@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: message.h,v 1.5 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -42,8 +42,8 @@
 #define MESSAGE_H
 
 #ifdef _MSC_VER
-#  pragma warning(disable:4290) //C++ ���㳰�λ����̵�뤵��ޤ����ؿ��� __declspec(nothrow) �Ǥʤ����ȤΤ�ɽ������ޤ���
-#  pragma warning(disable:4786) //�ǥХå�����Ǽ��̻Ҥ�255ʸ�����ڤ�ΤƤ��ޤ�����
+#  pragma warning(disable:4290) //C++ の例外の指定は無視されます。関数が __declspec(nothrow) でないことのみ表示されます。
+#  pragma warning(disable:4786) //デバッグ情報で識別子が255文字に切り捨てられました。
 #endif
 
 #include <string>
@@ -56,62 +56,62 @@
 #include "base/except.h"
 
     /*
-     *   ʸ���������إ�ѡ����饹
+     *   文字列整形ヘルパークラス
      */
 class Formatter
 {
 protected:
-    std::string       templatestring;    //�ƥ�ץ졼��ʸ����
-    std::stringstream content;           //ʸ���������Ƚ񼰺Ѥ�ʸ�����ǽ����ѥ��ȥ꡼��
-    bool              accept;            //�����������ǽ���ɤ���
+    std::string       templatestring;    //テンプレート文字列
+    std::stringstream content;           //文字列整形と書式済み文字列可能場所用ストリーム
+    bool              accept;            //引数を受入可能かどうか
 
-        //���ΰ�����������ؤȰ�ư
+        //次の引数の挿入先へと移動
     void shift(void) throw();
 
-        //̤����ΰ����� (null) ���ִ�
+        //未設定の引数を (null) で置換
     void shift_all(void) throw();
 
 public:
-        //�ǥե���ȥ��󥹥ȥ饯��
+        //デフォルトコンストラクタ
     Formatter(void) throw();
 
-        //���󥹥ȥ饯��
+        //コンストラクタ
     Formatter(std::string src) throw();
 
-        //���ԡ����󥹥ȥ饯��
+        //コピーコンストラクタ
     Formatter(const Formatter & src) throw();
 
-        //�ƥ�ץ졼��ʸ��������� (��ȤϾä���)
+        //テンプレート文字列の設定 (中身は消える)
     void assign(std::string src) throw();
 
-        //���ƤΥ��ꥢ
+        //内容のクリア
     void clear(void) throw();
 
-        //�����黻��
+        //代入演算子
     Formatter & operator =(const Formatter & src) throw();
 
-        //����������
+        //引数の設定
     template<class T>
     Formatter & operator << (const T & src) throw()
     {
         std::string::size_type pos;
 
-            //�����������ǽ�ʤ�
+            //引数を受入可能なら
         if(accept) {
             pos = content.str().size();
             content << src;
 
-                /* ��ʸ���Ǥʤ���м����������˰�ư */
+                /* 空文字でなければ次の挿入場所に移動 */
             if(pos != content.str().size())
                 shift();
         }
         return *this;
     }
 
-        //������å������μ��Ф�
+        //内部メッセージの取り出し
     std::string str(void) throw();
 
-        //ɸ����ϥ��ȥ꡼��ؤν����� operator << ���
+        //標準出力ストリームへの出力用 operator << 定義
     friend inline std::ostream & operator << (std::ostream & out, Formatter msg) throw()
     {
         out << msg.content.str();
@@ -122,7 +122,7 @@ public:
 };
 
     /*
-     *   ��å����������Ѥ�2�����б���Ԥä�ʸ���������إ�ѡ����饹
+     *   メッセージ出力用に2言語対応を行った文字列整形ヘルパークラス
      */
 class Message : public Formatter
 {
@@ -132,21 +132,21 @@ public:
         ENGLISH  = 0,
         JAPANESE = 1,
 
-        LAST_LANG,              //�Ǹ�ΰ���
-        NEUTRAL  = ENGLISH,     //ɸ�����
+        LAST_LANG,              //最後の位置
+        NEUTRAL  = ENGLISH,     //標準言語
     };
 
-        /* ���ϥ�å������������楯�饹 */
+        /* 出力メッセージ言語制御クラス */
     class MessageControl
     {
     protected:
-        int language;   //�ɤθ������Ѥ���Τ�
+        int language;   //どの言語を使用するのか
 
     public:
-            //���󥹥ȥ饯��
+            //コンストラクタ
         SINGLETON_CONSTRUCTOR(MessageControl) throw() : language(NEUTRAL) {};
 
-            //��������
+            //アクセサ
         inline void setLanguage(int _language) throw()  { language = _language; }
         inline int  getLanguage(void) const    throw()  { return language; }
 
@@ -155,30 +155,30 @@ public:
 
 protected:
 
-        //�������饹�ѥ��󥹥ȥ饯��
+        //派生クラス用コンストラクタ
     void _initialize(const char * src1, const char * src2, va_list vl) throw();
 
 public:
-        //�ǥե���ȥ��󥹥ȥ饯��
+        //デフォルトコンストラクタ
     Message(void) throw();
 
-        //���󥹥ȥ饯�� (ñ�����)
+        //コンストラクタ (単一言語)
     Message(std::string src) throw();
 
-        //���󥹥ȥ饯�� (ʣ������)
+        //コンストラクタ (複数言語)
     Message(const char * src1, const char * src2, ... ) throw();
 
-        //���ԡ����󥹥ȥ饯��
+        //コピーコンストラクタ
     Message(const Message & src) throw();
 
-        //�ƥ�ץ졼��ʸ��������� (��ȤϾä���)
+        //テンプレート文字列の設定 (中身は消える)
     void assign(std::string src) throw() { Formatter::assign(src); }
     void assign(const char * src1, const char * src2, ... ) throw();
 
-        //��������
+        //言語選択
     static void selectLanguage(enum tagLanguage lang = NEUTRAL) throw();
         
-        //����μ���
+        //言語の取得
     static enum tagLanguage getCurrentLanguage(void) throw()
     {   return static_cast<enum tagLanguage>(Singleton<MessageControl>::getInstance()->getLanguage());   }
 
@@ -187,23 +187,23 @@ public:
 
 
     /*
-     *   ��Ĺ������ʸ���������إ�ѡ����饹
+     *   冗長出力用文字列整形ヘルパークラス
      */
 class VerboseMessage : public Message
 {
 public:
-        //���̤ξ�Ĺ���Ͼ������ĥ��饹
+        //共通の冗長出力情報を持つクラス
     class VerboseControl
     {
     public:
-        bool           verbose;     //��Ĺ���Ϥ�Ԥ����ɤ���
-        std::ostream * out;         //������
+        bool           verbose;     //冗長出力を行うかどうか
+        std::ostream * out;         //出力先
 
-            //���󥹥ȥ饯��
+            //コンストラクタ
         SINGLETON_CONSTRUCTOR(VerboseControl) throw() : verbose(false), out(0)
         {}
 
-            //��Ĺ��������
+            //冗長出力制御
         template<class T>
         inline const VerboseControl & operator << (const T & src) const throw()
         {
@@ -212,20 +212,20 @@ public:
             return *this;
         }
 
-            //verbose��������
+            //verboseアクセサ
         void setVerbose(bool _verbose) throw()
         {   verbose = _verbose;   }
         bool getVerbose(void) const throw()
         {   return verbose;   }
 
-            //out��������
+            //outアクセサ
         void setStream(std::ostream * _out) throw()
         {   out = _out;   }
         std::ostream * getStream(void) throw()
         {   return out;   }
     };
 
-        //��Ĺ���ϥ��ȥ꡼�� (ñ����޻ߵ����Ĥ���åѡ����饹)
+        //冗長出力ストリーム (単純な抑止機構つきラッパークラス)
     class VerboseStream
     {
     protected:
@@ -244,32 +244,32 @@ public:
     };
 
 protected:
-        //�ǥե���ȥ��󥹥ȥ饯�� (�ƥ�����)
+        //デフォルトコンストラクタ (テスト用)
     VerboseMessage(void) throw();
 
 public:
 
-        //���󥹥ȥ饯��
+        //コンストラクタ
     VerboseMessage(const char * src) throw();
     VerboseMessage(const std::string & src) throw();
     VerboseMessage(const char * src1, const char * src2, ... ) throw();
 
-        //�ǥ��ȥ饯��
+        //デストラクタ
     ~VerboseMessage(void) throw();
 
-        //��Ĺ�������� (������������)
+        //冗長出力制御 (アクセサ回送)
     inline static void setVerbose(bool _verbose) throw()
     {   Singleton<VerboseControl>::getInstance()->setVerbose(_verbose);   }
 
-        //��Ĺ�����襹�ȥ꡼������ (������������)
+        //冗長出力先ストリーム設定 (アクセサ回送)
     inline static void setStream(std::ostream * _stream) throw()
     {   Singleton<VerboseControl>::getInstance()->setStream(_stream);   }
 
-        //��Ĺ��������ξ��ּ���
+        //冗長出力制御の状態取得
     inline static bool getVerbose(void) throw()
     {   return Singleton<VerboseControl>::getInstance()->getVerbose();   }
 
-        //��Ĺ�����襹�ȥ꡼��μ��� (���ꤷ����Τ�Ʊ����ΤϽФƤ��ʤ�)
+        //冗長出力先ストリームの取得 (設定したものと同じものは出てこない)
     inline static VerboseStream getStream(void) throw()
     {   return VerboseStream(getVerbose() ? Singleton<VerboseControl>::getInstance()->getStream() : 0);   }
 
@@ -277,12 +277,12 @@ public:
 };
 
     /*
-     *   �㳰��å�������ʸ���������إ�ѡ����饹
+     *   例外メッセージ用文字列整形ヘルパークラス
      */
 class ExceptionMessage : public Message
 {
 public:
-        //�㳰�δ����٥�٥�
+        //例外の危険度レベル
     enum tagLevel {
         DEFAULT = 0,
         FATAL   = 1,
@@ -302,7 +302,7 @@ protected:
     enum tagLevel level;
 
 public:
-        //���󥹥ȥ饯��
+        //コンストラクタ
     ExceptionMessage(const char * src) throw();
     ExceptionMessage(const std::string & src) throw();
     ExceptionMessage(const char * src1, const char * src2, ...) throw();
@@ -315,15 +315,15 @@ public:
     ExceptionMessage(const ExceptionMessage & src) throw();
 
 
-        //�����٥�٥뻲��
+        //危険度レベル参照
     inline bool operator == (enum tagLevel _level) const throw()
     {   return level == _level;   }
 
-        //�����٥�٥뻲��
+        //危険度レベル参照
     inline bool operator != (enum tagLevel _level) const throw()
     {   return !(operator ==(_level));   }
 
-        //���������� (�ֵ��ͤη���Message & ���� ExceptionMessage & �ˤ��뤿��ξ��ٹ�)
+        //引数の設定 (返却値の型をMessage & から ExceptionMessage & にするための小細工)
     template<class T>
     inline ExceptionMessage & operator << (const T & src) throw()
     {
@@ -331,26 +331,26 @@ public:
         return *this;
     }
 
-#ifdef EXCEPT_H     //Exception���饹����Ѥ�����
-        //�㳰��ȯ��
+#ifdef EXCEPT_H     //Exceptionクラスを使用する場合
+        //例外の発生
     bool throwException(void) throw(Exception)
     {
         ExceptionMessageException exc(level, str());
         return exc.throwException();
     }
-        //�ޥ˥ԥ�졼��
+        //マニピュレータ
     inline ExceptionMessage & operator << ( ExceptionMessage & (* func)(ExceptionMessage &) ) throw(Exception)
     {   return (*func)(*this);   }
 
-#else               //stdexcept����Ѥ�����
-        //�㳰��ȯ��
+#else               //stdexceptを使用する場合
+        //例外の発生
     template<class T>
     bool throwException(void) throw(T)
     {
         throw T(str());
         return true;
     }
-        //�ޥ˥ԥ�졼��
+        //マニピュレータ
     inline ExceptionMessage & operator << ( ExceptionMessage & (* func)(ExceptionMessage &) ) throw(T)
     {   return (*func)(*this);   }
 #endif
@@ -358,9 +358,9 @@ public:
     //TESTSUITE_PROTOTYPE(main)
 };
 
-#ifdef EXCEPT_H     //Exception���饹����Ѥ�����
+#ifdef EXCEPT_H     //Exceptionクラスを使用する場合
 
-        //�㳰�򥹥������뤿��Υޥ˥ԥ�졼��
+        //例外をスローするためのマニピュレータ
     inline ExceptionMessage & throwException(ExceptionMessage & excmsg) throw(Exception)
     {
         excmsg.throwException();
@@ -368,7 +368,7 @@ public:
     }
 
 #else
-        //�㳰�򥹥������뤿��Υޥ˥ԥ�졼��
+        //例外をスローするためのマニピュレータ
     template<class T>
     inline ExceptionMessage & throwException(ExceptionMessage & excmsg) throw(T)
     {
@@ -381,41 +381,41 @@ public:
 
 
     /*
-     *   �ǥХå����������ʸ���������إ�ѡ����饹
+     *   デバッグ情報出力用文字列整形ヘルパークラス
      */
 class DebugMessage : public Formatter
 {
 public:
-        //���̤ξ�Ĺ���Ͼ������ĥ��饹 (���󥰥�ȥ�ˤ���Τ�VerboseControl��Ʊ����Τ򥯥饹������)
+        //共通の冗長出力情報を持つクラス (シングルトンにするのでVerboseControlを同じものをクラス化する)
     class DebugControl : public VerboseMessage::VerboseControl
     { public: SINGLETON_CONSTRUCTOR_(DebugControl) throw() : VerboseMessage::VerboseControl(_singleton) {} };
 
 
 protected:
-        //�ǥե���ȥ��󥹥ȥ饯�� (�ƥ�����)
+        //デフォルトコンストラクタ (テスト用)
     DebugMessage(void) throw();
 
 public:
 
-        //���󥹥ȥ饯��
+        //コンストラクタ
     DebugMessage(std::string src) throw();
 
-        //�ǥ��ȥ饯��
+        //デストラクタ
     ~DebugMessage(void) throw();
 
-        //��Ĺ�������� (������������)
+        //冗長出力制御 (アクセサ回送)
     inline static void setVerbose(bool _verbose) throw()
     {   Singleton<DebugControl>::getInstance()->setVerbose(_verbose);   }
 
-        //��Ĺ�����襹�ȥ꡼������ (������������)
+        //冗長出力先ストリーム設定 (アクセサ回送)
     inline static void setStream(std::ostream * _stream) throw()
     {   Singleton<DebugControl>::getInstance()->setStream(_stream);   }
 
-        //��Ĺ��������ξ��ּ���
+        //冗長出力制御の状態取得
     inline static bool getVerbose(void) throw()
     {   return Singleton<DebugControl>::getInstance()->getVerbose();   }
 
-        //��Ĺ�����襹�ȥ꡼��μ��� (���ꤷ����Τ�Ʊ����ΤϽФƤ��ʤ�)
+        //冗長出力先ストリームの取得 (設定したものと同じものは出てこない)
     inline static VerboseMessage::VerboseStream getStream(void) throw()
     {   return VerboseMessage::VerboseStream(getVerbose() ? Singleton<DebugControl>::getInstance()->getStream() : 0);   }
 

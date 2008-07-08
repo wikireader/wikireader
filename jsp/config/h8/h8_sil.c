@@ -8,45 +8,45 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: h8_sil.c,v 1.7 2007/03/23 07:22:15 honda Exp $
  */
 
 /*
- * �����ƥ।�󥿥ե������쥤����ɲ���ʬ��
- *����I/O�ݡ��ȤΥǡ������ǥ��쥯����󡦥쥸����DDR�ؤΥ�������
- *����H8��DDR�Ͻ񤭹������ѤǤ��ꡢ���ΤޤޤǤϽ�˾�ΥӥåȤ�����
- *�����ѹ����뤳�Ȥ��Ǥ��ʤ�����bset,bclr̿��Ǥ�����Բġ�
- *�������Τ��ᡢ�ܼ����Ǥϡ������˥ƥ�ݥ����Ѱդ��ơ�DDR��
- *���������ͤ��ݻ�������ˡ��ΤäƤ��롣
- *����
- *�����ʤ����ݡ���7���������Ѥ�DDR�쥸�������ʤ����ᡢ��ά���Ƥ��롣
+ * システムインタフェースレイヤ（追加部分）
+ *　　I/Oポートのデータ・ディレクション・レジスタDDRへのアクセス
+ *　　H8のDDRは書き込み専用であり、そのままでは所望のビットだけを
+ *　　変更することができない。（bset,bclr命令でも回避不可）
+ *　　そのため、本実装では、メモリ上にテンポラリを用意して、DDRの
+ *　　現在値を保持する方法を採っている。
+ *　　
+ *　　なお、ポート7は入力専用でDDRレジスタがないため、省略している。
  */
 
 #include "jsp_kernel.h"
@@ -56,7 +56,7 @@
 
 #define	DUMMY	0
 
-/*  �����Υƥ�ݥ���ΰ�  */
+/*  メモリ上のテンポラリ領域  */
 static UB ddr_tmp[] = {
 	/* 1         2         3         4         5      */
 	H8P1DDR0, H8P2DDR0, H8P3DDR0, H8P4DDR0, H8P5DDR0, 
@@ -64,7 +64,7 @@ static UB ddr_tmp[] = {
 	H8P6DDR0, H8P8DDR0, H8P9DDR0, H8PADDR0, H8PBDDR0
 };
 
-/*  �ƥݡ��ȤΥ��ɥ쥹  */
+/*  各ポートのアドレス  */
 static const VP ddr_adr[] = {
 	(VP)H8P1DDR, (VP)H8P2DDR, (VP)H8P3DDR, (VP)H8P4DDR, (VP)H8P5DDR, 
 	(VP)H8P6DDR, (VP)H8P8DDR, (VP)H8P9DDR, (VP)H8PADDR, (VP)H8PBDDR
@@ -72,23 +72,23 @@ static const VP ddr_adr[] = {
 
 
 /*
- *  ���������Ԥ�
- *  ���ץ��ȥ����������sil.h��ˤ���
+ *  微少時間待ち
+ *  　プロトタイプ宣言はsil.h内にある
  */
 void sil_dly_nse(UINT dlytim) {
 	/* er0 = dlytim */
 	Asm("		sub.l	%0, er0" :: "g"(SIL_DLY_TIM1) );
 	Asm("		ble	sil_dly_nse_2");
-				/* dlytim < SIL_DLY_TIM1 �ʤ�롼�׽�λ */
+				/* dlytim < SIL_DLY_TIM1 ならループ終了 */
 	Asm("	sil_dly_nse_1:");
 	Asm("		sub.l	%0, er0" :: "g"(SIL_DLY_TIM2) );
 	Asm("		bgt	sil_dly_nse_1");
-				/* dlytim > SIL_DLY_TIM2 �ʤ�롼��³�� */
+				/* dlytim > SIL_DLY_TIM2 ならループ続行 */
 	Asm("	sil_dly_nse_2:");
 }
 
 /*
- *      DDR���ɤ߽Ф�
+ *      DDRの読み出し
  */
 UB sil_reb_ddr(UINT port)
 {
@@ -97,7 +97,7 @@ UB sil_reb_ddr(UINT port)
 }
 
 /*
- *      DDR�ν񤭹���
+ *      DDRの書き込み
  */
 void sil_wrb_ddr(UINT port, UB data)
 {
@@ -107,7 +107,7 @@ void sil_wrb_ddr(UINT port, UB data)
 }
 
 /*
- *      DDR��AND�黻
+ *      DDRのAND演算
  */
 void sil_anb_ddr(UINT port, UB data)
 {
@@ -118,7 +118,7 @@ void sil_anb_ddr(UINT port, UB data)
 }
 
 /*
- *      DDR��OR�黻
+ *      DDRのOR演算
  */
 void sil_orb_ddr(UINT port, UB data)
 {

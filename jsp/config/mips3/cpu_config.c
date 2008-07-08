@@ -8,36 +8,36 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 /*
- *  �ץ����å���¸�⥸�塼���MIPS3�ѡ�
+ *  プロセッサ依存モジュール（MIPS3用）
  */
 
 #include "jsp_kernel.h"
@@ -45,28 +45,28 @@
 #include "task.h"
 
 /*
- *  ����ߥϥ�ɥ顿����ߥޥ����ε����ơ��֥�
+ *  割込みハンドラ／割込みマスクの擬似テーブル
  */
 INT_TABLE int_table[ TMAX_ALL_INTNO ];
 
 /*
- *  �㳰�ϥ�ɥ�ε����ơ��֥�
+ *  例外ハンドラの擬似テーブル
  */
 FP exc_table[ TMAX_CORE_EXCNO ];
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void cpu_initialize() {
 
 	int i;
 
-	/* ����ߥϥ�ɥ顿����ߥޥ����ε����ơ��֥����� */
+	/* 割込みハンドラ／割込みマスクの擬似テーブル初期化 */
 	for( i = 0; i < TMAX_ALL_INTNO; i++ ) {
 		define_inh( i, (FP) &cpu_experr );
 	}
 
-	/* �㳰�٥����ε����ơ��֥����� */
+	/* 例外ベクタの擬似テーブル初期化 */
 	for( i = 0; i < TMAX_CORE_EXCNO; i++ ) {
 		define_exc( i, (FP) &cpu_experr );
 	}
@@ -74,13 +74,13 @@ void cpu_initialize() {
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void cpu_terminate() {
 }
 
 /*
- *  ���������Ԥ�
+ *  微少時間待ち
  */
 void sil_dly_nse(UINT dlytim) {
 
@@ -89,13 +89,13 @@ void sil_dly_nse(UINT dlytim) {
 	Asm("	li	$3, %0" :: "g"(SIL_DLY_TIM1) );
 
 	Asm("	sub	$2, $2, $3");	/* v0 -= v1 (dlytim -= SIL_DLY_TIM1) */
-	Asm("	blez    $2, sil_dly_nse_2");	/* v0 <= 0 �ʤ�꥿���� */
+	Asm("	blez    $2, sil_dly_nse_2");	/* v0 <= 0 ならリターン */
 
 	Asm("	li      $3, %0" :: "g"(SIL_DLY_TIM2) );
 
 	Asm("sil_dly_nse_1:");
 	Asm("	sub     $2, $2, $3");	/* v0 -= v1 (dlytim -= SIL_DLY_TIM2) */
-	Asm("	bgtz    $2, sil_dly_nse_1");	/* v0 > 0 �ʤ�롼�� */
+	Asm("	bgtz    $2, sil_dly_nse_1");	/* v0 > 0 ならループ */
 
 	Asm("sil_dly_nse_2:");
 }
@@ -103,16 +103,16 @@ void sil_dly_nse(UINT dlytim) {
 #ifdef SUPPORT_CHG_IPM
 
 /*
- *  ����ߥޥ������ѹ�
+ *  割込みマスクの変更
  *
- *  ����ߥޥ����ϡ��������ǥ����ѥå��ˤ�äơ��������¹Ծ��֤ˤʤä���������
- *  �����Ѥ���롣���Τ��ᡢ���������¹���ˡ��̤Υ������ˤ�äƳ���ߥޥ�����
- *  �ѹ�������礬���롣JSP�����ͥ�Ǥϡ�����ߥޥ������ѹ��ϥ������㳰����
- *  �롼����ˤ�äƤⵯ���뤬������ˤ�äư������񤷤��ʤ�����Ͼ��ʤ��Ȼפ�
- *  ��롣����ߥޥ������ͤˤ�äƥ������ǥ����ѥå���ػߤ��������ˤϡ�
- *  dis_dsp ��ʻ�Ѥ���Ф褤��
- *  MIPS3�������åȤǤϡ�MIPS3�����γ���ߥޥ��������Ǥʤ�������ߥ���ȥ�����
- *  �γ���ߥ���ȥ�����ⰷ�äƤ���Τ����ա�
+ *  割込みマスクは、タスクディスパッチによって、新しく実行状態になったタスクに
+ *  引き継がれる。そのため、タスクが実行中に、別のタスクによって割込みマスクが
+ *  変更される場合がある。JSPカーネルでは、割込みマスクの変更はタスク例外処理
+ *  ルーチンによっても起こるが、これによって扱いが難しくなる状況は少ないと思わ
+ *  れる。割込みマスクの値によってタスクディスパッチを禁止したい場合には、
+ *  dis_dsp を併用すればよい。
+ *  MIPS3ターゲットでは、MIPS3コアの割込みマスクだけでなく、割込みコントローラ
+ *  の割込みコントローラも扱っているので注意。
  */
 
 SYSCALL ER chg_ipm(IPM ipm) {
@@ -124,9 +124,9 @@ SYSCALL ER chg_ipm(IPM ipm) {
 	CHECK_IPM(ipm);
 
 	t_lock_cpu();
-	cpu_set_ipm( ipm.core );	/* MIPS3�����γ���ߥޥ��������� */
-	icu_set_ipm( &(ipm.icu) );	/* ��������ߥ���ȥ�����γ���ߥޥ���
-					   ������ */
+	cpu_set_ipm( ipm.core );	/* MIPS3コアの割込みマスクの設定 */
+	icu_set_ipm( &(ipm.icu) );	/* 外部割込みコントローラの割込みマスク
+					   の設定 */
 	ercd = E_OK;
 	t_unlock_cpu();
 
@@ -136,7 +136,7 @@ SYSCALL ER chg_ipm(IPM ipm) {
 }
 
 /*
- *  ����ߥޥ����λ���
+ *  割込みマスクの参照
  */
 SYSCALL ER get_ipm(IPM *p_ipm) {
 
@@ -146,9 +146,9 @@ SYSCALL ER get_ipm(IPM *p_ipm) {
 	CHECK_TSKCTX_UNL();
 
 	t_lock_cpu();
-	p_ipm->core = cpu_get_ipm();	/* MIPS3�����γ���ߥޥ������� */
-	icu_get_ipm(&(p_ipm->icu));	/* ��������ߥ���ȥ�����γ���ߥޥ���
-					   �λ��� */
+	p_ipm->core = cpu_get_ipm();	/* MIPS3コアの割込みマスク参照 */
+	icu_get_ipm(&(p_ipm->icu));	/* 外部割込みコントローラの割込みマスク
+					   の参照 */
 	ercd = E_OK;
 	t_unlock_cpu();
 
@@ -160,10 +160,10 @@ SYSCALL ER get_ipm(IPM *p_ipm) {
 #endif /* SUPPORT_CHG_IPM */
 
 /*============================================================================*/
-/*  ���̥ɥ�����ȤˤϤʤ����ȼ�����ʬ  */
+/*  共通ドキュメントにはない、独自の部分  */
 
 /*
- * �ϥ�ɥ餬��Ͽ����Ƥ��ʤ�����ߡ��㳰��ȯ������ȸƤӽФ����
+ * ハンドラが登録されていない割込み・例外が発生すると呼び出される
  */
 void cpu_experr( EXCSTACK *sp, UW SR, UW CR) {
 
@@ -172,7 +172,7 @@ void cpu_experr( EXCSTACK *sp, UW SR, UW CR) {
     syslog_1(LOG_EMERG, "PC(EPC;CP0_r14) = 0x%08x",
     			sp->CP0_EPC);
     syslog_2(LOG_EMERG, "SR(Status;CP0_r12) = 0x%08x CR(Cause;CP0_r13) = 0x%08x",
-    			SR, CR);	/* SR�Ǥ⡢sp->CP0_Status�Ǥ�� */
+    			SR, CR);	/* SRでも、sp->CP0_Statusでも可 */
     syslog_3(LOG_EMERG, "at(r1 ) = %08x v0(r2 ) = %08x v1(r3 ) = %08x",
     			sp->at, sp->v0, sp->v1);
     syslog_4(LOG_EMERG, "a0(r4 ) = %08x a1(r5 ) = %08x a2(r6 ) = %08x a3(r7 ) = %08x",
@@ -191,11 +191,11 @@ void cpu_experr( EXCSTACK *sp, UW SR, UW CR) {
 }
 
 /*
- *  ����֥��å����饤�֥��ʥ�󥯥�����ץ���ǻ��ѡ�
- *	(ItIs�����ή��)
+ *  メモリブロック操作ライブラリ（リンクスクリプト内で使用）
+ *	(ItIsからの流用)
  *
- *  �ؿ��λ��ͤϡ�ANSI C �饤�֥��λ��ͤ�Ʊ����ɸ��饤�֥��Τ�Τ�
- *  �Ȥä�������Ψ���ɤ���ǽ�������롥
+ *  関数の仕様は，ANSI C ライブラリの仕様と同じ．標準ライブラリのものを
+ *  使った方が効率が良い可能性がある．
  */
 VP _dummy_memcpy(VP dest, VP src, UINT len) {
 

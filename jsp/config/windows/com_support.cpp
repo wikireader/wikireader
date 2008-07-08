@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: com_support.cpp,v 1.10 2003/12/15 07:19:22 takayuki Exp $
  */
@@ -46,17 +46,17 @@
 #include <commctrl.h>
 
 /*
- *  ����ʹ���줿��������
- *     Q: C�������륳���Ȥ�C++�������륳���Ȥ������äƤ��ޤ���?
- *     A: ���ڤ˥����ȥ����Ȥ����Ⱥ��������C�������륳���Ȥǡ������褦�ʽ����򤹤����������C++�������륳���Ȥ�ȤäƤ��ޤ���
+ *  前に聞かれた事の説明
+ *     Q: CスタイルコメントとC++スタイルコメントが混ざっていますが?
+ *     A: 気楽にコメントアウトされると困る処理がCスタイルコメントで、似たような処理をする場所の説明にC++スタイルコメントを使っています。
  *
- *     Q: �ѿ���̾�Ť���§������㤯����Ǥ���?
- *     A: ����Ū�˥��������ϰϤǻȤ�ʬ���Ƥ��ޤ���
- *          �������뤬��ʸ��+"_", �������Х뤬��ʸ����ʸ��, ���Ф�Java�äݤ���������
+ *     Q: 変数の名づけ規則がめちゃくちゃですが?
+ *     A: 基本的にスコープ範囲で使い分けています。
+ *          ローカルが小文字+"_", グローバルが大文字小文字, メンバがJavaっぽいスタイル
  *
- *     Q: INVALID_HANDLE_VALUE �� NULL ��ɤ��Ȥ�ʬ���Ƥ���ΤǤ���?
- *     A: CreateXxxx�����Ի����ֵѤ����ͤǤ��碌�ޤ�����
- *        ����Ū�ˤϡ��ե������INVALID_HANDLE_VALUE(CreateFile)�ǡ�����ʳ���NULL�ˤʤäƤޤ���
+ *     Q: INVALID_HANDLE_VALUE と NULL をどう使い分けているのですか?
+ *     A: CreateXxxxが失敗時に返却する値であわせました。
+ *        具体的には、ファイルはINVALID_HANDLE_VALUE(CreateFile)で、それ以外がNULLになってます。
  */
 
 #ifndef __COM_NOT_REQUIRED__
@@ -64,7 +64,7 @@
 
 //===================================================
 /*
- *   ������
+ *   共通部
  */
 extern "C" SYSTIM		_kernel_systim_offset;
 extern "C" SYSTIM		_kernel_current_time;
@@ -87,10 +87,10 @@ extern "C" void leave_system_critiacl_section(BOOL * cookie);
 
 //===================================================
 
-	/* �桼������Υ��� */
+	/* ユーザ定義のログ */
 #define USERDEFINED	0x60
-#define LOG_MODULENAME (0 | USERDEFINED)	/* �⥸�塼���̾��   */
-#define LOG_TIMESTAMP  (1 | USERDEFINED)    /* ��Ͽ�򳫻Ϥ������� (SYSTEMTIME��¤�Τ򤽤Τޤޥ����) */
+#define LOG_MODULENAME (0 | USERDEFINED)	/* モジュールの名前   */
+#define LOG_TIMESTAMP  (1 | USERDEFINED)    /* 記録を開始した時刻 (SYSTEMTIME構造体をそのままダンプ) */
 
 #define  __HAL_MSG_MSGONLY
 #include <hal_msg.h>
@@ -100,15 +100,15 @@ extern "C" void leave_system_critiacl_section(BOOL * cookie);
 namespace
 {
 	/*
-	 *   COM���󥿡��ե�������Ϣ�����
+	 *   COMインターフェース関連の定義
 	 */
 
-		//������ID�����
+		//諸々のIDの宣言
 	const IID   IID_IKernelEvents = {0x1353969D,0xE84F,0x463F,{0xB2,0x11,0x33,0x7E,0x9B,0xCF,0xB9,0x9E}};
 	const IID   IID_IKernel       = {0xD3E42099,0x3FDD,0x4A78,{0xBD,0xBD,0x4E,0x57,0xD3,0x62,0xF5,0xED}};
 	const CLSID CLSID_Kernel      = {0x51789667,0x9F20,0x40AF,{0xAF,0x7F,0x98,0x56,0x32,0x5D,0xFB,0x0B}};
 
-		// IKernel���󥿡��ե��������
+		// IKernelインターフェース定義
 	class IKernel : public IUnknown
 	{
 	public:
@@ -118,7 +118,7 @@ namespace
 		STDMETHOD(OnLogEvent)(long sz, unsigned char __RPC_FAR data[]) PURE;
 	};
 
-		// IKernelEvents���󥿥ե��������
+		// IKernelEventsインタフェース定義
 	class IKernelEvents : public IUnknown
 	{
 	public:
@@ -133,7 +133,7 @@ namespace
 	};
 
 	/*
-	 *   IKernelEvents����
+	 *   IKernelEvents実装
 	 */
 
 	IKernelEvents::IKernelEvents(void) : RefCount(0)
@@ -166,7 +166,7 @@ namespace
 
 		if(inhno < 0)
 		{
-			/* inhno < 0 ���ü�ʰ�̣����� */
+			/* inhno < 0 は特殊な意味を持つ */
 
 			/* inhno = -1 : keep-alive */
 		}else
@@ -177,70 +177,70 @@ namespace
 
 namespace {
 	/*
-	 *   COM�̿��Ѻ�ȥ���åɤ˴ؤ������
+	 *   COM通信用作業スレッドに関する定義
 	 */
 
-	HANDLE request_semaphore    = NULL;		//�׵��Ԥ����ޥե�
-	HANDLE worker_thread_handle = NULL;		//��ȥ���åɤΥϥ�ɥ�
+	HANDLE request_semaphore    = NULL;		//要求待ちセマフォ
+	HANDLE worker_thread_handle = NULL;		//作業スレッドのハンドル
 
 	//==============================================================================
 
-		//COM��ȥ���åɤ�����˺�ư���Ƥ��뤫�ݤ�
+		//COM作業スレッドが正常に作動しているか否か
 	inline bool IsValid(void)
 	{	return (request_semaphore != NULL) && (worker_thread_handle != NULL);	}
 
 	//===================================================
 
 		/*
-		 *    Q: �ɤ����ƥ����ƥ���å���ɬ�פʤ�?
-		 *    A: �������٥�Ȥ򥭥塼���󥰤��뤿��˳ƥ�����/����ߥ���åɤ��������
-		 *        -> VisualC++�Υޥ������å��ѥ�����ݥ饤�֥��������ǥ���ƥ����륻������󥪥֥������Ȥ�Ȥä���¾���椷�Ƥ���
-		 *        -> TOPPERS/JSP Windows�Υǥ����ѥå���(��������å�)���׵᤬���Ⱥ�ư���Ƥ��륹��åɤ�ߤ�ˤ�����
-		 *        -> ��������ѤΥ���ƥ����륻����������ä��ޤ�SuspendThread����Ƥ��ޤ�����������׵��Ф���¾�Υ���å����Ƥ����å�
-		 *        -> ��������åɤ������Ф�����˥����Ȥ�����Τǡ���������åɤ���å�
-		 *        -> ��������åɤ����å������ȡ��ǽ��SuspendThread���줿��Ĥ򵯤�������åɤ����ʤ�
-		 *        -> �ǥåɥ��å�
-		 *    ��­ : COM�̿���ȥ���åɤ䥳�󥽡����������åɤΤ褦�˴�������åɤ�SuspendThread���оݤˤʤ�ʤ�����åɤϥ��å����ʤ��Ƥ⤤��
+		 *    Q: どうしてシステムロックが必要なの?
+		 *    A: ログイベントをキューイングするために各タスク/割込みスレッドがメモリを取る
+		 *        -> VisualC++のマルチスレッド用メモリ確保ライブラリは内部でクリティカルセクションオブジェクトを使って排他制御している
+		 *        -> TOPPERS/JSP Windowsのディスパッチャ(管理スレッド)は要求が来ると今動いているスレッドを止めにかかる
+		 *        -> メモリ確保用のクリティカルセクションを持ったままSuspendThreadされてしまい、メモリ確保要求を出した他のスレッド全てがロック
+		 *        -> 管理スレッドもログを出すためにメモリをとりに来るので、管理スレッドもロック
+		 *        -> 管理スレッドがロックされると、最初にSuspendThreadされたヤツを起こすスレッドがいない
+		 *        -> デッドロック
+		 *    補足 : COM通信作業スレッドやコンソール管理スレッドのように管理スレッドのSuspendThreadの対象にならないスレッドはロックしなくてもいい
 		 */
 
 	//===================================================
 
-		/* ��ȥ���åɤ�Ϳ����ǡ������ݻ����륯�饹 */
+		/* 作業スレッドに与えるデータを保持するクラス */
 	class Request
 	{
 	public:
 		enum tagRequestType
 		{
-			Confirmation = 0x00,	/* �������åɤ�ư���ǧ (���ޥե��򤿤�������) */
+			Confirmation = 0x00,	/* ワーカスレッドの動作確認 (セマフォをたたくだけ) */
 			
-			DeviceRead   = 0x01,	/* �ǥХ������ߥ�졼����� �ɽФ���� */
-			DeviceWrite  = 0x02,	/* �ǥХ������ߥ�졼����� �������� */
+			DeviceRead   = 0x01,	/* デバイスエミュレーション 読出し操作 */
+			DeviceWrite  = 0x02,	/* デバイスエミュレーション 書込み操作 */
 
-			EventLog     = 0x03,	/* ���٥�ȥ������� */
+			EventLog     = 0x03,	/* イベントログ送出 */
 
-			QuitThread   = 0xff		/* ��ȥ���åɤν�λ */
+			QuitThread   = 0xff		/* 作業スレッドの終了 */
 		};
 
 	protected:
 		bool                blocking;
 		bool				allocated;
 		enum tagRequestType type;
-		unsigned long       address;		/* �ǥХ��� : �ǥХ����Τ��륢�ɥ쥹 */
-		unsigned long       size;			/* ����     : storage�����ĥǡ����Υ����� */
-		HGLOBAL             storage;		/* ����     : �ǡ������Ǽ���Ƥ����ΰ�Υ��ɥ쥹(�ϥ�ɥ�) */
-		int                 result;			/* ����     : �֥��å��󥰼¹Ի����ֵ��� */
-		HANDLE              signalobject;	/* ����     : �֥��å��󥰼¹Ի��Υ���åɥϥ�ɥ� */
+		unsigned long       address;		/* デバイス : デバイスのあるアドレス */
+		unsigned long       size;			/* 共通     : storageが持つデータのサイズ */
+		HGLOBAL             storage;		/* 共通     : データを格納している領域のアドレス(ハンドル) */
+		int                 result;			/* 共通     : ブロッキング実行時の返却地 */
+		HANDLE              signalobject;	/* 共通     : ブロッキング実行時のスレッドハンドル */
 
-		Request *           next;		/* ���塼�ˤ��뤿��Υ�� */
+		Request *           next;		/* キューにするためのリンク */
 
-		static LONG      RequestCount;	//���塼�ˤĤʤ��äƤ���ꥯ�����Ȥο�
-		static Request * top;			//�ꥯ�����ȥ��塼����Ƭ (��äȤ�Ť��ꥯ������)
-		static Request * tail;			//�ꥯ�����ȥ��塼������ (��äȤ⿷�����ꥯ������)
-		static CRITICAL_SECTION cs;		//��¾���塼����Ѵ����ΰ襪�֥�������
+		static LONG      RequestCount;	//キューにつながっているリクエストの数
+		static Request * top;			//リクエストキューの先頭 (もっとも古いリクエスト)
+		static Request * tail;			//リクエストキューの末尾 (もっとも新しいリクエスト)
+		static CRITICAL_SECTION cs;		//排他キュー操作用危険領域オブジェクト
 
 		void connect(void)
 		{
-				//�׵�򥭥塼�ˤĤʤ�
+				//要求をキューにつなぐ
 			::EnterCriticalSection(&cs);
 			next = NULL;
 			if(tail != NULL)
@@ -254,7 +254,7 @@ namespace {
 		}
 
 	protected:
-			//���󥹥ȥ饯��
+			//コンストラクタ
 		Request(enum tagRequestType _type, bool _block, unsigned int _size = 0, void * _storage = NULL, unsigned long _address = 0)
             :   blocking(_block), allocated(false), type(_type), address(_address), 
                 size(0), storage(NULL), result(-1), signalobject(NULL), next(NULL)
@@ -263,7 +263,7 @@ namespace {
 
 			if(size != 0)
 			{
-					//�ΰ褬���ꤵ��Ƥʤ���硢ưŪ�˳��ݤ���
+					//領域が指定されてない場合、動的に確保する
 				if(_storage != NULL)
 					storage = static_cast<HGLOBAL>(_storage);
 				else
@@ -272,11 +272,11 @@ namespace {
 		}
 
 	public:
-			//�ǥ��ȥ饯��
+			//デストラクタ
 		virtual ~Request(void)
 		{
 
-				//�ΰ褬ưŪ���ݤ���Ƥ�����硢�˴���Ԥ�
+				//領域が動的確保されていた場合、破棄を行う
 			if(storage != NULL && allocated)
 			{
 				BOOL lock;
@@ -316,7 +316,7 @@ namespace {
 			}
 		}
 
-			// �����ƥ����å����ʤ��ǥ��곫��
+			// システムをロックしないでメモリ開放
 		inline void release(void)
 		{
 			if(storage != NULL && allocated)
@@ -353,9 +353,9 @@ namespace {
 		static inline LONG getRequestCount(void)
 		{	return RequestCount;	}
 
-			//�ΰ�γ���
-			//	_size   : ɬ�פȤ����ΰ�Υ�����
-			//	realloc : ���Ƥ��ݻ����뤫�ݤ�
+			//領域の確保
+			//	_size   : 必要とする領域のサイズ
+			//	realloc : 内容を保持するか否か
 		bool allocate(unsigned int _size, bool realloc = false)
 		{
 			unsigned long old_size;
@@ -372,7 +372,7 @@ namespace {
 
 			FatalAssertion(storage != NULL, "Request::allocate failed to allocate a memory block.");
 
-				//�������Ƥ��ݻ� ������ΰ��˴�
+				//前の内容の保持 および領域破棄
 			if(old_storage != NULL)
 			{
 				if(realloc)
@@ -389,11 +389,11 @@ namespace {
 			return true;
 		}
 
-			//���Ƥ��ݻ������ޤ޺ƥ���������
+			//内容を保持したまま再アロケート
 		inline bool reallocate(unsigned int _size)
 		{	return allocate(_size, true);   }
 
-			//�ݻ��ΰ���Ф�������
+			//保持領域に対する書込み
 		inline void set(void * data, unsigned int sz, unsigned int offset = 0)
 		{
 			if(size < sz)
@@ -402,7 +402,7 @@ namespace {
 			::CopyMemory(reinterpret_cast<char *>(storage) + offset, data, sz);
 		}
 
-			//�ݻ��ΰ���Ф����ɹ���
+			//保持領域に対する読込み
 		inline bool get(void * data, unsigned int sz, unsigned int offset = 0)
 		{
 			if(size < sz + offset)
@@ -411,8 +411,8 @@ namespace {
 			::CopyMemory(data, reinterpret_cast<char *>(storage) + offset, sz);
 		}
 
-			//�ݻ��ΰ��Ǥ�դΰ��֤��Ф���ݥ��󥿼���
-			//		offset : ��Ƭ����ΥХ��ȥ��ե��å�
+			//保持領域の任意の位置に対するポインタ取得
+			//		offset : 先頭からのバイトオフセット
 		void * getptr(unsigned int offset = 0)
 		{
 			if(offset > size || storage == NULL)
@@ -422,9 +422,9 @@ namespace {
 		}
 
 			/*
-			 *   Request���֥������ȥե����ȥ�
-			 *     Q: �ɤ����ƥե����ȥ꤬ɬ�פʤΤ�?
-			 *     A: ������ݤ������CPU����å�����ɬ�פ����뤿�� (�ܺ٤Ͼ嵭CPU���å�������ͳ�򻲾�)
+			 *   Requestオブジェクトファクトリ
+			 *     Q: どうしてファクトリが必要なのか?
+			 *     A: メモリ確保よりも先にCPUをロックする必要があるため (詳細は上記CPUロックする理由を参照)
 			 */			
 		static Request * Create(enum tagRequestType _type, bool _block, unsigned int _size = 0, void * _storage = NULL, unsigned long _address = 0)
 		{
@@ -481,8 +481,8 @@ namespace {
 		}
 				
 			/*
-			 *   �������׵��ȯ��
-			 *     (���δؿ���Ȥ�����å� : ��������å�, ����ߥ���å�, ����������å�)
+			 *   新しい要求の発行
+			 *     (この関数を使うスレッド : 管理スレッド, 割込みスレッド, タスクスレッド)
 			 */
 		virtual int invoke(void)
 		{
@@ -499,30 +499,30 @@ namespace {
 
 			connect();
 
-				//�׵�μ¹��Ԥ�
+				//要求の実行待ち
 			if(blocking)
 			{
 				signalobject = (HANDLE)::GetCurrentThreadId();
 
-					//�������׵����������Ȥ�����
+					//新しい要求をだしたことを通知
 				::ReleaseSemaphore(request_semaphore,1,NULL);
 				leave_system_critiacl_section(&lock);
 
-					//WM_QUIT��å�������Ȥä�Ʊ������
+					//WM_QUITメッセージを使って同期を取る
 				while(::GetMessage(&msg, 0, 0, 0) != 0)
 					::DispatchMessage(&msg);
 
-					//���Υ��֥������Ȥ��˴�����ΤǥХå����åפ���
+					//このオブジェクトを破棄するのでバックアップを取る
 				_result = result;
 
-					//���塼����Ϥ��������Ϻ�ȥ���åɤ����
-					//delete request�ϡ��Υ�֥��å��󥰤ʤ��ȥ���å���Ǥ���֥��å��󥰤ʤ餳���Ǥ��
+					//キューからはずす処理は作業スレッドがやる
+					//delete requestは、ノンブロッキングなら作業スレッド責任、ブロッキングならここでやる
                 enter_system_critical_section(&lock);
 				delete this;
                 leave_system_critiacl_section(&lock);
 			}else
 			{
-					//�������׵����������Ȥ�����
+					//新しい要求をだしたことを通知
 				::ReleaseSemaphore(request_semaphore,1,NULL);
 				leave_system_critiacl_section(&lock);
 			}
@@ -563,10 +563,10 @@ namespace {
 			::WriteFile(FileHandle, &log, sizeof(log), &written, NULL);
 			::WriteFile(FileHandle, &systim, sizeof(SYSTEMTIME), &written, NULL);
 
-				/* �⥸�塼��̾����Ф� */
+				/* モジュール名を取り出す */
 			::lstrcpyn(buffer, ::GetCommandLine(), 1023);
 			top = buffer;
-			buffer[1023] = '\x0';	//����������ʼ
+			buffer[1023] = '\x0';	//サーチ用番兵
 
 			if(*top == '"')
 			{
@@ -576,11 +576,11 @@ namespace {
 			else
 				for(work = top; *work != '\x0' && *work != ' '; ++work);
 
-			*work = '\x0';	//�����ߥ͡��Ƚ���
+			*work = '\x0';	//ターミネート処理
 
 			log.logtype = LOG_MODULENAME;
 			log.logtim  = 0;
-			log.bufsz   = work - top + 1;	//�����ߥ͡�����ʬ
+			log.bufsz   = work - top + 1;	//ターミネータの分
 			log.valid   = 1;
 			::WriteFile(FileHandle, &log, sizeof(log), &written, NULL);
 			::WriteFile(FileHandle, top, log.bufsz, &written, NULL);
@@ -657,13 +657,13 @@ namespace {
             BOOL lock;
             BOOL cpustate;
 
-                //�����ߤ�ػߤ���
+                //割り込みを禁止する
             if((cpustate = CPUStatus) == 0)
                 dis_int(0);
 
             enter_system_critical_section(&lock);
 
-                //�׵�򥭥塼����Ƭ�ˤĤʤ�
+                //要求をキューの先頭につなぐ
             ::EnterCriticalSection(&cs);
             next = top;
             top = this;
@@ -693,16 +693,16 @@ namespace {
     };
 
 //	typedef class EventDumpRequest EventRequest;
-	typedef class Request EventRequest;		//���٥�ȥ��������׵�ǻ��Ѥ����ꥯ������
-//	typedef class Request DeviceRequest;	//�ǥХ����̿��׵�ǻ��Ѥ����ꥯ������
-	typedef class ExclusiveDeviceRequest DeviceRequest;	//�ǥХ����̿��׵�ǻ��Ѥ����ꥯ������
+	typedef class Request EventRequest;		//イベントログ出力要求で使用されるリクエスト
+//	typedef class Request DeviceRequest;	//デバイス通信要求で使用されるリクエスト
+	typedef class ExclusiveDeviceRequest DeviceRequest;	//デバイス通信要求で使用されるリクエスト
 
 	//==============================================================================
 
-	LONG				Request::RequestCount = -1;	//���塼�ˤĤʤ��äƤ���ꥯ�����Ȥο�
-	Request *			Request::top  = NULL;		//�ꥯ�����ȥ��塼����Ƭ (��äȤ�Ť��ꥯ������)
-	Request *			Request::tail = NULL;		//�ꥯ�����ȥ��塼������ (��äȤ⿷�����ꥯ������)
-	CRITICAL_SECTION	Request::cs;				//��¾���塼����Ѵ����ΰ襪�֥�������
+	LONG				Request::RequestCount = -1;	//キューにつながっているリクエストの数
+	Request *			Request::top  = NULL;		//リクエストキューの先頭 (もっとも古いリクエスト)
+	Request *			Request::tail = NULL;		//リクエストキューの末尾 (もっとも新しいリクエスト)
+	CRITICAL_SECTION	Request::cs;				//排他キュー操作用危険領域オブジェクト
 
 	HANDLE              EventDumpRequest::FileHandle    = INVALID_HANDLE_VALUE;     //CreateFile uses INVALID_HANDLE_VALUE for identifying an invalid instance 
     HANDLE              ExclusiveDeviceRequest::blocker = NULL;
@@ -710,10 +710,10 @@ namespace {
 	//==============================================================================
 
 		/*
-		 *   ��ȥ���åɤ����Ѥ����ȴؿ������
+		 *   作業スレッドが使用する作業関数の定義
 		 */
 
-		//���ͥ������ݥ���Ȥؤ���³
+		//コネクションポイントへの接続
 	bool Advise(IUnknown * container, REFIID iid, IUnknown * sink, DWORD * cookie, IConnectionPoint ** p_cp = NULL)
 	{
 		IConnectionPointContainer * cp_container;
@@ -725,18 +725,18 @@ namespace {
 		if(p_cp == 0)
 			p_cp = &cp;
 
-			//IUnknown���󥿥ե���������IConnectionPointContainer�إ��㥹��
+			//IUnknownインタフェースからIConnectionPointContainerへキャスト
 		container->QueryInterface(IID_IConnectionPointContainer, (void **)&cp_container);
 		if(cp_container == 0)
 			return false;
 
-			//ConnectionPointContainer�����׵�˹礦ConnectionPoint��õ��
+			//ConnectionPointContainerから要求に合うConnectionPointを探す
 		cp_container->FindConnectionPoint(iid, p_cp);
 		cp_container->Release();
 		if(*p_cp == 0)
 			return false;
 
-			//���ͥ������ݥ������³
+			//コネクションポイント接続
 		if(FAILED((*p_cp)->Advise(sink, cookie)))
 			return false;
 
@@ -748,8 +748,8 @@ namespace {
 	//==============================================================================
 	
     /*
-     *  PerformRequest : �׵�μ¹�
-     *     �ֵ��� : ���٥�Ƚ������³����(true) or ��ȥ���åɤ���ߤ�����(false)
+     *  PerformRequest : 要求の実行
+     *     返却値 : イベント処理を継続する(true) or 作業スレッドを停止させる(false)
      */
 
     bool PerformRequest(IKernel * manager)
@@ -757,11 +757,11 @@ namespace {
         Request * request;
         bool succeeded;
 
-			//���塼����ꥯ�����Ȥ�ȴ�����
+			//キューからリクエストを抜き取る
 		request = Request::GetRequest();
 		FatalAssertion(request != NULL,"");
 
-			//��λ�׵�
+			//終了要求
 		if(request->getType() == Request::QuitThread)
 		{
 			if(!request->isBlockingRequest())
@@ -775,7 +775,7 @@ namespace {
             return false;
 		}
 
-			//�׵���ν���
+			//要求毎の処理
 		switch(request->getType())
 		{
 		case Request::Confirmation:
@@ -793,7 +793,7 @@ namespace {
 		case Request::EventLog:
 			succeeded = SUCCEEDED(manager->OnLogEvent(request->getSize(), reinterpret_cast<unsigned char *>(request->getStorage())));
 
-				//����åȥ�������ʤ�����������Ϥ�����ޤ��ԤäƤ�餦
+				//シャットダウン中ならログを全部はき終るまで待ってもらう
 			ShutdownPostponementRequest = TRUE;
 			break;
 
@@ -807,7 +807,7 @@ namespace {
     }
 
 		/*
-		 *   COM�̿���Ԥ�����κ�ȥ���å� ����
+		 *   COM通信を行うための作業スレッド 本体
 		 */
 	DWORD WINAPI WorkerThreadProcess(LPVOID _param)
 	{
@@ -819,10 +819,10 @@ namespace {
 
         kprintf(("WorkerThreadProcess : start\n"));
 
-			/* ����� */
+			/* 初期化 */
 		::CoInitialize(NULL);
 
-			// �ǥХ����ޥ͡��������³
+			// デバイスマネージャと接続
 		manager = 0;
 		if(FAILED(::CoCreateInstance(CLSID_Kernel, NULL, CLSCTX_ALL, IID_IKernel, (void **)&manager)))
 			goto _WorkerThreadProc_Cleanup;
@@ -836,7 +836,7 @@ namespace {
 			goto _WorkerThreadProc_Cleanup;
 		}
 
-			/* �ᥤ��롼���� */
+			/* メインルーチン */
 		manager->IsValid(&Success);
 		if(Success != 0)
 		{
@@ -846,28 +846,28 @@ namespace {
 			
 			do {
                     /*
-                     * ��������COM�򤿤����ȥ�å������Ȥ�������Ǥ��뤿�ᡢWaitForSingleObject�ǥ��ޥե����ԤĤȳ���������׵��¹ԤǤ��ʤ��ʤ롣
-                     * ���Τ��ᡢMsgWaitFor...���Ѥ�����å�����������Ǥ������Ϥ�����н�Ǥ���褦�ˤ��롣
+                     * 外部からCOMをたたくとメッセージとして飛んでくるため、WaitForSingleObjectでセマフォを待つと外部からの要求を実行できなくなる。
+                     * そのため、MsgWaitFor...を用い、メッセージが飛んできた場合はこれに対処できるようにする。
                      */
 
                     /*
-                     * cygwin�Ķ�����QS_ALLPOSTMESSAGE���������ʤ��Τǡ�������н�
+                     * cygwin環境だとQS_ALLPOSTMESSAGEが定義されないので、これで対処
                      */
 #ifndef QS_ALLPOSTMESSAGE
 #define QS_ALLPOSTMESSAGE (0x0100)
 #endif
 
-                    //�׵��Ԥ�
+                    //要求待ち
                 work = ::MsgWaitForMultipleObjects(1, &request_semaphore, FALSE, INFINITE, QS_ALLPOSTMESSAGE);
 
                 switch(work) {
 
-                    //�����׵�μ¹�
+                    //処理要求の実行
                 case WAIT_OBJECT_0:
                         loop_flag = PerformRequest(manager);
                         break;
 
-                    //����������׵� (����ߤʤ�)
+                    //外部からの要求 (割込みなど)
                 case WAIT_OBJECT_0 + 1:
                         GetMessage(&msg, 0, 0, 0);
                         TranslateMessage(&msg);
@@ -903,7 +903,7 @@ namespace {
         manager = 0l;
 		::CoUninitialize();
 
-		/* ���塼����ˤ��� (�Ԥ����) */
+		/* キューを空にする (待ち解除) */
 
 		Request * request;
 		while((request = Request::GetRequest()) != 0)
@@ -919,8 +919,8 @@ namespace {
 
 /****************************************************
  *                                                  *
- * TOPPERS/JSP - Windows���ߥ�졼�����Ķ�        *
- *   COM���Ѥ����ǥХ������ߥ�졼�����ǽ        *
+ * TOPPERS/JSP - Windowsシミュレーション環境        *
+ *   COMを用いたデバイスエミュレーション機能        *
  *                                                  *
  ****************************************************/
 
@@ -949,14 +949,14 @@ int _cdecl DeviceWrite(unsigned long address, unsigned long size, void * storage
 
 /****************************************************
  *                                                  *
- * TOPPERS/JSP - Windows���ߥ�졼�����Ķ�        *
- *   COM���Ѥ��������ͥ����������ǽ                *
+ * TOPPERS/JSP - Windowsシミュレーション環境        *
+ *   COMを用いたカーネルログ取得機能                *
  *                                                  *
  ****************************************************/
 
 #ifdef EVENTLOG_ENABLE
 
-	/* ¿�ť��������ɻ��ѥ��ޥե� :  1��­������̤�1�Ǥ��ä��Ȥ���������������ϤǤ��� */
+	/* 多重ログ出力防止用セマフォ :  1を足した結果が1であったときだけ、ログを出力できる */
 static LONG event_write_semaphore = 0;
 
 void event_write(unsigned int logtype, unsigned int valid, UINT bufsz, ... )
@@ -967,22 +967,22 @@ void event_write(unsigned int logtype, unsigned int valid, UINT bufsz, ... )
 
 	if(IsValid() && TlsGetValue(TLS_LOGMASK) == 0)
 	{
-			// �ꥯ�������ΰ����
+			// リクエスト領域確保
 		event_request = EventRequest::Create(EventRequest::EventLog, false, sizeof(T_RGLOG_HEADER) + bufsz);
 		log     = reinterpret_cast<DBIFLOG *>(event_request->getptr());
 
-			// �إå�����
+			// ヘッダ生成
 		log->header.logtype = logtype;
 		log->header.logtim  = _kernel_systim_offset + _kernel_current_time;
 		log->header.valid   = valid;
 		log->header.bufsz   = bufsz;
 
-			// ���Τγ�Ǽ
+			// 本体の格納
 		va_start(vl, bufsz);
 		for(unsigned int i=0;i<bufsz/sizeof(int);i++)
 			*((int *)&log->body + i) = va_arg(vl, int);
 
-			// �׵������ (Non-blocking)
+			// 要求の送付 (Non-blocking)
 		event_request->invoke();
 	}
 }
@@ -997,11 +997,11 @@ void event_write_svc_enter(int fncd, unsigned int params, ... )
 
 	if(IsValid() && TlsGetValue(TLS_LOGMASK) == 0)
 	{
-			//�ΰ���� : ���ݤ��륵�����ϥѥ�᡼�����������ʬ¿�� (�ƤӽФ������ɥ쥹���Ǽ)
+			//領域確保 : 確保するサイズはパラメータ総数より一個分多い (呼び出し元アドレスを格納)
 		event_request = EventRequest::Create(EventRequest::EventLog, false, sizeof(T_RGLOG_HEADER) + sizeof(T_RGLOG_SVC) + params * sizeof(VP_INT));	
 		log     = reinterpret_cast<DBIFLOG *>(event_request->getptr());
 
-			//�ѥ��å�����
+			//パケット生成
 		log->header.logtype = LOG_TYPE_SVC;
 		log->header.logtim  = _kernel_systim_offset + _kernel_current_time;
 		log->header.valid   = 0x7fffffff >> (29 - params);
@@ -1012,7 +1012,7 @@ void event_write_svc_enter(int fncd, unsigned int params, ... )
 		log->body.svc.fncno  = fncd;
 		log->body.svc.prmcnt = params;
 
-			/* ���롼�פ�¿���ΤϺǸ�˸ƽи����ɥ쥹���Ѥ�Ǥ��뤿�� */
+			/* 一回ループが多いのは最後に呼出元アドレスを積んでいるため */
 		for(i=0;i<params+1;i++)
 			log->body.svc.prmary[i] = va_arg(vl, VP_INT);
 
@@ -1028,17 +1028,17 @@ void event_write_svc_leave(int fncd, unsigned int ercd, unsigned int retaddr)
 
 	if(IsValid() && TlsGetValue(TLS_LOGMASK) == 0)
 	{
-			//�ΰ���� : ���ݤ��륵�����ϥѥ�᡼������(�ֵ��ͤΤߤʤΤǣ���)�����ʬ¿�� (�ƤӽФ������ɥ쥹���Ǽ)
+			//領域確保 : 確保するサイズはパラメータ総数(返却値のみなので１つ)より一個分多い (呼び出し元アドレスを格納)
 		event_request = EventRequest::Create(EventRequest::EventLog, false, sizeof(T_RGLOG_HEADER) + sizeof(T_RGLOG_SVC) + sizeof(VP_INT));
 		log     = reinterpret_cast<DBIFLOG *>(event_request->getptr());
 
-			//�إå�������
+			//ヘッダ部生成
 		log->header.logtype = LOG_TYPE_SVC|LOG_LEAVE;
 		log->header.logtim  = _kernel_systim_offset + _kernel_current_time;
 		log->header.valid   = 0x7;
 		log->header.bufsz   = 4 * sizeof(int);
 
-			//�ܥǥ�������
+			//ボディ部生成
 		log->body.svc.fncno     = fncd;
 		log->body.svc.prmcnt    = 1;
 		log->body.svc.prmary[0] = (VP_INT)ercd;
@@ -1056,9 +1056,9 @@ void event_write_tskstat(void * tcb)
 	EventRequest * event_request;
 	DBIFLOG * log;
 
-	if(IsValid())	//����ϥ����ͥ����ʤΤ�TLS_LOGMASK�򸫤ƤϤ����ʤ�
+	if(IsValid())	//これはカーネル操作なのでTLS_LOGMASKを見てはいけない
 	{
-			//�ΰ����
+			//領域確保
 		event_request = EventRequest::Create(EventRequest::EventLog, false, sizeof(T_RGLOG_HEADER) + sizeof(T_RGLOG_TSKSTAT));
 		log     = reinterpret_cast<DBIFLOG *>(event_request->getptr());
 
@@ -1151,17 +1151,17 @@ void _cdecl FinalizeComSupportModule(void)
 		HWND  NotifyDialog;
 		MSG   msg;
 
-			//������ί�ޤꤹ����ȥ����Ǥ��˻��֤������ꡢ�ץ�����ब˽�������褦�˸�����Τ�
-			//�֥������Ǥ��Ƥ뤫���Ԥơפȷٹ��Ф���
+			//ログが溜まりすぎるとログ吐きに時間がかかり、プログラムが暴走したように見えるので
+			//「ログを吐いてるから待て」と警告を出す。
 		NotifyDialog = ::CreateDialog(ProcessInstance, MAKEINTRESOURCE(QUITNOTICEDIALOG), NULL, NotifyDialogProc);
 		hDlgitem     = ::GetDlgItem(NotifyDialog, IDC_NOTIFYMSG);
-		::SetWindowText(hDlgitem, "�� ������̿�����ͥ�Υ��٥�ȥ�����Ф��Ƥ���Τǡ�����ޤǾ����ԤäƤ�������");
+		::SetWindowText(hDlgitem, "今 一生懸命カーネルのイベントログを出しているので、終るまで少し待ってください");
 		::ShowWindow(NotifyDialog, SW_NORMAL);
 
 		Request * request = Request::Create(Request::QuitThread, false);
 		request->invoke();
 
-			//��λ�����������ѤΥ�å������ݥ��
+			//終了ダイアログ用のメッセージポンプ
 
         if(NotifyDialog != NULL) {
             while(GetMessage(&msg, NULL, 0, 0) != 0) {
@@ -1170,7 +1170,7 @@ void _cdecl FinalizeComSupportModule(void)
             }
         }
 
-			//�����ȥ���åɤ���λ����ޤ��Ե�
+			//ちゃんとスレッドが終了するまで待機
 		if(worker_thread_handle != NULL)
             ::WaitForSingleObject(worker_thread_handle, INFINITE);
 		::CloseHandle(request_semaphore);

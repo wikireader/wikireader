@@ -8,32 +8,32 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: mpc860_sil.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
@@ -41,15 +41,15 @@
 #include <sil.h>
 
 /*
- *  MPC860��¢������쥸�����ؤΥ����������桼�ƥ���ƥ�
+ *  MPC860内蔵の制御レジスタへのアクセス・ユーティリティ
  *  
- *  powerpc.h�˵��Ҥ���Τ����쥬��Ȥ�����sil.h�ȤΥ��󥯥롼�ɤ�
- *  ���֤δط�����Ω�����ե�����Ȥ��롣
- *  t_config.h��ľ�ܥ��󥯥롼�ɤ����Ȥ���sil.h������powerpc.h��
- *  ���󥯥롼�ɤ�����ǽ�������롣
+ *  powerpc.hに記述するのがエレガントだが、sil.hとのインクルードの
+ *  順番の関係で独立したファイルとする。
+ *  t_config.hを直接インクルードしたときにsil.hより先にpowerpc.hが
+ *  インクルードされる可能性がある。
  *  
- *  ����ѥ���η������å���ǽ��ͭ���ˤ��뤿�ᡢ�ݥ��󥿷���
- *  VB *��VH *��VW *���Ѥ��Ƥ��롣
+ *  コンパイラの型チェック機能を有効にするため、ポインタ型は
+ *  VB *、VH *、VW *を用いている。
  *  
  */
 
@@ -59,13 +59,13 @@
 #ifndef _MACRO_ONLY
 
 /*
- *  SIL��Ʊ���Υ��������ؿ��ʷ������å���ǽ�դ���
+ *  SILと同等のアクセス関数（型チェック機能付き）
  */
 
 #ifndef SIL_DEBUG
 
 /*
- *  8�ӥå�ñ�̤��ɽФ��������
+ *  8ビット単位の読出し／書込み
  */
 Inline VB
 mpc860_reb_mem(VB *mem)
@@ -81,7 +81,7 @@ mpc860_wrb_mem(VB *mem, VB data)
 }
 
 /*
- *  16�ӥå�ñ�̤��ɽФ��������
+ *  16ビット単位の読出し／書込み
  */
 Inline VH
 mpc860_reh_mem(VH *mem)
@@ -97,7 +97,7 @@ mpc860_wrh_mem(VH *mem, VH data)
 }
 
 /*
- *  32�ӥå�ñ�̤��ɽФ��������
+ *  32ビット単位の読出し／書込み
  */
 Inline VW
 mpc860_rew_mem(VW *mem)
@@ -115,11 +115,11 @@ mpc860_wrw_mem(VW *mem, VW data)
 
 
 /*
- *  �ӥåȱ黻
+ *  ビット演算
  */
 
 /*
- *  8�ӥåȥ쥸������AND�黻
+ *  8ビットレジスタのAND演算
  */
 Inline void
 mpc860_andb_mem(VB *mem, VB data)
@@ -130,7 +130,7 @@ mpc860_andb_mem(VB *mem, VB data)
 }
 
 /*
- *  8�ӥåȥ쥸������OR�黻
+ *  8ビットレジスタのOR演算
  */
 Inline void
 mpc860_orb_mem(VB *mem, VB data)
@@ -142,7 +142,7 @@ mpc860_orb_mem(VB *mem, VB data)
 
 
 /*
- *  16�ӥåȥ쥸������AND�黻
+ *  16ビットレジスタのAND演算
  */
 Inline void
 mpc860_andh_mem(VH *mem, VH data)
@@ -153,7 +153,7 @@ mpc860_andh_mem(VH *mem, VH data)
 }
 
 /*
- *  16�ӥåȥ쥸������OR�黻
+ *  16ビットレジスタのOR演算
  */
 Inline void
 mpc860_orh_mem(VH *mem, VH data)
@@ -164,7 +164,7 @@ mpc860_orh_mem(VH *mem, VH data)
 }
 
 /*
- *  32�ӥåȥ쥸������AND�黻
+ *  32ビットレジスタのAND演算
  */
 Inline void
 mpc860_andw_mem(VW *mem, VW data)
@@ -175,7 +175,7 @@ mpc860_andw_mem(VW *mem, VW data)
 }
 
 /*
- *  32�ӥåȥ쥸������OR�黻
+ *  32ビットレジスタのOR演算
  */
 Inline void
 mpc860_orw_mem(VW *mem, VW data)
@@ -191,8 +191,8 @@ extern UW sil_log_id;
 extern BOOL sil_debug_on;
 
 /*
- *  SIL�Υ������Ϥ������Ƥ���������٤����
- *����user.txt�Ρ�4.4 ��������ν����١׻��ȡ�
+ *  SILのログ出力を割り当てるログ重要度の定義
+ *　（user.txtの「4.4 ログ情報の重要度」参照）
  */
 #ifndef LOG_SIL
 #define LOG_SIL	LOG_EMERG
@@ -200,7 +200,7 @@ extern BOOL sil_debug_on;
 
 
 /*
- *  8�ӥå�ñ�̤��ɽФ�
+ *  8ビット単位の読出し
  */
 #define mpc860_reb_mem(mem)	mpc860_reb_mem_deb(#mem, mem)
 
@@ -251,7 +251,7 @@ mpc860_reb_mem_deb(char *str, VB *mem)
 
 
 /*
- *  8�ӥå�ñ�̤ν񤭹���
+ *  8ビット単位の書き込み
  */
 #define mpc860_wrb_mem(mem, data)	mpc860_wrb_mem_deb(#mem, mem, data)
 
@@ -298,7 +298,7 @@ mpc860_wrb_mem_deb(char *str, VB *mem, VB data)
 }
 
 /*
- *  16�ӥå�ñ�̤��ɽФ�
+ *  16ビット単位の読出し
  */
 #define mpc860_reh_mem(mem)	mpc860_reh_mem_deb(#mem, mem)
 
@@ -339,7 +339,7 @@ mpc860_reh_mem_deb(char *str, VH *mem)
 }
 
 /*
- *  16�ӥå�ñ�̤ν񤭹���
+ *  16ビット単位の書き込み
  */
 #define mpc860_wrh_mem(mem, data)	mpc860_wrh_mem_deb(#mem, mem, data)
 
@@ -378,7 +378,7 @@ mpc860_wrh_mem_deb(char *str, VH *mem, VH data)
 
 
 /*
- *  32�ӥå�ñ�̤��ɽФ�
+ *  32ビット単位の読出し
  */
 #define mpc860_rew_mem(mem)	mpc860_rew_mem_deb(#mem, mem)
 
@@ -420,7 +420,7 @@ mpc860_rew_mem_deb(char *str, VW *mem)
 
 
 /*
- *  32�ӥå�ñ�̤ν񤭹���
+ *  32ビット単位の書き込み
  */
 #define mpc860_wrw_mem(mem, data)	mpc860_wrw_mem_deb(#mem, mem, data)
 
@@ -459,11 +459,11 @@ mpc860_wrw_mem_deb(char *str, VW *mem, VW data)
 
 
 /*
- *  �ӥåȱ黻
+ *  ビット演算
  */
 
 /*
- *  8�ӥåȥ쥸������AND�黻
+ *  8ビットレジスタのAND演算
  */
 #define mpc860_andb_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -481,7 +481,7 @@ mpc860_andb_mem_deb(VB *mem, VB data)
 }
 
 /*
- *  8�ӥåȥ쥸������OR�黻
+ *  8ビットレジスタのOR演算
  */
 #define mpc860_orb_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -500,7 +500,7 @@ mpc860_orb_mem_deb(VB *mem, VB data)
 
 
 /*
- *  16�ӥåȥ쥸������AND�黻
+ *  16ビットレジスタのAND演算
  */
 #define mpc860_andh_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -518,7 +518,7 @@ mpc860_andh_mem_deb(VH *mem, VH data)
 }
 
 /*
- *  16�ӥåȥ쥸������OR�黻
+ *  16ビットレジスタのOR演算
  */
 #define mpc860_orh_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -536,7 +536,7 @@ mpc860_orh_mem_deb(VH *mem, VH data)
 }
 
 /*
- *  32�ӥåȥ쥸������AND�黻
+ *  32ビットレジスタのAND演算
  */
 #define mpc860_andw_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -554,7 +554,7 @@ mpc860_andw_mem_deb(VW *mem, VW data)
 }
 
 /*
- *  32�ӥåȥ쥸������OR�黻
+ *  32ビットレジスタのOR演算
  */
 #define mpc860_orw_mem(mem, data)				\
 	if (sil_debug_on) {					\
@@ -575,7 +575,7 @@ mpc860_orw_mem_deb(VW *mem, VW data)
 #endif	/*  SIL_DEBUG  */
 
 /*
- *  CP���ޥ�ɤ�ȯ�Բ�ǽ�ˤʤ�ޤ��Ԥ�
+ *  CPコマンドが発行可能になるまで待つ
  */
 Inline void
 mpc860_wait_ready_CP_command(void)
@@ -588,24 +588,24 @@ mpc860_wait_ready_CP_command(void)
 
 
 /*
- *  CP���ޥ�ɤ�ȯ�Ԥ���
- *	����
- *	��UW opcode�����ޥ�ɼ���
- *	��UW ch_num������ͥ��ֹ�ʥǥХ����ֹ��
+ *  CPコマンドを発行する
+ *	引数
+ *	　UW opcode：コマンド種別
+ *	　UW ch_num：チャネル番号（デバイス番号）
  */
 Inline void
 mpc860_CP_command(UW opcode, UW ch_num)
 {
 	UH cpcr;
 	
-	/*  ¾��CP���ޥ�ɽ�λ�Ԥ�  */
+	/*  他のCPコマンド終了待ち  */
 	mpc860_wait_ready_CP_command();
 	
-	/*  CP���ޥ��ȯ��  */
+	/*  CPコマンド発行  */
 	cpcr = (UH)((opcode << 8) | (ch_num << 4) | CPCR_FLG);
     	mpc860_wrh_mem(CPCR, cpcr);
 
-	/*  CP���ޥ�ɽ�λ�Ԥ�  */
+	/*  CPコマンド終了待ち  */
 	mpc860_wait_ready_CP_command();
     	
 }

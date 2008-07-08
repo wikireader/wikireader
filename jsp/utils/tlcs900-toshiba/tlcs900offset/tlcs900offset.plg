@@ -1,44 +1,44 @@
 <html>
 <body>
 <pre>
-<h1>ËŞÙÄŞ‚ÌÛ¸Ş</h1>
+<h1>å‡¡æ‹‚æ°£é»™äº”</h1>
 <h3>
---------------------\¬: tlcs900offset - Win32 Release--------------------
+--------------------æ§‹æˆ: tlcs900offset - Win32 Release--------------------
 </h3>
-<h3>ºÏİÄŞ ×²İ</h3>
-ˆêÌ§²Ù "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP76.tmp" ‚ğì¬‚µAŸ‚Ì“à—e‚ğ‹L˜^‚µ‚Ü‚·
+<h3>æ ½æ­¡Ã å¼‰Ã</h3>
+ä¸€æ™‚ç®•è· "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP76.tmp" ã‚’ä½œæˆã—ã€æ¬¡ã®å†…å®¹ã‚’è¨˜éŒ²ã—ã¾ã™
 [
 /nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/tlcs900offset.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
 "\\d3ns002\OSS-Prj\Porting\TOPPERS_JSP\TLSS_TLCS900\tool\tlcs900-toshiba\tlcs900offset\tlcs900offset.cpp"
 ]
 Creating command line "cl.exe @C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP76.tmp" 
-ˆêÌ§²Ù "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP77.tmp" ‚ğì¬‚µAŸ‚Ì“à—e‚ğ‹L˜^‚µ‚Ü‚·
+ä¸€æ™‚ç®•è· "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP77.tmp" ã‚’ä½œæˆã—ã€æ¬¡ã®å†…å®¹ã‚’è¨˜éŒ²ã—ã¾ã™
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/tlcs900offset.pdb" /machine:I386 /out:"Release/tlcs900offset.exe" 
 ".\Release\tlcs900offset.obj"
 ]
-ºÏİÄŞ ×²İ "link.exe @C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP77.tmp" ‚Ìì¬’†
-<h3>±³ÄÌß¯Ä ³¨İÄŞ³</h3>
-ºİÊß²Ù’†...
+æ ½æ­¡Ã å¼‰Ã "link.exe @C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP77.tmp" ã®ä½œæˆä¸­
+<h3>å˜˜é€šæ½˜Ã„ çµµæ­¡æµ¤</h3>
+éš›é‹ªè·ä¸­...
 tlcs900offset.cpp
-Øİ¸’†...
-ˆêÌ§²Ù "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP79.bat" ‚ğì¬‚µAŸ‚Ì“à—e‚ğ‹L˜^‚µ‚Ü‚·
+æ†¬å–§Â†...
+ä¸€æ™‚ç®•è· "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP79.bat" ã‚’ä½œæˆã—ã€æ¬¡ã®å†…å®¹ã‚’è¨˜éŒ²ã—ã¾ã™
 [
 @echo off
 copy .\\Release\\tlcs900offset.exe ..
 ]
-ºÏİÄŞ ×²İ "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP79.bat" ‚Ìì¬’†
+æ ½æ­¡Ã å¼‰Ã "C:\DOCUME~1\tomohiro\LOCALS~1\Temp\RSP79.bat" ã®ä½œæˆä¸­
 
 '\\d3ns002\OSS-Prj\Porting\TOPPERS_JSP\TLSS_TLCS900\tool\tlcs900-toshiba\tlcs900offset'
-ã‹L‚ÌŒ»İ‚ÌƒfƒBƒŒƒNƒgƒŠ‚Å CMD.EXE ‚ğŠJn‚µ‚Ü‚µ‚½B
-UNC ƒpƒX‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñBWindows ƒfƒBƒŒƒNƒgƒŠ‚ğŠù’è‚Åg—p‚µ‚Ü‚·B
-w’è‚³‚ê‚½ƒpƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
-c:\windows\system32\cmd.exe ‚ÌÀs´×°
+ä¸Šè¨˜ã®ç¾åœ¨ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ CMD.EXE ã‚’é–‹å§‹ã—ã¾ã—ãŸã€‚
+UNC ãƒ‘ã‚¹ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¾ã›ã‚“ã€‚Windows ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’æ—¢å®šã§ä½¿ç”¨ã—ã¾ã™ã€‚
+æŒ‡å®šã•ã‚ŒãŸãƒ‘ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
+c:\windows\system32\cmd.exe ã®å®Ÿè¡Œé–‘Â°
 
 
 
-<h3>Œ‹‰Ê</h3>
-tlcs900offset.exe - ´×° 1AŒx 0
+<h3>çµæœ</h3>
+tlcs900offset.exe - é–‘Â° 1ã€è­¦å‘Š 0
 </pre>
 </body>
 </html>

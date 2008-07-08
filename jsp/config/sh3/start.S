@@ -6,53 +6,53 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                                  Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: start.S,v 1.10 2003/12/11 00:52:12 honda Exp $
  */
         
 /*
- *  �����ͥ��ѤΥ������ȥ��åץ⥸�塼��
+ *  カーネル用のスタートアップモジュール
  */               
 #define _MACRO_ONLY
 #include <t_config.h>
 #include <sys_defs.h>
         
 /*
- *   SH3�ѥ������ȥ��åץ⥸�塼��
- *   �����ͥ�ϥ��ץꥱ�������ȥ�󥯤��ƻ��Ѥ���
- *   �����ʤΤ�JSP�����ͥ�Τ߻��Ѥ��롣	
+ *   SH3用スタートアップモジュール
+ *   カーネルはアプリケーションとリンクして使用する
+ *   だけなのでJSPカーネルのみ使用する。	
  */
 	.global	_start
 	.align 2
 _start:
 	/*
-	 *  ����å���ν����
+	 *  キャッシュの初期化
 	 */
 	mov.l _ccr_addr,r1
 	mov.l _ccr_disable,r2
@@ -61,28 +61,28 @@ _start:
 	mov.l r2,@r1
 
 	/*
-	 *  SR���������롣
-	 *  MD=1, RB=0, BL=0, I3��I0=e f��stub�Τ�
+	 *  SRを初期化する。
+	 *  MD=1, RB=0, BL=0, I3〜I0=e fはstubのみ
 	 */
 	mov.l _init_sr,r0
 	ldc   r0,sr
 	mov   #0x01,r0
 	ldc   r0,r7_bank
 	/*
-	 * ��������Ω�Υ����å���STACKTOP�˽��������
-	 * STACKTOP�ϡ�sys_config.h�����
+	 * タスク独立のスタックをSTACKTOPに初期化する
+	 * STACKTOPは、sys_config.hで定義
 	 */
 	mov.l  _stack_k, r15
 
 	/*
-	 *  _hardware_init_hook ��ƤӽФ���(0�Ǥʤ����)
+	 *  _hardware_init_hook を呼び出す。(0でない場合)
 	 *
-	 *  �ϡ��ɥ�������¸��ɬ�פʽ����������������ϡ�
-	 *  hardware_init_hook �Ȥ����ؿ����Ѱդ���Ф褤��
-	 *  ����Ū�ˤ�ROM���κݡ�RAM����Ѳ�ǽ�ˤ��뤿���
-	 *  �Х�����ȥ�����ν��������Ԥ���
-	 *  sys_support.S ��� _hardware_init_hook ��������Ƥ�
-	 *  �롥
+	 *  ハードウェア依存に必要な初期化処理がある場合は，
+	 *  hardware_init_hook という関数を用意すればよい．
+	 *  具体的にはROM化の際、RAMを使用可能にするための
+	 *  バスコントローラの初期化等を行う。
+	 *  sys_support.S 内で _hardware_init_hook を定義してい
+	 *  る．
 	 */
 
 start_0:
@@ -94,7 +94,7 @@ start_0:
 
 	
 	/*
-     * bss���������򥯥ꥢ
+     * bssセクションをクリア
 	 */
 start_1:		
 	mov.l	_bss_start_k,r0
@@ -109,10 +109,10 @@ start_2:
 	bt	start_2
 
 	/*
-	 *  data�������������������ROM���б��ˡ�
+	 *  dataセクションを初期化する（ROM化対応）．
 	 *
-	 *  __idata_start ���� __idata_end �ޤǤ�__data_start �ʹߤ�
-	 *  ���ԡ����롥
+	 *  __idata_start から __idata_end までを，__data_start 以降に
+	 *  コピーする．
 	 */
 start_3:
 	mov.l   __idata_start_k,r1
@@ -129,11 +129,11 @@ start_4:
 
 		
 	/*
-	 *  _software_init_hook ��ƤӽФ���0 �Ǥʤ����ˡ�
+	 *  _software_init_hook を呼び出す（0 でない場合）．
 	 *
-	 *  ���եȥ������Ķ����ä˥饤�֥��ˤ˰�¸����ɬ�פʽ������
-	 *  ����������ϡ�software_init_hook �Ȥ����ؿ����Ѱդ����
-	 *  �褤��
+	 *  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+	 *  理がある場合は，software_init_hook という関数を用意すれば
+	 *  よい．
 	 */
 start_5:	
 	mov.l  _software_init_hook_k, r0
@@ -145,7 +145,7 @@ start_5:
 		
 start_6:
 	/*	
-     *  �����ͥ��ư����
+     *  カーネルを起動する
 	 */
 	! call the mainline
 	mov.l _kernel_start_k,r0

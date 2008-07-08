@@ -8,37 +8,37 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 /*
- *  �ϡ��ɥ������񸻤����
+ *  ハードウェア資源の定義
  *  definitions of hardware resource.
  */
 #ifndef _DMT33209_H_
@@ -47,8 +47,8 @@
 #include "s1c33.h"
 
 #ifndef _MACRO_ONLY
-extern int __START_bss[];			/* ��󥫥�����ץȤ���������	*/
-extern int __END_bss[];				/* ����ܥ�			*/
+extern int __START_bss[];			/* リンカスクリプトで定義される	*/
+extern int __END_bss[];				/* シンボル			*/
 extern int __START_data[];
 extern int __END_data[];
 extern int __START_vector[];
@@ -60,18 +60,18 @@ extern int __END_vector_lma[];
 #endif /* _MACRO_ONLY */
 
 /*
- *	���ꥢ��Ƭ/��ü���ɥ쥹
+ *	エリア先頭/終端アドレス
  *  Top/tail address of each area.
  */
 #define STACKTOP	((void *)0x00002000)
 
-#define BSS_START	__START_bss		/* RAM�ΰ����Ƭ 		*/
-#define BSS_END		__END_bss		/* RAM�ΰ�ν�ü		*/
-#define DATA_START	__START_data		/* RAM��ν�����ѿ��ΰ���Ƭ	*/
-#define IDATA_START	__START_data_lma	/* ROM��ν�����ѿ��ΰ���Ƭ	*/
-#define IDATA_END	__END_data_lma		/* ROM��ν�����ѿ��ΰ轪ü	*/
-#define VECTOR_START	__START_vector		/* RAM��Υ٥����ơ��֥��ΰ���Ƭ*/
-#define IVECTOR_START	__START_vector_lma	/* ROM��Υ٥����ơ��֥��ΰ���Ƭ*/
-#define IVECTOR_END	__END_vector_lma	/* ROM��Υ٥����ơ��֥��ΰ轪ü*/
+#define BSS_START	__START_bss		/* RAM領域の先頭 		*/
+#define BSS_END		__END_bss		/* RAM領域の終端		*/
+#define DATA_START	__START_data		/* RAM上の初期化変数領域先頭	*/
+#define IDATA_START	__START_data_lma	/* ROM上の初期化変数領域先頭	*/
+#define IDATA_END	__END_data_lma		/* ROM上の初期化変数領域終端	*/
+#define VECTOR_START	__START_vector		/* RAM上のベクタテーブル領域先頭*/
+#define IVECTOR_START	__START_vector_lma	/* ROM上のベクタテーブル領域先頭*/
+#define IVECTOR_END	__END_vector_lma	/* ROM上のベクタテーブル領域終端*/
 
 #endif /*  _DMT33209_H_ */

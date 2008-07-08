@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: primary_thread.c,v 1.10 2007/04/19 07:44:46 honda Exp $
  */
@@ -49,7 +49,7 @@
 #include <eventlog.h>
 #include <cpu_rename.h>
 
-    /* ��λ�����˴���Ԥ��ؿ��Υ��塼 */
+    /* 終了時に破棄を行う関数のキュー */
 struct tagDestructionProcedureQueue
 {
 	struct tagDestructionProcedureQueue * Next;
@@ -58,13 +58,13 @@ struct tagDestructionProcedureQueue
 };
 
  /*
-  *   �ץ��ȥ��������
+  *   プロトタイプ宣言
   */
 extern void kernel_start();
 extern void kernel_exit();
 
  /*
-  *   ����ѿ�
+  *   大域変数
   */
 HINSTANCE ProcessInstance;
 HANDLE    PrimaryThreadHandle;
@@ -77,7 +77,7 @@ static struct tagDestructionProcedureQueue * DestructionProcedureQueue;
 
 
  /*
-  *  ���߼¹���Υ���åɤ����ꤵ�줿�������Ǥ��뤫�ɤ����Υ����å�
+  *  現在実行中のスレッドが指定されたタスクであるかどうかのチェック
   */
 Inline 
 int isTaskThreadRunning(TCB * tcb)
@@ -85,9 +85,9 @@ int isTaskThreadRunning(TCB * tcb)
 
 
  /*
-  * �����ͥ륹������
-  *   kernel_start�ϺǸ��exit_and_dispatch��Ƥ֤Τǡ�����ƥ������˴���
-  *   �����ƿ���������åɤ��������롣
+  * カーネルスタータ
+  *   kernel_startは最後にexit_and_dispatchを呼ぶので、コンテキスト破棄に
+  *   備えて新しいスレッドを生成する。
   */
 
 static DWORD WINAPI
@@ -101,21 +101,21 @@ KernelStarter(LPVOID param)
 
     kernel_start();
 
-    /* �ץ������Ϥ����ˤ���ʤ� */
+    /* プログラムはここには来ない */
 
 	return 0;
 }
 
  /*
-  *  �������㳰��ư�롼���� 
-  *     Visual C++   -> cpu_config.c �˰�ư���ޤ���
-  *     mingw/cygwin -> cpu_insn.S   �˰�ư���ޤ���
+  *  タスク例外起動ルーチン 
+  *     Visual C++   -> cpu_config.c に移動しました
+  *     mingw/cygwin -> cpu_insn.S   に移動しました
   */
 extern void TaskExceptionPerformer(void);
 
  /*
-  * �������ǥ롼����
-  *   �������֤��ʤ����֥��������˴��ץ��������к�
+  * 強制遮断ルーチン
+  *   応答を返さないオブジェクト破棄プロシジャ対策
   */
 DWORD WINAPI
 ForceShutdownHandler(LPVOID param)
@@ -129,7 +129,7 @@ ForceShutdownHandler(LPVOID param)
 }
 
  /*
-  * �ǥХå����ѥ����������Υ�å������ϥ�ɥ�
+  * デバッグ時用ダイアログのメッセージハンドラ
   */
 Inline LRESULT CALLBACK
 PrimaryDialogCommandHandler(WPARAM wParam, LPARAM lParam)
@@ -138,7 +138,7 @@ PrimaryDialogCommandHandler(WPARAM wParam, LPARAM lParam)
 
 	switch(wParam)
 	{
-			/* �֥����å��ζ������ߤ���ץܥ��� */
+			/* 「クロックの供給を停止する」ボタン */
 		case IDC_CLOCKSUPPLY:
 		{
 			int state;
@@ -146,7 +146,7 @@ PrimaryDialogCommandHandler(WPARAM wParam, LPARAM lParam)
 			state = SendDlgItemMessage(PrimaryDialogHandle, IDC_CLOCKSUPPLY,BM_GETCHECK,0,0);
 			switch(state)
 			{
-					/* �����å���� -> �����å���ߤ�� and ��ư���Ƥ��륹��åɤ������ */
+					/* クロック停止 -> クロックを止める and 今動いているスレッドを強制停止 */
 			case BST_CHECKED:
 				if((lock_flag = sense_lock()) != TRUE)
 					dis_int(0);
@@ -155,7 +155,7 @@ PrimaryDialogCommandHandler(WPARAM wParam, LPARAM lParam)
 					SuspendThread(CurrentRunningThreadHandle);
 				break;
 
-					/* �����å�����Ƴ� -> �Ǹ�˻ߤ᤿����åɤκƳ� and �����å�����Ƴ� */
+					/* クロック供給再開 -> 最後に止めたスレッドの再開 and クロック供給再開 */
 			case BST_UNCHECKED:
 				if(CurrentRunningThreadHandle != NULL)
 					ResumeThread(CurrentRunningThreadHandle);
@@ -175,35 +175,35 @@ PrimaryDialogCommandHandler(WPARAM wParam, LPARAM lParam)
 }
 
     /*
-     *  TOPPERS/JSP ����åɥ�ǥ� �������ǥ����ѥå��� 
+     *  TOPPERS/JSP スレッドモデル タスクディスパッチャ 
      */
 static void task_dispatcher(int is_taskschedule_required)
 {
-		/* ����ư���Ƥ��륹��å�(=�����+������)������С������ߤ�� */
+		/* いま動いているスレッド(=割込み+タスク)があれば、それを止める */
 	if(CurrentRunningThreadHandle != NULL)
 	{
 		wait_for_thread_suspension_completion(CurrentRunningThreadHandle);
 
-            //ư���Ƥ����Τ��������Ǥ���С�����ߥޥ�����٥����¸����
+            //動いていたのがタスクであれば、割込みマスクレベルを保存する
         if(isTaskThreadRunning(runtsk))
 			vget_ims(&runtsk->tskctxb.InterruptLevel);
 	}
 
-		/* ���������� */
+		/* タスク切替 */
 
-        //�ǥ����ѥå�����ɬ�פ�����
+        //ディスパッチする必要がある
     if(is_taskschedule_required != 0 && enadsp && runtsk != schedtsk)
         runtsk = schedtsk;
 
-        //�ڴ��西������¸�ߤ���ʤ顢���Υ�������ư����
+        //切換先タスクが存在するなら、そのタスクを起動する
 	if(runtsk != 0l)
 	{
 		CurrentRunningThreadHandle = runtsk->tskctxb.ThreadHandle;
 
-			/* �������㳰�������ä��� */
+			/* タスク例外がおこったら */
 		if (runtsk->enatex && runtsk->texptn != 0) 
 		{
-				/* �������㳰��ư�롼����ؤȺ����ؤ��� */
+				/* タスク例外起動ルーチンへと差し替える */
 			CONTEXT context;
 			context.ContextFlags = CONTEXT_FULL;
 			GetThreadContext(CurrentRunningThreadHandle,&context);
@@ -217,7 +217,7 @@ static void task_dispatcher(int is_taskschedule_required)
 		ResumeThread(runtsk->tskctxb.ThreadHandle);
 	}else
 	{
-			/* ư������Τ��ʤ��ʤ顢�����ߤ򤢤����Ԥ� */
+			/* 動かすものがないなら、割り込みをあけて待つ */
 		CurrentRunningThreadHandle = NULL;
 		ena_int(0);
 	}
@@ -226,7 +226,7 @@ static void task_dispatcher(int is_taskschedule_required)
 
 
 	/*
-	 * TOPPERS/JSP ����åɥ�ǥ� �����ͥ��å������ϥ�ɥ�
+	 * TOPPERS/JSP スレッドモデル カーネルメッセージハンドラ
 	 */
 Inline LRESULT CALLBACK
 HALMessageHandler(WPARAM wParam,LPARAM lParam)
@@ -234,18 +234,18 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
 	switch(wParam)
 	{
 			/*
-			 *�֥��������˴����Ƥ��������ץ�å����� 
-			 *  lParam : �˴��оݥ�������TCB�Υ��ɥ쥹
+			 *「タスクを破棄してください」メッセージ 
+			 *  lParam : 破棄対象タスクのTCBのアドレス
 			 */
 	case HALMSG_DESTROY:
         {
             TCB * tcb = (TCB *)lParam;
 
-				    /* tcb == 0 ����Ω����Τϡ�KernelStarter��exit_and_dispatch�����Ȥ��Τ� */
+				    /* tcb == 0 が成立するのは、KernelStarterがexit_and_dispatchしたときのみ */
             if(tcb == 0 || isTaskThreadRunning(tcb)){
                 CurrentRunningThreadHandle = NULL;
 
-                    /* �����������ε�ư�׵��Ф���ext_tsk����ȡ����λ����Ǥ��Ǥ˿���������åɤΥϥ�ɥ뤬���äƤ���ΤǾä��ƤϤ����ʤ� */
+                    /* タスクが次の起動要求を出してext_tskすると、この時点ですでに新しいスレッドのハンドルが入っているので消してはいけない */
 
                 if(tcb == runtsk)
                     runtsk = 0;
@@ -253,41 +253,41 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
         }
 
 			/*
-			 *�֥��������ڤ��ؤ��Ƥ��������ץ�å�����
+			 *「タスクを切り替えてください」メッセージ
 			 */
 	case HALMSG_DISPATCH:
         task_dispatcher(1);
         break;
 
 		/*
-		 *�ֳ����ߤ�ȯ�������Ƥ��������ץ�å�����
-		 * lParam : ������ֹ� (>0)
+		 *「割り込みを発生させてください」メッセージ
+		 * lParam : 割込み番号 (>0)
 		 */
 	case HALMSG_INTERRUPT:
         if(lParam == 0 || iniflg == FALSE || ras_int((unsigned int)lParam) == FALSE)
             break;
 
-            /* ����߼��ս��� : ���Τޤ޼��� */
+            /* 割込み受付処理 : このまま次に */
 
         /*
-         * �ּ��˼¹Ԥ��٤������ߤ�õ���ơ�����߽����򳫻Ϥ��Ƥ��������ץ�å�����
+         * 「次に実行すべき割り込みを探して、割込み処理を開始してください」メッセージ
          */
     case HALMSG_INTERRUPT_FINISH:
         {
-			    /* ���߼¹Ԥ��Ƥ��륹��åɤ���� */
+			    /* 現在実行しているスレッドを停止 */
 		    wait_for_thread_suspension_completion(CurrentRunningThreadHandle);
 
-				/* ����ߥ���å����� and �ǥ����ѥå� */
+				/* 割込みスレッド生成 and ディスパッチ */
 			if((CurrentRunningThreadHandle = sch_int()) != NULL)
 			{
-                    //����ޤ�ư�����Ƥ����������γ���ߥޥ�����٥������
+                    //これまで動かしていたタスクの割込みマスクレベルを退避
 				if(isTaskThreadRunning(runtsk))
 					vget_ims(&runtsk->tskctxb.InterruptLevel);
 
-                ResumeThread(CurrentRunningThreadHandle);   //����ߥ���åɵ�ư
+                ResumeThread(CurrentRunningThreadHandle);   //割込みスレッド起動
 			}
             else {
-                    // �������ؤ����
+                    // タスクへと戻る
                 task_dispatcher(reqflg);
                 reqflg = 0;
             }
@@ -296,13 +296,13 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
 		}
 
 		/*
-		 *�ִ�������åɤθ��¤Ǥ�äƴؿ���¹Ԥ��Ƥ��������ץ�å�����
-		 *  lParam : �ѥ�᡼�����Ǽ���빽¤�ΤؤΥݥ���
-		 *    �ѥ�᡼����¤������
-		 *      func  : �¹Ԥ������ؿ�
-		 *      param : �ѥ�᡼���Ȥ����Ϥ����Ǥ⥢��("void *")����
+		 *「管理スレッドの権限でもって関数を実行してください」メッセージ
+		 *  lParam : パラメータを格納する構造体へのポインタ
+		 *    パラメータ構造体内訳
+		 *      func  : 実行したい関数
+		 *      param : パラメータとして渡す何でもアリ("void *")な値
 		 *
-		 * ��) �������ǥ�����ɥ��Ȥ�����ȡ��������˴��ǥ�����ɥ����ä��Ƥ��ޤ���
+		 * 注) タスクでウィンドウとかを作ると、タスク破棄でウィンドウが消えてしまうよ
 		 */
 	case HALMSG_EXECUTEPROCEDURE:
 		{
@@ -312,8 +312,8 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
 		}
 
 		/*
-		 *�ֺǸ�κǸ�ˤ��ν�����ư�����Ƥ�������(onExit�ϥ�ɥ�)�ץ�å�����
-		 * lParam : �ؿ��¹ԥ�å������Ȥ��ä��� ( func,param�ؤΥݥ��� )
+		 *「最後の最後にこの処理を動かしてください(onExitハンドラ)」メッセージ
+		 * lParam : 関数実行メッセージといっしょ ( func,paramへのポインタ )
 		 */
 	case HALMSG_ADDDESTRUCTIONPROCEDURE:
 		{
@@ -334,14 +334,14 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
 		}
 
 		/*
-		 *�֥ץ�������ߤ�Ƥ��������ץ�å�����
+		 *「プログラムを止めてください」メッセージ
 		 */
 	case HALMSG_QUITREQUEST:
 		{
 			struct tagDestructionProcedureQueue * destqueue;
 			void * destarea;
 
-			dis_int(0);		// ����߼��դ⤳�Υ���åɤ����Τǡ��̤˶ػߤ��ʤ��Ƥ������
+			dis_int(0);		// 割込み受付もこのスレッドがやるので、別に禁止しなくても大丈夫
 
 //			WorkerThreadHandle = CreateThread(NULL, 0, ForceShutdownHandler, 0, NULL, NULL);
 
@@ -370,36 +370,36 @@ HALMessageHandler(WPARAM wParam,LPARAM lParam)
 }
 
 /*
- * �����ͥ륷�ߥ�졼������ˤȤʤ륹��åɤΥ�å������ϥ�ɥ�
+ * カーネルシミュレータの中核となるスレッドのメッセージハンドラ
  */
 LRESULT CALLBACK PrimaryDialogProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 {
 	switch(Msg)
 	{
-		/* �������ȥ쥤��������Ǳ�����å� */
+		/* タスクトレイアイコンで右クリック */
 	case HALMSG_MESSAGE+1:
 		if(lParam == WM_RBUTTONUP)
 			kernel_exit();
 
 		break;
 
-		/* �����ͥ��å����� */
+		/* カーネルメッセージ */
 	case HALMSG_MESSAGE:
 		return HALMessageHandler(wParam,lParam);
 
-		/* �ǥХå��ѥ�����������Υ����ƥ�Υ�å����� */
+		/* デバッグ用ダイアログ上のアイテムのメッセージ */
 	case WM_COMMAND:
 		return PrimaryDialogCommandHandler(wParam,lParam);
 	
-		/* ��������������(��å������ϥ�ɥ����) */
+		/* ダイアログ生成(メッセージハンドリング用) */
 	case WM_INITDIALOG:
 		{
 			DWORD ThreadID;
 			NOTIFYICONDATA nid;
 
-			PrimaryDialogHandle = hDlg;	//���Ū
+			PrimaryDialogHandle = hDlg;	//一時的
 
-				/* �������ȥ쥤�˥����������Ͽ */
+				/* タスクトレイにアイコンを登録 */
 			nid.cbSize = sizeof(NOTIFYICONDATA);
 			nid.uFlags = NIF_ICON|NIF_TIP|NIF_MESSAGE;
 			nid.uID = ID_NOTIFYICON;
@@ -410,7 +410,7 @@ LRESULT CALLBACK PrimaryDialogProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lPara
 
 			Shell_NotifyIcon(NIM_ADD,&nid);
 
-				/* �����ͥ���̥���åɤǵ�ư���� */
+				/* カーネルを別スレッドで起動する */
 			PrimaryThreadHandle = (HANDLE)hDlg;
 			CurrentRunningThreadHandle = CreateThread(NULL,0,KernelStarter,NULL,CREATE_SUSPENDED,&ThreadID);
             ResumeThread(CurrentRunningThreadHandle);
@@ -420,15 +420,15 @@ LRESULT CALLBACK PrimaryDialogProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lPara
 			break;
 		}
 
-		/* �������������Ĥ��褦�Ȥ��Ƥ��ޤ� */
+		/* ダイアログを閉じようとしています */
 	case WM_CLOSE:
 			HALQuitRequest();
 			break;
 
-		/* �������������˴�����ޤ��� */
+		/* ダイアログが破棄されました */
 	case WM_DESTROY:
 		{
-				/* �������ȥ쥤���� */
+				/* タスクトレイ始末 */
 			NOTIFYICONDATA nid;
 
 			nid.cbSize = sizeof(NOTIFYICONDATA);
@@ -442,12 +442,12 @@ LRESULT CALLBACK PrimaryDialogProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lPara
 			break;
 		}
 
-		/* �����޽��� */
+		/* タイマ処理 */
 	case WM_TIMER:
-			/* ���16�ӥåȤ�����1 -> �����ͥ�Υ����� */
+			/* 上位16ビットが全部1 -> カーネルのタイマ */
 		if((wParam & 0xffff0000) == 0xffff0000)
 		{
-				/* ����16�ӥåȤϳ�����ֹ� */
+				/* 下位16ビットは割込み番号 */
 			return HALMessageHandler(HALMSG_INTERRUPT,(wParam & 0x0000ffff));
 		}
 	default:
@@ -457,7 +457,7 @@ LRESULT CALLBACK PrimaryDialogProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lPara
 }
 
 
-    /* �ޥ���ץ����å��Ǥ���ꤹ��褦���虜��ñ��Υץ����å��Τߤǽ���������褦�ˤ��� */
+    /* マルチプロセッサでも安定するよう、わざと単一のプロセッサのみで処理させるようにする */
 void setAffinityMask(void)
 {
     DWORD process;
@@ -484,7 +484,7 @@ static void initialize(HANDLE hInstance)
 #ifdef KERNEL_DEBUG_MODE
     AllocConsole();
 #endif
-        /* �ץ����å������դ��� */
+        /* プロセッサを割り付ける */
     setAffinityMask();
 
 }
@@ -495,7 +495,7 @@ static void finalRelease(void)
 
     kprintf(("finalRelease()\n"));
 
-	/* �˴�����Ƥʤ��������θ���� */
+	/* 破棄されてないタスクの後始末 */
 	for(i=0;i<_kernel_tmax_tskid;i++)
 	{
 		if(_kernel_tcb_table[i].tskctxb.ThreadHandle != NULL)
@@ -506,7 +506,7 @@ static void finalRelease(void)
 		}
 	}
 
-    /* COM�̿��򤷤Ƥ��륹��åɤ������ */
+    /* COM通信をしているスレッドを強制停止 */
 	if(WorkerThreadHandle  != NULL)
 	{
 		TerminateThread(WorkerThreadHandle ,0);
@@ -523,7 +523,7 @@ static void finalRelease(void)
 
 
 /*
- * �ᥤ��ؿ�
+ * メイン関数
  */
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nShow)
 {

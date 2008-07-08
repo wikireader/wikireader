@@ -7,47 +7,47 @@
  *                              Toyohashi Univ. of Technology, JAPAN
  *  Copyright (C) 2003-2004 Takagi Nobuhisa
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cxx_sample2.cpp,v 1.4 2004/09/17 09:11:34 honda Exp $
  */
 
 /*
- *  C++����ץ�ץ������(2)������
+ *  C++サンプルプログラム(2)の本体
  *
- *  ���Υ���ץ�ץ������ϡ�ů�ؼԤο����פ�١����Ȥ��ơ�C++�γƵ�ǽ
- *  �Υǥ��ԤäƤ��롣
- *  5�ͤ�ů�ؼԤ������Υե���������ݡ��ΰդ˥ǥåɥ��å���ȯ��������
- *  �����ॢ���Ȥ򸡽Ф���������C++���㳰�����Ф��Ƥ��롣
+ *  このサンプルプログラムは「哲学者の食事」をベースとして、C++の各機能
+ *  のデモを行っている。
+ *  5人の哲学者が左右のフォークを取る際、故意にデッドロックを発生させ、
+ *  タイムアウトを検出した時点でC++の例外を送出している。
  *
- *  ư�����'q'�����Ϥ����ư�����ߤ��뤳�Ȥ��Ǥ���restart? [y|n]����
- *  ����'y'�����Ϥ���кƵ�ư��'n'�����Ϥ���н�λ���롣
- *  �ޤ���ư�����'a'�����Ϥ���Х��ܡ��Ȥ��롣
+ *  動作中に'q'を入力すると動作を停止することができ、restart? [y|n]に対
+ *  して'y'を入力すれば再起動、'n'を入力すれば終了する。
+ *  また、動作中に'a'を入力すればアボートする。
  */
 
 #include <t_services.h>
@@ -56,14 +56,14 @@
 #include "kernel_id.h"
 #include "cxx_sample2.h"
 
-//	��ޥ���������ƥ��ȥ��饹
-//	��Ū���֥������ȤΥ��󥹥ȥ饯���ȥǥ��ȥ饯����ư���ץ�
+//	非マルチタスクテストクラス
+//	静的オブジェクトのコンストラクタとデストラクタの動作サンプル
 class non_multitask_test
 {
 	int* x_;
 public:
 	non_multitask_test()
-		: x_(new int(12345))	// �����ͥ���ư����֤Ǥ�new�黻��
+		: x_(new int(12345))	// カーネル非動作状態でのnew演算子
 	{
 	}
 	~non_multitask_test()
@@ -72,7 +72,7 @@ public:
 			syslog(LOG_NOTICE,"non-multitask test succeeded");
 		else
 			syslog(LOG_NOTICE,"non-multitask test failed");
-		delete x_;				// �����ͥ���ư����֤Ǥ�delete�黻��
+		delete x_;				// カーネル非動作状態でのdelete演算子
 		x_ = 0;
 	}
 } test;
@@ -81,7 +81,7 @@ class timeout_error
 {
 };
 
-// �������
+// 擬似乱数
 int rnd()
 {
 	static unsigned int seed = 1;
@@ -91,7 +91,7 @@ int rnd()
 	return (seed >> 16) % 0x7fff;
 }
 
-//	�ե��������饹
+//	フォーククラス
 class fork
 {
 	ID semid_;
@@ -123,7 +123,7 @@ public:
 
 fork* p_fork[5];
 
-//	ů�ؼԥ��饹
+//	哲学者クラス
 class philosopher
 {
 	ID		tskid_;
@@ -152,7 +152,7 @@ public:
 		{
 			try
 			{
-				//	�տ�Ū�˥ǥåɥ��å���ȯ�������롣
+				//	意図的にデッドロックを発生させる。
 				left_->take();
 				syslog(LOG_NOTICE, "#%d take left fork(%d)", tskid_, left_->id());
 
@@ -171,7 +171,7 @@ public:
 			}
 			catch (timeout_error&)
 			{
-				//	�����ॢ���Ȥˤ��ǥåɥ��å��򸡽Ф���ȡ��ե�������������
+				//	タイムアウトによりデッドロックを検出すると、フォークを放す。
 				syslog(LOG_NOTICE, "#%d !!!! timeout error !!!!", tskid_);
 				if (left_->is_used())
 				{
@@ -191,7 +191,7 @@ public:
 
 void task(VP_INT exinf)
 {
-	_toppers_cxxrt_reset_specific();	// �������κƵ�ư���ǽ�ˤ��뤿��ν��������
+	_toppers_cxxrt_reset_specific();	// タスクの再起動を可能にするための初期化処理
 	ID		tskid = ID(exinf);
 	fork* left	= p_fork[(tskid - 1) % 5];
 	fork* right = p_fork[(tskid - 1 + 4) % 5];
@@ -199,14 +199,14 @@ void task(VP_INT exinf)
 	phil.run();
 }
 
-//	std::atexit����Ͽ���뽪λ���ؿ�
+//	std::atexitで登録する終了時関数
 void finish()
 {
 	syslog(LOG_NOTICE, "finish");
 }
 
 
-//	�ᥤ�󥿥���
+//	メインタスク
 void main_task(VP_INT exinf)
 {
 	serial_ctl_por(TASK_PORTID, (IOCTL_CRLF | IOCTL_FCSND | IOCTL_FCRCV));

@@ -5,39 +5,39 @@
  * 
  *  Copyright (C) 2006 by Witz Corporation, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: uart.c,v 1.1 2006/04/10 08:19:25 honda Exp $
  */
 
 /*
- *  ��Ʊ���̿� (UART)���ꥢ������ͥ�ǥХ�����SIO�˥ɥ饤��
- *  ��Zup-F16��ĥ�ܡ����ѡ�
+ *  非同期通信 (UART)シリアルチャンネルデバイス（SIO）ドライバ
+ *  （Zup-F16拡張ボード用）
  */
 #include <s_services.h>
 #include <sil.h>
@@ -45,7 +45,7 @@
 #include <uart.h>
 
 /*
- *  ���ꥢ��I/O����쥸�����ؤΥ��ե��å����
+ *  シリアルI/O制御レジスタへのオフセット定義
  */
 #define		TOFFSET_SC0BUF			0x0000
 #define		TOFFSET_SC0CR			0x0001
@@ -55,7 +55,7 @@
 #define		TOFFSET_SC0MOD1			0x0005
  
 /*
- *  ���ꥢ��I/O�ݡ��Ⱦ��֥ե饰�����
+ *  シリアルI/Oポート状態フラグの定義
  */
 #define		TBIT_STS_DEF			0x00
 #define		TBIT_TXB_EMPTY			0x01
@@ -64,32 +64,32 @@
 #define		TBIT_LOG_PORT			0x80
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ *  シリアルI/Oポート初期化ブロック
  *
- *  ID = 1 ��uart1��ID = 2 ��uart0���б������Ƥ��롥
+ *  ID = 1 をuart1，ID = 2 をuart0に対応させている．
  */
 static const SIOPINIB siopinib_table[TNUM_PORT] = {
 	{ TADR_SFR_SC1BUF, TADR_SFR_INTES1, 0x08, (TBIT_SIOSMU8 | TBIT_SIORXE | TBIT_SIOSCBRG),
-	  0x00, BRCR_19200, BRADD_19200, TBIT_RX1_CLR }	/* ID1�� UART1 19200bps	*/
+	  0x00, BRCR_19200, BRADD_19200, TBIT_RX1_CLR }	/* ID1用 UART1 19200bps	*/
 /*	{ TADR_SFR_SC1BUF, TADR_SFR_INTES1, 0x08, (TBIT_SIOSMU8 | TBIT_SIORXE | TBIT_SIOSCBRG),
-	  0x00, BRCR_38400, BRADD_38400, TBIT_RX1_CLR }*/	/* ID1�� UART1 38400bps	*/
+	  0x00, BRCR_38400, BRADD_38400, TBIT_RX1_CLR }*/	/* ID1用 UART1 38400bps	*/
 /*	{ TADR_SFR_SC0BUF, TADR_SFR_INTES0, 0x01, (TBIT_SIOSMU8 | TBIT_SIORXE | TBIT_SIOSCBRG),
-	  0x00, BRCR_19200, BRADD_19200, TBIT_RX0_CLR }*/	/* ID2�� UART0 19200bps	*/
+	  0x00, BRCR_19200, BRADD_19200, TBIT_RX0_CLR }*/	/* ID2用 UART0 19200bps	*/
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 static SIOPCB siopcb_table[TNUM_PORT];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
 #define INDEX_SIOP(siopid)	((UINT)((siopid) - 1))
 #define get_siopcb(siopid)	(&(siopcb_table[INDEX_SIOP(siopid)]))
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 uart_initialize()
@@ -98,7 +98,7 @@ uart_initialize()
 	UINT	i;
 
 	/*
-	 *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+	 *  シリアルI/Oポート管理ブロックの初期化
 	 */
 	for (siopcb = siopcb_table, i = 0; i < TNUM_PORT; siopcb++, i++) {
 		siopcb->siopinib = &(siopinib_table[i]);
@@ -108,7 +108,7 @@ uart_initialize()
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 uart_opn_por(ID siopid, VP_INT exinf)
@@ -117,43 +117,43 @@ uart_opn_por(ID siopid, VP_INT exinf)
 	const SIOPINIB	*siopinib;
 	int i;
 
-	/* �ݡ���ID��������֥��å������	*/
+	/* ポートIDから管理ブロックを取得	*/
 	siopcb = get_siopcb(siopid);
 	siopinib = siopcb->siopinib;
 
-	/* �����֥��å��˾�������	*/
+	/* 管理ブロックに情報設定	*/
 	siopcb->sts_flag |= TBIT_TXB_EMPTY;
 	siopcb->exinf = exinf;
-	if( siopid == LOGTASK_PORTID ){	/* �����ƥ�����ѤΥݡ��Ȥξ��	*/
+	if( siopid == LOGTASK_PORTID ){	/* システムログ用のポートの場合	*/
 		siopcb->sts_flag |= TBIT_LOG_PORT;
 		if( log_io_busy == TRUE ){
-			/* ������ξ��ϴ�λ�ޤ��Ԥ�	*/
+			/* 送信中の場合は完了まで待つ	*/
 			while( (sil_reb_mem((VP)(siopinib->hint)) & TBIT_INTC_H) == 0 );
 		}
-		log_io_busy = FALSE;	/* ������ʤΤ�����Ū�˹ԤäƤ���   */
+		log_io_busy = FALSE;	/* 初期化なので明示的に行っている   */
 	}
 
-	/* �������	*/
+	/* 受信停止	*/
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_SC0MOD0), 0x00 );
-	/* �ݡ�������(TXD�Ȥ��ƻ���)	*/
+	/* ポート設定(TXDとして使用)	*/
 	sil_wrb_mem((VP)(TADR_SFR_P9FC), siopinib->pcrfc_def );
 	sil_wrb_mem((VP)(TADR_SFR_P9CR), siopinib->pcrfc_def );
 
-	/* ư��⡼������	*/
+	/* 動作モード設定	*/
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_SC0MOD0), siopinib->scmod0_def );
-	sil_reb_mem((VP)(siopinib->cntrl+TOFFSET_SC0CR));	/* �ɽФ��ˤ�ꥨ�顼�ե饰���ꥢ	*/
+	sil_reb_mem((VP)(siopinib->cntrl+TOFFSET_SC0CR));	/* 読出しによりエラーフラグクリア	*/
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_SC0CR), siopinib->sccr_def );
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_BR0CR), siopinib->brcr_def);
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_BR0ADD), siopinib->bradd_def);
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_SC0MOD1), TBIT_SIOI2S);
 
-	/* ���ꥢ�����ߤ����ꤪ����׵�ե饰���ꥢ	 */
-	sil_wrb_mem((VP)TADR_SFR_INTCLR, (siopinib->int_clr) );		/* �����׵᥯�ꥢ	*/
-	sil_wrb_mem((VP)TADR_SFR_INTCLR, (VB)(siopinib->int_clr + 1) );	/* �����׵᥯�ꥢ	*/
+	/* シリアル割込みの設定および要求フラグクリア	 */
+	sil_wrb_mem((VP)TADR_SFR_INTCLR, (siopinib->int_clr) );		/* 受信要求クリア	*/
+	sil_wrb_mem((VP)TADR_SFR_INTCLR, (VB)(siopinib->int_clr + 1) );	/* 送信要求クリア	*/
 	sil_wrb_mem((VP)(siopinib->hint), (VB)((INT_LEVEL_UART << 4) | INT_LEVEL_UART) );
 
 	/*
-	 * ���ߡ��ǡ�������
+	 * ダミーデータ受信
 	 */
 	sil_reb_mem((VP)(siopinib->cntrl+TOFFSET_SC0BUF));
 	sil_reb_mem((VP)(siopinib->cntrl+TOFFSET_SC0BUF));
@@ -162,7 +162,7 @@ uart_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 uart_cls_por(SIOPCB *siopcb)
@@ -171,23 +171,23 @@ uart_cls_por(SIOPCB *siopcb)
 
 	siopinib = siopcb->siopinib;
 
-	/* �������	*/
+	/* 受信停止	*/
 	sil_wrb_mem((VP)(siopinib->cntrl+TOFFSET_SC0MOD0), 0x00 );
 
-	/* �����ƥ�����ѥݡ��Ȥν���	*/
+	/* システムログ用ポートの処理	*/
 	if( (siopcb->sts_flag & TBIT_LOG_PORT) == TBIT_LOG_PORT ){
 		if( log_io_busy == TRUE ){
-			/* ������ξ��ϴ�λ�ޤ��Ԥ�	*/
+			/* 送信中の場合は完了まで待つ	*/
 			while( (sil_reb_mem((VP)(TADR_SFR_INTES0)) & TBIT_INTC_H) == 0 );
 		}
 		log_io_busy = FALSE;
 	}
 
-	/* ���ꥢ�����ߤζػߤ�����׵�ե饰���ꥢ	 */
+	/* シリアル割込みの禁止および要求フラグクリア	 */
 	sil_wrb_mem((VP)(siopinib->hint), 0x00 );
-	sil_wrb_mem((VP)TADR_SFR_INTCLR, (siopinib->int_clr) );		/* �����׵᥯�ꥢ	*/
-	sil_wrb_mem((VP)TADR_SFR_INTCLR, (VB)(siopinib->int_clr + 1) );	/* �����׵᥯�ꥢ	*/
-	/* �ݡ�������(�ݡ��ȤȤ��ƻ���)	*/
+	sil_wrb_mem((VP)TADR_SFR_INTCLR, (siopinib->int_clr) );		/* 受信要求クリア	*/
+	sil_wrb_mem((VP)TADR_SFR_INTCLR, (VB)(siopinib->int_clr + 1) );	/* 送信要求クリア	*/
+	/* ポート設定(ポートとして使用)	*/
 	sil_wrb_mem((VP)(TADR_SFR_P9FC), 0x00 );
 	sil_wrb_mem((VP)(TADR_SFR_P9CR), 0x00 );
 
@@ -195,7 +195,7 @@ uart_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 uart_snd_chr(SIOPCB *siopcb, char c)
@@ -204,9 +204,9 @@ uart_snd_chr(SIOPCB *siopcb, char c)
 		siopcb->sts_flag &= (UB)~TBIT_TXB_EMPTY;
 		sil_wrb_mem((VP)(siopcb->siopinib->cntrl+TOFFSET_SC0BUF), c);
 
-	/* �����ƥ�����ѥݡ��Ȥν���	*/
+	/* システムログ用ポートの処理	*/
 		if( (siopcb->sts_flag & TBIT_LOG_PORT) == TBIT_LOG_PORT ){
-			log_io_busy = TRUE;	/* ������	*/
+			log_io_busy = TRUE;	/* 送信中	*/
 		}
 		return(TRUE);
 	}
@@ -214,7 +214,7 @@ uart_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 uart_rcv_chr(SIOPCB *siopcb)
@@ -223,7 +223,7 @@ uart_rcv_chr(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 uart_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -241,7 +241,7 @@ uart_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 uart_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -259,22 +259,22 @@ uart_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  �ݡ���ID=1�˻��ꤵ��Ƥ���SIO�����ͥ�(uart1)����μ��������
+ *  ポートID=1に指定されているSIOチャンネル(uart1)からの受信割込み
  */
 void serial_in_handler1()
 {
 	SIOPCB *siopcb = &siopcb_table[0];
 
-	/* ���顼�ξ��������ʤ�   */
+	/* エラーの場合処理しない   */
 	if( ( sil_reb_mem((VP)(siopcb->siopinib->cntrl+TOFFSET_SC0CR)) & 0x1c ) == 0 ){
 
-		/* �ǡ�������	*/
+		/* データ受信	*/
 		siopcb->rxb = (INT)sil_reb_mem((VP)(siopcb->siopinib->cntrl+TOFFSET_SC0BUF));
 
-		/* ������Хå������Ĥ���Ƥ�����	*/
+		/* コールバックが許可されている場合	*/
 		if( (siopcb->sts_flag & TBIT_ENE_RXCBR) == TBIT_ENE_RXCBR ){
 			/*
-			 *  �������Υ�����Хå��롼�����ƤӽФ���
+			 *  受信通知コールバックルーチンを呼び出す．
 			 */
 			uart_ierdy_rcv(siopcb->exinf);
 		}
@@ -282,24 +282,24 @@ void serial_in_handler1()
 }
 
 /*
- *  �ݡ���ID=1�˻��ꤵ��Ƥ���SIO�����ͥ�(uart1)��������������
+ *  ポートID=1に指定されているSIOチャンネル(uart1)からの送信割込み
  */
 void serial_out_handler1()
 {
 	SIOPCB *siopcb = &siopcb_table[0];
 
-	/* �ǡ���������λ�ե饰ON	*/
+	/* データ送信完了フラグON	*/
 	siopcb->sts_flag |= TBIT_TXB_EMPTY;
 
-	/* �����ƥ�����ѥݡ��Ȥν���	*/
+	/* システムログ用ポートの処理	*/
 	if( (siopcb->sts_flag & TBIT_LOG_PORT) == TBIT_LOG_PORT ){
-		log_io_busy = FALSE;	/* ������λ	*/
+		log_io_busy = FALSE;	/* 送信完了	*/
 	}
 
-	/* ������Хå������Ĥ���Ƥ�����	*/
+	/* コールバックが許可されている場合	*/
 	if( (siopcb->sts_flag & TBIT_ENE_TXCBR) == TBIT_ENE_TXCBR ){
 		/*
-		 *  ������ǽ������Хå��롼�����ƤӽФ���
+		 *  送信可能コールバックルーチンを呼び出す．
 		 */
 		uart_ierdy_snd(siopcb->exinf);
 	}
@@ -307,22 +307,22 @@ void serial_out_handler1()
 
 #if TNUM_PORT >= 2
 /*
- *  �ݡ���ID=2�˻��ꤵ��Ƥ���SIO�����ͥ�(uart0)����μ��������
+ *  ポートID=2に指定されているSIOチャンネル(uart0)からの受信割込み
  */
 void serial_in_handler2()
 {
 	SIOPCB *siopcb = &siopcb_table[1];
 
-	/* ���顼�ξ��������ʤ�   */
+	/* エラーの場合処理しない   */
 	if( ( sil_reb_mem((VP)(siopcb->siopinib->cntrl+TOFFSET_SC0CR)) & 0x1c ) == 0 ){
 
-		/* �ǡ�������	*/
+		/* データ受信	*/
 		siopcb->rxb = (INT)sil_reb_mem((VP)(siopcb->siopinib->cntrl+TOFFSET_SC0BUF));
 
-		/* ������Хå������Ĥ���Ƥ�����	*/
+		/* コールバックが許可されている場合	*/
 		if( (siopcb->sts_flag & TBIT_ENE_RXCBR) == TBIT_ENE_RXCBR ){
 			/*
-			 *  �������Υ�����Хå��롼�����ƤӽФ���
+			 *  受信通知コールバックルーチンを呼び出す．
 			 */
 			uart_ierdy_rcv(siopcb->exinf);
 		}
@@ -330,24 +330,24 @@ void serial_in_handler2()
 }
 
 /*
- *  �ݡ���ID=2�˻��ꤵ��Ƥ���SIO�����ͥ�(uart0)��������������
+ *  ポートID=2に指定されているSIOチャンネル(uart0)からの送信割込み
  */
 void serial_out_handler2()
 {
 	SIOPCB *siopcb = &siopcb_table[1];
 
-	/* �ǡ���������λ�ե饰ON	*/
+	/* データ送信完了フラグON	*/
 	siopcb->sts_flag |= TBIT_TXB_EMPTY;
 
-	/* �����ƥ�����ѥݡ��Ȥν���	*/
+	/* システムログ用ポートの処理	*/
 	if( (siopcb->sts_flag & TBIT_LOG_PORT) == TBIT_LOG_PORT ){
-		log_io_busy = FALSE;	/* ������λ	*/
+		log_io_busy = FALSE;	/* 送信完了	*/
 	}
 
-	/* ������Хå������Ĥ���Ƥ�����	*/
+	/* コールバックが許可されている場合	*/
 	if( (siopcb->sts_flag & TBIT_ENE_TXCBR) == TBIT_ENE_TXCBR ){
 		/*
-		 *  ������ǽ������Хå��롼�����ƤӽФ���
+		 *  送信可能コールバックルーチンを呼び出す．
 		 */
 		uart_ierdy_snd(siopcb->exinf);
 	}

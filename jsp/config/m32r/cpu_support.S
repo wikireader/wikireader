@@ -9,38 +9,38 @@
  *  Copyright (C) 2007 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_support.S,v 1.12 2007/05/30 03:56:47 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼�� ������֥��������M32R�ѡ�
+ *	プロセッサ依存モジュール アセンブリ言語部（M32R用）
  */
 
 #define	_MACRO_ONLY
@@ -78,7 +78,7 @@
 	.extern	ext_tsk
 		
 /*
- *  EIT�٥�������ȥ�����
+ *  EITベクタエントリの定義
  */
 	.section ".vector","ax"
 	.global	  reset
@@ -91,14 +91,14 @@ reset:
 	.balign 0x10
 vector_entry_SBI:
     /* 
-	 *  �����ƥ�֥졼�������
+	 *  システムブレーク割込み
 	 */
 	bra 	vector_entry_SBI
 
 	.balign 0x10
 vector_entry_RIE:
     /* 
-	 *  ͽ��̿���㳰��Reserved Instruction Exception��
+	 *  予約命令例外（Reserved Instruction Exception）
 	 */
 	stmdb	"r0,r1"
 	ldi		r1, #(EXC_RIE*4-4)
@@ -107,7 +107,7 @@ vector_entry_RIE:
 	.balign 0x10
 vector_entry_AE:
     /* 
-	 *  ���ɥ쥹�㳰��Address Exception��
+	 *  アドレス例外（Address Exception）
 	 */
 	stmdb	"r0,r1"
 	ldi		r1, #(EXC_AE*4-4)
@@ -116,7 +116,7 @@ vector_entry_AE:
 	.balign 0x10
 vector_entry_trap:
     /*
-	 *  �ȥ�åץ٥�������ȥ�
+	 *  トラップベクタエントリ
 	 */
 	bra		_trap_handler_0
 	bra		_trap_handler_1
@@ -136,190 +136,190 @@ vector_entry_trap:
 	bra		_trap_handler_15
 
 /*
- *  ����ߥ٥�������ȥ�ȳ���ߥϥ�ɥ鵯ư������������
+ *  割込みベクタエントリと割込みハンドラ起動／復帰処理部
  *
- *  �����ȯ�����Υϡ��ɥ�������ư��
+ *  割込み発生時のハードウエアの動作
  *
- *  psw�쥸�������sm��ie��pm��c�ӥåȤ�bsm��bie��bpm��bc�ӥåȤ�����
- *  ���롥bpc�ˤϳ����ȯ������pc�ͤ����롥
+ *  pswレジスタ中のsm，ie，pm，cビットをbsm，bie，bpm，bcビットに退避
+ *  する．bpcには割込み発生時のpc値が入る．
  *
  *	bsm <- sm
  *  bie <- ie
  *  bpm <- pm
  *  bc <- c
- *  bpc <- �����ȯ������pc��
+ *  bpc <- 割込み発生時のpc値
  *
- *	psw�쥸�������sm��ie��pm��c�ӥåȤ�ʲ��Τ褦�˹������롥
+ *	pswレジスタ中のsm，ie，pm，cビットを以下のように更新する．
  *
  *	sm <- 0
  *  ie <- 0
  *  pm <- 0
  *  c <- 0
  *
- *���쥸�������Ѥ���
- *  r0-r1�ʺ���ΰ��
- *  r0-r7��r14��acc(hi/lo)��bpc��psw��ICUISTS��psw�ʳ���ߥϥ�ɥ�ƽ�����
+ *　レジスタの積み方
+ *  r0-r1（作業領域）
+ *  r0-r7，r14，acc(hi/lo)，bpc，psw，ICUISTS，psw（割込みハンドラ呼出前）
  *  
- *  ����ܤ�psw�ʳ��ϡ������ȯ�����Υ���ƥ����Ȥ��б����������å���
- *  ���򤹤롥2���ܤ�psw�ϡ�����ߥϥ�ɥ�μ¹�ľ����������뤿��ˡ�
- *  ɬ������ߥ����å������򤹤롥�ٱ�ǥ����ѥå�������ˤϡ��嵭��
- *  �쥸�����ʳ��ˤ⡤r8-r13�����򤷤ƥǥ����ѥå����ƤӽФ���
+ *  二つ目のpsw以外は，割込み発生時のコンテキストに対応したスタックに
+ *  退避する．2つ目のpswは，割込みハンドラの実行直後に復帰するために，
+ *  必ず割込みスタックに退避する．遅延ディスパッチする場合には，上記の
+ *  レジスタ以外にも，r8-r13を退避してディスパッチャを呼び出す．
  */
 	.balign 0x10
 interrupt_handler:
 
 	/* 
-	 *  ����ѥ쥸���������� 
+	 *  作業用レジスタの退避 
 	 *
-	 *  �ǽ�˺���ѥ쥸�����򥹥��å������򤹤롥�����ȯ��ľ��ϡ�ɬ
-	 *  ������ߥ����å��ˤʤ�Τǡ����������򤹤����ѥ쥸�����ϳ��
-	 *  �ߥ����å����Ѥޤ�롥
+	 *  最初に作業用レジスタをスタックに退避する．割込み発生直後は，必
+	 *  ず割込みスタックになるので，ここで退避する作業用レジスタは割込
+	 *  みスタックに積まれる．
 	 */
 	stmdb	"r0,r1"
 
 	/* 
-	 *  �����ȯ�����Υ���ƥ�����Ƚ��
+	 *  割込み発生時のコンテキスト判定
 	 *
-	 *  psw��bsm�ӥåȤ�������ȯ�����˻��Ѥ��Ƥ��������å���������
-	 *  ���롥bsm��0�ξ��ϡ�����ߥ����å�����Ѥ��Ƥ������Ȥˤʤ��
-	 *  �ǡ�����ߥ���ƥ����Ȥǳ���ߤ�ȯ��������Ƚ�Ǥ��롥bsm��1�ξ�
-	 *  ��ϡ��桼�������å�����Ѥ��Ƥ������Ȥˤʤ�Τǡ������������
-	 *  �����Ȥǳ���ߤ�ȯ��������Ƚ�Ǥ��롥��Ԥξ��ϡ�����ΰ��r0
-	 *  ��r1�ˤ��Ѥ�ľ����ɬ�פʤ���
+	 *  pswのbsmビットから割込み発生時に使用していたスタック情報を取得
+	 *  する．bsmが0の場合は，割込みスタックを使用していたことになるの
+	 *  で，割込みコンテキストで割込みが発生したと判断する．bsmが1の場
+	 *  合は，ユーザスタックを使用していたことになるので，タスクコンテ
+	 *  キストで割込みが発生したと判断する．後者の場合は，作業領域（r0
+	 *  とr1）の積み直しは必要ない．
 	 */
 	mvfc	r0, psw
 	and3	r1, r0, 0x8000
 	beqz	r1, L1
 
 	/* 
-	 *  ����쥸�����Υ桼�������å��ؤ��Ѥ�ľ��  
+	 *  退避レジスタのユーザスタックへの積み直し  
 	 *
-	 *  ����������ƥ����Ȥǳ���ߤ�ȯ���������ϡ�����ߥ����å�����
-	 *  �򤷤�����ѥ쥸����r0��r1��桼�������å����Ѥ�ľ��ɬ�פ����롥
+	 *  タスクコンテキストで割込みが発生した場合は，割込みスタックに退
+	 *  避した作業用レジスタr0とr1をユーザスタックに積み直す必要がある．
 	 */
 
 	or3		r0, r0, 0x80		
-	mvtc	r0, psw				/* �桼�������å������ء�sp = spu�� */
+	mvtc	r0, psw				/* ユーザスタックに切替（sp = spu） */
 
 	mvfc	r1, spi
-	ld		r0, @(4, r1)		/* ���򤷤�r0�����ߥ����å�������Ф� */
-	st		r0, @-sp			/* r0��桼�������å����Ѥ� */
-	ld		r0, @r1				/* ���򤷤�r1�����ߥ����å�������Ф� */
-	st		r0, @-sp			/* r1��桼�������å����Ѥ� */
-	addi	r1, 8				/* ����ߥ����å����ȥ����å����������᤹ */
-	mvtc	r1, spi				/* ����ߥ����å����֤�spi����¸ */
+	ld		r0, @(4, r1)		/* 退避したr0を割込みスタックから取り出す */
+	st		r0, @-sp			/* r0をユーザスタックに積む */
+	ld		r0, @r1				/* 退避したr1を割込みスタックから取り出す */
+	st		r0, @-sp			/* r1をユーザスタックに積む */
+	addi	r1, 8				/* 割込みスタックを作業スタック退避前に戻す */
+	mvtc	r1, spi				/* 割込みスタック位置をspiに保存 */
 	mvfc	r0, psw
 
 L1:
 	/* 
-	 *  ����ƥ����Ȥ�����
+	 *  コンテキストの退避
 	 * 
-	 *  r2-r7, r14, acch, accl, bpc, psw, ����ߥޥ�����ICUISTS��,psw
-	 *  �ν�˥����å������򤹤롥�����Ǥϡ�ɬ��psw��r0����¸����Ƥ�
-	 *  �롥
+	 *  r2-r7, r14, acch, accl, bpc, psw, 割込みマスク（ICUISTS）,psw
+	 *  の順にスタックに退避する．ここでは，必ずpswがr0に保存されてい
+	 *  る．
 	 */
 	stmdb	"r2,r3,r4,r5,r6,r7,r14"
 	mvfachi	r1
-	st		r1, @-sp			/* acch������ */
+	st		r1, @-sp			/* acchを退避 */
 	mvfaclo	r1
-	st		r1, @-sp			/* accl������ */
+	st		r1, @-sp			/* acclを退避 */
 	mvfc	r1, bpc
-	st		r1, @-sp			/* bpc������ */
-	st 		r0, @-sp			/* psw������ */
+	st		r1, @-sp			/* bpcを退避 */
+	st 		r0, @-sp			/* pswを退避 */
 
 	ld24	r1, ICUISTS
-	ld		r0, @r1				/* ����ߥޥ����ɤ߹��ߡʳ�����׵�ϥ��ꥢ������*/
-	st		r0, @-sp			/* ����ߥޥ��������� */
+	ld		r0, @r1				/* 割込みマスク読み込み（割込み要求はクリアされる）*/
+	st		r0, @-sp			/* 割込みマスクを退避 */
 
-	lea		r1, InterruptHandlerEntry /* ����ߥϥ�ɥ�ơ��֥����Ƭ���ɥ쥹����Ф� */
-	srli	r0, 22				/* ������װ��ֹ����� */
-	addi	r0, -1				/* ����ߥϥ�ɥ�ơ��֥�Υ���ǥå�����׻� */
-	slli	r0, 2				/* ����ߥϥ�ɥ�ơ��֥�Υ��ե��åȤ�׻� */
-	add		r1, r0				/* ����ߥϥ�ɥ�ơ��֥���γ���ߥϥ�ɥ�Υ��ɥ쥹�׻� */
-	ld		r1, @r1				/* ����ߥϥ�ɥ�ε�ư���Ϥ���Ф� */
+	lea		r1, InterruptHandlerEntry /* 割込みハンドラテーブルの先頭アドレスを取り出す */
+	srli	r0, 22				/* 割込み要因番号を取得 */
+	addi	r0, -1				/* 割込みハンドラテーブルのインデックスを計算 */
+	slli	r0, 2				/* 割込みハンドラテーブルのオフセットを計算 */
+	add		r1, r0				/* 割込みハンドラテーブル中の割込みハンドラのアドレス計算 */
+	ld		r1, @r1				/* 割込みハンドラの起動番地を取り出す */
 
 L2:
 	/*
-	 *  ����ߥϥ�ɥ�θƽФ�
+	 *  割込みハンドラの呼出し
 	 *
-	 *  psw�����򤷡�����ߥ����å�, ����ߵ��Ĥˤ��Ƴ���ߥϥ�ɥ��
-	 *  �ƤӽФ�������ߥϥ�ɥ餫���������Ϥ�eit_handler_r�Ȥ��롥
-	 *  �����ǡ�����psw�����򤹤�Τϡ�eit_handler_r�κǽ�ǡ����Ѥ���
-	 *  �����å����᤹ɬ�פ����뤿��ǡ�ɬ������ߥ����å������򤷤Ƥ�
-	 *  ����
+	 *  pswを退避し，割込みスタック, 割込み許可にして割込みハンドラを
+	 *  呼び出す．割込みハンドラからの戻り番地をeit_handler_rとする．
+	 *  ここで，再度pswを退避するのは，eit_handler_rの最初で，使用する
+	 *  スタックを戻す必要があるためで，必ず割込みスタックに退避してお
+	 *  く．
 	 */
 	mvfc	r2, psw						
 	and3	r3, r2, 0xff7f				
-	mvtc	r3, psw						/* ����ߥ����å� */
-	st		r2, @-sp					/* psw�����ߥ����å������� */
-	lea		r14, eit_handler_r 			/* ������Ϥ����� */
+	mvtc	r3, psw						/* 割込みスタック */
+	st		r2, @-sp					/* pswを割込みスタックに退避 */
+	lea		r14, eit_handler_r 			/* 戻り番地を設定 */
 	or3		r3, r3, 0x40				
-	mvtc	r3, psw						/* ����ߵ��� */
-	jmp		r1							/* �ϥ�ɥ鵯ư */
+	mvtc	r3, psw						/* 割込み許可 */
+	jmp		r1							/* ハンドラ起動 */
 
 	.text
 	.align 4
 eit_handler_r:
 	/*
-	 *  EIT�ϥ�ɥ餫�����������
+	 *  EITハンドラからの復帰処理
 	 *
-	 *  EIT�ϥ�ɥ�μ¹Ԥ���λ����ȸƤӽФ���롥�����ȯ�����Υ���
-	 *  �ƥ����ȡ�������׵��̵ͭ���ǥ����ѥå����ġ��ػ߾��֤��顤Ŭ
-	 *  �ڤ�����������Ԥʤ���
+	 *  EITハンドラの実行が終了すると呼び出される．割込み発生時のコン
+	 *  テキスト，割込み要求の有無，ディスパッチ許可／禁止状態から，適
+	 *  切な復帰処理を行なう．
 	 */
 	ld		r0, @sp+
-	mvtc	r0, psw			/* ����ߥ����å�����psw��������EITȯ����
-							   �Υ���ƥ����Ȥ���롥����ߤ϶ػ߾��֡�
+	mvtc	r0, psw			/* 割込みスタックからpswを復帰（EIT発生時
+							   のコンテキストに戻る．割込みは禁止状態）
 							    */
 
 	ld24 	r1, ICUIMASK
 	ld 		r2, @sp+
-	st 		r2, @r1			/* ����ߥޥ��������� */
+	st 		r2, @r1			/* 割込みマスクの復帰 */
 
 	and3	r0, r0, 0x8000
-	beqz	r0, recover_int	/* EITȯ�����Υ���ƥ����Ȥ�����ߥ���ƥ�
-							   ���ȤǤ���С�¿�ų���ߤǤ����Ƚ�Ǥ���
-							   ¨�¤˶������������� */
+	beqz	r0, recover_int	/* EIT発生時のコンテキストが割込みコンテキ
+							   ストであれば，多重割込みであると判断し，
+							   即座に共通復帰処理へ */
 
 	/* 
-	 *  ����������ƥ����Ȥؤ������롼����
+	 *  タスクコンテキストへの復帰ルーチン
 	 *
-	 *  �ǥ����ѥå����������㳰��ư�׵᤬�ʤ����ϡ�¨�¤˶��������롼
-	 *  ��������֡��ٱ�ǥ����ѥå�������Ԥʤ����ǥ����ѥå��׵᤬��
-	 *  ����ж��̤�����������recover_int�ˤ�Ԥʤ���
+	 *  ディスパッチ／タスク例外起動要求がない場合は，即座に共通復帰ルー
+	 *  チンに飛ぶ．遅延ディスパッチ処理を行なう．ディスパッチ要求がな
+	 *  ければ共通の復帰処理（recover_int）を行なう．
 	 */
 	lea		r0, _kernel_reqflg
 	ld		r1, @r0
-	beqz	r1, recover_int		/* ���������롼����� */
+	beqz	r1, recover_int		/* 共通復帰ルーチンへ */
 
 	/* 
-	 *  �ǥ����ѥå����������㳰��ư�׵᤬������ν���
+	 *  ディスパッチ／タスク例外起動要求がある場合の処理
 	 *
-	 *  �ޤ����ǥ����ѥå��׵�ե饰��reqflg�ˤ򥯥ꥢ���롥�����ơ��ǥ�
-	 *  ���ѥå����ĥե饰��enadsp�ˤ�FALSE�ξ��ȡ�runtsk��schedtsk 
-	 *  ��Ʊ�����ˤϡ��ǥ����ѥå������ˡ��������㳰��ư�����롼����
-	 *  �����֡��ǥ����ѥå������Ĥ���Ƥ��ꡤruntsk��schedtsk���ۤʤ�
-	 *  ���ˤϡ��ٱ�ǥ����ѥå�������Ԥ���
+	 *  まず，ディスパッチ要求フラグ（reqflg）をクリアする．そして，ディ
+	 *  スパッチ許可フラグ（enadsp）がFALSEの場合と，runtskとschedtsk 
+	 *  が同じ場合には，ディスパッチせずに，タスク例外起動処理ルーチン
+	 *  へ飛ぶ．ディスパッチが許可されており，runtskとschedtskが異なる
+	 *  場合には，遅延ディスパッチ処理を行う．
 	 */
 	ldi		r1, #0
-	st		r1, @r0				/* reqflg�򥯥ꥢ */
+	st		r1, @r0				/* reqflgをクリア */
 
 	lea 	r0,  _kernel_enadsp
 	ld 		r0, @r0
-	beqz 	r0, recover_task 	/* enaflg�Υ����å� */
+	beqz 	r0, recover_task 	/* enaflgのチェック */
 
 	lea		r0, _kernel_runtsk
 	lea		r1, _kernel_schedtsk
 	ld		r0, @r0	
     ld		r1, @r1
-    beq		r0, r1, recover_task	/* runtsk��schedtsk��Ʊ�����ϥ�
-								       �����㳰��ư������ */
+    beq		r0, r1, recover_task	/* runtskとschedtskが同じ場合はタ
+								       スク例外起動処理へ */
 
 	/*
-	 *  �㳰������߽и��Ǥ��ٱ�ǥ����ѥå�����
+	 *  例外／割込み出口での遅延ディスパッチ処理
 	 *
-	 *  ���򤷤Ƥ��ʤ��Ĥ�Υ쥸���������򤷡��¹Ծ��֥�������pc��sp��
-	 *  ���򤷤Ƥ���ǥ����ѥå����ƤӽФ���
+	 *  退避していない残りのレジスタを退避し，実行状態タスクのpcとspを
+	 *  退避してからディスパッチャを呼び出す．
 	 */
 	stmdb	"r8,r9,r10,r11,r12,r13"
 
@@ -337,39 +337,39 @@ recover_task_r:
 
 recover_task:
 	/* 
-	 *  �������㳰��ư����
+	 *  タスク例外起動処理
 	 *
-	 *  �����ǡ�enatex��TRUE�ǡ�texptn��0�Ǥʤ���С��������㳰�����롼
-	 *  �����ƤӽФ���calltex�ν������ơ�runtsk->enatex��TRUE�ǡ�
-	 *  runtsk->texptn��0�Ǥʤ����ˡ�call_texrtn��Ƥ֡ˤ򤳤��˥���
-	 *  �饤��Ÿ������������Ψ���ɤ����������δʰײ��Τ����calltex ��
-	 *  �ƤӽФ���
+	 *  ここで，enatexがTRUEで，texptnが0でなければ，タスク例外処理ルー
+	 *  チンを呼び出す．calltexの処理内容（runtsk->enatexがTRUEで，
+	 *  runtsk->texptnが0でない場合に，call_texrtnを呼ぶ）をここにイン
+	 *  ライン展開した方が効率が良いが，実装の簡易化のためにcalltex を
+	 *  呼び出す．
 	 */
 	bl		_kernel_calltex
 
 recover_int:
 	/* 
-	 *  EIT����������������ͥ���ٳ���ߤؤ������ޤ��
+	 *  EIT共通復帰処理（低優先度割込みへの復帰含む）
 	 *
-	 *  ���򤷤����֡�r2-r7, r14, acch, accl, bpc, psw�ˤεս�ǥ�����
-	 *  ��������Ф����������롥�ޤ�������ѥ쥸������r0��r1�ˤ�����
-	 *  ���롥
+	 *  退避した順番（r2-r7, r14, acch, accl, bpc, psw）の逆順でスタッ
+	 *  クから取り出して復帰する．また，作業用レジスタ（r0，r1）も復帰
+	 *  する．
 	 */
 	ld 		r0, @sp+
-	mvtc 	r0, psw						/* psw������ */
+	mvtc 	r0, psw						/* pswを復帰 */
 	ld		r0, @sp+			
-	mvtc	r0, bpc						/* bpc������ */
+	mvtc	r0, bpc						/* bpcを復帰 */
 	ld		r0, @sp+	
-	mvtaclo	r0							/* accl������ */
+	mvtaclo	r0							/* acclを復帰 */
 	ld		r0, @sp+
-	mvtachi	r0							/* acchl������ */
-	ldmia	"r14,r7,r6,r5,r4,r3,r2"		/* ����¾�Υ쥸���������� */
-	ldmia	"r1,r0"						/* ����ѥ쥸���������� */
-	rte									/* ����߽����������� */
+	mvtachi	r0							/* acchlを復帰 */
+	ldmia	"r14,r7,r6,r5,r4,r3,r2"		/* その他のレジスタを復帰 */
+	ldmia	"r1,r0"						/* 作業用レジスタの復帰 */
+	rte									/* 割込み処理から復帰 */
 
 	.section ".vector","ax"
 	/*
-	 *  �ȥ�åפΥ���ȥ��� : �ȥ�å��ֹ�γ�Ǽ
+	 *  トラップのエントリ部 : トラップ番号の格納
 	 */
 	.irp num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 		.align	4
@@ -381,38 +381,38 @@ recover_int:
 	.endr
 		
 /*
- *  �㳰���ȥ�åץϥ�ɥ���������
+ *  例外／トラップハンドラ入口処理
  *
- *  �㳰��ȯ���������ˤϡ�������å��쥸���������򤷤��㳰�װ���r1��
- *  ���äƤ���ˤ��б������㳰�ϥ�ɥ��ƤӽФ����㳰�ϥ�ɥ餫�����
- *  �������ϡ�����ߥϥ�ɥ餫������������ȶ��̡�eit_handler_r�ˤǤ��롥
+ *  例外が発生した場合には，スクラッチレジスタを退避して例外要因（r1に
+ *  入っている）に対応する例外ハンドラを呼び出す．例外ハンドラからの復
+ *  帰処理は，割込みハンドラからの復帰処理と共通（eit_handler_r）である．
  *
- *  �㳰ȯ�����Υϡ��ɥ�������ư��
+ *  例外発生時のハードウエアの動作
  *
- *  psw�쥸�������sm��ie��pm��c�ӥåȤ�bsm��bie��bpm��bc�ӥåȤ�����
- *  ���롥bpc�ˤ��㳰�򵯤�����̿���pc�ͤ����롥
+ *  pswレジスタ中のsm，ie，pm，cビットをbsm，bie，bpm，bcビットに退避
+ *  する．bpcには例外を起こした命令のpc値が入る．
  *
  *	bsm <- sm
  *  bie <- ie
  *  bpm <- pm
  *  bc <- c
- *  bpc <- �㳰�򵯤�����̿��Υ��ɥ쥹
+ *  bpc <- 例外を起こした命令のアドレス
  *
- *	psw�쥸�������sm��ie��pm��c�ӥåȤ�ʲ��Τ褦�˹������롥
+ *	pswレジスタ中のsm，ie，pm，cビットを以下のように更新する．
  *
- *	sm <- ����
+ *	sm <- 不変
  *  ie <- 0
  *  pm <- 0
  *  c <- 0
  *
- *  �쥸�������Ѥ���
+ *  レジスタの積み方
  *
- *  r0-r1�ʺ���ΰ衤�٥����κǽ�������
- *  r2-r7��r14��acc(hi/lo)��bpc��psw��ICUIMASK���㳰�ϥ�ɥ�ƽ�����
+ *  r0-r1（作業領域，ベクタの最初で退避）
+ *  r2-r7，r14，acc(hi/lo)，bpc，psw，ICUIMASK（例外ハンドラ呼出前）
  *
- *  �����ǡ�ICUISTS�ǤϤʤ�ICUIMASK�����򤹤�Τϡ��㳰������˳�����
- *  ���ߤ�ȯ���������ˡ�ICUISTS���ɹ��ߤˤ�������װ������ꥢ����
- *  �Ƥ��ޤ��Τ��ɤ�����Ǥ��롥
+ *  ここで，ICUISTSではなくICUIMASKを退避するのは，例外処理中に外部割
+ *  込みが発生した場合に，ICUISTSの読込みにより割込み要因がクリアされ
+ *  てしまうのを防ぐためである．
  */
 _exception_handler:
 
@@ -431,59 +431,59 @@ _exception_handler:
 
 	lea		r0, ExceptionHandlerEntry
 	add		r0, r1
-	ld		r1, @r0				/* �㳰�ϥ�ɥ�Υ��ɥ쥹����� */
+	ld		r1, @r0				/* 例外ハンドラのアドレスを取得 */
 
-	mv 		r0, sp				/* �����å��ΰ��֤��㳰�ϥ�ɥ�ΰ���
-								   ������ */
+	mv 		r0, sp				/* スタックの位置を例外ハンドラの引数
+								   に設定 */
 	and3 	r3, r2, 0x7f00
 	srli 	r3, 8
-	mvtc 	r3, psw 			/* ����ߥ����å�������ߵ��ľ��֤� */
-	st 		r2, @-sp			/* �㳰ȯ��ľ���psw�����ߥ����å������� */
+	mvtc 	r3, psw 			/* 割込みスタック，割込み許可状態に */
+	st 		r2, @-sp			/* 例外発生直後のpswを割込みスタックに退避 */
 	lea 	r14, eit_handler_r 
 	jmp 	r1
 				
 Function _kernel_dispatch
 	/*
-	 *  ���������ؤ��Τ�����������
+	 *  タスク切替えのための退避処理
 	 *
-	 *  ���Υ롼����ϡ�����������ƥ����ȡ�CPU���å����֡��ǥ����ѥ�
-	 *  �����ľ��֤ǸƤӽФ���롥�ƽи��Ǥ���¸����ʤ��쥸�����򥹥���
-	 *  �������򤷡�pc��sp��TCB�����򤹤롥pc�ϥǥ����ѥå���и�����
-	 *  ��dispatch_r�ˤ����ꤹ�롥
+	 *  このルーチンは，タスクコンテキスト，CPUロック状態，ディスパッ
+	 *  チ許可状態で呼び出される．呼出元では保存されないレジスタをスタッ
+	 *  クに退避し，pcとspはTCBに退避する．pcはディスパッチャ出口処理
+	 *  （dispatch_r）に設定する．
 	 */
 	stmdb	"r8,r9,r10,r11,r12,r13,r14"
 
 	lea 	r0, _kernel_runtsk
 	lea		r1, dispatch_r
 	ld		r0, @r0
-	st		r1, @(TCB_pc, r0)		/* �����������dispatch_r�˵��äƤ��� */
-	st		sp, @(TCB_sp, r0)		/* �����å��ݥ��󥿤����� */
+	st		r1, @(TCB_pc, r0)		/* 復帰する時はdispatch_rに帰ってくる */
+	st		sp, @(TCB_sp, r0)		/* スタックポインタを退避 */
 
 Function _kernel_exit_and_dispatch
 	/*
-	 *  ���������ؤ���������
+	 *  タスク切替えの前処理
 	 *
-	 *  schedtsk�����Ǥʤ���������å����롥schedtsk�����Ǥʤ����ϡ�
-	 *  ���������ؤ������˰ܤ롥���ξ��ϡ�����ߤ���Ĥ��ƥ롼�פ���
-	 *  �����˰ܤ롥
+	 *  schedtskが空でないかをチェックする．schedtskが空でない場合は，
+	 *  タスク切替え処理に移る．空の場合は，割込みを許可してループする
+	 *  処理に移る．
 	 */	
 	xor		r0, r0
-	mvtc	r0, psw						/* ����߶ػߡ�����ߥ����å� */
+	mvtc	r0, psw						/* 割込み禁止，割込みスタック */
 	
 	lea		r1,  _kernel_schedtsk
 L6:	ld		r0, @r1
-	bnez	r0, L7						/* schedtsk��̵ͭ������å� */
+	bnez	r0, L7						/* schedtskの有無をチェック */
 
 	/* 
-	 *  ��ư���٤����������ʤ����ν���
+	 *  起動すべきタスクがない場合の処理
 	 *
-	 *  ��ư���٤����������ʤ����ϡ�����ߤ���Ĥ��ƥ롼�פ��롥�롼
-	 *  �פ�����ǳ���ߤ���Ĥ����¹Բ�ǽ���������Ԥġ�
+	 *  起動すべきタスクがない場合は，割込みを許可してループする．ルー
+	 *  プの途中で割込みを許可し，実行可能タスクを待つ．
 	 */
 	ldi		r0, 0x40
-	mvtc	r0, psw						/* ����ߵ��� */
+	mvtc	r0, psw						/* 割込み許可 */
 	xor		r0, r0
-	mvtc	r0, psw						/* ����߶ػ� */
+	mvtc	r0, psw						/* 割込み禁止 */
 
 	lea 	r0, _kernel_reqflg
 	xor 	r2, r2
@@ -492,29 +492,29 @@ L6:	ld		r0, @r1
 
 L7:
     /* 
-	 *  ���������ؤ�����
+	 *  タスク切替え処理
 	 *
-	 *  �¹��楿������runtsk�ˤ˺ǹ�ͥ���̥�������schedtsk�ˤ����ꤷ��
-	 *  �����å���桼�������å������ؤ��롥runtsk��TCB��sp��pc������
-	 *  ���롥�����Ǥϡ�r0 = schedtsk�Ǥ��롥
+	 *  実行中タスク（runtsk）に最高優先順位タスク（schedtsk）を設定し，
+	 *  スタックをユーザスタックに切替える．runtskのTCBのspとpcを復帰
+	 *  する．ここでは，r0 = schedtskである．
 	 */
 	lea		r2, _kernel_runtsk
 	st		r0, @r2 					/* runtsk = schedtsk */
 
 	ldi 	r1, 0x80
-	mvtc 	r1, psw 					/* �桼�������å�������߶ػ� */
+	mvtc 	r1, psw 					/* ユーザスタック，割込み禁止 */
 
-	ld		sp, @(TCB_sp, r0)			/* �����å��ݥ��󥿤����� */
-	ld		r0, @(TCB_pc, r0)			/* �ץ�����५���󥿤����� */
+	ld		sp, @(TCB_sp, r0)			/* スタックポインタを復帰 */
+	ld		r0, @(TCB_pc, r0)			/* プログラムカウンタを復帰 */
 	jmp		r0
 
 	.align 4
 Label dispatch_r
 	/* 
-	 *  �ǥ����ѥå���νи�����
+	 *  ディスパッチャの出口処理
 	 * 
-	 *  dispatch�����򤷤��쥸���������������������㳰�����롼������
-	 *  �ӽФ���
+	 *  dispatchで退避したレジスタを復帰し，タスク例外処理ルーチンを呼
+	 *  び出す．
 	 */
 	bl 		_kernel_calltex 
     ldmia 	"r14,r13,r12,r11,r10,r9,r8" 
@@ -522,13 +522,13 @@ Label dispatch_r
 
 Function _kernel_activate_r
 	/*
-	 *  �������ε�ư�롼����
+	 *  タスクの起動ルーチン
 	 *
-	 *  runtsk�Υ�����������֥��å����饿�����ؿ��ȳ�ĥ�������Ф�
-	 *  �ơ���ĥ���������쥸������r0�ˤ����ꤹ�롥ext_tsk��ƤӽФ�
-	 *  ���˥���������λ�����礬���뤿�ᡤ�������ؿ���������Ϥ�
-	 *  ext_tsk�����ꤹ�롥��ư���������ƴ�λ���Ƥ��顤����ߤ���Ĥ�
-	 *  �ƥ������ؿ������֡�
+	 *  runtskのタスク初期化ブロックからタスク関数と拡張情報を取り出し
+	 *  て，拡張情報を引数レジスタ（r0）に設定する．ext_tskを呼び出さ
+	 *  ずにタスクが終了する場合があるため，タスク関数の戻り番地を
+	 *  ext_tskに設定する．起動準備が全て完了してから，割込みを許可し
+	 *  てタスク関数に飛ぶ．
 	 */
 	lea		r2, _kernel_runtsk
 	ld		r2, @r2
@@ -536,8 +536,8 @@ Function _kernel_activate_r
 	ld		r0, @(TINIB_exinf, r2)
 	ld		r1, @(TINIB_task,  r2)
 
-	lea		r14, ext_tsk				/* ��������������Ϥ�ext_tsk�� */
+	lea		r14, ext_tsk				/* タスクの戻り番地をext_tskに */
 
 	ldi 	r2, 0xc0
-	mvtc 	r2, psw						/* �桼�������å�������ߵ��� */
-	jmp		r1							/* �������ؿ��� */
+	mvtc 	r2, psw						/* ユーザスタック，割込み許可 */
+	jmp		r1							/* タスク関数へ */

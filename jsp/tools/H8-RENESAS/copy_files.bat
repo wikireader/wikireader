@@ -1,8 +1,8 @@
 echo off
-rem ’ˆÓ@HEW‚Åƒrƒ‹ƒh‚·‚é‘O‚ÉA‚±‚Ìƒoƒbƒ`ƒtƒ@ƒCƒ‹‚ğ—\‚ßÀs‚µ‚Ä‚¨‚­B
+rem æ³¨æ„ã€€HEWã§ãƒ“ãƒ«ãƒ‰ã™ã‚‹å‰ã«ã€ã“ã®ãƒãƒƒãƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’äºˆã‚å®Ÿè¡Œã—ã¦ãŠãã€‚
 
-rem ˆË‘¶•”‚Æ”ñˆË‘¶•”‚Ìƒ\[ƒXƒtƒ@ƒCƒ‹‚ğ
-rem jsp\tools\H8-RENESAS\libkernel\kernel_source‚ÉƒRƒs[
+rem ä¾å­˜éƒ¨ã¨éä¾å­˜éƒ¨ã®ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’
+rem jsp\tools\H8-RENESAS\libkernel\kernel_sourceã«ã‚³ãƒ”ãƒ¼
 
 cd libkernel\kernel_source
 xcopy /Q /I /D /S ..\..\..\..\config\h8-renesas h8-renesas
@@ -10,9 +10,9 @@ xcopy /Q /I /D ..\..\..\..\kernel kernel
 xcopy /Q /I /D ..\..\..\..\library library
 xcopy /Q /I /D ..\..\..\..\systask systask
 
-rem ƒJ[ƒlƒ‹ƒ\[ƒXƒtƒ@ƒCƒ‹‚ÌƒRƒs[
-rem ŠÖ”’PˆÊ‚ÅƒŠƒ“ƒN‚·‚é‚½‚ßAƒJ[ƒlƒ‹‚Ìƒ\[ƒXƒR[ƒh‚É#define•¶‚ğ’Ç‰Á‚µ‚Ä
-rem ƒRƒs[‚·‚éB
+rem ã‚«ãƒ¼ãƒãƒ«ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
+rem é–¢æ•°å˜ä½ã§ãƒªãƒ³ã‚¯ã™ã‚‹ãŸã‚ã€ã‚«ãƒ¼ãƒãƒ«ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«#defineæ–‡ã‚’è¿½åŠ ã—ã¦
+rem ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 
 mkdir kernel_api
 perl ../../../../utils/h8-renesas/copy_kernel_source.pl ../../../../kernel kernel_api

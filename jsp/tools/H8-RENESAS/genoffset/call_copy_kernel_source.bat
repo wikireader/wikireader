@@ -1,10 +1,10 @@
 echo off
-rem ƒJ[ƒlƒ‹ƒ\[ƒXƒtƒ@ƒCƒ‹‚ÌƒRƒs[
+rem ã‚«ãƒ¼ãƒãƒ«ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
 
-rem ŠÖ”’PˆÊ‚ÅƒŠƒ“ƒN‚·‚é‚½‚ßAƒJ[ƒlƒ‹‚Ìƒ\[ƒXƒR[ƒh‚É#define•¶‚ğ’Ç‰Á‚µ‚Ä
-rem ƒRƒs[‚·‚éB
+rem é–¢æ•°å˜ä½ã§ãƒªãƒ³ã‚¯ã™ã‚‹ãŸã‚ã€ã‚«ãƒ¼ãƒãƒ«ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«#defineæ–‡ã‚’è¿½åŠ ã—ã¦
+rem ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 
-rem jsp\tools\H8S-RENESAS\libkernel\source‚©‚çŒ©‚½‘Š‘ÎƒpƒX‚Åw’è‚·‚éB
+rem jsp\tools\H8S-RENESAS\libkernel\sourceã‹ã‚‰è¦‹ãŸç›¸å¯¾ãƒ‘ã‚¹ã§æŒ‡å®šã™ã‚‹ã€‚
 
 perl ../../../../utils/h8-renesas/copy_kernel_source.pl ../../../../kernel .
 if errorlevel 1 exit 1

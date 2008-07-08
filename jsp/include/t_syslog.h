@@ -8,112 +8,112 @@
  *  Copyright (C) 2004 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: t_syslog.h,v 1.4 2004/01/05 05:15:01 hiro Exp $
  */
 
 /*
- *	�����ƥ������ǽ
+ *	システムログ機能
  *
- *  �����ƥ���������ӥ��ϡ������ƥ�Υ����������Ϥ��뤿��Υ����ӥ�
- *  �Ǥ��롥�����ͥ뤫��Υ�������ν��Ϥˤ��Ѥ��뤿�ᡤ�������Ԥ�����
- *  �ˤϤ��뤳�ȤϤʤ���
+ *  システムログサービスは，システムのログ情報を出力するためのサービス
+ *  である．カーネルからのログ情報の出力にも用いるため，内部で待ち状態
+ *  にはいることはない．
  *
- *  ��������ϡ������ͥ���Υ����Хåե��˽񤭹��फ�����٥��ʸ����
- *  �ϴؿ����Ѥ��ƽ��Ϥ��롥�ɤ����Ȥ����ϡ���ĥ�����ӥ���������ڤ�
- *  �����뤳�Ȥ��Ǥ��롥
+ *  ログ情報は，カーネル内のログバッファに書き込むか，低レベルの文字出
+ *  力関数を用いて出力する．どちらを使うかは，拡張サービスコールで切り
+ *  換えることができる．
  *
- *  �����Хåե��ΰ褬�����Хե����������ˤϡ��Ť����������ä��ƾ�
- *  �񤭤��롥
+ *  ログバッファ領域がオーバフローした場合には，古いログ情報を消して上
+ *  書きする．
  *
- *  ������֥����Υ������ե�����䥷���ƥॳ��ե�����졼�����ե�
- *  ���뤫�餳�Υե�����򥤥󥯥롼�ɤ�����ϡ�_MACRO_ONLY ���������
- *  �������Ȥǡ��ޥ�������ʳ��ε��Ҥ�������Ȥ��Ǥ��롥
+ *  アセンブリ言語のソースファイルやシステムコンフィギュレーションファ
+ *  イルからこのファイルをインクルードする時は，_MACRO_ONLY を定義して
+ *  おくことで，マクロ定義以外の記述を除くことができる．
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�kernel.h �� sil.h �ǥ��󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ���뤳�ȤϤʤ���
+ *  このインクルードファイルは，kernel.h と sil.h でインクルードされる．
+ *  他のファイルから直接インクルードされることはない．
  *
- *  ���Υե�����򥤥󥯥롼�ɤ������ˡ�t_stddef.h �� itron.h �򥤥�
- *  �롼�ɤ��Ƥ������Ȥ�ɬ�פǤ��롥
+ *  このファイルをインクルードする前に，t_stddef.h と itron.h をインク
+ *  ルードしておくことが必要である．
  */
 
 #ifndef _T_SYSLOG_H_
 #define _T_SYSLOG_H_
 
 /*
- *  ��������μ��̤����
+ *  ログ情報の種別の定義
  *
- *  LOG_TYPE_CYC��LOG_TYPE_ASSERT �ʳ��ϡ��ǥХå��󥰥��󥿥ե�������
- *  �ͤȹ��פ��Ƥ��롥
+ *  LOG_TYPE_CYC，LOG_TYPE_ASSERT 以外は，デバッギングインタフェース仕
+ *  様と合致している．
  */
-#define LOG_TYPE_INH		0x01u	/* ����ߥϥ�ɥ� */
-#define LOG_TYPE_ISR		0x02u	/* ����ߥ����ӥ��롼���� */
-#define LOG_TYPE_CYC		0x03u	/* �����ϥ�ɥ� */
-#define LOG_TYPE_EXC		0x04u	/* CPU�㳰�ϥ�ɥ� */
-#define LOG_TYPE_TEX		0x05u	/* �������㳰�����롼���� */
-#define LOG_TYPE_TSKSTAT	0x06u	/* �����������Ѳ� */
-#define LOG_TYPE_DSP		0x07u	/* �ǥ����ѥå��� */
-#define LOG_TYPE_SVC		0x08u	/* �����ӥ������� */
-#define LOG_TYPE_COMMENT	0x09u	/* ������ */
-#define LOG_TYPE_ASSERT		0x0au	/* �����������μ��� */
+#define LOG_TYPE_INH		0x01u	/* 割込みハンドラ */
+#define LOG_TYPE_ISR		0x02u	/* 割込みサービスルーチン */
+#define LOG_TYPE_CYC		0x03u	/* 周期ハンドラ */
+#define LOG_TYPE_EXC		0x04u	/* CPU例外ハンドラ */
+#define LOG_TYPE_TEX		0x05u	/* タスク例外処理ルーチン */
+#define LOG_TYPE_TSKSTAT	0x06u	/* タスク状態変化 */
+#define LOG_TYPE_DSP		0x07u	/* ディスパッチャ */
+#define LOG_TYPE_SVC		0x08u	/* サービスコール */
+#define LOG_TYPE_COMMENT	0x09u	/* コメント */
+#define LOG_TYPE_ASSERT		0x0au	/* アサーションの失敗 */
 
-#define LOG_ENTER		0x00u	/* ���������� */
-#define LOG_LEAVE		0x80u	/* �и�����λ */
+#define LOG_ENTER		0x00u	/* 入口／開始 */
+#define LOG_LEAVE		0x80u	/* 出口／終了 */
 
 /*
- *  ��������ν����٤����
+ *  ログ情報の重要度の定義
  */
-#define LOG_EMERG	0u		/* ����åȥ�������ͤ��륨�顼 */
+#define LOG_EMERG	0u		/* シャットダウンに値するエラー */
 #define LOG_ALERT	1u
 #define LOG_CRIT	2u
-#define LOG_ERROR	3u		/* �����ƥ२�顼 */
-#define LOG_WARNING	4u		/* �ٹ��å����� */
+#define LOG_ERROR	3u		/* システムエラー */
+#define LOG_WARNING	4u		/* 警告メッセージ */
 #define LOG_NOTICE	5u
 #define LOG_INFO	6u
-#define LOG_DEBUG	7u		/* �ǥХå��ѥ�å����� */
+#define LOG_DEBUG	7u		/* デバッグ用メッセージ */
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ��������Υǡ�����¤
+ *  ログ情報のデータ構造
  */
 
 #define TMAX_LOGINFO	6
 
 typedef struct {
-		UINT	logtype;		/* ��������μ��� */
-		SYSTIM	logtim;			/* �������� */
-		VP_INT	loginfo[TMAX_LOGINFO];	/* ����¾�Υ������� */
+		UINT	logtype;		/* ログ情報の種別 */
+		SYSTIM	logtim;			/* ログ時刻 */
+		VP_INT	loginfo[TMAX_LOGINFO];	/* その他のログ情報 */
 	} SYSLOG;
 
 /*
- *  ��������ν����٤Υӥåȥޥåפ��뤿��Υޥ���
+ *  ログ情報の重要度のビットマップを作るためのマクロ
  */
 #define LOG_MASK(prio)	(1u << (prio))
 #define LOG_UPTO(prio)	((1u << ((prio) + 1)) - 1)
@@ -121,22 +121,22 @@ typedef struct {
 #ifndef OMIT_SYSLOG
 
 /*
- *  ��������ν���
+ *  ログ情報の出力
  */
 extern ER	vwri_log(UINT prio, SYSLOG *p_log) throw();
 
 /*
- *  �����Хåե�����Υ���������ɽФ�
+ *  ログバッファからのログ情報の読出し
  */
 extern ER_UINT	vrea_log(SYSLOG *p_log) throw();
 
 /* 
- *  ���Ϥ��٤���������ν����٤�����
+ *  出力すべきログ情報の重要度の設定
  */
 extern ER	vmsk_log(UINT logmask, UINT lowmask) throw();
 
 /*
- *  �����������Ϥ��뤿��Υ饤�֥��ؿ�
+ *  ログ情報を出力するためのライブラリ関数
  */
 
 Inline ER
@@ -243,11 +243,11 @@ _syslog_6(UINT prio, UINT type, VP_INT arg1, VP_INT arg2, VP_INT arg3,
 #endif /* OMIT_SYSLOG */
 
 /*
- *  ��������ʥ����ȡˤ���Ϥ��뤿��Υޥ���
+ *  ログ情報（コメント）を出力するためのマクロ
  *
- *  format ����Ӹ�³�ΰ����������������å������򡤽����� prio ��
- *  ��������Ȥ��ƽ��Ϥ��뤿��Υޥ�����arg1��argn �� VP_INT���˥���
- *  ���Ȥ��뤿�ᡤVP_INT���˷��Ѵ��Ǥ���Ǥ�դη��Ǥ褤��
+ *  format および後続の引数から作成したメッセージを，重大度 prio で
+ *  ログ情報として出力するためのマクロ．arg1〜argn は VP_INT型にキャ
+ *  ストするため，VP_INT型に型変換できる任意の型でよい．
  */
 
 #define	syslog_0(prio, format) \
@@ -276,12 +276,12 @@ _syslog_6(UINT prio, UINT type, VP_INT arg1, VP_INT arg2, VP_INT arg3,
 					(VP_INT)(arg4), (VP_INT)(arg5))
 
 /*
- *  ��������ʥ����ȡˤ���Ϥ��뤿��Υ饤�֥��ؿ���vasyslog.c��
+ *  ログ情報（コメント）を出力するためのライブラリ関数（vasyslog.c）
  */
 extern ER	syslog(UINT prio, const char *format, ...) throw();
 
 /* 
- *  ��������Υե����ޥåȽ��ϡ�log_output.c��
+ *  ログ情報のフォーマット出力（log_output.c）
  */
 extern void	syslog_printf(const char *format, VP_INT *args,
 						void (*putc)(char)) throw();

@@ -7,7 +7,7 @@ Dim ccs
 
 Const ForReading = 1, ForWriting = 2, ForAppending = 3
 
-msgbox "TOPPERS/JSP ¤ò¥Ó¥ë¥É¤¹¤ë¤Î¤ËÉ¬Í×¤Ê¥Õ¥¡¥¤¥ë¤òºîÀ®¤·¤Ş¤¹¡¥"
+msgbox "TOPPERS/JSP ã‚’ãƒ“ãƒ«ãƒ‰ã™ã‚‹ã®ã«å¿…è¦ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã—ã¾ã™ï¼"
 
 Set fs = CreateObject("Scripting.FileSystemObject")
 fs.copyfile "..\..\sample\sample1.c", ".\"
@@ -37,5 +37,5 @@ Ws.run "cmd /c" & cmd, 0, true
 cmd = "..\..\cfg\cfg.exe -s sample1_i.cfg  -c -v -lj -obj --ZERO ""x y[1]"""
 Ws.run cmd, 0, true
 
-msgbox "Àµ¾ï¤Ë½ªÎ»¤·¤Ş¤·¤¿"
+msgbox "æ­£å¸¸ã«çµ‚äº†ã—ã¾ã—ãŸ"
 

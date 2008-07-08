@@ -6,37 +6,37 @@
  *  Copyright (C) 2000-2005 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  */
 
 /*
- *  ���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�Xstormy16�ѡ�
+ *  シリアルI/Oデバイス（SIO）ドライバ（Xstormy16用）
  */
 
 #include <kernel.h>
@@ -45,17 +45,17 @@
 #include <cpu_sfrs.h>
 
 /*
- *  ��Ʊ�������Ǥ�TxReady�Υ����ॢ����
+ *  非同期送信でのTxReadyのタイムアウト
  */
 #define TXREADY_TIMEOUT 400
 
 /*
- *  SIOPCB*�����å��Τ���Υޥ��å���
+ *  SIOPCB*チェックのためのマジック値
  */
 #define MAGIC_SIOPCB 0xabcd
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 static SIOPCB siopcb_table[TNUM_PORT] = {
     { MAGIC_SIOPCB, __U0CR, 0x1400 },
@@ -63,7 +63,7 @@ static SIOPCB siopcb_table[TNUM_PORT] = {
 } ;
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void sio_initialize(void)
 {
@@ -71,27 +71,27 @@ void sio_initialize(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *sio_opn_por(ID siopid, VP_INT exinf)
 {
     SIOPCB* siopcb ;
     UH uhBase ;
                                 /*
-                                 *  �����ץ�����ݡ��Ȥ��Υ����å�
+                                 *  オープン出来るポートかのチェック
                                  */
     if ( siopid < 1 || siopid > TNUM_PORT ) return NULL ;
     siopcb = &siopcb_table[siopid-1] ;
     if ( siopcb->bNotExist ) return NULL ;
                                 /*
-                                 *  ���˥����ץ�Ѥߤξ��
+                                 *  既にオープン済みの場合
                                  */
     if ( siopcb->bOpened ) {
         siopcb->vpiExinf = exinf ;
         return siopcb ;
     }
                                 /*
-                                 *  SIO�ν������¸�ߤΥ����å�
+                                 *  SIOの初期化と存在のチェック
                                  */
     uhBase = siopcb->uhBase ;
     __SFR(uhBase) = __UxCR_RUN|__UxCR_TXEMPTY ;
@@ -102,7 +102,7 @@ SIOPCB *sio_opn_por(ID siopid, VP_INT exinf)
         return NULL ;
     }
                                 /*
-                                 *  �����ơ��֥�ν����
+                                 *  管理テーブルの初期化
                                  */
     siopcb->vpiExinf = exinf ;
     siopcb->bOpened = TRUE ;
@@ -110,7 +110,7 @@ SIOPCB *sio_opn_por(ID siopid, VP_INT exinf)
     siopcb->bRxIe = FALSE ;
     siopcb->bLastIsCr = FALSE ;
                                 /*
-                                 *  �����ߥϥ�ɥ����Ͽ�ȵ���
+                                 *  割り込みハンドラの登録と許可
                                  */
     define_inh( INHNO_SIO, sio_handler ) ;
     __UNLOCK_EXCP() ;
@@ -120,52 +120,52 @@ SIOPCB *sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void sio_cls_por(SIOPCB *siopcb)
 {
                                 /*
-                                 *  �������������ݡ��Ȥ��Υ����å�
+                                 *  クローズ出来るポートかのチェック
                                  */
     if ( !siopcb || siopcb->uhMagic != MAGIC_SIOPCB ||
         siopcb->bNotExist || !siopcb->bOpened ) return ;
                                 /*
-                                 *  �����ơ��֥���ѹ�
+                                 *  管理テーブルの変更
                                  */
     siopcb->bOpened = FALSE ;
                                 /*
-                                 *  �����ߤζػ�
+                                 *  割り込みの禁止
                                  */
     __UNLOCK_EXCP() ;
     __SFRW(__EXCPL) &= ~siopcb->uhExcpMask ;
     __LOCK_EXCP() ;
                                 /*
-                                 *  SIO�����
+                                 *  SIOの停止
                                  */
     __SFR(siopcb->uhBase) = 0 ;
 }
 
 /*
- *  SIO�γ���ߥϥ�ɥ�
+ *  SIOの割込みハンドラ
  */
 void sio_handler(void)
 {
                                 /*
-                                 *  ���ƤΥݡ��ȤˤĤ��ƥ����å�
+                                 *  全てのポートについてチェック
                                  */
     ID portid ;
     for ( portid = 0 ; portid < TNUM_PORT ; portid++ ) {
         SIOPCB *siopcb = &siopcb_table[portid] ;
         UH uhBase = siopcb->uhBase ;
                                 /*
-                                 *  ������λ�����ߤ�
+                                 *  送信完了割り込みか
                                  */
         if ( ( __SFR(uhBase) & ( __UxCR_TXIE | __UxCR_TXEMPTY ) ) ==
             ( __UxCR_TXIE | __UxCR_TXEMPTY ) ) {
             sio_ierdy_snd( siopcb->vpiExinf ) ;
         }
                                 /*
-                                 *  ���������ߤ�
+                                 *  受信割り込みか
                                  */
         if ( ( __SFR(uhBase) & ( __UxCR_RXIE | __UxCR_RXREADY ) ) ==
             ( __UxCR_RXIE | __UxCR_RXREADY ) ) {
@@ -175,71 +175,71 @@ void sio_handler(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL sio_snd_chr(SIOPCB *siopcb, char c)
 {
     UH uhBase ;
                                 /*
-                                 *  ͭ���ʥݡ��Ȥ��ɤ����Υ����å�
+                                 *  有効なポートかどうかのチェック
                                  */
     if ( !siopcb || siopcb->uhMagic != MAGIC_SIOPCB ||
         siopcb->bNotExist || !siopcb->bOpened ) return FALSE ;
     uhBase = siopcb->uhBase ;
                                 /*
-                                 *  ������ǽ���ɤ����Υ����å�
+                                 *  送信可能かどうかのチェック
                                  */
     if ( ! ( __SFR(uhBase) & __UxCR_TXEMPTY ) ) return FALSE ;
                                 /*
-                                 *  �����ǡ����ν񤭹���
+                                 *  送信データの書き込み
                                  */
     __SFRW(uhBase+4) = __UxTX_STOPBIT | c ;
     return TRUE ;
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT sio_rcv_chr(SIOPCB *siopcb)
 {
     UH uhBase ;
                                 /*
-                                 *  ͭ���ʥݡ��Ȥ��ɤ����Υ����å�
+                                 *  有効なポートかどうかのチェック
                                  */
     if ( !siopcb || siopcb->uhMagic != MAGIC_SIOPCB ||
         siopcb->bNotExist || !siopcb->bOpened ) return -1 ;
     uhBase = siopcb->uhBase ;
                                 /*
-                                 *  �����ǡ���̵ͭ�Υ����å�
+                                 *  受信データ有無のチェック
                                  */
     if ( ! ( __SFR(uhBase) & __UxCR_RXREADY ) ) return -1 ;
                                 /*
-                                 *  �����ǡ����μ��Ф�
+                                 *  受信データの取り出し
                                  */
     return __SFRW(uhBase+2) & 0xff ;
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void sio_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 {
     UH uhBase ;
                                 /*
-                                 *  ͭ���ʥݡ��Ȥ��ɤ����Υ����å�
+                                 *  有効なポートかどうかのチェック
                                  */
     if ( !siopcb || siopcb->uhMagic != MAGIC_SIOPCB ||
         siopcb->bNotExist || !siopcb->bOpened ) return ;
     uhBase = siopcb->uhBase ;
                                 /*
-                                 *  ���������ߤε���
+                                 *  送信割り込みの許可
                                  */
     if ( cbrtn == SIO_ERDY_SND ) {
         __SFR(uhBase) |= __UxCR_TXIE ;
         siopcb->bTxIe = TRUE ;
     }
                                 /*
-                                 *  ���������ߤε���
+                                 *  受信割り込みの許可
                                  */
     if ( cbrtn == SIO_ERDY_RCV ) {
         __SFR(uhBase) |= __UxCR_RXIE ;
@@ -248,26 +248,26 @@ void sio_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void sio_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 {
     UH uhBase ;
                                 /*
-                                 *  ͭ���ʥݡ��Ȥ��ɤ����Υ����å�
+                                 *  有効なポートかどうかのチェック
                                  */
     if ( !siopcb || siopcb->uhMagic != MAGIC_SIOPCB ||
         siopcb->bNotExist || !siopcb->bOpened ) return ;
     uhBase = siopcb->uhBase ;
                                 /*
-                                 *  ���������ߤζػ�
+                                 *  送信割り込みの禁止
                                  */
     if ( cbrtn == SIO_ERDY_SND ) {
         __SFR(uhBase) &= ~__UxCR_TXIE ;
         siopcb->bTxIe = FALSE ;
     }
                                 /*
-                                 *  ���������ߤζػ�
+                                 *  受信割り込みの禁止
                                  */
     if ( cbrtn == SIO_ERDY_RCV ) {
         __SFR(uhBase) &= ~__UxCR_RXIE ;
@@ -276,7 +276,7 @@ void sio_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  �ǥե���Ȥ�������ǽ������Хå�
+ *  デフォルトの送信可能コールバック
  */
 void sio_ierdy_snd(VP_INT exinf) __attribute__((__weak__)) ;
 void sio_ierdy_snd(VP_INT exinf)
@@ -284,7 +284,7 @@ void sio_ierdy_snd(VP_INT exinf)
 }
 
 /*
- *  �ǥե���Ȥμ������Υ�����Хå�
+ *  デフォルトの受信通知コールバック
  */
 void sio_ierdy_rcv(VP_INT exinf) __attribute__((__weak__)) ;
 void sio_ierdy_rcv(VP_INT exinf)
@@ -292,7 +292,7 @@ void sio_ierdy_rcv(VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ���Ʊ��ʸ������
+ *  シリアルI/Oポートへの非同期文字出力
  */
 void sio_asnd_chr( INT c )
 {
@@ -300,7 +300,7 @@ void sio_asnd_chr( INT c )
     UH uhBase ;
     int i ;
                                 /*
-                                 *  CPU���å����֤ˤ���
+                                 *  CPUロック状態にする
                                  */
     BOOL bLocked ;
     if ( sns_loc() ) bLocked = TRUE ;
@@ -310,13 +310,13 @@ void sio_asnd_chr( INT c )
         else loc_cpu() ;
     }
                                 /*
-                                 *  ��Ʊ���ѥݡ��Ȥ򳫤�
+                                 *  非同期用ポートを開く
                                  */
     if ( ( siopcb = sio_opn_por( LOGTASK_PORTID,
         siopcb_table[LOGTASK_PORTID-1].vpiExinf ) ) != NULL ) {
         uhBase = siopcb->uhBase ;
                                 /*
-                                 *  LF�ʤ�ޤ�CR������
+                                 *  LFならまずCRを送出
                                  */
         if ( c == '\n' ) {
             for ( i = 0 ; i < TXREADY_TIMEOUT ; i++ ) {
@@ -327,7 +327,7 @@ void sio_asnd_chr( INT c )
             }
         }
                                 /*
-                                 *  �ǡ�������
+                                 *  データ送出
                                  */
         for ( i = 0 ; i < TXREADY_TIMEOUT ; i++ ) {
             if ( __SFR(uhBase) & __UxCR_TXEMPTY ) break ;
@@ -337,7 +337,7 @@ void sio_asnd_chr( INT c )
         }
     }
                                 /*
-                                 *  CPU���å��򸵤��᤹
+                                 *  CPUロックを元に戻す
                                  */
     if ( !bLocked ) {
         if ( sns_ctx() ) iunl_cpu() ;
@@ -346,7 +346,7 @@ void sio_asnd_chr( INT c )
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ������Ʊ��ʸ������
+ *  シリアルI/Oポートからの非同期文字入力
  */
 INT sio_arcv_chr( void )
 {
@@ -354,21 +354,21 @@ INT sio_arcv_chr( void )
     UH uhBase ;
     INT c = -1 ;
                                 /*
-                                 *  ����������ƥ����Ȥ���Τ߻��Ѳ�
+                                 *  タスクコンテキストからのみ使用可
                                  */
     if ( sns_ctx() || sns_loc() || sns_dsp() ) return -1 ;
                                 /*
-                                 *  CPU���å����֤ˤ���
+                                 *  CPUロック状態にする
                                  */
     loc_cpu() ;
                                 /*
-                                 *  ��Ʊ���ѥݡ��Ȥ򳫤�
+                                 *  非同期用ポートを開く
                                  */
     if ( ( siopcb = sio_opn_por( LOGTASK_PORTID,
         siopcb_table[LOGTASK_PORTID-1].vpiExinf ) ) != NULL ) {
         uhBase = siopcb->uhBase ;
                                 /*
-                                 *  �����Ԥ�
+                                 *  受信待ち
                                  */
         while(1) {
             if ( __SFR(uhBase) & __UxCR_RXREADY ) {
@@ -389,7 +389,7 @@ INT sio_arcv_chr( void )
         }
     }
                                 /*
-                                 *  CPU���å�����
+                                 *  CPUロックを解除
                                  */
     unl_cpu() ;
     return c ;

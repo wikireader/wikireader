@@ -8,38 +8,38 @@
  * 
  *  Copyright (C) 2005-2007 by Y.D.K.Co.,LTD Technologies company
  *
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: sys_config.c,v 1.2 2007/05/21 01:33:50 honda Exp $
  */
 
 /*
- *    ¥¿¡¼¥²¥Ã¥È¥·¥¹¥Æ¥à°ÍÂ¸¥â¥¸¥å¡¼¥ë
+ *    ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ ä¾å­˜ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
  */
 
 #include "jsp_kernel.h"
@@ -77,15 +77,15 @@ static void	cpuSetupCS7(void);
 
 
 /*
- * ³ä¹ş¤ß¥Ï¥ó¥É¥éÅĞÏ¿ÍÑ¥Æ¡¼¥Ö¥ë
+ * å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ç™»éŒ²ç”¨ãƒ†ãƒ¼ãƒ–ãƒ«
  */
 FP   int_table[MAX_INT_NUM];
 UW   int_mask_table[MAX_INT_NUM];
 
 /*
- * IRQ¤ÈINT ID¤ÎÂĞ±ş¥Æ¡¼¥Ö¥ë¡¢IRQ¤ËÂĞ±ş¤¹¤ëINT ID¤òÀßÄê¤¹¤ë¡£
- * ¤³¤Î¥Æ¡¼¥Ö¥ë¤Î¥Ç¡¼¥¿¤«¤é¡¢IntConfigRegistar¤òÀßÄê¤¹¤ë¡£
- * Ì¤»ÈÍÑ¤ÎIRQ¤Ë¤ÏINT_ID_NONE¤ò¥»¥Ã¥È¤¹¤ë
+ * IRQã¨INT IDã®å¯¾å¿œãƒ†ãƒ¼ãƒ–ãƒ«ã€IRQã«å¯¾å¿œã™ã‚‹INT IDã‚’è¨­å®šã™ã‚‹ã€‚
+ * ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã€IntConfigRegistarã‚’è¨­å®šã™ã‚‹ã€‚
+ * æœªä½¿ç”¨ã®IRQã«ã¯INT_ID_NONEã‚’ã‚»ãƒƒãƒˆã™ã‚‹
  */
 const	UW	int_id_table[] = {
 	INT_ID_NONE,			/* IRQ0 INT ID  : unuse							*/
@@ -155,73 +155,73 @@ const	UW	int_id_table[] = {
 };
 
 
-/*--- GPIO ÀßÄê¾ğÊó ---*/
+/*--- GPIO è¨­å®šæƒ…å ± ---*/
 /*
  **** Control Registers ****
  */
-/* Control Registers #1 (GPIO[0]¡Á[31]) */
+/* Control Registers #1 (GPIO[0]ã€œ[31]) */
 const	UW	BbusGpio_ContSts1 = (BBUS_GPIO_CONT_STS1_GPIO2 | BBUS_GPIO_CONT_STS1_GPIO16);
 
-/* Control Registers #2 (GPIO[32]¡Á[63]) */
+/* Control Registers #2 (GPIO[32]ã€œ[63]) */
 const	UW	BbusGpio_ContSts2 = (BBUS_GPIO_CONT_STS2_GPIO36 | BBUS_GPIO_CONT_STS2_GPIO37 
                                             | BBUS_GPIO_CONT_STS2_GPIO38 | BBUS_GPIO_CONT_STS2_GPIO39);
 	
-/* Control Registers #3 (GPIO[64]¡Á[72]) */
+/* Control Registers #3 (GPIO[64]ã€œ[72]) */
 const	UW	BbusGpio_ContSts3 = 0;
 
 /*
  **** Configration Registers ****
  */
 
-/* Configration Registers #1 (GPIO[0]¡Á[7]) */
+/* Configration Registers #1 (GPIO[0]ã€œ[7]) */
 const	UW	BbusGpio_Config1 = (BBUS_GPIO_CONFIG1_GPIO0 | BBUS_GPIO_CONFIG1_GPIO1
                               | BBUS_GPIO_CONFIG1_GPIO2 | BBUS_GPIO_CONFIG1_GPIO3
                               | BBUS_GPIO_CONFIG1_GPIO4 | BBUS_GPIO_CONFIG1_GPIO5
                               | BBUS_GPIO_CONFIG1_GPIO6 | BBUS_GPIO_CONFIG1_GPIO7);
 
-/* Configration Registers #2 (GPIO[8]¡Á[15]) */
+/* Configration Registers #2 (GPIO[8]ã€œ[15]) */
 const	UW	BbusGpio_Config2 = (BBUS_GPIO_CONFIG2_GPIO8 | BBUS_GPIO_CONFIG2_GPIO9
                               | BBUS_GPIO_CONFIG2_GPIO10 | BBUS_GPIO_CONFIG2_GPIO11
                               | BBUS_GPIO_CONFIG2_GPIO12 | BBUS_GPIO_CONFIG2_GPIO13
                               | BBUS_GPIO_CONFIG2_GPIO14 | BBUS_GPIO_CONFIG2_GPIO15);
 
-/* Configration Registers #3 (GPIO[16]¡Á[23]) */
+/* Configration Registers #3 (GPIO[16]ã€œ[23]) */
 const	UW	BbusGpio_Config3 = (BBUS_GPIO_CONFIG3_GPIO16 | BBUS_GPIO_CONFIG3_GPIO17
                               | BBUS_GPIO_CONFIG3_GPIO18 | BBUS_GPIO_CONFIG3_GPIO19
                               | BBUS_GPIO_CONFIG3_GPIO20 | BBUS_GPIO_CONFIG3_GPIO21
                               | BBUS_GPIO_CONFIG3_GPIO22 | BBUS_GPIO_CONFIG3_GPIO23);
 
-/* Configration Registers #4 (GPIO[24]¡Á[31]) */
+/* Configration Registers #4 (GPIO[24]ã€œ[31]) */
 const	UW	BbusGpio_Config4 = (BBUS_GPIO_CONFIG4_GPIO24 | BBUS_GPIO_CONFIG4_GPIO25
                               | BBUS_GPIO_CONFIG4_GPIO26 | BBUS_GPIO_CONFIG4_GPIO27
                               | BBUS_GPIO_CONFIG4_GPIO28 | BBUS_GPIO_CONFIG4_GPIO29
                               | BBUS_GPIO_CONFIG4_GPIO30 | BBUS_GPIO_CONFIG4_GPIO31);
 
-/* Configration Registers #5 (GPIO[32]¡Á[39]) */
+/* Configration Registers #5 (GPIO[32]ã€œ[39]) */
 const	UW	BbusGpio_Config5 = (BBUS_GPIO_CONFIG5_GPIO32 | BBUS_GPIO_CONFIG5_GPIO33
                               | BBUS_GPIO_CONFIG5_GPIO34 | BBUS_GPIO_CONFIG5_GPIO35
                               | BBUS_GPIO_CONFIG5_GPIO36 | BBUS_GPIO_CONFIG5_GPIO37
                               | BBUS_GPIO_CONFIG5_GPIO38 | BBUS_GPIO_CONFIG5_GPIO39);
 
-/* Configration Registers #6 (GPIO[40]¡Á[47]) */
+/* Configration Registers #6 (GPIO[40]ã€œ[47]) */
 const	UW	BbusGpio_Config6 = (BBUS_GPIO_CONFIG6_GPIO40 | BBUS_GPIO_CONFIG6_GPIO41
                               | BBUS_GPIO_CONFIG6_GPIO42 | BBUS_GPIO_CONFIG6_GPIO43
                               | BBUS_GPIO_CONFIG6_GPIO44 | BBUS_GPIO_CONFIG6_GPIO45
                               | BBUS_GPIO_CONFIG6_GPIO46 | BBUS_GPIO_CONFIG6_GPIO47);
 
-/* Configration Registers #7 (GPIO[48]¡Á[55]) */
+/* Configration Registers #7 (GPIO[48]ã€œ[55]) */
 const	UW	BbusGpio_Config7 = (BBUS_GPIO_CONFIG7_GPIO48 | BBUS_GPIO_CONFIG7_GPIO49
                               | BBUS_GPIO_CONFIG7_GPIO50 | BBUS_GPIO_CONFIG7_GPIO51
                               | BBUS_GPIO_CONFIG7_GPIO52 | BBUS_GPIO_CONFIG7_GPIO53
                               | BBUS_GPIO_CONFIG7_GPIO54 | BBUS_GPIO_CONFIG7_GPIO55);
 
-/* Configration Registers #8 (GPIO[56]¡Á[63]) */
+/* Configration Registers #8 (GPIO[56]ã€œ[63]) */
 const	UW	BbusGpio_Config8 = (BBUS_GPIO_CONFIG8_GPIO56 | BBUS_GPIO_CONFIG8_GPIO57
                               | BBUS_GPIO_CONFIG8_GPIO58 | BBUS_GPIO_CONFIG8_GPIO59
                               | BBUS_GPIO_CONFIG8_GPIO60 | BBUS_GPIO_CONFIG8_GPIO61
                               | BBUS_GPIO_CONFIG8_GPIO62 | BBUS_GPIO_CONFIG8_GPIO63);
 
-/* Configration Registers #9 (GPIO[64]¡Á[71]) */
+/* Configration Registers #9 (GPIO[64]ã€œ[71]) */
 const	UW	BbusGpio_Config9 = (BBUS_GPIO_CONFIG9_GPIO64 | BBUS_GPIO_CONFIG9_GPIO65
                               | BBUS_GPIO_CONFIG9_GPIO66 | BBUS_GPIO_CONFIG9_GPIO67
                               | BBUS_GPIO_CONFIG9_GPIO68 | BBUS_GPIO_CONFIG9_GPIO69
@@ -232,29 +232,29 @@ const	UW	BbusGpio_Config10 = (BBUS_GPIO_CONFIG10_GPIO72);
 
 
 /*
- *  ¥¿¡¼¥²¥Ã¥È¥·¥¹¥Æ¥à°ÍÂ¸¤Î½é´ü²½
+ *  ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ ä¾å­˜ã®åˆæœŸåŒ–
  */
 void
 sys_initialize()
 {
     /*
-     *  ARM¤Î¥Ù¥¯¥¿¥Æ¡¼¥Ö¥ë¤Ø³ä¹ş¤ß¥Ï¥ó¥É¥é¤òÅĞÏ¿
+     *  ARMã®ãƒ™ã‚¯ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã¸å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ã‚’ç™»éŒ²
      */
     arm_install_handler(IRQ_Number,IRQ_Handler);
   
     /*
-     *  sys_putc ¤¬²ÄÇ½¤Ë¤Ê¤ë¤è¤¦¤ËUART¤ò½é´ü²½
+     *  sys_putc ãŒå¯èƒ½ã«ãªã‚‹ã‚ˆã†ã«UARTã‚’åˆæœŸåŒ–
      */
     uart_init(LOGTASK_PORTID);
     /*
-     * BBus¤Î³ä¹ş¤ßµö²Ä
+     * BBusã®å‰²è¾¼ã¿è¨±å¯
      */
      sil_wrw_mem((VP)BBBIE_REG, sil_rew_mem((VP)BBBIE_REG) | BBBI_GLBL);
 }
 
 
 /*
- *  ¥¿¡¼¥²¥Ã¥È¥·¥¹¥Æ¥à¤Î½ªÎ»
+ *  ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ ã®çµ‚äº†
  */
 void
 sys_exit(void)
@@ -265,7 +265,7 @@ sys_exit(void)
 
 
 /*
- *  ¥¿¡¼¥²¥Ã¥È¥·¥¹¥Æ¥à¤ÎÊ¸»ú½ĞÎÏ
+ *  ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ ã®æ–‡å­—å‡ºåŠ›
  */
 void
 sys_putc(char c)
@@ -278,9 +278,9 @@ sys_putc(char c)
 
 
 /*
- *  ³ä¹ş¤ß¥Ï¥ó¥É¥é¤ÎÀßÄê
+ *  å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ã®è¨­å®š
  *
- *  ³ä¹ş¤ßÈÖ¹æ inhno ¤Î³ä¹ş¤ß¥Ï¥ó¥É¥é¤Îµ¯Æ°ÈÖÃÏ¤ò inthdr ¤ËÀßÄê¤¹¤ë¡¥
+ *  å‰²è¾¼ã¿ç•ªå· inhno ã®å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ã®èµ·å‹•ç•ªåœ°ã‚’ inthdr ã«è¨­å®šã™ã‚‹ï¼
  */
 void
 define_inh(INHNO inhno, FP inthdr)
@@ -293,11 +293,11 @@ define_inh(INHNO inhno, FP inthdr)
     if(INT_ID_BBUS_F > inhno)
     {
 		/*
-		 * BBusBridge·ĞÍ³¤Ç¤Ï¤Ê¤¤³ä¹ş¤ß¤ÎÅĞÏ¿
+		 * BBusBridgeçµŒç”±ã§ã¯ãªã„å‰²è¾¼ã¿ã®ç™»éŒ²
 		 */
-	    sil_wrw_mem((VP)(IVARV_REG+inhno*4),(VW)inthdr);     /* Interruput Vector Reg ¤ÎÀßÄê */
+	    sil_wrw_mem((VP)(IVARV_REG+inhno*4),(VW)inthdr);     /* Interruput Vector Reg ã®è¨­å®š */
 	    
-	    /* IntConfigReg¤ÎÀßÄê */
+	    /* IntConfigRegã®è¨­å®š */
 	    reg = sil_rew_mem((VP)((INT_CONFIG_REG+inhno)&0xfffffffc));
 	    reg &= ~(0xff000000 >> (inhno%4)*8);
 	    reg |= ((int_id_table[inhno] | INT_CFG_BIT_IT)<<24) >> ((inhno%4)*8);
@@ -307,7 +307,7 @@ define_inh(INHNO inhno, FP inthdr)
 
 
 /*
- * ³ä¹ş¤ß¥Ï¥ó¥É¥éµ¯Æ°»ş¤Ë³ä¹ş¤ß¥³¥ó¥È¥í¡¼¥é¡¼¤Ë¥»¥Ã¥È¤¹¤ë¥Ş¥¹¥¯ÃÍ¤òÀßÄê¡¥
+ * å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©èµ·å‹•æ™‚ã«å‰²è¾¼ã¿ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«ã‚»ãƒƒãƒˆã™ã‚‹ãƒã‚¹ã‚¯å€¤ã‚’è¨­å®šï¼
  */
 void
 define_inh_mask(INHNO inhno, UW mask)
@@ -318,7 +318,7 @@ define_inh_mask(INHNO inhno, UW mask)
 
 
 /*
- *  Ì¤ÄêµÁ¤Î³ä¹ş¤ß¤¬Æş¤Ã¤¿¾ì¹ç¤Î½èÍı
+ *  æœªå®šç¾©ã®å‰²è¾¼ã¿ãŒå…¥ã£ãŸå ´åˆã®å‡¦ç†
  */
 void
 undef_interrupt(){
@@ -327,7 +327,7 @@ undef_interrupt(){
 }
 
 /*
- *  BBus³ä¹ş¤ß¥µ¡¼¥Ó¥¹¥ë¡¼¥Á¥ó
+ *  BBuså‰²è¾¼ã¿ã‚µãƒ¼ãƒ“ã‚¹ãƒ«ãƒ¼ãƒãƒ³
  */
 void
 BBus_isr()
@@ -354,7 +354,7 @@ BBus_isr()
 }
 
 /*
- *  CS¡¢GPIOÀßÄê
+ *  CSã€GPIOè¨­å®š
  */
 void cpu_CsGpioInit(void)
 {
@@ -364,7 +364,7 @@ void cpu_CsGpioInit(void)
 		*(UW*)(BBUS_GPIO_CONT1_REG) |= 0x10;
 
 	
-    /* ¥ê¥¹¥¿¡¼¥È¥Õ¥é¥°¤Î¼èÆÀ¡õ¥»¥Ã¥È */
+    /* ãƒªã‚¹ã‚¿ãƒ¼ãƒˆãƒ•ãƒ©ã‚°ã®å–å¾—ï¼†ã‚»ãƒƒãƒˆ */
     software_restart = ((~AHB_ABT_CFG_REG_restart) & sil_rew_mem((VP)AHB_ABT_CFG_REG));
     														/* Restart Flag get		*/
 	
@@ -372,7 +372,7 @@ void cpu_CsGpioInit(void)
 															/* Restart Flag set	*/
 
 	
-    /* ¥Ç¥Ğ¥Ã¥°¥Õ¥é¥°¤Î¼èÆÀ */
+    /* ãƒ‡ãƒãƒƒã‚°ãƒ•ãƒ©ã‚°ã®å–å¾— */
     debugger = ((~AHB_ABT_CFG_REG_debug) & sil_rew_mem((VP)AHB_ABT_CFG_REG));	/* Debug Flag get */
  
     if (!software_restart)
@@ -413,8 +413,8 @@ void cpu_CsGpioInit(void)
 static void	cpuSetupCS0(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 /*
@@ -423,8 +423,8 @@ static void	cpuSetupCS0(void)
 static void	cpuSetupCS2(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 /*
@@ -433,8 +433,8 @@ static void	cpuSetupCS2(void)
 static void	cpuSetupCS3(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 /*
@@ -443,8 +443,8 @@ static void	cpuSetupCS3(void)
 static void	cpuSetupCS5(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 /*
@@ -453,8 +453,8 @@ static void	cpuSetupCS5(void)
 static void	cpuSetupCS6(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 /*
@@ -463,8 +463,8 @@ static void	cpuSetupCS6(void)
 static void	cpuSetupCS7(void)
 {
 	/*
-	 * ¥¿¡¼¥²¥Ã¥È¤Ë¹ç¤ï¤»¤Æ½é´ü²½½èÍı¤òµ­½Ò¤¹¤ë
-	 * Boot¥í¡¼¥À¡¼¤Ë¤ÆÀßÄêºÑ¤ß¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÎÀßÄê¤ÏÉÔÍ×
+	 * ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«åˆã‚ã›ã¦åˆæœŸåŒ–å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹
+	 * Bootãƒ­ãƒ¼ãƒ€ãƒ¼ã«ã¦è¨­å®šæ¸ˆã¿ã®å ´åˆã€ã“ã“ã§ã®è¨­å®šã¯ä¸è¦
 	 */
 }
 
@@ -478,45 +478,45 @@ static void	cpuSetupGPIO(void)
 	/*
 	 **** Control Registers ****
 	 */
-	/* ³ºÅöpin¤òGPIO½ĞÎÏ¤ËÀßÄê¤·¤¿¾ì¹ç¤Ë¥Ç¥Õ¥©¥ë¥È½ĞÎÏ¤ò»ØÄê¤·¤¿¤¤¾ì¹ç¤Ë°Ê²¼¤òµ­½Ò¤¹¤ë */
+	/* è©²å½“pinã‚’GPIOå‡ºåŠ›ã«è¨­å®šã—ãŸå ´åˆã«ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå‡ºåŠ›ã‚’æŒ‡å®šã—ãŸã„å ´åˆã«ä»¥ä¸‹ã‚’è¨˜è¿°ã™ã‚‹ */
 	
-	/* Control Registers #1 (GPIO[0]¡Á[31]) */
+	/* Control Registers #1 (GPIO[0]ã€œ[31]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONT1_REG , BbusGpio_ContSts1);
 
-	/* Control Registers #2 (GPIO[32]¡Á[63]) */
+	/* Control Registers #2 (GPIO[32]ã€œ[63]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONT2_REG , BbusGpio_ContSts2);
 	
-	/* Control Registers #3 (GPIO[64]¡Á[72]) */
+	/* Control Registers #3 (GPIO[64]ã€œ[72]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONT3_REG , BbusGpio_ContSts3);
 
 	/*
 	 **** Configration Registers ****
 	 */
-	/* Configration Registers #1 (GPIO[0]¡Á[7]) */
+	/* Configration Registers #1 (GPIO[0]ã€œ[7]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG1_REG , BbusGpio_Config1);
 
-	/* Configration Registers #2 (GPIO[8]¡Á[15]) */
+	/* Configration Registers #2 (GPIO[8]ã€œ[15]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG2_REG , BbusGpio_Config2);
 
-	/* Configration Registers #3 (GPIO[16]¡Á[23]) */
+	/* Configration Registers #3 (GPIO[16]ã€œ[23]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG3_REG , BbusGpio_Config3);
 
-	/* Configration Registers #4 (GPIO[24]¡Á[31]) */
+	/* Configration Registers #4 (GPIO[24]ã€œ[31]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG4_REG , BbusGpio_Config4);
 
-	/* Configration Registers #5 (GPIO[32]¡Á[39]) */
+	/* Configration Registers #5 (GPIO[32]ã€œ[39]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG5_REG , BbusGpio_Config5);
 
-	/* Configration Registers #6 (GPIO[40]¡Á[47]) */
+	/* Configration Registers #6 (GPIO[40]ã€œ[47]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG6_REG , BbusGpio_Config6);
 
-	/* Configration Registers #7 (GPIO[48]¡Á[55]) */
+	/* Configration Registers #7 (GPIO[48]ã€œ[55]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG7_REG , BbusGpio_Config7);
 
-	/* Configration Registers #8 (GPIO[56]¡Á[63]) */
+	/* Configration Registers #8 (GPIO[56]ã€œ[63]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG8_REG , BbusGpio_Config8);
 
-	/* Configration Registers #9 (GPIO[64]¡Á[71]) */
+	/* Configration Registers #9 (GPIO[64]ã€œ[71]) */
 	sil_wrw_mem((VP) BBUS_GPIO_CONFIG9_REG , BbusGpio_Config9);
 
 	/* Configration Registers #10 (GPIO[72]) */

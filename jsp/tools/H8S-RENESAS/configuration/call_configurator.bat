@@ -1,28 +1,28 @@
 echo off
-rem �V�X�e���E�R���t�B�M�����[�V�����ƃx�N�^�e�[�u���̎�������
+rem システム・コンフィギュレーションとベクタテーブルの自動生成
 
-rem HEW�ł́A���΃p�X�w��ŊO���c�[�����Ăяo���Ȃ����߁A
-rem �o�b�`�t�@�C�����o�R���āA�R���t�B�M�����[�^���Ăяo���Ă���
+rem HEWでは、相対パス指定で外部ツールを呼び出せないため、
+rem バッチファイルを経由して、コンフィギュレータを呼び出している
 rem
-rem �V�X�e���E�R���t�B�M�����[�V�����E�t�@�C�����v���v���Z�X���ꂽ
-rem ���ʂ̃t�@�C�������A����%1�Ƃ���HEW���炱�̃o�b�`�t�@�C���ɓn�����B
+rem システム・コンフィギュレーション・ファイルがプリプロセスされた
+rem 結果のファイル名が、引数%1としてHEWからこのバッチファイルに渡される。
 
-rem �ȉ��̕����͈ڐA�̍ۂɕύX����K�v������
-rem �V�X�e���ˑ����̃f�B���N�g����
+rem 以下の部分は移植の際に変更する必要がある
+rem システム依存部のディレクトリ名
 rem cfg.exe -s %1 -c -obj -cpu h8 -system xxxxxxxx
 
-rem �x�N�^�e�[�u���̃T�C�Y
+rem ベクタテーブルのサイズ
 rem genvector.pl -s xxx
 
-rem HEW�ł́A�����t�@�C�����Ńp�X�݈̂قȂ�\�[�X�t�@�C�����R���t�B
-rem �M�����[�V����(Debug/Release)�ɂ���āA�r���h�Ώۂ��g�������邱��
-rem ���ł��Ȃ��B
-rem �����������邽�߁Avector.src��debug_vector.src��release_vector.
-rem src�ɃR�s�[���A��x�A�������v���W�F�N�g�ɓo�^���A�R���t�B�M�����[
-rem �V�������ɂ���Ȃ��t�@�C�����r���h�Ώۂ��珜�O����B
-rem kernel_cfg.c�ɂ��Ă����l
+rem HEWでは、同じファイル名でパスのみ異なるソースファイルをコンフィ
+rem ギュレーション(Debug/Release)によって、ビルド対象を使い分けること
+rem ができない。
+rem これを回避するため、vector.srcをdebug_vector.srcとrelease_vector.
+rem srcにコピーし、一度、両方をプロジェクトに登録し、コンフィギュレー
+rem ション毎にいらないファイルをビルド対象から除外する。
+rem kernel_cfg.cについても同様
 
-rem Perl�̌Ăяo���Ɏ��s����ꍇ�̓p�X��ʂ����ƁB
+rem Perlの呼び出しに失敗する場合はパスを通すこと。
 
 echo on
 

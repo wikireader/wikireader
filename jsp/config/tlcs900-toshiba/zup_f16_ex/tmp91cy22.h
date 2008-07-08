@@ -5,56 +5,56 @@
  * 
  *  Copyright (C) 2006 by Witz Corporation, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: tmp91cy22.h,v 1.1 2006/04/10 08:19:25 honda Exp $
  */
 
 /*
- *  �ü쵡ǽ�쥸������Ϣ�������TMP91CY22�ѡ�
+ *  特殊機能レジスタ関連の定義（TMP91CY22用）
  */
 
 #ifndef _TMP91CY22_H_
 #define _TMP91CY22_H_
 
 /*
- *  ������ֹ�����
+ *  割込み番号の定義
  */
-#define		INT_NO_RST_SW0		1	/* �ꥻ�å�/SWI 0 ̿��				*/
-#define		INT_NO_SW1			2	/* SWI 1 ̿��						*/
-#define		INT_NO_UNDEF_SW2	3	/* ̤���̿��¹԰�ȿ/SWI 2 ̿��	*/
-#define		INT_NO_SW3			4	/* SWI 3 ̿��						*/
-#define		INT_NO_SW4			5	/* SWI 4 ̿��						*/
-#define		INT_NO_SW5			6	/* SWI 5 ̿��						*/
-#define		INT_NO_SW6			7	/* SWI 6 ̿��						*/
-#define		INT_NO_SW7			8	/* SWI 7 ̿��						*/
+#define		INT_NO_RST_SW0		1	/* リセット/SWI 0 命令				*/
+#define		INT_NO_SW1			2	/* SWI 1 命令						*/
+#define		INT_NO_UNDEF_SW2	3	/* 未定義命令実行違反/SWI 2 命令	*/
+#define		INT_NO_SW3			4	/* SWI 3 命令						*/
+#define		INT_NO_SW4			5	/* SWI 4 命令						*/
+#define		INT_NO_SW5			6	/* SWI 5 命令						*/
+#define		INT_NO_SW6			7	/* SWI 6 命令						*/
+#define		INT_NO_SW7			8	/* SWI 7 命令						*/
 #define		INT_NO_NMI			9	/* NMI								*/
-#define		INT_NO_WD			10	/* �����å��ɥå�������				*/
+#define		INT_NO_WD			10	/* ウォッチドッグタイマ				*/
 #define		INT_NO_0			11	/* INT0								*/
 #define		INT_NO_1			12	/* INT1								*/
 #define		INT_NO_2			13	/* INT2								*/
@@ -64,37 +64,37 @@
 #define		INT_NO_6			17	/* INT6								*/
 #define		INT_NO_7			18	/* INT7								*/
 #define		INT_NO_8			19	/* INT8								*/
-#define		INT_NO_TA0			20	/* 8�ӥåȥ�����0					*/
-#define		INT_NO_TA1			21	/* 8�ӥåȥ�����1					*/
-#define		INT_NO_TA2			22	/* 8�ӥåȥ�����2					*/
-#define		INT_NO_TA3			23	/* 8�ӥåȥ�����3					*/
-#define		INT_NO_TA4			24	/* 8�ӥåȥ�����4					*/
-#define		INT_NO_TA5			25	/* 8�ӥåȥ�����5					*/
-#define		INT_NO_TA6			26	/* 8�ӥåȥ�����6					*/
-#define		INT_NO_TA7			27	/* 8�ӥåȥ�����7					*/
-#define		INT_NO_TB00			28	/* 16�ӥåȥ�����00					*/
-#define		INT_NO_TB01			29	/* 16�ӥåȥ�����01					*/
-#define		INT_NO_TB10			30	/* 16�ӥåȥ�����10					*/
-#define		INT_NO_TB11			31	/* 16�ӥåȥ�����11					*/
-#define		INT_NO_TBOF0		32	/* 16�ӥåȥ�����0�����С��ե���	*/
-#define		INT_NO_TBOF1		33	/* 16�ӥåȥ�����1�����С��ե���	*/
-#define		INT_NO_RX0			34	/* ���ꥢ�����0					*/
-#define		INT_NO_TX0			35	/* ���ꥢ������0					*/
-#define		INT_NO_RX1			36	/* ���ꥢ�����1					*/
-#define		INT_NO_TX1			37	/* ���ꥢ������1					*/
-#define		INT_NO_SBI			38	/* ���ꥢ��Х����󥿥ե�����		*/
-#define		INT_NO_RTC			39	/* �����ѥ�����						*/
-#define		INT_NO_AD			40	/* AD�Ѵ���λ						*/
-#define		INT_NO_TC0			41	/* �ޥ�����DMA��λ0					*/
-#define		INT_NO_TC1			42	/* �ޥ�����DMA��λ1					*/
-#define		INT_NO_TC2			43	/* �ޥ�����DMA��λ2					*/
-#define		INT_NO_TC3			44	/* �ޥ�����DMA��λ3					*/
+#define		INT_NO_TA0			20	/* 8ビットタイマ0					*/
+#define		INT_NO_TA1			21	/* 8ビットタイマ1					*/
+#define		INT_NO_TA2			22	/* 8ビットタイマ2					*/
+#define		INT_NO_TA3			23	/* 8ビットタイマ3					*/
+#define		INT_NO_TA4			24	/* 8ビットタイマ4					*/
+#define		INT_NO_TA5			25	/* 8ビットタイマ5					*/
+#define		INT_NO_TA6			26	/* 8ビットタイマ6					*/
+#define		INT_NO_TA7			27	/* 8ビットタイマ7					*/
+#define		INT_NO_TB00			28	/* 16ビットタイマ00					*/
+#define		INT_NO_TB01			29	/* 16ビットタイマ01					*/
+#define		INT_NO_TB10			30	/* 16ビットタイマ10					*/
+#define		INT_NO_TB11			31	/* 16ビットタイマ11					*/
+#define		INT_NO_TBOF0		32	/* 16ビットタイマ0オーバーフロー	*/
+#define		INT_NO_TBOF1		33	/* 16ビットタイマ1オーバーフロー	*/
+#define		INT_NO_RX0			34	/* シリアル受信0					*/
+#define		INT_NO_TX0			35	/* シリアル送信0					*/
+#define		INT_NO_RX1			36	/* シリアル受信1					*/
+#define		INT_NO_TX1			37	/* シリアル送信1					*/
+#define		INT_NO_SBI			38	/* シリアルバスインタフェース		*/
+#define		INT_NO_RTC			39	/* 時計用タイマ						*/
+#define		INT_NO_AD			40	/* AD変換終了						*/
+#define		INT_NO_TC0			41	/* マイクロDMA終了0					*/
+#define		INT_NO_TC1			42	/* マイクロDMA終了1					*/
+#define		INT_NO_TC2			43	/* マイクロDMA終了2					*/
+#define		INT_NO_TC3			44	/* マイクロDMA終了3					*/
 
 /*
- *  SFR���ɥ쥹���
+ *  SFRアドレス定義
  */
 /*
- *  �ݡ��ȥ쥸����
+ *  ポートレジスタ
  */
 #define		TADR_SFR_P0				0x0000
 #define		TADR_SFR_P1				0x0001
@@ -129,7 +129,7 @@
 #define		TADR_SFR_ODE			0x002f
 
 /*
- *  ����ߥ쥸����
+ *  割込みレジスタ
  */
 #define		TADR_SFR_DMA0V			0x0080
 #define		TADR_SFR_DMA1V			0x0081
@@ -158,7 +158,7 @@
 #define		TADR_SFR_INTETC23		0x00a1
 
 /*
- *  ���åץ��쥯��/�������ȥ���ȥ�����쥸����
+ *  チップセレクト/ウェイトコントローラレジスタ
  */
 #define		TADR_SFR_B0CS			0x00c0
 #define		TADR_SFR_B1CS			0x00c1
@@ -175,7 +175,7 @@
 #define		TADR_SFR_MAMR3			0x00cf
 
 /*
- *  �����å�����/�����å����ܲ�ϩ�쥸����
+ *  クロックギア/クロック逓倍回路レジスタ
  */
 #define		TADR_SFR_SYSCR0			0x00e0
 #define		TADR_SFR_SYSCR1			0x00e1
@@ -186,7 +186,7 @@
 #define		TADR_SFR_DFMCR1			0x00e9
 
 /*
- *  8bit������A�쥸����
+ *  8bitタイマAレジスタ
  */
 #define		TADR_SFR_TA01RUN		0x0100
 #define		TADR_SFR_TA0REG			0x0102
@@ -210,7 +210,7 @@
 #define		TADR_SFR_TA7FFCR		0x011d
 
 /*
- *  16bit������B�쥸����
+ *  16bitタイマBレジスタ
  */
 #define		TADR_SFR_TB0RUN			0x0180
 #define		TADR_SFR_TB0MOD			0x0182
@@ -236,7 +236,7 @@
 #define		TADR_SFR_TB1CP1H		0x019f
 
 /*
- *  ���ꥢ��I/O(UART/I2C�Х�/SIO)�쥸����
+ *  シリアルI/O(UART/I2Cバス/SIO)レジスタ
  */
 #define		TADR_SFR_SC0BUF			0x0200
 #define		TADR_SFR_SC0CR			0x0201
@@ -259,7 +259,7 @@
 #define		TADR_SFR_SBI0BR1		0x0245
 
 /*
- *  10�ӥå�ADC�쥸����
+ *  10ビットADCレジスタ
  */
 #define		TADR_SFR_ADREG04L		0x02a0
 #define		TADR_SFR_ADREG04H		0x02a1
@@ -273,29 +273,29 @@
 #define		TADR_SFR_ADMOD1			0x02b1
 
 /*
- *  �����å��ɥå������ޥ쥸����
+ *  ウォッチドッグタイマレジスタ
  */
 #define		TADR_SFR_WDMOD			0x0300
 #define		TADR_SFR_WDCR			0x0301
 
 /*
- *  �����ѥ����ޥ쥸����
+ *  時計用タイマレジスタ
  */
 #define		TADR_SFR_RTCCR			0x0310
 
 /*
- *  SFRbit�ޥ������
+ *  SFRbitマスク定義
  */
 /*
- *  ����ߥ쥸����
+ *  割込みレジスタ
  */
-/* ͥ��������쥸����	*/
+/* 優先順位設定レジスタ	*/
 #define		TBIT_INTM_L			0x07
 #define		TBIT_INTC_L			0x08
 #define		TBIT_INTM_H			0x70
 #define		TBIT_INTC_H			0x80
-/* ����ߥ��ꥢ����쥸����	*/
-/* ���ꥢ�٥���(�ޥ�����DMA��ư�٥���)	*/
+/* 割込みクリア制御レジスタ	*/
+/* クリアベクタ(マイクロDMA起動ベクタ)	*/
 #define		TBIT_INT0_CLR		0x0a	/* INT0								*/
 #define		TBIT_INT1_CLR		0x0b	/* INT1								*/
 #define		TBIT_INT2_CLR		0x0c	/* INT2								*/
@@ -305,38 +305,38 @@
 #define		TBIT_INT6_CLR		0x10	/* INT6								*/
 #define		TBIT_INT7_CLR		0x11	/* INT7								*/
 #define		TBIT_INT8_CLR		0x12	/* INT8								*/
-#define		TBIT_TA0_CLR		0x13	/* 8�ӥåȥ�����0					*/
-#define		TBIT_TA1_CLR		0x14	/* 8�ӥåȥ�����1					*/
-#define		TBIT_TA2_CLR		0x15	/* 8�ӥåȥ�����2					*/
-#define		TBIT_TA3_CLR		0x16	/* 8�ӥåȥ�����3					*/
-#define		TBIT_TA4_CLR		0x17	/* 8�ӥåȥ�����4					*/
-#define		TBIT_TA5_CLR		0x18	/* 8�ӥåȥ�����5					*/
-#define		TBIT_TA6_CLR		0x19	/* 8�ӥåȥ�����6					*/
-#define		TBIT_TA7_CLR		0x1a	/* 8�ӥåȥ�����7					*/
-#define		TBIT_TB00_CLR		0x1b	/* 16�ӥåȥ�����00					*/
-#define		TBIT_TB01_CLR		0x1c	/* 16�ӥåȥ�����01					*/
-#define		TBIT_TB10_CLR		0x1d	/* 16�ӥåȥ�����10					*/
-#define		TBIT_TB11_CLR		0x1e	/* 16�ӥåȥ�����11					*/
-#define		TBIT_TBOF0_CLR		0x1f	/* 16�ӥåȥ�����0�����С��ե���	*/
-#define		TBIT_TBOF1_CLR		0x20	/* 16�ӥåȥ�����1�����С��ե���	*/
-#define		TBIT_RX0_CLR		0x21	/* ���ꥢ�����0					*/
-#define		TBIT_TX0_CLR		0x22	/* ���ꥢ������0					*/
-#define		TBIT_RX1_CLR		0x23	/* ���ꥢ�����1					*/
-#define		TBIT_TX1_CLR		0x24	/* ���ꥢ������1					*/
-#define		TBIT_SBI_CLR		0x25	/* ���ꥢ��Х����󥿥ե�����		*/
-#define		TBIT_RTC_CLR		0x26	/* �����ѥ�����						*/
-#define		TBIT_AD_CLR			0x27	/* AD�Ѵ���λ						*/
+#define		TBIT_TA0_CLR		0x13	/* 8ビットタイマ0					*/
+#define		TBIT_TA1_CLR		0x14	/* 8ビットタイマ1					*/
+#define		TBIT_TA2_CLR		0x15	/* 8ビットタイマ2					*/
+#define		TBIT_TA3_CLR		0x16	/* 8ビットタイマ3					*/
+#define		TBIT_TA4_CLR		0x17	/* 8ビットタイマ4					*/
+#define		TBIT_TA5_CLR		0x18	/* 8ビットタイマ5					*/
+#define		TBIT_TA6_CLR		0x19	/* 8ビットタイマ6					*/
+#define		TBIT_TA7_CLR		0x1a	/* 8ビットタイマ7					*/
+#define		TBIT_TB00_CLR		0x1b	/* 16ビットタイマ00					*/
+#define		TBIT_TB01_CLR		0x1c	/* 16ビットタイマ01					*/
+#define		TBIT_TB10_CLR		0x1d	/* 16ビットタイマ10					*/
+#define		TBIT_TB11_CLR		0x1e	/* 16ビットタイマ11					*/
+#define		TBIT_TBOF0_CLR		0x1f	/* 16ビットタイマ0オーバーフロー	*/
+#define		TBIT_TBOF1_CLR		0x20	/* 16ビットタイマ1オーバーフロー	*/
+#define		TBIT_RX0_CLR		0x21	/* シリアル受信0					*/
+#define		TBIT_TX0_CLR		0x22	/* シリアル送信0					*/
+#define		TBIT_RX1_CLR		0x23	/* シリアル受信1					*/
+#define		TBIT_TX1_CLR		0x24	/* シリアル送信1					*/
+#define		TBIT_SBI_CLR		0x25	/* シリアルバスインタフェース		*/
+#define		TBIT_RTC_CLR		0x26	/* 時計用タイマ						*/
+#define		TBIT_AD_CLR			0x27	/* AD変換終了						*/
 
 /*
- *  8bit�����ޥ쥸����
+ *  8bitタイマレジスタ
  */
-/* RUN�쥸����	*/
+/* RUNレジスタ	*/
 #define		TBIT_TA0RUN			0x01
 #define		TBIT_TA1RUN			0x02
 #define		TBIT_TA01PRUN		0x04
 #define		TBIT_I2TA01			0x08
 #define		TBIT_TA0RDE			0x80
-/* �⡼�ɥ쥸����	*/
+/* モードレジスタ	*/
 #define		TBIT_TA0CLK			0x03
 #define		TBIT_TA0CLK0		0x00
 #define		TBIT_TA0CLK1		0x01
@@ -358,9 +358,9 @@
 #define		TBIT_TA01MPWM		0xc0
 
 /*
- *  ���ꥢ��I/O�쥸����
+ *  シリアルI/Oレジスタ
  */
-/* �⡼�ɥ쥸����0	*/
+/* モードレジスタ0	*/
 #define		TBIT_SIOSC			0x03
 #define		TBIT_SIOSCT			0x00
 #define		TBIT_SIOSCBRG		0x01
@@ -375,7 +375,7 @@
 #define		TBIT_SIORXE			0x20
 #define		TBIT_SIOCTSE		0x40
 #define		TBIT_SIOTB8			0x80
-/* ����쥸����	*/
+/* 制御レジスタ	*/
 #define		TBIT_SIOIOC			0x01
 #define		TBIT_SIOSCLKS		0x02
 #define		TBIT_SIOFERR		0x04
@@ -384,7 +384,7 @@
 #define		TBIT_SIOPE			0x20
 #define		TBIT_SIOEVEN		0x40
 #define		TBIT_SIORB8			0x80
-/* �ܡ��졼�ȥ���ȥ�����	*/
+/* ボーレートコントローラ	*/
 #define		TBIT_SIOBRS			0x0f
 #define		TBIT_SIOBRCK		0x30
 #define		TBIT_SIOBRCK0		0x00
@@ -393,7 +393,7 @@
 #define		TBIT_SIOBRCK32		0x30
 #define		TBIT_SIOBRADD		0x40
 #define		TBIT_SIOBRK			0x0f
-/* �⡼�ɥ쥸����1	*/
+/* モードレジスタ1	*/
 #define		TBIT_SIOFDPX		0x40
 #define		TBIT_SIOI2S			0x80
 

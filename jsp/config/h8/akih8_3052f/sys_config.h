@@ -10,105 +10,105 @@
  *  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
  *                   Tomakomai National College of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sys_config.h,v 1.14 2007/03/23 07:22:15 honda Exp $
  */
 
 /*
- *	�������åȥ����ƥ��¸�⥸�塼��
+ *	ターゲットシステム依存モジュール
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _SYS_CONFIG_H_
 #define _SYS_CONFIG_H_
 
 /*
- *  �����ͥ����������̾�Υ�͡���
+ *  カーネルの内部識別名のリネーム
  */
 
 #include <sys_rename.h>
 
 /*
- *  �������åȥ����ƥ�Υϡ��ɥ������񸻤����
+ *  ターゲットシステムのハードウェア資源の定義
  */
 #include <h8.h>
 #include <h8_3052f.h>
 
 /*
- *  ��ư��å������Υ������å�̾
+ *  起動メッセージのターゲット名
  */
 
 #define	TARGET_NAME	"AKI-H8/3052F"
 
 /*
- *  chg_ipm�򥵥ݡ��Ȥ��뤫�ɤ��������
+ *  chg_ipmをサポートするかどうかの定義
  */
 #define SUPPORT_CHG_IPM
 
 /*
- *  vxget_tim �򥵥ݡ��Ȥ��뤫�ɤ��������
+ *  vxget_tim をサポートするかどうかの定義
  */
 
 #define	SUPPORT_VXGET_TIM
 
 /*
- *   �����å��ΰ�����
+ *   スタック領域の定義
  */
 
-			/* �󥿥�������ƥ������ѥ����å��ν���� */
+			/* 非タスクコンテキスト用スタックの初期値 */
 #define STACKTOP    	(H8IN_RAM_BASE + H8IN_RAM_SIZE)
 #define str_STACKTOP	_TO_STRING(STACKTOP)
 
 #ifndef _MACRO_ONLY
 
 /*
- *  �������åȥ����ƥ��¸�ν����
+ *  ターゲットシステム依存の初期化
  */
 
 extern void	sys_initialize(void);
 
 /*
- *  �������åȥ����ƥ�ν�λ
+ *  ターゲットシステムの終了
  *
- *  �����ƥ��λ������˻Ȥ���ROM��˥��ƽФ��Ǽ¸����뤳�Ȥ����ꤷ
- *  �Ƥ��롥
+ *  システムを終了する時に使う．ROMモニタ呼出しで実現することを想定し
+ *  ている．
  */
 
 extern void	sys_exit(void);
 
 /*
- *  �������åȥ����ƥ��ʸ������
+ *  ターゲットシステムの文字出力
  *
- *  �����ƥ�����٥��ʸ�����ϥ롼����ROM��˥��ƽФ��Ǽ¸����뤳
- *  �Ȥ����ꤷ�Ƥ��롥
+ *  システムの低レベルの文字出力ルーチン．ROMモニタ呼出しで実現するこ
+ *  とを想定している．
  */
 
 extern void cpu_putc(char c);
@@ -122,32 +122,32 @@ sys_putc(char c)
 #endif /* _MACRO_ONLY */
 
 /*
- *  (1) ���ꥢ��ݡ��Ȥ�����
- *  (2) �����ޡ�������
- *  (3) �������ɥ쥹��������
+ *  (1) シリアルポートの設定
+ *  (2) タイマーの設定
+ *  (3) 外部アドレス空間制御
  */
 
 /*
- *  ���ݡ��Ȥ��륷�ꥢ��ǥ��Х����ο��Ϻ��� 2
+ *  サポートするシリアルディバイスの数は最大 2
  */
 #define TNUM_PORT		1
 
 /*
- *  SCI ����������ޥ���
+ *  SCI 共通定数、マクロ
  */
 
-#define	CONSOLE_PORTID		SYSTEM_PORTID	/* ���󥽡�����Ѥ��륷�ꥢ��ݡ����ֹ�		*/
-#define	LOGTASK_PORTID		SYSTEM_PORTID	/* �����ƥ��������Ϥ��륷�ꥢ��ݡ����ֹ�	*/
+#define	CONSOLE_PORTID		SYSTEM_PORTID	/* コンソールに用いるシリアルポート番号		*/
+#define	LOGTASK_PORTID		SYSTEM_PORTID	/* システムログを出力するシリアルポート番号	*/
 
-#define H8_MIN_BAUD_RATE	9600		/* SCI �򥯥��������������Ԥ����֤η׻��˻��Ѥ��롣*/
+#define H8_MIN_BAUD_RATE	9600		/* SCI をクローズする前の待ち時間の計算に使用する。*/
 
-/* ���顼�����ߤ����ϳ����ߤ��̤�������ϥ����Ȥ�Ϥ�����*/
+/* エラー割り込みを、入力割り込みと別に操作する場合はコメントをはずす。*/
 #if 0
 #define H8_CFG_SCI_ERR_HANDLER
 #endif
 
 /*
- *  SYSTEM �� SCI ��������
+ *  SYSTEM 用 SCI の設定値
  */
 
 #define SYSTEM_SCI		H8SCI1
@@ -156,12 +156,12 @@ sys_putc(char c)
 #define SYSTEM_SCI_IP_BIT	H8IPR_SCI1_BIT
 
 #define SYSTEM_SCI_SMR		0
-			/* �������ե����ޥå�			*/
-	     		/* Ĵ��Ʊ����				*/
-	     		/* ����饯����󥰥���8�ӥå�		*/
-	     		/* �ѥ�ƥ��ʤ�				*/
-	     		/* ���ȥåץӥåȥ�󥰥���1		*/
-	     		/* �����å����쥯�ȡ�ʬ�����:1		*/
+			/* 送受信フォーマット			*/
+	     		/* 調歩同期式				*/
+	     		/* キャラクタレングス：8ビット		*/
+	     		/* パリティなし				*/
+	     		/* ストップビットレングス：1		*/
+	     		/* クロックセレクト（分周比）:1		*/
 
 #define SYSTEM_BAUD_RATE	38400			/* bps	*/
 
@@ -181,12 +181,12 @@ sys_putc(char c)
 #define USER_SCI_IP_BIT		H8IPR_SCI0_BIT
 
 #define USER_SCI_SMR		0
-			/* �������ե����ޥå�			*/
-	     		/* Ĵ��Ʊ����				*/
-	     		/* ����饯����󥰥���8�ӥå�		*/
-	     		/* �ѥ�ƥ��ʤ�				*/
-	     		/* ���ȥåץӥåȥ�󥰥���1		*/
-	     		/* �����å����쥯�ȡ�ʬ�����:1		*/
+			/* 送受信フォーマット			*/
+	     		/* 調歩同期式				*/
+	     		/* キャラクタレングス：8ビット		*/
+	     		/* パリティなし				*/
+	     		/* ストップビットレングス：1		*/
+	     		/* クロックセレクト（分周比）:1		*/
 
 #define USER_BAUD_RATE		38400			/* bps	*/
 
@@ -207,21 +207,21 @@ sys_putc(char c)
 
 #endif	/* of #if TNUM_PORT == 1 */
 
-/*  �ץ饤����ƥ���٥������ѤΥǡ���  */
+/*  プライオリティレベル設定用のデータ  */
 
-/*  ������׵�Υ�٥�����  */
+/*  割込み要求のレベル設定  */
 #define SYSTEM_SCI_IPM			IPM_LEVEL0
 #define USER_SCI_IPM			IPM_LEVEL0
 
 /*  
- * ����ߥϥ�ɥ�¹���γ���ߥޥ�������
- * ����¾�γ���ߤ�ޥ������뤿�������  
- * ������ʬ��Ʊ����٥�γ�����׵��֥��å����뤿�ᡢ
- * �����嵭�γ�����׵��٥��꣱�Ĺ⤤��٥�����ꤹ�롣
+ * 割込みハンドラ実行中の割込みマスクの値
+ * 　　他の割込みをマスクするための設定  
+ * 　　自分と同じレベルの割込み要求をブロックするため、
+ * 　　上記の割込み要求レベルより１つ高いレベルに設定する。
  */
-#if TNUM_PORT == 1	/*  �ݡ��ȣ��������ƥࡦ�ݡ���  */
+#if TNUM_PORT == 1	/*  ポート１：システム・ポート  */
 
-/*  �����ƥࡦ�ݡ���  */
+/*  システム・ポート  */
 #if SYSTEM_SCI_IPM == IPM_LEVEL0
 #define sio_in_handler_intmask		IPM_LEVEL1
 #elif SYSTEM_SCI_IPM == IPM_LEVEL1
@@ -230,16 +230,16 @@ sys_putc(char c)
 
 
 #elif TNUM_PORT == 2	/* of #if TNUM_PORT == 1 */
-			/*  �ݡ��ȣ����桼�������ݡ���  */
-			/*  �ݡ��ȣ��������ƥࡦ�ݡ���  */
-/*  �桼�������ݡ���  */
+			/*  ポート１：ユーザー・ポート  */
+			/*  ポート２：システム・ポート  */
+/*  ユーザー・ポート  */
 #if USER_SCI_IPM == IPM_LEVEL0
 #define sio_in_handler_intmask		IPM_LEVEL1
 #elif USER_SCI_IPM == IPM_LEVEL1
 #define sio_in_handler_intmask		IPM_LEVEL2
 #endif 	/* USER_SCI_IPM == IPM_LEVEL0 */
 
-/*  �����ƥࡦ�ݡ���  */
+/*  システム・ポート  */
 #if SYSTEM_SCI_IPM == IPM_LEVEL0
 #define sio_in2_handler_intmask		IPM_LEVEL1
 #elif SYSTEM_SCI_IPM == IPM_LEVEL1
@@ -256,7 +256,7 @@ sys_putc(char c)
 
 
 /*
- *  �����ޤ�����
+ *  タイマの設定
  */
 
 #define SYSTEM_TIMER		H8ITU0
@@ -284,18 +284,18 @@ sys_putc(char c)
 #define TIMER_CLOCK		((CPU_CLOCK)/8000)
 				/* 25MHz / 8 = 2MHz = 3125KHz */
 
-/*  �ץ饤����ƥ���٥������ѤΥǡ���  */
+/*  プライオリティレベル設定用のデータ  */
 
-/*  ������׵�Υ�٥�����  */
+/*  割込み要求のレベル設定  */
 #define SYSTEM_TIMER_IPR                H8IPRA
 #define SYSTEM_TIMER_IP_BIT             H8IPR_ITU0_BIT
 #define SYSTEM_TIMER_IPM                IPM_LEVEL1
 
 /*  
- * ����ߥϥ�ɥ�¹���γ���ߥޥ�������
- * ����¾�γ���ߤ�ޥ������뤿�������  
- * ������ʬ��Ʊ����٥�γ�����׵��֥��å����뤿�ᡢ
- * �����嵭�γ�����׵��٥��꣱�Ĺ⤤��٥�����ꤹ�롣
+ * 割込みハンドラ実行中の割込みマスクの値
+ * 　　他の割込みをマスクするための設定  
+ * 　　自分と同じレベルの割込み要求をブロックするため、
+ * 　　上記の割込み要求レベルより１つ高いレベルに設定する。
  */
 #if SYSTEM_TIMER_IPM == IPM_LEVEL0
 #define timer_handler_intmask		IPM_LEVEL1
@@ -305,7 +305,7 @@ sys_putc(char c)
 
 
 /*
- *  �������ɥ쥹��������
+ *  外部アドレス空間制御
  */
 
 /*#define ENABLE_LOWER_DATA*/
@@ -320,7 +320,7 @@ sys_putc(char c)
 #define ENABLE_PA_A21_A23	(H8BRCR_A23E|H8BRCR_A22E|H8BRCR_A21E)
 
 /*
- *  ���������Ԥ��Τ�������
+ *  微少時間待ちのための定義
  */
 
 #ifdef ROM
@@ -337,43 +337,43 @@ sys_putc(char c)
 #endif	/* of #ifdef ROM */
 
 /*
- *  DDR�ν���ͤ����
+ *  DDRの初期値の定義
  */
-#define	H8P1DDR0        0xff				/*  �ݡ���1  */
-#define	H8P2DDR0        0xff				/*  �ݡ���2  */
-#define	H8P3DDR0        0xff				/*  �ݡ���3  */
+#define	H8P1DDR0        0xff				/*  ポート1  */
+#define	H8P2DDR0        0xff				/*  ポート2  */
+#define	H8P3DDR0        0xff				/*  ポート3  */
 
 #ifdef ENABLE_LOWER_DATA
-#define	H8P4DDR0        0xff				/*  �ݡ���4  */
+#define	H8P4DDR0        0xff				/*  ポート4  */
 #else	/* #if ENABLE_LOWER_DATA */
-#define	H8P4DDR0        DUMMY				/*  �ݡ���4  */
+#define	H8P4DDR0        DUMMY				/*  ポート4  */
 #endif	/* #if ENABLE_LOWER_DATA */
 
-#define	H8P5DDR0        0xff				/*  �ݡ���5  */
-#define	H8P6DDR0        DUMMY				/*  �ݡ���6  */
+#define	H8P5DDR0        0xff				/*  ポート5  */
+#define	H8P6DDR0        DUMMY				/*  ポート6  */
 
-/*  �ݡ���7���������Ѥ�DDR�쥸�������ʤ����ᡢ��ά���Ƥ��롣  */
+/*  ポート7は入力専用でDDRレジスタがないため、省略している。  */
 
 #ifdef ENABLE_P8_CS
-#define	H8P8DDR0        ENABLE_P8_CS			/*  �ݡ���8  */
+#define	H8P8DDR0        ENABLE_P8_CS			/*  ポート8  */
 #else	/* #ifdef ENABLE_P8_CS */
-#define	H8P8DDR0        DUMMY				/*  �ݡ���8  */
+#define	H8P8DDR0        DUMMY				/*  ポート8  */
 #endif	/* #ifdef ENABLE_P8_CS */
 
-#define	H8P9DDR0        DUMMY				/*  �ݡ���9  */
+#define	H8P9DDR0        DUMMY				/*  ポート9  */
 
 #ifdef ENABLE_PA_CS
-#define	H8PADDR0        ENABLE_PA_CS			/*  �ݡ���A  */
+#define	H8PADDR0        ENABLE_PA_CS			/*  ポートA  */
 #elif defined(ENABLE_PA_A21_A23)
-#define	H8PADDR0        ENABLE_PA_A21_A23		/*  �ݡ���A  */
+#define	H8PADDR0        ENABLE_PA_A21_A23		/*  ポートA  */
 #else
-#define	H8PADDR0        DUMMY				/*  �ݡ���A  */
+#define	H8PADDR0        DUMMY				/*  ポートA  */
 #endif	/* #ifdef ENABLE_PA_CS */
 
 #ifdef ENABLE_PB_CS
-#define	H8PBDDR0        ENABLE_PB_CS			/*  �ݡ���B  */
+#define	H8PBDDR0        ENABLE_PB_CS			/*  ポートB  */
 #else	/* #ifdef ENABLE_PB_CS */
-#define	H8PBDDR0        DUMMY				/*  �ݡ���B  */
+#define	H8PBDDR0        DUMMY				/*  ポートB  */
 #endif	/* #ifdef ENABLE_PB_CS */
 
 #endif /* _SYS_CONFIG_H_ */

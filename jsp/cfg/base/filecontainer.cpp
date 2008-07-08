@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: filecontainer.cpp,v 1.11 2003/12/20 06:51:58 takayuki Exp $
  */
 
 #ifdef _MSC_VER
-#pragma warning(disable:4786) //¥Ç¥Ğ¥Ã¥°Ê¸»úÎó¤ò255Ê¸»ú¤ËÀÚ¤êµÍ¤á¤¿
+#pragma warning(disable:4786) //ãƒ‡ãƒãƒƒã‚°æ–‡å­—åˆ—ã‚’255æ–‡å­—ã«åˆ‡ã‚Šè©°ã‚ãŸ
 #endif
 
 #include "base/filecontainer.h"
@@ -47,7 +47,7 @@
 using namespace std;
 
 namespace {
-        /* Éä¹æ¤Ê¤·10¿ÊÊ¸»úÎó¤Î¥Ñ¡¼¥¹ */
+        /* ç¬¦å·ãªã—10é€²æ–‡å­—åˆ—ã®ãƒ‘ãƒ¼ã‚¹ */
     char * parse_uint(char * src, unsigned int * dest, unsigned int default_value = 0)
     {
         int result = 0;
@@ -66,7 +66,7 @@ namespace {
     }
 }
 
-    /* ÊÑ¿ô¾ğÊó¤ÎÆÉ¤ß¹ş¤ß */
+    /* å¤‰æ•°æƒ…å ±ã®èª­ã¿è¾¼ã¿ */
 void FileContainer::attachInfo(const string & filename) throw(Exception)
 {
     char    buffer[256];
@@ -79,7 +79,7 @@ void FileContainer::attachInfo(const string & filename) throw(Exception)
 
     file.open(filename.c_str(), ios::in);
     if(!file.is_open()) {
-        ExceptionMessage("Structure information file(%) was not found. ","¹½Â¤ÂÎ¾ğÊó¥Õ¥¡¥¤¥ë(%)¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó ") << filename << throwException;
+        ExceptionMessage("Structure information file(%) was not found. ","æ§‹é€ ä½“æƒ…å ±ãƒ•ã‚¡ã‚¤ãƒ«(%)ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ ") << filename << throwException;
         return;
     }
 
@@ -110,11 +110,11 @@ void FileContainer::attachInfo(const string & filename) throw(Exception)
                     break;
                 }
 
-            case 'd':   //¼±ÊÌ»ÒÌ¾¤ÏÌµ»ë
+            case 'd':   //è­˜åˆ¥å­åã¯ç„¡è¦–
                 break;
 
             default:
-                ExceptionMessage("Unknown information type identifier found - [%]","Ì¤ÃÎ¤Î·¿¼±ÊÌ»Ò - [%]") << buffer[0] << throwException;
+                ExceptionMessage("Unknown information type identifier found - [%]","æœªçŸ¥ã®å‹è­˜åˆ¥å­ - [%]") << buffer[0] << throwException;
             }
         }
         else
@@ -126,14 +126,14 @@ void FileContainer::attachInfo(const string & filename) throw(Exception)
     file.close();
 }
 
-    /* ÊÑ¿ô¾ğÊó¤Î¼èÆÀ */
+    /* å¤‰æ•°æƒ…å ±ã®å–å¾— */
 struct FileContainer::tagVariableInfo FileContainer::getVariableInfo(const string & name) throw(Exception)
 {
     map<string, tagVariableInfo>::const_iterator scope;
 
     scope = variableinfo.find(name);
     if(scope == variableinfo.end()) {
-        ExceptionMessage("Operation against the unknwon symbol [%] was rejected.","ÉÔÌÀ¤Ê¥·¥ó¥Ü¥ëÌ¾ [%] ¤Î¾ğÊó¤ò¼èÆÀ¤·¤è¤¦¤È¤·¤Æ¤¤¤Ş¤¹") << name << throwException;
+        ExceptionMessage("Operation against the unknwon symbol [%] was rejected.","ä¸æ˜ãªã‚·ãƒ³ãƒœãƒ«å [%] ã®æƒ…å ±ã‚’å–å¾—ã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™") << name << throwException;
 
         struct tagVariableInfo dummy;
         memset(&dummy, 0, sizeof(dummy));
@@ -144,7 +144,7 @@ struct FileContainer::tagVariableInfo FileContainer::getVariableInfo(const strin
 }
 
 
-    /* ¥³¥ó¥¹¥È¥é¥¯¥¿ (¥·¥ó¥Ü¥ëÌ¾¤ò»ØÄê¤·¤Æ½é´ü²½) */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (ã‚·ãƒ³ãƒœãƒ«åã‚’æŒ‡å®šã—ã¦åˆæœŸåŒ–) */
 TargetVariableBase::TargetVariableBase(const std::string & sym) throw() 
     : address(0), size(0), offset(0), structure_size(0), loaded(false)
 {
@@ -160,7 +160,7 @@ TargetVariableBase::TargetVariableBase(const std::string & sym) throw()
     }
 }
 
-    /* ¥³¥ó¥¹¥È¥é¥¯¥¿ (¥·¥ó¥Ü¥ëÌ¾, ¥Ç¡¼¥¿Ä¹¤ò»ØÄê¤·¤Æ½é´ü²½) */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (ã‚·ãƒ³ãƒœãƒ«å, ãƒ‡ãƒ¼ã‚¿é•·ã‚’æŒ‡å®šã—ã¦åˆæœŸåŒ–) */
 TargetVariableBase::TargetVariableBase(const string & sym, size_t _size) throw() 
     : address(0), size(_size), offset(0), structure_size(_size), loaded(false)
 {
@@ -174,16 +174,16 @@ TargetVariableBase::TargetVariableBase(const string & sym, size_t _size) throw()
     }
 }
 
-    /* ¥³¥ó¥¹¥È¥é¥¯¥¿ (¥·¥ó¥Ü¥ëÌ¾¡¢¥á¥ó¥ĞÌ¾¤ò»ØÄê¤·¤Æ½é´ü²½) */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (ã‚·ãƒ³ãƒœãƒ«åã€ãƒ¡ãƒ³ãƒåã‚’æŒ‡å®šã—ã¦åˆæœŸåŒ–) */
 TargetVariableBase::TargetVariableBase(const string & sym, const string & sz) throw() 
     : address(0), size(0), offset(0), structure_size(0), loaded(false)
 {
     try{
         FileContainer * fc = FileContainer::getInstance();
-        address = fc->getSymbolAddress(sym);                                //¹½Â¤ÂÎ¤ÎÀèÆ¬¥¢¥É¥ì¥¹
-        size    = fc->getVariableInfo(sz).size;                             //¥á¥ó¥ĞÊÑ¿ô¤ÎÄ¹¤µ
-        offset  = static_cast<size_t>(fc->getVariableInfo(sz).address);     //¥á¥ó¥ĞÊÑ¿ô¤Î¥ª¥Õ¥»¥Ã¥È
-        structure_size = fc->getVariableInfo(sym).size;                     //¹½Â¤ÂÎ¤ÎÄ¹¤µ
+        address = fc->getSymbolAddress(sym);                                //æ§‹é€ ä½“ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+        size    = fc->getVariableInfo(sz).size;                             //ãƒ¡ãƒ³ãƒå¤‰æ•°ã®é•·ã•
+        offset  = static_cast<size_t>(fc->getVariableInfo(sz).address);     //ãƒ¡ãƒ³ãƒå¤‰æ•°ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+        structure_size = fc->getVariableInfo(sym).size;                     //æ§‹é€ ä½“ã®é•·ã•
     }
     catch(...) {
         address = 0;
@@ -191,7 +191,7 @@ TargetVariableBase::TargetVariableBase(const string & sym, const string & sz) th
     }
 }
 
-    /* ¥³¥Ô¡¼¥³¥ó¥¹¥È¥é¥¯¥¿ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 TargetVariableBase::TargetVariableBase(const TargetVariableBase & src) throw()
     : address(0), size(0), offset(0), structure_size(0), loaded(false)
 {
@@ -205,7 +205,7 @@ TargetVariableBase::TargetVariableBase(const TargetVariableBase & src) throw()
 }
 
 
-    /* ¥ª¥Ö¥¸¥§¥¯¥ÈÆâÍÆ¤Î¼èÆÀ */
+    /* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå†…å®¹ã®å–å¾— */
 void TargetVariableBase::loadContent(void * dest, size_t dest_size) throw(Exception)
 {
     char * buffer = 0;
@@ -222,18 +222,18 @@ void TargetVariableBase::loadContent(void * dest, size_t dest_size) throw(Except
             if(size < dest_size)
                 memset(dest, 0, dest_size);
             else if(size > dest_size)
-                ExceptionMessage("[TargetVariableBase::loadContent] Destination storage is too small to store the contents.","[TargetVariableBase::loadContent] ½ĞÎÏÀè¥Ğ¥Ã¥Õ¥¡¤Î¥µ¥¤¥º¤¬¾®¤µ¤¹¤®¤Ş¤¹").throwException();
+                ExceptionMessage("[TargetVariableBase::loadContent] Destination storage is too small to store the contents.","[TargetVariableBase::loadContent] å‡ºåŠ›å…ˆãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºãŒå°ã•ã™ãã¾ã™").throwException();
             memcpy(dest, buffer, getSize());
 
             delete [] buffer;
             loaded = true;
         }
         else {
-            ExceptionMessage("loadContent was performed with an illegal target variable.","ÉÔÀµ¤Ê¥¿¡¼¥²¥Ã¥ÈÊÑ¿ô¾ğÊó¤ÇloadContent¤¬¸Æ¤Ğ¤ì¤Ş¤·¤¿").throwException();
+            ExceptionMessage("loadContent was performed with an illegal target variable.","ä¸æ­£ãªã‚¿ãƒ¼ã‚²ãƒƒãƒˆå¤‰æ•°æƒ…å ±ã§loadContentãŒå‘¼ã°ã‚Œã¾ã—ãŸ").throwException();
         }
     }
     catch(bad_alloc &) {
-        ExceptionMessage("No available memory [%B]","¥á¥â¥êÉÔÂ­¤Ç¤¹ [%B]") << (unsigned int)getSize() << throwException;
+        ExceptionMessage("No available memory [%B]","ãƒ¡ãƒ¢ãƒªä¸è¶³ã§ã™ [%B]") << (unsigned int)getSize() << throwException;
     }
     catch(Exception &) {
         if(buffer)
@@ -242,7 +242,7 @@ void TargetVariableBase::loadContent(void * dest, size_t dest_size) throw(Except
     }
 }
 
-    /* ¥Ğ¥¤¥È¥ª¡¼¥À¤ÎÊÑ¹¹ */
+    /* ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ã®å¤‰æ›´ */
 void TargetVariableBase::changeEndian(char * buffer, size_t size) throw()
 {
     char * tail = buffer + size - 1;
@@ -316,54 +316,54 @@ TESTSUITE(main, TFileContainer)
     chain.renewInstance();
 
     BEGIN_CASE("getInstance","getInstance") {
-        BEGIN_CASE("1","²¿¤âÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¤ÎgetInstance¤ÇÎã³°") {
+        BEGIN_CASE("1","ä½•ã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ãã®getInstanceã§ä¾‹å¤–") {
             bool result = false;
             try { FileContainer::getInstance(); } catch(Exception &) { result = true; }
             if(!result)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","getInstance¤Ç¥¤¥ó¥¹¥¿¥ó¥¹¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2","getInstanceã§ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒè¿”ã‚‹") {
             TFileContainer fc;
             FileContainer * instance;
             bool result = true;
             try { instance = FileContainer::getInstance(); } catch(...) { result = false; }
-            TEST_CASE("1","Îã³°¤Ï¤ª¤­¤Ê¤¤", result);
-            TEST_CASE("2","¼èÆÀ¤Ç¤­¤ë¥¤¥ó¥¹¥¿¥ó¥¹¤¬Àµ¤·¤¤", instance == &fc);
+            TEST_CASE("1","ä¾‹å¤–ã¯ãŠããªã„", result);
+            TEST_CASE("2","å–å¾—ã§ãã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒæ­£ã—ã„", instance == &fc);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("parse_uint","parse_uint") {
-        BEGIN_CASE("1","¿ô»ú¤òÀÚ¤ê½Ğ¤»¤ë") {
+        BEGIN_CASE("1","æ•°å­—ã‚’åˆ‡ã‚Šå‡ºã›ã‚‹") {
             unsigned int dest;
             char * src = "123";
             char * result = parse_uint(src, &dest);
 
-            TEST_CASE("1","result¤¬ºÇ¸å¤ËÍè¤Æ¤¤¤ë", result == src + 3);
-            TEST_CASE("2","ÃÍ¤ÏÀµ¤·¤¤", dest == 123);
+            TEST_CASE("1","resultãŒæœ€å¾Œã«æ¥ã¦ã„ã‚‹", result == src + 3);
+            TEST_CASE("2","å€¤ã¯æ­£ã—ã„", dest == 123);
         } END_CASE;
 
-        BEGIN_CASE("2","¿ô»ú¤ÇÌµ¤¤Ê¸»ú¤òÍ¿¤¨¤ë¤È¥Ç¥Õ¥©¥ë¥ÈÃÍ¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2","æ•°å­—ã§ç„¡ã„æ–‡å­—ã‚’ä¸ãˆã‚‹ã¨ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ãŒè¿”ã‚‹") {
             unsigned int dest;
             char * src = "abc";
             char * result = parse_uint(src, &dest, 1234567);
 
-            TEST_CASE("1","result¤Ï¿Ê¤ó¤Ç¤¤¤Ê¤¤", result == src);
-            TEST_CASE("2","¥Ç¥Õ¥©¥ë¥ÈÃÍ¤¬ÊÖ¤ë", dest == 1234567);
+            TEST_CASE("1","resultã¯é€²ã‚“ã§ã„ãªã„", result == src);
+            TEST_CASE("2","ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ãŒè¿”ã‚‹", dest == 1234567);
         } END_CASE;
 
-        BEGIN_CASE("3","¥Ç¥ê¥ß¥¿¤Ç¤È¤Ş¤ë") {
+        BEGIN_CASE("3","ãƒ‡ãƒªãƒŸã‚¿ã§ã¨ã¾ã‚‹") {
             unsigned int dest;
             char * src = "321,123";
             char * result = parse_uint(src, &dest);
 
-            TEST_CASE("1","result¤Ï¿Ê¤ó¤Ç¤¤¤Ê¤¤", result == src + 3);
-            TEST_CASE("2","¥Ç¥Õ¥©¥ë¥ÈÃÍ¤¬ÊÖ¤ë", dest == 321);
+            TEST_CASE("1","resultã¯é€²ã‚“ã§ã„ãªã„", result == src + 3);
+            TEST_CASE("2","ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ãŒè¿”ã‚‹", dest == 321);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("attachInfo","attachInfo") {
-        BEGIN_CASE("1","ÉáÄÌ¤Ë½èÍı¤ò¤µ¤»¤ë") {
+        BEGIN_CASE("1","æ™®é€šã«å‡¦ç†ã‚’ã•ã›ã‚‹") {
             fstream file("dummy",ios::out);
             file << "s_kernel_tinib_table,32,0\nstask_initialization_block::texrtn,4,28\n";
             file.close();
@@ -373,20 +373,20 @@ TESTSUITE(main, TFileContainer)
             bool result = true;
             try { fc.attachInfo("dummy"); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ï¤ª¤­¤Ê¤¤", result);
+            TEST_CASE("1","ä¾‹å¤–ã¯ãŠããªã„", result);
 
             map<string, struct tagVariableInfo>::iterator scope = fc.variableinfo.find("_kernel_tinib_table");
-            TEST_CASE("2","Í×ÁÇ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë (tinib)", scope != fc.variableinfo.end());
-            TEST_CASE("3","ÃÍ¤¬Àµ¤·¤¤ (tinib)", scope->second.size == 32);
+            TEST_CASE("2","è¦ç´ ãŒè¿½åŠ ã•ã‚Œã¦ã„ã‚‹ (tinib)", scope != fc.variableinfo.end());
+            TEST_CASE("3","å€¤ãŒæ­£ã—ã„ (tinib)", scope->second.size == 32);
 
             scope = fc.variableinfo.find("task_initialization_block::texrtn");
-            TEST_CASE("4","Í×ÁÇ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë (texrtn)", scope != fc.variableinfo.end());
-            TEST_CASE("5","ÃÍ¤¬Àµ¤·¤¤ (texrtn.size)", scope->second.size == 4);
-            TEST_CASE("6","ÃÍ¤¬Àµ¤·¤¤ (texrtn.address)", scope->second.address == 28);
+            TEST_CASE("4","è¦ç´ ãŒè¿½åŠ ã•ã‚Œã¦ã„ã‚‹ (texrtn)", scope != fc.variableinfo.end());
+            TEST_CASE("5","å€¤ãŒæ­£ã—ã„ (texrtn.size)", scope->second.size == 4);
+            TEST_CASE("6","å€¤ãŒæ­£ã—ã„ (texrtn.address)", scope->second.address == 28);
         } END_CASE;
         remove("dummy");
 
-        BEGIN_CASE("2","¼±ÊÌÊ¸»ú 'd' ¤òÌµ»ë¤¹¤ë") {
+        BEGIN_CASE("2","è­˜åˆ¥æ–‡å­— 'd' ã‚’ç„¡è¦–ã™ã‚‹") {
             fstream file("dummy",ios::out);
             file << "ddummy,0\ndtask_initialization_block::texrtn,4,28\n";
             file.close();
@@ -396,12 +396,12 @@ TESTSUITE(main, TFileContainer)
             bool result = true;
             try { fc.attachInfo("dummy"); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ï¤ª¤­¤Ê¤¤", result);
-            TEST_CASE("2","Í×ÁÇ¤ÏÄÉ²Ã¤µ¤ì¤Æ¤¤¤Ê¤¤", fc.variableinfo.size() == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯ãŠããªã„", result);
+            TEST_CASE("2","è¦ç´ ã¯è¿½åŠ ã•ã‚Œã¦ã„ãªã„", fc.variableinfo.size() == 0);
         } END_CASE;
         remove("dummy");
 
-        BEGIN_CASE("3","¶õ¹Ô¤òÌµ»ë¤Ç¤­¤ë") {
+        BEGIN_CASE("3","ç©ºè¡Œã‚’ç„¡è¦–ã§ãã‚‹") {
             fstream file("dummy",ios::out);
             file << "s_kernel_tinib_table,32,0\n\nstask_initialization_block::texrtn,4,28\n";
             file.close();
@@ -411,20 +411,20 @@ TESTSUITE(main, TFileContainer)
             bool result = true;
             try { fc.attachInfo("dummy"); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ï¤ª¤­¤Ê¤¤", result);
+            TEST_CASE("1","ä¾‹å¤–ã¯ãŠããªã„", result);
 
             map<string, struct tagVariableInfo>::iterator scope = fc.variableinfo.find("_kernel_tinib_table");
-            TEST_CASE("2","Í×ÁÇ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë (tinib)", scope != fc.variableinfo.end());
-            TEST_CASE("3","ÃÍ¤¬Àµ¤·¤¤ (tinib)", scope->second.size == 32);
+            TEST_CASE("2","è¦ç´ ãŒè¿½åŠ ã•ã‚Œã¦ã„ã‚‹ (tinib)", scope != fc.variableinfo.end());
+            TEST_CASE("3","å€¤ãŒæ­£ã—ã„ (tinib)", scope->second.size == 32);
 
             scope = fc.variableinfo.find("task_initialization_block::texrtn");
-            TEST_CASE("4","Í×ÁÇ¤¬ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë (texrtn)", scope != fc.variableinfo.end());
-            TEST_CASE("5","ÃÍ¤¬Àµ¤·¤¤ (texrtn.size)", scope->second.size == 4);
-            TEST_CASE("6","ÃÍ¤¬Àµ¤·¤¤ (texrtn.address)", scope->second.address == 28);
+            TEST_CASE("4","è¦ç´ ãŒè¿½åŠ ã•ã‚Œã¦ã„ã‚‹ (texrtn)", scope != fc.variableinfo.end());
+            TEST_CASE("5","å€¤ãŒæ­£ã—ã„ (texrtn.size)", scope->second.size == 4);
+            TEST_CASE("6","å€¤ãŒæ­£ã—ã„ (texrtn.address)", scope->second.address == 28);
         } END_CASE;
         remove("dummy");
 
-        BEGIN_CASE("4","'s'¤È'd'°Ê³°¤ò¤Ï¤¸¤¯") {
+        BEGIN_CASE("4","'s'ã¨'d'ä»¥å¤–ã‚’ã¯ã˜ã") {
             char c;
             char msg[2] = {0, 0};
 
@@ -441,8 +441,8 @@ TESTSUITE(main, TFileContainer)
                     try { fc.attachInfo("dummy"); } catch(...) { result = true; }
 
                     msg[0] = c;
-                    TEST_CASE_("1","Îã³°¤¬¤ª¤­¤ë", result, string(msg));
-                    TEST_CASE_("2","Í×ÁÇ¤ÏÄÉ²Ã¤µ¤ì¤Æ¤¤¤Ê¤¤", fc.variableinfo.size() == 0, string(msg));
+                    TEST_CASE_("1","ä¾‹å¤–ãŒãŠãã‚‹", result, string(msg));
+                    TEST_CASE_("2","è¦ç´ ã¯è¿½åŠ ã•ã‚Œã¦ã„ãªã„", fc.variableinfo.size() == 0, string(msg));
                 }
             }
         } END_CASE;
@@ -457,7 +457,7 @@ class TTargetVariable : public TargetVariable<int>
     TESTSUITE_PROTOTYPE(main)
 
         /*
-         * ¥³¥ó¥¹¥È¥é¥¯¥¿ (TargetVariable<int>¤Ë²óÁ÷)
+         * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (TargetVariable<int>ã«å›é€)
          */
     inline TTargetVariable(FileContainer::address_t addr) throw()
         : TargetVariable<int>(addr)
@@ -479,7 +479,7 @@ class TTargetVariable : public TargetVariable<int>
         : TargetVariable<int>(sym, sz)
     {}
 
-        /* ¥Ç¥¹¥È¥é¥¯¥¿ (ÆÃ¤Ë²¿¤â¤·¤Ê¤¤) */
+        /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (ç‰¹ã«ä½•ã‚‚ã—ãªã„) */
     virtual ~TTargetVariable(void) throw() 
     {}
 };
@@ -501,25 +501,25 @@ TESTSUITE(main, TTargetVariable)
 
     fc.attachInfo("dummy");
 
-    BEGIN_CASE("constructor","¥³¥ó¥¹¥È¥é¥¯¥¿") {
+    BEGIN_CASE("constructor","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿") {
         BEGIN_CASE("1", "(address_t, size_t)") {
             TTargetVariable tv(1, 2);
 
-            TEST_CASE("1","ÊÑ¿ô¤ÏÍ­¸ú", tv.isValid());
-            TEST_CASE("2","¥¢¥É¥ì¥¹¤ÏÀµ¤·¤¤", tv.getAddress() == 1);
-            TEST_CASE("3","¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getSize() == 2);
-            TEST_CASE("4","¥ª¥Õ¥»¥Ã¥È¤Ï0", tv.getOffset() == 0);
-            TEST_CASE("5","¹½Â¤ÂÎ¥µ¥¤¥º¤ÏÊÑ¿ô¥µ¥¤¥º¤È°ì½ï", tv.getStructureSize() == tv.getSize());
+            TEST_CASE("1","å¤‰æ•°ã¯æœ‰åŠ¹", tv.isValid());
+            TEST_CASE("2","ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯æ­£ã—ã„", tv.getAddress() == 1);
+            TEST_CASE("3","ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getSize() == 2);
+            TEST_CASE("4","ã‚ªãƒ•ã‚»ãƒƒãƒˆã¯0", tv.getOffset() == 0);
+            TEST_CASE("5","æ§‹é€ ä½“ã‚µã‚¤ã‚ºã¯å¤‰æ•°ã‚µã‚¤ã‚ºã¨ä¸€ç·’", tv.getStructureSize() == tv.getSize());
         } END_CASE;
 
         BEGIN_CASE("2","(address_t, size_t, size_t, size_t)") {
             TTargetVariable tv(1,2,3,4);
 
-            TEST_CASE("1","ÊÑ¿ô¤ÏÍ­¸ú", tv.isValid());
-            TEST_CASE("2","¥¢¥É¥ì¥¹¤ÏÀµ¤·¤¤", tv.getAddress() == 1);
-            TEST_CASE("3","¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getSize() == 2);
-            TEST_CASE("4","¥ª¥Õ¥»¥Ã¥È¤ÏÀµ¤·¤¤", tv.getOffset() == 3);
-            TEST_CASE("5","¹½Â¤ÂÎ¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getStructureSize() == 4);
+            TEST_CASE("1","å¤‰æ•°ã¯æœ‰åŠ¹", tv.isValid());
+            TEST_CASE("2","ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯æ­£ã—ã„", tv.getAddress() == 1);
+            TEST_CASE("3","ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getSize() == 2);
+            TEST_CASE("4","ã‚ªãƒ•ã‚»ãƒƒãƒˆã¯æ­£ã—ã„", tv.getOffset() == 3);
+            TEST_CASE("5","æ§‹é€ ä½“ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getStructureSize() == 4);
         } END_CASE;
 
         BEGIN_CASE("3","(string)") {
@@ -527,13 +527,13 @@ TESTSUITE(main, TTargetVariable)
 
             TTargetVariable tv("_test");
 
-            TEST_CASE("1","ÊÑ¿ô¤ÏÍ­¸ú", tv.isValid());
-            TEST_CASE("2","getSymbolAddress¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("getSymbolAddress"));
-            TEST_CASE("3","getSymbolAddress¤Î°ú¿ô¤¬Àµ¤·¤¤", fc.symbol.compare("_test") == 0);
-            TEST_CASE("3","¥¢¥É¥ì¥¹¤ÏÀµ¤·¤¤", tv.getAddress() == 1);
-            TEST_CASE("4","¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getSize() == 4);
-            TEST_CASE("5","¥ª¥Õ¥»¥Ã¥È¤ÏÀµ¤·¤¤", tv.getOffset() == 0);
-            TEST_CASE("6","¹½Â¤ÂÎ¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getStructureSize() == 4);
+            TEST_CASE("1","å¤‰æ•°ã¯æœ‰åŠ¹", tv.isValid());
+            TEST_CASE("2","getSymbolAddressãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("getSymbolAddress"));
+            TEST_CASE("3","getSymbolAddressã®å¼•æ•°ãŒæ­£ã—ã„", fc.symbol.compare("_test") == 0);
+            TEST_CASE("3","ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯æ­£ã—ã„", tv.getAddress() == 1);
+            TEST_CASE("4","ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getSize() == 4);
+            TEST_CASE("5","ã‚ªãƒ•ã‚»ãƒƒãƒˆã¯æ­£ã—ã„", tv.getOffset() == 0);
+            TEST_CASE("6","æ§‹é€ ä½“ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getStructureSize() == 4);
         } END_CASE;
 
         BEGIN_CASE("4","(string,string)") {
@@ -541,105 +541,105 @@ TESTSUITE(main, TTargetVariable)
 
             TTargetVariable tv("_kernel_tinib_table", "task_initialization_block::texrtn");
 
-            TEST_CASE("1","ÊÑ¿ô¤ÏÍ­¸ú", tv.isValid());
-            TEST_CASE("2","getSymbolAddress¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("getSymbolAddress"));
-            TEST_CASE("3","getSymbolAddress¤Î°ú¿ô¤¬Àµ¤·¤¤", fc.symbol.compare("_kernel_tinib_table") == 0);
-            TEST_CASE("3","¥¢¥É¥ì¥¹¤ÏÀµ¤·¤¤", tv.getAddress() == 1);
-            TEST_CASE("4","¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getSize() == 4);
-            TEST_CASE("5","¥ª¥Õ¥»¥Ã¥È¤ÏÀµ¤·¤¤", tv.getOffset() == 28);
-            TEST_CASE("6","¹½Â¤ÂÎ¥µ¥¤¥º¤ÏÀµ¤·¤¤", tv.getStructureSize() == 32);
+            TEST_CASE("1","å¤‰æ•°ã¯æœ‰åŠ¹", tv.isValid());
+            TEST_CASE("2","getSymbolAddressãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("getSymbolAddress"));
+            TEST_CASE("3","getSymbolAddressã®å¼•æ•°ãŒæ­£ã—ã„", fc.symbol.compare("_kernel_tinib_table") == 0);
+            TEST_CASE("3","ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯æ­£ã—ã„", tv.getAddress() == 1);
+            TEST_CASE("4","ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getSize() == 4);
+            TEST_CASE("5","ã‚ªãƒ•ã‚»ãƒƒãƒˆã¯æ­£ã—ã„", tv.getOffset() == 28);
+            TEST_CASE("6","æ§‹é€ ä½“ã‚µã‚¤ã‚ºã¯æ­£ã—ã„", tv.getStructureSize() == 32);
         } END_CASE;
 
-        BEGIN_CASE("5","Ìµ¸ú¤Ê¥±¡¼¥¹") {
-            TEST_CASE("1","¥¢¥É¥ì¥¹0¤ÎÊÑ¿ô¤ÏÌµ¸ú (1)", !TTargetVariable(0,4).isValid());
-            TEST_CASE("2","¥¢¥É¥ì¥¹0¤ÎÊÑ¿ô¤ÏÌµ¸ú (2)", !TTargetVariable(0,4,4,4).isValid());
-            TEST_CASE("3","¥µ¥¤¥º0¤ÎÊÑ¿ô¤ÏÌµ¸ú (1)", !TTargetVariable(4,0).isValid());
-            TEST_CASE("4","¥µ¥¤¥º0¤ÎÊÑ¿ô¤ÏÌµ¸ú (2)", !TTargetVariable(4,0,4,4).isValid());
-            TEST_CASE("5","¹½Â¤ÂÎ¥µ¥¤¥º0¤ÎÊÑ¿ô¤ÏÌµ¸ú", !TTargetVariable(4,4,4,0).isValid());
+        BEGIN_CASE("5","ç„¡åŠ¹ãªã‚±ãƒ¼ã‚¹") {
+            TEST_CASE("1","ã‚¢ãƒ‰ãƒ¬ã‚¹0ã®å¤‰æ•°ã¯ç„¡åŠ¹ (1)", !TTargetVariable(0,4).isValid());
+            TEST_CASE("2","ã‚¢ãƒ‰ãƒ¬ã‚¹0ã®å¤‰æ•°ã¯ç„¡åŠ¹ (2)", !TTargetVariable(0,4,4,4).isValid());
+            TEST_CASE("3","ã‚µã‚¤ã‚º0ã®å¤‰æ•°ã¯ç„¡åŠ¹ (1)", !TTargetVariable(4,0).isValid());
+            TEST_CASE("4","ã‚µã‚¤ã‚º0ã®å¤‰æ•°ã¯ç„¡åŠ¹ (2)", !TTargetVariable(4,0,4,4).isValid());
+            TEST_CASE("5","æ§‹é€ ä½“ã‚µã‚¤ã‚º0ã®å¤‰æ•°ã¯ç„¡åŠ¹", !TTargetVariable(4,4,4,0).isValid());
 
-            TEST_CASE("6","Â¸ºß¤·¤Ê¤¤¥·¥ó¥Ü¥ëÌ¾¤ÎÊÑ¿ô¤âÌµ¸ú(1)", !TTargetVariable("unknown").isValid());
-            TEST_CASE("7","Â¸ºß¤·¤Ê¤¤¥·¥ó¥Ü¥ëÌ¾¤ÎÊÑ¿ô¤âÌµ¸ú(2)", !TTargetVariable("unknown","task_initialization_block::texrtn").isValid());
-            TEST_CASE("8","Â¸ºß¤·¤Ê¤¤¥á¥ó¥ĞÌ¾¤ÎÊÑ¿ô¤âÌµ¸ú", !TTargetVariable("_kernel_tinib_table","unknown").isValid());
+            TEST_CASE("6","å­˜åœ¨ã—ãªã„ã‚·ãƒ³ãƒœãƒ«åã®å¤‰æ•°ã‚‚ç„¡åŠ¹(1)", !TTargetVariable("unknown").isValid());
+            TEST_CASE("7","å­˜åœ¨ã—ãªã„ã‚·ãƒ³ãƒœãƒ«åã®å¤‰æ•°ã‚‚ç„¡åŠ¹(2)", !TTargetVariable("unknown","task_initialization_block::texrtn").isValid());
+            TEST_CASE("8","å­˜åœ¨ã—ãªã„ãƒ¡ãƒ³ãƒåã®å¤‰æ•°ã‚‚ç„¡åŠ¹", !TTargetVariable("_kernel_tinib_table","unknown").isValid());
 
-            TEST_CASE("10","³ÊÇ¼ÎÎ°è¤¬ÉÔÂ­¤·¤Æ¤¤¤ëÊÑ¿ô", !TTargetVariable("_kernel_tinib_table").isValid());
-            TEST_CASE("11","Ìµ¸ú¤Ê°ú¿ô¤ò¤â¤é¤Ã¤¿¾ì¹ç", !TTargetVariable(*((TTargetVariable *)0)).isValid());
+            TEST_CASE("10","æ ¼ç´é ˜åŸŸãŒä¸è¶³ã—ã¦ã„ã‚‹å¤‰æ•°", !TTargetVariable("_kernel_tinib_table").isValid());
+            TEST_CASE("11","ç„¡åŠ¹ãªå¼•æ•°ã‚’ã‚‚ã‚‰ã£ãŸå ´åˆ", !TTargetVariable(*((TTargetVariable *)0)).isValid());
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("loadContents", "loadContents") {
-        BEGIN_CASE("1","ÄÌ¾ïµ¯Æ°") {
+        BEGIN_CASE("1","é€šå¸¸èµ·å‹•") {
             int i;
             TTargetVariable tv(0x100);
 
             bool result = true;
             try { tv.loadContent(&i, sizeof(int)); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤", result);
-            TEST_CASE("2","Ãæ¿È¤Ï~0¤Ç¥Õ¥£¥ë¤µ¤ì¤Æ¤¤¤ë", i == ~0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„", result);
+            TEST_CASE("2","ä¸­èº«ã¯~0ã§ãƒ•ã‚£ãƒ«ã•ã‚Œã¦ã„ã‚‹", i == ~0);
         } END_CASE;
 
-        BEGIN_CASE("2","¸µ¤è¤ê¤âÂç¤­¤Ê·¿¤Ç¼õ¤±¤ë") {
+        BEGIN_CASE("2","å…ƒã‚ˆã‚Šã‚‚å¤§ããªå‹ã§å—ã‘ã‚‹") {
             struct { int first; int second; } i;
             TTargetVariable tv(0x100);
 
             bool result = true;
             try { tv.loadContent(&i, sizeof(i)); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤", result);
-            TEST_CASE("2","Ãæ¿È¤Ï~0¤Ç¥Õ¥£¥ë¤µ¤ì¤Æ¤¤¤ë", i.first == ~0);
-            TEST_CASE("3","»Ä¤ê¤Ï0¤Ç¥Õ¥£¥ë¤µ¤ì¤Æ¤¤¤ë", i.second == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„", result);
+            TEST_CASE("2","ä¸­èº«ã¯~0ã§ãƒ•ã‚£ãƒ«ã•ã‚Œã¦ã„ã‚‹", i.first == ~0);
+            TEST_CASE("3","æ®‹ã‚Šã¯0ã§ãƒ•ã‚£ãƒ«ã•ã‚Œã¦ã„ã‚‹", i.second == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","Ìµ¸ú¤ÊÍ×ÁÇ¤ËÂĞ¤·¤Æ¼Â¹Ô¤¹¤ë") {
+        BEGIN_CASE("3","ç„¡åŠ¹ãªè¦ç´ ã«å¯¾ã—ã¦å®Ÿè¡Œã™ã‚‹") {
             TTargetVariable tv(0, 0, 0, 0);
             int i;
 
             bool result = false;
             try{ tv.loadContent(&i, sizeof(i)); } catch(...) { result = true; }
-            TEST_CASE("1","Îã³°¤¬µ¯¤­¤ë", result);
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ãã‚‹", result);
         } END_CASE;
 
-        BEGIN_CASE("4","¸µ¤è¤ê¤â¾®¤µ¤Ê·¿¤Ç¼õ¤±¤ë") {
+        BEGIN_CASE("4","å…ƒã‚ˆã‚Šã‚‚å°ã•ãªå‹ã§å—ã‘ã‚‹") {
             char i;
             TTargetVariable tv(0x100);
 
             bool result = false;
             try { tv.loadContent(&i, sizeof(i)); } catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤³¤ë", result);
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹", result);
         } END_CASE;
 
     } END_CASE;
 
-    BEGIN_CASE("pointer_operators","¥İ¥¤¥ó¥¿É÷¤Î±é»»") {
+    BEGIN_CASE("pointer_operators","ãƒã‚¤ãƒ³ã‚¿é¢¨ã®æ¼”ç®—") {
         TargetVariable<int> tv(0x100);
         TargetVariable<int> tvl(0x100);
 
         *tvl;
 
-        TEST_CASE("0","[Á°Äó] tv:¥¢¥É¥ì¥¹¤Ï0x100", tv.getAddress() == 0x100);
-        TEST_CASE("0","[Á°Äó] tv:¥µ¥¤¥º¤Ï4", tv.getSize() == 4);
-        TEST_CASE("0","[Á°Äó] tv:¹½Â¤ÂÎ¥µ¥¤¥º¤â4", tv.getStructureSize() == 4);
-        TEST_CASE("0","[Á°Äó] tv:ÆÉ½Ğ¤·Ì¤Î»", !tv.isLoaded());
-        TEST_CASE("0","[Á°Äó] tvl:¥¢¥É¥ì¥¹¤Ï0x100", tvl.getAddress() == 0x100);
-        TEST_CASE("0","[Á°Äó] tvl:¥µ¥¤¥º¤Ï4", tvl.getSize() == 4);
-        TEST_CASE("0","[Á°Äó] tvl:¹½Â¤ÂÎ¥µ¥¤¥º¤â4", tvl.getStructureSize() == 4);
-        TEST_CASE("0","[Á°Äó] tvl:ÆÉ½Ğ¤·´°Î»", tvl.isLoaded());
+        TEST_CASE("0","[å‰æ] tv:ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x100", tv.getAddress() == 0x100);
+        TEST_CASE("0","[å‰æ] tv:ã‚µã‚¤ã‚ºã¯4", tv.getSize() == 4);
+        TEST_CASE("0","[å‰æ] tv:æ§‹é€ ä½“ã‚µã‚¤ã‚ºã‚‚4", tv.getStructureSize() == 4);
+        TEST_CASE("0","[å‰æ] tv:èª­å‡ºã—æœªäº†", !tv.isLoaded());
+        TEST_CASE("0","[å‰æ] tvl:ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x100", tvl.getAddress() == 0x100);
+        TEST_CASE("0","[å‰æ] tvl:ã‚µã‚¤ã‚ºã¯4", tvl.getSize() == 4);
+        TEST_CASE("0","[å‰æ] tvl:æ§‹é€ ä½“ã‚µã‚¤ã‚ºã‚‚4", tvl.getStructureSize() == 4);
+        TEST_CASE("0","[å‰æ] tvl:èª­å‡ºã—å®Œäº†", tvl.isLoaded());
 
         BEGIN_CASE("1","operator +") {
             TestSuite::clearCheckpoints();
 
             TargetVariable<int> work = tv + 0x10;
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x140", work.getAddress() == 0x100 + sizeof(int) * 0x10);
-            TEST_CASE("2","work¤ÏÆÉ¤ß¹ş¤Ş¤ì¤Æ¤¤¤Ê¤¤", !work.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x140", work.getAddress() == 0x100 + sizeof(int) * 0x10);
+            TEST_CASE("2","workã¯èª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„", !work.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("2","operator -") {
             TestSuite::clearCheckpoints();
 
             TargetVariable<int> work = tv - 0x10;
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0xc0", work.getAddress() == 0x100 - sizeof(int) * 0x10);
-            TEST_CASE("2","work¤ÏÆÉ¤ß¹ş¤Ş¤ì¤Æ¤¤¤Ê¤¤", !work.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0xc0", work.getAddress() == 0x100 - sizeof(int) * 0x10);
+            TEST_CASE("2","workã¯èª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„", !work.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("3","operator ++") {
@@ -649,9 +649,9 @@ TESTSUITE(main, TTargetVariable)
 
             TargetVariable<int> result = (++ work);
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x104", work.getAddress() == 0x100 + sizeof(int));
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x104", work.getAddress() == 0x100 + sizeof(int));
             TEST_CASE("2","work == result", work == result);
-            TEST_CASE("3","ÆÉ¤ß¹ş¤ßÌ¤Î»¾õÂÖ", !result.isLoaded());
+            TEST_CASE("3","èª­ã¿è¾¼ã¿æœªäº†çŠ¶æ…‹", !result.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("4","operator ++(int)") {
@@ -661,9 +661,9 @@ TESTSUITE(main, TTargetVariable)
 
             TargetVariable<int> result = (work++);
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x104", work.getAddress() == 0x100 + sizeof(int));
-            TEST_CASE("2","result¤Î¥¢¥É¥ì¥¹¤Ï0x100", result.getAddress() == 0x100);
-            TEST_CASE("3","ÆÉ¤ß¹ş¤ß´°Î»¾õÂÖ", result.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x104", work.getAddress() == 0x100 + sizeof(int));
+            TEST_CASE("2","resultã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x100", result.getAddress() == 0x100);
+            TEST_CASE("3","èª­ã¿è¾¼ã¿å®Œäº†çŠ¶æ…‹", result.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("5","operator --") {
@@ -673,9 +673,9 @@ TESTSUITE(main, TTargetVariable)
 
             TargetVariable<int> result = (-- work);
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x9c", work.getAddress() == 0x100 - sizeof(int));
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x9c", work.getAddress() == 0x100 - sizeof(int));
             TEST_CASE("2","work == result", work == result);
-            TEST_CASE("3","ÆÉ¤ß¹ş¤ßÌ¤Î»¾õÂÖ", !result.isLoaded());
+            TEST_CASE("3","èª­ã¿è¾¼ã¿æœªäº†çŠ¶æ…‹", !result.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("6","operator --(int)") {
@@ -685,9 +685,9 @@ TESTSUITE(main, TTargetVariable)
 
             TargetVariable<int> result = (work--);
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x9c", work.getAddress() == 0x100 - sizeof(int));
-            TEST_CASE("2","result¤Î¥¢¥É¥ì¥¹¤Ï0x100", result.getAddress() == 0x100);
-            TEST_CASE("3","ÆÉ¤ß¹ş¤ß´°Î»¾õÂÖ", result.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x9c", work.getAddress() == 0x100 - sizeof(int));
+            TEST_CASE("2","resultã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x100", result.getAddress() == 0x100);
+            TEST_CASE("3","èª­ã¿è¾¼ã¿å®Œäº†çŠ¶æ…‹", result.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("7","operator +=") {
@@ -697,8 +697,8 @@ TESTSUITE(main, TTargetVariable)
 
             work += 0x10;
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0x140", work.getAddress() == 0x100 + sizeof(int) * 0x10);
-            TEST_CASE("2","ÆÉ¤ß¹ş¤ßÌ¤Î»¾õÂÖ", !work.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0x140", work.getAddress() == 0x100 + sizeof(int) * 0x10);
+            TEST_CASE("2","èª­ã¿è¾¼ã¿æœªäº†çŠ¶æ…‹", !work.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("8","operator -=") {
@@ -708,13 +708,13 @@ TESTSUITE(main, TTargetVariable)
 
             work -= 0x10;
 
-            TEST_CASE("1","work¤Î¥¢¥É¥ì¥¹¤Ï0xc0", work.getAddress() == 0x100 - sizeof(int) * 0x10);
-            TEST_CASE("2","ÆÉ¤ß¹ş¤ßÌ¤Î»¾õÂÖ", !work.isLoaded());
+            TEST_CASE("1","workã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0xc0", work.getAddress() == 0x100 - sizeof(int) * 0x10);
+            TEST_CASE("2","èª­ã¿è¾¼ã¿æœªäº†çŠ¶æ…‹", !work.isLoaded());
         } END_CASE;
 
         BEGIN_CASE("9", "operator &") {
-            TEST_CASE("1","¥¢¥É¥ì¥¹¤¬È´¤±¤ë", &tv == 0x100);
-            TEST_CASE("2","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤Ë¤Ï0¤¬ÊÖ¤ë", &(*((TargetVariable<int> *)0)) == 0);
+            TEST_CASE("1","ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒæŠœã‘ã‚‹", &tv == 0x100);
+            TEST_CASE("2","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ã¯0ãŒè¿”ã‚‹", &(*((TargetVariable<int> *)0)) == 0);
         } END_CASE;
 
         BEGIN_CASE("10", "operator *") {
@@ -723,22 +723,22 @@ TESTSUITE(main, TTargetVariable)
 
             const void * result = &(*work);
 
-            TEST_CASE("1","loadContents¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("loadContents"));
-            TEST_CASE("2","°ú¿ô¤¬Àµ¤·¤¤", fc.addr == 0x100);
-            TEST_CASE("3","°ú¿ô¤¬Àµ¤·¤¤", fc.sz == sizeof(int));
+            TEST_CASE("1","loadContentsãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("loadContents"));
+            TEST_CASE("2","å¼•æ•°ãŒæ­£ã—ã„", fc.addr == 0x100);
+            TEST_CASE("3","å¼•æ•°ãŒæ­£ã—ã„", fc.sz == sizeof(int));
 
             TestSuite::clearCheckpoints();
             *work;
 
-            TEST_CASE("4","loadContents¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤", !TestSuite::isReached("loadContents"));
+            TEST_CASE("4","loadContentsã¯å®Ÿè¡Œã•ã‚Œãªã„", !TestSuite::isReached("loadContents"));
         } END_CASE;
 
         BEGIN_CASE("11","operator ==/!=") {
-            TEST_CASE("1","¥¢¥É¥ì¥¹¤¬°ìÃ×¤¹¤ì¤ĞOK", tv == TTargetVariable(tv.getAddress()));
-            TEST_CASE("2","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤È¤ÎÈæ³Ó¤â¤Ç¤­¤ë", tv != *((TTargetVariable *)0));
+            TEST_CASE("1","ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒä¸€è‡´ã™ã‚Œã°OK", tv == TTargetVariable(tv.getAddress()));
+            TEST_CASE("2","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¨ã®æ¯”è¼ƒã‚‚ã§ãã‚‹", tv != *((TTargetVariable *)0));
         } END_CASE;
 
-        BEGIN_CASE("cvr","¥«¥Ğ¥ì¥Ã¥¸ÂĞºö") {
+        BEGIN_CASE("cvr","ã‚«ãƒãƒ¬ãƒƒã‚¸å¯¾ç­–") {
             
             (*((TTargetVariable *)0)) ++;
 

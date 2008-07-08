@@ -8,39 +8,39 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_support.S,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *  �ץ����å���¸�⥸�塼�� ������֥��������PowerPC�ѡ�
- *���������������ͥ������ǻ��Ѥ������
+ *  プロセッサ依存モジュール アセンブリ言語部（PowerPC用）
+ *　　　　　カーネル内部で使用する定義
  */
 
 #define	_MACRO_ONLY
@@ -48,62 +48,62 @@
 #include "offset.h"
 
 /*
- *  TCB��¤�ΤΥ��ե��åȤΥ����å�
- *������15�ӥåȤ˼��ޤäƤ��ʤ�������ĥ�������ꡢ
- *���������Ԥ���ư��ˤʤ�ʤ���
+ *  TCB構造体のオフセットのチェック
+ *　　　15ビットに収まっていないと符号拡張が起こり、
+ *　　　期待する動作にならない。
  */
 #define CHECK_OFFSET(offset)	(((offset)&~0x8fff) != 0)
 #if CHECK_OFFSET(TCB_pc) || CHECK_OFFSET(TCB_sp) 		\
     || CHECK_OFFSET(TCB_enatex) || CHECK_OFFSET(TCB_texptn) 	\
     || CHECK_OFFSET(TCB_tinib) || CHECK_OFFSET(TINIB_task) 	\
     || CHECK_OFFSET(TINIB_exinf) 
-	�����ǥ���ѥ��륨�顼
+	ここでコンパイルエラー
 #endif
 
 
 /*
- *���㳰��������Ⱦ�����򤹤�쥸������
- *���������ѥ쥸������gpr0-1,3-12
- *�������ü�쥸������LR,CTR,XER,SRR0,SRR1
+ *　例外処理の前半で退避するレジスタ数
+ *　　　汎用レジスタ：gpr0-1,3-12
+ *　　　特殊レジスタ：LR,CTR,XER,SRR0,SRR1
  */
 #define NUM_REG			17
 
-/*  �쥸���������򤹤�Τ�ɬ�פʥХ��ȿ�  */
+/*  レジスタを待避するのに必要なバイト数  */
 #define GPR0_12_SPRG_AREA_SIZE  (NUM_REG*4 + 4)  
-		/*  +4���㳰�װ��ֹ����¸���륹�ڡ���  */
-		/*  ���ա�4�Х��ȶ����ˤʤäƤ���  */
+		/*  +4は例外要因番号を保存するスペース  */
+		/*  注意：4バイト境界になっている  */
 
 #define GPR13_31_AREA_SIZE      (19*4)  /*  gpr13-31  */
 
     /*
-     *������
-     *������MPC860����ư�������쥸�������ʤ����ᡢ������ʬ��
-     *�������ƥ��Ȥ���Ƥ��ʤ�
+     *　注意
+     *　　　MPC860は浮動小数点レジスタがないため、この部分は
+     *　　　テストされていない
      */
 #ifdef SUPPORT_FLOATING_POINT_REG
-/*  �ϡ��ɥ���������ư�������쥸��������������Ƥ�����  */
+/*  ハードウェアで浮動小数点レジスタが実装されている場合  */
 #define FPR_AREA_SIZE       (32*8+8)    /*  fpr0-31,FPSCR  */
 #define FPR0_13_AREA_SIZE   (14*8+8)    /*  fpr0-14,FPSCR  */
 #define FPR14_31_AREA_SIZE  (18*8)      /*  fpr15-31  */
 
 #else   /*  SUPPORT_FLOATING_POINT_REG  */
-/*  �ϡ��ɥ���������ư�������쥸��������������Ƥ��ʤ����  */
+/*  ハードウェアで浮動小数点レジスタが実装されていない場合  */
 #define FPR_AREA_SIZE       0           /*  fpr0-31,FPSCR  */
 #define FPR0_13_AREA_SIZE   0           /*  fpr0-14,FPSCR  */
 #define FPR14_31_AREA_SIZE  0           /*  fpr15-31  */
 #endif  /* SUPPORT_FLOATING_POINT_REG */    
 
 /*
- *  ����ߡ�CPU�㳰���ջ��Υ쥸����������
- *��������
- *��������ư�������쥸����������ϥǥ����ѥå��ƤӽФ�������Ȥ�
- *�������ʥ����������å��β�ǽ��������Ȥ��ˤΤ߹Ԥ���
- *����������ߥϥ�ɥ��CPU�㳰�ϥ�ɥ������ư�������쥸������
- *���������Ѥ�����ϡ��ƥϥ�ɥ������ư�������쥸����������
- *������������Ԥ����ȡ�
- *������
- *������r4��SRR1��CPU�㳰ȯ������CPU���å�����Ƚ�̤ˤ���Ѥ��롣
- *������
+ *  割込み、CPU例外受付時のレジスタの待避
+ *　　注意
+ *　　　浮動小数点レジスタの待避はディスパッチ呼び出しがあるとき
+ *　　　（タスクスイッチの可能性があるとき）のみ行う。
+ *　　　割込みハンドラやCPU例外ハンドラ内で浮動小数点レジスタを
+ *　　　使用する場合は、各ハンドラ内で浮動小数点レジスタの待避／
+ *　　　復元を行うこと。
+ *　　　
+ *　　　r4のSRR1はCPU例外発生時のCPUロック状態判別にも使用する。
+ *　　　
  */
 #define SAVE_GPR0_12_SPRG                   \
     subi    sp, sp, GPR0_12_SPRG_AREA_SIZE; \
@@ -133,13 +133,13 @@
 
 
 /*  
- *  ����ߡ�CPU�㳰���ջ��Υ쥸����������
- *  ������gpr0-1,3-12, �ü�쥸������������
+ *  割込み、CPU例外受付時のレジスタの復元
+ *  　　（gpr0-1,3-12, 特殊レジスタの復元）
  *  
- *  �����ǥ����ѥå��ƤӽФ����ʤ����
+ *  　　ディスパッチ呼び出しがない場合
  */
 #define LOAD_R0_12_SPRG                         \
-    /*  �ü�쥸����������  */                  \
+    /*  特殊レジスタの復元  */                  \
     lwz     r3, 11*4(sp);                       \
     mtspr   SRR0, r3;                           \
     lwz     r4, 12*4(sp);                       \
@@ -152,7 +152,7 @@
     mtcr    r7;             /*  CR  */          \
     lwz     r8, 16*4(sp);                       \
     mtspr   XER, r8;                            \
-    /*  ���ѥ쥸����gpr0-1,3-12������  */       \
+    /*  汎用レジスタgpr0-1,3-12の復元  */       \
     lwz     r0, 0*4(sp);                        \
     lwz     r3, 1*4(sp);                        \
     lwz     r4, 2*4(sp);                        \
@@ -164,38 +164,38 @@
     lwz     r10, 8*4(sp);                       \
     lwz     r11, 9*4(sp);                       \
     lwz     r12, 10*4(sp)
-    /*  �ޥ�����������ޤ�  */
+    /*  マクロ定義ここまで  */
 
 
 /*
- *  CPU�㳰�������������⡢���㳰�٥��������֤�����Ⱦ��ʬ
+ *  CPU例外の入口処理の内、各例外ベクタに配置する前半部分
  *  
- *  ���ޥ�������
- *  ����exc_no���㳰�ֹ�
- *  ��
- *  ���쥸�����������
- *  ����SPRG2��exc_table��CPU�㳰�����٥����ơ��֥����Ƭ���ɥ쥹��
- *  ����CTR��C����롼�������Ƭ���ɥ쥹
- *  ����r3��CPU�㳰�ϥ�ɥ�ΰ���
- *  ����r4��SRR1�Υ��ԡ�
+ *  　マクロ引数
+ *  　　exc_no：例外番号
+ *  　
+ *  　レジスタ割り当て
+ *  　　SPRG2：exc_table（CPU例外擬似ベクタテーブルの先頭アドレス）
+ *  　　CTR：C言語ルーチンの先頭アドレス
+ *  　　r3：CPU例外ハンドラの引数
+ *  　　r4：SRR1のコピー
  */
 #define MAKE_EXCEPTION_ENTRY(exe_no)                            \
-    SAVE_GPR0_12_SPRG;  /*  ������å��쥸����������  */        \
-                        /*  ��r4��SRR1�����ԡ�������  */      \
-    mr  r3, sp;         /*  CPU�㳰�ϥ�ɥ�ΰ�������  */       \
-    /*  C����롼�������Ƭ���ɥ쥹����  */                     \
-    mfspr   r5, SPRG2;  /*  r5��SPRG2��exc_table  */            \
-                        /*  �����٥����ơ��֥��ɤ߽Ф�  */      \
+    SAVE_GPR0_12_SPRG;  /*  スクラッチレジスタの待避  */        \
+                        /*  （r4にSRR1がコピーされる）  */      \
+    mr  r3, sp;         /*  CPU例外ハンドラの引数設定  */       \
+    /*  C言語ルーチンの先頭アドレス設定  */                     \
+    mfspr   r5, SPRG2;  /*  r5←SPRG2：exc_table  */            \
+                        /*  擬似ベクタテーブル読み出し  */      \
     lwz     r6, (exe_no<<2)(r5);                                \
-    li      r7, exe_no; /*  �㳰�װ��ֹ����¸  */              \
-    stw     r7, NUM_REG*4(sp)    /*  (cpu_experr()�ǻ���)  */
+    li      r7, exe_no; /*  例外要因番号の保存  */              \
+    stw     r7, NUM_REG*4(sp)    /*  (cpu_experr()で使用)  */
 
 /*
- *  CPU�㳰�������������⡢���㳰�٥��������֤���ʤ�
- *  ��Ⱦ��ʬ�ؤ�ʬ��
+ *  CPU例外の入口処理の内、各例外ベクタに配置されない
+ *  前半部分への分岐
  *  
- *  �㳰�٥��������֤ˤ�äƤ�b̿��ˤ��ʬ��������0x07ff,ffff�ˤ�
- *  �Ϥ��ʤ���礬���롣���ξ����������Ϥ���ꤷ��ʬ�����롣
+ *  例外ベクタの配置によってはb命令による分岐（前後0x07ff,ffff）で
+ *  届かない場合がある。この場合は絶対番地を指定して分岐する。
  */
 #ifdef ABSOLUTE_JUMP_EXC_ENTRY
 #define JUMP_EXC_ENTRY(label)			\
@@ -208,37 +208,37 @@
 #endif	/*  ABSOLUTE_JUMP_EXE_ENTRY  */
 
 /*  
- *   �㳰�٥��������
+ *   例外ベクタの定義
  */   
 
 #ifndef IBM_PPC_EMB_ENV
 /*  
- *   ���ꥸ�ʥ��PowerPC�������ƥ�����ξ��
- *   ������ȥ�����MPC���꡼����IPM PowerPC6xx/7xx���꡼����
- *   ����������˳������롣
+ *   オリジナルのPowerPCアーキテクチャの場合
+ *   　　モトローラMPCシリーズ、IPM PowerPC6xx/7xxシリーズは
+ *   　　こちらに該当する。
  */   
 
 /*
- *  �㳰�٥����ơ��֥����Ƭ���ɥ쥹
- *  �����ޥ��󥹥ơ������쥸����MSR��IP�ӥåȤ�
- *  ��������0�ΤȤ���0x0000,0000����
- *  ��������1�ΤȤ���0xfff0,0000����
- * ����������Υ��ե��åȤˤʤ�
+ *  例外ベクタテーブルの先頭アドレス
+ *  　　マシンステータスレジスタMSRのIPビットが
+ *  　　　　0のとき：0x0000,0000番地
+ *  　　　　1のとき：0xfff0,0000番地
+ * 　　　からのオフセットになる
  */
 #define EXCEPTION_VECTOR_BASE   0x100
 
 /*
- *  �����ƥ�ꥻ�å��㳰
+ *  システムリセット例外
  */
     .section ".exception_vector","rxai"
     .align 2
     .org 0x100 - EXCEPTION_VECTOR_BASE
 
 System_reset_exception:
-    JUMP_EXC_ENTRY(start)               /*  �������ȥ��åץ롼����  */
+    JUMP_EXC_ENTRY(start)               /*  スタートアップルーチン  */
 
 /*
- *  �ޥ��󡦥����å��㳰
+ *  マシン・チェック例外
  */
     .org 0x200 - EXCEPTION_VECTOR_BASE
 
@@ -247,9 +247,9 @@ Machine_check_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  DSI�㳰
- *  ���ǡ��������ꡦ��������
- *  ���ǡ���TLB���顼���ߥ�
+ *  DSI例外
+ *  　データ・メモリ・アクセス
+ *  　データTLBエラー／ミス
  */
     .org 0x300 - EXCEPTION_VECTOR_BASE
 
@@ -258,9 +258,9 @@ DSI_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ISI�㳰
- *  ��̿��ե��å�
- *  ��̿��TLB���顼���ߥ�
+ *  ISI例外
+ *  　命令フェッチ
+ *  　命令TLBエラー／ミス
  */
     .org 0x400 - EXCEPTION_VECTOR_BASE
 
@@ -270,22 +270,22 @@ ISI_exception:
 
 
 /*
- *  ���������
- *  �����٤Ƥγ��������ߤ�Ʊ�����Ϥ�ʬ������
+ *  外部割込み
+ *  　すべての外部割り込みで同じ番地に分岐する
  */
     .org 0x500 - EXCEPTION_VECTOR_BASE
 
 External_interrupt:
-    SAVE_GPR0_12_SPRG           /*  �쥸����������  */
+    SAVE_GPR0_12_SPRG           /*  レジスタの待避  */
     /*
-     *  �����Ϥ�����³���ν�����Ԥ���������0x100�Х��ȡ�64̿��˸����
-     *  ���饤�����㳰�ν��������뤿�ᡢ³����External_interrupt_1:�ǹ�
-     *  ����
+     *  本当はここで続きの処理を行いたいが、0x100バイト（64命令）後ろに
+     *  アライメント例外の処理が入るため、続きはExternal_interrupt_1:で行
+     *  う。
      */
     JUMP_EXC_ENTRY(External_interrupt_1)
 
 /*
- *  ���饤�����㳰
+ *  アライメント例外
  */
     .org 0x600 - EXCEPTION_VECTOR_BASE
 
@@ -294,11 +294,11 @@ Alignment_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  �ץ�������㳰
- *  ����Floating point enabled
- *  ����Illegal instruction
- *  ����Privileged instruction
- *  ����Trap instruction
+ *  プログラム例外
+ *  　　Floating point enabled
+ *  　　Illegal instruction
+ *  　　Privileged instruction
+ *  　　Trap instruction
  */
     .org 0x700 - EXCEPTION_VECTOR_BASE
 
@@ -307,7 +307,7 @@ Program_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ��ư�����������Բ�
+ *  浮動小数点使用不可
  */
     .org 0x800 - EXCEPTION_VECTOR_BASE
 
@@ -316,7 +316,7 @@ Floating_point_unavailable:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  �ǥ������㳰
+ *  デクリメンタ例外
  */
     .org 0x900 - EXCEPTION_VECTOR_BASE
 
@@ -325,7 +325,7 @@ Decrementer_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ����ץ���ơ�������ͭ���㳰0x00a00
+ *  インプリメンテーション固有の例外0x00a00
  */
 #ifdef IMPLEMENT_EXCEPTION_00A00
     .org 0xa00 - EXCEPTION_VECTOR_BASE
@@ -338,7 +338,7 @@ Implementation_exception_00a00:
 
 
 /*
- *  �����ƥॳ����
+ *  システムコール
  */
     .org 0xc00 - EXCEPTION_VECTOR_BASE
 
@@ -347,7 +347,7 @@ System_call:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  �ȥ졼���ʥ��ץ�����
+ *  トレース（オプション）
  */
     .org 0xd00 - EXCEPTION_VECTOR_BASE
 
@@ -357,7 +357,7 @@ Trace_exception:
 
 
 /*
- *  ��ư���������
+ *  浮動小数点補助
  */
     .org 0xe00 - EXCEPTION_VECTOR_BASE
 
@@ -366,9 +366,9 @@ Floating_point_assist:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ����ץ���ơ���������Ѥν��� 0x01000-0x2ffff
- *    ����ץ���ơ�������ͭ���㳰�٥����ʣ��ĤȤϸ¤�ʤ��ˤ�
- *    ¾�����Ӥ˻��Ѥ����
+ *  インプリメンテーション専用の処理 0x01000-0x2ffff
+ *    インプリメンテーション固有の例外ベクタ（１つとは限らない）や
+ *    他の用途に使用される
  */
 #ifdef IMPLEMENT_EXCEPTION_01000_PROC
     .org 0x1000 - EXCEPTION_VECTOR_BASE
@@ -380,34 +380,34 @@ Floating_point_assist:
 #else	/*  IBM_PPC_EMB_ENV  */
 
 /*  
- *   The IBM PowerPC Embedded Environment�ξ��
- *   ��IBM��PowerPC40x���꡼���б�
+ *   The IBM PowerPC Embedded Environmentの場合
+ *   　IBM系PowerPC40xシリーズ対応
  */   
 
 /*
- *  �㳰�٥����ơ��֥����Ƭ���ɥ쥹
- *   �� The IBM PowerPC Embedded Environment�ξ��
- *  ���������㳰�٥�������Ƭ���ɥ쥹��EVPR�쥸���������ꤹ��
- *  ���������ޥ��󥹥ơ������쥸����MSR��IP�ӥåȤ��ʤ�
+ *  例外ベクタテーブルの先頭アドレス
+ *   　 The IBM PowerPC Embedded Environmentの場合
+ *  　　　・例外ベクタの先頭アドレスはEVPRレジスタで設定する
+ *  　　　・マシンステータスレジスタMSRのIPビットがない
  */
 #define EXCEPTION_VECTOR_BASE   0x100
 
 /*
  *  Critical Interrupt
- *  �����ե��åȡ�0x100
- *  ��Critical Interrupt�ϥ���ץ���ơ�������¸�ʤΤ�
- *  ���������Ƥϥޥ���������Ƥ�����
- *  �����ޥ���̾��CRITICAL_INTERRUPT_EXCEPTION_PROC
- *  �����ν������Ƥ�0x100�Х��Ȥ�Ķ���ƤϤ����ʤ���
- *  ����Ķ������ϻĤ����ʬ���̤ξ������֤��ơ�
- *  ����������ʬ�����뤳�ȡ�
+ *  　オフセット：0x100
+ *  　Critical Interruptはインプリメンテーション依存なので
+ *  　処理内容はマクロ定義しておく。
+ *  　　マクロ名：CRITICAL_INTERRUPT_EXCEPTION_PROC
+ *  　この処理内容は0x100バイトを超えてはいけない。
+ *  　（超える場合は残りの部分を別の場所に配置して、
+ *  　　そこに分岐すること）
  *
- *  ��Critical Interrupt�ϥ����ͥ���������㳰�Ȥ��롣
- *  ���ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
+ *  　Critical Interruptはカーネル管理外の例外とする。
+ *  　（この処理ルーチン内でサービスコールを使用しない。）
  *
- *�����㳰���饹��Critical
- *  �����꥿����̿���rfci(Return From Critical Interrupt)
- *  �������Ѥ��롣
+ *　　例外クラス：Critical
+ *  　　リターン命令はrfci(Return From Critical Interrupt)
+ *  　　を用いる。
  */
     .section ".exception_vector","rxai"
     .align 2
@@ -415,20 +415,20 @@ Floating_point_assist:
 
 Critical_Interrupt_exception:
     CRITICAL_INTERRUPT_EXCEPTION_PROC
-    /*  ���ա��꥿����̿���rfci(Return From Critical Interrupt)  */
+    /*  注意：リターン命令はrfci(Return From Critical Interrupt)  */
 
 /*
- *  �ޥ��󡦥����å��㳰
- *  �����ν������Ƥ�0x100�Х��Ȥ�Ķ���ƤϤ����ʤ���
- *  ����Ķ������ϻĤ����ʬ���̤ξ������֤��ơ�
- *  ����������ʬ�����뤳�ȡ�
+ *  マシン・チェック例外
+ *  　この処理内容は0x100バイトを超えてはいけない。
+ *  　（超える場合は残りの部分を別の場所に配置して、
+ *  　　そこに分岐すること）
  *
- *  �������ͥ���������㳰�Ȥ��롣
- *  ���ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
+ *  　カーネル管理外の例外とする。
+ *  　（この処理ルーチン内でサービスコールを使用しない。）
  *
- *�����㳰���饹��Critical
- *  �����꥿����̿���rfci(Return From Critical Interrupt)
- *  �������Ѥ��롣
+ *　　例外クラス：Critical
+ *  　　リターン命令はrfci(Return From Critical Interrupt)
+ *  　　を用いる。
  */
     .org 0x200 - EXCEPTION_VECTOR_BASE
 
@@ -436,8 +436,8 @@ Machine_check_exception:
     MACHINE_CHECK_PROC
 
 /*
- *  Data storage�㳰
- *  ���ǡ��������ꡦ��������
+ *  Data storage例外
+ *  　データ・メモリ・アクセス
  */
     .org 0x300 - EXCEPTION_VECTOR_BASE
 
@@ -446,8 +446,8 @@ DSI_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  Instruction storage�㳰
- *  ��̿��ե��å�
+ *  Instruction storage例外
+ *  　命令フェッチ
  */
     .org 0x400 - EXCEPTION_VECTOR_BASE
 
@@ -457,22 +457,22 @@ ISI_exception:
 
 
 /*
- *  ���������
- *  �����٤Ƥγ��������ߤ�Ʊ�����Ϥ�ʬ������
+ *  外部割込み
+ *  　すべての外部割り込みで同じ番地に分岐する
  */
     .org 0x500 - EXCEPTION_VECTOR_BASE
 
 External_interrupt:
-    SAVE_GPR0_12_SPRG           /*  �쥸����������  */
+    SAVE_GPR0_12_SPRG           /*  レジスタの待避  */
     /*
-     *  �����Ϥ�����³���ν�����Ԥ���������0x100�Х��ȡ�64̿��˸����
-     *  ���饤�����㳰�ν��������뤿�ᡢ³����External_interrupt_1:�ǹ�
-     *  ����
+     *  本当はここで続きの処理を行いたいが、0x100バイト（64命令）後ろに
+     *  アライメント例外の処理が入るため、続きはExternal_interrupt_1:で行
+     *  う。
      */
     JUMP_EXC_ENTRY(External_interrupt_1)
 
 /*
- *  ���饤�����㳰
+ *  アライメント例外
  */
     .org 0x600 - EXCEPTION_VECTOR_BASE
 
@@ -481,14 +481,14 @@ Alignment_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  �ץ�������㳰
- *  ����Illegal instruction
- *  ����Privileged instruction
- *  ����Trap instruction
- *  ����Floating point enabled
- *  ����Floating point unimplemented
- *  ����Auxiliary processor unavailable
- *  ����Auxiliary processor enabled
+ *  プログラム例外
+ *  　　Illegal instruction
+ *  　　Privileged instruction
+ *  　　Trap instruction
+ *  　　Floating point enabled
+ *  　　Floating point unimplemented
+ *  　　Auxiliary processor unavailable
+ *  　　Auxiliary processor enabled
  */
     .org 0x700 - EXCEPTION_VECTOR_BASE
 
@@ -497,9 +497,9 @@ Program_exception:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ��ư�����������Բ�
+ *  浮動小数点使用不可
  */
-#ifdef SUPPORT_IBM_PPC_EMB_APU	/*  APU����ĵ�������Ѳ�ǽ  */
+#ifdef SUPPORT_IBM_PPC_EMB_APU	/*  APUを持つ機種は利用可能  */
     .org 0x800 - EXCEPTION_VECTOR_BASE
 
 Floating_point_unavailable:
@@ -510,7 +510,7 @@ Floating_point_unavailable:
 
 
 /*
- *  �����ƥॳ����
+ *  システムコール
  */
     .org 0xc00 - EXCEPTION_VECTOR_BASE
 
@@ -519,15 +519,15 @@ System_call:
     JUMP_EXC_ENTRY(Exception_Entry)
 
 /*
- *  ����ץ���ơ���������Ѥν����ʥ��ե��å� 0xd00-0xff0��
- *    ����ץ���ơ�������ͭ���㳰�٥���
+ *  インプリメンテーション専用の処理（オフセット 0xd00-0xff0）
+ *    インプリメンテーション固有の例外ベクタ
  *    
- * �� ���ե��åȤλ�����ˡ�����դ��뤳�ȡ�
- *  ������Ū�ˤ�
- *     .org ���ե��å� - EXCEPTION_VECTOR_BASE
- * �� �Τ褦�˻��ꤹ�롣�ܤ�����¾���㳰�װ��γ����Ľ�򻲾ȡ�
- *    �㤨�С�PowerPC405�Ǥϥ��ե��å�0xf20��
- *    APU Unavailable�㳰�ν��������֤���
+ * 　 オフセットの指定方法に注意すること。
+ *  　具体的には
+ *     .org オフセット - EXCEPTION_VECTOR_BASE
+ * 　 のように指定する。詳しくは他の例外要因の該当個所を参照。
+ *    例えば、PowerPC405ではオフセット0xf20に
+ *    APU Unavailable例外の処理を配置する
  */
 #ifdef IMPLEMENT_EXCEPTION_D00_PROC
 
@@ -537,7 +537,7 @@ System_call:
 
 /*
  *  Programmable Interval timer
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+ *  　0x10バイトしか領域が割り当てられていないので注意
  */
     .org 0x1000 - EXCEPTION_VECTOR_BASE
 
@@ -546,7 +546,7 @@ Programmable_Interval_timer:
 
 /*
  *  Fixed Interval timer
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+ *  　0x10バイトしか領域が割り当てられていないので注意
  */
     .org 0x1010 - EXCEPTION_VECTOR_BASE
 
@@ -555,15 +555,15 @@ Fixed_Interval_timer:
 
 /*
  *  Watchdog timer
- *  �����ե��åȡ�0x1020
+ *  　オフセット：0x1020
  *
- *�����㳰���饹��Critical
- *  �����꥿����̿���rfci(Return From Critical Interrupt)
- *  �������Ѥ��롣
+ *　　例外クラス：Critical
+ *  　　リターン命令はrfci(Return From Critical Interrupt)
+ *  　　を用いる。
  *
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
- *  �������ͥ���������㳰�Ȥ��롣
- *  ���ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
+ *  　0x10バイトしか領域が割り当てられていないので注意
+ *  　カーネル管理外の例外とする。
+ *  　（この処理ルーチン内でサービスコールを使用しない。）
  */
     .org 0x1020 - EXCEPTION_VECTOR_BASE
 
@@ -572,7 +572,7 @@ Watchdog_timer:
 
 /*
  *  Data TLB miss
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+ *  　0x10バイトしか領域が割り当てられていないので注意
  */
     .org 0x1100 - EXCEPTION_VECTOR_BASE
 
@@ -581,7 +581,7 @@ Data_TLB_miss:
 
 /*
  *  Instruction TLB miss
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+ *  　0x10バイトしか領域が割り当てられていないので注意
  */
     .org 0x1200 - EXCEPTION_VECTOR_BASE
 
@@ -589,26 +589,26 @@ Instruction_TLB_miss:
 	INSTRUCTION_TLB_MISS_PROC
 
 /*
- *  Debug�㳰
- *  �����ե��åȡ�0x2000
+ *  Debug例外
+ *  　オフセット：0x2000
  *
- *�����㳰���饹��Critical
- *  �����꥿����̿���rfci(Return From Critical Interrupt)
- *  �������Ѥ��롣
- *  ��
- *  ���װ��ϰʲ���7����
- *  ����Trap
- *  ����Instruction address compare
- *  ����Data address compare
- *  ����Instruction complete
- *  ����Branch taken
- *  ����Exception
- *  ����Unconditional debug event
- *  ��
- *  �������ͥ���������㳰�Ȥ��롣
- *  ���ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
- *  ��
- *  ��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+ *　　例外クラス：Critical
+ *  　　リターン命令はrfci(Return From Critical Interrupt)
+ *  　　を用いる。
+ *  　
+ *  　要因は以下の7種類
+ *  　　Trap
+ *  　　Instruction address compare
+ *  　　Data address compare
+ *  　　Instruction complete
+ *  　　Branch taken
+ *  　　Exception
+ *  　　Unconditional debug event
+ *  　
+ *  　カーネル管理外の例外とする。
+ *  　（この処理ルーチン内でサービスコールを使用しない。）
+ *  　
+ *  　0x10バイトしか領域が割り当てられていないので注意
  */
     .org 0x2000 - EXCEPTION_VECTOR_BASE
 
@@ -617,14 +617,14 @@ Debug_exception:
 
 
 /*
- *  ����ץ���ơ���������Ѥν����ʥ��ե��å� 0x2010-0x2ff0��
- *    ����ץ���ơ�������ͭ���㳰�٥����ʣ��ĤȤϸ¤�ʤ��ˤ�
- *    ¾�����Ӥ˻��Ѥ����
+ *  インプリメンテーション専用の処理（オフセット 0x2010-0x2ff0）
+ *    インプリメンテーション固有の例外ベクタ（１つとは限らない）や
+ *    他の用途に使用される
  *    
- * �� ���ե��åȤλ�����ˡ�����դ��뤳�ȡ�
- *  ������Ū�ˤ�
- *     .org ���ե��å� - EXCEPTION_VECTOR_BASE
- * �� �Τ褦�˻��ꤹ�롣�ܤ�����¾���㳰�װ��γ����Ľ�򻲾ȡ�
+ * 　 オフセットの指定方法に注意すること。
+ *  　具体的には
+ *     .org オフセット - EXCEPTION_VECTOR_BASE
+ * 　 のように指定する。詳しくは他の例外要因の該当個所を参照。
  */
 #ifdef IMPLEMENT_EXCEPTION_02010_PROC
 
@@ -635,22 +635,22 @@ Debug_exception:
 
 /*
  *  System reset
- *    �ꥻ�åȥ٥�����0xffff,fffc���Ϥ˸��ꤵ��Ƥ���
+ *    リセットベクタは0xffff,fffc番地に固定されている
  */
     .section ".system_reset_vector","rxai"
     .align 2
     
-/*  ���ιԤ�(0xffff,fffc - 4�Х��ȡ�4̿��)���Ϥ����֤��롣  */
+/*  この行を(0xffff,fffc - 4バイト×4命令)番地に配置する。  */
 jump_to_start:    
     LI32(r8, start)
     mtctr	r8
     bctrl
 
-/*  ���ιԤ�0xffff,fffc���Ϥ����֤��롣  */
+/*  この行を0xffff,fffc番地に配置する。  */
 reset_vector:
     b		jump_to_start
-    /*  �����ˤ�1̿�ᤷ������ʤ��Τ�����ʬ��̿����֤���  */
-    /*  start�롼����ؤ�ʬ���Ͼ嵭��jump_to_start�ǹԤ���  */
+    /*  ここには1命令しか入らないので相対分岐命令を置き、  */
+    /*  startルーチンへの分岐は上記のjump_to_startで行う。  */
 
 
 #endif	/*  IBM_PPC_EMB_ENV  */
@@ -659,28 +659,28 @@ reset_vector:
 
 
 /*
- *  CPU�㳰���������롼�����³��
- *�����㳰�װ��ˤ�餺�����̤ν���
- *�������㳰�٥��������ή���ơ��Ĥ�ν����򤳤��ǹԤ���
- *���������ץ����å����������ѥ쥸�������ü�쥸����������
- *��������C����롼�����
- *      ��������Ƭ���ɥ쥹������
- *      ����������������
- *�������Ѥ�����֤Ǥ��������
+ *  CPU例外入口処理ルーチンの続き
+ *　　例外要因によらず、共通の処理
+ *　　各例外ベクタから合流して、残りの処理をここで行う。
+ *　　　・プロセッサコアの汎用レジスタと特殊レジスタの待避
+ *　　　・C言語ルーチンの
+ *      　　・先頭アドレスの設定
+ *      　　・引数の設定
+ *　　が済んだ状態でここに来る
  *
- *  ���쥸����������ơʤ��٤�����Ѥߤξ��֤Ǥ���������
- *  ����SPRG0������ߡ��㳰�Υͥ��ȥ�����
- *  ����SPRG2��exc_table��CPU�㳰�����٥����ơ��֥����Ƭ���ɥ쥹��
- *  ����r3��CPU�㳰�ϥ�ɥ�ΰ���
- *  ����r4��SRR1�Υ��ԡ�
- *  ����r6��C����롼�������Ƭ���ɥ쥹
+ *  　レジスタ割り当て（すべて設定済みの状態でここに来る）
+ *  　　SPRG0：割込み／例外のネストカウンタ
+ *  　　SPRG2：exc_table（CPU例外擬似ベクタテーブルの先頭アドレス）
+ *  　　r3：CPU例外ハンドラの引数
+ *  　　r4：SRR1のコピー
+ *  　　r6：C言語ルーチンの先頭アドレス
  *
- *  regflg ������å��������˳����ߤ�ػߤ��ʤ��ȡ�reqflg ������å�
- *  ��˵�ư���줿�����ߥϥ�ɥ���ǥǥ����ѥå����׵ᤵ�줿���ˡ�
- *  �ǥ����ѥå�����ʤ���
+ *  regflg をチェックする前に割り込みを禁止しないと、reqflg をチェック
+ *  後に起動された割り込みハンドラ内でディスパッチが要求された場合に、
+ *  ディスパッチされない。
  *  
- *  �㳰�٥�������text����������PC����ʬ�����Ϥ��ʤ��ʤä��Ȥ��Τ��ᡢ
- *  Exception_Entry�򥰥����Х�������Ƥ��롣
+ *  例外ベクタからtextセクションにPC相対分岐で届かなくなったときのため、
+ *  Exception_Entryをグローバル宣言している。
  *
  */
 
@@ -691,160 +691,160 @@ reset_vector:
 #endif	/*  ABSOLUTE_JUMP_EXC_ENTRY  */
     
 Exception_Entry:
-    mtctr   r6;         /*  CTR��C����롼�������Ƭ���ɥ쥹 */
-    /*  ����ߥͥ��ȥ����󥿤Υ��󥯥����  */
-    mfspr   r8, SPRG0   /*  SPRG0:����ߡ��㳰�ͥ��ȥ�����  */
+    mtctr   r6;         /*  CTR←C言語ルーチンの先頭アドレス */
+    /*  割込みネストカウンタのインクリメント  */
+    mfspr   r8, SPRG0   /*  SPRG0:割込み／例外ネストカウンタ  */
     addi    r8, r8, 1
     mtspr   SPRG0, r8
 
-    /*  CPU�㳰ȯ�����Υ���ƥ����Ȥ�Ƚ��  */
+    /*  CPU例外発生時のコンテキストの判別  */
     cmpwi   crf0, r8, 1
     bne     exception_from_int
 
-    /*  ���ʤ�CPU�㳰�ξ��  */
+    /*  初段のCPU例外の場合  */
 exception_from_task:
     /*
-     *  ������󥰡�����٥󥷥��˹�碌�ơ������å��ݥ��󥿤�
-     *��8�Х��Ȥ��餷�Ƥ�����
-     *��
+     *  コーリング・コンベンションに合わせて、スタックポインタを
+     *　8バイトずらしておく。
+     *　
      *         -8  ----------------------
      *            |      task sp         |
-     *         -4  ----------------------��
-     *            |                      |��C����롼����θƤӽФ��ˤ��
-     * STACKTOP��  ----------------------   �񤭹��ޤ��
+     *         -4  ----------------------　
+     *            |                      |←C言語ルーチンの呼び出しにより
+     * STACKTOP→  ----------------------   書き込まれる
      *  
      */
     LI32(r9, STACKTOP-STACK_MARGIN)
-    stw     sp, 0(r9)     /*  �����������å��ݥ��󥿤���¸  */
-    mr      sp, r9        /*  �����å��ڤ��ؤ�  */
+    stw     sp, 0(r9)     /*  タスクスタックポインタの保存  */
+    mr      sp, r9        /*  スタック切り替え  */
 
 
 /*
- *  �ޥ��������CPU�㳰�ϥ�ɥ�θƽФ�
- *  ���������������ʤ��㳰��¿���㳰�ζ��̽���
+ *  マクロ定義：CPU例外ハンドラの呼出し
+ *  　　　　　　初段の例外と多重例外の共通処理
  *  
- *  ��������
- *  ��C����롼����ƤӽФ�
+ *  処理内容
+ *  　C言語ルーチン呼び出し
  *  
- *  ����
- *  ��  label����٥뼱����ʸ����
- *  ��  ����������ʣ���ս�Ǥ��Υޥ�������ѤǤ���褦�ˤ��뤿���
+ *  引数
+ *  　  label：ラベル識別用文字列
+ *  　  　　　　（複数箇所でこのマクロを使用できるようにするため）
  *  
- *  ������
- *  �� r3=C����롼����ΰ���
- *  �� r4=SRR1
- *  �� CTR=C����롼�������Ƭ���ɥ쥹
- *  �����ξ��֤ǻ��Ѥ����
+ *  前提条件
+ *  　 r3=C言語ルーチンの引数
+ *  　 r4=SRR1
+ *  　 CTR=C言語ルーチンの先頭アドレス
+ *  　　の状態で使用される
  *  
- *  ����
- *  ��CPU�㳰�ϥ�ɥ�ε�ư�ˤ�ꡢCPU���å����֤��ѹ����ƤϤ����ʤ�
- *  ���ĤޤꡢCPU�㳰ȯ������CPU���å����֤Ǥ���С�CPU���å����֤�
- *  ���ޤޡ�CPU�㳰�ϥ�ɥ��ư���롣
- *  ����CPU�㳰ȯ������CPU���å�������֤Ǥ���С�CPU���å�������֤�
- *  �����ޤޡ�CPU�㳰�ϥ�ɥ��ư���롣��
- *  ����
+ *  備考
+ *  　CPU例外ハンドラの起動により、CPUロック状態を変更してはいけない
+ *  　つまり、CPU例外発生時にCPUロック状態であれば、CPUロック状態の
+ *  　まま、CPU例外ハンドラを起動する。
+ *  　（CPU例外発生時にCPUロック解除状態であれば、CPUロック解除状態の
+ *  　　まま、CPU例外ハンドラを起動する。）
+ *  　　
  */
 #define _CALL_EXCEPTION_ROUTINE(label)                                  \
-    andi.   r6, r4, MSR_EE;   /*  r4��SSR1�Υ��ԡ�  */                  \
-    /* ��̤������ʤ�С�CPU���å����֤��ä��ʤ�� */                   \
-    /*  EQ�ե饰�����åȤ�����CPU���å�������֤ʤ�ʬ����  */         \
+    andi.   r6, r4, MSR_EE;   /*  r4：SSR1のコピー  */                  \
+    /* 結果がゼロならば（CPUロック状態だったなら） */                   \
+    /*  EQフラグがセットされる（CPUロック解除状態なら分岐）  */         \
     bne     exception_from_cpu_unlock_##label;                          \
                                                                         \
-    /*  CPU�㳰ȯ������CPU���å����֤��ä����  */                      \
-    /*  CPU���å����֤Τޤޡ�CPU�㳰�ϥ�ɥ��ƤӽФ�  */              \
-    /*  ��C����롼���󤫤��������Ϥ�����  */                         \
+    /*  CPU例外発生時にCPUロック状態だった場合  */                      \
+    /*  CPUロック状態のまま、CPU例外ハンドラを呼び出す  */              \
+    /*  　C言語ルーチンからの戻り番地を設定  */                         \
     LI32(r7, exit_CALL_EXCEPTION_ROUTINE_##label);                      \
     mtspr   LR, r7;                                                     \
-    bctr;               /*  C����롼����ƤӽФ�  */                   \
-    /* exit_CALL_EXCEPTION_ROUTINE_##label���Ϥ���äƤ���   */         \
+    bctr;               /*  C言語ルーチン呼び出し  */                   \
+    /* exit_CALL_EXCEPTION_ROUTINE_##label番地に戻ってくる   */         \
                                                                         \
-    /*  CPU�㳰ȯ������CPU���å�������֤��ä����  */                  \
+    /*  CPU例外発生時にCPUロック解除状態だった場合  */                  \
 exception_from_cpu_unlock_##label:;                                     \
     mfmsr   r10;                                                        \
-    ori     r11, r10, MSR_EE;   /*  EE�ӥåȤ򥻥å�  */                \
-    mtmsr   r11;                /*  ����ߵ���  */                      \
-    bctrl;                      /*  C����롼����ƤӽФ�  */           \
+    ori     r11, r10, MSR_EE;   /*  EEビットをセット  */                \
+    mtmsr   r11;                /*  割込み許可  */                      \
+    bctrl;                      /*  C言語ルーチン呼び出し  */           \
     mfmsr   r10;                                                        \
-    xori    r11, r10, MSR_EE;   /*  EE�ӥåȤ򥯥ꥢ  */                \
-    mtmsr   r11;                /*  ����߶ػ� (a)  */                  \
-exit_CALL_EXCEPTION_ROUTINE_##label:     /*  �ޥ����νи���٥�  */  
+    xori    r11, r10, MSR_EE;   /*  EEビットをクリア  */                \
+    mtmsr   r11;                /*  割込み禁止 (a)  */                  \
+exit_CALL_EXCEPTION_ROUTINE_##label:     /*  マクロの出口ラベル  */  
     
 
-/* �ޥ�������label��μ¤˥ޥ���Ÿ�����뤿�ᡢ�ޥ�����2�Ťˤ��Ƥ��� */
+/* マクロ引数labelを確実にマクロ展開するため、マクロを2重にしている */
 #define CALL_EXCEPTION_ROUTINE(label)   _CALL_EXCEPTION_ROUTINE(label)
     
-    /*  C����롼����ƤӽФ�  */
+    /*  C言語ルーチン呼び出し  */
     CALL_EXCEPTION_ROUTINE(exception_from_task)
     /*
-     *  ����߶ػߤ���äƤ���
-     *�����㳰ȯ������CPU���å����������Ƥ�������
-     *�����嵭(a)�Ԥǳ���߶ػߤˤ��Ƥ���
+     *  割込み禁止で戻ってくる
+     *　　例外発生時にCPUロックが解除されていた場合も
+     *　　上記(a)行で割込み禁止にしている
      */
     li      r0, 0
-    mtspr   SPRG0, r0           /*  ����ߥͥ��ȥ����󥿤򥯥ꥢ  */
-    lwz     sp, 0(sp)           /*  �����å�����  */
+    mtspr   SPRG0, r0           /*  割込みネストカウンタをクリア  */
+    lwz     sp, 0(sp)           /*  スタック切替  */
     lis     r3, reqflg@ha
     lwz     r4, reqflg@l(r3)    /*  r4=reqflg  */
-    cmpwi   crf0, r4, 0         /*  reqflg�Υ����å�  */
-    beq     ret_to_task_exc /*  �ǥ����ѥå��׵᤬�ʤ�����ʬ��  */        
-    stw     r0, reqflg@l(r3)    /*  reqflg�Υ��ꥢ  */
-    b       ret_exc             /*  �и������إ�����  */
+    cmpwi   crf0, r4, 0         /*  reqflgのチェック  */
+    beq     ret_to_task_exc /*  ディスパッチ要求がない場合は分岐  */        
+    stw     r0, reqflg@l(r3)    /*  reqflgのクリア  */
+    b       ret_exc             /*  出口処理へジャンプ  */
     
-/*  ¿���㳰�ξ��  */
+/*  多重例外の場合  */
 exception_from_int: 
     /*
-     *  ������󥰡�����٥󥷥��˹�碌�ơ������å��ݥ��󥿤�
-     *��8�Х��Ȥ��餷�Ƥ���
-     *��
+     *  コーリング・コンベンションに合わせて、スタックポインタを
+     *　8バイトずらしておく
+     *　
      *         -8  ----------------------
      *            |                      |
-     *         -4  ----------------------��
-     *            |                      |��C����롼����θƤӽФ��ˤ��
-     *       sp��  ----------------------   �񤭹��ޤ��
+     *         -4  ----------------------　
+     *            |                      |←C言語ルーチンの呼び出しにより
+     *       sp→  ----------------------   書き込まれる
      *  
      */
     subi    sp, sp, STACK_MARGIN
 
-    /*  C����롼����ƤӽФ�  */
+    /*  C言語ルーチン呼び出し  */
     CALL_EXCEPTION_ROUTINE(exception_from_int)
     /*
-     *  ����߶ػߤ���äƤ���
-     *�����㳰ȯ������CPU���å����������Ƥ�������
-     *�����嵭(a)�Ԥǳ���߶ػߤˤ��Ƥ���
-     *  ��
-     *  ��ʬ����ret_to_task_exc�Ǥ�CPU�㳰����Υ꥿����̿��rfi�ˤ��
-     *  ������MSR��SRR1
-     *  ���Ȥʤ�Τǡ����Υ���ƥ����Ȥ����Ȥ��ˤ�CPU�㳰ȯ��
-     *  ��ľ����CPU���å������å�������֤����������
+     *  割込み禁止で戻ってくる
+     *　　例外発生時にCPUロックが解除されていた場合も
+     *　　上記(a)行で割込み禁止にしている
+     *  　
+     *  　分岐先ret_to_task_excではCPU例外からのリターン命令rfiにより
+     *  　　　MSR←SRR1
+     *  　となるので、元のコンテキストに戻るときにはCPU例外発生
+     *  　直前のCPUロック／ロック解除状態が復元される
      */
-    			/*  �����å��ݥ��󥿤򸵤��᤹�ʾ嵭���ȡ� */
+    			/*  スタックポインタを元に戻す（上記参照） */
     addi    sp, sp, STACK_MARGIN
-    mfspr   r3, SPRG0   /*  SPRG0:����ߡ��㳰�ͥ��ȥ�����  */
-    subi    r3, r3, 1   /*  ����ߥͥ��ȥ����󥿤Υǥ��������  */
+    mfspr   r3, SPRG0   /*  SPRG0:割込み／例外ネストカウンタ  */
+    subi    r3, r3, 1   /*  割込みネストカウンタのディクリメント  */
     mtspr   SPRG0, r3
     b       ret_to_task_exc
 
 
 
 /*
- *  ����߽����������롼�����³��
- *��������ߥ٥�����0x100�Х��ȡ�64̿��ʬ�ˤ����ʤ��Τǡ�
- *�����Ĥ�ν����򤳤��ǹԤ���
- *��������ߥ���ȥ������¸����ñ��Ǥ����64̿��˼��ޤ�
- *���������Τ�ʤ��������������θ���ơ������˵��Ҥ�����
- *�����ץ����å����������ѥ쥸�������ü�쥸����������
- *�����Ѥ�����֤Ǥ��������
+ *  割込み出入口処理ルーチンの続き
+ *　　割込みベクタが0x100バイト（64命令分）しかないので、
+ *　　残りの処理をここで行う。
+ *　　割込みコントローラ依存部が単純であれば64命令に収まる
+ *　　かも知れないが、可読性を考慮して、ここに記述した。
+ *　　プロセッサコアの汎用レジスタと特殊レジスタの待避が
+ *　　済んだ状態でここに来る
  *
- *  �����٤Ƥγ��������ߤ�Ʊ�����Ϥ�ʬ������
+ *  　すべての外部割り込みで同じ番地に分岐する
  *
- *  SPRG0�쥸���������ߡ��㳰�Υͥ��ȥ����󥿤Ȥ��ƻ��Ѥ��롣
+ *  SPRG0レジスタを割込み／例外のネストカウンタとして使用する。
  *
- *  regflg ������å��������˳����ߤ�ػߤ��ʤ��ȡ�reqflg ������å�
- *  ��˵�ư���줿�����ߥϥ�ɥ���ǥǥ����ѥå����׵ᤵ�줿���ˡ�
- *  �ǥ����ѥå�����ʤ���
+ *  regflg をチェックする前に割り込みを禁止しないと、reqflg をチェック
+ *  後に起動された割り込みハンドラ内でディスパッチが要求された場合に、
+ *  ディスパッチされない。
  *  
- *  �㳰�٥�������text����������PC����ʬ�����Ϥ��ʤ��ʤä��Ȥ��Τ��ᡢ
- *  External_interrupt_1�򥰥����Х�������Ƥ��롣
+ *  例外ベクタからtextセクションにPC相対分岐で届かなくなったときのため、
+ *  External_interrupt_1をグローバル宣言している。
  *
  */
 
@@ -855,140 +855,140 @@ exception_from_int:
 #endif	/*  ABSOLUTE_JUMP_EXC_ENTRY  */
 
 External_interrupt_1:
-    /*  �ץ����å������Υ쥸����������ϺѤ�Ǥ���  */
+    /*  プロセッサコアのレジスタの待避は済んでいる  */
     
-    PUSH_ICU_IPM    /*  ����ߥ���ȥ�����ICU��IPM������  */
-    			/*  IPM�Υǡ�����������ǡ���ˤ�餺�� */
-    			/*  �����å��ݥ��󥿤�4�Х��ȶ�����  */
-    			/*  ��뤳��  */
+    PUSH_ICU_IPM    /*  割込みコントローラICUのIPMを待避  */
+    			/*  IPMのデータサイズの如何によらず、 */
+    			/*  スタックポインタは4バイト境界を  */
+    			/*  守ること  */
 
-    /*  ����ߥͥ��ȥ����󥿤Υ��󥯥����  */
-    mfspr   r3, SPRG0   /*  SPRG0:����ߡ��㳰�ͥ��ȥ�����  */
+    /*  割込みネストカウンタのインクリメント  */
+    mfspr   r3, SPRG0   /*  SPRG0:割込み／例外ネストカウンタ  */
     addi    r3, r3, 1
     mtspr   SPRG0, r3
 
-    /*  ����߸��Υ���ƥ����Ȥ�Ƚ��  */
+    /*  割込み元のコンテキストの判別  */
     cmpwi   crf0, r3, 1
     bne     interrupt_from_int
 
-    /*  ���ʤγ���ߤξ��  */
+    /*  初段の割込みの場合  */
 interrupt_from_task:
     /*
-     *  ������󥰡�����٥󥷥��˹�碌�ơ������å��ݥ��󥿤�
-     *��8�Х��Ȥ��餷�Ƥ�����
-     *��
+     *  コーリング・コンベンションに合わせて、スタックポインタを
+     *　8バイトずらしておく。
+     *　
      *         -8  ----------------------
      *            |      task sp         |
-     *         -4  ----------------------��
-     *            |                      |��C����롼����θƤӽФ��ˤ��
-     * STACKTOP��  ----------------------   �񤭹��ޤ��
+     *         -4  ----------------------　
+     *            |                      |←C言語ルーチンの呼び出しにより
+     * STACKTOP→  ----------------------   書き込まれる
      *  
      */
     LI32(r4, STACKTOP-STACK_MARGIN)  /*  r4=STACKTOP  */
-    stw     sp, 0(r4)     /*  �����������å��ݥ��󥿤���¸  */
-    mr      sp, r4        /*  �����å��ڤ��ؤ�  */
+    stw     sp, 0(r4)     /*  タスクスタックポインタの保存  */
+    mr      sp, r4        /*  スタック切り替え  */
 
     /*
-     *  ICU��¸�γ���߽��� 
-     * �� ��������
-     *  ������������װ���Ƚ��
-     *  ����������ߥޥ���������
-     *  ����������ߵ���
-     *  ������C����롼����ƤӽФ�
-     *  ����������߶ػ�
-     *  �������������׵�ե饰�Υ��ꥢ��ɬ�פǤ���С�
+     *  ICU依存の割込み処理 
+     * 　 処理内容
+     *  　　・割込み要因の判別
+     *  　　・割込みマスクの設定
+     *  　　・割込み許可
+     *  　　・C言語ルーチン呼び出し
+     *  　　・割込み禁止
+     *  　　・割り込み要求フラグのクリア（必要であれば）
      */
     PROC_ICU(FROM_TASK)
-    /*  ����߶ػߤ���äƤ���  */
+    /*  割込み禁止で戻ってくる  */
     
     li      r0, 0
-    mtspr   SPRG0, r0           /*  ����ߥͥ��ȥ����󥿤򥯥ꥢ  */
-    lwz     sp, 0(sp)           /*  �����å�����  */
-    POP_ICU_IPM                 /*  ����ߥ���ȥ�����ICU��IPM������  */
-    			        /*  IPM�Υǡ�����������ǡ���ˤ�餺�� */
-    			        /*  �����å��ݥ��󥿤�4�Х��ȶ�����  */
-    			        /*  ��뤳��  */
+    mtspr   SPRG0, r0           /*  割込みネストカウンタをクリア  */
+    lwz     sp, 0(sp)           /*  スタック切替  */
+    POP_ICU_IPM                 /*  割込みコントローラICUのIPMを復帰  */
+    			        /*  IPMのデータサイズの如何によらず、 */
+    			        /*  スタックポインタは4バイト境界を  */
+    			        /*  守ること  */
     lis     r3, reqflg@ha   
     lwz     r4, reqflg@l(r3)    /*  r4=reqflg  */
-    cmpwi   crf0, r4, 0         /*  reqflg�Υ����å�  */
-    beq     ret_to_task_int /*  �ǥ����ѥå��׵᤬�ʤ�����ʬ��  */        
-    stw     r0, reqflg@l(r3)    /*  reqflg�Υ��ꥢ  */
-    b       ret_int             /*  �и������إ�����  */
+    cmpwi   crf0, r4, 0         /*  reqflgのチェック  */
+    beq     ret_to_task_int /*  ディスパッチ要求がない場合は分岐  */        
+    stw     r0, reqflg@l(r3)    /*  reqflgのクリア  */
+    b       ret_int             /*  出口処理へジャンプ  */
 
             
-    /*  ¿�ų���ߤξ��  */
+    /*  多重割込みの場合  */
 interrupt_from_int:
     /*
-     *  ������󥰡�����٥󥷥��˹�碌�ơ������å��ݥ��󥿤�
-     *��8�Х��Ȥ��餷�Ƥ���
-     *��
+     *  コーリング・コンベンションに合わせて、スタックポインタを
+     *　8バイトずらしておく
+     *　
      *         -8  ----------------------
      *            |                      |
-     *         -4  ----------------------��
-     *            |                      |��C����롼����θƤӽФ��ˤ��
-     *       sp��  ----------------------   �񤭹��ޤ��
+     *         -4  ----------------------　
+     *            |                      |←C言語ルーチンの呼び出しにより
+     *       sp→  ----------------------   書き込まれる
      *  
      */
     subi    sp, sp, STACK_MARGIN
 
-    PROC_ICU(FROM_INT)  /*  ICU��¸�γ���߽���  */
-    /*  ����߶ػߤ���äƤ���  */
+    PROC_ICU(FROM_INT)  /*  ICU依存の割込み処理  */
+    /*  割込み禁止で戻ってくる  */
     
-    			/*  �����å��ݥ��󥿤򸵤��᤹�ʾ嵭���ȡ� */
+    			/*  スタックポインタを元に戻す（上記参照） */
     addi    sp, sp, STACK_MARGIN
-    mfspr   r3, SPRG0   /*  SPRG0:����ߡ��㳰�ͥ��ȥ�����  */
-    subi    r3, r3, 1   /*  ����ߥͥ��ȥ����󥿤Υǥ��������  */
+    mfspr   r3, SPRG0   /*  SPRG0:割込み／例外ネストカウンタ  */
+    subi    r3, r3, 1   /*  割込みネストカウンタのディクリメント  */
     mtspr   SPRG0, r3
-    POP_ICU_IPM     /*  ����ߥ���ȥ�����ICU��IPM������  */
-    			/*  IPM�Υǡ�����������ǡ���ˤ�餺�� */
-    			/*  �����å��ݥ��󥿤�4�Х��ȶ�����  */
-    			/*  ��뤳��  */
+    POP_ICU_IPM     /*  割込みコントローラICUのIPMを復帰  */
+    			/*  IPMのデータサイズの如何によらず、 */
+    			/*  スタックポインタは4バイト境界を  */
+    			/*  守ること  */
     
     /*  
-     *  �ǥ����ѥå����ƤФ���ñ��˳���߸����㳰ȯ�����ˤ������
+     *  ディスパッチャを呼ばずに単純に割込み元（例外発生元）に戻る場合
      *
-     *  rfi̿���Ʊ��̿��ʤΤǡ��嵭�Υ쥸������������sp�βû�����λ����
-     *  ���鸵�Υ���ƥ����Ȥ���롣
-     *  sp�βû���������˺Ѥ�ǳ���ߵ��Ĥˤʤ뿴�ۤϤʤ���
+     *  rfi命令は同期命令なので、上記のレジスタの復帰とspの加算が終了して
+     *  から元のコンテキストに戻る。
+     *  spの加算だけが先に済んで割込み許可になる心配はない。
      *
-     *    CPU�㳰��������������
-     *  ����CPU�㳰����Υ꥿����̿��rfi�ˤ��
-     *  ������MSR��SRR1
-     *  �����Ȥʤ�Τǡ����Υ���ƥ����Ȥ����Ȥ��ˤ�CPU�㳰ȯ��
-     *  ����ľ����CPU���å������å�������֤����������
+     *    CPU例外から復帰する場合
+     *  　　CPU例外からのリターン命令rfiにより
+     *  　　　MSR←SRR1
+     *  　　となるので、元のコンテキストに戻るときにはCPU例外発生
+     *  　　直前のCPUロック／ロック解除状態が復元される
      */
 ret_to_task_int:
 ret_to_task_exc:
-    LOAD_R0_12_SPRG     /*  gpr0-1,3-12, �ü�쥸����������  */
+    LOAD_R0_12_SPRG     /*  gpr0-1,3-12, 特殊レジスタの復元  */
     addi    sp, sp, GPR0_12_SPRG_AREA_SIZE
-    rfi     		/*  ����߸�������  */
+    rfi     		/*  割込み元へ復帰  */
     
 
 
-/*  �쥸���������򤹤�Τ�ɬ�פʥХ��ȿ�  */
+/*  レジスタを待避するのに必要なバイト数  */
                                     /*  gpr13-31,LR  */
 #define GPR13_31_LR_AREA_SIZE   (GPR13_31_AREA_SIZE +4)
 
 /*  
- *  �ޥ�����������ѥ쥸����gpr13-31������
+ *  マクロ定義：汎用レジスタgpr13-31の待避
  */
 
 #ifdef USE_MULTIPLE_WORD_LOAD_STORE
     /*  
-     *  ���������ɡ����ȥ����ޥ���ץ�̿��
-     *��������ץ���ơ������ˤ�äƤϤ����ä��٤��ʤä�
-     *�������ޤ��Τ����դ�ɬ��
+     *  整数ロード／ストア・マルチプル命令
+     *　　インプリメンテーションによってはかえって遅くなって
+     *　　しまうので注意が必要
      */
 
 #if SIL_ENDIAN == SIL_ENDIAN_LITTLE
-�����������ǥ���ѥ��롦���顼
-��������ȥ롦����ǥ����󡦥⡼�ɤˤ���Ȥ��ˤϵ�ǽ���ʤ�
-�������ʥϡ��ɥ������ˤ�����»����
+　　！ここでコンパイル・エラー
+　　　リトル・エンディアン・モードにあるときには機能しない
+　　　（ハードウェアによる制限事項）
 #endif
 
 
 #define STORE_R13_31                                \
-    stmw    r13, 0(sp)    /*  gpr13-31������  */
+    stmw    r13, 0(sp)    /*  gpr13-31を待避  */
 
 #else   /*  USE_MULTIPLE_WORD_LOAD_STORE  */
 #define STORE_R13_31                                \
@@ -1013,21 +1013,21 @@ ret_to_task_exc:
     stw     r31, 18*4(sp)                           
 #endif  /*  USE_MULTIPLE_WORD_LOAD_STORE  */
 
-    /*  �ޥ�����������ޤ�  */
+    /*  マクロ定義ここまで  */
 
 
 /*  
- *  �ޥ�����������ѥ쥸����gpr13-31������
+ *  マクロ定義：汎用レジスタgpr13-31の復元
  */
 
 #ifdef USE_MULTIPLE_WORD_LOAD_STORE
     /*  
-     *  ���������ɡ����ȥ����ޥ���ץ�̿��
-     *��������ץ���ơ������ˤ�äƤϤ����ä��٤��ʤä�
-     *�������ޤ��Τ����դ�ɬ��
+     *  整数ロード／ストア・マルチプル命令
+     *　　インプリメンテーションによってはかえって遅くなって
+     *　　しまうので注意が必要
      */
 #define LOAD_R13_31                                 \
-    lmw     r13, 0(sp)    /*  gpr13-31������  */
+    lmw     r13, 0(sp)    /*  gpr13-31を復元  */
     
 #else   /*  USE_MULTIPLE_WORD_LOAD_STORE  */
 #define LOAD_R13_31                                 \
@@ -1052,33 +1052,33 @@ ret_to_task_exc:
     lwz     r31, 18*4(sp)
 #endif  /*  USE_MULTIPLE_WORD_LOAD_STORE  */
 
-    /*  �ޥ�����������ޤ�  */
+    /*  マクロ定義ここまで  */
 
 
 
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  *
- *  dispatch �ϡ�SPRG0 = 0,����߶ػ߾��֤ǸƤӽФ��ʤ���Фʤ�ʤ���
- *  exit_and_dispatch �⡤SPRG0 = 0������߶ػ߾��֤ǸƤӽФ��Τ���§
- *  �Ǥ��뤬�������ͥ뵯ư�����б����뤿�ᡤSPRG0 = 1�ǸƤӽФ������
- *  �ˤ��б����Ƥ��롥
+ *  dispatch は、SPRG0 = 0,割込み禁止状態で呼び出さなければならない．
+ *  exit_and_dispatch も，SPRG0 = 0・割込み禁止状態で呼び出すのが原則
+ *  であるが，カーネル起動時に対応するため，SPRG0 = 1で呼び出した場合
+ *  にも対応している．
  */
 
     .global dispatch
 dispatch:
-    /*  ������å��쥸����������  */
+    /*  スクラッチレジスタの待避  */
     subi    sp, sp, GPR13_31_LR_AREA_SIZE + FPR14_31_AREA_SIZE
-    STORE_R13_31                /*  gpr13-31������  */
+    STORE_R13_31                /*  gpr13-31の待避  */
 
     mfspr   r7, LR
-    stw     r7, GPR13_31_LR_AREA_SIZE - 4(sp)   /*  LR������  */
+    stw     r7, GPR13_31_LR_AREA_SIZE - 4(sp)   /*  LRの待避  */
 
-    /*  ��ư�������쥸����������  */
+    /*  浮動小数点レジスタの待避  */
 #ifdef SUPPORT_FLOATING_POINT_REG
-    /*  �ϡ��ɥ���������ư�������쥸������������Ƥ�����  */
-    /*  ̤����������ʤ�8�Х��Ȥ˥��饤���Ȥ���  */    
+    /*  ハードウェアが浮動小数点レジスタを実装している場合  */
+    /*  未完成：本来なら8バイトにアライメントする  */    
     stfd    f14,  0*8+GPR13_31_LR_AREA_SIZE(sp)
     stfd    f15,  1*8+GPR13_31_LR_AREA_SIZE(sp)
     stfd    f16,  2*8+GPR13_31_LR_AREA_SIZE(sp)
@@ -1107,16 +1107,16 @@ dispatch:
     b       dispatcher
 
 
-    /*  �ǥ����ѥå���νи�  */
-    /*      �����å��ݥ��󥿤������ϺѤ�Ǥ���  */
-    /*  ����r10��runtsk�����äƸƤФ��  */
+    /*  ディスパッチャの出口  */
+    /*      スタックポインタの復元は済んでいる  */
+    /*  　　r10にruntskが入って呼ばれる  */
 dispatch_r: 
-    /*  ������å��쥸����������  */
+    /*  スクラッチレジスタの復帰  */
 
-    /*  ��ư�������쥸����  */
+    /*  浮動小数点レジスタ  */
 #ifdef SUPPORT_FLOATING_POINT_REG    
-    /*  �ϡ��ɥ���������ư�������쥸������������Ƥ�����  */
-    /*  ̤����������ʤ�8�Х��Ȥ˥��饤���Ȥ���  */    
+    /*  ハードウェアが浮動小数点レジスタを実装している場合  */
+    /*  未完成：本来なら8バイトにアライメントする  */    
     lfd     f14,  0*8+GPR13_31_LR_AREA_SIZE(sp)
     lfd     f15,  1*8+GPR13_31_LR_AREA_SIZE(sp)
     lfd     f16,  2*8+GPR13_31_LR_AREA_SIZE(sp)
@@ -1137,167 +1137,167 @@ dispatch_r:
     lfd     f31, 17*8+GPR13_31_LR_AREA_SIZE(sp)
 #endif  /* SUPPORT_FLOATING_POINT_REG */    
 
-    /*  ���ѥ쥸����  */
+    /*  汎用レジスタ  */
     LOAD_R13_31
 
-    /*  LR������  */
+    /*  LRの復元  */
     lwz     r7, GPR13_31_LR_AREA_SIZE - 4(sp)
     mtspr   LR, r7
 
     addi    sp, sp, GPR13_31_LR_AREA_SIZE + FPR14_31_AREA_SIZE
 
     /*
-     *  �������㳰�����׵�Υ����å�
-     *  dispatch_r��dispatcher����ƤӽФ���뤿�ᡤ
-     *  runtsk��r10�����äƤ��롥
+     *  タスク例外処理要求のチェック
+     *  dispatch_rはdispatcherから呼び出されるため，
+     *  runtskはr10に入っている．
      */                           
     lbz     r4, TCB_enatex(r10)         /*  r10=runtsk  */
     /*
-     *  �ޥ����ǡ����Υӥå����ȥ���ǥ������makeoffset.c��
-     *  BIT_BB�����BIT_LB�ǻ��ꤷ�Ƥ���
+     *  マスクデータのビット幅とエンディアンはmakeoffset.cの
+     *  BIT_BBおよびBIT_LBで指定している
      */                                 
     andi.   r5, r4, TCB_enatex_mask     /*  r5 = runtsk->enatex  */
-                    /* ��̤������ʤ�С�EQ�ե饰�����åȤ���� */
+                    /* 結果がゼロならば、EQフラグがセットされる */
 
-          /*  �������㳰�����ػߤʤ�dispatch()�θƤӽФ��������  */
-    beqlr               /*  ��LR��������Ϥ���Ǽ����Ƥ����  */
+          /*  タスク例外処理禁止ならdispatch()の呼び出し元に戻る  */
+    beqlr               /*  （LRに戻り番地が格納されている）  */
     lwz     r6, TCB_texptn(r10)          /*  r6 = runtsk->texptn  */
     cmpwi   crf0, r6, 0
-                        /*  �������㳰�׵᤬�ʤ���� */
-                        /*  dispatch()�θƤӽФ��������  */
-    beqlr               /*  ��LR��������Ϥ���Ǽ����Ƥ����  */
+                        /*  タスク例外要求がなければ */
+                        /*  dispatch()の呼び出し元に戻る  */
+    beqlr               /*  （LRに戻り番地が格納されている）  */
 
-    b       call_texrtn /*  �������㳰�����롼����ƤӽФ�  */
+    b       call_texrtn /*  タスク例外処理ルーチン呼び出し  */
     /*
-     *  call_texrtn()���餳���ˤ���äƤ��ʤ��ǡ�dispatch()��
-     *���ƤӽФ�����=LR�쥸�������ؤ��������ϡˤ�ľ����롣
-     *��
-     *��call_texrtn()�θƤӽФ��ˤ��(sp+3)��(ps+7)���Ϥ����Ƥ�
-     *���˲�����뤬��sp�ΰ��֤�dispatch()��ƤӽФ����Ȥ���Ʊ��
-     *���ʤΤ�����ʤ�
-     *��
-     *  sp��  ----------------------  
+     *  call_texrtn()からここには戻ってこないで、dispatch()の
+     *　呼び出し元（=LRレジスタが指し示す番地）に直接戻る。
+     *　
+     *　call_texrtn()の呼び出しにより(sp+3)〜(ps+7)番地の内容が
+     *　破壊されるが、spの位置はdispatch()を呼び出したときと同じ
+     *　なので問題ない
+     *　
+     *  sp→  ----------------------  
      *       |                      |
-     *    +4  ----------------------��
-     *       |                      |��call_texrtn()�θƤӽФ��ˤ��
-     *    +8  ----------------------   �񤭹��ޤ��
+     *    +4  ----------------------　
+     *       |                      |←call_texrtn()の呼び出しにより
+     *    +8  ----------------------   書き込まれる
      *  
      *  
-     *������
- ����*�����������㳰�����롼���������ư�������쥸��������Ѥ���
- ����*�������ϡ��������㳰�����롼����¦����ư�������쥸������
- ����*��������������Ԥ����ȡ�
+     *　注意
+ 　　*　　タスク例外処理ルーチン内で浮動小数点レジスタを使用する
+ 　　*　　場合は、タスク例外処理ルーチン側で浮動小数点レジスタの
+ 　　*　　待避／復元を行うこと。
      */
 
 
     .global exit_and_dispatch
 exit_and_dispatch:
     li      r0, 0
-    mtspr   SPRG0, r0           /*  �ͥ��ȥ����󥿤򥯥ꥢ  */
+    mtspr   SPRG0, r0           /*  ネストカウンタをクリア  */
     
 dispatcher:
     /*
-     * �����ˤϳ����߶ػߤ���뤳��
+     * ここには割り込み禁止で来ること
      */
     LOAD_VAL32(r10, schedtsk)   /*  r10 = schedtsk  */
     lis     r5, runtsk@ha
 	/*
-	 * ������runtsk��schedtsk����������Τϣ��Ĥΰ�̣�����롣
-	 * ��(1) schedtsk != NULL�ξ��
-	 * ���������̾�Υ������ڤ��ؤ���Ԥ���
-	 * ��(2) schedtsk == NULL�ξ��
-	 * ��������runtsk��NULL���������Ƥ�����
-	 * ����������dispatcher_1�ʹߤγ�����Ԥ��ǳ���ߤ����ꡢ�������
-	 * ����������iget_tid()�������뤵�줿�Ȥ���������TSK_NONE���֤�����
-	 * �����������ˤϡ��¹Ծ��֤Υ��������ʤ����ˡ�runtsk��NULL�ˤ���
-	 * ��������������ɬ�פ����롣��
+	 * ここでruntskにschedtskを代入するのは２つの意味がある。
+	 * 　(1) schedtsk != NULLの場合
+	 * 　　　　通常のタスク切り替えを行う。
+	 * 　(2) schedtsk == NULLの場合
+	 * 　　　　runtskにNULLを代入しておく。
+	 * 　　　　（dispatcher_1以降の割込み待ちで割込みが入り、その中で
+	 * 　　　　　iget_tid()がコールされたときに正しくTSK_NONEを返すため
+	 * 　　　　　には、実行状態のタスクがない時に、runtskをNULLにして
+	 * 　　　　　おる必要がある。）
 	 */
     stw     r10, runtsk@l(r5)       /*  runtsk=schedtsk(=r10)  */
 
     cmpwi   crf0, r10, 0
-    beq     dispatcher_1            /*  schedtsk��̵����г�����Ԥ���  */
+    beq     dispatcher_1            /*  schedtskが無ければ割込み待ちへ  */
 
-    lwz     r6, TCB_pc(r10)         /*  �¹ԺƳ����Ϥ���Ф���  */
-    mtctr   r6                      /*  CTR<-�¹ԺƳ�����  */
-    lwz     sp, TCB_sp(r10)         /*  �����å��ݥ��󥿤�����  */
-    bctr                            /*  �����סʲ������ȡ�  */
+    lwz     r6, TCB_pc(r10)         /*  実行再開番地を取り出して  */
+    mtctr   r6                      /*  CTR<-実行再開番地  */
+    lwz     sp, TCB_sp(r10)         /*  スタックポインタを復元  */
+    bctr                            /*  ジャンプ（下記参照）  */
 
     /*  
-     *  �¹ԺƳ����Ϥϰʲ���3�̤�
-     *  ��������ξ���r10=runtsk�ǸƤӽФ�����
-     *  �������ǥ����ѥå���νи���dispatch_r
-     *  ����������ߡ��㳰�νи�����ret_int_r
-     *  ��������������ưľ�塡������activate_r
+     *  実行再開番地は以下の3通り
+     *  　いずれの場合もr10=runtskで呼び出すこと
+     *  　　・ディスパッチャの出口　dispatch_r
+     *  　　・割込み／例外の出口　　ret_int_r
+     *  　　・タスク起動直後　　　　activate_r
      */
 
 
     /*  
-     *���¹Ԥ��٤��������������ޤ��ԤĽ���
+     *　実行すべきタスクが現れるまで待つ処理
      *
-     *  �������󥿥�������ƥ����Ȥ��ڤ괹����Τϡ�������ȯ����������
-     *  �����ˤɤΥ����å���Ȥ����Ȥ�������β��ȡ�����ߥϥ�ɥ����
-     *  �Υ������ǥ����ѥå����ɻߤȤ�����Ĥΰ�̣�����롥
+     *  ここで非タスクコンテキストに切り換えるのは，ここで発生する割込み
+     *  処理にどのスタックを使うかという問題の解決と，割込みハンドラ内で
+     *  のタスクディスパッチの防止という二つの意味がある．
      */ 
 dispatcher_1:
-    LI32(sp, STACKTOP)          /*  �����å��ڤ��ؤ�  */
+    LI32(sp, STACKTOP)          /*  スタック切り替え  */
     li      r3, 1
-    mtspr   SPRG0, r3           /*  �ͥ��ȥ����󥿡�1  */
+    mtspr   SPRG0, r3           /*  ネストカウンタ＝1  */
     
-    /*  �롼����ǻȤ�������Ѱդ��Ƥ���  */
-    LI32(r4, reqflg)            /*  reqflg�Υ��ɥ쥹  */
+    /*  ループ内で使う定数を用意しておく  */
+    LI32(r4, reqflg)            /*  reqflgのアドレス  */
     li      r0, 0
 
 dispatcher_2:
 #ifdef SUPPORT_POWER_MANAGEMENT
-                                /*  �����ϥ⡼�ɤ�������  */    
+                                /*  省電力モードがある場合  */    
     /*  
-     *  ����ߵ��ĤȾ����ϥ⡼�ɤؤΰܹ�
-     *  ��������ߤ�����äƤ�����˳���߶ػߤ�Ԥ�
-     *  ����r0��r4�����Ƥ��˲����ƤϤʤ�ʤ�
+     *  割込み許可と省電力モードへの移行
+     *  　・割込みから戻ってきた後に割込み禁止も行う
+     *  　・r0〜r4の内容を破壊してはならない
      *
-     *  ����
-     *      �ֳ���ߵ��ġפȡ־����ϥ⡼�ɤؤΰܹԡפ򥢥ȥߥå��˹Ԥ�
-     *      �ʤ��ץ����å��Ǥϡ�����ߤΥ����ߥ󥰤ˤ�äƤϡֳ���ߵ�
-     *      �ġפȡ־����ϥ⡼�ɤؤΰܹԡפδ֤ǳ���ߤ�����դ��Ƥ���
-     *      �����տޤ��ʤ����Ǿ����ϥ⡼�ɤ˰ܹԤ��Ƥ��ޤ��Τ����ա�
-     *      ����ߤˤ�äƼ¹Բ�ǽ�ʥ�����������Ƥ�ץ����å������꡼
-     *      �פ����ޤޤǼ¹Ԥ���ʤ��ʤ롣�ʼºݤˤϥ����޳���ߤˤ��
-     *      �����ϥ⡼�ɤ�����������Τǡ����������Ԥ��������֤Ϻ���
-     *      �Ǥ⥿���޳���߼����ǲ��������롣��
+     *  注意
+     *      「割込み許可」と「省電力モードへの移行」をアトミックに行え
+     *      ないプロセッサでは、割込みのタイミングによっては「割込み許
+     *      可」と「省電力モードへの移行」の間で割込みを受け付けてしま
+     *      い、意図しない形で省電力モードに移行してしまうので注意。
+     *      割込みによって実行可能なタスクが現れてもプロセッサがスリー
+     *      プしたままで実行されなくなる。（実際にはタイマ割込みにより
+     *      省電力モードから復帰するので、タスクが待たされる時間は最大
+     *      でもタイマ割込み周期で押さえられる。）
      */ 
     SAVE_POWPER
 #else   /* SUPPORT_POWER_MANAGEMENT */    
-                                /*  �����ϥ⡼�ɤ��ʤ����  */    
+                                /*  省電力モードがない場合  */    
     mfmsr   r5
     ori     r6, r5, MSR_EE
-    mtmsr   r6                  /*  ����ߵ���  */
-    /*  �����ǳ���ߤ����äơ���äƤ���  */
-    mtmsr   r5                  /*  ����߶ػ�  */
+    mtmsr   r6                  /*  割込み許可  */
+    /*  ここで割込みが入って、戻ってくる  */
+    mtmsr   r5                  /*  割込み禁止  */
 #endif  /* SUPPORT_POWER_MANAGEMENT */    
     lwz     r6, 0(r4)           /*  r6 = reqflg  */
     cmpwi   crf0, r6, 0
-               /*  �ǥ����ѥå��׵᤬�ʤ���Х롼�פ���Ƭ��  */
+               /*  ディスパッチ要求がなければループの先頭へ  */
     beq     dispatcher_2
-    stw     r0, 0(r4)           /*  reqflg�򥯥ꥢ  */
-    mtspr   SPRG0, r0           /*  �ͥ��ȥ����󥿤򥯥ꥢ  */
-    b       dispatcher          /*  �¹ԺƳ����Ϥ���Ф������إ�����  */
+    stw     r0, 0(r4)           /*  reqflgをクリア  */
+    mtspr   SPRG0, r0           /*  ネストカウンタをクリア  */
+    b       dispatcher          /*  実行再開番地を取り出す処理へジャンプ  */
 
 	/*
-	 *��������Ԥ���ľ���˹Ԥä������å����ؤ��ᤷ��ԤäƤ��ʤ�����
-	 *���ǥ����ѥå���νи���TCB������Ф����ͤ򥹥��å��ݥ���
-	 *���������ꤹ��Τ�����ʤ���
+	 *　割込み待ちの直前に行ったスタック切替の戻しを行っていないが、
+	 *　ディスパッチャの出口でTCBから取り出した値をスタックポイン
+	 *　タに設定するので問題ない。
 	 */
 
 
 
 /* 
- *  �����ߥϥ�ɥ�/CPU�㳰�ϥ�ɥ�и�����
+ *  割り込みハンドラ/CPU例外ハンドラ出口処理
  *
- * ����褬��������reqflg�����åȤ���Ƥ�����Τߤ����ˤ��롣
- * SPRG0 = 0,�����߶ػ߾���,������å��쥸��������¸����
- * ���֤ǸƤӽФ����ȡ� 
+ * 戻り先がタスクでreqflgがセットされている場合のみここにくる。
+ * SPRG0 = 0,割り込み禁止状態,スクラッチレジスタを保存した
+ * 状態で呼び出すこと。 
  *  
- *  �ޤ���r10��runtsk���ͤ�����Ƥ���ret_int_1�˥����פ��뤳��
+ *  また、r10にruntskの値を入れてからret_int_1にジャンプすること
  */
 
 ret_int:
@@ -1305,23 +1305,23 @@ ret_exc:
     LOAD_VAL32(r5, enadsp)  	/*  r5 = enadsp  */
     LOAD_VAL32(r10, runtsk) 	/*  r10 = runtsk  */
     cmpwi   crf0, r5, 0
-    beq     ret_int_1           /*  �ǥ����ѥå��ػߤʤ饸����  */
+    beq     ret_int_1           /*  ディスパッチ禁止ならジャンプ  */
     
     LOAD_VAL32(r5, schedtsk)  	/*  r5 = schedtsk  */
     cmpw    crf0, r5, r10
-    beq     ret_int_1           /*  runtsk=schedtsk�ʤ饸����  */
+    beq     ret_int_1           /*  runtsk=schedtskならジャンプ  */
     
     
-    /*  �Ĥ�Υ쥸��������¸  */
+    /*  残りのレジスタを保存  */
 
     subi    sp, sp, GPR13_31_AREA_SIZE + FPR_AREA_SIZE
-    /*  ���ѥ쥸����������  */
-    STORE_R13_31                /*  gpr13-31������  */
+    /*  汎用レジスタの待避  */
+    STORE_R13_31                /*  gpr13-31の待避  */
 
-    /*  ��ư�������쥸����������  */
+    /*  浮動小数点レジスタの待避  */
 #ifdef SUPPORT_FLOATING_POINT_REG    
-    /*  �ϡ��ɥ���������ư�������쥸������������Ƥ�����  */
-    /*  ̤����������ʤ�8�Х��Ȥ˥��饤���Ȥ���  */    
+    /*  ハードウェアが浮動小数点レジスタを実装している場合  */
+    /*  未完成：本来なら8バイトにアライメントする  */    
     stfd    f0,   0*8+GPR13_31_AREA_SIZE(sp)
     stfd    f1,   1*8+GPR13_31_AREA_SIZE(sp)
     stfd    f2,   2*8+GPR13_31_AREA_SIZE(sp)
@@ -1355,45 +1355,45 @@ ret_exc:
     stfd    f30, 30*8+GPR13_31_AREA_SIZE(sp)
     stfd    f31, 31*8+GPR13_31_AREA_SIZE(sp)
     /*  
-     * FPSCR������  
+     * FPSCRの待避  
      *
-     *���������å���8�Х��Ȼ��Ѥ���Τ�̵�̤Ǥ��뤬��
-     *����stfiwx̿��ϥ��ץ����ʤΤ����򤷤ʤ��ä���
-     *�����ʤޤ����б����������̿�᤬�ʤ��Τ������
+     *　　スタックを8バイト使用するのは無駄であるが、
+     *　　stfiwx命令はオプションなので選択しなかった。
+     *　　（また、対応するロード命令がないのも問題）
      *
      */
-    mffs    f0              /*  f0�β���2�Х��Ȣ�FPSCR  */
-                            /*  @(sp+���ե��å�)��f0  */
+    mffs    f0              /*  f0の下位2バイト←FPSCR  */
+                            /*  @(sp+オフセット)←f0  */
     stfd    f0, GPR13_31_AREA_SIZE+FPR0_13_AREA_SIZE-8(sp)
 #endif  /* SUPPORT_FLOATING_POINT_REG */    
 
     LI32(r5, ret_int_r)
-                                /*  r10 = runtsk�Ǥ��������  */
+                                /*  r10 = runtskでここに来る  */
     stw     sp, TCB_sp(r10)      /*  runtsk->sp = sp  */
-                                /*  �����������å��ݥ��󥿤���¸  */
+                                /*  タスクスタックポインタの保存  */
     stw     r5, TCB_pc(r10)     /*  runtsk->pc = ret_int_r  */
-                                /*  �ʼ¹ԺƳ����Ϥ���¸��  */
+                                /*  （実行再開番地の保存）  */
 
-    b       dispatcher          /*  �ǥ����ѥå���ƤӽФ�  */
+    b       dispatcher          /*  ディスパッチャ呼び出し  */
 
 
- /*  ����ߡ��㳰�νи������θ�Ⱦ��ʬ
-  *     ret_int����
-  *     ����ľ�ܡ�ret_int_1�˹�ή������
-  *     �����ǥ����ѥå�����ͳ���Ƥ�ä������
-  *     ����2�̤ꤢ��
-  *     ��������ξ���r10��runtsk�����äƤ���
+ /*  割込み／例外の出口処理の後半部分
+  *     ret_intから
+  *     　・直接、ret_int_1に合流する場合
+  *     　・ディスパッチャを経由してやって来る場合
+  *     　の2通りある
+  *     　いずれの場合もr10にruntskが入っている
   */
 ret_int_r:
 
 #ifdef SUPPORT_FLOATING_POINT_REG    
-    /*  �ϡ��ɥ���������ư�������쥸������������Ƥ�����  */
+    /*  ハードウェアが浮動小数点レジスタを実装している場合  */
 
-    /*  FPSCR������  */
+    /*  FPSCRの復元  */
     lfd     f0, GPR13_31_AREA_SIZE+FPR0_13_AREA_SIZE-8(sp)
-    mtfsf   0xf,f0          /*  FPSCR��f0�β���2�Х���  */
+    mtfsf   0xf,f0          /*  FPSCR←f0の下位2バイト  */
 
-    /*  ��ư�������쥸����������  */
+    /*  浮動小数点レジスタの復元  */
     lfd     f0,   0*8+GPR13_31_AREA_SIZE(sp)
     lfd     f1,   1*8+GPR13_31_AREA_SIZE(sp)
     lfd     f2,   2*8+GPR13_31_AREA_SIZE(sp)
@@ -1428,118 +1428,118 @@ ret_int_r:
     lfd     f31, 31*8+GPR13_31_AREA_SIZE(sp)
 #endif  /* SUPPORT_FLOATING_POINT_REG */    
 
-    /*  ���ѥ쥸����������  */
-    LOAD_R13_31     /*  gpr13-31������  */
+    /*  汎用レジスタの復元  */
+    LOAD_R13_31     /*  gpr13-31の復元  */
     addi    sp, sp, GPR13_31_AREA_SIZE + FPR_AREA_SIZE
 
-    /*  �ǥ����ѥå�����ͳ���ʤ����Ϥ��������ή  */
-    /*  ��r10��runtsk�����ä����֤Ǥ���������  */
+    /*  ディスパッチャを経由しない場合はここから合流  */
+    /*  （r10にruntskが入った状態でここに来る）  */
 ret_int_1:
-    /*  �������㳰�����׵�Υ����å�  */
+    /*  タスク例外処理要求のチェック  */
                                     /*  r10 = runtsk  */
     lbz     r4, TCB_enatex(r10)
     /*
-     *  �ޥ����ǡ����Υӥå����ȥ���ǥ������makeoffset.c��
-     *  BIT_BB�����BIT_LB�ǻ��ꤷ�Ƥ���
+     *  マスクデータのビット幅とエンディアンはmakeoffset.cの
+     *  BIT_BBおよびBIT_LBで指定している
      */                                 
     andi.   r5, r4, TCB_enatex_mask /*  r5 = runtsk->enatex  */
-                            /* ��̤������ʤ�С�EQ�ե饰�����åȤ���� */
-    beq     ret_int_2               /*  �������㳰�����ػߤʤ饸����  */
+                            /* 結果がゼロならば、EQフラグがセットされる */
+    beq     ret_int_2               /*  タスク例外処理禁止ならジャンプ  */
     lwz     r6, TCB_texptn(r10)      /*  r6 = runtsk->texptn  */
-        /*  �������㳰�׵᤬�ʤ���Фʤ饸����  */
+        /*  タスク例外要求がなければならジャンプ  */
     cmpwi   crf0, r6, 0
     beq     ret_int_2
     
     /*
-     *  ������󥰡�����٥󥷥��˹�碌�ơ������å��ݥ��󥿤�
-     *��8�Х��Ȥ��餷�Ƥ�����
-     *��
+     *  コーリング・コンベンションに合わせて、スタックポインタを
+     *　8バイトずらしておく。
+     *　
      *    -8  ----------------------
      *       |                      |
-     *    -4  ----------------------��
-     *       |                      |��call_texrtn()�θƤӽФ��ˤ��
-     *  sp��  ----------------------   �񤭹��ޤ��
+     *    -4  ----------------------　
+     *       |                      |←call_texrtn()の呼び出しにより
+     *  sp→  ----------------------   書き込まれる
      *  
      */
     subi    sp, sp, STACK_MARGIN
 
-    bl      call_texrtn             /*  �������㳰�����롼����ƤӽФ�  */
-		    	     /*  �����å��ݥ��󥿤򸵤��᤹�ʾ嵭���ȡ� */
+    bl      call_texrtn             /*  タスク例外処理ルーチン呼び出し  */
+		    	     /*  スタックポインタを元に戻す（上記参照） */
     addi    sp, sp, STACK_MARGIN
     /*  
-     *������
- ����*�����������㳰�����롼���������ư�������쥸��������Ѥ���
- ����*�������ϡ��������㳰�����롼����¦����ư�������쥸������
- ����*��������������Ԥ����ȡ�
+     *　注意
+ 　　*　　タスク例外処理ルーチン内で浮動小数点レジスタを使用する
+ 　　*　　場合は、タスク例外処理ルーチン側で浮動小数点レジスタの
+ 　　*　　待避／復元を行うこと。
      */
 
 ret_int_2:
     /*  
-     *��call_texrtn()���餳������ä���롣(�嵭addi̿����ͳ��
-     *����call_texrtn()��ƤФʤ�����ľ�ܤ���������
+     *　call_texrtn()からここに戻って来る。(上記addi命令を経由）
+     *　（call_texrtn()を呼ばない場合は直接ここに来る）
      *
- ����*�������Ū��ret_to_task_int��Ʊ�������ˤʤä�����
- ����*����̵���ˤޤȤ��Ȳ������������ʤ�Τ�
- ����*�����̡��Τޤޤˤ��Ƥ��롣
+ 　　*　　結果的にret_to_task_intと同じ処理になったが、
+ 　　*　　無理にまとめると可読性が悪くなるので
+ 　　*　　別々のままにしている。
      */
-    LOAD_R0_12_SPRG     /*  gpr0-1,3-12, �ü�쥸����������  */
+    LOAD_R0_12_SPRG     /*  gpr0-1,3-12, 特殊レジスタの復元  */
     addi    sp, sp, GPR0_12_SPRG_AREA_SIZE
     /*  
-     *  rfi̿���Ʊ��̿��ʤΤǡ��嵭�Υ쥸������������sp�βû�����λ����
-     *  ���鸵�Υ���ƥ����Ȥ���롣
-     *  sp�βû���������˺Ѥ�ǳ���ߵ��Ĥˤʤ뿴�ۤϤʤ���
+     *  rfi命令は同期命令なので、上記のレジスタの復帰とspの加算が終了して
+     *  から元のコンテキストに戻る。
+     *  spの加算だけが先に済んで割込み許可になる心配はない。
      */
-    rfi     /*  ����߸�������  */
+    rfi     /*  割込み元へ復帰  */
 
 
 
 
 /*
- *  ��������ư����
- *  ���ǥ����ѥå��㤫��ƤӽФ����Τǡ�r10�ˤ�runtsk�����äƤ���
- *  �������å��ݥ��󥿤�����Ѥ�
+ *  タスク起動処理
+ *  　ディスパッチャから呼び出されるので、r10にはruntskが入っている
+ *  　スタックポインタも設定済み
  */ 
 
     .globl activate_r
 activate_r:
-                                    /*  r10 = runtsk (�ǥ����ѥå��������) */
+                                    /*  r10 = runtsk (ディスパッチャで設定) */
     lwz     r4, TCB_tinib(r10)      /*  r4 = runtsk->tinib  */
 
-                                    /*  ��������ư���Ϥ�����  */
+                                    /*  タスク起動番地の設定  */
     lwz     r5, TINIB_task(r4)      
     mtctr   r5                      /*  CTR = runtsk->tinib->task  */
 
-                                    /*  �������ؤΰ����ʳ�ĥ�����  */
+                                    /*  タスクへの引数（拡張情報）  */
     lwz     r3, TINIB_exinf(r4)     /*  r3 = runtsk->tinib->TINIB_exinf  */
 
     /*
-     *  LR�쥸������ext_tsk�����ꤹ�뤳�Ȥˤ�ꡢext_tsk��
-     *  �ƤФʤ��ǥ������δؿ���ȴ�������ext_tsk��ʬ�����롣
+     *  LRレジスタにext_tskを設定することにより、ext_tskを
+     *  呼ばないでタスクの関数を抜ける場合もext_tskに分岐する。
      */                                 
     LI32(r6, ext_tsk)
-    mtspr   LR, r6                  /*  �����������������Ϥ�����  */
+    mtspr   LR, r6                  /*  タスクからの戻り番地を設定  */
 
     mfmsr   r8
     ori     r9, r8, MSR_EE
-    mtmsr   r9                      /*  ����ߵ���  */
+    mtmsr   r9                      /*  割込み許可  */
 
-    bctr                            /*  C����롼����ƤӽФ�  */
+    bctr                            /*  C言語ルーチン呼び出し  */
 
 
 /*
- *  ���������Ԥ� 
- *��������r3���Ԥ����֤�nsecñ�̤ǻ��ꤹ��
+ *  微少時間待ち 
+ *　　引数r3：待ち時間をnsec単位で指定する
  */
     .globl sil_dly_nse
 sil_dly_nse:
     LI32(r4, SIL_DLY_TIM1)
-    sub.    r3, r3, r4          /* r3 ����SIL_DLY_TIM1����� */
-    blelr                       /* ��̤�0�ʲ��ʤ�꥿���� */
+    sub.    r3, r3, r4          /* r3 からSIL_DLY_TIM1を引く */
+    blelr                       /* 結果が0以下ならリターン */
 
     LI32(r5, SIL_DLY_TIM2)
 sil_dly_nse_1:
-    sub.    r3, r3, r5          /* r3 ����SIL_DLY_TIM2����� */
-    bgt     sil_dly_nse_1       /* ��̤� 0 ����礭����Х롼�� */
+    sub.    r3, r3, r5          /* r3 からSIL_DLY_TIM2を引く */
+    bgt     sil_dly_nse_1       /* 結果が 0 より大きければループ */
     blr
 
 /*  end of file  */

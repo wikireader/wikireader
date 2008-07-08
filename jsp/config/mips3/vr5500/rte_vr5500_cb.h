@@ -8,32 +8,32 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _RTE_VR5500_CB_
@@ -42,72 +42,72 @@
 #define RTE_VR5500_CB
 
 /*
- *  �ǥХ����γ�����ƥ١������ɥ쥹
+ *  デバイスの割り当てベースアドレス
  */
 
-/* ���ꥢ�륳��ȥ����� (TL16PIR552) */
+/* シリアルコントローラ (TL16PIR552) */
 #define UART_CH01	0xb9001000
 #define UART_CH02	0xb9002000
 #define PRINTER_PPCS	0xb9003000
 #define PRINTER_ECPCS	0xb9004000
 
-/* ������ (uPD71054) */
+/* タイマ (uPD71054) */
 #define TIMER_BASE_ADDR	0xb9005000
 
-/* ����ߥ���ȥ�����(PIC) */
+/* 割込みコントローラ(PIC) */
 #define ICU_BASE_ADDR	0xb9000000
 
 /*
- *  �ǥХ����˶��뤵��륯���å�
+ *  デバイスに供給されるクロック
  */
-/* ���ꥢ��˶��뤵��륯���å����ȿ� [Hz]�ʥܡ��졼������ǻ��ѡ�
- * ��16MHz = 16000000 Hz ; �ܡ��ɤΥޥ˥奢��p21���ȡ� */
+/* シリアルに供給されるクロック周波数 [Hz]（ボーレート設定で使用）
+ * （16MHz = 16000000 Hz ; ボードのマニュアルp21参照） */
 #define XIN_CLOCK	16000000u
 
-/* �����ޤ˶��뤵��륯���å����ȿ� [kHz]
- *��TO_CLOCK ��1�ߥ��ü���(1kHz)��ȯ�������뤿��˻��ѡ�
- * (2MHz = 2000kHz ; �ܡ��ɤΥޥ˥奢��p22����) */
+/* タイマに供給されるクロック周波数 [kHz]
+ *（TO_CLOCK で1ミリ秒周期(1kHz)を発生させるために使用）
+ * (2MHz = 2000kHz ; ボードのマニュアルp22参照) */
 #define TIMER_CLOCK	2000u
 
 /*
- *  �ǥХ����γ���ߥޥ��������
+ *  デバイスの割込みマスクの定義
  *
- *  ͥ���� : (��) ���ꥢ�룱 -> ���ꥢ�룰 -> �����ޣ� (��)
+ *  優先度 : (低) シリアル１ -> シリアル０ -> タイマ０ (高)
  */
 
 /*
- *  ���ꥢ�룰����ߤγ���ߥޥ��������������ѡ�
- *  ������ߥ�٥�������������Ʊ����٥�����ꤷ�Ƥ���
+ *  シリアル０割込みの割込みマスク（送受信共用）
+ *  ・割込みレベルは送信も受信も同じレベルに設定している
  */
-#define CORE_IPM_SCC		INIT_CORE_IPM	/* MIPS3����(SR)�ѥǡ��� */
+#define CORE_IPM_SCC		INIT_CORE_IPM	/* MIPS3コア(SR)用データ */
 
-#define ICU_IPM_INT0_SCC0	TIMER0		/* ����ߥ���ȥ������ѥǡ��� */
+#define ICU_IPM_INT0_SCC0	TIMER0		/* 割込みコントローラ用データ */
 #define ICU_IPM_INT1_SCC0	0u
 
-/*  ���ꤹ�����ߥޥ�����IPM���ǵ��Ҥ���� */
+/*  設定する割込みマスク（IPM型で記述する） */
 #define IPM_SCC0	{ CORE_IPM_SCC, {ICU_IPM_INT0_SCC0, ICU_IPM_INT1_SCC0} }
 
 /*
- *  ���ꥢ�룱����ߤγ���ߥޥ��������������ѡ�
- *  ������ߥ�٥�������������Ʊ����٥�����ꤷ�Ƥ���
- *  ��MIPS3�����ѤΥǡ����ϡ�SCC0�ȶ���
+ *  シリアル１割込みの割込みマスク（送受信共用）
+ *  ・割込みレベルは送信も受信も同じレベルに設定している
+ *  ・MIPS3コア用のデータは、SCC0と共通
  */
-#define ICU_IPM_INT0_SCC1	(TIMER0 | SERIAL0) /* ����ߥ���ȥ������ѥǡ��� */
+#define ICU_IPM_INT0_SCC1	(TIMER0 | SERIAL0) /* 割込みコントローラ用データ */
 #define ICU_IPM_INT1_SCC1	0u
 
-/*  ���ꤹ�����ߥޥ�����IPM���ǵ��Ҥ���� */
+/*  設定する割込みマスク（IPM型で記述する） */
 #define IPM_SCC1	{ CORE_IPM_SCC, {ICU_IPM_INT0_SCC1, ICU_IPM_INT1_SCC1} }
 
 /*
- *  �����ޣ�����ߤγ���ߥޥ���
- *  �ܼ����Ǥϡ������޳���ߤ����ä��Ȥ��ϡ����Ƥγ�������ߤ�ػߤ��Ƥ��롣
+ *  タイマ０割込みの割込みマスク
+ *  本実装では、タイマ割込みが入ったときは、全ての外部割込みを禁止している。
  */
-#define CORE_IPM_TIMER		INIT_CORE_IPM	/* MIPS3����(SR)�ѥǡ��� */
+#define CORE_IPM_TIMER		INIT_CORE_IPM	/* MIPS3コア(SR)用データ */
 
-#define ICU_IPM_INT0_TIMER0	0u		/* ����ߥ���ȥ������ѥǡ��� */
+#define ICU_IPM_INT0_TIMER0	0u		/* 割込みコントローラ用データ */
 #define ICU_IPM_INT1_TIMER0	0u
 
-/*  ���ꤹ�����ߥޥ�����IPM���ǵ��Ҥ���� */
+/*  設定する割込みマスク（IPM型で記述する） */
 #define IPM_TIMER0	{ CORE_IPM_TIMER, {ICU_IPM_INT0_TIMER0, ICU_IPM_INT1_TIMER0} }
 
 #endif /* _PIC_ICU_H_ */

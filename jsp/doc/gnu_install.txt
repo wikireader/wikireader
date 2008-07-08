@@ -1,7 +1,7 @@
 
-                  �� GNU��ȯ�Ķ����ۥޥ˥奢�� ��
+                  ＝ GNU開発環境構築マニュアル ＝
 
-            ��Release 1.4�б����ǽ�����: 20-Dec-2003��
+            （Release 1.4対応，最終更新: 20-Dec-2003）
 
 ------------------------------------------------------------------------ 
  TOPPERS/JSP Kernel
@@ -11,143 +11,143 @@
  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
                              Toyohashi Univ. of Technology, JAPAN
 
- �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-     �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-     ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-     �ȡ�
-   (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-       �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-   (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-       ��𤹤뤳�ȡ�
- (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-     ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 
- �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 
  @(#) $Id: gnu_install.txt,v 1.26 2003/12/20 09:13:20 honda Exp $
 ------------------------------------------------------------------------
 
 
-����GNU��ȯ�Ķ��ι���
+１．GNU開発環境の構築
 
 
-1.1 ��ȯ�Ķ��γ���
+1.1 開発環境の概要
 
-�����ͥ�򥤥󥹥ȡ��뤹��ˤϡ�JSP�����ͥ�����ۥ��åȤ˴ޤޤ��ʳ�
-�ˡ��ʲ��Υġ��뤪��ӥ饤�֥�꤬ɬ�פǤ��롥
+カーネルをインストールするには，JSPカーネルの配布キットに含まれる以外
+に，以下のツールおよびライブラリが必要である．
 
-    GNU��ȯ�Ķ�
-       BINUTILS�ʥ�����֥顤��󥫤ʤɡ�
-       GCC-CORE��C����ѥ����
-       GDB�ʥǥХå���
-    NEWLIB��ɸ��C�饤�֥���
-    perl��ư���ǧ�� 5.005��
-    GNU Make��ư���ǧ�� 3.77��
+    GNU開発環境
+       BINUTILS（アセンブラ，リンカなど）
+       GCC-CORE（Cコンパイラ）
+       GDB（デバッガ）
+    NEWLIB（標準Cライブラリ）
+    perl（動作確認は 5.005）
+    GNU Make（動作確認は 3.77）
 
-�ƥġ���ΥС������ˤĤ��Ƥϡ��������å���˰ۤʤ뤿�ᡤ�������å���
-�Υޥ˥奢��򻲾ȤΤ��ȡ�
+各ツールのバージョンについては，ターゲット毎に異なるため，ターゲット毎
+のマニュアルを参照のこと．
 
-���ץꥱ�������ɸ��C�饤�֥�����Ѥ��ʤ����ˤ� NEWLIB ��ɬ�פ�
-������GCC �򥤥󥹥ȡ��뤹��ݤ� NEWLIB �����ä������Թ礬�褤���ᡤ
-NEWLIB ��ޤ�ƥ��󥹥ȡ��뤹����ˡ��ɸ��Ȥ��롥NEWLIB �򥤥󥹥ȡ���
-���ʤ����ˤϡ�GCC �Υ������ν�����ɬ�פȤʤꡤ GCC �� 2.95.3 ���о�
-�Ȥ��Ƹ�Ҥ��롥�������åȤؤΥ���������ɤȼ¹Ԥ� ROM��˥���GDB ����
-�����Ƥ��ʤ���Ρˤˤ�äƹԤ����ˤϡ�GDB �򥤥󥹥ȡ��뤹��ɬ�פϤ�
-����
+アプリケーションが標準Cライブラリを使用しない場合には NEWLIB は必要な
+いが，GCC をインストールする際に NEWLIB があった方が都合がよいため，
+NEWLIB も含めてインストールする方法を標準とする．NEWLIB をインストール
+しない場合には，GCC のソースの修正が必要となり， GCC の 2.95.3 を対象
+として後述する．ターゲットへのダウンロードと実行を ROMモニタ（GDB に対
+応していないもの）によって行う場合には，GDB をインストールする必要はな
+い．
 
-perl �� GNU Make �ϡ��ۤȤ�ɤ� Linux �� Cygwin �Ǥ�ɸ��ǥ��󥹥ȡ���
-����뤿�ᡤ�����˥��󥹥ȡ��뤹��ɬ�פϤʤ������󥹥ȡ��뤵��Ƥ��� 
-perl �ޤ��� make �ΥС��������Τꤿ�����ˤϡ�-v ���ץ�����Ĥ���
-�¹Ԥ���Ф褤��-v ���ץ����򥵥ݡ��Ȥ��Ƥ��ʤ� make �� GNU make ��
-�Ϥʤ��ˡ��ʤ����ʲ��������Ǥϡ�make���ޥ�ɤ� GNU Make �Ǥ����ΤȤ�
-�롥
+perl と GNU Make は，ほとんどの Linux と Cygwin では標準でインストール
+されるため，新たにインストールする必要はない．インストールされている 
+perl または make のバージョンを知りたい場合には，-v オプションをつけて
+実行すればよい（-v オプションをサポートしていない make は GNU make で
+はない）．なお，以下の説明では，makeコマンドが GNU Make であるものとす
+る．
 
-�ޤ��������γ�ȯ�Ķ��� Windows��˹��ۤ��뤿��ˤ� Cygwin ���Ѥ��롥
+また，これらの開発環境を Windows上に構築するためには Cygwin を用いる．
 
-    Cygwin��ư���ǧ�� 1.5.5��
+    Cygwin（動作確認は 1.5.5）
 
-Cygwin�Υ��󥹥ȡ���ˤĤ��Ƥϸ�Ҥ��롥�ޤ����ġ���Υ����������ɤ�
-������ɬ�פ����뤬��������Ҥ��롥
+Cygwinのインストールについては後述する．また，ツールのソースコードを修
+正する必要があるが，これも後述する．
 
-�����Υġ��뤪��ӥ饤�֥��Υ����������ɤϡ����Υ����Ȥ������ꤹ��
-���Ȥ��Ǥ��롥
+これらのツールおよびライブラリのソースコードは，次のサイトから入手する
+ことができる．
 
-    BINUTILS��GCC-CORE��GDB��GNU Make:
-        GNU�ץ���������     http://www.gnu.org/
+    BINUTILS，GCC-CORE，GDB，GNU Make:
+        GNUプロジェクト     http://www.gnu.org/
         Ring Server         http://www.ring.gr.jp/
 
     NEWLIB:
         Red Hat             http://sources.redhat.com/newlib/
-                    �ޤ���  ftp://sources.redhat.com/pub/newlib/
+                    または  ftp://sources.redhat.com/pub/newlib/
 
     Cygwin:
         Red Hat             http://sources.redhat.com/cygwin/
-                    �ޤ���  ftp://sources.redhat.com/pub/cygwin/
+                    または  ftp://sources.redhat.com/pub/cygwin/
         Ring Server         http://www.ring.gr.jp/
 
 
-1.2 ��ȯ�Ķ��ι�����ˡ
+1.2 開発環境の構築方法
 
-������Ǥϡ���ȯ�Ķ��ι�����ˡ���������롥��ȯ�Ķ��� Windows��˹��ۤ�
-����ˤϡ����餫���� Cygwin �򥤥󥹥ȡ��뤷�Ƥ������Ȥ�ɬ�פǤ��롥
-Cygwin �Υ��󥹥ȡ���������ջ���ϡ�1.3��ǽҤ٤롥
+この節では，開発環境の構築方法を説明する．開発環境を Windows上に構築す
+る場合には，あらかじめ Cygwin をインストールしておくことが必要である．
+Cygwin のインストール時の注意事項は，1.3節で述べる．
 
-(1) �������
+(1) 準備作業
 
-�ۥ��Ⱦ��ɬ�פʥġ��뤬­��ʤ����ˤϡ����餫���ᥤ�󥹥ȡ��뤷�Ƥ�
-��������Ū�ˤϡ�perl �� GNU Make ��ɬ�פǤ��롥����ˡ���ȯ�Ķ��ι���
-�˻Ȥ�����ˡ��ۥ��Ⱦ�ˤ�ǿ��� GCC �򥤥󥹥ȡ��뤷�Ƥ������Ȥ�˾��
-������
+ホスト上に必要なツールが足りない場合には，あらかじめインストールしてお
+く．具体的には，perl と GNU Make が必要である．さらに，開発環境の構築
+に使うために，ホスト上にも最新の GCC をインストールしておくことが望ま
+しい．
 
-�ʤ���JSP�����ͥ�����ۥ��åȤ˴ޤޤ�� perl������ץȤϡ�perl �Υץ�
-����ब /usr/bin/perl �ˤ����ΤȲ��ꤷ�Ƶ��Ҥ��Ƥ��롥perl �Υץ���
-���Υѥ�������Ȱۤʤ���ϡ��� perl������ץȤ���Ƭ�� perl ������
-�ѥ���������ɬ�פ����롥
+なお，JSPカーネルの配布キットに含まれる perlスクリプトは，perl のプロ
+グラムが /usr/bin/perl にあるものと仮定して記述している．perl のプログ
+ラムのパスがこれと異なる場合は，各 perlスクリプトの先頭の perl の絶対
+パスを修正する必要がある．
 
-(2) �������ե������Ÿ��
+(2) ソースファイルの展開
 
-BINUTILS��GCC-CORE��GDB��NEWLIB �Υ������ե������Ÿ�����롥�ʲ��Ǥϡ�
-Ÿ���ˤ��������줿�ǥ��쥯�ȥ�̾�򤽤줾�켡�Τ褦��ɽ�����롥
+BINUTILS，GCC-CORE，GDB，NEWLIB のソースファイルを展開する．以下では，
+展開により作成されたディレクトリ名をそれぞれ次のように表記する．
 
-    <BINUTILS-SRCDIR>   BINUTILS �Υ�������Ÿ�������ǥ��쥯�ȥ�
-    <GCC-SRCDIR>        GCC-CORE �Υ�������Ÿ�������ǥ��쥯�ȥ�
-    <GDB-SRCDIR>        GDB �Υ�������Ÿ�������ǥ��쥯�ȥ�
-    <NEWLIB-SRCDIR>     NEWLIB �Υ�������Ÿ�������ǥ��쥯�ȥ�
+    <BINUTILS-SRCDIR>   BINUTILS のソースを展開したディレクトリ
+    <GCC-SRCDIR>        GCC-CORE のソースを展開したディレクトリ
+    <GDB-SRCDIR>        GDB のソースを展開したディレクトリ
+    <NEWLIB-SRCDIR>     NEWLIB のソースを展開したディレクトリ
 
-(3) ��ȯ�Ķ����ۤΤ���Υǥ��쥯�ȥ�η���
+(3) 開発環境構築のためのディレクトリの決定
 
-��ȯ�Ķ����ۤ��뤿��ˡ��ʲ��Υǥ��쥯�ȥ���Ѱդ��롥
+開発環境を構築するために，以下のディレクトリを用意する．
 
-    <PREFIX>            ��ȯ�Ķ��򥤥󥹥ȡ��뤹��ǥ��쥯�ȥ�
-    <BINUTILS-OBJDIR>   BITUTILS �Υ��֥������Ȥ���������ǥ��쥯�ȥ�
-    <GCC-OBJDIR>        GCC-CORE �Υ��֥������Ȥ���������ǥ��쥯�ȥ�
-    <GDB-OBJDIR>        GDB �Υ��֥������Ȥ���������ǥ��쥯�ȥ�
-    <NEWLIB-OBJDIR>     NEWLIB �Υ��֥������Ȥ���������ǥ��쥯�ȥ�
+    <PREFIX>            開発環境をインストールするディレクトリ
+    <BINUTILS-OBJDIR>   BITUTILS のオブジェクトを生成するディレクトリ
+    <GCC-OBJDIR>        GCC-CORE のオブジェクトを生成するディレクトリ
+    <GDB-OBJDIR>        GDB のオブジェクトを生成するディレクトリ
+    <NEWLIB-OBJDIR>     NEWLIB のオブジェクトを生成するディレクトリ
 
-<PREFIX>/bin ���¹ԥѥ��˴ޤޤ��褦�˥�����������ԤäƤ������ޤ���
-make install �ϡ�<PREFIX> �ʲ��˽񤭹��߸��¤�����桼���ǹԤ�ɬ�פ���
-�롥
+<PREFIX>/bin が実行パスに含まれるようにシェルの設定を行っておく．また，
+make install は，<PREFIX> 以下に書き込み権限があるユーザで行う必要があ
+る．
 
-(4) �������åȤ�����
+(4) ターゲットの選択
 
-�������åȥץ����å��˱����ơ��������åȴĶ������򤹤롥����Ū�ˤϡ���
-���̤ꡥ
+ターゲットプロセッサに応じて，ターゲット環境を選択する．具体的には，次
+の通り．
 
-    �ץ����å�      �������åȴĶ���<TARGET>��
+    プロセッサ      ターゲット環境（<TARGET>）
     M68040          m68k-unknown-elf
     SH1, SH3        sh-hitachi-elf
     V850            v850-nec-elf
@@ -158,16 +158,16 @@ make install �ϡ�<PREFIX> �ʲ��˽񤭹��߸��¤�����桼���ǹԤ�ɬ�פ���
     mips3           mipsel-nec-elf
     Xstormy16       xstormy16-elf
 
-�ʲ����������åȴĶ���ɽ��ʸ����� <TARGET> ��ɽ�����롥
+以下，ターゲット環境を表す文字列を <TARGET> と表記する．
 
-�ʤ����������åȤˤ�äƤϡ��ġ���ޤ��ϥ饤�֥��Υ����������ɤν���
-��ɬ�פʾ�礬���롥�������ƤˤĤ��Ƥϡ��������å���Υޥ˥奢��˵���
-���롥
+なお，ターゲットによっては，ツールまたはライブラリのソースコードの修正
+が必要な場合がある．修正内容については，ターゲット毎のマニュアルに記述
+する．
 
-(5) BINUTILS �Υ��󥹥ȡ���
+(5) BINUTILS のインストール
 
-BINUTILS �ϡ�GCC-CORE �Υ��󥹥ȡ����ɬ�פʤ��ᡤGCC-CORE ������ä�
-���󥹥ȡ��뤹�롥BINUTILS �Υ��󥹥ȡ�����ϼ����̤ꡥ
+BINUTILS は，GCC-CORE のインストールに必要なため，GCC-CORE に先だって
+インストールする．BINUTILS のインストール手順は次の通り．
 
     % mkdir <BINUTILS-OBJDIR>
     % cd <BINUTILS-OBJDIR>
@@ -176,13 +176,13 @@ BINUTILS �ϡ�GCC-CORE �Υ��󥹥ȡ����ɬ�פʤ��ᡤGCC-CORE ������ä�
     % make
     % make install
 
-(6) GCC-CORE �Υ��󥹥ȡ���
+(6) GCC-CORE のインストール
 
-��NELIB �򥤥󥹥ȡ��뤹����
-NEWLIB �Υ��󥹥ȡ���ˤ� GCC-CORE ��ɬ�פʤ��ᡤGCC-CORE �Υ��󥹥ȡ�
-�����˹Ԥ���configure �ϡ�newlib �Υإå����ե������ <PREFIX> �ʲ�
-�˥��󥹥ȡ��뤹�뤿�ᡤ<PREFIX> �ʲ��˽񤭹��߸��¤Τ���桼�����ǹ�
-��ɬ�פ����롥GCC-CORE �Υ��󥹥ȡ�����ϼ����̤ꡥ
+・NELIB をインストールする場合
+NEWLIB のインストールには GCC-CORE が必要なため，GCC-CORE のインストー
+ルを先に行う．configure は，newlib のヘッダーファイルを <PREFIX> 以下
+にインストールするため，<PREFIX> 以下に書き込み権限のあるユーザーで行
+う必要がある．GCC-CORE のインストール手順は次の通り．
 
     % mkdir <GCC-OBJDIR>
     % cd <GCC-OBJDIR>
@@ -193,20 +193,20 @@ NEWLIB �Υ��󥹥ȡ���ˤ� GCC-CORE ��ɬ�פʤ��ᡤGCC-CORE �Υ��󥹥ȡ�
     % make
     % make install
 
-��NEWLIB �򥤥󥹥ȡ��뤷�ʤ���硥
-NEWLIB �򥤥󥹥ȡ��뤷�ʤ���硤�������ե�����ν�����ɬ�פȤʤ롥��
-���Ľ�ϡ�
-    <GCC-SRCDIR>/gcc/libgcc2.c �� 41,42���ܤ�
+・NEWLIB をインストールしない場合．
+NEWLIB をインストールしない場合，ソースファイルの修正が必要となる．修
+正個所は，
+    <GCC-SRCDIR>/gcc/libgcc2.c の 41,42行目の
     #include <stdlib.h>
     #include <unistd.h>
-    ����Ԥ򥳥��ȥ����Ȥ��롥
+    の二行をコメントアウトする．
 
-    <GCC-SRCDIR>/gcc/frame.c �� 42,43���ܤ�
+    <GCC-SRCDIR>/gcc/frame.c の 42,43行目の
     #include <stdlib.h>
     #include <unistd.h>
-    ����Ԥ򥳥��ȥ����Ȥ��롥
+    の二行をコメントアウトする．
 
-������� GCC-CORE �Υ��󥹥ȡ�����ϼ����̤ꡥ
+修正後の GCC-CORE のインストール手順は次の通り．
     
     % mkdir <GCC-OBJDIR>
     % cd <GCC-OBJDIR>
@@ -216,9 +216,9 @@ NEWLIB �򥤥󥹥ȡ��뤷�ʤ���硤�������ե�����ν�����ɬ�פȤʤ롥��
     % make
     % make install
 
-(7) GDB �Υ��󥹥ȡ���
+(7) GDB のインストール
 
-���μ��˽��äơ�GDB �򥤥󥹥ȡ��뤹�롥
+次の手順に従って，GDB をインストールする．
 
     % mkdir <GDB-OBJDIR>
     % cd <GDB-OBJDIR>
@@ -226,9 +226,9 @@ NEWLIB �򥤥󥹥ȡ��뤷�ʤ���硤�������ե�����ν�����ɬ�פȤʤ롥��
     % make
     % make install
 
-(8) NEWLIB �Υ��󥹥ȡ���
+(8) NEWLIB のインストール
 
-���μ��˽��äơ�NEWLIB �򥤥󥹥ȡ��뤹�롥
+次の手順に従って，NEWLIB をインストールする．
 
     % mkdir <NEWLIB-OBJDIR>
     % cd <NEWLIB-OBJDIR>
@@ -238,139 +238,139 @@ NEWLIB �򥤥󥹥ȡ��뤷�ʤ���硤�������ե�����ν�����ɬ�פȤʤ롥��
 
 
 
-�����������åȤؤΥ���������ɤȼ¹�
+２．ターゲットへのダウンロードと実行
 
-�桼�����ޥ˥奢��μ��ˤ������äơ�JSP�����ͥ뤪��ӥ��ץꥱ������
-��ץ�����ब���ۤǤ���ȡ��������åȥ����ƥ�إ���������ɤ��Ƽ¹Ԥ�
-�롥����������ɤȼ¹Ԥ���ˡ�ˤϡ�ROM��˥����Ѥ�����ˡ�ȡ�gdb�ܥ�����
-���Ѥ�����ˡ�����롥
+ユーザズマニュアルの手順にしたがって，JSPカーネルおよびアプリケーショ
+ンプログラムが構築できると，ターゲットシステムへダウンロードして実行す
+る．ダウンロードと実行の方法には，ROMモニタを用いる方法と，gdb＋スタブ
+を用いる方法がある．
 
-(A) ROM��˥����Ѥ�����ˡ
+(A) ROMモニタを用いる方法
 
-�������åȥ����ƥब ROM��˥�����äƤ�����ˤϡ��Х��ʥ�����ޤ���
-��ȥ����� S�����Υե������ROM��˥��Υ���������ɥ��ޥ�ɤ�Ȥä�
-����������ɤ����¹ԥ��ޥ�ɤ�Ȥäƥ���������ɤ������Ϥ���¹Ԥ����
-�褤��
+ターゲットシステムが ROMモニタを持っている場合には，バイナリ形式または
+モトローラ S形式のファイルを，ROMモニタのダウンロードコマンドを使って
+ダウンロードし，実行コマンドを使ってダウンロードした番地から実行すれば
+よい．
 
-(B) �����֤��Ѥ�����ˡ
+(B) スタブを用いる方法
 
-JSP�����ͥ�Ȱ��˻Ȥ���褦�˲�¤���������֤Υ����������ɤϡ�JSP����
-�ͥ�Υ����֥����Ȥ������������ɤ��뤳�Ȥ��Ǥ��롥�����֤���������
-�ɤ����顤README�ե�����˽��äƥ����֤��ۤ���ROM �ޤ��ϥե�å����
-���˽񤭹��ࡥ
+JSPカーネルと一緒に使えるように改造したスタブのソースコードは，JSPカー
+ネルのウェブサイトからダウンロードすることができる．スタブをダウンロー
+ドしたら，READMEファイルに従ってスタブを構築し，ROM またはフラッシュメ
+モリに書き込む．
 
-gdb�ܥ����֤��Ѥ��ƥץ����������������ɡ��¹Ԥ�����ϼ����̤ꡥ
+gdb＋スタブを用いてプログラムをダウンロード・実行する手順は次の通り．
 
     % <TARGET>-gdb jsp
     GNU gdb 4.18
     Copyright 1998 Free Software Foundation, Inc.
-    .......... �ʲ���å�������³�� ..........
+    .......... 以下メッセージが続く ..........
     (gdb) 
 
-gdb ����ư�����顤���Υ��ޥ�ɤ�¹Ԥ��ơ��������åȥ����ƥ����³���롥
+gdb が起動したら，次のコマンドを実行して，ターゲットシステムと接続する．
 
     (gdb) set remotebaud <BPS>
     (gdb) target remote /dev/ttyXX
 
-<BPS>��/dev/ttyXX �ˤϡ����줾�졤�������åȥ����ƥ����³���Ƥ��륷��
-����ݡ��ȤΥܡ��졼�Ȥȡ��ǥХ���̾����ꤹ�롥���ˡ�load ���ޥ�ɤ�
-��ꡤ�ץ����������������ɤ��롥
+<BPS>，/dev/ttyXX には，それぞれ，ターゲットシステムを接続しているシリ
+アルポートのボーレートと，デバイス名を指定する．次に，load コマンドに
+より，プログラムをダウンロードする．
 
     (gdb) load
 
-�ץ������μ¹Ԥϡ�continue ���ޥ�ɤǹԤ���
+プログラムの実行は，continue コマンドで行う．
 
     (gdb) continue
 
-�������åȥ����ƥ�ˤ�äƤϡ��ץ������μ¹���˥���ȥ�����-C ����
-�Ϥ��롤�ޤ��� NMI �򤫤��뤳�Ȥǡ��ץ���������ߤ����� gdb �����椬
-�᤹���Ȥ��Ǥ��롥������������߶ػ߾��֤Ǥϡ�����ȥ�����-C ����ߤ�
-���뤳�ȤϤǤ��ʤ����ܤ����ϡ������֤� README�ե�����ޤ��ϥ������å�
-��Υޥ˥奢��򻲾Ȥ��뤳�ȡ�
+ターゲットシステムによっては，プログラムの実行中にコントロール-C を入
+力する，または NMI をかけることで，プログラムを停止させて gdb に制御が
+戻すことができる．ただし，割込み禁止状態では，コントロール-C で停止さ
+せることはできない．詳しくは，スタブの READMEファイルまたはターゲット
+毎のマニュアルを参照すること．
 
 
 
-����Cygwin�Υ��󥹥ȡ���
+３．Cygwinのインストール
 
-�ܥ��󥹥ȡ���ޥ˥奢��ϡ�cygwin��1.5.5�С��������оݤˤ��Ƥ��롥
-�ޤ����ʲ��Υ����ȤǤ�Cygwin�˴ؤ�������ɥ�����Ȥ��ޤȤ���Ƥ��롥
+本インストールマニュアルは，cygwinの1.5.5バージョンを対象にしている．
+また，以下のサイトではCygwinに関する情報やドキュメントがまとめられている．
 http://www.sixnine.net/cygwin/cygwin-doc/
 
-3.1ɬ�פʥե�����
-Cygwin�Υ��󥹥ȡ����ɬ�פʥե�����ϼ��Υ����Ȥ������ꤹ�뤳�Ȥ��Ǥ��롥
+3.1必要なファイル
+Cygwinのインストールに必要なファイルは次のサイトから入手することができる．
 
         Red Hat             http://www.cygwin.com/
-                    �ޤ���  ftp://sources.redhat.com/pub/cygwin/
+                    または  ftp://sources.redhat.com/pub/cygwin/
         Ring Server         http://www.ring.gr.jp/
 
-�嵭�Υ����Ȥ���ǿ��Ǥ� setup.exe �����������ɤ��롥
+上記のサイトから最新版の setup.exe をダウンロードする．
 
-3.2���󥹥ȡ���
-setup.exe ��¹Ԥ���ȡ�
+3.2インストール
+setup.exe を実行すると，
 
-�����󥿡��ͥåȤ������������ɤ���
-�����󥿡��ͥåȤ��饤�󥹥ȡ��뤹��
-����������ǥ��쥯�ȥ꤫�饤�󥹥ȡ��뤹��
+・インターネットからダウンロードする
+・インターネットからインストールする
+・ローカルディレクトリからインストールする
 
-�������륤�󥹥ȡ����ˡ�˥����å������˿ʤࡥ���椫�Υޥ���˥��󥹥ȡ�
-�뤹��ʤ顤1���ܤϥ��󥿡��ͥåȤ��饤�󥹥ȡ��륤�᡼������������
-�ɤ�����Υޥ���ˤϤ����Υե�����򥳥ԡ����ƥ�������ǥ��쥯�ȥ꤫
-�饤�󥹥ȡ��뤹��Ф褤��
+該当するインストール手法にチェックし次に進む．何台かのマシンにインストー
+ルするなら，1台目はインターネットからインストールイメージをダウンロー
+ドし，後のマシンにはそれらのファイルをコピーしてローカルディレクトリか
+らインストールすればよい．
 
-�ʲ������󥿡��ͥåȤ������������ɤ�����ˤĤ����������롥���������
-�ɤ����򤹤��ɬ�פʤ�� proxy ������θ塤�ߥ顼�����Ȥΰ�����������
-��Τǡ��᤯�Υ����Ȥ����򤹤롥
+以下，インターネットからダウンロードする場合について説明する．ダウンロー
+ドを選択すると必要ならば proxy の設定の後，ミラーサイトの一覧が示され
+るので，近くのサイトを選択する．
 
-���ˡ��ѥå�����������������뤿�ᡤɬ�פʥѥå����������򤹤롥�ä˲�
-���������꤬�ʤ������ꤹ�٤ƤΥѥå������򥤥󥹥ȡ��뤹��Τ�˾�ޤ�����
+次に，パッケージ一覧が示されるため，必要なパッケージを選択する．特に回
+線等の問題がないかぎりすべてのパッケージをインストールするのが望ましい．
 
-����������ɤ���λ������⤦���� setup.exe ��¹Ԥ��ơ���������ǥ���
-���ȥ꤫��Υ��󥹥ȡ�������򤹤롥���˥��󥹥ȡ��븵�Υǥ��쥯�ȥ�
-(��ǥ���������ɤ����ե����뤬¸�ߤ���ǥ��쥯�ȥꡤ�ǥե���Ȥ�����
-����Ƥ���Ϥ�)�����򤹤롥���˥��󥹥ȡ����������˰ܤ뤬���ä���ͳ
-���ʤ��¤�ǥե���Ȥ� C:\Cygwin �˥��󥹥ȡ��뤹�롥���˥��󥹥ȡ���
-����ѥå����������򤹤롥��ۤɥ���������ɤ��줿�ե����뤬ɽ�����졤
-�ǥ��ե���ȤǤ����ƥ��󥹥ȡ��뤵��뤳�ȤˤʤäƤ��뤿�ᡤñ�� next 
-�򲡤��ƥ��󥹥ȡ���򳫻Ϥ��롥
+ダウンロードが終了したらもう一度 setup.exe を実行して，ローカルディレ
+クトリからのインストールを選択する．次にインストール元のディレクトリ
+(上でダウンロードしたファイルが存在するディレクトリ，デフォルトで選択
+されているはず)を選択する．次にインストール先の選択に移るが，特に理由
+がない限りデフォルトの C:\Cygwin にインストールする．次にインストール
+するパッケージを選択する．先ほどダウンロードされたファイルが表示され，
+ディフォルトでは全てインストールされることになっているため，単に next 
+を押してインストールを開始する．
 
 
-3.3.��ȯ�Ķ��Υ��󥹥ȡ���
+3.3.開発環境のインストール
 
-3.3.1 �Х��ʥ꤫��Υ��󥹥ȡ���
+3.3.1 バイナリからのインストール
 
-�ä˺ǿ��ǤΥ���ѥ��餬ɬ�פǤʤ���С�TOPPERS/JSP �Υۡ���ڡ���
-��http://www.toppers.jp/�ˤ��� SH �Ѥ� BINUTILS,GCC-CORE,GDB �ΥХ���
-���gnu_cygwin_sh.tar.gz�ˤ�c:\Cygwin\usr\local�˥���������ɤ��ưʲ�
-�μ���Ÿ�����롥�ʤ������Υե�����ˤ�NEWLIB�ϴޤޤ�Ƥ��ʤ�����
-GDB-Stub��TOPPERS/JSP �� sample1 �Υ���ѥ���ˤϻپ�Ϥʤ����桼����
-���ץꥱ��������������뤵����ɬ�פʤ����ӥ��������饳��ѥ��롤����
-���ȡ��뤹�롥�Х��ʥ��gnu_cygwin_sh.tar.gz�ˤϡ�Cygwin �� /usr/local 
-��Ÿ�����롥
+特に最新版のコンパイラが必要でなければ，TOPPERS/JSP のホームページ
+（http://www.toppers.jp/）から SH 用の BINUTILS,GCC-CORE,GDB のバイナ
+リ（gnu_cygwin_sh.tar.gz）をc:\Cygwin\usr\localにダウンロードして以下
+の手順で展開する．なお，このファイルにはNEWLIBは含まれていないが，
+GDB-Stub，TOPPERS/JSP の sample1 のコンパイルには支障はない．ユーザー
+アプリケーションを作成するさい，必要なら別途ソースからコンパイル，イン
+ストールする．バイナリ（gnu_cygwin_sh.tar.gz）は，Cygwin の /usr/local 
+で展開する．
 
     $ cd /usr/local
     $ tar xvfz gnu_cygwin_sh.tar.gz
 
-�����/usr/local/sh�ʲ��˳�ȯ�ġ��뤬���󥹥ȡ��뤵��롥����
-/usr/local/sh/bin �˥ѥ����̤�������Ū�ˤϥۡ����cygwin�¹Ի��Υ����
-�ȥǥ��쥯�ȥ�)��bash������ե�����".bashrc"��������Ƽ��ΰ�Ԥ��ɲä�
-�롥
+これで/usr/local/sh以下に開発ツールがインストールされる．次に
+/usr/local/sh/bin にパスを通す．具体的にはホーム（cygwin実行時のカレン
+トディレクトリ)にbashの設定ファイル".bashrc"を作成して次の一行を追加す
+る．
 
 export PATH=/usr/local/sh/bin:${PATH}
 
-��ϡ�JSP�γƥ������åȤ�Makefile��Ƭ�ˤ���"CYGWIN = ture"����ʬ�Υ���
-��ȥ����Ȥ򳰤���Cygwin���JSP�Υ���ѥ��뤬��ǽ�Ǥ��롥
+後は，JSPの各ターゲットのMakefile先頭にある"CYGWIN = ture"の部分のコメ
+ントアウトを外せばCygwin上でJSPのコンパイルが可能である．
 
 
-3.4.gdb�ˤ��ǥХå�
-GDB�Υ��ޥ�ɥ饤�󤫤�COM1��ͳ�ǥ������åȤ���³������ϡ�
+3.4.gdbによるデバッグ
+GDBのコマンドラインからCOM1経由でターゲットに接続する場合は，
 
 (gdb)target remote /dev/ttyS0
 
-COM2��ͳ�ξ���
+COM2経由の場合は
 
 (gdb)target remote /dev/ttyS1
 
-�Ȥ��롥
+とする．
 
 
-�ʾ�
+以上

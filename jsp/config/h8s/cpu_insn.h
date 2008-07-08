@@ -10,46 +10,46 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef	_CPU_INSN_H_
 #define	_CPU_INSN_H_
 
-/* �����ˤ����Ѥ��Ƥ��롢MAX_IPM �� cpu_config.h ����� */
+/* 下記にて利用している、MAX_IPM は cpu_config.h で定義 */
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ����쥸���������ؿ�
+ *  制御レジスタの操作関数
  */
 
-/* ����ǥ���󥳡��ɥ쥸������CCR�ˤθ����ͤ��ɽФ� */
+/* コンデションコードレジスタ（CCR）の現在値の読出し */
 Inline UB current_ccr(void)
 {
 	UB	ccr;
@@ -59,13 +59,13 @@ Inline UB current_ccr(void)
 	return(ccr);
 }
 
-/* ����ǥ�����󥳡��ɥ쥸������CCR�ˤθ����ͤ��ѹ� */
+/* コンディションコードレジスタ（CCR）の現在値の変更 */
 Inline void set_ccr(UB ccr)
 {
 	Asm( "ldc.b	%0l, ccr" ::"r"(ccr) );
 }
 
-/* �������ƥ�ɥ쥸������EXR�ˤθ����ͤ��ɽФ� */
+/* エクステンドレジスタ（EXR）の現在値の読出し */
 Inline UB current_exr(void)
 {
 	UB	exr;
@@ -75,40 +75,40 @@ Inline UB current_exr(void)
 	return(exr);
 }
 
-/* ����ǥ���󥳡��ɥ쥸������EXR�ˤθ����ͤ��ѹ� */
+/* コンデションコードレジスタ（EXR）の現在値の変更 */
 Inline void set_exr(UB exr)
 {
 	Asm( "ldc.b	%0l, exr" :: "r"(exr) );
 }
 
 /*
- *  ����ߥޥ������饤�֥�� (����ߥ⡼�ɣ���)
+ *  割込みマスク操作ライブラリ (割込みモード２用)
  */
 
-/* ���ߤγ���ߥޥ������ɽФ� */
+/* 現在の割込みマスクの読出し */
 Inline IPM current_intmask(void)
 {
 	return(  (IPM)  (current_exr() &  EXR_I_MASK) );
 }
 
-/* ����ߥޥ��������� */
+/* 割込みマスクの設定 */
 Inline void set_intmask(IPM intmask)
 {
 	set_exr( (IPM) ((current_exr() & ~EXR_I_MASK) | intmask ) );
 }
 
-/* �����ͥ�������Τ��٤Ƥγ���� �� ����ߥ�٥뤬MAX_IPM �ʲ��γ���� */
+/* カーネル管理下のすべての割込み ＝ 割込みレベルがMAX_IPM 以下の割込み */
 
-/* �����ͥ�������Τ��٤Ƥγ���ߤ�ػ� (NMI�����)  */
+/* カーネル管理下のすべての割込みを禁止 (NMIを除く)  */
 Inline void disint(void)
 {
 	/* set_intmask( (IPM) MAX_IPM ); */
 	set_exr( (IPM) ((current_exr() & ~EXR_I_MASK) | MAX_IPM ) );
 }
 
-/* �����ͥ�������Τ��٤Ƥγ���ߤ���� (NMI�����) */
-/*   ���ν����ϡ����¾塢�����ͥ��������̵ͭ����鷺�����٤Ƥγ���ߤ�
-     ���Ĥ��뤳�ȤˤʤäƤ��롣 */
+/* カーネル管理下のすべての割込みを許可 (NMIを除く) */
+/*   この処理は、事実上、カーネル管理下の有無を問わず、すべての割込みを
+     許可することになっている。 */
 Inline void enaint()
 {
 	/* set_intmask( (IPM) 0 ); */
@@ -116,10 +116,10 @@ Inline void enaint()
 }
 
 /*
- *  ����ߥ��å����֤������Ѵؿ�
+ *  割込みロック状態の制御用関数
  */
 
-/* ���٤Ƥγ���ߤ�ػ� (NMI�����) */
+/* すべての割込みを禁止 (NMIを除く) */
 Inline void _disint_()
 {
 	/* set_intmask( (IPM) 7 ); */
@@ -127,16 +127,16 @@ Inline void _disint_()
 }
 
 /*
- *  �ӥå�����Ѵؿ�
+ *  ビット操作用関数
  */
 
-/* �ӥåȥ��ꥢ */
+/* ビットクリア */
 Inline void bitclr(UW addr, UB bit)
 {
 	Asm( "bclr %1l, @%0" :: "r"(addr), "r"(bit) );
 }
 
-/* �ӥåȥ��å� */
+/* ビットセット */
 Inline void bitset(UW addr, UB bit)
 {
 	Asm( "bset %1l, @%0" :: "r"(addr), "r"(bit) );

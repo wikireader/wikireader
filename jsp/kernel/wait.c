@@ -6,45 +6,45 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: wait.c,v 1.6 2003/06/04 01:46:16 hiro Exp $
  */
 
 /*
- *	�Ԥ����ִ����⥸�塼��
+ *	待ち状態管理モジュール
  */
 
 #include "jsp_kernel.h"
 #include "wait.h"
 
 /*
- *  �Ԥ����֤ؤΰܹԡʥ����ॢ���Ȼ����
+ *  待ち状態への移行（タイムアウト指定）
  *
  */
 #ifdef __waimake
@@ -68,11 +68,11 @@ make_wait_tmout(WINFO *winfo, TMEVTB *tmevtb, TMO tmout)
 #endif /* __waimake */
 
 /*
- *  �Ԥ�����Τ���Υ��������֤ι���
+ *  待ち解除のためのタスク状態の更新
  *
- *  tcb �ǻ��ꤵ��륿�������Ԥ��������褦���������֤򹹿����롥��
- *  ��������륿�������¹ԤǤ�����֤ˤʤ���ϡ���ǥ����塼�ˤĤʤ���
- *  �ޤ����ǥ����ѥå���ɬ�פʾ��ˤ� TRUE ���֤���
+ *  tcb で指定されるタスクを，待ち解除するようタスク状態を更新する．待
+ *  ち解除するタスクが実行できる状態になる場合は，レディキューにつなぐ．
+ *  また，ディスパッチが必要な場合には TRUE を返す．
  */
 Inline BOOL
 make_non_wait(TCB *tcb)
@@ -81,13 +81,13 @@ make_non_wait(TCB *tcb)
 
 	if (!(TSTAT_SUSPENDED(tcb->tstat))) {
 		/*
-		 *  �Ԥ����֤���¹ԤǤ�����֤ؤ�����
+		 *  待ち状態から実行できる状態への遷移
 		 */
 		return(make_runnable(tcb));
 	}
 	else {
 		/*
-		 *  ����Ԥ����֤��鶯���Ԥ����֤ؤ�����
+		 *  二重待ち状態から強制待ち状態への遷移
 		 */
 		tcb->tstat = TS_SUSPENDED;
 		LOG_TSKSTAT(tcb);
@@ -96,7 +96,7 @@ make_non_wait(TCB *tcb)
 }
 
 /*
- *  �Ԥ����
+ *  待ち解除
  */
 #ifdef __waicmp
 
@@ -113,7 +113,7 @@ wait_complete(TCB *tcb)
 #endif /* __waicmp */
 
 /*
- *  �����ॢ���Ȥ�ȼ���Ԥ����
+ *  タイムアウトに伴う待ち解除
  */
 #ifdef __waitmo
 
@@ -144,7 +144,7 @@ wait_tmout_ok(TCB *tcb)
 #endif /* __waitmook */
 
 /*
- *  �Ԥ����֤ζ������
+ *  待ち状態の強制解除
  */
 #ifdef __waican
 
@@ -173,7 +173,7 @@ wait_release(TCB *tcb)
 #endif /* __wairel */
 
 /*
- *  ��������ͥ���ٽ���Ԥ����塼�ؤ�����
+ *  タスクの優先度順の待ちキューへの挿入
  */
 Inline void
 queue_insert_tpri(TCB *tcb, QUEUE *queue)
@@ -190,7 +190,7 @@ queue_insert_tpri(TCB *tcb, QUEUE *queue)
 }
 
 /*
- *  �¹���Υ�������Ʊ�����̿����֥������Ȥ��Ԥ����塼�ؤ�����
+ *  実行中のタスクの同期・通信オブジェクトの待ちキューへの挿入
  */
 Inline void
 wobj_queue_insert(WOBJCB *wobjcb)
@@ -205,7 +205,7 @@ wobj_queue_insert(WOBJCB *wobjcb)
 }
 
 /*
- *  Ʊ�����̿����֥������Ȥ��Ф����Ԥ����֤ؤΰܹ�
+ *  同期・通信オブジェクトに対する待ち状態への移行
  */
 #ifdef __wobjwai
 
@@ -235,7 +235,7 @@ wobj_make_wait_tmout(WOBJCB *wobjcb, WINFO_WOBJ *winfo,
 
 #endif /* __wobjwaitmo */
 /*
- *  ��������ͥ�����ѹ����ν���
+ *  タスクの優先度変更時の処理
  */
 #ifdef __wobjpri
 

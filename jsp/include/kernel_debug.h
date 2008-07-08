@@ -6,42 +6,42 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: kernel_debug.h,v 1.2 2003/07/01 13:36:30 hiro Exp $
  */
 
 /*
- *	��ITRON4.0���� �ǥХå��ѥ��󥯥롼�ɥե�����
+ *	μITRON4.0仕様 デバッグ用インクルードファイル
  *
- *  ���Υե�����ϡ���ITRON4.0���ͤΥ���������ɥץ��ե����볰������ȡ�
- *  ITRON�ǥХå��󥰥��󥿥ե��������ͤ˴ޤޤ���������ǡ�JSP������
- *  ��ΥǥХå����ݡ��ȵ�ǽ��ɬ�פ������ޤࡥ
+ *  このファイルは，μITRON4.0仕様のスタンダードプロファイル外の定義と，
+ *  ITRONデバッギングインタフェース仕様に含まれる定義の中で，JSPカーネ
+ *  ルのデバッグサポート機能に必要な定義を含む．
  */
 
 #ifndef _KERNEL_DEBUG_H_
@@ -52,33 +52,33 @@ extern "C" {
 #endif
 
 /*
- *  ���������֤����
+ *  タスク状態の定義
  */
-#define TTS_RUN		0x01u			/* �¹Ծ��� */
-#define TTS_RDY		0x02u			/* �¹Բ�ǽ���� */
-#define TTS_WAI		0x04u			/* �Ԥ����� */
-#define TTS_SUS		0x08u			/* �����Ԥ����� */
-#define TTS_WAS		(TTS_WAI|TTS_SUS)	/* ����Ԥ����� */
-#define TTS_DMT		0x10u			/* �ٻ߾��� */
+#define TTS_RUN		0x01u			/* 実行状態 */
+#define TTS_RDY		0x02u			/* 実行可能状態 */
+#define TTS_WAI		0x04u			/* 待ち状態 */
+#define TTS_SUS		0x08u			/* 強制待ち状態 */
+#define TTS_WAS		(TTS_WAI|TTS_SUS)	/* 二重待ち状態 */
+#define TTS_DMT		0x10u			/* 休止状態 */
 
-#define TTW_SLP		0x0001u		/* �����Ԥ����� */
-#define TTW_DLY		0x0002u		/* ���ַв��Ԥ����� */
-#define TTW_SEM		0x0004u		/* ���ޥե��񸻤γ����Ԥ����� */
-#define TTW_FLG		0x0008u		/* ���٥�ȥե饰�Ԥ����� */
-#define TTW_SDTQ	0x0010u		/* �ǡ������塼�ؤ������Ԥ����� */
-#define TTW_RDTQ	0x0020u		/* �ǡ������塼����μ����Ԥ����� */
-#define TTW_MBX		0x0040u		/* �᡼��ܥå�������μ����Ԥ����� */
-#define TTW_MTX		0x0080u		/* �ߥ塼�ƥå����Υ��å��Ԥ����� */
-#define TTW_SMBF	0x0100u		/* ��å������Хåե��ؤ������Ԥ� */
-#define TTW_RMBF	0x0200u		/* ��å������Хåե�����μ����Ԥ� */
-#define TTW_CAL		0x0400u		/* ���ǥ֤θƽФ��Ԥ����� */
-#define TTW_ACP		0x0800u		/* ���ǥ֤μ����Ԥ����� */
-#define TTW_RDV		0x1000u		/* ���ǥ֤ν�λ�Ԥ����� */
-#define TTW_MPF		0x2000u		/* ����Ĺ����֥��å��γ����Ԥ� */
-#define TTW_MPL		0x4000u		/* ����Ĺ����֥��å��γ����Ԥ� */
+#define TTW_SLP		0x0001u		/* 起床待ち状態 */
+#define TTW_DLY		0x0002u		/* 時間経過待ち状態 */
+#define TTW_SEM		0x0004u		/* セマフォ資源の獲得待ち状態 */
+#define TTW_FLG		0x0008u		/* イベントフラグ待ち状態 */
+#define TTW_SDTQ	0x0010u		/* データキューへの送信待ち状態 */
+#define TTW_RDTQ	0x0020u		/* データキューからの受信待ち状態 */
+#define TTW_MBX		0x0040u		/* メールボックスからの受信待ち状態 */
+#define TTW_MTX		0x0080u		/* ミューテックスのロック待ち状態 */
+#define TTW_SMBF	0x0100u		/* メッセージバッファへの送信待ち */
+#define TTW_RMBF	0x0200u		/* メッセージバッファからの受信待ち */
+#define TTW_CAL		0x0400u		/* ランデブの呼出し待ち状態 */
+#define TTW_ACP		0x0800u		/* ランデブの受付待ち状態 */
+#define TTW_RDV		0x1000u		/* ランデブの終了待ち状態 */
+#define TTW_MPF		0x2000u		/* 固定長メモリブロックの獲得待ち */
+#define TTW_MPL		0x4000u		/* 可変長メモリブロックの獲得待ち */
 
 /*
- *  ��ǽ�����ɤ����
+ *  機能コードの定義
  */
 #define TFN_CRE_TSK	(-5)
 #define TFN_DEL_TSK	(-6)
@@ -227,7 +227,7 @@ extern "C" {
 #define TFN_VXGET_TIM	(-233)
 
 /*
- *  ���֥�����������������ITRON�ǥХå��󥰥��󥿥ե��������͡�
+ *  オブジェクト定数の定義（ITRONデバッギングインタフェース仕様）
  */
 #define OBJ_SEMAPHORE		(128)
 #define OBJ_EVENTFLAG		(129)

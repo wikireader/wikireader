@@ -8,51 +8,51 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: vea_oea_emb.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*  
- *   PowerPC�������ƥ�����VEA,OEA��¸�����
- *   ��The IBM PowerPC Embedded Environment�ξ��
- *   ����IBM��PowerPC40x�ե��ߥꤳ����˳������롣
- *   ��
- *   ��PowerPC�������ƥ����������ϰʲ��Σ��ĤΥ�٥뤫������
- *   ����USIA:User Instruction Set Architecture
- *   ����VEA: Virtual Environment Architecture
- *   ����OEA: Operating Environment Architecture
- *   ��
- *   ��USIA�ˤĤ��Ƥ������ﶦ�̤Ǥ��뤬��VEA��OEA�ˤĤ��Ƥ�
- *   �����ꥸ�ʥ��PowerPC�������ƥ������The IBM PowerPC 
- *   ��Embedded Environment���줾���̤��������Ƥ��뤿�ᡢ
- *   ��VEA��OEA������ϥե������ʬ���ơ�����򥤥󥯥롼��
- *   �����Ƥ��롣
+ *   PowerPCアーキテクチャVEA,OEA依存の定義
+ *   　The IBM PowerPC Embedded Environmentの場合
+ *   　　IBM系PowerPC40xファミリこちらに該当する。
+ *   　
+ *   　PowerPCアーキテクチャの定義は以下の３つのレベルから成る
+ *   　・USIA:User Instruction Set Architecture
+ *   　・VEA: Virtual Environment Architecture
+ *   　・OEA: Operating Environment Architecture
+ *   　
+ *   　USIAについては全機種共通であるが、VEAとOEAについては
+ *   　オリジナルのPowerPCアーキテクチャとThe IBM PowerPC 
+ *   　Embedded Environmentそれぞれ別に定義されているため、
+ *   　VEAとOEAの定義はファイルを分けて、それをインクルード
+ *   　している。
  */   
 
 
@@ -60,16 +60,16 @@
 #define _VEA_OEA_EMB_H_
 
 /*  
- *  �쥸�����ֹ�����
+ *  レジスタ番号の定義
  */   
 
 /*
- *  Special Purpose Register�Υ쥸�����ֹ�
- *  ����(*)��������PowerPC�������ƥ�����Ǥ��������Ƥ��ʤ��쥸����
+ *  Special Purpose Registerのレジスタ番号
+ *  　　(*)印：元のPowerPCアーキテクチャでは定義されていないレジスタ
  */
 
 /*
- *  �㳰�����˴ؤ���쥸����
+ *  例外処理に関するレジスタ
  */
 #define SRR0	  26	/* Save/Restore Register0  */
 #define SRR1	  27	/* Save/Restore Register1  */
@@ -85,7 +85,7 @@
 #define SPRG3	 275	/* SPR General 3  */
 
 /*
- *  ����¾�Υ쥸����
+ *  その他のレジスタ
  */
 #define DAC	1014	/* Data Address Compare(*) */
 #define DBCR	1010	/* Debug Control Register(*) */
@@ -116,7 +116,7 @@
 #define ZPR	 944	/* Zone Protection Register(*) */
 
 /*
- *  MSR�Υӥå�����
+ *  MSRのビット配列
  */
 /*  0-10:Reserved  */
 #define MSR_APE	BIT11_32	/* Auxiliary Processor Exception Enable */
@@ -140,7 +140,7 @@
 
 
 /*
- *  ESR(Exception Syndrome Register)�Υӥå�����
+ *  ESR(Exception Syndrome Register)のビット配列
  */
 #define ESR_PIL	BIT4_32	 /* Program - Illegal Instruction exception */
 #define ESR_PPR	BIT5_32	 /* Program - Privileged Instruction exception */
@@ -157,74 +157,74 @@
 
 
 /*  
- *   CPU�㳰�װ������
- *   ���ֹ椬��Ϣ³�ʤΤ�CPU�㳰�����٥����ơ��֥�˰���̵�̤����뤬��
- *   ��PowerPC�������ƥ����������˹�碌������ͥ�褷����
+ *   CPU例外要因の定義
+ *   　番号が不連続なのでCPU例外擬似ベクタテーブルに一部無駄が入るが、
+ *   　PowerPCアーキテクチャの定義に合わせる方を優先した。
  */   
 #define EXC_NO_CRITICAL_INPUT           	0x1
 #define EXC_NO_MACHINE_CHECK            	0x2
 #define EXC_NO_DATA_STORAGE             	0x3
 #define EXC_NO_INSTRUCTION_STORAGE      	0x4
-#define EXC_NO_EXTERNAL_INTERRUPT       	0x5   /*  ���������  */
+#define EXC_NO_EXTERNAL_INTERRUPT       	0x5   /*  外部割込み  */
 #define EXC_NO_ALIGNMENT                	0x6
-			/*  �ץ�������㳰���װ������*/
+			/*  プログラム例外（要因７種）*/
 #define EXC_NO_PROGRAM                  	0x7
 #define EXC_NO_FLOATING_POINT_UNAVAILABLE 	0x8
-/*  ��APU�����PowerPC405��440�Τߡ�  */
+/*  （APUを持つPowerPC405、440のみ）  */
 
-/*  0x900��Reserved  */
-/*  0xa00��Reserved  */
-/*  0xb00��Reserved  */
-#define EXC_NO_SYSTEM_CALL              	0xc	/*  �����ƥॳ����  */
-/*  0xd00��Reserved  */
-/*  0xe00��Reserved  */
-/*  0xe10-0xff0��Reserved  */
-/* 0x1000��Programmable Interval Timer  */
-/* 0x1010��Fixed Interval Timer  */
-/* 0x1020��Watchdog Timer  */
-/* 0x1030-0x10f0��Reserved  */
-/* 0x1100��Data TLB miss  */
-/* 0x1110-0x11f0��Reserved  */
-/* 0x1200��Instruction TLB miss  */
-/* 0x1210-0x1ff0��Reserved  */
-/* 0x2000��Debug���װ������   */
-/* 0x2010-0x2ff0��Implementation Specific  */
+/*  0x900：Reserved  */
+/*  0xa00：Reserved  */
+/*  0xb00：Reserved  */
+#define EXC_NO_SYSTEM_CALL              	0xc	/*  システムコール  */
+/*  0xd00：Reserved  */
+/*  0xe00：Reserved  */
+/*  0xe10-0xff0：Reserved  */
+/* 0x1000：Programmable Interval Timer  */
+/* 0x1010：Fixed Interval Timer  */
+/* 0x1020：Watchdog Timer  */
+/* 0x1030-0x10f0：Reserved  */
+/* 0x1100：Data TLB miss  */
+/* 0x1110-0x11f0：Reserved  */
+/* 0x1200：Instruction TLB miss  */
+/* 0x1210-0x1ff0：Reserved  */
+/* 0x2000：Debug（要因７種）   */
+/* 0x2010-0x2ff0：Implementation Specific  */
 
 /*  
- *   �㳰�μ��̿�
- *   ����������ߤ⣱�Ĥȿ�����
- *   ����0�֤�̤����
- *   ���������㳰�٥����Υ��ե��åȤ��б�
- *   �����������������ߤ⣱�Ĥȿ�����
- *   ����������������Τ��ᡢ+1���Ƥ���
+ *   例外の種別数
+ *   　外部割込みも１つと数える
+ *   　　0番は未使用
+ *   　　　・例外ベクタのオフセットと対応
+ *   　　　・外部割り込みも１つと数える
+ *   　　　・配列宣言のため、+1している
  */   
 
 #define TMAX_EXCNO       ( 0x20 + 1 + NUM_IMPLEMENT_EXCEPTION )
 
 
 /*
- *  DCR�ؤΥ�������
+ *  DCRへのアクセス
  *     DCR:Device Control Register
- *     �ʲ��Υ롼����ϥǥХ����ɥ饤�и����˺������Ƥ��롣
- *     DCR�ζ���Ū��̾�Τ䵡ǽ�ϥǥХ�����¸�Ǥ��롣
+ *     以下のルーチンはデバイスドライバ向けに作成している。
+ *     DCRの具体的な名称や機能はデバイス依存である。
  *     
- *     ����
- *     ��mfdcr,mtdcr̿���DCR���ֹ�����ѥ쥸�����ǤϤʤ���
- *     ��¨�ͤǻ��ꤹ�뤿�ᡢ����饤��ؿ��ˤǤ��ʤ���
+ *     備考
+ *     　mfdcr,mtdcr命令はDCRの番号を汎用レジスタではなく、
+ *     　即値で指定するため、インライン関数にできない。
  */
 
 /*
- *  DCR�θ����ͤ��ɽФ�
- *     reg:�쥸�����ֹ�����������
- *     val:�ɤ߽Ф����ͤ��Ǽ�����ѿ���UW����
+ *  DCRの現在値の読出し
+ *     reg:レジスタ番号（整数定数）
+ *     val:読み出した値を格納する変数（UW型）
  */
 #define _sil_rew_dcr(reg, val)	Asm("mfdcr %0," #reg : "=r"(val))
 #define sil_rew_dcr(reg, val)	_sil_rew_dcr(reg, val)
 
 /*
- *  DCR�θ����ͤ��ѹ�
- *     reg:�쥸�����ֹ�����������
- *     val:���ꤹ���ͤ���Ǽ���줿�ѿ���UW����
+ *  DCRの現在値の変更
+ *     reg:レジスタ番号（整数定数）
+ *     val:設定する値が格納された変数（UW型）
  */
 #define _sil_wrw_dcr(reg, val)	Asm("mtdcr "#reg",%0" : : "r"(val) )
 #define sil_wrw_dcr(reg, val)	_sil_wrw_dcr(reg, val)

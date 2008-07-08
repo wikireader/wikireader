@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ì˙ñ{åÍ resources
+// Êó•Êú¨Ë™û resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -113,17 +113,17 @@ IDI_ICON1               ICON                    "icon1.ico"
 
 IDD_DUMMYDIALOG DIALOG  0, 0, 187, 93
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "¿ﬁ≤±€∏ﬁ"
-FONT 9, "ÇlÇr ÇoÉSÉVÉbÉN"
+CAPTION "ÊäòÊÜ∂ÊùÜ√û"
+FONT 9, "Ôº≠Ôº≥ Ôº∞„Ç¥„Ç∑„ÉÉ„ÇØ"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,130,7,50,14
-    PUSHBUTTON      "∑¨›æŸ",IDCANCEL,130,24,50,14
+    PUSHBUTTON      "Ê°ëÊ≠â√ô",IDCANCEL,130,24,50,14
 END
 
 IDD_MAPLISTDIALOG DIALOGEX 0, 0, 309, 212
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
-CAPTION "ÉÅÉÇÉäÉ}ÉbÉv"
+CAPTION "„É°„É¢„É™„Éû„ÉÉ„Éó"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,252,191,50,14
@@ -169,7 +169,7 @@ BEGIN
     IDS_PROJNAME            "devicemanager"
 END
 
-#endif    // ì˙ñ{åÍ resources
+#endif    // Êó•Êú¨Ë™û resources
 /////////////////////////////////////////////////////////////////////////////
 
 

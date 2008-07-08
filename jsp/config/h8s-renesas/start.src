@@ -8,43 +8,43 @@
 ;  Copyright (C) 2001-2007 by Industrial Technology Institute,
 ;                              Miyagi Prefectural Government, JAPAN
 ;
-;  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
-;  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
-;  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
-;  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
-;  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
-;  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-;      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-;      ����������˴ޤޤ�Ƥ��뤳�ȡ�
-;  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-;      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-;      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-;      �ȡ�
-;    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-;        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-;        ��𤹤뤳�ȡ�
-;  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-;      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+;  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+;  によって公表されている GNU General Public License の Version 2 に記
+;  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;  利用と呼ぶ）することを無償で許諾する．
+;  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;      スコード中に含まれていること．
+;  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;      の無保証規定を掲載すること．
+;  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;      と．
+;    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;        作権表示，この利用条件および下記の無保証規定を掲載すること．
+;    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;        報告すること．
+;  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 ;
-;  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
-;  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
-;  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
-;  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+;  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 ;
 ;  @(#) $Id: start.src,v 1.2 2007/03/23 07:59:26 honda Exp $
 ;
 
-;   H8S�ѥ������ȥ��åץ⥸�塼��
-;   �������ͥ�ϥ��ץꥱ�������ȥ�󥯤��ƻ��Ѥ���Τǡ�
-;   �����Υ⥸�塼���JSP�����ͥ뵯ư���Τ߻��Ѥ��롣
+;   H8S用スタートアップモジュール
+;   　カーネルはアプリケーションとリンクして使用するので、
+;   　このモジュールはJSPカーネル起動時のみ使用する。
 
         .CPU 2000A
 
-        ; STARTOF�黻�ҡ�SIZEOF�黻�Ҥ�ͭ���ˤ��뤿��Υ�����������
+        ; STARTOF演算子、SIZEOF演算子を有効にするためのセクション宣言
         .SECTION D,DATA,ALIGN=2
         .SECTION R,DATA,ALIGN=2
         .SECTION B,DATA,ALIGN=2
@@ -69,55 +69,55 @@
         .GLOBAL _start
 _start:
         ;
-        ; �󥿥�������ƥ����ȤΥ����å��ݥ��󥿤�STACKTOP�˽��������
-        ; ����STACKTOP�ϡ�user_config.inc�������
+        ; 非タスクコンテキストのスタックポインタをSTACKTOPに初期化する
+        ; 　（STACKTOPは、user_config.incで定義）
         ;
-        ;�����ץ���������Ƭ̿��� SP �ν����̿��Ǥʤ���Фʤ�ʤ���
-        ;�����ϡ��ɥ������ޥ˥奢�� ��4.2.4 �ꥻ�å�ľ��γ���ߡ�(P90)����
+        ;　　プログラムの先頭命令は SP の初期化命令でなければならない。
+        ;　　ハードウェアマニュアル 「4.2.4 リセット直後の割込み」(P90)参照
         ;
         mov.l   #STACKTOP, sp
 
         ;
-        ;  CCR�ν�����ʳ���߶ػߡ�
+        ;  CCRの初期化（割込み禁止）
         ;
-        ;   �����������⡼��0 �ˤ��������߶ػ� (I = 1 ; CCR)
-	;    (cpu_initialize()��ǳ��������⡼�ɤ��ѹ�����ޤǤϡ�
-	;     ���������⡼�ɤ�0�Ǥ��롣)
+        ;   ・割込み制御モード0 における割込み禁止 (I = 1 ; CCR)
+	;    (cpu_initialize()内で割込み制御モードを変更するまでは、
+	;     割込み制御モードは0である。)
 	;
 	ldc.b	#CCR_I, ccr
 
 	;
-	;  EXR�ν����
-	;  �����������⡼��2 �ˤ��������߶ػ� (I2, I1, I0 = 1 ; CCR)
-	;���������ͥ�������γ���ߤ�ޤ�ƶػߤ���
+	;  EXRの初期化
+	;  ・割込み制御モード2 における割込み禁止 (I2, I1, I0 = 1 ; CCR)
+	;　・カーネル管理外の割込みも含めて禁止する
 	;
 	ldc.b	#EXR_I_MASK, exr
 
         ;
-        ;  �ϡ��ɥ�����������ؿ��θƤӽФ�
+        ;  ハードウェア初期化関数の呼び出し
         ;
-        ;  �ϡ��ɥ�������¸��ɬ�פʽ����������������ϡ�
-        ;  �ϡ��ɥ�����������ؿ����Ѱդ���������Ƭ���ɥ쥹��
-        ;  HARDWARE_INIT_HOOK�ޥ����Ȥ���������롣
-        ;  ����Ū�ˤ�ROM���κݡ�RAM����Ѳ�ǽ�ˤ��뤿���
-        ;  �Х������ơ��ȡ�����ȥ�����ν��������Ԥ���
-        ;  �ϡ��ɥ�����������ؿ��μ�����sys_support.src ��ǹԤ���
-        ;��HARDWARE_INIT_HOOK�ޥ�����sys_config.inc���������
-        ;���Τ�ɸ��Ȥ��롣
+        ;  ハードウェア依存に必要な初期化処理がある場合は，
+        ;  ハードウェア初期化関数を用意し、その先頭アドレスを
+        ;  HARDWARE_INIT_HOOKマクロとして定義する。
+        ;  具体的にはROM化の際、RAMを使用可能にするための
+        ;  バス・ステート・コントローラの初期化等を行う。
+        ;  ハードウェア初期化関数の実装はsys_support.src 内で行い、
+        ;　HARDWARE_INIT_HOOKマクロをsys_config.incで定義する
+        ;　のを標準とする。
 start_0:
-        ;����¢RAM����Ѥ��ʤ����ϡ�����RAM��ͭ���ˤʤ�ʤ��ȥ�����
-        ;�������ꥢ���Ȥ��ʤ������Τ��ᡢ������Ϥ򥹥��å����Ѥ�
-        ;��jsr̿��Ϥ��Υ����ߥ󥰤ǤϤޤ����ѤǤ��ʤ����Ĥޤꡢ
-        ;��HARDWARE_INIT_HOOK�ؤ�jmp̿���̵���ʬ��̿��ˤ�ʬ������
-        ;��jmp̿�����äƤ��롣
-        ;���ʥ�٥�clear_b_section�򥨥����ݡ��Ȥ��Ƥ��롣��
+        ;　内蔵RAMを使用しない場合は、外部RAMが有効にならないとスタッ
+        ;　クエリアが使えない。そのため、戻り番地をスタックに積む
+        ;　jsr命令はこのタイミングではまだ使用できない。つまり、
+        ;　HARDWARE_INIT_HOOKへはjmp命令（無条件分岐命令）で分岐し、
+        ;　jmp命令で戻ってくる。
+        ;　（ラベルclear_b_sectionをエクスポートしている。）
 
  .AIFDEF HARDWARE_INIT_HOOK
         jmp     @HARDWARE_INIT_HOOK
  .AENDI ; HARDWARE_INIT_HOOK
 
 
-         ; B���������򥯥ꥢ
+         ; Bセクションをクリア
 _clear_b_section:
 start_1:
         mov.l   @_bss_start_k, er0
@@ -130,13 +130,13 @@ start_2:
         blo     start_2         ; er1 > er0
 
         ;
-        ;  D�������������������ROM���б��ˡ�
+        ;  Dセクションを初期化する（ROM化対応）．
         ;
-        ;  __idata_start ���� __idata_end �ޤǤ�__data_start �ʹߤ�
-        ;  ���ԡ����롥
+        ;  __idata_start から __idata_end までを，__data_start 以降に
+        ;  コピーする．
         ;  
-        ;  eepmov.w̿���Ȥ�������ΨŪ����������ž���Х��ȿ���
-        ;  65,535�Х��Ȥ����¤���뤿�ᡢ���Ѥ��Ƥ��ʤ���
+        ;  eepmov.w命令を使う方が効率的だが、最大転送バイト数が
+        ;  65,535バイトに制限されるため、使用していない。
 start_3:
         mov.l   @__idata_start_k, er0
         mov.l   @__idata_end_k, er1
@@ -149,20 +149,20 @@ start_4:
         blo     start_4         ; er1 > er0
 
         ;
-        ;  ���եȥ������Ķ�������ؿ��θƤӽФ�
+        ;  ソフトウェア環境初期化関数の呼び出し
         ;
-        ;  ���եȥ������Ķ����ä˥饤�֥��ˤ˰�¸����ɬ�פʽ������
-        ;  ����������ϡ����եȥ������Ķ�������ؿ����Ѱդ���������Ƭ
-        ;  ���ɥ쥹��SOFTWARE_INIT_HOOK�ޥ����Ȥ���������롣
-        ;  software_init_hook�ؿ��μ�����sys_support.src ��ǹԤ���
-        ;��SOFTWARE_INIT_HOOK�ޥ�����user_config.inc���������
-        ;���Τ�ɸ��Ȥ��롣
+        ;  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+        ;  理がある場合は，ソフトウェア環境初期化関数を用意し、その先頭
+        ;  アドレスをSOFTWARE_INIT_HOOKマクロとして定義する。
+        ;  software_init_hook関数の実装はsys_support.src 内で行い、
+        ;　SOFTWARE_INIT_HOOKマクロをuser_config.incで定義する
+        ;　のを標準とする。
  .AIFDEF SOFTWARE_INIT_HOOK
 start_5:
         jsr     @SOFTWARE_INIT_HOOK
  .AENDI ; SOFTWARE_INIT_HOOK
 
-        ;  �����ͥ��ư����
+        ;  カーネルを起動する
 
 start_6:
         jmp     @_kernel_start

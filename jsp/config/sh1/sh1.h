@@ -8,32 +8,32 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sh1.h,v 1.8 2004/10/07 17:13:56 honda Exp $
  */
@@ -42,16 +42,16 @@
 #define _SH1_H_
 
 /*
- *  ����ߤΥ٥����ֹ����
+ *  割込みのベクタ番号定義
  */
-#define GII	 4	/*  ��������̿��:General Illegal Instruction  */
-#define SII	 6	/*  �����å�����̿��:Slot Illegal Instruction */
-#define CAE	 9	/*  CPU���ɥ쥹���顼:CPU Address Error       */
-#define DAE	10	/*  DMA���ɥ쥹���顼:DMA Address Error       */
+#define GII	 4	/*  一般不当命令:General Illegal Instruction  */
+#define SII	 6	/*  スロット不当命令:Slot Illegal Instruction */
+#define CAE	 9	/*  CPUアドレスエラー:CPU Address Error       */
+#define DAE	10	/*  DMAアドレスエラー:DMA Address Error       */
 
 #define NMI	11	/*  NMI  		*/
-#define USBK	12	/*  �桼�����֥졼��  	*/
-#define IRQ0	64	/*  ����������׵�  	*/
+#define USBK	12	/*  ユーザーブレーク  	*/
+#define IRQ0	64	/*  外部割込み要求  	*/
 #define IRQ1	65
 #define IRQ2	66
 #define IRQ3	67
@@ -60,13 +60,13 @@
 #define IRQ6	70
 #define IRQ7	71
 
-	/*  DMAC:�����쥯�ȥ��ꥢ����������ȥ�����  */
+	/*  DMAC:ダイレクトメモリアクセスコントローラ  */
 #define DEI0	72	/*  DMAC0  */
 #define DEI1	74	/*  DMAC1  */
 #define DEI2	76	/*  DMAC2  */
 #define DEI3	78	/*  DMAC3  */
 
-	/*  ITU:����ƥ��졼�ƥåɥ����ޥѥ륹��˥å�  */
+	/*  ITU:インテクレーテッドタイマパルスユニット  */
 #define IMIA0	80	/*  ITU0  */
 #define IMIB0	81
 #define OVI0	82
@@ -83,7 +83,7 @@
 #define IMIB4	97
 #define OVI4	98
 
-	/*  SCI:���ꥢ�륳�ߥ�˥�������󥤥󥿡��ե�����  */
+	/*  SCI:シリアルコミュニケーションインターフェース  */
 #define ERI0	100	/*  SCI0  */
 #define RXI0	101
 #define TXI0	102
@@ -93,48 +93,48 @@
 #define TXI1	106
 #define TEI1	107
 
-#define PEI	108	/*  PRT:�Х�����ȥ�����Υѥ�ƥ�����  */
-#define ADI	109	/*  A/D����С���  			*/
-#define ITI	112	/*  WDT:�����å��ɥå�������  		*/
-#define CMI	113	/*  REF:DRAM��ե�å�������  		*/
+#define PEI	108	/*  PRT:バスコントローラのパリティ制御  */
+#define ADI	109	/*  A/Dコンバータ  			*/
+#define ITI	112	/*  WDT:ウォッチドックタイマ  		*/
+#define CMI	113	/*  REF:DRAMリフレッシュ制御  		*/
 
 
 
 #ifndef _MACRO_ONLY
 
 /*
- *  SH1�������쥸�������
+ *  SH1の内部レジスタ定義
  *  
- *  ������ѥ���η������å���ǽ��ͭ���ˤ��뤿�ᡢ�ݥ��󥿷��ˤ�
- *  ��VP�ǤϤʤ���VB *,VH *, VW *���Ѥ��Ƥ��롣
+ *  　コンパイラの型チェック機能を有効にするため、ポインタ型には
+ *  　VPではなく、VB *,VH *, VW *を用いている。
  */
 
 /*
- * �ԥ�ե��󥯥���󥳥�ȥ����� �ʥ�������2�Х��ȡ�
+ * ピンファンクションコントローラ （サイズは2バイト）
  */
-#define	PAIOR	((VH *)0x5ffffc4)	/*  �ݡ���A I/O�쥸����  	  */
-#define	PACR1	((VH *)0x5ffffc8)	/*  �ݡ���A ����ȥ�����쥸����1 */
-#define	PACR2	((VH *)0x5ffffca)	/*  �ݡ���A ����ȥ�����쥸����2 */
-#define	PBIOR	((VH *)0x5ffffc6)	/*  �ݡ���B I/O�쥸����  	  */
-#define	PBCR1	((VH *)0x5ffffcc)	/*  �ݡ���B ����ȥ�����쥸����1 */
-#define	PBCR2	((VH *)0x5ffffce)	/*  �ݡ���B ����ȥ�����쥸����2 */
-#define	PADR	((VH *)0x5ffffc0)	/*  �ݡ���A �ǡ����쥸����  	  */
+#define	PAIOR	((VH *)0x5ffffc4)	/*  ポートA I/Oレジスタ  	  */
+#define	PACR1	((VH *)0x5ffffc8)	/*  ポートA コントロールレジスタ1 */
+#define	PACR2	((VH *)0x5ffffca)	/*  ポートA コントロールレジスタ2 */
+#define	PBIOR	((VH *)0x5ffffc6)	/*  ポートB I/Oレジスタ  	  */
+#define	PBCR1	((VH *)0x5ffffcc)	/*  ポートB コントロールレジスタ1 */
+#define	PBCR2	((VH *)0x5ffffce)	/*  ポートB コントロールレジスタ2 */
+#define	PADR	((VH *)0x5ffffc0)	/*  ポートA データレジスタ  	  */
 
-#define PBCR1_TD0_RD0_MASK 	~0xfu	/*  TxD0,RxD0ü�������ѥޥ���	*/
-#define PBCR1_TD0 		 0x8u	/*  TxD0ü�������ѥޥ���  	*/
-#define PBCR1_RD0 		 0x2u	/*  RxD0ü�������ѥޥ���  	*/
+#define PBCR1_TD0_RD0_MASK 	~0xfu	/*  TxD0,RxD0端子設定用マスク	*/
+#define PBCR1_TD0 		 0x8u	/*  TxD0端子設定用マクロ  	*/
+#define PBCR1_RD0 		 0x2u	/*  RxD0端子設定用マクロ  	*/
 
 
 /*
- * �����ߥ���ȥ�����쥸����
+ * 割り込みコントローラレジスタ
  */
-#define	IPRA	((VH *)0x5ffff84)	/*  ����ߥ�٥�����쥸����  */
-#define	IPRB	((VH *)0x5ffff86)	/*  �ʥ�������2�Х��ȡ�  */
+#define	IPRA	((VH *)0x5ffff84)	/*  割込みレベル設定レジスタ  */
+#define	IPRB	((VH *)0x5ffff86)	/*  （サイズは2バイト）  */
 #define	IPRC	((VH *)0x5ffff88)
 #define	IPRD	((VH *)0x5ffff8a)
 #define	IPRE	((VH *)0x5ffff8c)
-#define	ICR	((VH *)0x5ffff8e)	/*  ����ߥ���ȥ�����쥸����  */
-					/*  �ʥ�������2�Х��ȡ�  */
+#define	ICR	((VH *)0x5ffff8e)	/*  割込みコントロールレジスタ  */
+					/*  （サイズは2バイト）  */
 
 #endif /* _MACRO_ONLY */
 

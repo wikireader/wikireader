@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: fc_binutils.cpp,v 1.21 2004/09/04 15:50:13 honda Exp $
  */
@@ -39,7 +39,7 @@
 #if defined(FILECONTAINER_BINUTILS) || defined(TESTSUITE)
 
 #ifdef _MSC_VER
-#pragma warning(disable:4786) //¥Ç¥Ğ¥Ã¥°Ê¸»úÎó¤ò255Ê¸»ú¤ËÀÚ¤êµÍ¤á¤¿
+#pragma warning(disable:4786) //ãƒ‡ãƒãƒƒã‚°æ–‡å­—åˆ—ã‚’255æ–‡å­—ã«åˆ‡ã‚Šè©°ã‚ãŸ
 #endif
 
 #include "base/filecontainer.h"
@@ -54,12 +54,12 @@
 #define _isspace(x)  isspace(x)
 #define _isprint(x)  isprint(x)
 
-#define SIZE_LOADPAGE 65536         //¥Ğ¥¤¥Ê¥ê¥Ç¡¼¥¿¤ò³ÊÇ¼¤¹¤ë¥Ú¡¼¥¸Ã±°Ì
+#define SIZE_LOADPAGE 65536         //ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ãƒšãƒ¼ã‚¸å˜ä½
 
-#define SIZE_TO_CONFIRM_BINARYFILE 128  //¥Õ¥¡¥¤¥ë¤¬¥Ğ¥¤¥Ê¥ê¤ò´Ş¤à¤«¤É¤¦¤«¤ò³ÎÇ§¤¹¤ë¤Î¤ËÆÉ¤ß½Ğ¤¹¥Ç¡¼¥¿¤ÎÄ¹¤µ (¥Ğ¥Ã¥Õ¥¡¤ò¼è¤ë¤Î¤Ç¤¢¤Ş¤êÂç¤­¤¯¤·¤Ê¤¤¤³¤È)
+#define SIZE_TO_CONFIRM_BINARYFILE 128  //ãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒã‚¤ãƒŠãƒªã‚’å«ã‚€ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹ã®ã«èª­ã¿å‡ºã™ãƒ‡ãƒ¼ã‚¿ã®é•·ã• (ãƒãƒƒãƒ•ã‚¡ã‚’å–ã‚‹ã®ã§ã‚ã¾ã‚Šå¤§ããã—ãªã„ã“ã¨)
 
 #define MAGIC_SYMBOL "_checker_magic_number"
-#define MAGIC_NUMBER 0x01234567                         //4¥Ğ¥¤¥È¤ÎÀ°¿ô
+#define MAGIC_NUMBER 0x01234567                         //4ãƒã‚¤ãƒˆã®æ•´æ•°
 
 #define CMD_GNUNM      "nm"
 #define CMD_GNUOBJCOPY "objcopy"
@@ -74,24 +74,24 @@ namespace {
     class FileContainerBinutilsImpl : public FileContainer
     {
     public:
-        typedef void (interceptor_func_t)(fstream &, const string &);      //ÉÔ°Õ¤ËË¬¤ì¤¿¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë¤Î½±·â¤ËÂĞ±ş¤¹¤ë´Ø¿ô¤Î·¿
+        typedef void (interceptor_func_t)(fstream &, const string &);      //ä¸æ„ã«è¨ªã‚ŒãŸãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®è¥²æ’ƒã«å¯¾å¿œã™ã‚‹é–¢æ•°ã®å‹
 
     protected:
         string                 symbol_prefix;
         map<string, address_t> symbol_table;
         map<address_t, char *> contents;
 
-        address_t last_address;     //¥­¥ã¥Ã¥·¥å¤â¤É¤­
+        address_t last_address;     //ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚‚ã©ã
         char *    last_page;
 
-            //¥Ç¡¼¥¿¼è¤ê¹ş¤ß
+            //ãƒ‡ãƒ¼ã‚¿å–ã‚Šè¾¼ã¿
         void loadSymbols(fstream & file)  throw(Exception);
         void loadDataContents(fstream & file) throw(Exception);
 
-            //contents¤Ø1¥Ğ¥¤¥È½ñ¤­¹ş¤ß
+            //contentsã¸1ãƒã‚¤ãƒˆæ›¸ãè¾¼ã¿
         void writeByte(address_t address, unsigned int) throw(Exception);
 
-            //¼«Æ°½èÍı
+            //è‡ªå‹•å‡¦ç†
         void searchSymbolPrefix(void) throw();
         void searchByteOrder(void)    throw();
 
@@ -99,7 +99,7 @@ namespace {
         FileContainerBinutilsImpl(void) throw();
         virtual ~FileContainerBinutilsImpl(void) throw();
 
-            /* ¥¤¥ó¥¿¥Õ¥§¡¼¥¹Éô */
+            /* ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹éƒ¨ */
         virtual void        attachModule(const string & filename) throw(Exception);
         virtual void        loadContents(void * dest, address_t address, size_t size) throw(Exception);
         virtual address_t   getSymbolAddress(const string & symbol) throw(Exception);
@@ -112,12 +112,12 @@ namespace {
         FileContainerBinutilsImpl instance_of_FileContainerBinutilsImpl;
     }
 
-        /* ¥³¥ó¥¹¥È¥é¥¯¥¿ */
+        /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     FileContainerBinutilsImpl::FileContainerBinutilsImpl(void) throw()
         : symbol_prefix(""), symbol_table(), contents(), last_address(0), last_page(0)
     {}
 
-        /* ¥Ç¥¹¥È¥é¥¯¥¿ : ¥Ç¡¼¥¿¥Ğ¥Ã¥Õ¥¡¤Î²òÊü */
+        /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ : ãƒ‡ãƒ¼ã‚¿ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾ */
     FileContainerBinutilsImpl::~FileContainerBinutilsImpl(void) throw()
     {
         map<address_t, char *>::iterator scope;
@@ -131,7 +131,7 @@ namespace {
         contents.clear();
     }
 
-        /* ¥Õ¥¡¥¤¥ëÌ¾¤ò¥«¥ó¥Ş¤ÇÆó¤Ä¤ËÊ¬¤±¤ë */
+        /* ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚«ãƒ³ãƒã§äºŒã¤ã«åˆ†ã‘ã‚‹ */
     void splitFilename(const string & src, string & first, string & second) throw(Exception)
     {
         if(!src.empty()) {
@@ -143,16 +143,16 @@ namespace {
                 second = src.substr(pos + 1);
             }
             else {
-                    //¥Õ¥¡¥¤¥ëÌ¾¤¬°ì¤Ä¤·¤«»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤
+                    //ãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸€ã¤ã—ã‹æŒ‡å®šã•ã‚Œã¦ã„ãªã„
                 first  = src;
                 second = src;
             }
         }
         else
-            ExceptionMessage("[FCBI] Empty filename could not be accepted.","[FCBI] ¥Õ¥¡¥¤¥ëÌ¾¤¬¤¢¤ê¤Ş¤»¤ó").throwException();
+            ExceptionMessage("[FCBI] Empty filename could not be accepted.","[FCBI] ãƒ•ã‚¡ã‚¤ãƒ«åãŒã‚ã‚Šã¾ã›ã‚“").throwException();
     }
 
-        /* ¥Õ¥¡¥¤¥ë¤¬¥Ğ¥¤¥Ê¥ê¥Ç¡¼¥¿¤ò»ı¤Ã¤Æ¤¤¤ë¤«¤É¤¦¤«¤òÈ½Äê */
+        /* ãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‚’æŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š */
     bool hasBinaryContents(fstream & file) throw()
     {
         assert(file.is_open());
@@ -173,13 +173,13 @@ namespace {
 
 		if(!result) {
 	        file.clear();
-    	    file.seekg(0, ios::beg);    //ÀèÆ¬¤ËÌá¤·¤Æ¤ª¤¯
+    	    file.seekg(0, ios::beg);    //å…ˆé ­ã«æˆ»ã—ã¦ãŠã
 		}
 
         return result;
     }
 
-        /* ¥Æ¥­¥¹¥È¥Õ¥¡¥¤¥ë¤ò³«¤¯ (¥Ğ¥¤¥Ê¥ê¤À¤Ã¤¿¾ì¹ç¤Ë¤ÏÂĞ½è) */
+        /* ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã (ãƒã‚¤ãƒŠãƒªã ã£ãŸå ´åˆã«ã¯å¯¾å‡¦) */
     void openTextFile(fstream & file, const string & filename, FileContainerBinutilsImpl::interceptor_func_t * interceptor) throw(Exception)
     {
         assert(!filename.empty());
@@ -187,17 +187,17 @@ namespace {
 
         file.open(filename.c_str(), ios::in|ios::binary);
         if(!file.is_open()) {
-            ExceptionMessage("File '%' could not be opened.","¥Õ¥¡¥¤¥ë '%' ¤Ï³«¤±¤Ş¤»¤ó") << filename << throwException;
+            ExceptionMessage("File '%' could not be opened.","ãƒ•ã‚¡ã‚¤ãƒ« '%' ã¯é–‹ã‘ã¾ã›ã‚“") << filename << throwException;
             return;
         }
 
-            /* ¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë¤À¤Ã¤¿¤é... */
+            /* ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸã‚‰... */
         while(hasBinaryContents(file)) {
             file.close();
             
             if(interceptor != 0) {
                 (*interceptor)(file, filename);
-                interceptor = 0;    //ÂĞ½è¤Ï°ì²ó¤Î¤ß
+                interceptor = 0;    //å¯¾å‡¦ã¯ä¸€å›ã®ã¿
             }
 
             if(!file.is_open()) {
@@ -205,14 +205,14 @@ namespace {
             }
         }
 
-            /* ¥Õ¥¡¥¤¥ë¤¬³«¤±¤Ê¤«¤Ã¤¿¤éÎã³° */
+            /* ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‹ã£ãŸã‚‰ä¾‹å¤– */
         if(!file.is_open())
             ExceptionMessage("Program failed to convert the binary '%' into suitable style. Please specify a suitable TEXT file.",
-                            "¥×¥í¥°¥é¥à¤Ï¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë'%'¤ÎÊÑ´¹¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£Àµ¤·¤¤¥Æ¥­¥¹¥È¥Õ¥¡¥¤¥ë¤ò»ØÄê¤·Ä¾¤·¤Æ¤¯¤À¤µ¤¤¡£")
+                            "ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«'%'ã®å¤‰æ›ã«å¤±æ•—ã—ã¾ã—ãŸã€‚æ­£ã—ã„ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ç›´ã—ã¦ãã ã•ã„ã€‚")
                                 << filename << throwException;
     }
 
-        /* °ì»şÅª¤Ê¥Õ¥¡¥¤¥ëÌ¾¤ÎÀ¸À® */
+        /* ä¸€æ™‚çš„ãªãƒ•ã‚¡ã‚¤ãƒ«åã®ç”Ÿæˆ */
     const char * makeTemporaryFilename(void) throw()
     {
         static char filename[10];
@@ -223,7 +223,7 @@ namespace {
     }
 
 
-        /* ¥Ğ¥¤¥Ê¥ê¤òGNU-NM¤ò»È¤Ã¤ÆÊÑ´¹¤¹¤ë */
+        /* ãƒã‚¤ãƒŠãƒªã‚’GNU-NMã‚’ä½¿ã£ã¦å¤‰æ›ã™ã‚‹ */
     void interceptWithGnuNM(fstream & file, const string & filename) throw(Exception)
     {
         assert(!file.is_open());
@@ -237,14 +237,14 @@ namespace {
 
 		system(cmdline.c_str());
 
-            /* Àµ¤·¤¯³«¤±¤¿¤é¥Õ¥¡¥¤¥ë¤òºï½ü */
+            /* æ­£ã—ãé–‹ã‘ãŸã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ */
         file.open(symfile.c_str(), ios::in);
         if(file.is_open()) {
             remove(symfile.c_str());
         }
     }
 
-        /* ¥Ğ¥¤¥Ê¥ê¤òGNU-OBJCOPY¤ò»È¤Ã¤ÆÊÑ´¹¤¹¤ë */
+        /* ãƒã‚¤ãƒŠãƒªã‚’GNU-OBJCOPYã‚’ä½¿ã£ã¦å¤‰æ›ã™ã‚‹ */
     void interceptWithGnuObjcopy(fstream & file, const string & filename) throw(Exception)
     {
         assert(!file.is_open());
@@ -258,14 +258,14 @@ namespace {
 
 		system(cmdline.c_str());
 
-            /* Àµ¤·¤¯³«¤±¤¿¤é¥Õ¥¡¥¤¥ë¤òºï½ü */
+            /* æ­£ã—ãé–‹ã‘ãŸã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ */
         file.open(srecfile.c_str(), ios::in);
         if(file.is_open()) {
             remove(srecfile.c_str());
         }
     }
 
-        /* 16¿Ê¤«¤é10¿Ê¤Ø¤ÎÊÑ´¹ (¥İ¥¤¥ó¥¿°ÜÆ°, Ä¹¤µ»ØÄêÉÕ¤­) */
+        /* 16é€²ã‹ã‚‰10é€²ã¸ã®å¤‰æ› (ãƒã‚¤ãƒ³ã‚¿ç§»å‹•, é•·ã•æŒ‡å®šä»˜ã) */
     unsigned int hextodec(const char * & src, size_t length) throw()
     {
         assert(length <= sizeof(unsigned int) * 2);
@@ -290,7 +290,7 @@ namespace {
         return result;
     }
 
-        /* NM¤¬½ĞÎÏ¤·¤¿¹Ô¤ò¥Ñ¡¼¥¹ */
+        /* NMãŒå‡ºåŠ›ã—ãŸè¡Œã‚’ãƒ‘ãƒ¼ã‚¹ */
     bool readGnuNmLine(fstream & file, FileContainer::address_t & address, string & attribute, string & symbolname) throw()
     {
         assert(file.is_open());
@@ -300,14 +300,14 @@ namespace {
         string::size_type pos1;
         string::size_type pos2;
 
-            /* Ãæ¿È¤ò¶õ¤Ë¤·¤Æ¤ª¤¯ */
+            /* ä¸­èº«ã‚’ç©ºã«ã—ã¦ãŠã */
         address = 0;
         if(!attribute.empty())
             attribute.erase();
         if(!symbolname.empty())
             symbolname.erase();
 
-            //¼¡¤Î¹Ô¤ò¼èÆÀ (¶õ¹Ô, Ì¤ÄêµÁ¥·¥ó¥Ü¥ë¤ÏÆÉ¤ßÈô¤Ğ¤¹)
+            //æ¬¡ã®è¡Œã‚’å–å¾— (ç©ºè¡Œ, æœªå®šç¾©ã‚·ãƒ³ãƒœãƒ«ã¯èª­ã¿é£›ã°ã™)
         do {
             if(file.eof())
                 return false;
@@ -315,7 +315,7 @@ namespace {
             getline(file, src, '\n');
         } while(src.empty() || src.at(0) == ' ');
 
-            //¹Ô¤òÊ¬²ò
+            //è¡Œã‚’åˆ†è§£
         pos1 = src.find_first_of(' ');
         addr = src.substr(0, pos1);
 
@@ -323,7 +323,7 @@ namespace {
         attribute  = src.substr(pos1 + 1, pos2 - pos1 - 1);
         symbolname = src.substr(pos2 + 1);
 
-            //¥¢¥É¥ì¥¹¤Î¥Ñ¡¼¥¹  (Ãí : ¤Ê¤ó¤Ç¤³¤ó¤Ê¤Á¤Ş¤Á¤Ş¤ä¤Ã¤Æ¤ë¤«¤È¤¤¤¦¤È¡¢¥¢¥É¥ì¥¹¤¬32bit¤òÄ¶¤¨¤ë¥¿¡¼¥²¥Ã¥È¤¬¤¤¤ë¤«¤é)
+            //ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ãƒ‘ãƒ¼ã‚¹  (æ³¨ : ãªã‚“ã§ã“ã‚“ãªã¡ã¾ã¡ã¾ã‚„ã£ã¦ã‚‹ã‹ã¨ã„ã†ã¨ã€ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒ32bitã‚’è¶…ãˆã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ã‚‹ã‹ã‚‰)
         while(!addr.empty()) {
             size_t length = addr.size();
             const char * src = addr.c_str();
@@ -336,7 +336,7 @@ namespace {
         return true;
     }
 
-        /* ¥·¥ó¥Ü¥ë¤ÎÆÉ¤ß¹ş¤ß */
+        /* ã‚·ãƒ³ãƒœãƒ«ã®èª­ã¿è¾¼ã¿ */
     void FileContainerBinutilsImpl::loadSymbols(fstream & file) throw(Exception)
     {
         assert(file.is_open());
@@ -354,13 +354,13 @@ namespace {
         file.close();
     }
 
-        /* contents¤Ë1¥Ğ¥¤¥È½ñ¤­¹ş¤ß */
+        /* contentsã«1ãƒã‚¤ãƒˆæ›¸ãè¾¼ã¿ */
     void FileContainerBinutilsImpl::writeByte(address_t address, unsigned int value) throw(Exception)
     {
         address_t & base = last_address;
         char *    & page = last_page;
 
-            /* ¥­¥ã¥Ã¥·¥å¤â¤É¤­¤¬»È¤¨¤Ê¤¤¤Ê¤é¡¢¥Ú¡¼¥¸¤òÃµ¤¹ */
+            /* ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚‚ã©ããŒä½¿ãˆãªã„ãªã‚‰ã€ãƒšãƒ¼ã‚¸ã‚’æ¢ã™ */
         if(MAKE_BASEADDRESS(address) != last_address || last_page == 0) {
             map<address_t, char *>::iterator scope;
 
@@ -369,7 +369,7 @@ namespace {
             if(scope == contents.end()) {
                 page = new(nothrow) char [SIZE_LOADPAGE];
                 if(page == 0) {
-                    ExceptionMessage("Not enough memory available to store the contents","¶õ¤­¥á¥â¥êÉÔÂ­¤Î¤¿¤á¡¢¥Ç¡¼¥¿¤Î³ÊÇ¼¤Ë¼ºÇÔ¤·¤Ş¤·¤¿").throwException();
+                    ExceptionMessage("Not enough memory available to store the contents","ç©ºããƒ¡ãƒ¢ãƒªä¸è¶³ã®ãŸã‚ã€ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´ã«å¤±æ•—ã—ã¾ã—ãŸ").throwException();
                     return;
                 }
                 contents.insert(map<address_t,char*>::value_type(base, page));
@@ -381,7 +381,7 @@ namespace {
         *(page + (address - base)) = static_cast<char>(value & 0xff);
     }
 
-        /* ËöÈø¤Î¶õÇòÊ¸»ú¤òÀÚ¤ê¼è¤ë */
+        /* æœ«å°¾ã®ç©ºç™½æ–‡å­—ã‚’åˆ‡ã‚Šå–ã‚‹ */
     void trimString(string & src) throw()
     {
         string::size_type pos;
@@ -391,7 +391,7 @@ namespace {
             src.erase(pos + 1);
     }
 
-        /* ¥â¥È¥í¡¼¥éS¥ì¥³¡¼¥É¤ò°ì¹ÔÆÉ¤ß¹ş¤à */
+        /* ãƒ¢ãƒˆãƒ­ãƒ¼ãƒ©Sãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ä¸€è¡Œèª­ã¿è¾¼ã‚€ */
         /*
                 The general format of an S-record follows: 
                 +-------------------//------------------//-----------------------+
@@ -405,9 +405,9 @@ namespace {
         unsigned int i;
         const char * pos;
 
-            /* ¼¡¤Î¹Ô¤òÆÉ¤ß¹ş¤à */
+            /* æ¬¡ã®è¡Œã‚’èª­ã¿è¾¼ã‚€ */
         do {
-                //getline¤¬ReadFile¤ò¸Æ¤ó¤Ç¥Ö¥í¥Ã¥¯¤¹¤ë¤Î¤Ç¡¢³Î¼Â¤ËEOF¤òÈ¿±ş¤µ¤»¤ë¤¿¤á¤Ë¤³¤¦¤¹¤ë
+                //getlineãŒReadFileã‚’å‘¼ã‚“ã§ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹ã®ã§ã€ç¢ºå®Ÿã«EOFã‚’åå¿œã•ã›ã‚‹ãŸã‚ã«ã“ã†ã™ã‚‹
             int ch = file.get();
             if(ch == EOF)
                 return false;
@@ -418,27 +418,27 @@ namespace {
 
         trimString(dest);
 
-            /* ÀµÅöÀ­¤ÎÈ½Äê */
+            /* æ­£å½“æ€§ã®åˆ¤å®š */
 
-        if(dest[0] != 'S')      //¹ÔÆ¬¤¬'S'¤Ç»Ï¤Ş¤é¤Ê¤¤
-            ExceptionMessage("The file is not a Motorola S-Record file.","¥â¥È¥í¡¼¥éS¥Õ¥©¡¼¥Ş¥Ã¥È¤ÇÌµ¤¤¹Ô¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿") << throwException;
+        if(dest[0] != 'S')      //è¡Œé ­ãŒ'S'ã§å§‹ã¾ã‚‰ãªã„
+            ExceptionMessage("The file is not a Motorola S-Record file.","ãƒ¢ãƒˆãƒ­ãƒ¼ãƒ©Sãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§ç„¡ã„è¡ŒãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸ") << throwException;
 
         pos = dest.c_str() + 2;
         count = hextodec(pos, 2);
         if(dest.size() != (count + 2)*2)
-            ExceptionMessage("Illegal S-Record found (count unmatched).","ÉÔÀµ¤ÊS¥ì¥³¡¼¥É¤¬¤¢¤ê¤Ş¤¹ (¥µ¥¤¥ºÉÔ°ìÃ×)") << throwException;
+            ExceptionMessage("Illegal S-Record found (count unmatched).","ä¸æ­£ãªSãƒ¬ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚Šã¾ã™ (ã‚µã‚¤ã‚ºä¸ä¸€è‡´)") << throwException;
 
         sum = count;
         for(i = 0; i < count; ++ i)
             sum += hextodec(pos, 2);
 
         if((sum & 0xff) != 0xff)
-            ExceptionMessage("Illegal S-Record found (check-sum unmatched).","ÉÔÀµ¤ÊS¥ì¥³¡¼¥É¤¬¤¢¤ê¤Ş¤¹ (¥Á¥§¥Ã¥¯¥µ¥àÉÔ°ìÃ×)") << throwException;
+            ExceptionMessage("Illegal S-Record found (check-sum unmatched).","ä¸æ­£ãªSãƒ¬ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚Šã¾ã™ (ãƒã‚§ãƒƒã‚¯ã‚µãƒ ä¸ä¸€è‡´)") << throwException;
 
         return true;
     }
 
-        /* ¼¡¤Î³«»Ï¥¢¥É¥ì¥¹¤òÆÀ¤ë */
+        /* æ¬¡ã®é–‹å§‹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å¾—ã‚‹ */
     FileContainer::address_t parseRecordAddress(const string & src, FileContainer::address_t base) throw()
     {
         const char * record = src.c_str();
@@ -465,7 +465,7 @@ namespace {
         return result;
     }
 
-        /* ¥Ç¡¼¥¿ÉôÊ¬¤À¤±¤ò»Ä¤·¤Æ¥Á¥ç¥Ã¥× */
+        /* ãƒ‡ãƒ¼ã‚¿éƒ¨åˆ†ã ã‘ã‚’æ®‹ã—ã¦ãƒãƒ§ãƒƒãƒ— */
     void chopRecord(string & src) throw()
     {
         string::size_type start;
@@ -477,11 +477,11 @@ namespace {
             default:   start = 4;      break;
         }
 
-            //ÀèÆ¬4¥Ğ¥¤¥È + ¥¢¥É¥ì¥¹Éô + ºÇ¸å¤Î¥µ¥à¤ò¼è¤ê½ü¤¯
+            //å…ˆé ­4ãƒã‚¤ãƒˆ + ã‚¢ãƒ‰ãƒ¬ã‚¹éƒ¨ + æœ€å¾Œã®ã‚µãƒ ã‚’å–ã‚Šé™¤ã
         src = src.substr(start, src.size() - start - 2);
     }
 
-        /* ¥×¥í¥°¥é¥à¥Ç¡¼¥¿¤ÎÆÉ¤ß¹ş¤ß */
+        /* ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ */
     void FileContainerBinutilsImpl::loadDataContents(fstream & file) throw(Exception)
     {
         assert(file.is_open());
@@ -496,7 +496,7 @@ namespace {
 
             chopRecord(line);
 
-                /* ¥Ç¡¼¥¿¤Î³ÊÇ¼ */
+                /* ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´ */
             const char * pos = line.c_str();
             while(*pos != '\x0') {
                 unsigned int data = hextodec(pos, 2);
@@ -508,7 +508,7 @@ namespace {
         file.close();
     }
 
-        /* ¥·¥ó¥Ü¥ë¥×¥ì¥Õ¥£¥¯¥¹¤Î¼«Æ°È½Äê */
+        /* ã‚·ãƒ³ãƒœãƒ«ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹ã®è‡ªå‹•åˆ¤å®š */
     void FileContainerBinutilsImpl::searchSymbolPrefix(void) throw()
     {
         const char *  candidate_list[] = {"", "_", NULL};
@@ -529,7 +529,7 @@ namespace {
             symbol_prefix.assign(*candidate);
     }
 
-        /* ¥¨¥ó¥Ç¥£¥¢¥ó¤Î¼«Æ°È½Äê */
+        /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®è‡ªå‹•åˆ¤å®š */
     void FileContainerBinutilsImpl::searchByteOrder(void) throw()
     {
         address_t address;
@@ -559,7 +559,7 @@ namespace {
         catch(...) {}
     }
 
-        /* ¥â¥¸¥å¡¼¥ë¤Î¥¢¥¿¥Ã¥Á -> ¥·¥ó¥Ü¥ëÆÉ½Ğ¤·, ¥Ç¡¼¥¿³ÊÇ¼ */
+        /* ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ã‚¢ã‚¿ãƒƒãƒ -> ã‚·ãƒ³ãƒœãƒ«èª­å‡ºã—, ãƒ‡ãƒ¼ã‚¿æ ¼ç´ */
     void FileContainerBinutilsImpl::attachModule(const string & filename) throw(Exception)
     {
         fstream file;
@@ -578,7 +578,7 @@ namespace {
         searchByteOrder();
     }
 
-        /* ³ÊÇ¼¤·¤Æ¤¤¤ëÆâÍÆ¤Î¼èÆÀ */
+        /* æ ¼ç´ã—ã¦ã„ã‚‹å†…å®¹ã®å–å¾— */
     void FileContainerBinutilsImpl::loadContents(void * _dest, address_t address, size_t size) throw(Exception)
     {
         char * dest = static_cast<char *>(_dest);
@@ -595,7 +595,7 @@ namespace {
 
             scope = contents.find(base);
             if(scope == contents.end())
-                ExceptionMessage("[Internel error] Memory read with unmapped address","[ÆâÉô¥¨¥é¡¼] ¥Ş¥Ã¥×¤µ¤ì¤Æ¤Ê¤¤¥¢¥É¥ì¥¹¤ò»È¤Ã¤Æ¥á¥â¥ê¥ê¡¼¥É¤¬¹Ô¤ï¤ì¤Ş¤·¤¿").throwException();
+                ExceptionMessage("[Internel error] Memory read with unmapped address","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] ãƒãƒƒãƒ—ã•ã‚Œã¦ãªã„ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ä½¿ã£ã¦ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ãƒ‰ãŒè¡Œã‚ã‚Œã¾ã—ãŸ").throwException();
 
             memcpy(dest, scope->second + offset, transfer_size);
 
@@ -604,7 +604,7 @@ namespace {
         }
     }
 
-        /* ¥·¥ó¥Ü¥ë¤Î¥¢¥É¥ì¥¹¤Î¼èÆÀ */
+        /* ã‚·ãƒ³ãƒœãƒ«ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã®å–å¾— */
     FileContainer::address_t FileContainerBinutilsImpl::getSymbolAddress(const string & symbol) throw(Exception)
     {
         string symbolname;
@@ -614,12 +614,12 @@ namespace {
 
         scope = symbol_table.find(symbolname);
         if(scope == symbol_table.end())
-            ExceptionMessage("Unknown symbol '%'","ÉÔÌÀ¤Ê¥·¥ó¥Ü¥ëÌ¾ '%'") << symbol << throwException;
+            ExceptionMessage("Unknown symbol '%'","ä¸æ˜ãªã‚·ãƒ³ãƒœãƒ«å '%'") << symbol << throwException;
 
         return scope->second;
     }
 
-        /* ¥¢¡¼¥­¥Æ¥¯¥Á¥ãÌ¾¤Î¼èÆÀ */
+        /* ã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£åã®å–å¾— */
     string FileContainerBinutilsImpl::getArchitecture(void) throw()
     {
         if(byteorder == LITTLE)
@@ -671,23 +671,23 @@ TESTSUITE(main, FileContainerBinutilsImpl)
     chain.saveContext<RuntimeObjectTable>();
 
     BEGIN_CASE("splitFilename","splitFilename") {
-        BEGIN_CASE("1","¥«¥ó¥Ş¤ÎÁ°¸å¤ÇÀÚ¤ì¤ë") {
+        BEGIN_CASE("1","ã‚«ãƒ³ãƒã®å‰å¾Œã§åˆ‡ã‚Œã‚‹") {
             string first, second;
             
             splitFilename("a,b", first, second);
-            TEST_CASE("1","first¤ÎÃæ¿È¤ÏÀµ¤·¤¤", first.compare("a") == 0);
-            TEST_CASE("2","second¤ÎÃæ¿È¤ÏÀµ¤·¤¤", second.compare("b") == 0);
+            TEST_CASE("1","firstã®ä¸­èº«ã¯æ­£ã—ã„", first.compare("a") == 0);
+            TEST_CASE("2","secondã®ä¸­èº«ã¯æ­£ã—ã„", second.compare("b") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","¥«¥ó¥Ş¤ÎÌµ¤¤°ú¿ô¤òÍ¿¤¨¤ë¤È¡¢Î¾Êı¤ËÆ±¤¸Ãæ¿È¤¬Æş¤ë") {
+        BEGIN_CASE("2","ã‚«ãƒ³ãƒã®ç„¡ã„å¼•æ•°ã‚’ä¸ãˆã‚‹ã¨ã€ä¸¡æ–¹ã«åŒã˜ä¸­èº«ãŒå…¥ã‚‹") {
             string first, second;
 
             splitFilename("abc", first, second);
-            TEST_CASE("1","first¤ÎÃæ¿È¤ÏÀµ¤·¤¤", first.compare("abc") == 0);
-            TEST_CASE("2","second¤ÎÃæ¿È¤ÏÀµ¤·¤¤", second.compare("abc") == 0);
+            TEST_CASE("1","firstã®ä¸­èº«ã¯æ­£ã—ã„", first.compare("abc") == 0);
+            TEST_CASE("2","secondã®ä¸­èº«ã¯æ­£ã—ã„", second.compare("abc") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","¶õÊ¸»ú¤òÍ¿¤¨¤ë¤ÈÎã³°") {
+        BEGIN_CASE("3","ç©ºæ–‡å­—ã‚’ä¸ãˆã‚‹ã¨ä¾‹å¤–") {
             bool result = false;
             string first, second;
             try { splitFilename("", first, second); } catch(Exception &) { result = true; }
@@ -697,28 +697,28 @@ TESTSUITE(main, FileContainerBinutilsImpl)
     } END_CASE;
 
     BEGIN_CASE("hasBinaryContents","hasBinaryContents") {
-        BEGIN_CASE("1","¥Æ¥­¥¹¥È¥Õ¥¡¥¤¥ë¤ò¿©¤ï¤»¤ë") {
+        BEGIN_CASE("1","ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’é£Ÿã‚ã›ã‚‹") {
             fstream file("test", ios::out);
             file << "This is a sample text file.";
             file.close();
 
             file.open("test",ios::in|ios::binary);
-            TEST_CASE("1","´Ø¿ô¤Ïfalse¤òÊÖ¤¹", !hasBinaryContents(file));
-            TEST_CASE("2","file¤Ïeof¤ËÃ£¤·¤Æ¤¤¤Ê¤¤", !file.eof());
+            TEST_CASE("1","é–¢æ•°ã¯falseã‚’è¿”ã™", !hasBinaryContents(file));
+            TEST_CASE("2","fileã¯eofã«é”ã—ã¦ã„ãªã„", !file.eof());
             file.close();
 
             remove("test");
         } END_CASE;
 
-        BEGIN_CASE("2","¥Ğ¥¤¥Ê¥ê¥Ç¡¼¥¿¤ò¿©¤ï¤»¤ë") {
+        BEGIN_CASE("2","ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‚’é£Ÿã‚ã›ã‚‹") {
             fstream file("test", ios::out|ios::binary);
             file << "This is a sample text file.";
             file.write("\x0\x1\x2\x3", 4);
             file.close();
 
             file.open("test",ios::in|ios::binary);
-            TEST_CASE("1","´Ø¿ô¤Ïtrue¤òÊÖ¤¹", hasBinaryContents(file));
-            TEST_CASE("2","file¤Ïeof¤ËÃ£¤·¤Æ¤¤¤Ê¤¤", !file.eof());
+            TEST_CASE("1","é–¢æ•°ã¯trueã‚’è¿”ã™", hasBinaryContents(file));
+            TEST_CASE("2","fileã¯eofã«é”ã—ã¦ã„ãªã„", !file.eof());
             file.close();
 
             remove("test");
@@ -726,7 +726,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
     } END_CASE;
 
     BEGIN_CASE("openTextFile","openTextFile") {
-        BEGIN_CASE("1","¥Æ¥­¥¹¥È¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë") {
+        BEGIN_CASE("1","ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹") {
             TestSuite::clearCheckpoints();
             fstream file("test", ios::out);
             file << "This is a sample text file.";
@@ -735,19 +735,19 @@ TESTSUITE(main, FileContainerBinutilsImpl)
             bool result = true;
             try { openTextFile(file, "test", interceptor); } catch(Exception &) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤­¤Ê¤¤", result);
-            TEST_CASE("2","¥Õ¥¡¥¤¥ë¤¬³«¤«¤ì¤Æ¤¤¤ë", file.is_open());
-            TEST_CASE("3","interceptor¤Ï¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤Ê¤¤", !TestSuite::isReached("interceptor"));
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ããªã„", result);
+            TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹", file.is_open());
+            TEST_CASE("3","interceptorã¯ã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„", !TestSuite::isReached("interceptor"));
 
             string work;
             getline(file, work, '\n');
-            TEST_CASE("4","ÆÉ¤ß½Ğ¤µ¤ì¤¿ÆâÍÆ¤¬Àµ¤·¤¤", work.compare("This is a sample text file.") == 0);
+            TEST_CASE("4","èª­ã¿å‡ºã•ã‚ŒãŸå†…å®¹ãŒæ­£ã—ã„", work.compare("This is a sample text file.") == 0);
 
             file.close();
             remove("test");
         } END_CASE;
 
-        BEGIN_CASE("2","¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë (interceptor¤Ï¥Õ¥¡¥¤¥ë¤ò³«¤«¤Ê¤¤)") {
+        BEGIN_CASE("2","ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹ (interceptorã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‹ãªã„)") {
             TestSuite::clearCheckpoints();
             fstream file("test", ios::out|ios::binary);
             file.write("\x1", 1);
@@ -756,28 +756,28 @@ TESTSUITE(main, FileContainerBinutilsImpl)
             bool result = false;
             try { openTextFile(file, "test", interceptor); } catch(Exception &) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤­¤ë", result);
-            TEST_CASE("2","¥Õ¥¡¥¤¥ë¤¬³«¤«¤ì¤Æ¤¤¤ë", !file.is_open());
-            TEST_CASE("3","interceptor¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("interceptor"));
-            TEST_CASE("4","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤ (file)", interceptor_file == &file);
-            TEST_CASE("5","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤", interceptor_filename.compare("test") == 0);
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ãã‚‹", result);
+            TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹", !file.is_open());
+            TEST_CASE("3","interceptorãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("interceptor"));
+            TEST_CASE("4","interceptorã®å¼•æ•°ãŒæ­£ã—ã„ (file)", interceptor_file == &file);
+            TEST_CASE("5","interceptorã®å¼•æ•°ãŒæ­£ã—ã„", interceptor_filename.compare("test") == 0);
 
             file.close();
             remove("test");
         } END_CASE;
 
-        BEGIN_CASE("3","Â¸ºß¤·¤Ê¤¤¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë") {
+        BEGIN_CASE("3","å­˜åœ¨ã—ãªã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹") {
             TestSuite::clearCheckpoints();
             fstream file;
             bool result = false;
             try { openTextFile(file, "___unknown___", interceptor); } catch(Exception &) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤­¤ë", result);
-            TEST_CASE("2","¥Õ¥¡¥¤¥ë¤¬³«¤«¤ì¤Æ¤¤¤Ê¤¤", !file.is_open());
-            TEST_CASE("3","interceptor¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤Ê¤¤", !TestSuite::isReached("interceptor"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ãã‚‹", result);
+            TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ãªã„", !file.is_open());
+            TEST_CASE("3","interceptorãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„", !TestSuite::isReached("interceptor"));
         } END_CASE;
 
-        BEGIN_CASE("4","interceptor¤¬¥Æ¥­¥¹¥È¥Õ¥¡¥¤¥ë¤òÀ¸À®¤¹¤ë") {
+        BEGIN_CASE("4","interceptorãŒãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹") {
             TestSuite::clearCheckpoints();
             fstream file("textfile", ios::out|ios::binary);
             file.write("\x1", 1);
@@ -786,21 +786,21 @@ TESTSUITE(main, FileContainerBinutilsImpl)
             bool result = true;
             try { openTextFile(file, "textfile", interceptor); } catch(Exception &) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤­¤Ê¤¤", result);
-            TEST_CASE("2","¥Õ¥¡¥¤¥ë¤¬³«¤«¤ì¤Æ¤¤¤ë", file.is_open());
-            TEST_CASE("3","interceptor¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("interceptor"));
-            TEST_CASE("4","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤ (file)", interceptor_file == &file);
-            TEST_CASE("5","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤", interceptor_filename.compare("textfile") == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ããªã„", result);
+            TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã‚‹", file.is_open());
+            TEST_CASE("3","interceptorãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("interceptor"));
+            TEST_CASE("4","interceptorã®å¼•æ•°ãŒæ­£ã—ã„ (file)", interceptor_file == &file);
+            TEST_CASE("5","interceptorã®å¼•æ•°ãŒæ­£ã—ã„", interceptor_filename.compare("textfile") == 0);
 
             string work;
             getline(file, work, '\n');
-            TEST_CASE("4","ÆÉ¤ß½Ğ¤µ¤ì¤¿ÆâÍÆ¤¬Àµ¤·¤¤", work.compare("text") == 0);
+            TEST_CASE("4","èª­ã¿å‡ºã•ã‚ŒãŸå†…å®¹ãŒæ­£ã—ã„", work.compare("text") == 0);
 
             file.close();
             remove("textfile");
         } END_CASE;
 
-        BEGIN_CASE("5","interceptor¤¬¥Ğ¥¤¥Ê¥ê¥Õ¥¡¥¤¥ë¤òÀ¸À®¤¹¤ë") {
+        BEGIN_CASE("5","interceptorãŒãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã™ã‚‹") {
             TestSuite::clearCheckpoints();
             fstream file("binaryfile", ios::out|ios::binary);
             file.write("\x1", 1);
@@ -809,11 +809,11 @@ TESTSUITE(main, FileContainerBinutilsImpl)
             bool result = false;
             try { openTextFile(file, "binaryfile", interceptor); } catch(Exception &) { result = true; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤­¤ë", result);
-            TEST_CASE("2","¥Õ¥¡¥¤¥ë¤¬³«¤«¤ì¤Æ¤¤¤Ê¤¤", !file.is_open());
-            TEST_CASE("3","interceptor¤¬¥³¡¼¥ë¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("interceptor"));
-            TEST_CASE("4","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤ (file)", interceptor_file == &file);
-            TEST_CASE("5","interceptor¤Î°ú¿ô¤¬Àµ¤·¤¤", interceptor_filename.compare("binaryfile") == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ãã‚‹", result);
+            TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ãªã„", !file.is_open());
+            TEST_CASE("3","interceptorãŒã‚³ãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("interceptor"));
+            TEST_CASE("4","interceptorã®å¼•æ•°ãŒæ­£ã—ã„ (file)", interceptor_file == &file);
+            TEST_CASE("5","interceptorã®å¼•æ•°ãŒæ­£ã—ã„", interceptor_filename.compare("binaryfile") == 0);
 
             file.close();
             remove("binaryfile");
@@ -824,16 +824,16 @@ TESTSUITE(main, FileContainerBinutilsImpl)
         const char * letter = "0123456789abcdEFg";
         const char * work = letter;
 
-        TEST_CASE("1", "ÀÚ¤ê½Ğ¤µ¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", hextodec(work, 2) == 1);
-        TEST_CASE("2", "work¤¬¿Ê¤ó¤Ç¤¤¤ë", work == letter + 2);
-        TEST_CASE("3", "ÀÚ¤ê½Ğ¤µ¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", hextodec(work, 4) == 0x2345);
-        TEST_CASE("4", "work¤¬¿Ê¤ó¤Ç¤¤¤ë", work == letter + 6);
-        TEST_CASE("5", "ÀÚ¤ê½Ğ¤µ¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", hextodec(work, 8) == 0x6789abcd);
-        TEST_CASE("6", "work¤¬¿Ê¤ó¤Ç¤¤¤ë", work == letter + 14);
-        TEST_CASE("7", "ÀÚ¤ê½Ğ¤µ¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", hextodec(work, 8) == 0xef);
-        TEST_CASE("8", "work¤¬'g'¤Î°ÌÃÖ¤Ç¤È¤Ş¤ë", *work == 'g');
-        TEST_CASE("9", "ÀÚ¤ê½Ğ¤µ¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", hextodec(work, 8) == 0);
-        TEST_CASE("10", "work¤¬'g'¤Î°ÌÃÖ¤Ç¤È¤Ş¤ë", *work == 'g');
+        TEST_CASE("1", "åˆ‡ã‚Šå‡ºã•ã‚ŒãŸå€¤ãŒæ­£ã—ã„", hextodec(work, 2) == 1);
+        TEST_CASE("2", "workãŒé€²ã‚“ã§ã„ã‚‹", work == letter + 2);
+        TEST_CASE("3", "åˆ‡ã‚Šå‡ºã•ã‚ŒãŸå€¤ãŒæ­£ã—ã„", hextodec(work, 4) == 0x2345);
+        TEST_CASE("4", "workãŒé€²ã‚“ã§ã„ã‚‹", work == letter + 6);
+        TEST_CASE("5", "åˆ‡ã‚Šå‡ºã•ã‚ŒãŸå€¤ãŒæ­£ã—ã„", hextodec(work, 8) == 0x6789abcd);
+        TEST_CASE("6", "workãŒé€²ã‚“ã§ã„ã‚‹", work == letter + 14);
+        TEST_CASE("7", "åˆ‡ã‚Šå‡ºã•ã‚ŒãŸå€¤ãŒæ­£ã—ã„", hextodec(work, 8) == 0xef);
+        TEST_CASE("8", "workãŒ'g'ã®ä½ç½®ã§ã¨ã¾ã‚‹", *work == 'g');
+        TEST_CASE("9", "åˆ‡ã‚Šå‡ºã•ã‚ŒãŸå€¤ãŒæ­£ã—ã„", hextodec(work, 8) == 0);
+        TEST_CASE("10", "workãŒ'g'ã®ä½ç½®ã§ã¨ã¾ã‚‹", *work == 'g');
     } END_CASE;
 
     BEGIN_CASE("readGnuNmLine","readGnuNmLine") {
@@ -846,29 +846,29 @@ TESTSUITE(main, FileContainerBinutilsImpl)
         string    symbolname;
 
         file.open("test", ios::in);
-        BEGIN_CASE("1","ÉáÄÌ¤Î¥¨¥ó¥È¥ê¤¬ÆÉ¤á¤ë") {
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", readGnuNmLine(file, address, attribute, symbolname));
-            TEST_CASE("2","address¤ÏÀµ¤·¤¤", address == 0x0804aab0);
-            TEST_CASE("3","attribute¤ÏÀµ¤·¤¤", attribute.compare("T") == 0);
-            TEST_CASE("4","symbolname¤ÏÀµ¤·¤¤", symbolname.compare("_kernel_task_initialize") == 0);
+        BEGIN_CASE("1","æ™®é€šã®ã‚¨ãƒ³ãƒˆãƒªãŒèª­ã‚ã‚‹") {
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", readGnuNmLine(file, address, attribute, symbolname));
+            TEST_CASE("2","addressã¯æ­£ã—ã„", address == 0x0804aab0);
+            TEST_CASE("3","attributeã¯æ­£ã—ã„", attribute.compare("T") == 0);
+            TEST_CASE("4","symbolnameã¯æ­£ã—ã„", symbolname.compare("_kernel_task_initialize") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","ÉáÄÌ¤Î¥¨¥ó¥È¥ê¤¬ÆÉ¤á¤ë (2)") {
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", readGnuNmLine(file, address, attribute, symbolname));
-            TEST_CASE("2","address¤ÏÀµ¤·¤¤", address == 0x0805d8a0);
-            TEST_CASE("3","attribute¤ÏÀµ¤·¤¤", attribute.compare("B") == 0);
-            TEST_CASE("4","symbolname¤ÏÀµ¤·¤¤", symbolname.compare("_kernel_tcb_table") == 0);
+        BEGIN_CASE("2","æ™®é€šã®ã‚¨ãƒ³ãƒˆãƒªãŒèª­ã‚ã‚‹ (2)") {
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", readGnuNmLine(file, address, attribute, symbolname));
+            TEST_CASE("2","addressã¯æ­£ã—ã„", address == 0x0805d8a0);
+            TEST_CASE("3","attributeã¯æ­£ã—ã„", attribute.compare("B") == 0);
+            TEST_CASE("4","symbolnameã¯æ­£ã—ã„", symbolname.compare("_kernel_tcb_table") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","¶õ¹Ô¤òÆÉ¤ßÈô¤Ğ¤·¤Æ¼¡¤¬ÆÉ¤á¤ë") {
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", readGnuNmLine(file, address, attribute, symbolname));
-            TEST_CASE("2","address¤ÏÀµ¤·¤¤", address == 0x0804e560);
-            TEST_CASE("3","attribute¤ÏÀµ¤·¤¤", attribute.compare("R") == 0);
-            TEST_CASE("4","symbolname¤ÏÀµ¤·¤¤", symbolname.compare("_kernel_tinib_table") == 0);
+        BEGIN_CASE("3","ç©ºè¡Œã‚’èª­ã¿é£›ã°ã—ã¦æ¬¡ãŒèª­ã‚ã‚‹") {
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", readGnuNmLine(file, address, attribute, symbolname));
+            TEST_CASE("2","addressã¯æ­£ã—ã„", address == 0x0804e560);
+            TEST_CASE("3","attributeã¯æ­£ã—ã„", attribute.compare("R") == 0);
+            TEST_CASE("4","symbolnameã¯æ­£ã—ã„", symbolname.compare("_kernel_tinib_table") == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","¥¢¥É¥ì¥¹¤ÎÌµ¤¤¥¨¥ó¥È¥ê¤ÏÌµ»ë¤¹¤ë") {
-            TEST_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !readGnuNmLine(file, address, attribute, symbolname));
+        BEGIN_CASE("4","ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ç„¡ã„ã‚¨ãƒ³ãƒˆãƒªã¯ç„¡è¦–ã™ã‚‹") {
+            TEST_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !readGnuNmLine(file, address, attribute, symbolname));
         } END_CASE;
 
         file.close();
@@ -885,8 +885,8 @@ TESTSUITE(main, FileContainerBinutilsImpl)
         FileContainerBinutilsImpl fcbi;
         fcbi.loadSymbols(file);
 
-        TEST_CASE("1","ÆÉ¤ß¹ş¤Ş¤ì¤¿¥¨¥ó¥È¥ê¤Î¿ô¤¬Àµ¤·¤¤", fcbi.symbol_table.size() == 3);
-        TEST_CASE("2","¥Õ¥¡¥¤¥ë¤ÏÊÄ¤¸¤é¤ì¤Æ¤¤¤ë", !file.is_open());
+        TEST_CASE("1","èª­ã¿è¾¼ã¾ã‚ŒãŸã‚¨ãƒ³ãƒˆãƒªã®æ•°ãŒæ­£ã—ã„", fcbi.symbol_table.size() == 3);
+        TEST_CASE("2","ãƒ•ã‚¡ã‚¤ãƒ«ã¯é–‰ã˜ã‚‰ã‚Œã¦ã„ã‚‹", !file.is_open());
 
         remove("test");
     } END_CASE;
@@ -894,41 +894,41 @@ TESTSUITE(main, FileContainerBinutilsImpl)
     BEGIN_CASE("writeByte","writeByte") {
         FileContainerBinutilsImpl fcbi;
 
-        BEGIN_CASE("1","Â¸ºß¤·¤Ê¤¤¥Ú¡¼¥¸¤Ø¤Î½ñ¤­¹ş¤ß") {
-            TEST_CASE("0", "[Á°Äó] contents¤ÎÍ×ÁÇ¿ô¤Ï0", fcbi.contents.size() == 0);
+        BEGIN_CASE("1","å­˜åœ¨ã—ãªã„ãƒšãƒ¼ã‚¸ã¸ã®æ›¸ãè¾¼ã¿") {
+            TEST_CASE("0", "[å‰æ] contentsã®è¦ç´ æ•°ã¯0", fcbi.contents.size() == 0);
             fcbi.writeByte(0x100, 0);
 
-            TEST_CASE("1","contents¤ÎÍ×ÁÇ¤¬Áı¤¨¤Æ¤¤¤ë", fcbi.contents.size() == 1);
+            TEST_CASE("1","contentsã®è¦ç´ ãŒå¢—ãˆã¦ã„ã‚‹", fcbi.contents.size() == 1);
 
             const char * scope = fcbi.contents.find(MAKE_BASEADDRESS(0x100))->second + MAKE_OFFSETADDRESS(0x100);
-            TEST_CASE("2","½ñ¤­¹ş¤Ş¤ì¤Æ¤¤¤ëÆâÍÆ¤¬Àµ¤·¤¤", *scope == 0);
+            TEST_CASE("2","æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹å†…å®¹ãŒæ­£ã—ã„", *scope == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","Â¸ºß¤¹¤ë¥Ú¡¼¥¸¤Ø¤Î½ñ¤­¹ş¤ß (Ï¢Â³¥¢¥¯¥»¥¹)") {
+        BEGIN_CASE("2","å­˜åœ¨ã™ã‚‹ãƒšãƒ¼ã‚¸ã¸ã®æ›¸ãè¾¼ã¿ (é€£ç¶šã‚¢ã‚¯ã‚»ã‚¹)") {
             fcbi.writeByte(0x100, 0xff);
 
-            TEST_CASE("1","contents¤ÎÍ×ÁÇ¤¬Áı¤¨¤Æ¤¤¤Ê¤¤", fcbi.contents.size() == 1);
+            TEST_CASE("1","contentsã®è¦ç´ ãŒå¢—ãˆã¦ã„ãªã„", fcbi.contents.size() == 1);
 
             const char * scope = fcbi.contents.find(MAKE_BASEADDRESS(0x100))->second + MAKE_OFFSETADDRESS(0x100);
-            TEST_CASE("2","½ñ¤­¹ş¤Ş¤ì¤Æ¤¤¤ëÆâÍÆ¤¬Àµ¤·¤¤", *scope == 0xff);
+            TEST_CASE("2","æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹å†…å®¹ãŒæ­£ã—ã„", *scope == 0xff);
         } END_CASE;
 
-        BEGIN_CASE("3","¿·¤·¤¤¥Ú¡¼¥¸¤Ø¤Î½ñ¤­¹ş¤ß") {
+        BEGIN_CASE("3","æ–°ã—ã„ãƒšãƒ¼ã‚¸ã¸ã®æ›¸ãè¾¼ã¿") {
             fcbi.writeByte(0x10000000, 0xff);
 
-            TEST_CASE("1","contents¤ÎÍ×ÁÇ¤¬Áı¤¨¤Æ¤¤¤ë", fcbi.contents.size() == 2);
+            TEST_CASE("1","contentsã®è¦ç´ ãŒå¢—ãˆã¦ã„ã‚‹", fcbi.contents.size() == 2);
 
             const char * scope = fcbi.contents.find(MAKE_BASEADDRESS(0x10000000))->second + MAKE_OFFSETADDRESS(0x10000000);
-            TEST_CASE("2","½ñ¤­¹ş¤Ş¤ì¤Æ¤¤¤ëÆâÍÆ¤¬Àµ¤·¤¤", *scope == 0xff);
+            TEST_CASE("2","æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹å†…å®¹ãŒæ­£ã—ã„", *scope == 0xff);
         } END_CASE;
 
-        BEGIN_CASE("4","´ûÂ¸¤Î¥Ú¡¼¥¸¤Ø¤Î¥¢¥¯¥»¥¹") {
+        BEGIN_CASE("4","æ—¢å­˜ã®ãƒšãƒ¼ã‚¸ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹") {
             fcbi.writeByte(0x100, 0x0);
 
-            TEST_CASE("1","contents¤ÎÍ×ÁÇ¤¬Áı¤¨¤Æ¤¤¤Ê¤¤", fcbi.contents.size() == 2);
+            TEST_CASE("1","contentsã®è¦ç´ ãŒå¢—ãˆã¦ã„ãªã„", fcbi.contents.size() == 2);
 
             const char * scope = fcbi.contents.find(MAKE_BASEADDRESS(0x100))->second + MAKE_OFFSETADDRESS(0x100);
-            TEST_CASE("2","½ñ¤­¹ş¤Ş¤ì¤Æ¤¤¤ëÆâÍÆ¤¬Àµ¤·¤¤", *scope == 0x0);
+            TEST_CASE("2","æ›¸ãè¾¼ã¾ã‚Œã¦ã„ã‚‹å†…å®¹ãŒæ­£ã—ã„", *scope == 0x0);
         } END_CASE;
     } END_CASE;
 
@@ -938,104 +938,104 @@ TESTSUITE(main, FileContainerBinutilsImpl)
         file.close();
 
         file.open("test",ios::in);
-        BEGIN_CASE("1","Àµ¾ï¥±¡¼¥¹") {
+        BEGIN_CASE("1","æ­£å¸¸ã‚±ãƒ¼ã‚¹") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤", !exception);
-            TEST_CASE("2","´Ø¿ô¤Ïtrue¤òÊÖ¤¹", result);
-            TEST_CASE("3","ÆÉ¤ß½Ğ¤µ¤ì¤¿ÆâÍÆ¤¬Àµ¤·¤¤", work.compare("S315080480F42F6C69622F6C642D6C696E75782E736F98") == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„", !exception);
+            TEST_CASE("2","é–¢æ•°ã¯trueã‚’è¿”ã™", result);
+            TEST_CASE("3","èª­ã¿å‡ºã•ã‚ŒãŸå†…å®¹ãŒæ­£ã—ã„", work.compare("S315080480F42F6C69622F6C642D6C696E75782E736F98") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","Àµ¾ï¥±¡¼¥¹ (¶õ¹Ô¤ÎÆÉ¤ßÈô¤Ğ¤·)") {
+        BEGIN_CASE("2","æ­£å¸¸ã‚±ãƒ¼ã‚¹ (ç©ºè¡Œã®èª­ã¿é£›ã°ã—)") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤", !exception);
-            TEST_CASE("2","´Ø¿ô¤Ïtrue¤òÊÖ¤¹", result);
-            TEST_CASE("3","ÆÉ¤ß½Ğ¤µ¤ì¤¿ÆâÍÆ¤¬Àµ¤·¤¤", work.compare("S315080480F42F6C69622F6C642D6C696E75782E736F98") == 0);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„", !exception);
+            TEST_CASE("2","é–¢æ•°ã¯trueã‚’è¿”ã™", result);
+            TEST_CASE("3","èª­ã¿å‡ºã•ã‚ŒãŸå†…å®¹ãŒæ­£ã—ã„", work.compare("S315080480F42F6C69622F6C642D6C696E75782E736F98") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","¥Á¥§¥Ã¥¯¥µ¥à¤¬¸í¤Ã¤Æ¤¤¤ë¥¨¥ó¥È¥ê") {
+        BEGIN_CASE("3","ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒèª¤ã£ã¦ã„ã‚‹ã‚¨ãƒ³ãƒˆãƒª") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤ò¤ª¤³¤¹", exception);
+            TEST_CASE("1","ä¾‹å¤–ã‚’ãŠã“ã™", exception);
         } END_CASE;
 
-        BEGIN_CASE("4","ÀèÆ¬¤¬S¤Ç»Ï¤Ş¤é¤Ê¤¤¥¨¥ó¥È¥ê") {
+        BEGIN_CASE("4","å…ˆé ­ãŒSã§å§‹ã¾ã‚‰ãªã„ã‚¨ãƒ³ãƒˆãƒª") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤ò¤ª¤³¤¹", exception);
+            TEST_CASE("1","ä¾‹å¤–ã‚’ãŠã“ã™", exception);
         } END_CASE;
 
-        BEGIN_CASE("5","»ØÄê¤µ¤ì¤¿Ä¹¤µ¤è¤ê¤âÄ¹¤¤¥¨¥ó¥È¥ê") {
+        BEGIN_CASE("5","æŒ‡å®šã•ã‚ŒãŸé•·ã•ã‚ˆã‚Šã‚‚é•·ã„ã‚¨ãƒ³ãƒˆãƒª") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤ò¤ª¤³¤¹", exception);
+            TEST_CASE("1","ä¾‹å¤–ã‚’ãŠã“ã™", exception);
         } END_CASE;
 
-        BEGIN_CASE("6","»ØÄê¤µ¤ì¤¿Ä¹¤µ¤è¤ê¤âÃ»¤¤¥¨¥ó¥È¥ê") {
+        BEGIN_CASE("6","æŒ‡å®šã•ã‚ŒãŸé•·ã•ã‚ˆã‚Šã‚‚çŸ­ã„ã‚¨ãƒ³ãƒˆãƒª") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤ò¤ª¤³¤¹", exception);
+            TEST_CASE("1","ä¾‹å¤–ã‚’ãŠã“ã™", exception);
         } END_CASE;
 
-        BEGIN_CASE("7","¥Õ¥¡¥¤¥ë½ªÃ¼") {
+        BEGIN_CASE("7","ãƒ•ã‚¡ã‚¤ãƒ«çµ‚ç«¯") {
             string work;
             bool result;
             bool exception = false;
             try { result = readRecord(file, work); } catch(Exception &) { exception = true; }
-            TEST_CASE("1","Îã³°¤ò¤ª¤³¤µ¤Ê¤¤", !exception);
-            TEST_CASE("2","´Ø¿ô¤Ïfalse¤òÊÖ¤¹", !result);
+            TEST_CASE("1","ä¾‹å¤–ã‚’ãŠã“ã•ãªã„", !exception);
+            TEST_CASE("2","é–¢æ•°ã¯falseã‚’è¿”ã™", !result);
         } END_CASE;
 
         remove("test");
     } END_CASE;
 
     BEGIN_CASE("chopRecord","chopRecord") {
-        BEGIN_CASE("1","S1¥ì¥³¡¼¥É") {
+        BEGIN_CASE("1","S1ãƒ¬ã‚³ãƒ¼ãƒ‰") {
             string src("S106080480F42F4A");
 
             chopRecord(src);
-            TEST_CASE("1","ÃÍ¤¬Àµ¤·¤¤", src.compare("80F42F") == 0);
+            TEST_CASE("1","å€¤ãŒæ­£ã—ã„", src.compare("80F42F") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","S2¥ì¥³¡¼¥É") {
+        BEGIN_CASE("2","S2ãƒ¬ã‚³ãƒ¼ãƒ‰") {
             string src("S206080480F42F4A");
 
             chopRecord(src);
-            TEST_CASE("1","ÃÍ¤¬Àµ¤·¤¤", src.compare("F42F") == 0);
+            TEST_CASE("1","å€¤ãŒæ­£ã—ã„", src.compare("F42F") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","S3¥ì¥³¡¼¥É") {
+        BEGIN_CASE("3","S3ãƒ¬ã‚³ãƒ¼ãƒ‰") {
             string src("S306080480F42F4A");
 
             chopRecord(src);
-            TEST_CASE("1","ÃÍ¤¬Àµ¤·¤¤", src.compare("2F") == 0);
+            TEST_CASE("1","å€¤ãŒæ­£ã—ã„", src.compare("2F") == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","S4¥ì¥³¡¼¥É") {
+        BEGIN_CASE("4","S4ãƒ¬ã‚³ãƒ¼ãƒ‰") {
             string src("S406080480F42F4A");
 
             chopRecord(src);
-            TEST_CASE("1","ÃÍ¤¬Àµ¤·¤¤", src.compare("080480F42F") == 0);
+            TEST_CASE("1","å€¤ãŒæ­£ã—ã„", src.compare("080480F42F") == 0);
         } END_CASE;
 
-        BEGIN_CASE("5","S5¥ì¥³¡¼¥É") {
+        BEGIN_CASE("5","S5ãƒ¬ã‚³ãƒ¼ãƒ‰") {
             string src("S506080480F42F4A");
 
             chopRecord(src);
-            TEST_CASE("1","ÃÍ¤¬Àµ¤·¤¤", src.compare("080480F42F") == 0);
+            TEST_CASE("1","å€¤ãŒæ­£ã—ã„", src.compare("080480F42F") == 0);
         } END_CASE;
 
     } END_CASE;
@@ -1045,35 +1045,35 @@ TESTSUITE(main, FileContainerBinutilsImpl)
         file << "S30D000000000123456789ABCDEF32\nS509FEDCBA9876543210BE";
         file.close();
 
-        BEGIN_CASE("1","Àµ¾ï¥±¡¼¥¹") {
+        BEGIN_CASE("1","æ­£å¸¸ã‚±ãƒ¼ã‚¹") {
             FileContainerBinutilsImpl fcbi;
 
             file.open("test",ios::in);
             bool exception = false;
             try { fcbi.loadDataContents(file); } catch(...) { exception = true; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤", !exception);
-            TEST_CASE("2","¥Ç¡¼¥¿¤¬³ÎÊİ¤µ¤ì¤Æ¤¤¤ë", fcbi.contents.size() == 1);
-            TEST_CASE("3","¥Õ¥¡¥¤¥ë¤ÏÊÄ¤¸¤é¤ì¤Æ¤¤¤ë", !file.is_open());
-            BEGIN_CASE("4","³ÊÇ¼¤·¤¿ÃÍ¤¬Àµ¤·¤¯ÆÉ¤á¤ë") {
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„", !exception);
+            TEST_CASE("2","ãƒ‡ãƒ¼ã‚¿ãŒç¢ºä¿ã•ã‚Œã¦ã„ã‚‹", fcbi.contents.size() == 1);
+            TEST_CASE("3","ãƒ•ã‚¡ã‚¤ãƒ«ã¯é–‰ã˜ã‚‰ã‚Œã¦ã„ã‚‹", !file.is_open());
+            BEGIN_CASE("4","æ ¼ç´ã—ãŸå€¤ãŒæ­£ã—ãèª­ã‚ã‚‹") {
                 unsigned int i;
 
                 assert(sizeof(unsigned int) >= 4);
                 i = 0;
                 
                 fcbi.loadContents(&i, 0, 4);
-                TEST_CASE("1","1-4¥Ğ¥¤¥ÈÌÜ", i == 0x67452301);
+                TEST_CASE("1","1-4ãƒã‚¤ãƒˆç›®", i == 0x67452301);
                 fcbi.loadContents(&i, 4, 4);
-                TEST_CASE("1","5-8¥Ğ¥¤¥ÈÌÜ", i == 0xefcdab89);
+                TEST_CASE("1","5-8ãƒã‚¤ãƒˆç›®", i == 0xefcdab89);
                 fcbi.loadContents(&i, 8, 4);
-                TEST_CASE("1","9-12¥Ğ¥¤¥ÈÌÜ", i == 0x98badcfe);
+                TEST_CASE("1","9-12ãƒã‚¤ãƒˆç›®", i == 0x98badcfe);
                 fcbi.loadContents(&i,12, 4);
-                TEST_CASE("1","13-16¥Ğ¥¤¥ÈÌÜ", i == 0x10325476);
+                TEST_CASE("1","13-16ãƒã‚¤ãƒˆç›®", i == 0x10325476);
             } END_CASE;
         } END_CASE;
         remove("test");
 
-        BEGIN_CASE("2","loadContents¤Ç°ìÅÙ¤Ë¥Ú¡¼¥¸¥µ¥¤¥º¤òÄ¶¤¨¤ëÎÌ¤òÍ×µá¤¹¤ë") {
+        BEGIN_CASE("2","loadContentsã§ä¸€åº¦ã«ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºã‚’è¶…ãˆã‚‹é‡ã‚’è¦æ±‚ã™ã‚‹") {
             FileContainerBinutilsImpl fcbi;
             unsigned int i;
 
@@ -1094,7 +1094,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
 
     BEGIN_CASE("searchSymbolPrefix","searchSymbolPrefix") {
 
-        BEGIN_CASE("1","¥×¥ì¥Õ¥£¥¯¥¹¤¬¤Ê¤¤") {
+        BEGIN_CASE("1","ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹ãŒãªã„") {
             FileContainerBinutilsImpl fcbi;
             fcbi.symbol_table.insert(pair<string, address_t>(MAGIC_SYMBOL, 0x100));
 
@@ -1103,7 +1103,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","ÊÑ¿ôÌ¾¤Ë\"_\"¤¬¤Ä¤¯¥¿¥¤¥×") {
+        BEGIN_CASE("2","å¤‰æ•°åã«\"_\"ãŒã¤ãã‚¿ã‚¤ãƒ—") {
             FileContainerBinutilsImpl fcbi;
             fcbi.symbol_table.insert(pair<string, address_t>("_" MAGIC_SYMBOL, 0x100));
 
@@ -1112,7 +1112,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","\"__\"¤Ë¤ÏÈ¿±ş¤·¤Ê¤¤") {
+        BEGIN_CASE("3","\"__\"ã«ã¯åå¿œã—ãªã„") {
             FileContainerBinutilsImpl fcbi;
             fcbi.symbol_table.insert(pair<string, address_t>("__" MAGIC_SYMBOL, 0x100));
 
@@ -1121,7 +1121,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
             
-        BEGIN_CASE("4","È¯¸«¤Ç¤­¤Ê¤¤¾ì¹ç¡¢ÊÑ¹¹¤·¤Ê¤¤") {
+        BEGIN_CASE("4","ç™ºè¦‹ã§ããªã„å ´åˆã€å¤‰æ›´ã—ãªã„") {
             FileContainerBinutilsImpl fcbi;
             fcbi.symbol_prefix.assign("test");
 
@@ -1132,7 +1132,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
     } END_CASE;
 
     BEGIN_CASE("searchByteOrder","searchByteOrder") {
-        BEGIN_CASE("1","¥Û¥¹¥È¤ÈÆ±¤¸¥¨¥ó¥Ç¥£¥¢¥ó") {
+        BEGIN_CASE("1","ãƒ›ã‚¹ãƒˆã¨åŒã˜ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³") {
             FileContainerBinutilsImpl fcbi;
             unsigned int value = MAGIC_NUMBER;
             fcbi.symbol_table.insert(pair<string, address_t>(MAGIC_SYMBOL, 0x100));
@@ -1147,7 +1147,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¥Û¥¹¥È¤È°ã¤¦¥¨¥ó¥Ç¥£¥¢¥ó") {
+        BEGIN_CASE("2","ãƒ›ã‚¹ãƒˆã¨é•ã†ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³") {
             FileContainerBinutilsImpl fcbi;
             unsigned int value = MAGIC_NUMBER;
             fcbi.symbol_table.insert(pair<string, address_t>(MAGIC_SYMBOL, 0x100));
@@ -1162,7 +1162,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¥·¥ó¥Ü¥ë¤¬Ìµ¤¤") {
+        BEGIN_CASE("3","ã‚·ãƒ³ãƒœãƒ«ãŒç„¡ã„") {
             FileContainerBinutilsImpl fcbi;
             unsigned int value = MAGIC_NUMBER;
 
@@ -1176,7 +1176,7 @@ TESTSUITE(main, FileContainerBinutilsImpl)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","¥Ç¡¼¥¿¤¬Ìµ¤¤") {
+        BEGIN_CASE("4","ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„") {
             FileContainerBinutilsImpl fcbi;
             unsigned int value = MAGIC_NUMBER;
             fcbi.symbol_table.insert(pair<string, address_t>(MAGIC_SYMBOL, 0x100));

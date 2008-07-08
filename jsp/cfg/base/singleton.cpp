@@ -6,32 +6,32 @@
  *  Copyright (C) 2002-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: singleton.cpp,v 1.5 2003/12/15 07:32:14 takayuki Exp $
  */
@@ -43,14 +43,14 @@
 
 using namespace std;
 
-    //Singleton ��Ū�ѿ�
-bool SingletonBase::initialize = false;     //������Ѥߥե饰
-bool SingletonBase::is_valid   = true;      //���󥹥������������ե饰
+    //Singleton 静的変数
+bool SingletonBase::initialize = false;     //初期化済みフラグ
+bool SingletonBase::is_valid   = true;      //インスタンス生成成功フラグ
 
-struct SingletonBase::chain * SingletonBase::top  = 0;  //�ǥ��ȥ饯����������Υȥå�
+struct SingletonBase::chain * SingletonBase::top  = 0;  //デストラクタチェーンのトップ
 
 
-/************************************* �ƥ��ȥ������� *************************************/
+/************************************* テストスィート *************************************/
 
 #ifdef TESTSUITE
 #include "base/coverage_undefs.h"
@@ -88,58 +88,58 @@ struct SingletonBase::chain * SingletonBase::top  = 0;  //�ǥ��ȥ饯�����������
         top  = 0;
 
         BEGIN_CASE("getInstance","getInstance") {
-            BEGIN_CASE("1","ñ��Υ��󥹥��󥹤����������") {
+            BEGIN_CASE("1","単一のインスタンスが生成される") {
                 TestSuite::clearCheckpoints();
                 DummyType * dummy = Singleton<DummyType>::getInstance();
-                TEST_CASE("1","���󥹥ȥ饯������ư����Ƥ���", TestSuite::isReached("DummyType::DummyType"));
+                TEST_CASE("1","コンストラクタが起動されている", TestSuite::isReached("DummyType::DummyType"));
 
                 TestSuite::clearCheckpoints();
-                TEST_CASE("2","���󥹥��󥹤����������", Singleton<DummyType>::getInstance() == dummy);
-                TEST_CASE("3","2���ܰʹߤϥ��󥹥ȥ饯������ư����ʤ�", !TestSuite::isReached("DummyType::DummyType"));
-                TEST_CASE("4","���󥰥�ȥ�ν����������äƤ���", SingletonBase::initialize);
-                TEST_CASE("5","�ǥ��ȥ饯���������󤬹�������Ƥ���", SingletonBase::top != 0);
+                TEST_CASE("2","インスタンスが生成される", Singleton<DummyType>::getInstance() == dummy);
+                TEST_CASE("3","2回目以降はコンストラクタが起動されない", !TestSuite::isReached("DummyType::DummyType"));
+                TEST_CASE("4","シングルトンの初期化が終わっている", SingletonBase::initialize);
+                TEST_CASE("5","デストラクタチェーンが構成されている", SingletonBase::top != 0);
             } END_CASE;
         } END_CASE;
 
         BEGIN_CASE("final_release","final_release") {
-            BEGIN_CASE("1","���󥹥��󥹤�����Ǥ���") {
-                TEST_CASE("0","[����] ������٤����Ǥ�����", SingletonBase::top != 0);
+            BEGIN_CASE("1","インスタンスが削除できる") {
+                TEST_CASE("0","[前提] 削除すべき要素がある", SingletonBase::top != 0);
 
                 TestSuite::clearCheckpoints();
                 SingletonBase::final_release();
 
-                TEST_CASE("1","�ǥ��ȥ饯������ư����Ƥ���", TestSuite::isReached("DummyType::~DummyType"));
-                TEST_CASE("2","�ǥ��ȥ饯���������󤬤ʤ��ʤäƤ���", SingletonBase::top == 0);
+                TEST_CASE("1","デストラクタが起動されている", TestSuite::isReached("DummyType::~DummyType"));
+                TEST_CASE("2","デストラクタチェーンがなくなっている", SingletonBase::top == 0);
             } END_CASE;
 
-            BEGIN_CASE("2","���֤�������") {
+            BEGIN_CASE("2","順番が正しい") {
                 DummyType::counter = 0;
 
                 DummyType  * dummy  = Singleton<DummyType>::getInstance();
                 DummyType2 * dummy2 = Singleton<DummyType2>::getInstance();
 
-                TEST_CASE("0","[����] ���������������", dummy->order == 1 && dummy2->order == 2);
+                TEST_CASE("0","[前提] 生成順序が正しい", dummy->order == 1 && dummy2->order == 2);
 
                 TestSuite::clearCheckpoints();
                 SingletonBase::final_release();
 
-                TEST_CASE("1","�ǥ��ȥ饯������ư����Ƥ���", TestSuite::isReached("DummyType::~DummyType"));
-                TEST_CASE("2","�ǥ��ȥ饯���������󤬤ʤ��ʤäƤ���", SingletonBase::top == 0);
-                TEST_CASE("3","�˴������������", !TestSuite::isReached("illegal order"));
+                TEST_CASE("1","デストラクタが起動されている", TestSuite::isReached("DummyType::~DummyType"));
+                TEST_CASE("2","デストラクタチェーンがなくなっている", SingletonBase::top == 0);
+                TEST_CASE("3","破棄順序が正しい", !TestSuite::isReached("illegal order"));
             } END_CASE;
 
         } END_CASE;
 
         BEGIN_CASE("getInstance","getInstance") {
-            BEGIN_CASE("1","���������㳰") {
+            BEGIN_CASE("1","生成時に例外") {
                 BEGIN_CASE("1","getInstance()") {
                     throw_DummyType = true;
                     bool result = false;
                     try { Singleton<DummyType>::getInstance(); }
                     catch(...) { result = true; }
 
-                    TEST_CASE("1","�㳰�ϵ�����",result);
-                    TEST_CASE("2","�ǥ��ȥ饯����������ˤϲ���Ĥʤ��äƤ��ʤ�", SingletonBase::top == 0);
+                    TEST_CASE("1","例外は起こる",result);
+                    TEST_CASE("2","デストラクタチェーンには何もつながっていない", SingletonBase::top == 0);
                 } END_CASE;
 
                 SingletonBase::final_release();
@@ -152,9 +152,9 @@ struct SingletonBase::chain * SingletonBase::top  = 0;  //�ǥ��ȥ饯�����������
                     try { dummy = Singleton<DummyType>::getInstance(nothrow); }
                     catch(...) { result = false; }
 
-                    TEST_CASE("1","�㳰�ϵ����ʤ�",result);
-                    TEST_CASE("2","NULL���֤�", dummy == 0);
-                    TEST_CASE("3","�ǥ��ȥ饯����������ˤϲ���Ĥʤ��äƤ��ʤ�", SingletonBase::top == 0);
+                    TEST_CASE("1","例外は起きない",result);
+                    TEST_CASE("2","NULLが返る", dummy == 0);
+                    TEST_CASE("3","デストラクタチェーンには何もつながっていない", SingletonBase::top == 0);
                 } END_CASE;
             } END_CASE;
         } END_CASE;

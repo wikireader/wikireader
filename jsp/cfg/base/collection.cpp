@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: collection.cpp,v 1.3 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -43,26 +43,26 @@
 
 using namespace std;
 
-    //ÆÃ¤Ë²¿¤â¤·¤Ê¤¤¥³¥ó¥¹¥È¥é¥¯¥¿
+    //ç‰¹ã«ä½•ã‚‚ã—ãªã„ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Collection::Collection(void) throw()
 {}
 
-    //¥Ç¥¹¥È¥é¥¯¥¿
+    //ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Collection::~Collection(void) throw()
 {
-        //Ç°¤Î¤¿¤á¤ËÎã³°¤Ë¤Õ¤¿¤ò¤¹¤ë
+        //å¿µã®ãŸã‚ã«ä¾‹å¤–ã«ãµãŸã‚’ã™ã‚‹
     try { clear(); }
     catch(...) {}
 }
 
-    //¥¤¥ó¥¹¥¿¥ó¥¹¤ò¥³¥ì¥¯¥·¥ç¥ó¤ËÄÉ²Ã (½ç½ø¤ÏÅĞÏ¿½ç)
+    //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã«è¿½åŠ  (é †åºã¯ç™»éŒ²é †)
 bool Collection::addInstance(Collectable * _instance, bool _destruction) throw()
 {
     bool result = false;
 
     if(isValid() && _instance != 0) {
 
-            // Æ±¤¸¥¤¥ó¥¹¥¿¥ó¥¹¤ò2²óÅĞÏ¿¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë
+            // åŒã˜ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’2å›ç™»éŒ²ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
         list<Element>::iterator scope;
 
         scope = container.begin();
@@ -73,14 +73,14 @@ bool Collection::addInstance(Collectable * _instance, bool _destruction) throw()
         }
 
         if(scope == container.end()) {
-                // ËöÈø¤ËÍ×ÁÇ¤òÄÉ²Ã
+                // æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ 
             struct Element element;
             element.instance    = _instance;
             element.destruction = _destruction;
             container.push_back(element);
         }
         else {
-                // ÇË´ş»Ø¼¨¤ÏºÇ¿·¤ËÄ¾¤·¤Æ¤ª¤¯
+                // ç ´æ£„æŒ‡ç¤ºã¯æœ€æ–°ã«ç›´ã—ã¦ãŠã
             scope->destruction = _destruction;
         }
 
@@ -90,18 +90,18 @@ bool Collection::addInstance(Collectable * _instance, bool _destruction) throw()
     return result;
 }
 
-    //»ØÄê¤µ¤ì¤¿Collectable¥¤¥ó¥¹¥¿¥ó¥¹¤ËÁêÅö¤¹¤ë¾ì½ê¤ò»Ø¤¹¥¤¥Æ¥ì¡¼¥¿¤Î¼èÆÀ (getInstance)
+    //æŒ‡å®šã•ã‚ŒãŸCollectableã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ç›¸å½“ã™ã‚‹å ´æ‰€ã‚’æŒ‡ã™ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã®å–å¾— (getInstance)
 list<Collection::Element>::const_iterator Collection::_findInstance(const Collectable * predecessor) const throw()
 {
     list<Element>::const_iterator result;
 
     result = container.begin();
 
-        //predecessor¤¬»ØÄê¤µ¤ì¤Æ¤¤¤¿¾ì¹ç¤ÏÃµ¤¹
+        //predecessorãŒæŒ‡å®šã•ã‚Œã¦ã„ãŸå ´åˆã¯æ¢ã™
     if(predecessor != 0) {
         while(result != container.end()) {
             if(result->instance == predecessor) {
-                ++ result;   //¸¡º÷¤Ïpredecessor¤Î¼¡¤«¤é
+                ++ result;   //æ¤œç´¢ã¯predecessorã®æ¬¡ã‹ã‚‰
                 break;
             }
             ++ result;
@@ -111,7 +111,7 @@ list<Collection::Element>::const_iterator Collection::_findInstance(const Collec
     return result;
 }
 
-    //¥³¥ì¥¯¥·¥ç¥ó¤«¤é¥¤¥ó¥¹¥¿¥ó¥¹¤ò¼èÆÀ
+    //ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
 Collectable * Collection::getInstance(const type_info & type, const Collectable * predecessor) const throw()
 {
     Collectable * result;
@@ -121,10 +121,10 @@ Collectable * Collection::getInstance(const type_info & type, const Collectable 
 
         list<Element>::const_iterator scope;
 
-            // Àè¹Ô¤¹¤ë¥¤¥ó¥¹¥¿¥ó¥¹¤Î¾ì½ê¤òÃµ¤¹
+            // å…ˆè¡Œã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å ´æ‰€ã‚’æ¢ã™
         scope = _findInstance(predecessor);
 
-            // »ØÄê¤µ¤ì¤¿·¿¤ò»ı¤Ä¼¡¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÃµ¤¹
+            // æŒ‡å®šã•ã‚ŒãŸå‹ã‚’æŒã¤æ¬¡ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ¢ã™
         while(scope != container.end()) {
             if(typeid(*scope->instance) == type) {
                 result = scope->instance;
@@ -137,7 +137,7 @@ Collectable * Collection::getInstance(const type_info & type, const Collectable 
     return result;
 }
 
-    //¥³¥ì¥¯¥·¥ç¥ó¤«¤é¥¤¥ó¥¹¥¿¥ó¥¹¤ò½ü³° (ÇË´ş¤Ï¤·¤Ê¤¤)
+    //ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’é™¤å¤– (ç ´æ£„ã¯ã—ãªã„)
 bool Collection::removeInstance(const Collectable * instance) throw()
 {
     bool result = false;
@@ -148,7 +148,7 @@ bool Collection::removeInstance(const Collectable * instance) throw()
         scope = container.begin();
         while(scope != container.end()) {
             if(scope->instance == instance) {
-                    //Í×ÁÇ¤Îºï½ü
+                    //è¦ç´ ã®å‰Šé™¤
                 container.erase(scope);
                 result = true;
                 break;
@@ -160,18 +160,18 @@ bool Collection::removeInstance(const Collectable * instance) throw()
     return result;
 }
 
-    //Á´Í×ÁÇ¤ÎÇË´ş
+    //å…¨è¦ç´ ã®ç ´æ£„
 void Collection::clear(void)
 {
     if(isValid()) {
         list<Element>::iterator scope;
         list<Element>::iterator next;
 
-            //ÇË´ş¥Õ¥é¥°¤¬¤Ä¤¤¤Æ¤¤¤ë¥¤¥ó¥¹¥¿¥ó¥¹¤òÇË´ş
+            //ç ´æ£„ãƒ•ãƒ©ã‚°ãŒã¤ã„ã¦ã„ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„
         scope = container.begin();
         while(scope != container.end()) {
 
-            next = scope;       //ROT·Ï¤Ïdelete¤¹¤ë¤È¼«Ê¬¤ò¾Ã¤·¤Ë¤«¤«¤ë¤Î¤Ç¡¢¥¤¥Æ¥ì¡¼¥¿¤òÊİÂ¸¤¹¤ë¤¿¤á¤ËÀè¤Ë¼¡¤ò¼èÆÀ¤·¤Æ¤ª¤¯
+            next = scope;       //ROTç³»ã¯deleteã™ã‚‹ã¨è‡ªåˆ†ã‚’æ¶ˆã—ã«ã‹ã‹ã‚‹ã®ã§ã€ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹ãŸã‚ã«å…ˆã«æ¬¡ã‚’å–å¾—ã—ã¦ãŠã
             ++ next;
 
             if(scope->destruction)
@@ -184,7 +184,7 @@ void Collection::clear(void)
     }
 }
 
-/************************************************* ¥Æ¥¹¥È¥¹¥£¡¼¥È *************************************************/
+/************************************************* ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ *************************************************/
 
 #ifdef TESTSUITE
 #include "coverage_undefs.h"
@@ -206,27 +206,27 @@ class TestCollectable4 : public TestCollectable2
 TESTSUITE(main, Collection)
 {
     BEGIN_CASE("addInstance","addInstance") {
-        BEGIN_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤ë") {
+        BEGIN_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯æ­£ã—ãç™»éŒ²ã§ãã‚‹") {
             Collection col;
             TestCollectable test;
             TestCollectable2 test2;
 
-            BEGIN_CASE("1","ÅĞÏ¿¤Ç¤­TRUE¤¬ÊÖ¤ë (1¸ÄÌÜ)") {
+            BEGIN_CASE("1","ç™»éŒ²ã§ãTRUEãŒè¿”ã‚‹ (1å€‹ç›®)") {
                 if(!col.addInstance(&test,  false))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","ÅĞÏ¿¤Ç¤­true¤¬ÊÖ¤ë (2¸ÄÌÜ)") {
+            BEGIN_CASE("2","ç™»éŒ²ã§ãtrueãŒè¿”ã‚‹ (2å€‹ç›®)") {
                 if(!col.addInstance(&test2, false))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("3","¸Ä¿ô¤¬¹ç¤Ã¤Æ¤ë") {
+            BEGIN_CASE("3","å€‹æ•°ãŒåˆã£ã¦ã‚‹") {
                 if(col.container.size() != 2)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("4","½çÈÖ¤¬¤¢¤Ã¤Æ¤ë") {
+            BEGIN_CASE("4","é †ç•ªãŒã‚ã£ã¦ã‚‹") {
             list<Element>::iterator scope;
                 scope = col.container.begin();
                 if(scope->instance != &test || scope->destruction != false)
@@ -240,35 +240,35 @@ TESTSUITE(main, Collection)
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÅĞÏ¿¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ç™»éŒ²ã•ã‚Œãªã„") {
             Collection col;
 
-            BEGIN_CASE("1","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤òÅÏ¤¹¤Èfalse¤¬ÊÖ¤ë") {
+            BEGIN_CASE("1","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ¸¡ã™ã¨falseãŒè¿”ã‚‹") {
                 if(col.addInstance(0))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","²¿¤âÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤") {
+            BEGIN_CASE("2","ä½•ã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ãªã„") {
                 if(col.container.size() != 0)
                     TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("3","Ìµ¸ú¤Ê¥¤¥ó¥¹¥¿¥ó¥¹¤ËÂĞ¤¹¤ëÁàºî¤Çfalse¤¬ÊÖ¤ë") {
+        BEGIN_CASE("3","ç„¡åŠ¹ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«å¯¾ã™ã‚‹æ“ä½œã§falseãŒè¿”ã‚‹") {
             Collection col;
 
             if(col.addInstance(0))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","Æ±°ì¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤ò2²óÅĞÏ¿¤·¤Æ¤â1¸Ä¤À¤±¤·¤«ÅĞÏ¿¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("4","åŒä¸€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’2å›ç™»éŒ²ã—ã¦ã‚‚1å€‹ã ã‘ã—ã‹ç™»éŒ²ã•ã‚Œãªã„") {
             Collection col;
             TestCollectable test;
 
-            TEST_CASE("0","[Á°Äó] °ì²óÌÜ¤ÏÀµ¤·¤¯À®¸ù¤¹¤ë", col.addInstance(&test, false));
+            TEST_CASE("0","[å‰æ] ä¸€å›ç›®ã¯æ­£ã—ãæˆåŠŸã™ã‚‹", col.addInstance(&test, false));
 
-            TEST_CASE("1","´Ø¿ô¤ÏÀµ¤·¤¯½ªÎ»¤¹¤ë", col.addInstance(&test, false));
-            TEST_CASE("2","¥¤¥ó¥¹¥¿¥ó¥¹¿ô¤ÏÁı¤¨¤Æ¤¤¤Ê¤¤", col.container.size() == 1);
+            TEST_CASE("1","é–¢æ•°ã¯æ­£ã—ãçµ‚äº†ã™ã‚‹", col.addInstance(&test, false));
+            TEST_CASE("2","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹æ•°ã¯å¢—ãˆã¦ã„ãªã„", col.container.size() == 1);
 
         } END_CASE;
 
@@ -292,61 +292,61 @@ TESTSUITE(main, Collection)
 
         Collectable * instance = 0;
 
-        BEGIN_CASE("1","ºÇ½é¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æœ€åˆã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable));
             if(instance != &test)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("2","æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable), instance);
             if(instance != &test_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¤µ¤é¤Ë¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("3","ã•ã‚‰ã«æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable), instance);
             if(instance != &test_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","¤½¤Î¤Ş¤¿¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤·¤¿¤éNULL¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4","ãã®ã¾ãŸæ¬¡ã®è¦ç´ ã‚’å–å¾—ã—ãŸã‚‰NULLãŒè¿”ã‚‹") {
             instance = col.getInstance(typeid(TestCollectable), instance);
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","ºÇ½é¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("5","æœ€åˆã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable2));
             if(instance != &test2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6","¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("6","æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable2), instance);
             if(instance != &test2_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7","¤µ¤é¤Ë¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("7","ã•ã‚‰ã«æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance(typeid(TestCollectable2), instance);
             if(instance != &test2_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("8","¤½¤Î¤Ş¤¿¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤·¤¿¤éNULL¤¬ÊÖ¤ë") {
+        BEGIN_CASE("8","ãã®ã¾ãŸæ¬¡ã®è¦ç´ ã‚’å–å¾—ã—ãŸã‚‰NULLãŒè¿”ã‚‹") {
             instance = col.getInstance(typeid(TestCollectable), instance);
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("9","´ğÄì¥¯¥é¥¹¤Ç¤Ï¤Ò¤Ã¤«¤«¤é¤Ê¤¤") {
+        BEGIN_CASE("9","åŸºåº•ã‚¯ãƒ©ã‚¹ã§ã¯ã²ã£ã‹ã‹ã‚‰ãªã„") {
             instance = col.getInstance(typeid(Collectable));
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        TEST_CASE("10","NULL¤ËÂĞ¤·¤Æ¼Â¹Ô¤¹¤ë¤ÈNULL¤¬ÊÖ¤ë", ((Collection *)0)->getInstance(typeid(Collectable)) == 0);
+        TEST_CASE("10","NULLã«å¯¾ã—ã¦å®Ÿè¡Œã™ã‚‹ã¨NULLãŒè¿”ã‚‹", ((Collection *)0)->getInstance(typeid(Collectable)) == 0);
     } END_CASE;
 
     BEGIN_CASE("getInstance<T>()","getInstance<T>()") {
@@ -367,103 +367,103 @@ TESTSUITE(main, Collection)
 
         Collectable * instance = 0;
 
-        BEGIN_CASE("1","ºÇ½é¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æœ€åˆã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable>();
             if(instance != &test)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("2","æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable>(instance);
             if(instance != &test_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¤µ¤é¤Ë¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("3","ã•ã‚‰ã«æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable>(instance);
             if(instance != &test_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","¤½¤Î¤Ş¤¿¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤·¤¿¤éNULL¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4","ãã®ã¾ãŸæ¬¡ã®è¦ç´ ã‚’å–å¾—ã—ãŸã‚‰NULLãŒè¿”ã‚‹") {
             instance = col.getInstance<TestCollectable>(instance);
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","ºÇ½é¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("5","æœ€åˆã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable2>();
             if(instance != &test2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6","¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("6","æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable2>(instance);
             if(instance != &test2_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7","¤µ¤é¤Ë¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤Ç¤­¤ë") {
+        BEGIN_CASE("7","ã•ã‚‰ã«æ¬¡ã®è¦ç´ ã‚’å–å¾—ã§ãã‚‹") {
             instance = col.getInstance<TestCollectable2>(instance);
             if(instance != &test2_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("8","¤½¤Î¤Ş¤¿¼¡¤ÎÍ×ÁÇ¤ò¼èÆÀ¤·¤¿¤éNULL¤¬ÊÖ¤ë") {
+        BEGIN_CASE("8","ãã®ã¾ãŸæ¬¡ã®è¦ç´ ã‚’å–å¾—ã—ãŸã‚‰NULLãŒè¿”ã‚‹") {
             instance = col.getInstance<TestCollectable2>(instance);
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("9","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î1") {
+        BEGIN_CASE("9","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®1") {
             instance = col.getInstance<Collectable>();
             if(instance != &test)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("10","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î2") {
+        BEGIN_CASE("10","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®2") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != &test2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("11","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î3") {
+        BEGIN_CASE("11","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®3") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != &test_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("12","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î4") {
+        BEGIN_CASE("12","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®4") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != &test2_2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("13","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î5") {
+        BEGIN_CASE("13","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®5") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != &test_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("14","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î6") {
+        BEGIN_CASE("14","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®6") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != &test2_3)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("15","´ğÄì¥¯¥é¥¹¤Ç°ú¤Ã³İ¤±¤ë ¤½¤Î7") {
+        BEGIN_CASE("15","åŸºåº•ã‚¯ãƒ©ã‚¹ã§å¼•ã£æ›ã‘ã‚‹ ãã®7") {
             instance = col.getInstance<Collectable>(instance);
             if(instance != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        TEST_CASE("16","NULL¤ËÂĞ¤·¤Æ¼Â¹Ô¤¹¤ë¤ÈNULL¤¬ÊÖ¤ë", ((Collection *)0)->getInstance<Collectable>() == 0);
+        TEST_CASE("16","NULLã«å¯¾ã—ã¦å®Ÿè¡Œã™ã‚‹ã¨NULLãŒè¿”ã‚‹", ((Collection *)0)->getInstance<Collectable>() == 0);
 
     } END_CASE;
 
     BEGIN_CASE("removeInstance","removeInstance") {
 
-        BEGIN_CASE("1","Àµ¾ï¤Ëºï½ü¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æ­£å¸¸ã«å‰Šé™¤ã§ãã‚‹") {
             Collection col;
             TestCollectable test;
             TestCollectable test2;
@@ -471,23 +471,23 @@ TESTSUITE(main, Collection)
             col.addInstance(test);
             col.addInstance(test2);
 
-            BEGIN_CASE("1","Â¸ºß¤¹¤ëÍ×ÁÇ¤òremove¤·¤¿¤étrue") {
+            BEGIN_CASE("1","å­˜åœ¨ã™ã‚‹è¦ç´ ã‚’removeã—ãŸã‚‰true") {
                 if(!col.removeInstance(&test))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","¤Á¤ã¤ó¤È¾Ã¤¨¤Æ¤¤¤ë") {
+            BEGIN_CASE("2","ã¡ã‚ƒã‚“ã¨æ¶ˆãˆã¦ã„ã‚‹") {
                 if(col.container.size() != 1 || col.container.begin()->instance != &test2)
                     TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤Ë¼Â¹Ô¤¹¤ë¤Èfalse") {
+        BEGIN_CASE("2","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«å®Ÿè¡Œã™ã‚‹ã¨false") {
             if(((Collection *)0)->removeInstance(0))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","ÅĞÏ¿¤·¤Æ¤¤¤Ê¤¤¥¤¥ó¥¹¥¿¥ó¥¹¤ò»ØÄê¤¹¤ë¤È¼ºÇÔ¤¹¤ë") {
+        BEGIN_CASE("3","ç™»éŒ²ã—ã¦ã„ãªã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æŒ‡å®šã™ã‚‹ã¨å¤±æ•—ã™ã‚‹") {
             Collection col;
             TestCollectable test;
             TestCollectable test2;
@@ -498,7 +498,7 @@ TESTSUITE(main, Collection)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤òÅÏ¤¹¤È¼ºÇÔ¤¹¤ë") {
+        BEGIN_CASE("4","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ¸¡ã™ã¨å¤±æ•—ã™ã‚‹") {
             Collection col;
             TestCollectable test;
             col.addInstance(test);
@@ -509,7 +509,7 @@ TESTSUITE(main, Collection)
     } END_CASE;
 
     BEGIN_CASE("clear","clear") {
-        BEGIN_CASE("1","¼ÂÂÎ¤òÅĞÏ¿¤·¤Æclear") {
+        BEGIN_CASE("1","å®Ÿä½“ã‚’ç™»éŒ²ã—ã¦clear") {
             Collection col;
             TestCollectable2 test2;
 
@@ -517,15 +517,15 @@ TESTSUITE(main, Collection)
             col.addInstance(test2);
             col.clear();
 
-            BEGIN_CASE("1","Í×ÁÇ¤¬¤Ê¤¯¤Ê¤Ã¤Æ¤¤¤ë") {
+            BEGIN_CASE("1","è¦ç´ ãŒãªããªã£ã¦ã„ã‚‹") {
                 if(col.container.size() != 0)
                     TEST_FAIL;
             } END_CASE;
 
-            TEST_CASE("2","test2¤ÏÇË´ş¤µ¤ì¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("2","test2ã¯ç ´æ£„ã•ã‚Œãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
-        BEGIN_CASE("2","¥İ¥¤¥ó¥¿¤òÅĞÏ¿¤·¤Æclear") {
+        BEGIN_CASE("2","ãƒã‚¤ãƒ³ã‚¿ã‚’ç™»éŒ²ã—ã¦clear") {
             Collection col;
             TestCollectable2 * test2 = new TestCollectable2;
             
@@ -533,20 +533,20 @@ TESTSUITE(main, Collection)
             col.addInstance(test2);
             col.clear();
 
-            BEGIN_CASE("1","Í×ÁÇ¤¬¤Ê¤¯¤Ê¤Ã¤Æ¤¤¤ë") {
+            BEGIN_CASE("1","è¦ç´ ãŒãªããªã£ã¦ã„ã‚‹") {
                 if(col.container.size() != 0)
                     TEST_FAIL;
             } END_CASE;
 
-            TEST_CASE("2","test2¤ÏÇË´ş¤µ¤ì¤ë", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("2","test2ã¯ç ´æ£„ã•ã‚Œã‚‹", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
-        BEGIN_CASE("3","NULL¥ª¥Ö¥¸¥§¥¯¥È¤ËÂĞ¤·¤Æ¼Â¹Ô¤·¤Æ¤âË½Áö¤·¤Ê¤¤") {
+        BEGIN_CASE("3","NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦å®Ÿè¡Œã—ã¦ã‚‚æš´èµ°ã—ãªã„") {
             ((Collection *)0)->clear();
         } END_CASE;
 
 #ifdef _MSC_VER
-        BEGIN_CASE("4","Îã³°¤¬½Ğ¤ë¤è¤¦¤Ê¥Ç¥¹¥È¥é¥¯¥¿¤ò¤â¤Ä¥¤¥ó¥¹¥¿¥ó¥¹¤òÇË´ş¤¹¤ë¤ÈÎã³°¤¬Ï³¤ì¤ë") {
+        BEGIN_CASE("4","ä¾‹å¤–ãŒå‡ºã‚‹ã‚ˆã†ãªãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ã‚‚ã¤ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„ã™ã‚‹ã¨ä¾‹å¤–ãŒæ¼ã‚Œã‚‹") {
             Collection col;
             bool result = false;
             TestCollectable3 * test = new TestCollectable3;
@@ -567,7 +567,7 @@ TESTSUITE(main, Collection)
     } END_CASE;
 
     BEGIN_CASE("destructor","destructor") {
-        BEGIN_CASE("1","¼ÂÂÎ¤òÅĞÏ¿¤·¤ÆÇË´ş") {
+        BEGIN_CASE("1","å®Ÿä½“ã‚’ç™»éŒ²ã—ã¦ç ´æ£„") {
             Collection * col = new Collection;
             TestCollectable2 test2;
 
@@ -575,10 +575,10 @@ TESTSUITE(main, Collection)
             col->addInstance(test2);
             delete col;
 
-            TEST_CASE("1","test2¤ÏÇË´ş¤µ¤ì¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1","test2ã¯ç ´æ£„ã•ã‚Œãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
-        BEGIN_CASE("2","¥İ¥¤¥ó¥¿¤òÅĞÏ¿¤·¤Æclear") {
+        BEGIN_CASE("2","ãƒã‚¤ãƒ³ã‚¿ã‚’ç™»éŒ²ã—ã¦clear") {
             Collection * col = new Collection;
             TestCollectable2 * test2 = new TestCollectable2;
 
@@ -586,11 +586,11 @@ TESTSUITE(main, Collection)
             col->addInstance(test2);
             delete col;
 
-            TEST_CASE("1","test2¤ÏÇË´ş¤µ¤ì¤ë", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1","test2ã¯ç ´æ£„ã•ã‚Œã‚‹", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
 #ifdef _MSC_VER
-        BEGIN_CASE("3","Îã³°¤¬½Ğ¤ë¤è¤¦¤Ê¥Ç¥¹¥È¥é¥¯¥¿¤ò»ı¤Ä¥¤¥ó¥¹¥¿¥ó¥¹¤òÇË´ş¤·¤Æ¤âÎã³°¤¬Ï³¤ì¤Ê¤¤") {
+        BEGIN_CASE("3","ä¾‹å¤–ãŒå‡ºã‚‹ã‚ˆã†ãªãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’æŒã¤ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„ã—ã¦ã‚‚ä¾‹å¤–ãŒæ¼ã‚Œãªã„") {
             Collection * col = new Collection;
             TestCollectable3 * test2 = new TestCollectable3;
             bool result = true;
@@ -612,36 +612,36 @@ TESTSUITE(main, Collection)
     } END_CASE;
 
     BEGIN_CASE("deleteInstance","deleteInstance") {
-        BEGIN_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤òºï½ü¤Ç¤­¤ë") {
+        BEGIN_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å‰Šé™¤ã§ãã‚‹") {
             Collection col;
             TestCollectable2 * test = new TestCollectable2;
 
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance<TestCollectable2>() != 0);
 
             col.deleteInstance<TestCollectable2>();
-            TEST_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤¬¾Ã¤¨¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() == 0);
-            TEST_CASE("2","¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒæ¶ˆãˆã¦ã„ã‚‹", col.getInstance<TestCollectable2>() == 0);
+            TEST_CASE("2","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         }END_CASE;
 
-        BEGIN_CASE("2","´Ø·¸¤Ê¤¤¥¯¥é¥¹¤ò»ØÄê¤·¤¿¤éºï½ü¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","é–¢ä¿‚ãªã„ã‚¯ãƒ©ã‚¹ã‚’æŒ‡å®šã—ãŸã‚‰å‰Šé™¤ã•ã‚Œãªã„") {
             Collection col;
             TestCollectable2 * test = new TestCollectable2;
 
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance<TestCollectable2>() != 0);
 
             col.deleteInstance<TestCollectable>();
-            TEST_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤¬¾Ã¤¨¤Æ¤¤¤Ê¤¤", col.getInstance<TestCollectable2>() != 0);
-            TEST_CASE("2","¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒæ¶ˆãˆã¦ã„ãªã„", col.getInstance<TestCollectable2>() != 0);
+            TEST_CASE("2","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
             delete test;
         }END_CASE;
 
-        BEGIN_CASE("3","Æ±¤¸¥¯¥é¥¹¤À¤±¤Ç¤Ê¤¯ÇÉÀ¸Àè¤â¾Ã¤¨¤ë") {
+        BEGIN_CASE("3","åŒã˜ã‚¯ãƒ©ã‚¹ã ã‘ã§ãªãæ´¾ç”Ÿå…ˆã‚‚æ¶ˆãˆã‚‹") {
             Collection col;
             TestCollectable2 * test = new TestCollectable2;
             TestCollectable4 * test2 = new TestCollectable4;
@@ -650,37 +650,37 @@ TESTSUITE(main, Collection)
             col.addInstance(test);
             col.addInstance(test2);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) != 0);
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable4)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable4)) != 0);
 
             col.deleteInstance<TestCollectable2>();
-            TEST_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤¬¤¹¤Ù¤Æ¾Ã¤¨¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() == 0);
-            TEST_CASE("2","TestCollectable2¤Î¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
-            TEST_CASE("3","TestCollectable4¤Î¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("TestCollectable4::~TestCollectable4"));
+            TEST_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒã™ã¹ã¦æ¶ˆãˆã¦ã„ã‚‹", col.getInstance<TestCollectable2>() == 0);
+            TEST_CASE("2","TestCollectable2ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("3","TestCollectable4ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("TestCollectable4::~TestCollectable4"));
         }END_CASE;
 
-        BEGIN_CASE("4","¼ÂÂÎ¤ÏÇË´şÂĞ¾İ¤Ë¤Ê¤é¤Ê¤¤") {
+        BEGIN_CASE("4","å®Ÿä½“ã¯ç ´æ£„å¯¾è±¡ã«ãªã‚‰ãªã„") {
             Collection col;
             TestCollectable2 test;
 
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance<TestCollectable2>() != 0);
 
             col.deleteInstance<TestCollectable2>();
-            TEST_CASE("1","¥¤¥ó¥¹¥¿¥ó¥¹¤¬¾Ã¤¨¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() == 0);
-            TEST_CASE("2","¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1","ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒæ¶ˆãˆã¦ã„ã‚‹", col.getInstance<TestCollectable2>() == 0);
+            TEST_CASE("2","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         }END_CASE;
 
-        BEGIN_CASE("5","NULL¥ª¥Ö¥¸¥§¥¯¥È¤ËÂĞ¤·¤ÆÈ¯¹Ô¤·¤Æ¤âË½Áö¤·¤Ê¤¤") {
+        BEGIN_CASE("5","NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦ç™ºè¡Œã—ã¦ã‚‚æš´èµ°ã—ãªã„") {
             ((Collection *)0)->deleteInstance<TestCollectable>();
         } END_CASE;
 
     } END_CASE;
 
     BEGIN_CASE("replaceInstance","replaceInstance") {
-        BEGIN_CASE("1","ÅĞÏ¿ºÑ¤ß¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÆş¤ìÂØ¤¨¤ë") {
+        BEGIN_CASE("1","ç™»éŒ²æ¸ˆã¿ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å…¥ã‚Œæ›¿ãˆã‚‹") {
             Collection col;
             TestCollectable2 test;
             TestCollectable2 test2;
@@ -688,15 +688,15 @@ TESTSUITE(main, Collection)
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) != 0);
             
-            TEST_CASE("1", "´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", col.replaceInstance<TestCollectable2>(test2));
-            TEST_CASE("2", "¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÆş¤ìÂØ¤ï¤Ã¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) == &test2);
-            TEST_CASE("3", "test2°Ê³°¤Ë¥¤¥ó¥¹¥¿¥ó¥¹¤Ï¤Ê¤¤", col.getInstance(typeid(TestCollectable2), &test2) == 0);
-            TEST_CASE("4", "¥Ç¥¹¥È¥é¥¯¥¿¤Ï¼Â¹Ô¤µ¤ì¤Æ¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1", "é–¢æ•°ã¯æˆåŠŸã™ã‚‹", col.replaceInstance<TestCollectable2>(test2));
+            TEST_CASE("2", "ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯å…¥ã‚Œæ›¿ã‚ã£ã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) == &test2);
+            TEST_CASE("3", "test2ä»¥å¤–ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ãªã„", col.getInstance(typeid(TestCollectable2), &test2) == 0);
+            TEST_CASE("4", "ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å®Ÿè¡Œã•ã‚Œã¦ãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
-        BEGIN_CASE("2","ÅĞÏ¿ºÑ¤ß¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÇÉÀ¸¥¯¥é¥¹¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤ÇÆş¤ìÂØ¤¨¤ë") {
+        BEGIN_CASE("2","ç™»éŒ²æ¸ˆã¿ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§å…¥ã‚Œæ›¿ãˆã‚‹") {
             Collection col;
             TestCollectable2 test;
             TestCollectable4 test2;
@@ -704,15 +704,15 @@ TESTSUITE(main, Collection)
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) != 0);
             
-            TEST_CASE("1", "´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", col.replaceInstance<TestCollectable2>(test2));
-            TEST_CASE("2", "¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÆş¤ìÂØ¤ï¤Ã¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() == &test2);
-            TEST_CASE("3", "test2°Ê³°¤Ë¥¤¥ó¥¹¥¿¥ó¥¹¤Ï¤Ê¤¤", col.getInstance(typeid(TestCollectable2)) == 0);
-            TEST_CASE("4", "¥Ç¥¹¥È¥é¥¯¥¿¤Ï¼Â¹Ô¤µ¤ì¤Æ¤Ê¤¤", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1", "é–¢æ•°ã¯æˆåŠŸã™ã‚‹", col.replaceInstance<TestCollectable2>(test2));
+            TEST_CASE("2", "ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯å…¥ã‚Œæ›¿ã‚ã£ã¦ã„ã‚‹", col.getInstance<TestCollectable2>() == &test2);
+            TEST_CASE("3", "test2ä»¥å¤–ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ãªã„", col.getInstance(typeid(TestCollectable2)) == 0);
+            TEST_CASE("4", "ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å®Ÿè¡Œã•ã‚Œã¦ãªã„", !TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
-        BEGIN_CASE("3","Ìµ´Ø·¸¤Ê¥¯¥é¥¹¤ò»ØÄê¤·¤ÆÆş¤ìÂØ¤¨¤ë") {
+        BEGIN_CASE("3","ç„¡é–¢ä¿‚ãªã‚¯ãƒ©ã‚¹ã‚’æŒ‡å®šã—ã¦å…¥ã‚Œæ›¿ãˆã‚‹") {
             Collection col;
             TestCollectable2 test;
             TestCollectable4 test2;
@@ -720,13 +720,13 @@ TESTSUITE(main, Collection)
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) != 0);
             
-            TEST_CASE("1", "´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !col.replaceInstance<TestCollectable>(test2));
-            TEST_CASE("2", "¥¤¥ó¥¹¥¿¥ó¥¹¤Ï»Ä¤Ã¤Æ¤¤¤ë", col.getInstance<TestCollectable2>() == &test);
+            TEST_CASE("1", "é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !col.replaceInstance<TestCollectable>(test2));
+            TEST_CASE("2", "ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯æ®‹ã£ã¦ã„ã‚‹", col.getInstance<TestCollectable2>() == &test);
         } END_CASE;
 
-        BEGIN_CASE("4","ÅĞÏ¿ºÑ¤ß¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÆş¤ìÂØ¤¨¤ë (Æ°Åª³ÎÊİ)") {
+        BEGIN_CASE("4","ç™»éŒ²æ¸ˆã¿ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å…¥ã‚Œæ›¿ãˆã‚‹ (å‹•çš„ç¢ºä¿)") {
             Collection col;
             TestCollectable2 * test = new TestCollectable2;
             TestCollectable2 test2;
@@ -734,12 +734,12 @@ TESTSUITE(main, Collection)
             TestSuite::clearCheckpoints();
             col.addInstance(test);
 
-            TEST_CASE("0","[Á°Äó] ¤Á¤ã¤ó¤ÈÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) != 0);
+            TEST_CASE("0","[å‰æ] ã¡ã‚ƒã‚“ã¨ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) != 0);
             
-            TEST_CASE("1", "´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", col.replaceInstance<TestCollectable2>(test2));
-            TEST_CASE("2", "¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÆş¤ìÂØ¤ï¤Ã¤Æ¤¤¤ë", col.getInstance(typeid(TestCollectable2)) == &test2);
-            TEST_CASE("3", "test2°Ê³°¤Ë¥¤¥ó¥¹¥¿¥ó¥¹¤Ï¤Ê¤¤", col.getInstance(typeid(TestCollectable2), &test2) == 0);
-            TEST_CASE("4", "¥Ç¥¹¥È¥é¥¯¥¿¤Ï¼Â¹Ô¤µ¤ì¤Æ¤ë", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
+            TEST_CASE("1", "é–¢æ•°ã¯æˆåŠŸã™ã‚‹", col.replaceInstance<TestCollectable2>(test2));
+            TEST_CASE("2", "ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯å…¥ã‚Œæ›¿ã‚ã£ã¦ã„ã‚‹", col.getInstance(typeid(TestCollectable2)) == &test2);
+            TEST_CASE("3", "test2ä»¥å¤–ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ãªã„", col.getInstance(typeid(TestCollectable2), &test2) == 0);
+            TEST_CASE("4", "ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å®Ÿè¡Œã•ã‚Œã¦ã‚‹", TestSuite::isReached("TestCollectable2::~TestCollectable2"));
         } END_CASE;
 
     } END_CASE;
@@ -766,7 +766,7 @@ TESTSUITE(main, RuntimeObjectTable)
     Singleton<RuntimeObjectTable>::saveContext(context);
 
     BEGIN_CASE("getInstance","getInstance") {
-        BEGIN_CASE("1","getInstance¤ÏÀµ¤·¤¯µ¡Ç½¤¹¤ë") {
+        BEGIN_CASE("1","getInstanceã¯æ­£ã—ãæ©Ÿèƒ½ã™ã‚‹") {
             Singleton<RuntimeObjectTable>::renewInstance();
             TestCollectable test;
 
@@ -785,48 +785,48 @@ TESTSUITE(main, RuntimeObjectTable)
     } END_CASE;
 
     BEGIN_CASE("RuntimeObject","RuntimeObject") {
-        BEGIN_CASE("1","À¸À®¤¹¤ë¤ÈÅĞÏ¿¤µ¤ì¡¢ÇË´ş¤Ç¾ÃÌÇ¤¹¤ë") {
+        BEGIN_CASE("1","ç”Ÿæˆã™ã‚‹ã¨ç™»éŒ²ã•ã‚Œã€ç ´æ£„ã§æ¶ˆæ»…ã™ã‚‹") {
             TestRuntimeObject * ro;
 
             TestSuite::clearCheckpoints();
 
-            TEST_CASE("0","[Á°Äó] ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
+            TEST_CASE("0","[å‰æ] ç™»éŒ²ã•ã‚Œã¦ã„ãªã„", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
 
             ro = new TestRuntimeObject;
 
-            TEST_CASE("1","¥³¥ó¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("TestRuntimeObject::TestRuntimeObject"));
-            TEST_CASE("2","ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë", RuntimeObjectTable::getInstance<TestRuntimeObject>() == ro);
+            TEST_CASE("1","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("TestRuntimeObject::TestRuntimeObject"));
+            TEST_CASE("2","ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹", RuntimeObjectTable::getInstance<TestRuntimeObject>() == ro);
 
             delete ro;
 
-            TEST_CASE("3","¥Ç¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("TestRuntimeObject::~TestRuntimeObject"));
-            TEST_CASE("4","ÅĞÏ¿¤¬²ò½ü¤µ¤ì¤Æ¤¤¤ë", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
+            TEST_CASE("3","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("TestRuntimeObject::~TestRuntimeObject"));
+            TEST_CASE("4","ç™»éŒ²ãŒè§£é™¤ã•ã‚Œã¦ã„ã‚‹", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
 
         } END_CASE;
 
-        BEGIN_CASE("2","¼«Æ°ÇË´ş¤Î¥Á¥§¥Ã¥¯") {
+        BEGIN_CASE("2","è‡ªå‹•ç ´æ£„ã®ãƒã‚§ãƒƒã‚¯") {
             TestRuntimeObject * ro;
             TestRuntimeObject2 * ro2;
 
             TestSuite::clearCheckpoints();
 
-            TEST_CASE("0","[Á°Äó] ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
-            TEST_CASE("0","[Á°Äó] ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == 0);
+            TEST_CASE("0","[å‰æ] ç™»éŒ²ã•ã‚Œã¦ã„ãªã„", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
+            TEST_CASE("0","[å‰æ] ç™»éŒ²ã•ã‚Œã¦ã„ãªã„", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == 0);
 
             ro = new TestRuntimeObject;
             ro2 = new TestRuntimeObject2;
 
-            TEST_CASE("1","¥³¥ó¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë(ro)", TestSuite::isReached("TestRuntimeObject::TestRuntimeObject"));
-            TEST_CASE("2","¥³¥ó¥¹¥È¥é¥¯¥¿¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë(ro2)", TestSuite::isReached("TestRuntimeObject2::TestRuntimeObject2"));
-            TEST_CASE("3","ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë(ro)", RuntimeObjectTable::getInstance<TestRuntimeObject>() == ro);
-            TEST_CASE("4","ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë(ro2)", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == ro2);
+            TEST_CASE("1","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹(ro)", TestSuite::isReached("TestRuntimeObject::TestRuntimeObject"));
+            TEST_CASE("2","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹(ro2)", TestSuite::isReached("TestRuntimeObject2::TestRuntimeObject2"));
+            TEST_CASE("3","ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹(ro)", RuntimeObjectTable::getInstance<TestRuntimeObject>() == ro);
+            TEST_CASE("4","ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹(ro2)", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == ro2);
 
             Singleton<RuntimeObjectTable>::getInstance()->clear();
 
-            TEST_CASE("5","¥Ç¥¹¥È¥é¥¯¥¿¤Ï¼Â¹Ô¤µ¤ì¤Æ¤¤¤Ê¤¤ (ro)", !TestSuite::isReached("TestRuntimeObject::~TestRuntimeObject"));
-            TEST_CASE("6","¥Ç¥¹¥È¥é¥¯¥¿¤Ï¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë (ro2)", TestSuite::isReached("TestRuntimeObject2::~TestRuntimeObject2"));
-            TEST_CASE("7","ÅĞÏ¿¤¬²ò½ü¤µ¤ì¤Æ¤¤¤ë", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
-            TEST_CASE("8","ÅĞÏ¿¤¬²ò½ü¤µ¤ì¤Æ¤¤¤ë", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == 0);
+            TEST_CASE("5","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å®Ÿè¡Œã•ã‚Œã¦ã„ãªã„ (ro)", !TestSuite::isReached("TestRuntimeObject::~TestRuntimeObject"));
+            TEST_CASE("6","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯å®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹ (ro2)", TestSuite::isReached("TestRuntimeObject2::~TestRuntimeObject2"));
+            TEST_CASE("7","ç™»éŒ²ãŒè§£é™¤ã•ã‚Œã¦ã„ã‚‹", RuntimeObjectTable::getInstance<TestRuntimeObject>() == 0);
+            TEST_CASE("8","ç™»éŒ²ãŒè§£é™¤ã•ã‚Œã¦ã„ã‚‹", RuntimeObjectTable::getInstance<TestRuntimeObject2>() == 0);
 
             delete ro;
         } END_CASE;

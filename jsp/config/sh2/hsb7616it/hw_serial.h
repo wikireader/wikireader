@@ -9,38 +9,38 @@
  *                              Miyagi Prefectural Government, JAPAN
  *  Copyright (C) 2002-2004 by Hokkaido Industrial Research Institute, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.h,v 1.5 2005/07/06 00:45:07 honda Exp $
  */
 
 /*
- *�������ꥢ��I/O�ǥХ�����SIO/SCIF�˥ɥ饤�С�HSB7615IT�ѡ�
+ *　　シリアルI/Oデバイス（SIO/SCIF）ドライバ（HSB7615IT用）
  */
 
 #ifndef _HW_SERIAL_H_
@@ -52,11 +52,11 @@
 #endif /* _MACRO_ONLY */
 
 /*
- *  SIO/SCIF�γ���ߥϥ�ɥ�Υ٥����ֹ�
+ *  SIO/SCIFの割込みハンドラのベクタ番号
  */
-/* �����ϥݡ��Ȥ������sys_config.c */
-/* ����ߥ٥����ֹ�������hw_serial.h */
-/* �����֥��å��������sh7615scif.c */
+/* 入出力ポートの設定はsys_config.c */
+/* 割込みベクタ番号の設定はhw_serial.h */
+/* 管理ブロックの設定はsh7615scif.c */
 
 #ifndef GDB_STUB
 
@@ -81,21 +81,21 @@
 #endif	/*  GDB_STUB  */
 
 /*
- * SCI�γ����ߥ�٥�
- * ������ߥϥ�ɥ���������̡�����Ͽ�Ǥ��뤬������ߥ�٥��
- * �������������Ʊ����٥�ˤ�������Ǥ��ʤ���
+ * SCIの割り込みレベル
+ * 　割込みハンドラは送受信別々に登録できるが、割込みレベルは
+ * 　送信も受信も同じレベルにしか設定できない。
  */
-#define LEVEL0		0			/*  ����߲�����Υ�٥�  */
+#define LEVEL0		0			/*  割込み解除時のレベル  */
 
 #ifndef _MACRO_ONLY
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 #define	sio_initialize	sh2scif_initialize
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 Inline SIOPCB *
 sio_opn_por(ID siopid, VP_INT exinf)
@@ -104,18 +104,18 @@ sio_opn_por(ID siopid, VP_INT exinf)
 	BOOL	openflag;
 
 	/*
-	 *  �����ץ󤷤��ݡ��Ȥ����뤫�� openflag ���ɤ�Ǥ�����
+	 *  オープンしたポートがあるかを openflag に読んでおく．
 	 */
 	openflag = sh2scif_openflag (siopid);
 
 	/*
-	 *  �ǥХ�����¸�Υ����ץ������
+	 *  デバイス依存のオープン処理．
 	 */
 	siopcb = sh2scif_opn_por(siopid, exinf);
 
 	/*
-	 *  ����ߥ���ȥ������¸
-	 *  �����ꥢ��I/O����ߤγ���ߥ�٥�����ꤹ��
+	 *  割込みコントローラ依存
+	 *  　シリアルI/O割込みの割込みレベルを設定する
 	 */
 	if (!openflag) {
 		if (siopcb->siopinib->reg_base == 0xfffffcc0)
@@ -127,18 +127,18 @@ sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 Inline void
 sio_cls_por(SIOPCB *siopcb)
 {
 	/*
-	 *  �ǥХ�����¸�Υ�������������
+	 *  デバイス依存のクローズ処理．
 	 */
 	sh2scif_cls_por(siopcb);
 
 	/*
-	 *  ���ꥢ��I/O����ߥ�٥������٥�ˤ���
+	 *  シリアルI/O割込みレベルを最低レベルにする
 	 */
 		if (siopcb->siopinib->reg_base == 0xfffffcc0)
 			define_int_plevel (IPRD, LEVEL0, 0);
@@ -148,50 +148,50 @@ sio_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  SIO/SCIF�γ���ߥϥ�ɥ�
+ *  SIO/SCIFの割込みハンドラ
  */
-#define	sio_handler_in	sh2scif_isr_in	/*  ��������ߥϥ�ɥ�  */
-#define	sio_handler_out	sh2scif_isr_out	/*  ��������ߥϥ�ɥ�  */
-#define	sio_handler_error sh2scif_isr_error	/*  �������顼����ߥϥ�ɥ�  */
-#define	sio_handler_brk	sh2scif_isr_brk	/*  �֥졼�����г���ߥϥ�ɥ�  */
+#define	sio_handler_in	sh2scif_isr_in	/*  受信割込みハンドラ  */
+#define	sio_handler_out	sh2scif_isr_out	/*  送信割込みハンドラ  */
+#define	sio_handler_error sh2scif_isr_error	/*  受信エラー割込みハンドラ  */
+#define	sio_handler_brk	sh2scif_isr_brk	/*  ブレーク検出割込みハンドラ  */
 #if TNUM_PORT >= 2
-#define	sio_handler2_in		sh2scif_isr2_in	/*  ��������ߥϥ�ɥ�  */
-#define	sio_handler2_out	sh2scif_isr2_out	/*  ��������ߥϥ�ɥ�  */
-#define	sio_handler2_error	sh2scif_isr2_error	/*  �������顼����ߥϥ�ɥ�  */
-#define	sio_handler2_brk	sh2scif_isr2_brk	/*  �֥졼�����г���ߥϥ�ɥ�  */
+#define	sio_handler2_in		sh2scif_isr2_in	/*  受信割込みハンドラ  */
+#define	sio_handler2_out	sh2scif_isr2_out	/*  送信割込みハンドラ  */
+#define	sio_handler2_error	sh2scif_isr2_error	/*  受信エラー割込みハンドラ  */
+#define	sio_handler2_brk	sh2scif_isr2_brk	/*  ブレーク検出割込みハンドラ  */
 #endif /* TNUM_PORT >= 2 */
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 #define	sio_snd_chr	sh2scif_snd_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 #define	sio_rcv_chr	sh2scif_rcv_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 #define	sio_ena_cbr	sh2scif_ena_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 #define	sio_dis_cbr	sh2scif_dis_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
- *  ����jsp/systask/serial.c�ˤ�����Τ��͡��ष�Ƥ���
- *  �����ʰ����������ȡ�
+ *  シリアルI/Oポートからの送信可能コールバック
+ *  　　jsp/systask/serial.cにある実体をリネームしている
+ *  　　（一種の前方参照）
  */
 #define	sio_ierdy_snd	sh2scif_ierdy_snd
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
- *  ����jsp/systask/serial.c�ˤ�����Τ��͡��ष�Ƥ���
- *  �����ʰ����������ȡ�
+ *  シリアルI/Oポートからの受信通知コールバック
+ *  　　jsp/systask/serial.cにある実体をリネームしている
+ *  　　（一種の前方参照）
  */
 #define	sio_ierdy_rcv	sh2scif_ierdy_rcv
 

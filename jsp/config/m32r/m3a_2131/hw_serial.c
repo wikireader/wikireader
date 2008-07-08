@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.c,v 1.1 2007/05/30 08:38:51 honda Exp $
  */
 
 /*
- *	���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�M32102��¢��Ʊ�����ꥢ���ѡ�
+ *	シリアルI/Oデバイス（SIO）ドライバ（M32102内蔵非同期シリアル用）
  */
 
 #include <sil.h>
@@ -51,14 +51,14 @@ SIOPCB siopcb_table[TNUM_PORT];
 extern FP InterruptHandlerEntry[];
 
 /* 
- *  ����Ѵؿ� 
+ *  作業用関数 
  */
 #define ID_PORT(x)		((x) + 1)
 #define INDEX_PORT(x)	((x) - 1)
 #define GET_SIOPCB(x)	(&siopcb_table[INDEX_PORT(x)])
 
 /*
- *  ���ꥢ��ݡ��Ȥν����
+ *  シリアルポートの初期化
  */
 void
 sio_initialize(void)
@@ -77,7 +77,7 @@ sio_initialize(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 sio_opn_por(ID siopid, VP_INT exinf)
@@ -89,10 +89,10 @@ sio_opn_por(ID siopid, VP_INT exinf)
 	switch(SIO_TYP(siopcb->flags)) {
 	case SIO_TYP_M32RUART:
 
-		/* UART����� */
+		/* UART初期化 */
 		sil_wrb_mem((void *)(SIOCR(siopcb->port)+3), 0);
 
-		/* �ݡ��Ȥ򳫤�(UART0) */
+		/* ポートを開く(UART0) */
 		sil_wrb_mem((void *)PDATA(5), 0);
 		sil_wrb_mem((void *)PDIR(5),  0x80);
 
@@ -102,22 +102,22 @@ sio_opn_por(ID siopid, VP_INT exinf)
 		/* 8bit, internal clock */
 		sil_wrh_mem((void *)(SIOMOD1(siopcb->port)+2), 0x0800);
 
-		/* M32R(32102) - f(BLK)=16MHz��115200bps */
+		/* M32R(32102) - f(BLK)=16MHzで115200bps */
 		sil_wrh_mem((void *)(SIOBAUR(siopcb->port)+2), SERIAL_CLKDIV);
 		sil_wrb_mem((void *)(SIORBAUR(siopcb->port)+3), SERIAL_CLKCMP);
 
-		/* �����������ȯ������ */
+		/* 送受信割込み発生許可 */
 		sil_wrh_mem((void *)(SIOTRCR(siopcb->port)+2), 0x0006);
 
-		/* ���ơ��������ꥢ, ������ư��� */
+		/* ステータスクリア, 送受信動作開始 */
 		sil_wrb_mem((void *)(SIOCR(siopcb->port)+2), 0x3);
 		sil_wrb_mem((void *)(SIOCR(siopcb->port)+3), 0x3);
 
-		/* ��������߼��յ��� */
+		/* 受信割込み受付許可 */
 		sil_wrh_mem((void *)(ICUCR(SIO,siopcb->port)+2), 0x1000);
 		sil_wrh_mem((void *)(ICUCR(SIO,siopcb->port)+6), 0x1000);
 
-		/* TxD,RxD�ԥ�ͭ��(UART0) */
+		/* TxD,RxDピン有効(UART0) */
 		sil_wrh_mem((void *)PMOD(5), 0x5500);
 
 		break;
@@ -127,7 +127,7 @@ sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 sio_cls_por(SIOPCB *siopcb)
@@ -135,14 +135,14 @@ sio_cls_por(SIOPCB *siopcb)
 	switch(SIO_TYP(siopcb->flags))
 	{
 	case SIO_TYP_M32RUART:
-		/* ������ư���ػߤ��� */
+		/* 送受信動作を禁止する */
 		sil_wrb_mem((void *)(SIOCR(siopcb->port)+3), 0);
 		break;
 	}
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT sio_rcv_chr(SIOPCB * siopcb)
 {
@@ -157,7 +157,7 @@ INT sio_rcv_chr(SIOPCB * siopcb)
 
 
 /*
- *  ʸ�������������������å�
+ *  文字を受信したかをチェック
  */
 
 inline BOOL
@@ -172,13 +172,13 @@ hw_port_getready(SIOPCB *p)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå�����
+ *  シリアルI/Oポートからのコールバック許可
  */
 void sio_ena_cbr(SIOPCB * siopcb, UINT cbrtn)
 {}
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ػ�
+ *  シリアルI/Oポートからのコールバック禁止
  */
 void sio_dis_cbr(SIOPCB * siopcb, UINT cbrtn)
 {}
@@ -202,7 +202,7 @@ void sio_handler_out(void)
 	{
 		if((siopcb_table[port].flags & SIO_STS_SENDING) != 0)
 		{
-			/* �������ơ���������� */
+			/* 送信ステータス初期化 */
 			sil_wrb_mem((void *)(SIOCR(port)+2), 0x1);
 			siopcb_table[port].flags &= ~SIO_STS_SENDING;
 

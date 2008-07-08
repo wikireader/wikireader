@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: parser.h,v 1.14 2003/12/20 06:32:48 takayuki Exp $
  */
@@ -59,12 +59,12 @@
 #define PARSERESULT         "/parse_result"
 
 #ifndef  ERROR
-#undef   ERROR   /* MinGW�Ķ�����wingdi.h��ERROR���������� */
+#undef   ERROR   /* MinGW環境だとwingdi.hでERRORが定義される */
 #endif
 
 class Token : public std::string
 {
-        //���Фα��äϤ��ʤ�
+        //メンバの隠蔽はしない
 public:
     enum tagTokenType
     {
@@ -129,8 +129,8 @@ protected:
     std::list<tagFile *>  fileStack;
     int                   functionalities;
 
-    std::string           preprocessname;   //�ץ�ץ����å����̤��Ȥ��˻Ȥä�̾��
-    std::string           originalname;     //�����̾��
+    std::string           preprocessname;   //プリプロセッサを通すときに使った名前
+    std::string           originalname;     //本来の名前
 
     bool parseDirectives(Token &, int, bool);
 
@@ -303,7 +303,7 @@ inline bool Token::operator ==(const Token & src) const
 inline void Token::confirm(const char * str) const
 {
     if(compare(str) != 0)
-        ExceptionMessage("Illegal token (%) appears during parse process.","������Ϥ�����������ʥȡ�����(%)���и����ޤ���") << str << throwException;
+        ExceptionMessage("Illegal token (%) appears during parse process.","字句解析の途中で不正なトークン(%)が出現しました") << str << throwException;
 }
 
 inline void Parser::getToken(Token & token, enum Token::tagTokenType type, const char * term)
@@ -316,7 +316,7 @@ inline void Parser::getToken(Token & token, enum Token::tagTokenType type, const
     if((type != token) || (term != NULL && token.compare(term) != 0))
     {
         lastErrorToken = token;
-        ExceptionMessage("Parse error on reading [%]","������ϤΥ��顼 [%]") << token << throwException;
+        ExceptionMessage("Parse error on reading [%]","字句解析のエラー [%]") << token << throwException;
     }
 }
 
@@ -329,7 +329,7 @@ inline Directory * StaticAPI::find(Directory & container, const Token & token, c
 
     node = container.findChild(id,token.c_str(),NULL);
     if(node == 0)
-        ExceptionMessage("The object %(%) does not exist.","���֥�������%(%)��̤����Ǥ�") << token << throwException;
+        ExceptionMessage("The object %(%) does not exist.","オブジェクト%(%)は未定義です") << token << throwException;
 
     return node;
 }

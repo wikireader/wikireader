@@ -6,38 +6,38 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: testsuite.h,v 1.4 2003/12/20 06:51:58 takayuki Exp $
  */
 
 /*
- *   ¥Æ¥¹¥È¥¹¥£¡¼¥È¼Â¹ÔÊä½õ ¥¯¥é¥¹/¥Ş¥¯¥í¥é¥¤¥Ö¥é¥ê
+ *   ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆå®Ÿè¡Œè£œåŠ© ã‚¯ãƒ©ã‚¹/ãƒã‚¯ãƒ­ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
  */
 
 // $Header: /home/CVS/configurator/base/testsuite.h,v 1.4 2003/12/20 06:51:58 takayuki Exp $
@@ -45,12 +45,12 @@
 
 #ifdef TESTSUITE
 
-    //¥·¥Ê¥ê¥ª½ªÃ¼¥Ş¥¯¥í(Exception¥¯¥é¥¹¤ÎÍ­Ìµ¤Ë¤è¤Ã¤ÆÃæ¿È¤òÂØ¤¨¤¿¤¤¤Î¤Ç¤³¤³¤Ë¤ª¤¯)
+    //ã‚·ãƒŠãƒªã‚ªçµ‚ç«¯ãƒã‚¯ãƒ­(Exceptionã‚¯ãƒ©ã‚¹ã®æœ‰ç„¡ã«ã‚ˆã£ã¦ä¸­èº«ã‚’æ›¿ãˆãŸã„ã®ã§ã“ã“ã«ãŠã)
 #  undef END_CASE
 #  ifdef EXCEPT_H
-#    define END_CASE }catch(TestSuite::Fail & x) { _suite_control.fail_in_suite(x.getMessage()); } catch(Exception & exc) { _suite_control.fail_in_suite(string("ÉÔÌÀ¤ÊÎã³° : ") + exc.getDetails()); } catch(...) { _suite_control.fail_in_suite("¥Æ¥¹¥È¼Â¹ÔÃæ¤ËÉÔÌÀ¤ÊÎã³°¤ò¼õ¤±¼è¤Ã¤¿¤¿¤áÃæÃÇ¤µ¤ì¤¿"); } _suite_control.leave_case(); }
+#    define END_CASE }catch(TestSuite::Fail & x) { _suite_control.fail_in_suite(x.getMessage()); } catch(Exception & exc) { _suite_control.fail_in_suite(string("ä¸æ˜ãªä¾‹å¤– : ") + exc.getDetails()); } catch(...) { _suite_control.fail_in_suite("ãƒ†ã‚¹ãƒˆå®Ÿè¡Œä¸­ã«ä¸æ˜ãªä¾‹å¤–ã‚’å—ã‘å–ã£ãŸãŸã‚ä¸­æ–­ã•ã‚ŒãŸ"); } _suite_control.leave_case(); }
 #  else
-#    define END_CASE }catch(TestSuite::Fail & x) { _suite_control.fail_in_suite(x.getMessage()); } catch(...) { _suite_control.fail_in_suite("¥Æ¥¹¥È¼Â¹ÔÃæ¤ËÉÔÌÀ¤ÊÎã³°¤ò¼õ¤±¼è¤Ã¤¿¤¿¤áÃæÃÇ¤µ¤ì¤¿"); } _suite_control.leave_case(); }
+#    define END_CASE }catch(TestSuite::Fail & x) { _suite_control.fail_in_suite(x.getMessage()); } catch(...) { _suite_control.fail_in_suite("ãƒ†ã‚¹ãƒˆå®Ÿè¡Œä¸­ã«ä¸æ˜ãªä¾‹å¤–ã‚’å—ã‘å–ã£ãŸãŸã‚ä¸­æ–­ã•ã‚ŒãŸ"); } _suite_control.leave_case(); }
 #  endif
 
 #endif
@@ -59,13 +59,13 @@
 #ifndef TESTSUITE_H
 #define TESTSUITE_H
 
-    //¥Æ¥¹¥È¥¹¥£¡¼¥È¤ò¤«¤±¤ë¤«¤É¤¦¤«
+    //ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹
 //#define TESTSUITE
 
 
 #if defined(TESTSUITE) //&& defined(_DEBUG)
 
-    //¥¹¥È¥ê¡¼¥à¤ÎÆâÍÆ¤ò¥Æ¥¹¥È¤Ç»È¤¤¤¿¤¤¤Î¤ÇÆş¤ìÂØ¤¨¤ë
+    //ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å†…å®¹ã‚’ãƒ†ã‚¹ãƒˆã§ä½¿ã„ãŸã„ã®ã§å…¥ã‚Œæ›¿ãˆã‚‹
 #include <iostream>
 #define cin  _cin
 #define cout _cout
@@ -85,13 +85,13 @@ namespace std {
 #include <map>
 
 
-    //É¸½à¤Î¥Æ¥¹¥È¥¹¥£¡¼¥È´Ø¿ô¤Î¥×¥í¥È¥¿¥¤¥×Àë¸ÀÍÑ¥Ş¥¯¥í
+    //æ¨™æº–ã®ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆé–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€ç”¨ãƒã‚¯ãƒ­
 #define TESTSUITE_PROTOTYPE(suite) \
     public: \
         static void test_suite_##suite(TestSuiteControl & _suite_control);
 
 
-    //É¸½à¤Î¥Æ¥¹¥È¥¹¥£¡¼¥È´Ø¿ô¤ÎÄêµÁÍÑ¥Ş¥¯¥í (¤ï¤¶¤È¥¹¥£¡¼¥È¼Â¹Ô¤Î¾ò·ï¥³¥ó¥Ñ¥¤¥ëÍÑ¤ÎÄêµÁÌ¾¤ÈÆ±¤¸Ì¾Á°¤Ë¤¹¤ë)
+    //æ¨™æº–ã®ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆé–¢æ•°ã®å®šç¾©ç”¨ãƒã‚¯ãƒ­ (ã‚ã–ã¨ã‚¹ã‚£ãƒ¼ãƒˆå®Ÿè¡Œã®æ¡ä»¶ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ç”¨ã®å®šç¾©åã¨åŒã˜åå‰ã«ã™ã‚‹)
 #undef TESTSUITE
 #define TESTSUITE(suite,cls) \
     TestSuite TestSuite_##cls##_##suite(#cls "(" #suite ")", cls::test_suite_##suite); \
@@ -101,112 +101,112 @@ namespace std {
     TestSuite TestSuite_##spr##_##cls##_##suite(#spr "::" #cls "(" #suite ")", spr::cls::test_suite_##suite); \
     void spr::cls::test_suite_##suite(TestSuiteControl & _suite_control)
 
-    //Â¿½Å¼Â¹ÔËÉ»ßÍÑ¥Ş¥¯¥í
+    //å¤šé‡å®Ÿè¡Œé˜²æ­¢ç”¨ãƒã‚¯ãƒ­
 #define PROCEED_ONCE static bool _proceed_once_flag_ = false; if(_proceed_once_flag_) return; else _proceed_once_flag_ = true;
 
-    //¥·¥Ê¥ê¥ª³«»Ï¥Ş¥¯¥í
+    //ã‚·ãƒŠãƒªã‚ªé–‹å§‹ãƒã‚¯ãƒ­
 #define BEGIN_CASE(x,y) if(_suite_control.enter_case(x,y,__FILE__,__LINE__)) { try {
 
-    //¥·¥Ê¥ê¥ª¼ºÇÔ¥Ş¥¯¥í
+    //ã‚·ãƒŠãƒªã‚ªå¤±æ•—ãƒã‚¯ãƒ­
 #define TEST_FAIL     throw TestSuite::Fail();
 #define TEST_FAIL_(x) throw TestSuite::Fail(x);
 
-    //Ã»¤¤¥·¥Ê¥ê¥ªÍÑ¥Ş¥¯¥í
+    //çŸ­ã„ã‚·ãƒŠãƒªã‚ªç”¨ãƒã‚¯ãƒ­
 #define TEST_CASE(x,y,z)   BEGIN_CASE(x,y) { if(!(z)) TEST_FAIL;    } END_CASE
 #define TEST_CASE_(x,y,z,u) BEGIN_CASE(x,y) { if(!(z)) TEST_FAIL_(u); } END_CASE
 
-    //ÅşÃ£È½Äê¥Ş¥¯¥í
+    //åˆ°é”åˆ¤å®šãƒã‚¯ãƒ­
 #define CHECKPOINT(x) TestSuite::check(x);
 
-    //¥·¥ó¥°¥ë¥È¥óÂàÈò
+    //ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³é€€é¿
 #define SINGLETON(x)    Singleton<x>::Context context;     Singleton<x>::saveContext(context);
 #define SINGLETON_(x,y) Singleton<x>::Context context_##y; Singleton<x>::saveContext(context_##y);
 
 /*
- *  ¥Æ¥¹¥È¥¹¥£¡¼¥È¤Î¼Â¹ÔÀ©¸æ¥¯¥é¥¹
+ *  ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã®å®Ÿè¡Œåˆ¶å¾¡ã‚¯ãƒ©ã‚¹
  */
 class TestSuiteControl {
 protected:
-    std::list<std::string> session;         //¸½ºß¤Î¥»¥Ã¥·¥ç¥óÌ¾¥¹¥¿¥Ã¥¯
+    std::list<std::string> session;         //ç¾åœ¨ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³åã‚¹ã‚¿ãƒƒã‚¯
 
-    std::string    target_session;          //½èÍıÂĞ¾İ¥»¥Ã¥·¥ç¥óÌ¾
-    std::string    current_session;         //¸½ºß¤Î¥¹¥£¡¼¥È¥·¥Ê¥ê¥ªÌ¾
-    std::string    current_description;     //¸½ºß¤Î¥¹¥£¡¼¥È¥·¥Ê¥ê¥ª¤ÎÀâÌÀ
-    std::ostream * out;                     //ÀâÌÀ¤Î½ĞÎÏÀè
-    bool           fail;                    //¼ºÇÔ¤·¤¿¥·¥Ê¥ê¥ª¤¬¤¢¤Ã¤¿¤«¤É¤¦¤«
-    bool           verbose;                 //¾éÄ¹½ĞÎÏ¤¹¤ë¤«Èİ¤«
+    std::string    target_session;          //å‡¦ç†å¯¾è±¡ã‚»ãƒƒã‚·ãƒ§ãƒ³å
+    std::string    current_session;         //ç¾åœ¨ã®ã‚¹ã‚£ãƒ¼ãƒˆã‚·ãƒŠãƒªã‚ªå
+    std::string    current_description;     //ç¾åœ¨ã®ã‚¹ã‚£ãƒ¼ãƒˆã‚·ãƒŠãƒªã‚ªã®èª¬æ˜
+    std::ostream * out;                     //èª¬æ˜ã®å‡ºåŠ›å…ˆ
+    bool           fail;                    //å¤±æ•—ã—ãŸã‚·ãƒŠãƒªã‚ªãŒã‚ã£ãŸã‹ã©ã†ã‹
+    bool           verbose;                 //å†—é•·å‡ºåŠ›ã™ã‚‹ã‹å¦ã‹
 
-    unsigned int   case_count;              //¥±¡¼¥¹¤ÎÁí¿ô
-    unsigned int   fail_count;              //¼ºÇÔ¤·¤¿¥±¡¼¥¹¤Î¿ô
+    unsigned int   case_count;              //ã‚±ãƒ¼ã‚¹ã®ç·æ•°
+    unsigned int   fail_count;              //å¤±æ•—ã—ãŸã‚±ãƒ¼ã‚¹ã®æ•°
 
-        //¥·¥Ê¥ê¥ªÌ¾¤Î¼èÆÀ
+        //ã‚·ãƒŠãƒªã‚ªåã®å–å¾—
     std::string get_suitename(const char * name = "") const;
 
 
 public:
-        //¥³¥ó¥¹¥È¥é¥¯¥¿
+        //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     TestSuiteControl(std::ostream & _out, const char * _pattern = "");
 
-        //¥Æ¥¹¥È¥·¥Ê¥ê¥ª¤ÎÉ½ÂêÀßÄê (ÊÖµÑÃÍ : ¼Â¹Ô¤¹¤ëÉ¬Í×¤¬¤¢¤ë¤«¤É¤¦¤«)
+        //ãƒ†ã‚¹ãƒˆã‚·ãƒŠãƒªã‚ªã®è¡¨é¡Œè¨­å®š (è¿”å´å€¤ : å®Ÿè¡Œã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹)
     bool        _enter_case(const char * session, const char * description, const char * filename = "", long lineno = -1);
     inline void leave_case(void) { leave_session(); }
 
-        //¥·¥ó¥°¥ë¥¹¥Æ¥Ã¥×¼Â¹Ô»ş¤ËÃæ¤ËÈô¤Ó¹ş¤Ş¤Ê¤¤¤¿¤á¤Î¥é¥Ã¥Ñ
+        //ã‚·ãƒ³ã‚°ãƒ«ã‚¹ãƒ†ãƒƒãƒ—å®Ÿè¡Œæ™‚ã«ä¸­ã«é£›ã³è¾¼ã¾ãªã„ãŸã‚ã®ãƒ©ãƒƒãƒ‘
     inline bool enter_case(const char * session, const char * description, const char * filename = "", long lineno = -1)
     {   return _enter_case(session, description, filename, lineno);   }
 
-        //¥Æ¥¹¥È¥»¥Ã¥·¥ç¥óÌ¾ (¥·¥Ê¥ê¥ª¥×¥ì¥Õ¥£¥¯¥¹) ¤ÎÀßÄê/²ò½ü
+        //ãƒ†ã‚¹ãƒˆã‚»ãƒƒã‚·ãƒ§ãƒ³å (ã‚·ãƒŠãƒªã‚ªãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹) ã®è¨­å®š/è§£é™¤
     void enter_session(const std::string & session);
     void leave_session(void);
 
-        //¥Æ¥¹¥È¥·¥Ê¥ê¥ª¤Î¼ºÇÔÊó¹ğ
+        //ãƒ†ã‚¹ãƒˆã‚·ãƒŠãƒªã‚ªã®å¤±æ•—å ±å‘Š
     void fail_in_suite(std::string msg="");                                           
 
-        //¼ºÇÔ¤·¤¿¥·¥Ê¥ê¥ª¤ÎÍ­Ìµ¤Î³ÎÇ§
+        //å¤±æ•—ã—ãŸã‚·ãƒŠãƒªã‚ªã®æœ‰ç„¡ã®ç¢ºèª
     inline bool is_failed(void) const
     {   return fail;   }
 
-        //¾éÄ¹½ĞÎÏ¤ÎÀßÄê
+        //å†—é•·å‡ºåŠ›ã®è¨­å®š
     inline void set_verbose(bool _verbose = true)
     {   verbose = _verbose;   }
 
-        //¼Â¹Ô¤·¤¿¥Æ¥¹¥È¥±¡¼¥¹¤Î¿ô
+        //å®Ÿè¡Œã—ãŸãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã®æ•°
     inline unsigned int countCases(void) const
     {   return case_count;   }
 
-        //¼ºÇÔ¤·¤¿¥Æ¥¹¥È¥±¡¼¥¹¤Î¿ô
+        //å¤±æ•—ã—ãŸãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã®æ•°
     inline unsigned int countFails(void) const
     {   return fail_count;   }
 };
 
-    //¥·¥ó¥°¥ë¥È¥ó¤Î¥Æ¥¹¥È¥¹¥£¡¼¥È¤Î¤¿¤á¤Ë¤³¤³¤Ç¥¤¥ó¥¯¥ë¡¼¥É
+    //ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã®ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã®ãŸã‚ã«ã“ã“ã§ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "base/singleton.h"
 
 /*
- *  ¥Æ¥¹¥È¥¹¥£¡¼¥È¼Â¹Ô¥¯¥é¥¹
+ *  ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆå®Ÿè¡Œã‚¯ãƒ©ã‚¹
  */
 class TestSuite {
 public:
-    class Fail  //¥Æ¥¹¥È¥±¡¼¥¹¼ºÇÔÄÌÃÎ¤ËÍÑ¤¤¤ëÎã³°ÍÑ¥¯¥é¥¹
+    class Fail  //ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹å¤±æ•—é€šçŸ¥ã«ç”¨ã„ã‚‹ä¾‹å¤–ç”¨ã‚¯ãƒ©ã‚¹
     {
     protected:
         std::string msg;
 
     public:
-            //¥³¥ó¥¹¥È¥é¥¯¥¿
+            //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
         Fail(std::string src = "") throw() : msg(src) {}
 
-            //¥³¥Ô¡¼¥³¥ó¥¹¥È¥é¥¯¥¿
+            //ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
         Fail(const Fail & src) throw() : msg(src.msg) {}
         
-            //¥á¥Ã¥»¡¼¥¸¤ò¼èÆÀ
+            //ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å–å¾—
         inline const std::string & getMessage(void) const throw()
         {   return msg;   }
     };
 
     typedef void (*SuiteFunction)(TestSuiteControl &);
 
-        /* ¥¯¥é¥¹Ëè¤Î¥Æ¥¹¥È¥¹¥£¡¼¥È¤Ë´Ø¤¹¤ë¾ğÊó¤òÊİ»ı¤¹¤ë¥¯¥é¥¹ */
+        /* ã‚¯ãƒ©ã‚¹æ¯ã®ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã«é–¢ã™ã‚‹æƒ…å ±ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹ */
     class SuiteContainerNode
     {
     protected:
@@ -214,93 +214,93 @@ public:
         SuiteFunction suite;
     
     public:
-            //¥¹¥£¡¼¥È¾ğÊó¥³¥ó¥¹¥È¥é¥¯¥¿
+            //ã‚¹ã‚£ãƒ¼ãƒˆæƒ…å ±ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
         SuiteContainerNode(const char * session, SuiteFunction suite);
         SuiteContainerNode(const SuiteContainerNode & src);
 
-            //¥¹¥£¡¼¥È¤Î¼Â¹Ô
+            //ã‚¹ã‚£ãƒ¼ãƒˆã®å®Ÿè¡Œ
         bool invoke(TestSuiteControl & suite_control);
 
-            //¥¹¥£¡¼¥ÈÌ¾¤Î¼èÆÀ
+            //ã‚¹ã‚£ãƒ¼ãƒˆåã®å–å¾—
         inline const std::string & getName(void) const throw()
         {   return session;   }
     };
 
-        //¼Â¹Ô¤¹¤Ù¤­¥Æ¥¹¥È¥¹¥£¡¼¥È¤ò»ı¤Ä¥¤¥ó¥¹¥¿¥ó¥¹¤Î¥ê¥¹¥È¤Î·¿
+        //å®Ÿè¡Œã™ã¹ããƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã‚’æŒã¤ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒªã‚¹ãƒˆã®å‹
     class SuiteContainer : public std::list<SuiteContainerNode>
     {   public: SINGLETON_CONSTRUCTOR(SuiteContainer) {}   };
 
-        /* ¼Â¹Ô¥ª¥×¥·¥ç¥ó */
+        /* å®Ÿè¡Œã‚ªãƒ—ã‚·ãƒ§ãƒ³ */
     enum tagPerformOption {
-        THROUGH = 1,    //¤¹¤Ù¤ÆÄÌ¤·¤Ç¼Â¹Ô¤¹¤ë (¤¤¤Á¤¤¤Á»ß¤á¤Ê¤¤)
-        VERBOSE = 2,    //¾éÄ¹½ĞÎÏ
+        THROUGH = 1,    //ã™ã¹ã¦é€šã—ã§å®Ÿè¡Œã™ã‚‹ (ã„ã¡ã„ã¡æ­¢ã‚ãªã„)
+        VERBOSE = 2,    //å†—é•·å‡ºåŠ›
 
         DEFAULT = THROUGH
     };
 
-        /* ¥Á¥§¥Ã¥¯¥İ¥¤¥ó¥È¤ò³ÊÇ¼¤¹¤ë¥¯¥é¥¹ */
+        /* ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆã‚’æ ¼ç´ã™ã‚‹ã‚¯ãƒ©ã‚¹ */
     class Checkpoint : public std::set<std::string>
     { public: SINGLETON_CONSTRUCTOR(Checkpoint) throw() {} };
 
 protected:
-    bool            fail;       //ºÇ¸å¤Ë¼Â¹Ô¤·¤¿¥¹¥£¡¼¥È¤¬¼ºÇÔ¤·¤¿¤¬¤É¤¦¤«¤òÊİ»ı¤¹¤ëÊÑ¿ô
-    static bool     starvated;  //new¤Ë¼ºÇÔ¤¹¤ë¤«¤É¤¦¤«
+    bool            fail;       //æœ€å¾Œã«å®Ÿè¡Œã—ãŸã‚¹ã‚£ãƒ¼ãƒˆãŒå¤±æ•—ã—ãŸãŒã©ã†ã‹ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
+    static bool     starvated;  //newã«å¤±æ•—ã™ã‚‹ã‹ã©ã†ã‹
 
 public:
-        //¥³¥ó¥¹¥È¥é¥¯¥¿
+        //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     TestSuite(const char * session, SuiteFunction suite);
 
-        //¥Ç¥¹¥È¥é¥¯¥¿
+        //ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     ~TestSuite(void);
 
-        //¥Æ¥¹¥È¥¹¥£¡¼¥È¤Î¼Â¹Ô  (ÊÖµÑÃÍ:¥¹¥£¡¼¥È¤¬Àµ¤·¤¯¼Â¹Ô¤µ¤ì¤¿¤«¤É¤¦¤«)
+        //ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã®å®Ÿè¡Œ  (è¿”å´å€¤:ã‚¹ã‚£ãƒ¼ãƒˆãŒæ­£ã—ãå®Ÿè¡Œã•ã‚ŒãŸã‹ã©ã†ã‹)
     static bool performTestSuite(int flags = THROUGH, const char * pattern = "");
 
-        //¥Æ¥¹¥È¥¹¥£¡¼¥È¤Î¼Â¹Ô (°ú¿ôÊÑ´¹)
+        //ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã®å®Ÿè¡Œ (å¼•æ•°å¤‰æ›)
     inline static bool performTestSuite(const char * pattern)
     {   return performTestSuite(THROUGH, pattern);   }
 
-        //ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥È¥Ã¥×¥ì¥Ù¥ë¥¹¥£¡¼¥È¤Î°ìÍ÷É½¼¨
+        //ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã‚¹ã‚£ãƒ¼ãƒˆã®ä¸€è¦§è¡¨ç¤º
     static void listTestSuite(void);
 
         /*
-         *   ¥Á¥§¥Ã¥¯¥İ¥¤¥ó¥ÈÍÑ´Ø¿ô
+         *   ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆç”¨é–¢æ•°
          */
 
-        //ÄÌ²á¤·¤¿¤³¤È¤òÊó¹ğ
+        //é€šéã—ãŸã“ã¨ã‚’å ±å‘Š
     inline static void check(std::string checkname)
     {   Singleton<Checkpoint>::getInstance()->insert(checkname);   }
 
-        //¤³¤ì¤Ş¤Ç¤Ë¼õ¤±¤¿Êó¹ğ¤òºï½ü
+        //ã“ã‚Œã¾ã§ã«å—ã‘ãŸå ±å‘Šã‚’å‰Šé™¤
     inline static void clearCheckpoints(void)
     {   Singleton<Checkpoint>::getInstance()->clear();   }
 
-        //¤½¤Î°ÌÃÖ¤ËÍè¤¿¤«
+        //ãã®ä½ç½®ã«æ¥ãŸã‹
     static bool isReached(std::string checkname);
 
         /*
-         *   ¥Æ¥¹¥ÈÍÑºî¶È´Ø¿ô
+         *   ãƒ†ã‚¹ãƒˆç”¨ä½œæ¥­é–¢æ•°
          */
 
-        //¥Õ¥¡¥¤¥ë¤ÎÃæ¿È¤ò³«¤¤¤Æ¥Á¥§¥Ã¥¯¤¹¤ë
+        //ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’é–‹ã„ã¦ãƒã‚§ãƒƒã‚¯ã™ã‚‹
     static bool compareFileContents(const char * filename, const char * filecontents, bool remove = true);
 };
 
 /*
- *  ¥¹¥£¡¼¥È¼Â¹ÔÍÑmain´Ø¿ô
+ *  ã‚¹ã‚£ãƒ¼ãƒˆå®Ÿè¡Œç”¨mainé–¢æ•°
  */
 extern int main(int argc, char ** argv);
 
-#define main pseudo_main    //ÄÌ¾ï¤Îmain¤òº¹¤·´¹¤¨
+#define main pseudo_main    //é€šå¸¸ã®mainã‚’å·®ã—æ›ãˆ
 
-    //´Ê°×¥½¥Õ¥È¥¦¥§¥¢¥È¥ì¡¼¥¹µ¡Ç½¤Î¥¤¥ó¥¯¥ë¡¼¥É
+    //ç°¡æ˜“ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ãƒˆãƒ¬ãƒ¼ã‚¹æ©Ÿèƒ½ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 #include "base/coverage_defs.h"
 
 #else
 
 /*********************************************************************************************/
 /*
- *  ¥Æ¥¹¥È¤ò¼Â¹Ô¤·¤Ê¤¤¤È¤­¤Î¥¯¥é¥¹ÄêµÁ
+ *  ãƒ†ã‚¹ãƒˆã‚’å®Ÿè¡Œã—ãªã„ã¨ãã®ã‚¯ãƒ©ã‚¹å®šç¾©
  */
 
 #define TESTABLEOBJECT(x)
@@ -316,11 +316,11 @@ extern int main(int argc, char ** argv);
 #define CHECKPOINT(x)
 
 /*
-    *  ¥Æ¥¹¥È¥¹¥£¡¼¥È¼Â¹Ô¥¯¥é¥¹
+    *  ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆå®Ÿè¡Œã‚¯ãƒ©ã‚¹
     */
 class TestSuite {
 public:
-        //¥Æ¥¹¥È¥¹¥£¡¼¥È¤Î¼Â¹Ô  (ÊÖµÑÃÍ:¥¹¥£¡¼¥È¤òÀµ¤·¤¯¼Â¹Ô¤·¤¿¤«¤É¤¦¤«)
+        //ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆã®å®Ÿè¡Œ  (è¿”å´å€¤:ã‚¹ã‚£ãƒ¼ãƒˆã‚’æ­£ã—ãå®Ÿè¡Œã—ãŸã‹ã©ã†ã‹)
     inline static bool performTestSuite(void) { return true; };
 };
 

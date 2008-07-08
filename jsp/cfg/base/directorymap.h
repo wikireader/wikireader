@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: directorymap.h,v 1.9 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -49,7 +49,7 @@
 #include "base/garbage.h"
 #include "base/singleton.h"
 
-  //MSVC6.0�� <cstdio> ���Ƥ�std������Ƥ���ʤ��Τ�
+  //MSVC6.0が <cstdio> してもstdに入れてくれないので
 #include <stdio.h>
 
 #include <string>
@@ -60,14 +60,14 @@ class Directory : public std::map<std::string, Directory *>
 {
 private:
     /*
-     * Directory���饹 : �߷ץ��
+     * Directoryクラス : 設計メモ
      *
-     *   ���ƻҥΡ��ɴ֤δط�
-     *      ���� : �Ƥ� �Ҥ�ľ�ܤ����äƥ�󥯤�ĥ��
-     *      �˴� : �Ҥ� �Ƥ������Ω����ꤹ�� (�Ƥ������Ū�˴������ʤ�)
+     *   ・親子ノード間の関係
+     *      生成 : 親が 子を直接いじってリンクを張る
+     *      破棄 : 子が 親からの独立を依頼する (親から一方的に勘当しない)
      *
-     *   ��NULL�����ռ���
-     *      �����δؿ��� this != NULL ���ꤷ�ʤ��Ǽ������� (��ʬ�ؤ�����������)
+     *   ・NULLセーフ実装
+     *      一部の関数は this != NULL を仮定しないで実装する (自分への利便性向上)
      *        - addChild
      *        - findChild, openChild (findNode()
      *        - erase(void)
@@ -287,7 +287,7 @@ inline Directory * Directory::addChild(const char * key, Directory & node)
 inline Directory * Directory::addChild(Directory & node)
 {   return addChild(&node); }
 
-    //����addChild���ɲä������Ǥϡ���������뤫���ä��ƤϤ����ʤ�
+    //このaddChildで追加した要素は、一括削除するか、消してはいけない
 inline Directory * Directory::addChild(Directory * node)
 {
     char buffer[32];
@@ -326,7 +326,7 @@ inline Directory::operator const char * (void)
         return content.const_literal;
     if(type == LITERAL)
         return content.literal->c_str();
-    ExceptionMessage("Bad cast exception raised","�������㥹���㳰").throwException();
+    ExceptionMessage("Bad cast exception raised","不正キャスト例外").throwException();
     return 0;
 }
 
@@ -334,7 +334,7 @@ inline Directory::operator const std::string &(void) const
 {
     if(type == LITERAL)
         return *content.literal;
-    ExceptionMessage("Bad cast exception raised","�������㥹���㳰").throwException();
+    ExceptionMessage("Bad cast exception raised","不正キャスト例外").throwException();
     return *(std::string *)0;
 }
 
@@ -342,7 +342,7 @@ inline Directory::operator const Garbage * (void) const
 {
     if(type == OBJECT)
         return content.instance;
-    ExceptionMessage("Bad cast exception raised","�������㥹���㳰").throwException();
+    ExceptionMessage("Bad cast exception raised","不正キャスト例外").throwException();
     return 0;
 }
 

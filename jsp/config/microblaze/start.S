@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: start.S,v 1.9 2004/02/05 09:16:25 honda Exp $
  */
@@ -56,79 +56,79 @@
     .ent _start
 _start:
     /*
-     *  msr������
+     *  msrを初期化
      */
     la   r1, r0, MSR_CACHE_SETTING         
     mts  rmsr,r1 
                 
     /*
-     *  opb_mdm ��Ȥ��� msr ��BIP�ӥåȤ�'1'�Ǽ¹Ԥ���뤿�ᡤ
-     *  rtbd̿��ˤ��'0'�˽�������롥
-     *  stub ��Ȥ�����ɬ�פʤ����ä������Ѥ��ʤ����ᡤ̵���˼¹Ԥ��롥
+     *  opb_mdm を使うと msr のBIPビットが'1'で実行されるため，
+     *  rtbd命令により'0'に初期化する．
+     *  stub を使う場合は必要ないが特に副作用がないため，無条件に実行する．
      */
     la    r1, r0, _start_
     rtbd  r1,0
 _start_:        
                
     /*
-     * R2��R3������
-     *��R2  : Read-only small data area anchor
-     *   _SDA2_BASE_ .sdata2���濴
-     *��R13 : Read-write small data area anchor
-     *   .sdata��sbss��Ϣ³�����֤���������֤�_SDA_BASE_ �����ꤹ��
+     * R2とR3の設定
+     *・R2  : Read-only small data area anchor
+     *   _SDA2_BASE_ .sdata2の中心
+     *・R13 : Read-write small data area anchor
+     *   .sdataとsbssを連続して置き，この中間に_SDA_BASE_ を設定する
      */
 	la	r13, r0, _SDA_BASE_
 	la	r2,  r0, _SDA2_BASE_
 
 	/*
-	 * �����å��ݥ��󥿤ν����
+	 * スタックポインタの初期化
 	 */
 	la	r1, r0, STACKTOP - 4
 
    /*
-	* �٥����ơ��֥�ν����
+	* ベクタテーブルの初期化
 	*/
 	/*
-     *  brai ̿��ν񤭹���
+     *  brai 命令の書き込み
      */
-	la  r3,  r0,  0xb8080000  /* brai �Υ��ڥ�����      */
-	swi r3,  r0,  0xc         /* exception�٥�������Ͽ  */
-	swi r3,  r0,  0x14        /* interrrupt�٥�������Ͽ */
+	la  r3,  r0,  0xb8080000  /* brai のオペコード      */
+	swi r3,  r0,  0xc         /* exceptionベクタへ登録  */
+	swi r3,  r0,  0x14        /* interrruptベクタへ登録 */
 	/*
-     * imm ̿��ν񤭹���
+     * imm 命令の書き込み
      */
-	la  r4,  r0,  0xb0000000  /* imm �Υ��ڥ�����       */
-	swi r4,  r0,  0x8         /* exception�٥�������Ͽ  */
-    swi r4,  r0,  0x10        /* interrrupt�٥�������Ͽ */
+	la  r4,  r0,  0xb0000000  /* imm のオペコード       */
+	swi r4,  r0,  0x8         /* exceptionベクタへ登録  */
+    swi r4,  r0,  0x10        /* interrruptベクタへ登録 */
 
 	/*
-     *  �㳰�ϥ�ɥ����Ͽ
+     *  例外ハンドラの登録
      */
 	la   r5,  r0,  exception_entry
 	sw	 r5,  r1,  r0
 	lhu  r6,  r1,  r0
-	shi	 r5,  r0,  0xe       /* ����ߥϥ�ɥ鲼��16bit */
-	shi	 r6,  r0,  0xa       /* ����ߥϥ�ɥ���16bit */
+	shi	 r5,  r0,  0xe       /* 割込みハンドラ下位16bit */
+	shi	 r6,  r0,  0xa       /* 割込みハンドラ上位16bit */
 
 	/*
-	 *  ����ߥϥ�ɥ����Ͽ
+	 *  割込みハンドラの登録
 	 */
 	la   r5,  r0,  interrupt_entry
 	sw	 r5,  r1,  r0
 	lhu  r6,  r1,  r0
-	shi	 r5,  r0,  0x16      /* ����ߥϥ�ɥ鲼��16bit */
-	shi	 r6,  r0,  0x12      /* ����ߥϥ�ɥ���16bit */
+	shi	 r5,  r0,  0x16      /* 割込みハンドラ下位16bit */
+	shi	 r6,  r0,  0x12      /* 割込みハンドラ上位16bit */
 
 
 	/*
-	 *  _hardware_init_hook ��ƤӽФ���(0�Ǥʤ����)
+	 *  _hardware_init_hook を呼び出す。(0でない場合)
 	 *
-	 *  �ϡ��ɥ�������¸��ɬ�פʽ����������������ϡ�
-	 *  hardware_init_hook �Ȥ����ؿ����Ѱդ���Ф褤��
-	 *  ����Ū�ˤ�ROM���κݡ�RAM����Ѳ�ǽ�ˤ��뤿���
-	 *  �Х�����ȥ�����ν��������Ԥ���
-	 *  sys_support.S ��� _hardware_init_hook ��������Ƥ�
-	 *  �롥
+	 *  ハードウェア依存に必要な初期化処理がある場合は，
+	 *  hardware_init_hook という関数を用意すればよい．
+	 *  具体的にはROM化の際、RAMを使用可能にするための
+	 *  バスコントローラの初期化等を行う。
+	 *  sys_support.S 内で _hardware_init_hook を定義してい
+	 *  る．
 	 */
 start_0:
 	la    r3,  r0,  _hardware_init_hook
@@ -138,7 +138,7 @@ start_0:
 
 
 	/*
-     *  bss���������򥯥ꥢ
+     *  bssセクションをクリア
      */
 start_1:
 	la    r3,  r0,  __bss_start
@@ -152,19 +152,19 @@ start_2:
 	bgti  r5,  start_2
 
 	/*
-	 *  data���������ν������ROM���б���
+	 *  dataセクションの初期化（ROM化対応）
 	 *
-	 *  __idata_start ���� __idata_end �ޤǤ�__data_start �ʹߤ�
-	 *  ���ԡ����롥
-     *  Microblaze����¡RAM�����������Ȥȡ�BRAM�����Ƥ�
-     *  �ꥳ��ե�����졼����󤹤�Ƚ��������뤿��
-     *  data���������ν�����ϹԤ�ʤ�
-     *  ���������ˤ�äƤϼ������뤳�Ȥ�ͤ��ƥ�٥�Τ�������Ƥ���
+	 *  __idata_start から __idata_end までを，__data_start 以降に
+	 *  コピーする．
+     *  Microblazeは内臓RAMが小さいことと，BRAMの内容は
+     *  リコンフィギュレーションすると初期化されるため
+     *  dataセクションの初期化は行わない
+     *  ただし場合によっては実装することを考えてラベルのみ定義しておく
 	 */
 start_3:
 	la    r3,  r0,  __idata_start
 	la    r4,  r0,  __idata_end
-	sub   r5,  r4,  r3     /* ������������å� */
+	sub   r5,  r4,  r3     /* サイズをチェック */
 	beqi  r5,  start_5
 	la    r6,  r0,  __data_start
 start_4:
@@ -179,7 +179,7 @@ start_4:
 start_5:
 	la    r3,  r0,  __isdata2_start
 	la    r4,  r0,  __isdata2_end
-	sub   r5,  r4,  r3     /* ������������å� */
+	sub   r5,  r4,  r3     /* サイズをチェック */
 	beqi  r5,  start_7
 	la    r6,  r0,  __sdata2_start
 start_6:
@@ -194,7 +194,7 @@ start_6:
 start_7:
 	la    r3,  r0,  __isdata_start
 	la    r4,  r0,  __isdata_end
-	sub   r5,  r4,  r3     /* ������������å� */
+	sub   r5,  r4,  r3     /* サイズをチェック */
 	beqi  r5,  start_9
 	la    r6,  r0,  __sdata_start
 start_8:
@@ -207,11 +207,11 @@ start_8:
 
 
 	/*
-	 *  _software_init_hook ��ƤӽФ���0 �Ǥʤ����ˡ�
+	 *  _software_init_hook を呼び出す（0 でない場合）．
 	 *
-	 *  ���եȥ������Ķ����ä˥饤�֥��ˤ˰�¸����ɬ�פʽ������
-	 *  ����������ϡ�software_init_hook �Ȥ����ؿ����Ѱդ����
-	 *  �褤��
+	 *  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+	 *  理がある場合は，software_init_hook という関数を用意すれば
+	 *  よい．
 	 */
 start_9:
 	la    r3,  r0,  _software_init_hook
@@ -221,4 +221,4 @@ start_9:
 
 start_10:
 	brlid	r15, kernel_start
-    addik r1,r1,4            /* �����å��򸵤��᤹ */
+    addik r1,r1,4            /* スタックを元に戻す */

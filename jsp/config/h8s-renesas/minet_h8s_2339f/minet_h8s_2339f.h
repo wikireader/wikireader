@@ -10,105 +10,105 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _MINET_H8S_2339F_H_
 #define _MINET_H8S_2339F_H_
 
 /*
- *  MiSPO MiNET-H8S/2339F�����
+ *  MiSPO MiNET-H8S/2339F用定義
  */
 
 #define MINET_H8S_2339F
 
 /*
- *  SYSCR�ν����
- *  ����INTM1=1,INTM0=0�����������⡼�ɣ�
- *  ����NMIEG=0��NMI���Ϥ�Ω���ꥨ�å��ǳ������׵��ȯ��
- *  ����IRQPAS��IRQ����ü�ҥ��쥯��
- *  ����RAME=1����¢RAMͭ��
+ *  SYSCRの初期値
+ *  　・INTM1=1,INTM0=0：割込み制御モード２
+ *  　・NMIEG=0：NMI入力の立下りエッジで割り込み要求を発生
+ *  　・IRQPAS：IRQ入力端子セレクト
+ *  　・RAME=1：内蔵RAM有効
  */
 #define	SYS_SYSCR	(INT_MODE2 | RAME)
 
 /*
- *  CPU �����å�
+ *  CPU クロック
  */
-#define CPU_CLOCK	24576			/* kHzñ�� ��24.576MHz��*/
+#define CPU_CLOCK	24576			/* kHz単位 （24.576MHz）*/
 
 /*
- *  �����ޤ˶��뤵��륯���å� (���������å���/4�ǥ������)
+ *  タイマに供給されるクロック (内部クロックφ/4でカウント)
  */
-#define TIMER_CLOCK	((CPU_CLOCK)/4)		/* kHzñ�� */
+#define TIMER_CLOCK	((CPU_CLOCK)/4)		/* kHz単位 */
 
 /*
- *  ���ꥢ��ݡ��Ȥ�BRR�쥸�����ͤ����
- *    �׻������Ѥ�����ˡ�⤢�뤬��������Ƚ�꤬ɬ�פʤΤǡ�
- *�������̤˥ޥ���������Ƥ��롣
- *����BRR_RATE�ޥ����ϥޥ˥奢����N���б����롣
- *�����������n=0�Ǥ��롣
- *����BAUD_RATE��user_config.h��������롣
+ *  シリアルポートのBRRレジスタ値の定義
+ *    計算式を用いる方法もあるが、誤差の判定が必要なので、
+ *　　個別にマクロ定義している。
+ *　　BRR_RATEマクロはマニュアル上のNに対応する。
+ *　　いずれもn=0である。
+ *　　BAUD_RATEはuser_config.hで定義する。
  */
 #if CPU_CLOCK != 24576
 #error CPU_CLOCK is invalid value.
 #else /*  CPU_CLOCK != 24576  */
 
 /*  SCI0  */
-#if BAUD_RATE0 == 9600		/* �ӥåȥ졼�ȡ� 9600[bps] */
+#if BAUD_RATE0 == 9600		/* ビットレート： 9600[bps] */
 	#define BRR0_RATE	79
-#elif BAUD_RATE0 == 19200	/* �ӥåȥ졼�ȡ�19200[bps] */
+#elif BAUD_RATE0 == 19200	/* ビットレート：19200[bps] */
 	#define BRR0_RATE	39
-#elif BAUD_RATE0 == 38400	/* �ӥåȥ졼�ȡ�38400[bps] */
+#elif BAUD_RATE0 == 38400	/* ビットレート：38400[bps] */
 	#define BRR0_RATE	19
 #endif /* BAUD_RATE0 == 9600  */
 
 /*  SCI1  */
-#if BAUD_RATE1 == 9600		/* �ӥåȥ졼�ȡ� 9600[bps] */
+#if BAUD_RATE1 == 9600		/* ビットレート： 9600[bps] */
 	#define BRR1_RATE	79
-#elif BAUD_RATE1 == 19200	/* �ӥåȥ졼�ȡ�19200[bps] */
+#elif BAUD_RATE1 == 19200	/* ビットレート：19200[bps] */
 	#define BRR1_RATE	39
-#elif BAUD_RATE1 == 38400	/* �ӥåȥ졼�ȡ�38400[bps] */
+#elif BAUD_RATE1 == 38400	/* ビットレート：38400[bps] */
 	#define BRR1_RATE	19
 #endif /* BAUD_RATE1 == 9600  */
 
 /*  SCI1  */
-#if BAUD_RATE2 == 9600		/* �ӥåȥ졼�ȡ� 9600[bps] */
+#if BAUD_RATE2 == 9600		/* ビットレート： 9600[bps] */
 	#define BRR2_RATE	79
-#elif BAUD_RATE2 == 19200	/* �ӥåȥ졼�ȡ�19200[bps] */
+#elif BAUD_RATE2 == 19200	/* ビットレート：19200[bps] */
 	#define BRR2_RATE	39
-#elif BAUD_RATE2 == 38400	/* �ӥåȥ졼�ȡ�38400[bps] */
+#elif BAUD_RATE2 == 38400	/* ビットレート：38400[bps] */
 	#define BRR2_RATE	19
 #endif /* BAUD_RATE1 == 9600  */
 
 /*
- *  SCR�쥸������CKS0,CKS1�ӥå�
- *�����ܡ��졼�ȷ׻�����n=0���б�
- *�����ܡ��졼������ͤ��ۤʤ��礬����Τ�����
+ *  SCRレジスタのCKS0,CKS1ビット
+ *　　ボーレート計算式のn=0に対応
+ *　　ボーレート毎に値が異なる場合があるので注意
  */
 #define SCR0_CKS		0	/*  SCI0  */
 #define SCR1_CKS		0	/*  SCI1  */
@@ -117,12 +117,12 @@
 #endif /* CPU_CLOCK != 24576 */
 
 /*
- *  DDR�쥸�����ν���ͤ����
+ *  DDRレジスタの初期値の定義
  */
 #define P1DDR0		0xf0
 #define P2DDR0		DUMMY
 #define P3DDR0		DUMMY
-/*  �ݡ��ȣ���DDR���ʤ����ᡢ����  */
+/*  ポート４はDDRがないため、欠番  */
 #define P5DDR0		DUMMY
 #define P6DDR0		0xc3
 #define P7DDR0		DUMMY

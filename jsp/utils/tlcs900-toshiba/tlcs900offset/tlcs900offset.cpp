@@ -8,35 +8,35 @@
  *  Copyright (C) 2003-2004 by Ryosuke Takeuchi
  *              Platform Development Center RIOCH COMPANY,LTD. JAPAN
  * 
- *  �嵭����Ԥϡ�Free Software Foundation �ˤ�äƸ�ɽ����Ƥ��� 
- *  GNU General Public License �� Version 2 �˵��Ҥ���Ƥ����狼����
- *  ����(1)��(4)�ξ������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ���
- *  ������Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ�����������Ѳ�ǽ�ʥХ��ʥꥳ���ɡʥ���������֥륪��
- *      �������ȥե������饤�֥��ʤɡˤη������Ѥ�����ˤϡ�����
- *      ��ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ����
- *      �������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ�������������Բ�ǽ�ʥХ��ʥꥳ���ɤη��ޤ��ϵ������
- *      �߹�����������Ѥ�����ˤϡ����Τ����줫�ξ������������ȡ�
- *    (a) ���Ѥ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭������
- *        ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) ���Ѥη��֤��̤�������ˡ�ˤ�äơ��嵭����Ԥ���𤹤�
- *        ���ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����դ��뤳�ȡ�
+ *  上記著作権者は，Free Software Foundation によって公表されている 
+ *  GNU General Public License の Version 2 に記述されている条件か，以
+ *  下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェア（本ソフトウェ
+ *  アを改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを再利用可能なバイナリコード（リロケータブルオブ
+ *      ジェクトファイルやライブラリなど）の形で利用する場合には，利用
+ *      に伴うドキュメント（利用者マニュアルなど）に，上記の著作権表示，
+ *      この利用条件および下記の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを再利用不可能なバイナリコードの形または機器に組
+ *      み込んだ形で利用する場合には，次のいずれかの条件を満たすこと．
+ *    (a) 利用に伴うドキュメント（利用者マニュアルなど）に，上記の著作
+ *        権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 利用の形態を，別に定める方法によって，上記著作権者に報告する
+ *        こと．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者を免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥϡ�
- *  �ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����ޤ�ơ������ʤ��ݾڤ�Ԥ�
- *  �ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū����������
- *  ���ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者は，
+ *  本ソフトウェアに関して，その適用可能性も含めて，いかなる保証も行わ
+ *  ない．また，本ソフトウェアの利用により直接的または間接的に生じたい
+ *  かなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: tlcs900offset.cpp,v 1.4 2007/04/17 05:08:07 honda Exp $
  */
-// tlcs900offset.cpp : ���󥽡��� ���ץꥱ��������ѤΥ���ȥ� �ݥ���Ȥ����
+// tlcs900offset.cpp : コンソール アプリケーション用のエントリ ポイントの定義
 //
 
 #include <stdio.h>
@@ -62,7 +62,7 @@ static char input_file[STR_SIZE];
 static char output_file[STR_SIZE];
 
 /*
-���ϥե����뤬BEGIN, END�ζ�֤Ǥ������
+入力ファイルがBEGIN, ENDの区間である場合は
 offset_state = NORMAL_STATE;
 */
 static int  offset_state = NORMAL_STATE;
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]){
 	strcpy(input_file, default_input_file);
 	strcpy(output_file, default_output_file);
 
-	//���ޥ�ɥ饤�����Ϥ����
+	//コマンドライン入力を解析
 	for(nCnt = 1 ; nCnt < argc ; nCnt++){
 		s = argv[nCnt];
 		if(*s++ == '-'){
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 	}
-	//input, output�ե�����̾��ɸ�����
+	//input, outputファイル名の標準出力
 	printf("input file   = %s\n", input_file);
 	printf("output file  = %s\n", output_file);
 
@@ -134,13 +134,13 @@ int main(int argc, char* argv[]){
 		exit(1);
 	}
 
-	//input�ե�����μ�����
+	//inputファイルの取り込み
 	for(;;){
 		if((fgets(buf, BUF_SIZE, pfi)) == NULL)
 			break;
 		s = buf;
 		switch(offset_state){
-		//; BEGIN TCB_texptn���ϰϤβ���
+		//; BEGIN TCB_texptnの範囲の解析
 		case TEXPTN_STATE:
 			if(test_string(&s, "; END")){
 				offset_state = NORMAL_STATE;
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		case SP_STATE:
-		//; BEGIN TCB_sp���ϰϤβ���
+		//; BEGIN TCB_spの範囲の解析
 			if(test_string(&s, "; END")){
 				offset_state = NORMAL_STATE;
 				continue;
@@ -195,7 +195,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		case PC_STATE:
-		//; BEGIN TCB_pc���ϰϤβ���
+		//; BEGIN TCB_pcの範囲の解析
 			if(test_string(&s, "; END")){
 				offset_state = NORMAL_STATE;
 				continue;
@@ -217,7 +217,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		case ENATEX_STATE:
-		//; BEGIN TCB_pc���ϰϤβ���
+		//; BEGIN TCB_pcの範囲の解析
 			if(test_string(&s, "; END")){
 				offset_state = NORMAL_STATE;
 				continue;
@@ -288,7 +288,7 @@ int main(int argc, char* argv[]){
 }
 
 /*
- * 16��ʸ�����int�����Ѵ�
+ * 16進文字列をint型に変換
  */
 unsigned int atoh(char* s)
 {
@@ -307,7 +307,7 @@ unsigned int atoh(char* s)
 	return nCnt;
 }
 /*
- * ���ɥ쥹��ʬ�����
+ * アドレス部分を抽出
  */
 void get_num(char* s)
 {
@@ -321,7 +321,7 @@ void get_num(char* s)
 }
 
 /*
- * get_num�ǽ񤭴�������ʬ�򸵤��᤹
+ * get_numで書き換えた部分を元に戻す
  */
 void get_num_undo(char* s)
 {
@@ -336,7 +336,7 @@ void get_num_undo(char* s)
 
 
 /*
- * ʸ�������Ӥ���Ʊ��ʤ��TURE
+ * 文字列を比較して同一ならばTURE
  */
 static bool test_string(char** s, char const *t)
 {
@@ -361,7 +361,7 @@ static bool test_string(char** s, char const *t)
 }
 
 /*
- * ����Υ���饯���ޤǥ����å�
+ * 指定のキャラクタまでスキップ
  */
 static bool skip_char(char** s, char const c)
 {
@@ -385,7 +385,7 @@ static bool skip_char(char** s, char const c)
 }
 
 /*
- * ���ڡ����ޤ��ϥ��֤򥹥��åפ���
+ * スペースまたはタブをスキップする
  */
 static bool skip_space(char** s)
 {

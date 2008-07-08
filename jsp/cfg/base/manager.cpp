@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: manager.cpp,v 1.11 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -77,7 +77,7 @@ int CDECL main(int argc, char ** argv)
         }
         catch(Exception & e)
         {
-            cerr << Message("Program failed in its process by following reason.\n","�ץ���������̿Ū�ʥ��顼�ˤ�����Ǥ���ޤ���.\n");
+            cerr << Message("Program failed in its process by following reason.\n","プログラムは致命的なエラーにより中断されました.\n");
             cerr << "  " << e.getDetails() << '\n';
         }
         catch(ExceptionMessage & e) {
@@ -103,7 +103,7 @@ int CDECL main(int argc, char ** argv)
     catch(Exception & e)
     {
         DebugMessage("exception was raised in the event - %\n") << e.getDetails();
-        cerr << Message("Program failed in its process by following reason.\n","�ץ���������̿Ū�ʥ��顼�ˤ�����Ǥ���ޤ���.\n");
+        cerr << Message("Program failed in its process by following reason.\n","プログラムは致命的なエラーにより中断されました.\n");
         cerr << "  " << e.getDetails() << '\n';
     }
 
@@ -118,7 +118,7 @@ int CDECL main(int argc, char ** argv)
     return evt.exit_code;
 }
 
-/************************************* �ƥ��ȥ������� *************************************/
+/************************************* テストスィート *************************************/
 
 #ifdef TESTSUITE
 #include "coverage_undefs.h"
@@ -159,7 +159,7 @@ namespace {
         TestSuite::check("dummyShutdownHandler");
     }
 
-        //�ƥ��ȥ������Ȥ�����
+        //テストスィートの本体
     void testsuite(TestSuiteControl & _suite_control)
     {
         SingletonBase::ContextChain chain;
@@ -168,13 +168,13 @@ namespace {
         chain.saveContext<Event<StartupEvent>::handler_list_type>();
         chain.saveContext<Event<ShutdownEvent>::handler_list_type>();
 
-        BEGIN_CASE("1","main�ؿ�ñ�� + ����ݡ��ͥ�Ȥʤ�") {
+        BEGIN_CASE("1","main関数単体 + コンポーネントなし") {
             chain.renewInstance();
 
             Event<StartupEvent>::add(dummyStartupHandler);
             Event<ShutdownEvent>::add(dummyShutdownHandler);
 
-            BEGIN_CASE("1","���̤˼¹Ԥ���") {
+            BEGIN_CASE("1","普通に実行する") {
                 TestSuite::clearCheckpoints();
 
                 char * argv[] = { "test.exe" };
@@ -183,18 +183,18 @@ namespace {
                 TestComponent test;
                 test.mode = 0;
 
-                TEST_CASE("1","main�ؿ���EXIT_SUCCESS���֤�", main(1, argv) == EXIT_SUCCESS);
+                TEST_CASE("1","main関数はEXIT_SUCCESSを返す", main(1, argv) == EXIT_SUCCESS);
 
-                TEST_CASE("2","�㳰���¹Ԥ���ʤ� catch(Exception)", !TestSuite::isReached("catch(Exception)"));
-                TEST_CASE("3","�㳰���¹Ԥ���ʤ� catch(bad_alloc)", !TestSuite::isReached("catch(bad_alloc)"));
-                TEST_CASE("4","�㳰���¹Ԥ���ʤ� catch(...)",       !TestSuite::isReached("catch(...)"));
-                TEST_CASE("5","Component���¹Ԥ���Ƥ���", TestSuite::isReached("TestComponent::case 0"));
-                TEST_CASE("6","�������ȥ��åץϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyStartupHandler"));
-                TEST_CASE("7","����åȥ�����ϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyShutdownHandler"));
-                TEST_CASE("8","����åȥ�����ϥ�ɥ��EXIT_SUCCESS������Ƥ���", dummyShutdownHandler_exit_code == EXIT_SUCCESS);
+                TEST_CASE("2","例外が実行されない catch(Exception)", !TestSuite::isReached("catch(Exception)"));
+                TEST_CASE("3","例外が実行されない catch(bad_alloc)", !TestSuite::isReached("catch(bad_alloc)"));
+                TEST_CASE("4","例外が実行されない catch(...)",       !TestSuite::isReached("catch(...)"));
+                TEST_CASE("5","Componentが実行されている", TestSuite::isReached("TestComponent::case 0"));
+                TEST_CASE("6","スタートアップハンドラが起動されている", TestSuite::isReached("dummyStartupHandler"));
+                TEST_CASE("7","シャットダウンハンドラが起動されている", TestSuite::isReached("dummyShutdownHandler"));
+                TEST_CASE("8","シャットダウンハンドラはEXIT_SUCCESSを受けている", dummyShutdownHandler_exit_code == EXIT_SUCCESS);
             } END_CASE;
 
-            BEGIN_CASE("2","Exception�㳰���֤�") {
+            BEGIN_CASE("2","Exception例外を返す") {
                 TestSuite::clearCheckpoints();
 
                 char * argv[] = { "test.exe" };
@@ -203,17 +203,17 @@ namespace {
                 TestComponent test;
                 test.mode = 1;
 
-                TEST_CASE("1","main�ؿ���EXIT_FAILURE���֤�", main(1, argv) == EXIT_FAILURE);
+                TEST_CASE("1","main関数はEXIT_FAILUREを返す", main(1, argv) == EXIT_FAILURE);
 
-                TEST_CASE("2","�㳰���¹Ԥ����   catch(Exception)", TestSuite::isReached("catch(Exception)"));
-                TEST_CASE("3","�㳰���¹Ԥ���ʤ� catch(bad_alloc)", !TestSuite::isReached("catch(bad_alloc)"));
-                TEST_CASE("4","�㳰���¹Ԥ���ʤ� catch(...)",       !TestSuite::isReached("catch(...)"));
-                TEST_CASE("5","�������ȥ��åץϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyStartupHandler"));
-                TEST_CASE("6","����åȥ�����ϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyShutdownHandler"));
-                TEST_CASE("7","����åȥ�����ϥ�ɥ��EXIT_FAILURE������Ƥ���", dummyShutdownHandler_exit_code == EXIT_FAILURE);
+                TEST_CASE("2","例外が実行される   catch(Exception)", TestSuite::isReached("catch(Exception)"));
+                TEST_CASE("3","例外が実行されない catch(bad_alloc)", !TestSuite::isReached("catch(bad_alloc)"));
+                TEST_CASE("4","例外が実行されない catch(...)",       !TestSuite::isReached("catch(...)"));
+                TEST_CASE("5","スタートアップハンドラが起動されている", TestSuite::isReached("dummyStartupHandler"));
+                TEST_CASE("6","シャットダウンハンドラが起動されている", TestSuite::isReached("dummyShutdownHandler"));
+                TEST_CASE("7","シャットダウンハンドラはEXIT_FAILUREを受けている", dummyShutdownHandler_exit_code == EXIT_FAILURE);
             } END_CASE;
 
-            BEGIN_CASE("3","bad_alloc�㳰���֤�") {
+            BEGIN_CASE("3","bad_alloc例外を返す") {
                 TestSuite::clearCheckpoints();
 
                 char * argv[] = { "test.exe" };
@@ -222,12 +222,12 @@ namespace {
                 TestComponent test;
                 test.mode = 2;
 
-                TEST_CASE("1","main�ؿ���EXIT_FAILURE���֤�", main(1, argv) == EXIT_FAILURE);
+                TEST_CASE("1","main関数はEXIT_FAILUREを返す", main(1, argv) == EXIT_FAILURE);
 
-                TEST_CASE("2","�б�����catch�Τߤ��¹Ԥ���Ƥ���", !TestSuite::isReached("catch(Exception)") && TestSuite::isReached("catch(bad_alloc)") && !TestSuite::isReached("catch(...)"));
-                TEST_CASE("3","�������ȥ��åץϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyStartupHandler"));
-                TEST_CASE("4","����åȥ�����ϥ�ɥ餬��ư����Ƥ���", TestSuite::isReached("dummyShutdownHandler"));
-                TEST_CASE("5","����åȥ�����ϥ�ɥ��EXIT_FAILURE������Ƥ���", dummyShutdownHandler_exit_code == EXIT_FAILURE);
+                TEST_CASE("2","対応するcatchのみが実行されている", !TestSuite::isReached("catch(Exception)") && TestSuite::isReached("catch(bad_alloc)") && !TestSuite::isReached("catch(...)"));
+                TEST_CASE("3","スタートアップハンドラが起動されている", TestSuite::isReached("dummyStartupHandler"));
+                TEST_CASE("4","シャットダウンハンドラが起動されている", TestSuite::isReached("dummyShutdownHandler"));
+                TEST_CASE("5","シャットダウンハンドラはEXIT_FAILUREを受けている", dummyShutdownHandler_exit_code == EXIT_FAILURE);
             } END_CASE;
         } END_CASE;
 

@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_defs.c,v 1.14 2003/12/15 07:19:22 takayuki Exp $
  */
@@ -42,42 +42,42 @@
 #include <hal_msg.h>
 
 /*
- * m68k�äݤ�����ߥ��ߥ�졼�� (Windows HAL)
+ * m68kっぽい割込みエミュレータ (Windows HAL)
  */
 
-	/* ���ߤγ���ߥޥ�����٥� */
+	/* 現在の割込みマスクレベル */
 unsigned int CurrentInterruptLevel;
 
-	/* ����ߴ����ơ��֥� */
+	/* 割込み管理テーブル */
 static struct tagInterruptLevel InterruptLevel[INT_NUMINTERRUPTS];
 
-	/* ����ߥޥ�����٥��ͭ���ϰϥ����å� */
+	/* 割込みマスクレベルの有効範囲チェック */
 #define CHECK_IMS(x) ( (x) != 0 && (x) <= INT_NUMINTERRUPTS )
 
-	/* �㳰�����ơ��֥� */
+	/* 例外管理テーブル */
 struct tagExceptionLevel ExceptionLevel[EXC_MAXITEMS];
 
-	/* ��ʬ��������Ͽ����Ƥ�����¤���㳰�ϥ�ɥ�Υ��ɥ쥹 */
+	/* 自分の前に登録されていた構造化例外ハンドラのアドレス */
 static LPTOP_LEVEL_EXCEPTION_FILTER AnotherExceptionFilter;
 
 /*
- *   �����ƥ����ΤΥ���ƥ����륻������������롼����
- *     ���ɤ�����CRITICAL_SECTION��Ȥ��Τ��᤿�Τ�
- *        -> Windows�Υ���ƥ����륻�������ϡ�ITRON�Ǹ����Ȥ����Υǥ����ѥå��ػߤǼ������Ƥ���餷����
- *           �������٥�Ȥǵ������Ƥ��ޤä�����åɤ�����ƥ����륻���������ˤ��륹��åɤ�ư���
- *           ��ߤ����Ƥ��ޤ����Ȥ��Ǥ���餷�����ʤΤ�CPU���å��ΤĤ��ǥ���ƥ����륻��������ȤäƤ���ȡ�
- *           �¤Ϥ����Υǥ����ѥå��ػߤʤΤǥϥ�ɥ餬��ư���Ƥ��ޤ���PrimaryThread��SuspendThread��ȯ�Ԥ��ƥǥåɥ��å����Ƥ��ޤ���
- *           ��������ϻ���ȯ��������������������ä������ޤ�������ʤ��Ȥ��������Ȥϻפ�����ʤ��ä���
- *           WinProg�Ϥ�ML�Ǥ�ָ�������������Ʊ��������ʤ饯��ƥ����륻�������ϻȤ�ʤ��ۤ����褤�פȤ��äƤ��롣
+ *   システム全体のクリティカルセクション生成ルーチン
+ *     ・どうしてCRITICAL_SECTIONを使うのをやめたのか
+ *        -> Windowsのクリティカルセクションは、ITRONで言うところのディスパッチ禁止で実装しているらしく、
+ *           外部イベントで起床してしまったスレッドがクリティカルセクション内にいるスレッドの動作を
+ *           停止させてしまうことができるらしい。なのでCPUロックのつもりでクリティカルセクションを使っていると、
+ *           実はただのディスパッチ禁止なのでハンドラが起動してしまい、PrimaryThreadがSuspendThreadを発行してデッドロックしてしまう。
+ *           この問題は時々発生する非常に厄介な問題だったが、まさかそんなことが原因だとは思いもよらなかった。
+ *           WinProg系のMLでも「原因不明の不正同期がイヤならクリティカルセクションは使わないほうがよい」といっている。
  */
 
-static HANDLE SystemMutex = NULL;		                //�����ƥ���å��ѤΥߥ塼�ƥå������֥�������
-static DWORD  SystemMutexOwnerThreadID = 0;				//�����ƥ���å��������������åɤ�ID
-static DWORD  SystemMutexLastOwnerThreadID = 0;			//�Ǹ�˥����ƥ���å���������Ƥ�������åɤ�ID (�ǥХå���)
+static HANDLE SystemMutex = NULL;		                //システムロック用のミューテックスオブジェクト
+static DWORD  SystemMutexOwnerThreadID = 0;				//システムロックを取得したスレッドのID
+static DWORD  SystemMutexLastOwnerThreadID = 0;			//最後にシステムロックを取得していたスレッドのID (デバッグ用)
 
 	/*
-	 *   enter_system_critical_section : �����ƥ�Υ��å������������
-	 *     BOOL * lock : ���å���(��ʬ���Ϥ�ƥ��å�������������TRUE���֤�)
+	 *   enter_system_critical_section : システムのロック権を獲得する
+	 *     BOOL * lock : クッキー(自分が始めてロック権を獲得するとTRUEが返る)
 	 */
 void enter_system_critical_section(BOOL * lock)
 {
@@ -95,8 +95,8 @@ void enter_system_critical_section(BOOL * lock)
 }
 
 	/*
-	 *   leave_system_critical_section : �����ƥ�Υ��å�����������
-	 *		BOOL * lock : enter_system_critical_section�ǻ��Ѥ������å���
+	 *   leave_system_critical_section : システムのロック権を開放する
+	 *		BOOL * lock : enter_system_critical_sectionで使用したクッキー
 	 */
 void leave_system_critiacl_section(BOOL * lock)
 {
@@ -112,7 +112,7 @@ void leave_system_critiacl_section(BOOL * lock)
 }
 
 	/*
-	 *   wait_for_thread_suspension_completion : ����åɤ���å����������֤���ߤ����� 
+	 *   wait_for_thread_suspension_completion : スレッドをロック権開放状態で停止させる 
 	 */
 ER wait_for_thread_suspension_completion(HANDLE thread)
 {
@@ -131,13 +131,13 @@ ER wait_for_thread_suspension_completion(HANDLE thread)
 
 
 /*
- *  ���˼¹Ԥ��٤�����ߥϥ�ɥ�Τ����٥���������
- *      ipl : ����ߥޥ�����٥�
+ *  次に実行すべき割込みハンドラのあるレベルを取得する
+ *      ipl : 割込みマスクレベル
  *
- *    �����ߥ�٥�ޥ�����ipl�ޤǲ����ä��Ȥ��ˡ�����ư�����٤�����ߤ����򤹤롣
- *    �ޥ�����٥�����̤γ���ߤξ�硢�ڥ�ǥ��󥰤��줿�׵� or ���˼¹Ԥ�
- *    �ϤޤäƤ���ϥ�ɥ� ��¹Ԥ��롣�ޥ�����٥�ʲ��ξ�硢����ư���Ƥ���
- *    �ϥ�ɥ餬������Τ߼¹Ԥ��롣����ʤ�����0���֤���
+ *    割り込みレベルマスクがiplまで下がったときに、次に動かすべき割込みを選択する。
+ *    マスクレベルよりも上位の割込みの場合、ペンディングされた要求 or 既に実行が
+ *    始まっているハンドラ を実行する。マスクレベル以下の場合、既に動いている
+ *    ハンドラがある場合のみ実行する。何もない場合は0を返す。
  */
 static unsigned int
 isns_int( unsigned int ipl )
@@ -177,7 +177,7 @@ InterruptHandlerWrapper(LPVOID param)
 
 	while(1==1)
 	{
-			/* ����������� */
+			/* 割込み前処理 */
 
 		set_logcontrol((intlv->Flags & INT_MOD_LOGMASK) != 0);
 		LOG_INH_ENTER((intlv - InterruptLevel)+1);
@@ -192,10 +192,10 @@ InterruptHandlerWrapper(LPVOID param)
 
         ( (void (*)(void) )(intlv->Routine))();
         
-			/* ����߸���� 
-             *    �����ǰ쵤��PrevLevel�ޤ���Ȥ��ƤϤ����ʤ�.
-             *    �����ߤ��������ˤ�äƤϡ�ͥ���٤��㤤����ߤ�æ�н�����ͥ���٤ι⤤�����ߤο���������ľ��˼¹Ԥ��졢
-             *    ����������ͥ���٤ι⤤����ߤ�CurrentInterruptLevel = 0�ξ��֤����äƤ��ޤ����Ȥˤʤ롣
+			/* 割込み後処理 
+             *    ここで一気にPrevLevelまで落としてはいけない.
+             *    割り込みの入り方によっては、優先度の低い割込みの脱出処理が優先度の高い割り込みの進入処理の直後に実行され、
+             *    運が悪いと優先度の高い割込みがCurrentInterruptLevel = 0の状態で走ってしまうことになる。
              */
 		enter_system_critical_section(&systemLock);
 		intlv->Flags &= ~INT_STAT_RUNNING;
@@ -208,7 +208,7 @@ InterruptHandlerWrapper(LPVOID param)
 
 		LOG_INH_LEAVE((intlv - InterruptLevel)+1);
 
-            /* ���γ���ߤ��������褦������ */
+            /* 次の割込みを処理するように通知 */
 	    HALInterruptRequestAndWait();
 	}
 
@@ -260,9 +260,9 @@ ini_int(void)
 		InterruptLevel[i].Flags        = INT_MOD_LOGMASK;
 	}
 
-		/* �����ư��CPU���å����֤ذܹԤ����� */
-	CurrentInterruptLevel = 0;	//����ߥޥ�����������
-	CPUStatus |= CPU_STAT_LOCK;	//CPU�ǳ���߶ػߤ�
+		/* 初期起動でCPUロック状態へ移行させる */
+	CurrentInterruptLevel = 0;	//割込みマスクは全許可
+	CPUStatus |= CPU_STAT_LOCK;	//CPUで割込み禁止に
 
 	ReleaseMutex(SystemMutex);
 
@@ -295,12 +295,12 @@ fin_int(void)
 	}
 	CurrentInterruptLevel = 0;
 
-        /* CloseHandle(SystemMutex), SystemMutex = INVALID_HANDLE; ������ˤ�� */
+        /* CloseHandle(SystemMutex), SystemMutex = INVALID_HANDLE; を安全にやる */
 	work = SystemMutex;
 	SystemMutex = NULL;
 	CloseHandle(work);
 
-		//����ʹߤ�CPU���å����֤��Ȼפ�����
+		//これ以降はCPUロック状態だと思い込む
 	CPUStatus |= CPU_STAT_LOCK;
 
     kprintf(("fin_int : [Exit]\n"));
@@ -397,7 +397,7 @@ dis_int(unsigned int ims)
 	}else
 	{
 		DWORD newThreadID = GetCurrentThreadId();
-		LockerThreadID = GetCurrentThreadId();	//�֥졼���֤���
+		LockerThreadID = GetCurrentThreadId();	//ブレーク置き場
 	}
 	leave_system_critiacl_section(&lock);
 
@@ -410,7 +410,7 @@ chg_ims(unsigned int ims)
 	BOOL lock;
 	int  i;
 
-		//chg_ims �� ims==0 �����
+		//chg_ims は ims==0 を許す
 	if(ims != 0 && !CHECK_IMS(ims))
 		return -17 /*E_PAR*/;
 
@@ -461,7 +461,7 @@ vget_ims(unsigned int *p_ims)
 }
 
 /*
- * �Ǿ�̥�٥�Windows��¤���㳰�ϥ�ɥ�
+ * 最上位レベルWindows構造化例外ハンドラ
  */
 
 LONG WINAPI
@@ -473,7 +473,7 @@ HALExceptionHandler( EXCEPTION_POINTERS * exc )
 	if((CPUStatus & CPU_STAT_EXC) == 0)
 		CPUStatus |= CPU_STAT_DOUBLEFAULT;
 
-        /* �ϼ������� (���֤����ޤ�����...) */
+        /* 馬鹿サーチ (空間がせまいから...) */
 	CPUStatus |= CPU_STAT_EXC;
 	for(i=0;i<EXC_MAXITEMS;i++)
 	{
@@ -521,7 +521,7 @@ def_exc(DWORD exc, void * routine)
 	int j;
 	int i;
 
-        /* ����롼���� */
+        /* 解除ルーチン */
 	if(routine == 0l)
 	{
         kprintf(("def_exc : [UNREG] 0x%08x\n", exc));
@@ -536,7 +536,7 @@ def_exc(DWORD exc, void * routine)
 		return FALSE;
 	}
 
-    /* ��Ͽ�롼���� */
+    /* 登録ルーチン */
 
     kprintf(("def_exc : [REG] 0x%08x\n", exc));
 
@@ -545,16 +545,16 @@ def_exc(DWORD exc, void * routine)
 	{
 		if(ExceptionLevel[i].ExceptionCode != 0)
 		{
-				/* ��Ͽ���褦�Ȥ��Ƥ����ֹ椬������Ͽ����Ƥ��ʤ����ɤ���Ĵ�٤� */
+				/* 登録しようとしている番号が既に登録されていないかどうか調べる */
 			if(ExceptionLevel[i].ExceptionCode == exc)
 				return FALSE;
 		}else
 		{
-				/* �����ֹ�κǾ���Ф��� */
+				/* 空き番号の最小を覚える */
 			if(j > i)
 				j = i;
 
-            /* ����Ͽ�����å�������Τǡ�������break���Ƥϥ��� */
+            /* 既登録チェックがあるので、ここでbreakしてはダメ */
 		}
 	}
 

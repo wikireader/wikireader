@@ -6,74 +6,74 @@
  *  Copyright (C) 2005 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN    
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: nios2.c,v 1.6 2005/07/17 14:24:04 honda Exp $
  */
 
 /*
- * Nios2 ɸ��ڥ�ե�����ѥɥ饤��
+ * Nios2 標準ペリフェラル用ドライバ
  */
 #include <s_services.h>
 #include <nios2.h>
 
 
 /*
- * UART �� �ʰץɥ饤��
+ * UART 用 簡易ドライバ
  */
 
 /*                                                                       
- * ���ꥢ��I/O�ݡ��Ƚ�����֥��å�                                         
+ * シリアルI/Oポート初期化ブロック                                         
  */
 const SIOPINIB siopinib_table[TNUM_SIOP] = {{}};
 
 /*                                                                      
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ                                
+ *  シリアルI/Oポート管理ブロックのエリア                                
  */
 SIOPCB  siopcb_table[TNUM_SIOP];
 
 /*                                                                          
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���                  
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ                  
  */
 #define INDEX_SIOP(siopid)  ((UINT)((siopid) - 1))
 #define get_siopcb(siopid)  (&(siopcb_table[INDEX_SIOP(siopid)]))
 
 #ifdef USE_JTAG_UART
 /*
- *  JTAG_UART �ϥ��ơ������ȥǡ�����Ʊ���˼������뤿�ᡤ���ơ�������
- *  �����å�����ȥǡ������ɤ߹���Ǥ��ޤ������Τ��ᡤuart_getready()
- *  ��¹Ԥ�����Υǡ���������롥  
+ *  JTAG_UART はステータスとデータを同時に取得するため，ステータスを
+ *  チェックするとデータを読み込んでしまう．そのため，uart_getready()
+ *  を実行した後のデータを入れる．  
  */ 
 UB jtag_uart_buf = -1;
 #endif /* USE_JTAG_UART */
 
 /*
- * ʸ�������������?                                                       
+ * 文字を受信したか?                                                       
  */
 Inline BOOL
 uart_getready(SIOPCB *siopcb)
@@ -89,7 +89,7 @@ uart_getready(SIOPCB *siopcb)
 }
 
 /*                                                                             
- * ʸ���������Ǥ��뤫?                                                         
+ * 文字を送信できるか?                                                         
  */
 Inline BOOL
 uart_putready(SIOPCB *siopcb)
@@ -103,7 +103,7 @@ uart_putready(SIOPCB *siopcb)
 }
 
 /*                                                                             
- *  ��������ʸ���μ��Ф�                                                     
+ *  受信した文字の取り出し                                                     
  */
 Inline UB
 uart_getchar(SIOPCB *siopcb)
@@ -116,7 +116,7 @@ uart_getchar(SIOPCB *siopcb)
 }
 
 /*                                                                            
- *  ��������ʸ���ν񤭹���                                                    
+ *  送信する文字の書き込み                                                    
  */
 Inline void
 uart_putchar(SIOPCB *siopcb, UB c)
@@ -129,10 +129,10 @@ uart_putchar(SIOPCB *siopcb, UB c)
 }
 
 /*
- * ��������ؿ�
+ * 送信制御関数
  */
 /*                                                                             
- *  ��������ߵ���                                                             
+ *  送信割込み許可                                                             
  */
 Inline void
 uart_enable_send(SIOPCB *siopcb)
@@ -147,7 +147,7 @@ uart_enable_send(SIOPCB *siopcb)
 }
 
 /*                                                                             
- *  ��������߶ػ�                                                             
+ *  送信割込み禁止                                                             
  */
 Inline void
 uart_disable_send(SIOPCB *siopcb)
@@ -162,10 +162,10 @@ uart_disable_send(SIOPCB *siopcb)
 }
 
 /*
- * ��������ؿ�
+ * 受信制御関数
  */
 /*                                                                             
- *  ��������ߵ���                                                             
+ *  受信割込み許可                                                             
  */
 Inline void
 uart_enable_rcv(SIOPCB *siopcb)
@@ -180,7 +180,7 @@ uart_enable_rcv(SIOPCB *siopcb)
 }
 
 /*                                                                             
- *  ��������߶ػ�                                                             
+ *  受信割込み禁止                                                             
  */
 Inline void
 uart_disable_rcv(SIOPCB *siopcb)
@@ -196,8 +196,8 @@ uart_disable_rcv(SIOPCB *siopcb)
 
 
 /*                                                                             
- *  SIO�ɥ饤�Фν�����롼����                                                
- *  1�ݡ��Ȥ����ʤ����ᡤ���ޤ��̣�Ϥʤ�                                      
+ *  SIOドライバの初期化ルーチン                                                
+ *  1ポートしかないため，あまり意味はない                                      
  */
 void
 uart_initialize()
@@ -206,7 +206,7 @@ uart_initialize()
     UINT    i;
 
     /*                                                                         
-     *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����                                  
+     *  シリアルI/Oポート管理ブロックの初期化                                  
      */
     for (siopcb = siopcb_table, i = 0; i < TNUM_SIOP; siopcb++, i++) {
         siopcb->siopinib = &(siopinib_table[i]);
@@ -230,7 +230,7 @@ uart_opn_por(ID siopid, VP_INT exinf){
     sil_wrw_mem((VP)UART_STATUS, 0x00);
     
     /*
-     *  ���������ߵ���
+     *  受信割り込み許可
      */
     sil_wrw_mem((VP)UART_CONTROL, UART_STATUS_RRDY);
 #else
@@ -248,7 +248,7 @@ uart_opn_por(ID siopid, VP_INT exinf){
 void
 uart_cls_por(SIOPCB *siopcb){
 #ifndef USE_JTAG_UART	
-    /* ����߶ػ� */
+    /* 割込み禁止 */
     sil_wrw_mem((VP)UART_CONTROL, 0x00);
 #else
 	sil_wrw_mem((VP)JTAG_UART_CONTROL,0x00);
@@ -260,7 +260,7 @@ uart_cls_por(SIOPCB *siopcb){
 
 
 /*                                                                             
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������                                            
+ *  シリアルI/Oポートへの文字送信                                            
  */
 BOOL
 uart_snd_chr(SIOPCB *siopcb, INT chr)
@@ -273,7 +273,7 @@ uart_snd_chr(SIOPCB *siopcb, INT chr)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 uart_rcv_chr(SIOPCB *siopcb)
@@ -297,7 +297,7 @@ uart_rcv_chr(SIOPCB *siopcb)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 uart_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -315,7 +315,7 @@ uart_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 uart_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -332,21 +332,21 @@ uart_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 
 
 /*                                                                            
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф������߽���                                       
+ *  シリアルI/Oポートに対する割込み処理                                       
  */
 static void
 uart_isr_siop(SIOPCB *siopcb)
 {
     if (uart_getready(siopcb)) {
         /*
-         *  �������Υ�����Хå��롼�����ƤӽФ���
+         *  受信通知コールバックルーチンを呼び出す．
          */
         uart_ierdy_rcv(siopcb->exinf);
     }
 
     if (uart_putready(siopcb)) {
         /*
-         *  ������ǽ������Хå��롼�����ƤӽФ���
+         *  送信可能コールバックルーチンを呼び出す．
          */
         uart_ierdy_snd(siopcb->exinf);
     }
@@ -354,7 +354,7 @@ uart_isr_siop(SIOPCB *siopcb)
 
 
 /*                                                                             
- *  SIO�γ���ߥ����ӥ��롼����                                                
+ *  SIOの割込みサービスルーチン                                                
  */
 void
 uart_isr()

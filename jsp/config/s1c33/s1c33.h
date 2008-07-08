@@ -8,43 +8,43 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 /*
- *  �ϡ��ɥ������񸻤����
+ *  ハードウェア資源の定義
  */
 #ifndef _S1C33_H_
 #define _S1C33_H_
 
 /*
- *  ���ѥ쥸������
+ *  汎用レジスタ数
  */
 #define S1C33_GR_NUM		16
 
@@ -56,7 +56,7 @@
 #define S1C33_PSR_FLAG_IE	0x00000010
 
 /*
- *  ���ܥ���ޥå�
+ *  基本メモリマップ
  */
 #define S1C33_AREA00_BASE	0x00000000
 #define S1C33_AREA01_BASE	0x00040000
@@ -101,7 +101,7 @@
 #define S1C33_HSDMA_BASE		(S1C33_INT16_DEVICE_BASE + 0x0000220)
 
 /*
- *  �����ߥ٥����ֹ�
+ *  割り込みベクタ番号
  */
 #define S1C33_INHNO_RESET		0x00
 #define S1C33_INHNO_ZERO		0x04
@@ -161,7 +161,7 @@
 #define S1C33_INHNO_SERIAL3TX		0x52
 
 /*
- *  ���ɥХ󥹥ȥޥ�����ͭ�γ����ߥ٥���
+ *  アドバンストマクロ固有の割り込みベクタ
  */
 #define S1C33_INHNO_PINT8		0x54
 #define S1C33_INHNO_PINT9		0x55
@@ -190,7 +190,7 @@ typedef volatile word   HIOREG;
 typedef volatile int    LIOREG;
 
 /*
- * �쥸����(TIMER_CONTROL 140)
+ * レジスタ(TIMER_CONTROL 140)
  */
 typedef struct {
 	IOREG bP8ClkSelect45;
@@ -203,7 +203,7 @@ typedef struct {
 } s1c33TimerControl_t;
 
 /*
- *  �쥸����(SERIAL 1e0)
+ *  レジスタ(SERIAL 1e0)
  */
 typedef struct {
 	struct {
@@ -230,33 +230,33 @@ typedef struct {
 } s1c33Serial_t;
 
 /*
- *  �쥸����(INTC 260)
+ *  レジスタ(INTC 260)
  *
  */
 typedef struct {
-	IOREG bPriority[15];	/* C33209�ǤΥ��������bPriority[14] +	*/
-	IOREG bDummy0[1];	/* bDummy0[2]�ι�����������		*/
+	IOREG bPriority[15];	/* C33209でのアサインはbPriority[14] +	*/
+	IOREG bDummy0[1];	/* bDummy0[2]の構成と等しい		*/
 
-	IOREG bIntEnable[10];	/* C33209�ǤΥ��������bIntEnable[8] +	*/
-	IOREG bDummy1[6];	/* bDummy1[8]�ι�����������		*/
+	IOREG bIntEnable[10];	/* C33209でのアサインはbIntEnable[8] +	*/
+	IOREG bDummy1[6];	/* bDummy1[8]の構成と等しい		*/
 
-	IOREG bIntFactor[10];	/* C33209�ǤΥ��������bIntFactor[8] +	*/
-	IOREG bDummy2[6];	/* bDummy2[8]�ι�����������		*/
+	IOREG bIntFactor[10];	/* C33209でのアサインはbIntFactor[8] +	*/
+	IOREG bDummy2[6];	/* bDummy2[8]の構成と等しい		*/
 
 	IOREG bIDMAReq[4];
 	IOREG bIDMAEnable[4];
 	IOREG bHSDMATriger[2];
 	IOREG bHSDMASoftTrg;
 
-	IOREG bIDMAReqExt;	/* C33209�ǤΥ��������bDummy3[4]��	*/
-	IOREG bIDMAEnableExt;	/* ������������*/
+	IOREG bIDMAReqExt;	/* C33209でのアサインはbDummy3[4]の	*/
+	IOREG bIDMAEnableExt;	/* 構成と等しい*/
 	IOREG bDummy3[2];
 
 	IOREG bReset;
 } s1c33Intc_t;
 
 /*
- *  �쥸����(PORT 2c0)
+ *  レジスタ(PORT 2c0)
  */
 typedef struct {
 	struct {
@@ -271,7 +271,7 @@ typedef struct {
 		IOREG bData;
 	} stK6Port;
 
-	IOREG bIntFPSwitch;		/* C33L11�Ǥ�̤����		*/
+	IOREG bIntFPSwitch;		/* C33L11では未使用		*/
 
 	struct {
 		IOREG bSpt[2];
@@ -281,7 +281,7 @@ typedef struct {
 
 	struct {
 		IOREG bSppk;
-		IOREG bTM16Switch;	/* C33L11�Ǥ�̤����		*/
+		IOREG bTM16Switch;	/* C33L11では未使用		*/
 		IOREG bScpk[2];
 		IOREG bSmpk[2];
 	} stKINT;
@@ -290,13 +290,13 @@ typedef struct {
 		IOREG bFuncSwitch;
 		IOREG bData;
 		IOREG bControl;
-		IOREG bFuncExt		/* stPPort[0]�Τ�C33209,C33L11	*/;
-					/* �Ȥ�̤����			*/
+		IOREG bFuncExt		/* stPPort[0]のみC33209,C33L11	*/;
+					/* とも未使用			*/
 	} stPPort[4];
 } s1c33Port_t;
 
 /*
- *  �쥸����(BCU 120)
+ *  レジスタ(BCU 120)
  */
 typedef struct {
 	HIOREG uwA18_15;
@@ -316,7 +316,7 @@ typedef struct {
 } s1c33Bcu_t;
 
 /*
- *  �쥸����(P16TIMER 180)
+ *  レジスタ(P16TIMER 180)
  */
 typedef struct {
 	struct {

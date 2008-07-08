@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: parser.cpp,v 1.18 2003/12/15 07:32:14 takayuki Exp $
  */
@@ -50,13 +50,13 @@
 using namespace std;
 
 /*
- *  ÀèÆ¬¤ÈËöÈø¤Ë¤¢¤ë¶õÇòÊ¸»ú¤ò¼è¤ê½ü¤¯
+ *  å…ˆé ­ã¨æœ«å°¾ã«ã‚ã‚‹ç©ºç™½æ–‡å­—ã‚’å–ã‚Šé™¤ã
  */
 Token & Token::trim(void)
 {
     string::iterator scope;
 
-        /* ¤¢¤¿¤Ş */
+        /* ã‚ãŸã¾ */
     scope = begin();
     while(*scope == ' ' || *scope == '\t' || *scope == '\r' || *scope == '\n')
         ++ scope;
@@ -64,7 +64,7 @@ Token & Token::trim(void)
 
     if(!empty())
     {
-            /* ¤ª¤·¤ê */
+            /* ãŠã—ã‚Š */
         scope = end();
         do {
             -- scope;
@@ -77,7 +77,7 @@ Token & Token::trim(void)
 
 
  /*
-  *  Ê¸»úÎó¥ê¥Æ¥é¥ë¤ÎÅ¸³« (¥À¥Ö¥ë¥¯¥©¡¼¥È¤Î¼è¤ê½ü¤­ + ¥¨¥¹¥±¡¼¥×¥·¡¼¥±¥ó¥¹¤ÎÅ¸³«)
+  *  æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã®å±•é–‹ (ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã®å–ã‚Šé™¤ã + ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã®å±•é–‹)
   */
 Token & Token::chopLiteral(void)
 {
@@ -86,7 +86,7 @@ Token & Token::chopLiteral(void)
 
     string::iterator scope;
 
-        //¥¨¥é¡¼½èÍı¤Î¤¿¤á¤ËÈóÇË²õ½èÍı¤ò¤¹¤ë
+        //ã‚¨ãƒ©ãƒ¼å‡¦ç†ã®ãŸã‚ã«éç ´å£Šå‡¦ç†ã‚’ã™ã‚‹
     string src(*this);
     string work;
 
@@ -100,7 +100,7 @@ Token & Token::chopLiteral(void)
     {
         if(*scope == '\\')
         {
-                //¥ê¥Æ¥é¥ë¤ÎËöÈø¤¬\¤Ç½ª¤ï¤ë¤³¤È¤Ï¤Ê¤¤¤Î¤Ç¥Á¥§¥Ã¥¯¤·¤Ê¤¤
+                //ãƒªãƒ†ãƒ©ãƒ«ã®æœ«å°¾ãŒ\ã§çµ‚ã‚ã‚‹ã“ã¨ã¯ãªã„ã®ã§ãƒã‚§ãƒƒã‚¯ã—ãªã„
             ++ scope;
             switch(*scope)
             {
@@ -111,7 +111,7 @@ Token & Token::chopLiteral(void)
             case 'b':   work += '\b';  break;
             case '\\':   work += '\\';  break;
             default:
-                ExceptionMessage("Illegal escape sequence [\\%]","¥¨¥¹¥±¡¼¥×¥·¡¼¥±¥ó¥¹[\\%]¤ÏÉÔÀµ¤Ç¤¹") << *scope << throwException;
+                ExceptionMessage("Illegal escape sequence [\\%]","ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹[\\%]ã¯ä¸æ­£ã§ã™") << *scope << throwException;
             }
         }else
             work += *scope;
@@ -126,11 +126,11 @@ Token & Token::chopLiteral(void)
     return *this;
 }
 
-    /* ¶èÀÚ¤êÊ¸»ú (°ìÊ¸»ú¤À¤±¤Ç°ÕÌ£¤òÀ®¤¹Ê¸»ú) */
+    /* åŒºåˆ‡ã‚Šæ–‡å­— (ä¸€æ–‡å­—ã ã‘ã§æ„å‘³ã‚’æˆã™æ–‡å­—) */
 const char * Parser::Punctuator =
     ",;(){}";
 
-    /* ±é»»»Ò (ÆÃ¼ìÊ¸»ú¤«¤é¤Ê¤ëÊ¸»ú) */
+    /* æ¼”ç®—å­ (ç‰¹æ®Šæ–‡å­—ã‹ã‚‰ãªã‚‹æ–‡å­—) */
 const char * Parser::Operator =
     "+-*/&|%^~!?[]=:.#";
 
@@ -138,72 +138,72 @@ Token Parser::lastErrorToken;
 
 
  /*
-  *  ¥¹¥È¥ê¡¼¥à¤«¤é°ìÊ¸»ú¤À¤±ÀÚ¤ê½Ğ¤¹
+  *  ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ä¸€æ–‡å­—ã ã‘åˆ‡ã‚Šå‡ºã™
   */
 inline int Parser::getChar(void)
 {
     int work = current->stream->get();
 
-        /* ¹ÔÈÖ¹æ¤Î½èÍı */
+        /* è¡Œç•ªå·ã®å‡¦ç† */
     if(work == '\n')
         current->line ++;
     
-        /* ¥¹¥È¥ê¡¼¥à¥í¥°¤Î¤¿¤á¤Î½èÍı */
+        /* ã‚¹ãƒˆãƒªãƒ¼ãƒ ãƒ­ã‚°ã®ãŸã‚ã®å‡¦ç† */
     if(PutBackCount == 0)
     {
         if(LogBuffer != 0 && isenabled(LOGGING))
             *LogBuffer += static_cast<char>(work);
     }else
-        PutBackCount --;    //¤¹¤Ç¤ËÆÉ¤ß¹ş¤ó¤Ç¤¤¤ë
+        PutBackCount --;    //ã™ã§ã«èª­ã¿è¾¼ã‚“ã§ã„ã‚‹
 
     return work;
 }
 
  /*
-  *  ¼è¤ê½Ğ¤·¤¹¤®¤¿Ê¸»ú¤ò¥¹¥È¥ê¡¼¥à¤ËÊÖ¤¹
+  *  å–ã‚Šå‡ºã—ã™ããŸæ–‡å­—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«è¿”ã™
   */
 inline void Parser::putBack(int ch)
 {
-        /* ¹ÔÈÖ¹æ¤Î¤¿¤á¤Î½èÍı */
+        /* è¡Œç•ªå·ã®ãŸã‚ã®å‡¦ç† */
     if(ch == '\n')
         current->line --;
 
-        /* ¥¹¥È¥ê¡¼¥à¥í¥°¤Î¤¿¤á¤Î½èÍı */
+        /* ã‚¹ãƒˆãƒªãƒ¼ãƒ ãƒ­ã‚°ã®ãŸã‚ã®å‡¦ç† */
     PutBackCount ++;
 
     current->stream->putback(ch);
 }
 
  /*
-  *  Parser¥¯¥é¥¹¤Î¥Ç¥¹¥È¥é¥¯¥¿
+  *  Parserã‚¯ãƒ©ã‚¹ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
   */
 Parser::~Parser(void)
 {
     list<tagFile *>::iterator scope;
 
-        /* ºÇ¸å¤Ş¤Ç¥Ñ¡¼¥¹¤·¤Æ¤Ê¤¤¤Ê¤é¡¢¤È¤ê¤¢¤¨¤º¥¹¥¿¥Ã¥¯¤ËÆş¤ì¤Æ¤ª¤¯ */
+        /* æœ€å¾Œã¾ã§ãƒ‘ãƒ¼ã‚¹ã—ã¦ãªã„ãªã‚‰ã€ã¨ã‚Šã‚ãˆãšã‚¹ã‚¿ãƒƒã‚¯ã«å…¥ã‚Œã¦ãŠã */
     if(current != 0)
         fileStack.push_front(current);
 
-        /* ¥¹¥¿¥Ã¥¯¤ÎÃæ¿ÈÁ´Éô¤òÇË´ş */
+        /* ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸­èº«å…¨éƒ¨ã‚’ç ´æ£„ */
     scope = fileStack.begin();
     while(scope != fileStack.end())
     {
         if((*scope)->stream != 0 && (*scope)->stream != &cin)
-            delete (*scope)->stream;        //¥¹¥È¥ê¡¼¥à¤ÎÇË´ş
-        delete (*scope);                    //¹½Â¤ÂÎ¤Î¥Ç¡¼¥¿ÎÎ°è¤ÎÇË´ş
+            delete (*scope)->stream;        //ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç ´æ£„
+        delete (*scope);                    //æ§‹é€ ä½“ã®ãƒ‡ãƒ¼ã‚¿é ˜åŸŸã®ç ´æ£„
 
         ++ scope;
     }
 
-        /* Ç°¤Î¤¿¤á */
+        /* å¿µã®ãŸã‚ */
     fileStack.clear();
     TokenStack.clear();
 }
 
 
  /*
-  *  ¼±ÊÌ»Ò¤ÎÀÚ½Ğ¤· (¼±ÊÌ»Ò = [a-zA-Z_][0-9a-zA-Z_]*)
+  *  è­˜åˆ¥å­ã®åˆ‡å‡ºã— (è­˜åˆ¥å­ = [a-zA-Z_][0-9a-zA-Z_]*)
   */
 bool Parser::getIdentifier(Token & token,int ch)
 {
@@ -224,14 +224,14 @@ bool Parser::getIdentifier(Token & token,int ch)
 
 
  /*
-  *  ¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÎÀÚ½Ğ¤·¤È½èÍı
+  *  ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®åˆ‡å‡ºã—ã¨å‡¦ç†
   */
 bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
 {
     Token directive;
     map<string, ParseUnit *>::iterator scope;
 
-        //¶õÇòÆÉ¤ßÈô¤Ğ¤·
+        //ç©ºç™½èª­ã¿é£›ã°ã—
     do {
         token += static_cast<char>(ch);
         ch = getChar();
@@ -239,18 +239,18 @@ bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
     
     if(ch >= '0' && ch <= '9')
     {
-            //GNU-cpp line¥Ç¥£¥ì¥¯¥Æ¥£¥Ö ÂĞºö
+            //GNU-cpp lineãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ– å¯¾ç­–
         directive.assign("line");
         this->putBack(ch);
     }else
     {
-            //¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÎÆÉ¤ß½Ğ¤·
+            //ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®èª­ã¿å‡ºã—
         putBack(ch);
         getToken(directive);
         token += directive;
     }
 
-        //line¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤Î²òÀÏ
+        //lineãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®è§£æ
     if(directive.compare("line") == 0)
     {
         Token token;
@@ -270,7 +270,7 @@ bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
         return true;
     }
 
-        //pragma¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤Î²òÀÏ
+        //pragmaãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®è§£æ
     if(directive.compare("pragma") == 0)    
     {
         getToken(directive);
@@ -281,7 +281,7 @@ bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
         {
             (*scope).second->body(directive, *Container, *this, string(""));
 
-                //Í¾Ê¬¤Ê¥È¡¼¥¯¥ó¤ÎÆÉ¤ßÈô¤Ğ¤·
+                //ä½™åˆ†ãªãƒˆãƒ¼ã‚¯ãƒ³ã®èª­ã¿é£›ã°ã—
             if(!TokenStack.empty())
             {
                 do {
@@ -294,11 +294,11 @@ bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
         }
     }
 
-        //include¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤Î²òÀÏ
+        //includeãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®è§£æ
     if(directive.compare("include") == 0)
     {
-        cerr << getStreamLocation() << Message(": Configurator found 'include' directive\nKernel configuration file must be preprocessed.\n",": #include¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤òÈ¯¸«¤·¤Ş¤·¤¿\n ¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ë¤ÏC¥×¥ê¥×¥í¥»¥Ã¥µ¤òÄÌ²á¤µ¤»¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹\n");
-        ExceptionMessage("Illegal kernel configuration file","ÉÔÀµ¤Ê¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ë").throwException();
+        cerr << getStreamLocation() << Message(": Configurator found 'include' directive\nKernel configuration file must be preprocessed.\n",": #includeãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã‚’ç™ºè¦‹ã—ã¾ã—ãŸ\n ã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«ã¯Cãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã‚’é€šéã•ã›ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™\n");
+        ExceptionMessage("Illegal kernel configuration file","ä¸æ­£ãªã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«").throwException();
     }
 
     putBack(directive);
@@ -307,10 +307,10 @@ bool Parser::parseDirectives(Token & token, int ch, bool allow_space)
 
 
  /*
-  *  ¶õÇòÊ¸»ú¤ÎÀÚ½Ğ¤·
-  *    ¡¦¥¹¥Ú¡¼¥¹, ¥¿¥Ö   ¡¦#¤Ç»Ï¤Ş¤Ã¤Æ²ş¹Ô¤Ş¤Ç    ¡¦C¸À¸ì¤Î¥³¥á¥ó¥È¥Ö¥í¥Ã¥¯
-  *    ¡¦2Ï¢¤Î¥¹¥é¥Ã¥·¥å(//)¤«¤é²ş¹Ô¤Ş¤Ç
-  *    ¡¦¾å¤Î4¤Ä¤òÁÈ¤ß¹ç¤ï¤»¤¿¤â¤Î
+  *  ç©ºç™½æ–‡å­—ã®åˆ‡å‡ºã—
+  *    ãƒ»ã‚¹ãƒšãƒ¼ã‚¹, ã‚¿ãƒ–   ãƒ»#ã§å§‹ã¾ã£ã¦æ”¹è¡Œã¾ã§    ãƒ»Cè¨€èªã®ã‚³ãƒ¡ãƒ³ãƒˆãƒ–ãƒ­ãƒƒã‚¯
+  *    ãƒ»2é€£ã®ã‚¹ãƒ©ãƒƒã‚·ãƒ¥(//)ã‹ã‚‰æ”¹è¡Œã¾ã§
+  *    ãƒ»ä¸Šã®4ã¤ã‚’çµ„ã¿åˆã‚ã›ãŸã‚‚ã®
   */
 bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
 {
@@ -324,7 +324,7 @@ bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
 
         switch(ch)
         {
-            /* ¥³¥á¥ó¥È¥Ö¥í¥Ã¥¯ */
+            /* ã‚³ãƒ¡ãƒ³ãƒˆãƒ–ãƒ­ãƒƒã‚¯ */
         case '*':
             token += "/*";
             prev = '\x0';
@@ -336,7 +336,7 @@ bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
             token += static_cast<char>(ch);
             break;
 
-            /* ¥À¥Ö¥ë¥¹¥é¥Ã¥·¥å */
+            /* ãƒ€ãƒ–ãƒ«ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ */
         case '/':
             token += '/';
             do {
@@ -344,19 +344,19 @@ bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
             } while( (ch = getChar()) != '\n' );
             break;
 
-            /* ¤¿¤À'/'¤Ç»Ï¤Ş¤Ã¤¿¤À¤±¤Ç¤·¤¿ */
+            /* ãŸã '/'ã§å§‹ã¾ã£ãŸã ã‘ã§ã—ãŸ */
         default:
             putBack(ch);
             return getOperator(token, '/');;
         }
         break;
 
-        /* # ¤Ç»Ï¤Ş¤ë¹Ô */
+        /* # ã§å§‹ã¾ã‚‹è¡Œ */
     case '#':
-            /* ¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤¬Ìµ¸ú or ¤½¤ó¤Ê¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÃÎ¤é¤Ê¤¤ */
+            /* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ãŒç„¡åŠ¹ or ãã‚“ãªãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯çŸ¥ã‚‰ãªã„ */
         if(! (isenabled(DIRECTIVE) && parseDirectives(token, ch, allow_space)) )
         {
-                //²ş¹Ô¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤·
+                //æ”¹è¡Œã¾ã§èª­ã¿é£›ã°ã—
             TokenStack.clear();
             do {
                 token += static_cast<char>(ch);
@@ -366,7 +366,7 @@ bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
         }
         break;
 
-        /* Â¯¤Ë¸À¤¦¶õÇòÊ¸»ú */
+        /* ä¿—ã«è¨€ã†ç©ºç™½æ–‡å­— */
     case ' ':
     case '\t':
     case '\n':
@@ -382,8 +382,8 @@ bool Parser::getWhitespace(Token & token, int ch, bool allow_space)
 }
 
  /*
-  *  À°¿ôÃÍ¤ÎÀÚ½Ğ¤· (8/10/16¿Ê, Àµ¿ô/Éé¿ô)
-  *   ¡¦2¿Ê¤ÏÉÔÉ¾¤À¤Ã¤¿¤Î¤Ç¤ä¤á¤Ş¤·¤¿
+  *  æ•´æ•°å€¤ã®åˆ‡å‡ºã— (8/10/16é€², æ­£æ•°/è² æ•°)
+  *   ãƒ»2é€²ã¯ä¸è©•ã ã£ãŸã®ã§ã‚„ã‚ã¾ã—ãŸ
   */
 bool Parser::getInteger(Token & token, int ch)
 {
@@ -461,7 +461,7 @@ bool Parser::getInteger(Token & token, int ch)
         {
             int  first, second;
             bool accept = false;
-            const signed char suffix_list[10] = { -1, '6', -1, '2', -1, -1, '4', -1, 0, -1};    //8, 16, 32, 64¤Î¤ß¤ò¼õÍı
+            const signed char suffix_list[10] = { -1, '6', -1, '2', -1, -1, '4', -1, 0, -1};    //8, 16, 32, 64ã®ã¿ã‚’å—ç†
 
             first  = getChar();
             second = -1;
@@ -525,18 +525,18 @@ bool Parser::getInteger(Token & token, int ch)
 
 
  /*
-  *  ¥ª¥Ú¥ì¡¼¥¿(ÆÃ¼ìÊ¸»ú¤ÎÁÈ¹ç¤»¤«¤é¤Ê¤ë¥È¡¼¥¯¥ó)¤ÎÀÚ½Ğ¤·
+  *  ã‚ªãƒšãƒ¬ãƒ¼ã‚¿(ç‰¹æ®Šæ–‡å­—ã®çµ„åˆã›ã‹ã‚‰ãªã‚‹ãƒˆãƒ¼ã‚¯ãƒ³)ã®åˆ‡å‡ºã—
   */
 bool Parser::getOperator(Token & token, int ch)
 {
     const char * work;
 
-        /* ch¤¬¥ª¥Ú¥ì¡¼¥¿Ê¸»ú¤Ç¤¢¤ë¤«¤É¤¦¤«³Î¤«¤á¤ë */
+        /* chãŒã‚ªãƒšãƒ¬ãƒ¼ã‚¿æ–‡å­—ã§ã‚ã‚‹ã‹ã©ã†ã‹ç¢ºã‹ã‚ã‚‹ */
     for(work = Operator;*work != '\x0' && *work != ch;work++);
     if(*work == '\x0')
         return false;
 
-        /* ¸åÂ³¤¹¤ëÊ¸»ú¤â¥ª¥Ú¥ì¡¼¥¿Ê¸»ú¤Ç¤¢¤ë¤«¤É¤¦¤«³Î¤«¤á¤ë */
+        /* å¾Œç¶šã™ã‚‹æ–‡å­—ã‚‚ã‚ªãƒšãƒ¬ãƒ¼ã‚¿æ–‡å­—ã§ã‚ã‚‹ã‹ã©ã†ã‹ç¢ºã‹ã‚ã‚‹ */
     do {
         token += static_cast<char>(ch);
         ch = getChar();
@@ -550,11 +550,11 @@ bool Parser::getOperator(Token & token, int ch)
 
 
  /*
-  *  Ê¸»úÎó¥ê¥Æ¥é¥ë (¥À¥Ö¥ë¥¯¥©¡¼¥È¤Ç³ç¤é¤ì¤¿Ê¸»ú)
-  *    ¡¦¥·¥ó¥°¥ë¥¯¥©¡¼¥È¤âµö¤¹¤è¤¦¤Ë¤·¤¿
+  *  æ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ« (ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã§æ‹¬ã‚‰ã‚ŒãŸæ–‡å­—)
+  *    ãƒ»ã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã‚‚è¨±ã™ã‚ˆã†ã«ã—ãŸ
   *
-  *    VisualStudio6.0¤Ç¥³¥ó¥Ñ¥¤¥ë¤·¤¿¾ì¹ç¡¢²ş¹Ô¤¬LF¤Î¥Õ¥¡¥¤¥ë¤ËÂĞ¤·¤Ætellg¸å¤Ë
-  *    get¤¹¤ë¤ÈEOF¤¬ÊÖ¤ë¤¿¤á¡¢Æ±½èÍı¤ò¥³¥á¥ó¥È¥¢¥¦¥È¤·¤Æ¤ª¤¯¡£
+  *    VisualStudio6.0ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸå ´åˆã€æ”¹è¡ŒãŒLFã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã¦tellgå¾Œã«
+  *    getã™ã‚‹ã¨EOFãŒè¿”ã‚‹ãŸã‚ã€åŒå‡¦ç†ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã—ã¦ãŠãã€‚
   */
 bool Parser::getStringLiteral(Token & token, int delimitor)
 {
@@ -579,15 +579,15 @@ bool Parser::getStringLiteral(Token & token, int delimitor)
             return true;
     }
 
-        //¤¤¤Ã¤¿¤óÊÄ¤¸¤ÆºÆ¥ª¡¼¥×¥ó¤·¤Æ¡¢¥ê¥Æ¥é¥ë³«»Ï¤Î " ¤Î¼¡¤Ë°ÜÆ°
+        //ã„ã£ãŸã‚“é–‰ã˜ã¦å†ã‚ªãƒ¼ãƒ—ãƒ³ã—ã¦ã€ãƒªãƒ†ãƒ©ãƒ«é–‹å§‹ã® " ã®æ¬¡ã«ç§»å‹•
     
-    ExceptionMessage(ExceptionMessage::FATAL, "Unterminated string literal appeared.","ÊÄ¤¸¤é¤ì¤Æ¤¤¤Ê¤¤Ê¸»ú¥ê¥Æ¥é¥ë¤ò¸¡½Ğ¤·¤Ş¤·¤¿").throwException();
+    ExceptionMessage(ExceptionMessage::FATAL, "Unterminated string literal appeared.","é–‰ã˜ã‚‰ã‚Œã¦ã„ãªã„æ–‡å­—ãƒªãƒ†ãƒ©ãƒ«ã‚’æ¤œå‡ºã—ã¾ã—ãŸ").throwException();
     return false;
 }
 
 
  /*
-  *  ¥È¡¼¥¯¥ó¤ÎÀÚ½Ğ¤·
+  *  ãƒˆãƒ¼ã‚¯ãƒ³ã®åˆ‡å‡ºã—
   */
 enum Token::tagTokenType Parser::getToken(Token & token, bool allow_space)
 {
@@ -599,7 +599,7 @@ enum Token::tagTokenType Parser::getToken(Token & token, bool allow_space)
         token.type = Token::ERROR;
         token.value = 0;
 
-            //¥È¡¼¥¯¥ó¥¹¥¿¥Ã¥¯¤«¤éÀÚ¤ê½Ğ¤¹
+            //ãƒˆãƒ¼ã‚¯ãƒ³ã‚¹ã‚¿ãƒƒã‚¯ã‹ã‚‰åˆ‡ã‚Šå‡ºã™
         if(!TokenStack.empty())
         {
             do {
@@ -611,17 +611,17 @@ enum Token::tagTokenType Parser::getToken(Token & token, bool allow_space)
                 return token.type;
         }
 
-            //¥¹¥È¥ê¡¼¥à¤«¤éÀÚ¤ê½Ğ¤¹
+            //ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰åˆ‡ã‚Šå‡ºã™
         if(current == NULL || current->stream == NULL || current->stream->bad())
         {
             token.assign("<End of stream>");
             return (token.type = Token::EOS);
         }
 
-            //¥«¥ì¥ó¥È¤Î¥¹¥È¥ê¡¼¥à¤¬¶õ¤Ë¤Ê¤Ã¤¿
+            //ã‚«ãƒ¬ãƒ³ãƒˆã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒç©ºã«ãªã£ãŸ
         if(current->stream->eof())
         {
-                //¥Õ¥¡¥¤¥ë¥¹¥¿¥Ã¥¯¤«¤é¼¡¤Î¥¹¥È¥ê¡¼¥à¤ò¼è¤ë
+                //ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ã‚¿ãƒƒã‚¯ã‹ã‚‰æ¬¡ã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’å–ã‚‹
             if(!fileStack.empty())
             {
                 if(current->stream != &cin)
@@ -693,7 +693,7 @@ enum Token::tagTokenType Parser::getToken(Token & token, bool allow_space)
 
 
  /*
-  *  ¥È¡¼¥¯¥óÍÑ ¥¹¥È¥ê¡¼¥à¥ª¥Ú¥ì¡¼¥¿ (¼ç¤Ë¥Æ¥¹¥ÈÌÜÅª)
+  *  ãƒˆãƒ¼ã‚¯ãƒ³ç”¨ ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ (ä¸»ã«ãƒ†ã‚¹ãƒˆç›®çš„)
   */
 ostream & operator << (ostream & out, Token & src)
 {
@@ -729,19 +729,19 @@ ostream & operator << (ostream & out, Token & src)
 }
 
  /*
-  *  Í½Ìó¸ì¤ÎÀÚ½Ğ¤·(¤È¤¤¤¦¤è¤ê¤â³ÎÇ§)
+  *  äºˆç´„èªã®åˆ‡å‡ºã—(ã¨ã„ã†ã‚ˆã‚Šã‚‚ç¢ºèª)
   */
 void Parser::getToken(const char * term) throw(Exception)
 {
     Token token;
 
     if(term == NULL)
-        ExceptionMessage("Internal: GetToken received an empty string as reserved word.","ÆâÉô¥¨¥é¡¼: GetToken¤Ë¶õÊ¸»úÎó¤¬ÅÏ¤µ¤ì¤Ş¤·¤¿").throwException();
+        ExceptionMessage("Internal: GetToken received an empty string as reserved word.","å†…éƒ¨ã‚¨ãƒ©ãƒ¼: GetTokenã«ç©ºæ–‡å­—åˆ—ãŒæ¸¡ã•ã‚Œã¾ã—ãŸ").throwException();
 
     getToken(token, false);
     if(token.compare(term) != 0) {
         lastErrorToken = token;
-        ExceptionMessage("Token [%] should be replaced by [%]","»ú¶ç[%]¤Ï[%]¤Ç¤¢¤ë¤Ù¤­¤Ç¤¹") << token << term << throwException;
+        ExceptionMessage("Token [%] should be replaced by [%]","å­—å¥[%]ã¯[%]ã§ã‚ã‚‹ã¹ãã§ã™") << token << term << throwException;
     }
 }
 
@@ -812,7 +812,7 @@ void Parser::pushStream(const std::string & filename, std::string strid)
         current->line       = 1;
     }else
     {       
-        ExceptionMessage("File operation failure : [%]","¥Õ¥¡¥¤¥ëÁàºî¤Ë¼ºÇÔ¤·¤Ş¤·¤¿ [%]") << filename << throwException;
+        ExceptionMessage("File operation failure : [%]","ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œã«å¤±æ•—ã—ã¾ã—ãŸ [%]") << filename << throwException;
         delete fin;
     }
 }
@@ -823,7 +823,7 @@ void Parser::pushStdStream(std::string strid)
     char buffer[1024];
     int  count;
 
-        //É¸½àÆşÎÏ¤Î¾ğÊó¤ò¤¹¤Ù¤Æ¼è¤ê¹ş¤à (¥¨¥é¡¼ÂĞ½èÍÑ¤Ë seekg/tellg ¤ò»È¤¤¤¿¤¤)
+        //æ¨™æº–å…¥åŠ›ã®æƒ…å ±ã‚’ã™ã¹ã¦å–ã‚Šè¾¼ã‚€ (ã‚¨ãƒ©ãƒ¼å¯¾å‡¦ç”¨ã« seekg/tellg ã‚’ä½¿ã„ãŸã„)
     do {
         cin.read(buffer, 1024);
         count = cin.gcount();
@@ -869,10 +869,10 @@ void Parser::doPreProcess(const char * cmd)
     stringstream * stream;
 
     if(current == NULL || current->stream == NULL)
-        ExceptionMessage("No stream specified for processing","½èÍıÂĞ¾İ¤È¤Ê¤ë¥¹¥È¥ê¡¼¥à¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤»¤ó").throwException();
+        ExceptionMessage("No stream specified for processing","å‡¦ç†å¯¾è±¡ã¨ãªã‚‹ã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“").throwException();
 
 
-        /* º£¤Î¥¹¥È¥ê¡¼¥à¤ÎÆâÍÆ¤ò¤¹¤Ù¤Æ¥Æ¥ó¥İ¥é¥ê¤Ë½ñ¤­½Ğ¤¹ */
+        /* ä»Šã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å†…å®¹ã‚’ã™ã¹ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªã«æ›¸ãå‡ºã™ */
 
     strcpy(buffer,"cfgXXXXXX");
     mktemp(buffer);
@@ -881,7 +881,7 @@ void Parser::doPreProcess(const char * cmd)
     tempfile.open(tempfilename.c_str(),ios::out);
 
     if(!tempfile.is_open())
-        ExceptionMessage("Failed to open a temporary file","¥Æ¥ó¥İ¥é¥ê¥Õ¥¡¥¤¥ë¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿").throwException();
+        ExceptionMessage("Failed to open a temporary file","ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ").throwException();
 
     do {
         current->stream->read(buffer, 1024);
@@ -891,7 +891,7 @@ void Parser::doPreProcess(const char * cmd)
     tempfile.close();
 
 
-        /* ¥¹¥È¥ê¡¼¥àº¹¤·ÂØ¤¨ */
+        /* ã‚¹ãƒˆãƒªãƒ¼ãƒ å·®ã—æ›¿ãˆ */
 
     preprocessname = tempfilename;
     originalname   = current->identifier;
@@ -902,10 +902,10 @@ void Parser::doPreProcess(const char * cmd)
     current->stream = stream;
 
 
-        /* ¥×¥ê¥×¥í¥»¥Ã¥µ¤Îµ¯Æ° & ½ĞÎÏ¤Î¼è¤ê¹ş¤ß */
+        /* ãƒ—ãƒªãƒ—ãƒ­ã‚»ãƒƒã‚µã®èµ·å‹• & å‡ºåŠ›ã®å–ã‚Šè¾¼ã¿ */
 
     work  = string(cmd) + " " + tempfilename;
-    VerboseMessage(" Start the external preprocessor [%]\n"," ³°Éô¥×¥í¥°¥é¥à¤òµ¯Æ°¤·¤Ş¤¹ [%]\n") << work;
+    VerboseMessage(" Start the external preprocessor [%]\n"," å¤–éƒ¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’èµ·å‹•ã—ã¾ã™ [%]\n") << work;
 
     FILE * pipe = popen(work.c_str(),"r");
     while(feof(pipe) == 0)
@@ -936,7 +936,7 @@ ParseUnit::ParseUnit(void * _container, const char * name)
         apiname = work.substr(i, j-i);
 
         if(container->find(apiname) != container->end())
-            ExceptionMessage("Multiple registration of [%]\n","[%]¤¬½ÅÊ£¤·¤ÆÅĞÏ¿¤µ¤ì¤è¤¦¤È¤·¤Æ¤¤¤Ş¤¹") << apiname << throwException;
+            ExceptionMessage("Multiple registration of [%]\n","[%]ãŒé‡è¤‡ã—ã¦ç™»éŒ²ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã¾ã™") << apiname << throwException;
         (*container)[apiname] = this;
         i = j + 1;
     }while(j != string::npos);
@@ -951,7 +951,7 @@ void ParseUnit::printList(void * _container)
     container = reinterpret_cast<map<string, ParseUnit *> *>(_container);
     if(container->empty())
     {
-        cerr << "  " << Message("None of element registed\n", "ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÍ×ÁÇ¤Ï¤¢¤ê¤Ş¤»¤ó\n");
+        cerr << "  " << Message("None of element registed\n", "ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹è¦ç´ ã¯ã‚ã‚Šã¾ã›ã‚“\n");
         return;
     }
 
@@ -996,7 +996,7 @@ Token & ParseUnit::parseParameter(Parser & p)
             else if(nest == 0)
                 break;
             if(nest < 0)
-                ExceptionMessage("')' appeared before '('.","ÂĞ±ş¤·¤Ê¤¤ÊÄ¤¸³ç¸Ì¤¬¤¢¤ê¤Ş¤¹").throwException();
+                ExceptionMessage("')' appeared before '('.","å¯¾å¿œã—ãªã„é–‰ã˜æ‹¬å¼§ãŒã‚ã‚Šã¾ã™").throwException();
         }
 
         if(result == Token::ERROR)
@@ -1039,7 +1039,7 @@ int ParseUnit::parseParameters(Parser & p, Directory * container, int min, int m
     }while(work.compare(",")==0 && count < max);
 
     if(count < min)
-        ExceptionMessage("Too few parameters [%/%]","¥Ñ¥é¥á¡¼¥¿¤Î¿ô¤¬¾¯¤Ê¤¹¤®¤Ş¤¹ [%/%]") << count << min << throwException;
+        ExceptionMessage("Too few parameters [%/%]","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ãŒå°‘ãªã™ãã¾ã™ [%/%]") << count << min << throwException;
 
     p.putBack(work);
     return count;
@@ -1063,7 +1063,7 @@ int ParseUnit::parseParameters(Parser & p, Directory * container, const char * p
     do
     {
         if(head == string::npos)
-            ExceptionMessage("Too many parameters","¥Ñ¥é¥á¡¼¥¿¤Î¿ô¤¬Â¿¤¹¤®¤Ş¤¹").throwException();
+            ExceptionMessage("Too many parameters","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ãŒå¤šã™ãã¾ã™").throwException();
 
         Token & token = parseParameter(p);
         if(token.type == Token::ERROR)
@@ -1086,7 +1086,7 @@ int ParseUnit::parseParameters(Parser & p, Directory * container, const char * p
     }while(work.compare(",")==0);
 
     if(tail != string::npos)
-        ExceptionMessage("Too few parameters","¥Ñ¥é¥á¡¼¥¿¤Î¿ô¤¬¾¯¤Ê¤¹¤®¤Ş¤¹").throwException();
+        ExceptionMessage("Too few parameters","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ãŒå°‘ãªã™ãã¾ã™").throwException();
 
     return count;
 }
@@ -1107,10 +1107,10 @@ Directory * StaticAPI::allocate(Directory & container, const Token & token, cons
     Directory * node;
 
     if(!(token == Token::IDENTIFIER || token == Token::INTEGER))
-        ExceptionMessage("Given token(%) is not suitable for an object identifier.","¥ª¥Ö¥¸¥§¥¯¥È¤Î¼±ÊÌÌ¾¤È¤·¤ÆÍøÍÑ¤Ç¤­¤Ê¤¤»ú¶ç(%)¤¬»ØÄê¤µ¤ì¤Ş¤·¤¿") << token << throwException;
+        ExceptionMessage("Given token(%) is not suitable for an object identifier.","ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è­˜åˆ¥åã¨ã—ã¦åˆ©ç”¨ã§ããªã„å­—å¥(%)ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸ") << token << throwException;
 
     if(regist && (token == Token::INTEGER && token.value <= 0))
-        ExceptionMessage("Cannot assign an ID number less or equal to 0.","0°Ê²¼¤ÎIDÈÖ¹æ¤òÀßÄê¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó").throwException();
+        ExceptionMessage("Cannot assign an ID number less or equal to 0.","0ä»¥ä¸‹ã®IDç•ªå·ã‚’è¨­å®šã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“").throwException();
 
 
     node = container.findChild(id);
@@ -1122,7 +1122,7 @@ Directory * StaticAPI::allocate(Directory & container, const Token & token, cons
         while(scope != node->end())
         {
             if((*scope).first.compare(token) == 0)
-                ExceptionMessage("Identifier % is already used.","¼±ÊÌÌ¾%¤Ï¤¹¤Ç¤ËÍøÍÑ¤µ¤ì¤Æ¤¤¤Ş¤¹") << token << throwException;
+                ExceptionMessage("Identifier % is already used.","è­˜åˆ¥å%ã¯ã™ã§ã«åˆ©ç”¨ã•ã‚Œã¦ã„ã¾ã™") << token << throwException;
             ++ scope;
         }
     }else
@@ -1173,18 +1173,18 @@ void ParserComponent::parseOption(Directory & container)
             "  -iapi ,--ignore-api       : Ignore unknown static api\n"
             "  -t, --through             : Get unprocessed APIs through\n"
             "  --print-api               : Show registered static api list\n", 
-            "ÀÅÅªAPI¥Ñ¡¼¥µ\n"
-            "  -s, --source=¥Õ¥¡¥¤¥ëÌ¾   : ÆşÎÏ¥Õ¥¡¥¤¥ëÌ¾¤ò»ØÄê¤·¤Ş¤¹\n"
-            "  -idir ,--ignore-directive : ¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤Î²òÀÏ¤ò¹Ô¤¤¤Ş¤»¤ó\n"
-            "  -iapi, --ignore-api       : ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤API¤òÌµ»ë¤·¤Ş¤¹\n"
-            "  -t, --through             : ½èÍı¤·¤Ê¤«¤Ã¤¿API¤òÄÌ²á¤µ¤»¤Ş¤¹\n"
-            "  --print-api               : ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëAPI¤Î°ìÍ÷¤òÉ½¼¨¤·¤Ş¤¹\n");
+            "é™çš„APIãƒ‘ãƒ¼ã‚µ\n"
+            "  -s, --source=ãƒ•ã‚¡ã‚¤ãƒ«å   : å…¥åŠ›ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¾ã™\n"
+            "  -idir ,--ignore-directive : ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®è§£æã‚’è¡Œã„ã¾ã›ã‚“\n"
+            "  -iapi, --ignore-api       : ç™»éŒ²ã•ã‚Œã¦ã„ãªã„APIã‚’ç„¡è¦–ã—ã¾ã™\n"
+            "  -t, --through             : å‡¦ç†ã—ãªã‹ã£ãŸAPIã‚’é€šéã•ã›ã¾ã™\n"
+            "  --print-api               : ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹APIã®ä¸€è¦§ã‚’è¡¨ç¤ºã—ã¾ã™\n");
         return;
     }
 
     if(findOption("-print-api"))
     {
-        cerr << Message("List of Registerd Static API\n","ÀÅÅªAPI °ìÍ÷\n");
+        cerr << Message("List of Registerd Static API\n","é™çš„API ä¸€è¦§\n");
         StaticAPI::printList();
         return;
     }
@@ -1220,7 +1220,7 @@ bool ParserComponent::parseStaticAPI(Parser & p, Directory & container, Token to
         {
             if(ignoreUnknownAPI)
             {
-                cerr << Message("%: Unknown static api % was ignored. (skipped)\n","%: ÈóÅĞÏ¿¤ÎAPI % ¤ÏÌµ»ë¤µ¤ì¤Ş¤¹\n") << p.getStreamLocation() << token;
+                cerr << Message("%: Unknown static api % was ignored. (skipped)\n","%: éç™»éŒ²ã®API % ã¯ç„¡è¦–ã•ã‚Œã¾ã™\n") << p.getStreamLocation() << token;
                 do {
                     p.getToken(token);
                 }while(token.compare(";") != 0);
@@ -1228,7 +1228,7 @@ bool ParserComponent::parseStaticAPI(Parser & p, Directory & container, Token to
                 (*node) = (long)0;
                 return true;
             }
-            ExceptionMessage("Static API [%] is not registered in the configurator", "ÀÅÅªAPI[%]¤ÏÌ¤ÅĞÏ¿¤Ç¤¹") << token << throwException;
+            ExceptionMessage("Static API [%] is not registered in the configurator", "é™çš„API[%]ã¯æœªç™»éŒ²ã§ã™") << token << throwException;
         }
 
         DebugMessage("  StaticAPI [%]\n") << (*api).first;
@@ -1247,7 +1247,7 @@ bool ParserComponent::parseStaticAPI(Parser & p, Directory & container, Token to
     {
         int offset;
         string work;
-        work = p.getStreamLocation() + Message(":[Error] ",":[¥¨¥é¡¼] ").str() + e.getDetails();
+        work = p.getStreamLocation() + Message(":[Error] ",":[ã‚¨ãƒ©ãƒ¼] ").str() + e.getDetails();
         isParseErrorOccured = true;
 
         StaticAPI::dropLastObject();
@@ -1260,11 +1260,11 @@ bool ParserComponent::parseStaticAPI(Parser & p, Directory & container, Token to
             if( token == ";" )
                 break;
 
-                //ÆÉ¤ß½Ğ¤·¤¿¥È¡¼¥¯¥ó¤¬ÀÅÅªAPI¤ÈÆ±¤¸Ì¾Á°¤Ê¤é ¤­¤Ã¤È¥»¥ß¥³¥í¥óËº¤ì
+                //èª­ã¿å‡ºã—ãŸãƒˆãƒ¼ã‚¯ãƒ³ãŒé™çš„APIã¨åŒã˜åå‰ãªã‚‰ ãã£ã¨ã‚»ãƒŸã‚³ãƒ­ãƒ³å¿˜ã‚Œ
             api = StaticAPI::container().find(token);
             if(api != StaticAPI::container().end())
             {
-                cerr << Message("<The following error must be occured by lack of ';' at the end of previous line>\n","<¼¡¤Î¥¨¥é¡¼¤ÏÄ¾Á°¹Ô¤Î';'Ëº¤ì¤Ë¤è¤ë²ÄÇ½À­¤¬¹â¤¤¤Ç¤¹>\n");
+                cerr << Message("<The following error must be occured by lack of ';' at the end of previous line>\n","<æ¬¡ã®ã‚¨ãƒ©ãƒ¼ã¯ç›´å‰è¡Œã®';'å¿˜ã‚Œã«ã‚ˆã‚‹å¯èƒ½æ€§ãŒé«˜ã„ã§ã™>\n");
                 offset = -(int)token.size();
                 p.putBack(token);
                 break;
@@ -1278,14 +1278,14 @@ bool ParserComponent::parseStaticAPI(Parser & p, Directory & container, Token to
 
         cerr << work << '\n';
 
-        ExceptionMessage("Fatal error on Static API parsing","ÀÅÅªAPI¤Î¹½Ê¸²òÀÏ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿").throwException();
+        ExceptionMessage("Fatal error on Static API parsing","é™çš„APIã®æ§‹æ–‡è§£æã«å¤±æ•—ã—ã¾ã—ãŸ").throwException();
     }
 
     return true;
 }
 
 /*
- *  ½èÍı¤Ç¤­¤Ê¤«¤Ã¤¿API¤òÉ¸½à½ĞÎÏ¤ËÅÇ¤­½Ğ¤¹
+ *  å‡¦ç†ã§ããªã‹ã£ãŸAPIã‚’æ¨™æº–å‡ºåŠ›ã«åãå‡ºã™
  */
 void ParserComponent::throughConfigurationFile(string & log, Directory & container)
 {
@@ -1335,7 +1335,7 @@ void ParserComponent::body(Directory & container)
 
     failCount = 0;
     
-        //idir¥ª¥×¥·¥ç¥ó¤Î½èÍı
+        //idirã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å‡¦ç†
     if(findOption("idir","ignore-directive"))
         p.disable(Parser::DIRECTIVE);
 
@@ -1347,32 +1347,32 @@ void ParserComponent::body(Directory & container)
         ignoreUnknownAPI = true;
     }
 
-        //ÆşÎÏ¥½¡¼¥¹
+        //å…¥åŠ›ã‚½ãƒ¼ã‚¹
     item = getOption("s", "source");
     item.mergeItem(getOption(DEFAULT_PARAMETER));
     if(item.countParameter() == 0)
     {
-        p.pushStdStream(Message("Standard Input","É¸½àÆşÎÏ").str());
-        VerboseMessage("Starting parse with standard input\n","É¸½àÆşÎÏ¤«¤é¤Î»ú¶ç²òÀÏ¤ò³«»Ï¤·¤Ş¤·¤¿\n");
+        p.pushStdStream(Message("Standard Input","æ¨™æº–å…¥åŠ›").str());
+        VerboseMessage("Starting parse with standard input\n","æ¨™æº–å…¥åŠ›ã‹ã‚‰ã®å­—å¥è§£æã‚’é–‹å§‹ã—ã¾ã—ãŸ\n");
     }
 
     try{
         do {
             if(item.hasParameter())
             {
-                VerboseMessage("Starting parse with file[%]\n","¥Õ¥¡¥¤¥ë[%]¤Î»ú¶ç²òÀÏ¤ò³«»Ï¤·¤Ş¤·¤¿\n") << item[itemcount];
+                VerboseMessage("Starting parse with file[%]\n","ãƒ•ã‚¡ã‚¤ãƒ«[%]ã®å­—å¥è§£æã‚’é–‹å§‹ã—ã¾ã—ãŸ\n") << item[itemcount];
                 p.pushStream(item[itemcount]);
             }
 
             this->parse(p, container);
 
             if(p.getToken(token) != Token::EOS)
-                ExceptionMessage("Buffer has remaining tokens, parsing is not yet finished", "¥Ñ¡¼¥¹¤¬ÃæÃÇ¤µ¤ì¤Ş¤·¤¿").throwException();
+                ExceptionMessage("Buffer has remaining tokens, parsing is not yet finished", "ãƒ‘ãƒ¼ã‚¹ãŒä¸­æ–­ã•ã‚Œã¾ã—ãŸ").throwException();
 
             if(failCount != 0)
-                ExceptionMessage("Total % failures found in this configuration.","%¸Ä¤Î¾ã³²¤¬¤¢¤ê¤Ş¤¹") << failCount << throwException;
+                ExceptionMessage("Total % failures found in this configuration.","%å€‹ã®éšœå®³ãŒã‚ã‚Šã¾ã™") << failCount << throwException;
 
-            VerboseMessage("Parse finished\n","»ú¶ç²òÀÏ¤ÏÀµ¾ï¤Ë½ªÎ»¤·¤Ş¤·¤¿\n");
+            VerboseMessage("Parse finished\n","å­—å¥è§£æã¯æ­£å¸¸ã«çµ‚äº†ã—ã¾ã—ãŸ\n");
 
         } while(++itemcount < item.countParameter());
 
@@ -1385,18 +1385,18 @@ void ParserComponent::body(Directory & container)
     {
         string work;
 
-        work = p.getStreamLocation() + Message(":[Error] ",":[¥¨¥é¡¼] ").str() + e.getDetails();
+        work = p.getStreamLocation() + Message(":[Error] ",":[ã‚¨ãƒ©ãƒ¼] ").str() + e.getDetails();
         ExceptionMessage(work.c_str()).throwException();
     }
 }
 
-    // ¥ª¥×¥·¥ç¥ó¥Î¡¼¥É¤«¤é³äÉÕÊıË¡¤ò¼èÆÀ¤¹¤ë
+    // ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒãƒ¼ãƒ‰ã‹ã‚‰å‰²ä»˜æ–¹æ³•ã‚’å–å¾—ã™ã‚‹
 enum Common::tagAssignmentOrder Common::parseOrder(Directory * node)
 {
     Directory * scope;
     int         i;
 
-        //³äÅö¥Ñ¥é¥á¡¼¥¿²òÀÏ
+        //å‰²å½“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è§£æ
     i = FCFS;
     if(node != 0)
     {
@@ -1418,7 +1418,7 @@ enum Common::tagAssignmentOrder Common::parseOrder(Directory * node)
     return static_cast<enum tagAssignmentOrder>(i);
 }
 
-    // ¥ª¥×¥·¥ç¥ó¥Î¡¼¥É¤«¤é³äÉÕÊıË¡¤ò¼èÆÀ¤¹¤ë
+    // ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒãƒ¼ãƒ‰ã‹ã‚‰å‰²ä»˜æ–¹æ³•ã‚’å–å¾—ã™ã‚‹
 enum Common::tagAssignmentOrder Common::parseOrder(OptionParameter::OptionItem item)
 {
     Directory node;
@@ -1430,8 +1430,8 @@ enum Common::tagAssignmentOrder Common::parseOrder(OptionParameter::OptionItem i
     return parseOrder(&node);
 }
 
-    //IDÃÍ¤Î¥¢¥µ¥¤¥ó¥á¥ó¥È
-    //  (Â¾¤Î¾ì½ê¤«¤é¤â»È¤¦¤Î¤Ç¤³¤³¤Ë°ÜÆ°)
+    //IDå€¤ã®ã‚¢ã‚µã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+    //  (ä»–ã®å ´æ‰€ã‹ã‚‰ã‚‚ä½¿ã†ã®ã§ã“ã“ã«ç§»å‹•)
 int Common::assignID(Directory & container, const char * category, const char * top, enum tagAssignmentOrder order)
 {
     Directory * node  = 0;
@@ -1442,7 +1442,7 @@ int Common::assignID(Directory & container, const char * category, const char * 
     map<int, Directory *>::iterator p_sorter;
     int i;
 
-        //²¼½àÈ÷
+        //ä¸‹æº–å‚™
     node = container.findChild(top,category,NULL);
     if(node == 0)
         return 0;
@@ -1450,7 +1450,7 @@ int Common::assignID(Directory & container, const char * category, const char * 
     for(i=1;i< (signed int) node->size() + 32; i++)
         idpool.insert(i);
 
-        //³äÉÕ½ç¤Î·èÄê¤È¡¤³äÅöºÑ¤ßID¤Îºï½ü
+        //å‰²ä»˜é †ã®æ±ºå®šã¨ï¼Œå‰²å½“æ¸ˆã¿IDã®å‰Šé™¤
     i = 0;
     scope = node->getFirstChild();
     while(scope != 0)
@@ -1459,15 +1459,15 @@ int Common::assignID(Directory & container, const char * category, const char * 
             idpool.erase(*scope);
         else
         {
-                //½ÅÊ£Ì¾¾Î¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
+                //é‡è¤‡åç§°ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
             work = container.openChild("/","identifier",scope->getKey().c_str(),NULL);
             if( *work == Directory::INTEGER)
             {
-                VerboseMessage("Assigning the same ID (%) since the name (%[%]) is duplicated\n","IDÈÖ¹æ(%)¤ò°Û¼ïÆ±Ì¾¤Î¥ª¥Ö¥¸¥§¥¯¥È(%[%])¤Ë³ä¤êÅö¤Æ¤Ş¤¹¡¥\n") << work->toInteger() << scope->getKey() << category;
+                VerboseMessage("Assigning the same ID (%) since the name (%[%]) is duplicated\n","IDç•ªå·(%)ã‚’ç•°ç¨®åŒåã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(%[%])ã«å‰²ã‚Šå½“ã¦ã¾ã™ï¼\n") << work->toInteger() << scope->getKey() << category;
                 idpool.erase(*scope = work->toInteger());
             } else
             {
-                    //³äÅöÊıË¡¤Ë½¾¤Ã¤Æ³äÅö¸õÊä¤ËÄÉ²Ã
+                    //å‰²å½“æ–¹æ³•ã«å¾“ã£ã¦å‰²å½“å€™è£œã«è¿½åŠ 
                 switch(order)
                 {
                 case ALPHABETIC:
@@ -1489,7 +1489,7 @@ int Common::assignID(Directory & container, const char * category, const char * 
         scope = scope->getNext();
     }
 
-        //ID³äÅö
+        //IDå‰²å½“
     p_sorter = sorter.begin();
     while(p_sorter != sorter.end())
     {
@@ -1506,10 +1506,10 @@ int Common::assignID(Directory & container, const char * category, const char * 
         ++ p_sorter;
     }
 
-        //³äÅöÉ½ºîÀ®
+        //å‰²å½“è¡¨ä½œæˆ
     if(node->size() != 0 && VerboseMessage::getVerbose())
     {
-        VerboseMessage("Object ID assignment list [%]\n","¥ª¥Ö¥¸¥§¥¯¥ÈID³äÉÕÉ½ [%]\n") << category;
+        VerboseMessage("Object ID assignment list [%]\n","ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆIDå‰²ä»˜è¡¨ [%]\n") << category;
 
         sorter.clear();
         scope = node->getFirstChild();
@@ -1527,9 +1527,9 @@ int Common::assignID(Directory & container, const char * category, const char * 
         }
     }
 
-        //ÂÅÅöÀ­¤ÎÈ½Äê
+        //å¦¥å½“æ€§ã®åˆ¤å®š
     if((signed)node->size()+1 != *(idpool.begin()))
-        ExceptionMessage("Discontinuous % ID assignment occured","ÉÔÏ¢Â³¤Ê¥ª¥Ö¥¸¥§¥¯¥ÈID(%)") << category << throwException;
+        ExceptionMessage("Discontinuous % ID assignment occured","ä¸é€£ç¶šãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆID(%)") << category << throwException;
 
     return node->size();
 }

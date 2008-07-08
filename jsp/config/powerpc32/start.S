@@ -8,46 +8,46 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: start.S,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�����ͥ��ѤΥ������ȥ��åץ⥸�塼���PowerPC�ѡ�
+ *	カーネル用のスタートアップモジュール（PowerPC用）
  *	
- *	�쥸�����γ������
- *		r1�� �������å��ݥ���
- *		SPRG0������ߡ�CPU�㳰�ͥ��ȥ�����
- *		SPRG1��int_table
- *			����������ѵ����٥����ơ��֥����Ƭ���ɥ쥹
- *		SPRG2��exc_table
- *			����CPU�㳰�ѵ����٥����ơ��֥����Ƭ���ɥ쥹
+ *	レジスタの割り当て
+ *		r1　 ：スタックポインタ
+ *		SPRG0：割込み／CPU例外ネストカウンタ
+ *		SPRG1：int_table
+ *			　　割込み用擬似ベクタテーブルの先頭アドレス
+ *		SPRG2：exc_table
+ *			　　CPU例外用擬似ベクタテーブルの先頭アドレス
  */
 
 #define	_MACRO_ONLY
@@ -58,43 +58,43 @@
 	.globl start_1
 start:
 	/*
-	 *  �ץ����å��⡼�ɤȥ����å��ݥ��󥿤ν����
-	 *�����ꥻ�åȻ���MSR�ν���ͤ��ΤޤޤǤ褱��С�
-	 *����INIT_MSR��������ʤ��Ƥ�褤��
+	 *  プロセッサモードとスタックポインタの初期化
+	 *　　リセット時のMSRの初期値そのままでよければ、
+	 *　　INIT_MSRは定義しなくてもよい。
 	 */
 #ifdef INIT_MSR
-	LI32(r3, INIT_MSR)		/*  MSR�ν����  */
+	LI32(r3, INIT_MSR)		/*  MSRの初期化  */
 	mtmsr	r3
 #endif	/*  INIT_MSR  */
 	
 	/*
-	 * �󥿥�������ƥ����ȤΥ����å���STACKTOP�˽��������
-	 * STACKTOP�ϡ�sys_config.h�����
-	 * ������󥰡�����٥󥷥��δط���8�Х��Ȥ��餷�Ƥ���
+	 * 非タスクコンテキストのスタックをSTACKTOPに初期化する
+	 * STACKTOPは、sys_config.hで定義
+	 * コーリング・コンベンションの関係で8バイトずらしておく
 	 */
 	LI32(sp, STACKTOP - STACK_MARGIN)
 	
-	/*  ����ߡ�CPU�㳰�ͥ��ȥ����󥿤ν����  */
+	/*  割込み／CPU例外ネストカウンタの初期化  */
 	li	r5, 1
 	mtspr	SPRG0, r5
 	
-	/*  ������ѵ����٥����ơ��֥����Ƭ���ɥ쥹  */
+	/*  割込み用擬似ベクタテーブルの先頭アドレス  */
 	LI32(r6, int_table)
 	mtspr	SPRG1, r6
 	
-	/*  CPU�㳰�ѵ����٥����ơ��֥����Ƭ���ɥ쥹  */
+	/*  CPU例外用擬似ベクタテーブルの先頭アドレス  */
 	LI32(r7, exc_table)
 	mtspr	SPRG2, r7
 	
 	/*
-	 *  hardware_init_hook �θƽФ���0 �Ǥʤ�����
+	 *  hardware_init_hook の呼出し（0 でない場合）
 	 *
-	 *  �ϡ��ɥ�������¸��ɬ�פʽ����������������ϡ�
-	 *  hardware_init_hook �Ȥ����ؿ����Ѱդ���Ф褤��
-	 *  ����Ū�ˤ�ROM���κݡ�RAM����Ѳ�ǽ�ˤ��뤿���
-	 *  �Х�����ȥ�����ν��������Ԥ���
-	 *  sys_support.S ��� hardware_init_hook ��������Ƥ�
-	 *  �롥
+	 *  ハードウェア依存に必要な初期化処理がある場合は，
+	 *  hardware_init_hook という関数を用意すればよい．
+	 *  具体的にはROM化の際、RAMを使用可能にするための
+	 *  バスコントローラの初期化等を行う。
+	 *  sys_support.S 内で hardware_init_hook を定義してい
+	 *  る．
 	 */
 	LI32(r8, hardware_init_hook)
 	mtctr	r8
@@ -102,7 +102,7 @@ start:
 	bnectrl
 
 	/*
-	 *  bss���������Υ��ꥢ
+	 *  bssセクションのクリア
 	 */
 start_1:
 	LI32(r5, __bss_start)
@@ -113,15 +113,15 @@ start_1:
 	subi	r5, r5, 4
 	subi	r6, r6, 4
 start_2:
-	stwu	r0, 4(r5)	/*  r5�ι�����1̿��Ǽ¹Ԥ����  */
+	stwu	r0, 4(r5)	/*  r5の更新も1命令で実行される  */
 	cmpw	crf0, r5, r6
 	blt	start_2	
 
 	/*
-	 *  data���������ν������ROM���б���
+	 *  dataセクションの初期化（ROM化対応）
 	 *
-	 *  __idata_start ���� __idata_end �ޤǤ�__data_start �ʹߤ�
-	 *  ���ԡ����롥
+	 *  __idata_start から __idata_end までを，__data_start 以降に
+	 *  コピーする．
 	 */
 start_3:
 	LI32(r7, __idata_start)
@@ -129,21 +129,21 @@ start_3:
 	cmpw	crf0, r7, r8
 	beq	start_5
 	LI32(r9, __data_start)
-	subi	r7, r7, 4	/*  lwzu̿���Ȥ�����-4���Ƥ���  */
+	subi	r7, r7, 4	/*  lwzu命令を使うため-4している  */
 	subi	r8, r8, 4
 	subi	r9, r9, 4
 start_4:
-	lwzu	r10, 4(r7)	/*  r7�ι�����1̿��Ǽ¹Ԥ����  */
-	stwu	r10, 4(r9)	/*  r9�ι�����1̿��Ǽ¹Ԥ����  */
+	lwzu	r10, 4(r7)	/*  r7の更新も1命令で実行される  */
+	stwu	r10, 4(r9)	/*  r9の更新も1命令で実行される  */
 	cmpw	crf0, r7, r8
 	blt	start_4
 
 	/*
-	 *  software_init_hook ��ƽФ���0 �Ǥʤ�����
+	 *  software_init_hook を呼出し（0 でない場合）
 	 *
-	 *  ���եȥ������Ķ����ä˥饤�֥��ˤ˰�¸����ɬ�פʽ������
-	 *  ����������ϡ�software_init_hook �Ȥ����ؿ����Ѱդ����
-	 *  �褤��
+	 *  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+	 *  理がある場合は，software_init_hook という関数を用意すれば
+	 *  よい．
 	 */
 start_5:
 	LI32(r4, software_init_hook)
@@ -152,7 +152,7 @@ start_5:
 	bnectrl
 
 	/*
-	 *  �����ͥ��ư���롥
+	 *  カーネルを起動する．
 	 */
 start_6:
 	LI32(r5, kernel_start)

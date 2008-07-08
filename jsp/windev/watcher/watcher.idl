@@ -1,8 +1,8 @@
-// watcher.idl : watcher.dll ÍÑ¤Î IDL ¥½¡¼¥¹ ¥Õ¥¡¥¤¥ë
+// watcher.idl : watcher.dll ç”¨ã® IDL ã‚½ãƒ¼ã‚¹ ãƒ•ã‚¡ã‚¤ãƒ«
 //
 
-// ¤³¤Î¥Õ¥¡¥¤¥ë¤Ï¥¿¥¤¥× ¥é¥¤¥Ö¥é¥ê (watcher.tlb) ¤òºîÀ®¤¹¤ë¤¿¤á¤Ë
-// ¥¿¥¤¥× ¥é¥¤¥Ö¥é¥êºîÀ®¥Ä¡¼¥ë MIDL ¤Ë¤è¤Ã¤Æ½èÍı¤µ¤ì¤Ş¤¹¡£
+// ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚¿ã‚¤ãƒ— ãƒ©ã‚¤ãƒ–ãƒ©ãƒª (watcher.tlb) ã‚’ä½œæˆã™ã‚‹ãŸã‚ã«
+// ã‚¿ã‚¤ãƒ— ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½œæˆãƒ„ãƒ¼ãƒ« MIDL ã«ã‚ˆã£ã¦å‡¦ç†ã•ã‚Œã¾ã™ã€‚
 
 import "oaidl.idl";
 import "ocidl.idl";
@@ -18,18 +18,18 @@ import "ocidl.idl";
 	]
 	interface IKernelLogControl : IDispatch
 	{
-		[id(1), helpstring("Ò¿¯ÄŞ Open")] HRESULT Open();
-		[id(2), helpstring("Ò¿¯ÄŞ Close")] HRESULT Close();
-		[propget, id(3), helpstring("ÌßÛÊßÃ¨ Type")] HRESULT Type([out, retval] long *pVal);
-		[propget, id(4), helpstring("ÌßÛÊßÃ¨ Logtim")] HRESULT Logtim([out, retval] long *pVal);
-		[propget, id(5), helpstring("ÌßÛÊßÃ¨ isValid")] HRESULT isValid([out, retval] BOOL *pVal);
-		[propget, id(6), helpstring("ÌßÛÊßÃ¨ Param")] HRESULT Param(long index, [out, retval] long *pVal);
+		[id(1), helpstring("è€…è³ªè­˜æŸ´é…Œ Open")] HRESULT Open();
+		[id(2), helpstring("è€…è³ªè­˜æŸ´é…Œ Close")] HRESULT Close();
+		[propget, id(3), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Type")] HRESULT Type([out, retval] long *pVal);
+		[propget, id(4), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Logtim")] HRESULT Logtim([out, retval] long *pVal);
+		[propget, id(5), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ isValid")] HRESULT isValid([out, retval] BOOL *pVal);
+		[propget, id(6), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Param")] HRESULT Param(long index, [out, retval] long *pVal);
 	};
 
 [
 	uuid(A242E427-5E2F-4447-AC87-0C7CC382CBFE),
 	version(1.0),
-	helpstring("watcher 1.0 À²Ìß ×²ÌŞ×Ø")
+	helpstring("watcher 1.0 å®Ÿè»¸æ¨é‡ˆ é‚ªè»¸æ¨é…Œé‚ªå€Ÿ")
 ]
 library WATCHERLib
 {
@@ -44,9 +44,9 @@ library WATCHERLib
 	{
 		properties:
 		methods:
-		[id(1), helpstring("Ò¿¯ÄŞ OnKernelStart")] HRESULT OnKernelStart();
-		[id(2), helpstring("Ò¿¯ÄŞ OnKernelExit")] HRESULT OnKernelExit();
-		[id(3), helpstring("Ò¿¯ÄŞ OnLogEvent")] HRESULT OnLogEvent([in] int type);
+		[id(1), helpstring("è€…è³ªè­˜æŸ´é…Œ OnKernelStart")] HRESULT OnKernelStart();
+		[id(2), helpstring("è€…è³ªè­˜æŸ´é…Œ OnKernelExit")] HRESULT OnKernelExit();
+		[id(3), helpstring("è€…è³ªè­˜æŸ´é…Œ OnLogEvent")] HRESULT OnLogEvent([in] int type);
 	};
 	
 
@@ -59,10 +59,10 @@ library WATCHERLib
 	]
 	interface IDirectoryMap : IDispatch
 	{
-		[propget, id(1), helpstring("ÌßÛÊßÃ¨ Path")] HRESULT Path([out, retval] BSTR *pVal);
-		[propput, id(1), helpstring("ÌßÛÊßÃ¨ Path")] HRESULT Path([in] BSTR newVal);
-		[propget, id(2), helpstring("ÌßÛÊßÃ¨ Valid")] HRESULT Valid([out, retval] BOOL *pVal);
-		[id(3), helpstring("Ò¿¯ÄŞ Load")] HRESULT Load(BSTR filename);
+		[propget, id(1), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Path")] HRESULT Path([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Path")] HRESULT Path([in] BSTR newVal);
+		[propget, id(2), helpstring("æ¨é‡ˆæ“å†™é‡ˆå²è€³ Valid")] HRESULT Valid([out, retval] BOOL *pVal);
+		[id(3), helpstring("è€…è³ªè­˜æŸ´é…Œ Load")] HRESULT Load(BSTR filename);
 	};
 	
 

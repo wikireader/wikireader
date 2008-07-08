@@ -1,8 +1,8 @@
 
-	    �� TOPPERS/JSP�����ͥ� �桼�����ޥ˥奢�� ��
-    		    ��PowerPC32 �������åȰ�¸����
+	    ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+    		    （PowerPC32 ターゲット依存部）
 
-	    ��Release 1.4.1 �б����ǽ�����: 07-Oct-2004��
+	    （Release 1.4.1 対応、最終更新: 07-Oct-2004）
 
 ------------------------------------------------------------------------
  TOPPERS/JSP Kernel
@@ -14,391 +14,391 @@
  Copyright (C) 2001-2004 by Industrial Technology Institute,
                              Miyagi Prefectural Government, JAPAN
 
- �嵭����Ԥϡ�Free Software Foundation �ˤ�äƸ�ɽ����Ƥ���
- GNU General Public License �� Version 2 �˵��Ҥ���Ƥ����狼����
- ����(1)��(4)�ξ������������˸¤ꡢ�ܥ��եȥ��������ܥ��եȥ���
- ������Ѥ�����Τ�ޤࡣ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롣
- (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- (2) �ܥ��եȥ�����������Ѳ�ǽ�ʥХ��ʥꥳ���ɡʥ���������֥륪��
-     �������ȥե������饤�֥��ʤɡˤη������Ѥ�����ˤϡ�����
-     ��ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ����
-     �������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- (3) �ܥ��եȥ�������������Բ�ǽ�ʥХ��ʥꥳ���ɤη��ޤ��ϵ������
-     �߹�����������Ѥ�����ˤϡ����Τ����줫�ξ������������ȡ�
-   (a) ���Ѥ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭������
-       ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-   (b) ���Ѥη��֤��̤�������ˡ�ˤ�äơ��嵭����Ԥ���𤹤�
-       ���ȡ�
- (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-     ������⡢�嵭����Ԥ����դ��뤳�ȡ�
+ 上記著作権者は、Free Software Foundation によって公表されている
+ GNU General Public License の Version 2 に記述されている条件か、以
+ 下の(1)〜(4)の条件を満たす場合に限り、本ソフトウェア（本ソフトウェ
+ アを改変したものを含む。以下同じ）を使用・複製・改変・再配布（以下、
+ 利用と呼ぶ）することを無償で許諾する。
+ (1) 本ソフトウェアをソースコードの形で利用する場合には、上記の著作
+     権表示、この利用条件および下記の無保証規定が、そのままの形でソー
+     スコード中に含まれていること。
+ (2) 本ソフトウェアを再利用可能なバイナリコード（リロケータブルオブ
+     ジェクトファイルやライブラリなど）の形で利用する場合には、利用
+     に伴うドキュメント（利用者マニュアルなど）に、上記の著作権表示、
+     この利用条件および下記の無保証規定を掲載すること。
+ (3) 本ソフトウェアを再利用不可能なバイナリコードの形または機器に組
+     み込んだ形で利用する場合には、次のいずれかの条件を満たすこと。
+   (a) 利用に伴うドキュメント（利用者マニュアルなど）に、上記の著作
+       権表示、この利用条件および下記の無保証規定を掲載すること。
+   (b) 利用の形態を、別に定める方法によって、上記著作権者に報告する
+       こと。
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも、上記著作権者を免責すること。
 
- �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롣�嵭����Ԥϡ�
- �ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����ޤ�ơ������ʤ��ݾڤ�Ԥ�
- �ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū����������
- ���ʤ�»���˴ؤ��Ƥ⡢������Ǥ�����ʤ���
+ 本ソフトウェアは、無保証で提供されているものである。上記著作権者は、
+ 本ソフトウェアに関して、その適用可能性も含めて、いかなる保証も行わ
+ ない。また、本ソフトウェアの利用により直接的または間接的に生じたい
+ かなる損害に関しても、その責任を負わない。
 ------------------------------------------------------------------------
 
-��. PowerPC32 �������åȰ�¸���γ���
+１. PowerPC32 ターゲット依存部の概要
 
-1.1 �������åȥ����ƥ�ȳ�ȯ�Ķ�
+1.1 ターゲットシステムと開発環境
 
-PowerPC32�ץ����å��Υ������åȥ����ƥ�Ȥ��Ƥϡ��ʲ��Υץ����å���
-�ݡ��Ȥ��Ƥ��롣
+PowerPC32プロセッサのターゲットシステムとしては、以下のプロセッサをサ
+ポートしている。
 
-��MPC860T (��ȥ�����)
+・MPC860T (モトローラ)
 
-���ݡ��Ȥ��Ƥ���ܡ��ɤϡ��ʲ����̤�Ǥ��롣
+サポートしているボードは、以下の通りである。
 
-��(��)����Хå��� TB6102S(CPU:MPC860T)
+・(株)タンバック製 TB6102S(CPU:MPC860T)
 
-��ȯ�Ķ��ˤϡ�GCC �ʤɤ� GNU��ȯ�Ķ����Ѥ������֥������ȥե�����ե���
-�ޥåȤ� ELF ��ɸ��Ȥ��롣
+開発環境には、GCC などの GNU開発環境を用い、オブジェクトファイルフォー
+マットは ELF を標準とする。
 
-�ǥ��쥯�ȥ깽����ʲ��˼�����PowerPC�ǤǤϥ����ƥ��¸���ǰ����ץ�
-���å���¸�ʼ�˳���ߥ���ȥ������¸�˹ԤäƤ��롣���Τ��ᡢ�ץ�����
-����¸���ȥ����ƥ��¸���Ȥ���ɽ���ϸ���򾷤��䤹���Τǡ��ʸ塢$CPU
-�ǥ��쥯�ȥ��$SYS�ǥ��쥯�ȥ�Ȥ���ɽ�����Ѥ��롣
+ディレクトリ構成を以下に示す。PowerPC版ではシステム依存部で一部プロ
+セッサ依存（主に割込みコントローラ依存）行っている。そのため、プロセッ
+サ依存部とシステム依存部という表記は誤解を招きやすいので、以後、$CPU
+ディレクトリと$SYSディレクトリという表記を用いる。
 
-��$CPU=powerpc32�ǥ��쥯�ȥ�
-������PowerPC������
-��������PowerPC�������ƥ�����ˤ�äƵ��ꤵ��Ƥ����ϰ����
-�������������Ǥ�����ʬ
-�����������٤Ƥ�PowerPC�ϥץ����å��Ƕ��̤˻��ѤǤ��롣
-��������
-��$SYS�ǥ��쥯�ȥ�
-����������Υܡ��ɰ�¸���ʥ����ƥ��¸����
-����������ߥ���ȥ������¸
-�����������ޥɥ饤��
-���������ꥢ��ɥ饤��
+　$CPU=powerpc32ディレクトリ
+　　　PowerPC共通部
+　　　　PowerPCアーキテクチャによって規定されている範囲内で
+　　　　実装できる部分
+　　　　すべてのPowerPC系プロセッサで共通に使用できる。
+　　　　
+　$SYSディレクトリ
+　　　従来のボード依存部（システム依存部）
+　　　割込みコントローラ依存
+　　　タイマドライバ
+　　　シリアルドライバ
 
-�ޤ���The IBM PowerPC Embedded Environment�������ƥ���������Υ����ƥ�
-��¸���Υ���ץ륳���ɤ��ե�����Ѥ˴ޤ�Ǥ��뤬���������ư���ǧ
-���Ƥ��ʤ����ʥǥХ�����¸�������Ŭ�����ɲä���ɬ�פ����롣��
+また、The IBM PowerPC Embedded Environmentアーキテクチャ向けのシステム
+依存部のサンプルコードをレファレンス用に含んでいるが、こちらは動作確認
+していない。（デバイス依存の定義を適宜、追加する必要がある。）
 
-1.2 ���ݡ��Ȥ��뵡ǽ�γ���
+1.2 サポートする機能の概要
 
-PowerPC32�������åȰ�¸�ε�ǽ�Ȥ��ơ�����ߥޥ������ѹ�������(chg_ipm��
-get_ipm)�ȡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ(vxget_tim)�򥵥ݡ��Ȥ��Ƥ�
-�롣����ߤζػߤȵ���(dis_int��ena_int)�ϥ��ݡ��Ȥ��Ƥ��ʤ���
+PowerPC32ターゲット依存の機能として、割込みマスクの変更・参照(chg_ipm、
+get_ipm)と、性能評価用システム時刻参照機能(vxget_tim)をサポートしてい
+る。割込みの禁止と許可(dis_int、ena_int)はサポートしていない。
 
-1.3 ¾�Υ������åȤؤΥݡ��ƥ���
+1.3 他のターゲットへのポーティング
 
-PowerPC�������ƥ�����ϥץ����å�����������ʬ�Τߤ����ꤵ��Ƥ��ꡢ��
-�Υ������Ѥ����ץ����å�����ȾƳ�Υ᡼�����������ʲ�����Ƥ��롣�����
-����ȥ�����λ��ͤ��ƥ���ץ���ơ��������˰ۤʤäƤ��뤿�ᡢ���
-�ߥ���ȥ������¸�ν�����$SYS�ǥ��쥯�ȥ�ʥ����ƥ��¸���ˤ�ʬΥ����
-�Ƥ��롣¾��PowerPC�������ƥ����㡦�ץ����å��إݡ��ƥ��󥰤������
-$SYS�ǥ��쥯�ȥ�ʲ���������Ф褤��
-�ݡ��ƥ��󥰤ι����ϳ����ߥ���ȥ�����Υ������ƥ�����˰�¸���롣
-�ʶ���Ū�ʽ������ܤϡ�7. �����ͥ�ܿ��Ը����ξ���פ򻲾ȡ�
+PowerPCアーキテクチャはプロセッサ・コアの部分のみが規定されており、こ
+のコアを用いたプロセッサが各半導体メーカーから製品化されている。割込み
+コントローラの仕様が各インプリメンテーション毎に異なっているため、割込
+みコントローラ依存の処理は$SYSディレクトリ（システム依存部）に分離され
+ている。他のPowerPCアーキテクチャ・プロセッサへポーティングする場合は
+$SYSディレクトリ以下を修正すればよい。
+ポーティングの工数は割り込みコントローラのアーキテクチャに依存する。
+（具体的な修正項目は「7. カーネル移植者向けの情報」を参照）
 
-�ʤ��������PowerPC 32�ӥåȥ������ƥ�������оݤ˥����ͥ�μ�����Ԥ�
-����
+なお、今回はPowerPC 32ビットアーキテクチャを対象にカーネルの実装を行っ
+た。
 
-1.4 GDB ������
+1.4 GDB スタブ
 
-���ߤ� TOPPERS/JSP�����ͥ� PowerPC32�Ǥ�ROM���Τߤ򥵥ݡ��Ȥ��Ƥ��롣
-���衢GDB�����֤��Ȥ߹�碌�ƻ��Ѥ��뤳�Ȥ��θ���ơ�¾�����Ǥ�JSP����
-�ͥ��Ʊ�ͤ˥��������������GDB_STUB�ޥ����ˤ���拾��ѥ���������
-�ԤäƤ��롣
+現在の TOPPERS/JSPカーネル PowerPC32版はROM化のみをサポートしている。
+将来、GDBスタブと組み合わせて使用することを考慮して、他機種版のJSPカー
+ネルと同様にソースコード内にGDB_STUBマクロによる条件コンパイルの設定を
+行っている。
 
-1.5 ���ꥢ��ݡ���
+1.5 シリアルポート
 
-�����ͥ�Υ��������Ѥ˥��ꥢ��ݡ��Ȥ򣱤Ļ��Ѥ��롣
-���ꥢ��ݡ��Ȥ������
-  ��8�ӥå�
-  ���ѥ�ƥ��ʤ�
-  �����ȥåץӥåȡ�1�ӥå�
-  ���ܡ��졼�ȡ�9600bps
-�Ǥ��롣
+カーネルのログ出力用にシリアルポートを１つ使用する。
+シリアルポートの設定は
+  ・8ビット
+  ・パリティなし
+  ・ストップビット：1ビット
+  ・ボーレート：9600bps
+である。
 
-�ʤ����ܡ��졼�ȤˤĤ��Ƥϡ�BAUD_RATE�ޥ����ˤ�������Ƥ���Τ�ɬ�פ�
-�������ѹ����뤳�Ȥ��Ǥ��롣
+なお、ボーレートについては、BAUD_RATEマクロにて定義しているので必要に
+応じて変更することができる。
 (user_config.h)
 
-1.6 ����ǥ�����
+1.6 エンディアン
 
-�ƥ������åȤϥǥ��åץ����å��ˤ�ꥨ��ǥ�������ѹ����뤳�Ȥ���ǽ��
-���롣����˹�碌�ơ������ͥ�Υ���ǥ����������ϳƥ����ƥ��¸����
-�ѹ���ǽ�Ǥ��롣����ǥ�����ϰʲ��θĽ�����ꤹ�롣
+各ターゲットはディップスイッチによりエンディアンを変更することが可能で
+ある。これに合わせて、カーネルのエンディアンの設定は各システム依存部で
+変更可能である。エンディアンは以下の個所で設定する。
 
- ��$SYS�ǥ��쥯�ȥ�� Makefile.config 
-    ����ѥ��륪�ץ����
-    ��-mbig���ӥå�������ǥ�����
-    ��-mlittle����ȥ롦����ǥ�����
+ ・$SYSディレクトリの Makefile.config 
+    コンパイルオプション
+    　-mbig：ビッグ・エンディアン
+    　-mlittle：リトル・エンディアン
 
- �������ƥ������user_config.h��
+ ・システム定義（user_config.h）
     SIL_ENDIAN
-    ��SIL_ENDIAN_BIG���ӥå�������ǥ�����
-    ��SIL_ENDIAN_LITTLE����ȥ롦����ǥ�����
+    　SIL_ENDIAN_BIG：ビッグ・エンディアン
+    　SIL_ENDIAN_LITTLE：リトル・エンディアン
     
-  ����
-  ����ȥ롦����ǥ�����Ǥ�ư���ǧ�ϹԤäƤ��ʤ�
+  注意
+  　リトル・エンディアンでの動作確認は行っていない
 
 
-��. PowerPC32�������åȰ�¸���ε�ǽ
+２. PowerPC32ターゲット依存部の機能
 
-������Ǥϡ������ͥ뤪��ӥ����ƥॵ���ӥ��ε�ǽ����ǡ�PowerPC32����
-���åȰ�¸����ʬ�ˤĤ��Ʋ��⤹�롣
+この節では、カーネルおよびシステムサービスの機能の中で、PowerPC32ター
+ゲット依存の部分について解説する。
 
-2.1 �ǡ�����
+2.1 データ型
 
-int������� unsigned int���Υ������� 32�ӥåȤǤ��롣
+int型および unsigned int型のサイズは 32ビットである。
 
-2.2 ����ץ���ơ�������¸���ε�����ˡ�ˤĤ���
+2.2 インプリメンテーション依存性の記述方法について
 
-PowerPC32�������ƥ�����ϳ���ߥ���ȥ�������ꤷ�Ƥ��ʤ����ᡢ�ƥ�
-��ץ���ơ������ˤ�äƳ���߽������ۤʤ롣������PowerPC32��¸��
-�μ����Ǥϡ�$CPU�ǥ��쥯�ȥ�ľ���ˤ�PowerPC32�������ƥ�����ǵ��ꤵ��
-�Ƥ������ƤΤߤ򵭽Ҥ�������ץ���ơ�������¸���ä˳����ߥ����
-�������¸�ˤν�����$SYS�ǥ��쥯�ȥ��������Ƥ��롣
-�������Ѥ����������åȰʳ��˰ܿ����뤿��γ���߽����˴ؤ��륤��
-�ե���������ϡ�����ʸ��κǸ�ˡ�7. �����ͥ�ܿ��Ը����ξ���פȤ���
-�ޤȤ�Ƶ��ܤ��Ƥ���Τǻ��ȤΤ��ȡ�
+PowerPC32アーキテクチャは割込みコントローラを規定していないため、各イ
+ンプリメンテーションによって割込み処理が異なる。そこでPowerPC32依存部
+の実装では、$CPUディレクトリ直下にはPowerPC32アーキテクチャで規定され
+ている内容のみを記述し、インプリメンテーション依存（特に割り込みコント
+ローラ依存）の処理は$SYSディレクトリで定義している。
+今回利用したターゲット以外に移植するための割込み処理に関するインタ
+フェース情報は、この文書の最後に「7. カーネル移植者向けの情報」として
+まとめて記載しているので参照のこと。
 
-2.3 ����ߴ�����ǽ
+2.3 割込み管理機能
 
-�����ͥ�������γ���ߤȤ��Ƥϡ� NMI�����롣��äơ�CPU���å����֤��
-�����롼������Ǥϡ�NMI �ʳ��γ���ߤϤ��٤ƶػߤ���Ƥ��롣����Ū�ˤϡ�
-MSR(Machine Status Register)��EE�ӥåȤ�0�����ꤵ��롣
+カーネル管理外の割込みとしては、 NMIがある。よって、CPUロック状態や初
+期化ルーチン内では、NMI 以外の割込みはすべて禁止されている。具体的には、
+MSR(Machine Status Register)のEEビットが0に設定される。
 
-DEF_INH �ǻ��ꤹ�����ߥϥ�ɥ��ֹ�(inhno)�ϡ��ץ����å��Υϡ��ɥ���
-����ɽ���˹�碌�뤳�Ȥ�§�Ȥ��롣
+DEF_INH で指定する割込みハンドラ番号(inhno)は、プロセッサのハードウェ
+アの表記に合わせることを原則とする。
 
-����ߥޥ����������ͥ��������Τ���Ρ������API�ϰʲ����̤�Ǥ��롣
+割込みマスク／割込み優先度制御のための、定義・APIは以下の通りである。
 
-(1) IPM��
-������ߥ���ȥ�����γ���ߥޥ����򰷤�����η��Ǥ��롣
+(1) IPM型
+　割込みコントローラの割込みマスクを扱うための型である。
 (sys_defs.h)
 
-(2) define_ipm         	������������߼��ջ��γ���ߥޥ���������
-���������������������������������ʥ��ץ�����
-��C����API��
+(2) define_ipm         	　　　　割込み受付時の割込みマスクの設定
+　　　　　　　　　　　　　　　　（オプション）
+【C言語API】
         define_ipm(INHNO inhno, IPM ipm);
 
-�ڥѥ�᡼����
-	INHNO inhno		����ߥϥ�ɥ��ֹ�
-	IPM ipm			����ߥޥ���
+【パラメータ】
+	INHNO inhno		割込みハンドラ番号
+	IPM ipm			割込みマスク
 
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
+【リターンパラメータ】
+	なし
 
-�ڵ�ǽ��
-������ߥϥ�ɥ��ֹ�inhno�γ���ߤ�����դ����Ȥ��˳����
-������ȥ������IPM�����ꤹ���ͤ�������롣����ߥ���ȥ�����
-����¿�ų���ߤΥ�٥������ϡ��ɥ������ǥ��ݡ��Ȥ��Ƥ���С�
-�����եȥ������Ǥ��Τ褦�ʽ����򤹤�ɬ�פϤʤ���
-���ǥХ����ɥ饤�Фν���������ǻ��Ѥ���뤳�Ȥ����ꤷ�Ƥ���
+【機能】
+　割込みハンドラ番号inhnoの割込みを受け付けたときに割込み
+　コントローラのIPMに設定する値を定義する。割込みコントローラ
+　が多重割込みのレベル制御をハードウェアでサポートしていれば、
+　ソフトウェアでこのような準備をする必要はない。
+　デバイスドライバの初期化処理で使用されることを想定している
   (sys_config.h)
 
-2.4 chg_ipm�Υ��ݡ��ȤˤĤ���
+2.4 chg_ipmのサポートについて
 
-PowerPC32�������ƥ������¸�ε�ǽ�Ȥ��ơ�����ߥ���ȥ�����γ�����
-�ޥ������ͤ��ѹ����뤿��Υ����ӥ������� chg_ipm �ȡ����Ȥ��뤿���
-�����ӥ������� get_ipm �򥵥ݡ��Ȥ��Ƥ��롣�ʤ��������ߥޥ����ӥå�
-���ͤ�ɽ���ǡ����� IPM �ϡ�$SYS�ǥ��쥯�ȥ�ˤ��������Ƥ��롣
+PowerPC32アーキテクチャ依存の機能として、割込みコントローラの割り込み
+マスクの値を変更するためのサービスコール chg_ipm と、参照するための
+サービスコール get_ipm をサポートしている。なお、割り込みマスクビット
+の値を表すデータ型 IPM は、$SYSディレクトリにて定義されている。
 
-�����Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤ξ��
-�ˤΤ߸ƤӽФ����Ȥ��Ǥ��롣chg_ipm �ˤ�� ���餫�γ���ߤ��ػߤ����
-������֤ˤ������Ǥ⡢�ǥ����ѥå��϶ػߤ��줺��chg_ipm �ˤ���ѹ���
-�� IPM ���ͤϡ��ǥ����ѥå���Υ������˰����Ѥ���롣�㤨�С����륿��
-���� IPM �� 0x01 ���ѹ������塢���餫�γ���ߤˤ���̤Υ��������ڤ���
-���ȡ��ڤ��ؤ�ä���Υ������Ǥ� IPM �� 0x01 �ˤʤ롣
+これらのサービスコールは、タスクコンテキストで CPUロック解除状態の場合
+にのみ呼び出すことができる。chg_ipm により 何らかの割込みが禁止されて
+いる状態にした場合でも、ディスパッチは禁止されず、chg_ipm により変更し
+た IPM の値は、ディスパッチ後のタスクに引き継がれる。例えば、あるタス
+クで IPM を 0x01 に変更した後、何らかの割込みにより別のタスクに切り替
+わると、切り替わった後のタスクでも IPM は 0x01 になる。
 
-chg_ipm �򥵥ݡ��Ȥ��뤿��ˡ�����ߥϥ�ɥ�ν����������ʤɤ˥����Хإ�
-�ɤ������Ƥ��롣�����ǡ�SUPPORT_CHG_IPM �Ȥ����ޥ����ˤ�ꡢ�����Υ���
-�ӥ�������򥵥ݡ��Ȥ��뤫�ɤ������ڤ��ؤ�����褦�ˤ��Ƥ��롣
-SUPPORT_CHG_IPM �ϡ�user_config.h ����� #define ����Ƥ��롣
+chg_ipm をサポートするために、割込みハンドラの出入口処理などにオーバヘッ
+ドを生じている。そこで、SUPPORT_CHG_IPM というマクロにより、これらのサー
+ビスコールをサポートするかどうかを切り替えられるようにしている。
+SUPPORT_CHG_IPM は、user_config.h の中で #define されている。
 
-PowerPC32�������åȰ�¸�γ���ߥޥ������ѹ������ȤΤ���Υ����ӥ�����
-��λ��ͤϼ����̤ꡣ
+PowerPC32ターゲット依存の割込みマスクの変更・参照のためのサービスコー
+ルの仕様は次の通り。
 
-(1) chg_ipm			����ߥޥ������ѹ�
+(1) chg_ipm			割込みマスクの変更
 
-��C����API��
+【C言語API】
 	ER ercd = chg_ipm(IPM ipm);
 
-�ڥѥ�᡼����
-	IPM	ipm		���ꤹ�٤� IPM ����
+【パラメータ】
+	IPM	ipm		設定すべき IPM の値
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
+【リターンパラメータ】
+	ER	ercd		エラーコード
 
-�ڥ��顼�����ɡ�
-	E_CTX			����ƥ����ȥ��顼
-	E_PAR			�ѥ�᡼�����顼(ipm ������)
+【エラーコード】
+	E_CTX			コンテキストエラー
+	E_PAR			パラメータエラー(ipm が不正)
 
-�ڵ�ǽ��
+【機能】
 
-������ߥޥ����� ipm �ǻ��ꤵ�줿�ͤ����ꤹ�롣���ꤷ���ͤ�����ߥ���
-���ȥ�����γ���ߥޥ������ϰ�������äƤ��ʤ����ˤ�E_PAR���顼����
-������
-���ޤ������ꤷ��IPM���ͤϡ��ǥ����ѥå��������Ѥ���롣
-��
-�����Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ�
-���ƤӽФ����Ȥ��Ǥ��롣�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�
-�������ˤϡ�E_CTX���顼�Ȥʤ롣
+　割込みマスクを ipm で指定された値に設定する。指定した値が割込みコン
+　トローラの割込みマスクの範囲内に入っていない場合にはE_PARエラーを返
+　す。
+　また、設定したIPMの値は、ディスパッチ後も引き継がれる。
+　
+　このサービスコールは、タスクコンテキストで CPUロック解除状態の時のみ
+　呼び出すことができる。非タスクコンテキストや CPUロック状態で呼び出し
+　た場合には、E_CTXエラーとなる。
 
-(2) get_ipm			����ߥޥ����λ���
+(2) get_ipm			割込みマスクの参照
 
-��C����API��
+【C言語API】
 	ER ercd = get_ipm(IPM *p_ipm);
 
-�ڥѥ�᡼����
-	�ʤ�
+【パラメータ】
+	なし
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
-	IPM	*p_ipm		���ߤ� IPM ����
+【リターンパラメータ】
+	ER	ercd		エラーコード
+	IPM	*p_ipm		現在の IPM の値
 
-�ڥ��顼�����ɡ�
-	E_CTX			����ƥ����ȥ��顼
+【エラーコード】
+	E_CTX			コンテキストエラー
 
-�ڵ�ǽ��
+【機能】
 
-�����ߤ� ����ߥޥ������ͤ��ɤ߽Ф���p_ipm���ؤ������ΰ�˽񤭹��ࡣ
-��
-�����Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ�
-���ƤӽФ����Ȥ��Ǥ��롣�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�
-�������ˤϡ�E_CTX���顼�Ȥʤ롣
-��
-���ʤ����ȥ졼��������ǽ�˴ؤ��ơ�chg_ipm�˴ؤ�����ʬ�ϥ����ƥ��¸��
-���ˤ������ԤäƤ��롣
-��(sys_tool_config.h)
+　現在の 割込みマスクの値を読み出し、p_ipmが指し示す領域に書き込む。
+　
+　このサービスコールは、タスクコンテキストで CPUロック解除状態の時のみ
+　呼び出すことができる。非タスクコンテキストや CPUロック状態で呼び出し
+　た場合には、E_CTXエラーとなる。
+　
+　なお、トレースログ機能に関して、chg_ipmに関する部分はシステム依存部
+　にて定義を行っている。
+　(sys_tool_config.h)
 
 
-2.5 ����ץ���ơ�������¸�����
+2.5 インプリメンテーション依存の定義
 
-2.5.1 MPC860T��¸�����
+2.5.1 MPC860T依存の定義
 
-(1) ������ֹ�
-     mpc860t.h��������Ƥ��롣
+(1) 割込み番号
+     mpc860t.hで定義している。
      
-                       ��SIU����ߥ�������
-        ������ֹ�  ��      �ޥ���̾    ��  ������װ� 
-      �ݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡ�
-             0x0    ��    INTNO_IRQ0    ��  IRQ0
-             0x1    ��    INTNO_LVL0    ��  ������٥�0
-             0x2    ��    INTNO_IRQ1    ��  IRQ1
-             0x3    ��    INTNO_LVL1    ��  ������٥�1
-             0x4    ��    INTNO_IRQ2    ��  IRQ2
-             0x5    ��    INTNO_LVL2    ��  ������٥�2
-             0x6    ��    INTNO_IRQ3    ��  IRQ3
-             0x7    ��    INTNO_LVL3    ��  ������٥�3�ʥ����ޤǻ��ѡ�
-             0x8    ��    INTNO_IRQ4    ��  IRQ4
-             0x9    ��    INTNO_LVL4    ��  ������٥�4��CPM�ǻ��ѡ�
-             0xa    ��    INTNO_IRQ5    ��  IRQ5
-             0xb    ��    INTNO_LVL5    ��  ������٥�5
-             0xc    ��    INTNO_IRQ6    ��  IRQ6
-             0xd    ��    INTNO_LVL6    ��  ������٥�6
-             0xe    ��    INTNO_IRQ7    ��  IRQ7
-             0xf    ��    INTNO_LVL7    ��  ������٥�7
-      �ݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡ�
+                       （SIU割込みソース）
+        割込み番号  ｜      マクロ名    ｜  割込み要因 
+      −−−−−−−−−−−−−−−−−−−−−−−−−−−−
+             0x0    ｜    INTNO_IRQ0    ｜  IRQ0
+             0x1    ｜    INTNO_LVL0    ｜  内部レベル0
+             0x2    ｜    INTNO_IRQ1    ｜  IRQ1
+             0x3    ｜    INTNO_LVL1    ｜  内部レベル1
+             0x4    ｜    INTNO_IRQ2    ｜  IRQ2
+             0x5    ｜    INTNO_LVL2    ｜  内部レベル2
+             0x6    ｜    INTNO_IRQ3    ｜  IRQ3
+             0x7    ｜    INTNO_LVL3    ｜  内部レベル3（タイマで使用）
+             0x8    ｜    INTNO_IRQ4    ｜  IRQ4
+             0x9    ｜    INTNO_LVL4    ｜  内部レベル4（CPMで使用）
+             0xa    ｜    INTNO_IRQ5    ｜  IRQ5
+             0xb    ｜    INTNO_LVL5    ｜  内部レベル5
+             0xc    ｜    INTNO_IRQ6    ｜  IRQ6
+             0xd    ｜    INTNO_LVL6    ｜  内部レベル6
+             0xe    ｜    INTNO_IRQ7    ｜  IRQ7
+             0xf    ｜    INTNO_LVL7    ｜  内部レベル7
+      −−−−−−−−−−−−−−−−−−−−−−−−−−−−
 
-                       ��CPM����ߥ�������
-        ������ֹ�  ��      �ޥ���̾    ��  ������װ� 
-      �ݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡ�
-            0x10    ��    INTNO_ERR     ��  ���顼
-            0x11    ��    INTNO_PC4     ��  �ѥ���I/O PC4
-            0x12    ��    INTNO_PC5     ��  �ѥ���I/O PC
-            0x13    ��    INTNO_SMC2    ��  SMC2/PIP
-            0x14    ��    INTNO_SMC1    ��  SMC1
-            0x15    ��    INTNO_SPI     ��  SPI
-            0x16    ��    INTNO_PC6     ��  �ѥ���I/O PC6
-            0x17    ��    INTNO_TIMER4  ��  ������4
-            0x18    ��                  ��  ͽ��Ѥ�
-            0x19    ��    INTNO_PC7     ��  �ѥ���I/O PC7
-            0x1a    ��    INTNO_PC8     ��  �ѥ���I/O PC8
-            0x1b    ��    INTNO_PC9     ��  �ѥ���I/O PC9
-            0x1c    ��    INTNO_TIMER3  ��  ������3
-            0x1d    ��                  ��  ͽ��Ѥ�
-            0x1e    ��    INTNO_PC10    ��  �ѥ���I/O PC10
-            0x1f    ��    INTNO_PC11    ��  �ѥ���I/O PC11
-            0x20    ��    INTNO_I2C     ��  I2C
-            0x21    ��    INTNO_RISC    ��  RISC�����ޥơ��֥�
-            0x22    ��    INTNO_TIMER2  ��  ������2
-            0x23    ��                  ��  ͽ��Ѥ�
-            0x24    ��    INTNO_IDMA2   ��  IDMA2
-            0x25    ��    INTNO_IDMA1   ��  IDMA1
-            0x26    ��    INTNO_SDMA    ��  SDMA����ͥ�Х����顼
-            0x27    ��    INTNO_PC12    ��  �ѥ���I/O PC12
-            0x28    ��    INTNO_PC13    ��  �ѥ���I/O PC13
-            0x29    ��    INTNO_TIMER1  ��  ������1
-            0x2a    ��    INTNO_PC14    ��  �ѥ���I/O PC14
-            0x2b    ��    INTNO_SCC4    ��  SCC4
-            0x2c    ��    INTNO_SCC3    ��  SCC3
-            0x2d    ��    INTNO_SCC2    ��  SCC2
-            0x2e    ��    INTNO_SCC1    ��  SCC1
-            0x2f    ��    INTNO_PC15    ��  �ѥ���I/O PC15
-      �ݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡݡ�
+                       （CPM割込みソース）
+        割込み番号  ｜      マクロ名    ｜  割込み要因 
+      −−−−−−−−−−−−−−−−−−−−−−−−−−−−
+            0x10    ｜    INTNO_ERR     ｜  エラー
+            0x11    ｜    INTNO_PC4     ｜  パラレルI/O PC4
+            0x12    ｜    INTNO_PC5     ｜  パラレルI/O PC
+            0x13    ｜    INTNO_SMC2    ｜  SMC2/PIP
+            0x14    ｜    INTNO_SMC1    ｜  SMC1
+            0x15    ｜    INTNO_SPI     ｜  SPI
+            0x16    ｜    INTNO_PC6     ｜  パラレルI/O PC6
+            0x17    ｜    INTNO_TIMER4  ｜  タイマ4
+            0x18    ｜                  ｜  予約済み
+            0x19    ｜    INTNO_PC7     ｜  パラレルI/O PC7
+            0x1a    ｜    INTNO_PC8     ｜  パラレルI/O PC8
+            0x1b    ｜    INTNO_PC9     ｜  パラレルI/O PC9
+            0x1c    ｜    INTNO_TIMER3  ｜  タイマ3
+            0x1d    ｜                  ｜  予約済み
+            0x1e    ｜    INTNO_PC10    ｜  パラレルI/O PC10
+            0x1f    ｜    INTNO_PC11    ｜  パラレルI/O PC11
+            0x20    ｜    INTNO_I2C     ｜  I2C
+            0x21    ｜    INTNO_RISC    ｜  RISCタイマテーブル
+            0x22    ｜    INTNO_TIMER2  ｜  タイマ2
+            0x23    ｜                  ｜  予約済み
+            0x24    ｜    INTNO_IDMA2   ｜  IDMA2
+            0x25    ｜    INTNO_IDMA1   ｜  IDMA1
+            0x26    ｜    INTNO_SDMA    ｜  SDMAチャネルバスエラー
+            0x27    ｜    INTNO_PC12    ｜  パラレルI/O PC12
+            0x28    ｜    INTNO_PC13    ｜  パラレルI/O PC13
+            0x29    ｜    INTNO_TIMER1  ｜  タイマ1
+            0x2a    ｜    INTNO_PC14    ｜  パラレルI/O PC14
+            0x2b    ｜    INTNO_SCC4    ｜  SCC4
+            0x2c    ｜    INTNO_SCC3    ｜  SCC3
+            0x2d    ｜    INTNO_SCC2    ｜  SCC2
+            0x2e    ｜    INTNO_SCC1    ｜  SCC1
+            0x2f    ｜    INTNO_PC15    ｜  パラレルI/O PC15
+      −−−−−−−−−−−−−−−−−−−−−−−−−−−−
 
-������SIU��System Interface Unit
-������CPM��Communication Processor Module
+　　　SIU：System Interface Unit
+　　　CPM：Communication Processor Module
 
-(2) ����ߥ���ȥ�����γ���ߥޥ���
+(2) 割込みコントローラの割込みマスク
 
-MPC860T�Ǥϥץ����å�����¢�Υ����ƥࡦ���󥿡��ե���������˥å�SIU��
-�̿��ץ����å����⥸�塼��CPM�����줾�����ߥ���ȥ��������äƤ��ꡢ
-����2�Ĥγ���ߥ���ȥ����餬������������³����Ƥ��롣
-����μ����Ǥϡ�SIU�γ���ߥޥ�����SIU����ߥޥ����쥸����SIMASK�ˤΤ�
-�����ͥ�Ǵ������Ƥ��롣CPM�ˤĤ��Ƥϳ���ߥ���ȥ����餬¿�ų���ߤ�
-��٥������ϡ��ɥ������ǥ��ݡ��Ȥ��Ƥ��ᡢ�����ͥ�Ǥ�CPM����ߥޥ�
-����������Ƥ��ʤ���
-IPM���������
-��typedef UH IPM;
-�Ǥ��롣��sys_defs.h��
-�ޤ���CPM����SIU�ؤγ�����׵��٥��4�����ꤵ��Ƥ��롣
-��user_config.h�Υޥ���CPM_INT_LEVEL��
+MPC860Tではプロセッサに内蔵のシステム・インターフェース・ユニットSIUと
+通信プロセッサ・モジュールCPMがそれぞれ割込みコントローラを持っており、
+この2つの割込みコントローラがカスケード接続されている。
+今回の実装では、SIUの割込みマスク（SIU割込みマスクレジスタSIMASK）のみ
+カーネルで管理している。CPMについては割込みコントローラが多重割込みの
+レベル制御をハードウェアでサポートしてため、カーネルではCPM割込みマス
+クを管理していない。
+IPM型の定義は
+　typedef UH IPM;
+である。（sys_defs.h）
+また、CPMからSIUへの割込み要求レベルは4に設定されている。
+（user_config.hのマクロCPM_INT_LEVEL）
 
-(3) �����ͥ�ǻ��Ѥ��Ƥ���ǥХ����ʳ�����װ���
-��������MPC860T��¢�μ�������ߥ�����PIT��������٥�3��
-��������MPC860T��¢���ꥢ�롦�ޥ͡������ȥ���ȥ�����SMC1
-����������CPM����ߤΰ��ʤΤǡ�������٥�4��
+(3) カーネルで使用しているデバイス（割込み要因）
+　　　・MPC860T内蔵の周期割込みタイマPIT（内部レベル3）
+　　　・MPC860T内蔵シリアル・マネージメントコントローラSMC1
+　　　　（CPM割込みの一種なので、内部レベル4）
 
-(4) �ƥǥХ����γ����ͥ����
-  ͥ���� : (��) ���ꥢ��SMC1�ʥ�٥�4�� > ������PIT�ʥ�٥�3�� (��)
-������
+(4) 各デバイスの割込み優先度
+  優先度 : (低) シリアルSMC1（レベル4） > タイマPIT（レベル3） (高)
+　　　
 
 
-2.5 CPU�㳰������ǽ��CPU�㳰�ϥ�ɥ�
+2.5 CPU例外管理機能とCPU例外ハンドラ
 
-DEF_EXC�ǻ��ꤹ��CPU�㳰�װ��ֹ�(excno)�ϡ�PowerPC�������ƥ�����ǵ���
-�����CPU�㳰�װ��ֹ�Ȱ��а���б����Ƥ��롣
-���Υǡ�����(EXCNO)�� UINT�����������Ƥ��롣
+DEF_EXCで指定するCPU例外要因番号(excno)は、PowerPCアーキテクチャで規定
+されるCPU例外要因番号と一対一に対応している。
+そのデータ型(EXCNO)は UINT型に定義されている。
 
-DEF_EXC���㳰�װ��ֹ�Ȥ���ͭ���Ǥʤ��ͤ�CPU�㳰���б����ʤ��ֹ�����
-��������ư����ݾڤ���ʤ���
+DEF_EXCで例外要因番号として有効でない値やCPU例外に対応しない番号を指定
+した場合の動作は保証されない。
 
-CPU�㳰�װ��ֹ桢�ޥ���̾��CPU�㳰�װ����б��ط���ʲ��˼�����
+CPU例外要因番号、マクロ名、CPU例外要因の対応関係を以下に示す。
 
- 1. EXC_NO_SYSTEM_RESET��     �����ƥ�ꥻ�å��㳰
- 2. EXC_NO_MACHINE_CHECK      �ޥ��󡦥����å��㳰
- 3. EXC_NO_DSI                DSI�㳰
-                              �ʥǡ��������ꡦ���������� 
- 4. EXC_NO_ISI                ISI�㳰��̿��ե��å���
- 5. EXC_NO_EXTERNAL_INTERRUPT ���������
- 6. EXC_NO_ALIGNMENT          ���饤�����㳰
- 7. EXC_NO_PROGRAM            �ץ�������㳰
+ 1. EXC_NO_SYSTEM_RESET　     システムリセット例外
+ 2. EXC_NO_MACHINE_CHECK      マシン・チェック例外
+ 3. EXC_NO_DSI                DSI例外
+                              （データ・メモリ・アクセス） 
+ 4. EXC_NO_ISI                ISI例外（命令フェッチ）
+ 5. EXC_NO_EXTERNAL_INTERRUPT 外部割込み
+ 6. EXC_NO_ALIGNMENT          アライメント例外
+ 7. EXC_NO_PROGRAM            プログラム例外
  8. EXC_NO_FLOATING_POINT_UNAVAILABLE 
-                              ��ư�����������Բ�
- 9. EXC_NO_DECREMENTER        �ǥ������㳰
+                              浮動小数点使用不可
+ 9. EXC_NO_DECREMENTER        デクリメンタ例外
 10. EXC_NO_IMPLEMENT_EXCEPTION_00A00
-                              ����ץ���ơ�������ͭ���㳰0x00a00
-12. EXC_NO_SYSTEM_CALL        �����ƥॳ����
-13. EXC_NO_TRACE              �ȥ졼���ʥ��ץ�����
+                              インプリメンテーション固有の例外0x00a00
+12. EXC_NO_SYSTEM_CALL        システムコール
+13. EXC_NO_TRACE              トレース（オプション）
 14. EXC_NO_FLOATING_POINT_ASSIST
-                              ��ư���������
+                              浮動小数点補助
 
-15�ְʹߤ˥ץ����å���Υ���ץ���ơ�������ͭ���㳰��0x01000�ˤ�
-�������Ƥ�����⤢�롣
+15番以降にプロセッサ毎のインプリメンテーション固有の例外（0x01000）が
+定義されている場合もある。
 
 
-(1) CPU�㳰�ϥ�ɥ�ؤΰ���p_excinf
-��CPU�㳰�ϥ�ɥ���Ϥ����p_excinf�ϡ�CPU�㳰ȯ�����Υ���ƥ����Ȥ���
-��¸���������å��ؤΥݥ��󥿤��Ϥ���롣�����å��ι�¤��ʲ��˼�����
+(1) CPU例外ハンドラへの引数p_excinf
+　CPU例外ハンドラに渡されるp_excinfは、CPU例外発生時のコンテキストを保
+　存したスタックへのポインタが渡される。スタックの構造を以下に示す。
 
 p_excinf -->  --------------------
              |       r0           | 
@@ -423,1229 +423,1229 @@ p_excinf -->  --------------------
               --------------------
              |       r12          |
               --------------------
-             |       srr0         | /*   ���������쥸����0��*/
+             |       srr0         | /*   待避／復帰レジスタ0　*/
               --------------------
-             |       srr1         | /*   ���������쥸����1��*/
+             |       srr1         | /*   待避／復帰レジスタ1　*/
               --------------------
-             |       lr           | /*   ��󥯡��쥸���� ����*/
+             |       lr           | /*   リンク・レジスタ 　　*/
               --------------------
-             |       ctr          | /*   ������ȡ��쥸������ */
+             |       ctr          | /*   カウント・レジスタ　 */
               --------------------
-             |       cr           | /*   ����ǥ�����󡦥쥸���� */
+             |       cr           | /*   コンディション・レジスタ */
               --------------------
-             |       xer          | /*   �������ڥ졼�����Ρ�*/
-              --------------------  /*       ��Ｑ�̥쥸����  */
-             |       exc_no       | /*   �㳰�װ��ֹ�  */
+             |       xer          | /*   整数オペレーションの　*/
+              --------------------  /*       条件識別レジスタ  */
+             |       exc_no       | /*   例外要因番号  */
               --------------------
              
-(2) ̤��Ͽ��CPU�㳰ȯ�����ν���
-��̤��Ͽ��CPU�㳰��ȯ���������ϥ����ͥ뤬�Ѱդ��Ƥ���ǥե���ȤΥ�
-���顼������Ԥ�������Ū�ˤ�CPU�㳰ȯ�����Υ쥸���������Ƥ�CPU�㳰�װ�
-����������Ϥ���̵�¥롼�פ����롣
+(2) 未登録のCPU例外発生時の処理
+　未登録のCPU例外が発生した場合はカーネルが用意しているデフォルトのエ
+　ラー処理を行う。具体的にはCPU例外発生時のレジスタの内容とCPU例外要因
+　をログ出力し、無限ループに入る。
 
 
-2.6 ��ư�������쥸����
+2.6 浮動小数点レジスタ
              
-PowerPC32�Ǥϡ���ư�������쥸���������ץ������������Ƥ��롣
-�����ͥ����ư�������쥸�����򥵥ݡ��Ȥ���������ԤäƤ��뤬���µ��Ǥ�
-ư��ƥ��Ȥ�ԤäƤ��ʤ����ʥݡ��ƥ��󥰤��Ѥ���MPC860T����ư��������
-�������������Ƥ��ʤ������
+PowerPC32では、浮動小数点レジスタがオプションで定義されている。
+カーネルも浮動小数点レジスタをサポートした実装を行っているが、実機での
+動作テストを行っていない。（ポーティングに用いたMPC860Tが浮動小数点レ
+ジスタを備えていないため）
 (cpu_support.S)
 
-2.7 �������ȥ��åץ⥸�塼��
+2.7 スタートアップモジュール
 
-PowerPC32�������åȤǤϡ��㳰�٥����ΰ�Ĥˡ��ꥻ�å��¤Ӥ� NMI(Non 
-Maskable Interrupt)�ѤΥ٥������ɥ쥹�������Ƥ��롣���Υ��ɥ쥹�����
-�������褬�������ȥ��åץ⥸�塼��ȤʤäƤ��롣
+PowerPC32ターゲットでは、例外ベクタの一つに、リセット並びに NMI(Non 
+Maskable Interrupt)用のベクタアドレスを備えている。このアドレスからの
+ジャンプ先がスタートアップモジュールとなっている。
 
-���Υ������ȥ��åץ⥸�塼��(start.S)�Ǥϡ����ν����������Ԥ���
+このスタートアップモジュール(start.S)では、次の初期化処理を行う。
 
-(A) �ץ����å��ν����
+(A) プロセッサの初期化
 
-�ޥ��󥹡��ơ��������쥸���������������ץ����å���ư��⡼�ɤ�����
-���롣
+マシンス・テータス・レジスタを初期化し、プロセッサの動作モードを設定
+する。
 
-���ˡ������å��ݥ���(r1)�� STACKTOP�����ꤹ�롣�����ǳ���ߥ����å�
-�ݥ��󥿤����ꤵ�줿�����å��ΰ�ϡ������ͥ뵯ư����󥿥�������ƥ���
-���ѤΥ����å��ΰ�Ȥ��ƻȤ��롣
-STACKTOP�ϡ�sys_config.h����������뤳�Ȥ����ꤷ�Ƥ��롣
+次に、スタックポインタ(r1)を STACKTOPに設定する。ここで割込みスタック
+ポインタに設定されたスタック領域は、カーネル起動後は非タスクコンテキス
+ト用のスタック領域として使われる。
+STACKTOPは、sys_config.h部で定義することを想定している。
 
-(B) hardware_init_hook �θƽФ�
+(B) hardware_init_hook の呼出し
 
-hardware_init_hook �� 0 �Ǥʤ����ˤϡ�hardware_init_hook ��ƤӽФ���
-hardware_init_hook �ϡ����̤˥����ͥ뤬��ư��������˹Ԥ�ɬ�פ����륷
-���ƥ��¸�ν�����򵭽Ҥ����ΤȤ��롣���㡧�Х����ơ��ȡ�����ȥ���
-��ν����������å���ν�����������å��ɥå������ޤν�����ʤɡ�
-���Ҿ��ϡ�sys_support.S��ɸ��Ȥ��롣
+hardware_init_hook が 0 でない場合には、hardware_init_hook を呼び出す。
+hardware_init_hook は、一般にカーネルが起動される前に行う必要があるシ
+ステム依存の初期化を記述するものとする。（例：バスステート・コントロー
+ラの初期化、キャッシュの初期化、ウォッチドッグタイマの初期化など）
+記述場所は、sys_support.Sを標準とする。
 
-hardware_init_hook ���ɤ��ˤ��������Ƥ��ʤ���硢��󥫤Ǥ��Υ����
-���0���������(��󥫥�����ץ���˵��Ҥ���)��
+hardware_init_hook がどこにも定義されていない場合、リンカでこのシンボ
+ルを0に定義する(リンカスクリプト内に記述あり)。
 
-(C) bss����������data���������ν����
+(C) bssセクションとdataセクションの初期化
 
-bss���������򥼥����ꥢ���롣
+bssセクションをゼロクリアする。
 
-data�����������������롣ROM���б��Τ���ˡ�ROM����RAM �إ��ԡ����
-����
+dataセクションを初期化する。ROM化対応のために、ROMからRAM へコピーを行
+う。
 
-(D) software_init_hook �θƽФ�
+(D) software_init_hook の呼出し
 
-software_init_hook �� 0 �Ǥʤ����ˤϡ�software_init_hook ��ƤӽФ���
-software_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륽�ե�
-�������Ķ�(����Ū�ˤϡ��饤�֥��)��¸�ν������Ԥ�������Ѱդ��Ƥ��롣
-software_init_hook ���ɤ��Ǥ��������Ƥ��ʤ���硢��󥫤Ǥ��Υ����
-���0���������(��󥫥�����ץ���˵��Ҥ���)��
+software_init_hook が 0 でない場合には、software_init_hook を呼び出す。
+software_init_hook は、カーネルが起動される前に行う必要があるソフト
+ウェア環境(具体的には、ライブラリ)依存の初期化を行うために用意している。
+software_init_hook がどこでも定義されていない場合、リンカでこのシンボ
+ルを0に定義する(リンカスクリプト内に記述あり)。
 
-(E) �����ͥ�ε�ư
+(E) カーネルの起動
 
-kernel_start ��ʬ�����������ͥ��ư���롣kernel_start ����꥿����
-�Ƥ��뤳�Ȥ����ꤷ�Ƥ��ʤ���
+kernel_start へ分岐し、カーネルを起動する。kernel_start からリターンし
+てくることは想定していない。
 
 
-��. �����ƥ��¸���ε�ǽ
+３. システム依存部の機能
 
-3.1 �����ƥ९���å��ɥ饤��
+3.1 システムクロックドライバ
 
-�����ƥ९���å��ɥ饤�Ф� isig_tim ��ƤӽФ������ϡ�user_config.h ��
-��TIC_NUME �� TIC_DENO ���������Ƥ���(�ǥե���ȤǤ� 1�ߥ��ü���)��
-����������ѹ����뤳�Ȥǡ�isig_tim ��ƤӽФ��������ѹ����뤳�Ȥ��Ǥ�
-�롣
-�������������ޤ����٤����륯���å��˰�¸���뤿�ᡢ�����ޤζ��륯���å�
-ñ�̤�ü���ˤʤ��ͤ����ꤷ�����ˤϡ�isig_tim �θƽФ������˸�������
-���뤳�Ȥˤʤ롣
+システムクロックドライバが isig_tim を呼び出す周期は、user_config.h 中
+のTIC_NUME と TIC_DENO で定義されている(デフォルトでは 1ミリ秒周期)。
+この定義を変更することで、isig_tim を呼び出す周期を変更することができ
+る。
+ただし、タイマの精度が供給クロックに依存するため、タイマの供給クロック
+単位で端数になる値を設定した場合には、isig_tim の呼出し周期に誤差が生
+じることになる。
 
-�ǥե���ȤǤϡ������Υ����ޤ����Ѥ��Ƥ��롣
-(a) MPC860T��¸��
-  MPC860T��¢�μ�������ߥ�����PIT
-  �ʶ��륯���å����ȿ� 12.5MHz��
+デフォルトでは、下記のタイマを利用している。
+(a) MPC860T依存部
+  MPC860T内蔵の周期割込みタイマPIT
+  （供給クロック周波数 12.5MHz）
 
-3.2 ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
+3.2 性能評価用システム時刻参照機能
 
-PowerPC32�������åȰ�¸���Ǥϡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
-(vxget_tim)�򥵥ݡ��Ȥ��Ƥ��롣SYSUTIM����UD��(64�ӥåȤ����̵������
-��)��������Ƥ��롣
+PowerPC32ターゲット依存部では、性能評価用システム時刻参照機能
+(vxget_tim)をサポートしている。SYSUTIM型はUD型(64ビットの符号無し整数
+型)で定義している。
 
-��ǽɾ���ѥ����ƥ��������٤϶��륯���å�ñ�̤Ǥ��뤬�������ޤθ����ͤ�
-�ɤ߽Ф�����˰��Ū�˥����ޤ���ߤ�����ɬ�פ����뤿�ᡢvxget_tim ��Ƥ�
-�٤˥����ƥ९���å��������Ť��٤�뤳�Ȥˤʤ롣
-�ޤ���SUPPORT_VXGET_TIM�Ȥ����ޥ����ˤ�ꡢ�����Υ����ӥ��������
-�ݡ��Ȥ��뤫�ɤ������ڤ��ؤ�����褦�ˤ��Ƥ��롣
-(SUPPORT_VXGET_TIM �ϡ�user_config.h ����� #define ����Ƥ��롣)
+性能評価用システム時刻の精度は供給クロック単位であるが、タイマの現在値を
+読み出すために一時的にタイマを停止させる必要があるため、vxget_tim を呼ぶ
+度にシステムクロックが少しづつ遅れることになる。
+また、SUPPORT_VXGET_TIMというマクロにより、これらのサービスコールをサ
+ポートするかどうかを切り替えられるようにしている。
+(SUPPORT_VXGET_TIM は、user_config.h の中で #define されている。)
 
-(a) MPC860T��¸��
-����ǽɾ���ѥ����ƥ��������٤�80nsec�Ǥ��롣
-  �ʥ����ޤؤζ��륯���å����ȿ� 12.5MHz��
+(a) MPC860T依存部
+　性能評価用システム時刻の精度は80nsecである。
+  （タイマへの供給クロック周波数 12.5MHz）
 
-3.3 ���ꥢ�륤�󥿥ե������ɥ饤��
-
-(a) MPC860T
-�����ꥢ�륤�󥿥ե������ɥ饤�Фϡ�MPC860T��¢���ꥢ�롦�ޥ͡������
-���ȡ�����ȥ�����SMC1�򥵥ݡ��Ȥ��Ƥ��롣���ꥢ��Υ��ݡ��Ȥ���ݡ���
-�����ϸ���1ch�Ǥ��ꡢuser_config.h �����TNUM_PORT�ޥ����ˤ�������Ƥ�
-���롣
-
-3.4 ����ޥå�
-
-����ޥåפ˴ؤ�������ϡ���󥫥�����ץȤˤƹԤ�������ѥ��������
-�Ѥ����󥫥�����ץȤ�$SYS/Makefile.config�ǻ��ꤹ�롣
-
-�ơ��Υ���ޥåפϰʲ��̤�Ǥ��롣
+3.3 シリアルインタフェースドライバ
 
 (a) MPC860T
-��(��)����Хå��� TB6102S
+　シリアルインタフェースドライバは、MPC860T内蔵シリアル・マネージメン
+　ト・コントローラSMC1をサポートしている。シリアルのサポートするポート
+　数は現状1chであり、user_config.h の中でTNUM_PORTマクロにて定義してい
+　る。
 
-(a-1) ROM���ξ���DBGENV = ROM�ˡ�mpc860elf.ld
+3.4 メモリマップ
+
+メモリマップに関する設定は、リンカスクリプトにて行う。コンパイル時に利
+用するリンカスクリプトは$SYS/Makefile.configで指定する。
+
+各々のメモリマップは以下通りである。
+
+(a) MPC860T
+・(株)タンバック製 TB6102S
+
+(a-1) ROM化の場合（DBGENV = ROM）：mpc860elf.ld
                                              (SDRAM 16Mbyte)
-	 0x00000100 - 0x00001fff  �㳰�٥���
-         0x00002000 -             �ǡ����ΰ�
-		    - 0x01000000  �󥿥�������ƥ������ѥ����å�
+	 0x00000100 - 0x00001fff  例外ベクタ
+         0x00002000 -             データ領域
+		    - 0x01000000  非タスクコンテキスト用スタック
 
                                              (FLASH ROM 2Mbyte)
-         0x10000100 - 0x100001ff  �ꥻ�åȥ٥���
-         0x10000200 - 0x10001fff  �㳰�٥����θ��ǡ���
-         0x10002000 -             �������ΰ�
-		    - 0x10400000  �ѿ��ν���ͥǡ���
+         0x10000100 - 0x100001ff  リセットベクタ
+         0x10000200 - 0x10001fff  例外ベクタの元データ
+         0x10002000 -             コード領域
+		    - 0x10400000  変数の初期値データ
 
-����
-������Ǥ���С��ꥻ�å�ľ���0x00000100���Ϥ���¹Ԥ����Ϥ����Ȥ���
-���������Υܡ��ɤξ��ϰʲ���2�Ĥ���ͳ����Flash ROM����Ƭ+0x100����
-���ʡ�0x10000100���ϡˤ���¹Ԥ��Ϥޤ롣
-����(1) �Х������ơ��ȡ�����ȥ����餬����������ޤǤϡ����٤ƤΥ���
-�����������������ꡦ�Х�0��Flash ROM�ˤ˥ҥåȤ��롣
-����(2) �ꥻ�åȻ��˥��ɥ쥹�Х���A20���椬�Գ����ˤʤäƤ��롣
+備考
+　本来であれば、リセット直後は0x00000100番地から実行が開始されるところ
+　が、このボードの場合は以下の2つの理由からFlash ROMの先頭+0x100番地
+　（＝0x10000100番地）から実行が始まる。
+　　(1) バス・ステート・コントローラが初期化されるまでは、すべてのアク
+　　　　セスがメモリ・バンク0（Flash ROM）にヒットする。
+　　(2) リセット時にアドレスバスのA20信号が不活性になっている。
 
 
-(a-2) RAM��ˤ��٤ƥ���������ɤ�����
-������DBGENV = DOWNLOAD_TO_RAM�ˡ�ram_mpc860elf.ld
+(a-2) RAM上にすべてダウンロードする場合
+　　（DBGENV = DOWNLOAD_TO_RAM）：ram_mpc860elf.ld
 
                                              (SDRAM 16Mbyte)
-	 0x00000100 - 0x00001fff  �㳰�٥���
-         0x00002000 -             �������ΰ�
-		    -             �ѿ��ν���ͥǡ���
-         0x00800000 -             �ǡ����ΰ�
-		    - 0x01000000  �󥿥�������ƥ������ѥ����å�
+	 0x00000100 - 0x00001fff  例外ベクタ
+         0x00002000 -             コード領域
+		    -             変数の初期値データ
+         0x00800000 -             データ領域
+		    - 0x01000000  非タスクコンテキスト用スタック
 
-����
-����JTAG�ǥХå��ġ���ʤɤǡ˥ǥХå��κݤˡ����ץ�������Flash 
-��RON�˽񤭹���Ǥ���Ⱥ�ȸ�Ψ�������������ǥץ������Υ����������
-�����֤�û�����뤿�ᡢ���٤ƤΥץ�������RAM��˥ޥåפ����󥯥���
-����ץȤ��Ѱդ��Ƥ��롣$SYS/Makefile.config��DBGENV = DOWNLOAD_TO_RAM
-�������򤹤��ɬ�פʥޥ���������ɲä���ȶ��ˡ���󥯥�����ץȤ�
-��ram_mpc860elf.ld�����ꤵ��롣�Х������ơ��ȥ���ȥ�����ν��������
-����Flash ROM�˽񤭹���Ǥ����������ޤǼ¹Ԥ�������(*1)�ǥץ�������
-������������ɤ���0x100���Ϥ���¹Ԥ򳫻Ϥ��롣
+備考
+　（JTAGデバッグツールなどで）デバッグの際に、毎回プログラムをFlash 
+　RONに書き込んでいると作業効率が悪い。そこでプログラムのダウンロード
+　時間を短くするため、すべてのプログラムをRAM上にマップするリンクスク
+　リプトも用意している。$SYS/Makefile.configでDBGENV = DOWNLOAD_TO_RAM
+　を選択すると必要なマクロ定義が追加されと共に、リンクスクリプトに
+　ram_mpc860elf.ldが指定される。バス・ステートコントローラの初期化処理
+　をFlash ROMに書き込んでおき、ここまで実行した時点(*1)でプログラムを
+　ダウンロードして0x100番地から実行を開始する。
 
-(*1) ROM��������ǥӥ�ɤ�����Τ�Flash ROM�˽񤭹���Ǥ�����
-���� sys_support.S�Υ�٥�copy_exception_vector�ԤޤǼ¹Ԥ�������ɤ���
+(*1) ROM化の設定でビルドしたものをFlash ROMに書き込んでおき、
+　　 sys_support.Sのラベルcopy_exception_vector行まで実行させれば良い。
 
 
 
-��. ��ȯ�Ķ��ι���
+４. 開発環境の構築
 
-��ȯ�Ķ��ι�����ˡ�ˤĤ��Ƥϡ�GNU��ȯ�Ķ����ۥޥ˥奢��򻲾Ȥ��뤳�ȡ�
-�ʤ����������åȴĶ� <TARGET> ���ͤˤĤ��Ƥϡ��ʲ��򻲹ͤΤ��ȡ�
-��ȯ�ˤ�Windows2000 SP4���Cygwin���Ѥ�����
+開発環境の構築方法については、GNU開発環境構築マニュアルを参照すること。
+なお、ターゲット環境 <TARGET> の値については、以下を参考のこと。
+開発にはWindows2000 SP4上のCygwinを用いた。
 
-ư���ǧ�ϡ������Υġ���ˤƳ�ǧ���Ƥ��롣���Υġ����ǥե���ȤȤ��롣
+動作確認は、下記のツールにて確認している。このツールをデフォルトとする。
 
-��GNU�������ۤ���Ƥ��륪�ꥸ�ʥ��GCC�ʤɤ򥽡������鹽�ۤ����ġ���
-  ư���ǧ��Ԥä��Ȥ��ΥС������ϰʲ����̤�Ǥ��롣
+・GNUから配布されているオリジナルのGCCなどをソースから構築したツール
+  動作確認を行ったときのバージョンは以下の通りである。
     BINUTILS : 2.13.2.1
     GCC-CORE : 2.95.3
     NEWLIB   : 1.11.0
-�ʤ��ξ��Υ������åȴĶ� <TARGET> �ˤϡ�powerpc-elf ���Ѥ��롣��
+（この場合のターゲット環境 <TARGET> には、powerpc-elf を用いる。）
 
-��The IBM PowerPC Embedded Environment�������ƥ������ѤΥ����ƥ��¸��
-���Υ���ץ륳���ɡʥ�ե���󥹼����ˤϥ�����󥯥�����EDK6.2�˴ޤޤ�
-����GNU�ġ���(gcc-2.95.3����)�ˤƥ���ѥ��뤬�̤�Ȥ����ޤǳ�ǧ���Ƥ��롣
-��EDK�˴ޤޤ��GNU�ġ����Cygwin������Ѥ�����ˡ�ϲ�����URL�򻲾ȡ�
-����http://www.ertl.jp/~honda/microblaze/index.html
+・The IBM PowerPC Embedded Environmentアーキテクチャ用のシステム依存部
+　のサンプルコード（レファレンス実装）はザイリンクス社製EDK6.2に含まれ
+　るGNUツール(gcc-2.95.3相当)にてコンパイルが通るところまで確認している。
+　EDKに含まれるGNUツールをCygwinから使用する方法は下記のURLを参照。
+　　http://www.ertl.jp/~honda/microblaze/index.html
 
-��. ���»���
+５. 制限事項
 
-��64�ӥåȡ��⡼�ɤϥ��ݡ��Ȥ��Ƥ��ʤ���
-���ʳ�ĥ�����Ū�ưפȻפ��롣��
+・64ビット・モードはサポートしていない。
+　（拡張は比較的容易と思われる。）
 
-����ư�������쥸���������������ϼµ��ƥ��Ȥ��Ƥ��ʤ���
-���ʥݡ��ƥ��󥰤��Ѥ���MPC860T����ư�������쥸�����������Ƥ��ʤ������
+・浮動小数点レジスタの退避／復元は実機テストしていない。
+　（ポーティングに用いたMPC860Tが浮動小数点レジスタを備えていないため）
 
-����ȥ롦����ǥ����󡦥⡼�ɤǤμµ��ƥ��Ȥ�ԤäƤ��ʤ���
+・リトル・エンディアン・モードでの実機テストを行っていない。
 
-���������ȥ��åץ롼���󡢥�󥯥�����ץȤϡ�C++���б����Ƥ��ʤ���
+・スタートアップルーチン、リンクスクリプトは、C++に対応していない。
 
-��SIL_LOC_INT()�ˤĤ���
-��PowerPC�ǤǤ�SIL_LOC_INT()�μ�����CPU���å���Ʊ���¸���ˡ���Ѥ��Ƥ�
-���롣���Τ��ᡢSIL_LOC_INT()�ǳ���߶ػߤ��Ƥ����֤Ǥϡ�sns_loc()
-���ڤ�vxsns_loc()��CPU���å����֤�Ƚ�̤���Ƥ��ޤ���
-��JSP�����ͥ�Ǥϸ���������ߥ��å���ˤϥ����ӥ����������ѤǤ��ʤ���
-�����ꤷ�Ƥ���Τǡ��ƶ��Ͼ��ʤ��Ȼפ��롣
-����jsp/user.txt�Ρ�5.1.1 ����ߥ��å����֤�����׻��ȡ�
+・SIL_LOC_INT()について
+　PowerPC版ではSIL_LOC_INT()の実装はCPUロックと同じ実現方法を用いてい
+　る。そのため、SIL_LOC_INT()で割込み禁止している区間では、sns_loc()
+　及びvxsns_loc()でCPUロック状態と判別されてしまう。
+　JSPカーネルでは元々、割込みロック中にはサービスコールを使用できないと
+　規定しているので、影響は少ないと思われる。
+　（jsp/user.txtの「5.1.1 割込みロック状態の制御」参照）
 
-��.sdata�����.sbss���������ˤĤ���
-���������ȥ��åץ롼���󤪤�ӥ�󥯥�����ץȤ�.sdata�����.sbss����
-���������б����Ƥ��ʤ����ޤ�������ե�����졼����󡦥����å�����
-��.sdata�����.sbss���������Υ���ޥåԥ󥰤��б����Ƥ��ʤ���
+・.sdataおよび.sbssセクションについて
+　スタートアップルーチンおよびリンクスクリプトが.sdataおよび.sbssセク
+　ションに対応していない。また、コンフィギュレーション・チェッカーが
+　.sdataおよび.sbssセクションのメモリマッピングに対応していない。
 
-��The IBM PowerPC Embedded Environment�������ƥ�����ˤĤ���
-�������ƥ��¸���Υ���ץ륳���ɤ��ե�����Ѥ˴ޤ�Ǥ��뤬��ư��
-����ǧ���Ƥ��ʤ����ʥ���ѥ��뤬�̤�Ȥ����ޤǤϳ�ǧ���Ƥ��롣��
-���ºݤ�ư�����ˤϥǥХ�����¸�������Ŭ�����ɲä���ɬ�פ����롣
+・The IBM PowerPC Embedded Environmentアーキテクチャについて
+　システム依存部のサンプルコードをレファレンス用に含んでいるが、動作
+　確認していない。（コンパイルが通るところまでは確認している。）
+　実際に動作させるにはデバイス依存の定義を適宜、追加する必要がある。
 
-��. ����¾
+６. その他
 
-6.1 �ǥ��쥯�ȥꡦ�ե����빽��
+6.1 ディレクトリ・ファイル構成
 
-PowerPC32 �������åȰ�¸���γƥե�����γ��פϼ����̤ꡣ
+PowerPC32 ターゲット依存部の各ファイルの概要は次の通り。
 
     config/powerpc32/
-        PowerPC32������
+        PowerPC32共通部
 
-	Makefile.config		Makefile��PowerPC32�������åȰ�¸�����
-	cpu_defs.h		�ץ����å���¸���Υ��ץꥱ������������
-	cpu_config.h		�ץ����å���¸���ι������
-	cpu_config.c		�ץ����å���¸���δؿ�
-	cpu_support.S		�ץ����å���¸���Υ��֥롼����
-	cpu_insn.h		���٥�Υץ����å����롼����
-	cpu_context.h		����ƥ��������
-	cpu_rename.def		�����ͥ����������̾�Υ�͡������
-	cpu_rename.h		�����ͥ����������̾�Υ�͡���
-	cpu_unrename.h		�����ͥ����������̾�Υ�͡�����
-	vea_oea.h		���ꥸ�ʥ��PowerPC�������ƥ����������
+	Makefile.config		MakefileのPowerPC32ターゲット依存の定義
+	cpu_defs.h		プロセッサ依存部のアプリケーション用定義
+	cpu_config.h		プロセッサ依存部の構成定義
+	cpu_config.c		プロセッサ依存部の関数
+	cpu_support.S		プロセッサ依存部のサブルーチン
+	cpu_insn.h		低レベルのプロセッサ操作ルーチン
+	cpu_context.h		コンテキスト操作
+	cpu_rename.def		カーネルの内部識別名のリネーム定義
+	cpu_rename.h		カーネルの内部識別名のリネーム
+	cpu_unrename.h		カーネルの内部識別名のリネーム解除
+	vea_oea.h		オリジナルのPowerPCアーキテクチャ用定義
 	vea_oea_emb.h		The IBM PowerPC Embedded Environment
-				�������ƥ����������
-	tool_defs.h		��ȯ�Ķ���¸���Υ��ץꥱ������������
-				��GNU��ȯ�Ķ��ѡ�
-	tool_config.h		��ȯ�Ķ���¸���ι��������GNU��ȯ�Ķ��ѡ�
-	powerpc32.h		PowerPC32�Υ쥸����̾�ʤɤ����
-	start.S			�������ȥ��åס��롼����
-	makeoffset.c		offset.h �������ݡ��ȥץ������
+				アーキテクチャ用定義
+	tool_defs.h		開発環境依存部のアプリケーション用定義
+				（GNU開発環境用）
+	tool_config.h		開発環境依存部の構成定義（GNU開発環境用）
+	powerpc32.h		PowerPC32のレジスタ名などの定義
+	start.S			スタートアップ・ルーチン
+	makeoffset.c		offset.h 生成サポートプログラム
 
     config/powerpc32/mpc860t/
-        MPC860T(��ȥ�����)�б������ƥ��¸��
-          ((��)����Хå��� TB6102S�б�)
+        MPC860T(モトローラ)対応システム依存部
+          ((株)タンバック製 TB6102S対応)
 
-	Makefile.config		Makefile��TB6102S�����ƥ��¸���
-	user_config.h		�桼�����������
-	sys_defs.h		�����ƥ��¸���Υ��ץꥱ������������
-	sys_config.h		�����ƥ��¸���ι������
-	sys_config.c		�����ƥ��¸���δؿ�
-	sys_support.S		�����ƥ��¸���Υ��֥롼����
-	sys_rename.def		�����ͥ����������̾�Υ�͡������
-	sys_rename.h		�����ͥ����������̾�Υ�͡���
-	sys_unrename.h		�����ͥ����������̾�Υ�͡�����
-	sys_tool_config.h	��ȯ�Ķ���¸���Υ����ƥ��¸���������
-				��GNU��ȯ�Ķ��ѡ�
-	mpc860t.h   		MPC860T�Υϡ��ɥ��������
-	mpc860_sil.h   		MPC860T�ѥ����������롼��������
-	tb6102s.h   		TB6102S�ܡ��ɤΥϡ��ɥ��������
-	hw_timer.h		���������롼����
-	mpc860_pit.h		MPC860T��¢��������ߥ�����PIT��
-				���롼����
-	hw_serial.h		SIO�ɥ饤��
-	hw_serial.cfg		SIO�ɥ饤�ФΥ���ե�����졼�����ե�����
-	mpc860_smc.h		MPC860T��¢���ꥢ�롦�ޥ͡�������
-				����ȥ�����SMC1�����롼����
-	mpc860_smc.c		Ʊ��
+	Makefile.config		MakefileのTB6102Sシステム依存定義
+	user_config.h		ユーザー定義情報
+	sys_defs.h		システム依存部のアプリケーション用定義
+	sys_config.h		システム依存部の構成定義
+	sys_config.c		システム依存部の関数
+	sys_support.S		システム依存部のサブルーチン
+	sys_rename.def		カーネルの内部識別名のリネーム定義
+	sys_rename.h		カーネルの内部識別名のリネーム
+	sys_unrename.h		カーネルの内部識別名のリネーム解除
+	sys_tool_config.h	開発環境依存部のシステム依存部構成定義
+				（GNU開発環境用）
+	mpc860t.h   		MPC860Tのハードウェア定義
+	mpc860_sil.h   		MPC860T用アクセス・ルーチンの定義
+	tb6102s.h   		TB6102Sボードのハードウェア定義
+	hw_timer.h		タイマ操作ルーチン
+	mpc860_pit.h		MPC860T内蔵周期割込みタイマPITの
+				操作ルーチン
+	hw_serial.h		SIOドライバ
+	hw_serial.cfg		SIOドライバのコンフィギュレーションファイル
+	mpc860_smc.h		MPC860T内蔵シリアル・マネージメント
+				コントローラSMC1の操作ルーチン
+	mpc860_smc.c		同上
 	
-	mpc860elf.ld		��󥫥�����ץȡ�ROM���ѡ�
-	mpc860elf_ram.ld	��󥫥�����ץȡʥǥХå��ѡ�
+	mpc860elf.ld		リンカスクリプト（ROM化用）
+	mpc860elf_ram.ld	リンカスクリプト（デバッグ用）
 
     config/powerpc32/ibm_ppc_emb_sample/
-        The IBM PowerPC Embedded Environment�������ƥ������б�
-        �����ƥ��¸���Υ���ץ륳����
+        The IBM PowerPC Embedded Environmentアーキテクチャ対応
+        システム依存部のサンプルコード
 
-	Makefile.config		Makefile�Υ����ƥ��¸���
-	user_config.h		�桼�����������
-	sys_defs.h		�����ƥ��¸���Υ��ץꥱ������������
-	sys_config.h		�����ƥ��¸���ι������
-          			(ɬ�פʥޥ�������Υ���ץ�)
-	sys_config.c		�����ƥ��¸���δؿ�
-	sys_support.S		�����ƥ��¸���Υ��֥롼����
-	sys_rename.def		�����ͥ����������̾�Υ�͡������
-	sys_rename.h		�����ͥ����������̾�Υ�͡���
-	sys_unrename.h		�����ͥ����������̾�Υ�͡�����
-	sys_tool_config.h	��ȯ�Ķ���¸���Υ����ƥ��¸���������
-				��GNU��ȯ�Ķ��ѡ�
-	hw_timer.h		���������롼����
-	pit.h			�����ޥǥХ��������ġ�����
-	hw_serial.h		SIO�ɥ饤��
-	hw_serial.cfg		SIO�ɥ饤�ФΥ���ե�����졼�����ե�����
-	smc.h			���ꥢ��ǥХ��������롼����
-	smc.c			Ʊ��
-	sample_elf.ld		��󥫥�����ץȡ�ROM���ѡ�
+	Makefile.config		Makefileのシステム依存定義
+	user_config.h		ユーザー定義情報
+	sys_defs.h		システム依存部のアプリケーション用定義
+	sys_config.h		システム依存部の構成定義
+          			(必要なマクロ定義のサンプル)
+	sys_config.c		システム依存部の関数
+	sys_support.S		システム依存部のサブルーチン
+	sys_rename.def		カーネルの内部識別名のリネーム定義
+	sys_rename.h		カーネルの内部識別名のリネーム
+	sys_unrename.h		カーネルの内部識別名のリネーム解除
+	sys_tool_config.h	開発環境依存部のシステム依存部構成定義
+				（GNU開発環境用）
+	hw_timer.h		タイマ操作ルーチン
+	pit.h			タイマデバイスの操作ツーチン
+	hw_serial.h		SIOドライバ
+	hw_serial.cfg		SIOドライバのコンフィギュレーションファイル
+	smc.h			シリアルデバイスの操作ルーチン
+	smc.c			同上
+	sample_elf.ld		リンカスクリプト（ROM化用）
 
-6.2 �桼�������������
+6.2 ユーザーの設定項目
 
-PowerPC��¸���Ǥϡ��桼������������ܤ򥷥��ƥ��¸���Σ��ĤΥե�����
-Makefile.config��user_config.h�ˤޤȤ�Ƥ��ꡢ�桼�����ϥ����ͥ�������
-Ω������ʤ��Ƥ⡢�������١�������ѹ���ǽ�ˤ��Ƥ��롣
+PowerPC依存部では、ユーザーの設定項目をシステム依存部の２つのファイル
+Makefile.configとuser_config.hにまとめてあり、ユーザーはカーネル内部に
+立ち入らなくても、ある程度、設定を変更可能にしている。
 
-6.2.1 Makefile.config���������
+6.2.1 Makefile.configの設定項目
 
-���¹ԴĶ�
-���ѿ�DBGENV������ˤ��¹ԴĶ������򤹤롣
-������DBGENV=ROM��ROM��
-������DBGENV=GDB_STUB��GDB stub��̤���ݡ��ȡ�
-������DBGENV=DOWNLOAD_TO_RAM
-���������ǥХå��Ѥ˥ץ������򤹤٤�RAM�ΰ�˥ޥåԥ󥰤�������
-����������TB6101S�ܡ��ɸ�ͭ��
+・実行環境
+　変数DBGENVの設定により実行環境を選択する。
+　　・DBGENV=ROM：ROM化
+　　・DBGENV=GDB_STUB：GDB stub（未サポート）
+　　・DBGENV=DOWNLOAD_TO_RAM
+　　　　デバッグ用にプログラムをすべてRAM領域にマッピングする設定
+　　　　（TB6101Sボード固有）
 
-������ǥ�����
-    ����ѥ��륪�ץ������ѿ�COPTS�ˤȤ��ƻ��ꤹ��
-    ��-mbig���ӥå�������ǥ�����
-    ��-mlittle����ȥ롦����ǥ�����
+・エンディアン
+    コンパイルオプション（変数COPTS）として指定する
+    　-mbig：ビッグ・エンディアン
+    　-mlittle：リトル・エンディアン
 
-  ����
-  ����ȥ롦����ǥ�����Ǥ�ư���ǧ�ϹԤäƤ��ʤ�
+  注意
+  　リトル・エンディアンでの動作確認は行っていない
 
-������ޥåԥ�
-������TEXT_START_ADDRESS��text������������Ƭ���ɥ쥹
-������DATA_START_ADDRESS��data������������Ƭ���ɥ쥹
+・メモリマッピング
+　　・TEXT_START_ADDRESS：textセクションの先頭アドレス
+　　・DATA_START_ADDRESS：dataセクションの先頭アドレス
 
-6.2.2 user_config.h���������
+6.2.2 user_config.hの設定項目
 
-user_config.h��ǰʲ��Υޥ��������Ԥ����Ȥˤ�ꡢ������ѹ��Ǥ��롣
+user_config.h内で以下のマクロ定義を行うことにより、設定を変更できる。
 
-(1) ��拾��ѥ����ѤΥե饰�Ȥ����Ѥ���ޥ���
+(1) 条件コンパイル用のフラグとして用いるマクロ
 
-��SUPPORT_CHG_IPM
-����chg_ipm()��ͭ���ˤ��롣
+・SUPPORT_CHG_IPM
+　　chg_ipm()を有効にする。
 
-��SUPPORT_VXGET_TIM
-������ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽvxget_tim()��ͭ���ˤ��롣
+・SUPPORT_VXGET_TIM
+　　性能評価用システム時刻参照機能vxget_tim()を有効にする。
 
-��SIL_ENDIAN
-    ��SIL_ENDIAN_BIG���ӥå�������ǥ�����
-    ��SIL_ENDIAN_LITTLE����ȥ롦����ǥ�����
+・SIL_ENDIAN
+    ・SIL_ENDIAN_BIG：ビッグ・エンディアン
+    ・SIL_ENDIAN_LITTLE：リトル・エンディアン
 
-��SUPPORT_POWER_MANAGEMENT
-�����ץ����å�����������ϥ⡼�ɤ������Ƥ��롣
-������MSR��POW�ӥåȤ�ͭ����
-�����¹Բ�ǽ�ʥ����������Ĥ�ʤ�������Ԥ��ˤʤ�Ȥ����ץ����å���
-������������ϥ⡼�ɤ˰ܹԤ����롣
-�����ޥ���SAVE_POWPER�������򻲾ȡ�
+・SUPPORT_POWER_MANAGEMENT
+　　プロセッサが低消費電力モードを備えている。
+　　（MSRのPOWビットが有効）
+　　実行可能なタスクが１つもなく割込み待ちになるとき、プロセッサを
+　　低消費電力モードに移行させる。
+　　マクロSAVE_POWPERの説明を参照。
 
-��USE_MULTIPLE_WORD_LOAD_STORE
-�����쥸�������������������������ɡ����ȥ����ޥ���ץ�̿���
-�������Ѥ��롣
-��������ץ���ơ������ˤ�äƤ�Ʊ���ν�����Ԥ������ɡ����ȥ�̿��
-������꤫���ä��٤��ʤ�Τ�����
+・USE_MULTIPLE_WORD_LOAD_STORE
+　　レジスタの待避／復元に整数ロード／ストア・マルチプル命令を
+　　使用する。
+　　インプリメンテーションによっては同等の処理を行うロード／ストア命令
+　　よりかえって遅くなるので注意
 
-��ABSOLUTE_JUMP_EXC_ENTRY
-�����㳰�٥��������֤ˤ�äƤϡ��㳰�٥�������text���������ˤ���³��
-�����ν�����ʬ������ݡ�b̿��ˤ��PC����ʬ��������0x07ff,ffff�ˤǤ���
-�������ʤ���礬���롣ABSOLUTE_JUMP_EXC_ENTRY�ޥ�������������������
-�����Ϥ���ꤷ��ʬ������������ڤ��ؤ�ꡢ������������Ǥ��롣
+・ABSOLUTE_JUMP_EXC_ENTRY
+　　例外ベクタの配置によっては、例外ベクタからtextセクションにある続き
+　　の処理に分岐する際、b命令によるPC相対分岐（前後0x07ff,ffff）では届
+　　かない場合がある。ABSOLUTE_JUMP_EXC_ENTRYマクロを定義すると絶対番
+　　地を指定して分岐する実装に切り替わり、この問題を回避できる。
 
-(2) �ͤ����ꤹ��ޥ���
+(2) 値を設定するマクロ
 
-��STACKTOP
-�����󥿥�������ƥ������ѥ����å��ν����
+・STACKTOP
+　　非タスクコンテキスト用スタックの初期値
 
-��SYSTEM_CLOCK
-���������ƥ९���å�[MHz]
+・SYSTEM_CLOCK
+　　システムクロック[MHz]
 
-��INTLVL_TIMER
-���������ޤγ���ߥ�٥�
-����
-��������MPC860T��ͭ��
-����������SIU��������٥��ɽ��
+・INTLVL_TIMER
+　　タイマの割込みレベル
+　　
+　　　【MPC860T固有】
+　　　　　SIUの内部レベルを表す
 
-��TIC_NUME
-��TIC_DENO
-���������޳���ߤˤ��isig_tim()���ƤӽФ�������[msec]
-�������줾��ʬ�ҡ�ʬ���ɽ����
-����config.txt��
-������(3) ������ƥ��å������
-�����򻲾�
+・TIC_NUME
+・TIC_DENO
+　　タイマ割込みによりisig_tim()が呼び出される周期[msec]
+　　それぞれ分子、分母を表す。
+　　config.txtの
+　　　(3) タイムティックの定義
+　　を参照
 
-��INTLVL_SERIAL
-�������ꥢ��γ���ߥ�٥�
+・INTLVL_SERIAL
+　　シリアルの割込みレベル
 
-��������MPC860T��ͭ��
-�������������ꥢ��γ���ߥ�٥�������̤�����Ǥ�����
-����������CPM_INT_LEVEL�ʸ�ҡˤˤ�äƷ��ꤹ�롣
+　　　【MPC860T固有】
+　　　　　シリアルの割込みレベルだけ個別に設定できず、
+　　　　　CPM_INT_LEVEL（後述）によって決定する。
 
-��BAUD_RATE
-�������ꥢ���̿��Υܡ��졼��
-����9600, 19200, 38400[bps]���ο��ͤ�������롣
+・BAUD_RATE
+　　シリアル通信のボーレート
+　　9600, 19200, 38400[bps]等の数値で定義する。
 
-�����ꥢ��ݡ��ȿ������
-������TNUM_PORT
-��������GDIC��٥�ǥ��ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο�
-���������ʥ����ͥ�δ������ˤ���ݡ��ȿ���
-������TNUM_SIOP
-��������PDIC��٥�ǥ��ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο�
-���������ʥǥХ����ɥ饤�С���٥�Υݡ��ȿ���
-������LOGTASK_PORTID
-�������������ƥ�������Ѥ��륷�ꥢ��ݡ����ֹ�
-
-
-6.2.2.1�����ꥸ�ʥ��PowerPC�������ƥ������ͭ���������
-
-(1) ��拾��ѥ����ѤΥե饰�Ȥ����Ѥ���ޥ���
-
-��SUPPORT_FLOATING_POINT_REG
-�����ץ����å�����ư�������쥸�����������Ƥ��롣
-�����ǥ����ѥå������ư�������쥸����������������Ԥ���
-
-�����ʰܿ����Ѥ���MPC860T����ư�������쥸�����������Ƥ��ʤ������
-�������Υ��ץ����ϼµ��ƥ��Ȥ�ԤäƤ��ʤ���
-�����ޤ��������8�Х��ȡ����饤���Ȥ˹�碌��٤����������������б���
-�������Ƥ��ʤ���
-��
-��������ߥ롼����CPU�㳰�롼���󤪤�ӥ������㳰�����롼�������
-������ư�������쥸��������Ѥ�����ϡ��ƥ롼����¦����ư������
-�����쥸����������������Ԥ����ȡ�
-
-��IMPLEMENT_EXCEPTION_00A00
-��������ץ���ơ�������ͭ���㳰0x00a00����Ѥ��롣
-�����������Ƥμ��Τ�0xa���ܤ�CPU�㳰�ϥ�ɥ�Ȥ�����Ͽ���뤳�ȡ�
-��
-������
-������CPU�㳰�ֹ�0xa�ϥޥ���EXC_NO_IMPLEMENT_EXCEPTION_00A00
-�������Ȥ��ơ�������Ƥ��롣
-��������Ͽ����CPU�㳰�ϥ�ɥ���Ǥϡ��̾��CPU�㳰�ϥ�ɥ��
-������Ʊ�ͤ˥����ͥ�ε�ǽ�����Ѥ��뤳�Ȥ��Ǥ��롣
-
-6.2.2.2��The IBM PowerPC Embedded Environment�������ƥ������ͭ���������
-  �ܺ٤ϡ�7.5.6 IBM��PowerPC�б��ˤĤ��ơפι�򻲾�
-
-(1) ��拾��ѥ����ѤΥե饰�Ȥ����Ѥ���ޥ���
-����SUPPORT_IBM_PPC_EMB_APU
-  ����APU���ǥХ����˼�������Ƥ��뤳�Ȥ򼨤���
-  ������APU��Auxiliary Processor Unit��
-
-(2) �ͤ����ꤹ��ޥ���
-����NUM_IMPLEMENT_EXCEPTION
-��������ץ���ơ�������ͭ��������줿�㳰�������ܿ�
-�����ʥ����ͥ����Ͽ����C����롼������ܿ���
-
-6.2.2.3��MPC860T��ͭ���������
-
-(1) ��拾��ѥ����ѤΥե饰�Ȥ����Ѥ���ޥ���
-����SIL_DEBUG
-������SIL����Ѥ����Ȥ��Υ�����ǽ��ͭ���ˤ���ʥǥХå��ѡ�
-����������Ū�ˤ�SIL���ͳ�����ǥХ����ؤΥ����������������٥�ʸ����
-�������ϥ롼����sys_putc()��𤷤ƥ��������ѤΥ��ꥢ�˵�Ͽ���롣
-������BOOL���Υ������Х��ѿ�sil_debug_on��TRUE�����ꤷ����������SIL��
-��������������������ǽ��ͭ���ˤʤ롣��sil_mpc860.h�򥤥󥯥롼�ɤ����
-������sil_debug_on��extern�������롣��
-������
-������SIL�Υ�����ǽ�������ǥ����ͥ�ɸ��Υ�����ǽ����Ѥ��Ƥ��뤿�ᡢ
-�������ܥ�����ǽ�ν��Ϥ�ɤν����٤ν��Ϥ˳�����Ƥ뤫�����դ�ɬ�פǤ�
-�������롣��user.txt�Ρ�4.4 ��������ν����١׻��ȡ�
-�������㤨�С�������LOG_EMERG��SIL�Υ������Ϥ˳�����Ƥ��硢����ץ�
-�������ץ�����������ǤϽ�����LOG_EMERG�ϳ���߶�ư�Υ��ꥢ����Ϥ�
-���������٥�ʸ�����Ϥ�ξ���˽��Ϥ�������ˤʤäƤ���Τǡ�������Ū��
-�������Ȥ����ˤ�Ŭ���ʤ����ʥ������ϻ��ˤ���˥�����ȯ��������������
-���������ߤޤ�ʤ��ʤ롣���ܵ�ǽ��ͭ���ˤ������ϲ����Τ褦��SIL�Υ���
-��������ǽ�������Ƥ������٤Υ��������߶�ư�ǥ��ꥢ����Ϥ��ʤ��ʤ�
-�������褦�������侩���롣
-������
-�����������㡧SIL�Υ�����ǽ������� LOG_EMERG�˳�����Ƥ����
-��������vmsk_log(LOG_UPTO(LOG_INFO) & ~LOG_MASK(LOG_EMERG), 
-������������������LOG_UPTO(LOG_EMERG));
-������
-�����������ޥɥ饤������Ѥ���ȥ����ƥ����٤��⤯�ʤꡢ���������ۤ�
-���������ư��ʤ��ʤ�Τ�����
-
-(2) �ͤ����ꤹ��ޥ���
-����CPM_INT_LEVEL
-������CPM����SIU�ؤγ�����׵��٥�
-���������ꥢ��SMC1�γ�����׵��٥�⤳���Ʊ�������ˤʤ�
+・シリアルポート数の定義
+　　・TNUM_PORT
+　　　　GDICレベルでサポートするシリアルポートの数
+　　　　（カーネルの管理下にあるポート数）
+　　・TNUM_SIOP
+　　　　PDICレベルでサポートするシリアルポートの数
+　　　　（デバイスドライバ・レベルのポート数）
+　　・LOGTASK_PORTID
+　　　　システムログに用いるシリアルポート番号
 
 
-6.3 ����Ѥߥޥ���
+6.2.2.1　オリジナルのPowerPCアーキテクチャ固有の設定項目
 
-������֥���Ѥ��뵿��̿��Ȥ��ơ���tool_config.h�ǰʲ��Υޥ�����
-�Ѱդ��Ƥ��롣
+(1) 条件コンパイル用のフラグとして用いるマクロ
 
-LI32(reg, imm) ��32�ӥå�¨�ͥ�����
-�����ѥ쥸����reg��32�ӥåȤ�¨��imm������ɤ��롣
-��
-������
-��������̿��li��16�ӥå�¨�ͤΥ����ɤǤ��롣
-��
-LOAD_VAL32(reg, val)��32�ӥå��ѿ�������
-�����ѥ쥸����reg���ѿ�val���ͤ�����ɤ��롣
+・SUPPORT_FLOATING_POINT_REG
+　　プロセッサが浮動小数点レジスタを備えている。
+　　ディスパッチャで浮動小数点レジスタの待避／復元を行う。
 
-�ʲ��Υ롼�����The IBM PowerPC Embedded Environment�������ƥ�����ˤ�
-����DCR��Device Control Register�˥��������Ѥ�vea_oea_emb.h��������
-��Ƥ��롣�����ϥǥХ����ɥ饤�Фǻ��Ѥ���뤳�Ȥ����ꤷ�Ƥ��롣
+　　（移植に用いたMPC860Tが浮動小数点レジスタを備えていないため）
+　　このオプションは実機テストを行っていない。
+　　また、本来は8バイト・アライメントに合わせるべきだが、この点も対応で
+　　きていない。
+　
+　　割込みルーチン、CPU例外ルーチンおよびタスク例外処理ルーチン内で
+　　浮動小数点レジスタを使用する場合は、各ルーチン側で浮動小数点
+　　レジスタの待避／復元を行うこと。
 
-sil_rew_dcr(reg, val)��DCR�θ����ͤ��ɽФ�
-      reg:�쥸�����ֹ�����������
-      val:�ɤ߽Ф����ͤ��Ǽ�����ѿ���UW����
+・IMPLEMENT_EXCEPTION_00A00
+　　インプリメンテーション固有の例外0x00a00を使用する。
+　　処理内容の実体は0xa番目のCPU例外ハンドラとして登録すること。
+　
+　備考
+　　・CPU例外番号0xaはマクロEXC_NO_IMPLEMENT_EXCEPTION_00A00
+　　　として、定義してある。
+　　・登録したCPU例外ハンドラ内では、通常のCPU例外ハンドラと
+　　　同様にカーネルの機能を利用することができる。
 
-sil_wrw_dcr(reg, val)��DCR�θ����ͤ��ѹ�
-      reg:�쥸�����ֹ�����������
-      val:���ꤹ���ͤ���Ǽ���줿�ѿ���UW����
+6.2.2.2　The IBM PowerPC Embedded Environmentアーキテクチャ固有の設定項目
+  詳細は「7.5.6 IBM系PowerPC対応について」の項を参照
+
+(1) 条件コンパイル用のフラグとして用いるマクロ
+　・SUPPORT_IBM_PPC_EMB_APU
+  　　APUがデバイスに実装されていることを示す。
+  　　（APU：Auxiliary Processor Unit）
+
+(2) 値を設定するマクロ
+　・NUM_IMPLEMENT_EXCEPTION
+　　インプリメンテーション固有に定義された例外処理の本数
+　　（カーネルに登録するC言語ルーチンの本数）
+
+6.2.2.3　MPC860T固有の設定項目
+
+(1) 条件コンパイル用のフラグとして用いるマクロ
+　・SIL_DEBUG
+　　　SILを使用したときのログ機能を有効にする（デバッグ用）
+　　　具体的にはSILを経由したデバイスへのアクセスログを低レベル文字出
+　　　力ルーチンsys_putc()を介してメモリ上の専用のエリアに記録する。
+　　　BOOL型のグローバル変数sil_debug_onをTRUEに設定した時点からSILの
+　　　アクセスログ機能が有効になる。（sil_mpc860.hをインクルードすると
+　　　sil_debug_onがextern宣言される。）
+　　　
+　　　SILのログ機能は内部でカーネル標準のログ機能を使用しているため、
+　　　本ログ機能の出力をどの重要度の出力に割り当てるかは注意が必要であ
+　　　る。（user.txtの「4.4 ログ情報の重要度」参照）
+　　　例えば、重要度LOG_EMERGをSILのログ出力に割り当てる場合、サンプル
+　　　プログラムの設定では重要度LOG_EMERGは割込み駆動のシリアル出力と
+　　　低レベル文字出力の両方に出力する設定になっているので、この目的で
+　　　使う場合には適さない。（ログ出力時にさらにログが発生し、ログ出力
+　　　が止まらなくなる。）本機能を有効にした場合は下記のようにSILのログ
+　　　機能を割り当てた重要度のログを割込み駆動でシリアル出力しなくなる
+　　　ような設定を推奨する。
+　　　
+　　　設定例：SILのログ機能を重要度 LOG_EMERGに割り当てた場合
+　　　　vmsk_log(LOG_UPTO(LOG_INFO) & ~LOG_MASK(LOG_EMERG), 
+　　　　　　　　　LOG_UPTO(LOG_EMERG));
+　　　
+　　　タイマドライバ内で用いるとシステムの負荷が高くなり、タスクがほと
+　　　んど動作しなくなるので注意
+
+(2) 値を設定するマクロ
+　・CPM_INT_LEVEL
+　　　CPMからSIUへの割込み要求レベル
+　　　シリアルSMC1の割込み要求レベルもこれと同じ扱いになる
+
+
+6.3 定義済みマクロ
+
+アセンブラで用いる疑似命令として、にtool_config.hで以下のマクロを
+用意している。
+
+LI32(reg, imm) ：32ビット即値ロード
+　汎用レジスタregに32ビットの即値immをロードする。
+　
+　備考
+　　擬似命令liは16ビット即値のロードである。
+　
+LOAD_VAL32(reg, val)：32ビット変数ロード
+　汎用レジスタregに変数valの値をロードする。
+
+以下のルーチンはThe IBM PowerPC Embedded Environmentアーキテクチャにお
+けるDCR（Device Control Register）アクセス用にvea_oea_emb.h内で定義さ
+れている。これらはデバイスドライバで使用されることを想定している。
+
+sil_rew_dcr(reg, val)：DCRの現在値の読出し
+      reg:レジスタ番号（整数定数）
+      val:読み出した値を格納する変数（UW型）
+
+sil_wrw_dcr(reg, val)：DCRの現在値の変更
+      reg:レジスタ番号（整数定数）
+      val:設定する値が格納された変数（UW型）
 
 ---------------------------------------------------------------------
 
-��. �����ͥ�ܿ��Ը����ξ���
+７. カーネル移植者向けの情報
 
-��������ϡ��ܥ����ͥ��¾�Τ�PowerPC32�������ƥ����㡦�ץ����å��ذ�
-�����뤿��ξ���ˤĤ��ƤޤȤ�롣
-
-
-7.1 �Ѹ����
-����ICU��Interrup Control Unit
-��������������ߥ���ȥ�����
-����IPM��Interrupt Priority Mask
-����������ICU�γ���ߥޥ���
-��������ץ���ơ�������¸��
-�����������ʲ���PowerPC�ϥץ����å��Ǥ��Υץ����å���ͭ����ʬ��
-��������������ץ���ơ�������¸���ȸƤ֡�
-
-7.2 �쥸�����γ������
-
-PowerPC��EABI(��)�ˤ�구�ꤵ���쥸�����������
-��r0��zero�ޤ������ѥ쥸����
-��r1:�����å��ݥ���
-��r2��TOC��Table of Contents��
-������������Ū��C����򥳥�ѥ��뤷�������ɤǤϻ��Ѥ���ʤ���
-������������UNIX�Υץ��������ؤǻ��Ѥ���Ƥ���̾��
-��������JSP�����ͥ�ǤϤ��Υ쥸��������Ѥ��Ƥ��ʤ���
-���������ʳ���ߤ��㳰����������������ԤäƤ��ʤ�����
-��r3-4�������������
-��r5-10������
-��r13��small data��.sdata���������Υ��ɥ쥹��
-��r14-30�����������ѿ�
-��r31�����������ѿ��ޤ���environment pointer
-��
-������PowerPC Embedded Application Binary Interface (EABI)�Ȥ���
-������PowerPC�������ƥ�����رĤ����ꤷ�Ƥ��롣
-��
-
-JSP�����ͥ�PowerPC��¸���Ƿ�᤿�쥸�����������
-��SPRG0������ߡ�CPU�㳰�ͥ��ȥ�����
-��SPRG1��int_table����������ߥ٥�������Ƭ���ɥ쥹
-��SPRG2��exc_table������CPU�㳰�٥�������Ƭ���ɥ쥹
+ここからは、本カーネルを他ののPowerPC32アーキテクチャ・プロセッサへ移
+植するための情報についてまとめる。
 
 
-��MPC860T��ͭ��
-��SPRG3��ipm_table������ߥϥ�ɥ��ֹ��IPM���б��դ���ơ��֥����Ƭ
-�����������������������ɥ쥹
+7.1 用語定義
+　・ICU：Interrup Control Unit
+　　　　　割込みコントローラ
+　・IPM：Interrupt Priority Mask
+　　　　　ICUの割込みマスク
+　・インプリメンテーション依存性
+　　　　　以下、PowerPC系プロセッサでそのプロセッサ固有の部分を
+　　　　　インプリメンテーション依存性と呼ぶ。
 
-7.3 OS�ξ���Ƚ�̤μ�������
+7.2 レジスタの割り当て
 
-������ƥ�����
-����SPRG0�쥸���������ߡ�CPU�㳰�ͥ��ȥ����󥿤Ȥ��Ƴ�����ƤƤ��ꡢ
-��������������ƥ����ȡ��󥿥�������ƥ����Ȥ�Ƚ�̤�ԤäƤ��롣
+PowerPCのEABI(※)により規定されるレジスタ割り当て
+　r0：zeroまたは汎用レジスタ
+　r1:スタックポインタ
+　r2：TOC（Table of Contents）
+　　　　基本的にC言語をコンパイルしたコードでは使用されない。
+　　　　元々UNIXのプロセス切替で使用されていた名残
+　　　　JSPカーネルではこのレジスタを使用していない。
+　　　　（割込みや例外処理で待避／復元を行っていない。）
+　r3-4：引数、戻り値
+　r5-10：引数
+　r13：small data（.sdataセクションのアドレス）
+　r14-30：ローカル変数
+　r31：ローカル変数またはenvironment pointer
+　
+　※　PowerPC Embedded Application Binary Interface (EABI)として
+　　　PowerPCアーキテクチャ陣営が規定している。
+　
 
-��CPU���å�����
-�����ޥ��������ơ��������쥸����MSR��EE�ӥåȤ�CPU���å����֤�
-����ɽ�����Ƥ��롣
-������EE=0:CPU���å�����
-������EE=1:CPU���å��������
-
-7.4 �ǥ��쥯�ȥ깽��
-��$CPU=powerpc32�ǥ��쥯�ȥ�
-������PowerPC������
-��������PowerPC�������ƥ�����ˤ�äƵ��ꤵ��Ƥ����ϰ����
-�������������Ǥ�����ʬ
-�����������٤Ƥ�PowerPC�ϥץ����å��Ƕ��̤˻��ѤǤ��롣
-��������
-��$SYS�ǥ��쥯�ȥ�
-����������Υܡ��ɰ�¸���ʥ����ƥ��¸����
-����������ߥ���ȥ������¸
-�����������ޥɥ饤��
-���������ꥢ��ɥ饤��
-������
-PowerPC�������ƥ�����Ǥϳ���ߥ���ȥ�����ϵ��ꤵ��Ƥ��餺���ƥץ�
-���å���˰ۤʤ����ߥ���ȥ����餬����ץ���Ȥ���Ƥ��롣�����ơ�
-���٤Ƥγ�������ߤ�Ʊ������ߥ٥����ʥ��ե��å�0x500�ˤ�ʬ�����롣
-PowerPC32��¸���Ǥϥ���ץ���ơ�������¸�ʼ�˳���ߥ���ȥ�����
-��¸�ˤν�����$SYS�ǥ��쥯�ȥ��ʬΥ���Ƥ��롣����ˤ�ꡢ¾��
-PowerPC32�������ƥ�����Υץ����å��ξ��⡢����ߥ���ȥ������¸��
-�򵭽Ҥ���������ܥ����ͥ��ܿ����뤳�Ȥ��Ǥ��롣�������ʤ��顢�ܿ���
-�����빩���ϳ����ߥ���ȥ�����Υ������ƥ�������礭����¸���롣��
-�ʲ���PowerPC32�������ƥ����㶦�����ȥ���ץ���ơ�������¸���Υ�
-�󥿥ե�������Ҥ٤롣
-
-7.5 PowerPC��������$SYS�ǥ��쥯�ȥ�֤Υ��󥿡��ե�����
-��������ե����롧sys_config.h�פȤ������ҤϤ��Υޥ�����
-��sys_config.h�ޤ���sys_config.h���饤�󥯥롼�ɤ����إå���
-���ե��������������뤳�Ȥ��̣���롣
-
-7.5.1 PowerPC�����˴ؤ������
-
-INIT_MSR�ޥ�����MSR�ν���͡ʥ��ץ�����
-  �ꥻ�å�ľ��ν���ͤΤޤޤǤ褤����������ʤ��Ƥ�褤
-  ����ե����롧sys_config.h
+JSPカーネルPowerPC依存部で決めたレジスタ割り当て
+　SPRG0：割込み／CPU例外ネストカウンタ
+　SPRG1：int_table　擬似割込みベクタの先頭アドレス
+　SPRG2：exc_table　擬似CPU例外ベクタの先頭アドレス
 
 
-7.5.2 ����ߥ���ȥ������¸�����
+【MPC860T固有】
+　SPRG3：ipm_table　割込みハンドラ番号とIPMを対応付けるテーブルの先頭
+　　　　　　　　　　アドレス
 
-(1) TMAX_INTNO�ޥ���������ߥ���ȥ����餬���̤Ǥ��������װ��ο�
-���㤨�С����ꥢ���̿��μ�������ߤ���������ߤ�Ʊ������ߥ���ͥ��
-����ͭ���Ƥ����硢������װ��Ȥ��Ƥϣ��Ĥȿ����롣
-  ����ե����롧sys_config.h
+7.3 OSの状態判別の実装方針
 
-(2) IPM������ߥޥ����Υǡ�����
-��ñ�ʤ�ޥ�������ǤϤʤ�typedef��Ȥä�������롣
-������ե����롧sys_defs.h
+　コンテキスト
+　　SPRG0レジスタを割込み／CPU例外ネストカウンタとして割り当てており、
+　　タスクコンテキスト／非タスクコンテキストの判別を行っている。
 
-(3) PUSH_ICU_IPM�ޥ���������ߥ���ȥ�����γ���ߥޥ���������
+　CPUロック状態
+　　マスタ・ステータス・レジスタMSRのEEビットでCPUロック状態を
+　　表現している。
+　　　EE=0:CPUロック状態
+　　　EE=1:CPUロック解除状態
 
-�ڵ�ǽ��
-������ߥ���ȥ�����γ���ߥޥ����򡢥����å�����¸���롣
-��������֥�̿��ǵ��Ҥ�������ߤ����������ǻ��Ѥ��롣
+7.4 ディレクトリ構成
+　$CPU=powerpc32ディレクトリ
+　　　PowerPC共通部
+　　　　PowerPCアーキテクチャによって規定されている範囲内で
+　　　　実装できる部分
+　　　　すべてのPowerPC系プロセッサで共通に使用できる。
+　　　　
+　$SYSディレクトリ
+　　　従来のボード依存部（システム依存部）
+　　　割込みコントローラ依存
+　　　タイマドライバ
+　　　シリアルドライバ
+　　　
+PowerPCアーキテクチャでは割込みコントローラは規定されておらず、各プロ
+セッサ毎に異なる割込みコントローラがインプリメントされている。そして、
+すべての外部割込みは同じ割込みベクタ（オフセット0x500）に分岐する。
+PowerPC32依存部ではインプリメンテーション依存（主に割込みコントローラ
+依存）の処理を$SYSディレクトリに分離している。これにより、他の
+PowerPC32アーキテクチャのプロセッサの場合も、割込みコントローラ依存部
+を記述するだけで本カーネルを移植することができる。（当然ながら、移植に
+かかる工数は割り込みコントローラのアーキテクチャに大きく依存する。）
+以下にPowerPC32アーキテクチャ共通部とインプリメンテーション依存部のイ
+ンタフェースを述べる。
 
-�����͡�
-�������˳���ߥ���ȥ���������Ѥ��ʤ������ƥ�Ǥϡ�����������뤳�ȡ�
-��r1,r13��r31���˲����ƤϤ����ʤ���
-��IPM�Υǡ�����������ǡ���ˤ�餺�����ν���������ǥ����å��ݥ��󥿤�
-��4�Х��ȶ������뤳�ȡ�
-���ޤ���PUSH_ICU_IPM�ޥ�����POP_ICU_IPM�ޥ������ФǼ¹Ԥ��줿���ϥ�
-�����å��ݥ��󥿤���������뤳�ȡ�
-������ե����롧sys_config.h
+7.5 PowerPC共通部と$SYSディレクトリ間のインターフェース
+　「定義ファイル：sys_config.h」という記述はそのマクロを
+　sys_config.hまたはsys_config.hからインクルードされるヘッダー
+　ファイル内で定義することを意味する。
+
+7.5.1 PowerPCコアに関する定義
+
+INIT_MSRマクロ：MSRの初期値（オプション）
+  リセット直後の初期値のままでよい場合は定義しなくてもよい
+  定義ファイル：sys_config.h
+
+
+7.5.2 割込みコントローラ依存の定義
+
+(1) TMAX_INTNOマクロ：割込みコントローラが識別できる割込み要因の数
+　例えば、シリアル通信の受信割込みと送信割込みが同じ割込みチャネルを
+　共有している場合、割込み要因としては１つと数える。
+  定義ファイル：sys_config.h
+
+(2) IPM：割込みマスクのデータ型
+　単なるマクロ定義ではなくtypedefを使って定義する。
+　定義ファイル：sys_defs.h
+
+(3) PUSH_ICU_IPMマクロ：割込みコントローラの割込みマスクの待避
+
+【機能】
+　割込みコントローラの割込みマスクを、スタックへ保存する。
+　アセンブラ命令で記述し、割込みの入口処理で使用する。
+
+【備考】
+　外部に割込みコントローラを利用しないシステムでは、空で定義すること。
+　r1,r13〜r31を破壊してはいけない。
+　IPMのデータサイズの如何によらず、この処理の前後でスタックポインタは
+　4バイト境界を守ること。
+　また、PUSH_ICU_IPMマクロとPOP_ICU_IPMマクロが対で実行された場合はス
+　タックポインタが復元されること。
+　定義ファイル：sys_config.h
   
-(4) POP_ICU_IPM�ޥ���������ߥ���ȥ�����γ���ߥޥ���������
+(4) POP_ICU_IPMマクロ：割込みコントローラの割込みマスクの復元
 
-�ڵ�ǽ��
-������ߥ���ȥ�����γ���ߥޥ����򡢥����å������������롣
-��������֥�̿��ǵ��Ҥ�������ߤνи������ǻ��Ѥ��롣
+【機能】
+　割込みコントローラの割込みマスクを、スタックから復元する。
+　アセンブラ命令で記述し、割込みの出口処理で使用する。
 
-�����͡�
-�������˳���ߥ���ȥ���������Ѥ��ʤ������ƥ�Ǥϡ�����������뤳�ȡ�
-��r1,r13��r31���˲����ƤϤ����ʤ���
-��IPM�Υǡ�����������ǡ���ˤ�餺�����ν���������ǥ����å��ݥ��󥿤�
-��4�Х��ȶ������뤳�ȡ�
-���ޤ���PUSH_ICU_IPM�ޥ�����POP_ICU_IPM�ޥ������ФǼ¹Ԥ��줿���ϥ�
-�����å��ݥ��󥿤���������뤳�ȡ�
-������ե����롧sys_config.h
+【備考】
+　外部に割込みコントローラを利用しないシステムでは、空で定義すること。
+　r1,r13〜r31を破壊してはいけない。
+　IPMのデータサイズの如何によらず、この処理の前後でスタックポインタは
+　4バイト境界を守ること。
+　また、PUSH_ICU_IPMマクロとPOP_ICU_IPMマクロが対で実行された場合はス
+　タックポインタが復元されること。
+　定義ファイル：sys_config.h
 
-(5) PROC_ICU(label)�ޥ���������߽�����ICU��¸��ʬ
+(5) PROC_ICU(label)マクロ：割込み処理のICU依存部分
 
-�ڥѥ�᡼����
-  label		����ܥ뼱���ѥޥ���
+【パラメータ】
+  label		シンボル識別用マクロ
 
-�ڵ�ǽ��
-��������װ���Ƚ�Ǥ���Ŭ�ڤʳ���ߥϥ�ɥ��ƤӽФ���
-��������֥�̿��ǵ��Ҥ��롣
-������ե����롧sys_config.h
-��
-��
-�����Υޥ�����cpu_support.S�γ���߽�������ǡ�PowerPC���������ѥ쥸��
-�����ΰ�����r0,r3��r12�ˡ��ü�쥸����������ߥ���ȥ������IPM������
-�������å����ؤ����Ѥ�����֤ǸƤФ졢�ʲ��ν�����Ԥ���
+【機能】
+　割込み要因を判断し、適切な割込みハンドラを呼び出す。
+　アセンブラ命令で記述する。
+　定義ファイル：sys_config.h
+　
+　
+　このマクロはcpu_support.Sの割込み処理の中で、PowerPCコアの汎用レジス
+　タの一部（r0,r3〜r12）、特殊レジスタ、割込みコントローラのIPMの退避、
+　スタック切替えが済んだ状態で呼ばれ、以下の処理を行う。
 
-  ���ƤӽФ����Ȥ���������
-  �����ʲ��ν������Ѥ�����֤ǸƤФ��
-  ���������쥸����������
-  �������������ѥ쥸�����ΰ��� r0,r3��r12
-  �����������ü�쥸���� SRR0��SRR1��LR��CTR��CR��XER
-  ��������������ߥ���ȥ������IPM
-  �������������å����ؤ�
-  ��������������ƥ����ȡʥ��������󥿥����ˤδ���
-  ��
-  ����������
-  ������������װ���Ƚ��
-  ����������ߥޥ���������
-  ����������ߵ���
-  ������C����롼����ƤӽФ�
-  �������ʳ���ߥϥ�ɥ�̤��Ͽ�ξ��ϥǥե���ȤΥ��顼������
-  ����������߶ػ�
-  ��������ɬ�פǤ���С˳������׵�ե饰�Υ��ꥢ
+  　呼び出されるときの前提条件
+  　　以下の処理が済んだ状態で呼ばれる
+  　　　・レジスタの退避
+  　　　　・汎用レジスタの一部 r0,r3〜r12
+  　　　　・特殊レジスタ SRR0、SRR1、LR、CTR、CR、XER
+  　　　　・割込みコントローラのIPM
+  　　　・スタック切替え
+  　　　　　コンテキスト（タスク／非タスク）の管理
+  　
+  　処理内容
+  　　・割込み要因の判別
+  　　・割込みマスクの設定
+  　　・割込み許可
+  　　・C言語ルーチン呼び出し
+  　　　（割込みハンドラ未登録の場合はデフォルトのエラー処理）
+  　　・割込み禁止
+  　　・（必要であれば）割り込み要求フラグのクリア
   
-������ߵ����٥����ơ��֥�int_table[]��PowerPC���������������Ƥ��ꡢ
-��������Ƭ���ɥ쥹��SPRG1�˳�Ǽ����Ƥ��롣
-���ʡ�7.2 �쥸�����γ�����ơ׻��ȡס�
-��
-����ŪAPI DEF_IHN��������줿����ߥϥ�ɥ�ˤĤ��Ƥϡ�C����롼�����
-����Ƭ���ɥ쥹�����ߵ����٥����ơ��֥����Ͽ�����������ư���˶�����
-������ƤӽФ���뤿��(*1)��PROC_ICU�ޥ����Ǥϥơ��֥�����ƤϽ������
-���ߤȤ������Ѥ����ɤ���
-����(*1) jsp/kernel/interrupt.c��interrupt_initialize()����
-��
-��PROC_ICU�ޥ����Ǥϳ���ߥϥ�ɥ��ֹ�򥤥�ǥå����Ȥ��Ƴ���ߵ�����
-�������ơ��֥뤫��C����롼�������Ƭ���ɥ쥹��4�Х��ȥǡ����Ȥ��Ƽ��
-���Ф����Ȥ��Ǥ��롣
-������Ū�ˤϰʲ������Ϥ򻲾Ȥ�����ɤ���
-������int_table����Ƭ���ɥ쥹�ܡʳ���ߥϥ�ɥ��ֹ�ߣ���
+　割込み擬似ベクタテーブルint_table[]はPowerPC共通部で定義されており、
+　その先頭アドレスはSPRG1に格納されている。
+　（「7.2 レジスタの割り当て」参照」）
+　
+　静的API DEF_IHNで定義された割込みハンドラについては、C言語ルーチンの
+　先頭アドレスを割込み擬似ベクタテーブルに登録する処理が起動時に共通部
+　から呼び出されるため(*1)、PROC_ICUマクロではテーブルの内容は初期化済
+　みとして利用して良い。
+　　(*1) jsp/kernel/interrupt.cのinterrupt_initialize()参照
+　
+　PROC_ICUマクロでは割込みハンドラ番号をインデックスとして割込み擬似ベ
+　クタテーブルからC言語ルーチンの先頭アドレスを4バイトデータとして取り
+　出すことができる。
+　具体的には以下の番地を参照すれば良い。
+　　　int_tableの先頭アドレス＋（割込みハンドラ番号×４）
 
-���ºݤγ�����װ��ȳ���ߥϥ�ɥ��ֹ���б��ط��ϥ����ץ��ơ�����
-�����¸������������桼���������Υɥ�����Ȥ��������뤳�ȡ�
-����PROC_ICU�ޥ����Ǥϡ�C����롼�����ƤӽФ������׵ᤵ�줿����ߤ�
-���Ф������ߥϥ�ɥ餬��Ͽ����Ƥ��뤫�����å�����̤��Ͽ�ξ��ϥ�
-���ե���ȤΥ��顼������Ԥ����ʤ������ʤ���0���Ϥ�ʬ�����Ƥ��ޤ�����
+　実際の割込み要因と割込みハンドラ番号の対応関係はインリプメンテーショ
+　ン依存部で定義し、ユーザー向けのドキュメントに明記すること。
+　　PROC_ICUマクロでは、C言語ルーチンを呼び出す前に要求された割込みに
+　対する割込みハンドラが登録されているかチェックし、未登録の場合はデ
+　フォルトのエラー処理を行う。（そうしないと0番地に分岐してしまう。）
 
-������ߥϥ�ɥ餬��Ͽ����Ƥ��ʤ�����ߤˤĤ��Ƥϥ������ȥ��åץ롼��
-����ǳ���ߵ����٥����ơ��֥뤬0�ǽ��������Ƥ롣���Τ��ᡢ�����٥�
-�����ơ��֥�򻲾Ȥ���С�����ߥϥ�ɥ����Ͽ��̤��Ͽ��Ƚ�̤�Ԥ�����
-�����Ǥ��롣
-����MPC860T�ǤǤ����Ѥδؿ���ƤӽФ���SIU����ߡ�CPM����ߤζ�ʬ����
-�����ӳ�����ֹ��������Ϥ��Ƥ��롣��
+　割込みハンドラが登録されていない割込みについてはスタートアップルーチ
+　ンで割込み擬似ベクタテーブルが0で初期化されてる。そのため、擬似ベク
+　タテーブルを参照すれば、割込みハンドラの登録／未登録の判別を行うこと
+　ができる。
+　（MPC860T版では専用の関数を呼び出し、SIU割込み／CPM割込みの区分およ
+　　び割込み番号をログ出力している。）
 
-�����Υޥ����Ͻ��ʤγ���ߤ�¿�ų���ߤξ���2�����Ÿ������롣
-���ޥ���������ʬ��̿�����Ѥ����硢���ΤޤޤǤ�2�����Ÿ�����줿��
-�������ǥ���ܥ�̾�����ͤ������줾���ʬ������̤Ǥ��ʤ��ʤ붲�줬��
-���롣�����������򤹤뤿�ᡢPowerPC�����������Ÿ�������ꤴ�Ȥ˰�
-���ʤ�ޥ�������label���Ϥ���롣�����Ÿ����Υ���ܥ�̾�ΰ������Ѥ�
-���뤳�Ȥˤ�ä�2�����Ÿ����ǥ���ܥ�̾�ξ��ͤ��ɤ����Ȥ��Ǥ��롣
+　このマクロは初段の割込みと多重割込みの場合の2ヶ所で展開される。
+　マクロ内部で分岐命令を使用する場合、そのままでは2ヶ所に展開されたマ
+　クロでシンボル名が衝突し、それぞれの分岐先を識別できなくなる恐れがあ
+　る。この問題を回避するため、PowerPC共通部からは展開する場所ごとに異
+　なるマクロ引数labelが渡される。これを展開先のシンボル名の一部に用い
+　ることによって2ヶ所の展開先でシンボル名の衝突を防ぐことができる。
   
-�����͡�
-��r1,r2,r13��r31���˲����ƤϤ����ʤ���
-���ʥ����å��ݥ��󥿤Ϥ��Υޥ�����λ���˸����ͤ���������Ƥ����OK��
-��PROC_ICU��ǥ����å���˥ǡ������Ѥ��硢�ʲ����������դ���ɬ�פ���
-���롣�ʤ��Υޥ����ϳ���ߥ���ȥ������IPM�����򤵤줿���֤Ǽ¹Ԥ���
-���뤿�ᡢ����ʳ��Υǡ����򥤥�ץ���ơ�������¸�˥����å�������
-�����ʤ��ΤǤ���С��������ʤ�����
+【備考】
+　r1,r2,r13〜r31を破壊してはいけない。
+　（スタックポインタはこのマクロ終了時に元の値に復元されていればOK）
+　PROC_ICU内でスタック上にデータを積む場合、以下の点に注意する必要があ
+　る。（このマクロは割込みコントローラのIPMが退避された状態で実行され
+　るため、それ以外のデータをインプリメンテーション依存にスタックに退避
+　しないのであれば、該当しない。）
 
-��C����롼�����ƤӽФ��ݤ�PowerPC�Υ�����󥰡�����٥󥷥��ˤ��
-��(sp+4)��(sp+7)���Ϥϥǡ������񤭹��ޤ��Τǡ������å���ˤ����ΰ��
-���ǡ������˲�����롣
-���ʡ�7.6 ����������աפ򻲾ȡ�
+　C言語ルーチンを呼び出す際にPowerPCのコーリング・コンベンションにより
+　(sp+4)〜(sp+7)番地はデータが書き込まれるので、スタック上にこの領域の
+　データが破壊される。
+　（「7.6 実装上の注意」を参照）
 
-���㤨�С�MPC860T�Ǥ�C����롼���󤫤���äƤ�����˳�����׵�򥯥ꥢ
-�����뤿��˳�����ֹ���MPC860T��¸���ȼ��ˡ˥����å����Ѥ�Ǥ��뤿
-���ᡢ���դ�ɬ�פʥ������˳������롣���γ�����ֹ�򥹥��å����Ѥ�Ȥ�
-���˾嵭��ͽ���ΰ�������褦�����֤��Ƥ��롣
-��
-�������å���˳��ݤ��٤��ޡ�����Υ�������cpu_config.h�˥ޥ���
-��STACK_MARGIN�Ȥ���������Ƥ��롣
-��
-������
-����64�ӥåȲ��κݤˤ����դ�ɬ�פǤ��롣
+　例えば、MPC860TではC言語ルーチンから戻ってきた後に割込み要求をクリア
+　するために割込み番号を（MPC860T依存部独自に）スタックに積んでいるた
+　め、注意が必要なケースに該当する。この割込み番号をスタックに積むとき
+　に上記の予約領域を空けるように配置している。
+　
+　スタック上に確保すべきマージンのサイズはcpu_config.hにマクロ
+　STACK_MARGINとして定義している。
+　
+　備考
+　　64ビット化の際には注意が必要である。
 
-�ڻ��ͷ������ͳ��
-��PROC_ICU�ޥ�����γƽ������Ƥ���̤��������PowerPC����������Ŭ����
-���ӽФ���C����롼����θƤӽФ���PowerPC�������ǹԤ���ˡ��ͤ����
-���뤬��ICU�Υ������ƥ����㤬ʣ���ʾ����㡧ʣ����ICU�Υ�����������³
-������Ƥ�����ˡ�������׵�Υ��ꥢ���ΨŪ�ʷ��Ǽ����Ǥ��ʤ����ᡢ
-�����٤Ƥν�����$SYS�ǥ��쥯�ȥ���������������ˤȤ�����
+【仕様決定の理由】
+　PROC_ICUマクロ内の各処理内容を個別に定義してPowerPC共通部から適宜呼
+　び出し、C言語ルーチンの呼び出しはPowerPC共通部で行う方法も考えられ
+　るが、ICUのアーキテクチャが複雑な場合（例：複数のICUのカスケード接続
+　されている場合）、割込み要求のクリアを効率的な形で実装できないため、
+　すべての処理を$SYSディレクトリで定義する実装方針とした。
 
 
-(6) define_ipm������߼��ջ���IPM������ʥ��ץ�����
+(6) define_ipm：割込み受付時のIPMの定義（オプション）
 
-��C����API��
+【C言語API】
 	void define_ipm(INHNO inhno, IPM ipm);
 
-�ڥѥ�᡼����
-	INHNO inhno	����ߥϥ�ɥ��ֹ�
-	IPM ipm		����߼��ջ������ꤹ��IPM����
+【パラメータ】
+	INHNO inhno	割込みハンドラ番号
+	IPM ipm		割込み受付時に設定するIPMの値
 
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
+【リターンパラメータ】
+	なし
 
-�ڵ�ǽ��
-������ߥϥ�ɥ��ֹ�inhno�γ���ߤ�����դ����Ȥ��˳���ߥ���ȥ�����
-����IPM�����ꤹ���ͤ�������롣
-��
-�����͡�
-������ߥ���ȥ����餬¿�ų���ߤΥ�٥������ϡ��ɥ������ǥ��ݡ��Ȥ�
-���Ƥ���С����եȥ������Ǥ��Τ褦�ʽ����򤹤�ɬ�פϤʤ���
-�����Υޥ����ϥǥХ����ɥ饤�Фν���������ǻ��Ѥ���뤳�Ȥ����ꤷ�Ƥ�
-���롣
+【機能】
+　割込みハンドラ番号inhnoの割込みを受け付けたときに割込みコントローラ
+　のIPMに設定する値を定義する。
+　
+【備考】
+　割込みコントローラが多重割込みのレベル制御をハードウェアでサポートし
+　ていれば、ソフトウェアでこのような準備をする必要はない。
+　このマクロはデバイスドライバの初期化処理で使用されることを想定してい
+　る。
 
-��Ʊ����ͳ��ipm_talbe[]��ɬ�ܤǤϤʤ���$CPU�ǥ��쥯�ȥ�ȤΥ��󥿡�
-���ե������ˤϴޤޤ�Ƥ��ʤ���
-����define_ipm()��PROC_ICU�ˤ�äơ�ipm_talbe[]��PowerPC���������鱣��
-��������Ƥ��롣��
+　同じ理由でipm_talbe[]も必須ではなく、$CPUディレクトリとのインター
+　フェースには含まれていない。
+　（define_ipm()とPROC_ICUによって、ipm_talbe[]はPowerPC共通部から隠蔽
+　　されている。）
 
 
-�ʲ��Σ��ĤΥޥ�����SUPPORT_CHG_IPM���������Ƥ�����Τ�ɬ�פȤʤ롣
+以下の３つのマクロはSUPPORT_CHG_IPMが定義されている場合のみ必要となる。
   
 
-(7) CHECK_IPM�ޥ�����IPM���ϰϥ����å�
+(7) CHECK_IPMマクロ：IPMの範囲チェック
 
-��C����API��
+【C言語API】
 	CHECK_IPM(IPM ipm);
 
-�ڥѥ�᡼����
-	IPM ipm		�����å����٤�IPM����
+【パラメータ】
+	IPM ipm		チェックすべきIPMの値
 
-�ڵ�ǽ��
-��chg_ipm()�ˤ�����ipm���ϰϥ����å���Ԥ���
-��C����ǵ��Ҥ��롣
-��ipm���ͤ������ʤ�С�ercd��E_PAR����������chg_ipm()��Υ�٥�exit��
-�������פ��롣
-������Ū�ˤϰʲ��ε��Ҥ�Ʊ���ν�����Ԥ���
-��
-��if (ipm���ͤ�����) {
+【機能】
+　chg_ipm()においてipmの範囲チェックを行う。
+　C言語で記述する。
+　ipmの値が不正ならば、ercdにE_PARを代入してchg_ipm()内のラベルexitへ
+　ジャンプする。
+　具体的には以下の記述と同等の処理を行う。
+　
+　if (ipmの値が不正) {
 	ercd = E_PAR;
 	goto exit;
   }
-��
-  ����ե����롧sys_config.h
-��
-(8) CHG_IPM�ޥ�����IPM���ѹ�
-��C����API��
+　
+  定義ファイル：sys_config.h
+　
+(8) CHG_IPMマクロ：IPMの変更
+【C言語API】
 	CHG_IPM(IPM ipm);
 
-�ڥѥ�᡼����
-	IPM ipm		���ꤹ��IPM����
+【パラメータ】
+	IPM ipm		設定するIPMの値
 
-�ڵ�ǽ��
-��chg_ipm()�ˤ�����ipm�����ߥ���ȥ�����γ���ߥޥ����˽񤭹��ࡣ
-��C����ǵ��Ҥ��롣
-  ����ե����롧sys_config.h
+【機能】
+　chg_ipm()においてipmを割込みコントローラの割込みマスクに書き込む。
+　C言語で記述する。
+  定義ファイル：sys_config.h
 
-(9) GET_IPM�ޥ�����IPM�μ���
-��C����API��
+(9) GET_IPMマクロ：IPMの取得
+【C言語API】
 	GET_IPM(IPM *p_ipm);
 
-�ڥѥ�᡼����
-	IPM *p_ipm	IPM���Ǽ�����ΰ�ؤΥݥ���
+【パラメータ】
+	IPM *p_ipm	IPMを格納する領域へのポインタ
 
-�ڵ�ǽ��
-��get_ipm()�ˤ����Ƴ���ߥ���ȥ�����γ���ߥޥ������ɤ߽Ф���p_ipm��
-���ؤ������ΰ�˽񤭹��ࡣ
-��C����ǵ��Ҥ��롣
-  ����ե����롧sys_config.h
+【機能】
+　get_ipm()において割込みコントローラの割込みマスクを読み出し、p_ipmが
+　指し示す領域に書き込む。
+　C言語で記述する。
+  定義ファイル：sys_config.h
 
-7.5.3 �ǥХ����ɥ饤�д�Ϣ
-��jsp-1.4����ǥХ����ɥ饤�Фϡ�ITRON�ǥХ����ɥ饤���߷ץ����ɥ饤
-����פ˽�򤷤ƺ�������Ƥ��롣
-����ITRON�ǥХ����ɥ饤���߷ץ����ɥ饤��פϲ�����URL��������������
-���Ǥ��롣
-����http://www.ertl.jp/ITRON/GUIDE/device-j.html
-����
-��SIL(System Interface Layer)��PDIC(Primitive Device Interface 
-��Compornet)��GDIC(General Device Interface Compornet)�����Ѹ��
-����ITRON�ǥХ����ɥ饤���߷ץ����ɥ饤��פ򻲾ȡ�
-����ñ�˽Ҥ٤��PDIC�Ͻ����hw_timer.h��hw_serial.h����
-����������ߥ���ȥ������¸
-������CPU��¸
-�������ܡ��ɰ�¸
-����������ǥХ�����¸��ʬ���б�����GDIC�Ϥ��ξ�̥쥤��ˤ����붦����
-����serial.c���б����롣
+7.5.3 デバイスドライバ関連
+　jsp-1.4からデバイスドライバは「ITRONデバイスドライバ設計ガイドライ
+　ン」に準拠して作成されている。
+　「ITRONデバイスドライバ設計ガイドライン」は下記のURLからダウンロード
+　できる。
+　　http://www.ertl.jp/ITRON/GUIDE/device-j.html
+　　
+　SIL(System Interface Layer)、PDIC(Primitive Device Interface 
+　Compornet)、GDIC(General Device Interface Compornet)等の用語は
+　「ITRONデバイスドライバ設計ガイドライン」を参照。
+　簡単に述べるとPDICは従来のhw_timer.h、hw_serial.hから
+　　・割込みコントローラ依存
+　　・CPU依存
+　　・ボード依存
+　を除いたデバイス依存部分に対応し、GDICはその上位レイヤにあたる共通部
+　のserial.cに対応する。
 
-��MPC860T��ͭ��
-��MPC860T��¸���ǤϼºݤΥǥХ����ɥ饤�ФǤ褯�Ȥ����������ؿ���
-��sil_mpc860t.h��������Ƥ���Τǡ��ǥХ����ɥ饤�Ф򼫺�����
-��������Ѥ��Ƥ��ɤ���
-���ʥǥХ����߷ץ����ɥ饤��Ǥϴ���Ū�ʥ꡼�ɡ��饤�ȤΥ��������ؿ�
-���Τ�������Ƥ��롣��
-
-
-�����ͥ��ư�����Τ˺����ɬ�פʥǥХ����ɥ饤�д�Ϣ�ι��ܤ�ʲ�
-�˼�����
-
-(1) SIL_ENDIAN�ޥ������ץ����å��Υ���ǥ���������
-������ե����롧user_config.h
-���ӥå�����ǥ�����ξ�硧SIL_ENDIAN_BIG
-����ȥ륨��ǥ�����ξ�硧SIL_ENDIAN_LITTLE
-����
-(2) �����ޡ��ɥ饤��
-��hw_timer.h�Ȥ�������ƤӽФ����PDIC��$SYS�ǥ��쥯�ȥ���Ѱդ��롣
-���ܤ�����jsp/doc/config.txt�򻲾�
-����
-(3) ���ꥢ�롦�ɥ饤��
-��hw_serial.h�Ȥ�������ƤӽФ����PDIC����ӳ���ߥϥ�ɥ�Υ���ե�
-������졼����󡦥ե�����hw_serial.cfg��$SYS�ǥ��쥯�ȥ���Ѱդ��롣
-�����ꥢ��ǥХ��������դ��ǥХ����ǡ�PDIC��¾�Υޥ�����Ǥ�ή�ѤǤ���
-����硢PDIC��jsp/pdic/simple_sio�ǥ��쥯�ȥ�����֤��롣
-���ܤ�����jsp/doc/config.txt�򻲾�
+【MPC860T固有】
+　MPC860T依存部では実際のデバイスドライバでよく使うアクセス関数を
+　sil_mpc860t.hで定義しているので、デバイスドライバを自作する場合は
+　これを用いても良い。
+　（デバイス設計ガイドラインでは基本的なリード／ライトのアクセス関数
+　のみ定義している。）
 
 
-7.5.4 ���ץ���󰷤��Υޥ������
+カーネルを動作させるのに最低限必要なデバイスドライバ関連の項目を以下
+に示す。
 
-�ʲ��Υޥ�������ϥ��ץ����Ǥ��롣
+(1) SIL_ENDIANマクロ：プロセッサのエンディアンの定義
+　定義ファイル：user_config.h
+　ビッグエンディアンの場合：SIL_ENDIAN_BIG
+　リトルエンディアンの場合：SIL_ENDIAN_LITTLE
+　　
+(2) タイマ・ドライバ
+　hw_timer.hとそこから呼び出されるPDICを$SYSディレクトリで用意する。
+　詳しくはjsp/doc/config.txtを参照
+　　
+(3) シリアル・ドライバ
+　hw_serial.hとそこから呼び出されるPDICおよび割込みハンドラのコンフィ
+　ギュレーション・ファイルhw_serial.cfgを$SYSディレクトリで用意する。
+　シリアルデバイスが外付けデバイスで、PDICを他のマイコンでも流用できる
+　場合、PDICをjsp/pdic/simple_sioディレクトリに配置する。
+　詳しくはjsp/doc/config.txtを参照
 
-(1) SAVE_POWPER�ޥ���
-���ǥ����ѥå������ΤǼ¹Բ�ǽ�ʥ��������ʤ��Ȥ��˥ץ����å��������
-���⡼�ɤ˰ܹԤ��������
-��������֥�̿��ǵ��Ҥ��롣
-    ������ߤ�����äƤ�����˳���߶ػߤ�Ԥ�
-    ��r0��r4�����Ƥ��˲����ƤϤʤ�ʤ�
 
-�����͡�
-��SUPPORT_POWER_MANAGEMENT�ޥ������������Ƥ�����Τ�ͭ���Ȥʤ롣
-  ����ե����롧sys_config.h
+7.5.4 オプション扱いのマクロ定義
 
-�����ա�
-�����ֳ���ߵ��ġפȡ־����ϥ⡼�ɤؤΰܹԡפ򥢥ȥߥå��˹Ԥ��ʤ���
-���������å��Ǥϡ�����ߤΥ����ߥ󥰤ˤ�äƤϡֳ���ߵ��ġפȡ־���
-�����ϥ⡼�ɤؤΰܹԡפδ֤ǳ���ߤ�����դ��Ƥ��ޤ����տޤ��ʤ�����
-���������ϥ⡼�ɤ˰ܹԤ��Ƥ��ޤ��Τ����ա�
-��������ߤˤ�äƼ¹Բ�ǽ�ʥ�����������Ƥ�ץ����å������꡼�פ���
-�����ޤޤǼ¹Ԥ���ʤ��ʤ롣�ʼºݤˤϥ����޳���ߤˤ������ϥ⡼��
-����������������Τǡ����������Ԥ��������֤Ϻ���Ǥ⥿���޳���߼�
-�������ǲ��������롣��
+以下のマクロ定義はオプションである。
 
-(2) �ȥ졼������������ʥ��ץ�����������������ե������ɬ�ס�
-��������tool_config.h����������Ƥ����ޥ������⡢����ߥ���ȥ������
-����ư���������黻��˥åȤ˰�¸���벼���Υޥ�����$SYS�ǥ��쥯�ȥ��
-��sys_tool_config.h��ʬΥ���롣���Υޥ���������Τϥ��ץ����Ǥ��뤬��
-��sys_tool_config.h�ե����뼫�Τ϶��Ǥ��Ѱդ���ɬ�פ����롣
-������ե����롧sys_tool_config.h
+(1) SAVE_POWPERマクロ
+　ディスパッチャ本体で実行可能なタスクがないときにプロセッサを省電力
+　モードに移行させる処理
+　アセンブラ命令で記述する。
+    ・割込みから戻ってきた後に割込み禁止も行う
+    ・r0〜r4の内容を破壊してはならない
 
-������LOG_INH_ENTER(inhno)
-������LOG_INH_LEAVE(inhno)
-������LOG_ISR_ENTER(intno)
-������LOG_ISR_LEAVE(intno)
+【備考】
+　SUPPORT_POWER_MANAGEMENTマクロが定義されている場合のみ有効となる。
+  定義ファイル：sys_config.h
 
-������LOG_CHG_IPM_ENTER(ipm)
-������LOG_CHG_IPM_LEAVE(ercd)		/*  ǰ�Τ��ᡢʬΥ���Ƥ���  */
-������LOG_GET_IPM_ENTER(p_ipm)
-������LOG_GET_IPM_LEAVE(ercd, ipm)
+【注意】
+　　「割込み許可」と「省電力モードへの移行」をアトミックに行えないプ
+　　ロセッサでは、割込みのタイミングによっては「割込み許可」と「省電
+　　力モードへの移行」の間で割込みを受け付けてしまい、意図しない形で
+　　省電力モードに移行してしまうので注意。
+　　割込みによって実行可能なタスクが現れてもプロセッサがスリープした
+　　ままで実行されなくなる。（実際にはタイマ割込みにより省電力モード
+　　から復帰するので、タスクが待たされる時間は最大でもタイマ割込み周
+　　期で押さえられる。）
 
-������LOG_DSP_ENTER(tcb)
-������LOG_DSP_LEAVE(tcb)
+(2) トレースログの設定（オプションだが、空の定義ファイルは必要）
+　元々、tool_config.h内で定義されていたマクロの内、割込みコントローラや
+　浮動点小数点演算ユニットに依存する下記のマクロを$SYSディレクトリの
+　sys_tool_config.hに分離する。このマクロ定義自体はオプションであるが、
+　sys_tool_config.hファイル自体は空でも用意する必要がある。
+　定義ファイル：sys_tool_config.h
 
-7.5.5 Makefile��Ϣ
+　　　LOG_INH_ENTER(inhno)
+　　　LOG_INH_LEAVE(inhno)
+　　　LOG_ISR_ENTER(intno)
+　　　LOG_ISR_LEAVE(intno)
 
-$SYS/Makefile.config�������ɬ�פʹ��ܤ�ʲ��˽Ҥ٤롣
+　　　LOG_CHG_IPM_ENTER(ipm)
+　　　LOG_CHG_IPM_LEAVE(ercd)		/*  念のため、分離している  */
+　　　LOG_GET_IPM_ENTER(p_ipm)
+　　　LOG_GET_IPM_LEAVE(ercd, ipm)
 
-(1) �������å�̾�ʥ���ѥ���̾��
-��powerpc-elf-gcc�ʳ��Υ���ѥ�����Ѥ�������ѿ�TARGET��������롣
-���������Ƥ��ʤ����ϡ��ǥե���Ȥ�TARGET��powerpc-eabi-elf�����ꤵ
-����롣
+　　　LOG_DSP_ENTER(tcb)
+　　　LOG_DSP_LEAVE(tcb)
 
-(2) ����ѥ��륪�ץ����
-���ä˥ǥХå�����Υ��ץ�����gcc�ΥС���������Ѥ���ǥХå��ġ�
-����˰�¸����Τǡ��ѿ�COPTS��������롣
-����
-(3) ����оݤȤʤ륪�֥������ȥե�����
-��$SYS�ǥ��쥯�ȥ�˥������ե����뤬�����ΤˤĤ��Ƥ��ѿ�
-��KERNEL_ASMOBJS�ʥ�����֥�ˡ�KERNEL_COBJS��C����ˤ˥��֥�������
-���ե�����̾��������롣
-��
-(4) ��󥯥�����ץ�
-���ѿ�LDSCRIPT�ǥե�����̾����ꤹ�롣
+7.5.5 Makefile関連
 
-(5) text�����data������������Ƭ���ɥ쥹
-����󥯥�����ץȤ˵��Ҥ��Ƥ��ɤ���
+$SYS/Makefile.configで定義が必要な項目を以下に述べる。
+
+(1) ターゲット名（コンパイラ名）
+　powerpc-elf-gcc以外のコンパイラを用いる場合は変数TARGETを定義する。
+　定義されていない場合は、デフォルトでTARGETにpowerpc-eabi-elfが設定さ
+　れる。
+
+(2) コンパイルオプション
+　特にデバッグ情報のオプションはgccのバージョンや使用するデバッグツー
+　ルに依存するので、変数COPTSで定義する。
+　　
+(3) リンク対象となるオブジェクトファイル
+　$SYSディレクトリにソースファイルがあるものについては変数
+　KERNEL_ASMOBJS（アセンブラ）、KERNEL_COBJS（C言語）にオブジェクト
+　ファイル名を定義する。
+　
+(4) リンクスクリプト
+　変数LDSCRIPTでファイル名を指定する。
+
+(5) textおよびdataセクションの先頭アドレス
+　リンクスクリプトに記述しても良い。
 
 ----------------------------------------------------------------------
-7.5.6 IBM��PowerPC�б��ˤĤ���
+7.5.6 IBM系PowerPC対応について
 
-PowerPC�������ƥ�������礭��ʬ���ơ��ʲ���2�Ĥ�ʬ�व��롣
-��(1) ���ꥸ�ʥ��PowerPC�������ƥ�����
-����������ȥ����� MPC�ե��ߥ�
-��������IBM PowerPC6xx/700�ե��ߥ�
-��(2) The IBM PowerPC Embedded Environment�������ƥ�����
-��������IBM PowerPC40x�ե��ߥ�
-��(3) The PowerPC Book-E�������ƥ�����
-������the Enhanced PowerPC�������ƥ������
-��������IBM PowerPC440�ե��ߥ�
+PowerPCアーキテクチャは大きく分けて、以下の2つに分類される。
+　(1) オリジナルのPowerPCアーキテクチャ
+　　　・モトローラ MPCファミリ
+　　　・IBM PowerPC6xx/700ファミリ
+　(2) The IBM PowerPC Embedded Environmentアーキテクチャ
+　　　・IBM PowerPC40xファミリ
+　(3) The PowerPC Book-Eアーキテクチャ
+　　（the Enhanced PowerPCアーキテクチャ）
+　　　・IBM PowerPC440ファミリ
 
-�ޤ���PowerPC�������ƥ����������ϥ��ץꥱ��������٥뤫
-�饫���ͥ롦��٥�ޤ�3�ĤΥ�٥�ʬ��������Ƥ��ꡢ�嵭3�Ĥ�
-�������ƥ��������Ӥ����UISA�϶��̤�����VEA��OEA�ϰۤʤ���
-���ˤʤäƤ��롣
-����UISA��User Instruction Set Architechture
-���������桼����̿�᥻�åȥ������ƥ�����
-�������������桼������٥�̿�᥻�å�
-�������������桼������٥롦�쥸����
-�������������ǡ���������
-���������������ɥ�å��󥰡��⡼��
-����VEA�� Virtual Environment Architechture
-�����������۴Ķ��������ƥ�����
-�����������������ǥ�
-������������������å����ޤ�
-����OEA�� Opareting Environment Architechture
-��������ư��Ķ��������ƥ�����
-�������������������
-�����������������ѡ��Х�������٥롦�쥸����
-�������������㳰��ǥ�
+また、PowerPCアーキテクチャの定義はアプリケーションレベルか
+らカーネル・レベルまで3つのレベル分けがされており、上記3つの
+アーキテクチャを比較するとUISAは共通だが、VEAとOEAは異なる定
+義になっている。
+　・UISA：User Instruction Set Architechture
+　　　・ユーザー命令セットアーキテクチャ
+　　　　　・ユーザーレベル命令セット
+　　　　　・ユーザーレベル・レジスタ
+　　　　　・データタイプ
+　　　　　・アドレッシング・モード
+　・VEA： Virtual Environment Architechture
+　　　・仮想環境アーキテクチャ
+　　　　　・メモリモデル
+　　　　　　　キャッシュを含む
+　・OEA： Opareting Environment Architechture
+　　　・動作環境アーキテクチャ
+　　　　　・メモリ管理
+　　　　　・スーパーバイザ・レベル・レジスタ
+　　　　　・例外モデル
 
-�ܼ����Ǥ�(1),(2)�Υ������ƥ�������б��Ǥ���褦�ˤʤäƤ��ꡢ
-ξ�Ԥ��ڤ��ؤ���IBM_PPC_EMB_ENV�ޥ����������̵ͭ�ˤ�ä�
-��拾��ѥ����ԤäƤ��롣
-�ޤ���ξ�Ԥΰ㤤��ۼ����뤿�ᡢVEA��OEA�˴ؤ��뵭�Ҥϳƥ���
-���ƥ�������˥إå����ե������ʬ���Ƥ��롣
-������vea_oea.h�����ꥸ�ʥ��PowerPC�������ƥ�������
-������vea_oea_emb.h��The IBM PowerPC Embedded Environment�������ƥ�������
+本実装では(1),(2)のアーキテクチャに対応できるようになっており、
+両者の切り替えはIBM_PPC_EMB_ENVマクロの定義の有無によって
+条件コンパイルを行っている。
+また、両者の違いを吸収するため、VEAとOEAに関する記述は各アー
+キテクチャ毎にヘッダーファイルを分けている。
+　　・vea_oea.h：オリジナルのPowerPCアーキテクチャ用
+　　・vea_oea_emb.h：The IBM PowerPC Embedded Environmentアーキテクチャ用
 
-�ʤ���The PowerPC Book-E�������ƥ�����ˤ�̤�б��Ǥ��롣
-���Υ������ƥ�����ؤΰܿ����˾�����������̤��줿����
+なお、The PowerPC Book-Eアーキテクチャには未対応である。
+このアーキテクチャへの移植を希望する方は相談されたい。
 
-�ʲ���$SYS�ǥ��쥯�ȥ�ǳƥ������ƥ�����������ꤹ�٤����Ƥ�Ҥ٤롣
+以下、$SYSディレクトリで各アーキテクチャ毎に設定すべき内容を述べる。
 
-(1) ���ꥸ�ʥ��PowerPC�������ƥ������ͭ����������
+(1) オリジナルのPowerPCアーキテクチャ固有の設定内容
 
-IMPLEMENT_EXCEPTION_01000_PROC�ޥ����ʥ��ץ�����
-������ץ���ơ�������ͭ���㳰0x01000�ν������Ƥ���������ޥ���
-��
-���������Ƥϥץ����å��Υ���ץ���ơ�������ͭ�Τ�ΤʤΤǡ�
-�������ͥ�ˤ��������������������줺�����Υޥ�������������������Ƥ�
-��ľ�ܸƤӽФ���롣�ʤĤޤꡢ�����ͥ�δ�����������
-�����Τ��ᡢ���ν�����ǥ����ͥ�ε�ǽ��ƤӽФ�������ư���̤�����
-�����롣
-��
-�����ե��å�0x01000�ʹߤ����֤�����㳰�װ��ϣ��ĤȤϸ¤�ʤ���2�İʾ�
-�����㳰�٥��������֤�����硢���ե��åȤλ�����ˡ�����դ��뤳�ȡ�
-������Ū�ˤ�
-��    .org ���ե��å� - EXCEPTION_VECTOR_BASE
-���Τ褦�˻��ꤹ�롣�ܤ�����cpu_support.S�γ����Ľ�򻲾ȡ�
-��
-  ����ե����롧sys_config.h
+IMPLEMENT_EXCEPTION_01000_PROCマクロ（オプション）
+　インプリメンテーション固有の例外0x01000の処理内容を定義したマクロ
+　
+　処理内容はプロセッサのインプリメンテーション固有のものなので、
+　カーネルによる出入口処理は挿入されず、このマクロで定義した処理内容が
+　直接呼び出される。（つまり、カーネルの管理外扱い）
+　そのため、この処理中でカーネルの機能を呼び出した場合の動作は未定義で
+　ある。
+　
+　オフセット0x01000以降に配置される例外要因は１つとは限らない。2つ以上
+　の例外ベクタが配置される場合、オフセットの指定方法に注意すること。
+　具体的には
+　    .org オフセット - EXCEPTION_VECTOR_BASE
+　のように指定する。詳しくはcpu_support.Sの該当個所を参照。
+　
+  定義ファイル：sys_config.h
 
 
-(2) The IBM PowerPC Embedded Environment�������ƥ������ͭ����������
+(2) The IBM PowerPC Embedded Environmentアーキテクチャ固有の設定内容
 
-�����ޥ���
+Ａ．マクロ
 
-A-1 ��拾��ѥ����ѥޥ���
+A-1 条件コンパイル用マクロ
 
-  ���ʲ��Υޥ��������$SYS/Makefile.config����ǥ���ѥ��顦
-  �����ץ����Ȥ���Ϳ����
+  　以下のマクロ定義は$SYS/Makefile.configの中でコンパイラ・
+  　オプションとして与える
 
 IBM_PPC_EMB_ENV
-  �����Υޥ������������Ƥ����硢The IBM PowerPC Embedded 
-  ��Environment�������ƥ�����Ǥ��뤳�Ȥ򼨤���
+  　このマクロが定義されている場合、The IBM PowerPC Embedded 
+  　Environmentアーキテクチャであることを示す。
 
-A-2 �㳰�����롼��������
-�����߷�����
-����������Ū�˰ʲ����㳰������ǥ����ӥ����������Ѥ���
-�����������������ꤷ�Ƥ��ʤ����ʥ����ͥ������������
-  �����㳰�����롼������ǥ����ӥ��������ƤӽФ����Ȥ���
-  ����ư����ݾڤ���ʤ���
-������������
-�������������Ƥϥ�����֥�ǵ��Ҥ��롣
-��������C����Ǥε��Ҥ����ꤷ�Ƥ��ʤ��Τǡ��嵭�Τ褦��
-���������߷����ˤȤʤ롣��
-������������
-�������������ƥ�����塢0x10�Х��Ȥ����ΰ褬������Ƥ���
-���������ʤ��㳰�װ��ˤĤ��Ƥϡ�ʬ��̿���Ȥä��̤ξ���
-�����������롼��������֤��뤳��
-������������
-�������㳰���饹��Critical���㳰�����Ǥ��̾���㳰�Ȱۤʤꡢ
-  �����꥿����̿���rfci���Ѥ��롣
-  ����(rfci��Return From Critical Interrupt) 
-  �����ʲ��Σ��Ĥ��㳰�װ����������롣
-  ��������Critical Input
-  ��������Machine Check
-  ��������Watchdoc Timer
-  ��������Debug
+A-2 例外処理ルーチンの定義
+　　設計方針
+　　　基本的に以下の例外処理内でサービスコールを使用する
+　　　ケースは想定していない。（カーネル管理外扱い）
+  　　例外処理ルーチン内でサービスコールを呼び出したときの
+  　　動作は保証されない。
+　　注意点１
+　　　処理内容はアセンブラで記述する。
+　　　（C言語での記述を想定していないので、上記のような
+　　　　設計方針となる。）
+　　注意点２
+　　　アーキテクチャ上、0x10バイトしか領域が割り当てられて
+　　　いない例外要因については、分岐命令を使って別の場所に
+　　　処理ルーチンを配置すること
+　　注意点３
+　　　例外クラスがCriticalの例外処理では通常の例外と異なり、
+  　　リターン命令はrfciを用いる。
+  　　(rfci：Return From Critical Interrupt) 
+  　　以下の４つの例外要因が該当する。
+  　　　・Critical Input
+  　　　・Machine Check
+  　　　・Watchdoc Timer
+  　　　・Debug
 
-�ʲ��Υޥ����Ϥ������sys_config.h�ޤ��Ϥ������饤�󥯥롼�ɤ����
-�إå����ե��������������뤳�ȡ�
+以下のマクロはいずれもsys_config.hまたはそこからインクルードされる
+ヘッダーファイル内で定義すること。
 
-�ʲ����㳰�����������ɬ�ܤǤ��롣
+以下の例外処理の定義は必須である。
 
 CRITICAL_INTERRUPT_EXCEPTION_PROC
-��Critical Interrupt�㳰�ν���
-���㳰�٥���0x100
-���㳰���饹��Critical
-  �����̾���㳰�Ȱۤʤꡢ�꥿����̿���rfci���Ѥ��롣
-  ����(rfci��Return From Critical Interrupt) 
-  Critical Interrupt�ϥ���ץ���ơ�������¸�ʤΤ�
-  �������Ƥϥޥ���������Ƥ�����
-��0x100�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
-  �����ϰϤ�Ķ������ϻĤ����ʬ���̤ξ������֤��ơ�
-  ������ʬ�����뤳��
+　Critical Interrupt例外の処理
+　例外ベクタ0x100
+　例外クラス：Critical
+  　　通常の例外と異なり、リターン命令はrfciを用いる。
+  　　(rfci：Return From Critical Interrupt) 
+  Critical Interruptはインプリメンテーション依存なので
+  処理内容はマクロ定義しておく。
+　0x100バイトしか領域が割り当てられていないので注意
+  この範囲を超える場合は残りの部分を別の場所に配置して、
+  そこに分岐すること
 
- ����������
- ������Critical Interrupt�ϥ����ͥ���������㳰�Ȥ��롣
- �������ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
+ 　注意点１
+ 　　　Critical Interruptはカーネル管理外の例外とする。
+ 　　　（この処理ルーチン内でサービスコールを使用しない。）
 
 MACHINE_CHECK_PROC
-��Machine Check�㳰�ν���
-���㳰�٥���0x200
-���㳰���饹��Critical
-  �����̾���㳰�Ȱۤʤꡢ�꥿����̿���rfci���Ѥ��롣
-  ����(rfci��Return From Critical Interrupt) 
-��0x100�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
-  �����ϰϤ�Ķ������ϻĤ����ʬ���̤ξ������֤��ơ�
-  ������ʬ�����뤳��
+　Machine Check例外の処理
+　例外ベクタ0x200
+　例外クラス：Critical
+  　　通常の例外と異なり、リターン命令はrfciを用いる。
+  　　(rfci：Return From Critical Interrupt) 
+　0x100バイトしか領域が割り当てられていないので注意
+  この範囲を超える場合は残りの部分を別の場所に配置して、
+  そこに分岐すること
 
- ����������
- ������Machine Check�ϥ����ͥ���������㳰�Ȥ��롣
- �������ʤ��ν����롼������ǥ����ӥ����������Ѥ��ʤ�����
+ 　注意点１
+ 　　　Machine Checkはカーネル管理外の例外とする。
+ 　　　（この処理ルーチン内でサービスコールを使用しない。）
 
 PROGRAMMABLE_INTERVAL_TIMER_PROC
-��Programmable Interval timer�㳰�ν���
-���㳰�٥���0x1000
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
-  �����ϰϤ�Ķ������ϻĤ����ʬ���̤ξ������֤��ơ�
-  ������ʬ�����뤳��
- �ʰʲ��Υޥ�����Ʊ�͡�
+　Programmable Interval timer例外の処理
+　例外ベクタ0x1000
+　0x10バイトしか領域が割り当てられていないので注意
+  この範囲を超える場合は残りの部分を別の場所に配置して、
+  そこに分岐すること
+ （以下のマクロも同様）
 
 FIXED_INTERVAL_TIMER_PROC
-��Fixed Interval timer�㳰�ν���
-���㳰�٥���0x1010
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+　Fixed Interval timer例外の処理
+　例外ベクタ0x1010
+　0x10バイトしか領域が割り当てられていないので注意
 
 WATCHDOG_TIMER_PROC
-��Watchdog timer�㳰�ν���
-���㳰�٥���0x1020
-���㳰���饹��Critical
-  �����̾���㳰�Ȱۤʤꡢ�꥿����̿���rfci���Ѥ��롣
-  ����(rfci��Return From Critical Interrupt) 
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+　Watchdog timer例外の処理
+　例外ベクタ0x1020
+　例外クラス：Critical
+  　　通常の例外と異なり、リターン命令はrfciを用いる。
+  　　(rfci：Return From Critical Interrupt) 
+　0x10バイトしか領域が割り当てられていないので注意
 
 DATA_TLB_MISS_PROC
-��Data TLB miss�㳰�ν���
-���㳰�٥���0x1100
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+　Data TLB miss例外の処理
+　例外ベクタ0x1100
+　0x10バイトしか領域が割り当てられていないので注意
 
 INSTRUCTION_TLB_MISS_PROC
-��Instruction TLB miss�㳰�ν���
-���㳰�٥���0x1200
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
+　Instruction TLB miss例外の処理
+　例外ベクタ0x1200
+　0x10バイトしか領域が割り当てられていないので注意
 
 DEBUG_PROC
-��Debug�㳰�ν���
-���㳰�٥���0x2000
-��0x10�Х��Ȥ����ΰ褬������Ƥ��Ƥ��ʤ��Τ�����
-���װ��ϰʲ���7����
-����Trap
-����Instruction address compare
-����Data address compare
-����Instruction complete
-����Branch taken
-����Exception
-����Unconditional debug event
+　Debug例外の処理
+　例外ベクタ0x2000
+　0x10バイトしか領域が割り当てられていないので注意
+　要因は以下の7種類
+　　Trap
+　　Instruction address compare
+　　Data address compare
+　　Instruction complete
+　　Branch taken
+　　Exception
+　　Unconditional debug event
 
 
-�ʲ����㳰����������ϥ��ץ����Ǥ��롣
+以下の例外処理の定義はオプションである。
 
-IMPLEMENT_EXCEPTION_D00_PROC�ʥ��ץ�����
-  ����ץ���ơ���������Ѥν��� 
-  �����ե��åȡ�0xd00-0xff0
-    ����ץ���ơ�������ͭ���㳰�٥����ʣ��ĤȤϸ¤�ʤ��ˤ�
-    ¾�����Ӥ˻��Ѥ���롣
+IMPLEMENT_EXCEPTION_D00_PROC（オプション）
+  インプリメンテーション専用の処理 
+  　オフセット：0xd00-0xff0
+    インプリメンテーション固有の例外ベクタ（１つとは限らない）や
+    他の用途に使用される。
 
- �� ���ե��åȤλ�����ˡ�����դ��뤳�ȡ�
-  ������Ū�ˤ�
-       .org ���ե��å� - EXCEPTION_VECTOR_BASE
- �� �Τ褦�˻��ꤹ�롣�ܤ�����¾���㳰�װ��γ����Ľ�򻲾ȡ�
-    �㤨�С�PowerPC405�Ǥϥ��ե��å�0xf20��
-    APU Unavailable�㳰�ν��������֤��롣
+ 　 オフセットの指定方法に注意すること。
+  　具体的には
+       .org オフセット - EXCEPTION_VECTOR_BASE
+ 　 のように指定する。詳しくは他の例外要因の該当個所を参照。
+    例えば、PowerPC405ではオフセット0xf20に
+    APU Unavailable例外の処理を配置する。
 
-IMPLEMENT_EXCEPTION_02010_PROC�ʥ��ץ�����
-  ����ץ���ơ���������Ѥν��� 
-  �����ե��åȡ�0x2010-0x2ff0
-    ����ץ���ơ�������ͭ���㳰�٥����ʣ��ĤȤϸ¤�ʤ��ˤ�
-    ¾�����Ӥ˻��Ѥ����
+IMPLEMENT_EXCEPTION_02010_PROC（オプション）
+  インプリメンテーション専用の処理 
+  　オフセット：0x2010-0x2ff0
+    インプリメンテーション固有の例外ベクタ（１つとは限らない）や
+    他の用途に使用される
 
- �� ���ե��åȤλ�����ˡ�����դ��뤳�ȡ�
-  ������Ū�ˤ�
-       .org ���ե��å� - EXCEPTION_VECTOR_BASE
- �� �Τ褦�˻��ꤹ�롣�ܤ�����¾���㳰�װ��γ����Ľ�򻲾ȡ�
+ 　 オフセットの指定方法に注意すること。
+  　具体的には
+       .org オフセット - EXCEPTION_VECTOR_BASE
+ 　 のように指定する。詳しくは他の例外要因の該当個所を参照。
 
 
-�¡���󥯥�����ץ�
+Ｂ．リンクスクリプト
 
-�ꥻ�åȥ٥�����0xffff,fffc���Ϥ˸��ꤵ��Ƥ��롣
-�ꥻ�åȽ����Ѥ�reset_vector����������������Ƥ��롣
-��󥯥�����ץȤǤ��Υ���������0xffff,ffec����
-(0xffff,fffc - 4�Х��ȡ�4̿��)�����֤��롣
-�ܤ�����cpu_support.S�Υꥻ�åȥ٥����ε��ҸĽ�򻲾�
+リセットベクタは0xffff,fffc番地に固定されている。
+リセット処理用にreset_vectorセクションを定義している。
+リンクスクリプトでこのセクションを0xffff,ffec番地
+(0xffff,fffc - 4バイト×4命令)に配置する。
+詳しくはcpu_support.Sのリセットベクタの記述個所を参照
 
-����
-��EVPR�쥸����������ϥ��ꥳ��ȥ�����ν�����θ�˹Ԥ��٤��ʤΤ�
-���ǥե���ȤΥ������ȥ��åץ롼����ǤϹԤ鷺��hardware_init_hook
-���롼����ǹԤ���ˡ��ɸ��Ȥ��롣
+備考
+　EVPRレジスタの設定はメモリコントローラの初期化の後に行うべきなので
+　デフォルトのスタートアップルーチンでは行わず、hardware_init_hook
+　ルーチンで行う方法を標準とする。
 
 ----------------------------------------------------------------------
 
-7.6 �����������
+7.6 実装上の注意
 
-(1) hardware_init_hook��������ϤˤĤ���
-���������ȥ��åץ롼�����hardware_init_hook��������Ϥ��󥯥쥸����
-��LR����¸���Ƥ���Τǡ��˲����ƤϤ����ʤ���
-����hardware_init_hook�������Ȥ��˥�󥯥쥸����LR�����Ѥ�����ľ�ܥ�
-���٥�start_1�˥����פ��Ƥ�OK��
+(1) hardware_init_hookの戻り番地について
+　スタートアップルーチンでhardware_init_hookの戻り番地をリンクレジスタ
+　LRに保存しているので、破壊してはいけない。
+　（hardware_init_hookから戻るときにリンクレジスタLRを利用せずに直接ラ
+　ベルstart_1にジャンプしてもOK）
 
-(2) ������֥�롼���󤫤��C����롼����ƽФ��ˤĤ���
-��PowerPC EABI�ǵ��ꤵ��Ƥ��륳����󥰡�����٥󥷥��Ǥϴؿ��Ƥӽ�
-�������Υե졼�ॹ���å��ݥ��󥿤��ؤ��Ƥ���8�Х�����(sp+4)��(sp+7)��
-���Ϥ˸ƤФ줿¦�ξ������򤵤�롣���Τ��ᡢ������֥�롼���󤫤�C
-������롼�����ƤӽФ��ս���ä˳���ߥ���ȥ������¸���ˤǤ����դ�
-��ɬ�פǤ��롣
-������Ū�ˤϰʲ��βս꤬�������롣
- ��(1) �������ȥ��åץ롼����
- ��(2) ��������ư
- ��  (2-1) �������㳰�����롼����ư
- ��(3) ����ߥϥ�ɥ鵯ư
- ��(4) CPU�㳰�롼����ư
+(2) アセンブラルーチンからのC言語ルーチン呼出しについて
+　PowerPC EABIで規定されているコーリング・コンベンションでは関数呼び出
+　し時のフレームスタックポインタが指している8バイト先(sp+4)〜(sp+7)番
+　地に呼ばれた側の情報が待避される。そのため、アセンブラルーチンからC
+　言語ルーチンを呼び出す箇所（特に割込みコントローラ依存部）では注意が
+　必要である。
+　具体的には以下の箇所が該当する。
+ 　(1) スタートアップルーチン
+ 　(2) タスク起動
+ 　  (2-1) タスク例外処理ルーチン起動
+ 　(3) 割込みハンドラ起動
+ 　(4) CPU例外ルーチン起動
 
-�����������������������������å������Ӥ�����
-����������������������������������
- �ؿ��ƤӽФ�����sp��  ---------------------- 
- ����������           |                      |
-����������         +4  ----------------------��
-����������            |                      |��C����롼����θƤӽФ�
-����������         +8  ----------------------   �ˤ��񤭹��ޤ��
+　　　　　　　　　　　　スタックが伸びる方向
+　　　　　　　　　　　　　　　　↑
+ 関数呼び出し前のsp→  ---------------------- 
+ 　　　　　           |                      |
+　　　　　         +4  ----------------------　
+　　　　　            |                      |←C言語ルーチンの呼び出し
+　　　　　         +8  ----------------------   により書き込まれる
 
-�������å���˳��ݤ��٤��ޡ�����Υ�������cpu_config.h�˥ޥ���
-��STACK_MARGIN�Ȥ���������Ƥ��롣
+　スタック上に確保すべきマージンのサイズはcpu_config.hにマクロ
+　STACK_MARGINとして定義している。
 
 
-�ѹ�����
+変更履歴
 
-2004ǯ10��9����Release1.4.1
-������
-   + �桼�������ѹ��Ǥ���ս��user_config.h�Ȥ���ʬΥ������
+2004年10月9日　Release1.4.1
+・改良
+   + ユーザーが変更できる箇所をuser_config.hとして分離した。
 
-2004ǯ5��14����
-������
-   + The IBM PowerPC Embedded Environment�������ƥ�����˴ؤ���
-���� ���Ҥ��ɲ�
-���� �������ꥸ�ʥ��PowerPC�������ƥ�����
-���� ����The IBM PowerPC Embedded Environment�������ƥ�����
-���� ��ξ�б��Ȥ��뤿�ᡢ
-���� ����UISA���桼����̿�᥻�åȥ������ƥ�����
-���� ����VEA�����۴Ķ��������ƥ�����
-���� ����OEA��ư��Ķ��������ƥ�����
-���� �γ�����Υե����빽����ľ��
+2004年5月14日　
+・改良
+   + The IBM PowerPC Embedded Environmentアーキテクチャに関する
+　　 記述を追加
+　　 　・オリジナルのPowerPCアーキテクチャ
+　　 　・The IBM PowerPC Embedded Environmentアーキテクチャ
+　　 の両対応とするため、
+　　 　・UISA：ユーザー命令セットアーキテクチャ
+　　 　・VEA：仮想環境アーキテクチャ
+　　 　・OEA：動作環境アーキテクチャ
+　　 の各定義のファイル構成を見直し
 
-2004ǯ2��20����JSP�����ͥ� Release1.4 �б�
-     PowerPC32�ǤΥ��ݡ��Ȥ򳫻�
+2004年2月20日　JSPカーネル Release1.4 対応
+     PowerPC32版のサポートを開始

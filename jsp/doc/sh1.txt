@@ -1,8 +1,8 @@
 
-	    �� TOPPERS/JSP�����ͥ� �桼�����ޥ˥奢�� ��
-    		    ��SH1 �������åȰ�¸����
+	    ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+    		    （SH1 ターゲット依存部）
 
-             ��Release 1.4.2�б����ǽ�����: 14-Nov-2005��
+             （Release 1.4.2対応，最終更新: 14-Nov-2005）
 
 ------------------------------------------------------------------------
  TOPPERS/JSP Kernel
@@ -14,202 +14,202 @@
  Copyright (C) 2001-2004 by Industrial Technology Institute,
                              Miyagi Prefectural Government, JAPAN
 
- �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-     �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-     ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-     �ȡ�
-   (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-       �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-   (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-       ��𤹤뤳�ȡ�
- (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-     ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 
- �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 
  @(#) $Id: sh1.txt,v 1.25 2005/11/14 08:00:54 honda Exp $
 ------------------------------------------------------------------------
 
 
-����SH1 �������åȰ�¸���γ���
+１．SH1 ターゲット依存部の概要
 
-1.1 �������åȥ����ƥ�ȳ�ȯ�Ķ�
+1.1 ターゲットシステムと開発環境
 
-SH1�ץ����å��Υ������åȥ����ƥ�Ȥ��Ƥϡ�SH7032����ܤ����ʲ��Υܡ���
-�򥵥ݡ��Ȥ��Ƥ��롣
+SH1プロセッサのターゲットシステムとしては、SH7032を搭載した以下のボード
+をサポートしている。
 
-�����ԥޥ���������ԥ塼��(��)����KZ-SH1-01(CPU: HD6417032F20)
-��CQ����(��)����RISCɾ�����å� SH-1(CPU: HD6417032F20)
-��(��)�����������Φ�ITRON���SH1CPU�ܡ���(CPU: HD6417034F20)
+・京都マイクロコンピュータ(株)製のKZ-SH1-01(CPU: HD6417032F20)
+・CQ出版(株)製のRISC評価キット SH-1(CPU: HD6417032F20)
+・(株)中央製作所製のμITRON搭載SH1CPUボード(CPU: HD6417034F20)
 
-��ȯ�Ķ��ˤϡ�GCC �ʤɤ� GNU��ȯ�Ķ����Ѥ������֥������ȥե�����ե���
-�ޥåȤ� ELF ��ɸ��Ȥ��롣
+開発環境には、GCC などの GNU開発環境を用い、オブジェクトファイルフォー
+マットは ELF を標準とする。
 
-�¹ԴĶ���ROM���������򥵥ݡ��Ȥ��Ƥ��롣Makefile.config��ǡ���
-��DBGENV��ROM�����ꤷ�Ƥ��롣���縵��Makefile��GDB_STUB�����ꤵ���
-�Τ��ɤ������
-
-
-1.2 ���ݡ��Ȥ��뵡ǽ�γ���
-
-SH1��¸�ε�ǽ�Ȥ��ơ�����ߥޥ������ѹ�������(chg_ixx��get_ixx)�ȡ�
-��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ(vxget_tim)�򥵥ݡ��Ȥ��Ƥ��롣�����
-�ζػߤȵ���(dis_int��ena_int)�ϥ��ݡ��Ȥ��Ƥ��ʤ���
-
-1.3 ¾�Υ������åȤؤΥݡ��ƥ���
-
-���С������Ǥϡ�SH7032�򥵥ݡ��Ȥ��Ƥ��롣SH���꡼����SH1,SH2��SH3��
-�ߤǤϳ���ߤΰ��������ʤ�ۤʤ롣����Ū�ˤ�SH1��SH2�ϥ٥����ơ��֥��
-���Ȥ��ơ�������װ��̤��Ѱդ��줿����ߥϥ�ɥ��ʬ�����롣������Ф�
-�ơ�SH3��SH4�Ǥϳ������װ��ˤ�餺����Ʊ��γ���ߥϥ�ɥ��ʬ������
-�塢�������װ������åȤ��줿�쥸�����򻲾Ȥ��ƺ��١�ʬ�����롣
-
-1.4 GDB ������
-
-TOPPERS/JSP �����ͥ� SH1�Ǥ�GDB�����־�ǤΥǥХå��򥵥ݡ��Ȥ��Ƥ��롣
-ư���ǧ�ϵ��ԥޥ���������ԥ塼��(��)����KZ-SH1-01�ǹԤä���
-GDB�����֤��Ȥ߹�碌�ƻ��Ѥ��뤳�Ȥ��θ���ơ�¾�����Ǥ�JSP�����ͥ��
-Ʊ�ͤˡ���������������˥ޥ���GDB_STUB�ˤ���拾��ѥ���������Ԥ�
-�Ƥ��롣�¹ԴĶ��������$(SYS)/Makefile.config����ѿ�DBGENV�ǹԤ���
-SH1�Ѥ�GDB�����֤ϸ��ߡ�����������Ǥ��ꡢ�֤�ʤ�����ͽ��Ǥ��롣
-
-1.5 ���ꥢ��ݡ���
-
-�����ͥ�Υ��������Ѥ˥��ꥢ��ݡ��Ȥ򣱤Ļ��Ѥ��롣
-���ꥢ��ݡ��Ȥ������
-����8�ӥå�
-�����ѥ�ƥ��ʤ�
-�������ȥåץӥåȡ�1�ӥå�
-�����ܡ��졼�ȡ�
-���������ԥޥ���������ԥ塼��(��)����KZ-SH1-01��38400bps
-������(��)�����������Φ�ITRON���SH1CPU�ܡ��ɡ� 9600bps
-�Ǥ��롣
+実行環境はROM化した場合をサポートしている。Makefile.config中で，変
+数DBGENVにROMを設定している。（大元のMakefileでGDB_STUBに設定される
+のを防ぐため）
 
 
-����SH1�ץ����å���¸���ε�ǽ
+1.2 サポートする機能の概要
 
-������Ǥϡ������ͥ뤪��ӥ����ƥॵ���ӥ��ε�ǽ����ǡ�SH1��¸����ʬ
-�ˤĤ��Ʋ��⤹�롣
+SH1依存の機能として、割込みマスクの変更・参照(chg_ixx、get_ixx)と、
+性能評価用システム時刻参照機能(vxget_tim)をサポートしている。割込み
+の禁止と許可(dis_int、ena_int)はサポートしていない。
 
-2.1 �ǡ�����
+1.3 他のターゲットへのポーティング
 
-signed int����unsigned int����size_t���Υ������ϡ��������32�ӥåȤǤ�
-�롥
+現バージョンでは、SH7032をサポートしている。SHシリーズはSH1,SH2とSH3以
+降では割込みの扱いがかなり異なる。具体的にはSH1、SH2はベクタテーブルを
+参照して、割込み要因別に用意された割込みハンドラに分岐する。これに対し
+て、SH3、SH4では割り込み要因によらず一度同一の割込みハンドラに分岐した
+後、割り込み要因がセットされたレジスタを参照して再度、分岐する。
 
-2.2 ����ߴ�����ǽ�ȳ���ߥϥ�ɥ�
+1.4 GDB スタブ
 
-�����ͥ�������γ���ߤȤ��Ƥϡ� NMI �����롣��äơ�CPU���å����֤��
-�����롼������Ǥϡ�NMI �ʳ��γ���ߤϤ��٤ƶػߤ���Ƥ��롣����Ū�ˤϡ�
-IPM(Interrupt Priority Mask)�� 15 �����ꤵ��롣
+TOPPERS/JSP カーネル SH1版はGDBスタブ上でのデバッグをサポートしている。
+動作確認は京都マイクロコンピュータ(株)製のKZ-SH1-01で行った。
+GDBスタブと組み合わせて使用することを考慮して、他機種版のJSPカーネルと
+同様に、ソースコード内にマクロGDB_STUBによる条件コンパイルの設定を行っ
+ている。実行環境の設定は$(SYS)/Makefile.config内の変数DBGENVで行う。
+SH1用のGDBスタブは現在、公開準備中であり、間もなく公開予定である。
 
-����Ū��GDB�����֤����Ѥ��뤳�Ȥ��θ���ơ���������������˰ʲ��Τ褦
-�ʵ��Ҥ�ޤࡣ
-�ܡ��ɾ�� NMI ���Ϥ�����ʤ��������åȤΤ��ᡢGDB �Υ����֤��ۥ��Ȥ�
-�ޥ�����̿����뤿��Υ��ꥢ��ݡ��Ȥ�ͥ���٤� 15 ����Ͽ����GDB ��
-Ctrl-C �򲡤��� �����ߤ����ꥹ���֤����椬�ܤ�褦�ˤ��Ƥ��롣���ε�
-ǽ����Ѥ��뤿��ˤ�CPU���å����֤Ǥϡ�ͥ���٤� 14 �ˤʤ�褦�ˤ��ʤ�
-��Фʤ�ʤ������Τ��ᡢCPU���å������ꤵ���ͥ���٤�ޥ��� MAX_IPM��
-���ꤷ�Ƥ��롣MAX_IPM ��cpu_config.h ����� #define ����Ƥ��롣������
-��Ȥ�����MAX_IPM��14�ˡ������֤�Ȥ�ʤ�����MAX_IPM��15�����ꤷ��
-���롣
+1.5 シリアルポート
 
-SH1��¸�ε�ǽ�Ȥ��ơ�SR(Status Register)��� �����ߥޥ����ӥå�(I3��
-I0)���ͤ��ѹ����뤿��Υ����ӥ������� chg_ipm �ȡ����Ȥ��뤿��Υ�����
-�������� get_ipm �򥵥ݡ��Ȥ��Ƥ��롣�ʤ��������ߥޥ����ӥåȤ��ͤ�
-ɽ���ǡ����� IPM �ϡ�unsigned int�����������Ƥ��롣
+カーネルのログ出力用にシリアルポートを１つ使用する。
+シリアルポートの設定は
+　・8ビット
+　・パリティなし
+　・ストップビット：1ビット
+　・ボーレート：
+　　　京都マイクロコンピュータ(株)製のKZ-SH1-01：38400bps
+　　　(株)中央製作所製のμITRON搭載SH1CPUボード： 9600bps
+である。
 
-�����Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤ξ��
-�ˤΤ߸ƤӽФ����Ȥ��Ǥ��롣chg_ipm �ˤ�� IPM �� 0 �ʳ�(���ʤ������
-�餫�γ���ߤ��ػߤ���Ƥ������)�ˤ������Ǥ⡢�ǥ����ѥå��϶ػߤ�
-�줺��chg_ipm �ˤ���ѹ����� IPM ���ͤϡ��ǥ����ѥå���Υ������˰���
-�Ѥ���롣�㤨�С����륿������ IPM �� 1 ���ѹ������塢���餫�γ���ߤ�
-����̤Υ��������ڤ��ؤ��ȡ��ڤ��ؤ�ä���Υ������Ǥ�IPM��1�ˤʤ롣
 
-chg_ipm �򥵥ݡ��Ȥ��뤿��ˡ�����ߥϥ�ɥ�ν����������ʤɤ˥����Хإ�
-�ɤ������Ƥ��롣�����ǡ�SUPPORT_CHG_IPM �Ȥ����ޥ����ˤ�ꡢ�����Υ���
-�ӥ�������򥵥ݡ��Ȥ��뤫�ɤ������ڤ��ؤ�����褦�ˤ��Ƥ��롣
-SUPPORT_CHG_IPM �ϡ�user_config.h ����� #define ����Ƥ��롣
+２．SH1プロセッサ依存部の機能
 
-SH1��¸�γ���ߥޥ������ѹ������ȤΤ���Υ����ӥ�������λ��ͤϼ�����
-�ꡣ
+この節では、カーネルおよびシステムサービスの機能の中で、SH1依存の部分
+について解説する。
 
-(1) chg_ipm			����ߥޥ������ѹ�
+2.1 データ型
 
-��C����API��
+signed int型，unsigned int型，size_t型のサイズは，いずれも32ビットであ
+る．
+
+2.2 割込み管理機能と割込みハンドラ
+
+カーネル管理外の割込みとしては、 NMI がある。よって、CPUロック状態や初
+期化ルーチン内では、NMI 以外の割込みはすべて禁止されている。具体的には、
+IPM(Interrupt Priority Mask)が 15 に設定される。
+
+将来的にGDBスタブを利用することを考慮して、ソースコード内に以下のよう
+な記述を含む。
+ボード上に NMI 入力を持たないターゲットのため、GDB のスタブがホストの
+マシンと通信するためのシリアルポートの優先度を 15 で登録し、GDB で
+Ctrl-C を押すと 割り込みが入りスタブに制御が移るようにしてある。この機
+能を使用するためにはCPUロック状態では、優先度が 14 になるようにしなけ
+ればならない。そのため、CPUロックで設定される優先度をマクロ MAX_IPMで
+指定している。MAX_IPM はcpu_config.h の中で #define されている。スタブ
+を使う場合はMAX_IPMを14に、スタブを使わない場合はMAX_IPMを15に設定して
+いる。
+
+SH1依存の機能として、SR(Status Register)中の 割り込みマスクビット(I3〜
+I0)の値を変更するためのサービスコール chg_ipm と、参照するためのサービ
+スコール get_ipm をサポートしている。なお、割り込みマスクビットの値を
+表すデータ型 IPM は、unsigned int型に定義されている。
+
+これらのサービスコールは、タスクコンテキストで CPUロック解除状態の場合
+にのみ呼び出すことができる。chg_ipm により IPM を 0 以外(すなわち、何
+らかの割込みが禁止されている状態)にした場合でも、ディスパッチは禁止さ
+れず、chg_ipm により変更した IPM の値は、ディスパッチ後のタスクに引き
+継がれる。例えば、あるタスクで IPM を 1 に変更した後、何らかの割込みに
+より別のタスクに切り替わると、切り替わった後のタスクでもIPMは1になる。
+
+chg_ipm をサポートするために、割込みハンドラの出入口処理などにオーバヘッ
+ドを生じている。そこで、SUPPORT_CHG_IPM というマクロにより、これらのサー
+ビスコールをサポートするかどうかを切り替えられるようにしている。
+SUPPORT_CHG_IPM は、user_config.h の中で #define されている。
+
+SH1依存の割込みマスクの変更・参照のためのサービスコールの仕様は次の通
+り。
+
+(1) chg_ipm			割込みマスクの変更
+
+【C言語API】
 	ER ercd = chg_ipm(IPM ipm);
 
-�ڥѥ�᡼����
-	IPM	ipm		���ꤹ�٤� IPM ����
+【パラメータ】
+	IPM	ipm		設定すべき IPM の値
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
+【リターンパラメータ】
+	ER	ercd		エラーコード
 
-�ڥ��顼�����ɡ�
-	E_CTX		����ƥ����ȥ��顼
-	E_PAR		�ѥ�᡼�����顼(ipm ������)
+【エラーコード】
+	E_CTX		コンテキストエラー
+	E_PAR		パラメータエラー(ipm が不正)
 
-�ڵ�ǽ��
+【機能】
 
-IPM(Interrupt Priority Mask)�� ipm �ǻ��ꤵ�줿�ͤ����ꤹ�롣���ꤷ��
-�ͤ� 0��14�ʤ���0��13�ʳ��ξ�硢E_PAR���顼�Ȥʤ롣IPM ��0�ʳ�
-��1��MAX_IPM-1�ˤ����ꤷ�����Ǥ⡢�ǥ����ѥå��϶ػߤ���ʤ����ޤ���
-���ꤷ�� IPM ���ͤϡ��ǥ����ѥå��������Ѥ���롣
+IPM(Interrupt Priority Mask)を ipm で指定された値に設定する。指定した
+値が 0〜14ないし0〜13以外の場合、E_PARエラーとなる。IPM を0以外
+（1〜MAX_IPM-1）に設定した場合でも、ディスパッチは禁止されない。また、
+設定した IPM の値は、ディスパッチ後も引き継がれる。
 
-�ʤ������Υ����ӥ���������Ѥ��ơ�IPM �� MAX_IPM (���٤Ƥγ���ߤ�ػ�)
-�����ꤹ�뤳�ȤϤǤ��ʤ���IPM �� MAX_IPM �ˤ��������ˤϡ�loc_cpu ��
-�Ȥ��٤��Ǥ��롣
+なお、このサービスコールを用いて、IPM を MAX_IPM (すべての割込みを禁止)
+に設定することはできない。IPM を MAX_IPM にしたい場合には、loc_cpu を
+使うべきである。
 
-���Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ߸�
-�ӽФ����Ȥ��Ǥ��롣�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�����
-��ˤϡ�E_CTX���顼�Ȥʤ롣
+このサービスコールは、タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる。非タスクコンテキストや CPUロック状態で呼び出した場
+合には、E_CTXエラーとなる。
 
-(2) get_ipm			����ߥޥ����λ���
+(2) get_ipm			割込みマスクの参照
 
-��C����API��
+【C言語API】
 	ER ercd = get_ipm(IPM *p_ipm);
 
-�ڥѥ�᡼����
-	�ʤ�
+【パラメータ】
+	なし
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
-	IPM	ipm		���ߤ� IPM ����
+【リターンパラメータ】
+	ER	ercd		エラーコード
+	IPM	ipm		現在の IPM の値
 
-�ڥ��顼�����ɡ�
-	E_CTX		����ƥ����ȥ��顼
+【エラーコード】
+	E_CTX		コンテキストエラー
 
-�ڵ�ǽ��
+【機能】
 
-���ߤ� IPM(Interrupt Priority Mask)���ͤ��ɤ߽Ф���ipm ���֤���
+現在の IPM(Interrupt Priority Mask)の値を読み出し、ipm に返す。
 
-���Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ߸�
-�ӽФ����Ȥ��Ǥ��롣�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�����
-��ˤϡ�E_CTX���顼�Ȥʤ롣
+このサービスコールは、タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる。非タスクコンテキストや CPUロック状態で呼び出した場
+合には、E_CTXエラーとなる。
 
 
-2.3 CPU�㳰������ǽ��CPU�㳰�ϥ�ɥ�
+2.3 CPU例外管理機能とCPU例外ハンドラ
 
-DEF_EXC �ǻ��ꤹ�����ߥϥ�ɥ��ֹ�(excno)�ϡ�SH1 �Ǥ� �٥����ơ��֥�
-�Υ٥����ֹ��ɽ�������Υǡ�����(EXCNO)�� unsigned int�����������Ƥ�
-�롣DEF_EXC �ǡ��٥����ֹ�Ȥ���ͭ���Ǥʤ��ͤ䡢CPU�㳰���б����ʤ���
-�����ꤷ������ư����ݾڤ���ʤ���
+DEF_EXC で指定する割込みハンドラ番号(excno)は、SH1 での ベクタテーブル
+のベクタ番号を表し、そのデータ型(EXCNO)は unsigned int型に定義されてい
+る。DEF_EXC で、ベクタ番号として有効でない値や、CPU例外に対応しない番
+号を指定した場合の動作は保証されない。
 
-CPU�㳰�ϥ�ɥ���Ϥ����p_excinf�ϡ�CPU�㳰ȯ�����Υ���ƥ����Ȥ���¸
-���������å��ؤΥݥ��󥿤��Ϥ���롣�����å��ι�¤��ʲ��˼�����
+CPU例外ハンドラに渡されるp_excinfは、CPU例外発生時のコンテキストを保存
+したスタックへのポインタが渡される。スタックの構造を以下に示す。
 
 
       ----------------------
@@ -240,180 +240,180 @@ CPU�㳰�ϥ�ɥ���Ϥ����p_excinf�ϡ�CPU�㳰ȯ�����Υ���ƥ����Ȥ���¸
      SR:Status Register
      PC:Program Counter
 
-�ޤ���CPU�㳰ȯ������PC���ͤϥ��󥯥���Ȥ���롣���Τ��ᡢCPU�㳰��
-��ɥ餫��������Ԥ��ȡ�CPU�㳰��ȯ������̿��μ���̿�ᤫ��¹Ԥ�Ƴ�
-���롣
+また、CPU例外発生時のPCの値はインクリメントされる。そのため、CPU例外ハ
+ンドラから復帰を行うと、CPU例外が発生した命令の次の命令から実行を再開
+する。
 
 
 
-2.4 �������ȥ��åץ⥸�塼��
+2.4 スタートアップモジュール
 
-SH1��¸�Υ������ȥ��åץ⥸�塼��(start.S)�Ǥϡ����ν����������Ԥ���
+SH1依存のスタートアップモジュール(start.S)では、次の初期化処理を行う。
 
-(A) �ץ����å��⡼�ɤν�����ȥ����å��ݥ��󥿤ν����
+(A) プロセッサモードの初期化とスタックポインタの初期化
 
-�����ߥޥ����� MAX_IPM �����ꤹ�롣
+割り込みマスクを MAX_IPM に設定する。
 
-���ˡ������å��ݥ���(r15)�� STACKTOP �����ꤹ�롣�����ǳ���ߥ�����
-���ݥ��󥿤����ꤵ�줿�����å��ΰ�ϡ������ͥ뵯ư����󥿥�������ƥ�
-�����ѤΥ����å��ΰ�Ȥ��ƻȤ��롣STACKTOP �ϡ�user_config.h �������
-���뤳�Ȥ����ꤷ�Ƥ��롣
+次に、スタックポインタ(r15)を STACKTOP に設定する。ここで割込みスタッ
+クポインタに設定されたスタック領域は、カーネル起動後は非タスクコンテキ
+スト用のスタック領域として使われる。STACKTOP は、user_config.h 部で定義
+することを想定している。
 
-(B) hardware_init_hook �θƽФ�
+(B) hardware_init_hook の呼出し
 
-hardware_init_hook �� 0 �Ǥʤ����ˤϡ�hardware_init_hook ��ƤӽФ���
-hardware_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륿������
-�Ȱ�¸�ν������Ԥ�������Ѱդ��Ƥ��롣hardware_init_hook ���ɤ��Ǥ�
-�������Ƥ��ʤ���硢��󥫤Ǥ��Υ���ܥ�� 0 ���������(��󥫥���
-��ץ���˵��Ҥ���)��
+hardware_init_hook が 0 でない場合には、hardware_init_hook を呼び出す。
+hardware_init_hook は、カーネルが起動される前に行う必要があるターゲッ
+ト依存の初期化を行うために用意している。hardware_init_hook がどこでも
+定義されていない場合、リンカでこのシンボルを 0 に定義する(リンカスク
+リプト内に記述あり)。
 
-(C) bss���������� data���������ν����
+(C) bssセクションと dataセクションの初期化
 
-bss���������򥼥����ꥢ���롣�ޤ���data�����������������롣
+bssセクションをゼロクリアする。また、dataセクションを初期化する。
 
-(D) software_init_hook �θƽФ�
+(D) software_init_hook の呼出し
 
-software_init_hook �� 0 �Ǥʤ����ˤϡ�software_init_hook ��ƤӽФ���
-software_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륽�եȥ���
-���Ķ�(����Ū�ˤϡ��饤�֥��)��¸�ν������Ԥ�������Ѱդ��Ƥ��롣
-software_init_hook ���ɤ��Ǥ��������Ƥ��ʤ���硢��󥫤Ǥ��Υ����
-��� 0 ���������(��󥫥�����ץ���˵��Ҥ���)��
+software_init_hook が 0 でない場合には、software_init_hook を呼び出す。
+software_init_hook は、カーネルが起動される前に行う必要があるソフトウェ
+ア環境(具体的には、ライブラリ)依存の初期化を行うために用意している。
+software_init_hook がどこでも定義されていない場合、リンカでこのシンボ
+ルを 0 に定義する(リンカスクリプト内に記述あり)。
 
-(E) �����ͥ�ε�ư
+(E) カーネルの起動
 
-kernel_start ��ʬ�����������ͥ��ư���롣kernel_start ����꥿����
-�Ƥ��뤳�Ȥ����ꤷ�Ƥ��ʤ���
-
-
-2.5 �����ȯ�����Υ����å������̤ˤĤ���
-
-�ʲ�����ͳ�ˤ�ꡢ�ƥ����������å��ϥ��������Ȥ����Ѥ���ʬ�˲ä��ƺ���
-240�Х���;ʬ���Ѱդ���ɬ�פ����롣
-
-JSP�����ͥ�Ǥϥ����������å���¾�˳���ߥ����å����Ѱդ����󥿥�����
-��ƥ����Ȥϳ���ߥ����å��Ǽ¹Ԥ���롣
-SH1���㳰/����߼��ջ��˳���߶ػߤˤʤ뵡�����ϡ��ɥ��������Ѱդ����
-���ʤ������Τ��ᡢ����ߤ����������ǥ��եȥ������ˤ�äƳ���߶ػߤˤ�
-��ɬ�פ����롣���������Ǥϳ���߶ػߤ˰ܹԤ��뤿��ˡʳ���ߵ��Ĥξ���
-�ǡ˥����å���r0,r1�����򤹤롣��SR(Status Register)��PC(Program
-Counter)�ϳ���߼��դ����˥ϡ��ɥ���������ưŪ�������Ԥ�����
-���ΤȤ���¿�ų���ߤ�ȯ������ȳ����ߥ����å����ڤ��ؤ�������Ʊ�ͤ�
-�ե졼�ब�����å������������롣SH1�ϳ����ߥ�٥뤬15�ʤ���Τǡ�
-�ǰ��Υ����ߥ󥰤ǳ���ߤ�ȯ������ȡ������å���240�Х��Ⱦ��񤵤�롣
-��4�Х��ȡ�4�쥸������15���åȡ�
-
-�㳰/�����ߤΥͥ��Ȳ���Υ�������Ѥ˥����ͥ�����ѿ�intnest���Ѱ�
-�����󥿥�������ƥ����Ȥȥ���������ƥ����Ȥ�Ƚ�̤Ϥ����ѿ��ˤ��
-�ԤäƤ��롣
+kernel_start へ分岐し、カーネルを起動する。kernel_start からリターンし
+てくることは想定していない。
 
 
-2.6 MACH��MACL (���¥쥸������
+2.5 割込み発生時のスタック消費量について
+
+以下の理由により、各タスクスタックはタスク自身が使用する分に加えて最大
+240バイト余分に用意する必要がある。
+
+JSPカーネルではタスクスタックの他に割込みスタックを用意し、非タスクコ
+ンテキストは割込みスタックで実行される。
+SH1は例外/割込み受付時に割込み禁止になる機構がハードウェアで用意されて
+いない。そのため、割込みの入口処理でソフトウェアによって割込み禁止にす
+る必要がある。入口処理では割込み禁止に移行するために（割込み許可の状態
+で）スタックにr0,r1を待避する。（SR(Status Register)とPC(Program
+Counter)は割込み受付け時にハードウェアが自動的に待避を行う。）
+このとき、多重割込みが発生すると割り込みスタックに切り替える前に同様の
+フレームがスタック上に生成される。SH1は割り込みレベルが15段あるので、
+最悪のタイミングで割込みが発生すると、スタックが240バイト消費される。
+（4バイト×4レジスタ×15セット）
+
+例外/割り込みのネスト回数のカウント用にカーネル内で変数intnestを用意
+し、非タスクコンテキストとタスクコンテキストの判別はこの変数により
+行っている。
+
+
+2.6 MACHとMACL (積和レジスタ）
       MACH:Multiply and accumulate high register
       MACL:Multiply and accumulate low register
 
-MACH��MACL�ˤĤ��Ƥϡ�gcc��-mhitachi���ץ�����Ĥ���ȡ��ؿ���MACH��
-MACL����Ѥ����硢�����å�����¸���Ƥ�����Ѥ����ؿ���ȴ����ȸ�����
-�����ᡢ����ߤǤ���¸���Ƥ��ʤ����ޤ�������ǥ����ѥå����ƤӽФ���
-�ǥ����ѥå�������ϡ��ؿ��ƤӽФ��ˤʤ뤿�ᡢ���θƤӽФ��ˤޤ�����
-�ơ������Υ쥸������Ȥ����ȤϤʤ�������¸���Ƥ��ʤ������Τ��ᥢ����
-�֥�Υ����ɤ���Ѥ�����⤳�Υ롼��˽���ɬ�פ����롣
-�ʤ�������ߤ���Υǥ����ѥå�(��ưŪ�ǥ����ѥå�)�Ǥ���¸���Ƥ��롣
+MACHとMACLについては、gccに-mhitachiオプションをつけると、関数でMACHと
+MACLを使用する場合、スタックに保存してから使用し、関数を抜けると元に戻
+すため、割込みでは保存していない。また、自らディスパッチャを呼び出し、
+ディスパッチする場合は、関数呼び出しになるため、この呼び出しにまたがっ
+て、これらのレジスタを使うことはないため保存していない。そのためアセン
+ブラのコードを使用する場合もこのルールに従う必要がある。
+なお、割込みからのディスパッチ(受動的ディスパッチ)では保存している。
 
 
 2.7 GBR (Global Base Register)
 
-gcc��GBR����Ѥ��ʤ����ᡢ����ߥϥ�ɥ�������Ǥ���¸���Ƥ��ʤ������
-�ߥϥ�ɥ����GBR��Ȥ����ϥ��ץꥱ�������¦��GBR������/��¸��Ԥ�
-ɬ�פ����롣�ޤ����嵭��MACH��MACL��Ʊ����ͳ�ˤ�ꡢ����ǥ����ѥå���
-��ƤӽФ����ˤ���¸���Ƥ��ʤ����ʤ�������ߤ���Υǥ����ѥå�(��ư
-Ū�ǥ����ѥå�)�Ǥ���¸���Ƥ��롣
+gccはGBRを使用しないため、割込みハンドラの入口では保存していない。割込
+みハンドラ内でGBRを使う場合はアプリケーション側でGBRの待避/保存を行う
+必要がある。また、上記のMACHとMACLと同じ理由により、自らディスパッチャ
+を呼び出す場合にも保存していない。なお、割込みからのディスパッチ(受動
+的ディスパッチ)では保存している。
 
 
 
-���������ƥ��¸���ε�ǽ
+３．システム依存部の機能
 
-3.1 �����ƥ९���å��ɥ饤��
+3.1 システムクロックドライバ
 
-�����ƥ९���å��ɥ饤�Ф� isig_tim ��ƤӽФ������ϡ�user_config.h ��
-��TIC_NUME �� TIC_DENO ���������Ƥ���(�ǥե���ȤǤ� 1�ߥ��ü���)��
-����������ѹ����뤳�Ȥǡ�isig_tim ��ƤӽФ��������ѹ����뤳�Ȥ��Ǥ�
-�롣
-�������������ޤ����٤� 1���äǤ��뤿�ᡢ1����ñ�̤�ü���ˤʤ��ͤ�����
-�������ˤϡ�isig_tim �θƽФ������˸����������뤳�Ȥˤʤ롣
-�ǥե���ȤǤ�SH1����¢����ƥ��졼�ƥåɡ������ޡ��ѥ륹����˥å�
-ITU�Υ���ͥ�0����Ѥ��Ƥ��롣�����ޥϥ�ɥ��ͥ���٤�user_config.h��
-�ޥ���TINTLVL0�Ȥ���������Ƥ��롣�ʥǥե���ȤǤ�4��
+システムクロックドライバが isig_tim を呼び出す周期は、user_config.h 中
+のTIC_NUME と TIC_DENO で定義されている(デフォルトでは 1ミリ秒周期)。
+この定義を変更することで、isig_tim を呼び出す周期を変更することができ
+る。
+ただし、タイマの精度が 1μ秒であるため、1μ秒単位で端数になる値を設定
+した場合には、isig_tim の呼出し周期に誤差が生じることになる。
+デフォルトではSH1の内蔵インテグレーテッド・タイマ・パルス・ユニット
+ITUのチャネル0を使用している。タイマハンドラの優先度はuser_config.hで
+マクロTINTLVL0として定義している。（デフォルトでは4）
 
-3.2 ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
+3.2 性能評価用システム時刻参照機能
 
-SH1��¸���Ǥϡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ(vxget_tim)�򥵥ݡ��Ȥ���
-���롣��ǽɾ���ѥ����ƥ��������٤� 1����ñ�̤Ǥ��뤬�������ޤθ�����
-���ɤ߽Ф�����˰��Ū�˥����ޤ���ߤ�����ɬ�פ����뤿�ᡢvxget_tim ��
-�Ƥ��٤˥����ƥ९���å��������Ť��٤�뤳�Ȥˤʤ롣�ʤ���SYSUTIM����
-UD��(64�ӥåȤ����̵��������)��������Ƥ��롣
+SH1依存部では、性能評価用システム時刻参照機能(vxget_tim)をサポートして
+いる。性能評価用システム時刻の精度は 1μ秒単位であるが、タイマの現在値
+を読み出すために一時的にタイマを停止させる必要があるため、vxget_tim を
+呼ぶ度にシステムクロックが少しづつ遅れることになる。なお、SYSUTIM型は
+UD型(64ビットの符号無し整数型)に定義している。
 
-3.3 ���ꥢ�륤�󥿥ե������ɥ饤��
+3.3 シリアルインタフェースドライバ
 
-���ꥢ�륤�󥿥ե������ɥ饤�Фϡ�SH1��¢��SCI��Serial Communication
-Interface�ˤΥ���ͥ�0�򥵥ݡ��Ȥ��Ƥ��ꡢ�����ͥ�Υ��������Ѥ˻���
-���Ƥ��롣���ꥢ�����ߥϥ�ɥ��ͥ���٤�����������ӥ��顼����߶�
-��user_config.h�ǥޥ���SCIINTLVL�Ȥ���������Ƥ��롣
-�ʥǥե���ȤǤ�6��
+シリアルインタフェースドライバは、SH1内蔵のSCI（Serial Communication
+Interface）のチャネル0をサポートしており、カーネルのログ出力用に使用
+している。シリアル割込みハンドラの優先度は送受信およびエラー割込み共
+にuser_config.hでマクロSCIINTLVLとして定義している。
+（デフォルトでは6）
 
 
-3.4 ����ޥå�
+3.4 メモリマップ
 
-�����ԥޥ���������ԥ塼��(��)����KZ-SH1-01
-��CQ����(��)����RISCɾ�����å� SH-1
+・京都マイクロコンピュータ(株)製のKZ-SH1-01
+・CQ出版(株)製のRISC評価キット SH-1
 
-���Σ��ĤΥܡ��ɤϥ���ޥåԥ󥰤�Ʊ���ʤΤǡ���¸���Υ����������ɤ�
-���̤Ǥ��롣��CQ���ǤΥܡ��ɤϲ����Ρ����աפι�򻲾ȡ�
-��¸���Ǥϡ��������ΰ�� 0x0000,0000 �� 0x0003,ffff��256KB���ǡ����ΰ�
-��0x0a00,0000 �� ��256KB���󥿥�������ƥ������ѤΥ����å��ΰ�� ��
-0x0a03,ffff �˳��ݤ��Ƥ��롣
+この２つのボードはメモリマッピングが同じなので、依存部のソースコードは
+共通である。（CQ出版のボードは下記の「注意」の項を参照）
+依存部では、コード領域を 0x0000,0000 〜 0x0003,ffffの256KB、データ領域
+を0x0a00,0000 〜 の256KB、非タスクコンテキスト用のスタック領域を 〜
+0x0a03,ffff に確保している。
 
-����
-��CQ���Ǥ�RISCɾ�����å� SH-1�ϥǥե���Ȥ������8�ӥåȥХ���ROM1�ġ�
-���Ǥϡ����ɥ쥹�Х�����³�����եȤ���Ƥ��롣���Τ��ᡢROM�Υ��ɥ쥹
-���ȼ¥��ɥ쥹�����פ��ʤ���
-����°��ROM��˥��ʳ��Υ桼�����ץ�������ROM��������ϡ����ɥ쥹
-���Х��������16�ӥåȡ�ROM2�ġˤ��ѹ�����ɬ�פ����롣
-���ʥܡ�����°�Υޥ˥奢��p17�򻲾ȡ�
+注意
+　CQ出版のRISC評価キット SH-1はデフォルトの設定（8ビットバス、ROM1個）
+　では、アドレスバスの接続がシフトされている。そのため、ROMのアドレス
+　と実アドレスが一致しない。
+　付属のROMモニタ以外のユーザープログラムをROM化する場合は、アドレス
+　バスの設定を16ビット（ROM2個）に変更する必要がある。
+　（ボード付属のマニュアルp17を参照）
 
-��(��)�����������Φ�ITRON���SH1CPU�ܡ���
-������������פ�FROM,SRAM���줾��2���ढ��
-��FROM
-����0x0000,0000 - 0x0007,ffff  �������ΰ�(512KB)
-����0x0000,0000 - 0x0003,ffff  �������ΰ�(256KB)
-��SRAM
-����0x0200,0000 -              �ǡ����ΰ�(512KB)
-                - 0x0207,ffff  �󥿥�������ƥ������ѤΥ����å��ΰ�
-����0x0200,0000 -              �ǡ����ΰ�(128KB)
-                - 0x0201,ffff  �󥿥�������ƥ������ѤΥ����å��ΰ�
-�������������ΰ��0x0000,0000 �� 0x0000,ffff��FROM����ߥץ�������
-��¢���Ƥ��뤿�ᡢ�񴹲�ǽ�ʥ������ΰ��0x0001,0000 ����ȤʤäƤ��롣
-�ޤ���ROMICE���ѻ���S3�����å�ON�ˤϡ�����FROM�ϥ��ꥢ����0x0400,0000 �� ��
-�˥ޥåԥ󥰤���롣
+・(株)中央製作所製のμITRON搭載SH1CPUボード
+メモリ実装タイプがFROM,SRAMそれぞれ2種類ある
+　FROM
+　・0x0000,0000 - 0x0007,ffff  コード領域(512KB)
+　・0x0000,0000 - 0x0003,ffff  コード領域(256KB)
+　SRAM
+　・0x0200,0000 -              データ領域(512KB)
+                - 0x0207,ffff  非タスクコンテキスト用のスタック領域
+　・0x0200,0000 -              データ領域(128KB)
+                - 0x0201,ffff  非タスクコンテキスト用のスタック領域
+ただしコード領域の0x0000,0000 〜 0x0000,ffffにFROM書込みプログラムを
+内蔵しているため、書換可能なコード領域は0x0001,0000 からとなっている。
+また、ROMICE使用時（S3スイッチON）は、実装FROMはエリア４（0x0400,0000 〜 ）
+にマッピングされる。
 
-������ȯ�Ķ��ι���
+４．開発環境の構築
 
-��ȯ�Ķ��ι�����ˡ�ˤĤ��Ƥϡ�GNU��ȯ�Ķ����ۥޥ˥奢��򻲾Ȥ��뤳�ȡ�
-��ȯ�ˤ�Windows2000 SP3 + Cygwin���Ѥ�����
-ư���ǧ�����ġ���ΥС������ϰʲ����̤�Ǥ��롥
+開発環境の構築方法については、GNU開発環境構築マニュアルを参照すること。
+開発にはWindows2000 SP3 + Cygwinを用いた。
+動作確認したツールのバージョンは以下の通りである．
     BINUTILS : 2.13.2.1
     GCC-CORE : 2.95.3
-    NEWLIB   : 1.8.1�ʵ��ԥޥ���������ԥ塼��(��)��KZ-SH1-01��
-�������������� 1.11.0��(��)���������� SH1CPU�ܡ��ɡ��������ȡ�
+    NEWLIB   : 1.8.1（京都マイクロコンピュータ(株)製KZ-SH1-01）
+　　　　　　　 1.11.0（(株)中央製作所製 SH1CPUボード、下記参照）
 
-configure �Υ��ץ�����--target=sh-hitachi-elf�Ǥ��롣
-�ޤ���Windows���Cygwin���Ѥ��Ƴ�ȯ������ϡ�binutils��configure�Υ�
-�ץ����� --disable-nls ����ꤹ�뤳�ȡ�
+configure のオプションは--target=sh-hitachi-elfである。
+また、Windows上でCygwinを用いて開発する場合は、binutilsのconfigureのオ
+プションに --disable-nls も指定すること。
 
-����
-����(��)���������� SH1CPU�ܡ��ɤ�ư���ǧ�κݤˤ�newlib1.11.0����
-�������Ƥ��롣newlib1.11.0��make���˥��顼��ȯ�����뤿�ᡢnewlib�ǥ���
-�������ȥ겼�Ρ�newlib/libc\machine/sh/memset.S�פ�1���ܤ���9���ܤ�
-�������ȥ����Ȥ��Ƥ��롣
+備考
+　　(株)中央製作所製 SH1CPUボードの動作確認の際にはnewlib1.11.0を用
+　　いている。newlib1.11.0のmake時にエラーが発生するため、newlibディレ
+　　クトリ下の「newlib/libc\machine/sh/memset.S」の1行目から9行目をコ
+　　メントアウトしている。
 
 /*
 !
@@ -421,464 +421,464 @@ configure �Υ��ץ�����--target=sh-hitachi-elf�Ǥ��롣
 !
 ! by Toshiyasu Morita (tm@netcom.com)
 !
-! SH5 code by J"orn Rennecke (joern.rennecke@superh.com)��<-- J"�ǥ��顼
+! SH5 code by J"orn Rennecke (joern.rennecke@superh.com)　<-- J"でエラー
 ! Copyright 2002 SuperH Ltd.
 !
 */
 
 
-�������»���
+５．制限事項
 
-5.1 �����ƥ।�󥿡��ե������쥤���sil_dly_nse()�ˤĤ���
+5.1 システムインターフェースレイヤのsil_dly_nse()について
 
-�����nsecñ�̤λ����Ԥ���Ԥ��ؿ��ޤ��ϥޥ����Ǥ��뤬����¬�����Ȥ�����
-1��θƤӽФ��Ǻ���Ǥ�2240nsec�⤫���äƤ���Τǡ��ȤƤ�nsecñ�̤Ȥ�
-�����ʤ����֤Ǥ��롣��ư��®�٤��٤��ǥХ����˥����������뤿��ε�ǽ��
-�Τ�����Ϥʤ��Ȼפ��롣��
-��¬���
-�����ܡ��ɡ����ԥޥ���������ԥ塼��KZ-SH1-01
-���������å����ȿ���20MHz
-�����Х����ơ��ȥ���ȥ���������ꡧ
-�����������ꥢ0���꡼�ɥ��������WAIT����ˤ�륦�����ȥ��ơ��������ʤ�
-�����������ꥢ0,2��1���ơ��ȥ��󥰥�������
-�����������ꥢ3���꡼�ɥ�������ϣ����ơ��Ȥǽ�λ
+本来はnsec単位の時間待ちを行う関数またはマクロであるが、実測したところ、
+1回の呼び出しで最低でも2240nsecもかかっているので、とてもnsec単位とは
+言えない状態である。（動作速度が遅いデバイスにアクセスするための機能な
+ので問題はないと思われる。）
+　測定条件：
+　　ボード：京都マイクロコンピュータKZ-SH1-01
+　　クロック周波数：20MHz
+　　バスステートコントローラの設定：
+　　　　エリア0：リードサイクルでWAIT信号によるウェートステート挿入なし
+　　　　エリア0,2：1ステートロングウェイト
+　　　　エリア3：リードサイクルは１ステートで終了
 
-5.2 SIL_LOC_INT()�ˤĤ���
+5.2 SIL_LOC_INT()について
 
-SH1�ǤǤ�SIL_LOC_INT()�μ�����CPU���å���Ʊ���¸���ˡ���Ѥ��Ƥ��롣
-�ʳ���ߥ��å����ͥ��ȤǤ�������CPU���å��Ȱۤʤ롣�ˤ��Τ��ᡢ
-SIL_LOC_INT()�ǳ���߶ػߤ��Ƥ����֤Ǥϡ�sns_loc()�ڤ�vxsns_loc()��
-CPU���å����֤�Ƚ�̤���Ƥ��ޤ���
-JSP�����ͥ�Ǥϸ���������ߥ��å���ˤϥ����ӥ����������ѤǤ��ʤ���
-���ꤷ�Ƥ���Τǡ��ƶ��Ͼ��ʤ��Ȼפ��롣
-��jsp/user.txt�Ρ�5.1.1 ����ߥ��å����֤�����׻��ȡ�
+SH1版ではSIL_LOC_INT()の実装はCPUロックと同じ実現方法を用いている。
+（割込みロックがネストできる点はCPUロックと異なる。）そのため、
+SIL_LOC_INT()で割込み禁止している区間では、sns_loc()及びvxsns_loc()で
+CPUロック状態と判別されてしまう。
+JSPカーネルでは元々、割込みロック中にはサービスコールを使用できないと
+規定しているので、影響は少ないと思われる。
+（jsp/user.txtの「5.1.1 割込みロック状態の制御」参照）
 
-5.3 gcc3.x�б��ˤĤ���
+5.3 gcc3.x対応について
 
-SH1�Ǥ�gcc3.x�Ϥ��б����Ƥ��ʤ���
-SH1�Ǥ�mach�쥸����������10�ӥåȤ�����Ǽ����ʤ��Τˡ������Ϥ��Զ��
-�ˤ��ؿ��ƤӽФ��κݤ����ѥ쥸������������Ȥ��ơ���ȥ쥸�����˻Ȥ�
-��Ƥ��ޤ������Τ��ᡢ�쥸���������Ƥ������Ǥ��ʤ��ʤꡢ��������þ���롣
-�����JSP�����ͥ��̵ͭ�˴ط��ʤ������븽�ݤǤ��ꡢgcc�ޤ���binutils��
-�������ʤ����б��Ǥ��ʤ���
-��-ffixed-mach���ץ������������̤Ϥʤ��ä�����
+SH1版はgcc3.x系に対応していない。
+SH1ではmachレジスタが下位10ビットしか格納されないのに、処理系の不具合
+により関数呼び出しの際に汎用レジスタの退避先として、作業レジスタに使わ
+れてしまう。そのため、レジスタの内容が復元できなくなり、処理が破綻する。
+これはJSPカーネルの有無に関係なく起こる現象であり、gccまたはbinutilsを
+修正しないと対応できない。
+（-ffixed-machオプションを試したが効果はなかった。）
 
-5.4 ��褵�줿���»���
+5.4 解決された制限事項
 
-�ʲ������»���ϲ�褵��Ƥ��롣
+以下の制限事項は解決されている。
 
-5.4.1 �¹Ԥ��٤����������ʤ����γ�����Ԥ��ˤĤ���
+5.4.1 実行すべきタスクがない場合の割込み待ちについて
 
-�ǥ����ѥå���νи��Ǽ¹Ԥ��٤����������ʤ�(schedtsk==NULL�˾��ϡ�
-sleep̿��ˤ�äƥץ����å�������ϥ⡼�ɤ��ڤ��ؤ��Ƴ�����Ԥ��򤷤�
-���롣��cpu_sapport.S��dispatcher_2�ն�򻲾ȡ�
+ディスパッチャの出口で実行すべきタスクがない(schedtsk==NULL）場合は、
+sleep命令によってプロセッサを省電力モードに切り替えて割込み待ちをして
+いる。（cpu_sapport.Sのdispatcher_2付近を参照）
 
-����ߵ��ĸ��sleep̿���¹Ԥ��Ƥ��뤿�ᡢ����ߵ���̿��μ¹����˳�
-�����׵᤬���äƤ�����ʤ��뤤�ϳ���ߵ���ľ�塢sleep̿��¹����˳�
-�����׵᤬���ä����ˡ�����ߵ���̿��μ¹Ԥȶ��˳���ߤ������դ���졢
-�����������sleep�����ޤޤˤʤꡢreqflg�Υ����å��˿ʤޤʤ���
-��1msec����˥����޳���ߤ����뤿�ᡢ�ºݤˤ�sleep�����ޤޤȤ������Ȥ�
-�ʤ�����
+割込み許可後にsleep命令を実行しているため、割込み許可命令の実行前に割
+込み要求が入っている場合（あるいは割込み許可直後、sleep命令実行前に割
+込み要求が入った場合）、割込み許可命令の実行と共に割込みが受け付けられ、
+その復帰後にsleepしたままになり、reqflgのチェックに進まない。
+（1msec以内にタイマ割込みが入るため、実際にはsleepしたままということは
+ない。）
 
-��������ϡ�����ߤε��Ĥ�sleep ���֤ؤΰܹԤ����ȥߥå��˼¹ԤǤ��ʤ�
-���Ȥ˵������롣SH3�ʹߤǤ�IPM�Ȥ��̤�SR��BL�ӥåȤ�ȤäƳ���ߤζػ�
-/���Ĥ����椹�뤳�Ȥˤ�ꡢ������������Ǥ��뤬��SH1/2�Ǥ�IPM�����ꤹ
-��ʳ��˳���ߤ�ػߡ����Ĥ�����ˡ���ʤ�������ߵ��ġʳ�����Ԥ���IPM��
-��ˤ�sleep�򥢥ȥߥå��˹Ԥ���ˡ���ʤ���
-������SH1��¸���Ǥϡ�����߼��ջ��˥����å����Ѥޤ줿������Ϥ�¿�ų��
-�ߤνи������ǥ����å�����������Ϥ��嵭��sleep̿��˳�������������
-���Ϥ�1̿��ʬ��2�Х��ȡ˿ʤ�뤳�Ȥˤ�ꤳ���������򤷤Ƥ��롣
-��������������ˡ�Ǥ�¿�ų���ߤνи������˿�̿��Υ����С��إåɤ������롣
-OMIT_POWER_CONTROL�ޥ�����������뤳�Ȥ�sleep̿��������nop̿�᤬����
-���졢¿�ų���ߤνи������ǤΥ����å��롼����Ͼ�ά����롣�ʤ��ξ���
-�������Ϥ����������ˤʤ롣��
+この問題は、割込みの許可とsleep 状態への移行がアトミックに実行できない
+ことに起因する。SH3以降ではIPMとは別にSRのBLビットを使って割込みの禁止
+/許可を制御することにより、この問題を回避できるが、SH1/2ではIPMを設定す
+る以外に割込みを禁止／許可する方法がなく、割込み許可（割込み待ちのIPM設
+定）とsleepをアトミックに行う方法がない。
+そこでSH1依存部では、割込み受付時にスタックに積まれた戻り番地を多重割込
+みの出口処理でチェックし、戻り番地が上記のsleep命令に該当する場合は戻り
+番地を1命令分（2バイト）進めることによりこの問題を回避している。
+ただし、この方法では多重割込みの出口処理に数命令のオーバーヘッドが生じる。
+OMIT_POWER_CONTROLマクロを定義することでsleep命令の代わりにnop命令が挿入
+され、多重割込みの出口処理でのチェックルーチンは省略される。（この場合は
+消費電力の点で不利になる。）
 
-5.4.2 ����ߡ�CPU�㳰�ν����������ˤĤ���
+5.4.2 割込み／CPU例外の出入口処理について
 
-SH1�Ǥϳ���߼���ľ��˳���߶ػߤˤʤäƤ��ʤ����ᡢ�����A����������
-����̤γ����B�������ǽ�������롣�ʤ���ϥϡ��ɥ������Υ������ƥ�
-������򤱤褦���ʤ����˳���ߥϥ�ɥ�B��ǥ������ڤ��ؤ��򵯤����褦
-�ʥ����ӥ��������Ƥ֤ȳ����B�νи��������̤Υ������˥ǥ����ѥå���
-�Ƥ��ޤ���������2���鸵�Υ���������äƤ���ޤǡ������A�ν������٤��
-���ޤ���
-�ޤ��������A����٥�ȥꥬ����2�󸡽Ф���Ƥ��ޤ�����⤢�롣
-������ɤ����ᡢ�����å����Ѥ�Ǥ���������IPM��task_intmask���ͤ���
-�Ӥ��ơ�����������˳���ߤ�����ʤ��ä��������å����Ƥ��롣
-��cpu_support.S��_ret_int���ȡ�
+SH1では割込み受付直後に割込み禁止になっていないため、割込みAの入口処理
+中に別の割込みBが入る可能性がある。（これはハードウェアのアーキテク
+チャ上避けようがない。）割込みハンドラB内でタスク切り替えを起こすよう
+なサービスコールを呼ぶと割込みBの出口処理で別のタスクにディスパッチし
+てしまい、タスク2から元のタスクに戻ってくるまで、割込みAの処理が遅れて
+しまう。
+また、割込みAがレベルトリガだと2回検出されてしまう問題もある。
+これを防ぐため、スタックに積んである戻り先のIPMとtask_intmaskの値を比
+較して、入口処理中に割込みが入らなかったかチェックしている。
+（cpu_support.Sの_ret_int参照）
 
-SH1�Ǥ�CPU�㳰������դ��Ƥ����ߥޥ������Ѳ����ʤ����ᡢCPU�㳰����
-��������˳���ߤ����ä���硢�嵭�Τ褦��Ƚ����ˡ�Ǥ��н�Ǥ��ʤ�����
-�Τ��ᡢ����ߤνи������ǥ����å����Ѥޤ줿������Ϥ�CPU�㳰��������
-�������Ϥ���Ӥ��ơ�����褬CPU�㳰�������������ݤ���Ƚ�̽����򥪥�
-�������Ѱդ��Ƥ��롣���ν�����CPU�㳰����Ͽ�����ơ��֥�򥵡�������
-���������뤿�ᡢ�����߶ػ߶�֤�Ĺ���ʤ롣����Ƚ�̽�����ͭ���ˤ�����
-���ϥޥ���SUPPORT_CPU_EXC_ENTRY_CHECK��������롣
-������������ƥ����Ȥ�ȯ������CPU�㳰�ν����ϡ���󤷤ˤ���Ƥ�����
-�ۤ�����Ϥʤ��ȹͤ����嵭�ν����ϥǥե���ȤǤ�̵���ˤ��Ƥ��롣������
-����ƥ����ȤǤ�CPU�㳰���ɤΥ��������ȯ�����뤫�ϡ�����ߤΤ褦�˥�
-���ߥ󥰤ˤ���ΤǤϤʤ�ɬ��Ū�ʤ�ΤǤ��롣���Τ��ᡢCPU�㳰������
-ͥ���̤⤽�Υ������˽स���ΤȤ���Ƚ�Ǥ�����
-���㤨�С��������¹���˥��������㳰��ȯ�����ơ������㳰�������٤줿��
-���Ƥ⡢¾�Υ������ؤαƶ��Ϥʤ����ʸ��Υ���������äƤ���Ȥ��ˤϡ���
-������Ƥ����㳰�������Ԥ���Τǡ����Υ��������Ф��Ƥ�ƶ��Ϥʤ�����
+SH1ではCPU例外を受け付けても割込みマスクは変化しないため、CPU例外の入
+口処理中に割込みが入った場合、上記のような判別方法でも対処できない。そ
+のため、割込みの出口処理でスタックに積まれた戻り番地とCPU例外の入口処
+理の番地を比較して、戻り先がCPU例外の入口処理か否かを判別処理をオプ
+ションで用意している。この処理はCPU例外を登録したテーブルをサーチする
+処理が入るため、割り込み禁止区間が長くなる。この判別処理を有効にしたい
+場合はマクロSUPPORT_CPU_EXC_ENTRY_CHECKを定義する。
+　タスクコンテキストで発生したCPU例外の処理は、後回しにされても割込み
+ほど問題はないと考え、上記の処理はデフォルトでは無効にしている。タスク
+コンテキストでのCPU例外がどのタスク内で発生するかは、割込みのようにタ
+イミングによるものではなく必然的なものである。そのため、CPU例外処理の
+優先順位もそのタスクに準じるものとして判断した。
+　例えば、タスク実行中にゼロ除算例外が発生して、その例外処理が遅れたと
+しても、他のタスクへの影響はない。（元のタスクに戻ってくるときには、待
+たされていた例外処理が行われるので、元のタスクに対しても影響はない。）
 
-�嵭�Υơ��֥�ϥǥե���Ȥ�CPU�㳰��6�װ���Ͽ�Ǥ���褦�ˤ��Ƥ��뤬��
-���ץꥱ�������ǥȥ�å�̿�����Ѥ��������ͥ�ǥϥ�ɥ�󥰤�����
-��user_config.h��NUM_EXC���ͤ�Ŭ���ѹ����롣
+上記のテーブルはデフォルトでCPU例外を6要因登録できるようにしているが、
+アプリケーションでトラップ命令を使用し、カーネルでハンドリングする場合
+はuser_config.hのNUM_EXCの値を適宜変更する。
 
 
 
-��������¾
+６．その他
 
-6.1 �ǥ��쥯�ȥꡦ�ե����빽��
+6.1 ディレクトリ・ファイル構成
 
-SH1 �������åȰ�¸���γƥե�����γ��פϼ����̤ꡣ
+SH1 ターゲット依存部の各ファイルの概要は次の通り。
 
     config/sh1/
-	Makefile.config	Makefile��SH1��¸���
-	cpu_defs.h	�ץ����å���¸���Υ��ץꥱ������������
-	cpu_config.h	�ץ����å���¸���ι������
-	cpu_config.c	�ץ����å���¸���δؿ�
-	cpu_support.S	�ץ����å���¸���Υ��֥롼����
-	cpu_context.h	����ƥ��������
-	cpu_insn.h	���٥�Υץ����å����롼����
-	cpu_rename.def	�����ͥ����������̾�Υ�͡������
-	cpu_rename.h	�����ͥ����������̾�Υ�͡���
-	cpu_unrename.h	�����ͥ����������̾�Υ�͡�����
-	tool_defs.h	��ȯ�Ķ���¸���Υ��ץꥱ��������������GNU��ȯ�Ķ��ѡ�
-	tool_config.h	��ȯ�Ķ���¸���ι��������GNU��ȯ�Ķ��ѡ�
-	sh1.h		SH1�����
-	start.S		�������ȥ��åץ⥸�塼��
-	vector_table.c	����ߥ٥����ơ��֥�
-	sh1_sil.h	SH1�ѥ����������桼�ƥ���ƥ�
-	sh1itu.h	SH1��¢itu�ѥ����ޥɥ饤��
-	sh1sci.c	SH1��¢sci�ѥ��ꥢ��ɥ饤��
-	sh1sci.h	SH1��¢sci�ѥ��ꥢ��ɥ饤��
-	util.h		�桼�ƥ���ƥ������ޥ��������
-	makeoffset.c	offset.h �������ݡ��ȥץ������
-	shelf.ld	��󥫥�����ץ�
+	Makefile.config	MakefileのSH1依存定義
+	cpu_defs.h	プロセッサ依存部のアプリケーション用定義
+	cpu_config.h	プロセッサ依存部の構成定義
+	cpu_config.c	プロセッサ依存部の関数
+	cpu_support.S	プロセッサ依存部のサブルーチン
+	cpu_context.h	コンテキスト操作
+	cpu_insn.h	低レベルのプロセッサ操作ルーチン
+	cpu_rename.def	カーネルの内部識別名のリネーム定義
+	cpu_rename.h	カーネルの内部識別名のリネーム
+	cpu_unrename.h	カーネルの内部識別名のリネーム解除
+	tool_defs.h	開発環境依存部のアプリケーション用定義（GNU開発環境用）
+	tool_config.h	開発環境依存部の構成定義（GNU開発環境用）
+	sh1.h		SH1の定義
+	start.S		スタートアップモジュール
+	vector_table.c	割込みベクタテーブル
+	sh1_sil.h	SH1用アクセス・ユーティリティ
+	sh1itu.h	SH1内蔵itu用タイマドライバ
+	sh1sci.c	SH1内蔵sci用シリアルドライバ
+	sh1sci.h	SH1内蔵sci用シリアルドライバ
+	util.h		ユーティリティー・マクロの定義
+	makeoffset.c	offset.h 生成サポートプログラム
+	shelf.ld	リンカスクリプト
 
 
     config/sh1/kz_sh1/
-    	���ԥޥ���������ԥ塼��(��)�� KZ-SH1-01�ܡ��ɰ�¸��ʬ
-    	��CQ����(��)�� RISCɾ�����å�SH-1�Ǥ�ư���ǽ��
+    	京都マイクロコンピュータ(株)製 KZ-SH1-01ボード依存部分
+    	（CQ出版(株)製 RISC評価キットSH-1でも動作可能）
 
-	user_config.h	�桼�����������
-	Makefile.config	Makefile��KZ-SH1-01�ܡ��ɰ�¸���
-	sys_defs.h  	�����ƥ��¸���Υ��ץꥱ������������
-	sys_config.h	�����ƥ��¸���ι������
-	sys_config.c	�����ƥ��¸���δؿ�
-	sys_support.S	�����ƥ��¸���Υ��֥롼����
-	sys_rename.def	�����ͥ����������̾�Υ�͡������
-	sys_rename.h	�����ͥ����������̾�Υ�͡���
-	sys_unrename.h	�����ͥ����������̾�Υ�͡�����
-	hw_timer.h	���������롼����
-	hw_serial.h	SIO�ɥ饤��
-	hw_serial.cfg	SIO�ɥ饤�ФΥ���ե�����졼�����ե�����
-	kz_sh1.h   	KZ-SH1-01�Υϡ��ɥ��������
+	user_config.h	ユーザー定義情報
+	Makefile.config	MakefileのKZ-SH1-01ボード依存定義
+	sys_defs.h  	システム依存部のアプリケーション用定義
+	sys_config.h	システム依存部の構成定義
+	sys_config.c	システム依存部の関数
+	sys_support.S	システム依存部のサブルーチン
+	sys_rename.def	カーネルの内部識別名のリネーム定義
+	sys_rename.h	カーネルの内部識別名のリネーム
+	sys_unrename.h	カーネルの内部識別名のリネーム解除
+	hw_timer.h	タイマ操作ルーチン
+	hw_serial.h	SIOドライバ
+	hw_serial.cfg	SIOドライバのコンフィギュレーションファイル
+	kz_sh1.h   	KZ-SH1-01のハードウェア定義
 
 
     config/sh1/zunda_sh1/
-    	(��)������������ITRON���SH1CPU�ܡ��ɰ�¸��ʬ
+    	(株)中央製作所製μITRON搭載SH1CPUボード依存部分
 	
-	Makefile.config	Makefile������������ SH1CPU�ܡ��ɰ�¸���
-	sys_defs.h  	�����ƥ��¸���Υ��ץꥱ������������
-	sys_config.h	�����ƥ��¸���ι������
-	sys_config.c	�����ƥ��¸���δؿ�
-	sys_support.h	�����ƥ��¸���Υ��֥롼���������
-	sys_support.c	�����ƥ��¸���Υ��֥롼����
-	sys_rename.def	�����ͥ����������̾�Υ�͡������
-	sys_rename.h	�����ͥ����������̾�Υ�͡���
-	sys_unrename.h	�����ͥ����������̾�Υ�͡�����
-	hw_timer.h	���������롼����
-	hw_serial.h	SIO�ɥ饤��
-	hw_serial.cfg	SIO�ɥ饤�ФΥ���ե�����졼�����ե�����
-	sh1sci2.c	SH1��¢sci�ѥ��ꥢ��ɥ饤�С�2ch�б���
-	sh1sci2.h	SH1��¢sci�ѥ��ꥢ��ɥ饤�С�2ch�б���
-	zunda_sh1.h.h   ���������� SH1CPU�ܡ��ɤΥϡ��ɥ��������
-	device.h	LED,SW ����ؿ������
-	device.c	LED,SW ����ؿ�
+	Makefile.config	Makefileの中央製作所製 SH1CPUボード依存定義
+	sys_defs.h  	システム依存部のアプリケーション用定義
+	sys_config.h	システム依存部の構成定義
+	sys_config.c	システム依存部の関数
+	sys_support.h	システム依存部のサブルーチン用定義
+	sys_support.c	システム依存部のサブルーチン
+	sys_rename.def	カーネルの内部識別名のリネーム定義
+	sys_rename.h	カーネルの内部識別名のリネーム
+	sys_unrename.h	カーネルの内部識別名のリネーム解除
+	hw_timer.h	タイマ操作ルーチン
+	hw_serial.h	SIOドライバ
+	hw_serial.cfg	SIOドライバのコンフィギュレーションファイル
+	sh1sci2.c	SH1内蔵sci用シリアルドライバ（2ch対応）
+	sh1sci2.h	SH1内蔵sci用シリアルドライバ（2ch対応）
+	zunda_sh1.h.h   中央製作所製 SH1CPUボードのハードウェア定義
+	device.h	LED,SW 制御関数の宣言
+	device.c	LED,SW 制御関数
 
 
-6.2 �桼�������������
+6.2 ユーザーの設定項目
 
-SH1��¸���Ǥϡ��桼������������ܤ򥷥��ƥ��¸���Σ��ĤΥե�����
-Makefile.config��user_config.h�ˤޤȤ�Ƥ��ꡢ�桼�����ϥ����ͥ�������
-Ω������ʤ��Ƥ⡢�������١�������ѹ���ǽ�ˤ��Ƥ��롣
+SH1依存部では、ユーザーの設定項目をシステム依存部の２つのファイル
+Makefile.configとuser_config.hにまとめてあり、ユーザーはカーネル内部に
+立ち入らなくても、ある程度、設定を変更可能にしている。
 
-6.2.1 Makefile.config���������
+6.2.1 Makefile.configの設定項目
 
-���¹ԴĶ�
-���ѿ�DBGENV������ˤ��¹ԴĶ������򤹤롣
-������DBGENV=ROM��ROM��
-������DBGENV=GDB_STUB��GDB stub
-������DBGENV=PARTNER�����ԥޥ���������ԥ塼����PARTNER-ET II
-������������������ SH1CPU�ܡ��ɸ�ͭ��
-��������ROMICE���ѻ���NMI�ޤǤ�ROM�٥����ơ��֥��٥����١����쥸������
-�����������ꥢ��ž�����롣
-��������KERNEL_HAS_A_VECTOR_TABLE�ޥ����ʸ�ҡˤ��������Ƥ�����Τ�
-��������ͭ���Ǥ��롣
-������DBGENV=MULTI_STACK�����ե��������ƥॺ��MultiSTAC-SH1
-���������ʵ��ԥޥ���������ԥ塼��(��)��KZ-SH1-01��ͭ��
+・実行環境
+　変数DBGENVの設定により実行環境を選択する。
+　　・DBGENV=ROM：ROM化
+　　・DBGENV=GDB_STUB：GDB stub
+　　・DBGENV=PARTNER：京都マイクロコンピュータ製PARTNER-ET II
+　　　（中央製作所製 SH1CPUボード固有）
+　　　　ROMICE使用時にNMIまでのROMベクタテーブルをベクタベースレジスタの
+　　　　エリアへ転送する。
+　　　　KERNEL_HAS_A_VECTOR_TABLEマクロ（後述）が定義されている場合のみ
+　　　　有効である。
+　　・DBGENV=MULTI_STACK：ソフィアシステムズ製MultiSTAC-SH1
+　　　　（京都マイクロコンピュータ(株)製KZ-SH1-01固有）
 
-������ޥåԥ�
-������TEXT_START_ADDRESS��text������������Ƭ���ɥ쥹
-������DATA_START_ADDRESS��data������������Ƭ���ɥ쥹
+・メモリマッピング
+　　・TEXT_START_ADDRESS：textセクションの先頭アドレス
+　　・DATA_START_ADDRESS：dataセクションの先頭アドレス
 
-6.2.2 user_config.h���������
+6.2.2 user_config.hの設定項目
 
-user_config.h��ǰʲ��Υޥ��������Ԥ����Ȥˤ�ꡢ������ѹ��Ǥ��롣
+user_config.h内で以下のマクロ定義を行うことにより、設定を変更できる。
 
-��SUPPORT_CHG_IPM
-����chg_ipm()��ͭ���ˤ��롣
-����2.2�Ỳ��
+・SUPPORT_CHG_IPM
+　　chg_ipm()を有効にする。
+　　2.2節参照
 
-��SUPPORT_VXGET_TIM
-������ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽvxget_tim()��ͭ���ˤ��롣
-����3.2�Ỳ��
+・SUPPORT_VXGET_TIM
+　　性能評価用システム時刻参照機能vxget_tim()を有効にする。
+　　3.2節参照
 
-��SUPPORT_CPU_EXC_ENTRY_CHECK
-��������ߤνи�����������褬CPU�㳰�����������Ǥ��뤫��
-���������å���Ԥ���
-����5.4.2�Ỳ��
+・SUPPORT_CPU_EXC_ENTRY_CHECK
+　　割込みの出口処理で戻り先がCPU例外の入口処理であるかの
+　　チェックを行う。
+　　5.4.2節参照
 
-��OMIT_POWER_CONTROL
-�����¹Ԥ��٤����������ʤ����γ�����Ԥ��Ǿ����ϥ⡼�ɤ˰ܹԤ��ʤ���
-�����ʥե�ICE�����������
-����5.4.1�Ỳ��
+・OMIT_POWER_CONTROL
+　　実行すべきタスクがない場合の割込み待ちで省電力モードに移行しない。
+　　（フルICE向けの設定）
+　　5.4.1節参照
 
-��FILL_STACK_WITH_0
-�����ǥХå��ǥ����å��ΰ��ѻ����פ����뤿�ᡢ�������ȥ��åץ롼�����
-�����󥿥�������ƥ����ȤΥ����å��ΰ��0�ǽ��������
+・FILL_STACK_WITH_0
+　　デバッガでスタック領域を観察し易くするため、スタートアップルーチンで
+　　非タスクコンテキストのスタック領域を0で初期化する
 
-��OMIT_DATA_SECTION_COPY
-�����ǥХå��Ķ��ˤ�äƤ�data����������ǧ�����Զ�礬���ꡢ
-����__idata_start���Ϥ˥���������ɤ��٤��ǡ�����__data_start���Ϥ˥�����
-���������ɤ��Ƥ��ޤ���Τ����롣���ξ���OMIT_DATA_SECTION_COPY�ޥ�����
-����������Ƥ�뤳�Ȥǥ������ȥ��åץ롼����ǤΤ��Υ��ԡ���Ȥ��ά���롣
-����
-��LARGE_TYPE������������ SH1CPU�ܡ��ɸ�ͭ��
-����SRAM������������פ�顼�������פȤ��롣
+・OMIT_DATA_SECTION_COPY
+　　デバッグ環境によってはdataセクションの認識に不具合があり、
+　　__idata_start番地にダウンロードすべきデータを__data_start番地にダウン
+　　ロードしてしまうものがある。その場合はOMIT_DATA_SECTION_COPYマクロを
+　　定義してやることでスタートアップルーチンでのこのコピー作業を省略する。
+　　
+・LARGE_TYPE（中央製作所製 SH1CPUボード固有）
+　　SRAMメモリ実装タイプをラージタイプとする。
 
-��STACKTOP
-�����󥿥�������ƥ������ѥ����å��ν����
+・STACKTOP
+　　非タスクコンテキスト用スタックの初期値
 
-��CONFIG_20MHZ
-��CONFIG_19MHZ
-��CONFIG_16MHZ
-���������å����ȿ����ڤ��ؤ���������롣
-�����嵭���⡢���Ĥ����򤹤롣
+・CONFIG_20MHZ
+・CONFIG_19MHZ
+・CONFIG_16MHZ
+　　クロック周波数の切り替えを定義する。
+　　上記の内、１つを選択する。
 
-��CONFIG_BAUD
-��CONFIG_BAUD_2
-�������ꥢ���̿��Υܡ��졼�ȡʤ��줾��ݡ��ȣ��������б���
-����9600, 19200, 38400[bps]�Τ����줫����ͤ�������롣
+・CONFIG_BAUD
+・CONFIG_BAUD_2
+　　シリアル通信のボーレート（それぞれポート１，２に対応）
+　　9600, 19200, 38400[bps]のいずれかを数値で定義する。
 
-�����ꥢ��ݡ��ȿ������
-������TNUM_PORT
-��������GDIC��٥�ǥ��ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο�
-���������ʥ����ͥ�δ������ˤ���ݡ��ȿ���
-������TNUM_SIOP
-��������PDIC��٥�ǥ��ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο�
-���������ʥǥХ����ɥ饤�С���٥�Υݡ��ȿ���
-������LOGTASK_PORTID
-�������������ƥ�������Ѥ��륷�ꥢ��ݡ����ֹ�
+・シリアルポート数の定義
+　　・TNUM_PORT
+　　　　GDICレベルでサポートするシリアルポートの数
+　　　　（カーネルの管理下にあるポート数）
+　　・TNUM_SIOP
+　　　　PDICレベルでサポートするシリアルポートの数
+　　　　（デバイスドライバ・レベルのポート数）
+　　・LOGTASK_PORTID
+　　　　システムログに用いるシリアルポート番号
 
-��SCI_INTLVL
-�������ꥢ�����ߤ�ͥ����
-����3.3�Ỳ��
+・SCI_INTLVL
+　　シリアル割込みの優先度
+　　3.3節参照
 
-��TIMER_INTLVL
-���������޳���ߤ�ͥ����
-����3.1�Ỳ��
+・TIMER_INTLVL
+　　タイマ割込みの優先度
+　　3.1節参照
 
-��TIC_NUME
-��TIC_DENO
-���������޳���ߤˤ��isig_tim()���ƤӽФ�������[msec]
-�������줾��ʬ�ҡ�ʬ���ɽ����
-����3.1�ᤪ���config.txt��
-������(3) ������ƥ��å������
-�����򻲾�
+・TIC_NUME
+・TIC_DENO
+　　タイマ割込みによりisig_tim()が呼び出される周期[msec]
+　　それぞれ分子、分母を表す。
+　　3.1節およびconfig.txtの
+　　　(3) タイムティックの定義
+　　を参照
 
-��NUM_EXC
-�����嵭�Υ����å��оݤȤʤ�CPU�㳰����Ͽ��
-�����ǥե���ȤǤ�6�װ��Ȥ��Ƥ��롣
-����SUPPORT_CPU_EXC_ENTRY_CHECK���������Ƥ��ʤ�����̵�뤵��롣
-����5.4.2�Ỳ��
+・NUM_EXC
+　　上記のチェック対象となるCPU例外の登録数
+　　デフォルトでは6要因としている。
+　　SUPPORT_CPU_EXC_ENTRY_CHECKが定義されていない場合は無視される。
+　　5.4.2節参照
 
-��INNER_RAM_ADDRESS
-�����ץ����å���¢RAM�����ѤǤ�����Ϥ��κǸ����Υ��ɥ쥹��
-����INNER_RAM_ADDRESS�ޥ����Ȥ���user_config.h��������롣
-�������Υޥ������������Ƥ�����ϡ������å��ݥ��󥿤򤳤��ͤ����ꤷ
-������hardware_init_hook()��ƤӽФ��Τǡ�hardware_init_hook()��C����
-�����ǵ��Ҥ��뤳�Ȥ��Ǥ��롣�ʤĤޤꡢINNER_RAM_ADDRESS�ϥ����å��ݥ�
-�����󥿤ΰ��Ū�ʽ���ͤȤ��ƻ��Ѥ���롣��
-����hardware_init_hook()������ä���ǥ����å��ݥ��󥿤�STACKTOP�˺���
-�����ꤷ�Ƥ��롣
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
-��
-������
-�������̤�C����δؿ��ƤӽФ��ϥ����å�����Ѥ���Τǡ��Х�����ȥ�����
-�����ν�������˴ؿ��ƤӽФ��ϤǤ��ʤ���INNER_RAM_ADDRESS�ޥ����������
-�����뤳�Ȥ�hardware_init_hook()��C����ǵ��ҤǤ���褦�ˤʤ롣
+・INNER_RAM_ADDRESS
+　　プロセッサ内蔵RAMが利用できる場合はその最後尾のアドレスを
+　　INNER_RAM_ADDRESSマクロとしてuser_config.hで定義する。
+　　このマクロが定義されている場合は、スタックポインタをこの値に設定し
+　　てhardware_init_hook()を呼び出すので、hardware_init_hook()をC言語
+　　で記述することができる。（つまり、INNER_RAM_ADDRESSはスタックポイ
+　　ンタの一時的な初期値として使用される。）
+　　hardware_init_hook()から戻った後でスタックポインタをSTACKTOPに再設
+　　定している。
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
+　
+　備考
+　　一般にC言語の関数呼び出しはスタックを使用するので、バスコントローラ
+　　の初期化前に関数呼び出しはできない。INNER_RAM_ADDRESSマクロを定義す
+　　ることでhardware_init_hook()をC言語で記述できるようになる。
 
-��CPU�㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ʲ��Υޥ����Ϥ��٤ƾ�ά��ǽ�Ǥ��롣
-������ά�������ϥǥե���Ȥ��ͤȤ��ơ��������ȥ��åץ롼�������Ƭ
-�������ɥ쥹�����Ѥ���롣
+・CPU例外ハンドラの先頭アドレス
+　　以下のマクロはすべて省略可能である。
+　　省略した場合はデフォルトの値として、スタートアップルーチンの先頭
+　　アドレスが使用される。
 
-��NMI_VECTOR
-����NMI�㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ǥե�����͡��������ȥ��åץ롼�������Ƭ���ɥ쥹
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
+・NMI_VECTOR
+　　NMI例外ハンドラの先頭アドレス
+　　デフォルト値：スタートアップルーチンの先頭アドレス
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
 
-��GII_VECTOR
-������������̿���㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ǥե�����͡��������ȥ��åץ롼�������Ƭ���ɥ쥹
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
+・GII_VECTOR
+　　一般不当命令例外ハンドラの先頭アドレス
+　　デフォルト値：スタートアップルーチンの先頭アドレス
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
 
-��SII_VECTOR
-���������å�����̿���㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ǥե�����͡��������ȥ��åץ롼�������Ƭ���ɥ쥹
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
+・SII_VECTOR
+　　スロット不当命令例外ハンドラの先頭アドレス
+　　デフォルト値：スタートアップルーチンの先頭アドレス
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
 
-��CAE_VECTOR
-����CPU���ɥ쥹���顼�㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ǥե�����͡��������ȥ��åץ롼�������Ƭ���ɥ쥹
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
+・CAE_VECTOR
+　　CPUアドレスエラー例外ハンドラの先頭アドレス
+　　デフォルト値：スタートアップルーチンの先頭アドレス
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
 
-��DAE_VECTOR
-����DMA���ɥ쥹���顼�㳰�ϥ�ɥ����Ƭ���ɥ쥹
-�����ǥե�����͡��������ȥ��åץ롼�������Ƭ���ɥ쥹
-����KERNEL_HAS_A_VECTOR_TABLE�ޥ������������Ƥ�����Τ�ͭ���Ǥ��롣
-
-
-
-6.3�������ͥ�ܿ��Ը����ξ���
-
-6.3.1������Ū�˻��Ѥ���Ƥ���ޥ���
-�ʲ��Υޥ�����SH1��¸���Ǿ�拾��ѥ����Ԥ����������Ū�˻��Ѥ��Ƥ�
-��ΤǤ��ꡢ�桼�������������ɬ�פϤʤ���
-
-��GDB_STUB
-����GDB stub���ݡ��Ȼ��Τ��ᡢͽ�󤷤Ƥ��롣
-
-��KERNEL_HAS_A_VECTOR_TABLE
-�����㳰�٥����򥫡��ͥ뤬�������롣
-����GDB stub���˥��ץ�����ब�㳰�٥��������������ϡ����Υޥ���
-������������ʤ���
-
-��SIO_RESERVED
-�������ꥢ�롦���ߥ�˥�������󡦥��󥿡��ե�����SCI��1ch��ǥХå���
-���������Ѥ��Ƥ��롣
-�������Υޥ�������������ȥ����ͥ��SCI 1ch����Ѥ��ʤ���
+・DAE_VECTOR
+　　DMAアドレスエラー例外ハンドラの先頭アドレス
+　　デフォルト値：スタートアップルーチンの先頭アドレス
+　　KERNEL_HAS_A_VECTOR_TABLEマクロが定義されている場合のみ有効である。
 
 
-6.3.2 ��ͥ����ƥ��Υ���������C����ѥ���˰ܿ��������������
-���ǥ����ץ졼�������դ��쥸�������ܤε��Ҥ��ۤʤ�Τ����դ�ɬ�פǤ��롣
-���������ս��cpu_support.S��
-��������TCB��¤�ΤؤΥ�������
-������������ߡ�CPU�㳰�νи������ˤ����륿��������ƥ����Ȥγ����
-���������ޥ����ΰ����Ѥ�
-��
-������ͥ����ƥ��Υ�������������֥��@(disp,Rn) 
-�������������������� �¸����ɥ쥹�η׻��� 
-�������Х��� Rn + disp �� EA 
-��������� Rn + disp��2 �� EA 
-���������󥰥�� Rn + disp��4 �� EA 
 
-����gas��@(disp,Rn) 
-�������������������� �¸����ɥ쥹�η׻��� 
-�������Х��� Rn + disp �� EA 
-��������� Rn + disp �� EA(â��disp��2n) 
-���������󥰥�� Rn + disp �� EA(â��disp��4n) 
+6.3　カーネル移植者向けの情報
 
+6.3.1　内部的に使用されているマクロ
+以下のマクロはSH1依存部で条件コンパイルを行うために内部的に使用してる
+ものであり、ユーザーが定義する必要はない。
 
-�ѹ�����
+・GDB_STUB
+　　GDB stubサポート時のため、予約している。
 
-2005ǯ11��14����Release1.4.2
-������
-   + cpu_config.c��_dummy_memcpy( )
-   ��+ string.h�ˤ���memcpy( )�ΰ���Ū�ʥץ��ȥ���������˹�碌��
-   ����void *memcpy(void *dest, const void *src, size_t len);
-   ����
-   + �����ʤ��δؿ����
-   ��+ ����Ū��void���դ�����
+・KERNEL_HAS_A_VECTOR_TABLE
+　　例外ベクタをカーネルが管理する。
+　　GDB stubやモニタプログラムが例外ベクタを管理する場合は、このマクロ
+　　を定義しない。
+
+・SIO_RESERVED
+　　シリアル・コミュニケーション・インターフェースSCIの1chをデバッガ等
+　　が使用している。
+　　このマクロが定義されるとカーネルはSCI 1chを使用しない。
 
 
-2005ǯ9��14��
-������
+6.3.2 ルネサステクノロジ製純正Cコンパイラに移植する場合の注意点
+　ディスプレースメント付きレジスタ間接の記述が異なるので注意が必要である。
+　　該当箇所（cpu_support.S）
+　　　・TCB構造体へのアクセス
+　　　・割込み／CPU例外の出口処理におけるタスクコンテキストの割込み
+　　　　マスクの引き継ぎ
+　
+　　ルネサステクノロジ純正アセンブラの@(disp,Rn) 
+　　　アクセスサイズ 実効アドレスの計算式 
+　　　バイト Rn + disp → EA 
+　　　ワード Rn + disp×2 → EA 
+　　　ロングワード Rn + disp×4 → EA 
+
+　　gasの@(disp,Rn) 
+　　　アクセスサイズ 実効アドレスの計算式 
+　　　バイト Rn + disp → EA 
+　　　ワード Rn + disp → EA(但しdispは2n) 
+　　　ロングワード Rn + disp → EA(但しdispは4n) 
+
+
+変更履歴
+
+2005年11月14日　Release1.4.2
+・修正
+   + cpu_config.cの_dummy_memcpy( )
+   　+ string.hにあるmemcpy( )の一般的なプロトタイプ宣言に合わせる
+   　　void *memcpy(void *dest, const void *src, size_t len);
+   　　
+   + 引数なしの関数定義
+   　+ 明示的にvoidを付けた。
+
+
+2005年9月14日
+・改良
    + zunda_sh1/sys_support.h
-   ��+ �ݡ��ȣ�����ĥ�ɡ��������ľ��
-   + ����饤�󥢥���֥��ʸˡ���顼����
-   ��+ cpu_config.h��define_inh()
-   ��+ kz_sh1/kz_sh1.h��gdb_stub_putc()
-   + mac�쥸���������������ս�θ�ľ��
-������gcc3.x�ؤ��б����ߤ뤬��ư�����
-�������ʾܺ٤�5.3��򻲾ȡ�
-������
-��������������
-������������ߤˤ�륿���������å��Τ�
-�����������塧
-��������������ߥϥ�ɥ�ƤӽФ���
-����������ǽưŪ�ʥǥ����ѥå���ƤӽФ��ˤ�륿���������å���
+   　+ ポートＡ・拡張Ｉ／Ｏ定義見直し
+   + インラインアセンブラの文法エラーを修正
+   　+ cpu_config.hのdefine_inh()
+   　+ kz_sh1/kz_sh1.hのgdb_stub_putc()
+   + macレジスタの退避／復元箇所の見直し
+　　　gcc3.xへの対応を試みるが、動作せず。
+　　　（詳細は5.3節を参照）
+　　　
+　　　修正前：
+　　　　割込みによるタスクスイッチのみ
+　　　修正後：
+　　　　・割込みハンドラ呼び出し前
+　　　　・能動的なディスパッチャ呼び出しによるタスクスイッチ前
 
 
-2004ǯ10��9����Release1.4.1
+2004年10月9日　Release1.4.1
 
-���Х��ե��å���
-   + ����ߤ�������������̤γ���ߤ�������˺ǽ�γ���ߤ����������
-   ����������󤷤ˤ�����Զ�������CPU�㳰�ˤĤ��Ƥ�Ʊ�͡�
-   + �¹Ԥ��٤����������ʤ��Ȥ��γ�����Ԥ��ǡ������ߥ󥰤ˤ�äƤ�
-   ������߽������sleep�����ޤޤˤʤ��Զ�����
-������
-   + ���ݡ��ȥܡ��ɤ��ѹ�
-   ��+ ������������ITRON���SH1CPU�ܡ��ɤ��ɲ�
-   ��+ ���׾��� SH1/CPUB����
-   + ����ߡ�CPU�㳰�ν����������롼������װ����Ÿ��������ʬ��ľ����
-   ��ROM�����̤�︺�������ʣ�������װ�������126�Х��Ⱥ︺��
-   + GDB stub���б�
-   + ROM-ICE�������㳰�٥����μ�����ˡ����
-   ��+ NMI�����㳰�٥�����ܡ��ɰ�¸��������Ǥ���褦�ˤ���
-   + SIL�Υ��������ؿ���̾�Τ򥬥��ɥ饤������ѹ�
-   + INNER_RAM_ADDRESS�ޥ�����Ƴ���ˤ��hardware_init_hook()��C�����
-   �����ҤǤ���褦�˥������ȥ��åץ롼�������
-   + �桼�������ѹ��Ǥ���ս��user_config.h�Ȥ���ʬΥ������
+・バグフィックス
+   + 割込みの入口処理中に別の割込みが入る場合に最初の割込みがタスクより
+   　処理が後回しにされる不具合を修正（CPU例外についても同様）
+   + 実行すべきタスクがないときの割込み待ちで、タイミングによっては
+   　割込み処理後にsleepしたままになる不具合を修正
+・改良
+   + サポートボードの変更
+   　+ 中央製作所製μITRON搭載SH1CPUボードを追加
+   　+ 常盤商行 SH1/CPUBを削除
+   + 割込み／CPU例外の出入口処理ルーチンを要因毎に展開する部分を見直し、
+   　ROM消費量を削減した。（１割込み要因当たり126バイト削減）
+   + GDB stubに対応
+   + ROM-ICE向けに例外ベクタの実装方法を修正
+   　+ NMI等の例外ベクタをボード依存部で定義できるようにした
+   + SILのアクセス関数の名称をガイドライン準拠に変更
+   + INNER_RAM_ADDRESSマクロの導入によりhardware_init_hook()をC言語で
+   　記述できるようにスタートアップルーチンを修正
+   + ユーザーが変更できる箇所をuser_config.hとして分離した。
 
-2003ǯ12��24����Release1.4
+2003年12月24日　Release1.4
 
-���Х��ե��å���
-   + �¹Ԥ��٤����������ʤ��Ƴ�����Ԥ��򤹤�ݡ�runtsk�򥯥ꥢ���Ƥ��ʤ�
-   �����ᡢ�����ߥ󥰤ˤ�äƤ�iget_tid()������ͤ��������ʤ��Զ�����
-   + vxget_tim()��1msec�ʲ���ü�����������ʤ��ä��Զ�����
+・バグフィックス
+   + 実行すべきタスクがなくて割込み待ちをする際、runtskをクリアしていない
+   　ため、タイミングによってはiget_tid()の戻り値が正しくない不具合を修正
+   + vxget_tim()で1msec以下の端数が正しくなかった不具合を修正
 
-������¾�β���
-   + �ե�����ΰ�¸�ط�������Ū�ʸ�ľ��
-   + ���ꥢ��ɥ饤�Фȥ����ޥɥ饤�Ф�ITRON�ǥХ����ɥ饤�Х����ɥ饤��
-   �����˽���
-   + ���ꥢ��ɥ饤�Ф˼������顼����ߥϥ�ɥ���ɲ�
+・その他の改良
+   + ファイルの依存関係の全面的な見直し
+   + シリアルドライバとタイマドライバをITRONデバイスドライバガイドライン
+   　準拠に修正
+   + シリアルドライバに受信エラー割込みハンドラを追加
 
-2002ǯ4��15����Release1.3
+2002年4月15日　Release1.3
 
-���Х��ե��å���
-   + ��������γ���ߡ�CPU�㳰�ͥ��ȥ����󥿤��ͤν���
-   + ����߽и������Ǥγ���ߥޥ���������������ɲ�
+・バグフィックス
+   + 初期化時の割込み／CPU例外ネストカウンタの値の修正
+   + 割込み出口処理での割込みマスクの設定処理の追加
 
-������¾�β���
-   + ɸ��饤�֥���memcpy���󥯤�����Ȥ��ʤ�����ξ�����б�
+・その他の改良
+   + 標準ライブラリのmemcpyをリンクする場合としない場合の両方に対応
 
-2001ǯ11��20�� Release1.2
+2001年11月20日 Release1.2
 
-���Х��ե��å���
-   + �٥����ơ��֥�Υ��ԡ��κݡ��ΰ�Υ�������ְ㤨�Ƥ���
-   ���Х�����
+・バグフィックス
+   + ベクタテーブルのコピーの際、領域のサイズを間違えていた
+   　バグを修正
 
-������¾�β���
-�� + �����¸���ȶ������Υ��󥿡��ե��������ѹ����ɽ�
-�� + �¹ԤǤ��륿���������Ĥ�ʤ��Ȥ��ε�ư���ѹ�
-��������chg_ipm()�Ȥ������
+・その他の改良
+　 + 機種依存部と共通部のインターフェースの変更に追従
+　 + 実行できるタスクが１つもないときの挙動を変更
+　　　（chg_ipm()との整合）
 
 
-2001ǯ5��10����Release1.1
+2001年5月10日　Release1.1
 
-SH1�ǤΥ��ݡ��Ȥ򳫻�
+SH1版のサポートを開始

@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: clause.h,v 1.4 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -49,58 +49,58 @@
 #include <map>
 #include <string>
 
-#define INTEGER_CLAUSE_IDENTIFIER   "##INTEGER" //2Ϣ��#�ȼ��̻Ҥ�쵤�˼��Ф����ȤϤǤ��ʤ��Τ�̾�����Ťʤ뤳�ȤϤʤ�
+#define INTEGER_CLAUSE_IDENTIFIER   "##INTEGER" //2連の#と識別子を一気に取り出すことはできないので名前が重なることはない
 #define LITERAL_CLAUSE_IDENTIFIER   "##STRING"
 #define OPERATOR_CLAUSE_IDENTIFIER  "##OPERATOR"
 
-    //��ʸ��ΰ����������륯�饹
+    //構文上の一節を処理するクラス
 class Clause
 {
 public:
-        //����̾�����֤�°������Υޥå�
+        //ある名前空間に属する節のマップ
     typedef std::map<std::string, Clause *> map_type;
 
-        //̾������
+        //名前空間
     class Namespace : public std::map<std::string, map_type>
     { public: SINGLETON_CONSTRUCTOR(Namespace) throw() {} };
 
 protected:
     static map_type * getClauseMap(std::string ns) throw();
 
-        //�ȡ����󤫤鼱��̾����������
+        //トークンから識別名を生成する
     static std::string getClauseIdentifier(Token token) throw();
 
-        //���Ȥ���Ͽ����
+        //自身を登録する
     void   addClause(std::string ns, std::string identifier) throw();
 
-        //��ʬ��ʣ����leading identifier���б��դ���
+        //自分を複数のleading identifierに対応付ける
     void   addMultipleClauses(std::string ns, std::string identifier_list) throw();
 
-protected:  /* ���󥿥ե����� */
+protected:  /* インタフェース */
 
-        //�ѡ�������
+        //パーサ本体
     virtual void before(const Token & first, Parser & p);
     virtual void body  (const Token & first, Parser & p) = 0;
     virtual void after (const Token & first, Parser & p);
 
-        //�ѡ������Ի��β�������
+        //パース失敗時の回復処理
     virtual void onFail(const Token & first, Parser & p) throw();
 
 public:
     Clause(void) throw() {}
     virtual ~Clause(void) throw() {}
 
-        //ͭ��Ƚ��
+        //有効判定
     inline bool isValid(void) const throw()
     {   return (this != 0);   }
 
-        //��β���
+        //節の解析
     static bool parseClause(std::string ns, Parser & p);
 
-        //first�ǻϤޤ��᤬���뤫
+        //firstで始まる節があるか
     static bool hasClause(std::string ns, std::string first) throw();
 
-        //[�إ����] ��Ͽ����Ƥ�����ΰ������������
+        //[ヘルプ用] 登録されている節の一覧を作成する
     static std::string makeClauseList(std::string ns, int width = 80) throw();
 
     TESTSUITE_PROTOTYPE(main)
@@ -108,7 +108,7 @@ public:
 
 
     /*
-     *   ��ŪAPI
+     *   静的API
      */
 #define NAMESPACE_STATICAPI "StaticAPI"
 
@@ -119,32 +119,32 @@ protected:
     virtual void before(const Token & first, Parser & p);
     virtual void after (const Token & first, Parser & p);
 
-        //�ѡ������Ի��β�������
+        //パース失敗時の回復処理
     virtual void onFail(const Token & first, Parser & p) throw();
 
 public:
-        //�ǥե���ȥ��󥹥ȥ饯�� (���⤷�ʤ�)
+        //デフォルトコンストラクタ (何もしない)
     StaticAPI(void) throw() {}      
-        //API̾����ꤷ������ (regist����)
+        //API名を指定して生成 (registをよぶ)
     StaticAPI(std::string apinamelist) throw()
     {   addMultipleClauses(NAMESPACE_STATICAPI, apinamelist);   }
 
     inline void regist(std::string apinamelist) throw()
     {   addMultipleClauses(NAMESPACE_STATICAPI, apinamelist);   }
 
-        //��β���
+        //節の解析
     static bool parseStaticAPI(Parser & p)
     {   return Clause::parseClause(NAMESPACE_STATICAPI, p);   }
 
-        //first�ǻϤޤ��᤬���뤫
+        //firstで始まる節があるか
     inline static bool hasStaticAPI(std::string first) throw()
     {   return Clause::hasClause(NAMESPACE_STATICAPI, first);   }
 
-        //[�إ����] ��Ͽ����Ƥ�����ΰ������������
+        //[ヘルプ用] 登録されている節の一覧を作成する
     inline static std::string makeClauseList(int width = 80) throw()
     {   return Clause::makeClauseList(NAMESPACE_STATICAPI, width);   }
 
-        //�����å�
+        //スキップ
     static void skip(Parser & p, bool invalid_api = true) throw();
 
     TESTSUITE_PROTOTYPE(main)
@@ -152,7 +152,7 @@ public:
 
 
     /*
-     *   �ץ�ץ������ǥ��쥯�ƥ���
+     *   プリプロセスディレクティブ
      */
 #define NAMESPACE_DIRECTIVES "Directives"
 
@@ -162,28 +162,28 @@ protected:
 
     virtual void after(const Token & first, Parser & p) throw(Exception);
 
-        //�ѡ������Ի��β�������
+        //パース失敗時の回復処理
     virtual void onFail(const Token & first, Parser & p) throw();
 
 public:
-        //�ǥե���ȥ��󥹥ȥ饯�� (���⤷�ʤ�)
+        //デフォルトコンストラクタ (何もしない)
     Directives(void) throw() {}      
-        //API̾����ꤷ������ (regist����)
+        //API名を指定して生成 (registをよぶ)
     Directives(std::string apinamelist) throw()
     {   addMultipleClauses(NAMESPACE_DIRECTIVES, apinamelist);   }
 
     inline void regist(std::string apinamelist) throw()
     {   addMultipleClauses(NAMESPACE_DIRECTIVES, apinamelist);   }
 
-        //��β���
+        //節の解析
     inline static bool parseDirectives(Parser & p)
     {   return Clause::parseClause(NAMESPACE_DIRECTIVES, p);   }
 
-        //first�ǻϤޤ��᤬���뤫
+        //firstで始まる節があるか
     inline static bool hasDirectives(std::string first) throw()
     {   return Clause::hasClause(NAMESPACE_DIRECTIVES, first);   }
 
-        //[�إ����] ��Ͽ����Ƥ�����ΰ������������
+        //[ヘルプ用] 登録されている節の一覧を作成する
     inline static std::string makeClauseList(int width = 80) throw()
     {   return Clause::makeClauseList(NAMESPACE_DIRECTIVES, width);   }
 

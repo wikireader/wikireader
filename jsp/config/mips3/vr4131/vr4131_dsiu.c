@@ -8,64 +8,64 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
  
 #include <vr4131_dsiu.h>
 
 /*
- *	VR4131��¢DSIU�� �ʰ�SIO�ɥ饤��
+ *	VR4131内蔵DSIU用 簡易SIOドライバ
  */
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å������
+ *  シリアルI/Oポート初期化ブロックの定義
  */
 typedef struct sio_port_initialization_block {
-	UB	lcr_def;	/* LCR������ b0-b6;
-				   (�������ӥåȿ������ȥåץӥåȡ��ѥ�ƥ�) */
-	UB	boud_hi_def;	/* DLM�����͡ʥܡ��졼�Ⱦ�̤������͡� */
-	UB	boud_lo_def;	/* DLL�����͡ʥܡ��졼�Ȳ��̤������͡� */
+	UB	lcr_def;	/* LCR設定値 b0-b6;
+				   (送受信ビット数、ストップビット，パリティ) */
+	UB	boud_hi_def;	/* DLM設定値（ボーレート上位の設定値） */
+	UB	boud_lo_def;	/* DLL設定値（ボーレート下位の設定値） */
 } SIOPINIB;
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å������
+ *  シリアルI/Oポート管理ブロックの定義
  */
 struct sio_port_control_block {
-	const SIOPINIB	*siopinib;	/* ���ꥢ��I/O�ݡ��Ƚ�����֥��å� */
-	VP_INT		exinf;		/* ��ĥ���� */
-	BOOL		openflag;	/* �����ץ�Ѥߥե饰 */
-	BOOL		getready;	/* ʸ��������������� */
-	BOOL		putready;	/* ʸ���������Ǥ������ */
+	const SIOPINIB	*siopinib;	/* シリアルI/Oポート初期化ブロック */
+	VP_INT		exinf;		/* 拡張情報 */
+	BOOL		openflag;	/* オープン済みフラグ */
+	BOOL		getready;	/* 文字を受信した状態 */
+	BOOL		putready;	/* 文字を送信できる状態 */
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
- *  �ʥݡ��Ȥϣ��Ĥ����ʤ�����¾�Υ����������ɤȤο����������������������
+ *  シリアルI/Oポート初期化ブロック
+ *  （ポートは１つしかないが、他のソースコードとの親和性から配列で定義する）
  */
 const SIOPINIB siopinib_table[TNUM_SIOP] = {
 	{ (UB)	WORD_LENGTH_8 | STOP_BITS_1 | PARITY_NON,
@@ -74,24 +74,24 @@ const SIOPINIB siopinib_table[TNUM_SIOP] = {
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å��μ�Ф�
+ *  シリアルI/Oポート初期化ブロックの取出し
  */
 #define INDEX_SIOPINIB(siopid)	((UINT)((siopid) - 1))
 #define get_siopinib(siopid)	(&(siopinib_table[INDEX_SIOPINIB(siopid)]))
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 SIOPCB	siopcb_table[TNUM_SIOP];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
 #define INDEX_SIOP(siopid)	((UINT)((siopid) - 1))
 #define get_siopcb(siopid)	(&(siopcb_table[INDEX_SIOP(siopid)]))
 
 /*
- *  ���֤��ɽФ���IID���ɽФ���
+ *  状態の読出し（IIDの読出し）
  */
 static void
 vr4131_dsiu_get_stat(SIOPCB *siopcb)
@@ -116,7 +116,7 @@ vr4131_dsiu_get_stat(SIOPCB *siopcb)
 }
 
 /*
- *  ʸ��������Ǥ��뤫��
+ *  文字を受信できるか？
  */
 Inline BOOL
 vr4131_dsiu_getready(SIOPCB *siopcb)
@@ -125,7 +125,7 @@ vr4131_dsiu_getready(SIOPCB *siopcb)
 }
 
 /*
- *  ʸ���������Ǥ��뤫��
+ *  文字を送信できるか？
  */
 Inline BOOL
 vr4131_dsiu_putready(SIOPCB *siopcb)
@@ -134,7 +134,7 @@ vr4131_dsiu_putready(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���μ�Ф�
+ *  受信した文字の取出し
  */
 Inline char
 vr4131_dsiu_getchar(SIOPCB *siopcb)
@@ -144,7 +144,7 @@ vr4131_dsiu_getchar(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���ν����
+ *  送信する文字の書込み
  */
 Inline void
 vr4131_dsiu_putchar(SIOPCB *siopcb, char c)
@@ -159,7 +159,7 @@ vr4131_dsiu_putchar(SIOPCB *siopcb, char c)
 }
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 vr4131_dsiu_initialize()
@@ -168,46 +168,46 @@ vr4131_dsiu_initialize()
 	UINT	i = 0;
 
 	/*
-	 *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+	 *  シリアルI/Oポート管理ブロックの初期化
 	 */
 	siopcb->siopinib = &(siopinib_table[i]);
 	siopcb->openflag = FALSE;
 }
 
 /*
- *  SIO�쥸����������롼����
+ *  SIOレジスタ初期化ルーチン
  */
 void
 vr4131_dsiu_init_siopinib( const SIOPINIB  *siopinib )
 {
 	/*
-	 * DSIU�쥸�����ν����
+	 * DSIUレジスタの初期化
 	 */
-	/* ������� */
+	/* 初期処理 */
 	vr4131_wrb_mem( (VP) DSIUIE,  DIS_INT );
 
-	/* �ܡ��졼�Ȥ����� */
+	/* ボーレートの設定 */
 	vr4131_wrb_mem( (VP) DSIULC,  siopinib->lcr_def | DIVISOR_LATCH_ACC );
 
 	vr4131_wrb_mem( (VP) DSIUDLL, siopinib->boud_lo_def );
 	vr4131_wrb_mem( (VP) DSIUDLM, siopinib->boud_hi_def );
 
-	/* �⡼�ɤ����� */
+	/* モードの設定 */
 	vr4131_wrb_mem( (VP) DSIULC,  siopinib->lcr_def );
 
-	/* FIFO������ */
+	/* FIFOの設定 */
 	vr4131_wrb_mem( (VP) DSIUFC,  FIFO_ENABLE );
 	vr4131_wrb_mem( (VP) DSIUFC,  FIFO_ENABLE | RECEIVE_FIFO_RESET | TRANS_FIFO_RESET | RECEIVE_TRIG_1_BYTE );
 	vr4131_wrb_mem( (VP) DSIUFC,  FIFO_ENABLE | RECEIVE_TRIG_1_BYTE );
 
-	/* ��λ���� */
+	/* 終了処理 */
 	vr4131_wrb_mem( (VP) DSIUMC,  RTS );
 
 	vr4131_wrb_mem( (VP) DSIUIE,  RECEIVE_DATA_AVAILABLE);
 }
 
 /*
- *  �����ͥ뵯ư���ΥС��ʡ������Ѥν����
+ *  カーネル起動時のバーナー出力用の初期化
  */
 void
 vr4131_dsiu_init(void)
@@ -216,7 +216,7 @@ vr4131_dsiu_init(void)
 }
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 BOOL
 vr4131_dsiu_openflag(void)
@@ -225,7 +225,7 @@ vr4131_dsiu_openflag(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 vr4131_dsiu_opn_por(ID siopid, VP_INT exinf)
@@ -234,11 +234,11 @@ vr4131_dsiu_opn_por(ID siopid, VP_INT exinf)
 	const SIOPINIB	*siopinib = siopcb->siopinib;
 
 #ifndef GDB_STUB
-	/* DSIU�쥸�����ν���� */
+	/* DSIUレジスタの初期化 */
 	vr4131_dsiu_init_siopinib( siopinib );
 #endif	/*  GDB_STUB  */
 
-	/* ����ߥ�٥����ꡢ������׵᥯�ꥢ�ϡ�sio_opn_por(hw_serial.h)�ǹԤ��� */
+	/* 割込みレベル設定、割込み要求クリアは、sio_opn_por(hw_serial.h)で行う。 */
 
 	siopcb->exinf = exinf;
 	siopcb->getready = siopcb->putready = FALSE;
@@ -248,7 +248,7 @@ vr4131_dsiu_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 vr4131_dsiu_cls_por(SIOPCB *siopcb)
@@ -259,7 +259,7 @@ vr4131_dsiu_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 vr4131_dsiu_snd_chr(SIOPCB *siopcb, char c)
@@ -272,7 +272,7 @@ vr4131_dsiu_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 vr4131_dsiu_rcv_chr(SIOPCB *siopcb)
@@ -284,7 +284,7 @@ vr4131_dsiu_rcv_chr(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 vr4131_dsiu_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -304,7 +304,7 @@ vr4131_dsiu_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 vr4131_dsiu_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -324,7 +324,7 @@ vr4131_dsiu_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф������߽���
+ *  シリアルI/Oポートに対する割込み処理
  */
 static void
 vr4131_dsiu_isr_siop(SIOPCB *siopcb)
@@ -333,20 +333,20 @@ vr4131_dsiu_isr_siop(SIOPCB *siopcb)
 
 	if ( vr4131_dsiu_getready(siopcb) ) {
 		/*
-		 *  �������Υ�����Хå��롼�����ƤӽФ���
+		 *  受信通知コールバックルーチンを呼び出す．
 		 */
 		vr4131_dsiu_ierdy_rcv(siopcb->exinf);
 	}
 	if ( vr4131_dsiu_putready(siopcb) ) {
 		/*
-		 *  ������ǽ������Хå��롼�����ƤӽФ���
+		 *  送信可能コールバックルーチンを呼び出す．
 		 */
 		vr4131_dsiu_ierdy_snd(siopcb->exinf);
 	}
 }
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 void
 vr4131_dsiu_isr()
@@ -357,12 +357,12 @@ vr4131_dsiu_isr()
 }
 
 /*
- *  VR4131 ��¢ DSIU �ѥݡ���󥰽��� (sys_putc������)
+ *  VR4131 内蔵 DSIU 用ポーリング出力 (sys_putcで利用)
  */
 void
 vr4131_dsiu_putchar_pol( char val ) {
 
-	/* ����������ץƥ��ˤʤ�ޤ��Ԥġ� */
+	/* 送信部エンプティになるまで待つ。 */
 	while( (vr4131_reb_mem( (VP)DSIULS ) & (TEMT) ) == 0 );
 
 	vr4131_wrb_mem( (VP)DSIUTH, (VB) val );

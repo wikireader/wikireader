@@ -10,32 +10,32 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _H8S_H_
@@ -44,12 +44,12 @@
 #include <util.h>
 
 /*
- *  H8S/2600, H8S/2000 CPU �����
- *    ����ӡ��Х�����ȥ����顢����ߥ���ȥ������Ϣ�����
+ *  H8S/2600, H8S/2000 CPU 用定義
+ *    および、バスコントローラ、割込みコントローラ関連の定義
  */
 
 /*
- *  ����ǥ�����󥳡��ɥ쥸����(CCR)
+ *  コンディションコードレジスタ(CCR)
  */
 #define CCR_I		BIT7
 #define CCR_UI		BIT6
@@ -61,25 +61,25 @@
 #define CCR_C		BIT0
 
 /*
- *  �������ƥ�ɥ쥸����(EXR)
+ *  エクステンドレジスタ(EXR)
  */
-#define EXR_T		BIT7		/* �ȥ졼���ӥå� */
-#define EXR_I2		BIT2		/* ����ߥޥ����ӥå� */
-#define EXR_I1		BIT1		/* ����ߥޥ����ӥå� */
-#define EXR_I0		BIT0		/* ����ߥޥ����ӥå� */
+#define EXR_T		BIT7		/* トレースビット */
+#define EXR_I2		BIT2		/* 割込みマスクビット */
+#define EXR_I1		BIT1		/* 割込みマスクビット */
+#define EXR_I0		BIT0		/* 割込みマスクビット */
 
-/* ����ߥޥ����ӥåȼ����ѥޥ��� */
+/* 割込みマスクビット取得用マスク */
 #define EXR_I_MASK	(EXR_I2|EXR_I1|EXR_I0)
 
 /*
- *  MCUư��⡼�ɴ�Ϣ�Υ쥸����
+ *  MCU動作モード関連のレジスタ
  */
 
-/* �쥸�����Υ��ɥ쥹 */
+/* レジスタのアドレス */
 #define MDCR		0xff3b
 #define SYSCR		0xff39
 
-/* �ƥ쥸�����Υӥåȥѥ����� */
+/* 各レジスタのビットパターン */
 
 /* MDCR */
 #define MDS2		BIT2
@@ -95,27 +95,27 @@
 #define RAME_BIT	0x0
 
 /*
- *  ����ߥ���ȥ�����
+ *  割込みコントローラ
  */
-/* �쥸�����Υ��ɥ쥹 */
-/* �����ƥॳ��ȥ�����쥸�����ϡ���������Ѥ� */
-#define ISCRH		0xff2c		/* IRQ���󥹥���ȥ�����쥸����H */
-#define ISCRL		0xff2d		/* IRQ���󥹥���ȥ�����쥸����L */
-#define IER		0xff2e		/* IRQ���͡��֥�쥸���� */
-#define ISR		0xff2f		/* IRQ���ơ������쥸���� */
-#define IPRA		0xfec4		/* ���󥿥�ץȥץ饤����ƥ��쥸����A */
-#define IPRB 		0xfec5		/* ���󥿥�ץȥץ饤����ƥ��쥸����B */
-#define IPRC		0xfec6		/* ���󥿥�ץȥץ饤����ƥ��쥸����C */
-#define IPRD		0xfec7		/* ���󥿥�ץȥץ饤����ƥ��쥸����D */
-#define IPRE		0xfec8		/* ���󥿥�ץȥץ饤����ƥ��쥸����E */
-#define IPRF		0xfec9		/* ���󥿥�ץȥץ饤����ƥ��쥸����F */
-#define IPRG		0xfeca		/* ���󥿥�ץȥץ饤����ƥ��쥸����G */
-#define IPRH		0xfecb		/* ���󥿥�ץȥץ饤����ƥ��쥸����H */
-#define IPRI		0xfecc		/* ���󥿥�ץȥץ饤����ƥ��쥸����I */
-#define IPRJ		0xfecd		/* ���󥿥�ץȥץ饤����ƥ��쥸����J */
-#define IPRK		0xfece		/* ���󥿥�ץȥץ饤����ƥ��쥸����K */
+/* レジスタのアドレス */
+/* システムコントロールレジスタは、既に定義済み */
+#define ISCRH		0xff2c		/* IRQセンスコントロールレジスタH */
+#define ISCRL		0xff2d		/* IRQセンスコントロールレジスタL */
+#define IER		0xff2e		/* IRQイネーブルレジスタ */
+#define ISR		0xff2f		/* IRQステータスレジスタ */
+#define IPRA		0xfec4		/* インタラプトプライオリティレジスタA */
+#define IPRB 		0xfec5		/* インタラプトプライオリティレジスタB */
+#define IPRC		0xfec6		/* インタラプトプライオリティレジスタC */
+#define IPRD		0xfec7		/* インタラプトプライオリティレジスタD */
+#define IPRE		0xfec8		/* インタラプトプライオリティレジスタE */
+#define IPRF		0xfec9		/* インタラプトプライオリティレジスタF */
+#define IPRG		0xfeca		/* インタラプトプライオリティレジスタG */
+#define IPRH		0xfecb		/* インタラプトプライオリティレジスタH */
+#define IPRI		0xfecc		/* インタラプトプライオリティレジスタI */
+#define IPRJ		0xfecd		/* インタラプトプライオリティレジスタJ */
+#define IPRK		0xfece		/* インタラプトプライオリティレジスタK */
 
-/* �ƥ쥸�����Υӥåȥѥ����� */
+/* 各レジスタのビットパターン */
 
 /* IPRx (x = A-K) */
 #define IPR6		BIT6
@@ -125,11 +125,11 @@
 #define IPR1		BIT1
 #define IPR0		BIT0
 
-/* icu_set_ilv�� */
+/* icu_set_ilv用 */
 #define IPR_UPR		TRUE
 #define IPR_LOW		FALSE
-#define IPR_UPR_MASK	(IPR6|IPR5|IPR4)	/* IPR��̥ӥåȥޥ��� */
-#define IPR_LOW_MASK	(IPR2|IPR1|IPR0)	/* IPR���̥ӥåȥޥ��� */
+#define IPR_UPR_MASK	(IPR6|IPR5|IPR4)	/* IPR上位ビットマスク */
+#define IPR_LOW_MASK	(IPR2|IPR1|IPR0)	/* IPR下位ビットマスク */
 
 /* IER */
 #define IRQ7E		BIT7
@@ -171,93 +171,93 @@
 #define IRQ1F		BIT1
 #define IRQ0F		BIT0
 
-/* ������㳰�����٥����ơ��֥�Υ٥����ֹ� */
-					/* �׵�ȯ���� */
-#define IRQ_POWRESET	0		/* �ѥ����ꥻ�å� */
-#define IRQ_MANRESET	1		/* �ޥ˥奢��ꥻ�å� */
-/* 2-4 �ϡ��㳰�����٥����ơ��֥���б�����Τǡ���ά */
-#define IRQ_TRACE	5		/* �ȥ졼�� */
-/* 6 �ϡ��㳰�����٥����ơ��֥���б�����Τǡ���ά */
-#define IRQ_NMI		7		/* ����ü�� */
-#define IRQ_TRAP0	8		/* �ȥ�å�̿�� */
-#define IRQ_TRAP1	9		/* �ȥ�å�̿�� */
-#define IRQ_TRAP2	10		/* �ȥ�å�̿�� */
-#define IRQ_TRAP3	11		/* �ȥ�å�̿�� */
-/* 12-15 �ϡ��㳰�����٥����ơ��֥���б�����Τǡ���ά */
-#define IRQ_IRQ0	16		/* ����ü�� */
-#define IRQ_IRQ1	17		/* ����ü�� */
-#define IRQ_IRQ2	18		/* ����ü�� */
-#define IRQ_IRQ3	19		/* ����ü�� */
-#define IRQ_IRQ4	20		/* ����ü�� */
-#define IRQ_IRQ5	21		/* ����ü�� */
-#define IRQ_IRQ6	22		/* ����ü�� */
-#define IRQ_IRQ7	23		/* ����ü�� */
+/* 割込み例外処理ベクタテーブルのベクタ番号 */
+					/* 要求発生元 */
+#define IRQ_POWRESET	0		/* パワーオンリセット */
+#define IRQ_MANRESET	1		/* マニュアルリセット */
+/* 2-4 は、例外処理ベクタテーブルに対応するので、省略 */
+#define IRQ_TRACE	5		/* トレース */
+/* 6 は、例外処理ベクタテーブルに対応するので、省略 */
+#define IRQ_NMI		7		/* 外部端子 */
+#define IRQ_TRAP0	8		/* トラップ命令 */
+#define IRQ_TRAP1	9		/* トラップ命令 */
+#define IRQ_TRAP2	10		/* トラップ命令 */
+#define IRQ_TRAP3	11		/* トラップ命令 */
+/* 12-15 は、例外処理ベクタテーブルに対応するので、省略 */
+#define IRQ_IRQ0	16		/* 外部端子 */
+#define IRQ_IRQ1	17		/* 外部端子 */
+#define IRQ_IRQ2	18		/* 外部端子 */
+#define IRQ_IRQ3	19		/* 外部端子 */
+#define IRQ_IRQ4	20		/* 外部端子 */
+#define IRQ_IRQ5	21		/* 外部端子 */
+#define IRQ_IRQ6	22		/* 外部端子 */
+#define IRQ_IRQ7	23		/* 外部端子 */
 #define IRQ_SWDTEND	24		/* DTC */
-#define IRQ_WOVI	25		/* �����å��ɥå������� */
-#define IRQ_CMI 	26		/* ��ե�å��女��ȥ����� */
-/* 27 �֤ϡ��ꥶ���� */
+#define IRQ_WOVI	25		/* ウォッチドッグタイマ */
+#define IRQ_CMI 	26		/* リフレッシュコントローラ */
+/* 27 番は、リザーブ */
 #define IRQ_ADI		28		/* A/D */
-/* 29, 30, 31 �֤ϡ��ꥶ���� */
-#define IRQ_TGI0A	32		/* TPU����ͥ�0 */
-#define IRQ_TGI0B	33		/* TPU����ͥ�0 */
-#define IRQ_TGI0C	34		/* TPU����ͥ�0 */
-#define IRQ_TGI0D	35		/* TPU����ͥ�0 */
-#define IRQ_TCI0V	36		/* TPU����ͥ�0 */
-/* 37, 38, 39 �֤ϡ��ꥶ���� */
-#define IRQ_TGI1A	40		/* TPU����ͥ�1 */
-#define IRQ_TGI1B	41		/* TPU����ͥ�1 */
-#define IRQ_TCI1V	42		/* TPU����ͥ�1 */
-#define IRQ_TCI1U	43		/* TPU����ͥ�1 */
-#define IRQ_TGI2A	44		/* TPU����ͥ�2 */
-#define IRQ_TGI2B	45		/* TPU����ͥ�2 */
-#define IRQ_TCI2V	46		/* TPU����ͥ�2 */
-#define IRQ_TCI2U	47		/* TPU����ͥ�2 */
-#define IRQ_TGI3A	48		/* TPU����ͥ�3 */
-#define IRQ_TGI3B	49		/* TPU����ͥ�3 */
-#define IRQ_TGI3C	50		/* TPU����ͥ�3 */
-#define IRQ_TGI3D	51		/* TPU����ͥ�3 */
-#define IRQ_TCI3V	52		/* TPU����ͥ�3 */
-/* 53, 54, 55 �֤ϡ��ꥶ���� */
-#define IRQ_TGI4A	56		/* TPU����ͥ�4 */
-#define IRQ_TGI4B	57		/* TPU����ͥ�4 */
-#define IRQ_TCI4V	58		/* TPU����ͥ�4 */
-#define IRQ_TCI4U	59		/* TPU����ͥ�4 */
-#define IRQ_TGI5A	60		/* TPU����ͥ�5 */
-#define IRQ_TGI5B	61		/* TPU����ͥ�5 */
-#define IRQ_TCI5V	62		/* TPU����ͥ�5 */
-#define IRQ_TCI5U	63		/* TPU����ͥ�5 */
-/* 64, 65, 66, 67, 68, 69, 70, 71 �֤ϡ��ꥶ���� */
+/* 29, 30, 31 番は、リザーブ */
+#define IRQ_TGI0A	32		/* TPUチャネル0 */
+#define IRQ_TGI0B	33		/* TPUチャネル0 */
+#define IRQ_TGI0C	34		/* TPUチャネル0 */
+#define IRQ_TGI0D	35		/* TPUチャネル0 */
+#define IRQ_TCI0V	36		/* TPUチャネル0 */
+/* 37, 38, 39 番は、リザーブ */
+#define IRQ_TGI1A	40		/* TPUチャネル1 */
+#define IRQ_TGI1B	41		/* TPUチャネル1 */
+#define IRQ_TCI1V	42		/* TPUチャネル1 */
+#define IRQ_TCI1U	43		/* TPUチャネル1 */
+#define IRQ_TGI2A	44		/* TPUチャネル2 */
+#define IRQ_TGI2B	45		/* TPUチャネル2 */
+#define IRQ_TCI2V	46		/* TPUチャネル2 */
+#define IRQ_TCI2U	47		/* TPUチャネル2 */
+#define IRQ_TGI3A	48		/* TPUチャネル3 */
+#define IRQ_TGI3B	49		/* TPUチャネル3 */
+#define IRQ_TGI3C	50		/* TPUチャネル3 */
+#define IRQ_TGI3D	51		/* TPUチャネル3 */
+#define IRQ_TCI3V	52		/* TPUチャネル3 */
+/* 53, 54, 55 番は、リザーブ */
+#define IRQ_TGI4A	56		/* TPUチャネル4 */
+#define IRQ_TGI4B	57		/* TPUチャネル4 */
+#define IRQ_TCI4V	58		/* TPUチャネル4 */
+#define IRQ_TCI4U	59		/* TPUチャネル4 */
+#define IRQ_TGI5A	60		/* TPUチャネル5 */
+#define IRQ_TGI5B	61		/* TPUチャネル5 */
+#define IRQ_TCI5V	62		/* TPUチャネル5 */
+#define IRQ_TCI5U	63		/* TPUチャネル5 */
+/* 64, 65, 66, 67, 68, 69, 70, 71 番は、リザーブ */
 #define IRQ_DEND0A	72		/* DMAC */
 #define IRQ_DEND0B	73		/* DMAC */
 #define IRQ_DEND1A	74		/* DMAC */
 #define IRQ_DEND1B	75		/* DMAC */
-/* 76, 77, 78, 79 �֤ϡ��ꥶ���� */
-#define IRQ_ERI0	80		/* SCI����ͥ�0 */
-#define IRQ_RXI0	81		/* SCI����ͥ�0 */
-#define IRQ_TXI0	82		/* SCI����ͥ�0 */
-#define IRQ_TEI0	83		/* SCI����ͥ�0 */
-#define IRQ_ERI1	84		/* SCI����ͥ�1 */
-#define IRQ_RXI1	85		/* SCI����ͥ�1 */
-#define IRQ_TXI1	86		/* SCI����ͥ�1 */
-#define IRQ_TEI1	87		/* SCI����ͥ�1 */
-/* 88, 89, 90, 91 �֤ϡ��ꥶ���� */
+/* 76, 77, 78, 79 番は、リザーブ */
+#define IRQ_ERI0	80		/* SCIチャネル0 */
+#define IRQ_RXI0	81		/* SCIチャネル0 */
+#define IRQ_TXI0	82		/* SCIチャネル0 */
+#define IRQ_TEI0	83		/* SCIチャネル0 */
+#define IRQ_ERI1	84		/* SCIチャネル1 */
+#define IRQ_RXI1	85		/* SCIチャネル1 */
+#define IRQ_TXI1	86		/* SCIチャネル1 */
+#define IRQ_TEI1	87		/* SCIチャネル1 */
+/* 88, 89, 90, 91 番は、リザーブ */
 
 /*
- *  �Х�����ȥ�����
+ *  バスコントローラ
  */
-/* �쥸�����Υ��ɥ쥹 */
-#define ABWCR		0xfed0		/* �Х�������ȥ�����쥸���� */
-#define ASTCR		0xfed1		/* �����������ơ��ȥ���ȥ�����쥸���� */
-#define WCRH		0xfed2		/* �������ȥ���ȥ�����쥸����H */
-#define WCRL      	0xfed3		/* �������ȥ���ȥ�����쥸����L */
-#define BCRH		0xfed4		/* �Х�����ȥ�����쥸����H */
-#define BCRL		0xfed5		/* �Х�����ȥ�����쥸����L */
-#define MCR		0xfed6		/* ���ꥳ��ȥ�����쥸���� */
-#define DRAMCR		0xfed7		/* DRAM����ȥ�����쥸���� */
-#define RTCNT		0xfed8		/* ��ե�å��奿���ޥ����� */
-#define RTCOR		0xfed9		/* ��ե�å��奿���ޥ��󥹥���ȥ쥸���� */
+/* レジスタのアドレス */
+#define ABWCR		0xfed0		/* バス幅コントロールレジスタ */
+#define ASTCR		0xfed1		/* アクセスステートコントロールレジスタ */
+#define WCRH		0xfed2		/* ウェイトコントロールレジスタH */
+#define WCRL      	0xfed3		/* ウェイトコントロールレジスタL */
+#define BCRH		0xfed4		/* バスコントロールレジスタH */
+#define BCRL		0xfed5		/* バスコントロールレジスタL */
+#define MCR		0xfed6		/* メモリコントロールレジスタ */
+#define DRAMCR		0xfed7		/* DRAMコントロールレジスタ */
+#define RTCNT		0xfed8		/* リフレッシュタイマカウンタ */
+#define RTCOR		0xfed9		/* リフレッシュタイマコンスタントレジスタ */
 
-/* �ƥ쥸�����Υӥåȥѥ����� */
+/* 各レジスタのビットパターン */
 
 /* ASTCR */
 #define AST7 		BIT7
@@ -300,12 +300,12 @@
 #define RMTS0 		BIT0
 
 /*
- *  ����߻��Υ����å��ˤ�����EXR�쥸�����Υ��ե��å�
+ *  割込み時のスタックにおけるEXRレジスタのオフセット
  */
 #define EXR_offset	28
 
 /*
- *  ̤��������ȯ�����Υ��顼���ϻ��Υ����å���¤�����
+ *  未定義割込み発生時のエラー出力時のスタック構造の定義
  */
 #ifndef _MACRO_ONLY
 
@@ -319,8 +319,8 @@ typedef struct exc_stack {
 	UW	er0;
 	UB	exr;
 	UB	tmp;
-	UH	ccr;	/* 1 byte : 1 byte = CCR : PC(��̣��Х���) */
-	UH	pc;	/* 1 byte : 1 byte = PC(���̣��Х���) */
+	UH	ccr;	/* 1 byte : 1 byte = CCR : PC(上位１バイト) */
+	UH	pc;	/* 1 byte : 1 byte = PC(下位２バイト) */
 } EXCSTACK;
 
 #endif /* _MACRO_ONLY */

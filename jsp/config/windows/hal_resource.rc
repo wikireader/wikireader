@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// “ú–{Œê resources
+// æ—¥æœ¬èªž resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 #ifdef _WIN32
@@ -30,16 +30,16 @@ PRIMARYDIALOG DIALOG  0, 0, 187, 11
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "TOPPERS/JSP for Windows - Primary Messaging Dialog"
-FONT 9, "‚l‚r ‚oƒSƒVƒbƒN"
+FONT 9, "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
 BEGIN
-    CONTROL         "ƒNƒƒbƒN‹Ÿ‹‹‚Ì’âŽ~",IDC_CLOCKSUPPLY,"Button",
+    CONTROL         "ã‚¯ãƒ­ãƒƒã‚¯ä¾›çµ¦ã®åœæ­¢",IDC_CLOCKSUPPLY,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,5,0,95,10
 END
 
 DEBUGOUTDIALOG DIALOG  0, 0, 186, 93
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_THICKFRAME
-CAPTION "ƒfƒoƒbƒOo—Í•¶Žš—ñ"
-FONT 9, "‚l‚r ‚oƒSƒVƒbƒN"
+CAPTION "ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›æ–‡å­—åˆ—"
+FONT 9, "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
 BEGIN
     EDITTEXT        IDC_DEBUGOUT,24,21,142,52,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_READONLY | ES_WANTRETURN | WS_VSCROLL
@@ -47,9 +47,9 @@ END
 
 CONSOLEDIALOG DIALOGEX 0, 0, 186, 93
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_THICKFRAME
-CAPTION "ƒVƒŠƒAƒ‹ƒRƒ“ƒ\[ƒ‹“üo—Í"
+CAPTION "ã‚·ãƒªã‚¢ãƒ«ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å…¥å‡ºåŠ›"
 MENU IDR_CONSOLEMENU
-FONT 9, "‚l‚r ‚oƒSƒVƒbƒN", 0, 0, 0x0
+FONT 9, "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯", 0, 0, 0x0
 BEGIN
     EDITTEXT        IDC_CONSOLE,24,21,142,52,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_READONLY | ES_WANTRETURN | WS_VSCROLL
@@ -58,11 +58,11 @@ END
 QUITNOTICEDIALOG DIALOGEX 0, 0, 432, 27
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 EXSTYLE WS_EX_TOPMOST
-CAPTION "TOPPERS/JSP I—¹ˆ—’†"
+CAPTION "TOPPERS/JSP çµ‚äº†å‡¦ç†ä¸­"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_PROGRESS1,"msctls_progress32",0x1,2,12,427,13
-    LTEXT           "ƒXƒ^ƒeƒBƒbƒN",IDC_NOTIFYMSG,2,0,427,11
+    LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯",IDC_NOTIFYMSG,2,0,427,11
 END
 
 
@@ -147,18 +147,18 @@ IDI_ERTLICON            ICON                    "icon1.ico"
 
 IDR_CONSOLEMENU MENU 
 BEGIN
-    POPUP "•\Ž¦(&V)"
+    POPUP "è¡¨ç¤º(&V)"
     BEGIN
-        POPUP "ƒtƒHƒ“ƒgƒTƒCƒY(&F)"
+        POPUP "ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(&F)"
         BEGIN
-            MENUITEM "‘å‚«‚¢(&B)",                  ID_FONT_BIG
-            MENUITEM "•W€(&N)",                    ID_FONT_NORMAL
-            MENUITEM "¬‚³‚¢(&S)",                  ID_FONT_SMALL
+            MENUITEM "å¤§ãã„(&B)",                  ID_FONT_BIG
+            MENUITEM "æ¨™æº–(&N)",                    ID_FONT_NORMAL
+            MENUITEM "å°ã•ã„(&S)",                  ID_FONT_SMALL
         END
     END
 END
 
-#endif    // “ú–{Œê resources
+#endif    // æ—¥æœ¬èªž resources
 /////////////////////////////////////////////////////////////////////////////
 
 

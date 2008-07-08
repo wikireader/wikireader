@@ -9,31 +9,31 @@
  *                              Miyagi Prefectural Government, JAPAN
  *  Copyright (C) 2002-2004 by Hokkaido Industrial Research Institute, JAPAN
  *
- *  �嵭����Ԥϡ�Free Software Foundation �ˤ�äƸ�ɽ����Ƥ���
- *  GNU General Public License �� Version 2 �˵��Ҥ���Ƥ����狼����
- *  ���ξ��Τ����줫�����������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ���
- *  ������Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ�����������Ѳ�ǽ�ʥХ��ʥꥳ���ɡʥ���������֥륪��
- *      �������ȥե������饤�֥��ʤɡˤη������Ѥ�����ˤϡ�����
- *      ��ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ����
- *      �������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ�������������Բ�ǽ�ʥХ��ʥꥳ���ɤη��ޤ��ϵ������
- *      �߹�����������Ѥ�����ˤϡ����Τ����줫�ξ������������ȡ�
- *    (a) ���Ѥ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭������
- *        ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) ���Ѥη��֤��̤�������ˡ�ˤ�äơ��嵭����Ԥ���𤹤�
- *        ���ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����դ��뤳�ȡ�
+ *  上記著作権者は，Free Software Foundation によって公表されている
+ *  GNU General Public License の Version 2 に記述されている条件か，以
+ *  下の条件のいずれかを満たす場合に限り，本ソフトウェア（本ソフトウェ
+ *  アを改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを再利用可能なバイナリコード（リロケータブルオブ
+ *      ジェクトファイルやライブラリなど）の形で利用する場合には，利用
+ *      に伴うドキュメント（利用者マニュアルなど）に，上記の著作権表示，
+ *      この利用条件および下記の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを再利用不可能なバイナリコードの形または機器に組
+ *      み込んだ形で利用する場合には，次のいずれかの条件を満たすこと．
+ *    (a) 利用に伴うドキュメント（利用者マニュアルなど）に，上記の著作
+ *        権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 利用の形態を，別に定める方法によって，上記著作権者に報告する
+ *        こと．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者を免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥϡ�
- *  �ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����ޤ�ơ������ʤ��ݾڤ�Ԥ�
- *  �ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū����������
- *  ���ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者は，
+ *  本ソフトウェアに関して，その適用可能性も含めて，いかなる保証も行わ
+ *  ない．また，本ソフトウェアの利用により直接的または間接的に生じたい
+ *  かなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: sh7615.h,v 1.5 2005/07/06 00:45:07 honda Exp $
  */
@@ -44,18 +44,18 @@
 #include <sil.h>
 
 /*
- *  ����ߤΥ٥����ֹ����
+ *  割込みのベクタ番号定義
  */
-#define GII	 4					/*  ��������̿��:General Illegal Instruction  */
-#define SII	 6					/*  �����å�����̿��:Slot Illegal Instruction */
-#define CAE	 9					/*  CPU���ɥ쥹���顼:CPU Address Error       */
-#define DAE	10					/*  DMA���ɥ쥹���顼:DMA Address Error       */
+#define GII	 4					/*  一般不当命令:General Illegal Instruction  */
+#define SII	 6					/*  スロット不当命令:Slot Illegal Instruction */
+#define CAE	 9					/*  CPUアドレスエラー:CPU Address Error       */
+#define DAE	10					/*  DMAアドレスエラー:DMA Address Error       */
 
 #define NMI	11					/*  NMI         */
-#define USBK	12				/*  �桼�����֥졼��    */
-#define HUDI	13				/*  �桼�����ǥХå����󥿡��ե�����    */
-/* �����٥����ֹ����ꤹ���硢��������̤�������� */
-#define IRQ0	64				/*  ����������׵�      */
+#define USBK	12				/*  ユーザーブレーク    */
+#define HUDI	13				/*  ユーザーデバッグインターフェース    */
+/* 外部ベクタ番号を指定する場合、再定義か別に定義する */
+#define IRQ0	64				/*  外部割込み要求      */
 #define IRQ1	65
 #define IRQ2	66
 #define IRQ3	67
@@ -75,21 +75,21 @@
 #define IRL14	71
 #define IRL15	71
 
-/* �٥����ֹ��ͳ�˻��ꤹ���硢��������̤�������� */
-	/*  DMAC:�����쥯�ȥ��ꥢ����������ȥ�����  */
+/* ベクタ番号を自由に指定する場合、再定義か別に定義する */
+	/*  DMAC:ダイレクトメモリアクセスコントローラ  */
 #define DMAC0	72				/*  DMAC0  */
 #define DMAC1	73				/*  DMAC1  */
 
-#define ITI	74					/*  WDT:�����å��ɥå�������        */
-#define CMI	75					/*  REF:DRAM��ե�å�������        */
-#define EINT	76				/*  EINT:EtherC������         */
+#define ITI	74					/*  WDT:ウォッチドックタイマ        */
+#define CMI	75					/*  REF:DRAMリフレッシュ制御        */
+#define EINT	76				/*  EINT:EtherC割り込み         */
 
-	/*  FRT:�ե꡼���˥󥰥�����  */
+	/*  FRT:フリーランニングタイマ  */
 #define ICI	77					/*  FRT  */
 #define OCI	78
 #define OVI	79
 
-	/*  TPU:�����ޥѥ륹��˥å�  */
+	/*  TPU:タイマパルスユニット  */
 #define TGI0A	80				/*  TPU0  */
 #define TGI0B	81
 #define TGI0C	82
@@ -104,7 +104,7 @@
 #define TCI2V	91
 #define TCI2U	92
 
-	/*  SCIF:���ꥢ�륳�ߥ�˥�������󥤥󥿡��ե�����  */
+	/*  SCIF:シリアルコミュニケーションインターフェース  */
 #define ERI1	93				/*  SCI1  */
 #define RXI1	94
 #define BRI1	95
@@ -114,7 +114,7 @@
 #define BRI2	99
 #define TXI2	100
 
-	/*  SIO:���ꥢ��I/O  */
+	/*  SIO:シリアルI/O  */
 #define EREI0	101				/*  SCI0  */
 #define TERI0	102
 #define RDFI0	103
@@ -133,50 +133,50 @@
 #ifndef _MACRO_ONLY
 
 /*
- *  SH2�������쥸�������
+ *  SH2の内部レジスタ定義
  */
 
-/* �쥸�����Υ��������ϸ�§32bit�� */
+/* レジスタのアクセスは原則32bit幅 */
 /*
- *   �Х����ơ��ȥ���ȥ�����
+ *   バスステートコントローラ
  */
-/* �Х�����ȥ�����쥸���� */
+/* バスコントロールレジスタ */
 #define BCR1    ((VW *)0xffffffe0)
 #define BCR2    ((VW *)0xffffffe4)
 #define BCR3    ((VW *)0xfffffffc)
-/* �������ȥ���ȥ�����쥸���� */
+/* ウェイトコントロールレジスタ */
 #define WCR1    ((VW *)0xffffffe8)
 #define WCR2    ((VW *)0xffffffc0)
 #define WCR3    ((VW *)0xffffffc4)
-/* ���̥��ꥳ��ȥ�����쥸���� */
+/* 個別メモリコントロールレジスタ */
 #define MCR     ((VW *)0xffffffec)
-/* ��ե�å��奿���ޥ���ȥ�����/���ơ������쥸���� */
+/* リフレッシュタイマコントロール/ステータスレジスタ */
 #define RTCSR   ((VW *)0xfffffff0)
-/* ��ե�å��奿���ޥ����� */
+/* リフレッシュタイマカウンタ */
 #define RTCNT   ((VW *)0xfffffff4)
-/* ��ե�å��奿���ॳ�󥹥���ȥ쥸���� */
+/* リフレッシュタイムコンスタントレジスタ */
 #define RTCOR   ((VW *)0xfffffff8)
-/*-----����ȯ����ϩ-----*/
+/*-----内部発振回路-----*/
 #define FMR     ((VB *)0xfffffe90)
 
 /*
- * �ԥ�ե��󥯥���󥳥�ȥ�����
+ * ピンファンクションコントローラ
  */
-#define PACR    ((VH *)0xfffffc80)	/*  �ݡ���A ����ȥ�����쥸����  */
-#define PAIOR   ((VH *)0xfffffc82)	/*  �ݡ���A I/O�쥸����       */
-#define PBCR    ((VH *)0xfffffc88)	/*  �ݡ���B ����ȥ�����쥸����  */
-#define PBIOR   ((VH *)0xfffffc8a)	/*  �ݡ���B I/O�쥸����       */
-#define PBCR2   ((VH *)0xfffffc8e)	/*  �ݡ���B ����ȥ�����쥸����2 */
-#define PADR    ((VH *)0xfffffc84)	/*  �ݡ���A �ǡ����쥸����        */
-#define PBDR    ((VH *)0xfffffc8c)	/*  �ݡ���B �ǡ����쥸����        */
+#define PACR    ((VH *)0xfffffc80)	/*  ポートA コントロールレジスタ  */
+#define PAIOR   ((VH *)0xfffffc82)	/*  ポートA I/Oレジスタ       */
+#define PBCR    ((VH *)0xfffffc88)	/*  ポートB コントロールレジスタ  */
+#define PBIOR   ((VH *)0xfffffc8a)	/*  ポートB I/Oレジスタ       */
+#define PBCR2   ((VH *)0xfffffc8e)	/*  ポートB コントロールレジスタ2 */
+#define PADR    ((VH *)0xfffffc84)	/*  ポートA データレジスタ        */
+#define PBDR    ((VH *)0xfffffc8c)	/*  ポートB データレジスタ        */
 
-/* ������ͥ���٥�٥�����쥸���� */
+/* 割り込み優先度レベル設定レジスタ */
 #define IPRA    ((VH *)0xfffffee2)
 #define IPRB    ((VH *)0xfffffe60)
 #define IPRC    ((VH *)0xfffffee6)
 #define IPRD    ((VH *)0xfffffe40)
 #define IPRE    ((VH *)0xfffffec0)
-/* �٥����ֹ�����쥸���� */
+/* ベクタ番号設定レジスタ */
 #define VCRA    ((VH *)0xfffffe62)
 #define VCRB    ((VH *)0xfffffe64)
 #define VCRC    ((VH *)0xfffffe66)
@@ -201,13 +201,13 @@
 #define VCRWDT  ((VH *)0xfffffee4)
 #define DMA_VCRDMA0     ((VW *)0xffffffa0)
 #define DMA_VCRDMA1     ((VW *)0xffffffa8)
-/* �����ߥ���ȥ�����쥸���� */
+/* 割り込みコントロールレジスタ */
 #define ICR     ((VH *)0xfffffee0)
-/* �����ߥ���ȥ�����/���ơ������쥸���� */
+/* 割り込みコントロール/ステータスレジスタ */
 #define IRQCSR  ((VH *)0xfffffee8)
 
 /*
- * �����ߥ���ȥ�����ν����
+ * 割り込みコントローラの初期化
  */
 Inline void
 sh2_init_intcontorller (void)

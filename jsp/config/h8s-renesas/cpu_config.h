@@ -10,103 +10,103 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 /*
- *      �ץ����å���¸�⥸�塼���H8S�ѡ�
- *���������������ͥ������ǻ��Ѥ������
- *�������������ǡ��������ޥ������ؿ��Υץ��ȥ��������
+ *      プロセッサ依存モジュール（H8S用）
+ *　　　　　カーネル内部で使用する定義
+ *　　　　　　データ型、マクロ、関数のプロトタイプ宣言
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _CPU_CONFIG_H_
 #define _CPU_CONFIG_H_
 
 /*
- *  �����ͥ����������̾�Υ�͡���
+ *  カーネルの内部識別名のリネーム
  */
 #include <cpu_rename.h>
 
 
 /*
- *  �ץ����å���Ϣ�����
+ *  プロセッサ関連の定義
  */
 #include <h8s.h>
 #include <h8s_sil.h>
 
 
 /*
- *  �ץ����å����ü�̿��Υ���饤��ؿ����
- *    �����ǡ�MAX_IPM�����Ѥ��Ƥ���Τǡ��������ɤ߹���
+ *  プロセッサの特殊命令のインライン関数定義
+ *    内部で、MAX_IPMを利用しているので、定義後に読み込む
  */
 #include <cpu_insn.h>
 
 /*
- *  TCB ��Υե�����ɤΥӥå��������
+ *  TCB 中のフィールドのビット幅の定義
  *
- *  cpu_context.h ��������������쥬��Ȥ��������Ȥΰ�¸���δط��ǡ�
- *  cpu_context.h �ˤ�������ʤ���
+ *  cpu_context.h に入れる方がエレガントだが，参照の依存性の関係で，
+ *  cpu_context.h には入れられない．
  */
-#define TBIT_TCB_TSTAT          8       /* tstat �ե�����ɤΥӥå��� */
-#define TBIT_TCB_PRIORITY       8       /* priority �ե�����ɤΥӥå��� */
+#define TBIT_TCB_TSTAT          8       /* tstat フィールドのビット幅 */
+#define TBIT_TCB_PRIORITY       8       /* priority フィールドのビット幅 */
 
 /*
- *  ����������ƥ����ȥ֥��å������
+ *  タスクコンテキストブロックの定義
  */
 #ifndef _MACRO_ONLY
 
 typedef struct task_context_block {
-	VP	sp;		/* �����å��ݥ��� */
-	FP	pc;		/* �ץ�����५���� */
+	VP	sp;		/* スタックポインタ */
+	FP	pc;		/* プログラムカウンタ */
 } CTXB;
 
 #endif /* _MACRO_ONLY */
 
 /*
- *  �����ƥ���ֻ���
+ *  システム状態参照
  */
 #ifndef _MACRO_ONLY
 
 /*
- *  ����ߥͥ��ȥ�����
- *    �ͥ��ȥ����󥿤��ͤǥ���ƥ����Ȥ�Ƚ�Ǥ�Ԥ��Τǡ�����ƥ����Ȼ��Ȼ���
- *    ���Ѥ��롣
+ *  割込みネストカウンタ
+ *    ネストカウンタの値でコンテキストの判断を行うので、コンテキスト参照時に
+ *    利用する。
  */
 
 extern volatile UB	intnest;
 
 /*
- *  ����ƥ����Ȼ���
- *    ����ߥͥ��ȥ����󥿤��ɤ߽Ф���ľ��˳���ߤ�ȯ�����Ƥ⡢��ä��Ȥ��ˤ�
- *    ����ƥ����Ȥ⸵����äƤ���
+ *  コンテキスト参照
+ *    割込みネストカウンタを読み出した直後に割込みが発生しても、戻ったときには
+ *    コンテキストも元に戻っている
  */
 
 Inline BOOL
@@ -119,15 +119,15 @@ sense_context(void)
 }
 
 /*
- *  CPU���å����֤λ���
+ *  CPUロック状態の参照
  */
 
 /*
- *  CPU���å����֤�ɽ���ե饰
- *  ��������߶ػߡʥ����ͥ�������γ���ߤΤߡ�
- *  ����������
- *  ����iscpulocked == TRUE
- *  �������ΤȤ�CPU���å����֤Ȥ��롣
+ *  CPUロック状態を表すフラグ
+ *  　・割込み禁止（カーネル管理下の割込みのみ）
+ *  　　　かつ
+ *  　・iscpulocked == TRUE
+ *  　　　のときCPUロック状態とする。
  */
 extern volatile BOOL     iscpulocked;
 
@@ -141,14 +141,14 @@ extern volatile BOOL     iscpulocked;
 #ifndef _MACRO_ONLY
 
 /*
- *  CPU���å��Ȥ��β���ʥ���������ƥ������ѡ�
+ *  CPUロックとその解除（タスクコンテキスト用）
  *
- *  task_intmask �ϡ�chg_ipm �򥵥ݡ��Ȥ��뤿����ѿ���chg_ipm �򥵥ݡ���
- *  ���ʤ����ˤϡ�t_unlock_cpu ��� task_intmask �� 0 ���֤������Ƥ褤��
+ *  task_intmask は、chg_ipm をサポートするための変数。chg_ipm をサポート
+ *  しない場合には、t_unlock_cpu 中の task_intmask は 0 に置き換えてよい。
  */
 
 #ifdef SUPPORT_CHG_IPM
-extern volatile IPM	task_intmask;	/* ����������ƥ����ȤǤγ���ߥޥ��� */
+extern volatile IPM	task_intmask;	/* タスクコンテキストでの割込みマスク */
 #endif /* SUPPORT_CHG_IPM */
 
 Inline void
@@ -164,8 +164,8 @@ t_unlock_cpu(void)
         iscpulocked = FALSE;
 #ifdef SUPPORT_CHG_IPM
 	/*
-	 *  t_unlock_cpu ���ƤӽФ����Τ� CPU���å����֤ΤߤǤ��뤿�ᡣ
-	 *  ����������� task_intmask ���񤭴���뤳�ȤϤʤ���
+	 *  t_unlock_cpu が呼び出されるのは CPUロック状態のみであるため。
+	 *  処理の途中で task_intmask が書き換わることはない。
 	 */
 	set_intmask(task_intmask);
 #else /* SUPPORT_CHG_IPM */
@@ -174,10 +174,10 @@ t_unlock_cpu(void)
 }
 
 /*
- *  CPU���å��Ȥ��β�����󥿥�������ƥ������ѡ�
+ *  CPUロックとその解除（非タスクコンテキスト用）
  */
 
-extern volatile IPM	int_intmask;	/* �󥿥�������ƥ����ȤǤγ���ߥޥ��� */
+extern volatile IPM	int_intmask;	/* 非タスクコンテキストでの割込みマスク */
 
 Inline void
 i_lock_cpu(void)
@@ -185,9 +185,9 @@ i_lock_cpu(void)
 	IPM	intmask;
 
 	/*
-	 *  ����ѿ� intmask ��ȤäƤ���Τϡ�current_intmask()��Ƥ��ľ���
-	 *  ����ߤ�ȯ��������ư���줿����ߥϥ�ɥ���� int_intmask ���ѹ�
-	 *  ������ǽ�������뤿��Ǥ��롣
+	 *  一時変数 intmask を使っているのは、current_intmask()を呼んだ直後に
+	 *  割込みが発生し、起動された割込みハンドラ内で int_intmask が変更
+	 *  される可能性があるためである。
 	 */
 	intmask = current_intmask();
 	disint();		/* cpu_insn.h */
@@ -203,35 +203,35 @@ i_unlock_cpu(void)
 }
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  */
 
 /*
- *  �ǹ�ͥ���̥������ؤΥǥ����ѥå���cpu_support.src��
- *    dispatch �ϡ�����������ƥ����Ȥ���ƤӽФ��줿�����ӥ������������ǡ�
- *    CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  最高優先順位タスクへのディスパッチ（cpu_support.src）
+ *    dispatch は，タスクコンテキストから呼び出されたサービスコール処理内で、
+ *    CPUロック状態で呼び出さなければならない。
  */
 extern void	dispatch(void);
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå���cpu_support.src��
- *    exit_and_dispatch �ϡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  現在のコンテキストを捨ててディスパッチ（cpu_support.src）
+ *    exit_and_dispatch は，CPUロック状態で呼び出さなければならない。
  */
 extern void	exit_and_dispatch(void);
 
 /*
- *  ����ߥϥ�ɥ������
- *    H8S�Ǥϡ�����ߥ٥����ơ��֥��ROM���ľ�ܤ����֤��뤿�ᡢ
- *��������������ʤ���
- *���ʥ٥����ơ��֥��perl������ץȤ����������
+ *  割込みハンドラの設定
+ *    H8Sでは、割込みベクタテーブルをROM上に直接に配置するため、
+ *　　何も処理しない。
+ *　（ベクタテーブルをperlスクリプトで生成する）
  */
 
 Inline void define_inh(INHNO inhno, FP inthdr) {
 }
 
 /*
- *  CPU�㳰�ϥ�ɥ������
- *    H8S�Ǥϡ�CPU�㳰�ε������ʤ����ᡢ����������ʤ���
+ *  CPU例外ハンドラの設定
+ *    H8Sでは、CPU例外の機構がないため、何も処理しない。
  */
 
 Inline void define_exc(EXCNO excno, FP exchdr) {
@@ -240,44 +240,44 @@ Inline void define_exc(EXCNO excno, FP exchdr) {
 #endif /* _MACRO_ONLY */
 
 /*
- *  ����ߥϥ�ɥ�ν���������
- *����H8C��H8S��¸���Ǥϳ���ߤν����������򥢥���֥饽�������
- *�����������뤿�ᡢ�����C��������������ɬ�פ��ʤ���
- *���������Ǥ϶������ȤΥ��󥿡��ե��������碌�뤿�ᡢ
- *����ɬ�פʥޥ�������Τߤ��Ƥ��롣
+ *  割込みハンドラの出入口処理
+ *　　H8C用H8S依存部では割込みの出入口処理をアセンブラソース内に
+ *　　生成するため、本来はC言語中で定義する必要がない。
+ *　　ここでは共通部とのインターフェースを合わせるため、
+ *　　必要なマクロ定義のみしている。
  */
 
 /*
- *  C����롼����δؿ�̾�������������Υ�٥������
- *����H8C��H8��¸���Ǥ�����������vector.src��Υ������롦����ܥ��
- *�����Ǥ���Τǡ��������Х�˸�������ɬ�פ��ʤ���
- *���������Ǥ϶������ȤΥ��󥿡��ե��������碌�뤿�ᡢ
- *�������ߡ��Υ�٥��Ϳ���Ƥ��롣
+ *  C言語ルーチンの関数名から入口処理のラベルを生成
+ *　　H8C用H8依存部では入口処理がvector.src内のローカル・シンボルに
+ *　　できるので、グローバルに公開する必要がない。
+ *　　ここでは共通部とのインターフェースを合わせるため、
+ *　　ダミーのラベルを与えている。
  */
 #define INT_ENTRY(inthdr) _kernel_common_interrupt_process
 #define EXC_ENTRY(exchdr) _kernel_common_interrupt_process
 
 /*
- *  ����ߥϥ�ɥ�ν����������������ޥ���
- *������C�����ǤϤ��ޤ������Ǥ��ʤ����ᡢ������֥饽�������
- *�����������Ѱդ��롣
+ *  割込みハンドラの出入口処理の生成マクロ
+ *　　　C言語上ではうまく生成できないため、アセンブラソース内で
+ *　　　別途用意する。
  */
 #define INTHDR_ENTRY(inthdr) extern void INT_ENTRY(inthdr)(void)
 
 /*
- *  CPU�㳰�ϥ�ɥ�ν����������������ޥ���
+ *  CPU例外ハンドラの出入口処理の生成マクロ
  */
 #define EXCHDR_ENTRY(exchdr) extern void EXC_ENTRY(exchdr)(void)
 
 /*
- *  CPU�㳰��ȯ���������Υ����ƥ���֤λ���
+ *  CPU例外の発生した時のシステム状態の参照
  */
 #ifndef _MACRO_ONLY
 
 /*
- *  CPU�㳰��ȯ���������Υ���ƥ�����Ƚ��
- *    H8S�ǤǤϡ��ƤФ�뤳�Ȥ�̵���������󥿡��ե������򤽤����뤿�ᡢ
- *�����������Ƥ��롣
+ *  CPU例外の発生した時のコンテキスト判定
+ *    H8S版では、呼ばれることは無いが、インターフェースをそろえるため、
+ *　　実装している。
  */
 Inline BOOL
 exc_sense_context(VP p_excinf)
@@ -286,9 +286,9 @@ exc_sense_context(VP p_excinf)
 }
 
 /*
- *  CPU�㳰��ȯ����������CPU���å����֤λ���
- *    H8S�ǤǤϡ��ƤФ�뤳�Ȥ�̵���������󥿡��ե������򤽤����뤿�ᡢ
- *�����������Ƥ��롣
+ *  CPU例外の発生した時のCPUロック状態の参照
+ *    H8S版では、呼ばれることは無いが、インターフェースをそろえるため、
+ *　　実装している。
  */
 Inline BOOL
 exc_sense_lock(VP p_excinf)
@@ -297,25 +297,25 @@ exc_sense_lock(VP p_excinf)
 }
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 extern void	cpu_initialize(void);
 
 /*
- *  �ץ����å���¸�ν�λ������
+ *  プロセッサ依存の終了時処理
  */
 extern void	cpu_terminate(void);
 
 #endif /* _MACRO_ONLY_ */
 
 /*============================================================================*/
-/*  ���̥ɥ�����ȤˤϤʤ����ȼ�����ʬ  */
+/*  共通ドキュメントにはない、独自の部分  */
 
 /*
- *  ����ߥ�٥������ѥޥ����ʤ⤷���ϡ�����饤��ؿ���
- *  ��ipr : ���󥿥�ץȥץ饤����ƥ��쥸����( IPRA - IPRK ) ����16�ӥå�
- *  ��mask : IPR�����ѥޥ����ʾ�̤����̤������( IPR_UPR, IPR_LOW )
- *  ��level : ����ߥ�٥�( 0 - 7 )
+ *  割込みレベル設定用マクロ（もしくは、インライン関数）
+ *  ・ipr : インタラプトプライオリティレジスタ( IPRA - IPRK ) 下位16ビット
+ *  ・mask : IPR設定用マスク（上位か下位の選択）( IPR_UPR, IPR_LOW )
+ *  ・level : 割込みレベル( 0 - 7 )
  */
 #ifndef _MACRO_ONLY
 
@@ -332,29 +332,29 @@ Inline void icu_set_ilv( UH ipr, BOOL mask, INT level ) {
 }
 
 /*
- *  ̤��������ȯ�����Υ��顼���� (cpu_config.c, cpu_support.src)
+ *  未定義割込み発生時のエラー出力 (cpu_config.c, cpu_support.src)
  */
 
 /*
- * �����å�����Ƭ����ƥ쥸�����ΤޤǤΥ��ե��å�
+ * スタックの先頭から各レジスタのまでのオフセット
  * 
- * ��������
- * ���������ɥХ󥹥ɥ⡼��
- * ���������������⡼�ɣ�
+ * 　前提条件
+ * 　　・アドバンスドモード
+ * 　　・割込み制御モード２
  * 
- * �������å���¤
- *���� +0:er0
- *���� +4:er1
- *���� +8:er2
- *����+12:er3
- *����+16:er4
- *����+20:er5
- *����+24:er6
- *����+28:exr
- *����+29:�ꥶ����
- *����+30:crr
- *����+31:pc
- *����+34��:��������˻��Ѥ���Ƥ��������å��ΰ�
+ * 　スタック構造
+ *　　 +0:er0
+ *　　 +4:er1
+ *　　 +8:er2
+ *　　+12:er3
+ *　　+16:er4
+ *　　+20:er5
+ *　　+24:er6
+ *　　+28:exr
+ *　　+29:リザーブ
+ *　　+30:crr
+ *　　+31:pc
+ *　　+34〜:割込み前に使用されていたスタック領域
  */
 
 #ifndef __2000A__
@@ -362,13 +362,13 @@ Inline void icu_set_ilv( UH ipr, BOOL mask, INT level ) {
 #endif
 
 /*
- * �����ȯ��ľ���Υ����å��ݥ��󥿤ޤǤΥ��ե��å�
- * ����̤��������ȯ������
+ * 割込み発生直前のスタックポインタまでのオフセット
+ * 　（未定義割込み発生時）
  */
 #define OFFSET_SP	34
 
 /*
- *  ̤��������ȯ�����Υ��顼���ϻ��Υ����å���¤�����
+ *  未定義割込み発生時のエラー出力時のスタック構造の定義
  */
 typedef struct exc_stack {
 	UW	er0;
@@ -380,7 +380,7 @@ typedef struct exc_stack {
 	UW	er6;
 	UB	exr;
 	UB	dummy;
-	UW	pc;	/*  �ץ�����ࡦ������  	*/
+	UW	pc;	/*  プログラム・カウンタ  	*/
 } EXCSTACK;
 
 

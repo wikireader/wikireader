@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: component.h,v 1.8 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -55,26 +55,26 @@
 class Component : public RuntimeObject
 {
 public:
-        //����ݡ��ͥ�Ȥε�ưͥ����
+        //コンポーネントの起動優先度
     enum tagProcessStage {
-        INITIALIZE,                 //�Ȥˤ����������ư����������
+        INITIALIZE,                 //とにかく真っ先に動きたい処理
 
-        BEFORE_PARSE,               //�ѡ�����
-        PARSER,                     //�ѡ���
-        AFTER_PARSE,                //�ѡ�����
+        BEFORE_PARSE,               //パース前
+        PARSER,                     //パーサ
+        AFTER_PARSE,                //パース後
 
-        PREDECESSOR,                //���Ѥ���
-        GENERAL_PURPOSE,            //����
-        SUCCESSOR,                  //���Ѥθ�
+        PREDECESSOR,                //汎用の前
+        GENERAL_PURPOSE,            //汎用
+        SUCCESSOR,                  //汎用の後
 
-        BEFORE_CODEGENERATION,      //������������
-        CODEGENERATOR,              //����������
-        AFTER_CODEGENERATION,       //������������
+        BEFORE_CODEGENERATION,      //コード生成前
+        CODEGENERATOR,              //コード生成
+        AFTER_CODEGENERATION,       //コード生成後
 
         FINALIZE
     };
 
-        //����ݡ��ͥ�Ȥ˶��̤Υǡ��������/���륯�饹
+        //コンポーネントに共通のデータを持つ/操作するクラス
     class ComponentInfo
     {
     protected:
@@ -82,32 +82,32 @@ public:
         std::multimap<int, Component *> componentList;
         std::list<Component *>          activatedComponentList;
 
-            //���󥹥ȥ饯�� (�ƥ�����)
+            //コンストラクタ (テスト用)
         ComponentInfo(void) throw() {}
     public:
-            //���󥹥ȥ饯��
+            //コンストラクタ
         SINGLETON_CONSTRUCTOR(ComponentInfo) {}
 
-            //����ݡ��ͥ�Ȥ��ɲ�
+            //コンポーネントの追加
         bool addComponent(Component * component, int order) throw();
 
-            //����ݡ��ͥ�Ȥ���Ͽ���
-        void removeComponent(Component * component, int order) throw();     //�����ͥ���٤�������
-        void removeComponent(Component * component) throw();                //���Ʋ��
+            //コンポーネントの登録解除
+        void removeComponent(Component * component, int order) throw();     //特定の優先度だけを解除
+        void removeComponent(Component * component) throw();                //全て解除
 
-            //����ݡ��ͥ�Ȥε�ư�׵�
+            //コンポーネントの起動要求
         bool activateComponent(Component * component) throw();
 
-            //���ץ����Υѡ���
+            //オプションのパース
         void parseOption(OptionParameter & option);
 
-            //����ݡ��ͥ�Ȥε�ư
+            //コンポーネントの起動
         void activateComponent(void);
 
-            //�۾�����ϥ�ɥ�ε�ư
+            //異常処理ハンドラの起動
         void onFatalExit(void);
 
-            //����ݡ��ͥ��T����ư���Ƥ��뤫��Ƚ��
+            //コンポーネントTが起動しているかを判定
         template<class T>
         bool isActive(void) const throw()
         {
@@ -122,7 +122,7 @@ public:
             return false;
         }
 
-            //�Хʡ��ѿ��ؤΥ�������
+            //バナー変数へのアクセサ
         inline void setBanner(std::string src)
         {   banner = src;    }
         inline std::string getBanner(void) const
@@ -134,21 +134,21 @@ public:
 
 
 protected:
-    static bool is_valid;       //����ݡ��ͥ�Ȥν�����������������ɤ�������ĥե饰
+    static bool is_valid;       //コンポーネントの初期化に成功したかどうかを持つフラグ
 
     /*
-     *   ��ȴؿ�
+     *   作業関数
      */
 
-        //����ݡ��ͥ�Ȥε�ư
+        //コンポーネントの起動
     inline bool activateComponent(void) throw()
     {   return Singleton<ComponentInfo>::getInstance()->activateComponent(this);   }
 
-        //����Ū�ʥ��ץ����ν���
+        //一般的なオプションの処理
     static void _parseCommonOption(OptionParameter & option) throw();
 
 
-        //��ʬ����Ԥ��륳��ݡ��ͥ�Ȥε�ưȽ��
+        //自分に先行するコンポーネントの起動判定
     template<class T>
     static bool isActive(void) throw()
     {   
@@ -161,7 +161,7 @@ protected:
 
 
         /*
-         *   ���Ȥθߴ����Τ���Υѥ�᡼�����API
+         *   過去との互換性のためのパラメータ操作API
          */
 
     static bool findOption (const char * key1, const char * key2 = 0, std::string * = 0) throw();
@@ -170,39 +170,39 @@ protected:
     static OptionParameter::OptionItem mergeOption(const char * key1, const char * key2 = 0) throw();
 
 public:
-        //���󥹥ȥ饯��
+        //コンストラクタ
     Component(int order = GENERAL_PURPOSE) throw();
 
-        //�ǥ��ȥ饯��
+        //デストラクタ
     virtual ~Component(void) throw();
 
-        //ͭ��Ƚ��
+        //有効判定
     static bool isValid(void) throw()
     {   return is_valid && SingletonBase::isValid();   }
 
-        //����ݡ��ͥ�Ȥμ¹�
+        //コンポーネントの実行
     static void executeComponents(OptionParameter & option);
     static void executeComponents(int argc, char * argv []);
 
-        //�Хʡ���������
+        //バナーアクセサ
     static void        setBanner(std::string) throw(std::bad_alloc);
     static std::string getBanner(void)        throw(std::bad_alloc);
 
     /*
-     *   ���٥�ȥϥ�ɥ�
+     *   イベントハンドラ
      */
 
-        //���ץ����Υѡ���
+        //オプションのパース
     virtual void parseOption(OptionParameter &)
     { parseOption(*Singleton<Directory>::getInstance()); }
     
     virtual void parseOption(Directory &) {}
 
-        //����ݡ��ͥ�Ȥ�����
+        //コンポーネントの本体
     virtual void body(void)        { body(*Singleton<Directory>::getInstance()); }
     virtual void body(Directory &) {}
 
-        //�۾ｪλ�ϥ�ɥ�
+        //異常終了ハンドラ
     virtual void onFatalExit(void) {}
 
 

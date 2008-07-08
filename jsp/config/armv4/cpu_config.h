@@ -6,88 +6,88 @@
  *  Copyright (C) 2000-2004 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.h,v 1.19 2004/09/17 13:45:55 honda Exp $
  */
 
 /*
- *  �ץ����å���¸�⥸�塼���ARM4vT�ѡ�
+ *  プロセッサ依存モジュール（ARM4vT用）
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _CPU_CONFIG_H_
 #define _CPU_CONFIG_H_
 
 /*
- *  �����ͥ���������̾�Υ�͡���
+ *  カーネル内部識別名のリネーム
  */
 #include "cpu_rename.h"
 
 /*
- *  �ץ����å����ü�̿��Υ���饤��ؿ����
+ *  プロセッサの特殊命令のインライン関数定義
  */
 #ifndef _MACRO_ONLY
 #include <cpu_insn.h>
 #endif /* _MACRO_ONLY */
 
 /*
- *  TCB ��Ϣ�����
+ *  TCB 関連の定義
  *
- *  cpu_context.h ��������������쥬��Ȥ��������Ȥΰ�¸���δط��ǡ�
- *  cpu_context.h �ˤ�������ʤ���
+ *  cpu_context.h に入れる方がエレガントだが，参照の依存性の関係で，
+ *  cpu_context.h には入れられない．
  */
 
 /*
- *  TCB ��Υե�����ɤΥӥå��������
+ *  TCB 中のフィールドのビット幅の定義
  */
-#define    TBIT_TCB_TSTAT       8    /* tstat �ե�����ɤΥӥå��� */
-#define    TBIT_TCB_PRIORITY    8    /* priority �ե�����ɤΥӥå��� */
+#define    TBIT_TCB_TSTAT       8    /* tstat フィールドのビット幅 */
+#define    TBIT_TCB_PRIORITY    8    /* priority フィールドのビット幅 */
 
 #ifndef _MACRO_ONLY
 /*
- *  ����������ƥ����ȥ֥��å������
+ *  タスクコンテキストブロックの定義
  */
 typedef struct task_context_block {
-    VP    sp;        /* �����å��ݥ��� */
-    FP    pc;        /* �ץ�����५���� */
+    VP    sp;        /* スタックポインタ */
+    FP    pc;        /* プログラムカウンタ */
 } CTXB;
 
 /*
- * �����ߤΥͥ��Ȳ���Υ������
+ * 割り込みのネスト回数のカウント
  */
 extern UW interrupt_count;
 
 
 /*
- *  �����ƥ���ֻ���
+ *  システム状態参照
  */
 Inline UB
 current_mode()
@@ -112,7 +112,7 @@ sense_lock()
 
 
 /*
- *  CPU���å��Ȥ��β��
+ *  CPUロックとその解除
  *
  */
 
@@ -136,40 +136,40 @@ unlock_cpu()
 
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  */
 
 /*
- *  �ǹ�ͥ���̥������ؤΥǥ����ѥå���cpu_support.S��
+ *  最高優先順位タスクへのディスパッチ（cpu_support.S）
  *
- *  dispatch �ϡ�����������ƥ����Ȥ���ƤӽФ��줿�����ӥ����������
- *  ��ǡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  dispatch は，タスクコンテキストから呼び出されたサービスコール処理
+ *  内で，CPUロック状態で呼び出さなければならない．
  */
 extern void    dispatch(void);
 
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå���cpu_support.S��
+ *  現在のコンテキストを捨ててディスパッチ（cpu_support.S）
  *
- *  exit_and_dispatch �ϡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  exit_and_dispatch は，CPUロック状態で呼び出さなければならない．
  */
 extern void    exit_and_dispatch(void);
 
 
 /*
- * �㳰�٥����˽񤭹��ޤ줿������̿�᤬���Ȥ��륢�ɥ쥹
+ * 例外ベクタに書き込まれたジャンプ命令が参照するアドレス
  */
 extern UW * arm_vector_add[8];
 
 
 /*
- * �㳰�˱������ϥ�ɥ�ε�ư����
+ * 例外に応じたハンドラの起動番地
  */
 extern UW arm_handler_add[8];
 
 
 /*
- *  CPU�㳰�ϥ�ɥ������
+ *  CPU例外ハンドラの設定
  */
 extern void define_exc(EXCNO excno, FP exchdr);
 
@@ -182,53 +182,53 @@ arm_install_handler(EXCNO excno, FP exchdr)
 
 
 /*
- *  CPU�㳰�ϥ�ɥ�ν���������
+ *  CPU例外ハンドラの出入口処理
  */
 
 
 /*
- *  CPU�㳰�ϥ�ɥ�ν����������������ޥ���
+ *  CPU例外ハンドラの出入口処理の生成マクロ
  *
  */
 #define __EXCHDR_ENTRY(exchdr, stacktop)    \
 extern void exchdr##_entry(VP sp);          \
 asm(".text                             \n"  \
 #exchdr "_entry:                       \n"  \
-"       ldr   sp,.int_stack_"#exchdr"  \n"  /* �����å����ڤ��ؤ�        */\
-"       sub   lr,lr,#4                 \n"  /* undef�Ǥ⤳��Ǥ�����?    */\
-"       stmfd sp!, {r0 - r2,lr}        \n"  /* ���Ū��int_stack������   */ \
-"       mrs   r1, spsr                 \n"  /* SVC�⡼�ɤ��ڤ��ؤ��뤿�� */ \
-"       mov   r0, sp                   \n"  /* ��¸����                  */ \
-"       mov   r2,#0xd3                 \n"  /* CPSR�ν񤭴���(SVC�⡼�ɤ�)*/ \
+"       ldr   sp,.int_stack_"#exchdr"  \n"  /* スタックの切り替え        */\
+"       sub   lr,lr,#4                 \n"  /* undefでもこれでいいか?    */\
+"       stmfd sp!, {r0 - r2,lr}        \n"  /* 一時的にint_stackに待避   */ \
+"       mrs   r1, spsr                 \n"  /* SVCモードに切り替えるため */ \
+"       mov   r0, sp                   \n"  /* 保存する                  */ \
+"       mov   r2,#0xd3                 \n"  /* CPSRの書き換え(SVCモードへ)*/ \
 "       msr   cpsr,r2                  \n" \
 "       ldr   r2,[r0,#0x0C]            \n"     /* load  PC            */\
 "       stmfd sp!,{r2}                 \n"     /* Store PC            */\
 "       stmfd sp!,{r3,ip,lr}           \n"     /* Store r3,ip,lr      */\
 "       ldmfd r0!,{r2,ip,lr}           \n"     /* load  r0,r1,r2      */\
 "       stmfd sp!,{r1,r2,ip,lr}        \n"     /* SPSR,Store r0,r1,r2 */\
-"       ldr   r2, .interrupt_count_"#exchdr"\n" /* ¿�ų����ߤ�Ƚ��  */\
+"       ldr   r2, .interrupt_count_"#exchdr"\n" /* 多重割り込みか判定  */\
 "       ldr   r3, [r2]                 \n" \
 "       add   r0,r3,#1                 \n" \
 "       str   r0, [r2]                 \n" \
-"       mov   r0,sp                    \n" /* �㳰�ϥ�ɥ�ؤΰ��� */\
+"       mov   r0,sp                    \n" /* 例外ハンドラへの引数 */\
 "       cmp   r3, #0x00                \n" \
-"       ldreq   sp,stack_"#exchdr"     \n" /* �����å����ѹ�       */\
-"       stmeqfd sp!,{r0}               \n" /* �����������å�����¸ */\
-"       and   r2, r1, #0xc0            \n" /* �㳰ȯ������CPU���å�����(IRQ) */\
-"       orr   r2, r2, #0x13            \n" /* ��FIQ��Ѿ�. SVC�⡼�� */\
+"       ldreq   sp,stack_"#exchdr"     \n" /* スタックの変更       */\
+"       stmeqfd sp!,{r0}               \n" /* タスクスタックの保存 */\
+"       and   r2, r1, #0xc0            \n" /* 例外発生時のCPUロック状態(IRQ) */\
+"       orr   r2, r2, #0x13            \n" /* とFIQを継承. SVCモード */\
 "       msr   cpsr,r2                  \n" \
-"       bl    "#exchdr"                \n" /* �ϥ�ɥ�ƤӽФ�     */\
-"       mrs   r2, cpsr                 \n" /* FIQ��Ѿ�            */\
+"       bl    "#exchdr"                \n" /* ハンドラ呼び出し     */\
+"       mrs   r2, cpsr                 \n" /* FIQを継承            */\
 "       and   r2, r2, #0x40            \n" /*                      */\
-"       orr   r2, r2, #0x93            \n" /* �����߶ػ�         */\
+"       orr   r2, r2, #0x93            \n" /* 割り込み禁止         */\
 "       msr   cpsr,r2                  \n" \
-"       ldr   r2,.interrupt_count_"#exchdr" \n"/* �����߲����   */\
-"       ldr   r1, [r2]                 \n"     /* �ǥ������     */\
+"       ldr   r2,.interrupt_count_"#exchdr" \n"/* 割り込み回数を   */\
+"       ldr   r1, [r2]                 \n"     /* デクリメント     */\
 "       sub   r3,r1,#1                 \n"\
 "       str   r3, [r2]                 \n"\
-"       cmp   r3,#0x00                 \n" /* �����ߥͥ��ȿ�?    */\
+"       cmp   r3,#0x00                 \n" /* 割り込みネスト数?    */\
 "       bne   return_to_task_"#exchdr" \n" \
-"       ldmfd sp!,{r0}                 \n" /* �����������å������� */\
+"       ldmfd sp!,{r0}                 \n" /* タスクスタックの復帰 */\
 "       mov   sp, r0                   \n"\
 "       ldr   r1, reqflg_"#exchdr"     \n" /* Check reqflg         */\
 "       ldr   r0,[r1]                  \n"\
@@ -236,14 +236,14 @@ asm(".text                             \n"  \
 "       beq   return_to_task_"#exchdr" \n"\
 "       mov   r0,#0                    \n"\
 "       str   r0,[r1]                  \n" /* Clear reqflg   */\
-"       b     _kernel_ret_exc          \n" /* ret_int��      */\
+"       b     _kernel_ret_exc          \n" /* ret_intへ      */\
 "return_to_task_"#exchdr":             \n" \
-"       ldmfd sp!,{r1}                 \n" /* CPSR���������� r1 <- cpsr*/\
-"       mrs   r2, cpsr                 \n" /* FIQ��Ѿ�            */\
+"       ldmfd sp!,{r1}                 \n" /* CPSRの復帰処理 r1 <- cpsr*/\
+"       mrs   r2, cpsr                 \n" /* FIQを継承            */\
 "       and   r2, r2, #0x40            \n" /*                      */\
 "       and   r1, r1, #~0x40           \n" /*                      */\
 "       orr   r1, r1, r2               \n" /*                      */\
-"       msr   spsr, r1                 \n" /* �����ߵ���   */\
+"       msr   spsr, r1                 \n" /* 割り込み許可   */\
 "       ldmfd sp!,{r0-r3,ip,lr,pc}^    \n"\
 "       .align 4                       \n"\
 ".int_stack_"#exchdr":                 \n"\
@@ -264,11 +264,11 @@ asm(".text                             \n"  \
 
 
 /*
- *  CPU�㳰��ȯ���������Υ����ƥ���֤λ���
+ *  CPU例外の発生した時のシステム状態の参照
  */
 
 /*
- *  CPU�㳰��ȯ���������Υǥ����ѥå�
+ *  CPU例外の発生した時のディスパッチ
  */
 Inline BOOL
 exc_sense_context(VP p_excinf)
@@ -278,7 +278,7 @@ exc_sense_context(VP p_excinf)
 
 
 /*
- *  CPU�㳰��ȯ����������CPU���å����֤λ���
+ *  CPU例外の発生した時のCPUロック状態の参照
  */
 Inline BOOL
 exc_sense_lock(VP p_excinf)
@@ -288,7 +288,7 @@ exc_sense_lock(VP p_excinf)
 
 
 /*
- * ̤������㳰�����ä����
+ * 未定義の例外が入った場合
  */
 extern void undef_exception();
 extern void swi_exception();
@@ -299,19 +299,19 @@ extern void fiq_abort_exception();
 
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 extern void    cpu_initialize(void);
 
 
 /*
- *  �ץ����å���¸�ν�λ������
+ *  プロセッサ依存の終了時処理
  */
 extern void    cpu_terminate(void);
 
 
 /*
- * CPU/����ߥϥ�ɥ�ν�����������ǰ��Ū�˻��Ѥ��륹���å�
+ * CPU/割込みハンドラの出入り口処理で一時的に使用するスタック
  */
 #define INT_STACK_SIZE 6
 extern UW int_stack[INT_STACK_SIZE];

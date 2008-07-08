@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: fc_windows.cpp,v 1.12 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -63,7 +63,7 @@ namespace {
         FileContainerWindowsImpl(void) throw();
         virtual ~FileContainerWindowsImpl(void) throw();
 
-            /* ¥¤¥ó¥¿¥Õ¥§¡¼¥¹Éô */
+            /* ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹éƒ¨ */
         virtual void        attachModule(const string & filename) throw(Exception);
         virtual void        loadContents(void * dest, address_t address, size_t size) throw(Exception);
         virtual address_t   getSymbolAddress(const string & symbol) throw(Exception);
@@ -74,12 +74,12 @@ namespace {
 
     FileContainerWindowsImpl instance_of_FileContaienrWindowsImpl;
 
-        /* ¥³¥ó¥¹¥È¥é¥¯¥¿ */
+        /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     FileContainerWindowsImpl::FileContainerWindowsImpl(void) throw()
         : process(NULL), image(), base(0)
     {}
 
-        /* ¥Ç¥¹¥È¥é¥¯¥¿ */
+        /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     FileContainerWindowsImpl::~FileContainerWindowsImpl(void) throw()
     {
         if(isLoaded()) {
@@ -90,23 +90,23 @@ namespace {
         }
     }
 
-        /* ÂĞ¾İ¥â¥¸¥å¡¼¥ë¤Î³äÉÕ */
+        /* å¯¾è±¡ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®å‰²ä»˜ */
     void FileContainerWindowsImpl::attachModule(const std::string & _filename) throw(Exception)
     {
         string filename(_filename);
 
         process = ::GetCurrentProcess();
         if(::SymInitialize( process , NULL, FALSE) == FALSE)
-            ExceptionMessage("[Internal Error] ImageHelper API initialization failure","[ÆâÉô¥¨¥é¡¼] ½é´ü²½¤Ë¼ºÇÔ¤·¤Ş¤·¤¿ (ImageHlp)").throwException();
+            ExceptionMessage("[Internal Error] ImageHelper API initialization failure","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ (ImageHlp)").throwException();
 
         base = ::SymLoadModule(process, NULL, (PSTR)filename.c_str(), NULL, 0, 0);
 
         image.SizeOfImage = sizeof(LOADED_IMAGE);
         if(::MapAndLoad((PSTR)filename.c_str(), NULL, &image, FALSE, TRUE) == FALSE)
-            ExceptionMessage("[Internel error] Module loading failure [%]","[ÆâÉô¥¨¥é¡¼] ¥â¥¸¥å¡¼¥ë¤ÎÆÉ¤ß¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿ [%]") << filename << throwException;
+            ExceptionMessage("[Internel error] Module loading failure [%]","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ [%]") << filename << throwException;
     }
 
-        /* ÆâÍÆ¤Î¼èÆÀ */
+        /* å†…å®¹ã®å–å¾— */
     void FileContainerWindowsImpl::loadContents(void * dest, address_t address, size_t size) throw(Exception)
     {
         PIMAGE_SECTION_HEADER header;
@@ -123,10 +123,10 @@ namespace {
         }
 
         if(i == image.NumberOfSections)
-            ExceptionMessage("[Internel error] Memory read with unmapped address","[ÆâÉô¥¨¥é¡¼] ¥Ş¥Ã¥×¤µ¤ì¤Æ¤Ê¤¤¥¢¥É¥ì¥¹¤ò»È¤Ã¤Æ¥á¥â¥ê¥ê¡¼¥É¤¬¹Ô¤ï¤ì¤Ş¤·¤¿").throwException();
+            ExceptionMessage("[Internel error] Memory read with unmapped address","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] ãƒãƒƒãƒ—ã•ã‚Œã¦ãªã„ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ä½¿ã£ã¦ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ãƒ‰ãŒè¡Œã‚ã‚Œã¾ã—ãŸ").throwException();
     }
 
-        /* ¥·¥ó¥Ü¥ë¥¢¥É¥ì¥¹¤Î²ò·è */
+        /* ã‚·ãƒ³ãƒœãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã®è§£æ±º */
     FileContainer::address_t FileContainerWindowsImpl::getSymbolAddress(const string & _symbol) throw(Exception)
     {
         FileContainer::address_t result = 0;
@@ -134,7 +134,7 @@ namespace {
         IMAGEHLP_SYMBOL sym;
 
         if(process == NULL || base == 0)
-            ExceptionMessage("Not initialized","½é´ü²½¤µ¤ì¤Æ¤Ş¤»¤ó").throwException();
+            ExceptionMessage("Not initialized","åˆæœŸåŒ–ã•ã‚Œã¦ã¾ã›ã‚“").throwException();
 
         sym.SizeOfStruct = sizeof(sym);
         sym.MaxNameLength = 0;
@@ -143,7 +143,7 @@ namespace {
             result = static_cast<FileContainer::address_t>(sym.Address);
      
         if(result == 0)
-            ExceptionMessage("Unknown symbol [%]","ÉÔÀµ¤Ê¥·¥ó¥Ü¥ëÌ¾ [%]") << symbol << throwException;
+            ExceptionMessage("Unknown symbol [%]","ä¸æ­£ãªã‚·ãƒ³ãƒœãƒ«å [%]") << symbol << throwException;
 
         return static_cast<FileContainer::address_t>(sym.Address);
     }
@@ -158,7 +158,7 @@ namespace {
 #ifdef TESTSUITE
 #include "base/coverage_undefs.h"
 
-#pragma warning(disable:4311) //'reinterpret_cast' : ¥İ¥¤¥ó¥¿¤ò 'const int *__w64 ' ¤«¤é 'FileContainer::address_t' ¤ØÀÚ¤êµÍ¤á¤Ş¤¹¡£
+#pragma warning(disable:4311) //'reinterpret_cast' : ãƒã‚¤ãƒ³ã‚¿ã‚’ 'const int *__w64 ' ã‹ã‚‰ 'FileContainer::address_t' ã¸åˆ‡ã‚Šè©°ã‚ã¾ã™ã€‚
 
 extern "C" const int FileContainerWindowsImplTestVariable = 0x01234567;
 extern "C" const int _FileContainerWindowsImplTestVariableWithUnderbar = 0x89abcdef;
@@ -172,61 +172,61 @@ TESTSUITE(main, FileContainerWindowsImpl)
     chain.renewInstance();
 
     BEGIN_CASE("attachModule","attachModule") {
-        BEGIN_CASE("1","¼Â¹Ô¤·¤Æ¤¤¤ë¥×¥í¥°¥é¥à¤¬³«¤±¤ë¤«") {
+        BEGIN_CASE("1","å®Ÿè¡Œã—ã¦ã„ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒé–‹ã‘ã‚‹ã‹") {
             FileContainerWindowsImpl fcwi;
             bool result = true;
             try { fcwi.attachModule(TestSuite::getProgName()); } catch(...) { result = false; }
             
-            TEST_CASE("1", "Îã³°¤Ïµ¯¤­¤Ê¤¤", result);
+            TEST_CASE("1", "ä¾‹å¤–ã¯èµ·ããªã„", result);
         } END_CASE;
 
-        BEGIN_CASE("2","Â¸ºß¤·¤Ê¤¤¥Õ¥¡¥¤¥ëÌ¾¤ÇÎã³°") {
+        BEGIN_CASE("2","å­˜åœ¨ã—ãªã„ãƒ•ã‚¡ã‚¤ãƒ«åã§ä¾‹å¤–") {
             FileContainerWindowsImpl fcwi;
             bool result = false;
             try { fcwi.attachModule("..."); } catch(...) { result = true; }
             
-            TEST_CASE("1", "Îã³°¤¬µ¯¤­¤ë", result);
+            TEST_CASE("1", "ä¾‹å¤–ãŒèµ·ãã‚‹", result);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("getSymbolAddress","getSymbolAddress") {
         FileContainerWindowsImpl fcwi;
 
-        BEGIN_CASE("1","½é´ü²½¤·¤Æ¤¤¤Ê¤¤¾õÂÖ¤Ç¸¡º÷¤¹¤ë") {
+        BEGIN_CASE("1","åˆæœŸåŒ–ã—ã¦ã„ãªã„çŠ¶æ…‹ã§æ¤œç´¢ã™ã‚‹") {
             bool result = false;
             try { fcwi.getSymbolAddress("FileContainerWindowsImplTestVariable"); } catch(...) { result = true; }
-            TEST_CASE("1","Îã³°¤¬¤ª¤­¤ë", result);
+            TEST_CASE("1","ä¾‹å¤–ãŒãŠãã‚‹", result);
         } END_CASE;
 
         fcwi.attachModule(TestSuite::getProgName());
 
-        BEGIN_CASE("2","Â¸ºß¤¹¤ë¥·¥ó¥Ü¥ë¤ò¸¡º÷¤¹¤ë") {
+        BEGIN_CASE("2","å­˜åœ¨ã™ã‚‹ã‚·ãƒ³ãƒœãƒ«ã‚’æ¤œç´¢ã™ã‚‹") {
             FileContainer::address_t addr = 0;
             bool result = true;
 
             try { addr = fcwi.getSymbolAddress("FileContainerWindowsImplTestVariable"); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤­¤Ê¤¤", result);
-            TEST_CASE("2","¥¢¥É¥ì¥¹¤¬Àµ¤·¤¤", addr == reinterpret_cast<FileContainer::address_t>(&FileContainerWindowsImplTestVariable));
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ããªã„", result);
+            TEST_CASE("2","ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒæ­£ã—ã„", addr == reinterpret_cast<FileContainer::address_t>(&FileContainerWindowsImplTestVariable));
         } END_CASE;
 
-        BEGIN_CASE("3","Í¾·×¤Ê_¤ò¾¡¼ê¤ËÉÕ²Ã¤·¤Ê¤¤") {
+        BEGIN_CASE("3","ä½™è¨ˆãª_ã‚’å‹æ‰‹ã«ä»˜åŠ ã—ãªã„") {
             FileContainer::address_t addr = 0;
             bool result = false;
 
             try { addr = fcwi.getSymbolAddress("FileContainerWindowsImplTestVariableWithUnderbar"); } catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤­¤ë", result);
-            TEST_CASE("2","¥¢¥É¥ì¥¹¤Ï0¤Î¤Ş¤Ş", addr == 0);
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ãã‚‹", result);
+            TEST_CASE("2","ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯0ã®ã¾ã¾", addr == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","Â¸ºß¤·¤Ê¤¤¥·¥ó¥Ü¥ë¤ò¸¡º÷¤¹¤ë") {
+        BEGIN_CASE("4","å­˜åœ¨ã—ãªã„ã‚·ãƒ³ãƒœãƒ«ã‚’æ¤œç´¢ã™ã‚‹") {
             FileContainer::address_t addr = 0;
             bool result = false;
 
             try { addr = fcwi.getSymbolAddress("____unknown____"); } catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬¤ª¤­¤ë", result);
+            TEST_CASE("1","ä¾‹å¤–ãŒãŠãã‚‹", result);
         } END_CASE;
     } END_CASE;
 
@@ -234,7 +234,7 @@ TESTSUITE(main, FileContainerWindowsImpl)
         FileContainerWindowsImpl fcwi;
         fcwi.attachModule(TestSuite::getProgName());
 
-        BEGIN_CASE("1","Â¸ºß¤¹¤ëÊÑ¿ô¤òÆÉ¤ß½Ğ¤¹") {
+        BEGIN_CASE("1","å­˜åœ¨ã™ã‚‹å¤‰æ•°ã‚’èª­ã¿å‡ºã™") {
             FileContainer::address_t addr;
             int i;
 
@@ -242,11 +242,11 @@ TESTSUITE(main, FileContainerWindowsImpl)
             bool result = true;
             try { fcwi.loadContents(&i, addr, sizeof(i)); } catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤­¤Ê¤¤", result);
-            TEST_CASE("2","ÆÉ¤ß½Ğ¤µ¤ì¤¿ÆâÍÆ¤ÏÀµ¤·¤¤", i == FileContainerWindowsImplTestVariable);
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ããªã„", result);
+            TEST_CASE("2","èª­ã¿å‡ºã•ã‚ŒãŸå†…å®¹ã¯æ­£ã—ã„", i == FileContainerWindowsImplTestVariable);
         } END_CASE;
 
-        BEGIN_CASE("2","Â¸ºß¤·¤Ê¤¤ÊÑ¿ô¤òÆÉ¤ß½Ğ¤¹") {
+        BEGIN_CASE("2","å­˜åœ¨ã—ãªã„å¤‰æ•°ã‚’èª­ã¿å‡ºã™") {
             FileContainer::address_t addr;
             int i;
 
@@ -254,7 +254,7 @@ TESTSUITE(main, FileContainerWindowsImpl)
             bool result = false;
             try { fcwi.loadContents(&i, addr, sizeof(i)); } catch(Exception &) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤³¤ë", result);
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹", result);
         } END_CASE;
 
     } END_CASE;

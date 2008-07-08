@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.c,v 1.24 2006/04/10 09:58:15 honda Exp $
  */
 
 /*
- *  �ץ����å���¸�⥸�塼���SH3/4�ѡ�
+ *  プロセッサ依存モジュール（SH3/4用）
  */
 #include <s_services.h>
 #include "jsp_kernel.h"
@@ -45,7 +45,7 @@
 #include "task.h"
 
 /*
- *  ����������ƥ����ȤǤγ���ߥޥ���
+ *  タスクコンテキストでの割込みマスク
  */
 #ifdef SUPPORT_CHG_IPM
 UW	task_intmask;
@@ -53,26 +53,26 @@ UW	task_intmask;
 
 
 /*
- *  �󥿥�������ƥ����ȤǤγ���ߥޥ���
+ *  非タスクコンテキストでの割込みマスク
  */
 UW	int_intmask;
 
 
 /*
- * �����ߥϥ�ɥ�/ͥ���٤ε����ơ��֥�
+ * 割り込みハンドラ/優先度の疑似テーブル
  */
 FP  int_table[(MAX_INTIVT>>5) + 1];
 VW  int_plevel_table[(MAX_INTIVT>>5) + 1];
 
 
 /*
- * CPU�㳰�ϥ�ɥ�ε����ơ��֥�
+ * CPU例外ハンドラの疑似テーブル
  */
 FP	exc_table[(0x1E0 >> 5) + 1];
 
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void
 cpu_initialize()
@@ -80,18 +80,18 @@ cpu_initialize()
     int i;
     
     /*
-     *  ����������ƥ����ȤǤγ���ߥޥ����ν����
+     *  タスクコンテキストでの割込みマスクの初期化
      */
 #ifdef SUPPORT_CHG_IPM
     task_intmask = 0x0000;    
 #endif /* SUPPORT_CHG_IPM */
     
     /*
-     * int_table[],int_plevel_table[]�ν����
-     * ̤��Ͽ�γ����ȯ������cpu_interrup()���ƤӽФ����褦��
-     * no_reg_interrup()����Ͽ����
-     * �ǥ��ե���Ȥ�int_plevel_table[]�γ����ͥ���٤�MAX_IPM - 1
-     * �Ȥ��롥
+     * int_table[],int_plevel_table[]の初期化
+     * 未登録の割込み発生時にcpu_interrup()が呼び出されるように
+     * no_reg_interrup()を登録する
+     * ディフォルトのint_plevel_table[]の割込み優先度はMAX_IPM - 1
+     * とする．
      */
     for(i = 0; i < ((MAX_INTIVT>>5) + 1); i++){
         int_table[i] = no_reg_interrupt;
@@ -100,7 +100,7 @@ cpu_initialize()
     
 #ifndef GDB_STUB
     /*
-     * �����ߥ���ȥ�����ν���� 
+     * 割り込みコントローラの初期化 
      */
 #if defined(SH7750)
     sil_wrh_mem((VP)ICR, 0x0000);
@@ -125,7 +125,7 @@ cpu_initialize()
 #endif /* SH7750 */
     
     /*
-     *  �٥����١����쥸�������ν����
+     *  ベクタベースレジスターの初期化
      */
     set_vbr(BASE_VBR);
     
@@ -134,7 +134,7 @@ cpu_initialize()
 
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void
 cpu_terminate()
@@ -143,7 +143,7 @@ cpu_terminate()
 
 
 /*
- * Trapa�ʳ����㳰����Ͽ����Ƥ��ʤ��㳰��ȯ������ȸƤӽФ����
+ * Trapa以外の例外で登録されていない例外が発生すると呼び出される
  */
 void
 cpu_expevt(VW expevt,VW spc,VW ssr,VW pr)
@@ -155,7 +155,7 @@ cpu_expevt(VW expevt,VW spc,VW ssr,VW pr)
 }
 
 /*
- * ̤��Ͽ�γ���ߤ�ȯ���������˸ƤӽФ����
+ * 未登録の割込みが発生した場合に呼び出される
  */
 void
 cpu_interrupt(VW intevt, VW intevt2,VW spc,VW ssr)
@@ -175,18 +175,18 @@ cpu_interrupt(VW intevt, VW intevt2,VW spc,VW ssr)
 #ifdef SUPPORT_CHG_IPM
 
 /*
- *  ����ߥޥ������ѹ�
+ *  割込みマスクの変更
  *
- *  chg_ipm ��Ȥä� IPM �� MAX_IPM ��NMI �����֥�⡼�ȥ֥졼�� �ʳ�
- *  �Τ��٤Ƥγ���ߤ�ػߡ˰ʾ���ѹ����뤳�ȤϤǤ��ʤ���NMI �����֥�
- *  �⡼�ȥ֥졼���ʳ��Τ��٤Ƥγ���ߤ�ػߤ��������ˤϡ�loc_cpu ��
- *  ���CPU���å����֤ˤ���Ф褤��IPM �� 0 �ʳ��λ��ˤ⡤�������ǥ���
- *  �ѥå�����α����ʤ���IPM �ϡ��������ǥ����ѥå��ˤ�äơ���������
- *  �Ծ��֤ˤʤä��������ذ����Ѥ���롥���Τ��ᡤ���������¹���ˡ���
- *  �Υ������ˤ�ä� IPM ���ѹ�������礬���롥JSP�����ͥ�Ǥϡ�IPM
- *  ���ѹ��ϥ������㳰�����롼����ˤ�äƤⵯ����Τǡ�����ˤ�äư�
- *  �����񤷤��ʤ�����Ͼ��ʤ��Ȼפ��롥IPM ���ͤˤ�äƥ������ǥ���
- *  �ѥå���ػߤ��������ˤϡ�dis_dsp ��ʻ�Ѥ���Ф褤��
+ *  chg_ipm を使って IPM を MAX_IPM （NMI スタブリモートブレーク 以外
+ *  のすべての割込みを禁止）以上に変更することはできない．NMI スタブリ
+ *  モートブレーク以外のすべての割込みを禁止したい場合には、loc_cpu に
+ *  よりCPUロック状態にすればよい．IPM が 0 以外の時にも，タスクディス
+ *  パッチは保留されない．IPM は，タスクディスパッチによって，新しく実
+ *  行状態になったタスクへ引き継がれる．そのため，タスクが実行中に，別
+ *  のタスクによって IPM が変更される場合がある．JSPカーネルでは，IPM
+ *  の変更はタスク例外処理ルーチンによっても起こるので，これによって扱
+ *  いが難しくなる状況は少ないと思われる．IPM の値によってタスクディス
+ *  パッチを禁止したい場合には，dis_dsp を併用すればよい．
  */
 
 SYSCALL ER
@@ -210,7 +210,7 @@ chg_ipm(IPM ipm)
 
 
 /*
- *  ����ߥޥ����λ���
+ *  割込みマスクの参照
  */
 SYSCALL ER
 get_ipm(IPM *p_ipm)

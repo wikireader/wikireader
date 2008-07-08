@@ -8,46 +8,46 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: h8_sil.h,v 1.7 2007/03/23 07:58:33 honda Exp $
  */
 
 /*
- *  H8����SIL�γ�ĥ�ʥӥåȱ黻��
+ *  H8向けSILの拡張（ビット演算）
  *
- *  h8.h�˵��Ҥ���Τ����쥬��Ȥ�����sil.h�ȤΥ��󥯥롼�ɤ�
- *  ���֤δط�����Ω�����ե�����Ȥ���
- *  t_config.h��ľ�ܥ��󥯥롼�ɤ����Ȥ���sil.h�����ˤ���
- *  �ե����뤬���󥯥롼�ɤ�����ǽ�������롣
+ *  h8.hに記述するのがエレガントだが、sil.hとのインクルードの
+ *  順番の関係で独立したファイルとする
+ *  t_config.hを直接インクルードしたときにsil.hより先にこの
+ *  ファイルがインクルードされる可能性がある。
  *
- *  ����ѥ���η������å���ǽ��ͭ���ˤ��뤿�ᡢ�ݥ��󥿷���
- *  UB *��UH *��UW *���Ѥ��Ƥ��롣
+ *  コンパイラの型チェック機能を有効にするため、ポインタ型は
+ *  UB *、UH *、UW *を用いている。
  *
  */
 
@@ -60,7 +60,7 @@
 #include <cpu_insn.h>	/*  bitset(), bitclr()  */
 
 /*
- *  8�ӥåȥ쥸������AND�黻
+ *  8ビットレジスタのAND演算
  */
 Inline void
 h8_anb_reg(UB *mem, UB data)
@@ -71,7 +71,7 @@ h8_anb_reg(UB *mem, UB data)
 }
 
 /*
- *  8�ӥåȥ쥸������OR�黻
+ *  8ビットレジスタのOR演算
  */
 Inline void
 h8_orb_reg(UB *mem, UB data)
@@ -83,7 +83,7 @@ h8_orb_reg(UB *mem, UB data)
 
 
 /*
- *  16�ӥåȥ쥸������AND�黻
+ *  16ビットレジスタのAND演算
  */
 Inline void
 h8_anh_reg(UH *mem, UH data)
@@ -94,7 +94,7 @@ h8_anh_reg(UH *mem, UH data)
 }
 
 /*
- *  16�ӥåȥ쥸������OR�黻
+ *  16ビットレジスタのOR演算
  */
 Inline void
 h8_orh_reg(UH *mem, UH data)
@@ -105,7 +105,7 @@ h8_orh_reg(UH *mem, UH data)
 }
 
 /*
- *  32�ӥåȥ쥸������AND�黻
+ *  32ビットレジスタのAND演算
  */
 Inline void
 h8_anw_reg(UW *mem, UW data)
@@ -116,7 +116,7 @@ h8_anw_reg(UW *mem, UW data)
 }
 
 /*
- *  32�ӥåȥ쥸������OR�黻
+ *  32ビットレジスタのOR演算
  */
 Inline void
 h8_orw_reg(UW *mem, UW data)
@@ -127,14 +127,14 @@ h8_orw_reg(UW *mem, UW data)
 }
 
 /*
- *  ����ߥ�٥������
+ *  割込みレベルの設定
  *
- *  ��irc  ��IRC�ǡ�������Ƭ���ɥ쥹
+ *  　irc  ：IRCデータの先頭アドレス
  *
- *  ����UB *ipr�����ꤹ��IPR�쥸����������
- *  ����UB bit ��IPR�쥸�����γ�������ӥå��ֹ�
- *  ����IPM ipm�����ꤹ�����ߥ�٥�
- *  ��������������IPM_LEVEL0,IPM_LEVEL1�Τ����줫
+ *  　　UB *ipr：設定するIPRレジスタの番地
+ *  　　UB bit ：IPRレジスタの該当するビット番号
+ *  　　IPM ipm：設定する割込みレベル
+ *  　　　　　　　IPM_LEVEL0,IPM_LEVEL1のいずれか
  */
 Inline void
 define_int_plevel(const IRC *irc)
@@ -144,10 +144,10 @@ define_int_plevel(const IRC *irc)
         IPM ipm = irc->ipm;
 
         switch(ipm) {
-                case IPM_LEVEL0:        /*  �ץ饤����ƥ���٥�0������  */
+                case IPM_LEVEL0:        /*  プライオリティレベル0に設定  */
                         bitclr(ipr, bit);
                         break;
-                case IPM_LEVEL1:        /*  �ץ饤����ƥ���٥�1������  */
+                case IPM_LEVEL1:        /*  プライオリティレベル1に設定  */
                         bitset(ipr, bit);
                         break;
                 default:
@@ -156,18 +156,18 @@ define_int_plevel(const IRC *irc)
 }
 
 /*
- *��I/O�ݡ��ȤΥǡ������ǥ��쥯����󡦥쥸����DDR�ؤΥ�������
- *��
- *����H8��DDR�Ͻ񤭹������ѤǤ��ꡢ���ΤޤޤǤϽ�˾�ΥӥåȤ�����
- *�����ѹ����뤳�Ȥ��Ǥ��ʤ�����bset,bclr̿��Ǥ�����Բġ�
- *�������Τ��ᡢ�ܼ����Ǥϡ������˥ƥ�ݥ����Ѱդ��ơ�DDR��
- *���������ͤ��ݻ�������ˡ��ΤäƤ��롣
+ *　I/Oポートのデータ・ディレクション・レジスタDDRへのアクセス
+ *　
+ *　　H8のDDRは書き込み専用であり、そのままでは所望のビットだけを
+ *　　変更することができない。（bset,bclr命令でも回避不可）
+ *　　そのため、本実装では、メモリ上にテンポラリを用意して、DDRの
+ *　　現在値を保持する方法を採っている。
  */
 /*
- *��DDR���ֹ����
- *��
- *��������Υ���ǥå������Ѥ��롣
- *�����ݡ���7���������ѤΤ��ᡢ��ά���Ƥ��롣
+ *　DDRの番号定義
+ *　
+ *　　配列のインデックスに用いる。
+ *　　ポート7は入力専用のため、省略している。
  */
 typedef enum {
 	IO_PORT1,

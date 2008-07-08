@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sys_defs.h,v 1.17 2003/12/15 07:37:50 takayuki Exp $
  */
@@ -43,39 +43,39 @@
 #include <cpu_rename.h>
 
     /*
-     *  ���Ѥ���ǥ����ѥå��������
+     *  使用するディスパッチャを選択
      */
-#define WIN32_THREADMODEL               //����å� = ������
-//#define WIN32_NATIVEDISPATCHER        //x86̿��ǥ����ѥå���(PUSHAD, FSAVE)  �������Բ�
-//#define WIN32_EXCEPTIONDISPATCHER     //Windows��¤���㳰�ǥ����ѥå��� �������Բ�
-//#define WIN32_VIRTUALMACHINE          //���ۥޥ��󥯥饹�饤�֥�� �������Բ�
+#define WIN32_THREADMODEL               //スレッド = タスク
+//#define WIN32_NATIVEDISPATCHER        //x86命令ディスパッチャ(PUSHAD, FSAVE)  ※選択不可
+//#define WIN32_EXCEPTIONDISPATCHER     //Windows構造化例外ディスパッチャ ※選択不可
+//#define WIN32_VIRTUALMACHINE          //仮想マシンクラスライブラリ ※選択不可
 
     /*
-     * Windows��¸����ĥ��ǽ������
+     * Windows依存部拡張機能の選択
      */
-//#define DEBUG_ENABLE       /* �ǥХå����ϥ��󥽡����ͭ���ˤ��뤫�ɤ��� */
+//#define DEBUG_ENABLE       /* デバッグ出力コンソールを有効にするかどうか */
 
-//#define DEVICE_ENABLE      /* �ǥХ������ߥ�졼�����ǽ����Ѥ��뤫�ɤ��� */
+//#define DEVICE_ENABLE      /* デバイスエミュレーション機能を使用するかどうか */
 
-//#define EVENTLOG_ENABLE    /* �����ͥ�ư���������������ͭ���ˤ��뤫�ɤ��� */
+//#define EVENTLOG_ENABLE    /* カーネル動作ログ取得機構を有効にするかどうか */
 
 	/*
-     *  ���ߥ�졼�������Ѥ��륿���ޡ��μ��� 
+     *  シミュレーションに用いるタイマーの種別 
      */
-//#define TIMER_NOTHING         // ���Ѥ��ʤ� (�������鶡�뤹��)
-#define TIMER_MULTIMEDIATIMER	// �ޥ����ǥ���������
-//#define TIMER_WINDOWSTIMER	// ɸ��Υ����� (SetTimer�Ȥ�KillTimer�Ȥ�)
-//#define TIMER_WAITABLETIMER   // NT4��WaitableTimer����Ѥ���С������
+//#define TIMER_NOTHING         // 使用しない (外部から供給する)
+#define TIMER_MULTIMEDIATIMER	// マルチメディアタイマ
+//#define TIMER_WINDOWSTIMER	// 標準のタイマ (SetTimerとかKillTimerとか)
+//#define TIMER_WAITABLETIMER   // NT4のWaitableTimerを使用するバージョン
 
     /*
-     *  ����¾�ε�ǽ����
+     *  その他の機能選択
      */
-//#define KERNEL_DEBUG_MODE    /* �����ͥ�ΥǥХå�������Ф�(Windows��¸���ǥХå���) */
+//#define KERNEL_DEBUG_MODE    /* カーネルのデバッグログを出す(Windows依存部デバッグ用) */
 
 
 #ifndef _MACRO_ONLY
 /*
- *  �����ƥॢ�ܡ��ȥϥ�ɥ�
+ *  システムアボートハンドラ
  */
 extern void kernel_abort(void);
 

@@ -6,39 +6,39 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.c,v 1.15 2003/12/15 07:19:22 takayuki Exp $
  */
 
 
 /*
- *	�ץ����å���¸�⥸�塼���Windows�ѡ�
+ *	プロセッサ依存モジュール（Windows用）
  */
 #include <cpu_rename.h>
 
@@ -50,12 +50,12 @@
 
 #include <hal_msg.h>
 
-volatile char CPUStatus = CPU_STAT_LOCK;	//CPU���֥ե饰
+volatile char CPUStatus = CPU_STAT_LOCK;	//CPU状態フラグ
 
 /*
- *  �������ǥ����ѥå���
- *    �ǥ����ѥå������Τ�primary_thread.c�ˤ���
- *    �����Ǥϴ�������åɤ˥ǥ����ѥå������Ф�����
+ *  タスクディスパッチャ
+ *    ディスパッチャ本体はprimary_thread.cにある
+ *    ここでは管理スレッドにディスパッチ依頼を出すだけ
  */
 void
 dispatch()
@@ -64,7 +64,7 @@ dispatch()
 	HALDispatchRequest();	
 }
 
-/* ������ѥǥ����ѥå��� (���Ϥ����������Τߤ��ۤʤ�) */
+/* 割込み用ディスパッチャ (出力するログ情報のみが異なる) */
 void
 idispatch()
 {
@@ -74,10 +74,10 @@ idispatch()
 
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå�
- *    exit_and_dispatch �ϡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  現在のコンテキストを捨ててディスパッチ
+ *    exit_and_dispatch は，CPUロック状態で呼び出さなければならない．
  *
- *    ���߼¹���Υ�������TCB����ꤷ���˴����ꡣ�˴��弫ưŪ�˥ǥ����ѥå���ء�
+ *    現在実行中のタスクのTCBを指定して破棄依頼。破棄後自動的にディスパッチャへ。
  */
 void
 exit_and_dispatch() 
@@ -97,7 +97,7 @@ exit_and_dispatch()
 
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 
 void
@@ -106,31 +106,31 @@ cpu_initialize()
     kprintf(("cpu_initialize()\n"));
 
 	/*
-	 *  ����ߥ��ߥ�졼���ν����
+	 *  割込みエミュレータの初期化
 	 */
 	ini_int();
 
 	/*
-	 * �Ǿ�̹�¤���㳰�ϥ�ɥ������
+	 * 最上位構造化例外ハンドラの設定
 	 */
 	ini_exc();
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void
 cpu_terminate()
 {
     kprintf(("cpu_terminate()\n"));
 
-    fin_int();  //����ߥ��ߥ�졼�������
-	fin_exc();  //�Ǿ�̹�¤���㳰�ϥ�ɥ�β��
+    fin_int();  //割込みエミュレータの停止
+	fin_exc();  //最上位構造化例外ハンドラの解除
 }
 
 
 /*
- * ��������ư�롼����
+ * タスク起動ルーチン
  *
  */
 
@@ -151,14 +151,14 @@ activate_r( LPVOID param)
 }
 
 /*
- *  atexit����Ͽ���줿�ؿ����ɽФ� (Windows�ϲ��⤷�ʤ� -> CRT��Ǥ����)
+ *  atexitで登録された関数の読出し (Windowsは何もしない -> CRTに任せる)
  */
 void call_atexit(void)
 {}
 
 
 /*
- *   ��̿Ū�ʼ��Ԥ��Ф����н�롼����
+ *   致命的な失敗に対する対処ルーチン
  */
 void FatalAssertion(int exp, LPCSTR format, ...)
 {
@@ -170,31 +170,31 @@ void FatalAssertion(int exp, LPCSTR format, ...)
 		va_list vl;
 		char    buffer[1024];
 
-			/* ���顼���������������ͤ��ߤ�� */
+			/* エラーが起きた原因を突き止める */
 		wsprintf(buffer, "Critical assertion fail occured !!\nGetLastError = 0x%08x\n\n", GetLastError());
 
-			/* �����ͥ뤬ư���Ф��Ƥ�����... */		
+			/* カーネルが動き出していたら... */		
 		if(PrimaryThreadHandle != NULL)
 		{
-				/* �����ͥ�μ¹Ԥ�ߤ�� */
+				/* カーネルの実行を止める */
 			dis_int(0);
 			if(CurrentRunningThreadHandle != NULL)
 				SuspendThread(CurrentRunningThreadHandle);
 			hw_timer_terminate();
 		}
 
-			/* �ٹ�ɽ�� */
+			/* 警告表示 */
 		va_start(vl, format);
 		wvsprintf(buffer + lstrlen(buffer), format, vl);
 		MessageBox(PrimaryDialogHandle, buffer, "Assertion Failed", MB_OK|MB_ICONERROR);
 
-			/* �����ͥ���� */
+			/* カーネル停止 */
 		HALQuitRequest();
 	}
 }
 
 	/*
-	 *   �������Ϥ�ɤ����뤫������
+	 *   ログ出力をどうするかの制御
 	 */
 void set_logcontrol(BOOL enable)
 {
@@ -208,7 +208,7 @@ void set_logcontrol(BOOL enable)
 }
 
     /*
-     *   �����ͥ�ΥǥХå���printf
+     *   カーネルのデバッグ用printf
      */
 void _kernel_debugprintf(const char * format, ... )
 {
@@ -224,31 +224,31 @@ void _kernel_debugprintf(const char * format, ... )
         WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), buffer, words, &count, NULL);
 }
 
-#ifdef _MSC_VER     //cygwin�ξ���cpu_insn.S�˵���
+#ifdef _MSC_VER     //cygwinの場合はcpu_insn.Sに記述
 
  /*
-  * �������㳰��ư�롼����
-  *   ����ƥ����Ȥ���פ����뤿�ᡢ
-  *   �������㳰��ư�������������Υ���åɾ��ư����뤿��Υ롼����
+  * タスク例外起動ルーチン
+  *   コンテキストを一致させるため、
+  *   タスク例外を動かしたタスクのスレッド上で動作させるためのルーチン
   */
 void __declspec(naked) TaskExceptionPerformer(void)
 {
-		/* �쥸�������� */
+		/* レジスタ退避 */
 	__asm	pusha
 	__asm	sub		esp, FPU_CONTEXTSIZE
 	__asm	fsave	[esp]
 
-		/* �������㳰�ε�ư */
+		/* タスク例外の起動 */
 	__asm	call	call_texrtn
 
-		/* ����ߥޥ����ᤷ */
+		/* 割込みマスク戻し */
 	__asm	mov		ebx, DWORD PTR runtsk
 	__asm	mov		eax, [ebx]TCB.tskctxb.InterruptLevel
 	__asm	push	eax
 	__asm	call	chg_ims
 	__asm	add		esp, 4
 
-		/* �쥸�������� */
+		/* レジスタ復帰 */
 	__asm	finit
 	__asm	frstor	[esp]
 	__asm	add		esp, FPU_CONTEXTSIZE

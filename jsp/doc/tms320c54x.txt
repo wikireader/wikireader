@@ -1,8 +1,8 @@
 
-	    �� TOPPERS/JSP�����ͥ� �桼�����ޥ˥奢�� ��
-                ��TMS320C5402 �������åȰ�¸����
+	    ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                （TMS320C5402 ターゲット依存部）
 
-            ��Release 1.4�б����ǽ�����: 20-Dec-2003��
+            （Release 1.4対応，最終更新: 20-Dec-2003）
 
 ------------------------------------------------------------------------ 
  TOPPERS/JSP Kernel
@@ -12,207 +12,207 @@
  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
                              Toyohashi Univ. of Technology, JAPAN
 
- �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-     �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-     ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-     �ȡ�
-   (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-       �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-   (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-       ��𤹤뤳�ȡ�
- (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-     ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 
- �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 
  @(#) $Id: tms320c54x.txt,v 1.12 2003/12/24 07:43:20 honda Exp $
 ------------------------------------------------------------------------
 
 
-����C54x �������åȰ�¸���γ���
+１．C54x ターゲット依存部の概要
 
-1.1 �������åȥ����ƥ�ȳ�ȯ�Ķ�
+1.1 ターゲットシステムと開発環境
 
-TMS320C54x DSP �Υ������åȥ����ƥ�Ȥ��Ƥϡ�TMS320VC5402 DSP �����
-����TEXAS INSTRUMENTS���� TMS320VC5402 DSP �������������å�(DSK) ��
-���ݡ��Ȥ��Ƥ��롥
-��ȯ�Ķ��ˤϡ�DSK�˥Х�ɥ뤵��Ƥ������糫ȯ�Ķ� Code Composer Studio 2.0 
-(CCS 2.0) ���Ѥ������֥������ȥե�����ե����ޥåȤ� COFF �ȤʤäƤ��롥
-
-
-1.2 ���ݡ��Ȥ��뵡ǽ�γ���
-
-TMS320VC5402 �ΰ�¸�ε�ǽ�Ȥ��ơ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ(vxget_tim)��
-���ݡ��Ȥ��Ƥ��롥����ߤζػߤȵ���(dis_int, ena_int)�ϥ��ݡ��Ȥ��Ƥ��ʤ���
+TMS320C54x DSP のターゲットシステムとしては，TMS320VC5402 DSP を搭載
+したTEXAS INSTRUMENTS製の TMS320VC5402 DSP スタータ・キット(DSK) を
+サポートしている．
+開発環境には，DSKにバンドルされている統合開発環境 Code Composer Studio 2.0 
+(CCS 2.0) を用い，オブジェクトファイルフォーマットは COFF となっている．
 
 
-1.3 ¾�Υ������åȤؤΥݡ��ƥ���
+1.2 サポートする機能の概要
 
-���С������Ǥϡ�TMS320C54x �򥵥ݡ��Ȥ��Ƥ��롥
-
-
-1.5 ���ꥢ��ݡ���
-
-DSK�ܡ��ɤ���ܤ���Ƥ��륷�ꥢ��ݡ��Ȥϡ������ͥ�Υ��������Ѥ˻��Ѥ��롥
-���ꥢ��ݡ��Ȥ�����ϡ��ǡ��� : 8bit��Parity : none��Stop   : 1bit �Ǥ��롥
-
-                          �����ͥ������
-��TMS320VC5402 DSK        COM : 1152000bps
+TMS320VC5402 の依存の機能として，性能評価用システム時刻参照機能(vxget_tim)を
+サポートしている．割込みの禁止と許可(dis_int, ena_int)はサポートしていない．
 
 
-1.6 �ե���������ˤĤ���
+1.3 他のターゲットへのポーティング
 
-�ե���������ˤĤ��Ƥϡ����ߤϥ��ݡ��Ȥ��Ƥ��ʤ������Τ��ᡤ�ǥ����ѥå���
-���������������ˤ����ơ���ĥ�ץ�����५����(XPC)����¸������ϹԤä�
-���ʤ���
+現バージョンでは，TMS320C54x をサポートしている．
 
 
-����TMS320VC5402 DSP ��¸���ε�ǽ
+1.5 シリアルポート
 
-������Ǥϡ������ͥ뤪��ӥ����ƥॵ���ӥ��ε�ǽ����ǡ�TMS320VC5402 DSP 
-��¸����ʬ�ˤĤ��Ʋ��⤹�롥
+DSKボードに搭載されているシリアルポートは，カーネルのログ出力用に使用する．
+シリアルポートの設定は，データ : 8bit，Parity : none，Stop   : 1bit である．
 
-2.1 �ǡ�����
-
-TMS320C54x �Ǥϡ�16�ӥåȡ�32�ӥå� Ĺ�Υǡ������򥵥ݡ��Ȥ��Ƥ��롥
-int������� char����short���Υ������� 16�ӥåȤǤ��롥long���� 32�ӥåȤǤ��롥
-8�ӥå� �Υǡ��������ʤ����� B, UB, VB �� 16�ӥåȤˤʤäƤ��ꡤ���դ�ɬ�פ�
-���롥
+                          カーネルログ用
+・TMS320VC5402 DSK        COM : 1152000bps
 
 
-2.2 ���ե��åȥե����������
+1.6 ファーコールについて
 
-������֥����ǵ��Ҥ����ץ�����फ�顤C����ι�¤�Τ˥��������������
-ɬ�פȤʤ륪�ե��å��ͤ�ե�����˽��Ϥ��뤿��ˡ�JSP�����ͥ�Ǥϡ�
-genoffset ���Ѱդ��Ƥ��롥�������ʤ��顤TMS320C54x �Ǥ� genoffset ����Ѥ���
-���Ȥ��Ǥ��ʤ����ᡤTCB ��Υ���������ƥ����ȥ֥��å���tskctxb�ˤ˴ޤޤ��
- pc �ڤ� sp �ե�����ɤΥ��ե��å��ͤϸ���ȤʤäƤ��롥���Τ��ᡤTCB ���
-�ӥåȥե�����ɤ�ǡ������˽�����ä����硤 pc �ڤ� sp �Υ��ե��å��ͤ�
-���դ�ɬ�פǤ��롥����ϡ�2.1 �ǡ����� ������ʸ��ʻ���ƹ�θ���롥
+ファーコールについては，現在はサポートしていない．そのため，ディスパッチ，
+割込み入り口処理において，拡張プログラムカウンタ(XPC)の保存，退避は行って
+いない．
 
 
-2.3 ����ߴ�����ǽ�ȳ���ߥϥ�ɥ�
+２．TMS320VC5402 DSP 依存部の機能
 
-�����ͥ�������γ���ߤȤ��Ƥϡ� NMI �����롥��äơ�CPU���å����֤�����
-�롼������Ǥϡ�NMI�ʳ��γ���ߤϤ��٤ƶػߤ���Ƥ��롥����Ū�ˤϡ�
-ST1(���ơ������쥸������)�Υޥ����֥����߶ػߥӥå�(INTM : bit 11)�� 1 
-�����ꤵ��롥
+この説では，カーネルおよびシステムサービスの機能の中で，TMS320VC5402 DSP 
+依存の部分について解説する．
 
-DEF_INH �ǻ��ꤹ�����ߥϥ�ɥ��ֹ�(inhno)�ϡ�C5402 �Ǥϡ�����ߥ٥����ݥ���
-(IPTR)����γƳ���ߥ٥����Υ��ե��å��ͤ򱦤�2�ӥåȥ��ե�(4�ǽ���)�����ͤǤ��롥
-�ǡ�����(INHNO)�� unsigned int�����������Ƥ��롥
+2.1 データ型
 
-
-2.4 CPU�㳰������ǽ��CPU�㳰�ϥ�ɥ�
-
-TMS320C54x DSP�ˤ�CPU�㳰���ʤ���
+TMS320C54x では，16ビット，32ビット 長のデータ型をサポートしている．
+int型および char型，short型のサイズは 16ビットである．long型は 32ビットである．
+8ビット のデータ型がないため B, UB, VB が 16ビットになっており，注意が必要で
+ある．
 
 
-2.5 �������ȥ��åץ⥸�塼��
+2.2 オフセットファイルの生成
 
-C5402 DSP ��¸�Υ������ȥ��åץ⥸�塼��(start.S)�Ǥϡ����ν����������Ԥ���
-
-(A) ���ơ������쥸�����ν�����ȥ����å��ݥ��󥿤ν����
-
-�ǽ�ˡ��ޥ����֥����ߤζػߤ��롥
-
-���ˡ�ľ�ܥ��ɥ�å��󥰤˥����å��ݥ���(SP)���Ѥ��륳��ѥ���ߴ��⡼��
-�����ꤷ��C�ץ������򥵥ݡ��Ȥ��롥
-
-���ˡ������å��ݥ��󥿤� STACKTOP �����ꤹ�롥�����ǳ���ߥ����å��ݥ���
-�����ꤵ�줿�����å��ΰ�ϡ������ͥ뵯ư����󥿥�������ƥ������ѤΥ����å�
-�ΰ�Ȥ��ƻȤ��롥STACKTOP �ϡ�sys_surpport.S ����������뤳�Ȥ��������
-���롥
-
-(B) hardware_init_hook �θƽФ�
-
-hardware_init_hook �� 0 �Ǥʤ����ˤϡ�hardware_init_hook ��ƤӽФ���
-hardware_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륿�����å�
-��¸�ν������Ԥ�������Ѱդ��Ƥ��롥hardware_init_hook ���ɤ��Ǥ����
-����Ƥ��ʤ���硤��󥫤Ǥ��Υ���ܥ�� 0 ���������(��󥫥��ޥ�ɥե�
-���� c5402dsk.cmd ��˵��Ҥ���)��
-
-(C) bss���������� cinit���������ν����
-
-bss���������򥼥����ꥢ���롥�ޤ���data��������������
-
-(D) software_init_hook �θƽФ�
-
-software_init_hook �� 0 �Ǥʤ����ˤϡ�software_init_hook ��ƤӽФ���
-software_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륽�եȥ�����
-�Ķ�(����Ū�ˤϡ��饤�֥��)��¸�ν������Ԥ�������Ѱդ��Ƥ��롥
-software_init_hook ���ɤ��Ǥ��������Ƥ��ʤ���硤��󥫤Ǥ��Υ���ܥ�� 
-0 ���������(��󥫥��ޥ�ɥե�������˵��Ҥ���)��
-
-(E) �����ͥ�ε�ư
-
-kernel_start ��ʬ�����������ͥ��ư���롥kernel_start ����꥿���󤷤�
-���뤳�Ȥ����ꤷ�Ƥ��ʤ���
+アセンブリ言語で記述されるプログラムから，C言語の構造体にアクセスする場合に
+必要となるオフセット値をファイルに出力するために，JSPカーネルでは，
+genoffset を用意している．しかしながら，TMS320C54x では genoffset を使用する
+ことができないため，TCB 中のタスクコンテキストブロック（tskctxb）に含まれる
+ pc 及び sp フィールドのオフセット値は固定となっている．そのため，TCB 中の
+ビットフィールドやデータ型に修正を加える場合， pc 及び sp のオフセット値に
+注意が必要である．これは，2.1 データ型 の説明文と併せて考慮する．
 
 
-���������ƥ��¸���ε�ǽ
+2.3 割込み管理機能と割込みハンドラ
 
-3.1 �����ƥ९���å��ɥ饤��
+カーネル管理外の割込みとしては， NMI がある．よって，CPUロック状態や初期化
+ルーチン内では，NMI以外の割込みはすべて禁止されている．具体的には，
+ST1(ステータスレジスタ１)のマスカブル割込み禁止ビット(INTM : bit 11)が 1 
+に設定される．
 
-�����ƥ९���å��ɥ饤�Ф� isig_tim ��ƤӽФ������ϡ�sys_defs.h �� �� 
-TIC_NUME �� TIC_DENO ���������Ƥ���(ɸ��� 1 �ߥ��ü���)�����������
-�ѹ����뤳�Ȥǡ�isig_tim ��ƤӽФ��������ѹ����뤳�Ȥ��Ǥ��롥��������
-�����ޤ����٤� 1���äǤ��뤿�ᡤ������ñ�̤�ü���ˤʤ��ͤ����ꤷ�����
-�ˤϡ�isig_tim �θƽФ������˸����������뤳�Ȥˤʤ롥
-
-
-3.2 ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
-
-TMS320VC5402 DSP ��¸���Ǥϡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ(vxget_tim)��
-���ݡ��Ȥ��Ƥ��롥��ǽɾ���ѥ����ƥ��������٤ϡ�������ñ�̤Ǥ��롥�ʤ���
-SYSUTIM���� UW��(32�ӥåȤ����̵��������)��������Ƥ��롥
-
-3.3 ���ꥢ�륤�󥿥ե������ɥ饤��
-
-TMS320VC5402 DSK ���ꥢ�륤�󥿥ե������ɥ饤�Фϡ�DSK �ܡ��ɾ�� 
-TL16C550CFN ��UART�򥵥ݡ��Ȥ��Ƥ��롥
-
-3.4 ����ޥå�
-
-��C5402 DSK
-��¸���Ǥϡ��������ΰ�� 0x4000 �� 0xFFFF ��96KB���ǡ����ΰ�� 0x0080 �� 
-0x3FFF ��32KB���󥿥�������ƥ������ѤΥ����å��ΰ�� �� 0x3FFF �˳��ݤ�
-�Ƥ��롥�������ΰ�� 0xFF80 �� 0xFFFF �ϡ�����ߥ٥����ơ��֥��ΰ�Ȥ���
-���Ѥ��Ƥ��롥�ޤ���0x0060 �� 0x007F �򥹥���å��ѥå��ΰ�Ȥ��Ƴ��ݤ���
-���롥������å��ѥå��ΰ�Ǥϡ����� �ޥåץ� �쥸���� ���ɥ�å��� 
-����Ѥ��뤳�Ȥ��Ǥ��롥
+DEF_INH で指定する割込みハンドラ番号(inhno)は，C5402 では，割込みベクタポインタ
+(IPTR)からの各割込みベクタのオフセット値を右に2ビットシフト(4で除算)した値である．
+データ型(INHNO)は unsigned int型に定義されている．
 
 
-������ȯ�Ķ��ι���
+2.4 CPU例外管理機能とCPU例外ハンドラ
 
-��ȯ�Ķ��ˤϡ����糫ȯ�Ķ� CCS (2.0) �� Windows ���ߥ�졼�����Ķ�����
-���롥���줾��γ�ȯ�Ķ��ι�����ˡ�ˤĤ��Ƥϡ�CCS �Υɥ�����Ȥ���ӡ�
-Windows ���ߥ�졼�����Ķ����ۥޥ˥奢��򻲾ȤΤ��ȡ��ʤ���CCS (2.0) 
-�Υ��󥹥ȡ���� c:\ti �Υǥ��쥯�ȥ�˹Ԥ����Ȥ�����Ȥ���������Ԥ���
+TMS320C54x DSPにはCPU例外がない．
 
-4.1 ��ȯ�Ķ��γ���
 
-4.1.1 �饤�֥��ؿ�
+2.5 スタートアップモジュール
 
-TMS320C54x �Ǥϡ�������32�ӥåȾ軻�˥饤�֥��ؿ����Ѥ��Ƥ��롥��������
-�饤�֥���ץ��������Ȥ��Ȥ߹���ǥӥ�ɤ���ȡ�start.S �Υ������ȥ��å�
-�롼���󤬻��ѤǤ��ʤ��ʤ롥���Τ��ᡤ�饤�֥��Υ����� (rts.src) ���餤
-���Ĥ��δؿ��Υ��������ե��������Ф��ƥץ��������Ȥ��ɲä���ɬ�פ�������
-��礬���롥�ʲ��Υ��ޥ�ɤǥ��������ե��������Ф��뤳�Ȥ��Ǥ��롣
+C5402 DSP 依存のスタートアップモジュール(start.S)では，次の初期化処理を行う．
+
+(A) ステータスレジスタの初期化とスタックポインタの初期化
+
+最初に，マスカブル割込みの禁止する．
+
+次に，直接アドレッシングにスタックポインタ(SP)を用いるコンパイラ互換モード
+に設定し，Cプログラムをサポートする．
+
+次に，スタックポインタを STACKTOP に設定する．ここで割込みスタックポインタ
+に設定されたスタック領域は，カーネル起動後は非タスクコンテキスト用のスタック
+領域として使われる．STACKTOP は，sys_surpport.S 部で定義することを定義して
+いる．
+
+(B) hardware_init_hook の呼出し
+
+hardware_init_hook が 0 でない場合には，hardware_init_hook を呼び出す．
+hardware_init_hook は，カーネルが起動される前に行う必要があるターゲット
+依存の初期化を行うために用意している．hardware_init_hook がどこでも定義
+されていない場合，リンカでこのシンボルを 0 に定義する(リンカコマンドファ
+イル c5402dsk.cmd 内に記述あり)．
+
+(C) bssセクションと cinitセクションの初期化
+
+bssセクションをゼロクリアする．また，dataセクションを初期化
+
+(D) software_init_hook の呼出し
+
+software_init_hook が 0 でない場合には，software_init_hook を呼び出す．
+software_init_hook は，カーネルが起動される前に行う必要があるソフトウェア
+環境(具体的には，ライブラリ)依存の初期化を行うために用意している．
+software_init_hook がどこでも定義されていない場合，リンカでこのシンボルを 
+0 に定義する(リンカコマンドファイル内に記述あり)．
+
+(E) カーネルの起動
+
+kernel_start へ分岐し，カーネルを起動する．kernel_start からリターンして
+くることは想定していない．
+
+
+３．システム依存部の機能
+
+3.1 システムクロックドライバ
+
+システムクロックドライバが isig_tim を呼び出す周期は，sys_defs.h 中 の 
+TIC_NUME と TIC_DENO で定義されている(標準は 1 ミリ秒周期)．この定義を
+変更することで，isig_tim を呼び出す周期を変更することができる．ただし，
+タイマの精度が 1μ秒であるため，１μ秒単位で端数になる値を設定した場合
+には，isig_tim の呼出し周期に誤差が生じることになる．
+
+
+3.2 性能評価用システム時刻参照機能
+
+TMS320VC5402 DSP 依存部では，性能評価用システム時刻参照機能(vxget_tim)を
+サポートしている．性能評価用システム時刻の精度は，１μ秒単位である．なお，
+SYSUTIM型は UW型(32ビットの符号無し整数型)に定義している．
+
+3.3 シリアルインタフェースドライバ
+
+TMS320VC5402 DSK シリアルインタフェースドライバは，DSK ボード上の 
+TL16C550CFN のUARTをサポートしている．
+
+3.4 メモリマップ
+
+・C5402 DSK
+依存部では，コード領域を 0x4000 〜 0xFFFF 約96KB，データ領域を 0x0080 〜 
+0x3FFF 約32KB，非タスクコンテキスト用のスタック領域を 〜 0x3FFF に確保し
+ている．コード領域の 0xFF80 〜 0xFFFF は，割込みベクタテーブル領域として
+使用している．また，0x0060 〜 0x007F をスクラッチパッド領域として確保して
+いる．スクラッチパッド領域では，メモリ マップド レジスタ アドレッシング 
+を使用することができる．
+
+
+４．開発環境の構築
+
+開発環境には，統合開発環境 CCS (2.0) と Windows シミュレーション環境を用
+いる．それぞれの開発環境の構築方法については，CCS のドキュメントおよび，
+Windows シミュレーション環境構築マニュアルを参照のこと．なお，CCS (2.0) 
+のインストールは c:\ti のディレクトリに行うことを前提として説明を行う．
+
+4.1 開発環境の概要
+
+4.1.1 ライブラリ関数
+
+TMS320C54x では，除算，32ビット乗算にライブラリ関数を用いている．しかし，
+ライブラリをプロジェクトに組み込んでビルドすると，start.S のスタートアップ
+ルーチンが使用できなくなる．そのため，ライブラリのソース (rts.src) からい
+くつかの関数のソース・ファイルを抽出してプロジェクトに追加する必要が生じる
+場合がある．以下のコマンドでソース・ファイルを抽出することができる。
 
     ar500 -x rts.src xxx.asm yyy.asm zzz.asm
 
@@ -221,88 +221,88 @@ TMS320C54x �Ǥϡ�������32�ӥåȾ軻�˥饤�֥��ؿ����Ѥ��Ƥ��롥��������
     c:\ti\c5400\cgtools\lib\
       rts.src
 
-����ץ�ץ������Ǥϡ�ldiv.asm, udiv.asm, lmpy.asm ��3�ĤΥե����뤬
-ɬ�פȤʤ롥�����Υե����������㤬 jsp\C5402DSK\configure.vbs �ˤ�
-��Τǻ��ͤˤ��Ƥۤ�����
+サンプルプログラムでは，ldiv.asm, udiv.asm, lmpy.asm の3つのファイルが
+必要となる．これらのファイルの抽出例が jsp\C5402DSK\configure.vbs にあ
+るので参考にしてほしい．
 
-4.1.1 ����ե�����졼���Υӥ��
+4.1.1 コンフィギュレータのビルド
 
-����ե�����졼���ϡ�Windows���ߥ�졼�����Ķ��� cfg.exe ���Ѥ��롥
-cfg.exe �Υӥ����ˡ�� Windows�Ķ������򻲾Ȥ��줿��
+コンフィギュレータは，Windowsシミュレーション環境の cfg.exe を用いる．
+cfg.exe のビルド方法は Windows環境の方を参照されたし
 
-4.1.3 ����ե�����졼�������»���
+4.1.3 コンフィギュレータの制限事項
 
-CCS �Ǥ϶��Υ��֥������ȤϺ��ʤ����ᡤcfg �Υ��ץ����Ȥ��� 
+CCS では空のオブジェクトは作れないため，cfg のオプションとして 
 
   --ZERO "x y[1]"
 
-����ꤹ��ɬ�פ����롥����ץ�ʳ��Υ���ե�����졼�����ե��������
-�Ѥ����硤����ե�����졼���� kernel_id.h �� kernel_cfg.c �������
-����ɬ�פ����롥����Ū�ʥ��ץ����ˤĤ��Ƥϡ�Windows ���ߥ�졼�����
-�Ķ����ۥޥ˥奢��򻲾ȤΤ��ȡ�
+を指定する必要がある．サンプル以外のコンフィギュレーションファイルを利
+用する場合，コンフィギュレータに kernel_id.h と kernel_cfg.c を作成さ
+せる必要がある．具体的なオプションについては，Windows シミュレーション
+環境構築マニュアルを参照のこと．
 
-�ʤ�������ե�����졼���ζ���Ū�ʻ����㤬 jsp\C5402DSK\configure.vbs
-�ˤ���Τǻ��ͤˤ��Ƥۤ�����
+なお，コンフィギュレータの具体的な使用例が jsp\C5402DSK\configure.vbs
+にあるので参考にしてほしい．
 
-4.1.2 Code Composer Studio 2.0 (CCS 2.0) �ˤ����� TOPPERS/JSP �Υӥ��
+4.1.2 Code Composer Studio 2.0 (CCS 2.0) における TOPPERS/JSP のビルド
 
-�ޤ���jsp �Υ��������֥ե������ c:\ti\myprojects\ ��Ÿ�����롥����
-c:\ti\myprojects\jsp\C5402DSK (�ʲ�������\jsp\C5402DSK�Ȥ���)�ˤ��륹
-����ץȥե����롤
+まず，jsp のアーカイブファイルを c:\ti\myprojects\ に展開する．次に
+c:\ti\myprojects\jsp\C5402DSK (以下ここを\jsp\C5402DSKとする)にあるス
+クリプトファイル，
 
     c:\ti\myprojects\jsp\C5402DSK> configure.vbs
 
-��¹Ԥ��뤳�Ȥˤ�ꡤsample1.cfg, sample1.h, sample1.c���ԡ�������ե�
-����졼���ˤ��kernel_id.h, kernel_cfg.c������������� ldiv.asm,
-lmpy.asm, udiv.asm ����Ф��Ԥ��롥�����Υե������ \jsp\tools\C5402DSK 
-�˺�������롥
+を実行することにより，sample1.cfg, sample1.h, sample1.cコピー，コンフィ
+ギュレータによるkernel_id.h, kernel_cfg.cの生成，さらに ldiv.asm,
+lmpy.asm, udiv.asm の抽出が行われる．これらのファイルは \jsp\tools\C5402DSK 
+に作成される．
 
-\jsp\tools\C5402DSK\ccs_project ��ˤ��륵��ץ�ץ������Υץ��������ȥե�
- ���� TOPPERS.pjt �� CCS ���鳫���ȡ����˥ӥ�ɤ�ɬ�פ�����򽪤�����
- �֤ˤʤäƤ��롥
+\jsp\tools\C5402DSK\ccs_project 内にあるサンプルプログラムのプロジェクトファ
+ イル TOPPERS.pjt を CCS から開くと，既にビルドに必要な設定を終えた状
+ 態になっている．
 
-CCS ����ӥ�ɤ�Ԥ��� \jsp\tools\C5402DSK �� TOPPERS.out �����������Τǡ���
-��򥿡����åȥܡ��ɤ˥���������ɤ���м¹Բ�ǽ�Ȥʤ롥�������åȤȤ�
-���ꥢ���̿���®�٤� 115200bps �Ǥ��롥
+CCS からビルドを行うと \jsp\tools\C5402DSK に TOPPERS.out が生成されるので，こ
+れをターゲットボードにダウンロードすれば実行可能となる．ターゲットとの
+シリアル通信の速度は 115200bps である．
 
 
-��������¾ 
+５．その他 
 
-5.1 �ǥ��쥯�ȥꡦ�ե����빽��
+5.1 ディレクトリ・ファイル構成
 
      c:\ti\myprojects\jsp\tools\C5402DSK
-	configure.vbs       kernel_cfg.c kernel_id.h �����Τ���ΥХå��ե�����
-	\ccs_project\ccs_project.pjt	CCS 2.0 �ץ��������ȥե�����
+	configure.vbs       kernel_cfg.c kernel_id.h 生成のためのバッチファイル
+	\ccs_project\ccs_project.pjt	CCS 2.0 プロジェクトファイル
 
      c:\ti\myprojects\jsp\config\tms320c54x
-	c54x.h			TMS320C54x �����
-	cpu_support.S		�ץ����å���¸���Υ��֥롼����
-	cpu_config.c		�ץ����å���¸���δؿ�
-	cpu_config.h		�ץ����å���¸���ι������
-	cpu_context.h		����ƥ��������
-	cpu_defs.h		�ץ����å���¸���Υ��ץꥱ������������
-	start.S			�������ȥ��åץ⥸�塼��
-	vectors.S		����ߥ٥����ơ��֥�
-	hw_timer.h		���������롼����
-	cpu_insn.h		���٥�ץ����å����롼����
-	cpu_rename.def		�����ͥ����������̾�Υ�͡������
-	cpu_rename.h		�����ͥ����������̾�Υ�͡���
-	cpu_unrename.h		�����ͥ����������̾�Υ�͡�����
-	tool_defs.h		��ȯ�Ķ���¸���Υ��ץꥱ������������
-	tool_config.h		��ȯ�Ķ���¸���ι������
-	api.h			API�������̲�������ե�����
+	c54x.h			TMS320C54x の定義
+	cpu_support.S		プロセッサ依存部のサブルーチン
+	cpu_config.c		プロセッサ依存部の関数
+	cpu_config.h		プロセッサ依存部の構成定義
+	cpu_context.h		コンテキスト操作
+	cpu_defs.h		プロセッサ依存部のアプリケーション用定義
+	start.S			スタートアップモジュール
+	vectors.S		割込みベクタテーブル
+	hw_timer.h		タイマ操作ルーチン
+	cpu_insn.h		低レベルプロセッサ操作ルーチン
+	cpu_rename.def		カーネルの内部識別名のリネーム定義
+	cpu_rename.h		カーネルの内部識別名のリネーム
+	cpu_unrename.h		カーネルの内部識別名のリネーム解除
+	tool_defs.h		開発環境依存部のアプリケーション用定義
+	tool_config.h		開発環境依存部の構成定義
+	api.h			APIガード通過用定義ファイル
 
      c:\ti\myprojects\jsp\config\tms320c54x\c5402dsk
-	c5402dsk.cmd		��󥫥��ޥ�ɥե�����
-	hw_serial.h		���ꥢ�륤�󥿥ե������ǥХ������롼����
-	hw_serial.cfg		SIO�ɥ饤�ФΥ���ե�����졼�����ե�����
-	c5402dsk.h		C5402 DSK �ϡ��ɥ��������
-	sys_config.c		�����ƥ��¸���δؿ�
-	sys_config.h		�����ƥ��¸���ι������
-	sys_defs.h		�����ƥ��¸���Υ��ץꥱ������������
-	sys_support.S		�����ƥ��¸���Υ��֥롼����
-        sys_rename.def		�����ͥ����������̾�Υ�͡������
-        sys_rename.h		�����ͥ����������̾�Υ�͡���
-        sys_unrename.h		�����ͥ����������̾�Υ�͡�����
-	tl16c550cfn.c		�ʰ�SIO�ɥ饤��
-	tl16c550cfn.h		�ʰ�SIO�ɥ饤�д�Ϣ�����
+	c5402dsk.cmd		リンカコマンドファイル
+	hw_serial.h		シリアルインタフェースデバイス操作ルーチン
+	hw_serial.cfg		SIOドライバのコンフィギュレーションファイル
+	c5402dsk.h		C5402 DSK ハードウェア定義
+	sys_config.c		システム依存部の関数
+	sys_config.h		システム依存部の構成定義
+	sys_defs.h		システム依存部のアプリケーション用定義
+	sys_support.S		システム依存部のサブルーチン
+        sys_rename.def		カーネルの内部識別名のリネーム定義
+        sys_rename.h		カーネルの内部識別名のリネーム
+        sys_unrename.h		カーネルの内部識別名のリネーム解除
+	tl16c550cfn.c		簡易SIOドライバ
+	tl16c550cfn.h		簡易SIOドライバ関連の定義

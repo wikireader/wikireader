@@ -8,32 +8,32 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _KZ_VR4131PCI_01_
@@ -42,60 +42,60 @@
 #define KZ_VR4131PCI_01
 
 /*
- *  �ǥХ����γ�����ƥ١������ɥ쥹
+ *  デバイスの割り当てベースアドレス
  */
 
 #define VR4131_BASE_ADDR	0xa0000000
 
 /*
- *  �ǥХ����˶��뤵��륯���å�
+ *  デバイスに供給されるクロック
  */
 /*
- *  VR4131 �ϵ�ư���� CLKSEL(2:0) ü�Ҥ򸫤ơ��ѥ��ץ饤�󥯥��å�PClock��
- *  ���ꤹ�롣����Υ������åȥܡ��ɤΥǥե���Ȥϡ�
+ *  VR4131 は起動時に CLKSEL(2:0) 端子を見て、パイプラインクロックPClockを
+ *  決定する。今回のターゲットボードのデフォルトは、
  *        CLKSEL(2:0) = 110
- *  �ѥ�ޥͥ����ȥ�˥åȤΡ�PMUTCLKDIVREG���ѹ��ϲä��ʤ����᲼���Ȥʤ롣
+ *  パワーマネジメントユニットの、PMUTCLKDIVREGに変更は加えないため下記となる。
  *        PClock 199.1[MHz], VTClock 33.2[MHz], TClock 16.6[MHz]
  */
-/* ���ꥢ��˶��뤵��륯���å����ȿ� [Hz]�ʥܡ��졼������ǻ��ѡ�
- * ��18.432MHz = 18432000 Hz ; �ϡ��ɥ�������p193���ȡ� */
+/* シリアルに供給されるクロック周波数 [Hz]（ボーレート設定で使用）
+ * （18.432MHz = 18432000 Hz ; ハードウェア編p193参照） */
 #define XIN_CLOCK	18432000u	/* [Hz] */
 
-/* �����ޤ˶��뤵��륯���å����ȿ� [kHz]��TO_CLOCK�ǻ��ѡ�
- * ��TO_CLOCK ��1�ߥ��ü���(1kHz)��ȯ�������뤿��˻��ѡ�
- * ��VTClock=33.2MHz = 33200kHz ; �ϡ��ɥ�������p22���ȡ� */
+/* タイマに供給されるクロック周波数 [kHz]（TO_CLOCKで使用）
+ * （TO_CLOCK で1ミリ秒周期(1kHz)を発生させるために使用）
+ * （VTClock=33.2MHz = 33200kHz ; ハードウェア編p22参照） */
 #define TIMER_CLOCK	33200u	/* [kHz] */
 
 /*
- *  �ǥХ����γ���ߥޥ��������
+ *  デバイスの割込みマスクの定義
  *
- *  ͥ���� : (��) DSIU -> TClock������ -> �Хåƥ������­���� (��)
+ *  優先度 : (低) DSIU -> TClockカウンタ -> バッテリ残量不足検知 (高)
  */
-/* MSYSINT1 �� BATINTR ������ˤĤ��Ƥϡ��ϡ��ɥ�������p224����  */
+/* MSYSINT1 の BATINTR の設定については、ハードウェア編p224参照  */
 
 /*
- *  DSIU ����ߤγ���ߥޥ��������������ѡ�
- *  ������ߥ�٥�������������Ʊ����٥�����ꤷ�Ƥ���
+ *  DSIU 割込みの割込みマスク（送受信共用）
+ *  ・割込みレベルは送信も受信も同じレベルに設定している
  */
-#define CORE_IPM_DSIU		INIT_CORE_IPM	/* MIPS3����(SR)�ѥǡ��� */
+#define CORE_IPM_DSIU		INIT_CORE_IPM	/* MIPS3コア(SR)用データ */
 
-/* BATINTR��TCLKINTR ����ߤΤߤ���Ĥ��롣 */
-#define ICU_IPM_SYSINT1_DSIU	BATINTR		/* ����ߥ���ȥ������ѥǡ��� */
+/* BATINTR、TCLKINTR 割込みのみを許可する。 */
+#define ICU_IPM_SYSINT1_DSIU	BATINTR		/* 割込みコントローラ用データ */
 #define ICU_IPM_SYSINT2_DSIU	TCLKINTR
 
-/*  ���ꤹ�����ߥޥ�����IPM���ǵ��Ҥ���� */
+/*  設定する割込みマスク（IPM型で記述する） */
 #define IPM_DSIU	{ CORE_IPM_DSIU, {ICU_IPM_SYSINT1_DSIU, ICU_IPM_SYSINT2_DSIU} }
 
 /*
- *  RTC ��Ϣ�γ���ߥޥ���
+ *  RTC 関連の割込みマスク
  */
-#define CORE_IPM_TIMER		INIT_CORE_IPM	/* MIPS3����(SR)�ѥǡ��� */
+#define CORE_IPM_TIMER		INIT_CORE_IPM	/* MIPS3コア(SR)用データ */
 
-/* BATINTR ����ߤΤߤ���Ĥ��롣 */
-#define ICU_IPM_SYSINT1_TCLK	BATINTR		/* ����ߥ���ȥ������ѥǡ��� */
+/* BATINTR 割込みのみを許可する。 */
+#define ICU_IPM_SYSINT1_TCLK	BATINTR		/* 割込みコントローラ用データ */
 #define ICU_IPM_SYSINT2_TCLK	0u
 
-/*  ���ꤹ�����ߥޥ�����IPM���ǵ��Ҥ���� */
+/*  設定する割込みマスク（IPM型で記述する） */
 #define IPM_TIMER	{ CORE_IPM_TIMER, {ICU_IPM_SYSINT1_TCLK, ICU_IPM_SYSINT2_TCLK} }
 
 #endif /* _KZ_VR4131PCI_01_ */

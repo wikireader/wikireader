@@ -8,38 +8,38 @@
  * 
  *  Copyright (C) 2005 by Freelines CO.,Ltd
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_support.S,v 1.10 2007/01/05 02:10:17 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼�� ������֥��������V850ES�ѡ�
+ *	プロセッサ依存モジュール アセンブリ言語部（V850ES用）
  */
 
 #define	_MACRO_ONLY
@@ -48,12 +48,12 @@
 #include "offset.h"
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  */
 Function	__kernel_dispatch
 
 	/*
-	 * ����ƥ����Ȥ����� 
+	 * コンテキストの退避 
 	 */
 	Push	ep
 	addi	-120, sp, sp
@@ -89,7 +89,7 @@ Function	__kernel_dispatch
 	sst.w	r29,  4[ep]
 	sst.w	r31,  0[ep]
 
-	/* �����å��ȼ��ε�ư���Ϥ���¸ */
+	/* スタックと次の起動番地を保存 */
 	Lea	__kernel_runtsk, ep
 	sld.w	0[ep], ep
 	sst.w	sp, TCB_sp[ep]
@@ -99,8 +99,8 @@ Function	__kernel_dispatch
 	sst.w	r10, TCB_psw[ep]
 
 	/*
-	 * ���Υ������ν��� __kernel_dispatch_1
-	 *  �����ϳ����߶ػ߾��֤����ɬ�פ����롣
+	 * 次のタスクの準備 __kernel_dispatch_1
+	 *  ここは割り込み禁止状態で来る必要がある。
 	 */
 Label	__kernel_dispatch_1
 	/* runtsk = schedtsk */
@@ -112,18 +112,18 @@ Label	__kernel_dispatch_1
 	bne	1f
 
 	/*
-	 * ��ư���٤��������Ϥʤ�...�����ɥ�롼��
+	 * 起動すべきタスクはない...アイドルループ
 	 */
 
-	/* �����ߥ����å����ڤ��ؤ� */
+	/* 割り込みスタックに切り替え */
 	Lea	STACKTOP, sp
-	/* intnest�򣱤ˤ��� */
+	/* intnestを１にする */
 	mov	r0, r10
 	add	1, r10
 	Lea	_intnest, r11
 	st.w	r10, 0[r11]
 
-	/* �������Ԥ� */
+	/* 割り込み待ち */
 	ei
 	nop
 	nop
@@ -134,14 +134,14 @@ Label	__kernel_dispatch_1
 	nop
 	di
 
-	/* intnest�򥯥ꥢ���� */
+	/* intnestをクリアする */
 	Lea	_intnest, r10
 	st.w	r0, 0[r10]
 
 	br	__kernel_dispatch_1
 
 1:
-	/* �����å��ȼ��ε�ư���Ϥ����� */
+	/* スタックと次の起動番地を復帰 */
 	mov	r10, ep
 	sld.w	TCB_pc[ep], r31
 	sld.w	TCB_sp[ep], sp
@@ -149,7 +149,7 @@ Label	__kernel_dispatch_1
 	ldsr	r10, psw
 	jmp	r31
 
-	/* �ǥ����ѥå���������롼���� */
+	/* ディスパッチャの復帰ルーチン */
 Label	dispatch_r
 	Lea	__kernel_runtsk, r10
 	ld.w	0[r10], r10
@@ -160,7 +160,7 @@ Label	dispatch_r
 	cmp	r0, r11
 	be	1f
 
-	/* �������㳰 */
+	/* タスク例外 */
 	jarl	__kernel_calltex, r31
 1:
 	mov	sp, ep
@@ -199,7 +199,7 @@ Label	dispatch_r
 	jmp	r31
 
 /*
- *  ��������ư������
+ *  タスク起動時処理
  */
 Function	__kernel_activate_r
 
@@ -215,8 +215,8 @@ Function	__kernel_activate_r
 	jmp	r10
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå�
- *    CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ�
+ *  現在のコンテキストを捨ててディスパッチ
+ *    CPUロック状態で呼び出さなければならない
  */
 Function	__kernel_exit_and_dispatch
 	di
@@ -230,11 +230,11 @@ Function	__kernel_exit_and_dispatch
 .extern __kernel_calltex
 
 /*
- * ����ߥϥ�ɥ�
+ * 割込みハンドラ
  */
 Function	vector_handler
 
-	/* ����ΰ�κ��� */
+	/* 作業領域の作成 */
 	addi	-16,  sp, sp
 	st.w	 ep, 12[sp]
 	st.w	r10,  8[sp]
@@ -242,8 +242,8 @@ Function	vector_handler
 	st.w	r12,  0[sp]
 
 	/*
-	 * �ϥ�ɥ鵯ư���Ϥ��ɤ߽Ф�
-	 *    R10 : �ϥ�ɥ������
+	 * ハンドラ起動番地の読み出し
+	 *    R10 : ハンドラの番地
 	 */
 	stsr	ecr, r10
 	shr	2, r10
@@ -252,25 +252,25 @@ Function	vector_handler
 	add	r10, r11
 	ld.w	0[r11], r10
 
-	/* �ϥ�ɥ餬̵�����¨��λ */
+	/* ハンドラが無ければ即終了 */
 	cmp	r0,r10
 	bne	1f
 
-	/* �����ߥϥ�ɥ餬��Ͽ����Ƥ��ʤ���硧
-	   ������r6���˲����ơ��äδؿ���Ƥ�Ǥ��뤫��¾�Υ쥸�������˲�
-	   ������ǽ�����������������Ƥ���cpu_experr()�����halt������
-	   ���뤫̵�¥롼�פ��Ƥ���ΤǤ��δؿ��������äƤ��ʤ�����ä�
-	   ����褦�ˤ������ʤ�¾�Υ쥸��������¸�����ۤ����褤 */
+	/* 割り込みハンドラが登録されていない場合：
+	   ここでr6を破壊して、Ｃの関数を呼んでいるから他のレジスタも破壊
+	   される可能性が強いが、たいてい、cpu_experr()の中でhaltさせて
+	   いるか無限ループしているのでこの関数からは戻ってこない。戻って
+	   くるようにしたいなら他のレジスタも保存したほうがよい */
 	stsr	ecr, r6
 	jarl	_cpu_experr, r31
 	br	end_handler
 
 1:
 	/*
-	 * �Ĥ�Υ쥸�������� 
+	 * 残りのレジスタ退避 
 	 */
 	addi	-116, sp, ep
-	mov	ep, sp			/* �����å���ȿ�� */
+	mov	ep, sp			/* スタックに反映 */
 	sst.w	r1, 112[ep]
 	sst.w	r2, 108[ep]
 	sst.w	r3, 104[ep]
@@ -298,12 +298,12 @@ Function	vector_handler
 	sst.w	r28, 16[ep]
 	sst.w	r29, 12[ep]
 	sst.w	r31,  8[ep]
-	stsr	eipc,   r6		/* ¿�ų�����к� */
+	stsr	eipc,   r6		/* 多重割込み対策 */
 	sst.w	r6 ,  4[ep]
 	stsr	eipsw,  r6
 	sst.w	r6 ,  0[ep]
 
-	/* ¿�ų����ߥ����å��ȥͥ��ȥ����󥿤򥤥󥯥���� */
+	/* 多重割り込みチェックとネストカウンタをインクリメント */
 	Lea	_intnest, r11
 	ld.w	0[r11], r6
 	add	1, r6
@@ -311,32 +311,32 @@ Function	vector_handler
 	cmp	1, r6
 	ble	1f
 
-	/* ¿�ų����...���Ǥ˳����ߥ����å��ˤʤäƤ��� */
+	/* 多重割込み...すでに割り込みスタックになっている */
 	jr	2f
 1:
-	/* ¿�ų���ߤǤʤ� */
-	/* �����å��ڤ��ؤ� */
+	/* 多重割込みでない */
+	/* スタック切り替え */
 	mov	sp, r11
 	Lea	STACKTOP, sp
 	Push	r11
 
 	Lea	end_int, r31
-	/* �����ߵ��� */
+	/* 割り込み許可 */
 	ei
-	/* �ϥ�ɥ鵯ư */
+	/* ハンドラ起動 */
 	jmp	r10
 
 	/*
-	 * �����ߤ������������
+	 * 割り込みからの復帰処理
 	 */
 Label	end_int
-	/* �����߶ػ� */
+	/* 割り込み禁止 */
 	di
 
-	/* �����å������� */
+	/* スタックの復帰 */
 	ld.w	0[sp], sp
 
-	/* intnest��ǥ�������� */
+	/* intnestをディクリメント */
 	Lea	_intnest, r11
 	ld.w	0[r11], r10
 	mov	1, r11
@@ -345,7 +345,7 @@ Label	end_int
 	st.w	r10, 0[r11]
 
 	/* 
-	 * �������ǥ����ѥå����׵᤬���뤫��
+	 * タスクディスパッチャ要求があるか？
 	 */
 	Lea	__kernel_reqflg, r10
 	ld.w	0[r10], r11
@@ -356,19 +356,19 @@ Label	end_int
 
 2:
 	Lea	end_int_nest, r31
-	/* �����ߵ��� */
+	/* 割り込み許可 */
 	ei
-	/* �ϥ�ɥ鵯ư */
+	/* ハンドラ起動 */
 	jmp	r10
 
 	/*
-	 * �����ߤ������������
+	 * 割り込みからの復帰処理
 	 */
 Label	end_int_nest
-	/* �����߶ػ� */
+	/* 割り込み禁止 */
 	di
 
-	/* intnest��ǥ�������� */
+	/* intnestをディクリメント */
 	Lea	_intnest, r11
 	ld.w	0[r11], r10
 	mov	1, r11
@@ -378,7 +378,7 @@ Label	end_int_nest
 
 recover_from_int:
 	/*
-	 * �쥸�������� 
+	 * レジスタ復帰 
 	 */
 	mov	sp, ep
 
@@ -419,7 +419,7 @@ recover_from_int:
 
 end_handler:
 	/*
-	 * ����ΰ������
+	 * 作業領域の復帰
 	 */
 	addi	 16, sp, sp
 	ld.w	 -4[sp], ep
@@ -430,16 +430,16 @@ end_handler:
 
 
 /*
- * �����ߤˤȤ�ʤ��������ǥ����ѥå���Ƚ��
+ * 割り込みにともなうタスクディスパッチの判定
  */
 ret_int:
-	/* �ǥ����ѥå��ػߡ� */
+	/* ディスパッチ禁止？ */
 	Lea	__kernel_enadsp, r10
 	ld.w	0[r10], r10
 	cmp	r0, r10
 	be	ret_int_r
 
-	/* �������ڤ��ؤ���ɬ�פ����뤫�� */
+	/* タスク切り替えの必要があるか？ */
 	Lea	__kernel_schedtsk, r10
 	ld.w	0[r10], r10
 	Lea	__kernel_runtsk, r11
@@ -447,7 +447,7 @@ ret_int:
 	cmp	r10,r11
 	be	ret_int_r
 
-	/* TCB����Ȥ�������������������� */
+	/* TCBの中身を修正して復帰情報を設定 */
 	mov	ep, r11
 	Lea	__kernel_runtsk, ep
 	sld.w	0[ep], ep			/* ep = _kernel_runtsk */
@@ -459,7 +459,7 @@ ret_int:
 	sst.w	r10, TCB_psw[ep]
 	mov	r11, ep
 
-	/* �������ǥ����ѥå���� */
+	/* タスクディスパッチャへ */
 	stsr	eipsw, r10
 	ori	0x20, r10, r10
 	ldsr	r10, eipsw
@@ -479,16 +479,16 @@ ret_int_r:
 	cmp	r0, r11
 	be	1f
 
-	/* �������㳰 */
+	/* タスク例外 */
 	jarl	__kernel_calltex, r31
 1:
-	/* ������Ȥ��������������Ф� */
+	/* おおもとの復帰処理へ飛ばす */
 	jr	recover_from_int
 
 /*
- * CPU���å����֤μ���
+ * CPUロック状態の取得
  *
- *   ����߶ػߤʤ�CPU���å�����
+ *   割込み禁止ならCPUロック状態
  */
 Function	_sense_lock
 	stsr	psw, r10

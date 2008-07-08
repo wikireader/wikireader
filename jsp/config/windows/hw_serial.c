@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.c,v 1.13 2003/12/15 07:19:22 takayuki Exp $
  */
@@ -45,8 +45,8 @@
 #include <resource.h>
 #include <debugout.h>
 
-#define BUFSZ_UPPERBOUND	24*1024	/* ���󥽡���Хåե��δ��ᤷ��ॵ���� (�����Ķ����ȴ����ᤷ)  (�ɤ����30000��Ķ�����ʤ��餷��)*/
-#define BUFSZ_LOWERBOUND	 8*1024	/* �����ᤷ���Ȥ��ˤɤΤ��餤�����᤹�� (UPPERBOUND���⾮������)*/
+#define BUFSZ_UPPERBOUND	24*1024	/* コンソールバッファの巻戻し基準サイズ (これを超えると巻き戻し)  (どうやら30000を超えられないらしい)*/
+#define BUFSZ_LOWERBOUND	 8*1024	/* 巻き戻したときにどのくらい巻き戻すか (UPPERBOUNDよりも小さい数)*/
 
 #define ID_PORT(x)		((x) + 1)
 #define INDEX_PORT(x)	((x) - 1)
@@ -59,22 +59,22 @@
 extern HINSTANCE	ProcessInstance;
 extern HANDLE		PrimaryThreadHandle;
 
-	/* ���ꥢ������֥��å� */
+	/* シリアル制御ブロック */
 SIOPCB siopcb_table[TNUM_PORT];
 
 
-	/* ��̿Ū�ʥ��顼ȯ�����ѥ������� */
+	/* 致命的なエラー発生時用アサート */
 extern void FatalAssertion(int exp, LPCSTR format, ... );
 
 
 /*
- *  ���ꥢ��I/O���������󥿥ե�����
+ *  シリアルI/O共通部インタフェース
  */
 
 /*===========================================================================*/
 
 /*
- * ���󥽡��뷿���ꥢ��
+ * コンソール型シリアル
  */
 
 #define MAX_CONSOLE_BUFSZ	2048
@@ -93,7 +93,7 @@ static LRESULT CALLBACK KeyEventTrapper(HWND hWnd, UINT Msg, WPARAM wParam, LPAR
 {
 	SIOPCB * scope;
 	
-		/* WM_CHAR��եå����� */
+		/* WM_CHARをフックする */
 	if(Msg == WM_CHAR)
 	{
 		scope = (SIOPCB *)GetWindowLong(GetParent(hWnd),GWL_USERDATA);
@@ -101,7 +101,7 @@ static LRESULT CALLBACK KeyEventTrapper(HWND hWnd, UINT Msg, WPARAM wParam, LPAR
 		return TRUE;
 	}
 
-		/* ��Ȥ�Ȥ�WndProc��ƤӤʤ��� */
+		/* もともとのWndProcを呼びなおす */
 	return CallWindowProc((void *)GetWindowLong(hWnd,GWL_USERDATA),hWnd,Msg,wParam,lParam);
 }
 
@@ -112,24 +112,24 @@ static void SelectConsoleFont(HWND console, UINT pixel)
 	LOGFONT logfont;
 	HDC     hDC;
 
-		/* DC���� */
+		/* DC取得 */
 	hDC = GetDC(console);
 
-		/* ���Υե���Ⱦ����������� */
+		/* 今のフォント情報を取得する */
 	oldfont = (HANDLE) SendMessage(console, WM_GETFONT, 0, 0);
 	GetObject(oldfont, sizeof(LOGFONT), &logfont);
 	
-		/* �ݥ���Ȥ��ѹ� */
+		/* ポイントを変更 */
 	logfont.lfHeight = -MulDiv(pixel, GetDeviceCaps(hDC, LOGPIXELSY), 72);
 
-		/* ���������ե���Ⱦ���򸵤ˡ��������ե���Ȥ������������� */
+		/* 更新したフォント情報を元に、新しいフォントを生成して選択 */
 	newfont = CreateFontIndirect(&logfont);
 	SendMessage(console, WM_SETFONT, (WPARAM)newfont, MAKELPARAM(TRUE,0));
 
-		/* ���Υե���Ȥ��˴� */
+		/* 前のフォントを破棄 */
 	DeleteObject(oldfont);
 
-		/* DC���� */
+		/* DC解放 */
 	ReleaseDC(console, hDC);
 }
 
@@ -144,7 +144,7 @@ static LRESULT ConsoleCommandHandler(HWND hDlg, UINT wID, UINT wNotifyCode, LPAR
 	switch(wID)
 	{
 		/*
-		 * �ե���Ȥ��礭�����ѹ����� 
+		 * フォントの大きさを変更する 
 		 */
 	case ID_FONT_BIG:
 		SelectConsoleFont(console, 16);
@@ -175,7 +175,7 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 
 			hConsole = GetDlgItem(hDlg, IDC_CONSOLE);
 
-				/* �ƥ����ȥܥå�����WndProc�˥եå��򤫤��� */
+				/* テキストボックスのWndProcにフックをかける */
 			DefWndProc = (void *)GetWindowLong(hConsole,GWL_WNDPROC);
 			SetWindowLong(hConsole, GWL_USERDATA, (LONG) DefWndProc);
 
@@ -199,7 +199,7 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 			break;
 		}
 
-	case WM_CLOSE:	/* �桼���ˤ�륦����ɥ������������޻� */
+	case WM_CLOSE:	/* ユーザによるウィンドウクローズを抑止 */
 		break;
 
 	case WM_CHAR:
@@ -230,7 +230,7 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 	case WM_COMMAND:
 		return ConsoleCommandHandler(hDlg, LOWORD(wParam), HIWORD(wParam), lParam);
 
-		//������֤��ä�����Ԥ����ʤ��Ƥ���Ϥ���
+		//一定時間たったら改行がこなくても出力する
 	case WM_TIMER:
 		if(wParam == 100)
 		{
@@ -246,10 +246,10 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 			    lParam = TRUE;
             }
             else
-                break;  //�ޤ������������äƤʤ��Τǲ��⤷�ʤ�
+                break;  //まだ初期化が終わってないので何もしない
 		}
 
-		//lParam : ����������ä���˳���ߤ򤫤��뤫�ɤ��� (FALSE:�����ʤ� TRUE:������)
+		//lParam : 送信が終わった後に割込みをかけるかどうか (FALSE:かけない TRUE:かける)
 	case SERMSG_UPDATE:
 		{
 			LRESULT  result;
@@ -267,12 +267,12 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 			    textlength = GetWindowTextLength(console);
 			    if(textlength > BUFSZ_UPPERBOUND)
 			    {
-					    /* �Ť������ä� */
+					    /* 古い情報を消す */
 				    SendMessage(console,EM_SETSEL,0,textlength - BUFSZ_LOWERBOUND);
 				    SendMessage(console,EM_REPLACESEL,(WPARAM)FALSE,(LPARAM)"");
 				    textlength = GetWindowTextLength(console);
 			    }
-				    /* ������ʸ�����֤� */
+				    /* 末尾に文字を置く */
 			    result = SendMessage(console,EM_SETSEL,textlength,textlength);
 
 			    EnterCriticalSection(&param->cs);
@@ -288,7 +288,7 @@ static BOOL CALLBACK ConsoleProc(HWND hDlg,UINT Msg,WPARAM wParam,LPARAM lParam)
 			    }
             }
             else
-                PostMessage(hDlg, Msg, wParam, lParam);     //�ޤ������������äƤʤ��Τ������ˤĤ��ʤ���
+                PostMessage(hDlg, Msg, wParam, lParam);     //まだ初期化が終わってないので末尾につけなおす
 
 			break;
 		}
@@ -348,12 +348,12 @@ static BOOL SerialConsole_PutChar(SIOPCB * cb, INT chr, BOOL rasint)
 	textlength = GetWindowTextLength(console);
 	if(textlength > BUFSZ_UPPERBOUND)
 	{
-			/* �Ť������ä� */
+			/* 古い情報を消す */
 		SendMessage(console,EM_SETSEL,0,textlength - BUFSZ_LOWERBOUND);
 		SendMessage(console,EM_REPLACESEL,(WPARAM)FALSE,(LPARAM)"");
 		textlength = GetWindowTextLength(console);
 	}
-		/* ������ʸ�����֤� */
+		/* 末尾に文字を置く */
 	SendMessage(console,EM_SETSEL,textlength,textlength);
 	SendMessage(console,EM_REPLACESEL,(WPARAM)FALSE,(LPARAM)buffer);
 
@@ -402,7 +402,7 @@ static BOOL SerialConsole_PushChar(SIOPCB * cb, INT chr)
 /*===========================================================================*/
 
 /*
- *   Windows�Υ��󥽡������Ѥ������ꥢ��������
+ *   Windowsのコンソールを使用したシリアル入出力
  */
 
 static DWORD WINAPI WinConsole_ReceiverThread(LPVOID param)
@@ -420,7 +420,7 @@ static DWORD WINAPI WinConsole_ReceiverThread(LPVOID param)
 
 	while((work = WaitForSingleObject(cb->Handle, INFINITE)) != WAIT_FAILED)
 	{
-		assert(work == WAIT_OBJECT_0);	/* ���֥������Ȥϥ����ʥ���֤ˤʤä� */
+		assert(work == WAIT_OBJECT_0);	/* オブジェクトはシグナル状態になった */
 
 		ReadConsoleInput(stdin, &input_record, 1, &work);
 
@@ -444,7 +444,7 @@ static void WinConsole_CreatePort(SIOPCB * cb)
 	cb->Handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTitle("TOPPERS/JSP SerialConsole");
 
-		/* �����Хåե��ƻ��ѥ���åɤ���� */
+		/* 受信バッファ監視用スレッドを作成 */
 	CreateThread(NULL,0,WinConsole_ReceiverThread,(LPVOID)cb,0,NULL);
 }
 
@@ -458,11 +458,11 @@ static BOOL WinConsole_PutChar(SIOPCB * cb, INT chr, BOOL rasint)
 	assert(BITTEST(cb->Flag, SIO_TYP_TTY));
 	assert(cb->Handle != NULL && cb->Handle != 0);
 
-		/* ɸ����Ϥ˰�ʸ������ */
+		/* 標準出力に一文字送信 */
 	word   = (char)chr;
 	result = WriteFile(cb->Handle, &word, 1, &written, NULL);
 
-		/* �����ȯ���ե饰��Ω�äƤ����顢������λ������׵�򵯤��� */
+		/* 割込み発生フラグが立っていたら、送信完了割込み要求を起こす */
 	if(result != 0 && rasint == TRUE)
 	{
 		BITSET(cb->Flag, SIO_STA_INTSND);
@@ -487,11 +487,11 @@ static void WinConsole_ClosePort(SIOPCB * cb)
 /*===========================================================================*/
 
 /*
- *   Windows�Υ��󥽡������Ѥ������ꥢ��������
+ *   Windowsのコンソールを使用したシリアル入出力
  */
 
-/* �� : CreateConsoleScreenBuffer�ϼ��Ի���INVALID_HANDLE_VALUE���֤�����
-          ¾�Υ��ꥢ�����������ȶ��̤����뤿���NULL���Ѥ��롣 */
+/* 注 : CreateConsoleScreenBufferは失敗時にINVALID_HANDLE_VALUEを返すが、
+          他のシリアル入出力部と共通かするためにNULLを用いる。 */
 
 static DWORD WINAPI ScreenBuffer_ReceiverThread(LPVOID param)
 {
@@ -504,7 +504,7 @@ static DWORD WINAPI ScreenBuffer_ReceiverThread(LPVOID param)
 
 	while((work = WaitForSingleObject(cb->Handle, INFINITE)) != WAIT_FAILED)
 	{
-		assert(work == WAIT_OBJECT_0);	/* ���֥������Ȥϥ����ʥ���֤ˤʤä� */
+		assert(work == WAIT_OBJECT_0);	/* オブジェクトはシグナル状態になった */
 
 		ReadConsoleInput(cb->Handle, &input_record, 1, &work);
 
@@ -531,7 +531,7 @@ static void ScreenBuffer_CreatePort(SIOPCB * cb)
 	SetConsoleActiveScreenBuffer(cb->Handle);
 	SetConsoleTitle("TOPPERS/JSP SerialConsole");
 
-		/* �����Хåե��ƻ��ѥ���åɤ���� */
+		/* 受信バッファ監視用スレッドを作成 */
 	CreateThread(NULL,0,ScreenBuffer_ReceiverThread,(LPVOID)cb,0,NULL);
 }
 
@@ -545,11 +545,11 @@ static BOOL ScreenBuffer_PutChar(SIOPCB * cb, INT chr, BOOL rasint)
 	assert(BITTEST(cb->Flag, SIO_TYP_SCRBUF));
 	assert(cb->Handle != NULL && cb->Handle != 0);
 
-		/* ɸ����Ϥ˰�ʸ������ */
+		/* 標準出力に一文字送信 */
 	word   = (char)chr;
 	result = WriteFile(cb->Handle, &word, 1, &written, NULL);
 
-		/* �����ȯ���ե饰��Ω�äƤ����顢������λ������׵�򵯤��� */
+		/* 割込み発生フラグが立っていたら、送信完了割込み要求を起こす */
 	if(result != 0 && rasint == TRUE)
 	{
 		BITSET(cb->Flag, SIO_STA_INTSND);
@@ -574,7 +574,7 @@ static void ScreenBuffer_ClosePort(SIOPCB * cb)
 /*===========================================================================*/
 
 /*
- *   �ۤ�Ȥ˥��ꥢ�����
+ *   ほんとにシリアル出力
  */
 
 static DWORD WINAPI RawSerial_ReceiverThread(LPVOID param)
@@ -588,7 +588,7 @@ static DWORD WINAPI RawSerial_ReceiverThread(LPVOID param)
 
 	while((work = WaitForSingleObject(cb->Handle, INFINITE)) != WAIT_FAILED)
 	{
-		assert(work == WAIT_OBJECT_0);	/* ���֥������Ȥϥ����ʥ���֤ˤʤä� */
+		assert(work == WAIT_OBJECT_0);	/* オブジェクトはシグナル状態になった */
 
 		ReadFile(cb->Handle, &buffer, 1, &work, NULL);
 
@@ -606,7 +606,7 @@ static void RawSerial_CreatePort(SIOPCB * cb)
 	FatalAssertion( cb->Handle != INVALID_HANDLE_VALUE && cb->Handle != NULL, 
                     "RawSerial_CreatePort failed to open the port 'COM1'.");
 
-		/* �����Хåե��ƻ��ѥ���åɤ���� */
+		/* 受信バッファ監視用スレッドを作成 */
 	CreateThread(NULL, 0, RawSerial_ReceiverThread, (LPVOID)cb, 0, NULL);
 }
 
@@ -620,11 +620,11 @@ static BOOL RawSerial_PutChar(SIOPCB * cb, INT chr, BOOL rasint)
 	assert(BITTEST(cb->Flag, SIO_TYP_RAWSIO));
 	assert(cb->Handle != NULL && cb->Handle != 0);
 
-		/* ɸ����Ϥ˰�ʸ������ */
+		/* 標準出力に一文字送信 */
 	word   = (char)chr;
 	result = WriteFile(cb->Handle, &word, 1, &written, NULL);
 
-		/* �����ȯ���ե饰��Ω�äƤ����顢������λ������׵�򵯤��� */
+		/* 割込み発生フラグが立っていたら、送信完了割込み要求を起こす */
 	if(result != 0 && rasint == TRUE)
 	{
 		BITSET(cb->Flag, SIO_STA_INTSND);
@@ -648,7 +648,7 @@ static void RawSerial_ClosePort(SIOPCB * cb)
 
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void sio_initialize(void)
 {
@@ -664,7 +664,7 @@ void sio_initialize(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB * sio_opn_por(ID siopid, VP_INT exinf)
 {
@@ -701,7 +701,7 @@ SIOPCB * sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void sio_cls_por(SIOPCB *siopcb)
 {
@@ -725,7 +725,7 @@ void sio_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL sio_snd_chr(SIOPCB *siopcb, INT chr)
 {
@@ -753,7 +753,7 @@ BOOL sio_snd_chr(SIOPCB *siopcb, INT chr)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT sio_rcv_chr(SIOPCB * siopcb)
 {
@@ -767,20 +767,20 @@ INT sio_rcv_chr(SIOPCB * siopcb)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå�����
+ *  シリアルI/Oポートからのコールバック許可
  */
 void sio_ena_cbr(SIOPCB * siopcb, UINT cbrtn)
 {}
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ػ�
+ *  シリアルI/Oポートからのコールバック禁止
  */
 void sio_dis_cbr(SIOPCB * siopcb, UINT cbrtn)
 {}
 
 
 /*
- *  ���ꥢ��I/O�ݡ��ȳ���ߥϥ�ɥ�
+ *  シリアルI/Oポート割込みハンドラ
  */
 void sio_handler(void)
 {
@@ -790,16 +790,16 @@ void sio_handler(void)
 	{
 		if(BITTEST(siopcb_table[port].Flag, SIO_STA_OPEN))
 		{
-				/* ������λ����� */
+				/* 受信完了割込み */
 			if(BITTEST(siopcb_table[port].Flag, SIO_STA_INTRCV))
 			{
-					/* ��������ʸ������Ф� */
+					/* 受信した文字を取り出し */
 				BITCLEAR(siopcb_table[port].Flag, SIO_STA_INTRCV);
 				sio_ierdy_rcv(GET_SIOPCB(ID_PORT(port))->exinf);
 
 			}
 
-				/* ������λ����� */
+				/* 送信完了割込み */
 			if(BITTEST(siopcb_table[port].Flag, SIO_STA_INTSND))
 			{
 				BITCLEAR(siopcb_table[port].Flag, SIO_STA_INTSND);
@@ -810,7 +810,7 @@ void sio_handler(void)
 }
 
 /*
- *  ���󥽡���ݡ��Ȥؤζ�����ʸ������ (����ߤʤ�)
+ *  コンソールポートへの強制一文字出力 (割込みなし)
  */
 void SerialRawPutc(INT chr)
 {

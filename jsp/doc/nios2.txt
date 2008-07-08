@@ -1,9 +1,9 @@
 
-             �� TOPPERS/JSP�����ͥ� �桼�����ޥ˥奢�� ��
-                     ��Nios2 �������åȰ�¸����
+             ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                     （Nios2 ターゲット依存部）
 
-             ��Release 1.4.2 �б����ǽ�����: 10-Feb-2006��
-                 ��NiosII Development Kit 5.1 �б���
+             （Release 1.4.2 対応、最終更新: 10-Feb-2006）
+                 （NiosII Development Kit 5.1 対応）
 
 ------------------------------------------------------------------------ 
  TOPPERS/JSP Kernel
@@ -13,187 +13,187 @@
  Copyright (C) 2004 by Embedded and Real-Time Systems Laboratory
                Graduate School of Information Science, Nagoya Univ., JAPAN    
 
- �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-     �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-     ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-     �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-     �ȡ�
-   (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-       �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-   (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-       ��𤹤뤳�ȡ�
- (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-     ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 
- �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 
  @(#) $Id: nios2.txt,v 1.6 2006/02/10 08:36:10 honda Exp $
 ------------------------------------------------------------------------
 
 
-1. Nios2 �������åȰ�¸���γ���
+1. Nios2 ターゲット依存部の概要
 
-1.1 �������åȥ����ƥ�
+1.1 ターゲットシステム
 
-Nios2 �ץ����å��Υ������åȥ����ƥ�Ȥ��Ƥϡ�Nios2 �����ݡ��Ȥ��Ƥ� 
-FPGA ����ܤ��������ƥ�򥵥ݡ��Ȥ��Ƥ��롣�������åȥ����ƥ�Ȥ��Ƥϡ�
-�ʲ��Υܡ��ɤ򥵥ݡ��Ȥ��Ƥ��롣�����Υܡ��ɤ���Ѥ��뤹��ݤˤϡ���
-���ɤ���°����ǥ�������� Standard �⤷���� Full Featured �� FPGA ��
-��������ɬ�פ����롥
+Nios2 プロセッサのターゲットシステムとしては、Nios2 がサポートしてる 
+FPGA を搭載したシステムをサポートしている。ターゲットシステムとしては、
+以下のボードをサポートしている。これらのボードを使用するする際には、ボ
+ードに付属するデザイン例の Standard もしくは Full Featured を FPGA に
+実装する必要がある．
 
- ��NiosII Development Board Cyclone Edition
- ��NiosII Development Board Stratix Edition
- ��NiosII Development Board Stratix Professional Edition 
- ��NiosII Development Board StratixII Edition
+ ・NiosII Development Board Cyclone Edition
+ ・NiosII Development Board Stratix Edition
+ ・NiosII Development Board Stratix Professional Edition 
+ ・NiosII Development Board StratixII Edition
 
-1.2 ��ȯ�Ķ��ȼ¹ԴĶ�
+1.2 開発環境と実行環境
 
-��ȯ�Ķ��ˤϡ�NiosII Development Kit�˴ޤޤ�Ƥ��� GCC �ʤɤ� GNU��ȯ
-�Ķ����Ѥ������֥������ȥե�����ե����ޥåȤ� ELF ��ɸ��Ȥ��롥
+開発環境には，NiosII Development Kitに含まれている GCC などの GNU開発
+環境を用い，オブジェクトファイルフォーマットは ELF を標準とする．
 
-�����ͥ�Υ���ѥ���ڤӥ���������ɤ�Eclipse���Ѥ������ޥ�ɥ饤��
-(Cygwin�⤷����NiosII SDK Shell)����Ԥ���
+カーネルのコンパイル及びダウンロードはEclipseを用いずコマンドライン
+(CygwinもしくはNiosII SDK Shell)から行う．
 
-1.3 ���ݡ��Ȥ��뵡ǽ�γ���
+1.3 サポートする機能の概要
 
-Nios2 ��¸�ε�ǽ�Ȥ��ơ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ��vxget_tim�ˤ�
-���ݡ��Ȥ��Ƥ��롥����ߤζػߡ�����(dis_int, ena_int)�򥵥ݡ��Ȥ��롥
-�ޤ�������ߥޥ������ѹ�������(chg_ixx��get_ixx)�ϥ��ݡ��Ȥ��Ƥ��ʤ���
+Nios2 依存の機能として，性能評価用システム時刻参照機能（vxget_tim）を
+サポートしている．割込みの禁止・許可(dis_int, ena_int)をサポートする．
+また，割込みマスクの変更・参照(chg_ixx，get_ixx)はサポートしていない．
 
-1.4 ¾�Υ������åȤؤΥݡ��ƥ���
+1.4 他のターゲットへのポーティング
 
-JSP�����ͥ��ư�����ˤϡ�64Kbyte���٤Υ���ȡ�ɸ���TIMER��
-JTAG-UART�ʤ⤷����UART�ˤ����줾��1��ɬ�פǤ��롣�ºݤΥ������ѹ��ս�
-�ˤĤ��Ƥϸ�Ҥ��롣
-
-
-2��Nios2 �ץ����å���¸���ε�ǽ
-
-������Ǥϡ������ͥ뤪��ӥ����ƥॵ���ӥ��ε�ǽ����ǡ�Nios2 ��¸����
-ʬ�ˤĤ��Ʋ��⤹�롥
-
-2.1 �ǡ�����
-
-signed int������� unsigned int���Υ������� 32�ӥåȤǤ��롥
-
-2.2 ����ߴ�����ǽ�ȳ���ߥϥ�ɥ�
-
-DEF_INH �ǻ��ꤹ�����ߥϥ�ɥ��ֹ��inhno�ˤϡ�SOPC Builder�Ǥ˻���
-����������ֹ��ɽ�������Υǡ�������INHNO�ˤ� unsigned int�����������
-�Ƥ��롥DEF_INH �ǡ������ͥ���٤Ȥ���ͭ���Ǥʤ��ͤ䡤�ºݤγ����ͥ��
-�٤Ȥϰۤʤ��ֹ����ꤷ������ư����ݾڤ���ʤ���
-
-2.4 �������ȥ��åץ⥸�塼��
-
-Nios2 ��¸�Υ������ȥ��åץ⥸�塼���start.S�ˤǤϡ����ν����������
-�Ԥ���
-
-(A) ̿�ᥭ��å���ν����
-
-̿�ᥭ��å����������Ƥ����硤initi��̿�ᥭ��å�����������롥
-
-(B) �ǡ�������å���ν����
-
-�ǡ�������å����������Ƥ����硤initi��̿�ᥭ��å�����������롥
-
-(C) �����å��ݥ��󥿤ν�����ȥ������Х�ݥ��󥿡�������
-
-�����å��ݥ���(sp)STACKTOP�����ꤷ�����˥������Х�ݥ��󥿡�(gp)��
-_gp�ǽ�������� 
-
-(D) hardware_init_hook �θƽФ�
-
-hardware_init_hook �� 0 �Ǥʤ����ˤϡ�hardware_init_hook ��ƤӽФ���
-hardware_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륿������
-�Ȱ�¸�ν������Ԥ�������Ѱդ��Ƥ��롥hardware_init_hook ���ɤ��Ǥ�
-�������Ƥ��ʤ���硤��󥫤Ǥ��Υ���ܥ�� 0 ���������ʥ�󥫥���
-��ץ���˵��Ҥ���ˡ�
-
-(E) bss���������ν����
-
-bss���������򥼥����ꥢ���롥�ʤ���data���������ˤĤ��Ƥϡ�RAM�λ�
-���̤򸺤餹��Ū�ǡ�ROM�����б�����������ϹԤäƤ��ʤ���
-
-(F) software_init_hook �θƽФ�
-
-software_init_hook �� 0 �Ǥʤ����ˤϡ�software_init_hook ��ƤӽФ���
-software_init_hook �ϡ������ͥ뤬��ư��������˹Ԥ�ɬ�פ����륽�եȥ���
-���Ķ��ʶ���Ū�ˤϡ��饤�֥��˰�¸�ν������Ԥ�������Ѱդ��Ƥ��롥
-software_init_hook ���ɤ��Ǥ��������Ƥ��ʤ���硤��󥫤Ǥ��Υ����
-��� 0 ���������ʥ�󥫥�����ץ���˵��Ҥ���ˡ�
-
-(G) �����ͥ�ε�ư
-
-kernel_start ��ʬ�����������ͥ��ư���롥kernel_start ����꥿����
-�Ƥ��뤳�Ȥ����ꤷ�Ƥ��ʤ���
-
-2.5 ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
-
-Nios2 ��¸���Ǥϡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ��vxget_tim�ˤ򥵥ݡ�
-�Ȥ��Ƥ��롥��ǽɾ���ѥ����ƥ��������٤ϥ����ޤ˶��뤹�륯���å��ˤ�
-�äƷ�ޤ롥�ʤ���SYSUTIM���� UD����64�ӥåȤ����̵���������ˤ������
-�Ƥ��롥
-
-2.6 ���ꥢ�륤�󥿥ե������ɥ饤��
-
-Nios2 ��¸���Υ��ꥢ�륤�󥿥ե������ɥ饤�Фϡ�UART �⤷���� 
-JTAG-UART �򥵥ݡ��Ȥ��Ƥ��롥UART �� JTAG-UART ������ϥ����ƥ��¸��
-�� sys_defs.h �� USE_JTAG_UART ���������Ф褤��
+JSPカーネルを動作させるには、64Kbyte程度のメモリと、標準のTIMERと
+JTAG-UART（もしくはUART）がそれぞれ1つ必要である。実際のコード変更箇所
+については後述する。
 
 
-3. �����ͥ�ι�����ˡ & �¹���ˡ
+2．Nios2 プロセッサ依存部の機能
 
-3.1 ������ˡ
-�����ͥ�ι��ۤˤ�GUN��ȯ�Ķ���¾�ˡ�make �� perl ��ɬ�פȤʤ롥���Τ�
-�ᡤWindows �Ǥ� Cygwin �Ķ��⤷���� NiosII SDK Shell ����Ѥ���ɬ�פ�
-���롣NiosII SDK Shell �� JSP�����ͥ�ι��ۤ�ɬ�פ� perl������ץȤǻ�
-�Ѥ���饤�֥�꤬�Ѱդ���Ƥ����ᡢɸ��ι�����ˡ�ǤϹ��ۤǤ��ʤ�����
-���Ǥϡ�Cygwin �Ķ��� NiosII SDK Shell ��ʬ�����������롣
+この節では，カーネルおよびシステムサービスの機能の中で，Nios2 依存の部
+分について解説する．
 
-3.1.1 Cygwin�Ķ�
+2.1 データ型
 
-NiosII Development Kit �˴ޤޤ�Ƥ��륳��ѥ�������GNU�ġ���� Cygwin 
-����ƤӽФ���褦�ѥ����̤���
+signed int型および unsigned int型のサイズは 32ビットである．
+
+2.2 割込み管理機能と割込みハンドラ
+
+DEF_INH で指定する割込みハンドラ番号（inhno）は，SOPC Builderでに指定
+した割込み番号を表し，そのデータ型（INHNO）は unsigned int型に定義され
+ている．DEF_INH で，割込み優先度として有効でない値や，実際の割込み優先
+度とは異なる番号を指定した場合の動作は保証されない．
+
+2.4 スタートアップモジュール
+
+Nios2 依存のスタートアップモジュール（start.S）では，次の初期化処理を
+行う．
+
+(A) 命令キャッシュの初期化
+
+命令キャッシュを実装している場合，initiで命令キャッシュを初期化する．
+
+(B) データキャッシュの初期化
+
+データキャッシュを実装している場合，initiで命令キャッシュを初期化する．
+
+(C) スタックポインタの初期化とグローバルポインターの設定
+
+スタックポインタ(sp)STACKTOPに設定し，次にグローバルポインター(gp)を
+_gpで初期化する 
+
+(D) hardware_init_hook の呼出し
+
+hardware_init_hook が 0 でない場合には，hardware_init_hook を呼び出す．
+hardware_init_hook は，カーネルが起動される前に行う必要があるターゲッ
+ト依存の初期化を行うために用意している．hardware_init_hook がどこでも
+定義されていない場合，リンカでこのシンボルを 0 に定義する（リンカスク
+リプト内に記述あり）．
+
+(E) bssセクションの初期化
+
+bssセクションをゼロクリアする．なお，dataセクションについては，RAMの使
+用量を減らす目的で，ROM化に対応した初期化は行っていない．
+
+(F) software_init_hook の呼出し
+
+software_init_hook が 0 でない場合には，software_init_hook を呼び出す．
+software_init_hook は，カーネルが起動される前に行う必要があるソフトウェ
+ア環境（具体的には，ライブラリ）依存の初期化を行うために用意している．
+software_init_hook がどこでも定義されていない場合，リンカでこのシンボ
+ルを 0 に定義する（リンカスクリプト内に記述あり）．
+
+(G) カーネルの起動
+
+kernel_start へ分岐し，カーネルを起動する．kernel_start からリターンし
+てくることは想定していない．
+
+2.5 性能評価用システム時刻参照機能
+
+Nios2 依存部では，性能評価用システム時刻参照機能（vxget_tim）をサポー
+トしている．性能評価用システム時刻の精度はタイマに供給するクロックによ
+って決まる．なお，SYSUTIM型は UD型（64ビットの符号無し整数型）に定義し
+ている．
+
+2.6 シリアルインタフェースドライバ
+
+Nios2 依存部のシリアルインタフェースドライバは，UART もしくは 
+JTAG-UART をサポートしている．UART と JTAG-UART の選択はシステム依存部
+の sys_defs.h で USE_JTAG_UART を定義すればよい。
+
+
+3. カーネルの構築方法 & 実行方法
+
+3.1 構築方法
+カーネルの構築にはGUN開発環境の他に，make や perl が必要となる．そのた
+め，Windows では Cygwin 環境もしくは NiosII SDK Shell を使用する必要が
+ある。NiosII SDK Shell は JSPカーネルの構築に必要な perlスクリプトで使
+用するライブラリが用意されていため、標準の構築方法では構築できない。以
+下では、Cygwin 環境と NiosII SDK Shell に分けて説明する。
+
+3.1.1 Cygwin環境
+
+NiosII Development Kit に含まれているコンパイラ等のGNUツールを Cygwin 
+から呼び出せるようパスを通す。
 
     $nios2_install$/bin/nios2-gnutools/H-i686-pc-cygwin/bin/
-     ��$nios2_install$ �� NiosII Development Kit �Υ��󥹥ȡ���ǥ��쥯�ȥ��
+     （$nios2_install$ は NiosII Development Kit のインストールディレクトリ）
 
-��ϡ��̾�ι��ۼ���user.txt ��7.3�������ˡ�ˤ˽��������ͥ���ۤ�
-�롣
+後は、通常の構築手順（user.txt の7.3からの方法）に従いカーネルを構築す
+る。
 
-3.1.2 NiosII SDK Shell �Ķ�
+3.1.2 NiosII SDK Shell 環境
 
-NiosII���ݡ��ȥڡ�����http://www.ertl.jp/~honda/niosII/�ˤ��顢�ʲ���
-�ե���������������ɤ��롣
+NiosIIサポートページ（http://www.ertl.jp/~honda/niosII/）から、以下の
+ファイルをダウンロードする。
 
-   ������ѥ���ѤߤΥ���ե�����졼����cfg.exe�ˤȥ����å�����chk.exe��
-   ��getopt.pl�饤�֥��(perl�饤�֥��)
+   ・コンパイル済みのコンフィギュレータ（cfg.exe）とチェッカー（chk.exe）
+   ・getopt.plライブラリ(perlライブラリ)
 
-�����ͥ륽���������ɤ�Ÿ�������塢�ǥ��쥯�ȥ� ./cfg �˥���ѥ���Ѥ�
-�Υ���ե�����졼����cfg.exe�ˤȥ����å�����chk.exe�ˤ򥳥ԡ����롣
+カーネルソースコードを展開した後、ディレクトリ ./cfg にコンパイル済み
+のコンフィギュレータ（cfg.exe）とチェッカー（chk.exe）をコピーする。
 
-getopt.pl �ϡ�NiosII SDK Shell �Ķ��� perl �饤�֥��λ�����˥��ԡ�
-���롣
-    �� : $quartus_install\sopc_builder\bin\perl_lib
-         ($quartus_install ��QuartusII�Υ��󥹥ȡ�����) 
+getopt.pl は、NiosII SDK Shell 環境で perl ライブラリの参照先にコピー
+する。
+    例 : $quartus_install\sopc_builder\bin\perl_lib
+         ($quartus_install はQuartusIIのインストール先) 
 
-�����ͥ륽���������ɤ�Ÿ�������ǥ��쥯�ȥ��ľ���ˤ��� perl������ץ� 
-./configure  �򳫤���get_object�ؿ����ʲ��Τ褦�˽񤭴�����
+カーネルソースコードを展開したディレクトリに直下にある perlスクリプト 
+./configure  を開き、get_object関数内を以下のように書き換える
 
-  ���ꥸ�ʥ�
+  オリジナル
 	sub get_objext {
 	   	local(@uname);
 
@@ -207,42 +207,42 @@ getopt.pl �ϡ�NiosII SDK Shell �Ķ��� perl �饤�֥��λ�����˥��ԡ�
     	}
 	 }
 
-   �񤭴�����
+   書き換え後
 	sub get_objext {	  
 		return("");
 	 }
 
-�ʾ�κ�Ȥθ塢�̾�ι�����ˡ�˽��������ͥ���ۤ��롣�ʲ��ϥ����ͥ�
-�����������ɤ�Ÿ�������ǥ��쥯�ȥ�Ǥκ�Ȥ���Ǥ��롣
+以上の作業の後、通常の構築方法に従いカーネルを構築する。以下はカーネル
+ソースコードを展開したディレクトリでの作業の例である。
 
-      �ǥ��쥯�ȥ�����
+      ディレクトリを作成
         $makdir obj       
         $cd obj
 
-      ����ե�����졼����󥹥���ץȤ�¹�
+      コンフィギュレーションスクリプトを実行
         $../configure -C nios2 -S altera_dev_board
 
-      �����ͥ����
+      カーネルを構築
         $make depned
         $make 
   
-�����ͥ빽�۸塢���֥������ȥե����� jsp.elf ������Ƥ���й��ۤ�����
-�Ǥ��롣
+カーネル構築後、オブジェクトファイル jsp.elf が出来ていれば構築は成功
+である。
 
 
-3.2 �¹���ˡ
+3.2 実行方法
 
-Cygwin �⤷���� NiosII SDK Shell �Υ��󥽡���򳫤���gdbserver ��¹�
-���롣
+Cygwin もしくは NiosII SDK Shell のコンソールを開き、gdbserver を実行
+する。
     
      $nios2-gdb-server --cable=USB-Blaster --tcpport=1234 -r
 
-JTAG-UART ����Ѥ�����ϡ�nios2-terminal��¹Ԥ��롣
+JTAG-UART を使用する場合は、nios2-terminalも実行する。
 
      $nios2-terminal.exe --cable=USB-Blaster --instance=0
 
-�����ͥ���ۤ����ǥ��쥯�ȥ�� gdb ��¹Ԥ��ƥ����ͥ������������
-���Ƽ¹Ԥ��롣
+カーネルを構築したディレクトリで gdb を実行してカーネルをダウンロード
+して実行する。
 
      $nios2-elf-gdb jsp.elf
      (gdb)target remote localhost:1234
@@ -250,90 +250,90 @@ JTAG-UART ����Ѥ�����ϡ�nios2-terminal��¹Ԥ��롣
      (gdb)continue
 
 
-4. ¾�Υ������åȥܡ��ɤؤΥݡ��ƥ���
+4. 他のターゲットボードへのポーティング
 
-4.1 �ǥ��쥯�ȥ깽��
+4.1 ディレクトリ構成
 
-�̾�Υ������åȤξ��ϡ�./config �ʲ���
+通常のターゲットの場合は，./config 以下で
 
-   �ʥץ����å���/�ʥ������åȥܡ���1��
-                 /�ʥ������åȥܡ���2��
+   （プロセッサ）/（ターゲットボード1）
+                 /（ターゲットボード2）
 
-�Ȥ��������ǥǥ��쥯�ȥ꤬��������Ƥ��ꡤ�ʥץ����å��ˤϥץ����å���
-����ץ����å��ѥå�����������IC�˥ѥå��������줿��Τ򼨤����ץ�����
-����¸���ȸƤ֡��ʥ������åȥܡ��ɡˤϤ���IC����ܤ����ܡ��ɰ�¸�ε�ǽ
-�ˤĤ��ƤΥ����ɤ��֤��Ƥ�����ǥ������åȰ�¸���ȸƤ֡�����
-Nios2 �ϡ������ƥ๽����ͳ���ѹ��Ǥ��뤿�ᡤ���Τ褦�����Τ��ڤ�ʬ
-���ϤǤ��ʤ��������ǡ�JSP�����ͥ��ư����뤿���ɬ�׺Ǿ��¤ι�����
-�ץ����å���¸���Ȥ��ơʥץ����å��ˤ��֤����ץ����å���¸���Ȥ��ƤΡ�
-JSP�����ͥ��ư����뤿��κǾ�������ʲ��˼�����
+という構成でディレクトリが作成されており，（プロセッサ）はプロセッサコ
+アやプロセッサパッケージいわゆるICにパッケージされたものを示し，プロセッ
+サ依存部と呼ぶ．（ターゲットボード）はそのICを搭載したボード依存の機能
+についてのコードを置いている場所でターゲット依存部と呼ぶ．一方
+Nios2 は，システム構成を自由に変更できるため，このように明確な切り分
+けはできない．そこで，JSPカーネルを動作させるための必要最小限の構成を
+プロセッサ依存部として（プロセッサ）に置く．プロセッサ依存部としての，
+JSPカーネルを動作させるための最小構成を以下に示す．
 
- ���ץ����å�
- ������(64kbyte����)
- ��TIMER
- ��UART �⤷���� JTAG UART
+ ・プロセッサ
+ ・メモリ(64kbyte程度)
+ ・TIMER
+ ・UART もしくは JTAG UART
 
-UART��JTAG UART����¾Ū�˻��Ѳ�ǽ�Ǥ��ꡢ�ǥ��ե���ȤǤ�JTAG-UART���
-�Ѥ���褦�ˤ��Ƥ��롣UART ����Ѥ�����ϡ�sys_defs.h �� 
-USE_JTAG_UART ��̤����ˤ��뤳�ȡ�����ʳ��ε�ǽ�Υ����ɤϥ������åȰ�
-¸���Ȥ��ơ��ʥ������åȥܡ��ɡ˰ʲ��Υǥ��쥯�ȥ�����֤��롥
+UARTとJTAG UARTは排他的に使用可能であり、ディフォルトではJTAG-UARTを使
+用するようにしている。UART を使用する場合は、sys_defs.h で 
+USE_JTAG_UART を未定義にすること．これ以外の機能のコードはターゲット依
+存部として，（ターゲットボード）以下のディレクトリに配置する．
 
-���ۥѥå������˴ޤޤ�Ƥ��륿�����åȰ�¸����ʲ��˼�����
+配布パッケージに含まれているターゲット依存部を以下に示す．
 
-  ��./altera_dev_board
-      NiosII Development Board��
+  ・./altera_dev_board
+      NiosII Development Board用
 
 
-4.2 �����ƥॳ��ե�����졼�����
+4.2 システムコンフィギュレーション
 
-    �����ʥ����ƥ��JSP�����ͥ��ư�������ϡ��嵭�� NiosII 
-    Development Board �ѤΥ������åȰ�¸���Υե�������оݤȤ��륷��
-    �ƥ๽���ˤ��碌�ƽ񤭴�����Ф褤�������ƥ�˹�碌���Խ�����ɬ��
-    ��������ܤ�ʲ��˼�����
+    新たなシステムでJSPカーネルを動作させる場合は，上記の NiosII 
+    Development Board 用のターゲット依存部のファイルを、対象とするシス
+    テム構成にあわせて書き換えればよい．システムに合わせて編集する必要
+    がある項目を以下に示す．
 
-      ��./sys_defs.h
-        STACKTOP    : �����å�������ɥ쥹
-        TIMER_CLOCK : �����ޡ������å�
-        TIC_NUME    : ������ƥ��å�������ʬ��
-        TIC_DENO    : ������ƥ��å�������ʬ��
-        TIM_BASE    : TIMER�Υ١������ɥ쥹
-        UART_BASE   : UART�١������ɥ쥹
-        TIM_INTLVL  : TIMER�γ�����ֹ�
-        UART_INTLVL : UART�γ�����ֹ�
-        NIOS2_ICACHE_SIZE        : ̿�ᥭ��å��奵����
-        NIOS2_DCACHE_SIZE        : �ǡ�������å��奵����
-        NIOS2_ICACHE_LINE_SIZE   : ̿�ᥭ��å���饤�󥵥���
-        NIOS2_DCACHE_LINE_SIZE   : �ǡ�������å���饤�󥵥���
+      ・./sys_defs.h
+        STACKTOP    : スタック初期アドレス
+        TIMER_CLOCK : タイマークロック
+        TIC_NUME    : タイムティック周期の分子
+        TIC_DENO    : タイムティック周期の分母
+        TIM_BASE    : TIMERのベースアドレス
+        UART_BASE   : UARTベースアドレス
+        TIM_INTLVL  : TIMERの割込み番号
+        UART_INTLVL : UARTの割込み番号
+        NIOS2_ICACHE_SIZE        : 命令キャッシュサイズ
+        NIOS2_DCACHE_SIZE        : データキャッシュサイズ
+        NIOS2_ICACHE_LINE_SIZE   : 命令キャッシュラインサイズ
+        NIOS2_DCACHE_LINE_SIZE   : データキャッシュラインサイズ
 
-      ��./Makefile.config
-        COPTS              : ����ѥ��륪�ץ����
-        LIBS               : �饤�֥�����
-        LDFLAGS            : ��󥫥��ץ����
-        TEXT_START_ADDRESS : TEXT���������Υ������ȥ��ɥ쥹
-        DATA_START_ADDRESS : DATA���������Υ������ȥ��ɥ쥹
+      ・./Makefile.config
+        COPTS              : コンパイルオプション
+        LIBS               : ライブラリ指定
+        LDFLAGS            : リンカオプション
+        TEXT_START_ADDRESS : TEXTセクションのスタートアドレス
+        DATA_START_ADDRESS : DATAセクションのスタートアドレス
         
-        Nios2 �Υ���ѥ��饪�ץ����Ȥ��Ƥϰʲ��Τ�Τ����롣
-            -mno-hw-mul  : �軻��ʤ�
-            -mno-hw-div  : ������ʤ�
-            -mhw-mul     : �軻�濫��   
-            -mhw-div     : �����濫��
+        Nios2 のコンパイラオプションとしては以下のものがある。
+            -mno-hw-mul  : 乗算器なし
+            -mno-hw-div  : 除算器なし
+            -mhw-mul     : 乗算器あり   
+            -mhw-div     : 除算器あり
         
-      ��./nios2elf.l
-        NiosII IDC(Eclipse)�ǥ���ץ�ץ��������ۤ�������������
-        ��󥯥�����ץ�
+      ・./nios2elf.l
+        NiosII IDC(Eclipse)でサンプルプログラムを構築すると生成される
+        リンクスクリプト
 
           xxx_syslib/Debug/system_description/generated.x
 
-        �˰ʲ��ιԤ��ɲä��ƻ��Ѥ��롣
+        に以下の行を追加して使用する。
 
           PROVIDE(_hardware_init_hook = 0);
           PROVIDE(_software_init_hook = 0);
           PROVIDE(software_term_hook = 0);
 
     
-        �㳰�Υ���ȥꥳ���ɤϡ�.exception�����֤���褦�˽񤫤�Ƥ���
-        ���ᡤ��󥫥�����ץȤǤϡ����Υ����������������ץ����å���
-        �㳰����ȥ�����֤���ɬ�פ����롥
+        例外のエントリコードは，.exceptionに配置するように書かれている
+        ため，リンカスクリプトでは，このセクションを正しくプロセッサの
+        例外エントリに配置する必要がある．
           
               .exceptions :
               {
@@ -343,55 +343,55 @@ USE_JTAG_UART ��̤����ˤ��뤳�ȡ�����ʳ��ε�ǽ�Υ����ɤϥ������åȰ�
               } > sdram
 
 
-5������¾
+5．その他
 
-5.1 �ǥ��쥯�ȥꡦ�ե����빽��
+5.1 ディレクトリ・ファイル構成
 
-Nios2 �������åȰ�¸���γƥե�����γ��פϼ����̤ꡥ
+Nios2 ターゲット依存部の各ファイルの概要は次の通り．
 
     config/nios2/
-        Makefile.config    Makefile �� Microblaze��¸���
-        cpu_defs.h         �ץ����å���¸���Υ��ץꥱ������������
-        cpu_config.h       �ץ����å���¸���ι������
-        cpu_config.c       �ץ����å���¸���δؿ�
-        cpu_support.S      �ץ����å���¸���Υ��֥롼����
-        cpu_context.h      ����ƥ��������
-        makeoffset.c       offset.h �������ݡ��ȥץ������
-        cpu_insn.h         ���٥�Υץ����å����롼����
-        start.S            �������ȥ��åץ⥸�塼��
-        cpu_rename.def     �����ͥ����������̾�Υ�͡������
-        cpu_rename.h       �����ͥ����������̾�Υ�͡���
-        cpu_unrename.h     �����ͥ����������̾�Υ�͡�����
-        nios2.h            Nios2 �����
-        nios2.c            Nios2 �ѥ�����
-        hw_serial.h        UART/JATG-UART�ɥ饤��
-        hw_serial.cfg      UART/JATG-UART�ɥ饤�ФΥ���ե�����졼�����ե�����
-        hw_timer.h         ���������롼����
-        tool_defs.h        ��ȯ�Ķ���¸���Υ��ץꥱ��������������GNU��ȯ�Ķ��ѡ�
-        tool_config.h      ��ȯ�Ķ���¸���ι��������GNU��ȯ�Ķ��ѡ�
+        Makefile.config    Makefile の Microblaze依存定義
+        cpu_defs.h         プロセッサ依存部のアプリケーション用定義
+        cpu_config.h       プロセッサ依存部の構成定義
+        cpu_config.c       プロセッサ依存部の関数
+        cpu_support.S      プロセッサ依存部のサブルーチン
+        cpu_context.h      コンテキスト操作
+        makeoffset.c       offset.h 生成サポートプログラム
+        cpu_insn.h         低レベルのプロセッサ操作ルーチン
+        start.S            スタートアップモジュール
+        cpu_rename.def     カーネルの内部識別名のリネーム定義
+        cpu_rename.h       カーネルの内部識別名のリネーム
+        cpu_unrename.h     カーネルの内部識別名のリネーム解除
+        nios2.h            Nios2 の定義
+        nios2.c            Nios2 用コード
+        hw_serial.h        UART/JATG-UARTドライバ
+        hw_serial.cfg      UART/JATG-UARTドライバのコンフィギュレーションファイル
+        hw_timer.h         タイマ操作ルーチン
+        tool_defs.h        開発環境依存部のアプリケーション用定義（GNU開発環境用）
+        tool_config.h      開発環境依存部の構成定義（GNU開発環境用）
 
     config/nios2/altera_dev_board
-        Makefile.config    Makefile �� MIREF ��¸���
-        nios3elf.l         ��󥫥�����ץ�
-        sys_defs.h         �����ƥ��¸���Υ��ץꥱ������������
-        sys_config.h       �����ƥ��¸���ι������
-        sys_config.c       �����ƥ��¸���δؿ�
-        sys_support.S      �����ƥ��¸���Υ��֥롼����
-        sys_rename.def     �����ͥ����������̾�Υ�͡������
-        sys_rename.h       �����ͥ����������̾�Υ�͡���
-        sys_unrename.h     �����ͥ����������̾�Υ�͡�����
+        Makefile.config    Makefile の MIREF 依存定義
+        nios3elf.l         リンカスクリプト
+        sys_defs.h         システム依存部のアプリケーション用定義
+        sys_config.h       システム依存部の構成定義
+        sys_config.c       システム依存部の関数
+        sys_support.S      システム依存部のサブルーチン
+        sys_rename.def     カーネルの内部識別名のリネーム定義
+        sys_rename.h       カーネルの内部識別名のリネーム
+        sys_unrename.h     カーネルの内部識別名のリネーム解除
 
 
-5.2 ���ݡ���
+5.2 サポート
 
-�Х�����ȯ���������� toppers-users �� ML �����⤷���ϡ�Nios2 ��¸
-���γ�ȯ�Ԥΰʲ��Υ᡼�륢�ɥ쥹��Ϣ������ĺ������
+バグ等を発見した場合は toppers-users の ML に報告もしくは，Nios2 依存
+部の開発者の以下のメールアドレスに連絡して頂きたい
 
   honda@ertl.jp
 
-�ޤ����ʲ��Υڡ����˴�Ϣ�����Ǻܤ��Ƥ��롣
+また，以下のページに関連情報を掲載している。
 
   http://www.ertl.jp/~honda/nios2
 
 
-�ʾ�
+以上

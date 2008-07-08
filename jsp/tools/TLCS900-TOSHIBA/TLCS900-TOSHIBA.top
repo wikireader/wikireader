@@ -279,7 +279,7 @@ MRUDockingState=0
 DockingStyle=61440
 TypeID=0
 ClassName=COutputDocking
-WindowName=ƒAƒEƒgƒvƒbƒg
+WindowName=ã‚¢ã‚¦ãƒˆãƒ—ãƒƒãƒˆ
 ResourceID=0
 [Builder.DockState.Bar-9]
 BarID=257
@@ -309,7 +309,7 @@ MRUDockingState=0
 DockingStyle=61440
 TypeID=0
 ClassName=CWorkspaceDocking
-WindowName=ƒ[ƒNƒXƒy[ƒX
+WindowName=ãƒ¯ãƒ¼ã‚¯ã‚¹ãƒšãƒ¼ã‚¹
 ResourceID=0
 [Builder.DockState.Bar-10]
 BarID=59398

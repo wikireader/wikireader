@@ -1,8 +1,8 @@
 echo off
-rem ���ԃt�@�C�����폜����o�b�`�t�@�C��
+rem 中間ファイルを削除するバッチファイル
 rem
-rem�@�@���̃X�N���v�g���̂̓r���h�ɂ͎g�p����Ȃ��B
-rem�@�@���̃t�@�C�����A�[�J�C�u�Ɋ܂߂邱�Ƃɂ��A
-rem�@�@kernel_source�f�B���N�g���̃A�[�J�C�u�R���h���B
+rem　　このスクリプト自体はビルドには使用されない。
+rem　　このファイルをアーカイブに含めることにより、
+rem　　kernel_sourceディレクトリのアーカイブ漏れを防ぐ。
 
 del *.c

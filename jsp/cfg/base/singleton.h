@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: singleton.h,v 1.12 2004/09/06 15:00:49 honda Exp $
  */
@@ -44,31 +44,31 @@
 #define SINGLETON_H
 
 #ifdef _MSC_VER
-#  pragma warning(disable:4290) //C++ ���㳰�λ����̵�뤵��ޤ����ؿ��� __declspec(nothrow) �Ǥʤ����ȤΤ�ɽ������ޤ���
-#  pragma warning(disable:4291) //��������ݥɤ��㳰�򥹥��ݤ���ȡ�'new' �黻�Ҥ���Ѥ��Ƥ���ȥ����������ޤ���
-#  pragma warning(disable:4786) //�ǥХå�����Ǽ��̻Ҥ� 255 ʸ�����ڤ�ΤƤ��ޤ�����
+#  pragma warning(disable:4290) //C++ の例外の指定は無視されます。関数が __declspec(nothrow) でないことのみ表示されます。
+#  pragma warning(disable:4291) //初期化コ−ドが例外をスロ−すると、'new' 演算子を使用しているとメモリを解放しません。
+#  pragma warning(disable:4786) //デバッグ情報で識別子が 255 文字に切り捨てられました。
 #endif
 
 #include <new>
 #include <stdexcept>
 
 /*
- *  ���󥰥�ȥ�ѥ����� ����
+ *  シングルトンパターン 実装
  */
 
-    //���󥰥�ȥ���쥯�饹
-    //  #gcc��friend class Singleton�򿩤äƤ���ʤ��ΤǴ������
+    //シングルトン基底クラス
+    //  #gccがfriend class Singletonを食ってくれないので基底を作る
 class SingletonBase {
 public:
-        //�ǥ��ȥ饯���Υ�������
+        //デストラクタのチェーン
     struct chain {
         struct chain * next;
         void (*destructor)(void);
     };
 
-        //���󥰥�ȥ�ǥ��󥹥��󥹤������������Ȥ򼨤�����Υ��饹
-        //    ���Υ��饹��Singleton���餷�����β��Ǥ��ʤ��Τǡ�
-        //    �ۤ��Υ��饹���餳�������ˤ�ĥ��󥹥ȥ饯������Ѥ��뤳�ȤϤǤ��ʤ�
+        //シングルトンでインスタンスを生成したことを示すためのクラス
+        //    このクラスはSingletonからしか実体化できないので、
+        //    ほかのクラスからこれを引数にもつコンストラクタを使用することはできない
     class SingletonConstructionLocker
     {
     friend class SingletonBase;
@@ -77,14 +77,14 @@ public:
     };
 
 private:
-    static bool   initialize;       //������Ѥߤ� (atexit��Ƥ�����ɤ���)
-    static bool   is_valid;         //�����˼��Ԥ������󥰥�ȥ󥬤��뤫�ɤ���
-    static struct chain * top;      //�ǥ��ȥ饯����������
+    static bool   initialize;       //初期化済みか (atexitを呼んだかどうか)
+    static bool   is_valid;         //生成に失敗したシングルトンガあるかどうか
+    static struct chain * top;      //デストラクタチェーン
 
-        //�ǥ��ȥ饯���ε�ư
+        //デストラクタの起動
     static void final_release(void) throw()
     {
-            //��Ƭ������ (�������Ф�)
+            //先頭から削除 (先入れ後出し)
         while(top != 0) {
             struct chain * node = top;
             top = node->next;
@@ -96,14 +96,14 @@ private:
     }
 
 protected:
-        //��������˥ǥ��ȥ饯�����ɲ�
+        //チェーンにデストラクタを追加
     static bool addDestructor(void (* destructor)(void)) throw()
     {
         bool result = false;
         struct SingletonBase::chain * node = new(std::nothrow) struct SingletonBase::chain;
         if(node != 0) {
 
-                //���������Ǥ���Ƭ���ɲ�
+                //新しい要素を先頭に追加
             node->next       = top;
             node->destructor = destructor;
             
@@ -111,7 +111,7 @@ protected:
 
             result = true;
 
-                //�����˴��Τ���˺Ǹ���˴��롼�����ư������
+                //要素破棄のために最後に破棄ルーチンを起動させる
             if(!initialize) {
                 atexit(final_release);
                 initialize = true;
@@ -120,18 +120,18 @@ protected:
         return result;
     }
 
-        //SingletonConstructionLocker�ե����ȥ�
+        //SingletonConstructionLockerファクトリ
     inline static SingletonConstructionLocker getLocker(void)
     {   return SingletonConstructionLocker();   }
 
 public:
-        //�����˼��Ԥ������󥰥�ȥ󤬤ʤ����Ȥ����
+        //生成に失敗したシングルトンがないことを取得
     static bool isValid(void) throw()
     {   return is_valid;   }
 
 #ifdef TESTSUITE
         /*
-         *   ����ƥ����ȥ������� (�ƥ����ѥ��󥰥�ȥ󥳥�ƥ����������������)
+         *   コンテキストチェーン (テスト用シングルトンコンテキスト退避チェーン)
          */
     class ContextChain {
     protected:
@@ -150,7 +150,7 @@ public:
         ~ContextChain(void) throw()
         {   restoreContext();   }
 
-            /* ����ƥ����Ȥ����� */
+            /* コンテキストの復帰 */
         void restoreContext(void) throw()
         {
             while(top != 0) {
@@ -162,7 +162,7 @@ public:
             }
         }
 
-            /* ���ƤΥ��󥹥��󥹤������ */
+            /* 全てのインスタンスを再生成 */
         void renewInstance(void) throw(std::bad_alloc)
         {
             struct chain * node = top;
@@ -172,7 +172,7 @@ public:
             }
         }
             
-            /* ���ƤΥ��󥹥��󥹤��˴� */
+            /* 全てのインスタンスを破棄 */
         void clearInstance(void) throw(std::bad_alloc)
         {
             struct chain * node = top;
@@ -182,7 +182,7 @@ public:
             }
         }
             
-            /* ����ƥ����Ȥ����� */
+            /* コンテキストの退避 */
         template<class T> void saveContext(void) throw(std::bad_alloc)
         {
             struct chain * node = new struct chain;
@@ -213,7 +213,7 @@ protected:
 
     static T * instance;
 
-        //�ǥ��ȥ饯��
+        //デストラクタ
     static void destructor(void) throw()
     {
         if(instance != 0) {
@@ -222,7 +222,7 @@ protected:
         }
     }
 
-        //���󥹥��󥹤����� (���󥹥������� + �ǥ��ȥ饯����Ͽ + ���顼����)
+        //インスタンスの生成 (インスタンス生成 + デストラクタ登録 + エラー処理)
     static T * createInstance(std::nothrow_t) throw()
     {
         T * instance = 0;
@@ -231,7 +231,7 @@ protected:
 
             if(instance != 0) {
                 if(!addDestructor(destructor))
-                    throw false;    //catch���¹Ԥ�������
+                    throw false;    //catch節を実行させたい
             }
         }
         catch(...) {
@@ -243,7 +243,7 @@ protected:
         return instance;
     }
 
-        //���󥹥������� (bad_alloc�㳰�򥹥����������)
+        //インスタンス生成 (bad_alloc例外をスローする実装)
     static T * createInstance(void) throw(std::bad_alloc)
     {
         instance = createInstance(std::nothrow);
@@ -253,7 +253,7 @@ protected:
     }
 
 public:
-        //���󥹥��󥹤μ���
+        //インスタンスの取得
     inline static T * getInstance(void) throw(std::bad_alloc)
     {
         if(instance == 0)
@@ -261,7 +261,7 @@ public:
         return instance;
     }
 
-        //���󥹥��󥹤μ���
+        //インスタンスの取得
     inline static T * getInstance(std::nothrow_t) throw()
     {
         if(instance == 0)
@@ -269,33 +269,33 @@ public:
         return instance;
     }
 
-#ifdef TESTSUITE    /* �ƥ����� */
+#ifdef TESTSUITE    /* テスト用 */
 
-    typedef T * Context;    //������
+    typedef T * Context;    //退避用
 
-        //���������󥹥��󥹤�����
+        //新しいインスタンスの生成
     static void renewInstance(void) throw(std::bad_alloc)
     {
-        destructor();                     //���Υ��󥹥��󥹤��˴�
-        instance = new T(getLocker());    //���������󥹥��󥹤����� (�ǥ��ȥ饯������Ͽ����Ƥ��ޤ��Τ�createInstance��Ƥ�ǤϤ����ʤ�)
+        destructor();                     //今のインスタンスを破棄
+        instance = new T(getLocker());    //新しいインスタンスを生成 (デストラクタが登録されてしまうのでcreateInstanceを呼んではいけない)
     }
 
-        //���󥹥����˴�
+        //インスタンス破棄
     static void clearInstance(void) throw()
     {   destructor();   }
 
-        //����ƥ���������
+        //コンテキスト退避
     static void saveContext(Context & context) throw()
     {
         context  = instance;
         instance = 0;
     }
 
-        //����ƥ���������
+        //コンテキスト復帰
     static void restoreContext(Context & context) throw()
     {
-        destructor();           //���Υ��󥹥��󥹤��˴�
-        instance = context;     //���򤷤����󥹥��󥹤�����
+        destructor();           //今のインスタンスを破棄
+        instance = context;     //退避したインスタンスを復帰
     }
 
 #endif /* TESTSUITE */
@@ -304,7 +304,7 @@ public:
 
 
 
-    //Singleton ��Ū�ѿ�
+    //Singleton 静的変数
 template<class T> T * Singleton<T>::instance = 0;
 
 #define SINGLETON_CONSTRUCTOR(x)  explicit x(const SingletonBase::SingletonConstructionLocker &)

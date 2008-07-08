@@ -8,65 +8,65 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: h8s_sil.c,v 1.2 2007/03/23 07:59:26 honda Exp $
  */
 
 /*
- * �����ƥ।�󥿥ե������쥤����ɲ���ʬ��
- *����I/O�ݡ��ȤΥǡ������ǥ��쥯����󡦥쥸����DDR�ؤΥ�������
- *����H8S��DDR�Ͻ񤭹������ѤǤ��ꡢ���ΤޤޤǤϽ�˾�ΥӥåȤ�����
- *�����ѹ����뤳�Ȥ��Ǥ��ʤ�����bset,bclr̿��Ǥ�����Բġ�
- *�������Τ��ᡢ�ܼ����Ǥϡ������˥ƥ�ݥ����Ѱդ��ơ�DDR��
- *���������ͤ��ݻ�������ˡ��ΤäƤ��롣
- *����
- *�����ݡ��ȣ���DDR�Ϥʤ����ᡢ���֤ˤ��Ƥ��롣
+ * システムインタフェースレイヤ（追加部分）
+ *　　I/Oポートのデータ・ディレクション・レジスタDDRへのアクセス
+ *　　H8SのDDRは書き込み専用であり、そのままでは所望のビットだけを
+ *　　変更することができない。（bset,bclr命令でも回避不可）
+ *　　そのため、本実装では、メモリ上にテンポラリを用意して、DDRの
+ *　　現在値を保持する方法を採っている。
+ *　　
+ *　　ポート４にDDRはないため、欠番にしている。
  */
 
 #include "jsp_kernel.h"
 #include "check.h"
 #include "task.h"
 
-/*  �����Υƥ�ݥ���ΰ�  */
+/*  メモリ上のテンポラリ領域  */
 static UB ddr_tmp[] = {
-        P1DDR0, P2DDR0, P3DDR0, P5DDR0, 	/*  �ݡ��ȣ��Ϸ���  */
+        P1DDR0, P2DDR0, P3DDR0, P5DDR0, 	/*  ポート４は欠番  */
         P6DDR0, P7DDR0, P8DDR0, P9DDR0, 
         PADDR0, PBDDR0, PCDDR0, PDDDR0, PEDDR0, 
         PFDDR0, PGDDR0
 };
 
 /*  
- *���ƥݡ��ȤΥ��ɥ쥹  
- *���������ɥ쥹�β���16�ӥåȤ��ݻ����롣
+ *　各ポートのアドレス  
+ *　　　アドレスの下位16ビットを保持する。
  */
 static const UH ddr_adr[] = {
-        P1DDR, P2DDR, P3DDR, P5DDR,  		/*  �ݡ��ȣ��Ϸ���  */
+        P1DDR, P2DDR, P3DDR, P5DDR,  		/*  ポート４は欠番  */
         P6DDR, P7DDR, P8DDR, P9DDR, 
         PADDR, PBDDR, PCDDR, PDDDR, PEDDR,
         PFDDR, PGDDR
@@ -74,7 +74,7 @@ static const UH ddr_adr[] = {
 
 
 /*
- *      DDR���ɤ߽Ф�
+ *      DDRの読み出し
  */
 UB sil_reb_ddr(IO_PORT_ID port)
 {
@@ -83,7 +83,7 @@ UB sil_reb_ddr(IO_PORT_ID port)
 }
 
 /*
- *      DDR�ν񤭹���
+ *      DDRの書き込み
  */
 void sil_wrb_ddr(IO_PORT_ID port, UB data)
 {
@@ -93,7 +93,7 @@ void sil_wrb_ddr(IO_PORT_ID port, UB data)
 }
 
 /*
- *      DDR��AND�黻
+ *      DDRのAND演算
  */
 void sil_anb_ddr(IO_PORT_ID port, UB data)
 {
@@ -104,7 +104,7 @@ void sil_anb_ddr(IO_PORT_ID port, UB data)
 }
 
 /*
- *      DDR��OR�黻
+ *      DDRのOR演算
  */
 void sil_orb_ddr(IO_PORT_ID port, UB data)
 {

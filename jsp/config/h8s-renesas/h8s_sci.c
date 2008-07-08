@@ -10,61 +10,61 @@
  *  Copyright (C) 2001-2007 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 /*
- *  H8S��¢SCI�� �ʰ�SIO�ɥ饤��
- *  �������ϡ��������ͥ��Ѥ˵��Ҥ��Ƥ��롣H8S���꡼������ˤϡ��������ͥ�
- *    �ʾ奵�ݡ��Ȥ��Ƥ�����åפ⤢�뤬�����ΤȤ����б����ưפǤ��롣
+ *  H8S内蔵SCI用 簡易SIOドライバ
+ *  ・下記は、２チャンネル用に記述している。H8Sシリーズの中には、３チャンネル
+ *    以上サポートしているチップもあるが、そのときの対応は容易である。
  */
 
 #include <h8s_sci.h>
 
-/* SCI�쥸�����Υ��ɥ쥹 */
-/* �١������ɥ쥹 */
-#define SCI0_BASE_ADDR	0xff78	/* ����ͥ룰 */
-#define SCI1_BASE_ADDR	0xff80	/* ����ͥ룱 */
-#define SCI2_BASE_ADDR	0xff88	/* ����ͥ룲 */
+/* SCIレジスタのアドレス */
+/* ベースアドレス */
+#define SCI0_BASE_ADDR	0xff78	/* チャネル０ */
+#define SCI1_BASE_ADDR	0xff80	/* チャネル１ */
+#define SCI2_BASE_ADDR	0xff88	/* チャネル２ */
 
-/* �쥸�������ե��å� */
-#define SMR		0	/* ���ꥢ��⡼�ɥ쥸���� */
-#define BRR		1	/* �ӥåȥ졼�ȥ쥸���� */
-#define SCR		2	/* ���ꥢ�륳��ȥ�����쥸���� */
-#define TDR		3	/* �ȥ�󥹥ߥåȥǡ����쥸���� */
-#define SSR		4	/* ���ꥢ�륹�ơ������쥸���� */
-#define RDR		5	/* �쥷���֥ǡ����쥸���� */
-#define SCMR		6	/* ���ޡ��ȥ����ɥ⡼�ɥ쥸���� */
+/* レジスタオフセット */
+#define SMR		0	/* シリアルモードレジスタ */
+#define BRR		1	/* ビットレートレジスタ */
+#define SCR		2	/* シリアルコントロールレジスタ */
+#define TDR		3	/* トランスミットデータレジスタ */
+#define SSR		4	/* シリアルステータスレジスタ */
+#define RDR		5	/* レシーブデータレジスタ */
+#define SCMR		6	/* スマートカードモードレジスタ */
 
-/* �ƥ쥸�����Υӥåȥѥ����� */
+/* 各レジスタのビットパターン */
 
 /* RSR, RDR, TSR, TDR */
-/* ������٤���Τϡ��ä�̵�� */
+/* 定義すべきものは、特に無い */
 
 /* SMR */
 #define CA	BIT7
@@ -77,15 +77,15 @@
 #define	CSK0	BIT0
 
 /*
- *��SMR�ν����
+ *　SMRの初期値
  *
- *���ӥå�7=0��Ĵ��Ʊ�����⡼��
- *���ӥå�6=0������饯����󥰥�=8�ӥå�
- *���ӥå�5=0���ѥ�ƥ����ղá������å���ػ�
- *���ӥå�4�����ѥ�ƥ��⡼�ɡ�̤���ѡ�
- *���ӥå�3=0�����ȥåץӥåȥ�󥰥���1�ӥå�
- *���ӥå�1,0���ܡ��졼�ȥ����ͥ졼���ؤΥ����å�����������
- *���������������ܡ��ɰ�¸����SCRn_CKS�Ȥ��������n��ch�ֹ��
+ *　ビット7=0：調歩同期式モード
+ *　ビット6=0：キャラクタレングス=8ビット
+ *　ビット5=0：パリティの付加、チェックを禁止
+ *　ビット4　：パリティモード（未使用）
+ *　ビット3=0：ストップビットレングス＝1ビット
+ *　ビット1,0：ボーレートジェネレータへのクロックソース選択
+ *　　　　　　　ボード依存部でSCRn_CKSとして定義（nはch番号）
  */
 #define SMR_INIT	0
 
@@ -111,94 +111,94 @@
 
 
 /* 
- * TNUM_PORT : ���ꥢ��ɥ饤�С�serial.c�ˡ��Ĥޤ� GDIC��٥�ǥ��ݡ��Ȥ���
- * ���������������ꥢ��ݡ��Ȥο� 
- * TNUM_SIOP : PDIC��٥�ʥץ����å���¢SIO�ˤǥ��ݡ��Ȥ��륷�ꥢ��I/O�ݡ���
- *������������ �ο��ʸ��ߤμ����ǤϺ���3��
+ * TNUM_PORT : シリアルドライバ（serial.c）、つまり GDICレベルでサポートする
+ * 　　　　　　シリアルポートの数 
+ * TNUM_SIOP : PDICレベル（プロセッサ内蔵SIO）でサポートするシリアルI/Oポート
+ *　　　　　　 の数（現在の実装では最大3）
  *  
- *���������user_config.h��������롣
+ *　いずれもuser_config.hで定義する。
  */
 
-/* �ʲ��ǡ��쥸�����Υ��ɥ쥹��UW ���إ��㥹�Ȥ򤷤Ƥ��롣����ϡ��١���
-   ���ɥ쥹�˥��ե��å��ͤ�ä��ơ��ǽ�Ū�ʥ쥸�����Υ��ɥ쥹����Ƥ���
-   ����Ǥ��롣������ˡ��ǽ�Ū�� VP ���˥��㥹�Ȥ���Ƥ��롣(h8s_sci.h) */
+/* 以下で、レジスタのアドレスを、UW 型へキャストをしている。これは、ベース
+   アドレスにオフセット値を加えて、最終的なレジスタのアドレスを求めている
+   ためである。取得後に、最終的に VP 型にキャストされている。(h8s_sci.h) */
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å������
+ *  シリアルI/Oポート初期化ブロックの定義
  */
 typedef struct sio_port_initialization_block {
-	UW	reg_base;	/* �쥸�����Υ١������ɥ쥹 */
-	UH	boud_rate;	/* �ܡ��졼��[bps]��*/
-	UB	boud_brr_def;	/* BRR �����͡ʥܡ��졼�Ȥ������͡� */
-	UB	smr_def;	/* SMR ������
-				   (�������ӥåȿ������ȥåץӥåȡ��ѥ�ƥ�) */
+	UW	reg_base;	/* レジスタのベースアドレス */
+	UH	boud_rate;	/* ボーレート[bps]　*/
+	UB	boud_brr_def;	/* BRR 設定値（ボーレートの設定値） */
+	UB	smr_def;	/* SMR 設定値
+				   (送受信ビット数、ストップビット，パリティ) */
 } SIOPINIB;
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å������
+ *  シリアルI/Oポート管理ブロックの定義
  */
 struct sio_port_control_block {
-	const SIOPINIB	*siopinib;	/* ���ꥢ��I/O�ݡ��Ƚ�����֥��å� */
-	VP_INT		exinf;		/* ��ĥ���� */
-	BOOL		openflag;	/* �����ץ�Ѥߥե饰 */
-	BOOL		getready;	/* ʸ��������������� */
-	BOOL		putready;	/* ʸ���������Ǥ������ */
+	const SIOPINIB	*siopinib;	/* シリアルI/Oポート初期化ブロック */
+	VP_INT		exinf;		/* 拡張情報 */
+	BOOL		openflag;	/* オープン済みフラグ */
+	BOOL		getready;	/* 文字を受信した状態 */
+	BOOL		putready;	/* 文字を送信できる状態 */
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ *  シリアルI/Oポート初期化ブロック
  */
 const SIOPINIB siopinib_table[TNUM_SIOP] = {
 	{ (UW)SCI0_BASE_ADDR,
 	  (UH)BAUD_RATE1,
-	  (UB)BRR0_RATE,			/* N �� */
+	  (UB)BRR0_RATE,			/* N 値 */
 	  (UB)(SMR_INIT | (SCR0_CKS & (CKE1 | CKE0)))
 	},
 #if TNUM_SIOP >= 2
 	{ (UW)SCI1_BASE_ADDR,
 	  (UH)BAUD_RATE1,
-	  (UB)BRR1_RATE,			/* N �� */
+	  (UB)BRR1_RATE,			/* N 値 */
 	  (UB)(SMR_INIT | (SCR1_CKS & (CKE1 | CKE0)))
 	}
 #endif /* TNUM_SIOP >= 2 */
 #if TNUM_SIOP >= 3
 	,{(UW)SCI2_BASE_ADDR,
 	  (UH)BAUD_RATE2,
-	  (UB)BRR2_RATE,			/* N �� */
+	  (UB)BRR2_RATE,			/* N 値 */
 	  (UB)(SMR_INIT | (SCR2_CKS & (CKE1 | CKE0)))
 	}
 #endif /* TNUM_SIOP >= 3 */
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å��μ�Ф�
+ *  シリアルI/Oポート初期化ブロックの取出し
  */
 #define INDEX_SIOPINIB(siopid)	((UINT)((siopid) - 1))
 #define get_siopinib(siopid)	(&(siopinib_table[INDEX_SIOPINIB(siopid)]))
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 SIOPCB	siopcb_table[TNUM_SIOP];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
 #define INDEX_SIOP(siopid)	((UINT)((siopid) - 1))
 #define get_siopcb(siopid)	(&(siopcb_table[INDEX_SIOP(siopid)]))
 
 /*
- *  SCI�ѥ����ƥ।�󥿥ե������쥤��
+ *  SCI用システムインタフェースレイヤ
  *
- *   base : �ݡ��ȤΥ١������ɥ쥹
- *   offset : �쥸�������ե��å�
- *   val : �쥸������ 
+ *   base : ポートのベースアドレス
+ *   offset : レジスタオフセット
+ *   val : レジスタ値 
  */
 #define h8s_sci_wrb( base, offset, val ) h8s_wrb_reg( (base) + (offset), (val) )
 #define h8s_sci_reb( base, offset )	h8s_reb_reg( (base) + (offset) )
 
 /*
- *  SCI�ѥ쥸�������ؿ�
+ *  SCI用レジスタ操作関数
  */
 Inline void
 h8s_sci_or( const SIOPINIB *siopinib, INT offset, INT val )
@@ -215,7 +215,7 @@ h8s_sci_and( const SIOPINIB *siopinib, INT offset, INT val )
 }
 
 /*
- *  ʸ��������Ǥ��뤫��
+ *  文字を受信できるか？
  */
 Inline BOOL
 h8s_sci_getready(SIOPCB *siopcb)
@@ -231,7 +231,7 @@ h8s_sci_getready(SIOPCB *siopcb)
 }
 
 /*
- *  ʸ���������Ǥ��뤫��
+ *  文字を送信できるか？
  */
 Inline BOOL
 h8s_sci_putready(SIOPCB *siopcb)
@@ -244,31 +244,31 @@ h8s_sci_putready(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���μ�Ф�
+ *  受信した文字の取出し
  */
 Inline char
 h8s_sci_getchar(SIOPCB *siopcb)
 {
-	/* RDRF���ꥢ */
+	/* RDRFクリア */
 	h8s_sci_and( siopcb->siopinib, SSR, ~RDRF );
 
 	return( (char) h8s_sci_reb( siopcb->siopinib->reg_base, RDR ) );
 }
 
 /*
- *  ��������ʸ���ν����
+ *  送信する文字の書込み
  */
 Inline void
 h8s_sci_putchar(SIOPCB *siopcb, char c)
 {
 	h8s_sci_wrb( siopcb->siopinib->reg_base, TDR, c );
 
-	/* TDRE���ꥢ */
+	/* TDREクリア */
 	h8s_sci_and( siopcb->siopinib, SSR, ~TDRE );
 }
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 h8s_sci_initialize(void)
@@ -277,7 +277,7 @@ h8s_sci_initialize(void)
 	UINT	i;
 
 	/*
-	 *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+	 *  シリアルI/Oポート管理ブロックの初期化
 	 */
 	for (siopcb = siopcb_table, i = 0; i < TNUM_SIOP; siopcb++, i++) {
 		siopcb->siopinib = &(siopinib_table[i]);
@@ -286,50 +286,50 @@ h8s_sci_initialize(void)
 }
 
 /*
- *  SIO�쥸����������롼����
+ *  SIOレジスタ初期化ルーチン
  */
 void
 h8s_sci_init_siopinib( const SIOPINIB  *siopinib )
 {
 	/*
-	 * SCI�쥸�����ν����
+	 * SCIレジスタの初期化
 	 */
 
-	/* ��������� */
+	/* 送受信停止 */
 	h8s_sci_and( siopinib, SCR, ~( TE | RE ) );
 
-	/* �ӥå�Ĺ�ʤ����� */
+	/* ビット長など設定 */
 	h8s_sci_wrb( siopinib->reg_base, SMR, siopinib->smr_def );
 
-	/* �ܡ��졼������ */
+	/* ボーレート設定 */
 	h8s_sci_wrb( siopinib->reg_base, BRR, siopinib->boud_brr_def );
 
 	/*
-	 *  ����߶ػߤȥ����å�����������
-	 *���������å������������������å�������
+	 *  割込み禁止とクロックソース選択
+	 *　　クロックソースは内部クロックを選択
 	 */
 	h8s_sci_and( siopinib, SCR, ~( TIE | RIE | MPIE | TEIE | CKE1 | CKE0 ) );
 
-	/* �ܡ��졼�Ȥΰ��경(1bitʬ���Ԥ�) */
+	/* ボーレートの安定化(1bit分の待ち) */
 	sil_dly_nse_long( 1000000000ul / (siopinib->boud_rate) );
 
-	/* ���顼�ե饰�򥯥ꥢ */
-	h8s_sci_and( siopinib, SSR, ~( ORER | FER | PER ) );	/* ���� */
+	/* エラーフラグをクリア */
+	h8s_sci_and( siopinib, SSR, ~( ORER | FER | PER ) );	/* 修正 */
 
-	/* ���������ġ���������ߵ��� */
+	/* 送受信許可、受信割込み許可 */
 	h8s_sci_or( siopinib, SCR, ( RIE | TE | RE ) );
 }
 
 
 /*
- *  SCI0�������̷�⤬�ʤ��������å�
+ *  SCI0の設定に矛盾がないかチェック
  */
 #if defined(OMIT_SCI0) && (POL_PORTID == 1)
 #error h8s_sci_putchar_pol serial port ID error.
 #endif
 
 /*
- *  �����ͥ뵯ư���ΥС��ʡ������Ѥν����
+ *  カーネル起動時のバーナー出力用の初期化
  */
 void
 h8s_sci_init(void)
@@ -338,7 +338,7 @@ h8s_sci_init(void)
 }
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 BOOL
 h8s_sci_openflag(void)
@@ -362,7 +362,7 @@ h8s_sci_openflag(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 h8s_sci_opn_por(ID siopid, VP_INT exinf)
@@ -370,10 +370,10 @@ h8s_sci_opn_por(ID siopid, VP_INT exinf)
 	SIOPCB 		*siopcb = get_siopcb(siopid);
 	const SIOPINIB  *siopinib = siopcb->siopinib;
 
-	/* SCI�쥸�����ν���� */
+	/* SCIレジスタの初期化 */
 	h8s_sci_init_siopinib( siopinib );
 
-	/* ����ߥ�٥����ꡢ������׵᥯�ꥢ�ϡ�sio_opn_por �ǹԤ��� */
+	/* 割込みレベル設定、割込み要求クリアは、sio_opn_por で行う。 */
 
 	siopcb->exinf = exinf;
 	siopcb->getready = siopcb->putready = FALSE;
@@ -383,20 +383,20 @@ h8s_sci_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 h8s_sci_cls_por(SIOPCB *siopcb)
 {
-	/* TEND �� 1 �ˤʤ�ޤ��Ԥ� */
+	/* TEND が 1 になるまで待つ */
 	while ( !(h8s_sci_reb( siopcb->siopinib->reg_base, SSR ) & TEND ) );
 
-	h8s_sci_and( siopcb->siopinib, SCR, ~( TE | RE ) );	/* ���� */
+	h8s_sci_and( siopcb->siopinib, SCR, ~( TE | RE ) );	/* 修正 */
 	siopcb->openflag = FALSE;
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 h8s_sci_snd_chr(SIOPCB *siopcb, char c)
@@ -410,7 +410,7 @@ h8s_sci_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 h8s_sci_rcv_chr(SIOPCB *siopcb)
@@ -418,14 +418,14 @@ h8s_sci_rcv_chr(SIOPCB *siopcb)
 	if( h8s_sci_getready(siopcb) ) {
 		siopcb->getready = FALSE;
 		return( (INT)(UB) h8s_sci_getchar(siopcb) );
-			/* UB �Υ��㥹�Ȥϡ�����ĥ���ɻߤ��뤿�� */
+			/* UB のキャストは、符号拡張を防止するため */
 	}
 
 	return(-1);
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 h8s_sci_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -441,7 +441,7 @@ h8s_sci_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 h8s_sci_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -457,15 +457,15 @@ h8s_sci_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
- *����������ͥ붦����ʬ�򥤥�饤��ؿ��Ȥ���������Ƥ���
+ *  SIOの割込みサービスルーチン
+ *　　全チャネル共通部分をインライン関数として定義しておく
  */
 Inline void
 h8s_scix_isr_in(ID portid)
 {
 	SIOPCB *siopcb = get_siopcb(portid);
 
-	/* �������Υ�����Хå��롼����θƤӽФ� */
+	/* 受信通知コールバックルーチンの呼び出し */
 	if( siopcb->openflag ) {
 		h8s_sci_ierdy_rcv( siopcb->exinf );
 	}
@@ -476,18 +476,18 @@ h8s_scix_isr_out(ID portid)
 {
 	SIOPCB *siopcb = get_siopcb(portid);
 
-	/* ������ǽ������Хå��롼����θƤӽФ� */
+	/* 送信可能コールバックルーチンの呼び出し */
 	if( siopcb->openflag ) {
 		h8s_sci_ierdy_snd( siopcb->exinf );
 	}
 }
 
 /*
- *  SIO�μ������顼����ߥ����ӥ��롼����
- *����������ͥ붦����ʬ�򥤥�饤��ؿ��Ȥ���������Ƥ���
+ *  SIOの受信エラー割込みサービスルーチン
+ *　　全チャネル共通部分をインライン関数として定義しておく
  *
- *  ���顼�����ϡ��������顼�ե饰�Υ��ꥢ�Τߡ�
- *  �������С���󥨥顼���ե졼�ߥ󥰥��顼���ѥ�ƥ����顼
+ *  エラー処理は、下記エラーフラグのクリアのみ。
+ *  ・オーバーランエラー、フレーミングエラー、パリティエラー
  */
 Inline void
 h8s_scix_isr_error(INT portid)
@@ -495,7 +495,7 @@ h8s_scix_isr_error(INT portid)
 	SIOPCB *siopcb = get_siopcb(portid);
 
 	if( siopcb->openflag ) {
-		/*  ���顼�ե饰���ꥢ  */
+		/*  エラーフラグクリア  */
 		h8s_sci_and( siopcb->siopinib, SSR, ~( RDRF | ORER | FER | PER ) );
 	}
 }
@@ -503,7 +503,7 @@ h8s_scix_isr_error(INT portid)
 
 #ifndef OMIT_SCI0
 /*
- *  SIO�γ���ߥ����ӥ��롼���� (SCI0����)
+ *  SIOの割込みサービスルーチン (SCI0専用)
  */
 void
 h8s_sci0_isr_in(void)
@@ -518,7 +518,7 @@ h8s_sci0_isr_out(void)
 }
 
 /*
- *  SIO�μ������顼����ߥ����ӥ��롼���� (SCI0����)
+ *  SIOの受信エラー割込みサービスルーチン (SCI0専用)
  */
 void
 h8s_sci0_isr_error(void)
@@ -530,7 +530,7 @@ h8s_sci0_isr_error(void)
 
 #if TNUM_SIOP >=2
 /*
- *  SIO�γ���ߥ����ӥ��롼���� (SCI1����)
+ *  SIOの割込みサービスルーチン (SCI1専用)
  */
 void
 h8s_sci1_isr_in(void)
@@ -545,7 +545,7 @@ h8s_sci1_isr_out(void)
 }
 
 /*
- *  SIO�μ������顼����ߥ����ӥ��롼���� (SCI1����)
+ *  SIOの受信エラー割込みサービスルーチン (SCI1専用)
  */
 void
 h8s_sci1_isr_error(void)
@@ -556,7 +556,7 @@ h8s_sci1_isr_error(void)
 
 #if TNUM_SIOP >=3
 /*
- *  SIO�γ���ߥ����ӥ��롼���� (SCI2����)
+ *  SIOの割込みサービスルーチン (SCI2専用)
  */
 void
 h8s_sci2_isr_in(void)
@@ -571,7 +571,7 @@ h8s_sci2_isr_out(void)
 }
 
 /*
- *  SIO�μ������顼����ߥ����ӥ��롼���� (SCI2����)
+ *  SIOの受信エラー割込みサービスルーチン (SCI2専用)
  */
 void
 h8s_sci2_isr_error(void)
@@ -582,7 +582,7 @@ h8s_sci2_isr_error(void)
 
 
 /*
- *  H8S ��¢ SCI �ѥݡ���󥰽��� (POL_PORTID���ѡ�sys_putc������)
+ *  H8S 内蔵 SCI 用ポーリング出力 (POL_PORTID専用、sys_putcで利用)
  */
 void
 h8s_sci_putchar_pol( char c )
@@ -590,14 +590,14 @@ h8s_sci_putchar_pol( char c )
 
 	const SIOPINIB  *siopinib = get_siopinib( POL_PORTID );
 
-	/* TDRE �� 1 �ˤʤ�ޤ��Ԥ� */
+	/* TDRE が 1 になるまで待つ */
 	while ( !(h8s_sci_reb( siopinib->reg_base, SSR ) & TDRE ) );
 
 	h8s_sci_wrb( siopinib->reg_base, TDR, c );
 
-	/* TDRE���ꥢ */
+	/* TDREクリア */
 	h8s_sci_and( siopinib, SSR, ~TDRE );
 
-	/* TEND �� 1 �ˤʤ�ޤ��Ԥ� */
+	/* TEND が 1 になるまで待つ */
 	while ( !(h8s_sci_reb( siopinib->reg_base, SSR ) & TEND ) );
 }

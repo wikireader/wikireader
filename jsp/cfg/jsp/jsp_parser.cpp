@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: jsp_parser.cpp,v 1.60 2004/09/09 19:22:41 takayuki Exp $
  */
@@ -85,11 +85,11 @@ void CoreParser::parseOption(Directory & container)
             "     fcfs       (in arrival order [as default])\n"
             "     reverse    (reverse the order)\n"
             "  -var, --variable-id : Prepare ID-variable for storing its identifier number\n",
-            "  -obj, --dump-object=¥Õ¥¡¥¤¥ëÌ¾ : »ØÄê¤·¤¿¥Õ¥¡¥¤¥ë¤Ë¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò½ĞÎÏ¤·¤Ş¤¹\n"
-            "  -ao, --assign-order=½ç½ø : ¼«Æ°ID³äÅö¤Î³äÅö½ç½ø¤ò»ØÄê¤·¤Ş¤¹\n"
-            "    ³äÅö½ç½ø¤Ï¼¡¤Î3¤Ä¤ÎÁÈ¹ç¤»¤Ç»ØÄê¤·¤Ş¤¹.\n"
-            "     alphabetic (ABC½ç), fcfs (Àë¸À½ç [¥Ç¥Õ¥©¥ë¥È]), reverse (µÕ½ç)\n"
-            "  -var, --variable-id : IDÈÖ¹æ¤ò³ÊÇ¼¤¹¤ëÊÑ¿ô¤òÍÑ°Õ¤·¤Ş¤¹");
+            "  -obj, --dump-object=ãƒ•ã‚¡ã‚¤ãƒ«å : æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’å‡ºåŠ›ã—ã¾ã™\n"
+            "  -ao, --assign-order=é †åº : è‡ªå‹•IDå‰²å½“ã®å‰²å½“é †åºã‚’æŒ‡å®šã—ã¾ã™\n"
+            "    å‰²å½“é †åºã¯æ¬¡ã®3ã¤ã®çµ„åˆã›ã§æŒ‡å®šã—ã¾ã™.\n"
+            "     alphabetic (ABCé †), fcfs (å®£è¨€é † [ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ]), reverse (é€†é †)\n"
+            "  -var, --variable-id : IDç•ªå·ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã‚’ç”¨æ„ã—ã¾ã™");
         return;
     }
 
@@ -109,7 +109,7 @@ namespace {
 	    if(node == 0 || node->size() == 0)
 		return 0;
 
-	    VerboseMessage("Handler assignment list [%]\n","¥Ï¥ó¥É¥é³äÉÕÉ½ [%]\n") << category;
+	    VerboseMessage("Handler assignment list [%]\n","ãƒãƒ³ãƒ‰ãƒ©å‰²ä»˜è¡¨ [%]\n") << category;
 
 	    scope = node->getFirstChild();
 	    while(scope != 0)
@@ -121,12 +121,12 @@ namespace {
 	    return node->size();
 	}
 
-	//¥Ş¥¯¥í²½¤µ¤ì¤¿toupper¤ò´Ø¿ô²½¤¹¤ë (STL-algorithmÍÑ)
+	//ãƒã‚¯ãƒ­åŒ–ã•ã‚ŒãŸtoupperã‚’é–¢æ•°åŒ–ã™ã‚‹ (STL-algorithmç”¨)
 	int toupper_function(int c)
 	{ return toupper(c); }
 }
 /*
- *  outputContainer - ¥Ç¥Ğ¥Ã¥°»ş or ¥À¥ó¥×»ØÄê»ş¤Ë¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò½êÄê¤Î¥Õ¥¡¥¤¥ë·Á¼°¤Ç½ĞÎÏ¤¹¤ë
+ *  outputContainer - ãƒ‡ãƒãƒƒã‚°æ™‚ or ãƒ€ãƒ³ãƒ—æŒ‡å®šæ™‚ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’æ‰€å®šã®ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã§å‡ºåŠ›ã™ã‚‹
  */
 void CoreParser::outputContainer(Directory & container) throw()
 {
@@ -149,8 +149,8 @@ void CoreParser::outputContainer(Directory & container) throw()
 }
 
 /*
- *  assignID - ¥ª¥Ö¥¸¥§¥¯¥È¤ËÂĞ¤·¤ÆID¤ò³ä¤êÉÕ¤±¤ë
- *             ¼è¤ê¹ş¤ó¤À¥ª¥Ö¥¸¥§¥¯¥ÈÌ¾¤ò¥æ¡¼¥¶¤ËÄó¼¨¤¹¤ë
+ *  assignID - ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦IDã‚’å‰²ã‚Šä»˜ã‘ã‚‹
+ *             å–ã‚Šè¾¼ã‚“ã ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’ãƒ¦ãƒ¼ã‚¶ã«æç¤ºã™ã‚‹
  */
 void CoreParser::assignID(Directory & container) throw()
 {
@@ -197,8 +197,8 @@ bool CoreParser::parse(Parser & p, Directory & container)
             p.getToken(token);
             if(token == Token::IDENTIFIER)
             {
-                    /* ¥¨¥é¡¼¤¬µ¯¤­¤Æ¤â¶ËÎÏÂ³¤±¤¿¤¤¤Î¤Ç¡¢
-                        µ¯¤­¤¿¤³¤È¤À¤±³Ğ¤¨¤Æ¤ª¤¤¤Æ¤É¤ó¤É¤óÂ³¤±¤ë */
+                    /* ã‚¨ãƒ©ãƒ¼ãŒèµ·ãã¦ã‚‚æ¥µåŠ›ç¶šã‘ãŸã„ã®ã§ã€
+                        èµ·ããŸã“ã¨ã ã‘è¦šãˆã¦ãŠã„ã¦ã©ã‚“ã©ã‚“ç¶šã‘ã‚‹ */
                 try 
                 {   this->parseStaticAPI(p, container, token);  }
                 catch(...)
@@ -210,22 +210,22 @@ bool CoreParser::parse(Parser & p, Directory & container)
         p.setLogBuffer(NULL);
 
         if(isParseErrorOccured)
-            ExceptionMessage(ExceptionMessage::FATAL,"The configuration process was aborted due to occurence of parse error","¹½Ê¸²òÀÏ¤Ë¼ºÇÔ¤·¤¿¤¿¤á½èÍı¤òÃæÃÇ¤·¤Ş¤¹").throwException();
+            ExceptionMessage(ExceptionMessage::FATAL,"The configuration process was aborted due to occurence of parse error","æ§‹æ–‡è§£æã«å¤±æ•—ã—ãŸãŸã‚å‡¦ç†ã‚’ä¸­æ–­ã—ã¾ã™").throwException();
 
         if(container[OBJECTTREE "/" TASK].size() == 0)
-            ExceptionMessage("Kernel requires one or more task objects.","¥¿¥¹¥¯¥ª¥Ö¥¸¥§¥¯¥È¤¬¤¢¤ê¤Ş¤»¤ó").throwException();
+            ExceptionMessage("Kernel requires one or more task objects.","ã‚¿ã‚¹ã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Šã¾ã›ã‚“").throwException();
 
-            /* ID³äÉÕ & ¥ª¥Ö¥¸¥§¥¯¥ÈÌ¾É½¼¨ */
+            /* IDå‰²ä»˜ & ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåè¡¨ç¤º */
         assignID(container);
 
-            /* ¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò¥Õ¥¡¥¤¥ë¤Ë½ĞÎÏ */
+            /* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ› */
         outputContainer(container);
 
         return true;
     }
     catch(Exception &)
     {
-            /* Îã³°¤òÅê¤²¤Ê¤ª¤¹Á°¤Ë ¸½ºß¤Î¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò³ÊÇ¼¤¹¤ë */
+            /* ä¾‹å¤–ã‚’æŠ•ã’ãªãŠã™å‰ã« ç¾åœ¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ */
         outputContainer(container);
         throw;
     }
@@ -242,7 +242,7 @@ DECLARE_DIRECTIVE(assigner,"assign_id")
     p.getToken(value, Token::INTEGER);
 
     if(value.value <= 0)
-        ExceptionMessage("Cannot assign an ID number less or equal to 0.","0°Ê²¼¤ÎIDÈÖ¹æ¤òÀßÄê¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó").throwException();
+        ExceptionMessage("Cannot assign an ID number less or equal to 0.","0ä»¥ä¸‹ã®IDç•ªå·ã‚’è¨­å®šã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“").throwException();
 
     *container.openChild("/","identifier",name.c_str(),NULL) = value.value;
 }
@@ -256,7 +256,7 @@ DECLARE_DIRECTIVE(parameter,"parameter")
     do {
         p.getToken(token);
         if(!(token == Token::STRINGLITERAL))
-            ExceptionMessage("parameter pragma requires additional parameter put in '\"...\"'","parameter¥×¥é¥°¥Ş¤Ë¤Ï\"...\"¤Ç³ç¤é¤ì¤¿ÄÉ²Ã¥Ñ¥é¥á¡¼¥¿¤¬É¬Í×¤Ç¤¹").throwException();
+            ExceptionMessage("parameter pragma requires additional parameter put in '\"...\"'","parameterãƒ—ãƒ©ã‚°ãƒã«ã¯\"...\"ã§æ‹¬ã‚‰ã‚ŒãŸè¿½åŠ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå¿…è¦ã§ã™").throwException();
 
         token.chopLiteral();
 
@@ -265,7 +265,7 @@ DECLARE_DIRECTIVE(parameter,"parameter")
             i = token.find_first_of('=');
             j = token.find_first_not_of('-');
             if(i == j || j == string::npos)
-                ExceptionMessage(ExceptionMessage::FATAL,"Wrong option [%]","ÉÔÀµ¤Ê¥ª¥×¥·¥ç¥ó [%]") << token << throwException;
+                ExceptionMessage(ExceptionMessage::FATAL,"Wrong option [%]","ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ [%]") << token << throwException;
 
             if(i != string::npos)
             {
@@ -311,7 +311,7 @@ public:
 
 namespace {
 
-        //¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
+        //ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
     string get_filename(string category, string _default) throw(Exception)
     {
         string result(_default);
@@ -321,24 +321,24 @@ namespace {
             if(item.countParameter() == 1)
                 result = item[0];
             else
-                ExceptionMessage("-% should have just ONE filename.","-%¥ª¥×¥·¥ç¥ó¤Ë»ØÄê¤Ç¤­¤ë¥Õ¥¡¥¤¥ë¤Ï1¤Ä¤Î¤ß") << category << throwException;
+                ExceptionMessage("-% should have just ONE filename.","-%ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«æŒ‡å®šã§ãã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã¯1ã¤ã®ã¿") << category << throwException;
         }
 
         if(result.empty())
-            ExceptionMessage("-% has illegal file name.","-%¥ª¥×¥·¥ç¥ó¤ËÅÏ¤µ¤ì¤¿¥Õ¥¡¥¤¥ëÌ¾¤ÏÉÔÀµ") << category << throwException;
+            ExceptionMessage("-% has illegal file name.","-%ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«æ¸¡ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«åã¯ä¸æ­£") << category << throwException;
         
         return result;
     }
 
-        // ¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ë¤ÎÀ¸À®
+        // ã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆ
     KernelCfg * createKernelCfg(void)
     {
         KernelCfg * cfg;
 
         cfg = KernelCfg::createInstance(get_filename("kernel_cfg","kernel_cfg.c"));
-        cfg->disableOutput();       //½èÍı¤¬´°Î»¤¹¤ë¤Ş¤Ç½ĞÎÏ¤µ¤»¤Ê¤¤
+        cfg->disableOutput();       //å‡¦ç†ãŒå®Œäº†ã™ã‚‹ã¾ã§å‡ºåŠ›ã•ã›ãªã„
 
-            //´ğËÜÅª¤Ê¥ª¥Ö¥¸¥§¥¯¥È¤Î³ÊÇ¼¾ì½ê¤Ï¤³¤³¤Ç»ØÄê¤·¤Æ¤ª¤¯
+            //åŸºæœ¬çš„ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ ¼ç´å ´æ‰€ã¯ã“ã“ã§æŒ‡å®šã—ã¦ãŠã
         cfg->createPart("header")
             .createPart("include")
             .createPart(IDENTIFIER_VARIABLE)
@@ -355,21 +355,21 @@ namespace {
             .createPart(OBJECT_INITIALIZER)
             .createPart("others");
 
-            //¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ëÀ¸À®¥¤¥Ù¥ó¥È¤Î¼Â¹Ô
+            //ã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«ç”Ÿæˆã‚¤ãƒ™ãƒ³ãƒˆã®å®Ÿè¡Œ
         KernelCfg::CreationEvent ev;
         ev.file = cfg;
         Event<KernelCfg::CreationEvent>::raise(ev);
 
-            //¥¨¥é¡¼¥Á¥§¥Ã¥¯
+            //ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
         if(ev.file == 0)
-            ExceptionMessage("Internal error : kernel_cfg event handler eliminates the instance.","ÆâÉô¥¨¥é¡¼ : kernel_cfg¤Î¥Ï¥ó¥É¥é¤¬¥¤¥ó¥¹¥¿¥ó¥¹¤òºï½ü¤·¤¿") << throwException;
+            ExceptionMessage("Internal error : kernel_cfg event handler eliminates the instance.","å†…éƒ¨ã‚¨ãƒ©ãƒ¼ : kernel_cfgã®ãƒãƒ³ãƒ‰ãƒ©ãŒã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å‰Šé™¤ã—ãŸ") << throwException;
         if(RuntimeObjectTable::getInstance(typeid(KernelCfg)) != ev.file)
-            ExceptionMessage("Internal error : kernel_cfg event handler creates the illegal instance.","ÆâÉô¥¨¥é¡¼ : kernel_cfg¤Î¥Ï¥ó¥É¥é¤¬ÉÔÀµ¤Ê¥¤¥ó¥¹¥¿¥ó¥¹¤òÀ¸À®¤·¤¿") << throwException;
+            ExceptionMessage("Internal error : kernel_cfg event handler creates the illegal instance.","å†…éƒ¨ã‚¨ãƒ©ãƒ¼ : kernel_cfgã®ãƒãƒ³ãƒ‰ãƒ©ãŒä¸æ­£ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ãŸ") << throwException;
 
-        return ev.file; //cfg¤Ç¤Ï¥À¥á
+        return ev.file; //cfgã§ã¯ãƒ€ãƒ¡
     }
 
-        //¥Õ¥¡¥¤¥ëÌ¾¤«¤é¾×ÆÍ²óÈòÍÑ¤ÎÌ¾Á°¤òÀ¸À®¤¹¤ë
+        //ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰è¡çªå›é¿ç”¨ã®åå‰ã‚’ç”Ÿæˆã™ã‚‹
     string convert_filename_to_definition(string filename)
     {
         string result;
@@ -387,7 +387,7 @@ namespace {
         return result;
     }
 
-        //¼«Æ°ID³äÉÕ·ë²Ì¥Õ¥¡¥¤¥ë¤ÎÀ¸À®
+        //è‡ªå‹•IDå‰²ä»˜çµæœãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆ
     KernelID * createKernelID(void)
     {
         KernelID * id = 0;
@@ -395,42 +395,42 @@ namespace {
         id = KernelID::createInstance(get_filename("kernel_id","kernel_id.h"));
         id->disableOutput();
 
-            //´ğËÜÅª¤Ê¥ª¥Ö¥¸¥§¥¯¥È¤Î³ÊÇ¼¾ì½ê¤Ï¤³¤³¤Ç»ØÄê¤·¤Æ¤ª¤¯
+            //åŸºæœ¬çš„ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ ¼ç´å ´æ‰€ã¯ã“ã“ã§æŒ‡å®šã—ã¦ãŠã
         id-> createPart("__header__")
             .createPart("body")
             .createPart("__footer__");
 
-            //¥Õ¥¡¥¤¥ëÀ¸À®¥¤¥Ù¥ó¥È¤Î¼Â¹Ô
+            //ãƒ•ã‚¡ã‚¤ãƒ«ç”Ÿæˆã‚¤ãƒ™ãƒ³ãƒˆã®å®Ÿè¡Œ
         KernelID::CreationEvent ev;
         ev.file = id;
         Event<KernelID::CreationEvent>::raise(ev);
 
-            //¥¨¥é¡¼¥Á¥§¥Ã¥¯
+            //ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
         if(ev.file == 0)
-            ExceptionMessage("Internal error : kernel_id event handler eliminates the instance.","ÆâÉô¥¨¥é¡¼ : kernel_id¤Î¥Ï¥ó¥É¥é¤¬¥¤¥ó¥¹¥¿¥ó¥¹¤òºï½ü¤·¤¿") << throwException;
+            ExceptionMessage("Internal error : kernel_id event handler eliminates the instance.","å†…éƒ¨ã‚¨ãƒ©ãƒ¼ : kernel_idã®ãƒãƒ³ãƒ‰ãƒ©ãŒã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å‰Šé™¤ã—ãŸ") << throwException;
         if(RuntimeObjectTable::getInstance(typeid(KernelID)) != ev.file)
-            ExceptionMessage("Internal error : kernel_id event handler creates the illegal instance.","ÆâÉô¥¨¥é¡¼ : kernel_id¤Î¥Ï¥ó¥É¥é¤¬ÉÔÀµ¤Ê¥¤¥ó¥¹¥¿¥ó¥¹¤òÀ¸À®¤·¤¿") << throwException;
+            ExceptionMessage("Internal error : kernel_id event handler creates the illegal instance.","å†…éƒ¨ã‚¨ãƒ©ãƒ¼ : kernel_idã®ãƒãƒ³ãƒ‰ãƒ©ãŒä¸æ­£ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ãŸ") << throwException;
 
-            //Â¿½Å¥¤¥ó¥¯¥ë¡¼¥É²óÈòÍÑÄêµÁ¤ÎÄÉ²Ã
+            //å¤šé‡ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰å›é¿ç”¨å®šç¾©ã®è¿½åŠ 
         string defname = convert_filename_to_definition(id->getFilename());
         id->movePart("__header__");
-        (*id)   // << get_agreement(id->getFilename())      //Ê¸¸À¤ÎÉÕÍ¿
+        (*id)   // << get_agreement(id->getFilename())      //æ–‡è¨€ã®ä»˜ä¸
                 << "#ifndef " << defname << '\n'        //#ifndef KERNELID_H
                 << "#define " << defname << "\n\n";     //#define KERNELID_H
         
         id->movePart("__footer__");
         (*id)   << "\n#endif /* " << defname << " */\n\n";          //#endif /* KERNELID_H */
 
-        return ev.file; //id¤Ç¤Ï¥À¥á
+        return ev.file; //idã§ã¯ãƒ€ãƒ¡
     }
 
-        //ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÊ¸»ú¤ÎºÇÂçÄ¹¤òÆÀ¤ë
+        //ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹æ–‡å­—ã®æœ€å¤§é•·ã‚’å¾—ã‚‹
     unsigned int countLongestSymbolName(const std::map<std::string, int> & identifiers) throw()
     {
         unsigned int max_length = 0;
         std::map<std::string, int>::const_iterator scope;
 
-            // ¤â¤Ã¤È¤âÄ¹¤¤Ì¾Á°¤ò»ı¤Ä¥·¥ó¥Ü¥ëÌ¾¤ò¸¡º÷
+            // ã‚‚ã£ã¨ã‚‚é•·ã„åå‰ã‚’æŒã¤ã‚·ãƒ³ãƒœãƒ«åã‚’æ¤œç´¢
         scope = identifiers.begin();
         while(scope != identifiers.end()) {
             if(max_length < scope->first.size())
@@ -441,7 +441,7 @@ namespace {
         return max_length;
     }
 
-        //¼«Æ°ID³äÉÕ·ë²Ì½ĞÎÏ (¤³¤ì¤Ş¤Ç¤È¤Î¸ß´¹¥â¡¼¥É)
+        //è‡ªå‹•IDå‰²ä»˜çµæœå‡ºåŠ› (ã“ã‚Œã¾ã§ã¨ã®äº’æ›ãƒ¢ãƒ¼ãƒ‰)
     void serializeIdentifiers_defineStyle(KernelID * out, std::map<std::string, int> & identifier_pool)
     {
         std::map<std::string, int>::const_iterator scope;
@@ -449,27 +449,27 @@ namespace {
 
         (*out) << "\t/* object identifier deifnition */\n\n";
 
-            // ¤â¤Ã¤È¤âÄ¹¤¤Ì¾Á°¤ò»ı¤Ä¥·¥ó¥Ü¥ëÌ¾¤ò¸¡º÷
+            // ã‚‚ã£ã¨ã‚‚é•·ã„åå‰ã‚’æŒã¤ã‚·ãƒ³ãƒœãƒ«åã‚’æ¤œç´¢
         max_length = countLongestSymbolName(identifier_pool);
 
         scope = identifier_pool.begin();
         while(scope != identifier_pool.end()) {
             (*out)  << "#define " << scope->first 
-                    << string(max_length - scope->first.size() + 4, ' ')    //ÃÍ¤ò¤½¤í¤¨¤ë
+                    << string(max_length - scope->first.size() + 4, ' ')    //å€¤ã‚’ãã‚ãˆã‚‹
                     << setw(3)
                     << scope->second << '\n';
             ++ scope;
         }
     }
 
-        //¼«Æ°ID³äÉÕ·ë²Ì½ĞÎÏ (Äê¿ôÊÑ¿ô³ÊÇ¼Êı¼°)
+        //è‡ªå‹•IDå‰²ä»˜çµæœå‡ºåŠ› (å®šæ•°å¤‰æ•°æ ¼ç´æ–¹å¼)
     void serializeIdentifiers_variableStyle(KernelID * id, std::map<std::string, int> & identifier) throw(Exception)
     {
         std::map<std::string, int>::const_iterator scope;
         string::size_type max_length;
         KernelCfg * cfg = getRuntimeObjectInstance(KernelCfg);
 
-            /* kernel_id.h¤Ë½ĞÎÏ */
+            /* kernel_id.hã«å‡ºåŠ› */
 
         (*id) << "#ifdef __cplusplus\n"
                  "#define KERNELID_EXPORT extern \"C\"\n"
@@ -477,7 +477,7 @@ namespace {
                  "#define KERNELID_EXPORT extern\n"
                  "#endif\n\n";
 
-            // ¤â¤Ã¤È¤âÄ¹¤¤Ì¾Á°¤ò»ı¤Ä¥·¥ó¥Ü¥ëÌ¾¤ò¸¡º÷
+            // ã‚‚ã£ã¨ã‚‚é•·ã„åå‰ã‚’æŒã¤ã‚·ãƒ³ãƒœãƒ«åã‚’æ¤œç´¢
         max_length = countLongestSymbolName(identifier);
 
         scope = identifier.begin();
@@ -491,7 +491,7 @@ namespace {
 
         (*id) << "\n#undef KERNELID_EXPORT\n\n";
 
-            /* kernel_cfg.c¤ËÄê¿ôÄêµÁ¤ò½ĞÎÏ */
+            /* kernel_cfg.cã«å®šæ•°å®šç¾©ã‚’å‡ºåŠ› */
 
         cfg->movePart(IDENTIFIER_VARIABLE);
         (*cfg) << "\t/* Identifier storage variables */\n";
@@ -506,13 +506,13 @@ namespace {
         }
     }
 
-        //¼«Æ°ID³äÉÕ·ë²Ì½ĞÎÏ (Ê»ÍÑÊı¼° - (toppers-dev 28))
+        //è‡ªå‹•IDå‰²ä»˜çµæœå‡ºåŠ› (ä½µç”¨æ–¹å¼ - (toppers-dev 28))
     void serializeIdentifiers_blendedStyle(KernelID * id, std::map<std::string, int> & identifier) throw(Exception)
     {
-        /* kernel_id.h¤Ø¤Î½ĞÎÏ¤Ï½¾Íè¤ÈÆ±¤¸ */
+        /* kernel_id.hã¸ã®å‡ºåŠ›ã¯å¾“æ¥ã¨åŒã˜ */
         serializeIdentifiers_defineStyle(id, identifier);
 
-            /* kernel_cfg.c¤ËÄê¿ôÄêµÁ¤ò½ĞÎÏ */
+            /* kernel_cfg.cã«å®šæ•°å®šç¾©ã‚’å‡ºåŠ› */
 
         std::map<std::string, int>::const_iterator scope;
         string::size_type max_length;
@@ -534,13 +534,13 @@ namespace {
         }
     }
 
-        //¼«Æ°ID³äÉÕ·ë²Ì¤Î½ĞÎÏ
+        //è‡ªå‹•IDå‰²ä»˜çµæœã®å‡ºåŠ›
     void serializeIdentifiers(bool varid_style = false) throw(Exception)
     {
         KernelID * out = getRuntimeObjectInstance(KernelID);
         std::map<std::string, int> identifier_pool;
 
-            //¼±ÊÌ»Ò¥×¡¼¥ë¤òÀ¸À®
+            //è­˜åˆ¥å­ãƒ—ãƒ¼ãƒ«ã‚’ç”Ÿæˆ
         {
             Directory * scope = Singleton<Directory>::getInstance()->findChild("/identifier")->getFirstChild();
             while(scope != 0)
@@ -550,7 +550,7 @@ namespace {
             }
         }
 
-            //³äÉÕ·ë²Ì¤Î½ĞÎÏ
+            //å‰²ä»˜çµæœã®å‡ºåŠ›
         out->movePart("body");
         if(varid_style) {
             serializeIdentifiers_blendedStyle(out, identifier_pool);
@@ -567,25 +567,25 @@ namespace {
     {
         const bool backward_compatible = getOptionParameter()["1.3"].isValid();
         
-            //Æ¬¤ÎÉôÊ¬¤Î½ĞÎÏ
+            //é ­ã®éƒ¨åˆ†ã®å‡ºåŠ›
         out.movePart("header");
 
-        out // << get_agreement(out.getFilename())          //Ê¸¸À¤ÎÅºÉÕ
-            << "/* Configured with ["                   //¥³¥ó¥Õ¥£¥®¥å¥ì¡¼¥·¥ç¥ó¥ª¥×¥·¥ç¥ó¤ò½ĞÎÏ¤·¤Æ¤ª¤¯
+        out // << get_agreement(out.getFilename())          //æ–‡è¨€ã®æ·»ä»˜
+            << "/* Configured with ["                   //ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’å‡ºåŠ›ã—ã¦ãŠã
             << getOptionParameter().getCommandLine() 
             << "] */\n\n";
 
-            //1.4°Ê¹ß¤Ïkernel_cfg.h¤ò»ÈÍÑ
+            //1.4ä»¥é™ã¯kernel_cfg.hã‚’ä½¿ç”¨
         if(!backward_compatible)
             out << "#include " << conv_includefile("kernel_cfg.h") << '\n';
 
-            //kernel_id.h¤Îinclude (kernel_id¤Ï¥À¥Ö¥ë¥¯¥©¡¼¥È¤Ç¤¯¤¯¤ë)
+            //kernel_id.hã®include (kernel_idã¯ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã§ããã‚‹)
         out << "#include \"" << dynamic_cast<KernelID *>(RuntimeObjectTable::getInstance(typeid(KernelID)))->getFilename() <<"\"\n" 
             << '\n';
 
 
             //CFG_INT/EXCHDR_ENTRY
-            // Q: "<<"¤¬¤¢¤Ã¤¿¤ê¤Ê¤«¤Ã¤¿¤ê¤¹¤ë¤Î¤Ï¤Ê¤¼? A: 2¹ÔÌÜ¤«¤é5¹ÔÌÜ¤Ş¤Ç¤Ïelse¥Ö¥í¥Ã¥¯¤Ç½ĞÎÏ¤·¤Æ¤¤¤ëÆâÍÆ¤È¤Ş¤Ã¤¿¤¯Æ±¤¸¡£¤³¤¦¤¹¤ì¤Ğ¥³¥ó¥Ñ¥¤¥é¤Ë¤è¤Ã¤Æ¤Ï¥·¥å¥ê¥ó¥¯¤µ¤ì¤Æ°ì¤Ä¤Ë¤Ê¤ë¤·¡¢²ÄÆÉÀ­¤â°­¤¯¤Ê¤é¤Ê¤¤¡£
+            // Q: "<<"ãŒã‚ã£ãŸã‚Šãªã‹ã£ãŸã‚Šã™ã‚‹ã®ã¯ãªãœ? A: 2è¡Œç›®ã‹ã‚‰5è¡Œç›®ã¾ã§ã¯elseãƒ–ãƒ­ãƒƒã‚¯ã§å‡ºåŠ›ã—ã¦ã„ã‚‹å†…å®¹ã¨ã¾ã£ãŸãåŒã˜ã€‚ã“ã†ã™ã‚Œã°ã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ã«ã‚ˆã£ã¦ã¯ã‚·ãƒ¥ãƒªãƒ³ã‚¯ã•ã‚Œã¦ä¸€ã¤ã«ãªã‚‹ã—ã€å¯èª­æ€§ã‚‚æ‚ªããªã‚‰ãªã„ã€‚
         if(backward_compatible) {
             out << "#if TKERNEL_PRVER >= 0x1040\n"
                 << "#error \"This configuration file has no compatibility with"
@@ -614,7 +614,7 @@ namespace {
                 << "#endif\n\n";
         }
 
-            //__EMPTY_LABEL¥Ş¥¯¥í¤Î½ĞÎÏ
+            //__EMPTY_LABELãƒã‚¯ãƒ­ã®å‡ºåŠ›
         if(!getOptionParameter()["z"].isValid()) {
             
             string zeromacro;
@@ -629,7 +629,7 @@ namespace {
                     "#endif\n\n";
         }
 
-            /* PRID¤Î¥Á¥§¥Ã¥¯ */
+            /* PRIDã®ãƒã‚§ãƒƒã‚¯ */
         out << "#if TKERNEL_PRID != 0x0001u /* TOPPERS/JSP */\n"
                "#error \"You can not use this configuration file without TOPPERS/JSP\"\n"
                "#endif\n\n";
@@ -650,13 +650,13 @@ void ConfigurationFileGenerator::parseOption(Directory & parameter)
             "  -oproto, --output-prototype: Output task prototype definitions in kernel_cfg\n"
             "  -z, --nonzero              : Do not output __EMPTY_LABEL macro and related definitions\n"
             "  -1.3  : Generates kernel_cfg.c for TOPPERS/JSP rel 1.3\n",
-            "¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ë¤ÎÀ¸À®\n"
-            "  -id, --kernel_id=¥Õ¥¡¥¤¥ëÌ¾  : ID³äÅö¥Õ¥¡¥¤¥ë¤ÎÌ¾Á°¤ò»ØÄê¤·¤Ş¤¹\n"
-            "  -cfg,--kernel_cfg=¥Õ¥¡¥¤¥ëÌ¾ : ¥«¡¼¥Í¥ë¹½À®¥Õ¥¡¥¤¥ë¤ÎÌ¾Á°¤ò»ØÄê¤·¤Ş¤¹\n"
-            "  -il, --include-libstyle      : ¥«¡¼¥Í¥ë¤Î¥Ø¥Ã¥À¥Õ¥¡¥¤¥ë¤ò<...>¤Î·Á¤Ç½ĞÎÏ¤·¤Ş¤¹\n"
-            "  -oproto, --output-prototype  : ¥¿¥¹¥¯ËÜÂÎ¤Ê¤É¤ÎÄêµÁ¤òkernel_cfg.c¤ËÀ¸À®¤·¤Ş¤¹\n"
-            "  -z, --nonzero                : __EMPTY_LABEL¥Ş¥¯¥í¤Î»ÈÍÑ¤òÀ©¸Â¤·¤Ş¤¹\n"
-            "  -1.3  : TOPPERS/JSP rel 1.3 ÍÑ¤Î¥³¥ó¥Õ¥£¥®¥å¥ì¡¼¥·¥ç¥ó¥Õ¥¡¥¤¥ë¤òÀ¸À®¤·¤Ş¤¹\n");
+            "ã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆ\n"
+            "  -id, --kernel_id=ãƒ•ã‚¡ã‚¤ãƒ«å  : IDå‰²å½“ãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰ã‚’æŒ‡å®šã—ã¾ã™\n"
+            "  -cfg,--kernel_cfg=ãƒ•ã‚¡ã‚¤ãƒ«å : ã‚«ãƒ¼ãƒãƒ«æ§‹æˆãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰ã‚’æŒ‡å®šã—ã¾ã™\n"
+            "  -il, --include-libstyle      : ã‚«ãƒ¼ãƒãƒ«ã®ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’<...>ã®å½¢ã§å‡ºåŠ›ã—ã¾ã™\n"
+            "  -oproto, --output-prototype  : ã‚¿ã‚¹ã‚¯æœ¬ä½“ãªã©ã®å®šç¾©ã‚’kernel_cfg.cã«ç”Ÿæˆã—ã¾ã™\n"
+            "  -z, --nonzero                : __EMPTY_LABELãƒã‚¯ãƒ­ã®ä½¿ç”¨ã‚’åˆ¶é™ã—ã¾ã™\n"
+            "  -1.3  : TOPPERS/JSP rel 1.3 ç”¨ã®ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã—ã¾ã™\n");
         return;
     }
 
@@ -664,18 +664,18 @@ void ConfigurationFileGenerator::parseOption(Directory & parameter)
     checkOption("id","id");
 
         /*
-         *  ¥«¡¼¥Í¥ë¥³¥ó¥Õ¥£¥®¥å¥ì¡¼¥·¥ç¥ó·ë²Ì¤Î¥Õ¥¡¥¤¥ë (kernel_cfg.c) ¤Î½é´üÀßÄê
+         *  ã‚«ãƒ¼ãƒãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³çµæœã®ãƒ•ã‚¡ã‚¤ãƒ« (kernel_cfg.c) ã®åˆæœŸè¨­å®š
          */
 
     createKernelCfg();
 
         /*
-         *  ID³äÉÕ·ë²Ì¤Î¥Õ¥¡¥¤¥ë (kernel_id.h) ¤Î½é´üÀßÄê
+         *  IDå‰²ä»˜çµæœã®ãƒ•ã‚¡ã‚¤ãƒ« (kernel_id.h) ã®åˆæœŸè¨­å®š
          */
 
     createKernelID();
 
-        /* ¤½¤ÎÂ¾¥ª¥×¥·¥ç¥ó */
+        /* ãã®ä»–ã‚ªãƒ—ã‚·ãƒ§ãƒ³ */
     restrict_zero = findOption("z","zero");
     def_prototype = findOption("oproto","output-prototype");
     libstyle_include = findOption("il","include-libstyle");
@@ -691,7 +691,7 @@ void ConfigurationFileGenerator::parseOption(Directory & parameter)
 
 void ConfigurationFileGenerator::onFatalExit(Directory & container)
 {
-        //Îã³°¤Ç°Û¾ï½ªÎ»¤·¤¿¤é¡¢¥Õ¥¡¥¤¥ë¤òÀ¸À®¤·¤Ê¤¤
+        //ä¾‹å¤–ã§ç•°å¸¸çµ‚äº†ã—ãŸã‚‰ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã—ãªã„
     dynamic_cast<MultipartStream *>(RuntimeObjectTable::getInstance(typeid(KernelCfg)))->disableOutput();
     dynamic_cast<MultipartStream *>(RuntimeObjectTable::getInstance(typeid(KernelID)))->disableOutput();
 }
@@ -713,13 +713,13 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
     if(container.size() == 0 && findOption("mcfg","minimize-cfg"))
     {
         if(!getOptionParameter().find("ext"))
-            ExceptionMessage("Use of the extended option --minimize-cfg. Please use -ext option together.","--minimize¥ª¥×¥·¥ç¥ó¤Ï³ÈÄ¥µ¡Ç½¤Ç¤¹¡£»ÈÍÑ¤¹¤ë¤Ë¤Ï-ext¤ò»ØÄê¤·¤Æ¤¯¤À¤µ¤¤¡£").throwException();
+            ExceptionMessage("Use of the extended option --minimize-cfg. Please use -ext option together.","--minimizeã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯æ‹¡å¼µæ©Ÿèƒ½ã§ã™ã€‚ä½¿ç”¨ã™ã‚‹ã«ã¯-extã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚").throwException();
         return;
     }
     va_start(vl, flag);
 
 
-        //É¬Í×¤Ê¾ğÊó¤ÎºîÀ®
+        //å¿…è¦ãªæƒ…å ±ã®ä½œæˆ
     work = string(va_arg(vl, const char *));
     id["id"]  = work;
     transform(work.begin(), work.end(), work.begin(), toupper_function);
@@ -748,11 +748,11 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
     id["name"] = work;
     out->movePart(work);
 
-        //¥ª¥Ö¥¸¥§¥¯¥È½é´ü²½´Ø¿ô¤òÄÉ²Ã
+        //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–é–¢æ•°ã‚’è¿½åŠ 
     if((flag & INIT) != 0 && container.size() != 0)
         container["/" OBJECT_INITIALIZER].addChild(new Directory(work));
 
-    (*out) << "\n\t/* " << (Message("Object initializer [%]","¥ª¥Ö¥¸¥§¥¯¥È½é´ü²½¥Ö¥í¥Ã¥¯ [%]") << work) << " */\n\n";
+    (*out) << "\n\t/* " << (Message("Object initializer [%]","ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–ãƒ–ãƒ­ãƒƒã‚¯ [%]") << work) << " */\n\n";
 
     if(((flag & HEADER) != 0) && backward_compatible)
         (*out) << "#include " << conv_includefile(work) << "\n\n";
@@ -769,7 +769,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
         (*out) << id.format("const UINT $(symbolprefix,)tnum_$(id)no = TNUM_$(ID)NO;\n\n");
     }
 
-        /* ID½ç¤Ë¥½¡¼¥È (¤³¤Î»şÅÀ¤ÇÏ¢ÈÖ¤¬³ÎÄê¤·¤Æ¤¤¤ë¤Ï¤º¤Ê¤Î¤Ç¡¤¥Á¥§¥Ã¥¯¤Ï¤·¤Ê¤¤) */
+        /* IDé †ã«ã‚½ãƒ¼ãƒˆ (ã“ã®æ™‚ç‚¹ã§é€£ç•ªãŒç¢ºå®šã—ã¦ã„ã‚‹ã¯ãšãªã®ã§ï¼Œãƒã‚§ãƒƒã‚¯ã¯ã—ãªã„) */
     if((flag & (BUFFER|DEFINITION)) != 0)
     {
         const bool is_identifier = (flag & TNUMNO) == 0;
@@ -787,7 +787,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
         }
     }
 
-        //¥×¥í¥È¥¿¥¤¥×ÄêµÁ¤Î½ĞÎÏ
+        //ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®šç¾©ã®å‡ºåŠ›
     if((flag & PROTOTYPE) != 0)
     {
         buffer = va_arg(vl, const char *);
@@ -813,7 +813,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
         }
     }
 
-        //¥Ğ¥Ã¥Õ¥¡¤ÎºîÀ®
+        //ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
     if((flag & BUFFER) != 0 && container.size() != 0)
     {
         buffer = va_arg(vl, const char *);
@@ -826,7 +826,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
         (*out) << '\n';
     }
 
-        //ÄêµÁ¥Ö¥í¥Ã¥¯(xINIB)¤Î½ĞÎÏ
+        //å®šç¾©ãƒ–ãƒ­ãƒƒã‚¯(xINIB)ã®å‡ºåŠ›
     if((flag & DEFINITION) != 0)
     {
         buffer = va_arg(vl, const char *);
@@ -852,7 +852,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
     {
         Directory * node;
 
-            /* Àë¸À½ç¤ÇIDÈÖ¹æ¤ò¥½¡¼¥È */
+            /* å®£è¨€é †ã§IDç•ªå·ã‚’ã‚½ãƒ¼ãƒˆ */
         sorter.clear();
         node = container.getFirstChild();
         while(node != NULL)
@@ -873,7 +873,7 @@ void ConfigurationFileGenerator::createObjectDefinition(MultipartStream * out, D
         *out << "};\n\n";
     }
 
-        //À©¸æ¥Ö¥í¥Ã¥¯(xCB)¤Î½ĞÎÏ
+        //åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯(xCB)ã®å‡ºåŠ›
     if((flag & CONTROLBLOCK) != 0)
     {
         if(container.size() != 0)
@@ -891,23 +891,23 @@ void ConfigurationFileGenerator::body(Directory & container)
     string work;
     const bool varid_style = findOption("var","variable-id");
 
-        /* kernel_id.h¤Î½ĞÎÏ */
+        /* kernel_id.hã®å‡ºåŠ› */
     serializeIdentifiers(varid_style);
 
-        /* kernel_cfg.c¤Î½ĞÎÏ */
+        /* kernel_cfg.cã®å‡ºåŠ› */
     out = dynamic_cast<KernelCfg *>(RuntimeObjectTable::getInstance(typeid(KernelCfg)));
     if(out == 0) {
-        ExceptionMessage("[Internal error] The stream buffer of kernel_cfg disappeared.","[ÆâÉô¥¨¥é¡¼] ¥Õ¥¡¥¤¥ë¥¹¥È¥ê¡¼¥à¤¬³«¤±¤Ş¤»¤ó (kernel_cfg.c)").throwException();
+        ExceptionMessage("[Internal error] The stream buffer of kernel_cfg disappeared.","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒé–‹ã‘ã¾ã›ã‚“ (kernel_cfg.c)").throwException();
         return;
     }
 
-        /* Æ¬¤ÎÄêµÁÉôÊ¬¤ÎºîÀ® */
+        /* é ­ã®å®šç¾©éƒ¨åˆ†ã®ä½œæˆ */
     serializeConfiguration_headerPart(*out);
 
         /* INCLUDE */
     out->movePart(INCLUDEFILE);
     scope = container(OBJECTTREE "/" INCLUDEFILE)->getFirstChild();
-    (*out) << "\t/* " << Message("User specified include files","¥æ¡¼¥¶ÄêµÁ¤Î¥¤¥ó¥¯¥ë¡¼¥É¥Õ¥¡¥¤¥ë") << "*/\n";
+    (*out) << "\t/* " << Message("User specified include files","ãƒ¦ãƒ¼ã‚¶å®šç¾©ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«") << "*/\n";
     while(scope != 0)
     {
         (*out) << "#include " << scope->toString() << '\n';
@@ -946,9 +946,9 @@ void ConfigurationFileGenerator::body(Directory & container)
     createObjectDefinition(out, container[OBJECTTREE "/" EXCEPTIONHANDLER], HEADER|BUFFER|TNUMNO|DEFINITION|INIT|PROTOTYPE,"exc","void $(exchdr)(VP p_excinf);","CFG_EXCHDR_ENTRY($(exchdr));","$@,$(excatr),(FP)CFG_EXC_ENTRY($(exchdr))");
 
 
-        /* ¥ª¥Ö¥¸¥§¥¯¥È½é´ü²½¥ë¡¼¥Á¥ó */
+        /* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–ãƒ«ãƒ¼ãƒãƒ³ */
     out->movePart(OBJECT_INITIALIZER);
-    (*out) << "\t/* " << Message("Object initialization routine","¥ª¥Ö¥¸¥§¥¯¥È½é´ü²½¥ë¡¼¥Á¥ó") << " */\n\n";
+    (*out) << "\t/* " << Message("Object initialization routine","ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–ãƒ«ãƒ¼ãƒãƒ³") << " */\n\n";
     (*out) << "void\n" << conv_kernelobject("object_initialize") << "(void)\n{\n";
     scope = container["/" OBJECT_INITIALIZER].getFirstChild();
     while(scope != 0)
@@ -959,9 +959,9 @@ void ConfigurationFileGenerator::body(Directory & container)
     (*out) << "}\n\n";
 
 
-        /* ½é´ü²½¥Ï¥ó¥É¥é */
+        /* åˆæœŸåŒ–ãƒãƒ³ãƒ‰ãƒ© */
     out->movePart(INITIALIZER);
-    (*out) << "\t/* " << Message("Initialization handler","½é´ü²½¥Ï¥ó¥É¥éµ¯Æ°¥ë¡¼¥Á¥ó") << " */\n\n";
+    (*out) << "\t/* " << Message("Initialization handler","åˆæœŸåŒ–ãƒãƒ³ãƒ‰ãƒ©èµ·å‹•ãƒ«ãƒ¼ãƒãƒ³") << " */\n\n";
     (*out) << "void\n" << conv_kernelobject("call_inirtn") << "(void)\n{\n";
     scope = container[OBJECTTREE "/" INITIALIZER].getFirstChild();
     while(scope != 0)
@@ -971,7 +971,7 @@ void ConfigurationFileGenerator::body(Directory & container)
     }
     (*out) << "}\n\n";
 
-        /* ½ªÎ»¥Ï¥ó¥É¥é */
+        /* çµ‚äº†ãƒãƒ³ãƒ‰ãƒ© */
     scope = container[OBJECTTREE "/"  TERMINATOR].getLastChild();
     if(!backward_compatible) {
         (*out) << "void\n" << conv_kernelobject("call_terrtn") << "(void)\n{\n";
@@ -985,7 +985,7 @@ void ConfigurationFileGenerator::body(Directory & container)
     else {
         if(scope->size() != 0)
             ExceptionMessage("VATT_TER is not supported for TOPPERS/JSP rel 1.3 or earlier.",
-                             "VATT_TER¤ÏTOPPERS/JSP rel 1.3°ÊÁ°¤Ç¤Ï¥µ¥İ¡¼¥È¤µ¤ì¤Ş¤»¤ó").throwException();
+                             "VATT_TERã¯TOPPERS/JSP rel 1.3ä»¥å‰ã§ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¾ã›ã‚“").throwException();
     }
 
     out->movePart("others");
@@ -1005,7 +1005,7 @@ void ConfigurationFileGenerator::body(Directory & container)
             container[OBJECTTREE].Store(&f);
             f.close();
         }else
-            ExceptionMessage(" Failed to open the file % for storing object definitions"," ¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò³ÊÇ¼¤¹¤ë¤¿¤á¤Î¥Õ¥¡¥¤¥ë(%)¤¬³«¤±¤Ş¤»¤ó") << filename << throwException;
+            ExceptionMessage(" Failed to open the file % for storing object definitions"," ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ãƒ•ã‚¡ã‚¤ãƒ«(%)ãŒé–‹ã‘ã¾ã›ã‚“") << filename << throwException;
     }
 
     out->enableOutput();

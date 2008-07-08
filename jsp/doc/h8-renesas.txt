@@ -1,7 +1,7 @@
-               �� TOPPERS/JSP�����ͥ� �桼�����ޥ˥奢�� ��
-                  ��H8�������åȰ�¸�� (H8C(HEW)�б���)��
+               ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                  （H8ターゲット依存部 (H8C(HEW)対応版)）
    
-               ��Release 1.4.3�б����ǽ�����: 08-Mar-2007��
+               （Release 1.4.3対応，最終更新: 08-Mar-2007）
    
    ------------------------------------------------------------------------ 
     TOPPERS/JSP Kernel
@@ -18,1198 +18,1198 @@
     Copyright (C) 2001-2004 by Kunihiko Ohnaka
     Copyright (C) 2004 by Katsuhiro Amano
    
-    �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
+    上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
 
-    �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
-    �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
-    ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
-    ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
-    (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-        ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-        ����������˴ޤޤ�Ƥ��뤳�ȡ�
-    (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-        �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-        �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-        ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
-    (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-        �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-        �ȡ�
-      (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-          �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-      (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-          ��𤹤뤳�ȡ�
-    (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-        ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+    によって公表されている GNU General Public License の Version 2 に記
+    述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+    を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+    利用と呼ぶ）することを無償で許諾する．
+    (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+        権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+        スコード中に含まれていること．
+    (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+        用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+        者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+        の無保証規定を掲載すること．
+    (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+        用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+        と．
+      (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+          作権表示，この利用条件および下記の無保証規定を掲載すること．
+      (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+          報告すること．
+    (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+        害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
    
-    �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
-    ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
-    �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
-    ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+    本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+    よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+    含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+    接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
    
     @(#) $Id: h8-renesas.txt,v 1.9 2007/03/23 07:27:55 honda Exp $
 
    ------------------------------------------------------------------------
-1.  H8�������åȰ�¸���γ���
+1.  H8ターゲット依存部の概要
 
-1. 1  �������åȥ����ƥ�ȳ�ȯ�Ķ�
+1. 1  ターゲットシステムと開発環境
 
-��Release1.4.1�ޤǤΥС������򤪻Ȥ�������
-��Release1.4.2�������ߤΰ������������ѹ�����Ƥ��뤿�ᡢ��С������
-�򤴻��Ѥ����ϡ�2.2.1 ����ߥϥ�ɥ����Ͽ��ˡ�פ򻲾Ȥ��줿����
+・Release1.4.1までのバージョンをお使いの方へ
+　Release1.4.2から割込みの扱いが大幅に変更されているため、旧バージョン
+をご使用の方は「2.2.1 割込みハンドラの登録方法」を参照されたい。
 
-���ܼ�����gcc�б����ä�H8��¸����(��)��ͥ��� ����塼��������γ�ȯ
-�Ķ�H8C(HEW)���б���������ΤǤ��롣
+　本実装はgcc対応だったH8依存部を(株)ルネサス ソリューションズ製の開発
+環境H8C(HEW)に対応させたものである。
 
-  H8 �ץ����å��Υ������åȥ����ƥ�ϡ�H8/3048F-ONE����ܤ����ʲ���
-�ܡ��ɤǤ��롣
+  H8 プロセッサのターゲットシステムは、H8/3048F-ONEを搭載した以下の
+ボードである。
 
-   ��(��)�����Ż� H8/3048F-ONE�����������åȡʷ���HSB8F3048BF25��
+   ・(株)北斗電子 H8/3048F-ONEスタータキット（型番HSB8F3048BF25）
 
-�ʤ������⤷�ʤ������� 1 �ĤκǾ������Ǥ⡢ɬ�פ� RAM ���̤� H8 ����¢
-RAM�����̤�Ķ���롣 ���Τ��ᡢ�������ɥ쥹���֤�ͭ���ˤ���ɬ�פ����롣
-CPU�⡼�ɤϥ��ɥХ󥹥ɥ⡼�ɤǻ��Ѥ��뤳�Ȥ�����Ȥ��Ƥ��롣�Ρ��ޥ�
-�⡼�ɤǻ��Ѥ�����ϡ�������֥���ʬ��������ɬ�פ����롣
+なお、何もしないタスク 1 個の最小構成でも、必要な RAM 容量は H8 の内蔵
+RAMの容量を超える。 このため、外部アドレス空間を有効にする必要がある。
+CPUモードはアドバンスドモードで使用することを前提としている。ノーマル
+モードで使用する場合は、アセンブラ部分を修正する必要がある。
 
-1. 2  ���ݡ��Ȥ��뵡ǽ�γ���
+1. 2  サポートする機能の概要
 
-  ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ (vxget_tim)������ߥޥ������ѹ�������
- (chg_ipm�� get_ipm)�򥵥ݡ��Ȥ��Ƥ��뤬�� �����ߤζػߤȵ���
-(dis_int��ena_int) �ϥ��ݡ��Ȥ��Ƥ��ʤ���
+  性能評価用システム時刻参照機能 (vxget_tim)、割込みマスクの変更・参照
+ (chg_ipm、 get_ipm)をサポートしているが、 割り込みの禁止と許可
+(dis_int、ena_int) はサポートしていない。
 
-1. 3  ¾�Υ������åȤؤΥݡ��ƥ���
+1. 3  他のターゲットへのポーティング
 
-  H8/300H ���꡼���Ǥ���С��ݡ��ƥ��󥰤��ưפ˽����Ȼפ��롣
+  H8/300H シリーズであれば、ポーティングは容易に出来ると思われる。
 
-1. 4  ���ꥢ��ݡ��� (SCI)
+1. 4  シリアルポート (SCI)
 
-  H8/3048F�ˤ�SCI0��SCI1��2�ܤΥ��ꥢ��ݡ��Ȥ����ꡢuser_config.h��
-������Ƥ���TNUM_PORT�ˤ�겿�ܻ��Ѥ��뤫����Ǥ��롣
-���ߤμ����Ǥ�2�ܤޤǻ��ѤǤ��롣 JSP �����ͥ�Υ��������Ѥˤ�SCI0��
-���Ѥ��Ƥ��롣 ���ꥢ��ݡ��Ȥ������ʲ��˼����� 
+  H8/3048FにはSCI0とSCI1の2本のシリアルポートがあり、user_config.hに
+定義しているTNUM_PORTにより何本使用するか指定できる。
+現在の実装では2本まで使用できる。 JSP カーネルのログ出力用にはSCI0を
+使用している。 シリアルポートの設定を以下に示す。 
 
-   ���ܡ��졼�ȡ�����38400[bps]
-   ���ǡ���Ĺ��������8�ӥå�
-   �����ȥåץӥåȡ�1�ӥå�
-   ���ѥ�ƥ��ʤ�
+   ・ボーレート　　　38400[bps]
+   ・データ長　　　　8ビット
+   ・ストップビット　1ビット
+   ・パリティなし
 
-2.  H8 �ץ����å���¸���ε�ǽ
+2.  H8 プロセッサ依存部の機能
 
-  �����ͥ�ȥ����ƥॵ���ӥ���ǽ����ǡ�H8��¸����ʬ�ˤĤ��Ʋ��⤹�롣
+  カーネルとシステムサービス機能の中で、H8依存の部分について解説する。
 
-2. 1  �ǡ�����
+2. 1  データ型
 
-  int����unsigned int���Υ������� 16�ӥåȤǤ��롣�ޤ��������Ϥ�����
-�顢64�ӥå������ϥ��ݡ��Ȥ��Ƥ��ʤ���
+  int型とunsigned int型のサイズは 16ビットである。また、処理系の制約か
+ら、64ビット整数はサポートしていない。
 
-2. 2  ����ߴ�����ǽ�ȳ���ߥϥ�ɥ�
+2. 2  割込み管理機能と割込みハンドラ
 
-�����ͥ�������γ���ߤ�NMI�ΤߤǤ��롥��äơ�CPU���å����֤�����
-�롼������Ǥϡ�NMI�ʳ��γ���ߤϤ��٤ƶػߤ���Ƥ��롥����Ū�ˤϡ�CPU
-���å����֤Ǥ�CCR�쥸������I�ӥåȤ�UI�ӥåȤ򥻥åȤ�������˥����ͥ�
-��Υե饰�ѿ��򥻥åȤ��Ƥ��롣
-���ܼ����Ǥ�SYSCR�쥸������UE�ӥåȤ򥯥ꥢ����CCR�쥸������I�ӥåȤ�
-UI�ӥåȤ����ߥޥ�����IPM��Interrupt Priority Mask�ˤȤ��ƻ��Ѥ��Ƥ�
-�롣�ʥ�٥�0�ȥ�٥�1�γ���ߤ����ѤǤ��롣��
+カーネル管理外の割込みはNMIのみである．よって，CPUロック状態や初期化
+ルーチン内では，NMI以外の割込みはすべて禁止されている．具体的には、CPU
+ロック状態ではCCRレジスタのIビットとUIビットをセットし、さらにカーネル
+内のフラグ変数をセットしている。
+　本実装ではSYSCRレジスタのUEビットをクリアし、CCRレジスタのIビットと
+UIビットを割込みマスク（IPM：Interrupt Priority Mask）として使用してい
+る。（レベル0とレベル1の割込みが使用できる。）
 
-DEF_INH�ǻ��ꤹ�����ߥϥ�ɥ��ֹ��inhno�ˤϡ�H8�Ǥ��㳰�٥����ֹ��
-ɽ�������Υǡ�������INHNO�ˤ�unsigned int�����������Ƥ��롥
-DEF_INH�ǡ��㳰�٥����ֹ�Ȥ���ͭ���Ǥʤ��ͤ䡤��������ߤ��б����ʤ�
-�ֹ����ꤷ������ư����ݾڤ���ʤ���
+DEF_INHで指定する割込みハンドラ番号（inhno）は，H8での例外ベクタ番号を
+表し，そのデータ型（INHNO）はunsigned int型に定義されている．
+DEF_INHで，例外ベクタ番号として有効でない値や，外部割込みに対応しない
+番号を指定した場合の動作は保証されない．
 
-2.2.1 ����ߥϥ�ɥ����Ͽ��ˡ
+2.2.1 割込みハンドラの登録方法
 
-jsp-1.4.1 H8��¸����gcc�ǡˤ������ߥϥ�ɥ����Ͽ��ˡ���ѹ�����Ƥ��롣
-�ѹ����ϰʲ����̤ꡣ
-��1�������ͥ��������򥵥ݡ���
-������������ߥץ饤����ƥ�����٥�0
-������������ߥץ饤����ƥ�����٥�1
-��2������ߥ�٥�������2����ǹԤ���
-������(1) ������׵���ѥץ饤����ƥ�����٥�
-�������������ǥХ���������ߥ���ȥ�������׵᤹�����ߥ�٥�
-�������������ƥǥХ����ɥ饤�Фν���������ˤ�IPRA��IPRB�쥸������
-���������������������Ԥ���
-������(2) ����ߵ��Ļ��ѥץ饤����ƥ�����٥�
-����������������ߥϥ�ɥ�ƤӽФ����˳���ߥޥ��������ꤹ����
-������������¾�γ�����׵��֥��å����뤿�����
+jsp-1.4.1 H8依存部（gcc版）から割込みハンドラの登録方法が変更されている。
+変更点は以下の通り。
+　1．割込み優先度制御をサポート
+　　　・割込みプライオリティ・レベル0
+　　　・割込みプライオリティ・レベル1
+　2．割込みレベルの設定は2ヶ所で行う。
+　　　(1) 割込み要求時用プライオリティ・レベル
+　　　　　　デバイスが割込みコントローラに要求する割込みレベル
+　　　　　　各デバイスドライバの初期化処理にてIPRA、IPRBレジスタの
+　　　　　　設定処理を行う。
+　　　(2) 割込み許可時用プライオリティ・レベル
+　　　　　　割込みハンドラ呼び出し時に割込みマスクに設定する値
+　　　　　　他の割込み要求をブロックするための値
 
-��3���ǥХ����ɥ饤�Фν���������ǡ�����ߥ�٥�������Ԥ���
-������define_int_plevel( )���Ѥ��롣
-��4��cpu_support.S�ǹԤäƤ����ʲ��ε��Ҥ����פˤʤä���
-�����ʳ���ߥ�٥������Ԥä������
-���������ϡ��ɥ���������ߵ��ġ�_xxxxx_enable_int
-���������ϡ��ɥ���������߶ػߡ�_xxxxx_disable_int
-����������gcc�ǤǤϡ�������׵�򥯥ꥢ���������_xxxxx_disable_int��
-�������������Ҥ��Ƥ�������renesas�ǤǤϳ���ߥϥ�ɥ��C����롼����
-�����������ޤ��Ϥ�������ƤФ��ؿ���˵��Ҥ�����ˡ��ɸ��Ȥ��롣
-��5���桼�������Խ����٤���ʬ���̥ե������ʬΥ���Ƥ��롣
-�����������ƥ��¸����intmask.inc
-��6������ߥ٥����ơ��֥�μ�ư����
-����������ե�����졼��������DEF_INH( )�ΰ������鼫ư�������롣
+　3．デバイスドライバの初期化処理で、割込みレベルの設定を行う。
+　　　define_int_plevel( )を用いる。
+　4．cpu_support.Sで行っていた以下の記述は不要になった。
+　　（割込みレベル制御を行ったため）
+　　　・ハードウェア割込み許可　_xxxxx_enable_int
+　　　・ハードウェア割込み禁止　_xxxxx_disable_int
+　　　　　gcc版では、割込み要求をクリアする処理を_xxxxx_disable_intに
+　　　　　記述していたが、renesas版では割込みハンドラのC言語ルーチン
+　　　　　またはそこから呼ばれる関数内に記述する方法を標準とする。
+　5．ユーザーが編集すべき部分は別ファイルに分離している。
+　　　システム依存部のintmask.inc
+　6．割込みベクタテーブルの自動生成
+　　　コンフィギュレーション時にDEF_INH( )の引数から自動生成する。
 
-����ߥϥ�ɥ����Ͽ�����ȼ��
-�������޳���ߤ�����������롣
+割込みハンドラを登録する作業手順
+　タイマ割込みを例に説明する。
 
-��(1) ����ߥϥ�ɥ�ε���
+　(1) 割込みハンドラの記述
 
-���������ǤǤϡ�������׵�򥯥ꥢ���������ɬ�פʾ���
-������_xxxxx_disable_int�˵��Ҥ��Ƥ����������ǤǤϳ���ߥϥ�ɥ��C��
-��������롼���󡢤ޤ��Ϥ�������ƤФ��ؿ���˵��Ҥ�����ˡ��ɸ���
-���������롣
+　　　旧版では、割込み要求をクリアする処理が必要な場合は
+　　　_xxxxx_disable_intに記述していたが、新版では割込みハンドラのC言
+　　　語ルーチン、またはそこから呼ばれる関数内に記述する方法を標準と
+　　　する。
 
-�����������޳���ߤǤε����㡧
-��������jsp/systask/timer.c
-������  �� timer_handler( )����ƤӽФ����hw_timer_int_clear( )
-��������������jsp/config/h8-renesas/hw_timer.h��
-
-
-��(2) ����ե�����졼����󡦥ե�����ε���
-
-����������ե�����졼����󡦥ե�����ε�����ˡ��¾�Υץ����å���Ʊ��
-�������Ǥ��롣
-�������٥����ֹ��jsp/config/h8-renesas/h8_3048f.h���ǥޥ���������Ƥ��롣
-������DEF_INH( )����1�����γ���ߥϥ�ɥ��ֹ�ϥץ�ץ���������������
-�������ˤʤäƤ��ʤ���Фʤ�ʤ����ʼ�ư����դ����б������ͥѥ�᡼����
-�������٥����ơ��֥뼫ư�������⤽����ꤷ�Ƥ��롣
-
-�����������޳���ߤǤε����㡧
-��������jsp/systask/timer.cfg
-  ��������DEF_INH(INHNO_TIMER, { TA_HLNG, timer_handler });
+　　　タイマ割込みでの記述例：
+　　　　jsp/systask/timer.c
+　　　  　 timer_handler( )から呼び出されるhw_timer_int_clear( )
+　　　　　　（jsp/config/h8-renesas/hw_timer.h）
 
 
-��(3) ����ߥץ饤����ƥ���٥������
+　(2) コンフィギュレーション・ファイルの記述
 
-������IPRA,IPRB�����ꤹ�������׵���Υץ饤����ƥ���٥�ȡ������
-�������ϥ�ɥ�ƤӽФ����˳���ߥޥ��������ꤹ��ץ饤����ƥ���٥�
-�������Σ��Ĥ������װ�������ꤹ�롣
+　　　コンフィギュレーション・ファイルの記述方法は他のプロセッサと同様
+　　　である。
+　　　ベクタ番号はjsp/config/h8-renesas/h8_3048f.h等でマクロ定義している。
+　　　DEF_INH( )の第1引数の割込みハンドラ番号はプリプロセス後に整数定数
+　　　になっていなければならない。（自動割り付け非対応整数値パラメータ）
+　　　ベクタテーブル自動生成時もそれを仮定している。
 
-��(3)-1 ������׵���ѥץ饤����ƥ���٥������
+　　　タイマ割込みでの記述例：
+　　　　jsp/systask/timer.cfg
+  　　　　DEF_INH(INHNO_TIMER, { TA_HLNG, timer_handler });
 
-�����������������cpu_initialize( )�Ǥ��٤Ƥγ���ߤ��٥�0�˽������
-�������Ƥ��롣
-�������ǥХ����ɥ饤�Фν���������ǳ�����װ���Υץ饤����ƥ������
-������������ꤹ�뤿��δؿ����Ѱդ���Ƥ��롣
-��������
-��������C����API��
-����������void define_int_plevel(const IRC *irc);
 
-������������IRC��Interrupt Request Controller
-����������������������ߥ���ȥ�����
+　(3) 割込みプライオリティレベルの設定
 
-�������ڥѥ�᡼����
-����������const IRC *irc������ǡ������Ǽ�����ΰ����Ƭ���ɥ쥹
-   ����������UB *ipr�����ꤹ��IPR�쥸����������
-   ��������������������IPRA�ޤ���IPRB�쥸����
-   ����������UB bit ��IPR�쥸�����γ�������ӥå��ֹ�
-������   ����IPM ipm�����ꤹ�����ߥ�٥�
-   ��������������������IPM_LEVEL0,IPM_LEVEL1�Τ����줫
+　　　IPRA,IPRBに設定する割込み要求時のプライオリティレベルと、割込み
+　　　ハンドラ呼び出し時に割込みマスクに設定するプライオリティレベル
+　　　の２つを割込み要因毎に設定する。
 
-�������ڥ꥿����ѥ�᡼����
-�����������ʤ�
+　(3)-1 割込み要求時用プライオリティレベルの設定
 
-�������ڵ�ǽ��
-����������irc���ؤ������ΰ�Υǡ������Ѥ��ơ��ǥХ�������γ���ߤ�
-�����������ץ饤����ƥ�����٥�����ꤹ�롣
-�������������δؿ���ƤӽФ�����h8_sil.h�򥤥󥯥롼�ɤ���ɬ�פ����롣
+　　　初期化処理のcpu_initialize( )ですべての割込みをレベル0に初期化し
+　　　ている。
+　　　デバイスドライバの初期化処理で割込み要因毎のプライオリティ・レベ
+　　　ルを設定するための関数が用意されている。
+　　　　
+　　　【C言語API】
+　　　　　void define_int_plevel(const IRC *irc);
 
-�������ڥ����޳���ߤǤε������
+　　　　　　IRC：Interrupt Request Controller
+　　　　　　　　　割込みコントローラ
 
-����������jsp/config/h8-renesas/cpu_config.c
-������������const IRC TIMER_IRC = {(UB*)SYSTEM_TIMER_IPR,
-                        ������������SYSTEM_TIMER_IP_BIT,
-                        ������������SYSTEM_TIMER_IPM
-                      ������������};
+　　　【パラメータ】
+　　　　　const IRC *irc　設定データを格納した領域の先頭アドレス
+   　　　　　UB *ipr：設定するIPRレジスタの番地
+   　　　　　　　　　　IPRAまたはIPRBレジスタ
+   　　　　　UB bit ：IPRレジスタの該当するビット番号
+　　　   　　IPM ipm：設定する割込みレベル
+   　　　　　　　　　　IPM_LEVEL0,IPM_LEVEL1のいずれか
 
-����������jsp/config/h8-renesas/hw_timer.h
-������������hw_timer_initialize( )
-����������    define_int_plevel(&TIMER_IRC);
+　　　【リターンパラメータ】
+　　　　　なし
 
-������������Ѥ����ͤϥޥ����������Ƥ��롣
-������
-��������IPRA��IPRB�쥸�����Υ��ɥ쥹
-������jsp/config/h8-renesas/h8_3048f.h
+　　　【機能】
+　　　　　ircが指し示す領域のデータを用いて、デバイスからの割込みの
+　　　　　プライオリティ・レベルを設定する。
+　　　　　この関数を呼び出す前にh8_sil.hをインクルードする必要がある。
+
+　　　【タイマ割込みでの記述例】
+
+　　　　　jsp/config/h8-renesas/cpu_config.c
+　　　　　　const IRC TIMER_IRC = {(UB*)SYSTEM_TIMER_IPR,
+                        　　　　　　SYSTEM_TIMER_IP_BIT,
+                        　　　　　　SYSTEM_TIMER_IPM
+                      　　　　　　};
+
+　　　　　jsp/config/h8-renesas/hw_timer.h
+　　　　　　hw_timer_initialize( )
+　　　　　    define_int_plevel(&TIMER_IRC);
+
+　　　設定に用いる値はマクロ定義されている。
+　　　
+　　　・IPRA、IPRBレジスタのアドレス
+　　　jsp/config/h8-renesas/h8_3048f.h
       #define H8IPRA                  0xfffff8ul
       #define H8IPRB                  0xfffff9ul
 
 
-��������IPRA��IPRB�쥸�����Υӥå��ֹ�
-������jsp/config/h8-renesas/h8_3048f.h
-��������IPRA
-������#define H8IPR_IRQ0_BIT          7u       /* IRQ0         */
-������#define H8IPR_IRQ1_BIT          6u       /* IRQ1         */
-������#define H8IPR_IRQ2_BIT          5u       /* IRQ2         */
-������#define H8IPR_IRQ3_BIT          5u       /* IRQ3         */
-������#define H8IPR_IRQ4_BIT          4u       /* IRQ4         */
-������#define H8IPR_IRQ5_BIT          4u       /* IRQ5         */
-������#define H8IPR_WDT_BIT           3u       /* WDT          */
-������#define H8IPR_CMI_BIT           3u       /* CMI          */
-������#define H8IPR_ITU0_BIT          2u       /* ITU0         */
-������#define H8IPR_ITU1_BIT          1u       /* ITU1         */
-������#define H8IPR_ITU2_BIT          0u       /* ITU2         */
-������
+　　　・IPRA、IPRBレジスタのビット番号
+　　　jsp/config/h8-renesas/h8_3048f.h
+　　　・IPRA
+　　　#define H8IPR_IRQ0_BIT          7u       /* IRQ0         */
+　　　#define H8IPR_IRQ1_BIT          6u       /* IRQ1         */
+　　　#define H8IPR_IRQ2_BIT          5u       /* IRQ2         */
+　　　#define H8IPR_IRQ3_BIT          5u       /* IRQ3         */
+　　　#define H8IPR_IRQ4_BIT          4u       /* IRQ4         */
+　　　#define H8IPR_IRQ5_BIT          4u       /* IRQ5         */
+　　　#define H8IPR_WDT_BIT           3u       /* WDT          */
+　　　#define H8IPR_CMI_BIT           3u       /* CMI          */
+　　　#define H8IPR_ITU0_BIT          2u       /* ITU0         */
+　　　#define H8IPR_ITU1_BIT          1u       /* ITU1         */
+　　　#define H8IPR_ITU2_BIT          0u       /* ITU2         */
+　　　
 
-��������IPRB
-������#define H8IPR_ITU3_BIT          7u       /* ITU3         */
-������#define H8IPR_ITU4_BIT          6u       /* ITU4         */
-������#define H8IPR_DMAC_BIT          5u       /* DMAC (CH0,1) */
-������#define H8IPR_SCI0_BIT          3u       /* SCI0         */
-������#define H8IPR_SCI1_BIT          2u       /* SCI1         */
-������#define H8IPR_AD_BIT            1u       /* A/D          */
+　　　・IPRB
+　　　#define H8IPR_ITU3_BIT          7u       /* ITU3         */
+　　　#define H8IPR_ITU4_BIT          6u       /* ITU4         */
+　　　#define H8IPR_DMAC_BIT          5u       /* DMAC (CH0,1) */
+　　　#define H8IPR_SCI0_BIT          3u       /* SCI0         */
+　　　#define H8IPR_SCI1_BIT          2u       /* SCI1         */
+　　　#define H8IPR_AD_BIT            1u       /* A/D          */
 
 
-(3)-2 ����ߵ��Ļ��ѥץ饤����ƥ���٥������
+(3)-2 割込み許可時用プライオリティレベルの設定
 
-������****_intmask�ޥ��������
-������H8��¸���Ǥϡ���ŪAPI DEF_INH( )�ǳ���ߥϥ�ɥ���������ȡ�
-�����������ͥ륳��ե�����졼�����ˤ�ꡢ����ߤ�����������
-������vector.src��˼�ư��������롣
-�������������������Ǥϡ�C����롼����****��ƤӽФ�ľ���γ���ߵ��Ļ�
-�������˳���ߥޥ��������ꤹ���ͤȤ��ơ��ޥ���****_intmask����������
-����������Ȳ��ꤷ�Ƥ���Τǡ�������װ����IPM_LEVEL1��IPM_LEVEL2�Τ�
-���������줫��������뤳�ȡ�
-��������ʬ��Ʊ����٥�γ���ߤ�ޥ������뤿�ᡢIPM�ˤϣ��ľ�Υ�٥�
-�����������ꤹ��ɬ�פ�����Τǡ����դ�ɬ�פǤ��롣
-������intmask.inc���������Τ�ɸ��Ȥ��롣
+　　・****_intmaskマクロの定義
+　　　H8依存部では、静的API DEF_INH( )で割込みハンドラを定義すると、
+　　　カーネルコンフィギュレーションにより、割込みの入口処理が
+　　　vector.src内に自動生成される。
+　　　この入口処理では、C言語ルーチン****を呼び出す直前の割込み許可時
+　　　に割込みマスクに設定する値として、マクロ****_intmaskが定義されて
+　　　いると仮定しているので、割込み要因毎にIPM_LEVEL1、IPM_LEVEL2のい
+　　　ずれかに定義すること。
+　　　自分と同じレベルの割込みをマスクするため、IPMには１つ上のレベル
+　　　を設定する必要があるので、注意が必要である。
+　　　intmask.incで定義するのを標準とする。
 
-�������ڥ����޳���ߤǤε������
-��������jsp/config/h8-renesas/hsb8f3048bf25/intmask.inc
-��������
-��������timer_handler_intmask:         .DEFINE         "IPM_LEVEL2"
-��������
+　　　【タイマ割込みでの記述例】
+　　　　jsp/config/h8-renesas/hsb8f3048bf25/intmask.inc
+　　　　
+　　　　timer_handler_intmask:         .DEFINE         "IPM_LEVEL2"
+　　　　
 
-2.2.2 ����ߥޥ������ѹ�������
+2.2.2 割込みマスクの変更・参照
 
-H8��¸�ε�ǽ�Ȥ��ơ�CCR�쥸�������IPM���ͤ��ѹ����뤿��Υ����ӥ�����
-��chg_ipm�ȡ����Ȥ��뤿��Υ����ӥ�������get_ipm�򥵥ݡ��Ȥ��Ƥ��롥
-�ʤ���IPM���ͤ�ɽ���ǡ�����IPM�ϡ�unsigned char�����������Ƥ��롥
+H8依存の機能として，CCRレジスタ中のIPMの値を変更するためのサービスコー
+ルchg_ipmと，参照するためのサービスコールget_ipmをサポートしている．
+なお，IPMの値を表すデータ型IPMは，unsigned char型に定義されている．
 
-�����Υ����ӥ�������ϡ�����������ƥ����Ȥ�CPU���å�������֤ξ��
-�ˤΤ߸ƤӽФ����Ȥ��Ǥ��롥chg_ipm�ˤ��IPM���٥�0�ʳ��ʤ��ʤ����
-���餫�γ���ߤ��ػߤ���Ƥ�����֡ˤˤ������Ǥ⡤�ǥ����ѥå��϶ػ�
-���줺��chg_ipm�ˤ���ѹ�����IPM���ͤϡ��ǥ����ѥå���Υ������˰�����
-����롥
-�㤨�С����륿������IPM���٥�1���ѹ������塤���餫�γ���ߤˤ���̤�
-���������ڤ��ؤ��ȡ��ڤ��ؤ�ä���Υ������Ǥ�IPM�ϥ�٥�1�ˤʤ롥
+これらのサービスコールは，タスクコンテキストでCPUロック解除状態の場合
+にのみ呼び出すことができる．chg_ipmによりIPMをレベル0以外（すなわち，
+何らかの割込みが禁止されている状態）にした場合でも，ディスパッチは禁止
+されず，chg_ipmにより変更したIPMの値は，ディスパッチ後のタスクに引き継
+がれる．
+例えば，あるタスクでIPMをレベル1に変更した後，何らかの割込みにより別の
+タスクに切り替わると，切り替わった後のタスクでもIPMはレベル1になる．
 
-chg_ipm�򥵥ݡ��Ȥ��뤿��ˡ�����ߥϥ�ɥ�ν����������ʤɤ˥�����
-�إåɤ������Ƥ��롥�����ǡ�SUPPORT_CHG_IPM�Ȥ����ޥ����ˤ�ꡤ�����
-�Υ����ӥ�������򥵥ݡ��Ȥ��뤫�ɤ������ڤ��ؤ�����褦�ˤ��Ƥ��롥
-SUPPORT_CHG_IPM�ϡ�user_config.h�����user_config_asm.inc����ǥޥ���
-�������Ƥ��롥
+chg_ipmをサポートするために，割込みハンドラの出入口処理などにオーバ
+ヘッドを生じている．そこで，SUPPORT_CHG_IPMというマクロにより，これら
+のサービスコールをサポートするかどうかを切り替えられるようにしている．
+SUPPORT_CHG_IPMは，user_config.hおよびuser_config_asm.incの中でマクロ
+定義されている．
 
-H8��¸�γ���ߥޥ������ѹ������ȤΤ���Υ����ӥ�������λ��ͤϼ����̤ꡥ
+H8依存の割込みマスクの変更・参照のためのサービスコールの仕様は次の通り．
 
-(1) chg_ipm			����ߥޥ������ѹ�
+(1) chg_ipm			割込みマスクの変更
 
-��C����API��
+【C言語API】
 	ER ercd = chg_ipm(IPM ipm);
 
-�ڥѥ�᡼����
-	IPM	ipm		���ꤹ�٤� IPM ����
+【パラメータ】
+	IPM	ipm		設定すべき IPM の値
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
+【リターンパラメータ】
+	ER	ercd		エラーコード
 
-�ڥ��顼�����ɡ�
-	E_CTX		����ƥ����ȥ��顼
-	E_PAR		�ѥ�᡼�����顼��ipm ��������
+【エラーコード】
+	E_CTX		コンテキストエラー
+	E_PAR		パラメータエラー（ipm が不正）
 
-�ڵ�ǽ��
+【機能】
 
-IPM��Interrupt Priority Mask�ˤ� ipm �ǻ��ꤵ�줿�ͤ����ꤹ�롥
-IPM���Ѥ����ͤȤ��ơ��ʲ��Υޥ������Ѱդ���Ƥ��롣
-��IPM_LEVEL0����٥룰�����٤Ƥγ���ߤ�����դ���
-��IPM_LEVEL1����٥룱��NMI����ӥץ饤����ƥ���٥룱�γ���ߤΤߤ�
-�����������������������������դ���
-��IPM_LEVEL2����٥룲��NMI�ʳ��γ���ߤ�����դ��ʤ�
+IPM（Interrupt Priority Mask）を ipm で指定された値に設定する．
+IPMで用いる値として、以下のマクロが用意されている。
+　IPM_LEVEL0：レベル０　すべての割込みを受け付ける
+　IPM_LEVEL1：レベル１　NMIおよびプライオリティレベル１の割込みのみを
+　　　　　　　　　　　　受け付ける
+　IPM_LEVEL2：レベル２　NMI以外の割込みを受け付けない
 
 
-IPM�˻��ꤷ���ͤ��嵭�Υޥ����ʳ��ξ�硤E_PAR���顼�Ȥʤ롥IPM ��
-IPM_LEVEL0�ʳ������ꤷ�����Ǥ⡤�ǥ����ѥå��϶ػߤ���ʤ����ޤ�����
-�ꤷ��IPM���ͤϡ��ǥ����ѥå��������Ѥ���롥�ǥ����ѥå���ػߤ�
-�������ˤϡ�dis_dsp��ʻ�Ѥ���Ф褤��
+IPMに指定した値が上記のマクロ以外の場合，E_PARエラーとなる．IPM を
+IPM_LEVEL0以外に設定した場合でも，ディスパッチは禁止されない．また，設
+定したIPMの値は，ディスパッチ後も引き継がれる．ディスパッチを禁止し
+たい場合には，dis_dspと併用すればよい．
 
-�ʤ������Υ����ӥ���������Ѥ��ơ�IPM��IPM_LEVEL2��NMI�ʳ��γ���ߤ��
-�ߡˤ����ꤷ�Ƥ�CPU���å����֤Ȥ϶��̤���롣�ʥǥ����ѥå����ػߤ���
-�ʤ�����
+なお，このサービスコールを用いて，IPMをIPM_LEVEL2（NMI以外の割込みを禁
+止）に設定してもCPUロック状態とは区別される。（ディスパッチが禁止され
+ない。）
 
-���Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ߸�
-�ӽФ����Ȥ��Ǥ��롥�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�����
-��ˤϡ�E_CTX���顼�Ȥʤ롥
+このサービスコールは，タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる．非タスクコンテキストや CPUロック状態で呼び出した場
+合には，E_CTXエラーとなる．
 
-(2) get_ipm			����ߥޥ����λ���
+(2) get_ipm			割込みマスクの参照
 
-��C����API��
+【C言語API】
 	ER ercd = get_ipm(IPM *p_ipm);
 
-�ڥѥ�᡼����
-	�ʤ�
+【パラメータ】
+	なし
 
-�ڥ꥿����ѥ�᡼����
-	ER	ercd		���顼������
-	IPM	ipm		���ߤ� IPM ����
+【リターンパラメータ】
+	ER	ercd		エラーコード
+	IPM	ipm		現在の IPM の値
 
-�ڥ��顼�����ɡ�
-	E_CTX		����ƥ����ȥ��顼
+【エラーコード】
+	E_CTX		コンテキストエラー
 
-�ڵ�ǽ��
+【機能】
 
-���ߤ� IPM��Interrupt Priority Mask�ˤ��ͤ��ɤ߽Ф���ipm ���֤���
+現在の IPM（Interrupt Priority Mask）の値を読み出し，ipm に返す．
 
-���Υ����ӥ�������ϡ�����������ƥ����Ȥ� CPU���å�������֤λ��Τ߸�
-�ӽФ����Ȥ��Ǥ��롥�󥿥�������ƥ����Ȥ� CPU���å����֤ǸƤӽФ�����
-��ˤϡ�E_CTX���顼�Ȥʤ롥
+このサービスコールは，タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる．非タスクコンテキストや CPUロック状態で呼び出した場
+合には，E_CTXエラーとなる．
 
 
-2. 3  CPU�㳰������ǽ�� CPU�㳰�ϥ�ɥ�
+2. 3  CPU例外管理機能と CPU例外ハンドラ
 
-H8�ץ����å����Τ�CPU�㳰�򰷤���ǽ������äƤ��ʤ����ᡢ�����ͥ��H8
-��¸����CPU�㳰�򥵥ݡ��Ȥ��Ƥ��ʤ������äơ�CPU �㳰�ϥ�ɥ�������
-�� define_exc( )�ϲ��⤷�ʤ��ؿ��Ǥ��롣
-¾����Ȥθߴ����Τ��ᡢCPU�㳰�ϥ�ɥ��ֹ�Υǡ����� (EXCNO) �� 
-unsigned int�����������Ƥ��롣
+H8プロセッサ自体にCPU例外を扱う機能が備わっていないため、カーネルのH8
+依存部もCPU例外をサポートしていない。従って、CPU 例外ハンドラの設定関
+数 define_exc( )は何もしない関数である。
+他機種との互換性のため、CPU例外ハンドラ番号のデータ型 (EXCNO) は 
+unsigned int型に定義されている。
 
-2. 4  �������ȥ��åץ⥸�塼��
+2. 4  スタートアップモジュール
 
-  H8��¸�Υ������ȥ��åץ⥸�塼�� (start.src) �ϼ��˼����������¹Ԥ�
-���塢�����ͥ� (kernel_start) ��ư���롣�������� kernel_start �������
-�Ƥ��뤳�Ȥ����ꤷ�Ƥ��ʤ���
+  H8依存のスタートアップモジュール (start.src) は次に示す初期化を実行し
+た後、カーネル (kernel_start) を起動する。ただし、 kernel_start から戻っ
+てくることは想定していない。
 
-   (1)   �����å��ݥ��󥿤�����
+   (1)   スタックポインタの設定
 
-   (2)   �ϡ��ɥ�������¸�ν���������θƽФ�
-������������HARDWARE_INIT_HOOK�ޥ������������Ƥ���С��ϡ��ɥ�������
-����������¸�ν����������ƽФ������δؿ��ϥ����ͥ��ư�������ˡ�
-�����������������åȰ�¸�Υϡ��ɥ�����Ū�ʽ������Ԥ�������Ѱդ�����
-�����������δؿ�̾��HARDWARE_INIT_HOOK�ޥ����Ȥ���������롣
-�������������ܼ����Ǥϡ�����������֤�ͭ������¾�ˤ⡢SYSCR�쥸����
-������������UE�ӥåȤΥ��ꥢ�������ͥ��쥸����(IPRA��IPRB)�θ��̳��
-�������������ߤ�ͥ���٤������ԤäƤ��롣
-����������HARDWARE_INIT_HOOK�ޥ����������sys_config_asm.inc�ǹԤ��Τ�
-����������ɸ��Ȥ��롣
+   (2)   ハードウェア依存の初期化処理の呼出し
+　　　　　　HARDWARE_INIT_HOOKマクロが定義されていれば、ハードウェア依
+　　　　　存の初期化処理を呼出す。この関数はカーネルを起動する前に、
+　　　　　ターゲット依存のハードウェア的な初期化を行うために用意し、そ
+　　　　　の関数名をHARDWARE_INIT_HOOKマクロとして定義する。
+　　　　　　本実装では、外部メモリ空間の有効化の他にも、SYSCRレジスタ
+　　　　　のUEビットのクリア、割込み優先レジスタ(IPRAとIPRB)の個別割り
+　　　　　込みの優先度の設定を行っている。
+　　　　　HARDWARE_INIT_HOOKマクロの定義はsys_config_asm.incで行うのを
+　　　　　標準とする。
 
-   (3)   B���������ν����
-           B�������������ΰ�� 0 ���ꥢ���롣
+   (3)   Bセクションの初期化
+           Bセクションの全領域を 0 クリアする。
 
-   (4)   D���������ν����
-           D������������ RAM ��ž�����롣
+   (4)   Dセクションの初期化
+           Dセクションを外部 RAM に転送する。
 
-   (5)   ���եȥ������Ķ���¸�ν���������θƽФ�
-������������SOFTWARE_INIT_HOOK�ޥ������������Ƥ���С����եȥ�������
-��������������¸�ν����������ƽФ������δؿ��ϥ����ͥ��ư�������ˡ�
-�������������եȥ������Ķ�(�饤�֥����)��¸�ν������Ԥ�������Ѱդ�
-�����������롣�㤨�С��饤�֥��ν������ʤɤǤ��롣
-�������������δؿ�̾��SOFTWARE_INIT_HOOK�ޥ����Ȥ���������롣
-����������SOFTWARE_INIT_HOOK�ޥ����������sys_config_asm.inc�ǹԤ��Τ�
-����������ɸ��Ȥ��롣
+   (5)   ソフトウェア環境依存の初期化処理の呼出し
+　　　　　　SOFTWARE_INIT_HOOKマクロが定義されていれば、ソフトウェア環
+　　　　　境依存の初期化処理を呼出す。この関数はカーネルを起動する前に、
+　　　　　ソフトウェア環境(ライブラリ等)依存の初期化を行うために用意す
+　　　　　る。例えば、ライブラリの初期設定などである。
+　　　　　その関数名をSOFTWARE_INIT_HOOKマクロとして定義する。
+　　　　　SOFTWARE_INIT_HOOKマクロの定義はsys_config_asm.incで行うのを
+　　　　　標準とする。
 
-2. 5  �����ȯ�����Υ����å������̤ˤĤ���
+2. 5  割込み発生時のスタック使用量について
 
-  ����������ƥ����ȼ¹Ի��˳���ߤ�ȯ���������η�̡������������å���
-���硢�����������å��ˤϰʲ��ξ����Ѥޤ�뤿�ᡢ���������32�Х���
-���ĥ����å��ΰ��;ʬ�˳��ݤ���ɬ�פ����롣
-�ʤ��θ塢���Υ���������äƤ���ݤˡ��������㳰�����롼���󤬵�ư����
-����Ϥ���˥����������å����ΰ褬ɬ�פˤʤ롣��
+  タスクコンテキスト実行時に割込みが発生し、その結果、タスクスイッチす
+る場合、タスクスタックには以下の情報が積まれるため、タスク毎に32バイト
+ずつスタック領域を余分に確保する必要がある。
+（その後、元のタスクに戻ってくる際に、タスク例外処理ルーチンが起動され
+る場合はさらにタスクスタックの領域が必要になる。）
 
-  �������������å����Ѥޤ������
-  �������������
-  ������CCR�쥸����
-  ������er0��er6
+  　タスクスタックに積まれる内容
+  　　・戻り番地
+  　　・CCRレジスタ
+  　　・er0〜er6
 
-3.  �����ƥ��¸���ε�ǽ
+3.  システム依存部の機能
 
-3. 1  �����ƥ९���å��ɥ饤��
+3. 1  システムクロックドライバ
 
-  �����ƥ९���å��ɥ饤�Ф� isig_tim ��ƽФ������ϡ� user_config.h��
-��TIC_NUME �� TIC_DENO ���������Ƥ��ꡢ�ǥ��ե���Ȥ� 1[ms] �����Ǥ�
-�롣
-����������ѹ����뤳�Ȥǡ�isig_tim ��ƽФ��������ѹ��Ǥ��롣 ��������
-���������٤�ñ�̤�ü���ˤʤ��ͤ����ꤹ��ȡ� isig_tim �θƽФ������˸�
-����ȯ�����롣
+  システムクロックドライバが isig_tim を呼出す周期は、 user_config.h内
+のTIC_NUME と TIC_DENO で定義されており、ディフォルトは 1[ms] 周期であ
+る。
+この定義を変更することで、isig_tim を呼出す周期を変更できる。 ただし、
+タイマ精度の単位で端数になる値を設定すると、 isig_tim の呼出し周期に誤
+差が発生する。
 
-��H8/3048F-ONE�����������åȡ�
-�����ޤ˶��뤵��Ƥ��륯���å����ȿ���3072[kHz]�Ǥ���
-�ʥ����å�24.576[MHz]��8ʬ���ˡ����������٤�
-��(1000000/3072)[nsec]����0.326[��sec]
-�Ǥ��롣
-�ǥ��ե���ȤΥ����å��ǥХ����Ȥ��ơ�H8/3048F-ONE�Ǥ�ITU0����Ѥ���
-���롣
+【H8/3048F-ONEスタータキット】
+タイマに供給されているクロック周波数は3072[kHz]であり
+（クロック24.576[MHz]の8分周）、タイマ精度は
+　(1000000/3072)[nsec]＝約0.326[μsec]
+である。
+ディフォルトのクロックデバイスとして、H8/3048F-ONEではITU0を使用して
+いる。
 
 
-3. 2  ��ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ
+3. 2  性能評価用システム時刻参照機能
 
-  H8�Ǥϡ���ǽɾ���ѥ����ƥ���ﻲ�ȵ�ǽ (vxget_tim) �򥵥ݡ��Ȥ��Ƥ�
-�롣
+  H8では、性能評価用システム時刻参照機能 (vxget_tim) をサポートしてい
+る。
 
-��C����API��
-����ER vxget_tim(SYSUTIM *p_sysutim);
+【C言語API】
+　　ER vxget_tim(SYSUTIM *p_sysutim);
 
-�ڥѥ�᡼����
-	�ʤ�
+【パラメータ】
+	なし
 
-�ڥ꥿����ѥ�᡼����
-	SYSUTIM sysutim���ꥻ�åȤ���ηв���֡ʦ�secñ�̡�
+【リターンパラメータ】
+	SYSUTIM sysutim：リセットからの経過時間（μsec単位）
 
-�ڥ��顼�����ɡ�
-	E_CTX���󥿥�������ƥ����Ȥ���ƤӽФ���
+【エラーコード】
+	E_CTX：非タスクコンテキストから呼び出した
 
-�ڵ�ǽ��
-�ꥻ�åȤ���ηв���֤��secñ�̤Ƿ�¬�����¹���ǽ�η�¬��ǽ���󶡤�
-�롣SYSUTIM���� UW��(32 �ӥå����ʤ�������)�Ǥ��뤿�ᡢ��secñ�̤Ǵ�
-������ȥꥻ�åȤ�����71ʬ����˥����С��ե������ơ���������롣2����
-�μ¹Ի��֤��¬����Ȥ��ˤ��Υ����С��ե�����ȯ�����Ƥ��ʤ������դ�ɬ
-�פǤ��롣
+【機能】
+リセットからの経過時間をμsec単位で計測し、実行性能の計測機能を提供す
+る。SYSUTIM型は UW型(32 ビット符号なし整数型)であるため、μsec単位で換
+算するとリセットから約71分間毎にオーバーフローして、ゼロに戻る。2点間
+の実行時間を計測するときにこのオーバーフローが発生していないか注意が必
+要である。
 
-��H8/3048F-ONE�����������åȡ�
-�����޼��Τ����٤���0.326[��sec]�Ǥ��ꡢ1��secñ�̤ޤ�ͭ���Ǥ��롣
+【H8/3048F-ONEスタータキット】
+タイマ自体の精度は約0.326[μsec]であり、1μsec単位まで有効である。
 
-3. 3  ���ꥢ�륤�󥿥ե������ɥ饤��
-
-  H8/3048F-ONE�ˤ� SCI0 �� SCI1 �� 2 �ܤΥ��ꥢ��ݡ��Ȥ����ꡢ
-user_config.h ��������Ƥ��� TNUM_PORT �ˤ�겿�ܻ��Ѥ��뤫����Ǥ��롣
-���ߤμ����Ǥ� 2 �ܤޤǻ��ѤǤ��롣 JSP �����ͥ�Υ��������Ѥˤ� SCI0
-����Ѥ��Ƥ��롣
+3. 3  シリアルインタフェースドライバ
+
+  H8/3048F-ONEには SCI0 と SCI1 の 2 本のシリアルポートがあり、
+user_config.h に定義している TNUM_PORT により何本使用するか指定できる。
+現在の実装では 2 本まで使用できる。 JSP カーネルのログ出力用には SCI0
+を使用している。
 
-3. 4  ����ޥå�
+3. 4  メモリマップ
 
-3. 4. 1  H8/3048F-ONE�����������åȤΥ���ޥå�
+3. 4. 1  H8/3048F-ONEスタータキットのメモリマップ
 
-  �⡼��6�˸��ꤵ��Ƥ��롣
+  モード6に固定されている。
 
-         0x00,0000 - 0x01,ffff  ��¢ROM 128KB
-         ���������������������������٥����ơ��֥롢P,C,D���������
-         0x20,0000 - 0x27,ffff  ����RAM 512KB
-         ��������������������������R(D),B���������
-         0xff,ef10 - 0xff,efff  ��¢RAM 4KB
-         ���������������������������󥿥�������ƥ������ѥ����å����ꥢ
+         0x00,0000 - 0x01,ffff  内蔵ROM 128KB
+         　　　　　　　　　　　　　ベクタテーブル、P,C,Dセクション
+         0x20,0000 - 0x27,ffff  外部RAM 512KB
+         　　　　　　　　　　　　　R(D),Bセクション
+         0xff,ef10 - 0xff,efff  内蔵RAM 4KB
+         　　　　　　　　　　　　　非タスクコンテキスト用スタックエリア
 
 
-4.  ����ץ�ץ������μ¹Լ��
+4.  サンプルプログラムの実行手順
 
-4. 1  ��ȯ�Ķ�
+4. 1  開発環境
 
-  ��ȯ�Ķ��ϡ�Windows 2000��ǡ�(��)��ͥ��� ����塼��������γ�ȯ
-�Ķ����Ѥ�����
-���ܳ�ȯ���Ѥ����ġ���ΥС�������ʲ��˼����� 
+  開発環境は、Windows 2000上で、(株)ルネサス ソリューションズ製の開発
+環境を用いた。
+　本開発に用いたツールのバージョンを以下に示す。 
 
-   ������ѥ��顢������֥顢��Ŭ����󥱡������ǥ���
-   �������֡�R0C40008XSW06R
-   �����С������V.6.1.2
-   �����糫ȯ�Ķ� HEW4.02.00.022
-   ���ǥХå���E10T-USB Emulator
-   ����ź�ե��եȥ������ΥС������:2.01.00
+   ・コンパイラ、アセンブラ、最適化リンケージエディタ
+   　　型番：R0C40008XSW06R
+   　　バージョン：V.6.1.2
+   ・統合開発環境 HEW4.02.00.022
+   ・デバッガ　E10T-USB Emulator
+   　　添付ソフトウェアのバージョン:2.01.00
 
-�ޤ���¾�ˤⲼ���Υġ��뤬ɬ�פˤʤ롣
-   ��Visual C++6.0�ޤ���Visual C++ .NET
-   ��������ե�����졼����ӥ�ɤ��뤿���ɬ�פȤʤ롣
+また、他にも下記のツールが必要になる。
+   ・Visual C++6.0またはVisual C++ .NET
+   　　コンフィギュレータをビルドするために必要となる。
 
-   ��Windows�Υ��ޥ�ɡ��ץ���ץȤ�ư���Perl
-   ����������4.3 (1)�κ�Ȥǻ��Ѥ��롣
-   ����Active Perl v5.8.8
-       �����۸���http://www.ActiveState.com
+   ・Windowsのコマンド・プロンプトで動作するPerl
+   　　下記の4.3 (1)の作業で使用する。
+   　　Active Perl v5.8.8
+       　配布元　http://www.ActiveState.com
 
-4. 2  ����ե�����졼���Υӥ��
+4. 2  コンフィギュレータのビルド
 
-jsp/cfg�ǥ��쥯�ȥ�ʲ��Τˤ��륳��ե�����졼����ӥ�ɤ��롣
-�ӥ����ˡ
-��jsp/cfg/vc_project/make.vbs��¹Ԥ��롣
-�������Visual C++�Ѥ�Cygwin�Ѥ�����褬����Τǡ�Visual C++�Ѥ�
-�����򤹤롣
+jsp/cfgディレクトリ以下のにあるコンフィギュレータをビルドする。
+ビルド方法
+　jsp/cfg/vc_project/make.vbsを実行する。
+　途中でVisual C++用かCygwin用か選択肢があるので、Visual C++用を
+　選択する。
 
-�ܤ�����jsp/doc/windows.txt�򻲾ȡ�
+詳しくはjsp/doc/windows.txtを参照。
 
-4. 3  ����ץ�ץ������Υӥ��
+4. 3  サンプルプログラムのビルド
 
-(1) HEW��ǤΥӥ��
+(1) HEW上でのビルド
 
-������ڡ������ե�����򳫤�
-��jsp/tools/H8-RENESAS/H8-RENESAS.hws
-��������ڡ����������ȥǥ��쥯�ȥ꤬�ۤʤ�ݤηٹ𤬽Ф뤬̵�뤹�롣
-��
-���� �ġ����������ΥС�����󤬰ۤʤ�ݤηٹ𤬽Ф���
-�������嵭�ΥС��������Ť��ġ����������Ǥ�ư���̤��ǧ�Ǥ��롣
+ワークスペース・ファイルを開く
+　jsp/tools/H8-RENESAS/H8-RENESAS.hws
+　ワークスペース作成時とディレクトリが異なる旨の警告が出るが無視する。
+　
+　※ ツールチェーンのバージョンが異なる旨の警告が出る場合
+　　　上記のバージョンより古いツールチェーンでの動作は未確認である。
 
-���Υ�����ڡ����ˤ�4�ĤΥץ��������Ȥ���Ͽ����Ƥ��롣
-����genoffset��TCB��¤����Υ��ե��åȤ���롣
-����libkernel�������ͥ롦�饤�֥��Υӥ�ɤ�Ԥ���
-����configuration�������ͥ롦����ե�����졼����󡢥٥����ơ��֥��
-����������������������ư������Ԥ���
-����sample������ץ롦���ץꥱ�������Υӥ�ɤ�Ԥ���
+このワークスペースには4つのプロジェクトが登録されている。
+　・genoffset：TCB構造体内のオフセットを求める。
+　・libkernel：カーネル・ライブラリのビルドを行う。
+　・configuration：カーネル・コンフィギュレーション、ベクタテーブルの
+　　　　　　　　　　自動生成を行う。
+　・sample：サンプル・アプリケーションのビルドを行う。
 
-�ץ��������Ȥΰ�¸�ط��Τ��ᡢ�ʲ��ν��֤ǥӥ�ɤ��롣
-������libkernel�ץ��������Ȥ򥢥��ƥ��֥ץ��������Ȥ����ꤹ��
-������libkernel�ץ��������Ȥ�ӥ�ɤ���
-������sample�ץ��������Ȥ򥢥��ƥ��֥ץ��������Ȥ����ꤹ��
-������sample�ץ��������Ȥ�ӥ�ɤ���
+プロジェクトの依存関係のため、以下の順番でビルドする。
+　１．libkernelプロジェクトをアクティブプロジェクトに設定する
+　２．libkernelプロジェクトをビルドする
+　３．sampleプロジェクトをアクティブプロジェクトに設定する
+　４．sampleプロジェクトをビルドする
 
-���1��2�Ϻǽ��1��ΤߤǤ褯�����ץꥱ���������ʬ�Τߥ���
-�������ɤ��ѹ��������ϥ�ӥ�ɤ���ɬ�פϤʤ���
-configuration�ץ��������Ȥ�offset�ץ��������Ȥϰ�¸�ץ�����
-���ȤȤ��Ƽ�ưŪ�˥ӥ�ɤ���롣
+手順1と2は最初の1回のみでよく、アプリケーション部分のみソー
+スコードを変更した場合はリビルドする必要はない。
+configurationプロジェクトとoffsetプロジェクトは依存プロジェ
+クトとして自動的にビルドされる。
 
-sample�ץ��������ȤΥӥ�ɤ���������ȡ�
-�����¹ԥե����롡sample1.abs
-����S�쥳���ɥե����롡sample1.mot
-�����������褦���ꤷ�Ƥ��롣
+sampleプロジェクトのビルドが成功すると、
+　・実行ファイル　sample1.abs
+　・Sレコードファイル　sample1.mot
+が生成されるよう設定してある。
 
-���ա�
-��libkernel�Υӥ�ɤ�����genoffset�ץ��������Ȥ�ӥ�ɤ���ɬ�פ�
-���뤬���ץ��������ȴ֤ΰ�¸�ط������ꤷ�Ƥ�sample�ץ��������Ȥ�����
-�������ʰ�¸�ط����ͥ��Ȥ��Ƥ�����ˤ�����������Ǽ¹Ԥ���ʤ��Τǡ�
-��ư��libkernel�ץ��������Ȥ�ͽ��ӥ�ɤ��Ƥ�����
+注意：
+　libkernelのビルドより先にgenoffsetプロジェクトをビルドする必要が
+あるが、プロジェクト間の依存関係を設定してもsampleプロジェクトを起点と
+した場合（依存関係がネストしている場合）は正しい順序で実行されないので、
+手動でlibkernelプロジェクトを予めビルドしておく。
 
-����
-��Release�ӥ�ɤ�Debug�ӥ�ɤ����ؤ�HEW�Υӥ�ɡ�����ե�����졼����
-��ˤ�äƹԤ����ӥ�ɡ�����ե�����졼�������ѹ�����ȡ��ե������
-��¸�������å��˼��Ԥ����礬���롣
-�ʥ��󥯥롼�ɥե����뤬���Ĥ���ʤ����ˡ�
-���ξ��ϡ��ʲ��μ��ǲ���Ǥ��롣
-������Windows�Υ��ޥ�ɡ��ץ���ץȡ�DOS��ˤ򳫤��ơ�
-������jsp/tools/H8-RENESAS/libkernel�ǥ��쥯�ȥ��clean.bat��¹Ԥ��롣
-������HEW�Ρ֥ӥ�ɡסݡ֤��٤Ƥ�ӥ�ɡץ��ޥ�ɤ�¹Ԥ��롣
+備考
+　ReleaseビルドとDebugビルドの切替はHEWのビルド・コンフィギュレーショ
+ンによって行う。ビルド・コンフィギュレーションを変更すると、ファイルの
+依存性チェックに失敗する場合がある。
+（インクルードファイルが見つからない等）　
+その場合は、以下の手順で回避できる。
+　１．Windowsのコマンド・プロンプト（DOS窓）を開いて、
+　　　jsp/tools/H8-RENESAS/libkernelディレクトリでclean.batを実行する。
+　２．HEWの「ビルド」−「すべてをビルド」コマンドを実行する。
 
 
-(2) �������åȡ��ܡ��ɤΥ����������
+(2) ターゲット・ボードのダウンロード
 
-�ܡ��ɤ�ǥХå��ġ���Υޥ˥奢��򻲾ȡ�
+ボードやデバッグツールのマニュアルを参照。
 
-4. 4  �褯�������Ȳ���
+4. 4  よくある質問と回答
 
-Q.��genoffset��libkernel, configuration��sample�Τ褦�˥ե������
-������������ե������Ȥ���򥳥�ѥ��뤹��ե�������ۤʤ�ץ���������
-�����˳�����ƤƤ���Τϲ�����ͳ������ΤǤ��礦����
+Q.　genoffsetとlibkernel, configurationとsampleのようにファイルを
+　　生成するフェーズとそれをコンパイルするフェーズを異なるプロジェクト
+　　に割り当てているのは何か理由があるのでしょうか？
 
-A.���ǽ��Ʊ���ץ�����������������ե������ȥ���ѥ���ե�������
-��������褦�Ȥ����ΤǤ�����HEW�ϥץ��������ȤΥӥ�ɤ򳫻Ϥ���
-�����ݤ˥ե�����ΰ�¸�ط��򥹥���󤷡�ɬ�פʥ������ե����뤬��
-�������äƤ��ʤ��ӥ�ɤ��ߤޤäƤ��ޤ����ᡢ���ߤΤ褦�ʷ���ʬ��
-�������ޤ�����
-������������ե������ν��֤�Ĵ���Ǥ��ޤ�������¸�ط��������Υ�
-�������ߥ󥰤��Ѥ����ʤ��褦�Ǥ���
+A.　最初は同じプロジェクト内に生成フェーズとコンパイルフェーズを
+　　入れようとしたのですが、HEWはプロジェクトのビルドを開始する
+　　際にファイルの依存関係をスキャンし、必要なソースファイルがそ
+　　ろっていないビルドが止まってしまうため、現在のような形に分割
+　　しました。
+　　カスタムフェーズの順番は調整できますが、依存関係スキャンのタ
+　　イミングは変えられないようです。
 
-5.  �ե����빽��
+5.  ファイル構成
 
-5. 1  �ǥ��쥯�ȥꡦ�ե����빽��
+5. 1  ディレクトリ・ファイル構成
 
    (1)   config/h8-renesas/
 
-            cpu_config.c     H8�ץ����å���¸����C�ؿ�
-            cpu_config.h     H8�ץ����å���¸���ι������
-            cpu_config_asm.inc���嵭�Υ�����֥������
-            cpu_context.h    H8�ץ����å���¸���Υ���ƥ��������
-            cpu_defs.h       H8�ץ����å���¸���Υ��ץꥱ������������
-            cpu_insn.h       H8�ץ����å����ü�̿��δؿ����
-            cpu_support.src  H8�ץ����å��Υ�����֥�ؿ�
-            cpu_rename.def   �����ͥ����������̾�Υ�͡���Ȥ��β����
-            ���������������� ����ꥹ��
-            cpu_unrename.h   �����ͥ����������̾�Υ�͡����������
-            cpu_rename.h     �����ͥ����������̾�Υ�͡�������
-            cpu_rename_asm.inc �嵭�Υ�����֥������
-            h8.h             H8/300H�ץ����å��ζ������
-            makeoffset.c     offset.h�������ݡ����ѥ������ե�����
-            start.src        �������ȥ��åץ⥸�塼��
-            tool_config.h    H8�ץ����å��γ�ȯ�Ķ���¸�⥸�塼�����
-            tool_defs.h      H8�ץ����å��γ�ȯ�Ķ���¸���
-            vector_header.src ����ߥ٥����ơ��֥�Υإå�����ʬ
-            h8_sil.c     ����SIL��H8������ĥ C�ؿ�
-            h8_sil.h     ����SIL��H8������ĥ �������
+            cpu_config.c     H8プロセッサ依存部のC関数
+            cpu_config.h     H8プロセッサ依存部の構成定義
+            cpu_config_asm.inc　上記のアセンブラ用定義
+            cpu_context.h    H8プロセッサ依存部のコンテキスト操作
+            cpu_defs.h       H8プロセッサ依存部のアプリケーション用定義
+            cpu_insn.h       H8プロセッサの特殊命令の関数定義
+            cpu_support.src  H8プロセッサのアセンブリ関数
+            cpu_rename.def   カーネルの内部識別名のリネームとその解除の
+            　　　　　　　　 定義リスト
+            cpu_unrename.h   カーネルの内部識別名のリネーム解除の定義
+            cpu_rename.h     カーネルの内部識別名のリネームの定義
+            cpu_rename_asm.inc 上記のアセンブラ用定義
+            h8.h             H8/300Hプロセッサの共通定義
+            makeoffset.c     offset.h生成サポート用ソースファイル
+            start.src        スタートアップモジュール
+            tool_config.h    H8プロセッサの開発環境依存モジュール定義
+            tool_defs.h      H8プロセッサの開発環境依存定義
+            vector_header.src 割込みベクタテーブルのヘッダー部分
+            h8_sil.c     　　SILのH8向け拡張 C関数
+            h8_sil.h     　　SILのH8向け拡張 構成定義
             
-            h8_3048f.h       H8/3048F�ץ����å������
-            ��������������������H8/3048F��H8/3048F-ONE����
-            h8_3048f_asm.inc �嵭�Υ�����֥������
-            util.h       �����ӥå��ֹ�ʤɤ����
-            util_asm.inc �����嵭�Υ�����֥������
+            h8_3048f.h       H8/3048Fプロセッサの定義
+            　　　　　　　　　　H8/3048F、H8/3048F-ONE兼用
+            h8_3048f_asm.inc 上記のアセンブラ用定義
+            util.h       　　ビット番号などの定義
+            util_asm.inc 　　上記のアセンブラ用定義
 
-            hw_serial.c      SCI ���ѿ��ȴؿ�
-            hw_serial.cfg    SCI �Υ���ե�����졼�����ե�����
-            hw_serial.h      SCI �����
-            hw_timer.h       ITU �����
+            hw_serial.c      SCI の変数と関数
+            hw_serial.cfg    SCI のコンフィギュレーションファイル
+            hw_serial.h      SCI の定義
+            hw_timer.h       ITU の定義
 
    (2)   config/h8-renesas/hsb8f3048bf25/
-           (��)�����Ż�H8/3048F-ONE�����������åȡʷ���HSB8F3048BF25��
-           �ܡ��ɤΰ�¸��ʬ
+           (株)北斗電子H8/3048F-ONEスタータキット（型番HSB8F3048BF25）
+           ボードの依存部分
 
-            sys_config.c     HSB8F3048BF25�ܡ��ɰ�¸����C�ؿ�
-            sys_config.h     HSB8F3048BF25�ܡ��ɰ�¸���ι������
-            sys_config_asm.inc���嵭�Υ�����֥������
-            sys_defs.h       HSB8F3048BF25�ܡ��ɰ�¸���Υ��ץꥱ�������
-            ���������������� �����
-            sys_support.src  HSB8F3048BF25�ܡ��ɰ�¸���Υ�����֥�ؿ�
-            sys_rename.def   �����ͥ����������̾�Υ�͡���Ȥ��β����
-            ���������������� ����ꥹ��
-            sys_rename.h     �����ͥ����������̾�Υ�͡�������
-            sys_unrename.h   �����ͥ����������̾�Υ�͡����������
+            sys_config.c     HSB8F3048BF25ボード依存部のC関数
+            sys_config.h     HSB8F3048BF25ボード依存部の構成定義
+            sys_config_asm.inc　上記のアセンブラ用定義
+            sys_defs.h       HSB8F3048BF25ボード依存部のアプリケーション
+            　　　　　　　　 用定義
+            sys_support.src  HSB8F3048BF25ボード依存部のアセンブリ関数
+            sys_rename.def   カーネルの内部識別名のリネームとその解除の
+            　　　　　　　　 定義リスト
+            sys_rename.h     カーネルの内部識別名のリネームの定義
+            sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
             
-            �ʲ��ϡ��桼�������Խ�����ɬ�פ�����ե�����
-            user_config.h�����桼����������ե�����졼������������
-            user_config_asm.inc���嵭�Υ�����֥������
-            intmask.inc����������ߥޥ��������
+            以下は、ユーザーが編集する必要があるファイル
+            user_config.h　　ユーザー・コンフィギュレーション情報の定義
+            user_config_asm.inc　上記のアセンブラ用定義
+            intmask.inc　　　割込みマスクの定義
 
    (3)   utils/
-   ���������ӥ�ɤ�ɬ�פʥ桼�ƥ���ƥ���
+   　　　　ビルドに必要なユーティリティ群
 
-          ��h8/ �������� gcc�Ǥȶ��̤Υ�����ץ�
-            ��grep_def_inh.pl��Perl������ץ������ѥե��륿
+          　h8/ 　　　　 gcc版と共通のスクリプト
+            　grep_def_inh.pl　Perlスクリプト生成用フィルタ
            
-          ��h8-renesas/��H8C��¸�Υ�����ץ�
-            ��copy_kernel_source.bat
-            ������������������ �����ͥ�Υ����������ɤ�API��˥��ԡ�
-            ������������������ ����Хå��ե�����
-            ��genoffset��������TCB��¤����Υ��ե��åȤ򻻽Ф���perl������ץ�
-            ��genvector.pl���� �٥����ơ��֥������ѥ�����ץ�
-            ��gen_intentry.pl��������������������ѥ�����ץ�
+          　h8-renesas/　H8C依存のスクリプト
+            　copy_kernel_source.bat
+            　　　　　　　　　 カーネルのソースコードをAPI毎にコピー
+            　　　　　　　　　 するバッチファイル
+            　genoffset　　　　TCB構造体内のオフセットを算出するperlスクリプト
+            　genvector.pl　　 ベクタテーブル生成用スクリプト
+            　gen_intentry.pl　割込み入口処理生成用スクリプト
             
 
    (4)   tools/H8-RENESAS/
-           HEW4.0�ѤΥ�����ڡ������ǥ��쥯�ȥ�
-           ��(��)�����Ż�H8/3048F-ONE�����������åȡʷ���HSB8F3048BF25��
+           HEW4.0用のワークスペース・ディレクトリ
+           　(株)北斗電子H8/3048F-ONEスタータキット（型番HSB8F3048BF25）
 
             readme.txt
-            ���ӥ�ɼ��򼨤���readme�ե�����
+            　ビルド手順を示したreadmeファイル
             H8-RENESAS.hws
-            ��������ڡ������ե�����
+            　ワークスペース・ファイル
             sample1.cfg
-            ������ץ롦���ץꥱ�������Υ���ե�����졼�����
-            ���ե�����
+            　サンプル・アプリケーションのコンフィギュレーション
+            　ファイル
             sample1.c
-            ������ץ롦���ץꥱ��������C���쥽�������ե�����
+            　サンプル・アプリケーションのC言語ソース・ファイル
             sample1.h
-            ������ץ롦���ץꥱ�������Υ��󥯥롼�ɡ��ե�����
+            　サンプル・アプリケーションのインクルード・ファイル
 
    (5)   tools/H8-RENESAS/genoffset/
-   ���������ʲ��ν�����Ԥ��ץ��������ȡ��ǥ��쥯�ȥ�
-   �����������������ͥ롦�����������ɤ�API��˥��ԡ�
-   ������������TCB��¤����Υ��ե��åȻ���
-   ��������
+   　　　　以下の処理を行うプロジェクト・ディレクトリ
+   　　　　　・カーネル・ソースコードをAPI毎にコピー
+   　　　　　・TCB構造体内のオフセット算出
+   　　　　
            call_copy_kernel_source.bat
-           ����copy_kernel_source.bat��ƤӽФ�����ΥХå��ե�����
+           　　copy_kernel_source.batを呼び出すためのバッチファイル
 
            call_genoffset.bat
-           ����genoffset������ץȤ�ƤӽФ�����ΥХå��ե�����
+           　　genoffsetスクリプトを呼び出すためのバッチファイル
 
-  �������� Debug/     �ǥХå��ѥӥ�ɥǥ��쥯�ȥ�
-   ������������offset.inc����TCB��¤����Υ��ե��å�����ե�����
+  　　　　 Debug/     デバッグ用ビルドディレクトリ
+   　　　　　　offset.inc　　TCB構造体内のオフセット定義ファイル
 
-  �������� Release/   �ǥХå��ѥӥ�ɥǥ��쥯�ȥ�
-   ������������offset.inc����TCB��¤����Υ��ե��å�����ե�����
+  　　　　 Release/   デバッグ用ビルドディレクトリ
+   　　　　　　offset.inc　　TCB構造体内のオフセット定義ファイル
 
    (6)   tools/H8-RENESAS/libkernel
-   �������������ͥ롦�饤�֥��Υӥ�ɤ�Ԥ��ץ��������ȡ��ǥ��쥯�ȥ�
-   ��������
-   ��������kernel_source/���� ��֥ե�������Ǽ����ǥ��쥯�ȥ�
-   ������������clean.bat��������֥ե�����������뤿��ΥХå��ե����� 
+   　　　　カーネル・ライブラリのビルドを行うプロジェクト・ディレクトリ
+   　　　　
+   　　　　kernel_source/　　 中間ファイルを格納するディレクトリ
+   　　　　　　clean.bat　　　中間ファイルを削除するためのバッチファイル 
 
    (7)   tools/H8-RENESAS/configuration
-   �������������ͥ롦����ե�����졼������Ԥ��ץ��������ȡ��ǥ��쥯�ȥ�
-   ��������
+   　　　　カーネル・コンフィギュレーションを行うプロジェクト・ディレクトリ
+   　　　　
            call_configuration.bat
-           ������������������ ����ե�����졼�����ȥ٥����ơ��֥�����
-           ������������������ ������ץȤθƤӽФ�
+           　　　　　　　　　 コンフィギュレーターとベクタテーブル生成
+           　　　　　　　　　 スクリプトの呼び出し
 
-  �������� Debug/     �ǥХå��ѥӥ�ɥǥ��쥯�ȥ�
-   ������������kernel_id.h������   ID��ư���դ�������ե�����
-   ������������debug_kernel_cfg.c  ����ե�����졼���ν��Ϸ��
-   ������������debug_vector.src    ��ư�������줿����ߥ٥����ơ��֥�
+  　　　　 Debug/     デバッグ用ビルドディレクトリ
+   　　　　　　kernel_id.h　　　   ID自動割付けの定義ファイル
+   　　　　　　debug_kernel_cfg.c  コンフィギュレータの出力結果
+   　　　　　　debug_vector.src    自動生成された割込みベクタテーブル
 
-  �������� Release/   �ǥХå��ѥӥ�ɥǥ��쥯�ȥ�
-   ������������kernel_id.h������   ID��ư���դ�������ե�����
-   ������������relase_kernel_cfg.c ����ե�����졼���ν��Ϸ��
-   ������������release_vector.src  ��ư�������줿����ߥ٥����ơ��֥�
-   ����������
+  　　　　 Release/   デバッグ用ビルドディレクトリ
+   　　　　　　kernel_id.h　　　   ID自動割付けの定義ファイル
+   　　　　　　relase_kernel_cfg.c コンフィギュレータの出力結果
+   　　　　　　release_vector.src  自動生成された割込みベクタテーブル
+   　　　　　
 
    (7)   tools/H8-RENESAS/sample
-   ������������ץ롦���ץꥱ�������Υӥ�ɤ�Ԥ��ץ��������ȡ��ǥ��쥯�ȥ�
-   ��������
-   ��������set_sp.hdc�������� �ǥХå��ǥ����å��ݥ��󥿤��������뤿���
-   �������������������������� �Хå��ե�����
+   　　　　サンプル・アプリケーションのビルドを行うプロジェクト・ディレクトリ
+   　　　　
+   　　　　set_sp.hdc　　　　 デバッガでスタックポインタを初期化するための
+   　　　　　　　　　　　　　 バッチファイル
 
 
-6. ���ץꥱ�������ȯ�Ը����ξ���
+6. アプリケーション開発者向けの情報
 
-���ץꥱ�������ȯ�Ԥ�ͭ�פȻפ������ˤĤ��ƽҤ٤롣
+アプリケーション開発者に有益と思われる情報について述べる。
 
-6.1 �����ͥ�������ѹ���ˡ
+6.1 カーネルの設定変更方法
 
-H8��¸���Ǥϡ��͡��������ѹ����ưפˤǤ���褦������ս���ʲ��Σ���
-�Υե�����ˤޤȤ�Ƥ��롣
-����user_config.h��������C�����������ե�����
-����user_config_asm.inc��������֥����������ե�����
+H8依存部では、様々な設定変更が容易にできるよう、設定箇所をを以下の２つ
+のファイルにまとめている。
+　・user_config.h　　　　C言語向け設定ファイル
+　・user_config_asm.inc　アセンブラ言語用設定ファイル
 
-�桼�����Ϥ��Σ��ĤΥե�������Υޥ���������ѹ���������ǡ������ͥ��
-�������ե�������ɤޤʤ��Ƥ⤢�����٤ޤǥ����ͥ��������ѹ��Ǥ��롣
-������ܤˤ�äƤ�C�����Ѥȥ�����֥�����Ѥ�ξ���������ɬ�פˤʤ��
-�����ա�
+ユーザーはこの２つのファイル内のマクロ定義を変更するだけで、カーネルの
+ソースファイルを読まなくてもある程度までカーネルの設定を変更できる。
+設定項目によってはC言語用とアセンブラ言語用の両方の定義が必要になるの
+で注意。
 
-�ʲ�������ե�������γƥޥ����ΰ�̣��Ҥ٤롣
+以下、設定ファイル内の各マクロの意味を述べる。
 
-������Ū���������
+・全般的な設定項目
 
 (1) SUPPORT_CHG_IPM
-chg_ipm�򥵥ݡ��Ȥ��뤫�ɤ��������
-����ե����롧user_config.h��user_config_asm.inc
+chg_ipmをサポートするかどうかの定義
+設定ファイル：user_config.h、user_config_asm.inc
 
 (2) SUPPORT_VXGET_TIM
-vxget_tim�򥵥ݡ��Ȥ��뤫�ɤ��������
-����������ѹ��������ϡ��ե�����ʬ�����ٹԤ�ɬ�פ����롣
-����ե����롧user_config.h
+vxget_timをサポートするかどうかの定義
+この設定を変更した場合は、ファイル分割を再度行う必要がある。
+設定ファイル：user_config.h
 
 (3) CPU_CLOCK
-�ץ����å��˶��뤵��륯���å����ȿ� [Hz]
-����ե����롧user_config.h��user_config_asm.inc
+プロセッサに供給されるクロック周波数 [Hz]
+設定ファイル：user_config.h、user_config_asm.inc
 
 (4) STACKTOP
-�󥿥�������ƥ������ѥ����å��ݥ��󥿤ν����
-����ե����롧user_config_asm.inc
+非タスクコンテキスト用スタックポインタの初期値
+設定ファイル：user_config_asm.inc
 
 (5) E10T
-E10T-USB Emulator�ǥǥХå�������Ϥ��Υޥ�����������롣
-E10T���ѻ���ɬ�פʽ����򥹥����ȥ��åץ롼����ǹԤ���
-�����ꡧ������֥�Υ��ץ����Ȥ���Ϳ���롣
-������������HEW�Υӥ�ɥ��ץ�����
+E10T-USB Emulatorでデバッグする場合はこのマクロを定義する。
+E10T使用時に必要な処理をスタートアップルーチンで行う。
+定義場所：アセンブラのオプションとして与える。
+　　　　　（HEWのビルドオプション）
 
 
-�����ꥢ��ݡ��ȴ�Ϣ���������
+・シリアルポート関連の設定項目
 
 (1) TNUM_PORT
-���ݡ��Ȥ��륷�ꥢ��ǥХ����ο��ʺ��� 2��
-����ե����롧user_config.h��user_config_asm.inc
+サポートするシリアルデバイスの数（最大 2）
+設定ファイル：user_config.h、user_config_asm.inc
 
-�ʲ����ݡ���2�������TNUM_PORT��2�����ꤷ�����Τ�ͭ���Ǥ��롣
+以下、ポート2の設定はTNUM_PORTを2に設定した場合のみ有効である。
 
-(2) SYSTEM_PORTID��USER_PORTID
-�����ƥ�ݡ��ȡ��桼�����ݡ��ȤΥݡ����ֹ�
-USER_PORTID�������TNUM_PORT��2�����ꤷ�����Τ�ͭ���Ǥ��롣
-����ե����롧user_config.h
+(2) SYSTEM_PORTID、USER_PORTID
+システムポート、ユーザーポートのポート番号
+USER_PORTIDの設定はTNUM_PORTを2に設定した場合のみ有効である。
+設定ファイル：user_config.h
 
 (3) SCI_LOW_PORTID
-�ݡ���󥰤ˤ�����٥���Ϥ��Ѥ��륷�ꥢ��ݡ��ȤΥݡ����ֹ�
-����ե����롧user_config.h
+ポーリングによる低レベル出力に用いるシリアルポートのポート番号
+設定ファイル：user_config.h
 
-(4) SCI_PORT1_BAUD_RATE��SCI_PORT2_BAUD_RATE
-�ݡ���1,2�Υܡ��졼�� [bps]
-����ե����롧user_config.h
+(4) SCI_PORT1_BAUD_RATE、SCI_PORT2_BAUD_RATE
+ポート1,2のボーレート [bps]
+設定ファイル：user_config.h
 
-(5) SCI_PORT1_IPM��SCI_PORT2_IPM
-�ݡ���1,2�γ���ߥץ饤����ƥ�����٥�
-�ʳ����ȯ������IRC�ؤ��׵��٥��
-����ե����롧user_config.h
+(5) SCI_PORT1_IPM、SCI_PORT2_IPM
+ポート1,2の割込みプライオリティ・レベル
+（割込み発生時のIRCへの要求レベル）
+設定ファイル：user_config.h
 
 (6) H8_CFG_SCI_ERR_HANDLER
-���ꥢ��������顼����ߤ��̾�μ�������ߤȤ��̤Υϥ�ɥ�������Ƥ�
-���ɤ��������
-����ե����롧user_config.h��user_config_asm.inc
+シリアル受信エラー割込みに通常の受信割込みとは別のハンドラを割り当てる
+かどうかの定義
+設定ファイル：user_config.h、user_config_asm.inc
 
-�������޴�Ϣ���������
+・タイマ関連の設定項目
 
-(1) TIC_NUME��TIC_DENO
-������ƥ��å��μ�����ʬ�ҡ�ʬ��
-����ե����롧user_config.h
+(1) TIC_NUME、TIC_DENO
+タイムティックの周期の分子、分母
+設定ファイル：user_config.h
 
 (2) TIMER_CLOCK
-�����ޤ˶��뤵��륯���å����ȿ�[kHz]
-����ե����롧user_config.h
+タイマに供給されるクロック周波数[kHz]
+設定ファイル：user_config.h
 
 (3) SYSTEM_TIMER_IPM
-�����޳���ߤΥץ饤����ƥ�����٥�
-�ʳ����ȯ������IRC�ؤ��׵��٥��
-����ե����롧user_config.h
+タイマ割込みのプライオリティ・レベル
+（割込み発生時のIRCへの要求レベル）
+設定ファイル：user_config.h
 
 
-6.2 ���ץꥱ�������������󶡤���뵡ǽ
+6.2 アプリケーション向けに提供される機能
 
-H8��¸���Ǥϥ��ץꥱ��������ȯ���䤹�����뤿�ᡢ�ʲ��ε�ǽ���󶡤�
-�Ƥ��롣
+H8依存部ではアプリケーションを開発しやすくするため、以下の機能を提供し
+ている。
 
-6.2.1�����������Ԥ�
+6.2.1　微少時間待ち
 
-�������¸����sil.h�ǥץ��ȥ�����������Ƥ���sil_dly_nse�ؿ��ϰ�����
-UINT���Ǥ��ꡢint����2�Х��ȤǤ��뤳�ν����ϤǤ���65��sec�ޤǤ���ɽ��
-�Ǥ��ʤ���������Ĺ�������Ԥ���Ԥ����ᡢ������UW�����ѹ������̴ؿ�
-sil_dly_nse_long���Ѱդ��Ƥ��롣�ɤ����nsecñ�̤��Ԥ����֤���ꤹ�롣
-t_services.h��s_services.h�򥤥󥯥롼�ɤ��뤳�Ȥˤ���cpu_defs.h���
-���ơ����ѤǤ��롣
+機種非依存部のsil.hでプロトタイプ宣言しているsil_dly_nse関数は引数が
+UINT型であり、int型が2バイトであるこの処理系では約65μsecまでしか表現
+できない。これより長い時間待ちを行うため、引数をUW型に変更した別関数
+sil_dly_nse_longを用意している。どちらもnsec単位で待ち時間を指定する。
+t_services.hやs_services.hをインクルードすることにより（cpu_defs.hを介
+して）利用できる。
 
-��C����API��
-����void sil_dly_nse_long(UW dlytim);
+【C言語API】
+　　void sil_dly_nse_long(UW dlytim);
 
-�ڥѥ�᡼����
-	UW dlytim������ �Ԥ�����[nsec]
+【パラメータ】
+	UW dlytim　　　 待ち時間[nsec]
 
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
+【リターンパラメータ】
+	なし
 
-�ڥ��顼�����ɡ�
-	�ʤ�
+【エラーコード】
+	なし
 
-�ڵ�ǽ��
+【機能】
 
-���եȥ��������롼�פˤ������Ԥ���Ԥ���
-Ʊ�ͤε�ǽ���󶡤���sil_dly_nse�ؿ��Ϻ�����65��sec�ޤ��Ԥ����֤�����
-����Τ��Ф��ơ�sil_dly_nse_long�ؿ�����4.3sec�ޤǻ���Ǥ��롣
+ソフトウェア・ループにより時間待ちを行う。
+同様の機能を提供するsil_dly_nse関数は最大約65μsecまで待ち時間を指定で
+きるのに対して、sil_dly_nse_long関数は約4.3secまで指定できる。
 
-6.2.2��I/O�ݡ��Ȥ�DDR�쥸�����ؤΥ������������ǽ
+6.2.2　I/OポートのDDRレジスタへのアクセス補助機能
 
-H8��I/O�ݡ��ȤΥǡ������ǥ��쥯����󡦥쥸����DDR�Ͻ񤭹������ѤǤ��ꡢ
-���ΤޤޤǤϽ�˾�ΥӥåȤ������ѹ����뤳�Ȥ��Ǥ��ʤ���
-��bset,bclr̿��Ǥ�����Բġ�
-�ޤ��������ͥ�Υ������ȥ��åץ롼����Ǥ⤤���Ĥ���DDR�쥸�������Ф�
-�������ԤäƤ��뤿�ᡢ���ΤޤޤǤϥ����ͥ�ȥ��ץꥱ�������δ֤���
-�������ݤĤ��Ȥ��Ǥ��ʤ���
-���Τ��ᡢ�ܼ����Ǥϡ������˥ƥ�ݥ����Ѱդ��ơ�DDR�θ����ͤ���
-��������ˡ��ΤäƤ��롣
-�ܵ�ǽ�����Ѥ������h8_sil.h�򥤥󥯥롼�ɤ���ɬ�פ����롣
-�ݡ����ֹ��IO_PORT���Ȥ���������Ƥ��ꡢIO_PORT1, IO_PORT2, IO_PORT3, 
-IO_PORT4, IO_PORT5, IO_PORT6, IO_PORT8, IO_PORT9, IO_PORTA, IO_PORTB��
-�����줫����ꤹ�롣�ʥݡ���7���������ѤΤ��ᡢDDR�쥸�������ʤ�����
-�ݡ����ֹ�Ȥ��ơ������ʳ����ͤ���ꤷ������assertʸ�ǥ��顼�Ȥʤ롣
-
-
-(1) sil_reb_ddr����DDR�쥸�������ɤ߽Ф�
-
-��C����API��
-����UB sil_reb_ddr(IO_PORT port);
-
-�ڥѥ�᡼����
-	IO_PORT port���������ݡ����ֹ�
-
-�ڥ꥿����ѥ�᡼����
-	DDR�쥸��������
-
-�ڥ��顼�����ɡ�
-	�ʤ�
-
-�ڵ�ǽ��
-
-port�ǻ��ꤵ���ݡ����ֹ��DDR�쥸�������ͤ��ɤ߽Ф���
-
-(2) sil_wrb_ddr����DDR�쥸�����ؤν񤭹���
-
-��C����API��
-����void sil_wrb_ddr(IO_PORT port, UB data);
-
-�ڥѥ�᡼����
-	IO_PORT port�� �ݡ����ֹ�
-	UB data���������񤭹�����
-
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
-
-�ڥ��顼�����ɡ�
-	�ʤ�
-
-�ڵ�ǽ��
-
-port�ǻ��ꤵ���ݡ����ֹ��DDR�쥸��������data��񤭹��ࡣ
-
-(3) sil_anb_ddr����DDR�쥸������AND�黻
-
-��C����API��
-����void sil_anb_ddr(IO_PORT port, UB data);
-
-�ڥѥ�᡼����
-	IO_PORT port�� �ݡ����ֹ�
-	UB data��������AND�黻��Ԥ���
-
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
-
-�ڥ��顼�����ɡ�
-	�ʤ�
-
-�ڵ�ǽ��
-
-port�ǻ��ꤵ���ݡ����ֹ��DDR�쥸�������Ф��ơ���data�Ȥ�AND�黻��
-�Ԥ���
-
-(4) sil_orb_ddr����DDR�쥸������OR�黻
-
-��C����API��
-����void sil_orb_ddr(IO_PORT port, UB data);
-
-�ڥѥ�᡼����
-	IO_PORT port�� �ݡ����ֹ�
-	UB data��������AND�黻��Ԥ���
-
-�ڥ꥿����ѥ�᡼����
-	�ʤ�
-
-�ڥ��顼�����ɡ�
-	�ʤ�
-
-�ڵ�ǽ��
-
-port�ǻ��ꤵ���ݡ����ֹ��DDR�쥸�������Ф��ơ���data�Ȥ�OR�黻��
-�Ԥ���
+H8のI/Oポートのデータ・ディレクション・レジスタDDRは書き込み専用であり、
+そのままでは所望のビットだけを変更することができない。
+（bset,bclr命令でも回避不可）
+また、カーネルのスタートアップルーチンでもいくつかのDDRレジスタに対し
+て設定を行っているため、そのままではカーネルとアプリケーションの間で整
+合性を保つことができない。
+そのため、本実装では、メモリ上にテンポラリを用意して、DDRの現在値を保
+持する方法を採っている。
+本機能を利用する場合はh8_sil.hをインクルードする必要がある。
+ポート番号はIO_PORT型として定義してあり、IO_PORT1, IO_PORT2, IO_PORT3, 
+IO_PORT4, IO_PORT5, IO_PORT6, IO_PORT8, IO_PORT9, IO_PORTA, IO_PORTBの
+いずれかを指定する。（ポート7は入力専用のため、DDRレジスタがない。）
+ポート番号として、これら以外の値を指定した場合はassert文でエラーとなる。
 
 
-7. �����ͥ�ܿ��Ը����ξ���
+(1) sil_reb_ddr　　DDRレジスタの読み出し
 
-��H8��¸����¾�Υ������åȡ��ܡ��ɤؤ�ܿ�����ݤ�ɬ�פʾ����ʲ���
-�Ҥ٤롣
+【C言語API】
+　　UB sil_reb_ddr(IO_PORT port);
 
-7.1 �ޥ������
+【パラメータ】
+	IO_PORT port　　　　ポート番号
+
+【リターンパラメータ】
+	DDRレジスタの値
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタの値を読み出す。
+
+(2) sil_wrb_ddr　　DDRレジスタへの書き込み
+
+【C言語API】
+　　void sil_wrb_ddr(IO_PORT port, UB data);
+
+【パラメータ】
+	IO_PORT port　 ポート番号
+	UB data　　　　書き込む値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに値dataを書き込む。
+
+(3) sil_anb_ddr　　DDRレジスタのAND演算
+
+【C言語API】
+　　void sil_anb_ddr(IO_PORT port, UB data);
+
+【パラメータ】
+	IO_PORT port　 ポート番号
+	UB data　　　　AND演算を行う値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに対して、値dataとのAND演算を
+行う。
+
+(4) sil_orb_ddr　　DDRレジスタのOR演算
+
+【C言語API】
+　　void sil_orb_ddr(IO_PORT port, UB data);
+
+【パラメータ】
+	IO_PORT port　 ポート番号
+	UB data　　　　AND演算を行う値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに対して、値dataとのOR演算を
+行う。
+
+
+7. カーネル移植者向けの情報
+
+　H8依存部を他のターゲット・ボードへを移植する際に必要な情報を以下に
+述べる。
+
+7.1 マクロ定義
 
 (1) SYSCR_SYS
-SYSCR�ν����
-�ܡ��ɰ�¸���������������
-�����ӥå�6-4 STS��������Х��������ޡ����쥯��
-�����ӥå�2 NMIEG��NMI���å�
-����ե����롧sys_config.h
-�Ĥ�ΥӥåȤ�CPU��¸����������Ƥ��롣
+SYSCRの初期値
+ボード依存部で定義する内容
+　・ビット6-4 STS：スタンバイ・タイマ・セレクト
+　・ビット2 NMIEG：NMIエッジ
+定義ファイル：sys_config.h
+残りのビットはCPU依存部で定義している。
 
 (2) HARDWARE_INIT_HOOK
-�������ȥ��åץ롼���󤫤�ϡ��ɥ�������¸�ν����������ƤӽФ��Ȥ��ϡ�
-������Ƭ���ɥ쥹��ޥ���������롣
-��GNU ld��PROVIDE̿���Ʊ���ε�ǽ���ʤ������
-����ե����롧sys_config_asm.inc
+スタートアップルーチンからハードウェア依存の初期化処理を呼び出すときは、
+その先頭アドレスをマクロ定義する。
+（GNU ldのPROVIDE命令と同等の機能がないため）
+定義ファイル：sys_config_asm.inc
 
 (3) SOFTWARE_INIT_HOOK
-�������ȥ��åץ롼���󤫤饽�եȥ������Ķ����ä˥饤�֥��˰�¸�ν�����
-�ƤӽФ��Ȥ��ϡ�������Ƭ���ɥ쥹��ޥ���������롣
-����ե����롧sys_config_asm.inc
+スタートアップルーチンからソフトウェア環境（特にライブラリ）依存の処理を
+呼び出すときは、その先頭アドレスをマクロ定義する。
+定義ファイル：sys_config_asm.inc
 
 (4) WITHOUT_INNER_RAM
-��¢RAM����Ѥ��ʤ����ϡ����Υޥ�����������롣
-��¢RAM����Ѥ��ʤ����ϡ�����RAM��ͭ���ˤʤ�ʤ��ȥ����å����ꥢ����
-���ʤ������Τ��ᡢ������Ϥ򥹥��å����Ѥ�H8�ץ����å��δؿ��ƤӽФ���
-�ʥ�����֥�Ǥ��äƤ�ˤ��Υ����ߥ󥰤ǤϤޤ��Ǥ��ʤ����Ĥޤꡢ
-HARDWARE_INIT_HOOK�Ǽ������ؿ������̵���ʬ��̿�����äƤ��롣
-�ʥ�٥�start_1�򥨥����ݡ��Ȥ��롣��
-����ե����롧sys_config_asm.inc
+内蔵RAMを使用しない場合は、このマクロを定義する。
+内蔵RAMを使用しない場合は、外部RAMが有効にならないとスタックエリアが使
+えない。そのため、戻り番地をスタックに積むH8プロセッサの関数呼び出しは
+（アセンブラであっても）このタイミングではまだできない。つまり、
+HARDWARE_INIT_HOOKで示される関数からは無条件分岐命令で戻ってくる。
+（ラベルstart_1をエクスポートする。）
+定義ファイル：sys_config_asm.inc
 
 (5) EXCLUSIVE_BUS
-sleep̿��ˤ�äƥ��եȥ�������������Х����⡼�ɤ����ܤ���ݡ��Х���
-�׵�ζ��礬�������礬���롣���㤨�С�H8/3048F�Υϡ��ɥ��������ޥ˥�
-�����6.4.4 ���եȥ�������������Х����⡼�ɤؤ����ܡ׻��ȡ�
-EXCLUSIVE_BUS�ޥ�������������ȡ��ǥ����ѥå����sleep̿�������˥�
-�����׵����¾���椬��������롣
-����ե����롧sys_config_asm.inc
+sleep命令によってソフトウェア・スタンバイ・モードに遷移する際、バス権
+要求の競合が起こる場合がある。（例えば、H8/3048Fのハードウェア・マニュ
+アル「6.4.4 ソフトウェア・スタンバイ・モードへの遷移」参照）
+EXCLUSIVE_BUSマクロが定義されると、ディスパッチャのsleep命令の前後にバ
+ス権要求の排他制御が挿入される。
+定義ファイル：sys_config_asm.inc
 
 (6) SOFTWARE_TERM_HOOK
-atexit( )����ƤӽФ������������������Ƥ�����ϡ����δؿ�̾��ޥ���
-������롣atexit( )�Ǥ�
-�����������������С������ƤӽФ�
-  ������������ʤ���С����⤷�ʤ��ʶ��������
-����ե����롧sys_config.h
+atexit( )から呼び出す処理が外部定義されている場合は、その関数名をマクロ
+定義する。atexit( )では
+　・外部定義があれば、それを呼び出す
+  ・外部定義がなければ、何もしない（空の定義）
+定義ファイル：sys_config.h
 
-(7) DDR���������롼����Τ����������
+(7) DDRアクセスルーチンのための定数定義
 
-(a) DDR�쥸�����Υ��ɥ쥹
-DDR�쥸�����Υ��ɥ쥹��ʲ��Υޥ���̾��������롣
+(a) DDRレジスタのアドレス
+DDRレジスタのアドレスを以下のマクロ名で定義する。
     H8P1DDR, H8P2DDR, H8P3DDR, H8P4DDR, H8P5DDR, 
     H8P6DDR, H8P8DDR, H8P9DDR, H8PADDR, H8PBDDR
-����ե����롧sys_config.h���饤�󥯥롼�ɤ����ե�����
-��������������h8_30xxf.h���������Τ�ɸ��Ȥ��롣
+定義ファイル：sys_config.hからインクルードされるファイル
+　　　　　　　h8_30xxf.hで定義するのを標準とする。
 
-(b) DDR�쥸�����ν����
-�������ȥ��åץ롼����¹�ľ���DDR�쥸�������ͤ�ʲ��Υޥ���̾�����
-���롣
-����H8P1DDR0��H8P2DDR0��H8P3DDR0��H8P4DDR0��H8P5DDR0��
-����H8P6DDR0��H8P8DDR0��H8P9DDR0��H8PADDR0��H8PBDDR0
-����ե����롧sys_config.h
+(b) DDRレジスタの初期値
+スタートアップルーチン実行直後のDDRレジスタの値を以下のマクロ名で定義
+する。
+　　H8P1DDR0、H8P2DDR0、H8P3DDR0、H8P4DDR0、H8P5DDR0、
+　　H8P6DDR0、H8P8DDR0、H8P9DDR0、H8PADDR0、H8PBDDR0
+定義ファイル：sys_config.h
 
-7.2 �ӥ���ѤΥ�����ץȤˤĤ���
+7.2 ビルド用のスクリプトについて
 
 (a) jsp/tools/H8-RENESAS/configuration/call_configurator.bat
 
-HEW�Ǥϡ��ʥ�����ڡ������ǥ��쥯�ȥ�γ��ˤ���˳����ġ�������Х�
-������ǸƤӽФ��ʤ����ᡢ���Τ褦�ʥХå��ե������𤷤ơ�
-��������ե�����졼��
-����Perl������ץ�
-��ƤӽФ��Ƥ��롣
-�ʲ���xxx����ʬ��ܿ��κݤ��ѹ�����ɬ�פ����롣
+HEWでは、（ワークスペース・ディレクトリの外にある）外部ツールを相対パ
+ス指定で呼び出せないため、このようなバッチファイルを介して、
+　・コンフィギュレータ
+　・Perlスクリプト
+を呼び出している。
+以下のxxxの部分を移植の際に変更する必要がある。
 
-���������ƥ��¸���Υǥ��쥯�ȥ�̾
-������cfg.exe -s %1 -c -obj -cpu h8 -system xxx
-������xxx�ˤϥ����ƥ��¸���Υǥ��쥯�ȥ�̾�����롣
+　・システム依存部のディレクトリ名
+　　　cfg.exe -s %1 -c -obj -cpu h8 -system xxx
+　　　xxxにはシステム依存部のディレクトリ名が入る。
 
-�����٥����ơ��֥�Υ�����
-������genvector.pl -s xxx
-������xxx�ˤϥ٥����ơ��֥�Υ����������롣
+　・ベクタテーブルのサイズ
+　　　genvector.pl -s xxx
+　　　xxxにはベクタテーブルのサイズが入る。
 
-�ޤ����Ķ��ˤ�äƤ�Perl�Υ��󥿥ץ꥿�ؤΥѥ������ɬ�פˤʤ��ǽ����
-���롣
+また、環境によってはPerlのインタプリタへのパス設定も必要になる可能性が
+ある。
 
 (b) jsp/utils/h8-renesas/genvector.pl
 
-�٥����ơ��֥������Τ����Perl������ץ�genvector.pl�λ���
-  -s n		�٥������ơ��֥�Υ�����
-  		n������������ꤷ�Ƥ��ꡢ����ʳ��ΰ�����Ϳ����줿
-  		����ư���̤����Ǥ��롣
+ベクタテーブル生成のためのPerlスクリプトgenvector.plの仕様
+  -s n		ベクターテーブルのサイズ
+  		nは整数定数を仮定しており、それ以外の引数が与えられた
+  		場合の動作は未定義である。
 
-(c) vector.src����Ѥ����Ƥ���ޥ����λ���
+(c) vector.src内で用いられているマクロの仕様
 
-C����롼����δؿ�̾���������������������뤿��Υޥ���INTHDR_ENTRY��
-�Ѱդ���Ƥ��롣������ץ�genvector.pl�ϡ�����intmask���ͤ�intmask.inc
-���****_intmask��̾�ǥޥ����������Ƥ���Ȳ��ꤷ�Ƥ��롣
-����
-�������ڥ�����֥����Ǥ�API��
-����������INTHDR_ENTRY c_routine, intmask
+C言語ルーチンの関数名から入口処理を生成するためのマクロINTHDR_ENTRYが
+用意されている。スクリプトgenvector.plは、引数intmaskの値がintmask.inc
+内に****_intmaskの名でマクロ定義されていると仮定している。
+　　
+　　　【アセンブラ言語でのAPI】
+　　　　　INTHDR_ENTRY c_routine, intmask
 
-�������ڥѥ�᡼����
-����������c_routine��C����롼����δؿ�̾
-����������intmask����C����롼�����ƤӽФ�ľ���γ���ߵ��Ļ��˳����
-�������������������� �ޥ��������ꤹ����
-�������������������� IPM_LEVEL1��IPM_LEVEL2�Τ����줫�ˤ��뤳�ȡ�
-�������������������� ��ʬ��Ʊ����٥�γ���ߤ�ޥ������뤿�ᡢIPM�ˤ�
-�������������������� ���ľ�Υ�٥�����ꤹ�롣
+　　　【パラメータ】
+　　　　　c_routine：C言語ルーチンの関数名
+　　　　　intmask　：C言語ルーチンを呼び出す直前の割込み許可時に割込み
+　　　　　　　　　　 マスクに設定する値
+　　　　　　　　　　 IPM_LEVEL1、IPM_LEVEL2のいずれかにすること。
+　　　　　　　　　　 自分と同じレベルの割込みをマスクするため、IPMには
+　　　　　　　　　　 １つ上のレベルを設定する。
 
-��������Ÿ����̡�
-��������������ߤ���������
+　　　【展開結果】
+　　　　　割込みの入口処理
 
-�������ڵ�ǽ��
-����������C����롼����δؿ�̾���������������������롣
+　　　【機能】
+　　　　　C言語ルーチンの関数名から入口処理を生成する。
 
-������
-���٥����ơ��֥������������vector.src�ˤޤȤ᤿��̡���٥�
-_kernel_****_entry�ϥ������Х�˸�������ɬ�פ��ʤ��ʤä����ᡢ������
-���٥�Ȥ��Ƥ��롣�����ȼ�ʤ�cpu_config.h��INT_ENTRY�ޥ����Ǥ϶���
-���ȤΥ��󥿡��ե��������碌�뤿�ᡢ���ߡ��Υ�٥�̾����Ѥ��Ƥ��롣
-
-
-7.3 ����¾
-��4.3��(2)�Υץ��������ȹ����ˤĤ���
-���ե�����ʬ���libkernel�ץ��������ȤΣ��ե������Ȥ����������������
-�̤����ɤ��ʤ뤬��������ˡ�Ǥϡ��ե�����ʬ�����ֺǽ�˼¹Ԥ���ӥ�
-�ɡ��ե������Ȥ���������Ƥ⡢�ե�����ʬ���Ԥ����˥���ѥ��롦�ե���
-���Υե�����ΰ�¸�ط��Υ����å����Ԥ�졢�ե����뤬�����ʤ��ݤηٹ�
-���̤�ɽ������Ƥ��ޤ���
+・備考
+　ベクタテーブルと入口処理をvector.srcにまとめた結果、ラベル
+_kernel_****_entryはグローバルに公開する必要がなくなったため、ローカ
+ルラベルとしている。それに伴ないcpu_config.hのINT_ENTRYマクロでは共通
+部とのインターフェースを合わせるため、ダミーのラベル名を使用している。
 
 
-8. ���»���
-
-���ۥ��ȥޥ����OS
-��Windows9x�Ϥϥ��ݡ��Ȥ��ʤ���
-
-������ե�����졼���Υ����å�(chk�ˤϼ������Ƥ��ʤ���
-
-��HEW���󶡤��������쥸��������ե�����ˤ��б����Ƥ��ʤ���
-����gcc�ǤȥǥХ����ɥ饤�Ф�ͭ���뤿���
-
-��64�ӥå������ϥ��ݡ��Ȥ��ʤ���
-���ʽ����Ϥ����»����
-
-�������ƥ������ǽ�ˤĤ���
-int����2�Х��ȤΤ��ᡢ�����ƥ������ǽ(syslog, syslog_n)��%d, %u, %x,
- %X�ˤ������ɽ���Ǥ�2�Х��ȥǡ�������ɽ���Ǥ��ʤ���2�Х��Ȥ���礭��
-�ǡ�����ɽ��������ϡ�ɽ������ǡ�����2�Х��Ȥ��Ĥ�ʬ�䤷�ƥ����ƥ�
-������ǽ���Ϥ�ɬ�פ����롣�ʥݥ��󥿷�ɽ����%p��Ȥ���4�Х��Ȥޤ�ɽ��
-�Ǥ��롣��
-
-�����л��֤ˤĤ���
-��RELTIM����2�Х��ȤΤ��ᡢ��1msecñ�̤Ǵ�������ȡ����л��֤���65�ä�
-���¤���롣RELTIM����4�Х��Ȥˤ���������jsp/include/itron.h�ˤ���
-RELTIM����������ѹ����롣
-
-�ѹ�����typedef	UINT RELTIM;            /* ���л��� */
-�ѹ��塧typedef	UW RELTIM;              /* ���л��� */
-
-��atexit �ν����ȥǥ��ȥ饯���μ¹�
-��(tool_config.h��call_atexit())
-��¾����Ǥϥ����ͥ�饤�֥��Υ�ӥ�ɤ�Ԥ�ʤ��Ƥ⡢
-software_term_hook()�����������С���ưŪ�˸ƤӽФ����褦�ˤʤäƤ�
-��ʤäƤ��뤬��h8-renesas�Ǥ�software_term_hook()����������ؿ�̾���
-����SOFTWARE_TERM_HOOK�Ȥ���������������ͥ�饤�֥����ӥ�ɤ���ɬ
-�פ����롣
-���ܤ����ϡ�7.1 �ޥ�������פΡ�(6) SOFTWARE_TERM_HOOK�פ򻲾ȡ�
+7.3 その他
+・4.3節(2)のプロジェクト構成について
+　ファイル分割はlibkernelプロジェクトの１フェーズとして定義した方が見
+通しが良くなるが、この方法では、ファイル分割を一番最初に実行するビル
+ド・フェーズとして定義しても、ファイル分割を行う前にコンパイル・フェー
+ズのファイルの依存関係のチェックが行われ、ファイルが開けない旨の警告が
+大量に表示されてしまう。
 
 
-9. gcc�ǡ�jsp-1.4.1 H8��¸���ˤ�����ѹ���
+8. 制限事項
 
-������ߥϥ�ɥ����Ͽ��ˡ���ѹ���2.2�Ỳ�ȡ�
-�������ͥ��������Υ��ݡ���
-������2��٥�
-�����������ȼ��������ߥޥ������ѹ������ȵ�ǽ�򥵥ݡ���
-�����������Ԥ��򥵥ݡ���
-��DDR�쥸�����������������롼����ο���
-���桼����������ܤ�����
+・ホストマシンのOS
+　Windows9x系はサポートしない。
+
+・コンフィギュレータのチェッカ(chk）は実装していない。
+
+・HEWが提供する内部レジスタ定義ファイルには対応していない。
+　（gcc版とデバイスドライバを共有するため）
+
+・64ビット整数はサポートしない。
+　（処理系の制限事項）
+
+・システムログ機能について
+int型が2バイトのため、システムログ機能(syslog, syslog_n)の%d, %u, %x,
+ %Xによる整数表示では2バイトデータしか表示できない。2バイトより大きい
+データを表示する場合は、表示するデータを2バイトずつに分割してシステム
+ログ機能に渡す必要がある。（ポインタ型表示の%pを使えば4バイトまで表示
+できる。）
+
+・相対時間について
+　RELTIM型が2バイトのため、（1msec単位で換算すると）相対時間が約65秒に
+制限される。RELTIM型を4バイトにしたい場合はjsp/include/itron.hにある
+RELTIM型の定義を変更する。
+
+変更前：typedef	UINT RELTIM;            /* 相対時間 */
+変更後：typedef	UW RELTIM;              /* 相対時間 */
+
+・atexit の処理とデストラクタの実行
+　(tool_config.hのcall_atexit())
+　他機種ではカーネルライブラリのリビルドを行わなくても、
+software_term_hook()の定義があれば、自動的に呼び出されるようになってい
+るなっているが、h8-renesasではsoftware_term_hook()に相当する関数名をマ
+クロSOFTWARE_TERM_HOOKとして定義し、カーネルライブラリをリビルドする必
+要がある。
+　詳しくは「7.1 マクロ定義」の「(6) SOFTWARE_TERM_HOOK」を参照。
 
 
-�ѹ�����
+9. gcc版（jsp-1.4.1 H8依存部）からの変更点
 
-'05/05/10 ���ݡ��ȳ���
+・割込みハンドラの登録方法の変更（2.2節参照）
+・割込み優先度制御のサポート
+　　・2レベル
+　　・これに伴い、割込みマスクの変更・参照機能をサポート
+・微少時間待ちをサポート
+・DDRレジスタ・アクセス・ルーチンの新設
+・ユーザー設定項目の整理
+
+
+変更履歴
+
+'05/05/10 サポート開始
 
 '05/12/28 Release1.4.2
-������
-��������ߥ٥����ơ��֥�
-����������ư��������褦�����ѹ�
-��������perl������ץȤΥҥ����ɥ�����Ȥ����ϻ���ʸ�����������Զ��
-������������������ʸ����Ⱦ��ʸ�����ѹ���
-��������ߥޥ����������ˡ
-���������桼�����ϳ���ߥޥ�������������Ԥ��кѤ�褦�˻����ѹ�
-���������������Х���ä�_kernel_xxxx_entry��٥�ϥ��������٥���ѹ�
-������������ߤ�����������vector.src�˽񤭽Ф��褦�ѹ�
-����TCB��¤�ΤΥ��ե��åȻ���
-��������MOV.B  #8:8,R0L�Τ褦��������Υӥå������������줿�Ȥ��˥ѡ���
-���������Ǥ��ʤ��Զ�����
-�����������ե��å��ͤ�16�ʿ��ξ����б�
-��������makefile.mak��Υѥ�����ǡ֥��ڡ�����ޤ���󥰥͡���פˤ�
-�����������Ƥε��Ҥ��ɲ�
-������Ͽ����Ƥ��ʤ�����ߤΰ���
-��������cpu_experr( )
-�����������������ȯ��ľ���Υ����å��ݥ��󥿤��͡ʥ��ե��å��͡ˤ���
-������������syslog( )��4�Х��ȥǡ�����ɽ�����뤿�ᡢ%p����ʥݥ��󥿷���
-���������������Ѥ���褦�ѹ�
-��������������%x���������ˤǤ�2�Х��Ȥ���ɽ���Ǥ��ʤ������
-��������no_reg_exception()
-�����������������å�������Ф���pc��ccr��ʬΥ���Ƥ��ʤ��ä��Զ���
-����������������
-������������syslog�ؿ���4�Х��ȥǡ����򤽤Τޤް����ˤ��Ƥ����Զ���
-����������������
-����������������int�������ʡ�2�Х��ȡˤΰ��������Ϥ��ʤ���
-����������֥�롼������߷׸�ľ��
-��������CPU���å��ե饰�Υ��ꥢ���֤θ�ľ��
-����������������ߤνи�����
-�������������¹Ԥ��٤����������ʤ����γ�����Ԥ�
-�����������ʬ��̿��ľ�������פ�or̿�����
-�����������ʤ�������mov̿������ǽ�ʬ��
-����DDR���������롼����
-��������sil_reb_ddr(), sil_wrb_ddr()
-������������assertʸ�ΰ��������å����ϰϥߥ�����
-�����ӥ�ɼ��
-��������Release�ӥ�ɻ��˥⥸�塼��ֺ�Ŭ�����Ѷ�Ū��Ŭ�Ѥ���褦��
-��������������ѹ�
-���������ƥ������ǽ
-��������ɽ���Ǥ���ǡ����������ˤĤ������»�����ɵ�
+　修正
+　・割込みベクタテーブル
+　　　・自動生成するよう仕様変更
+　　　・perlスクリプトのヒア・ドキュメントが出力時に文字化けする不具合
+　　　　を修正（全角文字を半角文字に変更）
+　・割込みマスクの定義方法
+　　　・ユーザーは割込みマスクの定義だけ行えば済むように仕様変更
+　　　・グローバルだった_kernel_xxxx_entryラベルはローカルラベルに変更
+　　　・割込みの入口処理もvector.srcに書き出すよう変更
+　・TCB構造体のオフセット算出
+　　　・MOV.B  #8:8,R0Lのように定数部のビット幅が明示されたときにパース
+　　　　できない不具合を修正
+　　　・オフセット値が16進数の場合に対応
+　　　・makefile.mak内のパス設定で「スペースを含むロングネーム」につ
+　　　　いての記述を追加
+　・登録されていない割込みの扱い
+　　　・cpu_experr( )
+　　　　　・割込み発生直前のスタックポインタの値（オフセット値）を修正
+　　　　　・syslog( )で4バイトデータを表示するため、%p指定（ポインタ型）
+　　　　　　を用いるよう変更
+　　　　　　（%x（整数型）では2バイトしか表示できないため）
+　　　・no_reg_exception()
+　　　　　・スタックから取り出したpcとccrを分離していなかった不具合を
+　　　　　　修正
+　　　　　・syslog関数で4バイトデータをそのまま引数にしていた不具合を
+　　　　　　修正
+　　　　　　　（intサイズ（＝2バイト）の引数しか渡せない）
+　・アセンブラルーチンの設計見直し
+　　　・CPUロックフラグのクリア位置の見直し
+　　　　　・割込みの出口処理
+　　　　　・実行すべきタスクがない場合の割込み待ち
+　　　・条件分岐命令直前の不要なor命令を削除
+　　　　　（その前のmov命令だけで十分）
+　・DDRアクセスルーチン
+　　　・sil_reb_ddr(), sil_wrb_ddr()
+　　　　　　assert文の引数チェックの範囲ミスを修正
+　・ビルド手順
+　　　　Releaseビルド時にモジュール間最適化を積極的に適用するように
+　　　　設定を変更
+　・システムログ機能
+　　　・表示できるデータサイズについて制限事項を追記
 
 '07/03/xx Release1.4.3
-�����٥����ơ��֥뼫ư����
-��������perl������ץȤ�gcc�Ǥȴ����˶��̲�
-������������0�٥���������б�
-�������������٥����������ΰ��������å����ɲ�
-������������������ֹ��u���Ĥ��Ƥ�����ν������ɲ�
-���������ܿ������θ���ơ�genvector.pl�ν����򣲤Ĥ�ʬ��
-������������genvector.pl���٥����ơ��֥��������H8S�Ǥȶ��̲���
-������������gen_intentry.pl������ߤ�����������INTENTRY�ˤ�����
-�������������ȼ�ʤ���grep_def_inh.pl�ȤΥ��󥿡��ե��������ѹ�
-����������������β��ԥ����ɤΰ㤤���б�
-��������DEF_INHʸ������ǲ��Ԥ�����ȥѡ����˼��Ԥ����������
-��������filter1.pl��filter2.pl�򣱤ĤˤޤȤᡢgrep_def_inh.pl�˲�̾
-����������gcc�Ǥ�HEW�ǤǸ��̤�filter2.pl���Ѱդ���ɬ�פ��ʤ��ʤä���
-���������ߥ�٥������
-��������h8_sil.h��define_int_plevel()
-����������cpu_insh.h�򥤥󥯥롼�ɤ��ʤ��ǡ�bitset(),bitclr()��Ƥ�
-�����������Ф��Ƥ����Զ�����
-��������bitset, bitclr
-�����������ʥ�����֥�ǵ��Ҥ����˴ؿ��ƤӽФ�����ޥ���������ѹ�
-�����������������ؿ��ƤӽФ��Υ����С��إåɤ�̵��������
-�����ӥ�ɼ��
-��������Debug��Release�ǥ����ͥ륳��ե�����졼������̤��̡���
-�����������Ƥ�褦�ˡ��ӥ�ɼ����ѹ�
-��������API��Υե����륳�ԡ������˥Хå��ե��������Ѥ����
-��������̵�Ѥʥ�å����������̤�ɽ������뤿�ᡢperl�ǽ�������
-���������褦�ѹ�
-��������H8S�ǤȤ�������
-������������������ӥ�ɤ�hmake��ƤӽФ������Хå��ե�����Τߤ�
-������������������褦�ӥ�ɼ����ѹ�
-��������������ˤ�ꡢ
-��������������hmake�ؤΥѥ����꤬���פˤʤ롣
-���������������ʥץ��������ȥե�����β������������
-����������������������ӥ����ǹԤäƤ����ץ�ץ����������פˤʤ�Τ�
-���������������������֤�û��
-�����ü�쥸��������������Ͻ����Υ饤�֥����ѹ�
-����DDR���������ؿ�
-�������ݡ����ֹ�η���INT������IO_PORT�����ѹ�
-����SIL�Υ�����֥��������ؿ��򵡼��¸�������
-����������ѥ���ηٹ����򤹤뤿��
-��������ץ�ץ������
-������user_config.h����TASK_PORTID���������
+　・ベクタテーブル自動生成
+　　　・perlスクリプトをgcc版と完全に共通化
+　　　　　・0ベクタ問題に対応
+　　　　　・ベクタサイズの引数チェックを追加
+　　　　　・割込み番号にuがついている場合の処理を追加
+　　　・移植性を考慮して、genvector.plの処理を２つに分割
+　　　　　・genvector.pl：ベクタテーブルの生成（H8S版と共通化）
+　　　　　・gen_intentry.pl：割込みの入口処理（INTENTRY）の生成
+　　　・これに伴ない、grep_def_inh.plとのインターフェースを変更
+　　　・処理系毎の改行コードの違いに対応
+　　　・DEF_INH文の途中で改行があるとパースに失敗する問題を修正
+　　　・filter1.plとfilter2.plを１つにまとめ、grep_def_inh.plに改名
+　　　　（gcc版とHEW版で個別にfilter2.plを用意する必要がなくなった）
+　・割り込みレベルの設定
+　　　・h8_sil.hのdefine_int_plevel()
+　　　　　cpu_insh.hをインクルードしないで、bitset(),bitclr()を呼び
+　　　　　出していた不具合を修正
+　　　・bitset, bitclr
+　　　　　（アセンブラで記述した）関数呼び出しからマクロ定義に変更
+　　　　　　　→関数呼び出しのオーバーヘッドを無くすため
+　・ビルド手順
+　　　・DebugとReleaseでカーネルコンフィギュレーション結果を別々に
+　　　　持てるように、ビルド手順を変更
+　　　・API毎のファイルコピー処理にバッチファイルを使用すると
+　　　　無用なメッセージが大量に表示されるため、perlで処理する
+　　　　よう変更
+　　　・H8S版との整合性
+　　　　　カスタムビルドでhmakeを呼び出さず、バッチファイルのみで
+　　　　　処理するようビルド手順を変更
+　　　　　これにより、
+　　　　　　・hmakeへのパス設定が不要になる。
+　　　　　　　（プロジェクトファイルの可搬性が向上）
+　　　　　　・カスタムビルド内で行っていたプリプロセスが不要になるので
+　　　　　　　処理時間が短縮
+　・特殊レジスタの操作を処理系純正のライブラリに変更
+　・DDRアクセス関数
+　　　ポート番号の型をINT型からIO_PORT型に変更
+　・SILのメモリ空間アクセス関数を機種依存部で定義
+　　　コンパイラの警告を回避するため
+　・サンプルプログラム
+　　　user_config.hからTASK_PORTIDの定義を削除

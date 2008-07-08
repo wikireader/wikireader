@@ -1,26 +1,26 @@
-�桼�ƥ���ƥ��ġ���γ��פ�ʲ��˼�����
+ユーティリティツールの概要を以下に示す．
 
-���٥����ơ��֥������ġ���
-�㳵�ס�
-����ե����졼�������Ϥ���kernel_cfg.c��Ρ�����ߥϥ�ɥ����������
-CPU�㳰�ϥ�ɥ�������������������٥����ơ��֥���������롥
-�ʤ����ܥġ�������Ϥ���ե�����ϡ�kernel_cfg.c��ץꥳ��ѥ��뤷��
-kernel_cfg.i�����ꤷ�Ƥ��롥
-�㥳�ޥ�ɡ�
+・ベクタテーブル生成ツール
+＜概要＞
+コンフィグレータが出力したkernel_cfg.c内の，割込みハンドラ初期化情報と
+CPU例外ハンドラ初期化情報を走査し，ベクタテーブルを生成する．
+なお，本ツールに入力するファイルは，kernel_cfg.cをプリコンパイルした
+kernel_cfg.iを想定している．
+＜コマンド＞
 tlcs900vec.exe
-�㥪�ץ�����
--R	���ϥե�������ꡡ�ǥե���Ȥϡ�kernel_cfg.i��
--o	���ϥե�������ꡡ�ǥե���Ȥϡ�otlcs900vec.inc��
+＜オプション＞
+-R	入力ファイル指定　デフォルトは「kernel_cfg.i」
+-o	出力ファイル指定　デフォルトは「otlcs900vec.inc」
 
 
-��TCB��¤�ΤΥ�����֥饪�ե��åȥޥ��������ġ���
-�㳵�ס�
-C�����������줿TCB��¤�ΤؤΥ�����֥饪�ե��åȥޥ������������롥
-TCB��¤�ΤؤΥ����������������ܤ��줿makeoffset.c�ե�����򥢥���֥�
-����makeoffset.asm���ܥġ�������ϥե�����Ȥ��롥
-�㥳�ޥ�ɡ�
+・TCB構造体のアセンブラオフセットマクロ生成ツール
+＜概要＞
+C言語で定義されたTCB構造体へのアセンブラオフセットマクロを生成する．
+TCB構造体へのアクセス処理が記載されたmakeoffset.cファイルをアセンブル
+したmakeoffset.asmを本ツールの入力ファイルとする．
+＜コマンド＞
 tlcs900offset.exe
-�㥪�ץ�����
--R	���ϥե�������ꡡ�ǥե���Ȥϡ�makeoffset.asm��
--o	���ϥե�������ꡡ�ǥե���Ȥϡ�offset.inc��
+＜オプション＞
+-R	入力ファイル指定　デフォルトは「makeoffset.asm」
+-o	出力ファイル指定　デフォルトは「offset.inc」
 

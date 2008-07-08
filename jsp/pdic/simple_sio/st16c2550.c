@@ -6,44 +6,44 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: st16c2550.c,v 1.4 2005/11/12 15:00:43 honda Exp $
  */
 
 /*
- *     ST16C2550 �� �ʰ�SIO�ɥ饤��
+ *     ST16C2550 用 簡易SIOドライバ
  */
 #include <s_services.h>
 #include <st16c2550.h>
  
 /*
- * �ƥ쥸�����Υ��ե��å�
+ * 各レジスタのオフセット
  */
 #define ST16C_RHR   0x00   /* H  LCR bit7=0 Read  */
 #define ST16C_THR   0x00   /* H  LCR bit7=0 Write */
@@ -58,10 +58,10 @@
 #define ST16C_MSR   0x0c   /* H  Read */
 #define ST16C_SPR   0x0e   /* H  */
 
-#define ISR_TX            0x02       /* ����������ȯ�� */
-#define IER_TX            0x02       /* ���������ߵ��� */
-#define ISR_RX            0x01       /* ����������ȯ�� */
-#define IER_RX            0x01       /* ���������ߵ��� */
+#define ISR_TX            0x02       /* 送信割り込み発生 */
+#define IER_TX            0x02       /* 送信割り込み許可 */
+#define ISR_RX            0x01       /* 受信割り込み発生 */
+#define IER_RX            0x01       /* 受信割り込み許可 */
 
 #define LCR_DL_MODE       0x80       /* Divisor Enable */
 #define LCR_VAL           0x03       /* 8bit,1stop,Noparity,No break */
@@ -73,7 +73,7 @@
 #define MCR_INT_ENABLE    0x08
 
 /*
- *  115200bps������
+ *  115200bpsに設定
  *  4 = (7372800Hz)/(115200*16)
  */
 #define DLM_VAL  0x00
@@ -83,7 +83,7 @@
 
 
 /*
- * ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ * シリアルI/Oポート初期化ブロック
  */
 const SIOPINIB siopinib_table[TNUM_SIOP] = {
     {ST16C_CHB, LCR_VAL, DLM_VAL, DLL_VAL, PINTER_PINT7E},
@@ -93,19 +93,19 @@ const SIOPINIB siopinib_table[TNUM_SIOP] = {
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å��μ�Ф�
+ *  シリアルI/Oポート初期化ブロックの取出し
  */
 #define INDEX_SIOPINIB(siopid)  ((UINT)((siopid) - 1))
 #define get_siopinib(siopid)  (&(siopinib_table[INDEX_SIOPINIB(siopid)]))
 
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 SIOPCB  siopcb_table[TNUM_SIOP];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
 #define INDEX_SIOP(siopid)  ((UINT)((siopid) - 1))
 #define get_siopcb(siopid)  (&(siopcb_table[INDEX_SIOP(siopid)]))
@@ -124,7 +124,7 @@ st16c_read(UW addr, UW offset)
 
 
 /*
- * ʸ�������������?
+ * 文字を受信したか?
  */ 
 Inline BOOL
 st16c_getready(SIOPCB *siopcb)
@@ -137,7 +137,7 @@ st16c_getready(SIOPCB *siopcb)
 }
 
 /*
- * ʸ���������Ǥ��뤫?
+ * 文字を送信できるか?
  */
 Inline BOOL
 st16c_putready(SIOPCB *siopcb)
@@ -150,7 +150,7 @@ st16c_putready(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���μ��Ф�
+ *  受信した文字の取り出し
  */
 Inline UB
 st16c_getchar(SIOPCB *siopcb)
@@ -159,7 +159,7 @@ st16c_getchar(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���ν񤭹���
+ *  送信する文字の書き込み
  */
 Inline void
 st16c_putchar(SIOPCB *siopcb, UB c)
@@ -168,7 +168,7 @@ st16c_putchar(SIOPCB *siopcb, UB c)
 }
 
 /*
- *  ��������ߵ���
+ *  送信割込み許可
  */
 Inline void
 st16c_enable_send(SIOPCB *siopcb)
@@ -178,7 +178,7 @@ st16c_enable_send(SIOPCB *siopcb)
 }
 
 /*
- *  ��������߶ػ�
+ *  送信割込み禁止
  */
 Inline void
 st16c_disable_send(SIOPCB *siopcb)
@@ -189,7 +189,7 @@ st16c_disable_send(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ߵ���
+ *  受信割込み許可
  */
 Inline void
 st16c_enable_rcv(SIOPCB *siopcb)
@@ -199,7 +199,7 @@ st16c_enable_rcv(SIOPCB *siopcb)
 }
 
 /*
- *  ��������߶ػ�
+ *  受信割込み禁止
  */
 Inline void
 st16c_disable_rcv(SIOPCB *siopcb)
@@ -211,7 +211,7 @@ st16c_disable_rcv(SIOPCB *siopcb)
 
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 st16c2550_initialize()
@@ -220,7 +220,7 @@ st16c2550_initialize()
     UINT    i;
 
     /*
-     *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+     *  シリアルI/Oポート管理ブロックの初期化
      */
     for (siopcb = siopcb_table, i = 0; i < TNUM_SIOP; siopcb++, i++) {
         siopcb->siopinib = &(siopinib_table[i]);
@@ -237,7 +237,7 @@ void
 st16c2550_init_siopinib(const SIOPINIB *siopinib)
 {
     /*
-     *  ʬ���������
+     *  分周比の設定
      */
     /* Divisor Enable */
     st16c_write(siopinib->reg_base, ST16C_LCR,
@@ -248,19 +248,19 @@ st16c2550_init_siopinib(const SIOPINIB *siopinib)
     st16c_write(siopinib->reg_base, ST16C_LCR,
                 (st16c_read(siopinib->reg_base, ST16C_LCR) & ~LCR_DL_MODE));
 
-    /* �⡼������ */
+    /* モード設定 */
     st16c_write(siopinib->reg_base, ST16C_LCR, siopinib->lcr_val);
 
     /* FIFO Disable */
     st16c_write(siopinib->reg_base, ST16C_FCR, FCR_FIFO_DISABLE);
 
-    /* ����߶ػ� */
+    /* 割込み禁止 */
     st16c_write(siopinib->reg_base, ST16C_IER, 0x00);
 }
 
 
 /*
- *  �����ͥ뵯ư���ΥС��ʡ������Ѥν����
+ *  カーネル起動時のバーナー出力用の初期化
  */
 void
 st16c2550_init(void)
@@ -274,7 +274,7 @@ st16c2550_init(void)
 }
 
 /*
- * �����ץ󤷤Ƥ���ݡ��Ȥ����뤫
+ * オープンしているポートがあるか
  */
 BOOL
 st16c2550_openflag(void)
@@ -288,7 +288,7 @@ st16c2550_openflag(void)
 
 
 /*
- * ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ * シリアルI/Oポートのオープン
  */
 SIOPCB *
 st16c2550_opn_por(ID siopid, VP_INT exinf)
@@ -300,14 +300,14 @@ st16c2550_opn_por(ID siopid, VP_INT exinf)
     siopinib = siopcb->siopinib;
     
     /*
-     * �����
+     * 初期化
      */
     st16c2550_init_siopinib(siopcb->siopinib);
     
-    /* ��������ߵ��� */
+    /* 受信割込み許可 */
     st16c_write(siopcb->siopinib->reg_base, ST16C_IER, IER_RX);
     
-    /* ��������򥤥͡��֥� */
+    /* 割込み線をイネーブル */
     st16c_write(siopcb->siopinib->reg_base, ST16C_MCR, MCR_INT_ENABLE);
 
     siopcb->exinf = exinf;
@@ -318,19 +318,19 @@ st16c2550_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 st16c2550_cls_por(SIOPCB *siopcb)
 {
-    /* ����߶ػ� */
+    /* 割込み禁止 */
     st16c_write(siopcb->siopinib->reg_base, ST16C_IER, 0x00);   
     siopcb->openflag = FALSE;
 }
 
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤؤΥݡ���󥰤Ǥν���
+ *  シリアルI/Oポートへのポーリングでの出力
  */
 void
 st16c2550_pol_putc(char c, ID siopid)
@@ -347,7 +347,7 @@ st16c2550_pol_putc(char c, ID siopid)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 st16c2550_snd_chr(SIOPCB *siopcb, char c)
@@ -360,7 +360,7 @@ st16c2550_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 st16c2550_rcv_chr(SIOPCB *siopcb)
@@ -376,7 +376,7 @@ st16c2550_rcv_chr(SIOPCB *siopcb)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 st16c2550_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -393,7 +393,7 @@ st16c2550_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 st16c2550_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -409,27 +409,27 @@ st16c2550_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф������߽���
+ *  シリアルI/Oポートに対する割込み処理
  */
 static void
 st16c2550_isr_siop(SIOPCB *siopcb)
 {
     if (st16c_getready(siopcb)) {
         /*
-         *  �������Υ�����Хå��롼�����ƤӽФ���
+         *  受信通知コールバックルーチンを呼び出す．
          */
         st16c2550_ierdy_rcv(siopcb->exinf);
     }
     if (st16c_putready(siopcb)) {
         /*
-         *  ������ǽ������Хå��롼�����ƤӽФ���
+         *  送信可能コールバックルーチンを呼び出す．
          */
         st16c2550_ierdy_snd(siopcb->exinf);
     }
 }
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 void
 st16c2550_isr()

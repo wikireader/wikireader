@@ -8,50 +8,50 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: powerpc.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*  
- *   PowerPC�������ƥ������¸�����
- *   �����ա�������32�ӥåȡ�����ץ�������ѤˤʤäƤ���
- *   ��
- *   ��PowerPC�������ƥ����������ϰʲ��Σ��ĤΥ�٥뤫������
- *   ����USIA:User Instruction Set Architecture
- *   ����VEA: Virtual Environment Architecture
- *   ����OEA: Operating Environment Architecture
- *   ��
- *   ��USIA�ˤĤ��Ƥ������ﶦ�̤Ǥ��뤬��VEA��OEA�ˤĤ��Ƥ�
- *   �����ꥸ�ʥ��PowerPC�������ƥ������The IBM PowerPC 
- *   ��Embedded Environment���줾���̤��������Ƥ��뤿�ᡢ
- *   ��VEA��OEA������ϥե������ʬ���ơ�����򥤥󥯥롼��
- *   �����Ƥ��롣
+ *   PowerPCアーキテクチャ依存の定義
+ *   　注意：一部、32ビット・インプリメント専用になっている
+ *   　
+ *   　PowerPCアーキテクチャの定義は以下の３つのレベルから成る
+ *   　・USIA:User Instruction Set Architecture
+ *   　・VEA: Virtual Environment Architecture
+ *   　・OEA: Operating Environment Architecture
+ *   　
+ *   　USIAについては全機種共通であるが、VEAとOEAについては
+ *   　オリジナルのPowerPCアーキテクチャとThe IBM PowerPC 
+ *   　Embedded Environmentそれぞれ別に定義されているため、
+ *   　VEAとOEAの定義はファイルを分けて、それをインクルード
+ *   　している。
  */   
 
 #ifndef _POWERPC_H_
@@ -61,21 +61,21 @@
 
 
 /*  
- *   VEA��OEA�����
+ *   VEAとOEAの定義
  */   
 
 #ifndef IBM_PPC_EMB_ENV
 /*  
- *   ���ꥸ�ʥ��PowerPC�������ƥ�����ξ��
- *   ������ȥ�����MPC���꡼����IPM PowerPC6xx/7xx���꡼����
- *   ����������˳������롣
+ *   オリジナルのPowerPCアーキテクチャの場合
+ *   　　モトローラMPCシリーズ、IPM PowerPC6xx/7xxシリーズは
+ *   　　こちらに該当する。
  */   
 #include <vea_oea.h>
 
 #else	/*  IBM_PPC_EMB_ENV  */
 /*  
- *   The IBM PowerPC Embedded Environment�ξ��
- *   ��IBM��PowerPC40x���꡼���б�
+ *   The IBM PowerPC Embedded Environmentの場合
+ *   　IBM系PowerPC40xシリーズ対応
  */   
 #include <vea_oea_emb.h>
 
@@ -83,26 +83,26 @@
 
 
 /*  
- *   UISA�����
+ *   UISAの定義
  */   
 
 /*  
- *  �쥸�����ֹ�����
- *  ����C������ѿ�̾�Ȥ֤Ĥ��ꤽ���ʤΤǡ�������֥���˸��ꤹ��
+ *  レジスタ番号の定義
+ *  　　C言語の変数名とぶつかりそうなので、アセンブラ内に限定する
  */   
 #ifdef _MACRO_ONLY
 
-/* CPU�����������쥸������̾�� */
+/* CPUコアの内部レジスタの名称 */
 
-/*  ���ѥ쥸����  */
-#define r0       0      /*  zero�ޤ������ѥ쥸����  */
+/*  汎用レジスタ  */
+#define r0       0      /*  zeroまたは汎用レジスタ  */
 #define r1       1
-#define sp       r1     /*  �����å��ݥ���  */
+#define sp       r1     /*  スタックポインタ  */
 
-#define r2       2      /*  TOC��Table of Contents  */
-#define r3       3      /*  r3-4�������������  */
+#define r2       2      /*  TOC：Table of Contents  */
+#define r3       3      /*  r3-4：引数、戻り値  */
 #define r4       4
-#define r5       5      /*  r5-10������  */
+#define r5       5      /*  r5-10：引数  */
 #define r6       6
 #define r7       7
 #define r8       8
@@ -110,8 +110,8 @@
 #define r10     10
 #define r11     11
 #define r12     12
-#define r13     13      /*  r13��small data  */
-#define r14     14      /*  r14-30�����������ѿ�  */
+#define r13     13      /*  r13：small data  */
+#define r14     14      /*  r14-30：ローカル変数  */
 #define r15     15
 #define r16     16
 #define r17     17
@@ -129,12 +129,12 @@
 #define r29     29
 #define r30     30
 #define r31     31
-#define fp      r31     /*  �ե졼��ݥ���  */
+#define fp      r31     /*  フレームポインタ  */
 
-/*  ��ư�������쥸����  */
+/*  浮動小数点レジスタ  */
 #define f0       0
-#define f1       1      /*  f1�������������  */
-#define f2       2      /*  f2-13������  */
+#define f1       1      /*  f1：引数、戻り値  */
+#define f2       2      /*  f2-13：引数  */
 #define f3       3
 #define f4       4
 #define f5       5
@@ -146,7 +146,7 @@
 #define f11     11
 #define f12     12
 #define f13     13
-#define f14     14      /*  f14-31�����������ѿ�  */
+#define f14     14      /*  f14-31：ローカル変数  */
 #define f15     15
 #define f16     16
 #define f17     17
@@ -165,16 +165,16 @@
 #define f30     30
 #define f31     31
 
-/*  �ü�쥸����  */
+/*  特殊レジスタ  */
 #define XER      1      /* Fixed Point Exception Register  */
-			/*  �������ڥ졼�����ξ�Ｑ�̥쥸���� */
-			/*  �ʥ���꡼�䥪���Хե����ʤɡ�  */
-#define LR       8      /*  ��󥯡��쥸����  */
-#define CTR      9      /*  ������ȡ��쥸����  */
+			/*  整数オペレーションの条件識別レジスタ */
+			/*  （キャリーやオーバフローなど）  */
+#define LR       8      /*  リンク・レジスタ  */
+#define CTR      9      /*  カウント・レジスタ  */
 
 #endif  /* _MACRO_ONLY */
 
-#define crf0        0   /*  ����ǥ������쥸����CR�Υե�����ɻ���  */
+#define crf0        0   /*  コンディションレジスタCRのフィールド指定  */
 
 #endif /* _POWERPC_H_ */
 /*  end of file  */

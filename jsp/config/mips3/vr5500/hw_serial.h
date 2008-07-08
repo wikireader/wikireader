@@ -8,36 +8,36 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 /*
- *	���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�TI16PIR552�ѡ�
+ *	シリアルI/Oデバイス（SIO）ドライバ（TI16PIR552用）
  */
 
 #ifndef _HW_SERIAL_H_
@@ -46,25 +46,25 @@
 #include <tl16pir552.h>		/* siopcb, tl16pir552_openflag */
 
 /*
- *  SIO�γ���ߥϥ�ɥ�Υ٥����ֹ�
+ *  SIOの割込みハンドラのベクタ番号
  */
 #define INHNO_SIO1		INTNO_SERIAL0
 #define INHNO_SIO2		INTNO_SERIAL1
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 #define	sio_initialize		tl16pir552_initialize
 
 /*
- *  �����ͥ뵯ư���Ѥν���� (sys_putc������)
+ *  カーネル起動時用の初期化 (sys_putcで利用)
  */
 #define sio_init		tl16pir552_init
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 Inline SIOPCB *
 sio_opn_por(ID siopid, VP_INT exinf)
@@ -75,62 +75,62 @@ sio_opn_por(ID siopid, VP_INT exinf)
 	UB	mask = 0;
 
 	/*
-	 *  �����ץ󤷤��ݡ��Ȥ����뤫�� openflag ���ɤ�Ǥ�����
+	 *  オープンしたポートがあるかを openflag に読んでおく．
 	 */
 	openflag = tl16pir552_openflag();
 
 	/*
-	 *  �ǥХ�����¸�Υ����ץ������
+	 *  デバイス依存のオープン処理．
 	 */
 	siopcb = tl16pir552_opn_por(siopid, exinf);
 
 	/*
-	 *  ���ꥢ��I/O����ߤγ���ߥ�٥�����ꤷ���ޥ����������롥
+	 *  シリアルI/O割込みの割込みレベルを設定し，マスクを解除する．
 	 */
 	if (!openflag) {
 		switch(siopid) {
-		case 1 :	/* �ݡ��ȣ�; ���ꥢ�룰 */
+		case 1 :	/* ポート１; シリアル０ */
 			all_set_ilv( INTNO_SERIAL0, &((IPM) IPM_SCC0) );
-							/* ����ߥ�٥����� */
+							/* 割込みレベル設定 */
 			mask = SERIAL0;
 			break;
-		case 2 :	/* �ݡ��ȣ�; ���ꥢ�룱 */
+		case 2 :	/* ポート２; シリアル１ */
 			all_set_ilv( INTNO_SERIAL1, &((IPM) IPM_SCC1) );
-							/* ����ߥ�٥����� */
+							/* 割込みレベル設定 */
 			mask = SERIAL1;
 			break;
 		}
 		icu_orb( (VP) ICU_INT0M, mask );
-							/* �ޥ���������� */
+							/* マスク設定処理 */
 	}
 
 	return(siopcb);
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 Inline void
 sio_cls_por(SIOPCB *siopcb)
 {
 	/*
-	 *  �ǥХ�����¸�Υ�������������
+	 *  デバイス依存のクローズ処理．
 	 */
 	tl16pir552_cls_por(siopcb);
 
 	/*
-	 *  ���ꥢ��I/O����ߤ�ޥ������롥(�ݡ��ȣ�������ξ��)
+	 *  シリアルI/O割込みをマスクする．(ポート１、２の両方)
 	 */
 	if (!tl16pir552_openflag) {
 		icu_andb( (VP) ICU_INT0M, ~(SERIAL0 | SERIAL1) );
-							/* �ޥ���������� */
+							/* マスク設定処理 */
 	}
 }
 
 #endif /* _MACRO_ONLY */
 
 /*
- *  SIO�γ���ߥϥ�ɥ�
+ *  SIOの割込みハンドラ
  */
 #define	sio1_handler		tl16pir552_uart0_isr
 #if TNUM_SIOP >= 2
@@ -138,37 +138,37 @@ sio_cls_por(SIOPCB *siopcb)
 #endif /* TNUM_SIOP */
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 #define	sio_snd_chr		tl16pir552_snd_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ�������ʥݡ���󥰡�
+ *  シリアルI/Oポートへの文字送信（ポーリング）
  */
 #define	sio_snd_chr_pol		tl16pir552_putchar_pol
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 #define	sio_rcv_chr		tl16pir552_rcv_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 #define	sio_ena_cbr		tl16pir552_ena_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 #define	sio_dis_cbr		tl16pir552_dis_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
+ *  シリアルI/Oポートからの送信可能コールバック
  */
 #define	sio_ierdy_snd		tl16pir552_ierdy_snd
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
+ *  シリアルI/Oポートからの受信通知コールバック
  */
 #define	sio_ierdy_rcv		tl16pir552_ierdy_rcv
 

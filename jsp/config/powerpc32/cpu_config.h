@@ -8,61 +8,61 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼���PowerPC�ѡ�
- *���������������ͥ������ǻ��Ѥ������
- *�������������ǡ��������ޥ������ؿ��Υץ��ȥ��������
+ *	プロセッサ依存モジュール（PowerPC用）
+ *　　　　　カーネル内部で使用する定義
+ *　　　　　　データ型、マクロ、関数のプロトタイプ宣言
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _CPU_CONFIG_H_
 #define _CPU_CONFIG_H_
 
 /*
- *  �����ͥ����������̾�Υ�͡���
+ *  カーネルの内部識別名のリネーム
  */
 #include <cpu_rename.h>
 
 /*
- *  PowerPC�ץ����å��������쥸���������
+ *  PowerPCプロセッサの内部レジスタの定義
  */
 #include <powerpc.h>
 
 
 /*
- *  �ץ����å����ü�̿��Υ���饤��ؿ����
+ *  プロセッサの特殊命令のインライン関数定義
  */
 #ifndef _MACRO_ONLY
 #include <cpu_insn.h>
@@ -70,70 +70,70 @@
 
 
 /*
- *  TCB ��Υե�����ɤΥӥå��������
+ *  TCB 中のフィールドのビット幅の定義
  *
- *  cpu_context.h ��������������쥬��Ȥ��������Ȥΰ�¸���δط��ǡ�
- *  cpu_context.h �ˤ�������ʤ���
+ *  cpu_context.h に入れる方がエレガントだが，参照の依存性の関係で，
+ *  cpu_context.h には入れられない．
  */
-#define	TBIT_TCB_TSTAT		8	/* tstat �ե�����ɤΥӥå��� */
-#define	TBIT_TCB_PRIORITY	8	/* priority �ե�����ɤΥӥå��� */
+#define	TBIT_TCB_TSTAT		8	/* tstat フィールドのビット幅 */
+#define	TBIT_TCB_PRIORITY	8	/* priority フィールドのビット幅 */
 
 /*
- *  �����å���ɬ�פʥޡ�����
+ *  スタックに必要なマージン
  *  
- *  PowerPC EABI�ǵ��ꤵ��Ƥ��륳����󥰡�����٥󥷥��Ǥϴؿ��Ƥ�
- *  �Ф����Υե졼�ॹ���å��ݥ��󥿤��ؤ��Ƥ���8�Х�����(sp+4)��
- *  (sp+7)���Ϥ˸ƤФ줿¦�ξ������򤵤�롣���Τ��ᡢ������֥�롼
- *  ���󤫤�C����롼�����ƤӽФ��ս���ä˳���ߥ���ȥ������¸
- *  ���ˤǤ����դ�ɬ�פǤ��롣
- *  ����Ū�ˤϰʲ��βս꤬�������롣
- *   ��(1) �������ȥ��åץ롼����
- *   ��(2) ��������ư
- *   ��  (2-1) �������㳰�����롼����ư
- *   ��(3) ����ߥϥ�ɥ鵯ư
- *   ��(4) CPU�㳰�롼����ư
+ *  PowerPC EABIで規定されているコーリング・コンベンションでは関数呼び
+ *  出し時のフレームスタックポインタが指している8バイト先(sp+4)〜
+ *  (sp+7)番地に呼ばれた側の情報が待避される。そのため、アセンブラルー
+ *  チンからC言語ルーチンを呼び出す箇所（特に割込みコントローラ依存
+ *  部）では注意が必要である。
+ *  具体的には以下の箇所が該当する。
+ *   　(1) スタートアップルーチン
+ *   　(2) タスク起動
+ *   　  (2-1) タスク例外処理ルーチン起動
+ *   　(3) 割込みハンドラ起動
+ *   　(4) CPU例外ルーチン起動
  *  
- *  �������������������������������å������Ӥ�����
- *  ������������������������������������
- *  �� �ؿ��ƤӽФ�����sp��  ---------------------- 
- *  �� ����������           |                      |
- *  ������������         +4  ----------------------��
- *  ������������            |                      |��C����롼����θƤӽФ�
- *  ������������         +8  ----------------------   �ˤ��񤭹��ޤ��
- *  ��
- *  ������
- *  ����64�ӥåȲ��κݤˤ����դ�ɬ�פǤ��롣
- *  ��
+ *  　　　　　　　　　　　　　スタックが伸びる方向
+ *  　　　　　　　　　　　　　　　　　↑
+ *  　 関数呼び出し前のsp→  ---------------------- 
+ *  　 　　　　　           |                      |
+ *  　　　　　　         +4  ----------------------　
+ *  　　　　　　            |                      |←C言語ルーチンの呼び出し
+ *  　　　　　　         +8  ----------------------   により書き込まれる
+ *  　
+ *  　備考
+ *  　　64ビット化の際には注意が必要である。
+ *  　
  */
 #define STACK_MARGIN	8
 
 
 #ifndef _MACRO_ONLY
 /*
- *  ����������ƥ����ȥ֥��å������
- *����sp��4�Х��ȶ����Ǥ��뤳�Ȥ��������뤿�ᡢ
- *����UW*����������Ƥ��롣
+ *  タスクコンテキストブロックの定義
+ *　　spが4バイト境界であることを明示するため、
+ *　　UW*型で宣言している。
  */
 
 typedef struct task_context_block {
-        UW	*sp;            /* �����å��ݥ��� */
-        FP	pc;             /* �ץ�����५���� */
+        UW	*sp;            /* スタックポインタ */
+        FP	pc;             /* プログラムカウンタ */
 } CTXB;
 
 /*
- *  �����ƥ���ֻ���
+ *  システム状態参照
  */
 
 /*
- *  ����ƥ����Ȼ���
+ *  コンテキスト参照
  *  
- *    �����
- *    ��TRUE ���󥿥�������ƥ�����
- *    ��FALSE������������ƥ�����
+ *    戻り値
+ *    　TRUE ：非タスクコンテキスト
+ *    　FALSE：タスクコンテキスト
  *
- *��SPRG0�����ߥͥ��ȥ����󥿤��Ѥ��Ƥ���
- *  ����ߥͥ��ȥ����󥿤��ɤ߽Ф���ľ��˳���ߤ�ȯ�����Ƥ⡢
- *  ��ä��Ȥ��ˤϥ���ƥ����Ȥ⸵����äƤ���
+ *　SPRG0を割込みネストカウンタに用いている
+ *  割込みネストカウンタを読み出した直後に割込みが発生しても、
+ *  戻ったときにはコンテキストも元に戻っている
  *
  */
 Inline BOOL
@@ -141,19 +141,19 @@ sense_context()
 {
     UW intnest;
     
-    intnest = current_sprg0();    	/*  intnest �� SPRG0  */
+    intnest = current_sprg0();    	/*  intnest ← SPRG0  */
     return(intnest > 0);
 }
 
 /*
- *  CPU���å����ֻ���
+ *  CPUロック状態参照
  *  
- *    �����
- *    ��TRUE ��CPU���å�����
- *    ��FALSE��CPU���å��������
+ *    戻り値
+ *    　TRUE ：CPUロック状態
+ *    　FALSE：CPUロック解除状態
  *
- *  MSR���ɤ߽Ф���ľ��˳���ߤ�ȯ�����Ƥ⡢��ä��Ȥ��ˤ�
- *  MSR�⸵����äƤ���
+ *  MSRを読み出した直後に割込みが発生しても、戻ったときには
+ *  MSRも元に戻っている
  *
  */
 Inline BOOL
@@ -168,53 +168,53 @@ sense_lock()
 
 
 /*
- *  CPU���å��Ȥ��β��
+ *  CPUロックとその解除
  *
- *  ��MSR��EE�ӥåȤ�CPU���å���¸����Ƥ��롣
- *  ������ߥޥ����ϳ���ߥ���ȥ�����ˤ��롣
- *  ����������ػߤȳ���ߥޥ�������Ω���Ƥ��뤿�ᡢ
- *  ��ñ��˼����Ǥ��롣
+ *  　MSRのEEビットでCPUロックを実現している。
+ *  　割込みマスクは割込みコントローラにある。
+ *  　割込み全禁止と割込みマスクが独立しているため、
+ *  　単純に実装できる。
  */
 
-/*  ����������ƥ�������  */
+/*  タスクコンテキスト用  */
 #define t_lock_cpu      disint      /*  cpu_insn.h  */
 #define t_unlock_cpu    enaint      /*  cpu_insn.h  */
 
-/*  �󥿥�������ƥ�������  */
+/*  非タスクコンテキスト用  */
 #define i_lock_cpu      disint      /*  cpu_insn.h  */
 #define i_unlock_cpu    enaint      /*  cpu_insn.h  */
 
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  */
 
 /*
- *  �ǹ�ͥ���̥������ؤΥǥ����ѥå���cpu_support.S��
+ *  最高優先順位タスクへのディスパッチ（cpu_support.S）
  *
- *  dispatch �ϡ�����������ƥ����Ȥ���ƤӽФ��줿�����ӥ����������
- *  ��ǡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  dispatch は，タスクコンテキストから呼び出されたサービスコール処理
+ *  内で，CPUロック状態で呼び出さなければならない．
  */
 extern void	dispatch(void);
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå���cpu_support.S��
+ *  現在のコンテキストを捨ててディスパッチ（cpu_support.S）
  *
- *  exit_and_dispatch �ϡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  exit_and_dispatch は，CPUロック状態で呼び出さなければならない．
  */
 extern void	exit_and_dispatch(void);
 
 /*
- *  ����ߥϥ�ɥ顿CPU�㳰�ϥ�ɥ������
+ *  割込みハンドラ／CPU例外ハンドラの設定
  */
 
 /*
- *  ����ߥϥ�ɥ�ε����ơ��֥�
+ *  割込みハンドラの擬似テーブル
  */
 extern FP int_table[];
 
 /*
- *  �㳰�٥����ε����ơ��֥�
+ *  例外ベクタの擬似テーブル
  */
 extern FP exc_table[];
 
@@ -224,13 +224,13 @@ define_inh(INHNO intno, FP inthdr)
 {
     int_table[intno] = inthdr;
 
-#ifdef GDB_STUB     /*  ��α  */
+#ifdef GDB_STUB     /*  保留  */
 
 #endif
 }
 
 /*
- *   CPU�㳰�ϥ�ɥ������
+ *   CPU例外ハンドラの設定
  */
 
 Inline void
@@ -238,14 +238,14 @@ define_exc(EXCNO excno, FP exchdr)
 {
     exc_table[excno] = exchdr;
 
-#ifdef GDB_STUB     /*  ��α  */
+#ifdef GDB_STUB     /*  保留  */
 
 #endif
 }
 
 
 /*
- *  ����ߥϥ�ɥ�ν����������������ޥ���
+ *  割込みハンドラの出入口処理の生成マクロ
  */
 
 #define INTHDR_ENTRY(inthdr)  extern void inthdr(void)
@@ -253,7 +253,7 @@ define_exc(EXCNO excno, FP exchdr)
 #define INT_ENTRY(inthdr) inthdr
 
 /*
- *  CPU�㳰�ϥ�ɥ�ν����������������ޥ���
+ *  CPU例外ハンドラの出入口処理の生成マクロ
  *
  */
 #define EXCHDR_ENTRY(exchdr)  extern void exchdr(VP sp)
@@ -261,15 +261,15 @@ define_exc(EXCNO excno, FP exchdr)
 #define EXC_ENTRY(exchdr)     exchdr
 
 /*
- *  CPU�㳰��ȯ���������Υ����ƥ���֤λ���
+ *  CPU例外の発生した時のシステム状態の参照
  */
 
 /*
- *  CPU�㳰��ȯ���������Υ���ƥ�����Ƚ��
+ *  CPU例外の発生した時のコンテキスト判別
  *  
- *    �����
- *    ��TRUE ��CPU�㳰ȯ�������󥿥�������ƥ�����
- *    ��FALSE��CPU�㳰ȯ�����˥���������ƥ�����
+ *    戻り値
+ *    　TRUE ：CPU例外発生時に非タスクコンテキスト
+ *    　FALSE：CPU例外発生時にタスクコンテキスト
  *
  */
 Inline BOOL
@@ -277,32 +277,32 @@ exc_sense_context(VP p_excinf)
 {
     UW  intnest;
     
-    intnest = current_sprg0();    	/*  intnest �� SPRG0  */
+    intnest = current_sprg0();    	/*  intnest ← SPRG0  */
 
     /*
-     * ������Ӥ���Τϡ����߼¹����CPU�㳰��ʬ
-     * ����ߥͥ��ȥ����󥿤����󥯥���Ȥ���Ƥ��뤿��
+     * １と比較するのは、現在実行中のCPU例外の分
+     * 割込みネストカウンタがインクリメントされているため
      */
     return(intnest > 1);
 }
 
 
 /*
- * �㳰�ϥ�ɥ�ΰ���p_excinf���ؤ��������Ϥ���
- * ������������������������SSR1�쥸�����ޤǤΥ��ե��å�
+ * 例外ハンドラの引数p_excinfが指し示す番地から
+ * 　　　　　　　　　　　　SSR1レジスタまでのオフセット
  * 
- * ����MSR�Υ��ԡ�SSR1�쥸�����ϡ������å���(OFFSET_SSR1+1)���ܤ�
- * �����Ѥޤ�Ƥ��롣
- * ����support.S��SAVE_GPR0_12_SPRG�򻲾� 
+ * 　　MSRのコピーSSR1レジスタは、スタックに(OFFSET_SSR1+1)番目に
+ * 　　積まれている。
+ * 　　support.SのSAVE_GPR0_12_SPRGを参照 
  */
 #define OFFSET_SSR1	12
 
 /*
- *  CPU�㳰��ȯ����������CPU���å����֤λ���
+ *  CPU例外の発生した時のCPUロック状態の参照
  *  
- *    �����
- *    ��TRUE ��CPU�㳰ȯ������CPU���å�����
- *    ��FALSE��CPU�㳰ȯ������CPU���å��������
+ *    戻り値
+ *    　TRUE ：CPU例外発生時にCPUロック状態
+ *    　FALSE：CPU例外発生時にCPUロック解除状態
  *  
  */
 Inline BOOL
@@ -315,17 +315,17 @@ exc_sense_lock(VP p_excinf)
 }
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 extern void cpu_initialize(void);
 
 /*
- *  �ץ����å���¸�ν�λ������
+ *  プロセッサ依存の終了時処理
  */
 extern void cpu_terminate(void);
 
 /*
- *  �����Υ������ϻ��Υ����å���¤�����
+ *  下記のログ出力時のスタック構造の定義
  */
 typedef struct exc_stack {
 	UW	r0;
@@ -339,21 +339,21 @@ typedef struct exc_stack {
 	UW	r10;
 	UW	r11;
 	UW	r12;
-	UW	srr0;	/*   ���������쥸����0��*/
-	UW	srr1;	/*   ���������쥸����1��*/
-	UW	lr;	/*   ��󥯡��쥸���� 	*/
-	UW	ctr;	/*   ������ȡ��쥸����	*/
-	UW	cr;	/*   ����ǥ�����󡦥쥸���� 	*/
-	UW	xer;	/*   �������ڥ졼�����ξ�Ｑ�̥쥸������*/
-			/*  ���ʥ���꡼�䥪���Хե����ʤɡ�  */
-	UW	exc_no;	/*   �㳰�ֹ� 	*/
+	UW	srr0;	/*   待避／復帰レジスタ0　*/
+	UW	srr1;	/*   待避／復帰レジスタ1　*/
+	UW	lr;	/*   リンク・レジスタ 	*/
+	UW	ctr;	/*   カウント・レジスタ	*/
+	UW	cr;	/*   コンディション・レジスタ 	*/
+	UW	xer;	/*   整数オペレーションの条件識別レジスタ　*/
+			/*  　（キャリーやオーバフローなど）  */
+	UW	exc_no;	/*   例外番号 	*/
 } EXCSTACK;
 
-/*  �����å���Υǡ�����ɽ��  */
+/*  スタック上のデータの表示  */
 void syslog_data_on_stack(EXCSTACK *sp);
 
 /*
- * ��Ͽ����Ƥ��ʤ��㳰ȯ�����Υ������� (cpu_config.c)
+ * 登録されていない例外発生時のログ出力 (cpu_config.c)
  */
 extern void no_reg_exception(EXCSTACK *);
 

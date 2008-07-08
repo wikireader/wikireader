@@ -10,68 +10,68 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _SYS_CONFIG_H_
 #define _SYS_CONFIG_H_
 
 /*
- *  �����ͥ����������̾�Υ�͡���
+ *  カーネルの内部識別名のリネーム
  */
 #include <sys_rename.h>
 
 /*
- *  �����ƥ��¸�Υ��󥯥롼�ɥե�������ɤ߹���
+ *  システム依存のインクルードファイルの読み込み
  */
 #include <h8s2350.h>
 #include <mispo_h8s2350.h>
 
 /*
- *  vgxet_tim �򥵥ݡ��Ȥ��뤫�ɤ��������
+ *  vgxet_tim をサポートするかどうかの定義
  */
 #define	SUPPORT_VXGET_TIM
 
 /*
- *  ���ꥢ��ݡ��ȿ������
+ *  シリアルポート数の定義
  */
-#define TNUM_PORT	2u	/* ���ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο� */
-#define	TNUM_SIOP	2u	/* ���ݡ��Ȥ��륷�ꥢ��I/O�ݡ��Ȥο� */
+#define TNUM_PORT	2u	/* サポートするシリアルポートの数 */
+#define	TNUM_SIOP	2u	/* サポートするシリアルI/Oポートの数 */
 
 /*
- *  �����ƥॿ�����˴ؤ������
+ *  システムタスクに関する定義
  */
-#define	LOGTASK_PORTID	1	/* �����ƥ��������Ϥ��륷�ꥢ��ݡ����ֹ� */
-#define	CONSOLE_PORTID	1	/* ���󥽡����������Ϥ��륷�ꥢ��ݡ����ֹ� */
-		/* CONSOLE_PORTID : monitor ���� */
+#define	LOGTASK_PORTID	1	/* システムログを出力するシリアルポート番号 */
+#define	CONSOLE_PORTID	1	/* コンソール用入出力するシリアルポート番号 */
+		/* CONSOLE_PORTID : monitor 向け */
 
 /*
- *  ���������Ԥ��Τ�������
+ *  微少時間待ちのための定義
  */
 #define	SIL_DLY_TIM1	22620
 #define	SIL_DLY_TIM2	3865
@@ -79,25 +79,25 @@
 #ifndef _MACRO_ONLY
 
 /*
- *  �������åȥ����ƥ��¸�ν����
+ *  ターゲットシステム依存の初期化
  */
 
 extern void	sys_initialize(void);
 
 /*
- *  �������åȥ����ƥ�ν�λ
+ *  ターゲットシステムの終了
  *
- *  �����ƥ��λ������˻Ȥ���ROM��˥��ƽФ��Ǽ¸����뤳�Ȥ����ꤷ
- *  �Ƥ��롥
+ *  システムを終了する時に使う．ROMモニタ呼出しで実現することを想定し
+ *  ている．
  */
 
 extern void	sys_exit(void);
 
 /*
- *  �������åȥ����ƥ��ʸ������
+ *  ターゲットシステムの文字出力
  *
- *  �����ƥ�����٥��ʸ�����ϥ롼����ROM��˥��ƽФ��Ǽ¸����뤳
- *  �Ȥ����ꤷ�Ƥ��롥
+ *  システムの低レベルの文字出力ルーチン．ROMモニタ呼出しで実現するこ
+ *  とを想定している．
  */
 
 extern void	sys_putc(char c) throw();
@@ -105,42 +105,42 @@ extern void	sys_putc(char c) throw();
 #endif /* _MACRO_ONLY */
 
 /*============================================================================*/
-/* �ʲ��ϡ����̥ɥ�����Ȥ�̵���ȼ������ */
+/* 以下は、共通ドキュメントに無い独自の定義 */
 
 /*
- *  JSP�����ͥ�ư����Υ���ޥå� (release.ld)
- *      0x000000 - 0x01ffff     �������ΰ�(128kB)
- *      0x200000 -              �ǡ����ΰ�(128kB)
- *               - 0x21ffff     ��������Ω���ѥ����å������꽪λ
+ *  JSPカーネル動作時のメモリマップ (release.ld)
+ *      0x000000 - 0x01ffff     コード領域(128kB)
+ *      0x200000 -              データ領域(128kB)
+ *               - 0x21ffff     タスク独立部用スタック，メモリ終了
  */
 
 /*
- *  JSP�����ͥ�ư����Υ���ޥå� (debug.ld)
- *      0x200000 - 0x20ffff     �������ΰ�(64kB)
- *      0x210000 -              �ǡ����ΰ�(64kB-8kB(for GDB_STUB))
- *               - 0x21efff     ��������Ω���ѥ����å������꽪λ
+ *  JSPカーネル動作時のメモリマップ (debug.ld)
+ *      0x200000 - 0x20ffff     コード領域(64kB)
+ *      0x210000 -              データ領域(64kB-8kB(for GDB_STUB))
+ *               - 0x21efff     タスク独立部用スタック，メモリ終了
  */
 
 /*
- *   �����å��ΰ�����
+ *   スタック領域の定義
  */
 #ifndef GDB_STUB
-#define STACKTOP    	0x21fffc	/* ��������Ω���ѥ����å��ν���� */
+#define STACKTOP    	0x21fffc	/* タスク独立部用スタックの初期値 */
 #else /* GDB_STUB */
-#define STACKTOP    	0x21effc	/* ��������Ω���ѥ����å��ν���� */
+#define STACKTOP    	0x21effc	/* タスク独立部用スタックの初期値 */
 #endif /* GDB_STUB */
 
 #define str_STACKTOP	TO_STRING(STACKTOP)
 
 /*
- *  ����ߥ�٥����
+ *  割込みレベル定義
  */
-#define SCI0_INT_LVL	3u		/* SCI����ͥ�0�γ����ߥ�٥� */
-#define SCI1_INT_LVL	3u		/* SCI����ͥ�1�γ����ߥ�٥� */
-#define TPU0_INT_LVL	5u		/* TPU����ͥ�0�γ����ߥ�٥� */
+#define SCI0_INT_LVL	3u		/* SCIチャネル0の割り込みレベル */
+#define SCI1_INT_LVL	3u		/* SCIチャネル1の割り込みレベル */
+#define TPU0_INT_LVL	5u		/* TPUチャネル0の割り込みレベル */
 
 /*
- *  ���ꥢ�륳��ȥ�����Υܡ��졼�Ȥ�����
+ *  シリアルコントローラのボーレートの設定
  */
 /* #define BAUD_RATE	9600u */	/* bps */
 #define BAUD_RATE	38400u

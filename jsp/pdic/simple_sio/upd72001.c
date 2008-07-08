@@ -6,54 +6,54 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: upd72001.c,v 1.4 2003/12/13 06:21:49 hiro Exp $
  */
 
 /*
- *	��PD72001�� �ʰ�SIO�ɥ饤��
+ *	μPD72001用 簡易SIOドライバ
  */
 
 #include <s_services.h>
 #include <upd72001.h>
 
 /*
- *  �ǥХ����쥸�����Υ��������ֳֻ��֡�nsecñ�̡�
+ *  デバイスレジスタのアクセス間隔時間（nsec単位）
  *
- *  200�Ȥ����ͤˤ��ޤ꺬��Ϥʤ���
+ *  200という値にあまり根拠はない．
  */
 #define	UPD72001_DELAY	200
 
 /*
- *  ��PD72001�Υ쥸�������ֹ�
+ *  μPD72001のレジスタの番号
  */
-#define	UPD72001_CR0	0x00u		/* ����ȥ�����쥸���� */
+#define	UPD72001_CR0	0x00u		/* コントロールレジスタ */
 #define	UPD72001_CR1	0x01u
 #define	UPD72001_CR2	0x02u
 #define	UPD72001_CR3	0x03u
@@ -64,60 +64,60 @@
 #define	UPD72001_CR14	0x0eu
 #define	UPD72001_CR15	0x0fu
 
-#define	UPD72001_SR0	0x00u		/* ���ơ������쥸���� */
+#define	UPD72001_SR0	0x00u		/* ステータスレジスタ */
 
 /*
- *  ����ȥ�����쥸������������
+ *  コントロールレジスタの設定値
  */
-#define CR_RESET	0x18u		/* �ݡ��ȥꥻ�åȥ��ޥ�� */
+#define CR_RESET	0x18u		/* ポートリセットコマンド */
 
-#define CR0_EOI		0x38u		/* EOI��End of Interrupt��*/
+#define CR0_EOI		0x38u		/* EOI（End of Interrupt）*/
 
-#define CR1_DOWN	0x00u		/* ������ߤ�ػ� */
-#define CR1_RECV	0x10u		/* ��������ߵ��ĥӥå� */
-#define CR1_SEND	0x02u		/* ��������ߵ��ĥӥå� */
+#define CR1_DOWN	0x00u		/* 全割込みを禁止 */
+#define CR1_RECV	0x10u		/* 受信割込み許可ビット */
+#define CR1_SEND	0x02u		/* 送信割込み許可ビット */
 
-#define CR3_DEF		0xc1u		/* �ǡ��� 8bit���������͡��֥� */
-#define CR4_DEF		0x44u		/* ���ȥåץӥå� 1bit���ѥ�ƥ��ʤ� */
-#define CR5_DEF		0xeau		/* �ǡ��� 8bit���������͡��֥� */
+#define CR3_DEF		0xc1u		/* データ 8bit，受信イネーブル */
+#define CR4_DEF		0x44u		/* ストップビット 1bit，パリティなし */
+#define CR5_DEF		0xeau		/* データ 8bit，送信イネーブル */
 
 #define CR10_DEF	0x00u		/* NRZ */
-#define CR14_DEF	0x07u		/* �ܡ��졼�ȥ����ͥ졼�����͡��֥� */
-#define CR15_DEF	0x56u		/* �ܡ��졼�ȥ����ͥ졼������ */
+#define CR14_DEF	0x07u		/* ボーレートジェネレータイネーブル */
+#define CR15_DEF	0x56u		/* ボーレートジェネレータ使用 */
 
-#define SR0_RECV	0x01u		/* �������Υӥå� */
-#define SR0_SEND	0x04u		/* ������ǽ�ӥå� */
+#define SR0_RECV	0x01u		/* 受信通知ビット */
+#define SR0_SEND	0x04u		/* 送信可能ビット */
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å������
+ *  シリアルI/Oポート初期化ブロックの定義
  */
 typedef struct sio_port_initialization_block {
-	VP	data;		/* �ǡ����쥸���������� */
-	VP	ctrl;		/* ����ȥ�����쥸���������� */
+	VP	data;		/* データレジスタの番地 */
+	VP	ctrl;		/* コントロールレジスタの番地 */
 
-	UB	cr3_def;	/* CR3�������͡ʼ����ӥåȿ���*/
-	UB	cr4_def;	/* CR4�������͡ʥ��ȥåץӥåȡ��ѥ�ƥ���*/
-	UB	cr5_def;	/* CR5�������͡������ӥåȿ���*/
-	UB	brg1_def;	/* �ܡ��졼�Ⱦ�̤������� */
-	UB	brg2_def;	/* �ܡ��졼�Ȳ��̤������� */
+	UB	cr3_def;	/* CR3の設定値（受信ビット数）*/
+	UB	cr4_def;	/* CR4の設定値（ストップビット，パリティ）*/
+	UB	cr5_def;	/* CR5の設定値（送信ビット数）*/
+	UB	brg1_def;	/* ボーレート上位の設定値 */
+	UB	brg2_def;	/* ボーレート下位の設定値 */
 } SIOPINIB;
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å������
+ *  シリアルI/Oポート管理ブロックの定義
  */
 struct sio_port_control_block {
-	const SIOPINIB	*siopinib;	/* ���ꥢ��I/O�ݡ��Ƚ�����֥��å� */
-	VP_INT		exinf;		/* ��ĥ���� */
-	BOOL		openflag;	/* �����ץ�Ѥߥե饰 */
-	UB		cr1;		/* CR1�������͡ʳ���ߵ��ġ�*/
-	BOOL		getready;	/* ʸ��������������� */
-	BOOL		putready;	/* ʸ���������Ǥ������ */
+	const SIOPINIB	*siopinib;	/* シリアルI/Oポート初期化ブロック */
+	VP_INT		exinf;		/* 拡張情報 */
+	BOOL		openflag;	/* オープン済みフラグ */
+	UB		cr1;		/* CR1の設定値（割込み許可）*/
+	BOOL		getready;	/* 文字を受信した状態 */
+	BOOL		putready;	/* 文字を送信できる状態 */
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ *  シリアルI/Oポート初期化ブロック
  *
- *  ID = 1 ��ݡ���B��ID = 2 ��ݡ���A���б������Ƥ��롥
+ *  ID = 1 をポートB，ID = 2 をポートAに対応させている．
  */
 const SIOPINIB siopinib_table[TNUM_SIOP] = {
 	{ (VP) TADR_UPD72001_DATAB, (VP) TADR_UPD72001_CTRLB,
@@ -129,18 +129,18 @@ const SIOPINIB siopinib_table[TNUM_SIOP] = {
 };
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 SIOPCB	siopcb_table[TNUM_SIOP];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
 #define INDEX_SIOP(siopid)	((UINT)((siopid) - 1))
 #define get_siopcb(siopid)	(&(siopcb_table[INDEX_SIOP(siopid)]))
 
 /*
- *  �ǥХ����쥸�����ؤΥ��������ؿ�
+ *  デバイスレジスタへのアクセス関数
  */
 Inline UB
 upd72001_read_reg(VP addr)
@@ -180,18 +180,18 @@ upd72001_write_brg(VP addr, UB reg, UB val, UB brg2, UB brg1)
 	upd72001_write_reg(addr, val);
 	upd72001_write_reg(addr, brg2);
 	upd72001_write_reg(addr, brg1);
-	(void) upd72001_read_reg(addr);		/* ���ߡ��꡼�� */
+	(void) upd72001_read_reg(addr);		/* ダミーリード */
 }
 
 /*
- *  ���֤��ɽФ���SR0���ɽФ���
+ *  状態の読出し（SR0の読出し）
  *
- *  ��PD72001�ϡ����֡�SR0�ˤ�����ɤ�ȼ������ΥӥåȤ�����Ƥ��ޤ���
- *  �ᡤ���֤��ɤ߽Ф��ؿ����ߤ������ꥢ��I/O�ݡ��ȴ����֥��å����
- *  getready �˼������ξ��֡�putready ��������ǽ���֤���¸���Ƥ������
- *  ����ǽ���֤���¸�����פ��⤷��ʤ��ˡ�
- *  ���֥쥸�������ɤ�Ǥ�������ΥӥåȤ�����ʤ��ǥХ����ʤ����餬��
- *  �̤Ȼפ���ˤǤϡ����δؿ���ɬ�פʤ���
+ *  μPD72001は，状態（SR0）を一度読むと受信通知ビットが落ちてしまうた
+ *  め，状態を読み出す関数を設け，シリアルI/Oポート管理ブロック中の
+ *  getready に受信通知状態，putready に送信可能状態を保存している（送
+ *  信可能状態の保存は不要かもしれない）．
+ *  状態レジスタを読んでも受信通知ビットが落ちないデバイス（こちらが普
+ *  通と思われる）では，この関数は必要ない．
  */
 static void
 upd72001_get_stat(SIOPCB *siopcb)
@@ -208,7 +208,7 @@ upd72001_get_stat(SIOPCB *siopcb)
 }
 
 /*
- *  ʸ��������Ǥ��뤫��
+ *  文字を受信できるか？
  */
 Inline BOOL
 upd72001_getready(SIOPCB *siopcb)
@@ -218,7 +218,7 @@ upd72001_getready(SIOPCB *siopcb)
 }
 
 /*
- *  ʸ���������Ǥ��뤫��
+ *  文字を送信できるか？
  */
 Inline BOOL
 upd72001_putready(SIOPCB *siopcb)
@@ -228,7 +228,7 @@ upd72001_putready(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���μ�Ф�
+ *  受信した文字の取出し
  */
 Inline char
 upd72001_getchar(SIOPCB *siopcb)
@@ -238,7 +238,7 @@ upd72001_getchar(SIOPCB *siopcb)
 }
 
 /*
- *  ��������ʸ���ν����
+ *  送信する文字の書込み
  */
 Inline void
 upd72001_putchar(SIOPCB *siopcb, char c)
@@ -248,7 +248,7 @@ upd72001_putchar(SIOPCB *siopcb, char c)
 }
 
 /*
- *  EOI��End Of Interrupt��ȯ��
+ *  EOI（End Of Interrupt）発行
  */
 Inline void
 upd72001_eoi()
@@ -257,7 +257,7 @@ upd72001_eoi()
 }
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 upd72001_initialize()
@@ -266,7 +266,7 @@ upd72001_initialize()
 	UINT	i;
 
 	/*
-	 *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+	 *  シリアルI/Oポート管理ブロックの初期化
 	 */
 	for (siopcb = siopcb_table, i = 0; i < TNUM_SIOP; siopcb++, i++) {
 		siopcb->siopinib = &(siopinib_table[i]);
@@ -275,7 +275,7 @@ upd72001_initialize()
 }
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 BOOL
 upd72001_openflag(void)
@@ -288,7 +288,7 @@ upd72001_openflag(void)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 upd72001_opn_por(ID siopid, VP_INT exinf)
@@ -325,7 +325,7 @@ upd72001_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 upd72001_cls_por(SIOPCB *siopcb)
@@ -335,7 +335,7 @@ upd72001_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 upd72001_snd_chr(SIOPCB *siopcb, char c)
@@ -348,7 +348,7 @@ upd72001_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 upd72001_rcv_chr(SIOPCB *siopcb)
@@ -360,7 +360,7 @@ upd72001_rcv_chr(SIOPCB *siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 upd72001_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -380,7 +380,7 @@ upd72001_ena_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 upd72001_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
@@ -400,27 +400,27 @@ upd72001_dis_cbr(SIOPCB *siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф������߽���
+ *  シリアルI/Oポートに対する割込み処理
  */
 static void
 upd72001_isr_siop(SIOPCB *siopcb)
 {
 	if ((siopcb->cr1 & CR1_RECV) != 0 && upd72001_getready(siopcb)) {
 		/*
-		 *  �������Υ�����Хå��롼�����ƤӽФ���
+		 *  受信通知コールバックルーチンを呼び出す．
 		 */
 		upd72001_ierdy_rcv(siopcb->exinf);
 	}
 	if ((siopcb->cr1 & CR1_SEND) != 0 && upd72001_putready(siopcb)) {
 		/*
-		 *  ������ǽ������Хå��롼�����ƤӽФ���
+		 *  送信可能コールバックルーチンを呼び出す．
 		 */
 		upd72001_ierdy_snd(siopcb->exinf);
 	}
 }
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 void
 upd72001_isr()

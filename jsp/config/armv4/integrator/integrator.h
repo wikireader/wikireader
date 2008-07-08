@@ -9,32 +9,32 @@
  *  Copyright (C) 2004 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: integrator.h,v 1.2 2004/05/26 19:14:24 honda Exp $
  */
@@ -209,7 +209,7 @@
 
 /*
  * Interrupt Mask
- * Timer2�Ϻǹ�ͥ���٤��� ??
+ * Timer2は最高優先度をもつ ??
  */
 
 #define MASK_IRQ_TM2         0x3FFFFF
@@ -422,16 +422,16 @@
 #ifndef _MACRO_ONLY
 
 /*
- * ��¢UART�� �ʰ�SIO�ɥ饤��
+ * 内蔵UART用 簡易SIOドライバ
  */
 /*
- * �����ͥ뵯ư���Ѥν����(sys_putc����Ѥ��뤿��)
+ * カーネル起動時用の初期化(sys_putcを使用するため)
  */
 extern void init_uart(void);
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ *  シリアルI/Oポート初期化ブロック
  */
 typedef struct sio_port_initialization_block 
 {
@@ -447,84 +447,84 @@ typedef struct sio_port_initialization_block
 SIOPINIB;
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å������
+ *  シリアルI/Oポート管理ブロックの定義
  */
 typedef struct sio_port_control_block 
 {
-    const SIOPINIB  *siopinib;  /* ���ꥢ��I/O�ݡ��Ƚ�����֥��å� */
-    VP_INT          exinf;      /* ��ĥ���� */
-    BOOL    openflag;       /* �����ץ�Ѥߥե饰 */
-    BOOL    sendflag;       /* ��������ߥ��͡��֥�ե饰 */
-    BOOL    getready;       /* ʸ��������������� */
-    BOOL    putready;       /* ʸ���������Ǥ������ */
+    const SIOPINIB  *siopinib;  /* シリアルI/Oポート初期化ブロック */
+    VP_INT          exinf;      /* 拡張情報 */
+    BOOL    openflag;       /* オープン済みフラグ */
+    BOOL    sendflag;       /* 送信割込みイネーブルフラグ */
+    BOOL    getready;       /* 文字を受信した状態 */
+    BOOL    putready;       /* 文字を送信できる状態 */
 
 }SIOPCB;
 
 
 /*
- *  ������Хå��롼����μ����ֹ�
+ *  コールバックルーチンの識別番号
  */
-#define SIO_ERDY_SND    1u      /* ������ǽ������Хå� */
-#define SIO_ERDY_RCV    2u      /* �������Υ�����Хå� */
+#define SIO_ERDY_SND    1u      /* 送信可能コールバック */
+#define SIO_ERDY_RCV    2u      /* 受信通知コールバック */
 
 /*
- *  ������åפ�UART����Υݡ���󥰽���
+ *  オンチップのUARTからのポーリング出力
  */
 extern void uart_putc(char c);
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 extern void uart_initialize(void);
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 extern BOOL uart_openflag(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 extern SIOPCB   *uart_opn_por(ID siopid, VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 extern void uart_cls_por(SIOPCB *siopcb);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 extern BOOL uart_snd_chr(SIOPCB *siopcb, char c);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 extern INT  uart_rcv_chr(SIOPCB *siopcb);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 extern void uart_ena_cbr(SIOPCB *siopcb, UINT cbrtn);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 extern void uart_dis_cbr(SIOPCB *siopcb, UINT cbrtn);
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 extern void uart_in_isr(void);
 extern void uart_out_isr(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
+ *  シリアルI/Oポートからの送信可能コールバック
  */
 extern void uart_ierdy_snd(VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
+ *  シリアルI/Oポートからの受信通知コールバック
  */
 extern void uart_ierdy_rcv(VP_INT exinf);
 

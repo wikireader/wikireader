@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: devicemanager.cpp,v 1.11 2003/12/24 07:40:42 takayuki Exp $
  */
@@ -49,15 +49,15 @@
 #include "kernel.h"
 #include "kernellog.h"
 
-#define WM_NOTIFYICONCALLBACK (WM_APP+1)	//NotifyIcon¤«¤é¼õ¤±¼è¤ë¥á¥Ã¥»¡¼¥¸¤Ë»È¤¦ÈÖ¹æ
+#define WM_NOTIFYICONCALLBACK (WM_APP+1)	//NotifyIconã‹ã‚‰å—ã‘å–ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«ä½¿ã†ç•ªå·
 
-const DWORD dwTimeOut = 5000;  // EXE¤¬¥·¥ã¥Ã¥È¥À¥¦¥ó¤¹¤ë¤Ş¤Ç¤Î¥¢¥¤¥É¥ë»ş´Ö¤Ç¤¹
-const DWORD dwPause = 1000;    // ¥¹¥ì¥Ã¥É¤¬½ª¤ï¤ë¤Î¤òÂÔ¤Ä»ş´Ö¤Ç¤¹
+const DWORD dwTimeOut = 5000;  // EXEãŒã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ã™ã‚‹ã¾ã§ã®ã‚¢ã‚¤ãƒ‰ãƒ«æ™‚é–“ã§ã™
+const DWORD dwPause = 1000;    // ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚ã‚ã‚‹ã®ã‚’å¾…ã¤æ™‚é–“ã§ã™
 
-HINSTANCE ProcessInstance = NULL;   //¥×¥í¥»¥¹¤Î¥¤¥ó¥¹¥¿¥ó¥¹¥Ï¥ó¥É¥ë
+HINSTANCE ProcessInstance = NULL;   //ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
 
 
-// ¥·¥ã¥Ã¥È¥À¥¦¥ó ¥¤¥Ù¥ó¥È´Æ»ëÍÑ¤Î CreateThread ¤ËÅÏ¤µ¤ì¤Ş¤¹
+// ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ ã‚¤ãƒ™ãƒ³ãƒˆç›£è¦–ç”¨ã® CreateThread ã«æ¸¡ã•ã‚Œã¾ã™
 static DWORD WINAPI MonitorProc(void* pv)
 {
     CExeModule* p = (CExeModule*)pv;
@@ -71,12 +71,12 @@ LONG CExeModule::Unlock()
     if (l == 0)
     {
         bActivity = true;
-        SetEvent(hEventShutdown); // ¥â¥Ë¥¿¡¼¤Ë¥¼¥í¤ËÊÑ°Ü¤·¤¿¤³¤È¤ò¤·¤é¤»¤Ş¤¹
+        SetEvent(hEventShutdown); // ãƒ¢ãƒ‹ã‚¿ãƒ¼ã«ã‚¼ãƒ­ã«å¤‰ç§»ã—ãŸã“ã¨ã‚’ã—ã‚‰ã›ã¾ã™
     }
     return l;
 }
 
-//¥·¥ã¥Ã¥È¥À¥¦¥ó¥¤¥Ù¥ó¥È¤ò´Æ»ë¤·¤Ş¤¹
+//ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç›£è¦–ã—ã¾ã™
 void CExeModule::MonitorShutdown()
 {
     while (1)
@@ -89,7 +89,7 @@ void CExeModule::MonitorShutdown()
             dwWait = WaitForSingleObject(hEventShutdown, dwTimeOut);
         } while (dwWait == WAIT_OBJECT_0);
         // timed out
-        if (!bActivity && m_nLockCnt == 0) // ²¿¤âÆ°ºî¤·¤Æ¤¤¤ë¤â¤Î¤¬¤Ê¤±¤ì¤ĞÈ´¤±½Ğ¤·¤Ş¤¹
+        if (!bActivity && m_nLockCnt == 0) // ä½•ã‚‚å‹•ä½œã—ã¦ã„ã‚‹ã‚‚ã®ãŒãªã‘ã‚Œã°æŠœã‘å‡ºã—ã¾ã™
         {
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
             CoSuspendClassObjects();
@@ -196,12 +196,12 @@ INT CALLBACK MemoryMapDialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
                 
                 col.mask = LVCF_TEXT|LVCF_WIDTH|LVCF_FMT;
                 col.fmt = LVCFMT_LEFT;
-                col.pszText = _T("¥Ç¥Ğ¥¤¥¹Ì¾");
+                col.pszText = _T("ãƒ‡ãƒã‚¤ã‚¹å");
                 col.cx = 200;
                 ListView_InsertColumn(hList, 0, &col);
 
                 col.mask = LVCF_TEXT|LVCF_SUBITEM|LVCF_WIDTH|LVCF_FMT;
-                col.pszText = _T("¥¢¥É¥ì¥¹ÈÏ°Ï");
+                col.pszText = _T("ã‚¢ãƒ‰ãƒ¬ã‚¹ç¯„å›²");
                 col.iSubItem = 1;
                 col.cx = 230;
                 ListView_InsertColumn(hList, 1, &col);
@@ -240,7 +240,7 @@ void ShowMemoryMapDialog(HWND hParent)
 
 
 //---------------------------------------------------------------------
-// NotifyIcon ¥³¥ó¥Æ¥­¥¹¥È¥á¥Ë¥å¡¼
+// NotifyIcon ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼
 INT DummyDialogContextMenu(HWND hDlg)
 {
 	enum tagMenuID {
@@ -254,16 +254,16 @@ INT DummyDialogContextMenu(HWND hDlg)
 	if(hMenu == NULL)
 		return 0;
 
-	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING, 0, _Module.Kernel != 0 ? _T("¥«¡¼¥Í¥ëµ¯Æ°Ãæ") : _T("¥«¡¼¥Í¥ëÌ¤ÀÜÂ³"));
-	wsprintf(buffer, _T("ÀÜÂ³¥Ç¥Ğ¥¤¥¹¿ô : %d"), _Module.DeviceList.size());
+	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING, 0, _Module.Kernel != 0 ? _T("ã‚«ãƒ¼ãƒãƒ«èµ·å‹•ä¸­") : _T("ã‚«ãƒ¼ãƒãƒ«æœªæ¥ç¶š"));
+	wsprintf(buffer, _T("æ¥ç¶šãƒ‡ãƒã‚¤ã‚¹æ•° : %d"), _Module.DeviceList.size());
 	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING, 0, buffer);
-	wsprintf(buffer, _T("³äÉÕºÑ¤ß¶õ´Ö¿ô : %d"), _Module.DeviceMap.size());
+	wsprintf(buffer, _T("å‰²ä»˜æ¸ˆã¿ç©ºé–“æ•° : %d"), _Module.DeviceMap.size());
 	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING, 0, buffer);
-	wsprintf(buffer, _T("ÀÜÂ³¥¦¥©¥Ã¥Á¥ã¿ô : %d"), _Module.WatcherList.size());
+	wsprintf(buffer, _T("æ¥ç¶šã‚¦ã‚©ãƒƒãƒãƒ£æ•° : %d"), _Module.WatcherList.size());
 	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING, 0, buffer);
 	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_SEPARATOR, 0, NULL);
-	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING,    IDM_MAPLIST, _T("¥á¥â¥ê¥Ş¥Ã¥×É½¼¨"));
-	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING,    IDM_EXIT,    _T("¶¯À©½ªÎ»"));
+	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING,    IDM_MAPLIST, _T("ãƒ¡ãƒ¢ãƒªãƒãƒƒãƒ—è¡¨ç¤º"));
+	InsertMenu(hMenu, -1, MF_BYPOSITION|MF_STRING,    IDM_EXIT,    _T("å¼·åˆ¶çµ‚äº†"));
 
 	POINT curpos = {0,0};
 	GetCursorPos(&curpos);
@@ -286,7 +286,7 @@ INT DummyDialogContextMenu(HWND hDlg)
 
 
 //---------------------------------------------------------------------
-// NotifyIconÍÑ¤Î¥À¥ß¡¼¥À¥¤¥¢¥í¥° ¥á¥Ã¥»¡¼¥¸¥Ï¥ó¥É¥é
+// NotifyIconç”¨ã®ãƒ€ãƒŸãƒ¼ãƒ€ã‚¤ã‚¢ãƒ­ã‚° ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ©
 INT CALLBACK DummyDialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg) {
@@ -303,7 +303,7 @@ INT CALLBACK DummyDialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	case WM_INITDIALOG: 
 		{
-				/* ¥¿¥¹¥¯¥È¥ì¥¤¤Ë¥¢¥¤¥³¥ó¤òÅĞÏ¿ */
+				/* ã‚¿ã‚¹ã‚¯ãƒˆãƒ¬ã‚¤ã«ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç™»éŒ² */
 			NOTIFYICONDATA nd;
 			HICON hIcon = LoadIcon(ProcessInstance, MAKEINTRESOURCE(IDI_ICON1));
 			nd.cbSize = sizeof(nd);
@@ -342,7 +342,7 @@ INT CALLBACK DummyDialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 extern "C" int WINAPI _tWinMain(HINSTANCE hInstance, 
     HINSTANCE /*hPrevInstance*/, LPTSTR lpCmdLine, int /*nShowCmd*/)
 {
-    lpCmdLine = GetCommandLine(); // ¤³¤Î¹Ô¤Ï _ATL_MIN_CRT ¤Î¤¿¤á¤ËÉ¬Í×¤Ç¤¹
+    lpCmdLine = GetCommandLine(); // ã“ã®è¡Œã¯ _ATL_MIN_CRT ã®ãŸã‚ã«å¿…è¦ã§ã™
     
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
     HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -403,7 +403,7 @@ extern "C" int WINAPI _tWinMain(HINSTANCE hInstance,
             DispatchMessage(&msg);
 
         _Module.RevokeClassObjects();
-        Sleep(dwPause); //¥¹¥ì¥Ã¥É¤¬½ªÎ»¤¹¤ë¤Ş¤ÇÂÔ¤Á¤Ş¤¹
+        Sleep(dwPause); //ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚äº†ã™ã‚‹ã¾ã§å¾…ã¡ã¾ã™
 
 		if(dummy_dialog_handle != NULL)
 			::DestroyWindow(dummy_dialog_handle);

@@ -1,4 +1,4 @@
-/* ROM ��̵��兩���פ����줿�Ȥ��˻Ȥ���󥫥�����ץ� */
+/* ROM に無条件ジャンプを入れたときに使うリンカスクリプト */
 
 OUTPUT_FORMAT("elf32-littlemips","elf32-littlemips","elf32-littlemips")
 OUTPUT_ARCH(mips)
@@ -8,8 +8,8 @@ MEMORY
 	ROM0(rxai):ORIGIN = 0xafc00000, LENGTH =      0x700	/* kseg0 */
 	ROM1(rxai):ORIGIN = 0xafc00700, LENGTH =   1M-0x700	/* kseg0 */
 	RAM (wxai):ORIGIN = 0xa8000000, LENGTH =  64M		/* kseg0 */
-		/* SDRAM �κǽ餫���äƤ��ʤ��Τϡ��ǽ��2MBʬ��
-		   ROM �Υߥ顼�Ѥ˳��ݤ��뤿�� */
+		/* SDRAM の最初から取っていないのは、最初の2MB分は
+		   ROM のミラー用に確保するため */
 }
 
 PROVIDE(_stack_top = 0);
@@ -26,7 +26,7 @@ SECTIONS
 		*(.exce_vec_map)
 	} > ROM0
 
-	.reset 0xafc00400 :		/* ����å��������ʤɤ�ޤ� */
+	.reset 0xafc00400 :		/* キャッシュ初期化などを含む */
 	{
 		*(.reset)
 	} > ROM0
@@ -50,11 +50,11 @@ SECTIONS
 		*(.data)
 	} > RAM
 
-	/* ��ͳ���ɤ�ʬ����ʤ�����ɤ⡢�����񤯤Τ�����Ū�餷���� */
+	/* 理由は良く分からないけれども、こう書くのが一般的らしい。 */
 	_gp = . + 0x8000;
 
-	/* sdata ���������� chk �ǰ��ä�����Τǡ���α��
-	   ����ѥ�����ˡ�-G 0 ���ץ������򤱤Ƥ��ޤ��� */
+	/* sdata セクションは chk で引っかかるので、保留。
+	   コンパイル時に、-G 0 オプションで避けています。 */
 
 	__isdata_start = .;
 	.sdata : AT ( __isdata_start + SIZEOF(.data) )

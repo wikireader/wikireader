@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: jsp_common.cpp,v 1.4 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -73,13 +73,13 @@ namespace {
 #endif
 
 
-    //���󥯥롼�ɥե�����η����ѹ�����
+    //インクルードファイルの形を変更する
 string ToppersJsp::conv_includefile(string file) throw()
 {
     OptionParameter & option = getOptionParameter();
     string result;
 
-        //il���ץ�����դ����Ȥ��ˤ� "<...>" �����ǽ���
+        //ilオプションが付いたときには "<...>" 形式で出力
     if(option["il"].isValid())
         result = string("<") + file + ">";
     else
@@ -88,7 +88,7 @@ string ToppersJsp::conv_includefile(string file) throw()
     return result;
 }
 
-    //�����ͥ���ѿ�̾�η����ѹ�����
+    //カーネルの変数名の形を変更する
 string ToppersJsp::conv_kernelobject(string obj) throw()
 {
     OptionParameter & option = getOptionParameter();
@@ -96,7 +96,7 @@ string ToppersJsp::conv_kernelobject(string obj) throw()
 
     result = obj;
 
-        // TOPPERS/JSP rel 1.3����ϥ����ͥ��ѿ���Ƭ�� _kernel_ ��Ĥ���
+        // TOPPERS/JSP rel 1.3より後はカーネル変数の頭に _kernel_ をつける
     if(!option["1.3"].isValid())
         result = string("_kernel_") + obj;
 
@@ -118,37 +118,37 @@ string ToppersJsp::get_agreement(string filename) throw()
         " *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory\n"
         " *                              Toyohashi Univ. of Technology, JAPAN\n"
         " * \n"
-        " *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation \n"
-        " *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�\n"
-        " *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����\n"
-        " *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���\n"
-        " *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥\n"
-        " *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������\n"
-        " *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���\n"
-        " *      ����������˴ޤޤ�Ƥ��뤳�ȡ�\n"
-        " *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�\n"
-        " *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����\n"
-        " *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���\n"
-        " *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�\n"
-        " *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�\n"
-        " *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������\n"
-        " *      �ȡ�\n"
-        " *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����\n"
-        " *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�\n"
-        " *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�\n"
-        " *        ��𤹤뤳�ȡ�\n"
-        " *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»\n"
-        " *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�\n"
+        " *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation \n"
+        " *  によって公表されている GNU General Public License の Version 2 に記\n"
+        " *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア\n"
+        " *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，\n"
+        " *  利用と呼ぶ）することを無償で許諾する．\n"
+        " *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作\n"
+        " *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー\n"
+        " *      スコード中に含まれていること．\n"
+        " *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使\n"
+        " *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用\n"
+        " *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記\n"
+        " *      の無保証規定を掲載すること．\n"
+        " *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使\n"
+        " *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ\n"
+        " *      と．\n"
+        " *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著\n"
+        " *        作権表示，この利用条件および下記の無保証規定を掲載すること．\n"
+        " *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに\n"
+        " *        報告すること．\n"
+        " *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損\n"
+        " *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．\n"
         " * \n"
-        " *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�\n"
-        " *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����\n"
-        " *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ\n"
-        " *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���\n"
+        " *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お\n"
+        " *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も\n"
+        " *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直\n"
+        " *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．\n"
         " * \n";
 
     string work(base_agreement);
 
-        //CVS��ID���Τ�Τ򤯤äĤ���
+        //CVSのID風のものをくっつける
     time_t t;
     time(&t);
 
@@ -157,7 +157,7 @@ string ToppersJsp::get_agreement(string filename) throw()
     work += " ";
     work += static_cast<const char *>(asctime(localtime(&t)));
     
-    work.erase(work.size() - 1);    //asctime�ǲ��Ԥ�����Τ�chomp
+    work.erase(work.size() - 1);    //asctimeで改行が入るのでchomp
 
     work += " ";
     work += get_loginname();
@@ -168,7 +168,7 @@ string ToppersJsp::get_agreement(string filename) throw()
 #endif
 
 
-/***************************************** �ƥ��ȥ������� *****************************************/
+/***************************************** テストスィート *****************************************/
 
 #ifdef TESTSUITE
 
@@ -182,14 +182,14 @@ public:
 TESTSUITE(main, SpecialtyFile_test)
 {
     BEGIN_CASE("constructor","constructor") {
-        BEGIN_CASE("1","���������ROT�˾��") {
+        BEGIN_CASE("1","生成するとROTに乗る") {
             SpecialtyFile_test file;
 
             if(RuntimeObjectTable::getInstance<SpecialtyFile_test>() == 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","�˴����оݤˤʤäƤ���") {
+        BEGIN_CASE("2","破棄の対象になっている") {
             Singleton<RuntimeObjectTable>::Context context;
             Singleton<RuntimeObjectTable>::saveContext(context);
 
@@ -197,29 +197,29 @@ TESTSUITE(main, SpecialtyFile_test)
 
             new SpecialtyFile_test;
 
-            TEST_CASE("0","[����] ��Ͽ����Ƥ���", RuntimeObjectTable::getInstance<SpecialtyFile_test>() != 0);
+            TEST_CASE("0","[前提] 登録されている", RuntimeObjectTable::getInstance<SpecialtyFile_test>() != 0);
             
             TestSuite::clearCheckpoints();
-            Singleton<RuntimeObjectTable>::renewInstance(); //���󥹥��󥹤κ�������ROT����������
+            Singleton<RuntimeObjectTable>::renewInstance(); //インスタンスの再生成でROTが削除される
 
-            TEST_CASE("1","ROT����������Ƥ���", RuntimeObjectTable::getInstance<SpecialtyFile_test>() == 0);
-            TEST_CASE("2","�ǥ��ȥ饯������ư����Ƥ���", TestSuite::isReached("SpecialtyFile::~SpecialtyFile"));
+            TEST_CASE("1","ROTから解除されている", RuntimeObjectTable::getInstance<SpecialtyFile_test>() == 0);
+            TEST_CASE("2","デストラクタが起動されている", TestSuite::isReached("SpecialtyFile::~SpecialtyFile"));
 
             Singleton<RuntimeObjectTable>::restoreContext(context);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("createInstance","createInstance") {
-        BEGIN_CASE("1","���󥹥��󥹤������Ǥ���") {
+        BEGIN_CASE("1","インスタンスが生成できる") {
             SpecialtyFile_test * file = SpecialtyFile::createInstance<SpecialtyFile_test>("test.txt");
 
-            file->disableOutput();  //���Ϥ���Ƥ⺤��Τ�
+            file->disableOutput();  //出力されても困るので
 
-            TEST_CASE("1","��NULL���֤�", file != 0);
-            TEST_CASE("2","�ե�����̾������",  file->getFilename().compare("test.txt") == 0);
+            TEST_CASE("1","非NULLが返る", file != 0);
+            TEST_CASE("2","ファイル名が正常",  file->getFilename().compare("test.txt") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","��ʸ�����Ϥ����㳰") {
+        BEGIN_CASE("2","空文字を渡すと例外") {
 
             bool result = false;
             try {
@@ -229,8 +229,8 @@ TESTSUITE(main, SpecialtyFile_test)
                 result = true;
             }
 
-            TEST_CASE("1","�㳰��������", result);
-            TEST_CASE("2","���֥������ȤϤʤ�", RuntimeObjectTable::getInstance<SpecialtyFile_test>() == 0);
+            TEST_CASE("1","例外が起こる", result);
+            TEST_CASE("2","オブジェクトはない", RuntimeObjectTable::getInstance<SpecialtyFile_test>() == 0);
         } END_CASE;
     } END_CASE;
 }
@@ -239,21 +239,21 @@ namespace {
     extern void testsuite(TestSuiteControl & _suite_control);
     TestSuite testsuite_onTop("TOPPERS/JSP Common Function(main)", testsuite);
 
-            //�ƥ��ȥ������Ȥ�����
+            //テストスィートの本体
     void testsuite(TestSuiteControl & _suite_control)
     {
         Singleton<OptionParameter>::Context context;
         Singleton<OptionParameter>::saveContext(context);
 
         BEGIN_CASE("conv_includefile","conv_includefile") {
-            BEGIN_CASE("1","-il���դ��Ƥ��ʤ��ȥ��֥륯�����ȤǤ�����") {
+            BEGIN_CASE("1","-ilが付いていないとダブルクォートでくくる") {
                 Singleton<OptionParameter>::renewInstance();
 
                 if(ToppersJsp::conv_includefile("test.h").compare("\"test.h\"") != 0)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("1","-il���դ��Ƥ����<>�Ǥ�����") {
+            BEGIN_CASE("1","-ilが付いていると<>でくくる") {
                 Singleton<OptionParameter>::renewInstance();
                 char * argv[] = {"test.exe","-il"};
                 getOptionParameter().parseOption(2, argv);
@@ -264,14 +264,14 @@ namespace {
         } END_CASE;
 
         BEGIN_CASE("conv_kernelobject","conv_kernelobject") {
-            BEGIN_CASE("1","-1.3���դ��Ƥ��ʤ���_kernel_���դ�") {
+            BEGIN_CASE("1","-1.3が付いていないと_kernel_が付く") {
                 Singleton<OptionParameter>::renewInstance();
 
                 if(ToppersJsp::conv_kernelobject("test").compare("_kernel_test") != 0)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("1","-1.3���դ��Ƥ���Ȥ��Τޤ޽ФƤ���") {
+            BEGIN_CASE("1","-1.3が付いているとそのまま出てくる") {
                 Singleton<OptionParameter>::renewInstance();
                 char * argv[] = {"test.exe","-1.3"};
                 getOptionParameter().parseOption(2, argv);

@@ -8,49 +8,49 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_insn.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�ץ����å����ü�̿��Υ���饤��ؿ������PowerPC�ѡ�
+ *	プロセッサの特殊命令のインライン関数定義（PowerPC用）
  */
 
 #ifndef	_CPU_INSN_H_
 #define	_CPU_INSN_H_
 
 /*
- *  ����쥸���������ؿ�
+ *  制御レジスタの操作関数
  */
 
 /*
- *  �ޥ��󥹥ơ������쥸������MSR�ˤθ����ͤ��ɽФ�
+ *  マシンステータスレジスタ（MSR）の現在値の読出し
  */
 Inline UW
 current_msr(void)
@@ -62,7 +62,7 @@ current_msr(void)
 
 
 /*
- *  �ޥ��󥹥ơ������쥸������MSR�ˤθ����ͤ��ѹ�
+ *  マシンステータスレジスタ（MSR）の現在値の変更
  */
 Inline void
 set_msr(UW msr)
@@ -72,16 +72,16 @@ set_msr(UW msr)
 
 
 /*
- *  NMI��������٤Ƥγ���ߤ�ػ�
+ *  NMIを除くすべての割込みを禁止
  */
 Inline void
 disint(void)
 {
 #if !defined(IBM_PPC_EMB_ENV)
 	/*  
-	 *   ���ꥸ�ʥ��PowerPC�������ƥ�����ξ��
-	 *   ������ȥ�����MPC���꡼����IPM PowerPC6xx/7xx���꡼����
-	 *   ����������˳������롣
+	 *   オリジナルのPowerPCアーキテクチャの場合
+	 *   　　モトローラMPCシリーズ、IPM PowerPC6xx/7xxシリーズは
+	 *   　　こちらに該当する。
 	 */   
 	UW msr;
 	
@@ -92,27 +92,27 @@ disint(void)
 
 #else	/*  IBM_PPC_EMB_ENV  */
 	/*  
-	 *   The IBM PowerPC Embedded Environment�ξ��
-	 *   ��IBM��PowerPC40x���꡼���б�
-	 *   ����wrteei̿���ľ��EE�ӥåȤ򥯥ꥢ�Ǥ��롣
+	 *   The IBM PowerPC Embedded Environmentの場合
+	 *   　IBM系PowerPC40xシリーズ対応
+	 *   　　wrteei命令で直接EEビットをクリアできる。
 	 */   
-	Asm("wrteei 0" : );	/*  MSR.EE��0  */
+	Asm("wrteei 0" : );	/*  MSR.EE←0  */
 
 #endif	/*  IBM_PPC_EMB_ENV  */
 }
 
 
 /*
- *  ����ߤ����
+ *  割込みを許可
  */
 Inline void
 enaint()
 {
 #if !defined(IBM_PPC_EMB_ENV)
 	/*  
-	 *   ���ꥸ�ʥ��PowerPC�������ƥ�����ξ��
-	 *   ������ȥ�����MPC���꡼����IPM PowerPC6xx/7xx���꡼����
-	 *   ����������˳������롣
+	 *   オリジナルのPowerPCアーキテクチャの場合
+	 *   　　モトローラMPCシリーズ、IPM PowerPC6xx/7xxシリーズは
+	 *   　　こちらに該当する。
 	 */   
 	UW msr;
 	
@@ -122,20 +122,20 @@ enaint()
 
 #else	/*  IBM_PPC_EMB_ENV  */
 	/*  
-	 *   The IBM PowerPC Embedded Environment�ξ��
-	 *   ��IBM��PowerPC40x���꡼���б�
-	 *   ����wrteei̿���ľ��EE�ӥåȤ򥻥åȤǤ��롣
+	 *   The IBM PowerPC Embedded Environmentの場合
+	 *   　IBM系PowerPC40xシリーズ対応
+	 *   　　wrteei命令で直接EEビットをセットできる。
 	 */   
-	Asm("wrteei 1" : );	/*  MSR.EE��1  */
+	Asm("wrteei 1" : );	/*  MSR.EE←1  */
 
 #endif	/*  IBM_PPC_EMB_ENV  */
 }
 
 
 /*
- *  ���ڥ���롦�ѡ��ѥ������쥸������SPR�ˤθ����ͤ��ɽФ�
- *     no :�쥸�����ֹ�
- *     dst:�ɤ߽Ф����ͤ��Ǽ�����ѿ�
+ *  スペシャル・パーパス・スレジスタ（SPR）の現在値の読出し
+ *     no :レジスタ番号
+ *     dst:読み出した値を格納する変数
  */
 
 #define _current_spr(no, dst)	Asm("mfspr %0," #no : "=r"(dst))
@@ -143,32 +143,32 @@ enaint()
 
 
 /*
- *  ���ڥ���롦�ѡ��ѥ������쥸������SPR�ˤθ����ͤ��ѹ�
- *     no :�쥸�����ֹ�
- *     src:���ꤹ����
+ *  スペシャル・パーパス・スレジスタ（SPR）の現在値の変更
+ *     no :レジスタ番号
+ *     src:設定する値
  */
 #define set_spr(no, src)	_set_spr(no, src)
 #define _set_spr(no, src)	Asm("mtspr "#no", %1" : : "r"(src) )
 
 /*
- *  SPRG0�θ����ͤ��ɽФ�
+ *  SPRG0の現在値の読出し
  */
 Inline UW
 current_sprg0()
 {
     UW sprg0;
     
-    current_spr(SPRG0, sprg0);	/*  sprg0 �� SPRG0  */
+    current_spr(SPRG0, sprg0);	/*  sprg0 ← SPRG0  */
     return(sprg0);
 }
 
 
 
 /*
- *  ��ǥ����塼�������Τ���Υӥåȥޥåץ������ؿ�
+ *  レディキューサーチのためのビットマップサーチ関数
  *
- *�����������¸�����Ѱդ���ؿ������Ѥ���Τ�
- *����CPU_BITMAP_SEARCH�ޥ�����������ʤ�
+ *　　機種非依存部で用意する関数を利用するので
+ *　　CPU_BITMAP_SEARCHマクロは定義しない
  */
 
 

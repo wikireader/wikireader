@@ -8,40 +8,40 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.c,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼���PowerPC�ѡ�
- *���������������ͥ������ǻ��Ѥ������
- *������������C����ؿ��μ���
+ *	プロセッサ依存モジュール（PowerPC用）
+ *　　　　　カーネル内部で使用する定義
+ *　　　　　　C言語関数の実体
  */
 
 #include "jsp_kernel.h"
@@ -51,22 +51,22 @@
 
 
 /*
- *  ����ߥϥ�ɥ顿����ߥޥ����ε����ơ��֥�
+ *  割込みハンドラ／割込みマスクの擬似テーブル
  */
 FP int_table[TMAX_INTNO];
 
 
 /*
- *  �㳰�٥����ε����ơ��֥�
+ *  例外ベクタの擬似テーブル
  */
 FP exc_table[TMAX_EXCNO];
 
 /*
- *  ���顼��å������Υǡ����ơ��֥�
+ *  エラーメッセージのデータテーブル
  *
- *  ����ץ���ơ�������ͭ���㳰0x1000�ϥ����ͥ뤬�Ѱդ����
- *  �����������ͳ���ʤ��Τǡ����Υơ��֥��0x10���ܤ����Ѥ����
- *  ���ȤϤʤ���
+ *  インプリメンテーション固有の例外0x1000はカーネルが用意する出
+ *  入口処理を経由しないので、このテーブルの0x10番目が使用される
+ *  ことはない。
  */
 static const char *(exe_list[]) = {
 	"",				/*  0x0  */
@@ -88,7 +88,7 @@ static const char *(exe_list[]) = {
 
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void
 cpu_initialize()
@@ -97,24 +97,24 @@ cpu_initialize()
     	EXCNO j;
 
     	/* 
-    	 * ����ߵ����٥����ơ��֥�����
+    	 * 割込み擬似ベクタテーブル初期化
     	 *
-    	 *����0�ǽ��������̤��Ͽ�����ˤ��Ƥ���Τǡ�
-    	 *��������߽�����ICU��¸��ʬPROC_ICU�Ǥϡ�
-    	 *����̤��Ͽ�ξ��ν���������Ƥ�������
+    	 *　　0で初期化して未登録扱いにしているので、
+    	 *　　割込み処理のICU依存部分PROC_ICUでは、
+    	 *　　未登録の場合の処理を入れておくこと
          */
     	for( i = 0; i < TMAX_INTNO; i++ ) {
         	define_inh( i, (FP)0 );
     	}
 
-    	/* CPU�㳰�����٥����ơ��֥����� */
+    	/* CPU例外擬似ベクタテーブル初期化 */
     	for( j = 0; j < TMAX_EXCNO; j++ ) {
         	define_exc( j, (FP)&no_reg_exception );
     	}
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void
 cpu_terminate()
@@ -124,35 +124,35 @@ cpu_terminate()
 #ifdef SUPPORT_CHG_IPM
 
 /*
- *  ����ߥޥ������ѹ�
+ *  割込みマスクの変更
  *
- *  PowerPC�����ˤ�IPM���ʤ�������ߥ���ȥ������IPM�Τ߰��ä�
- *  ������������
+ *  PowerPCコアにはIPMがなく、割込みコントローラのIPMのみ扱って
+ *  いる点に注意
  *
- *  chg_ipm ��Ȥä� NMI�ʳ��Τ��٤Ƥγ���ߤ�ػߤǤ��뤫�ɤ���
- *  �ϳ���ߥ���ȥ�����˰�¸���롣
- *  NMI�ʳ��Τ��٤Ƥγ���ߤ�ػߤ��������ˤϡ�loc_cpu�ˤ��CPU
- *  ���å����֤ˤ���Ф褤��
- *  IPM�ˤ�äư����γ���ߤ��ޥ�������Ƥ�����ˤ⡤�������ǥ���
- *  �ѥå�����α����ʤ���IPM�ϡ��������ǥ����ѥå��ˤ�äơ�����
- *  ���¹Ծ��֤ˤʤä��������ذ����Ѥ���롥���Τ��ᡤ����������
- *  ����ˡ��̤Υ������ˤ�ä� IPM���ѹ�������礬���롥JSP����
- *  �ͥ�Ǥϡ�IPM���ѹ��ϥ������㳰�����롼����ˤ�äƤⵯ���뤬��
- *  ����ˤ�äư������񤷤��ʤ�����Ͼ��ʤ��Ȼפ��롥IPM ����
- *  �ˤ�äƥ������ǥ����ѥå���ػߤ��������ˤϡ�dis_dsp��ʻ��
- *  ����Ф褤��
+ *  chg_ipm を使って NMI以外のすべての割込みを禁止できるかどうか
+ *  は割込みコントローラに依存する。
+ *  NMI以外のすべての割込みを禁止したい場合には，loc_cpuによりCPU
+ *  ロック状態にすればよい．
+ *  IPMによって一部の割込みがマスクされている時にも，タスクディス
+ *  パッチは保留されない．IPMは，タスクディスパッチによって，新し
+ *  く実行状態になったタスクへ引き継がれる．そのため，タスクが実
+ *  行中に，別のタスクによって IPMが変更される場合がある．JSPカー
+ *  ネルでは，IPMの変更はタスク例外処理ルーチンによっても起こるが，
+ *  これによって扱いが難しくなる状況は少ないと思われる．IPM の値
+ *  によってタスクディスパッチを禁止したい場合には，dis_dspを併用
+ *  すればよい．
  */
 SYSCALL ER
 chg_ipm(IPM ipm)
 {
 	ER	ercd;
 
-	LOG_CHG_IPM_ENTER(ipm);	/*  ICU��¸  */
+	LOG_CHG_IPM_ENTER(ipm);	/*  ICU依存  */
 	CHECK_TSKCTX_UNL();
-	CHECK_IPM(ipm);		/*  ICU��¸  */
+	CHECK_IPM(ipm);		/*  ICU依存  */
 
 	t_lock_cpu();
-	CHG_IPM(ipm);		/*  ICU��¸  */
+	CHG_IPM(ipm);		/*  ICU依存  */
 	ercd = E_OK;
 	t_unlock_cpu();
 
@@ -162,30 +162,30 @@ chg_ipm(IPM ipm)
 }
 
 /*
- *  ����ߥޥ����λ���
+ *  割込みマスクの参照
  */
 SYSCALL ER
 get_ipm(IPM *p_ipm)
 {
 	ER	ercd;
 
-	LOG_GET_IPM_ENTER(p_ipm);		/*  ICU��¸  */
+	LOG_GET_IPM_ENTER(p_ipm);		/*  ICU依存  */
 	CHECK_TSKCTX_UNL();
 
 	t_lock_cpu();
-	GET_IPM(p_ipm);				/*  ICU��¸  */
+	GET_IPM(p_ipm);				/*  ICU依存  */
 	ercd = E_OK;
 	t_unlock_cpu();
 
     exit:
-	LOG_GET_IPM_LEAVE(ercd, *p_ipm);	/*  ICU��¸  */
+	LOG_GET_IPM_LEAVE(ercd, *p_ipm);	/*  ICU依存  */
 	return(ercd);
 }
 
 #endif /* SUPPORT_CHG_IPM */
 
 
-/*  CPU�㳰�������ȯ�����Υ����å���Υǡ���ɽ��  */
+/*  CPU例外／割込み発生時のスタック上のデータ表示  */
 void syslog_data_on_stack(EXCSTACK *sp)
 {
     syslog(LOG_EMERG, "PC = 0x%08x SR = 0x%08x",
@@ -209,7 +209,7 @@ void syslog_data_on_stack(EXCSTACK *sp)
 
 
 /*
- * ��Ͽ����Ƥ��ʤ��㳰��ȯ������ȸƤӽФ����
+ * 登録されていない例外が発生すると呼び出される
  */
 
 void no_reg_exception(EXCSTACK *sp)
@@ -218,7 +218,7 @@ void no_reg_exception(EXCSTACK *sp)
     syslog(LOG_EMERG, " [0x%02x]: %s", 
     	   sp->exc_no, exe_list[sp->exc_no]);
 
-    /*  �����å���Υǡ�����ɽ��  */
+    /*  スタック上のデータの表示  */
     syslog_data_on_stack(sp);
 
     while(1);
@@ -226,11 +226,11 @@ void no_reg_exception(EXCSTACK *sp)
 
 
 /*
- *  ����֥��å����饤�֥��
- *	(ItIs�����ή��)
+ *  メモリブロック操作ライブラリ
+ *	(ItIsからの流用)
  *
- *  �ؿ��λ��ͤϡ�ANSI C �饤�֥��λ��ͤ�Ʊ����ɸ��饤�֥��Τ�Τ�
- *  �Ȥä�������Ψ���ɤ���ǽ�������롥
+ *  関数の仕様は，ANSI C ライブラリの仕様と同じ．標準ライブラリのものを
+ *  使った方が効率が良い可能性がある．
  *
  */
 VP

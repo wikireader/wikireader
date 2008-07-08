@@ -10,32 +10,32 @@
  *  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
  *                   Tomakomai National College of Technology, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: user_config.h,v 1.7 2007/03/23 07:58:33 honda Exp $
  */
@@ -44,65 +44,65 @@
 #define _USER_CONFIG_H_
 
 /*
- *  �桼����������ե�����졼������������
+ *  ユーザー・コンフィギュレーション情報の定義
  */
 
 /*
- *  chg_ipm�򥵥ݡ��Ȥ��뤫�ɤ��������
- *����������֥��Ѥ�user_config_asm.inc�ˤ�Ʊ�ͤ������ɬ�פʤΤ�����
+ *  chg_ipmをサポートするかどうかの定義
+ *　　アセンブラ用のuser_config_asm.incにも同様の定義が必要なので注意
  */
 #define SUPPORT_CHG_IPM
 
 /*
- *  vxget_tim�򥵥ݡ��Ȥ��뤫�ɤ��������
+ *  vxget_timをサポートするかどうかの定義
  */
 #define SUPPORT_VXGET_TIM
 
 /*
- *  �����å����ȿ� [Hz]
- *������user_config_asm.inc�ˤ�Ʊ�ͤ������ɬ�פʤΤ�����
+ *  クロック周波数 [Hz]
+ *　　　user_config_asm.incにも同様の定義が必要なので注意
  */
 #define CPU_CLOCK               24576000ul
 
 
 /*
- *  ���ꥢ��ݡ��Ȥ�����
+ *  シリアルポートの設定
  */
 
 /*
- *  ���ݡ��Ȥ��륷�ꥢ��ǥХ����ο��ʺ��� 2��
- *����user_config_asm.inc�ˤ�Ʊ�ͤ������ɬ�פʤΤ�����
+ *  サポートするシリアルデバイスの数（最大 2）
+ *　　user_config_asm.incにも同様の定義が必要なので注意
  */
 #define TNUM_PORT               1u
 
 /*
- *  �ݡ����ֹ�
+ *  ポート番号
  *
- *  �������hw_serial.h��������٤�����������ץ�ץ�����फ��
- *  �����Ȥ��뤿�ᡢ������������롣
+ *  　本来はhw_serial.hで定義すべきだが、サンプルプログラムから
+ *  　参照するため、ここで定義する。
  */
-#define SCI_PORTID1				1		/*  �ѹ��ػ�  */
-#define SCI_PORTID2				2		/*  Ʊ��  */
+#define SCI_PORTID1				1		/*  変更禁止  */
+#define SCI_PORTID2				2		/*  同上  */
 
 /*
- *  �ݡ����ֹ�γ������
+ *  ポート番号の割り当て
  *
- *  ��E10T-USB�ǥǥХå���Ԥ��ݤˤϡ�SCI1����ͭ����뤿�ᡢ
- *  ���桼�����ץ�������SCI0�Τߤ���Ѥ��롣
+ *  　E10T-USBでデバッグを行う際には、SCI1が占有されるため、
+ *  　ユーザープログラムはSCI0のみを使用する。
  *
- *�����ݡ��ȿ����ΤȤ�
- *���������ܡ��ȣ�(SCI0)�������ƥ�ݡ��ȡʸ����
- *�����ݡ��ȿ����ΤȤ�
- *���������ܡ��ȣ�(SCI0)�������ƥ�ݡ��ȡ��桼�����ݡ��������ǽ
- *���������ܡ��ȣ�(SCI1)��Ʊ��
+ *　　ポート数１のとき
+ *　　　　ボート１(SCI0)：システムポート（固定）
+ *　　ポート数２のとき
+ *　　　　ボート１(SCI0)：システムポート／ユーザーポート選択可能
+ *　　　　ボート２(SCI1)：同上
  */
 #if TNUM_PORT == 1u
 
-#define SYSTEM_PORTID           SCI_PORTID1		/*  ����  */
+#define SYSTEM_PORTID           SCI_PORTID1		/*  固定  */
 
 #elif TNUM_PORT == 2u    /* of #if TNUM_PORT == 1u */
 
-#define SYSTEM_PORTID           SCI_PORTID1		/*  �򴹲�ǽ  */
+#define SYSTEM_PORTID           SCI_PORTID1		/*  交換可能  */
 #define USER_PORTID             SCI_PORTID2
 
 #else   /* of #if TNUM_PORT == 1u || TNUM_PORT == 2u */
@@ -112,25 +112,25 @@
 #endif  /* of #if TNUM_PORT == 1u */
 
 /*
- *  ���٥���Ϥ��Ѥ��륷�ꥢ��ݡ��ȤΥݡ����ֹ�
+ *  低レベル出力に用いるシリアルポートのポート番号
  */
 #define SCI_LOW_PORTID			SYSTEM_PORTID
 
-/*  �ܡ��졼�Ȥȥץ饤����ƥ�����٥�  */
-#define SCI_PORT1_BAUD_RATE     38400ul		/* �ܡ��졼�� [bps]     */
-#define SCI_PORT1_IPM           IPM_LEVEL0	/* �ץ饤����ƥ���٥�  */
+/*  ボーレートとプライオリティ・レベル  */
+#define SCI_PORT1_BAUD_RATE     38400ul		/* ボーレート [bps]     */
+#define SCI_PORT1_IPM           IPM_LEVEL0	/* プライオリティレベル  */
 
 #if TNUM_PORT == 2u
 
-#define SCI_PORT2_BAUD_RATE     38400ul		/* �ܡ��졼�� [bps]     */
-#define SCI_PORT2_IPM           IPM_LEVEL0	/* �ץ饤����ƥ���٥�  */
+#define SCI_PORT2_BAUD_RATE     38400ul		/* ボーレート [bps]     */
+#define SCI_PORT2_IPM           IPM_LEVEL0	/* プライオリティレベル  */
 
 #endif  /* of #if TNUM_PORT == 2u */
 
 
 /*
- * ���顼�����ߤ����ϳ����ߤ��̤�������ϥ����Ȥ򳰤���
- *����user_config_asm.inc�ˤ�Ʊ�ͤ������ɬ�פʤΤ�����
+ * エラー割り込みを、入力割り込みと別に操作する場合はコメントを外す。
+ *　　user_config_asm.incにも同様の定義が必要なので注意
  */
 #if 0
 #define H8_CFG_SCI_ERR_HANDLER
@@ -138,20 +138,20 @@
 
 
 /*
- *  �����ޤ�����
+ *  タイマの設定
  */
 
 /*
- *  ������ƥ��å������
+ *  タイムティックの定義
  */
 
-#define TIC_NUME        1u               /* ������ƥ��å��μ�����ʬ�� */
-#define TIC_DENO        1u               /* ������ƥ��å��μ�����ʬ�� */
+#define TIC_NUME        1u               /* タイムティックの周期の分子 */
+#define TIC_DENO        1u               /* タイムティックの周期の分母 */
 
-/*  �����ޤ˶��뤵��륯���å����ȿ� [kHz]  */
-#define TIMER_CLOCK     ((CPU_CLOCK)/8000ul)     /* 8ʬ�� */
+/*  タイマに供給されるクロック周波数 [kHz]  */
+#define TIMER_CLOCK     ((CPU_CLOCK)/8000ul)     /* 8分周 */
 
-/*  �ץ饤����ƥ���٥�  */
+/*  プライオリティレベル  */
 #define SYSTEM_TIMER_IPM                IPM_LEVEL1
 
 

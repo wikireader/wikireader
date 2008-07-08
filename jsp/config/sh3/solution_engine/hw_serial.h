@@ -6,39 +6,39 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.h,v 1.4 2003/12/11 00:52:12 honda Exp $
  */
 
 /*
- *  ���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�Solution Engine�ѡ�
- *  �����ѡ�I/O(FDC37C935A)��Υ��ꥢ��1�����
+ *  シリアルI/Oデバイス（SIO）ドライバ（Solution Engine用）
+ *  スーパーI/O(FDC37C935A)上のシリアル1を使用
  */
 
 #ifndef _HW_SERIAL_H_
@@ -49,24 +49,24 @@
 #include <fdc37c935a.h>
 
 /*
- *  ���ꥢ��γ���ߥϥ�ɥ�Υ٥����ֹ�(�����ͥ����)
+ *  シリアルの割込みハンドラのベクタ番号(割込み優先度)
  */
 #define INHNO_SIO   UART_IRQ0
 
 /*
- * �����ߥ�٥�ϸ���Ǥ��롥
+ * 割り込みレベルは固定である．
  */
 #define SCI1INTLVL   8
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 #define sio_initialize  smsc_sci0_initialize
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 Inline SIOPCB *
 sio_opn_por(ID siopid, VP_INT exinf)
@@ -75,20 +75,20 @@ sio_opn_por(ID siopid, VP_INT exinf)
     BOOL    openflag;
 
     /*
-     *  �����ץ󤷤��ݡ��Ȥ����뤫�� openflg ���ɤ�Ǥ�����
+     *  オープンしたポートがあるかを openflg に読んでおく．
      */
     openflag = smsc_sci0_openflag();
     
     
     /*
-     *  �ǥХ�����¸�Υ����ץ������
+     *  デバイス依存のオープン処理．
      */
     siopcb = smsc_sci0_opn_por(siopid, exinf);
 
       
     /*
-     * �����ߴ�Ϣ������
-     * ���顼�ϥ�ɥ����Ͽ���٤�
+     * 割り込み関連の設定
+     * エラーハンドラも登録すべき
      */
     if(!openflag){
         define_int_plevel(INHNO_SIO,SCI1INTLVL);
@@ -98,50 +98,50 @@ sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 Inline void
 sio_cls_por(SIOPCB *siopcb)
 {
     /*
-     *  �ǥХ�����¸�Υ�������������
+     *  デバイス依存のクローズ処理．
      */
     smsc_sci0_cls_por(siopcb);
 }
 
 
 /*
- *  SIO�γ���ߥϥ�ɥ�
+ *  SIOの割込みハンドラ
  */
 #define sio_handler smsc_sci0_isr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 #define sio_snd_chr smsc_sci0_snd_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 #define sio_rcv_chr smsc_sci0_rcv_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 #define sio_ena_cbr smsc_sci0_ena_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 #define sio_dis_cbr smsc_sci0_dis_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
+ *  シリアルI/Oポートからの送信可能コールバック
  */
 #define sio_ierdy_snd   smsc_sci0_ierdy_snd
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
+ *  シリアルI/Oポートからの受信通知コールバック
  */
 #define sio_ierdy_rcv   smsc_sci0_ierdy_rcv
 

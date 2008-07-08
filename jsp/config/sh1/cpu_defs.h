@@ -8,59 +8,59 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_defs.h,v 1.14 2005/11/14 08:00:44 honda Exp $
  */
 
 /*
- *	�ץ����å��˰�¸���������SH1�ѡ�
- *�������������ץꥱ�������ɬ�פȤ������
+ *	プロセッサに依存する定義（SH1用）
+ *　　　　　アプリケーションが必要とする定義
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�kernel.h �� sil.h �ǥ��󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��뤳�ȤϤʤ������Υե�����򥤥�
- *  ���롼�ɤ������ˡ�t_stddef.h �� itron.h �����󥯥롼�ɤ����Τǡ�
- *  �����˰�¸���Ƥ�褤��
+ *  このインクルードファイルは，kernel.h と sil.h でインクルードされる．
+ *  他のファイルから直接インクルードすることはない．このファイルをイン
+ *  クルードする前に，t_stddef.h と itron.h がインクルードされるので，
+ *  それらに依存してもよい．
  */
 
 #ifndef _CPU_DEFS_H_
 #define _CPU_DEFS_H_
 
 /*
- *  �桼�����������
+ *  ユーザー定義情報
  */
-#include <user_config.h>	/*  SUPPORT_VXGET_TIM�ޥ��������  */
+#include <user_config.h>	/*  SUPPORT_VXGET_TIMマクロの定義  */
 
 
-#define SH1			/* �ץ����å�ά�� */
+#define SH1			/* プロセッサ略称 */
 #define SH7032
 
-/* �����ͥ뵯ư���Υ�å�����   */
+/* カーネル起動時のメッセージ   */
 #define COPYRIGHT_CPU \
 "Copyright (C) 2001-2004 by Industrial Technology Institute,\n" \
 "                            Miyagi Prefectural Government, JAPAN\n"
@@ -68,45 +68,45 @@
 #ifndef _MACRO_ONLY
 
 /*
- *  ����ߡ�CPU�㳰�ϥ�ɥ��ֹ�η�
+ *  割込み／CPU例外ハンドラ番号の型
  */
-typedef	UINT	INHNO;		/* ����ߥϥ�ɥ��ֹ� */
-typedef	UINT	EXCNO;		/* CPU�㳰�ϥ�ɥ��ֹ� */
+typedef	UINT	INHNO;		/* 割込みハンドラ番号 */
+typedef	UINT	EXCNO;		/* CPU例外ハンドラ番号 */
 
 /*
- *  ����ߥޥ����η��ȳ���ߥޥ������ѹ�������
+ *  割込みマスクの型と割込みマスクの変更／参照
  *  
- *  �����#ifdef SUPPORT_CHG_IPM��#endif�ǰϤ�٤�������
- *  ���Υե����뤬cpu_config.h�����˥��󥯥롼�ɤ���뤿��
- *  ��ά���Ƥ��롣
- *  ������ʬ���Ĥ뤳�Ȥˤ�ꡢ��������륳���ɤϤۤȤ�ɤʤ��Τ�
- *  �³��Ϥʤ���Ƚ�Ǥ�����
+ *  本来は#ifdef SUPPORT_CHG_IPM〜#endifで囲むべきだが、
+ *  このファイルがcpu_config.hより先にインクルードされるため
+ *  省略している。
+ *  この部分が残ることにより、生成されるコードはほとんどないので
+ *  実害はないと判断した。
  */
-typedef	UINT	IPM;		/* ����ߥޥ��� */
+typedef	UINT	IPM;		/* 割込みマスク */
 
 extern ER	chg_ipm(IPM ipm) throw();
 extern ER	get_ipm(IPM *p_ipm) throw();
 
 /*
- *  SIL��Ϣ�����
+ *  SIL関連の定義
  */
 
 
 /*
- *  ���ߤγ���ߥޥ������ɽФ�
+ *  現在の割込みマスクの読出し
  */
 #define _current_intmask_	current_intmask
 
 /*
- *  ����ߥޥ���������
+ *  割込みマスクの設定
  */
 #define _set_intmask_		set_intmask
 
 /*
- *  NMI��������٤Ƥγ���ߤ�ػ�
- *  ��disint()�������ͥ뤬�����������ߤΤߤ�ػߤ���Τ��Ф���
- *  ��_disint_()�ϥ����ͥ�������γ���ߤ�ޤ�ƶػߤ��롣
- *  ������Ū�ˤ�GDB stub�Υ��ꥢ���������ߤΰ������ۤʤ롣
+ *  NMIを除くすべての割込みを禁止
+ *  　disint()がカーネルが管理する割込みのみを禁止するのに対して
+ *  　_disint_()はカーネル管理外の割込みも含めて禁止する。
+ *  　具体的にはGDB stubのシリアル受信割込みの扱いが異なる。
  */
 Inline void
 _disint_(void)
@@ -120,7 +120,7 @@ _disint_(void)
 
 
 /*
- *  ����ߥ��å����֤�����
+ *  割込みロック状態の制御
  */
 #define	SIL_PRE_LOC	UW _intmask_ = _current_intmask_()
 #define	SIL_LOC_INT()	_disint_()
@@ -130,18 +130,18 @@ _disint_(void)
 #endif /* _MACRO_ONLY */
 
 /*
- *  �ץ����å��Υ���ǥ�����
+ *  プロセッサのエンディアン
  */
-#define	SIL_ENDIAN	SIL_ENDIAN_BIG	/* �ӥå�����ǥ����� */
+#define	SIL_ENDIAN	SIL_ENDIAN_BIG	/* ビッグエンディアン */
 
 
 #ifndef _MACRO_ONLY
 /*
- *  ��ǽɾ���ѥ����ƥ����λ���
+ *  性能評価用システム時刻の参照
  */
 
 #ifdef SUPPORT_VXGET_TIM
-typedef	UD	SYSUTIM;	/* ��ǽɾ���ѥ����ƥ���� */
+typedef	UD	SYSUTIM;	/* 性能評価用システム時刻 */
 
 extern ER	vxget_tim(SYSUTIM *p_sysutim) throw();
 

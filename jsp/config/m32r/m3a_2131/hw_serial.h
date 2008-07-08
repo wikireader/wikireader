@@ -8,38 +8,38 @@
  *  Copyright (C) 2007 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.h,v 1.2 2007/05/30 08:38:51 honda Exp $
  */
 
 /*
- *	���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�M32102��¢��Ʊ�����ꥢ���ѡ�
+ *	シリアルI/Oデバイス（SIO）ドライバ（M32102内蔵非同期シリアル用）
  */
 
 #ifndef _HW_SERIAL_H_
@@ -49,13 +49,13 @@
 #include <s_services.h>
 
 /*
- *  ������Хå��롼����μ����ֹ�
+ *  コールバックルーチンの識別番号
  */
-#define SIO_ERDY_SND    1u              /* ������ǽ������Хå� */
-#define SIO_ERDY_RCV    2u              /* �������Υ�����Хå� */
+#define SIO_ERDY_SND    1u              /* 送信可能コールバック */
+#define SIO_ERDY_RCV    2u              /* 受信通知コールバック */
 
 /*
- *  ���ꥢ��I/O�γ���ߥϥ�ɥ�Υ٥����ֹ�
+ *  シリアルI/Oの割込みハンドラのベクタ番号
  */
 #define INHNO_SERIAL_IN		(48 + ((CONSOLE_PORTID-1)*2))
 #define INHNO_SERIAL_OUT	(49 + ((CONSOLE_PORTID-1)*2))
@@ -79,22 +79,22 @@ extern void sio_handler_in(void);
 extern void sio_handler_out(void);
 
 /*
- *  ���ꥢ��ݡ��Ȥν����
+ *  シリアルポートの初期化
  */
 extern void sio_initialize(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 extern SIOPCB * sio_opn_por(ID siopid, VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 extern void sio_cls_por(SIOPCB *siopcb);
 
 /*
- *  ��ʸ������
+ *  一文字送信
  */
 Inline BOOL
 sio_snd_chr(SIOPCB * siopcb, INT chr)
@@ -120,37 +120,37 @@ sio_snd_chr(SIOPCB * siopcb, INT chr)
 
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字受信
  */
 extern INT	sio_rcv_chr(SIOPCB *siopcb);
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 extern void	sio_isr(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 extern void sio_ena_cbr(SIOPCB * siopcb, UINT cbrtn);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 extern void sio_dis_cbr(SIOPCB * siopcb, UINT cbrtn);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ��������λ������Хå�
+ *  シリアルI/Oポートへの文字送信完了コールバック
  */
 extern void sio_ierdy_snd(VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ��������λ������Хå�
+ *  シリアルI/Oポートへの文字受信完了コールバック
  */
 extern void sio_ierdy_rcv(VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ���������Υ�����Хå�
+ *  シリアルI/Oポートからの文字受信通知コールバック
  */
 extern void	sio_ercv_chr(ID siopid, INT chr);
 

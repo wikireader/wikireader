@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: message.cpp,v 1.4 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -46,18 +46,18 @@ using namespace std;
 /*****************************************************************************/
 
 /*
- *   ��å�����������ʸ���������إ�ѡ����饹
+ *   メッセージ出力用文字列整形ヘルパークラス
  */
 
-    //�ǥե���ȥ��󥹥ȥ饯��
+    //デフォルトコンストラクタ
 Formatter::Formatter(void) throw() : templatestring(""), accept(false)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 Formatter::Formatter(string src) throw() : templatestring(src)
 {   shift();   }
 
-    //���ԡ����󥹥ȥ饯��
+    //コピーコンストラクタ
 Formatter::Formatter(const Formatter & src) throw() : templatestring(src.templatestring), accept(src.accept)
 {
     string work;
@@ -66,7 +66,7 @@ Formatter::Formatter(const Formatter & src) throw() : templatestring(src.templat
     content << work;
 }
 
-    //���ΰ�����������ؤȰ�ư
+    //次の引数の挿入先へと移動
 void Formatter::shift(void) throw()
 {
     string::size_type pos;
@@ -79,7 +79,7 @@ void Formatter::shift(void) throw()
 
             if(pos != string::npos) {
 
-                    /* %�����äƤ��줬\%�Ȥ������ʤ顢%�򤽤Τޤ޽Ф� */
+                    /* %があってそれが\%という形なら、%をそのまま出す */
                 if(pos != string::npos && pos != 0 && templatestring.at(pos - 1) == '\\') {
 
                     if(pos > 1)
@@ -91,7 +91,7 @@ void Formatter::shift(void) throw()
                     continue;
                 }
                 else {
-                        /* %���ޤ����� */
+                        /* %がまだある */
                     if(pos != string::npos)
                         accept = true;
                     break;
@@ -112,21 +112,21 @@ void Formatter::shift(void) throw()
 }
 
 
-    //̤����ΰ����� (null) ���ִ�
+    //未設定の引数を (null) で置換
 void Formatter::shift_all(void) throw()
 {
     while(accept)
         *this << "(null)";
 }
 
-    //������å������μ��Ф�
+    //内部メッセージの取り出し
 string Formatter::str(void) throw()
 {
     shift_all();
     return content.str();
 }
 
-    //�ƥ�ץ졼��ʸ��������� (��ȤϾä���)
+    //テンプレート文字列の設定 (中身は消える)
 void Formatter::assign(string src) throw()
 {
     clear();
@@ -134,7 +134,7 @@ void Formatter::assign(string src) throw()
     shift();
 }
 
-    //���Ƥξõ�
+    //内容の消去
 void Formatter::clear(void) throw()
 {
     if(!templatestring.empty())
@@ -143,7 +143,7 @@ void Formatter::clear(void) throw()
     accept = false;
 }
 
-    //�����黻��
+    //代入演算子
 Formatter & Formatter::operator =(const Formatter & src) throw()
 {
     string work;
@@ -161,7 +161,7 @@ Formatter & Formatter::operator =(const Formatter & src) throw()
 /*****************************************************************************/
 
 /*
- *   ��å�����������ʸ���������إ�ѡ����饹
+ *   メッセージ出力用文字列整形ヘルパークラス
  */
 
 const char * Message::MessageControl::select(const char * msg1, const char * msg2, va_list vl) throw()
@@ -179,15 +179,15 @@ const char * Message::MessageControl::select(const char * msg1, const char * msg
     return msg;
 }
 
-    //�ǥե���ȥ��󥹥ȥ饯�� (�ƥ�����)
+    //デフォルトコンストラクタ (テスト用)
 Message::Message(void) throw()
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 Message::Message(string src) throw() : Formatter(src)
 {}
 
-    //���󥹥ȥ饯�� (ʣ������)
+    //コンストラクタ (複数言語)
 Message::Message(const char * src1, const char * src2, ...) throw()
 {
     va_list vl;
@@ -197,11 +197,11 @@ Message::Message(const char * src1, const char * src2, ...) throw()
     shift();
 }
 
-    //���ԡ����󥹥ȥ饯��
+    //コピーコンストラクタ
 Message::Message(const Message & src) throw() : Formatter(src)
 {}
 
-    //�������饹�ν�����Ѵؿ� (ʣ������)
+    //派生クラスの初期化用関数 (複数言語)
 void Message::_initialize(const char * src1, const char * src2, va_list vl) throw()
 {
     content.clear();
@@ -210,14 +210,14 @@ void Message::_initialize(const char * src1, const char * src2, va_list vl) thro
     shift();
 }
 
-    //��������
+    //言語選択
 void Message::selectLanguage(enum tagLanguage lang) throw()
 {
     if(lang >= 0 && lang < LAST_LANG)
         Singleton<Message::MessageControl>::getInstance()->setLanguage(lang);
 }
 
-    //�ƥ�ץ졼��ʸ��������� (��ȤϾä���)
+    //テンプレート文字列の設定 (中身は消える)
 void Message::assign(const char * src1, const char * src2, ... ) throw()
 {
     va_list vl;
@@ -232,22 +232,22 @@ void Message::assign(const char * src1, const char * src2, ... ) throw()
 /*****************************************************************************/
 
 /*
- *   ��Ĺ������ʸ���������إ�ѡ����饹
+ *   冗長出力用文字列整形ヘルパークラス
  */
 
-    //�ǥե���ȥ��󥹥ȥ饯��
+    //デフォルトコンストラクタ
 VerboseMessage::VerboseMessage(void) throw() : Message()
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 VerboseMessage::VerboseMessage(const char * src) throw() : Message(src)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 VerboseMessage::VerboseMessage(const string & src) throw() : Message(src)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 VerboseMessage::VerboseMessage(const char * src1, const char * src2, ... ) throw() : Message()
 {
     va_list vl;
@@ -256,25 +256,25 @@ VerboseMessage::VerboseMessage(const char * src1, const char * src2, ... ) throw
     _initialize(src1, src2, vl);
 }
 
-    //�ǥ��ȥ饯��
+    //デストラクタ
 VerboseMessage::~VerboseMessage(void) throw()
 {   Singleton< VerboseControl >::getInstance()->operator << (str());    }
 
 /*****************************************************************************/
 
 /*
- *   �㳰��å�������ʸ���������إ�ѡ����饹
+ *   例外メッセージ用文字列整形ヘルパークラス
  */
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(const char * src) throw() : Message(src), level(DEFAULT)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(const std::string & src) throw() : Message(src), level(DEFAULT)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(const char * src1, const char * src2, ...) throw() : Message(), level(DEFAULT)
 {
     va_list vl;
@@ -283,19 +283,19 @@ ExceptionMessage::ExceptionMessage(const char * src1, const char * src2, ...) th
     _initialize(src1, src2, vl);
 }
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(enum tagLevel _level) throw() : Message(), level(_level)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(enum tagLevel _level, const char * src) throw() : Message(src), level(_level)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(enum tagLevel _level, const std::string & src) throw() : Message(src), level(_level)
 {}
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 ExceptionMessage::ExceptionMessage(enum tagLevel _level, const char * src1, const char * src2, ...) throw() : Message(), level(_level)
 {
     va_list vl;
@@ -304,7 +304,7 @@ ExceptionMessage::ExceptionMessage(enum tagLevel _level, const char * src1, cons
     _initialize(src1, src2, vl);
 }
 
-    //���ԡ����󥹥ȥ饯��
+    //コピーコンストラクタ
 ExceptionMessage::ExceptionMessage(const ExceptionMessage & src) throw() : Message(src), level(src.level)
 {}
 
@@ -312,14 +312,14 @@ ExceptionMessage::ExceptionMessage(const ExceptionMessage & src) throw() : Messa
 /*****************************************************************************/
 
 /*
- *   �ǥХå���å�������ʸ���������إ�ѡ����饹
+ *   デバッグメッセージ用文字列整形ヘルパークラス
  */
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 DebugMessage::DebugMessage(string src) throw() : Formatter(src)
 {}
 
-    //�ǥ��ȥ饯��
+    //デストラクタ
 DebugMessage::~DebugMessage(void) throw()
 {   Singleton<DebugControl>::getInstance()->operator << (str());    }
 

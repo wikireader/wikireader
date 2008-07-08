@@ -8,48 +8,48 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sys_config.c,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�������åȥ����ƥ��¸�⥸�塼���MPC860T TB6102S�ѡ�
- *���������������ͥ������ǻ��Ѥ������
- *������������C����ؿ��μ���
+ *	ターゲットシステム依存モジュール（MPC860T TB6102S用）
+ *　　　　　カーネル内部で使用する定義
+ *　　　　　　C言語関数の実体
  */
 
 #include "jsp_kernel.h"
 #include <mpc860_sil.h>
 
 /*
- *  �����ȯ�����˥����å������򤵤줿���֤�IPM�Υǡ�����¤
- *    4�Х��ȶ�����ݻ����뤿�ᡢ���ߡ��ΰ褬����
+ *  割込み発生時にスタックに待避された状態のIPMのデータ構造
+ *    4バイト境界を維持するため、ダミー領域が入る
  */
 typedef struct ipm_stack {
 	UH	ipm;
@@ -57,14 +57,14 @@ typedef struct ipm_stack {
 } IPM_STACK;
 
 /*
- *  ����ߥޥ����ѵ����٥����ơ��֥�
- *	ipm_table���Τ�$(CPU)�ȤΥ��󥿡��ե������˴ޤޤ�ʤ�
- *��������define_ipm�ˤ�ꡢ���ä���Ƥ����
+ *  割込みマスク用擬似ベクタテーブル
+ *	ipm_table自体は$(CPU)とのインターフェースに含まれない
+ *　　　（define_ipmにより、隠蔽されている）
  */
 IPM ipm_table[TMAX_EXCNO];
 
 /*
- *  SIL����Ѥ����Ȥ��Υ�����ǽ
+ *  SILを使用したときのログ機能
  */
 #ifdef SIL_DEBUG
 
@@ -76,7 +76,7 @@ UW sil_log_id = 0;
 #endif	/* SIL_DEBUG */
 
 /*
- *  �������åȥ����ƥ��¸�ν����
+ *  ターゲットシステム依存の初期化
  */
 void
 sys_initialize()
@@ -84,43 +84,43 @@ sys_initialize()
     	INHNO j;
 	
 	/*
-	 *  �̿��ץ����å�CPM�ν����
+	 *  通信プロセッサCPMの初期化
 	 */
 	
-	/*  �ꥻ�åȡ����ޥ�ɤ�ȯ��  */
+	/*  リセット・コマンドの発行  */
     	mpc860_wrh_mem(CPCR, CPCR_RST | CPCR_FLG);
 	
 	/*
-	 *  ����ߥ���ȥ�����ν����
-	 *����IRL��SIU���Ф������ߥ�٥�
-	 *����IEN=1��CPM����ߥ��͡��֥�
+	 *  割込みコントローラの初期化
+	 *　　IRL：SIUに対する割込みレベル
+	 *　　IEN=1：CPM割込みイネーブル
 	 */
 	mpc860_wrw_mem(CICR, CICR_IRL0 | CICR_IEN);
 
-	/*  IPM�ν������CPM����ߤε���  */
+	/*  IPMの初期化：CPM割込みの許可  */
 	mpc860_wrh_mem(SIMASK, ENABLE_CPM);
 
 
 	/*
-	 *  �����ǡ����ν����
+	 *  内部データの初期化
 	 */
 
-    	/* IPM�ơ��֥�ν���� */
+    	/* IPMテーブルの初期化 */
     	for( j = 0; j < TMAX_EXCNO; j++ ) {
         	ipm_table[j] = DEFAULT_IPM;
     	}
     	
-    	/*  CPM����ߤ�IPM������  */
+    	/*  CPM割込みのIPMを設定  */
     	ipm_table[INHNO_CPM] = IPM_CPM;
 	
 	/*
-	 *  �ץ����å����̤Τ�����ѿ��ν����
+	 *  プロセッサ識別のための変数の初期化
 	 */
-	/*  ̤����  */
+	/*  未実装  */
 }
 
 /*
- *  �������åȥ����ƥ�ν�λ
+ *  ターゲットシステムの終了
  */
 void
 sys_exit()
@@ -129,7 +129,7 @@ sys_exit()
 }
 
 /*
- *  �������åȥ����ƥ��ʸ������
+ *  ターゲットシステムの文字出力
  */
 void
 sys_putc(char c)
@@ -141,16 +141,16 @@ sys_putc(char c)
 }
 
 /*
- * ��Ͽ����Ƥ��ʤ������ȯ�����Υ�������
- * �����ޥ���PROC_ICU����ǸƤӽФ����
- * �����ؿ�̾������η��ϥץ����å���˷����ɤ�
+ * 登録されていない割込み発生時のログ出力
+ * 　　マクロPROC_ICUの中で呼び出される
+ * 　　関数名や引数の型はプロセッサ毎に決めて良い
  *
- *     MPC860�Ǥϳ���ߥ���ȥ����餬������������³����Ƥ��뤿�ᡢ
- *���� �Ƴ���ߥ���ȥ���������Ѥδؿ����Ѱդ�����
+ *     MPC860では割込みコントローラがカスケード接続されているため、
+ *　　 各割込みコントローラに専用の関数を用意した。
  *
  */
 
-/*  SIU����ߡ�CPM����߰ʳ���  */
+/*  SIU割込み（CPM割込み以外）  */
 void no_reg_SIU_interrupt(INHNO intno, UW *sp)
 {
     syslog(LOG_EMERG, "SIU interrupt error occurs.");
@@ -158,9 +158,9 @@ void no_reg_SIU_interrupt(INHNO intno, UW *sp)
     syslog(LOG_EMERG, "IPM=0x%04x", ((IPM_STACK *)sp)->ipm);
 
     /*  
-     *  �����å���Υǡ�����ɽ��
-     *    ����ߥޥ����򥹥��å����Ѥ�Ǥ���Τ�
-     *��  ����ʬ�������åפ���
+     *  スタック上のデータの表示
+     *    割込みマスクをスタックに積んでいるので
+     *　  その分、スキップする
      */
     ++sp;
     syslog_data_on_stack((EXCSTACK *)sp);
@@ -168,7 +168,7 @@ void no_reg_SIU_interrupt(INHNO intno, UW *sp)
     while(1);
 }
 
-/*  CPM�����  */
+/*  CPM割込み  */
 void no_reg_CPM_interrupt(INHNO intno, UW *sp)
 {
     syslog(LOG_EMERG, "CPM interrupt error occurs.");
@@ -177,9 +177,9 @@ void no_reg_CPM_interrupt(INHNO intno, UW *sp)
     syslog(LOG_EMERG, "IPM=0x%04x", ((IPM_STACK *)sp)->ipm);
 
     /*  
-     *  �����å���Υǡ�����ɽ��
-     *    ����ߥޥ����򥹥��å����Ѥ�Ǥ���Τ�
-     *��  ����ʬ�������åפ���
+     *  スタック上のデータの表示
+     *    割込みマスクをスタックに積んでいるので
+     *　  その分、スキップする
      */
     ++sp;
     syslog_data_on_stack((EXCSTACK *)sp);

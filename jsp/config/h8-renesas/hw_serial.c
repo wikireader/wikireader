@@ -10,51 +10,51 @@
  *  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
  *                   Tomakomai National College of Technology, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: hw_serial.c,v 1.7 2007/03/23 07:58:33 honda Exp $
  */
 
 /*
- *  �������åȰ�¸���ꥢ��I/O�⥸�塼���H8�ѡ�
- *    ���ݡ��Ȥ� 1�ܤξ��� HWPORT1_ADDR�˻��ꤵ�줿�ݡ��Ȥ���Ѥ���
- *      2�ܤξ��ϡ�HWPORT1_ADDR��桼���ѡ�HWPORT2_ADDR�򥳥󥽡���
- *      ���ϤȤ��ƻ��Ѥ��롣
- *      HWPORTx_ADDR�� �������åȰ�¸�� sys_config.h��ǻ��ꤹ�롣
- *    ���������Υ⥸�塼��ˤ�äơ�XON/XOFF�ե������椬�Ԥ�
- *      ��Ƥ���Τǡ���������TxD��RxD��2�ܤǤ褤
+ *  ターゲット依存シリアルI/Oモジュール（H8用）
+ *    ・ポートが 1本の場合は HWPORT1_ADDRに指定されたポートを使用し、
+ *      2本の場合は、HWPORT1_ADDRをユーザ用、HWPORT2_ADDRをコンソール
+ *      出力として使用する。
+ *      HWPORTx_ADDRは ターゲット依存の sys_config.h中で指定する。
+ *    ・共通部のモジュールによって、XON/XOFFフロー制御が行わ
+ *      れているので、信号線はTxDとRxDの2本でよい
  */
 
 #include "jsp_kernel.h"
 #include <hw_serial.h>
 
 /*
- *  ���ꥢ��ݡ��Ȥν�����֥��å�
+ *  シリアルポートの初期化ブロック
  */
 static const SIOPINIB siopinib_table[TNUM_PORT] = {
         {
@@ -85,12 +85,12 @@ static const SIOPINIB siopinib_table[TNUM_PORT] = {
 
 
 /*
- *  ���ꥢ��ݡ��Ȥ�����֥��å�
+ *  シリアルポートの制御ブロック
  */
 SIOPCB siopcb_table[TNUM_PORT];
 
 /*
- *  SIO ID ��������֥��å��ؤ��Ѵ�
+ *  SIO ID から管理ブロックへの変換
  */
 Inline SIOPINIB*
 get_siopinib(ID sioid)
@@ -103,8 +103,8 @@ get_siopinib(ID sioid)
 }
 
 /*
- *  �ܡ��졼�Ȥ���BRR�쥸�����������ͤؤ��Ѵ�
- *  ���黻������ǥ����С��ե������ʤ��褦UW�����Ѥ��Ƥ���
+ *  ボーレートからBRRレジスタの設定値への変換
+ *  　演算の途中でオーバーフローしないようUW型を用いている
  */
 Inline UB 
 baud_to_brr(UW baud)
@@ -120,13 +120,13 @@ baud_to_brr(UW baud)
 }
 
 /*
- *  �ܡ��졼���������Ԥ�����[nsec]�����ޥ���
- *  ���黻������ǥ����С��ե������ʤ��褦UW���˥��㥹�Ȥ��Ƥ���
+ *  ボーレート設定後の待ち時間[nsec]を求めるマクロ
+ *  　演算の途中でオーバーフローしないようUW型にキャストしている
  */
 #define SCI_SETUP_TIME(b)       (((1000000ul / (b)) + 1ul) * 1000ul)
 
 /*
- *  SCI �ν����
+ *  SCI の初期化
  */
 void
 SCI_initialize (ID sioid)
@@ -138,61 +138,61 @@ SCI_initialize (ID sioid)
 
         sil_wrb_mem((VP)(inib->base + H8SMR), (VB)(inib->smr_init));
 
-                                        /*  �ܡ��졼������      */
+                                        /*  ボーレート設定      */
         sil_wrb_mem((VP)(inib->base + H8BRR), (VB)baud_to_brr(inib->baudrate));
 
-                        /* ����߶ػߤȥ����å�������������     */
+                        /* 割込み禁止とクロックソースの選択     */
         h8_anb_reg(inib->base + H8SCR,
                      (UB)~(H8SCR_TIE  | H8SCR_RIE  | H8SCR_MPIE | H8SCR_TEIE |
                                                               H8SCR_CKE1 | H8SCR_CKE0 ));
 
-        /* �ܡ��졼�Ȥ�����塢1�ӥå�ʬ�Ԥ��ʤ���Фʤ�ʤ���*/
+        /* ボーレートの設定後、1ビット分待たなければならない。*/
         sil_dly_nse_long(SCI_SETUP_TIME(inib->baudrate));
 
-                                        /* ���顼�ե饰�򥯥ꥢ         */
+                                        /* エラーフラグをクリア         */
         h8_anb_reg(inib->base + H8SSR, (UB)~(H8SSR_ORER | H8SSR_FER | H8SSR_PER));
 
         /*
-         *  �ץ饤����ƥ���٥������
-         *      �����ϳ���ߥ���ȥ������¸��ʬ��ʬΥ���٤�
+         *  プライオリティレベルの設定
+         *      本当は割込みコントローラ依存部分を分離すべき
          */
         define_int_plevel(&(inib->irc));
 
-        /* ���������ߤ���������ߤε��Ĥϥ��ꥢ�� I/O �ǹԤ� */
-        /* ���������� */
+        /* 受信割り込みと送信割込みの許可はシリアル I/O で行う */
+        /* 送受信許可 */
 
         h8_orb_reg(inib->base + H8SCR, (UB)(H8SCR_TE | H8SCR_RE));
 }
 
 /*
- *  SCI �Υ�������
+ *  SCI のクローズ
  */
 void
 SCI_cls_por (UB *base)
 {
 	    UB ssr;
 	    
-        /* TDRE �� 1 �ˤʤ�ޤ��Ԥ� */
+        /* TDRE が 1 になるまで待つ */
         do {
 			ssr = sil_reb_mem((VP)(base + H8SSR));
 			ssr &= H8SSR_TDRE;
         } while(ssr == 0u);
 
-        /* 11�ӥå�����ʬ�Ԥġ�*/
+        /* 11ビット送信分待つ。*/
         /*
-         * �׸�Ƥ����1.2msec����ꤹ��Τǡ�¾�ν�����CPU��
-         * �����������ä����������������󥿥�������ƥ����Ȥ�
-         * ���������ƤФ���ǽ��������Τǡ����Τޤޤˤ��Ƥ��롣
+         * 要検討：約1.2msec空回りするので、他の処理にCPUを
+         * 　　　　譲った方が得策だが、非タスクコンテキストで
+         * 　　　　呼ばれる可能性があるので、そのままにしている。
          */
         sil_dly_nse_long(SCI_SETUP_TIME(H8_MIN_BAUD_RATE)*11ul);
 
-                                        /* ���������           */
+                                        /* 送受信停止           */
         h8_anb_reg(base + H8SCR,
                     (UB)(~(H8SCR_TIE | H8SCR_RIE | H8SCR_TE | H8SCR_RE)));
 }
 
 /*
- *  SCI_in_handler -- SCI ���ϳ���ߥϥ�ɥ�
+ *  SCI_in_handler -- SCI 入力割込みハンドラ
  */
 void
 SCI_in_handler(ID sioid)
@@ -203,9 +203,9 @@ SCI_in_handler(ID sioid)
 
         if (flag != 0) {
 
-                /* ���顼����           */
+                /* エラー処理           */
 
-                /* ���顼�ե饰�򥯥ꥢ */
+                /* エラーフラグをクリア */
                 sil_wrb_mem((VP)(pcb->inib->base + H8SSR),
                             (VB)(status & ~(H8SSR_ORER | H8SSR_FER | H8SSR_PER)));
         }
@@ -213,7 +213,7 @@ SCI_in_handler(ID sioid)
 		flag = (UB)(status & H8SSR_RDRF);
         if (flag != 0) {
                 if (pcb->openflag == TRUE) {
-                        /* ������ǽ������Хå��롼�����ƽФ���*/
+                        /* 受信可能コールバックルーチンを呼出す。*/
                         SCI_ierdy_rcv(pcb->exinf);
                 } else {
                         sil_wrb_mem((VP)(pcb->inib->base + H8SSR), (VB)(status & ~H8SSR_RDRF));
@@ -222,7 +222,7 @@ SCI_in_handler(ID sioid)
 }
 
 /*
- *  SCI_out_handler -- SCI ���ϳ���ߥϥ�ɥ�
+ *  SCI_out_handler -- SCI 出力割込みハンドラ
  */
 void
 SCI_out_handler(ID sioid)
@@ -231,7 +231,7 @@ SCI_out_handler(ID sioid)
 
         pcb = get_siopcb(sioid);
         if (pcb->openflag == TRUE) {
-                /* ������ǽ������Хå��롼�����ƽФ���*/
+                /* 送信可能コールバックルーチンを呼出す。*/
                 SCI_ierdy_snd(pcb->exinf);
         }
 }
@@ -239,7 +239,7 @@ SCI_out_handler(ID sioid)
 #ifdef H8_CFG_SCI_ERR_HANDLER
 
 /*
- *  SCI_err_handler -- SCI ���顼���ϳ���ߥϥ�ɥ�
+ *  SCI_err_handler -- SCI エラー入力割込みハンドラ
  */
 void
 SCI_err_handler(ID sioid)
@@ -251,9 +251,9 @@ SCI_err_handler(ID sioid)
         status = sil_reb_mem((VP)(pcb->inib->base + H8SSR));
         if (status & (H8SSR_ORER | H8SSR_FER | H8SSR_PER)) {
 
-                /* ���顼����           */
+                /* エラー処理           */
 
-                /* ���顼�ե饰�򥯥ꥢ */
+                /* エラーフラグをクリア */
                 sil_wrb_mem((VP)(pcb->inib->base + H8SSR),
                             status & ~(H8SSR_ORER | H8SSR_FER | H8SSR_PER));
         }
@@ -262,14 +262,14 @@ SCI_err_handler(ID sioid)
 #endif  /* of #ifdef H8_CFG_SCI_ERR_HANDLER */
 
 /*
- *  sio_initialize -- ���ꥢ��ݡ��ȥɥ饤�Фν����
+ *  sio_initialize -- シリアルポートドライバの初期化
  */
 void
 sio_initialize(void)
 {
         INT ix;
 
-        /* SIO �����֥��å��ν���� */
+        /* SIO 管理ブロックの初期化 */
         for (ix = 0; ix < TNUM_PORT; ix++) {
                 siopcb_table[ix].inib     = &siopinib_table[ix];
                 siopcb_table[ix].openflag = FALSE;
@@ -277,7 +277,7 @@ sio_initialize(void)
 }
 
 /*
- *  sio_ena_cbr -- ���ꥢ�� I/O ����Υ�����Хå��ε���
+ *  sio_ena_cbr -- シリアル I/O からのコールバックの許可
  */
 void
 sio_ena_cbr(SIOPCB *pcb, UINT cbrtn)
@@ -295,7 +295,7 @@ sio_ena_cbr(SIOPCB *pcb, UINT cbrtn)
 }
 
 /*
- *  sio_dis_cbr -- ���ꥢ�� I/O ����Υ�����Хå��ζػ�
+ *  sio_dis_cbr -- シリアル I/O からのコールバックの禁止
  */
 void
 sio_dis_cbr(SIOPCB *pcb, UINT cbrtn)
@@ -313,7 +313,7 @@ sio_dis_cbr(SIOPCB *pcb, UINT cbrtn)
 }
 
 /*
- *  SCI ������
+ *  SCI 割り込み
  */
 void
 sio_in_handler (void)

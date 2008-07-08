@@ -10,61 +10,61 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 #ifndef _H8S_SCI_H_
 #define _H8S_SCI_H_
 
-#include <s_services.h>		/* �ǥХ����ɥ饤����ɸ�।�󥯥롼�ɥե����� */
+#include <s_services.h>		/* デバイスドライバ用標準インクルードファイル */
 #include <h8s_sil.h>
 
 /*
- *  H8S ��¢���ꥢ�륳�ߥ�˥�������󥤥󥿥ե�����(SCI)��Ϣ�����
+ *  H8S 内蔵シリアルコミュニケーションインタフェース(SCI)関連の定義
  */
 
-/* SCI�쥸�����Υ��ɥ쥹 */
-/* �١������ɥ쥹 */
-#define SCI0_BASE_ADDR	0xff78	/* ����ͥ룰 */
-#define SCI1_BASE_ADDR	0xff80	/* ����ͥ룱 */
-/* �쥸�������ե��å� */
-#define SMR		0	/* ���ꥢ��⡼�ɥ쥸������ */
-#define BRR		1	/* �ӥåȥ졼�ȥ쥸���� */
-#define SCR		2	/* ���ꥢ�륳��ȥ�����쥸���� */
-#define TDR		3	/* �ȥ�󥹥ߥåȥǡ����쥸���� */
-#define SSR		4	/* ���ꥢ�륹�ơ������쥸���� */
-#define RDR		5	/* �쥷���֥ǡ����쥸���� */
-#define SCMR		6	/* ���ޡ��ȥ����ɥ⡼�ɥ쥸���� */
+/* SCIレジスタのアドレス */
+/* ベースアドレス */
+#define SCI0_BASE_ADDR	0xff78	/* チャネル０ */
+#define SCI1_BASE_ADDR	0xff80	/* チャネル１ */
+/* レジスタオフセット */
+#define SMR		0	/* シリアルモードレジスタタ */
+#define BRR		1	/* ビットレートレジスタ */
+#define SCR		2	/* シリアルコントロールレジスタ */
+#define TDR		3	/* トランスミットデータレジスタ */
+#define SSR		4	/* シリアルステータスレジスタ */
+#define RDR		5	/* レシーブデータレジスタ */
+#define SCMR		6	/* スマートカードモードレジスタ */
 
-/* �ƥ쥸�����Υӥåȥѥ����� */
+/* 各レジスタのビットパターン */
 
 /* RSR, RDR, TSR, TDR */
-/* ������٤���Τϡ��ä�̵�� */
+/* 定義すべきものは、特に無い */
 
 /* SMR */
 #define CA	BIT7
@@ -97,111 +97,111 @@
 #define	MPBT	BIT0
 
 /*
- *  �ܡ��졼�ȴط������
- *    ư����ȿ���20 [MHz] �ʤΤǡ��ޥ˥奢��p567����ޤ롣
+ *  ボーレート関係の定義
+ *    動作周波数：20 [MHz] なので、マニュアルp567より決まる。
  */
-#if BAUD_RATE == 9600		/* �ӥåȥ졼�ȡ� 9600 [bit/s] */
+#if BAUD_RATE == 9600		/* ビットレート： 9600 [bit/s] */
 	#define BRR_RATE	64	/* N = 64 */
-#elif BAUD_RATE == 38400	/* �ӥåȥ졼�ȡ�38400 [bit/s] */
+#elif BAUD_RATE == 38400	/* ビットレート：38400 [bit/s] */
 	#define BRR_RATE	15	/* N = 15 */
-#elif BAUD_RATE == 57600	/* �ӥåȥ졼�ȡ�57600 [bit/s] */
+#elif BAUD_RATE == 57600	/* ビットレート：57600 [bit/s] */
 	#define BRR_RATE	10	/* N = 10 */
 #endif
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ *  シリアルI/Oポート初期化ブロック
  */
 typedef struct sio_port_control_block	SIOPCB;
 
 #endif /* _MACRO_ONLY */
 
 /*
- *  SCI�ѥ����ƥ।�󥿥ե������쥤�䡼
+ *  SCI用システムインタフェースレイヤー
  */
-/* x : �ݡ��ȤΥ١������ɥ쥹(UW ��)
-   y : �쥸�������ե��å�(UW ��)
-   z : �쥸������ */
+/* x : ポートのベースアドレス(UW 型)
+   y : レジスタオフセット(UW 型)
+   z : レジスタ値 */
 #define h8s_sci_wrb( x, y, z )	h8s_wrb_mem( (VP)(x + y), z )
 #define h8s_sci_reb( x, y )	h8s_reb_mem( (VP)(x + y) )
 
 /*
- *  ������Хå��롼����μ����ֹ�
+ *  コールバックルーチンの識別番号
  */
-#define SIO_ERDY_SND	1u		/* ������ǽ������Хå� */
-#define SIO_ERDY_RCV	2u		/* �������Υ�����Хå� */
+#define SIO_ERDY_SND	1u		/* 送信可能コールバック */
+#define SIO_ERDY_RCV	2u		/* 受信通知コールバック */
 
 #ifndef _MACRO_ONLY
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 extern void	h8s_sci_initialize(void);
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 extern BOOL	h8s_sci_openflag(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 extern SIOPCB	*h8s_sci_opn_por(ID siopid, VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 extern void	h8s_sci_cls_por(SIOPCB *siopcb);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 extern BOOL	h8s_sci_snd_chr(SIOPCB *siopcb, char c);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 extern INT	h8s_sci_rcv_chr(SIOPCB *siopcb);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 extern void	h8s_sci_ena_cbr(SIOPCB *siopcb, UINT cbrtn);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 extern void	h8s_sci_dis_cbr(SIOPCB *siopcb, UINT cbrtn);
 
 /*
- *  SIO�γ���ߥ����ӥ��롼����
+ *  SIOの割込みサービスルーチン
  */
 extern void	h8s_sci_isr_in(void);
 extern void	h8s_sci_isr_out(void);
 
 /*
- *  SIO�μ������顼����ߥ����ӥ��롼����
+ *  SIOの受信エラー割込みサービスルーチン
  */
 extern void	h8s_sci_isr_error(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
+ *  シリアルI/Oポートからの送信可能コールバック
  */
 extern void	h8s_sci_ierdy_snd(VP_INT exinf);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
+ *  シリアルI/Oポートからの受信通知コールバック
  */
 extern void	h8s_sci_ierdy_rcv(VP_INT exinf);
 
 /*
- *  �����ͥ뵯ư���Ѥν���� (sys_putc������)
+ *  カーネル起動時用の初期化 (sys_putcで利用)
  */
 extern void	h8s_sci_init(void);
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ�������ʥݡ���󥰡�
+ *  シリアルI/Oポートへの文字送信（ポーリング）
  */
 extern void	h8s_sci_putchar_pol(char c);
 

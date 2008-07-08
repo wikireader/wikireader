@@ -8,65 +8,65 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: vea_oea.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*  
- *   PowerPC�������ƥ�����VEA,OEA��¸�����
- *   �����ꥸ�ʥ��PowerPC�������ƥ�����ξ��
- *   ������ȥ�����MPC���꡼����IPM PowerPC6xx/7xx���꡼����
- *   ����������˳������롣
- *   ��
- *   ��PowerPC�������ƥ����������ϰʲ��Σ��ĤΥ�٥뤫������
- *   ����USIA:User Instruction Set Architecture
- *   ����VEA: Virtual Environment Architecture
- *   ����OEA: Operating Environment Architecture
- *   ��
- *   ��USIA�ˤĤ��Ƥ������ﶦ�̤Ǥ��뤬��VEA��OEA�ˤĤ��Ƥ�
- *   �����ꥸ�ʥ��PowerPC�������ƥ������The IBM PowerPC 
- *   ��Embedded Environment���줾���̤��������Ƥ��뤿�ᡢ
- *   ��VEA��OEA������ϥե������ʬ���ơ�����򥤥󥯥롼��
- *   �����Ƥ��롣
+ *   PowerPCアーキテクチャVEA,OEA依存の定義
+ *   　オリジナルのPowerPCアーキテクチャの場合
+ *   　　モトローラMPCシリーズ、IPM PowerPC6xx/7xxシリーズは
+ *   　　こちらに該当する。
+ *   　
+ *   　PowerPCアーキテクチャの定義は以下の３つのレベルから成る
+ *   　・USIA:User Instruction Set Architecture
+ *   　・VEA: Virtual Environment Architecture
+ *   　・OEA: Operating Environment Architecture
+ *   　
+ *   　USIAについては全機種共通であるが、VEAとOEAについては
+ *   　オリジナルのPowerPCアーキテクチャとThe IBM PowerPC 
+ *   　Embedded Environmentそれぞれ別に定義されているため、
+ *   　VEAとOEAの定義はファイルを分けて、それをインクルード
+ *   　している。
  */   
 
 #ifndef _VEA_OEA_H_
 #define _VEA_OEA_H_
 
 /*  
- *  �쥸�����ֹ�����
+ *  レジスタ番号の定義
  */   
 
 /*  
  *  Configuration Register
  */   
-#define PVR	287	/*  �ץ����å����С�����󡦥쥸����  */
+#define PVR	287	/*  プロセッサ・バージョン・レジスタ  */
 
 /*  
  *  Memory Management Registers
@@ -99,15 +99,15 @@
  */   
 #define DAR	 19	/*  Data Address Register  */
 
-#define SPRG0   272     /*  �ü�쥸������OS��  */
-#define SPRG1   273     /*  �ü�쥸������OS��  */
-#define SPRG2   274     /*  �ü�쥸������OS��  */
-#define SPRG3   275     /*  �ü�쥸������OS��  */
+#define SPRG0   272     /*  特殊レジスタ：OS用  */
+#define SPRG1   273     /*  特殊レジスタ：OS用  */
+#define SPRG2   274     /*  特殊レジスタ：OS用  */
+#define SPRG3   275     /*  特殊レジスタ：OS用  */
 
-#define DSISR    18     /*  DSI���ơ��������쥸����(*)  */
-                        /*  ��DSI���ǡ��������ȥ������  */
-#define SRR0     26     /*  ���������쥸����0  */
-#define SRR1     27     /*  ���������쥸����1  */
+#define DSISR    18     /*  DSIステータス・レジスタ(*)  */
+                        /*  　DSI：データ・ストア割込み  */
+#define SRR0     26     /*  待避／復帰レジスタ0  */
+#define SRR1     27     /*  待避／復帰レジスタ1  */
 
 #define FPECR	1022	/*  Floating-Point Exception Cause Register  */
 
@@ -123,7 +123,7 @@
 #define TBL	268
 #define TBU	269
 
-#define DEC      22     /*  �ǥ�������ȡ��쥸����(*)  */
+#define DEC      22     /*  ディクリメント・レジスタ(*)  */
 
 #define PIR	1023	/*  Processor Identification Register  */
 
@@ -133,40 +133,40 @@
 
 
 /*  
- *   �ӥå��ֹ�����
- *   �����ա�PowerPC�Υӥå��ֹ���̾�ȵդˤʤäƤ���
- *   ���������ޤ���32�ӥåȥ쥸������16�ӥåȥ쥸�����Ǥ�
- *   ���������ǲ��̥ӥåȤΥӥå��ֹ椬�ۤʤ����ˤ�����
+ *   ビット番号の定義
+ *   　注意：PowerPCのビット番号は通常と逆になっている
+ *   　　　　また、32ビットレジスタと16ビットレジスタでは
+ *   　　　　最下位ビットのビット番号が異なる点にも注意
  */   
 
-/*  �ޥ��󥹥ơ������쥸�����γƥӥåȤ����  */
-/*  �����ա�32�ӥåȡ�����ץ��������  */
-#define MSR_POW BIT13_32    /*  �ѥ�ޥ͡������ȡ����͡��֥�  */
-#define MSR_ILE BIT15_32    /*  �㳰�������Υ���ǥ�����⡼��  */
-                            /*  ���㳰���ջ���MSR.LE��MSR.ILE  */
-#define MSR_EE  BIT16_32    /*  ��������ߥ��͡��֥�  */
-#define MSR_PR  BIT17_32    /*  �ø���٥�  */
-                            /*  ��0�������ѥХ�������٥�  */
-                            /*  ��1���桼������٥�  */
-#define MSR_FP  BIT18_32    /*  ��ư���������͡��֥�  */
-#define MSR_ME  BIT19_32    /*  �ޥ�������å������͡��֥�  */
-#define MSR_FE0 BIT20_32    /*  ��ư�������㳰�⡼��0  */
-#define MSR_FE1 BIT23_32    /*  ��ư�������㳰�⡼��1  */
-                            /*  �����ա��ֹ椬��Ϣ³  */
-#define MSR_SE  BIT21_32    /*  ���󥰥륹�ƥåץȥ졼�������͡��֥�  */
-#define MSR_BE  BIT22_32    /*  ʬ���ȥ졼�������͡��֥�  */
-#define MSR_IP  BIT25_32    /*  �㳰�ץ�ե��å���  */
-                            /*  ��0��0x000n,nnnn  */
-                            /*  ��1��0xfffn,nnnn  */
-#define MSR_IR  BIT26_32    /*  ̿�ᥢ�ɥ쥹�Ѵ����͡��֥�  */
-#define MSR_DR  BIT27_32    /*  �ǡ������ɥ쥹�Ѵ����͡��֥�  */
-#define MSR_RI  BIT30_32    /*  ������ǽ���㳰  */
-                            /*  ��0:�����Բ�ǽ  */
-                            /*  ��1:������ǽ  */
-#define MSR_LE  BIT31_32    /*  ��ȥ륨��ǥ����󡦥⡼��  */
-                            /*  ��0���ӥå�����ǥ�����  */
-                            /*  ��1����ȥ륨��ǥ�����  */
-/*  0��ͽ�󤵤�Ƥ���ӥåȤΤ���Υޥ���  */
+/*  マシンステータスレジスタの各ビットの定義  */
+/*  　注意：32ビット・インプリメント専用  */
+#define MSR_POW BIT13_32    /*  パワーマネージメント・イネーブル  */
+#define MSR_ILE BIT15_32    /*  例外処理時のエンディアンモード  */
+                            /*  　例外受付時にMSR.LE←MSR.ILE  */
+#define MSR_EE  BIT16_32    /*  外部割込みイネーブル  */
+#define MSR_PR  BIT17_32    /*  特権レベル  */
+                            /*  　0：スーパバイザ・レベル  */
+                            /*  　1：ユーザ・レベル  */
+#define MSR_FP  BIT18_32    /*  浮動小数点イネーブル  */
+#define MSR_ME  BIT19_32    /*  マシンチェック・イネーブル  */
+#define MSR_FE0 BIT20_32    /*  浮動小数点例外モード0  */
+#define MSR_FE1 BIT23_32    /*  浮動小数点例外モード1  */
+                            /*  　注意：番号が不連続  */
+#define MSR_SE  BIT21_32    /*  シングルステップトレース・イネーブル  */
+#define MSR_BE  BIT22_32    /*  分岐トレース・イネーブル  */
+#define MSR_IP  BIT25_32    /*  例外プリフィックス  */
+                            /*  　0：0x000n,nnnn  */
+                            /*  　1：0xfffn,nnnn  */
+#define MSR_IR  BIT26_32    /*  命令アドレス変換イネーブル  */
+#define MSR_DR  BIT27_32    /*  データアドレス変換イネーブル  */
+#define MSR_RI  BIT30_32    /*  回復可能な例外  */
+                            /*  　0:回復不可能  */
+                            /*  　1:回復可能  */
+#define MSR_LE  BIT31_32    /*  リトルエンディアン・モード  */
+                            /*  　0：ビッグエンディアン  */
+                            /*  　1：リトルエンディアン  */
+/*  0で予約されているビットのためのマスク  */
 #define MSR_MASK    ~(BIT0_32 | BIT1_32 | BIT2_32 | BIT3_32 | BIT4_32 \
                     | BIT5_32 | BIT6_32 | BIT7_32 | BIT8_32 | BIT9_32 \
                     | BIT10_32 | BIT11_32 | BIT12_32 | BIT24_32 \
@@ -174,39 +174,39 @@
 
 
 /*  
- *   CPU�㳰�װ������
- *   ���ֹ椬��Ϣ³�ʤΤ�CPU�㳰�����٥����ơ��֥�˰���̵�̤����뤬��
- *   ��PowerPC�������ƥ����������˹�碌������ͥ�褷����
+ *   CPU例外要因の定義
+ *   　番号が不連続なのでCPU例外擬似ベクタテーブルに一部無駄が入るが、
+ *   　PowerPCアーキテクチャの定義に合わせる方を優先した。
  */   
-#define EXC_NO_SYSTEM_RESET             0x1   /*  �����ƥ�ꥻ�å��㳰  */
-#define EXC_NO_MACHINE_CHECK            0x2   /*  �ޥ��󡦥����å��㳰  */
-#define EXC_NO_DSI                      0x3   /*  DSI�㳰  */
-                                        /*  �ʥǡ��������ꡦ����������  */
-#define EXC_NO_ISI                      0x4   /*  ISI�㳰��̿��ե��å���  */
-#define EXC_NO_EXTERNAL_INTERRUPT       0x5   /*  ���������  */
-#define EXC_NO_ALIGNMENT                0x6   /*  ���饤�����㳰  */
-#define EXC_NO_PROGRAM                  0x7   /*  �ץ�������㳰  */
-#define EXC_NO_FLOATING_POINT_UNAVAILABLE 0x8   /*  ��ư�����������Բ�  */
-#define EXC_NO_DECREMENTER              0x9   /*  �ǥ������㳰  */
-                            /*  ����ץ���ơ�������ͭ���㳰0x00a00  */
+#define EXC_NO_SYSTEM_RESET             0x1   /*  システムリセット例外  */
+#define EXC_NO_MACHINE_CHECK            0x2   /*  マシン・チェック例外  */
+#define EXC_NO_DSI                      0x3   /*  DSI例外  */
+                                        /*  （データ・メモリ・アクセス）  */
+#define EXC_NO_ISI                      0x4   /*  ISI例外（命令フェッチ）  */
+#define EXC_NO_EXTERNAL_INTERRUPT       0x5   /*  外部割込み  */
+#define EXC_NO_ALIGNMENT                0x6   /*  アライメント例外  */
+#define EXC_NO_PROGRAM                  0x7   /*  プログラム例外  */
+#define EXC_NO_FLOATING_POINT_UNAVAILABLE 0x8   /*  浮動小数点使用不可  */
+#define EXC_NO_DECREMENTER              0x9   /*  デクリメンタ例外  */
+                            /*  インプリメンテーション固有の例外0x00a00  */
 #define EXC_NO_IMPLEMENT_EXCEPTION_00A00 0xa 
-#define EXC_NO_SYSTEM_CALL              0xc /*  �����ƥॳ����  */
-#define EXC_NO_TRACE                    0xd /*  �ȥ졼���ʥ��ץ�����  */
-#define EXC_NO_FLOATING_POINT_ASSIST    0xe /*  ��ư���������  */
-                            /*  ����ץ���ơ�������ͭ���㳰0x01000  */
+#define EXC_NO_SYSTEM_CALL              0xc /*  システムコール  */
+#define EXC_NO_TRACE                    0xd /*  トレース（オプション）  */
+#define EXC_NO_FLOATING_POINT_ASSIST    0xe /*  浮動小数点補助  */
+                            /*  インプリメンテーション固有の例外0x01000  */
 #define EXC_NO_IMPLEMENT_EXCEPTION_01000 0x10    
 
 
 /*  
- *   �㳰�μ��̿�
- *   ����������ߤ⣱�Ĥȿ�����
- *   ����0�֤�̤����
- *   ���������㳰�٥����Υ��ե��åȤ��б�
- *   �����������������ߤ⣱�Ĥȿ�����
- *   ����������������Τ��ᡢ+1���Ƥ���
+ *   例外の種別数
+ *   　外部割込みも１つと数える
+ *   　　0番は未使用
+ *   　　　・例外ベクタのオフセットと対応
+ *   　　　・外部割り込みも１つと数える
+ *   　　　・配列宣言のため、+1している
  */   
 
-#ifdef IMPLEMENT_EXCEPTION_01000    /*  �㳰�٥���0x1000����Ѥ�����  */
+#ifdef IMPLEMENT_EXCEPTION_01000    /*  例外ベクタ0x1000を使用する場合  */
 #define TMAX_EXCNO       ( 0x10 + 1 )
 
 #else /* IMPLEMENT_EXCEPTION_01000 */

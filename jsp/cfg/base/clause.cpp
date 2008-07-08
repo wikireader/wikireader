@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: clause.cpp,v 1.3 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -44,10 +44,10 @@
 using namespace std;
 
 /*
- *   ¹½Ê¸¾å¤Î°ìÀá¤ò½èÍı¤¹¤ë¥¯¥é¥¹
+ *   æ§‹æ–‡ä¸Šã®ä¸€ç¯€ã‚’å‡¦ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
  */
 
-    //»ØÄê¤·¤¿Ì¾Á°¶õ´Ö¤ÎÀá¥Ş¥Ã¥×¤ò¼èÆÀ
+    //æŒ‡å®šã—ãŸåå‰ç©ºé–“ã®ç¯€ãƒãƒƒãƒ—ã‚’å–å¾—
 Clause::map_type * Clause::getClauseMap(string name) throw()
 {
     map_type * result = NULL;
@@ -63,18 +63,18 @@ Clause::map_type * Clause::getClauseMap(string name) throw()
     return result;
 }
 
-    //Àá¤ÎÅĞÏ¿
+    //ç¯€ã®ç™»éŒ²
 void Clause::addClause(string _namespace, string _identifier) throw()
 {
     if(isValid()) {
         Namespace * const ns = Singleton<Namespace>::getInstance(nothrow);
         if(ns != 0)
             (*ns)[_namespace][_identifier] = this;
-//          ns->operator [](_namespace).insert(map_type::value_type(_identifier, this));        //¾å½ñ¤­¤µ¤»¤Ê¤¤¾ì¹ç
+//          ns->operator [](_namespace).insert(map_type::value_type(_identifier, this));        //ä¸Šæ›¸ãã•ã›ãªã„å ´åˆ
     }
 }
 
-    //¥È¡¼¥¯¥ó¤ËÂĞ¤·¤ÆÀá¼±ÊÌÌ¾¤òÀ¸À®¤¹¤ë
+    //ãƒˆãƒ¼ã‚¯ãƒ³ã«å¯¾ã—ã¦ç¯€è­˜åˆ¥åã‚’ç”Ÿæˆã™ã‚‹
 string Clause::getClauseIdentifier(Token token) throw()
 {
     string result;
@@ -100,49 +100,49 @@ string Clause::getClauseIdentifier(Token token) throw()
     return result;
 }
 
-    //Àá¤Î²òÀÏ
+    //ç¯€ã®è§£æ
 bool Clause::parseClause(string ns, Parser & p)
 {
     bool result = false;
     map_type::iterator scope;
     map_type * clause = getClauseMap(ns);
 
-        //¥¬¡¼¥ÉÀá
+        //ã‚¬ãƒ¼ãƒ‰ç¯€
     if(clause == 0 || p.eof())
         return false;
 
-        //¥È¡¼¥¯¥ó¤«¤é¼±ÊÌÌ¾¤ò¼è¤ê½Ğ¤¹
+        //ãƒˆãƒ¼ã‚¯ãƒ³ã‹ã‚‰è­˜åˆ¥åã‚’å–ã‚Šå‡ºã™
     Token  token;
     string identifier;
 
     token      = p.getToken();
     identifier = getClauseIdentifier(token);
     
-        //Àá½èÍıÉô¤Î¼Â¹Ô
+        //ç¯€å‡¦ç†éƒ¨ã®å®Ÿè¡Œ
     scope = clause->find(identifier);
     if(scope != clause->end()) {
 
-            //¥Ç¥Ğ¥Ã¥°ÍÑ¥á¥Ã¥»¡¼¥¸½ĞÎÏ
+            //ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡ºåŠ›
         DebugMessage("Clause::parseClause(%) - %\n") << ns << identifier;
 
         try {
             scope->second->before(token, p);
-            scope->second->body(token, p);  //¥Ò¥Ã¥È¤·¤¿¤â¤Î¤ò¼Â¹Ô
+            scope->second->body(token, p);  //ãƒ’ãƒƒãƒˆã—ãŸã‚‚ã®ã‚’å®Ÿè¡Œ
             scope->second->after(token, p);
             result = true;
         }
         catch(...) {
-            scope->second->onFail(token, p);    //¼ºÇÔ¤·¤¿¤È¤­¤Î¸å»ÏËö¤ò¤ª´ê¤¤¤¹¤ë
+            scope->second->onFail(token, p);    //å¤±æ•—ã—ãŸã¨ãã®å¾Œå§‹æœ«ã‚’ãŠé¡˜ã„ã™ã‚‹
             throw;
         }
     }
     else
-        p.putback(token);   //¼±ÊÌ»Ò¤Ë¥Ş¥Ã¥Á¤¹¤ë¤â¤Î¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤
+        p.putback(token);   //è­˜åˆ¥å­ã«ãƒãƒƒãƒã™ã‚‹ã‚‚ã®ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„
 
     return result;
 }
 
-    //first¤Ç»Ï¤Ş¤ëÀá¤¬¤¢¤ë¤«
+    //firstã§å§‹ã¾ã‚‹ç¯€ãŒã‚ã‚‹ã‹
 bool Clause::hasClause(string ns, string first) throw()
 {
     map_type * clause = getClauseMap(ns);
@@ -152,32 +152,32 @@ bool Clause::hasClause(string ns, string first) throw()
     return clause->find(first) != clause->end();
 }
 
-    //¥Ñ¡¼¥¹Á°½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å‰å‡¦ç†
 void Clause::before(const Token &, Parser &)
 {}
 
-    //¥Ñ¡¼¥¹¸å½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å¾Œå‡¦ç†
 void Clause::after(const Token &, Parser &)
 {}
 
-    //É¸½à¤ÎÎã³°È¯À¸»ş¤Î¸å»ÏËö¥ë¡¼¥Á¥ó
+    //æ¨™æº–ã®ä¾‹å¤–ç™ºç”Ÿæ™‚ã®å¾Œå§‹æœ«ãƒ«ãƒ¼ãƒãƒ³
 void Clause::onFail(const Token &, Parser & p) throw()
 {
     Token token;
 
-        //ºÇ¸å¤Ş¤ÇÆÉ¤ß¤­¤ë
+        //æœ€å¾Œã¾ã§èª­ã¿ãã‚‹
     while(!p.eof())
         token = p.getToken();
 }
 
-    //Àá¤òÊ£¿ô¤Î¼±ÊÌÌ¾¤ËÂĞ±şÉÕ¤±¤ë
+    //ç¯€ã‚’è¤‡æ•°ã®è­˜åˆ¥åã«å¯¾å¿œä»˜ã‘ã‚‹
 void Clause::addMultipleClauses(string ns, string id_list) throw()
 {
     string            id;
     string::size_type pos;
     string::size_type prev;
 
-        //¥«¥ó¥Ş¤Ç¶èÀÚ¤é¤ì¤¿Í×ÁÇËè¤ËaddClause¤òÈ¯¹Ô
+        //ã‚«ãƒ³ãƒã§åŒºåˆ‡ã‚‰ã‚ŒãŸè¦ç´ æ¯ã«addClauseã‚’ç™ºè¡Œ
     if(isValid()) {
         prev = 0;
         do {
@@ -191,7 +191,7 @@ void Clause::addMultipleClauses(string ns, string id_list) throw()
     }
 }
 
-    //[¥Ø¥ë¥×ÍÑ] ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÀá¤Î°ìÍ÷¤òºîÀ®¤¹¤ë
+    //[ãƒ˜ãƒ«ãƒ—ç”¨] ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç¯€ã®ä¸€è¦§ã‚’ä½œæˆã™ã‚‹
 std::string Clause::makeClauseList(string ns, int width) throw()
 {
     string result;
@@ -199,7 +199,7 @@ std::string Clause::makeClauseList(string ns, int width) throw()
     map_type * clause = getClauseMap(ns);
     size_t max_length = 0;
 
-        //ºÇÂç¤ÎÊ¸»úÎóÄ¹¤òµá¤á¤ë
+        //æœ€å¤§ã®æ–‡å­—åˆ—é•·ã‚’æ±‚ã‚ã‚‹
     scope = clause->begin();
     while(scope != clause->end()) {
         size_t i = scope->first.size();
@@ -208,7 +208,7 @@ std::string Clause::makeClauseList(string ns, int width) throw()
         ++ scope;
     }
 
-        //°ìÍ÷¤òºîÀ®
+        //ä¸€è¦§ã‚’ä½œæˆ
     size_t max_column = width/(max_length+1);
     size_t column = 0;
     scope = clause->begin();
@@ -220,7 +220,7 @@ std::string Clause::makeClauseList(string ns, int width) throw()
         ++ column;
         ++ scope;
 
-            //ËöÈø½èÍı
+            //æœ«å°¾å‡¦ç†
         if(column == max_column || scope == clause->end())
             result += '\n';
         else {
@@ -234,54 +234,54 @@ std::string Clause::makeClauseList(string ns, int width) throw()
 
 
     /*
-     *   ÀÅÅªAPI
+     *   é™çš„API
      */
 
-    //¥Ñ¡¼¥¹Á°½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å‰å‡¦ç†
 void StaticAPI::before(const Token & first, Parser & p)
 {
     Token token = p.getToken();
     if(token != Token::LPAREN) {
-        ExceptionMessage("StaticAPI [%] lacks left-parenthesis '('.","ÀÅÅªAPI[%]¤Ë¤Ï³ç¸Ì'('¤¬·ç¤±¤Æ¤¤¤ë") << first.getLiteral() << throwException;
+        ExceptionMessage("StaticAPI [%] lacks left-parenthesis '('.","é™çš„API[%]ã«ã¯æ‹¬å¼§'('ãŒæ¬ ã‘ã¦ã„ã‚‹") << first.getLiteral() << throwException;
     }
 }
 
-    //¥Ñ¡¼¥¹¸å½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å¾Œå‡¦ç†
 void StaticAPI::after(const Token & first, Parser & p)
 {
     Token token = p.getToken();
     if(token != Token::RPAREN) {
-        ExceptionMessage("StaticAPI [%] lacks right-parenthesis ')'.","ÀÅÅªAPI[%]¤Ë¤Ï³ç¸Ì')'¤¬·ç¤±¤Æ¤¤¤ë") << first.getLiteral() << throwException;
+        ExceptionMessage("StaticAPI [%] lacks right-parenthesis ')'.","é™çš„API[%]ã«ã¯æ‹¬å¼§')'ãŒæ¬ ã‘ã¦ã„ã‚‹") << first.getLiteral() << throwException;
     }
     else {
         token = p.getToken();
         if(token != ";")
-            ExceptionMessage("StaticAPI [%] lacks ';' at the end of declaration.","ÀÅÅªAPI[%]¤ÎËöÈø¤Ë';'¤¬·ç¤±¤Æ¤¤¤ë") << first.getLiteral() << throwException;
+            ExceptionMessage("StaticAPI [%] lacks ';' at the end of declaration.","é™çš„API[%]ã®æœ«å°¾ã«';'ãŒæ¬ ã‘ã¦ã„ã‚‹") << first.getLiteral() << throwException;
     }
 }
 
-    //¼ºÇÔ»ş¤Î²óÉü½èÍı
+    //å¤±æ•—æ™‚ã®å›å¾©å‡¦ç†
 void StaticAPI::onFail(const Token & , Parser & p) throw()
 {   skip(p, false);   }
 
 
-    //¥¹¥­¥Ã¥×
-    //   invalid_api : ¼¡¤ËºÇ½é¤ËÆÉ¤ß½Ğ¤µ¤ì¤ëAPI¤ÏÌµ¸ú
+    //ã‚¹ã‚­ãƒƒãƒ—
+    //   invalid_api : æ¬¡ã«æœ€åˆã«èª­ã¿å‡ºã•ã‚Œã‚‹APIã¯ç„¡åŠ¹
 void StaticAPI::skip(Parser & p, bool invalid_api) throw()
 {
-        //¥»¥ß¥³¥í¥ó or ¼¡¤ÎÀÅÅªAPI¤Î½Ğ¸½¤Ş¤Ç
+        //ã‚»ãƒŸã‚³ãƒ­ãƒ³ or æ¬¡ã®é™çš„APIã®å‡ºç¾ã¾ã§
     Token token;
-    bool  condition; //¥¢¥ìÂĞºö
+    bool  condition; //ã‚¢ãƒ¬å¯¾ç­–
 
     if(invalid_api)
-        token = p.getToken();   //¼¡¤ÎAPIÌ¾¤ÏÆÉ¤ßÈô¤Ğ¤¹
+        token = p.getToken();   //æ¬¡ã®APIåã¯èª­ã¿é£›ã°ã™
 
     do {
         token = p.getToken(true);
 
-        condition = (!token.isValid()) ||                                                   //Ìµ¸ú¤Ê¥È¡¼¥¯¥ó¤«
-                    (token == Token::PUNCTUATOR && token == ";") ||                         //¥»¥ß¥³¥í¥ó¤«
-                    (token == Token::IDENTIFIER && hasStaticAPI(token.getLiteral()));       //ÀÅÅªAPI¤«
+        condition = (!token.isValid()) ||                                                   //ç„¡åŠ¹ãªãƒˆãƒ¼ã‚¯ãƒ³ã‹
+                    (token == Token::PUNCTUATOR && token == ";") ||                         //ã‚»ãƒŸã‚³ãƒ­ãƒ³ã‹
+                    (token == Token::IDENTIFIER && hasStaticAPI(token.getLiteral()));       //é™çš„APIã‹
 
     } while(!condition);
 
@@ -290,21 +290,21 @@ void StaticAPI::skip(Parser & p, bool invalid_api) throw()
 }
 
     /*
-     *   ¥×¥ê¥×¥í¥»¥¹¥Ç¥£¥ì¥¯¥Æ¥£¥Ö
+     *   ãƒ—ãƒªãƒ—ãƒ­ã‚»ã‚¹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–
      */
 
-    //¥Ñ¡¼¥¹¸å½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å¾Œå‡¦ç†
 void Directives::after(const Token & first, Parser & p) throw(Exception)
 {
     Token token = p.getToken(true);
     if(!token.isValid() || !p.isLocatedonHeadofLine())
-        ExceptionMessage("Directive [%] has a wrong parameter or misses a new-line.","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö[%]¤ËÉÔÀµ¤Ê°ú¿ô¤¬¤¢¤ë¤«¡¢²ş¹Ô¤¬¤Ê¤¤") << first.getLiteral() << throwException;
+        ExceptionMessage("Directive [%] has a wrong parameter or misses a new-line.","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–[%]ã«ä¸æ­£ãªå¼•æ•°ãŒã‚ã‚‹ã‹ã€æ”¹è¡ŒãŒãªã„") << first.getLiteral() << throwException;
 }
 
-    //¥Ñ¡¼¥¹¼ºÇÔ»ş¤Î²óÉü½èÍı
+    //ãƒ‘ãƒ¼ã‚¹å¤±æ•—æ™‚ã®å›å¾©å‡¦ç†
 void Directives::onFail(const Token & , Parser & p) throw()
 {
-        //¼¡¤Î²ş¹Ô¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤¹
+        //æ¬¡ã®æ”¹è¡Œã¾ã§èª­ã¿é£›ã°ã™
     Token token;
 
     do {
@@ -312,7 +312,7 @@ void Directives::onFail(const Token & , Parser & p) throw()
     } while(token.isValid() && !p.isLocatedonHeadofLine());
 }
 
-/************************************************* ¥Æ¥¹¥È¥¹¥£¡¼¥È *************************************************/
+/************************************************* ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ *************************************************/
 
 #ifdef TESTSUITE
 
@@ -365,54 +365,54 @@ TESTSUITE(main, Clause)
     chain.saveContext<Namespace>();
 
     BEGIN_CASE("getClauseIdentifier","getClauseIdentifier") {
-        BEGIN_CASE("1","ÉáÄÌ¤Î¼±ÊÌ»Ò¤Ï¤½¤Î¤Ş¤Ş¤¬Ãæ¿È¤Ë¤Ê¤ë") {
+        BEGIN_CASE("1","æ™®é€šã®è­˜åˆ¥å­ã¯ãã®ã¾ã¾ãŒä¸­èº«ã«ãªã‚‹") {
             Token token(Token::IDENTIFIER, "test");
 
             if(getClauseIdentifier(token).compare("test") != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¿ôÃÍ¤ÏÃæ¿È¤Ë´Ø·¸¤Ê¤¯" INTEGER_CLAUSE_IDENTIFIER "¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2","æ•°å€¤ã¯ä¸­èº«ã«é–¢ä¿‚ãªã" INTEGER_CLAUSE_IDENTIFIER "ãŒè¿”ã‚‹") {
             Token token(Token::INTEGER, "", "", 0);
 
             if(getClauseIdentifier(token).compare(INTEGER_CLAUSE_IDENTIFIER) != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¥ê¥Æ¥é¥ë¤ÏÃæ¿È¤Ë´Ø·¸¤Ê¤¯" LITERAL_CLAUSE_IDENTIFIER "¤¬ÊÖ¤ë") {
+        BEGIN_CASE("3","ãƒªãƒ†ãƒ©ãƒ«ã¯ä¸­èº«ã«é–¢ä¿‚ãªã" LITERAL_CLAUSE_IDENTIFIER "ãŒè¿”ã‚‹") {
             Token token(Token::LITERAL, "");
 
             if(getClauseIdentifier(token).compare(LITERAL_CLAUSE_IDENTIFIER) != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","±é»»»Ò¤ÏÃæ¿È¤Ë´Ø·¸¤Ê¤¯" OPERATOR_CLAUSE_IDENTIFIER "¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4","æ¼”ç®—å­ã¯ä¸­èº«ã«é–¢ä¿‚ãªã" OPERATOR_CLAUSE_IDENTIFIER "ãŒè¿”ã‚‹") {
             Token token(Token::OPERATOR);
 
             if(getClauseIdentifier(token).compare(OPERATOR_CLAUSE_IDENTIFIER) != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","¶õÇò¤Î¥È¡¼¥¯¥ó¤Ë¤Ï¶õÊ¸»ú(==Èó¼õÍı)¤¬ÊÖ¤ë") {
+        BEGIN_CASE("5","ç©ºç™½ã®ãƒˆãƒ¼ã‚¯ãƒ³ã«ã¯ç©ºæ–‡å­—(==éå—ç†)ãŒè¿”ã‚‹") {
             Token token(Token::SPACE);
 
             if(!getClauseIdentifier(token).empty())
                 TEST_FAIL;
         } END_CASE;
 
-        TEST_CASE("6","¥¨¥é¡¼¥È¡¼¥¯¥ó¤Ë¤Ï¶õÊ¸»ú(==Èó¼õÍı)¤¬ÊÖ¤ë", getClauseIdentifier(Token(Token::ERROR)).empty());
-        TEST_CASE("7","EOS¥È¡¼¥¯¥ó¤Ë¤Ï¶õÊ¸»ú(==Èó¼õÍı)¤¬ÊÖ¤ë",   getClauseIdentifier(Token(Token::END_OF_STREAM)).empty());
+        TEST_CASE("6","ã‚¨ãƒ©ãƒ¼ãƒˆãƒ¼ã‚¯ãƒ³ã«ã¯ç©ºæ–‡å­—(==éå—ç†)ãŒè¿”ã‚‹", getClauseIdentifier(Token(Token::ERROR)).empty());
+        TEST_CASE("7","EOSãƒˆãƒ¼ã‚¯ãƒ³ã«ã¯ç©ºæ–‡å­—(==éå—ç†)ãŒè¿”ã‚‹",   getClauseIdentifier(Token(Token::END_OF_STREAM)).empty());
 
     } END_CASE;
 
     BEGIN_CASE("getClauseMap","getClauseMap") {
-        BEGIN_CASE("1","²¿¤âÅĞÏ¿¤·¤Æ¤¤¤Ê¤¤¶õ´Ö¤Ë¤ÏNULL¤¬ÊÖ¤ë") {
+        BEGIN_CASE("1","ä½•ã‚‚ç™»éŒ²ã—ã¦ã„ãªã„ç©ºé–“ã«ã¯NULLãŒè¿”ã‚‹") {
             chain.renewInstance();
             if(Clause::getClauseMap("unknown") != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","Í×ÁÇ¤¬¤¢¤ì¤ĞÈó0¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2","è¦ç´ ãŒã‚ã‚Œã°é0ãŒè¿”ã‚‹") {
             chain.renewInstance();
             Singleton<Namespace>::getInstance()->operator []("test");
 
@@ -422,56 +422,56 @@ TESTSUITE(main, Clause)
     } END_CASE;
 
     BEGIN_CASE("addClause","addClause") {
-        BEGIN_CASE("1","¥ª¥Ö¥¸¥§¥¯¥È¤òÅĞÏ¿¤Ç¤­¤ë") {
+        BEGIN_CASE("1","ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç™»éŒ²ã§ãã‚‹") {
             chain.renewInstance();
             Clause_test ct;
             Clause_test ct2;
 
-            BEGIN_CASE("1","ÉáÄÌ¤ËÅĞÏ¿¤¹¤ë") {
+            BEGIN_CASE("1","æ™®é€šã«ç™»éŒ²ã™ã‚‹") {
                 ct.addClause("test","first_literal");
 
-                TEST_CASE("1","Ì¾Á°¶õ´Ö¤¬Áı¤¨¤Æ¤¤¤ë", Singleton<Namespace>::getInstance()->size() == 1);
-                TEST_CASE("2","\"test\"¤È¤¤¤¦¶õ´Ö¤¬¤¢¤ë", Singleton<Namespace>::getInstance()->find("test") != Singleton<Namespace>::getInstance()->end());
-                TEST_CASE("3","getClause¤Ç¥¢¥É¥ì¥¹¤¬¼è¤ì¤ë", Clause::getClauseMap("test") != 0); 
-                TEST_CASE("4","Ì¾Á°¶õ´Ö¤ÎÀá¤Î¿ô¤Ï1",  Clause::getClauseMap("test")->size() == 1);
-                TEST_CASE("5","\"first_literal\"¤Î¥Î¡¼¥É¤¬¤¢¤ë", Clause::getClauseMap("test")->find("first_literal") != Clause::getClauseMap("test")->end());
-                TEST_CASE("6","´ØÏ¢ÉÕ¤±¤é¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", (*Clause::getClauseMap("test"))["first_literal"] == &ct);
+                TEST_CASE("1","åå‰ç©ºé–“ãŒå¢—ãˆã¦ã„ã‚‹", Singleton<Namespace>::getInstance()->size() == 1);
+                TEST_CASE("2","\"test\"ã¨ã„ã†ç©ºé–“ãŒã‚ã‚‹", Singleton<Namespace>::getInstance()->find("test") != Singleton<Namespace>::getInstance()->end());
+                TEST_CASE("3","getClauseã§ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒå–ã‚Œã‚‹", Clause::getClauseMap("test") != 0); 
+                TEST_CASE("4","åå‰ç©ºé–“ã®ç¯€ã®æ•°ã¯1",  Clause::getClauseMap("test")->size() == 1);
+                TEST_CASE("5","\"first_literal\"ã®ãƒãƒ¼ãƒ‰ãŒã‚ã‚‹", Clause::getClauseMap("test")->find("first_literal") != Clause::getClauseMap("test")->end());
+                TEST_CASE("6","é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸå€¤ãŒæ­£ã—ã„", (*Clause::getClauseMap("test"))["first_literal"] == &ct);
             } END_CASE;
 
-            BEGIN_CASE("2","2¸ÄÌÜ¤òÅĞÏ¿¤¹¤ë") {
+            BEGIN_CASE("2","2å€‹ç›®ã‚’ç™»éŒ²ã™ã‚‹") {
                 ct2.addClause("test","second_literal");
 
-                TEST_CASE("1","Ì¾Á°¶õ´Ö¤¬Áı¤¨¤Æ¤¤¤Ê¤¤", Singleton<Namespace>::getInstance()->size() == 1);
-                TEST_CASE("2","\"test\"¤È¤¤¤¦¶õ´Ö¤¬¤¢¤ë", Singleton<Namespace>::getInstance()->find("test") != Singleton<Namespace>::getInstance()->end());
-                TEST_CASE("3","Ì¾Á°¶õ´Ö¤ÎÀá¤Î¿ô¤Ï2",  Clause::getClauseMap("test")->size() == 2);
-                TEST_CASE("4","\"second_literal\"¤Î¥Î¡¼¥É¤¬¤¢¤ë", Clause::getClauseMap("test")->find("second_literal") != Clause::getClauseMap("test")->end());
-                TEST_CASE("5","´ØÏ¢ÉÕ¤±¤é¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", (*Clause::getClauseMap("test"))["second_literal"] == &ct2);
+                TEST_CASE("1","åå‰ç©ºé–“ãŒå¢—ãˆã¦ã„ãªã„", Singleton<Namespace>::getInstance()->size() == 1);
+                TEST_CASE("2","\"test\"ã¨ã„ã†ç©ºé–“ãŒã‚ã‚‹", Singleton<Namespace>::getInstance()->find("test") != Singleton<Namespace>::getInstance()->end());
+                TEST_CASE("3","åå‰ç©ºé–“ã®ç¯€ã®æ•°ã¯2",  Clause::getClauseMap("test")->size() == 2);
+                TEST_CASE("4","\"second_literal\"ã®ãƒãƒ¼ãƒ‰ãŒã‚ã‚‹", Clause::getClauseMap("test")->find("second_literal") != Clause::getClauseMap("test")->end());
+                TEST_CASE("5","é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸå€¤ãŒæ­£ã—ã„", (*Clause::getClauseMap("test"))["second_literal"] == &ct2);
             } END_CASE;
 
-            BEGIN_CASE("3","2¸ÄÌÜ¤ò1¸ÄÌÜ¤Ç¾å½ñ¤­ÅĞÏ¿¤¹¤ë") {
+            BEGIN_CASE("3","2å€‹ç›®ã‚’1å€‹ç›®ã§ä¸Šæ›¸ãç™»éŒ²ã™ã‚‹") {
                 ct.addClause("test","second_literal");
-                TEST_CASE("1","¾å½ñ¤­¤µ¤ì¤Æ¤¤¤ë", (*Clause::getClauseMap("test"))["second_literal"] == &ct);
+                TEST_CASE("1","ä¸Šæ›¸ãã•ã‚Œã¦ã„ã‚‹", (*Clause::getClauseMap("test"))["second_literal"] == &ct);
             } END_CASE;
 
-            BEGIN_CASE("4","°ã¤¦Ì¾Á°¶õ´Ö¤ËÅĞÏ¿¤¹¤ë") {
+            BEGIN_CASE("4","é•ã†åå‰ç©ºé–“ã«ç™»éŒ²ã™ã‚‹") {
                 ct.addClause("TEST","first_literal");
 
-                TEST_CASE("1","Ì¾Á°¶õ´Ö¤¬Áı¤¨¤Æ¤¤¤ë", Singleton<Namespace>::getInstance()->size() == 2);
-                TEST_CASE("2","\"TEST\"¤È¤¤¤¦¶õ´Ö¤¬¤¢¤ë", Singleton<Namespace>::getInstance()->find("TEST") != Singleton<Namespace>::getInstance()->end());
-                TEST_CASE("3","getClause¤Ç¥¢¥É¥ì¥¹¤¬¼è¤ì¤ë", Clause::getClauseMap("TEST") != 0); 
-                TEST_CASE("4","Ì¾Á°¶õ´Ö¤ÎÀá¤Î¿ô¤Ï1",  Clause::getClauseMap("TEST")->size() == 1);
-                TEST_CASE("5","\"first_literal\"¤Î¥Î¡¼¥É¤¬¤¢¤ë", Clause::getClauseMap("TEST")->find("first_literal") != Clause::getClauseMap("TEST")->end());
-                TEST_CASE("6","´ØÏ¢ÉÕ¤±¤é¤ì¤¿ÃÍ¤¬Àµ¤·¤¤", (*Clause::getClauseMap("TEST"))["first_literal"] == &ct);
+                TEST_CASE("1","åå‰ç©ºé–“ãŒå¢—ãˆã¦ã„ã‚‹", Singleton<Namespace>::getInstance()->size() == 2);
+                TEST_CASE("2","\"TEST\"ã¨ã„ã†ç©ºé–“ãŒã‚ã‚‹", Singleton<Namespace>::getInstance()->find("TEST") != Singleton<Namespace>::getInstance()->end());
+                TEST_CASE("3","getClauseã§ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒå–ã‚Œã‚‹", Clause::getClauseMap("TEST") != 0); 
+                TEST_CASE("4","åå‰ç©ºé–“ã®ç¯€ã®æ•°ã¯1",  Clause::getClauseMap("TEST")->size() == 1);
+                TEST_CASE("5","\"first_literal\"ã®ãƒãƒ¼ãƒ‰ãŒã‚ã‚‹", Clause::getClauseMap("TEST")->find("first_literal") != Clause::getClauseMap("TEST")->end());
+                TEST_CASE("6","é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸå€¤ãŒæ­£ã—ã„", (*Clause::getClauseMap("TEST"))["first_literal"] == &ct);
             } END_CASE;
 
         } END_CASE;
 
-        BEGIN_CASE("2","Ìµ¸ú¤Ê¥ª¥Ö¥¸¥§¥¯¥È¤ÏÅĞÏ¿¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","ç„¡åŠ¹ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç™»éŒ²ã•ã‚Œãªã„") {
             chain.renewInstance();
 
             ((Clause_test *)0)->addClause("test","first_literal");
 
-            TEST_CASE("1","Ì¾Á°¶õ´Ö¤¬Áı¤¨¤Æ¤¤¤Ê¤¤", Singleton<Namespace>::getInstance()->size() == 0);
+            TEST_CASE("1","åå‰ç©ºé–“ãŒå¢—ãˆã¦ã„ãªã„", Singleton<Namespace>::getInstance()->size() == 0);
         } END_CASE;
 
     } END_CASE;
@@ -480,33 +480,33 @@ TESTSUITE(main, Clause)
         Clause_test ct;
         chain.renewInstance();
 
-        TEST_CASE("1","²¿¤âÍ×ÁÇ¤¬¤Ê¤¤¤È¤­¤Ë¤âÀµ¾ï¤ËÆ°ºî¤¹¤ë", !Clause::hasClause("dummy","null"));
+        TEST_CASE("1","ä½•ã‚‚è¦ç´ ãŒãªã„ã¨ãã«ã‚‚æ­£å¸¸ã«å‹•ä½œã™ã‚‹", !Clause::hasClause("dummy","null"));
 
         ct.addClause("test","first_literal");
 
-        TEST_CASE("2","ÅĞÏ¿¤·¤¿Í×ÁÇ¤òÃµ¤»¡¢true¤¬ÊÖ¤ë", Clause::hasClause("test","first_literal"));
-        TEST_CASE("3","Â¸ºß¤·¤Ê¤¤Í×ÁÇ¤Ëfalse¤¬ÊÖ¤ë", !Clause::hasClause("dummy","null"));
+        TEST_CASE("2","ç™»éŒ²ã—ãŸè¦ç´ ã‚’æ¢ã›ã€trueãŒè¿”ã‚‹", Clause::hasClause("test","first_literal"));
+        TEST_CASE("3","å­˜åœ¨ã—ãªã„è¦ç´ ã«falseãŒè¿”ã‚‹", !Clause::hasClause("dummy","null"));
     } END_CASE;
 
     BEGIN_CASE("addMultipleClauses","addMultipleClauses") {
-        BEGIN_CASE("1","Ã±°ì¤ÎÀá¤òÅĞÏ¿¤Ç¤­¤ë") {
+        BEGIN_CASE("1","å˜ä¸€ã®ç¯€ã‚’ç™»éŒ²ã§ãã‚‹") {
             chain.renewInstance();
             Clause_test ct;
 
             ct.addMultipleClauses("test","first");
 
-            TEST_CASE("1","ÅĞÏ¿¤·¤¿Àá¤¬¤¢¤ë", Clause::hasClause("test","first"));
+            TEST_CASE("1","ç™»éŒ²ã—ãŸç¯€ãŒã‚ã‚‹", Clause::hasClause("test","first"));
         } END_CASE;
 
-        BEGIN_CASE("2","Ê£¿ô¤ÎÀá¤òÅĞÏ¿¤¹¤ë") {
+        BEGIN_CASE("2","è¤‡æ•°ã®ç¯€ã‚’ç™»éŒ²ã™ã‚‹") {
             chain.renewInstance();
             Clause_test ct;
 
             ct.addMultipleClauses("test","first,second,third");
 
-            TEST_CASE("1","ÅĞÏ¿¤·¤¿Àá¤¬¤¢¤ë", Clause::hasClause("test","first"));
-            TEST_CASE("2","ÅĞÏ¿¤·¤¿Àá¤¬¤¢¤ë", Clause::hasClause("test","second"));
-            TEST_CASE("3","ÅĞÏ¿¤·¤¿Àá¤¬¤¢¤ë", Clause::hasClause("test","third"));
+            TEST_CASE("1","ç™»éŒ²ã—ãŸç¯€ãŒã‚ã‚‹", Clause::hasClause("test","first"));
+            TEST_CASE("2","ç™»éŒ²ã—ãŸç¯€ãŒã‚ã‚‹", Clause::hasClause("test","second"));
+            TEST_CASE("3","ç™»éŒ²ã—ãŸç¯€ãŒã‚ã‚‹", Clause::hasClause("test","third"));
         } END_CASE;
 
     } END_CASE;
@@ -520,7 +520,7 @@ TESTSUITE(main, Clause)
         buf.str("first second third 4 5 6 siebt acht neunt 0xa");
 
         ct.onFail_super(token, p);
-        TEST_CASE("1","¥¹¥È¥ê¡¼¥à¤ÏºÇ¸å¤Ş¤Ç¿Ê¤ó¤Ç¤¤¤ë", p.eof());
+        TEST_CASE("1","ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¯æœ€å¾Œã¾ã§é€²ã‚“ã§ã„ã‚‹", p.eof());
     } END_CASE;
 
     BEGIN_CASE("parseClause","parseClause") {
@@ -529,21 +529,21 @@ TESTSUITE(main, Clause)
 
         ct.addClause("test","first");
 
-        BEGIN_CASE("1","Ì¾Á°¶õ´Ö¤òÁªÂò¤·¤ÆÀµ¤·¤¯Àá¤ò¼Â¹Ô¤Ç¤­¤ë") {
+        BEGIN_CASE("1","åå‰ç©ºé–“ã‚’é¸æŠã—ã¦æ­£ã—ãç¯€ã‚’å®Ÿè¡Œã§ãã‚‹") {
             stringstream buf;
             Parser p(&buf, "test");
             buf.str("first second");
 
             TestSuite::clearCheckpoints();
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", Clause::parseClause("test", p));
-            TEST_CASE("2","Clause::before¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Clause_test::before"));
-            TEST_CASE("3","Clause::body¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Clause_test::body"));
-            TEST_CASE("4","body¤Îfirst¤¬Àµ¤·¤¤", ct.first == "first");
-            TEST_CASE("5","body¤ÇÆÉ¤ß½Ğ¤·¤¿¥È¡¼¥¯¥ó¤¬Àµ¤·¤¤", ct.second == "second");
-            TEST_CASE("6","Clause::after¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Clause_test::after"));
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", Clause::parseClause("test", p));
+            TEST_CASE("2","Clause::beforeãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Clause_test::before"));
+            TEST_CASE("3","Clause::bodyãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Clause_test::body"));
+            TEST_CASE("4","bodyã®firstãŒæ­£ã—ã„", ct.first == "first");
+            TEST_CASE("5","bodyã§èª­ã¿å‡ºã—ãŸãƒˆãƒ¼ã‚¯ãƒ³ãŒæ­£ã—ã„", ct.second == "second");
+            TEST_CASE("6","Clause::afterãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Clause_test::after"));
         } END_CASE;
 
-        BEGIN_CASE("2","Àá¤Î½èÍıÃæ¤ËÎã³°¤¬µ¯¤³¤ë¤ÈonFail¤¬¸Æ¤Ğ¤ì¤ë") {
+        BEGIN_CASE("2","ç¯€ã®å‡¦ç†ä¸­ã«ä¾‹å¤–ãŒèµ·ã“ã‚‹ã¨onFailãŒå‘¼ã°ã‚Œã‚‹") {
             stringstream buf;
             Parser p(&buf, "test");
             buf.str("first second");
@@ -555,27 +555,27 @@ TESTSUITE(main, Clause)
             try { Clause::parseClause("test", p); }
             catch(...){ result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤³¤ë", result);
-            TEST_CASE("2","Clause::body¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Clause_test::body"));
-            TEST_CASE("3","Clause::onFail¤¬¼Â¹Ô¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Clause_test::onFail"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹", result);
+            TEST_CASE("2","Clause::bodyãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Clause_test::body"));
+            TEST_CASE("3","Clause::onFailãŒå®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Clause_test::onFail"));
         } END_CASE;
 
-        BEGIN_CASE("3","Â¸ºß¤·¤Ê¤¤Ì¾Á°¶õ´Ö¤ò»ØÄê¤¹¤ë") {
+        BEGIN_CASE("3","å­˜åœ¨ã—ãªã„åå‰ç©ºé–“ã‚’æŒ‡å®šã™ã‚‹") {
             stringstream buf;
             Parser p(&buf, "test");
             buf.str("first second");
 
-            TEST_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !Clause::parseClause("unknown", p));
+            TEST_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !Clause::parseClause("unknown", p));
         } END_CASE;
 
-        BEGIN_CASE("4","EOF¤ËÃ£¤·¤¿¥¹¥È¥ê¡¼¥à¤ò»ØÄê¤¹¤ë") {
+        BEGIN_CASE("4","EOFã«é”ã—ãŸã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’æŒ‡å®šã™ã‚‹") {
             stringstream buf;
             Parser p(&buf, "test");
             buf.str("");
             buf.get();
 
-            TEST_CASE("0","[Á°Äó]¥¹¥È¥ê¡¼¥à¤Ï½ªÃ¼¤ËÃ£¤·¤Æ¤¤¤ë", buf.eof());
-            TEST_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !Clause::parseClause("unknown", p));
+            TEST_CASE("0","[å‰æ]ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¯çµ‚ç«¯ã«é”ã—ã¦ã„ã‚‹", buf.eof());
+            TEST_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !Clause::parseClause("unknown", p));
         } END_CASE;
     } END_CASE;
 
@@ -605,55 +605,55 @@ TESTSUITE(main, StaticAPI)
     Exception::setThrowControl(true);
 
     BEGIN_CASE("regist","regist") {
-        BEGIN_CASE("1","Ã±°ì¤ÎÌ¾Á°¤ò»ØÄê¤·¤ÆÅĞÏ¿¤Ç¤­¤ë") {
+        BEGIN_CASE("1","å˜ä¸€ã®åå‰ã‚’æŒ‡å®šã—ã¦ç™»éŒ²ã§ãã‚‹") {
             Singleton<Namespace>::renewInstance();
             StaticAPI_test api;
 
             api.regist("VTST_API");
 
-            TEST_CASE("1","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("VTST_API"));
+            TEST_CASE("1","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("VTST_API"));
         } END_CASE;
 
-        BEGIN_CASE("2","Ê£¿ô¤ÎÌ¾Á°¤ò»ØÄê¤·¤ÆÅĞÏ¿¤¹¤ë") {
+        BEGIN_CASE("2","è¤‡æ•°ã®åå‰ã‚’æŒ‡å®šã—ã¦ç™»éŒ²ã™ã‚‹") {
             Singleton<Namespace>::renewInstance();
             StaticAPI_test api;
 
             api.regist("API_1,API_2,API_3");
 
-            TEST_CASE("1","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API_1"));
-            TEST_CASE("2","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API_2"));
-            TEST_CASE("3","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API_3"));
+            TEST_CASE("1","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API_1"));
+            TEST_CASE("2","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API_2"));
+            TEST_CASE("3","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API_3"));
         } END_CASE;
 
-        BEGIN_CASE("3","¾å½ñ¤­¤¹¤ë") {
+        BEGIN_CASE("3","ä¸Šæ›¸ãã™ã‚‹") {
             Singleton<Namespace>::renewInstance();
             StaticAPI_test api;
             StaticAPI_test api2;
             StaticAPI_test api3;
 
             api.regist("test");
-            TEST_CASE("1","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("test"));
-            TEST_CASE("2","API¥Ï¥ó¥É¥é¤¬Àµ¤·¤¤", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api);
+            TEST_CASE("1","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("test"));
+            TEST_CASE("2","APIãƒãƒ³ãƒ‰ãƒ©ãŒæ­£ã—ã„", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api);
 
             api2.regist("test");
-            TEST_CASE("3","API¥Ï¥ó¥É¥é¤¬¾å½ñ¤­¤µ¤ì¤Æ¤¤¤ë", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api2);
+            TEST_CASE("3","APIãƒãƒ³ãƒ‰ãƒ©ãŒä¸Šæ›¸ãã•ã‚Œã¦ã„ã‚‹", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api2);
 
             api3.regist("test");
-            TEST_CASE("4","API¥Ï¥ó¥É¥é¤¬¾å½ñ¤­¤µ¤ì¤Æ¤¤¤ë", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api3);
+            TEST_CASE("4","APIãƒãƒ³ãƒ‰ãƒ©ãŒä¸Šæ›¸ãã•ã‚Œã¦ã„ã‚‹", (*StaticAPI::getClauseMap(NAMESPACE_STATICAPI))["test"] == &api3);
         } END_CASE;
 
-        BEGIN_CASE("4","¥³¥ó¥¹¥È¥é¥¯¥¿¤ÇÅĞÏ¿") {
+        BEGIN_CASE("4","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ç™»éŒ²") {
             Singleton<Namespace>::renewInstance();
             StaticAPI_test api("API1,API2,API3");
 
-            TEST_CASE("1","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API1"));
-            TEST_CASE("2","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API2"));
-            TEST_CASE("3","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",StaticAPI::hasStaticAPI("API3"));
+            TEST_CASE("1","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API1"));
+            TEST_CASE("2","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API2"));
+            TEST_CASE("3","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",StaticAPI::hasStaticAPI("API3"));
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("parseStaticAPI","parseStaticAPI") {
-        BEGIN_CASE("1","ÀÅÅªAPI¤òÀµ¤·¤¯½èÍı¤Ç¤­¤ë") {
+        BEGIN_CASE("1","é™çš„APIã‚’æ­£ã—ãå‡¦ç†ã§ãã‚‹") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             StaticAPI_test api("API");
@@ -666,11 +666,11 @@ TESTSUITE(main, StaticAPI)
             try { StaticAPI::parseStaticAPI(p); }
             catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤é¤Ê¤¤", result);
-            TEST_CASE("2","ÀÅÅªAPI¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("StaticAPI::body"));
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã‚‰ãªã„", result);
+            TEST_CASE("2","é™çš„APIã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("StaticAPI::body"));
         } END_CASE;
 
-        BEGIN_CASE("2","'('Ëº¤ì¤ÇÎã³°") {
+        BEGIN_CASE("2","'('å¿˜ã‚Œã§ä¾‹å¤–") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             StaticAPI_test api("API");
@@ -683,11 +683,11 @@ TESTSUITE(main, StaticAPI)
             try { StaticAPI::parseStaticAPI(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","ÀÅÅªAPI¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Ê¤¤", !TestSuite::isReached("StaticAPI::body"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","é™çš„APIã®æœ¬ä½“ãŒå‘¼ã°ã‚Œãªã„", !TestSuite::isReached("StaticAPI::body"));
         } END_CASE;
 
-        BEGIN_CASE("3","')'Ëº¤ì¤ÇÎã³°") {
+        BEGIN_CASE("3","')'å¿˜ã‚Œã§ä¾‹å¤–") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             StaticAPI_test api("API");
@@ -700,11 +700,11 @@ TESTSUITE(main, StaticAPI)
             try { StaticAPI::parseStaticAPI(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","ÀÅÅªAPI¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("StaticAPI::body"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","é™çš„APIã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("StaticAPI::body"));
         } END_CASE;
 
-        BEGIN_CASE("4","';'Ëº¤ì¤ÇÎã³°") {
+        BEGIN_CASE("4","';'å¿˜ã‚Œã§ä¾‹å¤–") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             StaticAPI_test api("API");
@@ -717,13 +717,13 @@ TESTSUITE(main, StaticAPI)
             try { StaticAPI::parseStaticAPI(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","ÀÅÅªAPI¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("StaticAPI::body"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","é™çš„APIã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("StaticAPI::body"));
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("onFail","onFail") {
-        BEGIN_CASE("1","¥»¥ß¥³¥í¥ó¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤·") {
+        BEGIN_CASE("1","ã‚»ãƒŸã‚³ãƒ­ãƒ³ã¾ã§èª­ã¿é£›ã°ã—") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Parser p(&buf, "test");
@@ -733,10 +733,10 @@ TESTSUITE(main, StaticAPI)
 
             api.onFail_super(Token(), p);
 
-            TEST_CASE("1","¥»¥ß¥³¥í¥ó¤Î¼¡¤¬ÆÉ¤á¤ë", p.getToken() == "next_api");
+            TEST_CASE("1","ã‚»ãƒŸã‚³ãƒ­ãƒ³ã®æ¬¡ãŒèª­ã‚ã‚‹", p.getToken() == "next_api");
         } END_CASE;
 
-        BEGIN_CASE("2","¼¡¤ÎAPI¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤·") {
+        BEGIN_CASE("2","æ¬¡ã®APIã¾ã§èª­ã¿é£›ã°ã—") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Parser p(&buf, "test");
@@ -745,12 +745,12 @@ TESTSUITE(main, StaticAPI)
 
             api.onFail_super(p.getToken(), p);
 
-            TEST_CASE("1","¼¡¤ÎAPIÌ¾¤¬ÆÉ¤á¤ë", p.getToken() == "next_api");
+            TEST_CASE("1","æ¬¡ã®APIåãŒèª­ã‚ã‚‹", p.getToken() == "next_api");
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("skip","skip") {
-        BEGIN_CASE("1","¥»¥ß¥³¥í¥ó¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤·") {
+        BEGIN_CASE("1","ã‚»ãƒŸã‚³ãƒ­ãƒ³ã¾ã§èª­ã¿é£›ã°ã—") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Parser p(&buf, "test");
@@ -760,10 +760,10 @@ TESTSUITE(main, StaticAPI)
 
             StaticAPI::skip(p);
 
-            TEST_CASE("1","¥»¥ß¥³¥í¥ó¤Î¼¡¤¬ÆÉ¤á¤ë", p.getToken() == "next_api");
+            TEST_CASE("1","ã‚»ãƒŸã‚³ãƒ­ãƒ³ã®æ¬¡ãŒèª­ã‚ã‚‹", p.getToken() == "next_api");
         } END_CASE;
 
-        BEGIN_CASE("2","¼¡¤ÎAPI¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤·") {
+        BEGIN_CASE("2","æ¬¡ã®APIã¾ã§èª­ã¿é£›ã°ã—") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Parser p(&buf, "test");
@@ -772,10 +772,10 @@ TESTSUITE(main, StaticAPI)
 
             StaticAPI::skip(p);
 
-            TEST_CASE("1","¼¡¤ÎAPIÌ¾¼¡¤¬ÆÉ¤á¤ë", p.getToken() == "next_api");
+            TEST_CASE("1","æ¬¡ã®APIåæ¬¡ãŒèª­ã‚ã‚‹", p.getToken() == "next_api");
         } END_CASE;
 
-        BEGIN_CASE("3","ÀèÆ¬¤¬APIÌ¾¤Ç¤âÆÉ¤ßÈô¤Ğ¤·¤Ç¤­¤ë") {
+        BEGIN_CASE("3","å…ˆé ­ãŒAPIåã§ã‚‚èª­ã¿é£›ã°ã—ã§ãã‚‹") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Parser p(&buf, "test");
@@ -784,7 +784,7 @@ TESTSUITE(main, StaticAPI)
 
             StaticAPI::skip(p);
 
-            TEST_CASE("1","¼¡¤ÎAPIÌ¾¤¬ÆÉ¤á¤ë", p.getToken() == "next_api");
+            TEST_CASE("1","æ¬¡ã®APIåãŒèª­ã‚ã‚‹", p.getToken() == "next_api");
         } END_CASE;
     } END_CASE;
     
@@ -818,55 +818,55 @@ TESTSUITE(main, Directives)
     Exception::setThrowControl(true);
 
     BEGIN_CASE("regist","regist") {
-        BEGIN_CASE("1","Ã±°ì¤ÎÌ¾Á°¤ò»ØÄê¤·¤ÆÅĞÏ¿¤Ç¤­¤ë") {
+        BEGIN_CASE("1","å˜ä¸€ã®åå‰ã‚’æŒ‡å®šã—ã¦ç™»éŒ²ã§ãã‚‹") {
             Singleton<Namespace>::renewInstance();
             Directives_test api;
 
             api.regist("include");
 
-            TEST_CASE("1","API¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("include"));
+            TEST_CASE("1","APIã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("include"));
         } END_CASE;
 
-        BEGIN_CASE("2","Ê£¿ô¤ÎÌ¾Á°¤ò»ØÄê¤·¤ÆÅĞÏ¿¤¹¤ë") {
+        BEGIN_CASE("2","è¤‡æ•°ã®åå‰ã‚’æŒ‡å®šã—ã¦ç™»éŒ²ã™ã‚‹") {
             Singleton<Namespace>::renewInstance();
             Directives_test api;
 
             api.regist("pragma,define,endif");
 
-            TEST_CASE("1","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("pragma"));
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("define"));
-            TEST_CASE("3","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("endif"));
+            TEST_CASE("1","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("pragma"));
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("define"));
+            TEST_CASE("3","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("endif"));
         } END_CASE;
 
-        BEGIN_CASE("3","¾å½ñ¤­¤¹¤ë") {
+        BEGIN_CASE("3","ä¸Šæ›¸ãã™ã‚‹") {
             Singleton<Namespace>::renewInstance();
             Directives_test api;
             Directives_test api2;
             Directives_test api3;
 
             api.regist("test");
-            TEST_CASE("1","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("test"));
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¥Ï¥ó¥É¥é¤¬Àµ¤·¤¤", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api);
+            TEST_CASE("1","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("test"));
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ãƒãƒ³ãƒ‰ãƒ©ãŒæ­£ã—ã„", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api);
 
             api2.regist("test");
-            TEST_CASE("3","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¥Ï¥ó¥É¥é¤¬¾å½ñ¤­¤µ¤ì¤Æ¤¤¤ë", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api2);
+            TEST_CASE("3","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ãƒãƒ³ãƒ‰ãƒ©ãŒä¸Šæ›¸ãã•ã‚Œã¦ã„ã‚‹", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api2);
 
             api3.regist("test");
-            TEST_CASE("4","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¥Ï¥ó¥É¥é¤¬¾å½ñ¤­¤µ¤ì¤Æ¤¤¤ë", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api3);
+            TEST_CASE("4","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ãƒãƒ³ãƒ‰ãƒ©ãŒä¸Šæ›¸ãã•ã‚Œã¦ã„ã‚‹", (*Directives::getClauseMap(NAMESPACE_DIRECTIVES))["test"] == &api3);
         } END_CASE;
 
-        BEGIN_CASE("4","¥³¥ó¥¹¥È¥é¥¯¥¿¤ÇÅĞÏ¿") {
+        BEGIN_CASE("4","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ç™»éŒ²") {
             Singleton<Namespace>::renewInstance();
             Directives_test api("pragma,define,endif");
 
-            TEST_CASE("1","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("pragma"));
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("define"));
-            TEST_CASE("3","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÏÀµ¤·¤¯ÅĞÏ¿¤Ç¤­¤Æ¤¤¤ë",Directives::hasDirectives("endif"));
+            TEST_CASE("1","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("pragma"));
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("define"));
+            TEST_CASE("3","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã¯æ­£ã—ãç™»éŒ²ã§ãã¦ã„ã‚‹",Directives::hasDirectives("endif"));
         } END_CASE;
     } END_CASE;
     
     BEGIN_CASE("parseDirectives","parseDirectives") {
-        BEGIN_CASE("1","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤òÀµ¤·¤¯½èÍı¤Ç¤­¤ë") {
+        BEGIN_CASE("1","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã‚’æ­£ã—ãå‡¦ç†ã§ãã‚‹") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Directives_test api("pragma");
@@ -879,11 +879,11 @@ TESTSUITE(main, Directives)
             try { Directives::parseDirectives(p); }
             catch(...) { result = false; }
 
-            TEST_CASE("1","Îã³°¤Ïµ¯¤é¤Ê¤¤", result);
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Directives::body"));
+            TEST_CASE("1","ä¾‹å¤–ã¯èµ·ã‚‰ãªã„", result);
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Directives::body"));
         } END_CASE;
 
-        BEGIN_CASE("2","²ş¹Ô¤Ê¤·(ÉÔÀµ¥Ñ¥é¥á¡¼¥¿)¤ÇÎã³°") {
+        BEGIN_CASE("2","æ”¹è¡Œãªã—(ä¸æ­£ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿)ã§ä¾‹å¤–") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Directives_test api("pragma");
@@ -896,11 +896,11 @@ TESTSUITE(main, Directives)
             try { Directives::parseDirectives(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Directives::body"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Directives::body"));
         } END_CASE;
 
-        BEGIN_CASE("3","²ş¹Ô¤Ê¤·(EOF)¤ÇÎã³°") {
+        BEGIN_CASE("3","æ”¹è¡Œãªã—(EOF)ã§ä¾‹å¤–") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Directives_test api("pragma");
@@ -913,13 +913,13 @@ TESTSUITE(main, Directives)
             try { Directives::parseDirectives(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","¥Ç¥£¥ì¥¯¥Æ¥£¥Ö¤ÎËÜÂÎ¤¬¸Æ¤Ğ¤ì¤Æ¤¤¤ë", TestSuite::isReached("Directives::body"));
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","ãƒ‡ã‚£ãƒ¬ã‚¯ãƒ†ã‚£ãƒ–ã®æœ¬ä½“ãŒå‘¼ã°ã‚Œã¦ã„ã‚‹", TestSuite::isReached("Directives::body"));
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("onFail","onFail") {
-        BEGIN_CASE("1","body¤ÇÎã³°¤¬µ¯¤ë¤ÈonFail¤¬¼¡¤Î²ş¹Ô¤Ş¤ÇÆÉ¤ßÈô¤Ğ¤¹") {
+        BEGIN_CASE("1","bodyã§ä¾‹å¤–ãŒèµ·ã‚‹ã¨onFailãŒæ¬¡ã®æ”¹è¡Œã¾ã§èª­ã¿é£›ã°ã™") {
             Singleton<Namespace>::renewInstance();
             stringstream buf;
             Directives_test api("pragma");
@@ -931,9 +931,9 @@ TESTSUITE(main, Directives)
             try { Directives::parseDirectives(p); }
             catch(...) { result = true; }
 
-            TEST_CASE("1","Îã³°¤¬µ¯¤ë", result);
-            TEST_CASE("2","»Ä¤Ã¤¿ÆâÍÆ¤¬Àµ¤·¤¤", p.getToken() == "next");
-            TEST_CASE("3","¥È¡¼¥¯¥ó¤Ï¹ÔÆ¬", p.isHeadofLine());
+            TEST_CASE("1","ä¾‹å¤–ãŒèµ·ã‚‹", result);
+            TEST_CASE("2","æ®‹ã£ãŸå†…å®¹ãŒæ­£ã—ã„", p.getToken() == "next");
+            TEST_CASE("3","ãƒˆãƒ¼ã‚¯ãƒ³ã¯è¡Œé ­", p.isHeadofLine());
         } END_CASE;
     } END_CASE;
             

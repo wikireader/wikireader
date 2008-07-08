@@ -8,39 +8,39 @@
  *  Copyright (C) 2001-2004 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: pit.h,v 1.2 2004/10/07 17:10:56 honda Exp $
  */
 
 /*
- *	�����ޥɥ饤��
- *����������MPC860T��¢�μ�������ߥ�����PIT�����
+ *	タイマドライバ
+ *　　　　　MPC860T内蔵の周期割込みタイマPITを使用
  */
 
 #ifndef _PIT_H_
@@ -49,59 +49,59 @@
 #include <mpc860_sil.h>
 
 /*
- *  SIU����������ߥ�٥�ʥӥåȥѥ������
+ *  SIUの内部割込みレベル（ビットパターン）
  */
 #define SIU_INT_PIT	LEVEL_TO_BIT_PATTERN(INTLVL_PIT)
 
 
 /*
- *  �������ͤ�����ɽ���η�
+ *  タイマ値の内部表現の型
  */
 typedef UH	CLOCK;
 
 /*
- *	�����ޤ˶��뤵��륯���å����ȿ�[kHz]
+ *	タイマに供給されるクロック周波数[kHz]
  *   	TIMER_CLOCK=SYSTEM_CLOCK[MHz] / 4
  */
 #define	TIMER_CLOCK		(SYSTEM_CLOCK * 1000 / 4)
 
 /*
- *  �������ͤ�����ɽ���ȥߥ��á�����ñ�̤Ȥ��Ѵ�
+ *  タイマ値の内部表現とミリ秒・μ秒単位との変換
  */
 #define	TO_CLOCK(nume, deno)	(TIMER_CLOCK * (nume) / (deno))
 #define	TO_USEC(clock)		((clock) * 1000 / TIMER_CLOCK)
 #define CLOCK_PER_TICK	((CLOCK) (TO_CLOCK(TIC_NUME, TIC_DENO) - 1))
 
 /*
- *  ����Ǥ������Υ����޼�����ñ�̤�����ɽ����
+ *  設定できる最大のタイマ周期（単位は内部表現）
  */
 #define	MAX_CLOCK	((CLOCK) 0xffffu)
 
 /*
- *  �����ޤθ����ͤ�����ȯ�������ͤȤߤʤ�����Ƚ��
+ *  タイマの現在値を割込み発生前の値とみなすかの判断
  */
-#define	GET_TOLERANCE	100	/* �����٤�θ��Ѥ��͡�ñ�̤�����ɽ����*/
+#define	GET_TOLERANCE	100	/* 処理遅れの見積り値（単位は内部表現）*/
 #define	BEFORE_IREQ(clock) \
 		((clock) >= TO_CLOCK(TIC_NUME, TIC_DENO) - GET_TOLERANCE)
 
 /*
- *  ����ȥ�����쥸���������
+ *  コントロールレジスタの定義
  */
 
-/*  ��������ߥ��ơ��������������쥸����  */
+/*  周期割込みステータスおよび制御レジスタ  */
 #define PISCR       (VH *)(IMMR_BASE + 0x240)
-#define PISCRK      (VW *)(IMMR_BASE + 0x340)  /*  �����쥸����  */
-#define PISCR_PIRQ  0xff00      /*  ����������׵��٥�ӥå�  */  
-#define PISCR_PS    BIT8_16     /*  ��������ߥ��ơ�����  */    
-#define PISCR_PIE   BIT13_16    /*  ��������ߥ��͡��֥�  */
-#define PISCR_PITF  BIT14_16    /*  PIT�ե꡼�������͡��֥�  */
-#define PISCR_PTE   BIT15_16    /*  ���������ޡ����͡��֥�  */
+#define PISCRK      (VW *)(IMMR_BASE + 0x340)  /*  キーレジスタ  */
+#define PISCR_PIRQ  0xff00      /*  周期割込み要求レベルビット  */  
+#define PISCR_PS    BIT8_16     /*  周期割込みステータス  */    
+#define PISCR_PIE   BIT13_16    /*  周期割込みイネーブル  */
+#define PISCR_PITF  BIT14_16    /*  PITフリーズ・イネーブル  */
+#define PISCR_PTE   BIT15_16    /*  周期タイマ・イネーブル  */
 
-/*  PIT������ȥ쥸�����ʾ��2�Х��ȤΤߡ�  */
+/*  PITカウントレジスタ（上位2バイトのみ）  */
 #define PITC        (VH *)(IMMR_BASE + 0x244)
-#define PITCK       (VW *)(IMMR_BASE + 0x344)  /*  �����쥸����  */
+#define PITCK       (VW *)(IMMR_BASE + 0x344)  /*  キーレジスタ  */
 
-/*  PIT�쥸�����ʾ��2�Х��ȤΤߡ�  */
+/*  PITレジスタ（上位2バイトのみ）  */
 #define PITR        (VH *)(IMMR_BASE + 0x248)
 
 
@@ -109,33 +109,33 @@ typedef UH	CLOCK;
 #ifndef _MACRO_ONLY
 
 /*
- *  �����쥸�����ݸ�Υ��å��ȥ�����å�
+ *  内部レジスタ保護のロックとアンロック
  */
 
-/*  PISCR���å�  */
+/*  PISCRロック  */
 Inline void
 lock_piscr()
 {
-    	/*  �ͤ�UNLOCK_KEY�ʳ��Ǥ�����ɤ�  */
+    	/*  値はUNLOCK_KEY以外であれば良い  */
     mpc860_wrw_mem(PISCRK, 0);
 }
 
-/*  PISCR������å�  */
+/*  PISCRアンロック  */
 Inline void
 unlock_piscr()
 {
     mpc860_wrw_mem(PISCRK, UNLOCK_KEY);
 }
 
-/*  PITC���å�  */
+/*  PITCロック  */
 Inline void
 lock_pitc()
 {
-    	/*  �ͤ�UNLOCK_KEY�ʳ��Ǥ�����ɤ�  */
+    	/*  値はUNLOCK_KEY以外であれば良い  */
     mpc860_wrw_mem(PITCK, 0);
 }
 
-/*  PITC������å�  */
+/*  PITCアンロック  */
 Inline void
 unlock_pitc()
 {
@@ -143,48 +143,48 @@ unlock_pitc()
 }
 
 /*
- *  �����ޥ�������
+ *  タイマスタート
  */
 Inline void
 pit_start()
 {
-    unlock_piscr();         	/*  PISCR������å�  */
+    unlock_piscr();         	/*  PISCRアンロック  */
     mpc860_orh_mem(PISCR, PISCR_PTE);
-    lock_piscr();         	/*  PISCR���å�  */
+    lock_piscr();         	/*  PISCRロック  */
 }
 
 /*
- *  �����ް�����
+ *  タイマ一時停止
  */
 Inline void
 pit_stop()
 {
-    unlock_piscr();         	/*  PISCR������å�  */
+    unlock_piscr();         	/*  PISCRアンロック  */
     mpc860_andh_mem(PISCR, ~PISCR_PTE);
-    lock_piscr();         	/*  PISCR���å�  */
+    lock_piscr();         	/*  PISCRロック  */
 }
 
 /*
- *  �����޳�����׵�Υ��ꥢ
- *          PISCR�쥸������PS�ӥåȤ�1��񤭹���
+ *  タイマ割込み要求のクリア
+ *          PISCRレジスタのPSビットに1を書き込む
  */
 Inline void
 pit_int_clear()
 {
 	/*
-	 *  SIL����Ѥ����Ȥ��Υ�����ǽ�򥪥դ�
+	 *  SILを使用したときのログ機能をオフに
 	 */
 #ifdef SIL_DEBUG
     BOOL sil_debug_tmp = sil_debug_on;
     sil_debug_on = FALSE;
 #endif /* SIL_DEBUG */
 
-    unlock_piscr();         	/*  PISCR������å�  */
+    unlock_piscr();         	/*  PISCRアンロック  */
     mpc860_orh_mem(PISCR, PISCR_PS);
-    lock_piscr();         	/*  PISCR���å�  */
+    lock_piscr();         	/*  PISCRロック  */
 
 	/*
-	 *  SIL����Ѥ����Ȥ��Υ�����ǽ������
+	 *  SILを使用したときのログ機能を復元
 	 */
 #ifdef SIL_DEBUG
     sil_debug_on = sil_debug_tmp;
@@ -194,9 +194,9 @@ pit_int_clear()
 
 
 /*
- *  �����ޤε�ư����
+ *  タイマの起動処理
  *
- *  �����ޤ�������������Ū�ʥ����޳�����׵��ȯ�������롥
+ *  タイマを初期化し，周期的なタイマ割込み要求を発生させる．
  */
 Inline void
 pit_initialize()
@@ -204,59 +204,59 @@ pit_initialize()
     VH piscr;
     VW sccr;
     
-    /* �����޾����=�ѿ��κ����ͤʤΤǥ����å��Ͼ�ά */
+    /* タイマ上限値=変数の最大値なのでチェックは省略 */
 
-    pit_stop();		/* ��������� */
+    pit_stop();		/* タイマ停止 */
     
     /*
-     *  �����޴�Ϣ������
+     *  タイマ関連の設定
      */
     
-    /*  �����å�����������ʬ��������  */
-    unlock_sccr();              /*  SCCR������å�  */
+    /*  クロックソース選択、分周比設定  */
+    unlock_sccr();              /*  SCCRアンロック  */
     sccr = mpc860_rew_mem(SCCR);
-    sccr = (sccr & ~SCCR_RTDIV) /*  �ꥢ�륿���९���å�ʬ��:4  */
-            | SCCR_RTSEL;       /*  �����å���������EXTCLK  */
+    sccr = (sccr & ~SCCR_RTDIV) /*  リアルタイムクロック分周:4  */
+            | SCCR_RTSEL;       /*  クロックソース：EXTCLK  */
     mpc860_wrw_mem(SCCR, sccr);
-    lock_sccr();                /*  SCCR���å�  */
+    lock_sccr();                /*  SCCRロック  */
 
 
-    /*  ��������ɸ������  */
-    unlock_pitc();                  /*  PITC������å�  */
+    /*  カウンタ目標値設定  */
+    unlock_pitc();                  /*  PITCアンロック  */
     mpc860_wrh_mem(PITC, CLOCK_PER_TICK);
-    lock_pitc();                    /*  PITC���å�  */
+    lock_pitc();                    /*  PITCロック  */
     
     
-    unlock_piscr();                 /*  PISCR������å�  */
+    unlock_piscr();                 /*  PISCRアンロック  */
     piscr = mpc860_reh_mem(PISCR);
     piscr = (piscr & ~PISCR_PIRQ)
-            | (SIU_INT_PIT << 8)	/*  ����ߥ�٥�����  */
-            | PISCR_PIE;                /*  PIT����ߵ���  */
+            | (SIU_INT_PIT << 8)	/*  割込みレベル設定  */
+            | PISCR_PIE;                /*  PIT割込み許可  */
     mpc860_wrh_mem(PISCR, piscr);
-    lock_piscr();                   /*  PISCR���å�  */
+    lock_piscr();                   /*  PISCRロック  */
 }
 
 /*
- *  �����ޤ���߽���
+ *  タイマの停止処理
  *
- *  �������ޤ�ư�����ߤ����롥
+ *  　タイマの動作を停止させる．
  */
 Inline void
 pit_terminate()
 {
-    pit_stop();				/* �����ޤ���� 	*/
-    pit_int_clear();			/* �������׵�򥯥ꥢ */
+    pit_stop();				/* タイマを停止 	*/
+    pit_int_clear();			/* 割り込み要求をクリア */
 
-    unlock_piscr();                 	/*  PISCR������å�  */
-    mpc860_andh_mem(PISCR, ~PISCR_PIE);	/* �����޳���ߤ�ػ�   */
-    lock_piscr();                   	/*  PISCR���å�  */
+    unlock_piscr();                 	/*  PISCRアンロック  */
+    mpc860_andh_mem(PISCR, ~PISCR_PIE);	/* タイマ割込みを禁止   */
+    lock_piscr();                   	/*  PISCRロック  */
     
-    /*  �����ϥ����ޤؤΥ����å��������ߤ���  */
+    /*  本当はタイマへのクロック供給を停止する  */
 }
 
 /*
- *  �����ޤθ����ͤ��ɽФ�
- *����������߶ػ߶����ǸƤӽФ�����
+ *  タイマの現在値の読出し
+ *　　　割込み禁止区間中で呼び出すこと
  */
 Inline CLOCK
 pit_get_current()
@@ -268,14 +268,14 @@ pit_get_current()
 }
 
 /*
- *  �����޳�����׵�Υ����å�
+ *  タイマ割込み要求のチェック
  */
 Inline BOOL
 pit_fetch_interrupt()
 {
     VH piscr;
     
-    /*  �ɤ߽Ф��ʤΤǡ�������å����ʤ����ɤ�  */
+    /*  読み出しなので、アンロックしなくて良い  */
     piscr = mpc860_reh_mem(PISCR);
     return(piscr & PISCR_PS);
 }

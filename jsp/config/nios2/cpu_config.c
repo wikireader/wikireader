@@ -6,38 +6,38 @@
  *  Copyright (C) 2004 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN  
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.c,v 1.3 2004/09/03 17:32:25 honda Exp $
  */
 
 /*
- *  �ץ����å���¸�⥸�塼���Nios2�ѡ�
+ *  プロセッサ依存モジュール（Nios2用）
  */
 #include "jsp_kernel.h"
 #include "check.h"
@@ -45,24 +45,24 @@
 #include <nios2.h>
 
 /*
- * �����ߥϥ�ɥ�/�ӥåȥޥ����ơ��֥�
+ * 割り込みハンドラ/ビットマスクテーブル
  */
 FP  int_handler_table[MAX_INT_NUM];
 UW  int_bit_table[MAX_INT_NUM];
 
 /*
- * CPU�㳰�ϥ�ɥ�ơ��֥�
+ * CPU例外ハンドラテーブル
  */
 FP	exc_handler_table[MAX_EXC_NUM]; 
 
 /*
- * �����ߤΥͥ��Ȳ���Υ������
- * �����ͥ뵯ư���ϥ�������Ω���Ȥߤʤ�����1�ǽ��������
+ * 割り込みのネスト回数のカウント
+ * カーネル起動時はタスク独立部とみなすため1で初期化する
  */
 UW interrupt_count = 1;
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void
 cpu_initialize()
@@ -70,17 +70,17 @@ cpu_initialize()
     int i;
     
     /*
-     * int_handler_table[],int_plevel_table[]�ν����
-     * ̤��Ͽ�γ����ȯ������cpu_interrup()���ƤӽФ����褦��
-     * no_reg_interrup()����Ͽ����
+     * int_handler_table[],int_plevel_table[]の初期化
+     * 未登録の割込み発生時にcpu_interrup()が呼び出されるように
+     * no_reg_interrup()を登録する
      */
     for(i = 0; i < MAX_INT_NUM; i++){
         int_handler_table[i] = no_reg_interrupt;
-        int_bit_table[i]  = 1 << i; /* �ӥåȥѥ���������� */
+        int_bit_table[i]  = 1 << i; /* ビットパターンの生成 */
     }
 
     /*
-     *  CPU�㳰�ϥ�ɥ�ơ��֥�
+     *  CPU例外ハンドラテーブル
      */
     for(i = 0; i < MAX_EXC_NUM; i++){
         exc_handler_table[i] = no_reg_exception; 
@@ -88,8 +88,8 @@ cpu_initialize()
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
- *  ����߶ػ�
+ *  プロセッサ依存の終了処理
+ *  割込み禁止
  */
 void
 cpu_terminate()
@@ -99,7 +99,7 @@ cpu_terminate()
 
 
 /*
- * ����ߤε���/�ػ�
+ * 割込みの許可/禁止
  */
 SYSCALL ER
 ena_int(INTNO intno){
@@ -113,7 +113,7 @@ dis_int(INTNO intno){
 
 
 /*
- * ̤��Ͽ�γ���ߤ�ȯ���������˸ƤӽФ����
+ * 未登録の割込みが発生した場合に呼び出される
  */
 void
 no_reg_interrupt(void)
@@ -123,7 +123,7 @@ no_reg_interrupt(void)
 }
 
 /*
- * ̤��Ͽ���㳰��ȯ���������˸ƤӽФ����
+ * 未登録の例外が発生した場合に呼び出される
  */
 void
 no_reg_exception(void)
@@ -133,7 +133,7 @@ no_reg_exception(void)
 }
 
 /*
- * ������װ���Ƚ��ȳ���ߥϥ�ɥ�θƤӽФ�
+ * 割込み要因の判定と割込みハンドラの呼び出し
  */
 void
 int_handler_call(){
@@ -160,8 +160,8 @@ int_handler_call(){
 }
 
 /*
- *  �㳰��Ƚ���CPU�㳰�ϥ�ɥ�θƤӽФ�
- *  ���ߤ�̤����̿���㳰�Τߤ򥵥ݡ��� 
+ *  例外の判定とCPU例外ハンドラの呼び出し
+ *  現在は未実装命令例外のみをサポート 
  */
 void
 exc_handler_call(VP p_excinf){

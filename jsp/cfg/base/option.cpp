@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: option.cpp,v 1.3 2003/12/15 07:32:14 takayuki Exp $
  */
@@ -44,12 +44,12 @@
 
 using namespace std;
 
-    //ÊÌ¤ÎOptionItem¤¬»ı¤Ä¥Ñ¥é¥á¡¼¥¿¤ò¼«Ê¬¤ËÄÉ²Ã¤¹¤ë
+    //åˆ¥ã®OptionItemãŒæŒã¤ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è‡ªåˆ†ã«è¿½åŠ ã™ã‚‹
 void OptionParameter::OptionItem::mergeItem(const OptionItem & src)
 {
     vector<string>::const_iterator scope;
 
-        //Á´¤Æ¤Î¥Ñ¥é¥á¡¼¥¿¤ò¼«Ê¬¤Î¸å¤í¤ËÄÉ²Ã
+        //å…¨ã¦ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è‡ªåˆ†ã®å¾Œã‚ã«è¿½åŠ 
     scope = src.param.begin();
     while(scope != src.param.end()) {
         param.push_back(*scope);
@@ -57,7 +57,7 @@ void OptionParameter::OptionItem::mergeItem(const OptionItem & src)
     }
 }
 
-    //Ê¸»úÎó¤ÎÀèÆ¬¤Ë¤¢¤ë¶õÇòÊ¸»ú¤ò¼è¤ê½ü¤¯
+    //æ–‡å­—åˆ—ã®å…ˆé ­ã«ã‚ã‚‹ç©ºç™½æ–‡å­—ã‚’å–ã‚Šé™¤ã
 namespace {
     void TrimString(string & src)
     {
@@ -69,7 +69,7 @@ namespace {
     }
 }
 
-    //¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤ò²òÀÏ¤·¤ÆOptionItem¤òÀ¸À®¤¹¤ë
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è§£æã—ã¦OptionItemã‚’ç”Ÿæˆã™ã‚‹
 bool OptionParameter::OptionItem::createItem(OptionItem & _dest, string & argv)
 {
     bool              result;
@@ -81,13 +81,13 @@ bool OptionParameter::OptionItem::createItem(OptionItem & _dest, string & argv)
 
     TrimString(argv);
     if(argv.empty())
-        result = false;     //Ãæ¿È¤¬¶õ¤Ã¤İ
+        result = false;     //ä¸­èº«ãŒç©ºã£ã½
     else {
-            //¥ª¥×¥·¥ç¥ó¤Î¥Á¥§¥Ã¥¯
+            //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ãƒã‚§ãƒƒã‚¯
         if(argv[0] == '-') {
             pos = argv.find_first_of(" =");
 
-            if(argv.substr(0,pos).compare("-") == 0) {  // - ¤À¤±¤Î¥ª¥×¥·¥ç¥ó¤Ï¼õ¤±ÉÕ¤±¤Ê¤¤
+            if(argv.substr(0,pos).compare("-") == 0) {  // - ã ã‘ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯å—ã‘ä»˜ã‘ãªã„
                 result = false;
             }
             else {
@@ -108,22 +108,22 @@ bool OptionParameter::OptionItem::createItem(OptionItem & _dest, string & argv)
         while(!argv.empty() && argv[0] != '-') {
             if(argv[0] == '"') {
 
-                    //ÂĞ¤Ë¤Ê¤ë¥À¥Ö¥ë¥¯¥©¡¼¥È¤òÃµ¤¹
+                    //å¯¾ã«ãªã‚‹ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã‚’æ¢ã™
                 pos = argv.find_first_of('"',1);
                 if(pos == string::npos) {
                     result = false;
                     break;
                 }
 
-                    //¥À¥Ö¥ë¥¯¥©¡¼¥È¤ÎÃæ¿È¤ò¼è¤ë
+                    //ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã®ä¸­èº«ã‚’å–ã‚‹
                 param = argv.substr(1, pos - 1);
 
-                    //¥À¥Ö¥ë¥¯¥©¡¼¥È¤ò¾Ã¤¹
+                    //ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã‚’æ¶ˆã™
                 ++ pos;
             }
             else {
 
-                    //¼¡¤Î¶èÀÚ¤ê¤òÃµ¤¹
+                    //æ¬¡ã®åŒºåˆ‡ã‚Šã‚’æ¢ã™
                 pos = argv.find_first_of(" \t\r\n");
                 if(pos == string::npos)
                     param = argv;
@@ -144,7 +144,7 @@ bool OptionParameter::OptionItem::createItem(OptionItem & _dest, string & argv)
     return result;
 }
 
-    //Ìµ¸ú¤Ê¥ª¥×¥·¥ç¥ó¥¢¥¤¥Æ¥à¤ÎÀ¸À®
+    //ç„¡åŠ¹ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚¢ã‚¤ãƒ†ãƒ ã®ç”Ÿæˆ
 OptionParameter::OptionItem OptionParameter::OptionItem::createInvalidItem(void) throw()
 {
     OptionItem result;
@@ -154,7 +154,7 @@ OptionParameter::OptionItem OptionParameter::OptionItem::createInvalidItem(void)
 }
 
 
-    //Á´¤Æ¤Î¥Ñ¥é¥á¡¼¥¿·ë¹ç¤·¤¿¤â¤Î¤ò¼èÆÀ
+    //å…¨ã¦ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿çµåˆã—ãŸã‚‚ã®ã‚’å–å¾—
 string OptionParameter::OptionItem::getParameters(string punctuator) const throw()
 {
     string result;
@@ -170,13 +170,13 @@ string OptionParameter::OptionItem::getParameters(string punctuator) const throw
         }
 
         if(!result.empty())
-            result.erase(0, punctuator.size()); //ÀèÆ¬¤Î¶èÀÚ¤ê»Ò¤òºï½ü
+            result.erase(0, punctuator.size()); //å…ˆé ­ã®åŒºåˆ‡ã‚Šå­ã‚’å‰Šé™¤
     }
 
     return result;
 }
 
-    //¥ª¥×¥·¥ç¥ó¤Î¸Ä¿ô¤Î¥Á¥§¥Ã¥¯
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å€‹æ•°ã®ãƒã‚§ãƒƒã‚¯
 bool OptionParameter::OptionItem::checkParameterCount(size_t required, bool allow_zero) const throw()
 {
     bool result = true;
@@ -190,7 +190,7 @@ bool OptionParameter::OptionItem::checkParameterCount(size_t required, bool allo
     return result;
 }
 
-        //¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤Î¥Ñ¡¼¥¹
+        //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒ‘ãƒ¼ã‚¹
 bool OptionParameter::parseOption(int _argc, char const * const * _argv, char const * _default) throw()
 {
     bool        result;
@@ -200,11 +200,11 @@ bool OptionParameter::parseOption(int _argc, char const * const * _argv, char co
 
     map<string, OptionItem>::iterator scope;
 
-        //¥×¥í¥°¥é¥àÌ¾¤Î¼èÆÀ
+        //ãƒ—ãƒ­ã‚°ãƒ©ãƒ åã®å–å¾—
     if(_argc > 0)
         program_name.assign(_argv[0]);
 
-        //Á´¤Æ¤Ä¤Ê¤²¤ë
+        //å…¨ã¦ã¤ãªã’ã‚‹
     for(i=1;i<_argc;++i) {
         arguments += _argv[i];
         arguments += ' ';
@@ -217,7 +217,7 @@ bool OptionParameter::parseOption(int _argc, char const * const * _argv, char co
 
     result = true;
 
-        //³Æ¥ª¥×¥·¥ç¥ó¤Î²òÀÏ
+        //å„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è§£æ
     while(!arguments.empty()) {
 
         if(!OptionItem::createItem(work, arguments)) {
@@ -225,7 +225,7 @@ bool OptionParameter::parseOption(int _argc, char const * const * _argv, char co
             break;
         }
 
-            //Æ±°ì¤Î¥ª¥×¥·¥ç¥ó¤¬¤¤¤¿¤é¥Ş¡¼¥¸¤¹¤ë
+            //åŒä¸€ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã„ãŸã‚‰ãƒãƒ¼ã‚¸ã™ã‚‹
         scope = container.find(work);
         if(scope != container.end())
             scope->second.mergeItem(work);
@@ -236,14 +236,14 @@ bool OptionParameter::parseOption(int _argc, char const * const * _argv, char co
     return result;
 }
 
-    //Í×ÁÇ¤Î¸¡½Ğ
+    //è¦ç´ ã®æ¤œå‡º
 map<string, OptionParameter::OptionItem>::iterator OptionParameter::_find(const std::string & name, bool check) throw()
 {
     map<string, OptionParameter::OptionItem>::iterator scope;
 
     scope = container.find(name);
 
-        //Í×ÁÇ¤ò»ÈÍÑ¤·¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+        //è¦ç´ ã‚’ä½¿ç”¨ã—ãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
     if(check && scope != container.end())
         scope->second._check();
 
@@ -251,7 +251,7 @@ map<string, OptionParameter::OptionItem>::iterator OptionParameter::_find(const 
 }
 
 
-    //¥ª¥×¥·¥ç¥ó¥¢¥¤¥Æ¥à¤Î»²¾È
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚¢ã‚¤ãƒ†ãƒ ã®å‚ç…§
 OptionParameter::OptionItem OptionParameter::get(const std::string & name, bool check) throw()
 {
     OptionItem                        result;
@@ -267,13 +267,13 @@ OptionParameter::OptionItem OptionParameter::get(const std::string & name, bool 
 }
 
 
-    //Á´¤Æ¤Î¥ª¥×¥·¥ç¥ó¤¬»ÈÍÑ¤µ¤ì¤¿¤«¤É¤¦¤«¤Î³ÎÇ§
+    //å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä½¿ç”¨ã•ã‚ŒãŸã‹ã©ã†ã‹ã®ç¢ºèª
 bool OptionParameter::validateOption(void) const throw()
 {
     map<string, OptionItem>::const_iterator scope;
     bool result = true;
 
-        //Á´¤Æ¤Î¥ª¥×¥·¥ç¥ó¤¬¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë¤³¤È¤ò³ÎÇ§
+        //å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèª
     scope = container.begin();
     while(scope != container.end()) {
         if(!scope->second.isChecked()) {
@@ -287,13 +287,13 @@ bool OptionParameter::validateOption(void) const throw()
 }
 
 
-    //»ÈÍÑ¤µ¤ì¤Ê¤«¤Ã¤¿¥ª¥×¥·¥ç¥óÎó¤ò¼èÆÀ
+    //ä½¿ç”¨ã•ã‚Œãªã‹ã£ãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³åˆ—ã‚’å–å¾—
 string OptionParameter::getInvalidOptions(void) const throw()
 {
     map<string, OptionItem>::const_iterator scope;
     string result;
 
-        //»ÈÍÑ¤µ¤ì¤Ê¤«¤Ã¤¿Á´¤Æ¤Î¥ª¥×¥·¥ç¥ó¤ËÂĞ¤·¤Æ
+        //ä½¿ç”¨ã•ã‚Œãªã‹ã£ãŸå…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«å¯¾ã—ã¦
     scope = container.begin();
     while(scope != container.end()) {
         const OptionItem & item = scope->second;
@@ -301,7 +301,7 @@ string OptionParameter::getInvalidOptions(void) const throw()
             result += " -";
             result += item;
 
-                //¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤ÎÎóµó
+                //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®åˆ—æŒ™
             size_t params = item.countParameter();
             for(size_t i=0; i<params; ++i) {
                 result += " \"";
@@ -312,14 +312,14 @@ string OptionParameter::getInvalidOptions(void) const throw()
         ++ scope;
     }
 
-        //ÀèÆ¬¤Î¶õÇò¤ò¼è¤ê½ü¤¯
+        //å…ˆé ­ã®ç©ºç™½ã‚’å–ã‚Šé™¤ã
     if(!result.empty())
         result = result.substr(1);
 
     return result;
 }
 
-/***************** ¥Æ¥¹¥È¥¹¥£¡¼¥È *****************/
+/***************** ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ *****************/
 
 #ifdef TESTSUITE
 #include "coverage_undefs.h"
@@ -327,7 +327,7 @@ string OptionParameter::getInvalidOptions(void) const throw()
 
 TESTSUITE_(main,OptionItem,OptionParameter)
 {
-    BEGIN_CASE("01","¥Ç¥Õ¥©¥ë¥È¥Ñ¥é¥á¡¼¥¿¤¬" DEFAULT_PARAMETER "¤Ë¤Ê¤Ã¤Æ¤¤¤ë") {
+    BEGIN_CASE("01","ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒ" DEFAULT_PARAMETER "ã«ãªã£ã¦ã„ã‚‹") {
         OptionItem work;
         if(work.compare(DEFAULT_PARAMETER) != 0)
             TEST_FAIL;
@@ -335,7 +335,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
     //----
 
-    BEGIN_CASE("02","¥³¥ó¥¹¥È¥é¥¯¥¿¥Á¥§¥Ã¥¯ (checked == false, ¥Ñ¥é¥á¡¼¥¿Ì¾)") {
+    BEGIN_CASE("02","ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒã‚§ãƒƒã‚¯ (checked == false, ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å)") {
 
         BEGIN_CASE("1","OptionItem(void)") {
             OptionItem work;
@@ -367,12 +367,12 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
         OptionItem work;
 
-        BEGIN_CASE("1", "ºî¤Ã¤¿Ä¾¸å¤ÎcountParameter¤Ï0") {
+        BEGIN_CASE("1", "ä½œã£ãŸç›´å¾Œã®countParameterã¯0") {
             if(work.countParameter() != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2", "addParameter¤¹¤ë¤¿¤Ó¤Ë1¤º¤ÄÁı¤¨¤ë¤Ï¤º") {
+        BEGIN_CASE("2", "addParameterã™ã‚‹ãŸã³ã«1ãšã¤å¢—ãˆã‚‹ã¯ãš") {
             while(*param != NULL) {
                 size_t count = work.countParameter();
 
@@ -385,7 +385,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
             }
         } END_CASE;
 
-        BEGIN_CASE("3", "Æş¤ì¤¿¤â¤Î¤Ï¤Á¤ã¤ó¤ÈÆş¤Ã¤Æ¤ë") {
+        BEGIN_CASE("3", "å…¥ã‚ŒãŸã‚‚ã®ã¯ã¡ã‚ƒã‚“ã¨å…¥ã£ã¦ã‚‹") {
             i = 0;
             param = container;
             while(*param != NULL) {
@@ -397,7 +397,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
             }
         } END_CASE;
 
-        BEGIN_CASE("4", "operator[]¤ËÈÏ°Ï³°¤Î¥Ñ¥é¥á¡¼¥¿¤òÆş¤ì¤ë¤È¶õÊ¸»ú¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4", "operator[]ã«ç¯„å›²å¤–ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å…¥ã‚Œã‚‹ã¨ç©ºæ–‡å­—ãŒè¿”ã‚‹") {
             if(!work[10000].empty())
                 TEST_FAIL;
         } END_CASE;
@@ -408,12 +408,12 @@ TESTSUITE_(main,OptionItem,OptionParameter)
     BEGIN_CASE("04", "hasParameter") {
         OptionItem work;
 
-        BEGIN_CASE("1", "Ãæ¿È¤¬¤Ê¤¤¤È¤­¤Ïfalse¤¬ÊÖ¤ë") {
+        BEGIN_CASE("1", "ä¸­èº«ãŒãªã„ã¨ãã¯falseãŒè¿”ã‚‹") {
             if(work.hasParameter())
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2", "Ãæ¿È¤¬¤¢¤ë¤È¤­¤Ïtrue¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2", "ä¸­èº«ãŒã‚ã‚‹ã¨ãã¯trueãŒè¿”ã‚‹") {
             work.addParameter("dummy");
             if(!work.hasParameter())
                 TEST_FAIL;
@@ -431,12 +431,12 @@ TESTSUITE_(main,OptionItem,OptionParameter)
         
         work.mergeItem(work2);
 
-        BEGIN_CASE("1","¥Ş¡¼¥¸¤µ¤ì¤Æ¤¤¤ë") {
+        BEGIN_CASE("1","ãƒãƒ¼ã‚¸ã•ã‚Œã¦ã„ã‚‹") {
             if(work[0].compare("one") != 0 || work[1].compare("two") != 0 || work.countParameter() != 2)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","ÊÑ¹¹¸µ¤ÏÊÑ²½¤Ê¤·") {
+        BEGIN_CASE("2","å¤‰æ›´å…ƒã¯å¤‰åŒ–ãªã—") {
             if(work2[0].compare("two") != 0 || work2.countParameter() != 1)
                 TEST_FAIL;
         } END_CASE;
@@ -448,18 +448,18 @@ TESTSUITE_(main,OptionItem,OptionParameter)
     BEGIN_CASE("isChecked/checked", "isChecked/check") {
         OptionItem work;
 
-        BEGIN_CASE("1","ºÇ½é¤Ïunchecked¾õÂÖ") {
+        BEGIN_CASE("1","æœ€åˆã¯uncheckedçŠ¶æ…‹") {
             if(work.isChecked() != false)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","check¤ò¤Ä¤±¤ë") {
+        BEGIN_CASE("2","checkã‚’ã¤ã‘ã‚‹") {
             work._check();
             if(work.isChecked() != true)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¤â¤¦°ì²ó¤ä¤Ã¤Æ¤â¥È¥°¥ë¤Ë¤Ê¤é¤Ê¤¤") {
+        BEGIN_CASE("3","ã‚‚ã†ä¸€å›ã‚„ã£ã¦ã‚‚ãƒˆã‚°ãƒ«ã«ãªã‚‰ãªã„") {
             work._check();
             if(work.isChecked() != true)
                 TEST_FAIL;
@@ -469,7 +469,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
     //----
 
-    BEGIN_CASE("CopyConstructor", "¥³¥Ô¡¼¥³¥ó¥¹¥È¥é¥¯¥¿¤Ç¥Ñ¥é¥á¡¼¥¿¤¬°Ü¤ë¤«") {
+    BEGIN_CASE("CopyConstructor", "ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒç§»ã‚‹ã‹") {
         OptionItem src;
         src.addParameter("one");
 
@@ -481,15 +481,15 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
     //----
 
-    BEGIN_CASE("TrimString", "TrinString¤¬¤Á¤ã¤ó¤ÈÆ°¤¯¤«") {
-        BEGIN_CASE("1","ÀèÆ¬¤Î¶õÇòÊ¸»ú¤¬¾Ã¤¨¤ë") {
+    BEGIN_CASE("TrimString", "TrinStringãŒã¡ã‚ƒã‚“ã¨å‹•ãã‹") {
+        BEGIN_CASE("1","å…ˆé ­ã®ç©ºç™½æ–‡å­—ãŒæ¶ˆãˆã‚‹") {
             string work(" \r\n\ttest");
             TrimString(work);
             if(work.compare("test") != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¶õÇòÊ¸»ú¤À¤±¤«¤éÀ®¤ëÊ¸»úÎó") {
+        BEGIN_CASE("2","ç©ºç™½æ–‡å­—ã ã‘ã‹ã‚‰æˆã‚‹æ–‡å­—åˆ—") {
             string work("     ");
             TrimString(work);
             if(!work.empty())
@@ -499,15 +499,15 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
     //----
 
-    BEGIN_CASE("createItem", "createItem´Ø¿ô¤ÎÆ°ºî¸¡¾Ú") {
-        BEGIN_CASE("1", "¶õ¤Ã¤İ¤ÎÊ¸»úÎó¤ò¤¤¤ì¤ë¤È¼ºÇÔ¤¹¤ë") {
+    BEGIN_CASE("createItem", "createItemé–¢æ•°ã®å‹•ä½œæ¤œè¨¼") {
+        BEGIN_CASE("1", "ç©ºã£ã½ã®æ–‡å­—åˆ—ã‚’ã„ã‚Œã‚‹ã¨å¤±æ•—ã™ã‚‹") {
             OptionItem work;
             string param("");
             if(OptionItem::createItem(work, param))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2", "°ú¿ô¤Ê¤·¥ª¥×¥·¥ç¥ó") {
+        BEGIN_CASE("2", "å¼•æ•°ãªã—ã‚ªãƒ—ã‚·ãƒ§ãƒ³") {
             OptionItem work;
             string     arg("-test");
             if(!OptionItem::createItem(work, arg))
@@ -518,7 +518,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3", "Ï¢Â³¤¹¤ë°ú¿ô¤Ê¤·¥ª¥×¥·¥ç¥ó") {
+        BEGIN_CASE("3", "é€£ç¶šã™ã‚‹å¼•æ•°ãªã—ã‚ªãƒ—ã‚·ãƒ§ãƒ³") {
             OptionItem work;
             string     arg("-test -test2");
             if(!OptionItem::createItem(work, arg))
@@ -527,7 +527,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4", "°ú¿ô¤Ä¤­¥ª¥×¥·¥ç¥ó(-test param)") {
+        BEGIN_CASE("4", "å¼•æ•°ã¤ãã‚ªãƒ—ã‚·ãƒ§ãƒ³(-test param)") {
             OptionItem work;
             string     arg("-test param");
             if(!OptionItem::createItem(work, arg))
@@ -540,7 +540,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5", "°ú¿ô¤Ä¤­¥ª¥×¥·¥ç¥ó(-test=param)") {
+        BEGIN_CASE("5", "å¼•æ•°ã¤ãã‚ªãƒ—ã‚·ãƒ§ãƒ³(-test=param)") {
             OptionItem work;
             string     arg("-test=param");
             if(!OptionItem::createItem(work, arg))
@@ -553,7 +553,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6", "°ú¿ô¤Ä¤­¥ª¥×¥·¥ç¥ó(-test=\"a b c\")") {
+        BEGIN_CASE("6", "å¼•æ•°ã¤ãã‚ªãƒ—ã‚·ãƒ§ãƒ³(-test=\"a b c\")") {
             OptionItem work;
             string     arg("-test=\"a b c\"");
             if(!OptionItem::createItem(work, arg))
@@ -566,7 +566,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7", "Ï¢Â³¤·¤¿°ú¿ô¤Ä¤­¥ª¥×¥·¥ç¥ó(-test one two)") {
+        BEGIN_CASE("7", "é€£ç¶šã—ãŸå¼•æ•°ã¤ãã‚ªãƒ—ã‚·ãƒ§ãƒ³(-test one two)") {
             OptionItem work;
             string     arg("-test one two");
             if(!OptionItem::createItem(work, arg))
@@ -579,22 +579,22 @@ TESTSUITE_(main,OptionItem,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("8", "¥Ï¥¤¥Õ¥ó") {
-            BEGIN_CASE("1", "¥Ï¥¤¥Õ¥ó¤À¤±¤Î°ú¿ô¤Ï¼õ¤±ÉÕ¤±¤Ê¤¤") {
+        BEGIN_CASE("8", "ãƒã‚¤ãƒ•ãƒ³") {
+            BEGIN_CASE("1", "ãƒã‚¤ãƒ•ãƒ³ã ã‘ã®å¼•æ•°ã¯å—ã‘ä»˜ã‘ãªã„") {
                 OptionItem work;
                 string     arg("-");
                 if(OptionItem::createItem(work, arg))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2", "¥Ï¥¤¥Õ¥ó¤À¤±¤Î°ú¿ô¤Ï¼õ¤±ÉÕ¤±¤Ê¤¤(Ï¢Â³)") {
+            BEGIN_CASE("2", "ãƒã‚¤ãƒ•ãƒ³ã ã‘ã®å¼•æ•°ã¯å—ã‘ä»˜ã‘ãªã„(é€£ç¶š)") {
                 OptionItem work;
                 string     arg("- - -");
                 if(OptionItem::createItem(work, arg))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("3", "¥À¥Ö¥ë¥¯¥©¡¼¥È¤Ç¤¯¤¯¤é¤ì¤¿¥Ï¥¤¥Õ¥ó¤Ï¼õ¤±ÉÕ¤±¤ë") {
+            BEGIN_CASE("3", "ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã§ããã‚‰ã‚ŒãŸãƒã‚¤ãƒ•ãƒ³ã¯å—ã‘ä»˜ã‘ã‚‹") {
                 OptionItem work;
                 string     arg("\"-\"");
                 if(!OptionItem::createItem(work, arg))
@@ -605,7 +605,7 @@ TESTSUITE_(main,OptionItem,OptionParameter)
     
         } END_CASE;
 
-        BEGIN_CASE("9", "ÂĞ¤Ë¤Ê¤ë¥À¥Ö¥ë¥¯¥©¡¼¥È¤¬·ç¤±¤¿°ú¿ô¤Ï¼õ¤±ÉÕ¤±¤Ê¤¤") {
+        BEGIN_CASE("9", "å¯¾ã«ãªã‚‹ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆãŒæ¬ ã‘ãŸå¼•æ•°ã¯å—ã‘ä»˜ã‘ãªã„") {
             OptionItem work;
             string     arg("-test=\"a b c");
             if(OptionItem::createItem(work, arg))
@@ -614,15 +614,15 @@ TESTSUITE_(main,OptionItem,OptionParameter)
 
     } END_CASE;
 
-    BEGIN_CASE("isValid/createInvalidItem", "Ìµ¸ú¤ò¼¨¤¹¥¤¥ó¥¹¥¿¥ó¥¹¤òÀ¸À®¤Ç¤­¡¢¤½¤ì¤òÈ½Äê¤Ç¤­¤ë") {
+    BEGIN_CASE("isValid/createInvalidItem", "ç„¡åŠ¹ã‚’ç¤ºã™ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã§ãã€ãã‚Œã‚’åˆ¤å®šã§ãã‚‹") {
         OptionItem work;
 
-        BEGIN_CASE("1","¥Ç¥Õ¥©¥ë¥È¥³¥ó¥¹¥È¥é¥¯¥¿¤ÇÀ¸À®¤·¤¿¥ª¥Ö¥¸¥§¥¯¥È¤ÏÍ­¸ú") {
+        BEGIN_CASE("1","ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯æœ‰åŠ¹") {
             if(!work.isValid())
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","Ìµ¸ú¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÅöÁ³Ìµ¸ú") {
+        BEGIN_CASE("2","ç„¡åŠ¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯å½“ç„¶ç„¡åŠ¹") {
             work = OptionItem::createInvalidItem();
             if(work.isValid())
                 TEST_FAIL;
@@ -630,52 +630,52 @@ TESTSUITE_(main,OptionItem,OptionParameter)
     } END_CASE;
 
     BEGIN_CASE("getParameters","getParameters") {
-        BEGIN_CASE("1","Àµ¤·¤¯¥ª¥×¥·¥ç¥ó¤ò·ë¹ç¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æ­£ã—ãã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’çµåˆã§ãã‚‹") {
             OptionItem work;
             string     arg("-test a b c d e f g");
 
-            TEST_CASE("0","[Á°Äó]¥ª¥×¥·¥ç¥ó²òÀÏ¤ËÀ®¸ù¤¹¤ë", OptionItem::createItem(work,arg));
-            TEST_CASE("1","·ë¹ç¤Ç¤­¤ë", work.getParameters().compare("a b c d e f g") == 0);
-            TEST_CASE("2","¶èÀÚ¤ê»á¤ò»ØÄê¤·¤Æ·ë¹ç¤Ç¤­¤ë", work.getParameters(",").compare("a,b,c,d,e,f,g") == 0);
+            TEST_CASE("0","[å‰æ]ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã«æˆåŠŸã™ã‚‹", OptionItem::createItem(work,arg));
+            TEST_CASE("1","çµåˆã§ãã‚‹", work.getParameters().compare("a b c d e f g") == 0);
+            TEST_CASE("2","åŒºåˆ‡ã‚Šæ°ã‚’æŒ‡å®šã—ã¦çµåˆã§ãã‚‹", work.getParameters(",").compare("a,b,c,d,e,f,g") == 0);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("checkParameterCount","checkParameterCount") {
-        BEGIN_CASE("1","¥ª¥×¥·¥ç¥ó¤Î¿ô¤¬¤¢¤Ã¤Æ¤¤¤ì¤Ïtrue") {
+        BEGIN_CASE("1","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ•°ãŒã‚ã£ã¦ã„ã‚Œã¯true") {
             OptionItem work;
             string     arg("-test a b c d e f g");
 
-            TEST_CASE("0","[Á°Äó]¥ª¥×¥·¥ç¥ó²òÀÏ¤ËÀ®¸ù¤¹¤ë", OptionItem::createItem(work,arg));
+            TEST_CASE("0","[å‰æ]ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã«æˆåŠŸã™ã‚‹", OptionItem::createItem(work,arg));
 
             if(!work.checkParameterCount(7))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","¥ª¥×¥·¥ç¥ó¤Î¿ô¤¬´Ö°ã¤Ã¤Æ¤¤¤ë¤Èfalse") {
+        BEGIN_CASE("2","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æ•°ãŒé–“é•ã£ã¦ã„ã‚‹ã¨false") {
             OptionItem work;
             string     arg("-test a b c d e f g");
 
-            TEST_CASE("0","[Á°Äó]¥ª¥×¥·¥ç¥ó²òÀÏ¤ËÀ®¸ù¤¹¤ë", OptionItem::createItem(work,arg));
+            TEST_CASE("0","[å‰æ]ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã«æˆåŠŸã™ã‚‹", OptionItem::createItem(work,arg));
 
             if(work.checkParameterCount(2))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¥ª¥×¥·¥ç¥ó¤¬¤Ê¤¯¤Æ¡¢!allow_zero¤Ê¤éfalse") {
+        BEGIN_CASE("3","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒãªãã¦ã€!allow_zeroãªã‚‰false") {
             OptionItem work;
             string     arg("-test");
 
-            TEST_CASE("0","[Á°Äó]¥ª¥×¥·¥ç¥ó²òÀÏ¤ËÀ®¸ù¤¹¤ë", OptionItem::createItem(work,arg));
+            TEST_CASE("0","[å‰æ]ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã«æˆåŠŸã™ã‚‹", OptionItem::createItem(work,arg));
 
             if(work.checkParameterCount(1,false))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","¥ª¥×¥·¥ç¥ó¤¬¤Ê¤¯¤Æ¡¢allow_zero¤Ê¤étrue") {
+        BEGIN_CASE("4","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒãªãã¦ã€allow_zeroãªã‚‰true") {
             OptionItem work;
             string     arg("-test");
 
-            TEST_CASE("0","[Á°Äó]¥ª¥×¥·¥ç¥ó²òÀÏ¤ËÀ®¸ù¤¹¤ë", OptionItem::createItem(work,arg));
+            TEST_CASE("0","[å‰æ]ã‚ªãƒ—ã‚·ãƒ§ãƒ³è§£æã«æˆåŠŸã™ã‚‹", OptionItem::createItem(work,arg));
 
             if(work.checkParameterCount(1,true))
                 TEST_FAIL;
@@ -684,13 +684,13 @@ TESTSUITE_(main,OptionItem,OptionParameter)
     } END_CASE;
 }
 
-/********************************* ¥Æ¥¹¥È¥¹¥£¡¼¥È *********************************/
+/********************************* ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ *********************************/
 
 TESTSUITE(main,OptionParameter)
 {
     SINGLETON(OptionParameter);
 
-    BEGIN_CASE("countItem","¥ª¥×¥·¥ç¥ó¥¢¥¤¥Æ¥à¤Î¿ô¤¬Àµ¤·¤¯¼èÆÀ¤Ç¤­¤ë") {
+    BEGIN_CASE("countItem","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ãŒæ­£ã—ãå–å¾—ã§ãã‚‹") {
         OptionParameter param;
         if(param.countItem() != 0)
             TEST_FAIL;
@@ -700,7 +700,7 @@ TESTSUITE(main,OptionParameter)
             TEST_FAIL;
     } END_CASE;
 
-    BEGIN_CASE("opeator []","operator []¤ÇÍ×ÁÇ¤Ë¥¢¥¯¥»¥¹¤Ç¤­¤ë") {
+    BEGIN_CASE("opeator []","operator []ã§è¦ç´ ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹") {
         OptionParameter param;
         OptionItem work;
         string arg("-test param");
@@ -708,28 +708,28 @@ TESTSUITE(main,OptionParameter)
         OptionItem::createItem(work, arg);
         param.container.insert(pair<string, OptionItem>(work, work));
 
-        BEGIN_CASE("1", "operator [] (const string &)¤ÇÁíÁÄ¤Ë¥¢¥¯¥»¥¹¤Ç¤­¤ë") {
+        BEGIN_CASE("1", "operator [] (const string &)ã§ç·ç¥–ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹") {
             if(param[string("test")][0].compare("param") != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2", "operator [] (const char *)¤ÇÁíÁÄ¤Ë¥¢¥¯¥»¥¹¤Ç¤­¤ë") {
+        BEGIN_CASE("2", "operator [] (const char *)ã§ç·ç¥–ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹") {
             if(param["test"][0].compare("param") != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3", "operator []¤Ç¿¨¤ë¤È¡¢check¤¬Æş¤ë") {
+        BEGIN_CASE("3", "operator []ã§è§¦ã‚‹ã¨ã€checkãŒå…¥ã‚‹") {
             if(!param["test"].isChecked())
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4", "operator []¤ËÌµ¸ú¤Ê¥­¡¼¤òÆş¤ì¤ë¤È¡¢Ìµ¸ú¤Ê¥Ç¡¼¥¿¤¬ÊÖ¤Ã¤Æ¤¯¤ë") {
+        BEGIN_CASE("4", "operator []ã«ç„¡åŠ¹ãªã‚­ãƒ¼ã‚’å…¥ã‚Œã‚‹ã¨ã€ç„¡åŠ¹ãªãƒ‡ãƒ¼ã‚¿ãŒè¿”ã£ã¦ãã‚‹") {
             if(param["nonexist"].isValid())
                 TEST_FAIL;
         } END_CASE;
     } END_CASE;
 
-    BEGIN_CASE("get","Í×ÁÇ¤Ø¤Î¥¢¥¯¥»¥¹") {
+    BEGIN_CASE("get","è¦ç´ ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹") {
         OptionParameter param;
         OptionItem work;
 
@@ -738,30 +738,30 @@ TESTSUITE(main,OptionParameter)
         OptionItem::createItem(work, string("-test2 param2"));
         param.container.insert(pair<string, OptionItem>(work, work));
 
-        BEGIN_CASE("1","get(test)¤ÇÍ×ÁÇ¤¬¼èÆÀ¤Ç¤­¡¢¥Á¥§¥Ã¥¯¤¬Æş¤ë") {
-            TEST_CASE("1","Í×ÁÇ¤¬Â¸ºß¤¹¤ë", (work = param.get("test")).isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤ë", work.isChecked() );
-            TEST_CASE("3","Í×ÁÇ¤Ï¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", work.hasParameter() );
+        BEGIN_CASE("1","get(test)ã§è¦ç´ ãŒå–å¾—ã§ãã€ãƒã‚§ãƒƒã‚¯ãŒå…¥ã‚‹") {
+            TEST_CASE("1","è¦ç´ ãŒå­˜åœ¨ã™ã‚‹", (work = param.get("test")).isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ã‚‹", work.isChecked() );
+            TEST_CASE("3","è¦ç´ ã¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", work.hasParameter() );
         } END_CASE;
 
-        BEGIN_CASE("2","get(test2,false)¤ÇÍ×ÁÇ¤¬¼èÆÀ¤Ç¤­¡¢¥Á¥§¥Ã¥¯¤Ï¤Ä¤«¤Ê¤¤") {
-            TEST_CASE("1","Í×ÁÇ¤¬Â¸ºß¤¹¤ë", (work = param.get("test2",false)).isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤Ê¤¤", !work.isChecked() );
+        BEGIN_CASE("2","get(test2,false)ã§è¦ç´ ãŒå–å¾—ã§ãã€ãƒã‚§ãƒƒã‚¯ã¯ã¤ã‹ãªã„") {
+            TEST_CASE("1","è¦ç´ ãŒå­˜åœ¨ã™ã‚‹", (work = param.get("test2",false)).isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ãªã„", !work.isChecked() );
         } END_CASE;
 
-        BEGIN_CASE("3","¤¹¤Ç¤Ë¥Á¥§¥Ã¥¯¤Î¤Ä¤¤¤¿test¤ËÂĞ¤·¡¢get(test,false)¤ÇÍ×ÁÇ¤¬¼èÆÀ¤Ç¤­¡¢¥Á¥§¥Ã¥¯ºÑ¤ß") {
-            TEST_CASE("1","Í×ÁÇ¤¬Â¸ºß¤¹¤ë", (work = param.get("test",false)).isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤Ê¤¤", work.isChecked() );
+        BEGIN_CASE("3","ã™ã§ã«ãƒã‚§ãƒƒã‚¯ã®ã¤ã„ãŸtestã«å¯¾ã—ã€get(test,false)ã§è¦ç´ ãŒå–å¾—ã§ãã€ãƒã‚§ãƒƒã‚¯æ¸ˆã¿") {
+            TEST_CASE("1","è¦ç´ ãŒå­˜åœ¨ã™ã‚‹", (work = param.get("test",false)).isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ãªã„", work.isChecked() );
         } END_CASE;
 
-        BEGIN_CASE("4","get(Ìµ¸ú¤ÊÌ¾Á°)¤ÇÌµ¸ú¤ÊÍ×ÁÇ¤¬ÊÖ¤ë") {
-            TEST_CASE("1","Í×ÁÇ¤¬Â¸ºß¤¹¤ë", !param.get("unknown").isValid());
+        BEGIN_CASE("4","get(ç„¡åŠ¹ãªåå‰)ã§ç„¡åŠ¹ãªè¦ç´ ãŒè¿”ã‚‹") {
+            TEST_CASE("1","è¦ç´ ãŒå­˜åœ¨ã™ã‚‹", !param.get("unknown").isValid());
         } END_CASE;
     } END_CASE;
 
 
-    BEGIN_CASE("parseOption","¥Ñ¥é¥á¡¼¥¿¤Î¥Ñ¡¼¥¹¤¬Àµ¾ï¤Ë¤Ç¤­¤ë¤«") {
-        BEGIN_CASE("01","Ãæ¿È¤¬²¿¤â¤Ê¤¤¥Ñ¥é¥á¡¼¥¿¤òÍ¿¤¨¤Æ¤âÀ®¸ù¤¹¤ë") {
+    BEGIN_CASE("parseOption","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒ‘ãƒ¼ã‚¹ãŒæ­£å¸¸ã«ã§ãã‚‹ã‹") {
+        BEGIN_CASE("01","ä¸­èº«ãŒä½•ã‚‚ãªã„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ä¸ãˆã¦ã‚‚æˆåŠŸã™ã‚‹") {
             OptionParameter param;
             char ** argv = { NULL };
 
@@ -769,7 +769,7 @@ TESTSUITE(main,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("02","¥×¥í¥°¥é¥àÌ¾¤Ï¥ª¥×¥·¥ç¥ó¤È¤·¤Æ²òÀÏ¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("02","ãƒ—ãƒ­ã‚°ãƒ©ãƒ åã¯ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¨ã—ã¦è§£æã•ã‚Œãªã„") {
             OptionParameter param;
             char * argv[] = { "test.exe", NULL };
 
@@ -779,7 +779,7 @@ TESTSUITE(main,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("03","¥Ñ¥é¥á¡¼¥¿¤¬¤½¤ì¤Ê¤ê¤Ë²òÀÏ¤µ¤ì¤ë") {
+        BEGIN_CASE("03","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒãã‚Œãªã‚Šã«è§£æã•ã‚Œã‚‹") {
             OptionParameter param;
             char * argv[] = { "test.exe", "-test", "param", "-test2=\"dummy\"", NULL };
 
@@ -799,7 +799,7 @@ TESTSUITE(main,OptionParameter)
 
         } END_CASE;
 
-        BEGIN_CASE("04","°ú¿ôÎó¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("04","å¼•æ•°åˆ—ãŒå–ã‚Œã‚‹") {
             OptionParameter param;
             char * argv[] = { "test.exe", "-test", "param", "-test2=\"dummy\"", NULL };
 
@@ -810,7 +810,7 @@ TESTSUITE(main,OptionParameter)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("05","²¿¤â°ú¿ô¤¬Ìµ¤¤¤È¤­¤Ë¤Ï¥Ç¥Õ¥©¥ë¥È°ú¿ô¤ò¤Ò¤¤¤Æ¤¯¤ë") {
+        BEGIN_CASE("05","ä½•ã‚‚å¼•æ•°ãŒç„¡ã„ã¨ãã«ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå¼•æ•°ã‚’ã²ã„ã¦ãã‚‹") {
             OptionParameter param;
             char * argv[] = { "test.exe", NULL };
 
@@ -823,7 +823,7 @@ TESTSUITE(main,OptionParameter)
 
     } END_CASE;
 
-    BEGIN_CASE("04","»²¾È¥Ş¡¼¥¯¤ò¤Ä¤±¤ë") {
+    BEGIN_CASE("04","å‚ç…§ãƒãƒ¼ã‚¯ã‚’ã¤ã‘ã‚‹") {
         OptionParameter param;
         char * argv[] = { "test.exe", "-test", "param", "-test2=\"dummy\"", NULL };
 
@@ -845,19 +845,19 @@ TESTSUITE(main,OptionParameter)
         if(!param.parseOption(4, argv))
             TEST_FAIL;
 
-        BEGIN_CASE("1","²¿¤â»ÈÍÑ¤·¤Æ¤¤¤Ê¤¤¤È¤­¤Ë¤Ïfalse") {
+        BEGIN_CASE("1","ä½•ã‚‚ä½¿ç”¨ã—ã¦ã„ãªã„ã¨ãã«ã¯false") {
             if(param.validateOption())
                 TEST_FAIL;
         } END_CASE;
 
         param["test"]._check();
-        BEGIN_CASE("2","¤Û¤«¤Ë¥Á¥§¥Ã¥¯¤·¤Æ¤¤¤Ê¤¤¥ª¥×¥·¥ç¥ó¤¬¤¢¤ì¤Ğfalse") {
+        BEGIN_CASE("2","ã»ã‹ã«ãƒã‚§ãƒƒã‚¯ã—ã¦ã„ãªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ã‚Œã°false") {
             if(param.validateOption())
                 TEST_FAIL;
         } END_CASE;
 
         param["test2"]._check();
-        BEGIN_CASE("3","Á´¤Æ»ÈÍÑ¤µ¤ì¤ì¤Ğtrue") {
+        BEGIN_CASE("3","å…¨ã¦ä½¿ç”¨ã•ã‚Œã‚Œã°true") {
             if(!param.validateOption())
                 TEST_FAIL;
         } END_CASE;
@@ -870,13 +870,13 @@ TESTSUITE(main,OptionParameter)
         if(!param.parseOption(4, argv))
             TEST_FAIL;
 
-        BEGIN_CASE("1","²¿¤â»ÈÍÑ¤·¤Æ¤¤¤Ê¤¤¤È¤­¤Ë¤ÏÁ´¤Æ¤Î¥ª¥×¥·¥ç¥ó¤¬Ìµ¸ú") {
+        BEGIN_CASE("1","ä½•ã‚‚ä½¿ç”¨ã—ã¦ã„ãªã„ã¨ãã«ã¯å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒç„¡åŠ¹") {
             if(param.getInvalidOptions().compare("-test \"param\" -test2 \"dummy\"") != 0)
                 TEST_FAIL;
         } END_CASE;
 
         param["test"]._check();
-        BEGIN_CASE("2","¤Û¤«¤Ë¥Á¥§¥Ã¥¯¤·¤Æ¤¤¤Ê¤¤¥ª¥×¥·¥ç¥ó¤¬¤¢¤ì¤Ğ¤½¤ì¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("2","ã»ã‹ã«ãƒã‚§ãƒƒã‚¯ã—ã¦ã„ãªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ã‚Œã°ãã‚ŒãŒå–ã‚Œã‚‹") {
             if(param.getInvalidOptions().compare("-test2 \"dummy\"") != 0)
                 TEST_FAIL;
         } END_CASE;
@@ -889,17 +889,17 @@ TESTSUITE(main,OptionParameter)
         if(!param.parseOption(4, argv))
             TEST_FAIL;
 
-        BEGIN_CASE("1","Â¸ºß¤¹¤ë¥ª¥×¥·¥ç¥ó¤ËÂĞ¤·¤Ætrue¤¬ÊÖ¤ë") {
+        BEGIN_CASE("1","å­˜åœ¨ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«å¯¾ã—ã¦trueãŒè¿”ã‚‹") {
             if(!param.find("test") || !param.find("test2"))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","Â¸ºß¤·¤Ê¤¤¥ª¥×¥·¥ç¥ó¤ËÂĞ¤·¤Æfalse¤¬ÊÖ¤ë") {
+        BEGIN_CASE("2","å­˜åœ¨ã—ãªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«å¯¾ã—ã¦falseãŒè¿”ã‚‹") {
             if(param.find("unknown"))
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","¶õÊ¸»ú¤ËÂĞ¤·¤Æfalse¤¬ÊÖ¤ë") {
+        BEGIN_CASE("3","ç©ºæ–‡å­—ã«å¯¾ã—ã¦falseãŒè¿”ã‚‹") {
             if(param.find(""))
                 TEST_FAIL;
         } END_CASE;

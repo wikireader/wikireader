@@ -7,32 +7,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- * �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- * �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- * �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- * ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- * ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- * (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *     ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *     ����������˴ޤޤ�Ƥ��뤳�ȡ�
- * (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *     �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *     �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *     ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- * (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *     �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *     �ȡ�
- *   (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *       �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *   (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *       ��𤹤뤳�ȡ�
- * (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *     ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ * 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ * によって公表されている GNU General Public License の Version 2 に記
+ * 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ * を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ * 利用と呼ぶ）することを無償で許諾する．
+ * (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *     スコード中に含まれていること．
+ * (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *     の無保証規定を掲載すること．
+ * (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *     と．
+ *   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *       作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *       報告すること．
+ * (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- * �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- * ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- * �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- * ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ * 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ * よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ * 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ * 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: cpu_support.S,v 1.15 2007/04/19 06:38:27 honda Exp $
  */
@@ -40,12 +40,12 @@
 #define _MACRO_ONLY
         
 /*
- *  ���ץꥱ�������ȶ��̤Υ��󥯥롼�ɥե�����
+ *  アプリケーションと共通のインクルードファイル
  */
 #include <kernel.h>
                 
 /*
- *  �������åȰ�¸��������
+ *  ターゲット依存情報の定義
  */
 #include <t_config.h>
 
@@ -56,9 +56,9 @@
 
 
 /*
- * INTC���߷פˤĤ��ơ�
+ * INTCの設計について，
  *
- *  ��¸����쥸����
+ *  保存するレジスタ
  *  R3-R4   Return Valus        (Volatile)
  *  R5-R10  Passing parameters  (Volatile)
  *  R11-R12 Temporaries         (Volatile)
@@ -82,7 +82,7 @@
 
 
 /*
- *  �㳰����ȥ�
+ *  例外エントリ
  *  Not Support!
  */
 	.text
@@ -99,7 +99,7 @@ exception_entry:
 	.align 2
 interrupt_entry:
 /*
- * �����å��ݥ��󥿤��ڤ��ؤ���ɬ��
+ * スタックポインタの切り替えが必要
  */
 	addik r1,r1,-64
 	swi r3,  r1, 60
@@ -117,62 +117,62 @@ interrupt_entry:
 	swi r16, r1, 12
 	swi r17, r1, 8
 	swi r18, r1, 4
-	mfs r3,  rmsr     /* msr����¸ */
+	mfs r3,  rmsr     /* msrの保存 */
 	swi r3,  r1, 0
 
 	lwi   r5,  r13, interrupt_count
-	bgti  r5,  nest_int      /* �ͥ��Ȳ����1�ʾ�ʤ饹���å����ڤ��ؤ��ʤ� */
+	bgti  r5,  nest_int      /* ネスト回数が1以上ならスタックを切り替えない */
 	
 	/*
-	 * �����å��ݥ����ڤ��ؤ�
+	 * スタックポインタ切り替え
 	 */
-	la    r4,  r0, STACK_TOP   /* ��������Ω���Υ����å����ɤ߹��� */
-	sw    r1,  r0, r4          /* �����������å�����¸             */
-	Mov   r1,  r4              /* �����å��ݥ����ڤ��ؤ�         */
+	la    r4,  r0, STACK_TOP   /* タスク独立部のスタックの読み込み */
+	sw    r1,  r0, r4          /* タスクスタックの保存             */
+	Mov   r1,  r4              /* スタックポインタ切り替え         */
 nest_int:
 	/* 
-     * ����ߥͥ��Ȳ���Υ��󥯥����
+     * 割込みネスト回数のインクリメント
 	 */
 	addi  r5,  r5,  1 
 	swi   r5,  r13, interrupt_count
 
-	lwi   r3,  r0, INTC_IVR    /* �٥������ɤ߹���                 */
-	add   r3,  r3, r3          /* �٥�����4��                      */
+	lwi   r3,  r0, INTC_IVR    /* ベクタの読み込み                 */
+	add   r3,  r3, r3          /* ベクタを4倍                      */
 	add   r3,  r3, r3	        
-	lwi   r5,  r3, int_handler_table /* �ϥ�ɥ饢�ɥ쥹���ɤ߹��� */
-	lwi   r6,  r3, int_bit_table     /* �ޥ����ӥåȤ��ɤ߹���     */
-	swi   r6,  r0, INTC_CIE          /* ȯ����������ߤ�ޥ���     */
+	lwi   r5,  r3, int_handler_table /* ハンドラアドレスの読み込み */
+	lwi   r6,  r3, int_bit_table     /* マスクビットの読み込み     */
+	swi   r6,  r0, INTC_CIE          /* 発生した割込みをマスク     */
 	ori   r4,  r0, 0x02 | MSR_CACHE_SETTING /* r4 = 0x02           */
-	Push  r6                         /* �ޥ����ӥåȤ򥹥��å���   */
+	Push  r6                         /* マスクビットをスタックに   */
 
-	mts   rmsr,r4                    /* ����ߵ���(MSR(IE)�򥻥å�)*/
+	mts   rmsr,r4                    /* 割込み許可(MSR(IE)をセット)*/
 
-	brald r15, r5             /* �ϥ�ɥ�ƤӽФ� */
+	brald r15, r5             /* ハンドラ呼び出し */
 	 nop
 
     la    r4, r0, MSR_CACHE_SETTING  
-	mts   rmsr,r4                    /* ����߶ػ�                 */
+	mts   rmsr,r4                    /* 割込み禁止                 */
 
 //    ori   r4,  r0, 0x03       /* r4 = 0x03                         */
-//    swi   r4,  r0, INTC_MER   /* INTC_MER = 0x0 INTC��������       */
+//    swi   r4,  r0, INTC_MER   /* INTC_MER = 0x0 INTCスタート       */
 
-	Pop   r6                         /* �ޥ����ӥåȤμ��Ф�     */
+	Pop   r6                         /* マスクビットの取り出し     */
 //	swi   r6,  r0, INTC_IAR          /* ACK                        */        
-	swi   r6,  r0, INTC_SIE          /* ȯ������ߤε���           */
+	swi   r6,  r0, INTC_SIE          /* 発生割込みの許可           */
 
 	/*
-	 *  ����ߥͥ��Ȳ���Υǥ������
+	 *  割込みネスト回数のデクリメント
      */
 	lwi   r5,  r13, interrupt_count
 	addi  r5,  r5,  -1 
 	swi   r5,  r13, interrupt_count
 	
-	bgti  r5,  ret_to_task_int      /* �ͥ��Ȳ����1�ʾ�ʤ���� */
+	bgti  r5,  ret_to_task_int      /* ネスト回数が1以上なら戻る */
 
-	lw    r1,  r0, r1	            /* �����å��ݥ��󥿤��᤹    */  
-	lwi   r4,  r13, reqflg          /* reqflg �Υ����å�         */
-	beqi  r4,  ret_to_task_int      /* FALSE �ʤ� �����������   */
-	bri   ret_int                   /* TRUE �ʤ� ret_int ��      */
+	lw    r1,  r0, r1	            /* スタックポインタを戻す    */  
+	lwi   r4,  r13, reqflg          /* reqflg のチェック         */
+	beqi  r4,  ret_to_task_int      /* FALSE なら タスクに戻る   */
+	bri   ret_int                   /* TRUE なら ret_int に      */
 ret_to_task_int:
 	lwi  r3,  r1, 0
 	mts  rmsr,r3
@@ -197,7 +197,7 @@ ret_to_task_int:
 
 
 	/*
-	 * ̤��Ͽ�γ���ߤ�ȯ������ȸƤӽФ����
+	 * 未登録の割込みが発生すると呼び出される
 	 * Not Yet!
 	 */
 	.globl no_reg_interrupt
@@ -207,24 +207,24 @@ no_reg_interrupt:
 
 
 	/*
-	 * �������ǥ����ѥå���
+	 * タスクディスパッチャ
 	 * 
-	 * dispatch �ϡ�interrupt_count = 0 
-     * MSR�� IE=0 �γ���߶ػ߾��֤ǸƤӽФ��ʤ���Фʤ�ʤ���
-	 * exit_and_dispatch ��Ʊ�ͤˡ�interrupt_count = 0 ����߶ػ߾��֤�
-     * �ƤӽФ��Τ���§�Ǥ��뤬�������ͥ뵯ư�����б����뤿�ᡤ
-     * interrupt_count = 1 �ǸƤӽФ������ˤ��б����Ƥ��롥
+	 * dispatch は，interrupt_count = 0 
+     * MSRの IE=0 の割込み禁止状態で呼び出さなければならない．
+	 * exit_and_dispatch も同様に，interrupt_count = 0 割込み禁止状態で
+     * 呼び出すのが原則であるが，カーネル起動時に対応するため，
+     * interrupt_count = 1 で呼び出した場合にも対応している．
 	 *    
 	 */
 	
 	.globl dispatch
 	.align  2
 dispatch:
-	addi  r1,  r1,  -64  /* ������å��쥸�����ʳ�����¸���� */
+	addi  r1,  r1,  -64  /* スクラッチレジスタ以外を保存する */
 	swi   r15, r1,  60
-	mfs   r3,  rmsr      /* msr����¸(����å�����������¸) */
+	mfs   r3,  rmsr      /* msrの保存(キャッシュの設定の保存) */
 	swi   r3,  r1,  56                
-	swi   r18, r1,  52   /* ɬ�פ�? */
+	swi   r18, r1,  52   /* 必要か? */
 	swi   r19, r1,  48
 	swi   r20, r1,  44
 	swi   r21, r1,  40
@@ -239,13 +239,13 @@ dispatch:
 	swi   r30, r1,  4
 	swi   r31, r1,  0
 	lwi   r4 , r13, runtsk     /* r4 <- runtsk */
-	swi   r1 , r4,  TCB_sp 	   /* �����������å���TCB����¸ */	
-	la    r5 , r0,  dispatch_r /* �¹ԺƳ����Ϥ���¸ */
-	swi   r5 , r4,  TCB_pc     /* �¹ԺƳ����Ϥ�TCB����¸   */
+	swi   r1 , r4,  TCB_sp 	   /* タスクスタックをTCBに保存 */	
+	la    r5 , r0,  dispatch_r /* 実行再開番地を保存 */
+	swi   r5 , r4,  TCB_pc     /* 実行再開番地をTCBに保存   */
 	bri   dispatcher
 
 dispatch_r:
-	lwi  r31,  r1, 0      /* �쥸���������� */
+	lwi  r31,  r1, 0      /* レジスタを復帰 */
 	lwi  r30,  r1, 4
 	lwi  r29,  r1, 8
 	lwi  r28,  r1, 12
@@ -259,21 +259,21 @@ dispatch_r:
 	lwi  r20,  r1, 44
 	lwi  r19,  r1, 48
 	lwi  r18,  r1, 52
-    lwi  r3,   r1, 56   /* MSR���᤹(����å����������᤹) */
+    lwi  r3,   r1, 56   /* MSRを戻す(キャッシュの設定を戻す) */
     mts  rmsr,r3            
-	addi r1,   r1, 60   /* �����å��ݥ��󥿤��᤹ */
+	addi r1,   r1, 60   /* スタックポインタを戻す */
 	/*
-	 *  �������㳰�����롼����ε�ư
-	 *  dispatch_r �� dispatcher ����ƤӽФ���뤿�ᡤ
-	 *  tcb �Υ��ɥ쥹�� r4 �����äƤ���
+	 *  タスク例外処理ルーチンの起動
+	 *  dispatch_r は dispatcher から呼び出されるため，
+	 *  tcb のアドレスは r4 に入っている
      *  Not Yet!
 	 */
 	lwi  r5,  r4,  TCB_enatex  /* r5 <- enatex                 */
 	andi r6,  r5,  TCB_enatex_mask  
-	beqi r6,  dispatch_r_1     /* enatex �� FALSE �ʤ�꥿���� */
+	beqi r6,  dispatch_r_1     /* enatex が FALSE ならリターン */
 	lwi  r7,  r4,  TCB_texptn  /* r5 <- texptn                 */
-	beqi r7,  dispatch_r_1     /* texptn �� 0 �Ǥʤ����       */
-	brlid r15  call_texrtn     /* �������㳰�롼����θƤӽФ� */	
+	beqi r7,  dispatch_r_1     /* texptn が 0 でなければ       */
+	brlid r15  call_texrtn     /* タスク例外ルーチンの呼び出し */	
 	 nop
 dispatch_r_1:
 	Pop     r15
@@ -284,60 +284,60 @@ dispatch_r_1:
 
 	.globl exit_and_dispatch
 exit_and_dispatch:
-	/* interrupt_count �򥯥ꥢ */
+	/* interrupt_count をクリア */
 	swi   r0,  r13, interrupt_count 
 dispatcher:
 	/*
-	 * �����ϳ���߶ػߤ���뤳��
+	 * ここは割込み禁止で来ること
 	 */
 	lwi  r4,  r13, schedtsk  /* r4 <- schedtsk              */
-	swi  r4,  r13, runtsk    /* schedtsk �� runtsk ��       */        
-	beqi r4,  dispatcher_1   /* schedtsk �����뤫           */
-	lwi  r1,  r4,  TCB_sp    /* TCB���饿���������å������� */
-	lwi  r5,  r4,  TCB_pc    /* TCB����¹ԺƳ����Ϥ�����   */
+	swi  r4,  r13, runtsk    /* schedtsk を runtsk に       */        
+	beqi r4,  dispatcher_1   /* schedtsk があるか           */
+	lwi  r1,  r4,  TCB_sp    /* TCBからタスクスタックを復帰 */
+	lwi  r5,  r4,  TCB_pc    /* TCBから実行再開番地を復帰   */
 	bra  r5	  
 dispatcher_1:
 	/*
-	 * �����ǳ���ߥ⡼�ɤ��ڤ��ؤ���Τϡ�������ȯ���������߽���
-     * �ˤɤΥ����å���Ȥ����Ȥ�������β��ȡ�����ߥϥ�ɥ����
-	 * �Υ������ǥ����ѥå����ɻߤȤ���2�Ĥΰ�̣�����롥
+	 * ここで割込みモードに切り替えるのは，ここで発生する割込み処理
+     * にどのスタックを使うかという問題の解決と，割込みハンドラ内で
+	 * のタスクディスパッチの防止という2つの意味がある．
 	 */
-	la   r1,  r0,  STACKTOP         /* ����ߥ����å����ѹ�             */
-	la   r6,  r0,  1                /* interrupt_count ��1��            */
+	la   r1,  r0,  STACKTOP         /* 割込みスタックに変更             */
+	la   r6,  r0,  1                /* interrupt_count を1に            */
 	swi  r6,  r13, interrupt_count
 	la   r5,  r0, 0x02 | MSR_CACHE_SETTING /* IE = '1'               */
 	la   r4,  r0, MSR_CACHE_SETTING        /* IE = '0'               */        
 dispatcher_2:
-	mts   rmsr, r5   /* ����ߵ���(MSR(IE)�򥻥å�)      */
+	mts   rmsr, r5   /* 割込み許可(MSR(IE)をセット)      */
 	nop
 	nop
-	mts   rmsr, r4                  /* ����߶ػ�(MSR(IE)�򥯥ꥢ)      */
+	mts   rmsr, r4                  /* 割込み禁止(MSR(IE)をクリア)      */
 	lwi   r6,  r13,  reqflg         /* r6 <- reqflg                     */
-	beqi  r6,  dispatcher_2         /* reqflg �� FALSE �ʤ�             */
-	swi   r0,  r13, interrupt_count /* interrupt_count �򥯥ꥢ         */
-	swi   r0,  r13,  reqflg         /* reqflg �� FALSE ��               */	
+	beqi  r6,  dispatcher_2         /* reqflg が FALSE なら             */
+	swi   r0,  r13, interrupt_count /* interrupt_count をクリア         */
+	swi   r0,  r13,  reqflg         /* reqflg を FALSE に               */	
 	bri   dispatcher
 
 	/*
-	 *  ����ߥϥ�ɥ�/CPU�㳰�ϥ�ɥ�и�����
+	 *  割込みハンドラ/CPU例外ハンドラ出口処理
 	 * 
-	 * ����褬�������� reqflg �����åȤ���Ƥ�����Τߤ����ˤ��롥
-	 * interrupt_count = 0������߶ػ߾��֡�������å��쥸��������¸����
-	 * ���֤ǸƤӽФ����ȡ�
+	 * 戻り先がタスクで reqflg がセットされている場合のみここにくる．
+	 * interrupt_count = 0，割込み禁止状態，スクラッチレジスタを保存した
+	 * 状態で呼び出すこと．
 	 */
 	.align 2
 	.globl ret_int
 	.globl ret_exc
 ret_exc:
 ret_int:
-	swi  r0,  r13,  reqflg   /* reqflg �� FALSE �� */
+	swi  r0,  r13,  reqflg   /* reqflg を FALSE に */
 	lwi  r4,  r13,  runtsk   /* r4 <- runtsk        */
 	lwi  r6,  r13,  enadsp   /* r6 <- enadsp        */
-	beqi r6,  ret_int_1      /* enadsp �� FALSE �ʤ� ret_int_1 �� */
+	beqi r6,  ret_int_1      /* enadsp が FALSE なら ret_int_1 へ */
 	lwi  r5,  r13,  schedtsk /* r5 <- schedtsk                    */
-	sub  r6,  r5,   r4       /* runtsk �� schedtsk ��Ʊ���ʤ�     */
-	beqi r6,  ret_int_1      /* ret_int_1 ��                      */
-	addi  r1,  r1,  -52      /* �Ĥ�Υ쥸��������¸����          */
+	sub  r6,  r5,   r4       /* runtsk と schedtsk が同じなら     */
+	beqi r6,  ret_int_1      /* ret_int_1 へ                      */
+	addi  r1,  r1,  -52      /* 残りのレジスタを保存する          */
 	swi   r19, r1,  48
 	swi   r20, r1,  44
 	swi   r21, r1,  40
@@ -351,13 +351,13 @@ ret_int:
 	swi   r29, r1,  8
 	swi   r30, r1,  4
 	swi   r31, r1,  0	
-	swi   r1 , r4,  TCB_sp 	   /* �����������å���TCB����¸ */	
-	la    r6 , r0,  ret_int_r  /* �¹ԺƳ����Ϥ���¸ */
-	swi   r6 , r4,  TCB_pc     /* �¹ԺƳ����Ϥ�TCB����¸   */
+	swi   r1 , r4,  TCB_sp 	   /* タスクスタックをTCBに保存 */	
+	la    r6 , r0,  ret_int_r  /* 実行再開番地を保存 */
+	swi   r6 , r4,  TCB_pc     /* 実行再開番地をTCBに保存   */
 	bri   dispatcher
 
 ret_int_r:	
-	lwi  r31,  r1,  0      /* �쥸���������� */
+	lwi  r31,  r1,  0      /* レジスタを復帰 */
 	lwi  r30,  r1,  4
 	lwi  r29,  r1,  8
 	lwi  r28,  r1,  12
@@ -371,23 +371,23 @@ ret_int_r:
 	lwi  r20,  r1,  44
 	lwi  r19,  r1,  48
 	addi r1,   r1,  52
-	lwi  r3,   r1,   0    /* MSR ���᤹�ʥ���å����������᤹��*/
+	lwi  r3,   r1,   0    /* MSR を戻す（キャッシュの設定を戻す）*/
 	mts  rmsr, r3                
 ret_int_1:
 	/*
-	 * �������㳰�롼����ε�ư
-	 * ret_int_r �� dispatcher ����ƤӽФ���뤿�ᡤ
-	 * tcb �Υ��ɥ쥹�� r4 �����äƤ���
+	 * タスク例外ルーチンの起動
+	 * ret_int_r は dispatcher から呼び出されるため，
+	 * tcb のアドレスは r4 に入っている
 	 */
 	lwi  r5,  r4,  TCB_enatex  /* r5 <- enatex                 */
 	andi r6,  r5,  TCB_enatex_mask  
-	beqi r6,  ret_int_2        /* enatex �� FALSE �ʤ�꥿���� */
+	beqi r6,  ret_int_2        /* enatex が FALSE ならリターン */
 	lwi  r7,  r4,  TCB_texptn  /* r5 <- texptn                 */
-	beqi r7,  ret_int_2        /* texptn �� 0 �Ǥʤ����       */
-	brlid r15  call_texrtn     /* �������㳰�롼����θƤӽФ� */	
+	beqi r7,  ret_int_2        /* texptn が 0 でなければ       */
+	brlid r15  call_texrtn     /* タスク例外ルーチンの呼び出し */	
 	 nop
 ret_int_2:
-	lwi  r3,  r1, 0    /* MSR ���᤹�ʳ����IE=0�ǳ���߶ػߤˤʤ��*/
+	lwi  r3,  r1, 0    /* MSR を戻す（割込みIE=0で割込み禁止になる）*/
 	mts  rmsr,r3
 	lwi  r18, r1, 4
 	lwi  r17, r1, 8
@@ -410,22 +410,22 @@ ret_int_2:
 
 
 	/*
-	 * ��������ư����
+	 * タスク起動処理
      *   
-     *  �����å��μ����
-     *  Microblaze Processor Reference Guide 52��53���
-     *  �ؿ��ƽФ��Τ��������ϡ�r5��r10 �˳�Ǽ���롥
-     *  �����Ʊ���˸ƽФ����ϥ����å��ե졼��˰����γ�Ǽ������ݤ���ɬ��
-     *  �����롥����ˤ��ξ�ˤϥ�󥯥쥸����(R15)��ʬ���ΰ褬ɬ�פȤʤ롥
-     *  �ƽФ���Ϲ���¾�δؿ���ƤӽФ�������� r5��r10 �򤳤��ΰ����¸��
-     * �롥
+     *  スタックの取り方
+     *  Microblaze Processor Reference Guide 52〜53より
+     *  関数呼出しのさい引数は，r5〜r10 に格納する．
+     *  それと同時に呼出し元はスタックフレームに引数の格納場所を確保する必要
+     *  がある．さらにその上にはリンクレジスタ(R15)の分の領域が必要となる．
+     *  呼出し先は更に他の関数を呼び出す場合等に r5〜r10 をこの領域に保存す
+     * る．
      *  Low Address
      *             --------------------
      *  new_sp -> | Link Register(R15) |
      *             --------------------
-     *            |   Arg1�Ѥ��ΰ�     |
+     *            |   Arg1用の領域     |
      *             --------------------
-     *            |   Arg2�Ѥ��ΰ�     |
+     *            |   Arg2用の領域     |
      *             --------------------        
      *            |      ....          |
      *             --------------------
@@ -436,17 +436,17 @@ ret_int_2:
 	.globl activate_r
 	.align 2
 activate_r:
-	ori   r4,  r0, 0x02 | MSR_CACHE_SETTING  /* msr�ν����        */
-	mts   rmsr,r4              /* ����ߵ���(MSR(IE)�򥻥å�)      */
-    lw    r11, r1, r0          /* �������μ¹�����                 */
-    lwi   r5,  r1,  4          /* ������exinf��                    */
-	la    r15, r0,  ext_tsk -8 /* ����������������               */
-	bra   r11                  /* �������μ¹Գ���                 */
+	ori   r4,  r0, 0x02 | MSR_CACHE_SETTING  /* msrの初期値        */
+	mts   rmsr,r4              /* 割込み許可(MSR(IE)をセット)      */
+    lw    r11, r1, r0          /* タスクの実行番地                 */
+    lwi   r5,  r1,  4          /* 引数（exinf）                    */
+	la    r15, r0,  ext_tsk -8 /* タスクからの戻り先               */
+	bra   r11                  /* タスクの実行開始                 */
 
 
         
     /*
-     * ���������Ԥ�
+     * 微少時間待ち
      */
      .globl _sil_dly_nse
 _sil_dly_nse:

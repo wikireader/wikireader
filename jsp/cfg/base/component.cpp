@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: component.cpp,v 1.13 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -44,10 +44,10 @@
 
 using namespace std;
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥ÈÁ´ÂÎ¤¬»ÈÍÑ¤Ç¤­¤ë¤Ê¤étrue
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå…¨ä½“ãŒä½¿ç”¨ã§ãã‚‹ãªã‚‰true
 bool Component::is_valid = true;
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÎÅĞÏ¿
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç™»éŒ²
 bool Component::ComponentInfo::addComponent(Component * component, int order) throw()
 {
     bool result = false;
@@ -60,7 +60,7 @@ bool Component::ComponentInfo::addComponent(Component * component, int order) th
     return result;
 }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÎÅĞÏ¿²ò½ü
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 void Component::ComponentInfo::removeComponent(Component * component, int order) throw()
 {
     if(this != 0 && component != 0) {
@@ -68,11 +68,11 @@ void Component::ComponentInfo::removeComponent(Component * component, int order)
 
         scope = componentList.lower_bound(order);
         while(scope != componentList.end()) {
-                //¤â¤¦»ØÄê¤µ¤ì¤¿Í¥ÀèÅÙ¤Ï¤¹¤Ù¤Æ¸«¤¿
+                //ã‚‚ã†æŒ‡å®šã•ã‚ŒãŸå„ªå…ˆåº¦ã¯ã™ã¹ã¦è¦‹ãŸ
             if(scope->first != order)
                 break;
         
-                //»ØÄê¤µ¤ì¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤Ë°ìÃ×¤·¤¿¤éºï½ü
+                //æŒ‡å®šã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ä¸€è‡´ã—ãŸã‚‰å‰Šé™¤
             if(scope->second == component) {
                 multimap<int, Component *>::iterator target = scope;
                 ++ scope;
@@ -84,13 +84,13 @@ void Component::ComponentInfo::removeComponent(Component * component, int order)
     }
 }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÎÅĞÏ¿²ò½ü
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ç™»éŒ²è§£é™¤
 void Component::ComponentInfo::removeComponent(Component * component) throw()
 {
     if(this != 0 && component != 0) {
         multimap<int, Component *>::iterator scope;
 
-            //»ØÄê¤µ¤ì¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤Ë°ìÃ×¤¹¤ë¤â¤Î¤òÁ´¤Æºï½ü
+            //æŒ‡å®šã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ä¸€è‡´ã™ã‚‹ã‚‚ã®ã‚’å…¨ã¦å‰Šé™¤
         scope = componentList.begin();
         while(scope != componentList.end()) {
             if(scope->second == component) {
@@ -105,13 +105,13 @@ void Component::ComponentInfo::removeComponent(Component * component) throw()
     }
 }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤Îµ¯Æ°Í×µá¤ÎÈ¯¹Ô
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®èµ·å‹•è¦æ±‚ã®ç™ºè¡Œ
 bool Component::ComponentInfo::activateComponent(Component * component) throw()
 {
     bool result = false;
 
     if(this != 0 && component != 0) {
-            //µ¯Æ°Í×µá¤ÎËöÈø¤Ë²Ã¤¨¤ë
+            //èµ·å‹•è¦æ±‚ã®æœ«å°¾ã«åŠ ãˆã‚‹
         activatedComponentList.push_back(component);
         result = true;
     }
@@ -119,13 +119,13 @@ bool Component::ComponentInfo::activateComponent(Component * component) throw()
     return result;
 }
 
-    //¥ª¥×¥·¥ç¥ó¤Î¥Ñ¡¼¥¹
+    //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ãƒ‘ãƒ¼ã‚¹
 void Component::ComponentInfo::parseOption(OptionParameter & option)
 {
     if(this != 0) {
         multimap<int, Component *>::iterator scope;
 
-            //Á´¤Æ¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÎparseOption¤ò¼Â¹Ô
+            //å…¨ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®parseOptionã‚’å®Ÿè¡Œ
         scope = componentList.begin();
         while(scope != componentList.end()) {
             DebugMessage("Component::parseOption start  - %\n") << typeid(*scope->second).name();
@@ -136,14 +136,14 @@ void Component::ComponentInfo::parseOption(OptionParameter & option)
     }
 }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤Îµ¯Æ°
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®èµ·å‹•
 void Component::ComponentInfo::activateComponent(void)
 {
     if(this != 0) {
         list<Component *>::iterator scope;
 
         try {
-                //µ¯Æ°Í×µá¤Î¤¢¤Ã¤¿Á´¤Æ¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤òµ¯Æ°
+                //èµ·å‹•è¦æ±‚ã®ã‚ã£ãŸå…¨ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’èµ·å‹•
             scope = activatedComponentList.begin();
             while(scope != activatedComponentList.end()) {
                 DebugMessage("Component::body start  - %\n") << typeid(**scope).name();
@@ -151,11 +151,11 @@ void Component::ComponentInfo::activateComponent(void)
                 DebugMessage("Component::body finish - %\n") << typeid(**scope).name();
                 ++ scope;
             }
-                //Í×µá¥ê¥¹¥È¤ò¥¯¥ê¥¢
+                //è¦æ±‚ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
             activatedComponentList.clear();
         }
         catch(...) {
-                //onFatalExitÍÑ¤Ë¡¢activatedComponentList¤òµ¯Æ°¤ò¤«¤±¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤À¤±¤Ë¹Ê¤ë
+                //onFatalExitç”¨ã«ã€activatedComponentListã‚’èµ·å‹•ã‚’ã‹ã‘ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã ã‘ã«çµã‚‹
             ++ scope;
             if(scope != activatedComponentList.end())
                 activatedComponentList.erase(scope, activatedComponentList.end());
@@ -165,36 +165,36 @@ void Component::ComponentInfo::activateComponent(void)
     }
 }
 
-    //°Û¾ï½èÍı¥Ï¥ó¥É¥é¤Îµ¯Æ°
+    //ç•°å¸¸å‡¦ç†ãƒãƒ³ãƒ‰ãƒ©ã®èµ·å‹•
 void Component::ComponentInfo::onFatalExit(void)
 {
     if(this != 0) {
         Component * handler;
 
-            //µ¯Æ°Í×µá¤Î¤¢¤Ã¤¿Á´¤Æ¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤òµ¯Æ°
+            //èµ·å‹•è¦æ±‚ã®ã‚ã£ãŸå…¨ã¦ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’èµ·å‹•
         while(!activatedComponentList.empty()) {
             handler = *activatedComponentList.begin();
             activatedComponentList.pop_front();
 
-                //¥Ï¥ó¥É¥é¤òµ¯Æ°
+                //ãƒãƒ³ãƒ‰ãƒ©ã‚’èµ·å‹•
             DebugMessage("Component::onFatalExit start  - %\n") << typeid(*handler).name();
             handler->onFatalExit();
             DebugMessage("Component::onFatalExit fihish - %\n") << typeid(*handler).name();
         }
-            //Í×µá¥ê¥¹¥È¤ò¥¯¥ê¥¢
+            //è¦æ±‚ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
         activatedComponentList.clear();
     }
 }
 
 
 /*
- *   Component : ¥³¥ó¥İ¡¼¥Í¥ó¥È
+ *   Component : ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
  */
 
-    //¥³¥ó¥¹¥È¥é¥¯¥¿
+    //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Component::Component(int order) throw() : RuntimeObject()
 {
-        //¤³¤³¤Ç½é¤á¤Æ¥·¥ó¥°¥ë¥È¥ó¥¤¥ó¥¹¥¿¥ó¥¹¤Ë¥¢¥¯¥»¥¹¤¹¤ë¤Î¤Ç¡¢bad_alloc¤¬È¯À¸¤¹¤ë²ÄÇ½À­¤¬¤¢¤ë
+        //ã“ã“ã§åˆã‚ã¦ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ã®ã§ã€bad_allocãŒç™ºç”Ÿã™ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹
     try {
         Singleton<ComponentInfo>::getInstance()->addComponent(this, order);
     }
@@ -203,11 +203,11 @@ Component::Component(int order) throw() : RuntimeObject()
     }
 }
 
-    //¥Ç¥¹¥È¥é¥¯¥¿
+    //ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Component::~Component(void) throw()
 {   Singleton<ComponentInfo>::getInstance()->removeComponent(this);   }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¼Â¹Ô
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å®Ÿè¡Œ
 void Component::executeComponents(int argc, char * argv [])
 {
     OptionParameter & option = getOptionParameter();
@@ -216,7 +216,7 @@ void Component::executeComponents(int argc, char * argv [])
     executeComponents(option);
 }
 
-    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¼Â¹Ô
+    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å®Ÿè¡Œ
 void Component::executeComponents(OptionParameter & option)
 {
     if(isValid()) {
@@ -224,21 +224,21 @@ void Component::executeComponents(OptionParameter & option)
         _parseCommonOption(option);
 
         try {
-                //¥ª¥×¥·¥ç¥ó¤Î¥Ñ¡¼¥¹
+                //ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ãƒ‘ãƒ¼ã‚¹
             Singleton<ComponentInfo>::getInstance()->parseOption(option);
 
-                //Á´¤Æ¤Î¥ª¥×¥·¥ç¥ó¤¬»ÈÍÑºÑ¤ß¤Ç¤Ê¤±¤ì¤Ğ¥¨¥é¡¼
+                //å…¨ã¦ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä½¿ç”¨æ¸ˆã¿ã§ãªã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼
             if(!option.validateOption()) {
                 CHECKPOINT("Exception_UnknownOption");
-                ExceptionMessage("Unknown option [%] found.","ÉÔÌÀ¤Ê¥ª¥×¥·¥ç¥ó¤¬»ØÄê¤µ¤ì¤¿ : %") << option.getInvalidOptions() << throwException;
+                ExceptionMessage("Unknown option [%] found.","ä¸æ˜ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚ŒãŸ : %") << option.getInvalidOptions() << throwException;
             }
             else {
-                    //¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¼Â¹Ô
+                    //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å®Ÿè¡Œ
                 Singleton<ComponentInfo>::getInstance()->activateComponent(); 
             }
         }
 
-            //Îã³°¤ÎÈ¯À¸ -> °Û¾ï½ªÎ»¥Ï¥ó¥É¥é¤Îµ¯Æ°
+            //ä¾‹å¤–ã®ç™ºç”Ÿ -> ç•°å¸¸çµ‚äº†ãƒãƒ³ãƒ‰ãƒ©ã®èµ·å‹•
         catch(...) {
             bool continuation;
             do {
@@ -249,7 +249,7 @@ void Component::executeComponents(OptionParameter & option)
                 }
                 catch(Exception & e) {
                     CHECKPOINT("Exception_onFatalExit");
-                    cerr << Message("[Internal error] onFatalExit threw an exception! : ","[ÆâÉô¥¨¥é¡¼] onFatalExitÃæ¤ÎÎã³°! : ") << e.getDetails() << '\n';
+                    cerr << Message("[Internal error] onFatalExit threw an exception! : ","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] onFatalExitä¸­ã®ä¾‹å¤–! : ") << e.getDetails() << '\n';
                 }
             } while(continuation);
 
@@ -259,45 +259,45 @@ void Component::executeComponents(OptionParameter & option)
 }
 
 
-    //°ìÈÌÅª¤Ê¥ª¥×¥·¥ç¥ó¤Î½èÍı
+    //ä¸€èˆ¬çš„ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å‡¦ç†
 void Component::_parseCommonOption(OptionParameter & option) throw()
 {
-        //¥Ç¥Ğ¥Ã¥°½èÍı
+        //ãƒ‡ãƒãƒƒã‚°å‡¦ç†
     if(option.find("debug")) {
         DebugMessage::setStream(&cerr);
         DebugMessage::setVerbose(true);
     }
 
-        //¸À¸ìÁªÂò
+        //è¨€èªé¸æŠ
     if(option.find("lj") || option.find("-japanese"))
         Message::selectLanguage(Message::JAPANESE);
     if(option.find("le") || option.find("-english"))
         Message::selectLanguage(Message::ENGLISH);
 
-        //¾éÄ¹¥á¥Ã¥»¡¼¥¸
+        //å†—é•·ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
     if(option.find("v") || option.find("-verbose")) {
         VerboseMessage::setStream(&cout);
         VerboseMessage::setVerbose(true);
     }
 
-        //¥Ğ¥Ê¡¼É½¼¨
+        //ãƒãƒŠãƒ¼è¡¨ç¤º
     if(!getBanner().empty() && option.find("v") || option.find("-verbose") || option.find("h") || option.find("-help"))
         cout << getBanner() << endl;
 
-        //¥Ø¥ë¥×É½¼¨
+        //ãƒ˜ãƒ«ãƒ—è¡¨ç¤º
     if(option.find("h") || option.find("-help"))
         cout << '\n' << Message(
             "Global option\n"
             " -lj, --japanese : Use Japanese as default language\n"
             " -le, --english  : Use English as default language\n"
             " -v,  --verbose  : Verbose Message\n",
-            "Á´ÂÎ¤Î¥ª¥×¥·¥ç¥ó\n"
-            " -lj, --japanese : ÆüËÜ¸ì¤ÇÉ½¼¨¤·¤Ş¤¹\n"
-            " -le, --english  : ±Ñ¸ì¤ÇÉ½¼¨¤·¤Ş¤¹\n"
-            " -v,  --verbose  : ¾éÄ¹¥á¥Ã¥»¡¼¥¸¤ò½ĞÎÏ¤·¤Ş¤¹\n");
+            "å…¨ä½“ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³\n"
+            " -lj, --japanese : æ—¥æœ¬èªã§è¡¨ç¤ºã—ã¾ã™\n"
+            " -le, --english  : è‹±èªã§è¡¨ç¤ºã—ã¾ã™\n"
+            " -v,  --verbose  : å†—é•·ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºåŠ›ã—ã¾ã™\n");
 }
 
-    //¥Ğ¥Ê¡¼¥¢¥¯¥»¥µ
+    //ãƒãƒŠãƒ¼ã‚¢ã‚¯ã‚»ã‚µ
 void Component::setBanner(string src) throw(bad_alloc)
 {
     ComponentInfo * info = Singleton<ComponentInfo>::getInstance();
@@ -311,10 +311,10 @@ string Component::getBanner(void) throw(bad_alloc)
 }
 
 /*
- *   ²áµî¤È¤Î¸ß´¹À­¤Î¤¿¤á¤Î¥Ñ¥é¥á¡¼¥¿ÁàºîAPI
+ *   éå»ã¨ã®äº’æ›æ€§ã®ãŸã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ“ä½œAPI
  */
 
-    /* »ØÄê¤µ¤ì¤¿¥ª¥×¥·¥ç¥ó¤ÎÂ¸ºß¤ò³ÎÇ§¤·¡¢É¬Í×¤Ç¤¢¤ì¤Ğ¤½¤Î¥Ñ¥é¥á¡¼¥¿¤ò¼èÆÀ¤¹¤ë */
+    /* æŒ‡å®šã•ã‚ŒãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å­˜åœ¨ã‚’ç¢ºèªã—ã€å¿…è¦ã§ã‚ã‚Œã°ãã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ */
 bool Component::findOption(const char * key1, const char * key2, std::string * element) throw()
 {
     OptionParameter::OptionItem item;
@@ -326,11 +326,11 @@ bool Component::findOption(const char * key1, const char * key2, std::string * e
     return item.isValid();
 }
 
-    /* Â¸ºß³ÎÇ§ + ¥Á¥§¥Ã¥¯¤ò¤Ä¤±¤ë */
+    /* å­˜åœ¨ç¢ºèª + ãƒã‚§ãƒƒã‚¯ã‚’ã¤ã‘ã‚‹ */
 bool Component::checkOption(const char * key1, const char * key2) throw()
 {   return getOption(key1, key2, true).isValid();   }
 
-    /* »ØÄê¤µ¤ì¤¿Ì¾Á°¤Î¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤ò¼èÆÀ */
+    /* æŒ‡å®šã•ã‚ŒãŸåå‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å–å¾— */
 OptionParameter::OptionItem Component::getOption(const char * key1, const char * key2, bool dirty) throw()
 {
     OptionParameter::OptionItem item;
@@ -348,13 +348,13 @@ OptionParameter::OptionItem Component::getOption(const char * key1, const char *
     return item;
 }
 
-    /* 2¤Ä¤Î¥ª¥×¥·¥ç¥ó¹àÌÜ¤ò¥Ş¡¼¥¸¤¹¤ë (Êü¤Ã¤Æ¤ª¤¤¤Æ¤â¥Ş¡¼¥¸¤µ¤ì¤ë¤Î¤Çµ¤¤Ë¤·¤Ê¤¤) */
+    /* 2ã¤ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³é …ç›®ã‚’ãƒãƒ¼ã‚¸ã™ã‚‹ (æ”¾ã£ã¦ãŠã„ã¦ã‚‚ãƒãƒ¼ã‚¸ã•ã‚Œã‚‹ã®ã§æ°—ã«ã—ãªã„) */
 OptionParameter::OptionItem Component::mergeOption(const char * key1, const char * key2) throw()
 {   return getOption(key1, key2);   }
 
 
 
-/****************************************************** ¥Æ¥¹¥È¥¹¥£¡¼¥È ******************************************************/
+/****************************************************** ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ ******************************************************/
 
 #ifdef TESTSUITE
 #include "coverage_undefs.h"
@@ -425,40 +425,40 @@ TESTSUITE_(main,ComponentInfo,Component)
 
     BEGIN_CASE("addComponent","addComponent") {
 
-        BEGIN_CASE("1","Àµ¤·¤¯ÄÉ²Ã¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æ­£ã—ãè¿½åŠ ã§ãã‚‹") {
             ComponentInfo info;
 
-            BEGIN_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë") {
+            BEGIN_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹") {
                 if(!info.addComponent((Component *)0x1234, 10))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë") {
+            BEGIN_CASE("2","è¿½åŠ ã•ã‚Œã¦ã„ã‚‹") {
                 if(info.componentList.size() != 1)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("3", "ÆâÍÆ¤¬Àµ¤·¤¤") {
+            BEGIN_CASE("3", "å†…å®¹ãŒæ­£ã—ã„") {
                 if(info.componentList.begin()->first != 10 || info.componentList.begin()->second != (Component *)0x1234)
                     TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÅĞÏ¿¤Ç¤­¤Ê¤¤") {
+        BEGIN_CASE("2","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯ç™»éŒ²ã§ããªã„") {
             ComponentInfo info;
 
-            BEGIN_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë") {
+            BEGIN_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹") {
                 if(info.addComponent(0, 10))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","Í×ÁÇ¤ÏÄÉ²Ã¤µ¤ì¤Æ¤¤¤Ê¤¤") {
+            BEGIN_CASE("2","è¦ç´ ã¯è¿½åŠ ã•ã‚Œã¦ã„ãªã„") {
                 if(info.componentList.size() != 0)
                     TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("3","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤ËÁàºî¤¹¤ë¤Èfalse¤¬ÊÖ¤ë") {
+        BEGIN_CASE("3","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«æ“ä½œã™ã‚‹ã¨falseãŒè¿”ã‚‹") {
             if(((ComponentInfo *)0)->addComponent((Component *)0x1234, 10))
                 TEST_FAIL;
         } END_CASE;
@@ -466,34 +466,34 @@ TESTSUITE_(main,ComponentInfo,Component)
     } END_CASE;
 
     BEGIN_CASE("removeComponent(Component *, int)","removeComponent(Component *, int)") {
-        BEGIN_CASE("1", "Àµ¤·¤¯²ò½ü¤Ç¤­¤ë") {
+        BEGIN_CASE("1", "æ­£ã—ãè§£é™¤ã§ãã‚‹") {
             ComponentInfo info;
 
-            info.addComponent((Component *)0x0123, 10); //38¹ÔÌÜ¤Îif¤Îelse¤ò¼Â¹Ô¤µ¤»¤ë¤¿¤á¤Î¥À¥ß¡¼
+            info.addComponent((Component *)0x0123, 10); //38è¡Œç›®ã®ifã®elseã‚’å®Ÿè¡Œã•ã›ã‚‹ãŸã‚ã®ãƒ€ãƒŸãƒ¼
             info.addComponent((Component *)0x1234, 10);
             info.addComponent((Component *)0x1234, 20);
 
             info.removeComponent((Component *)0x1234, 10);
             info.removeComponent((Component *)0x0123, 10);
 
-            BEGIN_CASE("1","Í×ÁÇ¿ô¤¬1") {
+            BEGIN_CASE("1","è¦ç´ æ•°ãŒ1") {
                 if(info.componentList.size() != 1)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","»Ä¤Ã¤¿Í×ÁÇ¤Îorder¤Ï20") {
+            BEGIN_CASE("2","æ®‹ã£ãŸè¦ç´ ã®orderã¯20") {
                 if(info.componentList.begin()->first != 20)
                     TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2", "NULL¥ª¥Ö¥¸¥§¥¯¥È¤«¤é¼Â¹Ô¤·¤Æ¤âÂç¾æÉ×") {
+        BEGIN_CASE("2", "NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰å®Ÿè¡Œã—ã¦ã‚‚å¤§ä¸ˆå¤«") {
             ((ComponentInfo *)0)->removeComponent(0, 0);
         } END_CASE;
     } END_CASE;
             
     BEGIN_CASE("removeComponent(Component *)","removeComponent(Component *)") {
-        BEGIN_CASE("1", "Àµ¤·¤¯²ò½ü¤Ç¤­¤ë") {
+        BEGIN_CASE("1", "æ­£ã—ãè§£é™¤ã§ãã‚‹") {
             ComponentInfo info;
             multimap<int, Component *>::iterator scope;
 
@@ -504,13 +504,13 @@ TESTSUITE_(main,ComponentInfo,Component)
 
             info.removeComponent((Component *)0x1234);
 
-            BEGIN_CASE("1","Í×ÁÇ¿ô¤¬2") {
+            BEGIN_CASE("1","è¦ç´ æ•°ãŒ2") {
                 if(info.componentList.size() != 2)
                     TEST_FAIL;
             } END_CASE;
 
             scope = info.componentList.begin();
-            BEGIN_CASE("2","»Ä¤Ã¤¿Í×ÁÇ¤ÎÆâÍÆ¤ÏÀµ¤·¤¤") {
+            BEGIN_CASE("2","æ®‹ã£ãŸè¦ç´ ã®å†…å®¹ã¯æ­£ã—ã„") {
                 if(scope->first != 10 || scope->second != (Component *)0x1235)
                     TEST_FAIL;
                 ++ scope;
@@ -519,41 +519,41 @@ TESTSUITE_(main,ComponentInfo,Component)
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2", "NULL¥ª¥Ö¥¸¥§¥¯¥È¤«¤é¼Â¹Ô¤·¤Æ¤âÂç¾æÉ×") {
+        BEGIN_CASE("2", "NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰å®Ÿè¡Œã—ã¦ã‚‚å¤§ä¸ˆå¤«") {
             ((ComponentInfo *)0)->removeComponent(0);
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("activateComponent","activateComponent") {
-        BEGIN_CASE("1","Àµ¾ï¤ËÄÉ²Ã¤Ç¤­¤ë") {
+        BEGIN_CASE("1","æ­£å¸¸ã«è¿½åŠ ã§ãã‚‹") {
             ComponentInfo info;
 
-            BEGIN_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë") {
+            BEGIN_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹") {
                 if(!info.activateComponent((Component *)0x1234))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","µ¯Æ°Í×µá¥ê¥¹¥È¤ËÀµ¤·¤¯ÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë") {
+            BEGIN_CASE("2","èµ·å‹•è¦æ±‚ãƒªã‚¹ãƒˆã«æ­£ã—ãè¿½åŠ ã•ã‚Œã¦ã„ã‚‹") {
                 if(info.activatedComponentList.size() != 1)
                     TEST_FAIL;
                 if(*info.activatedComponentList.begin() != (Component *)0x1234)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("3","NULL¥ª¥Ö¥¸¥§¥¯¥È¤«¤éÈ¯¹Ô¤·¤Æ¤âË½Áö¤·¤Ê¤¤") {
+            BEGIN_CASE("3","NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç™ºè¡Œã—ã¦ã‚‚æš´èµ°ã—ãªã„") {
                 ((ComponentInfo *)0)->activateComponent();
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("1","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤ÏÄÉ²Ã¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("1","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯è¿½åŠ ã•ã‚Œãªã„") {
             ComponentInfo info;
 
-            BEGIN_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë") {
+            BEGIN_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹") {
                 if(info.activateComponent((Component *)0))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","µ¯Æ°Í×µá¥ê¥¹¥È¤Ï¶õ¤Î¤Ş¤Ş") {
+            BEGIN_CASE("2","èµ·å‹•è¦æ±‚ãƒªã‚¹ãƒˆã¯ç©ºã®ã¾ã¾") {
                 if(!info.activatedComponentList.empty())
                     TEST_FAIL;
             } END_CASE;
@@ -564,23 +564,23 @@ TESTSUITE_(main,ComponentInfo,Component)
         Singleton<ComponentInfo>::renewInstance();
         TestComponent * test = 0;
 
-        BEGIN_CASE("0","Á°Äó¾ò·ï¤òËş¤¿¤¹") {
+        BEGIN_CASE("0","å‰ææ¡ä»¶ã‚’æº€ãŸã™") {
             if(Singleton<ComponentInfo>::getInstance()->componentList.size() != 0)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("1","Component¤ò¥¤¥ó¥¹¥¿¥ó¥¹²½¤¹¤ë¤È¡¢¾¡¼ê¤ËÅĞÏ¿¤µ¤ì¤ë") {
+        BEGIN_CASE("1","Componentã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã™ã‚‹ã¨ã€å‹æ‰‹ã«ç™»éŒ²ã•ã‚Œã‚‹") {
             test = new TestComponent;
             if(Singleton<ComponentInfo>::getInstance()->componentList.size() != 1)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÆâÍÆ¤ÏÀµ¤·¤¤") {
+        BEGIN_CASE("2","ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å†…å®¹ã¯æ­£ã—ã„") {
             if(Singleton<ComponentInfo>::getInstance()->componentList.begin()->second != test)
                 TEST_FAIL;
         } END_CASE;
             
-        BEGIN_CASE("3","ÇË´ş¤¹¤ë¤È¥¨¥ó¥È¥ê¤¬¾Ã¤¨¤ë") {
+        BEGIN_CASE("3","ç ´æ£„ã™ã‚‹ã¨ã‚¨ãƒ³ãƒˆãƒªãŒæ¶ˆãˆã‚‹") {
             delete test;
             if(Singleton<ComponentInfo>::getInstance()->componentList.size() != 0)
                 TEST_FAIL;
@@ -589,7 +589,7 @@ TESTSUITE_(main,ComponentInfo,Component)
 
     BEGIN_CASE("parseOption","parseOption") {
 
-        BEGIN_CASE("1","parseOption¤ò¼Â¹Ô¤¹¤ë¤ÈÅĞÏ¿¤µ¤ì¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÎparseOption¤¬¼Â¹Ô¤µ¤ì¤ë") {
+        BEGIN_CASE("1","parseOptionã‚’å®Ÿè¡Œã™ã‚‹ã¨ç™»éŒ²ã•ã‚ŒãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®parseOptionãŒå®Ÿè¡Œã•ã‚Œã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -601,7 +601,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Æ±°ì¥ì¥Ù¥ë¤Ê¤éÅĞÏ¿½ç)") {
+        BEGIN_CASE("2","èµ·å‹•é †åºãŒæ­£ã—ã„ (åŒä¸€ãƒ¬ãƒ™ãƒ«ãªã‚‰ç™»éŒ²é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -614,7 +614,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Í¥ÀèÅÙ½ç)") {
+        BEGIN_CASE("3","èµ·å‹•é †åºãŒæ­£ã—ã„ (å„ªå…ˆåº¦é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test(10);
@@ -627,7 +627,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","activate¤ò¤«¤±¤ë¤ÈactivateList¤ËÅĞÏ¿¤µ¤ì¤ë") {
+        BEGIN_CASE("4","activateã‚’ã‹ã‘ã‚‹ã¨activateListã«ç™»éŒ²ã•ã‚Œã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -648,7 +648,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","Îã³°¤ÏÈ´¤±¤Æ¤¯¤ë") {
+        BEGIN_CASE("5","ä¾‹å¤–ã¯æŠœã‘ã¦ãã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -669,7 +669,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6","Îã³°Á°¤ËÅĞÏ¿¤µ¤ì¤¿activate¤Ï»Ä¤ë") {
+        BEGIN_CASE("6","ä¾‹å¤–å‰ã«ç™»éŒ²ã•ã‚ŒãŸactivateã¯æ®‹ã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -697,13 +697,13 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7","NULL¥¤¥ó¥¹¥¿¥ó¥¹¤«¤é¤Î¥³¡¼¥ë¤ËÂÑ¤¨¤ë") {
+        BEGIN_CASE("7","NULLã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰ã®ã‚³ãƒ¼ãƒ«ã«è€ãˆã‚‹") {
             ((ComponentInfo *)0)->parseOption(getOptionParameter());
         } END_CASE;
     }END_CASE;
 
     BEGIN_CASE("activateCompoent/Component::body","activateCompoent/Component::body") {
-        BEGIN_CASE("1","activateComponent¤ò¤¹¤ë¤È¡¢µ¯Æ°Í×µá¤ò½Ğ¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬µ¯Æ°¤µ¤ì¤ë") {
+        BEGIN_CASE("1","activateComponentã‚’ã™ã‚‹ã¨ã€èµ·å‹•è¦æ±‚ã‚’å‡ºã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒèµ·å‹•ã•ã‚Œã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -718,7 +718,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","µ¯Æ°Í×µá¤ò½Ğ¤µ¤Ê¤¤¥³¥ó¥İ¡¼¥Í¥ó¥È¤Ïµ¯Æ°¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","èµ·å‹•è¦æ±‚ã‚’å‡ºã•ãªã„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯èµ·å‹•ã•ã‚Œãªã„") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -733,7 +733,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Æ±°ì¥ì¥Ù¥ë¤Ê¤éÅĞÏ¿½ç)") {
+        BEGIN_CASE("3","èµ·å‹•é †åºãŒæ­£ã—ã„ (åŒä¸€ãƒ¬ãƒ™ãƒ«ãªã‚‰ç™»éŒ²é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -748,7 +748,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Í¥ÀèÅÙ½ç)") {
+        BEGIN_CASE("4","èµ·å‹•é †åºãŒæ­£ã—ã„ (å„ªå…ˆåº¦é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test(10);
@@ -763,7 +763,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","Îã³°¤ÏÈ´¤±¤Æ¤¯¤ë") {
+        BEGIN_CASE("5","ä¾‹å¤–ã¯æŠœã‘ã¦ãã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -786,7 +786,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6","Îã³°¤òµ¯¤³¤·¤¿¤é¡¢¤½¤ì¤Ş¤Ç¤Ëµ¯Æ°¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬activatedComponentList¤Ë»Ä¤ë") {
+        BEGIN_CASE("6","ä¾‹å¤–ã‚’èµ·ã“ã—ãŸã‚‰ã€ãã‚Œã¾ã§ã«èµ·å‹•ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒactivatedComponentListã«æ®‹ã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -814,7 +814,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("8","Îã³°¤òµ¯¤³¤·¤¿¤é¡¢¤½¤ì¤Ş¤Ç¤Ëµ¯Æ°¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬activatedComponentList¤Ë»Ä¤ë(2¸ÄÌÜ)") {
+        BEGIN_CASE("8","ä¾‹å¤–ã‚’èµ·ã“ã—ãŸã‚‰ã€ãã‚Œã¾ã§ã«èµ·å‹•ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒactivatedComponentListã«æ®‹ã‚‹(2å€‹ç›®)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -848,7 +848,7 @@ TESTSUITE_(main,ComponentInfo,Component)
     } END_CASE;
 
     BEGIN_CASE("onFatalExit","onFatalExit") {
-        BEGIN_CASE("1","OnFatalExit¤ò¤¹¤ë¤Èµ¯Æ°Í×µá¥ê¥¹¥È¤Ë¤¢¤ë¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬¸Æ¤Ğ¤ì¤ë") {
+        BEGIN_CASE("1","OnFatalExitã‚’ã™ã‚‹ã¨èµ·å‹•è¦æ±‚ãƒªã‚¹ãƒˆã«ã‚ã‚‹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå‘¼ã°ã‚Œã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -864,7 +864,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","µ¯Æ°Í×µá¤ò½Ğ¤µ¤Ê¤¤¥³¥ó¥İ¡¼¥Í¥ó¥È¤Ïµ¯Æ°¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","èµ·å‹•è¦æ±‚ã‚’å‡ºã•ãªã„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯èµ·å‹•ã•ã‚Œãªã„") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -881,7 +881,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Æ±°ì¥ì¥Ù¥ë¤Ê¤éÅĞÏ¿½ç)") {
+        BEGIN_CASE("4","èµ·å‹•é †åºãŒæ­£ã—ã„ (åŒä¸€ãƒ¬ãƒ™ãƒ«ãªã‚‰ç™»éŒ²é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -898,7 +898,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5","µ¯Æ°½ç½ø¤¬Àµ¤·¤¤ (Í¥ÀèÅÙ½ç)") {
+        BEGIN_CASE("5","èµ·å‹•é †åºãŒæ­£ã—ã„ (å„ªå…ˆåº¦é †)") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test(10);
@@ -915,7 +915,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6","Îã³°¤ÏÈ´¤±¤Æ¤¯¤ë") {
+        BEGIN_CASE("6","ä¾‹å¤–ã¯æŠœã‘ã¦ãã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -940,7 +940,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7","Îã³°¤¬µ¯¤­¤¿¤È¤­¡¢¤Ş¤À¼Â¹Ô¤µ¤ì¤Æ¤¤¤Ê¤¤¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¥Ï¥ó¥É¥éµ¯Æ°Í×µá¤Ï»Ä¤ë") {
+        BEGIN_CASE("7","ä¾‹å¤–ãŒèµ·ããŸã¨ãã€ã¾ã å®Ÿè¡Œã•ã‚Œã¦ã„ãªã„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ãƒãƒ³ãƒ‰ãƒ©èµ·å‹•è¦æ±‚ã¯æ®‹ã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -972,14 +972,14 @@ TESTSUITE_(main,ComponentInfo,Component)
 
         } END_CASE;
 
-        BEGIN_CASE("8","NULL¥ª¥Ö¥¸¥§¥¯¥È¤«¤éÈ¯¹Ô¤·¤Æ¤âÂç¾æÉ×") {
+        BEGIN_CASE("8","NULLã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç™ºè¡Œã—ã¦ã‚‚å¤§ä¸ˆå¤«") {
             ((ComponentInfo *)0)->onFatalExit();
         } END_CASE;
 
     } END_CASE;
 
     BEGIN_CASE("isActive","isActive") {
-        BEGIN_CASE("1","µ¯Æ°¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤òÈ½Äê¤Ç¤­¤ë") {
+        BEGIN_CASE("1","èµ·å‹•ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’åˆ¤å®šã§ãã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;         
@@ -989,7 +989,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","µ¯Æ°¤·¤Æ¤¤¤Ê¤¤¥³¥ó¥İ¡¼¥Í¥ó¥È¤Ë¤ÏÈ¿±ş¤·¤Ê¤¤") {
+        BEGIN_CASE("2","èµ·å‹•ã—ã¦ã„ãªã„ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ã¯åå¿œã—ãªã„") {
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;
@@ -998,7 +998,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","ÇÉÀ¸¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤Ë¤ÏÈ¿±ş¤¹¤ë") {
+        BEGIN_CASE("3","æ´¾ç”Ÿã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ã¯åå¿œã™ã‚‹") {
             Singleton<ComponentInfo>::renewInstance();
 
             DerivedTestComponent test;
@@ -1008,7 +1008,7 @@ TESTSUITE_(main,ComponentInfo,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4","Ê£¿ôµ¯Æ°¤·¤Æ¤¤¤Æ¤âÍ×µá¤Ë¹ç¤Ã¤¿¤â¤Î¤òÃµ¤»¤ë") {   //isActive¤Îif(dynamic_cast<T *>(iterator->instance) != 0)¤ÎelseÀá¤ò¼Â¹Ô¤µ¤»¤ë¤Î¤¬ÌÜÅª
+        BEGIN_CASE("4","è¤‡æ•°èµ·å‹•ã—ã¦ã„ã¦ã‚‚è¦æ±‚ã«åˆã£ãŸã‚‚ã®ã‚’æ¢ã›ã‚‹") {   //isActiveã®if(dynamic_cast<T *>(iterator->instance) != 0)ã®elseç¯€ã‚’å®Ÿè¡Œã•ã›ã‚‹ã®ãŒç›®çš„
             Singleton<ComponentInfo>::renewInstance();
 
             TestComponent test;         
@@ -1039,7 +1039,7 @@ TESTSUITE(main,Component)
     chain.saveContext<DebugMessage::DebugControl>();
 
     BEGIN_CASE("executeComponent","executeComponent") {
-        BEGIN_CASE("1","ÆÃ¤Ë²¿¤â¤Ê¤±¤ĞparseOption/body¤¬¼Â¹Ô¤µ¤ì¤ë") {
+        BEGIN_CASE("1","ç‰¹ã«ä½•ã‚‚ãªã‘ã°parseOption/bodyãŒå®Ÿè¡Œã•ã‚Œã‚‹") {
             chain.renewInstance();
 
             bool result = true;
@@ -1050,18 +1050,18 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = false; }
 
-            BEGIN_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤") {
+            BEGIN_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„") {
                 if(!result)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption/body¤Ï¼Â¹Ô¤µ¤ì¤ë") {
+            BEGIN_CASE("2","parseOption/bodyã¯å®Ÿè¡Œã•ã‚Œã‚‹") {
                  if(!test.check_parseOption || !test.check_body || test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("2","½èÍı¤·¤Æ¤Ê¤¤¥ª¥×¥·¥ç¥ó¤¬¤¢¤ë") {
+        BEGIN_CASE("2","å‡¦ç†ã—ã¦ãªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹") {
             TestSuite::clearCheckpoints();
             chain.renewInstance();
 
@@ -1075,20 +1075,20 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = true; }
 
-            BEGIN_CASE("1","Îã³°¤¬µ¯¤³¤ë") {
+            BEGIN_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹") {
                 if(!result)
                     TEST_FAIL;
                 if(!TestSuite::isReached("Exception_UnknownOption"))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption/onFatalExit¤Ï¼Â¹Ô¤µ¤ì¤ë¤¬body¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤") {
+            BEGIN_CASE("2","parseOption/onFatalExitã¯å®Ÿè¡Œã•ã‚Œã‚‹ãŒbodyã¯å®Ÿè¡Œã•ã‚Œãªã„") {
                  if(!test.check_parseOption || test.check_body || !test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("3","¥ª¥×¥·¥ç¥ó¥Ñ¡¼¥¹Ãæ¤ËÎã³° (activate¤Ê¤·)") {
+        BEGIN_CASE("3","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ¼ã‚¹ä¸­ã«ä¾‹å¤– (activateãªã—)") {
             chain.renewInstance();
 
             bool result = false;
@@ -1099,18 +1099,18 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = true; }
 
-            BEGIN_CASE("1","Îã³°¤¬µ¯¤³¤ë") {
+            BEGIN_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹") {
                 if(!result)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption¤Ï¼Â¹Ô¤µ¤ì¤ë¤¬body/onFatalExit¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤") {
+            BEGIN_CASE("2","parseOptionã¯å®Ÿè¡Œã•ã‚Œã‚‹ãŒbody/onFatalExitã¯å®Ÿè¡Œã•ã‚Œãªã„") {
                  if(!test.check_parseOption || test.check_body || test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("4","¥ª¥×¥·¥ç¥ó¥Ñ¡¼¥¹Ãæ¤ËÎã³° (activate¤¢¤ê)") {
+        BEGIN_CASE("4","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ¼ã‚¹ä¸­ã«ä¾‹å¤– (activateã‚ã‚Š)") {
             chain.renewInstance();
 
             bool result = false;
@@ -1122,18 +1122,18 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = true; }
 
-            BEGIN_CASE("1","Îã³°¤¬µ¯¤³¤ë") {
+            BEGIN_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹") {
                 if(!result)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption/onFatalExit¤Ï¼Â¹Ô¤µ¤ì¤ë¤¬body¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤") {
+            BEGIN_CASE("2","parseOption/onFatalExitã¯å®Ÿè¡Œã•ã‚Œã‚‹ãŒbodyã¯å®Ÿè¡Œã•ã‚Œãªã„") {
                  if(!test.check_parseOption || test.check_body || !test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("5","body¤ÇÎã³°") {
+        BEGIN_CASE("5","bodyã§ä¾‹å¤–") {
             chain.renewInstance();
 
             bool result = false;
@@ -1145,19 +1145,19 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = true; }
 
-            BEGIN_CASE("1","Îã³°¤¬µ¯¤³¤ë") {
+            BEGIN_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹") {
                 if(!result)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption/body/onFatalExit¤È¤â¼Â¹Ô¤µ¤ì¤ë") {
+            BEGIN_CASE("2","parseOption/body/onFatalExitã¨ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹") {
                  if(!test.check_parseOption || !test.check_body || !test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
 
-        BEGIN_CASE("6","onFatalExit¤ÇÎã³°") {
+        BEGIN_CASE("6","onFatalExitã§ä¾‹å¤–") {
             TestSuite::clearCheckpoints();
             chain.renewInstance();
 
@@ -1173,24 +1173,24 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = true; }
 
-            BEGIN_CASE("1","Îã³°¤¬µ¯¤³¤ë") {
+            BEGIN_CASE("1","ä¾‹å¤–ãŒèµ·ã“ã‚‹") {
                 if(!result)
                     TEST_FAIL;
                 if(!TestSuite::isReached("Exception_onFatalExit"))
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","ºÇ½é¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤ÏparseOption/body/onFatalExit¤È¤â¼Â¹Ô¤µ¤ì¤ë") {
+            BEGIN_CASE("2","æœ€åˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã¯parseOption/body/onFatalExitã¨ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹") {
                  if(!test.check_parseOption || !test.check_body || !test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
-            BEGIN_CASE("3","¼¡¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤âparseOption/body/onFatalExit¤È¤â¼Â¹Ô¤µ¤ì¤ë") {
+            BEGIN_CASE("3","æ¬¡ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚‚parseOption/body/onFatalExitã¨ã‚‚å®Ÿè¡Œã•ã‚Œã‚‹") {
                  if(!test2.check_parseOption || !test2.check_body || !test2.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
         } END_CASE;
 
-        BEGIN_CASE("7","Component::is_valid¤¬false¤Î¤È¤­¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤") {
+        BEGIN_CASE("7","Component::is_validãŒfalseã®ã¨ãã¯å®Ÿè¡Œã•ã‚Œãªã„") {
             chain.renewInstance();
 
             bool result = true;
@@ -1202,12 +1202,12 @@ TESTSUITE(main,Component)
             try { executeComponents(getOptionParameter()); }
             catch(...) { result = false; }
 
-            BEGIN_CASE("1","Îã³°¤Ïµ¯¤³¤é¤Ê¤¤") {
+            BEGIN_CASE("1","ä¾‹å¤–ã¯èµ·ã“ã‚‰ãªã„") {
                 if(!result)
                     TEST_FAIL;
             } END_CASE;
 
-            BEGIN_CASE("2","parseOption/body¤Ï¼Â¹Ô¤µ¤ì¤Ê¤¤") {
+            BEGIN_CASE("2","parseOption/bodyã¯å®Ÿè¡Œã•ã‚Œãªã„") {
                  if(test.check_parseOption || test.check_body || test.check_onFatalExit)
                      TEST_FAIL;
             } END_CASE;
@@ -1218,7 +1218,7 @@ TESTSUITE(main,Component)
 
     BEGIN_CASE("_parseCommonOption","_parseCommonOption") {
 
-        BEGIN_CASE("1", "-debug¤ÇDebugMessage¤¬Í­¸ú¤Ë¤Ê¤ë") {
+        BEGIN_CASE("1", "-debugã§DebugMessageãŒæœ‰åŠ¹ã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "-debug" };
@@ -1232,7 +1232,7 @@ TESTSUITE(main,Component)
 
         } END_CASE;
 
-        BEGIN_CASE("2", "-v ¤ÇVerboseMessage¤¬Í­¸ú¤Ë¤Ê¤ë") {
+        BEGIN_CASE("2", "-v ã§VerboseMessageãŒæœ‰åŠ¹ã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "-v" };
@@ -1245,7 +1245,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3", "--verbose¤ÇVerboseMessage¤¬Í­¸ú¤Ë¤Ê¤ë") {
+        BEGIN_CASE("3", "--verboseã§VerboseMessageãŒæœ‰åŠ¹ã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "--verbose" };
@@ -1258,7 +1258,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("4", "-lj ¤ÇMessage¤¬ÆüËÜ¸ì¤Ë¤Ê¤ë") {
+        BEGIN_CASE("4", "-lj ã§MessageãŒæ—¥æœ¬èªã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "-lj" };
@@ -1271,7 +1271,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("5", "--japanese ¤ÇMessage¤¬ÆüËÜ¸ì¤Ë¤Ê¤ë") {
+        BEGIN_CASE("5", "--japanese ã§MessageãŒæ—¥æœ¬èªã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "--japanese" };
@@ -1284,7 +1284,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("6", "-le ¤ÇMessage¤¬±Ñ¸ì¤Ë¤Ê¤ë") {
+        BEGIN_CASE("6", "-le ã§MessageãŒè‹±èªã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "-le" };
@@ -1297,7 +1297,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("7", "--english ¤ÇMessage¤¬±Ñ¸ì¤Ë¤Ê¤ë") {
+        BEGIN_CASE("7", "--english ã§MessageãŒè‹±èªã«ãªã‚‹") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "--english" };
@@ -1310,7 +1310,7 @@ TESTSUITE(main,Component)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("8","¥Ø¥ë¥×¤¬¤Ç¤ë (-h)") {
+        BEGIN_CASE("8","ãƒ˜ãƒ«ãƒ—ãŒã§ã‚‹ (-h)") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "-h" };
@@ -1320,12 +1320,12 @@ TESTSUITE(main,Component)
             cout.str("");
             Component::_parseCommonOption(param);
 
-                //¤È¤ê¤¢¤¨¤º²¿¤«½ĞÎÏ¤µ¤ì¤Æ¤¤¤ë¤³¤È¤À¤±³ÎÇ§¤·¤Æ¤ª¤¯
+                //ã¨ã‚Šã‚ãˆãšä½•ã‹å‡ºåŠ›ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã ã‘ç¢ºèªã—ã¦ãŠã
             if(cout.str().empty())
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("9","¥Ø¥ë¥×¤¬¤Ç¤ë (--help)") {
+        BEGIN_CASE("9","ãƒ˜ãƒ«ãƒ—ãŒã§ã‚‹ (--help)") {
             chain.renewInstance();
 
             char * argv[] = { "test.exe", "--help" };
@@ -1335,241 +1335,241 @@ TESTSUITE(main,Component)
             cout.str("");
             Component::_parseCommonOption(param);
 
-                //¤È¤ê¤¢¤¨¤º²¿¤«½ĞÎÏ¤µ¤ì¤Æ¤¤¤ë¤³¤È¤À¤±³ÎÇ§¤·¤Æ¤ª¤¯
+                //ã¨ã‚Šã‚ãˆãšä½•ã‹å‡ºåŠ›ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã ã‘ç¢ºèªã—ã¦ãŠã
             if(cout.str().empty())
                 TEST_FAIL;
         } END_CASE;
 
     } END_CASE;
 
-    BEGIN_CASE("getOption","¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤Î¼èÆÀ") {
+    BEGIN_CASE("getOption","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—") {
         chain.renewInstance();
 
         char * argv[] = { "test.exe","-test","param","-test2","param2", "--test","param3","--test2","param4" };
         getOptionParameter().parseOption(9, argv);
 
-        BEGIN_CASE("1","getOption(test)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("1","getOption(test)ã§paramãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = getOption("test");
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë", item.isChecked());
-            TEST_CASE("3","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò¤â¤Ä", item.countParameter() == 1);
-            TEST_CASE("4","¥Ñ¥é¥á¡¼¥¿¤ÎÆâÍÆ¤¬¤¢¤Ã¤Æ¤¤¤ë", item[0].compare("param") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹", item.isChecked());
+            TEST_CASE("3","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ã‚‚ã¤", item.countParameter() == 1);
+            TEST_CASE("4","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å†…å®¹ãŒã‚ã£ã¦ã„ã‚‹", item[0].compare("param") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","getOption(test,test)¤Ç2¤Ä¤ÎÏ¢·ë¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("2","getOption(test,test)ã§2ã¤ã®é€£çµãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
-            TEST_CASE("0","[Á°Äó] --test¤Ë¥Á¥§¥Ã¥¯¤Ï¤Ä¤¤¤Æ¤¤¤Ê¤¤", !getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("0","[å‰æ] --testã«ãƒã‚§ãƒƒã‚¯ã¯ã¤ã„ã¦ã„ãªã„", !getOptionParameter().get("-test",false).isChecked());
 
             item = getOption("test","test");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë", item.isChecked());
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë (test)", getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("4","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë (-test)", getOptionParameter().get("-test",false).isChecked());
-            TEST_CASE("5","2¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 2);
-            TEST_CASE("6","1¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param") == 0);
-            TEST_CASE("7","2¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[1].compare("param3") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹", item.isChecked());
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹ (test)", getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("4","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹ (-test)", getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("5","2ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 2);
+            TEST_CASE("6","1ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param") == 0);
+            TEST_CASE("7","2ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[1].compare("param3") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","getOption(test,unknown)¤Çtest¤Î¥Ñ¥é¥á¡¼¥¿¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("3","getOption(test,unknown)ã§testã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = getOption("test","unknown");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 1);
-            TEST_CASE("3","¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 1);
+            TEST_CASE("3","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param") == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","getOption(unknown,test)¤Ç -test¤Î¥Ñ¥é¥á¡¼¥¿¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("4","getOption(unknown,test)ã§ -testã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = getOption("unknown","test");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 1);
-            TEST_CASE("3","¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param3") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 1);
+            TEST_CASE("3","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param3") == 0);
         } END_CASE;
 
-        BEGIN_CASE("5","getOption(unknown,unknown)¤ÇÌµ¸ú¤Ê¥¢¥¤¥Æ¥à¤¬ÊÖ¤ë") {
+        BEGIN_CASE("5","getOption(unknown,unknown)ã§ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒè¿”ã‚‹") {
             OptionParameter::OptionItem item;
 
             item = getOption("unknown","unknown");
 
-            TEST_CASE("1","Ìµ¸ú¤ÊÃÍ¤¬ÊÖ¤ë", !item.isValid());
+            TEST_CASE("1","ç„¡åŠ¹ãªå€¤ãŒè¿”ã‚‹", !item.isValid());
         } END_CASE;
 
-        BEGIN_CASE("6","getOption(test2,test2,false)¤Ç¥Á¥§¥Ã¥¯¤¬¤Ä¤«¤Ê¤¤") {
+        BEGIN_CASE("6","getOption(test2,test2,false)ã§ãƒã‚§ãƒƒã‚¯ãŒã¤ã‹ãªã„") {
             OptionParameter::OptionItem item;
 
-            TEST_CASE("0","[Á°Äó] -test2¤Ë¥Á¥§¥Ã¥¯¤Ï¤Ä¤¤¤Æ¤¤¤Ê¤¤", !getOptionParameter().get("test2",false).isChecked());
-            TEST_CASE("0","[Á°Äó] --test2¤Ë¥Á¥§¥Ã¥¯¤Ï¤Ä¤¤¤Æ¤¤¤Ê¤¤", !getOptionParameter().get("-test2",false).isChecked());
+            TEST_CASE("0","[å‰æ] -test2ã«ãƒã‚§ãƒƒã‚¯ã¯ã¤ã„ã¦ã„ãªã„", !getOptionParameter().get("test2",false).isChecked());
+            TEST_CASE("0","[å‰æ] --test2ã«ãƒã‚§ãƒƒã‚¯ã¯ã¤ã„ã¦ã„ãªã„", !getOptionParameter().get("-test2",false).isChecked());
 
             item = getOption("test2","test2",false);
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ê¤¤", !item.isChecked());
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ê¤¤ (test2)", !getOptionParameter().get("test2",false).isChecked());
-            TEST_CASE("4","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ê¤¤ (-test2)", !getOptionParameter().get("-test2",false).isChecked());
-            TEST_CASE("5","2¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 2);
-            TEST_CASE("6","1¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param2") == 0);
-            TEST_CASE("7","2¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[1].compare("param4") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ãªã„", !item.isChecked());
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ãªã„ (test2)", !getOptionParameter().get("test2",false).isChecked());
+            TEST_CASE("4","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ãªã„ (-test2)", !getOptionParameter().get("-test2",false).isChecked());
+            TEST_CASE("5","2ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 2);
+            TEST_CASE("6","1ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param2") == 0);
+            TEST_CASE("7","2ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[1].compare("param4") == 0);
         } END_CASE;
 
     } END_CASE;
 
-    BEGIN_CASE("findOption","¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤Î¼èÆÀ") {
+    BEGIN_CASE("findOption","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—") {
         chain.renewInstance();
 
         char * argv[] = { "test.exe","-test","param","--test","param3", "-noparam"};
         getOptionParameter().parseOption(6, argv);
 
-        BEGIN_CASE("1","findOption(test,test)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("1","findOption(test,test)ã§paramãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (test)", !getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (-test)", !getOptionParameter().get("-test",false).isChecked());
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", findOption("test","test",&result));
-            TEST_CASE("2","Ê¸»úÎó¤Ëparam¤¬ÊÖ¤ë", result.compare("param") == 0);
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß (test)", getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß (-test)", getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (test)", !getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (-test)", !getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", findOption("test","test",&result));
+            TEST_CASE("2","æ–‡å­—åˆ—ã«paramãŒè¿”ã‚‹", result.compare("param") == 0);
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (test)", getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (-test)", getOptionParameter().get("-test",false).isChecked());
         } END_CASE;
 
-        BEGIN_CASE("2","findOption(test,unknown)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("2","findOption(test,unknown)ã§paramãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", findOption("test","unknown",&result));
-            TEST_CASE("2","Ê¸»úÎó¤Ëparam¤¬ÊÖ¤ë", result.compare("param") == 0);
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", findOption("test","unknown",&result));
+            TEST_CASE("2","æ–‡å­—åˆ—ã«paramãŒè¿”ã‚‹", result.compare("param") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","findOption(unknown,test)¤Çparam3¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("3","findOption(unknown,test)ã§param3ãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", findOption("unknown","test",&result));
-            TEST_CASE("2","Ê¸»úÎó¤Ëparam¤¬ÊÖ¤ë", result.compare("param3") == 0);
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", findOption("unknown","test",&result));
+            TEST_CASE("2","æ–‡å­—åˆ—ã«paramãŒè¿”ã‚‹", result.compare("param3") == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","findOption(unknown,unknown)¤ÇÌµ¸ú¤Ê¥¢¥¤¥Æ¥à¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4","findOption(unknown,unknown)ã§ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒè¿”ã‚‹") {
             string result;
 
             result.assign("dummy");
 
-            TEST_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !findOption("unknown","unknown",&result));
-            TEST_CASE("2","Ê¸»úÎó¤Ï½ñ¤­´¹¤ï¤é¤Ê¤¤", result.compare("dummy") == 0);
+            TEST_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !findOption("unknown","unknown",&result));
+            TEST_CASE("2","æ–‡å­—åˆ—ã¯æ›¸ãæ›ã‚ã‚‰ãªã„", result.compare("dummy") == 0);
         } END_CASE;
 
         BEGIN_CASE("5","findOption(noparam,NULL,&result)") {
             string result;
             result.assign("dummy");
 
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", findOption("noparam", 0, &result));
-            TEST_CASE("2","Ê¸»úÎó¤ÏÃÖ¤­´¹¤ï¤é¤Ê¤¤", result.compare("dummy") == 0);
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", findOption("noparam", 0, &result));
+            TEST_CASE("2","æ–‡å­—åˆ—ã¯ç½®ãæ›ã‚ã‚‰ãªã„", result.compare("dummy") == 0);
         } END_CASE;
     } END_CASE;
 
-    BEGIN_CASE("checkOption","¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤ÎÂ¸ºß³ÎÇ§ + ¥Á¥§¥Ã¥¯") {
+    BEGIN_CASE("checkOption","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å­˜åœ¨ç¢ºèª + ãƒã‚§ãƒƒã‚¯") {
         chain.renewInstance();
 
         char * argv[] = { "test.exe","-test","param","--test","param3", "-test2", "--test3"};
         getOptionParameter().parseOption(7, argv);
 
-        BEGIN_CASE("1","checkOption(test,test)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("1","checkOption(test,test)ã§paramãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (test)", !getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (-test)", !getOptionParameter().get("-test",false).isChecked());
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", checkOption("test","test"));
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß (test)", getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß (-test)", getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (test)", !getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (-test)", !getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", checkOption("test","test"));
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (test)", getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (-test)", getOptionParameter().get("-test",false).isChecked());
         } END_CASE;
 
-        BEGIN_CASE("2","checkOption(test2,unknown)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("2","checkOption(test2,unknown)ã§paramãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (test2)", !getOptionParameter().get("test2",false).isChecked());
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", checkOption("test2","unknown"));
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß (test2)", getOptionParameter().get("test2",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (test2)", !getOptionParameter().get("test2",false).isChecked());
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", checkOption("test2","unknown"));
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (test2)", getOptionParameter().get("test2",false).isChecked());
         } END_CASE;
 
-        BEGIN_CASE("3","checkOption(unknown,test3)¤Çparam3¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("3","checkOption(unknown,test3)ã§param3ãŒå–ã‚Œã‚‹") {
             string result;
 
-            TEST_CASE("0","[Á°Äó] ¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤Ï¤Ê¤¤ (test3)", !getOptionParameter().get("-test3",false).isChecked());
-            TEST_CASE("1","´Ø¿ô¤ÏÀ®¸ù¤¹¤ë", checkOption("unknown","test3"));
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß (test3)", getOptionParameter().get("-test3",false).isChecked());
+            TEST_CASE("0","[å‰æ] ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã¯ãªã„ (test3)", !getOptionParameter().get("-test3",false).isChecked());
+            TEST_CASE("1","é–¢æ•°ã¯æˆåŠŸã™ã‚‹", checkOption("unknown","test3"));
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ (test3)", getOptionParameter().get("-test3",false).isChecked());
         } END_CASE;
 
-        BEGIN_CASE("4","checkOption(unknown,unknown)¤ÇÌµ¸ú¤Ê¥¢¥¤¥Æ¥à¤¬ÊÖ¤ë") {
+        BEGIN_CASE("4","checkOption(unknown,unknown)ã§ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒè¿”ã‚‹") {
             string result;
 
             result.assign("dummy");
 
-            TEST_CASE("1","´Ø¿ô¤Ï¼ºÇÔ¤¹¤ë", !checkOption("unknown","unknown"));
+            TEST_CASE("1","é–¢æ•°ã¯å¤±æ•—ã™ã‚‹", !checkOption("unknown","unknown"));
         } END_CASE;
     } END_CASE;
 
-        /* mergeOption¤Î¥Á¥§¥Ã¥¯¹àÌÜ¤Ï¡¢getOption¤È¤Û¤ÜÆ±¤¸ */
-    BEGIN_CASE("mergeOption","¥ª¥×¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤Î·ë¹ç") {
+        /* mergeOptionã®ãƒã‚§ãƒƒã‚¯é …ç›®ã¯ã€getOptionã¨ã»ã¼åŒã˜ */
+    BEGIN_CASE("mergeOption","ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®çµåˆ") {
         chain.renewInstance();
 
         char * argv[] = { "test.exe","-test","param","-test2","param2", "--test","param3","--test2","param4" };
         getOptionParameter().parseOption(9, argv);
 
-        BEGIN_CASE("1","mergeOption(test)¤Çparam¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("1","mergeOption(test)ã§paramãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = mergeOption("test");
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë", item.isChecked());
-            TEST_CASE("3","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò¤â¤Ä", item.countParameter() == 1);
-            TEST_CASE("4","¥Ñ¥é¥á¡¼¥¿¤ÎÆâÍÆ¤¬¤¢¤Ã¤Æ¤¤¤ë", item[0].compare("param") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹", item.isChecked());
+            TEST_CASE("3","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ã‚‚ã¤", item.countParameter() == 1);
+            TEST_CASE("4","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å†…å®¹ãŒã‚ã£ã¦ã„ã‚‹", item[0].compare("param") == 0);
         } END_CASE;
 
-        BEGIN_CASE("2","mergeOption(test,test)¤Ç2¤Ä¤ÎÏ¢·ë¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("2","mergeOption(test,test)ã§2ã¤ã®é€£çµãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
-            TEST_CASE("0","[Á°Äó] --test¤Ë¥Á¥§¥Ã¥¯¤Ï¤Ä¤¤¤Æ¤¤¤Ê¤¤", !getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("0","[å‰æ] --testã«ãƒã‚§ãƒƒã‚¯ã¯ã¤ã„ã¦ã„ãªã„", !getOptionParameter().get("-test",false).isChecked());
 
             item = mergeOption("test","test");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë", item.isChecked());
-            TEST_CASE("3","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë (test)", getOptionParameter().get("test",false).isChecked());
-            TEST_CASE("4","¥Á¥§¥Ã¥¯ºÑ¤ß¤Ç¤¢¤ë (-test)", getOptionParameter().get("-test",false).isChecked());
-            TEST_CASE("5","2¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 2);
-            TEST_CASE("6","1¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param") == 0);
-            TEST_CASE("7","2¤Ä¤á¤Î¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[1].compare("param3") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹", item.isChecked());
+            TEST_CASE("3","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹ (test)", getOptionParameter().get("test",false).isChecked());
+            TEST_CASE("4","ãƒã‚§ãƒƒã‚¯æ¸ˆã¿ã§ã‚ã‚‹ (-test)", getOptionParameter().get("-test",false).isChecked());
+            TEST_CASE("5","2ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 2);
+            TEST_CASE("6","1ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param") == 0);
+            TEST_CASE("7","2ã¤ã‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[1].compare("param3") == 0);
         } END_CASE;
 
-        BEGIN_CASE("3","mergeOption(test,unknown)¤Çtest¤Î¥Ñ¥é¥á¡¼¥¿¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("3","mergeOption(test,unknown)ã§testã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = mergeOption("test","unknown");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 1);
-            TEST_CASE("3","¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 1);
+            TEST_CASE("3","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param") == 0);
         } END_CASE;
 
-        BEGIN_CASE("4","mergeOption(unknown,test)¤Ç -test¤Î¥Ñ¥é¥á¡¼¥¿¤¬¼è¤ì¤ë") {
+        BEGIN_CASE("4","mergeOption(unknown,test)ã§ -testã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå–ã‚Œã‚‹") {
             OptionParameter::OptionItem item;
 
             item = mergeOption("unknown","test");
 
-            TEST_CASE("1","Í­¸ú¤ÊÃÍ¤¬ÊÖ¤ë", item.isValid());
-            TEST_CASE("2","1¤Ä¤Î¥Ñ¥é¥á¡¼¥¿¤ò»ı¤Ä", item.countParameter() == 1);
-            TEST_CASE("3","¥Ñ¥é¥á¡¼¥¿¤ÎÃÍ¤ÏÀµ¤·¤¤", item[0].compare("param3") == 0);
+            TEST_CASE("1","æœ‰åŠ¹ãªå€¤ãŒè¿”ã‚‹", item.isValid());
+            TEST_CASE("2","1ã¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒã¤", item.countParameter() == 1);
+            TEST_CASE("3","ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€¤ã¯æ­£ã—ã„", item[0].compare("param3") == 0);
         } END_CASE;
 
-        BEGIN_CASE("5","mergeOption(unknown,unknown)¤ÇÌµ¸ú¤Ê¥¢¥¤¥Æ¥à¤¬ÊÖ¤ë") {
+        BEGIN_CASE("5","mergeOption(unknown,unknown)ã§ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒè¿”ã‚‹") {
             OptionParameter::OptionItem item;
 
             item = mergeOption("unknown","unknown");
 
-            TEST_CASE("1","Ìµ¸ú¤ÊÃÍ¤¬ÊÖ¤ë", !item.isValid());
+            TEST_CASE("1","ç„¡åŠ¹ãªå€¤ãŒè¿”ã‚‹", !item.isValid());
         } END_CASE;
 
     } END_CASE;

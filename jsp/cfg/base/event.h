@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: event.h,v 1.9 2004/09/06 15:00:49 honda Exp $
  */
@@ -46,7 +46,7 @@
 
 #include <list>
 
-    //���٥�ȥեå��μ��ޤȤ���
+    //イベントフックの取りまとめ役
 template<typename T>
 class Event
 {
@@ -57,7 +57,7 @@ public:
     {   public: SINGLETON_CONSTRUCTOR(handler_list_type) throw() {}   };
 
     /*
-     *   ���饹����Υϥ�ɥ���
+     *   クラスの中のハンドラ用
      */
 
     class Handler
@@ -70,11 +70,11 @@ public:
         virtual void handler(T & ev) = 0;
 
     protected:
-            //��Ͽ
+            //登録
         Handler(void) throw()
         {   Singleton<instance_list_type>::getInstance()->push_back(this);   }
         
-            //��Ͽ���
+            //登録解除
         virtual ~Handler(void) throw()
         {
             typename Event<T>::Handler::instance_list_type * list = Singleton<instance_list_type>::getInstance(std::nothrow);
@@ -102,14 +102,14 @@ public:
     virtual ~Event(void) {}
 
     /*
-     *  �����ƥ��å��ʥϥ�ɥ���
+     *  スタティックなハンドラ用
      */
 
-        //���٥�Ȥ˥ϥ�ɥ���ɲ�
+        //イベントにハンドラを追加
     inline static void add(handler_type func) throw(std::bad_alloc)
     {   Singleton<handler_list_type>::getInstance()->push_back(func);   }
 
-        //���٥�Ȥ���ϥ�ɥ����
+        //イベントからハンドラを削除
     static void remove(handler_type func) throw()
     {
         typename Event<T>::handler_list_type * list;
@@ -131,15 +131,15 @@ public:
     }
 
     /*
-     *  �������
+     *  共通操作
      */
-        //���٥�Ȥ�ȯ��
+        //イベントの発生
     static void raise(T & ev)
     {
             typedef typename Event<T>::handler_list_type handler_list_type_t; 
             typedef typename Event<T>::Handler::instance_list_type instance_list_type_t;
 
-        /* ��Ͽ���줿��Ū�ʴؿ��˥��٥�Ȥ�ȯ�� */ {
+        /* 登録された静的な関数にイベントを発行 */ {
            handler_list_type_t * list;
             typename handler_list_type_t::iterator scope;
 
@@ -152,7 +152,7 @@ public:
             }
         }
 
-        /* ��Ͽ���줿���饹���󥹥��󥹤˥��٥�Ȥ�ȯ�� */ {
+        /* 登録されたクラスインスタンスにイベントを発行 */ {
             instance_list_type_t * list;
             typename instance_list_type_t::iterator scope;
 
@@ -166,7 +166,7 @@ public:
         }
     }
 
-        //���٥�Ȥ�ȯ�� (�����ʤ�)
+        //イベントの発生 (引数なし)
     inline static void raise(void)
     {
         T ev;
@@ -176,14 +176,14 @@ public:
 
 
     /*
-     *  ���ѥ��٥��
+     *  汎用イベント
      */
 
-    //���󥹥ȥ饯������ư������ä����ȡ�������˵��륤�٥��
+    //コンストラクタが起動し終わったあと、真っ先に起るイベント
 class StartupEvent {};
 
 
-    //�������Ԥ���鷺���ץ�����ब�����Ȥ��˵��륤�٥��
+    //成功失敗を問わず、プログラムが終わるときに起るイベント
 struct ShutdownEvent
 {
     int exit_code;

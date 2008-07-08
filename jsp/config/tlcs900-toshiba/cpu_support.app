@@ -5,32 +5,32 @@
 ;
 ;   Copyright (C) 2006 by Witz Corporation, JAPAN
 ;
-;   �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
-;   �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
-;   �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
-;   ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
-;   ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
-;   (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-;       ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-;       ����������˴ޤޤ�Ƥ��뤳�ȡ�
-;   (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;       �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-;       �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-;       ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;   (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;       �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-;       �ȡ�
-;     (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-;         �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;     (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-;         ��𤹤뤳�ȡ�
-;   (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-;       ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+;   上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+;   によって公表されている GNU General Public License の Version 2 に記
+;   述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;   を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;   利用と呼ぶ）することを無償で許諾する．
+;   (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;       権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;       スコード中に含まれていること．
+;   (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;       用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;       者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;       の無保証規定を掲載すること．
+;   (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;       用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;       と．
+;     (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;         作権表示，この利用条件および下記の無保証規定を掲載すること．
+;     (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;         報告すること．
+;   (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;       害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 ;
-;   �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
-;   ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
-;   �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
-;   ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+;   本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;   よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;   含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;   接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 ;
 ;   @(#) $Id: cpu_support.app,v 1.1 2006/04/10 08:19:25 honda Exp $
 ;
@@ -39,7 +39,7 @@
 	module cpu_support_app
 
 ;
-;	�ץ����å���¸�⥸�塼�� ������֥��������TLCS-900L1�ѡ�
+;	プロセッサ依存モジュール アセンブリ言語部（TLCS-900L1用）
 ;
 
 #define	SUPPORT_CHG_IPM
@@ -48,7 +48,7 @@
 #include "sys_rename.h"
 #include "offset.inc"
 
-; �������ȥ���ܥ����
+; 外部参照シンボル定義
 	extern large	__StackTop
 	extern large	_reqflg
 	extern large	_enadsp
@@ -62,195 +62,195 @@
 f_code section code large align=1,1
 
 ;
-;	�������ǥ����ѥå���
+;	タスクディスパッチャ
 ;
-;   dispatch �ϡ�����������ƥ����Ⱦ��֡�����߶ػ߾��֤ǸƤӽФ��ʤ�
-;   ��Фʤ�ʤ���exit_and_dispatch �⡤����������ƥ����Ⱦ��֡����
-;   �߶ػ߾��֤ǸƤӽФ��Τ���§�Ǥ��뤬�������ͥ뵯ư�����б����뤿�ᡤ
-;   ����ߥ���ƥ����Ⱦ��֤ǸƤӽФ������ˤ��б����Ƥ��롥
-;	�ƤӽФ����: SR��IFF=7 (����߶ػ߾���),
-;				  intcnt = 0(����������ƥ�����), �����������å�
+;   dispatch は，タスクコンテキスト状態・割込み禁止状態で呼び出さなけ
+;   ればならない．exit_and_dispatch も，タスクコンテキスト状態・割込
+;   み禁止状態で呼び出すのが原則であるが，カーネル起動時に対応するため，
+;   割込みコンテキスト状態で呼び出した場合にも対応している．
+;	呼び出し条件: SRのIFF=7 (割込み禁止状態),
+;				  intcnt = 0(タスクコンテキスト), タスクスタック
 ;
 	public _dispatch
 
 _dispatch:
-	push	xiz			; �ؿ��ƽФ��ݸɬ�פʥ쥸��������¸
-	ld		xwa, (_runtsk)	; ư���楿������TCB�����
+	push	xiz			; 関数呼出で保護が必要なレジスタの保存
+	ld		xwa, (_runtsk)	; 動作中タスクのTCBを取得
 	ld		(xwa+TCB_sp), xsp	;
 	lda		xhl, dispatch_r	;
 	ld		(xwa+TCB_pc), xhl	;
 	jr		dispatcher	;
 
 ;
-;	�ƤӽФ����: SR��IFF=7 (����߶ػ߾���),
-;				  intcnt = 0(����������ƥ�����), �����������å�
+;	呼び出し条件: SRのIFF=7 (割込み禁止状態),
+;				  intcnt = 0(タスクコンテキスト), タスクスタック
 ;
-;	xwa �ˤ�runtsk �Υ��ɥ쥹����Ǽ����Ƥ���
+;	xwa にはruntsk のアドレスが格納されている
 ;
 dispatch_r:
 	pop		xiz		;
 	ld		bc, (xwa+TCB_enatex)	;
 	bit		TCB_enatex_bit, bc	;
-	jr		z, dispatch_r_1	; enatex �� FALSE �ʤ�꥿����
-	cpw		(xwa+TCB_texptn), 0	; �������㳰�װ���������
+	jr		z, dispatch_r_1	; enatex が FALSE ならリターン
+	cpw		(xwa+TCB_texptn), 0	; タスク例外要因がある場合
 	jp		nz, _call_texrtn	;
-	; call_texrtn����ľ��dispatch �ƤӽФ��������.
-dispatch_r_1:				; �������㳰��¹Ԥ��ʤ����
-	ret				; dispatch �ƤӽФ��������.
+	; call_texrtnから直接dispatch 呼び出し元へ戻る.
+dispatch_r_1:				; タスク例外を実行しない場合
+	ret				; dispatch 呼び出し元へ戻る.
 
 ;
-;	��������ư������
+;	タスク起動時処理
 ;
-;	�����Ǥ�, CPU���å�������֤ˤ�, ��������ư����.
+;	ここでは, CPUロック解除状態にし, タスクを起動する.
 ;
-;	�ƤӽФ����: SR��IFF=7 (����߶ػ߾���),
-;				  intcnt = 0(����������ƥ�����), �����������å�
+;	呼び出し条件: SRのIFF=7 (割込み禁止状態),
+;				  intcnt = 0(タスクコンテキスト), タスクスタック
 ;
 	public _activate_r
 
 _activate_r:
-	pop		xhl		; �������ε�ư���Ϥ�whl ������
-#ifdef SUPPORT_CHG_IPM			/* t_unlock_cpu �����ν��� */
-	push	sr			; ����ߥޥ����� task_intmask ������
+	pop		xhl		; タスクの起動番地をwhl に設定
+#ifdef SUPPORT_CHG_IPM			/* t_unlock_cpu 相当の処理 */
+	push	sr			; 割込みマスクに task_intmask を設定
 	ld		wa, (_task_intmask)	;
 	andw	(xsp), ~0x7000	;
 	or		(xsp), wa	;
 	pop		sr			;
 #else /* SUPPORT_CHG_IPM */
-	ei		0		; ����ߵ���
+	ei		0		; 割込み許可
 #endif /* SUPPORT_CHG_IPM */
 	jp		xhl
 
 ;
-;	dispatcher�ƤӽФ����:
-;		�����٤ƤΥ������Υ���ƥ����Ȥ���¸����Ƥ���.
-;		��SR��IFF=7 (����߶ػ߾���)
-;		������ƥ����Ȥϥ���������ƥ�����(intcnt=0)
-;	dispatcher �ƽл��Υ����å�:
-;		dispatch ���餭�����: �����������å�
-;		exit_and_dispatch ���餭�����: 
-;			exit_task ���餭�����ϥ����������å�
-;			�����ͥ뵯ư���ϳ���ߥ����å�
-;		ret_int ���餭�����: �����������å�
-;		dispatcher_2 �Ǥγ�����Ԥ����餭�����: ����ߥ����å�
+;	dispatcher呼び出し条件:
+;		・すべてのタスクのコンテキストは保存されている.
+;		・SRのIFF=7 (割込み禁止状態)
+;		・コンテキストはタスクコンテキスト(intcnt=0)
+;	dispatcher 呼出時のスタック:
+;		dispatch からきた場合: タスクスタック
+;		exit_and_dispatch からきた場合: 
+;			exit_task からきた場合はタスクスタック
+;			カーネル起動時は割込みスタック
+;		ret_int からきた場合: タスクスタック
+;		dispatcher_2 での割込み待ちからきた場合: 割込みスタック
 ;
 	public _exit_and_dispatch
 
 _exit_and_dispatch:
-	ldw		(_intcnt), 0	; �ͥ��ȥ����󥿥��ꥢ(����������ƥ�����)
+	ldw		(_intcnt), 0	; ネストカウンタクリア(タスクコンテキスト)
 dispatcher:
-	ld		xwa, (_schedtsk)	; schedtsk �� runtsk ������
+	ld		xwa, (_schedtsk)	; schedtsk を runtsk に設定
 	ld		(_runtsk), xwa	;
-	or		xwa, xwa		; �¹Ԥ��륿������̵����Х����ɥ�롼�פ�
+	or		xwa, xwa		; 実行するタスクが無ければアイドルループへ
 	jr		z, pre_idle_loop	;
-	ld		xsp, (xwa+TCB_sp)	; �����������å��ݥ��󥿤�����
+	ld		xsp, (xwa+TCB_sp)	; タスクスタックポインタを復帰
 	ld		xhl, (xwa+TCB_pc)	;
-	jp		xhl			; �¹ԺƳ����Ϥإ�����
+	jp		xhl			; 実行再開番地へジャンプ
 ;
-;	�¹Ԥ��٤��������������ޤ��ԤĽ���
+;	実行すべきタスクが現れるまで待つ処理
 ;
 pre_idle_loop:
-	ld		xsp, __StackTop ; ������ѤΥ����å������ؤ�
-	incw	1, (_intcnt)	; �󥿥�������ƥ�����
+	ld		xsp, __StackTop ; 割込み用のスタックへ切替え
+	incw	1, (_intcnt)	; 非タスクコンテキスト
 ;
-;	�������󥿥�������ƥ�����,����ߥ����å����ڤ괹�����Τ�,
-;	������ȯ���������߽����ˤɤΥ����å���Ȥ����Ȥ�������β���,
-;	����ߥϥ�ɥ���ǤΥǥ����ѥå��ɻߤȤ���2�Ĥΰ�̣�����롥
+;	ここで非タスクコンテキスト,割込みスタックに切り換えたのは,
+;	ここで発生する割込み処理にどのスタックを使うかという問題の解決と,
+;	割込みハンドラ内でのディスパッチ防止という2つの意味がある．
 ;
 idle_loop:
-#ifdef SUPPORT_CHG_IPM			/* t_unlock_cpu �����ν��� */
-	push	sr			; ����ߥޥ����� task_intmask ������
+#ifdef SUPPORT_CHG_IPM			/* t_unlock_cpu 相当の処理 */
+	push	sr			; 割込みマスクに task_intmask を設定
 	ld		wa, (_task_intmask)	;
 	andw	(xsp), ~0x7000	;
 	or		(xsp), wa	;
 	pop		sr			;
 #else /* SUPPORT_CHG_IPM */
-	ei		0		; ����ߵ���
+	ei		0		; 割込み許可
 #endif /* SUPPORT_CHG_IPM */
 
-	halt 		; IDLE2���֤�����
-	nop			; �嵭halt�򥳥���(nop�Τ�)�ˤ����
-	nop			; �����ư���Ԥ�ʤ������ɥ�롼�פȤʤ�.
+	halt 		; IDLE2状態へ遷移
+	nop			; 上記haltをコメント(nopのみ)にすると
+	nop			; 低消費動作を行わないアイドルループとなる.
 	nop			; 
 	nop			; 
-	ei		7			; ����߶ػ�
-	cpw		(_reqflg), 0	; reqflg �� FALSE �Ǥ����
-	jr		z, idle_loop	;         idle_loop ��
+	ei		7			; 割込み禁止
+	cpw		(_reqflg), 0	; reqflg が FALSE であれば
+	jr		z, idle_loop	;         idle_loop へ
 	ldw		(_reqflg), 0	; reqflg <--- FALSE
-	decw		1, (_intcnt)	; ����������ƥ����Ȥ��᤹
-	jr		dispatcher		; dispatcher �����
+	decw		1, (_intcnt)	; タスクコンテキストに戻す
+	jr		dispatcher		; dispatcher へ戻る
 
 ;
-;  �ٱ�ǥ����ѥå�����
+;  遅延ディスパッチ処理
 ;
-;	�ƤӽФ����: SR��IFF=7 (����߶ػ߾���),
-;				  intcnt = 0(����������ƥ�����), �����������å�
+;	呼び出し条件: SRのIFF=7 (割込み禁止状態),
+;				  intcnt = 0(タスクコンテキスト), タスクスタック
 ;				  reqflg = TRUE
-;				  INTNEST�쥸���� = 1
+;				  INTNESTレジスタ = 1
 ;
 ret_int:
 	ldw		(_reqflg), 0	; reqflg <--- FALSE
 	ld		de, 0	;
-	ldc		intnest, de	; �ǥ����ѥå�������intnest ��0
-	push	xiz			; �ؿ��ƽФ��ݸɬ�פʥ쥸��������¸
-	ld		xwa, (_runtsk)	; runtsk �����
-	cpw		(_enadsp), 0	; enadsp �� FALSE �ʤ�
-	jr		z, ret_int_r	; ret_int_r ��
-	cp		xwa, (_schedtsk)	; runtsk ��schedtsk ��Ʊ���ʤ�
-	jr		z, ret_int_r	; ret_int_r ��
-	or		xwa, xwa	; runtsk = NULL �ʤ�
-	jr		z, dispatcher	; ��¸����dispather ��
+	ldc		intnest, de	; ディスパッチしたらintnest は0
+	push	xiz			; 関数呼出で保護が必要なレジスタの保存
+	ld		xwa, (_runtsk)	; runtsk を取得
+	cpw		(_enadsp), 0	; enadsp が FALSE なら
+	jr		z, ret_int_r	; ret_int_r へ
+	cp		xwa, (_schedtsk)	; runtsk とschedtsk が同じなら
+	jr		z, ret_int_r	; ret_int_r へ
+	or		xwa, xwa	; runtsk = NULL なら
+	jr		z, dispatcher	; 保存せずdispather へ
 	ld		(xwa+TCB_sp), xsp	;
 	lda		xhl, ret_int_r	;
 	ld		(xwa+TCB_pc), xhl	;
 	jr		dispatcher	;
 
 ;
-;	�ƤӽФ����: SR��IFF=7 (����߶ػ߾���),
-;				  intcnt = 0(����������ƥ�����), �����������å�
-;				  INTNEST�쥸���� = 0
+;	呼び出し条件: SRのIFF=7 (割込み禁止状態),
+;				  intcnt = 0(タスクコンテキスト), タスクスタック
+;				  INTNESTレジスタ = 0
 ;
-;	xwa �ˤ�runtsk �Υ��ɥ쥹����Ǽ����Ƥ���
+;	xwa にはruntsk のアドレスが格納されている
 ;
 ret_int_r:
 	pop		xiz
-#ifdef SUPPORT_CHG_IPM		/* �����å��ˤ���SR ��IFF ����� */
+#ifdef SUPPORT_CHG_IPM		/* スタックにあるSR のIFF を操作 */
 	ld		de, (_task_intmask)	;
 	andw	(xsp+24), ~0x7000	;
 	or		(xsp+24), de	;
 #endif /* SUPPORT_CHG_IPM */
 	ld		bc, (xwa+TCB_enatex)	;
 	bit		TCB_enatex_bit, bc	;
-	jr		z, nest_ctrl_r	; enatex �� FALSE �ʤ�꥿����
-	cpw		(xwa+TCB_texptn), 0	; �������㳰�װ���������
+	jr		z, nest_ctrl_r	; enatex が FALSE ならリターン
+	cpw		(xwa+TCB_texptn), 0	; タスク例外要因がある場合
 	call	nz, _call_texrtn	;
 nest_ctrl_r:
 	ld		de, 1	;
-	ldc		intnest, de	; reti�Ѥ˵���Ū��intnest ��1
+	ldc		intnest, de	; reti用に擬似的にintnest は1
 	jr		interrupt_r
 
 ;
-;	�����/CPU�㳰�ζ��̽���
+;	割込み/CPU例外の共通処理
 ;
-;	�ƽФ����:
-;	��SR��IFF=7.
-;	�������å���¿�ų����ߤʤ����ߥ����å�, �����Ǥʤ����
-;	  �����������å�
-;	��XHL �ˤϳ����/CPU�㳰�ϥ�ɥ�Υ��ɥ쥹����Ǽ����Ƥ���.
-;	��AW �ˤ��ܳ���ߤ�ͥ���٤����ꤵ�줿 SR ����Ǽ����Ƥ���.
+;	呼出し条件:
+;	・SRのIFF=7.
+;	・スタックは多重割り込みなら割込みスタック, そうでなければ
+;	  タスクスタック
+;	・XHL には割込み/CPU例外ハンドラのアドレスが格納されている.
+;	・AW には本割込みの優先度が設定された SR が格納されている.
 ;
-;	�쥸�����������å���ˤɤΤ褦����¸����Ƥ��뤫��ʲ��˼���.
-;	���οޤǤϾ夬���, ������̤Υ��ɥ쥹��, �����å��ϲ�����
-;	�������˸����ä��Ѥ߾夲�����ΤȤ���.
+;	レジスタがスタック上にどのように保存されているかを以下に示す.
+;	この図では上が低位, 下が高位のアドレスで, スタックは下から
+;	上方向に向かって積み上げられるものとする.
 ;
 ;	--------------------------------------
-;	|        CPU�㳰�ϥ�ɥ�ΰ���       |
-;	|          CPU�㳰����(4byte)        |
+;	|        CPU例外ハンドラの引数       |
+;	|          CPU例外情報(4byte)        |
 ;	|                                    |
 ;	|                                    |
 ;	--------------------------------------
-;	|             XSP(4byte)             | �����������å��ݥ��󥿡�
-;	|             �����ʤΤ�             | ���ʤγ���ߤΤ��ݻ�����롥
+;	|             XSP(4byte)             | タスクスタックポインタ．
+;	|             ※初段のみ             | 初段の割込みのみ保持される．
 ;	|                                    |
 ;	|                                    |
 ;	--------------------------------------
@@ -273,7 +273,7 @@ nest_ctrl_r:
 ;	|                                    |
 ;	|                                    |
 ;	|                                    |
-;	-------------------------------------- <-- ���������������ǽ�������롥
+;	-------------------------------------- <-- 割込み入り口処理で処理される．
 ;	|             XHL(4byte)             |
 ;	|                                    |
 ;	|                                    |
@@ -283,9 +283,9 @@ nest_ctrl_r:
 ;	|                                    |
 ;	|                                    |
 ;	|                                    |
-;	-------------------------------------- <-- �����ȯ�����˥ϡ��ɥ�����
-;	|              SR(2byte)             |     �ˤƽ�������롥 p_excinf��
-;	|                                    |     ������ؤ��褦�˱黻���롥
+;	-------------------------------------- <-- 割込み発生時にハードウェア
+;	|              SR(2byte)             |     にて処理される． p_excinfは
+;	|                                    |     ここを指すように演算する．
 ;	--------------------------------------
 ;	|              PC(4byte)             |
 ;	|                                    |
@@ -293,56 +293,56 @@ nest_ctrl_r:
 ;	|                                    |
 ;	--------------------------------------
 ;
-;	�ϥ�ɥ餫��꥿���󤷤����, ¿�ų���ߤǤʤ�, ���� reqflg ��
-;	TRUE �ˤʤä����ˡ�ret_int ��ʬ�����롥
+;	ハンドラからリターンした後は, 多重割込みでなく, かつ reqflg が
+;	TRUE になった時に，ret_int へ分岐する．
 ;
-;	¿�ų���ߤ��ɤ����ϳ���ߥͥ��ȥ����󥿤��ͤ�Ƚ�ꤹ��.
-;	intcnt != 0 �ʤ��¿�ų���ߤǤ����Ƚ�ꤹ��.
-;	�ʤ����ϡ��ɥ��������;塤�����ȯ���������߶ػߤ�Ԥ��ޤǤδ֤�
-;	¿�ų���ߤ�ȯ������ȡ�¿�ų���ߤǤ��뤳�Ȥ򥽥եȥ������Ǹ��Τ�
-;	���ʤ����ᡤ�ǽ��ȯ����������߽�����¹Ԥ��ʤ��ޤޥ������ǥ���
-;	�ѥå������ǽ�������롥����¿�ų���ߤ��Τ��뤿��˥ϡ��ɥ�����
-;	INTNEST �쥸���������Ѥ��롥
+;	多重割込みかどうかは割込みネストカウンタの値で判定する.
+;	intcnt != 0 ならば多重割込みであると判定する.
+;	なお，ハードウェア仕様上，割込み発生から割込み禁止を行うまでの間に
+;	多重割込みが発生すると，多重割込みであることをソフトウェアで検知で
+;	きないため，最初に発生した割込み処理を実行しないままタスクディス
+;	パッチする可能性がある．この多重割込みを検知するためにハードウェア
+;	INTNEST レジスタを利用する．
 ;
-;	reqflg ��CPU���å����֤ǥ����å�����. �����Ǥʤ��ȡ�
-;	reqflg �����å���˵�ư���줿����ߥϥ�ɥ����
-;	�ǥ����ѥå����׵ᤵ�줿���ˡ��ǥ����ѥå�����ʤ�.
+;	reqflg はCPUロック状態でチェックする. そうでないと，
+;	reqflg チェック後に起動された割込みハンドラ内で
+;	ディスパッチが要求された場合に，ディスパッチされない.
 ;
 	public _interrupt
 
 _interrupt:
-	push	xbc			; ������å��쥸�����λĤ����¸
+	push	xbc			; スクラッチレジスタの残りを保存
 	push	xde			;
 	push	xix			;
 	push	xiy			;
 
-	ld		xbc, xsp	; CPU�㳰��������˻��Ѥ��뤿�ᤳ���Ǽ���
+	ld		xbc, xsp	; CPU例外情報引数に使用するためここで取得
 	cpw		(_intcnt), 0	;
 	jr		nz, from_int	;
-	ld		xsp, __StackTop ; ���ʤγ���ߤξ�祹���å����ڤ��ؤ�
-	push	xbc			; ������SP���ݻ�
+	ld		xsp, __StackTop ; 初段の割込みの場合スタックを切り替え
+	push	xbc			; タスクSPの保持
 from_int:				;
-	incw	1, (_intcnt)	; ����ߥͥ��ȥ�����Ȥ򥤥󥯥����
+	incw	1, (_intcnt)	; 割込みネストカウントをインクリメント
 
-	add		xbc, 24	; CPU�㳰�����������
-	push	xbc			; ����߽����Ǥ�̤����
+	add		xbc, 24	; CPU例外情報引数生成
+	push	xbc			; 割込み処理では未使用
 	push	wa			;
-	pop		sr			; �ܳ���ߤ��ͥ���٤ι⤤����ߵ���
-	call	xhl			; ����ߥϥ�ɥ�/CPU�㳰������ƤӽФ�
-	ei		7			; ����߶ػ�
-	pop		xbc			; �����å�����碌(CPU�㳰�������)
+	pop		sr			; 本割込みより優先度の高い割込み許可
+	call	xhl			; 割込みハンドラ/CPU例外処理を呼び出す
+	ei		7			; 割込み禁止
+	pop		xbc			; スタック数合わせ(CPU例外情報引数)
 
-	decw	1, (_intcnt)	; ����ߥͥ��ȥ�����Ȥ�ǥ������
+	decw	1, (_intcnt)	; 割込みネストカウントをデクリメント
 	jr		nz, from_int_r	;
-	pop		xbc			; ���ʤγ���ߤξ�祿����SP������
+	pop		xbc			; 初段の割込みの場合タスクSPの復帰
 	ld		xsp, xbc	;
-	ldc		de, intnest	; �����ȯ���������߶ػߤޤǤδ֤�¿�ų���ߤ�
-	djnz	de, from_int_r	; ȯ�����Ƥ�����ϥǥ����ѥå����ʤ�
-	cpw		(_reqflg), 0	; reqflg �� TRUE �Ǥ����
-	jp		nz, ret_int	;              ret_int ��
+	ldc		de, intnest	; 割込み発生から割込み禁止までの間に多重割込みが
+	djnz	de, from_int_r	; 発生している場合はディスパッチしない
+	cpw		(_reqflg), 0	; reqflg が TRUE であれば
+	jp		nz, ret_int	;              ret_int へ
 from_int_r:		;
 interrupt_r:	;
-	pop		xiy	;������å��쥸����������
+	pop		xiy	;スクラッチレジスタを復帰
 	pop		xix	;
 	pop		xde	;
 	pop		xbc	;
@@ -351,7 +351,7 @@ interrupt_r:	;
 	reti	;
 
 ;
-; ̤���ѳ���ߤν���
+; 未使用割込みの処理
 ;
 	public unused_interrupt
 

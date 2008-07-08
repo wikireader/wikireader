@@ -8,36 +8,36 @@
  *  Copyright (C) 2000-2003 by Industrial Technology Institute,
  *                              Miyagi Prefectural Government, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  */
 
 /*
- *	���ꥢ��I/O�ǥХ�����SIO�˥ɥ饤�С�VR4131��¢DSIU�ѡ�
+ *	シリアルI/Oデバイス（SIO）ドライバ（VR4131内蔵DSIU用）
  */
 
 #ifndef _HW_SERIAL_H_
@@ -46,24 +46,24 @@
 #include <vr4131_dsiu.h>		/* siopcb, vr4131_dsiu_openflag */
 
 /*
- *  SIO�γ���ߥϥ�ɥ�Υ٥����ֹ�
+ *  SIOの割込みハンドラのベクタ番号
  */
 #define INHNO_SIO		INTNO_DSIU
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 #define	sio_initialize		vr4131_dsiu_initialize
 
 /*
- *  �����ͥ뵯ư���Ѥν���� (sys_putc������)
+ *  カーネル起動時用の初期化 (sys_putcで利用)
  */
 #define sio_init		vr4131_dsiu_init
 
 #ifndef _MACRO_ONLY
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 Inline SIOPCB *
 sio_opn_por(ID siopid, VP_INT exinf)
@@ -72,31 +72,31 @@ sio_opn_por(ID siopid, VP_INT exinf)
 	BOOL	openflag;
 
 	/*
-	 *  �����ץ󤷤��ݡ��Ȥ����뤫�� openflag ���ɤ�Ǥ�����
+	 *  オープンしたポートがあるかを openflag に読んでおく．
 	 */
 	openflag = vr4131_dsiu_openflag();
 
 	/*
-	 * DSIU�ؤΥ����å����볫��
+	 * DSIUへのクロック供給開始
 	 */
 	vr4131_orh( (VP) CMUCLKMSK, (MSKDSIU | MSKSSIU | MSKSIU) );
 
 	/*
-	 *  �ǥХ�����¸�Υ����ץ������
+	 *  デバイス依存のオープン処理．
 	 */
 	siopcb = vr4131_dsiu_opn_por(siopid, exinf);
 
 	/*
-	 *  ���ꥢ��I/O����ߤγ���ߥ�٥�����ꤷ���ޥ����������롥
+	 *  シリアルI/O割込みの割込みレベルを設定し，マスクを解除する．
 	 */
 	if (!openflag) {
-		/* ����ߥ�٥����� */
+		/* 割込みレベル設定 */
 		all_set_ilv( (UINT) INTNO_DSIU, &((IPM) IPM_DSIU) );
 
-		/* �ޥ����������(��٥룱) */
+		/* マスク解除処理(レベル１) */
 		vr4131_orh( (VP) MSYSINT2REG, DSIUINTR );
 
-		/* �ޥ����������(��٥룲) */
+		/* マスク解除処理(レベル２) */
 		vr4131_orh( (VP) MDSIUINTREG, INTDSIU );
 	}
 
@@ -104,29 +104,29 @@ sio_opn_por(ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 Inline void
 sio_cls_por(SIOPCB *siopcb)
 {
 	/*
-	 *  ���ꥢ��I/O����ߤ�ޥ������롥
+	 *  シリアルI/O割込みをマスクする．
 	 */
 	if (!vr4131_dsiu_openflag) {
-		/* �ޥ����������(��٥룱) */
+		/* マスク設定処理(レベル１) */
 		vr4131_andh( (VP) MSYSINT2REG, ~DSIUINTR );
 
-		/* �ޥ����������(��٥룲) */
+		/* マスク設定処理(レベル２) */
 		vr4131_andh( (VP) MDSIUINTREG, ~INTDSIU );
 	}
 
 	/*
-	 *  �ǥХ�����¸�Υ�������������
+	 *  デバイス依存のクローズ処理．
 	 */
 	vr4131_dsiu_cls_por(siopcb);
 
 	/*
-	 *  DSIU�ؤΥ����å��������
+	 *  DSIUへのクロック供給停止
 	 */
 	vr4131_andh( (VP) CMUCLKMSK, ~(MSKDSIU | MSKSSIU | MSKSIU) );
 
@@ -135,42 +135,42 @@ sio_cls_por(SIOPCB *siopcb)
 #endif /* _MACRO_ONLY */
 
 /*
- *  SIO�γ���ߥϥ�ɥ�
+ *  SIOの割込みハンドラ
  */
 #define	sio_handler		vr4131_dsiu_isr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 #define	sio_snd_chr		vr4131_dsiu_snd_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ�������ʥݡ���󥰡�
+ *  シリアルI/Oポートへの文字送信（ポーリング）
  */
 #define	sio_snd_chr_pol		vr4131_dsiu_putchar_pol
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 #define	sio_rcv_chr		vr4131_dsiu_rcv_chr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 #define	sio_ena_cbr		vr4131_dsiu_ena_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 #define	sio_dis_cbr		vr4131_dsiu_dis_cbr
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����������ǽ������Хå�
+ *  シリアルI/Oポートからの送信可能コールバック
  */
 #define	sio_ierdy_snd		vr4131_dsiu_ierdy_snd
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���μ������Υ�����Хå�
+ *  シリアルI/Oポートからの受信通知コールバック
  */
 #define	sio_ierdy_rcv		vr4131_dsiu_ierdy_rcv
 

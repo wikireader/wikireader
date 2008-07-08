@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2004 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_support.S,v 1.27 2007/01/05 01:02:31 honda Exp $
  */
 
 /*
- *    �ץ����å���¸�⥸�塼�� ������֥��������ARMv4�ѡ�
+ *    プロセッサ依存モジュール アセンブリ言語部（ARMv4用）
  */
 #define _MACRO_ONLY
 #include "jsp_kernel.h"
@@ -46,13 +46,13 @@
 #include <t_config.h>
         
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  *
- *  dispatch�ϡ�
- *  dispatch �ϡ������ƥ�⡼�ɡ�����߶ػ߾��֤ǸƤӽФ��ʤ���Фʤ��
- *  ����_exit_and_dispatch �⡤�����ƥ�⡼�ɡ�����߶ػ߾��֤ǸƤӽФ�
- *  �Τ���§�Ǥ��뤬�������ͥ뵯ư�����б����뤿�ᡤIRQ�⡼�ɤǸƤӽФ���
- *    ���ˤ��б����Ƥ��롥
+ *  dispatchは，
+ *  dispatch は，システムモード・割込み禁止状態で呼び出さなければならな
+ *  い．_exit_and_dispatch も，システムモード・割込み禁止状態で呼び出す
+ *  のが原則であるが，カーネル起動時に対応するため，IRQモードで呼び出した
+ *    場合にも対応している．
  */
 
         .text
@@ -60,75 +60,75 @@
         .globl dispatch
         .globl exit_and_dispatch
 dispatch:
-        stmfd sp!, {r4 - r11,lr}   /* �쥸��������¸ */
-        ldr   r0, =runtsk          /* runtsk���ɤ߹��� */
+        stmfd sp!, {r4 - r11,lr}   /* レジスタの保存 */
+        ldr   r0, =runtsk          /* runtskを読み込む */
         ldr   r1, [r0]
-        str   sp, [r1,#TCB_sp]      /* �����������å�����¸ */
+        str   sp, [r1,#TCB_sp]      /* タスクスタックを保存 */
         adr   r2, dispatch_r
-        str   r2, [r1,#TCB_pc]      /* �¹ԺƳ����Ϥ���¸ */
+        str   r2, [r1,#TCB_pc]      /* 実行再開番地を保存 */
         ldr   r6, =interrupt_count  /* r6 <-interrupt_count */
-        mov   r5, #(CPSR_SVC|CPSR_IRQ_BIT)  /* �����߶ػ�(�����ƥ�⡼��) */
-        mov   r4, #(CPSR_SVC)               /* �����ߵ���(�����ƥ�⡼��) */
+        mov   r5, #(CPSR_SVC|CPSR_IRQ_BIT)  /* 割り込み禁止(システムモード) */
+        mov   r4, #(CPSR_SVC)               /* 割り込み許可(システムモード) */
         b     dispatcher_1
 
 dispatch_r:
         ldmfd sp!,{r4 - r11,lr}
         /*
-         * �������㳰�����롼����ε�ư
-         * dispatch_r �� dispatcher_1 ����ƤӽФ���뤿�ᡤ
-         * tcb�Υ��ɥ쥹��r1�����äƤ���
+         * タスク例外処理ルーチンの起動
+         * dispatch_r は dispatcher_1 から呼び出されるため，
+         * tcbのアドレスはr1に入っている
          */
         ldrb  r0,[r1,#TCB_enatex]
         tst   r0,#TCB_enatex_mask
-        beq   dispatch_r_1          /* enatex �� FALSE �ʤ�꥿���� */
-        ldr   r0,[r1,#TCB_texptn]   /* texptn�������               */
-        tst   r0,r0                 /* texptn ��0��̵�����         */
-        bne   call_texrtn           /* �������㳰�롼����θƤӽФ� */
+        beq   dispatch_r_1          /* enatex が FALSE ならリターン */
+        ldr   r0,[r1,#TCB_texptn]   /* texptnをロード               */
+        tst   r0,r0                 /* texptn が0で無ければ         */
+        bne   call_texrtn           /* タスク例外ルーチンの呼び出し */
 dispatch_r_1:   
         mov   pc,lr        
 
 
 
 exit_and_dispatch:
-        ldr   r6, =interrupt_count /* interrupt_count��0���ꥢ */
+        ldr   r6, =interrupt_count /* interrupt_countを0クリア */
         mov   r3, #0        
         str   r3, [r6]                                        
         /*
-         *  FIQ�Ͼ�˶ػߤ��롥
+         *  FIQは常に禁止する．
          */
-        mov   r5, #(CPSR_SVC|CPSR_IRQ_BIT) /* �����߶ػ�(�����ƥ�⡼��) */
-        mov   r4, #(CPSR_SVC)              /* �����ߵ���(�����ƥ�⡼��) */
-        mrs   r0, cpsr                     /* FIQ��Ѿ�            */
+        mov   r5, #(CPSR_SVC|CPSR_IRQ_BIT) /* 割り込み禁止(システムモード) */
+        mov   r4, #(CPSR_SVC)              /* 割り込み許可(システムモード) */
+        mrs   r0, cpsr                     /* FIQを継承            */
         and   r0, r0, #CPSR_FIQ_BIT
         orr   r0, r0, r5
-        msr   cpsr, r0          /* �����ƥ�⡼�� */
+        msr   cpsr, r0          /* システムモード */
 dispatcher_1:
         /*
-         *  �����Ǥϥ����ƥ�⡼�ɡ�����߶ػ߾��֤Ǥʤ���Фʤ�ʤ���
+         *  ここではシステムモード・割込み禁止状態でなければならない．
          */
-        ldr   r0, =schedtsk   /* schedtsk ���ɤ߹��� */
+        ldr   r0, =schedtsk   /* schedtsk を読み込む */
         ldr   r1, [r0]
-        ldr   r2, =runtsk     /* schedtsk �� runtsk�� */
-        str   r1, [r2]        /* schedtsk �����ʤ�����runtsk��NULL�� */
+        ldr   r2, =runtsk     /* schedtsk を runtskに */
+        str   r1, [r2]        /* schedtsk がいない場合はruntskをNULLに */
         cmp   r1, #0
         beq   dispatcher_2        
 dispatcher_3:           
-        ldr   sp, [r1,#TCB_sp] /* �����������å������� */
-        ldr   pc, [r1,#TCB_pc] /* �¹ԺƳ����Ϥ�����   */
+        ldr   sp, [r1,#TCB_sp] /* タスクスタックを復帰 */
+        ldr   pc, [r1,#TCB_pc] /* 実行再開番地を復帰   */
 dispatcher_2:
         mov   r3,#1
         str   r3, [r6]         /* interupt_count = 1 */
         ldr   sp, =STACKTOP
-        /* sleep�⡼�ɤ����CPU�ʤ�񤭴����� */
-        mrs   r0, cpsr        /* FIQ��Ѿ�           */
+        /* sleepモードを持つCPUなら書き換える */
+        mrs   r0, cpsr        /* FIQを継承           */
         and   r0, r0, #CPSR_FIQ_BIT
         orr   r0, r0, r4
-        msr   cpsr, r0        /* ������Ԥ�          */
+        msr   cpsr, r0        /* 割込み待ち          */
         WAIT_INTERRUPT
-        mrs   r0, cpsr        /* FIQ��Ѿ�           */
+        mrs   r0, cpsr        /* FIQを継承           */
         and   r0, r0, #CPSR_FIQ_BIT
         orr   r0, r0, r5
-        msr   cpsr, r0        /* ����߶ػ�          */        
+        msr   cpsr, r0        /* 割込み禁止          */        
         mov   r3,#0
         str   r3, [r6]        /* interrupt_count = 0 */   
         b     dispatcher_1
@@ -136,25 +136,25 @@ dispatcher_2:
 
                 
 /*
- *  ��������ư������
+ *  タスク起動時処理
  */
         .text
         .globl activate_r
 activate_r:
-        mov   r1,#(CPSR_SVC|CPSR_FIQ_BIT) /* �����ߵ���(�����ƥ�⡼��) */
-        mrs   r2, cpsr         /* FIQ��Ѿ�   */
+        mov   r1,#(CPSR_SVC|CPSR_FIQ_BIT) /* 割り込み許可(システムモード) */
+        mrs   r2, cpsr         /* FIQを継承   */
         and   r2, r2, #CPSR_FIQ_BIT
         orr   r1, r1, r2            
-        msr   cpsr, r1         /* ����ߵ��� */
-        ldr   lr, =ext_tsk     /* ����������� */
-        ldmfd sp!, {r0,pc}     /* ����,PC����  */
+        msr   cpsr, r1         /* 割込み許可 */
+        ldr   lr, =ext_tsk     /* 戻り番地設定 */
+        ldmfd sp!, {r0,pc}     /* 引数,PC設定  */
 
 
         
 /*
- *  ����ߥϥ�ɥ顿CPU�㳰�ϥ�ɥ�и�����
+ *  割込みハンドラ／CPU例外ハンドラ出口処理
  *
- *  ret_int �ϥ����ƥ�⡼�ɡ�IRQ����߶ػ߾��֤ǸƤӽФ���
+ *  ret_int はシステムモード・IRQ割込み禁止状態で呼び出す．
  */
         .text
         .globl ret_int
@@ -162,9 +162,9 @@ activate_r:
 ret_int:
 ret_exc:                
         /*
-         *   �����ƥ�⡼�ɤ���뤳��
+         *   システムモードで来ること
          */
-        ldr   r2, =runtsk       /* runtsk ���ɤ߹��� */
+        ldr   r2, =runtsk       /* runtsk を読み込む */
         ldr   r1, [r2]
         ldr   r2, =enadsp
         ldr   r0, [r2]
@@ -172,39 +172,39 @@ ret_exc:
         beq   ret_int_1
         ldr   r2, =schedtsk
         ldr   r0, [r2]
-        cmp   r0, r1            /* schedtsk �� runtsk ����� */
+        cmp   r0, r1            /* schedtsk と runtsk を比較 */
         beq   ret_int_1
-        stmfd sp!, {r4-r11}     /* �Ĥ�Υ쥸��������¸ */
-        str   sp, [r1,#TCB_sp]  /* �����������å�����¸ */
-        adr   r0, ret_int_r     /* �¹ԺƳ����Ϥ���¸   */
+        stmfd sp!, {r4-r11}     /* 残りのレジスタを保存 */
+        str   sp, [r1,#TCB_sp]  /* タスクスタックを保存 */
+        adr   r0, ret_int_r     /* 実行再開番地を保存   */
         str   r0, [r1,#TCB_pc]
         b     dispatcher_1
 ret_int_r:
-        ldmfd sp!, {r4-r11}     /* �쥸���������� */
+        ldmfd sp!, {r4-r11}     /* レジスタの復帰 */
 ret_int_1:
         /*
-         * �������㳰�����롼����ε�ư
-         * dispatch_r �� dispatcher_1 ����ƤӽФ���뤿�ᡤ
-         * tcb�Υ��ɥ쥹��r1�����äƤ���
-         * ret_int_1 �� ret_exe ����ƤӽФ����
+         * タスク例外処理ルーチンの起動
+         * dispatch_r は dispatcher_1 から呼び出されるため，
+         * tcbのアドレスはr1に入っている
+         * ret_int_1 は ret_exe から呼び出される
          */
         ldrb  r0, [r1,#TCB_enatex]
         tst   r0, #TCB_enatex_mask
-        beq   ret_int_2              /* enatex �� FALSE �ʤ�꥿���� */
-        ldr   r0, [r1,#TCB_texptn]   /* texptn�������               */
-        tst   r0, r0                 /* texptn ��0��̵�����         */
-        blne  call_texrtn            /* �������㳰�롼����θƤӽФ� */        
+        beq   ret_int_2              /* enatex が FALSE ならリターン */
+        ldr   r0, [r1,#TCB_texptn]   /* texptnをロード               */
+        tst   r0, r0                 /* texptn が0で無ければ         */
+        blne  call_texrtn            /* タスク例外ルーチンの呼び出し */        
 ret_int_2:              
-        ldmfd sp!, {r0}       /* spsr ������ */
-        mrs   r2, cpsr        /* FIQ��Ѿ�            */
+        ldmfd sp!, {r0}       /* spsr を復帰 */
+        mrs   r2, cpsr        /* FIQを継承            */
         and   r2, r2, #CPSR_FIQ_BIT
         and   r0, r0, #~CPSR_FIQ_BIT
         orr   r0, r0, r2              
-        msr     spsr, r0              /* ������cpsr��spsr������ */
-        ldmfd   sp!,{r0-r3,ip,lr,pc}^ /* ������������ ^�դ��ʤΤǡ�cpsr <- spsr */
+        msr     spsr, r0              /* 戻り先のcpsrをspsrに設定 */
+        ldmfd   sp!,{r0-r3,ip,lr,pc}^ /* タスクに復帰 ^付きなので、cpsr <- spsr */
         
         /*
-         *  ���������Ԥ�
+         *  微少時間待ち
          */
 	.globl sil_dly_nse
 sil_dly_nse:

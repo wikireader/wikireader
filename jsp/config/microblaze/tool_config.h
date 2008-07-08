@@ -6,60 +6,60 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: tool_config.h,v 1.6 2007/01/05 02:02:38 honda Exp $
  */
 
 /*
- *	��ȯ�Ķ���¸�⥸�塼��
+ *	開発環境依存モジュール
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _TOOL_CONFIG_H_
 #define _TOOL_CONFIG_H_
 
 /*
- *  ��٥����̾��������뤿��Υޥ���
+ *  ラベルの別名を定義するためのマクロ
  */
 #define	_LABEL_ALIAS(new_label, defined_label) \
 	asm(".globl " #new_label "\n" #new_label " = " #defined_label);
 #define LABEL_ALIAS(x, y) _LABEL_ALIAS(x, y)
 
 /*
- *  ��ȯ�Ķ���¸�ν�����ϻ��Ѥ��ʤ�
+ *  開発環境依存の初期化は使用しない
  */
 #define tool_initialize()
 
 /*
- *  atexit �ν����ȥǥ��ȥ饯���μ¹�
+ *  atexit の処理とデストラクタの実行
  */
 #ifndef _MACRO_ONLY
 
@@ -70,9 +70,9 @@ call_atexit()
 	volatile FP	fp = software_term_hook;
 
 	/*
-	 *  software_term_hook�ؤΥݥ��󥿤򡤰�övolatile FP����fp��
-	 *  �������Ƥ���Ȥ��Τϡ�0�Ȥ���Ӥ���Ŭ���Ǻ������ʤ��褦
-	 *  �ˤ��뤿��Ǥ��롥
+	 *  software_term_hookへのポインタを，一旦volatile FP型のfpに
+	 *  代入してから使うのは，0との比較が最適化で削除されないよう
+	 *  にするためである．
 	 */
 	if (fp != 0) {
 		(*fp)();
@@ -82,28 +82,28 @@ call_atexit()
 #endif /* _MACRO_ONLY */
 
 /*
- *  �ȥ졼������������
+ *  トレースログの設定
  */
 
-#define	LOG_INH_ENTER(inhno)		/* �ץ����å���¸�� */
-#define	LOG_INH_LEAVE(inhno)		/* �ץ����å���¸�� */
+#define	LOG_INH_ENTER(inhno)		/* プロセッサ依存部 */
+#define	LOG_INH_LEAVE(inhno)		/* プロセッサ依存部 */
 
-#define	LOG_ISR_ENTER(intno)		/* �ץ����å���¸�� */
-#define	LOG_ISR_LEAVE(intno)		/* �ץ����å���¸�� */
+#define	LOG_ISR_ENTER(intno)		/* プロセッサ依存部 */
+#define	LOG_ISR_LEAVE(intno)		/* プロセッサ依存部 */
 
 #define	LOG_CYC_ENTER(cyccb)
 #define	LOG_CYC_LEAVE(cyccb)
 
-#define	LOG_EXC_ENTER(excno)		/* �ץ����å���¸�� */
-#define	LOG_EXC_LEAVE(excno)		/* �ץ����å���¸�� */
+#define	LOG_EXC_ENTER(excno)		/* プロセッサ依存部 */
+#define	LOG_EXC_LEAVE(excno)		/* プロセッサ依存部 */
 
 #define	LOG_TEX_ENTER(texptn)
 #define	LOG_TEX_LEAVE(texptn)
 
 #define	LOG_TSKSTAT(tcb)
 
-#define	LOG_DSP_ENTER(tcb)		/* �ץ����å���¸�� */
-#define	LOG_DSP_LEAVE(tcb)		/* �ץ����å���¸�� */
+#define	LOG_DSP_ENTER(tcb)		/* プロセッサ依存部 */
+#define	LOG_DSP_LEAVE(tcb)		/* プロセッサ依存部 */
 
 #define	LOG_ACT_TSK_ENTER(tskid)
 #define	LOG_ACT_TSK_LEAVE(ercd)

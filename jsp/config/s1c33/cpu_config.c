@@ -8,38 +8,38 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 
 /*
- *	�ץ����å���¸�⥸�塼��(S1C33��)
+ *	プロセッサ依存モジュール(S1C33用)
  */
 
 #include "jsp_kernel.h"
@@ -50,39 +50,39 @@
 #include "sys_config.h"
 
 /*
- *  CPU���å����������������
+ *  CPUロック解除時に復元する
  */
 UINT	tps_OrgIntLevel;
 
 /*
- *  ����ߥͥ��ȥ�����
+ *  割込みネストカウンタ
  */
 UINT	tps_IntNestCnt;
 
 /*
- *  ���������쥸���� �����������
+ *  割込み制御レジスタ 位置特定処理
  */
 ER	get_Offset(INTNO);
 ER	get_BitFlag(INTNO);
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void
 cpu_initialize()
 {
-	tps_IntNestCnt = 0;			/* ����ߥͥ��ȥ�����Ȥν���� */
+	tps_IntNestCnt = 0;			/* 割込みネストカウントの初期化 */
 	tps_OrgIntLevel = TPS_INIT_INTLEVEL;
 
 	/*
-	 *  �����ߵ��ĥե饰�����ꤷ��OS�������γ����ߤ�ޥ�������
+	 *  割り込み許可フラグを設定し、OS管理下の割り込みをマスクする
 	 */
 	set_psr((TPS_CPULOCK_LEV << 8) | S1C33_PSR_FLAG_IE);
 
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void
 cpu_terminate()
@@ -91,25 +91,25 @@ cpu_terminate()
 }
 
 /*
- *  ��������ư����
+ *  タスク起動処理
  */
 void
 activate_r(void)
 {
 	unlock_cpu();
-	Asm("xld.w %r0, ext_tsk");		/* �����֤�ext_tsk������ */
+	Asm("xld.w %r0, ext_tsk");		/* 戻り位置をext_tskに設定 */
 	Asm("pushn %r0");
 	Asm("ld.w %%r6, %0": : "r"(runtsk->tinib->exinf));
 	set_pc(runtsk->tinib->task);
 }
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  *
- *  dispatch�ϥ���������ƥ����ȡ�CPU���å����֤ǸƤӽФ���
- *  exit_and_dispatch��Ʊ�ͤ����������ͥ뵯ư�����б����뤿��
- *  �󥿥�������ƥ����ȡ�CPU���å�������֤θƤӽФ��ˤ��б�
- *  ���Ƥ��롣
+ *  dispatchはタスクコンテキスト・CPUロック状態で呼び出す。
+ *  exit_and_dispatchも同様だが、カーネル起動時に対応するため
+ *  非タスクコンテキスト・CPUロック解除状態の呼び出しにも対応
+ *  している。
  */
 void
 dispatch(void)
@@ -119,13 +119,13 @@ dispatch(void)
 	Asm("pushn %r3");
 	task = runtsk;
 	task->tskctxb.sp = get_sp();
-	task->tskctxb.pc = && dispatch_1;	/* gcc��ĥ��ǽ����Ѥ��� */
+	task->tskctxb.pc = && dispatch_1;	/* gcc拡張機能を使用する */
 	Asm("xjp _kernel_exit_and_dispatch");
 dispatch_1:
 	Asm("popn %r3");
 	task = (TCB * volatile) runtsk;
 	if ((task->enatex != FALSE) && (task->texptn != 0)) {
-		Asm("xjp _kernel_calltex");	/* �㳰�ϥ�ɥ鵯ư	*/
+		Asm("xjp _kernel_calltex");	/* 例外ハンドラ起動	*/
 	}
 }
 
@@ -134,16 +134,16 @@ exit_and_dispatch(void)
 {
 	register UW	ulPsr;
 
-	lock_cpu();			/* CPU����å�����	*/
+	lock_cpu();			/* CPUをロックする	*/
 	runtsk = schedtsk;
 	if (runtsk != NULL) {
 		set_sp(runtsk->tskctxb.sp);
 		set_pc(runtsk->tskctxb.pc);
 	}
 
-	set_sp(STACKTOP);			/* �¹Բ�ǽ�ʥ��������ʤ����	*/
-	ulPsr = get_psr();			/* �����ߤ���Ĥ��ƥ��٥��	*/
-	ulPsr |= S1C33_PSR_FLAG_IE;	/* ȯ�����Ԥ�					*/
+	set_sp(STACKTOP);			/* 実行可能なタスクがない場合	*/
+	ulPsr = get_psr();			/* 割り込みを許可してイベント	*/
+	ulPsr |= S1C33_PSR_FLAG_IE;	/* 発生を待つ					*/
 	set_psr(ulPsr);
 	unlock_cpu();
 
@@ -153,7 +153,7 @@ exit_and_dispatch(void)
 }
 
 /*
- *  ����ߥϥ�ɥ�/CPU�㳰�ϥ�ɥ�и�����
+ *  割込みハンドラ/CPU例外ハンドラ出口処理
  */
 void
 ret_int(void)
@@ -163,7 +163,7 @@ ret_int(void)
 	reqflg = FALSE;
 	task = runtsk;
 
-	if (task == NULL) {			/* �����ɥ�����إ����פ��� */
+	if (task == NULL) {			/* アイドル処理へジャンプする */
 		Asm("xjp _kernel_exit_and_dispatch");
 	}
 
@@ -172,8 +172,8 @@ ret_int(void)
 		Asm("pushn %r1");
 #endif	/* __c33adv */
 		task->tskctxb.sp = get_sp();
-		task->tskctxb.pc = && ret_int_2;/* gcc��ĥ��ǽ����� */
-						/* �ǥ����ѥå������إ����� */
+		task->tskctxb.pc = && ret_int_2;/* gcc拡張機能を使用 */
+						/* ディスパッチ処理へジャンプ */
 		Asm("xjp _kernel_exit_and_dispatch");
 ret_int_2:
 #ifndef	__c33adv
@@ -182,7 +182,7 @@ ret_int_2:
 	}
 	task = (TCB * volatile) runtsk;
 	if ((task->enatex != FALSE) && (task->texptn != 0)) {
-		call_texrtn();			/* �㳰�ϥ�ɥ鵯ư	*/
+		call_texrtn();			/* 例外ハンドラ起動	*/
 	}
 #ifdef	__c33adv
 	Asm("pops %sor");
@@ -191,8 +191,8 @@ ret_int_2:
 	Asm("ld.w %ahr, %r0");
 #endif	/* __c33adv */
 
-#if TPS_DAREA_CNT == 4				/* �ǡ������ꥢ�ݥ��󥿿���	*/
-	Asm("popn %r11");			/* ������pop������Ԥ�		*/
+#if TPS_DAREA_CNT == 4				/* データエリアポインタ数に	*/
+	Asm("popn %r11");			/* 応じたpop処理を行う		*/
 #elif TPS_DAREA_CNT == 3
 	Asm("popn %r12");
 #elif TPS_DAREA_CNT == 2
@@ -203,14 +203,14 @@ ret_int_2:
 	Asm("popn %r15");
 #endif /* TPS_DAREA */
 
-	Asm("reti");				/* CPU���å����֤���������	*/
-						/* �������Υ����ӥ������뤫��	*/
-						/* �꥿���󤹤���˲�������	*/
+	Asm("reti");				/* CPUロック状態は復帰した	*/
+						/* タスクのサービスコールから	*/
+						/* リターンする時に解除される	*/
 }
 
 
 /*
- *  ����ߥ�٥��ѹ�����
+ *  割込みレベル変更処理
  */
 ER
 chg_ilv(ILEVNO ilevno)
@@ -223,9 +223,9 @@ chg_ilv(ILEVNO ilevno)
 	if(ilevno > TPS_INTLEV_MAX){
 		ercd = E_PAR;
 	} else {
-		ulPsr = get_psr();			/* ���ߤ�PSR�ͤ����	*/
+		ulPsr = get_psr();			/* 現在のPSR値を取得	*/
 		ulPsr = (ulPsr & ~S1C33_PSR_MASK_IL) | (ilevno << 8);
-		set_psr(ulPsr);				/* PSR�ͤ򹹿�		*/
+		set_psr(ulPsr);				/* PSR値を更新		*/
 		ercd = E_OK;
 	}
 exit:
@@ -234,7 +234,7 @@ exit:
 }
 
 /*
- *  ����ߥ�٥��������
+ *  割込みレベル取得処理
  */
 ER
 get_ilv(ILEVNO *p_ilevno)
@@ -247,7 +247,7 @@ get_ilv(ILEVNO *p_ilevno)
 	if(p_ilevno == NULL){
 		ercd = E_PAR;
 	} else {
-		ulPsr = get_psr();			/* ���ߤγ���ߥ�٥����� */
+		ulPsr = get_psr();			/* 現在の割込みレベルを取得 */
 		*p_ilevno = (ulPsr & S1C33_PSR_MASK_IL) >> 8;
 		ercd = E_OK;
 	}
@@ -258,65 +258,65 @@ exit:
 
 #ifndef __c33pe
 /*
- *  �����ȯ�����Ľ���
+ *  割込み発生許可処理
  */
 ER
 ena_int(INTNO intno)
 {
 	INT	iOffset, iBitFlag;
 
-	iOffset = get_Offset(intno);			/* �쥸�������֤�������� */
+	iOffset = get_Offset(intno);			/* レジスタ位置を取得する */
 	iBitFlag = get_BitFlag(intno);
 
 	if(iOffset == E_PAR || iBitFlag == E_PAR){
 		return (E_PAR);
 	}
-							/* �����ߤ���Ĥ��� */
+							/* 割り込みを許可する */
 	(*(s1c33Intc_t *) S1C33_INTC_BASE).bIntEnable[iOffset] |= (UB)iBitFlag;
 
 	return (E_OK);
 }
 
 /*
- *  �����ȯ���ػ߽���
+ *  割込み発生禁止処理
  */
 ER
 dis_int(INTNO intno)
 {
 	INT	iOffset, iBitFlag;
 
-	iOffset = get_Offset(intno);			/* �쥸�������֤��������  */
+	iOffset = get_Offset(intno);			/* レジスタ位置を取得する  */
 	iBitFlag = get_BitFlag(intno);
 
 	if(iOffset == E_PAR || iBitFlag == E_PAR){
 		return (E_PAR);
 	}
-							/* �����ߤ�ػߤ��� */
+							/* 割り込みを禁止する */
 	(*(s1c33Intc_t *) S1C33_INTC_BASE).bIntEnable[iOffset] &= ~((UB)iBitFlag);
 
 	return (E_OK);
 }
 
 /*
- *  �����ȯ���װ����ꥢ
+ *  割込み発生要因クリア
  */
 ER
 clr_int(INTNO intno)
 {
 	INT	iOffset, iBitFlag;
 
-	iOffset = get_Offset(intno);			/* �쥸�������֤�������� */
+	iOffset = get_Offset(intno);			/* レジスタ位置を取得する */
 	iBitFlag = get_BitFlag(intno);
 
 	if(iOffset == E_PAR || iBitFlag == E_PAR){
 		return (E_PAR);
 	}
 #ifdef	__c33adv
-	if(intno > S1C33_INHNO_SERIAL3TX){		/* ����/�ػߥ쥸�������װ�    */
-		iOffset -= 0x0d;			/* �ե饰�쥸�����Υ��ե��å� */
-	}						/* ���֤����פ��ʤ�����       */
+	if(intno > S1C33_INHNO_SERIAL3TX){		/* 許可/禁止レジスタと要因    */
+		iOffset -= 0x0d;			/* フラグレジスタのオフセット */
+	}						/* 位置が一致しないため       */
 #endif /* __c33adv */
-							/* �������װ��򥯥ꥢ���� */
+							/* 割り込み要因をクリアする */
 	(*(s1c33Intc_t *) S1C33_INTC_BASE).bIntFactor[iOffset] = ((UB)iBitFlag);
 
 	return (E_OK);

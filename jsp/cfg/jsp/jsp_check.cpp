@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: jsp_check.cpp,v 1.25 2005/07/06 01:29:21 honda Exp $
  */
@@ -54,10 +54,10 @@ public:
     enum tagCheckLevel
     {
         UNKNOWN    = 0,
-        LAZY       = 1,     /* Ã×Ì¿Åª (¹Ô¤­²á¤®²şÂ¤ËÉ»ßÍÑ)  */
-        STANDARD   = 2,     /* ITRON»ÅÍÍ¤ÎÈÏ°Ï (²şÂ¤¤òµöÍÆ) */
-        TOPPERS    = 4,     /* TOPPERS/JSP¤ÎÈÏ°ÏÆâ          */
-        RESTRICTED = 8,     /* ÊÒ¤ÃÃ¼¤«¤éÊá¤Ş¤¨¤ë           */
+        LAZY       = 1,     /* è‡´å‘½çš„ (è¡Œãéãæ”¹é€ é˜²æ­¢ç”¨)  */
+        STANDARD   = 2,     /* ITRONä»•æ§˜ã®ç¯„å›² (æ”¹é€ ã‚’è¨±å®¹) */
+        TOPPERS    = 4,     /* TOPPERS/JSPã®ç¯„å›²å†…          */
+        RESTRICTED = 8,     /* ç‰‡ã£ç«¯ã‹ã‚‰æ•ã¾ãˆã‚‹           */
 
         NORMAL     = 8
     };
@@ -95,8 +95,8 @@ using namespace std;
 static ConfigurationChecker  instance_of_ConfigurationChecker;
 
 //------------------------------------------------------
-    //¥¿¡¼¥²¥Ã¥È¤ÎÆ±Ì¾¤Î·¿¤è¤ê¤âÂç¤­¤Ê·¿¤ÎÄêµÁ
-    // (Ãí) ÃÍÈæ³Ó, ±é»»¤¬²ÄÇ½¤Ê·¿¤Ç¤¢¤ë¤³¤È
+    //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åŒåã®å‹ã‚ˆã‚Šã‚‚å¤§ããªå‹ã®å®šç¾©
+    // (æ³¨) å€¤æ¯”è¼ƒ, æ¼”ç®—ãŒå¯èƒ½ãªå‹ã§ã‚ã‚‹ã“ã¨
 
 typedef          int  DT_INT;
 typedef unsigned int  DT_UINT;
@@ -157,16 +157,16 @@ void ConfigurationChecker::notify(enum tagCheckLevel level, Formatter msg, bool 
 
         if(error)
         {
-            cout << Message("[ Error ] ","[¥¨¥é¡¼] ");
+            cout << Message("[ Error ] ","[ã‚¨ãƒ©ãƒ¼] ");
             error_count ++;
         }else
-            cout << Message("[Warning] ","[ ·Ù¹ğ ] ");
+            cout << Message("[Warning] ","[ è­¦å‘Š ] ");
         cout << msg << endl;
     }
 }
 
     /*
-     * ¥¿¥¹¥¯¥ª¥Ö¥¸¥§¥¯¥È¤Ë´Ø¤¹¤ë¥¨¥é¡¼¸¡½Ğ
+     * ã‚¿ã‚¹ã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«é–¢ã™ã‚‹ã‚¨ãƒ©ãƒ¼æ¤œå‡º
      */
 
 bool ConfigurationChecker::check_taskblock(Directory & parameter, FileContainer * container)
@@ -178,17 +178,17 @@ bool ConfigurationChecker::check_taskblock(Directory & parameter, FileContainer 
 
     TargetVariable<unsigned int> _kernel_tmax_tskid("_kernel_tmax_tskid");
 
-    Message object("Task","¥¿¥¹¥¯");
+    Message object("Task","ã‚¿ã‚¹ã‚¯");
 
     if(!_kernel_tmax_tskid.isValid())
         ExceptionMessage(
             "Internal error: Unknown symbol (Probably, Symbol table was stripped)",
-            "ÆâÉô¥¨¥é¡¼: ÉÔÀµ¤Ê¥·¥ó¥Ü¥ëÌ¾ (¼Â¹Ô·Á¼°¤¬¥·¥ó¥Ü¥ë¥Æ¡¼¥Ö¥ë¤ò´Ş¤ó¤Ç¤Ê¤¤²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹)").throwException();
+            "å†…éƒ¨ã‚¨ãƒ©ãƒ¼: ä¸æ­£ãªã‚·ãƒ³ãƒœãƒ«å (å®Ÿè¡Œå½¢å¼ãŒã‚·ãƒ³ãƒœãƒ«ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’å«ã‚“ã§ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™)").throwException();
 
     if(*_kernel_tmax_tskid < 1)
     {
         notify(RESTRICTED,
-            Message("  [Task] : No tasks created\n","  [¥¿¥¹¥¯] : ¥¿¥¹¥¯¥ª¥Ö¥¸¥§¥¯¥È¤¬¤¢¤ê¤Ş¤»¤ó\n"));
+            Message("  [Task] : No tasks created\n","  [ã‚¿ã‚¹ã‚¯] : ã‚¿ã‚¹ã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Šã¾ã›ã‚“\n"));
         return true;
     }
 
@@ -201,84 +201,84 @@ bool ConfigurationChecker::check_taskblock(Directory & parameter, FileContainer 
     maxpri = container->getVariableInfo("TMAX_TPRI").value;
     minpri = container->getVariableInfo("TMIN_TPRI").value;
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tmax_tskid;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tmax_tskid;
     for(id = 1; id <= *_kernel_tmax_tskid; id++)
     {
         set_banner(parameter, object, TASK, id);
 
             /*
-             *  Â°À­¥Á¥§¥Ã¥¯
+             *  å±æ€§ãƒã‚§ãƒƒã‚¯
              */
 
-            // Â°À­ÃÍ¤¬ TA_HLNG|TA_ASM|TA_ACT °Ê³°¤ÎÃÍ¤ò¤È¤Ã¤Æ¤¤¤ë
+            // å±æ€§å€¤ãŒ TA_HLNG|TA_ASM|TA_ACT ä»¥å¤–ã®å€¤ã‚’ã¨ã£ã¦ã„ã‚‹
         if((*tskatr & ~0x3) != 0)
             notify( STANDARD,
                 Message("Illegal task attribute (It should be ((TA_HLNG||TA_ASM)|TA_ACT))",
-                        "ÉÔÀµ¤Ê¥¿¥¹¥¯Â°À­ ((TA_HLNG||TA_ASM)|TA_ACT)°Ê³°"));
+                        "ä¸æ­£ãªã‚¿ã‚¹ã‚¯å±æ€§ ((TA_HLNG||TA_ASM)|TA_ACT)ä»¥å¤–"));
 
-            // Â°À­ÃÍ¤Ë TA_ASM ¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë
+            // å±æ€§å€¤ã« TA_ASM ãŒå«ã¾ã‚Œã¦ã„ã‚‹
         if((*tskatr & 0x1) != 0)
             notify( RESTRICTED,
                 Message("TA_ASM specified as task attribute takes no effect.",
-                        "¥¿¥¹¥¯Â°À­¤ËTA_ASM¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë"));
+                        "ã‚¿ã‚¹ã‚¯å±æ€§ã«TA_ASMãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹"));
 
-            /* µ¯Æ°ÈÖÃÏ¤¬0 */
+            /* èµ·å‹•ç•ªåœ°ãŒ0 */
         if(*task == 0)
             notify(RESTRICTED,
                 Message("The address of task routine is equal to zero.",
-                        "³«»ÏÈÖÃÏ¤Ë0¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹"));
+                        "é–‹å§‹ç•ªåœ°ã«0ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™"));
 
             /*
-             *  Í¥ÀèÅÙ¥Á¥§¥Ã¥¯
+             *  å„ªå…ˆåº¦ãƒã‚§ãƒƒã‚¯
              */
 
-            // ºÇÂçÍ¥ÀèÅÙ¤ÈºÇ¾®Í¥ÀèÅÙ¤ÎÀßÄê¤¬¤ª¤«¤·¤¤
+            // æœ€å¤§å„ªå…ˆåº¦ã¨æœ€å°å„ªå…ˆåº¦ã®è¨­å®šãŒãŠã‹ã—ã„
         if(maxpri < minpri)
             notify(LAZY,
                 Message("Illegal Priority Settings found (TMAX_TPRI(%) < TMIN_TPRI).",
-                        "½é´üÍ¥ÀèÅÙ¤¬ºÇÄãÍ¥ÀèÅÙ(%)¤òÄ¶¤¨¤Æ¤¤¤ë") << minpri);
+                        "åˆæœŸå„ªå…ˆåº¦ãŒæœ€ä½å„ªå…ˆåº¦(%)ã‚’è¶…ãˆã¦ã„ã‚‹") << minpri);
 
-            // Í¥ÀèÅÙ¤ÎÈÏ°Ï¤¬[ºÇ¾®Í¥ÀèÅÙ, ºÇÂçÍ¥ÀèÅÙ]¤ÎÈÏ°Ï¤òÄ¶¤¨¤Æ¤¤¤ë
+            // å„ªå…ˆåº¦ã®ç¯„å›²ãŒ[æœ€å°å„ªå…ˆåº¦, æœ€å¤§å„ªå…ˆåº¦]ã®ç¯„å›²ã‚’è¶…ãˆã¦ã„ã‚‹
         if(*ipriority > (signed)(maxpri - minpri))
             notify(TOPPERS,
                 Message("Initial priority is greater than maximum priority (%).",
-                        "½é´üÍ¥ÀèÅÙ¤¬ºÇÂçÍ¥ÀèÅÙ(%)¤òÄ¶¤¨¤Æ¤¤¤ë") << maxpri);
+                        "åˆæœŸå„ªå…ˆåº¦ãŒæœ€å¤§å„ªå…ˆåº¦(%)ã‚’è¶…ãˆã¦ã„ã‚‹") << maxpri);
         if(*ipriority < 0)
             notify(STANDARD,
                 Message("Initial priority is less than the minimum priority (%).",
-                        "½é´üÍ¥ÀèÅÙ¤¬ºÇÄãÍ¥ÀèÅÙ(%)¤ò²¼²ó¤ë") << minpri);
+                        "åˆæœŸå„ªå…ˆåº¦ãŒæœ€ä½å„ªå…ˆåº¦(%)ã‚’ä¸‹å›ã‚‹") << minpri);
 
             /*
-             *   ¥¿¥¹¥¯Îã³°Â°À­¥Á¥§¥Ã¥¯
+             *   ã‚¿ã‚¹ã‚¯ä¾‹å¤–å±æ€§ãƒã‚§ãƒƒã‚¯
              */
 
-            // Â°À­ÃÍ¤¬TA_HLNG or TA_ASM¤Ç¤Ê¤¤
+            // å±æ€§å€¤ãŒTA_HLNG or TA_ASMã§ãªã„
         if((*texatr & ~0x3) != 0)
             notify(STANDARD,
                 Message("Task exception routine has an illegal attribute specifier.",
-                        "¥¿¥¹¥¯Îã³°¤ËÌµ¸ú¤ÊÂ°À­(TA_HLNG,TA_ASM°Ê³°) ¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹"));
+                        "ã‚¿ã‚¹ã‚¯ä¾‹å¤–ã«ç„¡åŠ¹ãªå±æ€§(TA_HLNG,TA_ASMä»¥å¤–) ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™"));
 
-            // Â°À­ÃÍ¤Ë TA_ASM ¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë
+            // å±æ€§å€¤ã« TA_ASM ãŒå«ã¾ã‚Œã¦ã„ã‚‹
         if((*texatr & 0x1) != 0)
             notify( RESTRICTED,
                 Message("TA_ASM, specified as texatr, does not always take effect.",
-                        "¥¿¥¹¥¯Îã³°¤ËTA_ASM¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ş¤¹"));
+                        "ã‚¿ã‚¹ã‚¯ä¾‹å¤–ã«TA_ASMãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™"));
 
             /*
-             *   ¥¹¥¿¥Ã¥¯¥Á¥§¥Ã¥¯
+             *   ã‚¹ã‚¿ãƒƒã‚¯ãƒã‚§ãƒƒã‚¯
              */
 
-            // ¥¹¥¿¥Ã¥¯¥µ¥¤¥º¤¬0
+            // ã‚¹ã‚¿ãƒƒã‚¯ã‚µã‚¤ã‚ºãŒ0
         if(*stksz == 0)
             notify(RESTRICTED,
                 Message("Stack size is equal to zero.",
-                        "¥¹¥¿¥Ã¥¯¥µ¥¤¥º¤Ë0¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹"));
+                        "ã‚¹ã‚¿ãƒƒã‚¯ã‚µã‚¤ã‚ºã«0ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™"));
 
-            // ¥¹¥¿¥Ã¥¯¤ÎÈÖÃÏ¤¬0
+            // ã‚¹ã‚¿ãƒƒã‚¯ã®ç•ªåœ°ãŒ0
         if(*stksz == 0)
             notify(RESTRICTED,
                 Message("The address of task stack is equal to zero.",
-                        "¥¹¥¿¥Ã¥¯³«»ÏÈÖÃÏ¤Ë0¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹"));
+                        "ã‚¹ã‚¿ãƒƒã‚¯é–‹å§‹ç•ªåœ°ã«0ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™"));
 
         ++ tskatr, ++ task, ++ ipriority, ++ texatr, ++ stksz;
     }
@@ -291,7 +291,7 @@ bool ConfigurationChecker::check_semaphoreblock(Directory & parameter, FileConta
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Semaphore","¥»¥Ş¥Õ¥©");
+    Message object("Semaphore","ã‚»ãƒãƒ•ã‚©");
 
     TargetVariable<DT_UINT> _kernel_tmax_semid("_kernel_tmax_semid");
     if(*_kernel_tmax_semid < 1)
@@ -301,7 +301,7 @@ bool ConfigurationChecker::check_semaphoreblock(Directory & parameter, FileConta
     TargetVariable<DT_UINT> maxsem("_kernel_seminib_table","semaphore_initialization_block::maxsem");
     TargetVariable<DT_UINT> isemcnt("_kernel_seminib_table","semaphore_initialization_block::isemcnt");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n")
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n")
         << object << *_kernel_tmax_semid;
 
     for(id = 1; id <= *_kernel_tmax_semid; id++)
@@ -312,18 +312,18 @@ bool ConfigurationChecker::check_semaphoreblock(Directory & parameter, FileConta
         if((*sematr & ~0x1) != 0)
             notify(STANDARD,
                 Message("Illegal attribute (It should be (TA_TFIFO||TA_TPRI)).",
-                        "(TA_TFIFO||TA_TPRI)°Ê³°¤ÎÂ°À­¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë"));
+                        "(TA_TFIFO||TA_TPRI)ä»¥å¤–ã®å±æ€§ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹"));
 
             //maxcnt < isemcnt
         if(*maxsem < *isemcnt)
             notify(STANDARD,
                 Message("Initial count[%] is greater than the maximum count[%] of this semaphore",
-                        "½é´üÃÍ[%]¤¬ºÇÂçÃÍ[%]¤òÄ¶¤¨¤Æ¤¤¤ë") << *isemcnt << *maxsem);
+                        "åˆæœŸå€¤[%]ãŒæœ€å¤§å€¤[%]ã‚’è¶…ãˆã¦ã„ã‚‹") << *isemcnt << *maxsem);
 
         if(*maxsem == 0)
             notify(STANDARD,
                 Message("Maximum count must be greater than zero.",
-                        "¥»¥Ş¥Õ¥©¤ÎºÇÂç¥«¥¦¥ó¥È¤Ï1°Ê¾å¤Ç¤Ê¤±¤ì¤Ğ¤¤¤±¤Ş¤»¤ó"));
+                        "ã‚»ãƒãƒ•ã‚©ã®æœ€å¤§ã‚«ã‚¦ãƒ³ãƒˆã¯1ä»¥ä¸Šã§ãªã‘ã‚Œã°ã„ã‘ã¾ã›ã‚“"));
 
         ++ sematr, ++ maxsem, ++ isemcnt;
     }
@@ -337,7 +337,7 @@ bool ConfigurationChecker::check_eventflagblock(Directory & parameter, FileConta
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Event flag","¥¤¥Ù¥ó¥È¥Õ¥é¥°");
+    Message object("Event flag","ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ãƒ©ã‚°");
 
     TargetVariable<DT_UINT> _kernel_tmax_flgid("_kernel_tmax_flgid");
     if(*_kernel_tmax_flgid < 1)
@@ -345,7 +345,7 @@ bool ConfigurationChecker::check_eventflagblock(Directory & parameter, FileConta
 
     TargetVariable<DT_UINT> flgatr("_kernel_flginib_table","eventflag_initialization_block::flgatr");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n")
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n")
          << object << *_kernel_tmax_flgid;
 
     for(id = 1; id <= *_kernel_tmax_flgid; id++)
@@ -356,12 +356,12 @@ bool ConfigurationChecker::check_eventflagblock(Directory & parameter, FileConta
         if((*flgatr & ~0x7) != 0)
             notify(STANDARD,
                 Message("Illegal attribute value [0x%]",
-                        "¤ª¤«¤·¤ÊÂ°À­ÃÍ [0x%]") << setbase(16) << (*flgatr & ~0x7));
+                        "ãŠã‹ã—ãªå±æ€§å€¤ [0x%]") << setbase(16) << (*flgatr & ~0x7));
 
         if((*flgatr & 0x2) != 0)
-            notify(TOPPERS,     //°ÍÂ¸Éô¤ÇÄ¾¤é¤Ê¤¤¤Î¤ÇRESTRICTED¤Ë¤·¤Ê¤¤
+            notify(TOPPERS,     //ä¾å­˜éƒ¨ã§ç›´ã‚‰ãªã„ã®ã§RESTRICTEDã«ã—ãªã„
                 Message("Attribute TA_WMUL is not supported in current version.",
-                        "TA_WMUL¤Ï¥µ¥İ¡¼¥È³°"));
+                        "TA_WMULã¯ã‚µãƒãƒ¼ãƒˆå¤–"));
     
         ++ flgatr;
     }
@@ -375,7 +375,7 @@ bool ConfigurationChecker::check_dataqueueblock(Directory & parameter, FileConta
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Data queue","¥Ç¡¼¥¿¥­¥å¡¼");
+    Message object("Data queue","ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼");
 
     TargetVariable<DT_UINT> _kernel_tmax_dtqid("_kernel_tmax_dtqid");
     if(*_kernel_tmax_dtqid < 1)
@@ -385,7 +385,7 @@ bool ConfigurationChecker::check_dataqueueblock(Directory & parameter, FileConta
     TargetVariable<DT_UINT> dtqcnt("_kernel_dtqinib_table", "dataqueue_initialization_block::dtqcnt");
     TargetVariable<DT_VP_INT> dtq("_kernel_dtqinib_table", "dataqueue_initialization_block::dtq");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n")
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n")
         << object << *_kernel_tmax_dtqid;
 
     for(id = 1; id <= *_kernel_tmax_dtqid; id++)
@@ -396,11 +396,11 @@ bool ConfigurationChecker::check_dataqueueblock(Directory & parameter, FileConta
         if((*dtqatr & ~0x1) != 0)
             notify(STANDARD,
                 Message("Illegal attribute value [0x%]",
-                        "¤ª¤«¤·¤ÊÂ°À­ÃÍ [0x%]") << setbase(16) << (*dtqatr & ~0x1));
+                        "ãŠã‹ã—ãªå±æ€§å€¤ [0x%]") << setbase(16) << (*dtqatr & ~0x1));
 
         if(*dtqcnt != 0 && *dtq == 0)
             notify(TOPPERS,
-                Message("Dataqueue buffer should not be NULL", "¥Ç¡¼¥¿¥­¥å¡¼¤Î¥Ğ¥Ã¥Õ¥¡¤¬NULLÃÍ"));
+                Message("Dataqueue buffer should not be NULL", "ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼ã®ãƒãƒƒãƒ•ã‚¡ãŒNULLå€¤"));
 
         ++ dtqatr, ++ dtqcnt, ++ dtq;
     }
@@ -414,7 +414,7 @@ bool ConfigurationChecker::check_mailboxblock(Directory & parameter, FileContain
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Mailbox","¥á¡¼¥ë¥Ü¥Ã¥¯¥¹");
+    Message object("Mailbox","ãƒ¡ãƒ¼ãƒ«ãƒœãƒƒã‚¯ã‚¹");
 
     TargetVariable<DT_UINT> _kernel_tmax_mbxid("_kernel_tmax_mbxid");
     if(*_kernel_tmax_mbxid < 1)
@@ -426,7 +426,7 @@ bool ConfigurationChecker::check_mailboxblock(Directory & parameter, FileContain
     DT_INT maxpri = container->getVariableInfo("TMAX_MPRI").value;
     DT_INT minpri = container->getVariableInfo("TMIN_MPRI").value;
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tmax_mbxid;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tmax_mbxid;
     for(id = 1; id <= *_kernel_tmax_mbxid; id++)
     {
         set_banner(parameter, object, MAILBOX, id);
@@ -435,22 +435,22 @@ bool ConfigurationChecker::check_mailboxblock(Directory & parameter, FileContain
         if((*mbxatr & ~0x3) != 0)
             notify(STANDARD,
                 Message("Illegal attribute value [0x%]",
-                        "¤ª¤«¤·¤ÊÂ°À­ÃÍ [0x%]") << setbase(16) << (*mbxatr & ~0x3));
+                        "ãŠã‹ã—ãªå±æ€§å€¤ [0x%]") << setbase(16) << (*mbxatr & ~0x3));
     
             //mailbox message priority check
         if(*maxmpri < 0)
             notify(STANDARD,
-                Message("Priority must not be a negative number.","Í¥ÀèÅÙ¤¬ÉéÃÍ"));
+                Message("Priority must not be a negative number.","å„ªå…ˆåº¦ãŒè² å€¤"));
 
         if(*maxmpri < minpri)
             notify(STANDARD,
                 Message("Message priority should be greater than or equal to %.",
-                        "¥á¥Ã¥»¡¼¥¸Í¥ÀèÅÙ¤Ï%°Ê¾å¤Ç¤Ê¤±¤ì¤Ğ¤¤¤±¤Ş¤»¤ó") << minpri);
+                        "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å„ªå…ˆåº¦ã¯%ä»¥ä¸Šã§ãªã‘ã‚Œã°ã„ã‘ã¾ã›ã‚“") << minpri);
 
         if(*maxmpri > maxpri)
             notify(STANDARD,
                 Message("Message priority should be less than or equal to %.",
-                        "¥á¥Ã¥»¡¼¥¸Í¥ÀèÅÙ¤Ï%°Ê²¼¤Ç¤Ê¤±¤ì¤Ğ¤¤¤±¤Ş¤»¤ó") << maxpri);
+                        "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å„ªå…ˆåº¦ã¯%ä»¥ä¸‹ã§ãªã‘ã‚Œã°ã„ã‘ã¾ã›ã‚“") << maxpri);
 
         ++ mbxatr, ++ maxmpri;
     }
@@ -463,7 +463,7 @@ bool ConfigurationChecker::check_fixed_memorypoolblock(Directory & parameter, Fi
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Fixed size memory pool","¸ÇÄêÄ¹¥á¥â¥ê¥×¡¼¥ë");
+    Message object("Fixed size memory pool","å›ºå®šé•·ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«");
 
     TargetVariable<DT_UINT> _kernel_tmax_mpfid("_kernel_tmax_mpfid");
     if(*_kernel_tmax_mpfid < 1)
@@ -474,7 +474,7 @@ bool ConfigurationChecker::check_fixed_memorypoolblock(Directory & parameter, Fi
     TargetVariable<DT_VP>   mpf   ("_kernel_mpfinib_table", "fixed_memorypool_initialization_block::mpf");
     TargetVariable<DT_UINT> blksz ("_kernel_mpfinib_table", "fixed_memorypool_initialization_block::blksz");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tmax_mpfid;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tmax_mpfid;
     for(id = 1; id <= *_kernel_tmax_mpfid; id++)
     {
         set_banner(parameter, object, FIXEDSIZEMEMORYPOOL, id);
@@ -482,22 +482,22 @@ bool ConfigurationChecker::check_fixed_memorypoolblock(Directory & parameter, Fi
             //attribute validation check
         if((*mpfatr & ~0x1) != 0)
             notify(STANDARD,
-                Message("Illegal attribute value [0x%]","¤ª¤«¤·¤ÊÂ°À­ÃÍ [0x%]") << (*mpfatr & ~0x1));
+                Message("Illegal attribute value [0x%]","ãŠã‹ã—ãªå±æ€§å€¤ [0x%]") << (*mpfatr & ~0x1));
 
-            //¥Ö¥í¥Ã¥¯¿ô¤¬0
+            //ãƒ–ãƒ­ãƒƒã‚¯æ•°ãŒ0
         if(*mpf == *limit)
             notify(STANDARD,
-                Message("blkcnt should be a non-zero value.","¥Ö¥í¥Ã¥¯¿ô¤¬0¤Ç¤¹"));
+                Message("blkcnt should be a non-zero value.","ãƒ–ãƒ­ãƒƒã‚¯æ•°ãŒ0ã§ã™"));
 
-            //¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤¬0
+            //ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºãŒ0
         if(*blksz == 0)
             notify(STANDARD,
-                Message("blksz should be a non-zero value.","¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤¬0¤Ç¤¹"));
+                Message("blksz should be a non-zero value.","ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºãŒ0ã§ã™"));
 
-            //¥Ğ¥Ã¥Õ¥¡¥¢¥É¥ì¥¹¤¬0
+            //ãƒãƒƒãƒ•ã‚¡ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒ0
         if(*mpf == 0)
             notify(TOPPERS,
-                Message("buffer address is a NULL pointer.","¥Ğ¥Ã¥Õ¥¡¥¢¥É¥ì¥¹¤¬NULL¥İ¥¤¥ó¥¿¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹"));
+                Message("buffer address is a NULL pointer.","ãƒãƒƒãƒ•ã‚¡ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒNULLãƒã‚¤ãƒ³ã‚¿ã«ãªã£ã¦ã„ã¾ã™"));
 
         ++ mpfatr, ++ limit, ++ mpf, ++ blksz;
     }
@@ -511,7 +511,7 @@ bool ConfigurationChecker::check_cyclic_handlerblock(Directory & parameter, File
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Cyclic handler","¼ş´ü¥Ï¥ó¥É¥é");
+    Message object("Cyclic handler","å‘¨æœŸãƒãƒ³ãƒ‰ãƒ©");
 
     TargetVariable<DT_UINT> _kernel_tmax_cycid("_kernel_tmax_cycid");
     if(*_kernel_tmax_cycid < 1)
@@ -522,7 +522,7 @@ bool ConfigurationChecker::check_cyclic_handlerblock(Directory & parameter, File
     TargetVariable<DT_RELTIM> cyctim("_kernel_cycinib_table", "cyclic_handler_initialization_block::cyctim");
     TargetVariable<DT_RELTIM> cycphs("_kernel_cycinib_table", "cyclic_handler_initialization_block::cycphs");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tmax_cycid;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tmax_cycid;
     for(id = 1; id <= *_kernel_tmax_cycid; id++)
     {
         set_banner(parameter, object, CYCLICHANDLER, id);
@@ -530,34 +530,34 @@ bool ConfigurationChecker::check_cyclic_handlerblock(Directory & parameter, File
             //attribute validation check
         if((*cycatr & ~0x7) != 0)
             notify(STANDARD,
-                Message("Illegal attribute value [0x%]","¤ª¤«¤·¤ÊÂ°À­ÃÍ [0x%]") << (*cycatr & ~0x1));
+                Message("Illegal attribute value [0x%]","ãŠã‹ã—ãªå±æ€§å€¤ [0x%]") << (*cycatr & ~0x1));
 
         if((*cycatr & 0x4) != 0)
-            notify(TOPPERS,     //Èó°ÍÂ¸Éô¤Ê¤Î¤ÇRESTRICTED¤Ë¤·¤Ê¤¤
-                Message("TA_PHS is not supported in this kernel.","TA_PHS¤Ï¥µ¥İ¡¼¥È³°"));
+            notify(TOPPERS,     //éä¾å­˜éƒ¨ãªã®ã§RESTRICTEDã«ã—ãªã„
+                Message("TA_PHS is not supported in this kernel.","TA_PHSã¯ã‚µãƒãƒ¼ãƒˆå¤–"));
 
-            // Â°À­ÃÍ¤Ë TA_ASM ¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë
+            // å±æ€§å€¤ã« TA_ASM ãŒå«ã¾ã‚Œã¦ã„ã‚‹
         if((*cycatr & 0x1) != 0)
             notify( RESTRICTED,
                 Message("TOPPERS/JSP Kernel never minds the flag 'TA_ASM'.",
-                        "TOPPERS/JSP¥«¡¼¥Í¥ë¤ÎÁ´¤Æ¤Îµ¡¼ï°ÍÂ¸Éô¤ÇTA_ASM¤ò¥µ¥İ¡¼¥È¤¹¤ë¤È¤Ï¸Â¤é¤Ê¤¤"));
+                        "TOPPERS/JSPã‚«ãƒ¼ãƒãƒ«ã®å…¨ã¦ã®æ©Ÿç¨®ä¾å­˜éƒ¨ã§TA_ASMã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ã¨ã¯é™ã‚‰ãªã„"));
 
-            //RELTIM¤Ç¤ÎÉ½¸½ÈÏ°ÏÆâ¤Ë¤¢¤ë¤«¤É¤¦¤«¤Î¥Á¥§¥Ã¥¯
+            //RELTIMã§ã®è¡¨ç¾ç¯„å›²å†…ã«ã‚ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
         if(*cyctim > maxreltim)
             notify(STANDARD,
                 Message("The cyclic object has a period (%) that exceeds the maximum period (%)",
-                        "µ¯Æ°¼ş´ü(%)¤¬É½¸½²ÄÇ½¤ÊÁêÂĞ»ş´Ö¤ÎÈÏ°Ï(%)¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹") << *cyctim << maxreltim);
+                        "èµ·å‹•å‘¨æœŸ(%)ãŒè¡¨ç¾å¯èƒ½ãªç›¸å¯¾æ™‚é–“ã®ç¯„å›²(%)ã‚’è¶…ãˆã¦ã„ã¾ã™") << *cyctim << maxreltim);
 
-            //µ¯Æ°¼ş´ü¤¬0¤Ç¤Ê¤¤¤³¤È¤Î¥Á¥§¥Ã¥¯
+            //èµ·å‹•å‘¨æœŸãŒ0ã§ãªã„ã“ã¨ã®ãƒã‚§ãƒƒã‚¯
         if(*cyctim == 0)
             notify(STANDARD,
                 Message("The cyclic object has a ZERO period.",
-                        "µ¯Æ°¼ş´ü¤¬0¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹"));
+                        "èµ·å‹•å‘¨æœŸãŒ0ã«ãªã£ã¦ã„ã¾ã™"));
 
         if(*cycphs > maxreltim)
             notify(STANDARD,
                 Message("The cyclic object has a initial delay (%) that exceeds the maximum period (%)",
-                        "µ¯Æ°°ÌÁê(%)¤¬É½¸½²ÄÇ½¤ÊÁêÂĞ»ş´Ö¤ÎÈÏ°Ï(%)¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹") << *cycphs << maxreltim);
+                        "èµ·å‹•ä½ç›¸(%)ãŒè¡¨ç¾å¯èƒ½ãªç›¸å¯¾æ™‚é–“ã®ç¯„å›²(%)ã‚’è¶…ãˆã¦ã„ã¾ã™") << *cycphs << maxreltim);
 
         ++ cycatr, ++ cyctim, ++ cycphs;
     }
@@ -570,7 +570,7 @@ bool ConfigurationChecker::check_interrupt_handlerblock(Directory & parameter, F
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Interrupt handler","³ä¹ş¤ß¥Ï¥ó¥É¥é");
+    Message object("Interrupt handler","å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©");
 
     TargetVariable<DT_UINT> _kernel_tnum_inhno("_kernel_tnum_inhno");
     if(*_kernel_tnum_inhno == 0)
@@ -579,7 +579,7 @@ bool ConfigurationChecker::check_interrupt_handlerblock(Directory & parameter, F
     TargetVariable<DT_UINT> inhatr("_kernel_inhinib_table", "interrupt_handler_initialization_block::inhatr");
     TargetVariable<DT_FP>   inthdr("_kernel_inhinib_table", "interrupt_handler_initialization_block::inthdr");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tnum_inhno;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tnum_inhno;
     for(id = 0; id < *_kernel_tnum_inhno; id++)
     {
         set_banner(parameter, object, INTERRUPTHANDLER, id);
@@ -588,19 +588,19 @@ bool ConfigurationChecker::check_interrupt_handlerblock(Directory & parameter, F
         if((*inhatr & 0x1) != 0)
             notify(STANDARD,
                 Message("The attribute can take only TA_HLNG|TA_ASM",
-                        "TA_HLNG|TA_ASM°Ê³°¤ÎÂ°À­¤ÏÀßÄê¤Ç¤­¤Ş¤»¤ó"));
+                        "TA_HLNG|TA_ASMä»¥å¤–ã®å±æ€§ã¯è¨­å®šã§ãã¾ã›ã‚“"));
 
-            // Â°À­ÃÍ¤Ë TA_ASM ¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë
+            // å±æ€§å€¤ã« TA_ASM ãŒå«ã¾ã‚Œã¦ã„ã‚‹
         if((*inhatr & 0x1) != 0)
             notify(RESTRICTED,
                 Message("TOPPERS/JSP Kernel never minds the flag 'TA_ASM'.",
-                        "TA_ASM¤¬»ÈÍÑ¤µ¤ì¤Æ¤¤¤ë"));
+                        "TA_ASMãŒä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹"));
 
-            // µ¯Æ°ÈÖÃÏ¥Á¥§¥Ã¥¯
+            // èµ·å‹•ç•ªåœ°ãƒã‚§ãƒƒã‚¯
         if(*inthdr == 0)
             notify(RESTRICTED,
                 Message("NULL pointer is specified as an inthdr address.",
-                        "³ä¹ş¤ß¥Ï¥ó¥É¥é¤ÎÈÖÃÏ¤¬NULL¤Ç¤¹"));
+                        "å‰²è¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ã®ç•ªåœ°ãŒNULLã§ã™"));
 
         ++ inhatr, ++ inthdr;
     }
@@ -613,7 +613,7 @@ bool ConfigurationChecker::check_exception_handlerblock(Directory & parameter, F
     unsigned int id;
     unsigned int old_error_count = error_count;
 
-    Message object("Exception handler","Îã³°¥Ï¥ó¥É¥é");
+    Message object("Exception handler","ä¾‹å¤–ãƒãƒ³ãƒ‰ãƒ©");
 
     TargetVariable<DT_UINT> _kernel_tnum_excno("_kernel_tnum_excno");
     if(*_kernel_tnum_excno == 0)
@@ -622,7 +622,7 @@ bool ConfigurationChecker::check_exception_handlerblock(Directory & parameter, F
     TargetVariable<DT_UINT> excatr("_kernel_excinib_table", "cpu_exception_handler_initialization_block::excatr");
     TargetVariable<DT_FP>   exchdr("_kernel_excinib_table", "cpu_exception_handler_initialization_block::exchdr");
 
-    VerboseMessage("% object : % items\n","%¥ª¥Ö¥¸¥§¥¯¥È : % ¸Ä\n") << object << *_kernel_tnum_excno;
+    VerboseMessage("% object : % items\n","%ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ : % å€‹\n") << object << *_kernel_tnum_excno;
     for(id = 0; id < *_kernel_tnum_excno; id++)
     {
         set_banner(parameter, object, EXCEPTIONHANDLER, id);
@@ -631,19 +631,19 @@ bool ConfigurationChecker::check_exception_handlerblock(Directory & parameter, F
         if((*excatr & 0x1) != 0)
             notify(STANDARD,
                 Message("The attribute can take only TA_HLNG|TA_ASM",
-                        "TA_HLNG|TA_ASM°Ê³°¤ÎÂ°À­¤ÏÀßÄê¤Ç¤­¤Ş¤»¤ó"));
+                        "TA_HLNG|TA_ASMä»¥å¤–ã®å±æ€§ã¯è¨­å®šã§ãã¾ã›ã‚“"));
 
-            // Â°À­ÃÍ¤Ë TA_ASM ¤¬´Ş¤Ş¤ì¤Æ¤¤¤ë
+            // å±æ€§å€¤ã« TA_ASM ãŒå«ã¾ã‚Œã¦ã„ã‚‹
         if((*excatr & 0x1) != 0)
             notify(RESTRICTED,
                 Message("TOPPERS/JSP Kernel never minds the flag 'TA_ASM'.",
-                        "TOPPERS/JSP¥«¡¼¥Í¥ë¤ÎÁ´¤Æ¤Îµ¡¼ï°ÍÂ¸Éô¤ÇTA_ASM¤ò¥µ¥İ¡¼¥È¤¹¤ë¤È¤Ï¸Â¤é¤Ê¤¤"));
+                        "TOPPERS/JSPã‚«ãƒ¼ãƒãƒ«ã®å…¨ã¦ã®æ©Ÿç¨®ä¾å­˜éƒ¨ã§TA_ASMã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ã¨ã¯é™ã‚‰ãªã„"));
 
-            // µ¯Æ°ÈÖÃÏ¥Á¥§¥Ã¥¯
+            // èµ·å‹•ç•ªåœ°ãƒã‚§ãƒƒã‚¯
         if(*exchdr == 0)
             notify(RESTRICTED,
                 Message("NULL pointer is specified as an exchdr address.",
-                        "Îã³°¥Ï¥ó¥É¥é¤ÎÈÖÃÏ¤¬NULL¤Ç¤¹"));
+                        "ä¾‹å¤–ãƒãƒ³ãƒ‰ãƒ©ã®ç•ªåœ°ãŒNULLã§ã™"));
 
         ++ excatr, ++ exchdr;
     }
@@ -669,16 +669,16 @@ void ConfigurationChecker::parseOption(Directory & parameter)
             "    s(tandard)   : includes some ITRON Standard check items.\n"
             "    t(oppers)    : checks whether it meets TOPPERS/JSP restrictions\n"
             "    r(estricted) : All of check items will be performed.\n",
-            "¥³¥ó¥Õ¥£¥®¥å¥ì¡¼¥·¥ç¥ó¥Á¥§¥Ã¥« - ¥ª¥×¥·¥ç¥ó\n"
-            "  -m, --module=¥Õ¥¡¥¤¥ëÌ¾ : ¥í¡¼¥É¥â¥¸¥å¡¼¥ëÌ¾¤ò»ØÄê¤·¤Ş¤¹ (É¬¿Ü¹àÌÜ)\n"
-            "  -cs, --script=¥Õ¥¡¥¤¥ëÌ¾  : ¥Á¥§¥Ã¥«¥¹¥¯¥ê¥×¥È¤ò»ØÄê¤·¤Ş¤¹\n"
+            "ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒã‚§ãƒƒã‚« - ã‚ªãƒ—ã‚·ãƒ§ãƒ³\n"
+            "  -m, --module=ãƒ•ã‚¡ã‚¤ãƒ«å : ãƒ­ãƒ¼ãƒ‰ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«åã‚’æŒ‡å®šã—ã¾ã™ (å¿…é ˆé …ç›®)\n"
+            "  -cs, --script=ãƒ•ã‚¡ã‚¤ãƒ«å  : ãƒã‚§ãƒƒã‚«ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æŒ‡å®šã—ã¾ã™\n"
             "  -cl, --checklevel=level : Specify one of the check levels below \n"
-            "    l(azy)       : ºÇ¾®¸Â¤Î¥Á¥§¥Ã¥¯¤Î¤ß¤ò¹Ô¤¤¤Ş¤¹\n"
-            "    s(tandard)   : ITRON»ÅÍÍ¤ÎÈÏ°Ï¤Ç¥Á¥§¥Ã¥¯¤ò¹Ô¤¤¤Ş¤¹\n"
-            "    t(oppers)    : TOPPERS/JSP¥«¡¼¥Í¥ë¤ÎÀ©¸Â¤òËş¤¿¤¹¤³¤È¤ò³ÎÇ§¤·¤Ş¤¹\n"
-            "    r(estricted) : µ¡¼ï°ÍÂ¸Éô¤ò´Ş¤áÁ´¤Æ¤Î¥Á¥§¥Ã¥¯¹àÌÜ¤ò¼Â»Ü¤·¤Ş¤¹\n");
+            "    l(azy)       : æœ€å°é™ã®ãƒã‚§ãƒƒã‚¯ã®ã¿ã‚’è¡Œã„ã¾ã™\n"
+            "    s(tandard)   : ITRONä»•æ§˜ã®ç¯„å›²ã§ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã„ã¾ã™\n"
+            "    t(oppers)    : TOPPERS/JSPã‚«ãƒ¼ãƒãƒ«ã®åˆ¶é™ã‚’æº€ãŸã™ã“ã¨ã‚’ç¢ºèªã—ã¾ã™\n"
+            "    r(estricted) : æ©Ÿç¨®ä¾å­˜éƒ¨ã‚’å«ã‚å…¨ã¦ã®ãƒã‚§ãƒƒã‚¯é …ç›®ã‚’å®Ÿæ–½ã—ã¾ã™\n");
         cout << endl 
-             << Message("Supported architecture : ", "ÂĞ±ş¥¢¡¼¥­¥Æ¥¯¥Á¥ã : ")
+             << Message("Supported architecture : ", "å¯¾å¿œã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£ : ")
              << FileContainer::getInstance()->getArchitecture()
              << endl;
         return;
@@ -687,7 +687,7 @@ void ConfigurationChecker::parseOption(Directory & parameter)
     if(findOption("m","module",&loadmodule) || findOption(DEFAULT_PARAMETER,NULL,&loadmodule))
     {
         if(findOption("s","source"))
-            ExceptionMessage("Configuration checker can not execute while Configurator executes","¥³¥ó¥Õ¥£¥®¥å¥ì¡¼¥¿¤È¥Á¥§¥Ã¥«¤ÏÆ±»ş¤Ëµ¯Æ°¤Ç¤­¤Ş¤»¤ó").throwException();
+            ExceptionMessage("Configuration checker can not execute while Configurator executes","ã‚³ãƒ³ãƒ•ã‚£ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚¿ã¨ãƒã‚§ãƒƒã‚«ã¯åŒæ™‚ã«èµ·å‹•ã§ãã¾ã›ã‚“").throwException();
 
         parameter["/file/loadmodule"] = loadmodule;
         activateComponent();
@@ -709,7 +709,7 @@ void ConfigurationChecker::parseOption(Directory & parameter)
             parameter["/object"].Load(&f);
             f.close();
         }else
-            ExceptionMessage(" Failed to open the file '%' for storing object definitions"," ¥ª¥Ö¥¸¥§¥¯¥È¾ğÊó¤ò³ÊÇ¼¤¹¤ë¤¿¤á¤Î¥Õ¥¡¥¤¥ë(%)¤¬³«¤±¤Ş¤»¤ó") << work << throwException;
+            ExceptionMessage(" Failed to open the file '%' for storing object definitions"," ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ãƒ•ã‚¡ã‚¤ãƒ«(%)ãŒé–‹ã‘ã¾ã›ã‚“") << work << throwException;
     }
 
     if(findOption("cl","checklevel",&work))
@@ -726,7 +726,7 @@ void ConfigurationChecker::parseOption(Directory & parameter)
             current_level = RESTRICTED;
 
         if(current_level == UNKNOWN)
-            ExceptionMessage(" Unknown check level [%] specified"," Ìµ¸ú¤Ê¥Á¥§¥Ã¥¯¥ì¥Ù¥ë»ØÄê [%]") << work << throwException;
+            ExceptionMessage(" Unknown check level [%] specified"," ç„¡åŠ¹ãªãƒã‚§ãƒƒã‚¯ãƒ¬ãƒ™ãƒ«æŒ‡å®š [%]") << work << throwException;
     }else
         current_level = NORMAL;
 
@@ -739,7 +739,7 @@ void ConfigurationChecker::body(Directory & parameter)
     FileContainer * container;
     bool result = true;
 
-        /* ¤è¤êÍ¥ÀèÅÙ¤Î¹â¤¤¥¨¥é¡¼¤âÂĞ¾İ¤Ë */
+        /* ã‚ˆã‚Šå„ªå…ˆåº¦ã®é«˜ã„ã‚¨ãƒ©ãƒ¼ã‚‚å¯¾è±¡ã« */
     current_level = static_cast<enum tagCheckLevel>(static_cast<int>(current_level) * 2 - 1);
 
     container = FileContainer::getInstance();
@@ -748,7 +748,7 @@ void ConfigurationChecker::body(Directory & parameter)
 
     if(VerboseMessage::getVerbose())
     {
-        cout << Message("  Target architecture : ","  ¥¿¡¼¥²¥Ã¥È¥¢¡¼¥­¥Æ¥¯¥Á¥ã : ")
+        cout << Message("  Target architecture : ","  ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£ : ")
              << container->getArchitecture() << endl;
     }
 
@@ -764,8 +764,8 @@ void ConfigurationChecker::body(Directory & parameter)
     result &= check_exception_handlerblock(parameter,container);
 
     if(!result)
-        ExceptionMessage("Total % errors found in current configuration.\n","Á´Éô¤Ç%¸Ä¤Î¥¨¥é¡¼¤¬¸¡½Ğ¤µ¤ì¤Ş¤·¤¿\n") << error_count << throwException;
+        ExceptionMessage("Total % errors found in current configuration.\n","å…¨éƒ¨ã§%å€‹ã®ã‚¨ãƒ©ãƒ¼ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸ\n") << error_count << throwException;
 
-    VerboseMessage("No error found in current configuration\n","¹½À®¤Ë°Û¾ï¤Ï¤¢¤ê¤Ş¤»¤ó¤Ç¤·¤¿\n");
+    VerboseMessage("No error found in current configuration\n","æ§‹æˆã«ç•°å¸¸ã¯ã‚ã‚Šã¾ã›ã‚“ã§ã—ãŸ\n");
 }
 

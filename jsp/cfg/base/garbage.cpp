@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: garbage.cpp,v 1.6 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -48,24 +48,24 @@ using namespace std;
 TrashBox * TrashBox::current_box = 0;
 
 //----------------------------------------------------------------
-// Garbage : ¥´¥ß
+// Garbage : ã‚´ãƒŸ
 
-    //¥³¥ó¥¹¥È¥é¥¯¥¿
+    //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Garbage::Garbage(void) throw()
 {
-        //¥´¥ßÈ¢¤Ë´ØÏ¢ÉÕ¤±¤ë
+        //ã‚´ãƒŸç®±ã«é–¢é€£ä»˜ã‘ã‚‹
     assigned_box = TrashBox::getCurrentTrashBox();
     if(assigned_box->isValid())
         cookie = assigned_box->addGarbage(this);
 }
 
-    //¥Ç¥¹¥È¥é¥¯¥¿
+    //ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Garbage::~Garbage(void) throw()
 {
     rescue();
 }
 
-    //¥´¥ßµß½Ğ
+    //ã‚´ãƒŸæ•‘å‡º
 void Garbage::rescue(void) throw()
 {
     if(assigned_box->isValid()) {
@@ -76,30 +76,30 @@ void Garbage::rescue(void) throw()
 
 
 //----------------------------------------------------------------
-// TrashBox : ¥´¥ß¤òÆş¤ì¤ëÈ¢
+// TrashBox : ã‚´ãƒŸã‚’å…¥ã‚Œã‚‹ç®±
 
 TrashBox::TrashBox(void) throw()
 {
-        //¥´¥ßÈ¢¤Îº¹¤·ÂØ¤¨
+        //ã‚´ãƒŸç®±ã®å·®ã—æ›¿ãˆ
     previous_box = current_box;
     current_box  = this;
 }
 
 TrashBox::~TrashBox(void) throw()
 {
-        //¥´¥ß¤¬¤Ê¤¯¤Ê¤ë¤Ş¤Çºï½ü
+        //ã‚´ãƒŸãŒãªããªã‚‹ã¾ã§å‰Šé™¤
     while(!garbage.empty()) {
-            //¤Õ¤¿
+            //ãµãŸ
         try{   cleanup();   }
         catch(...) {}
     }
 
-        //¥´¥ßÈ¢¤Îº¹¤·ÂØ¤¨
+        //ã‚´ãƒŸç®±ã®å·®ã—æ›¿ãˆ
     current_box = previous_box;
 }
 
 /*
-    //¥´¥ßÈ¢¤ËÆş¤ì¤¿¥´¥ß¤ò¼è¤ê½ü¤¯
+    //ã‚´ãƒŸç®±ã«å…¥ã‚ŒãŸã‚´ãƒŸã‚’å–ã‚Šé™¤ã
 void TrashBox::recoverGarbage(Garbage * _garbage, TrashBox::Cookie cookie) throw()
 {
     if(isValid() && _garbage != 0) {
@@ -109,48 +109,48 @@ void TrashBox::recoverGarbage(Garbage * _garbage, TrashBox::Cookie cookie) throw
         if(!garbage.empty()) {
             scope = garbage.erase(cookie);
 
-                //¼«Ê¬¤¬»ÏËö¤·¤¿
+                //è‡ªåˆ†ãŒå§‹æœ«ã—ãŸ
             if(scope != garbage.end() || garbage.empty())
                 forward = false;
         }
 
-            //¿Æ¥´¥ßÈ¢¤Ë²óÁ÷
+            //è¦ªã‚´ãƒŸç®±ã«å›é€
         if(forward && previous_box->isValid())
             previous_box->recoverGarbage(_garbage, cookie);
     }
 }
 */
-    /*  ½¤Àµ»ş¤Î¥á¥â 
-              ´ØÏ¢ÉÕ¤±¤é¤ì¤¿¥´¥ßÈ¢¤¬¾Ã¤¨¤ë¤³¤È¤ÏÌµ¤¤(À¸À®´ü´Ö¤Ï¥´¥ßÈ¢¤Î¤Û¤¦¤¬Ä¹¤¤¤Ï¤º)¤Î¤Ç¡¢¿Æ¤Ë²óÁ÷¤¹¤ëÉ¬Í×¤ÏÌµ¤¤¡£¤è¤Ã¤Æif(forward...Àá¤ÏÉÔÍ×¡£
-              ¼«Ê¬¤¬»ÏËö¤Ç¤­¤Ê¤¤¥´¥ß¤ÏÌµ¤¤¤Î¤Ç(cleanup¤ÏrecoverGargabe¤ò¸Æ¤Ğ¤Ê¤¤)¡¢erase¤ÎÊÖµÑÃÍ¤Î¥Á¥§¥Ã¥¯¤ÏÉÔÍ×¡£
-              ¸ÄÊÌºï½üÍ×µá¤Ï¥´¥ß¤«¤é½Ğ¤µ¤ì¤ë¤Î¤Ç¡¢¼Â¹Ô¤µ¤ì¤¿»şÅÀ¤Ç¥´¥ß¤Ï1¤Ä°Ê¾åÂ¸ºß¤¹¤ë¤Ï¤º¤Ê¤Î¤Ç¡¢empty¥Á¥§¥Ã¥¯¤ÏÉÔÍ×.
-              ¤³¤Î»şÅÀ¤Çerase¤À¤±¤Ë¤Ê¤ê¡¢Âè°ì°ú¿ô¤ÏÉÔÍ×¡£
+    /*  ä¿®æ­£æ™‚ã®ãƒ¡ãƒ¢ 
+              é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸã‚´ãƒŸç®±ãŒæ¶ˆãˆã‚‹ã“ã¨ã¯ç„¡ã„(ç”ŸæˆæœŸé–“ã¯ã‚´ãƒŸç®±ã®ã»ã†ãŒé•·ã„ã¯ãš)ã®ã§ã€è¦ªã«å›é€ã™ã‚‹å¿…è¦ã¯ç„¡ã„ã€‚ã‚ˆã£ã¦if(forward...ç¯€ã¯ä¸è¦ã€‚
+              è‡ªåˆ†ãŒå§‹æœ«ã§ããªã„ã‚´ãƒŸã¯ç„¡ã„ã®ã§(cleanupã¯recoverGargabeã‚’å‘¼ã°ãªã„)ã€eraseã®è¿”å´å€¤ã®ãƒã‚§ãƒƒã‚¯ã¯ä¸è¦ã€‚
+              å€‹åˆ¥å‰Šé™¤è¦æ±‚ã¯ã‚´ãƒŸã‹ã‚‰å‡ºã•ã‚Œã‚‹ã®ã§ã€å®Ÿè¡Œã•ã‚ŒãŸæ™‚ç‚¹ã§ã‚´ãƒŸã¯1ã¤ä»¥ä¸Šå­˜åœ¨ã™ã‚‹ã¯ãšãªã®ã§ã€emptyãƒã‚§ãƒƒã‚¯ã¯ä¸è¦.
+              ã“ã®æ™‚ç‚¹ã§eraseã ã‘ã«ãªã‚Šã€ç¬¬ä¸€å¼•æ•°ã¯ä¸è¦ã€‚
     */
 
-    //¥´¥ßÈ¢¤ËÆş¤ì¤¿¥´¥ß¤ò¼è¤ê½ü¤¯  
+    //ã‚´ãƒŸç®±ã«å…¥ã‚ŒãŸã‚´ãƒŸã‚’å–ã‚Šé™¤ã  
 void TrashBox::recoverGarbage(TrashBox::Cookie cookie) throw()
 {   garbage.erase(cookie);  }
 
-    //¥´¥ßÈ¢¤ò¶õ¤Ë¤¹¤ë
+    //ã‚´ãƒŸç®±ã‚’ç©ºã«ã™ã‚‹
 void TrashBox::cleanup(void)
 {
-        //¼«Ê¬¤¬¥È¥Ã¥×¥ì¥Ù¥ë¥´¥ßÈ¢¤Ç¤Ê¤«¤Ã¤¿¤é¼ºÇÔ
+        //è‡ªåˆ†ãŒãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã‚´ãƒŸç®±ã§ãªã‹ã£ãŸã‚‰å¤±æ•—
     if(current_box != this)
         throw std::runtime_error("TrashBox::cleanup can be performed from the top level trash box only.");
 
     try {
         while(!garbage.empty())
-            delete *garbage.begin();        //¥´¥ß¥ê¥¹¥È¤«¤éÍ×ÁÇ¤ò³°¤¹¤Î¤Ï»Ò¤ÎÌòÌÜ
+            delete *garbage.begin();        //ã‚´ãƒŸãƒªã‚¹ãƒˆã‹ã‚‰è¦ç´ ã‚’å¤–ã™ã®ã¯å­ã®å½¹ç›®
     }
     catch(...) {
-        garbage.erase(garbage.begin());     //Îã³°¤òµ¯¤³¤·¤¿ºÇ½é¤ÎÍ×ÁÇ¤òºï½ü
-        throw;                              //ºÆÁ÷
+        garbage.erase(garbage.begin());     //ä¾‹å¤–ã‚’èµ·ã“ã—ãŸæœ€åˆã®è¦ç´ ã‚’å‰Šé™¤
+        throw;                              //å†é€
     }
 }
 
 
 
-/****************************************** ¥Æ¥¹¥È¥¹¥£¡¼¥È ******************************************/
+/****************************************** ãƒ†ã‚¹ãƒˆã‚¹ã‚£ãƒ¼ãƒˆ ******************************************/
 
 #ifdef TESTSUITE
 #include "coverage_undefs.h"
@@ -194,28 +194,28 @@ namespace { int counter = 0; }
 
 TESTSUITE(main, TrashBox)
 {
-    BEGIN_CASE("1","¥´¥ßÈ¢¤òºî¤ë¤ÈÅĞÏ¿¤µ¤ì¤ë") {
+    BEGIN_CASE("1","ã‚´ãƒŸç®±ã‚’ä½œã‚‹ã¨ç™»éŒ²ã•ã‚Œã‚‹") {
         TrashBox mybox;
-        TEST_CASE("1", "ºî¤Ã¤¿¥´¥ßÈ¢¤¬¸½ºß¤Î¥´¥ßÈ¢¤Ë¤Ê¤Ã¤Æ¤¤¤ë", TrashBox::current_box == &mybox);
+        TEST_CASE("1", "ä½œã£ãŸã‚´ãƒŸç®±ãŒç¾åœ¨ã®ã‚´ãƒŸç®±ã«ãªã£ã¦ã„ã‚‹", TrashBox::current_box == &mybox);
         
         {
             TrashBox mybox2;
-            TEST_CASE("2", "ºî¤Ã¤¿¥´¥ßÈ¢¤¬¸½ºß¤Î¥´¥ßÈ¢¤Ë¤Ê¤Ã¤Æ¤¤¤ë (2)", TrashBox::current_box == &mybox2);
-            TEST_CASE("3", "¤â¤È¤â¤È¤Î¥´¥ßÈ¢¤¬ÊİÂ¸¤µ¤ì¤Æ¤¤¤ë", mybox2.previous_box == &mybox);
+            TEST_CASE("2", "ä½œã£ãŸã‚´ãƒŸç®±ãŒç¾åœ¨ã®ã‚´ãƒŸç®±ã«ãªã£ã¦ã„ã‚‹ (2)", TrashBox::current_box == &mybox2);
+            TEST_CASE("3", "ã‚‚ã¨ã‚‚ã¨ã®ã‚´ãƒŸç®±ãŒä¿å­˜ã•ã‚Œã¦ã„ã‚‹", mybox2.previous_box == &mybox);
         }
 
-        TEST_CASE("4", "¤â¤È¤Î¥´¥ßÈ¢¤ËÌá¤ë", TrashBox::current_box == &mybox);
+        TEST_CASE("4", "ã‚‚ã¨ã®ã‚´ãƒŸç®±ã«æˆ»ã‚‹", TrashBox::current_box == &mybox);
     } END_CASE;
 
     BEGIN_CASE("2","isValid") {
         TrashBox mybox;
 
-        TEST_CASE("1","ºî¤Ã¤¿¥´¥ßÈ¢¤ÏÀµ¾ï", mybox.isValid());
-        TEST_CASE("2","NULLÈ¢¤Ï°Û¾ï", !((TrashBox *)0)->isValid());
+        TEST_CASE("1","ä½œã£ãŸã‚´ãƒŸç®±ã¯æ­£å¸¸", mybox.isValid());
+        TEST_CASE("2","NULLç®±ã¯ç•°å¸¸", !((TrashBox *)0)->isValid());
     } END_CASE;
 
     BEGIN_CASE("3","operator new") {
-        BEGIN_CASE("1","new TrashBox¤Ïbad_allocÎã³°¤òÊÖ¤¹") {
+        BEGIN_CASE("1","new TrashBoxã¯bad_allocä¾‹å¤–ã‚’è¿”ã™") {
             bool result = false;
 
             try { TrashBox * box = new TrashBox; }
@@ -225,60 +225,60 @@ TESTSUITE(main, TrashBox)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("2","new(nothrow) TrashBox¤ÏNULL¤òÊÖ¤¹") {
+        BEGIN_CASE("2","new(nothrow) TrashBoxã¯NULLã‚’è¿”ã™") {
             bool result = true;
             TrashBox * box;
 
             try { box = new(nothrow) TrashBox; }
             catch(...) { result = false; }
 
-            TEST_CASE("1", "new(nothrow)¤ÏÎã³°¤òÊÖ¤µ¤Ê¤¤", result);
-            TEST_CASE("2", "new(nothrow)¤ÏNULL¤òÊÖ¤¹",   box == 0);
+            TEST_CASE("1", "new(nothrow)ã¯ä¾‹å¤–ã‚’è¿”ã•ãªã„", result);
+            TEST_CASE("2", "new(nothrow)ã¯NULLã‚’è¿”ã™",   box == 0);
         } END_CASE;
     } END_CASE;
 
-    BEGIN_CASE("4","´ğËÜÅª¤ÊÀ¸À®ºï½ü") {
-        BEGIN_CASE("1","¤Á¤ã¤ó¤È¥´¥ßÈ¢¤«¤é³°¤»¤ë") {
+    BEGIN_CASE("4","åŸºæœ¬çš„ãªç”Ÿæˆå‰Šé™¤") {
+        BEGIN_CASE("1","ã¡ã‚ƒã‚“ã¨ã‚´ãƒŸç®±ã‹ã‚‰å¤–ã›ã‚‹") {
             TrashBox mybox;
 
             DummyGarbage * garbage = new DummyGarbage;
 
-            TEST_CASE("0","[Á°Äó] ¥´¥ß¤¬Æş¤Ã¤Æ¤¤¤ë", std::find(mybox.garbage.begin(), mybox.garbage.end(), garbage) != mybox.garbage.end());
+            TEST_CASE("0","[å‰æ] ã‚´ãƒŸãŒå…¥ã£ã¦ã„ã‚‹", std::find(mybox.garbage.begin(), mybox.garbage.end(), garbage) != mybox.garbage.end());
             delete garbage;
-            TEST_CASE("1","¥´¥ß¤¬¾Ã¤¨¤Æ¤¤¤ë", std::find(mybox.garbage.begin(), mybox.garbage.end(), garbage) == mybox.garbage.end());
+            TEST_CASE("1","ã‚´ãƒŸãŒæ¶ˆãˆã¦ã„ã‚‹", std::find(mybox.garbage.begin(), mybox.garbage.end(), garbage) == mybox.garbage.end());
 
 
         } END_CASE;
 
-        BEGIN_CASE("2","¿Æ¤Î¥´¥ßÈ¢¤ËÆş¤Ã¤Æ¤¤¤ë¤â¤Î¤â¥´¥ßÈ¢¤«¤é³°¤»¤ë") {
+        BEGIN_CASE("2","è¦ªã®ã‚´ãƒŸç®±ã«å…¥ã£ã¦ã„ã‚‹ã‚‚ã®ã‚‚ã‚´ãƒŸç®±ã‹ã‚‰å¤–ã›ã‚‹") {
             TrashBox mybox;
             DummyGarbage * garbage = new DummyGarbage;
-            TEST_CASE("0","[Á°Äó] ¥´¥ß¤¬Æş¤Ã¤Æ¤¤¤ë", find(mybox.garbage.begin(), mybox.garbage.end(), garbage) != mybox.garbage.end());
+            TEST_CASE("0","[å‰æ] ã‚´ãƒŸãŒå…¥ã£ã¦ã„ã‚‹", find(mybox.garbage.begin(), mybox.garbage.end(), garbage) != mybox.garbage.end());
 
             TrashBox secondbox;
             delete garbage;
 
-            TEST_CASE("1","¥´¥ß¤¬¾Ã¤¨¤Æ¤¤¤ë", find(mybox.garbage.begin(), mybox.garbage.end(), garbage) == mybox.garbage.end());
+            TEST_CASE("1","ã‚´ãƒŸãŒæ¶ˆãˆã¦ã„ã‚‹", find(mybox.garbage.begin(), mybox.garbage.end(), garbage) == mybox.garbage.end());
            
         } END_CASE;
     } END_CASE;
 
     BEGIN_CASE("5","TrashBox::cleanup") {
-        BEGIN_CASE("1","Æ°Åª¤Ëºî¤Ã¤¿¥ª¥Ö¥¸¥§¥¯¥È¤¬ÇË´ş¤Ç¤­¤ë") {
+        BEGIN_CASE("1","å‹•çš„ã«ä½œã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç ´æ£„ã§ãã‚‹") {
             TrashBox mybox;
             DummyGarbage * garbage;
 
             TestSuite::clearCheckpoints();
 
             garbage = new DummyGarbage;
-            TEST_CASE("0","[Á°Äó] ¥³¥ó¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::DummyGarbage"));
+            TEST_CASE("0","[å‰æ] ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::DummyGarbage"));
 
             mybox.cleanup();
-            TEST_CASE("1","¥Ç¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::~DummyGarbage"));
+            TEST_CASE("1","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::~DummyGarbage"));
         } END_CASE;
 
 #ifdef _MSC_VER
-        BEGIN_CASE("2","Îã³°¤Ï¤â¤ì¤ë") {
+        BEGIN_CASE("2","ä¾‹å¤–ã¯ã‚‚ã‚Œã‚‹") {
             TrashBox mybox;
             DummyGarbage * garbage;
 
@@ -295,7 +295,7 @@ TESTSUITE(main, TrashBox)
                 TEST_FAIL;
         } END_CASE;
 
-        BEGIN_CASE("3","Îã³°¤òµ¯¤³¤·¤¿¥ª¥Ö¥¸¥§¥¯¥È¤¬ÇË²õ¤µ¤ì¤Æ¤¤¤ë (2½ÅÇË´ş¤Ë¤Ê¤é¤Ê¤¤)") {
+        BEGIN_CASE("3","ä¾‹å¤–ã‚’èµ·ã“ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç ´å£Šã•ã‚Œã¦ã„ã‚‹ (2é‡ç ´æ£„ã«ãªã‚‰ãªã„)") {
             TrashBox mybox;
             DummyGarbage * garbage;
             DummyGarbage * garbage2;
@@ -309,7 +309,7 @@ TESTSUITE(main, TrashBox)
 
             try { mybox.cleanup(); }
             catch(...) {}
-            try { mybox.cleanup(); }    //¤³¤³¤ÇAccessViolation¤¬µ¯¤³¤é¤Ê¤¤
+            try { mybox.cleanup(); }    //ã“ã“ã§AccessViolationãŒèµ·ã“ã‚‰ãªã„
             catch(...) {}
 
             if(!mybox.garbage.empty())
@@ -317,7 +317,7 @@ TESTSUITE(main, TrashBox)
         } END_CASE;
 #endif
 
-        BEGIN_CASE("4","ºï½ü¤Î½ç½ø¤¬Àµ¤·¤¤") {
+        BEGIN_CASE("4","å‰Šé™¤ã®é †åºãŒæ­£ã—ã„") {
             TrashBox mybox;
             DummyGarbage * garbage;
             DummyGarbage * garbage2;
@@ -334,12 +334,12 @@ TESTSUITE(main, TrashBox)
 
             mybox.cleanup();
 
-            TEST_CASE("1","ºÇ½é¤ËÅĞÏ¿¤µ¤ì¤¿¤â¤Î¤ÏºÇ¸å¤Ëºï½ü",g == 3);
-            TEST_CASE("2","¼¡¤ËÅĞÏ¿¤µ¤ì¤¿¤â¤Î¤Ï2ÈÖÌÜ¤Ëºï½ü",g2 == 2);
-            TEST_CASE("3","¼¡¤ËÅĞÏ¿¤µ¤ì¤¿¤â¤Î¤ÏºÇ½é¤Ëºï½ü",g3 == 1);
+            TEST_CASE("1","æœ€åˆã«ç™»éŒ²ã•ã‚ŒãŸã‚‚ã®ã¯æœ€å¾Œã«å‰Šé™¤",g == 3);
+            TEST_CASE("2","æ¬¡ã«ç™»éŒ²ã•ã‚ŒãŸã‚‚ã®ã¯2ç•ªç›®ã«å‰Šé™¤",g2 == 2);
+            TEST_CASE("3","æ¬¡ã«ç™»éŒ²ã•ã‚ŒãŸã‚‚ã®ã¯æœ€åˆã«å‰Šé™¤",g3 == 1);
         } END_CASE;
 
-        BEGIN_CASE("5","¥È¥Ã¥×¥ì¥Ù¥ë¤Ç¤Ê¤¤¥´¥ßÈ¢¤Ïcleanup¤Ç¤­¤Ê¤¤") {
+        BEGIN_CASE("5","ãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã§ãªã„ã‚´ãƒŸç®±ã¯cleanupã§ããªã„") {
             TrashBox outerbox;
             TrashBox innerbox;
 
@@ -354,8 +354,8 @@ TESTSUITE(main, TrashBox)
 
     } END_CASE;
 
-    BEGIN_CASE("6","¥Ç¥¹¥È¥é¥¯¥¿¤Ë¤è¤ëÇË´ş") {
-        BEGIN_CASE("1","Æ°Åª¤Ëºî¤Ã¤¿¥ª¥Ö¥¸¥§¥¯¥È¤¬ÇË´ş¤Ç¤­¤ë (TrashBox::~TrashBox)") {
+    BEGIN_CASE("6","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã«ã‚ˆã‚‹ç ´æ£„") {
+        BEGIN_CASE("1","å‹•çš„ã«ä½œã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç ´æ£„ã§ãã‚‹ (TrashBox::~TrashBox)") {
             {
                 TrashBox mybox;
                 DummyGarbage * garbage;
@@ -363,12 +363,12 @@ TESTSUITE(main, TrashBox)
                 TestSuite::clearCheckpoints();
 
                 garbage = new DummyGarbage;
-                TEST_CASE("0","[Á°Äó] ¥³¥ó¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::DummyGarbage"));
+                TEST_CASE("0","[å‰æ] ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::DummyGarbage"));
             }
-            TEST_CASE("1","¥Ç¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::~DummyGarbage"));
+            TEST_CASE("1","ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::~DummyGarbage"));
         } END_CASE;
 
-        BEGIN_CASE("2","Îã³°¤Ï¤â¤ì¤Ê¤¤") {
+        BEGIN_CASE("2","ä¾‹å¤–ã¯ã‚‚ã‚Œãªã„") {
             bool result = true;
             try{
                 TrashBox mybox;
@@ -377,11 +377,11 @@ TESTSUITE(main, TrashBox)
                 TestSuite::clearCheckpoints();
 
                 garbage = new DummyGarbage;
-                TEST_CASE("0","[Á°Äó] ¥³¥ó¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::DummyGarbage"));
+                TEST_CASE("0","[å‰æ] ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::DummyGarbage"));
             }
             catch(...)
             { result = false; }
-            TEST_CASE("1","Îã³°¤Ï¤â¤ì¤Ê¤¤", result);
+            TEST_CASE("1","ä¾‹å¤–ã¯ã‚‚ã‚Œãªã„", result);
         } END_CASE;
 
     } END_CASE;
@@ -395,19 +395,19 @@ TESTSUITE(main, TrashBox)
 
             TestSuite::clearCheckpoints();
         }
-        TEST_CASE("1","rescue¤·¤¿¥´¥ß¤Ïºï½ü¤µ¤ì¤Ê¤¤", !TestSuite::isReached("DummyGarbage::~DummyGarbage"));
+        TEST_CASE("1","rescueã—ãŸã‚´ãƒŸã¯å‰Šé™¤ã•ã‚Œãªã„", !TestSuite::isReached("DummyGarbage::~DummyGarbage"));
         delete garbage;
     } END_CASE;
 
-    BEGIN_CASE("8","ÀÅÅª¤Ê¥ª¥Ö¥¸¥§¥¯¥È¤¬Â¿½ÅÇË´ş¤µ¤ì¤Ê¤¤") {
+    BEGIN_CASE("8","é™çš„ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¤šé‡ç ´æ£„ã•ã‚Œãªã„") {
         TrashBox outerbox;
         {
             DummyGarbage garbage;
             TrashBox innerbox;
             DummyGarbage garbage2;
 
-            TEST_CASE("0","[Á°Äó] ¥³¥ó¥¹¥È¥é¥¯¥¿¤¬µ¯Æ°¤µ¤ì¤Æ¤¤¤ë", TestSuite::isReached("DummyGarbage::DummyGarbage"));
-        }   //¤³¤³¤Ç2½ÅÇË´ş¤ÇMACV¤Ë¤Ê¤é¤Ê¤¤
+            TEST_CASE("0","[å‰æ] ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒèµ·å‹•ã•ã‚Œã¦ã„ã‚‹", TestSuite::isReached("DummyGarbage::DummyGarbage"));
+        }   //ã“ã“ã§2é‡ç ´æ£„ã§MACVã«ãªã‚‰ãªã„
     } END_CASE;
 }
 

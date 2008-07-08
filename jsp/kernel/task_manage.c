@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: task_manage.c,v 1.9 2007/04/22 18:04:06 hiro Exp $
  */
 
 /*
- *	������������ǽ
+ *	タスク管理機能
  */
 
 #include "jsp_kernel.h"
@@ -46,7 +46,7 @@
 #include "wait.h"
 
 /*
- *  �������ε�ư
+ *  タスクの起動
  */
 #ifdef __act_tsk
 
@@ -85,7 +85,7 @@ act_tsk(ID tskid)
 #endif /* __act_tsk */
 
 /*
- *  �������ε�ư���󥿥�������ƥ������ѡ�
+ *  タスクの起動（非タスクコンテキスト用）
  */
 #ifdef __iact_tsk
 
@@ -124,7 +124,7 @@ iact_tsk(ID tskid)
 #endif /* __iact_tsk */
 
 /*
- *  ��������ư�׵�Υ���󥻥�
+ *  タスク起動要求のキャンセル
  */
 #ifdef __can_act
 
@@ -152,7 +152,7 @@ can_act(ID tskid)
 #endif /* __can_act */
 
 /*
- *  ���������ν�λ
+ *  自タスクの終了
  */
 #ifdef __ext_tsk
 
@@ -163,26 +163,26 @@ ext_tsk(void)
 
 #ifdef ACTIVATED_STACK_SIZE
 	/*
-	 *  create_context �� activate_context �ǡ�������Υ����å���
-	 *  ����˲����ʤ��褦�ˡ������å���˥��ߡ��ΰ����ݤ��롥
+	 *  create_context と activate_context で，使用中のスタック領
+	 *  域を破壊しないように，スタック上にダミー領域を確保する．
 	 */
 	(void) alloca(ACTIVATED_STACK_SIZE);
 #endif /* ACTIVATED_STACK_SIZE */
 
 	if (sense_context()) {
 		/*
-		 *  �󥿥�������ƥ����Ȥ��� ext_tsk ���ƤФ줿��硤
-		 *  �����ƥ�����˥��顼��Ͽ�������Τޤ޼¹Ԥ�³����
-		 *  ��, ư����ݾڤ���ʤ���
+		 *  非タスクコンテキストから ext_tsk が呼ばれた場合，
+		 *  システムログにエラーを記録し，そのまま実行を続ける
+		 *  が, 動作は保証されない．
 		 */
 		syslog_0(LOG_EMERG,
 			"ext_tsk is called from non-task contexts.");
 	}
 	if (sense_lock()) {
 		/*
-		 *  CPU���å����֤� ext_tsk ���ƤФ줿���ϡ�CPU���å�
-		 *  �������Ƥ��饿������λ���롥������ϡ������ӥ�
-		 *  ��������Ǥ�CPU���å����ά����Ф褤������
+		 *  CPUロック状態で ext_tsk が呼ばれた場合は，CPUロック
+		 *  を解除してからタスクを終了する．実装上は，サービス
+		 *  コール内でのCPUロックを省略すればよいだけ．
 		 */
 		syslog_0(LOG_WARNING,
 			"ext_tsk is called from CPU locked state.");
@@ -197,8 +197,8 @@ ext_tsk(void)
 	}
 	if (!(enadsp)) {
 		/*
-		 *  �ǥ����ѥå��ػ߾��֤� ext_tsk ���ƤФ줿���ϡ�
-		 *  �ǥ����ѥå����ľ��֤ˤ��Ƥ��饿������λ���롥
+		 *  ディスパッチ禁止状態で ext_tsk が呼ばれた場合は，
+		 *  ディスパッチ許可状態にしてからタスクを終了する．
 		 */
 		syslog_0(LOG_WARNING,
 			"ext_tsk is called from dispatch disabled state.");
@@ -210,7 +210,7 @@ ext_tsk(void)
 #endif /* __ext_tsk */
 
 /*
- *  �������ζ�����λ
+ *  タスクの強制終了
  */
 #ifdef __ter_tsk
 
@@ -257,7 +257,7 @@ ter_tsk(ID tskid)
 #endif /* __ter_tsk */
 
 /*
- *  ������ͥ���٤��ѹ�
+ *  タスク優先度の変更
  */
 #ifdef __chg_pri
 
@@ -305,7 +305,7 @@ chg_pri(ID tskid, PRI tskpri)
 #endif /* __chg_pri */
 
 /*
- *  ������ͥ���٤λ���
+ *  タスク優先度の参照
  */
 #ifdef __get_pri
 

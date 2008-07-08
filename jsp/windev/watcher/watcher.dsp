@@ -1,25 +1,25 @@
 # Microsoft Developer Studio Project File - Name="watcher" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** •ÒW‚µ‚È‚¢‚Å‚­‚¾‚³‚¢ **
+# ** ç·¨é›†ã—ãªã„ã§ãã ã•ã„ **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=watcher - Win32 Debug
-!MESSAGE ‚±‚ê‚Í—LŒø‚ÈƒƒCƒNƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñB ‚±‚ÌƒvƒƒWƒFƒNƒg‚ğƒrƒ‹ƒh‚·‚é‚½‚ß‚É‚Í NMAKE ‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢B
-!MESSAGE [ƒƒCƒNƒtƒ@ƒCƒ‹‚ÌƒGƒNƒXƒ||ƒg] ƒRƒ}ƒ“ƒh‚ğg—p‚µ‚ÄÀs‚µ‚Ä‚­‚¾‚³‚¢
+!MESSAGE ã“ã‚Œã¯æœ‰åŠ¹ãªãƒ¡ã‚¤ã‚¯ãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ“ãƒ«ãƒ‰ã™ã‚‹ãŸã‚ã«ã¯ NMAKE ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚
+!MESSAGE [ãƒ¡ã‚¤ã‚¯ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¨ã‚¯ã‚¹ãƒâˆ’ãƒˆ] ã‚³ãƒãƒ³ãƒ‰ã‚’ä½¿ç”¨ã—ã¦å®Ÿè¡Œã—ã¦ãã ã•ã„
 !MESSAGE 
 !MESSAGE NMAKE /f "watcher.mak".
 !MESSAGE 
-!MESSAGE NMAKE ‚ÌÀs‚É\¬‚ğw’è‚Å‚«‚Ü‚·
-!MESSAGE ƒRƒ}ƒ“ƒh ƒ‰ƒCƒ“ã‚Åƒ}ƒNƒ‚Ìİ’è‚ğ’è‹`‚µ‚Ü‚·B—á:
+!MESSAGE NMAKE ã®å®Ÿè¡Œæ™‚ã«æ§‹æˆã‚’æŒ‡å®šã§ãã¾ã™
+!MESSAGE ã‚³ãƒãƒ³ãƒ‰ ãƒ©ã‚¤ãƒ³ä¸Šã§ãƒã‚¯ãƒ­ã®è¨­å®šã‚’å®šç¾©ã—ã¾ã™ã€‚ä¾‹:
 !MESSAGE 
 !MESSAGE NMAKE /f "watcher.mak" CFG="watcher - Win32 Debug"
 !MESSAGE 
-!MESSAGE ‘I‘ğ‰Â”\‚Èƒrƒ‹ƒh ƒ‚|ƒh:
+!MESSAGE é¸æŠå¯èƒ½ãªãƒ“ãƒ«ãƒ‰ ãƒ¢âˆ’ãƒ‰:
 !MESSAGE 
-!MESSAGE "watcher - Win32 Debug" ("Win32 (x86) Dynamic-Link Library" —p)
-!MESSAGE "watcher - Win32 Unicode Debug" ("Win32 (x86) Dynamic-Link Library" —p)
-!MESSAGE "watcher - Win32 Unicode Release MinDependency" ("Win32 (x86) Dynamic-Link Library" —p)
+!MESSAGE "watcher - Win32 Debug" ("Win32 (x86) Dynamic-Link Library" ç”¨)
+!MESSAGE "watcher - Win32 Unicode Debug" ("Win32 (x86) Dynamic-Link Library" ç”¨)
+!MESSAGE "watcher - Win32 Unicode Release MinDependency" ("Win32 (x86) Dynamic-Link Library" ç”¨)
 !MESSAGE 
 
 # Begin Project
@@ -52,7 +52,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# Begin Custom Build - “o˜^‚ğs‚Á‚Ä‚¢‚Ü‚·
+# Begin Custom Build - ç™»éŒ²ã‚’è¡Œã£ã¦ã„ã¾ã™
 OutDir=.\Debug
 TargetPath=.\Debug\watcher.dll
 InputPath=.\Debug\watcher.dll
@@ -86,7 +86,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# Begin Custom Build - “o˜^‚ğs‚Á‚Ä‚¢‚Ü‚·
+# Begin Custom Build - ç™»éŒ²ã‚’è¡Œã£ã¦ã„ã¾ã™
 OutDir=.\DebugU
 TargetPath=.\DebugU\watcher.dll
 InputPath=.\DebugU\watcher.dll
@@ -99,7 +99,7 @@ SOURCE="$(InputPath)"
 	echo regsvr32 exec. time > "$(OutDir)\regsvr32.trg" 
 	goto end 
 	:NOTNT 
-	echo Œx : Windows 95 ‚É Unicode DLL ‚ğ“o˜^‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñ 
+	echo è­¦å‘Š : Windows 95 ã« Unicode DLL ã‚’ç™»éŒ²ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ 
 	:end 
 	
 # End Custom Build
@@ -126,7 +126,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
-# Begin Custom Build - “o˜^‚ğs‚Á‚Ä‚¢‚Ü‚·
+# Begin Custom Build - ç™»éŒ²ã‚’è¡Œã£ã¦ã„ã¾ã™
 OutDir=.\ReleaseUMinDependency
 TargetPath=.\ReleaseUMinDependency\watcher.dll
 InputPath=.\ReleaseUMinDependency\watcher.dll
@@ -139,7 +139,7 @@ SOURCE="$(InputPath)"
 	echo regsvr32 exec. time > "$(OutDir)\regsvr32.trg" 
 	goto end 
 	:NOTNT 
-	echo Œx : Windows 95 ‚É Unicode DLL ‚ğ“o˜^‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñ 
+	echo è­¦å‘Š : Windows 95 ã« Unicode DLL ã‚’ç™»éŒ²ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ 
 	:end 
 	
 # End Custom Build

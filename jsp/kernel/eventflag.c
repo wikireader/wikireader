@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: eventflag.c,v 1.8 2003/06/04 01:46:16 hiro Exp $
  */
 
 /*
- *	���٥�ȥե饰��ǽ
+ *	イベントフラグ機能
  */
 
 #include "jsp_kernel.h"
@@ -47,47 +47,47 @@
 #include "eventflag.h"
 
 /*
- *  ���٥�ȥե饰ID�κ����͡�kernel_cfg.c��
+ *  イベントフラグIDの最大値（kernel_cfg.c）
  */
 extern const ID	tmax_flgid;
 
 /*
- *  ���٥�ȥե饰������֥��å��Υ��ꥢ��kernel_cfg.c��
+ *  イベントフラグ初期化ブロックのエリア（kernel_cfg.c）
  */
 extern const FLGINIB	flginib_table[];
 
 /*
- *  ���٥�ȥե饰�����֥��å��Υ��ꥢ��kernel_cfg.c��
+ *  イベントフラグ管理ブロックのエリア（kernel_cfg.c）
  */
 extern FLGCB	flgcb_table[];
 
 /*
- *  ���٥�ȥե饰�ο�
+ *  イベントフラグの数
  */
 #define TNUM_FLG	((UINT)(tmax_flgid - TMIN_FLGID + 1))
 
 /*
- *  ���٥�ȥե饰ID���饤�٥�ȥե饰�����֥��å�����Ф�����Υޥ���
+ *  イベントフラグIDからイベントフラグ管理ブロックを取り出すためのマクロ
  */
 #define INDEX_FLG(flgid)	((UINT)((flgid) - TMIN_FLGID))
 #define get_flgcb(flgid)	(&(flgcb_table[INDEX_FLG(flgid)]))
 
 /*
- *  ���٥�ȥե饰�Ԥ�����֥��å������
+ *  イベントフラグ待ち情報ブロックの定義
  *
- *  flgptn �ϡ�waiptn ����� wfmode ��Ʊ���˻Ȥ����ȤϤʤ����ᡤunion 
- *  ��Ȥ��Х�������󤹤뤳�Ȥ���ǽ�Ǥ��롥
+ *  flgptn は，waiptn および wfmode と同時に使うことはないため，union 
+ *  を使えばメモリを節約することが可能である．
  */
 typedef struct eventflag_waiting_information {
-	WINFO	winfo;		/* ɸ����Ԥ�����֥��å� */
-	WOBJCB	*wobjcb;	/* �Ԥ����֥������Ȥδ����֥��å� */
-	FLGPTN	waiptn;		/* �Ԥ��ѥ����� */
-	MODE	wfmode;		/* �Ԥ��⡼�� */
-	FLGPTN	flgptn;		/* �Ԥ�������Υѥ����� */
+	WINFO	winfo;		/* 標準の待ち情報ブロック */
+	WOBJCB	*wobjcb;	/* 待ちオブジェクトの管理ブロック */
+	FLGPTN	waiptn;		/* 待ちパターン */
+	MODE	wfmode;		/* 待ちモード */
+	FLGPTN	flgptn;		/* 待ち解除時のパターン */
 } WINFO_FLG;
 
 /*
- *  ���٥�ȥե饰��ǽ�ν����
+ *  イベントフラグ機能の初期化
  */
 #ifdef __flgini
 
@@ -107,7 +107,7 @@ eventflag_initialize(void)
 #endif /* __flgini */
 
 /*
- *  ���٥�ȥե饰�Ԥ�������Υ����å�
+ *  イベントフラグ待ち解除条件のチェック
  */
 #ifdef __flgcnd
 
@@ -128,7 +128,7 @@ eventflag_cond(FLGCB *flgcb, FLGPTN waiptn, MODE wfmode, FLGPTN *p_flgptn)
 #endif /* __flgcnd */
 
 /*
- *  ���٥�ȥե饰�Υ��å�
+ *  イベントフラグのセット
  */
 #ifdef __set_flg
 
@@ -169,7 +169,7 @@ set_flg(ID flgid, FLGPTN setptn)
 #endif /* __set_flg */
 
 /*
- *  ���٥�ȥե饰�Υ��åȡ��󥿥�������ƥ������ѡ�
+ *  イベントフラグのセット（非タスクコンテキスト用）
  */
 #ifdef __iset_flg
 
@@ -210,7 +210,7 @@ iset_flg(ID flgid, FLGPTN setptn)
 #endif /* __iset_flg */
 
 /*
- *  ���٥�ȥե饰�Υ��ꥢ
+ *  イベントフラグのクリア
  */
 #ifdef __clr_flg
 
@@ -238,7 +238,7 @@ clr_flg(ID flgid, FLGPTN clrptn)
 #endif /* __clr_flg */
 
 /*
- *  ���٥�ȥե饰�Ԥ�
+ *  イベントフラグ待ち
  */
 #ifdef __wai_flg
 
@@ -283,7 +283,7 @@ wai_flg(ID flgid, FLGPTN waiptn, MODE wfmode, FLGPTN *p_flgptn)
 #endif /* __wai_flg */
 
 /*
- *  ���٥�ȥե饰�Ԥ��ʥݡ���󥰡�
+ *  イベントフラグ待ち（ポーリング）
  */
 #ifdef __pol_flg
 
@@ -320,7 +320,7 @@ pol_flg(ID flgid, FLGPTN waiptn, MODE wfmode, FLGPTN *p_flgptn)
 #endif /* __pol_flg */
 
 /*
- *  ���٥�ȥե饰�Ԥ��ʥ����ॢ���Ȥ����
+ *  イベントフラグ待ち（タイムアウトあり）
  */
 #ifdef __twai_flg
 

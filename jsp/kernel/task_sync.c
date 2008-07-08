@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: task_sync.c,v 1.7 2003/12/20 08:12:24 hiro Exp $
  */
 
 /*
- *	��������°Ʊ����ǽ
+ *	タスク付属同期機能
  */
 
 #include "jsp_kernel.h"
@@ -46,7 +46,7 @@
 #include "wait.h"
 
 /*
- *  �����Ԥ�
+ *  起床待ち
  */
 #ifdef __slp_tsk
 
@@ -81,7 +81,7 @@ slp_tsk()
 #endif /* __slp_tsk */
 
 /*
- *  �����Ԥ��ʥ����ॢ���Ȥ����
+ *  起床待ち（タイムアウトあり）
  */
 #ifdef __tslp_tsk
 
@@ -121,7 +121,7 @@ tslp_tsk(TMO tmout)
 #endif /* __tslp_tsk */
 
 /*
- *  �������ε���
+ *  タスクの起床
  */
 #ifdef __wup_tsk
 
@@ -164,7 +164,7 @@ wup_tsk(ID tskid)
 #endif /* __wup_tsk */
 
 /*
- *  �������ε������󥿥�������ƥ������ѡ�
+ *  タスクの起床（非タスクコンテキスト用）
  */
 #ifdef __iwup_tsk
 
@@ -207,7 +207,7 @@ iwup_tsk(ID tskid)
 #endif /* __iwup_tsk */
 
 /*
- *  �����������׵�Υ���󥻥�
+ *  タスク起床要求のキャンセル
  */
 #ifdef __can_wup
 
@@ -240,7 +240,7 @@ can_wup(ID tskid)
 #endif /* __can_wup */
 
 /*
- *  �Ԥ����֤ζ������
+ *  待ち状態の強制解除
  */
 #ifdef __rel_wai
 
@@ -275,7 +275,7 @@ rel_wai(ID tskid)
 #endif /* __rel_wai */
 
 /*
- *  �Ԥ����֤ζ���������󥿥�������ƥ������ѡ�
+ *  待ち状態の強制解除（非タスクコンテキスト用）
  */
 #ifdef __irel_wai
 
@@ -310,7 +310,7 @@ irel_wai(ID tskid)
 #endif /* __irel_wai */
 
 /*
- *  �����Ԥ����֤ؤΰܹ�
+ *  強制待ち状態への移行
  */
 #ifdef __sus_tsk
 
@@ -335,7 +335,7 @@ sus_tsk(ID tskid)
 	}
 	else if (TSTAT_RUNNABLE(tstat)) {
 		/*
-		 *  �¹ԤǤ�����֤��鶯���Ԥ����֤ؤ�����
+		 *  実行できる状態から強制待ち状態への遷移
 		 */
 		tcb->tstat = TS_SUSPENDED;
 		LOG_TSKSTAT(tcb);
@@ -349,7 +349,7 @@ sus_tsk(ID tskid)
 	}
 	else {
 		/*
-		 *  �Ԥ����֤�������Ԥ����֤ؤ�����
+		 *  待ち状態から二重待ち状態への遷移
 		 */
 		tcb->tstat |= TS_SUSPENDED;
 		LOG_TSKSTAT(tcb);
@@ -365,7 +365,7 @@ sus_tsk(ID tskid)
 #endif /* __sus_tsk */
 
 /*
- *  �����Ԥ����֤���κƳ�
+ *  強制待ち状態からの再開
  */
 #ifdef __rsm_tsk
 
@@ -387,7 +387,7 @@ rsm_tsk(ID tskid)
 	}
 	else if (!(TSTAT_WAITING(tstat))) {
 		/*
-		 *  �����Ԥ����֤���¹ԤǤ�����֤ؤ�����
+		 *  強制待ち状態から実行できる状態への遷移
 		 */
 		if (make_runnable(tcb)) {
 			dispatch();
@@ -396,7 +396,7 @@ rsm_tsk(ID tskid)
 	}
 	else {
 		/*
-		 *  ����Ԥ����֤����Ԥ����֤ؤ�����
+		 *  二重待ち状態から待ち状態への遷移
 		 */
 		tcb->tstat &= ~TS_SUSPENDED;
 		LOG_TSKSTAT(tcb);
@@ -412,14 +412,14 @@ rsm_tsk(ID tskid)
 #endif /* __rsm_tsk */
 
 /*
- *  �����Ԥ����֤���ζ����Ƴ�
+ *  強制待ち状態からの強制再開
  *
- *  JSP�����ͥ�Ǥϡ�frsm_tsk �� rsm_tsk ��Ʊ��ν����Ȥʤ롥frsm_tsk 
- *  ���ƤФ��ȡ�frsm_tsk �� rsm_tsk ��ξ���Υ����ӥ�������Υȥ졼��
- *  ���������Ϥ���롥����������� rsm_tsk �Υȥ졼�������������뤳
- *  �Ȥ�ɬ�פǤ��롥rsm_tsk �Υȥ졼��������������������뤿��ˤϡ���
- *  �����ǥ����ѥå��Υ����ȡ��������㳰�����Υ�����������뤳�Ȥ�ɬ��
- *  �Ȥʤ�Τǡ����դ�ɬ�פǤ��롥
+ *  JSPカーネルでは，frsm_tsk と rsm_tsk は同一の処理となる．frsm_tsk 
+ *  が呼ばれると，frsm_tsk と rsm_tsk の両方のサービスコールのトレース
+ *  ログが出力される．ログ取得後に rsm_tsk のトレースログを削除するこ
+ *  とが必要である．rsm_tsk のトレースログを正しく削除するためには，タ
+ *  スクディスパッチのログと，タスク例外処理のログも取得することが必要
+ *  となるので，注意が必要である．
  */
 #ifdef __frsm_tsk
 
@@ -437,7 +437,7 @@ frsm_tsk(ID tskid)
 #endif /* __frsm_tsk */
 
 /*
- *  �����������ٱ�
+ *  自タスクの遅延
  */
 #ifdef __dly_tsk
 

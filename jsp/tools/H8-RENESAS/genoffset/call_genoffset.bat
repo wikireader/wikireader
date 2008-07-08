@@ -1,13 +1,13 @@
 echo off
-rem TCB�\���̂̃I�t�Z�b�g�Z�o
+rem TCB構造体のオフセット算出
 
-rem HEW�ł́A���΃p�X�w��ŊO���c�[�����Ăяo���Ȃ����߁A
-rem �o�b�`�t�@�C�����o�R���āA�R���t�B�M�����[�^���Ăяo���Ă���
+rem HEWでは、相対パス指定で外部ツールを呼び出せないため、
+rem バッチファイルを経由して、コンフィギュレータを呼び出している
 rem
-rem jsp/config/h8-renessas/makeoffset.c���R���p�C�����ꂽ
-rem ���ʂ̃t�@�C�������A����%1�Ƃ���HEW���炱�̃o�b�`�t�@�C���ɓn�����B
+rem jsp/config/h8-renessas/makeoffset.cがコンパイルされた
+rem 結果のファイル名が、引数%1としてHEWからこのバッチファイルに渡される。
 rem
-rem Perl�̌Ăяo���Ɏ��s����ꍇ�̓p�X��ʂ����ƁB
+rem Perlの呼び出しに失敗する場合はパスを通すこと。
 
 echo on
 

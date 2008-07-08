@@ -10,42 +10,42 @@
 ;*  Copyright (C) 2003-2004 by Ryosuke Takeuchi
 ;*              Platform Development Center RICOH COMPANY,LTD. JAPAN
 ;*
-;*  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
-;*  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
-;*  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
-;*  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
-;*  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
-;*  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-;*      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-;*      ����������˴ޤޤ�Ƥ��뤳�ȡ�
-;*  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;*      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-;*      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-;*      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;*  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;*      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-;*      �ȡ�
-;*    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-;*        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;*    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-;*        ��𤹤뤳�ȡ�
-;*  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-;*      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+;*  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+;*  によって公表されている GNU General Public License の Version 2 に記
+;*  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;*  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;*  利用と呼ぶ）することを無償で許諾する．
+;*  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;*      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;*      スコード中に含まれていること．
+;*  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;*      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;*      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;*      の無保証規定を掲載すること．
+;*  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;*      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;*      と．
+;*    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;*        作権表示，この利用条件および下記の無保証規定を掲載すること．
+;*    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;*        報告すること．
+;*  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;*      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 ;*
-;*  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
-;*  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
-;*  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
-;*  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+;*  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;*  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;*  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;*  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 ;* 
 ;*  @(#) $Id: cpu_support.a30,v 1.4 2005/11/24 12:41:23 honda Exp $
 
 
 ;
-;	�ץ����å���¸�⥸�塼�� ������֥��������M32C�ѡ�
+;	プロセッサ依存モジュール アセンブリ言語部（M32C用）
 ;
 
 ;
-;  offset.inc ��TCB����Ƭ������ФޤǤΥ��ե��å�����ե�����
+;  offset.inc はTCBの先頭からメンバまでのオフセット定義ファイル
 ;
 	.include	offset.inc
 
@@ -66,93 +66,93 @@
 
 	.section	program, code, align
 ;
-;	�������ǥ����ѥå���
+;	タスクディスパッチャ
 ;
-;   dispatch �ϡ�����������ƥ����Ⱦ��֡�����߶ػ߾��֤ǸƤӽФ��ʤ�
-;   ��Фʤ�ʤ���exit_and_dispatch �⡤����������ƥ����Ⱦ��֡����
-;   �߶ػ߾��֤ǸƤӽФ��Τ���§�Ǥ��뤬�������ͥ뵯ư�����б����뤿�ᡤ
-;   ����ߥ⡼�ɤǸƤӽФ������ˤ��б����Ƥ��롥
-;	�ƤӽФ����: IPL=0, FLG�쥸����I�ӥå�=0 (CPU���å�����),
-;			intnest = 0(����������ƥ�����), �����������å�
+;   dispatch は，タスクコンテキスト状態・割込み禁止状態で呼び出さなけ
+;   ればならない．exit_and_dispatch も，タスクコンテキスト状態・割込
+;   み禁止状態で呼び出すのが原則であるが，カーネル起動時に対応するため，
+;   割込みモードで呼び出した場合にも対応している．
+;	呼び出し条件: IPL=0, FLGレジスタIビット=0 (CPUロック状態),
+;			intnest = 0(タスクコンテキスト), タスクスタック
 ;
 __kernel_dispatch:
-	pushm	r0,r1,r2,r3,a0,a1,sb,fb 	; �����å��إ쥸������¸
+	pushm	r0,r1,r2,r3,a0,a1,sb,fb 	; スタックへレジスタ保存
 	mov.l	__kernel_runtsk, a0     
-	stc  	isp, TCB_sp[a0]         	; �����å��ݥ��󥿤�TCB����¸
-	mov.l	#dispatch_r, TCB_pc[a0] 	; �¹ԺƳ����Ϥ�TCB����¸
+	stc  	isp, TCB_sp[a0]         	; スタックポインタをTCBに保存
+	mov.l	#dispatch_r, TCB_pc[a0] 	; 実行再開番地をTCBに保存
 	jmp.b	dispatcher
 ;
-;	�ƤӽФ����: IPL=0, FLG�쥸����I�ӥå�=0 (CPU���å�����),
-;			intnest = 0(����������ƥ�����), �����������å�
+;	呼び出し条件: IPL=0, FLGレジスタIビット=0 (CPUロック状態),
+;			intnest = 0(タスクコンテキスト), タスクスタック
 ;
-;	a0 �ˤ�runtsk �Υ��ɥ쥹����Ǽ����Ƥ���
+;	a0 にはruntsk のアドレスが格納されている
 ;
 dispatch_r:
 	mov.b	TCB_enatex[a0], r0l
-	btst 	TCB_enatex_bit, r0l     	; �������㳰��������?
-	jz   	dispatch_r_1            	; ���ĤǤʤ���� dispatch_r_1 ��
-	mov.w	TCB_texptn[a0], r0      	; ��α�㳰�װ������뤫��
-	jz   	dispatch_r_1            	; �ʤ���� dispatch_r_1 ��
-	jsr.a	__kernel_call_texrtn    	; �������㳰�ϥ�ɥ��
-dispatch_r_1:	                    	; �������㳰��¹Ԥ��ʤ����
-	popm 	r0,r1,r2,r3,a0,a1,sb,fb 	; �����������å�����쥸��������
-	rts  	                        	; dispatch �ƤӽФ��������.
+	btst 	TCB_enatex_bit, r0l     	; タスク例外処理許可?
+	jz   	dispatch_r_1            	; 許可でなければ dispatch_r_1 へ
+	mov.w	TCB_texptn[a0], r0      	; 保留例外要因があるか？
+	jz   	dispatch_r_1            	; なければ dispatch_r_1 へ
+	jsr.a	__kernel_call_texrtn    	; タスク例外ハンドラへ
+dispatch_r_1:	                    	; タスク例外を実行しない場合
+	popm 	r0,r1,r2,r3,a0,a1,sb,fb 	; タスクスタックからレジスタ復帰
+	rts  	                        	; dispatch 呼び出し元へ戻る.
 
 
 ;
-;	��������ư������
+;	タスク起動時処理
 ;
-;	�����Ǥ�, CPU���å�������֤ˤ�, ��������ư����.
+;	ここでは, CPUロック解除状態にし, タスクを起動する.
 ;
-;	�ƽо��: FLG�쥸����I�ӥå�=0 (CPU���å�����), �����������å�
-;		IPL=0, ����������ƥ�����(intnest=0)
+;	呼出条件: FLGレジスタIビット=0 (CPUロック状態), タスクスタック
+;		IPL=0, タスクコンテキスト(intnest=0)
 ;
 __kernel_activate_r:
 	pop.w 	r0
 	pop.w 	r2
-	mov.l 	r2r0, a0    	; �������ε�ư���Ϥ�A0������
-	ldc   	#0040h, flg 	; ����ߵ���, ISP, IPL=0
+	mov.l 	r2r0, a0    	; タスクの起動番地をA0に設定
+	ldc   	#0040h, flg 	; 割込み許可, ISP, IPL=0
 	jmpi.a	a0
 
 ;
-;	dispatch�ƤӽФ����:
-;		�����٤ƤΥ������Υ���ƥ����Ȥ���¸����Ƥ���.
-;		��FLG�쥸����I�ӥå�=0 (CPU���å�����)
-;		������ƥ����Ȥϥ����ͥ뵯ư�����������������ƥ�����(intnest=0)
-;		��ư�����󥿥�������ƥ�����(intnest=1)��, ���ξ��ˤ��б�.
-;	dispatcher �ƽл��Υ����å�:
-;		__kernel_dispatch ���餭�����: �����������å�
-;		exit_and_dispatch ���餭�����: 
-;			exit_task ���餭�����ϥ����������å�
-;			�����ͥ뵯ư���ϳ���ߥ����å�
-;		ret_int ���餭�����: ����ߥ����å�
-;		dispatcher_2 �Ǥγ�����Ԥ����餭�����: ����ߥ����å�
+;	dispatch呼び出し条件:
+;		・すべてのタスクのコンテキストは保存されている.
+;		・FLGレジスタIビット=0 (CPUロック状態)
+;		・コンテキストはカーネル起動時を除きタスクコンテキスト(intnest=0)
+;		起動時は非タスクコンテキスト(intnest=1)で, その場合にも対応.
+;	dispatcher 呼出時のスタック:
+;		__kernel_dispatch からきた場合: タスクスタック
+;		exit_and_dispatch からきた場合: 
+;			exit_task からきた場合はタスクスタック
+;			カーネル起動時は割込みスタック
+;		ret_int からきた場合: 割込みスタック
+;		dispatcher_2 での割込み待ちからきた場合: 割込みスタック
 ;
 
 __kernel_exit_and_dispatch:
-	fclr  	i                    	; ����߶ػ�
-	mov.b 	#0, __kernel_intnest 	; �ͥ��ȥ����󥿥��ꥢ
+	fclr  	i                    	; 割込み禁止
+	mov.b 	#0, __kernel_intnest 	; ネストカウンタクリア
 dispatcher:
 	mov.l 	__kernel_schedtsk, a0	; 
-	mov.l 	a0, __kernel_runtsk  	; schedtsk �� runtsk ��
+	mov.l 	a0, __kernel_runtsk  	; schedtsk を runtsk に
 	.IF MON == 1
-;   ��������˥�����ǽ��ʬ��
-;   ���פξ��� (MON = 0)
-	jsr.a 	_iana_tsk            	; �������¹Ծ��������
-	mov.l 	__kernel_runtsk,a0   	; a0������
+;   タスクモニター機能用分岐
+;   不要の場合は (MON = 0)
+	jsr.a 	_iana_tsk            	; タスク実行情報の設定
+	mov.l 	__kernel_runtsk,a0   	; a0を復帰
 	.ENDIF
-	jz    	dispatcher_1         	; schedtsk ���ʤ���г�����Ԥ�
-	ldc   	TCB_sp[a0], isp      	; �����������å��ݥ��󥿤�����
-	jmpi.a	TCB_pc[a0]           	; �¹ԺƳ����Ϥإ�����
+	jz    	dispatcher_1         	; schedtsk がなければ割込み待ち
+	ldc   	TCB_sp[a0], isp      	; タスクスタックポインタを復帰
+	jmpi.a	TCB_pc[a0]           	; 実行再開番地へジャンプ
 ;
-;	schdedtsk�� NULL �ξ��ϡ������겼�ˤϹԤ��ʤ�
+;	schdedtskが NULL の場合は、これより下には行かない
 ;
 dispatcher_1:
-	ldc   	#RAMEND, isp         	; ������ѤΥ����å������ؤ�
-	inc.b 	__kernel_intnest     	; �󥿥�������ƥ�����
+	ldc   	#RAMEND, isp         	; 割込み用のスタックへ切替え
+	inc.b 	__kernel_intnest     	; 非タスクコンテキスト
 dispatcher_2:
-	fset  	i                    	; ������Ԥ�
-	.IF USE_KD3083 != 1          	; KD3083����Ѥ���Ȥ���wait̿���Ȥ�ʤ�
+	fset  	i                    	; 割込み待ち
+	.IF USE_KD3083 != 1          	; KD3083を使用するときはwait命令を使わない
 	wait
 	.ENDIF
 	nop
@@ -160,68 +160,68 @@ dispatcher_2:
 	nop
 	nop
 ;
-;	�������󥿥�������ƥ�����,����ߥ����å����ڤ괹�����Τ�,
-;	������ȯ���������߽����ˤɤΥ����å���Ȥ����Ȥ�������β���,
-;	����ߥϥ�ɥ���ǤΥǥ����ѥå��ɻߤȤ���2�Ĥΰ�̣�����롥
+;	ここで非タスクコンテキスト,割込みスタックに切り換えたのは,
+;	ここで発生する割込み処理にどのスタックを使うかという問題の解決と,
+;	割込みハンドラ内でのディスパッチ防止という2つの意味がある．
 ;
-	fclr 	i                  	; ����߶ػ�
-	mov.w	__kernel_reqflg, r0	; reqflg �� FALSE �ʤ�
-	jz   	dispatcher_2       	; dispatcher_2 ��
-	mov.w	#0, __kernel_reqflg	; reqflg��TRUE�ʤ�FALSE�ˤ���
-	dec.b	__kernel_intnest   	; ����������ƥ����Ȥ��᤹
-	jmp.b	dispatcher         	; dispatcher �����
+	fclr 	i                  	; 割込み禁止
+	mov.w	__kernel_reqflg, r0	; reqflg が FALSE なら
+	jz   	dispatcher_2       	; dispatcher_2 へ
+	mov.w	#0, __kernel_reqflg	; reqflgがTRUEならFALSEにする
+	dec.b	__kernel_intnest   	; タスクコンテキストに戻す
+	jmp.b	dispatcher         	; dispatcher へ戻る
 
 
 ;
-;  ����ߥϥ�ɥ�/CPU�㳰�ϥ�ɥ�и�����
+;  割込みハンドラ/CPU例外ハンドラ出口処理
 ;
-;	�ƽФ����:
-;	��FLG�쥸������I�ӥå�=0, IPL=0, ����������ƥ�����(intnest=0)
-;	�����ѥ����å��ϥ����������å�, reqflg = TRUE
+;	呼出し条件:
+;	・FLGレジスタのIビット=0, IPL=0, タスクコンテキスト(intnest=0)
+;	・使用スタックはタスクスタック, reqflg = TRUE
 ;
 ret_int:
 	mov.w	#0, __kernel_reqflg    	; reqflg <--- FALSE
-	mov.l	__kernel_runtsk, a0    	; ���� ret_int_r �˥����פ����礬����ΤǤ����ǥ��å�
-	mov.w	__kernel_enadsp, r0    	; enadsp �� FALSE �ʤ�
-	jz   	ret_int_r              	; ret_int_r ��
-	mov.l	__kernel_schedtsk, a1  	; schedtsk��
-	cmp.l	a0, a1                 	; runtsk ��Ʊ���ʤ�
-	jeq  	ret_int_r              	; ret_int_r ��
-	mov.l	a0, r2r0               	; runtsk = NULL �ʤ�
-	jz   	dispatcher             	; ��¸����dispather��
-	stc  	isp, TCB_sp[a0]        	; �����������å�����¸
-	mov.l	#ret_int_r, TCB_pc[a0] 	; �¹ԺƳ����Ϥ���¸
+	mov.l	__kernel_runtsk, a0    	; すぐ ret_int_r にジャンプする場合があるのでここでセット
+	mov.w	__kernel_enadsp, r0    	; enadsp が FALSE なら
+	jz   	ret_int_r              	; ret_int_r へ
+	mov.l	__kernel_schedtsk, a1  	; schedtskと
+	cmp.l	a0, a1                 	; runtsk が同じなら
+	jeq  	ret_int_r              	; ret_int_r へ
+	mov.l	a0, r2r0               	; runtsk = NULL なら
+	jz   	dispatcher             	; 保存せずdispatherへ
+	stc  	isp, TCB_sp[a0]        	; タスクスタックを保存
+	mov.l	#ret_int_r, TCB_pc[a0] 	; 実行再開番地を保存
 	jmp.b	dispatcher
 
 __kernel_break_wait:
 ret_int_r:
-	mov.b	TCB_enatex[a0],r0l     	; enatex �� FALSE �ʤ�꥿����
+	mov.b	TCB_enatex[a0],r0l     	; enatex が FALSE ならリターン
 	btst 	TCB_enatex_bit,r0l
 	jz   	ret_int_r_1
-	mov.w	TCB_texptn[a0],r0      	; texptn �� 0 �ʤ�Х꥿����
+	mov.w	TCB_texptn[a0],r0      	; texptn が 0 ならばリターン
 	jz   	ret_int_r_1
-	jsr.a	__kernel_call_texrtn   	; �������㳰�����롼����θƽФ�
+	jsr.a	__kernel_call_texrtn   	; タスク例外処理ルーチンの呼出し
 ret_int_r_1:
-	popm 	r0,r1,r2,r3,a0,a1,sb,fb	; �����å�����쥸����������
-	reit 	                       	; �����������
+	popm 	r0,r1,r2,r3,a0,a1,sb,fb	; スタックからレジスタを復帰
+	reit 	                       	; タスクへ戻る
 
 
 ;
-;	�����/CPU�㳰�ν���������(������֥���쵭����ʬ)
+;	割込み/CPU例外の出入口処理(アセンブリ言語記述部分)
 ;
-;	�ƽФ����:
-;	��FLG�쥸������I�ӥå�=0, IPL�ϼ��դ�������ߤ�IPL.
-;	�������å���¿�ų����ߤʤ����ߥ����å�, �����Ǥʤ����
-;	  �����������å�
-;	��a0 �ˤϳ����/CPU�㳰�ϥ�ɥ�Υ��ɥ쥹����Ǽ����Ƥ���.
-;	��r3r1 �ˤ�(������or�����)�����å��ݥ��󥿤��ͤ���Ǽ����Ƥ���.
-;	����Ϥ��Τޤ�CPU�㳰�ϥ�ɥ���Ϥ�VP�����ѿ� p_excinf �Ȥʤ�.
-;	�ݥ����ѿ��ϥǥե���Ȥ�far�ݥ��󥿤ʤΤ�VP����4�Х��ȥ�������
-;	�ݥ��󥿤Ȥʤ�, �����򥹥��å����Ϥ����Ȥˤʤ�.
+;	呼出し条件:
+;	・FLGレジスタのIビット=0, IPLは受付けた割込みのIPL.
+;	・スタックは多重割り込みなら割込みスタック, そうでなければ
+;	  タスクスタック
+;	・a0 には割込み/CPU例外ハンドラのアドレスが格納されている.
+;	・r3r1 には(タスクor割込み)スタックポインタの値が格納されている.
+;	これはそのままCPU例外ハンドラに渡すVP型の変数 p_excinf となる.
+;	ポインタ変数はデフォルトでfarポインタなのでVP型は4バイトサイズの
+;	ポインタとなり, 引数をスタックで渡すことになる.
 ;
-;	�쥸�����������å���ˤɤΤ褦����¸����Ƥ��뤫��ʲ��˼���.
-;	���οޤǤϾ夬���, ������̤Υ��ɥ쥹��, �����å��ϲ�����
-;	�������˸����ä��Ѥ߾夲�����ΤȤ���.
+;	レジスタがスタック上にどのように保存されているかを以下に示す.
+;	この図では上が低位, 下が高位のアドレスで, スタックは下から
+;	上方向に向かって積み上げられるものとする.
 ;
 ;	--------------------------
 ;	|       R0(2byte)        | <----- p_excinf
@@ -250,47 +250,47 @@ ret_int_r_1:
 ;	|       FLG(2byte)       |
 ;	-------------------------
 ;
-;	�ϥ�ɥ餫��꥿���󤷤����, ¿�ų���ߤǤʤ�, ���� reqflg ��
-;	TRUE �ˤʤä����ˡ�ret_int ��ʬ�����롥
+;	ハンドラからリターンした後は, 多重割込みでなく, かつ reqflg が
+;	TRUE になった時に，ret_int へ分岐する．
 ;
-;	¿�ų���ߤ��ɤ����ϳ���ߥͥ��ȥ����󥿤��ͤ�Ƚ�ꤹ��.
-;	intnest != 0 �ʤ��¿�ų���ߤǤ����Ƚ�ꤹ��.
+;	多重割込みかどうかは割込みネストカウンタの値で判定する.
+;	intnest != 0 ならば多重割込みであると判定する.
 ;
-;	reqflg ��CPU���å����֤ǥ����å�����. �����Ǥʤ��ȡ�
-;	reqflg �����å���˵�ư���줿����ߥϥ�ɥ����
-;	�ǥ����ѥå����׵ᤵ�줿���ˡ��ǥ����ѥå�����ʤ�.
+;	reqflg はCPUロック状態でチェックする. そうでないと，
+;	reqflg チェック後に起動された割込みハンドラ内で
+;	ディスパッチが要求された場合に，ディスパッチされない.
 ;
 __kernel_interrupt:
-	cmp.b   	#0, __kernel_intnest	; ¿�ų����ߤ��ɤ���
-	jnz     	int_from_int        	; 0�Ǥʤ����¿�ų����
-int_from_task:                      	; ���ʤγ����
-	ldc     	#RAMEND, isp        	; ������ѤΥ����å������ؤ���
-int_from_int:                       	; ¿�ų����
-	inc.b   	__kernel_intnest    	; �ͥ��Ȳ���򥤥󥯥����
-	push.w  	r3                  	; �����å��ݥ��󥿤����ߥ����å�����¸
-	push.w  	r1                  	; (����߻�����¸��ɬ�פʤ���, �㳰���ȥ롼����ͭ�Τ���)
-	fset    	i                   	; ����߶ػ߲��
-	jsri.a  	a0                  	; C�롼����ƤӽФ�
-	fclr    	i                   	; ����߶ػ�
-	pop.w   	r1                  	; �����å��ݥ��󥿤�����
-	pop.w   	r3                  	; (����߻���������ɬ�פʤ���, �㳰���ȥ롼����ͭ�Τ���)
-	dec.b   	__kernel_intnest    	; �ͥ��Ȳ����ǥ������
-	jnz     	int_return          	; ¿�ų����ߤʤ�꥿����
-int_from_task2:                     	; ���ʤγ����
-	ldc     	r3r1, isp           	; �������Υ����å����᤹
-	ldipl   	#0                  	; ��������IPL�ͤ򥻥å�(IPL=0)
-	mov.w   	__kernel_reqflg, r1 	; �ǥ����ѥå��׵᤬�ʤ���?
-	jz      	int_return          	; �ʤ���г����ȯ�����Υ����������
-	jmp.b   	ret_int             	; ����� ret_int �إ�����
+	cmp.b   	#0, __kernel_intnest	; 多重割り込みかどうか
+	jnz     	int_from_int        	; 0でなければ多重割込み
+int_from_task:                      	; 初段の割込み
+	ldc     	#RAMEND, isp        	; 割込み用のスタックへ切替える
+int_from_int:                       	; 多重割込み
+	inc.b   	__kernel_intnest    	; ネスト回数をインクリメント
+	push.w  	r3                  	; スタックポインタを割込みスタックへ保存
+	push.w  	r1                  	; (割込み時は保存の必要ないが, 例外時とルーチン共有のため)
+	fset    	i                   	; 割込み禁止解除
+	jsri.a  	a0                  	; Cルーチン呼び出し
+	fclr    	i                   	; 割込み禁止
+	pop.w   	r1                  	; スタックポインタを復帰
+	pop.w   	r3                  	; (割込み時は復帰の必要ないが, 例外時とルーチン共有のため)
+	dec.b   	__kernel_intnest    	; ネスト回数をデクリメント
+	jnz     	int_return          	; 多重割り込みならリターン
+int_from_task2:                     	; 初段の割込み
+	ldc     	r3r1, isp           	; タスクのスタックに戻す
+	ldipl   	#0                  	; タスクのIPL値をセット(IPL=0)
+	mov.w   	__kernel_reqflg, r1 	; ディスパッチ要求がないか?
+	jz      	int_return          	; なければ割込み発生元のタスクに戻る
+	jmp.b   	ret_int             	; あれば ret_int へジャンプ
 int_return:
-	popm    	r0,r1,r2,r3,a0,a1,sb,fb	; �쥸��������
-	reit    	                    	; ��������ν��������
+	popm    	r0,r1,r2,r3,a0,a1,sb,fb	; レジスタ復帰
+	reit    	                    	; 割込み前の処理に戻る
 
 ;
-;  ���������Ԥ�
+;  微少時間待ち
 ;
-SIL_DLY_TIM1	.equ	264	; �Ǿ�����(�롼��0��)[ns]
-SIL_DLY_TIM2	.equ	66	; �롼��1�󤢤���λ���[ns]
+SIL_DLY_TIM1	.equ	264	; 最小時間(ループ0回)[ns]
+SIL_DLY_TIM2	.equ	66	; ループ1回あたりの時間[ns]
 
 	.glb	$sil_dly_nse
 $sil_dly_nse:
@@ -303,7 +303,7 @@ L0:
 	rts
 
 
-	; ̤���ѳ���ߤν���
+	; 未使用割込みの処理
 	.glb _unused_interrupt
 _unused_interrupt:
 	reit

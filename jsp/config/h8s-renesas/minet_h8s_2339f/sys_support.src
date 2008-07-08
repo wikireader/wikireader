@@ -10,38 +10,38 @@
 ;  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
 ;                   Tomakomai National College of Technology, JAPAN
 ;
-;  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation
-;  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
-;  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
-;  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
-;  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
-;  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
-;      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
-;      ����������˴ޤޤ�Ƥ��뤳�ȡ�
-;  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
-;      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
-;      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
-;      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
-;      �ȡ�
-;    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
-;        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
-;    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
-;        ��𤹤뤳�ȡ�
-;  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
-;      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+;  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+;  によって公表されている GNU General Public License の Version 2 に記
+;  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;  利用と呼ぶ）することを無償で許諾する．
+;  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;      スコード中に含まれていること．
+;  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;      の無保証規定を掲載すること．
+;  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;      と．
+;    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;        作権表示，この利用条件および下記の無保証規定を掲載すること．
+;    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;        報告すること．
+;  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
 ;
-;  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
-;  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
-;  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
-;  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+;  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
 ;
 ;  @(#) $Id: sys_support.src,v 1.2 2007/03/23 07:59:26 honda Exp $
 ;
 
-;       �������åȥ����ƥ��¸�⥸�塼�� ������֥������
-;       ��MiSPO MiNET-H8S/2339F�ѡ�
+;       ターゲットシステム依存モジュール アセンブリ言語部
+;       （MiSPO MiNET-H8S/2339F用）
 
         .CPU 2000A
         .SECTION P, CODE, ALIGN=2
@@ -52,104 +52,104 @@
         .IMPORT _clear_b_section
 
 ;
-;�������Υܡ��Ȥξ�����¢RAM�򥹥��å��ˤ��ơ�
-;����_hardware_init_hook���ƤӽФ���롣
+;　　このボートの場合は内蔵RAMをスタックにして、
+;　　_hardware_init_hookが呼び出される。
 ;
         .GLOBAL _hardware_init_hook
 _hardware_init_hook:
 
  .AIFDEF RAM
-        ;���ǥХå�����RAM��˥���������ɤ������
-        ;���Х������ơ��ȡ�����ȥ�����������Ԥ�ʤ���
-        ;���ʥǥХå��ġ��뤬���ꤹ�롣��
+        ;　デバッグ時にRAM上にダウンロードする場合は
+        ;　バス・ステート・コントローラの設定を行わない。
+        ;　（デバッグツールが設定する。）
 
  .AELSE
 
 ;
-;���Х������ơ��ȡ�����ȥ����������
+;　バス・ステート・コントローラの設定
 ;
 
-	;������ν���
+	;　定数の準備
 	mov.b #0, r0l
 	mov.b #H'ff, r1l
 
-	;��CS7��CS0���٤�16�ӥå���
+	;　CS7〜CS0すべて16ビット幅
 	mov.b r0l, @(ABWCR+H8S_BASE_ADDR)
 	
-	;��CS7��CS0���٤�3���ơ��ȡ�����������������
+	;　CS7〜CS0すべて3ステート、ウェイト挿入許可
 	mov.b r1l, @(ASTCR+H8S_BASE_ADDR)
 	
-	;��CS6�Τߥץ������ 2������������
+	;　CS6のみプログラム 2ウェイト挿入
 	mov.b #H'20, r2l
 	mov.b r2l, @(WCRH+H8S_BASE_ADDR)
 
-	;��CS3��CS0�ϥץ�����०�����������ʤ�
+	;　CS3〜CS0はプログラムウェイト挿入なし
 	mov.b r0l, @(WCRL+H8S_BASE_ADDR)
 
-	;�������ɥ�������CS2��CS5���̾����
+	;　アイドル挿入、CS2〜CS5は通常空間
 	mov.b #H'd0, r2l
 	mov.b r2l, @(BCRH+H8S_BASE_ADDR)
 
-	;��BREQ0ü�Ҥ�̵����EAE=0,WAIT���ϵ���
+	;　BREQ0端子は無効、EAE=0,WAIT入力許可
 	mov.b #H'1d, r2l
 	mov.b r2l, @(BCRL+H8S_BASE_ADDR)
 
-	;���ݡ���6�����٤�'H'
+	;　ポート6：すべて'H'
 	mov.b r1l, @(P6DR+H8S_BASE_ADDR)
 
-	;��P67,P66,P61,P60�Ͻ��ϡ�¾������
+	;　P67,P66,P61,P60は出力、他は入力
 	mov.b #H'c3, r2l
 	mov.b r2l, @(P6DDR+H8S_BASE_ADDR)
 
-	;���ݡ���9�����٤�'H'
+	;　ポート9：すべて'H'
 	mov.b r1l, @(P9DR+H8S_BASE_ADDR)
 
-	;��P97��P95�Ͻ��ϡ�P94��P92������
+	;　P97〜P95は出力、P94〜P92は入力
 	mov.b #H'e0, r2l
 	mov.b r2l, @(P9DDR+H8S_BASE_ADDR)
 
-	;��PA7��PA4��'H'
+	;　PA7〜PA4は'H'
 	mov.b #H'f0, r2l
 	mov.b r2l, @(PADR+H8S_BASE_ADDR)
 
-	;���ݡ���A�����٤ƽ���
+	;　ポートA：すべて出力
 	mov.b r1l, @(PADDR+H8S_BASE_ADDR)
 
-	;��A23��A20��PA7��PA4���Ϥ�����
+	;　A23〜A20はPA7〜PA4出力に設定
 	mov.b r0l, @(PFCR1+H8S_BASE_ADDR)
 
-	;���ݡ���B�����٤ƥ��ɥ쥹����
+	;　ポートB：すべてアドレス出力
 	mov.b r1l, @(PBDDR+H8S_BASE_ADDR)
 
-	;���ݡ���C�����٤ƥ��ɥ쥹����
+	;　ポートC：すべてアドレス出力
 	mov.b r1l, @(PCDDR+H8S_BASE_ADDR)
 
-	;���ݡ���G�����٤�'H'
+	;　ポートG：すべて'H'
 	mov.b r1l, @(PGDR+H8S_BASE_ADDR)
 
-	;���ݡ���G�����٤ƽ���
+	;　ポートG：すべて出力
 	mov.b #H'1f, r2l
 	mov.b r2l, @(PGDDR+H8S_BASE_ADDR)
 
-	;�������å����ϡ�PF2��PF0�Ͻ���
+	;　クロック出力、PF2〜PF0は出力
 	mov.b r1l, @(PFDDR+H8S_BASE_ADDR)
 
-	;����¢RAMͭ��
+	;　内蔵RAM有効
 	mov.b #H'01, r2l
 	mov.b r2l, @(SYSCR+H8S_BASE_ADDR)
 
-	;��P86=nWAIT���ϡ�CS7��CS1ü��ͭ����ASü��ͭ��
+	;　P86=nWAIT入力、CS7〜CS1端子有効、AS端子有効
 	mov.b #H'30, r2l
 	mov.b r2l, @(PFCR2+H8S_BASE_ADDR)
 
-	;��DMAC, DTC, TPU, TMR SCI�⥸�塼��ON
+	;　DMAC, DTC, TPU, TMR SCIモジュールON
 	mov.w #H'0f1f, r2
 	mov.w r2, @(MSTPCR+H8S_BASE_ADDR)
 
-	;���ݡ���1�����٤�'L'
+	;　ポート1：すべて'L'
 	mov.b r0l, @(P1DR+H8S_BASE_ADDR)
 
-	;��P17��P14���ϡ�P13��P10����
+	;　P17〜P14出力、P13〜P10入力
 	mov.b #H'f0, r2l
 	mov.b r2l, @(P1DDR+H8S_BASE_ADDR)
 

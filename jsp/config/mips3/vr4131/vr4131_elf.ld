@@ -7,8 +7,8 @@ MEMORY
 	ROM1(rxai):ORIGIN = 0x9fc00700, LENGTH =   2M-0x700	/* kseg1 */
 /*	ROM1(rxai):ORIGIN = 0xbfc00700, LENGTH =   2M-0x700*/	/* kseg0 */
 	RAM (wxai):ORIGIN = 0xa0200000, LENGTH =  14M		/* kseg0 */
-		/* SDRAM �κǽ餫���äƤ��ʤ��Τϡ��ǽ��2MBʬ��
-		   ROM �Υߥ顼�Ѥ˳��ݤ��뤿�� */
+		/* SDRAM の最初から取っていないのは、最初の2MB分は
+		   ROM のミラー用に確保するため */
 }
 
 PROVIDE(_stack_top = 0);
@@ -26,7 +26,7 @@ SECTIONS
 		*(.exce_vec_map)
 	} > ROM0
 
-	.reset 0xbfc00400 :		/* ����å��������ʤɤ�ޤ� */
+	.reset 0xbfc00400 :		/* キャッシュ初期化などを含む */
 	{
 		*(.reset)
 	} > ROM0
@@ -50,11 +50,11 @@ SECTIONS
 		*(.data)
 	} > RAM
 
-	/* ��ͳ���ɤ�ʬ����ʤ�����ɤ⡢�����񤯤Τ�����Ū�餷���� */
+	/* 理由は良く分からないけれども、こう書くのが一般的らしい。 */
 	_gp = . + 0x8000;
 
-	/* sdata ���������� chk �ǰ��ä�����Τǡ���α��
-	   ����ѥ�����ˡ�-G 0 ���ץ������򤱤Ƥ��ޤ��� */
+	/* sdata セクションは chk で引っかかるので、保留。
+	   コンパイル時に、-G 0 オプションで避けています。 */
 
 	__isdata_start = .;
 	.sdata : AT ( __isdata_start + SIZEOF(.data) )

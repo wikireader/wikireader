@@ -5,95 +5,95 @@
  * 
  *  Copyright (C) 2006 by Witz Corporation, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.h,v 1.1 2006/04/10 08:19:25 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼���TLCS-900L1�ѡ�
+ *	プロセッサ依存モジュール（TLCS-900L1用）
  *
- *  ���Υ��󥯥롼�ɥե�����ϡ�t_config.h �Τߤ��饤�󥯥롼�ɤ���롥
- *  ¾�Υե����뤫��ľ�ܥ��󥯥롼�ɤ��ƤϤʤ�ʤ���
+ *  このインクルードファイルは，t_config.h のみからインクルードされる．
+ *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _CPU_CONFIG_H_
 #define _CPU_CONFIG_H_
 
 /*
- *  �����ͥ����������̾�Υ�͡���
+ *  カーネルの内部識別名のリネーム
  */
 #include <cpu_rename.h>
 
 /*
- *  �ץ����å����ü�̿��Υ���饤��ؿ����
+ *  プロセッサの特殊命令のインライン関数定義
  */
 #ifndef _MACRO_ONLY
 #include <cpu_insn.h>
 #endif /* _MACRO_ONLY */
 
 /*
- *  chg_ipm/get_ipm �򥵥ݡ��Ȥ��뤫�ɤ��������
+ *  chg_ipm/get_ipm をサポートするかどうかの定義
  */
 #define	SUPPORT_CHG_IPM
 
 /*
- *  TCB ��Υե�����ɤΥӥå��������
+ *  TCB 中のフィールドのビット幅の定義
  *
- *  cpu_context.h ��������������쥬��Ȥ��������Ȥΰ�¸���δط��ǡ�
- *  cpu_context.h �ˤ�������ʤ���
+ *  cpu_context.h に入れる方がエレガントだが，参照の依存性の関係で，
+ *  cpu_context.h には入れられない．
  */
-#define	TBIT_TCB_TSTAT		8	/* tstat �ե�����ɤΥӥå��� */
-#define	TBIT_TCB_PRIORITY	4	/* priority �ե�����ɤΥӥå��� */
+#define	TBIT_TCB_TSTAT		8	/* tstat フィールドのビット幅 */
+#define	TBIT_TCB_PRIORITY	4	/* priority フィールドのビット幅 */
 
 #ifndef _MACRO_ONLY
 /*
- *  ����������ƥ����ȥ֥��å������
+ *  タスクコンテキストブロックの定義
  */
 typedef struct task_context_block {
-	VP	xsp;		/* �����å��ݥ��� */
-	FP	pc;		/* �ץ�����५���� */
+	VP	xsp;		/* スタックポインタ */
+	FP	pc;		/* プログラムカウンタ */
 } CTXB;
 
 /* 
- *  �����/CPU�㳰�ͥ��ȥ�����
+ *  割込み/CPU例外ネストカウンタ
  */
 extern UINT	intcnt;
 
 /*
- *  ����ߥޥ������饤�֥��
+ *  割込みマスク操作ライブラリ
  *
- *  ����ߥޥ�����intmask�ˤϡ�IPM��Interrupt Priority Mask�ˤ�12�ӥå�
- *  ���˥��եȤ�����ΤǤ��롥
+ *  割込みマスク（intmask）は，IPM（Interrupt Priority Mask）を12ビット
+ *  左にシフトしたものである．
  */
 
 /*
- *  ���ߤγ���ߥޥ������ɽФ�
+ *  現在の割込みマスクの読出し
  */
 #pragma inline current_intmask
 UH
@@ -103,7 +103,7 @@ current_intmask()
 }
 
 /*
- *  ����ߥޥ���������
+ *  割込みマスクの設定
  */
 #pragma inline set_intmask
 void
@@ -113,7 +113,7 @@ set_intmask(UH intmask)
 }
 
 /*
- *  �����ƥ���ֻ���
+ *  システム状態参照
  */
 
 #pragma inline sense_context
@@ -135,14 +135,14 @@ sense_lock()
 #define i_sense_lock	sense_lock
 
 /*
- *  CPU���å��Ȥ��β���ʥ���������ƥ������ѡ�
+ *  CPUロックとその解除（タスクコンテキスト用）
  *
- *  task_intmask �ϡ�chg_ipm �򥵥ݡ��Ȥ��뤿����ѿ���chg_ipm �򥵥ݡ�
- *  �Ȥ��ʤ����ˤϡ�task_intmask ����� 0 �ˤʤäƤ���ȹͤ���Ф褤��
+ *  task_intmask は，chg_ipm をサポートするための変数．chg_ipm をサポー
+ *  トしない場合には，task_intmask が常に 0 になっていると考えればよい．
  */
 
 #ifdef SUPPORT_CHG_IPM
-extern UH	task_intmask;	/* ����������ƥ����ȤǤγ���ߥޥ��� */
+extern UH	task_intmask;	/* タスクコンテキストでの割込みマスク */
 #endif /* SUPPORT_CHG_IPM */
 
 #pragma inline t_lock_cpu
@@ -158,8 +158,8 @@ t_unlock_cpu()
 {
 #ifdef SUPPORT_CHG_IPM
 	/*
-	 *  t_unlock_cpu ���ƤӽФ����Τ� CPU���å����֤ΤߤǤ��뤿
-	 *  �ᡤ����������� task_intmask ���񤭴���뤳�ȤϤʤ���
+	 *  t_unlock_cpu が呼び出されるのは CPUロック状態のみであるた
+	 *  め，処理の途中で task_intmask が書き換わることはない．
 	 */
 	set_intmask(task_intmask);
 #else /* SUPPORT_CHG_IPM */
@@ -168,10 +168,10 @@ t_unlock_cpu()
 }
 
 /*
- *  CPU���å��Ȥ��β�����󥿥�������ƥ������ѡ�
+ *  CPUロックとその解除（非タスクコンテキスト用）
  */
 
-extern UH	int_intmask;	/* �󥿥�������ƥ����ȤǤγ���ߥޥ��� */
+extern UH	int_intmask;	/* 非タスクコンテキストでの割込みマスク */
 
 #pragma inline i_lock_cpu
 void
@@ -180,9 +180,9 @@ i_lock_cpu()
 	UH	intmask;
 
 	/*
-	 *  ����ѿ� intmask ��ȤäƤ���Τϡ�current_intmask() ���
-	 *  ���ľ��˳���ߤ�ȯ��������ư���줿����ߥϥ�ɥ����
-	 *  int_intmask ���ѹ�������ǽ�������뤿��Ǥ��롥
+	 *  一時変数 intmask を使っているのは，current_intmask() を呼
+	 *  んだ直後に割込みが発生し，起動された割込みハンドラ内で
+	 *  int_intmask が変更される可能性があるためである．
 	 */
 	intmask = current_intmask();
 	disint();
@@ -197,34 +197,34 @@ i_unlock_cpu()
 }
 
 /*
- *  �������ǥ����ѥå���
+ *  タスクディスパッチャ
  */
 
 /*
- *  �ǹ�ͥ���̥������ؤΥǥ����ѥå���cpu_support.asm��
+ *  最高優先順位タスクへのディスパッチ（cpu_support.asm）
  *
- *  dispatch �ϡ�����������ƥ����Ȥ���ƤӽФ��줿�����ӥ����������
- *  ��ǡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  dispatch は，タスクコンテキストから呼び出されたサービスコール処理
+ *  内で，CPUロック状態で呼び出さなければならない．
  */
 extern void	dispatch(void);
 
 /*
- *  ���ߤΥ���ƥ����Ȥ�ΤƤƥǥ����ѥå���cpu_support.asm��
+ *  現在のコンテキストを捨ててディスパッチ（cpu_support.asm）
  *
- *  exit_and_dispatch �ϡ�CPU���å����֤ǸƤӽФ��ʤ���Фʤ�ʤ���
+ *  exit_and_dispatch は，CPUロック状態で呼び出さなければならない．
  */
 extern void	exit_and_dispatch(void);
 
 /*
- *  ����ߥϥ�ɥ顿CPU�㳰�ϥ�ɥ������
+ *  割込みハンドラ／CPU例外ハンドラの設定
  */
 
 /*
- *  ����ߥϥ�ɥ������
+ *  割込みハンドラの設定
  *
- *  �٥��ȥ��ֹ� inhno �γ���ߥϥ�ɥ�ε�ư���Ϥ� inthdr �����ꤹ�롥
- *  ����ߥϥ�ɥ����Ͽ����٥����ơ��֥��ROM��˼��,
- *  �����˽񤭹���. ���Τ��ᤳ���Ǥϲ��⤷�ʤ���
+ *  ベクトル番号 inhno の割込みハンドラの起動番地を inthdr に設定する．
+ *  割込みハンドラを登録するベクタテーブルはROM上に取り,
+ *  そこに書き込む. そのためここでは何もしない．
  */
 
 #pragma inline define_inh
@@ -234,11 +234,11 @@ define_inh(INHNO inhno, FP inthdr)
 }
 
 /*
- *  CPU�㳰�ϥ�ɥ������
+ *  CPU例外ハンドラの設定
  *
- *  �٥��ȥ��ֹ� excno ��CPU�㳰�ϥ�ɥ�ε�ư���Ϥ� exchdr �����ꤹ�롥
- *  ����ߥϥ�ɥ����Ͽ����٥����ơ��֥��ROM��˼��,
- *  �����˽񤭹���. ���Τ��ᤳ���Ǥϲ��⤷�ʤ���
+ *  ベクトル番号 excno のCPU例外ハンドラの起動番地を exchdr に設定する．
+ *  割込みハンドラを登録するベクタテーブルはROM上に取り,
+ *  そこに書き込む. そのためここでは何もしない．
  */
 #pragma inline define_exc
 void
@@ -248,57 +248,57 @@ define_exc(EXCNO excno, FP exchdr)
 
 
 /*
- *  ����ߥϥ�ɥ顿CPU�㳰�ϥ�ɥ�ν���������
+ *  割込みハンドラ／CPU例外ハンドラの出入口処理
  */
 
 /*
- *  ����ߥϥ�ɥ�����������������ޥ���
+ *  割込みハンドラの入口処理の生成マクロ
  *
- *  �����ȯ�����Υ����å����ڤ��ؤ��򥽥եȥ������Ǽ¸����롥���Τ��ᡤ
- *  ����ߥϥ�ɥ�������ˤƳ���߶ػ߽�����Ԥ����ʤ��������ȯ������
- *  ����߶ػߤ�Ԥ��ޤǤδ֤�¿�ų���ߤ�ȯ������ȡ�¿�ų���ߤǤ���
- *  ���Ȥ򥽥եȥ������Ǹ��ΤǤ��ʤ����ᡤ�ǽ��ȯ����������߽������
- *  �Ԥ��ʤ��ޤޥ������ǥ����ѥå������ǽ�������롥����¿�ų���ߤ�
- *  �Τ��뤿��˥ϡ��ɥ����� INTNEST �쥸���������Ѥ��롥
+ *  割込み発生時のスタックの切り替えをソフトウェアで実現する．このため，
+ *  割込みハンドラ入り口にて割込み禁止処理を行う．なお，割込み発生から
+ *  割込み禁止を行うまでの間に多重割込みが発生すると，多重割込みである
+ *  ことをソフトウェアで検知できないため，最初に発生した割込み処理を実
+ *  行しないままタスクディスパッチする可能性がある．この多重割込みを検
+ *  知するためにハードウェア INTNEST レジスタを利用する．
  *
- *  TLCS-900 Family C Compiler �Ǥ� XIZ �쥸�����ʳ������ƥ�����å���
- *  �������Ǥ��롥�ʤ�������������ǻ��Ѥ��륹����å��쥸�����Τߤ�
- *  �����ݻ������Ĥ�ϳ���߶��̽������ݻ����롥
+ *  TLCS-900 Family C Compiler では XIZ レジスタ以外は全てスクラッチレ
+ *  ジスタである．なお，入り口処理で使用するスクラッチレジスタのみをこ
+ *  こで保持し，残りは割込み共通処理で保持する．
  *
- *  ��������������ϡ�����CPU�㳰�ϥ�ɥ��������������ޥ�����Ʊ�ͤ�
- *  �������뤳�ȡ�
+ *  ここを修正する場合は，下のCPU例外ハンドラ入口処理生成マクロも同様に
+ *  修正すること．
  */
 #define	INTHDR_ENTRY(inthdr) \
 extern void _kernel_interrupt(void); \
 extern void inthdr##(void); \
 void inthdr##_entry(void) \
 { \
-Asm("	push	xwa	");	/* ���Ѥ��륹����å��쥸��������¸ */ \
-Asm("	push	sr");	/* �����ȯ������IFF�����	*/ \
+Asm("	push	xwa	");	/* 使用するスクラッチレジスタを保存 */ \
+Asm("	push	sr");	/* 割込み発生時のIFFを取得	*/ \
 Asm("	pop		wa"); \
-Asm("	ei		7");	/* ����߶ػ�	*/ \
-Asm("	push	xhl	");	/* ���Ѥ��륹����å��쥸��������¸ */ \
-Asm("	ld		xhl, _" #inthdr );	/* �桼���ϥ�ɥ�ݥ��󥿤����	*/ \
-Asm("	jp	__kernel_interrupt"	);	/* ����߶��̽�����	*/ \
+Asm("	ei		7");	/* 割込み禁止	*/ \
+Asm("	push	xhl	");	/* 使用するスクラッチレジスタを保存 */ \
+Asm("	ld		xhl, _" #inthdr );	/* ユーザハンドラポインタを取得	*/ \
+Asm("	jp	__kernel_interrupt"	);	/* 割込み共通処理へ	*/ \
 }
 /*
- *  �嵭����������ϡ�����CPU�㳰�ϥ�ɥ��������������ޥ�����Ʊ�ͤ�
- *  �������뤳�ȡ�
+ *  上記を修正する場合は，下のCPU例外ハンドラ入口処理生成マクロも同様に
+ *  修正すること．
  */
 
 
 #define	INT_ENTRY(inthdr)	inthdr##_entry
 
 /*
- *  CPU�㳰�ϥ�ɥ�ν����������������ޥ���
+ *  CPU例外ハンドラの出入口処理の生成マクロ
  *
- *  CPU�㳰�ϥ�ɥ�ϡ��󥿥�������ƥ����ȤǼ¹Ԥ��롥
- *  CPU�㳰�ϥ�ɥ�ϡ�����ߥϥ�ɥ��Ʊ�������Ȥ��롥
- *  �ʤ����㳰�ϥ�ɥ�ΰ��������ۤʤ뤿�ᡤƱ�������Υޥ���������
- *  �������롥
+ *  CPU例外ハンドラは，非タスクコンテキストで実行する．
+ *  CPU例外ハンドラは，割込みハンドラと同等処理とする．
+ *  なお，例外ハンドラの引数型が異なるため，同等処理のマクロを別途
+ *  生成する．
  *
- *  ��������������ϡ���γ���ߥϥ�ɥ��������������ޥ�����Ʊ�ͤ�
- *  �������뤳�ȡ�
+ *  ここを修正する場合は，上の割込みハンドラ入口処理生成マクロも同様に
+ *  修正すること．
  */
 
 #define	EXCHDR_ENTRY(exchdr) \
@@ -306,28 +306,28 @@ extern void _kernel_interrupt(void); \
 extern void exchdr##(VP p_excinf); \
 void exchdr##_entry(void) \
 { \
-Asm("	push	xwa	");	/* ���Ѥ��륹����å��쥸��������¸ */ \
-Asm("	push	sr");	/* �����ȯ������IFF�����	*/ \
+Asm("	push	xwa	");	/* 使用するスクラッチレジスタを保存 */ \
+Asm("	push	sr");	/* 割込み発生時のIFFを取得	*/ \
 Asm("	pop		wa"); \
-Asm("	ei		7");	/* ����߶ػ�	*/ \
-Asm("	push	xhl	");	/* ���Ѥ��륹����å��쥸��������¸ */ \
-Asm("	ld		xhl, _" #exchdr );	/* �桼���ϥ�ɥ�ݥ��󥿤����	*/ \
-Asm("	jp	__kernel_interrupt"	);	/* ����߶��̽�����	*/ \
+Asm("	ei		7");	/* 割込み禁止	*/ \
+Asm("	push	xhl	");	/* 使用するスクラッチレジスタを保存 */ \
+Asm("	ld		xhl, _" #exchdr );	/* ユーザハンドラポインタを取得	*/ \
+Asm("	jp	__kernel_interrupt"	);	/* 割込み共通処理へ	*/ \
 }
 /*
- *  ��������������ϡ���γ���ߥϥ�ɥ��������������ޥ�����Ʊ�ͤ�
- *  �������뤳�ȡ�
+ *  ここを修正する場合は，上の割込みハンドラ入口処理生成マクロも同様に
+ *  修正すること．
  */
 
 #define	EXC_ENTRY(exchdr)	exchdr##_entry
 
 
 /*
- *  CPU�㳰��ȯ���������Υ����ƥ���֤λ���
+ *  CPU例外の発生した時のシステム状態の参照
  */
 
 /*
- *  CPU�㳰��ȯ���������Υ���ƥ����Ȥλ���
+ *  CPU例外の発生した時のコンテキストの参照
  */
 #pragma inline exc_sense_context
 BOOL
@@ -338,7 +338,7 @@ exc_sense_context(VP p_excinf)
 }
 
 /*
- *  CPU�㳰��ȯ����������CPU���å����֤λ���
+ *  CPU例外の発生した時のCPUロック状態の参照
  */
 #pragma inline exc_sense_lock
 BOOL
@@ -348,12 +348,12 @@ exc_sense_lock(VP p_excinf)
 }
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 extern void	cpu_initialize(void);
 
 /*
- *  �ץ����å���¸�ν�λ������
+ *  プロセッサ依存の終了時処理
  */
 extern void	cpu_terminate(void);
 

@@ -8,40 +8,40 @@
  * 
  *  Copyright (C) 2005 by Freelines CO.,Ltd
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: hw_serial.h,v 1.2 2007/01/05 02:10:17 honda Exp $
  */
 
 /*
- * �������åȰ�¸���ꥢ��I/O�⥸�塼���V850ES/SG2 ��¢��Ʊ�����ꥢ��ch0/ch1/ch2�ѡ�
- *   �ܡ��졼�������SERIAL_COMPAREVALUE���ѹ����롣
- *   �ǡ����ե����ޥåȤ�8bit data, non-parity, 1stop-bit����
+ * ターゲット依存シリアルI/Oモジュール（V850ES/SG2 内蔵非同期シリアルch0/ch1/ch2用）
+ *   ボーレート設定はSERIAL_COMPAREVALUEを変更する。
+ *   データフォーマットは8bit data, non-parity, 1stop-bit固定
  */
 
 #ifndef _HW_SERIAL_H_
@@ -50,48 +50,48 @@
 #include <s_services.h>
 
 /*
- *  ���ꥢ��ݡ��Ȥν�����֥��å�
+ *  シリアルポートの初期化ブロック
  */
 
 typedef struct sio_port_initialization_block {
 } SIOPINIB;
 
 /*
- *  ���ꥢ��ݡ��Ȥ�����֥��å�
+ *  シリアルポートの制御ブロック
  */
 typedef struct sio_port_control_block {
-	const SIOPINIB	*inib;		/* ������֥��å�	*/
-	VP_INT		exinf;		/* ��ĥ����		*/
-	BOOL		openflag;	/* �����ץ�Ѥߥե饰	*/
-	int			port_id;	/* �ݡ����ֹ�(0��) */
+	const SIOPINIB	*inib;		/* 初期化ブロック	*/
+	VP_INT		exinf;		/* 拡張情報		*/
+	BOOL		openflag;	/* オープン済みフラグ	*/
+	int			port_id;	/* ポート番号(0〜) */
 } SIOPCB;
 
 extern SIOPCB siopcb_table[TNUM_PORT];
 
 /*
- *  SIO ID ��������֥��å��ؤ��Ѵ��ޥ���
+ *  SIO ID から管理ブロックへの変換マクロ
  */
 
 #define INDEX_SIO(sioid)	((UINT)((sioid) - 1))
 #define get_siopcb(sioid)	(&(siopcb_table[INDEX_SIO(sioid)]))
 
 /*
- *  ������Хå��롼����μ����ֹ�
+ *  コールバックルーチンの識別番号
  */
 
-#define SIO_ERDY_SND		1u			/* ������ǽ������Хå�			*/
-#define SIO_ERDY_RCV		2u			/* �������Υ�����Хå�			*/
+#define SIO_ERDY_SND		1u			/* 送信可能コールバック			*/
+#define SIO_ERDY_RCV		2u			/* 受信通知コールバック			*/
 
 /*
- *  ���ꥢ��ݡ��ȤΥϡ��ɥ�������¸��������
+ *  シリアルポートのハードウェア依存情報の定義
  */
 
-#define SERIAL_PORT				(CONSOLE_PORTID-1)		/* �����ƥ�Υݡ����ֹ� */
-#define SERIAL_INT_PRIORITY		1	/* ������ͥ���� */
+#define SERIAL_PORT				(CONSOLE_PORTID-1)		/* システムのポート番号 */
+#define SERIAL_INT_PRIORITY		1	/* 割り込み優先度 */
 #define SERIAL_CLKDIV			3	/* clk = fxx/8     */
 #define SERIAL_COMPAREVALUE		11	/* 9600bps=130, 19200bps=65, 38400bps=33, 57600bps=22, 115200bps=11 */
 
-/* ���ꥢ���Ϣ�쥸���� */
+/* シリアル関連レジスタ */
 #define UAnCTL0(x)  (UA0CTL0 + ((x) * 0x10))
 #define UAnCTL1(x)  (UA0CTL1 + ((x) * 0x10))
 #define UAnCTL2(x)  (UA0CTL2 + ((x) * 0x10))
@@ -103,17 +103,17 @@ extern SIOPCB siopcb_table[TNUM_PORT];
 #define UAnTIC(x)	(UA0TIC  + ((x) * 0x4))
 
 /*
- *  ���ꥢ��I/O�γ���ߥϥ�ɥ�Υ٥����ֹ�
+ *  シリアルI/Oの割込みハンドラのベクタ番号
  */
 #define INHNO_SERIAL_IN		(0x31 + (SERIAL_PORT * 2))
 #define INHNO_SERIAL_OUT	(0x32 + (SERIAL_PORT * 2))
 
 
 /*
- *  ���٥�ݡ��Ⱦ�������֥��å��ν����
+ *  低レベルポート情報管理ブロックの初期値
  */
 
-#define NUM_PORT	1	/* ���ݡ��Ȥ��륷�ꥢ��ݡ��Ȥο� */
+#define NUM_PORT	1	/* サポートするシリアルポートの数 */
 
 #define FLG_RECEIVED 1
 #define FLG_TXRBUSY  2
@@ -121,7 +121,7 @@ extern SIOPCB siopcb_table[TNUM_PORT];
 extern unsigned int _serial_flag[TNUM_PORT];
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥν����
+ *  シリアルI/Oポートの初期化
  */
 Inline BOOL
 hw_port_initialize(int port_id)
@@ -129,10 +129,10 @@ hw_port_initialize(int port_id)
    	_serial_flag[port_id] = 0;
 	if( (sil_reb_mem((VP)UAnCTL0(port_id)) & 0x80) == 0 )
 	{
-    	/* ��Ʊ�����ꥢ���̿�ϩ�ν���� */
+    	/* 非同期シリアル通信路の初期化 */
 
 		sil_wrb_mem((VP)UAnCTL0(port_id), 0x80);	/* UART enable */
-		/* �ݡ��Ȥ򳫤��� */
+		/* ポートを開ける */
 		if (port_id == 0) {
 			sil_wrh_mem((VP)PFC3, sil_reh_mem((VP)PFC3) & ~0x0003);
 			sil_wrh_mem((VP)PMC3, sil_reh_mem((VP)PMC3) | 0x0003);
@@ -144,7 +144,7 @@ hw_port_initialize(int port_id)
 			sil_wrh_mem((VP)PFC3, sil_reh_mem((VP)PFC3) & ~0x0300);
 			sil_wrh_mem((VP)PMC3, sil_reh_mem((VP)PMC3) | 0x0300);
 		}
-		/* �ܡ��졼��ȯ����ν���� */
+		/* ボーレート発生器の初期化 */
 		sil_wrb_mem((VP)UAnCTL1(port_id), SERIAL_CLKDIV);
 		sil_wrb_mem((VP)UAnCTL2(port_id), SERIAL_COMPAREVALUE);
 
@@ -156,7 +156,7 @@ hw_port_initialize(int port_id)
 
 		sil_wrb_mem((VP)UAnCTL0(port_id), sil_reb_mem((VP)UAnCTL0(port_id)) | 0x60);	/* Tx, Rx enable */
 
-		/* ��������� */
+		/* 割込み制御 */
 		sil_wrb_mem((VP)UAnRIC(port_id), SERIAL_INT_PRIORITY);
 		sil_wrb_mem((VP)UAnTIC(port_id), SERIAL_INT_PRIORITY);
 	}
@@ -164,7 +164,7 @@ hw_port_initialize(int port_id)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥν�λ
+ *  シリアルI/Oポートの終了
  */
 Inline void
 hw_port_terminate(int port_id)
@@ -172,13 +172,13 @@ hw_port_terminate(int port_id)
 }
 
 /*
- *  ���ꥢ��ݡ��ȳ���ߥ����ӥ��롼������������ȡ�
+ *  シリアルポート割込みサービスルーチン（前方参照）
  */
 extern void	serial_handler_in(int portid);
 extern void	serial_handler_out(int portid);
 
 /*
- *  ʸ���������������
+ *  文字を受信したか？
  */
 Inline BOOL
 hw_port_getready(int port_id)
@@ -187,7 +187,7 @@ hw_port_getready(int port_id)
 }
 
 /*
- *  ʸ���������Ǥ��뤫��
+ *  文字を送信できるか？
  */
 Inline BOOL
 hw_port_putready(int port_id)
@@ -204,7 +204,7 @@ hw_port_putready2(int port_id)
 }
 
 /*
- *  ��������ʸ���μ��Ф�
+ *  受信した文字の取り出し
  */
 Inline unsigned char
 hw_port_getchar(int port_id)
@@ -215,7 +215,7 @@ hw_port_getchar(int port_id)
 }
 
 /*
- *  ��������ʸ���ν񤭹���
+ *  送信する文字の書き込み
  */
 Inline void
 hw_port_putchar(int port_id, unsigned char c)
@@ -225,7 +225,7 @@ hw_port_putchar(int port_id, unsigned char c)
 }
 
 /*
- *  ��������ʸ���ν񤭹��ߡ�������ǽ�ˤʤ�ޤ��Ԥġ�
+ *  送信する文字の書き込み（送信可能になるまで待つ）
  */
 Inline void
 hw_port_wait_putchar(int port_id, unsigned char c)
@@ -235,7 +235,7 @@ hw_port_wait_putchar(int port_id, unsigned char c)
 }
 
 /*
- *  ��������ؿ�
+ *  送信制御関数
  */
 Inline void
 hw_port_sendstart(int port_id)
@@ -267,21 +267,21 @@ hw_port_handler_out(int port_id)
 /***********************************************************************************/
 
 /*
- *  sio_initialize -- ���ꥢ��ݡ��ȥɥ饤�Фν����
+ *  sio_initialize -- シリアルポートドライバの初期化
  */
 Inline void
 sio_initialize (void)
 {
 	int ix;
 
-	/* SIO �����֥��å��ν���� */
+	/* SIO 管理ブロックの初期化 */
 	for (ix = TNUM_PORT; ix -- > 0; ) {
 		siopcb_table[ix].openflag = FALSE;
 	}
 }
 
 /*
- *  sio_opn_por -- �ݡ��ȤΥ����ץ�
+ *  sio_opn_por -- ポートのオープン
  */
 Inline SIOPCB *
 sio_opn_por(ID sioid, VP_INT exinf)
@@ -298,7 +298,7 @@ sio_opn_por(ID sioid, VP_INT exinf)
 }
 
 /*
- *  sio_snd_chr -- ʸ������
+ *  sio_snd_chr -- 文字送信
  */
 Inline BOOL
 sio_snd_chr(SIOPCB *pcb, INT chr)
@@ -312,7 +312,7 @@ sio_snd_chr(SIOPCB *pcb, INT chr)
 }
 
 /*
- *  sio_rcv_chr -- ʸ������
+ *  sio_rcv_chr -- 文字受信
  */
 Inline INT
 sio_rcv_chr(SIOPCB *pcb)
@@ -324,7 +324,7 @@ sio_rcv_chr(SIOPCB *pcb)
 }
 
 /*
- *  sio_ena_cbr -- ���ꥢ�� I/O ����Υ�����Хå��ε���
+ *  sio_ena_cbr -- シリアル I/O からのコールバックの許可
  */
 Inline void
 sio_ena_cbr(SIOPCB *pcb, UINT cbrtn)
@@ -332,7 +332,7 @@ sio_ena_cbr(SIOPCB *pcb, UINT cbrtn)
 }
 
 /*
- *  sio_dis_cbr -- ���ꥢ�� I/O ����Υ�����Хå��ζػ�
+ *  sio_dis_cbr -- シリアル I/O からのコールバックの禁止
  */
 Inline void
 sio_dis_cbr(SIOPCB *pcb, UINT cbrtn)
@@ -340,7 +340,7 @@ sio_dis_cbr(SIOPCB *pcb, UINT cbrtn)
 }
 
 /*
- *  sio_cls_por -- �ݡ��ȤΥ�������
+ *  sio_cls_por -- ポートのクローズ
  */
 Inline void
 sio_cls_por(SIOPCB *pcb)

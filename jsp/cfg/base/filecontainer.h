@@ -6,32 +6,32 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  ¾åµ­Ãøºî¸¢¼Ô¤Ï¡¤°Ê²¼¤Î (1)¡Á(4) ¤Î¾ò·ï¤«¡¤Free Software Foundation 
- *  ¤Ë¤è¤Ã¤Æ¸øÉ½¤µ¤ì¤Æ¤¤¤ë GNU General Public License ¤Î Version 2 ¤Ëµ­
- *  ½Ò¤µ¤ì¤Æ¤¤¤ë¾ò·ï¤òËş¤¿¤¹¾ì¹ç¤Ë¸Â¤ê¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¡ÊËÜ¥½¥Õ¥È¥¦¥§¥¢
- *  ¤ò²şÊÑ¤·¤¿¤â¤Î¤ò´Ş¤à¡¥°Ê²¼Æ±¤¸¡Ë¤ò»ÈÍÑ¡¦Ê£À½¡¦²şÊÑ¡¦ºÆÇÛÉÛ¡Ê°Ê²¼¡¤
- *  ÍøÍÑ¤È¸Æ¤Ö¡Ë¤¹¤ë¤³¤È¤òÌµ½ş¤ÇµöÂú¤¹¤ë¡¥
- *  (1) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¥½¡¼¥¹¥³¡¼¥É¤Î·Á¤ÇÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¾åµ­¤ÎÃøºî
- *      ¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤¬¡¤¤½¤Î¤Ş¤Ş¤Î·Á¤Ç¥½¡¼
- *      ¥¹¥³¡¼¥ÉÃæ¤Ë´Ş¤Ş¤ì¤Æ¤¤¤ë¤³¤È¡¥
- *  (2) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤¥é¥¤¥Ö¥é¥ê·Á¼°¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤ë·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ
- *      ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃøºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­
- *      ¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *  (3) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ò¡¤µ¡´ï¤ËÁÈ¤ß¹ş¤à¤Ê¤É¡¤Â¾¤Î¥½¥Õ¥È¥¦¥§¥¢³«È¯¤Ë»È
- *      ÍÑ¤Ç¤­¤Ê¤¤·Á¤ÇºÆÇÛÉÛ¤¹¤ë¾ì¹ç¤Ë¤Ï¡¤¼¡¤Î¤¤¤º¤ì¤«¤Î¾ò·ï¤òËş¤¿¤¹¤³
- *      ¤È¡¥
- *    (a) ºÆÇÛÉÛ¤ËÈ¼¤¦¥É¥­¥å¥á¥ó¥È¡ÊÍøÍÑ¼Ô¥Ş¥Ë¥å¥¢¥ë¤Ê¤É¡Ë¤Ë¡¤¾åµ­¤ÎÃø
- *        ºî¸¢É½¼¨¡¤¤³¤ÎÍøÍÑ¾ò·ï¤ª¤è¤Ó²¼µ­¤ÎÌµÊİ¾Úµ¬Äê¤ò·ÇºÜ¤¹¤ë¤³¤È¡¥
- *    (b) ºÆÇÛÉÛ¤Î·ÁÂÖ¤ò¡¤ÊÌ¤ËÄê¤á¤ëÊıË¡¤Ë¤è¤Ã¤Æ¡¤TOPPERS¥×¥í¥¸¥§¥¯¥È¤Ë
- *        Êó¹ğ¤¹¤ë¤³¤È¡¥
- *  (4) ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤ë¤¤¤«¤Ê¤ëÂ»
- *      ³²¤«¤é¤â¡¤¾åµ­Ãøºî¸¢¼Ô¤ª¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤òÌÈÀÕ¤¹¤ë¤³¤È¡¥
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ï¡¤ÌµÊİ¾Ú¤ÇÄó¶¡¤µ¤ì¤Æ¤¤¤ë¤â¤Î¤Ç¤¢¤ë¡¥¾åµ­Ãøºî¸¢¼Ô¤ª
- *  ¤è¤ÓTOPPERS¥×¥í¥¸¥§¥¯¥È¤Ï¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤Ë´Ø¤·¤Æ¡¤¤½¤ÎÅ¬ÍÑ²ÄÇ½À­¤â
- *  ´Ş¤á¤Æ¡¤¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤ï¤Ê¤¤¡¥¤Ş¤¿¡¤ËÜ¥½¥Õ¥È¥¦¥§¥¢¤ÎÍøÍÑ¤Ë¤è¤êÄ¾
- *  ÀÜÅª¤Ş¤¿¤Ï´ÖÀÜÅª¤ËÀ¸¤¸¤¿¤¤¤«¤Ê¤ëÂ»³²¤Ë´Ø¤·¤Æ¤â¡¤¤½¤ÎÀÕÇ¤¤òÉé¤ï¤Ê¤¤¡¥
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  *  @(#) $Id: filecontainer.h,v 1.8 2003/12/15 07:32:13 takayuki Exp $
  */
@@ -42,7 +42,7 @@
 #define FILECONTAINER_H
 
 #ifdef _MSC_VER
-#pragma warning(disable:4786) //¥Ç¥Ğ¥Ã¥°¾ğÊó¤ò255Ê¸»ú¤ËÀÚ¤êµÍ¤á¤Ş¤·¤¿
+#pragma warning(disable:4786) //ãƒ‡ãƒãƒƒã‚°æƒ…å ±ã‚’255æ–‡å­—ã«åˆ‡ã‚Šè©°ã‚ã¾ã—ãŸ
 #endif
 
 #include "testsuite.h"
@@ -67,7 +67,7 @@ public:
         };
     };
 
-    enum tagByteOrder { LITTLE, BIG, HOSTORDER=LITTLE, UNKNOWN };   /* UNKNOWN¤Ï¥Æ¥¹¥ÈÍÑ */
+    enum tagByteOrder { LITTLE, BIG, HOSTORDER=LITTLE, UNKNOWN };   /* UNKNOWNã¯ãƒ†ã‚¹ãƒˆç”¨ */
 
 protected:
     enum tagByteOrder byteorder;
@@ -78,7 +78,7 @@ protected:
     virtual ~FileContainer(void) throw() {}
 
 public:
-        /* ¥¤¥ó¥¿¥Õ¥§¡¼¥¹Éô */
+        /* ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹éƒ¨ */
     virtual void                    attachModule(const std::string & filename) throw(Exception) = 0;
     virtual void                    loadContents(void * dest, address_t address, size_t size) throw(Exception) = 0;
     virtual address_t               getSymbolAddress(const std::string & symbol) throw(Exception) = 0;
@@ -87,13 +87,13 @@ public:
     virtual struct tagVariableInfo  getVariableInfo(const std::string & name) throw(Exception);
     virtual void                    attachInfo(const std::string & filename) throw(Exception);
 
-        /* ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥³¥ó¥Æ¥Ê¤Î¸Æ¤Ó½Ğ¤· */
+        /* ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚³ãƒ³ãƒ†ãƒŠã®å‘¼ã³å‡ºã— */
     static inline FileContainer * getInstance(void) throw(Exception)
     {
         FileContainer * result;
         RuntimeObjectTable::getInstance(&result);
         if(result == 0)
-            ExceptionMessage("[Internal error] Filecontainer has no instance.","[ÆâÉô¥¨¥é¡¼] FileContainer¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤¬¤¢¤ê¤Ş¤»¤ó").throwException();
+            ExceptionMessage("[Internal error] Filecontainer has no instance.","[å†…éƒ¨ã‚¨ãƒ©ãƒ¼] FileContainerã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒã‚ã‚Šã¾ã›ã‚“").throwException();
         return result;
     }
 
@@ -104,11 +104,11 @@ public:
 class TargetVariableBase
 {
 protected:
-    FileContainer::address_t address;               //ÊÑ¿ô¤Î¥¢¥É¥ì¥¹
-    size_t                   size;                  //ÊÑ¿ô¤Î¥µ¥¤¥º
-    size_t                   offset;                //Â°¤¹¤ë¹½Â¤ÂÎ¤ÎÀèÆ¬¤«¤é¤Î¥ª¥Õ¥»¥Ã¥È
-    size_t                   structure_size;        //Â°¤¹¤ë¹½Â¤ÂÎ¤ÎÂç¤­¤µ
-    bool                     loaded;                //ÃÍ¤¬ÆÉ½Ğ¤·ºÑ¤ß¤Ç¤¢¤ë¤³¤È¤òÊİ»ı¤¹¤ë¥Õ¥é¥°
+    FileContainer::address_t address;               //å¤‰æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+    size_t                   size;                  //å¤‰æ•°ã®ã‚µã‚¤ã‚º
+    size_t                   offset;                //å±ã™ã‚‹æ§‹é€ ä½“ã®å…ˆé ­ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+    size_t                   structure_size;        //å±ã™ã‚‹æ§‹é€ ä½“ã®å¤§ãã•
+    bool                     loaded;                //å€¤ãŒèª­å‡ºã—æ¸ˆã¿ã§ã‚ã‚‹ã“ã¨ã‚’ä¿æŒã™ã‚‹ãƒ•ãƒ©ã‚°
 
     inline TargetVariableBase(FileContainer::address_t _address, size_t _size) throw()
         : address(_address), size(_size), offset(0), structure_size(_size), loaded(false)
@@ -125,13 +125,13 @@ protected:
 
     virtual ~TargetVariableBase(void) throw() {}
 
-        /* ÆâÍÆ¤Î¼èÆÀ */
+        /* å†…å®¹ã®å–å¾— */
     void loadContent(void * dest, size_t dest_size) throw(Exception);
 
-        /* ¥¨¥ó¥Ç¥£¥¢¥óÊÑ´¹ */
+        /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³å¤‰æ› */
     void changeEndian(char * buffer, size_t size) throw();
 
-        /* ¥¢¥É¥ì¥¹¤Î°ÜÆ° (¤Ä¤¤¤Ç¤Ëloaded¤ò²¼¤²¤ë) */
+        /* ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ç§»å‹• (ã¤ã„ã§ã«loadedã‚’ä¸‹ã’ã‚‹) */
     inline void setAddress(int offset) throw()
     {
         if(isValid()) {
@@ -159,7 +159,7 @@ public:
     inline bool isLoaded(void) const throw()
     {   return this != 0 ? loaded : false;   }
 
-        /* ´ğËÜÅª¤ÊÁàºî */
+        /* åŸºæœ¬çš„ãªæ“ä½œ */
     inline bool operator == (const TargetVariableBase & right) const throw()
     {   return isValid() && right.isValid() && address == right.address;   }
 
@@ -181,7 +181,7 @@ protected:
 
 public:
         /*
-         * ¥³¥ó¥¹¥È¥é¥¯¥¿ (TargetVariableBase¤Ë²óÁ÷)
+         * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (TargetVariableBaseã«å›é€)
          */
     inline TargetVariable(FileContainer::address_t addr) throw()
         : TargetVariableBase(addr, sizeof(T)), entity() 
@@ -212,16 +212,16 @@ public:
         }
     }
 
-        /* ¥Ç¥¹¥È¥é¥¯¥¿ (ÆÃ¤Ë²¿¤â¤·¤Ê¤¤) */
+        /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ (ç‰¹ã«ä½•ã‚‚ã—ãªã„) */
     virtual ~TargetVariable(void) throw() 
     {}
 
-        /* ÀµÅöÈ½Äê¤Ë³ÊÇ¼¤Ë½½Ê¬¤Ê¥µ¥¤¥º¤¬¤¢¤ë¤«¤É¤¦¤«¤òÄÉ²Ã¤·¤Æ¤ª¤¯ */
+        /* æ­£å½“åˆ¤å®šã«æ ¼ç´ã«ååˆ†ãªã‚µã‚¤ã‚ºãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’è¿½åŠ ã—ã¦ãŠã */
     inline bool isValid(void) const
     {   return TargetVariableBase::isValid() && (sizeof(T) >= getSize());   }
 
         /*
-         * ¥İ¥¤¥ó¥¿É÷¤ÎÆ°ºî¤ò¤¹¤ë¥ª¥Ú¥ì¡¼¥¿·²
+         * ãƒã‚¤ãƒ³ã‚¿é¢¨ã®å‹•ä½œã‚’ã™ã‚‹ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ç¾¤
          */
     inline TargetVariable<T> offsetInBytes(int offset) const throw()
     {   return TargetVariable<T>(getAddress() + offset, getSize(), getOffset(), getStructureSize());   }

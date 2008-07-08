@@ -1,6 +1,6 @@
-I-008-1000:ƒrƒ‹ƒh‚Ì€”õ’†...
-I-008-1400:--------------------\¬F[Zup-F16-ex.abs] - [Release] --------------------
-ƒRƒ“ƒtƒBƒOƒŒ[ƒ^¥ƒ†[ƒeƒBƒŠƒeƒB‚ÌÀs
+I-008-1000:ãƒ“ãƒ«ãƒ‰ã®æº–å‚™ä¸­...
+I-008-1400:--------------------æ§‹æˆï¼š[Zup-F16-ex.abs] - [Release] --------------------
+ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚¿ã‚‡ï¿½[ãƒ†ã‚£ãƒªãƒ†ã‚£ã®å®Ÿè¡Œ
 cp ./sample1.cfg ./sample1.cfg.c
 cc900 -P -w3 -O3 -Xub -Xuc -Xw -A -Xc -Xp2 -XF -DLABEL_ASM -I ../../../include -I ../../../kernel -I ../../../systask -I../../../sample -I ../../../config/tlcs900-toshiba -I ../../../config/tlcs900-toshiba/zup_f16_ex -I ./ -XS sample1.cfg.c -o sample1.cfg.i
 ../../../cfg/cfg.exe -cpu tlcs900-toshiba -system zup_f16_ex -s sample1.cfg.i
@@ -24,7 +24,7 @@ TCB_pc	equ	24
 TCB_enatex	equ	12
 TCB_enatex_mask	equ	0x4000
 TCB_enatex_bit	equ	14
-I-008-1500:ƒRƒ“ƒpƒCƒ‹’†...
+I-008-1500:ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ä¸­...
 I-008-1300:..\..\..\kernel\banner.c
 I-008-1300:..\..\..\kernel\cyclic.c
 I-008-1300:..\..\..\kernel\dataqueue.c
@@ -108,7 +108,7 @@ D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: TH
 D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: THC2-Warning-556: "stime2" used before set in 'main_task'
 I-008-1300:..\..\..\config\tlcs900-toshiba\makeoffset.c
 D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\config\tlcs900-toshiba\makeoffset.c 97: THC1-Warning-582: No function prototype 'pc'
-I-008-1600:ƒŠƒ“ƒN’†...
-I-008-1700:ƒRƒ“ƒo[ƒg’†...
+I-008-1600:ãƒªãƒ³ã‚¯ä¸­...
+I-008-1700:ã‚³ãƒ³ãƒãƒ¼ãƒˆä¸­...
  
-I-008-1100:Zup-F16-ex.abs - ƒGƒ‰[ 0AŒx 49
+I-008-1100:Zup-F16-ex.abs - ã‚¨ãƒ©ãƒ¼ 0ã€è­¦å‘Š 49

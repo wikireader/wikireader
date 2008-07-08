@@ -9,45 +9,45 @@
  *                              Miyagi Prefectural Government, JAPAN
  *  Copyright (C) 2002-2004 by Hokkaido Industrial Research Institute, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sh7145sci.c,v 1.3 2005/07/06 00:45:07 honda Exp $
  */
 
 /*
- *   SH2��¢���ꥢ�륳�ߥ�˥�������󥤥󥿥ե�����SCI�� �ʰץɥ饤��
+ *   SH2内蔵シリアルコミュニケーションインタフェースSCI用 簡易ドライバ
  */
 
 #include <s_services.h>
 #include "sh7145sci.h"
 
 /*
- * ���ꥢ��I/O�ݡ��Ƚ�����֥��å�
+ * シリアルI/Oポート初期化ブロック
  */
 #ifndef GDB_STUB
 const SIOPINIB siopinib_table[TNUM_PORT] = {
@@ -64,41 +64,41 @@ const SIOPINIB siopinib_table[TNUM_PORT] = {
 
 
 /*
- *  ���ꥢ��I/O�ݡ��ȴ����֥��å��Υ��ꥢ
+ *  シリアルI/Oポート管理ブロックのエリア
  */
 static SIOPCB siopcb_table[TNUM_PORT];
 
 /*
- *  ���ꥢ��I/O�ݡ���ID��������֥��å�����Ф�����Υޥ���
+ *  シリアルI/OポートIDから管理ブロックを取り出すためのマクロ
  */
-				/*  �ݡ���ID����ǥХ����ֹ�����ޥ���  */
+				/*  ポートIDからデバイス番号を求めるマクロ  */
 #define INDEX_SIOP(siopid)	((UINT)((siopid) - 1))
 #define get_siopcb(siopid)	(&(siopcb_table[INDEX_SIOP(siopid)]))
 
 /*
- *  ʸ��������Ǥ��뤫��
+ *  文字を受信できるか？
  */
 Inline BOOL
 sh2sci_getready (SIOPCB * siopcb)
 {
-	/*  �쥷���֥ǡ����쥸�����ե롦�ե饰�Υ����å�  */
+	/*  レシーブデータレジスタフル・フラグのチェック  */
 	return (sil_reb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SSR)) &
 			SSR_RDRF);
 }
 
 /*
- *  ʸ���������Ǥ��뤫��
+ *  文字を送信できるか？
  */
 Inline BOOL
 sh2sci_putready (SIOPCB * siopcb)
 {
-	/*  �ȥ�󥹥ߥåȥǡ����쥸��������ץƥ����ե饰�Υ����å� */
+	/*  トランスミットデータレジスタエンプティ・フラグのチェック */
 	return (sil_reb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SSR)) &
 			SSR_TDRE);
 }
 
 /*
- *  ��������ʸ���μ�Ф�
+ *  受信した文字の取出し
  */
 Inline char
 sh2sci_getchar (SIOPCB * siopcb)
@@ -106,7 +106,7 @@ sh2sci_getchar (SIOPCB * siopcb)
 	char data;
 
 	data = sil_reb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_RDR));
-	/*  �쥷���֥ǡ����쥸�����ե롦�ե饰�Υ��ꥢ  */
+	/*  レシーブデータレジスタフル・フラグのクリア  */
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SSR),
 				 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 									  SCI_SSR)) & ~SSR_RDRF);
@@ -114,7 +114,7 @@ sh2sci_getchar (SIOPCB * siopcb)
 }
 
 /*
- *  ��������ʸ���ν����
+ *  送信する文字の書込み
  */
 Inline void
 sh2sci_putchar (SIOPCB * siopcb, char c)
@@ -126,7 +126,7 @@ sh2sci_putchar (SIOPCB * siopcb, char c)
 }
 
 /*
- *  SIO�ɥ饤�Фν�����롼����
+ *  SIOドライバの初期化ルーチン
  */
 void
 sh2sci_initialize ()
@@ -135,7 +135,7 @@ sh2sci_initialize ()
 	UINT i;
 
 	/*
-	 *  ���ꥢ��I/O�ݡ��ȴ����֥��å��ν����
+	 *  シリアルI/Oポート管理ブロックの初期化
 	 */
 	for (siopcb = siopcb_table, i = 0; i < TNUM_PORT; siopcb++, i++) {
 		siopcb->openflag = FALSE;
@@ -144,7 +144,7 @@ sh2sci_initialize ()
 }
 
 /*
- *  �����ץ󤷤Ƥ���ݡ��Ȥ����뤫��
+ *  オープンしているポートがあるか？
  */
 BOOL
 sh2sci_openflag (ID siopid)
@@ -153,25 +153,25 @@ sh2sci_openflag (ID siopid)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ����ץ�
+ *  シリアルI/Oポートのオープン
  */
 SIOPCB *
 sh2sci_opn_por (ID siopid, VP_INT exinf)
 {
 	SIOPCB *siopcb = get_siopcb (siopid);
 
-	/*  ���������  */
+	/*  送受信停止  */
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR), 0x00);
 
-	/*  SCI�ǡ��������ϥݡ��Ȥ�����  */
-	/*  �ԥ󥢥����� */
-	/* sys_initialize������ */
+	/*  SCIデータ入出力ポートの設定  */
+	/*  ピンアサイン */
+	/* sys_initializeで設定 */
 
-	/*  �������ե����ޥå�  */
-	/*  Ĵ��Ʊ����  */
-	/*  8�ӥåȡ��ѥ�ƥ��ʤ�  */
-	/*  ���ȥåץӥåȥ�󥰥���1   */
-	/*  �����å����쥯�� */
+	/*  送受信フォーマット  */
+	/*  調歩同期式  */
+	/*  8ビット、パリティなし  */
+	/*  ストップビットレングス：1   */
+	/*  クロックセレクト */
 
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SMR),
 				 siopcb->siopinib->smr);
@@ -179,16 +179,16 @@ sh2sci_opn_por (ID siopid, VP_INT exinf)
 				 (VB) siopcb->siopinib->brr);
 
 	/*
-	 * �ܡ��졼�Ȥ�����塢1�������ʬ�Ԥ��ʤ���Фʤ�ʤ���
+	 * ボーレートの設定後、1カウント分待たなければならない。
 	 */
-	sil_dly_nse (sh2sci_DELAY);	/* �ͤϣ�裱��Ʊ�� */
+	sil_dly_nse (sh2sci_DELAY);	/* 値はｓｈ１と同じ */
 
-	/* ���顼�ե饰�򥯥ꥢ */
+	/* エラーフラグをクリア */
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SSR),
 				 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 									  SCI_SSR)) & ~(SSR_ORER | SSR_FER |
 													SSR_PER));
-	/*���������ġ����������ߵ��� */
+	/*送受信許可、受信割り込み許可 */
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 				 (VB) (SCI_RIE | SCI_TE | SCI_RE));
 
@@ -198,12 +198,12 @@ sh2sci_opn_por (ID siopid, VP_INT exinf)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��ȤΥ�������
+ *  シリアルI/Oポートのクローズ
  */
 void
 sh2sci_cls_por (SIOPCB * siopcb)
 {
-	/*  ��������ߡ�����߶ػ�  */
+	/*  送受信停止、割込み禁止  */
 	sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 				 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 									  SCI_SCR)) & (VB) ~ (SCI_TIE | SCI_RIE |
@@ -212,7 +212,7 @@ sh2sci_cls_por (SIOPCB * siopcb)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥؤ�ʸ������
+ *  シリアルI/Oポートへの文字送信
  */
 BOOL
 sh2sci_snd_chr (SIOPCB * siopcb, char c)
@@ -225,31 +225,31 @@ sh2sci_snd_chr (SIOPCB * siopcb, char c)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ����ʸ������
+ *  シリアルI/Oポートからの文字受信
  */
 INT
 sh2sci_rcv_chr (SIOPCB * siopcb)
 {
 	if (sh2sci_getready (siopcb)) {
 		return ((INT) (UB) sh2sci_getchar (siopcb));
-		/*  (UB)�ǥ��㥹�Ȥ���Τϥ�����ĥ�ˤ��뤿��  */
+		/*  (UB)でキャストするのはゼロ拡張にするため  */
 	}
 	return (-1);
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ε���
+ *  シリアルI/Oポートからのコールバックの許可
  */
 void
 sh2sci_ena_cbr (SIOPCB * siopcb, UINT cbrtn)
 {
 	switch (cbrtn) {
-	case SIO_ERDY_SND:			/* �����������׵����� */
+	case SIO_ERDY_SND:			/* 送信割り込み要求を許可 */
 		sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 					 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 										  SCI_SCR)) | SCI_TIE);
 		break;
-	case SIO_ERDY_RCV:			/* �����������׵����� */
+	case SIO_ERDY_RCV:			/* 受信割り込み要求を許可 */
 		sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 					 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 										  SCI_SCR)) | SCI_RIE);
@@ -258,18 +258,18 @@ sh2sci_ena_cbr (SIOPCB * siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ���Υ�����Хå��ζػ�
+ *  シリアルI/Oポートからのコールバックの禁止
  */
 void
 sh2sci_dis_cbr (SIOPCB * siopcb, UINT cbrtn)
 {
 	switch (cbrtn) {
-	case SIO_ERDY_SND:			/* �����������׵��ػ� */
+	case SIO_ERDY_SND:			/* 送信割り込み要求を禁止 */
 		sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 					 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 										  SCI_SCR)) & ~SCI_TIE);
 		break;
-	case SIO_ERDY_RCV:			/* �����������׵��ػ� */
+	case SIO_ERDY_RCV:			/* 受信割り込み要求を禁止 */
 		sil_wrb_mem ((VB *) (siopcb->siopinib->reg_base + SCI_SCR),
 					 sil_reb_mem ((VB *) (siopcb->siopinib->reg_base +
 										  SCI_SCR)) & ~SCI_RIE);
@@ -278,7 +278,7 @@ sh2sci_dis_cbr (SIOPCB * siopcb, UINT cbrtn)
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф�����������߽���
+ *  シリアルI/Oポートに対する送信割込み処理
  */
 Inline void
 sh2sci_isr_siop_out (SIOPCB * siopcb)
@@ -287,14 +287,14 @@ sh2sci_isr_siop_out (SIOPCB * siopcb)
 
 	if ((scr0 & SCI_TIE) != 0 && sh2sci_putready (siopcb)) {
 		/*
-		 *  �������Υ�����Хå��롼�����ƤӽФ���
+		 *  送信通知コールバックルーチンを呼び出す．
 		 */
 		sh2sci_ierdy_snd (siopcb->exinf);
 	}
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф����������߽���
+ *  シリアルI/Oポートに対する受信割込み処理
  */
 Inline void
 sh2sci_isr_siop_in (SIOPCB * siopcb)
@@ -303,14 +303,14 @@ sh2sci_isr_siop_in (SIOPCB * siopcb)
 
 	if ((scr0 & SCI_RIE) != 0 && sh2sci_getready (siopcb)) {
 		/*
-		 *  �������Υ�����Хå��롼�����ƤӽФ���
+		 *  受信通知コールバックルーチンを呼び出す．
 		 */
 		sh2sci_ierdy_rcv (siopcb->exinf);
 	}
 }
 
 /*
- *  ���ꥢ��I/O�ݡ��Ȥ��Ф���������顼����߽���
+ *  シリアルI/Oポートに対する受信エラー割込み処理
  */
 Inline void
 sh2sci_isr_siop_err (SIOPCB * siopcb)
@@ -322,7 +322,7 @@ sh2sci_isr_siop_err (SIOPCB * siopcb)
 }
 
 /*
- *  SCI��������ߥ����ӥ��롼����
+ *  SCI送信割込みサービスルーチン
  *  
  */
 void
@@ -334,7 +334,7 @@ sh2sci_isr_out (void)
 }
 
 /*
- *  SIO��������ߥ����ӥ��롼����
+ *  SIO受信割込みサービスルーチン
  *  
  */
 void
@@ -346,7 +346,7 @@ sh2sci_isr_in (void)
 }
 
 /*
- *  SIO�������顼����ߥ����ӥ��롼����
+ *  SIO受信エラー割込みサービスルーチン
  */
 void
 sh2sci_isr_error (void)
@@ -357,7 +357,7 @@ sh2sci_isr_error (void)
 }
 
 /*
- * �ݡ���󥰤ˤ��ʸ��������
+ * ポーリングによる文字の送信
  */
 void
 sh2sci_putc_pol (ID portid, char c)
@@ -369,7 +369,7 @@ sh2sci_putc_pol (ID portid, char c)
 
 #if TNUM_PORT >= 2
 /*
- *  SIO��������ߥ����ӥ��롼����
+ *  SIO受信割込みサービスルーチン
  *  
  */
 void
@@ -381,7 +381,7 @@ sh2sci_isr2_in (void)
 }
 
 /*
- *  SCI��������ߥ����ӥ��롼����
+ *  SCI送信割込みサービスルーチン
  *  
  */
 void
@@ -393,7 +393,7 @@ sh2sci_isr2_out (void)
 }
 
 /*
- *  SIO�������顼����ߥ����ӥ��롼����
+ *  SIO受信エラー割込みサービスルーチン
  */
 void
 sh2sci_isr2_error (void)

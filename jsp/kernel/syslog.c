@@ -6,38 +6,38 @@
  *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: syslog.c,v 1.9 2003/06/04 01:46:16 hiro Exp $
  */
 
 /*
- *	�����ƥ������ǽ
+ *	システムログ機能
  */
 
 #undef OMIT_SYSLOG
@@ -46,7 +46,7 @@
 #include "syslog.h"
 
 /*
- *  ����ƥ����Ȥ˰ͤ�ʤ�CPU���å������å����
+ *  コンテキストに依らないCPUロック／ロック解除
  */
 #define	lock_cpu()	(sense_context() ? i_lock_cpu() : t_lock_cpu())
 #define	unlock_cpu()	(sense_context() ? i_unlock_cpu() : t_unlock_cpu())
@@ -54,22 +54,22 @@
 #ifdef __logini
 
 /*
- *  �����Хåե��Ȥ���˥����������뤿��Υݥ���
+ *  ログバッファとそれにアクセスするためのポインタ
  */
-SYSLOG	syslog_buffer[TCNT_SYSLOG_BUFFER];	/* �����Хåե� */
-UINT	syslog_count;			/* �����Хåե���Υ����ο� */
-UINT	syslog_head;			/* ��Ƭ�Υ����γ�Ǽ���� */
-UINT	syslog_tail;			/* ���Υ����γ�Ǽ���� */
-UINT	syslog_lost;			/* ����줿�����ο� */
+SYSLOG	syslog_buffer[TCNT_SYSLOG_BUFFER];	/* ログバッファ */
+UINT	syslog_count;			/* ログバッファ中のログの数 */
+UINT	syslog_head;			/* 先頭のログの格納位置 */
+UINT	syslog_tail;			/* 次のログの格納位置 */
+UINT	syslog_lost;			/* 失われたログの数 */
 
 /*
- *  ���Ϥ��٤���������ν����١ʥӥåȥޥåס�
+ *  出力すべきログ情報の重要度（ビットマップ）
  */
-UINT	syslog_logmask;			/* �����Хåե��˵�Ͽ���٤������� */
-UINT	syslog_lowmask;			/* ���٥���Ϥ��٤������� */
+UINT	syslog_logmask;			/* ログバッファに記録すべき重要度 */
+UINT	syslog_lowmask;			/* 低レベル出力すべき重要度 */
 
 /*
- *  �����ƥ������ǽ�ν����
+ *  システムログ機能の初期化
  */
 void
 syslog_initialize()
@@ -85,9 +85,9 @@ syslog_initialize()
 #endif /* __logini */
 
 /* 
- *  ��������ν���
+ *  ログ情報の出力
  *
- *  CPU���å����֤�¹ԥ���ƥ����Ȥˤ�餺ư��Ǥ���褦�˼������Ƥ��롥
+ *  CPUロック状態や実行コンテキストによらず動作できるように実装してある．
  */
 #ifdef __vwri_log
 
@@ -102,12 +102,12 @@ vwri_log(UINT prio, SYSLOG *p_log)
 	}
 
 	/*
-	 *  �������������
+	 *  ログ時刻の設定
 	 */
 	p_log->logtim = systim_offset + current_time;
 
 	/*
-	 *  �����Хåե��˵�Ͽ
+	 *  ログバッファに記録
 	 */
 	if ((syslog_logmask & LOG_MASK(prio)) != 0) {
 		syslog_buffer[syslog_tail] = *p_log;
@@ -125,7 +125,7 @@ vwri_log(UINT prio, SYSLOG *p_log)
 	}
 
 	/*
-	 *  ���٥����
+	 *  低レベル出力
 	 */
 	if ((syslog_lowmask & LOG_MASK(prio)) != 0) {
 		syslog_print(p_log, sys_putc);
@@ -140,9 +140,9 @@ vwri_log(UINT prio, SYSLOG *p_log)
 #endif /* __vwri_log */
 
 /*
- *  �����Хåե�������ɽФ�
+ *  ログバッファからの読出し
  *
- *  CPU���å����֤�¹ԥ���ƥ����Ȥˤ�餺ư��Ǥ���褦�˼������Ƥ��롥
+ *  CPUロック状態や実行コンテキストによらず動作できるように実装してある．
  */
 #ifdef __vrea_log
 
@@ -178,7 +178,7 @@ vrea_log(SYSLOG *p_log)
 #endif /* __vrea_log */
 
 /* 
- *  ���Ϥ��٤���������ν����٤�����
+ *  出力すべきログ情報の重要度の設定
  */
 #ifdef __vmsk_log
 
@@ -193,10 +193,10 @@ vmsk_log(UINT logmask, UINT lowmask)
 #endif /* __vmsk_log */
 
 /* 
- *  �����ƥ������ǽ�ν�λ����
+ *  システムログ機能の終了処理
  *
- *  �����Хåե��˵�Ͽ���줿������������٥���ϵ�ǽ���Ѥ��ƽ��Ϥ�
- *  �롥
+ *  ログバッファに記録されたログ情報を，低レベル出力機能を用いて出力す
+ *  る．
  */
 #ifdef __logter
 

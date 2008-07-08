@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="m16cvec" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** �Խ����ʤ��Ǥ������� **
+# ** 編集しないでください **
 
 # TARGTYPE "Win32 (x86) Console Application" 0x0103
 
 CFG=m16cvec - Win32 Debug
-!MESSAGE �����ͭ���ʎҎ����̎����٤ǤϤ���ޤ��� ���Ύ̎ߎێ��ގ����Ĥ�ˎގَĎޤ��뤿��ˤ� NMAKE ����Ѥ��Ƥ���������
-!MESSAGE [�Ҏ����̎����٤Ύ������Ύߎ���] ���ώݎĎޤ���Ѥ��Ƽ¹Ԥ��Ƥ�������
+!MESSAGE これは有効な者軸失捨而軸勺ではありません。 この捨釈杓湿酌蒔失柴を射酌勺柴酌するためには NMAKE を使用してください。
+!MESSAGE [者軸失捨而軸勺の雫失漆斜釈鴫柴] 室煮爵柴酌を使用して実行してください
 !MESSAGE 
 !MESSAGE NMAKE /f "m16cvec.mak".
 !MESSAGE 
-!MESSAGE NMAKE �μ¹Ի��˹��������Ǥ��ޤ�
-!MESSAGE ���ώݎĎ� �׎��ݾ�ǎώ��ۤ������������ޤ�����:
+!MESSAGE NMAKE の実行時に構成を指定できます
+!MESSAGE 室煮爵柴酌 邪軸爵上で煮失杓の設定を定義します。例:
 !MESSAGE 
 !MESSAGE NMAKE /f "m16cvec.mak" CFG="m16cvec - Win32 Debug"
 !MESSAGE 
-!MESSAGE �����ǽ�ʎˎގَĎ� �ӎ��Ď�:
+!MESSAGE 選択可能な射酌勺柴酌 謝鴫柴酌:
 !MESSAGE 
-!MESSAGE "m16cvec - Win32 Release" ("Win32 (x86) Console Application" ��)
-!MESSAGE "m16cvec - Win32 Debug" ("Win32 (x86) Console Application" ��)
+!MESSAGE "m16cvec - Win32 Release" ("Win32 (x86) Console Application" 用)
+!MESSAGE "m16cvec - Win32 Debug" ("Win32 (x86) Console Application" 用)
 !MESSAGE 
 
 # Begin Project

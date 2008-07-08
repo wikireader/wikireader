@@ -9,40 +9,40 @@
  *                              Miyagi Prefectural Government, JAPAN
  *  Copyright (C) 2002-2004 by Hokkaido Industrial Research Institute, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: cpu_config.c,v 1.5 2005/07/06 00:45:07 honda Exp $
  */
 
 /*
- *	�ץ����å���¸�⥸�塼���SH2�ѡ�
- *���������������ͥ������ǻ��Ѥ������
- *������������C����ؿ��μ���
+ *	プロセッサ依存モジュール（SH2用）
+ *　　　　　カーネル内部で使用する定義
+ *　　　　　　C言語関数の実体
  */
 
 #include "jsp_kernel.h"
@@ -52,24 +52,24 @@
 #include <sil.h>
 
 /*
- *  ����������ƥ����ȤǤγ���ߥޥ���
+ *  タスクコンテキストでの割込みマスク
  */
 #ifdef SUPPORT_CHG_IPM
 UW	task_intmask;
 #endif /* SUPPORT_CHG_IPM */
 
 /*
- *  �󥿥�������ƥ����ȤǤγ���ߥޥ���
+ *  非タスクコンテキストでの割込みマスク
  */
 UW	int_intmask;
 
 /*
- *  ����ߡ�CPU�㳰�ͥ��ȥ�����
+ *  割込み／CPU例外ネストカウンタ
  */
 UW	intnest;
 
 /*
- *  ���ꥸ�ʥ�Υ٥����١����쥸��������¸�ΰ�
+ *  オリジナルのベクタベースレジスタの保存領域
  */
 #ifdef KERNEL_HAS_A_VECTOR_TABLE
 static VP org_vbr;
@@ -78,46 +78,46 @@ static VP org_vbr;
 #ifdef SUPPORT_CPU_EXC_ENTRY_CHECK
 
 /*
- *  CPU�㳰���װ���
+ *  CPU例外の要因数
  */
 #ifndef NUM_EXC
 #define NUM_EXC	(6 + 2)
 #endif	/*  NUM_EXC  */
 
 /*
- *  ��Ͽ���줿CPU�㳰���װ���
+ *  登録されたCPU例外の要因数
  */
 static UW num_exc;
 
 /*
- *  CPU�㳰��������������Ƭ���ɥ쥹
+ *  CPU例外の入口処理の先頭アドレス
  */
 static FP exc_entries[NUM_EXC];
 
 #endif /* SUPPORT_CPU_EXC_ENTRY_CHECK */
 
 /*
- *  �ץ����å���¸�ν����
+ *  プロセッサ依存の初期化
  */
 void
 cpu_initialize()
 {
 	/*
-	 *  ����������ƥ����ȤǤγ���ߥޥ����ν����
+	 *  タスクコンテキストでの割込みマスクの初期化
 	 */
 #ifdef SUPPORT_CHG_IPM
 	task_intmask = 0x0000u;
 #endif /* SUPPORT_CHG_IPM */
 
 	/*
-	 *  ����ߡ�CPU�㳰�ͥ��ȥ����󥿤ν����
+	 *  割込み／CPU例外ネストカウンタの初期化
 	 */
 	intnest = 1u;
 
 #ifndef GDB_STUB
 
 	/*
-	 * �����ߥ���ȥ�����ν����
+	 * 割り込みコントローラの初期化
 	 */
 	sh2_init_intcontorller ();
 
@@ -125,14 +125,14 @@ cpu_initialize()
 
 #ifdef KERNEL_HAS_A_VECTOR_TABLE
 	/*
-	 *  �٥����ơ��֥�Ͻ�����դ��ѿ�������ˤˤ����Τǡ�
-	 *  �������ȥ��åץ롼�����data���������򥳥ԡ�����ݤ�
-	 *  ���������롣
-	 *  �ʤ����ǽ��������ɬ�פϤʤ�����
+	 *  ベクタテーブルは初期値付き変数（配列）にしたので、
+	 *  スタートアップルーチンでdataセクションをコピーする際に
+	 *  初期化される。
+	 *  （ここで初期化する必要はない。）
 	 */
 	
 	/*
-	 *  �٥����١����쥸�����ν����
+	 *  ベクタベースレジスタの初期化
 	 */
 	org_vbr = current_vbr();
 	set_vbr((VP)vector_table);
@@ -145,7 +145,7 @@ cpu_initialize()
 }
 
 /*
- *  �ץ����å���¸�ν�λ����
+ *  プロセッサ依存の終了処理
  */
 void
 cpu_terminate()
@@ -156,14 +156,14 @@ cpu_terminate()
 }
 
 /*
- *  CPU�㳰�ϥ�ɥ������
+ *  CPU例外ハンドラの設定
  *
- *  �٥��ȥ��ֹ� excno ��CPU�㳰�ϥ�ɥ�ε�ư���Ϥ� exchdr �����ꤹ�롥
+ *  ベクトル番号 excno のCPU例外ハンドラの起動番地を exchdr に設定する．
  */
 void
 define_exc(EXCNO excno, FP exchdr)
 {
-	/*  SH1�ϳ���ߤ�CPU�㳰��Ʊ������  */
+	/*  SH1は割込みもCPU例外も同じ形式  */
 	define_inh((INHNO)excno, exchdr);
 
 #ifdef SUPPORT_CPU_EXC_ENTRY_CHECK
@@ -174,31 +174,31 @@ define_exc(EXCNO excno, FP exchdr)
 
 #ifdef SUPPORT_CPU_EXC_ENTRY_CHECK
 /*
- *  CPU�㳰�����������ǳ���߶ػߤ���ޤǤ�̿���
+ *  CPU例外の入口処理で割込み禁止するまでの命令数
  */
 #define NUM_INST_DIS_INT	5
 
 
 /*
- *  ����ߤ���������Υ����å�
+ *  割込みからの戻り先のチェック
  *
- *  ������
- *  ����VP pc�������å�����Ѥޤ줿�������
- *  �������
- *  ����TRUE������褬CPU�㳰�����������ʳ���߶ػߤ�������
- *  ����FALSE������褬�嵭�ʳ�
- *  ������
- *  ��������ߤνи������ǳ���߶ػߤǸƤФ�롣
+ *  　引数
+ *  　　VP pc：スタック上に積まれた戻り番地
+ *  　戻り値
+ *  　　TRUE：戻り先がCPU例外の入口処理（割込み禁止する前）
+ *  　　FALSE：戻り先が上記以外
+ *  　備考
+ *  　　割込みの出口処理で割込み禁止で呼ばれる。
  */
 
-/* cpu_support.S��ret_int��������ƤФ��Τ� 	*/
-/* �إå����ե�����ˤϴޤ�ʤ��� 		*/
+/* cpu_support.Sのret_intだけから呼ばれるので 	*/
+/* ヘッダーファイルには含めない。 		*/
 BOOL check_cpu_exc_entry(VP pc)   throw();
 
 BOOL check_cpu_exc_entry(VP pc)
 {
 	UW i;
-	UH *entry;	/* 2�Х���Ĺ̿��ؤΥݥ��� */
+	UH *entry;	/* 2バイト長命令へのポインタ */
 	
 	for(i = 0; i < num_exc; i++) {
 		entry = (UH *)exc_entries[i];
@@ -218,18 +218,18 @@ BOOL check_cpu_exc_entry(VP pc)
 #ifdef SUPPORT_CHG_IPM
 
 /*
- *  ����ߥޥ������ѹ�
+ *  割込みマスクの変更
  *
- *  chg_ipm ��Ȥä� IPM ��0xf��NMI �ʳ��Τ��٤Ƥγ���ߤ�ػߡˤ��ѹ�
- *  ���뤳�ȤϤǤ��ʤ���NMI �ʳ��Τ��٤Ƥγ���ߤ�ػߤ��������ˤϡ�
- *  loc_cpu �ˤ��CPU���å����֤ˤ���Ф褤��
- *  IPM �� 0 �ʳ��λ��ˤ⡤�������ǥ����ѥå�����α����ʤ���IPM �ϡ�
- *  �������ǥ����ѥå��ˤ�äơ��������¹Ծ��֤ˤʤä��������ذ����Ѥ�
- *  ��롥���Τ��ᡤ���������¹���ˡ��̤Υ������ˤ�ä� IPM ���ѹ���
- *  ����礬���롥JSP�����ͥ�Ǥϡ�IPM ���ѹ��ϥ������㳰�����롼��
- *  ��ˤ�äƤⵯ���뤬������ˤ�äư������񤷤��ʤ�����Ͼ��ʤ���
- *  �פ��롥IPM ���ͤˤ�äƥ������ǥ����ѥå���ػߤ��������ˤϡ�
- *  dis_dsp ��ʻ�Ѥ���Ф褤��
+ *  chg_ipm を使って IPM を0xf（NMI 以外のすべての割込みを禁止）に変更
+ *  することはできない．NMI 以外のすべての割込みを禁止したい場合には，
+ *  loc_cpu によりCPUロック状態にすればよい．
+ *  IPM が 0 以外の時にも，タスクディスパッチは保留されない．IPM は，
+ *  タスクディスパッチによって，新しく実行状態になったタスクへ引き継が
+ *  れる．そのため，タスクが実行中に，別のタスクによって IPM が変更さ
+ *  れる場合がある．JSPカーネルでは，IPM の変更はタスク例外処理ルーチ
+ *  ンによっても起こるが，これによって扱いが難しくなる状況は少ないと
+ *  思われる．IPM の値によってタスクディスパッチを禁止したい場合には，
+ *  dis_dsp を併用すればよい．
  */
 SYSCALL ER
 chg_ipm(IPM ipm)
@@ -251,7 +251,7 @@ chg_ipm(IPM ipm)
 }
 
 /*
- *  ����ߥޥ����λ���
+ *  割込みマスクの参照
  */
 SYSCALL ER
 get_ipm(IPM *p_ipm)
@@ -274,7 +274,7 @@ get_ipm(IPM *p_ipm)
 #endif /* SUPPORT_CHG_IPM */
 
 /*
- * ��Ͽ����Ƥ��ʤ��㳰��ȯ������ȸƤӽФ����
+ * 登録されていない例外が発生すると呼び出される
  */
 void cpu_experr(EXCSTACK *sp)
 {
@@ -293,7 +293,7 @@ void cpu_experr(EXCSTACK *sp)
     			sp->r9, sp->r10, sp->r11);
     syslog(LOG_EMERG, "r12 = 0x%08x r13 = 0x%08x r14 = 0x%08x",
     			sp->r12, sp->r13, sp->r14);
-    			/*  �㳰ȯ��ľ���Υ����å��ݥ��󥿤���  */
+    			/*  例外発生直前のスタックポインタの値  */
     syslog(LOG_EMERG, "r15 = 0x%08x", (sp->r15)+19*4);
 
     while(1);
@@ -301,11 +301,11 @@ void cpu_experr(EXCSTACK *sp)
 
 
 /*
- *  ����֥��å����饤�֥��
- *	(ItIs�����ή��)
+ *  メモリブロック操作ライブラリ
+ *	(ItIsからの流用)
  *
- *  �ؿ��λ��ͤϡ�ANSI C �饤�֥��λ��ͤ�Ʊ����ɸ��饤�֥��Τ�Τ�
- *  �Ȥä�������Ψ���ɤ���ǽ�������롥
+ *  関数の仕様は，ANSI C ライブラリの仕様と同じ．標準ライブラリのものを
+ *  使った方が効率が良い可能性がある．
  *
  */
 VP

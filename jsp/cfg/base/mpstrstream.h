@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: mpstrstream.h,v 1.9 2003/12/20 06:51:58 takayuki Exp $
  */
@@ -42,8 +42,8 @@
 #define MPSTRSTREAM_H
 
 #ifdef _MSC_VER
-#  pragma warning(disable:4290) //C++ ���㳰�λ����̵�뤵��ޤ����ؿ��� __declspec(nothrow) �Ǥʤ����ȤΤ�ɽ������ޤ���
-#  pragma warning(disable:4786) //�ǥХå�����Ǽ��̻Ҥ�255ʸ�����ڤ�ΤƤ��ޤ�����
+#  pragma warning(disable:4290) //C++ の例外の指定は無視されます。関数が __declspec(nothrow) でないことのみ表示されます。
+#  pragma warning(disable:4786) //デバッグ情報で識別子が255文字に切り捨てられました。
 #endif
 
 #include "testsuite.h"
@@ -57,12 +57,12 @@
 #include <list>
 
 
-    //ʣ�����̤���ʤ�����ѥ��ȥ꡼��Υ��饹
+    //複数部位からなる出力用ストリームのクラス
 class MultipartStream : public Event<ShutdownEvent>::Handler
 {
 public:
 
-        //ʣ�����̤���ʤ�����ѥ��ȥ꡼��ΰ����̤��������륯�饹
+        //複数部位からなる出力用ストリームの一部位に相当するクラス
     class Part
     {
     protected:
@@ -70,41 +70,41 @@ public:
         std::stringstream stream;
 
     public:
-            //���󥹥ȥ饯��
+            //コンストラクタ
         Part(std::string name) throw();
         Part(const Part & src) throw();
 
-            //������Ƚ��
+            //正当性判定
         inline bool isValid(void) const throw()
         {   return (this != 0) && !name.empty() && stream.good();   }
 
-            //���ȥ꡼��ؤν����
+            //ストリームへの書込み
         template<class T>
         Part & operator << ( T src ) throw(Exception)
         {
             if(isValid())
                 stream << src;
             else
-                ExceptionMessage("Operation was performed against an invalid stream.","̵���ʥ��ȥ꡼����Ф������Ԥ��ޤ���").throwException();
+                ExceptionMessage("Operation was performed against an invalid stream.","無効なストリームに対して操作が行われました").throwException();
 
             return *this;
         }
 
-            //���ȥ꡼��˽񤤤����Ƥ�������
+            //ストリームに書いた内容を受け取る
         std::string getContents(void) const throw(Exception);
 
-            //���ȥ꡼������Ƥ�ľ�����ꤹ��
+            //ストリームの内容を直接設定する
         void setContents(std::string contents) throw(Exception);
 
-            //���ȥ꡼��̾�λ���
+            //ストリーム名の参照
         inline const std::string & getName(void) const throw(Exception)
         {
             if(!isValid())
-                ExceptionMessage("Operation was performed against an invalid stream.","̵���ʥ��ȥ꡼����Ф������Ԥ��ޤ���").throwException();
+                ExceptionMessage("Operation was performed against an invalid stream.","無効なストリームに対して操作が行われました").throwException();
             return name;
         }
 
-            //�����黻��
+            //代入演算子
         inline Part & operator = (const Part & src) throw()
         {
             name = src.name;
@@ -119,50 +119,50 @@ public:
 
 
 protected:
-    std::string         filename;       //��Ϣ�դ���줿�ե�����̾
-    std::list<Part>     parts;          //���̽���(����Ĥ�)
-    Part *              current;        //�����Ƥ�������
-    bool                dirty;          //�ե�����˽��Ϥ����פ����true (�����񤭹������... �ǤϤʤ����ޤ����Ϥ��Ƥʤ����ɤ���)
-    bool                output;         //���Ϥ��Ƥ��ɤ��ʤ�true
+    std::string         filename;       //関連付けられたファイル名
+    std::list<Part>     parts;          //部位集合(順序つき)
+    Part *              current;        //今見ている部位
+    bool                dirty;          //ファイルに出力する要あらばtrue (何か書き込んだら... ではなく、まだ出力してないかどうか)
+    bool                output;         //出力しても良いならtrue
 
     virtual void handler(ShutdownEvent & evt)
     {   serialize();    }
   
 public:
-        //���󥹥ȥ饯��
+        //コンストラクタ
     MultipartStream(std::string filename = "") throw();
 
-        //�ǥ��ȥ饯��
+        //デストラクタ
     virtual ~MultipartStream(void) throw();
 
-        //������Ƚ��
+        //正当性判定
     inline bool isValid(void) const throw()
     {   return (this != 0) && !filename.empty();   }
 
-        //�ե�����̾
+        //ファイル名
     std::string setFilename(std::string filename) throw(Exception);
     std::string getFilename(void) const throw() { return filename; };
 
-        //���ȥ꡼������Ƥ�ե�����˽���
+        //ストリームの内容をファイルに出力
     bool serialize(void) throw(Exception);
 
-        //���̤�����
+        //部位の生成
     MultipartStream & createPart(std::string name, bool precedence = false) throw(Exception);
 
-        //���̤�����
+        //部位の選択
     MultipartStream & movePart(std::string name) throw(Exception);
 
-        //���Ϥ��뤫�ɤ���������
+        //出力するかどうかの設定
     inline void enableOutput(void) throw()
     {   if(isValid()) output = true;   }
     inline void disableOutput(void) throw()
     {   if(isValid()) output = false;   }
 
-        //�����ƥ��ӥåȤ�����
+        //ダーティビットの設定
     inline void setDirty(bool _dirty = true) throw()
     {   dirty = _dirty;   }
 
-        //����
+        //出力
     template <class T>
     inline MultipartStream & operator << ( T src ) throw(Exception)
     {
@@ -171,11 +171,11 @@ public:
             (*current) << src;
         }
         else
-            ExceptionMessage("Invalid operation against an invalid object","̵���ʥ��֥������Ȥ��Ф����׵�").throwException();
+            ExceptionMessage("Invalid operation against an invalid object","無効なオブジェクトに対する要求").throwException();
         return *this;
     }
 
-        //���̤����� (Synonym)
+        //部位の選択 (Synonym)
     inline MultipartStream & operator[] (std::string name) throw(Exception)
     {   return movePart(name);   }
 

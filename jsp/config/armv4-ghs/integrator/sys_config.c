@@ -7,44 +7,44 @@
  *                              Toyohashi Univ. of Technology, JAPAN
  *                2003      by Advanced Data Controls, Corp
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: sys_config.c,v 1.4 2003/12/19 11:48:37 honda Exp $
  */
 
 /*
- *	�������åȥ����ƥ��¸�⥸�塼���Integrator�ѡ�
+ *	ターゲットシステム依存モジュール（Integrator用）
  */
 
 #include "jsp_kernel.h"
 #include <integrator.h>
 
-/*�����ƥ�����Τ���Υݡ���*/
+/*システムログのためのポート*/
 #ifndef MULTI_IO
 #include <hw_sysio.h>
 #else
@@ -83,13 +83,13 @@ UW irq_mask[MAX_INT_NUM]={
 
 extern UW int_stack[];
 /*
- * ����ߥϥ�ɥ���Ͽ�ѥơ��֥�
+ * 割込みハンドラ登録用テーブル
  */
 FP   int_table[MAX_INT_NUM];
 
 
 /*
- *  �������åȥ����ƥ��¸�ν����
+ *  ターゲットシステム依存の初期化
  */
 void
 sys_initialize()
@@ -97,20 +97,20 @@ sys_initialize()
     int i;
 
     /*
-     *  ����ߥơ��֥�ν����
+     *  割込みテーブルの初期化
      */
     for(i = 0; i < MAX_INT_NUM; i++){
-        int_table[i] = 0x00;        /* �ꥻ�å� */
+        int_table[i] = 0x00;        /* リセット */
    
     }
 
     /*
-     *  ARM�Υ٥����ơ��֥�س���ߥϥ�ɥ����Ͽ
+     *  ARMのベクタテーブルへ割込みハンドラを登録
      */
     arm_install_handler(IRQ_Number,IRQ_Handler);
      
     /*
-     *  ����ߴ�Ϣ�ν����
+     *  割込み関連の初期化
      */
     sil_wrw_mem((VP)IRQ0_ENABLECLR,INT_DISABLE_ALL);
     /*initialize system port*/
@@ -121,7 +121,7 @@ sys_initialize()
 
 
 /*
- *  �������åȥ����ƥ�ν�λ
+ *  ターゲットシステムの終了
  */
 void
 sys_exit(void)
@@ -132,7 +132,7 @@ sys_exit(void)
 
 
 /*
- *  �������åȥ����ƥ��ʸ������
+ *  ターゲットシステムの文字出力
  */
 
 void
@@ -147,9 +147,9 @@ sys_putc(char c)
 
 
 /*
- *  ����ߥϥ�ɥ������
+ *  割込みハンドラの設定
  *
- *  ������ֹ� inhno �γ���ߥϥ�ɥ�ε�ư���Ϥ� inthdr �����ꤹ�롥
+ *  割込み番号 inhno の割込みハンドラの起動番地を inthdr に設定する．
  */
 void
 define_inh(INHNO inhno, FP inthdr)
@@ -160,7 +160,7 @@ define_inh(INHNO inhno, FP inthdr)
 }
 
 /*
- *  ̤����γ���ߤ����ä����ν���
+ *  未定義の割込みが入った場合の処理
  */
 void
 undef_interrupt(){
@@ -169,7 +169,7 @@ undef_interrupt(){
 }
 
 
-/*IRQ�쥸���������ꥢ�����ޤ��Ԥ�*/
+/*IRQレジスタがクリアされるまで待つ*/
 #define INT_CLEAR_DELAY  0x70
 void poll_intreg(int int_mask)
 {
@@ -181,7 +181,7 @@ void poll_intreg(int int_mask)
 
 }
 
-/*ȯ�����������ߥӥåȤ򸡺�*/
+/*発生した割り込みビットを検索*/
 
 UINT find_bit(UINT bitmap)
 {

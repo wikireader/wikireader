@@ -6,32 +6,32 @@
  *  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
- *  �嵭����Ԥϡ��ʲ��� (1)��(4) �ξ�狼��Free Software Foundation 
- *  �ˤ�äƸ�ɽ����Ƥ��� GNU General Public License �� Version 2 �˵�
- *  �Ҥ���Ƥ���������������˸¤ꡤ�ܥ��եȥ��������ܥ��եȥ�����
- *  ����Ѥ�����Τ�ޤࡥ�ʲ�Ʊ���ˤ���ѡ�ʣ�������ѡ������ۡʰʲ���
- *  ���ѤȸƤ֡ˤ��뤳�Ȥ�̵���ǵ������롥
- *  (1) �ܥ��եȥ������򥽡��������ɤη������Ѥ�����ˤϡ��嵭������
- *      ��ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ��꤬�����Τޤޤη��ǥ���
- *      ����������˴ޤޤ�Ƥ��뤳�ȡ�
- *  (2) �ܥ��եȥ������򡤥饤�֥������ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ�����Ǻ����ۤ�����ˤϡ������ۤ�ȼ���ɥ�����ȡ�����
- *      �ԥޥ˥奢��ʤɡˤˡ��嵭�����ɽ�����������Ѿ�浪��Ӳ���
- *      ��̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *  (3) �ܥ��եȥ������򡤵�����Ȥ߹���ʤɡ�¾�Υ��եȥ�������ȯ�˻�
- *      �ѤǤ��ʤ����Ǻ����ۤ�����ˤϡ����Τ����줫�ξ�����������
- *      �ȡ�
- *    (a) �����ۤ�ȼ���ɥ�����ȡ����Ѽԥޥ˥奢��ʤɡˤˡ��嵭����
- *        �ɽ�����������Ѿ�浪��Ӳ�����̵�ݾڵ����Ǻܤ��뤳�ȡ�
- *    (b) �����ۤη��֤��̤�������ˡ�ˤ�äơ�TOPPERS�ץ��������Ȥ�
- *        ��𤹤뤳�ȡ�
- *  (4) �ܥ��եȥ����������Ѥˤ��ľ��Ū�ޤ��ϴ���Ū�������뤤���ʤ�»
- *      ������⡤�嵭����Ԥ����TOPPERS�ץ��������Ȥ����դ��뤳�ȡ�
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �ܥ��եȥ������ϡ�̵�ݾڤ��󶡤���Ƥ����ΤǤ��롥�嵭����Ԥ�
- *  ���TOPPERS�ץ��������Ȥϡ��ܥ��եȥ������˴ؤ��ơ�����Ŭ�Ѳ�ǽ����
- *  �ޤ�ơ������ʤ��ݾڤ�Ԥ�ʤ����ޤ����ܥ��եȥ����������Ѥˤ��ľ
- *  ��Ū�ޤ��ϴ���Ū�������������ʤ�»���˴ؤ��Ƥ⡤������Ǥ�����ʤ���
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  *  @(#) $Id: testsuite.cpp,v 1.3 2003/12/15 07:32:14 takayuki Exp $
  */
@@ -45,19 +45,19 @@
 
 #ifdef TESTSUITE
 
-#undef  main           //�ƥ��ȥ��������Ѥ�main���������Τ�undef����
+#undef  main           //テストスィート用のmainを定義するのでundefする
 #undef  cin
 #undef  cout
 #undef  cerr
 
-#include <stdlib.h>     //EXIT_SUCCESS|EXIT_FAILURE��
-#include <fstream>      //��ȴؿ���
+#include <stdlib.h>     //EXIT_SUCCESS|EXIT_FAILURE用
+#include <fstream>      //作業関数用
 #include <cstdio>
 #include <iomanip>
 
 using namespace std;
 
-/* ���ȥ꡼���������Ѥ��ѿ���� */
+/* ストリーム入換え用の変数定義 */
 namespace std {
     stringstream _cin;
     stringstream _cout;
@@ -65,15 +65,15 @@ namespace std {
 }
 
 /*
- *  �ƥ��ȥ������Ȥμ¹����楯�饹 ; class TestSuiteControl
+ *  テストスィートの実行制御クラス ; class TestSuiteControl
  */
 
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 TestSuiteControl::TestSuiteControl(ostream & _out, const char * _pattern) : target_session(_pattern), out(&_out), fail(false), verbose(false), case_count(0), fail_count(0)
 {}
 
-    //���ʥꥪ̾�μ���
+    //シナリオ名の取得
 string TestSuiteControl::get_suitename(const char * name) const
 {
     string result;
@@ -93,25 +93,25 @@ string TestSuiteControl::get_suitename(const char * name) const
 }
 
 
-    //�ƥ��ȥ��ʥꥪ��ɽ������ (�ֵ��� : �¹Ԥ���ɬ�פ����뤫�ɤ���)
+    //テストシナリオの表題設定 (返却値 : 実行する必要があるかどうか)
 bool TestSuiteControl::_enter_case(const char * session, const char * description, const char * filename, long lineno)
 {
     bool         result;
     stringstream buf;
 
-        //ɽ�������
+        //表題の設定
     current_session.assign(get_suitename(session));
 
-        //�ܺپ��������
+        //詳細情報の設定
     if(description != 0)
         buf << description;
 
-        //�ե�����̾ (filename:lineno) ������
+        //ファイル名 (filename:lineno) の生成
     if(filename != 0) {
         string            work(filename);
         string::size_type pos;
 
-            //�ե�ѥ����褿��û���ڤ�
+            //フルパスで来たら短く切る
         pos = work.find_last_of("/\\");
         if(pos != string::npos)
             work.erase(0, pos + 1);
@@ -123,7 +123,7 @@ bool TestSuiteControl::_enter_case(const char * session, const char * descriptio
     }
     current_description = buf.str();
     
-        //�¹Ԥ���ɬ�פ�̵ͭ�γ�ǧ
+        //実行する必要の有無の確認
     result = (target_session.empty() || current_session.find(target_session) != string::npos);
 
     if(result) {
@@ -142,15 +142,15 @@ bool TestSuiteControl::_enter_case(const char * session, const char * descriptio
     return result;
 }
 
-    //�ƥ��ȥ��å����̾ (���ʥꥪ�ץ�ե�����) ������
+    //テストセッション名 (シナリオプレフィクス) の設定
 void TestSuiteControl::enter_session(const string & _session)
 {   session.push_back(_session);   }
 
-    //�ƥ��ȥ��å����̾ (���ʥꥪ�ץ�ե�����) �β��
+    //テストセッション名 (シナリオプレフィクス) の解除
 void TestSuiteControl::leave_session(void)
 {   session.pop_back();   }
 
-    //�ƥ��ȥ��ʥꥪ�μ������
+    //テストシナリオの失敗報告
 void TestSuiteControl::fail_in_suite(string msg)
 {
     fail = true;
@@ -161,15 +161,15 @@ void TestSuiteControl::fail_in_suite(string msg)
 }
 
 
-    //�������Ⱦ��󥳥󥹥ȥ饯��
+    //スィート情報コンストラクタ
 TestSuite::SuiteContainerNode::SuiteContainerNode(const char * _session, SuiteFunction _suite) : session(_session), suite(_suite)
 {}
 
-    //�������Ⱦ��󥳥󥹥ȥ饯��
+    //スィート情報コンストラクタ
 TestSuite::SuiteContainerNode::SuiteContainerNode(const SuiteContainerNode & src) : session(src.session), suite(src.suite)
 {}
 
-    //�������Ȥμ¹�
+    //スィートの実行
 bool TestSuite::SuiteContainerNode::invoke(TestSuiteControl & suite_control)
 {
     if(suite != 0) {
@@ -182,20 +182,20 @@ bool TestSuite::SuiteContainerNode::invoke(TestSuiteControl & suite_control)
 }
 
 /*
- *  �ƥ��ȥ������ȼ¹ԥ��饹
+ *  テストスィート実行クラス
  */
 
-    //���󥹥ȥ饯��
+    //コンストラクタ
 TestSuite::TestSuite(const char * session, SuiteFunction suite) : fail(false)
 {   Singleton<SuiteContainer>::getInstance()->push_back(SuiteContainerNode(session, suite));   }
 
 
-    //�ǥ��ȥ饯��
+    //デストラクタ
 TestSuite::~TestSuite(void)
 {}
 
 
-    //�ƥ��ȥ������Ȥμ¹�  (�ֵ���:�������Ȥ�¹Ԥ������ɤ���)
+    //テストスィートの実行  (返却値:スィートを実行したかどうか)
 bool TestSuite::performTestSuite(int flags, const char * pattern)
 {
     bool                        result;
@@ -203,37 +203,37 @@ bool TestSuite::performTestSuite(int flags, const char * pattern)
     SuiteContainer *            container;
     SuiteContainer::iterator    scope;
 
-        //�¹ԥ������ȥꥹ�Ȥλ���
+        //実行スィートリストの参照
     container = Singleton<SuiteContainer>::getInstance();
 
-        //��Ĺ��������
+        //冗長出力設定
     if( (flags & VERBOSE) != 0 )
         suite_control.set_verbose();
 
-        //����Ͽ�������Ȥμ¹�
+        //全登録スィートの実行
     scope = container->begin();
     while(scope != container->end()) {
 
         result = scope->invoke(suite_control);
 
-            //���������ߤ�� or �̤��Ǽ¹�
+            //いちいち止める or 通しで実行
         if( !result && (flags & THROUGH) == 0)
             break;
 
         ++ scope;
     }
 
-        //���顼���ʤ����OKɽ��
+        //エラーがなければOK表示
     if(!suite_control.is_failed())
         cerr << "OK (" << suite_control.countCases() << " passed)" << endl;
     else
         cerr << "Failed (" << suite_control.countFails() << '/' << suite_control.countCases() << ')' << endl;
 
-    return !suite_control.is_failed();    //�������Ȥ�����˼¹ԤǤ�����true
+    return !suite_control.is_failed();    //スィートを正常に実行できたらtrue
 }
 
 
-    //��Ͽ����Ƥ���ȥåץ�٥륹�����Ȥΰ���ɽ��
+    //登録されているトップレベルスィートの一覧表示
 void TestSuite::listTestSuite(void)
 {
     SuiteContainer::iterator  scope;
@@ -258,7 +258,7 @@ void TestSuite::listTestSuite(void)
 
 
 /*
- *   �����å��ݥ�����Ѵؿ�
+ *   チェックポイント用関数
  */
 
 bool TestSuite::isReached(std::string checkname)
@@ -272,17 +272,17 @@ bool TestSuite::isReached(std::string checkname)
 
 
 /*
- *   �ƥ��ȥ������ȼ¹��Ѻ�ȴؿ�
+ *   テストスィート実行用作業関数
  */
 
-    //�ե������������
+    //ファイル内容比較
 bool TestSuite::compareFileContents(const char * filename, const char * filecontents, bool _remove)
 {
     fstream file(filename,ios::in);
     int     ch;
     bool    result = true;
 
-        //���ƥ����å�
+        //内容チェック
     while(result && *filecontents != '\x0' && file.good()) {
         ch = file.get();
 
@@ -292,7 +292,7 @@ bool TestSuite::compareFileContents(const char * filename, const char * filecont
         ++ filecontents;
     }
 
-        //EOF��ã���Ƥ��뤫
+        //EOFに達しているか
     if(result) {
         if(!file.good() || file.get() != EOF)
             result = false;
@@ -308,7 +308,7 @@ bool TestSuite::compareFileContents(const char * filename, const char * filecont
 
     
 /*
-    *   �ƥ��ȥ������ȼ¹���main�ؿ�
+    *   テストスィート実行用main関数
     */
 int main(int argc, char ** argv)
 {
