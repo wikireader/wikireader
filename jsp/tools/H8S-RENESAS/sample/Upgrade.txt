@@ -1,0 +1,12 @@
+Project name : sample
+
+
+
+Hitachi H8S,H8/300 Standard Toolchain was upgraded 6.1.0.0 -> 6.1.2.0.
+
+
+
+[Standard Library]/[Mode]/[Mode :] option is changed.
+
+
+

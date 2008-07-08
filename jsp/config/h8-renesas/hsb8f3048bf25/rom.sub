@@ -1,0 +1,8 @@
+start=V,P,C,D/0, R,B/200000
+cpu=ROM=0-01ffff,RAM=200000-27ffff
+rom=D=R
+define=_software_term_hook=0
+form=absolute
+debug
+nologo
+exit

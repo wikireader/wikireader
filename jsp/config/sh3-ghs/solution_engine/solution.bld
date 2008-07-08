@@ -1,0 +1,31 @@
+#!build
+default:
+	subproject
+	:sourcedirs=../../sh3/solution_engine
+fdc37c935a.h
+	include_file
+hw_serial.h
+	include_file
+ms7709ase01.h
+	include_file
+ms7729rse01.h
+	include_file
+ms7750se01.h
+	include_file
+solution_engine.h
+	include_file
+sys_config.h
+	include_file
+sys_defs.h
+	include_file
+	:defines=MS7729RSE01
+sys_rename.h
+	include_file
+sys_unrename.h
+	include_file
+fdc37c935a.c
+	C
+sys_config.c
+	C
+sys_support.sh
+	assembly

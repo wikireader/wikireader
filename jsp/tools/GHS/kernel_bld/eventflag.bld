@@ -1,0 +1,38 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+eventflag.h
+        include_file
+eventflag.c
+        C
+        :outputname=flgini.o
+        :defines=__flgini
+eventflag.c
+        C
+        :outputname=flgcnd.o
+        :defines=__flgcnd
+eventflag.c
+        C
+        :outputname=set_flg.o
+        :defines=__set_flg
+eventflag.c
+        C
+        :outputname=iset_flg.o
+        :defines=__iset_flg
+eventflag.c
+        C
+        :outputname=clr_flg.o
+        :defines=__clr_flg
+eventflag.c
+        C
+        :outputname=wai_flg.o
+        :defines=__wai_flg
+eventflag.c
+        C
+        :outputname=pol_flg.o
+        :defines=__pol_flg
+eventflag.c
+        C
+        :outputname=twai_flg.o
+        :defines=__twai_flg

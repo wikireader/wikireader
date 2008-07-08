@@ -1,0 +1,20 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+time_event.h
+	include_file
+
+time_manage.c
+	C
+	:outputname=set_tim.o
+	:defines=__set_tim
+time_manage.c
+	C
+	:outputname=get_tim.o
+	:defines=__get_tim
+time_manage.c
+	C
+	:outputname=vxget_tim.o
+	:defines=__vxget_tim

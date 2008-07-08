@@ -1,0 +1,15 @@
+#!build
+default:
+	subproject
+	:sourcedirs=../../../systask
+	:defines=GHS_HOOK=2
+hook.c
+	C
+hook.h
+	include_file
+hook_data.c
+	C
+ghs_hook.h
+	include_file
+ghs_hook.c
+	C

@@ -1,0 +1,7 @@
+activate_r
+ret_int
+ret_exc
+interrupt_count
+int_handler_table
+exc_handler_table
+_irq_entry

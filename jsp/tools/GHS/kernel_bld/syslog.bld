@@ -1,0 +1,30 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+time_event.h
+	include_file
+syslog.h
+	include_file
+
+syslog.c
+	C
+	:outputname=logini.o
+	:defines=__logini
+syslog.c
+	C
+	:outputname=vwri_log.o
+	:defines=__vwri_log
+syslog.c
+	C
+	:outputname=vrea_log.o
+	:defines=__vrea_log
+syslog.c
+	C
+	:outputname=vmsk_log.o
+	:defines=__vmsk_log
+syslog.c
+	C
+	:outputname=logter.o
+	:defines=__logter

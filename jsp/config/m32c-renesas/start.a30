@@ -1,0 +1,144 @@
+;*
+;*  TOPPERS/JSP Kernel
+;*      Toyohashi Open Platform for Embedded Real-Time Systems/
+;*      Just Standard Profile Kernel
+;* 
+;*  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+;*                              Toyohashi Univ. of Technology, JAPAN
+;*  Copyright (C) 2001 by OAKS16KIT support
+;*  Copyright (C) 2003-2004 by Naoki Saito
+;*             Nagoya Municipal Industrial Research Institute, JAPAN
+;*  Copyright (C) 2003-2004 by Ryosuke Takeuchi
+;*               Platform Development Center RICOH COMPANY,LTD. JAPAN
+;* 
+;*  上記著作権者は，Free Software Foundation によって公表されている 
+;*  GNU General Public License の Version 2 に記述されている条件か，以
+;*  下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェア（本ソフトウェ
+;*  アを改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;*  利用と呼ぶ）することを無償で許諾する．
+;*  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;*      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;*      スコード中に含まれていること．
+;*  (2) 本ソフトウェアを再利用可能なバイナリコード（リロケータブルオブ
+;*      ジェクトファイルやライブラリなど）の形で利用する場合には，利用
+;*      に伴うドキュメント（利用者マニュアルなど）に，上記の著作権表示，
+;*      この利用条件および下記の無保証規定を掲載すること．
+;*  (3) 本ソフトウェアを再利用不可能なバイナリコードの形または機器に組
+;*      み込んだ形で利用する場合には，次のいずれかの条件を満たすこと．
+;*    (a) 利用に伴うドキュメント（利用者マニュアルなど）に，上記の著作
+;*        権表示，この利用条件および下記の無保証規定を掲載すること．
+;*    (b) 利用の形態を，別に定める方法によって，上記著作権者に報告する
+;*        こと．
+;*  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;*      害からも，上記著作権者を免責すること．
+;* 
+;*  本ソフトウェアは，無保証で提供されているものである．上記著作権者は，
+;*  本ソフトウェアに関して，その適用可能性も含めて，いかなる保証も行わ
+;*  ない．また，本ソフトウェアの利用により直接的または間接的に生じたい
+;*  かなる損害に関しても，その責任を負わない．
+;* 
+;*  @(#) $Id: start.a30,v 1.3 2005/11/24 12:41:23 honda Exp $
+
+PRCR  .EQU		000AH			; プロテクトレジスタ
+PRC0  .BTEQU	0,PRCR			; システムクロックレジスタビット
+PRC1  .BTEQU	1,PRCR			; プロセッサモードレジスタビット
+;
+PM0   .EQU		0004H			; プロセッサモードレジスタ０
+PM1   .EQU		0005H			; プロセッサモードレジスタ１
+;
+CM0   .EQU		0006H			; クロックモードレジスタ０
+CM1   .EQU		0007H			; クロックモードレジスタ１
+MCD   .EQU		000CH
+CM2   .EQU		000DH
+C_CM0 .EQU		00000000B		; CM0(Xcin-HIGH)
+C_CM1 .EQU		00100000B		; CM1(Xin-HIGH)
+C_CM2 .EQU		00000000B		; メインクロック分周なし
+C_MCD .EQU		00010010B		; 発振停止検出機能無効
+
+
+;/*	定数定義（初期化）*/
+;
+VECTOR_ADR 	.EQU	0FFBD00h		; ベクタアドレス
+
+	.include	m16cvec.inc
+
+	.section	bss_NE,DATA,ALIGN
+	.section	data_NE,DATA,ALIGN
+	.section	data_NEI,ROMDATA,ALIGN
+	.section	bss_NO,DATA,ALIGN
+	.section	data_NO,DATA,ALIGN
+	.section	data_NOI,ROMDATA,ALIGN
+
+;
+;************************************************
+;*	初期化ルーチン                              *
+;************************************************
+	.section	program, code, align
+	.glb		_hardware_start
+	.glb		_kernel_start
+	.glb		_software_init_hook
+;
+_hardware_start:
+	ldc			#RAMEND,ISP		; 割り込みスタックポインタセット
+
+; ----- set Processor mode -----
+	bset		PRC1			; プロセッサモードレジスタ書き込みイネーブル
+	mov.b		#00000000b,PM0		; シングルチップモード、BCLK出力しない
+	mov.b		#00000000b,PM1		; メモリ非拡張、ノーウェイト
+	;	CAN 関連レジスタを使用する場合は次のようにする.
+	;	mov.b	#00001000b, PM1		; メモリ非拡張, 0wait,SFR 1wait(CAN使用時)
+	bclr		PRC1			; プロセッサモードレジスタ書き込みディゼーブル
+; ----- set System clock -----
+	bset		PRC0			; クロックコントロールレジスタ書き込みイネーブル
+	mov.b		#C_CM0,CM0		; 発信
+	mov.b		#C_CM1,CM1		; 
+	mov.b		#C_CM2,CM2		; 発振停止検出機能無効
+	mov.b		#C_MCD,MCD		; メインクロック分周なし
+	bclr		PRC0			; レジスタ書き込みディゼーブル
+;
+;	ldc		#0000h, flg		; bank#0,割り込み禁止,ISP
+	ldc		#VECTOR_ADR, intb	; ベクタテーブルの設定
+
+;------ DATA領域の初期化 ------
+init_data_NE:
+	mov.w	#(sizeof data_NE), r3
+	jz	init_data_NO	; サイズ0なら初期化必要なし
+	mov.l	#(topof data_NEI), a0
+	mov.l	#(topof data_NE), a1
+	smovf.b
+
+init_data_NO:
+	mov.w	#(sizeof data_NO), r3
+	jz	clear_bss	; サイズ0なら初期化必要なし
+	mov.l	#(topof data_NOI), a0
+	mov.l	#(topof data_NO), a1
+	smovf.b
+
+;------ BSS領域の初期化 ------
+clear_bss:
+	mov.b	#0, r0l
+	mov.w	#(topof bss_NE & 0ffffh), a1
+	mov.w	#(sizeof bss_NE) , r3
+	sstr.b
+
+	mov.w	#(topof bss_NO & 0ffffh), a1
+	mov.w	#(sizeof bss_NO) , r3
+	sstr.b
+
+;*  software_init_hook を呼出し（0 でない場合）
+;*
+;*  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+;*  理がある場合は，software_init_hook という関数を用意すれば
+;*  よい．M32Cの場合、コンパイル時EXTERN_SOFT_HOOKをデファインする
+	mov.l		#_software_init_hook, a0
+	mov.l		[a0], a1
+	cmp.l		#0, a1
+	jz		kernel_link
+	jsri.a		a1
+
+;;
+;***** カーネルスタートへ	*****
+kernel_link:
+	jmp		_kernel_start	; --> kernel_start()
+;
+	.end

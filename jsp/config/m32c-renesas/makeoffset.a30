@@ -1,0 +1,370 @@
+	._LANG	'C','5.02.05','REV.F'
+
+;## NC308 C Compiler OUTPUT
+;## ccom308 Version 5.02.05
+;## COPYRIGHT(C) 1999(2004) RENESAS TECHNOLOGY CORPORATION
+;## AND RENESAS SOLUTIONS CORPORATION ALL RIGHTS RESERVED
+;## Compile Start Time Wed Aug 04 13:51:05 2004
+
+;## COMMAND_LINE: ccom308  C:\MTOOL\TMP\makeoffset.i -o ..\..\config\m32c-renesas\makeoffset.a30 -dS
+
+
+;## Normal Optimize		OFF
+;## ROM size Optimize		OFF
+;## Speed Optimize		OFF
+;## Default ROM is		far
+;## Default RAM is		near
+
+	.GLB	__SB__
+	.SB	__SB__
+	.FB	0
+
+;## #	FUNCTION kernel_abort
+
+;## #	FUNCTION _syslog_0
+
+;## #	FUNCTION _syslog_1
+
+;## #	FUNCTION _syslog_2
+
+;## #	FUNCTION _syslog_3
+
+;## #	FUNCTION _syslog_4
+
+;## #	FUNCTION _syslog_5
+
+;## #	FUNCTION _syslog_6
+
+;## #	FUNCTION current_flgreg
+
+;## #	FUNCTION disint
+
+;## #	FUNCTION enaint
+
+;## #	FUNCTION sense_context
+
+;## #	FUNCTION sense_lock
+
+;## #	FUNCTION lock_cpu
+
+;## #	FUNCTION unlock_cpu
+
+;## #	FUNCTION define_inh
+
+;## #	FUNCTION define_exc
+
+;## #	FUNCTION exc_sense_context
+
+;## #	FUNCTION exc_sense_lock
+
+;## #	FUNCTION queue_initialize
+
+;## #	FUNCTION queue_insert_prev
+
+;## #	FUNCTION queue_delete
+
+;## #	FUNCTION queue_delete_next
+
+;## #	FUNCTION queue_empty
+
+;## #	FUNCTION tmevtb_enqueue
+
+;## #	FUNCTION tmevtb_enqueue_evttim
+
+;## #	FUNCTION tmevtb_dequeue
+
+;## #	FUNCTION makeoffset
+;## #	ARG Size(0)	Auto Size(0)	Context Size(4)
+
+
+	.SECTION	program,CODE,ALIGN
+	._file	'../../config/m32c-renesas/makeoffset.c'
+	.align
+	._line	196
+;## # C_SRC :	{
+	.glb	_makeoffset
+_makeoffset:
+	pushm	A0
+	._line	197
+;## # C_SRC :		asm("! BEGIN TCB_texptn\n");
+;#### ASM START
+! BEGIN TCB_texptn
+;#### ASM END
+	._line	198
+;## # C_SRC :		(INT)(((TCB *)0)->texptn) |= 1;
+	mov.l	#00000000H,A0
+	or.w	#0001H,00000eH[A0]
+	._line	199
+;## # C_SRC :		asm("! END");
+;#### ASM START
+! END
+	._line	201
+;## # C_SRC :		asm("! BEGIN TCB_sp\n");
+! BEGIN TCB_sp
+;#### ASM END
+	._line	202
+;## # C_SRC :		*(char *)(((TCB *)0)->tskctxb.sp) |= 1;
+	mov.l	00000014H,A0
+	extz	[A0],R0
+	bset	0,R0L
+	mov.l	#00000014H,A0
+	mov.b	R0L,[[A0]]
+	._line	203
+;## # C_SRC :		asm("! END");
+;#### ASM START
+! END
+	._line	205
+;## # C_SRC :		asm("! BEGIN TCB_pc\n");
+! BEGIN TCB_pc
+;#### ASM END
+	._line	206
+;## # C_SRC :		(((TCB *)0)->tskctxb.pc)();
+	mov.l	#00000018H,A0
+	jsri.a	[A0]
+	._line	207
+;## # C_SRC :		asm("! END");
+;#### ASM START
+! END
+	._line	209
+;## # C_SRC :		asm("! BEGIN TCB_enatex\n");
+! BEGIN TCB_enatex
+;#### ASM END
+	._line	210
+;## # C_SRC :		(INT)(((TCB *)0)->enatex) = 1;
+	bset	6,0000000cH+1
+	._line	211
+;## # C_SRC :		asm("! END");
+;#### ASM START
+! END
+;#### ASM END
+	._line	212
+;## # C_SRC :	}
+	popm	A0
+	rts	
+E1:
+	.glb	_vxget_tim
+	.glb	_hardware_start
+	.glb	$vwri_log
+	.glb	_vrea_log
+	.glb	$vmsk_log
+	.glb	_syslog
+	.glb	_syslog_printf
+	.glb	_syslog_print
+	.glb	_syslog_output
+	.glb	$act_tsk
+	.glb	$iact_tsk
+	.glb	$can_act
+	.glb	_ext_tsk
+	.glb	$ter_tsk
+	.glb	$chg_pri
+	.glb	$get_pri
+	.glb	_slp_tsk
+	.glb	$tslp_tsk
+	.glb	$wup_tsk
+	.glb	$iwup_tsk
+	.glb	$can_wup
+	.glb	$rel_wai
+	.glb	$irel_wai
+	.glb	$sus_tsk
+	.glb	$rsm_tsk
+	.glb	$frsm_tsk
+	.glb	$dly_tsk
+	.glb	$ras_tex
+	.glb	$iras_tex
+	.glb	_dis_tex
+	.glb	_ena_tex
+	.glb	_sns_tex
+	.glb	$sig_sem
+	.glb	$isig_sem
+	.glb	$wai_sem
+	.glb	$pol_sem
+	.glb	$twai_sem
+	.glb	$set_flg
+	.glb	$iset_flg
+	.glb	$clr_flg
+	.glb	$wai_flg
+	.glb	$pol_flg
+	.glb	$twai_flg
+	.glb	$snd_dtq
+	.glb	$psnd_dtq
+	.glb	$ipsnd_dtq
+	.glb	$tsnd_dtq
+	.glb	$fsnd_dtq
+	.glb	$ifsnd_dtq
+	.glb	$rcv_dtq
+	.glb	$prcv_dtq
+	.glb	$trcv_dtq
+	.glb	$snd_mbx
+	.glb	$rcv_mbx
+	.glb	$prcv_mbx
+	.glb	$trcv_mbx
+	.glb	$get_mpf
+	.glb	$pget_mpf
+	.glb	$tget_mpf
+	.glb	$rel_mpf
+	.glb	_set_tim
+	.glb	_get_tim
+	.glb	_isig_tim
+	.glb	$sta_cyc
+	.glb	$stp_cyc
+	.glb	$rot_rdq
+	.glb	$irot_rdq
+	.glb	_get_tid
+	.glb	_iget_tid
+	.glb	_loc_cpu
+	.glb	_iloc_cpu
+	.glb	_unl_cpu
+	.glb	_iunl_cpu
+	.glb	_dis_dsp
+	.glb	_ena_dsp
+	.glb	_sns_ctx
+	.glb	_sns_loc
+	.glb	_sns_dsp
+	.glb	_sns_dpn
+	.glb	_vxsns_ctx
+	.glb	_vxsns_loc
+	.glb	_vxsns_dsp
+	.glb	_vxsns_dpn
+	.glb	_vxsns_tex
+	.glb	_vsns_ini
+	.glb	__kernel_sys_initialize
+	.glb	__kernel_sys_exit
+	.glb	$_kernel_sys_putc
+	.glb	_sys_led
+	.glb	__kernel_intnest
+	.glb	__kernel_dispatch
+	.glb	__kernel_exit_and_dispatch
+	.glb	__kernel_cpu_initialize
+	.glb	__kernel_cpu_terminate
+	.glb	__kernel_object_initialize
+	.glb	__kernel_call_inirtn
+	.glb	__kernel_call_terrtn
+	.glb	__kernel_print_banner
+	.glb	_kernel_exit
+	.glb	__kernel_iniflg
+	.glb	__kernel_tmevt_heap
+	.glb	__kernel_systim_offset
+	.glb	__kernel_current_time
+	.glb	__kernel_next_time
+	.glb	__kernel_last_index
+	.glb	__kernel_tmevt_initialize
+	.glb	$_kernel_tmevt_up
+	.glb	$_kernel_tmevt_down
+	.glb	__kernel_tmevtb_insert
+	.glb	__kernel_tmevtb_delete
+	.glb	__kernel_runtsk
+	.glb	__kernel_schedtsk
+	.glb	__kernel_reqflg
+	.glb	__kernel_enadsp
+	.glb	__kernel_ready_queue
+	.glb	__kernel_ready_primap
+	.glb	__kernel_tmax_tskid
+	.glb	__kernel_tinib_table
+	.glb	__kernel_torder_table
+	.glb	__kernel_tcb_table
+	.glb	__kernel_task_initialize
+	.glb	__kernel_search_schedtsk
+	.glb	__kernel_make_runnable
+	.glb	__kernel_make_non_runnable
+	.glb	__kernel_make_dormant
+	.glb	__kernel_make_active
+	.glb	__kernel_exit_task
+	.glb	__kernel_change_priority
+	.glb	$_kernel_rotate_ready_queue
+	.glb	__kernel_call_texrtn
+	.glb	__kernel_calltex
+
+	.SECTION	rom_FO,ROMDATA
+___T4:
+	.byte	74H	;  't'
+	.byte	69H	;  'i'
+	.byte	6dH	;  'm'
+	.byte	65H	;  'e'
+	.byte	5fH	;  '_'
+	.byte	65H	;  'e'
+	.byte	76H	;  'v'
+	.byte	65H	;  'e'
+	.byte	6eH	;  'n'
+	.byte	74H	;  't'
+	.byte	2eH	;  '.'
+	.byte	68H	;  'h'
+	.byte	00H
+___T3:
+	.byte	74H	;  't'
+	.byte	69H	;  'i'
+	.byte	6dH	;  'm'
+	.byte	65H	;  'e'
+	.byte	20H	;  ' '
+	.byte	3cH	;  '<'
+	.byte	3dH	;  '='
+	.byte	20H	;  ' '
+	.byte	54H	;  'T'
+	.byte	4dH	;  'M'
+	.byte	41H	;  'A'
+	.byte	58H	;  'X'
+	.byte	5fH	;  '_'
+	.byte	52H	;  'R'
+	.byte	45H	;  'E'
+	.byte	4cH	;  'L'
+	.byte	54H	;  'T'
+	.byte	49H	;  'I'
+	.byte	4dH	;  'M'
+	.byte	00H
+___T2:
+	.byte	71H	;  'q'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	2dH	;  '-'
+	.byte	3eH	;  '>'
+	.byte	70H	;  'p'
+	.byte	72H	;  'r'
+	.byte	65H	;  'e'
+	.byte	76H	;  'v'
+	.byte	20H	;  ' '
+	.byte	3dH	;  '='
+	.byte	3dH	;  '='
+	.byte	20H	;  ' '
+	.byte	71H	;  'q'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	00H
+___T1:
+	.byte	71H	;  'q'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	2eH	;  '.'
+	.byte	68H	;  'h'
+	.byte	00H
+___T0:
+	.byte	71H	;  'q'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	2dH	;  '-'
+	.byte	3eH	;  '>'
+	.byte	6eH	;  'n'
+	.byte	65H	;  'e'
+	.byte	78H	;  'x'
+	.byte	74H	;  't'
+	.byte	20H	;  ' '
+	.byte	21H	;  '!'
+	.byte	3dH	;  '='
+	.byte	20H	;  ' '
+	.byte	71H	;  'q'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	75H	;  'u'
+	.byte	65H	;  'e'
+	.byte	00H
+	.END
+
+;## Compile End Time Wed Aug 04 13:51:05 2004
+
+

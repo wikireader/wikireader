@@ -1,0 +1,63 @@
+
+   TOPPERS/JSP Kernel（Release 1.4.3）
+       Toyohashi Open Platform for Embedded Real-Time Systems/
+       Just Standard Profile Kernel
+
+TOPPERS/JSPカーネルは，TOPPERSプロジェクトにおいて開発したμITRON4.0仕
+様に準拠したリアルタイムカーネルです．JSP（Just Standard Profile）の名
+前が示す通り，μITRON4.0仕様のスタンダードプロファイル規定に従って実装
+されています．
+
+ターゲットプロセッサとして，現時点で，M68040，SH3/4，SH1，SH2，H8，H8S, 
+ARMv4，M32R，MicroBlaze，TMS320C54x，Xstormy16，MIPS3，M16C，SC33，
+PowerPC32，Nios2, v850をサポートしています．カーネルのできる限り多くの
+部分をC言語で記述する，ターゲット独立部と依存部を明確に分離するなど，
+他のターゲットプロセッサへのポーティングが容易な構造になっています．さ
+らに，Linux上とWindows上で動作するシミュレーション環境を用意しています．
+
+TOPPERS/JSPカーネルは，オープンソースソフトウェアです．TOPPERS/JSPカー
+ネルの配付キットの最新版は，以下のウェブサイトからダウンロードすること
+ができます．
+        http://www.toppers.jp/
+
+このページからダウンロードできる配付キットには，シミュレーション環境を
+含むTOPPERS/JSPカーネルの全ソースファイルとコンフィギュレータのソース
+ファイルが含まれています．TOPPERS/JSPカーネルの利用条件については，各
+ソースファイルの先頭に記述されている利用条件を参照してください．
+
+【ユーザズマニュアル】
+
+TOPPERS/JSPカーネルのユーザズマニュアルは，doc/user.txt にあります．
+TOPPERS/JSPカーネルを利用する場合には，まず，このマニュアルに目を通し
+て下さい．インストール方法の説明は，このマニュアルの７章にあります．
+
+【TOPPERSユーザズメーリングリスト】
+
+TOPPERS/JSPカーネルのユーザのために，TOPPERSユーザズメーリングリストを
+用意しています．このメーリングリストには，誰でも自由にメールを送付する
+ことができます．メールの送付先は，users@toppers.jp です．また，送付さ
+れたメールは，上記のウェブサイトで読むことができます．
+
+TOPPERS/JSPカーネルに関する質問やバグレポートは，このメーリングリスト
+宛てにお送り下さい．ただし，担当者の都合で迅速な返答ができない場合があ
+るかと思いますが，ご了承下さい．
+
+TOPPERSユーザズメーリングリストへの登録を希望される方は，
+users-ctl@toppers.jp 宛てに，本文に
+
+        subscribe あなたの名前
+        例: subscribe Hiroaki Takada
+
+と書いたメールを送付してください（上記のコマンド中には半角英文字のみを
+使うこと）．折り返し，登録確認のためのメールをお送りしますので，その指
+示に従って下さい．
+
+----------------------------------------------------------------------
+・TRON は "The Real-time Operating system Nucleus" の略称です．
+・ITRON は "Industrial TRON" の略称です．
+・μITRON は "Micro Industrial TRON" の略称です．
+・TRON，ITRON，およびμITRONは，特定の商品ないしは商品群を指す名称では
+  ありません．
+・TOPPERS は "Toyohashi OPen Platform for Embedded Real-time Systems" 
+  の略称，JSP は "Just Standard Profile" の略称です．
+・本文中の商品名は，各社の商標または登録商標です．

@@ -1,0 +1,24 @@
+HKCR
+{
+	ATLDeviceManager.Information.1 = s 'Information Class'
+	{
+		CLSID = s '{D7AAF617-008A-4961-BB51-041CFD490ED3}'
+	}
+	ATLDeviceManager.Information = s 'Information Class'
+	{
+		CLSID = s '{D7AAF617-008A-4961-BB51-041CFD490ED3}'
+		CurVer = s 'ATLDeviceManager.Information.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D7AAF617-008A-4961-BB51-041CFD490ED3} = s 'Information Class'
+		{
+			ProgID = s 'ATLDeviceManager.Information.1'
+			VersionIndependentProgID = s 'ATLDeviceManager.Information'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{44CB3B0F-D399-428E-829C-9BD5183AFF51}'
+			'TypeLib' = s '{F15F5272-83F3-42C3-874C-E4FF2B904AC2}'
+		}
+	}
+}

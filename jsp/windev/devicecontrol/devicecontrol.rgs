@@ -1,0 +1,34 @@
+HKCR
+{
+	ToppersDevice.DeviceControl.1 = s 'DeviceControl Class'
+	{
+		CLSID = s '{D6626115-E35B-4B38-BC65-3E59D5535AD4}'
+	}
+	ToppersDevice.DeviceControl = s 'DeviceControl Class'
+	{
+		CLSID = s '{D6626115-E35B-4B38-BC65-3E59D5535AD4}'
+		CurVer = s 'ToppersDevice.DeviceControl.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D6626115-E35B-4B38-BC65-3E59D5535AD4} = s 'DeviceControl Class'
+		{
+			ProgID = s 'ToppersDevice.DeviceControl.1'
+			VersionIndependentProgID = s 'ToppersDevice.DeviceControl'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{194B359F-594E-4EE4-A804-84723D1CF1C4}'
+			'Version' = s '1.0'
+		}
+	}
+}

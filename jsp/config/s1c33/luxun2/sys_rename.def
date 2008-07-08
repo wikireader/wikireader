@@ -1,0 +1,5 @@
+#sys_config.h
+sys_initialize
+sys_exit
+get_Offset
+get_BitFlag

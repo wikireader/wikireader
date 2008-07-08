@@ -1,0 +1,10 @@
+#!build
+default:
+	subproject
+	:sourcedirs=../../../systask
+serial.c
+	C
+timer.c
+	C
+logtask.c
+	C

@@ -1,0 +1,25 @@
+#!build
+default:
+	subproject
+	:sourcedirs=./
+	:sourcedirs=../sh3/ms7727cp01
+hw_serial.h
+	include_file
+st16c2550.h
+	include_file
+sys_defs.h
+	include_file
+sys_unrename.h
+	include_file
+ms7727cp01.h
+	include_file
+	:sourcedirs=./
+	:sourcedirs=../../sh3/ms7727cp01
+sys_config.h
+	include_file
+sys_rename.h
+	include_file
+st16c2550.c
+	C
+sys_config.c
+	C

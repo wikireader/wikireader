@@ -1,0 +1,184 @@
+/*
+ *  TOPPERS/JSP Kernel
+ *      Toyohashi Open Platform for Embedded Real-Time Systems/
+ *      Just Standard Profile Kernel
+ * 
+ *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+ *                              Toyohashi Univ. of Technology, JAPAN
+ * 
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+ * 
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+ * 
+ *  @(#) $Id: devicemanager.idl,v 1.6 2003/12/24 07:40:42 takayuki Exp $
+ */
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+    [
+        object,
+        uuid(0FDFFA99-68D5-4BE0-8984-FB6A3A2C0AAC),
+        helpstring("IInformation Interface"),
+        pointer_default(unique)
+    ]
+    interface IInformation : IUnknown
+    {
+    };
+
+    [
+        object,
+        uuid(6575FAAB-8750-42D2-ADDD-4BE764AA2767), 
+        helpstring("IDevice Interface"),
+        pointer_default(unique)
+    ]
+    interface IDevice : IUnknown
+    {
+        [helpstring("Method IsValid")] HRESULT IsValid([out]BOOL * valid);
+        [helpstring("Method SetDeviceName")] HRESULT SetDeviceName([in]BSTR devname);
+        [helpstring("Method Map")] HRESULT Map([in]unsigned long address, [in]unsigned long size);
+        [helpstring("Method Unmap")] HRESULT Unmap([in]unsigned long address);
+        [helpstring("Method RaiseInterrupt")] HRESULT RaiseInterrupt([in]unsigned long inhno);
+    };
+
+    [
+        uuid(DA93137D-FB52-4421-B95D-9077340AD03B),
+        helpstring("_IDeviceEvents Interface")
+    ]
+    interface _IDeviceEvents : IUnknown
+    {
+        [helpstring("Method OnRead")] HRESULT OnRead([in]long address, [in]long sz, [out,size_is(sz),length_is(sz)] byte data []);
+        [helpstring("Method OnWrite")] HRESULT OnWrite([in]long address, [in]long sz, [in,size_is(sz),length_is(sz)] byte data []);
+        [helpstring("Method OnKernelStart")] HRESULT OnKernelStart();
+        [helpstring("Method OnKernelExit")] HRESULT OnKernelExit();
+    };
+
+    [
+        object,
+        uuid(D3E42099-3FDD-4A78-BDBD-4E57D362F5ED),
+        helpstring("IKernel Interface"),
+        pointer_default(unique)
+    ]
+    interface IKernel : IUnknown
+    {
+        [helpstring("Method Read")] HRESULT Read([in]unsigned long address, [in] unsigned long sz, [out,size_is(sz),length_is(sz)] byte data []);
+        [helpstring("Method IsValid")] HRESULT IsValid([out]BOOL * valid);
+        [helpstring("Method Write")] HRESULT Write([in]unsigned long address, [in]unsigned long sz, [in,size_is(sz),length_is(sz)] byte data []);
+        [helpstring("メソッド OnLogEvent")] HRESULT OnLogEvent([in] long sz, [in,size_is(sz), length_is(sz)] byte data []);
+    };
+
+
+    [
+        uuid(1353969D-E84F-463F-B211-337E9BCFB99E),
+        helpstring("_IKernelEvents Interface")
+    ]
+    interface _IKernelEvents : IUnknown
+    {
+        [helpstring("Method OnInterruptRequest")] HRESULT OnInterruptRequest([in]unsigned long inhno);
+    };
+
+    [
+        uuid(11E125BE-FC60-4DC9-8393-DC393B556D06),
+        helpstring("_IInformationEvents Interface")
+    ]
+    interface _IInformationEvents : IUnknown
+    {
+        [helpstring("Method OnDeviceChanged")] HRESULT OnDeviceChanged(short reason, long devid, long extra);
+        [helpstring("Method OnKernelChanged")] HRESULT OnKernelChanged(short reason);
+    };
+    [
+        object,
+        uuid(395F900A-AC7E-4A78-9BC1-EE5EF76254FF),
+    
+        helpstring("IKernelLog Interface"),
+        pointer_default(unique)
+    ]
+    interface IKernelLog : IUnknown
+    {
+    };
+    [
+        uuid(35E35399-55ED-45FC-8F0B-4A1BC6CEA3F0),
+        helpstring("_IKernelLogEvents Interface")
+    ]
+    interface _IKernelLogEvents : IUnknown
+    {
+        [helpstring("メソッド OnKernelStart")] HRESULT OnKernelStart();
+        [helpstring("メソッド OnKernelExit")] HRESULT OnKernelExit();
+        [helpstring("メソッド OnLogEvent")] HRESULT OnLogEvent([in] long sz, [in, size_is(sz), length_is(sz)] byte data []);
+    };
+
+[
+    uuid(F15F5272-83F3-42C3-874C-E4FF2B904AC2),
+    version(1.0),
+    helpstring("Toppers JSP on Windows DeviceManager 1.0 Type Library")
+]
+library ATLDEVICEMANAGERLib
+{
+    importlib("stdole32.tlb");
+    importlib("stdole2.tlb");
+
+    [
+        uuid(FEE2A68B-7F98-40E0-9853-183EE68BC7F8),
+        helpstring("Device Class")
+    ]
+    coclass Device
+    {
+        [default] interface IDevice;
+        [default, source] interface _IDeviceEvents;
+    };
+
+
+    [
+        uuid(D7AAF617-008A-4961-BB51-041CFD490ED3),
+        helpstring("Information Class")
+    ]
+    coclass Information
+    {
+        [default] interface IInformation;
+        [default, source] interface _IInformationEvents;
+    };
+
+
+    [
+        uuid(51789667-9F20-40AF-AF7F-9856325DFB0B),
+        helpstring("Kernel Class")
+    ]
+    coclass Kernel
+    {
+        [default] interface IKernel;
+        [default, source] interface _IKernelEvents;
+    };
+
+    [
+        uuid(4BD327FC-9E4A-4A5D-9503-27C979A8E802),
+        helpstring("KernelLog Class")
+    ]
+    coclass KernelLog
+    {
+        [default] interface IKernelLog;
+        [default, source] dispinterface _IKernelLogEvents;
+    };
+};

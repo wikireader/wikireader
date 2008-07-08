@@ -1,0 +1,23 @@
+-sec
+{
+    .vector     0x00000000		:
+    .vector_table 0x00000000            :
+    .text	0x00001000		:
+    .syscall				:
+    .secinfo				:
+    .fixaddr				:
+    .fixtype				:
+    .rodata	align(4)		:
+    .romdata    ROM(.data)		:
+    .romsdata   ROM(.sdata)		:
+    .sdabase 	0x010000		:
+ #       .sdabase 	0x04000000		:
+    .sbss				:
+    .sdata      			:
+    .rosdata				:
+    .data				:
+    .bss				:
+    .heap	align(0x1000) pad(0x4000)	:
+    .stacktop	align(0x1000)		:
+    .stack	align(4) pad(0x20000)	:
+}

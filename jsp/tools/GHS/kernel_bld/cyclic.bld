@@ -1,0 +1,26 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+cyclic.h
+        include_file
+cyclic.c
+        C
+        :outputname=cycini.o
+        :defines=__cycini
+cyclic.c
+        C
+        :outputname=cycenq.o 
+        :defines=__cycenq
+cyclic.c
+        C
+        :outputname=sta_cyc.o
+        :defines=__sta_cyc
+cyclic.c
+        C
+        :outputname=stp_cyc.o
+        :defines=__stp_cyc
+cyclic.c
+        C
+        :outputname=cyccal.o
+        :defines=__cyccal

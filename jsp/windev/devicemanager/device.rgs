@@ -1,0 +1,23 @@
+HKCR
+{
+	ToppersDeviceManager.Device.1 = s 'Device Class'
+	{
+		CLSID = s '{FEE2A68B-7F98-40E0-9853-183EE68BC7F8}'
+	}
+	ToppersDeviceManager.Device = s 'Device Class'
+	{
+		CLSID = s '{FEE2A68B-7F98-40E0-9853-183EE68BC7F8}'
+		CurVer = s 'ToppersDeviceManager.Device.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {FEE2A68B-7F98-40E0-9853-183EE68BC7F8} = s 'Device Class'
+		{
+			ProgID = s 'ToppersDeviceManager.Device.1'
+			VersionIndependentProgID = s 'ToppersDeviceManager.Device'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{44CB3B0F-D399-428E-829C-9BD5183AFF51}'
+			'TypeLib' = s '{F15F5272-83F3-42C3-874C-E4FF2B904AC2}'
+		}
+	}
+}

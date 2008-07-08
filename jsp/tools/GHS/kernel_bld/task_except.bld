@@ -1,0 +1,28 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+check.h
+	include_file
+task.h
+	include_file
+task_except.c
+	C
+	:outputname=ras_tex.o
+	:defines=__ras_tex
+task_except.c
+	C
+	:outputname=iras_tex.o
+	:defines=__iras_tex
+task_except.c
+	C
+	:outputname=dis_tex.o
+	:defines=__dis_tex
+task_except.c
+	C
+	:outputname=ena_tex.o
+	:defines=__ena_tex
+task_except.c
+	C
+	:outputname=sns_tex.o
+	:defines=__sns_tex

@@ -1,0 +1,46 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+task.h
+	include_file
+task.c
+	C
+	:outputname=tskini.o
+	:defines=__tskini
+task.c
+	C
+	:outputname=tsksched.o
+	:defines=__tsksched
+task.c
+	C
+	:outputname=tskrun.o
+	:defines=__tskrun
+task.c
+	C
+	:outputname=tsknrun.o
+	:defines=__tsknrun
+task.c
+	C
+	:outputname=tskact.o
+	:defines=__tskact
+task.c
+	C
+	:outputname=tskext.o
+	:defines=__tskext
+task.c
+	C
+	:outputname=tskpri.o
+	:defines=__tskpri
+task.c
+	C
+	:outputname=tskrot.o
+	:defines=__tskrot
+task.c
+	C
+	:outputname=tsktex.o
+	:defines=__tsktex
+task.c
+	C
+	:outputname=tskdmt.o
+	:defines=__tskdmt

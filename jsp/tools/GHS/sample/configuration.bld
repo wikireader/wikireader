@@ -1,0 +1,9 @@
+#!build
+default:
+	nobuild
+	:stage=cppfile
+	:nodepends=sample1.cfg
+sample1.cfg
+	C
+	:outputname=sample1.i
+	:postexec=../../../cfg/cfg -s sample1.i -kernel_id kernel_id.h -kernel_cfg kernel_cfg.c

@@ -1,0 +1,32 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+check.h
+	include_file
+task.h
+	include_file
+wait.h
+	include_file
+mailbox.h
+	include_file
+mailbox.c
+	C
+	:outputname=mbxini.o
+	:defines=__mbxini
+mailbox.c
+	C
+	:outputname=snd_mbx.o
+	:defines=__snd_mbx
+mailbox.c
+	C
+	:outputname=rcv_mbx.o
+	:defines=__rcv_mbx
+mailbox.c
+	C
+	:outputname=prcv_mbx.o
+	:defines=__prcv_mbx
+mailbox.c
+	C
+	:outputname=trcv_mbx.o
+	:defines=__trcv_mbx

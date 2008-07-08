@@ -1,0 +1,31 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+exception.h
+	include_file
+exception.c
+	C
+	:outputname=excini.o
+	:defines=__excini
+exception.c
+	C
+	:outputname=vxsns_ctx.o
+	:defines=__vxsns_ctx
+exception.c
+	C
+	:outputname=vxsns_loc.o
+	:defines=__vxsns_loc
+exception.c
+	C
+	:outputname=vxsns_dsp.o
+	:defines=__vxsns_dsp
+exception.c
+	C
+	:outputname=vxsns_dpn.o
+	:defines=__vxsns_dpn
+exception.c
+	C
+	:outputname=vxsns_tex.o
+	:defines=__vxsns_tex
+

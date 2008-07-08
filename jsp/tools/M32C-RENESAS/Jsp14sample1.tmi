@@ -1,0 +1,28 @@
+[PROJECT]
+ProjectName=Jsp14sample1
+WorkingDirectory=C:\usr\jsp14-040527_m32c-040805\tools\M32C-RENESAS
+OutputDirectory=.
+ProjectFile=C:\usr\jsp14-040527_m32c-040805\tools\M32C-RENESAS\Jsp14sample1.tmk
+ProjectInfoFile=C:\usr\jsp14-040527_m32c-040805\tools\M32C-RENESAS\Jsp14sample1.tmi
+TargetName=M16C/80 Series
+Type=6
+GoalFile=C:\usr\jsp14-040527_m32c-040805\tools\M32C-RENESAS\Jsp14sample1.x30
+[NC]
+Name=NC308WA
+Version=V.5.20 Release 1
+[MEMBER]
+Count=0
+[DOCUMENTFILE]
+Count=0
+[ITEM]
+ActiveFactory=default
+FactoryName1=default
+ActiveTagName1=all
+Count=1
+[TOOL]
+ToolCount=0
+[PD]
+Name=KD3083
+Version=
+Path=C:\MTOOL\KD3083\KD3083.EXE
+Type=0

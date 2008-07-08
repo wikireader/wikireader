@@ -1,0 +1,343 @@
+
+             ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                  （Microblaze ターゲット依存部）
+
+             （Release 1.4.2対応，最終更新: 27-Jul-2005）
+            （Embedded Development Kit（EDK）7.1対応）
+
+------------------------------------------------------------------------ 
+ TOPPERS/JSP Kernel
+     Toyohashi Open Platform for Embedded Real-Time Systems/
+     Just Standard Profile Kernel
+
+ Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+                             Toyohashi Univ. of Technology, JAPAN
+
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+
+ @(#) $Id: microblaze.txt,v 1.14 2005/07/27 11:28:44 honda Exp $
+------------------------------------------------------------------------
+
+
+１．Microblaze ターゲット依存部の概要
+
+1.1 ターゲットシステム
+
+Microblaze プロセッサのターゲットシステムとしては，Microblaze がサポート
+してる FPGA を搭載したシステムをサポートしている．なお，JSPカーネルを動
+作させるには，64Kbyte程度のメモリが必要である．システム依存部として以下
+のボードをサポートしている．
+
+・YDKテクノロジーズ製の MIREF（FPGA:XCV400E-QFP240）
+・YDKテクノロジーズ製の MIREF-MULTI（FPGA:XC2V3000-FF1152）
+・ Xilinx製の Xilinx MultiMedia Board（FPGA:XC2V2000-FF896）
+
+
+1.2 開発環境
+
+開発環境には，EDKに含まれているGCC などの GNU開発環境を用い，オブジェク
+トファイルフォーマットは ELF を標準とする．
+
+PCでは，EDKをイントールすると，GNUの開発環境を動作させるため xygwin がイ
+ンストールされる．JSPカーネルの構築には，perlやg++(ホスト環境の)がひつよ
+うなため，Cygwin をインストールする必要がある．同一のマシンにCygwin をイ
+ンストールした後，xygwin をインストールすると Cygwin 上のアプリケーショ
+ンが正しく動作しないため，xygwin のインストール後に，Cygwin をインストー
+ルすることを推奨する．
+
+EDKに含まれるGNUの開発環境は，xygwinで動作すること前提に作成されているた
+め，Cygwin上の make から呼び出した場合エラーが表示されないといった制約が
+ある．そのため，Xilinx の Web サイト（
+http://www.xilinx.com/guest_resources/gnu/index.htm）からGNUのソースをダ
+ウンロードして Cygwin 用に構築する．
+
+
+1.2 システム構成
+
+通常のターゲットの場合は，./config 以下で
+
+   （プロセッサ）/（ターゲットボード1）
+                 /（ターゲットボード2）
+
+という構成でディレクトリが作成されており，（プロセッサ）はプロセッサコ
+アやプロセッサパッケージいわゆるICにパッケージされたものを示し，プロセッ
+サ依存部と呼ぶ．（ターゲットボード）はそのICを搭載したボード依存の機能
+についてのコードを置いている場所でターゲット依存部と呼ぶ．一方
+Microblaze は，システム構成を自由に変更できるため，このように明確な切
+り分けはできない．そこで，JSPカーネルを動作させるための必要最小限の構
+成をプロセッサ依存部として（プロセッサ）に置く．プロセッサ依存部として
+の，JSPカーネルを動作させるための最小構成を以下に示す．
+
+ ・INTC（割込みコントローラ）
+   レジスタ IVR，SIE，CIEレジスタが必要
+ ・TIM，UARTLITE
+   INTCに接続する（割込みを有効にする）
+
+これ以外の機能のコードはターゲット依存部として，（ターゲットボード）以
+下のディレクトリに配置する．
+
+配布パッケージに含まれているターゲット依存部を以下に示す．それぞれの依存
+部は上記のデバイスのアドレスやコンパイルオプションが異なるだけでコードは
+ほぼ等しい．
+
+  ・./miref
+   （株）YDKデクノロジーズ製の MIREF ボード用
+
+  ・./miref_multi
+   （株）YDKデクノロジーズ製の MIREF-MULTI ボード用
+
+  ・./multimedia 
+    Xilinx製の Xilinx MultiMedia Board 用
+
+
+
+1.4 システムコンフィギュレーション
+
+    新たなシステムでJSPカーネルを動作させる場合は，適当なターゲット依存部
+    のファイルをベースにシステム構成にあわせて書き換えればよい．
+    システム毎に編集する必要がある項目を以下に示す．
+
+      ・./sys_defs.h
+        STACKTOP    : スタック初期アドレス
+        TIMER_CLOCK : タイマークロック
+        TIC_NUME    : タイムティック周期の分子
+        TIC_DENO    : タイムティック周期の分母
+        INTC_BASE   : INTCのベースアドレス
+        TIMER_BASE  : TIMERのベースアドレス
+        UART_BASE   : UARTベースアドレス
+        TIMINTLVL   : TIMERの割込み番号
+        UARTINTLVL  : UARTの割込み番号
+
+      ・./Makefile.config
+        COPTS              : コンパイルオプション
+        LIBS               : ライブラリ指定
+        LDFLAGS            : リンカオプション
+        TEXT_START_ADDRESS : TEXTセクションのスタートアドレス
+        DATA_START_ADDRESS : DATAセクションのスタートアドレス
+        
+
+
+     ディフォルトとのリンカスクリプトとしては，./microblaze/mbelf.l を
+     用意している．このリンカスクリプトでは，アドレスをtext,dataセクショ
+     ンの2つを指定することが可能である．さらに複雑なマッピングを行いた
+     い場合は，リンカスクリプトを新たに作り 上記の LDSCRIPT に指定すれ
+     ばよい．
+
+
+1.3 サポートする機能の概要
+
+Microblaze 依存の機能として，性能評価用システム時刻参照機能（vxget_tim）
+をサポートしている．割込みマスクの変更・参照(chg_ixx，get_ixx)と，割込
+みの禁止と許可（dis_int，ena_int）はサポートしていない．
+
+
+1.4 制限事項
+ ・CPU例外機能とCPU例外ハンドラ
+   Microblaze にはCPU例外のベクタはあるが，発生要因がない．そのため，
+   CPU例外機能とCPU例外ハンドラはサポートしない．
+
+
+
+２．Microblaze プロセッサ依存部の機能
+
+この節では，カーネルおよびシステムサービスの機能の中で，Microblaze 依
+存の部分について解説する．
+
+2.1 データ型
+
+signed int型および unsigned int型のサイズは 32ビットである．
+
+2.2 割込み管理機能と割込みハンドラ
+
+DEF_INH で指定する割込みハンドラ番号（inhno）は，MHSファイルでデバイス
+に指定した割込み優先度を表し，そのデータ型（INHNO）は unsigned int型に
+定義されている．DEF_INH で，割込み優先度として有効でない値や，実際の割
+込み優先度とは異なる番号を指定した場合の動作は保証されない．
+
+
+2.4 スタートアップモジュール
+
+Microblaze 依存のスタートアップモジュール（start.S）では，次の初期化処
+理を行う．
+
+(A) MSRの初期化
+
+キャッシュの設定を反映してMSRを初期化する．MDMを使用している場合などは，
+BIPビットが'1'となっている場合があるため，rtbd命令によりクリアする．
+
+(B) スモールデータアンカーの設定とスタックポインタの初期化
+
+最初に，Read-only small data area anchor（R2）とRead-write small data
+area anchor（R13）を初期化する
+
+次に，割込みスタックポインタ（R1）を STACKTOP - 4 に設定する．-4 する
+のは，スタートアップルーチンのワーク用である．
+
+
+(C) 例外/割込みベクタへのハンドラの登録
+
+0x0C-0x10 の例外ベクタに例外ハンドラ（exception_entry）を，0x10-0x14の
+割込みベクタに割込みハンドラ（interrupt_entry）を登録する．
+
+
+(D) hardware_init_hook の呼出し
+
+hardware_init_hook が 0 でない場合には，hardware_init_hook を呼び出す．
+hardware_init_hook は，カーネルが起動される前に行う必要があるターゲッ
+ト依存の初期化を行うために用意している．hardware_init_hook がどこでも
+定義されていない場合，リンカでこのシンボルを 0 に定義する（リンカスク
+リプト内に記述あり）．
+
+(E) bssセクションの初期化
+
+bssセクションをゼロクリアする．なお，dataセクションについては，RAMの使
+用量を減らす目的で，ROM化に対応した初期化は行っていない．
+
+(F) software_init_hook の呼出し
+
+software_init_hook が 0 でない場合には，software_init_hook を呼び出す．
+software_init_hook は，カーネルが起動される前に行う必要があるソフトウェ
+ア環境（具体的には，ライブラリ）依存の初期化を行うために用意している．
+software_init_hook がどこでも定義されていない場合，リンカでこのシンボ
+ルを 0 に定義する（リンカスクリプト内に記述あり）．
+
+(G) カーネルの起動
+
+kernel_start へ分岐し，カーネルを起動する．kernel_start からリターンし
+てくることは想定していない．
+
+
+2.5 性能評価用システム時刻参照機能
+
+Microblaze 依存部では，性能評価用システム時刻参照機能（vxget_tim）をサ
+ポートしている．性能評価用システム時刻の精度はタイマに供給するクロック
+によって決まる．なお，SYSUTIM型は UD型（64ビットの符号無し整数型）に定
+義している．
+
+
+2.6 シリアルインタフェースドライバ
+
+Microblze 依存部のシリアルインタフェースドライバは，UART をサポートし
+ている．カーネルのログ出力として使用する UART は INTCに接続して割込み
+を有効にして，そのアドレスを./sys_config.h で UART_BASE として定義すれ
+ばよい．
+
+
+2.7 キャッシュ
+
+キャッシュの有効/無効はシステムの起動から終了まで一律固定とし，ユーザーが
+変更してもその変更はそのタスクのみで有効とする．キャッシュを有効とする
+には，システム依存部の sys_defs.h で，D_CACHE_ENABLE  I_CACHE_ENABLE
+を define すればよい．
+
+５．その他
+
+5.1 ディレクトリ・ファイル構成
+
+Microblaze ターゲット依存部の各ファイルの概要は次の通り．
+
+    config/microblze/
+        Makefile.config    Makefile の Microblaze依存定義
+        cpu_defs.h         プロセッサ依存部のアプリケーション用定義
+        cpu_config.h       プロセッサ依存部の構成定義
+        cpu_config.c       プロセッサ依存部の関数
+        cpu_support.S      プロセッサ依存部のサブルーチン
+        cpu_context.h      コンテキスト操作
+        makeoffset.c       offset.h 生成サポートプログラム
+        cpu_insn.h         低レベルのプロセッサ操作ルーチン
+        start.S            スタートアップモジュール
+        mbelf.ld           リンカスクリプト
+        cpu_rename.def     カーネルの内部識別名のリネーム定義
+        cpu_rename.h       カーネルの内部識別名のリネーム
+        cpu_unrename.h     カーネルの内部識別名のリネーム解除
+        microblaze.h       Microblaze の定義
+        microblaze.c       Microblaze 用コード
+        microblaze_asm.inc Microblaze のアセンブラマクロ
+        hw_serial.h        SIOドライバ
+        hw_serial.cfg      SIOドライバのコンフィギュレーションファイル
+        hw_timer.h         タイマ操作ルーチン
+        tool_defs.h        開発環境依存部のアプリケーション用定義（GNU開発環境用）
+        tool_config.h      開発環境依存部の構成定義（GNU開発環境用）
+
+    config/microblaze/miref
+        Makefile.config    Makefile の MIREF 依存定義
+        sys_defs.h         システム依存部のアプリケーション用定義
+        sys_config.h       システム依存部の構成定義
+        sys_config.c       システム依存部の関数
+        sys_support.S      システム依存部のサブルーチン
+        sys_rename.def     カーネルの内部識別名のリネーム定義
+        sys_rename.h       カーネルの内部識別名のリネーム
+        sys_unrename.h     カーネルの内部識別名のリネーム解除
+
+    config/microblaze/mire_multi
+        Makefile.config    Makefile の MIRE_MULTI 依存定義
+        sys_defs.h         システム依存部のアプリケーション用定義
+        sys_config.h       システム依存部の構成定義
+        sys_config.c       システム依存部の関数
+        sys_support.S      システム依存部のサブルーチン
+        sys_rename.def     カーネルの内部識別名のリネーム定義
+        sys_rename.h       カーネルの内部識別名のリネーム
+        sys_unrename.h     カーネルの内部識別名のリネーム解除
+
+    config/microblaze/multimedia
+        Makefile.config    Makefile の MIRE_MULTI 依存定義
+        sys_defs.h         システム依存部のアプリケーション用定義
+        sys_config.h       システム依存部の構成定義
+        sys_config.c       システム依存部の関数
+        sys_support.S      システム依存部のサブルーチン
+        sys_rename.def     カーネルの内部識別名のリネーム定義
+        sys_rename.h       カーネルの内部識別名のリネーム
+        sys_unrename.h     カーネルの内部識別名のリネーム解除
+
+
+
+
+5.2 ターゲットへのダウンロードと実行
+
+ターゲットへのダウンロードと実行手順については，GNU開発環境構築マニュ
+アルに説明されている．JSPカーネルはターゲットに xmdstub を組み込んだ状
+態で GDB よりダウンロードし実行することができる．
+
+
+
+5.3 サポート
+
+バグ等を発見した場合は toppers-users の ML に報告もしくは，Microblaze 依
+存部の開発者の以下のメールアドレスに連絡して頂きたい
+
+  honda@ertl.jp
+
+
+また，今後以下のページでもサポートを行う予定である．
+
+  http://www.ertl.jp/~honda/microblaze
+
+
+以上
+
+

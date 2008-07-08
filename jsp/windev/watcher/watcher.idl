@@ -1,0 +1,86 @@
+// watcher.idl : watcher.dll 用の IDL ソース ファイル
+//
+
+// このファイルはタイプ ライブラリ (watcher.tlb) を作成するために
+// タイプ ライブラリ作成ツール MIDL によって処理されます。
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+
+	[
+		object,
+		uuid(1FFB399D-1058-40B4-AF62-EA43CDDD79B0),
+		dual,
+		helpstring("IKernelLogControl Interface"),
+		pointer_default(unique)
+	]
+	interface IKernelLogControl : IDispatch
+	{
+		[id(1), helpstring("ﾒｿｯﾄﾞ Open")] HRESULT Open();
+		[id(2), helpstring("ﾒｿｯﾄﾞ Close")] HRESULT Close();
+		[propget, id(3), helpstring("ﾌﾟﾛﾊﾟﾃｨ Type")] HRESULT Type([out, retval] long *pVal);
+		[propget, id(4), helpstring("ﾌﾟﾛﾊﾟﾃｨ Logtim")] HRESULT Logtim([out, retval] long *pVal);
+		[propget, id(5), helpstring("ﾌﾟﾛﾊﾟﾃｨ isValid")] HRESULT isValid([out, retval] BOOL *pVal);
+		[propget, id(6), helpstring("ﾌﾟﾛﾊﾟﾃｨ Param")] HRESULT Param(long index, [out, retval] long *pVal);
+	};
+
+[
+	uuid(A242E427-5E2F-4447-AC87-0C7CC382CBFE),
+	version(1.0),
+	helpstring("watcher 1.0 ﾀｲﾌﾟ ﾗｲﾌﾞﾗﾘ")
+]
+library WATCHERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(99CCF4E3-5D17-477E-BA7B-F5DE796C8E13),
+		helpstring("_IKernelLogControlEvents Interface")
+	]
+	dispinterface _IKernelLogControlEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("ﾒｿｯﾄﾞ OnKernelStart")] HRESULT OnKernelStart();
+		[id(2), helpstring("ﾒｿｯﾄﾞ OnKernelExit")] HRESULT OnKernelExit();
+		[id(3), helpstring("ﾒｿｯﾄﾞ OnLogEvent")] HRESULT OnLogEvent([in] int type);
+	};
+	
+
+	[
+		object,
+		uuid(80AA7D6B-F115-4ACE-97F6-55391BA27997),
+		dual,
+		helpstring("IDirectoryMap Interface"),
+		pointer_default(unique)
+	]
+	interface IDirectoryMap : IDispatch
+	{
+		[propget, id(1), helpstring("ﾌﾟﾛﾊﾟﾃｨ Path")] HRESULT Path([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("ﾌﾟﾛﾊﾟﾃｨ Path")] HRESULT Path([in] BSTR newVal);
+		[propget, id(2), helpstring("ﾌﾟﾛﾊﾟﾃｨ Valid")] HRESULT Valid([out, retval] BOOL *pVal);
+		[id(3), helpstring("ﾒｿｯﾄﾞ Load")] HRESULT Load(BSTR filename);
+	};
+	
+
+	[
+		uuid(3474A699-17D5-4E00-8068-6D6608F3DF8A),
+		helpstring("KernelLogControl Class")
+	]
+	coclass KernelLogControl
+	{
+		[default] interface IKernelLogControl;
+		[default, source] dispinterface _IKernelLogControlEvents;
+	};
+	[
+		uuid(BA0030F5-042A-43DC-BF89-1B343A38E320),
+		helpstring("DirectoryMap Class")
+	]
+	coclass DirectoryMap
+	{
+		[default] interface IDirectoryMap;
+	};
+};

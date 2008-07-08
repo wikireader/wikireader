@@ -1,0 +1,41 @@
+#!build
+default:
+	program
+	:oldc_option=unknownpragmawarn
+	:oldc_option=slashcomment
+	:oldc_option=noasmwarn
+	:ec_option=nono_slash_comment
+	:lx_option=rescan
+	:lx_map_option=map
+	:lx_map_option=crossreference
+	:auto_mvc=false
+	:arm_cputype=arm9
+	:asm_mode=silent
+	:unknown_pragma=warn
+	:compilation=assembly
+	:optimizestrategy=none
+	:sourcedirs=../kernel_bld/
+	:sourcedirs=../ghs_hook_bld
+	:sourcedirs=../../../config/armv4-ghs/
+	:sysincdirs=../../../include
+	:sysincdirs=../../../kernel
+	:sysincdirs=../../../config/armv4-ghs
+	:sysincdirs=../../../config/armv4-ghs/integrator
+	:sysincdirs=../../../config/armv4
+	:sysincdirs=../../../systask
+	:defines=LABEL_ASM
+	:defines=NDEBUG
+linker_arm.lnk
+	linker_file
+kernel.bld
+	library
+systask.bld
+	subproject
+library.bld
+	subproject
+armv4t-ghs.bld
+	subproject
+ghs_hook.bld
+	subproject
+user_program.bld
+	subproject

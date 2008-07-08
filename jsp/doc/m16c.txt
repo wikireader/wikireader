@@ -1,0 +1,536 @@
+            ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                         （M16C ターゲット依存部）
+
+            （Release 1.4対応，最終更新: 19-Feb-2007）
+
+------------------------------------------------------------------------ 
+ TOPPERS/JSP Kernel
+
+     Toyohashi Open Platform for Embedded Real-Time Systems/
+     Just Standard Profile Kernel
+
+ Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+                             Toyohashi Univ. of Technology, JAPAN
+ Copyright (C) 2003-2004,2007 by Naoki Saito
+            Nagoya Municipal Industrial Research Institute, JAPAN
+ Copyright (C) 2003-2004 by Platform Development Center
+                                         RIOCH COMPANY,LTD. JAPAN
+
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+
+ @(#) $Id: m16c.txt,v 1.8 2007/03/23 07:08:47 honda Exp $
+------------------------------------------------------------------------
+
+1.  M16C ターゲット依存部の概要
+
+1.1  ターゲットシステムと開発環境
+
+M16Cプロセッサのターゲットシステムは，オークス電子株式会社のOASKS16と
+OAKS16-MINIをサポートしている．OAKS16はM30620FCAFP-CPUを，OAKS16-MINIは
+M30262F8FG-CPUを搭載している．
+
+1.2 開発環境と実行環境
+
+開発環境は，２つの形態を用意した．
+ひとつはOAKS16-FullKitまたはOAKS16-MINI FULLKIT BOARDに同梱されている
+CD-ROM中のルネサステクノロジ社製の開発環境をそのまま使用して開発を行う
+もので，JSP1.4のWindows版実行が可能でシリアルポートをもつパソコンがあ
+れば，構築，ボード上実行が可能である．この環境ではルネサステクノロジ社
+の統合開発環境TMを使用する．
+もうひとつの開発環境はDOS窓からmakeコマンドを用いて開発を行う環境であ
+る．この環境の対応はOAKS16ボードのみであり，開発環境としてルネサステク
+ノロジ社の正式の開発環境とperlの実行環境が必要となる．
+開発の詳細に関しては，tools/M16C-RENESASディレクトリ中のREADME.txtを参
+照のこと．
+
+1.3  サポートする機能の概要
+
+性能評価用システム時刻参照機能 (vxget_tim) はサポートしているが， 割込
+みマスクの変更・参照 (chg_ixx， get_ixx)， 割り込みの禁止と許可
+(dis_int，ena_int) はサポートしていない．
+
+1.4  他のターゲットへのポーティング
+
+このポーティングは教育的な目的を対象に行われていますが．M16CはCPU上に
+多くのデバイスが実装されており，SFRという形式で統一化されているためM16
+CシリーズのCPUをもつボードであれば，ポーティングは容易に出来ると思われ
+る．
+
+1.5  シリアルポート (SCI)
+
+  ボード上はUART1が実装されており，UART0が実装可能となっている．ポーテ
+ィングは２つの対応が行われている．なお，OAKS16-MINI版はRAMサイズが2KB
+しかなく．XON/XOFFやエコー等の機能には対応していない．
+シリアルポートの設定を以下に示す． 
+
+   ・ボーレイト，19200[bps]．
+   ・データ長，8 ビット．
+   ・ストップビット，1 ビット．
+   ・パリティなし．
+
+2.  M16C プロセッサ依存部の機能
+
+この節では，カーネルおよびシステムサービスの機能の中で，M16C依存の部分
+について解説する．
+
+2.1  データ型
+
+int 型と unsigned int 型のサイズは 16ビットである．また，_int64_は対応
+していない．ポインタに関して，M16Cでは16ビット長のnearポインタと32ビッ
+ト長のfarポインタがある．nearポインタはRAMやデバイスのポート領域である
+SFRをアクセスする為のポインタであり，farポインタをこれに加えてROM領域ま
+でアクセスが可能となる．ユーザプログラムを作成する場合，ポインタのサイ
+ズを意識してプログラムを作成する必要がある．今回のポーティングではVPを
+nearポインタ，VP_INTをfarポインタと定義している．
+
+2.2  割込み管理機能と割込みハンドラ
+
+ハードウェア割込みは割込み禁止とすることができる．M16Cの割込みの禁止は
+フラグレジスタ中の割込み許可フラグ(Iフラグ)によって行う．すなわち，Iフ
+ラグがゼロの場合はハードウェアマスカブル割込みは禁止され１の場合は許可
+される．
+割込みハンドラはCPUの設定位置に静的に配置される．本開発環境ではコンフィ
+ギュレーションから生成されるkernel_cfg.cの内容を識別し，自動的に静的な
+割込みハンドラを生成するユーティリティを用意している．このユーティリテ
+ィはutils/m16c-renesasデレクトリィ中のn16cvec.exeコマンドで，プリコンパ
+イルされたkernel_cfg.cの内容を解析し割込みハンドラリストであるm16cvec.i
+ncを生成する．m16cvec.incはCPUのスタートアップモジュールであるstart.a30
+にインクルードされており，コンフィギュレーションファイルの割込みハンド
+ラ設定をROM上に静的に配置する．
+なお，割込みハンドラとして未定義の値を設定した場合は，定義されていない
+割込みハンドラのハンドラとして設定されるためユーザは未定義の割込みが発
+生した場合のハンドラとして使用することができる．
+
+2.3  CPU 例外管理機能と CPU 例外ハンドラ
+
+CPU例外として，ハードウェアノンマスカブル割込みとソフトウェアノンマスカ
+ブル割込みがある．ハードウェアノンマスカブル割込み中のリセットを除いて
+ベクトルの設定が可能である．
+CPU例外ハンドラは割込みハンドラと同様にCPUの設定位置に静的に配置される
+．CPU例外ハンドラに関しても割込みハンドラと同様にm16cvec.exeを用いて，
+自動的に静的なCPU例外ハンドラを生成することができる．このデータは割込み
+ハンドラと同様にm16cvec.incに設定される．なお，CPU例外ハンドラとして未
+定義の値を設定した場合は，定義されていないCPU例外ハンドラのハンドラとし
+て設定されるためユーザは未定義の割込みが発生した場合のハンドラとして使
+用することができる．
+DEF_EXC で指定する割込みハンドラ番号（excno）は，M16Cでの例外ベクタ
+番号を表し，そのデータ型（EXCNO）は unsigned int型に定義されている．
+
+2.4  スタートアップモジュール
+
+  m16c依存のスタートアップモジュール (start.a30) は次に示す初期化を実行
+した後，カーネル (kernel_start) を起動する．ただし， kernel_start から
+戻ってくることは想定していない．電源投入直後に起動されるスタートアップ
+モジュールの開始番地は m16cvec.inc のベクタ定義より _hardware_start と
+されているが、配置されるアドレス値についてはリンク時に決定される。
+
+(1) スタックポインタの設定
+
+(2) CPU関連の初期設定
+
+プロセッサモードの設定とクロックの設定を行う．
+
+(3) hardware_init_hook の呼出し(未実行)
+
+M16Cアセンブラは，Ｃ言語コンパイラと同期を取ったプリコンパイル処理がで
+きない．hardware_init_hookの判定ができないため対応していない．
+実際，M16Cのハードウェア設定に関しては，sys_initialize()関数中で行って
+も十分に対応できると考えられるのでそちらで対応していただきたい．
+
+(4) bssセクションと dataセクションの初期化
+
+bssセクションをゼロクリアする．また，dataセクションを初期化する．
+
+(5) software_init_hook の呼出し
+
+software_init_hookが 0でなければ，software_init_hook を呼出す．software
+_init_hook はカーネルを起動する前に，ソフトウェア環境 (ライブラリ等) 依
+存の初期化を行うために用意されている．
+software_init_hookの定義はcpu_config.c中に0の設定で仮に行っている．外部
+でsoftware_init_hookを定義する場合は，構築時にＣコンパイラの定義として
+EXTERNAL_SOFT_HOOKを定義すれば，この設定はコンパイルされず外部からの設
+定が可能となる．例えば，ライブラリの初期設定などを行いたい場合は外部か
+らの設定が可能となる．
+
+(6) カーネルの起動
+
+kernel_start へ分岐し，カーネルを起動する．kernel_start からリターンし
+てくることは想定していない．
+
+2.5  割込み発生時のスタック使用量について
+
+カーネル起動，及び，割込み発生時はタスク用のスタックとは別の割込みスタ
+ックは専用のものを指定している．このスタックはRAMEND定義で指定されるRA
+M領域の最終位置からデクリメントして使用される．そのため，システム設定
+時にはこの領域を確保しなければならない．
+割込みネストレベルが 0で割込みが発生すると，タスクコンテキスト用スタッ
+クにレジスタを保存した後，割込み用スタックに切り替えるため，タスクコン
+テキスト用スタック使用量は 各レジスタ，フラグ，PCで20バイトである．
+割込みネストレベル 1以上ハンドラ では，割込みスタックに状態の保存が行
+われる(割込みごと20バイト)．これ以外に，割込みルーチンで使用されるスタ
+ックサイズが加算される．
+
+3.  システム依存部の機能
+
+3.1  システムクロックドライバ
+
+システムクロックドライバがisig_timを呼び出す周期は，sys_defs.h中の
+TIC_NUMEとTIC_DENOで定義されている（標準は 1ミリ秒周期）．この定義を変
+更することで，isig_timを呼び出す周期を変更することができる．ただし，タ
+イマの精度が1μ秒であるため，1μ秒単位で端数になる値を設定した場合には，
+isig_timの呼出し周期に誤差が生じることになる．
+
+3.2  性能評価用システム時刻参照機能
+
+M16Cでは，性能評価用システム時刻参照機能 (vxget_tim) をサポートしている
+．OAKS16では精度 0.0625[us]，OAKS16-MINIでは精度 1.6[us]である．SYSUTIM
+型は UW 型 (32 ビット符号なし整数型) である．
+
+3.3  シリアルインタフェースドライバ
+
+OAKS16，OAKS16-MINIではUART0とUART1の２つのシリアルポートがボード上に実
+装できる．このうちコネクタが実装されたUART1をログ出力用に使用している．
+
+3.4  メモリマップ
+
+3.4.1  OAKS16のメモリマップ
+
+(1)  実行環境
+
+     0x00000 - 0x003ff  SFR領域
+     0x00400 - 0x02bff  内臓 RAM，data_NE，data_NO，bss_NE，bss_NO
+     0xe0000 - 0xffdff  内蔵 ROM，program，rom_FE，rom_FO，data_NEI，
+                                  data_NOI
+     0xffe00 - 0xfffdb  内蔵 ROM，ハード，ソフト割込みベクタ領域 (vector)
+     0xfffdc - 0xfffff  内蔵 ROM，ハードCPU例外ベクタ領域(fvector)
+
+3.4.2  OAKS16-MINIのメモリマップ
+
+(1)  実行環境
+
+     0x00000 - 0x003ff  SFR領域
+     0x00400 - 0x00bff  内臓 RAM，data_NE，data_NO，bss_NE，bss_NO
+     0xe0000 - 0xffdff  内蔵 ROM，program，rom_FE，rom_FO，data_NEI，
+                                  data_NOI
+     0xffe00 - 0xfffdb  内蔵 ROM，ハード，ソフト割込みベクタ領域 (vector)
+     0xfffdc - 0xfffff  内蔵 ROM，ハードCPU例外ベクタ領域(fvector)
+
+4.  開発
+
+4.1  開発環境の構築
+
+開発環境は，Windows 2000とWindows XPを用いた．構築環境は以下の２つの構築
+がある．
+
+(1)  OAKS16-FullKitまたはOAKS16-MINI FULLKIT BOARDに同梱されている
+     CD-ROM中のルネサステクノロジ社製の開発環境をそのまま使用した環境
+
+     対象：OAKS16ボード，OAKS16-MINIボード
+     方式：ルネサステクノロジ社の統合開発環境TMを用いて構築
+           カーネル部をライブラリィ化せず構築する
+     その他：コンパイラNC30WA Version5.42 または 4.00 Entry版
+
+(2)  DOS窓からmakeコマンドを用いて開発を行う環境
+     対象：OAKS16ボード
+     方式：DOS窓からmakeを使って構築
+           カーネル部ライブラリィ化して構築する
+     その他：コンパイラNC30WA Version5.42
+             GNU make (version 3.77 で動作確認済)
+             Perl (動作確認は Active Perl v5.6.1で行った)
+
+4.2  統合開発環境TMを用いた構築
+
+OAKS16フルキットまたはOAKS16 MINIフルキットの添付されているCD-ROM中の
+開発環境を用いてm16c用のTOPPERS/JSPを構築する．構築したMOTファイルを
+FlashStaコマンド用いて，ボード上のフラッシュROMに書き込むことによりボ
+ード上で実行できる．対応はOAKS16とOAKS16 MINIです.構築方法は以下の通り
+です．構築にあたっては，windows用のコンフィギュコマンドを用いるため，
+configデレクトリィ上のcfg.exeを構築すること．フルキットに入っている
+CD-ROMから統合開発環境TM,コンパイラNC30WA,フラッシュROM書き込みツール
+FlashStaをインストールする必要がある．
+
+4.2.1 ツールの構築
+
+utils/m16c-renesas上のツールm16coffset.exeとm16cvec.exeを構築する.まず
+m16coffsetを生成する．utils/m16c-renesas/内のMicrosoft Visual C++プロ
+ジェクトファイルm16cutils.dswを開く，リビルドメニューからリビルドを選
+択するとm16coffset.exeが作成される．
+続けて，m16cvec.exeを生成する．メニューから「プロジェクト」「アクティ
+ブプロジェクトの設定」「o16cvec」を選択し，ビルドメニューからビルドを
+選択する．実行ファイルはutils/m16c-renesas/m16cvec.exeとして作成されて
+いる.
+
+4.2.2 TMにプロジェクトを選択しビルドする．
+
+Jsp14sample1.tmi，Jsp14sample1.tmk，Jsp14sample1m.tmi，
+Jsp14sample1m.tmk中の設定には絶対パスの指定を行われています．TMを使っ
+てプロジェクトの設定を行う前に，現在のtools/M16C-RENESASデレクトリィの
+絶対パスと異なる場合は，エデッタを使って絶対パスの設定を書き換えること．
+以下にJsp14sample1.tmiとJsp14sampl e1.tmkの例を示す．
+
+---Jsp14sample1.tmi ---
+[PROJECT]
+ProjectName=Jsp14sample1
+WorkingDirectory=D:\usr\TOPPERS\jsp-1.4\tools\R16C-RENESAS			<-絶対パス
+OutputDirectory=.
+ProjectFile=D:\usr\TOPPERS\jsp-1.4\tools\R16C-RENESAS\Jsp14sample1.tmk<-絶対パス
+ProjectInfoFile=D:\usr\TOPPERS\jsp-1.4\tools\R16C-RENESAS\Jsp14sample1.tmi<-絶対パス
+TargetName=M16C Family
+Type=1
+GoalFile=D:\usr\TOPPERS\jsp-1.4\tools\R16C-RENESAS\Jsp14sample1.x30<-絶対パス
+[NC]
+Name=NC30WA
+Version=V.4.00 Release 2
+	:
+
+---Jsp14sample1.tmk ---
+####################################################################
+# Makefile for TM V.3.20
+# Copyright 1998-2002 MITSUBISHI ELECTRIC CORPORATION
+# AND MITSUBISHI ELECTRIC SEMICONDUCTOR APPLICATION ENGINEERING CORPORATION
+# All Rights Reserved.
+#
+#	Notice	:	Don't edit.
+#	Date	:	2004 01(January) 10(Saturday) PM.03.11
+#	Project	:	Jsp14sample1
+####################################################################
+
+DELETE	=	@-del
+LNLIST	=	$(PROJECT).cmd
+PRJDIR	=	D:\usr\TOPPERS\jsp-1.4\tools\R16C-RENESAS	<-絶対パス
+LMC	=	LMC30
+CC	=	NC30
+	:
+
+続いて，TMにプロジェクトとして登録する．WindowsメニューからTMを起動す
+る，起動したら「Open Project」メニューを開き，tools/M16C-RENESASデレク
+トリィ中のJsp14sample1.tmkまたはJsp14sample1m.tmkを選択する．OAKS16用
+の構築を行う場合，はJsp14sample1.tmkを，OAKS16 MINI用の構築を行う場合
+は，Jsp14sample1m.tmkを選択すること．選択時，コンパイラの違いにより設
+定メニューが表示される場合がある．この環境は，NC30コンパイラの
+Version4.00とVersion5.00で評価を行っている．現在の環境にしたがって設定
+すること．設定後，「リビルド」メニューを選択しビルドをおこなってくださ
+い．このデレクトリィ中にJsp14sample1.motまたはJsp14sample1m.motが生成
+されている．TMの設定としてソースファイルの依存性の設定を行っていないの
+で，構築時は「リビルド」を進める．
+
+4.2.3 FlashStaを用いてフラッシュROMに書き込む
+
+開発用のパソコンとOAKS16(MINI)ボードとを，RS-232Cケーブルを使って接続
+する．CNVSSピンをジャンパーピンを使ってショートさせる．電源を接続し，
+電源スイッチをオンにする．FlashStaを起動する．Select Programメニューに
+てポートを選択して「OK」ボタンを押下す．ID Checkメニューが表示されたら
+「Refer..」ボタンを押下し，生成したMOTファイルを選択する．Select 
+Programに戻ったら，「OK」ボタンを押下しM16C Flash Startメニューを表示
+する．まず，「Erase」ボタンを押下し，フラッシュROMをクリアする．その後，
+「Program..」ボタンを押下しプログラムの書き込みを行う．書き込みが終了
+したら，「Exit」ボタンを押下しFlashStaを終了させること．電源を切り，
+CNVSSピンからジャンパーピンを外す．
+
+4.2.4. sample1の実行
+
+パソコンにシリアル・ターミナルを立ち上げる．
+設定は以下の通り．
+
+ Baud rate:19200
+ Data:8 bit
+ Parity:none
+ Stop:1 bit
+
+Flow controlはOAKS16 MINIではnone，OAKS16ではnoneでもXob/Xoffのどちらかに
+設定すること.電源を入れると，sample1が実行される．
+
+
+4.3 DOS窓からmakeコマンドを用いた構築
+
+GNU make を用いてm16c用のTOPPERS/JSPを構築する方法を示す．この方法で対
+応しているボードは OAKS16である．コンパイラはNC30WAの製品版を前提とし
+ている(ルネサステクノロジのウェブサイトから無償評価版を入手可能)．
+OAKS16付属のNC30WA(評価版)に対応させるにはライブラリアンlb30.exeを使用
+しないように Makefile (実際のファイル名はsampleディレクトリの
+Makefile.m16c-oaks16です)を書き換える必要がある．構築方法は以下の通り．
+構築にあたっては，コンフィギュレータ cfg.exe が cfg ディレクトリに，
+4.2.1で示したツール，m16coffset.exe および m16cvec.exe が 
+utils/m16c-renesas ディレクトリに，それぞれ存在していることが前提となる．
+また，NC30WAはあらかじめインストールしておくことが必要である．
+
+4.3.1 開発ツールの入手
+
+ツールは以下のサイトから入手可能．
+
+GNU Make 
+http://www.mingw.org/
+
+Active Perl
+http://www.activestate.com/
+
+4.3.2 サンプルプログラムの構築方法について
+
+サンプルプログラムの構築方法は基本的に doc/user.txt の 「7.4 サンプル
+プログラムの構築」で示された方法に準拠している．ただし，コンフィギュレ
+ーションスクリプト等の perl で書かれたスクリプトはそのまま Windows の 
+DOS窓（Windows2000等では「コマンドスクリプト」）の上では使用することが
+できない．そのため，utils/m16c-renesas ディレクトリに用意された専用の 
+Perlスクリプトを使用する．
+
+4.3.3 コンフィギュレーションスクリプトの実行
+
+   > mkdir OBJ
+   > cd OBJ
+   > perl ..\utils\m16c-renesas\configure.m16c
+
+何も引数を指定しない場合の動作は -C m16c -S oaks16 -T renesas -p 
+\perl\binオプションを指定して configure を実行したのと同じ動作を行うよ
+うになっている．
+この処理により，カレントディレクトリには Makefile，サンプルプログラム
+用のコンフィギュレーションファイル（sample1.cfg），サンプルプログラム
+本体（sample1.hおよびsample1.c）が生成される．ここでMakefileの修正が必
+要ならば修正を行うのは他のターゲットの場合と同じである．
+
+4.3.4 依存関係ファイルの生成およびサンプルプログラムのロードモジュール作成
+
+依存関係ファイル Makefile.depend およびロードモジュール jsp.mot を作成する
+には次のように実行する．
+
+   > make depend
+   > make
+
+4.3.5 フラッシュROM への書き込みおよびサンプルプログラムの実行
+
+構築したMOTファイルをFlashStaコマンド用いて，ボード上のフラッシュROMに
+書き込む手順から先は上記4.2.3，4.2.4で説明した内容と同じである．
+
+4.3.6 OAKS16-MINIの対応について
+
+OAKS16-MINI用のカーネルを構築する場合は，Makefile.m16c-oaks16_miniを使
+用する．OAKS16-MINI版のカーネルでは，メモリサイズ削減の為に，LOG機能はタスク
+化していない．そのため，コンフィギュレーション・ファイルを修正する必要があ
+る．sample1.cfg中の28行目の「#include "@(SRCDIR)/systask/logtask.cfg"」のの行を削
+除するか，コメント化してlog機能がタスク化しないように修正を行った後ビ
+ルドすること．
+他の手順はOAKS16版と同様である．
+
+4.4  デバッカ
+
+OAKS16およびOAKS16-MINIには，KD30デバッカで添付されている．このデバッカはフ
+ラッシュROM上のKD30モニターとUART1を用いて通信を行いデバック機能を実現する．
+本カーネルはフラッシュROM上に書き込み実行するため，カーネル書き込み時，モニ
+ター上に上書きされる為カーネル実行時はKD30デバッカは使用できない．
+再びKD30を使いたい場合は，CD-ROM中のKD30モニターをフラッシュROMに書き込む必
+要がある．
+なお，本カーネルはTOPPERS教育WGで作成した「TOPPERS初級実装セミナー」の教材に対
+応している為，教材で使用している「タスク・モニター」と併用することにより，TOPP
+ERS-JSP実行中にメモリやSFRの参照や設定，タスクの管理や状態表示が可能となる．
+必要な場合は「タスク・モニター」との併用を進める．
+
+4.5  コンパイルスイッチ
+
+以下のコンパイルスイッチの設定が可能である．
+
+(1)   NEED_API
+
+コンパイル時，NEED_APIをデファインするとapi.hがcpu_config.hにインクルード
+され，ライブラリィの為の分割コンパイルを抑止することができる．
+
+(2)   EXTERNAL_SOFT_HOOK
+
+コンパイル時，EXTERNAL_SOFT_HOOKをデファインするとsoftware_init_hookをボー
+ド依存部で定義しない．ユーザ側でsoftware_init_hookを供給することができる．
+
+(3)   MON
+
+アセンブル時に設定が必要，MON=0で通常の構築となる．MON=1とするとタスク切り
+替え部分でタスクモニタリング用の関数呼び出しを行う．教育用のタスクモニタと
+併用する場合はこの設定を行う．
+
+5.  ファイル構成
+
+5.1  ディレクトリ・ファイル構成
+
+(1)   config/m16c-renesas
+
+      api.h            非ライブラリィ化時のAPI定義
+      cpu_config.c     M16Cプロセッサ依存部の C 関数
+      cpu_config.h     M16Cプロセッサ依存部の構成定義
+      cpu_context.h    M16Cプロセッサ依存部のコンテキスト操作
+      cpu_defs.h       M16Cプロセッサ依存部のアプリケーション用定義
+      cpu_insn.h       M16Cプロセッサのアセンブリ inline 関数
+      cpu_rename.def   カーネルの内部識別名のリネームとその解除の定義リスト
+      cpu_rename.h     カーネルの内部識別名のリネームの定義
+      cpu_support.a30  M16Cプロセッサのアセンブリ関数
+      cpu_unrename.h   カーネルの内部識別名のリネーム解除の定義
+      Makefile.config  Makefile の M16C依存定義
+      makeoffset.c     offset.inc 生成サポート関数
+      hw_serial.c      SCI の変数と関数
+      hw_serial.cfg    SCI のコンフィギュレーションファイル
+      start.a30        スタートアップモジュール
+      tool_config.h    M16Cプロセッサの開発環境依存モジュール定義
+      tool_defs.h      M16Cプロセッサの開発環境依存定義
+
+(2)   config/m16c-renesas/oak16/
+
+      hw_serial.c      OAKS16用SIOドライバのC関数
+      hw_serial.cfg    SIOドライバのコンフィギュレーションファイル
+      hw_serial.h      OAKS16用SIOドライバ
+      hw_timer.h       OAKS16用タイマ操作ルーチン
+      Makefile.config  Makefile の OAKS16ボード依存定義
+      oaks16.h         M30620FCAFPプロセッサの定義
+      sys_config.c     OAKS16ボード依存部の C 関数
+      sys_config.h     OAKS16ボード依存部の構成定義
+      sys_defs.h       OAKS16ボード依存部のアプリケーション用定義
+      sys_rename.def   カーネルの内部識別名のリネームとその解除の定義リスト
+      sys_rename.h     カーネルの内部識別名のリネームの定義
+      sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+
+(3)   config/m16c-renesas/oaks16_mini/
+
+      hw_serial.cfg    SIOドライバのコンフィギュレーションファイル
+      hw_serial.h      OAKS16-MINI用SIOドライバ
+      hw_timer.h       OAKS16-MINI用タイマ操作ルーチン
+      Makefile.config  Makefile の OAKS16-MINIボード依存定義
+      oaks16mini.h     M30262F8FGプロセッサの定義
+      serial_mini.c    簡略型OAKS16-MINI用シリアルドライバー
+      sys_config.c     OAKS16-MINIボード依存部の C 関数
+      sys_config.h     OAKS18-MINIボード依存部の構成定義
+      sys_defs.h       OAKS16-MINIボード依存部のアプリケーション用定義
+      sys_rename.def   カーネルの内部識別名のリネームとその解除の定義リスト
+      sys_rename.h     カーネルの内部識別名のリネームの定義
+      sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+      syslog_mini.c    簡易型システムログプログラム
+
+(4)   sample/
+
+      Makefile.m16c-oaks16
+                   ライブラリィ型OAKS16用JSPを構築するためのmakeファイル
+
+(4)   その他
+
+      tools/M16C-RENESAS/
+      utils/m16c-renesas/
+      これらについては，tools/M16C-RENESAS/README.txtを参照のこと．
+

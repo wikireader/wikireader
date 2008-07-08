@@ -1,0 +1,909 @@
+####################################################################
+# Makefile for TM V.3.20A
+# COPYRIGHT(C) 1998(1998-2003)
+# RENESAS TECHNOLOGY CORPORATION ALL RIGHTS RESERVED
+# AND
+# RENESAS SOLUTIONS CORPORATION ALL RIGHTS RESERVED
+#
+#	Notice	:	Don't edit.
+#	Date	:	2006 05(May) 13(Saturday) AM.02.14
+#	Project	:	Jsp14sample1
+####################################################################
+
+DELETE	=	@-del
+LNLIST	=	$(PROJECT).cmd
+PRJDIR	=	C:\home\nexcess\new_board\jsp_142\obj_m3029\hoge
+INCLUDES	=	-I$(SRCDIR)/config/m16c-renesas -I$(SRCDIR)/config/m16c-renesas/$(TARGET_SYS) -I$(SRCDIR)/kernel -I$(SRCDIR)/include  -I../../sample -I.
+LMC	=	LMC30
+CC	=	NC30
+TARGET_SYS	=	m3029
+SRCDIR	=	../..
+AS	=	AS30
+OUTDIR	=	.
+MKDIR	=	@-mkdir
+#CPP	=	C:\tools\rtool\NC30WA\V530R02\LIB30\CPP30
+CPP	=	C:\tools\rtool\NC30WA\V530R02\LIB30\CPP30
+ABSFILE	=	$(PROJECT).x30
+ODINCMD	=	$(OUTDIR)
+LN	=	LN30
+TARGET	=	$(ABSFILE)
+ECHO	=	@-echo
+MKFILE	=	$(PROJECT).tmk
+PROJECT	=	Jsp14sample1_m3029
+TYPE	=	@-type
+LFLAGS	=	-MS -L nc30lib -G -O $(OUTDIR)\$(TARGET) -ORDER data_NE=400,data_NO,bss_NE,bss_NO,program=0E0000,rom_FE,rom_FO,data_NEI,data_NOI
+CFLAGS	=	-c $(INCLUDES) -dir $(OUTDIR) -g -DNEED_API
+LMCFLAGS	=	-ID\#0 -L
+AFLAGS	=	-LM -DRAMEND=03000h:MON=0:M3029=1 -I. -O$(OUTDIR)
+.SUFFIXES: .a30 .r30 .c .x30
+.PHONY: all
+all: \
+		$(OUTDIR)\$(TARGET) \
+		$(OUTDIR)\$(PROJECT).mot 
+.PHONY: LN30
+$(LN): 
+.PHONY: clean
+clean: 
+	$(DELETE) $(OUTDIR)\$(TARGET)
+	$(DELETE) $(ODINCMD)\$(LNLIST)
+	$(DELETE) $(OUTDIR)\kernel_cfg.c
+	$(DELETE) $(OUTDIR)\kernel_id.h
+	$(DELETE) $(OUTDIR)\m16cvec.inc
+	$(DELETE) $(OUTDIR)\offset.inc
+	$(DELETE) $(OUTDIR)\start.r30
+	$(DELETE) $(OUTDIR)\sys_config.r30
+	$(DELETE) $(OUTDIR)\sfruart.r30
+	$(DELETE) $(OUTDIR)\cpu_config.r30
+	$(DELETE) $(OUTDIR)\cpu_support.r30
+	$(DELETE) $(OUTDIR)\startup.r30
+	$(DELETE) $(OUTDIR)\banner.r30
+	$(DELETE) $(OUTDIR)\exception.r30
+	$(DELETE) $(OUTDIR)\interrupt.r30
+	$(DELETE) $(OUTDIR)\sys_manage.r30
+	$(DELETE) $(OUTDIR)\task_manage.r30
+	$(DELETE) $(OUTDIR)\time_manage.r30
+	$(DELETE) $(OUTDIR)\task.r30
+	$(DELETE) $(OUTDIR)\wait.r30
+	$(DELETE) $(OUTDIR)\task_except.r30
+	$(DELETE) $(OUTDIR)\task_sync.r30
+	$(DELETE) $(OUTDIR)\time_event.r30
+	$(DELETE) $(OUTDIR)\cyclic.r30
+	$(DELETE) $(OUTDIR)\dataqueue.r30
+	$(DELETE) $(OUTDIR)\eventflag.r30
+	$(DELETE) $(OUTDIR)\mailbox.r30
+	$(DELETE) $(OUTDIR)\mempfix.r30
+	$(DELETE) $(OUTDIR)\semaphore.r30
+	$(DELETE) $(OUTDIR)\syslog.r30
+	$(DELETE) $(OUTDIR)\logtask.r30
+	$(DELETE) $(OUTDIR)\serial.r30
+	$(DELETE) $(OUTDIR)\timer.r30
+	$(DELETE) $(OUTDIR)\log_output.r30
+	$(DELETE) $(OUTDIR)\strerror.r30
+	$(DELETE) $(OUTDIR)\t_perror.r30
+	$(DELETE) $(OUTDIR)\vasyslog.r30
+	$(DELETE) $(OUTDIR)\kernel_cfg.r30
+	$(DELETE) $(OUTDIR)\sample1.cfg.i
+	$(DELETE) $(OUTDIR)\start.lst
+	$(DELETE) $(OUTDIR)\cpu_support.lst
+	$(DELETE) $(OUTDIR)\makeoffset.a30
+	$(DELETE) $(OUTDIR)\$(PROJECT).map
+	$(DELETE) $(OUTDIR)\sample1.r30
+$(ODINCMD)\$(LNLIST): \
+		.\$(MKFILE) 
+	$(ECHO)\$(MRLFLAGS) $(LFLAGS) >	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\start.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sys_config.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sfruart.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cpu_config.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cpu_support.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\startup.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\banner.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\exception.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\interrupt.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sys_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\time_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\wait.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_except.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_sync.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\time_event.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cyclic.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\dataqueue.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\eventflag.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\mailbox.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\mempfix.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\semaphore.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\syslog.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\logtask.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\serial.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\timer.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\log_output.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\strerror.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\t_perror.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\vasyslog.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\kernel_cfg.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sample1.r30 >>	$(ODINCMD)\$(LNLIST)
+$(OUTDIR)\$(PROJECT).mot: \
+		$(OUTDIR)\$(TARGET) 
+	$(LMC) $(LMCFLAGS) $<
+$(OUTDIR)\$(TARGET): \
+		$(ODINCMD)\$(LNLIST) \
+		$(OUTDIR)\kernel_cfg.c \
+		$(OUTDIR)\kernel_id.h \
+		$(OUTDIR)\m16cvec.inc \
+		$(OUTDIR)\offset.inc \
+		$(OUTDIR)\start.r30 \
+		$(OUTDIR)\sys_config.r30 \
+		$(OUTDIR)\sfruart.r30 \
+		$(OUTDIR)\cpu_config.r30 \
+		$(OUTDIR)\cpu_support.r30 \
+		$(OUTDIR)\startup.r30 \
+		$(OUTDIR)\banner.r30 \
+		$(OUTDIR)\exception.r30 \
+		$(OUTDIR)\interrupt.r30 \
+		$(OUTDIR)\sys_manage.r30 \
+		$(OUTDIR)\task_manage.r30 \
+		$(OUTDIR)\time_manage.r30 \
+		$(OUTDIR)\task.r30 \
+		$(OUTDIR)\wait.r30 \
+		$(OUTDIR)\task_except.r30 \
+		$(OUTDIR)\task_sync.r30 \
+		$(OUTDIR)\time_event.r30 \
+		$(OUTDIR)\cyclic.r30 \
+		$(OUTDIR)\dataqueue.r30 \
+		$(OUTDIR)\eventflag.r30 \
+		$(OUTDIR)\mailbox.r30 \
+		$(OUTDIR)\mempfix.r30 \
+		$(OUTDIR)\semaphore.r30 \
+		$(OUTDIR)\syslog.r30 \
+		$(OUTDIR)\logtask.r30 \
+		$(OUTDIR)\serial.r30 \
+		$(OUTDIR)\timer.r30 \
+		$(OUTDIR)\log_output.r30 \
+		$(OUTDIR)\strerror.r30 \
+		$(OUTDIR)\t_perror.r30 \
+		$(OUTDIR)\vasyslog.r30 \
+		$(OUTDIR)\kernel_cfg.r30 \
+		$(OUTDIR)\sample1.r30 
+	$(LN) @$(ODINCMD)\$(LNLIST) 
+$(OUTDIR)\banner.r30: \
+		..\..\kernel\banner.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\banner.c
+$(OUTDIR)\cpu_config.r30: \
+		..\..\config\m16c-renesas\cpu_config.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m16c-renesas\cpu_config.c
+$(OUTDIR)\cpu_support.r30: \
+		..\..\config\m16c-renesas\cpu_support.a30 \
+		$(OUTDIR)\offset.inc 
+	$(AS) $(MRAFLAGS) $(AFLAGS) ..\..\config\m16c-renesas\cpu_support.a30
+$(OUTDIR)\cyclic.r30: \
+		..\..\kernel\cyclic.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\cyclic.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\cyclic.c
+$(OUTDIR)\dataqueue.r30: \
+		..\..\kernel\dataqueue.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\dataqueue.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\dataqueue.c
+$(OUTDIR)\eventflag.r30: \
+		..\..\kernel\eventflag.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\eventflag.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\eventflag.c
+$(OUTDIR)\exception.r30: \
+		..\..\kernel\exception.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\exception.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\exception.c
+$(OUTDIR)\interrupt.r30: \
+		..\..\kernel\interrupt.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\interrupt.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\interrupt.c
+$(OUTDIR)\kernel_cfg.c: \
+		.\sample1.cfg 
+	$(CPP) $(INCLUDES)  $< > sample1.cfg.i
+	..\..\cfg\cfg -cpu $(CPU) -system $(SYS) -s sample1.cfg.i
+$(OUTDIR)\kernel_cfg.r30: \
+		$(OUTDIR)\kernel_cfg.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) kernel_cfg.c
+$(OUTDIR)\kernel_id.h: \
+		.\sample1.cfg 
+	$(CPP) $(INCLUDES)  $< > sample1.cfg.i
+	..\..\cfg\cfg -cpu $(CPU) -system $(SYS) -s sample1.cfg.i
+$(OUTDIR)\log_output.r30: \
+		..\..\library\log_output.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\log_output.c
+$(OUTDIR)\logtask.r30: \
+		..\..\systask\logtask.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h \
+		..\..\include\logtask.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\logtask.c
+$(OUTDIR)\m16cvec.inc: \
+		$(OUTDIR)\kernel_cfg.c 
+	$(CPP) $(INCLUDES)  $< > kernel_cfg.i
+	..\..\utils\m16c-renesas\m16cvec.exe -M0
+$(OUTDIR)\mailbox.r30: \
+		..\..\kernel\mailbox.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\mailbox.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\mailbox.c
+$(OUTDIR)\mempfix.r30: \
+		..\..\kernel\mempfix.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\mempfix.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\mempfix.c
+$(OUTDIR)\offset.inc: \
+		..\..\config\m16c-renesas\makeoffset.c 
+	$(CC) -S $(MRCFLAGS) $(CFLAGS) $<
+	..\..\utils\m16c-renesas\m16coffset.exe
+$(OUTDIR)\sample1.r30: \
+		..\..\sample\sample1.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\sample\sample1.c
+$(OUTDIR)\semaphore.r30: \
+		..\..\kernel\semaphore.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\semaphore.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\semaphore.c
+$(OUTDIR)\serial.r30: \
+		..\..\systask\serial.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h \
+		..\..\config\m16c-renesas\m3029\hw_serial.h \
+		..\..\include\s_services.h \
+		..\..\include\sil.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\config\m16c-renesas\m3029\sfruart.h \
+		$(OUTDIR)\kernel_id.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\serial.c
+$(OUTDIR)\sfruart.r30: \
+		..\..\config\m16c-renesas\$(TARGET_SYS)\sfruart.c \
+		..\..\include\s_services.h \
+		..\..\include\sil.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\kernel.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\config\m16c-renesas\m3029\m3029.h \
+		..\..\config\m16c-renesas\m3029\sfruart.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m16c-renesas\$(TARGET_SYS)\sfruart.c
+$(OUTDIR)\start.r30: \
+		..\..\config\m16c-renesas\start.a30 \
+		$(OUTDIR)\m16cvec.inc 
+	$(AS) $(MRAFLAGS) $(AFLAGS) ..\..\config\m16c-renesas\start.a30
+$(OUTDIR)\startup.r30: \
+		..\..\kernel\startup.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\syslog.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\startup.c
+$(OUTDIR)\strerror.r30: \
+		..\..\library\strerror.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\strerror.c
+$(OUTDIR)\sys_config.r30: \
+		..\..\config\m16c-renesas\$(TARGET_SYS)\sys_config.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\include\sil.h \
+		..\..\config\m16c-renesas\m3029\m3029.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m16c-renesas\$(TARGET_SYS)\sys_config.c
+$(OUTDIR)\sys_manage.r30: \
+		..\..\kernel\sys_manage.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\sys_manage.c
+$(OUTDIR)\syslog.r30: \
+		..\..\kernel\syslog.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\syslog.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\syslog.c
+$(OUTDIR)\t_perror.r30: \
+		..\..\library\t_perror.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\t_perror.c
+$(OUTDIR)\task.r30: \
+		..\..\kernel\task.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\config\m16c-renesas\cpu_context.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task.c
+$(OUTDIR)\task_except.r30: \
+		..\..\kernel\task_except.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_except.c
+$(OUTDIR)\task_manage.r30: \
+		..\..\kernel\task_manage.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_manage.c
+$(OUTDIR)\task_sync.r30: \
+		..\..\kernel\task_sync.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h \
+		..\..\kernel\wait.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_sync.c
+$(OUTDIR)\time_event.r30: \
+		..\..\kernel\time_event.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\time_event.c
+$(OUTDIR)\time_manage.r30: \
+		..\..\kernel\time_manage.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\check.h \
+		..\..\kernel\time_event.h \
+		..\..\config\m16c-renesas\m3029\hw_timer.h \
+		..\..\include\s_services.h \
+		..\..\include\sil.h \
+		..\..\config\m16c-renesas\m3029\m3029.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\time_manage.c
+$(OUTDIR)\timer.r30: \
+		..\..\systask\timer.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h \
+		..\..\include\timer.h \
+		..\..\config\m16c-renesas\m3029\hw_timer.h \
+		..\..\include\s_services.h \
+		..\..\include\sil.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\config\m16c-renesas\m3029\m3029.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\timer.c
+$(OUTDIR)\vasyslog.r30: \
+		..\..\library\vasyslog.c \
+		..\..\include\t_services.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\serial.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stdarg.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\vasyslog.c
+$(OUTDIR)\wait.r30: \
+		..\..\kernel\wait.c \
+		..\..\kernel\jsp_kernel.h \
+		..\..\kernel\jsp_rename.h \
+		..\..\include\kernel.h \
+		..\..\include\t_stddef.h \
+		..\..\config\m16c-renesas\tool_defs.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\limits.h \
+		..\..\include\itron.h \
+		..\..\..\..\..\..\tools\rtool\NC30WA\V530R02\INC30\stddef.h \
+		..\..\config\m16c-renesas\m3029\sys_defs.h \
+		..\..\config\m16c-renesas\cpu_defs.h \
+		..\..\include\t_syslog.h \
+		..\..\include\t_config.h \
+		..\..\config\m16c-renesas\m3029\sys_config.h \
+		..\..\config\m16c-renesas\m3029\sys_rename.h \
+		..\..\config\m16c-renesas\cpu_config.h \
+		..\..\config\m16c-renesas\api.h \
+		..\..\config\m16c-renesas\cpu_rename.h \
+		..\..\config\m16c-renesas\cpu_insn.h \
+		..\..\config\m16c-renesas\tool_config.h \
+		..\..\kernel\wait.h \
+		..\..\kernel\task.h \
+		..\..\kernel\queue.h \
+		..\..\kernel\time_event.h 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\wait.c
+####################################################################
+# End of makefile for TM V.3.20A
+# COPYRIGHT(C) 1998(1998-2003)
+# RENESAS TECHNOLOGY CORPORATION ALL RIGHTS RESERVED
+# AND
+# RENESAS SOLUTIONS CORPORATION ALL RIGHTS RESERVED
+####################################################################

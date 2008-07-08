@@ -1,0 +1,397 @@
+
+             ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                     （Nios2 ターゲット依存部）
+
+             （Release 1.4.2 対応、最終更新: 10-Feb-2006）
+                 （NiosII Development Kit 5.1 対応）
+
+------------------------------------------------------------------------ 
+ TOPPERS/JSP Kernel
+     Toyohashi Open Platform for Embedded Real-Time Systems/
+     Just Standard Profile Kernel
+
+ Copyright (C) 2004 by Embedded and Real-Time Systems Laboratory
+               Graduate School of Information Science, Nagoya Univ., JAPAN    
+
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+
+ @(#) $Id: nios2.txt,v 1.6 2006/02/10 08:36:10 honda Exp $
+------------------------------------------------------------------------
+
+
+1. Nios2 ターゲット依存部の概要
+
+1.1 ターゲットシステム
+
+Nios2 プロセッサのターゲットシステムとしては、Nios2 がサポートしてる 
+FPGA を搭載したシステムをサポートしている。ターゲットシステムとしては、
+以下のボードをサポートしている。これらのボードを使用するする際には、ボ
+ードに付属するデザイン例の Standard もしくは Full Featured を FPGA に
+実装する必要がある．
+
+ ・NiosII Development Board Cyclone Edition
+ ・NiosII Development Board Stratix Edition
+ ・NiosII Development Board Stratix Professional Edition 
+ ・NiosII Development Board StratixII Edition
+
+1.2 開発環境と実行環境
+
+開発環境には，NiosII Development Kitに含まれている GCC などの GNU開発
+環境を用い，オブジェクトファイルフォーマットは ELF を標準とする．
+
+カーネルのコンパイル及びダウンロードはEclipseを用いずコマンドライン
+(CygwinもしくはNiosII SDK Shell)から行う．
+
+1.3 サポートする機能の概要
+
+Nios2 依存の機能として，性能評価用システム時刻参照機能（vxget_tim）を
+サポートしている．割込みの禁止・許可(dis_int, ena_int)をサポートする．
+また，割込みマスクの変更・参照(chg_ixx，get_ixx)はサポートしていない．
+
+1.4 他のターゲットへのポーティング
+
+JSPカーネルを動作させるには、64Kbyte程度のメモリと、標準のTIMERと
+JTAG-UART（もしくはUART）がそれぞれ1つ必要である。実際のコード変更箇所
+については後述する。
+
+
+2．Nios2 プロセッサ依存部の機能
+
+この節では，カーネルおよびシステムサービスの機能の中で，Nios2 依存の部
+分について解説する．
+
+2.1 データ型
+
+signed int型および unsigned int型のサイズは 32ビットである．
+
+2.2 割込み管理機能と割込みハンドラ
+
+DEF_INH で指定する割込みハンドラ番号（inhno）は，SOPC Builderでに指定
+した割込み番号を表し，そのデータ型（INHNO）は unsigned int型に定義され
+ている．DEF_INH で，割込み優先度として有効でない値や，実際の割込み優先
+度とは異なる番号を指定した場合の動作は保証されない．
+
+2.4 スタートアップモジュール
+
+Nios2 依存のスタートアップモジュール（start.S）では，次の初期化処理を
+行う．
+
+(A) 命令キャッシュの初期化
+
+命令キャッシュを実装している場合，initiで命令キャッシュを初期化する．
+
+(B) データキャッシュの初期化
+
+データキャッシュを実装している場合，initiで命令キャッシュを初期化する．
+
+(C) スタックポインタの初期化とグローバルポインターの設定
+
+スタックポインタ(sp)STACKTOPに設定し，次にグローバルポインター(gp)を
+_gpで初期化する 
+
+(D) hardware_init_hook の呼出し
+
+hardware_init_hook が 0 でない場合には，hardware_init_hook を呼び出す．
+hardware_init_hook は，カーネルが起動される前に行う必要があるターゲッ
+ト依存の初期化を行うために用意している．hardware_init_hook がどこでも
+定義されていない場合，リンカでこのシンボルを 0 に定義する（リンカスク
+リプト内に記述あり）．
+
+(E) bssセクションの初期化
+
+bssセクションをゼロクリアする．なお，dataセクションについては，RAMの使
+用量を減らす目的で，ROM化に対応した初期化は行っていない．
+
+(F) software_init_hook の呼出し
+
+software_init_hook が 0 でない場合には，software_init_hook を呼び出す．
+software_init_hook は，カーネルが起動される前に行う必要があるソフトウェ
+ア環境（具体的には，ライブラリ）依存の初期化を行うために用意している．
+software_init_hook がどこでも定義されていない場合，リンカでこのシンボ
+ルを 0 に定義する（リンカスクリプト内に記述あり）．
+
+(G) カーネルの起動
+
+kernel_start へ分岐し，カーネルを起動する．kernel_start からリターンし
+てくることは想定していない．
+
+2.5 性能評価用システム時刻参照機能
+
+Nios2 依存部では，性能評価用システム時刻参照機能（vxget_tim）をサポー
+トしている．性能評価用システム時刻の精度はタイマに供給するクロックによ
+って決まる．なお，SYSUTIM型は UD型（64ビットの符号無し整数型）に定義し
+ている．
+
+2.6 シリアルインタフェースドライバ
+
+Nios2 依存部のシリアルインタフェースドライバは，UART もしくは 
+JTAG-UART をサポートしている．UART と JTAG-UART の選択はシステム依存部
+の sys_defs.h で USE_JTAG_UART を定義すればよい。
+
+
+3. カーネルの構築方法 & 実行方法
+
+3.1 構築方法
+カーネルの構築にはGUN開発環境の他に，make や perl が必要となる．そのた
+め，Windows では Cygwin 環境もしくは NiosII SDK Shell を使用する必要が
+ある。NiosII SDK Shell は JSPカーネルの構築に必要な perlスクリプトで使
+用するライブラリが用意されていため、標準の構築方法では構築できない。以
+下では、Cygwin 環境と NiosII SDK Shell に分けて説明する。
+
+3.1.1 Cygwin環境
+
+NiosII Development Kit に含まれているコンパイラ等のGNUツールを Cygwin 
+から呼び出せるようパスを通す。
+
+    $nios2_install$/bin/nios2-gnutools/H-i686-pc-cygwin/bin/
+     （$nios2_install$ は NiosII Development Kit のインストールディレクトリ）
+
+後は、通常の構築手順（user.txt の7.3からの方法）に従いカーネルを構築す
+る。
+
+3.1.2 NiosII SDK Shell 環境
+
+NiosIIサポートページ（http://www.ertl.jp/~honda/niosII/）から、以下の
+ファイルをダウンロードする。
+
+   ・コンパイル済みのコンフィギュレータ（cfg.exe）とチェッカー（chk.exe）
+   ・getopt.plライブラリ(perlライブラリ)
+
+カーネルソースコードを展開した後、ディレクトリ ./cfg にコンパイル済み
+のコンフィギュレータ（cfg.exe）とチェッカー（chk.exe）をコピーする。
+
+getopt.pl は、NiosII SDK Shell 環境で perl ライブラリの参照先にコピー
+する。
+    例 : $quartus_install\sopc_builder\bin\perl_lib
+         ($quartus_install はQuartusIIのインストール先) 
+
+カーネルソースコードを展開したディレクトリに直下にある perlスクリプト 
+./configure  を開き、get_object関数内を以下のように書き換える
+
+  オリジナル
+	sub get_objext {
+	   	local(@uname);
+
+		use POSIX;
+		@uname = do uname();
+		if ($uname[0] =~ /^cygwin/i) {
+			return("exe");
+		}
+		else {
+			return("");
+    	}
+	 }
+
+   書き換え後
+	sub get_objext {	  
+		return("");
+	 }
+
+以上の作業の後、通常の構築方法に従いカーネルを構築する。以下はカーネル
+ソースコードを展開したディレクトリでの作業の例である。
+
+      ディレクトリを作成
+        $makdir obj       
+        $cd obj
+
+      コンフィギュレーションスクリプトを実行
+        $../configure -C nios2 -S altera_dev_board
+
+      カーネルを構築
+        $make depned
+        $make 
+  
+カーネル構築後、オブジェクトファイル jsp.elf が出来ていれば構築は成功
+である。
+
+
+3.2 実行方法
+
+Cygwin もしくは NiosII SDK Shell のコンソールを開き、gdbserver を実行
+する。
+    
+     $nios2-gdb-server --cable=USB-Blaster --tcpport=1234 -r
+
+JTAG-UART を使用する場合は、nios2-terminalも実行する。
+
+     $nios2-terminal.exe --cable=USB-Blaster --instance=0
+
+カーネルを構築したディレクトリで gdb を実行してカーネルをダウンロード
+して実行する。
+
+     $nios2-elf-gdb jsp.elf
+     (gdb)target remote localhost:1234
+     (gdb)load 
+     (gdb)continue
+
+
+4. 他のターゲットボードへのポーティング
+
+4.1 ディレクトリ構成
+
+通常のターゲットの場合は，./config 以下で
+
+   （プロセッサ）/（ターゲットボード1）
+                 /（ターゲットボード2）
+
+という構成でディレクトリが作成されており，（プロセッサ）はプロセッサコ
+アやプロセッサパッケージいわゆるICにパッケージされたものを示し，プロセッ
+サ依存部と呼ぶ．（ターゲットボード）はそのICを搭載したボード依存の機能
+についてのコードを置いている場所でターゲット依存部と呼ぶ．一方
+Nios2 は，システム構成を自由に変更できるため，このように明確な切り分
+けはできない．そこで，JSPカーネルを動作させるための必要最小限の構成を
+プロセッサ依存部として（プロセッサ）に置く．プロセッサ依存部としての，
+JSPカーネルを動作させるための最小構成を以下に示す．
+
+ ・プロセッサ
+ ・メモリ(64kbyte程度)
+ ・TIMER
+ ・UART もしくは JTAG UART
+
+UARTとJTAG UARTは排他的に使用可能であり、ディフォルトではJTAG-UARTを使
+用するようにしている。UART を使用する場合は、sys_defs.h で 
+USE_JTAG_UART を未定義にすること．これ以外の機能のコードはターゲット依
+存部として，（ターゲットボード）以下のディレクトリに配置する．
+
+配布パッケージに含まれているターゲット依存部を以下に示す．
+
+  ・./altera_dev_board
+      NiosII Development Board用
+
+
+4.2 システムコンフィギュレーション
+
+    新たなシステムでJSPカーネルを動作させる場合は，上記の NiosII 
+    Development Board 用のターゲット依存部のファイルを、対象とするシス
+    テム構成にあわせて書き換えればよい．システムに合わせて編集する必要
+    がある項目を以下に示す．
+
+      ・./sys_defs.h
+        STACKTOP    : スタック初期アドレス
+        TIMER_CLOCK : タイマークロック
+        TIC_NUME    : タイムティック周期の分子
+        TIC_DENO    : タイムティック周期の分母
+        TIM_BASE    : TIMERのベースアドレス
+        UART_BASE   : UARTベースアドレス
+        TIM_INTLVL  : TIMERの割込み番号
+        UART_INTLVL : UARTの割込み番号
+        NIOS2_ICACHE_SIZE        : 命令キャッシュサイズ
+        NIOS2_DCACHE_SIZE        : データキャッシュサイズ
+        NIOS2_ICACHE_LINE_SIZE   : 命令キャッシュラインサイズ
+        NIOS2_DCACHE_LINE_SIZE   : データキャッシュラインサイズ
+
+      ・./Makefile.config
+        COPTS              : コンパイルオプション
+        LIBS               : ライブラリ指定
+        LDFLAGS            : リンカオプション
+        TEXT_START_ADDRESS : TEXTセクションのスタートアドレス
+        DATA_START_ADDRESS : DATAセクションのスタートアドレス
+        
+        Nios2 のコンパイラオプションとしては以下のものがある。
+            -mno-hw-mul  : 乗算器なし
+            -mno-hw-div  : 除算器なし
+            -mhw-mul     : 乗算器あり   
+            -mhw-div     : 除算器あり
+        
+      ・./nios2elf.l
+        NiosII IDC(Eclipse)でサンプルプログラムを構築すると生成される
+        リンクスクリプト
+
+          xxx_syslib/Debug/system_description/generated.x
+
+        に以下の行を追加して使用する。
+
+          PROVIDE(_hardware_init_hook = 0);
+          PROVIDE(_software_init_hook = 0);
+          PROVIDE(software_term_hook = 0);
+
+    
+        例外のエントリコードは，.exceptionに配置するように書かれている
+        ため，リンカスクリプトでは，このセクションを正しくプロセッサの
+        例外エントリに配置する必要がある．
+          
+              .exceptions :
+              {
+                  . = ALIGN(0x20);
+                  *(.irq)
+                  KEEP (*(.exceptions));
+              } > sdram
+
+
+5．その他
+
+5.1 ディレクトリ・ファイル構成
+
+Nios2 ターゲット依存部の各ファイルの概要は次の通り．
+
+    config/nios2/
+        Makefile.config    Makefile の Microblaze依存定義
+        cpu_defs.h         プロセッサ依存部のアプリケーション用定義
+        cpu_config.h       プロセッサ依存部の構成定義
+        cpu_config.c       プロセッサ依存部の関数
+        cpu_support.S      プロセッサ依存部のサブルーチン
+        cpu_context.h      コンテキスト操作
+        makeoffset.c       offset.h 生成サポートプログラム
+        cpu_insn.h         低レベルのプロセッサ操作ルーチン
+        start.S            スタートアップモジュール
+        cpu_rename.def     カーネルの内部識別名のリネーム定義
+        cpu_rename.h       カーネルの内部識別名のリネーム
+        cpu_unrename.h     カーネルの内部識別名のリネーム解除
+        nios2.h            Nios2 の定義
+        nios2.c            Nios2 用コード
+        hw_serial.h        UART/JATG-UARTドライバ
+        hw_serial.cfg      UART/JATG-UARTドライバのコンフィギュレーションファイル
+        hw_timer.h         タイマ操作ルーチン
+        tool_defs.h        開発環境依存部のアプリケーション用定義（GNU開発環境用）
+        tool_config.h      開発環境依存部の構成定義（GNU開発環境用）
+
+    config/nios2/altera_dev_board
+        Makefile.config    Makefile の MIREF 依存定義
+        nios3elf.l         リンカスクリプト
+        sys_defs.h         システム依存部のアプリケーション用定義
+        sys_config.h       システム依存部の構成定義
+        sys_config.c       システム依存部の関数
+        sys_support.S      システム依存部のサブルーチン
+        sys_rename.def     カーネルの内部識別名のリネーム定義
+        sys_rename.h       カーネルの内部識別名のリネーム
+        sys_unrename.h     カーネルの内部識別名のリネーム解除
+
+
+5.2 サポート
+
+バグ等を発見した場合は toppers-users の ML に報告もしくは，Nios2 依存
+部の開発者の以下のメールアドレスに連絡して頂きたい
+
+  honda@ertl.jp
+
+また，以下のページに関連情報を掲載している。
+
+  http://www.ertl.jp/~honda/nios2
+
+
+以上

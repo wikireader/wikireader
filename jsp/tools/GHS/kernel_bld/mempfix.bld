@@ -1,0 +1,38 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+check.h
+	include_file
+task.h
+	include_file
+wait.h
+	include_file
+mempfix.h
+	include_file
+
+mempfix.c
+	C
+	:outputname=mpfini.o
+	:defines=__mpfini
+mempfix.c
+	C
+	:outputname=mpfget.o
+	:defines=__mpfget
+mempfix.c
+	C
+	:outputname=get_mpf.o
+	:defines=__get_mpf
+mempfix.c
+	C
+	:outputname=pget_mpf.o
+	:defines=__pget_mpf
+mempfix.c
+	C
+	:outputname=tget_mpf.o
+	:defines=__tget_mpf
+mempfix.c
+	C
+	:outputname=rel_mpf.o
+	:defines=__rel_mpf

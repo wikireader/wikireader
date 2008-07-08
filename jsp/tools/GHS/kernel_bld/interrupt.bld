@@ -1,0 +1,10 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+interrupt.h
+	include_file
+interrupt.c
+	C
+	:outputname=inhini.o
+	:defines=__inhini

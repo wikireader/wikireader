@@ -1,0 +1,12 @@
+[SIGNATURE]
+VERSION=0000
+TYPE=TIDE_WSP
+[Builder]
+LinkProject=1
+Composition=Release
+LinkProject0=Zup-F16-ex.abs;
+LinkProject1=Zup-F16-ex.abs;
+[PROJECT]
+Zup-F16-ex=.\Zup-F16-ex
+[PRIMARY_PROJECT]
+NAME=Zup-F16-ex

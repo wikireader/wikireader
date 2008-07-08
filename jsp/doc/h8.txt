@@ -1,0 +1,1615 @@
+               ＝ TOPPERS/JSPカーネル ユーザズマニュアル ＝
+                            （H8 ターゲット依存部）
+   
+               （Release 1.4.3対応，最終更新: 08-Mar-2007）
+   
+   ------------------------------------------------------------------- 
+    TOPPERS/JSP Kernel
+
+        Toyohashi Open Platform for Embedded Real-Time Systems/
+        Just Standard Profile Kernel
+   
+    Copyright (C) 2000-2004 by Embedded and Real-Time Systems Laboratory
+                                Toyohashi Univ. of Technology, JAPAN
+    Copyright (C) 2001-2007 by Industrial Technology Institute,
+                                Miyagi Prefectural Government, JAPAN
+    Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
+                     Tomakomai National College of Technology, JAPAN
+    Copyright (C) 2001-2004 by Kunihiko Ohnaka
+    Copyright (C) 2004 by Katsuhiro Amano
+   
+    上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+
+    によって公表されている GNU General Public License の Version 2 に記
+    述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+    を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+    利用と呼ぶ）することを無償で許諾する．
+    (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+        権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+        スコード中に含まれていること．
+    (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+        用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+        者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+        の無保証規定を掲載すること．
+    (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+        用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+        と．
+      (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+          作権表示，この利用条件および下記の無保証規定を掲載すること．
+      (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+          報告すること．
+    (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+        害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+   
+    本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+    よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+    含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+    接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+   
+    @(#) $Id: h8.txt,v 1.21 2007/03/23 07:19:27 honda Exp $
+
+   ---------------------------------------------------------------------
+
+1.  H8 ターゲット依存部の概要
+
+注意点：Release1.4.1までのバージョンをお使いの方へ
+　・処理系について
+　　　秋月電子通商製ボード付属のGNU開発環境はバージョンが古いため、
+　　　サポートしていない。（「4. 1  開発環境の構築」を参照）
+　・割込みの扱いについて
+　　　Release1.4.2から割込みの扱いが大幅に変更されているため、旧バー
+　　　ジョンをご使用の方は「2. 2. 2  割込みハンドラの登録」を参照され
+　　　たい。
+
+1. 1  ターゲットシステムと開発環境
+
+  H8 プロセッサのターゲットシステムは、H8/3052F、 H8/3069Fを搭載した
+以下のボードである。
+
+   ・(株) 秋月電子通商製の AKI-H8/3052F (AKI-H8-USB ボートに装着)
+   ・(株) 秋月電子通商製の AKI-H8/3069F
+
+以下のボードは参考実装であり、動作確認は行っていない。
+   ・(株) 秋月電子通商製の AKI-H8/3048F
+   ・(有) 品川通信計装サービス製の NKEV-010H8(H8/3069F使用)
+
+なお、何もしないタスク 1 個の最小構成でも、H8/3069F以外では必要なRAM容
+量がプロセッサの内蔵RAM 容量のを超える。このため外部 RAM の増設が必要
+で、外部アドレス空間を有効にする必要がある。現在の構成では、H8/3048F 
+がモード 5 の内蔵 ROM有効拡張 1M バイトモード、 H8/3052F がモード 6 の
+内蔵 ROM 有効拡張 16Mバイトモード、 H8/3069F がモード 5 の内蔵ROM有効
+拡張 16M バイトモードを想定している。
+  開発環境は、 Windows 2000上の cygwin の開発環境を用いた。また、デ
+バッグモードとリリースモードでモジュールの実行方法が異なっている。デ
+バッグモードでは (株)秋月電気通商製モニタデバッカ (以下、秋月モニタ)、
+または苫小牧高専情報学科製簡易モニタ (以下、 簡易モニタ)、を H8 の内蔵
+フラッシュ ROM に書き込み、デバッグするモジュールを外部 RAM にロードし
+てデバッグを行う。リリースモードでは、デバッグの終了したモジュールを内
+蔵フラッシュ ROM に書き込むことを想定している。 デバッグモードとリリー
+スモードの切り替えは、 ディレクトリ jsp/config/h8/$(SYS) にある 
+Makefile.config のDBGENV の定義による。
+（$(SYS)にはボード名を示す。）
+　また、参考実装としてeCos/RedBoot プロジェクト製デバッカ(以下、RedBoot)
+に対応しているが、実機テストは行っていない。詳しくは末尾の付録を参照。
+
+  NKEV-010H8はGDB STUBによるリモートデバッグも想定してある。注意事項等
+詳しくは末尾の付録を参照。
+
+備考
+　AKI-H8/3052Fは、AKI-H8-USBボートのUSBコネクタから電源を供給すること
+ができる。通常のDC電源コネクタから電源を供給する場合は、電源コネクタの
+周囲に抵抗を追加する必要がある。
+　AKI-H8/3069Fは、初期ロットとそれ以降では外部RAMの型番が異なっている。
+また、初期ロットでは外部RAMを自分で半田付けするようになっているので、
+どちらに該当するのかはボードの付属マニュアルを参照のこと。
+
+　　参考情報
+　　　　「(toppers-users 1375) akih8_3069f  依存部の修正について」
+　　　　
+1. 2  サポートする機能の概要
+
+  性能評価用システム時刻参照機能 (vxget_tim) と割込みマスクの変更・参
+照 (chg_ixx、 get_ixx)はサポートしているが、割り込みの禁止と許可
+(dis_int、ena_int) はサポートしていない。
+
+1. 3  他のターゲットへのポーティング
+
+  H8/300H シリーズであれば、ポーティングは容易に出来ると思われる。
+
+1. 4  シリアルポート (SCI)
+
+  H8/3048F と H8/3052F には SCI0 と SCI1 の 2 本、H8/3069F には SCI0 
+から SCI2 の 3 本のシリアルポートがあり、sys_config.h に定義している 
+TNUM_PORT により何本使用するか指定できる。
+現在の実装では 3本まで使用できる。 JSP カーネルのログ出力用には SCI1
+を使用している。 シリアルポートの設定を以下に示す。 
+
+   ・ボーレイト：38400[bps]
+   ・データ長：8 ビット
+   ・ストップビット：1 ビット
+   ・パリティなし
+   ・フロー制御：Xon/Xoff
+
+1. 4. 1  ポート番号の割り当てについて
+
+ポートID番号（マクロ名）　　デバイス番号　　　　用途
+　１（SYSTEM_PORTID）　　　　　　SCI1　　　　システムログ出力用
+　２（USER_PORTID）　　　　　　　SCI0　　　　ユーザーアプリケーション
+　３（USER2_PORTID）　　　　　　 SCI2　　　　ユーザーアプリケーション
+
+　ポートIDのカスタマイズについては、「カスタマイズ方法」の節を参照
+
+2.  H8 プロセッサ依存部の機能
+
+  カーネルとシステムサービス機能の中で、 H8 依存の部分について解説する。 
+
+2. 1  データ型
+
+  int 型と unsigned int 型のサイズは 32 ビットである。また、64ビット整
+数であるD型とUD型が使用できるか否かは処理系で定義しているマクロ
+__LONG_LONG_MAX__の値で判別している。
+gcc-2.95.3ではコンパイラの制約で、64ビット整数は扱えない。
+
+2. 2  割込み管理機能と割込みハンドラ
+
+カーネル管理外の割込みはNMIのみである．よって，CPUロック状態や初期化
+ルーチン内では，NMI以外の割込みはすべて禁止されている．具体的には、CPU
+ロック状態ではCCRレジスタのIビットとUIビットをセットし、さらにカーネル
+内のフラグ変数をセットしている。
+
+　　CPUロック状態を表すフラグ変数：BOOL iscpulocked
+　　　　TRUE ：CPUロック状態
+　　　　FALSE：CPUロック解除状態
+
+　本実装ではSYSCRレジスタのUEビットをクリアし、CCRレジスタのIビットと
+UIビットを割込みマスク（IPM：Interrupt Priority Mask）として使用してい
+る。（レベル0とレベル1の割込みが使用できる。）
+
+DEF_INHで指定する割込みハンドラ番号（inhno）は，H8での例外ベクタ番号を
+表し，そのデータ型（INHNO）はunsigned int型に定義されている．
+DEF_INHで，例外ベクタ番号として有効でない値や，外部割込みに対応しない
+番号を指定した場合の動作は保証されない．
+H8 の割込みベクタは ROM 領域にあり、 動的に内容を変更するためには特別
+の方法が必要であるため、動的なハンドラの登録機能はない。
+従って、 割込みハンドラの設定関数 define_inh( )は何もしない関数である。
+
+2. 2. 1  割込み発生時のスタック使用量について
+
+  割込みネストレベルが0（つまり、タスクコンテキスト実行中）で割込みが
+発生すると、 タスクコンテキスト用スタックにレジスタを一部保存した後、
+割込み用スタックに切り替えるため、各スタックの使用量は
+  ・タスクコンテキスト用スタック：　PC+CCR、ER0〜4　　計24バイト
+  ・非タスクコンテキスト用スタック：ER5〜6、SP　　　　計12バイト
+となる。
+多重割込みが発生した場合はすべて非タスクコンテキスト用スタックに退避す
+るため、スタック使用量は
+  ・非タスクコンテキスト用スタック：PC+CCR、ER0〜6　　計32バイト
+である。
+割込みネスト数は最大２であるので、全体のスタック使用量は以下のようにな
+る。（割込みハンドラ自身によるスタック消費分を除く。）
+
+　タスクコンテスト用スタック：　24バイト
+　非タスクコンテスト用スタック：
+   　12バイト（初段）＋32バイト（2段目）＝44バイト
+
+また、割込みの出口処理でタスクスイッチする場合は、残りのレジスタER5〜6
+もタスクコンテスト用スタックに退避するため、入口処理と合わせてタスク
+コンテスト用スタックは32バイト使用される。
+
+
+2. 2. 2  割込みハンドラの登録
+
+　gcc用H8依存部では、割込みハンドラを登録する際、コンフィギュレーショ
+ン・ファイルに静的API DEF_INH( )を記述しただけでは不十分である。登録の
+手順を以下に述べる。文中の****は登録する割込みハンドラのC言語ルーチン
+名を示す。
+
+割込みハンドラの登録方法が変更されている。
+旧版（Release1.4.1）からの変更点は以下の通り。
+　1．割込みベクタテーブルの自動生成
+　　　・DEF_INH()の引数から割込みベクタテーブルを自動生成するように
+　　　　した。これにより、ユーザーが手作業で編集する必要がなくなった。
+
+　2．割込み優先度制御をサポート
+　　　・割込みプライオリティ・レベル0
+　　　・割込みプライオリティ・レベル1
+　
+　3．割込みプライオリティレベルの設定は2ヶ所で行う。
+　　　(1) 割込み要求時用プライオリティ・レベル
+　　　　　　デバイスが割込みコントローラに要求する割込みレベル
+　　　　　　IPRA、IPRBレジスタの設定処理をsys_support.Sから各デバイス
+　　　　　　ドライバの初期化処理に移動
+　　　(2) 割込み許可時用プライオリティ・レベル
+　　　　　　割込みハンドラ呼び出し時に割込みマスクに設定する値
+　
+　4．sys_support.Sで行っていた以下の記述は不要になった。
+　　（割込みレベル制御を行ったため）
+　　　・ハードウェア割込み許可　_****_enable_int
+　　　・ハードウェア割込み禁止　_****_disable_int
+
+　　　　　旧版では、割込み要求をクリアする処理が必要な場合は、その処理
+　　　　　を_****_disable_intに記述していたが、新版では割込みハンドラ
+　　　　　のC言語ルーチンまたはそこから呼ばれる関数内に記述する方法を
+　　　　　標準とする。
+
+
+割込みハンドラを登録する作業手順
+　タイマ割込みを例に説明する。
+　（ボード依存部のパス名は適宜読み替えること）
+
+　(1) 割込みハンドラの記述
+
+　　　旧版では、割込み要求をクリアする処理が必要な場合は
+　　　_xxxxx_disable_intに記述していたが、新版では割込みハンドラのC言
+　　　語ルーチン、またはそこから呼ばれる関数内に記述する方法を標準と
+　　　する。
+
+　　　タイマ割込みでの記述例：
+　　　　jsp/systask/timer.c
+　　　  　 timer_handler( )から呼び出されるhw_timer_int_clear( )
+　　　　　　（jsp/config/h8/hw_timer.h）
+
+
+　(2) コンフィギュレーション・ファイルの記述
+
+　　　コンフィギュレーション・ファイルの記述方法は他のプロセッサと同様
+　　　である。
+　　　ベクタ番号はjsp/config/h8/h8_3069f.h等でマクロ定義している。
+　　　DEF_INH( )の第1引数の割込みハンドラ番号はプリプロセス後に整数定数
+　　　になっていなければならない。（自動割り付け非対応整数値パラメータ）
+　　　ベクタテーブル自動生成時もそれを仮定している。
+
+　　　タイマ割込みでの記述例：
+　　　　jsp/systask/timer.cfg
+  　　　　DEF_INH(INHNO_TIMER, { TA_HLNG, timer_handler });
+
+
+　(3) 割込みプライオリティレベルの設定
+
+　　　IPRA,IPRBに設定する割込み要求時のプライオリティレベルと、割込み
+　　　ハンドラ呼び出し時に割込みマスクに設定するプライオリティレベル
+　　　の２つを割込み要因毎に設定する。
+
+　(3)-1 割込み要求時用プライオリティレベルの設定
+
+　　　初期化処理のcpu_initialize( )ですべての割込みをレベル0に初期化し
+　　　ている。
+　　　デバイスドライバの初期化処理で割込み要因毎のプライオリティ・レベ
+　　　ルを設定するための関数が用意されている。
+　　　　
+　　　【C言語API】
+　　　　　void define_int_plevel(const IRC *irc);
+
+　　　　　　IRC：Interrupt Request Controller
+　　　　　　　　　割込みコントローラ
+
+　　　【パラメータ】
+　　　　　const IRC *irc　設定データを格納した領域の先頭アドレス
+   　　　　　UB *ipr：設定するIPRレジスタの番地
+   　　　　　　　　　　IPRAまたはIPRBレジスタ
+   　　　　　UB bit ：IPRレジスタの該当するビット番号
+　　　   　　IPM ipm：設定する割込みレベル
+   　　　　　　　　　　IPM_LEVEL0,IPM_LEVEL1のいずれか
+
+　　　【リターンパラメータ】
+　　　　　なし
+
+　　　【機能】
+　　　　　ircが指し示す領域のデータを用いて、デバイスからの割込みの
+　　　　　プライオリティ・レベルを設定する。
+　　　　　この関数を呼び出す前にh8_sil.hをインクルードする必要がある。
+
+　　　【タイマ割込みでの記述例】
+
+　　　　　jsp/config/h8/cpu_config.c
+　　　　　　const IRC TIMER_IRC = {(UB*)SYSTEM_TIMER_IPR,
+                        　　　　　　SYSTEM_TIMER_IP_BIT,
+                        　　　　　　SYSTEM_TIMER_IPM
+                      　　　　　　};
+
+　　　　　jsp/config/h8/hw_timer.h
+　　　　　　hw_timer_initialize( )
+　　　　　    define_int_plevel(&TIMER_IRC);
+
+　　　設定に用いる値はマクロ定義されている。
+　　　
+　　　・IPRA、IPRBレジスタのアドレス
+　　　jsp/config/h8/h8_3069f.h
+　　　#define H8IPRA			0xfee018
+　　　#define H8IPRB			0xfee019
+
+
+　　　・IPRA、IPRBレジスタのビット番号
+　　　jsp/config/h8/h8_3069f.h
+　　　・IPRA
+　　　#define H8IPR_IRQ0_BIT		7	/* IRQ0			*/
+　　　#define H8IPR_IRQ1_BIT		6	/* IRQ1			*/
+　　　#define H8IPR_IRQ2_BIT		5	/* IRQ2			*/
+　　　#define H8IPR_IRQ3_BIT		5	/* IRQ3			*/
+　　　#define H8IPR_IRQ4_BIT		4	/* IRQ4			*/
+　　　#define H8IPR_IRQ5_BIT		4	/* IRQ5			*/
+　　　#define H8IPR_WDT_BIT		3	/* WDT			*/
+　　　#define H8IPR_AD_BIT		3	/* A/D			*/
+　　　#define H8IPR_CMI_BIT		3	/* CMI			*/
+　　　#define H8IPR_ITU0_BIT		2	/* 16 bit timer 0	*/
+　　　#define H8IPR_ITU1_BIT		1	/* 16 bit timer 1	*/
+　　　#define H8IPR_ITU2_BIT		0	/* 16 bit timer 2	*/
+
+　　　・IPRB
+　　　#define H8IPR_TU80_BIT		7	/* 8 bit timer 0	*/
+　　　#define H8IPR_TU81_BIT		6	/* 8 bit timer 1	*/
+　　　#define H8IPR_DMAC_BIT		5	/* DMAC (CH0,1)		*/
+　　　#define H8IPR_SCI0_BIT		3	/* SCI0			*/
+　　　#define H8IPR_SCI1_BIT		2	/* SCI1			*/
+　　　#define H8IPR_SCI2_BIT		1	/* SCI2			*/
+
+
+(3)-2 割込み許可時用プライオリティレベルの設定
+
+　　・****_intmaskマクロの定義
+　　　H8依存部では、静的API DEF_INH( )で割込みハンドラを定義すると、
+　　　カーネルコンフィギュレーションにより、割込みの入口処理が自動生
+　　　成される。
+　　　この入口処理では、C言語ルーチン****を呼び出す直前の割込み許可時
+　　　に割込みマスクに設定する値として、マクロ****_intmaskが定義されて
+　　　いると仮定しているので、割込み要因毎にIPM_LEVEL1、IPM_LEVEL2のい
+　　　ずれかに定義すること。
+　　　自分と同じレベルの割込みをマスクするため、IPMには１つ上のレベル
+　　　を設定する必要があるので、注意すること。
+　　　cpu_config.h、sys_config.hまたはこれらからインクルードされるファ
+　　　イルで定義するのを標準とする。
+
+　　　【タイマ割込みでの記述例】
+　　　　jsp/config/h8/akih8_3069f/sys_config.h
+　　　
+　　　　#if SYSTEM_TIMER_IPM == IPM_LEVEL0
+　　　　#define timer_handler_intmask		IPM_LEVEL1
+　　　　#elif SYSTEM_TIMER_IPM == IPM_LEVEL1
+　　　　#define timer_handler_intmask		IPM_LEVEL2
+　　　　#endif 	/* SYSTEM_TIMER_IPM == IPM_LEVEL0 */
+
+
+2. 2. 3　割込みマスクの変更・参照
+
+H8依存の機能として，CCRレジスタ中のIPMの値を変更するためのサービスコー
+ルchg_ipmと，参照するためのサービスコールget_ipmをサポートしている．
+なお，IPMの値を表すデータ型IPMは，unsigned char型に定義されている．
+
+これらのサービスコールは，タスクコンテキストでCPUロック解除状態の場合
+にのみ呼び出すことができる．chg_ipmによりIPMをレベル0以外（すなわち，
+何らかの割込みが禁止されている状態）にした場合でも，ディスパッチは禁止
+されず，chg_ipmにより変更したIPMの値は，ディスパッチ後のタスクに引き継
+がれる．
+例えば，あるタスクでIPMをレベル1に変更した後，何らかの割込みにより別の
+タスクに切り替わると，切り替わった後のタスクでもIPMはレベル1になる．
+
+chg_ipmをサポートするために，割込みハンドラの出入口処理などにオーバ
+ヘッドを生じている．そこで，SUPPORT_CHG_IPMというマクロにより，これら
+のサービスコールをサポートするかどうかを切り替えられるようにしている．
+SUPPORT_CHG_IPMは，sys_config.hでマクロ定義されている．
+
+H8依存の割込みマスクの変更・参照のためのサービスコールの仕様は次の通り．
+
+(1) chg_ipm			割込みマスクの変更
+
+【C言語API】
+	ER ercd = chg_ipm(IPM ipm);
+
+【パラメータ】
+	IPM	ipm		設定すべき IPM の値
+
+【リターンパラメータ】
+	ER	ercd		エラーコード
+
+【エラーコード】
+	E_CTX		コンテキストエラー
+	E_PAR		パラメータエラー（ipm が不正）
+
+【機能】
+
+IPM（Interrupt Priority Mask）を ipm で指定された値に設定する．
+IPMで用いる値として、以下のマクロが用意されている。
+　IPM_LEVEL0：レベル０　すべての割込みを受け付ける
+　IPM_LEVEL1：レベル１　NMIおよびプライオリティレベル１の割込みのみを
+　　　　　　　　　　　　受け付ける
+　IPM_LEVEL2：レベル２　NMI以外の割込みを受け付けない
+
+
+IPMに指定した値が上記のマクロ以外の場合，E_PARエラーとなる．IPM を
+IPM_LEVEL0以外に設定した場合でも，ディスパッチは禁止されない．また，設
+定したIPMの値は，ディスパッチ後も引き継がれる．ディスパッチを禁止し
+たい場合には，dis_dspと併用すればよい．
+
+このサービスコールは，タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる．非タスクコンテキストや CPUロック状態で呼び出した場
+合には，E_CTXエラーとなる．
+
+(2) get_ipm			割込みマスクの参照
+
+【C言語API】
+	ER ercd = get_ipm(IPM *p_ipm);
+
+【パラメータ】
+	なし
+
+【リターンパラメータ】
+	ER	ercd		エラーコード
+	IPM	ipm		現在の IPM の値
+
+【エラーコード】
+	E_CTX		コンテキストエラー
+
+【機能】
+
+現在の IPM（Interrupt Priority Mask）の値を読み出し，ipm に返す．
+
+このサービスコールは，タスクコンテキストで CPUロック解除状態の時のみ呼
+び出すことができる．非タスクコンテキストや CPUロック状態で呼び出した場
+合には，E_CTXエラーとなる．
+
+2. 4  CPU例外管理機能とCPU例外ハンドラ
+
+  H8では（プロセッサ自体が）CPU例外を扱っていないが、他機種との互換性
+のため、CPU例外ハンドラ番号のデータ型(EXCNO)とCPU例外ハンドラの設定関
+数define_exc( )を定義している。
+
+
+2. 5  スタートアップモジュール
+
+  H8 依存のスタートアップモジュール (start.S) は次に示す初期化を実行し
+た後、カーネル (kernel_start) を起動する。ただし、 kernel_start から戻っ
+てくることは想定していない。
+
+   (1)   スタックポインタの設定
+
+   (2)   hardware_init_hook の呼出し
+           hardware_init_hook が 0 でなければ、hardware_init_hook を呼
+         出す。hardware_init_hook はカーネルを起動する前に、ターゲット
+         依存のハードウェア的な初期化を行うために用意されている。 本実
+         装では、SYSCR レジスタの UE ビットのクリア、 割込み優先レジス
+         タ (IPRA と IPRB) の個別割り込みの優先度の設定、 外部メモリ空
+         間の有効化を行っている。hardware_init_hook が未定義の場合、リ
+         ンカスクリプトの記述によりこのシンボルが 0 に定義される。 
+
+   (3)   bss セクションの初期化
+           bss セクションの全領域を 0 クリアする。
+
+   (4)   data セクションの初期化
+           data セクションを外部 RAM に転送する。
+
+   (5)   software_init_hook の呼出し
+           software_init_hook が 0 でなければ、software_init_hook を呼
+         出す。software_init_hook はカーネルを起動する前に、ソフトウェ
+         ア環境 (ライブラリ等) 依存の初期化を行うために用意されている。
+         例えば、ライブラリの初期設定などである。software_init_hook が
+         未定義の場合、リンカスクリプトの記述によりこのシンボルが 0 に
+         定義される。
+
+
+3.  システム依存部の機能
+
+3. 1  システムクロックドライバ
+
+  システムクロックドライバが isig_tim を呼出す周期は、 sys_defs.h 内の
+TIC_NUME と TIC_DENO で定義されており、ディフォルトは 1[ms] 周期である。
+この定義を変更することで、isig_tim を呼出す周期を変更できる。 ただし、
+H8/3048F のクロックが 16[MHz] で、 タイマの精度が 0.5[us]、H8/3052F の
+クロックが 25[MHz] で、タイマの精度が 0.32[us]、H8/3069F のクロックが 
+20[MHz] で、 タイマの精度が 0.4[us] のため、これら単位で端数になる値を
+設定すると、 isig_tim の呼出し周期に誤差が発生する。
+  ディフォルトのクロックディバイスは H8/3048F と H8/3052F が ITU0、
+H8/3069F が 16 ビットタイマユニット 0 を使用している。
+
+3. 2  性能評価用システム時刻参照機能
+
+  H8 では、性能評価用システム時刻参照機能 (vxget_tim) をサポートしてい
+る。精度は 0.5[us] で、SYSUTIM 型は__LONG_LONG_MAX__マクロの値により、
+処理系が扱える整数の範囲を判定し、定義方法を選択している。64ビット整数
+が使用できる場合は、64ビット符号なし整数に、そうでない場合は32ビット符
+号なし整数として定義している。
+
+3. 3  シリアルインタフェースドライバ
+
+  H8/3048F と H8/3052F には SCI0 と SCI1 の 2 本、H8/3069F には SCI0 
+から SCI2 の 3 本のシリアルポートがあり、sys_config.h に定義している 
+TNUM_PORT により何本使用するか指定できる。
+現在の実装では 2 本まで使用できる。 JSP カーネルのログ出力用には SCI1
+を使用している。
+
+3. 4  メモリマップ
+
+3. 4. 1  H8/3048F のメモリマップ
+
+  外部アドレス空間を有効にする必要があるため、モード 5 の内蔵 ROM 有効
+拡張 1M バイトモードを想定している。
+
+   (1)   デバッグ時
+
+         0x00000 - 0x1ffff  内蔵 ROM、秋月モニタ
+         0x20000 - 0x3ffff  外部 RAM、.text、.rodata、.data、.bss
+         0xfef10 - 0xfefff  内蔵 RAM、秋月モニタ
+         0xff000 - 0xff0ff  内蔵 RAM、仮想割込みベクタ領域 (.vectors)
+         0xff100 - 0xfff0f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xfff1c - 0xfffff  内蔵 I/O レジスタ
+
+   (2)   リリース時
+
+         0x00000 - 0x1ffff  内蔵 ROM、.vectors、.text、.rodata
+         0x20000 - 0xfef0f  外部 RAM、.data、.bss
+         0xfef10 - 0xfff0f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xfff1c - 0xfffff  内蔵 I/O レジスタ
+
+3. 4. 2  H8/3052F のメモリマップ
+
+  内蔵メモリだけでは不足するため、 AKI-H8-USB ボードに装着し、
+AKI-H8-USB ボードにある 128K バイトの RAM を利用している。このため、外
+部アドレス空間を有効にする必要があり、モード 6 の内蔵 ROM 有効拡張 16M
+バイトモードを想定している。
+
+   (1)   デバッグ時
+
+         0x000000 - 0x07ffff  内蔵 ROM、簡易モニタ
+         0x220000 - 0x23ffff  外部 RAM、.text、.rodata、.data、.bss
+         0xffdf10 - 0xffdfff  外部 RAM、簡易モニタ
+         0xffe000 - 0xffe0ff  内蔵 RAM、仮想割込みベクタ領域 (.vectors)
+         0xffe100 - 0xffff0f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff1c - 0xffffff  内蔵 I/O レジスタ
+
+   (2)   リリース時
+
+         0x000000 - 0x05ffff  内蔵 ROM、.vectors、.text、.rodata
+         0x220000 - 0x23ffff  外部 RAM、.data、.bss
+         0xffef10 - 0xffff0f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff1c - 0xffffff  内蔵 I/O レジスタ
+
+
+3. 4. 3  H8/3069F のメモリマップ
+
+  外部アドレス空間を有効にする必要があるため、モード 5 の内蔵 ROM 有効
+拡張 16M バイトモードを想定している。
+
+   (1)   デバッグ時 (簡易モニタ使用時)
+
+         0x000000 - 0x07ffff  内蔵 ROM、簡易モニタ
+         0x400000 - 0x4fffff  外部 RAM、.text、.rodata
+         0x500000 - 0x5fffff  外部 RAM、.data、.bss
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffbfff  外部 RAM、簡易モニタ
+         0xffc000 - 0xffc0ff  内蔵 RAM、仮想割込みベクタ領域 (.vectors)
+         0xffc100 - 0xffff1f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+   (2)   リリース時（外部RAM使用）
+
+         0x000000 - 0x07ffff  内蔵 ROM、.vectors、.text、.rodata
+         0x400000 - 0x5fffff  外部 RAM、.data、.bss
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffff1f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+   (3)   リリース時（外部RAM未使用）
+
+         0x000000 - 0x07ffff  内蔵 ROM、.vectors、.text、.rodata
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffff1f  内蔵 RAM、.data、.bss、
+         　　　　　　　　　　　　　　　　非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+
+3. 4. 4  H8/3069F(NKEV-010H8) のメモリマップ
+
+  外部アドレス空間を有効にする必要があるため、モード 5 の内蔵 ROM 有効
+拡張 16M バイトモードを想定している。
+
+   (1)   デバッグ時 (簡易モニタ使用時)
+
+         0x000000 - 0x07ffff  内蔵 ROM、簡易モニタ
+         0x400000 - 0x43ffff  外部 RAM、.text、.rodata
+         0x440000 - 0x47ffff  外部 RAM、.data、.bss
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffbfff  外部 RAM、簡易モニタ
+         0xffc000 - 0xffc0ff  内蔵 RAM、仮想割込みベクタ領域 (.vectors)
+         0xffc100 - 0xffff1f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+   (2)   デバッグ時 (GDB STUB使用時)
+
+         0x000000 - 0x07ffff  内蔵 ROM、GDB STUB
+         0x400000 - 0x4000ff  内蔵 RAM、仮想割込みベクタ領域 (.vectors)
+         0x400100 - 0x43ffff  外部 RAM、.text、.rodata
+         0x440000 - 0x47bfff  外部 RAM、.data、.bss
+         0x47c100 - 0x47ff1f  外部 RAM、非タスクコンテキスト用スタック
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffbfff  内部 RAM、GDB STUB
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+   (3)   リリース時（外部RAM使用）
+
+         0x000000 - 0x07ffff  内蔵 ROM、.vectors、.text、.rodata
+         0x400000 - 0x47ffff  外部 RAM、.data、.bss
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffff1f  内蔵 RAM、非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+   (4)   リリース時（外部RAM未使用）
+
+         0x000000 - 0x07ffff  内蔵 ROM、.vectors、.text、.rodata
+         0xee0000 - 0xee00ff  内蔵 I/O レジスタ(1)
+         0xffbf20 - 0xffff1f  内蔵 RAM、.data、.bss、
+         　　　　　　　　　　　　　　　　非タスクコンテキスト用スタック
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ(2)
+
+
+4.  開発
+
+4. 1  開発環境の構築
+
+  開発環境は、 Windows 2000上の cygwin の開発環境を用いた。本実装に用
+いたバージョンを以下に示す。 
+
+   binutils-2.11.2
+   gcc-2.95.3
+   newlib-1.9.0
+
+補助的な意味でNKEV-010H8については以下のバージョンでも確認を行った。
+
+　　binutiles-2.16.1
+　　gcc-3.4.3
+　　newlib-1.13.0
+
+注意事項１
+　秋月電子通商製ボード付属のGNU開発環境はバージョンが古いため、サポー
+　トしていない。
+
+注意事項２
+　gcc-3.2.3はビルトイン関数__muldi3()の実装に不具合があるため、この
+　バージョンの使用は推奨されない。
+
+configure のオプションは --target=h8300-hms である。 また、binutils の
+configure のオプションには --disable-nls も指定すること。
+デバッグのため、秋月モニタ、簡易モニタを使用することができる。
+NKEV-010H8では、GDB stubを用いることができる。詳しくは「9. 3  NKEV-010H8
+での GDB STUB を使った実行」を参照。
+（RedBootに関しては、末尾の付録を参照。）
+
+
+4. 2  sample1.h の設定
+
+  sample1.h で「ターゲット依存の定義（CPU 例外ハンドラの起動方法など）」
+の H8 依存部で、TASK_PORTID を 2、つまり SCI1 を設定してる。もし、他の
+ポートを使用する場合は、 この値を変更すること。
+
+4. 3  ターゲットへのダウンロードと実行
+
+  ターゲットへのダウンロードと実行には、秋月モニタ、または簡易モニタを
+使用する方法と直接 H8 のフラッシュ ROM に書き込んで実行する方法がある。
+
+   (1)   H8/3052F、H8/3069Fで簡易モニタを使用する方法 (デバッグモード)
+           苫小牧高専情報学科製簡易モニタ mon3052.mot (H8/3052F 用)、
+           mon3068.mot(H8/3068F、H8/3069F 用) を、 H8 の内蔵フラッシュ
+           ROM に書き込む。以下に、使用方法を示す。
+         
+         簡易モニタの配布元URL：
+         　  http://www.mit.pref.miyagi.jp/embedded/consortium/
+         
+
+         [1]   ディレクトリ $(CPU)/$(SYS) にある
+
+                  MakefileのDBGENV := TNCT_MONITOR
+
+               を有効にして make する。
+         [2]   端末ソフトからモニタコマンド ld を入力する。
+         [3]   端末ソフトから jsp.srec を送信する。
+         [4]   端末ソフトからモニタコマンド go を入力すると実行が開始
+               される。
+
+   (2)   H8/3048F で秋月モニタを使用する方法 (デバッグモード)
+           ディレクトリ $(CPU)/$(SYS) にある
+
+            MakefileのDBGENV := TNCT_MONITOR
+
+         を有効にして make する。 次に、H8/3048F の外部 RAM へのアクセ
+         スを有効にしなければならない。RAM の構成により異なるが、 アド
+         レスバス A0 から A19 とデータバス D8 から D15 を有効にするに
+         は、以下に示すポートに 0xff を書き込む。
+
+            Port   Address
+            P1DDR  0xfffc0
+            P2DDR  0xfffc1
+            P3DDR  0xfffc4
+            P5DDR  0xfffc8
+
+         最後に端末ソフトを使用して jsp.srec を H8/3048F に転送し、 実
+         行する。
+
+   (3)   内蔵フラッシュ ROM に書き込んで実行する方法 
+   　　　(リリースモード：外部RAM使用)
+           ディレクトリ $(CPU)/$(SYS) にある Makefile.config のディレ
+         クトリ $(CPU)/$(SYS) にある Makefile の
+
+            DBGENV := ROM
+
+         を有効にして make する。次に、h8write等のフラッシュ ROM 書き
+         込みプログラムで、 フラッシュ ROM に書き込む。
+
+   (4)   H8/3069Fで内蔵フラッシュROMに書き込み、内蔵RAMだけで実行する
+   　　　方法 (リリースモード：外部RAM未使用)
+           ディレクトリ $(CPU)/$(SYS) にある Makefile.config のディレ
+         クトリ $(CPU)/$(SYS) にある Makefile の
+
+            DBGENV := INMEM_ONLY
+
+         を有効にして make する。次に、h8write等のフラッシュ ROM 書き
+         込みプログラムで、 フラッシュ ROM に書き込む。
+
+4. 4  H8/3048F の外部 RAM の有効化
+
+  リリースモードでは、 sys_support.S の _hardware_init_hook で、アドレ
+スバス A0 から A19 とデータバス D8 から D15 を有効にした後、カーネルを
+実行する。 これ以外にアドレスバスとデータバスを有効にする場合は、
+sys_config.h の以下の部分を適当に編集する。
+
+   /*
+    *  外部アドレス空間制御
+    */
+   /*#define ENABLE_LOWER_DATA*/
+   #define ENABLE_P8_CS        (H8P8DDR_CS0|H8P8DDR_CS1|\
+                                H8P8DDR_CS2|H8P8DDR_CS3)
+   /*#define ENABLE_PA_CS      (H8PADDR_CS4|H8PADDR_CS5|H8PADDR_CS6)*/
+   /*#define ENABLE_PB_CS       H8PBDDR_CS7*/
+   #define ENABLE_PA_A21_A23   (H8BRCR_A23E|H8BRCR_A22E|H8BRCR_A21E)
+
+4. 5  H8/3052F の外部 RAM の有効化
+
+  リリースモードでは、 sys_support.S の _hardware_init_hook で、アドレ
+スバス A0 から A23、 データバス D8 から D15、 チップセレクト CS0 から
+CS3 を有効にした後、カーネルを実行する。これ以外にアドレスバスとデータ
+バスを有効にする場合は、sys_config.h の以下の部分を適当に編集する。
+
+   /*
+    *  外部アドレス空間制御
+    */
+   /*#define ENABLE_LOWER_DATA*/
+   #define ENABLE_P8_CS        (H8P8DDR_CS0|H8P8DDR_CS1|\
+                                H8P8DDR_CS2|H8P8DDR_CS3)
+   /*#define ENABLE_PA_CS      (H8PADDR_CS4|H8PADDR_CS5|H8PADDR_CS6)*/
+   /*#define ENABLE_PB_CS       H8PBDDR_CS7*/
+   #define ENABLE_PA_A21_A23   (H8BRCR_A23E|H8BRCR_A22E|H8BRCR_A21E)
+
+4. 6  H8/3069F の外部 RAM の有効化
+
+  リリースモードでは、 sys_support.S の _hardware_init_hook で、アドレ
+スバス A0 から A23、 データバス D8 から D15、 チップセレクト CS0 から
+CS3 を有効にした後、カーネルを実行する。これ以外にアドレスバスとデータ
+バスを有効にする場合は、sys_config.h の以下の部分を適当に編集する。
+
+   /*
+    *  外部アドレス空間制御
+    */
+   #define     ENABLE_P8_CS    (H8P8DDR_CS0|H8P8DDR_CS1|\
+                                H8P8DDR_CS2|H8P8DDR_CS3)
+   #if 0
+   #define     ENABLE_LOWER_DATA
+   #define     ENABLE_PB_CS    (H8PADDR_CS4|H8PADDR_CS5|\
+                                H8PADDR_CS6|H8PBDDR_CS7)
+   #endif      /* of #if 0 */
+
+5.  ファイル構成
+
+5. 1  ディレクトリ・ファイル構成
+
+   (1)   config/h8/
+
+            Makefile.config  Makefile の H8 依存定義
+            cpu_config.c     H8 プロセッサ依存部の C 関数
+            cpu_config.h     H8 プロセッサ依存部の構成定義
+            cpu_context.h    H8 プロセッサ依存部のコンテキスト操作
+            cpu_defs.h       H8 プロセッサ依存部のアプリケーション用定義
+            cpu_insn.h       H8 プロセッサのアセンブリ inline 関数
+            cpu_support.S    H8 プロセッサのアセンブリ関数
+            cpu_rename.def   カーネルの内部識別名のリネームとその解除の
+            　　　　　　　　 定義リスト
+            cpu_rename.h     カーネルの内部識別名のリネームの定義
+            cpu_unrename.h   カーネルの内部識別名のリネーム解除の定義
+            h8.h             H8/300H プロセッサの共通定義
+            h8_3048f.h       H8/3048F プロセッサの定義
+            h8_3052f.h       H8/3052F プロセッサの定義
+            h8_3069f.h       H8/3048F プロセッサの定義
+            h8_sil.c         SILのH8プロセッサ向け拡張 C関数
+            h8_sil.h         SILのH8プロセッサ向け拡張 構成定義
+            　　　　　　　　　（主にI/OポートのDDRアクセスルーチン）
+            hw_serial.c      SCI の変数と関数
+            hw_serial.cfg    SCI のコンフィギュレーションファイル
+            hw_serial.h      SCI の定義
+            hw_timer.h       ITU の定義
+            start.S          スタートアップモジュール
+            tool_config.h    H8 プロセッサの開発環境依存モジュール定義
+            tool_defs.h      H8 プロセッサの開発環境依存定義
+            vector_header.S  割込みベクタテーブルの先頭部分
+            makeoffset.c     offset.h 生成サポート関数
+
+   (2)   config/h8/akih8_3048f/
+           (株) 秋月電子通商製の AKI-H8/3048F ボードの依存部分
+
+            Makefile.config  Makefile の AKI-H8/3048F ボード依存定義
+            debug.ld         デバッグ用リンカスクリプト
+            release.ld       リリース用リンカスクリプト
+            sys_config.c     AKI-H8/3048F ボード依存部の C 関数
+            sys_config.h     AKI-H8/3048F ボード依存部の構成定義
+            sys_defs.h       AKI-H8/3048F ボード依存部のアプリケーショ
+            　　　　　　　　 ン用定義
+            sys_support.S    AKI-H8/3048F ボード依存部のアセンブリ関数
+            sys_rename.def   カーネルの内部識別名のリネームとその解除
+            　　　　　　　　 の定義リスト
+            sys_rename.h     カーネルの内部識別名のリネームの定義
+            sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+
+   (3)   config/h8/akih8_3052f/
+           (株) 秋月電子通商製の AKI-H8/3052F ボードの依存部分
+
+            Makefile.config  Makefile の AKI-H8/3052F ボード依存定義
+            debug.ld         デバッグ用リンカスクリプト
+            release.ld       リリース用リンカスクリプト
+            sys_config.c     AKI-H8/3052F ボード依存部の C 関数
+            sys_config.h     AKI-H8/3052F ボード依存部の構成定義
+            sys_defs.h       AKI-H8/3052F ボード依存部のアプリケーショ
+            　　　　　　　　 ン用定義
+            sys_support.S    AKI-H8/3052F ボード依存部のアセンブリ関数
+            sys_rename.def   カーネルの内部識別名のリネームとその解除
+            　　　　　　　　 の定義リスト
+            sys_rename.h     カーネルの内部識別名のリネームの定義
+            sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+
+   (4)   config/h8/akih8_3069f/
+           (株) 秋月電子通商製の AKI-H8/3069F ボードの依存部分
+
+            Makefile.config  Makefile の AKI-H8/3069F ボード依存定義
+            debug.ld         デバッグ (簡易モニタ対応) 用リンカスクリプト
+            debug_redboot.ld デバッグ (RedBoot対応) 用リンカスクリプト
+            release.ld       リリース用リンカスクリプト（外部RAM使用）
+            release_inmem.ld リリース用リンカスクリプト（外部RAM未使用）
+            sys_config.c     AKI-H8/3069F ボード依存部の C 関数
+            sys_config.h     AKI-H8/3069F ボード依存部の構成定義
+            sys_defs.h       AKI-H8/3069F ボード依存部のアプリケーショ
+            　　　　　　　　 ン用定義
+            sys_support.S    AKI-H8/3069F ボード依存部のアセンブリ関数
+            sys_rename.def   カーネルの内部識別名のリネームとその解除
+            　　　　　　　　 の定義リスト
+            sys_rename.h     カーネルの内部識別名のリネームの定義
+            sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+
+   (5)   config/h8/nkev_010h8/
+           (有) 品川通信計装サービス製の NKEV-010H8 ボードの依存部分
+
+            Makefile.config  Makefile NKEV-010H8 ボード依存定義
+            debug.ld         デバッグ (簡易モニタ対応) 用リンカスクリプト
+            debug_gdbstub.ld デバッグ (GDB STUB対応) 用リンカスクリプト
+            debug_redboot.ld デバッグ (RedBoot対応) 用リンカスクリプト
+            release.ld       リリース用リンカスクリプト（外部RAM使用）
+            release_inmem.ld リリース用リンカスクリプト（外部RAM未使用）
+            sys_config.c     NKEV-010H8 ボード依存部の C 関数
+            sys_config.h     NKEV-010H8 ボード依存部の構成定義
+            sys_defs.h       NKEV-010H8 ボード依存部のアプリケーショ
+            　　　　　　　　 ン用定義
+            sys_support.S    NKEV-010H8 ボード依存部のアセンブリ関数
+            sys_rename.def   カーネルの内部識別名のリネームとその解除
+            　　　　　　　　 の定義リスト
+            sys_rename.h     カーネルの内部識別名のリネームの定義
+            sys_unrename.h   カーネルの内部識別名のリネーム解除の定義
+
+   (6)   jsp/utils/h8/
+           H8依存部ビルド用スクリプト
+
+            cat.pl　　　　　 UNIXのcatコマンド相当
+            grep_def_inh.pl　Perlスクリプト生成用フィルタ
+            genvector.pl　　 ベクタテーブル生成用スクリプト
+
+   (7)   ビルド・ディレクトリ
+            vector.S　　　　 ベクタテーブル（make depend時に自動生成）
+
+6. アプリケーション開発者向けの情報
+
+アプリケーション開発者に有益と思われる情報について述べる。
+
+6.1 カーネルの設定変更方法
+
+(1) SUPPORT_CHG_IPM
+　　このマクロを定義すると割込みマスクの変更・参照機能が有効になる。
+　　詳細は「2. 2. 3　割込みマスクの変更・参照」を参照
+　　設定ファイル：sys_config.h
+
+(2) SUPPORT_VXGET_TIM
+　　このマクロを定義すると性能評価用システム時刻参照機能vxget_tim( )が
+　　有効になる。詳細は「3. 2  性能評価用システム時刻参照機能」を参照
+　　設定ファイル：sys_config.h
+
+(3) STACKTOP
+　　非タスクコンテキスト用スタックポインタの初期値
+　　スタートアップルーチンではSTACKTOPが指すRAM領域をスタックにして
+　　_hardware_init_hookを呼び出す。そのため、この領域は
+　　_hardware_init_hookを呼び出す前にアクセス可能になっている必要があ
+　　る。
+    　　・初期状態のままアクセスできる内蔵RAM　または
+    　　・モニタによりアクセスできる状態にある外部RAM
+
+　　設定ファイル：sys_config.h
+
+6.1.1 シリアルドライバのカスタマイズ方法
+
+　基本的にjsp/config/h8/akih8_3069f/sys_config.hにあるマクロ定義を修正
+することで、カスタマイズすることができる。以下に各マクロの意味を示す。
+　
+　・ポート数
+　　　jsp/config/h8/akih8_3069f/sys_config.h 145行目
+　　　マクロTNUM_PORTでポート数を定義する。
+　　　現在の実装では最大３まで使用できる。
+
+　・システムログを出力するシリアルポート番号
+　　　jsp/config/h8/akih8_3069f/sys_config.h 149行目
+　　　マクロLOGTASK_PORTIDでポート数を定義する。
+
+各チャネル毎にjsp/config/h8/akih8_3069f/sys_config.hで定義しているマク
+ロの意味について、以下に述べる。???の部分にはポートの識別子である
+SYSTEM、USER、USER2のいずれかが入る。
+
+　・???_SCI
+　　　シリアルデバイスの制御レジスタ群の先頭アドレス
+
+　・???_SCI_IPR
+　　　割込み制御で用いるIPRAまたはIPRBレジスタのアドレス
+
+　・???_SCI_IP_BIT
+　　　上記IPRレジスタ中でシリアルデバイスが該当するビット
+
+　・???_SCI_SMR
+　　　SMRレジスタの初期値
+　　　デフォルトで以下の設定を行っている。
+　　　	・送受信フォーマット：調歩同期式
+	・キャラクタレングス：8ビット
+	・パリティなし
+	・ストップビットレングス：1
+	・クロックセレクト（分周比）:1
+
+　・???_BAUD_RATE
+　　　ボーレート[bps]
+
+　・???_PORTID
+　　　ポートIDをマクロSYSTEM_PORTID、USER_PORTID、USER2_PORTIDで定義
+　　　する。ポートIDとデバイス番号(sci0〜2)の対応関係を変更する場合、
+　　　このマクロを変更するだけでなく、
+　　　　jsp/config/h8/hw_serial.c
+　　　で定義されているシリアルポート初期化ブロックsiopinib_table[]
+　　　内の初期化データの順番も入れ替える。
+
+　・???_SCI_IPM
+　　　割込みプライオリティレベル（送受信兼用）
+　　　IPM_LEVEL0またはIPM_LEVEL1を設定する。
+
+　・INHNO_SERIAL_IN、INHNO_SERIAL2_IN、INHNO_SERIAL3_IN
+　　　各ポートIDのシリアル受信割込みのベクタ番号
+
+　・INHNO_SERIAL_OUT、INHNO_SERIAL2_OUT、INHNO_SERIAL3_OUT
+　　　各ポートIDのシリアル送信割込みのベクタ番号
+
+　・INHNO_SERIAL_ERR、INHNO_SERIAL2_ERR、INHNO_SERIAL3_ERR
+　　　各ポートIDのシリアルエラー割込みのベクタ番号
+
+　・sio_in_handler_intmask、sio_in2_handler_intmask、
+　　sio_in3_handler_intmask
+　　　各ポートIDのシリアル受信割込みハンドラ実行中に、
+　　　割込みマスクとして設定する値
+　　　IPM_LEVEL1またはIPM_LEVEL2を設定する。
+
+　・sio_out_handler_intmask、sio_out2_handler_intmask、
+　　sio_out3_handler_intmask
+　　　各ポートIDのシリアル送信割込みハンドラ実行中に、
+　　　割込みマスクとして設定する値
+　　　IPM_LEVEL1またはIPM_LEVEL2を設定する。
+
+　・sio_err_handler_intmask、sio_err2_handler_intmask、
+　　sio_err3_handler_intmask
+　　　各ポートIDのシリアルエラー割込みハンドラ実行中に、
+　　　割込みマスクとして設定する値
+　　　IPM_LEVEL1またはIPM_LEVEL2を設定する。
+
+
+6.2 アプリケーション向けに提供される機能
+
+H8依存部ではアプリケーションを開発しやすくするため、以下の機能を提供し
+ている。
+
+6.2.1　I/OポートのDDRレジスタへのアクセス補助機能
+
+H8のI/Oポートのデータ・ディレクション・レジスタDDRは書き込み専用であり、
+そのままでは所望のビットだけを変更することができない。
+（bset,bclr命令でも回避不可）
+また、カーネルのスタートアップルーチンでもいくつかのDDRレジスタに対し
+て設定を行っているため、そのままではカーネルとアプリケーションの間で整
+合性を保つことができない。
+そのため、本実装では、メモリ上にテンポラリを用意して、DDRの現在値を保
+持する方法を採っている。
+本機能を利用する場合はh8_sil.hをインクルードする必要がある。
+ポート番号はIO_PORT1, IO_PORT2, IO_PORT3, IO_PORT4, IO_PORT5, IO_PORT6,
+ IO_PORT8, IO_PORT9, IO_PORTA, IO_PORTBのいずれかを指定する。（ポート7
+は入力専用のため、DDRレジスタがない。）ポート番号として、これら以外の
+値を指定した場合はassert文でエラーとなる。
+
+
+(1) sil_reb_ddr　　DDRレジスタの読み出し
+
+【C言語API】
+　　UB sil_reb_ddr(UINT port);
+
+【パラメータ】
+	UINT port　　　　ポート番号
+
+【リターンパラメータ】
+	DDRレジスタの値
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタの値を読み出す。
+
+(2) sil_wrb_ddr　　DDRレジスタへの書き込み
+
+【C言語API】
+　　void sil_wrb_ddr(UINT port, UB data);
+
+【パラメータ】
+	UINT port　　　ポート番号
+	UB data　　　　書き込む値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに値dataを書き込む。
+
+(3) sil_anb_ddr　　DDRレジスタのAND演算
+
+【C言語API】
+　　void sil_anb_ddr(UINT port, UB data);
+
+【パラメータ】
+	UINT port　　　ポート番号
+	UB data　　　　AND演算を行う値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに対して、値dataとのAND演算を
+行う。
+
+(4) sil_orb_ddr　　DDRレジスタのOR演算
+
+【C言語API】
+　　void sil_orb_ddr(UINT port, UB data);
+
+【パラメータ】
+	UINT port　　　ポート番号
+	UB data　　　　OR演算を行う値
+
+【リターンパラメータ】
+	なし
+
+【エラーコード】
+	なし
+
+【機能】
+
+portで指定されるポート番号のDDRレジスタに対して、値dataとのOR演算を
+行う。
+
+
+7. カーネル移植者向けの情報
+
+　H8依存部を他のターゲット・ボードへを移植する際に必要な情報を以下に
+述べる。
+
+7.1 マクロ定義
+
+(1) DDRアクセスルーチンのための定数定義
+
+(a) DDRレジスタのアドレス
+DDRレジスタのアドレスを以下のマクロ名で定義する。
+    H8P1DDR, H8P2DDR, H8P3DDR, H8P4DDR, H8P5DDR, 
+    H8P6DDR, H8P8DDR, H8P9DDR, H8PADDR, H8PBDDR
+定義ファイル：sys_config.hからインクルードされるファイル
+　　　　　　　h8_30xxf.hで定義するのを標準とする。
+
+(b) DDRレジスタの初期値
+スタートアップルーチン実行直後のDDRレジスタの値を以下のマクロ名で定義
+する。
+　　H8P1DDR0、H8P2DDR0、H8P3DDR0、H8P4DDR0、H8P5DDR0、
+　　H8P6DDR0、H8P8DDR0、H8P9DDR0、H8PADDR0、H8PBDDR0
+定義ファイル：sys_config.h
+
+(2) ベクタテーブル生成のための情報
+ベクタテーブルのサイズを変数VECTOR_SIZEとして定義する。
+定義ファイル：$(CPU)/$(SYS)/Makefile.config
+
+7.2 ベクタテーブル生成のためのPerlスクリプトgenvector.plの仕様
+
+  -s n		ベクターテーブルのサイズ
+  		nは整数定数を仮定しており、それ以外の引数が与えられた
+  		場合の動作は未定義である。
+  		
+  -z 		JSPカーネルでは登録されていない割込み番号に対して
+  		デフォルトで_no_reg_exceptionを設定するのを慣例と
+  		しているが、モニタなどの実行環境によっては値0を
+  		設定する必要がある。
+  		このオプションでは登録されていない割込みベクタに0を
+  		書き込む。
+		-zオプションを指定しない場合は、_no_reg_exceptionを
+		書き込む（デフォルト）
+		-zオプションの有無はjsp/config/h8/Makefile.configで
+		定義している。
+		　DBGENVマクロの値が
+		　　・TNCT_MONITORまたはREDBOOTの場合：-zオプションあり
+		　　・それ以外の場合：-zオプションなし
+
+
+8. 制限事項
+
+・ベクタテーブル
+　　make realcleanを実行しても、vector.Sが消去されない。
+　　（Makefileを機種依存にしないための制限事項とする。）
+　　ただし、make dependおよびmakeコマンドでベクタテーブルvector.Sを
+　　強制的に上書きしている。上書きしたくない場合は
+　　jsp/config/h8/Makefile.config 85行目の
+　　　.PHONY: vector.S
+　　をコメントアウトすると、上書きされなくなる。
+
+・実行すべきタスクがないときの割込み待ちについて
+　　sleepしている間にバス権要求が競合しないようにバス権の外部への解放
+　　を禁止する処理を省略している。
+　　　　該当個所：cpu_support.Sのdispatcher_2_enable_interrupt
+　　
+　　HEW版のjsp/config/h8-renesas/cpu_support.srcには実装済みである。
+　　詳しくはハードウェア・マニュアル「6.4.4 ソフトウェア・スタンバイ・
+　　モードへの遷移」参照
+
+・ベクタテーブルの自動生成
+　　デフォルトで用意しているno_reg_exceptionのように、複数の割込み要因
+　　に対して同じ割込みハンドラを登録するような使い方には対応していない。
+
+・#ifdef SUPPORT_ETHER
+　　なるべくカーネルとTINETの独立性を高める方針で修正を行ったが、バス
+　　の設定はカーネル側（スタートアップルーチン）で行うため、一部、
+　　SUPPORT_ETHERマクロによる条件コンパイルが残っている。
+　　（AKI-H8/3069F依存部のみ）
+
+・シンボル名
+　　C言語ルーチンの関数名****に対して、内部的に入口処理のラベルに
+　　__kernel_****_entryを使用しているため、これと同じシンボル名を
+　　アプリケーション内で使用できない。
+　　（元々__kernel_で始まるシンボル名はカーネル用に予約されている。）
+
+・秋月電子製ボード付属のCD-ROMに入っているgccはバージョンが古いため、
+　サポートしていない。
+
+・gccのバージョンによっては64ビット整数はサポートしない。
+　（処理系の制限事項）
+
+・ホストマシンのOS
+　Windows9x系はサポートしない。
+
+
+9. 付録
+
+9. 1  RedBoot対応について
+
+参考実装としてAKI-H8/3069F用のRedBootに対応しているが、実機テストは
+行っていない。以下に使用方法を記す。
+
+9. 1. 1  H8/3069F のメモリマップ
+   デバッグ時 (RedBoot使用時)
+
+         0x000000 - 0x07ffff  内蔵 ROM、RedBootモニター
+         0x400000 - 0x44ffff  外部 RAM、.text、.rodata
+         0x450000 - 0x4ffeff  外部 RAM、.data、.bss
+         0x4fff00 - 0x4fffff  外部 RAM、割り込みベクタ領域 (.vectors)
+         0x500000 - 0x510000  外部 RAM、非タスクコンテキスト用スタック
+         0xee0000 - 0xee0081  内蔵 I/O レジスタ
+         0xffbf20 - 0xfffd1f  内蔵 RAM、RedBootモニター
+         0xfffd20 - 0xfffe1f  内蔵 RAM、仮想割込みベクタ領域
+                              (cpu_config.cで.vectorsからコピー)
+         0xffff20 - 0xffffe9  内蔵 I/O レジスタ
+
+
+9. 1. 2  ターゲットへのダウンロードと実行
+           
+         ディレクトリ $(CPU)/$(SYS) にある
+
+            MakefileのDBGENV := REDBOOT
+
+         を有効にして make する。
+
+         RedBoot
+           http://sourceforge.jp/projects/ecos-h8/
+         リリース版を"h8write -3069 -f20 redboot.mot" で焼く。
+         
+         実行方法は
+         　(1) Redbootをローダとして利用する方法
+         　(2) GDBと接続する方法
+         がある。
+
+
+       　(1) Redbootをローダとして利用する方法
+
+           以下は、 天野氏提供による設定方法である。
+
+         下記ツールをダウンロードしてインストール(Winユーザー)
+         TFTPサーバーforWin32
+         http://www.vector.co.jp/soft/win95/net/se174412.html
+         Tera Term Pro
+         http://www.sakurachan.org/soft/teraterm-j/
+         
+         TFTPサーバーのフォルダ指定をjsp.Sが生成される場所に指定
+         Tera Term Proをインストールした場所にマクロファイル（下記）を
+         作成
+         ttpmacro.exe へのショートカットを作成して
+         右クリのプロパティ-リンク先でakiboot.ttlを追加
+         "C:\Program Files\TTERMPRO	tpmacro.exe" akiboot.ttl
+         
+         下記はakiboot.ttlのサンプル
+         ; Sample macro for Tera Term
+         ;環境設定ファイルをロードする場合
+         ;connect '/F=redboot.ini'
+         ;デフォルト設定でロードする場合
+         connect ''
+         ;改行コードを送ってプロンプトがでるのを待つ
+         sendln
+         UsernamePrompt = 'RedBoot>'
+         ;IPアドレスは環境によって変更してください。
+         ;-l akiボードのIP -h TFTPサーバーのIP
+         ipset = 'ip_address -l 192.168.0.12 -h 192.168.0.10'
+         load = 'load -b 0x400000 jsp.S'
+         go = 'go 0x400000'
+         ; ip設定
+         wait   UsernamePrompt
+         sendln ipset
+         ; load
+         wait   UsernamePrompt
+         sendln load
+         ; go
+         wait   UsernamePrompt
+         sendln go
+         ; OK, boot complete.
+
+
+      　(2) GDBと接続する方法
+      　
+      　ここではEthernet経由でGDBを接続する方法を述べる。
+      　
+      　ホストマシンとターゲットボードをシリアルケーブルとEthernetケーブル
+      　で接続する。
+      　（Ethernetケーブル：直結する場合はクロスケーブルを用いる。）
+
+      　ターミナルソフト（シリアル）を起動し、ターゲットの電源を入れる。
+      　しばらく待つと以下のように出力される。
+      　
+      　... waiting for BOOTP information
+      　Ethernet eth0: MAC address xx:xx:xx:xx:xx:xx
+      　Can't get BOOTP info for device!
+      　
+      　RedBoot(tm) bootstrap and debug environment [ROM]
+      　Non-certified release, version UNKNOWN - built 21:28:57, Apr 11 2004
+      　
+      　Platform: Akizuki H8/3068 Network micom (H8/300H)
+      　Copyright (C) 2000, 2001, 2002, Red Hat, Inc.
+      　
+      　RAM: 0x00400000-0x005f4000, [0x00400000-0x005e1000] available
+      　FLASH: 0x00000000 - 0x00080000, 8 blocks of 0x00010000 bytes each.
+      　RedBoot> 
+      　
+      　"RedBoot>"のプロンプトで入力待ちになったら、
+      　　　ip_address -l xxx.xxx.xxx.xxx
+      　と入力し、IPアドレスを設定する。
+      　（xxx.xxx.xxx.xxxの具体的な値は環境に合わせる。）
+      　以下のような応答があれば、成功である。
+
+      　IP: xxx.xxx.xxx.xxx/255.255.255.0, Gateway: 0.0.0.0
+      　Default server: 0.0.0.0
+      　RedBoot>
+      　
+      　（ターミナルソフトではなく、シェルの）コマンドプロンプトにて、
+      　gdbを起動する。
+      　
+      　h8300-hms-gdb jsp　（Cygwinの場合はjsp.exe）
+      　
+      　gdbのプロンプトにて以下のコマンドを実行する。
+      　target remote xxx.xxx.xxx.xxx:9000
+　      　　xxx.xxx.xxx.xxxは上記で設定したIPアドレス
+  　    　　9000はポート番号
+      　load
+      　b xxxx_xxxx
+      　c
+      　
+      　gdbのコマンドについてはgdbのマニュアルを参照
+
+
+9. 1. 3  移植のための参考情報
+
+　デバッガとカーネルが資源の競合を起こさないよう、特に割込みまわりの資
+源には配慮する必要がある。Redboot対応にあたり、以下のデータ構造や関数
+を新設している。他のボードやデバッガ用に移植する際にはこれらを修正する
+必要がある。
+
+(1) マクロ H8IPRA_INI,H8IPRB_INI
+　IPRA、IPRBレジスタの初期値
+　定義を省略した場合はデフォルト値0が使用される。
+　cpu_config.cのcpu_initialize関数にて、すべての割込みプライオリティを
+レベル０にする処理を行っている。デバッガが割込みを使用する場合は、この
+マクロで初期値を定義し、該当する割込みチャネルの割込みプライオリティが
+勝手にレベル０にクリアされないようにする。
+　定義場所：sys_config.h
+
+(2) マクロ VECTOR_TABLE_ADDR
+　Redbootが管理する擬似ベクタテーブルの先頭アドレス
+　定義場所：sys_config.h
+
+(3) データ型 TMP_VECTOR
+　cpu_config.cのvector_table_copy関数にて、カーネルが持つベクタテーブ
+ルをRedbootが管理するコピーしている。この際、上書きしてはまずい個所を
+退避／復元する必要がある。この退避先のデータ構造をTMP_VECTOR型として定
+義する。
+　定義場所：sys_config.h
+
+(4) 関数 load_vector  割込みベクタの退避
+
+【C言語API】
+　　void load_vector(TMP_VECTOR *p);
+
+【パラメータ】
+　　TMP_VECTOR *p　退避先の先頭アドレス
+
+【リターンパラメータ】
+　　なし
+
+【エラーコード】
+　　なし
+
+【機能】
+　　pで指定されるメモリ領域にRedbootが管理するベクタテーブルの一部を
+　　退避する。
+
+【定義場所】
+　　sys_config.c
+
+(5) 関数 save_vector  割込みベクタの復元
+
+【C言語API】
+　　void save_vector(TMP_VECTOR *p);
+
+【パラメータ】
+　　TMP_VECTOR *p　コピー元の先頭アドレス
+
+【リターンパラメータ】
+　　なし
+
+【エラーコード】
+　　なし
+
+【機能】
+　　pで指定されるメモリ領域にあるデータをRedbootが管理するベクタ
+　　テーブルの一部として復元する。
+
+【定義場所】
+　　sys_config.c
+
+9. 2  gccの呼び出し規約について
+
+　下記の参考資料によると、スクラッチレジスタはer0〜er3であると読めるが、
+実際には最適化オプション使用時にer4も破壊されるようなので、割込みの出
+入口処理でer0〜er4を退避／復元している。
+
+　参考資料
+　　http://gcc.gnu.org/projects/h8300-abi.html
+
+
+9. 3  シリアル3ch化に伴なう修正内容について
+　jsp/config/h8/hw_serial.cで定義されているシリアルポート初期化ブロッ
+クsiopinib_table[]のサイズを2から3に拡張し、それに伴い、
+　　・jsp/config/h8/hw_serial.cfg
+　　　　割込みハンドラの登録
+　　・jsp/config/h8/akih8_3069f/sys_config.h
+　　　　必要なマクロ定義
+をそれぞれを追加している。
+　また、修正以前はTNUM_PORTマクロの値により、システムログ出力に使用す
+るポート番号が変化するようになっていたが、今回の修正後は、TNUM_PORTマ
+クロの値に依らずシステムログ出力のポート番号が固定されるよう仕様変更し
+た。
+
+
+9. 4  NKEV-010H8 での GDB STUB を使った実行
+
+9. 4. 1  NKEV-010H8 対応STUB
+
+NKEV-010H8 対応 GDB STUB は製品添付の CD-ROM に納められて配布される。
+この GDB STUB は SCI1 を使用する為、syslog出力等はSCI0に行うように
+ターゲット依存部で定義される。
+
+9. 4. 2  NKEV-010H8をターゲットとしてGDBによるリモートデバッグ
+
+  1. config/h8/nkev-010h8/Makefile.config で DBGENV := を全て
+     コメントアウトする。
+  2. アプリケーションの Makefile に DBGENV := GDB_STUBを追加する。
+  3. アプリケーションの Makefile COPTS = -g -O0 を追加する。
+  4. 出力先のシリアルポート IDを 2 にしている場合は 1 に変更する。
+     (jspのsampleの場合、TASK_PORTID を 1 にする)
+  5. make depend、make を行う
+　6. h8300-hms-gdb jsp.exe を実行し、gdbを起動する。
+  7. gdbプロンプトが出たら以下を入力する。
+
+        (gdb) set machine h8300h
+        (gdb) set endian big
+        (gdb) set remotebaud 38400
+        (gdb) set remoteaddress 32
+        (gdb) target remote /dev/com1←PCのCOMポート番号
+        0x00001350 in ?? ()
+        (gdb) load
+        Loading section .vectors, size 0x100 lma 0x400000
+        Loading section .text, size 0x59ca lma 0x400100
+        Loading section .rodata, size 0x118a lma 0x405aca
+        Loading section .data, size 0x12 lma 0x406c54
+        Start address 0x400100, load size 27750
+        Transfer rate: 20181 bits/sec, 50 bytes/write.
+        (gdb)
+
+  8. contと入力する事でプログラムが実行する。
+
+  gdbの操作についてはGNUプロジェクトにマニュアルがあるので、そちらを
+  参照の事。
+
+9. 4. 3  既知の問題点
+
+  TNUM_PORT = 2 とすると、stub と USER PORTがバッティングして動作しない。
+
+
+変更履歴
+
+'01/11/15 Release1.2
+　H8サポート開始
+　　ターゲット：AKI-H8/3048F
+
+'02/04/15 Release1.3
+　ターゲットの変更
+　　AKI-H8/3067Fのサポートを追加
+
+'03/12/28 Release1.4
+　ターゲットシステムの変更
+　　・AKI-H8/3052Fのサポートを追加
+　　・AKI-H8/3068Fのサポートを追加
+　　・AKI-H8/3069Fのサポートを追加
+
+'05/12/28 Release1.4.2
+　ターゲットシステムの変更
+　　・NKEV-010H8のサポートを追加
+　　・AKI-H8/3068Fのサポートを中止
+　　・AKI-H8/3069Fのサポートを中止
+
+　新規
+　　・ベクタテーブルの自動生成
+　　　　DEF_INH()の引数から割込みベクタテーブルを自動生成するようにし
+　　　　た。これにより、ユーザーが手作業で編集する必要がなくなった。
+　　・割込み優先度のサポート
+　　　　・レベル０とレベル１の割込みをサポート
+　　　　・割込みハンドラの登録方法を変更
+　　　　　　割込み要因毎に2種類の割込みレベルの値を定義する。
+　　　　　　　　・割込み要求時：IPRA、IPRBレジスタの設定
+　　　　　　　　・割込み許可時：ccrの割込みマスクの設定
+　　　　・割込み要因別に用意していたxxx_enable_intとxxx_disable_intを
+　　　　　廃止
+　　　　・iscpulockedフラグを新設
+　　・IPMの参照と変更機能をサポート　
+　　・I/OポートのDDRアクセスルーチンを追加
+　　・AKI-H8/3069Fのリリースモードで内蔵RAMだけで動作するモードを追加
+　　　　・Makefile.configにDBGENV := INMEM_ONLYを新設
+　　　　・リンクスクリプトrelease_inmem.ldを追加
+
+　修正
+　　・実行環境の定義
+　　　　Makefile.config内の変数DBGENVの定義の見直し
+　　　　　DBGENV := ROM　ROM化の場合（新規）
+　　　　　DBGENV := TNCT_MONITOR　簡易モニタ使用時（変更）
+　　　　　　　TNCT:Tomakomai National College of Technology
+　　・微小時間待ち関数sil_dly_nse( )を実装
+　　・_int64_の定義を厳密化
+　　　　これに伴い、SYSUTIM型の定義を変更
+　　・シリアルドライバのSCI_getchar()で読み出した1バイトデータが符号
+　　　拡張されてしまう問題を修正
+　　・処理系
+　　　　秋月電子通商製ボード付属のGNU開発環境はバージョンが古いため、
+　　　　サポートしていない。（「4. 1  開発環境の構築」を参照）
+　　・cpu_experr( )でレジスタの内容をダンプする際、pcとccrを分離して
+　　　いなかった不具合を修正
+　　・TINET関連のファイルを分離
+　　　　・削除したファイル
+　　　　　　jsp/config/h8/tinet_cpu_defs.h
+　　　　　　jsp/config/h8/tinet_cpu_config.h
+　　　　　　jsp/config/h8/akih8_3048f/tinet_sys_config.h
+　　　　　　jsp/config/h8/akih8_3068f/tinet_sys_config.h
+　　　　　　jsp/config/h8/akih8_3069f/tinet_sys_config.h
+　　・Redboot関連
+　　　・debug_redboot.ldをパッケージに含めた
+　　　・スタックポインタの初期値を修正
+　　　・割込みベクタテーブルへの登録処理を修正
+　　・タイマハンドラ、シリアルハンドラの整理
+　　　　・BITSET,BITCLRマクロをインライン・アセンブラ関数に変更
+　　・割込みコントローラの初期化
+　　	・_hardware_init_hookの処理内容を一部、cpu_initialize()に移動
+　　・アセンブラルーチン
+　　　・条件分岐命令前の不要なor命令を削除
+　　　・gccの呼び出し規約に合わせて、レジスタの退避と復元を必要最小限
+　　　　にした。
+　　　　（gcc 3.x対策のため、割込みの出入口でer4も退避／復元している。）
+　　・h8_3048f.h、h8_3052f.h、h8_3069f.hをボード間で共有できるよう
+　　　$(CPU)ディレクトリに移動
+　　・AKI-H8/3052F, AKI-H8/3069Fシステム依存部
+　　　　・デフォルトのシリアルch数を1に変更
+　　　　　　コネクタを増設しないと使用できないため
+　　　　・それに伴ない、サンプルプログラムのTASK_PORTIDの定義を
+　　　　　sys_defs.hに移動
+　　・Makefile.configにデバッグオプション-gを追加
+　　・関数宣言で、引数のないものは明示的にvoidを記述した。
+　　・vxget_tim()のプロトタイプ宣言にthrow()を追加
+　　・intnestをUW型からUB型に変更
+　　・トレースログの設定を一部追加
+　　　　#define	LOG_VSNS_INI_ENTER()
+　　　　#define	LOG_VSNS_INI_LEAVE(state)
+　　・tool_config.hからNEWLIBマクロの定義を削除
+　　・cpu_context.hからACTIVATED_STACK_SIZEマクロの定義を削除
+　　・シンボル・リネーム対象の見直し
+　　    ・シンボルcpu_experrのリネーム漏れを修正
+　　・AKI-H8/3069F
+　　　　・HEAP_TOPマクロの定義を削除
+　　・マニュアル
+　　　・ボード付属のCD-ROMのgccはサポート外であることを明記
+　　　・Redboot対応が参考実装であることを明記し、付録に移動
+　　　・割込み発生時のスタック消費量を訂正
+　　　・割込みハンドラの登録方法を明記
+　　　・シリアルポートのフロー制御の設定を追記
+　　　・開発環境のバージョンを変更
+
+'07/03/xx  Release1.4.3
+　ターゲットシステムの変更
+　　・NKEV-010H8のサポートを中止
+　　・AKI-H8/3048Fのサポートを中止
+
+　修正
+　・シリアルドライバを3ch化
+　　　AKI-H8/3069Fのみ対応
+　・ベクタテーブル自動生成
+　　・make dependおよびmakeコマンドでベクタテーブルvector.Sを強制的に
+　　　上書きするよう仕様変更
+　　・処理系毎の改行コードの違いに対応
+　　・DEF_INH文の途中で改行があるとパースに失敗する問題を修正
+　　・割込み番号のマクロが未定義の場合、0番と解釈して、リセットベクタを
+　　　上書きしてしまう不具合を修正
+　　・割込み番号にuが付いている場合に正しく処理できない問題を修正
+　　・filter1.plとfilter2.plを１つにまとめ、grep_def_inh.plに改名
+　　　（gcc版とHEW版で個別にfilter2.plを用意する必要がなくなった）
+　・割り込みレベルの設定
+　　　・h8_sil.hのdefine_int_plevel()
+　　　　　cpu_insh.hをインクルードしないで、bitset(),bitclr()を呼び
+　　　　　出していた不具合を修正
+　・software_term_hookの呼び出し
+　　　・tool_config.hのcall_atexit()
+　　　　　software_term_hookへのポインタと0との比較が、コンパイラの
+　　　　　最適化によって削除されてしまわないよう、volatile修飾子を追加
+　・Redboot対応
+　　　・Redbootが使用する割込みベクタを上書きしてしまう問題を修正
+　　　・マニュアルh8.txtの9.1節を追記

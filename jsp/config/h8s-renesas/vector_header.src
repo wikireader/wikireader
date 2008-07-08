@@ -1,0 +1,109 @@
+;
+;  TOPPERS/JSP Kernel
+;      Toyohashi Open Platform for Embedded Real-Time Systems/
+;      Just Standard Profile Kernel
+;
+;  Copyright (C) 2000-2004 by Embedded and Real-Time Systems Laboratory
+;                              Toyohashi Univ. of Technology, JAPAN
+;  Copyright (C) 2001-2007 by Industrial Technology Institute,
+;                              Miyagi Prefectural Government, JAPAN
+;  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
+;                   Tomakomai National College of Technology, JAPAN
+;
+;  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+;  によって公表されている GNU General Public License の Version 2 に記
+;  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;  利用と呼ぶ）することを無償で許諾する．
+;  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;      スコード中に含まれていること．
+;  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;      の無保証規定を掲載すること．
+;  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;      と．
+;    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;        作権表示，この利用条件および下記の無保証規定を掲載すること．
+;    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;        報告すること．
+;  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+;
+;  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+;
+;  @(#) $Id: vector_header.src,v 1.2 2007/03/23 07:59:26 honda Exp $
+;
+
+;
+; ベクタテーブルと割込みの入口処理
+;　　　割込み制御モード２用
+;
+        .CPU 2000A
+
+;
+;　　割込みの入口処理を生成するマクロの定義
+;　　　（割込み要因毎に異なる部分）
+;
+;　　　パラメータ
+;　　　　　C_ROUTINE：C言語ルーチンの関数名（先頭の'_'は付けない）
+;
+;　　　レジスタ割り当て
+;　　　　　・er0：C言語ルーチンの先頭アドレス
+;
+;
+;　　　処理内容
+;　　　　　er0を退避後、C言語ルーチンの先頭アドレスを設定して
+;　　　　　すべての割込み要因共通の処理へ分岐する。
+;
+;　　　備考
+;　　　　　割込み制御モード２では割込み受付直後に割込み禁止になっていない。
+;　　　　　そのため、入口処理の途中で多重割込みが入る可能性がある。
+;　　　　　本実装では、割込み応答性を良くするため、割込み禁止のタイミングを
+;　　　　　できるだけ遅らせている。
+;
+;
+;　他機種と共通の注意事項
+;　　reqflg をチェックする前に割込みを禁止しないと，reqflg をチェック
+;　　後に起動された割込みハンドラ内でディスパッチが要求された場合に，
+;　　ディスパッチされない．
+;
+ .MACRO INTHDR_ENTRY C_ROUTINE
+        .IMPORT _\C_ROUTINE
+__kernel_\C_ROUTINE'_entry:
+        push.l  er0                             ;　レジスタの退避
+        mov.l   #_\C_ROUTINE, er0               ;　C言語ルーチンの先頭アドレス
+        jmp     @_common_interrupt_process      ;　共通の処理へ分岐
+
+ .ENDM
+
+
+; ベクタテーブルの定義
+
+        .SECTION P, CODE, ALIGN=2
+
+        .INCLUDE "sys_config.inc"
+        .INCLUDE "cpu_config.inc"
+
+        .IMPORT _start
+        .IMPORT _no_reg_exception
+        .IMPORT _common_interrupt_process
+
+;
+; 割込みベクタの定義
+;  （ベクタテーブルは固定なので、割込みの出入り口処理のラベルは
+;   以下のベクタテーブルに直接書き込む必要がある。)
+;
+        .SECTION V, CODE, ALIGN=4
+
+        .GLOBAL _vectors
+_vectors:
+;******************************************************
+;　ここから下はコンフィギュレーション時に自動生成される
+;******************************************************
+

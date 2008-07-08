@@ -1,0 +1,66 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+dataqueue.h
+	include_file
+dataqueue.c
+	C
+	:outputname=dtqini.o
+	:defines=__dtqini
+dataqueue.c
+	C
+	:outputname=dtqenq.o
+	:defines=__dtqenq
+dataqueue.c
+	C
+	:outputname=dtqfenq.o
+	:defines=__dtqfenq
+dataqueue.c
+	C
+	:outputname=dtqeq.o
+	:defines=__dtqdeq
+dataqueue.c
+	C
+	:outputname=dtqsnd.o
+	:defines=__dtqsnd
+dataqueue.c
+	C
+	:outputname=dtqrcv.o
+	:defines=__dtqrcv
+dataqueue.c
+	C
+	:outputname=snd_dtq.o
+	:defines=__snd_dtq
+dataqueue.c
+	C
+	:outputname=psnd_dtq.o
+	:defines=__psnd_dtq
+dataqueue.c
+	C
+	:outputname=ipsnd_dtq.o
+	:defines=__ipsnd_dtq
+dataqueue.c
+	C
+	:outputname=tsnd_dtq.o
+	:defines=__tsnd_dtq
+dataqueue.c
+	C
+	:outputname=fsnd_dtq.o
+	:defines=__fsnd_dtq
+dataqueue.c
+	C
+	:outputname=ifsnd_dtq.o
+	:defines=__ifsnd_dtq
+dataqueue.c
+	C
+	:outputname=rcv_dtq.o
+	:defines=__rcv_dtq
+dataqueue.c
+	C
+	:outputname=prcv_dtq.o
+	:defines=__prcv_dtq
+dataqueue.c
+	C
+	:outputname=trcv_dtq.o
+	:defines=__trcv_dtq

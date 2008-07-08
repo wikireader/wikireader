@@ -1,0 +1,376 @@
+
+                  ＝ GNU開発環境構築マニュアル ＝
+
+            （Release 1.4対応，最終更新: 20-Dec-2003）
+
+------------------------------------------------------------------------ 
+ TOPPERS/JSP Kernel
+     Toyohashi Open Platform for Embedded Real-Time Systems/
+     Just Standard Profile Kernel
+
+ Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+                             Toyohashi Univ. of Technology, JAPAN
+
+ 上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+
+ @(#) $Id: gnu_install.txt,v 1.26 2003/12/20 09:13:20 honda Exp $
+------------------------------------------------------------------------
+
+
+１．GNU開発環境の構築
+
+
+1.1 開発環境の概要
+
+カーネルをインストールするには，JSPカーネルの配布キットに含まれる以外
+に，以下のツールおよびライブラリが必要である．
+
+    GNU開発環境
+       BINUTILS（アセンブラ，リンカなど）
+       GCC-CORE（Cコンパイラ）
+       GDB（デバッガ）
+    NEWLIB（標準Cライブラリ）
+    perl（動作確認は 5.005）
+    GNU Make（動作確認は 3.77）
+
+各ツールのバージョンについては，ターゲット毎に異なるため，ターゲット毎
+のマニュアルを参照のこと．
+
+アプリケーションが標準Cライブラリを使用しない場合には NEWLIB は必要な
+いが，GCC をインストールする際に NEWLIB があった方が都合がよいため，
+NEWLIB も含めてインストールする方法を標準とする．NEWLIB をインストール
+しない場合には，GCC のソースの修正が必要となり， GCC の 2.95.3 を対象
+として後述する．ターゲットへのダウンロードと実行を ROMモニタ（GDB に対
+応していないもの）によって行う場合には，GDB をインストールする必要はな
+い．
+
+perl と GNU Make は，ほとんどの Linux と Cygwin では標準でインストール
+されるため，新たにインストールする必要はない．インストールされている 
+perl または make のバージョンを知りたい場合には，-v オプションをつけて
+実行すればよい（-v オプションをサポートしていない make は GNU make で
+はない）．なお，以下の説明では，makeコマンドが GNU Make であるものとす
+る．
+
+また，これらの開発環境を Windows上に構築するためには Cygwin を用いる．
+
+    Cygwin（動作確認は 1.5.5）
+
+Cygwinのインストールについては後述する．また，ツールのソースコードを修
+正する必要があるが，これも後述する．
+
+これらのツールおよびライブラリのソースコードは，次のサイトから入手する
+ことができる．
+
+    BINUTILS，GCC-CORE，GDB，GNU Make:
+        GNUプロジェクト     http://www.gnu.org/
+        Ring Server         http://www.ring.gr.jp/
+
+    NEWLIB:
+        Red Hat             http://sources.redhat.com/newlib/
+                    または  ftp://sources.redhat.com/pub/newlib/
+
+    Cygwin:
+        Red Hat             http://sources.redhat.com/cygwin/
+                    または  ftp://sources.redhat.com/pub/cygwin/
+        Ring Server         http://www.ring.gr.jp/
+
+
+1.2 開発環境の構築方法
+
+この節では，開発環境の構築方法を説明する．開発環境を Windows上に構築す
+る場合には，あらかじめ Cygwin をインストールしておくことが必要である．
+Cygwin のインストール時の注意事項は，1.3節で述べる．
+
+(1) 準備作業
+
+ホスト上に必要なツールが足りない場合には，あらかじめインストールしてお
+く．具体的には，perl と GNU Make が必要である．さらに，開発環境の構築
+に使うために，ホスト上にも最新の GCC をインストールしておくことが望ま
+しい．
+
+なお，JSPカーネルの配布キットに含まれる perlスクリプトは，perl のプロ
+グラムが /usr/bin/perl にあるものと仮定して記述している．perl のプログ
+ラムのパスがこれと異なる場合は，各 perlスクリプトの先頭の perl の絶対
+パスを修正する必要がある．
+
+(2) ソースファイルの展開
+
+BINUTILS，GCC-CORE，GDB，NEWLIB のソースファイルを展開する．以下では，
+展開により作成されたディレクトリ名をそれぞれ次のように表記する．
+
+    <BINUTILS-SRCDIR>   BINUTILS のソースを展開したディレクトリ
+    <GCC-SRCDIR>        GCC-CORE のソースを展開したディレクトリ
+    <GDB-SRCDIR>        GDB のソースを展開したディレクトリ
+    <NEWLIB-SRCDIR>     NEWLIB のソースを展開したディレクトリ
+
+(3) 開発環境構築のためのディレクトリの決定
+
+開発環境を構築するために，以下のディレクトリを用意する．
+
+    <PREFIX>            開発環境をインストールするディレクトリ
+    <BINUTILS-OBJDIR>   BITUTILS のオブジェクトを生成するディレクトリ
+    <GCC-OBJDIR>        GCC-CORE のオブジェクトを生成するディレクトリ
+    <GDB-OBJDIR>        GDB のオブジェクトを生成するディレクトリ
+    <NEWLIB-OBJDIR>     NEWLIB のオブジェクトを生成するディレクトリ
+
+<PREFIX>/bin が実行パスに含まれるようにシェルの設定を行っておく．また，
+make install は，<PREFIX> 以下に書き込み権限があるユーザで行う必要があ
+る．
+
+(4) ターゲットの選択
+
+ターゲットプロセッサに応じて，ターゲット環境を選択する．具体的には，次
+の通り．
+
+    プロセッサ      ターゲット環境（<TARGET>）
+    M68040          m68k-unknown-elf
+    SH1, SH3        sh-hitachi-elf
+    V850            v850-nec-elf
+    H8              h8300-hms
+    ARM             arm-elf
+    M32R            m32r-elf
+    Microblaze      mb
+    mips3           mipsel-nec-elf
+    Xstormy16       xstormy16-elf
+
+以下，ターゲット環境を表す文字列を <TARGET> と表記する．
+
+なお，ターゲットによっては，ツールまたはライブラリのソースコードの修正
+が必要な場合がある．修正内容については，ターゲット毎のマニュアルに記述
+する．
+
+(5) BINUTILS のインストール
+
+BINUTILS は，GCC-CORE のインストールに必要なため，GCC-CORE に先だって
+インストールする．BINUTILS のインストール手順は次の通り．
+
+    % mkdir <BINUTILS-OBJDIR>
+    % cd <BINUTILS-OBJDIR>
+    % <BINUTILS-SRCDIR>/configure --target=<TARGET> --prefix=<PREFIX>\
+      --disable-nls
+    % make
+    % make install
+
+(6) GCC-CORE のインストール
+
+・NELIB をインストールする場合
+NEWLIB のインストールには GCC-CORE が必要なため，GCC-CORE のインストー
+ルを先に行う．configure は，newlib のヘッダーファイルを <PREFIX> 以下
+にインストールするため，<PREFIX> 以下に書き込み権限のあるユーザーで行
+う必要がある．GCC-CORE のインストール手順は次の通り．
+
+    % mkdir <GCC-OBJDIR>
+    % cd <GCC-OBJDIR>
+    % <GCC-SRCDIR>/configure \
+        --target=<TARGET> --prefix=<PREFIX> \
+        --with-gnu-as --with-gnu-ld --with-newlib \
+        --with-headers=<NEWLIB-SRCDIR>/newlib/libc/include
+    % make
+    % make install
+
+・NEWLIB をインストールしない場合．
+NEWLIB をインストールしない場合，ソースファイルの修正が必要となる．修
+正個所は，
+    <GCC-SRCDIR>/gcc/libgcc2.c の 41,42行目の
+    #include <stdlib.h>
+    #include <unistd.h>
+    の二行をコメントアウトする．
+
+    <GCC-SRCDIR>/gcc/frame.c の 42,43行目の
+    #include <stdlib.h>
+    #include <unistd.h>
+    の二行をコメントアウトする．
+
+修正後の GCC-CORE のインストール手順は次の通り．
+    
+    % mkdir <GCC-OBJDIR>
+    % cd <GCC-OBJDIR>
+    % <GCC-SRCDIR>/configure \
+        --target=<TARGET> --prefix=<PREFIX> \
+        --with-gnu-as --with-gnu-ld 
+    % make
+    % make install
+
+(7) GDB のインストール
+
+次の手順に従って，GDB をインストールする．
+
+    % mkdir <GDB-OBJDIR>
+    % cd <GDB-OBJDIR>
+    % <GDB-SRCDIR>/configure --target=<TARGET> --prefix=<PREFIX>
+    % make
+    % make install
+
+(8) NEWLIB のインストール
+
+次の手順に従って，NEWLIB をインストールする．
+
+    % mkdir <NEWLIB-OBJDIR>
+    % cd <NEWLIB-OBJDIR>
+    % <NEWLIB-SRCDIR>/configure --target=<TARGET> --prefix=<PREFIX>
+    % make
+    % make install
+
+
+
+２．ターゲットへのダウンロードと実行
+
+ユーザズマニュアルの手順にしたがって，JSPカーネルおよびアプリケーショ
+ンプログラムが構築できると，ターゲットシステムへダウンロードして実行す
+る．ダウンロードと実行の方法には，ROMモニタを用いる方法と，gdb＋スタブ
+を用いる方法がある．
+
+(A) ROMモニタを用いる方法
+
+ターゲットシステムが ROMモニタを持っている場合には，バイナリ形式または
+モトローラ S形式のファイルを，ROMモニタのダウンロードコマンドを使って
+ダウンロードし，実行コマンドを使ってダウンロードした番地から実行すれば
+よい．
+
+(B) スタブを用いる方法
+
+JSPカーネルと一緒に使えるように改造したスタブのソースコードは，JSPカー
+ネルのウェブサイトからダウンロードすることができる．スタブをダウンロー
+ドしたら，READMEファイルに従ってスタブを構築し，ROM またはフラッシュメ
+モリに書き込む．
+
+gdb＋スタブを用いてプログラムをダウンロード・実行する手順は次の通り．
+
+    % <TARGET>-gdb jsp
+    GNU gdb 4.18
+    Copyright 1998 Free Software Foundation, Inc.
+    .......... 以下メッセージが続く ..........
+    (gdb) 
+
+gdb が起動したら，次のコマンドを実行して，ターゲットシステムと接続する．
+
+    (gdb) set remotebaud <BPS>
+    (gdb) target remote /dev/ttyXX
+
+<BPS>，/dev/ttyXX には，それぞれ，ターゲットシステムを接続しているシリ
+アルポートのボーレートと，デバイス名を指定する．次に，load コマンドに
+より，プログラムをダウンロードする．
+
+    (gdb) load
+
+プログラムの実行は，continue コマンドで行う．
+
+    (gdb) continue
+
+ターゲットシステムによっては，プログラムの実行中にコントロール-C を入
+力する，または NMI をかけることで，プログラムを停止させて gdb に制御が
+戻すことができる．ただし，割込み禁止状態では，コントロール-C で停止さ
+せることはできない．詳しくは，スタブの READMEファイルまたはターゲット
+毎のマニュアルを参照すること．
+
+
+
+３．Cygwinのインストール
+
+本インストールマニュアルは，cygwinの1.5.5バージョンを対象にしている．
+また，以下のサイトではCygwinに関する情報やドキュメントがまとめられている．
+http://www.sixnine.net/cygwin/cygwin-doc/
+
+3.1必要なファイル
+Cygwinのインストールに必要なファイルは次のサイトから入手することができる．
+
+        Red Hat             http://www.cygwin.com/
+                    または  ftp://sources.redhat.com/pub/cygwin/
+        Ring Server         http://www.ring.gr.jp/
+
+上記のサイトから最新版の setup.exe をダウンロードする．
+
+3.2インストール
+setup.exe を実行すると，
+
+・インターネットからダウンロードする
+・インターネットからインストールする
+・ローカルディレクトリからインストールする
+
+該当するインストール手法にチェックし次に進む．何台かのマシンにインストー
+ルするなら，1台目はインターネットからインストールイメージをダウンロー
+ドし，後のマシンにはそれらのファイルをコピーしてローカルディレクトリか
+らインストールすればよい．
+
+以下，インターネットからダウンロードする場合について説明する．ダウンロー
+ドを選択すると必要ならば proxy の設定の後，ミラーサイトの一覧が示され
+るので，近くのサイトを選択する．
+
+次に，パッケージ一覧が示されるため，必要なパッケージを選択する．特に回
+線等の問題がないかぎりすべてのパッケージをインストールするのが望ましい．
+
+ダウンロードが終了したらもう一度 setup.exe を実行して，ローカルディレ
+クトリからのインストールを選択する．次にインストール元のディレクトリ
+(上でダウンロードしたファイルが存在するディレクトリ，デフォルトで選択
+されているはず)を選択する．次にインストール先の選択に移るが，特に理由
+がない限りデフォルトの C:\Cygwin にインストールする．次にインストール
+するパッケージを選択する．先ほどダウンロードされたファイルが表示され，
+ディフォルトでは全てインストールされることになっているため，単に next 
+を押してインストールを開始する．
+
+
+3.3.開発環境のインストール
+
+3.3.1 バイナリからのインストール
+
+特に最新版のコンパイラが必要でなければ，TOPPERS/JSP のホームページ
+（http://www.toppers.jp/）から SH 用の BINUTILS,GCC-CORE,GDB のバイナ
+リ（gnu_cygwin_sh.tar.gz）をc:\Cygwin\usr\localにダウンロードして以下
+の手順で展開する．なお，このファイルにはNEWLIBは含まれていないが，
+GDB-Stub，TOPPERS/JSP の sample1 のコンパイルには支障はない．ユーザー
+アプリケーションを作成するさい，必要なら別途ソースからコンパイル，イン
+ストールする．バイナリ（gnu_cygwin_sh.tar.gz）は，Cygwin の /usr/local 
+で展開する．
+
+    $ cd /usr/local
+    $ tar xvfz gnu_cygwin_sh.tar.gz
+
+これで/usr/local/sh以下に開発ツールがインストールされる．次に
+/usr/local/sh/bin にパスを通す．具体的にはホーム（cygwin実行時のカレン
+トディレクトリ)にbashの設定ファイル".bashrc"を作成して次の一行を追加す
+る．
+
+export PATH=/usr/local/sh/bin:${PATH}
+
+後は，JSPの各ターゲットのMakefile先頭にある"CYGWIN = ture"の部分のコメ
+ントアウトを外せばCygwin上でJSPのコンパイルが可能である．
+
+
+3.4.gdbによるデバッグ
+GDBのコマンドラインからCOM1経由でターゲットに接続する場合は，
+
+(gdb)target remote /dev/ttyS0
+
+COM2経由の場合は
+
+(gdb)target remote /dev/ttyS1
+
+とする．
+
+
+以上

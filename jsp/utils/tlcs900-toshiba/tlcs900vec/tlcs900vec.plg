@@ -1,0 +1,123 @@
+<html>
+<body>
+<pre>
+<h1>ﾋﾞﾙﾄﾞのﾛｸﾞ</h1>
+<h3>
+--------------------構成: tlcs900offset - Win32 Release--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPCD.tmp" を作成し、次の内容を記録します
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/tlcs900offset.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\jsp141_win\utils\tlcs900-toshiba\tlcs900offset\tlcs900offset.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPCD.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPCE.tmp" を作成し、次の内容を記録します
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/tlcs900offset.pdb" /machine:I386 /out:"Release/tlcs900offset.exe" 
+".\Release\tlcs900offset.obj"
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPCE.tmp" の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+tlcs900offset.cpp
+ﾘﾝｸ中...
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD0.bat" を作成し、次の内容を記録します
+[
+@echo off
+copy .\\Release\\tlcs900offset.exe ..
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD0.bat" の作成中
+
+        1 個のファイルをコピーしました。
+
+
+
+<h3>結果</h3>
+tlcs900offset.exe - ｴﾗｰ 0、警告 0
+<h3>
+--------------------構成: tlcs900offset - Win32 Debug--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD1.tmp" を作成し、次の内容を記録します
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/tlcs900offset.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\jsp141_win\utils\tlcs900-toshiba\tlcs900offset\tlcs900offset.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD1.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD2.tmp" を作成し、次の内容を記録します
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/tlcs900offset.pdb" /debug /machine:I386 /out:"Debug/tlcs900offset.exe" /pdbtype:sept 
+".\Debug\tlcs900offset.obj"
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD2.tmp" の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+tlcs900offset.cpp
+ﾘﾝｸ中...
+
+
+
+<h3>結果</h3>
+tlcs900offset.exe - ｴﾗｰ 0、警告 0
+<h3>
+--------------------構成: tlcs900vec - Win32 Release--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD4.tmp" を作成し、次の内容を記録します
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/tlcs900vec.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\jsp141_win\utils\tlcs900-toshiba\tlcs900vec\tlcs900vec.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD4.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD5.tmp" を作成し、次の内容を記録します
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/tlcs900vec.pdb" /machine:I386 /out:"Release/tlcs900vec.exe" 
+".\Release\tlcs900vec.obj"
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD5.tmp" の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+tlcs900vec.cpp
+ﾘﾝｸ中...
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD7.bat" を作成し、次の内容を記録します
+[
+@echo off
+copy .\\Release\\tlcs900vec.exe ..
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD7.bat" の作成中
+
+        1 個のファイルをコピーしました。
+
+
+
+<h3>結果</h3>
+tlcs900vec.exe - ｴﾗｰ 0、警告 0
+<h3>
+--------------------構成: tlcs900vec - Win32 Debug--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD8.tmp" を作成し、次の内容を記録します
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/tlcs900vec.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\jsp141_win\utils\tlcs900-toshiba\tlcs900vec\tlcs900vec.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD8.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD9.tmp" を作成し、次の内容を記録します
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/tlcs900vec.pdb" /debug /machine:I386 /out:"Debug/tlcs900vec.exe" /pdbtype:sept 
+".\Debug\tlcs900vec.obj"
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @C:\DOCUME~1\admin\LOCALS~1\Temp\RSPD9.tmp" の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+tlcs900vec.cpp
+ﾘﾝｸ中...
+
+
+
+<h3>結果</h3>
+tlcs900vec.exe - ｴﾗｰ 0、警告 0
+</pre>
+</body>
+</html>

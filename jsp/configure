@@ -1,0 +1,257 @@
+#! /usr/bin/perl
+#
+#  TOPPERS/JSP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Just Standard Profile Kernel
+# 
+#  Copyright (C) 2001-2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+# 
+#  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+#  によって公表されている GNU General Public License の Version 2 に記
+#  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+#  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+#  利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+#  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+#  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+# 
+#  @(#) $Id: configure,v 1.13 2003/12/06 06:16:16 hiro Exp $
+# 
+
+require "getopt.pl";
+
+#  オプションの定義
+#
+#  -C <cpu>		プロセッサ名（必須）
+#  -S <sys>		システム名
+#  -T <tool>		開発環境名
+#  -A <uname>		アプリケーションプログラム名
+#  -U <utask>		他のアプリケーションプログラムファイル
+#			（.o ファイル名で指定．複数指定可）
+#  -L <kernel_lib>	カーネルライブラリ（libkernel.a）のディレクトリ名
+#			（省略した場合，カーネルライブラリも make する）
+#  -D <srcdir>		カーネル等のソースの置かれているディレクトリ
+#  -P <prefix>		開発環境インストール時の PREFIX
+#			（現在は PREFIX を使っているファイルはない）
+#  -p <perl>		perl のパス名（明示的に指定する場合）
+#  -l <lang>		プログラミング言語（現時点ではC++のみサポート）
+#  -d <dir>		テンプレートディレクトリを指定（デフォルトはsample）
+
+#  使用例(1)
+#
+#  % ../configure -C m68k -S dve68k -A test1 -U test_support.o -L .
+#
+#  使用例(2)
+#
+#  % ../configure -C linux
+#	アプリケーションプログラムは sample1 になる．
+
+#
+#  オプションの処理
+#
+do Getopt("CSTAULDPpld");
+unless ($opt_C) {
+	print STDERR "configure: -C option is mandatory\n";
+	exit(1);
+}
+
+$cpu = $opt_C;
+$sys = $opt_S ? $opt_S : "";
+$tool = $opt_T ? $opt_T : "";
+$uname = $opt_A ? $opt_A : "sample1";
+$utask = $opt_U ? $opt_U : "";
+$kernel_lib = $opt_L ? $opt_L : "";
+$prefix = $opt_P ? $opt_P : "/usr/local";
+$perl = opt_p ? $opt_p : do get_path("perl", ("/usr/local/bin", "/usr/bin"));
+$lang = $opt_l ? $opt_l : "";
+$templatedir = $opt_d ? $opt_d : "sample";
+
+#
+#  オブジェクトファイル名の拡張子を返す
+#
+sub get_objext {
+	local(@uname);
+
+	use POSIX;
+	@uname = do uname();
+	if ($uname[0] =~ /^cygwin/i) {
+		return("exe");
+	}
+	else {
+		return("");
+	}
+}
+
+#
+#  プログラムの場所を検索する
+#
+sub get_path {
+	local($progname, @pathlist) = @_;
+	local($path);
+
+	foreach $path (@pathlist) {
+		if (-x $path."/".$progname) {
+			return($path."/".$progname);
+		}
+	}
+	return("");
+}
+
+#
+#  ファイルを変換する
+#
+sub convert {
+	local($infile, $outfile) = @_;
+	local($line, $varname, $varval);
+
+	print STDERR "configure: Generating $outfile from $infile.\n";
+	if (-f $outfile) {
+		print STDERR "configure: $outfile exists.",
+				"  Save as $outfile.bak.\n";
+		rename($outfile, $outfile.".bak");
+	}
+	unless (open(INFILE, $infile)) {
+		print STDERR "configure: can't open $infile\n";
+		exit(1);
+	}
+	unless (open(OUTFILE, "> ".$outfile)) {
+		print STDERR "configure: can't open $outfile\n";
+		exit(1);
+	}
+
+	while ($line = <INFILE>) {
+		chop $line;
+		while ($line =~ /^(.*)\@\(([A-Za-z_]+)\)(.*)$/) {
+			$line = $1.$vartable{$2}.$3;
+		}
+		print OUTFILE $line,"\n";
+	}
+
+	close(INFILE);
+	close(OUTFILE);
+}
+
+#
+#  サンプルを見つけてファイルを生成する
+#
+sub generate {
+	local($file, $mandatory) = @_;
+	local($path);
+
+	if ($sys) {
+		$path = $sampledir.$file.".".$cpu."-".$sys;
+		if (-f $path) {
+			do convert($path, $file);
+			return;
+		}
+
+		$path = $sampledir.$file.".".$sys;
+		if (-f $path) {
+			do convert($path, $file);
+			return;
+		}
+	}	
+
+	$path = $sampledir.$file.".".$cpu;
+	if (-f $path) {
+		do convert($path, $file);
+		return;
+	}	
+
+	$path = $sampledir.$file;
+	if ($mandatory || -f $path) {
+		do convert($path, $file);
+	}	
+}
+
+#
+#  変数の初期化
+#
+
+#
+#  ソースディレクトリ名を取り出す
+#
+$pwd = `pwd`; chop $pwd;
+if ($opt_D) {
+	$srcabsdir = $srcdir = $opt_D;
+}
+elsif ($0 =~ /(.*)\/configure/) {
+	$srcdir = $1;
+	if ($srcdir =~ /^\//) {
+		$srcabsdir = $srcdir;
+	}
+	else {
+		$srcabsdir = $pwd."/".$srcdir;
+	}
+}
+else {
+	$srcabsdir = $srcdir = $pwd;
+}
+$sampledir = $srcdir."/".$templatedir."/";
+
+#
+#  変数テーブルの作成
+#
+%vartable = ();
+$vartable{"CPU"} = $cpu;
+$vartable{"SYS"} = $sys;
+$vartable{"TOOL"} = $tool;
+$vartable{"UNAME"} = $uname;
+$vartable{"UTASK"} = $utask;
+$vartable{"KERNEL_LIB"} = $kernel_lib;
+$vartable{"SRCDIR"} = $srcdir;
+$vartable{"SRCABSDIR"} = $srcabsdir;
+$vartable{"PREFIX"} = $prefix;
+$vartable{"OBJEXT"} = do get_objext();
+$vartable{"PERL"} = $perl;
+$vartable{"LANG"} = $lang;
+
+#
+#  ディレクトリのチェック
+#
+
+if (! -d $srcdir."/config/".$cpu) {
+	print STDERR "configure: $srcdir/config/$cpu not exist\n";
+	exit(1);
+}
+if ($sys && ! -d $srcdir."/config/".$cpu."/".$sys) {
+	print STDERR "configure: $srcdir/config/$cpu/$sys not exist\n";
+	exit(1);
+}
+if ($tool && ! -d $srcdir."/config/".$cpu."-".$tool."/".$sys) {
+	print STDERR "configure: $srcdir/config/$cpu-$tool/$sys not exist\n";
+	exit(1);
+}
+if ($tool && $sys && ! -d $srcdir."/config/".$cpu."-".$tool."/".$sys) {
+	print STDERR "configure: $srcdir/config/$cpu-$tool/$sys not exist\n";
+	exit(1);
+}
+
+#
+#  Makefile とアプリケーションファイルの生成
+#
+
+do generate("Makefile", 1);
+do generate($uname.".c", 0);
+do generate($uname.".cpp", 0);
+do generate($uname.".h", 0);
+do generate($uname.".cfg", 0);

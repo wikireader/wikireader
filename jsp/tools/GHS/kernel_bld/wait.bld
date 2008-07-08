@@ -1,0 +1,44 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+wait.h
+	include_file
+
+wait.c
+	C
+	:outputname=waimake.o
+	:defines=__waimake
+wait.c
+	C
+	:outputname=waicmp.o
+	:defines=__waicmp
+wait.c
+	C
+	:outputname=waitmo.o
+	:defines=__waitmo
+wait.c
+	C
+	:outputname=waitmook.o
+	:defines=__waitmook
+wait.c
+	C
+	:outputname=waican.o
+	:defines=__waican
+wait.c
+	C
+	:outputname=wairel.o
+	:defines=__wairel
+wait.c
+	C
+	:outputname=wobjwai.o
+	:defines=__wobjwai
+wait.c
+	C
+	:outputname=wobjwaitmo.o
+	:defines=__wobjwaitmo
+wait.c
+	C
+	:outputname=wobjpri.o
+	:defines=__wobjpri

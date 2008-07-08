@@ -1,0 +1,19 @@
+-sec
+{
+    .text	0xac008000		:
+    .syscall				:
+    .secinfo				:
+    .fixaddr				:
+    .fixtype				:
+    .rodata	align(4)		:
+    .romdata    ROM(.data)		:
+    .romsdata   ROM(.sdata)		:
+    .sdabase 	align(4)		:
+    .sbss				:
+    .sdata      			:
+    .rosdata				:
+    .data				:
+    .bss				:
+    .heap	align(4) pad(0x1000)	:
+    .stack	align(4) pad(0x1000)	:
+}

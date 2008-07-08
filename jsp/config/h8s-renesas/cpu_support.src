@@ -1,0 +1,512 @@
+;
+;  TOPPERS/JSP Kernel
+;      Toyohashi Open Platform for Embedded Real-Time Systems/
+;      Just Standard Profile Kernel
+;
+;  Copyright (C) 2000-2004 by Embedded and Real-Time Systems Laboratory
+;                              Toyohashi Univ. of Technology, JAPAN
+;  Copyright (C) 2001-2007 by Industrial Technology Institute,
+;                              Miyagi Prefectural Government, JAPAN
+;  Copyright (C) 2001-2004 by Dep. of Computer Science and Engineering
+;                   Tomakomai National College of Technology, JAPAN
+;
+;  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+;  によって公表されている GNU General Public License の Version 2 に記
+;  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+;  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+;  利用と呼ぶ）することを無償で許諾する．
+;  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+;      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+;      スコード中に含まれていること．
+;  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+;      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+;      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+;      の無保証規定を掲載すること．
+;  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+;      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+;      と．
+;    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+;        作権表示，この利用条件および下記の無保証規定を掲載すること．
+;    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+;        報告すること．
+;  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+;      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+;
+;  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+;  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+;  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+;  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+;
+;  @(#) $Id: cpu_support.src,v 1.2 2007/03/23 07:59:26 honda Exp $
+;
+
+;       プロセッサ依存モジュール アセンブリ言語部（H8S用）
+;　　　　　カーネル内部で使用する定義
+
+        .CPU 2000A
+        .SECTION P, CODE, ALIGN=2
+
+        .INCLUDE "sys_config.inc"
+        .INCLUDE "cpu_config.inc"
+        .INCLUDE "offset.inc"
+
+;　　共通部とのインターフェース
+;　　　変数
+        .IMPORT _runtsk
+        .IMPORT _schedtsk
+        .IMPORT _reqflg
+        .IMPORT _enadsp
+;　　　関数
+        .IMPORT _ext_tsk
+        .IMPORT _call_texrtn
+
+;　　H8S依存部独自
+;　　　変数
+        .IMPORT _intnest
+        .IMPORT _iscpulocked
+        .IMPORT _task_intmask
+;　　　関数
+        .IMPORT _cpu_experr
+
+;
+;  割込み禁止／許可
+;　　exrレジスタのトレースビットTは保存していない
+;
+
+;
+;  割込み禁止（カーネル管理外の割込みを除く）
+;
+DISINT: .DEFINE         "ldc.b  #MAX_IPM, exr"
+
+;
+;  すべての割込みを許可
+;
+ENAINT: .DEFINE         "ldc.b  #EXR_ENAINT_ALL, exr"
+
+
+;
+;  タスクディスパッチャ
+;
+;    　_dispatch は、割込み外ネストカウンタ = 0,割込み禁止状態
+;    で呼び出さなければならない．_exit_and_dispatch も，割込みネスト
+;    カウンタ = 0・割込み禁止状態で呼び出すのが原則であるが，カーネル
+;    起動時に対応するため，割込みネストカウンタ = 1で呼び出した場合に
+;    も対応している．
+
+        .GLOBAL _exit_and_dispatch
+_exit_and_dispatch:
+        ; 割り込み禁止で呼ばれる。
+        mov.b   #0, r0l         ; 割込みネストカウンタをクリア
+        mov.b   r0l, @_intnest
+        bra     dispatcher
+
+        ;
+        ;　サービスコール内から以下の条件で呼ばれる。
+        ;　　・CPUロック状態
+        ;　　・er0,er1を保存
+        ;
+        .GLOBAL _dispatch
+_dispatch:
+        push.l  er2                     ; er2〜6を保存
+        push.l  er3
+        push.l  er4
+        push.l  er5
+        push.l  er6
+        mov.l   @_runtsk, er0           ; er0 <- runtsk
+        mov.l   sp, @(TCB_sp, er0)      ; タスクスタックポインタを保存
+        mov.l   #dispatch_r, er1        ; 実行再開番地を保存
+        mov.l   er1, @(TCB_pc, er0)
+
+;
+;  ディスパッチャ本体
+;
+dispatcher:
+        ; ここには割り込み禁止で来ること
+
+        ; ここでruntskにschedtskを代入するのは２つの意味がある。
+        ; 　(1) schedtsk != NULLの場合
+        ; 　　　　通常のタスク切り替えを行う。
+        ; 　(2) schedtsk == NULLの場合
+        ; 　　　　runtskにNULLを代入しておく。
+        ; 　　　　（dispatcher_1以降の割込み待ちで割込みが入り、その中で
+        ; 　　　　　iget_tid()がコールされたときに正しくTSK_NONEを返すため
+        ; 　　　　　には、実行状態のタスクがない時に、runtskをNULLにして
+        ; 　　　　　おく必要がある。）
+
+        mov.l   @_schedtsk, er0         ; er0 <- schedtsk
+        mov.l   er0, @_runtsk           ; schedtsk があるか？
+        beq     dispatcher_1            ; 無ければジャンプ
+        mov.l   @(TCB_sp, er0), sp      ; スタックポインタを復元
+        mov.l   @(TCB_pc, er0), er0     ; 実行再開番地に分岐
+        jmp     @er0
+
+        ;
+        ;　実行すべきタスクがない場合の割込み待ち
+        ;
+        ;　ここで非タスクコンテキストと同じ状態に切り換えるのは，ここ
+        ;　で発生する割込み処理にどのスタックを使うかという問題の解決
+        ;　と，割込みハンドラ内でのタスクディスパッチの防止という二つ
+        ;　の意味がある．
+dispatcher_1:
+
+        mov.l   #STACKTOP, sp   ;　スタックを割込みスタックに切替え
+        mov.b   #1, r0l         ;  割込みネストカウンタを１にする
+        mov.b   r0l, @_intnest
+
+        ;  CPUロックフラグをクリア
+        mov.w   #0, r3
+        mov.w   r3, @_iscpulocked
+
+dispatcher_2_enable_interrupt:
+
+        ;　割込み許可
+ .AIFDEF SUPPORT_CHG_IPM
+        ;　ldc.w @dips, exr命令は、メモリから2バイト読み出し、下位
+        ;　１バイトは捨てられる。.wを付けないと"307 (E) ILLEGAL 
+        ;　ADDRESSING MODE OR OBJECT CODE SIZE"になる。
+	ldc.w	@_task_intmask, exr
+ .AELSE ; SUPPORT_CHG_IPM
+	ldc.b	#EXR_ENAINT_ALL, exr
+ .AENDI ; SUPPORT_CHG_IPM
+
+        ;　ldc命令直後は割込み禁止であり、割込み要求があっても
+        ;　次の命令が実行される。
+        ;　（割込みから戻ってきてsleepするケースはない）
+
+        sleep                           ; 割込み待ち
+        DISINT                          ; 割り込み禁止
+        mov.w   @_reqflg, r0            ; reqflgのチェック
+                                        ;  reqflgはBOOL型 -> int型(16bits)
+        beq     dispatcher_2_enable_interrupt
+        mov.w   #0,r0
+        mov.w   r0, @_reqflg            ; reqflgのクリア
+        mov.b   r0l, @_intnest          ; 割込みネストカウンタをクリア
+        bra     dispatcher
+
+
+
+;
+; タスクスイッチの結果ここから実行が再開される
+;
+dispatch_r:
+        pop.l   er6                     ; er2〜6を復元
+        pop.l   er5
+        pop.l   er4
+        pop.l   er3
+        pop.l   er2
+                                ; タスク例外許可状態のチェック
+        mov.l   @_runtsk, er0           ; er0←runtsk
+        mov.b   @(TCB_enatex,er0),r1l
+        btst   #TCB_enatex_bit,r1l      ; TCB.enatex=0->CCR.Z=1
+        beq    _dispatch_r_1    ;　タスク例外処理禁止状態ならジャンプ
+
+                                ; タスク例外処理要求のチェック
+                                ; TEXPTNはunsigned int型＝16ビット
+        mov.w   @(TCB_texptn,er0),r1
+        beq     _dispatch_r_1   ; 保留例外要因がなければジャンプ
+
+        jmp     @_call_texrtn   ; タスク例外処理処理ルーチンの呼び出し
+                                ;　　_call_texrtnからここには戻らず
+                                ;　　dispatch()の呼び出し元へ戻る
+_dispatch_r_1:
+        rts     ;　dispatch()の呼び出し元へリターン
+                ;　　CPUロック解除は呼び出し元で行う。
+
+
+
+;
+; 割込みの出口処理でスタックポインタが指している番地からEXRレジスタが
+; 積まれている番地までのオフセットの定義
+;
+;　 +0:er3
+;　 +4:er2
+;　 +8:er1
+;　+12:er0
+;  +16:exr ←ここをsp相対アクセスする
+
+OFFSET_EXR:             .DEFINE         "16"
+
+
+
+;
+;  割込みハンドラ入口処理
+;　　割込み要因に依らず、共通な部分
+;　　（vector.srcのINTHDR_ENTRYからの続き）
+;
+;　　　　以下の状態でここにやってくる
+;　　　　　・割込み許可（割込みプライオリティレベルはexrに設定済み）
+;　　　　　・er0：退避済み
+;　　　　　・er0：C言語ルーチンの先頭アドレス
+;　　　　
+;　　　　コーリングコンベンションを考えるとer3の退避は不要だが、
+;　　　　テンポラリが少ないと、ソースコードの可読性が悪くなるため
+;　　　　er3も退避している。
+;　　　　
+
+        .GLOBAL _common_interrupt_process
+_common_interrupt_process:
+        push.l  er1                     ;　er1〜er3の退避
+        push.l  er2
+        push.l  er3
+        stc.b	exr, r1l                ;　exrのコピー
+
+	;　デバッグ環境によっては、Tビットのクリアが必要
+ .AIFDEF USE_DEBUGGER
+	and.b	#EXR_I_MASK, r1l
+ .AENDI ; USE_DEBUGGER
+
+        DISINT                          ;　割込み禁止
+        mov.b   @_intnest, r3l          ;　割込みネストカウンタのインクリメント
+        inc.b	r3l;
+        mov.b   r3l, @_intnest
+        cmp.b   #1, r3l                 ;　割込み発生時のコンテキストの判別
+        bne     _interrupt_from_int     ;　多重割込みの処理へ
+
+        ;
+        ;　初段の割込みの場合
+        ;
+        mov.l   sp, er3                 ;　スタック切替
+        mov.l   #STACKTOP, sp
+        ldc.b   r1l, exr                ;　割込み許可
+        jsr     @er0                    ;　C言語ルーチン呼び出し
+        DISINT                          ;　割込み禁止
+        ;　スタック切替
+        ;　　er3はC言語ルーチンを呼び出しても破壊されない。
+        mov.l   er3, sp
+        mov.b   #0, r0l                 ;　割込みネストカウンタのクリア
+        mov.b   r0l, @_intnest
+        mov.w   @_reqflg, e0            ;　reqflgのチェック
+        beq     _ret_to_task_int        ;　reqflgがFALSEなら_ret_to_task_intに飛ぶ
+        
+        ;
+        ;　戻り先が割込みの入口処理か否かの判定
+        ;　　　
+        ;　　　H8Sの割込み制御モード２では割込み受付け直後に割込み禁止
+        ;　　　になっていないため、入口処理の途中で割込みが入る可能性が
+        ;　　　ある。
+        ;　　　その場合はreqflg=TRUEのまま、初段の割込み処理に戻る。
+        ;　　　もし、ここでreqflgをクリアしてしまうと、初段の割込みの
+        ;　　　出口処理でディスパッチャ呼び出し（またはタスク例外処理）を
+        ;　　　スキップしてしまう危険がある。
+        ;　　　
+        ;　　　判定にはスタックに積まれたexrレジスタの値（Iビット）を
+        ;　　　用いる。
+        ;　　　
+        
+	mov.b	@(OFFSET_EXR, sp), r0l	;　r01 = スタック上のEXR
+
+	;　スタックに積まれたexrレジスタの値もビット6-3に1が入っているので
+	;　クリアしておく。
+	and.b	#EXR_I_MASK, r0l
+
+ .AIFDEF SUPPORT_CHG_IPM
+	mov.b	@_task_intmask, r1l
+	cmp.b	r0l, r1l
+ .AELSE ; SUPPORT_CHG_IPM
+	cmp.b	#EXR_ENAINT_ALL, r0l
+ .AENDI ; SUPPORT_CHG_IPM
+
+	bne	_ret_to_task_int		;　割込み発生場所が、割込みの入口処理
+        
+        mov.w   #0, e0                  ;　reqflgをクリア
+        mov.w   e0, @_reqflg
+        bra     ret_int                 ;　出口処理へジャンプ
+
+
+        ;
+        ;　多重割込みの場合;
+        ;　　以下の状態でここにやってくる
+        ;　　　・割込み禁止
+        ;　　　・er0：C言語ルーチンの先頭アドレス
+        ;　　　・r3l：割込みネストカウンタ
+        ;
+_interrupt_from_int:
+        ldc.b   r1l, exr                ;　割込み許可
+        jsr     @er0                    ;　C言語ルーチン呼び出し
+        DISINT                          ;　割込み禁止
+
+        ;　割込みネストカウンタのディクリメント
+        ;　　r3lはC言語ルーチンを呼び出しても破壊されない。
+        dec.b	r3l                     
+        mov.b   r3l, @_intnest
+
+        ;　本来はここで戻り先が、割込み待ちのsleep命令かどうかのチェッ
+        ;　クが必要である。（もし、割込みハンドラ内でreqflg=TRUEにして
+        ;　もディスパッチャが呼ばれない＝タスクが実行されない）
+        ;　H8Sの場合、sleep命令の直前にある割込み許可のldc命令の実行直
+        ;　後は割込み禁止であり、割込み要求があったとしても割込みは受
+        ;　け付けないで、sleep命令が実行される。そのため、割込みから
+        ;　戻った直後にsleep命令が実行されるケースは考慮しなくて良い。
+
+        ;
+        ;　ディスパッチャを呼ばずに、割込み元に戻る場合
+        ;
+_ret_to_task_int:
+        pop.l   er3                     ;　レジスタを復元
+        pop.l   er2
+        pop.l   er1
+        pop.l   er0
+        rte                             ;　割込み元へリターン
+
+
+;
+;  割込みハンドラ出口処理
+;
+; 戻り先がタスクでreqflgがセットされている場合のみここにくる。
+; 割込みネストカウンタ = 0,割込み禁止状態,スクラッチレジスタを
+; 保存した状態で呼び出すこと。
+
+ret_int:
+                                        ; enadspのチェック
+        mov.w   @_enadsp, r0            ;  enadspはBOOL型 -> int型(16bits)
+        beq     ret_int_1               ; ディスパッチ禁止ならret_int_1へ
+
+        mov.l   @_runtsk, er0           ; er0 <- runtsk
+        mov.l   @_schedtsk, er1         ; er1 <- schedtsk
+        cmp.l   er0, er1                ; runtsk と schedtsk を比較
+        beq     ret_int_1               ; 同じならret_int_1へ
+
+        push.l  er4                     ;　レジスタ退避
+        push.l  er5
+        push.l  er6
+        mov.l   sp, @(TCB_sp, er0)      ; タスクスタックポインタを保存
+        mov.l   #ret_int_r, er1         ; 実行再開番地を保存
+        mov.l   er1, @(TCB_pc, er0)
+        bra     dispatcher
+
+        ;
+        ;  割込みの出口でディスパッチャからここに戻ってくる
+        ;
+ret_int_r:
+        pop.l   er6                     ;　レジスタ復元
+        pop.l   er5
+        pop.l   er4
+
+        ;
+        ;　タスクスイッチしない場合はここから合流する
+        ;
+ret_int_1:
+                                        ; タスク例外許可状態のチェック
+        mov.l   @_runtsk, er0           ; er0←runtsk
+        mov.b   @(TCB_enatex,er0),r1l
+        btst   #TCB_enatex_bit,r1l      ; TCB.enatex=0->CCR.Z=1
+        beq    ret_int_2                ;　タスク例外禁止状態ならジャンプ
+
+                                        ; タスク例外処理要求のチェック
+        mov.w   @(TCB_texptn,er0),r1    ; TEXPTNはunsigned int型＝16ビット
+        beq     ret_int_2               ; 保留例外要因がなければジャンプ
+        jsr     @_call_texrtn           ; タスク例外処理ルーチン起動
+
+ret_int_2:
+        ;　　
+        ;　ディスパッチャやタスク例外処理を経由すると
+        ;　iscpulockedがセットされるので、ここでクリアする。
+        ;　（CPUロックフラグ）
+        ;　　
+        mov.w   #0, r0
+        mov.w   r0, @_iscpulocked
+
+ .AIFDEF SUPPORT_CHG_IPM
+        ;  スタックに積んであるexr（戻り先の割込みマスク）を
+        ;　task_intmaskにする。（下記参照）
+        mov.b   @_task_intmask, r1l
+        mov.b   r1l, @(OFFSET_EXR, sp)
+ .AENDI ;SUPPORT_CHG_IPM
+                                        ; レジスタを復元
+        pop.l   er3                     ;　 +0:er3
+        pop.l   er2                     ;　 +4:er2
+        pop.l   er1                     ;　 +8:er1
+        pop.l   er0                     ;　+12:er0
+                                        ;  +16:exr ←ここを書き換える
+        rte                             ;　割込み元にリターン
+
+;
+;  タスク起動処理
+;
+;　　　　CPUロックで呼び出される。
+;
+;　　　　タスク実行開始直後はタスク例外処理禁止状態になっているので、
+;　　　　_activate_rでは保留例外要因のチェックをする必要がない。
+;
+
+        .GLOBAL _activate_r
+_activate_r:
+        ;　t_unlock_cpu 相当の処理
+        mov.w   #0, r0               ;  CPUロックフラグをクリア
+        mov.w   r0, @_iscpulocked
+        ;　割込み許可
+ .AIFDEF SUPPORT_CHG_IPM
+        mov.b   @_task_intmask, r0l  ;  割込みマスクをtask_intmaskに
+        ldc.b   r0l, exr
+ .AELSE         ; SUPPORT_CHG_IPM
+        ENAINT                       ;  割込み許可
+ .AENDI ;SUPPORT_CHG_IPM
+
+        mov.l   #_ext_tsk, er0
+        push.l  er0             ;  タスクからの戻り番地を設定
+
+        ;  ここで割込みが発生してタスクスイッチが起こったとしても、
+        ;  ここに戻くるときには、runtskの値は元に戻っている。
+
+        mov.l   @_runtsk, er2
+        mov.l   @(TCB_tinib, er2), er2
+        mov.l   @(TINIB_task, er2), er1 ;  タスク起動番地を設定
+
+                                ;  拡張情報（タスクへの引数）を設定
+        mov.l   @(TINIB_exinf, er2), er0
+        jmp     @er1
+
+;
+;  微少時間待ち
+;    void sil_dly_nse_long(UW dlytim)
+;
+;　　　注意事項：
+;　　　　標準ではdlytimはUINT型だが16ビットしかないので、
+;　　　　UW型に変更している。
+;
+        .GLOBAL _sil_dly_nse_long
+_sil_dly_nse_long:
+        sub.l   #SIL_DLY_TIM1, er0
+        ble     sil_dly_nse_2
+                ;  dlytim < SIL_DLY_TIM1 ならループ終了
+sil_dly_nse_1:
+        sub.l   #SIL_DLY_TIM2, er0
+        bgt     sil_dly_nse_1
+                ;  dlytim > SIL_DLY_TIM2 ならループ続行
+sil_dly_nse_2:
+        rts
+
+
+;**************************************************************
+;  以下、共通部とのインターフェースには含まれない独自の部分
+;**************************************************************
+
+;
+;  no_reg_exception()
+;  CPU例外として登録されていない例外が発生すると呼び出される。
+;  例外が発生した時点のPC,ER0〜7を出力してカーネル
+;  を停止する。
+        .GLOBAL _no_reg_exception
+_no_reg_exception:
+
+                        ;  er0〜6を保存
+        push.l  er6     ;　　 +0:er0
+        push.l  er5     ;　　 +4:er1
+        push.l  er4     ;　　 +8:er2
+        push.l  er3     ;　　+12:er3
+        push.l  er2     ;　　+16:er4
+        push.l  er1     ;　　+20:er5
+        push.l  er0     ;　　+24:er6
+                        ;　　+28:exr
+                        ;　　+29:リザーブ
+                        ;　　+30:crr
+                        ;　　+31:pc
+                        ;　　+34〜:割込み前に使用されていたスタック領域
+
+        mov.l   sp, er0         ;  引数設定
+                                ;    SPは+34で、発生時点の値
+        jsr     @_cpu_experr    ;  cpu_experr()の呼び出し
+
+
+        .END
+

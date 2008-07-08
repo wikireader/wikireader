@@ -1,0 +1,71 @@
+; Code Composer Project File, Version 2.0 (do not modify or remove this line)
+
+[Project Settings]
+ProjectName="ccs_project"
+ProjectDir="C:\ti\myprojects\jsp\tools\C5402DSK\ccs_project\"
+ProjectType=Executable
+CPUFamily=TMS320C54XX
+Tool="Compiler"
+Tool="DspBiosBuilder"
+Tool="Linker"
+Config="Debug"
+Config="Release"
+
+[Source Files]
+Source="..\..\..\config\tms320c54x\c5402dsk\sys_config.c"
+Source="..\..\..\config\tms320c54x\c5402dsk\sys_support.S"
+Source="..\..\..\config\tms320c54x\c5402dsk\tl16c550cfn.c"
+Source="..\..\..\config\tms320c54x\cpu_config.c"
+Source="..\..\..\config\tms320c54x\cpu_support.S"
+Source="..\..\..\config\tms320c54x\start.S"
+Source="..\..\..\config\tms320c54x\vectors.S"
+Source="..\..\..\kernel\banner.c"
+Source="..\..\..\kernel\cyclic.c"
+Source="..\..\..\kernel\dataqueue.c"
+Source="..\..\..\kernel\eventflag.c"
+Source="..\..\..\kernel\exception.c"
+Source="..\..\..\kernel\interrupt.c"
+Source="..\..\..\kernel\mailbox.c"
+Source="..\..\..\kernel\mempfix.c"
+Source="..\..\..\kernel\semaphore.c"
+Source="..\..\..\kernel\startup.c"
+Source="..\..\..\kernel\sys_manage.c"
+Source="..\..\..\kernel\syslog.c"
+Source="..\..\..\kernel\task.c"
+Source="..\..\..\kernel\task_except.c"
+Source="..\..\..\kernel\task_manage.c"
+Source="..\..\..\kernel\task_sync.c"
+Source="..\..\..\kernel\time_event.c"
+Source="..\..\..\kernel\time_manage.c"
+Source="..\..\..\kernel\wait.c"
+Source="..\..\..\library\log_output.c"
+Source="..\..\..\library\strerror.c"
+Source="..\..\..\library\t_perror.c"
+Source="..\..\..\library\vasyslog.c"
+Source="..\..\..\systask\logtask.c"
+Source="..\..\..\systask\serial.c"
+Source="..\..\..\systask\timer.c"
+Source="..\kernel_cfg.c"
+Source="..\ldiv.asm"
+Source="..\lmpy.asm"
+Source="..\sample1.c"
+Source="..\udiv.asm"
+Source="..\..\..\config\tms320c54x\c5402dsk\c5402dsk.cmd"
+
+["Compiler" Settings: "Debug"]
+Options=-k -q -o2 -eas -eoo -fr"C:\ti\myprojects\jsp\tools\C5402dsk\ccs_project\Debug" -fs"C:\ti\myprojects\jsp\tools\C5402dsk\ccs_project\Debug" -i"C:\ti\myprojects\jsp\kernel" -i"C:\ti\myprojects\jsp\include" -i"C:\ti\myprojects\jsp\config\tms320c54x" -i"C:\ti\myprojects\jsp\tools\C5402DSK" -i"C:\ti\myprojects\jsp\config\tms320c54x\c5402dsk" -d"_DEBUG" -d"NDEBUG"
+
+["Compiler" Settings: "Release"]
+Options=-q -o2 -fr"C:\ti\myprojects\jsp\tools\C5402dsk\ccs_project\Release"
+
+["DspBiosBuilder" Settings: "Debug"]
+Options=-v54
+
+["DspBiosBuilder" Settings: "Release"]
+Options=-v54
+
+["Linker" Settings: "Debug"]
+Options=-q -a -c -e_start -mTOPPERS.map -o"..\TOPPERS.out" -x
+
+["Linker" Settings: "Release"]
+Options=-q -c -o".\Release\ccs_project.out" -x

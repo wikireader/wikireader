@@ -1,0 +1,43 @@
+#!build
+default:
+	program
+	:c_option=unknownpragmawarn
+	:c_option=slashcomment
+	:c_option=noasmwarn
+	:lx_option=rescan
+	:lx_map_option=map
+	:lx_map_option=crossreference
+	:sh_cputype=sh3
+	:sourcekanji=euc
+	:targetkanji=euc
+	:compilation=assembly
+	:optimizestrategy=none
+	:sourcedirs=../../../tools/GHS/kernel_bld
+	:sourcedirs=../../../tools/GHS/ghs_hook_bld
+	:sourcedirs=../../../config/sh3-ghs
+	:sysincdirs=../../../include
+	:sysincdirs=../../../kernel
+	:sysincdirs=../../../config/sh3-ghs
+	:sysincdirs=../../../config/sh3-ghs/solution_engine
+	:sysincdirs=../../../config/sh3
+	:sysincdirs=../../../config/sh3/solution_engine
+	:sysincdirs=../../../tools/GHS/ghs_hook_bld
+	:defines=LABEL_ASM
+	:defines=NDEBUG
+	:defines=MS7709ASE01
+	:defines=GHS_STUB
+kernel.bld
+	library
+	:outputname=kernel.a
+systask.bld
+	subproject
+library.bld
+	subproject
+sh3_solution-ghs.bld
+	subproject
+ghs_hook.bld
+	subproject
+user_program.bld
+	subproject
+linker_sh3.lnk
+	linker_file

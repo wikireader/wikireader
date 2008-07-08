@@ -1,0 +1,12 @@
+#!build
+default:
+	subproject
+	:sourcedirs=../../../library
+log_output.c
+	C
+strerror.c
+	C
+t_perror.c
+	C
+vasyslog.c
+	C

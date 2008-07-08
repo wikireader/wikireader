@@ -1,0 +1,11 @@
+activate_r
+ret_main
+ret_int
+ret_exc
+task_intmask
+int_intmask
+intnest
+
+no_reg_exception
+cpu_putc
+

@@ -1,0 +1,574 @@
+[HIMDBVersion]
+2.0
+[DATABASE_VERSION]
+"2.8" 
+[PROJECT_DETAILS]
+"libkernel" "C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel" "C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\libkernel.hwp" "H8S,H8/300" "Hitachi H8S,H8/300 Standard" "Library" "" "" 
+[INFORMATION]
+"プロジェクト情報がありません" 
+[TOOL_CHAIN]
+"Hitachi H8S,H8/300 Standard Toolchain" "6.1.2.0" 
+[CONFIGURATIONS]
+"Debug" "C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\debug" 
+"Release" "C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\release" 
+[BUILD_PHASES]
+"Hitachi H8S,H8/300 Assembler" 1 
+"Hitachi H8S,H8/300 C/C++ Compiler" 1 
+"Hitachi H8S,H8/300 C/C++ Library Generator" 1 
+"Hitachi OptLinker" 1 
+[TOOL_ENVIRONMENT]
+[EXTENSIONS]
+"Absolute file" "ABS" 
+"Assembly include file" "INC" 
+"Assembly list file" "LIS" 
+"Assembly source file" "ASM" 
+"Assembly source file" "MAR" 
+"Assembly source file" "SRC" 
+"Binary file" "BIN" 
+"C header file" "H" 
+"C list file" "LST" 
+"C source file" "C" 
+"C++ header file" "HPP" 
+"C++ list file" "LPP" 
+"C++ source file" "CPP" 
+"CPU information file" "CPU" 
+"Expanded assembly source file" "EXP" 
+"Hex file" "HEX" 
+"Library file" "LIB" 
+"Library information file" "LBP" 
+"Linkage map file" "MAP" 
+"Linkage symbol file" "FSY" 
+"Object file" "OBJ" 
+"Optimize map file" "bls" 
+"Preprocessed C source file" "P" 
+"Preprocessed C++ source file" "PP" 
+"Profile file" "PRO" 
+"Relocatable file" "REL" 
+"S-Record file" "MOT" 
+"Stack information file" "SNI" 
+[FILE_GROUPS]
+"Absolute file" "BIN" "NONE" "" 
+"Assembly include file" "TEXT" "EDITOR" "" 
+"Assembly list file" "TEXT" "EDITOR" "" 
+"Assembly source file" "TEXT" "EDITOR" "" 
+"Binary file" "BIN" "NONE" "" 
+"C header file" "TEXT" "EDITOR" "" 
+"C list file" "TEXT" "EDITOR" "" 
+"C source file" "TEXT" "EDITOR" "" 
+"C++ header file" "TEXT" "EDITOR" "" 
+"C++ list file" "TEXT" "EDITOR" "" 
+"C++ source file" "TEXT" "EDITOR" "" 
+"CPU information file" "BIN" "NONE" "" 
+"Expanded assembly source file" "TEXT" "EDITOR" "" 
+"Hex file" "TEXT" "EDITOR" "" 
+"Library file" "BIN" "NONE" "" 
+"Library information file" "TEXT" "EDITOR" "" 
+"Linkage map file" "TEXT" "EDITOR" "" 
+"Linkage symbol file" "TEXT" "EDITOR" "" 
+"Object file" "BIN" "NONE" "" 
+"Optimize map file" "BIN" "NONE" "" 
+"Preprocessed C source file" "TEXT" "EDITOR" "" 
+"Preprocessed C++ source file" "TEXT" "EDITOR" "" 
+"Profile file" "BIN" "NONE" "" 
+"Relocatable file" "BIN" "NONE" "" 
+"S-Record file" "TEXT" "EDITOR" "" 
+"Stack information file" "BIN" "NONE" "" 
+[ASSOCIATED_APPLICATIONS]
+[TOOLCHAIN_PHASE]
+"Hitachi H8S,H8/300 Assembler" 
+"Hitachi H8S,H8/300 C/C++ Compiler" 
+"Hitachi H8S,H8/300 C/C++ Library Generator" 
+"Hitachi OptLinker" 
+[UTILITY_PHASE]
+[CUSTOM_PHASES]
+[CUSTOM_PHASE_INPUT_GROUP]
+[CUSTOM_PHASE_OUTPUT_SYNTAX]
+[BUILD_ORDER]
+"Hitachi H8S,H8/300 C/C++ Library Generator" 0 
+"Hitachi H8S,H8/300 C/C++ Compiler" 1 
+"Hitachi H8S,H8/300 Assembler" 1 
+"Hitachi OptLinker" 1 
+[BUILD_PHASE_DETAILS]
+"Hitachi H8S,H8/300 Assembler" "Assembly source file|Linkage symbol file" 1 
+"Hitachi H8S,H8/300 C/C++ Compiler" "C source file|C++ source file" 1 
+"Hitachi H8S,H8/300 C/C++ Library Generator" "" 0 
+"Hitachi OptLinker" "Object file|Library file|Relocatable file" 0 
+[BUILD_FILE_ORDER_Assembly source file]
+"Hitachi H8S,H8/300 Assembler" 1 
+[BUILD_FILE_ORDER_C source file]
+"Hitachi H8S,H8/300 C/C++ Compiler" 1 
+[BUILD_FILE_ORDER_C++ source file]
+"Hitachi H8S,H8/300 C/C++ Compiler" 1 
+[BUILD_FILE_ORDER_Linkage symbol file]
+"Hitachi H8S,H8/300 Assembler" 1 
+[SCRAP]
+"Project Generator Setup File" "" 
+[MAPPINGS]
+"Assembly source file" "Hitachi H8S,H8/300 Assembler" "Hitachi H8S,H8/300 C/C++ Compiler" 
+"Library file" "Hitachi OptLinker" "Hitachi H8S,H8/300 C/C++ Library Generator" 
+"Object file" "Hitachi OptLinker" "Hitachi H8S,H8/300 Assembler" 
+"Object file" "Hitachi OptLinker" "Hitachi H8S,H8/300 C/C++ Compiler" 
+[PROJECT_FILES]
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_config.c" "User" "config" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_support.src" "User" "Assembly source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\h8_sil.c" "User" "config" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_config.c" "User" "config" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_support.src" "User" "Assembly source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hw_serial.c" "User" "config" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\start.src" "User" "Assembly source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\kernel\startup.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\act_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_act.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_wup.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\chg_pri.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\clr_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cyccal.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycenq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_dsp.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dly_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqdeq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqenq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqfenq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqrcv.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqsnd.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_dsp.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\excini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ext_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgcnd.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\frsm_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\fsnd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_mpf.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_pri.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tid.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tim.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iact_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ifsnd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iget_tid.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iloc_cpu.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\inhini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ipsnd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iras_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irel_wai.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irot_rdq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iset_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_sem.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_tim.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iunl_cpu.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iwup_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\loc_cpu.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logter.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mbxini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfget.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pget_mpf.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_sem.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_mbx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\psnd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ras_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_mbx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_mpf.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_wai.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rot_rdq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rsm_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\semini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_tim.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sig_sem.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\slp_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_mbx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_ctx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dpn.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dsp.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_loc.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sta_cyc.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\stp_cyc.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sus_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ter_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tget_mpf.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedel.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedown.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeins.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeup.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_mbx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskact.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskdmt.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskext.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsknrun.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskpri.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrot.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrun.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsksched.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsktex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tslp_tsk.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsnd_dtq.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_sem.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\unl_cpu.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vmsk_log.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vrea_log.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vsns_ini.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vwri_log.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxget_tim.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_ctx.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dpn.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dsp.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_loc.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_tex.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_flg.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_sem.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waican.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waicmp.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waimake.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wairel.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmo.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmook.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjpri.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwai.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwaitmo.c" "User" "C source file" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wup_tsk.c" "User" "C source file" 2 
+[FOLDER]
+"Assembly source file" "Assembly source file" 
+"C source file" "C source file" 
+"Preprocessed C source file" "Preprocessed C source file" 
+"config" "config" 
+[GENERAL_DATA_PROJECT]
+"MAKEGEN_GENERATE_MAKEFILE_FOR" "0" 
+"MAKEGEN_MAKEFILE_FORMAT" "0" 
+"MAKEGEN_SCAN_DEPENDENCIES_WHILST_BUILDING_MAKEFILE" "1" 
+"MAKEGEN_USE_STATIC_SUBCOMMAND_FILES" "0" 
+"USE_CUSTOM_LINKAGE_ORDER" "0" 
+[ON_DEMAND_COMPONENTS_LOADED]
+[SYNC_SESSION_NAMES]
+[SESSIONS]
+"DefaultSession" "C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\defaultsession.hsf" 0 
+[GENERAL_DATA_SESSION_DefaultSession]
+[OPTIONS_Debug_Hitachi H8S,H8/300 Assembler]
+"Assembly source file" "01f3a3dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_support.src" "01f3a3dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_support.src" "01f3a3dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\start.src" "01f3a3dda1157c10" 3 
+"Linkage symbol file" "01f3a3dda1157c10" 3 
+[OPTIONS_Debug_Hitachi H8S,H8/300 C/C++ Compiler]
+"C source file" "025f73dda1157c10" 2 
+"C++ source file" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_config.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\h8_sil.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_config.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hw_serial.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\kernel\startup.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\act_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_act.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_wup.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\chg_pri.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\clr_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cyccal.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycenq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_dsp.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dly_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqdeq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqenq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqfenq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqrcv.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqsnd.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_dsp.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\excini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ext_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgcnd.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\frsm_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\fsnd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_mpf.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_pri.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tid.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tim.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iact_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ifsnd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iget_tid.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iloc_cpu.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\inhini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ipsnd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iras_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irel_wai.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irot_rdq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iset_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_sem.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_tim.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iunl_cpu.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iwup_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\loc_cpu.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logter.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mbxini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfget.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pget_mpf.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_sem.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_mbx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\psnd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ras_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_mbx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_mpf.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_wai.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rot_rdq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rsm_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\semini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_tim.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sig_sem.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\slp_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_mbx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_ctx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dpn.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dsp.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_loc.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sta_cyc.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\stp_cyc.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sus_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ter_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tget_mpf.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedel.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedown.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeins.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeup.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_mbx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskact.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskdmt.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskext.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsknrun.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskpri.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrot.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrun.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsksched.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsktex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tslp_tsk.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsnd_dtq.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_sem.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\unl_cpu.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vmsk_log.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vrea_log.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vsns_ini.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vwri_log.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxget_tim.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_ctx.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dpn.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dsp.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_loc.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_tex.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_flg.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_sem.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waican.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waicmp.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waimake.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wairel.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmo.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmook.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjpri.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwai.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwaitmo.c" "025f73dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wup_tsk.c" "025f73dda1157c10" 2 
+[OPTIONS_Debug_Hitachi H8S,H8/300 C/C++ Library Generator]
+"Single Shot" "025f73dda1157c10" 1 
+[OPTIONS_Debug_Hitachi OptLinker]
+"Single Shot" "01f3a3dda1157c10" 4 
+[OPTIONS_Debug]
+"" 0 
+"[S|OUTPUTPATH|^"$(CONFIGDIR)\$(PROJECTNAME).lib^"] [V|VERSION|1] [B|RUNTIME|1] [B|NEW|1] [B|CTYPE|0] [B|MATH|0] [B|MATHF|0] [B|STDARG|0] [B|STDIO|0] [B|STDLIB|0] [B|STRING|0] [B|IOS|0] [B|COMPLEX|0] [B|CPPSTRING|0] [S|MODE|NOTADD] [B|SPEED|0] [S|CPU|300HA:24] [S|STACK|MEDIUM] [I|REGPARAM|2] [B|LONGREG|0] [B|STRUCTREG|0] [B|RTTI|0] [S|BIT_ORDER|LEFT] [B|PACK|0] [B|EXCEPTION|0]" 1 
+"[V|VERSION|1] [S|INCLUDE|^"$(WORKSPDIR)\..\..\config\h8-renesas\hsb8f3048bf25^"|^"$(WORKSPDIR)\..\..\config\h8-renesas^"|^"$(WORKSPDIR)\genoffset\$(CONFIGNAME)^"] [S|ASSIGNC|LABEL_ASM=^" ^"|E10T=^" ^"] [B|DEBUG|1] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).obj^"] [B|ERRORPATH|1] [B|CHGINCPATH|1] [S|CPU|300HA:24] [I|SBR|0]
+" 3 
+"[V|VERSION|6] [I|SBR|0] [S|FORM|LIBRARY|U] [B|DEBUG|1] [S|ROM|(D,R)] [S|NOMESSAGE|1200] [B|LIST|1] [S|LIST|^"$(CONFIGDIR)\$(PROJECTNAME).lbp^"] [S|OUTPUT|^"$(CONFIGDIR)\$(PROJECTNAME).lib^"] [I|SPACE|^"FF^"] [B|OPTIMIZE|0] [I|CACHESIZE|000000008] [I|CACHELINE|000000020]
+" 4 
+"[V|VERSION|6] [S|INCLUDE|^"$(PROJDIR)\kernel_source^"|^"$(WORKSPDIR)\..\..\kernel^"|^"$(WORKSPDIR)\..\..\include^"|^"$(WORKSPDIR)\..\..\config\h8-renesas^"|^"$(WORKSPDIR)\..\..\config\h8-renesas\hsb8f3048bf25^"] [S|DEFINE|E10T|LABEL_ASM] [S|NOMESSAGE|10|16] [S|CHANGE_MESSAGE|WARNING|] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).obj^"] [B|DEBUG|1] [B|NOCPUEXPAND|1] [I|ALIGN|] [B|LIST|0] [S|SHOW|OBJECT|NOSTATISTICS|EXPANSION] [B|OPTIMIZE|0] [S|SPEED|REGISTER|SWITCH|SHIFT|STRUCT|EXPRESSION|LOOP|INLINE=110] [S|INLINE|DEFAULT] [S|OPT_RANGE|ALL] [I|MAX_UNROLL|1] [S|LIBRARY|FUNCTION] [S|MISRA_INSPECTION|ALL] [B|MISRA_REPORT|1] [S|MISRA_REPORT_PATH|^"$(CONFIGDIR)\$(FILELEAF).csv^"] [S|OTHER|^"-nomessage=1400^"] [S|CPU|300HA:24] [I|SBR|0] [S|BIT_ORDER|LEFT] [B|CHGINCPATH|1]
+" 2 
+[EXCLUDED_FILES_Debug]
+[LINKAGE_ORDER_Debug]
+[GENERAL_DATA_CONFIGURATION_Debug]
+[OPTIONS_Release_Hitachi H8S,H8/300 Assembler]
+"Assembly source file" "024853dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_support.src" "024853dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_support.src" "024853dda1157c10" 3 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\start.src" "024853dda1157c10" 3 
+"Linkage symbol file" "024853dda1157c10" 3 
+[OPTIONS_Release_Hitachi H8S,H8/300 C/C++ Compiler]
+"C source file" "023133dda1157c10" 2 
+"C++ source file" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\cpu_config.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\h8_sil.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hsb8f3048bf25\sys_config.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\config\h8-renesas\hw_serial.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\kernel\startup.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\act_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_act.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\can_wup.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\chg_pri.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\clr_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cyccal.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycenq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\cycini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_dsp.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dis_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dly_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqdeq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqenq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqfenq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqrcv.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\dtqsnd.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_dsp.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ena_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\excini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ext_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgcnd.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\flgini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\frsm_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\fsnd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_mpf.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_pri.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tid.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\get_tim.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iact_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ifsnd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iget_tid.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iloc_cpu.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\inhini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ipsnd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iras_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irel_wai.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\irot_rdq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iset_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_sem.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\isig_tim.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iunl_cpu.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\iwup_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\loc_cpu.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\logter.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mbxini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfget.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\mpfini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pget_mpf.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\pol_sem.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\prcv_mbx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\psnd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ras_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rcv_mbx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_mpf.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rel_wai.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rot_rdq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\rsm_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\semini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\set_tim.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sig_sem.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\slp_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\snd_mbx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_ctx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dpn.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_dsp.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_loc.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sns_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sta_cyc.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\stp_cyc.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\sus_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\ter_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tget_mpf.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedel.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmedown.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeins.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tmeup.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\trcv_mbx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskact.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskdmt.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskext.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsknrun.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskpri.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrot.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tskrun.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsksched.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsktex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tslp_tsk.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\tsnd_dtq.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\twai_sem.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\unl_cpu.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vmsk_log.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vrea_log.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vsns_ini.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vwri_log.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxget_tim.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_ctx.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dpn.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_dsp.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_loc.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\vxsns_tex.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_flg.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wai_sem.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waican.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waicmp.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waimake.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wairel.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmo.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\waitmook.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjpri.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwai.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wobjwaitmo.c" "023133dda1157c10" 2 
+"C:\cygwin\home\Administrator\hew\jsp\tools\H8-RENESAS\libkernel\kernel_source\wup_tsk.c" "023133dda1157c10" 2 
+[OPTIONS_Release_Hitachi H8S,H8/300 C/C++ Library Generator]
+"Single Shot" "023133dda1157c10" 1 
+[OPTIONS_Release_Hitachi OptLinker]
+"Single Shot" "025f73dda1157c10" 4 
+[OPTIONS_Release]
+"" 0 
+"[V|VERSION|1] [S|INCLUDE|^"$(WORKSPDIR)\divide_files\release^"|^"$(WORKSPDIR)\..\..\kernel^"|^"$(WORKSPDIR)\..\..\include^"|^"$(WORKSPDIR)\..\..\config\h8-renesas\hsb8f3048bf25^"|^"$(WORKSPDIR)\..\..\config\h8-renesas^"|^"$(WORKSPDIR)\genoffset\$(CONFIGNAME)^"] [B|DEBUG|0] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).obj^"] [B|OPTIMIZE|1] [B|GOPTIMIZE|1] [B|ERRORPATH|1] [B|CHGINCPATH|1] [S|CPU|300HA:24] [I|SBR|0]
+" 3 
+"[V|VERSION|6] [I|SBR|0] [S|PRELINK|SKIP] [S|FORM|LIBRARY|U] [B|DEBUG|0] [S|ROM|(D,R)] [S|NOMESSAGE|4,0100,1200] [B|LIST|1] [S|LIST|^"$(CONFIGDIR)\$(PROJECTNAME).lbp^"] [S|OUTPUT|^"$(CONFIGDIR)\$(PROJECTNAME).lib^"] [I|SPACE|^"FF^"] [S|OPTIMIZEITEMS|SPEED] [I|CACHESIZE|000000008] [I|CACHELINE|000000020]
+" 4 
+"[V|VERSION|6] [S|INCLUDE|^"$(PROJDIR)\kernel_source^"|^"$(WORKSPDIR)\..\..\kernel^"|^"$(WORKSPDIR)\..\..\include^"|^"$(WORKSPDIR)\..\..\config\h8-renesas^"|^"$(WORKSPDIR)\..\..\config\h8-renesas\hsb8f3048bf25^"|^"$(WORKSPDIR)\\offset^"] [S|NOMESSAGE|10|16] [S|CHANGE_MESSAGE|WARNING|] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).obj^"] [B|NOCPUEXPAND|1] [I|ALIGN|] [B|LIST|0] [B|SPEED|1] [S|SPEED|REGISTER|SWITCH|SHIFT|STRUCT|EXPRESSION|LOOP|INLINE=110] [S|INLINE|DEFAULT] [B|GOPTIMIZE|1] [S|OPT_RANGE|ALL] [I|MAX_UNROLL|1] [S|LIBRARY|FUNCTION] [S|MISRA_INSPECTION|ALL] [S|CPU|300HA:24] [I|SBR|0] [S|BIT_ORDER|LEFT] [B|CHGINCPATH|1]
+" 2 
+"[V|VERSION|6] [S|MODE|BUILD/CHANGED] [S|EXISTOUTPUTPATH|^"$(CONFIGDIR)\$(PROJECTNAME).lib^"] [B|RUNTIME|1] [B|NEW|1] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(PROJECTNAME).lib^"] [B|NOCPUEXPAND|1] [I|ALIGN|] [B|SPEED|1] [S|SPEED|REGISTER|SWITCH|SHIFT|STRUCT|EXPRESSION|LOOP|INLINE=110] [S|INLINE|DEFAULT] [S|OPT_RANGE|ALL] [I|MAX_UNROLL|1] [S|LIBRARY|FUNCTION] [S|CPU|300HA:24] [I|SBR|0] [S|BIT_ORDER|LEFT]
+" 1 
+[EXCLUDED_FILES_Release]
+[LINKAGE_ORDER_Release]
+[GENERAL_DATA_CONFIGURATION_Release]
+[GENERAL_DATA_CONFIGURATION_SESSION_Debug_DefaultSession]
+[SESSION_DATA_CONFIGURATION_SESSION_Debug_DefaultSession]
+"MEMORY_MAPPING_OPTIONS" "" 
+[GENERAL_DATA_CONFIGURATION_SESSION_Release_DefaultSession]
+[SESSION_DATA_CONFIGURATION_SESSION_Release_DefaultSession]
+"MEMORY_MAPPING_OPTIONS" "" 
+[EXT_DEBUGGER_INFO]
+0 "" "" "" "" 
+[END]

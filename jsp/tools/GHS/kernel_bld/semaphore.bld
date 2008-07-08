@@ -1,0 +1,37 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+check.h
+	include_file
+task.h
+	include_file
+wait.h
+	include_file
+semaphore.h
+	include_file
+
+semaphore.c
+	C
+	:outputname=semini.o
+	:defines=__semini
+semaphore.c
+	C
+	:outputname=sig_sem.o
+	:defines=__sig_sem
+semaphore.c
+	C
+	:outputname=isig_sem.o
+	:defines=__isig_sem
+semaphore.c
+	C
+	:outputname=wai_sem.o
+	:defines=__wai_sem
+semaphore.c
+	C
+	:outputname=pol_sem.o
+	:defines=__pol_sem
+semaphore.c
+	C
+	:outputname=twai_sem.o
+	:defines=__twai_sem

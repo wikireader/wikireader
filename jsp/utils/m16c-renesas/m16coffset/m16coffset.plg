@@ -1,0 +1,41 @@
+<html>
+<body>
+<pre>
+<h1>ﾋﾞﾙﾄﾞのﾛｸﾞ</h1>
+<h3>
+--------------------構成: m16coffset - Win32 Debug--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1D.tmp" を作成し、次の内容を記録します
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/m16coffset.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\usr\TOPPERS\jsp-1.4\utils\m16c-renesas\m16coffset\m16coffset.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1D.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1E.tmp" を作成し、次の内容を記録します
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/m16coffset.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\usr\TOPPERS\jsp-1.4\utils\m16c-renesas\m16coffset\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1E.tmp" 
+一時ﾌｧｲﾙ "C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1F.tmp" を作成し、次の内容を記録します
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/m16coffset.pdb" /debug /machine:I386 /out:"../m16coffset.exe" /pdbtype:sept 
+".\Debug\m16coffset.obj"
+".\Debug\StdAfx.obj"
+]
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @C:\DOCUME~1\roi\LOCALS~1\Temp\RSP1F.tmp" の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+StdAfx.cpp
+ｺﾝﾊﾟｲﾙ中...
+m16coffset.cpp
+ﾘﾝｸ中...
+
+
+
+<h3>結果</h3>
+m16coffset.exe - ｴﾗｰ 0、警告 0
+</pre>
+</body>
+</html>

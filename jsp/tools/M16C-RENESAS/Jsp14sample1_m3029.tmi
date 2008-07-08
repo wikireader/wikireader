@@ -1,0 +1,28 @@
+[PROJECT]
+ProjectName=Jsp14sample1
+WorkingDirectory=C:\home\nexcess\new_board\jsp_142\obj_m3029\hoge
+OutputDirectory=.
+ProjectFile=C:\home\nexcess\new_board\jsp_142\obj_m3029\hoge\Jsp14sample1_m3029.tmk
+ProjectInfoFile=C:\home\nexcess\new_board\jsp_142\obj_m3029\hoge\Jsp14sample1_m3029.tmi
+TargetName=M16C Family
+Type=1
+GoalFile=C:\home\nexcess\new_board\jsp_142\obj_m3029\hoge\Jsp14sample1_m3029.x30
+[NC]
+Name=NC30WA
+Version=V.5.10 Release 1
+[MEMBER]
+Count=0
+[DOCUMENTFILE]
+Count=0
+[ITEM]
+ActiveFactory=default
+FactoryName1=default
+ActiveTagName1=all
+Count=1
+[TOOL]
+ToolCount=0
+[PD]
+Name=KD30
+Version=V.4.00 Release 1
+Path=C:\tools\rtool\NC30WA\V530R02\KD30\KD30.EXE
+Type=1

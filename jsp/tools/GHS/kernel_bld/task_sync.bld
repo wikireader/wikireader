@@ -1,0 +1,51 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+task.h
+	include_file
+wait.h
+	include_file
+task_sync.c
+	C
+	:outputname=slp_tsk.o
+	:defines=__slp_tsk
+task_sync.c
+	C
+	:outputname=tslp_tsk.o
+	:defines=__tslp_tsk
+task_sync.c
+	C
+	:outputname=wup_tsk.o
+	:defines=__wup_tsk
+task_sync.c
+	C
+	:outputname=iwup_tsk.o
+	:defines=__iwup_tsk
+task_sync.c
+	C
+	:outputname=can_wup.o
+	:defines=__can_wup
+task_sync.c
+	C
+	:outputname=rel_wai.o
+	:defines=__rel_wai
+task_sync.c
+	C
+	:defines=__irel_wai
+task_sync.c
+	C
+	:outputname=sus_tsk.o
+	:defines=__sus_tsk
+task_sync.c
+	C
+	:outputname=rsm_tsk.o
+	:defines=__rsm_tsk
+task_sync.c
+	C
+	:outputname=frsm_tsk.o
+	:defines=__frsm_tsk
+task_sync.c
+	C
+	:outputname=dly_tsk.o
+	:defines=__dly_tsk

@@ -1,0 +1,13 @@
+#!build
+default:
+	subproject
+kernel_id.h
+	include_file
+sample1.h
+	include_file
+sample1.c
+	C
+kernel_cfg.c
+	C
+configuration.bld
+	nobuild

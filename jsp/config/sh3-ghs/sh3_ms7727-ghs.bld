@@ -1,0 +1,35 @@
+#!build
+default:
+	subproject
+	:sourcedirs=./ms7727cp01
+	:sourcedirs=../sh3
+	:sourcedirs=../sh3/ms7727cp01
+	:defines=LABEL_ASM
+cpu_config.h
+	include_file
+cpu_defs.h
+	include_file
+cpu_insn.h
+	include_file
+cpu_context.h
+	include_file
+cpu_rename.h
+	include_file
+cpu_unrename.h
+	include_file
+hw_timer.h
+	include_file
+sh3.h
+	include_file
+tool_defs.h
+	include_file
+tool_config.h
+	include_file
+cpu_support.sh
+	assembly
+start.sh
+	assembly
+cpu_config.c
+	C
+ms7727cp01.bld
+	subproject

@@ -1,0 +1,34 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+time_event.h
+	include_file
+
+time_event.c
+	C
+	:outputname=tmeini.o
+	:defines=__tmeini
+time_event.c
+	C
+	:outputname=tmeup.o
+	:defines=__tmeup
+time_event.c
+	C
+	:outputname=tmedown.o
+	:defines=__tmedown
+time_event.c
+	C
+	:outputname=tmeins.o
+	:defines=__tmeins
+time_event.c
+	C
+	:outputname=tmedel.o
+	:defines=__tmedel
+time_event.c
+	C
+	:outputname=isig_tim.o
+	:defines=__isig_tim
+
+

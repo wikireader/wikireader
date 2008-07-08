@@ -1,0 +1,48 @@
+#!build
+default:
+	library
+	:coverage=false
+	:auto_mvc=false
+	:compilation=assembly
+	:profilelevel=none
+	:sourcedirs=../../../kernel
+	:sourcedirs=../../../include
+	:defines=NDEBUG
+startup.c
+	C
+banner.c
+	C
+cyclic.bld
+	subproject
+dataqueue.bld
+	subproject
+eventflag.bld
+	subproject
+exception.bld
+	subproject
+interrupt.bld
+	subproject
+mailbox.bld
+	subproject
+mempfix.bld
+	subproject
+semaphore.bld
+	subproject
+sys_manage.bld
+	subproject
+syslog.bld
+	subproject
+task.bld
+	subproject
+task_except.bld
+	subproject
+task_manage.bld
+	subproject
+task_sync.bld
+	subproject
+time_event.bld
+	subproject
+time_manage.bld
+	subproject
+wait.bld
+	subproject

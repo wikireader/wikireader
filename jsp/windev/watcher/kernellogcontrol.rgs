@@ -1,0 +1,34 @@
+HKCR
+{
+	Watcher.KernelLogControl.1 = s 'KernelLogControl Class'
+	{
+		CLSID = s '{3474A699-17D5-4E00-8068-6D6608F3DF8A}'
+	}
+	Watcher.KernelLogControl = s 'KernelLogControl Class'
+	{
+		CLSID = s '{3474A699-17D5-4E00-8068-6D6608F3DF8A}'
+		CurVer = s 'Watcher.KernelLogControl.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3474A699-17D5-4E00-8068-6D6608F3DF8A} = s 'KernelLogControl Class'
+		{
+			ProgID = s 'Watcher.KernelLogControl.1'
+			VersionIndependentProgID = s 'Watcher.KernelLogControl'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{A242E427-5E2F-4447-AC87-0C7CC382CBFE}'
+			'Version' = s '1.0'
+		}
+	}
+}

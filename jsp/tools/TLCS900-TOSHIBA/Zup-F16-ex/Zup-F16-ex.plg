@@ -1,0 +1,114 @@
+I-008-1000:ビルドの準備中...
+I-008-1400:--------------------構成：[Zup-F16-ex.abs] - [Release] --------------------
+コンフィグレータ･ユーティリティの実行
+cp ./sample1.cfg ./sample1.cfg.c
+cc900 -P -w3 -O3 -Xub -Xuc -Xw -A -Xc -Xp2 -XF -DLABEL_ASM -I ../../../include -I ../../../kernel -I ../../../systask -I../../../sample -I ../../../config/tlcs900-toshiba -I ../../../config/tlcs900-toshiba/zup_f16_ex -I ./ -XS sample1.cfg.c -o sample1.cfg.i
+../../../cfg/cfg.exe -cpu tlcs900-toshiba -system zup_f16_ex -s sample1.cfg.i
+rm ./sample1.cfg.c
+cc900 -P -w3 -O3 -Xub -Xuc -Xw -A -Xc -Xp2 -XF -DLABEL_ASM -I ../../../include -I ../../../kernel -I ../../../systask -I../../../sample -I ../../../config/tlcs900-toshiba -I ../../../config/tlcs900-toshiba/zup_f16_ex -I ./ -XS kernel_cfg.c -o kernel_cfg.i
+../../../utils/tlcs900-toshiba/tlcs900vec.exe -Rkernel_cfg.i -otlcs900vec.inc
+input file   = kernel_cfg.i
+output file  = tlcs900vec.inc
+timer_handler_entry
+serial_in_handler1_entry
+serial_out_handler1_entry
+cpuexc_handler_entry
+cc900 -S -w3 -O3 -Xub -Xuc -Xw -A -Xc -Xp2 -XF -DLABEL_ASM -I ../../../include -I ../../../kernel -I ../../../systask -I../../../sample -I ../../../config/tlcs900-toshiba -I ../../../config/tlcs900-toshiba/zup_f16_ex -I ./ -XS ../../../config/tlcs900-toshiba/makeoffset.c -o makeoffset.asm
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\../../../config/tlcs900-toshiba/makeoffset.c 97: THC1-Warning-582: No function prototype 'pc'
+../../../utils/tlcs900-toshiba/tlcs900offset.exe -Rmakeoffset.asm -ooffset.inc
+input file   = makeoffset.asm
+output file  = offset.inc
+TCB_texptn	equ	14
+TCB_sp		equ	20
+TCB_pc	equ	24
+TCB_enatex	equ	12
+TCB_enatex_mask	equ	0x4000
+TCB_enatex_bit	equ	14
+I-008-1500:コンパイル中...
+I-008-1300:..\..\..\kernel\banner.c
+I-008-1300:..\..\..\kernel\cyclic.c
+I-008-1300:..\..\..\kernel\dataqueue.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 224: THC2-Warning-556: "winfo" used before set in 'snd_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 345: THC2-Warning-556: "winfo" used before set in 'tsnd_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 345: THC2-Warning-556: "tmevtb" used before set in 'tsnd_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 468: THC2-Warning-556: "winfo" used before set in 'rcv_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 468: THC2-Warning-556: "data" used before set in 'rcv_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 525: THC2-Warning-556: "data" used before set in 'prcv_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 571: THC2-Warning-556: "winfo" used before set in 'trcv_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 571: THC2-Warning-556: "tmevtb" used before set in 'trcv_dtq'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\dataqueue.c 571: THC2-Warning-556: "data" used before set in 'trcv_dtq'
+I-008-1300:..\..\..\kernel\eventflag.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\eventflag.c 247: THC2-Warning-556: "winfo" used before set in 'wai_flg'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\eventflag.c 329: THC2-Warning-556: "winfo" used before set in 'twai_flg'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\eventflag.c 329: THC2-Warning-556: "tmevtb" used before set in 'twai_flg'
+I-008-1300:..\..\..\kernel\exception.c
+I-008-1300:..\..\..\kernel\interrupt.c
+I-008-1300:..\..\..\kernel\mailbox.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mailbox.c 121: THC1-Warning-550: Illegal pointer operation '=', type mismatch
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mailbox.c 187: THC2-Warning-556: "winfo" used before set in 'rcv_mbx'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mailbox.c 261: THC2-Warning-556: "winfo" used before set in 'trcv_mbx'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mailbox.c 261: THC2-Warning-556: "tmevtb" used before set in 'trcv_mbx'
+I-008-1300:..\..\..\kernel\mempfix.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mempfix.c 142: THC2-Warning-556: "winfo" used before set in 'get_mpf'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mempfix.c 212: THC2-Warning-556: "winfo" used before set in 'tget_mpf'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\mempfix.c 212: THC2-Warning-556: "tmevtb" used before set in 'tget_mpf'
+I-008-1300:..\..\..\kernel\semaphore.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\semaphore.c 184: THC2-Warning-556: "winfo" used before set in 'wai_sem'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\semaphore.c 253: THC2-Warning-556: "winfo" used before set in 'twai_sem'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\semaphore.c 253: THC2-Warning-556: "tmevtb" used before set in 'twai_sem'
+I-008-1300:..\..\..\kernel\startup.c
+I-008-1300:..\..\..\kernel\sys_manage.c
+I-008-1300:..\..\..\kernel\syslog.c
+I-008-1300:..\..\..\kernel\task.c
+I-008-1300:..\..\..\kernel\task_except.c
+I-008-1300:..\..\..\kernel\task_manage.c
+I-008-1300:..\..\..\kernel\task_sync.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 453: THC1-Warning-543: Constant in conditional expression
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 453: THC1-Warning-543: Constant in conditional expression
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 55: THC2-Warning-556: "winfo" used before set in 'slp_tsk'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 90: THC2-Warning-556: "winfo" used before set in 'tslp_tsk'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 90: THC2-Warning-556: "tmevtb" used before set in 'tslp_tsk'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 446: THC2-Warning-556: "winfo" used before set in 'dly_tsk'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\kernel\task_sync.c 446: THC2-Warning-556: "tmevtb" used before set in 'dly_tsk'
+I-008-1300:..\..\..\kernel\time_event.c
+I-008-1300:..\..\..\kernel\time_manage.c
+I-008-1300:..\..\..\kernel\wait.c
+I-008-1300:..\..\..\library\log_output.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\library\log_output.c 62: THC2-Warning-556: "buf" used before set in 'convert'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\library\log_output.c 188: THC2-Warning-556: "log" used before set in 'syslog_output'
+I-008-1300:..\..\..\library\strerror.c
+I-008-1300:..\..\..\library\t_perror.c
+I-008-1300:..\..\..\library\vasyslog.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\library\vasyslog.c 50: THC2-Warning-556: "log" used before set in 'syslog'
+I-008-1300:..\..\..\systask\timer.c
+I-008-1300:..\..\..\systask\logtask.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\systask\logtask.c 66: THC1-Warning-653: Illegal pointer operation 'cast', pointer size mismatch
+I-008-1300:..\..\..\systask\serial.c
+I-008-1300:..\..\..\config\tlcs900-toshiba\cpu_config.c
+I-008-1300:..\..\..\config\tlcs900-toshiba\cpu_support.app
+I-008-1300:..\..\..\config\tlcs900-toshiba\start.app
+I-008-1300:..\..\..\config\tlcs900-toshiba\zup_f16_ex\sys_config.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\config\tlcs900-toshiba\zup_f16_ex\sys_config.c 102: THC1-Warning-543: Constant in conditional expression
+I-008-1300:..\..\..\config\tlcs900-toshiba\zup_f16_ex\sys_support.app
+I-008-1300:..\..\..\config\tlcs900-toshiba\zup_f16_ex\uart.c
+I-008-1300:kernel_cfg.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\kernel_cfg.c 77: THC1-Warning-544: Const object '_kernel_flginib_table' should be initialized
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\kernel_cfg.c 87: THC1-Warning-544: Const object '_kernel_dtqinib_table' should be initialized
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\kernel_cfg.c 97: THC1-Warning-544: Const object '_kernel_mbxinib_table' should be initialized
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\kernel_cfg.c 107: THC1-Warning-544: Const object '_kernel_mpfinib_table' should be initialized
+I-008-1300:..\..\..\sample\sample1.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 122: THC1-Warning-653: Illegal pointer operation 'cast', pointer size mismatch
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 127: THC1-Warning-543: Constant in conditional expression
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 181: THC1-Warning-653: Illegal pointer operation 'cast', pointer size mismatch
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 262: THC1-Warning-653: Illegal pointer operation 'cast', pointer size mismatch
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 200: THC2-Warning-556: "tskid" used before set in 'cpuexc_handler'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: THC2-Warning-556: "c" used before set in 'main_task'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: THC2-Warning-556: "tskpri" used before set in 'main_task'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: THC2-Warning-556: "stime1" used before set in 'main_task'
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\sample\sample1.c 249: THC2-Warning-556: "stime2" used before set in 'main_task'
+I-008-1300:..\..\..\config\tlcs900-toshiba\makeoffset.c
+D:\jsp142_win\tools\TLCS900-TOSHIBA\Zup-F16-ex\..\..\..\config\tlcs900-toshiba\makeoffset.c 97: THC1-Warning-582: No function prototype 'pc'
+I-008-1600:リンク中...
+I-008-1700:コンバート中...
+ 
+I-008-1100:Zup-F16-ex.abs - エラー 0、警告 49

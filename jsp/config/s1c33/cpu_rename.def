@@ -1,0 +1,13 @@
+#cpu_config.c
+cpu_terminate
+activate_r
+dispatch
+exit_and_dispatch
+ret_int
+ena_int
+dis_int
+clr_int
+tps_IntNestCnt
+tps_OrgIntLevel
+init_lib
+init_sys

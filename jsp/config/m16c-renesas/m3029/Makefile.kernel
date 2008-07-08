@@ -1,0 +1,128 @@
+#
+#  TOPPERS/JSP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Just Standard Profile Kernel
+# 
+#  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+#  Copyright (C) 2004 by Naoki Saito
+#             Nagoya Municipal Industrial Research Institute, JAPAN
+# 
+#  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+#  によって公表されている GNU General Public License の Version 2 に記
+#  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+#  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+#  利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+#  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+#  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+# 
+#  @(#) $Id: Makefile.kernel,v 1.2 2006/08/03 04:14:02 honda Exp $
+# 
+
+#
+#	カーネルのファイル構成の定義
+#	(M16Cで使用するためにファイルの拡張子部分を変更)
+#
+
+#
+#  カーネルのライブラリに含めるC言語のソースファイルで，1つのソースファ
+#  イルから複数のオブジェクトファイルを生成するものの定義
+#
+KERNEL_LCSRCS = task.c wait.c time_event.c syslog.c \
+		task_manage.c task_sync.c task_except.c \
+		semaphore.c eventflag.c dataqueue.c mailbox.c \
+		mempfix.c time_manage.c cyclic.c sys_manage.c \
+		interrupt.c exception.c
+
+#
+#  上のソースファイルから生成されるオブジェクトファイルの定義
+#
+KERNEL_LCOBJS = $(foreach file,$(KERNEL_LCSRCS),$($(file:.c=)))
+
+#
+#  各ソースファイルから生成されるオブジェクトファイルの定義
+#
+task = tskini.r30 tsksched.r30 tskrun.r30 tsknrun.r30 \
+		tskdmt.r30 tskact.r30 tskext.r30 tskpri.r30 tskrot.r30 tsktex.r30
+
+wait = waimake.r30 waicmp.r30 waitmo.r30 waitmook.r30 \
+		waican.r30 wairel.r30 wobjwai.r30 wobjwaitmo.r30 wobjpri.r30
+
+time_event = tmeini.r30 tmeup.r30 tmedown.r30 tmeins.r30 tmedel.r30 isig_tim.r30
+
+syslog = logini.r30 vwri_log.r30 vrea_log.r30 vmsk_log.r30 logter.r30
+
+task_manage = act_tsk.r30 iact_tsk.r30 can_act.r30 ext_tsk.r30 ter_tsk.r30 \
+		chg_pri.r30 get_pri.r30
+
+task_sync = slp_tsk.r30 tslp_tsk.r30 wup_tsk.r30 iwup_tsk.r30 can_wup.r30 \
+		rel_wai.r30 irel_wai.r30 sus_tsk.r30 rsm_tsk.r30 frsm_tsk.r30 dly_tsk.r30
+
+task_except = ras_tex.r30 iras_tex.r30 dis_tex.r30 ena_tex.r30 sns_tex.r30
+
+semaphore = semini.r30 sig_sem.r30 isig_sem.r30 wai_sem.r30 pol_sem.r30 twai_sem.r30
+
+eventflag = flgini.r30 flgcnd.r30 set_flg.r30 iset_flg.r30 clr_flg.r30 \
+		wai_flg.r30 pol_flg.r30 twai_flg.r30
+
+dataqueue = dtqini.r30 dtqenq.r30 dtqfenq.r30 dtqdeq.r30 dtqsnd.r30 dtqrcv.r30 \
+		snd_dtq.r30 psnd_dtq.r30 ipsnd_dtq.r30 tsnd_dtq.r30 \
+		fsnd_dtq.r30 ifsnd_dtq.r30 rcv_dtq.r30 prcv_dtq.r30 trcv_dtq.r30
+
+mailbox = mbxini.r30 snd_mbx.r30 rcv_mbx.r30 prcv_mbx.r30 trcv_mbx.r30
+
+mempfix = mpfini.r30 mpfget.r30 get_mpf.r30 pget_mpf.r30 tget_mpf.r30 rel_mpf.r30
+
+time_manage = set_tim.r30 get_tim.r30 vxget_tim.r30
+
+cyclic = cycini.r30 cycenq.r30 sta_cyc.r30 stp_cyc.r30 cyccal.r30
+
+sys_manage = rot_rdq.r30 irot_rdq.r30 get_tid.r30 iget_tid.r30 \
+		loc_cpu.r30 iloc_cpu.r30 unl_cpu.r30 iunl_cpu.r30 \
+		dis_dsp.r30 ena_dsp.r30 sns_ctx.r30 sns_loc.r30 sns_dsp.r30 \
+		sns_dpn.r30 vsns_ini.r30
+
+interrupt = inhini.r30
+
+exception = excini.r30 vxsns_ctx.r30 vxsns_loc.r30 \
+		vxsns_dsp.r30 vxsns_dpn.r30 vxsns_tex.r30
+
+#
+#  生成されるオブジェクトファイルの依存関係の定義
+#
+$(task) $(task:.r30=.a30) $(task:.r30=.d): task.c
+$(wait) $(wait:.r30=.a30) $(wait:.r30=.d): wait.c
+$(time_event) $(time_event:.r30=.a30) $(time_event:.r30=.d): time_event.c
+$(syslog) $(syslog:.r30=.a30) $(syslog:.r30=.d): syslog.c
+$(task_manage) $(task_manage:.r30=.a30) $(task_manage:.r30=.d): task_manage.c
+$(task_sync) $(task_sync:.r30=.a30) $(task_sync:.r30=.d): task_sync.c
+$(task_except) $(task_except:.r30=.a30) $(task_except:.r30=.d): task_except.c
+$(semaphore) $(semaphore:.r30=.a30) $(semaphore:.r30=.d): semaphore.c
+$(eventflag) $(eventflag:.r30=.a30) $(eventflag:.r30=.d): eventflag.c
+$(dataqueue) $(dataqueue:.r30=.a30) $(dataqueue:.r30=.d): dataqueue.c
+$(mailbox) $(mailbox:.r30=.a30) $(mailbox:.r30=.d): mailbox.c
+$(mempfix) $(mempfix:.r30=.a30) $(mempfix:.r30=.d): mempfix.c
+$(time_manage) $(time_manage:.r30=.a30) $(time_manage:.r30=.d): time_manage.c
+$(cyclic) $(cyclic:.r30=.a30) $(cyclic:.r30=.d): cyclic.c
+$(sys_manage) $(sys_manage:.r30=.a30) $(sys_manage:.r30=.d): sys_manage.c
+$(interrupt) $(interrupt:.r30=.a30) $(interrupt:.r30=.d): interrupt.c
+$(exception) $(exception:.r30=.a30) $(exception:.r30=.d): exception.c

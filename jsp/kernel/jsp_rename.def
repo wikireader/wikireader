@@ -1,0 +1,132 @@
+# startup.c
+iniflg
+
+# banner.c
+print_banner
+
+# cpu_config.c, cpu_support.S, sys_config.c, sys_support.S
+dispatch
+exit_and_dispatch
+cpu_initialize
+cpu_terminate
+sys_initialize
+sys_exit
+sys_putc
+
+# task.c
+runtsk
+schedtsk
+reqflg
+enadsp
+ready_queue
+ready_primap
+task_initialize
+search_schedtsk
+make_runnable
+make_non_runnable
+make_dormant
+make_active
+exit_task
+change_priority
+rotate_ready_queue
+call_texrtn
+calltex
+
+# wait.c
+make_wait_tmout
+wait_complete
+wait_tmout
+wait_tmout_ok
+wait_cancel
+wait_release
+wobj_make_wait
+wobj_make_wait_tmout
+wobj_change_priority
+
+# time_event.c
+systim_offset
+current_time
+next_time
+next_subtime
+last_index
+tmevt_initialize
+tmevt_up
+tmevt_down
+tmevtb_insert
+tmevtb_delete
+
+# syslog.c
+syslog_buffer
+syslog_count
+syslog_head
+syslog_tail
+syslog_lost
+syslog_logmask
+syslog_lowmask
+syslog_initialize
+syslog_terminate
+
+# semaphore.c
+semaphore_initialize
+
+# eventflag.c
+eventflag_initialize
+eventflag_cond
+
+# dataqueue.c
+dataqueue_initialize
+enqueue_data
+force_enqueue_data
+dequeue_data
+send_data_rwait
+receive_data_swait
+
+# mailbox.c
+mailbox_initialize
+
+# mempfix.c
+mempfix_initialize
+mempfix_get_block
+
+# cyclic.c
+cyclic_initialize
+tmevtb_enqueue_cyc
+call_cychdr
+
+# interrupt.c
+interrupt_initialize
+
+# exception.c
+exception_initialize
+
+# kernel_cfg.c
+object_initialize
+call_inirtn
+call_terrtn
+tmax_tskid
+tinib_table
+torder_table
+tcb_table
+tmax_semid
+seminib_table
+semcb_table
+tmax_flgid
+flginib_table
+flgcb_table
+tmax_dtqid
+dtqcb_table
+dtqinib_table
+tmax_mbxid
+mbxcb_table
+mbxinib_table
+tmax_mpfid
+mpfinib_table
+mpfcb_table
+tmax_cycid
+cycinib_table
+cyccb_table
+tnum_inhno
+inhinib_table
+tnum_excno
+excinib_table
+tmevt_heap

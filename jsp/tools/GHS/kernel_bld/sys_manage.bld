@@ -1,0 +1,69 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+check.h
+	include_file
+task.h
+	include_file
+sys_manage.c
+	C
+	:outputname=rot_rdq.o
+	:defines=__rot_rdq	
+sys_manage.c
+	C
+	:outputname=irot_rdq.o
+	:defines=__irot_rdq
+sys_manage.c
+	C
+	:outputname=get_tid.o
+	:defines=__get_tid
+sys_manage.c
+	C
+	:outputname=iget_tid.o
+	:defines=__iget_tid
+sys_manage.c
+	C
+	:outputname=loc_cpu.o
+	:defines=__loc_cpu
+sys_manage.c
+	C
+	:outputname=iloc_cpu.o
+	:defines=__iloc_cpu
+sys_manage.c
+	C
+	:outputname=unl_cpu.o
+	:defines=__unl_cpu
+sys_manage.c
+	C
+	:outputname=iunl_cpu.o
+	:defines=__iunl_cpu
+sys_manage.c
+	C
+	:outputname=dis_dsp.o
+	:defines=__dis_dsp
+sys_manage.c
+	C
+	:outputname=ena_dsp.o
+	:defines=__ena_dsp
+sys_manage.c
+	C
+	:outputname=sns_ctx.o
+	:defines=__sns_ctx
+sys_manage.c
+	C
+	:outputname=sns_loc.o
+	:defines=__sns_loc
+sys_manage.c
+	C
+	:outputname=sns_dsp.o
+	:defines=__sns_dsp
+sys_manage.c
+	C
+	:outputname=sns_dpn.o
+	:defines=__sns_dpn
+sys_manage.c
+	C
+	:outputname=vsns_ini.o
+	:defines=__vsns_ini

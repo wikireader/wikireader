@@ -1,0 +1,17 @@
+#cpu_support.S
+activate_r
+ret_int
+ret_exc
+Exception_Entry
+External_interrupt_1
+
+#cpu_config.c
+int_table
+exc_table
+exe_list
+no_reg_exception
+syslog_data_on_stack
+
+#cpu_config.h
+define_inh
+define_exc

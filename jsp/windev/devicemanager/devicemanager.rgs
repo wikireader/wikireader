@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{44CB3B0F-D399-428E-829C-9BD5183AFF51} = s 'ToppersDeviceManager'
+		'devicemanager.EXE'
+		{
+			val AppID = s {44CB3B0F-D399-428E-829C-9BD5183AFF51}
+		}
+	}
+}

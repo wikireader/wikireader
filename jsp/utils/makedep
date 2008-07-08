@@ -1,0 +1,147 @@
+#! /usr/bin/perl
+#
+#  TOPPERS/JSP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Just Standard Profile Kernel
+# 
+#  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+#  Copyright (C) 2004-2005 by Embedded and Real-Time Systems Laboratory
+#              Graduate School of Information Science, Nagoya Univ., JAPAN
+# 
+#  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+#  によって公表されている GNU General Public License の Version 2 に記
+#  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+#  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+#  利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+#  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+#  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+# 
+#  @(#) $Id: makedep,v 1.11 2005/11/24 11:44:31 hiro Exp $
+# 
+
+require "getopt.pl";
+
+#  オプションの定義
+#
+#  -C <cc_path>	Cコンパイラのコマンド名
+#  -O <cc_opts>	Cコンパイラ/CPPに渡すオプション
+#
+#  -X		ソースファイルを強制的にCヘッダファイルと見なす
+#
+#  -T <target>	ターゲットのファイル名
+#  -D <t_dir>	ターゲットのディレクトリ名を指定する
+#  -d		ターゲットのディレクトリ部を保持する
+#  -s		ターゲットのサフィックスを ".s" にする（デフォルトは ".o"）
+
+#
+#  オプションの処理
+#
+do Getopt("COTD");
+
+$cc_path = $opt_C;
+$cc_opts = $opt_O;
+
+$suffix = $opt_s ? "s" : "o";
+if ($opt_T) {
+	$target_file = $opt_T;
+}
+elsif ($opt_D) {
+	$target_dir = $opt_D;
+}
+elsif (!$opt_d) {
+	$target_dir = "";
+}
+
+#
+#  %dependlist に作られた依存関係を出力する
+#
+sub output_dependlist {
+	local($file) = @_;
+	local($target, $column, $len);
+
+	if ($target_file) {
+		$target = $target_file;
+	}
+	else {
+		$target = $file;
+		$target =~ s/(.*)\.(.)/$1.$suffix/;
+	}	
+	if (defined($target_dir)) {
+		$target =~ s/^.*\/([^\/]+)$/$1/;
+		if ($target_dir) {
+			$target = $target_dir."/".$target;
+		}
+	}
+	print $target, ": ";
+	$column = length($target) + 2;
+    
+	foreach $file (keys(%dependlist)) {
+		$len = length($file) + 1;
+		if ($column > 8 && $column + $len >= 70) {
+			print "\\\n\t";
+			$column = 8;
+		}
+		$column += $len;
+		print "$file ";
+	}
+	print "\n";
+}
+
+#
+#  $file の依存関係を %dependlist に作る
+#
+sub makedepend_one {
+	local($file) = @_;
+	local($command, $input, $dir, $filename);
+
+	$command = "$cc_path -E $cc_opts";
+	if ($opt_X) {
+		$command .= " -x c-header";
+	}
+	unless (open(INPUT, "$command $file |")) {
+		print STDERR "makedep: can't open $file\n";
+		exit(1);
+	}
+	while ($line = <INPUT>) {
+		if ($line =~ /^\#\s*([0-9]+)\s*\"([^\"]+)\"/) {
+			$filename = $2;
+			$filename =~ s/ /\\ /;
+			if ($filename !~ /^\<.*\>$/ && $filename !~ /\/$/) {
+				$dependlist{$filename} = 1;
+			}
+		}
+	}
+	unless (close(INPUT)) {
+		print STDERR "makedep: can't execute $command\n";
+		exit(1);
+	}
+}
+
+#
+#  メインルーチン
+#
+foreach $file (@ARGV) {
+	%dependlist = ();
+	do makedepend_one($file);
+	do output_dependlist($file) if (%dependlist);
+}

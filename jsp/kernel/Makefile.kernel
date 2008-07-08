@@ -1,0 +1,125 @@
+#
+#  TOPPERS/JSP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Just Standard Profile Kernel
+# 
+#  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+# 
+#  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+#  によって公表されている GNU General Public License の Version 2 に記
+#  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+#  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+#  利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+#  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+#  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+# 
+#  @(#) $Id: Makefile.kernel,v 1.5 2003/07/01 13:32:03 hiro Exp $
+# 
+
+#
+#	カーネルのファイル構成の定義
+#
+
+#
+#  カーネルのライブラリに含めるC言語のソースファイルで，1つのソースファ
+#  イルから複数のオブジェクトファイルを生成するものの定義
+#
+KERNEL_LCSRCS = task.c wait.c time_event.c syslog.c \
+		task_manage.c task_sync.c task_except.c \
+		semaphore.c eventflag.c dataqueue.c mailbox.c \
+		mempfix.c time_manage.c cyclic.c sys_manage.c \
+		interrupt.c exception.c
+
+#
+#  上のソースファイルから生成されるオブジェクトファイルの定義
+#
+KERNEL_LCOBJS = $(foreach file,$(KERNEL_LCSRCS),$($(file:.c=)))
+
+#
+#  各ソースファイルから生成されるオブジェクトファイルの定義
+#
+task = tskini.o tsksched.o tskrun.o tsknrun.o \
+		tskdmt.o tskact.o tskext.o tskpri.o tskrot.o tsktex.o
+
+wait = waimake.o waicmp.o waitmo.o waitmook.o \
+		waican.o wairel.o wobjwai.o wobjwaitmo.o wobjpri.o
+
+time_event = tmeini.o tmeup.o tmedown.o tmeins.o tmedel.o isig_tim.o
+
+syslog = logini.o vwri_log.o vrea_log.o vmsk_log.o logter.o
+
+task_manage = act_tsk.o iact_tsk.o can_act.o ext_tsk.o ter_tsk.o \
+		chg_pri.o get_pri.o
+
+task_sync = slp_tsk.o tslp_tsk.o wup_tsk.o iwup_tsk.o can_wup.o \
+		rel_wai.o irel_wai.o sus_tsk.o rsm_tsk.o frsm_tsk.o dly_tsk.o
+
+task_except = ras_tex.o iras_tex.o dis_tex.o ena_tex.o sns_tex.o
+
+semaphore = semini.o sig_sem.o isig_sem.o wai_sem.o pol_sem.o twai_sem.o
+
+eventflag = flgini.o flgcnd.o set_flg.o iset_flg.o clr_flg.o \
+		wai_flg.o pol_flg.o twai_flg.o
+
+dataqueue = dtqini.o dtqenq.o dtqfenq.o dtqdeq.o dtqsnd.o dtqrcv.o \
+		snd_dtq.o psnd_dtq.o ipsnd_dtq.o tsnd_dtq.o \
+		fsnd_dtq.o ifsnd_dtq.o rcv_dtq.o prcv_dtq.o trcv_dtq.o
+
+mailbox = mbxini.o snd_mbx.o rcv_mbx.o prcv_mbx.o trcv_mbx.o
+
+mempfix = mpfini.o mpfget.o get_mpf.o pget_mpf.o tget_mpf.o rel_mpf.o
+
+time_manage = set_tim.o get_tim.o vxget_tim.o
+
+cyclic = cycini.o cycenq.o sta_cyc.o stp_cyc.o cyccal.o
+
+sys_manage = rot_rdq.o irot_rdq.o get_tid.o iget_tid.o \
+		loc_cpu.o iloc_cpu.o unl_cpu.o iunl_cpu.o \
+		dis_dsp.o ena_dsp.o sns_ctx.o sns_loc.o sns_dsp.o \
+		sns_dpn.o vsns_ini.o
+
+interrupt = inhini.o
+
+exception = excini.o vxsns_ctx.o vxsns_loc.o \
+		vxsns_dsp.o vxsns_dpn.o vxsns_tex.o
+
+#
+#  生成されるオブジェクトファイルの依存関係の定義
+#
+$(task) $(task:.o=.s) $(task:.o=.d): task.c
+$(wait) $(wait:.o=.s) $(wait:.o=.d): wait.c
+$(time_event) $(time_event:.o=.s) $(time_event:.o=.d): time_event.c
+$(syslog) $(syslog:.o=.s) $(syslog:.o=.d): syslog.c
+$(task_manage) $(task_manage:.o=.s) $(task_manage:.o=.d): task_manage.c
+$(task_sync) $(task_sync:.o=.s) $(task_sync:.o=.d): task_sync.c
+$(task_except) $(task_except:.o=.s) $(task_except:.o=.d): task_except.c
+$(semaphore) $(semaphore:.o=.s) $(semaphore:.o=.d): semaphore.c
+$(eventflag) $(eventflag:.o=.s) $(eventflag:.o=.d): eventflag.c
+$(dataqueue) $(dataqueue:.o=.s) $(dataqueue:.o=.d): dataqueue.c
+$(mailbox) $(mailbox:.o=.s) $(mailbox:.o=.d): mailbox.c
+$(mempfix) $(mempfix:.o=.s) $(mempfix:.o=.d): mempfix.c
+$(time_manage) $(time_manage:.o=.s) $(time_manage:.o=.d): time_manage.c
+$(cyclic) $(cyclic:.o=.s) $(cyclic:.o=.d): cyclic.c
+$(sys_manage) $(sys_manage:.o=.s) $(sys_manage:.o=.d): sys_manage.c
+$(interrupt) $(interrupt:.o=.s) $(interrupt:.o=.d): interrupt.c
+$(exception) $(exception:.o=.s) $(exception:.o=.d): exception.c

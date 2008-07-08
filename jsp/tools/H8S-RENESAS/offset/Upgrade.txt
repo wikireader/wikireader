@@ -1,0 +1,8 @@
+Project name : offset
+
+
+
+Hitachi H8S,H8/300 Standard Toolchain was upgraded 6.1.0.0 -> 6.1.2.0.
+
+
+

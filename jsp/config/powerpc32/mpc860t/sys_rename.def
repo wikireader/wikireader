@@ -1,0 +1,8 @@
+#sys_config.c
+ipm_table
+no_reg_CPM_interrupt
+no_reg_SIU_interrupt
+sil_debug_on
+sil_buffer
+sil_pos
+sil_log_id

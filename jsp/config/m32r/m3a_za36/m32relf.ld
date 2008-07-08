@@ -1,0 +1,111 @@
+/*
+ *  TOPPERS/JSP Kernel
+ *      Toyohashi Open Platform for Embedded Real-Time Systems/
+ *      Just Standard Profile Kernel
+ * 
+ *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+ *                              Toyohashi Univ. of Technology, JAPAN
+ * 
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+ * 
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+ * 
+ *  @(#) $Id: m32relf.ld,v 1.2 2007/05/28 02:03:55 honda Exp $
+ */
+
+OUTPUT_FORMAT("elf32-m32r","elf32-m32r","elf32-m32r")
+OUTPUT_ARCH(m32r)
+
+PROVIDE(__stack = 0x04100000);
+PROVIDE(hardware_init_hook = 0);
+PROVIDE(software_init_hook = 0);
+PROVIDE(software_term_hook = 0);
+
+MEMORY
+{
+	iram(waxi)	: org = 0x00f00000, len = 32k		/* 内臓RAM領域 32kB	*/
+	eram(waxi)	: org = 0x04000000, len = 64m		/* 外部RAM領域 64MB	*/
+}
+
+SECTIONS
+{
+	/* 割込みベクタを移動させたい場合は次のコメントをとって、
+	   .textの先頭にある*(.vector)をコメントアウトすればよい */
+/*
+	.vector : 
+	{	*(.vector)		} > iram
+*/
+
+	. = ALIGN(4);
+    .text :	
+    {
+        *(.vector)
+       	__stext = . ;
+       	*(.text)
+		__etext = . ;
+   
+	 } > iram
+
+	. = ALIGN(4);
+    .rodata : 
+	{
+		__srodata = .;
+		 *(.rodata)
+		__erodata = .;
+	} > iram
+
+	. = ALIGN(4);
+	__sidata = . ;
+
+    .data   :  AT(__sidata) 
+    {
+		. = ALIGN(4);
+		__sdata = .;
+        	*(.data)
+		. = ALIGN(4);
+		__edata = .;
+    } > eram
+
+	__eidata = __edata - __sdata + __sidata;
+
+    .bss :
+    {
+		. = ALIGN(4);
+		__sbss = .;
+		*(.bss)
+		*(COMMON) 
+		. = ALIGN(4);
+		__ebss = .;
+    } > eram
+
+    .comment 0 : { *(.comment) }	
+    .debug          0 : { *(.debug) }
+    .line           0 : { *(.line) }
+    .debug_srcinfo  0 : { *(.debug_srcinfo) }
+    .debug_sfnames  0 : { *(.debug_sfnames) }
+    .debug_aranges  0 : { *(.debug_aranges) }
+    .debug_pubnames 0 : { *(.debug_pubnames) }	
+}

@@ -1,0 +1,41 @@
+#!build
+default:
+	subproject
+	:auto_mvc=false
+
+check.h
+	include_file
+task.h
+	include_file
+wait.h
+	include_file
+task_manage.c
+	C
+	:outputname=act_tsk.o
+	:defines=__act_tsk
+task_manage.c
+	C
+	:outputname=iact_tsk.o
+	:defines=__iact_tsk
+task_manage.c
+	C
+	:outputname=can_act.o
+	:defines=__can_act
+task_manage.c
+	C
+	:outputname=ext_tsk.o
+	:defines=__ext_tsk
+task_manage.c
+	C
+	:outputname=ter_tsk.o
+	:defines=__ter_tsk
+task_manage.c
+	C
+	:outputname=chg_pri.o
+	:defines=__chg_pri
+task_manage.c
+	C
+	:outputname=get_pri.o
+	:defines=__get_pri
+
+

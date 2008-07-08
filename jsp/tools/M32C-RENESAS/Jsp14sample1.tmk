@@ -1,0 +1,288 @@
+####################################################################
+# Makefile for TM V.3.20A
+# COPYRIGHT(C) 1998(1998-2003)
+# RENESAS TECHNOLOGY CORPORATION ALL RIGHTS RESERVED
+# AND
+# RENESAS SOLUTIONS CORPORATION ALL RIGHTS RESERVED
+#
+#	Notice	:	Don't edit.
+#	Date	:	2004 08(August) 05(Thursday) AM.11.28
+#	Project	:	Jsp14sample1
+####################################################################
+
+DELETE	=	@-del
+LNLIST	=	$(PROJECT).cmd
+CC_USER	=	NC308
+LN_USER	=	LN308
+LMC	=	lmc308
+CC	=	nc308
+AR	=	lb308
+AS	=	as308
+OUTDIR	=	.
+MKDIR	=	@-mkdir
+LIBFLAGS	=	
+CPP	=	\MTOOL\LIB308\CPP308
+ABSFILE	=	$(PROJECT).x30
+LMC_USER	=	LMC308
+PRJDIR_USER	=	C:\usr\TOPPERS\jsp-1.4\tools\M32C-RENESAS
+ODINCMD	=	$(OUTDIR)
+LBFILE	=	$(PROJECT).lib
+AS_USER	=	AS308
+TARGET	=	$(ABSFILE)
+LN	=	ln308
+ECHO	=	@-echo
+MKFILE	=	$(PROJECT).tmk
+@(SRCDIR)	=	..
+PROJECT	=	Jsp14sample1
+TYPE	=	@-type
+LFLAGS	=	-MS -L nc308lib -. -G -M82 -NOSTOP -O $(OUTDIR)\$(TARGET) -ORDER data_NE=0400,data_NO,bss_NE,bss_NO,program=0f80000,rom_FE,rom_FO,data_NEI,data_NOI
+CFLAGS	=	-c -I../../config/m32c-renesas -I../../config/m32c-renesas/oaks32 -I../../kernel -I../../include -I../../sample -I. -silent -dir $(OUTDIR) -g -DNEED_API -M82
+LMCFLAGS	=	-L
+AFLAGS	=	-LM -. -DRAMEND=07800h:MON=0:USE_KD3083=1 -I. -M82 -O$(OUTDIR)
+.SUFFIXES: .a30 .r30 .c .x30 .lib
+.PHONY: all
+all: \
+		$(OUTDIR)\$(TARGET) \
+		$(OUTDIR)\Jsp14sample1.mot 
+.PHONY: clean
+clean: 
+		$(DELETE) $(OUTDIR)\$(TARGET)
+		$(DELETE) $(ODINCMD)\$(LNLIST)
+		$(DELETE) $(OUTDIR)\kernel_cfg.c
+		$(DELETE) $(OUTDIR)\kernel_id.h
+		$(DELETE) $(OUTDIR)\m16cvec.inc
+		$(DELETE) $(OUTDIR)\start.r30
+		$(DELETE) $(OUTDIR)\sys_config.r30
+		$(DELETE) $(OUTDIR)\sfruart.r30
+		$(DELETE) $(OUTDIR)\cpu_config.r30
+		$(DELETE) $(OUTDIR)\cpu_support.r30
+		$(DELETE) $(OUTDIR)\startup.r30
+		$(DELETE) $(OUTDIR)\banner.r30
+		$(DELETE) $(OUTDIR)\exception.r30
+		$(DELETE) $(OUTDIR)\interrupt.r30
+		$(DELETE) $(OUTDIR)\sys_manage.r30
+		$(DELETE) $(OUTDIR)\task_manage.r30
+		$(DELETE) $(OUTDIR)\time_manage.r30
+		$(DELETE) $(OUTDIR)\task.r30
+		$(DELETE) $(OUTDIR)\wait.r30
+		$(DELETE) $(OUTDIR)\task_except.r30
+		$(DELETE) $(OUTDIR)\task_sync.r30
+		$(DELETE) $(OUTDIR)\time_event.r30
+		$(DELETE) $(OUTDIR)\cyclic.r30
+		$(DELETE) $(OUTDIR)\dataqueue.r30
+		$(DELETE) $(OUTDIR)\eventflag.r30
+		$(DELETE) $(OUTDIR)\mailbox.r30
+		$(DELETE) $(OUTDIR)\mempfix.r30
+		$(DELETE) $(OUTDIR)\semaphore.r30
+		$(DELETE) $(OUTDIR)\syslog.r30
+		$(DELETE) $(OUTDIR)\logtask.r30
+		$(DELETE) $(OUTDIR)\serial.r30
+		$(DELETE) $(OUTDIR)\timer.r30
+		$(DELETE) $(OUTDIR)\log_output.r30
+		$(DELETE) $(OUTDIR)\strerror.r30
+		$(DELETE) $(OUTDIR)\t_perror.r30
+		$(DELETE) $(OUTDIR)\vasyslog.r30
+		$(DELETE) $(OUTDIR)\kernel_cfg.r30
+		$(DELETE) $(OUTDIR)\sample1.r30
+		$(DELETE) $(OUTDIR)\sample1.cfg.i
+		$(DELETE) $(OUTDIR)\start.lst
+		$(DELETE) $(OUTDIR)\cpu_support.lst
+		$(DELETE) $(OUTDIR)\makeoffset.a30
+		$(DELETE) $(OUTDIR)\Jsp14sample1.map
+$(ODINCMD)\$(LNLIST): \
+		.\$(MKFILE) 
+	$(ECHO)\$(MRLFLAGS) $(LFLAGS) >	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\start.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sys_config.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sfruart.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cpu_config.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cpu_support.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\startup.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\banner.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\exception.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\interrupt.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sys_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\time_manage.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\wait.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_except.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\task_sync.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\time_event.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\cyclic.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\dataqueue.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\eventflag.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\mailbox.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\mempfix.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\semaphore.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\syslog.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\logtask.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\serial.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\timer.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\log_output.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\strerror.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\t_perror.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\vasyslog.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\kernel_cfg.r30 >>	$(ODINCMD)\$(LNLIST)
+	$(ECHO)\$(OUTDIR)\sample1.r30 >>	$(ODINCMD)\$(LNLIST)
+$(OUTDIR)\Jsp14sample1.mot: \
+		$(OUTDIR)\$(TARGET) 
+	$(LMC) -. -ID#00000000000000 $<
+$(OUTDIR)\$(TARGET): \
+		$(ODINCMD)\$(LNLIST) \
+		$(OUTDIR)\kernel_cfg.c \
+		$(OUTDIR)\kernel_id.h \
+		$(OUTDIR)\m16cvec.inc \
+		$(OUTDIR)\start.r30 \
+		$(OUTDIR)\sys_config.r30 \
+		$(OUTDIR)\sfruart.r30 \
+		$(OUTDIR)\cpu_config.r30 \
+		$(OUTDIR)\cpu_support.r30 \
+		$(OUTDIR)\startup.r30 \
+		$(OUTDIR)\banner.r30 \
+		$(OUTDIR)\exception.r30 \
+		$(OUTDIR)\interrupt.r30 \
+		$(OUTDIR)\sys_manage.r30 \
+		$(OUTDIR)\task_manage.r30 \
+		$(OUTDIR)\time_manage.r30 \
+		$(OUTDIR)\task.r30 \
+		$(OUTDIR)\wait.r30 \
+		$(OUTDIR)\task_except.r30 \
+		$(OUTDIR)\task_sync.r30 \
+		$(OUTDIR)\time_event.r30 \
+		$(OUTDIR)\cyclic.r30 \
+		$(OUTDIR)\dataqueue.r30 \
+		$(OUTDIR)\eventflag.r30 \
+		$(OUTDIR)\mailbox.r30 \
+		$(OUTDIR)\mempfix.r30 \
+		$(OUTDIR)\semaphore.r30 \
+		$(OUTDIR)\syslog.r30 \
+		$(OUTDIR)\logtask.r30 \
+		$(OUTDIR)\serial.r30 \
+		$(OUTDIR)\timer.r30 \
+		$(OUTDIR)\log_output.r30 \
+		$(OUTDIR)\strerror.r30 \
+		$(OUTDIR)\t_perror.r30 \
+		$(OUTDIR)\vasyslog.r30 \
+		$(OUTDIR)\kernel_cfg.r30 \
+		$(OUTDIR)\sample1.r30 
+	$(LN) @$(ODINCMD)\$(LNLIST)
+$(OUTDIR)\banner.r30: \
+		..\..\kernel\banner.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\banner.c
+$(OUTDIR)\cpu_config.r30: \
+		..\..\config\m32c-renesas\cpu_config.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m32c-renesas\cpu_config.c
+$(OUTDIR)\cpu_support.r30: \
+		..\..\config\m32c-renesas\cpu_support.a30 
+	$(AS) $(MRAFLAGS) $(AFLAGS) ..\..\config\m32c-renesas\cpu_support.a30
+$(OUTDIR)\cyclic.r30: \
+		..\..\kernel\cyclic.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\cyclic.c
+$(OUTDIR)\dataqueue.r30: \
+		..\..\kernel\dataqueue.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\dataqueue.c
+$(OUTDIR)\eventflag.r30: \
+		..\..\kernel\eventflag.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\eventflag.c
+$(OUTDIR)\exception.r30: \
+		..\..\kernel\exception.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\exception.c
+$(OUTDIR)\interrupt.r30: \
+		..\..\kernel\interrupt.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\interrupt.c
+$(OUTDIR)\kernel_cfg.c: \
+		.\sample1.cfg 
+	$(CPP) -I../../config/m32c-renesas/oaks32 -I../../config/m32c-renesas -I../../kernel -I../../include -I../../sample -I. $< > sample1.cfg.i
+	..\..\cfg\cfg -cpu $(CPU) -system $(SYS) -s sample1.cfg.i
+$(OUTDIR)\kernel_cfg.r30: \
+		$(OUTDIR)\kernel_cfg.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) kernel_cfg.c
+$(OUTDIR)\kernel_id.h: \
+		.\sample1.cfg 
+	$(CPP) -I../../config/m32c-renesas/oaks32 -I../../config/m32c-renesas -I../../kernel -I../../include -I../../sample -I. $< > sample1.cfg.i
+	..\..\cfg\cfg -cpu $(CPU) -system $(SYS) -s sample1.cfg.i
+$(OUTDIR)\log_output.r30: \
+		..\..\library\log_output.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\log_output.c
+$(OUTDIR)\logtask.r30: \
+		..\..\systask\logtask.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\logtask.c
+$(OUTDIR)\m16cvec.inc: \
+		$(OUTDIR)\kernel_cfg.c 
+	$(CPP) -I../../config/m32c-renesas/oaks32 -I../../config/m32c-renesas -I../../kernel -I../../include -I../../sample -I. $< > kernel_cfg.i
+	..\..\utils\m16c-renesas\m16cvec.exe -M0 -F0ffffdch
+$(OUTDIR)\mailbox.r30: \
+		..\..\kernel\mailbox.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\mailbox.c
+$(OUTDIR)\mempfix.r30: \
+		..\..\kernel\mempfix.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\mempfix.c
+$(OUTDIR)\sample1.r30: \
+		..\..\sample\sample1.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\sample\sample1.c
+$(OUTDIR)\semaphore.r30: \
+		..\..\kernel\semaphore.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\semaphore.c
+$(OUTDIR)\serial.r30: \
+		..\..\systask\serial.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\serial.c
+$(OUTDIR)\sfruart.r30: \
+		..\..\config\m32c-renesas\oaks32\sfruart.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m32c-renesas\oaks32\sfruart.c
+$(OUTDIR)\start.r30: \
+		..\..\config\m32c-renesas\start.a30 \
+		$(OUTDIR)\m16cvec.inc 
+	$(AS) $(MRAFLAGS) $(AFLAGS) ..\..\config\m32c-renesas\start.a30
+$(OUTDIR)\startup.r30: \
+		..\..\kernel\startup.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\startup.c
+$(OUTDIR)\strerror.r30: \
+		..\..\library\strerror.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\strerror.c
+$(OUTDIR)\sys_config.r30: \
+		..\..\config\m32c-renesas\oaks32\sys_config.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\config\m32c-renesas\oaks32\sys_config.c
+$(OUTDIR)\sys_manage.r30: \
+		..\..\kernel\sys_manage.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\sys_manage.c
+$(OUTDIR)\syslog.r30: \
+		..\..\kernel\syslog.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\syslog.c
+$(OUTDIR)\t_perror.r30: \
+		..\..\library\t_perror.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\t_perror.c
+$(OUTDIR)\task.r30: \
+		..\..\kernel\task.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task.c
+$(OUTDIR)\task_except.r30: \
+		..\..\kernel\task_except.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_except.c
+$(OUTDIR)\task_manage.r30: \
+		..\..\kernel\task_manage.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_manage.c
+$(OUTDIR)\task_sync.r30: \
+		..\..\kernel\task_sync.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\task_sync.c
+$(OUTDIR)\time_event.r30: \
+		..\..\kernel\time_event.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\time_event.c
+$(OUTDIR)\time_manage.r30: \
+		..\..\kernel\time_manage.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\time_manage.c
+$(OUTDIR)\timer.r30: \
+		..\..\systask\timer.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\systask\timer.c
+$(OUTDIR)\vasyslog.r30: \
+		..\..\library\vasyslog.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\library\vasyslog.c
+$(OUTDIR)\wait.r30: \
+		..\..\kernel\wait.c 
+	$(CC) $(MRCFLAGS) $(CFLAGS) ..\..\kernel\wait.c
+####################################################################
+# End of makefile for TM V.3.20A
+# COPYRIGHT(C) 1998(1998-2003)
+# RENESAS TECHNOLOGY CORPORATION ALL RIGHTS RESERVED
+# AND
+# RENESAS SOLUTIONS CORPORATION ALL RIGHTS RESERVED
+####################################################################

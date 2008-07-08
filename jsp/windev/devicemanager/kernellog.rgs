@@ -1,0 +1,23 @@
+HKCR
+{
+	Devicemanager.KernelLog.1 = s 'KernelLog Class'
+	{
+		CLSID = s '{4BD327FC-9E4A-4A5D-9503-27C979A8E802}'
+	}
+	Devicemanager.KernelLog = s 'KernelLog Class'
+	{
+		CLSID = s '{4BD327FC-9E4A-4A5D-9503-27C979A8E802}'
+		CurVer = s 'Devicemanager.KernelLog.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4BD327FC-9E4A-4A5D-9503-27C979A8E802} = s 'KernelLog Class'
+		{
+			ProgID = s 'Devicemanager.KernelLog.1'
+			VersionIndependentProgID = s 'Devicemanager.KernelLog'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{44CB3B0F-D399-428E-829C-9BD5183AFF51}'
+			'TypeLib' = s '{F15F5272-83F3-42C3-874C-E4FF2B904AC2}'
+		}
+	}
+}

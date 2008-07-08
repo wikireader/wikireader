@@ -1,0 +1,446 @@
+#
+#  TOPPERS/JSP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Just Standard Profile Kernel
+# 
+#  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+#  Copyright (C) 2003-2004 by Naoki Saito
+#             Nagoya Municipal Industrial Research Institute, JAPAN
+# 
+#  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+#  によって公表されている GNU General Public License の Version 2 に記
+#  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+#  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+#  利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+#  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+#  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+# 
+#  @(#) $Id: Makefile.m16c-oaks16_mini,v 1.2 2005/12/06 03:06:03 honda Exp $
+# 
+
+#
+#  ターゲットの指定（Makefile.config で上書きされるのを防ぐため）
+#
+all:
+
+#
+#  ターゲット名の定義
+#
+CPU = @(CPU)
+SYS = @(SYS)
+TOOL = @(TOOL)
+
+#
+#  ソースファイルのディレクトリの定義
+#
+SRCDIR = @(SRCDIR)
+
+#
+#  オブジェクトファイル名の拡張子の設定
+#
+OBJEXT = x30
+
+#
+#  実行環境の定義
+#		 （ターゲット依存に上書きされる場合がある）
+#
+MON = 0
+
+#
+#  カーネルライブラリ（libkernel.lib）のディレクトリ名
+#  （カーネルライブラリも make 対象にする時は，空に定義する）
+#
+KERNEL_LIB = @(KERNEL_LIB)
+
+#
+#  ターゲット依存の定義のインクルード
+#
+ifdef TOOL
+    ifdef SYS
+        include $(SRCDIR)\config\$(CPU)-$(TOOL)\$(SYS)\Makefile.config
+    endif
+    include $(SRCDIR)\config\$(CPU)-$(TOOL)\Makefile.config
+else
+    ifdef SYS
+        include $(SRCDIR)\config\$(CPU)\$(SYS)\Makefile.config
+    endif
+    include $(SRCDIR)\config\$(CPU)\Makefile.config
+endif
+
+#
+#  共通コンパイルオプションの定義
+#
+COPTS := $(COPTS)
+CDEFS := $(CDEFS)
+INCLUDES := -I. -I$(SRCDIR)\include -I$(SRCDIR)\sample $(INCLUDES)
+LDFLAGS := $(LDFLAGS)
+LIBS := $(LIBS)
+CFLAGS = $(COPTS) $(CDEFS) $(INCLUDES)
+
+#
+#  アプリケーションプログラムに関する定義
+#
+UNAME = @(UNAME)
+UTASK_CFG = $(UNAME).cfg
+
+UTASK_DIR = $(SRCDIR)\library
+UTASK_ASMOBJS =
+UTASK_COBJS = $(UNAME).r30 @(UTASK)
+UTASK_CFLAGS =
+UTASK_LIBS =
+
+#
+#  システムサービスに関する定義
+#
+STASK_DIR := $(STASK_DIR):$(SRCDIR)\systask:$(SRCDIR)\library
+STASK_ASMOBJS := $(STASK_ASMOBJS)
+STASK_COBJS := $(STASK_COBJS) timer.r30 vasyslog.r30 t_perror.r30 strerror.r30
+STASK_CFLAGS := $(STASK_CFLAGS) -I$(SRCDIR)\systask
+STASK_LIBS := $(STASK_LIBS)
+
+#
+#  カーネルに関する定義
+#
+#  KERNEL_ASMOBJS: カーネルライブラリに含める，ソースがアセンブリ言語の
+#		   オブジェクトファイル．
+#  KERNEL_COBJS: カーネルのライブラリに含める，ソースがC言語で，ソース
+#		 ファイルと1対1に対応するオブジェクトファイル．
+#  KERNEL_LCSRCS: カーネルのライブラリに含めるC言語のソースファイルで，
+#		  1つのソースファイルから複数のオブジェクトファイルを生
+#		  成するもの（Makefile.kernel で定義）．
+#  KERNEL_LCOBJS: 上のソースファイルから生成されるオブジェクトファイル
+#		  （Makefile.kernel で定義）．
+#  KERNEL_AUX_COBJS: ロードモジュールに含めないが，カーネルのソースファ
+#		     イルと同じオプションを適用してコンパイルすべきファ
+#		     イル．
+#
+KERNEL = $(SRCDIR)\kernel
+KERNEL_DIR := $(KERNEL_DIR):$(KERNEL)
+KERNEL_ASMOBJS := $(KERNEL_ASMOBJS)
+KERNEL_COBJS := startup.r30 banner.r30 $(KERNEL_COBJS)
+KERNEL_CFLAGS := $(KERNEL_CFLAGS) -I$(KERNEL)
+ifdef OMIT_MAKEOFFSET
+    OFFSET_H =
+    KERNEL_AUX_COBJS = kernel_chk.r30
+else
+    OFFSET_H = offset.inc
+    KERNEL_AUX_COBJS = makeoffset.r30 kernel_chk.r30
+endif
+
+#
+#  オブジェクトファイル名の定義
+#
+OBJNAME = jsp
+ifdef OBJEXT
+    OBJFILE = $(OBJNAME).$(OBJEXT)
+else
+    OBJFILE = $(OBJNAME)
+endif
+
+#
+#  ターゲットファイル（複数を同時に選択してはならない）
+#
+#all: $(OBJFILE)
+all: $(OBJNAME).mot
+
+#
+#  カーネルのコンフィギュレーションファイルの生成
+#
+kernel_cfg.c kernel_id.h kernel_chk.c: $(UTASK_CFG)
+	$(CPP)   $(INCLUDES) $(CDEFS) $(UTASK_CFG) > tmpfile1
+	$(SRCDIR)\cfg\cfg -s tmpfile1 -c -obj -cpu $(CPU) -system $(SYS)
+	@-del tmpfile1
+
+##### 以下は編集しないこと #####
+
+#
+#  環境に依存するコンパイルオプションの定義
+#
+ifdef DBGENV
+    CDEFS := $(CDEFS) -D$(DBGENV)
+endif
+
+#
+#  カーネルライブラリに関連する定義
+#
+ifdef KERNEL_LIB
+    MAKE_KERNEL =
+    LIBKERNEL = $(KERNEL_LIB)\libkernel.lib
+else
+    MAKE_KERNEL = libkernel.lib
+    LIBKERNEL = $(MAKE_KERNEL)
+endif
+
+#
+#  カーネルのファイル構成の定義
+#
+ifdef TOOL
+	include $(SRCDIR)\config\$(CPU)-$(TOOL)\$(SYS)\Makefile.kernel
+else
+	include $(SRCDIR)\config\$(CPU)\$(SYS)\Makefile.kernel
+endif
+
+#
+#  $(OBJNAME).chk の生成規則（静的APIのパラメータチェック）
+#
+$(OBJNAME).chk: kernel_chk.a30 $(SRCDIR)\utils\gencheck.m16c
+	$(PERL) $(SRCDIR)\utils\m16c-renesas\gencheck.m16c kernel_chk.a30 > $(OBJNAME).chk
+
+#
+#  offset.inc の生成規則（構造体内のオフセット値の算出）
+#
+offset.inc: makeoffset.a30
+	$(SRCDIR)\utils\m16c-renesas\m16coffset.exe
+
+#
+#  ソースファイルのあるディレクトリに関する定義
+#
+vpath %.c $(KERNEL_DIR):$(STASK_DIR):$(UTASK_DIR)
+vpath %.a30 $(KERNEL_DIR):$(STASK_DIR):$(UTASK_DIR)
+
+#
+#  コンパイルのための変数の定義
+#
+KERNEL_LIB_OBJS = $(KERNEL_ASMOBJS) $(KERNEL_COBJS) $(KERNEL_LCOBJS)
+STASK_OBJS = $(STASK_ASMOBJS) $(STASK_COBJS)
+UTASK_OBJS = $(UTASK_ASMOBJS) $(UTASK_COBJS) $(UTASK_CXXOBJS)
+TASK_OBJS = $(UTASK_OBJS) $(STASK_OBJS) kernel_cfg.r30
+ALL_OBJS = $(START_OBJS) $(TASK_OBJS) $(END_OBJS)
+ALL_LIBS = $(LIBKERNEL)
+ifdef LIBS
+	ALL_LIBS := $(ALL_LIBS),$(LIBS)
+endif
+ifdef STASK_LIBS
+	ALL_LIBS := $(STASK_LIBS),$(ALL_LIBS)
+endif
+ifdef UTASK_LIBS
+	ALL_LIBS := $(UTASK_LIBS),$(ALL_LIBS)
+endif
+
+#
+#  カーネルライブラリファイルの生成
+#
+libkernel.lib: $(OFFSET_H) $(KERNEL_LIB_OBJS)
+	@-del libkernel.lib
+	$(AR) -. -c $@ $(KERNEL_LIB_OBJS)
+
+#
+#  全体のリンク
+#
+$(OBJFILE): Makefile.depend $(ALL_OBJS) $(MAKE_KERNEL) # $(OBJNAME).chk
+	@echo $(LDFLAGS) > $(OBJNAME).cmd
+	@echo -O $(OBJFILE) >> $(OBJNAME).cmd
+	@echo -NOSTOP >> $(OBJNAME).cmd
+	@echo -ORDER data_NE=$(RAM_START_ADR) >> $(OBJNAME).cmd
+	@echo -ORDER data_NO >> $(OBJNAME).cmd
+	@echo -ORDER bss_NE >> $(OBJNAME).cmd
+	@echo -ORDER bss_NO >> $(OBJNAME).cmd
+	@echo -ORDER program=$(ROM_START_ADR) >> $(OBJNAME).cmd
+	@echo -ORDER rom_FE >> $(OBJNAME).cmd
+	@echo -ORDER rom_FO >> $(OBJNAME).cmd
+	@echo -ORDER data_NEI >> $(OBJNAME).cmd
+	@echo -ORDER data_NOI >> $(OBJNAME).cmd
+	@echo -ORDER vector >> $(OBJNAME).cmd
+	@echo -ORDER fvector >> $(OBJNAME).cmd
+	@echo $(ALL_OBJS) >> $(OBJNAME).cmd
+	@echo -L $(ALL_LIBS) >> $(OBJNAME).cmd
+	$(LD) @$(OBJNAME).cmd
+
+#
+#  Sレコードファイルの生成
+#
+$(OBJNAME).mot: $(OBJFILE)
+	$(OBJCOPY) -. -ID#00000000000000 $<
+
+#
+#  コンパイル結果の消去
+#
+clean:
+	@-del \#* *~ *.r30 tmpfile?
+	@-del $(MAKE_KERNEL) $(OBJNAME)
+	@-del $(OBJNAME).syms $(OBJNAME).mot $(OBJNAME).chk
+	@-del $(OBJNAME).exe $(OBJNAME).bin $(OBJNAME).out
+	@-del $(OBJNAME).map $(OBJFILE)  $(OBJNAME).id $(OBJNAME).cmd
+	@-del kernel_cfg.c kernel_chk.c kernel_chk.a30 kernel_id.h kernel_obj.dat
+	@-del makeoffset.a30 offset.inc m16cvec.inc
+	@-del $(KERNEL_LCOBJS:.r30=.a30)
+cleankernel:
+	@-del $(KERNEL_LIB_OBJS)
+	@-del makeoffset.a30 offset.inc m16cvec.inc
+
+cleandep:
+	@-del Makefile.depend
+
+realclean: cleandep clean
+
+#
+#  kernel_cfg.c のコンパイルルールと依存関係作成ルールの定義
+#
+#  kernel_cfg.c は，アプリケーションプログラム用，システムサービス用，
+#  カーネル用のすべてのオプションを付けてコンパイルする．
+#
+KERNEL_CFG_CFLAGS = $(UTASK_CFLAGS) $(STASK_CFLAGS) $(KERNEL_CFLAGS)
+
+kernel_cfg.r30: kernel_cfg.c
+	$(CC) -c $(CFLAGS) $(KERNEL_CFG_CFLAGS) $(<D)\$(<F)
+
+kernel_cfg.a30: kernel_cfg.c
+	$(CC) -S $(CFLAGS) $(KERNEL_CFG_CFLAGS) $(<D)\$(<F)
+
+kernel_cfg.d: kernel_cfg.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) \
+		-O "$(INCLUDES) -I$(SRCDIR)\kernel -I$(SRCDIR)\systask" \
+		$(<D)\$(<F) >> Makefile.depend
+
+#
+#  特別な依存関係の定義
+#
+banner.r30: $(filter-out banner.r30,$(KERNEL_LIB_OBJS))
+
+#
+#  特殊な依存関係作成ルールの定義
+#
+kernel_id.d: $(UTASK_CFG)
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) \
+		-T "kernel_cfg.c kernel_id.h kernel_chk.c" \
+		-O "$(INCLUDES)" $(<D)\$(<F) >> Makefile.depend
+
+makeoffset.d: makeoffset.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -s -C $(CPP) \
+		-O "$(INCLUDES) -I$(KERNEL)" $(<D)\$(<F) >> Makefile.depend
+
+kernel_chk.d: kernel_chk.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -s -C $(CPP) \
+		-O "$(INCLUDES) -I$(KERNEL)" $(<D)\$(<F) >> Makefile.depend
+
+#
+#  依存関係ファイルの生成
+#
+gendepend:
+	@echo "Generating Makefile.depend."
+
+ifdef KERNEL_LIB
+depend: cleandep kernel_cfg.c gendepend kernel_id.d \
+		kernel_chk.d $(ALL_OBJS:.r30=.d)
+else
+depend: cleandep $(OFFSET_H) kernel_cfg.c gendepend kernel_id.d \
+		$(KERNEL_AUX_COBJS:.r30=.d) $(KERNEL_ASMOBJS:.r30=.d) \
+		$(KERNEL_COBJS:.r30=.d) $(KERNEL_LCSRCS:.c=.d) $(ALL_OBJS:.r30=.d)
+endif
+
+#
+#  依存関係ファイルをインクルード
+#
+-include Makefile.depend
+
+PERL = @(PERL)
+
+#
+#  コンパイルルールの定義
+#
+KERNEL_ALL_COBJS = $(KERNEL_COBJS) $(KERNEL_AUX_COBJS)
+
+$(KERNEL_ALL_COBJS): %.r30: %.c
+	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $(<D)\$(<F)
+
+$(KERNEL_ALL_COBJS:.r30=.a30): %.a30: %.c
+	$(CC) -S $(CFLAGS) $(KERNEL_CFLAGS) $(<D)\$(<F)
+
+$(KERNEL_LCOBJS): %.r30: %.a30
+	$(CC) -D__$(*F) -o $@ -c $(CFLAGS) $(KERNEL_CFLAGS) $(<D)\$(<F)
+
+$(KERNEL_LCOBJS:.r30=.a30): %.a30:
+	$(CC) -D__$(*F) -o $@ -S $(CFLAGS) $(KERNEL_CFLAGS) $(<D)\$(<F)
+	ren $(<F:.c=.a30) $@
+
+$(KERNEL_ASMOBJS): %.r30: %.a30
+	$(AS) $(ASMFLAGS) $(KERNEL_ASMFLAGS) $(<D)\$(<F)
+
+$(STASK_COBJS): %.r30: %.c
+	$(CC) -c $(CFLAGS) $(STASK_CFLAGS) $(<D)\$(<F)
+
+$(STASK_COBJS:.r30=.a30): %.a30: %.c
+	$(CC) -S $(CFLAGS) $(STASK_CFLAGS) $(<D)\$(<F)
+
+$(STASK_ASMOBJS): %.r30: %.a30
+	$(AS) $(ASMFLAGS) $(STASK_ASMFLAGS) $(<D)\$(<F)
+
+$(UTASK_COBJS): %.r30: %.c
+	$(CC) -c $(CFLAGS) $(UTASK_CFLAGS) $(<D)\$(<F)
+
+$(UTASK_COBJS:.r30=.a30): %.a30: %.c
+	$(CC) -S $(CFLAGS) $(UTASK_CFLAGS) $(<D)\$(<F)
+
+$(UTASK_ASMOBJS): %.r30: %.a30
+	$(AS) $(ASMFLAGS) $(UTASK_ASMFLAGS) $(<D)\$(<F)
+
+#
+#  依存関係作成ルールの定義
+#
+# アセンブリ言語ファイルが依存するファイルは
+# それぞれのコンパイルルールで明示することにし、ここでは何もしない.
+#
+$(KERNEL_COBJS:.r30=.d): %.d: %.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) \
+		-O "$(INCLUDES) -I$(KERNEL)" $(<D)\$(<F) >> Makefile.depend
+
+$(KERNEL_LCSRCS:.c=.d): %.d: %.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) -T "$($*)" \
+		-O "$(foreach sym,$($*),-D__$(sym:.r30=)) \
+		$(INCLUDES) -I$(KERNEL)" $(<D)\$(<F) >> Makefile.depend
+
+$(KERNEL_LCOBJS:.r30=.d): %.d:
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) -T $*.r30 \
+		-O "-D__$(*F) $(INCLUDES) -I$(KERNEL)" $(<D)\$(<F) >> Makefile.depend
+
+$(KERNEL_ASMOBJS:.r30=.d): %.d: %.a30
+
+
+$(STASK_COBJS:.r30=.d): %.d: %.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) \
+		-O "$(INCLUDES) -I$(SRCDIR)\systask" $(<D)\$(<F) >> Makefile.depend
+
+$(STASK_ASMOBJS:.r30=.d): %.d: %.a30
+
+
+$(UTASK_COBJS:.r30=.d): %.d: %.c
+	@$(PERL) $(SRCDIR)\utils\m16c-renesas\makedep.m16c -C $(CPP) \
+		-O "$(INCLUDES)" $(<D)\$(<F) >> Makefile.depend
+
+$(UTASK_ASMOBJS:.r30=.d): %.d: %.a30
+
+
+#
+#  デフォルトコンパイルルールを上書き
+#
+%.r30: %.c
+	@echo "*** Default compile rules should not be used."
+	$(CC) -c $(CFLAGS) $(<D)\$(<F)
+
+%.a30: %.c
+	@echo "*** Default compile rules should not be used."
+	$(CC) -S $(CFLAGS) $(<D)\$(<F)
+
+%.r30: %.a30
+	@echo "*** Default compile rules should not be used."
+	$(AS) $(ASMFLAGS) $(<D)\$(<F)
