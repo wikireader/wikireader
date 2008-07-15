@@ -65,6 +65,9 @@
 
 #if defined(i386) | defined(_i386_) | defined(__i386__)
 
+#define JB_PC 0
+#define JB_SP 2
+
 #define JMPBUF_PC		JB_PC
 #define JMPBUF_SP		JB_SP
 #define STACK_MERGIN		4

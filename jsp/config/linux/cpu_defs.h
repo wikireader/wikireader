@@ -49,6 +49,7 @@
 
 #include <setjmp.h>
 #include <signal.h>
+#include <stdlib.h>
 
 typedef UINT        INHNO;		/* 割込ハンドラ番号 */
 typedef	sigset_t	IMS;		/* 割込みマスク        */
