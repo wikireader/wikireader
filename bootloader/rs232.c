@@ -1,71 +1,89 @@
 #include "regs.h"
 #include "wikireader.h"
 
-#define WAIT_FOR_SPI_RDY() \
-	do {} while (REG_SPI_STAT & (1 << 6))
-
+enum {
+	SPI_WRITE = 0,
+	SPI_READ = 1,
+	SPI_CS_HI = 2,
+	SPI_CS_LO = 3
+};
 
 int main(void) {
-	unsigned char b;
+	unsigned char cmd, dat, len;
 
-	init_pins();
-
+	INIT_PINS();
 	SDCARD_CS_HI();
+	EEPROM_CS_HI();
+
+	/* EEPROM WP: off */
+	REG_P2_IOC2 |= (1 << 6);
+	REG_P2_P2D  |= (1 << 6);
 
 	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */
 	REG_EFSIF0_CTL = 0xc3;
 
+	/* DIVMD = 1/8, General I/F mode */
+	REG_EFSIF0_IRDA = 0x10;
+
+	/* by default MCLKDIV = 0 which means that the internal MCLK is OSC/1,
+	 * where OSC = OSC3 as OSCSEL[1:0] = 00b
+	 * Hence, MCLK is 48MHz */
+
+	/* set up baud rate timer reload data */
+	/* 
+	 * BRTRD = ((F[brclk] * DIVMD) / (2 * bps)) - 1;
+	 * where
+	 * 	F[brclk] = 48MHz
+	 * 	DIVMD = 1/8
+	 *	bps = 38400
+	 *
+	 *   = 77
+	 */
+
+	REG_EFSIF0_BRTRDL = 77 & 0xff;
+	REG_EFSIF0_BRTRDM = 77 >> 8;
+
+	/* baud rate timer: run! */
+	REG_EFSIF0_BRTRUN = 0x01;
+
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
-	REG_SPI_CTL1 = 0x0001c73;
+	REG_SPI_CTL1 = 0x73 | (7 << 10);
 
-	/* EEPROM: write enable */
-	EEPROM_CS_LO();
-	REG_SPI_TXD = 0x06;
-	WAIT_FOR_SPI_RDY();
-	EEPROM_CS_HI();
-
-	/* EEPROM: chip erase */
-	EEPROM_CS_LO();
-	REG_SPI_TXD = 0x60;
-	WAIT_FOR_SPI_RDY();
-	EEPROM_CS_HI();
-
-	/* EEPROM: auto address increment (AAI), start at address 0 */
-	EEPROM_CS_LO();
-	REG_SPI_TXD = 0xaf;
-	WAIT_FOR_SPI_RDY();
-	
-	REG_SPI_TXD = 0x0;
-	WAIT_FOR_SPI_RDY();
-	
-	REG_SPI_TXD = 0x0;
-	WAIT_FOR_SPI_RDY();
-	
-	REG_SPI_TXD = 0x0;
-	WAIT_FOR_SPI_RDY();
-
-	do {} while (!(REG_EFSIF0_STATUS & 0x1));
-	b = REG_EFSIF0_RXD;
-
-	REG_SPI_TXD = b;
-	WAIT_FOR_SPI_RDY();
-	EEPROM_CS_HI();
-
-	/* get more bytes and write them to the EEPROM */
 	for (;;) {
 		do {} while (!(REG_EFSIF0_STATUS & 0x1));
-		b = REG_EFSIF0_RXD;
+		cmd = REG_EFSIF0_RXD;
 
-		EEPROM_CS_LO();
-		
-		REG_SPI_TXD = b;
-		WAIT_FOR_SPI_RDY();
-	
-		REG_SPI_TXD = 0xaf;
-		WAIT_FOR_SPI_RDY();
-		EEPROM_CS_HI();
+		switch (cmd) {
+			case SPI_CS_HI:
+				EEPROM_CS_HI();
+				break;
+			case SPI_CS_LO:
+				EEPROM_CS_LO();
+				break;
+			case SPI_WRITE:
+				do {} while (!(REG_EFSIF0_STATUS & 0x1));
+				len = REG_EFSIF0_RXD;
+
+				while (len--) {
+					do {} while (!(REG_EFSIF0_STATUS & 0x1));
+					dat = REG_EFSIF0_RXD;
+					REG_SPI_TXD = dat;
+					do {} while (REG_SPI_STAT & (1 << 6));
+				}
+				break;
+			case SPI_READ:
+				do {} while (!(REG_EFSIF0_STATUS & 0x1));
+				len = REG_EFSIF0_RXD;
+				
+				while (len--) {
+					REG_SPI_TXD = 0x00;
+					do {} while (REG_SPI_STAT & (1 << 6));
+					dat = REG_SPI_RXD;
+					REG_EFSIF0_TXD = dat;
+					do {} while (REG_EFSIF0_STATUS & (1 << 5));
+				}
+				break;
+		}
 	}
-
-	return 0;
 }
 

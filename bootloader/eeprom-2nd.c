@@ -2,45 +2,50 @@
 #include "regs.h"
 #include "wikireader.h"
 
-#define WAIT_FOR_SPI_RDY() \
-	do {} while (REG_SPI_STAT & (1 << 6))
+#define MEMSIZE (1024 * 1024 * 4)
+#define MEMSTART 0x40000
 
-
-int main(void) {
-	unsigned char b;
-
-	init_pins();
+void boot_from_sdcard(void)
+{
         EmbeddedFileSystem efs;
-        EmbeddedFile file_r, file_w;
-        unsigned short i,e;
-        char buf[512];
+        EmbeddedFile file;
+        char *buf = (char *) MEMSTART;
 
         debug_init();
 
-        DBG((TXT("Hello :-)")));
+        if (efs_init(&efs,0))
+		return;
 
-        if(efs_init(&efs,0)!=0){
-                hang();
-        }
+        if (file_fopen(&file, &efs.myFs, "kernel",'r'))
+		return;
 
-        if(file_fopen(&file_r,&efs.myFs,"orig.txt",'r')!=0){
-                hang();
-        }
+	file_read(&file, MEMSIZE, buf);
 
-        if(file_fopen(&file_w,&efs.myFs,"copy.txt",'w')!=0){
-                hang();
-        }
+        file_fclose (&file);
+        fs_umount (&efs.myFs);
 
-        while(e=file_read(&file_r,512,buf)){
-                file_write(&file_w,e,buf);
-        }
+	/* jump, just let go! :) */
+        ((void (*) (void)) buf) ();
+}
 
-        file_fclose(&file_r);
-        file_fclose(&file_w);
+int main(void)
+{
+	INIT_PINS();
 
-        fs_umount(&efs.myFs);
+bla:
+	REG_P6_P6D |=  (1 << 4);
+	REG_P6_P6D &= ~(1 << 4);
+goto bla;
 
-        hang();
+
+	boot_from_sdcard();
+
+	/* we we get here, boot_from_sdcard() failed to find a kernel on the
+	 * inserted media or there is no media. Thus, we register an 
+	 * interrupt handler for the SD card insert switch and try again as
+	 * soon as a media switch is detected. */
+
+	/* TODO */
 
 	return 0;
 }
