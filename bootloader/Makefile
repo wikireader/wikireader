@@ -1,7 +1,8 @@
 CROSS=c33-epson-elf-
 GCC=$(CROSS)gcc
 CC=$(GCC)
-LDFLAGS=-static -s -Wl,'-e 0' -Wl,'-z origin' -Wl,'-Ttext=0' -r --gc-sections -N -Ttext=0
+#LDFLAGS=-static -s -Wl,'-e 0' -Wl,'-z origin' -Wl,'-Ttext=0' -r --gc-sections -N -Ttext=0
+LDFLAGS=-static -s -r --no-gc-sections -Wl,'-Ttext=0' 
 CFLAGS=-Wall -I. -Iefsl/ -Iefsl/inc/
 OBJCOPY=$(CROSS)objcopy
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
@@ -14,37 +15,39 @@ EFSL_OBJS= \
 	efsl/src/interfaces/sd.o
 
 
-TARGETS=rs232 eeprom.img e07load
+TARGETS=rs232 eeprom-1st eeprom-2nd e07load
 all: $(TARGETS)
 
+#### e07load
 e07load: e07load.c
 	gcc -o $@ -Wall $<
 
+#### first boot loader
 rs232.elf: rs232.o
-	$(GCC) -o $@ $(LDFLAGS) $<
+	$(GCC) -o $@ $(LDFLAGS) $< -Wl,'-Ttext=0'
+
+rs232: rs232.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+
+#### second boot loader
+eeprom-1st.o: eeprom-1st.c eeprom-2nd
+	$(GCC) -c $(CFLAGS) -DEEPROM_PAYLOAD_SIZE=`wc -c eeprom-2nd | cut -f1 -d' '` $<
 
 eeprom-1st.elf: eeprom-1st.o
-	$(GCC) -o $@ $(LDFLAGS) $<
+	$(GCC) -o $@ $(LDFLAGS) $< -Wl,'-Ttext=0'
 
+eeprom-1st: eeprom-1st.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+
+#### third boot loader
 eeprom-2nd.elf: eeprom-2nd.o $(EFSL_OBJS)
 	$(GCC) -o $@ $(LDFLAGS) $^
 
-rs232: rs232.elf
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --set-start=0 $< $@
-	@ls -l $@
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --set-start=0 --pad-to 512 $< $@
-
-eeprom-1st: eeprom-1st.elf
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --set-start=0 --pad-to 512 $< $@
-
 eeprom-2nd: eeprom-2nd.elf
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --set-start=512 $< $@
-
-eeprom.img: eeprom-2nd eeprom-1st
-	@dd if=eeprom-1st of=$@ bs=512 count=1
-	@dd if=eeprom-2nd of=$@ bs=512 seek=1
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --only-section=.rodata \
+				--change-section-address rodata=0x10020000 	\
+				--set-start=0x10000000 $< $@
 
 clean::
 	rm -fr $(TARGETS) $(EFSL_OBJS) *.o *.elf
-
 

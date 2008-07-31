@@ -36,8 +36,6 @@ esint8 if_setPos(hwInterface* file,euint32 address)
 
 void if_spiInit(hwInterface *iface)
 {
-	euint8 i;
-
 	/* empty - this done in another early stage */
 }
 
@@ -52,7 +50,6 @@ euint8 if_spiSend(hwInterface *iface, euint8 outgoing)
 	do {} while (REG_SPI_STAT & (1 << 6));
 
 	/* read back */
-	do {} while (REG_SPI_STAT & (1 << 4));
 	incoming = REG_SPI_RXD;
 	
 	SDCARD_CS_HI();

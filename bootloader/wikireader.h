@@ -8,6 +8,7 @@
 					\
 	/* P50 & P52: CS lines */	\
 	REG_P5_IOC5 = 0x06;		\
+	REG_PA_IOC = 0x08;		\
 					\
 	/* P65-67: SPI */		\
 	REG_P6_47_CFP = 0x54;		\
@@ -22,8 +23,10 @@
 #define DEBUGLED2_ON()	do { REG_P1_P1D &= ~(1 << 3); } while (0)
 #define DEBUGLED2_OFF()	do { REG_P1_P1D |=  (1 << 3); } while (0)
 
-#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
-#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
+//#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
+//#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
+#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
+#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
 
 #define EEPROM_CS_LO()	do { REG_P5_P5D &= ~(1 << 2); } while (0)
 #define EEPROM_CS_HI()	do { REG_P5_P5D |=  (1 << 2); } while (0)
