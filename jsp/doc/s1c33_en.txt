@@ -1,0 +1,732 @@
+        == TOPPERS/JSP Kernel User's manual ==
+                  (s1c33 target dependence part)
+
+             (Release 1.4.2，Update: 31-Jan-2006)
+
+------------------------------------------------------------------------
+ TOPPERS/JSP Kernel
+     Toyohashi Open Platform for Embedded Real-Time Systems/
+     Just Standard Profile Kernel
+
+ Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+                             Toyohashi Univ. of Technology, JAPAN
+ Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
+
+ 上記著作権者は，以下の (1)～(4) の条件か，Free Software Foundation
+ によって公表されている GNU General Public License の Version 2 に記
+ 述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ 利用と呼ぶ）することを無償で許諾する．
+ (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+     権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+     スコード中に含まれていること．
+ (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+     用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+     者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+     の無保証規定を掲載すること．
+ (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+     用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+     と．
+   (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+       作権表示，この利用条件および下記の無保証規定を掲載すること．
+   (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+       報告すること．
+ (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+     害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+
+ 本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ 含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ 接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+
+------------------------------------------------------------------------
+
+1. Overview of S1C33 target dependency part.
+
+1.1 Target systems and the development environment.
+
+The following target boards manufactured by SEIKO EPSON are supported
+as a target system of the S1C33 processor.
+  DMT33209 (CPU:S1C33209)
+  LUXUN2   (CPU:S1C33L11)
+  DMT33401 (CPU:S1C33401)
+  LUXUN4   (CPU:S1C33401)
+  DMT33E07 (CPU:S1C33E07)
+
+
+Used development environment is S1C33001C (GNU33) of SEIKO EPSON.
+It is ported tools from a GNU development environment for the S1C33 CPU
+family, and ELF is used for object file format.
+
+  directory name
+    s1c33                   for GNU environment (It is not supported currently)
+        dmt33209                DMT33209  (SEIKO EPSON)
+        luxun2                  LUXUN2    (SEIKO EPSON)
+        dmt33401                DMT33401  (SEIKO EPSON)
+        luxun4                  LUXUN4    (SEIKO EPSON)
+        dmt33e07                DMT33E07  (SEIKO EPSON)
+
+    s1c33-gnu33             for GNU33 environment
+        dmt33209                DMT33209  (SEIKO EPSON)
+        luxun2                  LUXUN2    (SEIKO EPSON)
+        dmt33401                DMT33401  (SEIKO EPSON)
+        luxun4                  LUXUN4    (SEIKO EPSON)
+        dmt33e07                DMT33E07  (SEIKO EPSON)
+
+1.2 Overview of supporting functions
+
+The following service call is being supported as a function of S1C33
+processor dependence.
+  Interrupt disable / enable         : dis_int() / ena_int()
+  Interrupt level change / reference : chg_ilv() / get_ilv()
+
+A system time reference function (vxget_tim) for the performance evalua-
+tion isn't being supported.
+
+1.3 Porting other target system
+
+S1C33 family is categorized to the "Standard macro" representing with
+S1C33209, the "Advanced macro" representing with S1C33401 or "PE pro-
+cessor" representing with S1C33E07.
+If implemented CPU is upper compatible CPU of each category, it is not
+necessary to modify CPU dependence part.
+But, when using the additional functions which are not in the lower rank
+processor, the IO register address and so on must be appropriately
+changed according to the target.
+As for the system dependence part, the correction according to the target
+sometimes becomes necessary.
+
+1.4 Serial port
+
+Serial communication by using Ch.0(LUXUN4 board is Ch.2) is supported.
+It is possible to connect PC and target board with RS232-C cable by using
+DMT33MON board(excludes LUXUN4, DMT33E07).
+
+Communication specification is as follows.
+
+The communication specification is as follows.
+  Communication type  : asynchronis 8 bits
+  Communication speed : 115,200 bps
+                         14,400 bps(DMT33E07)
+  Parity              : None
+  Stop bit            : 1 bit
+
+
+2. Functions of S1C33 processor dependence part.
+
+This chapter explains the function of kernel and system services which
+depends to S1C33 processor.
+
+2.1 Data type
+
+Size of "int" and "unsigned int" is 32 bits.
+"ILEVNO" which means Interrupt level is defined by "unsigned int".
+
+2.2 Interruption management function and interrupt handler.
+
+In the system initialize routine (start()), all maskable interruptions
+are forbidden.
+
+In the CPU lock status, the maskable interruption which has the level
+which is less than "TPS_CPULOCK_LEV" is forbidden. Specifically, 0x5 is
+set to IL (Interrupt Level) field of PSR (Processor Status Register).
+The interruptions which is managed by kernel must have the interruption
+level which less than TPS_CPULOCK_LEV.
+The maximum interruption level which is able to set is being defined as
+"TPS_INTLEV_MAX". TPS_CPULOCK_LEV and TPS_INTLEV_MAX are defined in cpu_
+config.h, it is possible to modify as occasion demands.
+
+S1C33 processor can set intteruption level from 0 to 7.
+It is impossible to use service call in the interruption having level 5
+(default), or NMI.
+
+The interrupt handler number (inhno) which specify in the DEF_INH is
+after 16.
+The operation when equal to or less than 15 is specified is undefined.
+As for the valid vector number, refer to the manual of each CPU.
+
+Multiplex interrupt is being supported with S1C33 target dependence part.
+Therefore, the following processing is being done by handler entrance
+processing.
+
+  set up 1 to the IE bit
+  add 1 to the Interrupt nesting counter.
+
+When multiplex interruption is forbidden, you must forbid interrup-
+tion specifically.
+Multiplex interruption doesn't occur if all the levels to use inter-
+ruption are made the same.
+
+Target dependence service call dis_int, ena_int do not depend on
+context condition. But chg_ilv, get_ilv depend on context condition.
+They can not be called in the non-task context.
+
+Specifications of Target dependence service call to change or refer inte-
+rruption level, and to enable or disable interruption are as follows.
+
+(1) chg_ilv                     Change interruption level
+
+【API】
+        ER ercd = chg_ilv(ILEVNO ilevno);
+
+【Parameters】
+        ILEVNO     ilevno       The value of new IL.
+
+【Return parameters】
+        ER      ercd            Error code
+
+【Error code】
+        E_CTX                   Context error
+        E_PAR                   Parameter error (ilevno is invalid)
+
+【Description】
+
+IL(Interrupt Level) is updated with the value which was specified by ilevno.
+When the specified value exceeds the interruption level which was defined
+as TPS_INTLEV_MAX, this function returns E_PAR error.
+Dispatch is not forbidden by this function.
+
+This service call can be called only at the time of the CPU lock cancel-
+lation condition of the task context.
+In the other condition, this function returns E_CTX error.
+
+The level which was changed with chg_ilv is succeeded to behind the
+dispatch, too, as the principle but is not secure.
+For example, The interruption level changed by the task which dispatched
+by interrupt handler returns to the original level if the task
+which was executing when interruption occurred resumes.
+
+(2) get_ilv                   Refer to the interruption level.
+
+【API】
+        ER ercd = get_ilv(ILEVNO *p_ilevno);
+
+【Parameters】
+        None
+
+【Return parameters】
+        ER      ercd          Error code
+        ILEVNO  *p_ilevno     Current IL
+
+【Error code】
+        E_CTX                 Context error
+        E_PAR                 Parameter error (p_ilevno is NULL)
+
+【Description】
+
+This function set current IL to *p_ilevno.
+This service call can be called only at the time of the CPU lock cancel-
+lation condition of the task context.
+In the other condition, this func-tion returns E_CTX error.
+
+(3) dis_int                   Disable interruption
+
+【API】
+        ER ercd = dis_int(INTNO intno);
+
+【Parameters】
+        INTNO     intno       Vector number of target interruption
+
+【Return parameters】
+        ER      ercd          Error code
+
+【Error code】
+        E_PAR                 Parameter error (intno is invalid)
+
+【Description】
+
+This function disables the interruption corresponding to the specified
+vector number.
+This function does not depend to context condision.
+
+(4) ena_int                   Enable interruption
+
+【API】
+        ER ercd = ena_int(INTNO intno);
+
+【Parameters】
+        INTNO     intno       Vector number of target interruption
+
+【Return parameters】
+        ER      ercd          Error code
+
+【Error code】
+        E_PAR                 Parameter error (intno is invalid)
+
+【機能】
+
+This function enables the interruption corresponding to the specified
+vector number.
+This function does not depend to context condision.
+
+2.3 CPU exception management function and CPU exception handler.
+
+The exception number which specified in DEF_EXC specify from No. 0 to
+No. 15.
+The movement when invalid vector number is specified isn't guaranteed.
+
+2.4 Implementation of interrupt/CPU exception handler
+
+Interrut/CPU exception handler (hereinafter, are a handler) are imple-
+mented by the following point.
+
+(1) Generate by static API
+
+Generates handler wrapper by DEF_INH or DEF_EXC. Wrapper is named
+specified handler + "entry". In the following example, Wrapper is generated
+as "timer_handler_entry".
+
+Example: Registration of timer handler "timer_handler".
+    DEF_INH(INTHDR1, { TA_HLNG, timer_handler });
+
+(2) Registration to vector table.
+
+Registors handler wrapper generated process (1)  to vector table.
+
+const void *VectorTable[] = {
+                   :
+            INT_ENTRY(timer_handler),
+                   :
+}
+
+INT_ENTRY is the macro which adds _entry to the character string which
+was specified as the parameter. In case of the CPU exception handler,
+it uses EXC_ENTRY.
+
+When arranging a vector table in the rewritable section (.data, and so
+on) by the program, the vector table can be dynamically updated using
+macro define_inh.
+
+In this case, the static description isn't indispensable but as for the
+reset vector to subscribe to 0th of the vector table as the exception,
+it should subscribe beforehand. Because rewriting by define_inh is done
+after the program works. If target system is reset before working prog-
+ram, There is the possibility that the program start address is lost.
+
+The handler made by user can use local variables. Because it is called
+from the wrapper processing.(Refer following figure).
+
+S1C33 target dependence part supports only interrupt handler. Interrupt
+service routine is not supported.
+
+                     Interrupt handler      Interrupt handler
+                     wrapper
+
+    Interrupt    --->
+    happen           | 1.evacuation of the
+                     |   registers
+                     | 2.switch stack
+                     | 3.renew interrupt
+                     |   nesting counter
+                     |   (+1)
+                     | 4.set 1 to IE bit
+                     |
+                     +--------------------->
+                                            | 5.clear interrupt factor
+                                            | 6.handler processing
+                                            |
+                      <---------------------+
+                     |
+                     | 7.set 0 to IE bit
+                     | 8.renew interrupt
+                     |   nesting counter
+                     |   (-1)
+                     | 9.switch
+  dispatch or    <---+
+  return
+
+  restore of register
+  is done here.
+
+  When all the following conditions are satisfied in interrupt handler,
+  the addition of the trumpet treatment isn't necessary.
+  Instead, add __attribute__ ((interrupt_handler)) to the prototype
+  declaration.
+
+    The condition which wrapper processing can be omitted.
+    1. Stack area is not used.
+    2. Service call is not used.
+    3. Multiplex interrupt is not allowed.
+
+When vector table is arranged in the section which it is impossible to
+rewrite by program(.rodata section, and so on), rewriting by define_inh
+is not done. And its detection is not done too.
+
+2.5 Start up routine.
+
+Start up routine initializes system by the following processes.
+
+(1) Set default data area pointer.
+
+First, set up the address of default data area pointer.
+It is because the program which compiled with GNU33 specifies the add-
+ress of the global symbol with offset from data area pointer address.
+The address (__dp) specified with linker script is set up in data area
+pointer (r15 or dp register).
+
+(2) Initialize stack pointer and PSR register.
+
+Set up STACKTOP to the SP register. It is used stack area for non-task
+context. It is presumed that STACKTOP is defined in the sys_config.h.
+
+Initialize PSR register. Specifically, 0 is set as IE bit and "TPS_
+INIT_INTLEVEL" is set as IL.
+TPS_INIT_INTLEVEL is initial value of interrupt level. It is presumed
+that TPS_INIT_INTLEVEL is defined in the sys_config.h.
+
+(3) Call hardware_init_hook
+
+When hardware_init_hook is not 0, call hardware_init_hook.
+It is prepared for to do the initialization of target dependence which
+you must do before kernel is started. If hardware_init_hook is not
+defined in the anywhere, linker must define as 0.
+This function is prepared in sys_start.c, and setting TTBR or IO
+registers.
+
+(4) Initialize RAM area
+
+Copy the initial value of the .data section stored in the ROM area to
+the concerned RAM area. And initialize .bss area by 0.
+
+(5) Call software_init_hook
+
+When software_init_hook is not 0, call software_init_hook.
+It is prepared for to do the initialization of software (library etc.)
+which you must do before kernel is started. If software_init_hook is not
+defined in the anywhere, linker must define as 0.
+This function is prepared in sys_start.c, call ANSI library initialize
+function.
+
+(6) Start kernel
+
+Jump to kernel_start. It never return after the divergence.
+But after divergence processing, the infinity loop of the halt order
+is prepared.
+
+2.6 Idle processing
+
+The idol routine carried out when there is no task which can be carried
+out is mounted. In this routine, allowing interrupt, and a halt order
+is carried out in the infinity loop.
+
+2.7 Processer mode
+
+The S1C33 processor dependence part always works by the supervisor mode,
+user mode is not used. (Only S1C33401. Other CPUs do not have this
+concept)
+Because the influence occurs to the operation of the kernel, it forbids
+to switch to the user mode in the user program.
+
+3. The function of the target system dependence.
+
+3.1 system clock driver.
+
+hw_timer.h is set up to make hardware timer interrupt occur 1ms in the
+period. The renewal unit of the system time can be changed by changing
+TIC_NUME and TIC_DENO defined in sys_defs.h.
+By the default, 1 time of hardware timer interrupt  increases system
+time one.
+When TIC_DENO is 2, 2 time of hardware timer interrupt  increases sys-
+tem time one.
+
+
+3.2 Serial interface driver.
+
+It is set up with hw_serial.h so that it can do serial communication
+which a Ch. 0 (LUXUN4 is Ch. 2) was used for.
+A communication condition is as the following.
+
+  Communication type  : asynchronis 8 bits
+  Communication speed : 115,200 bps
+                         14,400 bps(DMT33E07)
+  Parity              : None
+  Stop bit            : 1 bit
+
+
+4. Construction of development environment.
+
+Refer to the GNU33 manual about the way of construction of development
+environment.
+
+4.1 Version of Development environment.
+
+The version of the tool which have checked the operation is as follows.
+
+    GNU33 v1.5
+    Cygwin (cygwin DLL 1.5.9-1)
+
+4.2 The sample program construction method
+
+Note point which is peculiar to S1C33 is described, using the case to
+build a sample program for the DMT33209 board as an example.
+The following description assumes that current directory is 'jsp/'
+
+(1) Construction of development environment.
+
+Installs GNU33. S1C33 target dependence part assumes that GNU33 is
+installed in c:\gnu33 (/cygdrive/c/gnu33). If it is installed in other
+directory, it is necessary to modify config/s1c33-gnu33/Makefile.config.
+The path of development environment is being defined as TOPDIR.
+It is possible to use "make" included in GNU33, or Cygwin environment.
+
+  The case which GNU33 is being installed in /usr/logal/gnu33.
+
+  TOPDIR = /usr/local/gnu33
+
+Because GNU33 includes cygwin1.dll, there is possibility that Cygwin
+notifies error message. If error message is notified, replace cygwin1.dll
+of GNU33 with Cygwin's one.
+
+(2) Compile configurator.
+
+Compile configurator. Refer to the user.txt about method to compile.
+
+(3) Generation of Makefile and sources file of sample program by configu-
+    ration script.
+
+Generates Makefile and source files of sample program by configuration
+script. At this time, specifies gnu33 as the development environment
+name.
+
+  % mkdir dmt33209
+  % cd dmt33209
+  % ../configure -C s1c33 -S dmt33209 -T gnu33
+
+The object file generated by GNU33 compiler has ELF format.
+But Makefile of default adds extension "exe" to the object file.
+
+When wanting to change an extension, it changes the definition "OBJEXT".
+
+  When changing an extension into "elf"
+
+  OBJEXT = elf
+
+(4) Compile
+
+Compiles. This is same as the standard procedure.
+
+  % make depend
+  % make
+
+
+5.Others
+
+5.1 The directory and the file organization
+
+config/s1c33/
+    Makefile.config      Definitions depending target dependence part for
+                         Makefile(for GNU development environment)
+    cpu_config.c         Source file of CPU dependence function
+    lib.c                ANSI C library initialization function source file
+    makeoffset.c         The generation support program for offset.h
+    sys.c                A low level input and output function source file
+    cpu_config.h         Header file of CPU dependence functions
+    cpu_context.h        Header file of context control functions
+    cpu_defs.h           The header file collected definitions about CPU
+                         dependence function.
+    cpu_insn.h           Source file of low level CPU control functions.
+    cpu_rename.h         Header file to rename the inner identification
+                         data of the kernel
+    cpu_unrename.h       Header file to cancel the renaming by cpu_rename.h
+    s1c33.h              Definitions about S1C33 CPU
+    tool_config.h        The composition definition in the development
+                         environment dependence part
+    tool_defs.h          The definition for the application in the deve-
+                         lopment environment dependence part
+    cpu_rename.def       Source file of cpu_rename.h
+    cpu_unrename.def     Source file of cpu_unrename.h
+
+config/s1c33/dmt33209
+    hw_serial.cfg        Configuration file of SIO driver
+    Makefile.config      Definitions depending system dependence part
+                         for Makefile(for GNU development environment)
+    hw_serial.c          Source file of serial interface
+    sys_config.c         Source file of system dependence functions
+    sys_start.c          Boot program source file.
+    dmt33209.h           Definitions about DMT33209 board
+    hw_serial.h          Serial interface control routine
+    hw_timer.h           Timer control routine
+    sys_config.h         Header file of system dependence functions
+    sys_defs.h           The header file collected definitions about
+                         system dependence function.
+    sys_rename.h         Header file to rename the inner identification
+                         data of the kernel
+    sys_unrename.h       Header file to cancel the renaming by sys_rename.h
+    sys_rename.def       Source file of cpu_rename.h
+    sys_unrename.def     Source file of cpu_unrename.h
+    dmt33209.ld          Linker script file for sample program
+
+config/s1c33/luxun2
+    hw_serial.cfg        Configuration file of SIO driver
+    Makefile.config      Definitions depending system dependence part
+                         for Makefile(for GNU development environment)
+    hw_serial.c          Source file of serial interface
+    sys_config.c         Source file of system dependence functions
+    sys_start.c          Boot program source file.
+    luxun2.h             Definitions about LUXUN2 board
+    hw_serial.h          Serial interface control routine
+    hw_timer.h           Timer control routine
+    sys_config.h         Header file of system dependence functions
+    sys_defs.h           The header file collected definitions about
+                         system dependence function.
+    sys_rename.h         Header file to rename the inner identification
+                         data of the kernel
+    sys_unrename.h       Header file to cancel the renaming by sys_rename.h
+    sys_rename.def       Source file of cpu_rename.h
+    sys_unrename.def     Source file of cpu_unrename.h
+    luxun2.ld            Linker script file for sample program
+
+config/s1c33/dmt33401
+    hw_serial.cfg        Configuration file of SIO driver
+    Makefile.config      Definitions depending system dependence part
+                         for Makefile(for GNU development environment)
+    hw_serial.c          Source file of serial interface
+    sys_config.c         Source file of system dependence functions
+    sys_start.c          Boot program source file.
+    dmt33401.h           Definitions about DMT33401 board
+    hw_serial.h          Serial interface control routine
+    hw_timer.h           Timer control routine
+    sys_config.h         Header file of system dependence functions
+    sys_defs.h           The header file collected definitions about
+                         system dependence function.
+    sys_rename.h         Header file to rename the inner identification
+                         data of the kernel
+    sys_unrename.h       Header file to cancel the renaming by sys_rename.h
+    sys_rename.def       Source file of cpu_rename.h
+    sys_unrename.def     Source file of cpu_unrename.h
+    dmt33401.ld          Linker script file for sample program
+
+config/s1c33/luxun4
+    hw_serial.cfg        Configuration file of SIO driver
+    Makefile.config      Definitions depending system dependence part
+                         for Makefile(for GNU development environment)
+    hw_serial.c          Source file of serial interface
+    sys_config.c         Source file of system dependence functions
+    sys_start.c          Boot program source file.
+    luxun4.h             Definitions about LUXUN4 board
+    hw_serial.h          Serial interface control routine
+    hw_timer.h           Timer control routine
+    sys_config.h         Header file of system dependence functions
+    sys_defs.h           The header file collected definitions about
+                         system dependence function.
+    sys_rename.h         Header file to rename the inner identification
+                         data of the kernel
+    sys_unrename.h       Header file to cancel the renaming by sys_rename.h
+    sys_rename.def       Source file of cpu_rename.h
+    sys_unrename.def     Source file of cpu_unrename.h
+    luxun4.ld            Linker script file for sample program
+
+config/s1c33-gnu33
+    Makefile.config      CPU dependence definitions for Makefile
+                         (for GNU33 development environment)
+
+config/s1c33-gnu33/dmt33209
+    Makefile.config      DMT33209 dependence definitions for Makefile
+                         (for GNU33 development environment)
+
+config/s1c33-gnu33/luxun2
+    Makefile.config      LUXUN2 dependence definitions for Makefile
+                         (for GNU33 development environment)
+
+config/s1c33-gnu33/dmt33401
+    Makefile.config      DMT33401 dependence definitions for Makefile
+                         (for GNU33 development environment)
+
+config/s1c33-gnu33/luxun4
+    Makefile.config      LUXUN4 dependence definitions for Makefile
+                         (for GNU33 development environment)
+
+5.2 Memory map
+
+DMT33209 board
+    Address
+    0x00000000 - 0x00001fff : CPU built-in SRAM
+                              for stack area of non-task context.
+    0x00040000 - 0x00004fff : CPU built-in I/O registers.
+
+    0x00200000 - 0x002fffff : Flash memory
+                              not used.
+    0x00600000 - 0x006fffff : SRAM
+                              for .bss and .data section RAM sections
+                              except for stack area of non-task context
+                              are arranged to here.
+    0x00c00000 - 0x00cfffff : Flash memory
+                              for .text, .rodata section and initialize
+                              data of .data section
+                              0x00c00000 is the default boot address of
+                              S1C33 standard macro.
+
+LUXUN2 board
+    Address
+    0x00000000 - 0x00003fff : CPU built-in SRAM
+                              for stack area of non-task context.
+    0x00040000 - 0x00004fff : CPU built-in I/O registers.
+
+    0x00400000 - 0x005fffff : SRAM (Virtual SRAM)
+                              not used.
+    0x00800000 - 0x00ffffff : Flash memory
+                              for .text, .rodata section and initialize
+                              data of .data section
+                              They are arranged from address 0x00c00000.
+
+    0x02000000 - 0x027fffff : SRAM (Virtual SRAM)
+                              for .bss and .data section RAM sections
+                              except for stack area of non-task context
+                              are arranged to here.
+
+DMT33401 board
+    Address
+    0x00000000 - 0x00007fff : CPU built-in SRAM
+                              For stack area of non-task context.
+    0x00040000 - 0x00004fff : CPU built-in I/O registers.
+
+    0x00200000 - 0x002fffff : Flash memory
+                              not used.
+    0x00600000 - 0x006fffff : SRAM
+                              For .bss and .data section RAM sections
+                              except for stack area of non-task context
+                              are arranged to here.
+    0x10000000 - 0x11ffffff : SDRAM
+                              not used.
+    0x20000000 - 0x200fffff : Flash memory
+                              for .text, .rodata section and initialize
+                              data of .data section
+                              0x20000000 is the default boot address of
+                              S1C33 advanced macro.
+
+LUXUN4 board
+    0x00000000 - 0x00007fff : CPU built-in SRAM
+                              For stack area of non-task context.
+    0x00040000 - 0x00004fff : CPU built-in I/O registers.
+
+    0x01000000 - 0x011fffff : SRAM (Combo memory)
+                              For .bss and .data section RAM sections
+                              except for stack area of non-task context
+                              are arranged to here.
+    0x10000000 - 0x11ffffff : SDRAM
+                              not used
+    0x20000000 - 0x207fffff : Flash memory (Combo memory)
+                              for .text, .rodata section and initialize
+                              data of .data section
+                              0x20000000 is the default boot address of
+                              S1C33 advanced macro.
+
+DMT33E07 board
+    Address
+    0x00000000 - 0x00001fff : CPU built-in SRAM
+                              for stack area of non-task context.
+    0x00300000 - 0x00301fff : CPU built-in I/O registers.
+
+    0x00600000 - 0x006fffff : SRAM
+                              for .bss and .data section RAM sections
+                              except for stack area of non-task context
+                              are arranged to here.
+    0x00c00000 - 0x00cfffff : Flash memory
+                              for .text, .rodata section and initialize
+                              data of .data section
+                              0x00c00000 is the default boot address of
+                              S1C33 PE core.
+
+    0x01000000 - 0x017fffff : SDRAM
+                              not used
+
