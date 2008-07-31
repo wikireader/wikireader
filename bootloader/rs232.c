@@ -16,8 +16,6 @@ enum {
 #define DELAY() \
 	{ int delay=0xfff; while(delay--) asm("nop"); }
 
-static const char *xxx = "ficken3000";
-
 int main(void)
 {
 	unsigned char cmd, dat, len;

@@ -14,7 +14,7 @@
 #define DEFAULT_RS232_FILE	"rs232"
 #define DEFAULT_EEPROM_1ST_FILE "eeprom-1st"
 #define DEFAULT_EEPROM_2ND_FILE "eeprom-2nd"
-#define EEPROM_OFFSET 		0
+#define EEPROM_OFFSET 		1
 
 #define msg(x...)                                                       \
 do {                                                                    \
@@ -285,6 +285,8 @@ static int verify_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset
 			msg("\n");
 			error("EEPROM verify failed in chunk @offset 0x%x!\n", a);
 			hex_dump(verify_buf + a, 0, i);
+			error("expected:\n");
+			hex_dump(buf + a, 0, i);
 			free(verify_buf);
 			return -1;
 		}
@@ -338,21 +340,27 @@ int main(int argc, char **argv)
 	if (!read_file(eeprom_1st_file, buf, sizeof(buf), &len))
 		return -1;
 
-	memmove(shifted_buf + EEPROM_OFFSET, buf, len + EEPROM_OFFSET);
+	memcpy(shifted_buf + EEPROM_OFFSET, buf, len + EEPROM_OFFSET);
 
 	write_eeprom(fd, shifted_buf, len, 0);
 	if (verify_eeprom(fd, shifted_buf, len, 0) < 0)
 		return -1;
-	
+
 
 	tmp = read_file(eeprom_2nd_file, NULL, -1, &len);
 	if (!tmp)
 		return -1;
 
-	write_eeprom(fd, tmp, len, 0x400);
-	if (verify_eeprom(fd, tmp, len, 0x400) < 0)
+	write_eeprom(fd, tmp, len, 0x300);
+
+	/* ?!?!? */
+//	read(fd, buf, 2);
+
+
+	if (verify_eeprom(fd, tmp, len, 0x300) < 0)
 		return -1;
 
+	free(tmp);
 	msg("YEAH.\n");
 	return 0;
 }

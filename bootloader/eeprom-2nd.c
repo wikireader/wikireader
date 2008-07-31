@@ -15,6 +15,8 @@ int main(void)
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
 
+	asm("xld.w %r15, 0x10005000");
+
 	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */
 	REG_EFSIF0_CTL = 0xc3;
 
@@ -53,6 +55,8 @@ int main(void)
 
 	/* TODO */
 
+	for(;;);
+
 	return 0;
 }
 
@@ -83,9 +87,9 @@ static void boot_from_sdcard(void)
 
 static void print(const char *txt)
 {
-	int delay = 0xff;
-	
 	while (txt && *txt) {
+		int delay = 0xff;
+
 		REG_EFSIF0_TXD = *txt;
 		do {} while (REG_EFSIF0_STATUS & (1 << 5));
 

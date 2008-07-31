@@ -45,7 +45,7 @@ eeprom-2nd.elf: eeprom-2nd.o $(EFSL_OBJS)
 
 eeprom-2nd: eeprom-2nd.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --only-section=.rodata \
-				--change-section-address rodata=0x10020000 	\
+				--change-section-address .rodata=0x5000 	\
 				--set-start=0x10000000 $< $@
 
 clean::

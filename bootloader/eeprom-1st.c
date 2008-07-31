@@ -81,7 +81,7 @@ int main(void) {
 
 	spi_transmit(0x03);
 	spi_transmit(0x00);
-	spi_transmit(0x04);
+	spi_transmit(0x03);
 	spi_transmit(0x00);
 
 	while (len--) {
