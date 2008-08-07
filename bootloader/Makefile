@@ -4,8 +4,14 @@ AS=$(CROSS)as
 LD=$(CROSS)ld
 HOSTCC=gcc
 CC=$(GCC)
+LIBDIR= /home/daniel/src/axlinux-c33pe.061027/tools/c33/lib/gcc-lib/c33-epson-elf/3.3.2/33401/
+
 #LDFLAGS=-static -s -Wl,'-e 0' -Wl,'-z origin' -Wl,'-Ttext=0' --gc-sections -N -Ttext=0
-LDFLAGS=-static -s --no-gc-sections -N
+LDFLAGS=-static -s --no-gc-sections -N \
+	-L$(LIBDIR) \
+
+LIBS= 	$(LIBDIR)/libgcc.a $(LIBDIR)/libc.a
+
 CFLAGS=-Wall -I. -Iefsl/ -Iefsl/inc/ -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
 
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33adv -mc33_ext
@@ -19,6 +25,7 @@ EFSL_OBJS= \
 	efsl/src/mkfs.o efsl/src/debug.o efsl/src/ioman.o efsl/src/ui.o 		\
 	efsl/src/extract.o efsl/src/interfaces/s1c33e07_spi.o 				\
 	efsl/src/interfaces/sd.o
+
 
 
 TARGETS=rs232 eeprom-1st eeprom-2nd e07load
@@ -50,8 +57,8 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o # $(EFSL_OBJS)
-	$(LD) -o $@ $(LDFLAGS) $^ -T $(<:.o=.lds) -Map $(<:.o=.map)
+eeprom-2nd.elf: eeprom-2nd.o $(EFSL_OBJS)
+	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --only-section=.rodata \

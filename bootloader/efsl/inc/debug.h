@@ -102,8 +102,15 @@
 		#define FUNC_IN(x) ;
 		#define FUNC_OUT(x) ;
 		#define debug lpc2000_debug_printf
-	#else
-	void debug(const eint8 *format, ...); /* This is messy FIXME */
+	#endif
+
+	#ifdef HW_ENDPOINT_S1C33E07_SD
+		extern void print(const char *);
+		#define TXT(x) x
+		#define DBG(x) print(x)
+		#define FUNC_IN(x) ;
+		#define FUNC_OUT(x) ;
+		#define debuf print
 	#endif
 
 	void debug_init();

@@ -41,6 +41,8 @@
  * It sets the pointerchain and verifies each step.
  * Return value: 0 on success and -1 on failure.
 */
+extern void print(const char*);
+
 esint8 efs_init(EmbeddedFileSystem * efs,eint8* opts)
 {
 	if(if_initInterface(&efs->myCard, opts)==0)

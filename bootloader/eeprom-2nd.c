@@ -6,16 +6,12 @@
 #define MEMSTART 0x40000
 
 
+void print(const char *txt);
 static void boot_from_sdcard(void);
-static void print(const char *txt);
 
 __attribute__((noreturn))
 int main(void) 
 {
-
-	const char *bla1 = "gagagagaga\n";
-	const char *bla2 = "12323452345\n";
-
 	INIT_PINS();
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
@@ -27,11 +23,7 @@ int main(void)
 	asm("xld.w   %r15, 0x10005000");
 //	asm("ld.w    %dp,%r15");
 
-	print("Bootloader alive and kicking.\n");
-	print(bla2);
-	print(bla1);
-	print(bla2);
-
+	print("Bootloader starting\n");
 	boot_from_sdcard();
 
 	/* we we get here, boot_from_sdcard() failed to find a kernel on the
@@ -46,14 +38,13 @@ int main(void)
 
 static void boot_from_sdcard(void)
 {
-#if 0
         EmbeddedFileSystem efs;
         EmbeddedFile file;
         char *buf = (char *) MEMSTART;
 
 //        debug_init();
 print("cp1\n");
-        if (efs_init(&efs,0))
+        if (efs_init(&efs, 0))
 		return;
 print("cp2\n");
 
@@ -68,10 +59,9 @@ print("cp3\n");
 
 	/* jump, just let go! :) */
         ((void (*) (void)) buf) ();
-#endif
 }
 
-static void print(const char *txt)
+void print(const char *txt)
 {
 	while (txt && *txt) {
 		int delay = 0xff;
