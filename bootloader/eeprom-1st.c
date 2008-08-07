@@ -4,12 +4,16 @@
 #define DEST 0x10000000
 //#define DEST 0x200
 
+#ifdef LOAD_FROM_EEPROM
 static void spi_transmit(unsigned char b);
+#endif
 
 /* MRS command address for burst length=1, CAS latency = 2 */
 #define MRSREG		(*(volatile unsigned char *) 0x10000442)
 #define RAMDUMMY	(*(volatile unsigned char *) 0x10000000)
 
+//#define LOAD_FROM_EEPROM 1
+#define LOAD_FROM_RS232 1
 
 int main(void) {
 	unsigned int len = EEPROM_PAYLOAD_SIZE;
@@ -20,9 +24,7 @@ int main(void) {
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
 
-
-
-	/*****************************************************/
+	/* RAM init */
 
 	/* disable write protection of clock registers */
 	REG_CMU_PROTECT = 0x96;
@@ -67,11 +69,9 @@ int main(void) {
 
 	REG_SDRAMC_INI = 0x10;	/* exit setup mode */
 
-	/***************************************************/
 
-
-
-
+#ifdef LOAD_FROM_EEPROM
+	/* read bytes from EEPROM and copy them to RAM */
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10);
@@ -91,16 +91,36 @@ int main(void) {
 	}
 
 	EEPROM_CS_HI();
+#endif
 
+#ifdef LOAD_FROM_RS232
+	INIT_RS232();
+
+	/* read bytes from serial port and copy them to RAM */
+	
+	len = 30000;
+	while (len--) {
+		do {} while (!(REG_EFSIF0_STATUS & 0x1));
+		*dest = REG_EFSIF0_RXD;
+		dest++;
+	}
+
+	REG_EFSIF0_TXD = '!';
+	do {} while (REG_EFSIF0_STATUS & (1 << 5));
+
+#endif
+
+	/* Gimme Van Halen */
 	((void (*) (void)) DEST) ();
 
 	return 0;
 }
 
+#ifdef LOAD_FROM_EEPROM
 static void spi_transmit(unsigned char b)
 {
 	REG_SPI_TXD = b;
 	do {} while (REG_SPI_STAT & (1 << 6));
 }
-
+#endif
 

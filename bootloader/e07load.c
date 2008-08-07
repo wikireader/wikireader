@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define DEFAULT_BAUD 		B38400
+#define DEFAULT_BAUD 		B57600
 #define DEFAULT_TTY		"/dev/ttyUSB0"
 #define DEFAULT_RS232_FILE	"rs232"
 #define DEFAULT_EEPROM_1ST_FILE "eeprom-1st"

@@ -9,42 +9,28 @@
 static void boot_from_sdcard(void);
 static void print(const char *txt);
 
-int main(void)
+__attribute__((noreturn))
+int main(void) 
 {
+
+	const char *bla1 = "gagagagaga\n";
+	const char *bla2 = "12323452345\n";
+
 	INIT_PINS();
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
+	INIT_RS232();
 
-	asm("xld.w %r15, 0x10005000");
+//	asm("xld.w   %r15,0x0800");
+//	asm("ld.w    %sp,%r15"); //        ; set SP
 
-	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */
-	REG_EFSIF0_CTL = 0xc3;
-
-	/* DIVMD = 1/8, General I/F mode */
-	REG_EFSIF0_IRDA = 0x10;
-
-	/* by default MCLKDIV = 0 which means that the internal MCLK is OSC/1,
-	 * where OSC = OSC3 as OSCSEL[1:0] = 00b
-	 * Hence, MCLK is 48MHz */
-
-	/* set up baud rate timer reload data */
-	/* 
-	 * BRTRD = ((F[brclk] * DIVMD) / (2 * bps)) - 1;
-	 * where
-	 * 	F[brclk] = 48MHz
-	 * 	DIVMD = 1/8
-	 *	bps = 38400
-	 *
-	 *   = 77
-	 */
-
-	REG_EFSIF0_BRTRDL = 77 & 0xff;
-	REG_EFSIF0_BRTRDM = 77 >> 8;
-
-	/* baud rate timer: run! */
-	REG_EFSIF0_BRTRUN = 0x01;
+	asm("xld.w   %r15, 0x10005000");
+//	asm("ld.w    %dp,%r15");
 
 	print("Bootloader alive and kicking.\n");
+	print(bla2);
+	print(bla1);
+	print(bla2);
 
 	boot_from_sdcard();
 
@@ -56,9 +42,7 @@ int main(void)
 	/* TODO */
 
 	for(;;);
-
-	return 0;
-}
+} 
 
 static void boot_from_sdcard(void)
 {
@@ -67,13 +51,15 @@ static void boot_from_sdcard(void)
         EmbeddedFile file;
         char *buf = (char *) MEMSTART;
 
-        debug_init();
-
+//        debug_init();
+print("cp1\n");
         if (efs_init(&efs,0))
 		return;
+print("cp2\n");
 
         if (file_fopen(&file, &efs.myFs, "kernel", 'r'))
 		return;
+print("cp3\n");
 
 	file_read(&file, MEMSIZE, buf);
 

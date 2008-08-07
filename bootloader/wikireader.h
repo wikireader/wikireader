@@ -17,6 +17,38 @@
 	REG_P0_03_CFP = 0x05;		\
 }
 
+
+#define INIT_RS232()								\
+{										\
+	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */	\
+	REG_EFSIF0_CTL = 0xc3;							\
+										\
+	/* DIVMD = 1/8, General I/F mode */					\
+	REG_EFSIF0_IRDA = 0x10;							\
+										\
+	/* by default MCLKDIV = 0 which means that the internal MCLK is OSC/1,	\
+	 * where OSC = OSC3 as OSCSEL[1:0] = 00b				\
+	 * Hence, MCLK is 48MHz */						\
+										\
+	/* set up baud rate timer reload data */				\
+	/* 									\
+	 * BRTRD = ((F[brclk] * DIVMD) / (2 * bps)) - 1;			\
+	 * where								\
+	 * 	F[brclk] = 48MHz						\
+	 * 	DIVMD = 1/8							\
+	 *	bps = 57600							\
+	 *									\
+	 *   = 51								\
+	 */									\
+										\
+	REG_EFSIF0_BRTRDL = 51 & 0xff;						\
+	REG_EFSIF0_BRTRDM = 51 >> 8;						\
+										\
+	/* baud rate timer: run! */						\
+	REG_EFSIF0_BRTRUN = 0x01;						\
+}
+
+
 #define DEBUGLED1_ON()	do { REG_P1_P1D &= ~(1 << 4); } while (0)
 #define DEBUGLED1_OFF()	do { REG_P1_P1D |=  (1 << 4); } while (0)
 

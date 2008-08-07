@@ -1,0 +1,43 @@
+OUTPUT_FORMAT("elf32-c33", "elf32-c33",
+              "elf32-c33")
+OUTPUT_ARCH(c33)
+SEARCH_DIR(.);
+SECTIONS
+{
+
+        /* data pointer symbol By GWB33 */
+        __dp = 0x10005000;
+
+        /* section infomation By GWB33 */
+        . = 0x10005000;
+
+        .bss 0x00000000 :
+          {
+           __START_bss = . ;
+           *(.bss) ;
+           __END_bss = . ;
+          }
+
+        .data : AT( __END_rodata )
+          {
+           __START_data = . ;
+           *(.data) ;
+           __END_data = . ;
+          }
+          __END_data_LMA = LOADADDR( .data );
+
+        .text 0x10000000 :
+          {
+           __START_text = . ;
+           *(.text) ;
+           __END_text = . ;
+          }
+
+        .rodata 0x10005000 :
+          {
+           __START_rodata = . ;
+           *(.rodata) ;
+           __END_rodata = . ;
+          }
+
+}
