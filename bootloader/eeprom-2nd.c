@@ -30,6 +30,9 @@ int main(void)
 
 	print("Bootloader starting\n");
 
+	/* enable SPI: master mode, no DMA, 8 bit transfers, slowest clock */
+	REG_SPI_CTL1 = 0x03 | (7 << 10) | (7 << 4);
+
 	boot_from_sdcard();
 
 	/* we we get here, boot_from_sdcard() failed to find a kernel on the
