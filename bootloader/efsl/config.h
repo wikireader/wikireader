@@ -39,7 +39,7 @@
  * you will have to pass a pointer to the memory as the last argument of
  * ioman_init.
 */
-	#define IOMAN_NUMBUFFER 1
+	#define IOMAN_NUMBUFFER 2
 	#define IOMAN_NUMITERATIONS 3
 	#define IOMAN_DO_MEMALLOC
 

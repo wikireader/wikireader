@@ -14,7 +14,7 @@ LIBS= 	$(LIBDIR)/libgcc.a $(LIBDIR)/libc.a
 
 CFLAGS=-Wall -I. -Iefsl/ -Iefsl/inc/ -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
 
-ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33adv -mc33_ext
+ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 OBJCOPY=$(CROSS)objcopy
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
@@ -57,7 +57,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o $(EFSL_OBJS)
+eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf

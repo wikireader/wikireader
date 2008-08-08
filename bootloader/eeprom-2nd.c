@@ -1,12 +1,13 @@
-#include <efs.h>
 #include "regs.h"
 #include "wikireader.h"
+#include "spi.h"
+#include "sdcard.h"
+#include "misc.h"
 
 #define MEMSIZE (1024 * 1024 * 4)
 #define MEMSTART 0x40000
 
 
-void print(const char *txt);
 static void boot_from_sdcard(void);
 
 __attribute__((noreturn))
@@ -17,6 +18,10 @@ int main(void)
 	SDCARD_CS_HI();
 	INIT_RS232();
 
+	/* CARDPWR on */
+	REG_SRAMC_A0_BSL |= 1 << 1;
+	*(volatile unsigned int *) 0x200000 |= 0x1;
+
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //        ; set SP
 
@@ -24,6 +29,7 @@ int main(void)
 //	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
+
 	boot_from_sdcard();
 
 	/* we we get here, boot_from_sdcard() failed to find a kernel on the
@@ -36,48 +42,22 @@ int main(void)
 	for(;;);
 } 
 
+
+
+
 static void boot_from_sdcard(void)
 {
-        EmbeddedFileSystem efs;
-        EmbeddedFile file;
         char *buf = (char *) MEMSTART;
+	int ret;
+	char tmp[100];
 
-//        debug_init();
-print("cp1\n");
-        if (efs_init(&efs, 0))
+	if (sdcard_init() < 0)
 		return;
-print("cp2\n");
+	
 
-        if (file_fopen(&file, &efs.myFs, "kernel", 'r'))
-		return;
-print("cp3\n");
 
-	file_read(&file, MEMSIZE, buf);
-
-        file_fclose (&file);
-        fs_umount (&efs.myFs);
 
 	/* jump, just let go! :) */
         ((void (*) (void)) buf) ();
-}
-
-void print(const char *txt)
-{
-	while (txt && *txt) {
-		int delay = 0xff;
-
-		REG_EFSIF0_TXD = *txt;
-		do {} while (REG_EFSIF0_STATUS & (1 << 5));
-
-		if (*txt == '\n') {
-			REG_EFSIF0_TXD = '\r';
-			do {} while (REG_EFSIF0_STATUS & (1 << 5));
-		}
-
-		while (delay--)
-			asm("nop");
-
-		txt++;
-	}
 }
 

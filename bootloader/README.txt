@@ -2,6 +2,7 @@
 	OpenMoko Dictionary hardware bootloader
 	Copyright (c) 7/8/2008 by Daniel Mack <daniel@caiaq.de>
 
+
 (0) Preamble
 
 Epson's S1C33E07 CPU has the possibility to boot from the following media:
@@ -27,10 +28,11 @@ the SD card, there is need for some more fuzzy logic.
 The bootloader is thus split into three parts which are described in
 detail here.
 
+
 (1) The first stage bootloader (rs232)
 
 This image is needed for bootstrapping a naked device and for debugging
-only. It it loaded via the serial port and has the following tasks to do:
+only. It is loaded via the serial port and has the following tasks to do:
 
 	* Set up the serial console to 57600/8N1
 	* Take commands from serial line to toggle the EEPROM's CS# signal
@@ -38,6 +40,7 @@ only. It it loaded via the serial port and has the following tasks to do:
 
 Hence, it is more or less a remote control for the EEPROM to allow the
 host to write an initial EEPROM image.
+
 
 (2) The first stage EEPROM bootloader (eeprom-1st)
 
@@ -70,6 +73,7 @@ the first lines. When compiled for serial mode, it does the following:
 With this mode, development became a lot easier, even though it is not
 the usual case for deployment later.
 
+
 (3) The second stage EEPROM bootloader (eeprom-2nd)
 
 This is where SD card handling and file loading is done and we don't
@@ -78,6 +82,7 @@ has some abstraction functions for low-level SPI communication tasks
 specific to our hardware design.
 
  ...
+
 
 
 (4) The e07load utility

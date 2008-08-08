@@ -106,6 +106,7 @@
 
 	#ifdef HW_ENDPOINT_S1C33E07_SD
 		extern void print(const char *);
+		extern void hex_dump(const char *, int);
 		#define TXT(x) x
 		#define DBG(x) print(x)
 		#define FUNC_IN(x) ;

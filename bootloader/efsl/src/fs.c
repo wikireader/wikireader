@@ -88,7 +88,8 @@ void fs_loadVolumeId(FileSystem *fs, Partition *part)
 	euint8 *buf;
 	
 	buf=part_getSect(part,0,IOM_MODE_READONLY|IOM_MODE_EXP_REQ);
-	
+hex_dump(buf, 128);
+
 	fs->volumeId.BytesPerSector=ex_getb16(buf,0x0B);
 	fs->volumeId.SectorsPerCluster=*((eint8*)(buf+0x0D));
 	fs->volumeId.ReservedSectorCount=ex_getb16(buf,0x0E);
@@ -114,7 +115,8 @@ esint16 fs_verifySanity(FileSystem *fs)
 {
 	esint16 sane=1; /* Sane until proven otherwise */
 	/* First check, BPS, we only support 512 */
-	if(fs->volumeId.BytesPerSector!=512)sane=0;
+//	if(fs->volumeId.BytesPerSector!=512)sane=0;
+if(!sane) print("check1 failed\n");
 	/* Check is SPC is valid (multiple of 2, and clustersize >=32KB */
 	if(!((fs->volumeId.SectorsPerCluster == 1 ) |
 	     (fs->volumeId.SectorsPerCluster == 2 ) |
@@ -123,14 +125,17 @@ esint16 fs_verifySanity(FileSystem *fs)
 	     (fs->volumeId.SectorsPerCluster == 16) |
 	     (fs->volumeId.SectorsPerCluster == 32) |
 	     (fs->volumeId.SectorsPerCluster == 64) ))sane=0;
+if(!sane) print("check2 failed\n");
 	/* Any number of FAT's should be supported... (untested) */
 	/* There should be at least 1 reserved sector */
 	if(fs->volumeId.ReservedSectorCount==0)sane=0;
+if(!sane) print("check3 failed\n");
 	if(fs->volumeId.FatSectorCount16 != 0){
 		if(fs->volumeId.FatSectorCount16 > fs->part->disc->partitions[fs->part->activePartition].numSectors)sane=0;
 	}else{
 		if(fs->volumeId.FatSectorCount32 > fs->part->disc->partitions[fs->part->activePartition].numSectors)sane=0;
 	} 
+if(!sane) print("check4 failed\n");
 	return(sane);
 }
 /*****************************************************************************/
