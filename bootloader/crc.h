@@ -1,2 +1,2 @@
-unsigned char crc7(unsigned char crc, const unsigned char *buffer, int len);
+unsigned char crc7(const unsigned char *buffer, int len);
 

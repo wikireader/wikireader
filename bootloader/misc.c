@@ -79,3 +79,8 @@ void hex_dump(const char *buf, int size)
         }
 }
 
+void delay(int nops)
+{
+	while (nops--)
+		asm("nop");
+}

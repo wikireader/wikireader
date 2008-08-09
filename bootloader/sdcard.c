@@ -4,10 +4,15 @@
 #include "misc.h"
 #include "crc.h"
 
-#define CMDREAD		0x11
-#define CMDREADCSD	0x09
+#define CMD_GO_IDLE_STATE	0x00
+#define CMD_READ_CSD		0x09
+#define CMD_READ_SECTOR		0x11
+#define CMD_SEND_OP_COND	0x29
+#define CMD_APP			0x37
 
-#define BYTES_PER_SECTOR 512
+#define BYTES_PER_SECTOR	512
+
+static unsigned char csd[16];
 
 static unsigned char sdcard_response(void)
 {
@@ -25,7 +30,7 @@ static unsigned char sdcard_response(void)
 	return ret;
 }
 
-static unsigned char sdcard_cmd(unsigned char cmd, unsigned int param)
+static void sdcard_cmd(unsigned char cmd, unsigned int param)
 {
 	unsigned char i, c[] = {
 		0x40 | cmd,
@@ -36,19 +41,19 @@ static unsigned char sdcard_cmd(unsigned char cmd, unsigned int param)
 	};
 
 	SDCARD_CS_LO();
+	spi_transmit(0xff);
 	for (i = 0; i < sizeof(c); i++)
 		spi_transmit(c[i]);
 
 	/* checksum */
-	spi_transmit(crc7(0, c, sizeof(c)) | 1);
+	spi_transmit((crc7(c, sizeof(c)) << 1) | 1);
 	SDCARD_CS_HI();
-	return sdcard_response();
 }
 
 static int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 {
 	unsigned char ret;
-	unsigned int i, retry = 0xffff;
+	unsigned int i, retry;
 
 	/* only valid for non-SDHC cards! */
 	sector *= BYTES_PER_SECTOR;
@@ -57,16 +62,17 @@ static int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 	for (i = 0; i < BYTES_PER_SECTOR; i++)
 		buf[i] = 0;
 
-	ret = sdcard_cmd(CMDREAD, sector);
+	sdcard_cmd(CMD_READ_SECTOR, sector);
+	ret = sdcard_response();
 
 	if (ret != 0) {
 		print("bad card response\n");
 		return -1;
 	}
 
-	while (retry--) {
+	for (retry = 0; retry < 1000; retry++) {
 		ret = sdcard_response();
-		if (ret != 0xff)
+		if (ret == 0xfe)
 			break;
 	}
 
@@ -80,9 +86,35 @@ static int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 		buf[i] = spi_transmit(0xff);
 	SDCARD_CS_HI();
 
-	/* checksum, ignored */
+	/* swallow checksum */
 	spi_transmit(0xff);
 	spi_transmit(0xff);
+
+	return 0;
+}
+
+static int sdcard_read_csd(void)
+{
+	unsigned int retry, ret, i;
+
+	sdcard_cmd(CMD_READ_CSD, 0);
+	
+	for (retry = 0; retry < 1000; retry++) {	
+		ret = sdcard_response();
+		if (ret == 0xfe)
+			break;
+	}
+
+	if (ret != 0xfe)
+		return -1;
+
+	SDCARD_CS_LO();
+	for (i = 0; i < sizeof(csd); i++)
+		csd[i] = spi_transmit(0xff);
+	SDCARD_CS_HI();
+
+	print("dumping CSD:\n");
+	hex_dump(csd, sizeof(csd));
 
 	return 0;
 }
@@ -91,36 +123,52 @@ int sdcard_init(void)
 {
 	unsigned char ret;
 	unsigned char buf[BYTES_PER_SECTOR];
-	unsigned int retry = 100;
+	unsigned int retry;
 
-	while (retry--) {
-		ret = sdcard_cmd(0, 0);
+	for (retry = 100; retry; retry--) {
+		sdcard_cmd(CMD_GO_IDLE_STATE, 0);
+		ret = sdcard_response();
+
 		if (ret == 1)
 			break;
 	}
 
 	if (ret != 1) {
+		print("unable to set SD card to IDLE state\n");
+		return -1;
+	}
+
+	for (retry = 1000; retry; retry--) {
+		sdcard_cmd(CMD_APP, 0);
+		ret = sdcard_response();
+		
+		sdcard_cmd(CMD_SEND_OP_COND, 0);
+		ret = sdcard_response();
+
+		if (ret == 0)
+			break;
+
+		delay(10000);
+	}
+
+	if (ret) {
 		print("SD card failed to init.\n");
 		return -1;
 	}
 
-	retry = 32000;
-	while (retry--) {
-		ret = sdcard_cmd(1, 0);
-		if (ret != 1)
-			break;
-	}
+	print("SD card initialized.\n");
 
-	if (ret != 0) {
-		print("SD card not responding\n");
+	if (sdcard_read_csd() < 0) {
+		print("unable to read CSD\n");
 		return -1;
 	}
 
+	print("Dumping sector 0:\n");
 	sdcard_read_sector(0, buf);
 	hex_dump(buf, sizeof(buf));
-	sdcard_read_sector(1, buf);
+	
+	print("Dumping sector 7:\n");
+	sdcard_read_sector(7, buf);
 	hex_dump(buf, sizeof(buf));
-
-	return 0;
 }
 
