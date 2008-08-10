@@ -3,14 +3,13 @@
 #include "spi.h"
 #include "misc.h"
 #include "crc.h"
+#include "sdcard.h"
 
 #define CMD_GO_IDLE_STATE	0x00
 #define CMD_READ_CSD		0x09
 #define CMD_READ_SECTOR		0x11
 #define CMD_SEND_OP_COND	0x29
 #define CMD_APP			0x37
-
-#define BYTES_PER_SECTOR	512
 
 static unsigned char csd[16];
 
@@ -50,7 +49,7 @@ static void sdcard_cmd(unsigned char cmd, unsigned int param)
 	SDCARD_CS_HI();
 }
 
-static int sdcard_read_sector(unsigned int sector, unsigned char *buf)
+int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 {
 	unsigned char ret;
 	unsigned int i, retry;
@@ -77,7 +76,7 @@ static int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 	}
 
 	if (ret != 0xfe) {
-		print("unable to read first block of sector\n");
+		print("read timeout\n");
 		return -2;
 	}
 
@@ -122,7 +121,6 @@ static int sdcard_read_csd(void)
 int sdcard_init(void)
 {
 	unsigned char ret;
-	unsigned char buf[BYTES_PER_SECTOR];
 	unsigned int retry;
 
 	for (retry = 100; retry; retry--) {
@@ -163,12 +161,6 @@ int sdcard_init(void)
 		return -1;
 	}
 
-	print("Dumping sector 0:\n");
-	sdcard_read_sector(0, buf);
-	hex_dump(buf, sizeof(buf));
-	
-	print("Dumping sector 7:\n");
-	sdcard_read_sector(7, buf);
-	hex_dump(buf, sizeof(buf));
+	return 0;
 }
 

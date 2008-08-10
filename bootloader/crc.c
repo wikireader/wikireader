@@ -4,8 +4,6 @@ unsigned char crc_byte(unsigned int crc, unsigned char byte, unsigned char nbits
 {
 	signed char bit;
 
-
-
 	for (bit = nbits - 1; bit >= 0; bit--) {
 		crc <<= 1;
 		crc |= (byte >> bit) & 1;

@@ -11,13 +11,6 @@ SECTIONS
         /* section infomation By GWB33 */
         . = 0x10005000;
 
-        .bss 0x00000000 :
-          {
-           __START_bss = . ;
-           *(.bss) ;
-           __END_bss = . ;
-          }
-
         .data : AT( __END_rodata )
           {
            __START_data = . ;
@@ -40,4 +33,10 @@ SECTIONS
            __END_rodata = . ;
           }
 
+	.bss : AT( __END_rodata )
+          {
+           __START_bss = . ;
+           *(.bss) ;
+           __END_bss = . ;
+          }
 }

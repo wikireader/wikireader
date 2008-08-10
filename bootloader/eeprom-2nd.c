@@ -3,6 +3,7 @@
 #include "spi.h"
 #include "sdcard.h"
 #include "misc.h"
+#include "fat.h"
 
 #define MEMSIZE (1024 * 1024 * 4)
 #define MEMSTART 0x40000
@@ -57,8 +58,8 @@ static void boot_from_sdcard(void)
 	if (sdcard_init() < 0)
 		return;
 	
-
-
+	if (fat_init(0) < 0)
+		return;
 
 	/* jump, just let go! :) */
         ((void (*) (void)) buf) ();
