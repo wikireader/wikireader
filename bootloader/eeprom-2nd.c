@@ -53,13 +53,21 @@ static void boot_from_sdcard(void)
 {
         char *buf = (char *) MEMSTART;
 	int ret;
-	char tmp[100];
+	char tmp[512*2];
 
 	if (sdcard_init() < 0)
 		return;
-	
+
 	if (fat_init(0) < 0)
 		return;
+
+	if (fat_read_file("KERNEL", tmp, sizeof(tmp)) < 0)
+		return;
+
+	print("DUMP:\n");
+	hex_dump(tmp, sizeof(tmp));
+
+	print("JUMP!\n");
 
 	/* jump, just let go! :) */
         ((void (*) (void)) buf) ();
