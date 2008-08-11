@@ -6,10 +6,10 @@ SECTIONS
 {
 
         /* data pointer symbol By GWB33 */
-        __dp = 0x10005000;
+        __dp = 0x10002000;
 
         /* section infomation By GWB33 */
-        . = 0x10005000;
+        . = 0x10002000;
 
         .data : AT( __END_rodata )
           {
@@ -26,7 +26,7 @@ SECTIONS
            __END_text = . ;
           }
 
-        .rodata 0x10005000 :
+        .rodata 0x10002000 :
           {
            __START_rodata = . ;
            *(.rodata) ;

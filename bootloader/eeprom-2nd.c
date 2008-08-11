@@ -27,13 +27,13 @@ int main(void)
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //        ; set SP
 
-	asm("xld.w   %r15, 0x10005000");
+	asm("xld.w   %r15, 0x10002000");
 //	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
 
-	/* enable SPI: master mode, no DMA, 8 bit transfers, slowest clock */
-	REG_SPI_CTL1 = 0x03 | (7 << 10);// | (7 << 4);
+	/* enable SPI: master mode, no DMA, 8 bit transfers */
+	REG_SPI_CTL1 = 0x03 | (7 << 10);
 
 	boot_from_sdcard();
 
@@ -53,7 +53,6 @@ int main(void)
 static void boot_from_sdcard(void)
 {
         char *buf = (char *) MEMSTART;
-	int ret;
 
 	if (sdcard_init() < 0)
 		return;
@@ -61,12 +60,12 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_read_file("TEST", MEMSTART, 36*1024) < 0)
+	if (fat_read_file("TEST", buf, 36*1024) < 0)
 		return;
 
 	print("DUMP:\n");
 	//hex_dump(MEMSTART, 1024);
-	print(MEMSTART);
+	print(buf);
 
 	print("JUMP!\n");
 

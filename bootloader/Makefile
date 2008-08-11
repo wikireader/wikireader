@@ -19,15 +19,6 @@ ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY=$(CROSS)objcopy
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
-EFSL_OBJS= \
-	efsl/src/efs.o efsl/src/plibc.o efsl/src/disc.o efsl/src/partition.o		\
-	efsl/src/time.o efsl/src/fs.o efsl/src/fat.o efsl/src/file.o efsl/src/dir.o	\
-	efsl/src/mkfs.o efsl/src/debug.o efsl/src/ioman.o efsl/src/ui.o 		\
-	efsl/src/extract.o efsl/src/interfaces/s1c33e07_spi.o 				\
-	efsl/src/interfaces/sd.o
-
-
-
 TARGETS=rs232 eeprom-1st eeprom-2nd e07load
 all: $(TARGETS)
 
@@ -69,7 +60,7 @@ eeprom-2nd: eeprom-2nd.elf
 #--set-start=0x10000000 --pad-to 30000
 
 clean::
-	rm -fr $(TARGETS) $(EFSL_OBJS) *.o *.elf *.d efsl/src/*.d *.map
+	rm -fr $(TARGETS) *.o *.elf *.d efsl/src/*.d *.map
 
 -include $(wildcard *.d) dummy
 
