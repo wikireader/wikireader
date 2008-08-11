@@ -6,7 +6,8 @@
 #include "fat.h"
 
 #define MEMSIZE (1024 * 1024 * 4)
-#define MEMSTART 0x40000
+#define MEMSTART 0x10006000
+//x10010000
 
 
 static void boot_from_sdcard(void);
@@ -32,7 +33,7 @@ int main(void)
 	print("Bootloader starting\n");
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers, slowest clock */
-	REG_SPI_CTL1 = 0x03 | (7 << 10) | (7 << 4);
+	REG_SPI_CTL1 = 0x03 | (7 << 10);// | (7 << 4);
 
 	boot_from_sdcard();
 
@@ -53,7 +54,6 @@ static void boot_from_sdcard(void)
 {
         char *buf = (char *) MEMSTART;
 	int ret;
-	char tmp[512*2];
 
 	if (sdcard_init() < 0)
 		return;
@@ -61,15 +61,16 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_read_file("KERNEL", tmp, sizeof(tmp)) < 0)
+	if (fat_read_file("TEST", MEMSTART, 36*1024) < 0)
 		return;
 
 	print("DUMP:\n");
-	hex_dump(tmp, sizeof(tmp));
+	//hex_dump(MEMSTART, 1024);
+	print(MEMSTART);
 
 	print("JUMP!\n");
 
 	/* jump, just let go! :) */
-        ((void (*) (void)) buf) ();
+//        ((void (*) (void)) buf) ();
 }
 

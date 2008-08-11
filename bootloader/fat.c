@@ -124,13 +124,20 @@ static int get_fat_entry(unsigned int cluster)
 	unsigned int sector = fat_start;
 
 	sector += cluster >> 8;
-	sdcard_read_sector(buf, (unsigned char *) fat);
+	sdcard_read_sector(sector, buf);
 	return fat[cluster & 0xff];
 }
 
 static int load_file(struct dir_entry *e, char *dest, int maxsize)
 {
 	unsigned int cluster = e->first_cluster;
+
+	if (maxsize > e->file_size)
+		maxsize = e->file_size;
+
+	/* alignment */
+	maxsize &= ~(BYTES_PER_SECTOR - 1);
+	maxsize +=   BYTES_PER_SECTOR;
 
 	while (maxsize) {
 		int i, sector = CLUSTER_TO_SECTOR(cluster);
