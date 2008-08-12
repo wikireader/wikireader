@@ -77,9 +77,7 @@ the usual case for deployment later.
 (3) The second stage EEPROM bootloader (eeprom-2nd)
 
 This is where SD card handling and file loading is done and we don't
-have this dramatic space problem here. The code is based on efsl and
-has some abstraction functions for low-level SPI communication tasks
-specific to our hardware design.
+have this dramatic space problem here. 
 
  ...
 
@@ -108,6 +106,5 @@ does the following things when started:
 
 (*) Links
 
-efsl:
 S1C33E07 datasheet:
 

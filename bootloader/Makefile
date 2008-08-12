@@ -53,15 +53,15 @@ eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --only-section=.rodata \
-				--pad-to 30000 					\
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text	\
+				--only-section=.rodata		\
 				$< $@
 
 #--change-section-address .rodata=0x5000
 #--set-start=0x10000000 --pad-to 30000
 
 clean::
-	rm -fr $(TARGETS) *.o *.elf *.d efsl/src/*.d *.map
+	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
 
 -include $(wildcard *.d) dummy
 

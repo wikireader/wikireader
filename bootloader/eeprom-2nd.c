@@ -29,7 +29,7 @@ int main(void)
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //        ; set SP
 
-	asm("xld.w   %r15, 0x2000");
+	asm("xld.w   %r15, 0x1000");
 //	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
