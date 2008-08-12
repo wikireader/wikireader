@@ -12,7 +12,6 @@ enum {
 #define MRSREG		(*(volatile unsigned char *) 0x10000442)
 #define RAMDUMMY	(*(volatile unsigned char *) 0x10000000)
 
-
 #define DELAY() \
 	{ int delay=0xfff; while(delay--) asm("nop"); }
 
@@ -21,10 +20,10 @@ int main(void)
 {
 	unsigned char cmd, dat, len;
 
-	INIT_PINS();
+	init_pins();
+	init_rs232();
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
-	INIT_RS232();
 
 	/* EEPROM WP: off */
 	REG_P2_IOC2 = (1 << 6);

@@ -19,7 +19,7 @@ ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY=$(CROSS)objcopy
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
-TARGETS=rs232 eeprom-1st eeprom-2nd e07load
+TARGETS=rs232 eeprom-1st eeprom-2nd 
 all: $(TARGETS)
 
 .c.o:
@@ -27,7 +27,8 @@ all: $(TARGETS)
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 #### e07load
-e07load: e07load.c
+E07LOAD_OBJS = e07load/e07load.o
+e07load: $(E07LOAD_OBJS)
 	$(HOSTCC) -o $@ -Wall $^
 
 #### first boot loader
@@ -41,14 +42,14 @@ rs232: rs232.elf
 eeprom-1st.o: eeprom-1st.c eeprom-2nd
 	$(GCC) -c $(CFLAGS) -DEEPROM_PAYLOAD_SIZE=`wc -c eeprom-2nd | cut -f1 -d' '` $<
 
-eeprom-1st.elf: eeprom-1st.o
+eeprom-1st.elf: eeprom-1st.o eeprom.o spi.o
 	$(GCC) -o $@ $(LDFLAGS) $< -Wl,'-Ttext=0'
 
 eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o
+eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf

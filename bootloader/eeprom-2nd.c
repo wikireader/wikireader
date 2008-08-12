@@ -2,12 +2,12 @@
 #include "wikireader.h"
 #include "spi.h"
 #include "sdcard.h"
+#include "eeprom.h"
 #include "misc.h"
 #include "fat.h"
 
 #define MEMSIZE (1024 * 1024 * 4)
-#define MEMSTART 0x10006000
-//x10010000
+#define MEMSTART 0x10000000
 
 
 static void boot_from_sdcard(void);
@@ -15,10 +15,12 @@ static void boot_from_sdcard(void);
 __attribute__((noreturn))
 int main(void) 
 {
-	INIT_PINS();
+	init_pins();
+	init_rs232();
+	init_ram();
+
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
-	INIT_RS232();
 
 	/* CARDPWR on */
 	REG_SRAMC_A0_BSL |= 1 << 1;
@@ -27,7 +29,7 @@ int main(void)
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //        ; set SP
 
-	asm("xld.w   %r15, 0x10002000");
+	asm("xld.w   %r15, 0x2000");
 //	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
@@ -45,10 +47,7 @@ int main(void)
 	/* TODO */
 
 	for(;;);
-} 
-
-
-
+}
 
 static void boot_from_sdcard(void)
 {
@@ -60,16 +59,16 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_read_file("TEST", buf, 36*1024) < 0)
+	if (fat_read_file("TEST", buf, MEMSIZE) < 0)
 		return;
 
 	print("DUMP:\n");
-	//hex_dump(MEMSTART, 1024);
-	print(buf);
+	hex_dump(buf, 1024);
+	//print(buf);
 
 	print("JUMP!\n");
 
 	/* jump, just let go! :) */
-//        ((void (*) (void)) buf) ();
+        ((void (*) (void)) buf) ();
 }
 
