@@ -40,12 +40,29 @@ struct boot_sector {
 	unsigned short reserved_sectors;
 	unsigned char  num_fats;
 	unsigned short max_root_entries;
-	unsigned short  total_sectors;
+	unsigned short total_sectors;
 	unsigned char  media_descriptor;
-	unsigned short sectors_per_fat;
-	/* not interested in the rest */
-	unsigned char  unused[512 - 26];
-	/* except for the signature */
+	unsigned short sectors_per_fat16;
+	unsigned short sectors_per_track;
+	unsigned short num_heads;
+	unsigned long  hidden_sectors;
+	unsigned long  total_sectors2;
+	/* fat32 specific extensions */
+	unsigned long  sectors_per_fat32;
+	unsigned short fat_flags;
+	unsigned short version;
+	unsigned long  root_cluster;
+	unsigned short fs_info_sector;
+	unsigned short bootsector_copy;
+	unsigned char  reserved[12];
+	unsigned char  pyhsical_driver_num;
+	unsigned char  reserved2;
+	unsigned char  extended_boot_signature;
+	unsigned long  id;
+	unsigned char  volume_label[11];
+	unsigned char  fat_type[8];
+	unsigned char  boot_code[420];
+	/* ... */
 	unsigned short signature;
 } __attribute__((packed));
 
@@ -109,12 +126,24 @@ static int read_bootsector(int sector)
 		return -1;
 	}
 
+	print("BOOT SECTOR:\n");
 	hex_dump(&boot, 512);
 	
 	fat_start = sector + boot.reserved_sectors;
-	root_entry = fat_start + (boot.num_fats * boot.sectors_per_fat);
-	first_cluster_sector = root_entry
-		+ 32; //boot.max_root_entries / (BYTES_PER_SECTOR / sizeof(struct dir_entry));
+
+	if (boot.fat_type[0] == 'F' && 
+	    boot.fat_type[1] == 'A' && 
+	    boot.fat_type[2] == 'T' && 
+	    boot.fat_type[3] == '3' && 
+	    boot.fat_type[4] == '2') {
+		first_cluster_sector = fat_start + (boot.num_fats * boot.sectors_per_fat32);
+		root_entry = CLUSTER_TO_SECTOR(boot.root_cluster);
+		boot.max_root_entries = 512; /* ??? */
+	} else {
+		root_entry = fat_start + (boot.num_fats * boot.sectors_per_fat16);
+		first_cluster_sector = root_entry
+			+ 32; //boot.max_root_entries / (BYTES_PER_SECTOR / sizeof(struct dir_entry));
+	}
 
 	return 0;
 }

@@ -19,6 +19,7 @@
 #include "regs.h"
 #include "wikireader.h"
 #include "spi.h"
+#include "eeprom.h"
 
 #define DEST 0x200
 
@@ -26,8 +27,8 @@
 static void spi_transmit(unsigned char b);
 #endif
 
-//#define LOAD_FROM_EEPROM 1
-#define LOAD_FROM_RS232 1
+#define LOAD_FROM_EEPROM 1
+//#define LOAD_FROM_RS232 1
 
 int main(void) {
 #ifdef LOAD_FROM_RS232
@@ -45,8 +46,8 @@ int main(void) {
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10);
 
-	/* read the EEPROM payload, starting from page 2 (512 bytes) */
-	read_eeprom(0x0300, dest, EEPROM_PAYLOAD_SIZE);
+	/* read the EEPROM payload, starting from page 3 */
+	eeprom_load(0x300, dest, EEPROM_PAYLOAD_SIZE);
 #endif
 
 #ifdef LOAD_FROM_RS232
@@ -58,11 +59,11 @@ int main(void) {
 		*dest = REG_EFSIF0_RXD;
 		dest++;
 	}
+#endif
 
 	REG_EFSIF0_TXD = '!';
 	do {} while (REG_EFSIF0_STATUS & (1 << 5));
 
-#endif
 
 	/* Gimme Van Halen */
 	((void (*) (void)) DEST) ();
