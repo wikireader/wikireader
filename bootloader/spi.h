@@ -1,7 +1,7 @@
 #ifndef SPI_H
 #define SPI_H
 
-unsigned char spi_transmit(unsigned char out);
+u8 spi_transmit(u8 out);
 
 #endif /* SPI_H */
 

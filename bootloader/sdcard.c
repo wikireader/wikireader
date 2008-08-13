@@ -17,6 +17,7 @@
 */
 
 #include "regs.h"
+#include "types.h"
 #include "wikireader.h"
 #include "spi.h"
 #include "misc.h"
@@ -29,11 +30,11 @@
 #define CMD_SEND_OP_COND	0x29
 #define CMD_APP			0x37
 
-static unsigned char csd[16];
+static u8 csd[16];
 
-static unsigned char sdcard_response(void)
+static u8 sdcard_response(void)
 {
-	unsigned char ret, retry = 8;
+	u8 ret, retry = 8;
 
 	while (retry--) {
 		SDCARD_CS_LO();
@@ -47,9 +48,9 @@ static unsigned char sdcard_response(void)
 	return ret;
 }
 
-static void sdcard_cmd(unsigned char cmd, unsigned int param)
+static void sdcard_cmd(u8 cmd, u32 param)
 {
-	unsigned char i, c[] = {
+	u8 i, c[] = {
 		0x40 | cmd,
 		param >> 24,
 		param >> 16,
@@ -67,10 +68,10 @@ static void sdcard_cmd(unsigned char cmd, unsigned int param)
 	SDCARD_CS_HI();
 }
 
-int sdcard_read_sector(unsigned int sector, unsigned char *buf)
+int sdcard_read_sector(u32 sector, u8 *buf)
 {
-	unsigned char ret;
-	unsigned int i, retry;
+	u8 ret;
+	u32 i, retry;
 
 	/* only valid for non-SDHC cards! */
 	sector *= BYTES_PER_SECTOR;
@@ -112,7 +113,7 @@ int sdcard_read_sector(unsigned int sector, unsigned char *buf)
 
 static int sdcard_read_csd(void)
 {
-	unsigned int retry, ret, i;
+	u32 retry, ret, i;
 
 	sdcard_cmd(CMD_READ_CSD, 0);
 	
@@ -138,8 +139,8 @@ static int sdcard_read_csd(void)
 
 int sdcard_init(void)
 {
-	unsigned char ret;
-	unsigned int retry;
+	u8 ret;
+	u32 retry;
 
 	for (retry = 100; retry; retry--) {
 		sdcard_cmd(CMD_GO_IDLE_STATE, 0);

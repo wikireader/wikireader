@@ -17,10 +17,12 @@
 */
 
 #include "regs.h"
+#include "types.h"
 #include "wikireader.h"
 #include "eeprom.h"
+#include "spi.h"
 
-void eeprom_load(unsigned int addr, char *dest, int size)
+void eeprom_load(u32 addr, u8 *dest, u32 size)
 {
 	/* read the EEPROM payload, starting from page 2 (512 bytes) */
 	EEPROM_CS_LO();

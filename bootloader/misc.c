@@ -17,10 +17,12 @@
 */
 
 #include "regs.h"
+#include "types.h"
+#include "types.h"
 #include "wikireader.h"
 #include "misc.h"
 
-void print(const char *txt)
+void print(const u8 *txt)
 {
 	while (txt && *txt) {
 		int delay = 0xf;
@@ -40,7 +42,7 @@ void print(const char *txt)
 	}
 }
 
-static void printnibble(char nib)
+static void printnibble(u8 nib)
 {
 	char a[2] = { '\0' };
 
@@ -54,13 +56,13 @@ static void printnibble(char nib)
 	print(a);
 }
 
-static void printbyte(char byte)
+static void printbyte(u8 byte)
 {
 	printnibble(byte >> 4);
 	printnibble(byte);
 }
 
-void hex_dump(const char *buf, int size)
+void hex_dump(const u8 *buf, u32 size)
 {
 	int i, l;
 	char a[2] = { '\0' };
@@ -97,8 +99,9 @@ void hex_dump(const char *buf, int size)
         }
 }
 
-void delay(int nops)
+void delay(u32 nops)
 {
 	while (nops--)
 		asm("nop");
 }
+

@@ -447,6 +447,8 @@
 #define REG_SRAMC_SLV_SIZE	*((REG_TYPE_32 *) (REG_BASE + 0x1508))
 #define REG_SRAMC_A0_BSL	*((REG_TYPE_32 *) (REG_BASE + 0x150c))
 #define REG_SRAMC_ALS		*((REG_TYPE_32 *) (REG_BASE + 0x1510))
+
+/* SDRAM controller */
 #define REG_SDRAMC_INI		*((REG_TYPE_32 *) (REG_BASE + 0x1600))
 #define REG_SDRAMC_CTL		*((REG_TYPE_32 *) (REG_BASE + 0x1604))
 #define REG_SDRAMC_REF		*((REG_TYPE_32 *) (REG_BASE + 0x1608))

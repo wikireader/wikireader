@@ -16,78 +16,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "types.h"
 #include "spi.h"
 #include "sdcard.h"
 #include "misc.h"
+#include "fat.h"
 
 #define FAT_ADDR_RESERVED_SECTORS	0x0e
 #define FAT_ADDR_NUM_FATS		0x10
 
-struct partition_record {
-	unsigned char status;
-	unsigned int  chs_first:24;
-	unsigned char type;
-	unsigned int  chs_last:24;
-	unsigned int  first_sector;
-	unsigned int  n_sectors;
-} __attribute__((packed));
-
-struct boot_sector {
-	unsigned char  jump_instr[3];
-	unsigned char  oem_name[8];
-	unsigned short bytes_per_sector;
-	unsigned char  sectors_per_cluster;
-	unsigned short reserved_sectors;
-	unsigned char  num_fats;
-	unsigned short max_root_entries;
-	unsigned short total_sectors;
-	unsigned char  media_descriptor;
-	unsigned short sectors_per_fat16;
-	unsigned short sectors_per_track;
-	unsigned short num_heads;
-	unsigned long  hidden_sectors;
-	unsigned long  total_sectors2;
-	/* fat32 specific extensions */
-	unsigned long  sectors_per_fat32;
-	unsigned short fat_flags;
-	unsigned short version;
-	unsigned long  root_cluster;
-	unsigned short fs_info_sector;
-	unsigned short bootsector_copy;
-	unsigned char  reserved[12];
-	unsigned char  pyhsical_driver_num;
-	unsigned char  reserved2;
-	unsigned char  extended_boot_signature;
-	unsigned long  id;
-	unsigned char  volume_label[11];
-	unsigned char  fat_type[8];
-	unsigned char  boot_code[420];
-	/* ... */
-	unsigned short signature;
-} __attribute__((packed));
-
-struct dir_entry {
-	unsigned char  name[8];
-	unsigned char  ext[3];
-	unsigned char  attrs;
-	unsigned char  reserved;
-	unsigned char  ignored[13];
-	unsigned short first_cluster;
-	unsigned int   file_size;
-}__attribute__((packed));
-
 static struct boot_sector boot;
-static unsigned int fat_start;
-static unsigned int first_cluster_sector;
-static unsigned int root_entry;
-static unsigned char buf[BYTES_PER_SECTOR];
+static u32 fat_start;
+static u32 first_cluster_sector;
+static u32 root_entry;
+static u8 buf[BYTES_PER_SECTOR];
 
 #define CLUSTER_TO_SECTOR(c)	\
 	(first_cluster_sector + (c - 2) * boot.sectors_per_cluster)
 
 /* returns the first sector of a given partition number,
  * read from the partition table */
-static int read_mbr(int partition_num)
+static int read_mbr (u32 partition_num)
 {
 	struct partition_record *part;
 
@@ -112,9 +61,9 @@ static int read_mbr(int partition_num)
 	return part->first_sector;
 }
 
-static int read_bootsector(int sector)
+static int read_bootsector (u32 sector)
 {
-	sdcard_read_sector(sector, (unsigned char *) &boot);
+	sdcard_read_sector(sector, (u8 *) &boot);
 
 	if (boot.bytes_per_sector != BYTES_PER_SECTOR) {
 		print("invalid number of bytes per sector, bummer.\n");
@@ -148,7 +97,7 @@ static int read_bootsector(int sector)
 	return 0;
 }
 
-int fat_init(int partition_num)
+int fat_init(u32 partition_num)
 {
 	int first_sector;
 
@@ -165,19 +114,19 @@ int fat_init(int partition_num)
 
 #define ENTRIES_PER_FAT_SECTOR (256)
 
-static int get_fat_entry(unsigned int cluster)
+static int get_fat_entry(u32 cluster)
 {
-	unsigned short *fat = (unsigned short *) buf;
-	unsigned int sector = fat_start;
+	u16 *fat = (u16 *) buf;
+	u32 sector = fat_start;
 
 	sector += cluster >> 8;
 	sdcard_read_sector(sector, buf);
 	return fat[cluster & 0xff];
 }
 
-static int load_file(struct dir_entry *e, char *dest, int maxsize)
+static int load_file(struct dir_entry *e, u8 *dest, u32 maxsize)
 {
-	unsigned int cluster = e->first_cluster;
+	u32 cluster = e->first_cluster;
 
 	if (maxsize > e->file_size)
 		maxsize = e->file_size;
@@ -205,7 +154,7 @@ static int load_file(struct dir_entry *e, char *dest, int maxsize)
 	return 0;
 }
 
-static int str_equal(const char *s1, const char *s2)
+static int str_equal(const u8 *s1, const u8 *s2)
 {
 	while (*s1 && *s2)
 		if (*s1++ != *s2++)
@@ -215,10 +164,10 @@ static int str_equal(const char *s1, const char *s2)
 }
 
 /* currently, this function only supports files located at the root directory */
-int fat_read_file(const char *filename, char *dest, int maxsize)
+int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize)
 {
-	unsigned int entry_cnt = 0;
-	unsigned int sector = root_entry;
+	u32 entry_cnt = 0;
+	u32 sector = root_entry;
 	struct dir_entry *e;
 
 	if (root_entry < 0)
@@ -228,7 +177,7 @@ int fat_read_file(const char *filename, char *dest, int maxsize)
 		sdcard_read_sector(sector++, buf);
 
 		for (e = (struct dir_entry *) buf;
-		     (unsigned char *) e < (buf + sizeof(buf)); 
+		     (u8 *) e < (buf + sizeof(buf)); 
 		     e++, entry_cnt++) {
 			if (e->attrs & 0xde || e->name[0] & 0x80)
 				continue;

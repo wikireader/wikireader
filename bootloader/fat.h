@@ -2,60 +2,60 @@
 #define FAT_H
 
 struct partition_record {
-	unsigned char status;
-	unsigned int  chs_first:24;
-	unsigned char type;
-	unsigned int  chs_last:24;
-	unsigned int  first_sector;
-	unsigned int  n_sectors;
+	u8  status;
+	u32 chs_first:24;
+	u8  type;
+	u32 chs_last:24;
+	u32 first_sector;
+	u32 n_sectors;
 } __attribute__((packed));
 
 struct boot_sector {
-	unsigned char  jump_instr[3];
-	unsigned char  oem_name[8];
-	unsigned short bytes_per_sector;
-	unsigned char  sectors_per_cluster;
-	unsigned short reserved_sectors;
-	unsigned char  num_fats;
-	unsigned short max_root_entries;
-	unsigned short total_sectors;
-	unsigned char  media_descriptor;
-	unsigned short sectors_per_fat16;
-	unsigned short sectors_per_track;
-	unsigned short num_heads;
-	unsigned long  hidden_sectors;
-	unsigned long  total_sectors2;
+	u8  jump_instr[3];
+	u8  oem_name[8];
+	u16 bytes_per_sector;
+	u8  sectors_per_cluster;
+	u16 reserved_sectors;
+	u8  num_fats;
+	u16 max_root_entries;
+	u16 total_sectors;
+	u8  media_descriptor;
+	u16 sectors_per_fat16;
+	u16 sectors_per_track;
+	u16 num_heads;
+	u32 hidden_sectors;
+	u32 total_sectors2;
 	/* fat32 specific extensions */
-	unsigned long  sectors_per_fat32;
-	unsigned short fat_flags;
-	unsigned short version;
-	unsigned long  root_cluster;
-	unsigned short fs_info_sector;
-	unsigned short bootsector_copy;
-	unsigned char  reserved[12];
-	unsigned char  pyhsical_driver_num;
-	unsigned char  reserved2;
-	unsigned char  extended_boot_signature;
-	unsigned long  id;
-	unsigned char  volume_label[11];
-	unsigned char  fat_type[8];
-	unsigned char  boot_code[420];
+	u32 sectors_per_fat32;
+	u16 fat_flags;
+	u16 version;
+	u32 root_cluster;
+	u16 fs_info_sector;
+	u16 bootsector_copy;
+	u8  reserved[12];
+	u8  pyhsical_driver_num;
+	u8  reserved2;
+	u8  extended_boot_signature;
+	u32 id;
+	u8  volume_label[11];
+	u8  fat_type[8];
+	u8  boot_code[420];
 	/* ... */
-	unsigned short signature;
+	u16 signature;
 } __attribute__((packed));
 
 struct dir_entry {
-	unsigned char  name[8];
-	unsigned char  ext[3];
-	unsigned char  attrs;
-	unsigned char  reserved;
-	unsigned char  ignored[13];
-	unsigned short first_cluster;
-	unsigned int   file_size;
+	u8  name[8];
+	u8  ext[3];
+	u8  attrs;
+	u8  reserved;
+	u8  ignored[13];
+	u16 first_cluster;
+	u32 file_size;
 }__attribute__((packed));
 
-int fat_init(int partition);
-int fat_read_file(const char *filename, char *dest, int maxsize);
+int fat_init(u32 partition);
+int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize);
 
 #endif /* FAT_H */
 

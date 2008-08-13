@@ -14,7 +14,7 @@ CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
-TARGETS=rs232 eeprom-1st eeprom-2nd 
+TARGETS=rs232 eeprom-1st eeprom-2nd e07load/e07load
 all: $(TARGETS)
 
 .c.o:
@@ -22,9 +22,8 @@ all: $(TARGETS)
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 #### e07load
-E07LOAD_OBJS = e07load/e07load.o
-e07load: $(E07LOAD_OBJS)
-	$(HOSTCC) -o $@ -Wall $^
+e07load/e07load::
+	make -C e07load
 
 #### first boot loader
 rs232.elf: rs232.o
@@ -52,10 +51,15 @@ eeprom-2nd: eeprom-2nd.elf
 				--only-section=.rodata		\
 				$< $@
 
+# flash target
+flash: rs232.elf eeprom-1st.elf eeprom-2nd.elf
+	@e07load/e07load wikireader.map
+
 #--change-section-address .rodata=0x5000
 #--set-start=0x10000000 --pad-to 30000
 
 clean::
+	make -C e07load clean
 	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
 
 -include $(wildcard *.d) dummy

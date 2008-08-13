@@ -106,11 +106,11 @@ int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	return 0;
 }
 
-int verify_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
+int verify_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 {
 	int i, a;
 	char *verify_buf = malloc(len);
-	char cmdbuf[256 + 4];
+	unsigned char cmdbuf[256 + 4];
 
 	msg("verifying %d bytes of EEPROM, offset 0x%x ", len, offset);
 	memset(verify_buf, 0, len);

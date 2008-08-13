@@ -16,11 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "types.h"
 #include "crc.h"
 
-unsigned char crc_byte(unsigned int crc, unsigned char byte, unsigned char nbits)
+u8 crc_byte(unsigned int crc, u8 byte, u8 nbits)
 {
-	signed char bit;
+	s8 bit;
 
 	for (bit = nbits - 1; bit >= 0; bit--) {
 		crc <<= 1;
@@ -33,9 +34,9 @@ unsigned char crc_byte(unsigned int crc, unsigned char byte, unsigned char nbits
 	return crc & 0xff;
 }
 
-unsigned char crc7(const unsigned char *buffer, int len)
+u8 crc7(const u8 *buffer, int len)
 {
-	unsigned char crc = 0;
+	u8 crc = 0;
 
         while (len--)
 		crc = crc_byte(crc, *buffer++, 8);

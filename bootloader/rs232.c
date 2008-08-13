@@ -17,6 +17,7 @@
 */
 
 #include "regs.h"
+#include "types.h"
 #include "wikireader.h"
 
 enum {
@@ -28,7 +29,7 @@ enum {
 
 int main(void)
 {
-	unsigned char cmd, dat, len;
+	u8 cmd, dat, len;
 
 	init_pins();
 	init_rs232();

@@ -17,6 +17,7 @@
 */
 
 #include "regs.h"
+#include "types.h"
 #include "wikireader.h"
 #include "spi.h"
 #include "sdcard.h"
@@ -69,7 +70,7 @@ int main(void)
 
 static void boot_from_sdcard(void)
 {
-        char *buf = (char *) MEMSTART;
+        u8 *buf = (char *) MEMSTART;
 
 	if (sdcard_init() < 0)
 		return;

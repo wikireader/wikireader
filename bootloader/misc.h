@@ -1,4 +1,9 @@
-void print(const char *txt);
-void hex_dump(const char *buf, int size);
-void delay(int nops);
+#ifndef MISC_H
+#define MISC_H
+
+void print(const u8 *txt);
+void hex_dump(const u8 *buf, u32 size);
+void delay(u32 nops);
+
+#endif /* MISC_H */
 
