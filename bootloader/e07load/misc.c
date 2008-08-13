@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "misc.h"
+
 void hex_dump (const unsigned char *buf, unsigned int addr, unsigned int len)
 {
         unsigned int start;
@@ -40,7 +42,7 @@ void read_blocking(int fd, char *dest, size_t size)
 {
 	int ret;
 
-	do {
+	while (size) {
 		ret = read(fd, dest, size);
 		if (ret < 0) {
 			perror("read");
@@ -49,7 +51,7 @@ void read_blocking(int fd, char *dest, size_t size)
 
 		size -= ret;
 		dest += ret;
-	} while (size);
+	}
 }
 
 void strchomp(char *s)

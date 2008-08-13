@@ -56,8 +56,6 @@ static inline void init_ram(void)
 {
 	int i;
 
-        /* RAM init */
-
         /* disable write protection of clock registers */
         REG_CMU_PROTECT = 0x96;
 

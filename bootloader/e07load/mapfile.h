@@ -7,7 +7,7 @@ struct mapfile_entry
 {
 	unsigned long  addr;
 	ssize_t        size;
-	char          *data;
+	unsigned char *data;
 	char          *fname;
 } mapfile_entry[MAX_MAPFILE_ENTRIES];
 

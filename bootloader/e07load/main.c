@@ -16,7 +16,7 @@
 #define DEFAULT_TTY		"/dev/ttyUSB0"
 #define DEFAULT_BOOTSTRAP_FILE	"rs232"
 
-int verbose_flag = 1;
+int verbose_flag = 0;
 
 static void usage(const char *argv0)
 {
@@ -42,18 +42,17 @@ int main(int argc, char **argv)
 	char *mapfile;
 	char *tty = DEFAULT_TTY;
 	char *bootstrap_file = DEFAULT_BOOTSTRAP_FILE;
-	char bootstrap_buf[512], verify_buf[512];
-	int ret, fd, ttyfd;
+	int ret, ttyfd;
 
 	static int c;
 
 	while (1) {
 		static struct option long_options[] = {
-			{"help",	no_argument,		0, 'h'},
-			{"verbose",	no_argument,		&verbose_flag, 1},
-			{"tty",		required_argument,	0, 't'},
-			{"bootstrap",	required_argument,	0, 'b'},
-			{0, 0, 0, 0}
+			{ "help",	no_argument,		0,		'h'},
+			{ "verbose",	no_argument,		&verbose_flag,	1},
+			{ "tty",	required_argument,	0,		't'},
+			{ "bootstrap",	required_argument,	0,		'b'},
+			{ 0, 0, 0, 0 }
 		};
            
 		int option_index = 0;
@@ -99,9 +98,6 @@ int main(int argc, char **argv)
 	if (mapfile_parse(mapfile) < 0)
 		return -1;
 
-	memset(bootstrap_buf, 0, sizeof(bootstrap_buf));
-	memset(verify_buf, 0, sizeof(verify_buf));
-
 	ttyfd = open_tty(tty);
 	if (ttyfd < 0)
 		return ttyfd;
@@ -109,29 +105,11 @@ int main(int argc, char **argv)
 	ret = sync_cpu(ttyfd);
 	if (ret < 0)
 		return ret;
+	
+	ret = bootstrap(ttyfd, bootstrap_file);
+	if (ret < 0)
+		return ret;
 
-	fd = open(bootstrap_file, O_RDONLY);
-	if (fd < 0) {
-		error("unable to open bootstrap file %s: %s\n", bootstrap_file, strerror(errno));
-		return fd;
-	}
-
-	read(fd, bootstrap_buf, sizeof(bootstrap_buf));
-	close(fd);
-
-	msg("uploading %d bytes of bootstrap code from file >%s< ... ", sizeof(bootstrap_buf), bootstrap_file);
-	write(ttyfd, bootstrap_buf, sizeof(bootstrap_buf));
-	msg("done.\n");
-
-	msg("reading back bootstrap code ... ");
-	read_blocking(ttyfd, verify_buf, sizeof(verify_buf));
-	if (memcmp(bootstrap_buf, verify_buf, sizeof(bootstrap_buf)) != 0) {
-		error("FAILED to verify bootstrap code!\n");
-		return -1;
-	}
-	msg("ok.\n");
-
-	usleep(10000);
 	if (mapfile_write_eeprom(ttyfd) < 1)
 		return -1;
 	

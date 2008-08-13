@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
+
 #include "e07.h"
 #include "misc.h"
 
@@ -20,6 +25,37 @@ int sync_cpu(int fd)
 		return -1;
 	}
 
+	return 0;
+}
+
+int bootstrap(int ttyfd, const char *bootstrap_file)
+{
+	char bootstrap_buf[512], verify_buf[512];
+	int fd = open(bootstrap_file, O_RDONLY);
+	
+	memset(bootstrap_buf, 0, sizeof(bootstrap_buf));
+	memset(verify_buf, 0, sizeof(verify_buf));
+	
+	if (fd < 0) {
+		error("unable to open bootstrap file %s: %s\n", bootstrap_file, strerror(errno));
+		return fd;
+	}
+
+	read(fd, bootstrap_buf, sizeof(bootstrap_buf));
+	close(fd);
+
+	msg("uploading %d bytes of bootstrap code from file >%s< ... ", sizeof(bootstrap_buf), bootstrap_file);
+	write(ttyfd, bootstrap_buf, sizeof(bootstrap_buf));
+	msg("done.\n");
+
+	msg("reading back bootstrap code ... ");
+	read_blocking(ttyfd, verify_buf, sizeof(verify_buf));
+	if (memcmp(bootstrap_buf, verify_buf, sizeof(bootstrap_buf)) != 0) {
+		error("FAILED to verify bootstrap code!\n");
+		return -1;
+	}
+
+	msg("ok.\n");
 	return 0;
 }
 

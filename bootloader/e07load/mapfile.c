@@ -31,9 +31,9 @@ static int check_overlaps(void)
 	return 0;
 }
 
-static char *read_file(const char *fname, ssize_t *len)
+static unsigned char *read_file(const char *fname, ssize_t *len)
 {
-	char *buf;
+	unsigned char *buf;
 	int file_fd, ret;
 	struct stat statbuf;
 
@@ -43,7 +43,7 @@ static char *read_file(const char *fname, ssize_t *len)
 	}
 
 	*len = statbuf.st_size;
-	buf = (char *) malloc(*len);
+	buf = (unsigned char *) malloc(*len);
 	
 	file_fd = open(fname, O_RDONLY);
 	if (file_fd < 0) {

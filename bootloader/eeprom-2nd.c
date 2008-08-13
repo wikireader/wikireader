@@ -23,8 +23,8 @@ int main(void)
 	SDCARD_CS_HI();
 
 	/* CARDPWR on */
-	REG_SRAMC_A0_BSL |= 1 << 1;
-	*(volatile unsigned int *) 0x200000 |= 0x1;
+//	REG_SRAMC_A0_BSL |= 1 << 1;
+	*(volatile unsigned int *) 0x200000 = 0xffffffff;
 
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //        ; set SP

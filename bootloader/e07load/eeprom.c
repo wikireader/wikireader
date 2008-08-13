@@ -13,13 +13,13 @@ enum {
 	SPI_CS_LO = 3
 };
 
-int write_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
+int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 {
 	int i, a;
 	unsigned char cmdbuf[256 + 4];
 
 	cmdbuf[0] = SPI_CS_LO;
-	write(fd, buf, 1);
+	write(fd, cmdbuf, 1);
 
 #if 0
 	cmdbuf[0] = SPI_WRITE;
@@ -64,22 +64,13 @@ int write_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
 		cmdbuf[3] = (a + offset) >> 16;
 		cmdbuf[4] = (a + offset) >> 8;
 		cmdbuf[5] = (a + offset) & 0xff;
-		int bla = write(fd, cmdbuf, 4 + 2);
-
-
-printf("\n");
-hex_dump(cmdbuf, 0, 6);
-printf("written %d\n", bla);
-
-
+		write(fd, cmdbuf, 4 + 2);
 
 		cmdbuf[0] = SPI_WRITE;
 
 		for (i = 0; i < 0x80 && a + i < len; i++)
 			cmdbuf[i + 2] = buf[i + a];
 
-		printf("chunk size %d @%d\n", i, a);
-		
 		cmdbuf[1] = i;
 		write(fd, cmdbuf, i + 2);
 
@@ -108,8 +99,6 @@ int verify_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
 
 	for (a = 0; a < len;) {
 		i = ((len - a) < 0x80) ? (len - a) : 0x80;
-
-		printf("chunk size %d @%d\n", i, a);
 
 		/* READ command */
 		cmdbuf[0] = SPI_CS_LO;
@@ -146,7 +135,7 @@ int verify_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
 		a += i;
 	}
 	
-	msg("\n");
+	msg(" ok.\n");
 	free(verify_buf);
 	return 0;
 }

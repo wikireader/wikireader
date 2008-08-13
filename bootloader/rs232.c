@@ -8,14 +8,6 @@ enum {
 	SPI_CS_LO = 3
 };
 
-/* MRS command address for burst length=1, CAS latency = 2 */
-#define MRSREG		(*(volatile unsigned char *) 0x10000442)
-#define RAMDUMMY	(*(volatile unsigned char *) 0x10000000)
-
-#define DELAY() \
-	{ int delay=0xfff; while(delay--) asm("nop"); }
-
-
 int main(void)
 {
 	unsigned char cmd, dat, len;
@@ -31,7 +23,7 @@ int main(void)
 
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
-	REG_SPI_CTL1 = 0x73 | (7 << 10);
+	REG_SPI_CTL1 = 0x73 | (7 << 10) | (7 << 4);
 
 	for (;;) {
 		do {} while (!(REG_EFSIF0_STATUS & 0x1));
