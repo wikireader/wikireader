@@ -90,7 +90,7 @@
 #define REG_ECC1CP		*((REG_TYPE_8 *) (REG_BASE + 0x318))
 #define REG_ECC1LPL		*((REG_TYPE_8 *) (REG_BASE + 0x31a))
 #define REG_ECC1LPH		*((REG_TYPE_8 *) (REG_BASE + 0x31b))
-	
+
 /* I/O Ports */
 #define	REG_P0_P0D		*((REG_TYPE_8 *) (REG_BASE + 0x380))
 #define REG_P0_IOC0		*((REG_TYPE_8 *) (REG_BASE + 0x381))

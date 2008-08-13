@@ -24,7 +24,6 @@
 
 void eeprom_load(u32 addr, u8 *dest, u32 size)
 {
-	/* read the EEPROM payload, starting from page 2 (512 bytes) */
 	EEPROM_CS_LO();
 
 	spi_transmit(0x03);

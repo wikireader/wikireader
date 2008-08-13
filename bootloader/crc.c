@@ -28,9 +28,9 @@ u8 crc_byte(unsigned int crc, u8 byte, u8 nbits)
 		crc |= (byte >> bit) & 1;
 		if ((crc & 0x80) ^ (byte & 0x80))
 			crc ^= 0x09;
-	
+
 	}
-	
+
 	return crc & 0xff;
 }
 
@@ -38,7 +38,7 @@ u8 crc7(const u8 *buffer, int len)
 {
 	u8 crc = 0;
 
-        while (len--)
+	while (len--)
 		crc = crc_byte(crc, *buffer++, 8);
 
 	return crc_byte(crc, 0, 7);

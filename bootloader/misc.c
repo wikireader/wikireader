@@ -96,7 +96,7 @@ void hex_dump(const u8 *buf, u32 size)
 		}
 
 		print("|\n");
-        }
+	}
 }
 
 void delay(u32 nops)

@@ -32,7 +32,7 @@
 static void boot_from_sdcard(void);
 
 __attribute__((noreturn))
-int main(void) 
+int main(void)
 {
 	init_pins();
 	init_rs232();
@@ -46,7 +46,7 @@ int main(void)
 	*(volatile unsigned int *) 0x200000 = 0xffffffff;
 
 //	asm("xld.w   %r15,0x0800");
-//	asm("ld.w    %sp,%r15"); //        ; set SP
+//	asm("ld.w    %sp,%r15"); //	; set SP
 
 	asm("xld.w   %r15, 0x1000");
 //	asm("ld.w    %dp,%r15");
@@ -59,7 +59,7 @@ int main(void)
 	boot_from_sdcard();
 
 	/* we we get here, boot_from_sdcard() failed to find a kernel on the
-	 * inserted media or there is no media. Thus, we register an 
+	 * inserted media or there is no media. Thus, we register an
 	 * interrupt handler for the SD card insert switch and try again as
 	 * soon as a media switch is detected. */
 
@@ -70,7 +70,7 @@ int main(void)
 
 static void boot_from_sdcard(void)
 {
-        u8 *buf = (char *) MEMSTART;
+	u8 *buf = (char *) MEMSTART;
 
 	if (sdcard_init() < 0)
 		return;
@@ -88,6 +88,6 @@ static void boot_from_sdcard(void)
 	print("JUMP!\n");
 
 	/* jump, just let go! :) */
-        ((void (*) (void)) buf) ();
+	((void (*) (void)) buf) ();
 }
 

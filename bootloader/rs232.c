@@ -69,7 +69,7 @@ int main(void)
 			case SPI_READ:
 				do {} while (!(REG_EFSIF0_STATUS & 0x1));
 				len = REG_EFSIF0_RXD;
-				
+
 				while (len--) {
 					REG_SPI_TXD = 0x00;
 					do {} while (REG_SPI_STAT & (1 << 6));

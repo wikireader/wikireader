@@ -1,0 +1,7 @@
+# this is an example mapping file
+
+# eeprom-1st has an offset of 1 for eeprom address compensation.
+
+0x1	eeprom-1st
+0x300	eeprom-2nd
+

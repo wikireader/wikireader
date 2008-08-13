@@ -116,8 +116,8 @@ static int sdcard_read_csd(void)
 	u32 retry, ret, i;
 
 	sdcard_cmd(CMD_READ_CSD, 0);
-	
-	for (retry = 0; retry < 1000; retry++) {	
+
+	for (retry = 0; retry < 1000; retry++) {
 		ret = sdcard_response();
 		if (ret == 0xfe)
 			break;
@@ -158,7 +158,7 @@ int sdcard_init(void)
 	for (retry = 1000; retry; retry--) {
 		sdcard_cmd(CMD_APP, 0);
 		ret = sdcard_response();
-		
+
 		sdcard_cmd(CMD_SEND_OP_COND, 0);
 		ret = sdcard_response();
 

@@ -2,50 +2,50 @@
 #define WIKIREADER_H
 
 static inline void init_pins(void)
-{					
-	/* P13 & P14: debug LEDs */	
-	REG_P1_IOC1 = 0x18;		
-					
-	/* P50 & P52: CS lines */	
-	REG_P5_IOC5 = 0x06;		
-	REG_PA_IOC = 0x08;		
-					
-	/* P65-67: SPI */		
-	REG_P6_47_CFP = 0x54;		
-					
-	/* Serial interface */		
-	REG_P0_03_CFP = 0x05;		
+{
+	/* P13 & P14: debug LEDs */
+	REG_P1_IOC1 = 0x18;
+
+	/* P50 & P52: CS lines */
+	REG_P5_IOC5 = 0x06;
+	REG_PA_IOC = 0x08;
+
+	/* P65-67: SPI */
+	REG_P6_47_CFP = 0x54;
+
+	/* Serial interface */
+	REG_P0_03_CFP = 0x05;
 }
 
 
 static inline void init_rs232(void)
-{										
-	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */	
-	REG_EFSIF0_CTL = 0xc3;							
-										
-	/* DIVMD = 1/8, General I/F mode */					
-	REG_EFSIF0_IRDA = 0x10;							
-										
-	/* by default MCLKDIV = 0 which means that the internal MCLK is OSC/1,	
-	 * where OSC = OSC3 as OSCSEL[1:0] = 00b				
-	 * Hence, MCLK is 48MHz */						
-										
-	/* set up baud rate timer reload data */				
-	/* 									
-	 * BRTRD = ((F[brclk] * DIVMD) / (2 * bps)) - 1;			
-	 * where								
-	 * 	F[brclk] = 48MHz						
-	 * 	DIVMD = 1/8							
-	 *	bps = 57600							
-	 *									
-	 *   = 51								
-	 */									
-										
-	REG_EFSIF0_BRTRDL = 51 & 0xff;						
-	REG_EFSIF0_BRTRDM = 51 >> 8;						
-										
-	/* baud rate timer: run! */						
-	REG_EFSIF0_BRTRUN = 0x01;						
+{
+	/* serial line 0: 8-bit async, no parity, internal clock, 1 stop bit */
+	REG_EFSIF0_CTL = 0xc3;
+
+	/* DIVMD = 1/8, General I/F mode */
+	REG_EFSIF0_IRDA = 0x10;
+
+	/* by default MCLKDIV = 0 which means that the internal MCLK is OSC/1,
+	 * where OSC = OSC3 as OSCSEL[1:0] = 00b
+	 * Hence, MCLK is 48MHz */
+
+	/* set up baud rate timer reload data */
+	/*
+	 * BRTRD = ((F[brclk] * DIVMD) / (2 * bps)) - 1;
+	 * where
+	 * 	F[brclk] = 48MHz
+	 * 	DIVMD = 1/8
+	 *	bps = 57600
+	 *
+	 *   = 51
+	 */
+
+	REG_EFSIF0_BRTRDL = 51 & 0xff;
+	REG_EFSIF0_BRTRDM = 51 >> 8;
+
+	/* baud rate timer: run! */
+	REG_EFSIF0_BRTRUN = 0x01;
 }
 
 /* MRS command address for burst length=1, CAS latency = 2 */

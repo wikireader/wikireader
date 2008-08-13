@@ -77,13 +77,13 @@ static int read_bootsector (u32 sector)
 
 	print("BOOT SECTOR:\n");
 	hex_dump(&boot, 512);
-	
+
 	fat_start = sector + boot.reserved_sectors;
 
-	if (boot.fat_type[0] == 'F' && 
-	    boot.fat_type[1] == 'A' && 
-	    boot.fat_type[2] == 'T' && 
-	    boot.fat_type[3] == '3' && 
+	if (boot.fat_type[0] == 'F' &&
+	    boot.fat_type[1] == 'A' &&
+	    boot.fat_type[2] == 'T' &&
+	    boot.fat_type[3] == '3' &&
 	    boot.fat_type[4] == '2') {
 		first_cluster_sector = fat_start + (boot.num_fats * boot.sectors_per_fat32);
 		root_entry = CLUSTER_TO_SECTOR(boot.root_cluster);
@@ -137,7 +137,7 @@ static int load_file(struct dir_entry *e, u8 *dest, u32 maxsize)
 
 	while (maxsize) {
 		int i, sector = CLUSTER_TO_SECTOR(cluster);
-		
+
 		for (i = 0; i < boot.sectors_per_cluster; i++) {
 			sdcard_read_sector(sector++, dest);
 			dest += BYTES_PER_SECTOR;
@@ -177,7 +177,7 @@ int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize)
 		sdcard_read_sector(sector++, buf);
 
 		for (e = (struct dir_entry *) buf;
-		     (u8 *) e < (buf + sizeof(buf)); 
+		     (u8 *) e < (buf + sizeof(buf));
 		     e++, entry_cnt++) {
 			if (e->attrs & 0xde || e->name[0] & 0x80)
 				continue;
