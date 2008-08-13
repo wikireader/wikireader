@@ -78,7 +78,7 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_read_file("TEST", buf, MEMSIZE) < 0)
+	if (fat_read_file("KERNEL", buf, MEMSIZE) < 0)
 		return;
 
 	print("DUMP:\n");

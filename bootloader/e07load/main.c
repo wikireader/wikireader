@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 	if (ret < 0)
 		return ret;
 
-	if (mapfile_write_eeprom(ttyfd) < 1)
+	if (mapfile_write_eeprom(ttyfd) < 0)
 		return -1;
 	
 	msg("YEAH.\n");
