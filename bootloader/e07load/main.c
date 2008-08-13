@@ -103,10 +103,10 @@ int main(int argc, char **argv)
 	memset(verify_buf, 0, sizeof(verify_buf));
 
 	ttyfd = open_tty(tty);
-	if (fd < 0)
-		return fd;
+	if (ttyfd < 0)
+		return ttyfd;
 
-	ret = sync_cpu(fd);
+	ret = sync_cpu(ttyfd);
 	if (ret < 0)
 		return ret;
 
@@ -131,6 +131,7 @@ int main(int argc, char **argv)
 	}
 	msg("ok.\n");
 
+	usleep(10000);
 	if (mapfile_write_eeprom(ttyfd) < 1)
 		return -1;
 	

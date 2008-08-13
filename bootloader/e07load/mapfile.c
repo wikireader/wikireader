@@ -61,8 +61,9 @@ static void dump_map(void)
 {
 	int i;
 
-	msg("\nDumping EEPROM map, %d entries:\n", num_mapfile_entries);
+	msg("dumping EEPROM map, %d entries:\n\n", num_mapfile_entries);
 	msg("\tstart address\tdata size\tsource file name\n");
+	msg("\t-------------\t---------\t----------------\n");
 
 	for (i = 0; i < num_mapfile_entries; i++)
 		msg("\t0x%08x\t%lu\t\t%s\n",
@@ -76,25 +77,17 @@ static void dump_map(void)
 int mapfile_write_eeprom(int ttyfd)
 {
 	int i;
-	char *verify_buf;
 
 	for (i = 0; i < num_mapfile_entries; i++) {
 		struct mapfile_entry *e = mapfile_entry + i;
 
+		debug("%s(): area #%d\n", __func__, i);
+
 		if (write_eeprom(ttyfd, e->data, e->size, e->addr) < 0)
 			return -1;
 
-		verify_buf = (char *) malloc(e->size);
-		if (verify_eeprom(ttyfd, verify_buf, e->size, e->addr) < 0)
+		if (verify_eeprom(ttyfd, e->data, e->size, e->addr) < 0)
 			return -1;
-
-		if (memcmp(verify_buf, e->data, e->size) != 0) {
-			error("verify FAILED.\n");
-			return -1;
-		}
-
-		free(verify_buf);
-
 	}
 
 	return 0;

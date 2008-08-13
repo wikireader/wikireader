@@ -64,13 +64,22 @@ int write_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
 		cmdbuf[3] = (a + offset) >> 16;
 		cmdbuf[4] = (a + offset) >> 8;
 		cmdbuf[5] = (a + offset) & 0xff;
-		write(fd, cmdbuf, 4 + 2);
+		int bla = write(fd, cmdbuf, 4 + 2);
+
+
+printf("\n");
+hex_dump(cmdbuf, 0, 6);
+printf("written %d\n", bla);
+
+
 
 		cmdbuf[0] = SPI_WRITE;
 
 		for (i = 0; i < 0x80 && a + i < len; i++)
 			cmdbuf[i + 2] = buf[i + a];
 
+		printf("chunk size %d @%d\n", i, a);
+		
 		cmdbuf[1] = i;
 		write(fd, cmdbuf, i + 2);
 
@@ -99,6 +108,8 @@ int verify_eeprom(int fd, char *buf, ssize_t len, ssize_t offset)
 
 	for (a = 0; a < len;) {
 		i = ((len - a) < 0x80) ? (len - a) : 0x80;
+
+		printf("chunk size %d @%d\n", i, a);
 
 		/* READ command */
 		cmdbuf[0] = SPI_CS_LO;
