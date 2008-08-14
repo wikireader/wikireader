@@ -1,0 +1,9 @@
+- implement support for SDHC
+- initialize the LCD controller
+- in case the bootloader fails to read a kernel from sd card:
+	- display image from EEPROM
+	- register IRQ handler
+	- go to deep sleep
+
+- adaptions to custom design (not to break the original support)
+
