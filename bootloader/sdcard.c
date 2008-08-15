@@ -58,6 +58,13 @@ static u8 sdcard_response(void)
 		SDCARD_CS_HI();
 	} while (--retry && (ret & 0x80));
 
+	/* !?! */
+	if (ret == 0x1f) {
+		SDCARD_CS_LO();
+		ret = spi_transmit(0xff);
+		SDCARD_CS_HI();
+	}
+
 	return ret;
 }
 
@@ -112,8 +119,8 @@ int sdcard_read_sector(u32 sector, u8 *buf)
 	ret = sdcard_response();
 
 	if (ret != 0) {
-		print("bad card response: ");
-		print_u32(ret); print("\n");
+//		print("bad card response: ");
+//		print_u32(ret); print("\n");
 		return -1;
 	}
 
@@ -240,12 +247,13 @@ int sdcard_init(void)
 		sdcard_cmd(CMD_GO_IDLE_STATE, 0);
 		ret = sdcard_response();
 
-		if (ret == 1)
+		if (ret == 0x01)
 			break;
 	}
 
-	if (ret != 1) {
+	if (ret != 0x01) {
 		print("unable to set SD card to IDLE state\n");
+		SDCARD_CS_HI();
 		return -1;
 	}
 
@@ -264,6 +272,7 @@ int sdcard_init(void)
 	else if (sdsc_init() == 0)
 		mode = MODE_SDSC;
 
+	SDCARD_CS_HI();
 	print("SD card initialized.\n");
 
 	return 0;
