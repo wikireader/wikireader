@@ -16,6 +16,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*
+ * Support code for FAT16 and FAT32 file systems.
+ *
+ * Restrictions:
+ * 	* supports read only, no writes
+ * 	* no convenient high-level functions
+ * 	* supports one FS only
+ */
+
 #include "types.h"
 #include "spi.h"
 #include "sdcard.h"

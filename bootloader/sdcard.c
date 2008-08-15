@@ -16,6 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*
+ * support code for SD cards, SDSC and SDHC. Some hints were taken from
+ * the vector06cc project, others were reverse-enginered due to dorky
+ * SD card consortium restrictions for documentation. Shame on you.
+ * 
+ * Restrictions:
+ * 	* does not support MMC cards
+ * 	* read-only, not write support
+ * 	* support for one card only
+ */
+
 #include "regs.h"
 #include "types.h"
 #include "wikireader.h"
@@ -37,24 +48,6 @@
 #define MODE_SDHC 1
 static u8 mode;
 
-static u8 csd[16];
-
-static u8 sdcard_wait_for_ready(void)
-{
-	u8 ret, retry = 10;
-
-	spi_transmit(0xff);
-return 1;
-
-	while (retry--) {
-		ret = spi_transmit(0xff);
-		if (ret == 0xff);
-			break;
-	}
-
-	return ret == 0xff;
-}
-
 static u8 sdcard_response(void)
 {
 	u8 ret, retry = 100;
@@ -64,9 +57,6 @@ static u8 sdcard_response(void)
 		ret = spi_transmit(0xff);
 		SDCARD_CS_HI();
 	} while (--retry && (ret & 0x80));
-
-	if (retry == 0)
-		print("TIMEOUT RESPONSE\n");
 
 	return ret;
 }
@@ -82,12 +72,7 @@ static void sdcard_cmd(u8 cmd, u32 param)
 	};
 
 	SDCARD_CS_LO();
-
-	if (cmd != CMD_GO_IDLE_STATE && !sdcard_wait_for_ready()) {
-		print("timeout waiting for card ready\n");
-		SDCARD_CS_HI();
-		return;
-	}
+	spi_transmit(0xff);
 
 	for (i = 0; i < sizeof(c); i++)
 		spi_transmit(c[i]);
@@ -155,38 +140,86 @@ int sdcard_read_sector(u32 sector, u8 *buf)
 	spi_transmit(0xff);
 	SDCARD_CS_HI();
 
-
-	/* stop reading */
-//	sdcard_cmd(12, 0);
-
-
-
 	return 0;
 }
 
-static int sdcard_read_csd(void)
+static int sdhc_init(void)
 {
-	u32 retry, ret, i;
+	u8 i, ocr[4];
+	u32 retry, ret;
 
-	sdcard_cmd(CMD_READ_CSD, 0);
-
-	for (retry = 0; retry < 10; retry++) {
-		ret = sdcard_response();
-		if (ret == 0xfe)
-			break;
-	}
-
-	if (ret != 0xfe)
-		return -1;
-
+	/* get the rest of R7 response */
 	SDCARD_CS_LO();
-	for (i = 0; i < sizeof(csd); i++)
-		csd[i] = spi_transmit(0xff);
+	for (i = 0; i < sizeof(ocr); i++)
+		ocr[i] = spi_transmit(0xff);
+
 	SDCARD_CS_HI();
 
-	print("dumping CSD:\n");
-	hex_dump(csd, sizeof(csd));
+	if (ocr[2] != 0x01 || ocr[3] != 0xaa) {
+		/* card can't operate @2.7-3.3V */
+		print("SDHC card not usable\n");
+		hex_dump(ocr, 4);
+		return -1;
+	}
 
+	/* leave the IDLE state (CMD41 | HCS bit) */
+	for (retry = 100; retry; retry--) {
+		sdcard_cmd(CMD_APP, 0);
+		ret = sdcard_response();
+
+		sdcard_cmd(CMD_41, (1UL << 30));
+		ret = sdcard_response();
+
+		if (ret == 0x00)
+			break;
+
+		delay(10000);
+	}
+
+	if (ret == 0x00) {
+		sdcard_cmd(CMD_58, 0);
+		ret = sdcard_response();
+
+		SDCARD_CS_LO();
+		for (i = 0; i < sizeof(ocr); i++)
+			ocr[i] = spi_transmit(0xff);
+
+		SDCARD_CS_HI();
+		hex_dump(ocr, 4);
+	} else {
+		print("SDHC: timeout\n");
+		return -1;
+	}
+
+	print("detected SDHC card\n");
+	return 0;
+}
+
+static int sdsc_init(void)
+{
+	u32 retry, ret;
+
+	for (retry = 1000; retry; retry--) {
+		sdcard_cmd(CMD_APP, 0);
+		ret = sdcard_response();
+
+		sdcard_cmd(CMD_SEND_OP_COND, 0);
+		ret = sdcard_response();
+
+		if (ret == 0)
+			break;
+
+		delay(10000);
+	}
+
+	if (ret != 0x00) {
+		print("unable to init SDSC card!\n");
+		print_u32(ret);
+		print("\n");
+		return -1;
+	}
+
+	print("detected SDSC card\n");
 	return 0;
 }
 
@@ -226,90 +259,10 @@ int sdcard_init(void)
 		delay(10000);
 	}
 
-	if (ret != 0x01) {
-		/* SDSC? */
-		for (retry = 100; retry; retry--) {
-			sdcard_cmd(CMD_APP, 0);
-			ret = sdcard_response();
-
-			sdcard_cmd(CMD_SEND_OP_COND, 0);
-			ret = sdcard_response();
-
-			if (ret == 0)
-				break;
-
-			delay(10000);
-		}
-
-		if (ret != 0x00) {
-			print("unable to init SDSC card!\n");
-			print_u32(ret);
-			return -1;
-		}
-
-		print("detected SDSC card\n");
-
-/*
-		if (sdcard_read_csd() < 0) {
-			print("unable to read CSD\n");
-			return -1;
-		}
-*/		
-		mode = MODE_SDSC;
-	} else {
-		u8 i, ocr[4];
-		/* SDHC? */
-
-		/* get the rest of R7 response */
-		SDCARD_CS_LO();
-		for (i = 0; i < sizeof(ocr); i++)
-			ocr[i] = spi_transmit(0xff);
-
-		SDCARD_CS_HI();
-
-		if (ocr[2] != 0x01 || ocr[3] != 0xaa) {
-			/* card can't operate @2.7-3.3V */
-			print("SDHC card not usable\n");
-			hex_dump(ocr, 4);
-			return -1;
-		}
-
-		/* leave the IDLE state (CMD41 | HCS bit) */
-		for (retry = 100; retry; retry--) {
-			sdcard_cmd(CMD_APP, 0);
-			ret = sdcard_response();
-
-			sdcard_cmd(CMD_41, (1UL << 30));
-			ret = sdcard_response();
-
-			if (ret == 0x00)
-				break;
-
-			delay(10000);
-		}
-
-		if (ret == 0x00) {
-			sdcard_cmd(CMD_58, 0);
-			ret = sdcard_response();
-
-			SDCARD_CS_LO();
-			for (i = 0; i < sizeof(ocr); i++)
-				ocr[i] = spi_transmit(0xff);
-
-			SDCARD_CS_HI();
-			hex_dump(ocr, 4);
-		} else {
-			print("SDHC: timeout\n");
-			return -1;
-		}
-
-		print("detected SDHC card\n");
+	if (ret == 0x01 && sdhc_init() == 0)
 		mode = MODE_SDHC;
-	}
-
-	sdcard_cmd(16, 512);
-	ret = sdcard_response();
-	print("CMD16 response: "); print_u32(ret); print("\n");
+	else if (sdsc_init() == 0)
+		mode = MODE_SDSC;
 
 	print("SD card initialized.\n");
 
