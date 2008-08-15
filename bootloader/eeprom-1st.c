@@ -28,8 +28,8 @@
 static void spi_transmit(u8 b);
 #endif
 
-#define LOAD_FROM_EEPROM 1
-//#define LOAD_FROM_RS232 1
+//#define LOAD_FROM_EEPROM 1
+#define LOAD_FROM_RS232 1
 
 int main(void) {
 #ifdef LOAD_FROM_RS232

@@ -99,6 +99,15 @@ void hex_dump(const u8 *buf, u32 size)
 	}
 }
 
+void print_u32(u32 val)
+{
+	print("0x");
+	printbyte(val >> 24);
+	printbyte(val >> 16);
+	printbyte(val >> 8);
+	printbyte(val);
+}
+
 void delay(u32 nops)
 {
 	while (nops--)
