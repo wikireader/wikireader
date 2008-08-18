@@ -31,21 +31,6 @@ enum {
 	SPI_CS_LO = 3
 };
 
-
-#if 0
-	cmdbuf[0] = SPI_WRITE;
-	cmdbuf[1] = 1;
-	cmdbuf[2] = 0x9f;
-	write(fd, cmdbuf, 3);
-
-	cmdbuf[0] = SPI_READ;
-	cmdbuf[1] = 3;
-	write(fd, cmdbuf, 2);
-	read(fd, cmdbuf, 3);
-
-	msg("EEPROM identifier: %02x %02x %02x\n", cmdbuf[0], cmdbuf[1], cmdbuf[2]);
-#endif
-
 static void spi_cs_lo (int fd)
 {
 	unsigned char cmdbuf = SPI_CS_LO;

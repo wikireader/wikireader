@@ -30,6 +30,16 @@
 
 int num_mapfile_entries = 0;
 
+#define MAX_MAPFILE_ENTRIES 64
+
+static struct mapfile_entry
+{
+	unsigned long  addr;
+	ssize_t        size;
+	unsigned char *data;
+	char          *fname;
+} mapfile_entry[MAX_MAPFILE_ENTRIES];
+
 static int check_overlaps(void)
 {
 	int i, endptr = 0;
@@ -126,6 +136,7 @@ int mapfile_parse(const char *filename)
 
 	while (fgets(buf, sizeof(buf), f)) {
 		char *addr, *fname;
+		struct mapfile_entry *e = mapfile_entry + num_mapfile_entries;
 
 		if (strlen(buf) == 0 || buf[0] == '#')
 			continue;
@@ -140,13 +151,13 @@ int mapfile_parse(const char *filename)
 
 		strchomp(fname);
 
-		mapfile_entry[num_mapfile_entries].addr = strtol(addr, NULL, 0);
-		mapfile_entry[num_mapfile_entries].data = read_file(fname, &mapfile_entry[num_mapfile_entries].size);
+		e->addr = strtol(addr, NULL, 0);
+		e->data = read_file(fname, &e->size);
 
-		if (!mapfile_entry[num_mapfile_entries].data)
+		if (!e->data)
 			return -1;
 		
-		mapfile_entry[num_mapfile_entries].fname = strdup(fname);
+		e->fname = strdup(fname);
 		num_mapfile_entries++;
 	}
 
