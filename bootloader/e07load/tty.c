@@ -51,9 +51,14 @@ int open_tty(const char *tty)
 	options.c_cflag |= CS8;
 	options.c_cflag |= CRTSCTS;
 	cfmakeraw(&options);
-	tcsetattr(fd, TCSANOW, &options);
-	debug("port >%s< opened.\n", tty);
+	
+	if (tcsetattr(fd, TCSANOW, &options) < 0) {
+		close(fd);
+		error("unable to set serial tty configuration.\n");
+		return -1;
+	}
 
+	debug("port >%s< opened.\n", tty);
 	return fd;
 }
 
