@@ -26,7 +26,7 @@
 
 enum {
 	SPI_WRITE = 0,
-	SPI_READ = 1,
+	SPI_READ  = 1,
 	SPI_CS_HI = 2,
 	SPI_CS_LO = 3
 };
