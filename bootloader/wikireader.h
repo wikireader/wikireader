@@ -100,6 +100,18 @@ static inline void init_ram(void)
         REG_SDRAMC_INI = 0x10;  /* exit setup mode */
 }
 
+static inline void enable_card_power(void)
+{
+	REG_SRAMC_A0_BSL |= 1 << 1;
+	*(volatile unsigned int *) 0x200000 = 0xffffffff;
+}
+
+static inline void disable_card_power(void)
+{
+	REG_SRAMC_A0_BSL |= 1 << 1;
+	*(volatile unsigned int *) 0x200000 = 0;
+}
+
 #define DEBUGLED1_ON()	do { REG_P1_P1D &= ~(1 << 4); } while (0)
 #define DEBUGLED1_OFF()	do { REG_P1_P1D |=  (1 << 4); } while (0)
 

@@ -41,10 +41,6 @@ int main(void)
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
 
-	/* CARDPWR on */
-	REG_SRAMC_A0_BSL |= 1 << 1;
-	*(volatile unsigned int *) 0x200000 = 0xffffffff;
-
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //	; set SP
 
@@ -78,14 +74,11 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_read_file("TEST", buf, MEMSIZE) < 0)
+	if (fat_read_file("KERNEL", buf, MEMSIZE) < 0)
 		return;
 
 	print("DUMP:\n");
 	hex_dump(buf, 1024);
-	//print(buf);
-
-	for(;;);
 
 	print("JUMP!\n");
 

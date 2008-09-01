@@ -116,7 +116,7 @@ int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 		spi_cs_hi(fd);
 		
 		usleep(100 * 1000);
-		msg(".");
+		printf(".");
 		fflush(0);
 
 		a += xlen;
@@ -149,7 +149,7 @@ int verify_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 
 		spi_cs_hi(fd);
 
-		msg (".");
+		printf(".");
 		fflush(0);
 	
 		if (memcmp(buf + a, verify_buf + a, i) != 0) {

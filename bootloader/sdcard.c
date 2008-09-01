@@ -18,10 +18,11 @@
 
 /*
  * support code for SD cards, SDSC and SDHC. Some hints were taken from
- * the vector06cc project, others were reverse-enginered due to dorky
- * SD card consortium restrictions for documentation. Shame on you.
+ * the vector06cc project, others were reverse-enginered, guessed and
+ * estimated due to dorky SD card consortium restrictions for
+ * documentation. Shame on you.
  * 
- * Restrictions:
+ * Limitations of this stack:
  * 	* does not support MMC cards
  * 	* read-only, not write support
  * 	* support for one card only
@@ -58,7 +59,8 @@ static u8 sdcard_response(void)
 		SDCARD_CS_HI();
 	} while (--retry && (ret & 0x80));
 
-	/* !?! */
+	/* some SDHC cards seem to transmit 0x1f followed by the actual
+	 * status code. */
 	if (ret == 0x1f) {
 		SDCARD_CS_LO();
 		ret = spi_transmit(0xff);
@@ -85,7 +87,8 @@ static void sdcard_cmd(u8 cmd, u32 param)
 		spi_transmit(c[i]);
 
 	/* checksum */
-	//spi_transmit((crc7(c, sizeof(c)) << 1) | 1);
+	/* FIXME: for some reason, the crc algorithm is wrong
+	 * for CMD8. Hence the hack here. */
 	switch (cmd) {
 		case 0:
 			crc = 0x95;
@@ -124,7 +127,7 @@ int sdcard_read_sector(u32 sector, u8 *buf)
 		return -1;
 	}
 
-	for (retry = 0; retry < 1000; retry++) {
+	for (retry = 0; retry < 10000; retry++) {
 		SDCARD_CS_LO();
 		ret = spi_transmit(0xff);
 		SDCARD_CS_HI();
@@ -234,6 +237,10 @@ int sdcard_init(void)
 {
 	u8 ret;
 	u32 retry;
+
+	disable_card_power();
+	delay(100000);
+	enable_card_power();
 
 	/* 80 dummy clocks */
 	SDCARD_CS_LO();
