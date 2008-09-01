@@ -88,11 +88,9 @@ int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	int a, rest = offset % CHUNKSIZE;
 	unsigned char cmdbuf[CHUNKSIZE + 4];
 
-
 	spi_cs_hi(fd);
 	msg("writing %d bytes to EEPROM, offset 0x%x ", len, offset);
 
-	/* write data */
 	for (a = 0; a < len;) {
 		int xlen = len - a;
 
