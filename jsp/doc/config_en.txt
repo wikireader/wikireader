@@ -242,38 +242,38 @@ directory where the kernel source is put and the object file that
 composes it are compiled is specified, it defines it in the variable 
 shown up.
 
-¥·¥¹¥Æ¥à°ÍÂžÉô€Î Makefile.config €Ç€³€ì€é€ÎÊÑ¿ô€òÄêµÁ€¹€ë»þ€Ï¡€CDEFS 
-€Ê€É€ÈÆ±ÍÍ€Î°·€€€¬É¬Í×€Ç€¢€ë¡¥
+When these variables are defined with Makefile.config in the system 
+dependence part, it is necessary to treat similar to CDEFS etc.
 
-€Û€È€ó€É€ÎŸì¹ç€Ë¡€¥×¥í¥»¥Ã¥µ°ÍÂžÉô€Î Makefile.config €Ë€Ï°Ê²Œ€Îµ­œÒ€ò
-ŽÞ€á€ëÉ¬Í×€¬€¢€ë¡¥
+It is necessary to include the following descriptions in Makefile.
+config in the processor dependence part in case of almost. 
 
-    GNU³«È¯ŽÄ¶­€òÍÑ€€€ëŸì¹ç
+    When you use GNU development environment
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)
         KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) cpu_support.o
         KERNEL_COBJS := $(KERNEL_COBJS) cpu_config.o
 
-    €œ€ÎÂŸ€Î³«È¯ŽÄ¶­€òÍÑ€€€ëŸì¹ç
+    When you use other development environments
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)-$(TOOL)
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)
         KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) cpu_support.o
         KERNEL_COBJS := $(KERNEL_COBJS) cpu_config.o
 
-€Þ€¿¡€¥·¥¹¥Æ¥à°ÍÂžÉô¥Ç¥£¥ì¥¯¥È¥ê€Î Makefile.config €Ë€Ï°Ê²Œ€Îµ­œÒ€òŽÞ
-€á€ëÉ¬Í×€¬€¢€ë¡¥
+Moreover, it is necessary to include the following descriptions in 
+Makefile.config of the system dependence department directory.
 
-    GNU³«È¯ŽÄ¶­€òÍÑ€€€ëŸì¹ç
+    When you use GNU development environment
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)/$(SYS)
         KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) sys_support.o
         KERNEL_COBJS := $(KERNEL_COBJS) sys_config.o
 
-    €œ€ÎÂŸ€Î³«È¯ŽÄ¶­€òÍÑ€€€ëŸì¹ç
+    When you use other development environments
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)-$(TOOL)/$(SYS)
         KERNEL_DIR := $(KERNEL_DIR):$(SRCDIR)/config/$(CPU)/$(SYS)
         KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) sys_support.o
         KERNEL_COBJS := $(KERNEL_COBJS) sys_config.o
 
-(6) ¥ª¥Õ¥»¥Ã¥È¥Õ¥¡¥€¥ë€ÎÀžÀ®
+(6) Generation of offset file
 
 ¥¢¥»¥ó¥Ö¥êžÀžì€Çµ­œÒ€µ€ì€ë¥×¥í¥°¥é¥à€«€é¡€CžÀžì€Î¹œÂ€ÂÎ€Ë¥¢¥¯¥»¥¹€¹€ë
 Ÿì¹ç€Ë€Ï¡€¹œÂ€ÂÎ€Î³Æ¥Õ¥£¡Œ¥ë¥É€Î¥ª¥Õ¥»¥Ã¥È€ò»²ŸÈ€¹€ë€³€È€¬É¬Í×€Ç€¢€ë¡¥ 
