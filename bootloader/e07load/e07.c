@@ -44,9 +44,9 @@ int sync_cpu(int fd)
 		return 0;
 	}
 
-	/* check CPU id for L18 */
+	/* check CPU id for L17 */
 	if (buf[0] == 0x06 && buf[1] == 0x15 && buf[2] == 0x17 && buf[3] == 0x01) {
-                msg("CPU id does match L17! Bummer.\n");
+                msg("CPU id does match L17!.\n");
                 return 0;
         }
 
