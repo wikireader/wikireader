@@ -38,12 +38,20 @@ int sync_cpu(int fd)
 	read(fd, buf, 4);
 	msg("reading CPU id: %02x%02x%02x%02x\n", buf[0], buf[1], buf[2], buf[3]);
 
-	if (buf[0] != 0x06 || buf[1] != 0x0e || buf[2] != 0x07 || buf[3] != 0x00) {
-		error("invalid  CPU id! Bummer.\n");
-		return -1;
+	/* check CPU id for E07 */
+	if (buf[0] == 0x06 && buf[1] == 0x0e && buf[2] == 0x07 && buf[3] == 0x00) {
+		msg("CPU id does match E07!\n");
+		return 0;
 	}
 
-	return 0;
+	/* check CPU id for L18 */
+	if (buf[0] == 0x06 && buf[1] == 0x15 && buf[2] == 0x17 && buf[3] == 0x01) {
+                msg("CPU id does match L17! Bummer.\n");
+                return 0;
+        }
+
+        error("CPU id does not match! Bummer.\n");
+	return -1;
 }
 
 int bootstrap(int ttyfd, const char *bootstrap_file)
