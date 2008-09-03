@@ -26,10 +26,6 @@
 #include "fat.h"
 #include "elf32.h"
 
-#define MEMSIZE (1024 * 1024 * 4)
-#define MEMSTART 0x10000000
-
-
 static void boot_from_sdcard(void);
 
 __attribute__((noreturn))
@@ -67,21 +63,15 @@ int main(void)
 
 static void boot_from_sdcard(void)
 {
-	u8 *buf = (char *) MEMSTART;
-
 	if (sdcard_init() < 0)
 		return;
 
 	if (fat_init(0) < 0)
 		return;
 
-	elf_read("KERNEL");
+	if (elf_read("KERNEL") < 0)
+		return;
 
 	for (;;);
-
-	print("JUMP!\n");
-
-	/* jump, just let go! :) */
-	((void (*) (void)) buf) ();
 }
 

@@ -73,16 +73,12 @@ typedef struct {
 #define SHT_SHLIB       10              /* Reserved, unspecified semantics */
 #define SHT_DYNSYM      11              /* Dynamic linking symbol table */
 
-#define MAX_SECTIONS		32
-#define MAX_SECTION_NAME	32
-
-unsigned char section_name[MAX_SECTIONS][MAX_SECTION_NAME];
-
 int elf_read(const u8 *filename)
 {
 	elf32_hdr hdr;
 	elf32_sec sec;
-	int i;
+	u32 i;
+	void *exec;
 
 	if (fat_open_file(filename) < 0)
 		return -1;
@@ -126,6 +122,15 @@ int elf_read(const u8 *filename)
 		}
 	}
 
+	print("sections loaded, jumping to ");
+	print_u32(hdr.e_entry);
+	print("\n");
+
+	exec = (void *) hdr.e_entry;
+	hex_dump(exec, 256);
+	((void (*) (void)) exec) ();
+
+	/* never reached */
 	return 0;
 }
 

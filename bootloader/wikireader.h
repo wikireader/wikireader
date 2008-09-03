@@ -67,7 +67,7 @@ static inline void init_ram(void)
         REG_P2_47_CFP = 0x55;
         REG_P5_03_CFP = 0x80;
 
-        /* enable write protection of clock registers */
+        /* re-enable write protection of clock registers */
         REG_CMU_PROTECT = 0x00;
 
         /* re-enable SDRAMC application core */

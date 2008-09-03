@@ -88,8 +88,8 @@ static int read_bootsector (u32 sector)
 		return -1;
 	}
 
-	print("BOOT SECTOR:\n");
-	hex_dump((u8 *) &boot, 512);
+	//print("BOOT SECTOR:\n");
+	//hex_dump((u8 *) &boot, 512);
 
 	fat_start = sector + boot.reserved_sectors;
 
@@ -102,12 +102,12 @@ static int read_bootsector (u32 sector)
 		root_entry = CLUSTER_TO_SECTOR(boot.root_cluster);
 		boot.max_root_entries = 512; /* ??? */
 		is_fat32 = 1;
-		print("FAT32 fs detected\n");
+		print("FAT32 fs detected.\n");
 	} else {
 		root_entry = fat_start + (boot.num_fats * boot.sectors_per_fat16);
 		first_cluster_sector = root_entry
 			+ 32; //boot.max_root_entries / (BYTES_PER_SECTOR / sizeof(struct dir_entry));
-		print("FAT16 fs detected\n");
+		print("FAT16 fs detected.\n");
 	}
 
 	return 0;
