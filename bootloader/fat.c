@@ -39,6 +39,7 @@ static u32 fat_start;
 static u32 first_cluster_sector;
 static u32 root_entry;
 static u8 buf[BYTES_PER_SECTOR];
+static u8 is_fat32;
 static struct dir_entry current_file;
 
 extern void memcpy(void *dst, void *src, u32 len);
@@ -100,6 +101,7 @@ static int read_bootsector (u32 sector)
 		first_cluster_sector = fat_start + (boot.num_fats * boot.sectors_per_fat32);
 		root_entry = CLUSTER_TO_SECTOR(boot.root_cluster);
 		boot.max_root_entries = 512; /* ??? */
+		is_fat32 = 1;
 		print("FAT32 fs detected\n");
 	} else {
 		root_entry = fat_start + (boot.num_fats * boot.sectors_per_fat16);
@@ -115,8 +117,10 @@ int fat_init(u32 partition_num)
 {
 	int first_sector;
 
+	is_fat32 = 0;
 	root_entry = -1;
 	first_sector = read_mbr(partition_num);
+	current_file.first_cluster = 0;
 
 	if (first_sector < 0)
 		/* if this failed, we maybe have a FAT FS at the first sector
@@ -130,17 +134,25 @@ int fat_init(u32 partition_num)
 
 static int get_fat_entry(u32 cluster)
 {
-	u16 *fat = (u16 *) buf;
 	u32 sector = fat_start;
-
-	sector += cluster >> 8;
-	sdcard_read_sector(sector, buf);
-	return fat[cluster & 0xff];
+	
+	if (is_fat32) {
+		u32 *fat = (u32 *) buf;
+		sector += cluster >> 7;
+		sdcard_read_sector(sector, buf);
+		return fat[cluster & 0x7f];
+	} else {
+		u16 *fat = (u16 *) buf;
+		sector += cluster >> 8;
+		sdcard_read_sector(sector, buf);
+		return fat[cluster & 0xff];
+	}
 }
 
 int fat_read_file(u32 offset, u8 *dest, u32 len)
 {
 	u32 cluster = current_file.first_cluster;
+	u8 buf[512];
 
 	if (!cluster)
 		return -1;
@@ -149,12 +161,10 @@ int fat_read_file(u32 offset, u8 *dest, u32 len)
 		len = current_file.file_size - offset;
 
 	while (len) {
-		int i, b, sector = CLUSTER_TO_SECTOR(cluster);
+		u32 i, b, sector = CLUSTER_TO_SECTOR(cluster);
 
 		/* read one cluster, which is spread over multiple sectors */
 		for (i = 0; i < boot.sectors_per_cluster; i++) {
-			u32 xlen = (len > BYTES_PER_SECTOR) ? BYTES_PER_SECTOR : len;
-
 			/* we loop here until the offset shrunk to something
 			 * we can reach in one block access */
 			if (offset >= BYTES_PER_SECTOR) {
@@ -167,11 +177,15 @@ int fat_read_file(u32 offset, u8 *dest, u32 len)
 			 * the first block access, all other cycles will use
 			 * an offset of 0. */
 
-			sdcard_read_sector(sector++, buf);
-			for (b = offset; b < xlen; b++)
-				*dest++ = buf[b];
+			sdcard_read_sector(sector + i, buf);
 
-			len -= xlen - offset;
+			for (b = offset; b < sizeof(buf); b++) {
+				*dest = buf[b];
+				dest++;
+				if (--len == 0)
+					break;
+			}
+			
 			offset = 0;
 
 			if (len == 0)
@@ -218,7 +232,7 @@ int fat_open_file(const u8 *filename)
 
 			if (str_equal(e->name, filename)) {
 				memcpy(&current_file, e, sizeof(*e));
-				return 1;
+				return 0;
 			}
 		}
 	}

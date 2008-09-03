@@ -24,6 +24,7 @@
 #include "eeprom.h"
 #include "misc.h"
 #include "fat.h"
+#include "elf32.h"
 
 #define MEMSIZE (1024 * 1024 * 4)
 #define MEMSTART 0x10000000
@@ -44,7 +45,7 @@ int main(void)
 //	asm("xld.w   %r15,0x0800");
 //	asm("ld.w    %sp,%r15"); //	; set SP
 
-	asm("xld.w   %r15, 0x1000");
+	asm("xld.w   %r15, 0x1500");
 //	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
@@ -74,11 +75,9 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (fat_open_file("KERNEL") < 0)
-		return;
+	elf_read("KERNEL");
 
-	print("DUMP:\n");
-	hex_dump(buf, 1024);
+	for (;;);
 
 	print("JUMP!\n");
 

@@ -43,7 +43,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o
+eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o elf32.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
