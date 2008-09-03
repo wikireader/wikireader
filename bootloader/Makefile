@@ -6,7 +6,7 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=/home/daniel/src/axlinux-c33pe.061027/tools/c33/lib/gcc-lib/c33-epson-elf/3.3.2/33401/
+LIBDIR=/usr/local/c33/lib/gcc-lib/c33-epson-elf/3.3.2/33401/
 LIBS=$(LIBDIR)/libgcc.a $(LIBDIR)/libc.a
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
