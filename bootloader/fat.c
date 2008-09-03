@@ -39,6 +39,9 @@ static u32 fat_start;
 static u32 first_cluster_sector;
 static u32 root_entry;
 static u8 buf[BYTES_PER_SECTOR];
+static struct dir_entry current_file;
+
+extern void memcpy(void *dst, void *src, u32 len);
 
 #define CLUSTER_TO_SECTOR(c)	\
 	(first_cluster_sector + (c - 2) * boot.sectors_per_cluster)
@@ -85,7 +88,7 @@ static int read_bootsector (u32 sector)
 	}
 
 	print("BOOT SECTOR:\n");
-	hex_dump(&boot, 512);
+	hex_dump((u8 *) &boot, 512);
 
 	fat_start = sector + boot.reserved_sectors;
 
@@ -135,26 +138,43 @@ static int get_fat_entry(u32 cluster)
 	return fat[cluster & 0xff];
 }
 
-static int load_file(struct dir_entry *e, u8 *dest, u32 maxsize)
+int fat_read_file(u32 offset, u8 *dest, u32 len)
 {
-	u32 cluster = e->first_cluster;
+	u32 cluster = current_file.first_cluster;
 
-	if (maxsize > e->file_size)
-		maxsize = e->file_size;
+	if (!cluster)
+		return -1;
 
-	/* alignment */
-	maxsize &= ~(BYTES_PER_SECTOR - 1);
-	maxsize +=   BYTES_PER_SECTOR;
+	if (len > current_file.file_size - offset)
+		len = current_file.file_size - offset;
 
-	while (maxsize) {
-		int i, sector = CLUSTER_TO_SECTOR(cluster);
+	while (len) {
+		int i, b, sector = CLUSTER_TO_SECTOR(cluster);
 
+		/* read one cluster, which is spread over multiple sectors */
 		for (i = 0; i < boot.sectors_per_cluster; i++) {
-			sdcard_read_sector(sector++, dest);
-			dest += BYTES_PER_SECTOR;
-			maxsize -= BYTES_PER_SECTOR;
+			u32 xlen = (len > BYTES_PER_SECTOR) ? BYTES_PER_SECTOR : len;
 
-			if (!maxsize)
+			/* we loop here until the offset shrunk to something
+			 * we can reach in one block access */
+			if (offset >= BYTES_PER_SECTOR) {
+				offset -= BYTES_PER_SECTOR;
+				continue;
+			}
+
+			/* Hence, once we reached here, offset is always
+			 * < BYTES_PER_OFFSET. We need that information only for
+			 * the first block access, all other cycles will use
+			 * an offset of 0. */
+
+			sdcard_read_sector(sector++, buf);
+			for (b = offset; b < xlen; b++)
+				*dest++ = buf[b];
+
+			len -= xlen - offset;
+			offset = 0;
+
+			if (len == 0)
 				break;
 		}
 
@@ -175,7 +195,7 @@ static int str_equal(const u8 *s1, const u8 *s2)
 }
 
 /* currently, this function only supports files located at the root directory */
-int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize)
+int fat_open_file(const u8 *filename)
 {
 	u32 entry_cnt = 0;
 	u32 sector = root_entry;
@@ -196,8 +216,10 @@ int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize)
 			//print("entry:\n");
 			//hex_dump(e, sizeof(*e));
 
-			if (str_equal(e->name, filename))
-				return load_file(e, dest, maxsize);
+			if (str_equal(e->name, filename)) {
+				memcpy(&current_file, e, sizeof(*e));
+				return 1;
+			}
 		}
 	}
 

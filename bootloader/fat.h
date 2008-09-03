@@ -25,7 +25,7 @@ struct boot_sector {
 	u16 num_heads;
 	u32 hidden_sectors;
 	u32 total_sectors2;
-	/* fat32 specific extensions */
+	/* fat32 specific extensions from here */
 	u32 sectors_per_fat32;
 	u16 fat_flags;
 	u16 version;
@@ -55,7 +55,8 @@ struct dir_entry {
 }__attribute__((packed));
 
 int fat_init(u32 partition);
-int fat_read_file(const u8 *filename, u8 *dest, u32 maxsize);
+int fat_open_file(const u8 *filename);
+int fat_read_file(u32 offset, u8 *dest, u32 maxsize);
 
 #endif /* FAT_H */
 
