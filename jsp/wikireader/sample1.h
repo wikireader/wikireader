@@ -8,174 +8,174 @@
  *  Copyright (C) 2005 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  *
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation 
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  *  @(#) $Id: sample1.h,v 1.33 2005/11/24 11:56:36 honda Exp $
  */
 
 /*
- *  �T���v���v���O����(1)�̃w�b�_�t�@�C��
+ *  サンプルプログラム(1)のヘッダファイル
  */
 
 #include <t_services.h>
 
 /*
- *  �e�^�X�N�̗D��x�̒�`
+ *  各タスクの優先度の定義
  */
 
-#define MAIN_PRIORITY	5		/* ���C���^�X�N�̗D��x */
-					/* HIGH_PRIORITY ��荂�����邱�� */
+#define MAIN_PRIORITY	5		/* メインタスクの優先度 */
+					/* HIGH_PRIORITY より高くすること */
 
-#define HIGH_PRIORITY	9		/* ����Ɏ��s�����^�X�N�̗D��x */
+#define HIGH_PRIORITY	9		/* 並列に実行されるタスクの優先度 */
 #define MID_PRIORITY	10
 #define LOW_PRIORITY	11
 
 /*
- *  �^�[�Q�b�g�ˑ��̒�`�iCPU��O�n���h���̋N�����@�Ȃǁj
+ *  ターゲット依存の定義（CPU例外ハンドラの起動方法など）
  */
 
 #ifdef M68K
 
-#define CPUEXC1		5		/* �[�����Z��O */
+#define CPUEXC1		5		/* ゼロ除算例外 */
 #define RAISE_CPU_EXCEPTION	syslog(LOG_NOTICE, "zerodiv = %d", 10 / 0)
 
 #elif defined(SH3)
 
-#define CPUEXC1		224		/* ���[�h�G���[��O */
+#define CPUEXC1		224		/* ロードエラー例外 */
 #define RAISE_CPU_EXCEPTION	(*((volatile int *) 0xFFFFFEC1))
 
 #elif defined(SH1)
 
-#define CPUEXC1		9		/* CPU�A�h���X�G���[��O */
+#define CPUEXC1		9		/* CPUアドレスエラー例外 */
 #define RAISE_CPU_EXCEPTION	(*((volatile int *) 0xFFFFFEC1))
 #ifdef TOKIWA_SH1
-#define	STACK_SIZE	512		/* �^�X�N�̃X�^�b�N�T�C�Y */
+#define	STACK_SIZE	512		/* タスクのスタックサイズ */
 #endif /* TOKIWA_SH1 */
 
 #elif defined(ARMV4)
 
-#define CPUEXC1		4		/* ���[�h�G���[��O */
+#define CPUEXC1		4		/* ロードエラー例外 */
 #define RAISE_CPU_EXCEPTION	(*((volatile int *) 0xFFFFFEC1))
 
 #elif defined(V850)
 
 #elif defined(H8)
 
-#undef CPUEXC1				/* CPU��O�n���h�����T�|�[�g���Ȃ� */
+#undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
 
 #elif defined(H8S)
 
-#undef CPUEXC1				/* CPU��O�n���h�����T�|�[�g���Ȃ� */
-#define LOOP_REF	4000L		/* ���x�v���p�̃��[�v�� */
+#undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
+#define LOOP_REF	4000L		/* 速度計測用のループ回数 */
 
 #elif defined(MICROBLAZE)
 
-#undef CPUEXC1				/* CPU��O�n���h�����T�|�[�g���Ȃ� */
-#define STACK_SIZE	2048		/* �^�X�N�̃X�^�b�N�T�C�Y */
+#undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
+#define STACK_SIZE	2048		/* タスクのスタックサイズ */
 
 #elif defined(IA32)
 
-#define CPUEXC1		0		/* �[�����Z��O */
+#define CPUEXC1		0		/* ゼロ除算例外 */
 #define RAISE_CPU_EXCEPTION   syslog(LOG_NOTICE, "zerodiv = %d", 10 / 0)
 #define OMIT_VGET_TIM
 
 #elif defined(TMS320C54X)
 
-#undef CPUEXC1				/* CPU��O�n���h�����T�|�[�g���Ȃ� */
-#define STACK_SIZE	320		/* �^�X�N�̃X�^�b�N�T�C�Y */
-#define LOOP_REF	500000L		/* ���x�v���p�̃��[�v�� */
+#undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
+#define STACK_SIZE	320		/* タスクのスタックサイズ */
+#define LOOP_REF	500000L		/* 速度計測用のループ回数 */
 
 #elif defined(XSTORMY16)
 
-#define CPUEXC1		0		/* �������ߗ�O */
+#define CPUEXC1		0		/* 無効命令例外 */
 #define RAISE_CPU_EXCEPTION	__asm__( ".hword 0x0006" )
-#define OMIT_VGET_TIM			/* vxget_tim()�͔�T�|�[�g */
-#define LOOP_REF 	4000L		/* ���x�v���p�̃��[�v�� */
-#define STACK_SIZE	256		/* �^�X�N�̃X�^�b�N�T�C�Y */
-#define TASK_PORTID	2		/* SIO�̓|�[�g2��p���� */
+#define OMIT_VGET_TIM			/* vxget_tim()は非サポート */
+#define LOOP_REF 	4000L		/* 速度計測用のループ回数 */
+#define STACK_SIZE	256		/* タスクのスタックサイズ */
+#define TASK_PORTID	2		/* SIOはポート2を用いる */
 
 #elif defined(MIPS3) || defined(MIPS64)
 
-#define CPUEXC1     Bp      /* �u���[�N�|�C���g��O�i�[�����Z���ɔ����j */
+#define CPUEXC1     Bp      /* ブレークポイント例外（ゼロ除算時に発生） */
 #define RAISE_CPU_EXCEPTION   syslog(LOG_NOTICE, "zerodiv = %d", 10 / 0)
 
 #elif defined(M16C) && defined(OAKS16)
 
-#define CPUEXC1     32      /* CPU��O�n���h���ԍ� */
-#define RAISE_CPU_EXCEPTION asm("   int #32") /* �\�t�g�E�F�A�����ݔ��� */
-#define STACK_SIZE  512     /* �^�X�N�̃X�^�b�N�T�C�Y */
-#define TASK_PORTID 2       /* �������͂���V���A���|�[�gID */
+#define CPUEXC1     32      /* CPU例外ハンドラ番号 */
+#define RAISE_CPU_EXCEPTION asm("   int #32") /* ソフトウェア割込み発生 */
+#define STACK_SIZE  512     /* タスクのスタックサイズ */
+#define TASK_PORTID 2       /* 文字入力するシリアルポートID */
 
 #elif defined(M16C) && defined(OAKS16_MINI)
 
-#define CPUEXC1     32      /* CPU��O�n���h���ԍ� */
-#define RAISE_CPU_EXCEPTION asm("   int #32") /* �\�t�g�E�F�A�����ݔ��� */
-#define STACK_SIZE  384     /* �^�X�N�̃X�^�b�N�T�C�Y */
-#define TASK_PORTID 2       /* �������͂���V���A���|�[�gID */
+#define CPUEXC1     32      /* CPU例外ハンドラ番号 */
+#define RAISE_CPU_EXCEPTION asm("   int #32") /* ソフトウェア割込み発生 */
+#define STACK_SIZE  384     /* タスクのスタックサイズ */
+#define TASK_PORTID 2       /* 文字入力するシリアルポートID */
 
 #elif defined(LINUX)
 
-#undef CPUEXC1				/* CPU��O�n���h�����T�|�[�g���Ȃ� */
+#undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
 #define OMIT_VGET_TIM
-#define LOOP_REF	4000000		/* ���x�v���p�̃��[�v�� */
+#define LOOP_REF	4000000		/* 速度計測用のループ回数 */
 
 #elif defined(NIOS2)
 
-#define CPUEXC1		0		  /* ���������ߗ�O */
+#define CPUEXC1		0		  /* 未実装命令例外 */
 #define RAISE_CPU_EXCEPTION	  Asm("div zero, zero, zero");
 
 #elif defined(M32C)
 
-#define CPUEXC1 32 /* CPU��O�n���h���ԍ� */
-#define RAISE_CPU_EXCEPTION asm(" int #32") /* �\�t�g�E�F�A�����ݔ��� */
-#define STACK_SIZE 512 /* �^�X�N�̃X�^�b�N�T�C�Y */
-#define TASK_PORTID 1 /* �������͂���V���A���|�[�gID */ 
+#define CPUEXC1 32 /* CPU例外ハンドラ番号 */
+#define RAISE_CPU_EXCEPTION asm(" int #32") /* ソフトウェア割込み発生 */
+#define STACK_SIZE 512 /* タスクのスタックサイズ */
+#define TASK_PORTID 1 /* 文字入力するシリアルポートID */ 
 
 #endif
 
 /*
- *  �^�[�Q�b�g�Ɉˑ�����\���̂���萔�̒�`
+ *  ターゲットに依存する可能性のある定数の定義
  */
 
 #ifndef TASK_PORTID
-#define	TASK_PORTID	1		/* �������͂���V���A���|�[�gID */
+#define	TASK_PORTID	1		/* 文字入力するシリアルポートID */
 #endif /* TASK_PORTID */
 
 #ifndef STACK_SIZE
-#define	STACK_SIZE	8192		/* �^�X�N�̃X�^�b�N�T�C�Y */
+#define	STACK_SIZE	8192		/* タスクのスタックサイズ */
 #endif /* STACK_SIZE */
 
 #ifndef LOOP_REF
-#define LOOP_REF	1000000		/* ���x�v���p�̃��[�v�� */
+#define LOOP_REF	1000000		/* 速度計測用のループ回数 */
 #endif /* LOOP_REF */
 
 /*
- *  �֐��̃v���g�^�C�v�錾
+ *  関数のプロトタイプ宣言
  */
 #ifndef _MACRO_ONLY
 

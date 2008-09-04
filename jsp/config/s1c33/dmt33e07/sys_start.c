@@ -8,37 +8,37 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 /*
- *  �J�[�l���p�̃X�^�[�g�A�b�v���W���[��(S1C33�p)
+ *  カーネル用のスタートアップモジュール(S1C33用)
  */
 
 #include "string.h"
@@ -47,7 +47,7 @@
 #include "cpu_config.h"
 
 /*
- *  �O���֐��̎Q��
+ *  外部関数の参照
  */
 extern void init_lib(void);
 extern void init_sys(void);
@@ -57,7 +57,7 @@ extern void INT_ENTRY(sio_in_handler)(void);
 extern void INT_ENTRY(sio_out_handler)(void);
 
 /*
- *  �v���g�^�C�v�錾
+ *  プロトタイプ宣言
  */
 void start(void);
 static void undef_handler(void);
@@ -65,7 +65,7 @@ static void hardware_init_hook(void);
 static void software_init_hook(void);
 
 /*
- *  �x�N�^�[�e�[�u��
+ *  ベクターテーブル
  */
 VP tps_VectorTable[] = {		/* offset   number */
 	(VP) start,			/* 00  Reset                    */
@@ -143,64 +143,64 @@ VP tps_VectorTable[] = {		/* offset   number */
 };
 
 /*
- *  �u�[�g���[�`��
+ *  ブートルーチン
  *  Boot routine
  */
 void start(void)
 {
 	/*
-	 *  �f�t�H���g�f�[�^�G���A�A�h���X��ݒ肷��
+	 *  デフォルトデータエリアアドレスを設定する
 	 */
 	Asm("xld.w %r15, __dp");
 
 	/*
-	 *  ��^�X�N�R���e�X�g�̃X�^�b�N��STACKTOP�ɏ���������
+	 *  非タスクコンテストのスタックをSTACKTOPに初期化する
 	 */
 	set_sp(STACKTOP);
 
 	/*
-	 * PSR�����������A���荞�݂��֎~����
+	 * PSRを初期化し、割り込みを禁止する
 	 */
 	set_psr(0x00000000);
 
 
 	/*
-	 *  hardware_init_hook ���Ăяo���B(0�łȂ��ꍇ)
+	 *  hardware_init_hook を呼び出す。(0でない場合)
 	 *
-	 *  �n�[�h�E�F�A�ˑ��ɕK�v�ȏ���������������ꍇ�́C
-	 *  hardware_init_hook �Ƃ����֐���p�ӂ���΂悢�D
-	 *  ��̓I�ɂ�ROM���̍ہARAM���g�p�\�ɂ��邽�߂�
-	 *  �o�X�R���g���[���̏����������s���B
-	 *  sys_config.c ���� hardware_init_hook ���`���Ă���D
+	 *  ハードウェア依存に必要な初期化処理がある場合は，
+	 *  hardware_init_hook という関数を用意すればよい．
+	 *  具体的にはROM化の際、RAMを使用可能にするための
+	 *  バスコントローラの初期化等を行う。
+	 *  sys_config.c 内で hardware_init_hook を定義している．
 	 */
 	if (hardware_init_hook != (VP) 0) {
 		hardware_init_hook();
 	}
 
 	/*
-	 *  data�Z�N�V����������������iROM���Ή��j�D
+	 *  dataセクションを初期化する（ROM化対応）．
 	 */
 	memcpy(VECTOR_START, IVECTOR_START, (UW)IVECTOR_END - (UW)IVECTOR_START);
 	memcpy(DATA_START, IDATA_START, (UW)IDATA_END - (UW)IDATA_START);
 
 	/*
-	 *  bss�Z�N�V������0�N���A����B
+	 *  bssセクションを0クリアする。
 	 */
 	 memset(BSS_START, 0x00, BSS_END - BSS_START);
 
 	/*
-	 *  software_init_hook ���Ăяo���i0 �łȂ��ꍇ�j
+	 *  software_init_hook を呼び出す（0 でない場合）
 	 *
-	 *  �\�t�g�E�F�A���i���Ƀ��C�u�����j�Ɉˑ����ĕK�v�ȏ�������
-	 *  ��������ꍇ�́Csoftware_init_hook �Ƃ����֐���p�ӂ����
-	 *  �悢�D
+	 *  ソフトウェア環境（特にライブラリ）に依存して必要な初期化処
+	 *  理がある場合は，software_init_hook という関数を用意すれば
+	 *  よい．
 	 */
 	if (software_init_hook != (VP) 0) {
 		software_init_hook();
 	}
 
 	/*
-	 *  �J�[�l�����N������
+	 *  カーネルを起動する
 	 */
 	Asm("xjp kernel_start");
 
@@ -210,7 +210,7 @@ void start(void)
 }
 
 /*
- *  �_�~�[���[�`��
+ *  ダミールーチン
  */
 static void undef_handler(void)
 {
@@ -220,7 +220,7 @@ static void undef_handler(void)
 }
 
 /*
- *  �V�X�e���ˑ��̏���������
+ *  システム依存の初期化処理
  */
 static	void	hardware_init_hook(void)
 {
@@ -248,7 +248,7 @@ static	void	hardware_init_hook(void)
 
 
 /*
- *  �\�t�g�E�F�A�ˑ��̏���������
+ *  ソフトウェア依存の初期化処理
  */
 static	void	software_init_hook(void)
 {

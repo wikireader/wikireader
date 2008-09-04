@@ -8,37 +8,37 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 /*
- *  �v���Z�b�T�ˑ����W���[��(S1C33�p)
+ *  プロセッサ依存モジュール(S1C33用)
  */
 
 
@@ -50,89 +50,89 @@
 #endif	/* TPS_ENA_LOGGING */
 
 /*
- *  �J�[�l���̓������ʖ��̃��l�[��
+ *  カーネルの内部識別名のリネーム
  */
 #include "cpu_rename.h"
 
 
 /*
- *  �ݒ�\�ȍō����荞�ݗD��x
+ *  設定可能な最高割り込み優先度
  */
 #define	TPS_INTLEV_MAX	(0x04)
 #define	TPS_CPULOCK_LEV	(TPS_INTLEV_MAX + 1)
 
 /*
- *  TCB ���̃t�B�[���h�̃r�b�g���̒�`
+ *  TCB 中のフィールドのビット幅の定義
  */
-#define	TBIT_TCB_PRIORITY	8	/* priority �t�B�[���h�̃r�b�g�� */
-#define	TBIT_TCB_TSTAT		8	/* tstat �t�B�[���h�̃r�b�g��	 */
+#define	TBIT_TCB_PRIORITY	8	/* priority フィールドのビット幅 */
+#define	TBIT_TCB_TSTAT		8	/* tstat フィールドのビット幅	 */
 
 
 #ifndef _MACRO_ONLY
 /*
- *  TCB �֘A�̒�`
- *  cpu_context.h �ɓ��������G���K���g�����C�Q�Ƃ̈ˑ����̊֌W�ŁC
- *  cpu_context.h �ɂ͓�����Ȃ��D
+ *  TCB 関連の定義
+ *  cpu_context.h に入れる方がエレガントだが，参照の依存性の関係で，
+ *  cpu_context.h には入れられない．
  */
 /*
- *  �^�X�N�R���e�L�X�g�u���b�N�̒�`
+ *  タスクコンテキストブロックの定義
  *  Task context block.
  */
 typedef struct task_context_block {
-	VP sp;				/* �X�^�b�N�|�C���^	*/
-	FP pc;				/* �v���O�����J�E���^	*/
+	VP sp;				/* スタックポインタ	*/
+	FP pc;				/* プログラムカウンタ	*/
 } CTXB;
 
 
 /*
- *  �ō��D�揇�ʃ^�X�N�ւ̃f�B�X�p�b�`(cpu_config.c)
+ *  最高優先順位タスクへのディスパッチ(cpu_config.c)
  *
- *  dispatch �́C�^�X�N�R���e�L�X�g����Ăяo���ꂽ�T�[�r�X�R�[������
- *  ���ŁCCPU���b�N��ԂŌĂяo���Ȃ���΂Ȃ�Ȃ��D
+ *  dispatch は，タスクコンテキストから呼び出されたサービスコール処理
+ *  内で，CPUロック状態で呼び出さなければならない．
  */
 extern void dispatch(void);
 
 /*
- *  ���݂̃R���e�L�X�g���̂Ăăf�B�X�p�b�`(cpu_config.c)
+ *  現在のコンテキストを捨ててディスパッチ(cpu_config.c)
  *
- *  exit_and_dispatch �́CCPU���b�N��ԂŌĂяo���Ȃ���΂Ȃ�Ȃ��D
+ *  exit_and_dispatch は，CPUロック状態で呼び出さなければならない．
  */
 extern void exit_and_dispatch(void);
 
 /*
- *  �v���Z�b�T�ˑ��̏�����
+ *  プロセッサ依存の初期化
  */
 extern void	cpu_initialize(void);
 
 /*
- *  �v���Z�b�T�ˑ��̏I��������
+ *  プロセッサ依存の終了時処理
  */
 extern void	cpu_terminate(void);
 
 /*
- *  CPU���b�N�������ɕ������銄�荞�݃��x��
+ *  CPUロック解除時に復元する割り込みレベル
  */
 extern UINT	tps_OrgIntLevel;
 
 /*
- *  �����݃l�X�g�J�E���^
+ *  割込みネストカウンタ
  */
 extern UINT	tps_IntNestCnt;
 
 /*
- *  �r�b�g�T�[�`�}�N���g�p�̐ݒ�
+ *  ビットサーチマクロ使用の設定
  */
 #ifndef __c33pe
 #define CPU_BITMAP_SEARCH
 #endif  /* __c33pe */
 
 /*
- *  �v���Z�b�T�̓��ꖽ�߂̃C�����C���֐���`
+ *  プロセッサの特殊命令のインライン関数定義
  */
 #include "cpu_insn.h"
 
 /*
- * �V�X�e����ԎQ�Ɗ֐��̕ʖ���`
+ * システム状態参照関数の別名定義
  */
 #define t_sense_lock	sense_lock
 #define i_sense_lock	sense_lock
@@ -142,7 +142,7 @@ extern UINT	tps_IntNestCnt;
 #define	i_unlock_cpu	unlock_cpu
 
 /*
- *  ���݂̃R���e�L�X�g��Ԃ��Q��
+ *  現在のコンテキスト状態を参照
  */
 Inline BOOL
 sense_context()
@@ -151,7 +151,7 @@ sense_context()
 }
 
 /*
- *  ���݂�CPU���b�N��Ԃ��Q��
+ *  現在のCPUロック状態を参照
  */
 Inline BOOL
 sense_lock()
@@ -165,7 +165,7 @@ sense_lock()
 }
 
 /*
- * CPU���b�N��Ԑݒ菈��
+ * CPUロック状態設定処理
  */
 Inline void
 lock_cpu()
@@ -196,10 +196,10 @@ unlock_cpu()
 }
 
 /*
- *  CPU��O�̔����������̃V�X�e����Ԃ̎Q��
+ *  CPU例外の発生した時のシステム状態の参照
  */
 /*
- *  CPU��O�̔����������̃R���e�L�X�g�̎Q��
+ *  CPU例外の発生した時のコンテキストの参照
  */
 Inline BOOL
 exc_sense_context(VP p_excinf)
@@ -208,7 +208,7 @@ exc_sense_context(VP p_excinf)
 }
 
 /*
- *  CPU��O�̔�����������CPU���b�N��Ԃ̎Q��
+ *  CPU例外の発生した時のCPUロック状態の参照
  */
 Inline BOOL
 exc_sense_lock(VP p_excinf)
@@ -220,19 +220,19 @@ exc_sense_lock(VP p_excinf)
 }
 
 /*
- *  ��O�x�N�^�e�[�u���̍\���̒�`
+ *  例外ベクタテーブルの構造の定義
  */
 typedef struct exc_vector_entry {
-	FP exchdr;				/* ��O�n���h���̋N���Ԓn */
+	FP exchdr;				/* 例外ハンドラの起動番地 */
 } EXCVE;
 
 /*
- *  CPU��O�n���h���̐ݒ�
+ *  CPU例外ハンドラの設定
  */
 #define	define_exc	define_inh
 
 /*
- *  �����݃n���h���̐ݒ�
+ *  割込みハンドラの設定
  */
 Inline void
 define_inh(INHNO inhno, FP inthdr)
@@ -244,33 +244,33 @@ define_inh(INHNO inhno, FP inthdr)
 }
 
 /*
- *  �����݃n���h���̏o���������̐����}�N��
+ *  割込みハンドラの出入口処理の生成マクロ
  */
 #define INTHDR_ENTRY(inthdr)	void inthdr##_entry(void) { tpsIntPreWrap(); asm("xcall " #inthdr); tpsIntPostWrap(); }
 #define	INT_ENTRY(inthdr)	inthdr##_entry
 
 /*
- *  CPU��O�n���h���̏o���������̐����}�N��
+ *  CPU例外ハンドラの出入口処理の生成マクロ
  */
 #define EXCHDR_ENTRY(exchdr)	INTHDR_ENTRY(exchdr)
 #define	EXC_ENTRY(exchdr)	exchdr##_entry
 
 /*
- *  ������/CPU��O�n���h���̏o��������
+ *  割込み/CPU例外ハンドラの出入口処理
  *
- *  idle���͊��荞�܂ꂽ�X�^�b�N==stacktop�Ȃ̂ŁA
- *  idle���[�`���ɂ�reti�ŕ��A�ł���ʒu�Ɋ��荞�݃X�^�b�N��ݒ肵�Ă���
+ *  idle中は割り込まれたスタック==stacktopなので、
+ *  idleルーチンにもretiで復帰できる位置に割り込みスタックを設定している
  */
 Inline void
 tpsIntPreWrap(void)
 {
 #ifdef	TPS_ENA_LOGGING
-						/* �G���g���|�C���g����肷�邽�߂̃V���{�� */
+						/* エントリポイントを特定するためのシンボル */
 	Asm("1:						");
 #endif	/* TPS_ENA_LOGGING */
 
-#if TPS_DAREA_CNT == 4				/* �f�[�^�G���A���ɉ����đޔ�	*/
-	Asm("pushn %r11");			/* ���W�X�^����ύX����B	*/
+#if TPS_DAREA_CNT == 4				/* データエリア数に応じて退避	*/
+	Asm("pushn %r11");			/* レジスタ数を変更する。	*/
 #elif TPS_DAREA_CNT == 3
 	Asm("pushn %r12");
 #elif TPS_DAREA_CNT == 2
@@ -289,23 +289,23 @@ tpsIntPreWrap(void)
 //	Asm("pushn	%r1				");
 #endif	/* __c33adv */
 
-	Asm("ld.w	%r2, %sp			");	/* �X�^�b�N�̐؂�ւ��A		*/
-	Asm("xld.w	%r3, _kernel_tps_IntNestCnt	");	/* ���荞�݃J�E���^�̍X�V�A	*/
-	Asm("ld.w	%r5, [%r3]			");	/* ���d���荞�݂̋����s��	*/
+	Asm("ld.w	%r2, %sp			");	/* スタックの切り替え、		*/
+	Asm("xld.w	%r3, _kernel_tps_IntNestCnt	");	/* 割り込みカウンタの更新、	*/
+	Asm("ld.w	%r5, [%r3]			");	/* 多重割り込みの許可を行う	*/
 	Asm("xld.w	%%r4, %0 - 8  " : : "g"(STACKTOP));
 	Asm("cmp	%r5, 0x00			");
 	Asm("jrne	0f				");
 	Asm("ld.w	%sp, %r4			");
 	Asm("0:						");
 #ifdef	TPS_ENA_LOGGING
-	Asm("sll	%r5, 2				");	/* �V���{���X�^�b�N�֊i�[	*/
+	Asm("sll	%r5, 2				");	/* シンボルスタックへ格納	*/
 	Asm("xld.w	%r4, _kernel_tps_SymStack	");
 	Asm("xld.w	%r7, 1b				");
 	Asm("add	%r4, %r5			");
 	Asm("ld.w	[%r4], %r7			");
 	Asm("xcall.d	tpsRecDispatchLog		");
 	Asm("ld.w	%%r6, %0" : : "g"(TPS_CTXTYPE_INTHDR));
-	Asm("ld.w	%r5, [%r3]			");	/* ���荞�݃J�E���^�𕜌�	*/
+	Asm("ld.w	%r5, [%r3]			");	/* 割り込みカウンタを復元	*/
 #endif
 	Asm("add	%r5, 1				");
 	Asm("ld.w	[%r3], %r5			");
@@ -314,8 +314,8 @@ tpsIntPreWrap(void)
 	Asm("ld.w	%psr, %r4			");
 
 	Asm("ld.w	%r6, %r2			");
-#ifdef	__c33adv						/* pushs���߂ɂ��X�^�b�N�g�p	*/
-	Asm("add	%r6, 24");				/* �T�C�Y�����Z����		*/
+#ifdef	__c33adv						/* pushs命令によるスタック使用	*/
+	Asm("add	%r6, 24");				/* サイズを加算する		*/
 #endif	/* __c33adv */
 #if TPS_DAREA_CNT == 4
 	Asm("add	%r6, 48");
@@ -334,30 +334,30 @@ tpsIntPreWrap(void)
 Inline void
 tpsIntPostWrap(void)
 {
-	Asm("ld.w	%r4, %psr		");	/* ���荞�݂��f�B�Z�[�u������	*/
+	Asm("ld.w	%r4, %psr		");	/* 割り込みをディセーブルする	*/
 	Asm("xand	%r4, 0xfffff0ff		");
 	Asm("xld.w	%%r5, %0"
 		: : "g"(TPS_CPULOCK_LEV << 8));
 	Asm("or		%r4, %r5		");
 	Asm("ld.w	%psr, %r4		");
-	Asm("ld.w	%r4, [%r3]		");	/* tps_IntNestCnt���X�V����	*/
+	Asm("ld.w	%r4, [%r3]		");	/* tps_IntNestCntを更新する	*/
 	Asm("sub	%r4, 1			");
 	Asm("ld.w	[%r3], %r4		");
-	Asm("ld.w	%sp, %r2		");	/* �X�^�b�N�̈�𕜌�����	*/
+	Asm("ld.w	%sp, %r2		");	/* スタック領域を復元する	*/
 	Asm("cmp	%r4, 0x00		");
 	Asm("xjrne	0f			");
 	Asm("xld.w	%r3, _kernel_reqflg	");
 	Asm("ld.w	%r3, [%r3]		");
-	Asm("cmp	%r3, 1			");	/* tps_IntNestCnt== 0�Ńf�B�X	  */
-	Asm("xjreq	_kernel_ret_int		");	/* �p�b�`���������Ă���΃W�����v */
-							/* ����				  */
+	Asm("cmp	%r3, 1			");	/* tps_IntNestCnt== 0でディス	  */
+	Asm("xjreq	_kernel_ret_int		");	/* パッチが発生していればジャンプ */
+							/* する				  */
 	Asm("0:					");
 #ifdef	TPS_ENA_LOGGING
 	Asm("xcall	tpsSenseRetContext	");
 	Asm("xcall	tpsRecDispatchLog	");
 #endif
 
-#ifdef	__c33adv					/* �ޔ��������ꃌ�W�X�^�𕜌����� */
+#ifdef	__c33adv					/* 退避した特殊レジスタを復元する */
 	Asm("pops	%sor			");
 #else	/* __c33adv */
 	Asm("ld.w	%alr, %r1		");

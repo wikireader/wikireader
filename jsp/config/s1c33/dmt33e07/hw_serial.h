@@ -8,37 +8,37 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  *
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
 
 /*
- * �^�[�Q�b�g�ˑ��V���A��I/O���W���[��(DMT33401)
+ * ターゲット依存シリアルI/Oモジュール(DMT33401)
  */
 
 #ifndef _HW_SERIAL_H_
@@ -47,29 +47,29 @@
 #include "s_services.h"
 
 /*
- *  �V���A��I/O�̊����݃n���h���̃x�N�^�ԍ�
+ *  シリアルI/Oの割込みハンドラのベクタ番号
  */
 #define INHNO_SERIAL_IN		S1C33_INHNO_SERIAL0RX
 #define INHNO_SERIAL_OUT	S1C33_INHNO_SERIAL0TX
 #define INHNO_SERIAL_ERR	S1C33_INHNO_SERIAL0ERR
 
 /*
- *  �R�[���o�b�N���[�`���̎��ʔԍ�
+ *  コールバックルーチンの識別番号
  */
-#define SIO_ERDY_SND		1	/* ���M�\�R�[���o�b�N	*/
-#define SIO_ERDY_RCV		2	/* ��M�ʒm�R�[���o�b�N	*/
+#define SIO_ERDY_SND		1	/* 送信可能コールバック	*/
+#define SIO_ERDY_RCV		2	/* 受信通知コールバック	*/
 
 #define INDEX_SIO(sioid)	((UINT)((sioid) - 1))
 
 /*
- *  SIO���荞�ݗv���t���O �r�b�g�ʒu
+ *  SIO割り込み要因フラグ ビット位置
  */
 #define SIO_INT_ERR		0x01
 #define	SIO_INT_RCV		0x02
 #define	SIO_INT_SND		0x04
 
 /*
- * �G���[�t���O �r�b�g�ʒu
+ * エラーフラグ ビット位置
  */
 #define SIO_ERR_FRAME		0x10
 #define SIO_ERR_PARITY		0x08
@@ -77,30 +77,30 @@
 
 #ifndef _MACRO_ONLY
 /*
- *	�V���A���|�[�g�̃n�[�h�E�F�A�ˑ����̒�`
+ *	シリアルポートのハードウェア依存情報の定義
  */
 typedef struct {
-	UB	ch_no;		/* SIO�`���l���ԍ�		*/
-	UB	err_vector;	/* �ʐM�G���[���荞�݃x�N�^�ԍ�	*/
-	UB	rx_vector;	/* ��M���荞�݃x�N�^�ԍ�	*/
-	UB	tx_vector;	/* ���M�������荞�݃x�N�^�ԍ�	*/
+	UB	ch_no;		/* SIOチャネル番号		*/
+	UB	err_vector;	/* 通信エラー割り込みベクタ番号	*/
+	UB	rx_vector;	/* 受信割り込みベクタ番号	*/
+	UB	tx_vector;	/* 送信完了割り込みベクタ番号	*/
 } SIOPINIB;
 
 /*
- *  �V���A���|�[�g�̐���u���b�N
+ *  シリアルポートの制御ブロック
  */
 typedef struct {
-	const SIOPINIB	*inib;		/* �������u���b�N	*/
-	VP_INT		exinf;		/* �g�����		*/
-	BOOL		openflag;	/* �I�[�v���ς݃t���O	*/
-	BOOL		tx_cbrflag;	/* ���M�R�[���o�b�N���s�t���O*/
-	BOOL		rx_cbrflag;	/* ��M�R�[���o�b�N���s�t���O*/
+	const SIOPINIB	*inib;		/* 初期化ブロック	*/
+	VP_INT		exinf;		/* 拡張情報		*/
+	BOOL		openflag;	/* オープン済みフラグ	*/
+	BOOL		tx_cbrflag;	/* 送信コールバック実行フラグ*/
+	BOOL		rx_cbrflag;	/* 受信コールバック実行フラグ*/
 } SIOPCB;
 
 extern SIOPCB siopcb_table[TNUM_PORT];
 
 /*
- *  �O���֐��̎Q��
+ *  外部関数の参照
  */
 extern void	sio_initialize (void);
 extern SIOPCB	*sio_opn_por(ID siopid, VP_INT exinf);
@@ -114,7 +114,7 @@ extern ER	ena_int(INTNO);
 extern ER	dis_int(INTNO);
 
 /*
- *  �ʐM�̒�~
+ *  通信の停止
  */
 Inline void
 sio_cls_por(SIOPCB *siopcb)
@@ -123,14 +123,14 @@ sio_cls_por(SIOPCB *siopcb)
 
 	ch_no = siopcb->inib->ch_no;
 	/*
-	 *  �]��������҂�
+	 *  転送完了を待つ
 	 */
 	while(((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[ch_no].bStatus & 0x20){
 		;
 	}
 
 	/*
-	 *  �ʐM���֎~����
+	 *  通信を禁止する
 	 */
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[ch_no].bControl = 0x07;
 
@@ -138,7 +138,7 @@ sio_cls_por(SIOPCB *siopcb)
 }
 
 /*
- *  ���M�@�\�̏�Ԃ��擾
+ *  送信機能の状態を取得
  */
 Inline BOOL
 sio_get_txready(UB ch_no)
@@ -151,7 +151,7 @@ sio_get_txready(UB ch_no)
 }
 
 /*
- *  ��M�@�\�̏�Ԃ��擾
+ *  受信機能の状態を取得
  */
 Inline BOOL
 sio_get_rxready(UB ch_no)
@@ -164,7 +164,7 @@ sio_get_rxready(UB ch_no)
 }
 
 /*
- *  ��M����1������ǂݍ���
+ *  受信した1文字を読み込む
  */
 Inline INT
 sio_rcv_chr(SIOPCB *siopcb)
@@ -184,7 +184,7 @@ sio_rcv_chr(SIOPCB *siopcb)
 }
 
 /*
- *  ���M����1��������������
+ *  送信する1文字を書き込む
  */
 Inline BOOL
 sio_snd_chr(SIOPCB *siopcb, char c)
@@ -202,7 +202,7 @@ sio_snd_chr(SIOPCB *siopcb, char c)
 }
 
 /*
- *  �w�肳�ꂽSIO�`���l���̊��荞�ݗv�����N���A����
+ *  指定されたSIOチャネルの割り込み要因をクリアする
  */
 Inline void
 sio_clr_factor(UB bFlag)
@@ -210,7 +210,7 @@ sio_clr_factor(UB bFlag)
 	((volatile s1c33Intc_t *) S1C33_INTC_BASE)->bIntFactor[6] = bFlag;
 }
 
-/*  �w�肳�ꂽSIO�`���l���̃G���[�t���O���N���A����
+/*  指定されたSIOチャネルのエラーフラグをクリアする
  *
  */
 Inline void

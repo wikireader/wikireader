@@ -5,32 +5,32 @@
  * 
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  * 
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation 
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  */
 
@@ -55,7 +55,7 @@
 #include "kernel_objs.h"
 
 /*
- *  �e�[�u������
+ *  テーブル生成
  *  Generates tables
  */
 
@@ -64,7 +64,7 @@ const	TPS_OSIDENT_INFO	_kernel_OSIdent =
 	 "1.4.2\0\0\0\0"};
 
 const	TPS_OBJINFO_TABLE	_kernel_tps_ObjInfoTable[22] = {
-	/* ��{�T�C�Y			������		�z�u�A�h���X	*/
+	/* 基本サイズ			生成数		配置アドレス	*/
 	/* Unit size			Number		Address		*/
 	{sizeof(tps_IntNestCnt),	1,		(void *)&tps_IntNestCnt},
 	{sizeof(enadsp),		1,		(void *)&enadsp},
@@ -91,33 +91,33 @@ const	TPS_OBJINFO_TABLE	_kernel_tps_ObjInfoTable[22] = {
 };
 
 const	unsigned short		_kernel_tps_PropertyTable[6] = {
-	TMIN_TPRI,						/* �ŏ��D��x			*/
+	TMIN_TPRI,						/* 最小優先度			*/
 								/* Minimum priority		*/
-	TMAX_TPRI,						/* �ő�D��x			*/
+	TMAX_TPRI,						/* 最大優先度			*/
 								/* Maximum priority		*/
-	TIC_NUME,						/* �^�C���e�B�b�N����1		*/
+	TIC_NUME,						/* タイムティック周期1		*/
 								/* Time tick cycle 1		*/
-	TIC_DENO,						/* �^�C���e�B�b�N����2		*/
+	TIC_DENO,						/* タイムティック周期2		*/
 								/* Time tick cycle 2		*/
-	1,							/* �V�X�e�������X�V����		*/
+	1,							/* システム時刻更新周期		*/
 								/* The cycle renewing system clock */
-	TPS_CPULOCK_LEV						/* CPU���b�N���荞�݃��x��	*/
+	TPS_CPULOCK_LEV						/* CPUロック割り込みレベル	*/
 								/* Interruption level as CPU lock  */
 };
 
 
-TPS_DISPATCH_INFO	_kernel_tps_DispatchInfo;		/* �f�B�X�p�b�`���O�L�^�̈�	*/
+TPS_DISPATCH_INFO	_kernel_tps_DispatchInfo;		/* ディスパッチログ記録領域	*/
 								/* Dispatch log recording area	*/
-TPS_KOBJACCESS_INFO	_kernel_tps_KObjAccessInfo;		/* �J�[�l���I�u�W�F�N�g�A�N�Z�X	*/
-								/* ���O�L�^�̈�			*/
+TPS_KOBJACCESS_INFO	_kernel_tps_KObjAccessInfo;		/* カーネルオブジェクトアクセス	*/
+								/* ログ記録領域			*/
 								/* Kernel object access log	*/
 								/* Recording area		*/
-void 			*_kernel_tps_SymStack[15 + 7];		/* ���d���荞�ݒǐ՗p�V���{���X�^�b�N */
+void 			*_kernel_tps_SymStack[15 + 7];		/* 多重割り込み追跡用シンボルスタック */
 								/* Symbol stack to trace multi-	*/
 								/* ple interruption		*/
-void			*_kernel_tps_CycHdrTorch;		/* �����n���h���N���t���O	*/
+void			*_kernel_tps_CycHdrTorch;		/* 周期ハンドラ起動フラグ	*/
 								/* Cyclic handler start flag	*/
-static	unsigned char	_kernel_tps_PrevCtxType;		/* �O�o�f�B�X�p�b�`���O���	*/
+static	unsigned char	_kernel_tps_PrevCtxType;		/* 前出ディスパッチログ情報	*/
 static	unsigned short	_kernel_tps_PrevCtxId;			/* Dispatch log information	*/
 								/* recorded previosly		*/
 
@@ -131,23 +131,23 @@ static	unsigned short	_kernel_tps_PrevCtxId;			/* Dispatch log information	*/
  ************************************************************************/
 void tpsInitMonitor(VP_INT pExInfo)
 {
-								/* ���O�L�^�̈搧���񏉊���	*/
+								/* ログ記録領域制御情報初期化	*/
 								/* Initializes Log recording	*/
 								/* control area			*/
 	_kernel_tps_DispatchInfo.stRecCtrl.ulMaxRecCount = TPS_MAX_DISPLOG;
 	if(0x00010000 < _kernel_tps_DispatchInfo.stRecCtrl.ulMaxRecCount){
 		_kernel_tps_DispatchInfo.stRecCtrl.ulMaxRecCount = 0x00010000;
 	}
-	_kernel_tps_DispatchInfo.stRecCtrl.usRefPoint    = 0;	/* O.W.���t���O�̏�������	*/
-	_kernel_tps_DispatchInfo.stRecCtrl.usRecPoint    = 0;	/* IDE�̐ӔC�ōs��		*/
+	_kernel_tps_DispatchInfo.stRecCtrl.usRefPoint    = 0;	/* O.W.許可フラグの初期化は	*/
+	_kernel_tps_DispatchInfo.stRecCtrl.usRecPoint    = 0;	/* IDEの責任で行う		*/
 	_kernel_tps_DispatchInfo.stRecCtrl.bOWState      = 0;	/* O.W. Enable flag is initia-	*/
 								/* lized by IDE.		*/
 	_kernel_tps_KObjAccessInfo.stRecCtrl.ulMaxRecCount = TPS_MAX_KOBJLOG;
 	if(0x00010000 < _kernel_tps_KObjAccessInfo.stRecCtrl.ulMaxRecCount){
 		_kernel_tps_KObjAccessInfo.stRecCtrl.ulMaxRecCount = 0x00010000;
 	}
-	_kernel_tps_KObjAccessInfo.stRecCtrl.usRefPoint    = 0;	/* O.W.���t���O�̏�������	*/
-	_kernel_tps_KObjAccessInfo.stRecCtrl.usRecPoint    = 0;	/* IDE�̐ӔC�ōs��		*/
+	_kernel_tps_KObjAccessInfo.stRecCtrl.usRefPoint    = 0;	/* O.W.許可フラグの初期化は	*/
+	_kernel_tps_KObjAccessInfo.stRecCtrl.usRecPoint    = 0;	/* IDEの責任で行う		*/
 	_kernel_tps_KObjAccessInfo.stRecCtrl.bOWState      = 0;	/* O.W. Enable flag is initia-	*/
 							       	/* lized by IDE.		*/
 	_kernel_tps_CycHdrTorch = NULL;
@@ -172,15 +172,15 @@ tpsChkRecAreaFull(TPS_LOGREC_CTRL *pstCtrl, int iLogType)
 	unsigned short	usRecPoint, usRefPoint;
 	int		iRetVal;
 
-	if(!(pstCtrl->ulMaxRecCount)){				/* ���O�̋L�^�������Ă��Ȃ�	*/
+	if(!(pstCtrl->ulMaxRecCount)){				/* ログの記録を許可していない	*/
 		return	TPS_E_NG;				/* Recording is disallowed	*/
 	}
 
-	iRetVal = TPS_E_OK;					/* ���O�̋L�^��������Ă���	*/
+	iRetVal = TPS_E_OK;					/* ログの記録が許可されている	*/
 	usRecPoint = pstCtrl->usRecPoint;			/* Recorded normally		*/
 	usRefPoint = pstCtrl->usRefPoint;
 	if(TPS_FLAG_OFF != pstCtrl->bOWState){
-		if(TPS_FLAG_OFF == pstCtrl->bOWEnable){		/* ���g�p���R�[�h�Ȃ�		*/
+		if(TPS_FLAG_OFF == pstCtrl->bOWEnable){		/* 未使用レコードなし		*/
 			iRetVal = TPS_E_NG;			/* All records are used		*/
 		}
 	}
@@ -218,9 +218,9 @@ tpsSearchCtxId(unsigned char *pbCtxType, void *pCBoxAddr)
 				break;
 			}
 
-			usTemp = TNUM_INHNO;			/* �ϐ��Ɋi�[���Ĕ�r����̂�	*/
-			usRecId = 0;				/* �I�u�W�F�N�g�������̏ꍇ��	*/
-								/* ���[�j���O���������邽��	*/
+			usTemp = TNUM_INHNO;			/* 変数に格納して比較するのは	*/
+			usRecId = 0;				/* オブジェクト未生成の場合に	*/
+								/* ワーニングが発生するため	*/
 								/* usTemp is used to restrain	*/
 			while((usTemp > usRecId) &&		/* Warning.			*/
 			      ((FP)pCBoxAddr != _kernel_inhinib_table[usRecId].inthdr)){
@@ -243,10 +243,10 @@ tpsSearchCtxId(unsigned char *pbCtxType, void *pCBoxAddr)
 				break;
 			}
 
-			usRecId = (unsigned short)-1 ;		/* �}�N��"INT_ENTRY" or "EXC_ENTRY"	*/
-			break;					/* �ɂ��t�����ꂽ�o�������������	*/
-								/* �Ăяo����邽�߁A�Y���Ȃ��Ƃ���	*/
-								/* �P�[�X�͎��ۂɂ͑��݂��Ȃ�		*/
+			usRecId = (unsigned short)-1 ;		/* マクロ"INT_ENTRY" or "EXC_ENTRY"	*/
+			break;					/* により付加された出入り口処理から	*/
+								/* 呼び出されるため、該当なしという	*/
+								/* ケースは実際には存在しない		*/
 		case TPS_CTXTYPE_CYCHDR:			/* Usually, this route is not proccessed*/
 			usRecId = (unsigned short)((((CYCCB*)pCBoxAddr) - cyccb_table) + TMIN_CYCID);
 			break;
@@ -254,7 +254,7 @@ tpsSearchCtxId(unsigned char *pbCtxType, void *pCBoxAddr)
 			usRecId = (unsigned short)TSKID((TCB *)pCBoxAddr);
 			break;
 		default:
-			usRecId = 0;				/* Idle���[�`��		*/
+			usRecId = 0;				/* Idleルーチン		*/
 			break;					/* Idle routine		*/
 	}
 
@@ -283,25 +283,25 @@ tpsRecDispatchLog(unsigned char bCtxType, void *pCBAddr)
 
 	iRetVal = tpsChkRecAreaFull((TPS_LOGREC_CTRL *)&_kernel_tps_DispatchInfo,
 				    TPS_LOGTYPE_DISP);
-	if(TPS_E_NG == iRetVal){				/* �I�[�o�[���C�g�֎~��Ԃł�	*/
-		return;						/* �󂫃��R�[�h�Ȃ�		*/
+	if(TPS_E_NG == iRetVal){				/* オーバーライト禁止状態での	*/
+		return;						/* 空きレコードなし		*/
 	}							/* Log recording is impossible	*/
 
 	pusRecPoint = &(_kernel_tps_DispatchInfo.stRecCtrl.usRecPoint);
-	usRecId = tpsSearchCtxId(&bCtxType, pCBAddr);		/* �^�X�N/�����n���h��ID or	*/
-								/* ���荞�݃n���h���ԍ������	*/
+	usRecId = tpsSearchCtxId(&bCtxType, pCBAddr);		/* タスク/周期ハンドラID or	*/
+								/* 割り込みハンドラ番号を特定	*/
 								/* Specifies calling context	*/
 	if(0xffff == usRecId){
-		return;						/* �^�C�}�n���h���ւ̃f�B�X�p�b�`   */
+		return;						/* タイマハンドラへのディスパッチ   */
 	}							/* Dispatches to timer handler	*/
 
-	if((bCtxType == _kernel_tps_PrevCtxType) &&		/* ���O�ɋL�^�����R���e�L�X�g��	*/
-	   (usRecId  == _kernel_tps_PrevCtxId)){		/* ����̏ꍇ�͋L�^���Ȃ�	*/
-		return;						/* �i�^�C�}�n���h���̒P�Ǝ��s�j	*/
+	if((bCtxType == _kernel_tps_PrevCtxType) &&		/* 直前に記録したコンテキストと	*/
+	   (usRecId  == _kernel_tps_PrevCtxId)){		/* 同一の場合は記録しない	*/
+		return;						/* （タイマハンドラの単独実行）	*/
 	}							/* Dispatches from timer handler*/
 
-								/* �f�B�X�p�b�`���O��CPU���b�N��� or	*/
-								/* ���荞�݋֎~��ԂŌĂяo�����	*/
+								/* ディスパッチログはCPUロック状態 or	*/
+								/* 割り込み禁止状態で呼び出される	*/
 								/* The condition when this function	*/
 								/* is called is "CPU lock".		*/
 	_kernel_tps_DispatchInfo.stDispLog[*pusRecPoint].ulRecTime = current_time;
@@ -350,7 +350,7 @@ tpsRecKObjAccessLog(unsigned short usObjId, void *pCtxInfo, unsigned long ulData
 	int			iRetVal;
 
 	iRetVal = tpsChkRecAreaFull((TPS_LOGREC_CTRL *)&_kernel_tps_KObjAccessInfo,
-				    TPS_LOGTYPE_KOBJ);		/* ���O�L�^�̉ۂ��`�F�b�N	*/
+				    TPS_LOGTYPE_KOBJ);		/* ログ記録の可否をチェック	*/
 	if(TPS_E_NG == iRetVal){				/* Checking log area capacity	*/
 		return;
 	}
@@ -361,19 +361,19 @@ tpsRecKObjAccessLog(unsigned short usObjId, void *pCtxInfo, unsigned long ulData
 	bResult     = (unsigned char)((ulTypesBcd >> 16) & 0x000000ff);
 	bCtxType    = (unsigned char)((ulTypesBcd >> 24) & 0x000000ff);
 
-	usCtxId = tpsSearchCtxId(&bCtxType, pCtxInfo);		/* �^�X�N/�����n���h��ID or	*/
-	if(!usCtxId || (0xffff == usCtxId)){			/* ���荞�݃n���h���ԍ������	*/
+	usCtxId = tpsSearchCtxId(&bCtxType, pCtxInfo);		/* タスク/周期ハンドラID or	*/
+	if(!usCtxId || (0xffff == usCtxId)){			/* 割り込みハンドラ番号を特定	*/
 		return;						/* Specify Calling context	*/
-	}							/* �z��O�̃R���e�L�X�g���	*/
+	}							/* 想定外のコンテキスト種別	*/
 								/* Not supporting context	*/
 	if(TPS_OBJTYPE_MBOX != bKObjType &&
-	   TPS_OBJTYPE_FLAG != bKObjType){			/* �T�|�[�g�O�̃I�u�W�F�N�g���	*/
+	   TPS_OBJTYPE_FLAG != bKObjType){			/* サポート外のオブジェクト種別	*/
 		return;						/* Not supporting object type	*/
 	}
 
 	{
-		SIL_PRE_LOC;					/* (���d)���荞�݂��֎~���邽��	*/
-		SIL_LOC_INT();					/* IE�𑀍삷��			*/
+		SIL_PRE_LOC;					/* (多重)割り込みを禁止するため	*/
+		SIL_LOC_INT();					/* IEを操作する			*/
 								/* Prohibits interruption	*/
 		_kernel_tps_KObjAccessInfo.stKObjLog[*pusRecPoint].ulRecTime   = current_time;
 		_kernel_tps_KObjAccessInfo.stKObjLog[*pusRecPoint].bObjType    = bKObjType;
@@ -391,7 +391,7 @@ tpsRecKObjAccessLog(unsigned short usObjId, void *pCtxInfo, unsigned long ulData
 		if(*pusRecPoint == _kernel_tps_KObjAccessInfo.stRecCtrl.usRefPoint){
 			_kernel_tps_KObjAccessInfo.stRecCtrl.bOWState = 0x01;
 		}
-		SIL_UNL_INT();					/* ���荞�݋֎~����������	*/
+		SIL_UNL_INT();					/* 割り込み禁止を解除する	*/
 	}							/* Allows interruption		*/
 
 	return;

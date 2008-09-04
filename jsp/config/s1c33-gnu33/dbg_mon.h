@@ -5,32 +5,32 @@
  * 
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  * 
- *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation 
- *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
- *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
- *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
- *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
- *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
- *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
- *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
- *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
- *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
- *      �̖��ۏ؋K����f�ڂ��邱�ƁD
- *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
- *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
- *      �ƁD
- *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
- *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
- *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
- *        �񍐂��邱�ƁD
- *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
- *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *  によって公表されている GNU General Public License の Version 2 に記
+ *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
+ *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
+ *  利用と呼ぶ）することを無償で許諾する．
+ *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+ *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+ *      スコード中に含まれていること．
+ *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+ *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+ *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+ *      の無保証規定を掲載すること．
+ *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+ *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+ *      と．
+ *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+ *        作権表示，この利用条件および下記の無保証規定を掲載すること．
+ *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+ *        報告すること．
+ *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+ *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
  * 
- *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
- *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
- *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
- *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
+ *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+ *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
+ *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
+ *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
  */
 
@@ -42,7 +42,7 @@
 #define	_DBG_MON_H_
 
 /*
- *  ��`
+ *  定義
  *  definitions
  */
 
@@ -102,7 +102,7 @@
 #include "itron.h"
 
 /*
- *  �}�N��
+ *  マクロ
  *  macro
  */
 #define		TPS_M_4PARS2BCD(bP1, bP2, bP3, bP4)	((unsigned long)(\
@@ -111,91 +111,91 @@
 							 ((unsigned long)bP3 <<  8) |\
 							 ((unsigned long)bP4)))
 /*
- *  �\����
+ *  構造体
  *  Structures
  */
 typedef	struct {
-	unsigned long	ulMaxRecCount;			/* �ő�L�^����			*/
+	unsigned long	ulMaxRecCount;			/* 最大記録件数			*/
 							/* Maximum record count		*/
-	unsigned short	usRefPoint;			/* ���O�擾�J�n�ʒu		*/
+	unsigned short	usRefPoint;			/* ログ取得開始位置		*/
 							/* Oldest log position		*/
-	unsigned short	usRecPoint;			/* ���O�L�^�ʒu			*/
+	unsigned short	usRecPoint;			/* ログ記録位置			*/
 							/* Recording position		*/
-	unsigned char	bOWEnable;			/* �I�[�o�[���C�g���t���O	*/
+	unsigned char	bOWEnable;			/* オーバーライト許可フラグ	*/
 							/* OverWrite Enable flag	*/
-	unsigned char	bOWState;			/* �I�[�o�[���C�g�����t���O	*/
+	unsigned char	bOWState;			/* オーバーライト発生フラグ	*/
 							/* OverWrite state flag		*/
 	unsigned char	bRsv[2];			/* Reserved */
 } TPS_LOGREC_CTRL;
 
 
 typedef	struct {
-	SYSTIM		ulRecTime;			/* ���O�L�^����			*/
+	SYSTIM		ulRecTime;			/* ログ記録時刻			*/
 							/* Recorded time		*/
-	unsigned char	bCtxType;			/* �������			*/
+	unsigned char	bCtxType;			/* 処理種別			*/
 							/* Context type			*/
 	unsigned char	bRsv;				/* Reserved			*/
-	unsigned short	usCtxId;			/* ���s��ԂɈڍs����������ID	*/
+	unsigned short	usCtxId;			/* 実行状態に移行した処理のID	*/
 							/* Context ID			*/
 } TPS_DISPLOG;
 
 
 typedef	struct {
-	SYSTIM		ulRecTime;			/* ���O�L�^����			*/
+	SYSTIM		ulRecTime;			/* ログ記録時刻			*/
 							/* Recorded time		*/
-	unsigned char	bObjType;			/* �J�[�l���I�u�W�F�N�g���	*/
+	unsigned char	bObjType;			/* カーネルオブジェクト種別	*/
 							/* Kernel object type		*/
-	unsigned char	bAccessType;			/* �A�N�Z�X���			*/
+	unsigned char	bAccessType;			/* アクセス種別			*/
 							/* Access type			*/
-	unsigned short	usObjectId;			/* �A�N�Z�X�����������J�[�l���I�u�W�F�N�g��ID */
+	unsigned short	usObjectId;			/* アクセスが発生したカーネルオブジェクトのID */
 							/* ID of accessed kernel object	*/
-	unsigned char	bResult;			/* ��������			*/
+	unsigned char	bResult;			/* 処理結果			*/
 							/* Result			*/
-	unsigned char	bCtxType;			/* �A�N�Z�X���������̎��	*/
+	unsigned char	bCtxType;			/* アクセスした処理の種別	*/
 							/* Context type			*/
-	unsigned short	usCtxId;			/* �A�N�Z�X����������ID		*/
+	unsigned short	usCtxId;			/* アクセスした処理のID		*/
 							/* Context ID			*/
-	unsigned long	ulDataId;			/* �f�[�^ID			*/
+	unsigned long	ulDataId;			/* データID			*/
 							/* Data ID			*/
 } TPS_KOBJLOG;
 
 
-typedef	struct {					/* �f�B�X�p�b�`���O�L�^�̈�		*/
+typedef	struct {					/* ディスパッチログ記録領域		*/
 							/* Recording area for dispatch log	*/
-	TPS_LOGREC_CTRL	stRecCtrl;			/* ���O�L�^�̈搧����			*/
+	TPS_LOGREC_CTRL	stRecCtrl;			/* ログ記録領域制御情報			*/
 							/* Control information			*/
-	TPS_DISPLOG	stDispLog[TPS_MAX_DISPLOG];	/* �f�B�X�p�b�`���O			*/
+	TPS_DISPLOG	stDispLog[TPS_MAX_DISPLOG];	/* ディスパッチログ			*/
 } TPS_DISPATCH_INFO;					/* Log buffer				*/
 
 
-typedef	struct {					/* �J�[�l���I�u�W�F�N�g�L�^�̈�		*/
+typedef	struct {					/* カーネルオブジェクト記録領域		*/
 							/* Recording area for kernel object	*/
 							/* access log				*/
-	TPS_LOGREC_CTRL	stRecCtrl;			/* ���O�L�^�̈搧����			*/
+	TPS_LOGREC_CTRL	stRecCtrl;			/* ログ記録領域制御情報			*/
 							/* Control information			*/
-	TPS_KOBJLOG	stKObjLog[TPS_MAX_KOBJLOG];	/* �J�[�l���I�u�W�F�N�g�A�N�Z�X���O	*/
+	TPS_KOBJLOG	stKObjLog[TPS_MAX_KOBJLOG];	/* カーネルオブジェクトアクセスログ	*/
 } TPS_KOBJACCESS_INFO;					/* Log buffer				*/
 
 
-typedef	struct {					/* OS��ʊi�[�e�[�u��			*/
+typedef	struct {					/* OS種別格納テーブル			*/
 							/* OS identity information table	*/
-	char	chOSName[20];				/* OS����				*/
+	char	chOSName[20];				/* OS名称				*/
 							/* OS name				*/
-	char	chOSVersion[10];			/* �o�[�W�������			*/
+	char	chOSVersion[10];			/* バージョン情報			*/
 							/* OS version*/
 } TPS_OSIDENT_INFO;
 
 typedef	struct {
-	unsigned short	usUnitSize;			/* �I�u�W�F�N�g����{�T�C�Y	*/
+	unsigned short	usUnitSize;			/* オブジェクト情報基本サイズ	*/
 							/* Unit size of target		*/
-	unsigned short	usObjCnt;			/* �I�u�W�F�N�g������		*/
+	unsigned short	usObjCnt;			/* オブジェクト生成数		*/
 							/* Generated count		*/
-	void		*pObjInfoAddr;			/* �I�u�W�F�N�g���z�u�A�h���X	*/
+	void		*pObjInfoAddr;			/* オブジェクト情報配置アドレス	*/
 } TPS_OBJINFO_TABLE;					/* assigned address		*/
 
 
 /*
- *  �v���g�^�C�v�錾
+ *  プロトタイプ宣言
  *  Proto-type declarations
  */
 extern	void	tpsInitMonitor(VP_INT);
@@ -205,7 +205,7 @@ extern	void	tpsRecKObjAccessLog(unsigned short, void *, unsigned long, unsigned 
 extern	void	timer_handler_entry(void);
 
 /*
- *  �O���ϐ�
+ *  外部変数
  *  variables for external
  */
 extern	void	*_kernel_tps_SymStack[];

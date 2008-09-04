@@ -5,32 +5,32 @@
  * 
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  * 
- *  ã‹L’˜ìŒ Ò‚ÍCˆÈ‰º‚Ì (1)`(4) ‚ÌğŒ‚©CFree Software Foundation 
- *  ‚É‚æ‚Á‚ÄŒö•\‚³‚ê‚Ä‚¢‚é GNU General Public License ‚Ì Version 2 ‚É‹L
- *  q‚³‚ê‚Ä‚¢‚éğŒ‚ğ–‚½‚·ê‡‚ÉŒÀ‚èC–{ƒ\ƒtƒgƒEƒFƒAi–{ƒ\ƒtƒgƒEƒFƒA
- *  ‚ğ‰ü•Ï‚µ‚½‚à‚Ì‚ğŠÜ‚ŞDˆÈ‰º“¯‚¶j‚ğg—pE•¡»E‰ü•ÏEÄ”z•ziˆÈ‰ºC
- *  —˜—p‚ÆŒÄ‚Ôj‚·‚é‚±‚Æ‚ğ–³‚Å‹–‘ø‚·‚éD
- *  (1) –{ƒ\ƒtƒgƒEƒFƒA‚ğƒ\[ƒXƒR[ƒh‚ÌŒ`‚Å—˜—p‚·‚éê‡‚É‚ÍCã‹L‚Ì’˜ì
- *      Œ •\¦C‚±‚Ì—˜—pğŒ‚¨‚æ‚Ñ‰º‹L‚Ì–³•ÛØ‹K’è‚ªC‚»‚Ì‚Ü‚Ü‚ÌŒ`‚Åƒ\[
- *      ƒXƒR[ƒh’†‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚±‚ÆD
- *  (2) –{ƒ\ƒtƒgƒEƒFƒA‚ğCƒ‰ƒCƒuƒ‰ƒŠŒ`®‚È‚ÇC‘¼‚Ìƒ\ƒtƒgƒEƒFƒAŠJ”­‚Ég
- *      —p‚Å‚«‚éŒ`‚ÅÄ”z•z‚·‚éê‡‚É‚ÍCÄ”z•z‚É”º‚¤ƒhƒLƒ…ƒƒ“ƒgi—˜—p
- *      Òƒ}ƒjƒ…ƒAƒ‹‚È‚Çj‚ÉCã‹L‚Ì’˜ìŒ •\¦C‚±‚Ì—˜—pğŒ‚¨‚æ‚Ñ‰º‹L
- *      ‚Ì–³•ÛØ‹K’è‚ğŒfÚ‚·‚é‚±‚ÆD
- *  (3) –{ƒ\ƒtƒgƒEƒFƒA‚ğC‹@Ší‚É‘g‚İ‚Ş‚È‚ÇC‘¼‚Ìƒ\ƒtƒgƒEƒFƒAŠJ”­‚Ég
- *      —p‚Å‚«‚È‚¢Œ`‚ÅÄ”z•z‚·‚éê‡‚É‚ÍCŸ‚Ì‚¢‚¸‚ê‚©‚ÌğŒ‚ğ–‚½‚·‚±
- *      ‚ÆD
- *    (a) Ä”z•z‚É”º‚¤ƒhƒLƒ…ƒƒ“ƒgi—˜—pÒƒ}ƒjƒ…ƒAƒ‹‚È‚Çj‚ÉCã‹L‚Ì’˜
- *        ìŒ •\¦C‚±‚Ì—˜—pğŒ‚¨‚æ‚Ñ‰º‹L‚Ì–³•ÛØ‹K’è‚ğŒfÚ‚·‚é‚±‚ÆD
- *    (b) Ä”z•z‚ÌŒ`‘Ô‚ğC•Ê‚É’è‚ß‚é•û–@‚É‚æ‚Á‚ÄCTOPPERSƒvƒƒWƒFƒNƒg‚É
- *        •ñ‚·‚é‚±‚ÆD
- *  (4) –{ƒ\ƒtƒgƒEƒFƒA‚Ì—˜—p‚É‚æ‚è’¼Ú“I‚Ü‚½‚ÍŠÔÚ“I‚É¶‚¶‚é‚¢‚©‚È‚é‘¹
- *      ŠQ‚©‚ç‚àCã‹L’˜ìŒ Ò‚¨‚æ‚ÑTOPPERSƒvƒƒWƒFƒNƒg‚ğ–ÆÓ‚·‚é‚±‚ÆD
+ *  ä¸Šè¨˜è‘—ä½œæ¨©è€…ã¯ï¼Œä»¥ä¸‹ã® (1)ã€œ(4) ã®æ¡ä»¶ã‹ï¼ŒFree Software Foundation 
+ *  ã«ã‚ˆã£ã¦å…¬è¡¨ã•ã‚Œã¦ã„ã‚‹ GNU General Public License ã® Version 2 ã«è¨˜
+ *  è¿°ã•ã‚Œã¦ã„ã‚‹æ¡ä»¶ã‚’æº€ãŸã™å ´åˆã«é™ã‚Šï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ï¼ˆæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+ *  ã‚’æ”¹å¤‰ã—ãŸã‚‚ã®ã‚’å«ã‚€ï¼ä»¥ä¸‹åŒã˜ï¼‰ã‚’ä½¿ç”¨ãƒ»è¤‡è£½ãƒ»æ”¹å¤‰ãƒ»å†é…å¸ƒï¼ˆä»¥ä¸‹ï¼Œ
+ *  åˆ©ç”¨ã¨å‘¼ã¶ï¼‰ã™ã‚‹ã“ã¨ã‚’ç„¡å„Ÿã§è¨±è«¾ã™ã‚‹ï¼
+ *  (1) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã®å½¢ã§åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯ï¼Œä¸Šè¨˜ã®è‘—ä½œ
+ *      æ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šãŒï¼Œãã®ã¾ã¾ã®å½¢ã§ã‚½ãƒ¼
+ *      ã‚¹ã‚³ãƒ¼ãƒ‰ä¸­ã«å«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ï¼
+ *  (2) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œãƒ©ã‚¤ãƒ–ãƒ©ãƒªå½¢å¼ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ãã‚‹å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œå†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨
+ *      è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜
+ *      ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *  (3) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚’ï¼Œæ©Ÿå™¨ã«çµ„ã¿è¾¼ã‚€ãªã©ï¼Œä»–ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢é–‹ç™ºã«ä½¿
+ *      ç”¨ã§ããªã„å½¢ã§å†é…å¸ƒã™ã‚‹å ´åˆã«ã¯ï¼Œæ¬¡ã®ã„ãšã‚Œã‹ã®æ¡ä»¶ã‚’æº€ãŸã™ã“
+ *      ã¨ï¼
+ *    (a) å†é…å¸ƒã«ä¼´ã†ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆï¼ˆåˆ©ç”¨è€…ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ãªã©ï¼‰ã«ï¼Œä¸Šè¨˜ã®è‘—
+ *        ä½œæ¨©è¡¨ç¤ºï¼Œã“ã®åˆ©ç”¨æ¡ä»¶ãŠã‚ˆã³ä¸‹è¨˜ã®ç„¡ä¿è¨¼è¦å®šã‚’æ²è¼‰ã™ã‚‹ã“ã¨ï¼
+ *    (b) å†é…å¸ƒã®å½¢æ…‹ã‚’ï¼Œåˆ¥ã«å®šã‚ã‚‹æ–¹æ³•ã«ã‚ˆã£ã¦ï¼ŒTOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«
+ *        å ±å‘Šã™ã‚‹ã“ã¨ï¼
+ *  (4) æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ã‚‹ã„ã‹ãªã‚‹æ
+ *      å®³ã‹ã‚‰ã‚‚ï¼Œä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å…è²¬ã™ã‚‹ã“ã¨ï¼
  * 
- *  –{ƒ\ƒtƒgƒEƒFƒA‚ÍC–³•ÛØ‚Å’ñ‹Ÿ‚³‚ê‚Ä‚¢‚é‚à‚Ì‚Å‚ ‚éDã‹L’˜ìŒ Ò‚¨
- *  ‚æ‚ÑTOPPERSƒvƒƒWƒFƒNƒg‚ÍC–{ƒ\ƒtƒgƒEƒFƒA‚ÉŠÖ‚µ‚ÄC‚»‚Ì“K—p‰Â”\«‚à
- *  ŠÜ‚ß‚ÄC‚¢‚©‚È‚é•ÛØ‚às‚í‚È‚¢D‚Ü‚½C–{ƒ\ƒtƒgƒEƒFƒA‚Ì—˜—p‚É‚æ‚è’¼
- *  Ú“I‚Ü‚½‚ÍŠÔÚ“I‚É¶‚¶‚½‚¢‚©‚È‚é‘¹ŠQ‚ÉŠÖ‚µ‚Ä‚àC‚»‚ÌÓ”C‚ğ•‰‚í‚È‚¢D
+ *  æœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ï¼Œç„¡ä¿è¨¼ã§æä¾›ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã§ã‚ã‚‹ï¼ä¸Šè¨˜è‘—ä½œæ¨©è€…ãŠ
+ *  ã‚ˆã³TOPPERSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã«é–¢ã—ã¦ï¼Œãã®é©ç”¨å¯èƒ½æ€§ã‚‚
+ *  å«ã‚ã¦ï¼Œã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œã‚ãªã„ï¼ã¾ãŸï¼Œæœ¬ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®åˆ©ç”¨ã«ã‚ˆã‚Šç›´
+ *  æ¥çš„ã¾ãŸã¯é–“æ¥çš„ã«ç”Ÿã˜ãŸã„ã‹ãªã‚‹æå®³ã«é–¢ã—ã¦ã‚‚ï¼Œãã®è²¬ä»»ã‚’è² ã‚ãªã„ï¼
  * 
  */
 
@@ -48,19 +48,19 @@
 #include "dataqueue.h"
 #include "mempfix.h"
 
-#define TPS_BUFSIZE	2048		    /* ƒƒbƒZ[ƒWƒoƒbƒtƒ@ƒTƒCƒY     */
+#define TPS_BUFSIZE	2048		    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º     */
 					    /* print buffer size (0x0800)   */
 #define TPS_EMPTY_MSG	"Warning: Stop by print buffer full."
 
-#define TPS_OK		0		    /* ƒGƒ‰[ƒR[ƒh */
+#define TPS_OK		0		    /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ */
 #define TPS_EXT_PARAM	1
 #define TPS_ERROR	-1		    /* error code   */
 #define TPS_NO_OBJECT	-2
 
-#define TPS_TSKSTS_RUNDMT   1		    /* ƒ^ƒXƒNó‘Ôƒtƒ‰ƒO */
+#define TPS_TSKSTS_RUNDMT   1		    /* ã‚¿ã‚¹ã‚¯çŠ¶æ…‹ãƒ•ãƒ©ã‚° */
 #define TPS_TSKSTS_SUSPEND  2		    /* Task status flag */
 
-#define TPS_STSID_SYS	0		    /* ó‘Ôæ“¾ŠÖ”—pƒtƒ‰ƒO	    */
+#define TPS_STSID_SYS	0		    /* çŠ¶æ…‹å–å¾—é–¢æ•°ç”¨ãƒ•ãƒ©ã‚°	    */
 #define TPS_STSID_TSK	1		    /* Flags for status reference   */
 					    /* function */
 
@@ -72,19 +72,19 @@ extern MBXCB mbxcb_table[TNUM_MBXID];
 extern MPFCB mpfcb_table[TNUM_MPFID];
 extern CYCCB cyccb_table[TNUM_CYCID];
 
-static	INT tps_StartNum, tps_EndNum;	    /* î•ñ•\¦”ÍˆÍ‚ğ•Û */
+static	INT tps_StartNum, tps_EndNum;	    /* æƒ…å ±è¡¨ç¤ºç¯„å›²ã‚’ä¿æŒ */
 static	INT tps_TaskFlag;		    /* The start/end number of the  */
 					    /* object which displays infor- */
 					    /* tion			    */
 
-typedef struct {			    /* ƒƒbƒZ[ƒWƒoƒbƒtƒ@\‘¢‘Ì     */
+typedef struct {			    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒãƒƒãƒ•ã‚¡æ§‹é€ ä½“     */
 	INT     iSize;			    /* structure of sprintf buffer  */
 	B	    chBuff[TPS_BUFSIZE + 3];
 } tps_DebugMsg_t;
 static	tps_DebugMsg_t	tps_tmpbuf;
 
 /*
- *  ‹ó‚«ƒoƒbƒtƒ@ƒTƒCƒY‚Ìƒ`ƒFƒbƒN
+ *  ç©ºããƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã®ãƒã‚§ãƒƒã‚¯
  *  Check free size of tps_tmpbuf
  */
 /************************************************************************
@@ -101,7 +101,7 @@ static INT chk_prtbuf(INT iChkSize)
 	INT     iCnt;
 
 	if(iChkSize > (TPS_BUFSIZE - tps_tmpbuf.iSize)){
-						    /* ŒxƒƒbƒZ[ƒW‚ªû‚Ü‚ç‚È‚¢ê‡ */
+						    /* è­¦å‘Šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒåã¾ã‚‰ãªã„å ´åˆ */
 						    /* when warning message doesn't fit*/
 						    /* buffer			      */
 		if(tps_tmpbuf.iSize + sizeof(TPS_EMPTY_MSG) + 2 + 1 > TPS_BUFSIZE){
@@ -119,7 +119,7 @@ static INT chk_prtbuf(INT iChkSize)
 }
 
 /*
- *  î•ño—Í”ÍˆÍ‚Ìİ’è
+ *  æƒ…å ±å‡ºåŠ›ç¯„å›²ã®è¨­å®š
  *  Set up the range which display information.
  */
 /************************************************************************
@@ -137,15 +137,15 @@ static INT chk_prtbuf(INT iChkSize)
 static INT chk_param(INT iStart, INT iEnd, INT iMaxNum)
 {
 	if(iMaxNum == 0){
-		return TPS_NO_OBJECT;		    /* –¢¶¬ƒIƒuƒWƒFƒNƒg‚Ìw’è     */
+		return TPS_NO_OBJECT;		    /* æœªç”Ÿæˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŒ‡å®š     */
 	}					    /* Specified ungenerated object */
 
 	if((iStart < 0) || (iEnd > iMaxNum)){
-		return TPS_ERROR;		    /* ˆÙíƒpƒ‰ƒ[ƒ^	 */
+		return TPS_ERROR;		    /* ç•°å¸¸ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿	 */
 	}					    /* illegal parameter */
 
 	if(iStart == 0){
-		if(iEnd == 0){			    /* ‘S•”•\¦‚·‚é		 */
+		if(iEnd == 0){			    /* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹		 */
 			tps_StartNum = 1;		    /* all display (1 -> maxnum) */
 			tps_EndNum = iMaxNum;
 			return TPS_OK;
@@ -157,24 +157,24 @@ static INT chk_param(INT iStart, INT iEnd, INT iMaxNum)
 
 	if(iEnd > iStart){
 		if(iEnd > iMaxNum){
-			tps_StartNum = iStart;	    /* ŠJn’l‚©‚çÅ‘å’l‚Ü‚Å */
+			tps_StartNum = iStart;	    /* é–‹å§‹å€¤ã‹ã‚‰æœ€å¤§å€¤ã¾ã§ */
 			tps_EndNum = iMaxNum;	    /* iStart -> iMaxNum    */
 		}else{
-			tps_StartNum = iStart;	    /* ŠJn’l‚©‚çI—¹’l‚Ü‚Å */
+			tps_StartNum = iStart;	    /* é–‹å§‹å€¤ã‹ã‚‰çµ‚äº†å€¤ã¾ã§ */
 			tps_EndNum = iEnd;		    /* iStart -> iEnd	    */
 		}
 	}else{
 		if(iStart > iMaxNum){
 			return TPS_ERROR;
 		}
-		tps_StartNum = iStart;		    /* ŠJn’l‚Ì’P“Æ•\¦     */
+		tps_StartNum = iStart;		    /* é–‹å§‹å€¤ã®å˜ç‹¬è¡¨ç¤º     */
 		tps_EndNum = iStart;		    /* iStart only	    */
 	}
 	return TPS_EXT_PARAM;
 }
 
 /*
- *  ƒLƒ…[ƒCƒ“ƒOî•ñƒƒbƒZ[ƒWì¬ˆ—
+ *  ã‚­ãƒ¥ãƒ¼ã‚¤ãƒ³ã‚°æƒ…å ±ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä½œæˆå‡¦ç†
  *  Make queuing information
  */
 /************************************************************************
@@ -191,37 +191,37 @@ static INT print_queue(QUEUE* pMember)
 	INT iFlag, iLoop, iCnt;
 
 
-	pTskcb = pMember->next;				/* æ“ªƒ^ƒXƒN‚ğæ“¾     */
+	pTskcb = pMember->next;				/* å…ˆé ­ã‚¿ã‚¹ã‚¯ã‚’å–å¾—     */
 	iFlag = 0;					/* get Top task-address */
 
-	while(pTskcb != pMember){			/* ƒ^ƒXƒN‚ª‚ ‚ê‚ÎŒŸõ‚·‚é */
+	while(pTskcb != pMember){			/* ã‚¿ã‚¹ã‚¯ãŒã‚ã‚Œã°æ¤œç´¢ã™ã‚‹ */
 		iLoop = 0;				/* Search task when Top   */
 							/* address is not pMember */
 		while((QUEUE*)&tcb_table[iLoop] != pTskcb){
 			iLoop++;
 			if(iLoop == tmax_tskid){
-				break;			/* Œ©‚Â‚©‚ç‚È‚¯‚ê‚ÎI—¹‚·‚é */
+				break;			/* è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°çµ‚äº†ã™ã‚‹ */
 			}				/* not found(illegal)	*/ 
 		}
 
-		if(chk_prtbuf((iFlag) ? 10 : 7)){	/* ƒoƒbƒtƒ@—e—Ê‚ğƒ`ƒFƒbƒN */
+		if(chk_prtbuf((iFlag) ? 10 : 7)){	/* ãƒãƒƒãƒ•ã‚¡å®¹é‡ã‚’ãƒã‚§ãƒƒã‚¯ */
 			return TPS_ERROR;		/* free buffer size check */
 		}
 
-		if(iFlag == 0){ 			/* æ“ªƒ^ƒXƒN‚Ì•\¦  */
+		if(iFlag == 0){ 			/* å…ˆé ­ã‚¿ã‚¹ã‚¯ã®è¡¨ç¤º  */
 							/* display head task */
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,"task%d", iLoop + 1);
 			tps_tmpbuf.iSize += iCnt;
 			iFlag = 1;
-		}else{					/* ”ñæ“ªƒ^ƒXƒN‚Ì•\¦    */
+		}else{					/* éå…ˆé ­ã‚¿ã‚¹ã‚¯ã®è¡¨ç¤º    */
 							/* display continue task */
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,"->task%d", iLoop + 1);
 			tps_tmpbuf.iSize += iCnt;
 		}
-		pTskcb = pTskcb->next;			/* Ÿ‚Ìƒ^ƒXƒN‚ğæ“¾      */
+		pTskcb = pTskcb->next;			/* æ¬¡ã®ã‚¿ã‚¹ã‚¯ã‚’å–å¾—      */
 	}						/* get next task-address */
 
-	if(iFlag == 0){					/* ƒLƒ…[ƒCƒ“ƒOƒ^ƒXƒN‚È‚µ*/
+	if(iFlag == 0){					/* ã‚­ãƒ¥ãƒ¼ã‚¤ãƒ³ã‚°ã‚¿ã‚¹ã‚¯ãªã—*/
 							/* Queuing no objects    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize, "-");
 		tps_tmpbuf.iSize += iCnt;
@@ -234,7 +234,7 @@ static INT print_queue(QUEUE* pMember)
 }
 
 /*
- *  ƒVƒXƒeƒ€/ƒ^ƒXƒNó‘Ô‚Ìæ“¾
+ *  ã‚·ã‚¹ãƒ†ãƒ /ã‚¿ã‚¹ã‚¯çŠ¶æ…‹ã®å–å¾—
  *  Refer system/task status.
  */
 /************************************************************************
@@ -250,7 +250,7 @@ static void print_status(INT iStsId, TCB* pstTcb, B *chStsBuff)
 {
 	ER	iRetVal;
 
-	*chStsBuff = '\0';				/* ƒVƒXƒeƒ€ó‘Ô‚Ìæ“¾  */
+	*chStsBuff = '\0';				/* ã‚·ã‚¹ãƒ†ãƒ çŠ¶æ…‹ã®å–å¾—  */
 	if(iStsId == TPS_STSID_SYS){			/* Check System Status */
 		if(enadsp == FALSE){
 			strcat(chStsBuff, " DDSP");
@@ -272,7 +272,7 @@ static void print_status(INT iStsId, TCB* pstTcb, B *chStsBuff)
 	}
 
 	tps_TaskFlag = 0;
-	if(pstTcb == runtsk){				/* ƒ^ƒXƒNó‘Ô‚Ìæ“¾  */
+	if(pstTcb == runtsk){				/* ã‚¿ã‚¹ã‚¯çŠ¶æ…‹ã®å–å¾—  */
 		sprintf(chStsBuff, "RUN");		/* Check task Status */
 		tps_TaskFlag = TPS_TSKSTS_RUNDMT;
 	}
@@ -301,7 +301,7 @@ static void print_status(INT iStsId, TCB* pstTcb, B *chStsBuff)
 }
 
 /*
- *  ƒVƒXƒeƒ€ó‘Ô‚Ì•\¦
+ *  ã‚·ã‚¹ãƒ†ãƒ çŠ¶æ…‹ã®è¡¨ç¤º
  *  Display system status.
  */
 /************************************************************************
@@ -319,18 +319,18 @@ VP iprint_mng(INT iParam1, INT iParam2, INT iParam3)
 	B	chCurSts[25];
 
 	tps_tmpbuf.iSize = 0;
-	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,	/* ƒ^ƒCƒgƒ‹‚Ì•\¦ */
+	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,	/* ã‚¿ã‚¤ãƒˆãƒ«ã®è¡¨ç¤º */
 			    "System management information\n");	/* print title   */
 	tps_tmpbuf.iSize += iCnt;
 
-							/* ƒVƒXƒeƒ€ó‘Ô‚Ì•\¦*/
+							/* ã‚·ã‚¹ãƒ†ãƒ çŠ¶æ…‹ã®è¡¨ç¤º*/
 	print_status(TPS_STSID_SYS, NULL, chCurSts);    /* print system status */
 	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 			    "System information        (%08xh) :%s\n",
 			    (UINT)&enadsp, chCurSts);
 	tps_tmpbuf.iSize += iCnt;
 
-							/* ƒ^ƒXƒNID‚Ì•\¦        */
+							/* ã‚¿ã‚¹ã‚¯IDã®è¡¨ç¤º        */
 							/* print running task ID */
 	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize, 
 			    "Current running task ID   (%08xh) : ",
@@ -347,7 +347,7 @@ VP iprint_mng(INT iParam1, INT iParam2, INT iParam3)
 	}
 	tps_tmpbuf.iSize += iCnt;
 
-								/* Ÿƒ^ƒXƒNID‚Ì•\¦   */
+								/* æ¬¡ã‚¿ã‚¹ã‚¯IDã®è¡¨ç¤º   */
 	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,	/* print next task ID */
 			    "Next task ID              (%08xh) : ",
 			    (UINT)&schedtsk);
@@ -363,26 +363,26 @@ VP iprint_mng(INT iParam1, INT iParam2, INT iParam3)
 	}
 	tps_tmpbuf.iSize += iCnt;
 
-								/* ƒVƒXƒeƒ€ŠÔ‚ğ•\¦ */
+								/* ã‚·ã‚¹ãƒ†ãƒ æ™‚é–“ã‚’è¡¨ç¤º */
 	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,	/* print current time */
 			    "Current time              (%08xh) : %08x\n",
 			    (UINT)&current_time, current_time);
 	tps_tmpbuf.iSize += iCnt;
 
-							/* Š„‚İƒlƒXƒgƒJƒEƒ“ƒg‚Ì•\¦    */
+							/* å‰²è¾¼ã¿ãƒã‚¹ãƒˆã‚«ã‚¦ãƒ³ãƒˆã®è¡¨ç¤º    */
 							/* print Nesting interrupt count */
 	iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 			    "Interrupt nesting count   (%08xh) : %03d\n",
 			    (UINT)&tps_IntNestCnt, tps_IntNestCnt);
 	tps_tmpbuf.iSize += iCnt;
 
-	tps_tmpbuf.iSize++; 				/* ƒkƒ‹•¶š•ª‚ğ‰ÁZ */
+	tps_tmpbuf.iSize++; 				/* ãƒŒãƒ«æ–‡å­—åˆ†ã‚’åŠ ç®— */
 							/* ++ is null	*/
 	return (VP)&tps_tmpbuf;
 }
 
 /*
- *  ƒŒƒfƒBƒLƒ…[‚Ì•\¦
+ *  ãƒ¬ãƒ‡ã‚£ã‚­ãƒ¥ãƒ¼ã®è¡¨ç¤º
  *  Display ready queue.
  */
 /************************************************************************
@@ -411,34 +411,34 @@ VP iprint_rdy(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-							    /* ƒ^ƒCƒgƒ‹‚ğ•\¦	*/
+							    /* ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¡¨ç¤º	*/
 							    /* print title	*/
 	iCnt = sprintf(tps_tmpbuf.chBuff,"Ready queue\nPRI  ADDRESS    QUEUE\n");
 	tps_tmpbuf.iSize = iCnt;
 
 	for(iLoop = tps_StartNum; iLoop <= tps_EndNum; iLoop++){
-		if(chk_prtbuf(15) != TPS_OK){		/* ƒoƒbƒtƒ@—e—Ê‚ğƒ`ƒFƒbƒN */
+		if(chk_prtbuf(15) != TPS_OK){		/* ãƒãƒƒãƒ•ã‚¡å®¹é‡ã‚’ãƒã‚§ãƒƒã‚¯ */
 			break;				/* free buffer size check */
 		}
 
-							/* —Dæ“x‚ÆƒAƒhƒŒƒX‚ğ•\¦     */
+							/* å„ªå…ˆåº¦ã¨ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤º     */
 							/* print priority No, address */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"%-3d  %08xh  ",
 				iLoop, (UINT)&ready_queue[iLoop-1]);
 		tps_tmpbuf.iSize += iCnt;
 
-							/* ƒLƒ…[ƒƒbƒZ[ƒW‚ğì¬‚·‚é */
+							/* ã‚­ãƒ¥ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ä½œæˆã™ã‚‹ */
 							/* print queue list */
 		print_queue((QUEUE *)&ready_queue[iLoop-1]);
 	}
 
-	tps_tmpbuf.iSize ++;				/* ƒkƒ‹•¶š•ª‚ğ‰ÁZ */
+	tps_tmpbuf.iSize ++;				/* ãƒŒãƒ«æ–‡å­—åˆ†ã‚’åŠ ç®— */
 	return (VP)&tps_tmpbuf;				/* ++ is null	*/
 }
 
 /*
- *  ƒ^ƒXƒN§Œäî•ñ‚Ì•\¦
+ *  ã‚¿ã‚¹ã‚¯åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display task control block.
  */
 /************************************************************************
@@ -470,7 +470,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == E_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == E_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt =	sprintf(tps_tmpbuf.chBuff, "Task overview\n");
 		iCnt += sprintf(tps_tmpbuf.chBuff + iCnt,
@@ -478,14 +478,14 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		tps_tmpbuf.iSize = iCnt;
 
 		for(iLoop = tps_StartNum; iLoop <= tps_EndNum; iLoop++){
-			if(chk_prtbuf(32) != TPS_OK){	/* ƒoƒbƒtƒ@—e—Ê‚ğƒ`ƒFƒbƒN */
+			if(chk_prtbuf(32) != TPS_OK){	/* ãƒãƒƒãƒ•ã‚¡å®¹é‡ã‚’ãƒã‚§ãƒƒã‚¯ */
 				break;			/* free buffer size       */
 			}
 
 			pTskcb = (TCB*)&tcb_table[iLoop-1];
 			print_status(TPS_STSID_TSK, pTskcb, chStsBuff);
 					    
-			if(tps_TaskFlag == 1){		/* ƒ^ƒXƒN‚ª‹x~, Àsó‘Ô‚Ìê‡ */
+			if(tps_TaskFlag == 1){		/* ã‚¿ã‚¹ã‚¯ãŒä¼‘æ­¢, å®Ÿè¡ŒçŠ¶æ…‹ã®å ´åˆ */
 							/* case DMT,RUN 		*/
 				iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 					"%-3d  --------   --------   %3s\n",
@@ -499,7 +499,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 				tps_tmpbuf.iSize += iCnt;
 			}
 		}
-		tps_tmpbuf.iSize++;			/* ƒkƒ‹•¶š•ª‚ğ‰ÁZ */
+		tps_tmpbuf.iSize++;			/* ãƒŒãƒ«æ–‡å­—åˆ†ã‚’åŠ ç®— */
 							/* ++ is nul	    */
 		return (VP)&tps_tmpbuf;
 	}
@@ -508,7 +508,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(12) != TPS_OK){
 			break;
 		}
-							/* ƒ^ƒXƒNID‚ğ•\¦	*/
+							/* ã‚¿ã‚¹ã‚¯IDã‚’è¡¨ç¤º	*/
 							/* print task ID	*/
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"TSKID = %-3d\n",
@@ -520,7 +520,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 			break;
 		}
 		print_status(TPS_STSID_TSK, pTskcb, chStsBuff);
-							/* ƒ^ƒXƒN§ŒäƒuƒƒbƒNƒAƒhƒŒƒX‚ğ•\¦ */
+							/* ã‚¿ã‚¹ã‚¯åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤º */
 							/* print taskcb address 	    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Taskcb addr        : %08xh\n",
@@ -530,12 +530,12 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != E_OK){
 			break;
 		}
-							/* Œ»İ‚ÌPC‚ğ•\¦   */
+							/* ç¾åœ¨ã®PCã‚’è¡¨ç¤º   */
 							/* print current PC */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"PC                 : ");
 		tps_tmpbuf.iSize += iCnt;
-		if(tps_TaskFlag == 1){			/* ƒ^ƒXƒN‚ª‹x~, Àsó‘Ô‚Ìê‡ */
+		if(tps_TaskFlag == 1){			/* ã‚¿ã‚¹ã‚¯ãŒä¼‘æ­¢, å®Ÿè¡ŒçŠ¶æ…‹ã®å ´åˆ */
 							/* case DMT, RUN	        */
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				    "--------\n");
@@ -550,7 +550,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != E_OK){
 			break;
 		}
-							    /* PC‰Šú’l‚ğ•\¦‚·‚é */
+							    /* PCåˆæœŸå€¤ã‚’è¡¨ç¤ºã™ã‚‹ */
 							    /* print initial PC   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Initial PC         : %08xh\n",
@@ -560,12 +560,12 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != E_OK){
 			break;
 		}
-							/* Œ»İ‚ÌSP‚ğ•\¦   */
+							/* ç¾åœ¨ã®SPã‚’è¡¨ç¤º   */
 							/* print current SP */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"SP                 : ");
 		tps_tmpbuf.iSize += iCnt;
-		if(tps_TaskFlag == 1){			/* ƒ^ƒXƒN‚ª‹x~, Àsó‘Ô‚Ìê‡ */
+		if(tps_TaskFlag == 1){			/* ã‚¿ã‚¹ã‚¯ãŒä¼‘æ­¢, å®Ÿè¡ŒçŠ¶æ…‹ã®å ´åˆ */
 							/* case DMT, RUN	        */
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				    "--------\n");
@@ -580,7 +580,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != E_OK){
 			break;
 		}
-							/* SP‰Šú’l‚ğ•\¦‚·‚é */
+							/* SPåˆæœŸå€¤ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print initial SP   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Initial SP         : %08xh\n",
@@ -590,7 +590,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(25) != E_OK){
 			break;
 		}
-							/* Œ»İ‚Ì—Dæ“x‚ğ•\¦‚·‚é */
+							/* ç¾åœ¨ã®å„ªå…ˆåº¦ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print current priority */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Priority           : %-2d\n",
@@ -600,7 +600,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(25) != E_OK){
 			break;
 		}
-							/* —Dæ“x‚Ì‰Šú’l‚ğ•\¦‚·‚é */
+							/* å„ªå…ˆåº¦ã®åˆæœŸå€¤ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print initial priority   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Initial priority   : %-2d\n",
@@ -610,7 +610,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(26) != E_OK){
 			break;
 		}
-							/* ƒ^ƒXƒNó‘Ô‚ğ•\¦‚·‚é */
+							/* ã‚¿ã‚¹ã‚¯çŠ¶æ…‹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print task status    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Task status        : %3s\n",
@@ -620,7 +620,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(24) != E_OK){
 			break;
 		}
-							/* ‹N“®—v‹”‚ğ•\¦‚·‚é      */
+							/* èµ·å‹•è¦æ±‚æ•°ã‚’è¡¨ç¤ºã™ã‚‹      */
 							/* print Start request count */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Start Req.   count : %d\n",
@@ -630,7 +630,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(24) != E_OK){				
 			break;
 		}
-							/* ‹N°—v‹”‚ğ•\¦‚·‚é       */
+							/* èµ·åºŠè¦æ±‚æ•°ã‚’è¡¨ç¤ºã™ã‚‹       */
 							/* print wake up request count*/
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"WUP Req.     count : %d\n",
@@ -640,7 +640,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(24) != E_OK){
 			break;
 		}
-							/* ƒTƒXƒyƒ“ƒh—v‹”‚ğ•\¦‚·‚é */
+							/* ã‚µã‚¹ãƒšãƒ³ãƒ‰è¦æ±‚æ•°ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Suspend request count*/
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Suspend Req. count : %d\n\n",
@@ -653,7 +653,7 @@ int *iprint_tsk(INT iStart, INT iEnd, INT iParam3)
 }
 
 /*
- *  üŠúƒnƒ“ƒhƒ‰§Œäî•ñ‚Ì•\¦
+ *  å‘¨æœŸãƒãƒ³ãƒ‰ãƒ©åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display cyclic handler control block.
  */
 /************************************************************************
@@ -683,7 +683,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Cyclic handler overview\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -695,7 +695,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 			if(chk_prtbuf(45) != TPS_OK){
 				break;
 			}
-							/* ƒnƒ“ƒhƒ‰ó‘Ô‚ğ•\¦‚·‚é */
+							/* ãƒãƒ³ãƒ‰ãƒ©çŠ¶æ…‹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print handler status   */
 			pHndrcb = (CYCCB*)&cyccb_table[iLoop - 1];
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -713,7 +713,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(26) != TPS_OK){
 			break;
 		}
-							/* ƒnƒ“ƒhƒ‰”Ô†‚ğ•\¦‚·‚é */
+							/* ãƒãƒ³ãƒ‰ãƒ©ç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print handler No.      */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Cyclic handler No. = %-3d\n",
@@ -723,7 +723,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(30) != TPS_OK){
 			break;
 		}
-							/*üŠúƒnƒ“ƒhƒ‰§ŒäƒuƒƒbƒNƒAƒhƒŒƒX‚ğ•\¦‚·‚é */
+							/*å‘¨æœŸãƒãƒ³ãƒ‰ãƒ©åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print cyclic handler cb address	     */
 		pHndrcb = (CYCCB*)&cyccb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -734,7 +734,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(24) != TPS_OK){
 			break;
 		}
-							/* Šˆ«ó‘Ô‚ğ•\¦‚·‚é */
+							/* æ´»æ€§çŠ¶æ…‹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print activation   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Activation       : %-3s\n",
@@ -744,7 +744,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(30) != TPS_OK){
 			break;
 		}
-							/* Šg’£î•ñŠi”[—Ìˆæ‚ğ•\¦‚·‚é 		  */
+							/* æ‹¡å¼µæƒ…å ±æ ¼ç´é ˜åŸŸã‚’è¡¨ç¤ºã™ã‚‹ 		  */
 							/* print address stored expand information*/
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Expand Info addr : %08xh\n",
@@ -754,7 +754,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(30) != TPS_OK){			    
 			break;
 		}
-		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize, /* PC‚ğ•\¦‚·‚é */
+		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize, /* PCã‚’è¡¨ç¤ºã™ã‚‹ */
 				"PC               : %08xh\n",	     /* print PC     */
 				(UINT)pHndrcb->cycinib->cychdr);
 		tps_tmpbuf.iSize += iCnt;
@@ -762,7 +762,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(30) != TPS_OK){
 			break;
 		}
-							/* ˆÊ‘ŠŠÔ‚ğ•\¦‚·‚é */
+							/* ä½ç›¸æ™‚é–“ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print phase time   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Phase time       : %08xh\n",
@@ -772,7 +772,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(30) != TPS_OK){
 			break;
 		}
-							/* üŠúŠÔ‚ğ•\¦‚·‚é */
+							/* å‘¨æœŸæ™‚é–“ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print cycle time   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Cycle time       : %08xh\n",
@@ -781,7 +781,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* ‹N“®‚ğ•\¦‚·‚é */
+							/* èµ·å‹•æ™‚åˆ»ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print entry time   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Entry time       : %08xh\n\n",
@@ -794,7 +794,7 @@ VP iprint_cyc(INT iStart, INT iEnd, INT Param3)
 }
 
 /*
- *  ƒ[ƒ‹ƒ{ƒbƒNƒX§Œäî•ñ‚Ì•\¦
+ *  ãƒ¡ãƒ¼ãƒ«ãƒœãƒƒã‚¯ã‚¹åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display mail box control block.
  */
 /************************************************************************
@@ -825,7 +825,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Mail box overview\nID   MSG  QUEUE\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -849,7 +849,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(20) != TPS_OK){
 			break;
 		}
-							/* ƒ[ƒ‹ƒ{ƒbƒNƒXID‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¼ãƒ«ãƒœãƒƒã‚¯ã‚¹IDã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print mail box ID	      */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Mail box ID = %-3d\n",
@@ -859,8 +859,8 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* ƒ[ƒ‹ƒ{ƒbƒNƒX§ŒäƒuƒƒbƒNƒAƒhƒŒƒX */
-							/* ‚ğ•\¦‚·‚é			      */
+							/* ãƒ¡ãƒ¼ãƒ«ãƒœãƒƒã‚¯ã‚¹åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ã‚¢ãƒ‰ãƒ¬ã‚¹ */
+							/* ã‚’è¡¨ç¤ºã™ã‚‹			      */
 							/* print control box address	      */
 		pMlbxcb = (MBXCB *)&mbxcb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -871,7 +871,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(42) != TPS_OK){
 			break;
 		}
-							/* ƒ[ƒ‹ƒ{ƒbƒNƒX‘®«‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¼ãƒ«ãƒœãƒƒã‚¯ã‚¹å±æ€§ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print mail box attribute     */
 		if(pMlbxcb->mbxinib->mbxatr == (TA_TFIFO | TA_MFIFO)){
 			chAtrMsg = "TA_TFIFO | TA_MFIFO";
@@ -893,7 +893,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* Å‘å—Dæ“x‚ğ•\¦‚·‚é */
+							/* æœ€å¤§å„ªå…ˆåº¦ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Max priority   */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Max mail priority  : %08xh\n",
@@ -903,7 +903,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(28) != TPS_OK){
 			break;
 		}
-							/* ƒ[ƒ‹‚Ì—L–³‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¼ãƒ«ã®æœ‰ç„¡ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print mail exist/empty */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Message list       : %s\n",
@@ -913,7 +913,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(22) != TPS_OK){
 			break;
 		}
-							/* óM‘Ò‚¿ƒLƒ…[‚ğ•\¦‚·‚é */
+							/* å—ä¿¡å¾…ã¡ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* Print waitting queue     */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Rcv queue          : ");
@@ -932,7 +932,7 @@ VP iprint_mbx(INT iStart, INT iEnd, INT iParam3)
 }
 
 /*
- *  ƒZƒ}ƒtƒH§Œäî•ñ‚Ì•\¦
+ *  ã‚»ãƒãƒ•ã‚©åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display semaphore control block.
  */
 /************************************************************************
@@ -963,7 +963,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Semaphore overview\nID   MAX  CNT  QUEUE\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -987,7 +987,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(20) != TPS_OK){		    
 			break;
 		}
-							/* ƒZƒ}ƒtƒHID‚ğ•\¦‚·‚é */
+							/* ã‚»ãƒãƒ•ã‚©IDã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print mail box ID    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Semaphore ID = %-3d\n",
@@ -997,7 +997,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(34) != TPS_OK){
 			break;
 		}
-							/* ƒZƒ}ƒtƒH§ŒäƒuƒƒbƒNƒAƒhƒŒƒX‚ğ•\¦‚·‚é */
+							/* ã‚»ãƒãƒ•ã‚©åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print control box address		  */
 		pSemcb = (SEMCB*)&semcb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1008,7 +1008,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(30) != TPS_OK){
 			break;
 		}
-							/* ƒZƒ}ƒtƒH‘®«‚ğ•\¦‚·‚é    */
+							/* ã‚»ãƒãƒ•ã‚©å±æ€§ã‚’è¡¨ç¤ºã™ã‚‹    */
 							/* print semaphore attribute */
 		if(pSemcb->seminib->sematr == TA_TFIFO){
 			pchAtrMsg = "TA_TFIFO";
@@ -1024,7 +1024,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* ƒZƒ}ƒtƒHƒJƒEƒ“ƒgÅ‘å’l‚ğ•\¦‚·‚é */
+							/* ã‚»ãƒãƒ•ã‚©ã‚«ã‚¦ãƒ³ãƒˆæœ€å¤§å€¤ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Max count		    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Max semaphore count : %08xh\n",
@@ -1033,7 +1033,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
-}							/* Œ»İ‚ÌƒZƒ}ƒtƒHƒJƒEƒ“ƒg‚ğ•\¦‚·‚é */
+}							/* ç¾åœ¨ã®ã‚»ãƒãƒ•ã‚©ã‚«ã‚¦ãƒ³ãƒˆã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print current semaphore count    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Semaphore count     : %08xh\n",
@@ -1043,7 +1043,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(24) != TPS_OK){
 			break;
 		}
-							/* æ“¾‘Ò‚¿ƒ^ƒXƒN‚ÌƒLƒ…[‚ğ•\¦‚·‚é */
+							/* å–å¾—å¾…ã¡ã‚¿ã‚¹ã‚¯ã®ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Waitting task queue	    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Wait queue          : ");
@@ -1062,7 +1062,7 @@ VP iprint_sem(INT iStart, INT iEnd, INT iParam3)
 }
 
 /*
- *  ƒCƒxƒ“ƒgƒtƒ‰ƒO§Œäî•ñ‚Ì•\¦
+ *  ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ãƒ©ã‚°åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display event flag control block.
  */
 /************************************************************************
@@ -1095,7 +1095,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Event flag overview\nID   QUEUE\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -1118,7 +1118,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(22) != TPS_OK){
 			break;
 		}
-							/* ƒCƒxƒ“ƒgƒtƒ‰ƒOID‚ğ•\¦‚·‚é */
+							/* ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ãƒ©ã‚°IDã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print event flag ID	      */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Event flag ID = %-3d\n",
@@ -1128,8 +1128,8 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(34) != TPS_OK){
 			break;
 		}
-							/* ƒCƒxƒ“ƒgƒtƒ‰ƒO§ŒäƒuƒƒbƒN */
-							/* ƒAƒhƒŒƒX‚ğ•\¦‚·‚é	      */
+							/* ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ãƒ©ã‚°åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ */
+							/* ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹	      */
 							/* print control box address  */
 		pFlgcb = (FLGCB*)&flgcb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1140,16 +1140,16 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(58) != TPS_OK){
 			break;
 		}
-							/* ƒCƒxƒ“ƒgƒtƒ‰ƒO‘®«‚ğ•\¦‚·‚é */
+							/* ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ãƒ©ã‚°å±æ€§ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print event flag attribute   */
 		chAtrMsg[0] = '\0';
-							/* ƒ^ƒXƒN—Dæ“x‚É‚æ‚éƒLƒ…[ƒCƒ“ƒO */
+							/* ã‚¿ã‚¹ã‚¯å„ªå…ˆåº¦ã«ã‚ˆã‚‹ã‚­ãƒ¥ãƒ¼ã‚¤ãƒ³ã‚° */
 							/* queuing by task priority       */
 		if(pFlgcb->flginib->flgatr & TA_TPRI){
 			strcat(chAtrMsg, "TA_TPRI");
 		}
 		else{
-			strcat(chAtrMsg, "TA_TFIFO");	/* FIFO‚Å‚ÌƒLƒ…[ƒCƒ“ƒO */
+			strcat(chAtrMsg, "TA_TFIFO");	/* FIFOã§ã®ã‚­ãƒ¥ãƒ¼ã‚¤ãƒ³ã‚° */
 		}					/* queuing by FIFO	*/
 
 		if(pFlgcb->flginib->flgatr & 0x02){
@@ -1158,7 +1158,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		else{
 			strcat(chAtrMsg, " | TA_WSGL");
 		}
-							/* ƒpƒ^[ƒ“ˆê’vŒãƒtƒ‰ƒO‚ÌƒNƒŠƒA */
+							/* ãƒ‘ã‚¿ãƒ¼ãƒ³ä¸€è‡´å¾Œãƒ•ãƒ©ã‚°ã®ã‚¯ãƒªã‚¢ */
 							/* cleaing flag pattern	        */
 		if(pFlgcb->flginib->flgatr & TA_CLR){
 			strcat(chAtrMsg, " | TA_CLR");	
@@ -1171,7 +1171,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* Œ»İ‚Ìƒtƒ‰ƒOƒpƒ^[ƒ“‚ğ•\¦‚·‚é */
+							/* ç¾åœ¨ã®ãƒ•ãƒ©ã‚°ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print current flag pattern     */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Flag pattern         : %08xh\n",
@@ -1181,7 +1181,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* ‘Ò‚¿ƒ^ƒXƒN‚Ìƒtƒ‰ƒOƒpƒ^[ƒ“	      */
+							/* å¾…ã¡ã‚¿ã‚¹ã‚¯ã®ãƒ•ãƒ©ã‚°ãƒ‘ã‚¿ãƒ¼ãƒ³	      */
 							/* print wait flag pattern of top task*/
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Wait flag pattern    : ");
@@ -1203,7 +1203,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(34) != TPS_OK){
 			break;
 		}
-							/* ‘Ò‚¿ƒ‚[ƒh‚Ì•\¦ */
+							/* å¾…ã¡ãƒ¢ãƒ¼ãƒ‰ã®è¡¨ç¤º */
 							/* print wait mode  */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 					"Wait mode            : ");
@@ -1221,7 +1221,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(24) != TPS_OK){
 			break;
 		}
-							/* æ“¾‘Ò‚¿ƒ^ƒXƒN‚ÌƒLƒ…[‚ğ•\¦‚·‚é */
+							/* å–å¾—å¾…ã¡ã‚¿ã‚¹ã‚¯ã®ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Waitting task queue	    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Wait queue           : ");
@@ -1240,7 +1240,7 @@ VP iprint_flg(INT iStart, INT iEnd, INT iParam3)
 }
 
 /*
- *  ƒf[ƒ^ƒLƒ…[§Œäî•ñ‚Ì•\¦
+ *  ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display data queue control block.
  */
 /************************************************************************
@@ -1271,7 +1271,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Data queue overview\nID   MSG       QUEUE\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -1280,7 +1280,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 			if(chk_prtbuf(16) != TPS_OK){
 				break;
 			}
-							/* óMó‘Ô‚ğ•\¦‚·‚é */
+							/* å—ä¿¡çŠ¶æ…‹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print recieve status */
 			pDtqcb = (DTQCB*)&dtqcb_table[iLoop - 1];
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1292,7 +1292,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 			if(chk_prtbuf(16) != TPS_OK){
 				break;
 			}
-							/* ‘—Mó‘Ô‚ğ•\¦‚·‚é */
+							/* é€ä¿¡çŠ¶æ…‹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print send status  */
 			pDtqcb = (DTQCB*)&dtqcb_table[iLoop - 1];
 			iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1308,7 +1308,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(22) != TPS_OK){
 			break;
 		}
-							/* ƒf[ƒ^ƒLƒ…[ID‚ğ•\¦‚·‚é */
+							/* ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼IDã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Data queue ID	    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Data queue ID = %-3d\n",
@@ -1318,8 +1318,8 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(34) != TPS_OK){
 			break;
 		}
-							/* ƒf[ƒ^ƒLƒ…[§ŒäƒuƒƒbƒN */
-							/* ƒAƒhƒŒƒX‚ğ•\¦‚·‚é	    */
+							/* ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ */
+							/* ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹	    */
 							/* print control box address*/
 		pDtqcb = (DTQCB*)&dtqcb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1330,7 +1330,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(40) != TPS_OK){
 			break;
 		}
-							/* ƒf[ƒ^ƒLƒ…[‘®«‚ğ•\¦‚·‚é */
+							/* ãƒ‡ãƒ¼ã‚¿ã‚­ãƒ¥ãƒ¼å±æ€§ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print data queue attribute */
 		if(pDtqcb->dtqinib->dtqatr == TA_TFIFO){
 			pchAtrMsg = "TA_TFIFO";
@@ -1346,7 +1346,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(42) != TPS_OK){
 			break;
 		}
-							/* ƒLƒ…[—Ìˆæ‚Ìæ“ªƒAƒhƒŒƒX‚ğ•\¦‚·‚é   */
+							/* ã‚­ãƒ¥ãƒ¼é ˜åŸŸã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹   */
 							/* print top address of data queue area */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Data queue area top address : %08xh\n",
@@ -1356,7 +1356,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(42) != TPS_OK){
 			break;
 		}
-							/* ƒf[ƒ^‹L˜^ˆÊ’u‚ğ•\¦‚·‚é      */
+							/* ãƒ‡ãƒ¼ã‚¿è¨˜éŒ²ä½ç½®ã‚’è¡¨ç¤ºã™ã‚‹      */
 							/* print current offset from top */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Top data offset             : %08xh\n",
@@ -1366,7 +1366,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(42) != TPS_OK){
 			break;
 		}
-							/* ƒLƒ…[ƒCƒ“ƒOƒf[ƒ^”‚ğ•\¦‚·‚é‚·‚é */
+							/* ã‚­ãƒ¥ãƒ¼ã‚¤ãƒ³ã‚°ãƒ‡ãƒ¼ã‚¿æ•°ã‚’è¡¨ç¤ºã™ã‚‹ã™ã‚‹ */
 							/* print queuing data count	      */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Queuing data count          : %08xh\n",
@@ -1376,7 +1376,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* óM‘Ò‚¿ƒ^ƒXƒNƒLƒ…[‚ğ•\¦‚·‚é     */
+							/* å—ä¿¡å¾…ã¡ã‚¿ã‚¹ã‚¯ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹     */
 							/* print Waitting task queue(recieve) */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Rcv task queue              : ");
@@ -1389,7 +1389,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(32) != TPS_OK){
 			break;
 		}
-							/* ‘—M‘Ò‚¿ƒ^ƒXƒNƒLƒ…[‚ğ•\¦‚·‚é  */
+							/* é€ä¿¡å¾…ã¡ã‚¿ã‚¹ã‚¯ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹  */
 							/* print Waitting task queue(send) */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Snd task queue              : ");
@@ -1407,7 +1407,7 @@ VP iprint_dtq(INT iStart, INT iEnd, INT iParam3)
 }
 
 /*
- *  ŒÅ’è’·ƒƒ‚ƒŠƒv[ƒ‹§Œäî•ñ‚Ì•\¦
+ *  å›ºå®šé•·ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«åˆ¶å¾¡æƒ…å ±ã®è¡¨ç¤º
  *  Display fixed memory pool control block.
  */
 /************************************************************************
@@ -1438,7 +1438,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		return (VP)&tps_tmpbuf;
 	}
 
-	if(iRetVal == TPS_OK){				/* ‘S•”•\¦‚·‚é */
+	if(iRetVal == TPS_OK){				/* å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ */
 							/* all display  */
 		iCnt = sprintf(tps_tmpbuf.chBuff, "Memory pool overview\nID   QUEUE\n");
 		tps_tmpbuf.iSize = iCnt;
@@ -1463,7 +1463,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(22) != TPS_OK){
 			break;
 		}
-							/* ƒƒ‚ƒŠƒv[ƒ‹ID‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«IDã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print memory pool ID     */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Memory pool ID = %-3d\n",
@@ -1473,8 +1473,8 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(46) != TPS_OK){
 			break;
 		}
-							/* ƒƒ‚ƒŠƒv[ƒ‹§ŒäƒuƒƒbƒN */
-							/* ƒAƒhƒŒƒX‚ğ•\¦‚·‚é	    */
+							/* ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«åˆ¶å¾¡ãƒ–ãƒ­ãƒƒã‚¯ */
+							/* ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹	    */
 							/* print control box address*/
 		pMpfcb = (MPFCB*)&mpfcb_table[iLoop - 1];
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
@@ -1485,7 +1485,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(44) != TPS_OK){
 			break;
 		}
-							/* ƒƒ‚ƒŠƒv[ƒ‹‘®«‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«å±æ€§ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print data queue attribute */
 		if(pMpfcb->mpfinib->mpfatr == TA_TFIFO){
 			pchAtrMsg = "TA_TFIFO";
@@ -1501,7 +1501,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(46) != TPS_OK){
 			break;
 		}
-							/* ƒuƒƒbƒNƒTƒCƒY‚ğ•\¦‚·‚é */
+							/* ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print memory block size  */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Memory block size               : %08xh\n",
@@ -1511,7 +1511,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(46) != TPS_OK){
 			break;
 		}
-							/* ƒƒ‚ƒŠƒv[ƒ‹‚Ìæ“ªƒAƒhƒŒƒX‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print top address of memory pool     */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Memory pool area top address    : %08xh\n",
@@ -1521,7 +1521,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(46) != TPS_OK){
 			break;
 		}
-							/* ƒƒ‚ƒŠƒv[ƒ‹‚Ì––”öƒAƒhƒŒƒX‚ğ•\¦‚·‚é */
+							/* ãƒ¡ãƒ¢ãƒªãƒ—ãƒ¼ãƒ«ã®æœ«å°¾ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print tail address of memory pool    */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Memory pool area tail address   : %08xh\n",
@@ -1531,7 +1531,7 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(46) != TPS_OK){
 			break;
 		}
-							/* –¢g—p—Ìˆæ‚Ìæ“ªƒAƒhƒŒƒX‚ğ•\¦‚·‚é */
+							/* æœªä½¿ç”¨é ˜åŸŸã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print top area of unused area      */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Unused area top address         : %08xh\n",
@@ -1541,15 +1541,15 @@ VP iprint_mpf(INT iStart, INT iEnd, INT iParam3)
 		if(chk_prtbuf(48) != TPS_OK){				
 			break;
 		}
-							/* •Ô‹pƒuƒƒbƒNƒŠƒXƒgƒgƒbƒv‚ÌƒuƒƒbƒN    */
-							/* ƒAƒhƒŒƒX‚ğ•\¦‚·‚é		     */
+							/* è¿”å´ãƒ–ãƒ­ãƒƒã‚¯ãƒªã‚¹ãƒˆãƒˆãƒƒãƒ—ã®ãƒ–ãƒ­ãƒƒã‚¯    */
+							/* ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¡¨ç¤ºã™ã‚‹		     */
 							/* print top address released block list */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Released block list top address : %08xh\n",
 				(UINT)pMpfcb->freelist);
 		tps_tmpbuf.iSize += iCnt;
 
-							/* æ“¾‘Ò‚¿ƒ^ƒXƒN‚ÌƒLƒ…[‚ğ•\¦‚·‚é */
+							/* å–å¾—å¾…ã¡ã‚¿ã‚¹ã‚¯ã®ã‚­ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ */
 							/* print Waitting task queue(send)  */
 		iCnt = sprintf(tps_tmpbuf.chBuff + tps_tmpbuf.iSize,
 				"Wait task queue                 : ");
