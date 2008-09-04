@@ -1,6 +1,9 @@
 #ifndef WIKIREADER_H
 #define WIKIREADER_H
 
+//#define S1C33E07
+#define PRT33L17LCD 
+
 static inline void init_pins(void)
 {
 	/* P13 & P14: debug LEDs */
@@ -8,8 +11,13 @@ static inline void init_pins(void)
 
 	/* P50 & P52: CS lines */
 	REG_P5_IOC5 = 0x06;
+#ifdef S1C33E07
 	REG_PA_IOC = 0x08;
+#endif
 
+#ifdef PRT33L17LCD 
+	REG_P8_IOC8 = 0x10;
+#endif
 	/* P65-67: SPI */
 	REG_P6_47_CFP = 0x54;
 
@@ -120,8 +128,15 @@ static inline void disable_card_power(void)
 
 //#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
 //#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
+#ifdef S1C33E07
 #define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
 #define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
+#endif
+
+#ifdef PRT33L17LCD
+#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
+#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
+#endif
 
 #define EEPROM_CS_LO()	do { REG_P5_P5D &= ~(1 << 2); } while (0)
 #define EEPROM_CS_HI()	do { REG_P5_P5D |=  (1 << 2); } while (0)

@@ -37,9 +37,15 @@ int main(void)
 	EEPROM_CS_HI();
 
 	/* EEPROM WP: off */
+#ifdef S1C33E07
 	REG_P2_IOC2 = (1 << 6);
 	REG_P2_P2D  = (1 << 6);
+#endif
 
+#ifdef PRT33L17LCD
+	REG_P1_IOC1 = (1 << 4);
+	REG_P1_P1D  = (1 << 4);
+#endif
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x73 | (7 << 10) | (7 << 4);
