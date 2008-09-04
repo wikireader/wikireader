@@ -8,37 +8,37 @@
  *
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
- *  によって公表されている GNU General Public License の Version 2 に記
- *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
- *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
- *  利用と呼ぶ）することを無償で許諾する．
- *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
- *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
- *      スコード中に含まれていること．
- *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
- *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
- *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
- *      の無保証規定を掲載すること．
- *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
- *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
- *      と．
- *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
- *        作権表示，この利用条件および下記の無保証規定を掲載すること．
- *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
- *        報告すること．
- *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
- *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+ *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation
+ *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
+ *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
+ *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
+ *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
+ *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
+ *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
+ *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
+ *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
+ *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
+ *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
+ *      �̖��ۏ؋K����f�ڂ��邱�ƁD
+ *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
+ *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
+ *      �ƁD
+ *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
+ *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
+ *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
+ *        �񍐂��邱�ƁD
+ *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
+ *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
  *
- *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
- *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
- *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
- *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+ *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
+ *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
+ *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
+ *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
  *
  */
 
 /*
- *  プロセッサに依存する定義(S1C33用)
+ *  �v���Z�b�T�Ɉˑ������`(S1C33�p)
  */
 
 #ifndef _CPU_DEFS_H_
@@ -47,30 +47,30 @@
 #define S1C33
 
 /*
- *  CPU のバイト順に関する定義
+ *  CPU �̃o�C�g���Ɋւ����`
  */
 
 #define SIL_ENDIAN		SIL_ENDIAN_LITTLE
 
 #ifndef _MACRO_ONLY
 
-typedef UINT	INHNO;		/* 割込みハンドラ番号	*/
-typedef UINT	EXCNO;		/* CPU例外ハンドラ番号	*/
-typedef UINT	ILEVNO;		/* 割込みレベル		*/
+typedef UINT	INHNO;		/* �����݃n���h���ԍ�	*/
+typedef UINT	EXCNO;		/* CPU��O�n���h���ԍ�	*/
+typedef UINT	ILEVNO;		/* �����݃��x��		*/
 
 /*
- *  割込みレベル変更／取得処理
+ *  �����݃��x���ύX�^�擾����
  */
 extern	ER	chg_ilv(ILEVNO ilevno);
 extern	ER	get_ilv(ILEVNO *p_ilevno);
 
 /*
- *  割込み許可／禁止処理
+ *  �����݋��^�֎~����
  */
-typedef UINT	INTNO;		/* 割込み番号		*/
+typedef UINT	INTNO;		/* �����ݔԍ�		*/
 
 /*
- *  依存関係によりここでリネーム
+ *  �ˑ��֌W�ɂ�肱���Ń��l�[��
  */
 #define ena_int		_kernel_ena_int
 #define dis_int		_kernel_dis_int
@@ -84,7 +84,7 @@ extern	ER	ena_int(INTNO intno);
 extern	ER	dis_int(INTNO intno);
 
 /*
- *  現在の割込み許可フラグの読出し
+ *  ���݂̊����݋��t���O�̓Ǐo��
  */
 Inline UW
 _current_intflag_(void)
@@ -96,7 +96,7 @@ _current_intflag_(void)
 }
 
 /*
- *  NMIを除くすべての割込みを禁止
+ *  NMI���������ׂĂ̊����݂��֎~
  */
 Inline void
 _disint_(void)
@@ -109,7 +109,7 @@ _disint_(void)
 }
 
 /*
- *  割込み許可フラグの復元
+ *  �����݋��t���O�̕���
  */
 Inline void
 _enaint_(UW intmask)
@@ -122,7 +122,7 @@ _enaint_(UW intmask)
 }
 
 /*
- *  割込みロック状態の制御
+ *  �����݃��b�N��Ԃ̐���
  */
 #define SIL_PRE_LOC	UW _intmask_ = _current_intflag_()
 #define SIL_LOC_INT()	_disint_()
@@ -130,12 +130,12 @@ _enaint_(UW intmask)
 
 #define OMIT_VGET_TIM
 
-typedef	UW  SYSUTIM;		/* 性能評価用システム時刻 */
+typedef	UW  SYSUTIM;		/* ���\�]���p�V�X�e������ */
 
-extern ER	vxget_tim(SYSUTIM *p_sysutim) throw();
+extern ER   vxget_tim(SYSUTIM *pk_sysutim);
 
 /*
- *  システムの中断処理
+ *  �V�X�e���̒��f����
  */
 
 Inline void

@@ -123,3 +123,10 @@ $(cyclic) $(cyclic:.o=.s) $(cyclic:.o=.d): cyclic.c
 $(sys_manage) $(sys_manage:.o=.s) $(sys_manage:.o=.d): sys_manage.c
 $(interrupt) $(interrupt:.o=.s) $(interrupt:.o=.d): interrupt.c
 $(exception) $(exception:.o=.s) $(exception:.o=.d): exception.c
+
+#
+# Compile rule
+#
+$(KERNEL_LCOBJS) : %.o:
+	$(CC) -D__$(*F) -o $@ -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+

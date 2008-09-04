@@ -3,9 +3,11 @@
  *      Toyohashi Open Platform for Embedded Real-Time Systems/
  *      Just Standard Profile Kernel
  * 
- *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2000 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
+ *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
+ *
  *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
  *  によって公表されている GNU General Public License の Version 2 に記
  *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
@@ -27,20 +29,16 @@
  *        報告すること．
  *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
  *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
- * 
+ *
  *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
  *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
  *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
  *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
- *  @(#) $Id: tool_config.h,v 1.4 2007/01/05 02:02:38 honda Exp $
  */
 
 /*
  *	開発環境依存モジュール
- *
- *  このインクルードファイルは，t_config.h のみからインクルードされる．
- *  他のファイルから直接インクルードしてはならない．
  */
 
 #ifndef _TOOL_CONFIG_H_
@@ -63,13 +61,11 @@
  */
 #ifndef _MACRO_ONLY
 
-
-
 Inline void
 call_atexit()
 {
-//	extern void	software_term_hook(void);
-	volatile FP	fp = NULL; //software_term_hook;
+	extern void	software_term_hook(void);
+	volatile FP	fp = software_term_hook;
 
 	/*
 	 *  software_term_hookへのポインタを，一旦volatile FP型のfpに
@@ -106,6 +102,11 @@ call_atexit()
 
 #define	LOG_DSP_ENTER(tcb)		/* プロセッサ依存部 */
 #define	LOG_DSP_LEAVE(tcb)		/* プロセッサ依存部 */
+
+#define	LOG_CHG_ILV_ENTER(ilevno)		/* プロセッサ依存部 */
+#define	LOG_CHG_ILV_LEAVE(ercd)			/* プロセッサ依存部 */
+#define	LOG_GET_ILV_ENTER(p_ilevno)		/* プロセッサ依存部 */
+#define	LOG_GET_ILV_LEAVE(ercd, p_ilevno)	/* プロセッサ依存部 */
 
 #define	LOG_ACT_TSK_ENTER(tskid)
 #define	LOG_ACT_TSK_LEAVE(ercd)
@@ -261,9 +262,7 @@ call_atexit()
 #define	LOG_VXGET_TIM_ENTER(p_sysutim)
 #define	LOG_VXGET_TIM_LEAVE(ercd, sysutim)
 
-#define	LOG_CHG_IPM_ENTER(ipm)
-#define	LOG_CHG_IPM_LEAVE(ercd)
-#define	LOG_GET_IPM_ENTER(p_ipm)
-#define	LOG_GET_IPM_LEAVE(ercd, ipm)
+#define	LOG_VSNS_INI_ENTER()
+#define	LOG_VSNS_INI_LEAVE(state)
 
 #endif /* _TOOL_CONFIG_H_ */

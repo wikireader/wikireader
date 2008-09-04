@@ -8,56 +8,56 @@
  * 
  *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
  *
- *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
- *  によって公表されている GNU General Public License の Version 2 に記
- *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
- *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
- *  利用と呼ぶ）することを無償で許諾する．
- *  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
- *      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
- *      スコード中に含まれていること．
- *  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
- *      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
- *      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
- *      の無保証規定を掲載すること．
- *  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
- *      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
- *      と．
- *    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
- *        作権表示，この利用条件および下記の無保証規定を掲載すること．
- *    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
- *        報告すること．
- *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
- *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+ *  ��L���쌠�҂́C�ȉ��� (1)�`(4) �̏������CFree Software Foundation 
+ *  �ɂ���Č��\����Ă��� GNU General Public License �� Version 2 �ɋL
+ *  �q����Ă�������𖞂����ꍇ�Ɍ���C�{�\�t�g�E�F�A�i�{�\�t�g�E�F�A
+ *  �����ς������̂��܂ށD�ȉ������j���g�p�E�����E���ρE�Ĕz�z�i�ȉ��C
+ *  ���p�ƌĂԁj���邱�Ƃ𖳏��ŋ�������D
+ *  (1) �{�\�t�g�E�F�A���\�[�X�R�[�h�̌`�ŗ��p����ꍇ�ɂ́C��L�̒���
+ *      ���\���C���̗��p��������щ��L�̖��ۏ؋K�肪�C���̂܂܂̌`�Ń\�[
+ *      �X�R�[�h���Ɋ܂܂�Ă��邱�ƁD
+ *  (2) �{�\�t�g�E�F�A���C���C�u�����`���ȂǁC���̃\�t�g�E�F�A�J���Ɏg
+ *      �p�ł���`�ōĔz�z����ꍇ�ɂ́C�Ĕz�z�ɔ����h�L�������g�i���p
+ *      �҃}�j���A���Ȃǁj�ɁC��L�̒��쌠�\���C���̗��p��������щ��L
+ *      �̖��ۏ؋K����f�ڂ��邱�ƁD
+ *  (3) �{�\�t�g�E�F�A���C�@��ɑg�ݍ��ނȂǁC���̃\�t�g�E�F�A�J���Ɏg
+ *      �p�ł��Ȃ��`�ōĔz�z����ꍇ�ɂ́C���̂����ꂩ�̏����𖞂�����
+ *      �ƁD
+ *    (a) �Ĕz�z�ɔ����h�L�������g�i���p�҃}�j���A���Ȃǁj�ɁC��L�̒�
+ *        �쌠�\���C���̗��p��������щ��L�̖��ۏ؋K����f�ڂ��邱�ƁD
+ *    (b) �Ĕz�z�̌`�Ԃ��C�ʂɒ�߂���@�ɂ���āCTOPPERS�v���W�F�N�g��
+ *        �񍐂��邱�ƁD
+ *  (4) �{�\�t�g�E�F�A�̗��p�ɂ�蒼�ړI�܂��͊ԐړI�ɐ����邢���Ȃ鑹
+ *      �Q������C��L���쌠�҂����TOPPERS�v���W�F�N�g��Ɛӂ��邱�ƁD
  *
- *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
- *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
- *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
- *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
+ *  �{�\�t�g�E�F�A�́C���ۏ؂Œ񋟂���Ă�����̂ł���D��L���쌠�҂�
+ *  ���TOPPERS�v���W�F�N�g�́C�{�\�t�g�E�F�A�Ɋւ��āC���̓K�p�\����
+ *  �܂߂āC�����Ȃ�ۏ؂��s��Ȃ��D�܂��C�{�\�t�g�E�F�A�̗��p�ɂ�蒼
+ *  �ړI�܂��͊ԐړI�ɐ����������Ȃ鑹�Q�Ɋւ��Ă��C���̐ӔC�𕉂�Ȃ��D
  * 
  */
 
 /*
- *	開発環境依存モジュール
+ *	�J�����ˑ����W���[��
  */
 
 #ifndef _TOOL_CONFIG_H_
 #define _TOOL_CONFIG_H_
 
 /*
- *  ラベルの別名を定義するためのマクロ
+ *  ���x���̕ʖ����`���邽�߂̃}�N��
  */
 #define	_LABEL_ALIAS(new_label, defined_label) \
 	asm(".globl " #new_label "\n" #new_label " = " #defined_label);
 #define LABEL_ALIAS(x, y) _LABEL_ALIAS(x, y)
 
 /*
- *  開発環境依存の初期化は使用しない
+ *  �J�����ˑ��̏������͎g�p���Ȃ�
  */
 #define tool_initialize()
 
 /*
- *  atexit の処理とデストラクタの実行
+ *  atexit �̏����ƃf�X�g���N�^�̎��s
  */
 #ifndef _MACRO_ONLY
 
@@ -65,48 +65,42 @@ Inline void
 call_atexit()
 {
 	extern void	software_term_hook(void);
-	volatile FP	fp = software_term_hook;
 
-	/*
-	 *  software_term_hookへのポインタを，一旦volatile FP型のfpに
-	 *  代入してから使うのは，0との比較が最適化で削除されないよう
-	 *  にするためである．
-	 */
-	if (fp != 0) {
-		(*fp)();
+	if (software_term_hook != 0) {
+		software_term_hook();
 	}
 }
 
 #endif /* _MACRO_ONLY */
 
 /*
- *  トレースログの設定
+ *  �g���[�X���O�̐ݒ�
  */
 
-#define	LOG_INH_ENTER(inhno)		/* プロセッサ依存部 */
-#define	LOG_INH_LEAVE(inhno)		/* プロセッサ依存部 */
+#define	LOG_INH_ENTER(inhno)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_INH_LEAVE(inhno)		/* �v���Z�b�T�ˑ��� */
 
-#define	LOG_ISR_ENTER(intno)		/* プロセッサ依存部 */
-#define	LOG_ISR_LEAVE(intno)		/* プロセッサ依存部 */
+#define	LOG_ISR_ENTER(intno)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_ISR_LEAVE(intno)		/* �v���Z�b�T�ˑ��� */
 
 #define	LOG_CYC_ENTER(cyccb)
 #define	LOG_CYC_LEAVE(cyccb)
 
-#define	LOG_EXC_ENTER(excno)		/* プロセッサ依存部 */
-#define	LOG_EXC_LEAVE(excno)		/* プロセッサ依存部 */
+#define	LOG_EXC_ENTER(excno)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_EXC_LEAVE(excno)		/* �v���Z�b�T�ˑ��� */
 
 #define	LOG_TEX_ENTER(texptn)
 #define	LOG_TEX_LEAVE(texptn)
 
 #define	LOG_TSKSTAT(tcb)
 
-#define	LOG_DSP_ENTER(tcb)		/* プロセッサ依存部 */
-#define	LOG_DSP_LEAVE(tcb)		/* プロセッサ依存部 */
+#define	LOG_DSP_ENTER(tcb)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_DSP_LEAVE(tcb)		/* �v���Z�b�T�ˑ��� */
 
-#define	LOG_CHG_ILV_ENTER(ilevno)		/* プロセッサ依存部 */
-#define	LOG_CHG_ILV_LEAVE(ercd)			/* プロセッサ依存部 */
-#define	LOG_GET_ILV_ENTER(p_ilevno)		/* プロセッサ依存部 */
-#define	LOG_GET_ILV_LEAVE(ercd, p_ilevno)	/* プロセッサ依存部 */
+#define	LOG_CHG_ILV_ENTER(ilevno)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_CHG_ILV_LEAVE(ercd)			/* �v���Z�b�T�ˑ��� */
+#define	LOG_GET_ILV_ENTER(p_ilevno)		/* �v���Z�b�T�ˑ��� */
+#define	LOG_GET_ILV_LEAVE(ercd, p_ilevno)	/* �v���Z�b�T�ˑ��� */
 
 #define	LOG_ACT_TSK_ENTER(tskid)
 #define	LOG_ACT_TSK_LEAVE(ercd)
@@ -247,8 +241,6 @@ call_atexit()
 #define	LOG_SNS_DSP_LEAVE(state)
 #define	LOG_SNS_DPN_ENTER()
 #define	LOG_SNS_DPN_LEAVE(state)
-#define	LOG_VSNS_INI_ENTER()
-#define	LOG_VSNS_INI_LEAVE(state)
 #define	LOG_VXSNS_CTX_ENTER(p_excinf)
 #define	LOG_VXSNS_CTX_LEAVE(state)
 #define	LOG_VXSNS_LOC_ENTER(p_excinf)

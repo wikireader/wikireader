@@ -37,107 +37,106 @@
  *
  */
 
-#ifndef	_CPU_INSN_H_
-#define	_CPU_INSN_H_
+#ifndef _HW_TIMER_H_
+#define _HW_TIMER_H_
+
+#include "s_services.h"
 
 /*
- *  制御レジスタの操作関数
+ *  タイマ割込みハンドラのベクタ番号
  */
+#define INHNO_TIMER		S1C33_INHNO_P16TIMER1B
 
+#define S1C33_P16TIMER_CLOCK	48000000
+
+#ifndef _MACRO_ONLY
 /*
- *  ステータスレジスタ(PSR)の現在値の読出し
+ *  外部関数の参照
  */
-Inline UW
-get_psr(void)
-{
-	UW psr;
-
-	Asm("ld.w %0, %%psr": "=r"(psr));
-
-	return psr;
-}
+extern	ER	ena_int(INHNO);
+extern	ER	dis_int(INHNO);
 
 /*
- *  ステータスレジスタ(PSR)の現在値の変更
- */
-Inline void
-set_psr(register UW psr)
-{
-	Asm("ld.w %%psr, %0": : "r"(psr));
-}
-
-/*
- *  スタックポインタ(SP)の現在値の読出し
- */
-Inline VP
-get_sp(void)
-{
-	VP sp;
-
-	Asm("ld.w %0, %%sp": "=r"(sp));
-
-	return sp;
-}
-
-/*
- *  スタックポインタ(SP)の現在値の変更
+ *  16ビットタイマ1の初期化
  */
 Inline void
-set_sp(VP sp)
+hw_timer_initialize(void)
 {
-	Asm("ld.w %%sp, %0": : "r"(sp));
+	/*
+	 *  16ビットタイマ1B 割込み禁止
+	 */
+	dis_int(INHNO_TIMER);
+
+	/*
+	 *  16ビットタイマ1B 割込み要因クリア
+	 */
+	(*(s1c33Intc_t *) S1C33_INTC_BASE).bIntFactor[2] |= 0x40;
+
+	/*
+	 *  16bitタイマ1設定
+	 *
+	 *  タイマクロックON  16分周  16ビットタイマ1B 周期 1ms
+	 */
+	((unsigned long *)S1C33_CMU_BASE)[9] = 0x96;		/* +0x24: Cancel protection */
+	((unsigned long *)S1C33_CMU_BASE)[1] |= 0x00004000;	/* +0x04: 16bitTimer enable */
+	((unsigned long *)S1C33_CMU_BASE)[9] = 0x00;		/* +0x24: Set protection    */
+
+	(*(s1c33PETimerControl_t *) S1C33_TIMER_CONTROL_BASE).uwP16ClkCtrl[1]
+		= 0x0b;
+	(*(s1c33P16Timer_t *) S1C33_P16TIMER_BASE).stChannel[1].uwComp[1]
+		= (int)((double)(S1C33_P16TIMER_CLOCK * 1) / (16 * 1000));
+
+	/*
+	 *  16ビットタイマリセット
+	 */
+	(*(s1c33P16Timer_t *) S1C33_P16TIMER_BASE).stChannel[1].bControl = 0x02;
+
+	/*
+	 *  16ビットタイマ1B 割込み許可
+	 */
+	ena_int(INHNO_TIMER);
+
+
+	/*
+	 *  16ビットタイマ1 動作開始
+	 */
+	(*(s1c33P16Timer_t *) S1C33_P16TIMER_BASE).stChannel[1].bControl = 0x01;
+
+	return;
 }
 
 /*
- *  プログラムカウンタ(PC)の現在値の変更
+ *  16ビットタイマ1割込み要因のクリア
  */
 Inline void
-set_pc(VP pc)
+hw_timer_int_clear(void)
 {
-	Asm("jp %0": "=r"(pc) : "0"(pc));
+	/*
+	 *  16ビットタイマ1B 割込み要因クリア
+	 */
+	(*(s1c33Intc_t *) S1C33_INTC_BASE).bIntFactor[2] = 0x40;
+
+	return;
 }
 
 /*
- *  トラップベースレジスタ(TTBR)の現在値の読出し
+ *  16ビットタイマ1の停止
  */
-Inline VP
-get_ttbr(void)
+Inline void
+hw_timer_terminate(void)
 {
-#ifdef __c33std
-	return (VP) ((volatile s1c33Bcu_t *) S1C33_BCU_BASE)->ulTtbr;
-#else
-	VP ttbr;
+	/*
+	 *  16ビットタイマ1B 割込み禁止
+	 */
+	dis_int(INHNO_TIMER);
 
-	Asm("ld.w %0, %%ttbr": "=r"(ttbr));
+	/*
+	 *  16ビットタイマ1停止
+	 */
+	(*(s1c33P16Timer_t *) S1C33_P16TIMER_BASE).stChannel[1].bControl = 0x00;
 
-	return ttbr;
-#endif /* __c33std */
+	return;
 }
 
-/*
- *  レディキューサーチのためのビットマップサーチ関数
- *  ビットマップの下位16ビットを使用し，最下位ビットを最低優先度に対応させる
- */
-#ifdef CPU_BITMAP_SEARCH
-Inline UINT
-bitmap_search(UINT bitmap)
-{
-	INT offset;
-	INT bit;
-
-	Asm("swap %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("mirror %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-	if(bit != 8){
-		return bit;
-	}
-
-	Asm("sll %0, %1": "=r"(bitmap): "r"(bit));
-	offset = bit;
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-
-	return offset + bit;
-}
-#endif	/* CPU_BITMAP_SEARCH */
-
-#endif /* _CPU_INSN_H_ */
+#endif /* _MACRO_ONLY  */
+#endif /* _HW_TIMER_H_ */

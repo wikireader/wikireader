@@ -37,107 +37,62 @@
  *
  */
 
-#ifndef	_CPU_INSN_H_
-#define	_CPU_INSN_H_
-
 /*
- *  制御レジスタの操作関数
+ *  ターゲットシステム依存モジュール
  */
 
+#include "jsp_kernel.h"
+
+extern	int	write(int, char *, int);
+
 /*
- *  ステータスレジスタ(PSR)の現在値の読出し
+ *  ターゲットシステム依存 初期化ルーチン
  */
-Inline UW
-get_psr(void)
+void
+sys_initialize()
 {
-	UW psr;
+	int iLoop;
 
-	Asm("ld.w %0, %%psr": "=r"(psr));
-
-	return psr;
-}
-
-/*
- *  ステータスレジスタ(PSR)の現在値の変更
- */
-Inline void
-set_psr(register UW psr)
-{
-	Asm("ld.w %%psr, %0": : "r"(psr));
-}
-
-/*
- *  スタックポインタ(SP)の現在値の読出し
- */
-Inline VP
-get_sp(void)
-{
-	VP sp;
-
-	Asm("ld.w %0, %%sp": "=r"(sp));
-
-	return sp;
-}
-
-/*
- *  スタックポインタ(SP)の現在値の変更
- */
-Inline void
-set_sp(VP sp)
-{
-	Asm("ld.w %%sp, %0": : "r"(sp));
-}
-
-/*
- *  プログラムカウンタ(PC)の現在値の変更
- */
-Inline void
-set_pc(VP pc)
-{
-	Asm("jp %0": "=r"(pc) : "0"(pc));
-}
-
-/*
- *  トラップベースレジスタ(TTBR)の現在値の読出し
- */
-Inline VP
-get_ttbr(void)
-{
-#ifdef __c33std
-	return (VP) ((volatile s1c33Bcu_t *) S1C33_BCU_BASE)->ulTtbr;
-#else
-	VP ttbr;
-
-	Asm("ld.w %0, %%ttbr": "=r"(ttbr));
-
-	return ttbr;
-#endif /* __c33std */
-}
-
-/*
- *  レディキューサーチのためのビットマップサーチ関数
- *  ビットマップの下位16ビットを使用し，最下位ビットを最低優先度に対応させる
- */
-#ifdef CPU_BITMAP_SEARCH
-Inline UINT
-bitmap_search(UINT bitmap)
-{
-	INT offset;
-	INT bit;
-
-	Asm("swap %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("mirror %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-	if(bit != 8){
-		return bit;
+	/*
+	 *  割り込み優先度の初期化
+	 */
+	for (iLoop = 0; iLoop < 15; iLoop++) {
+		if (iLoop == 5) {			/* IDMA is accepts lower 3bit */
+			(*(s1c33Intc_t *) S1C33_INTC_BASE).bPriority[iLoop] = 0x02;
+		} else {
+			(*(s1c33Intc_t *) S1C33_INTC_BASE).bPriority[iLoop] = 0x22;
+		}
 	}
+	for(iLoop = 0; iLoop < 4; iLoop++) {		/* Extracted port */
+		(*(s1c33Intc_t *) S1C33_INTC_BASE).bExtPriority[iLoop] = 0x22;
+	}
+	(*(s1c33Intc_t *) S1C33_INTC_BASE).bExtPriority[iLoop] = 0x02;
+		
 
-	Asm("sll %0, %1": "=r"(bitmap): "r"(bit));
-	offset = bit;
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-
-	return offset + bit;
+	return;
 }
-#endif	/* CPU_BITMAP_SEARCH */
 
-#endif /* _CPU_INSN_H_ */
+
+/*
+ *  ターゲットシステムの終了ルーチン
+ *  システムを終了する時に使う．通常はモニタ呼び出しで実現する．
+ */
+void
+sys_exit(void)
+{
+	while (1) {
+		Asm("halt");
+	}
+}
+
+/*
+ *  システム文字出力先の指定
+ */
+void
+sys_putc(char chData)
+{
+	write(0, &chData, 1);
+
+	return;
+}
+

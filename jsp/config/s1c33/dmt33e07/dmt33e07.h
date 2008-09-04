@@ -37,107 +37,40 @@
  *
  */
 
-#ifndef	_CPU_INSN_H_
-#define	_CPU_INSN_H_
+/*
+ *  ハードウェア資源の定義
+ */
+#ifndef _DMT33401_H_
+#define _DMT33401_H_
+
+#include "s1c33.h"
+
+#ifndef _MACRO_ONLY
+
+extern int __START_bss[];			/* リンカスクリプトで定義される	*/
+extern int __END_bss[];				/* シンボル			*/
+extern int __START_data[];
+extern int __END_data[];
+extern int __START_vector[];
+extern int __END_vector[];
+extern int __START_data_lma[];
+extern int __END_data_lma[];
+extern int __START_vector_lma[];
+extern int __END_vector_lma[];
+#endif /* _MACRO_ONLY */
 
 /*
- *  制御レジスタの操作関数
+ *	エリア先頭/終端アドレス
  */
+#define STACKTOP	((void *)0x00002000)
 
-/*
- *  ステータスレジスタ(PSR)の現在値の読出し
- */
-Inline UW
-get_psr(void)
-{
-	UW psr;
+#define BSS_START	((void *)__START_bss)		/* RAM領域の先頭 		*/
+#define BSS_END		((void *)__END_bss)		/* RAM領域の終端		*/
+#define DATA_START	((void *)__START_data)		/* RAM上の初期化変数領域先頭	*/
+#define IDATA_START	((void *)__START_data_lma)	/* ROM上の初期化変数領域先頭	*/
+#define IDATA_END	((void *)__END_data_lma)	/* ROM上の初期化変数領域終端	*/
+#define VECTOR_START	((void *)__START_vector)	/* RAM上のベクタテーブル領域先頭*/
+#define IVECTOR_START	((void *)__START_vector_lma)	/* ROM上のベクタテーブル領域先頭*/
+#define IVECTOR_END	((void *)__END_vector_lma)	/* ROM上のベクタテーブル領域終端*/
 
-	Asm("ld.w %0, %%psr": "=r"(psr));
-
-	return psr;
-}
-
-/*
- *  ステータスレジスタ(PSR)の現在値の変更
- */
-Inline void
-set_psr(register UW psr)
-{
-	Asm("ld.w %%psr, %0": : "r"(psr));
-}
-
-/*
- *  スタックポインタ(SP)の現在値の読出し
- */
-Inline VP
-get_sp(void)
-{
-	VP sp;
-
-	Asm("ld.w %0, %%sp": "=r"(sp));
-
-	return sp;
-}
-
-/*
- *  スタックポインタ(SP)の現在値の変更
- */
-Inline void
-set_sp(VP sp)
-{
-	Asm("ld.w %%sp, %0": : "r"(sp));
-}
-
-/*
- *  プログラムカウンタ(PC)の現在値の変更
- */
-Inline void
-set_pc(VP pc)
-{
-	Asm("jp %0": "=r"(pc) : "0"(pc));
-}
-
-/*
- *  トラップベースレジスタ(TTBR)の現在値の読出し
- */
-Inline VP
-get_ttbr(void)
-{
-#ifdef __c33std
-	return (VP) ((volatile s1c33Bcu_t *) S1C33_BCU_BASE)->ulTtbr;
-#else
-	VP ttbr;
-
-	Asm("ld.w %0, %%ttbr": "=r"(ttbr));
-
-	return ttbr;
-#endif /* __c33std */
-}
-
-/*
- *  レディキューサーチのためのビットマップサーチ関数
- *  ビットマップの下位16ビットを使用し，最下位ビットを最低優先度に対応させる
- */
-#ifdef CPU_BITMAP_SEARCH
-Inline UINT
-bitmap_search(UINT bitmap)
-{
-	INT offset;
-	INT bit;
-
-	Asm("swap %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("mirror %0, %1": "=r"(bitmap): "r"(bitmap));
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-	if(bit != 8){
-		return bit;
-	}
-
-	Asm("sll %0, %1": "=r"(bitmap): "r"(bit));
-	offset = bit;
-	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
-
-	return offset + bit;
-}
-#endif	/* CPU_BITMAP_SEARCH */
-
-#endif /* _CPU_INSN_H_ */
+#endif /*  _DMT33401_H_ */

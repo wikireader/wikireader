@@ -40,6 +40,8 @@
  *	プロセッサ依存モジュール（Linux用）
  */
 
+#include <stdio.h>
+#include <setjmp.h>
 #include "jsp_kernel.h"
 #include "check.h"
 #include "task.h"
@@ -62,15 +64,33 @@ dispatch()
     sigset_t waitmask;
     sigemptyset(&waitmask);
     sigaddset(&waitmask,SIGUSR1);
-        if (enadsp && (!runtsk || (runtsk != schedtsk
-                        && _setjmp(runtsk->tskctxb.env) == 0))) {
+
+printf(" XXXX %s() runtsk %p schedtsk %p\n", __func__, runtsk, schedtsk);
+
+	if (enadsp && (!runtsk || (runtsk != schedtsk
+                        && setjmp(runtsk->tskctxb.env) == 0))) {
             while (!(runtsk = schedtsk)) {
                 sigsuspend(&waitmask);
             }
-            _longjmp(runtsk->tskctxb.env, 1);
+            
+	    printf(" XXXX %s() tsk = %p, env = %08x\n", __func__, runtsk, *(unsigned long *) runtsk->tskctxb.env);
+	    longjmp(runtsk->tskctxb.env, 1);
         }else{
             calltex();
         }
+
+#if 0
+	if (enadsp && (!runtsk || (runtsk != schedtsk
+                        && setjmp(runtsk->tskctxb.env) == 0))) {
+            while (!(runtsk = schedtsk)) {
+                sigsuspend(&waitmask);
+            }
+            
+	    longjmp(runtsk->tskctxb.env, 1);
+        }else{
+            calltex();
+        }
+#endif
 }
 
 
@@ -83,8 +103,11 @@ dispatch()
 void
 exit_and_dispatch() 
 {                   
+printf("XXXX %s:%d\n", __func__, __LINE__);
     runtsk = 0;
+printf("XXXX %s:%d\n", __func__, __LINE__);
     dispatch();
+printf("XXXX %s:%d\n", __func__, __LINE__);
 }
 
 

@@ -3,9 +3,11 @@
  *      Toyohashi Open Platform for Embedded Real-Time Systems/
  *      Just Standard Profile Kernel
  * 
- *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+ *  Copyright (C) 2000 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
  * 
+ *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
+ *
  *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
  *  によって公表されている GNU General Public License の Version 2 に記
  *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
@@ -27,54 +29,43 @@
  *        報告すること．
  *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
  *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
- * 
+ *
  *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
  *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
  *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
  *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  * 
- *  @(#) $Id: start.c,v 1.6 2003/12/24 07:24:40 honda Exp $
  */
 
-#include <signal.h>
-#include "jsp_kernel.h"
-#include "check.h"
+/*
+ *	開発環境に依存する定義
+ */
 
-extern void kernel_start();
+#ifndef _TOOL_DEFS_H_
+#define _TOOL_DEFS_H_
 
+/*
+ *  コンパイラ依存のデータ型の定義
+ */
+#define	_int8_		char		/* 8ビットの整数型	*/
+#define	_int16_		short		/* 16ビットの整数型	*/
+#define	_int32_		int		/* 32ビットの整数型	*/
 
-int main()
-{
-    struct sigaltstack      ss;
-    struct sigaction action;
-    /*
-     *  シグナルスタックを，プロセススタック上に取る．
-     *  BSDのシグナルと異なりss.ss_flagsにSS_ONSTACKを
-     *  書き込んでも反映されないため、タスク独立部を表す
-     *  inSigStackを使用する。
-     */
-    
+/*
+ *  コンパイラの拡張機能のためのマクロ定義
+ */
+#ifndef __cplusplus			/* C++ には inline がある */
+#if __STDC_VERSION__ < 199901L		/* C99 には inline がある */
+#define	inline		__inline__
+#endif /* __STDC_VERSION__ < 199901L */
+#endif /* __cplusplus */
 
-    ss.ss_sp = (void *)(((INT) &ss) - SIGSTACK_MERGIN - SIGSTKSZ);
-    ss.ss_size = SIGSTKSZ;
-    ss.ss_flags = 0;
-    sigaltstack(&ss, 0);
+#define	Inline		static inline
 
-    /*
-     *  カーネルスタートアップルーチン(kernel_start())
-     *  をSIGUSR1で起動するように設定し、raise()で呼び出し、
-     *  スタックを切り替えて動作を開始する。
-     */
+#ifndef __cplusplus			/* C++ には asm がある */
+#define	asm		__asm__
+#endif /* __cplusplus */
 
-      action.sa_handler = kernel_start;
-      action.sa_flags   =  SA_ONSTACK;
-      sigfillset(&action.sa_mask);
-      sigaction(SIGUSR1,&action,NULL);
-      raise(SIGUSR1);
+#define	Asm		__asm__ volatile
 
-    /*
-     * ここに戻ることはない。
-     */
-    return(0);
-}
-
+#endif /* _TOOL_DEFS_H_ */

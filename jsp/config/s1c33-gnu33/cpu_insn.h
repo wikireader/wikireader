@@ -2,11 +2,13 @@
  *  TOPPERS/JSP Kernel
  *      Toyohashi Open Platform for Embedded Real-Time Systems/
  *      Just Standard Profile Kernel
- * 
- *  Copyright (C) 2000-2003 by Embedded and Real-Time Systems Laboratory
+ *
+ *  Copyright (C) 2000 by Embedded and Real-Time Systems Laboratory
  *                              Toyohashi Univ. of Technology, JAPAN
- * 
- *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation 
+ *
+ *  Copyright (C) 2004 by SEIKO EPSON Corp, JAPAN
+ *
+ *  上記著作権者は，以下の (1)〜(4) の条件か，Free Software Foundation
  *  によって公表されている GNU General Public License の Version 2 に記
  *  述されている条件を満たす場合に限り，本ソフトウェア（本ソフトウェア
  *  を改変したものを含む．以下同じ）を使用・複製・改変・再配布（以下，
@@ -27,54 +29,115 @@
  *        報告すること．
  *  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
  *      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
- * 
+ *
  *  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
  *  よびTOPPERSプロジェクトは，本ソフトウェアに関して，その適用可能性も
  *  含めて，いかなる保証も行わない．また，本ソフトウェアの利用により直
  *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
- * 
- *  @(#) $Id: start.c,v 1.6 2003/12/24 07:24:40 honda Exp $
+ *
  */
 
-#include <signal.h>
-#include "jsp_kernel.h"
-#include "check.h"
+#ifndef	_CPU_INSN_H_
+#define	_CPU_INSN_H_
 
-extern void kernel_start();
+/*
+ *  制御レジスタの操作関数
+ */
 
-
-int main()
+/*
+ *  ステータスレジスタ(PSR)の現在値の読出し
+ */
+Inline UW
+get_psr(void)
 {
-    struct sigaltstack      ss;
-    struct sigaction action;
-    /*
-     *  シグナルスタックを，プロセススタック上に取る．
-     *  BSDのシグナルと異なりss.ss_flagsにSS_ONSTACKを
-     *  書き込んでも反映されないため、タスク独立部を表す
-     *  inSigStackを使用する。
-     */
-    
+	UW psr;
 
-    ss.ss_sp = (void *)(((INT) &ss) - SIGSTACK_MERGIN - SIGSTKSZ);
-    ss.ss_size = SIGSTKSZ;
-    ss.ss_flags = 0;
-    sigaltstack(&ss, 0);
+	Asm("ld.w %0, %%psr": "=r"(psr));
 
-    /*
-     *  カーネルスタートアップルーチン(kernel_start())
-     *  をSIGUSR1で起動するように設定し、raise()で呼び出し、
-     *  スタックを切り替えて動作を開始する。
-     */
-
-      action.sa_handler = kernel_start;
-      action.sa_flags   =  SA_ONSTACK;
-      sigfillset(&action.sa_mask);
-      sigaction(SIGUSR1,&action,NULL);
-      raise(SIGUSR1);
-
-    /*
-     * ここに戻ることはない。
-     */
-    return(0);
+	return psr;
 }
 
+/*
+ *  ステータスレジスタ(PSR)の現在値の変更
+ */
+Inline void
+set_psr(register UW psr)
+{
+	Asm("ld.w %%psr, %0": : "r"(psr));
+}
+
+/*
+ *  スタックポインタ(SP)の現在値の読出し
+ */
+Inline VP
+get_sp(void)
+{
+	VP sp;
+
+	Asm("ld.w %0, %%sp": "=r"(sp));
+
+	return sp;
+}
+
+/*
+ *  スタックポインタ(SP)の現在値の変更
+ */
+Inline void
+set_sp(VP sp)
+{
+	Asm("ld.w %%sp, %0": : "r"(sp));
+}
+
+/*
+ *  プログラムカウンタ(PC)の現在値の変更
+ */
+Inline void
+set_pc(VP pc)
+{
+	Asm("jp %0": "=r"(pc) : "0"(pc));
+}
+
+/*
+ *  トラップベースレジスタ(TTBR)の現在値の読出し
+ */
+Inline VP
+get_ttbr(void)
+{
+#ifdef __c33std
+	return (VP) ((volatile s1c33Bcu_t *) S1C33_BCU_BASE)->ulTtbr;
+#else
+	VP ttbr;
+
+	Asm("ld.w %0, %%ttbr": "=r"(ttbr));
+
+	return ttbr;
+#endif /* __c33std */
+}
+
+/*
+ *  レディキューサーチのためのビットマップサーチ関数
+ *  ビットマップの下位16ビットを使用し，最下位ビットを最低優先度に対応させる
+ */
+#ifdef CPU_BITMAP_SEARCH
+Inline UINT
+bitmap_search(UINT bitmap)
+{
+	INT offset;
+	INT bit;
+
+	Asm("swap %0, %1": "=r"(bitmap): "r"(bitmap));
+	Asm("mirror %0, %1": "=r"(bitmap): "r"(bitmap));
+	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
+	if(bit != 8){
+		return bit;
+	}
+
+	Asm("sll %0, %1": "=r"(bitmap): "r"(bit));
+	offset = bit;
+	Asm("scan1 %0, %1": "=r"(bit): "r"(bitmap));
+
+	return offset + bit;
+}
+#endif	/* CPU_BITMAP_SEARCH */
+
+#endif /* _CPU_INSN_H_ */
