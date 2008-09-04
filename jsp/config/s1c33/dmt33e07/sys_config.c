@@ -53,17 +53,22 @@ sys_initialize()
 {
 	int iLoop;
 
+sys_putc('a');
+
 	/*
 	 *  割り込み優先度の初期化
 	 */
 	for (iLoop = 0; iLoop < 15; iLoop++) {
+sys_putc('b');
 		if (iLoop == 5) {			/* IDMA is accepts lower 3bit */
 			(*(s1c33Intc_t *) S1C33_INTC_BASE).bPriority[iLoop] = 0x02;
 		} else {
 			(*(s1c33Intc_t *) S1C33_INTC_BASE).bPriority[iLoop] = 0x22;
 		}
 	}
+sys_putc('c');
 	for(iLoop = 0; iLoop < 4; iLoop++) {		/* Extracted port */
+sys_putc('d');
 		(*(s1c33Intc_t *) S1C33_INTC_BASE).bExtPriority[iLoop] = 0x22;
 	}
 	(*(s1c33Intc_t *) S1C33_INTC_BASE).bExtPriority[iLoop] = 0x02;
@@ -85,14 +90,25 @@ sys_exit(void)
 	}
 }
 
+#define REG_BASE	(0x300000)
+#define REG_EFSIF0_TXD		*((unsigned char *) (REG_BASE + 0xb00))
+#define REG_EFSIF0_STATUS	*((unsigned char *) (REG_BASE + 0xb02))
+
+static void
+sys_output_char(char chData)
+{
+	REG_EFSIF0_TXD = chData;
+		do {} while (REG_EFSIF0_STATUS & (1 << 5));
+}
+
 /*
  *  システム文字出力先の指定
  */
 void
 sys_putc(char chData)
 {
-	write(0, &chData, 1);
-
-	return;
+	sys_output_char(chData);
+	if (chData == '\n')
+		sys_output_char('\r');
 }
 

@@ -156,6 +156,13 @@
 #define STACK_SIZE 512 /* タスクのスタックサイズ */
 #define TASK_PORTID 1 /* 文字入力するシリアルポートID */ 
 
+#elif defined(S1C33)
+
+#define CPUEXC1 32
+#define RAISE_CPU_EXCEPTION asm(" nop ")
+#define STACK_SIZE 512
+#define TASK_PORTID 1
+
 #endif
 
 /*

@@ -46,14 +46,11 @@ PROVIDE (software_term_hook = 0) ;
 
 SECTIONS
 {
-	/* data pointer symbol By GWB33 */
-	__dp = 0x00000000;
-
 	/* section information By GWB33 */
 	. = 0x00600000;
 
 	/* Map vector table */
-	__START_vector_lma = 0x0c00000;
+	__START_vector_lma = 0x10000000;
 	.vector : AT( __START_vector_lma ){
 		__START_vector = . ;
 		sys_start.o(.data)
@@ -72,24 +69,26 @@ SECTIONS
 
 	.rodata : {
 	   __START_rodata = . ; 
+	   /* data pointer symbol By GWB33 */
+	   __dp = . ;
 	   *(.rodata) 
 	}
 	__END_rodata = . ; 
-
-	. = __END_vector;
-
+	
 	.bss : {
 	   __START_bss = . ; 
 	   *(.bss) 
 	}
 	 __END_bss = . ; 
 
-	.data __END_bss : AT( __END_rodata ) {
+	. = __END_vector;
+
+	.data __END_bss : AT( __END_bss ) {
 	   __START_data = . ; 
 	   *(.data) 
 	}
+	__END_data = . ;
+
 	__START_data_lma = LOADADDR( .data );
 	__END_data_lma = __START_data_lma + SIZEOF( .data );
-
-
 }
