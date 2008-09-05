@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/ioctl.h>
 
 #include "misc.h"
 
@@ -80,10 +81,10 @@ void strchomp(char *s)
 
 void flush_fd(int fd)
 {
-	char buf;
-	long arg = 1;
-	fcntl(fd, F_SETFL, O_NONBLOCK, arg);
+	unsigned int bytes, buf;
 
-	while (read(fd, &buf, 1));
+	ioctl(fd, FIONREAD, &bytes);
+	while (bytes--)
+		read(fd, &buf, 1);
 }
 

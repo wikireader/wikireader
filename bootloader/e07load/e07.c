@@ -32,15 +32,10 @@ int sync_cpu(int fd)
 	const unsigned char syncbytes[] = { 0x80, 0x80, 0x80, 0x80 };
 	unsigned char buf[4];
 
-	/* when the servil powered there is some data we don't expect 
-	 * so clear useless data 
+	/* when the serial is powered there is some data we don't expect.
+	 * so clear useless data.
 	 */
-	int bytes;
-	ioctl(fd, FIONREAD, &bytes);
-	while(bytes){
-		read(fd, buf, 1);
-		bytes--;
-	}
+	flush_fd(fd);
 
 	msg("sending sync bytes ... ");
 	write(fd, syncbytes, sizeof(syncbytes));
