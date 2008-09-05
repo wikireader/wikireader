@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/ioctl.h>
 
 #include "e07.h"
 #include "misc.h"
@@ -30,6 +31,16 @@ int sync_cpu(int fd)
 {
 	const unsigned char syncbytes[] = { 0x80, 0x80, 0x80, 0x80 };
 	unsigned char buf[4];
+
+	/* when the servil powered there is some data we don't expect 
+	 * so clear useless data 
+	 */
+	int bytes;
+	ioctl(fd, FIONREAD, &bytes);
+	while(bytes){
+		read(fd, buf, 1);
+		bytes--;
+	}
 
 	msg("sending sync bytes ... ");
 	write(fd, syncbytes, sizeof(syncbytes));
