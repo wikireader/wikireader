@@ -58,25 +58,19 @@ kernel_start()
 	/*
 	 *  ターゲット依存の初期化
 	 */
-sys_putc('1');
 	cpu_initialize();
-sys_putc('2');
-//	sys_initialize();
-sys_putc('3');
+	sys_initialize();
 	tool_initialize();
-sys_putc('4');
 
 	/*
 	 *  システムログ機能の初期化
 	 */
 	syslog_initialize();
-sys_putc('5');
 
 	/*
 	 *  起動メッセージの表示
 	 */
 	print_banner();
-sys_putc('6');
 
 	/*
 	 *  各モジュールの初期化

@@ -180,13 +180,13 @@ void start(void)
 	/*
 	 *  dataセクションを初期化する（ROM化対応）．
 	 */
-	memcpy(VECTOR_START, IVECTOR_START, (UW)IVECTOR_END - (UW)IVECTOR_START);
-	memcpy(DATA_START, IDATA_START, (UW)IDATA_END - (UW)IDATA_START);
+//	memcpy(VECTOR_START, IVECTOR_START, (UW)IVECTOR_END - (UW)IVECTOR_START);
+//	memcpy(DATA_START, IDATA_START, (UW)IDATA_END - (UW)IDATA_START);
 
 	/*
 	 *  bssセクションを0クリアする。
 	 */
-	 memset(BSS_START, 0x00, BSS_END - BSS_START);
+//	 memset(BSS_START, 0x00, BSS_END - BSS_START);
 
 	/*
 	 *  software_init_hook を呼び出す（0 でない場合）

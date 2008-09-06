@@ -46,49 +46,45 @@ PROVIDE (software_term_hook = 0) ;
 
 SECTIONS
 {
-	/* section information By GWB33 */
-	. = 0x00600000;
+        /* data pointer symbol By GWB33 */
+/*        __dp = 0x00000000; */
 
-	/* Map vector table */
-	__START_vector_lma = 0x10000000;
-	.vector : AT( __START_vector_lma ){
-		__START_vector = . ;
-		sys_start.o(.data)
-	}
-	__END_vector = .;
-	__END_vector_lma = __START_vector_lma + SIZEOF( .vector );
+        /* section information By GWB33 */
+        . = 0x00600000;
+	. = 0x10000000;
 
-	/* section information */
-	. = __END_vector_lma ;
+        /* Map vector table */
+        __START_vector_lma = 0x10000000;
 
-	.text : {
-	   __START_text = . ; 
-	   *(.text) 
-	}
-	__END_text = . ; 
+        /* section information */
 
-	.rodata : {
-	   __START_rodata = . ; 
-	   /* data pointer symbol By GWB33 */
+        .rodata : {
+           __START_rodata = . ;
 	   __dp = . ;
-	   *(.rodata) 
-	}
-	__END_rodata = . ; 
-	
-	.bss : {
-	   __START_bss = . ; 
-	   *(.bss) 
-	}
-	 __END_bss = . ; 
+           *(.rodata)
+        }
+        __END_rodata = . ;
 
-	. = __END_vector;
+        .bss : {
+           __START_bss = . ;
+           *(.bss)
+        }
+         __END_bss = . ;
 
-	.data __END_bss : AT( __END_bss ) {
-	   __START_data = . ; 
-	   *(.data) 
-	}
-	__END_data = . ;
+        .data : {
+           __START_data = . ;
+           *(.data)
+        }
+        
+	.text : {
+           __START_text = . ;
+           *(.text)
+        }
+        __END_text = . ;
 
-	__START_data_lma = LOADADDR( .data );
-	__END_data_lma = __START_data_lma + SIZEOF( .data );
+        __START_data_lma = LOADADDR( .data );
+        __END_data_lma = __START_data_lma + SIZEOF( .data );
+
+
 }
+

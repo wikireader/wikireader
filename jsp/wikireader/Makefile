@@ -96,7 +96,8 @@ CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe
 ASFLAGS= -mc33pe
-LDFLAGS= -T $(SRCDIR)/config/$(LDSCRIPT) -Map $(TARGET).map -N --strip-all
+LDFLAGS= -T $(SRCDIR)/config/$(LDSCRIPT) -Map $(TARGET).map -N 
+#--strip-all
 KERNEL_CFLAGS:= $(KERNEL_CFLAGS) -I$(KER_DIR)
 
 $(STASK_COBJS): %.o: %.c
