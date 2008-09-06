@@ -22,7 +22,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
-#include <sys/ioctl.h>
 
 #include "e07.h"
 #include "misc.h"
@@ -32,8 +31,10 @@ int sync_cpu(int fd)
 	const unsigned char syncbytes[] = { 0x80, 0x80, 0x80, 0x80 };
 	unsigned char buf[4];
 
-	/* when the serial is powered there is some data we don't expect.
-	 * so clear useless data.
+	/* Niel Sun from EPSON Shanghai said when the serial 
+         * is powered. There were some garbage data generated. 
+         * Therefore before we query for CPU ID, we should 
+         * first clear those garbage data.the data always one byte.
 	 */
 	flush_fd(fd);
 

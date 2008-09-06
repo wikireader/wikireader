@@ -35,7 +35,7 @@
 int open_tty(const char *tty)
 {
 	struct termios options;
-	int fd = open(tty, O_RDWR | O_SYNC);
+	int fd = open(tty, O_RDWR|O_NOCTTY|O_SYNC);
 
 	if (fd < 0) {
 		error("unable to open tty %s: %s\n", tty, strerror(errno));

@@ -79,12 +79,11 @@ void strchomp(char *s)
                 s[strlen(s) - 1] = '\0';
 }
 
-void flush_fd(int fd)
+void flush_fd(const int fd)
 {
-	unsigned int bytes, buf;
-
-	ioctl(fd, FIONREAD, &bytes);
-	while (bytes--)
-		read(fd, &buf, 1);
+	int bytes = 0, buf = -10;
+	if (ioctl(fd, FIONREAD, &bytes) != -1){
+		while (bytes-- > 0 && read(fd, &buf, 1) == 1);
+	}
 }
 
