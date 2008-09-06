@@ -38,11 +38,8 @@ int main(void)
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
 
-//	asm("xld.w   %r15,0x0800");
-//	asm("ld.w    %sp,%r15"); //	; set SP
-
+	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, 0x1500");
-//	asm("ld.w    %dp,%r15");
 
 	print("Bootloader starting\n");
 
@@ -69,9 +66,6 @@ static void boot_from_sdcard(void)
 	if (fat_init(0) < 0)
 		return;
 
-	if (elf_read("KERNEL") < 0)
-		return;
-
-	for (;;);
+	elf_read("KERNEL");
 }
 
