@@ -79,7 +79,7 @@ void strchomp(char *s)
                 s[strlen(s) - 1] = '\0';
 }
 
-void flush_fd(const int fd)
+void flush_fd(int fd)
 {
 	int bytes = 0, buf = -10;
 	if (ioctl(fd, FIONREAD, &bytes) != -1){

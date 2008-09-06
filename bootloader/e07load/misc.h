@@ -28,7 +28,7 @@ do {                                                                    \
 void hex_dump (const unsigned char *buf, unsigned int addr, unsigned int len);
 void read_blocking(int fd, char *dest, size_t size);
 void strchomp(char *s);
-void flush_fd(const int fd);
+void flush_fd(int fd);
 
 #endif /* MISC_H */
 
