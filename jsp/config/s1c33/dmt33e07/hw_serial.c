@@ -182,14 +182,14 @@ SIOPCB
 	/*
 	 *  シリアルI/Fの設定
 	 *
-	 *  8bit調歩同期  パリティなし ストップビット1bit  内部クロック 14,400bps
+	 *  8bit調歩同期  パリティなし ストップビット1bit  内部クロック 57,600bps
 	 */
 	((s1c33PEPort_t *)S1C33_PORT_BASE)->stFuncSelect[0].bCfp03 = 0x05;
-	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bIrDA    = 0x00;
+	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bIrDA    = 0x10;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bControl = 0x00;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bStatus  = 0x00;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bBRTRun  = 0x00;
-	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bBRTRdl  = 0x67;
+	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bBRTRdl  = 51;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bBRTRdm  = 0x00;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bBRTRun  = 0x01;
 	((s1c33Serial_t *)S1C33_SERIAL_BASE)->stChannel01[INDEX_SIO(siopid)].bControl = 0x03;

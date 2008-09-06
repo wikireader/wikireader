@@ -85,26 +85,13 @@ sys_exit(void)
 	}
 }
 
-#define REG_BASE	(0x300000)
-#define REG_EFSIF0_TXD		*((volatile unsigned char *) (REG_BASE + 0xb00))
-#define REG_EFSIF0_STATUS	*((volatile unsigned char *) (REG_BASE + 0xb02))
-
-static void
-sys_output_char(char chData)
-{
-	REG_EFSIF0_TXD = chData;
-		do {} while (REG_EFSIF0_STATUS & (1 << 5));
-}
-
 /*
  *  システム文字出力先の指定
  */
 void
 sys_putc(char chData)
 {
-	sys_output_char(chData);
-
-	if (chData == '\n')
-		sys_output_char('\r');
+        write(0, &chData, 1);
+	return;
 }
 

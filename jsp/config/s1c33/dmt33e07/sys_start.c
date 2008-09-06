@@ -154,6 +154,11 @@ void start(void)
 	Asm("xld.w %r15, __dp");
 
 	/*
+	 * relocate the trap table
+	 */
+	Asm("ld.w %%ttbr, %0" :: "r"(tps_VectorTable));
+
+	/*
 	 *  非タスクコンテストのスタックをSTACKTOPに初期化する
 	 */
 	set_sp(STACKTOP);
