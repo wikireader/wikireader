@@ -110,7 +110,7 @@ int elf_read(const u8 *filename)
 
 		switch (sec.sh_type) {
 			case SHT_PROGBITS:
-				print("section.\n");
+				print("PROGBITS loaded.\n");
 				fat_read_file(sec.sh_offset, (u8 *) sec.sh_addr, sec.sh_size);
 				break;
 			case SHT_NOBITS:
@@ -122,9 +122,9 @@ int elf_read(const u8 *filename)
 		}
 	}
 
-	print("sections loaded, jumping to ");
+	print("all sections loaded, jumping to ");
 	print_u32(hdr.e_entry);
-	print("\n");
+	print(". Sayonara.\n\n");
 
 	exec = (void *) hdr.e_entry;
 	hex_dump(exec, 256);
