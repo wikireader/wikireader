@@ -14,7 +14,7 @@ CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
-TARGETS=rs232 eeprom-1st eeprom-2nd e07load/e07load
+TARGETS=rs232 eeprom-1st eeprom-2nd e07load/e07load gfxtool/gfxtool
 all: $(TARGETS)
 
 .c.o:
@@ -24,6 +24,10 @@ all: $(TARGETS)
 #### e07load
 e07load/e07load::
 	make -C e07load
+
+#### gfxtool
+gfxtool/gfxtool::
+	make -C gfxtool
 
 #### first boot loader
 rs232.elf: rs232.o
@@ -43,7 +47,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o elf32.o
+eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o elf32.o lcd.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
@@ -60,6 +64,7 @@ flash: rs232.elf eeprom-1st.elf eeprom-2nd.elf
 
 clean::
 	make -C e07load clean
+	make -C gfxtool clean
 	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
 
 -include $(wildcard *.d) dummy

@@ -1,8 +1,8 @@
 #ifndef WIKIREADER_H
 #define WIKIREADER_H
 
-//#define S1C33E07
-#define PRT33L17LCD 
+#define S1C33E07
+//#define PRT33L17LCD 
 
 static inline void init_pins(void)
 {
@@ -11,18 +11,28 @@ static inline void init_pins(void)
 
 	/* P50 & P52: CS lines */
 	REG_P5_IOC5 = 0x06;
-#ifdef S1C33E07
-	REG_PA_IOC = 0x08;
-#endif
 
-#ifdef PRT33L17LCD 
-	REG_P8_IOC8 = 0x10;
-#endif
+	/* P85: LCD_CS, P83: TFT_CTL1 */
+	REG_P8_IOC8 = 0x28;
+	REG_P8_03_CFP = 0x3f;
+	REG_P8_45_CFP = 0x03;
+
 	/* P65-67: SPI */
 	REG_P6_47_CFP = 0x54;
 
 	/* Serial interface */
 	REG_P0_03_CFP = 0x05;
+
+	/* LCD controller */
+  	REG_P8_03_CFP = 0x15;
+  	REG_P9_47_CFP = 0x55;
+
+	/* board specific things */
+#ifdef S1C33E07
+	REG_PA_IOC = 0x08;
+#elif PRT33L17LCD 
+	REG_P8_IOC8 = 0x10;
+#endif
 }
 
 
@@ -75,10 +85,13 @@ static inline void init_ram(void)
         REG_P2_47_CFP = 0x55;
         REG_P5_03_CFP = 0x80;
 
+	/* P85 */
+	REG_P8_45_CFP &= 0x03;
+
         /* re-enable write protection of clock registers */
         REG_CMU_PROTECT = 0x00;
 
-        /* re-enable SDRAMC application core */
+        /* enable SDRAMC application core */
         REG_SDRAMC_APP = 0x8000000b;
 
         /* set up SDRAM controller */
@@ -126,20 +139,23 @@ static inline void disable_card_power(void)
 #define DEBUGLED2_ON()	do { REG_P1_P1D &= ~(1 << 3); } while (0)
 #define DEBUGLED2_OFF()	do { REG_P1_P1D |=  (1 << 3); } while (0)
 
-//#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
-//#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
-#ifdef S1C33E07
-#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
-#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
-#endif
-
-#ifdef PRT33L17LCD
-#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
-#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
-#endif
-
 #define EEPROM_CS_LO()	do { REG_P5_P5D &= ~(1 << 2); } while (0)
 #define EEPROM_CS_HI()	do { REG_P5_P5D |=  (1 << 2); } while (0)
+
+#define LCD_CS_LO()	do { REG_P8_P8D &= ~(1 << 5); } while (0)
+#define LCD_CS_HI()	do { REG_P8_P8D |=  (1 << 5); } while (0)
+
+#define TFT_CTL1_LO()	do { REG_P8_P8D &= ~(1 << 3); } while (0)
+#define TFT_CTL1_HI()	do { REG_P8_P8D |=  (1 << 3); } while (0)
+
+/* board specific GPIO functions */
+#ifdef S1C33E07
+	#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
+	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
+#elif PRT33L17LCD
+	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
+	#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
+#endif 
 
 #endif /* WIKIREADER_H */
 

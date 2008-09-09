@@ -25,6 +25,7 @@
 #include "misc.h"
 #include "fat.h"
 #include "elf32.h"
+#include "lcd.h"
 
 static void boot_from_sdcard(void);
 
@@ -37,7 +38,7 @@ int main(void)
 
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
-
+	
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, 0x1500");
 
@@ -47,6 +48,10 @@ int main(void)
 	REG_SPI_CTL1 = 0x03 | (7 << 10);
 
 	boot_from_sdcard();
+	
+	/* load the 'could not boot from SD card' image */
+	eeprom_load(0x10000, 0x10000000, (320 * 240) / 2);
+	init_lcd();
 
 	/* we we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
