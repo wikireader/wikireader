@@ -1,6 +1,4 @@
-- initialize the LCD controller
 - in case the bootloader fails to read a kernel from sd card:
-	- display image from EEPROM
 	- register IRQ handler on CD pin
 	- go to deep sleep
 	- try again to boot when CD toggles

@@ -36,11 +36,7 @@ int sync_cpu(int fd)
 	unsigned char buf[4];
 	unsigned int id;
 
-	/* Niel Sun from EPSON Shanghai said when the serial 
-         * is powered. There were some garbage data generated. 
-         * Therefore before we query for CPU ID, we should 
-         * first clear those garbage data.the data always one byte.
-	 */
+	/* clear garbage from serial port */
 	flush_fd(fd);
 
 	msg("sending sync bytes ... ");
