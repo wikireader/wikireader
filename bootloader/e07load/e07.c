@@ -26,10 +26,15 @@
 #include "e07.h"
 #include "misc.h"
 
+#define ID_E07 0x060e0700
+#define ID_L17 0x06151700
+#define ID_L18 0x06151701
+
 int sync_cpu(int fd)
 {
 	const unsigned char syncbytes[] = { 0x80, 0x80, 0x80, 0x80 };
 	unsigned char buf[4];
+	unsigned int id;
 
 	/* Niel Sun from EPSON Shanghai said when the serial 
          * is powered. There were some garbage data generated. 
@@ -43,28 +48,24 @@ int sync_cpu(int fd)
 	msg("done.\n");
 
 	read(fd, buf, 4);
-	msg("reading CPU id: %02x%02x%02x%02x\n", buf[0], buf[1], buf[2], buf[3]);
+	id = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3];
+	
+	msg("reading CPU id: %08x\n", id);
 
-	/* check CPU id for E07 */
-	if (buf[0] == 0x06 && buf[1] == 0x0e && buf[2] == 0x07 && buf[3] == 0x00) {
-		msg("CPU id does match E07!\n");
-		return 0;
+	switch (id) {
+		case ID_E07:
+			msg("CPU id does match E07!\n");
+			return 0;
+		case ID_L17:
+                	msg("CPU id does match L17!\n");
+	                return 0;
+		case ID_L18:
+                	msg("CPU id does match L18!\n");
+			return 0;
+		default:
+        		error("CPU id does not match! Bummer.\n");
+			return -1;
 	}
-
-	/* check CPU id for L17 */
-	if (buf[0] == 0x06 && buf[1] == 0x15 && buf[2] == 0x17 && buf[3] == 0x00) {
-                msg("CPU id does match L17!\n");
-                return 0;
-        }
-
-	/* check CPU id for L18 */
-	if (buf[0] == 0x06 && buf[1] == 0x15 && buf[2] == 0x17 && buf[3] == 0x01) {
-                msg("CPU id does match L18!\n");
-                return 0;
-        }
-
-        error("CPU id does not match! Bummer.\n");
-	return -1;
 }
 
 int bootstrap(int ttyfd, const char *bootstrap_file)
