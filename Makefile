@@ -1,11 +1,11 @@
 # "WikiReaderMakefile" - a Makefile for setting up Wiki Reader
 #
-# Copyright (c) 2007  Xiangfu Liu <xiangfu@openmoko.org>
+# Copyright (c) 2008  Xiangfu Liu <xiangfu@openmoko.org>
 # All rights reserved.
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
-# version 2 as published by the Free Software Foundation.
+# version 3 as published by the Free Software Foundation.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
