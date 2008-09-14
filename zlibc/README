@@ -1,0 +1,6 @@
+A zmall c library derived from msp430-libc which in turn is derived from the
+original BSD C library.
+
+Differences:
+    - Do not include malloc... we might consider using it later
+    - Do not include quicksort from the stdlib
