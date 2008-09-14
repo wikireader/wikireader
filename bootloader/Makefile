@@ -6,8 +6,8 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=/usr/local/c33/lib/gcc-lib/c33-epson-elf/3.3.2/33401/
-LIBS=$(LIBDIR)/libgcc.a $(LIBDIR)/libc.a
+LIBDIR=$(PWD)/../zlibc/lib
+LIBS=$(LIBDIR)/libc.a
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
