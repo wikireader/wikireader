@@ -31,9 +31,6 @@
 #include "misc.h"
 #include "fat.h"
 
-#define FAT_ADDR_RESERVED_SECTORS	0x0e
-#define FAT_ADDR_NUM_FATS		0x10
-
 static struct boot_sector boot;
 static u32 fat_start;
 static u32 first_cluster_sector;
