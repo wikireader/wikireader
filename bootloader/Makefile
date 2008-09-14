@@ -7,7 +7,7 @@ CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
 LIBDIR=$(PWD)/../zlibc/lib
-LIBS=$(LIBDIR)/libc.a
+LIBS=$(LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
