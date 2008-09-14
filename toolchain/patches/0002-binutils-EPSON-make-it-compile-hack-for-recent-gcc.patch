@@ -1,0 +1,39 @@
+From 905ef9f159907c42104328ea9d2aedfe8095c8bb Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Fri, 12 Sep 2008 17:19:05 +0200
+Subject: [PATCH] [binutils] EPSON make it compile hack for recent gcc
+
+---
+ gas/config/tc-c33.h |    2 +-
+ gas/write.c         |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/gas/config/tc-c33.h b/gas/config/tc-c33.h
+index 98e62d2..1551339 100644
+--- a/gas/config/tc-c33.h
++++ b/gas/config/tc-c33.h
+@@ -56,7 +56,7 @@ extern int c33_force_relocation PARAMS ((struct fix *));
+    directives, so we have to parse "cons" expressions ourselves.  */
+ #define TC_PARSE_CONS_EXPRESSION(EXP, NBYTES) parse_cons_expression_c33 (EXP)
+ #define TC_CONS_FIX_NEW cons_fix_new_c33
+-extern const struct relax_type md_relax_table[];
++//extern const struct relax_type md_relax_table[];
+ #define TC_GENERIC_RELAX_TABLE md_relax_table
+ 
+ /* This section must be in the small data area (pointed to by GP).  */
+diff --git a/gas/write.c b/gas/write.c
+index 8386c4f..999c284 100644
+--- a/gas/write.c
++++ b/gas/write.c
+@@ -26,6 +26,8 @@
+ #include "obstack.h"
+ #include "output-file.h"
+ 
++extern const struct relax_type md_relax_table[];
++
+ /* This looks like a good idea.  Let's try turning it on always, for now.  */
+ #undef  BFD_FAST_SECTION_FILL
+ #define BFD_FAST_SECTION_FILL
+-- 
+1.5.4.3
+

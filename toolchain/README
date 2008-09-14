@@ -1,0 +1,36 @@
+Building our toolchain is easy:
+    We use a GNU toolchain and require patches against binutils, gcc and gdb
+    for our processor architecture. We currently investigate forward porting
+    of these patches to more current versions.
+
+
+Bintuils:
+    (It is assumed that $PWD/README is this file)
+    - Grab binutils 2.10.1 from ftp.gnu.org/pub/binutils
+    - tar -xvzf binutils-2.10.1.tar.gz
+    - cd binutils-2.10.1
+    - cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1
+    - cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1
+    - cat ../patches/0003-binutils-Disable-looking-at-the-flags.patch | patch -p1
+    - mkdir build
+    - cd build
+    - ../configure --prefix $PWD/../../install --target=c33-epson-elf (tab complete the path)
+    - make
+    - make install
+
+GCC:
+    (It is assumed that $PWD/README is this file)
+    - export PATH=$PWD//install/bin:$PATH
+    - Grab gcc 3.3.2 from ftp.gnu.org/pub/gcc
+    - tar -xvzf gcc-3.3.2.tar.gz
+    - cd gcc-3.3.2
+    - cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1
+    - mkdir build
+    - cd build
+    - ../configure --prefix $PWD/../../install --target=c33-epson-elf --enable-languages=c (tab complete the path)
+    - make
+    - make install
+
+Gdb:
+    - TO BE DONE
+  
