@@ -57,13 +57,7 @@ void init_lcd(void)
   	/* wf counter = 0 */
   	REG_LCDC_MR = 0x0;
 
-  	// LCDC Display Mode Register
-  	// bit31--29
-  	// reg_tft_stn, reg_color_mono, reg_fpshift_mask
-  	// bit27--24
-  	// reg_data_width[1:0], reg_swdt_inv, reg_disp_blank
-  	// bit7: reg_el
-  	// bit2-0: reg_bpp[1:0]
+  	/* LCDC Display Mode Register */
   	REG_LCDC_DMD = 0x22000012;
 
 	/* relocate the frame buffer RAM */
@@ -72,9 +66,9 @@ void init_lcd(void)
 	/* LCDC on */
   	spi_transmit(0xA8);
 
-  	REG_P8_P8D |= 0x20;     									// set P85 high
+	LCD_CS_HI();
 	delay(10);
-  	REG_P8_P8D &= 0xdf;     									// set P85 low
+	LCD_CS_LO();
 
   	/* set reg_power_save = 11b (normal mode) */
   	REG_LCDC_PS |= 0x00000003;

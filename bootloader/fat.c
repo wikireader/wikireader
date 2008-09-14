@@ -127,8 +127,6 @@ int fat_init(u32 partition_num)
 	return read_bootsector(first_sector);
 }
 
-#define ENTRIES_PER_FAT_SECTOR (256)
-
 static int get_fat_entry(u32 cluster)
 {
 	u32 sector = fat_start;

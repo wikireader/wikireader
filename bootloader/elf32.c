@@ -110,8 +110,8 @@ int elf_read(const u8 *filename)
 
 		switch (sec.sh_type) {
 			case SHT_PROGBITS:
-				print("PROGBITS loaded.\n");
 				fat_read_file(sec.sh_offset, (u8 *) sec.sh_addr, sec.sh_size);
+				print("PROGBITS loaded.\n");
 				break;
 			case SHT_NOBITS:
 				/* clean the .bss section */
