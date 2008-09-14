@@ -1,0 +1,3 @@
+*.o
+cfg/cfg
+cfg/chk
