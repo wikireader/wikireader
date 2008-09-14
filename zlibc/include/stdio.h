@@ -58,6 +58,16 @@ int vprintf(const char *string, va_list ap);
 int puts(const char *s);
 int putchar(int c);      //has to be supplied by the user, but avoids useless warnings
 
+typedef struct {
+    char _flg;
+    char _buf;
+    char _fd;
+} FILE;
+
+#ifndef FOPEN_MAX
+#define FOPEN_MAX 4
+#endif
+
 #ifdef __cplusplus
 }
 #endif //__cplusplus

@@ -33,9 +33,16 @@
  *  接的または間接的に生じたいかなる損害に関しても，その責任を負わない．
  *
  */
-#include	"smcvals.h"
 #include	"stdio.h"
 #include	"cpu_rename.h"
+
+/* Copied from the original smcvals.h */
+#define _UGETN      'E'
+#define _BOUNDARY   4           /* boundary size */
+/* calculate pointer and size consider boundary size */
+#define _BOUND(siz) ((siz + _BOUNDARY - 1) & (~(_BOUNDARY - 1)))
+
+
 
 FILE	_iob[FOPEN_MAX + 1];		/* standard i/o stream */
 
