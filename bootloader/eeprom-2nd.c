@@ -53,7 +53,7 @@ int main(void)
 	eeprom_load(0x10000, 0x10000000, (320 * 240) / 2);
 	init_lcd();
 
-	/* we we get here, boot_from_sdcard() failed to find a kernel on the
+	/* if we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
 	 * interrupt handler for the SD card insert switch and try again as
 	 * soon as a media switch is detected. */
