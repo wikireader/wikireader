@@ -1,0 +1,36 @@
+From 3fcfbcc9357939cf3a6b8aef1cb255016e061b9a Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Mon, 15 Sep 2008 21:05:35 +0200
+Subject: [PATCH] [gcc] Use the C implementations for division and modulo
+     The current assembly does not work on the PE variant of the CPU. For now
+     we will have to use the C variant of these four libgcc functions until we
+     have a faster assembly replacement.
+
+---
+ gcc/config/c33/t-c33 |   10 +---------
+ 1 files changed, 1 insertions(+), 9 deletions(-)
+
+diff --git a/gcc/config/c33/t-c33 b/gcc/config/c33/t-c33
+index 662c546..a7a6893 100644
+--- a/gcc/config/c33/t-c33
++++ b/gcc/config/c33/t-c33
+@@ -1,15 +1,7 @@
+-CROSS_LIBGCC1 = libgcc1-asm.a
+-LIB1ASMSRC = c33/libgcc1.S
+-LIB1ASMFUNCS	= _divsi3 \
+-		  _udivsi3 \
+-		  _modsi3 \
+-		  _umodsi3
+-	
+-
+ # These are really part of libgcc1, but this will cause them to be
+ # built correctly, so...
+ 
+-LIB2FUNCS_EXTRA = fp-bit.c dp-bit.c
++LIB2FUNCS_EXTRA = fp-bit.c dp-bit.c $(srcdir)/config/udivmod.c $(srcdir)/config/udivmodsi4.c
+ 
+ dp-bit.c: $(srcdir)/config/fp-bit.c
+ 	echo '#ifdef __LITTLE_ENDIAN__' > dp-bit.c
+-- 
+1.5.4.3
+

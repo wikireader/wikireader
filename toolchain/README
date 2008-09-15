@@ -24,6 +24,8 @@ GCC:
     - tar -xvzf gcc-3.3.2.tar.gz
     - cd gcc-3.3.2
     - cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1
+    - cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1
+    - cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1
     - mkdir build
     - cd build
     - ../configure --prefix $PWD/../../install --target=c33-epson-elf --enable-languages=c (tab complete the path)

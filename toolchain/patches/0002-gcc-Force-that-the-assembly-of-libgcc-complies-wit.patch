@@ -1,0 +1,25 @@
+From 16e03bdd9ff6a66b7a7f38927567642cfa7c7528 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Mon, 15 Sep 2008 21:00:15 +0200
+Subject: [PATCH] [gcc] Force that the assembly of libgcc complies with the PE variant
+
+---
+ gcc/config/c33/t-c33 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/gcc/config/c33/t-c33 b/gcc/config/c33/t-c33
+index 4a7a5d0..662c546 100644
+--- a/gcc/config/c33/t-c33
++++ b/gcc/config/c33/t-c33
+@@ -28,7 +28,7 @@ fp-bit.c: $(srcdir)/config/fp-bit.c
+ #TCFLAGS = -Wa,-mwarn-signed-overflow -Wa,-mwarn-unsigned-overflow
+ TCFLAGS = 
+ #debug_w
+-TARGET_LIBGCC2_CFLAGS = -Dinhibit_libc
++TARGET_LIBGCC2_CFLAGS = -Dinhibit_libc -mc33pe
+ GCC_FOR_TARGET = d:/Epson/gnu33/xgcc -Bd:/Epson/gnu33/
+ 
+ # 2002.2.13 watanabe
+-- 
+1.5.4.3
+
