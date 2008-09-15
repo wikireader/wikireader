@@ -275,107 +275,118 @@ Makefile.config of the system dependence department directory.
 
 (6) Generation of offset file
 
-¥¢¥»¥ó¥Ö¥êžÀžì€Çµ­œÒ€µ€ì€ë¥×¥í¥°¥é¥à€«€é¡€CžÀžì€Î¹œÂ€ÂÎ€Ë¥¢¥¯¥»¥¹€¹€ë
-Ÿì¹ç€Ë€Ï¡€¹œÂ€ÂÎ€Î³Æ¥Õ¥£¡Œ¥ë¥É€Î¥ª¥Õ¥»¥Ã¥È€ò»²ŸÈ€¹€ë€³€È€¬É¬Í×€Ç€¢€ë¡¥ 
-JSP¥«¡Œ¥Í¥ë€Ç€Ï¡€É¬Í×€Ê¥ª¥Õ¥»¥Ã¥ÈÃÍ€ò¥Õ¥¡¥€¥ë¡ÊÉžœà€Ç€Ï offset.h¡Ë€ËœÐ
-ÎÏ€¹€ë€¿€á€Î»ÅÁÈ€ß€È€·€Æ¡€makeoffset.c €È genoffset €òÍÑ°Õ€·€Æ€€€ë¡¥
-makeoffset.c €Ï¡€€É€Î¥ª¥Õ¥»¥Ã¥ÈÃÍ€ò¥Õ¥¡¥€¥ë€ËœÐÎÏ€¹€ë€«€ò»ØÄê€¹€ë€â€Î
-€Ç¡€¥¿¡Œ¥²¥Ã¥È°ÍÂžÉô€ÇÍÑ°Õ€¹€ëÉ¬Í×€¬€¢€ë¡¥genoffset €Ï¡€žœ»þÅÀ€Ç€ÏGNU
-³«È¯ŽÄ¶­€Ë€Î€ßÂÐ±þ€·€Æ€€€ë¡¥
+It is necessary to refer to the offset of each field of the structure 
+when it accesses the structure of C language from the program described 
+by the assembly language. 
+In the JSP kernel, makeoffset.c and genoffset are prepared as a 
+mechanism to output a necessary offset value to the file (It is offset.
+h in the standard). 
+It is necessary to prepare makeoffset.c in the target dependence part 
+by the one to specify which offset value to output to the file. 
+Genoffset corresponds only to GNU development environment now. 
 
-makeoffset.c €È genoffset €ò»È€Š€³€È€Ç¡€Îã€š€Ð¡€TCB Ãæ€Î texptn ¥Õ¥£¡Œ
-¥ë¥É€Î¥ª¥Õ¥»¥Ã¥ÈÃÍ€ò TCB_texptn €Ë¥Þ¥¯¥íÄêµÁ€¹€ë€³€È€ä¡€TCB Ãæ€Î¥¿¥¹¥¯
-¥³¥ó¥Æ¥­¥¹¥È¥Ö¥í¥Ã¥¯¡Êtskctxb¡Ë€ËŽÞ€Þ€ì€ë pc ¥Õ¥£¡Œ¥ë¥É€Î¥ª¥Õ¥»¥Ã¥ÈÃÍ
-€ò TCB_pc €Ë¥Þ¥¯¥íÄêµÁ€¹€ë€³€È€¬€Ç€­€ë¡¥€Þ€¿¡€TCB Ãæ€Î enatex ¥Õ¥£¡Œ¥ë
-¥É€Î¥ª¥Õ¥»¥Ã¥ÈÃÍ¡€¥Ó¥Ã¥È°ÌÃÖ¡€¥Ó¥Ã¥È¥Þ¥¹¥¯€ò¡€€œ€ì€Ÿ€ì TCB_enatex¡€
-TCB_enatex_bit¡€TCB_enatex_mask €Ë¥Þ¥¯¥íÄêµÁ€¹€ë€³€È€¬€Ç€­€ë¡¥¥Þ¥¯¥íÄê
-µÁ€¹€ë¥Ó¥Ã¥È°ÌÃÖ€ä¥Ó¥Ã¥È¥Þ¥¹¥¯€Ï¡€¥¢¥¯¥»¥¹€¹€ë¥µ¥€¥º€ä¥š¥ó¥Ç¥£¥¢¥ó€ò»Ø
-Äê€¹€ë€³€È€¬€Ç€­€ë¡¥
+In the use of makeoffset.c and genoffset, for instance, the offset 
+value of the TCB_texptn field in TCB is defined, and the offset value of 
+the pc field included in task context macro definition in TCB_texptn, 
+and in TCB block (tskctxb) is defined and the macro can be defined in 
+TCB_pc. Moreover, respectively the offset value, the bit position of 
+the enatex field in TCB, and the bit mask are defined and the macro can 
+be defined in TCB_enatex, TCB_enatex_bit, and TCB_enatex_mask. The bit 
+position and the bit mask that defines the macro can specify accessed 
+size and endian. 
 
-GNU³«È¯ŽÄ¶­°Ê³°€òÍÑ€€€ëŸì¹ç€Ê€É¡€€³€Î»ÅÁÈ€ß€Ç¥ª¥Õ¥»¥Ã¥È¥Õ¥¡¥€¥ë€òÀžÀ®
-€Ç€­€Ê€€»þ€Ë€Ï¡€offset.h €ò¥¿¡Œ¥²¥Ã¥È°ÍÂžÉô€ÇÍÑ°Õ€·¡€Makefile.config 
-€Ç OMIT_MAKEOFFSET €ò¥Ì¥ë¥¹¥È¥ê¥ó¥°°Ê³°€ËÄêµÁ€¹€ë¡¥
+When using it excluding GNU development environment, the offset file 
+is defined in this mechanism, and offset.h is prepared in the target 
+dependence part when not generable, and OMIT_MAKEOFFSET is defined 
+with Makefile.config besides a null string.
 
-makeoffset.c €È genoffset €ËŽØ€¹€ë¥Þ¥Ë¥å¥¢¥ë€Ï¡€žœ»þÅÀ€Ç€ÏÍÑ°Õ€Ç€­€Æ€€
-€Ê€€¡¥»È€€Êý€¬€ï€«€é€Ê€€Ÿì¹ç€ä¡€µ¡Çœ€¬Â­€ê€Ê€€Ÿì¹ç€Ë€Ï¡€ÁêÃÌ€µ€ì€¿€€¡¥
+The manual concerning makeoffset.c and genoffset cannot be prepared now. 
+Consult when no understanding of the usage, and the function are 
+insufficient. 
 
-(7) ¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€Ê€É
+(7) Start-up module etc.
 
-¥¿¡Œ¥²¥Ã¥È€Ë€è€Ã€Æ€Ï¡€¥í¡Œ¥É¥â¥ž¥å¡Œ¥ë€ÎÀèÆ¬€ÈºÇžå€Ë¥ê¥ó¥¯€¹€Ù€­¥×¥í¥°
-¥é¥à€ò¡€¥¿¡Œ¥²¥Ã¥È°ÍÂžÉô€ÇÍÑ°Õ€¹€ëÉ¬Í×€¬€¢€ë¡¥Â¿€¯€ÎŸì¹ç¡€¥¹¥¿¡Œ¥È¥¢¥Ã
-¥×¥â¥ž¥å¡Œ¥ë€ò¥í¡Œ¥É¥â¥ž¥å¡Œ¥ë€ÎÀèÆ¬€Ë¥ê¥ó¥¯€¹€ëÉ¬Í×€¬€¢€ë¡¥
+It is necessary to prepare programs that should be linked according to 
+the target at the head and the end of the load module in the target 
+dependence part. In many cases, it is necessary to link a start-up 
+module with the head of the load module. 
 
-¥í¡Œ¥É¥â¥ž¥å¡Œ¥ë€ÎÀèÆ¬€Ë¥ê¥ó¥¯€¹€Ù€­¥×¥í¥°¥é¥à€¬€¢€ëŸì¹ç€Ë€Ï¡€
-Makefile.config €Ë€ª€€€Æ¡€€œ€Î¥ª¥Ö¥ž¥§¥¯¥È¥Õ¥¡¥€¥ëÌŸ€ò START_OBJS €ËÄê
-µÁ€·¡€€œ€ì€ËÂÐ€¹€ë¥³¥ó¥Ñ¥€¥ë¥ë¡Œ¥ë€È°ÍÂžŽØ·žºîÀ®¥ë¡Œ¥ë€òÄêµÁ€·€Ê€±€ì€Ð
-€Ê€é€Ê€€¡¥¥í¡Œ¥É¥â¥ž¥å¡Œ¥ë€ÎºÇžå€Ë¥ê¥ó¥¯€¹€Ù€­¥×¥í¥°¥é¥à€¬€¢€ëŸì¹ç€Ë€Ï¡€
-€œ€Î¥ª¥Ö¥ž¥§¥¯¥È¥Õ¥¡¥€¥ëÌŸ€ò END_OBJS €ËÄêµÁ€·¡€€œ€ì€ËÂÐ€¹€ë¥³¥ó¥Ñ¥€¥ë
-¥ë¡Œ¥ë€È°ÍÂžŽØ·žºîÀ®¥ë¡Œ¥ë€òÄêµÁ€·€Ê€±€ì€Ð€Ê€é€Ê€€¡¥
+When there is a program that should be linked with the head of the load 
+module, it is necessary to define the objectfile name in START_OBJS, and 
+to define the compilation rule and the dependence making rule to it in 
+Makefile.config. It is necessary to define the objectfile name in END_
+OBJS when there is programs that should be linked at the end of the load 
+module, and to define the compilation rule and the dependence making rule 
+to it. 
 
-Îã€š€Ð¡€¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€Î¥œ¡Œ¥¹¥Õ¥¡¥€¥ë€¬ start.S €ÎŸì¹ç€Ë€Ï¡€
-Makefile.config €ËŒ¡€Î€è€Š€Êµ­œÒ€òÆþ€ì€ë€È€è€€¡¥
+For instance, when the source file of a start-up module is start.S, you 
+may put the following descriptions in Makefile.config. 
 
-        # ¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€Î¥ª¥Ö¥ž¥§¥¯¥È¥Õ¥¡¥€¥ëÌŸ
-        START_OBJS = start.o
+	# Objectfile name of start-up module
+	START_OBJS = start.o
 
-        # ¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€Î¥³¥ó¥Ñ¥€¥ë¥ë¡Œ¥ë
-        $(START_OBJS): %.o: %.S
-                $(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+	# Compilation rule of start-up module
+	$(START_OBJS): %.o: %.S
+	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
 
-        # ¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€Î°ÍÂžŽØ·žºîÀ®¥ë¡Œ¥ë
+	# Dependence making rule of start-up module
         $(START_OBJS:.o=.d): %.d: %.S
                 @$(PERL) $(SRCDIR)/utils/makedep -C $(CC) \
                         -O "$(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
 
-€Þ€¿¡€¥³¥ó¥Ñ¥€¥é€ËÉžœà€Î crtbegin.o €È crtend.o €òÍÑ€€€ëŸì¹ç€Ë€Ï¡€
-Makefile.config €ËŒ¡€Î€è€Š€Êµ­œÒ€òÆþ€ì€ë€È€è€€¡¥
+Moreover, when standard crtbegin.o and crtend.o are used for the 
+compiler, you may put the following descriptions in Makefile.config. 
 
-        # ¥ª¥Ö¥ž¥§¥¯¥È¥Õ¥¡¥€¥ëÌŸ
+	# Objectfile name
         START_OBJS = $(shell $(CC) -print-file-name=crtbegin.o)
         END_OBJS = $(shell $(CC) -print-file-name=crtend.o)
 
-        # °ÍÂžŽØ·žºîÀ®¥ë¡Œ¥ë
+        # Dependence making rule
         $(START_OBJS:.o=.d): %.d:
         $(END_OBJS:.o=.d): %.d:
 
-€³€ÎŸì¹ç¡€€³€ì€é€Î¥Õ¥¡¥€¥ë€ò¥³¥ó¥Ñ¥€¥ë€¹€ë€³€È€Ï€Ê€€€¿€á¡€¥³¥ó¥Ñ¥€¥ë¥ë¡Œ
-¥ë€ÏÉÔÍ×€Ç€¢€ë¡¥€Þ€¿¡€°ÍÂžŽØ·žºîÀ®¥ë¡Œ¥ë€Ï¥À¥ß¡Œ€Ç€è€€¡Ê°ÍÂžŽØ·žºîÀ®¥ë¡Œ
-¥ë€¬€Ê€€€È¥š¥é¡Œ€Ë€Ê€ë¡Ë¡¥
+In this case, because these files are not compiled, the compilation rule 
+is unnecessary. Moreover, the dependence making rule is good in the dummy 
+(Become an error if there is no dependence making rule). 
 
-€Ê€ª¡€¥«¡Œ¥Í¥ëÍÑ€Î¥¹¥¿¡Œ¥È¥¢¥Ã¥×¥â¥ž¥å¡Œ¥ë€«€é€Ï¡€main ŽØ¿ô€Ç€Ï€Ê€¯¡€
-kernel_start ŽØ¿ô€òµ¯Æ°€¹€ëÉ¬Í×€¬€¢€ë¡¥
+It is necessary to start not the main function but the kernel_start 
+function from a start-up module for the kernel. 
 
-(8) ¥ê¥ó¥«¥¹¥¯¥ê¥×¥È
+(8) Rincascript
 
-³«È¯ŽÄ¶­€ËÉžœà€Î¥ê¥ó¥«¥¹¥¯¥ê¥×¥È€¬»ÈÍÑ€Ç€­€Ê€€Ÿì¹ç€Ë€Ï¡€¥¿¡Œ¥²¥Ã¥È°ÍÂž
-Éô€ÇÍÑ°Õ€¹€ë¡¥
+When standard Rincascript cannot be used for the development 
+environment, it prepares it in the target dependence part. 
 
 
-£²¡¥¥¢¥×¥ê¥±¡Œ¥·¥ç¥óÍÑ€Î¥€¥ó¥¯¥ë¡Œ¥É¥Õ¥¡¥€¥ë
+2.Include file for application
 
-¥¿¡Œ¥²¥Ã¥È°ÍÂžÉô€ÇÄó¶¡€¹€Ù€­¥¢¥×¥ê¥±¡Œ¥·¥ç¥óÍÑ€ÎÄêµÁ€ÏŒ¡€ÎÄÌ€ê€Ç€¢€ë¡¥
-€³€ì€é€ÎÄêµÁ€ÎÃæ€Ç¡€(1) €ª€è€Ó (2) €Ï tool_defs.h €ËŽÞ€á€Ê€±€ì€Ð€Ê€é€Ê
-€€¡¥€œ€ÎÂŸ€ÎÄêµÁ€Ï¡€cpu_defs.h €Þ€¿€Ï sys_defs.h¡Ê€Þ€¿€Ï€œ€ì€é€«€é¥€¥ó
-¥¯¥ë¡Œ¥É€µ€ì€ë¥Õ¥¡¥€¥ë¡Ë€ËŽÞ€á€ë¡¥
+The definition for the application that should be offered in the target 
+dependence part is as follows. 
+(1) and (2) are inclusion in these definitions in tool_defs.h. 
+Other definitions are included in cpu_defs.h or sys_defs.h 
+(Or, file it from them of include's being done). 
 
-(1) ¥³¥ó¥Ñ¥€¥é°ÍÂž€Î¥Ç¡Œ¥¿·¿€ÎÄêµÁ
+(1) Definition of data type of compiler dependence
 
-¥³¥ó¥Ñ¥€¥é°ÍÂž€Î¥Ç¡Œ¥¿·¿€ò°Ê²Œ€Î¥·¥ó¥Ü¥ë€ËÄêµÁ€¹€ë¡¥€³€ì€é€ÎÄêµÁ€Ï¡€
-typedef €Ç€Ï€Ê€¯¡€#define €Ë€è€ê¥Þ¥¯¥íÄêµÁ€·€Ê€±€ì€Ð€Ê€é€Ê€€¡¥
+The data type of the compiler dependence is defined in the following 
+symbols. These definitions should define the macro by not typedef but 
+# define. 
 
-(1-1) _int8_            8¥Ó¥Ã¥È€ÎÀ°¿ô·¿
-(1-2) _int16_           16¥Ó¥Ã¥È€ÎÀ°¿ô·¿
-(1-3) _int32_           32¥Ó¥Ã¥È€ÎÀ°¿ô·¿
-(1-4) _int64_           64¥Ó¥Ã¥È€ÎÀ°¿ô·¿
+(1-1) _int8_  Integer type 8 bit
+(1-2) _int16_ Integer type 16 bit
+(1-3) _int32_ Integer type 32 bit
+(1-4) _int64_ Integer type 64 bit
 
-³Æ¥µ¥€¥º€ÎÀ°¿ô·¿€ò¡€€³€ì€é€Î¥·¥ó¥Ü¥ë€Ë¥Þ¥¯¥íÄêµÁ€¹€ë¡¥_int32_ °Ê³°€Ï¡€
-¥³¥ó¥Ñ¥€¥é€¬¥µ¥Ý¡Œ¥È€·€Æ€€€Ê€€Ÿì¹ç€Ë€ÏÄêµÁ€¹€ëÉ¬Í×€¬€Ê€€¡¥_int32_ €ÎÄê
-µÁ€ÏÉ¬¿Ü€Ç€¢€ë¡¥
+The integer type of each size is defined and the macro is defined in 
+these symbols. When the compiler doesn't support it excluding _int32_, 
+it is not necessary to define it. The definition of _int32_ is 
+indispensable. 
 
-(1-5) _bool_            BOOL€Î·¿
+(1-5) _BOOL_ Type of bool
 
-BOOL €Ï¡€Éžœà€Ç€Ï int €Ë·¿ÄêµÁ€µ€ì€ë€¬¡€€œ€ì€ÇÉÔÅÔ¹ç€ÊŸì¹ç€Ë€Ï¡€Å¬ÀÚ€Ê
-·¿€ò _bool_ €Ë¥Þ¥¯¥íÄêµÁ€¹€ë¡¥
+BOOL defines an appropriate type when it is inconvenient and, then, 
+defines the macro in _bool_ though is defined the type in int in the 
+standard. 
 
 (1-6) _vp_int_          VP_INT€Î·¿
 
@@ -1663,31 +1674,36 @@ chg_iXX €ò¥µ¥Ý¡Œ¥È€¹€ëŸì¹ç¡€¥¿¥¹¥¯ÀÚÂØ€š€
 CPUÎã³°¥Ï¥ó¥É¥éŒÂ¹Ô»þ€Ï¡€³ä¹þ€ß¥Þ¥¹¥¯€ÎÃÍ€¬CPUÎã³°È¯ÀžÄŸÁ°€ÈÆ±€ž€Ë€Ê€ë
 €è€Š€Ë€¹€ë€³€È¡¥
 
-(5) ŒÂ¹Ô€¹€Ù€­¥¿¥¹¥¯€¬€Ê€€Ÿì¹ç€ÎœèÍý
+(5) Processing when there is no task that should be executed
 
-ŒÂ¹Ô€¹€Ù€­¥¿¥¹¥¯€¬€Ê€€¡Êschedtsk €¬ NULL¡ËŸì¹ç€Ë¡€¥×¥í¥»¥Ã¥µ€òÂÔ€Á¥â¡Œ
-¥É¡Ê¥¹¥ê¡Œ¥×¥â¡Œ¥É¡Ë€Ë°Ü¹Ô€µ€»€ëœèÍý€È¡€³ä¹þ€ß€òµö²Ä€¹€ëœèÍý€È€Ï¡€ÉÔ²Ä
-Ê¬€Ë¹Ô€Ê€ŠÉ¬Í×€¬€¢€ë¡¥€³€ì€òÉÔ²ÄÊ¬€Ë¹Ô€Ê€ï€Ê€€Ÿì¹ç¡€³ä¹þ€ß€òµö²Ä€·€¿ÄŸ
-žå€Ë³ä¹þ€ß€¬Æþ€ê¡€€œ€ÎÃæ€Ç¥¿¥¹¥¯€¬ŒÂ¹Ô²ÄÇœŸõÂÖ€Ë€Ê€ë€È¡€ŒÂ¹Ô€¹€Ù€­¥¿¥¹
-¥¯€¬€¢€ë€Ë€â€«€«€ï€é€º¥×¥í¥»¥Ã¥µ€¬ÂÔ€Á¥â¡Œ¥É€Ë€Ê€Ã€Æ€·€Þ€Š¡¥
+It is necessary to do to inseparability with processing that shifts the 
+processor to the waiting mode (sleep mode) and processing that permits 
+interrupting when there is no task that should be executed (Schedtsk is 
+NULL). The interruption enters immediately after permitting 
+interrupting when this is not done to inseparability, and when the task 
+becomes a ready condition in that, the task that should be executed 
+becomes and the processor becomes a waiting mode though it is. 
 
-€Þ€¿¡€ŒÂ¹Ô€¹€Ù€­¥¿¥¹¥¯€¬€Ê€¯¡€³ä¹þ€ß€òµö²Ä€·€Æ³ä¹þ€ß€òÂÔ€ÄŽÖ€Ï¡€runtsk 
-€ò NULL €ËÀßÄê€·€Ê€±€ì€Ð€Ê€é€Ê€€¡¥€³€Î€è€Š€ËÀßÄê€·€Ê€€€È¡€³ä¹þ€ß¥Ï¥ó¥É
-¥é€«€é iget_tid €òžÆ€ÓœÐ€·€¿ºÝ€ÎÆ°ºî€¬»ÅÍÍ€Ë¹çÃ×€·€Ê€¯€Ê€ë¡ÊŠÌITRON4.0 
-»ÅÍÍ€Ç€Ï¡€ŒÂ¹ÔŸõÂÖ€Î¥¿¥¹¥¯€¬€Ê€€Ÿì¹ç€Ë¡€iget_tid €Ï TSK_NONE €òÊÖ€¹€³
-€È€Ë€Ê€Ã€Æ€ª€ê¡€iget_tid €Î¥³¡Œ¥É€Ï¡€runtsk €¬ NULL €Î»þ€Ë TSK_NONE €ò
-ÊÖ€¹€è€Š€Ë€Ê€Ã€Æ€€€ë¡Ë¡¥
+Moreover, there is no task that should be executed, and it is necessary 
+to set runtsk in permitting interrupting and waiting for the 
+interruption to NULL. The operation when iget_tid is called from the 
+interruption handler doesn't agree with the specification if it doesn't 
+set it like this (Iget_tid will return TSK_NONE in the μITRON4.0 
+specification when there is no task of the running state, and when 
+runtsk is NULL, the code of iget_tid returns TSK_NONE). 
 
-m68k €ÎŒÂÁõ€Ï¡Êconfig/m68k/cpu_support.S €è€ê¡Ë¡€
+Mounting m68k (From config/m68k/cpu_support.S)
 
 dispatcher:
         move.l schedtsk, %a0
-        move.l %a0, runtsk              /* schedtsk €ò runtsk €Ë */
-        jbeq dispatcher_1               /* runtsk €¬€¢€ë€«¡© */
+        move.l %a0, runtsk              /* Schedtsk to runtsk */
+        jbeq dispatcher_1                /* Is there runtsk? */
 
-€È€Ê€Ã€Æ€ª€ê¡€schedtsk €¬ NULL €Î»þ€Ë¡€runtsk €ò NULL €Ë€·€Æ€«€é¡€³ä¹þ
-€ßÂÔ€Á€ËÆþ€ë¡¥€·€«€·€Ê€¬€é¡€€³€ÎœèÍý€¬ÈŽ€±€Æ€€€ë€È¡€schedtsk €¬ NULL 
-€Î»þ€Ë€Ï¡€runtsk €ò€¹€°€Ë¹¹¿·€·€Ê€€¡¥€œ€Î€¿€á¡€ŒÂ¹ÔŸõÂÖ€Î¥¿¥¹¥¯€¬€Ê€€
-Ÿì¹ç€Ë iget_tid €òžÆ€Ö€È¡€Á°€ËŒÂ¹Ô€µ€ì€Æ€€€¿¥¿¥¹¥¯€ÎID €¬ÊÖ€ë¡¥
- 
-°ÊŸå
+It becomes, and it enters the interruption waiting after runtsk is made 
+NULL in the place where schedtsk is NULL. However, when schedtsk is 
+NULL when this processing has come off, runtsk is not renewed at once. 
+Therefore, when iget_tid is called when there is no task of the running 
+state, ID of the task executed ahead is restored. 
+
+This concludes my report. 
+
