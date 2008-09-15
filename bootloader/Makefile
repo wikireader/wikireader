@@ -10,7 +10,7 @@ LIBDIR=$(PWD)/../zlibc/lib
 LIBS=$(LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os #-medda32 -mc33adv
+CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 

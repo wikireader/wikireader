@@ -8,7 +8,7 @@ CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I. -Iinclude -gstabs -mlong-calls -fno-builtin -Os
+CFLAGS=-Wall -I. -Iinclude -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 C_STRING_OPERATIONS = \
