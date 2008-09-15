@@ -11,7 +11,6 @@ Bintuils:
     - cd binutils-2.10.1
     - cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1
     - cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1
-    - cat ../patches/0003-binutils-Disable-looking-at-the-flags.patch | patch -p1
     - mkdir build
     - cd build
     - ../configure --prefix $PWD/../../install --target=c33-epson-elf (tab complete the path)
