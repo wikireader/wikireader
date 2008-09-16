@@ -17,9 +17,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
+# ----- SVN configuration data --------------------------------------
+
 WR_SVN_SITE := wikipediardware.googlecode.com
 WR_SVN_PATH := svn/trunk
 WR_PATH := wikipediardware-read-only
+
+# ----- Toolchain configuration data --------------------------------------
+
+GCC_VERSION=3.3.2
+GCC_PACKAGE=gcc-$(GCC_VERSION).tar.gz
+GCC_URL=ftp://ftp.gnu.org/gnu/gcc/$(GCC_PACKAGE)
+
+BINUTILS_VERSION=2.10.1
+BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
+BINUTILS_URL= \
+  ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
+
+DL=toolchain/dl
+
+# ----- Toolchain configuration data --------------------------------------
 
 .PHONY: all
 all:	setup \
@@ -42,9 +59,56 @@ wikireader:
 	make -C wikireader && \
 	cp wikireader/sample1.elf ../kernel)
 
-#.PHONY: toolchain
-#toolchain:
-	#download the source, make them setup the env
+.PHONY: toolchain
+toolchain:toolchain-download gcc gdb bintuils
+
+.PHONY:toolchain-download
+toolchain-download: \
+	$(DL)/$(GCC_PACKAGE).ok \
+	  $(DL)/$(BINUTILS_PACKAGE).ok 
+
+$(DL)/$(GCC_PACKAGE).ok:
+	mkdir -p $(DL)
+	wget -c -O $(DL)/$(GCC_PACKAGE) $(GCC_URL)
+	touch $@
+
+$(DL)/$(BINUTILS_PACKAGE).ok:
+	mkdir -p $(DL)
+	wget -c -O $(DL)/$(BINUTILS_PACKAGE) $(BINUTILS_URL)
+	touch $@
+
+.PHONY: bintuils
+bintuils: $(DL)/$(BINUTILS_PACKAGE).ok
+	mkdir -p install
+	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
+	(cd toolchain && \
+	cd binutils-$(BINUTILS_VERSION) && \
+	cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
+	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1 && \
+	mkdir build && \
+	cd build  && \
+	../configure --prefix $(PWD)/../../install --target=c33-epson-elf && \
+	make && \
+	make install )
+
+.PHONY: gcc
+gcc: $(DL)/$(GCC_PACKAGE).ok
+	mkdir -p install
+	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
+	(cd toolchain && \
+	export PATH=$(PWD)/install/bin:\$(PATH)  && \
+	cd gcc-$(GCC_VERSION) && \
+	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
+	cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
+	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1 && \
+	mkdir build && \
+	cd build && \
+	../configure --prefix $(PWD)/../../install --target=c33-epson-elf --enable-languages=c && \
+	make && \
+	make install )
+
+.PHONY: gdb
+gdb:
 
 .PHONY: update
 update:update-bootloader update-wikireader
@@ -75,7 +139,7 @@ clean:
 .PHONY:help
 help:
 	@echo "\
-all:				compile all the source.\n\
+all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
 wikireader:		compile wikireader then you can see kernel file you need.\n\
@@ -84,7 +148,7 @@ update-bootloader: 	update the bootloader source.\n\
 update-wikireader: 	update the wikireader source.\n\
 check-makefile:		diff the remote makefile.\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
-				make sure the serial console is /dev/ttyUSB0.\n\
+			make sure the serial console is /dev/ttyUSB0.\n\
 clean: 			clean all.\n\
 					openmoko, Inc.\n "
 
