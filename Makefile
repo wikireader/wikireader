@@ -51,8 +51,9 @@ setup:
 	svn checkout http://${MM_SVN_SITE}/${MM_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
-bootloader:
-	make -C bootloader
+bootloader:zlibc 
+	( cd bootloader && \
+	make)
 
 .PHONY: wikireader
 wikireader:
