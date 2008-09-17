@@ -214,7 +214,14 @@ int fat_open_file(const u8 *filename)
 		return -1;
 
 	while (entry_cnt < boot.max_root_entries) {
-		sdcard_read_sector(sector++, buf);
+		u8 retry = 20;
+		int ret;
+
+		do {
+			ret = sdcard_read_sector(sector++, buf);
+			if (ret < 0)
+				print("read sector failed, retrying.\n");
+		} while (ret < 0 && retry--);
 
 		for (e = (struct dir_entry *) buf;
 		     (u8 *) e < (buf + sizeof(buf));

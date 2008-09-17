@@ -47,6 +47,7 @@
 
 #define MODE_SDSC 0
 #define MODE_SDHC 1
+#define MODE_NONE 0xff
 static u8 mode;
 
 static u8 sdcard_response(void)
@@ -122,8 +123,8 @@ int sdcard_read_sector(u32 sector, u8 *buf)
 	ret = sdcard_response();
 
 	if (ret != 0) {
-//		print("bad card response: ");
-//		print_u32(ret); print("\n");
+		print("bad card response: ");
+		print_u32(ret); print("\n");
 		return -1;
 	}
 
@@ -153,103 +154,11 @@ int sdcard_read_sector(u32 sector, u8 *buf)
 	return 0;
 }
 
-static int sdhc_init(void)
+static int sdcard_go_idle(void)
 {
-	u8 i, ocr[4];
-	u32 retry, ret;
-
-	/* get the rest of R7 response */
-	SDCARD_CS_LO();
-	for (i = 0; i < sizeof(ocr); i++)
-		ocr[i] = spi_transmit(0xff);
-
-	SDCARD_CS_HI();
-
-	if (ocr[2] != 0x01 || ocr[3] != 0xaa) {
-		/* card can't operate @2.7-3.3V */
-		print("SDHC card not usable\n");
-		hex_dump(ocr, 4);
-		return -1;
-	}
-
-	/* leave the IDLE state (CMD41 | HCS bit) */
-	for (retry = 100; retry; retry--) {
-		sdcard_cmd(CMD_APP, 0);
-		ret = sdcard_response();
-
-		sdcard_cmd(CMD_41, (1UL << 30));
-		ret = sdcard_response();
-
-		if (ret == 0x00)
-			break;
-
-		delay(10000);
-	}
-
-	if (ret == 0x00) {
-		sdcard_cmd(CMD_58, 0);
-		ret = sdcard_response();
-
-		SDCARD_CS_LO();
-		for (i = 0; i < sizeof(ocr); i++)
-			ocr[i] = spi_transmit(0xff);
-
-		SDCARD_CS_HI();
-		hex_dump(ocr, 4);
-	} else {
-		print("SDHC: timeout\n");
-		return -1;
-	}
-
-	print("detected SDHC card\n");
-	return 0;
-}
-
-static int sdsc_init(void)
-{
-	u32 retry, ret;
-
-	for (retry = 1000; retry; retry--) {
-		sdcard_cmd(CMD_APP, 0);
-		ret = sdcard_response();
-
-		sdcard_cmd(CMD_SEND_OP_COND, 0);
-		ret = sdcard_response();
-
-		if (ret == 0)
-			break;
-
-		delay(10000);
-	}
-
-	if (ret != 0x00) {
-		print("unable to init SDSC card!\n");
-		print_u32(ret);
-		print("\n");
-		return -1;
-	}
-
-	print("detected SDSC card\n");
-	return 0;
-}
-
-int sdcard_init(void)
-{
-	u8 ret;
 	u32 retry;
+	u8 ret;
 
-	disable_card_power();
-	delay(100000);
-	enable_card_power();
-
-	/* 80 dummy clocks */
-	SDCARD_CS_LO();
-	for (retry = 0; retry < 10; retry++)
-		spi_transmit(0xff);
-
-	SDCARD_CS_LO();
-		
-	/* set card to IDLE state */
 	for (retry = 100; retry; retry--) {
 		sdcard_cmd(CMD_GO_IDLE_STATE, 0);
 		ret = sdcard_response();
@@ -264,9 +173,16 @@ int sdcard_init(void)
 		return -1;
 	}
 
-	/* check for SDHC card type */
+	return 0;
+}
+
+static int sdcard_cmd8(u32 param)
+{
+	u32 retry;
+	u8 ret;
+
 	for (retry = 100; retry; retry--) {
-		sdcard_cmd(CMD_8, 0x1aa);
+		sdcard_cmd(CMD_8, param);
 		ret = sdcard_response();
 		if (ret == 0x01)
 			break;
@@ -274,14 +190,80 @@ int sdcard_init(void)
 		delay(10000);
 	}
 
-	if (ret == 0x01 && sdhc_init() == 0)
-		mode = MODE_SDHC;
-	else if (sdsc_init() == 0)
-		mode = MODE_SDSC;
+	if (ret != 0x01) {
+		print("unable to set card voltage conditions.\n");
+		print("This card does not support SD2.0 spec.\n");
+		SDCARD_CS_HI();
+		return -1;
+	}
+
+	return 0;
+}
+
+static int sdcard_read_ccs(void)
+{
+	u32 retry;
+	u8 ret;
+
+	/* leave the IDLE state (CMD41 | HCS bit) */
+	for (retry = 1000; retry; retry--) {
+		sdcard_cmd(CMD_APP, 0);
+		ret = sdcard_response();
+
+		sdcard_cmd(CMD_41, (1UL << 30));
+		ret = sdcard_response();
+
+		if (ret == 0x00)
+			break;
+
+		delay(10000);
+	}
+
+	if (ret != 0x00) {
+		print("Unable to set HCS idle state\n");
+		return -1;
+	}
+
+	return 0;
+}
+
+int sdcard_init(void)
+{
+	u8 buf[BYTES_PER_SECTOR];
+	u32 retry;
+
+	disable_card_power();
+	delay(100000);
+	enable_card_power();
+
+	/* 80 dummy clocks */
+	SDCARD_CS_LO();
+	for (retry = 0; retry < 10; retry++)
+		spi_transmit(0xff);
+
+	SDCARD_CS_LO();
+
+	/* set card to IDLE state */
+	if (sdcard_go_idle() < 0)
+		return -1;
+
+	/* send CMD8, interface voltage conditions. */
+	if (sdcard_cmd8(0x1aa) < 0)
+		return -1;
+	
+	if (sdcard_read_ccs() < 0)
+		return -1;
 
 	SDCARD_CS_HI();
-	print("SD card initialized.\n");
 
+	mode = MODE_SDHC;
+
+	if (sdcard_read_sector(1, buf) < 0) {
+		print("SD card unable to read sector, SDSC card?\n");
+		return -1;
+	}
+
+	print("SD card initialized.\n");
 	return 0;
 }
 
