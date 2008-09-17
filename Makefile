@@ -1,3 +1,4 @@
+#
 # "WikiReaderMakefile" - a Makefile for setting up Wiki Reader
 #
 # Copyright (c) 2008  Xiangfu Liu <xiangfu@openmoko.org>
@@ -36,17 +37,18 @@ BINUTILS_URL= \
 
 DL=toolchain/dl
 
-# ----- Toolchain configuration data --------------------------------------
+# ----- configuration data --------------------------------------
 
 .PHONY: all
 all:	setup \
 	bootloader \
-	wikireader
+	wikireader \
+	zlibc \
+	toolchain 
 
 .PHONY:setup
 setup:
 	svn checkout http://${MM_SVN_SITE}/${MM_SVN_PATH}/  ${WR_PATH}
-	#setup toolchain here
 
 .PHONY: bootloader
 bootloader:
@@ -54,7 +56,7 @@ bootloader:
 
 .PHONY: wikireader
 wikireader:
-	(cd jsp && \
+	( cd jsp && \
 	make -C cfg && \
 	make -C wikireader && \
 	cp wikireader/sample1.elf ../kernel)
@@ -81,7 +83,7 @@ $(DL)/$(BINUTILS_PACKAGE).ok:
 bintuils: $(DL)/$(BINUTILS_PACKAGE).ok
 	mkdir -p install
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
-	(cd toolchain && \
+	( cd toolchain && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
 	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1 && \
@@ -95,7 +97,7 @@ bintuils: $(DL)/$(BINUTILS_PACKAGE).ok
 gcc: $(DL)/$(GCC_PACKAGE).ok
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
-	(cd toolchain && \
+	( cd toolchain && \
 	export PATH=$(PWD)/install/bin:\$(PATH)  && \
 	cd gcc-$(GCC_VERSION) && \
 	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
@@ -109,6 +111,12 @@ gcc: $(DL)/$(GCC_PACKAGE).ok
 
 .PHONY: gdb
 gdb:
+
+.PHONY:zlibc
+zlibc:
+	make -C zlibc/
+
+#update other things
 
 .PHONY: update
 update:update-bootloader update-wikireader
@@ -134,21 +142,29 @@ flash-bootloader: bootloader
 .PHONY: clean
 clean: 
 	make clean -C bootloader
+	make clean -C zlibc
 	cd jsp && make clean -C wikireader
+	rm -r toolchain/gcc-$(GCC_VERSION)
+	rm -r toolchain/binutils-$(BINUTILS_VERSION)
 
 .PHONY:help
 help:
-	@echo "\
+	@echo "\n\
 all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
 wikireader:		compile wikireader then you can see kernel file you need.\n\
+toolchain:		make toolchain-download gcc gdb bintuils.\n\
+toolchain-download:	downlaod gcc and bintuils code we need.\n\
+bintuils: 		compile bintuils.\n\
+gcc:			compile gcc.\n\
+zlibc:			compile zlibc (libc.a).\n\
 update:			both update-bootloader update-wikireader.\n\
 update-bootloader: 	update the bootloader source.\n\
 update-wikireader: 	update the wikireader source.\n\
 check-makefile:		diff the remote makefile.\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
-			make sure the serial console is /dev/ttyUSB0.\n\
+				-make sure the serial console is /dev/ttyUSB0.\n\
 clean: 			clean all.\n\
-					openmoko, Inc.\n "
+				openmoko, Inc.\n "
 
