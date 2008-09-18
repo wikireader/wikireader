@@ -28,11 +28,18 @@ static inline void init_pins(void)
 
 	/* board specific things */
 #ifdef BOARD_S1C33E07
-	REG_PA_IOC = 0x08;
+	/* SDCARD CS# */
+	REG_PA_IOC = (1 << 3);
+	/* EEPROM WP# */
+	REG_P1_IOC1 = (1 << 4);
 #elif BOARD_PROTO1
-	REG_PA_IOC = 0x08;
+	/* SDCARD CS# */
+	REG_PA_IOC = (1 << 3);
 #elif BOARD_PRT33L17LCD 
-	REG_P8_IOC8 = 0x10;
+	/* SDCARD CS# */
+	REG_P8_IOC8 = (1 << 3);
+	/* EEPROM WP# */
+	REG_P1_IOC1 = (1 << 4);
 #endif
 }
 
@@ -153,12 +160,15 @@ static inline void disable_card_power(void)
 #ifdef BOARD_S1C33E07
 	#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
 	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
+	#define EEPROM_WP_HI()	do { REG_P2_P2D  =   (1 << 6); } while (0)
 #elif BOARD_PROTO1
 	#define SDCARD_CS_LO()	do { REG_P5_DATA &= ~(1 << 0); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P5_DATA |=  (1 << 0); } while (0)
+	#define EEPROM_WP_HI()	do {} while (0)
 #elif BOARD_PRT33L17LCD
 	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
+	#define EEPROM_WP_HI()	do { REG_P2_P2D  =   (1 << 6); } while (0)
 #endif 
 
 #endif /* WIKIREADER_H */
