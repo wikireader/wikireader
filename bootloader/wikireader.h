@@ -27,7 +27,7 @@ static inline void init_pins(void)
   	REG_P9_47_CFP = 0x55;
 
 	/* board specific things */
-#ifdef BOARD_S1C33E07
+#if BOARD_S1C33E07
 	/* SDCARD CS# */
 	REG_PA_IOC = (1 << 3);
 	/* EEPROM WP# */
@@ -162,8 +162,8 @@ static inline void disable_card_power(void)
 	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
 	#define EEPROM_WP_HI()	do { REG_P2_P2D  =   (1 << 6); } while (0)
 #elif BOARD_PROTO1
-	#define SDCARD_CS_LO()	do { REG_P5_DATA &= ~(1 << 0); } while (0)
-	#define SDCARD_CS_HI()	do { REG_P5_DATA |=  (1 << 0); } while (0)
+	#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
+	#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 	#define EEPROM_WP_HI()	do {} while (0)
 #elif BOARD_PRT33L17LCD
 	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)

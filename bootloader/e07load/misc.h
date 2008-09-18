@@ -5,14 +5,14 @@ extern int verbose_flag;
 
 #define msg(x...)                                                       \
 do {                                                                    \
-        fprintf(stderr, x);                                             \
-        fflush(stderr);                                                 \
+        fprintf(stdout, x);                                             \
+        fflush(stdout);                                                 \
 } while (0)
 
 #define debug(x...)                                                     \
 if (verbose_flag) {                                                     \
-        fprintf(stderr, x);                                             \
-        fflush(stderr);                                                 \
+        fprintf(stdout, x);                                             \
+        fflush(stdout);                                                 \
 } while (0)
 
 #define error(x...)                                                     \
