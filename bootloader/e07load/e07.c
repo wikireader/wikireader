@@ -26,9 +26,10 @@
 #include "e07.h"
 #include "misc.h"
 
-#define ID_E07 0x060e0700
-#define ID_L17 0x06151700
-#define ID_L18 0x06151701
+#define ID_E07		0x060e0700
+#define ID_E07_21	0x060e0721
+#define ID_L17		0x06151700
+#define ID_L18		0x06151701
 
 int sync_cpu(int fd)
 {
@@ -51,6 +52,9 @@ int sync_cpu(int fd)
 	switch (id) {
 		case ID_E07:
 			msg("CPU id does match E07!\n");
+			return 0;
+		case ID_E07_21:
+			msg("CPU id does match E07_21!\n");
 			return 0;
 		case ID_L17:
                 	msg("CPU id does match L17!\n");

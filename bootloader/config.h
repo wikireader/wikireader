@@ -1,0 +1,15 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define EEPROM1ST_LOAD_FROM_EEPROM 1
+//#define EEPROM1ST_LOAD_FROM_RS232 1
+
+#define BOARD_S1C33E07
+//#define BOARD_PRT33L17LCD 
+
+
+#ifdef BOARD_PROTO1
+#define EEPROM_SST25VF040
+#endif /* BOARD_PROTO1 */
+
+#endif /* CONFIG_H */

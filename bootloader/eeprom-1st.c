@@ -21,14 +21,12 @@
 #include "wikireader.h"
 #include "spi.h"
 #include "eeprom.h"
+#include "config.h"
 
 #define DEST 0x200
 
-#define LOAD_FROM_EEPROM 1
-//#define LOAD_FROM_RS232 1
-
 int main(void) {
-#ifdef LOAD_FROM_RS232
+#ifdef EEPROM1ST_LOAD_FROM_RS232
 	unsigned int len = 8192;
 #endif
 	u8 *dest = (u8 *) DEST;
@@ -37,7 +35,7 @@ int main(void) {
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
 
-#ifdef LOAD_FROM_EEPROM
+#ifdef EEPROM1ST_LOAD_FROM_EEPROM
 	/* read bytes from EEPROM and copy them to RAM */
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
@@ -47,7 +45,7 @@ int main(void) {
 	eeprom_load(0x300, dest, EEPROM_PAYLOAD_SIZE);
 #endif
 
-#ifdef LOAD_FROM_RS232
+#ifdef EEPROM1ST_LOAD_FROM_RS232
 	init_rs232();
 
 	/* read bytes from serial port and copy them to RAM */

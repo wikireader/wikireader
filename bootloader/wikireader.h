@@ -1,8 +1,7 @@
 #ifndef WIKIREADER_H
 #define WIKIREADER_H
 
-#define S1C33E07
-//#define PRT33L17LCD 
+#include "config.h"
 
 static inline void init_pins(void)
 {
@@ -28,9 +27,11 @@ static inline void init_pins(void)
   	REG_P9_47_CFP = 0x55;
 
 	/* board specific things */
-#ifdef S1C33E07
+#ifdef BOARD_S1C33E07
 	REG_PA_IOC = 0x08;
-#elif PRT33L17LCD 
+#elif BOARD_PROTO1
+	REG_PA_IOC = 0x08;
+#elif BOARD_PRT33L17LCD 
 	REG_P8_IOC8 = 0x10;
 #endif
 }
@@ -149,10 +150,13 @@ static inline void disable_card_power(void)
 #define TFT_CTL1_HI()	do { REG_P8_P8D |=  (1 << 3); } while (0)
 
 /* board specific GPIO functions */
-#ifdef S1C33E07
+#ifdef BOARD_S1C33E07
 	#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
 	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
-#elif PRT33L17LCD
+#elif BOARD_PROTO1
+	#define SDCARD_CS_LO()	do { REG_P5_DATA &= ~(1 << 0); } while (0)
+	#define SDCARD_CS_HI()	do { REG_P5_DATA |=  (1 << 0); } while (0)
+#elif BOARD_PRT33L17LCD
 	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
 #endif 

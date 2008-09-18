@@ -26,10 +26,21 @@ void eeprom_load(u32 addr, u8 *dest, u32 size)
 {
 	EEPROM_CS_LO();
 
+#ifdef EEPROM_SST25VF040
+	/* read high-speed */
+	spi_transmit(0x0b);
+#else
 	spi_transmit(0x03);
+#endif
+
 	spi_transmit(addr >> 16);
 	spi_transmit(addr >> 8);
 	spi_transmit(addr);
+
+#ifdef EEPROM_SST25VF040
+	/* dummy cycle */
+	spi_transmit(0x00);
+#endif
 
 	while (size--) {
 		spi_transmit(0x00);
