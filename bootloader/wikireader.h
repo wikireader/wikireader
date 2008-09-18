@@ -5,9 +5,6 @@
 
 static inline void init_pins(void)
 {
-	/* P50 & P52: CS lines */
-	REG_P5_IOC5 = 0x06;
-
 	/* P85: LCD_CS, P83: TFT_CTL1 */
 	REG_P8_IOC8 = 0x28;
 	REG_P8_03_CFP = 0x3f;
@@ -30,16 +27,21 @@ static inline void init_pins(void)
 	/* EEPROM WP# */
 	REG_P1_IOC1 = (1 << 4);
 #elif BOARD_PROTO1
-	/* SDCARD CS# */
-	REG_PA_IOC = (1 << 3);
 	/* P13 & P14: debug LEDs */
-	REG_P1_IOC1 = 0x1f;
+	REG_P1_IOC1 = 0x18;
+	/* SDCARD power */
+	REG_P3_IOC3 = 0x0f;
+	/* SDCARD CS# */
+	REG_P5_03_CFP = 0x01;
 #elif BOARD_PRT33L17LCD 
 	/* SDCARD CS# */
 	REG_P8_IOC8 = (1 << 3);
 	/* EEPROM WP# */
 	REG_P1_IOC1 = (1 << 4);
 #endif
+	
+	/* P50 & P52: CS lines */
+	REG_P5_IOC5 = 0x07;
 }
 
 
@@ -90,7 +92,7 @@ static inline void init_ram(void)
         /* P20-P27 functions */
         REG_P2_03_CFP = 0x55;
         REG_P2_47_CFP = 0x55;
-        REG_P5_03_CFP = 0x80;
+        REG_P5_03_CFP |= 0x80;
 
 	/* P85 */
 	REG_P8_45_CFP &= 0x03;
@@ -129,8 +131,8 @@ static inline void init_ram(void)
 }
 
 #if BOARD_PROTO1
-	#define enable_card_power()  do { REG_P1_P1D |=  (1 << 3); } while(0)
-	#define disable_card_power() do { REG_P1_P1D &= ~(1 << 3); } while(0)
+	#define enable_card_power()  do { REG_P3_P3D |=  (1 << 3); } while(0)
+	#define disable_card_power() do { REG_P3_P3D &= ~(1 << 3); } while(0)
 #else
 static inline void enable_card_power(void)
 {
@@ -172,7 +174,7 @@ static inline void disable_card_power(void)
 #elif BOARD_PRT33L17LCD
 	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
-	#define EEPROM_WP_HI()	do { REG_P2_P2D  =   (1 << 6); } while (0)
+	#define EEPROM_WP_HI()	do { REG_P2_P2D  =  (1 << 6); } while (0)
 #endif 
 
 #endif /* WIKIREADER_H */
