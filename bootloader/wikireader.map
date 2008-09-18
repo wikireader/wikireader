@@ -3,6 +3,6 @@
 # eeprom-1st has an offset of 1 for eeprom address compensation.
 
 0x1	eeprom-1st
-#0x300	eeprom-2nd
-#0x10000	gfxtool/homer.p
+0x300	eeprom-2nd
+0x10000	gfxtool/homer.p
 

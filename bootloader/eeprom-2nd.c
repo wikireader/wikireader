@@ -51,6 +51,13 @@ int main(void)
 	
 	/* load the 'could not boot from SD card' image */
 	eeprom_load(0x10000, 0x10000000, (320 * 240) / 2);
+#if BOARD_PROTO1
+	{
+		int i;
+		for (i = 0x10000000; i < 0x10000000 + (320 * 240) / 2; i++)
+			*(char *) i ^= 0xff;
+	}
+#endif
 	init_lcd();
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the

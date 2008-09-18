@@ -128,7 +128,7 @@ static void eeprom_erase_block (int fd, int block)
 	if (block_erased[block])
 		return;
 
-	msg("erasing 4k block @addr %d\n", a);
+	msg("erasing 4k block @addr 0x%08x\n", a);
 	eeprom_write_enable(fd, 1);
 	spi_cs_lo(fd);
 	cmdbuf[0] = SPI_WRITE;
