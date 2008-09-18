@@ -120,8 +120,14 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 static void eeprom_erase_block (int fd, int block)
 {
 	unsigned char cmdbuf[6];
-
+	static unsigned char block_erased[1 << 12] = { 0 };
 	int a = block << 12;
+
+	block &= (1 << 12) - 1;
+
+	if (block_erased[block])
+		return;
+
 	msg("erasing 4k block @addr %d\n", a);
 	eeprom_write_enable(fd, 1);
 	spi_cs_lo(fd);
@@ -134,6 +140,7 @@ static void eeprom_erase_block (int fd, int block)
 	write(fd, cmdbuf, sizeof(cmdbuf));
 	spi_cs_hi(fd);
 	usleep(100 * 1000);
+	block_erased[block] = 1;
 }
 
 static void eeprom_wait_ready (int fd)

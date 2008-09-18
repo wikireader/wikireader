@@ -5,9 +5,6 @@
 
 static inline void init_pins(void)
 {
-	/* P13 & P14: debug LEDs */
-	REG_P1_IOC1 = 0x18;
-
 	/* P50 & P52: CS lines */
 	REG_P5_IOC5 = 0x06;
 
@@ -35,6 +32,8 @@ static inline void init_pins(void)
 #elif BOARD_PROTO1
 	/* SDCARD CS# */
 	REG_PA_IOC = (1 << 3);
+	/* P13 & P14: debug LEDs */
+	REG_P1_IOC1 = 0x1f;
 #elif BOARD_PRT33L17LCD 
 	/* SDCARD CS# */
 	REG_P8_IOC8 = (1 << 3);
@@ -129,6 +128,10 @@ static inline void init_ram(void)
         REG_SDRAMC_INI = 0x10;  /* exit setup mode */
 }
 
+#if BOARD_PROTO1
+	#define enable_card_power()  do { REG_P1_P1D |=  (1 << 3); } while(0)
+	#define disable_card_power() do { REG_P1_P1D &= ~(1 << 3); } while(0)
+#else
 static inline void enable_card_power(void)
 {
 	REG_SRAMC_A0_BSL |= 1 << 1;
@@ -140,6 +143,7 @@ static inline void disable_card_power(void)
 	REG_SRAMC_A0_BSL |= 1 << 1;
 	*(volatile unsigned int *) 0x200000 = 0;
 }
+#endif
 
 #define DEBUGLED1_ON()	do { REG_P1_P1D &= ~(1 << 4); } while (0)
 #define DEBUGLED1_OFF()	do { REG_P1_P1D |=  (1 << 4); } while (0)
@@ -157,7 +161,7 @@ static inline void disable_card_power(void)
 #define TFT_CTL1_HI()	do { REG_P8_P8D |=  (1 << 3); } while (0)
 
 /* board specific GPIO functions */
-#ifdef BOARD_S1C33E07
+#if BOARD_S1C33E07
 	#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
 	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
 	#define EEPROM_WP_HI()	do { REG_P2_P2D  =   (1 << 6); } while (0)
