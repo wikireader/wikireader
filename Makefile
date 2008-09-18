@@ -22,7 +22,7 @@
 
 WR_SVN_SITE := wikipediardware.googlecode.com
 WR_SVN_PATH := svn/trunk
-WR_PATH := wikipediardware-read-only
+WR_PATH := .
 
 # ----- Toolchain configuration data --------------------------------------
 
@@ -48,7 +48,7 @@ all:	setup \
 
 .PHONY:setup
 setup:
-	svn checkout http://${MM_SVN_SITE}/${MM_SVN_PATH}/  ${WR_PATH}
+	svn checkout http://${WR_SVN_SITE}/${WR_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
 bootloader:zlibc 
