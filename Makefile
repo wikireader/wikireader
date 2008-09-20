@@ -40,14 +40,14 @@ DL=toolchain/dl
 # ----- configuration data --------------------------------------
 
 .PHONY: all
-all:	setup \
-	bootloader \
-	wikireader \
+all:	checkout \
 	zlibc \
-	toolchain 
+	toolchain \
+	bootloader \
+	wikireader 
 
-.PHONY:setup
-setup:
+.PHONY:checkout
+checkout:
 	svn checkout http://${WR_SVN_SITE}/${WR_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
@@ -117,7 +117,7 @@ gdb:
 zlibc:
 	make -C zlibc/
 
-#update other things
+#update and other things
 
 .PHONY: update
 update:update-bootloader update-wikireader
