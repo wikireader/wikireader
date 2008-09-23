@@ -31,7 +31,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {
     *handlers << new CreateIndex(QLatin1String("indexfile.index"));
     *handlers << new CreateText(QString());
-    *handlers << new ExtractTitles(QString());
+    *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
 }
 

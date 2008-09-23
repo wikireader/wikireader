@@ -19,15 +19,31 @@
 
 #include "ExtractTitles.h"
 
+#include <QStringList>
+#include <QTextStream>
+
 ExtractTitles::ExtractTitles(const QString& title)
     : m_titleFile(title)
 {}
 
 void ExtractTitles::parsingStarts()
-{}
+{
+    m_file.close();
+    m_file.setFileName(m_titleFile);
+    m_file.open(QFile::WriteOnly | QFile::Truncate);
+}
 
 void ExtractTitles::parsingFinished()
-{}
+{
+    m_file.close();
+}
 
-void ExtractTitles::handleArticle(const Article&)
-{}
+void ExtractTitles::handleArticle(const Article& article)
+{
+    QTextStream stream(&m_file); 
+    QStringList words = article.title().words();
+    for (int i = 0; i < words.count(); ++i) {
+        stream << words.join(" ") << "\n";
+        words.append(words.takeFirst());
+    }
+}

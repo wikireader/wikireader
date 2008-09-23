@@ -21,6 +21,7 @@
 #define ExtractTitles_h
 
 #include "ArticleHandler.h"
+#include <QFile>
 
 class ExtractTitles : public ArticleHandler {
 public:
@@ -32,6 +33,7 @@ public:
 
 private:
     QString m_titleFile;
+    QFile m_file;
 };
 
 #endif
