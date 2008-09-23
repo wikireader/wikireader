@@ -21,3 +21,19 @@
 
 ArticleHandler::~ArticleHandler()
 {}
+
+FileOutputArticleHandler::FileOutputArticleHandler(const QString& fileName)
+    : m_fileName(fileName)
+{}
+
+void FileOutputArticleHandler::parsingStarts()
+{
+    m_file.close();
+    m_file.setFileName(m_fileName);
+    m_file.open(QFile::WriteOnly | QFile::Truncate);
+}
+
+void FileOutputArticleHandler::parsingFinished()
+{
+    m_file.close();
+}

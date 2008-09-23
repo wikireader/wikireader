@@ -23,20 +23,9 @@
 #include <QTextStream>
 
 ExtractTitles::ExtractTitles(const QString& title)
-    : m_titleFile(title)
+    : FileOutputArticleHandler(title)
 {}
 
-void ExtractTitles::parsingStarts()
-{
-    m_file.close();
-    m_file.setFileName(m_titleFile);
-    m_file.open(QFile::WriteOnly | QFile::Truncate);
-}
-
-void ExtractTitles::parsingFinished()
-{
-    m_file.close();
-}
 
 void ExtractTitles::handleArticle(const Article& article)
 {

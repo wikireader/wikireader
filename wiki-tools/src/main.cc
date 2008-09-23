@@ -25,7 +25,6 @@
 #include "StreamReader.h"
 
 #include <QCoreApplication>
-#include <QFile>
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {

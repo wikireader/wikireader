@@ -21,19 +21,12 @@
 #define ExtractTitles_h
 
 #include "ArticleHandler.h"
-#include <QFile>
 
-class ExtractTitles : public ArticleHandler {
+class ExtractTitles : public FileOutputArticleHandler {
 public:
     ExtractTitles(const QString& titles);
 
-    void parsingStarts();
-    void parsingFinished();
     void handleArticle(const Article&);
-
-private:
-    QString m_titleFile;
-    QFile m_file;
 };
 
 #endif

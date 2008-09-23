@@ -21,23 +21,16 @@
 #define CreateIndex_h
 
 #include "ArticleHandler.h" 
-#include <QFile>
 
 /**
  * Extract Titles and build a simple index
  *   Title => Hash
  */
-class CreateIndex : public ArticleHandler {
+class CreateIndex : public FileOutputArticleHandler {
 public:
     CreateIndex(const QString& outputFile);
 
-    void parsingStarts();
-    void parsingFinished();
     void handleArticle(const Article&);
-
-private:
-    QString m_filePath;
-    QFile m_file;
 };
 
 #endif

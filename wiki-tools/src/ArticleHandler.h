@@ -22,6 +22,8 @@
 
 #include <Article.h>
 
+#include <QFile>
+
 /**
  * Called whenever a WikiMedia has been parsed. This allows
  * to easily hook in new filters/converters.
@@ -33,6 +35,18 @@ public:
     virtual void parsingStarts() = 0;
     virtual void handleArticle(const Article&) = 0;
     virtual void parsingFinished() = 0;
+};
+
+class FileOutputArticleHandler : public ArticleHandler {
+public:
+    FileOutputArticleHandler(const QString& output);
+
+    void parsingStarts();
+    void parsingFinished();
+
+protected:
+    QString m_fileName;
+    QFile m_file;
 };
 
 #endif
