@@ -21,6 +21,7 @@
 #define CreateIndex_h
 
 #include "ArticleHandler.h" 
+#include <QFile>
 
 /**
  * Extract Titles and build a simple index
@@ -36,6 +37,7 @@ public:
 
 private:
     QString m_filePath;
+    QFile m_file;
 };
 
 #endif

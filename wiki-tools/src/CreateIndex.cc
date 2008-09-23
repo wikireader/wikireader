@@ -18,6 +18,7 @@
  */
 
 #include "CreateIndex.h"
+#include <QTextStream>
 
 CreateIndex::CreateIndex(const QString& outputDir)
     : m_filePath(outputDir)
@@ -26,12 +27,20 @@ CreateIndex::CreateIndex(const QString& outputDir)
 
 // Do nothing here
 void CreateIndex::parsingStarts()
-{}
+{
+    m_file.close();
+    m_file.setFileName(m_filePath);
+    m_file.open(QFile::WriteOnly | QFile::Truncate);
+}
 
 void CreateIndex::parsingFinished()
 {
+    m_file.close();
 }
 
-void CreateIndex::handleArticle(const Article&)
+// TODO recognize redirections and resolve them
+void CreateIndex::handleArticle(const Article& article)
 {
+    QTextStream stream(&m_file); 
+    stream << article.title().title() << " " << article.hash() << "\n"; 
 }
