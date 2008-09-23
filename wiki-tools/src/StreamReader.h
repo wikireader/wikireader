@@ -32,13 +32,25 @@ class StreamReader {
 public:
     StreamReader();
 
-    bool hasError() const;
+    bool finished() const;
     bool write(const QByteArray& data);
     QList<Article> popArticles();
 
 private:
+    enum State {
+        State_None,
+        State_Page,
+        State_Title,
+        State_Revision,
+        State_Text,
+    };
+
     QXmlStreamReader m_xmlReader;
     QList<Article> m_queuedArticles;
+    Title m_currentTitle;
+    QString m_currentText;
+    QString m_pendingString;
+    State m_parseState;
 };
 
 #endif

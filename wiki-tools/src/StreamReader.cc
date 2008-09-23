@@ -20,18 +20,57 @@
 #include "StreamReader.h"
 
 StreamReader::StreamReader()
+    : m_parseState(State_None)
 {}
 
-bool StreamReader::hasError() const
+bool StreamReader::finished() const
 {
-    #warning TODO
-    return true;
+    return m_xmlReader.isEndDocument();
 }
 
-bool StreamReader::write(const QByteArray&)
+bool StreamReader::write(const QByteArray& data)
 {
-    #warning TODO
-    return false;
+    m_xmlReader.addData(data);
+
+    // Extract title and content from the XML Document
+    while (!m_xmlReader.atEnd()) {
+        m_xmlReader.readNext();
+
+        if (m_xmlReader.isStartElement()) {
+            if (m_xmlReader.name() == QLatin1String("page") && m_parseState == State_None) {
+                m_currentText = QString();
+                m_currentTitle = Title();
+                m_parseState = State_Page;
+            } else if (m_xmlReader.name() == QLatin1String("title") && m_parseState == State_Page) {
+                m_pendingString = QString();
+                m_parseState = State_Title;
+            } else if (m_xmlReader.name() == QLatin1String("revision") && m_parseState == State_Page) {
+                m_parseState = State_Revision;
+            } else if (m_xmlReader.name() == QLatin1String("text") && m_parseState == State_Revision) {
+                m_pendingString = QString();
+                m_parseState = State_Text;
+            }
+        } else if (m_xmlReader.isEndElement()) {
+            if (m_xmlReader.name() == QLatin1String("page") && m_parseState == State_Page) {
+                m_queuedArticles << Article(m_currentTitle, m_currentText);
+                m_parseState = State_None;
+            } else if (m_xmlReader.name() == QLatin1String("title") && m_parseState == State_Title) {
+                m_currentTitle = Title(m_pendingString);
+                m_pendingString = QString();
+                m_parseState = State_Page;
+            } else if (m_xmlReader.name() == QLatin1String("revision") && m_parseState == State_Revision) {
+                m_parseState = State_Page;
+            } else if (m_xmlReader.name() == QLatin1String("text") && m_parseState == State_Text) {
+                m_currentText = m_pendingString;
+                m_pendingString = QString();
+                m_parseState = State_Revision;
+            }
+        } else if (m_xmlReader.isCharacters() && (m_parseState == State_Title || m_parseState == State_Text)) {
+            m_pendingString.append(m_xmlReader.text());
+        }
+    }
+
+    return true;
 }
 
 QList<Article> StreamReader::popArticles()
