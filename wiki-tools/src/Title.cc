@@ -39,7 +39,11 @@ QStringList Title::words() const
     boundaryFinder.setPosition(lastPosition);
 
     for (int pos = boundaryFinder.toNextBoundary(); pos > 0; pos = boundaryFinder.toNextBoundary()) {
-        usedWords << m_title.mid(lastPosition, pos-lastPosition);
+        QString word = m_title.mid(lastPosition, pos - lastPosition);
+
+        // Do not add words that only contain ' '
+        if (!word.trimmed().isEmpty())
+            usedWords << m_title.mid(lastPosition, pos-lastPosition);
         lastPosition = pos;
     }
 
