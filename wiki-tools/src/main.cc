@@ -25,14 +25,19 @@
 #include "StreamReader.h"
 
 #include <QCoreApplication>
+#include <QFile>
 
-static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** argv)
+static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {
     *handlers << new CreateIndex(QString());
     *handlers << new CreateText(QString());
     *handlers << new ExtractTitles(QString());
     *handlers << new ExtractWords(QString());
 }
+
+#define INVOKE_HANDLERS(function)               \
+    foreach(ArticleHandler* handler, handlers)  \
+        handler->function;
 
 int main(int argc, char** argv)
 {
@@ -41,19 +46,28 @@ int main(int argc, char** argv)
     QList<ArticleHandler*> handlers;
     StreamReader reader;
 
+    QFile file;
+    if (!file.open(STDIN_FILENO, QFile::ReadOnly)) {
+        fprintf(stderr, "Failed to open stdin\n");
+        return EXIT_FAILURE;
+    }
+
     setupHandlers(&handlers, argc, argv);
 
-    foreach(ArticleHandler* handler, handlers)
-        handler->parsingStarts();
+    INVOKE_HANDLERS(parsingStarts())
 
     do {
+        // Write whatever is available
+        file.waitForReadyRead(-1);
+        reader.write(file.read(file.bytesAvailable()));
+
+        // Did we finish parsing an article?
         QList<Article> articles = reader.popArticles();
         foreach(ArticleHandler* handler, handlers)
             foreach(Article article, articles)
                 handler->handleArticle(article);
-    } while (!reader.hasError());
+    } while (!reader.finished());
 
-    foreach(ArticleHandler* handler, handlers)
-        handler->parsingFinished();
+    INVOKE_HANDLERS(parsingFinished())
 }
 
