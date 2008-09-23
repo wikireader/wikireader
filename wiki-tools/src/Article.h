@@ -33,11 +33,12 @@ public:
     bool isEmpty() const;
     Title   title() const;
     QString textContent() const;
-    QString hash() const;
+    QByteArray hash() const;
 
 private:
     Title   m_title;
     QString m_textContent;
+    mutable QByteArray m_result;
     bool    m_isEmpty;
 };
 

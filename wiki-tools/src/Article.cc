@@ -18,6 +18,7 @@
  */
 
 #include "Article.h"
+#include "sha1.h"
 
 Article::Article()
     : m_isEmpty(true)
@@ -44,8 +45,21 @@ QString Article::textContent() const
     return m_textContent;
 }
 
-QString Article::hash() const
+QByteArray Article::hash() const
 {
     // build sha1 hash of the text content
-    return QString();
+    if (!m_result.isEmpty())
+        return m_result;
+
+    SHA_CTX ctx;
+    SHA1_Init(&ctx);
+
+    QByteArray utf8 = m_textContent.toUtf8();
+    QByteArray result;
+    result.resize(20);
+    SHA1_Update(&ctx, utf8.constData(), utf8.length());
+    SHA1_Final((unsigned char*)result.data(), &ctx);
+
+    m_result = result.toHex();
+    return m_result;
 }

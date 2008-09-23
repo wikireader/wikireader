@@ -1,7 +1,12 @@
 TEMPLATE = app
 TARGET   = wiki-tools
 
-INCLUDEPATH += src/
+INCLUDEPATH += src/ mozilla-sha1/
+
+HEADERS += \
+    mozilla-sha1/sha1.h
+SOURCES += \
+    mozilla-sha1/sha1.c
 
 # Core functionality
 HEADERS += \
