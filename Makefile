@@ -39,9 +39,10 @@ DL=toolchain/dl
 
 # ----- configuration data --------------------------------------
 
+# If the user hasn't checked out sources, he/she should run 'make checkout'
+# first, then run 'make'
 .PHONY: all
-all:	checkout \
-	zlibc \
+all:    zlibc \
 	toolchain \
 	bootloader \
 	wikireader 
@@ -63,7 +64,7 @@ wikireader:
 	cp wikireader/sample1.elf ../kernel)
 
 .PHONY: toolchain
-toolchain:toolchain-download gcc gdb bintuils
+toolchain:toolchain-download gcc gdb binutils
 
 .PHONY:toolchain-download
 toolchain-download: \
@@ -80,8 +81,8 @@ $(DL)/$(BINUTILS_PACKAGE).ok:
 	wget -c -O $(DL)/$(BINUTILS_PACKAGE) $(BINUTILS_URL)
 	touch $@
 
-.PHONY: bintuils
-bintuils: $(DL)/$(BINUTILS_PACKAGE).ok
+.PHONY: binutils
+binutils: $(DL)/$(BINUTILS_PACKAGE).ok
 	mkdir -p install
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
 	( cd toolchain && \
@@ -95,7 +96,7 @@ bintuils: $(DL)/$(BINUTILS_PACKAGE).ok
 	make install )
 
 .PHONY: gcc
-gcc: $(DL)/$(GCC_PACKAGE).ok
+gcc: $(DL)/$(GCC_PACKAGE).ok binutils
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
@@ -155,9 +156,9 @@ all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
 wikireader:		compile wikireader then you can see kernel file you need.\n\
-toolchain:		make toolchain-download gcc gdb bintuils.\n\
-toolchain-download:	downlaod gcc and bintuils code we need.\n\
-bintuils: 		compile bintuils.\n\
+toolchain:		make toolchain-download gcc gdb binutils.\n\
+toolchain-download:	downlaod gcc and binutils code we need.\n\
+binutils: 		compile binutils.\n\
 gcc:			compile gcc.\n\
 zlibc:			compile zlibc (libc.a).\n\
 update:			both update-bootloader update-wikireader.\n\
