@@ -59,3 +59,19 @@ also comes in handy for testing with a smaller subset.
 There is this http://www.djangosnippets.org/snippets/139/ and a Trac plugin
 derived from this snippet. This looks like a rather good MediaWiki parser but
 I'm not sure if it implements Templates or not.
+
+== Performance ==
+time bzcat ./enwiki-latest-pages-articles.xml.bz2 > /dev/null
+real    35m11.656s
+user    32m6.628s
+sys     0m23.289s
+
+time bzcat ./enwiki-latest-pages-articles.xml.bz2 | ./openmoko-wikipediareader.git/wiki-tools/wiki-tools 
+
+real    77m41.179s
+user    73m9.870s
+sys     3m33.433s
+
+wc -l indexfile.index 
+7278279 indexfile.index
+
