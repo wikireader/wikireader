@@ -33,7 +33,9 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     *handlers << new CreateText(QString());
     *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
-    *handlers << new SplitArticles(50, QString("split_enwiki"));
+
+    // Enable that if you want to split articles
+    //*handlers << new SplitArticles(50, QString("split_enwiki"));
 }
 
 #define INVOKE_HANDLERS(function)               \
