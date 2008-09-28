@@ -21,6 +21,7 @@
 #include "CreateText.h"
 #include "ExtractWords.h"
 #include "ExtractTitles.h"
+#include "SplitArticles.h"
 
 #include "StreamReader.h"
 
@@ -32,6 +33,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     *handlers << new CreateText(QString());
     *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
+    *handlers << new SplitArticles(50, QString("split_enwiki"));
 }
 
 #define INVOKE_HANDLERS(function)               \

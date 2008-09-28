@@ -28,12 +28,22 @@ FileOutputArticleHandler::FileOutputArticleHandler(const QString& fileName)
 
 void FileOutputArticleHandler::parsingStarts()
 {
-    m_file.close();
-    m_file.setFileName(m_fileName);
-    m_file.open(QFile::WriteOnly | QFile::Truncate);
+    closeCurrentFile();
+    openFile(m_fileName);
 }
 
 void FileOutputArticleHandler::parsingFinished()
+{
+    closeCurrentFile();
+}
+
+void FileOutputArticleHandler::openFile(const QString& fileName)
+{
+    m_file.setFileName(fileName);
+    m_file.open(QFile::WriteOnly | QFile::Truncate);
+}
+
+void FileOutputArticleHandler::closeCurrentFile()
 {
     m_file.close();
 }

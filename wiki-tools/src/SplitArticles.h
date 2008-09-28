@@ -17,38 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ArticleHandler_h
-#define ArticleHandler_h
+#ifndef SplitArticles_h
+#define SplitArticles_h
 
-#include <Article.h>
+#include "ArticleHandler.h"
 
-#include <QFile>
-
-/**
- * Called whenever a WikiMedia has been parsed. This allows
- * to easily hook in new filters/converters.
- */
-class ArticleHandler {
+class SplitArticles : public FileOutputArticleHandler {
 public:
-    virtual ~ArticleHandler();
+    SplitArticles(int numberOfArticles, const QString& baseName);
 
-    virtual void parsingStarts() = 0;
-    virtual void handleArticle(const Article&) = 0;
-    virtual void parsingFinished() = 0;
-};
-
-class FileOutputArticleHandler : public ArticleHandler {
-public:
-    FileOutputArticleHandler(const QString& output);
-
+    void handleArticle(const Article&);
     void parsingStarts();
-    void parsingFinished();
 
-protected:
-    void openFile(const QString&);
-    void closeCurrentFile();
-    QString m_fileName;
-    QFile m_file;
+private:
+    void startNextSet();
+
+private:
+    const int m_splitAtNumberOfArticles;
+    int m_readArticles;
+    int m_fileNumber;
 };
 
 #endif

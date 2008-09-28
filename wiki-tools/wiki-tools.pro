@@ -27,10 +27,12 @@ HEADERS += \
     src/CreateIndex.h \
     src/CreateText.h \
     src/ExtractWords.h \
-    src/ExtractTitles.h
+    src/ExtractTitles.h \
+    src/SplitArticles.h
 SOURCES += \
     src/CreateIndex.cc \
     src/CreateText.cc \
     src/ExtractWords.cc \
     src/ExtractTitles.cc \
+    src/SplitArticles.cc \
     src/main.cc
