@@ -47,3 +47,15 @@ and download whatever you need.
 == Using the scripts ==
  bzcat ../../enwiki-latest-pages-articles.xml.bz2 |  php ./maintenance/importDump.php 
     output> 100 (6.85 pages/sec 6.85 revs/sec)
+
+= Rants and Notes =
+
+== Import failures ==
+the above script will go out of memory. wiki-tools can be used to split the dump
+into smaller dump files that can be imported one by one into the database. This
+also comes in handy for testing with a smaller subset.
+
+== Other parsers ==
+There is this http://www.djangosnippets.org/snippets/139/ and a Trac plugin
+derived from this snippet. This looks like a rather good MediaWiki parser but
+I'm not sure if it implements Templates or not.
