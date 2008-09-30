@@ -86,13 +86,13 @@ ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 
 OBJLDS= 
 
-LIBDIR= $(SRCDIR)/../zlibc/lib/
+LIBDIR= $(SRCDIR)/../mini-libc/lib/
 LIBS= $(LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 
 ### 4. Define compiler options, compilation rules and so on.
 ### Do not change the name about following 5 macros.
-INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) -I$(SRCDIR)/../zlibc/include
+INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) -I$(SRCDIR)/../mini-libc/include
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe

@@ -8,7 +8,7 @@ OBJCOPY=$(CROSS)objcopy
 
 ifneq ($(CROSS),)
 	LDFLAGS = -static -s --no-gc-sections -N -L$(LIBDIR)
-	CFLAGS = -Wall -I. -Iinclude -I../zlibc/include -nostdinc -gstabs -mlong-calls -fno-builtin -Os -mc33pe
+	CFLAGS = -Wall -I. -Iinclude -I../mini-libc/include -nostdinc -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 	ASFLAGS = -c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 else
 	CFLAGS = -Wall -I. -Iinclude -O2

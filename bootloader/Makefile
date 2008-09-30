@@ -6,7 +6,7 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=$(PWD)/../zlibc/lib
+LIBDIR=$(PWD)/../mini-libc/lib
 LIBS=$(LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)

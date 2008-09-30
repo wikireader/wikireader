@@ -42,7 +42,7 @@ DL=toolchain/dl
 # If the user hasn't checked out sources, he/she should run 'make checkout'
 # first, then run 'make'
 .PHONY: all
-all:    zlibc \
+all:    mini-libc \
 	toolchain \
 	bootloader \
 	wikireader 
@@ -52,7 +52,7 @@ checkout:
 	svn checkout http://${WR_SVN_SITE}/${WR_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
-bootloader:zlibc 
+bootloader:mini-libc 
 	( cd bootloader && \
 	make)
 
@@ -114,9 +114,9 @@ gcc: $(DL)/$(GCC_PACKAGE).ok binutils
 .PHONY: gdb
 gdb:
 
-.PHONY:zlibc
-zlibc:
-	make -C zlibc/
+.PHONY:mini-libc
+mini-libc:
+	make -C mini-libc/
 
 #update and other things
 
@@ -144,7 +144,7 @@ flash-bootloader: bootloader
 .PHONY: clean
 clean: 
 	make clean -C bootloader
-	make clean -C zlibc
+	make clean -C mini-libc
 	cd jsp && make clean -C wikireader
 	rm -r toolchain/gcc-$(GCC_VERSION)
 	rm -r toolchain/binutils-$(BINUTILS_VERSION)
@@ -160,7 +160,7 @@ toolchain:		make toolchain-download gcc gdb binutils.\n\
 toolchain-download:	downlaod gcc and binutils code we need.\n\
 binutils: 		compile binutils.\n\
 gcc:			compile gcc.\n\
-zlibc:			compile zlibc (libc.a).\n\
+mini-libc:			compile mini-libc (libc.a).\n\
 update:			both update-bootloader update-wikireader.\n\
 update-bootloader: 	update the bootloader source.\n\
 update-wikireader: 	update the wikireader source.\n\
