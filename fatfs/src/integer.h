@@ -5,7 +5,7 @@
 #ifndef _INTEGER
 
 /* These types must be 16-bit, 32-bit or larger integer */
-typedef int				INT;
+typedef signed int      INT;
 typedef unsigned int	UINT;
 
 /* These types must be 8-bit integer */
