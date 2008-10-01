@@ -101,6 +101,8 @@
 #include "kernel_id.h"
 #include "sample1.h"
 
+#include <ff.h>
+
 /*
  *  並行実行されるタスクへのメッセージ領域
  */
@@ -111,6 +113,8 @@ char	message[3];
  */
 UW	task_loop;		/* タスク内でのループ回数 */
 UW	tex_loop;		/* 例外処理ルーチン内でのループ回数 */
+
+static FATFS s_activeFatFs;
 
 /*
  *  並行実行されるタスク
@@ -257,12 +261,24 @@ void main_task(VP_INT exinf)
 #ifndef OMIT_VGET_TIM
 	SYSUTIM	utime1, utime2;
 #endif /* OMIT_VGET_TIM */
+        FRESULT result;
 
 	vmsk_log(LOG_UPTO(LOG_INFO), LOG_UPTO(LOG_EMERG));
 	syslog(LOG_NOTICE, "Sample program starts (exinf = %d).", (INT) exinf);
 
 	syscall(serial_ctl_por(TASK_PORTID,
 			(IOCTL_CRLF | IOCTL_FCSND | IOCTL_FCRCV)));
+
+#if 0
+        /*
+         * force the usage of fat
+         */
+        result = f_mount(0u, &s_activeFatFs); 
+        FIL file_object;
+        f_open(&file_object, "foo", FA_READ);
+#endif
+    
+        
 
 	/*
  	 *  ループ回数の設定
