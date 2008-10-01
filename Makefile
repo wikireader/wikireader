@@ -56,8 +56,13 @@ bootloader:mini-libc
 	( cd bootloader && \
 	make)
 
+.PHONY: fatfs
+fatfs: toolchain
+	( cd fatfs && \
+	make)
+
 .PHONY: wikireader
-wikireader:
+wikireader: mini-libc fatfs
 	( cd jsp && \
 	make -C cfg && \
 	make -C wikireader && \
