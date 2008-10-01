@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - FIL</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>FIL</h2>
+<p>The FIL structure (file object) holds state of a file. It is created by f_open function and discarded by f_close function. There is no member that can be changed by the application program.</p>
+
+<h4>FatFs</h4>
+<pre>
+typedef struct _FIL {
+    WORD    id;             /* Owner file system mount ID (inverted) */
+    BYTE    flag;           /* File status flags */
+    BYTE    csect;          /* Sector address in the cluster */
+    FATFS*  fs;             /* Pointer to the owner file system object */
+    DWORD   fptr;           /* File R/W pointer */
+    DWORD   fsize;          /* File size */
+    DWORD   org_clust;      /* File start cluster */
+    DWORD   curr_clust;     /* Current cluster */
+    DWORD   curr_sect;      /* Current sector */
+    DWORD   dir_sect;       /* Sector containing the directory entry */
+    BYTE*   dir_ptr;        /* Ponter to the directory entry in the window */
+    BYTE    buffer[512];    /* File R/W buffer */
+} FIL;
+</pre>
+
+<h4>Tiny-FatFs</h4>
+<pre>
+typedef struct _FIL {
+    WORD    id;             /* Owner file system mount ID (inverted) */
+    BYTE    flag;           /* File status flags */
+    BYTE    csect;          /* Sector address in the cluster */
+    FATFS*  fs;             /* Pointer to owner file system */
+    DWORD   fptr;           /* File R/W pointer */
+    DWORD   fsize;          /* File size */
+    CLUST   org_clust;      /* File start cluster */
+    CLUST   curr_clust;     /* Current cluster */
+    DWORD   curr_sect;      /* Current sector */
+    DWORD   dir_sect;       /* Sector containing the directory entry */
+    BYTE*   dir_ptr;        /* Ponter to the directory entry in the window */
+} FIL;
+</pre>
+</div>
+
+<p class="foot"><a href="../00index_e.html">Return</a></p>
+</body>
+</html>

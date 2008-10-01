@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_j.html">
+<link rel="stylesheet" href="../css_j.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - DIR</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>DIR</h2>
+<p><tt>DIR</tt>構造体は、f_opendir(), f_readdir()のワーク・エリアとして使用されます。</p>
+<h4>FatFs</h4>
+<pre>
+typedef struct _DIR {
+    WORD    id;          /* Owner file system mount ID (inverted) */
+    WORD    index;       /* Current index */
+    FATFS*  fs;          /* Pointer to the owner file system object */
+    DWORD   sclust;      /* Start cluster */
+    DWORD   clust;       /* Current cluster */
+    DWORD   sect;        /* Current sector */
+} DIR;
+</pre>
+<h4>Tiny-FatFs</h4>
+<pre>
+typedef struct _DIR {
+    WORD    id;          /* Owner file system mount ID (inverted) */
+    WORD    index;       /* Current index */
+    FATFS*  fs;          /* Pointer to the owner file system object */
+    CLUST   sclust;      /* Start cluster */
+    CLUST   clust;       /* Current cluster */
+    DWORD   sect;        /* Current sector */
+} DIR;
+</pre>
+</div>
+
+<p class="foot"><a href="../00index_j.html">戻る</a></p>
+</body>
+</html>

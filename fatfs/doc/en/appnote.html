@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs Module Application Note</title>
+</head>
+
+<body>
+<h1>FatFs Module Application Note</h1>
+<hr>
+
+<div class="para">
+<h3>Considerations on porting to various platform</h3>
+<p>The FatFs module is assuming following terms on portability.</p>
+<ul>
+<li>ANSI C<br>
+The FatFs module is a middleware that written in ANSI C. There is no platform dependence, so long as the compiler is in compliance with ANSI C. However it handles the system portable FAT structures. You must take the <strong>endian</strong> into consideration. This setting is defined in ff.h (tff.h). It must be changed for your platform first or the compiler will abort with an error.</li>
+<li>Size of char/short/long are 8/16/32-bit and int is 16 or 32 bit.<br>
+These correspondence are defined in integer.h. This will not be a problem on most compilers. When any conflict of the definitions between the integer.h and existing definitions is occured, you must resolve the confrict with care.</li>
+</ul>
+</div>
+
+<div class="para">
+<h3>Memory Usage (R0.06)</h3>
+<p>These are the memory usage on some target systems. The memory sizes are in unit of byte, D means number of logical drives and F means number of open files. All samples are optimezed in code size.</p>
+<table class="lst2">
+<tr><th></th><th>AVR</th><th>H8/300H</th><th>PIC</th><th>MSP430</th><th>TLCS-870/C</th><th>V850ES</th><th>SH2</th></tr>
+<tr><td>Compiler</td><td>WinAVR(gcc)</td><td>CH38</td><td>C30(gcc)</td><td>CL430</td><td>CC870C</td><td>CA850</td><td>SHC</td></tr>
+<tr><td>_MCU_ENDIAN</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td></tr>
+<tr class="lst3"><td>FatFs Code<br>(Full, R/W)</td><td>9280</td><td>9348</td><td>9387</td><td></td><td></td><td>6728</td><td>7538</td></tr>
+<tr><td>FatFs Code<br>(Minimum, R/W)</td><td>5814</td><td>5798</td><td>5913</td><td></td><td></td><td>4094</td><td>4742</td></tr>
+<tr><td>FatFs Code<br>(Full, R/O)</td><td>4402</td><td>4236</td><td>4371</td><td></td><td></td><td>3054</td><td>3474</td></tr>
+<tr><td>FatFs Code<br>(Minimum, R/O)</td><td>3066</td><td>3158</td><td>3213</td><td></td><td></td><td>2172</td><td>2630</td></tr>
+<tr><td>FatFs Work (Static)</td><td>D*2+2</td><td>D*4+2</td><td>D*2+2</td><td></td><td></td><td>D*4+2</td><td>D*4+2</td></tr>
+<tr><td>FatFs Work (Dynamic)</td><td>D*554+F*544</td><td>D*554+F*550</td><td>D*554+F*544</td><td></td><td></td><td>D*554+F*550</td><td>D*554+F*550</td></tr>
+<tr class="lst3"><td>Tiny-FatFs Code<br>(Full, R/W)</td><td>7628</td><td>7668</td><td>7560</td><td>7108</td><td>9501</td><td>5978</td><td>6640</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Minimum, R/W)</td><td>4684</td><td>4820</td><td>4698</td><td>4390</td><td>6322</td><td>3678</td><td>4236</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Full, R/O)</td><td>3634</td><td>3600</td><td>3618</td><td>3382</td><td>4554</td><td>2722</td><td>3072</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Minimum, R/O)</td><td>2524</td><td>2700</td><td>2601</td><td>2398</td><td>3390</td><td>1862</td><td>2300</td></tr>
+<tr><td>Tiny-FatFs Wrok (Static)</td><td>4</td><td>6</td><td>4</td><td>4</td><td>4</td><td>6</td><td>6</td></tr>
+<tr><td>Tiny-FatFs Work (Dynamic)</td><td>544+F*28</td><td>544+F*32</td><td>544+F*28</td><td>544+F*28</td><td>544+F*28</td><td>544+F*32</td><td>544+F*32</td></tr>
+</table>
+</div>
+
+<div class="para">
+<h3>FatFs vs. Tiny-FatFs</h3>
+<p>For most applications, such as portable audio and data logger, Tiny-FatFs is the best choice. However because the Tiny-FatFs does not support FAT32 in default, there is a limitation that can handle only tiny storage upto 2GB(4GB in FAT64). The FAT32 support can be added by <tt>_USE_FAT32</tt> option with an additional code size. The FatFs is suitable for fast multiple files access, and for multiple drive system.</p>
+<div class="rset">
+<table class="lst2">
+<tr><th>Memory Size</th><th>FAT Type</th></tr>
+<tr><td>&lt;= 64MB</td><td>FAT12</td></tr>
+<tr><td>128MB - 2GB</td><td>FAT16</td></tr>
+<tr><td>&gt;= 4GB</td><td>FAT32</td></tr>
+</table>
+</div>
+<p>Rignt table shows the correspondence between memory size and FAT type for SD memroy card and they are shipped with this format. The data area is justified to the erase block boundary and the memory card works with the best performance. For that reason, the memory card should not be reformated with PC. When cluster size or FAT type is changed, the write performance can be decreased.</p>
+</div>
+
+
+<div class="para">
+<h3>Performance effective file access</h3>
+<p>For good performance on reading/writing files on the small embedded system, application program should consider what process is done in the FatFs module. The file data on the disk is transferred by f_read function in these sequence.</p>
+<p>Figure 1. Sector miss-aligned read (short)<br>
+<img src="../img/f1.png" width="490" height="73">
+</p>
+<p>Figure 2. Sector miss-aligned read (long)<br>
+<img src="../img/f2.png" width="490" height="140">
+</p>
+<p>Figure 3. Sector aligned read<br>
+<img src="../img/f3.png" width="490" height="119">
+</p>
+<p>The file I/O buffer means a sector buffer to read/write a partial data on the sector. On the FatFs, member buffer[] in the file object is used. On the Tiny-FatFs, member win[] in the file system object is used.</p>
+<p>Tiny-FatFs processes all file data transfer and access to the FAT/directory with only one sector buffer, so that FAT sector cached into the buffer is lost and it must reloaded at every cluster boundary. FatFs has a FAT/directory buffer separated from file I/O buffer, the frequency of FAT accesses is only 1/341, 1/256 or 1/128 (when cluster is contiguous) compared to Tiny-FatFs. Thus the Tiny-FatFs is sacrificing its performance in compensation for very small memory footprint.</p>
+<p>Figure 1 shows that partial sector data is transferred via the file I/O buffer. At long data transfer shown in Figure 2, middle of transfer data that aligned to sector boundary is transferred into memory directly. Figure 3 shows that entier transfer data is aligned to the sector boundary. In this case, file I/O buffer is not used. At the unbuffered transfer, maximum extent of sectors are read with disk_read function at a time but it never across cluster boundary even if it is contiguous.</p>
+<p>Therefore taking effort to sector aligned read/write accesss eliminates memcpy and the read/write performance will be improved. Besides the effect, cached FAT sector is not flushed during read/write access on the Tiny-FatFs, so that it can achieve same performance as FatFs and its small memory footprint simultanesously.</p>
+</div>
+
+
+<div class="para">
+<h3>Critical section</h3>
+<p>When write operation to the FAT file system is interrupted due to any accidental failure, such as sudden blackout, incorrect disk removal and unrecoverable data error, the FAT structure can be destroyed. Following images shows the critical section on the FatFs module.</p>
+<div class="lset">
+Figure 4. Long critical section<br>
+<img src="../img/f4.png" width="320" height="436" alt="fig.4">
+</div>
+<div class="lset">
+Figure 5. Minimized critical section<br>
+<img src="../img/f5.png" width="320" height="436" alt="fig.5">
+</div>
+<br class="clr">
+<p>An interruption in the red section can cause a cross link; as a result, the file/directory being changed will be lost. There is one or more possibility listed below when an interruption in the yellow section is occured.</p>
+<ul>
+<li>File data being rewrited is collapted.</li>
+<li>A file being appended returns initial state.</li>
+<li>A file created as new is gone.</li>
+<li>A file created as new or in overwritten remains with length of zero.</li>
+<li>Efficiency of disk use gets worse due to lost chain.</li>
+</ul>
+<p>Each case does not affect the files that not in write operation. To minimize risk of data loss, the critical section can be minimized like shown in Figure 5 by minimizing the time that file is opened in write mode and using f_sync function properly.</p>
+</div>
+
+
+<div class="para">
+<h3>Problems and Ideas</h3>
+<ul>
+<li>Abstraction of file object<br>
+Currently the file object structure is held by application layer. This is not a problem for Tiny-FatFs, it consumes the task stack only 26 bytes per file. But FatFs requires 550 bytes per file. When managed the file objects in file handle, stack consumption at application module will able to be reduced. In this case, the work area for file objects is managed in FatFs module. This has a disadvantage that direct access to the file object structure cannot be used and additional file functions, such as feof and ftell, will be needed.</li>
+<li>Efficient sector buffer management<br>
+The FatFs module has only one sector buffer per logical drive. There is an ineffciency on random file access with many files simultanesously. When additional memory for the sector buffer is available, the file access performance will able to be improved with an advanced cache mechanism.</li>
+<li>Long file name<br>
+There is an extended feature to handle long file name (LFN) up to 255 characters, in addition to 8.3 format file name, on FAT file system. To support this, 512 byte string buffer for file name and UCS-2 - Shift_JIS mutual conversion table are required. Therefore memory consumption of code and work area will be increased drastically. The FatFs module does not support this feature. The LFN on the FAT file system is a patent of Microsoft. When support it on the commercial products, you have to be licensed.</li>
+<li>Porting to RTOS<br>
+When use FatFs module from only one task, no consideration is needed. However when make access to a logical drive from two or more tasks simultanesously, any exclusion control will be required. The FatFs module is also ported to a free RTOS based on &mu;ITRON by <a href="http://www.toppers.jp/en/index.html">TOPPERS Project</a>.</li>
+</ul>
+<br>
+<p>These are the problems and ideas on current revision of FatFs module. However the main target of FatFs module is 8 bit microcontrollers. These extensions requires much resource and the FatFs will unable to be ported to the 8 bit system. This may be the most serious problem on future plan.</p>
+</div>
+
+<p class="foot"><a href="../00index_e.html">Return</a></p>
+</body>
+</html>

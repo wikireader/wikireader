@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - DIR</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>DIR</h2>
+<p>The <tt>DIR</tt> structure is used for the work area to read a directory by f_oepndir and f_readdir functions.</p>
+<h4>FatFs</h4>
+<pre>
+typedef struct _DIR {
+    WORD    id;          /* Owner file system mount ID (inverted) */
+    WORD    index;       /* Current index */
+    FATFS*  fs;          /* Pointer to the owner file system object */
+    DWORD   sclust;      /* Start cluster */
+    DWORD   clust;       /* Current cluster */
+    DWORD   sect;        /* Current sector */
+} DIR;
+</pre>
+<h4>Tiny-FatFs</h4>
+<pre>
+typedef struct _DIR {
+    WORD    id;          /* Owner file system mount ID (inverted) */
+    WORD    index;       /* Current index */
+    FATFS*  fs;          /* Pointer to the owner file system object */
+    CLUST   sclust;      /* Start cluster */
+    CLUST   clust;       /* Current cluster */
+    DWORD   sect;        /* Current sector */
+} DIR;
+</pre>
+</div>
+
+<p class="foot"><a href="../00index_e.html">Return</a></p>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_j.html">
+<link rel="stylesheet" href="../css_j.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - ファイル・ディレクトリの指定方法</title>
+</head>
+
+<body>
+<div class="para">
+<h2>ファイル・ディレクトリの指定方法</h2>
+<p>FatFsモジュールでのファイル、ディレクトリ、ドライブの指定方法はMS-DOSとほぼ同じです。ただし、一般的なOSのようなカレント・ディレクトリの概念は無いので、常にルート・ディレクトリから辿る絶対パスでの指定となります。パス名の指定方法と例は次の通りです。</p>
+<pre>
+
+ "[<em>論理ドライブ番号</em>:][/]<em>ディレクトリ名</em>/<em>ファイル名</em>"
+
+ "file1.txt"           ファイル(ドライブ0)
+ "/file1.txt"          ↑と同じ
+ "dir1/dir2/file1.txt" ファイル(ドライブ0)
+ "2:dir3/file2.txt"    ファイル(ドライブ2)
+ "2:/dir5"             ディレクトリ(ドライブ2)
+ ""                    ルート・ディレクトリ(ドライブ0)
+ "/"                   ↑と同じ
+ "2:"                  ルート・ディレクトリ(ドライブ2)
+
+</pre>
+<p>FatFsモジュールは8.3形式ファイル名にのみ対応しています。長いファイル名には対応していないので、ファイル名やディレクトリ名は8.3形式の範囲内で指定します。ディレクトリ・セパレータには'/'を使用します。パス名先頭の'/'は、あってもなくても同じです。論理ドライブ番号は、'0'～'9'の一文字の数字とコロンで指定します。省略した場合は"0:"を指定したことになります。Tiny-FatFsでは一つのファイル・システム・オブジェクトしか持てず、常に論理ドライブ0として動作します。また、パス名中に論理ドライブ番号を使用できません。</p>
+</div>
+<p><br></p>
+<div class="para">
+<h2>論理ドライブと物理ドライブの対応</h2>
+<p>標準構成では、それぞれの論理ドライブは同じ番号の物理ドライブに1:1で結びつけられていて、先頭の区画がマウントされます。構成オプションで<tt>_MULTI_PARTITION</tt>を指定すると、論理ドライブに対して個別に物理ドライブ番号・区画を指定できるようになります。この構成では、論理ドライブと区画の対応を解決するためのテーブルを次に示すように定義する必要があります。</p>
+<pre>
+例:論理ドライブ0～2を物理ドライブ0(固定ディスク)の3つの基本区画に割り当て、
+   論理ドライブ3を物理ドライブ1(リムーバブル・ディスク)に割り当てる場合。
+
+const PARTITION Drives[] = {
+    {0, 0},     /* Logical drive 0 ==> Physical drive 0, 1st partition */
+    {0, 1},     /* Logical drive 1 ==> Physical drive 0, 2nd partition */
+    {0, 2},     /* Logical drive 2 ==> Physical drive 0, 3rd partition */
+    {1, 0}      /* Logical drive 3 ==> Physical drive 1 */
+};
+</pre>
+<p>複数区画指定を使用する場合、次の点に注意しなければなりません。
+<ul>
+<li>指定可能な区画は基本区画(0～3)のみ。</li>
+<li>物理ドライブがSFD形式(区画テーブル無し)の場合、区画指定は無視される。</li>
+<li>複数の論理ドライブを持つ物理ドライブは、固定ディスクでなければならない。</li>
+</li>
+
+</div>
+
+</body>
+</html>

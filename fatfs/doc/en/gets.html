@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - fgets</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>fgets</h2>
+<p>The fgets reads a string from the file.</p>
+<pre>
+char* fgets (
+  char* <em>Str</em>,        /* Read buffer */
+  int <em>Size</em>,         /* Size of the read buffer */
+  FIL* <em>FileObject</em>   /* File object */
+);
+</pre>
+</div>
+
+<div class="para">
+<h4>Parameters</h4>
+<dl class="par">
+<dt>Str</dt>
+<dd>Pointer to read buffer to store the read string.</dd>
+<dt>Size</dt>
+<dd>Size of the read buffer.</dd>
+<dt>FileObject</dt>
+<dd>Pointer to the open file object structure.</dd>
+</dl>
+</div>
+
+
+<div class="para">
+<h4>Return Values</h4>
+<p>When the function succeeded, <tt>Str</tt> will be returuned.</p>
+</div>
+
+
+<div class="para">
+<h4>Description</h4>
+<p>The fgets() is a wrapper function of <a href="read.html">f_read()</a>. The read operation continues until a <tt>'\n'</tt> is stored, reached end of file or buffer is filled with Size - 1 characters. The read string is terminated with a <tt>'\0'</tt>. When the file is already reached end of file or any error occured during read operation, fgets() returns a <tt>NULL</tt>. The EOF status can be examined with <tt>feof()</tt> macro.</p>
+<p>This function is available when <tt>_USE_STRFUNC</tt> is 1 or 2. When it is set to 2, <tt>'\r'</tt> contained in the file is stripped.</p>
+</div>
+
+
+<div class="para">
+<h4>References</h4>
+<p><tt><a href="open.html">f_open</a>, <a href="read.html">f_read</a>, <a href="putc.html">fputc</a>, <a href="puts.html">fputs</a>, <a href="printf.html">fprintf</a>, <a href="close.html">f_close</a>, <a href="sfile.html">FIL</a></tt></p>
+</div>
+
+<p class="foot"><a href="../00index_e.html">Return</a></p>
+</body>
+</html>

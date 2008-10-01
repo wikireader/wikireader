@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="alternate" hreflang="ja" title="Japanese version" href="00index_j.html">
+<link rel="stylesheet" href="css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>ELM - FAT File System Module</title>
+</head>
+
+<body>
+<h1>FAT File System Module</h1>
+<hr>
+
+<div class="abst">
+<img src="img/layers.png" class="rset" width="245" height="255" alt="layer">
+<p>FatFs is a generic file system module to implement the FAT file system to small embedded systems. The FatFs is written in compliance with ANSI C, therefore it is independent of hardware architecture. It can be incorporated into cheap microcontrollers, such as 8051, PIC, AVR, SH, Z80, H8, ARM and etc..., without any change.</p>
+
+<h4>Features of FatFs</h4>
+<ol>
+ <li>Separated buffer for FAT structure and each file, suitable for fast multiple file access.</li>
+ <li>Supports multiple drives and partitions.</li>
+ <li>Supports FAT12, FAT16 and FAT32.</li>
+ <li>Supports 8.3 format file name. (LFN is not supported)</li>
+ <li>Supports two partitioning rules: FDISK and Super-floppy.</li>
+ <li>Optimized for 8/16-bit microcontrollers.</li>
+</ol>
+<h4>Features of Tiny-FatFs (different to FatFs)</h4>
+<ol>
+ <li>Very low memory consumption, suitable for small memory system. (1KB RAM)</li>
+ <li>Supports only single drive.</li>
+</ol>
+</div>
+
+
+<div class="para">
+<h3>Application Interface</h3>
+<p>FatFs/Tiny-FatFs module provides following functions.</p>
+<ul>
+<li><a href="en/mount.html">f_mount</a> - Register or Unregister a Work Area</li>
+<li><a href="en/open.html">f_open</a> - Open or Create a File</li>
+<li><a href="en/close.html">f_close</a> - Close a File</li>
+<li><a href="en/read.html">f_read</a> - Read File</li>
+<li><a href="en/write.html">f_write</a> - Write File</li>
+<li><a href="en/lseek.html">f_lseek</a> - Move File R/W Pointer</li>
+<li><a href="en/truncate.html">f_truncate</a> - Truncate File</li>
+<li><a href="en/sync.html">f_sync</a> - Flush Cached Data</li>
+<li><a href="en/opendir.html">f_opendir</a> - Open a Directory</li>
+<li><a href="en/readdir.html">f_readdir</a> - Read a Directory Item</li>
+<li><a href="en/getfree.html">f_getfree</a> - Get Free Clusters</li>
+<li><a href="en/stat.html">f_stat</a> - Get File Status</li>
+<li><a href="en/mkdir.html">f_mkdir</a> - Create a Directory</li>
+<li><a href="en/unlink.html">f_unlink</a> - Remove a File or Directory</li>
+<li><a href="en/chmod.html">f_chmod</a> - Change Attribute</li>
+<li><a href="en/utime.html">f_utime</a> - Change Timestamp</li>
+<li><a href="en/rename.html">f_rename</a> - Rename/Move a File or Directory</li>
+<li><a href="en/mkfs.html">f_mkfs</a> - Create a File System on the Drive</li>
+<li><a href="en/forward.html">f_forward</a> - Forward file data to the stream directly</li>
+<li><a href="en/gets.html">fgets</a> - Read a string</li>
+<li><a href="en/putc.html">fputc</a> - Write a character</li>
+<li><a href="en/puts.html">fputs</a> - Write a string</li>
+<li><a href="en/printf.html">fprintf</a> - Write a formatted string</li>
+
+</ul>
+</div>
+
+
+<div class="para">
+<h3>Disk I/O Interface</h3>
+<p>Since the FatFs/Tiny-FatFs module is completely separated from disk I/O layer, it requires following functions to lower layer to read/write physical disk and to get current time. The low level disk I/O module with this interface must be provided by user. The sample drivers are also available in the next resources.</p>
+<ul>
+<li><a href="en/dinit.html">disk_initialize</a> - Initialize disk drive</li>
+<li><a href="en/dstat.html">disk_status</a> - Get disk status</li>
+<li><a href="en/dread.html">disk_read</a> - Read sector(s)</li>
+<li><a href="en/dwrite.html">disk_write</a> - Write sector(s)</li>
+<li><a href="en/dioctl.html">disk_ioctl</a> - Control device dependent features</li>
+<li><a href="en/fattime.html">get_fattime</a> - Get current time</li>
+</ul>
+</div>
+
+
+<div class="para">
+<h3>Resources</h3>
+<p>The FatFs/Tiny-FatFs module is a free software and is opened for education, research and development. You can use, modify and/or republish it for personal, non-profit or commercial use without any restriction under your responsibility.</p>
+<ul>
+<li><a href="en/appnote.html">FatFs module application note</a></li>
+<li><a href="img/rwtest.png">Benchmark</a> (Test Board: ATmega64/9.2MHz with <a href="img/rw_mmc.jpeg">MMC</a>/<a href="img/rw_ata.jpeg">HDD</a>/<a href="img/rw_cfc.jpeg">CFC</a>)</li>
+<li><a href="http://www.microsoft.com/whdc/system/platform/firmware/fatgen.mspx">FAT32 Specification</a> (Microsoft)</li>
+<li><a href="http://elm-chan.org/docs/mmc/mmc_e.html">How to Use MMC/SDC</a></li>
+</ul>
+</div>
+
+
+</body>
+</html>

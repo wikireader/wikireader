@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - File and Path name on the FatFs module</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>File and Path name on the FatFs module</h2>
+<p>The format of file and path name on the FatFs module is similer to MS-DOS. However it does not have a concept of current directory like OS oriented file system. All objects on the drive are specified in full path name from the root directory.</p>
+<pre>
+
+ "[<em>drive#</em>:][/]<em>directory</em>/<em>file</em>"
+
+ "file1.txt"           a file on drive 0
+ "/file1.txt"          (same as above)
+ "dir1/dir2/file1.txt" a file on drive 0
+ "2:dir3/file2.txt"    a file on drive 2
+ "2:/dir5"             a directory on drive 2
+ ""                    the root directory on drive 0
+ "/"                   (same as above)
+ "2:"                  the root directory on drive 2
+
+</pre>
+<p>The FatFs module supports only 8.3 format file name and long file name is currentry not supported. For directory separator, a '/' is used, not a '\'. Heading '/' is ignored and can be omitted.</p>
+<p>The logical drive number is specified in a numeral with a colon. When the drive number is omitted, it is assumed default drive (0:). As for the Tiny-FatFs, it has only one logical drive and always works as drive 0. Any drive number cannot be contained in the path name.</p>
+</div>
+
+<p><br></p>
+<div class="para">
+<h2>Correspondence between logical/physical drive</h2>
+<p>In default, the FatFs module has work areas that called <em>file system object</em> for each logical drive. The logical drive is bound to the physical drive that has same drive number, and the first partition is mounted. When <tt>_MULTI_PARTITION</tt> is specified in configuration option, each individual logical drive can be bound to any physical drive/partition. In this case, a drive number resolution table must be defined as follows:</p>
+<pre>
+Example: Logical drive 0-2 are assigned to three pri-partitions on the physical drive 0 (fixed disk)
+         Logical drive 3 is assigned to physical drive 1 (removable disk)
+
+const PARTITION Drives[] = {
+    {0, 0},     /* Logical drive 0 ==> Physical drive 0, 1st partition */
+    {0, 1},     /* Logical drive 1 ==> Physical drive 0, 2nd partition */
+    {0, 2},     /* Logical drive 2 ==> Physical drive 0, 3rd partition */
+    {1, 0}      /* Logical drive 3 ==> Physical drive 1 */
+};
+</pre>
+<p>There are some consideration when use <tt>_MULTI_PARTITION</tt> configuration.</p>
+<ul>
+<li>Only pri-partition (0-3) can be mounted.</li>
+<li>When the physical drive have no partition table (super floppy format), the partition number is ignored.</li>
+<li>The physical drive that has two or more logical drives must be fixed drive.</li>
+</li>
+</div>
+
+</body>
+</html>

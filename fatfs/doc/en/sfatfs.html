@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_e.html">
+<link rel="stylesheet" href="../css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - FATFS</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>FATFS</h2>
+<p>The <tt>FATFS</tt> structure holds dynamic work area of individual logical drives. It is given by application program and registerd/unregisterd to the FatFs module with f_mount function. Following members are in standard configuration. There is no member that can be changed from the application program.</p>
+<h4>FatFs</h4>
+<pre>
+typedef struct _FATFS {
+    WORD    id;             /* File system mount ID */
+    WORD    n_rootdir;      /* Number of root directory entries */
+    DWORD   winsect;        /* Current sector appearing in the win[] */
+    DWORD   sects_fat;      /* Sectors per fat */
+    DWORD   max_clust;      /* Maximum cluster# + 1 */
+    DWORD   fatbase;        /* FAT start sector */
+    DWORD   dirbase;        /* Root directory start sector (cluster# for FAT32) */
+    DWORD   database;       /* Data start sector */
+    DWORD   last_clust;     /* Last allocated cluster */
+    DWORD   free_clust;     /* Number of free clusters */
+    BYTE    fs_type;        /* FAT type (0:Not mounted) */
+    BYTE    csize;          /* Sectors per cluster */
+    BYTE    n_fats;         /* Number of FAT copies */
+    BYTE    drive;          /* Physical drive number */
+    BYTE    winflag;        /* win[] dirty flag (1:must be written back) */
+    BYTE    pad1;
+    BYTE    win[512];       /* Disk access window for Directory/FAT */
+} FATFS;
+</pre>
+
+<h4>Tiny-FatFs</h4>
+<pre>
+typedef struct _FATFS {
+    WORD    id;             /* File system mount ID */
+    WORD    n_rootdir;      /* Number of root directory entries */
+    DWORD   winsect;        /* Current sector appearing in the win[] */
+    DWORD   fatbase;        /* FAT start sector */
+    DWORD   dirbase;        /* Root directory start sector */
+    DWORD   database;       /* Data start sector */
+    CLUST   sects_fat;      /* Sectors per fat */
+    CLUST   max_clust;      /* Maximum cluster# + 1 */
+    CLUST   last_clust;     /* Last allocated cluster */
+    CLUST   free_clust;     /* Number of free clusters */
+    BYTE    fs_type;        /* FAT type (0:Not mounted) */
+    BYTE    csize;          /* Sectors per cluster */
+    BYTE    n_fats;         /* Number of FAT copies */
+    BYTE    winflag;        /* win[] dirty flag (1:must be written back) */
+    BYTE    win[512];       /* Disk access window for Directory/FAT/File */
+} FATFS;
+</pre>
+</div>
+
+<p class="foot"><a href="../00index_e.html">Return</a></p>
+</body>
+</html>

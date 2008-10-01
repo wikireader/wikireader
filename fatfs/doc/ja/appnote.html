@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_j.html">
+<link rel="stylesheet" href="../css_j.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFsモジュール アプリケーション・ノート</title>
+</head>
+
+<body>
+<h1>FatFsモジュール アプリケーション・ノート</h1>
+<hr>
+
+<div class="para">
+<h3>移植の際に配慮すべきこと</h3>
+<p>FatFsモジュールは移植性に関して次の点を前提としています。</p>
+<ul>
+<li>処理系はANSI C準拠であること。<br>
+FatFsモジュールはANSI C準拠で記述されているので、ANSI C準拠のコンパイラなら特に処理系依存な点はありません。ただし、FATというシステム間でポータブルな構造体を操作するため、プロセッサのエンディアンの違いは意識する必要があります。これは ff.h(tff.h) で定義されているので、最初にこれを適切に設定します。</li>
+<li>char/short/longのサイズは、それぞれ8/16/32ビットで、intは16または32ビットであること。<br>
+使用される整数の型は integer.h 内で typedef されています。整数の型とサイズに関しては、まっとうな処理系なら問題ないはずですが、既存の定義と衝突した場合は矛盾がないように注意しなければなりません。</li>
+</ul>
+</div>
+
+<div class="para">
+<h3>メモリ使用量 (R0.06)</h3>
+<p>各種環境でのモジュールのメモリ使用量の例を示します。数値の単位はバイトで、<em>D</em>は論理ドライブ数、<em>F</em>は同時オープン・ファイル数を示します。最適化オプションはコード・サイズとしています。</p>
+<table class="lst2">
+<tr><th></th><th>AVR</th><th>H8/300H</th><th>PIC</th><th>MSP430</th><th>TLCS870C</th><th>V850ES</th><th>SH2</th></tr>
+<tr><td>コンパイラ</td><td>WinAVR(gcc)</td><td>CH38</td><td>C30(gcc)</td><td>CL430</td><td>CC870C</td><td>CA850</td><td>SHC</td></tr>
+<tr><td>_MCU_ENDIAN</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td></tr>
+<tr class="lst3"><td>FatFs Code<br>(Full, R/W)</td><td>9280</td><td>9348</td><td>9387</td><td></td><td></td><td>6728</td><td>7538</td></tr>
+<tr><td>FatFs Code<br>(Minimum, R/W)</td><td>5814</td><td>5798</td><td>5913</td><td></td><td></td><td>4094</td><td>4742</td></tr>
+<tr><td>FatFs Code<br>(Full, R/O)</td><td>4402</td><td>4236</td><td>4371</td><td></td><td></td><td>3054</td><td>3474</td></tr>
+<tr><td>FatFs Code<br>(Minimum, R/O)</td><td>3066</td><td>3158</td><td>3213</td><td></td><td></td><td>2172</td><td>2630</td></tr>
+<tr><td>FatFs Work (Static)</td><td>D*2+2</td><td>D*4+2</td><td>D*2+2</td><td></td><td></td><td>D*4+2</td><td>D*4+2</td></tr>
+<tr><td>FatFs Work (Dynamic)</td><td>D*554+F*544</td><td>D*554+F*550</td><td>D*554+F*544</td><td></td><td></td><td>D*554+F*550</td><td>D*554+F*550</td></tr>
+<tr class="lst3"><td>Tiny-FatFs Code<br>(Full, R/W)</td><td>7628</td><td>7668</td><td>7560</td><td>7108</td><td>9501</td><td>5978</td><td>6640</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Minimum, R/W)</td><td>4684</td><td>4820</td><td>4698</td><td>4390</td><td>6322</td><td>3678</td><td>4236</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Full, R/O)</td><td>3634</td><td>3600</td><td>3618</td><td>3382</td><td>4554</td><td>2722</td><td>3072</td></tr>
+<tr><td>Tiny-FatFs Code<br>(Minimum, R/O)</td><td>2524</td><td>2700</td><td>2601</td><td>2398</td><td>3390</td><td>1862</td><td>2300</td></tr>
+<tr><td>Tiny-FatFs Wrok (Static)</td><td>4</td><td>6</td><td>4</td><td>4</td><td>4</td><td>6</td><td>6</td></tr>
+<tr><td>Tiny-FatFs Work (Dynamic)</td><td>544+F*28</td><td>544+F*32</td><td>544+F*28</td><td>544+F*28</td><td>544+F*28</td><td>544+F*32</td><td>544+F*32</td></tr>
+</table>
+</div>
+
+<div class="para">
+<h3>FatFs vs. Tiny-FatFs</h3>
+<p>ポータブル・オーディオやデータ・ロガーなど、よくある用途ではTiny-FatFsで十分です。しかし、Tiny-FatFsは標準構成ではFAT32に対応していないので、使用できるディスクは2GBまでという制約があります。<tt>_FAT32</tt>オプションでFAT32対応を追加できますが、その分コード・サイズが膨らみます。FatFsは、複数ファイルを高速アクセスする場合や、複数ドライブの対応が必要な用途に適しています。</p>
+<div class="rset">
+<table class="lst2">
+<tr><th>メモリ容量</th><th>FATタイプ</th></tr>
+<tr><td>64MB以下</td><td>FAT12</td></tr>
+<tr><td>128MB～2GB</td><td>FAT16</td></tr>
+<tr><td>4GB以上</td><td>FAT32</td></tr>
+</table>
+</div>
+<p>2GBまでのカードに限るなら、FAT32への対応は不要です。右の表にメモリ・カードの容量と規定のFATタイプ(SDメモリの場合)を示します。メモリ・カードの出荷時は、最大のパフォーマンスが出るようにデータ領域の境界が調整されたフォーマットになっています。したがって、PCでフォーマットするなどして規定と違うフォーマットになると、書き込み性能が大幅に低下する場合があるので注意が必要です。</p>
+</div>
+
+<div class="para">
+<h3>効率の良いファイル・アクセスの方法</h3>
+<p>資源の限られた組み込みシステムで効率よくアクセスするためには、ファイル・アクセスの仕組みをある程度意識した使用が求められます。FatFsモジュールでは、ディスク上のファイル・データは f_read()内で次のような手順で読み出されます。</p>
+<div class="lset">図1. セクタ・ミスアライメント・リード<br>
+<img src="../img/f1.png" width="490" height="73" alt="fig.1">
+</div>
+<br class="clr">
+<div class="lset">図2. セクタ・ミスアライメント・リード<br>
+<img src="../img/f2.png" width="490" height="140" alt="fig.2">
+</div>
+<br class="clr">
+<div class="lset">図3. セクタ・アライメント・リード<br>
+<img src="../img/f3.png" width="490" height="119" alt="fig.3">
+</div>
+<br class="clr">
+<p>ここでファイルI/Oバッファとは、データ・セクタの一部を読み書きするための1セクタ長のバッファで、FatFsではそのファイル・オブジェクト内の、Tiny-FatFsではワークエリア内のバッファのことを指しています。</p>
+<p>Tiny-FatFsでは、全てのデータ転送とFATやディレクトリへのアクセスをただ一つのセクタ・バッファで行っているため、データ転送によりFATのキャッシュが失われ、クラスタ境界を通過するたびにFATセクタを読み直す必要があります。FatFsの場合は、データ用バッファはFAT用とは別なので、FATセクタを読む頻度はTiny-FatFsの 1/341, 1/256 または 1/128で済みます(クラスタが連続している場合)。つまり、Tiny-FatFsは性能低下の代償を払ってRAM使用量を削減しているわけです。</p>
+<p>転送領域のうちセクタ全体を含む部分は(図2)のようにファイルI/Oバッファを介さず、ディスクとの間で直接転送されます。完全なセクタ・アライメント・アクセスの場合(図3)は、ファイルI/Oバッファは全く使用されません。直接転送では、可能ならdisk_read()に複数セクタを指定して最大限のマルチ・セクタ転送が行われます。ただし、クラスタ境界をまたぐときはクラスタが隣接していたとしても転送は分割されます。</p>
+<p>このように、極力セクタ・アライメント・アクセスになるように配慮すれば、無駄なメモリ・コピーが減って性能が向上します。さらに、Tiny-FatFsではFATのキャッシュが生きるようになり、省メモリ特性とFatFsの性能とが同時に得られます。</p>
+</div>
+
+<div class="para">
+<h3>クリチカル・セクション</h3>
+<p>ディスク上のFAT構造を操作している途中で、停電、不正なメディアの取り外し、回復不能なデータ・エラー等の障害が発生すると、処理が中途半端な状態で中断され、その結果としてFAT構造が破壊される可能性があります。次にFatFsモジュールにおけるクリチカル・セクションと、その間の障害により起きうるエラーの状態を示します。</p>
+<div class="lset">
+図4. 長いクリチカル・セクション<br>
+<img src="../img/f4.png" width="320" height="436" alt="fig.4">
+</div>
+<div class="lset">
+図5. 最小化したクリチカル・セクション<br>
+<img src="../img/f5.png" width="320" height="436" alt="fig.5">
+</div>
+<br class="clr">
+<p>赤で示したセクションを実行中に障害が発生した場合、クロス・リンクが発生して操作対象のファイル・ディレクトリが失われる可能性があります。黄色で示したセクションを実行中に障害が発生した場合、つぎのうちいずれかまたは複数の結果が生じる可能性があります。</p>
+<ul>
+<li>書き換え中のファイルの内容が破壊される。</li>
+<li>追記中のファイルがオープン前の状態に戻る。</li>
+<li>新規に作成されたファイルが消える。</li>
+<li>新規または上書きで作成されたファイルの長さがゼロになって残る。</li>
+<li>ロストチェーンの発生によりディスクの利用効率が悪化する。</li>
+</ul>
+<p>いずれも書き込み中や操作対象でないファイルには影響はありません。これらのクリチカル・セクションは、ファイルを書き込みモードで開いている時間を最小限にするか、f_sync()を適宜使用することで図5のようにリスクを最小化することができます。</p>
+</div>
+
+
+<div class="para">
+<h3>現リビジョンの問題点とその改善案</h3>
+<ul>
+<li>ファイル・オブジェクトの抽象化<br>
+現在はファイル・オブジェクトの実体をアプリケーション側で管理しているので、アプリケーション・モジュールでのスタック消費量が多くなります(Tiny-FatFsでは問題にならない)。これをハンドルで管理するなどより抽象化すればアプリケーション・モジュールでのスタック消費量を減らせるし、他のファイル・システムへの対応も容易になります。この場合、FatFs内でファイル・オブジェクトの領域を静的に確保しておくか、malloc()することになります。ただし、このようにするとファイル・オブジェクトを直接参照できなくなり、feofやftellなどムダな関数が新たに必要になります。</li>
+<li>セクタ・バッファ管理の改善<br>
+現在はセクタ・バッファを固定して使用しているため、無駄なディスクアクセスが多く効率が悪い。メモリの潤沢なシステムでは、複数のセクタ・バッファを使用してディスク・キャッシュを構成すれば性能を向上させることができます。</li>
+<li>長いファイル名への対応<br>
+FATの拡張仕様ではMS-DOSの8.3形式ファイル名に加え、255文字までの長いファイル名(LFN)を扱えるようになっていますが、現リビジョンでは未対応で8.3形式しか使用できません。これに対応するには、ファイル名だけでも500バイト以上のバッファが必要になったり、UCS-2とShift_JISの相互変換(256Kバイトの変換テーブルを使う)が必要になるなど、メモリの消費が爆発的に増えてしまいます。なお、LFNの機能はMicrosoft社の特許になっているため、これを製品に使うにはライセンス契約が必要です。</li>
+<li>RTOSへの対応<br>
+FatFsモジュールを使用するタスクを一つに限るなら特に意識する必要はありませんが、同じ論理ドライブに対して複数のタスクから再入するには、何らかの排他制御が必要になってきます。FatFsモジュールのRTOSへの対応作業は、<a href="http://www.toppers.jp/">TOPPERSプロジェクト</a>で行われています。</li>
+</ul>
+<br>
+<p>そして、これらの機能拡張を行うとそれだけ多くのリソースが要求されるようになり、このプロジェクトの対象とする8/16ビット・マイコンのシステムに載せられなくなってしまうという問題もあります(これが一番の問題かも知れません)。</p>
+</div>
+
+<p class="foot"><a href="../00index_j.html">戻る</a></p>
+</body>
+</html>

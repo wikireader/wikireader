@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="up" title="FatFs" href="../00index_j.html">
+<link rel="stylesheet" href="../css_j.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - f_readdir</title>
+</head>
+
+<body>
+
+<div class="para">
+<h2>f_readdir</h2>
+<p>ディレクトリ項目を読み出します</p>
+<pre>
+FRESULT f_readdir (
+  DIR* <em>DirObject</em>,    /* ディレクトリ・ブジェクト構造体へのポインタ */
+  FILINFO* <em>FileInfo</em>  /* ファイル情報構造体へのポインタ */
+);
+</pre>
+</div>
+
+<div class="para">
+<h4>引数</h4>
+<dl class="par">
+<dt>DirObject</dt>
+<dd>ディレクトリ・オブジェクト構造体へのポインタを指定します。</dd>
+<dt>FileInfo</dt>
+<dd>読み出したディレクトリ項目を格納するファイル情報構造体へのポインタを指定します。</dd>
+</dl>
+</div>
+
+
+<div class="para">
+<h4>戻り値</h4>
+<dl class="ret">
+<dt>FR_OK (0)</dt>
+<dd>正常終了。</dd>
+<dt>FR_NOT_READY</dt>
+<dd>メディアがセットされていないなど、ディスク・ドライブが動作不能状態。</dd>
+<dt>FR_RW_ERROR</dt>
+<dd>ディスク・エラーまたは内部エラーによる失敗。</dd>
+<dt>FR_INVALID_OBJECT</dt>
+<dd>無効なディレクトリ・オブジェクト。</dd>
+</dl>
+</div>
+
+
+<div class="para">
+<h4>解説</h4>
+<p>ディレクトリ項目を順次読み出します。この関数を繰り返し実行することによりディレクトリの全ての項目を読み出すことができます。全ての項目を読み出し、読み出す項目がもう無いときは、<tt>f_name[]</tt>メンバにヌル文字列が返されます。得られるファイル情報の詳細については <tt>FILINFO</tt>構造体を参照してください。<tt>_FS_MINIMIZE >= 2</tt>ではこの関数はサポートされません。</p>
+</div>
+
+
+<div class="para">
+<h4>使用例</h4>
+<pre>
+void scan_files (char* path)
+{
+    FILINFO finfo;
+    DIR dirs;
+    int i;
+
+    if (f_opendir(&dirs, path) == FR_OK) {
+        i = strlen(path);
+        while ((f_readdir(&dirs, &finfo) == FR_OK) && finfo.fname[0]) {
+            if (finfo._attrib & AM_DIR) {
+                sprintf(&path[i], "/%s", &finfo.fname[0]);
+                scan_files(path);
+                path[i] = 0;
+            } else {
+                printf("%s/%s\n", path, &finfo.fname[0]);
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+
+<div class="para">
+<h4>参照</h4>
+<p><tt><a href="opendir.html">f_opendir</a>, <a href="stat.html">f_stat</a>, <a href="sfileinfo.html">FILINFO</a>, <a href="sdir.html">DIR</a></tt></p>
+</div>
+
+<p class="foot"><a href="../00index_j.html">戻る</a></p>
+</body>
+</html>
