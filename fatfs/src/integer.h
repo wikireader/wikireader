@@ -4,9 +4,16 @@
 
 #ifndef _INTEGER
 
+#ifndef _ITRON_H_
+
 /* These types must be 16-bit, 32-bit or larger integer */
 typedef signed int      INT;
 typedef unsigned int	UINT;
+
+/* Boolean type */
+typedef enum { FALSE = 0, TRUE } BOOL;
+
+#endif
 
 /* These types must be 8-bit integer */
 typedef signed char		CHAR;
@@ -22,9 +29,6 @@ typedef unsigned short	WORD;
 typedef long			LONG;
 typedef unsigned long	ULONG;
 typedef unsigned long	DWORD;
-
-/* Boolean type */
-typedef enum { FALSE = 0, TRUE } BOOL;
 
 #define _INTEGER
 #endif
