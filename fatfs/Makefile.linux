@@ -1,0 +1,32 @@
+GCC=gcc
+AS=gcc
+LD=ld
+AR=ar
+HOSTCC=gcc
+CC=$(GCC)
+OBJCOPY=objcopy
+
+LDFLAGS=-static -s --no-gc-sections -N 
+CFLAGS=-Wall -Os 
+
+# For linux use c33. Only works on small endian systems
+CFLAGS+=-Iconfig/c33
+
+TARGETS=all
+
+all: lib/libfat.a lib/libtinyfat.a
+
+.c.o: $<
+	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
+	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
+lib/libfat.a: src/ff.o
+	$(AR) q $@ $^
+
+lib/libtinyfat.a: src/tff.o
+	$(AR) q $@ $^
+
+clean:
+	$(RM) src/*.d
+	$(RM) src/*.o
+	$(RM) lib/*.a
