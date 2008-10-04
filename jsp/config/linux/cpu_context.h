@@ -56,10 +56,8 @@
  *  ばれる．基本的には，タスクコンテキストをタスクが起動できる状態に設
  *  定する処理を，create_context と activate_context で行えばよい．
  */
-Inline void
-create_context(TCB *tcb)
-{
-}
+void
+create_context(TCB *tcb);
 
 /*
  *  タスクの起動準備
@@ -68,14 +66,8 @@ create_context(TCB *tcb)
  */
 extern void	activate_r(void);
 
-Inline void
-activate_context(TCB *tcb)
-{
-    ((int *) &(tcb->tskctxb.env))[JB_PC] = (int) activate_r;
-    ((int *) &(tcb->tskctxb.env))[JB_SP] = (int)(((VB *) tcb->tinib->stk) +
-                                                 tcb->tinib->stksz
-                                                 - STACK_MERGIN);
-}
+void
+activate_context(TCB *tcb);
 
 /*
  *  ext_tsk がスタック上に確保するダミー領域のサイズ

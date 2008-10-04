@@ -42,6 +42,7 @@
 
 #include <stdio.h>
 #include <setjmp.h>
+#include <ucontext.h>
 #include "jsp_kernel.h"
 #include "check.h"
 #include "task.h"
@@ -58,39 +59,39 @@ IMS     task_sigmask;
  */
 IMS	int_sigmask;
 
+
+/*
+ *  arbitary limit
+ */
+static ucontext_t mainTask;
+static ucontext_t* currentContext;
+
 void
 dispatch()
 {
+    ucontext_t* oldContext;
     sigset_t waitmask;
     sigemptyset(&waitmask);
     sigaddset(&waitmask,SIGUSR1);
 
-printf(" XXXX %s() runtsk %p schedtsk %p\n", __func__, runtsk, schedtsk);
-
-	if (enadsp && (!runtsk || (runtsk != schedtsk
-                        && setjmp(runtsk->tskctxb.env) == 0))) {
+    if (enadsp && (!runtsk || (runtsk != schedtsk))) {
+            /* yield until we have something to schedule? */
             while (!(runtsk = schedtsk)) {
                 sigsuspend(&waitmask);
             }
-            
-	    printf(" XXXX %s() tsk = %p, env = %08x\n", __func__, runtsk, *(unsigned long *) runtsk->tskctxb.env);
-	    longjmp(runtsk->tskctxb.env, 1);
-        }else{
-            calltex();
-        }
 
-#if 0
-	if (enadsp && (!runtsk || (runtsk != schedtsk
-                        && setjmp(runtsk->tskctxb.env) == 0))) {
-            while (!(runtsk = schedtsk)) {
-                sigsuspend(&waitmask);
-            }
-            
-	    longjmp(runtsk->tskctxb.env, 1);
-        }else{
-            calltex();
+        /*
+         * do switch the context now
+         */ 
+        oldContext = currentContext;
+        currentContext = &runtsk->tskctxb.stack_context;
+        if (swapcontext(oldContext, currentContext) == -1) {
+            perror("Task switch failed");
+            abort();
         }
-#endif
+    }else{
+        calltex();
+    }
 }
 
 
@@ -103,11 +104,8 @@ printf(" XXXX %s() runtsk %p schedtsk %p\n", __func__, runtsk, schedtsk);
 void
 exit_and_dispatch() 
 {                   
-printf("XXXX %s:%d\n", __func__, __LINE__);
     runtsk = 0;
-printf("XXXX %s:%d\n", __func__, __LINE__);
     dispatch();
-printf("XXXX %s:%d\n", __func__, __LINE__);
 }
 
 
@@ -121,6 +119,19 @@ extern void kernel_start();
 void
 cpu_initialize()
 {
+	/*
+	 * Save the main context
+	 */
+	if (getcontext(&mainTask) == -1) {
+		perror("Saving the main context failed");
+		abort();
+	}
+
+	currentContext = &mainTask;
+
+	/*
+	 * initialize stacks now
+	 */
 
 	/*
 	 *  タスクコンテキストでの割込みマスクの初期化
@@ -205,6 +216,7 @@ get_ims(IMS *p_ims)
 void
 activate_r()
 {
+	printf("%s\n", __FUNCTION__);
     /*
      *  シグナルマスクを設定して，タスクを起動する．
      */
@@ -221,4 +233,37 @@ activate_r()
 }
 
 
+static long long current_stack()
+{
+	ucontext_t currentContext;
+	if (getcontext(&currentContext) == -1) {
+		perror("current_stack failed");
+		return 0;
+	}
 
+	return currentContext.uc_stack.ss_sp;
+}
+
+BOOL
+sense_context()
+{
+	return (current_stack());
+}
+
+void create_context(TCB *tcb)
+{
+}
+
+void activate_context(TCB *tcb)
+{
+	if (getcontext(&tcb->tskctxb.stack_context) == -1) {
+		perror("failed to activate_context");
+		abort();
+	}
+
+	printf("Creating a context %p\n", tcb);
+	tcb->tskctxb.stack_context.uc_stack.ss_sp = tcb->tinib->stk;
+	tcb->tskctxb.stack_context.uc_stack.ss_size = tcb->tinib->stksz;
+	tcb->tskctxb.stack_context.uc_link = NULL;
+	makecontext(&tcb->tskctxb.stack_context, activate_r, 0);
+}

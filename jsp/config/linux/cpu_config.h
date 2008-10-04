@@ -55,7 +55,7 @@
  */
 
 #include <signal.h>
-#include <setjmp.h>
+#include <ucontext.h>
 
 /*
  *  chg_ims/get_ims をサポートするかどうかの定義
@@ -79,7 +79,7 @@
  *  タスクコンテキストブロックの定義
  */
 typedef struct task_context_block {
-	jmp_buf env;		/* CPUコンテキスト */
+	ucontext_t stack_context;
 } CTXB;
 
 /*
@@ -93,21 +93,8 @@ typedef struct task_context_block {
  */
 
 
-Inline int
-current_stack()
-{
-    struct sigaltstack      ss;
-
-    sigaltstack(((void *)0), &ss);
-    return(ss.ss_flags & SS_ONSTACK);
-}
-
-
-Inline BOOL
-sense_context()
-{
-	return(current_stack());
-}
+BOOL
+sense_context();
 
 Inline BOOL
 sense_lock()
