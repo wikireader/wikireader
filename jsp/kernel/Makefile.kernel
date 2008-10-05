@@ -38,11 +38,14 @@
 
 #
 #	カーネルのファイル構成の定義
+#	Definition of kernel creation
 #
 
 #
 #  カーネルのライブラリに含めるC言語のソースファイルで，1つのソースファ
 #  イルから複数のオブジェクトファイルを生成するものの定義
+#  It defines two or more object files those are generated from one source 
+#  file with the source file of C language included in the kernel library. 
 #
 KERNEL_LCSRCS = task.c wait.c time_event.c syslog.c \
 		task_manage.c task_sync.c task_except.c \
@@ -51,12 +54,14 @@ KERNEL_LCSRCS = task.c wait.c time_event.c syslog.c \
 		interrupt.c exception.c
 
 #
-#  上のソースファイルから生成されるオブジェクトファイルの定義
+# jp 上のソースファイルから生成されるオブジェクトファイルの定義
+# en Definition of object file generated from source file
 #
 KERNEL_LCOBJS = $(foreach file,$(KERNEL_LCSRCS),$($(file:.c=)))
 
 #
-#  各ソースファイルから生成されるオブジェクトファイルの定義
+# jp 各ソースファイルから生成されるオブジェクトファイルの定義
+# en Definition of object file generated from whick source file
 #
 task = tskini.o tsksched.o tskrun.o tsknrun.o \
 		tskdmt.o tskact.o tskext.o tskpri.o tskrot.o tsktex.o
@@ -104,7 +109,8 @@ exception = excini.o vxsns_ctx.o vxsns_loc.o \
 		vxsns_dsp.o vxsns_dpn.o vxsns_tex.o
 
 #
-#  生成されるオブジェクトファイルの依存関係の定義
+#  jp 生成されるオブジェクトファイルの依存関係の定義
+#  en Definition of dependence of generated object file
 #
 $(task) $(task:.o=.s) $(task:.o=.d): task.c
 $(wait) $(wait:.o=.s) $(wait:.o=.d): wait.c
