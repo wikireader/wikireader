@@ -51,7 +51,8 @@ and download whatever you need.
   that will fail ans is very slow. splitting the text is one option, using
   http://www.mediawiki.org/wiki/MWDumper and importing the SQL dumps is
   supposed to be faster. This means that you need to configure mediawiki
-  without a db prefix.
+  without a db prefix. But also split the content otherwise java will take
+  all your memory.
 
 = Rants and Notes =
 
