@@ -81,3 +81,10 @@ sys     3m33.433s
 wc -l indexfile.index 
 7278279 indexfile.index
 
+grep -v Image indexfile.index | grep -v Category > strip.indexfile.index
+du -sh strip.indexfile.index 
+364M	strip.indexfile.index
+
+wc -l strip.indexfile.index 
+6057152 strip.indexfile.index
+
