@@ -39,8 +39,8 @@ you see a setup page?
     mv the LocalSettings.php to the right place (the above website will tell you)
 
 
-= Importing a dumb =
-== Getting a dumb ==
+= Importing a dump =
+== Getting a dump ==
 You will need the pages and the images. Google for enwiki-latest-pages.articles.xml.bz2
 and download whatever you need.
 
@@ -78,6 +78,7 @@ real    77m41.179s
 user    73m9.870s
 sys     3m33.433s
 
+== Indexfile Information ==
 wc -l indexfile.index 
 7278279 indexfile.index
 
@@ -88,3 +89,8 @@ du -sh strip.indexfile.index
 wc -l strip.indexfile.index 
 6057152 strip.indexfile.index
 
+wc -w strip.indexfile.index 
+22993660 strip.indexfile.index
+
+22993660 - 6057152 = 16936508		// word count except SHA1
+16936508 / 6057152 = 2.796117383	// average word count per line
