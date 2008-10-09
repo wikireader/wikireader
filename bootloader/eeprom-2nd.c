@@ -45,7 +45,7 @@ int main(void)
 	print("Bootloader starting\n");
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
-	REG_SPI_CTL1 = 0x03 | (7 << 10);
+	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 
 	boot_from_sdcard();
 	
@@ -67,6 +67,8 @@ int main(void)
 
 	/* TODO */
 
+	asm("slp");
+
 	for(;;);
 }
 
@@ -74,7 +76,7 @@ static void boot_from_sdcard(void)
 {
 	if (sdcard_init() < 0)
 		return;
-
+	
 	if (fat_init(0) < 0)
 		return;
 

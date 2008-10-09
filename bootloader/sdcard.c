@@ -50,6 +50,8 @@
 #define MODE_NONE 0xff
 static u8 mode;
 
+static int blafoo = 0;
+
 static u8 sdcard_response(void)
 {
 	u8 ret, retry = 100;
@@ -62,7 +64,7 @@ static u8 sdcard_response(void)
 
 	/* some SDHC cards seem to transmit 0x1f followed by the actual
 	 * status code. */
-	if (ret == 0x1f) {
+	if (ret == 0x1f || ret == 0x3f) {
 		SDCARD_CS_LO();
 		ret = spi_transmit(0xff);
 		SDCARD_CS_HI();
@@ -169,6 +171,10 @@ static int sdcard_go_idle(void)
 
 	if (ret != 0x01) {
 		print("unable to set SD card to IDLE state\n");
+		print("ret = ");
+		print_u32(ret);
+		print("\n");
+
 		SDCARD_CS_HI();
 		return -1;
 	}
@@ -235,6 +241,7 @@ int sdcard_init(void)
 	disable_card_power();
 	delay(100000);
 	enable_card_power();
+	delay(100000);
 
 	/* 80 dummy clocks */
 	SDCARD_CS_LO();

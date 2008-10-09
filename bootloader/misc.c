@@ -25,7 +25,7 @@
 void print(const u8 *txt)
 {
 	while (txt && *txt) {
-		int delay = 0xf;
+		int delay = 0xff;
 
 		REG_EFSIF0_TXD = *txt;
 		do {} while (REG_EFSIF0_STATUS & (1 << 5));

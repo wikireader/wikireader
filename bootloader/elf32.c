@@ -125,6 +125,7 @@ int elf_read(const u8 *filename)
 	print("all sections loaded, jumping to ");
 	print_u32(hdr.e_entry);
 	print(". Sayonara.\n\n");
+	disable_card_power();
 
 	exec = (void *) hdr.e_entry;
 	hex_dump(exec, 256);

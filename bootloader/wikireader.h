@@ -33,6 +33,9 @@ static inline void init_pins(void)
 	REG_P3_IOC3 = 0x0f;
 	/* SDCARD CS# */
 	REG_P5_03_CFP = 0x01;
+
+	REG_MISC_PUP6 = (1 << 5);
+
 #elif BOARD_PRT33L17LCD 
 	/* SDCARD CS# */
 	REG_P8_IOC8 = (1 << 3);
@@ -108,7 +111,7 @@ static inline void init_ram(void)
         REG_SDRAMC_CTL = 0x37e1;
 
         /* enable RAM self-refresh */
-        //REG_SDRAMC_REF |= (1 << 25);
+        REG_SDRAMC_REF = (1 << 25);
 
         REG_SDRAMC_INI = 0x10;  /* exit setup mode */
 
