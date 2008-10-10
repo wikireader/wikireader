@@ -123,7 +123,12 @@ gdb:
 mini-libc:
 	make -C mini-libc/
 
-#update and other things
+# ----- wiki Dump and Algorithm  --------------------------------------
+.PHONY: getwikidump
+getwikidump:
+	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+
+# ----- update and other things --------------------------------------
 
 .PHONY: update
 update:update-bootloader update-wikireader
@@ -146,6 +151,7 @@ flash-bootloader: bootloader
 	( cd bootloader && \
 		e07load/e07load wikireader.map )
 
+# ----- clean and help --------------------------------------
 .PHONY: clean
 clean: 
 	make clean -C bootloader

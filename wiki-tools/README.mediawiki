@@ -43,6 +43,9 @@ you see a setup page?
 == Getting a dump ==
 You will need the pages and the images. Google for enwiki-latest-pages.articles.xml.bz2
 and download whatever you need.
+    xiangfu now use:
+	 http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2 
+	 enwiki-latest-pages-articles.xml.bz2  2008-Jul-27 15:43:45	3.9G	application/octet-stream
 
 == Using the scripts ==
  bzcat ../../enwiki-latest-pages-articles.xml.bz2 |  php ./maintenance/importDump.php 
