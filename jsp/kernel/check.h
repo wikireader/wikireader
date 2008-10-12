@@ -176,6 +176,14 @@
 	}							\
 }
 
+#ifdef __linux__
+#define CHECK_TSKCTX()
+#define CHECK_INTCTX()
+#define CHECK_TSKCTX_UNL()
+#define CHECK_INTCTX_UNL()
+#define CHECK_DISPATCH()
+
+#else
 /*
  *  呼出しコンテキストのチェック（E_CTX）
  */
@@ -219,6 +227,8 @@
 		goto exit;					\
 	}							\
 }
+
+#endif
 
 /*
  *  その他のコンテキストエラーのチェック（E_CTX）

@@ -247,7 +247,7 @@ static long long current_stack()
 BOOL
 sense_context()
 {
-	return (current_stack());
+    return FALSE;
 }
 
 void create_context(TCB *tcb)
