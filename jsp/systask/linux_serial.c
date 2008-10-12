@@ -297,7 +297,7 @@ read_char(SPCB *spcb, char *c)
 {
 	int	n;
 
-	if ((n = read(spcb->hwport.fd, c, 1)) == 1) {
+	if ((n = read(STDIN_FILENO, c, 1)) == 1) {
 		return(1);
 	}
 	assert(n < 0 && errno == EWOULDBLOCK);
@@ -309,7 +309,7 @@ write_char(SPCB *spcb, char c)
 {
 	int	n;
 
-	if ((n = write(spcb->hwport.fd, &c, 1)) == 1) {
+	if ((n = write(STDOUT_FILENO, &c, 1)) == 1) {
 		return(1);
 	}
 	assert(n < 0 && errno == EWOULDBLOCK);
