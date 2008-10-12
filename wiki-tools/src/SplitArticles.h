@@ -28,6 +28,7 @@ public:
 
     void handleArticle(const Article&);
     void parsingStarts();
+    void parsingFinished();
 
 private:
     void startNextSet();

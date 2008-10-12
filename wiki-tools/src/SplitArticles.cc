@@ -57,6 +57,13 @@ void SplitArticles::parsingStarts()
     startNextSet();
 }
 
+void SplitArticles::parsingFinished()
+{
+    QTextStream stream(&m_file);
+    stream << "</mediawiki>";
+    FileOutputArticleHandler::parsingFinished();
+}
+
 void SplitArticles::startNextSet()
 {
     if (m_file.isOpen()) {
