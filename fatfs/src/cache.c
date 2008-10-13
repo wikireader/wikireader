@@ -32,6 +32,23 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 }
 
 
+DSTATUS cache_update_sector (const BYTE *buff, DWORD sector)
+{
+	DWORD i, index;
+
+	/* if already in cache, move the entry forward */
+	for (i = 0; i < _CACHE_SIZE; i++) {
+		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
+			return;
+
+		if (SECTOR(sector_cache_index[i]) == sector) {
+			index = INDEX(sector_cache_index[i]);
+			memcpy(sector_cache + S_MAX_SIZ * index, buff, S_MAX_SIZ);
+			return;
+		}
+	}
+}
+
 DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 {
 	DWORD i, index;
