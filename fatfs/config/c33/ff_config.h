@@ -63,4 +63,5 @@
 #define _FAT32 1
 /* To enable FAT32 support in addition of FAT12/16, set _FAT32 to 1. For tinyfat*/
 
-
+#define _CACHE_SIZE	1000
+/* The CACHE_SIZE parameters specifies the the cache size in sectors. */
