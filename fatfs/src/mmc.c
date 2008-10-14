@@ -1,3 +1,7 @@
+/* Implementation taken from 
+ * 	http://vector06cc.googlecode.com/svn/trunk/firmware/floppysrc/
+ * GPL and so on. */
+
 /*-----------------------------------------------------------------------*/
 /* MMC/SDSC/SDHC (in SPI mode) control module  (C)ChaN, 2007             */
 /*-----------------------------------------------------------------------*/
@@ -30,9 +34,6 @@
 
 
 /* Port Controls  (Platform dependent) */
-//->specialio.h	#define SELECT()	PORTB &= ~1		/* MMC CS = L */
-//->specialio.h #define	DESELECT()	PORTB |= 1		/* MMC CS = H */
-
 #define SELECT()   SDCARD_CS_LO()
 #define DESELECT() SDCARD_CS_HI()
 

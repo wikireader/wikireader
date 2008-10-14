@@ -22,7 +22,7 @@ all: lib/libfat.a lib/libtinyfat.a
 	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-lib/libfat.a: src/ff.o src/cache.o src/mmc.o
+lib/libfat.a: src/ff.o src/cache.o src/mmc.o src/fattime.o
 	$(AR) q $@ $^
 
 lib/libtinyfat.a: src/tff.o
