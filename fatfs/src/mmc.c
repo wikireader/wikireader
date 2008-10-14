@@ -5,6 +5,8 @@
 /* are platform dependent.                                               */
 /*-----------------------------------------------------------------------*/
 
+#include <regs.h>
+#include <wikireader.h>
 #include "diskio.h"
 
 /* Definitions for MMC/SDC command */
@@ -31,8 +33,8 @@
 //->specialio.h	#define SELECT()	PORTB &= ~1		/* MMC CS = L */
 //->specialio.h #define	DESELECT()	PORTB |= 1		/* MMC CS = H */
 
-#define SELECT()
-#define DESELECT()
+#define SELECT()   SDCARD_CS_LO()
+#define DESELECT() SDCARD_CS_HI()
 
 //#define SOCKPORT	PINB			/* Socket contact port */
 //#define SOCKWP		0x20			/* Write protect switch (PB5) */
@@ -49,39 +51,40 @@
 static volatile
 DSTATUS Stat = STA_NOINIT;	/* Disk status */
 
-#define Timer1	TIMER_1
-#define Timer2	TIMER_2
-
 static
 BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 
-
-
-/*-----------------------------------------------------------------------*/
-/* Transmit a byte to MMC via SPI  (Platform dependent)                  */
-/*-----------------------------------------------------------------------*/
-
-//specialio.h #define xmit_spi(dat) 	SPDR=(dat); loop_until_bit_is_set(SPSR,SPIF)
-
-
+void delay(DWORD nops)
+{
+	while (nops--)
+	asm("nop");
+}
 
 /*-----------------------------------------------------------------------*/
 /* Receive a byte from MMC via SPI  (Platform dependent)                 */
 /*-----------------------------------------------------------------------*/
 
 static void rcvr_spi_m(BYTE* dst) {
-}
-
-static void xmit_spi(BYTE dat) {
+	REG_SPI_TXD = 0xff;
+	do {} while (~REG_SPI_STAT & (1 << 2));
+	*dst = REG_SPI_RXD;
 }
 
 static
 BYTE rcvr_spi (void)
 {
-//	SPDR = 0xFF;
-//	loop_until_bit_is_set(SPSR, SPIF);
-//	return SPDR;
-	return 0;
+	REG_SPI_TXD = 0xff;
+	do {} while (~REG_SPI_STAT & (1 << 2));
+	return REG_SPI_RXD;
+}
+
+/*-----------------------------------------------------------------------*/
+/* Transmit a byte to MMC via SPI  (Platform dependent)                  */
+/*-----------------------------------------------------------------------*/
+
+static void xmit_spi(BYTE dat) {
+	REG_SPI_TXD = dat;
+	do {} while (~REG_SPI_STAT & (1 << 2));
 }
 
 
@@ -92,14 +95,15 @@ BYTE rcvr_spi (void)
 static
 BYTE wait_ready (void)
 {
-	BYTE res = TRUE;
-#if 0
-	Timer2 = 50;	/* Wait for ready in timeout of 500ms */
-	rcvr_spi();
-	do
+	BYTE res = 0, timeout = 50;
+
+	res = rcvr_spi();
+
+	while ((res != 0xFF) && timeout--) {
+		delay(10);
 		res = rcvr_spi();
-	while ((res != 0xFF) && Timer2);
-#endif
+	}
+
 	return res;
 }
 
@@ -194,14 +198,15 @@ BOOL rcvr_datablock (
 	UINT btr			/* Byte count (must be even number) */
 )
 {
-#if 0
 	BYTE token;
+	/* 10 ms!? */
+	DWORD timeout = 1000;
 
-	Timer1 = 10;
 	do {				/* Wait for data packet in timeout of 100ms */
 		token = rcvr_spi();
-	} while ((token == 0xFF) && Timer1);
-	if(token != 0xFE) return FALSE;	/* If not valid data token, retutn with error */
+	} while ((token == 0xFF) && timeout--);
+	if (token != 0xFE)
+		return FALSE;	/* If not valid data token, retutn with error */
 
 	do {				/* Receive the data block into buffer */
 		rcvr_spi_m(buff++);
@@ -209,7 +214,7 @@ BOOL rcvr_datablock (
 	} while (btr -= 2);
 	rcvr_spi();			/* Discard CRC */
 	rcvr_spi();
-#endif
+
 	return TRUE;			/* Return with success */
 }
 #endif
@@ -255,7 +260,6 @@ BOOL xmit_datablock (
 	BYTE token		/* Data/Stop token */
 )
 {
-#if 0
 	BYTE resp, wc;
 
 	if (wait_ready() != 0xFF) return FALSE;
@@ -273,7 +277,6 @@ BOOL xmit_datablock (
 		if ((resp & 0x1F) != 0x05)	/* If not accepted, return with error */
 			return FALSE;
 	}
-#endif
 	return TRUE;
 }
 #endif

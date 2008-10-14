@@ -8,7 +8,7 @@ CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I../mini-libc/include -gstabs -mlong-calls -fno-builtin -Os -mc33pe
+CFLAGS=-Wall -I../mini-libc/include -I../bootloader/ -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 # For the c33
