@@ -32,11 +32,10 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 }
 
 
-DSTATUS cache_update_sector (const BYTE *buff, DWORD sector)
+void cache_update_sector (const BYTE *buff, DWORD sector)
 {
 	DWORD i, index;
 
-	/* if already in cache, move the entry forward */
 	for (i = 0; i < _CACHE_SIZE; i++) {
 		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
 			return;
