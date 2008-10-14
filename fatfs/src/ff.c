@@ -825,7 +825,6 @@ FRESULT f_open (
 	BYTE *dir;
 	char fn[8+3+1];
 
-
 	fp->fs = NULL;		/* Clear file object */
 #if !_FS_READONLY
 	mode &= (FA_READ|FA_WRITE|FA_CREATE_ALWAYS|FA_OPEN_ALWAYS|FA_CREATE_NEW);

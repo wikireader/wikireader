@@ -25,7 +25,7 @@ all: lib/libfat.a lib/libtinyfat.a
 lib/libfat.a: src/ff.o src/cache.o src/mmc.o src/fattime.o
 	$(AR) q $@ $^
 
-lib/libtinyfat.a: src/tff.o
+lib/libtinyfat.a: src/tff.o src/cache.o src/mmc.o src/fattime.o
 	$(AR) q $@ $^
 
 clean:
