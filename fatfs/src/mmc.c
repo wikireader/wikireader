@@ -132,12 +132,7 @@ void release_spi (void)
 static
 void power_on (void)
 {
-//	PORTE &= ~0x80;				/* Socket power ON */
-//	for (Timer1 = 3; Timer1; );	/* Wait for 30ms */
-//	PORTB = 0b10110101;			/* Enable drivers */
-//	DDRB  = 0b11000111;
-//	SPCR = 0b01010000;			/* Initialize SPI port (Mode 0) */
-//	SPSR = 0b00000001;
+	enable_card_power();
 }
 
 static
@@ -147,10 +142,7 @@ void power_off (void)
 	wait_ready();
 	release_spi();
 
-//	SPCR = 0;				/* Disable SPI function */
-//	DDRB  = 0b11000000;		/* Disable drivers */
-//	PORTB = 0b10110000;
-//	PORTE |=  0x80;			/* Socket power OFF */
+	disable_card_power();
 	Stat |= STA_NOINIT;		/* Set STA_NOINIT */
 }
 
