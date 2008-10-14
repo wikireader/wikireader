@@ -88,7 +88,7 @@ OBJLDS=
 
 C_LIBDIR= $(SRCDIR)/../mini-libc/lib/
 FAT_LIBDIR= $(SRCDIR)/../fatfs/lib
-LIBS= $(FAT_LIBDIR)/libfat.a $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
+LIBS= $(FAT_LIBDIR)/libtinyfat.a $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 
 ### 4. Define compiler options, compilation rules and so on.

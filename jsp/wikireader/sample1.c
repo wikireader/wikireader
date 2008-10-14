@@ -101,7 +101,7 @@
 #include "kernel_id.h"
 #include "sample1.h"
 
-#include <ff.h>
+#include <tff.h>
 
 /*
  *  並行実行されるタスクへのメッセージ領域
@@ -277,7 +277,7 @@ void main_task(VP_INT exinf)
 	syslog(LOG_INFO, "result = %d", result);
        
 	FIL file_object;
-	result = f_open(&file_object, "foo", FA_READ);
+	result = f_open(&file_object, "/foo", FA_READ);
 	syslog(LOG_INFO, "result = %d", result);
 #endif
     
