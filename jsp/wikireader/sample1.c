@@ -269,13 +269,16 @@ void main_task(VP_INT exinf)
 	syscall(serial_ctl_por(TASK_PORTID,
 			(IOCTL_CRLF | IOCTL_FCSND | IOCTL_FCRCV)));
 
-#if 0
+#if 1
         /*
          * force the usage of fat
          */
-        result = f_mount(0u, &s_activeFatFs); 
-        FIL file_object;
-        f_open(&file_object, "foo", FA_READ);
+	result = f_mount(0u, &s_activeFatFs); 
+	syslog(LOG_INFO, "result = %d", result);
+       
+	FIL file_object;
+	result = f_open(&file_object, "foo", FA_READ);
+	syslog(LOG_INFO, "result = %d", result);
 #endif
     
         
