@@ -269,19 +269,10 @@ void main_task(VP_INT exinf)
 	syscall(serial_ctl_por(TASK_PORTID,
 			(IOCTL_CRLF | IOCTL_FCSND | IOCTL_FCRCV)));
 
-#if 1
-        /*
-         * force the usage of fat
-         */
-	result = f_mount(0u, &s_activeFatFs); 
-	syslog(LOG_INFO, "result = %d", result);
-       
-	FIL file_object;
-	result = f_open(&file_object, "/foo", FA_READ);
-	syslog(LOG_INFO, "result = %d", result);
-#endif
-    
-        
+	/*
+	 * hagahaga görgnpög
+	 */
+	f_mount(0, &s_activeFatFs); 
 
 	/*
  	 *  ループ回数の設定
@@ -328,6 +319,12 @@ void main_task(VP_INT exinf)
 			tskno = 3;
 			tskid = TASK3;
 			break;
+		case '4': {
+			FIL file_object;
+			result = f_open(&file_object, "/foo", FA_READ);
+			syslog(LOG_INFO, "result = %d", result);
+       			break; 
+		}
 		case 'a':
 			syslog(LOG_INFO, "#act_tsk(%d)", tskno);
 			syscall(act_tsk(tskid));
