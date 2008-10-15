@@ -1,56 +1,22 @@
 /*--------------------------------------------------------------------------/
-/  Tiny-FatFs - FAT file system module include file  R0.05    (C)ChaN, 2007
+/  Tiny-FatFs - FAT file system module include file  R0.06    (C)ChaN, 2008
 /---------------------------------------------------------------------------/
 / FatFs module is an experimenal project to implement FAT file system to
 / cheap microcontrollers. This is a free software and is opened for education,
 / research and development under license policy of following trems.
 /
-/  Copyright (C) 2007, ChaN, all right reserved.
+/  Copyright (C) 2008, ChaN, all right reserved.
 /
 / * The FatFs module is a free software and there is no warranty.
 / * You can use, modify and/or redistribute it for personal, non-profit or
-/   profit use without any restriction under your responsibility.
+/   commercial use without any restriction under your responsibility.
 / * Redistributions of source code must retain the above copyright notice.
 /
 /---------------------------------------------------------------------------*/
 
 #ifndef _FATFS
 
-#define _MCU_ENDIAN		1
-/* The _MCU_ENDIAN defines which access method is used to the FAT structure.
-/  1: Enable word access.
-/  2: Disable word access and use byte-by-byte access instead.
-/  When the architectural byte order of the MCU is big-endian and/or address
-/  miss-aligned access results incorrect behavior, the _MCU_ENDIAN must be set
-/  to 2. If it is not the case, it can be set to 1 for good code efficiency. */
-
-#define _FS_READONLY	1
-/* Setting _FS_READONLY to 1 defines read only configuration. This removes
-/  writing functions, f_write, f_sync, f_unlink, f_mkdir, f_chmod, f_rename
-/  and useless f_getfree. */
-
-#define _FS_MINIMIZE	1
-/* The _FS_MINIMIZE option defines minimization level to remove some functions.
-/  0: Full function.
-/  1: f_stat, f_getfree, f_unlink, f_mkdir, f_chmod and f_rename are removed.
-/  2: f_opendir and f_readdir are removed in addition to level 1.
-/  3: f_lseek is removed in addition to level 2. */
-
-#define _FAT32	0
-/* To enable FAT32 support in addition of FAT12/16, set _FAT32 to 1. */
-
-#define _USE_FSINFO	0
-/* To enable FSInfo support on FAT32 volume, set _USE_FSINFO to 1. */
-
-#define	_USE_SJIS	0
-/* When _USE_SJIS is set to 1, Shift-JIS code transparency is enabled, otherwise
-/  only US-ASCII(7bit) code can be accepted as file/directory name. */
-
-#define	_USE_NTFLAG	0
-/* When _USE_NTFLAG is set to 1, upper/lower case of the file name is preserved.
-/  Note that the files are always accessed in case insensitive. */
-
-
+#include "ff_config.h"
 #include "integer.h"
 
 
@@ -84,10 +50,10 @@ typedef struct _FATFS {
 #endif
 #endif
 	BYTE	fs_type;		/* FAT sub type */
-	BYTE	sects_clust;	/* Sectors per cluster */
+	BYTE	csize;			/* Number of sectors per cluster */
 	BYTE	n_fats;			/* Number of FAT copies */
 	BYTE	winflag;		/* win[] dirty flag (1:must be written back) */
-	//BYTE	win[512];		/* Disk access window for Directory/FAT/File */
+	BYTE	win[512];		/* Disk access window for Directory/FAT/File */
 } FATFS;
 
 
@@ -106,7 +72,7 @@ typedef struct _DIR {
 typedef struct _FIL {
 	WORD	id;				/* Owner file system mount ID */
 	BYTE	flag;			/* File status flags */
-	BYTE	sect_clust;		/* Left sectors in cluster */
+	BYTE	csect;			/* Sector address in the cluster */
 	FATFS*	fs;				/* Pointer to owner file system */
 	DWORD	fptr;			/* File R/W pointer */
 	DWORD	fsize;			/* File size */
@@ -145,18 +111,18 @@ typedef enum {
 	FR_WRITE_PROTECTED,	/* 9 */
 	FR_NOT_ENABLED,		/* 10 */
 	FR_NO_FILESYSTEM,	/* 11 */
-	FR_INVALID_OBJECT	/* 12 */
+	FR_INVALID_OBJECT,	/* 12 */
+	FR_MKFS_ABORTED		/* 13 (not used) */
 } FRESULT;
 
 
 
 /*-----------------------------------------------------*/
-/* FatFs module application interface                  */
+/* Tiny-FatFs module application interface             */
 
 FRESULT f_mount (BYTE, FATFS*);						/* Mount/Unmount a logical drive */
 FRESULT f_open (FIL*, const char*, BYTE);			/* Open or create a file */
 FRESULT f_read (FIL*, void*, UINT, UINT*);			/* Read data from a file */
-FRESULT f_write_inplace (FIL*, void*, UINT, UINT*);	/* Direct access write over existing file (svofski's hax) */
 FRESULT f_write (FIL*, const void*, UINT, UINT*);	/* Write data to a file */
 FRESULT f_lseek (FIL*, DWORD);						/* Move file pointer of a file object */
 FRESULT f_close (FIL*);								/* Close an open file object */
@@ -164,11 +130,22 @@ FRESULT f_opendir (DIR*, const char*);				/* Open an existing directory */
 FRESULT f_readdir (DIR*, FILINFO*);					/* Read a directory item */
 FRESULT f_stat (const char*, FILINFO*);				/* Get file status */
 FRESULT f_getfree (const char*, DWORD*, FATFS**);	/* Get number of free clusters on the drive */
+FRESULT f_truncate (FIL*);							/* Truncate file */
 FRESULT f_sync (FIL*);								/* Flush cached data of a writing file */
 FRESULT f_unlink (const char*);						/* Delete an existing file or directory */
 FRESULT	f_mkdir (const char*);						/* Create a new directory */
 FRESULT f_chmod (const char*, BYTE, BYTE);			/* Change file/dir attriburte */
+FRESULT f_utime (const char*, const FILINFO*);		/* Change file/dir timestamp */
 FRESULT f_rename (const char*, const char*);		/* Rename/Move a file or directory */
+FRESULT f_forward (FIL*, UINT(*)(const BYTE*,UINT), UINT, UINT*);	/* Forward data to the stream */
+#if _USE_STRFUNC
+#define feof(fp) ((fp)->fptr == (fp)->fsize)
+#define EOF -1
+int fputc (int, FIL*);								/* Put a character to the file */
+int fputs (const char*, FIL*);						/* Put a string to the file */
+int fprintf (FIL*, const char*, ...);				/* Put a formatted string to the file */
+char* fgets (char*, int, FIL*);						/* Get a string from the file */
+#endif
 
 
 /* User defined function to give a current time to fatfs module */
@@ -274,15 +251,13 @@ DWORD get_fattime (void);	/* 31-25: Year(0-127 +1980), 24-21: Month(1-12), 20-16
 #define	LD_DWORD(ptr)		(DWORD)(*(DWORD*)(BYTE*)(ptr))
 #define	ST_WORD(ptr,val)	*(WORD*)(BYTE*)(ptr)=(WORD)(val)
 #define	ST_DWORD(ptr,val)	*(DWORD*)(BYTE*)(ptr)=(DWORD)(val)
-#else
-#if _MCU_ENDIAN == 2	/* Use byte-by-byte access */
+#elif _MCU_ENDIAN == 2	/* Use byte-by-byte access */
 #define	LD_WORD(ptr)		(WORD)(((WORD)*(volatile BYTE*)((ptr)+1)<<8)|(WORD)*(volatile BYTE*)(ptr))
 #define	LD_DWORD(ptr)		(DWORD)(((DWORD)*(volatile BYTE*)((ptr)+3)<<24)|((DWORD)*(volatile BYTE*)((ptr)+2)<<16)|((WORD)*(volatile BYTE*)((ptr)+1)<<8)|*(volatile BYTE*)(ptr))
 #define	ST_WORD(ptr,val)	*(volatile BYTE*)(ptr)=(BYTE)(val); *(volatile BYTE*)((ptr)+1)=(BYTE)((WORD)(val)>>8)
 #define	ST_DWORD(ptr,val)	*(volatile BYTE*)(ptr)=(BYTE)(val); *(volatile BYTE*)((ptr)+1)=(BYTE)((WORD)(val)>>8); *(volatile BYTE*)((ptr)+2)=(BYTE)((DWORD)(val)>>16); *(volatile BYTE*)((ptr)+3)=(BYTE)((DWORD)(val)>>24)
 #else
 #error Do not forget to set _MCU_ENDIAN properly!
-#endif
 #endif
 
 
