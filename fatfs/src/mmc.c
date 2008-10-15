@@ -42,7 +42,6 @@
 //#define SOCKINS		0x10			/* Card detect switch (PB4) */
 
 
-
 /*--------------------------------------------------------------------------
 
    Module Private Functions
@@ -55,19 +54,20 @@ DSTATUS Stat = STA_NOINIT;	/* Disk status */
 static
 BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 
-void delay(DWORD nops)
+void xdelay(DWORD nops)
 {
 	while (nops--)
-	asm("nop");
+		asm("nop");
 }
 
 /*-----------------------------------------------------------------------*/
 /* Receive a byte from MMC via SPI  (Platform dependent)                 */
 /*-----------------------------------------------------------------------*/
 
-static void rcvr_spi_m(BYTE* dst) {
+static void rcvr_spi_m(BYTE* dst)
+{
 	REG_SPI_TXD = 0xff;
-	do {} while (~REG_SPI_STAT & (1 << 2));
+	do {} while (REG_SPI_STAT & (1 << 6));
 	*dst = REG_SPI_RXD;
 }
 
@@ -75,7 +75,7 @@ static
 BYTE rcvr_spi (void)
 {
 	REG_SPI_TXD = 0xff;
-	do {} while (~REG_SPI_STAT & (1 << 2));
+	do {} while (REG_SPI_STAT & (1 << 6));
 	return REG_SPI_RXD;
 }
 
@@ -83,9 +83,10 @@ BYTE rcvr_spi (void)
 /* Transmit a byte to MMC via SPI  (Platform dependent)                  */
 /*-----------------------------------------------------------------------*/
 
-static void xmit_spi(BYTE dat) {
+static void xmit_spi(BYTE dat)
+{
 	REG_SPI_TXD = dat;
-	do {} while (~REG_SPI_STAT & (1 << 2));
+	do {} while (REG_SPI_STAT & (1 << 6));
 }
 
 
@@ -96,19 +97,18 @@ static void xmit_spi(BYTE dat) {
 static
 BYTE wait_ready (void)
 {
-	BYTE res = 0, timeout = 50;
+	BYTE res = 0;
+	DWORD timeout = 5000;
 
 	res = rcvr_spi();
 
-	while ((res != 0xFF) && timeout--) {
-		delay(10);
+	while ((res != 0xff) && timeout--) {
+		xdelay(10);
 		res = rcvr_spi();
 	}
 
 	return res;
 }
-
-
 
 /*-----------------------------------------------------------------------*/
 /* Deselect the card and release SPI bus                                 */
@@ -121,8 +121,6 @@ void release_spi (void)
 	rcvr_spi();
 }
 
-
-
 /*-----------------------------------------------------------------------*/
 /* Power Control  (Platform dependent)                                   */
 /*-----------------------------------------------------------------------*/
@@ -133,6 +131,7 @@ static
 void power_on (void)
 {
 	enable_card_power();
+	xdelay(100000);
 }
 
 static
@@ -287,7 +286,8 @@ BYTE send_cmd (
 	DWORD arg		/* Argument */
 )
 {
-	BYTE n, res;
+	BYTE res;
+	DWORD n;
 
 	if (cmd & 0x80) {	/* ACMD<n> is the command sequense of CMD55-CMD<n> */
 		cmd &= 0x7F;
@@ -298,7 +298,8 @@ BYTE send_cmd (
 	/* Select the card and wait for ready */
 	DESELECT();
 	SELECT();
-	if (wait_ready() != 0xFF) return 0xFF;
+	if (cmd != CMD0 && wait_ready() != 0xff)
+		return 0xff;
 
 	/* Send command packet */
 	xmit_spi(cmd);					/* Command */
@@ -313,11 +314,11 @@ BYTE send_cmd (
 
 	/* Receive command response */
 	if (cmd == CMD12) rcvr_spi();			/* Skip a stuff byte when stop reading */
-	n = 10;						/* Wait for a valid response in timeout of 10 attempts */
+	n = 10;					/* Wait for a valid response in timeout of 10 attempts */
 	do
 		res = rcvr_spi();
-	while ((res & 0x80) && --n);
-
+	while (((res & 0x80) || (res == 0x1f) || (res == 0x3f)) && --n);
+	
 	return res;			/* Return with the response value */
 }
 
@@ -359,13 +360,18 @@ DSTATUS disk_initialize (
 )
 {
 	BYTE n, cmd, ty, ocr[4];
-	DWORD timeout = 1000;
+	DWORD timeout = 10000;
 
 	if (drv) return STA_NOINIT;			/* Supports only single drive */
 	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
 
+	init_pins();
+	REG_SPI_CTL1 = 0x03 | (7 << 10) | (2 << 4);
+
 	power_on();					/* Force socket power on */
+	SELECT();
 	for (n = 10; n; n--) rcvr_spi();		/* 80 dummy clocks */
+	DESELECT();
 
 	ty = 0;
 	if (send_cmd(CMD0, 0) == 1) {			/* Enter Idle state */

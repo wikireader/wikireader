@@ -701,7 +701,6 @@ FRESULT auto_mount (	/* FR_OK(0): successful, !=0: any error occured */
 	}
 	if (fmt || LD_WORD(&fs->win[BPB_BytsPerSec]) != 512U)	/* No valid FAT patition is found */
 		return FR_NO_FILESYSTEM;
-
 	/* Initialize the file system object */
 	fatsize = LD_WORD(&fs->win[BPB_FATSz16]);			/* Number of sectors per FAT */
 	if (!fatsize) fatsize = LD_DWORD(&fs->win[BPB_FATSz32]);
@@ -831,6 +830,7 @@ FRESULT f_open (
 	mode &= FA_READ;
 	res = auto_mount(&path, 0);
 #endif
+
 	if (res != FR_OK) return res;
 	res = trace_path(&dj, fn, path, &dir);	/* Trace the file path */
 
