@@ -123,17 +123,8 @@ int createtst(char * fname)/* used */
 	return 0;
 }
 
-int a(Tptr *p){
-	*p = (Tptr) malloc(sizeof(Tnode)); 
-	Tptr pp=*p;
-	strcpy(pp->sha1,"asdf");
-	return 0;
-}
-
 int main(int argc, char *argv[]) /* used */
 {
-/*	a(&root);
-	printf("%s\n",root->sha1);*/
 	createtst(argv[1]);
 	char *s = search(argv[2]);
 	if( s != 0){
