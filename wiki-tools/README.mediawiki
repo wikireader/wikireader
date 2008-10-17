@@ -97,3 +97,5 @@ wc -w strip.indexfile.index
 
 22993660 - 6057152 = 16936508		// word count except SHA1
 16936508 / 6057152 = 2.796117383	// average word count per line
+sort strip.indexfile.index |grep '^[aA]' | grep ' \{1,\}' > justAfile.index 
+//the test data xiangfu use now 2008-10-16 and the data just have one word per line

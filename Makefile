@@ -1,8 +1,8 @@
 #
 # "WikiReaderMakefile" - a Makefile for setting up Wiki Reader
 #
-# Copyright (c) 2008  Xiangfu Liu <xiangfu@openmoko.org>
-# All rights reserved.
+# (C) Copyright 2008 OpenMoko, Inc.
+# Author: xiangfu liu <xiangfu@openmoko.org>
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ BINUTILS_URL= \
 
 DL=toolchain/dl
 
-# ----- configuration data --------------------------------------
+# ----- up is configuration data --------------------------------------
 
 # If the user hasn't checked out sources, he/she should run 'make checkout'
 # first, then run 'make'
@@ -56,11 +56,6 @@ bootloader:mini-libc
 	( cd bootloader && \
 	make)
 
-.PHONY: fatfs
-fatfs: toolchain
-	( cd fatfs && \
-	make)
-
 .PHONY: wikireader
 wikireader: mini-libc fatfs
 	( cd jsp && \
@@ -68,6 +63,17 @@ wikireader: mini-libc fatfs
 	make -C wikireader && \
 	cp wikireader/sample1.elf ../kernel)
 
+# ----- lib stuff   -------------------------------------------
+.PHONY:mini-libc
+mini-libc:
+	make -C mini-libc/
+
+.PHONY: fatfs
+fatfs: toolchain
+	( cd fatfs && \
+	make)
+
+# ----- toolchain stuff  --------------------------------------
 .PHONY: toolchain
 toolchain:toolchain-download gcc gdb binutils
 
@@ -119,9 +125,6 @@ gcc: $(DL)/$(GCC_PACKAGE).ok binutils
 .PHONY: gdb
 gdb:
 
-.PHONY:mini-libc
-mini-libc:
-	make -C mini-libc/
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
@@ -129,7 +132,6 @@ getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
 # ----- update and other things --------------------------------------
-
 .PHONY: update
 update:update-bootloader update-wikireader
 
