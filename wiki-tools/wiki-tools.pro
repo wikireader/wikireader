@@ -28,6 +28,7 @@ HEADERS += \
     src/CreateText.h \
     src/ExtractWords.h \
     src/ExtractText.h \
+    src/ExtractTextHashed.h \
     src/ExtractTitles.h \
     src/SplitArticles.h
 SOURCES += \
@@ -35,6 +36,7 @@ SOURCES += \
     src/CreateText.cc \
     src/ExtractWords.cc \
     src/ExtractText.cc \
+    src/ExtractTextHashed.cc \
     src/ExtractTitles.cc \
     src/SplitArticles.cc \
     src/main.cc
