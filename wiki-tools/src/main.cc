@@ -20,6 +20,7 @@
 #include "CreateIndex.h"
 #include "CreateText.h"
 #include "ExtractWords.h"
+#include "ExtractText.h"
 #include "ExtractTitles.h"
 #include "SplitArticles.h"
 
@@ -33,6 +34,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     *handlers << new CreateText(QString());
     *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
+    *handlers << new ExtractText(QString("extracted.text"));
 
     // Enable that if you want to split articles
     //*handlers << new SplitArticles(50, QString("split_enwiki"));
