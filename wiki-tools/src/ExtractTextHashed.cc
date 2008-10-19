@@ -22,6 +22,10 @@
 #include <QDir>
 #include <QTextStream>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 ExtractTextHashed::ExtractTextHashed(const QString& outputDir)
     : m_baseDir(outputDir)
 {}
@@ -67,10 +71,18 @@ void ExtractTextHashed::handleArticle(const Article& article)
 {
     QString name = article.hash(); 
     
+    QString fileName = m_baseDir + QDir::separator() + name.left(2) + QDir::separator() + name;
+    int fd = open(QFile::encodeName(fileName).data(), O_CREAT|O_WRONLY|O_TRUNC,
+                  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+    if (fd < 0)
+        qWarning("Failed to open file '%s'", qPrintable(fileName));
+
     QFile file;
-    file.setFileName(m_baseDir + QDir::separator() + name.left(2) + QDir::separator() + name);
-    file.open(QFile::WriteOnly);
+    file.open(fd, QFile::WriteOnly);
 
     QTextStream stream(&file);
     stream << article.textContent();
+
+    file.close();
+    close(fd);
 }
