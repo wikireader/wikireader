@@ -57,6 +57,11 @@ and download whatever you need.
   without a db prefix. But also split the content otherwise java will take
   all your memory.
 
+    java -jar mwdumper.jar --format=sql:1.5 enwiki-latest-pages-articles.xml.bz2 > wiki_sql_dump
+    cat wiki_sql_dump | mysql -u wikiuser -p wikidb
+    
+    The wiki_sql_dump will be close to 16gb of size.
+
 = Rants and Notes =
 
 == Import failures ==
