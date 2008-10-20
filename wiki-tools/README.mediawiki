@@ -62,6 +62,10 @@ and download whatever you need.
     
     The wiki_sql_dump will be close to 16gb of size.
 
+  http://meta.wikimedia.org/wiki/Data_dump has some stuff on how to install
+  "tidy" to have less messed up display of the pages. Also look at the
+  extensions one needs to install besides Tidy.
+
 = Rants and Notes =
 
 == Import failures ==
