@@ -66,6 +66,31 @@ and download whatever you need.
   "tidy" to have less messed up display of the pages. Also look at the
   extensions one needs to install besides Tidy.
 
+== After the database is imported ==
+Your MediaWiki needs to enable certain extensions:
+
+    I have a mediawiki and the extensions from trunk and symlinks work fine
+
+    extensions/Citation -> ../../for-zecke/extensions-trunk/Citation
+    extensions/Cite -> ../../for-zecke/extensions-trunk/Cite
+    extensions/ImageMap -> ../../for-zecke/extensions-trunk/ImageMap
+    extensions/ParserFunctions -> ../../for-zecke/extensions-trunk/ParserFunctions
+    extensions/Purge -> ../../for-zecke/extensions-trunk/Purge
+    extensions/README
+    extensions/tidy -> ../../for-zecke/extensions-trunk/tidy
+
+    And you need to enable some of them manually in the LocalSettings.php placed at the bottom.
+
+    $wgUseTidy = true;
+    $wgTidyBin = '/space/dports/bin/tidy';
+    $wgTidyConf = $IP.'/extensions/tidy/tidy.conf';
+
+    require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
+    require_once( "$IP/extensions/Cite/Cite.php" );
+    require_once( "$IP/extensions/ImageMap/ImageMap.php" );
+
+
+
 = Rants and Notes =
 
 == Import failures ==
