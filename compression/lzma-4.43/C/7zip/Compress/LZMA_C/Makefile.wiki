@@ -1,0 +1,29 @@
+CROSS=c33-epson-elf-
+CC=$(CROSS)gcc
+AS=$(CROSS)gcc
+LD=$(CROSS)ld
+AR=$(CROSS)ar
+OBJCOPY=$(CROSS)objcopy
+
+LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
+CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe
+ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
+
+LIB_LZMA = \
+	LzmaDecode.o
+
+TARGETS=liblzma.a
+all: $(TARGETS)
+
+.c.o:
+	$(CC) -M $(CFLAGS) $< > $(<:.c=.d)
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
+liblzma.a: $(LIB_LZMA)
+	$(AR) q liblzma.a $^
+
+clean::
+	rm -rf $(TARGETS) *.o *.elf *.d
+
+-include $(wildcard *.d) dummy
+
