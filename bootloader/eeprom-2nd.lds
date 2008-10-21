@@ -25,7 +25,7 @@ SECTIONS
            __END_text = . ;
           }
 
-        .rodata 0x1500 :
+        .rodata 0x1d00 :
           {
            __START_rodata = . ;
            *(.rodata) ;

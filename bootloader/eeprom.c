@@ -20,7 +20,13 @@
 #include "types.h"
 #include "wikireader.h"
 #include "eeprom.h"
-#include "spi.h"
+
+static u8 spi_transmit(u8 out)
+{
+	REG_SPI_TXD = out;
+	do {} while (~REG_SPI_STAT & (1 << 2));
+	return REG_SPI_RXD;
+}
 
 void eeprom_load(u32 addr, u8 *dest, u32 size)
 {

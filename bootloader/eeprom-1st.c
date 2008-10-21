@@ -19,7 +19,6 @@
 #include "regs.h"
 #include "types.h"
 #include "wikireader.h"
-#include "spi.h"
 #include "eeprom.h"
 #include "config.h"
 

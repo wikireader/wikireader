@@ -145,8 +145,8 @@ static void eeprom_erase_block (int fd, int block)
 
 static void eeprom_wait_ready (int fd)
 {
-	char status;
-	unsigned char cmdbuf[3];
+	//char status;
+	//unsigned char cmdbuf[3];
 
 	usleep(8000);
 	return;

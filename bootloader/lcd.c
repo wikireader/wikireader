@@ -21,7 +21,6 @@
 #include "lcd.h"
 #include "types.h"
 #include "misc.h"
-#include "spi.h"
 
 void init_lcd(void)
 {
@@ -64,7 +63,7 @@ void init_lcd(void)
   	REG_LCDC_MADD = LCD_VRAM;
 
 	/* LCDC on */
-  	spi_transmit(0xA8);
+        REG_SPI_TXD = 0xa8;
 
 	LCD_CS_HI();
 	delay(10);

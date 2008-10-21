@@ -6,11 +6,12 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=$(PWD)/../mini-libc/lib
-LIBS=$(LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
-
-LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe
+LIBDIR=$(PWD)/../mini-libc/
+FATFSDIR=$(PWD)/../fatfs/
+LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
+LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
+INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/
+CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
@@ -40,14 +41,14 @@ rs232: rs232.elf
 eeprom-1st.o: eeprom-1st.c eeprom-2nd
 	$(GCC) -c $(CFLAGS) -DEEPROM_PAYLOAD_SIZE=`wc -c eeprom-2nd | cut -f1 -d' '` $<
 
-eeprom-1st.elf: eeprom-1st.o eeprom.o spi.o
+eeprom-1st.elf: eeprom-1st.o eeprom.o 
 	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
 
 eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o spi.o sdcard.o crc.o fat.o eeprom.o elf32.o lcd.o
+eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
@@ -58,9 +59,6 @@ eeprom-2nd: eeprom-2nd.elf
 # flash target
 flash: rs232.elf eeprom-1st.elf eeprom-2nd.elf
 	@e07load/e07load wikireader.map
-
-#--change-section-address .rodata=0x5000
-#--set-start=0x10000000 --pad-to 30000
 
 clean::
 	make -C e07load clean

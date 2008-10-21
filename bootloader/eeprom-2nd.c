@@ -19,15 +19,12 @@
 #include "regs.h"
 #include "types.h"
 #include "wikireader.h"
-#include "spi.h"
-#include "sdcard.h"
 #include "eeprom.h"
 #include "misc.h"
-#include "fat.h"
 #include "elf32.h"
 #include "lcd.h"
 
-static void boot_from_sdcard(void);
+#define KERNEL "/KERNEL"
 
 __attribute__((noreturn))
 int main(void)
@@ -47,10 +44,10 @@ int main(void)
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 
-	boot_from_sdcard();
+	elf_exec(KERNEL);
 	
 	/* load the 'could not boot from SD card' image */
-	eeprom_load(0x10000, 0x10000000, (320 * 240) / 2);
+	eeprom_load(0x10000, (u8 *) 0x10000000, (320 * 240) / 2);
 #if BOARD_PROTO1
 	{
 		int i;
@@ -70,16 +67,5 @@ int main(void)
 	asm("slp");
 
 	for(;;);
-}
-
-static void boot_from_sdcard(void)
-{
-	if (sdcard_init() < 0)
-		return;
-	
-	if (fat_init(0) < 0)
-		return;
-
-	elf_read("KERNEL");
 }
 

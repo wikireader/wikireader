@@ -20,7 +20,8 @@
 #include "types.h"
 #include "wikireader.h"
 #include "misc.h"
-#include "fat.h"
+#include <tff.h>
+#include <string.h>
 
 #define ET_EXEC		2
 #define EM_C33		0x6b
@@ -73,18 +74,25 @@ typedef struct {
 #define SHT_SHLIB       10              /* Reserved, unspecified semantics */
 #define SHT_DYNSYM      11              /* Dynamic linking symbol table */
 
-int elf_read(const u8 *filename)
+
+
+int elf_exec(const u8 *filename)
 {
 	elf32_hdr hdr;
 	elf32_sec sec;
-	u32 i;
+	u32 i, r;
 	void *exec;
+	FATFS fatfs;
+	FIL file;
 
-	if (fat_open_file(filename) < 0)
+	f_mount(0, &fatfs);
+
+	if (f_open(&file, filename, FA_READ) < 0)
 		return -1;
 
-	fat_read_file(0, (u8 *) &hdr, sizeof(hdr));
-	
+	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr))
+		return -1;
+
 	if (hdr.e_ident[0] != ELFMAG0 ||
 	    hdr.e_ident[1] != ELFMAG1 ||
 	    hdr.e_ident[2] != ELFMAG2 ||
@@ -106,22 +114,28 @@ int elf_read(const u8 *filename)
 	print("\n");
 
 	for (i = 0; i < hdr.e_shnum; i++) {
-		fat_read_file(hdr.e_shoff + sizeof(sec) * i, (u8 *) &sec, sizeof(sec));
+		f_lseek(&file, hdr.e_shoff + sizeof(sec) * i);
+		if (f_read(&file, (u8 *) &sec, sizeof(sec), &r) || r != sizeof(sec))
+			continue;
 
 		switch (sec.sh_type) {
 			case SHT_PROGBITS:
-				fat_read_file(sec.sh_offset, (u8 *) sec.sh_addr, sec.sh_size);
-				print("PROGBITS loaded.\n");
+				f_lseek(&file, sec.sh_offset);
+				if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size)
+					print("unable to load PROGBITS!\n");
+				else
+					print("PROGBITS loaded.\n");
 				break;
 			case SHT_NOBITS:
-				/* clean the .bss section */
-				memset(sec.sh_addr, 0, sec.sh_size);
+				/* clean .bss sections */
+				memset((u8 *) sec.sh_addr, 0, sec.sh_size);
 				break;
 			default:
 				break;
 		}
 	}
 
+	f_close(&file);
 	print("all sections loaded, jumping to ");
 	print_u32(hdr.e_entry);
 	print(". Sayonara.\n\n");
