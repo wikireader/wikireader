@@ -91,6 +91,7 @@ char *ltoa(long num, char *str, int radix);
 char *ultoa(unsigned long num, char *str, int radix);
 
 void *malloc(size_t size);
+void *calloc(size_t nmemb, size_t size);
 void free(void *p);
 void *bsearch(const void *, const void *, size_t, size_t, register int (*compar)(const void *, const void *));
 
