@@ -1,0 +1,35 @@
+﻿CROSS=c33-epson-elf-
+CC=$(CROSS)gcc
+AS=$(CROSS)gcc
+LD=$(CROSS)ld
+AR=$(CROSS)ar
+OBJCOPY=$(CROSS)objcopy
+
+LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
+CFLAGS=-Wall -I. -I../../mini-libc/include/ -gstabs -mlong-calls -fno-builtin -Os -mc33pe -DBZ_NO_STDIO
+ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
+
+LIB_BZIP2 = \
+	blocksort.o  \
+	huffman.o    \
+	crctable.o   \
+	randtable.o  \
+	decompress.o \
+	bzlib.o
+
+
+TARGETS=libbz2.a
+all: $(TARGETS)
+
+.c.o:
+	$(CC) -M $(CFLAGS) $< > $(<:.c=.d)
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
+libbz2.a: $(LIB_BZIP2)
+	$(AR) q libbz2.a $^
+
+clean::
+	rm -rf $(TARGETS) *.o *.elf *.d
+
+-include $(wildcard *.d) dummy
+
