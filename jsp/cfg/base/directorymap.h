@@ -52,6 +52,7 @@
   //MSVC6.0が <cstdio> してもstdに入れてくれないので
 #include <stdio.h>
 
+#include <string.h>
 #include <string>
 #include <map>
 #include <iostream>

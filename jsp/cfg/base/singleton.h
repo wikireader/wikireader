@@ -38,6 +38,7 @@
 
 // $Header: /home/CVS/configurator/base/singleton.h,v 1.12 2004/09/06 15:00:49 honda Exp $
 
+#include <stdlib.h>
 #include "base/testsuite.h"
 
 #ifndef SINGLETON_H
