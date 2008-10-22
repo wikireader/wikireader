@@ -97,9 +97,11 @@
  *  'q' : 発行したシステムコールを表示しない．
  */
 
+#include <s1c33.h>
 #include <t_services.h>
 #include "kernel_id.h"
 #include "sample1.h"
+#include "keyboard.h"
 
 #include <tff.h>
 
@@ -131,6 +133,7 @@ void task(VP_INT exinf)
 	while (1) {
 		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
 					tskno, ++n, graph[tskno-1]);
+
 		for (i = 0; i < task_loop; i++);
 		c = message[tskno-1];
 		message[tskno-1] = 0;
@@ -273,6 +276,7 @@ void main_task(VP_INT exinf)
 	 * hagahaga görgnpög
 	 */
 	f_mount(0, &s_activeFatFs); 
+	keyboard_init();
 
 	/*
  	 *  ループ回数の設定
@@ -321,8 +325,25 @@ void main_task(VP_INT exinf)
 			break;
 		case '4': {
 			FIL file_object;
+			char tmp[512];
+			int n, total = 0;
+
 			result = f_open(&file_object, "/foo", FA_READ);
-			syslog(LOG_INFO, "result = %d", result);
+			syslog(LOG_INFO, "f_open result = %d", result);
+			if (result != 0)
+				break;
+
+			result = f_read (&file_object, tmp, sizeof(tmp), &n);
+			syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
+			syslog(LOG_INFO, "benchmark starting ...\n");
+
+			do {
+				result = f_read (&file_object, tmp, sizeof(tmp), &n);
+				total += n;
+			} while (result == 0 && n == sizeof(tmp));
+
+			syslog(LOG_INFO, "done. %d bytes read\n", total);
+
        			break; 
 		}
 		case 'a':

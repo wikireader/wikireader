@@ -55,6 +55,8 @@ extern void init_sys(void);
 extern void INT_ENTRY(timer_handler)(void);
 extern void INT_ENTRY(sio_in_handler)(void);
 extern void INT_ENTRY(sio_out_handler)(void);
+extern void INT_ENTRY(kint0_handler)(void);
+extern void INT_ENTRY(kint1_handler)(void);
 
 /*
  *  プロトタイプ宣言
@@ -88,8 +90,8 @@ VP tps_VectorTable[] = {		/* offset   number */
 	(VP) undef_handler,		/* 17 (01)                      */
 	(VP) undef_handler,		/* 18 (02)                      */
 	(VP) undef_handler,		/* 19 (03)                      */
-	(VP) undef_handler,		/* 20 (04)                      */
-	(VP) undef_handler,		/* 21 (05)                      */
+	(VP) INT_ENTRY(kint0_handler),	/* 20 (04)                      */
+	(VP) INT_ENTRY(kint1_handler),	/* 21 (05)                      */
 	(VP) undef_handler,		/* 22 (06)                      */
 	(VP) undef_handler,		/* 23 (07)                      */
 	(VP) undef_handler,		/* 24 (08)                      */
@@ -260,3 +262,4 @@ static	void	software_init_hook(void)
 	init_lib();
 	init_sys();
 }
+

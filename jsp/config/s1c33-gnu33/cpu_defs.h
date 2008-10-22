@@ -74,14 +74,17 @@ typedef UINT	INTNO;		/* 割込み番号		*/
  */
 #define ena_int		_kernel_ena_int
 #define dis_int		_kernel_dis_int
+#define clr_int		_kernel_clr_int
 
 #ifdef LABEL_ASM
 #define _ena_int	__kernel_ena_int
 #define _dis_int	__kernel_dis_int
+#define _clr_int	__kernel_clr_int
 #endif /* LABEL_ASM */
 
 extern	ER	ena_int(INTNO intno);
 extern	ER	dis_int(INTNO intno);
+extern	ER	clr_int(INTNO intno);
 
 /*
  *  現在の割込み許可フラグの読出し

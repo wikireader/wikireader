@@ -299,7 +299,7 @@ sio_out_handler (void)
 {
 	sio_clr_factor(SIO_INT_SND);
 	sio_out_service(1);
-	}
+}
 
 #ifdef SIO_ERR_HANDLER
 
