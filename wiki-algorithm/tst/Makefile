@@ -33,7 +33,7 @@ tst:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
 run: $(TARGETS)
-	./tst ./test.index Aba
+	./tst ./index100 trysearch
 
 clean:
 	rm -fr $(TARGETS) *.o *~
