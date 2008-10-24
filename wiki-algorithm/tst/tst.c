@@ -40,8 +40,9 @@ the input file in sorted order.
 #include <stdio.h>
 #include <time.h>
 
-/* TERNARY SEARCH TREE ALGS */
+#define SHA 			/* this for test will remove later */
 
+/* TERNARY SEARCH TREE ALGS */
 typedef struct tnode *Tptr;
 typedef struct tnode {
 	char splitchar;
@@ -100,12 +101,12 @@ int split(char *source, char *word, char*sha1)
 	}
 	char *p = strrchr(source, ' ');
 	int i=0;
-	int split_char_pos = p - source + 1;
+	int split_char_pos = p - source;
 	for(i = 0; i < split_char_pos; i++){
                 *(word++) = *(source++);
 	}
 	*word='\0';
-
+	source++;		/* eat the blank */
         while(*source != '\n' && *source != EOF)
                 *(sha1++) = *(source++);
 	*sha1='\0';
@@ -131,7 +132,9 @@ Tptr insert2(Tptr p, char *s)
 		p->lokid = insert2(p->lokid, s);
 	else if (*s == p->splitchar) {
 		if (*s == 0){
-			p->lokid = (Tptr) insertsha1;
+#ifdef SHA
+			p->lokid = (Tptr) insertsha1; 
+#endif
 			p->eqkid = (Tptr) insertstr; 
 		}else{
 			p->eqkid = insert2(p->eqkid, ++s);
@@ -181,18 +184,20 @@ void insert3(char *s)
 	}
 }
 
-char * search(char *s)
+char *srcharr[100000];
+int srchtop, nodecnt;
+
+int search(char *s)
 {   Tptr p;
 	p = root;
 	while (p) {
 		if (*s < p->splitchar)
 			p = p->lokid;
 		else if (*s == p->splitchar)  {
-/*			if (*s++ == 0)
-			return 1;
-*/
-			if(*s == 0)
-				return p->eqkid;
+			if (*s++ == 0){
+				srcharr[srchtop++] = (char *) (p->eqkid)->eqkid;
+				return 1;
+			}
 			p = p->eqkid;
 		} else
 			p = p->hikid;
@@ -200,7 +205,7 @@ char * search(char *s)
 	return 0;
 }
 
-char *rsearch(Tptr p, char *s)
+int rsearch(Tptr p, char *s)
 {
 	if (!p) return 0;
 	if (*s < p->splitchar)
@@ -208,7 +213,10 @@ char *rsearch(Tptr p, char *s)
 	else if (*s > p->splitchar)
 		return rsearch(p->hikid, s);
 	else {
-		if (*s == 0) return p->eqkid;
+		if (*s == 0){
+			srcharr[srchtop++] = (char *) (p->eqkid)->eqkid;
+			return 1;
+		}
 		return rsearch(p->eqkid, ++s);
 	}
 }
@@ -222,22 +230,22 @@ int rsearch2(Tptr p, char *s)
 		    ));
 }
 
-char *srcharr[100000];
-int srchtop, nodecnt;
-
 void pmsearch(Tptr p, char *s)
 { 
 	if (!p) return;
 	nodecnt++;
-	if (*s == '.' || *s < p->splitchar)
+	if (*s == '?' || *s < p->splitchar)
 		pmsearch(p->lokid, s);
-	if (*s == '.' || *s == p->splitchar)
+	if (*s == '?' || *s == p->splitchar)
 		if (p->splitchar && *s)
 			pmsearch(p->eqkid, s+1);
 	if (*s == 0 && p->splitchar == 0){
 		srcharr[srchtop++] = (char *) p->eqkid;
+#ifdef SHA
+		srcharr[srchtop++] = (char *) p->lokid; 
+#endif
 	}
-	if (*s == '.' || *s > p->splitchar)
+	if (*s == '?' || *s > p->splitchar)
 		pmsearch(p->hikid, s);
 }
 
@@ -249,7 +257,9 @@ void nearsearch(Tptr p, char *s, int d)
 	if (p->splitchar == 0) {
 		if ((int) strlen(s) <= d){
 			srcharr[srchtop++] = (char *)p->eqkid;
-			srcharr[srchtop++] = (char *)p->lokid;
+#ifdef SHA
+			srcharr[srchtop++] = (char *)p->lokid; 
+#endif
 		}
 	} else
 		nearsearch(p->eqkid, *s ? s+1:s,
@@ -372,7 +382,7 @@ void searchall(char *a[], int n)
 
 #define TASK(s)	printf("%s", s);
 #define CIN		starttime = clock();
-#define COUT	printf("\t%d", clock()-starttime);
+#define COUT	printf("%d", clock()-starttime);
 #define NL	printf("\n")
 #define REPEAT(s)	for (rptctr=0; rptctr<5; rptctr++) { s }; NL;
 
@@ -428,8 +438,10 @@ void trysearch()
 		COUT; NL;
 		printf("------------result----------\n");
 		for (i = 0; i < min(srchtop, 20); ){
-			printf("%s\t", srcharr[i++]);
-			printf("%s\n", srcharr[i++]);
+#ifdef SHA
+			printf("-%s-", srcharr[i++]); 
+#endif
+			printf("-%s-\n", srcharr[i++]);
 		}
 		NL;
 		printf("Enter searches: <distance> <word>\n");
