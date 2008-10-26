@@ -31,58 +31,39 @@ ExtractTextHashed::ExtractTextHashed(const QString& outputDir)
 {}
 
 void ExtractTextHashed::parsingStarts()
-{
-    QDir dir;
-    dir.mkdir(m_baseDir);
-    dir.cd(m_baseDir);
-
-    // Create the hash directories 0-f 0-f
-#define CREATE_DIR           \
-        name[0] = QChar(i);  \
-        name[1] = QChar(j);  \
-        dir.mkdir(name);
-
-    QString name;
-    name.resize(2);
-    for (int i = 48; i <= 57; ++i) {
-        for (int j = 48; j <= 57; ++j) {
-            CREATE_DIR
-        }
-
-        for (int j = 'a'; j <= 'f'; ++j) {
-            CREATE_DIR
-        }
-    }
-
-    for (int i = 'a'; i <= 'f'; ++i) {
-        for (int j = 48; j <= 57; ++j) {
-            CREATE_DIR
-        }
-
-        for (int j = 'a'; j <= 'f'; ++j) {
-            CREATE_DIR
-        }
-    }
-}
+{}
 
 
 // now put the text into the right place
 void ExtractTextHashed::handleArticle(const Article& article)
 {
-    QString name = article.hash(); 
-    
-    QString fileName = m_baseDir + QDir::separator() + name.left(2) + QDir::separator() + name;
-    int fd = open(QFile::encodeName(fileName).data(), O_CREAT|O_WRONLY|O_TRUNC,
-                  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
-    if (fd < 0)
-        qWarning("Failed to open file '%s'", qPrintable(fileName));
+    const QString name = article.hash(); 
+
+    // Create the directory structure on the fly
+    QDir dir;
+
+    dir.mkdir(m_baseDir);
+    dir.cd(m_baseDir);
+
+    for (int i = 0; i < 4; ++i) {
+        dir.mkdir(name.mid(i*2, 2));
+        dir.cd(name.mid(i*2, 2));
+    }
+
 
     QFile file;
-    file.open(fd, QFile::WriteOnly);
+    QString fileName = m_baseDir + QDir::separator();
+
+    for (int i = 0; i < 4; ++i)
+        fileName += name.mid(i*2, 2) + QDir::separator();
+
+    fileName += name;
+
+    file.setFileName(fileName);
+    file.open(QFile::WriteOnly);
 
     QTextStream stream(&file);
     stream << article.textContent();
 
     file.close();
-    close(fd);
 }
