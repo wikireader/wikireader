@@ -35,7 +35,9 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Trie: fast mapping of strings to values */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "trie.h"
 
@@ -50,6 +52,7 @@ struct _TrieNode {
 struct _Trie {
 	TrieNode *root_node;
 };
+
 
 static void trie_free_node(TrieNode *node)
 {
@@ -71,19 +74,19 @@ static void trie_free_node(TrieNode *node)
 
 Trie *trie_new(void)
 {
-	Trie *new_trie;
+	Trie new_trie;
 
-	new_trie = (Trie *) malloc(sizeof(Trie));
-	new_trie->root_node = NULL;
+	new_trie = (Trie) malloc(sizeof(Trie));
+	(new_trie)->root_node = NULL;
 
-	return new_trie;
+	return &new_trie;
 }
 
 void trie_free(Trie *trie)
 {
 	/* Free the subnode, and all others by implication */
 
-	trie_free_node(trie->root_node);
+	trie_free_node((*trie)->root_node);
 
 	/* Free the trie */
 
@@ -98,54 +101,40 @@ void trie_insert(Trie *trie, char *key, void *value)
 	int c;
 
 	/* Cannot insert NULL values */
-
 	if (value == NULL) {
 		return;
 	}
 
 	/* Search down the trie until we reach the end of string,
 	 * creating nodes as necessary */
-
-	rover = &trie->root_node;
+	rover = &(*trie)->root_node;
 	p = key;
 
 	for (;;) {
-
 		node = *rover;
-
 		if (node == NULL) {
-			
 			/* Node does not exist, so create it */
-
 			node = (TrieNode *) malloc(sizeof(TrieNode));
 			memset(node, 0, sizeof(TrieNode));
 
 			/* Link in to the trie */
-
 			*rover = node;
 		}
 
 		/* One more use of this node */
-
 		++node->use_count;
 
 		/* Current character */
-
 		c = *p;
 
 		/* Reached the end of string?  If so, we're finished. */
-
 		if (c == '\0') {
-
 			/* Set the data at the node we have reached */
-
 			node->data = value;
-
 			break;
 		}
 
 		/* Advance to the next node in the chain */
-
 		rover = &node->next[c];
 		++p;
 	}
@@ -164,7 +153,7 @@ void trie_remove(Trie *trie, char *key)
 
 	/* Search down the trie until the end of string is reached */
 
-	node = trie->root_node;
+	node = (*trie)->root_node;
 
 	for (p=key; *p != '\0'; ++p) {
 
@@ -187,8 +176,8 @@ void trie_remove(Trie *trie, char *key)
 	/* Now traverse the tree again as before, decrementing the use
 	 * count of each node.  Free back nodes as necessary. */
 
-	node = trie->root_node;
-	last_next_ptr = &trie->root_node;
+	node = (*trie)->root_node;
+	last_next_ptr = &(*trie)->root_node;
 	p = key;
 
 	for (;;) {
@@ -247,7 +236,7 @@ void *trie_lookup(Trie *trie, char *key)
 
 	/* Search down the trie until the end of string is found */
 	
-	node = trie->root_node;
+	node = (*trie)->root_node;
 	p = key;
 
 	while (*p != '\0') {
@@ -272,10 +261,124 @@ int trie_num_entries(Trie *trie)
 	/* To find the number of entries, simply look at the use count
 	 * of the root node. */
 
-	if (trie->root_node == NULL) {
+	if ((*trie)->root_node == NULL) {
 		return 0;
 	} else {
-		return trie->root_node->use_count;
+		return (*trie)->root_node->use_count;
 	}
+}
+
+#define TASK(s)	printf("%s", s);
+#define CIN		starttime = clock();
+#define COUT	printf("%g", clock()-starttime);
+#define NL	printf("\n")
+#define SHA1CHARS 40		/* sha1 char count */
+#define MAXCHARS 100		/* the max chars of the title */
+#define LINECHARS 80
+#define MAXWORDS 1000
+char space[MAXCHARS], *a[MAXWORDS] , *address[MAXWORDS];
+int starttime = 0, n = 0;
+Trie * root;
+
+int split(char *source, char *word, char*sha1)
+{
+	if(*source == 0){
+		*word = 0;
+		*sha1 = 0;
+		return 0;
+	}
+	char *p = strrchr(source, ' ');
+	int i=0;
+	int split_char_pos = p - source;
+	for(i = 0; i < split_char_pos; i++){
+                *(word++) = *(source++);
+	}
+	*word='\0';
+	source++;		/* eat the blank */
+        while(*source != '\n' && *source != EOF)
+                *(sha1++) = *(source++);
+	*sha1='\0';
+
+        return 0;
+}
+
+int generate_trie(char *a[])
+{
+	root = trie_new();
+	int i = 0;
+	for(i = 1; i< MAXWORDS; i++)
+		if(a[i] != NULL){
+			printf("%s-%s",a[i],address[i]);
+			trie_insert(root,a[i],address[i]);
+		}
+	return 0;
+}
+
+void trysearch()
+{
+	char *sha1;
+	generate_trie(a);
+	printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
+	while (scanf("%s", sha1) != EOF) {
+                CIN;
+		sha1 = trie_lookup(root, "Aba");
+		COUT; NL;
+                printf("------------result----------\n");
+		printf("-%s-", sha1);
+                printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
+	}
+}			       
+int main(int argc, char *argv[])
+{
+	double i, globalstarttime;
+	char *s = space, *fname;
+	FILE *fp;
+	if (argc == 1) { /* no args */
+		fname = "/usr/jlb/data/words"; /* default dict file */
+	} else /* at least one arg: file name */
+		fname = argv[1];
+	
+	setbuf(stdout, 0);
+	if ((fp = fopen(fname, "r")) == NULL) {
+		fprintf(stderr, "  Can't open file\n");
+		exit(1);
+	}
+
+	globalstarttime = clock();
+
+	TASK("Reading Input");
+	CIN;
+	a[0] = s;
+	char *sha1;
+	char line[LINECHARS];
+	while (!feof(fp)){
+		if (fgets(line, LINECHARS, fp) != NULL){
+			s = (char *) malloc(MAXCHARS * sizeof(char));
+			sha1 = (char *) malloc(SHA1CHARS * sizeof(char));
+			split(line, s, sha1);
+			a[++n] = s;
+			address[n] = sha1;
+			printf("read lines: %d\n", n);
+		}
+	}
+	COUT; NL;
+
+/*	TASK("System Qsort"); CIN; DOQSORT; COUT; NL; */
+
+	if (argc < 3) { /* at most one arg: file name */
+
+	} else {
+		if (strcmp(argv[2], "trysearch") == 0) {
+			trysearch();
+		} else if (strcmp(argv[2], "traverse") == 0) {
+
+		} else
+			printf("Unrecognized option\n");
+	}
+
+	i = clock() - globalstarttime;
+	printf("Total clicks\t%g\nTotal secs\t%g\n",
+	       i, (double) i / CLOCKS_PER_SEC);
+	return 0;
 }
 

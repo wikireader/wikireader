@@ -1,6 +1,7 @@
+#ifndef __TRIE__
+#define __TRIE__
+
 typedef struct _Trie *Trie;
-
-
 
 /* Trie_new
  * --------
@@ -127,3 +128,5 @@ int Trie_serialize(const Trie trie,
 Trie Trie_deserialize(int (*read)(void *wasread, const int length, void *data),
 		      void *(*read_value)(void *data),
 		      void *data);
+
+#endif
