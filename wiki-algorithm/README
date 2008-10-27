@@ -6,6 +6,7 @@
 you can find at: 
     http://www.cs.princeton.edu/~rs/strings/tstdemo.c
     http://www.ddj.com/windows/184410528
+
 the computer i use test the algorithms:
 	CPU: Intel(R) Celeron(R) M processor         1.50GHz
 	MemTotal:      1424400 kB
@@ -13,5 +14,11 @@ the computer i use test the algorithms:
 	16 heads, 63 sectors/track, 77520 cylinders
 	Units = cylinders of 1008 * 512 = 516096 bytes
 
+the index that tst use must sort
+
+use CTRL+D exit the trysearch function
+
 =tst1.4=
 you can find tst1.4.tar.gz at: http://www.octavian.org/cs/software.html
+
+=Radix tree=

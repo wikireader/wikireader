@@ -32,8 +32,10 @@ $(C_OBJS): $(C_SRCS)
 tst:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
-run: $(TARGETS)
-	./tst ./index100 trysearch
+search: $(TARGETS)
+	./tst ../index700 trysearch
 
+traverse: $(TARGETS)
+	./tst ../index700 traverse
 clean:
 	rm -fr $(TARGETS) *.o *~

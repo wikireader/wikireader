@@ -52,7 +52,7 @@ Tptr root;
 
 char *insertstr, *insertsha1;
 
-#define MAXWORDS 400000 	/* line count of the index file */
+#define MAXWORDS 1000 	/* line count of the index file */
 #define SHA1CHARS 40		/* sha1 char count */
 #define MAXCHARS 40		/* the max chars of the title */
 #define LINECHARS 80
@@ -62,20 +62,22 @@ char space[MAXCHARS], *a[MAXWORDS] , *address[MAXWORDS];
 
 Tptr insert(Tptr p, char *s)
 {   if (p == 0) {
-        p = (Tptr) malloc(sizeof(Tnode));
-        p->splitchar = *s;
-        p->lokid = p->eqkid = p->hikid = 0;
-    }
-    if (*s < p->splitchar)
-        p->lokid = insert(p->lokid, s);
-    else if (*s == p->splitchar) {
-        if (*s == 0)
-            p->eqkid = (Tptr) insertstr;
+		p = (Tptr) malloc(sizeof(Tnode));
+		p->splitchar = *s;
+		p->lokid = p->eqkid = p->hikid = 0;
+	}
+	if (*s < p->splitchar)
+		p->lokid = insert(p->lokid, s);
+	else if (*s == p->splitchar) {
+		if (*s == 0){
+			p->eqkid = (Tptr) insertstr;
+			p->lokid = (Tptr) insertsha1;
+		}
 		else
-            p->eqkid = insert(p->eqkid, ++s);
-    } else
-        p->hikid = insert(p->hikid, s);
-    return p;
+			p->eqkid = insert(p->eqkid, ++s);
+	} else
+		p->hikid = insert(p->hikid, s);
+	return p;
 }
 
 void cleanup(Tptr p)
@@ -339,14 +341,18 @@ void rinsall(char *a[], char *address[], int n)
 	if (n < 1) return;
 	m = n/2;		/* because here the index file must sort */
 	switch (instype) {
-	case 1: insertstr = a[m]; root = insert(root,a[m]); break;
+	case 1: {
+		insertstr = a[m]; 
+		insertsha1 = address[m];
+		root = insert(root,a[m]); 
+		break;
+	}
 	case 2: {
 		insertstr = a[m];
 		insertsha1 = address[m];
 		root = insert2(root,a[m]); 
 		break;
 	}
-
 	case 3: insert3(a[m]); break;
 	}
 	rinsall(a,address, m);
@@ -382,7 +388,7 @@ void searchall(char *a[], int n)
 
 #define TASK(s)	printf("%s", s);
 #define CIN		starttime = clock();
-#define COUT	printf("%d", clock()-starttime);
+#define COUT	printf("%g", clock()-starttime);
 #define NL	printf("\n")
 #define REPEAT(s)	for (rptctr=0; rptctr<5; rptctr++) { s }; NL;
 
@@ -423,10 +429,10 @@ void trysearch()
 {
 	char s[100];
 	int i, d;
-	instype = 2; insall(a,address, n);
+	instype = 1; insall(a,address, n);
 	for (i = 0; i <  10; i++)
 		srcharr[i] = NULL;
-	printf("Enter searches: <distance> <word>\n");
+	printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
 	while (scanf("%d %s", &d, s) != EOF) {
 		nodecnt = srchtop = 0;
 		CIN;
@@ -444,7 +450,7 @@ void trysearch()
 			printf("-%s-\n", srcharr[i++]);
 		}
 		NL;
-		printf("Enter searches: <distance> <word>\n");
+		printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
 	}
 }
 
@@ -458,6 +464,7 @@ int display_sha1(char ** sha1, int n)
 	printf("----------dump sha1 over------------\n");
 	return 0;
 }
+
 int main(int argc, char *argv[])
 {
 	int i, globalstarttime;
@@ -488,9 +495,7 @@ int main(int argc, char *argv[])
 			split(line, s, sha1);
 			a[++n] = s;
 			address[n] = sha1;
-/*			printf("line number:%d\n", n);
-			s = (char *) malloc(LINECHARS * sizeof(char));
-			a[++n] = s;*/
+			printf("read lines: %d\n", n);
 		}
 	}
 	COUT; NL;
