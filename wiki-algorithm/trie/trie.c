@@ -72,14 +72,14 @@ static void trie_free_node(TrieNode *node)
 	free(node);
 }
 
-Trie *trie_new(void)
+Trie trie_new(void)
 {
 	Trie new_trie;
 
 	new_trie = (Trie) malloc(sizeof(Trie));
 	(new_trie)->root_node = NULL;
 
-	return &new_trie;
+	return new_trie;
 }
 
 void trie_free(Trie *trie)
@@ -93,7 +93,7 @@ void trie_free(Trie *trie)
 	free(trie);
 }
 
-void trie_insert(Trie *trie, char *key, void *value)
+void trie_insert(Trie trie, char *key, void *value)
 {
 	TrieNode **rover;
 	TrieNode *node;
@@ -107,7 +107,7 @@ void trie_insert(Trie *trie, char *key, void *value)
 
 	/* Search down the trie until we reach the end of string,
 	 * creating nodes as necessary */
-	rover = &(*trie)->root_node;
+	rover = &(trie->root_node);
 	p = key;
 
 	for (;;) {
@@ -228,7 +228,7 @@ void trie_remove(Trie *trie, char *key)
 	}
 }
 
-void *trie_lookup(Trie *trie, char *key)
+void *trie_lookup(Trie trie, char *key)
 {
 	TrieNode *node;
 	char *p;
@@ -236,7 +236,7 @@ void *trie_lookup(Trie *trie, char *key)
 
 	/* Search down the trie until the end of string is found */
 	
-	node = (*trie)->root_node;
+	node = trie->root_node;
 	p = key;
 
 	while (*p != '\0') {
@@ -278,7 +278,7 @@ int trie_num_entries(Trie *trie)
 #define MAXWORDS 1000
 char space[MAXCHARS], *a[MAXWORDS] , *address[MAXWORDS];
 int starttime = 0, n = 0;
-Trie * root;
+Trie root;
 
 int split(char *source, char *word, char*sha1)
 {
@@ -308,7 +308,7 @@ int generate_trie(char *a[])
 	int i = 0;
 	for(i = 1; i< MAXWORDS; i++)
 		if(a[i] != NULL){
-			printf("%s-%s",a[i],address[i]);
+			printf("%s---%s\n",a[i],address[i]);
 			trie_insert(root,a[i],address[i]);
 		}
 	return 0;
@@ -317,15 +317,16 @@ int generate_trie(char *a[])
 void trysearch()
 {
 	char *sha1;
+	char * title;
 	generate_trie(a);
-	printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
-	while (scanf("%s", sha1) != EOF) {
+	printf("Enter searches: <word>\n");
+	while (scanf("%s", title) != EOF) {
                 CIN;
-		sha1 = trie_lookup(root, "Aba");
+		sha1 = trie_lookup(root, title);
 		COUT; NL;
-                printf("------------result----------\n");
-		printf("-%s-", sha1);
-                printf("Enter searches: <nndistance> <word>  (dist=-1 for pm search)\n");
+
+		printf("sha1 is :%s\n", sha1);
+		printf("Enter searches: <word>\n");
 	}
 }			       
 int main(int argc, char *argv[])
