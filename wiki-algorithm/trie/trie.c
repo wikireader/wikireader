@@ -82,14 +82,12 @@ Trie trie_new(void)
 	return new_trie;
 }
 
-void trie_free(Trie *trie)
+void trie_free(Trie trie)
 {
 	/* Free the subnode, and all others by implication */
-
-	trie_free_node((*trie)->root_node);
+	trie_free_node(trie->root_node);
 
 	/* Free the trie */
-
 	free(trie);
 }
 
@@ -304,7 +302,6 @@ int split(char *source, char *word, char*sha1)
 
 int generate_trie(char *a[])
 {
-	root = trie_new();
 	int i = 0;
 	for(i = 1; i< MAXWORDS; i++)
 		if(a[i] != NULL){
@@ -318,6 +315,7 @@ void trysearch()
 {
 	char *sha1;
 	char * title;
+	root = trie_new();
 	generate_trie(a);
 	printf("Enter searches: <word>\n");
 	while (scanf("%[^\n]%*c", title) != EOF) {
@@ -328,6 +326,7 @@ void trysearch()
 		printf("sha1 is :%s\n", sha1);
 		printf("Enter searches: <word>\n");
 	}
+	trie_free(root);
 }			       
 int main(int argc, char *argv[])
 {
