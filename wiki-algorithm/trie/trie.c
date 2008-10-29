@@ -320,7 +320,7 @@ void trysearch()
 	char * title;
 	generate_trie(a);
 	printf("Enter searches: <word>\n");
-	while (scanf("%s", title) != EOF) {
+	while (scanf("%[^\n]%*c", title) != EOF) {
                 CIN;
 		sha1 = trie_lookup(root, title);
 		COUT; NL;
