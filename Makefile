@@ -53,7 +53,8 @@ checkout:
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs
-	make -C  bootloader/
+	( cd bootloader && \
+	make )
 
 .PHONY: wikireader
 wikireader: mini-libc fatfs
