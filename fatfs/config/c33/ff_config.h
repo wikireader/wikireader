@@ -22,12 +22,12 @@
 /  miss-aligned access results incorrect behavior, the _MCU_ENDIAN must be set to 2.
 /  If it is not the case, it can also be set to 1 for good code efficiency. */
 
-#define _FS_READONLY	0
+#define _FS_READONLY	1
 /* Setting _FS_READONLY to 1 defines read only configuration. This removes
 /  writing functions, f_write, f_sync, f_unlink, f_mkdir, f_chmod, f_rename,
 /  f_truncate and useless f_getfree. */
 
-#define _FS_MINIMIZE	0
+#define _FS_MINIMIZE	2
 /* The _FS_MINIMIZE option defines minimization level to remove some functions.
 /  0: Full function.
 /  1: f_stat, f_getfree, f_unlink, f_mkdir, f_chmod, f_truncate and f_rename are removed.
@@ -56,12 +56,10 @@
 /* When _USE_SJIS is set to 1, Shift-JIS code transparency is enabled, otherwise
 /  only US-ASCII(7bit) code can be accepted as file/directory name. */
 
-#define	_USE_NTFLAG	1
+#define	_USE_NTFLAG	0
 /* When _USE_NTFLAG is set to 1, upper/lower case of the file name is preserved.
 /  Note that the files are always accessed in case insensitive. */
 
 #define _FAT32 1
 /* To enable FAT32 support in addition of FAT12/16, set _FAT32 to 1. For tinyfat*/
 
-#define _CACHE_SIZE	1000
-/* The CACHE_SIZE parameters specifies the the cache size in sectors. */

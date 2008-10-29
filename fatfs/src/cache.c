@@ -10,12 +10,17 @@
 #define SECTOR(s)	((s) >> 16 & 0xffff)
 #define MKENTRY(i,s)	(((s) & 0xffff) << 16 | ((i) & 0xffff))
 
+#define MAX_SECTOR	_CACHE_SIZE
+
 static BYTE sector_cache[_CACHE_SIZE * S_MAX_SIZ];
 static DWORD sector_cache_index[_CACHE_SIZE];
 
 DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 {
 	DWORD i;
+
+	if (sector > MAX_SECTOR)
+		return RES_NOTRDY;
 
 	for (i = 0; i < _CACHE_SIZE; i++) {
 		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
@@ -35,6 +40,9 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 void cache_update_sector (const BYTE *buff, DWORD sector)
 {
 	DWORD i, index;
+	
+	if (sector > MAX_SECTOR)
+		return;
 
 	for (i = 0; i < _CACHE_SIZE; i++) {
 		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
@@ -51,6 +59,9 @@ void cache_update_sector (const BYTE *buff, DWORD sector)
 DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 {
 	DWORD i, index;
+	
+	if (sector > MAX_SECTOR)
+		return RES_OK;
 
 	/* if already in cache, move the entry forward */
 	for (i = 0; i < _CACHE_SIZE; i++) {
