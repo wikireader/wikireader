@@ -158,9 +158,10 @@ flash-bootloader: bootloader
 clean: 
 	make clean -C bootloader
 	make clean -C mini-libc
+	make clean -C fatfs
 	cd jsp && make clean -C wikireader
-	rm -r toolchain/gcc-$(GCC_VERSION)
-	rm -r toolchain/binutils-$(BINUTILS_VERSION)
+	rm -rf toolchain/gcc-$(GCC_VERSION)
+	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
 
 .PHONY:help
 help:
