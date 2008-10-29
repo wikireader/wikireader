@@ -6,8 +6,8 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=$(PWD)/../mini-libc/
-FATFSDIR=$(PWD)/../fatfs/
+LIBDIR=$(PWD)/../mini-libc
+FATFSDIR=$(PWD)/../fatfs
 LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/
@@ -48,7 +48,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o
+eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o eeprom-2nd.lds
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
@@ -57,7 +57,7 @@ eeprom-2nd: eeprom-2nd.elf
 				$< $@
 
 # flash target
-flash: rs232.elf eeprom-1st.elf eeprom-2nd.elf
+flash: $(TARGETS)
 	@e07load/e07load wikireader.map
 
 clean::

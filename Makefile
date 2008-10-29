@@ -52,9 +52,8 @@ checkout:
 	svn checkout http://${WR_SVN_SITE}/${WR_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
-bootloader:mini-libc 
-	( cd bootloader && \
-	make)
+bootloader:mini-libc fatfs
+	make -C  bootloader/
 
 .PHONY: wikireader
 wikireader: mini-libc fatfs
@@ -69,9 +68,8 @@ mini-libc:
 	make -C mini-libc/
 
 .PHONY: fatfs
-fatfs: toolchain
-	( cd fatfs && \
-	make)
+fatfs:
+	make -C fatfs/
 
 # ----- toolchain stuff  --------------------------------------
 .PHONY: toolchain
@@ -133,7 +131,8 @@ getwikidump:
 
 # ----- update and other things --------------------------------------
 .PHONY: update
-update:update-bootloader update-wikireader
+update:
+	svn update
 
 .PHONY: update-bootloader
 update-bootloader: 
