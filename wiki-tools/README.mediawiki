@@ -116,20 +116,11 @@ user    73m9.870s
 sys     3m33.433s
 
 == Indexfile Information ==
+du -sh indexfile.index extracted.t*
+55M	indexfile.index
+3.5G	extracted.text
+73M	extracted.titles
+
 wc -l indexfile.index 
-7278279 indexfile.index
+937757 indexfile.index
 
-grep -v Image indexfile.index | grep -v Category > strip.indexfile.index
-du -sh strip.indexfile.index 
-364M	strip.indexfile.index
-
-wc -l strip.indexfile.index 
-6057152 strip.indexfile.index
-
-wc -w strip.indexfile.index 
-22993660 strip.indexfile.index
-
-22993660 - 6057152 = 16936508		// word count except SHA1
-16936508 / 6057152 = 2.796117383	// average word count per line
-sort strip.indexfile.index |grep '^[aA]' | grep ' \{1,\}' > justAfile.index 
-//the test data xiangfu use now 2008-10-16 and the data just have one word per line
