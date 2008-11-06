@@ -39,7 +39,7 @@ static int open_output_file(const char *filename)
 	unlink(filename);
 	output_fd = open(filename, O_RDWR | O_CREAT |
 				  S_IRUSR | S_IWUSR |
-				  S_IRGRP | S_IROTH);
+			          S_IRGRP | S_IROTH , 0666);
 	if (output_fd < 0) {
 		printf("Unable to open output file: %s\n", strerror(errno));
 		return -1;
