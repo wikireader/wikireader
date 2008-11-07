@@ -26,6 +26,7 @@ static inline void init_pins(void)
 	REG_PA_IOC = (1 << 3);
 	/* EEPROM WP# */
 	REG_P1_IOC1 = (1 << 4);
+	REG_P2_IOC2 = (1 << 6);
 #elif BOARD_PROTO1
 	/* P13 & P14: debug LEDs */
 	REG_P1_IOC1 = 0x18;
