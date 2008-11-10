@@ -1,0 +1,13 @@
+A set of notes, sql and patches to MediaWiki to wrestle with the Wikipedia Data
+
+Notes:
+    - How to setup MediaWiki
+    - How to import data
+    - How to post process data
+    - How to make things faster
+
+Data:
+    - Patchset for the content to be actually properly displayable
+
+Patches:
+    - quirks/skins needed for Openmoko...
