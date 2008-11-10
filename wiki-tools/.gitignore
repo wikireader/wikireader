@@ -1,0 +1,7 @@
+*.o
+wiki-tools
+wiki-tools.app
+Makefile
+articles*
+extracted*
+index*
