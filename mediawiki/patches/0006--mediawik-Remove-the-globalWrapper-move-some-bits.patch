@@ -1,0 +1,54 @@
+From 624df3103e59daa74e56fe590861c13e061a7045 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 10 Nov 2008 23:11:30 +0100
+Subject: [PATCH] [mediawik] Remove the globalWrapper, move some bits to content..
+
+    The CSS is starting to take shape. Many more things needs to be
+    done though.
+---
+ skins/MonoBook.php      |    2 --
+ skins/monobook/main.css |    6 ++++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/skins/MonoBook.php b/skins/MonoBook.php
+index 2fd1ce5..a302248 100644
+--- a/skins/MonoBook.php
++++ b/skins/MonoBook.php
+@@ -100,7 +100,6 @@ class MonoBookTemplate extends QuickTemplate {
+ <body<?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
+ <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
+  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
+-	<div id="globalWrapper" display="none">
+ 	<div id="content">
+ 		<a name="top" id="top"></a>
+ 		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
+@@ -115,7 +114,6 @@ class MonoBookTemplate extends QuickTemplate {
+ 			<div class="visualClear"></div>
+ 		</div>
+ 	</div>
+-</div>
+ <?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
+ <?php $this->html('reporttime') ?>
+ <?php if ( $this->data['debug'] ): ?>
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index 0bf1c3b..da9054d 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -16,10 +16,12 @@
+ 	padding: 0;
+ }
+ #content {
+-	margin: 2.8em 0 0 12.2em;
+-	padding: 0 1em 1em 1em;
+ 	position: relative;
+ 	z-index: 2;
++	font-size: 127%;
++	width: 98%;
++	margin: 0;
++	padding: 0.5em;
+ }
+ #column-one {
+ 	padding-top: 160px;
+-- 
+1.6.0.2
+

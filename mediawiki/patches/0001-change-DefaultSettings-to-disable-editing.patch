@@ -1,0 +1,39 @@
+From 1c92a76bfce7b3331effbd0f47a60ac50790ce65 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Tue, 4 Nov 2008 23:24:00 +0100
+Subject: [PATCH] change DefaultSettings to disable editing
+
+---
+ includes/DefaultSettings.php |    2 +-
+ includes/SkinTemplate.php    |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/includes/DefaultSettings.php b/includes/DefaultSettings.php
+index 6317573..88aa08b 100644
+--- a/includes/DefaultSettings.php
++++ b/includes/DefaultSettings.php
+@@ -1120,7 +1120,7 @@ $wgGroupPermissions = array();
+ // Implicit group for all visitors
+ $wgGroupPermissions['*'    ]['createaccount']    = true;
+ $wgGroupPermissions['*'    ]['read']             = true;
+-$wgGroupPermissions['*'    ]['edit']             = true;
++$wgGroupPermissions['*'    ]['edit']             = false;
+ $wgGroupPermissions['*'    ]['createpage']       = true;
+ $wgGroupPermissions['*'    ]['createtalk']       = true;
+ $wgGroupPermissions['*'    ]['writeapi']         = true;
+diff --git a/includes/SkinTemplate.php b/includes/SkinTemplate.php
+index 33307e3..e9921e2 100644
+--- a/includes/SkinTemplate.php
++++ b/includes/SkinTemplate.php
+@@ -165,7 +165,7 @@ class SkinTemplate extends Skin {
+ 		$this->thisurl = $this->mTitle->getPrefixedURL();
+ 		$this->loggedin = $wgUser->isLoggedIn();
+ 		$this->iscontent = ($this->mTitle->getNamespace() != NS_SPECIAL );
+-		$this->iseditable = ($this->iscontent and !($action == 'edit' or $action == 'submit'));
++		$this->iseditable = false; //($this->iscontent and !($action == 'edit' or $action == 'submit'));
+ 		$this->username = $wgUser->getName();
+ 
+ 		if ( $wgUser->isLoggedIn() || $this->showIPinHeader() ) {
+-- 
+1.6.0.2
+

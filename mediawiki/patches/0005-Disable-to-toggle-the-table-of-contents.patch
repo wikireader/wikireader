@@ -1,0 +1,77 @@
+From fbd971cd0854208b35449eb26c3522f95b514d90 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
+Date: Thu, 6 Nov 2008 12:00:18 +0100
+Subject: [PATCH] Disable to toggle the table of contents
+
+---
+ skins/common/wikibits.js |   47 ----------------------------------------------
+ 1 files changed, 0 insertions(+), 47 deletions(-)
+
+diff --git a/skins/common/wikibits.js b/skins/common/wikibits.js
+index 514714d..e04f732 100644
+--- a/skins/common/wikibits.js
++++ b/skins/common/wikibits.js
+@@ -120,38 +120,6 @@ function toggleVisibility(_levelId, _otherId, _linkId) {
+ 	}
+ }
+ 
+-function showTocToggle() {
+-	if (document.createTextNode) {
+-		// Uses DOM calls to avoid document.write + XHTML issues
+-
+-		var linkHolder = document.getElementById('toctitle');
+-		if (!linkHolder) {
+-			return;
+-		}
+-
+-		var outerSpan = document.createElement('span');
+-		outerSpan.className = 'toctoggle';
+-
+-		var toggleLink = document.createElement('a');
+-		toggleLink.id = 'togglelink';
+-		toggleLink.className = 'internal';
+-		toggleLink.href = 'javascript:toggleToc()';
+-		toggleLink.appendChild(document.createTextNode(tocHideText));
+-
+-		outerSpan.appendChild(document.createTextNode('['));
+-		outerSpan.appendChild(toggleLink);
+-		outerSpan.appendChild(document.createTextNode(']'));
+-
+-		linkHolder.appendChild(document.createTextNode(' '));
+-		linkHolder.appendChild(outerSpan);
+-
+-		var cookiePos = document.cookie.indexOf("hidetoc=");
+-		if (cookiePos > -1 && document.cookie.charAt(cookiePos + 8) == 1) {
+-			toggleToc();
+-		}
+-	}
+-}
+-
+ function changeText(el, newText) {
+ 	// Safari work around
+ 	if (el.innerText) {
+@@ -161,21 +129,6 @@ function changeText(el, newText) {
+ 	}
+ }
+ 
+-function toggleToc() {
+-	var toc = document.getElementById('toc').getElementsByTagName('ul')[0];
+-	var toggleLink = document.getElementById('togglelink');
+-
+-	if (toc && toggleLink && toc.style.display == 'none') {
+-		changeText(toggleLink, tocHideText);
+-		toc.style.display = 'block';
+-		document.cookie = "hidetoc=0";
+-	} else {
+-		changeText(toggleLink, tocShowText);
+-		toc.style.display = 'none';
+-		document.cookie = "hidetoc=1";
+-	}
+-}
+-
+ var mwEditButtons = [];
+ var mwCustomEditButtons = []; // eg to add in MediaWiki:Common.js
+ 
+-- 
+1.6.0.2
+
