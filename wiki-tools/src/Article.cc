@@ -28,11 +28,43 @@ Article::Article(const Title& title, const QString& textContent)
     : m_title(title)
     , m_textContent(textContent)
     , m_isEmpty(false)
+    , m_isRedirect(false)
+    , m_determinedRedirect(false)
 {}
 
 bool Article::isEmpty() const
 {
     return m_isEmpty;
+}
+
+QString Article::redirectsTo() const
+{
+    return m_redirectsTo;
+}
+
+bool Article::isRedirect() const
+{
+    if (m_determinedRedirect)
+        return m_isRedirect;
+
+    // in Python notation re.compile("^\#REDIRECT \[\[(?P<title>[a-zA-Z0-9- \t]*)\]\]$")
+    // and done manually here. This means the string is walked multiple times but only
+    // in the case of a #REDIRECT.
+    m_determinedRedirect = true;
+
+    if (!m_textContent.startsWith("#REDIRECT [["))     
+        return m_isRedirect;
+
+    if (m_textContent.contains("\n"))
+        return m_isRedirect;
+
+    if (!m_textContent.contains("]]"))
+        return m_isRedirect;
+
+    m_isRedirect = true;
+    m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT [[" - 1);
+    m_redirectsTo = m_redirectsTo.left(m_redirectsTo.indexOf("]]"));
+    return m_isRedirect;
 }
 
 Title Article::title() const

@@ -31,6 +31,8 @@ public:
     Article(const Title& title, const QString& textContent);
 
     bool isEmpty() const;
+    bool isRedirect() const;
+    QString redirectsTo() const;
     Title   title() const;
     QString textContent() const;
     QByteArray hash() const;
@@ -40,6 +42,9 @@ private:
     QString m_textContent;
     mutable QByteArray m_result;
     bool    m_isEmpty;
+    mutable bool m_isRedirect;
+    mutable bool m_determinedRedirect;
+    mutable QString m_redirectsTo;
 };
 
 #endif
