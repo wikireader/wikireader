@@ -37,6 +37,9 @@ void ExtractTextHashed::parsingStarts()
 // now put the text into the right place
 void ExtractTextHashed::handleArticle(const Article& article)
 {
+    if (article.isRedirect())
+        return;
+
     const QString name = article.hash(); 
 
     // Create the directory structure on the fly

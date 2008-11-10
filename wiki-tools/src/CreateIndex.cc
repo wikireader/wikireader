@@ -28,5 +28,8 @@ CreateIndex::CreateIndex(const QString& fileName)
 void CreateIndex::handleArticle(const Article& article)
 {
     QTextStream stream(&m_file); 
-    stream << article.title().title() << " " << article.hash() << "\n"; 
+
+    stream << article.title().title() << " ";
+    stream << (article.isRedirect() ? article.redirectsTo() : article.hash());
+    stream << "\n"; 
 }

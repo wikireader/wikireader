@@ -27,6 +27,9 @@ ExtractText::ExtractText(const QString& outputFile)
 
 void ExtractText::handleArticle(const Article& text)
 {
+    if (text.isRedirect())
+        return;
+
     QTextStream stream(&m_file);
     stream << text.textContent();
     stream << "\n\n\n";
