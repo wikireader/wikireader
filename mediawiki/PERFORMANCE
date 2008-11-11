@@ -1,0 +1,12 @@
+In one word the performance if Mediawiki is horrible slow:
+
+wgMainCacheType can be set to NONE (default), CACHE_ACCEL (using
+APC), CACHE_MEMCACHED, but do not expect wonders. mediawiki is
+inherently slow.
+
+I have no idea if mysql indexes are on... why should they be
+off though?
+
+So the two options:
+    - Abuse en.wikipedia.org to get the articles!
+    - Faster and bigger machine
