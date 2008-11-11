@@ -6,39 +6,6 @@ Becuase of Templates and other MediaWiki features we want to go through
 the original parser of MediaWiki. This is requiring a real database. This
 means the articles must be imported into the database
 
-== Installation ==
-
-I have phase3 from trunk and use cherokee as the webserver
-
-sudo aptitude install php5-cgi
-sudo aptitude install cherokee
-sudo aptitude install mime-support php5 php5-mysql mysql-server
-svn co http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3
-chmod a+w phase3/config
-sudo vim /etc/cherokee/sites-enabled/mediawiki and put the below there
-    Directory /mediawiki {
-              Handler common
-              DocumentRoot /dir/to/phase3-trunk
-    }
-
-sudo /etc/init.d/apache2 stop
-sudo /etc/inid.d/cherokee restart
-
-== Check installation ==
-open http://127.0.0.1/mediawiki/config/index.php to test the installation. Do
-you see a setup page?
-
-== Configuring mysqlserver ==
-    /etc/mysql/debian.cnf contains the admin user and pw for mysqld
-    mysql -u debian-sys-maint -p
-    mysql>create database wikidb;
-    mysql>grant create,select, insert, update, delete, lock tables on wikidb.* to  'wikiuser'@'localhost' identified by 'PASSWORD';
-
-== Complete the configuration ==
-    Go to http:/127.0.0.1/mediawiki/config/index.php and configure
-    mv the LocalSettings.php to the right place (the above website will tell you)
-
-
 = Importing a dump =
 == Getting a dump ==
 You will need the pages and the images. Google for enwiki-latest-pages.articles.xml.bz2
