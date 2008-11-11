@@ -36,4 +36,4 @@ search: $(TARGETS)
 	./trie ../index700 trysearch
 
 clean:
-	rm -fr $(TARGETS) *.o *~
+	rm -fr $(TARGETS) *.o *~ TAGS

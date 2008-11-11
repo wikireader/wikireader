@@ -1,53 +1,46 @@
 /*
-
-Copyright (c) 2005, Simon Howard
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without 
-modification, are permitted provided that the following conditions 
-are met:
-
- * Redistributions of source code must retain the above copyright 
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright 
-   notice, this list of conditions and the following disclaimer in 
-   the documentation and/or other materials provided with the 
-   distribution.
- * Neither the name of the C Algorithms project nor the names of its 
-   contributors may be used to endorse or promote products derived 
-   from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE.
-
-*/
-
-/* Trie: fast mapping of strings to values */
+ * Trie: fast mapping of strings to values 
+ *
+ * (C) Copyright 2008 OpenMoko, Inc.
+ * Author: xiangfu liu <xiangfu@openmoko.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
 #include "trie.h"
 
-typedef struct _TrieNode TrieNode;
+typedef unsigned short uint16;
+struct OnDiskNodeVariable {
+	unsigned char character;	/* current node character */
+	uint16 sha1_offset;		/*use another file to store the sha1,
+						 * if sha1_offset=0 means this node is not a title .*/
+	uint16 parent_offset;
+	uint16 children_offset['z'-'a'];
+	char padding; 
+};
 
+typedef struct _TrieNode TrieNode;
 struct _TrieNode {
 	void *data;
 	unsigned int use_count;
 	TrieNode *next[256];
 };
+
 
 struct _Trie {
 	TrieNode *root_node;
@@ -272,9 +265,9 @@ int trie_num_entries(Trie *trie)
 #define NL	printf("\n")
 #define SHA1CHARS 40		/* sha1 char count */
 #define MAXCHARS 100		/* the max chars of the title */
-#define LINECHARS 80
-#define MAXWORDS 1000
-char space[MAXCHARS], *a[MAXWORDS] , *address[MAXWORDS];
+#define LINECHARS 140		/* the max chars of one line*/
+
+char space[MAXCHARS];
 int starttime = 0, n = 0;
 Trie root;
 
@@ -283,7 +276,7 @@ int split(char *source, char *word, char*sha1)
 	if(*source == 0){
 		*word = 0;
 		*sha1 = 0;
-		return 0;
+		return 1;
 	}
 	char *p = strrchr(source, ' ');
 	int i=0;
@@ -292,7 +285,7 @@ int split(char *source, char *word, char*sha1)
                 *(word++) = *(source++);
 	}
 	*word='\0';
-	source++;		/* eat the blank */
+	source++;		/* eat the blank, ther is a blank between title and sha1 */
         while(*source != '\n' && *source != EOF)
                 *(sha1++) = *(source++);
 	*sha1='\0';
@@ -300,14 +293,40 @@ int split(char *source, char *word, char*sha1)
         return 0;
 }
 
-int generate_trie(char *a[])
+#define CREATE_TRIE_NODE \
+    (struct OnDiskNodeVariable *)malloc(sizeof(struct OnDiskNodeVariable));
+
+static void write_to_disc(struct OnDiskNodeVariable * node)
 {
-	int i = 0;
-	for(i = 1; i< MAXWORDS; i++)
-		if(a[i] != NULL){
-			printf("%s---%s\n",a[i],address[i]);
-			trie_insert(root,a[i],address[i]);
+	off_t current_offset = 0;
+/*    while (last) {
+      n_bytes = last->payload ? strlen(last->payload) : 0; 
+      off_t offset = current_offset + sizeof(offset);*/
+}
+
+int generate_trie(char *fname)
+{
+	char *sha1, *title;
+	char line[LINECHARS];
+	int n=0;
+	FILE *fp;
+	setbuf(stdout, 0);
+
+	if ((fp = fopen(fname, "r")) == NULL) {
+		fprintf(stderr, "  Can't open file\n");
+		exit(1);
+	}
+
+	while (!feof(fp)){
+		if (fgets(line, LINECHARS, fp) != NULL){
+			title = (char *) malloc(MAXCHARS * sizeof(char));
+			sha1 = (char *) malloc(SHA1CHARS * sizeof(char));
+			split(line, title, sha1);
+			printf("read lines: %d\n", ++n);
+			/* TODO: creaet the ondiskstructure file */
 		}
+	}
+
 	return 0;
 }
 
@@ -316,7 +335,7 @@ void trysearch()
 	char *sha1;
 	char * title;
 	root = trie_new();
-	generate_trie(a);
+/*	generate_trie(a); */
 	printf("Enter searches: <word>\n");
 	while (scanf("%[^\n]%*c", title) != EOF) {
                 CIN;
@@ -328,46 +347,15 @@ void trysearch()
 	}
 	trie_free(root);
 }			       
+
 int main(int argc, char *argv[])
 {
-	double i, globalstarttime;
-	char *s = space, *fname;
-	FILE *fp;
-	if (argc == 1) { /* no args */
-		fname = "/usr/jlb/data/words"; /* default dict file */
-	} else /* at least one arg: file name */
-		fname = argv[1];
-	
-	setbuf(stdout, 0);
-	if ((fp = fopen(fname, "r")) == NULL) {
-		fprintf(stderr, "  Can't open file\n");
-		exit(1);
-	}
-
-	globalstarttime = clock();
-
-	TASK("Reading Input");
-	CIN;
-	a[0] = s;
-	char *sha1;
-	char line[LINECHARS];
-	while (!feof(fp)){
-		if (fgets(line, LINECHARS, fp) != NULL){
-			s = (char *) malloc(MAXCHARS * sizeof(char));
-			sha1 = (char *) malloc(SHA1CHARS * sizeof(char));
-			split(line, s, sha1);
-			a[++n] = s;
-			address[n] = sha1;
-			printf("read lines: %d\n", n);
-		}
-	}
-	COUT; NL;
-
-/*	TASK("System Qsort"); CIN; DOQSORT; COUT; NL; */
-
+	char *fname;
 	if (argc < 3) { /* at most one arg: file name */
-
+		return 1;
 	} else {
+		fname = argv[1];
+
 		if (strcmp(argv[2], "trysearch") == 0) {
 			trysearch();
 		} else if (strcmp(argv[2], "traverse") == 0) {
@@ -376,9 +364,6 @@ int main(int argc, char *argv[])
 			printf("Unrecognized option\n");
 	}
 
-	i = clock() - globalstarttime;
-	printf("Total clicks\t%g\nTotal secs\t%g\n",
-	       i, (double) i / CLOCKS_PER_SEC);
 	return 0;
 }
 
