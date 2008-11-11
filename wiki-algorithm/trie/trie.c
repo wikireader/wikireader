@@ -24,16 +24,85 @@
 #include <time.h>
 #include "trie.h"
 
+/* if the offset == 0 means NULL */
+#define TASK(s)	printf("%s", s);
+#define CIN		starttime = clock();
+#define COUT	printf("%f", clock()-starttime);
+#define NL	printf("\n")
+#define SHA1CHARS 40		/* sha1 char count */
+#define MAXCHARS 100		/* the max chars of the title */
+#define LINECHARS 140		/* the max chars of one line*/
+#define INDEX_NAME ".\\index.bin"
+#define CHILD_COUNT  26		/* 'z' - 'a' */
+
+int starttime = 0, n = 0;
+char space[MAXCHARS];
+
 typedef unsigned short uint16;
-struct OnDiskNodeVariable {
+typedef struct _OnDiskNodeVariable  *OnDiskNode;
+struct _OnDiskNodeVariable {
 	unsigned char character;	/* current node character */
 	uint16 sha1_offset;		/*use another file to store the sha1,
 						 * if sha1_offset=0 means this node is not a title .*/
-	uint16 parent_offset;
-	uint16 children_offset['z'-'a'];
+	uint16 parent_offset;		/* 0 means no parent */
+	uint16 children_offset[CHILD_COUNT];	/* 0 means no this child */
 	char padding; 
 };
+OnDiskNode g_node;	 /* i use a globle variable store the node
+					  * read from the index.file */
 
+struct _OnDiskRoot {
+	uint16 children_offset[CHILD_COUNT];
+};
+OnDiskRoot root;
+
+OnDiskNode trie_init_node(OnDiskNode node)
+{
+	node->character = 0;
+	node->sha1_offset = 0;
+	node->parent_offset = 0;
+	int i = 0;
+	for(i=0;i<CHILD_COUNT;i++)
+		node->children_offset[i] = 0;
+	return node;
+}
+
+OnDiskRoot trie_new(FILE *fp_index)
+{
+	OnDiskRoot root = (OnDiskRoot)malloc(sizeof(struct _OnDiskRoot));
+	int i = 0;
+	for(i=0;i<CHILD_COUNT;i++)
+		root->children_offset[i] = 0;
+
+	write(fp_index, root, sizeof(struct _OnDiskRoot));
+//	write(fp_index, root->children_offset, sizeof(struct _OnDiskRoot));
+	if(write(fp_index, "a", sizeof(char)) <=0)
+		perror("Write error");
+
+	OnDiskNode g_node = (OnDiskNode)malloc(sizeof(struct _OnDiskNodeVariable)); 
+	trie_init_node(g_node);
+
+	return root;
+}
+
+int write_node_to_disc(struct OnDiskNodeVariable * node)
+{
+	off_t current_offset = 0;
+/*    while (last) {
+      n_bytes = last->payload ? strlen(last->payload) : 0; 
+      off_t offset = current_offset + sizeof(offset);*/
+	FILE *fp;
+	setbuf(stdout, 0);
+	return 0;
+}
+
+int trie_clean()
+{
+	free(root);
+	free(g_node);
+	return 0;
+}
+/*==================================*/
 typedef struct _TrieNode TrieNode;
 struct _TrieNode {
 	void *data;
@@ -41,38 +110,21 @@ struct _TrieNode {
 	TrieNode *next[256];
 };
 
-
 struct _Trie {
 	TrieNode *root_node;
 };
 
-
 static void trie_free_node(TrieNode *node)
 {
 	int i;
-
 	if (node == NULL)
 		return;
-	
 	/* First, free all subnodes */
-
 	for (i=0; i<256; ++i) {
 		trie_free_node(node->next[i]);
 	}
-
 	/* Free this node */
-
 	free(node);
-}
-
-Trie trie_new(void)
-{
-	Trie new_trie;
-
-	new_trie = (Trie) malloc(sizeof(Trie));
-	(new_trie)->root_node = NULL;
-
-	return new_trie;
 }
 
 void trie_free(Trie trie)
@@ -259,18 +311,7 @@ int trie_num_entries(Trie *trie)
 	}
 }
 
-#define TASK(s)	printf("%s", s);
-#define CIN		starttime = clock();
-#define COUT	printf("%g", clock()-starttime);
-#define NL	printf("\n")
-#define SHA1CHARS 40		/* sha1 char count */
-#define MAXCHARS 100		/* the max chars of the title */
-#define LINECHARS 140		/* the max chars of one line*/
-
-char space[MAXCHARS];
-int starttime = 0, n = 0;
-Trie root;
-
+/* ===================================== */
 int split(char *source, char *word, char*sha1)
 {
 	if(*source == 0){
@@ -293,18 +334,7 @@ int split(char *source, char *word, char*sha1)
         return 0;
 }
 
-#define CREATE_TRIE_NODE \
-    (struct OnDiskNodeVariable *)malloc(sizeof(struct OnDiskNodeVariable));
-
-static void write_to_disc(struct OnDiskNodeVariable * node)
-{
-	off_t current_offset = 0;
-/*    while (last) {
-      n_bytes = last->payload ? strlen(last->payload) : 0; 
-      off_t offset = current_offset + sizeof(offset);*/
-}
-
-int generate_trie(char *fname)
+static void read_node(char *findex)
 {
 	char *sha1, *title;
 	char line[LINECHARS];
@@ -312,8 +342,8 @@ int generate_trie(char *fname)
 	FILE *fp;
 	setbuf(stdout, 0);
 
-	if ((fp = fopen(fname, "r")) == NULL) {
-		fprintf(stderr, "  Can't open file\n");
+	if ((fp = fopen(findex, "r")) == NULL) {
+		fprintf(stderr, "Can't create file!\n");
 		exit(1);
 	}
 
@@ -323,18 +353,17 @@ int generate_trie(char *fname)
 			sha1 = (char *) malloc(SHA1CHARS * sizeof(char));
 			split(line, title, sha1);
 			printf("read lines: %d\n", ++n);
-			/* TODO: creaet the ondiskstructure file */
+			/* TODO: create the ondiskstructure file */
 		}
 	}
-
-	return 0;
 }
+
 
 void trysearch()
 {
 	char *sha1;
 	char * title;
-	root = trie_new();
+/*	root = trie_new(); */
 /*	generate_trie(a); */
 	printf("Enter searches: <word>\n");
 	while (scanf("%[^\n]%*c", title) != EOF) {
@@ -350,8 +379,16 @@ void trysearch()
 
 int main(int argc, char *argv[])
 {
+	FILE *fp_index;
 	char *fname;
+	if ((fp_index = fopen(INDEX_NAME, "w")) == NULL) {
+		fprintf(stderr, "Can't create file!\n");
+		exit(1);
+	}
+
 	if (argc < 3) { /* at most one arg: file name */
+		trie_new(fp_index);	
+		trie_clean();
 		return 1;
 	} else {
 		fname = argv[1];
@@ -363,7 +400,7 @@ int main(int argc, char *argv[])
 		} else
 			printf("Unrecognized option\n");
 	}
-
+	fclose(fp_index);
 	return 0;
 }
 

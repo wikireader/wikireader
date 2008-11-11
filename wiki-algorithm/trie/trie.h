@@ -2,6 +2,7 @@
 #define __TRIE__
 
 typedef struct _Trie *Trie;
+typedef struct _OnDiskRoot  *OnDiskRoot;
 
 /* Trie_new
  * --------
@@ -10,8 +11,7 @@ typedef struct _Trie *Trie;
  * details of this structure.  When finished, each Trie should be
  * freed with Trie_del.
  */
-Trie Trie_new(void);
-
+OnDiskRoot trie_new(FILE *fp_index);
 
 /* Trie_del
  * --------
