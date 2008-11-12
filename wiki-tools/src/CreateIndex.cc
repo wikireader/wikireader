@@ -29,7 +29,6 @@ CreateIndex::CreateIndex(const QString& fileName, QRegExp *filter)
 // TODO recognize redirections and resolve them
 void CreateIndex::handleArticle(const Article& article)
 {
-    QTextStream stream(&m_file); 
     QString title = article.title().title().toLower();
     QString hash = article.isRedirect() ? article.redirectsTo() : article.hash();
     bool match = (*m_filter).exactMatch(title);                                   
@@ -40,12 +39,21 @@ void CreateIndex::handleArticle(const Article& article)
         }else{
             map.insert(title, hash);
 
-            stream << title << "--";
-            stream << hash;
-            stream << "\n"; 
         }
     }else{
 	    //TODO: figure out the title we remove.
 	    //1. not match 2.double (lowcase) 3. redirect
     }
+}
+
+void CreateIndex::parsingFinished()
+{
+    QTextStream stream(&m_file); 
+    QMap<QString, QString>::const_iterator i = map.constBegin();
+    while (i != map.constEnd()) {
+        stream << i.key() << "--" << i.value() << endl;
+        ++i;
+     }
+
+    closeCurrentFile();
 }

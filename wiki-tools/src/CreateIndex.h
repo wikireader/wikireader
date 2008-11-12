@@ -31,6 +31,7 @@ public:
     CreateIndex(const QString& outputFile, QRegExp *filter);
 
     void handleArticle(const Article&);
+    void parsingFinished();
 private:
     QString m_pattern;
     QRegExp *m_filter;
