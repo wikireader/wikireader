@@ -32,7 +32,7 @@
 #define SHA1CHARS 40		/* sha1 char count */
 #define MAXCHARS 100		/* the max chars of the title */
 #define LINECHARS 140		/* the max chars of one line*/
-#define INDEX_NAME ".\\index.bin"
+#define INDEX_NAME "index.bin"
 #define CHILD_COUNT  26		/* 'z' - 'a' */
 
 int starttime = 0, n = 0;
@@ -75,7 +75,7 @@ OnDiskRoot trie_new(FILE *fp_index)
 		root->children_offset[i] = 0;
 
 	write(fp_index, root, sizeof(struct _OnDiskRoot));
-//	write(fp_index, root->children_offset, sizeof(struct _OnDiskRoot));
+/*	write(fp_index, root->children_offset, sizeof(struct _OnDiskRoot)); */
 	if(write(fp_index, "a", sizeof(char)) <=0)
 		perror("Write error");
 
