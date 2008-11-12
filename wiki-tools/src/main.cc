@@ -28,11 +28,12 @@
 #include "StreamReader.h"
 
 #include <QCoreApplication>
+#include <QRegExp>
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {
     *handlers << new CreateIndex(QLatin1String("indexfile.index"), 
-				                    QLatin1String("[0-9A-Za-z ]*") );
+				                    new QRegExp("[0-9A-Za-z ]*") );
     // *handlers << new CreateText(QString());
     // *handlers << new ExtractTitles(QString("extracted.titles"));
     // *handlers << new ExtractWords(QString());

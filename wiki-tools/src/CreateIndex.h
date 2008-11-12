@@ -28,11 +28,12 @@
  */
 class CreateIndex : public FileOutputArticleHandler {
 public:
-    CreateIndex(const QString& outputFile, const QString pattern);
+    CreateIndex(const QString& outputFile, QRegExp *filter);
 
     void handleArticle(const Article&);
 private:
     QString m_pattern;
+    QRegExp *m_filter;
 };
 
 #endif

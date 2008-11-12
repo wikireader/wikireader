@@ -21,9 +21,9 @@
 #include <QTextStream>
 #include <QRegExp>
 
-CreateIndex::CreateIndex(const QString& fileName, const QString pattern)
+CreateIndex::CreateIndex(const QString& fileName, QRegExp *filter)
     : FileOutputArticleHandler(fileName)
-    , m_pattern(pattern)
+    , m_filter(filter)
 {}
 
 // TODO recognize redirections and resolve them
@@ -32,9 +32,7 @@ void CreateIndex::handleArticle(const Article& article)
     QTextStream stream(&m_file); 
     QString title = article.title().title();
 
-    QRegExp filter(m_pattern);                                         
-    bool match = filter.exactMatch(title);                                   
-    int len = filter.matchedLength();                                       
+    bool match = (*m_filter).exactMatch(title);                                   
 
     if(match){
         stream << title << " ";
