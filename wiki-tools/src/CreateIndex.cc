@@ -19,17 +19,26 @@
 
 #include "CreateIndex.h"
 #include <QTextStream>
+#include <QRegExp>
 
-CreateIndex::CreateIndex(const QString& fileName)
+CreateIndex::CreateIndex(const QString& fileName, const QString pattern)
     : FileOutputArticleHandler(fileName)
+    , m_pattern(pattern)
 {}
 
 // TODO recognize redirections and resolve them
 void CreateIndex::handleArticle(const Article& article)
 {
     QTextStream stream(&m_file); 
+    QString title = article.title().title();
 
-    stream << article.title().title() << " ";
-    stream << (article.isRedirect() ? article.redirectsTo() : article.hash());
-    stream << "\n"; 
+    QRegExp filter(m_pattern);                                         
+    bool match = filter.exactMatch(title);                                   
+    int len = filter.matchedLength();                                       
+
+    if(match){
+        stream << title << " ";
+        stream << (article.isRedirect() ? article.redirectsTo() : article.hash());
+        stream << "\n"; 
+    }
 }
