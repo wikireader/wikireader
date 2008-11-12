@@ -30,13 +30,22 @@ CreateIndex::CreateIndex(const QString& fileName, QRegExp *filter)
 void CreateIndex::handleArticle(const Article& article)
 {
     QTextStream stream(&m_file); 
-    QString title = article.title().title();
-
+    QString title = article.title().title().toLower();
+    QString hash = article.isRedirect() ? article.redirectsTo() : article.hash();
     bool match = (*m_filter).exactMatch(title);                                   
 
     if(match){
-        stream << title << " ";
-        stream << (article.isRedirect() ? article.redirectsTo() : article.hash());
-        stream << "\n"; 
+        if (map.contains(title) && map.value(title) == hash){
+
+        }else{
+            map.insert(title, hash);
+
+            stream << title << "--";
+            stream << hash;
+            stream << "\n"; 
+        }
+    }else{
+	    //TODO: figure out the title we remove.
+	    //1. not match 2.double (lowcase) 3. redirect
     }
 }

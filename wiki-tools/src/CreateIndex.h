@@ -21,7 +21,7 @@
 #define CreateIndex_h
 
 #include "ArticleHandler.h" 
-
+#include <QMap>
 /**
  * Extract Titles and build a simple index
  *   Title => Hash
@@ -34,6 +34,7 @@ public:
 private:
     QString m_pattern;
     QRegExp *m_filter;
+    QMap<QString, QString> map;// title and hash(sha1)
 };
 
 #endif
