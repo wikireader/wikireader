@@ -20,6 +20,89 @@
 #include "Article.h"
 #include "sha1.h"
 
+#include <QApplication>
+#include <QWebFrame>
+#include <QWebView>
+
+
+// Todo: For the final conversion of the data switch to a plain QWebPage
+// currently we require a gui.
+class ArticleFetcher : public QObject {
+    Q_OBJECT
+public:
+    ArticleFetcher();
+    ~ArticleFetcher();
+    bool fetch(const QString& title);
+
+    QString toHtml();
+    QString toPlainText();
+
+private Q_SLOTS:
+    void loadFinished(bool);
+
+private:
+    QWebView* m_webView;
+    bool m_done;
+    bool m_result;
+};
+
+ArticleFetcher::ArticleFetcher()
+    : m_webView(0)
+    , m_done(false)
+    , m_result(false)
+{}
+
+ArticleFetcher::~ArticleFetcher()
+{
+    delete m_webView;
+}
+
+bool ArticleFetcher::fetch(const QString& title)
+{
+    if (!m_webView) {
+        QWebPage* page = new QWebPage(this);
+        m_webView = new QWebView(0);
+        m_webView->setGeometry(0, 0, 640, 480);
+        m_webView->setPage(page);
+        connect(m_webView, SIGNAL(loadFinished(bool)),
+                SLOT(loadFinished(bool)));
+    }
+
+
+    m_done = false;
+    m_result = false;
+
+    // hopefully no loadFinished is fired on replacing one page with another one
+    m_webView->setUrl(title);
+
+    // Evil loop
+    while (!m_done) {
+        QApplication::processEvents();
+    }
+
+    return m_result;
+}
+
+void ArticleFetcher::loadFinished(bool result)
+{
+    m_result = result;
+    m_done = true;
+}
+
+QString ArticleFetcher::toHtml()
+{
+    Q_ASSERT(m_webView);
+
+    return m_webView->page()->mainFrame()->toHtml();
+}
+
+QString ArticleFetcher::toPlainText()
+{
+    Q_ASSERT(m_webView);
+
+    return m_webView->page()->mainFrame()->toPlainText();
+}
+
 Article::Article()
     : m_isEmpty(true)
 {}
@@ -95,3 +178,34 @@ QByteArray Article::hash() const
     m_result = result.toHex();
     return m_result;
 }
+
+QString Article::toPlainText() const
+{
+    // Assume the html is not empty when we fetched it
+    if (!m_htmlText.isEmpty())
+        return m_plainText;
+
+    toHtml();
+
+    return m_plainText;
+}
+
+QString Article::toHtml() const
+{
+    if (!m_htmlText.isEmpty())
+        return m_htmlText;
+
+    // Spawn loading of a QWebView... and get the html/text from it
+    ArticleFetcher fetcher;
+    bool result = fetcher.fetch(QString::fromLatin1("http://127.0.0.1/mediawiki/index.php/%1").arg(m_title.title()));
+
+    if (!result)
+        return m_htmlText;
+
+    m_htmlText = fetcher.toHtml();
+    m_plainText = fetcher.toPlainText();
+
+    return m_htmlText;
+}
+
+#include "Article.moc"

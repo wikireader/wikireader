@@ -20,6 +20,8 @@
 #include "CreateIndex.h"
 #include "CreateText.h"
 #include "ExtractWords.h"
+#include "ExtractHtmlText.h"
+#include "ExtractPlainText.h"
 #include "ExtractText.h"
 #include "ExtractTextHashed.h"
 #include "ExtractTitles.h"
@@ -27,7 +29,7 @@
 
 #include "StreamReader.h"
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QRegExp>
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
@@ -38,6 +40,8 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
     *handlers << new ExtractText(QString("extracted.text"));
+    *handlers << new ExtractPlainText(QString("extracted.plain.text"));
+    *handlers << new ExtractHtmlText(QString("extracted.html.text"));
 
     // Enable that if you want to split articles
     //*handlers << new SplitArticles(50, QString("split_enwiki"));
@@ -52,7 +56,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 
 int main(int argc, char** argv)
 {
-    QCoreApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QList<ArticleHandler*> handlers;
     StreamReader reader;
