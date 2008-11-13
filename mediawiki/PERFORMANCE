@@ -10,3 +10,9 @@ off though?
 So the two options:
     - Abuse en.wikipedia.org to get the articles!
     - Faster and bigger machine
+
+
+MySQL performance:
+    This script www.day32.com/MySQL/tuning-primer.sh helps you to
+    figure out good defaults for MySQL.
+    
