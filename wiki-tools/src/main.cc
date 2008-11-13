@@ -34,14 +34,16 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {
     *handlers << new CreateIndex(QLatin1String("indexfile.index"), 
 				 QRegExp("[0-9A-Za-z\\s.]*") );
-    // *handlers << new CreateText(QString());
-    // *handlers << new ExtractTitles(QString("extracted.titles"));
-    // *handlers << new ExtractWords(QString());
-    // *handlers << new ExtractText(QString("extracted.text"));
-    // *handlers << new ExtractTextHashed(QString("articles"));
+    *handlers << new CreateText(QString());
+    *handlers << new ExtractTitles(QString("extracted.titles"));
+    *handlers << new ExtractWords(QString());
+    *handlers << new ExtractText(QString("extracted.text"));
 
     // Enable that if you want to split articles
     //*handlers << new SplitArticles(50, QString("split_enwiki"));
+
+    // Enable that if you want to split the articles into a hash structur
+    //*handlers << new ExtractTextHashed(QString("articles"));
 }
 
 #define INVOKE_HANDLERS(function)               \
