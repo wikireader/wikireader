@@ -19,9 +19,23 @@
 
 #include "Compression.h"
 
+#include <zlib.h>
+
 static QByteArray compress_zlib(const QByteArray& data, int level)
 {
-    return QByteArray();
+    QByteArray compressedResult;
+    compressedResult.resize(compressBound(data.size()));
+
+    unsigned long long size = compressedResult.size();
+
+    int result = compress2((Bytef*)compressedResult.data(), (uLongf*)&size,
+                           (Bytef*)data.data(), data.size(), level);
+
+    if (result != Z_OK)
+        return QByteArray();
+    
+    compressedResult.resize(size);
+    return compressedResult;
 }
 
 static QByteArray compress_bzip2(const QByteArray& data, int level)

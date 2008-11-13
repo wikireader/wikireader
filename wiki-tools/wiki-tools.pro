@@ -13,14 +13,18 @@ SOURCES += \
 HEADERS += \
     src/ArticleHandler.h \
     src/Article.h \
+    src/Compression.h \
     src/StreamReader.h \
     src/Title.h
 
 SOURCES += \
     src/ArticleHandler.cc \
     src/Article.cc \
+    src/Compression.cc \
     src/StreamReader.cc \
     src/Title.cc
+
+LIBS += -lz
     
 
 # Extractors/Functionality
