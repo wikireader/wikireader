@@ -41,9 +41,6 @@ static QByteArray compress_zlib(const QByteArray& data, int level)
 
 static QByteArray compress_bzip2(const QByteArray& data, int level)
 {
-    QByteArray compressedResult;
-    compressedResult.resize(compressBound(data.size()));
-
     unsigned int size = 0;
 
     // We need to use %1 + 600 bytes more
@@ -51,6 +48,9 @@ static QByteArray compress_bzip2(const QByteArray& data, int level)
         size = data.size() * 2 + 600;
     else
         size = data.size() + 601 + (data.size()/100);
+
+    QByteArray compressedResult;
+    compressedResult.resize(size);
 
     int result = BZ2_bzBuffToBuffCompress(compressedResult.data(), &size,
                                           (char*)data.data(), data.size(),
