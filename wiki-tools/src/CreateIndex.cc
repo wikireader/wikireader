@@ -21,7 +21,7 @@
 #include <QTextStream>
 #include <QRegExp>
 
-CreateIndex::CreateIndex(const QString& fileName, QRegExp *filter)
+CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
     : FileOutputArticleHandler(fileName)
     , m_filter(filter)
 {}
@@ -29,16 +29,16 @@ CreateIndex::CreateIndex(const QString& fileName, QRegExp *filter)
 // TODO recognize redirections and resolve them
 void CreateIndex::handleArticle(const Article& article)
 {
-    QString title = article.title().title().toLower();
+    QString title = article.title().title();
     QString hash = article.isRedirect() ? article.redirectsTo() : article.hash();
-    bool match = (*m_filter).exactMatch(title);                                   
+    bool match = m_filter.exactMatch(title);                                   
 
     if(match){
         if (map.contains(title) && map.value(title) == hash){
 
         }else{
             map.insert(title, hash);
-
+            //TODO:redirect code here
         }
     }else{
 	    //TODO: figure out the title we remove.
@@ -48,12 +48,11 @@ void CreateIndex::handleArticle(const Article& article)
 
 void CreateIndex::parsingFinished()
 {
-    QTextStream stream(&m_file); 
-    QMap<QString, QString>::const_iterator i = map.constBegin();
-    while (i != map.constEnd()) {
-        stream << i.key() << "--" << i.value() << endl;
-        ++i;
-     }
-
-    closeCurrentFile();
+   QTextStream stream(&m_file); 
+   QMap<QString, QString>::const_iterator i = map.constBegin();
+   while (i != map.constEnd()) {
+      stream << i.key().toLower() << "--" << i.value() << endl;
+      ++i;
+   }
+   FileOutputArticleHandler::parsingFinished();
 }

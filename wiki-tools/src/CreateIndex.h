@@ -21,6 +21,7 @@
 #define CreateIndex_h
 
 #include "ArticleHandler.h" 
+#include <QRegExp>
 #include <QMap>
 /**
  * Extract Titles and build a simple index
@@ -28,13 +29,12 @@
  */
 class CreateIndex : public FileOutputArticleHandler {
 public:
-    CreateIndex(const QString& outputFile, QRegExp *filter);
+    CreateIndex(const QString& outputFile, const QRegExp& filter);
 
     void handleArticle(const Article&);
     void parsingFinished();
 private:
-    QString m_pattern;
-    QRegExp *m_filter;
+    QRegExp m_filter;
     QMap<QString, QString> map;// title and hash(sha1)
 };
 
