@@ -23,6 +23,7 @@
 #include "ExtractHtmlText.h"
 #include "ExtractPlainText.h"
 #include "ExtractText.h"
+#include "ExtractTextCompressed.h"
 #include "ExtractTextHashed.h"
 #include "ExtractTitles.h"
 #include "SplitArticles.h"
@@ -43,6 +44,15 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     //*handlers << new ExtractTitles(QString("extracted.titles"));
     //*handlers << new ExtractWords(QString());
     //*handlers << new ExtractText(QString("extracted.text"));
+
+    // Enable that if you want to write out compressed text
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.1.bz2"), Compression::Method_Bzip2, 1);
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.4.bz2"), Compression::Method_Bzip2, 4);
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.9.bz2"), Compression::Method_Bzip2, 9);
+
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.1.gz"), Compression::Method_Zlib, 1);
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.4.gz"), Compression::Method_Zlib, 4);
+    //*handlers << new ExtractTextCompressed(QString("extracted.text.9.gz"), Compression::Method_Zlib, 9);
 
     // Enable that if want to get plaintext/html (untested)
     //*handlers << new ExtractPlainText(QString("extracted.plain.text"));

@@ -35,6 +35,7 @@ HEADERS += \
     src/ExtractHtmlText.h \
     src/ExtractPlainText.h \
     src/ExtractText.h \
+    src/ExtractTextCompressed.h \
     src/ExtractTextHashed.h \
     src/ExtractTitles.h \
     src/SplitArticles.h
@@ -45,6 +46,7 @@ SOURCES += \
     src/ExtractHtmlText.cc \
     src/ExtractPlainText.cc \
     src/ExtractText.cc \
+    src/ExtractTextCompressed.cc \
     src/ExtractTextHashed.cc \
     src/ExtractTitles.cc \
     src/SplitArticles.cc \
