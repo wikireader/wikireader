@@ -29,30 +29,58 @@ CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
 // TODO recognize redirections and resolve them
 void CreateIndex::handleArticle(const Article& article)
 {
-    QString title = article.title().title();
-    QString hash = article.isRedirect() ? article.redirectsTo() : article.hash();
-    bool match = m_filter.exactMatch(title);                                   
+   if(article.isRedirect()){
+      redirectMap.insert(article.title().title(), article.redirectsTo());
+   }else{
+      map.insert(article.title().title(), article.hash());
+   }
+}
 
-    if(match){
-        if (map.contains(title) && map.value(title) == hash){
+void CreateIndex::resolveRedirect()
+{
+   QString title = "",redirectTo = "", hash = "";
+   QMap<QString, QString>::const_iterator i = redirectMap.constBegin();
+   for( ; i !=redirectMap.constEnd(); i++){
+      title = i.key();
+      redirectTo = i.value();
+      while( redirectMap.contains( redirectTo ) ){
+	 redirectTo = redirectMap.value( redirectTo );
+      }
+      hash = map.value( redirectTo );
+      map.insert(title, hash);
+   }
+}
 
-        }else{
-            map.insert(title, hash);
-            //TODO:redirect code here
-        }
-    }else{
-	    //TODO: figure out the title we remove.
-	    //1. not match 2.double (lowcase) 3. redirect
-    }
+void CreateIndex::doMatch()
+{
+   QString title = "",hash = "";
+   QTextStream stream(&m_file); 
+   //i use a const name here
+   QFile notMatchfile;
+   notMatchfile.setFileName("notmatch.index");
+   notMatchfile.open(QFile::WriteOnly | QFile::Truncate);
+   QTextStream notMatchStream(&notMatchfile);
+   QMap<QString, QString>::const_iterator i = map.constBegin();
+
+   while (i != map.constEnd()) {
+      bool match = m_filter.exactMatch(title);
+      if(match){
+	 if(title == i.key().toLower() && hash == i.value())
+	    continue;
+	 stream << i.key().toLower() << "--" << i.value() << endl;
+
+	 title = i.key().toLower();
+	 hash = i.value();
+      }else{
+	 notMatchStream << title << "--" << hash << endl;
+      }
+      ++i;
+   }
 }
 
 void CreateIndex::parsingFinished()
 {
-   QTextStream stream(&m_file); 
-   QMap<QString, QString>::const_iterator i = map.constBegin();
-   while (i != map.constEnd()) {
-      stream << i.key().toLower() << "--" << i.value() << endl;
-      ++i;
-   }
-   FileOutputArticleHandler::parsingFinished();
+    resolveRedirect();
+    doMatch();
+    FileOutputArticleHandler::parsingFinished();
 }

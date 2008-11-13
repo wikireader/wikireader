@@ -36,6 +36,10 @@ public:
 private:
     QRegExp m_filter;
     QMap<QString, QString> map;// title and hash(sha1)
+    QMap<QString, QString> redirectMap;
+    QMap<QString, QString> notMatchMap;
+    void resolveRedirect();
+    void doMatch();
 };
 
 #endif
