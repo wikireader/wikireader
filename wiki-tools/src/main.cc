@@ -40,8 +40,10 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     *handlers << new ExtractTitles(QString("extracted.titles"));
     *handlers << new ExtractWords(QString());
     *handlers << new ExtractText(QString("extracted.text"));
-    *handlers << new ExtractPlainText(QString("extracted.plain.text"));
-    *handlers << new ExtractHtmlText(QString("extracted.html.text"));
+
+    // Enable that if want to get plaintext/html (untested)
+    //*handlers << new ExtractPlainText(QString("extracted.plain.text"));
+    //*handlers << new ExtractHtmlText(QString("extracted.html.text"));
 
     // Enable that if you want to split articles
     //*handlers << new SplitArticles(50, QString("split_enwiki"));
