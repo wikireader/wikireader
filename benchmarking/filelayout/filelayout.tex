@@ -1,0 +1,131 @@
+\documentclass{article}
+\begin{document}
+\title{Finding a sane on disk layout for the Articles}
+\author{Holger Hans Peter Freyther\\
+Openmoko Inc.
+}
+\maketitle
+This should enable people to understand why certain decisions has been made
+and what they are based on. This document will accumulate certain attempts,
+data, sizes and should conclude with the description of the data structure
+used for articles. This document is meant to be as short as possible, I can
+not stand producing paper\ldots
+
+\section{The setting}
+The uncomprssed english wikipedia dump is about 15gb in size, all extracted
+text is about 11gb. But that is only one part. Some articles are simple redirects
+to other pages and can be omitted. But there is also something called a Template.
+It is a turing complete language that can generate content. So the real size
+of the data is still to be determined and depend on our way of declaring
+text. As rough estimates we should take the plain text size, all html, all
+plain text (converted from html).
+
+
+\section{The problem}
+After the user selected to display an article we want to be able to display it
+as fast as possible. This means we should be able to find it on the SD Card
+rather quickly (e.g. one seek/open) and we should be able to easily decompress
+it and probably only the data we actually need.\\
+Another part is that we need to have an estimate how much space requirement
+we have to source SD cards of a reasonable size.
+
+\section{Compression}
+\subsection{GZIP/Deflate}
+You know it...No idea if it is block based.
+
+\subsubsection{Memory requirements for decompression}
+Oh well, I have no idea and would need to measure
+
+\subsection{BZIP2}
+block based compression normally leading to better text compression than GZIP/deflate.
+
+\subsubsection{Memory requirements for decompression}
+% Copy and pasted from man bzip2
+This is directly copied from the bzip2 manpage. The compression overhead is not
+really interesting, the higher the block size, the better the compression ratio but
+this also increases the amount of RAM we require on the device.
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Flag & Compress usage & Decompress usage & Decompress -s usage & Corpus Size \\ \hline
+-1   &   1200k  &     500k    &     350k  &    914704 \\ \hline
+-2   &   2000k  &     900k    &     600k  &    877703 \\ \hline 
+-3   &   2800k  &    1300k    &     850k  &    860338 \\ \hline
+-4   &   3600k  &    1700k    &    1100k  &    846899 \\ \hline
+-5   &   4400k  &    2100k    &    1350k  &    845160 \\ \hline
+-6   &   5200k  &    2500k    &    1600k  &    838626 \\ \hline
+-7   &   6100k  &    2900k    &    1850k  &    834096 \\ \hline
+-8   &   6800k  &    3300k    &    2100k  &    828642 \\ \hline
+-9   &   7600k  &    3700k    &    2350k  &    828642 \\ \hline
+\end{tabular}
+
+\subsection{LZMA}
+The new compression algorithm. LZA on steroids with bigger dictionaries and some
+other tricks. This is also increasing the memory required for decompression
+tremendously.
+
+\subsubsection{Memory requirements for decompression}
+\begin{tabular}{|c|c|c|}
+\hline
+Flag   & Compress usage &   Decompress usage \\ \hline
+-1     & 2 MB        &       1 MB \\ \hline
+-2     &    12 MB    &           2 MB \\ \hline
+-3     &    12 MB    &           1 MB \\ \hline
+-4     &    16 MB    &           2 MB \\ \hline
+-5     &    26 MB    &           3 MB \\ \hline
+-6     &    45 MB    &           5 MB \\ \hline
+-7     &    83 MB    &           9 MB \\ \hline
+-8     &   159 MB    &          17 MB \\ \hline
+-9     &   311 MB    &          33 MB \\ \hline
+\end{tabular}
+
+
+\section{Filelayout}
+How to store the articles. And how and when to compress them.
+
+\subsection{One big file}
+Store everything in one big file.
+
+\subsection{Hash Structure}
+Compute the hash of the text content. E.g. the hash is AABBCCDD12345\ldots
+then we will create the directory AA/BB/CC/DD/ and place the file
+there AABBCCDD12345\ldots. The hash is an attempt to get $\Omega(1)$ (contsant)
+access time.
+
+\section{Benchmarking/Measuring}
+\subsection{One big file}
+We have two options. Put everything in one file and then compress, compress each article separately and then concat the result. The first approach is likely to lead to a better compression ratio, but one article can be in two different compression units. This means we need to index the archive after compression and have more overhead on the device. The other options is to compress each article separately and concatinate the result. This is likely to lead to a worse compression ratio but is more easy to deal with on the device.\\
+We do not have our final format yet but would like to experiment and get some numbers. To get a good impression we will compare the two approaches with BZIP2, ZLIB, LZMA, various different options. The different sources will be MediaWiki syntax out of the dump, html from the wikiserver, plain text converted from the mediawiki server. The final result will be within these ranges.
+
+\subsubsection{One big file MediaWiki syntax, concatted, then compressed}
+\begin{tabular}{|c|c|c|}
+\hline
+Compression & Flags & filesize \\ \hline
+none & none & 14G \\ \hline
+bzip2 & -1 & 4.2G (4510124239) \\ \hline
+bzip2 & -5 & 3.7G (3998845628) \\ \hline
+bzip2 & -9 & 3.6G (3853095128) \\ \hline
+gzip  & -1 & 5.2G (5548892646) \\ \hline
+gzip  & -5 & 4.5G (4847073631) \\ \hline
+gzip  & -9 & 4.5G (4793230675) \\ \hline
+lzma  & -1 & 4.2G (4559777565) \\ \hline
+lzma  & -5 & 3.3G (3506960143) \\ \hline
+lzma  & -9 & 2.9G (3097003304) \\ \hline
+\end{tabular}
+
+\subsubsection{One big file MediaWiki syntax, compressed, then concatted}
+\subsubsection{One big file plain text, concatted, then compressed}
+\subsubsection{One big file plain text, compressed, then concatted}
+\subsubsection{One big file html, concatted, then compressed}
+\subsubsection{One big file html, compressed, then concatted}
+
+\subsection{Hash Structue}
+Okay this does not scale. It takes ages to split the articles up and it takes
+ages to list them. Even a find . -type f on the hashed directories is taking more
+than 24hours to complete. This mostly kills this idea. The number of files even
+with a four level indirect hash is not playing nice with the directory listing
+implementations on OSX and Linux. Even when considering deployment and the need
+to untar/unzip these files to a SD Card the hash based structure is losing.\\
+wiki-tools contains a ExtractTextHashed\.cc which can convert a wikipedia dump
+into the hash based structure.
+
+\end{document}
