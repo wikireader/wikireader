@@ -34,8 +34,9 @@
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 {
-    *handlers << new CreateIndex(QLatin1String("indexfile.index"), 
-				 QRegExp("[0-9A-Za-z\\s.]*") );
+    // Enable that if you want to create an index
+    //*handlers << new CreateIndex(QLatin1String("indexfile.index"), 
+    //                             QRegExp("[0-9A-Za-z\\s.]*") );
 
     // Some example runs... take a look
     //*handlers << new CreateText(QString());
