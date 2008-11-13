@@ -24,7 +24,7 @@ SOURCES += \
     src/StreamReader.cc \
     src/Title.cc
 
-LIBS += -lz
+LIBS += -lz -lbz2
     
 
 # Extractors/Functionality

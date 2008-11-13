@@ -20,6 +20,7 @@
 #include "Compression.h"
 
 #include <zlib.h>
+#include <bzlib.h>
 
 static QByteArray compress_zlib(const QByteArray& data, int level)
 {
@@ -40,7 +41,25 @@ static QByteArray compress_zlib(const QByteArray& data, int level)
 
 static QByteArray compress_bzip2(const QByteArray& data, int level)
 {
-    return QByteArray();
+    QByteArray compressedResult;
+    compressedResult.resize(compressBound(data.size()));
+
+    unsigned int size = 0;
+
+    // We need to use %1 + 600 bytes more
+    if (data.size() < 100)
+        size = data.size() * 2 + 600;
+    else
+        size = data.size() + 601 + (data.size()/100);
+
+    int result = BZ2_bzBuffToBuffCompress(compressedResult.data(), &size,
+                                          (char*)data.data(), data.size(),
+                                          level, 0, 0); 
+    if (result != BZ_OK)
+        return QByteArray();
+    
+    compressedResult.resize(size);
+    return compressedResult;
 }
 
 static QByteArray compress_lzma(const QByteArray& data, int level)
