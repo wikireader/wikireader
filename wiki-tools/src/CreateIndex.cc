@@ -30,6 +30,7 @@ CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
     m_imageEtcFile.setFileName("imageEtc.title");
     m_imageEtcFile.open(QFile::WriteOnly | QFile::Truncate);
     m_imageEtcStream = new QTextStream(&m_imageEtcFile);
+    m_imageEtcCount = 0;
 }
 
 void CreateIndex::handleArticle(const Article& article)
@@ -38,14 +39,17 @@ void CreateIndex::handleArticle(const Article& article)
     if (title.startsWith("Image:") || title.startsWith("Category:") ||
         title.startsWith("Talk:") || title.startsWith("Template:")) {
         (*m_imageEtcStream)<<title<<"--"<<article.hash()<<endl;
+        m_imageEtcCount++;
         return ;
     }
     if (article.isRedirect()) {
         m_redirectMap.insert(title, article.redirectsTo());
     } else {
-        m_map.insert(title, article.hash());
+        if (m_filter.exactMatch(title)) {
+            m_map.insert(title, article.hash());
+        }
     }
-    cout<< "index count:"<<m_map.count()<<"redirect count:"<<m_redirectMap.count()<<endl;
+    cout<< m_map.count()<<"---"<<m_redirectMap.count()<<"---"<<m_imageEtcCount<< endl;
 }
 
 void CreateIndex::resolveRedirect()
@@ -88,5 +92,7 @@ void CreateIndex::parsingFinished()
     resolveRedirect();
     cout<<"begin match and write"<<endl;
     doMatchAndWrite();
+
+    m_imageEtcFile.close();
     FileOutputArticleHandler::parsingFinished();
 }

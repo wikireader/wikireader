@@ -43,6 +43,7 @@ private:
     void doMatchAndWrite();
     QFile m_imageEtcFile;
     QTextStream* m_imageEtcStream;
+    int m_imageEtcCount;
 };
 
 #endif
