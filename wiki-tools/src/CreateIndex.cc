@@ -51,12 +51,18 @@ void CreateIndex::handleArticle(const Article& article)
 
 void CreateIndex::resolveRedirect()
 {
-    int i=0;
+    int i=0,findTimes = 0;
     QString title, redirectTo, hash;
     foreach (title, m_redirectMap.keys()) {
         redirectTo = m_redirectMap[title];
         while (m_redirectMap.contains(redirectTo)) {
             redirectTo = m_redirectMap.value(redirectTo);
+            findTimes++;
+            if (findTimes == 1000) {
+                findTimes = 0;
+                qDebug()<<"find 1000 times"<<endl;
+                break;
+            }
         }
         if (m_map.contains(redirectTo))
             m_map.insert(title, m_map.value(redirectTo));
@@ -75,7 +81,7 @@ void CreateIndex::doMatchAndWrite()
     QTextStream notMatchStream(&notMatchfile);
 
     foreach (QString key, m_map.keys()) {
-        QString indexLine = QString::fromLatin1("%1--%2").arg(key.toLower()).arg(m_map[key]);
+        QString indexLine = QString::fromLatin1("%1--%2\n").arg(key.toLower()).arg(m_map[key]);
         if (m_filter.exactMatch(key))
             stream << indexLine;
         else
