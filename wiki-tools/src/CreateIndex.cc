@@ -45,9 +45,7 @@ void CreateIndex::handleArticle(const Article& article)
     if (article.isRedirect()) {
         m_redirectMap.insert(title, article.redirectsTo());
     } else {
-        if (m_filter.exactMatch(title)) {
-            m_map.insert(title, article.hash());
-        }
+        m_map.insert(title, article.hash());
     }
     cout<< m_map.count()<<"---"<<m_redirectMap.count()<<"---"<<m_imageEtcCount<< endl;
 }
@@ -55,15 +53,13 @@ void CreateIndex::handleArticle(const Article& article)
 void CreateIndex::resolveRedirect()
 {
     QString title, redirectTo, hash;
-    QMap<QString, QString>::const_iterator it = m_redirectMap.constBegin();
-    for ( ; it != m_redirectMap.constEnd(); it++) {
-        title = it.key();
-        redirectTo = it.value();
+    foreach (title, m_redirectMap.keys()) {
+        redirectTo = m_redirectMap[title];
         while (m_redirectMap.contains(redirectTo)) {
             redirectTo = m_redirectMap.value(redirectTo);
         }
-        hash = m_map.value(redirectTo);
-        m_map.insert(title, hash);
+        if (m_map.contains(redirectTo))
+            m_map.insert(title, m_map.value(redirectTo));
     }
 }
 
