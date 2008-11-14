@@ -1,0 +1,60 @@
+Glyphs....
+
+A glyph is a 
+
+struct Glyph {
+    // the unicode symbol it represents
+    int16_t UNICODE_SYMBOL;
+    
+    // the default width/height of the glyph
+    int_t8 width;
+    int_t8 height;
+
+    // 1bbp of the glyphdata of the size width/height
+    char* glyph_data
+};
+
+Sizing of a glyph:
+    - Every glyph has a default width and height (height should be mostly
+      the same for all glyphs). To position the next glyph you use the old
+      y add the width of the current glyph and know the position of the new
+      one.
+    - Height should be the same. We think of terms of line of text. so a citation
+      mark that is set high will still have the same height.
+
+
+How to generate the glyphs:
+    - We walk the text and if we do not have the original glyph (unicode, size,
+      flags) in our glyph set we will rasterize one and store this glyph in the
+      our data set. The assigned glyph id will be the next free one!
+
+    - Details: What happens when the spacing is different than usual... we might
+      add a new sequence to change the spacing...
+
+
+Discussion:
+    - The font file might start with a index that maps from glyph index
+      to the offset in the file.
+
+
+A simple example:
+    Text: Hello glyph's
+
+    1.) Generate glyph's
+        H = 1
+        e = 2
+        l = 3
+        o = 4
+        _ = 5 (different width)
+        g = 6
+        y = 7
+        p = 8
+        h = 9
+        ' = 10
+        s = 11 (different width)
+
+    2.) Convert the text
+    \1\2\3\3\4\5\6\3\7\8\9\10\11
+
+    3.) Displaying
+    This would simply run over the sequence and blit the page...
