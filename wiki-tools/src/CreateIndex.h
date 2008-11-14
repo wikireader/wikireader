@@ -21,6 +21,7 @@
 #define CreateIndex_h
 
 #include "ArticleHandler.h" 
+#include <QTextStream>
 #include <QRegExp>
 #include <QMap>
 /**
@@ -40,6 +41,8 @@ private:
     QMap<QString, QString> m_notMatchMap;
     void resolveRedirect();
     void doMatchAndWrite();
+    QFile m_imageEtcFile;
+    QTextStream* m_imageEtcStream;
 };
 
 #endif

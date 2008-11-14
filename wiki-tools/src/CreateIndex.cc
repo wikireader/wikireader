@@ -20,28 +20,41 @@
 #include "CreateIndex.h"
 #include <QTextStream>
 #include <QRegExp>
+#include <iostream>
+using namespace std;
 
 CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
     : FileOutputArticleHandler(fileName)
     , m_filter(filter)
-{}
+{
+    m_imageEtcFile.setFileName("imageEtc.title");
+    m_imageEtcFile.open(QFile::WriteOnly | QFile::Truncate);
+    m_imageEtcStream = new QTextStream(&m_imageEtcFile);
+}
 
 void CreateIndex::handleArticle(const Article& article)
 {
-    if ( article.isRedirect() ) {
-        m_redirectMap.insert(article.title().title(), article.redirectsTo());
-    } else {
-        m_map.insert(article.title().title(), article.hash());
+    QString title = article.title().title();
+    if (title.startsWith("Image:") || title.startsWith("Category:") ||
+        title.startsWith("Talk:") || title.startsWith("Template:")) {
+        (*m_imageEtcStream)<<title<<"--"<<article.hash()<<endl;
+        return ;
     }
+    if (article.isRedirect()) {
+        m_redirectMap.insert(title, article.redirectsTo());
+    } else {
+        m_map.insert(title, article.hash());
+    }
+    cout<< "index count:"<<m_map.count()<<"redirect count:"<<m_redirectMap.count()<<endl;
 }
 
 void CreateIndex::resolveRedirect()
 {
     QString title, redirectTo, hash;
-    QMap<QString, QString>::const_iterator i = m_redirectMap.constBegin();
-    for ( ; i != m_redirectMap.constEnd(); i++) {
-        title = i.key();
-        redirectTo = i.value();
+    QMap<QString, QString>::const_iterator it = m_redirectMap.constBegin();
+    for ( ; it != m_redirectMap.constEnd(); it++) {
+        title = it.key();
+        redirectTo = it.value();
         while (m_redirectMap.contains(redirectTo)) {
             redirectTo = m_redirectMap.value(redirectTo);
         }
@@ -71,7 +84,9 @@ void CreateIndex::doMatchAndWrite()
 
 void CreateIndex::parsingFinished()
 {
+    cout<<"begin resolve"<<endl;
     resolveRedirect();
+    cout<<"begin match and write"<<endl;
     doMatchAndWrite();
     FileOutputArticleHandler::parsingFinished();
 }
