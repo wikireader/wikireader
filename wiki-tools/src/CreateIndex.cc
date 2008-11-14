@@ -20,8 +20,7 @@
 #include "CreateIndex.h"
 #include <QTextStream>
 #include <QRegExp>
-#include <iostream>
-using namespace std;
+#include <QtDebug>
 
 CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
     : FileOutputArticleHandler(fileName)
@@ -47,11 +46,12 @@ void CreateIndex::handleArticle(const Article& article)
     } else {
         m_map.insert(title, article.hash());
     }
-    cout<< m_map.count()<<"---"<<m_redirectMap.count()<<"---"<<m_imageEtcCount<< endl;
+    qDebug()<< m_map.count()<<"---"<<m_redirectMap.count()<<"---"<<m_imageEtcCount<< endl;
 }
 
 void CreateIndex::resolveRedirect()
 {
+    int i=0;
     QString title, redirectTo, hash;
     foreach (title, m_redirectMap.keys()) {
         redirectTo = m_redirectMap[title];
@@ -60,6 +60,7 @@ void CreateIndex::resolveRedirect()
         }
         if (m_map.contains(redirectTo))
             m_map.insert(title, m_map.value(redirectTo));
+        qDebug() << m_map.count() << "---" << i++ <<endl;
     }
 }
 
@@ -84,9 +85,9 @@ void CreateIndex::doMatchAndWrite()
 
 void CreateIndex::parsingFinished()
 {
-    cout<<"begin resolve"<<endl;
+    qDebug()<<"begin resolve"<<endl;
     resolveRedirect();
-    cout<<"begin match and write"<<endl;
+    qDebug()<<"begin match and write"<<endl;
     doMatchAndWrite();
 
     m_imageEtcFile.close();
