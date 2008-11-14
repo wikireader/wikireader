@@ -35,11 +35,11 @@ public:
     void parsingFinished();
 private:
     QRegExp m_filter;
-    QMap<QString, QString> map;// title and hash(sha1)
-    QMap<QString, QString> redirectMap;
-    QMap<QString, QString> notMatchMap;
+    QMap<QString, QString> m_map;// title and hash(sha1)
+    QMap<QString, QString> m_redirectMap;
+    QMap<QString, QString> m_notMatchMap;
     void resolveRedirect();
-    void doMatch();
+    void doMatchAndWrite();
 };
 
 #endif

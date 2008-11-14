@@ -26,61 +26,52 @@ CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
     , m_filter(filter)
 {}
 
-// TODO recognize redirections and resolve them
 void CreateIndex::handleArticle(const Article& article)
 {
-   if(article.isRedirect()){
-      redirectMap.insert(article.title().title(), article.redirectsTo());
-   }else{
-      map.insert(article.title().title(), article.hash());
-   }
+    if ( article.isRedirect() ) {
+        m_redirectMap.insert(article.title().title(), article.redirectsTo());
+    } else {
+        m_map.insert(article.title().title(), article.hash());
+    }
 }
 
 void CreateIndex::resolveRedirect()
 {
-   QString title = "",redirectTo = "", hash = "";
-   QMap<QString, QString>::const_iterator i = redirectMap.constBegin();
-   for( ; i !=redirectMap.constEnd(); i++){
-      title = i.key();
-      redirectTo = i.value();
-      while( redirectMap.contains( redirectTo ) ){
-	 redirectTo = redirectMap.value( redirectTo );
-      }
-      hash = map.value( redirectTo );
-      map.insert(title, hash);
-   }
+    QString title, redirectTo, hash;
+    QMap<QString, QString>::const_iterator i = m_redirectMap.constBegin();
+    for ( ; i != m_redirectMap.constEnd(); i++) {
+        title = i.key();
+        redirectTo = i.value();
+        while (m_redirectMap.contains(redirectTo)) {
+            redirectTo = m_redirectMap.value(redirectTo);
+        }
+        hash = m_map.value(redirectTo);
+        m_map.insert(title, hash);
+    }
 }
 
-void CreateIndex::doMatch()
+void CreateIndex::doMatchAndWrite()
 {
-   QString title = "",hash = "";
-   QTextStream stream(&m_file); 
-   //i use a const name here
-   QFile notMatchfile;
-   notMatchfile.setFileName("notmatch.index");
-   notMatchfile.open(QFile::WriteOnly | QFile::Truncate);
-   QTextStream notMatchStream(&notMatchfile);
-   QMap<QString, QString>::const_iterator i = map.constBegin();
+    QTextStream stream(&m_file); 
 
-   while (i != map.constEnd()) {
-      bool match = m_filter.exactMatch(title);
-      if(match){
-	 if(title == i.key().toLower() && hash == i.value())
-	    continue;
-	 stream << i.key().toLower() << "--" << i.value() << endl;
+    //i use a const name here
+    QFile notMatchfile;
+    notMatchfile.setFileName("notmatch.index");
+    notMatchfile.open(QFile::WriteOnly | QFile::Truncate);
+    QTextStream notMatchStream(&notMatchfile);
 
-	 title = i.key().toLower();
-	 hash = i.value();
-      }else{
-	 notMatchStream << title << "--" << hash << endl;
-      }
-      ++i;
-   }
+    foreach (QString key, m_map.keys()) {
+        QString indexLine = QString::fromLatin1("%1--%2").arg(key.toLower()).arg(m_map[key]);
+        if (m_filter.exactMatch(key))
+            stream << indexLine;
+        else
+            notMatchStream << indexLine;
+    }
 }
 
 void CreateIndex::parsingFinished()
 {
     resolveRedirect();
-    doMatch();
+    doMatchAndWrite();
     FileOutputArticleHandler::parsingFinished();
 }
