@@ -29,21 +29,29 @@
  *   Title => Hash
  */
 class CreateIndex : public FileOutputArticleHandler {
-public:
-    CreateIndex(const QString& outputFile, const QRegExp& filter);
+  public:
+    CreateIndex(const QString& splitChars, 
+                const QString& indexFileName, 
+                const QString& notMatchName,
+                const QRegExp& notArticle,
+                const QRegExp& match);
 
     void handleArticle(const Article&);
     void parsingFinished();
-private:
-    QRegExp m_filter;
-    QMap<QString, QString> m_map;// title and hash(sha1)
+  private:
+    QString m_splitChars;
+    QRegExp m_notArticle;
+    QRegExp m_match;
+
+    QMap<QString, QString> m_titleMap;	// title and hash(sha1)
     QMap<QString, QString> m_redirectMap;
-    QMap<QString, QString> m_notMatchMap;
+
     void resolveRedirect();
     void doMatchAndWrite();
-    QFile m_imageEtcFile;
-    QTextStream* m_imageEtcStream;
-    int m_imageEtcCount;
+
+    QFile m_notMatchFile;
+    QTextStream* m_notMatchStream;
+    int m_notMatchCount;
 };
 
 #endif

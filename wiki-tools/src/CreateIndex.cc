@@ -22,37 +22,45 @@
 #include <QRegExp>
 #include <QtDebug>
 
-CreateIndex::CreateIndex(const QString& fileName, const QRegExp& filter)
-    : FileOutputArticleHandler(fileName)
-    , m_filter(filter)
+CreateIndex::CreateIndex(const QString& splitChars, const QString& indexFileName, 
+                         const QString& notMatchName, 
+                         const QRegExp& notArticle,
+                         const QRegExp& match)
+    : FileOutputArticleHandler(indexFileName)
+    , m_splitChars(splitChars)
+    , m_match(match)
+    , m_notArticle(notArticle)
 {
-    m_imageEtcFile.setFileName("imageEtc.title");
-    m_imageEtcFile.open(QFile::WriteOnly | QFile::Truncate);
-    m_imageEtcStream = new QTextStream(&m_imageEtcFile);
-    m_imageEtcCount = 0;
+    m_notMatchFile.setFileName(notMatchName);
+    m_notMatchFile.open(QFile::WriteOnly | QFile::Truncate);
+    m_notMatchStream = new QTextStream(&m_notMatchFile);
+    (*m_notMatchStream) << "----------after here is not arctile. like Image: etc.\n";
+    m_notMatchCount = 0;
 }
 
 void CreateIndex::handleArticle(const Article& article)
 {
     QString title = article.title().title();
-    if (title.startsWith("Image:") || title.startsWith("Category:") ||
-        title.startsWith("Talk:") || title.startsWith("Template:")) {
-        (*m_imageEtcStream)<<title<<"--"<<article.hash()<<endl;
-        m_imageEtcCount++;
+    if (m_notArticle.exactMatch(title)) {
+        (*m_notMatchStream) << title << m_splitChars << article.hash() << endl;
+        m_notMatchCount++;
         return ;
     }
     if (article.isRedirect()) {
         m_redirectMap.insert(title, article.redirectsTo());
     } else {
-        m_map.insert(title, article.hash());
+        m_titleMap.insert(title, article.hash());
     }
-    qDebug()<< m_map.count()<<"---"<<m_redirectMap.count()<<"---"<<m_imageEtcCount<< endl;
+    qDebug()<< m_titleMap.count()<<m_splitChars<<m_redirectMap.count()<<m_splitChars<<m_notMatchCount;
 }
 
 void CreateIndex::resolveRedirect()
 {
     int i=0,findTimes = 0;
     QString title, redirectTo, hash;
+
+    (*m_notMatchStream) << "----------after here is fail redirect title\n";
+    m_notMatchCount = 0;
     foreach (title, m_redirectMap.keys()) {
         redirectTo = m_redirectMap[title];
         while (m_redirectMap.contains(redirectTo)) {
@@ -60,42 +68,44 @@ void CreateIndex::resolveRedirect()
             findTimes++;
             if (findTimes == 1000) {
                 findTimes = 0;
-                qDebug()<<"find 1000 times"<<endl;
+                m_notMatchCount ++;
+                (*m_notMatchStream) << title << m_splitChars << redirectTo <<endl;
+                qDebug()<<"find 1000 times";
                 break;
             }
         }
-        if (m_map.contains(redirectTo))
-            m_map.insert(title, m_map.value(redirectTo));
-        qDebug() << m_map.count() << "---" << i++ <<endl;
+        if (m_titleMap.contains(redirectTo))
+            m_titleMap.insert(title, m_titleMap.value(redirectTo));
+        qDebug() << m_titleMap.count() << m_splitChars << i++ ;
     }
+    (*m_notMatchStream) << "----------fail redirect titles count is: " << m_notMatchCount << endl;
 }
 
 void CreateIndex::doMatchAndWrite()
 {
     QTextStream stream(&m_file); 
 
-    //i use a const name here
-    QFile notMatchfile;
-    notMatchfile.setFileName("notmatch.index");
-    notMatchfile.open(QFile::WriteOnly | QFile::Truncate);
-    QTextStream notMatchStream(&notMatchfile);
-
-    foreach (QString key, m_map.keys()) {
-        QString indexLine = QString::fromLatin1("%1--%2\n").arg(key.toLower()).arg(m_map[key]);
-        if (m_filter.exactMatch(key))
+    (*m_notMatchStream) << "----------after here is not match titles.\n";
+    m_notMatchCount = 0;
+    foreach (QString key, m_titleMap.keys()) {
+        QString indexLine = key.toLower() + m_splitChars +m_titleMap[key];
+        if (m_match.exactMatch(key))
             stream << indexLine;
-        else
-            notMatchStream << indexLine;
+        else {
+            (*m_notMatchStream) << indexLine;
+            m_notMatchCount ++;
+        }
     }
+    (*m_notMatchStream) << "----------not match titles count: " << m_notMatchCount << endl;
+    (*m_notMatchStream) << "----------all over :-) " << endl;
 }
 
 void CreateIndex::parsingFinished()
 {
-    qDebug()<<"begin resolve"<<endl;
+    (*m_notMatchStream) << "----------not article count is: "<<m_notMatchCount<<endl;
     resolveRedirect();
-    qDebug()<<"begin match and write"<<endl;
     doMatchAndWrite();
 
-    m_imageEtcFile.close();
+    m_notMatchFile.close();
     FileOutputArticleHandler::parsingFinished();
 }
