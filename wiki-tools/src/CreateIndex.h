@@ -43,7 +43,7 @@ class CreateIndex : public FileOutputArticleHandler {
     QRegExp m_notArticle;
     QRegExp m_match;
 
-    QMap<QString, QString> m_titleMap;	// title and hash(sha1)
+    QMap<QString, QString> m_titleMap;    // title and hash(sha1)
     QMap<QString, QString> m_redirectMap;
 
     void resolveRedirect();
