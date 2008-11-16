@@ -22,6 +22,13 @@
 #include "types.h"
 #include "misc.h"
 
+u8 spi_transmit_lcd(u8 out)
+{
+	REG_SPI_TXD = out;
+	do {} while (REG_SPI_STAT & (1 << 6));
+	return REG_SPI_RXD;
+}
+
 void init_lcd(void)
 {
 	LCD_CS_LO();
@@ -63,7 +70,7 @@ void init_lcd(void)
   	REG_LCDC_MADD = LCD_VRAM;
 
 	/* LCDC on */
-        REG_SPI_TXD = 0xa8;
+	spi_transmit_lcd(0xa8);
 
 	LCD_CS_HI();
 	delay(10);
