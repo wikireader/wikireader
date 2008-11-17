@@ -89,7 +89,7 @@ void CreateIndex::doMatchAndWrite()
     (*m_notMatchStream) << "----------after here is not match titles.\n";
     m_notMatchCount = 0;
     foreach (QString key, m_titleMap.keys()) {
-        if ( title == key.toLower() && hash == m_titleMap.keys())
+        if ( title == key.toLower() && hash == m_titleMap[key])
             continue;
         QString indexLine = key.toLower() + m_splitChars +m_titleMap[key];
         if (m_match.exactMatch(key))
@@ -99,7 +99,7 @@ void CreateIndex::doMatchAndWrite()
             m_notMatchCount ++;
         }
         title = key.toLower();
-        hash = m_titleMap.keys();
+        hash = m_titleMap[key];
     }
     (*m_notMatchStream) << "----------not match titles count: " << m_notMatchCount << "\n";
     (*m_notMatchStream) << "----------all over :-) \n";
