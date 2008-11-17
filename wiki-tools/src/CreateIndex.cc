@@ -84,10 +84,13 @@ void CreateIndex::resolveRedirect()
 void CreateIndex::doMatchAndWrite()
 {
     QTextStream stream(&m_file); 
+    QString title, hash;
 
     (*m_notMatchStream) << "----------after here is not match titles.\n";
     m_notMatchCount = 0;
     foreach (QString key, m_titleMap.keys()) {
+        if ( title == key.toLower() && hash == m_titleMap.keys())
+            continue;
         QString indexLine = key.toLower() + m_splitChars +m_titleMap[key];
         if (m_match.exactMatch(key))
             stream << indexLine;
@@ -95,6 +98,8 @@ void CreateIndex::doMatchAndWrite()
             (*m_notMatchStream) << indexLine;
             m_notMatchCount ++;
         }
+        title = key.toLower();
+        hash = m_titleMap.keys();
     }
     (*m_notMatchStream) << "----------not match titles count: " << m_notMatchCount << "\n";
     (*m_notMatchStream) << "----------all over :-) \n";
