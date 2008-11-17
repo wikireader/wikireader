@@ -91,7 +91,7 @@ void CreateIndex::doMatchAndWrite()
     foreach (QString key, m_titleMap.keys()) {
         if ( title == key.toLower() && hash == m_titleMap[key])
             continue;
-        QString indexLine = key.toLower() + m_splitChars +m_titleMap[key];
+        QString indexLine = key.toLower() + m_splitChars + m_titleMap[key] + "\n";
         if (m_match.exactMatch(key))
             stream << indexLine;
         else {
