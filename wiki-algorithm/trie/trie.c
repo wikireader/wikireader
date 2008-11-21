@@ -386,7 +386,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	if (argc < 3) { /* at most one arg: file name */
+	if (argc < 3) { /* at most one arg: file name this is for my test*/
 		trie_new(fp_index);	
 		trie_clean();
 		return 1;
