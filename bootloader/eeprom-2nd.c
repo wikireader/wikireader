@@ -44,7 +44,7 @@ int main(void)
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 
-	elf_exec(KERNEL);
+	print_u32(elf_exec(KERNEL));
 	
 	/* load the 'could not boot from SD card' image */
 	eeprom_load(0x10000, (u8 *) 0x10000000, (320 * 240) / 2);

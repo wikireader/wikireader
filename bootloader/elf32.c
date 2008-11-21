@@ -85,39 +85,31 @@ int elf_exec(const u8 *filename)
 	FATFS fatfs;
 	FIL file;
 
-	if (f_mount(0, &fatfs) != FR_OK) {
-		print("can not mount fatfs\n");
+	if (f_mount(0, &fatfs) != 0)
 		return -1;
-	}
-	print("mount fatfs ok!\n");
 
-	if (f_open(&file, filename, FA_READ) < 0) {
-		print("can not open the file\n");
-		return -1;
-	}
-	print("open file ok!\n");
+	if (f_open(&file, filename, FA_READ) < 0)
+		return -2;
 
-	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr)) {
-		print("read elf32 file error!\n");
-		return -1;
-	}
+	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr))
+		return -3;
 
 	if (hdr.e_ident[0] != ELFMAG0 ||
 	    hdr.e_ident[1] != ELFMAG1 ||
 	    hdr.e_ident[2] != ELFMAG2 ||
 	    hdr.e_ident[3] != ELFMAG3) {
 	    	print("invalid ELF magic\n");
-		return -1;
+		return -4;
 	}
 
 	if (hdr.e_type != ET_EXEC) {
 		print("invalid ELF file type\n");
-		return -1;
+		return -5;
 	}
 
 	if (hdr.e_machine != EM_C33) {
 		print("invalid ELF machine type\n");
-		return -1;
+		return -6;
 	}
 
 	print("\n");
