@@ -142,7 +142,8 @@
 
 #undef CPUEXC1				/* CPU例外ハンドラをサポートしない */
 #define OMIT_VGET_TIM
-#define LOOP_REF	16000000		/* 速度計測用のループ回数 */
+#define LOOP_REF	16000000	/*Loop frequency for speed measurement*/
+							/* 速度計測用のループ回数 */
 
 #elif defined(NIOS2)
 

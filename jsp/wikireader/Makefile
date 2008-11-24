@@ -86,7 +86,7 @@ ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 
 OBJLDS= 
 
-C_LIBDIR= $(SRCDIR)/../mini-libc/lib/
+C_LIBDIR= $(SRCDIR)/../mini-libc/lib
 FAT_LIBDIR= $(SRCDIR)/../fatfs/lib
 LIBS= $(FAT_LIBDIR)/libtinyfat.a $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 

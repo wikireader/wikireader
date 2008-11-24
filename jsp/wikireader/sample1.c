@@ -279,7 +279,8 @@ void main_task(VP_INT exinf)
 	keyboard_init();
 
 	/*
- 	 *  ループ回数の設定
+ 	 *  jp: ループ回数の設定
+ 	 *  en: Set loop frequency
 	 */
 	task_loop = LOOP_REF;
 	get_tim(&stime1);
