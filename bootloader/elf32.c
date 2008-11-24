@@ -85,7 +85,7 @@ int elf_exec(const u8 *filename)
 	FATFS fatfs;
 	FIL file;
 
-	if (f_mount(0, &fatfs) != 0)
+	if (f_mount(0, &fatfs) != FR_OK)
 		return -1;
 
 	if (f_open(&file, filename, FA_READ) < 0)
