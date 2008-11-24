@@ -101,7 +101,7 @@ int split(char *source, char *word, char*sha1)
 		*sha1 = 0;
 		return 0;
 	}
-	char *p = strrchr(source, ' ');
+	char *p = strrchr(source, '-');
 	int i=0;
 	int split_char_pos = p - source;
 	for(i = 0; i < split_char_pos; i++){

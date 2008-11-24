@@ -20,7 +20,7 @@ CFLAGS = -Wall -I. -g
 C_SRCS = $(wildcard ./*.c) 
 C_OBJS = $(patsubst %.c,%.o, $(C_SRCS))
 
-TARGETS=tst
+TARGETS=a.out
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@  -c $<
@@ -29,13 +29,13 @@ all: $(TARGETS)
 
 $(C_OBJS): $(C_SRCS)
 
-tst:$(C_OBJS)
+a.out:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
 search: $(TARGETS)
-	./tst /home/xiangfu/om_workspace/wikipediardware/benchmarking/index/banchmarking.index trysearch
+	./a.out /home/xiangfu/om_workspace/wikipediardware/benchmarking/index/banchmarking.index
 
-traverse: $(TARGETS)
-	./tst ../index700 traverse
+s: $(TARGETS)
+	./a.out ./index
 clean:
 	rm -fr $(TARGETS) *.o *~
