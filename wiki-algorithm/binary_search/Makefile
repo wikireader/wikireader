@@ -33,9 +33,7 @@ a.out:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
 search: $(TARGETS)
-	./a.out /home/xiangfu/om_workspace/wikipediardware/benchmarking/index/banchmarking.index
+	./a.out ../../benchmarking/index/benchmarking.index 
 
-s: $(TARGETS)
-	./a.out ./index
 clean:
 	rm -fr $(TARGETS) *.o *~

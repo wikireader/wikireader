@@ -28,8 +28,9 @@
 #define LINECHARS 80
 #define RESULTCOUNT 10
 
-int	g_titles_count = 0; 
+int g_titles_count = 0; 
 char *g_titles[MAXWORDS] , *g_hash[MAXWORDS], *g_result[RESULTCOUNT];
+int g_result_index = -1;/* use this store the result index. not value */
 
 int split(char *source, char *word, char *sha1, char split_char)
 {
@@ -113,7 +114,8 @@ char ** lookup(char *key)
 	int query = binary_search(array, low, high, key, &count);
 */
 	int index = linear_search(g_titles, g_titles_count, key);
-	int i = 0;//index;
+	g_result_index = index;
+	int i = 0;
 	while (i<RESULTCOUNT && g_titles[index] != NULL) {
 		g_result[i] = malloc(MAXCHARS* sizeof(char));
 		strcpy(g_result[i++], g_titles[index++]);
@@ -154,7 +156,7 @@ int main(int argc, char *argv[])
 	display_array(g_titles, g_titles_count);
 
 	printf("Enter title:");
-	while (scanf("%s", title) != EOF) {
+	while (fgets(title, MAXCHARS, stdin) != NULL) {
 		init_g_result();
 
 		globalstarttime = clock();
@@ -162,9 +164,12 @@ int main(int argc, char *argv[])
 		i = clock() - globalstarttime;
 		printf("Total clicks\t%d\nTotal secs\t%4.3f\n",
 		       i, (double) i / CLOCKS_PER_SEC);
-		i=0;
-		while (g_result[i] != NULL && i<RESULTCOUNT)
-			printf("%d\t%s\n", i, g_result[i++]);
+		i = 0;
+		while (g_titles[g_result_index] != NULL && i<RESULTCOUNT) {
+			printf("%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
+			g_result_index++;
+			i++;
+		}
 
 		printf("\nEnter title:");
 	}
