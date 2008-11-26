@@ -18,8 +18,11 @@
  */
 
 #include <tff.h>
+#include <string.h>
+#include <stdio.h>
 #include <t_services.h>
 #include "search.h"
+#include "sample1.h"
 
 #define MAXWORDS 100 	/* line count of the index file */
 #define SHA1CHARS 40		/* sha1 char count */
@@ -126,7 +129,7 @@ int search(char *fname)
 	int n, total = 0;
 	FRESULT result;
 
-	char * title;
+	char *hash, *title;
 	/* fgets(title,5,&file_object); */
 
 	result = f_open(&file_object, fname, FA_READ);
@@ -138,28 +141,27 @@ int search(char *fname)
 	syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
 	syslog(LOG_INFO, "benchmark search starting ...\n");
 
+	char line[LINECHARS];
 	do {
 		result = f_read (&file_object, tmp, sizeof(tmp), &n);
 		total += n;
-		char *hash, *title;
-		char line[LINECHARS];
-		while (!feof(file_object)) {
-			if (fgets(line, LINECHARS, &file_object) != NULL) {
-				title = (char *) malloc(MAXCHARS * sizeof(char));
-				hash = (char *) malloc(SHA1CHARS * sizeof(char));
-				split(line, title, hash, '-');
-				g_titles[g_titles_count] = title;
-				g_hash[g_titles_count] = hash;
-				syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
-			}
+		if (fgets(line, LINECHARS, &file_object) != NULL) {
+			title = (char *) malloc(MAXCHARS * sizeof(char));
+			hash = (char *) malloc(SHA1CHARS * sizeof(char));
+			split(line, title, hash, '-');
+			g_titles[g_titles_count] = title;
+			g_hash[g_titles_count] = hash;
+			syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
 		}
 	} while (result == 0 && n == sizeof(tmp));
 
 	display_array(g_hash, g_titles_count);
 	display_array(g_titles, g_titles_count);
 
+	char c;
 	syslog(LOG_INFO,"Enter title:");
-	while (fgets(title, MAXCHARS, stdin) != NULL) {
+	do {
+		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
 		init_g_result();
 		get_tim(&begin_time);
 
@@ -174,7 +176,7 @@ int search(char *fname)
 			i++;
 		}
 		syslog(LOG_INFO, "\nEnter title:");
-	}
+	} while (c != '\003' && c!= 'Q');
 
 	syslog(LOG_INFO, "done.");
 	return 0;
