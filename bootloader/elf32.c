@@ -88,7 +88,7 @@ int elf_exec(const u8 *filename)
 	if (f_mount(0, &fatfs) != FR_OK)
 		return -1;
 
-	if (f_open(&file, filename, FA_READ) < 0)
+	if (f_open(&file, filename, FA_READ) != FR_OK)
 		return -2;
 
 	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr))
@@ -98,12 +98,12 @@ int elf_exec(const u8 *filename)
 	    hdr.e_ident[1] != ELFMAG1 ||
 	    hdr.e_ident[2] != ELFMAG2 ||
 	    hdr.e_ident[3] != ELFMAG3) {
-	    	print("invalid ELF magic\n");
+		/*print("invalid ELF magic\n");*/
 		return -4;
 	}
 
 	if (hdr.e_type != ET_EXEC) {
-		print("invalid ELF file type\n");
+		/*print("invalid ELF file type\n");*/
 		return -5;
 	}
 
@@ -112,27 +112,25 @@ int elf_exec(const u8 *filename)
 		return -6;
 	}
 
-	print("\n");
-
 	for (i = 0; i < hdr.e_shnum; i++) {
 		f_lseek(&file, hdr.e_shoff + sizeof(sec) * i);
 		if (f_read(&file, (u8 *) &sec, sizeof(sec), &r) || r != sizeof(sec))
 			continue;
 
 		switch (sec.sh_type) {
-			case SHT_PROGBITS:
-				f_lseek(&file, sec.sh_offset);
-				if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size)
-					print("unable to load PROGBITS!\n");
-				else
-					print("PROGBITS loaded.\n");
-				break;
-			case SHT_NOBITS:
-				/* clean .bss sections */
-				memset((u8 *) sec.sh_addr, 0, sec.sh_size);
-				break;
-			default:
-				break;
+		case SHT_PROGBITS:
+			f_lseek(&file, sec.sh_offset);
+			if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size)
+				print("unable to load PROGBITS!\n");
+			else
+				print("PROGBITS loaded.\n");
+			break;
+		case SHT_NOBITS:
+			/* clean .bss sections */
+			memset((u8 *) sec.sh_addr, 0, sec.sh_size);
+			break;
+		default:
+			break;
 		}
 	}
 
