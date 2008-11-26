@@ -102,7 +102,7 @@
 #include "kernel_id.h"
 #include "sample1.h"
 #include "keyboard.h"
-
+#include "search.h"
 #include <tff.h>
 
 /*
@@ -117,6 +117,12 @@ UW	task_loop;		/* タスク内でのループ回数 */
 UW	tex_loop;		/* 例外処理ルーチン内でのループ回数 */
 
 static FATFS s_activeFatFs;
+
+void search_task(VP_INT exinf)
+{
+	syslog(LOG_INFO, "search task starts (exinf = %d).", exinf);
+	search("/benchmarking.index");
+}
 
 /*
  *  並行実行されるタスク
@@ -255,7 +261,7 @@ void cyclic_handler(VP_INT exinf)
 void main_task(VP_INT exinf)
 {
 	char	c;
-	ID	tskid = TASK1;
+	ID	tskid = SEARCH_TASK;
 	volatile UW	i;
 	INT	tskno = 1;
 	ER_UINT	ercd;	
