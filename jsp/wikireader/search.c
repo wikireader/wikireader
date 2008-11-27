@@ -35,6 +35,7 @@ int g_result_index = -1;	/* use this store the result index. not value */
 char g_titles[TITLECOUNT][TITLECHARS];
 char g_hash[TITLECOUNT][SHA1CHARS];
 char g_result[RESULTCOUNT][TITLECHARS];
+char g_key[TITLECHARS];
 
 int split(char *source, char *word, char *sha1, char split_char)
 {
@@ -71,13 +72,13 @@ int scomp(const void *p, const void *q )
 
 int display_array(char ** array, int n)
 {
-	syslog(LOG_INFO, "----------begin dump-----------\n");
+	syslog(LOG_INFO, "----------begin dump-----------");
 	int i=0;
-	while (i<n && array[i] != NULL) {
+	while (i<n && array[i][0] != '\0') {
 		syslog(LOG_INFO, "%s\n", array[i]);
 		i++;
 	}
-	syslog(LOG_INFO, "----------dump over------count: %d\n", i);
+	syslog(LOG_INFO, "----------dump over------count: %d", i);
 	return 0;
 }
 
@@ -127,44 +128,33 @@ char ** lookup(char *key)
 	return g_result;
 }
 
-int gets(char *des, int des_length, FIL *file)
+int getline(char *des, int des_length, FIL *file)
 {
-	char* tmp[1];
+	char *tmp;
 	int n, result;
 	int count = 0;
-	while (count <des_length) {
-		result = f_read (file, tmp, sizeof(tmp), &n);
-		if (result != 0)
-			return -1;
 
-		if (tmp[0] = '\n') {
+	while (count <des_length) {
+		result = f_read (file, tmp, sizeof(char), &n);
+
+		if (result != 0)
+			return 0;
+		if (n != 1)
+			return 0;
+
+		syslog(LOG_INFO, "getline() char is :%c", *tmp);
+		if (*tmp == '\n') {
 			des[count] = '\0';
+			syslog(LOG_INFO, "%d\tgetline() gets des:%s", count, &des[0]);
 			return count;	
 		}
 
-		des[count] = tmp[0];
-		count ++;
+		des[count++] = *tmp;
 	}
-	return -1;
+	return 0;
 }
 
-char gets_from_serial(char *title)
-{
-	int count = 0;
-	char c = '0';
-	while (1) {
-		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
-		if (c == 'Q')
-			return 'Q';
-
-		if (c == '\n')
-			break;
-		title[count] = c;
-		count ++;
-	}
-	title[count] = '\0';
-}
-int search(char *fname)
+int search_start(char *fname)
 {
 	FIL file_object;
 	FRESULT result;
@@ -174,48 +164,58 @@ int search(char *fname)
 	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 
 	result = f_open(&file_object, fname, FA_READ);
-	syslog(LOG_INFO, "f_open result = %d", result);
+	syslog(LOG_INFO, "search_start() FIL name is:%s\t f_open result = %d",fname, result);
 	if (result != 0)
 		return -1;
 
-	syslog(LOG_INFO, "benchmark search starting ...\n");
+	syslog(LOG_INFO, "search_start() benchmark search starting ...");
 	get_tim(&begin_time);
 	g_titles_count = 0;
-	while (gets(line, LINECHARS, &file_object) != 0) {
+	while (getline(line, LINECHARS, &file_object) != 0) {
 		split(line, title, hash, SPLIT_CHAR);
 		strcpy(g_titles[g_titles_count], title);
 		strcpy(g_hash[g_titles_count], hash);
-		syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
+		syslog(LOG_INFO, "search_start() read lines: %d", g_titles_count++);
+		syslog(LOG_INFO, "search_start() line:--%s--",line); 
+		syslog(LOG_INFO, "search_start() title:--%s--",title); 
+		syslog(LOG_INFO, "search_start() hash:--%s--",hash); 
 	}
 	get_tim(&end_time);
-	syslog(LOG_INFO, "read time is :%d\n", end_time - begin_time);
+	syslog(LOG_INFO, "search_start() read time is :%d", end_time - begin_time);
 
 	display_array(g_hash, g_titles_count);
 	display_array(g_titles, g_titles_count);
+	syslog(LOG_INFO,"search_start() Enter title:");
+	return 0;
+}
+int set_key_and_search(char c)
+{
+	SYSTIM begin_time;
+	SYSTIM end_time;
+	int count = 0;
+	if ( c != '\n'){
+		g_key[count] = c;
+		count ++;
+	}
+	g_key[count] = '\0';
+	count = 0;
 
-	char c;
-	do {
-		syslog(LOG_INFO,"Enter title:");
-		c = gets_from_serial(title);
-		if ( c == '\003' && c== 'Q')
-			break;
+	init_g_result();
 
-		init_g_result();
+	get_tim(&begin_time);
+	lookup(g_key);
+	get_tim(&end_time);
 
-		get_tim(&begin_time);
-		lookup(title);
-		get_tim(&end_time);
-		syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
+	syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
 
-		int i = 0;
-		while (g_titles[g_result_index][0] != '\0' && i<RESULTCOUNT) {
-			syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
-			g_result_index++;
-			i++;
-		}
-		syslog(LOG_INFO, "\nEnter title:");
-	} while (1);
+	int i = 0;
+	while (g_titles[g_result_index][0] != '\0' && i<RESULTCOUNT) {
+		syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], 
+				       g_hash[g_result_index]);
+		g_result_index++;
+		i++;
+	}
 
-	syslog(LOG_INFO, "done.");
+	syslog(LOG_INFO,"Done!\n");
 	return 0;
 }

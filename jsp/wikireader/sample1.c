@@ -120,7 +120,7 @@ static FATFS s_activeFatFs;
 
 void search_task(VP_INT exinf)
 {
-	INT i, n = 0;
+	INT i;
 	INT tskno = (INT) exinf;
 	char c;
         FRESULT result;
@@ -129,14 +129,11 @@ void search_task(VP_INT exinf)
 
 	syslog(LOG_INFO, "search task starts (exinf = %d).", exinf);
 	while (1) {
-		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
-		       tskno, ++n, "   $");
-
-		for (i = 0; i < task_loop * 10; i++);
-		c = message[tskno-1];
-		message[tskno-1] = 0;
+		for (i = 0; i < task_loop; i++);
+		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
+		syslog(LOG_INFO, "%c", c);
 		switch (c) {
-		case 'd': {
+		case 'D': {
 			FIL file_object;
 			char tmp[512];
 			int n, total = 0;
@@ -146,26 +143,33 @@ void search_task(VP_INT exinf)
 			if (result != 0)
 				break;
 
-			result = f_read (&file_object, tmp, sizeof(tmp), &n);
-			syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
-			syslog(LOG_INFO, "benchmark starting ...\n");
-
+			syslog(LOG_INFO, "benchmark starting ...");
 			do {
 				result = f_read (&file_object, tmp, sizeof(tmp), &n);
+				syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
 				total += n;
 			} while (result == 0 && n == sizeof(tmp));
 
 			syslog(LOG_INFO, "done. %d bytes read\n", total);
-
        			break; 
 		}
-		case 'e':
+		case 'E':
 			syslog(LOG_INFO, "#%d#ext_tsk()", tskno);
 			ext_tsk();
-		case 's':
-			search("/index");
+		case '6':
+			search_start("/index60");
+			break;
+		case '1':
+			search_start("/index1");
+			break;
+		case '2':
+			search_start("/index2");
+			break;
+		case '5':
+			search_start("/index5");
 			break;
 		default:
+			set_key_and_search(c);
 			break;
 		}
 	}
@@ -351,6 +355,8 @@ void main_task(VP_INT exinf)
 	/*
  	 *  メインループ
 	 */
+	search_task(4); 
+#ifndef SEARCH
 	do {
 		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
 		switch (c) {
@@ -482,7 +488,7 @@ void main_task(VP_INT exinf)
 			break;
 		}
 	} while (c != '\003' && c != 'Q');
-
+#endif
 	syslog(LOG_NOTICE, "Sample program ends.");
 	kernel_exit();
 }

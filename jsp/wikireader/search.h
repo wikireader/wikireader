@@ -16,6 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef _SEARCH_H_
+#define _SEARCH_H_
+
+#define SEARCH
 
 #define SPLIT_CHAR '-'
+
 int search(char *fname);
+
+#endif /* _SEARCH_H_ */
