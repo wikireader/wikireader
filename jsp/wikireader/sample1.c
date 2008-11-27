@@ -132,7 +132,7 @@ void search_task(VP_INT exinf)
 		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
 		       tskno, ++n, "   $");
 
-		for (i = 0; i < task_loop; i++);
+		for (i = 0; i < task_loop * 10; i++);
 		c = message[tskno-1];
 		message[tskno-1] = 0;
 		switch (c) {
@@ -344,10 +344,10 @@ void main_task(VP_INT exinf)
 	/*
  	 *  タスクの起動
 	 */
-	act_tsk(TASK1);
-	act_tsk(TASK2);
-	act_tsk(TASK3);
-
+	/* act_tsk(TASK1);
+	 * act_tsk(TASK2);
+	 * act_tsk(TASK3);
+	 */
 	/*
  	 *  メインループ
 	 */

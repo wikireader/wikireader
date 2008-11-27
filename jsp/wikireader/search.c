@@ -24,36 +24,44 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXWORDS 100 	/* line count of the index file */
+#define TITLECOUNT 60 	/* line count of the index file */
 #define SHA1CHARS 40		/* sha1 char count */
-#define MAXCHARS 40		/* the max chars of the title */
+#define TITLECHARS 40		/* the max chars of the title */
 #define LINECHARS 80
 #define RESULTCOUNT 10
 
 int g_titles_count = 0; 
-char *g_titles[MAXWORDS] , *g_hash[MAXWORDS], *g_result[RESULTCOUNT];
-int g_result_index = -1;/* use this store the result index. not value */
+int g_result_index = -1;	/* use this store the result index. not value */
+char g_titles[TITLECOUNT][TITLECHARS];
+char g_hash[TITLECOUNT][SHA1CHARS];
+char g_result[RESULTCOUNT][TITLECHARS];
 
 int split(char *source, char *word, char *sha1, char split_char)
 {
-/*	if(*source == 0){
-		*word = 0;
-		*sha1 = 0;
-		return 0;
+	if (*source == 0 )
+		return -1;
+
+	if (*source == '\n') 
+		return -1;
+
+	char *temp = source;
+	int position = 0;
+	for ( ; *temp != 0; temp++) {
+		if (*temp == SPLIT_CHAR)
+			break;
+		position++;
 	}
-	char *p = strrchr(source, split_char);
+
 	int i=0;
-	int split_char_pos = p - source;
-	for(i = 0; i < split_char_pos; i++){
+	for(i = 0; i <= position; i++){
                 *(word++) = *(source++);
 	}
 	*word='\0';
 	source++;
-        while(*source != '\n' && *source != EOF)
+        while (*source != '\n')
                 *(sha1++) = *(source++);
 	*sha1='\0';
-
-        return 0;*/
+        return 0;
 }
 
 int scomp(const void *p, const void *q )
@@ -77,7 +85,7 @@ void init_g_result()
 {
 	int i=0;
 	for (i=0; i<RESULTCOUNT; i++) 
-		g_result[i] = NULL;
+		g_result[i][0] = '\0';
 }
 
 int binary_search (char *array[], int low, int high, char *key, int *count)
@@ -88,7 +96,7 @@ int binary_search (char *array[], int low, int high, char *key, int *count)
 		int mid = (low + high)/2;
 		*count = *count + 1;
 		int comp = scomp(key, array[mid]);
-		if (comp = 0)
+		if (comp == 0)
 			return mid;
 		else if (comp < 0) {
 			return binary_search(array, low, mid-1, key, count);
@@ -110,78 +118,104 @@ int linear_search (char *array[], int size, char *key)
 
 char ** lookup(char *key)
 {
-/*	int index = linear_search(g_titles, g_titles_count, key);
+	int index = linear_search(g_titles, g_titles_count, key);
 	g_result_index = index;
 	int i = 0;
 	while (i<RESULTCOUNT && g_titles[index] != NULL) {
-		g_result[i] = malloc(MAXCHARS* sizeof(char));
 		strcpy(g_result[i++], g_titles[index++]);
 	}
-	return g_result;*/
+	return g_result;
 }
 
+int gets(char *des, int des_length, FIL *file)
+{
+	char* tmp[1];
+	int n, result;
+	int count = 0;
+	while (count <des_length) {
+		result = f_read (file, tmp, sizeof(tmp), &n);
+		if (result != 0)
+			return -1;
+
+		if (tmp[0] = '\n') {
+			des[count] = '\0';
+			return count;	
+		}
+
+		des[count] = tmp[0];
+		count ++;
+	}
+	return -1;
+}
+
+char gets_from_serial(char *title)
+{
+	int count = 0;
+	char c = '0';
+	while (1) {
+		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
+		if (c == 'Q')
+			return 'Q';
+
+		if (c == '\n')
+			break;
+		title[count] = c;
+		count ++;
+	}
+	title[count] = '\0';
+}
 int search(char *fname)
 {
 	FIL file_object;
-	char tmp[512];
-	int n, total = 0;
 	FRESULT result;
 	SYSTIM begin_time;
 	SYSTIM end_time;
 
-	char *hash, *title;
-	char line[LINECHARS];
-	/* fgets(title,5,&file_object); */
+	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 
 	result = f_open(&file_object, fname, FA_READ);
 	syslog(LOG_INFO, "f_open result = %d", result);
 	if (result != 0)
 		return -1;
 
-
 	syslog(LOG_INFO, "benchmark search starting ...\n");
-	result = f_read (&file_object, tmp, sizeof(tmp), &n);
-	syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
 	get_tim(&begin_time);
-	do {
-		result = f_read (&file_object, tmp, sizeof(tmp), &n);
-		total += n;
-/*		if (fgets(line, LINECHARS, &file_object) != NULL) {
-		title = (char *) malloc(MAXCHARS * sizeof(char));
-		hash = (char *) malloc(SHA1CHARS * sizeof(char));
-		split(line, title, hash, '-');
-		g_titles[g_titles_count] = title;
-		g_hash[g_titles_count] = hash;
+	g_titles_count = 0;
+	while (gets(line, LINECHARS, &file_object) != 0) {
+		split(line, title, hash, SPLIT_CHAR);
+		strcpy(g_titles[g_titles_count], title);
+		strcpy(g_hash[g_titles_count], hash);
 		syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
-		}*/
-	} while (result == 0 && n == sizeof(tmp));
+	}
 	get_tim(&end_time);
-	syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
+	syslog(LOG_INFO, "read time is :%d\n", end_time - begin_time);
 
-/*	display_array(g_hash, g_titles_count);
+	display_array(g_hash, g_titles_count);
 	display_array(g_titles, g_titles_count);
 
 	char c;
-	syslog(LOG_INFO,"Enter title:");
 	do {
-	syscall(serial_rea_dat(TASK_PORTID, &c, 1));
-	init_g_result();
-	get_tim(&begin_time);
+		syslog(LOG_INFO,"Enter title:");
+		c = gets_from_serial(title);
+		if ( c == '\003' && c== 'Q')
+			break;
 
-	lookup(title);
-	get_tim(&end_time);
-	syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
+		init_g_result();
 
-	int i = 0;
-	while (g_titles[g_result_index] != NULL && i<RESULTCOUNT) {
-	syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
-	g_result_index++;
-	i++;
-	}
-	syslog(LOG_INFO, "\nEnter title:");
-	} while (c != '\003' && c!= 'Q');
-*/
+		get_tim(&begin_time);
+		lookup(title);
+		get_tim(&end_time);
+		syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
+
+		int i = 0;
+		while (g_titles[g_result_index][0] != '\0' && i<RESULTCOUNT) {
+			syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
+			g_result_index++;
+			i++;
+		}
+		syslog(LOG_INFO, "\nEnter title:");
+	} while (1);
+
 	syslog(LOG_INFO, "done.");
 	return 0;
 }
-
