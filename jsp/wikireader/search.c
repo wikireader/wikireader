@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <tff.h>
-#include <string.h>
-#include <stdio.h>
 #include <t_services.h>
 #include "search.h"
 #include "sample1.h"
+#include <tff.h>
+#include <stdio.h>
+#include <string.h>
 
 #define MAXWORDS 100 	/* line count of the index file */
 #define SHA1CHARS 40		/* sha1 char count */
@@ -36,7 +36,7 @@ int g_result_index = -1;/* use this store the result index. not value */
 
 int split(char *source, char *word, char *sha1, char split_char)
 {
-	if(*source == 0){
+/*	if(*source == 0){
 		*word = 0;
 		*sha1 = 0;
 		return 0;
@@ -48,12 +48,12 @@ int split(char *source, char *word, char *sha1, char split_char)
                 *(word++) = *(source++);
 	}
 	*word='\0';
-	source++;		/* eat the blank */
+	source++;
         while(*source != '\n' && *source != EOF)
                 *(sha1++) = *(source++);
 	*sha1='\0';
 
-        return 0;
+        return 0;*/
 }
 
 int scomp(const void *p, const void *q )
@@ -110,26 +110,27 @@ int linear_search (char *array[], int size, char *key)
 
 char ** lookup(char *key)
 {
-	int index = linear_search(g_titles, g_titles_count, key);
+/*	int index = linear_search(g_titles, g_titles_count, key);
 	g_result_index = index;
 	int i = 0;
 	while (i<RESULTCOUNT && g_titles[index] != NULL) {
 		g_result[i] = malloc(MAXCHARS* sizeof(char));
 		strcpy(g_result[i++], g_titles[index++]);
 	}
-	return g_result;
+	return g_result;*/
 }
 
 int search(char *fname)
 {
 	FIL file_object;
-	SYSTIM begin_time;
-	SYSTIM end_time;
 	char tmp[512];
 	int n, total = 0;
 	FRESULT result;
+	SYSTIM begin_time;
+	SYSTIM end_time;
 
 	char *hash, *title;
+	char line[LINECHARS];
 	/* fgets(title,5,&file_object); */
 
 	result = f_open(&file_object, fname, FA_READ);
@@ -137,47 +138,49 @@ int search(char *fname)
 	if (result != 0)
 		return -1;
 
+
+	syslog(LOG_INFO, "benchmark search starting ...\n");
 	result = f_read (&file_object, tmp, sizeof(tmp), &n);
 	syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
-	syslog(LOG_INFO, "benchmark search starting ...\n");
-
-	char line[LINECHARS];
+	get_tim(&begin_time);
 	do {
 		result = f_read (&file_object, tmp, sizeof(tmp), &n);
 		total += n;
-		if (fgets(line, LINECHARS, &file_object) != NULL) {
-			title = (char *) malloc(MAXCHARS * sizeof(char));
-			hash = (char *) malloc(SHA1CHARS * sizeof(char));
-			split(line, title, hash, '-');
-			g_titles[g_titles_count] = title;
-			g_hash[g_titles_count] = hash;
-			syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
-		}
+/*		if (fgets(line, LINECHARS, &file_object) != NULL) {
+		title = (char *) malloc(MAXCHARS * sizeof(char));
+		hash = (char *) malloc(SHA1CHARS * sizeof(char));
+		split(line, title, hash, '-');
+		g_titles[g_titles_count] = title;
+		g_hash[g_titles_count] = hash;
+		syslog(LOG_INFO, "read lines: %d\n", g_titles_count++);
+		}*/
 	} while (result == 0 && n == sizeof(tmp));
+	get_tim(&end_time);
+	syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
 
-	display_array(g_hash, g_titles_count);
+/*	display_array(g_hash, g_titles_count);
 	display_array(g_titles, g_titles_count);
 
 	char c;
 	syslog(LOG_INFO,"Enter title:");
 	do {
-		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
-		init_g_result();
-		get_tim(&begin_time);
+	syscall(serial_rea_dat(TASK_PORTID, &c, 1));
+	init_g_result();
+	get_tim(&begin_time);
 
-		lookup(title);
-		get_tim(&end_time);
-		syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
+	lookup(title);
+	get_tim(&end_time);
+	syslog(LOG_INFO, "time is :%d\n", end_time - begin_time);
 
-		int i = 0;
-		while (g_titles[g_result_index] != NULL && i<RESULTCOUNT) {
-			syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
-			g_result_index++;
-			i++;
-		}
-		syslog(LOG_INFO, "\nEnter title:");
+	int i = 0;
+	while (g_titles[g_result_index] != NULL && i<RESULTCOUNT) {
+	syslog(LOG_INFO, "%d\t%s---%s\n", i+1, g_titles[g_result_index], g_hash[g_result_index]);
+	g_result_index++;
+	i++;
+	}
+	syslog(LOG_INFO, "\nEnter title:");
 	} while (c != '\003' && c!= 'Q');
-
+*/
 	syslog(LOG_INFO, "done.");
 	return 0;
 }

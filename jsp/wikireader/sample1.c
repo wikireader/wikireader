@@ -108,7 +108,7 @@
 /*
  *  並行実行されるタスクへのメッセージ領域
  */
-char	message[3];
+char	message[4];
 
 /*
  *  ループ回数
@@ -120,8 +120,55 @@ static FATFS s_activeFatFs;
 
 void search_task(VP_INT exinf)
 {
+	INT i, n = 0;
+	INT tskno = (INT) exinf;
+	char c;
+        FRESULT result;
+
+	ena_tex();
+
 	syslog(LOG_INFO, "search task starts (exinf = %d).", exinf);
-	search("/benchmarking.index");
+	while (1) {
+		syslog(LOG_NOTICE, "task%d is running (%03d).   %s",
+		       tskno, ++n, "   $");
+
+		for (i = 0; i < task_loop; i++);
+		c = message[tskno-1];
+		message[tskno-1] = 0;
+		switch (c) {
+		case 'd': {
+			FIL file_object;
+			char tmp[512];
+			int n, total = 0;
+
+			result = f_open(&file_object, "/foo", FA_READ);
+			syslog(LOG_INFO, "f_open result = %d", result);
+			if (result != 0)
+				break;
+
+			result = f_read (&file_object, tmp, sizeof(tmp), &n);
+			syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
+			syslog(LOG_INFO, "benchmark starting ...\n");
+
+			do {
+				result = f_read (&file_object, tmp, sizeof(tmp), &n);
+				total += n;
+			} while (result == 0 && n == sizeof(tmp));
+
+			syslog(LOG_INFO, "done. %d bytes read\n", total);
+
+       			break; 
+		}
+		case 'e':
+			syslog(LOG_INFO, "#%d#ext_tsk()", tskno);
+			ext_tsk();
+		case 's':
+			search("/index");
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 /*
@@ -270,7 +317,6 @@ void main_task(VP_INT exinf)
 #ifndef OMIT_VGET_TIM
 	SYSUTIM	utime1, utime2;
 #endif /* OMIT_VGET_TIM */
-        FRESULT result;
 
 	vmsk_log(LOG_UPTO(LOG_INFO), LOG_UPTO(LOG_EMERG));
 	syslog(LOG_NOTICE, "Sample program starts (exinf = %d).", (INT) exinf);
@@ -330,29 +376,10 @@ void main_task(VP_INT exinf)
 			tskno = 3;
 			tskid = TASK3;
 			break;
-		case '4': {
-			FIL file_object;
-			char tmp[512];
-			int n, total = 0;
-
-			result = f_open(&file_object, "/foo", FA_READ);
-			syslog(LOG_INFO, "f_open result = %d", result);
-			if (result != 0)
-				break;
-
-			result = f_read (&file_object, tmp, sizeof(tmp), &n);
-			syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
-			syslog(LOG_INFO, "benchmark starting ...\n");
-
-			do {
-				result = f_read (&file_object, tmp, sizeof(tmp), &n);
-				total += n;
-			} while (result == 0 && n == sizeof(tmp));
-
-			syslog(LOG_INFO, "done. %d bytes read\n", total);
-
-       			break; 
-		}
+		case '4':
+			tskno = 4;
+			tskid = SEARCH_TASK;
+			break;
 		case 'a':
 			syslog(LOG_INFO, "#act_tsk(%d)", tskno);
 			syscall(act_tsk(tskid));
