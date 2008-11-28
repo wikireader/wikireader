@@ -128,6 +128,13 @@ void search_task(VP_INT exinf)
 	ena_tex();
 
 	syslog(LOG_INFO, "search task starts (exinf = %d).", exinf);
+	syslog(LOG_INFO, "comand 'D':  test read");
+	syslog(LOG_INFO, "comand 'E':  exit task");
+	syslog(LOG_INFO, "comand 'F':  test index60");
+	syslog(LOG_INFO, "comand 'A':  test index1");
+	syslog(LOG_INFO, "comand 'B':  test index2");
+	syslog(LOG_INFO, "comand 'C':  test index5");
+	syslog(LOG_INFO, "lowcase lettle:  title");
 	while (1) {
 		for (i = 0; i < task_loop; i++);
 		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
@@ -156,16 +163,16 @@ void search_task(VP_INT exinf)
 		case 'E':
 			syslog(LOG_INFO, "#%d#ext_tsk()", tskno);
 			ext_tsk();
-		case '6':
+		case 'F':
 			search_start("/index60");
 			break;
-		case '1':
+		case 'A':
 			search_start("/index1");
 			break;
-		case '2':
+		case 'B':
 			search_start("/index2");
 			break;
-		case '5':
+		case 'C':
 			search_start("/index5");
 			break;
 		default:
@@ -355,7 +362,8 @@ void main_task(VP_INT exinf)
 	/*
  	 *  メインループ
 	 */
-	search_task(4); 
+	/* act_tsk(SEARCH_TASK); */
+	search_task(4);
 #ifndef SEARCH
 	do {
 		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
