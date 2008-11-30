@@ -28,8 +28,8 @@ CreateIndex::CreateIndex(const QString& splitChars, const QString& indexFileName
                          const QRegExp& match)
     : FileOutputArticleHandler(indexFileName)
     , m_splitChars(splitChars)
-    , m_match(match)
     , m_notArticle(notArticle)
+    , m_match(match)
     , m_notMatchStream(&m_notMatchFile)
 {
     m_notMatchFile.setFileName(notMatchName);
