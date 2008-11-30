@@ -137,9 +137,11 @@ char* fgets (
 		for (k = 0; k < 50000; k++);
                 if (rc != 1) break;                     /* Break when no data to read */       
 
-/*                if (*p == '\r') continue;       /* Strip '\r' */                               
-		syslog(LOG_INFO, "%c", *p);
+                if (*p == '\r') continue;       /* Strip '\r' */                               
+
                 i++;                                                                           
+		syslog(LOG_INFO, "char num:%d\tchar:%c", i, *p);
+		syslog(LOG_INFO, "bufferis:%s", buff);
                 if (*p++ == '\n') {
 			p--;
 			break;        /* Break when reached end of line */           
@@ -166,6 +168,9 @@ int search_start(char *fname)
 	get_tim(&begin_time);
 	g_titles_count = 0;
 
+	int i;
+	for (i=0; i < LINECHARS; i++)
+		g_line_temp[i] = 0;
 	while (fgets(g_line_temp, LINECHARS, &file_object) != 0) {
 		syslog(LOG_INFO, "%s lines:%d\t%s", __func__, 1 + g_titles_count, g_line_temp);
 
@@ -176,6 +181,8 @@ int search_start(char *fname)
 		strcpy(g_titles[g_titles_count], g_title_temp);
 		strcpy(g_hash[g_titles_count], g_hash_temp);*/
 		g_titles_count ++;
+		for (i=0; i < LINECHARS; i++)
+			g_line_temp[i] = 0;
 	}
 	get_tim(&end_time);
 	syslog(LOG_INFO, "%s read time is:%d", __func__, end_time - begin_time);
