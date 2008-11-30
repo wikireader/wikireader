@@ -50,7 +50,7 @@ class CreateIndex : public FileOutputArticleHandler {
     void doMatchAndWrite();
 
     QFile m_notMatchFile;
-    QTextStream* m_notMatchStream;
+    QTextStream m_notMatchStream;
     int m_notMatchCount;
 };
 
