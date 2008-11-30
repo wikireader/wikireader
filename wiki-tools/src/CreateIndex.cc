@@ -44,14 +44,15 @@ void CreateIndex::handleArticle(const Article& article)
     if (m_notArticle.exactMatch(title)) {
         m_notMatchStream << title << m_splitChars << article.hash() << "\n";
         m_notMatchCount++;
-        return ;
+        return;
     }
-    if (article.isRedirect()) {
+
+    if (article.isRedirect())
         m_redirectMap.insert(title, article.redirectsTo());
-    } else {
+    else
         m_titleMap.insert(title, article.hash());
-    }
-    qDebug()<< m_titleMap.count()<<m_splitChars<<m_redirectMap.count()<<m_splitChars<<m_notMatchCount;
+
+    qDebug() << m_titleMap.count() << m_splitChars << m_redirectMap.count() << m_splitChars << m_notMatchCount;
 }
 
 void CreateIndex::resolveRedirect()
@@ -69,11 +70,12 @@ void CreateIndex::resolveRedirect()
             if (findTimes == 1000) {
                 findTimes = 0;
                 m_notMatchCount ++;
-                m_notMatchStream << title << m_splitChars << redirectTo <<"\n";
-                qDebug()<<"find 1000 times";
+                m_notMatchStream << title << m_splitChars << redirectTo << "\n";
+                qDebug()<< "find 1000 times";
                 break;
             }
         }
+
         if (m_titleMap.contains(redirectTo))
             m_titleMap.insert(title, m_titleMap.value(redirectTo));
         qDebug() << m_titleMap.count() << m_splitChars << i++ ;
@@ -89,7 +91,7 @@ void CreateIndex::doMatchAndWrite()
     m_notMatchStream << "----------after here is not match titles.\n";
     m_notMatchCount = 0;
     foreach (QString key, m_titleMap.keys()) {
-        if ( title == key.toLower() && hash == m_titleMap[key])
+        if (title == key.toLower() && hash == m_titleMap[key])
             continue;
         QString indexLine = key.toLower() + m_splitChars + m_titleMap[key] + "\n";
         if (m_match.exactMatch(key))
@@ -107,7 +109,7 @@ void CreateIndex::doMatchAndWrite()
 
 void CreateIndex::parsingFinished()
 {
-    m_notMatchStream << "----------not article count is: "<<m_notMatchCount<<"\n";
+    m_notMatchStream << "----------not article count is: "<< m_notMatchCount << "\n";
     resolveRedirect();
     doMatchAndWrite();
 
