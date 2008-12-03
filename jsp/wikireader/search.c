@@ -62,14 +62,6 @@ int scomp(const void *p, const void *q )
 	return strcmp( (char*) p, (char*) q );
 }
 
-int scomp_binary_search(const char *s1, const char *s2)
-{
-    while (*s1++ == *s2)
-        if (*s2++ == 0)
-            return (0);
-    return (*(const unsigned char *)s1 - *(const unsigned char *)(s2 - 1));
-}
-
 int display_array(char ** array, int n)
 {
 	syslog(LOG_INFO, "----------begin dump-----------");
@@ -96,8 +88,8 @@ int binary_search (char *array[], int low, int high, char *key, int *count)
 	} else {
 		int mid = (low + high)/2;
 		*count = *count + 1;
-		int comp = scomp_binary_search(array[mid], key);
-		if (comp >= 0)
+		int comp = scomp(key, array[mid]);
+		if (comp == 0)
 			return mid;
 		else if (comp < 0) {
 			return binary_search(array, low, mid-1, key, count);
