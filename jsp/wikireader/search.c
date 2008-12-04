@@ -200,3 +200,69 @@ int set_key_and_search(char c)
 	syslog(LOG_INFO,"Done! Enter Title:");
 	return 0;
 }
+
+int search()
+{
+	INT i;
+	char c = 'H';
+        FRESULT result;
+
+	ena_tex();
+	while (1) {
+		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
+		syslog(LOG_INFO, "%c", c);
+		switch (c) {
+		case 'H': {
+			syslog(LOG_INFO, "search task starts.");
+			syslog(LOG_INFO, "comand 'D':  test read");
+			syslog(LOG_INFO, "comand 'E':  exit task");
+			syslog(LOG_INFO, "comand 'F':  test index60");
+			syslog(LOG_INFO, "comand 'A':  test index1");
+			syslog(LOG_INFO, "comand 'B':  test index2");
+			syslog(LOG_INFO, "comand 'C':  test index5");
+			syslog(LOG_INFO, "comand 'H':  display help");
+			syslog(LOG_INFO, "lowcase lettle:  title");
+			break;
+		}
+		case 'D': {
+			FIL file_object;
+			char tmp[512];
+			int n, total = 0;
+
+			result = f_open(&file_object, "/foo", FA_READ);
+			syslog(LOG_INFO, "f_open result = %d", result);
+			if (result != 0)
+				break;
+
+			syslog(LOG_INFO, "benchmark starting ...");
+			do {
+				result = f_read (&file_object, tmp, sizeof(tmp), &n);
+				syslog(LOG_INFO, "f_read result = %d, n = %d", result, n);
+				total += n;
+			} while (result == 0 && n == sizeof(tmp));
+
+			syslog(LOG_INFO, "done. %d bytes read\n", total);
+       			break; 
+		}
+		case 'E':
+			syslog(LOG_INFO, "exit search function.");
+			return 0;
+		case 'F':
+			search_start("/index60");
+			break;
+		case 'A':
+			search_start("/index1");
+			break;
+		case 'B':
+			search_start("/index2");
+			break;
+		case 'C':
+			search_start("/index5");
+			break;
+		default:
+			set_key_and_search(c);
+			break;
+		}
+	}
+	return 0;
+}

@@ -187,7 +187,7 @@
  */
 #ifndef _MACRO_ONLY
 
-extern void 	search_task(VP_INT exinf);
+extern void 	search_task();
 extern void	task(VP_INT tskno);
 extern void	main_task(VP_INT exinf);
 extern void	tex_routine(TEXPTN texptn, VP_INT tskno);

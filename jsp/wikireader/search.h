@@ -24,6 +24,6 @@
 #define SPLIT_CHAR	'-'
 #define LINE_END	'\n'
 #define SERAIL_ENTER	'\r'
-int search(char *fname);
+int search();
 
 #endif /* _SEARCH_H_ */
