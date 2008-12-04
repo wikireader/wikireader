@@ -18,11 +18,11 @@
  */
 
 #include <t_services.h>
-#include "search.h"
-#include "sample1.h"
 #include <tff.h>
 #include <stdio.h>
 #include <string.h>
+#include "search.h"
+#include "sample1.h"
 
 #define TITLECOUNT 60 	/* line count of the index file */
 #define SHA1CHARS 40		/* sha1 char count */
@@ -121,37 +121,6 @@ char ** lookup(char *key)
 	return g_result;
 }
 
-char* fgets (                                                                                  
-        char* buff,     /* Pointer to the string buffer to read */                             
-        int len,        /* Size of string buffer */                                            
-        FIL* fil        /* Pointer to the file object */                                       
-	)                                                                                              
-{                                                                                              
-        int i = 0;                                                                             
-        char *p = buff;                                                                        
-        UINT rc;                                                                               
-	int k = 0;
-                                                                                               
-        while (i < len - 1) {                   /* Read bytes until buffer gets filled */      
-                f_read(fil, p, 1, &rc);                                                        
-		for (k = 0; k < 50000; k++);
-                if (rc != 1) break;                     /* Break when no data to read */       
-
-                if (*p == '\r') continue;       /* Strip '\r' */                               
-
-                i++;                                                                           
-		syslog(LOG_INFO, "char num:%d\tchar:%c", i, *p);
-		syslog(LOG_INFO, "bufferis:%s", buff);
-                if (*p++ == '\n') {
-			p--;
-			break;        /* Break when reached end of line */           
-		}
-        }                                                                                      
-        *p = 0;                                                                                
-	syslog(LOG_INFO, "%s", buff);
-        return i ? buff : 0;
-}    
-
 int search_start(char *fname)
 {
 	FIL file_object;
@@ -172,6 +141,8 @@ int search_start(char *fname)
 	for (i=0; i < LINECHARS; i++)
 		g_line_temp[i] = 0;
 	while (fgets(g_line_temp, LINECHARS, &file_object) != 0) {
+		int k = 0;
+		for (k = 0;k<500000; k++);
 		syslog(LOG_INFO, "%s lines:%d\t%s", __func__, 1 + g_titles_count, g_line_temp);
 
 /*		split(g_line_temp, g_title_temp, g_hash_temp, SPLIT_CHAR);
