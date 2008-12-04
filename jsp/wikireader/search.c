@@ -39,6 +39,69 @@ char g_key[TITLECHARS];
 int g_key_count = 0;
 
 char g_line_temp[LINECHARS], g_title_temp[TITLECHARS], g_hash_temp[SHA1CHARS];
+int g_titles_temp_count = 40;
+char *g_titles_temp[]= {
+	". .\0",
+	"1\0",
+	"2 am club\0",
+	"3 car garage\0",
+	"4 aquilae\0",
+	"5 alive\0",
+	"6 april\0",
+	"7 as\0",
+	"8 ball\0",
+	"9 brigade\0",
+	"0 k\0",
+	"a 44\0",
+	"bch formula\0",
+	"bchb\0",
+	"bche\0",
+	"bchl\0",
+	"bchs\0",
+	"bchydro\0",
+	"d arae\0",
+	"e boats\0"
+	"egf\0",
+	"egfa\0",
+	"egfe\0",
+	"egff\0",
+	"egfh\0",
+	"egfl7\0",
+	"egfp\0",
+	"egfr\0",
+	"egg project\0",
+	"eggd\0",
+	"eggp\0",
+	"eggr 239\0",
+	"eggr 265\0",
+	"eggr 572\0",
+	"f w olin\0",
+	"f w olin foundation\0",
+	"f w pomeroy\0",
+	"f w s craig\0",
+	"george a. loud\0",
+	"octavian paler\0",
+	"ou\0",
+	"ou andromedae\0",
+	"ou center for public management\0",
+	"ou chant\0",
+	"ou sooners\0",
+	"ou band\0",
+	"ou812\0",
+	"ou812 tour\0",
+	"oua\0",
+	"ouabc\0",
+	"ouac\0",
+	"ouat\0",
+	"ouatic\0",
+	"ouatitw\0",
+	"yzosse\0",
+	"z\0",
+	"z\0",
+	"zyzzyxdonta\0",
+	"zyzzyxdonta alata\0",
+	"zyzzyzus\0"
+	};
 
 int split(char *source, char *word, char *sha1, char split_char)
 {
@@ -100,6 +163,7 @@ int binary_search (char *array[], int low, int high, char *key, int *count)
 	}
 }
 
+
 int linear_search (char *array[], int size, char *key)
 {
 	int i=0;
@@ -111,12 +175,13 @@ int linear_search (char *array[], int size, char *key)
 
 char ** lookup(char *key)
 {
-	int index = linear_search(g_titles, g_titles_count, key);
+	int index = linear_search(g_titles_temp, g_titles_temp_count, key);
 
 	g_result_index = index;
+
 	int i = 0;
-	while (i<RESULTCOUNT && g_titles[index] != NULL) {
-		strcpy(g_result[i++], g_titles[index++]);
+	while (i<RESULTCOUNT && g_titles_temp[index] != NULL) {
+		strcpy(g_result[i++], g_titles_temp[index++]);
 	}
 	return g_result;
 }
@@ -174,9 +239,7 @@ int set_key_and_search(char c)
 		syslog(LOG_INFO,"key is:%s", g_key);
 		return 1;
 	}
-	g_key[g_key_count] = '\0';
-	g_key_count = 0;
-	syslog(LOG_INFO,"key is:%s", g_key);
+	syslog(LOG_INFO,"the search title is:%s", g_key);
 
 	init_g_result();
 
@@ -185,25 +248,56 @@ int set_key_and_search(char c)
 	get_tim(&begin_time);
 	lookup(g_key);
 	get_tim(&end_time);
-
 	syslog(LOG_INFO, "time is :%d", end_time - begin_time);
 
 	int i = 0;
-	while (g_titles[g_result_index][0] != '\0' && i<RESULTCOUNT) {
-		syslog(LOG_INFO, "%d\t%s---%s", i+1, g_titles[g_result_index], 
-		       g_hash[g_result_index]);
+	while (g_titles_temp[g_result_index][0] != '\0' && i<RESULTCOUNT) {
+		syslog(LOG_INFO, "%d\t%s", i+1, g_titles_temp[g_result_index]);
 		g_result_index++;
 		i++;
 	}
+
 	for (i=0; i< TITLECHARS; i++)
 		g_key[i] = '\0';
+	g_key_count = 0;
+
 	syslog(LOG_INFO,"Done! Enter Title:");
 	return 0;
 }
 
+int time_test()
+{
+	SYSTIM  start_time_1;
+	SYSTIM  start_time_2;
+	SYSTIM  start_time_3;
+	SYSTIM  stop_time_1;
+	SYSTIM  stop_time_2;
+	SYSTIM  stop_time_3;
+	int i = 0;
+	char t[2];
+	t[0] = t[1] = '\0';
+	get_tim(&start_time_1);
+	for (i = 0; i < g_titles_temp_count; i++) {
+		char *title = g_titles_temp[i];
+		syslog(LOG_INFO, "time 2 title is:%s", title);
+		get_tim(&start_time_2);
+		t[0] = *title++;
+		while (t[0] != NULL){
+			get_tim(&start_time_3);
+			lookup(t);
+			get_tim(&stop_time_3);
+			syslog(LOG_INFO, "time_3 is:%d", stop_time_3 - start_time_3);
+			t[0] = *title++;
+		}
+		get_tim(&stop_time_2);
+		syslog(LOG_INFO, "time_2 over value is:%d", stop_time_2 - start_time_2);
+	}
+	get_tim(&stop_time_1);
+	syslog(LOG_INFO, "time_all is:%d", stop_time_1 - start_time_1);
+}
+
 int search()
 {
-	INT i;
 	char c = 'H';
         FRESULT result;
 
@@ -258,6 +352,9 @@ int search()
 			break;
 		case 'C':
 			search_start("/index5");
+			break;
+		case 'T':
+			time_test();
 			break;
 		default:
 			set_key_and_search(c);
