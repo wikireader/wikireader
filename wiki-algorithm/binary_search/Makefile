@@ -33,7 +33,7 @@ a.out:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
 search: $(TARGETS)
-	./a.out ../../benchmarking/index/benchmarking.index 
+	./a.out ./indexfile.index
 
 clean:
 	rm -fr $(TARGETS) *.o *~
