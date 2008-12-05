@@ -38,8 +38,9 @@ char g_result[RESULTCOUNT][TITLECHARS];
 char g_key[TITLECHARS];
 int g_key_count = 0;
 
+char g_algorithm = 'L';
 char g_line_temp[LINECHARS], g_title_temp[TITLECHARS], g_hash_temp[SHA1CHARS];
-int g_titles_temp_count = 40;
+int g_titles_temp_count = 60;
 char *g_titles_temp[]= {
 	". .\0",
 	"1\0",
@@ -144,25 +145,23 @@ void init_g_result()
 		g_result[i][0] = '\0';
 }
 
-int binary_search (char *array[], int low, int high, char *key, int *count)
+int binary_search (char *array[], int size, char *key)
 {
-	if (low>=high) {
-		return -1;
-	} else {
-		int mid = (low + high)/2;
-		*count = *count + 1;
-		int comp = scomp(key, array[mid]);
-		if (comp == 0)
-			return mid;
-		else if (comp < 0) {
-			return binary_search(array, low, mid-1, key, count);
-		}
-		else {
-			return binary_search(array, mid+1, high, key, count);
-		}
+	int left = 0;
+	int right = size - 1;
+	int middle, comp;
+	while (left <= right) { 
+		middle = (left + right) / 2;
+		comp = scomp(key, array[middle]);
+		if (comp == 0) 
+			return middle;
+		if (comp > 0)
+			left = middle + 1;
+		else 
+			right = middle - 1;
 	}
+	return -1;
 }
-
 
 int linear_search (char *array[], int size, char *key)
 {
@@ -175,9 +174,23 @@ int linear_search (char *array[], int size, char *key)
 
 char ** lookup(char *key)
 {
-	int index = linear_search(g_titles_temp, g_titles_temp_count, key);
-
+	int count = 0;
+	int index = 1;
+	switch (g_algorithm) {
+	case 'L':
+		syslog(LOG_INFO, "algorithm is linear search");
+		index = linear_search(g_titles_temp, g_titles_temp_count, key);
+		break;
+	case 'B':
+		syslog(LOG_INFO, "algorithm is binary search");
+		index = binary_search(g_titles_temp, g_titles_temp_count, key);
+		break;
+	default :
+		syslog(LOG_INFO, "not select algorithm");
+		break;
+	}
 	g_result_index = index;
+	/* syslog(LOG_INFO, "g_result_index is = %d",g_result_index); */
 
 	int i = 0;
 	while (i<RESULTCOUNT && g_titles_temp[index] != NULL) {
@@ -345,9 +358,6 @@ int search()
 			search_start("/index60");
 			break;
 		case 'A':
-			search_start("/index1");
-			break;
-		case 'B':
 			search_start("/index2");
 			break;
 		case 'C':
@@ -355,6 +365,12 @@ int search()
 			break;
 		case 'T':
 			time_test();
+			break;
+		case 'L':
+			g_algorithm = 'L';
+			break;
+		case 'B':
+			g_algorithm = 'B';
 			break;
 		default:
 			set_key_and_search(c);
