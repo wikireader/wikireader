@@ -40,6 +40,7 @@ class CreateIndex : public FileOutputArticleHandler {
     void parsingFinished();
   private:
     QString m_splitChars;
+    QString m_longestTitle;
     QRegExp m_notArticle;
     QRegExp m_match;
 

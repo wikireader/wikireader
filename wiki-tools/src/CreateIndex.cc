@@ -94,9 +94,11 @@ void CreateIndex::doMatchAndWrite()
         if (title == key.toLower() && hash == m_titleMap[key])
             continue;
         QString indexLine = key.toLower() + m_splitChars + m_titleMap[key] + "\n";
-        if (m_match.exactMatch(key))
+        if (m_match.exactMatch(key)) {
+            if (m_longestTitle.length() < key.length())
+                m_longestTitle = key.toLower();
             stream << indexLine;
-        else {
+        } else {
             m_notMatchStream << indexLine;
             m_notMatchCount ++;
         }
@@ -104,6 +106,7 @@ void CreateIndex::doMatchAndWrite()
         hash = m_titleMap[key];
     }
     m_notMatchStream << "----------not match titles count: " << m_notMatchCount << "\n";
+    m_notMatchStream << "----------longest Title is: " << m_longestTitle <<"length is: " <<m_longestTitle.length() << "\n";
     m_notMatchStream << "----------all over :-) \n";
 }
 
