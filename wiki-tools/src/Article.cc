@@ -135,7 +135,7 @@ bool Article::isRedirect() const
     // in the case of a #REDIRECT.
     m_determinedRedirect = true;
 
-    if (!m_textContent.startsWith("#REDIRECT [["))     
+    if (!m_textContent.startsWith("#REDIRECT [[", Qt::CaseInsensitive))     
         return m_isRedirect;
 
     if (m_textContent.contains("\n"))
