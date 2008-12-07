@@ -18,4 +18,4 @@ SOURCES += \
     ../src/Title.cc \
     ../mozilla-sha1/sha1.c
 
-QT += testlib
+QT += testlib webkit
