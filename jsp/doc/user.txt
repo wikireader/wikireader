@@ -1250,13 +1250,17 @@ UNIX の API を参考にしている．また，低レベル出力機能を用�
 具体的には，ログの重要度として次の8段階を用意している．
 
         LOG_EMERG       システムをシャットダウンすべきエラー
+			Error to have to shut down system
         LOG_ALERT
         LOG_CRIT
         LOG_ERROR       重要性の低いシステムエラー
+			System error with low importance
         LOG_WARNING     警告メッセージ．システムは安全に継続動作できる
+			Alert message. As for the system, continuance can operate safely. 
         LOG_NOTICE
         LOG_INFO
         LOG_DEBUG       デバッグのためのメッセージ
+			Message for debugging
 
 なお，アサーションの失敗は，LOG_EMERG で出力する．カーネルのトレースロ
 グは，LOG_DEBUG で出力するのを標準とする（ターゲット依存）．
