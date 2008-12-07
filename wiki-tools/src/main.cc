@@ -89,7 +89,12 @@ int main(int argc, char** argv)
 
     INVOKE_HANDLERS(parsingStarts())
 
+    unsigned long long article_count = 0;
+
     do {
+        if ((++article_count % 1000) == 0)
+            printf("Handled another 1000 articles. Now: %lld\n", article_count);
+
         // Write whatever is available
         file.waitForReadyRead(-1);
         reader.write(file.read(file.bytesAvailable()));
