@@ -47,6 +47,18 @@ and download whatever you need.
 
 	 http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2 
 
+== Deleting/Wiping tables ==
+You want to clean the text and article table (remove the Main_Page). You can do this
+with
+  mysql -u wikiuser -p wikidb
+  PASSWORD
+
+  >show tables;
+  >delete from text;
+  >delete from article;
+
+This will help to make the below import work properly
+
 == Using the scripts ==
   http://www.mediawiki.org/wiki/MWDumper and importing the SQL dumps is
   supposed to be faster. This means that you need to configure mediawiki
