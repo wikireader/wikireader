@@ -91,7 +91,7 @@ char *g_titles[] = {
 	"zyzzyzus\0",
 };
 
-char **g_hash = {
+char *g_hash[] = {
 	"7264a4c17f2d9d1dbc4bd02731b61722d8d40ef0\0",
 	"4d3a29a587a59da7a4a234f7261e4fc4d38e5105\0",
 	"4e491fd4a13e63623f10283a53d2e0ed5d51fb13\0",
@@ -164,12 +164,14 @@ int split(char *source, char *word, char *sha1, char split_char)
 		return 0;
 	}
 	char *p = strrchr(source, split_char);
+	if (p == NULL)
+		return -1;
 	int i=0;
 	int split_char_pos = p - source;
 	for(i = 0; i < split_char_pos; i++){
                 *(word++) = *(source++);
 	}
-	word -= 2;
+
 	*word='\0';
 	source++;		/* eat the blank */
         while(*source != '\n' && *source != EOF)
@@ -186,7 +188,6 @@ int scomp(const void *p, const void *q )
 
 int display_array(char array[][LINECHARS], int n)
 {
-	printf("---------------------\n");
 	int i = 0, k = 0;
 	while (i < n - 2 && array[i][0] != NULL) {
 		while ( array[i][k] != '\0')
@@ -194,9 +195,29 @@ int display_array(char array[][LINECHARS], int n)
 		i++;
 		k = 0;
 	}
+	printf("---------------------\n");
 	return 0;
 }
 
+int get_line_from_pos(FILE *fp, long pos, char *line, int length)
+{
+	char c = '\0';
+	long p;
+	fsetpos(fp, &pos);
+
+	fread(&c, 1, 1, fp);
+	while (c != '\n') {
+		fseek(fp, -2, SEEK_CUR);
+		fgetpos(fp, &p);
+		if ( p == 0)
+			break;
+		fread(&c, 1, 1, fp);
+	}
+	fgets(line, length, fp);
+	printf("binary search line:%s", line);
+
+	return 0;
+}
 int binary_search (FILE *fp, char *key)
 {
 	char line[LINECHARS], title[MAXCHARS], hash[SHA1CHARS];
@@ -207,61 +228,55 @@ int binary_search (FILE *fp, char *key)
 
 	fseek(fp, 0, SEEK_END);
 	fgetpos(fp, &right);
-	printf("binary search end:%d\n", right);
 
 	rewind(fp);
 
 	while (left <= right) { 
 		middle = (left + right) / 2;
-		printf("middle:%ld\nleft:%ld\nright:%ld\n", middle, left, right);
-		fsetpos(fp, &middle);
-		fgets(line, LINECHARS, fp);
-		printf("binary search line 1:%s\n", line);
-		fgets(line, LINECHARS, fp);
-		printf("binary search line 2:%s\n", line);
-		split(line, title, hash, '-');
-		printf("binary search title:%s\n", title);
-		comp = scomp(key, title);
-		if (comp == 0) {
-			strcpy(g_result[0], line);
-			int i = 1;
-			for (i = 1; i < RESULTCOUNT; i++) {
-				fgets(line, LINECHARS, fp);
-				strcpy(g_result[i], line);
+//		printf("left:%ld\nmiddle:%ld\nright:%ld\n", left, middle, right);
+
+		get_line_from_pos(fp, middle, line, LINECHARS);
+		if (split(line, title, hash, '-') == 0) {
+			comp = scomp(key, title);
+			if (comp == 0) {
+				strcpy(g_result[0], line);
+				int i = 1;
+				for (i = 1; i < RESULTCOUNT; i++) {
+					if (fgets(line, LINECHARS, fp) == NULL)
+						break;
+					strcpy(g_result[i], line);
+				}
+				return middle;
 			}
-			return middle;
-		}
-		if (comp > 0)
-			left = middle + 1;
-		else 
-			right = middle - 1;
+			if (comp > 0)
+				left = middle + 1;
+			else
+				right = middle - 1;
+		} else
+			return -1;
 	}
 	return -1;
 }
 
-char ** lookup(char *key)
+char ** lookup(char *key, char *p_hash)
 {
-	clock_t i=0, globalstarttime=0;
-
 	char line[LINECHARS], title[MAXCHARS], hash[SHA1CHARS];
 	char line_malloc[LINECHARS];
 	int k = 0;
 
-	globalstarttime = clock();
+	rewind(fp);
 	while (!feof(fp)){
 		if (fgets(line, LINECHARS, fp) != NULL){
 			split(line, title, hash, '-');
-			printf("%s", line);
-			printf("%s---%s\n", title, hash);
-			int comp = strcmp(key, title);
-			if (comp == 0) {
+			int comp_key = strcmp(key, title);
+			if (comp_key == 0) {
+				int comp_hash = strcmp(p_hash, hash); 
+				comp_hash ? printf("%s\n%s\n", p_hash, hash)
+					: printf("trye\n");
 				break;
 			}
 		}
 	}
-	i = clock() - globalstarttime;
-	printf("Total clicks\t%ld\nTotal secs\t%4.3f\n",
-	       i, (double) i / CLOCKS_PER_SEC);
 
 	strcpy(g_result[0], line);
 	for (k = 1; k< RESULTCOUNT; k++) {
@@ -284,8 +299,9 @@ int main(int argc, char *argv[])
 	int k = 0;
 	char ** result;
 	char *fname;
-
-	if (argc != 2)/* no args */
+	char intput_title[MAXCHARS];
+	
+	if (argc != 3)/* no args */
 		printf("one arg: file name \n");
 	else /* at least one arg: file name */
 		fname = argv[1];
@@ -296,20 +312,50 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	/*result = lookup(g_titles[2]); */
-
-	clock_t i=0, globalstarttime=0;
-
-	globalstarttime = clock();
-	if (binary_search(fp, "z\0"/*g_titles[5]*/) < 0) {
-		printf("not found!\n");
+	clock_t i=0, globalstarttime=0, starttime=0;
+	switch (*argv[2]) {
+	case 'L':
+		/* linear search test */
+		globalstarttime = clock();
+		for (k = 0; k < 60; k++) {
+			printf("search title:%s\n",g_titles[k]);
+			starttime = clock();
+			result = lookup(g_titles[k], g_hash[k]);
+			i = clock() - starttime;
+			printf("Total clicks:%ld\tTotal secs:%4.3f\n",
+			       i, (double) i / CLOCKS_PER_SEC);
+			/* display_array(g_result, RESULTCOUNT); */
+		}
+		i = clock() - globalstarttime;
+		printf("Total clicks:%ld\tTotal secs:%4.3f\n",
+		       i, (double) i / CLOCKS_PER_SEC);
+		break;
+	case 'B':
+		/* binary search test */
+		globalstarttime = clock();
+		for (k = 0; k < 60; k++) {
+			printf("search title:%s\n",g_titles[k]);
+			starttime = clock();
+			if (binary_search(fp, g_titles[k]) < 0) {
+				printf("not_found: %s\n", g_titles[k]);
+			}
+			i = clock() - starttime;
+			printf("Total clicks\t%ld\nTotal secs\t%4.3f\n",
+			       i, (double) i / CLOCKS_PER_SEC);
+			/* display_array(g_result, RESULTCOUNT); */
+		}
+		i = clock() - globalstarttime;
+		printf("Total clicks\t%ld\nTotal secs\t%4.3f\n",
+		       i, (double) i / CLOCKS_PER_SEC);
+		break;
+	default:
+		while (scanf("%[^\n]%*c", intput_title) != EOF) {
+			binary_search(fp, intput_title);
+			display_array(g_result, RESULTCOUNT);
+		}
+		printf("wrong parameter\n");
+		break;
 	}
-	i = clock() - globalstarttime;
-	printf("Total clicks\t%ld\nTotal secs\t%4.3f\n",
-	       i, (double) i / CLOCKS_PER_SEC);
-
-	display_array(g_result, RESULTCOUNT);
-
 	return 0;
 }
 

@@ -32,8 +32,15 @@ $(C_OBJS): $(C_SRCS)
 a.out:$(C_OBJS)
 	$(CC) -o $(TARGETS) $(C_OBJS)
 
+lsearch: $(TARGETS)
+	./a.out ../indexfile.index L
+
+bsearch: $(TARGETS)
+	./a.out ../indexfile.index B
+
 search: $(TARGETS)
-	./a.out ./indexfile.index
+	./a.out ../indexfile.index L
+	./a.out ../indexfile.index B
 
 clean:
 	rm -fr $(TARGETS) *.o *~
