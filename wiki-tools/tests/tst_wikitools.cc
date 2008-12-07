@@ -49,6 +49,10 @@ void ArticleRedirectTest::testRedirect_data()
             << QString::fromLatin1("#REDIRECT [[African American]] {{R from CamelCase}}")
             << true
             << QString::fromLatin1("African American");
+    QTest::newRow("redirect 3")
+            << QString::fromLatin1("#redirect [[applied_mathematics]]{{R from other capitalisation}}")
+            << true
+            << QString::fromLatin1("applied_mathematics");
     QTest::newRow("normal 1")
             << QString::fromLatin1("{{Otherusesof|A}}")
             << false
