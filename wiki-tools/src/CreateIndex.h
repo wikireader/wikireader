@@ -38,21 +38,21 @@ class CreateIndex : public FileOutputArticleHandler {
 
     void handleArticle(const Article&);
     void parsingFinished();
+
   private:
     QString m_splitChars;
-    QString m_longestTitle;
     QRegExp m_notArticle;
     QRegExp m_match;
 
-    QMap<QString, QString> m_titleMap;    // title and hash(sha1)
+    // title and hash(sha1)
+    QMap<QString, QString> m_titleMap;
     QMap<QString, QString> m_redirectMap;
 
-    void resolveRedirect();
+    void resolveRedirects();
     void doMatchAndWrite();
 
     QFile m_notMatchFile;
     QTextStream m_notMatchStream;
-    int m_notMatchCount;
 };
 
 #endif

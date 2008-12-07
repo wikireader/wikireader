@@ -35,15 +35,17 @@ CreateIndex::CreateIndex(const QString& splitChars, const QString& indexFileName
     m_notMatchFile.setFileName(notMatchName);
     m_notMatchFile.open(QFile::WriteOnly | QFile::Truncate);
     m_notMatchStream << "----------after here is not arctile. like Image: etc.\n";
-    m_notMatchCount = 0;
 }
 
 void CreateIndex::handleArticle(const Article& article)
 {
     QString title = article.title().title();
+
+    /*
+     * black listed articles
+     */
     if (m_notArticle.exactMatch(title)) {
         m_notMatchStream << title << m_splitChars << article.hash() << "\n";
-        m_notMatchCount++;
         return;
     }
 
@@ -51,69 +53,58 @@ void CreateIndex::handleArticle(const Article& article)
         m_redirectMap.insert(title, article.redirectsTo());
     else
         m_titleMap.insert(title, article.hash());
-
-    qDebug() << m_titleMap.count() << m_splitChars << m_redirectMap.count() << m_splitChars << m_notMatchCount;
 }
 
-void CreateIndex::resolveRedirect()
+void CreateIndex::resolveRedirects()
 {
-    int i=0,findTimes = 0;
-    QString title, redirectTo, hash;
-    
     m_notMatchStream << "----------after here is fail redirect title\n";
-    m_notMatchCount = 0;
-    foreach (title, m_redirectMap.keys()) {
-        redirectTo = m_redirectMap[title];
-        while (m_redirectMap.contains(redirectTo)) {
-            redirectTo = m_redirectMap.value(redirectTo);
-            findTimes++;
-            if (findTimes == 1000) {
-                findTimes = 0;
-                m_notMatchCount ++;
-                m_notMatchStream << title << m_splitChars << redirectTo << "\n";
-                qDebug()<< "find 1000 times";
-                break;
-            }
-        }
+    foreach (QString title, m_redirectMap.keys()) {
+        QString redirectsTo = m_redirectMap[title];
 
-        if (m_titleMap.contains(redirectTo))
-            m_titleMap.insert(title, m_titleMap.value(redirectTo));
-        qDebug() << m_titleMap.count() << m_splitChars << i++ ;
+        /*
+         * if we run in a circle redirectTo will be title...
+         */
+        while (m_redirectMap.contains(redirectsTo) && title != redirectsTo)
+            redirectsTo = m_redirectMap.value(redirectsTo);
+
+        if (m_titleMap.contains(redirectsTo))
+            m_titleMap.insert(title, m_titleMap.value(redirectsTo));
+        else
+            m_notMatchStream << "Ignoring redirect for: " << title << " to: " << redirectsTo;
     }
-    m_notMatchStream << "----------fail redirect titles count is: " << m_notMatchCount << "\n";
+
+    m_notMatchStream << "----------fail redirect titles count is: " << "\n";
 }
 
 void CreateIndex::doMatchAndWrite()
 {
+    QString longestTitle;
     QTextStream stream(&m_file); 
-    QString title, hash;
 
     m_notMatchStream << "----------after here is not match titles.\n";
-    m_notMatchCount = 0;
-    foreach (QString key, m_titleMap.keys()) {
-        if (title == key.toLower() && hash == m_titleMap[key])
-            continue;
-        QString indexLine = key.toLower() + m_splitChars + m_titleMap[key] + "\n";
-        if (m_match.exactMatch(key)) {
-            if (m_longestTitle.length() < key.length())
-                m_longestTitle = key.toLower();
+    QMap<QString, QString>::const_iterator it, end = m_titleMap.end();
+    for (it = m_titleMap.begin(); it != end; ++it) {
+        QString indexLine = QString("%1%2%3\n").arg(it.key().toLower())
+                                               .arg(m_splitChars)
+                                               .arg(it.value());
+
+        if (m_match.exactMatch(it.key())) {
+            if (longestTitle.length() < it.key().length())
+                longestTitle = it.key();
+
             stream << indexLine;
         } else {
             m_notMatchStream << indexLine;
-            m_notMatchCount ++;
         }
-        title = key.toLower();
-        hash = m_titleMap[key];
     }
-    m_notMatchStream << "----------not match titles count: " << m_notMatchCount << "\n";
-    m_notMatchStream << "----------longest Title is: " << m_longestTitle <<"length is: " <<m_longestTitle.length() << "\n";
+
+    m_notMatchStream << "----------longest Title is: " << longestTitle << "length is: " << longestTitle.length() << "\n";
     m_notMatchStream << "----------all over :-) \n";
 }
 
 void CreateIndex::parsingFinished()
 {
-    m_notMatchStream << "----------not article count is: "<< m_notMatchCount << "\n";
-    resolveRedirect();
+    resolveRedirects();
     doMatchAndWrite();
 
     m_notMatchFile.close();
