@@ -96,8 +96,19 @@ void CreateIndex::resolveRedirects()
         /*
          * if we run in a circle redirectTo will be title...
          */
-        while (m_redirectMap.contains(redirectsTo) && title != redirectsTo)
+        QHash<QString, bool> circleDetector;
+        circleDetector.insert(title, 1);
+
+        while (m_redirectMap.contains(redirectsTo)) {
             redirectsTo = m_redirectMap.value(redirectsTo);
+
+            if (circleDetector.contains(redirectsTo)) {
+                qWarning() << "Circle detected: " << title << circleDetector;
+                break;
+            }
+
+            circleDetector.insert(redirectsTo, 1);
+        }
 
         if (m_titleMap.contains(redirectsTo))
             m_titleMap.insert(title, m_titleMap.value(redirectsTo));
