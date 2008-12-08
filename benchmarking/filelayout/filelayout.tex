@@ -113,10 +113,26 @@ lzma  & -9 & 2.9G (3097003304) \\ \hline
 \end{tabular}
 
 \subsubsection{One big file MediaWiki syntax, compressed, then concatted}
+\begin{tabular}{|c|c|c|}
+\hline
+Compression & Flags & filesize \\ \hline
+none & none & 14G \\ \hline
+bzip2 & -1 & 5.4G (5801769959) \\ \hline
+bzip2 & -4 & 5.4G (5776389844) \\ \hline
+bzip2 & -9 & 5.4G (5774299777) \\ \hline
+gzip  & -1 & 5.8G (6180649974) \\ \hline
+gzip  & -5 & 5.4G (5821198442) \\ \hline
+gzip  & -9 & 5.3G (5719626127) \\ \hline
+\end{tabular}
+
 \subsubsection{One big file plain text, concatted, then compressed}
+Skipped due performance issues with MediaWiki...
 \subsubsection{One big file plain text, compressed, then concatted}
+Skipped due performance issues with MediaWiki...
 \subsubsection{One big file html, concatted, then compressed}
+Skipped due performance issues with MediaWiki...
 \subsubsection{One big file html, compressed, then concatted}
+Skipped due performance issues with MediaWiki...
 
 \subsection{Hash Structue}
 Okay this does not scale. It takes ages to split the articles up and it takes
