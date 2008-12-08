@@ -144,4 +144,12 @@ to untar/unzip these files to a SD Card the hash based structure is losing.\\
 wiki-tools contains a ExtractTextHashed\.cc which can convert a wikipedia dump
 into the hash based structure.
 
+\subsection{Conclusion}
+The compression ratio of compressing everything at once is really better than
+compressing each article separately. There is little difference between the
+compression levels of gzip and bzip2.\\
+As the result of the each article compressed separately will fit on a 8GB SD
+card, the runtime overhead and performance of gzip (inflate) is a lot better 
+I'm tempted to go with this approach. 
+
 \end{document}
