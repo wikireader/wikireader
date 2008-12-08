@@ -32,6 +32,7 @@ Q_OBJECT
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    WikiDisplay *getDisplay(void);
 
 public slots:
     void powerButtonEvent(void);

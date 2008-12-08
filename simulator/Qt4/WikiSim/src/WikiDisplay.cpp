@@ -18,27 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <QPainter>
+#include <QByteArray>
 #include "WikiDisplay.h"
-
-#define WIDTH 320
-#define HEIGHT 240
+#include "guilib.h"
 
 WikiDisplay::WikiDisplay(QWidget *parent)
  : QWidget(parent)
 {
-	setMinimumSize(WIDTH, HEIGHT);
-	setMaximumSize(WIDTH, HEIGHT);
+	setMinimumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+	setMaximumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+	framebuffer = new QByteArray(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT, 0);
 }
 
 WikiDisplay::~WikiDisplay()
 {
+	delete framebuffer;
+}
+
+void
+WikiDisplay::setPixel(int x, int y, int v)
+{
+	char *data = framebuffer->data();
+
+	if (v > 0xf) {
+		printf("color index out of range for pixel %d,%d: %x\n", x, y, v);
+		return;
+	}
+
+	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT) {
+		printf("pixel position out of range: %d,%d\n", x, y);
+		return;
+	}
+
+	data[y * FRAMEBUFFER_WIDTH + x] = v;
+}
+
+void
+WikiDisplay::clear(void)
+{
+	framebuffer->fill(0);
 }
 
 void
 WikiDisplay::paintEvent(QPaintEvent *)
 {
+	int x, y;
+
         QPainter painter(this);
         painter.setBrush(Qt::SolidPattern);
-        painter.setPen(QColor::fromRgb(255, 255, 0, 255));
-	painter.fillRect(0, 0, WIDTH, HEIGHT, Qt::white);
+	painter.fillRect(0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT, Qt::white);
+
+	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
+		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
+			int r, g, b;
+			const char *data = framebuffer->data();
+			r = g = b = 255 - (data[y * FRAMEBUFFER_WIDTH + x] * 0xf);
+			painter.setPen(QColor::fromRgb(r, g, b, 255));
+			painter.drawPoint(x, y);
+		}
 }

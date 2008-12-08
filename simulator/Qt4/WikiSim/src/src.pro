@@ -1,3 +1,6 @@
+SOURCES += ../../../../gui-lib/guilib.c
+INCLUDEPATH += ../../../../gui-lib/
+
 SOURCES += main.cpp \
  WikiDisplay.cpp \
  MainWindow.cpp

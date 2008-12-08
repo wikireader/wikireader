@@ -27,7 +27,6 @@ void
 MainWindow::powerButtonEvent(void)
 {
     printf(" --- power button clicked --- \n");
-
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -59,4 +58,10 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
 	delete display;
+}
+
+WikiDisplay *
+MainWindow::getDisplay(void)
+{
+	return display;
 }

@@ -30,6 +30,10 @@ public:
     ~WikiDisplay();
 
     void paintEvent(QPaintEvent *);
+    void setPixel(int x, int y, int v);
+    void clear(void);
+private:
+    QByteArray *framebuffer;
 };
 
 #endif
