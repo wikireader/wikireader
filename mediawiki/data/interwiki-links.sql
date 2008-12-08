@@ -260,4 +260,6 @@
  ('mdf', 'http://xx.wikipedia.org/wiki/$1',1),
  ('new', 'http://xx.wikipedia.org/wiki/$1',1),
  ('fiu-vro', 'http://xx.wikipedia.org/wiki/$1',1),
+ ('sah', 'http://xx.wikipedia.org/wiki/$1', 1),
+ ('vls', 'http://xx.wikipedia.org/wiki/$1', 1),
  ('zu','http://zu.wikipedia.org/wiki/$1',1);
