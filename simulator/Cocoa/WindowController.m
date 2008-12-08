@@ -8,14 +8,26 @@
 
 #import "WindowController.h"
 //#include "wikilib/wikilib.h"
-#include <guilib.h>
+#include "guilib.h"
+
+static WindowController *controller = NULL;
 
 /* wikireader glue level */
-void display_refresh(void *ctx)
+void fb_refresh(void)
 {
-	WindowController *controller = ctx;
 	[controller refreshDisplay];
 }
+
+void fb_set_pixel(int x, int y, int v)
+{
+	[controller setPixel: v atX: x atY: y];
+}
+
+void fb_clear(void)
+{
+	[controller clear];
+}
+
 
 @implementation WindowController
 
@@ -28,18 +40,37 @@ void display_refresh(void *ctx)
 {
 	NSInteger x, y;
 
-	for (x = 0; x < (NSInteger) [imageView frame].size.width; x++)
-		for (y = 0; y < (NSInteger) [imageView frame].size.height; y++) {
-			NSUInteger val = guilib_get_pixel(frameBuffer, x, y);
-			NSUInteger rgba[4] = { val << 4, val << 4, val << 4, 0 };
+	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
+		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
+			NSUInteger val = 255 - (frameBuffer[y * FRAMEBUFFER_WIDTH + x] * 0xf);
+			NSUInteger rgba[4] = { val, val, val, 0 };
 			[imageRep setPixel: rgba atX: x y: y];
 		}
 		
 	[imageView setNeedsDisplay];
 }
 
+- (void) clear
+{
+	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
+}
+
+- (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y
+{
+	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT)
+		return;
+	
+	frameBuffer[y * FRAMEBUFFER_WIDTH + x] = val;
+}
+
 - (void) awakeFromNib 
 {
+	if ([imageView frame].size.width != FRAMEBUFFER_WIDTH ||
+		[imageView frame].size.height != FRAMEBUFFER_HEIGHT) {
+			printf("ERROR! guilib's framebuffer size does not match canvas size!\n");
+			return;
+	}
+
 	imageRep = [[NSBitmapImageRep alloc] 
 					initWithBitmapDataPlanes: NULL
 					pixelsWide: (NSInteger) [imageView frame].size.width
@@ -69,8 +100,10 @@ void display_refresh(void *ctx)
 	/* initalize wikireader library */
 	//wikilib_init();
 	
-	frameBuffer = (unsigned char *) malloc(sizeof (unsigned char) * FRAMEBUFFER_SIZE);
-	guilib_init(frameBuffer, self);
+	controller = self;
+	frameBuffer = (unsigned char *) malloc(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
+	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
+	guilib_init();
 }
 
 @end

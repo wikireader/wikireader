@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65D597020EEDA439000B81C5 /* guilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 65D6B0DF0EBF80E700AAF999 /* guilib.c */; };
 		65D617FD0EBF56AB009078F8 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D617FC0EBF56AB009078F8 /* WindowController.m */; };
 		65D618060EBF6288009078F8 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D618050EBF6288009078F8 /* Quartz.framework */; };
 		65D618100EBF647D009078F8 /* ImageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D6180F0EBF647D009078F8 /* ImageKit.framework */; };
-		65D6B0E00EBF80E700AAF999 /* guilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 65D6B0DF0EBF80E700AAF999 /* guilib.c */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -31,7 +31,7 @@
 		65D618050EBF6288009078F8 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		65D6180F0EBF647D009078F8 /* ImageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageKit.framework; path = /System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/ImageKit.framework; sourceTree = "<absolute>"; };
 		65D6B0D90EBF805500AAF999 /* guilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guilib.h; sourceTree = "<group>"; };
-		65D6B0DF0EBF80E700AAF999 /* guilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = guilib.c; path = ../Documents/guilib/guilib.c; sourceTree = SOURCE_ROOT; };
+		65D6B0DF0EBF80E700AAF999 /* guilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = guilib.c; path = "../../gui-lib/guilib.c"; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CocoaSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				65D6B0DF0EBF80E700AAF999 /* guilib.c */,
-				65D6B0D70EBF805500AAF999 /* guilib */,
+				65D6B0D70EBF805500AAF999 /* gui-lib */,
 				65D6180F0EBF647D009078F8 /* ImageKit.framework */,
 				65D618050EBF6288009078F8 /* Quartz.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -129,13 +129,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		65D6B0D70EBF805500AAF999 /* guilib */ = {
+		65D6B0D70EBF805500AAF999 /* gui-lib */ = {
 			isa = PBXGroup;
 			children = (
 				65D6B0D90EBF805500AAF999 /* guilib.h */,
 			);
-			name = guilib;
-			path = ../Documents/guilib;
+			name = "gui-lib";
+			path = "../../gui-lib";
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -195,7 +195,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				65D617FD0EBF56AB009078F8 /* WindowController.m in Sources */,
-				65D6B0E00EBF80E700AAF999 /* guilib.c in Sources */,
+				65D597020EEDA439000B81C5 /* guilib.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

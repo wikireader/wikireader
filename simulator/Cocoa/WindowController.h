@@ -16,5 +16,7 @@
 }
 
 - (void) refreshDisplay;
+- (void) clear;
+- (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y;
 
 @end
