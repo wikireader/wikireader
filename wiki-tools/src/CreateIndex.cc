@@ -22,6 +22,38 @@
 #include <QRegExp>
 #include <QtDebug>
 
+class LowercaseString {
+public:
+    explicit LowercaseString(const QString&);
+    bool operator< (const LowercaseString&) const;
+    bool operator==(const LowercaseString&) const;
+
+    QString string() const;
+
+private:
+    QString m_string;
+};
+
+LowercaseString::LowercaseString(const QString& string)
+    : m_string(string)
+{}
+
+bool LowercaseString::operator< (const LowercaseString& rhs) const
+{
+    return m_string.toLower().operator<(rhs.m_string.toLower());
+}
+
+bool LowercaseString::operator==(const LowercaseString& rhs) const
+{
+    return m_string.toLower().operator==(rhs.m_string.toLower());
+}
+
+QString LowercaseString::string() const
+{
+    return m_string;
+}
+
+
 CreateIndex::CreateIndex(const QString& splitChars, const QString& indexFileName, 
                          const QString& notMatchName, 
                          const QRegExp& notArticle,
@@ -78,19 +110,38 @@ void CreateIndex::resolveRedirects()
 
 void CreateIndex::doMatchAndWrite()
 {
+    m_notMatchStream << "----------after here is not match titles.\n";
+
     QString longestTitle;
     QTextStream stream(&m_file); 
 
-    m_notMatchStream << "----------after here is not match titles.\n";
-    QMap<QString, QString>::const_iterator it, end = m_titleMap.end();
-    for (it = m_titleMap.begin(); it != end; ++it) {
-        QString indexLine = QString("%1%2%3\n").arg(it.key())
-                                               .arg(m_splitChars)
-                                               .arg(it.value());
+    /*
+     * reshuffle the maps. Now we actually have a multimap...
+     */
+    QMap<QString, QString>::const_iterator mapIt, mapEnd = m_titleMap.end();
+    QMultiMap<LowercaseString, QString> titleMap;
+    for (mapIt = m_titleMap.begin(); mapIt != mapEnd; ++mapIt)
+        titleMap.insert(LowercaseString(mapIt.key()), mapIt.value());
 
-        if (m_match.exactMatch(it.key())) {
-            if (longestTitle.length() < it.key().length())
-                longestTitle = it.key();
+    /*
+     * safe memory after we had doubled it... we could even avoid
+     * the peak when removing it from m_titleMap in the above loop
+     */
+    m_titleMap = QMap<QString,QString>();
+
+
+    QMultiMap<LowercaseString, QString>::const_iterator multiIt, multiEnd = titleMap.end();
+    for (multiIt = titleMap.begin(); multiIt != multiEnd; ++multiIt) {
+        QString title = multiIt.key().string();
+        QString indexLine = QString("%1%2%3%4%5\n").arg(title.toLower())
+                                                   .arg(m_splitChars)
+                                                   .arg(title)
+                                                   .arg(m_splitChars)
+                                                   .arg(multiIt.value());
+
+        if (m_match.exactMatch(title)) {
+            if (longestTitle.length() < title.length())
+                longestTitle = title;
 
             stream << indexLine;
         } else {
