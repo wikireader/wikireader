@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "guilib.h"
+#include "glyph.h"
 
 static int fb_ref = 0;
 
@@ -43,8 +44,8 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 
 void guilib_init(void)
 {
-	guilib_draw_vline(10, 200, 40, 0xf);
-	guilib_draw_hline(10, 40, 60, 0xf);
-	fb_refresh();
+	/* just some tests ... */
+	load_glyphs();
+	render_string("Oh my god, it's techno music", 10, 10);
 }
 
