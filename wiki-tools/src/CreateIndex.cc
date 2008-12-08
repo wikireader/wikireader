@@ -96,11 +96,8 @@ void CreateIndex::resolveRedirects()
         /*
          * if we run in a circle redirectTo will be title...
          */
-        QString preRedirectsTo = title;
-        while (m_redirectMap.contains(redirectsTo) && preRedirectsTo != redirectsTo) {
-            preRedirectsTo = redirectsTo;
+        while (m_redirectMap.contains(redirectsTo) && title != redirectsTo)
             redirectsTo = m_redirectMap.value(redirectsTo);
-        }
 
         if (m_titleMap.contains(redirectsTo))
             m_titleMap.insert(title, m_titleMap.value(redirectsTo));
