@@ -84,7 +84,7 @@ void CreateIndex::doMatchAndWrite()
     m_notMatchStream << "----------after here is not match titles.\n";
     QMap<QString, QString>::const_iterator it, end = m_titleMap.end();
     for (it = m_titleMap.begin(); it != end; ++it) {
-        QString indexLine = QString("%1%2%3\n").arg(it.key().toLower())
+        QString indexLine = QString("%1%2%3\n").arg(it.key())
                                                .arg(m_splitChars)
                                                .arg(it.value());
 
