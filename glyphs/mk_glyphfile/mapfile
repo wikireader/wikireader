@@ -14,4 +14,9 @@ u tmp/u.png
 y tmp/y.png
 ' tmp/'.png
 , tmp/,.png
+W tmp/W.png
+A tmp/A.png
+R tmp/R.png
+S tmp/S.png
+? tmp/qm.png
 
