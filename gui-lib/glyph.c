@@ -9,56 +9,51 @@
 #include "guilib.h"
 #include "glyph.h"
 
+#define FONTSIZE 5
+
+static int glyph_fd = -1;
+
 /* FIXME: solve this with memory management */
-static char _buf[0xffff];
+static struct Glyph staticGlyph[2];
+static char _buf_a[200], _buf_b[200];
 
-#define MAX_GLYPHS 0xffff
-
-static struct Glyph glyph_array[MAX_GLYPHS];
-
-int load_glyphs(void)
+/* FIXME: make this file I/O portable */
+int glyph_init(const char *filename)
 {
-	char *buf = _buf;
-	struct Glyph *glyph;
-
-	/* FIXME: make this file I/O portable */
-	memset(_buf, 0, sizeof(_buf));
-	int fd = open("/tmp/glyphfile", O_RDONLY);
-	if (!fd)
+	glyph_fd = open(filename, O_RDONLY);
+	if (!glyph_fd)
 		return -1;
 
-	for (;;) {
-		char tmp[4];
-		int size, index;
-
-		if (read(fd, tmp, sizeof(tmp)) != sizeof(tmp))
-			break;
-
-		index = tmp[1] << 8 | tmp[0];
-		if (index > MAX_GLYPHS)
-			break;
-
-		glyph = glyph_array + index;
-		glyph->w = tmp[2];
-		glyph->h = tmp[3];
-		glyph->data = buf;
-		size = (glyph->h * glyph->w) / 2;
-
-		if (read(fd, buf, size) != size)
-			break;
-
-		buf += size;
-	}
-
-	close(fd);
+	staticGlyph[0].data = _buf_a;
+	staticGlyph[1].data = _buf_b;
 	return 0;
 }
 
-#define FONTSIZE 5
+/* FIXME: make this file I/O portable */
+static struct Glyph *get_glyph(int index)
+{
+	unsigned int offset, size;
+	static int cnt = 0;
+	struct Glyph *g = (cnt++ & 1) ? &staticGlyph[0] : &staticGlyph[1];
+
+	index &= 0xffff;
+	lseek(glyph_fd, index * sizeof(offset), SEEK_SET);
+	read(glyph_fd, &offset, sizeof(offset));
+	if (offset == 0)
+		return NULL;
+
+	lseek(glyph_fd, offset, SEEK_SET);
+	read(glyph_fd, &g->w, 1);
+	read(glyph_fd, &g->h, 1);
+	size = (g->h * g->w) / 2;
+	read(glyph_fd, g->data, size);
+
+	return g;
+}
 
 static inline char glyph_pixel(struct Glyph *g, int x, int y)
 {
-	int byte = (y * g->w + x);
+	int byte = y * g->w + x;
 	char v = g->data[byte / 2];
 	if (byte & 1)
 		return v & 0xf;
@@ -108,20 +103,18 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
 int render_string(const char *s, int off_x, int off_y)
 {
 	int x, y;
-	struct Glyph *last_glyph = 0;
-
-	guilib_fb_lock();
-
+	struct Glyph *last_glyph = NULL;
+	
 	while (*s) {
 		int index = *s++;
-		struct Glyph *g = glyph_array + index;
+		struct Glyph *g = get_glyph(index);
 
 		if (index == ' ') {
 			off_x += FONTSIZE;
 			continue;
 		}
 
-		if (g->w == 0 || g->h == 0)
+		if (!g || g->w == 0 || g->h == 0)
 			continue;
 		
 		off_x -= simple_kerning(last_glyph, g);
@@ -129,7 +122,7 @@ int render_string(const char *s, int off_x, int off_y)
 		for (y = 0; y < g->h; y++)
 			for (x = 0; x < g->w; x++) 
 				fb_set_pixel(x + off_x, y + off_y,
-					glyph_pixel(g, x, y));
+						glyph_pixel(g, x, y));
 
 		off_x += g->w + (FONTSIZE / 2);
 		last_glyph = g;

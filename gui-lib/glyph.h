@@ -7,7 +7,7 @@ struct Glyph {
 };
 
 int render_string(const char *s, int off_x, int off_y);
-int load_glyphs(void);
+int glyph_init(const char *filename);
 
 #endif /* GLYPH_H */
 

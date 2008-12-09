@@ -45,7 +45,7 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 void guilib_init(void)
 {
 	/* just some tests ... */
-	load_glyphs();
+	glyph_init("/tmp/glyphfile");
 	//render_string("Oh my god, it's techno music", 10, 10);
 	render_string("WAR WAS?", 10, 10);
 }
