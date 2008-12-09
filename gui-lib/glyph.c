@@ -6,6 +6,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+/* wiki-lib includes */
+#include <file-io.h>
+
+/* gui-lib includes */
 #include "guilib.h"
 #include "glyph.h"
 
@@ -17,10 +21,9 @@ static int glyph_fd = -1;
 static struct Glyph staticGlyph[2];
 static char _buf_a[200], _buf_b[200];
 
-/* FIXME: make this file I/O portable */
 int glyph_init(const char *filename)
 {
-	glyph_fd = open(filename, O_RDONLY);
+	glyph_fd = wl_open(filename, WL_O_RDONLY);
 	if (!glyph_fd)
 		return -1;
 
@@ -29,24 +32,23 @@ int glyph_init(const char *filename)
 	return 0;
 }
 
-/* FIXME: make this file I/O portable */
 static struct Glyph *get_glyph(int index)
 {
 	unsigned int offset, size;
 	static int cnt = 0;
-	struct Glyph *g = (cnt++ & 1) ? &staticGlyph[0] : &staticGlyph[1];
+	struct Glyph *g = &staticGlyph[cnt++ & 1];
 
 	index &= 0xffff;
-	lseek(glyph_fd, index * sizeof(offset), SEEK_SET);
-	read(glyph_fd, &offset, sizeof(offset));
+	wl_seek(glyph_fd, index * sizeof(offset));
+	wl_read(glyph_fd, &offset, sizeof(offset));
 	if (offset == 0)
 		return NULL;
 
-	lseek(glyph_fd, offset, SEEK_SET);
-	read(glyph_fd, &g->w, 1);
-	read(glyph_fd, &g->h, 1);
+	wl_seek(glyph_fd, offset);
+	wl_read(glyph_fd, &g->w, 1);
+	wl_read(glyph_fd, &g->h, 1);
 	size = (g->h * g->w) / 2;
-	read(glyph_fd, g->data, size);
+	wl_read(glyph_fd, g->data, size);
 
 	return g;
 }
@@ -72,12 +74,11 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
 	if (!a || !b)
 		return 0;
 
-	delta = MIN(a->w, b->w);
-
 	/* we do some very simple kerning here. The idea is to scan
 	 * the left edge of the right glyph and the right edge of the
 	 * left glyph and find out how far the two could move towards
 	 * each other without colliding. */
+	delta = MIN(a->w, b->w);
 	for (y = 0; y < MIN(a->h, b->h); y++) {
 		int x, d = 0;
 
@@ -104,6 +105,8 @@ int render_string(const char *s, int off_x, int off_y)
 {
 	int x, y;
 	struct Glyph *last_glyph = NULL;
+	
+	guilib_fb_lock();
 	
 	while (*s) {
 		int index = *s++;
