@@ -1,20 +1,7 @@
 #ifndef WIKILIB_EXTERNAL_INTERFACE_H
 #define WIKILIB_EXTERNAL_INTERFACE_H
 
-struct fb_info;
 
-struct fb_info
-{
-	void *mem;
-	int   width;
-	int   height;
-	int   bpp;
-	int   channels;
-	int   inverted;
-	void  (* update) (struct fb_info *info);
-};
-
-int fb_init (struct fb_info *info);
 
 struct machine_ops
 {
