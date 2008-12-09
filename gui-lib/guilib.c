@@ -47,6 +47,6 @@ void guilib_init(void)
 	/* just some tests ... */
 	glyph_init("/tmp/glyphfile");
 	render_string("Oh my god, it's techno music", 10, 10);
-	render_string("WAR WAS? AyAyAy", 10, 30);
+	render_string("WAR WAS?", 10, 30);
 }
 

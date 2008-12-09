@@ -53,6 +53,7 @@ void fb_clear(void)
 - (void) clear
 {
 	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
+	[imageView setNeedsDisplay];
 }
 
 - (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y
@@ -81,8 +82,7 @@ void fb_clear(void)
 					isPlanar: NO
 					colorSpaceName: @"NSCalibratedRGBColorSpace"
 					bytesPerRow: (NSInteger) [imageView frame].size.width * 3
-					bitsPerPixel: 24
-				];
+					bitsPerPixel: 24 ];
 	[imageRep setSize: [imageView frame].size];
 	NSImage *image = [[NSImage alloc] initWithSize: [imageView frame].size];
 

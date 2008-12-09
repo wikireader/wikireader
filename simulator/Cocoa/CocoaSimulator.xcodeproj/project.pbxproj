@@ -11,6 +11,8 @@
 		65D617FD0EBF56AB009078F8 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D617FC0EBF56AB009078F8 /* WindowController.m */; };
 		65D618060EBF6288009078F8 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D618050EBF6288009078F8 /* Quartz.framework */; };
 		65D618100EBF647D009078F8 /* ImageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D6180F0EBF647D009078F8 /* ImageKit.framework */; };
+		65F440550EEDD1B100877192 /* glyph.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F440530EEDD1B100877192 /* glyph.c */; };
+		65F4409C0EEF16EB00877192 /* file-io-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F4409B0EEF16EB00877192 /* file-io-posix.c */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -31,7 +33,11 @@
 		65D618050EBF6288009078F8 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		65D6180F0EBF647D009078F8 /* ImageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageKit.framework; path = /System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/ImageKit.framework; sourceTree = "<absolute>"; };
 		65D6B0D90EBF805500AAF999 /* guilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guilib.h; sourceTree = "<group>"; };
-		65D6B0DF0EBF80E700AAF999 /* guilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = guilib.c; path = "../../gui-lib/guilib.c"; sourceTree = SOURCE_ROOT; };
+		65D6B0DF0EBF80E700AAF999 /* guilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = guilib.c; sourceTree = "<group>"; };
+		65F440530EEDD1B100877192 /* glyph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glyph.c; sourceTree = "<group>"; };
+		65F440540EEDD1B100877192 /* glyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glyph.h; sourceTree = "<group>"; };
+		65F4409A0EEF16D400877192 /* file-io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "file-io.h"; path = "../../wiki-lib/include/file-io.h"; sourceTree = SOURCE_ROOT; };
+		65F4409B0EEF16EB00877192 /* file-io-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io-posix.c"; path = "../../wiki-lib/lib/file-io-posix.c"; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CocoaSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -86,7 +92,7 @@
 		29B97314FDCFA39411CA2CEA /* CocoaSimulator */ = {
 			isa = PBXGroup;
 			children = (
-				65D6B0DF0EBF80E700AAF999 /* guilib.c */,
+				65F440970EEF168B00877192 /* wiki-lib */,
 				65D6B0D70EBF805500AAF999 /* gui-lib */,
 				65D6180F0EBF647D009078F8 /* ImageKit.framework */,
 				65D618050EBF6288009078F8 /* Quartz.framework */,
@@ -132,11 +138,23 @@
 		65D6B0D70EBF805500AAF999 /* gui-lib */ = {
 			isa = PBXGroup;
 			children = (
+				65D6B0DF0EBF80E700AAF999 /* guilib.c */,
+				65F440530EEDD1B100877192 /* glyph.c */,
+				65F440540EEDD1B100877192 /* glyph.h */,
 				65D6B0D90EBF805500AAF999 /* guilib.h */,
 			);
 			name = "gui-lib";
 			path = "../../gui-lib";
 			sourceTree = SOURCE_ROOT;
+		};
+		65F440970EEF168B00877192 /* wiki-lib */ = {
+			isa = PBXGroup;
+			children = (
+				65F4409B0EEF16EB00877192 /* file-io-posix.c */,
+				65F4409A0EEF16D400877192 /* file-io.h */,
+			);
+			name = "wiki-lib";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -196,6 +214,8 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				65D617FD0EBF56AB009078F8 /* WindowController.m in Sources */,
 				65D597020EEDA439000B81C5 /* guilib.c in Sources */,
+				65F440550EEDD1B100877192 /* glyph.c in Sources */,
+				65F4409C0EEF16EB00877192 /* file-io-posix.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
