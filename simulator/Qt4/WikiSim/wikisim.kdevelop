@@ -214,7 +214,7 @@
     </filetemplates>
   </cppsupportpart>
   <ctagspart>
-    <customArguments></customArguments>
+    <customArguments/>
     <customTagfilePath>/home/daniel/src/openmoko/svn.wikipediardware/wikipediardware/simulator/Qt4/WikiSim/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>

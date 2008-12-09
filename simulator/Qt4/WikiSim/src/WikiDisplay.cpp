@@ -40,17 +40,14 @@ WikiDisplay::setPixel(int x, int y, int v)
 {
 	char *data = framebuffer->data();
 
-	if (v > 0xf) {
-		printf("color index out of range for pixel %d,%d: %x\n", x, y, v);
-		return;
-	}
+	v &= 0xf;
 
 	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT) {
 		printf("pixel position out of range: %d,%d\n", x, y);
 		return;
 	}
 
-	data[y * FRAMEBUFFER_WIDTH + x] = v;
+	data[y * FRAMEBUFFER_WIDTH + x] |= v;
 }
 
 void
@@ -64,8 +61,8 @@ WikiDisplay::paintEvent(QPaintEvent *)
 {
 	int x, y;
 
-        QPainter painter(this);
-        painter.setBrush(Qt::SolidPattern);
+	QPainter painter(this);
+	painter.setBrush(Qt::SolidPattern);
 	painter.fillRect(0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT, Qt::white);
 
 	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
