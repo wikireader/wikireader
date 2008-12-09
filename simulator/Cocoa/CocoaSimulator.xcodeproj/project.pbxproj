@@ -37,7 +37,7 @@
 		65F440530EEDD1B100877192 /* glyph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glyph.c; sourceTree = "<group>"; };
 		65F440540EEDD1B100877192 /* glyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glyph.h; sourceTree = "<group>"; };
 		65F4409A0EEF16D400877192 /* file-io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "file-io.h"; path = "../../wiki-lib/include/file-io.h"; sourceTree = SOURCE_ROOT; };
-		65F4409B0EEF16EB00877192 /* file-io-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io-posix.c"; path = "../../wiki-lib/lib/file-io-posix.c"; sourceTree = SOURCE_ROOT; };
+		65F4409B0EEF16EB00877192 /* file-io-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io-posix.c"; path = "../../wiki-lib/specific/file-io-posix.c"; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CocoaSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
