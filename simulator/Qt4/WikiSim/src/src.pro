@@ -1,6 +1,6 @@
 SOURCES += ../../../../gui-lib/guilib.c
 SOURCES += ../../../../gui-lib/glyph.c
-SOURCES += ../../../../wiki-lib/lib/file-io-posix.c
+SOURCES += ../../../../wiki-lib/specific/file-io-posix.c
 INCLUDEPATH += ../../../../gui-lib/
 INCLUDEPATH += ../../../../wiki-lib/include
 
