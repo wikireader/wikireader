@@ -46,10 +46,9 @@
 #include <stdarg.h>
 
 ER
-syslog(UINT prio, const char *format, ...)
+syslog_va(UINT prio, const char *format, va_list ap)
 {
 	SYSLOG	log;
-	va_list	ap;
 	int	i;
 	int	c;
 	BOOL	lflag;
@@ -57,8 +56,6 @@ syslog(UINT prio, const char *format, ...)
 	log.logtype = LOG_TYPE_COMMENT;
 	log.loginfo[0] = (VP_INT) format;
 	i = 1;
-	va_start(ap, format);
-
 	while ((c = *format++) != '\0' && i < TMAX_LOGINFO) {
 		if (c != '%') {
 			continue;
@@ -102,6 +99,17 @@ syslog(UINT prio, const char *format, ...)
 			break;
 		}
 	}
-	va_end(ap);
+
 	return(vwri_log(prio, &log));
+}
+
+ER
+syslog(UINT prio, const char *format, ...)
+{
+	va_list	ap;
+	int	ret;
+	va_start(ap, format);
+	ret = syslog_va(prio, format, ap);
+	va_end(ap);
+	return ret;
 }
