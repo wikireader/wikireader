@@ -39,8 +39,8 @@ bsearch: $(TARGETS)
 	./a.out ../indexfile.index B
 
 search: $(TARGETS)
-	./a.out ../indexfile.index L
-	./a.out ../indexfile.index B
+	./a.out ../indexfile.index L > linear_result.txt
+	./a.out ../indexfile.index B > binary_result.txt
 
 clean:
 	rm -fr $(TARGETS) *.o *~

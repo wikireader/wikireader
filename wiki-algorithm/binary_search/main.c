@@ -22,9 +22,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#define SHA1CHARS 100		/* sha1 char count */
+#define SHA1CHARS 400		/* sha1 char count */
 #define MAXCHARS 300		/* the max chars of the title */
-#define LINECHARS 400
+#define LINECHARS 700
 #define RESULTCOUNT 10
 
 FILE *fp;
@@ -163,16 +163,15 @@ int split(char *source, char *word, char *sha1, char split_char)
 		*sha1 = 0;
 		return 0;
 	}
-	char *p = strrchr(source, split_char);
-	if (p == NULL)
-		return -1;
-	int i=0;
-	int split_char_pos = p - source;
-	for(i = 0; i < split_char_pos; i++){
+
+	while (*source != split_char && *source != '\0')
                 *(word++) = *(source++);
-	}
+
+	if (*source == '\0')
+		return -1;
 
 	*word='\0';
+
 	source++;		/* eat the blank */
         while(*source != '\n' && *source != EOF)
                 *(sha1++) = *(source++);
@@ -233,7 +232,7 @@ int binary_search (FILE *fp, char *key)
 
 	while (left <= right) { 
 		middle = (left + right) / 2;
-//		printf("left:%ld\nmiddle:%ld\nright:%ld\n", left, middle, right);
+		/* printf("left:\t%ld\nmiddle:\t%ld\nright:\t%ld\n", left, middle, right); */
 
 		get_line_from_pos(fp, middle, line, LINECHARS);
 		if (split(line, title, hash, '-') == 0) {
@@ -272,7 +271,7 @@ char ** lookup(char *key, char *p_hash)
 			if (comp_key == 0) {
 				int comp_hash = strcmp(p_hash, hash); 
 				comp_hash ? printf("%s\n%s\n", p_hash, hash)
-					: printf("trye\n");
+					: printf("true\n");
 				break;
 			}
 		}
