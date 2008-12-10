@@ -1,3 +1,4 @@
+#include <msg.h>
 #include <file-io.h>
 #include <tff.h>
 
@@ -74,6 +75,9 @@ int wl_read(int fd, void *buf, unsigned int count)
 
 int wl_write(int fd, void *buf, unsigned int count)
 {
+#if _FS_READONLY
+	return -1;
+#else
 	int ret, wcount;
 
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
@@ -87,6 +91,7 @@ int wl_write(int fd, void *buf, unsigned int count)
 		return -1;
 
 	return 0;
+#endif /* _FS_READONLY */
 }
 
 int wl_seek(int fd, unsigned int pos)
