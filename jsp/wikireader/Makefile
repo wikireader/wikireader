@@ -57,6 +57,7 @@ KER_DIR=   $(SRCDIR)/kernel
 INC_DIR=   $(SRCDIR)/include
 CPU_DIR=   $(SRCDIR)/config/$(CPU)
 SYS_DIR=   $(SRCDIR)/config/$(CPU)/$(SYS)
+GUILIB_DIR= ../../gui-lib/
 WIKILIB_DIR_GENERIC= ../../wiki-lib/generic/
 WIKILIB_DIR_SPECIFIC= ../../wiki-lib/specific
 
@@ -65,7 +66,7 @@ WIKILIB_DIR_SPECIFIC= ../../wiki-lib/specific
 STASK_DIR= $(SRCDIR)/systask
 UTASK_DIR= $(SRCDIR)/library
 vpath %.c  $(CPU_DIR):$(SYS_DIR):$(KER_DIR):$(STASK_DIR):$(UTASK_DIR):\
-	$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC)
+	$(GUILIB_DIR):$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC)
 
 # Include CPU / target dependence definitions.
 # following definitions are used later section.
@@ -79,16 +80,17 @@ include $(SRCDIR)/kernel/Makefile.kernel
 ### 3. Regist object files of user program and necessary libraries.
 KERNEL_COBJS:= $(KERNEL_COBJS) startup.o banner.o 
 
-APPLI_COBJS= kernel_cfg.o sample1.o keyboard.o search.o
+APPLI_COBJS= kernel_cfg.o sample1.o keyboard.o search.o gui.o input.o
 STASK_COBJS= logtask.o serial.o timer.o
 UTASK_COBJS= log_output.o strerror.o t_perror.o vasyslog.o
 DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
-WIKILIB_COBJS= msg-toppers.o file-io-libfat.o
+GUILIB_COBJS= guilib.o glyph.o
+WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io.o
 
 ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(WIKILIB_COBJS) \
-	     $(KERNEL_LCOBJS)
+	     $(GUILIB_COBJS) $(KERNEL_LCOBJS)
 
 OBJLDS= 
 
@@ -103,7 +105,8 @@ INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) 	\
 	-I$(SRCDIR)/../mini-libc/include	\
 	-I$(SRCDIR)/../fatfs/src 		\
 	-I$(SRCDIR)/../fatfs/config/c33		\
-	-I$(SRCDIR)/../wiki-lib/include/
+	-I$(SRCDIR)/../gui-lib			\
+	-I$(SRCDIR)/../wiki-lib/include
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe

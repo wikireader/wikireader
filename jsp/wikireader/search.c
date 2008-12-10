@@ -21,6 +21,8 @@
 #include <tff.h>
 #include <stdio.h>
 #include <string.h>
+#include <wikilib.h>
+#include <guilib.h>
 #include "search.h"
 #include "sample1.h"
 
@@ -211,6 +213,8 @@ int search()
 {
 	char c = 'H';
         FRESULT result;
+
+	guilib_init();
 
 	ena_tex();
 	while (1) {

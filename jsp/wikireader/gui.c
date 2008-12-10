@@ -1,12 +1,10 @@
-// This is just a stub, not compileable yet. but GPL.
+#include <guilib.h>
 
-#include <guilib/guilib.h>
-
-unsigned char framebuffer = ...;
+unsigned char *framebuffer = (unsigned char *) 0x10000000;
 
 void fb_clear(void)
 {
-	memset(framebuffer, (FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
+	memset(framebuffer, 0, (FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
 }
 
 void fb_refresh(void)
@@ -15,7 +13,7 @@ void fb_refresh(void)
 	return;
 }
 
-void fb_set_pixel(unsigned int x, unsigned int y, unsigned char val)
+void fb_set_pixel(int x, int y, int val)
 {
         if (x & 1) {
                 framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] &= 0xf0;
