@@ -1,12 +1,5 @@
-/* FIXME: remove this includes */
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
 /* wiki-lib includes */
+#include <wikilib.h>
 #include <file-io.h>
 
 /* gui-lib includes */

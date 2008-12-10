@@ -1,4 +1,5 @@
-#include <stdio.h>
+#include <file-io.h>
+#include <msg.h>
 #include "guilib.h"
 #include "glyph.h"
 
@@ -42,10 +43,17 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 	guilib_fb_unlock();
 }
 
+#define GLYPHFILE "/tmp/glyphs"
+
 void guilib_init(void)
 {
 	/* just some tests ... */
-	glyph_init("/tmp/glyphfile");
+	if (glyph_init(GLYPHFILE) == 0) {
+		msg(MSG_INFO, "unable to load glyphfile %s\n", GLYPHFILE);
+		return;
+	}
+
+	msg(MSG_INFO, "loaded glyphfile %s\n", GLYPHFILE);
 	render_string("Oh my god, it's techno music", 10, 10);
 	render_string("WAR WAS?", 10, 30);
 }
