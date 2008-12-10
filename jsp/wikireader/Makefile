@@ -57,12 +57,15 @@ KER_DIR=   $(SRCDIR)/kernel
 INC_DIR=   $(SRCDIR)/include
 CPU_DIR=   $(SRCDIR)/config/$(CPU)
 SYS_DIR=   $(SRCDIR)/config/$(CPU)/$(SYS)
+WIKILIB_DIR_GENERIC= ../../wiki-lib/generic/
+WIKILIB_DIR_SPECIFIC= ../../wiki-lib/specific
 
 
 ### 2. If there are source files and so on in other directory, add Definitions
 STASK_DIR= $(SRCDIR)/systask
 UTASK_DIR= $(SRCDIR)/library
-vpath %.c  $(CPU_DIR):$(SYS_DIR):$(KER_DIR):$(STASK_DIR):$(UTASK_DIR)
+vpath %.c  $(CPU_DIR):$(SYS_DIR):$(KER_DIR):$(STASK_DIR):$(UTASK_DIR):\
+	$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC)
 
 # Include CPU / target dependence definitions.
 # following definitions are used later section.
@@ -81,8 +84,11 @@ STASK_COBJS= logtask.o serial.o timer.o
 UTASK_COBJS= log_output.o strerror.o t_perror.o vasyslog.o
 DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
+WIKILIB_COBJS= msg-toppers.o file-io-libfat.o
+
 ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
-	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(KERNEL_LCOBJS)
+	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(WIKILIB_COBJS) \
+	     $(KERNEL_LCOBJS)
 
 OBJLDS= 
 
@@ -93,7 +99,11 @@ LIBS= $(FAT_LIBDIR)/libtinyfat.a $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-na
 
 ### 4. Define compiler options, compilation rules and so on.
 ### Do not change the name about following 5 macros.
-INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) -I$(SRCDIR)/../mini-libc/include -I$(SRCDIR)/../fatfs/src -I$(SRCDIR)/../fatfs/config/c33
+INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) 	\
+	-I$(SRCDIR)/../mini-libc/include	\
+	-I$(SRCDIR)/../fatfs/src 		\
+	-I$(SRCDIR)/../fatfs/config/c33		\
+	-I$(SRCDIR)/../wiki-lib/include/
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe
