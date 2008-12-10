@@ -50,14 +50,16 @@ int scomp(const void *p, const void *q )
 	return strcmp( (char*) p, (char*) q );
 }
 
-int display_array(char ** array, int n)
+int display_array(char array[][LINECHARS], int n)
 {
-	syslog(LOG_INFO, "---------------------");
-	int i=0;
-	while (i<n && array[i][0] != '\0') {
-		syslog(LOG_INFO, "%s", array[i]);
+	int i = 0, k = 0;
+	while (i < n - 2 && array[i][0] != NULL) {
+		while ( array[i][k] != '\0')
+			syslog(LOG_INFO,"%c", array[i][k++]);
 		i++;
+		k = 0;
 	}
+	syslog(LOG_INFO, "---------------------\n");
 	return 0;
 }
 
@@ -68,16 +70,40 @@ void init_g_result()
 		g_result[i][0] = '\0';
 }
 
-int binary_search (char *array[], int size, char *key)
+int binary_search (FIL *fp, char *key)
 {
-	int left = 0;
-	int right = size - 1;
-	int middle, comp;
+	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
+	long left = 0;
+	long right = (*fp).fsize;
+	long middle;
+	int comp;
+
+	syslog(LOG_INFO, "binary search end:%d\n", right);
+
+	f_lseek(fp, 0);
+
 	while (left <= right) { 
 		middle = (left + right) / 2;
-		comp = scomp(key, array[middle]);
-		if (comp == 0) 
+		syslog(LOG_INFO, "middle:%ld\nleft:%ld\nright:%ld\n", middle, left, right);
+
+		f_lseek(fp, middle);
+		fgets(line, LINECHARS, fp);
+		syslog(LOG_INFO, "binary search line 1:%s\n", line);
+		fgets(line, LINECHARS, fp);
+		syslog(LOG_INFO, "binary search line 2:%s\n", line);
+		split(line, title, hash, '-');
+		syslog(LOG_INFO, "binary search title:%s\n", title);
+
+		comp = scomp(key, title);
+		if (comp == 0) {
+			strcpy(g_result[0], line);
+			int i = 1;
+			for (i = 1; i < RESULTCOUNT; i++) {
+				fgets(line, LINECHARS, fp);
+				strcpy(g_result[i], line);
+			}
 			return middle;
+		}
 		if (comp > 0)
 			left = middle + 1;
 		else 
@@ -86,25 +112,30 @@ int binary_search (char *array[], int size, char *key)
 	return -1;
 }
 
-char ** lookup(char *key)
+char ** lookup(char *key, char *p_hash)
 {
 	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 	int k = 0;
 	switch (g_algorithm) {
 	case 'L': /* here is linear search */
 		syslog(LOG_INFO, "algorithm is linear search");
-		while (fgets( line, LINECHARS, &file_object) != NULL) {
-			split(line, title, hash, '-');
-			int comp = scomp(key, title);
-			if (comp == 0) {
-				break;
+		while (file_object.fptr < file_object.fsize) {
+			if (fgets( line, LINECHARS, &file_object) != 0) {
+				split(line, title, hash, '-');
+				int comp = scomp(key, title);
+				if (comp == 0) {
+					int comp_hash = scomp(p_hash, hash); 
+					comp_hash ? syslog(LOG_INFO, "%s\n%s", p_hash, hash)
+						: syslog(LOG_INFO, "true\n");
+					break;
+				}
 			}
 		}
 
 		strcpy(g_result[0], line);
 		char line_temp[LINECHARS];
 		for (k = 1; k< RESULTCOUNT; k++) {
-			if (fgets(line_temp, LINECHARS, &file_object) != NULL){
+			if (fgets(line_temp, LINECHARS, &file_object) != NULL) {
 				strcpy(g_result[k], line_temp);
 			} else {
 				break;
@@ -113,6 +144,7 @@ char ** lookup(char *key)
 		break;
 	case 'B':
 		syslog(LOG_INFO, "algorithm is binary search");
+		binary_search (&file_object, key);
 		break;
 	default :
 		syslog(LOG_INFO, "not select algorithm");
@@ -138,7 +170,7 @@ int set_key_and_search(char c)
 	SYSTIM begin_time;
 	SYSTIM end_time;
 	get_tim(&begin_time);
-	r = lookup(g_key);
+	r = lookup(g_key, "\0");
 	get_tim(&end_time);
 	syslog(LOG_INFO, "search time is: %d", end_time - begin_time);
 
@@ -160,19 +192,18 @@ int time_test()
 	SYSTIM  stop_time_1;
 	SYSTIM  stop_time_2;
 	int i = 0;
-	char t[2];
-	t[0] = t[1] = '\0';
+
 	get_tim(&start_time_1);
 	for (i = 0; i < g_titles_count; i++) {
-		char *title = g_titles[i];
-		syslog(LOG_INFO, "time 2 title is:%s", title);
+		syslog(LOG_INFO, "time 2 title is:%s", g_titles[i]);
 		get_tim(&start_time_2);
-		lookup(title);
+		lookup(g_titles[i], g_hash[i]);
 		get_tim(&stop_time_2);
 		syslog(LOG_INFO, "time_2 over value is:%d", stop_time_2 - start_time_2);
 	}
 	get_tim(&stop_time_1);
 	syslog(LOG_INFO, "time_all is:%d", stop_time_1 - start_time_1);
+
 	return 0;
 }
 
@@ -183,22 +214,25 @@ int search()
 
 	ena_tex();
 	while (1) {
+		/*
+		 * get command for the serial
+		 */
 		syscall(serial_rea_dat(TASK_PORTID, &c, 1));
 		syslog(LOG_INFO, "%c", c);
 		switch (c) {
 		case 'H': {
-			syslog(LOG_INFO, "search task starts.");
 			syslog(LOG_INFO, "comand 'D':  test read");
 			syslog(LOG_INFO, "comand 'F':  test fgets");
 			syslog(LOG_INFO, "comand 'E':  exit task");
 			syslog(LOG_INFO, "comand 'S':  test index");
 			syslog(LOG_INFO, "comand 'T':  get the time of search all 60 titles");
+			syslog(LOG_INFO, "comand 'C':  test the lookup function");
 			syslog(LOG_INFO, "comand 'L':  linear search");
 			syslog(LOG_INFO, "comand 'B':  binary search");
 			syslog(LOG_INFO, "comand 'H':  display help");
-			syslog(LOG_INFO, "lowcase lettle:  title");
 			break;
 		}
+			/* test f_open and f_read function */
 		case 'D': {
 			char tmp[512];
 			int n, total = 0;
@@ -218,17 +252,22 @@ int search()
 			syslog(LOG_INFO, "done. %d bytes read", total);
        			break; 
 		}
+			/* test fgets function  */
 		case 'F': {
 			result = f_open(&file_object, "/foo", FA_READ);
 			syslog(LOG_INFO, "f_open result = %d", result);
 			if (result != 0)
 				break;
-
+			int k = 0;
 			char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 			syslog(LOG_INFO, "test fgets function");
-			while (fgets(line, LINECHARS, &file_object) != NULL) {
-				split(line, title, hash, '-');
-				syslog(LOG_INFO, "line: %s", line);
+			while (file_object.fptr < file_object.fsize) {
+				if (fgets( line, LINECHARS, &file_object) != NULL) {
+					split(line, title, hash, '-');
+					syslog(LOG_INFO, "line:%s", line);
+					syslog(LOG_INFO, "title:%s", title);
+					syslog(LOG_INFO, "hash:%s", hash);
+				}
 			}
 			syslog(LOG_INFO, "test over!");
        			break; 
@@ -236,6 +275,9 @@ int search()
 		case 'E':
 			syslog(LOG_INFO, "exit search function.");
 			return 0;
+			/*
+			 * set whick index file use
+			 * */
 		case 'S':
 			result = f_open(&file_object, "/index", FA_READ);
 			syslog(LOG_INFO, "index file f_open result = %d", result);
@@ -243,17 +285,24 @@ int search()
 		case 'T':
 			time_test();
 			break;
+			/*
+			 * test the lookup function
+			 * */
 		case 'C':
 			result = f_open(&file_object, "/foo", FA_READ);
 			syslog(LOG_INFO, "foo file f_open result = %d", result);
-			char ** temp_r;
-			temp_r = lookup("ou");
-			display_array(temp_r, RESULTCOUNT);
+			lookup("ou", "4d9ccb5331dea3aab31487e513c2fe11c46055da");
+			display_array(g_result, RESULTCOUNT);
 			break;
+			/* switch the algorithms */
 		case 'L':
 		case 'B':
 			g_algorithm = c;
+			syslog(LOG_INFO, "algorithm is %c", g_algorithm);
 			break;
+			/*
+			 * set the search title must lowcase work
+			 * */
 		default:
 			set_key_and_search(c);
 			break;
