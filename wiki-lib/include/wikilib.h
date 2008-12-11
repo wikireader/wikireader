@@ -25,4 +25,9 @@ typedef signed char s8;
 typedef signed short s16;
 typedef signed int s32;
 
+
+/* function prototypes */
+int wikilib_init (void);
+int wikilib_run (void);
+
 #endif /* WIKILIB_H */

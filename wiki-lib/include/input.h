@@ -8,9 +8,9 @@ enum {
 };
 
 struct wl_input_event {
-	unsigned int type;
-	unsigned int val_a;
-	unsigned int val_b;
+	int type;
+	int val_a;
+	int val_b;
 };
 
 int wl_input_wait(struct wl_input_event *ev);
