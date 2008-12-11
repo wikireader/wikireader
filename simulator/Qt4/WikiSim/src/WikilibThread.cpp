@@ -51,7 +51,6 @@ int wl_input_wait(struct wl_input_event *ev)
 {
 	WikiDisplay *display = window->display;
 	QWaitCondition *w = display->waitCondition;
-	QKeyEvent *keyEvent;
 	QMutex mutex;
 
 	ev->type = -1;
@@ -61,20 +60,18 @@ int wl_input_wait(struct wl_input_event *ev)
 	do {
 		mutex.lock();
 		w->wait(&mutex);
-		QKeyEvent event = display->keyEventQueue->dequeue();
+		QKeyEvent keyEvent = display->keyEventQueue->dequeue();
 		mutex.unlock();
 
-		switch (event.type()) {
+		switch (keyEvent.type()) {
 		case QEvent::KeyPress:
-			keyEvent = (QKeyEvent *) &event;
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-			ev->val_a = keyEvent->text().at(0).unicode();
+			ev->val_a = keyEvent.text().at(0).unicode();
 			ev->val_b = 1;
 			break;
 		case QEvent::KeyRelease:
-			keyEvent = (QKeyEvent *) &event;
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-			ev->val_a = keyEvent->text().at(0).unicode();
+			ev->val_a = keyEvent.text().at(0).unicode();
 			ev->val_b = 0;
 			break;
 		default:
