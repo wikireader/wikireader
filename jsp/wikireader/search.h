@@ -23,15 +23,15 @@
 #define LINE_END	'\n'
 #define SERAIL_ENTER	'\r'
 
-#define SHA1CHARS 50		/* sha1 char count */
-#define TITLECHARS 260		/* the max chars of the title */
-#define LINECHARS 310
-#define RESULTCOUNT 10
+#define SHA1CHARS	300		/* sha1 char count */
+#define TITLECHARS	260		/* the max chars of the title, the longest title is 250 chars*/
+#define LINECHARS		560
+#define RESULTCOUNT	5
 
 char g_algorithm = 'L';
 char g_result[RESULTCOUNT][TITLECHARS];
 
-int g_titles_count = 60;
+int g_titles_count = 58;
 char *g_titles[]= {
 	". .\0",
 	"1\0",
@@ -52,7 +52,6 @@ char *g_titles[]= {
 	"bchs\0",
 	"bchydro\0",
 	"d arae\0",
-	"e boats\0"
 	"egf\0",
 	"egfa\0",
 	"egfe\0",
@@ -89,7 +88,6 @@ char *g_titles[]= {
 	"ouatitw\0",
 	"yzosse\0",
 	"z\0",
-	"z\0",
 	"zyzzyxdonta\0",
 	"zyzzyxdonta alata\0",
 	"zyzzyzus\0"
@@ -115,7 +113,6 @@ char *g_hash[] = {
 	"a854c2c9a83445912cee3e5eb9b9f2c615fd339b",
 	"3a9b5bd5f8cb468d2fbed9ee1e610d3788ef58b7",
 	"96283dbce2bdf882203ba9f0c13b1fe6a77e9eb9",
-	"9cfb00219884b33d79b91d9447821a3ada4a1dc2",
 	"26fdb0e23dd78b58d79163ec6e8eafb2bb736b2a",
 	"0ff5a1aee1ba4698392c51079b7cbbb1ccfb798f",
 	"7a86636e79ef3d61f9daadd456a624c14517dae4",
@@ -152,7 +149,6 @@ char *g_hash[] = {
 	"b4612bbeffdc2371d8d6e9a8bd7d1d1300fbf9ce",
 	"d6b6d6f317d247c660e42e86d7a4f75ed7d4b021",
 	"8056f82374131414e7fbb021d2b40062605c28b7",
-	"3b6d1327b30b9e693fce24c81a12ac97e010cd06",
 	"95555a00198f058ec0f9379e4d02985120177ea4",
 	"95555a00198f058ec0f9379e4d02985120177ea4",
 	"e189d1dbab15374976c2e87d5d97ef5a5dd86084",
