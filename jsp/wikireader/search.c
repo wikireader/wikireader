@@ -25,6 +25,7 @@
 #include "search.h"
 #include "sample1.h"
 
+#if 0
 FIL file_object;
 char g_key[TITLECHARS];
 int g_key_count = 0;
@@ -230,6 +231,8 @@ int time_test()
 
 	return 0;
 }
+#endif
+
 /*
  * this is some kind of main() for the search.c
  * */
@@ -238,8 +241,11 @@ int search()
 	char c = 'H';
         FRESULT result;
 
+	wikilib_init();
 	guilib_init();
+	wikilib_run();
 
+#if 0
 	ena_tex();
 	while (1) {
 		/*
@@ -338,5 +344,7 @@ int search()
 			break;
 		}
 	}
+#endif
+
 	return 0;
 }
