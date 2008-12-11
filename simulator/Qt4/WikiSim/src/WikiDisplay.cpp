@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include <QPainter>
 #include <QByteArray>
+#include <QKeyEvent>
+#include <QString>
+
 #include "WikiDisplay.h"
 #include "guilib.h"
 
@@ -28,11 +31,17 @@ WikiDisplay::WikiDisplay(QWidget *parent)
 	setMinimumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 	setMaximumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 	framebuffer = new QByteArray(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT, 0);
+	keyEventQueue = new QQueue<QKeyEvent>;
+	waitCondition = new QWaitCondition();
+	grabKeyboard();
 }
 
 WikiDisplay::~WikiDisplay()
 {
 	delete framebuffer;
+	delete keyEventQueue;
+	delete waitCondition;
+	releaseKeyboard();
 }
 
 void
@@ -48,6 +57,16 @@ WikiDisplay::setPixel(int x, int y, int v)
 	}
 
 	data[y * FRAMEBUFFER_WIDTH + x] |= v;
+}
+
+void
+WikiDisplay::keyPressEvent(QKeyEvent *event)
+{
+	if (event->text().isEmpty())
+		return;
+
+	keyEventQueue->enqueue(*event);
+	waitCondition->wakeAll();
 }
 
 void

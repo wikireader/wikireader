@@ -22,41 +22,18 @@
 #include <QApplication>
 #include "MainWindow.h"
 #include "WikiDisplay.h"
+#include "WikilibThread.h"
 
-/* we keep this one static for the plain-C callbacks */
 MainWindow *window;
-
-extern "C" {
-#include "guilib.h"
-
-/* this is the gui-lib glue layer */
-void fb_set_pixel(int x, int y, int v)
-{
-	WikiDisplay *display = window->getDisplay();
-	display->setPixel(x, y, v);
-}
-
-void fb_refresh(void)
-{
-	WikiDisplay *display = window->getDisplay();
-	display->repaint();
-}
-
-void fb_clear(void)
-{
-	WikiDisplay *display = window->getDisplay();
-	display->clear();
-}
-
-} /* extern "C" */
 
 int main(int argc, char *argv[])
 {
+	WikilibThread *thread = new WikilibThread();
 	QApplication app(argc, argv);
 
 	window = new MainWindow();
 	window->show();
-	guilib_init();
+	thread->start(QThread::HighPriority);
 	app.exec();
 	return 0;
 }

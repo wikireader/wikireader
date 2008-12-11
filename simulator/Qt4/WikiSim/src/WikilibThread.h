@@ -17,30 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef WIKILIBTHREAD_H
+#define WIKILIBTHREAD_H
 
-#include <QWidget>
-#include <QPushButton>
-#include <QSlider>
+#include <QThread>
 
-#include "WikiDisplay.h"
-
-class MainWindow : public QWidget
+class WikilibThread : public QThread
 {
-Q_OBJECT
 public:
-    MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    WikiDisplay *display;
-
-public slots:
-    void powerButtonEvent(void);
-
-private:
-    QPushButton *powerSwitch;
-    QPushButton *cardInserted;
-    QSlider *batteryState;
+    WikilibThread();
+    ~WikilibThread();
+    void run();
 };
 
 #endif

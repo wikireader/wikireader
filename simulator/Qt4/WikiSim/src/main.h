@@ -17,30 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
 
-#include <QWidget>
-#include <QPushButton>
-#include <QSlider>
+#ifndef MAIN_H
+#define MAIN_H
 
-#include "WikiDisplay.h"
+#include <QtGui>
+#include <QApplication>
+#include "MainWindow.h"
 
-class MainWindow : public QWidget
-{
-Q_OBJECT
-public:
-    MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    WikiDisplay *display;
+/* we keep this one static for the plain-C callbacks */
+extern MainWindow *window;
 
-public slots:
-    void powerButtonEvent(void);
-
-private:
-    QPushButton *powerSwitch;
-    QPushButton *cardInserted;
-    QSlider *batteryState;
-};
-
-#endif
+#endif /* MAIN_H */

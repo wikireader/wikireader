@@ -59,9 +59,3 @@ MainWindow::~MainWindow()
 {
 	delete display;
 }
-
-WikiDisplay *
-MainWindow::getDisplay(void)
-{
-	return display;
-}
