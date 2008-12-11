@@ -1,14 +1,16 @@
 //
-//  WindowController.h
+//  MainWindow.h
 //  CocoaSimulator
 //
-//  Created by daniel on 11/3/08.
-//  Copyright 2008 caiaq. GPLv3.
+//  Created by Daniel on 11.12.08.
+//  Copyright 2008 caiaq. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-@interface WindowController : NSWindowController {
+
+@interface MainWindow : NSWindow {
+	NSCondition *condition;
 	IBOutlet NSImageView *imageView;
 	NSBitmapImageRep *imageRep;
 	NSTimer *refreshTimer;
@@ -18,5 +20,6 @@
 - (void) refreshDisplay;
 - (void) clear;
 - (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y;
+- (NSCondition *) getCondition;
 
 @end

@@ -1,39 +1,67 @@
 //
-//  WindowController.m
+//  MainWindow.m
 //  CocoaSimulator
 //
-//  Created by daniel on 11/3/08.
-//  Copyright 2008 caiaq. GPLv3.
+//  Created by Daniel on 11.12.08.
+//  Copyright 2008 caiaq. All rights reserved.
 //
 
-#import "WindowController.h"
-//#include "wikilib/wikilib.h"
-#include "guilib.h"
-
-static WindowController *controller = NULL;
+#import "MainWindow.h"
+#include <wikilib.h>
+#include <guilib.h>
+#include <input.h>
 
 /* wikireader glue level */
 void fb_refresh(void)
 {
-	[controller refreshDisplay];
+	MainWindow *window = (MainWindow *) [NSApp mainWindow];
+	[window refreshDisplay];
 }
 
 void fb_set_pixel(int x, int y, int v)
 {
-	[controller setPixel: v atX: x atY: y];
+	MainWindow *window = (MainWindow *) [NSApp mainWindow];
+	[window setPixel: v atX: x atY: y];
 }
 
 void fb_clear(void)
 {
-	[controller clear];
+	MainWindow *window = (MainWindow *) [NSApp mainWindow];
+	[window clear];
 }
 
-
-@implementation WindowController
-
-- (void) refreshTimerCallback: (NSTimer *) timer
+int wl_input_wait(struct wl_input_event *ev)
 {
-	[self refreshDisplay];
+	MainWindow *window = (MainWindow *) [NSApp mainWindow];
+	NSCondition *condition = [window getCondition];
+	NSEvent *currentEvent;
+	
+	do {
+		[condition lock];
+		[condition wait];
+		[condition unlock];
+
+		currentEvent = [NSApp currentEvent];
+		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+		ev->val_a = [[currentEvent characters] characterAtIndex: 0];
+		ev->val_b = ([currentEvent type] == NSKeyDown) ? 0 : 1;
+	} while ([currentEvent type] != NSKeyDown && [currentEvent type] != NSKeyUp);
+
+	return 0;
+}
+
+@implementation MainWindow
+
+- (void)keyDown:(NSEvent *)event
+{
+	[condition lock];
+	[condition signal];
+	[condition unlock];
+}
+
+- (NSCondition *) getCondition
+{
+	return condition;
 }
 
 - (void) refreshDisplay
@@ -64,6 +92,15 @@ void fb_clear(void)
 	frameBuffer[y * FRAMEBUFFER_WIDTH + x] = val;
 }
 
+- (void) wikiLibThread : (id) param
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	wikilib_init();
+	guilib_init();
+	wikilib_run();
+	[pool release];
+}
+
 - (void) awakeFromNib 
 {
 	if ([imageView frame].size.width != FRAMEBUFFER_WIDTH ||
@@ -88,22 +125,15 @@ void fb_clear(void)
 
 	[image addRepresentation: imageRep];
 	[imageView setImage: image];
-
-/*
-	refreshTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
-								target: self
-								selector: @selector(refreshTimerCallback:)
-								userInfo: nil
-								repeats: YES];
-*/
-
-	/* initalize wikireader library */
-	//wikilib_init();
-	
-	controller = self;
+	condition = [[NSCondition alloc] init];
 	frameBuffer = (unsigned char *) malloc(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
 	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
-	guilib_init();
+}
+
+// NSApplication delegates
+- (void)applicationDidBecomeActive: (NSNotification *) aNotification
+{
+	[NSThread detachNewThreadSelector:@selector(wikiLibThread:) toTarget: [NSApp mainWindow] withObject:nil];
 }
 
 @end
