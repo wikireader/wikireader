@@ -9,8 +9,18 @@ enum {
 
 struct wl_input_event {
 	int type;
-	int val_a;
-	int val_b;
+
+	union {
+		struct {
+			int keycode;
+			int value;
+		} key_event;
+
+		struct {
+			int x, y;
+			int value;
+		} touch_event;
+	}; /* union */
 };
 
 int wl_input_wait(struct wl_input_event *ev);

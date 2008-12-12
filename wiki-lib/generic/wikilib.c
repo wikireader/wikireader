@@ -12,7 +12,18 @@ int wikilib_run(void)
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
-		msg(MSG_INFO, "%s() got key: %d", __func__, ev.val_a);
+
+		switch (ev.type) {
+		case WL_INPUT_EV_TYPE_KEYBOARD:
+			msg(MSG_INFO, "%s() got key: %d", __func__, ev.key_event.keycode);
+			break;
+		case WL_INPUT_EV_TYPE_TOUCH:
+			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
+				ev.touch_event.x,
+				ev.touch_event.y,
+				ev.touch_event.value);
+			break;
+		}
 	}
 
 	/* never reached */
