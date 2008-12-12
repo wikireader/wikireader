@@ -58,7 +58,7 @@ void wl_close(int fd)
 
 int wl_read(int fd, void *buf, unsigned int count)
 {
-	int ret, rcount;
+	int ret, rcount = -1;
 
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
@@ -67,10 +67,7 @@ int wl_read(int fd, void *buf, unsigned int count)
 	if (ret)
 		return -ret;
 	
-	if (rcount != count)
-		return -1;
-
-	return 0;
+	return rcount;
 }
 
 int wl_write(int fd, void *buf, unsigned int count)
@@ -107,4 +104,24 @@ int wl_seek(int fd, unsigned int pos)
 
 	return 0;
 }
+
+int wl_eof(int fd)
+{
+	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
+		return -1;
+	
+	if (fil_list[fd].fptr == fil_list[fd].fsize)
+		return 0;
+
+	return -1;
+}
+
+int wl_ftell(int fd)
+{
+	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
+		return -1;
+	
+	return fil_list[fd].fptr;
+}
+
 
