@@ -105,17 +105,6 @@ int wl_seek(int fd, unsigned int pos)
 	return 0;
 }
 
-int wl_eof(int fd)
-{
-	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
-		return 0;
-	
-	if (fil_list[fd].fptr == fil_list[fd].fsize)
-		return 1;
-
-	return 0;
-}
-
 int wl_ftell(int fd)
 {
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
