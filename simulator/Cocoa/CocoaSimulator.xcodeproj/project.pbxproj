@@ -15,6 +15,7 @@
 		65F440C80EF189BF00877192 /* wikilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F440C70EF189BF00877192 /* wikilib.c */; };
 		65F440CA0EF189D200877192 /* msg-printf.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F440C90EF189D200877192 /* msg-printf.c */; };
 		65F440EC0EF18E6200877192 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F440EB0EF18E6200877192 /* MainWindow.m */; };
+		65F441A90EF29FA200877192 /* WikiDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F441A80EF29FA200877192 /* WikiDisplay.m */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -45,6 +46,8 @@
 		65F440CE0EF189E800877192 /* wikilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wikilib.h; path = "../../wiki-lib/include/wikilib.h"; sourceTree = SOURCE_ROOT; };
 		65F440EA0EF18E6200877192 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		65F440EB0EF18E6200877192 /* MainWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindow.m; sourceTree = "<group>"; };
+		65F441A70EF29FA200877192 /* WikiDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiDisplay.h; sourceTree = "<group>"; };
+		65F441A80EF29FA200877192 /* WikiDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiDisplay.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CocoaSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -99,6 +102,8 @@
 		29B97314FDCFA39411CA2CEA /* CocoaSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				65F441A70EF29FA200877192 /* WikiDisplay.h */,
+				65F441A80EF29FA200877192 /* WikiDisplay.m */,
 				65F440EA0EF18E6200877192 /* MainWindow.h */,
 				65F440EB0EF18E6200877192 /* MainWindow.m */,
 				65F440970EEF168B00877192 /* wiki-lib */,
@@ -230,6 +235,7 @@
 				65F440C80EF189BF00877192 /* wikilib.c in Sources */,
 				65F440CA0EF189D200877192 /* msg-printf.c in Sources */,
 				65F440EC0EF18E6200877192 /* MainWindow.m in Sources */,
+				65F441A90EF29FA200877192 /* WikiDisplay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

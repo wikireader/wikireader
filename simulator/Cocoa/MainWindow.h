@@ -7,11 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "WikiDisplay.h"
 
 @interface MainWindow : NSWindow {
 	NSCondition *condition;
-	IBOutlet NSImageView *imageView;
+	IBOutlet WikiDisplay *imageView;
 	NSBitmapImageRep *imageRep;
 	NSTimer *refreshTimer;
 	unsigned char *frameBuffer;
@@ -21,5 +21,6 @@
 - (void) clear;
 - (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y;
 - (NSCondition *) getCondition;
+- (NSImageView *) imageView;
 
 @end

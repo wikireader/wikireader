@@ -34,18 +34,37 @@ int wl_input_wait(struct wl_input_event *ev)
 {
 	MainWindow *window = (MainWindow *) [NSApp mainWindow];
 	NSCondition *condition = [window getCondition];
-	NSEvent *currentEvent;
+	NSPoint event_location, local_point;
+	NSSize view_size;
+
+	ev->type = -1;
 	
 	do {
 		[condition lock];
 		[condition wait];
 		[condition unlock];
 
-		currentEvent = [NSApp currentEvent];
-		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-		ev->val_a = [[currentEvent characters] characterAtIndex: 0];
-		ev->val_b = ([currentEvent type] == NSKeyDown) ? 0 : 1;
-	} while ([currentEvent type] != NSKeyDown && [currentEvent type] != NSKeyUp);
+		NSEvent *currentEvent = [NSApp currentEvent];
+		
+		switch ([currentEvent type]) {
+		case NSKeyUp:
+		case NSKeyDown:
+			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+			ev->key_event.keycode = [[currentEvent characters] characterAtIndex: 0];
+			ev->key_event.value = ([currentEvent type] == NSKeyUp) ? 0 : 1;
+			break;
+		case NSLeftMouseUp:
+		case NSLeftMouseDown:
+			ev->type = WL_INPUT_EV_TYPE_TOUCH;
+			event_location = [currentEvent locationInWindow];
+			local_point = [[window imageView] convertPoint:event_location fromView:nil];
+			view_size = [[window imageView] bounds].size;
+			ev->touch_event.x = local_point.x;
+			ev->touch_event.y = view_size.height - local_point.y;
+			ev->touch_event.value = ([currentEvent type] == NSLeftMouseUp) ? 0 : 1;
+			break;
+		}
+	} while (ev->type == -1);
 
 	return 0;
 }
@@ -59,9 +78,21 @@ int wl_input_wait(struct wl_input_event *ev)
 	[condition unlock];
 }
 
+- (void)mouseDownInDisplay:(NSEvent *) event
+{
+	[condition lock];
+	[condition signal];
+	[condition unlock];
+}
+
 - (NSCondition *) getCondition
 {
 	return condition;
+}
+
+- (NSImageView *) imageView
+{
+	return imageView;
 }
 
 - (void) refreshDisplay
@@ -128,6 +159,10 @@ int wl_input_wait(struct wl_input_event *ev)
 	condition = [[NSCondition alloc] init];
 	frameBuffer = (unsigned char *) malloc(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
 	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(mouseDownInDisplay:)
+		name:@"mouseEvent" object:imageView];
 }
 
 // NSApplication delegates
