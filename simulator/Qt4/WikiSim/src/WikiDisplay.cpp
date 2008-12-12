@@ -78,6 +78,13 @@ WikiDisplay::mousePressEvent(QMouseEvent *event)
 }
 
 void
+WikiDisplay::mouseReleaseEvent(QMouseEvent *event)
+{
+	mouseEventQueue->enqueue(*event);
+	waitCondition->wakeAll();
+}
+
+void
 WikiDisplay::clear(void)
 {
 	framebuffer->fill(0);

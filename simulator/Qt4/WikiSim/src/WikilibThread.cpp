@@ -82,7 +82,7 @@ int wl_input_wait(struct wl_input_event *ev)
 			ev->type = WL_INPUT_EV_TYPE_TOUCH;
 			ev->touch_event.x = mouseEvent.x();
 			ev->touch_event.y = mouseEvent.y();
-			ev->touch_event.value = 1;
+			ev->touch_event.value = (mouseEvent.type() == QEvent::MouseButtonPress) ? 1 : 0;
 		}
 
 		mutex.unlock();
