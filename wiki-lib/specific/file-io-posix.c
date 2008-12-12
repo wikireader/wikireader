@@ -1,7 +1,5 @@
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #include <file-io.h>
