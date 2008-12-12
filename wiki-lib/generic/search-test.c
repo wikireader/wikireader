@@ -54,11 +54,11 @@ int scomp(const void *p, const void *q )
 	return strcmp( (char*) p, (char*) q );
 }
 
-int display_array(char array[][LINECHARS], int n)
+int display_g_result()
 {
 	int i = 0;
-	while (i < n - 2 && array[i][0] != '\0') {
-		msg(MSG_INFO,"%s", array[i]);
+	while (i < RESULTCOUNT && g_result[i][0] != '\0') {
+		msg(MSG_INFO,"%s", g_result[i]);
 		i++;
 	}
 	msg(MSG_INFO, "---------------------\n");
@@ -67,8 +67,8 @@ int display_array(char array[][LINECHARS], int n)
 
 void init_g_result()
 {
-	int i=0;
-	for (i=0; i<RESULTCOUNT; i++) 
+	int i = 0;
+	for (i = 0; i < RESULTCOUNT; i++) 
 		g_result[i][0] = '\0';
 }
 /*
@@ -111,7 +111,7 @@ int get_char_offset(char c)
 /*
  * return the file's fptr value -1 mean not found
  * */
-int binary_search (int fp, char *key)
+int binary_search (int fp, char *key, char *p_hash)
 {
 	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 
@@ -142,6 +142,9 @@ int binary_search (int fp, char *key)
 		split(line, title, hash, '-');
 		comp = scomp(key, title);
 		if (comp == 0) {
+			int comp_hash = scomp(p_hash, hash); 
+			comp_hash ? msg(MSG_INFO, "%s\n%s", p_hash, hash)
+				: msg(MSG_INFO, "true\n");
 			return middle;
 		}
 		if (comp > 0)
@@ -164,14 +167,12 @@ char ** lookup(char *key, char *p_hash)
 			split(line, title, hash, '-');
 			int comp = scomp(key, title);
 			if (comp == 0) {
-				rt = wl_ftell(file_object);
 				int comp_hash = scomp(p_hash, hash); 
 				comp_hash ? msg(MSG_INFO, "%s\n%s", p_hash, hash)
 					: msg(MSG_INFO, "true\n");
 				break;
 			}
 		}
-		msg(MSG_INFO, "linear search result:%d", rt);
 
 #if 1	
 		strcpy(g_result[0], line);
@@ -187,7 +188,7 @@ char ** lookup(char *key, char *p_hash)
 #endif
 		break;
 	case 'B':
-		rt = binary_search(file_object, key);
+		rt = binary_search(file_object, key, p_hash);
 		msg(MSG_INFO, "binary search result:%d", rt);
 		break;
 	default :
@@ -218,7 +219,7 @@ int set_key_and_search(char c)
 	end_time = get_timer();
 	msg(MSG_INFO, "search time is: %d", end_time - begin_time);
 
-	display_array(g_result, RESULTCOUNT);
+	display_g_result();
 
 	int i = 0;
 	for (i=0; i< TITLECHARS; i++)
@@ -333,7 +334,7 @@ int search_test()
 			file_object = wl_open("/foo", WL_O_RDONLY);
 			msg(MSG_INFO, "index f_open result = %d", file_object);
 			lookup("ou", "4d9ccb5331dea3aab31487e513c2fe11c46055da");
-			display_array(g_result, RESULTCOUNT);
+			display_g_result();
 			wl_close(file_object);
 			break;
 			/* switch the algorithms */
