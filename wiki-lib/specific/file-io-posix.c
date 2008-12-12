@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <file-io.h>
+#include <msg.h>
 
 int wl_open(const char *filename, int flags)
 {
@@ -47,5 +48,6 @@ int wl_seek(int fd, unsigned int pos)
 
 int wl_ftell(int fd)
 {
-	return ftell(fd);
+	msg(MSG_ERROR, "%s() IS UNIMPLEMENTED!", __func__);
+	return -1;
 }
