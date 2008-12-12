@@ -45,3 +45,15 @@ int wl_seek(int fd, unsigned int pos)
 	return lseek(fd, pos, SEEK_SET);
 }
 
+int wl_eof(int fd)
+{
+	/* is non-zero if end of file has been reached,
+	 * and zero otherwise.
+	 * */
+	return = feof(fd);
+}
+
+int wl_ftell(int fd)
+{
+	return ftell(fd);
+}
