@@ -1,6 +1,7 @@
 #include <wikilib.h>
 #include <input.h>
 #include <msg.h>
+#include <search-test.h>
 
 int wikilib_init (void)
 {
@@ -9,6 +10,11 @@ int wikilib_init (void)
 
 int wikilib_run(void)
 {
+	search_test();
+
+	/* the above function does never return, so the code here
+	 * is unreached. I still leave it in as reference */
+
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
