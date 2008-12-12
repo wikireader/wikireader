@@ -19,7 +19,6 @@
 
 #include <string.h>
 #include <wikilib.h>
-#include <guilib.h>
 #include <file-io.h>
 #include <input.h>                                                              
 #include <msg.h>  
