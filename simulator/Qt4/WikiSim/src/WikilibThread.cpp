@@ -54,29 +54,38 @@ int wl_input_wait(struct wl_input_event *ev)
 	QMutex mutex;
 
 	ev->type = -1;
-	ev->val_a = 0;
-	ev->val_b = 0;
 
 	do {
 		mutex.lock();
 		w->wait(&mutex);
-		QKeyEvent keyEvent = display->keyEventQueue->dequeue();
-		mutex.unlock();
 
-		switch (keyEvent.type()) {
-		case QEvent::KeyPress:
+		if (!display->keyEventQueue->isEmpty()) {
+			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-			ev->val_a = keyEvent.text().at(0).unicode();
-			ev->val_b = 1;
-			break;
-		case QEvent::KeyRelease:
-			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-			ev->val_a = keyEvent.text().at(0).unicode();
-			ev->val_b = 0;
-			break;
-		default:
-			break;
+
+			switch (keyEvent.type()) {
+			case QEvent::KeyPress:
+				ev->key_event.keycode = keyEvent.text().at(0).unicode();
+				ev->key_event.value = 1;
+				break;
+			case QEvent::KeyRelease:
+				ev->key_event.keycode = keyEvent.text().at(0).unicode();
+				ev->key_event.value = 0;
+				break;
+			default:
+				break;
+			}
 		}
+
+		if (!display->mouseEventQueue->isEmpty()) {
+			QMouseEvent mouseEvent = display->mouseEventQueue->dequeue();
+			ev->type = WL_INPUT_EV_TYPE_TOUCH;
+			ev->touch_event.x = mouseEvent.x();
+			ev->touch_event.y = mouseEvent.y();
+			ev->touch_event.value = 1;
+		}
+
+		mutex.unlock();
 	} while (ev->type == -1);
 
 	return 0;

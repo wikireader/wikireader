@@ -32,6 +32,7 @@ WikiDisplay::WikiDisplay(QWidget *parent)
 	setMaximumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 	framebuffer = new QByteArray(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT, 0);
 	keyEventQueue = new QQueue<QKeyEvent>;
+	mouseEventQueue = new QQueue<QMouseEvent>;
 	waitCondition = new QWaitCondition();
 	grabKeyboard();
 }
@@ -66,6 +67,13 @@ WikiDisplay::keyPressEvent(QKeyEvent *event)
 		return;
 
 	keyEventQueue->enqueue(*event);
+	waitCondition->wakeAll();
+}
+
+void
+WikiDisplay::mousePressEvent(QMouseEvent *event)
+{
+	mouseEventQueue->enqueue(*event);
 	waitCondition->wakeAll();
 }
 

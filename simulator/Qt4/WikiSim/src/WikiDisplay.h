@@ -38,10 +38,12 @@ public:
     void clear(void);
     QWaitCondition *waitCondition;
     QQueue<QKeyEvent> *keyEventQueue;
+    QQueue<QMouseEvent> *mouseEventQueue;
 private:
     QByteArray *framebuffer;
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 };
 
 #endif
