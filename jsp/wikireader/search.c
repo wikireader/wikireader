@@ -263,7 +263,7 @@ int search()
 	ena_tex();
 	while (1) {
 		/*
-p		 * get command for the serial
+		 * get command for the serial
 		 */
 		struct wl_input_event ev; 
                 wl_input_wait(&ev);                                             
