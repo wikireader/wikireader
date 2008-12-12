@@ -11,8 +11,10 @@ char *wl_fgets(char *dst, unsigned int size, int fd)
 		if (wl_read(fd, dst, 1) != 1)
 			return NULL;
 
-		if (*dst == '\n' || *dst == '\r')
+		if (*dst == '\n' || *dst == '\r') {
+			*dst = '\0';
 			break;
+		}
 
 		dst++;
 	}

@@ -42,7 +42,7 @@ int split(char *source, char *word, char *sha1, char split_char)
 	*word='\0';
 
 	source++;
-        while (*source != 0)
+        while (*source != '\0')
                 *(sha1++) = *(source++);
 	*sha1='\0';
 
@@ -122,18 +122,21 @@ int binary_search (int fp, char *key)
 	long middle;
 	int comp;
 
-	if (wl_seek(fp, 0) != 0) {
-		msg(MSG_INFO, "wl_seek to 0 error");
+	int rt = wl_seek(fp, 0);
+	if (rt < 0) {
+		msg(MSG_INFO, "wl_seek to 0 error: %d", rt);
 		return -1;
 	}
 
 	while (left <= right) { 
 		middle = (left + right) / 2;
 
-		if (wl_seek(fp, middle) != 0) {
-			msg(MSG_INFO, "wl_seek to %d error", middle);
+		int rt = wl_seek(fp, middle);
+		if (rt < 0) {
+			msg(MSG_INFO, "wl_seek to %d error: %d", middle, rt);
 			return -1;
 		}
+
 		get_line_from_pos(fp, middle, line, LINECHARS);
 
 		split(line, title, hash, '-');
@@ -299,7 +302,7 @@ int search_test()
 			msg(MSG_INFO, "wl_open result = %d", file_object);
 
 			char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
-			msg(MSG_INFO, "test fgets function");
+			msg(MSG_INFO, "test wl_fgets function");
 			while (wl_fgets(line, LINECHARS, file_object) != NULL) {
 				split(line, title, hash, '-');
 				msg(MSG_INFO, "line:%s", line);
