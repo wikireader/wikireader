@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SEARCH_H_
-#define _SEARCH_H_
+#ifndef _SEARCH_TEST_H_
+#define _SEARCH_TEST_H_
 
 #define SPLIT_CHAR	'-'
 #define LINE_END		'\n'
@@ -28,11 +28,11 @@
 #define LINECHARS		560
 #define RESULTCOUNT	5
 
-char g_algorithm = 'L';
-char g_result[RESULTCOUNT][TITLECHARS];
+static char g_algorithm = 'L';
+static char g_result[RESULTCOUNT][TITLECHARS];
 
-int g_titles_count = 58;
-char *g_titles[]= {
+static int g_titles_count = 58;
+static char *g_titles[]= {
 	". .\0",
 	"1\0",
 	"2 am club\0",
@@ -93,7 +93,7 @@ char *g_titles[]= {
 	"zyzzyzus\0"
 };
 
-char *g_hash[] = {
+static char *g_hash[] = {
 	"7264a4c17f2d9d1dbc4bd02731b61722d8d40ef0",
 	"4d3a29a587a59da7a4a234f7261e4fc4d38e5105",
 	"4e491fd4a13e63623f10283a53d2e0ed5d51fb13",
@@ -154,7 +154,7 @@ char *g_hash[] = {
 	"e189d1dbab15374976c2e87d5d97ef5a5dd86084",
 };
 
-int g_offset[] = {
+static int g_offset[] = {
 	0,
 	104665,
 	127253,
@@ -195,7 +195,7 @@ int g_offset[] = {
 	296486592
 };
 
-char g_offset_char[] = {
+static char g_offset_char[] = {
 	'0',
 	'1',
 	'2',
@@ -234,6 +234,7 @@ char g_offset_char[] = {
 	'z'
 };
 
-int search_test();
+extern int search_test();
 
-#endif /* _SEARCH_H_ */
+#endif /* _SEARCH_TEST_H_ */
+

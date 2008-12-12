@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <t_services.h>
 #include <string.h>
 #include <wikilib.h>
 #include <guilib.h>
 #include <file-io.h>
 #include <input.h>                                                              
 #include <msg.h>  
-#include "search-test.h"
+#include <wl-time.h>
+#include <search-test.h>
 
 int file_object;
 char g_key[TITLECHARS];
@@ -209,11 +209,11 @@ int set_key_and_search(char c)
 
 	init_g_result();
 
-	SYSTIM begin_time;
-	SYSTIM end_time;
-	get_tim(&begin_time);
+	unsigned int begin_time;
+	unsigned int end_time;
+	begin_time = get_timer();
 	lookup(g_key, "\0");
-	get_tim(&end_time);
+	end_time = get_timer();
 	msg(MSG_INFO, "search time is: %d", end_time - begin_time);
 
 	display_array(g_result, RESULTCOUNT);
@@ -229,21 +229,21 @@ int set_key_and_search(char c)
 
 int time_test()
 {
-	SYSTIM  start_time_1;
-	SYSTIM  start_time_2;
-	SYSTIM  stop_time_1;
-	SYSTIM  stop_time_2;
+	unsigned int start_time_1;
+	unsigned int start_time_2;
+	unsigned int stop_time_1;
+	unsigned int stop_time_2;
 	int i = 0;
 
-	get_tim(&start_time_1);
+	start_time_1 = get_timer();
 	for (i = 0; i < g_titles_count; i++) {
 		msg(MSG_INFO, "title is:%s", g_titles[i]);
-		get_tim(&start_time_2);
+		start_time_2 = get_timer();
 		lookup(g_titles[i], g_hash[i]);
-		get_tim(&stop_time_2);
+		stop_time_2 = get_timer();
 		msg(MSG_INFO, "search time is:%d\n", stop_time_2 - start_time_2);
 	}
-	get_tim(&stop_time_1);
+	stop_time_1 = get_timer();
 	msg(MSG_INFO, "time all is:%d", stop_time_1 - start_time_1);
 
 	return 0;
@@ -254,11 +254,6 @@ int time_test()
  * */
 int search_test()
 {
-	/* wikilib_init(); */
-	/* guilib_init(); */
-	/* wikilib_run(); */
-
-	ena_tex();
 	while (1) {
 		/*
 		 * get command for the serial
