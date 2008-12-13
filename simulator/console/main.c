@@ -1,3 +1,23 @@
+/*
+    Wikipedia reader tools
+    ncurses based simulator
+
+    Copyright (c) 2008 Daniel Mack <daniel@caiaq.de>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <stdio.h>
 #include <ncurses.h>
 
@@ -20,16 +40,6 @@ int wl_input_wait(struct wl_input_event *ev)
 	ev->key_event.value = 1;
 	return 0;
 }
-
-void exit_handler(void)
-{
-	echo();
-	nocbreak();
-	clrtoeol();
-	refresh();
-	endwin();
-}
-
 
 void set_loglevel(int level)
 {
@@ -66,11 +76,12 @@ void msg(int level, const char *format, ...)
 
 int main(int argc, char *argv[])
 {
-	atexit(exit_handler);
 	initscr();
 	keypad(stdscr, TRUE);
 	noecho();
 	cbreak();
+	scrollok(stdscr, TRUE);
+	idlok(stdscr, TRUE);
 
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
