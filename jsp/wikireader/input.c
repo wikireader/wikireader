@@ -1,9 +1,3 @@
-#include <t_services.h>
-#include "search.h"
-#include <stdio.h>
-#include <string.h>
-
-#include <wikilib.h>
 #include <input.h>
 #include "sample1.h"
 
