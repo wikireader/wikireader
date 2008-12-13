@@ -13,7 +13,7 @@ Epson's S1C33E07 CPU has the possibility to boot from the following media:
 	* RS232
 
 For the Wikipedia reader, we only support SPI EEPROM (for normal operation)
-and RS232 (for initial bootstrapping and developent). This two options are
+and RS232 (for initial bootstrapping and development). This two options are
 selected by the CE10# line which is available at the PCB. The default is
 CE10# = low which make the CPU boot from EEPROM.
 
@@ -76,11 +76,11 @@ the usual case for deployment later.
 
 (3) The second stage EEPROM bootloader (eeprom-2nd)
 
-This is where SD card handling and file loading is done and we don't
-have this dramatic space problem here. 
+At this bootloader stage, we have to load our kernel from the SD card to
+extern SDRAM and execute it. FAT/FAT32 and SD card specific tasks are
+done be libfat, located in fatfs/.
 
- ...
-
+...
 
 
 (4) The e07load utility
