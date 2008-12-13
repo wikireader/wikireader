@@ -111,7 +111,7 @@ int get_char_offset(char c)
 /*
  * return the file's fptr value -1 mean not found
  * */
-int binary_search (int fp, char *key, char *p_hash)
+int binary_search (int fp, const char *key, const char *p_hash)
 {
 	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 
@@ -143,7 +143,7 @@ int binary_search (int fp, char *key, char *p_hash)
 		comp = scomp(key, title);
 		if (comp == 0) {
 			int comp_hash = scomp(p_hash, hash); 
-			comp_hash ? msg(MSG_INFO, "%s\n%s", p_hash, hash)
+			comp_hash ? msg(MSG_INFO, "%s\n%s\n", p_hash, hash)
 				: msg(MSG_INFO, "true\n");
 			return middle;
 		}
@@ -157,7 +157,7 @@ int binary_search (int fp, char *key, char *p_hash)
 /*
  * the linear seach is in this function
  * */
-char ** lookup(char *key, char *p_hash)
+char ** lookup(const char *key, const char *p_hash)
 {
 	char line[LINECHARS], title[TITLECHARS], hash[SHA1CHARS];
 	int rt = 0;
@@ -174,7 +174,7 @@ char ** lookup(char *key, char *p_hash)
 			}
 		}
 
-#if 1	
+#if 0
 		strcpy(g_result[0], line);
 		char line_temp[LINECHARS];
 		int k = 0;
@@ -257,6 +257,7 @@ int time_test()
  * */
 int search_test()
 {
+	msg(MSG_INFO, "--Begin Search Test--");
 	while (1) {
 		/*
 		 * get command for the serial
