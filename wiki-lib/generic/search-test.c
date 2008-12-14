@@ -173,19 +173,6 @@ char ** lookup(const char *key, const char *p_hash)
 				break;
 			}
 		}
-
-#if 0
-		strcpy(g_result[0], line);
-		char line_temp[LINECHARS];
-		int k = 0;
-		for (k = 1; k< RESULTCOUNT; k++) {
-			if (wl_fgets(line_temp, LINECHARS, file_object) != NULL) {
-				strcpy(g_result[k], line_temp);
-			} else {
-				break;
-			}
-		}
-#endif
 		break;
 	case 'B':
 		rt = binary_search(file_object, key, p_hash);
@@ -236,17 +223,24 @@ int time_test()
 	unsigned int start_time_2;
 	unsigned int stop_time_1;
 	unsigned int stop_time_2;
+	unsigned int file_io_time;
+	unsigned int file_io_time_all = 0;
 	int i = 0;
 
 	start_time_1 = get_timer();
 	for (i = 0; i < g_titles_count; i++) {
 		msg(MSG_INFO, "title is:%s", g_titles[i]);
 		start_time_2 = get_timer();
+		init_file_io_time();
 		lookup(g_titles[i], g_hash[i]);
+		file_io_time = get_file_io_time();
 		stop_time_2 = get_timer();
+		file_io_time_all += file_io_time;
+		msg(MSG_INFO, "file io time is:%d", file_io_time);
 		msg(MSG_INFO, "search time is:%d\n", stop_time_2 - start_time_2);
 	}
 	stop_time_1 = get_timer();
+	msg(MSG_INFO, "file io time all is:%d", file_io_time_all);
 	msg(MSG_INFO, "time all is:%d", stop_time_1 - start_time_1);
 
 	return 0;
@@ -321,9 +315,11 @@ int search_test()
 			/*
 			 * set whick index file use
 			 * */
-		case 'T':
+		case 'S':
 			file_object = wl_open("/index", WL_O_RDONLY);
 			msg(MSG_INFO, "index f_open result = %d", file_object);
+			break;
+		case 'T':
 			time_test();
 			wl_close(file_object);
 			break;
