@@ -58,15 +58,17 @@ INC_DIR=   $(SRCDIR)/include
 CPU_DIR=   $(SRCDIR)/config/$(CPU)
 SYS_DIR=   $(SRCDIR)/config/$(CPU)/$(SYS)
 GUILIB_DIR= ../../gui-lib/
-WIKILIB_DIR_GENERIC= ../../wiki-lib/generic/
-WIKILIB_DIR_SPECIFIC= ../../wiki-lib/specific
+WIKILIB_DIR_GENERIC= $(SRCDIR)/../wiki-lib/generic
+WIKILIB_DIR_SPECIFIC= $(SRCDIR)/../wiki-lib/specific
+FATLIB_DIR= $(SRCDIR)/../fatfs/src
 
 
 ### 2. If there are source files and so on in other directory, add Definitions
 STASK_DIR= $(SRCDIR)/systask
 UTASK_DIR= $(SRCDIR)/library
 vpath %.c  $(CPU_DIR):$(SYS_DIR):$(KER_DIR):$(STASK_DIR):$(UTASK_DIR):\
-	$(GUILIB_DIR):$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC)
+	$(GUILIB_DIR):$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC):\
+	$(FATLIB_DIR)
 
 # Include CPU / target dependence definitions.
 # following definitions are used later section.
@@ -87,16 +89,16 @@ DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
 GUILIB_COBJS= guilib.o glyph.o
 WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io.o time-toppers.o wikilib.o search-test.o
+FATLIB_COBJS= tff.o mmc.o fattime.o
 
 ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(WIKILIB_COBJS) \
-	     $(GUILIB_COBJS) $(KERNEL_LCOBJS)
+	     $(GUILIB_COBJS) $(FATLIB_COBJS) $(KERNEL_LCOBJS)
 
 OBJLDS= 
 
 C_LIBDIR= $(SRCDIR)/../mini-libc/lib
-FAT_LIBDIR= $(SRCDIR)/../fatfs/lib
-LIBS= $(FAT_LIBDIR)/libtinyfat.a $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
+LIBS= $(C_LIBDIR)/libc.a `$(CC) -print-libgcc-file-name`
 
 
 ### 4. Define compiler options, compilation rules and so on.
@@ -106,7 +108,8 @@ INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) 	\
 	-I$(SRCDIR)/../fatfs/src 		\
 	-I$(SRCDIR)/../fatfs/config/c33		\
 	-I$(SRCDIR)/../gui-lib			\
-	-I$(SRCDIR)/../wiki-lib/include
+	-I$(SRCDIR)/../wiki-lib/include		\
+	-I$(SRCDIR)/../bootloader
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe
