@@ -235,7 +235,6 @@ int time_test()
 		msg(MSG_INFO, "search time is:%d\n", stop_time_2 - start_time_2);
 	}
 	stop_time_1 = get_timer();
-	msg(MSG_INFO, "file io time all is:%d", file_io_time_all);
 	msg(MSG_INFO, "time all is:%d", stop_time_1 - start_time_1);
 
 	return 0;

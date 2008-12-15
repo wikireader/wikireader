@@ -2,7 +2,7 @@
 #include <input.h>
 #include <msg.h>
 
-/*extern int search_test(); */
+extern int search_test();
 
 int wikilib_init (void)
 {
