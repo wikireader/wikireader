@@ -25,9 +25,10 @@
 #include <wl-time.h>
 #include <search-test.h>
 
-int file_object;
-char g_key[TITLECHARS];
-int g_key_count = 0;
+static int file_object;
+static char g_key[TITLECHARS];
+static int g_key_count = 0;
+static unsigned int file_io_time_all = 0;
 
 /*
  * split the line with split_char to get title and hash
@@ -165,6 +166,7 @@ char ** lookup(const char *key, const char *p_hash)
 	case 'L': /* here is linear search */
 		while (wl_fgets(line, LINECHARS, file_object) != NULL) {
 			split(line, title, hash, '-');
+			msg(MSG_INFO, "line:%s", title);
 			int comp = scomp(key, title);
 			if (comp == 0) {
 				int comp_hash = scomp(p_hash, hash); 
@@ -190,7 +192,7 @@ char ** lookup(const char *key, const char *p_hash)
  * */
 int set_key_and_search(char c)
 {
-	if (c != SERAIL_ENTER) {
+	if (c != SERAIL_ENTER && c != CONSOLE_ENTER) {
 		g_key[g_key_count] = c;
 		g_key_count ++;
 		msg(MSG_INFO,"key is:%s", g_key);
@@ -223,20 +225,14 @@ int time_test()
 	unsigned int start_time_2;
 	unsigned int stop_time_1;
 	unsigned int stop_time_2;
-	unsigned int file_io_time;
-	unsigned int file_io_time_all = 0;
 	int i = 0;
 
 	start_time_1 = get_timer();
 	for (i = 0; i < g_titles_count; i++) {
 		msg(MSG_INFO, "title is:%s", g_titles[i]);
 		start_time_2 = get_timer();
-		init_file_io_time();
 		lookup(g_titles[i], g_hash[i]);
-		file_io_time = get_file_io_time();
 		stop_time_2 = get_timer();
-		file_io_time_all += file_io_time;
-		msg(MSG_INFO, "file io time is:%d", file_io_time);
 		msg(MSG_INFO, "search time is:%d\n", stop_time_2 - start_time_2);
 	}
 	stop_time_1 = get_timer();

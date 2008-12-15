@@ -11,23 +11,8 @@
 static FIL fil_list[MAX_FILES];
 static int fil_used[MAX_FILES] = { 0 };
 
-#ifdef COLLECT_TIME
-u32 init_file_io_time()
-{
-	time = 0;
-}
-
-u32 get_file_io_time()
-{
-	return time;
-}
-#endif
-
 int wl_open(const char *filename, int flags)
 {
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 	FIL *fil;
 	int i, ret, ff_flags = 0;
 	switch (flags) {
@@ -60,9 +45,6 @@ int wl_open(const char *filename, int flags)
 		return -ret;
 
 	fil_used[i] = 1;
-#ifdef COLLECT_TIME
-	time += get_timer() - time_start;
-#endif
 	return 0;
 }
 
@@ -73,17 +55,11 @@ void wl_close(int fd)
 	
 	f_close(fil_list + fd);
 	fil_used[fd] = 0;
-#ifdef COLLECT_TIME
-	time += get_timer() - time_start;
-#endif
 }
 
 int wl_read(int fd, void *buf, unsigned int count)
 {
 	int ret, rcount = -1;
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
@@ -92,9 +68,6 @@ int wl_read(int fd, void *buf, unsigned int count)
 	if (ret)
 		return -ret;
 
-#ifdef COLLECT_TIME
-	time += get_timer() - time_start;
-#endif
 	return rcount;
 }
 
@@ -121,9 +94,6 @@ int wl_write(int fd, void *buf, unsigned int count)
 
 int wl_seek(int fd, unsigned int pos)
 {
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 	int ret;
 
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
@@ -133,23 +103,14 @@ int wl_seek(int fd, unsigned int pos)
 	if (ret)
 		return -ret;
 
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 	return 0;
 }
 
 int wl_ftell(int fd)
 {
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
 	
-#ifdef COLLECT_TIME
-	time_start = get_timer();
-#endif
 	return fil_list[fd].fptr;
 }
 

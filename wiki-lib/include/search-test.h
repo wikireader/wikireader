@@ -22,6 +22,7 @@
 #define SPLIT_CHAR	'-'
 #define LINE_END		'\n'
 #define SERAIL_ENTER	'\r'
+#define CONSOLE_ENTER	'\n'
 
 #define SHA1CHARS	300		/* sha1 char count */
 #define TITLECHARS	260		/* the max chars of the title, the longest title is 250 chars*/
