@@ -63,3 +63,5 @@
 #define _FAT32 1
 /* To enable FAT32 support in addition of FAT12/16, set _FAT32 to 1. For tinyfat*/
 
+#define _USE_CACHE 1
+

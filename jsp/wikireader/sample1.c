@@ -106,7 +106,7 @@
 #include <tff.h>
 #include <wikilib.h>
 #include <guilib.h>
-
+#include <malloc.h>
 
 /*
  *  並行実行されるタスクへのメッセージ領域
@@ -233,6 +233,7 @@ void main_task(VP_INT exinf)
 	tex_loop = task_loop / 5;
 
 	ena_tex();
+	malloc_init();
 	wikilib_init();
 	guilib_init();
 	wikilib_run();
