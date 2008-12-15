@@ -1,7 +1,8 @@
 #include <wikilib.h>
 #include <input.h>
 #include <msg.h>
-#include <search-test.h>
+
+/*extern int search_test(); */
 
 int wikilib_init (void)
 {
@@ -12,8 +13,7 @@ int wikilib_run(void)
 {
 	search_test();
 
-	/* the above function does never return, so the code here
-	 * is unreached. I still leave it in as reference */
+	/* if you input 'E' the search_test will return */
 
 	for (;;) {
 		struct wl_input_event ev;

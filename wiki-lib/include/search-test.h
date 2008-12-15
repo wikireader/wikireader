@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/* this file can only include by the search-test.c */
+
 #ifndef _SEARCH_TEST_H_
 #define _SEARCH_TEST_H_
 
@@ -234,8 +237,6 @@ static char g_offset_char[] = {
 	'y',
 	'z'
 };
-
-extern int search_test();
 
 #endif /* _SEARCH_TEST_H_ */
 

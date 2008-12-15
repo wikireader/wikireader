@@ -28,7 +28,6 @@
 static int file_object;
 static char g_key[TITLECHARS];
 static int g_key_count = 0;
-static unsigned int file_io_time_all = 0;
 
 /*
  * split the line with split_char to get title and hash
