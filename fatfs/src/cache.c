@@ -1,36 +1,40 @@
 #include <string.h>
+#include <malloc.h>
+#include <msg.h>
 
 #include "integer.h"
 #include "diskio.h"
 #include "ff.h"
 #include "cache.h"
 
-#define NO_ENTRY	(0xffff)
-#define INDEX(i)	((i) & 0xffff)
-#define SECTOR(s)	((s) >> 16 & 0xffff)
-#define MKENTRY(i,s)	(((s) & 0xffff) << 16 | ((i) & 0xffff))
+#define NO_ENTRY	(0xffffffff)
+#define N_ENTRIES	(1000)
 
-#define MAX_SECTOR	_CACHE_SIZE
+static struct cache_entry
+{
+	DWORD sector;
+	BYTE *buf;
+} cache[N_ENTRIES];
 
-static BYTE sector_cache[_CACHE_SIZE * S_MAX_SIZ];
-static DWORD sector_cache_index[_CACHE_SIZE];
+
+int cache_hits = 0, cache_updates = 0;
+
+void dump_cache_stats(void)
+{
+	msg(0, "hits: %d, updates %d", cache_hits, cache_updates);
+}
 
 DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 {
 	DWORD i;
 
-	if (sector > MAX_SECTOR)
-		return RES_NOTRDY;
+	for (i = 0; i < N_ENTRIES; i++) {
+		if (cache[i].sector != sector)
+			continue;
 
-	for (i = 0; i < _CACHE_SIZE; i++) {
-		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
-			break;
-
-		if (SECTOR(sector_cache_index[i]) == sector) {
-			DWORD index = INDEX(sector_cache_index[i]);
-			memcpy(buff, sector_cache + index, S_MAX_SIZ);
-			return RES_OK;
-		}
+		cache_hits++;
+		memcpy(buff, cache[i].buf, S_MAX_SIZ);
+		return RES_OK;
 	}
 
 	return RES_NOTRDY;
@@ -39,69 +43,66 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 
 void cache_update_sector (const BYTE *buff, DWORD sector)
 {
-	DWORD i, index;
-	
-	if (sector > MAX_SECTOR)
+	DWORD i;
+
+	for (i = 0; i < N_ENTRIES; i++) {
+		if (cache[i].sector != sector)
+			continue;
+
+		memcpy(cache[i].buf, buff, S_MAX_SIZ);
 		return;
-
-	for (i = 0; i < _CACHE_SIZE; i++) {
-		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
-			return;
-
-		if (SECTOR(sector_cache_index[i]) == sector) {
-			index = INDEX(sector_cache_index[i]);
-			memcpy(sector_cache + S_MAX_SIZ * index, buff, S_MAX_SIZ);
-			return;
-		}
 	}
 }
 
 DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 {
-	DWORD i, index;
+	DWORD i;
 	
-	if (sector > MAX_SECTOR)
-		return RES_OK;
-
-	/* if already in cache, move the entry forward */
-	for (i = 0; i < _CACHE_SIZE; i++) {
-		if (SECTOR(sector_cache_index[i]) == NO_ENTRY)
+	/* if already in cache, move the entry forward by swapping
+	 * it with its neighbour */
+	for (i = 0; i < N_ENTRIES; i++) {
+		if (cache[i].sector == NO_ENTRY)
 			break;
+		
+		if (cache[i].sector != sector)
+			continue;
 
-		if (SECTOR(sector_cache_index[i]) == sector) {
-			DWORD tmp;
+		if (i != 0) {
+			BYTE *b = cache[i - 1].buf;
+			DWORD s = cache[i - 1].sector;
 
-			if (i != 0) {
-				tmp = sector_cache_index[i - 1];
-				sector_cache_index[i - 1] = sector_cache_index[i];
-				sector_cache_index[i] = tmp;
-			}
+			cache[i - 1].buf = cache[i].buf;
+			cache[i - 1].sector = cache[i].sector;
 
-			index = INDEX(sector_cache_index[i]);
-			memcpy(sector_cache + S_MAX_SIZ * index, buff, S_MAX_SIZ);
-			return RES_OK;
+			cache[i].buf = b;
+			cache[i].sector = s;
 		}
+
+		break;
 	}
 
-	/* if not, kick the last entry */
-	if (i == _CACHE_SIZE)
-		i--;
+	/* if not, kick last entry */
+	if (i == N_ENTRIES)
+		i++;
 
-	index = INDEX(sector_cache_index[i]);
-	sector_cache_index[i] = MKENTRY(index, sector);
-	memcpy(sector_cache + S_MAX_SIZ * index, buff, S_MAX_SIZ);
+	cache_updates++;
+	cache[i].sector = sector;
+	if (!cache[i].buf)
+		cache[i].buf = (BYTE *) malloc(S_MAX_SIZ);
+	
+	memcpy(cache[i].buf, buff, S_MAX_SIZ);
 	return RES_OK;
 }
 
 DSTATUS cache_init (void)
 {
-	DWORD i;
+	int i;
 
-	for (i = 0; i < _CACHE_SIZE; i++)
-		sector_cache_index[i] = MKENTRY(i, NO_ENTRY);
-	
+	for (i = 0; i < N_ENTRIES; i++) {
+		cache[i].sector = NO_ENTRY;
+		cache[i].buf = NULL;
+	}
+
 	return RES_OK;
 }
-
-
 

@@ -12,7 +12,11 @@
 #include <regs.h>
 #include <wikireader.h>
 #include "diskio.h"
-//#include "cache.h"
+#include "ff_config.h"
+
+#ifdef _USE_CACHE
+#include "cache.h"
+#endif
 
 /* Definitions for MMC/SDC command */
 #define CMD0	(0x40+0)	/* GO_IDLE_STATE */
@@ -363,7 +367,9 @@ DSTATUS disk_initialize (
 	BYTE n, cmd, ty, ocr[4];
 	DWORD timeout = 10000;
 
-	//cache_init();
+#ifdef _USE_CACHE
+	cache_init();
+#endif
 
 	if (drv) return STA_NOINIT;			/* Supports only single drive */
 	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
@@ -424,8 +430,6 @@ DSTATUS disk_status (
 	return Stat;
 }
 
-
-
 /*-----------------------------------------------------------------------*/
 /* Read Sector(s)                                                        */
 /*-----------------------------------------------------------------------*/
@@ -443,20 +447,27 @@ DRESULT disk_read (
 	if (!(CardType & 8)) sector *= 512;	/* Convert to byte address if needed */
 
 	if (count == 1) {	/* Single block read */
-		//if (cache_read_sector (buff, sector))
-		//	return RES_OK;
+#ifdef _USE_CACHE
+		if (cache_read_sector (buff, sector) == RES_OK)
+			return RES_OK;
+#endif
 
 		if ((send_cmd(CMD17, sector) == 0)	/* READ_SINGLE_BLOCK */
 			&& rcvr_datablock(buff, 512))
 			count = 0;
 
-		//if (count)
-		//	cache_write_sector(buff, sector);
+#ifdef _USE_CACHE
+		if (count == 0)
+			cache_write_sector(buff, sector);
+#endif
 	}
 	else {				/* Multiple block read */
 		if (send_cmd(CMD18, sector) == 0) {	/* READ_MULTIPLE_BLOCK */
 			do {
 				if (!rcvr_datablock(buff, 512)) break;
+#ifdef _USE_CACHE
+				cache_write_sector(buff, sector++);
+#endif
 				buff += 512;
 			} while (--count);
 			send_cmd(CMD12, 0);				/* STOP_TRANSMISSION */
@@ -491,8 +502,10 @@ DRESULT disk_write (
 		if ((send_cmd(CMD24, sector) == 0)	/* WRITE_BLOCK */
 			&& xmit_datablock(buff, 0xFE))
 			count = 0;
-		
-		//cache_update_sector(buff, sector);
+
+#ifdef _USE_CACHE
+		cache_update_sector(buff, sector);
+#endif
 	}
 	else {				/* Multiple block write */
 		if (CardType & 6) send_cmd(ACMD23, count);
@@ -500,7 +513,9 @@ DRESULT disk_write (
 			do {
 				if (!xmit_datablock(buff, 0xFC)) break;
 				buff += 512;
-				//cache_update_sector(buff, sector++);
+#ifdef _USE_CACHE
+				cache_update_sector(buff, sector++);
+#endif
 			} while (--count);
 			if (!xmit_datablock(0, 0xFD))	/* STOP_TRAN token */
 				count = 1;
