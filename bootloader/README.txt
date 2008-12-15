@@ -1,6 +1,6 @@
 
 	OpenMoko Dictionary hardware bootloader
-	Copyright (c) 7/8/2008 by Daniel Mack <daniel@caiaq.de>
+	Copyright (c) 2008 by Daniel Mack <daniel@caiaq.de>
 
 
 (0) Preamble
@@ -51,10 +51,9 @@ the EEPROM and call the next bootloader. These are the functions:
 
 	* Initialize the SPI interface
 	* Set up the serial console to 57600/8N1
-	* Initialize the external SDRAM (mapped to area 19, 0x10000000)
 	* Read a fix number (determined at compile time) of bytes from
-	  EEPROM's logical address 0x300 and copy the to the external
-	  RAM @0x10000000
+	  EEPROM's logical address 0x300 and copy the to the internal
+	  RAM @0x200, right after the image we loaded before.
 	* Outputs the character '!' to indicate the following jump
 	* Jump to the location of the newly loaded code
 
@@ -64,9 +63,9 @@ which can be selected at compile time with a simple #define switch in
 the first lines. When compiled for serial mode, it does the following:
 
 	* Set up the serial console to 57600/8N1
-	* Initialize the external SDRAM (mapped to area 19, 0x10000000)
-	* Loads a fix number (hardcoded in this case, 30000 for now)
-	  from the RS232 line and copies them to the external RAM location
+	* Loads a fix number (hardcoded in this case, 8192-512 = 7680)
+	  of bytes from the RS232 line and copies them to the internal
+	  RAM at address 0x200.
 	* Outputs the character '!' to indicate the following jump
 	* Jump to the location of the newly loaded code
 
@@ -78,9 +77,21 @@ the usual case for deployment later.
 
 At this bootloader stage, we have to load our kernel from the SD card to
 extern SDRAM and execute it. FAT/FAT32 and SD card specific tasks are
-done be libfat, located in fatfs/.
+done be libfat, located in fatfs/. This bootloader stage has to fit into
+the internal RAM, starting at address 0x200. As this internal RAM has
+a size limit of 8192 bytes, the binary has to fit in 8192-512 = 7680
+bytes.
 
-...
+The kernel is then loaded to external SDRAM. In fact, as the kernel is
+deployed as ELF32 binary and the load address is taken from the ELF32
+headers, the final location of the kernel can be anywhere in the memory
+map. The kernel is built in a way that all its sections and its entry
+point is located at address 0x10000000.
+
+	* Initialize the external SDRAM (mapped to area 19, 0x10000000)
+	* Use libfat to access the SD card and load the ELF32 file
+	  '/kernel' to wherever it wants to be loaded.
+	* Jump to the entry point of the kernel image
 
 
 (4) The e07load utility

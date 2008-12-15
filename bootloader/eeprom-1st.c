@@ -26,7 +26,7 @@
 
 int main(void) {
 #ifdef EEPROM1ST_LOAD_FROM_RS232
-	unsigned int len = 8192;
+	unsigned int len = 8192 - 512;
 #endif
 	u8 *dest = (u8 *) DEST;
 
