@@ -24,6 +24,24 @@ void dump_cache_stats(void)
 	msg(0, "hits: %d, updates %d", cache_hits, cache_updates);
 }
 
+static void __cache_entry_move_up(DWORD entry)
+{
+	BYTE *b;
+	DWORD s;
+
+	if (entry == 0)
+		return;
+	
+	b = cache[entry - 1].buf;
+	s = cache[entry - 1].sector;
+
+	cache[entry - 1].buf = cache[entry].buf;
+	cache[entry - 1].sector = cache[entry].sector;
+
+	cache[entry].buf = b;
+	cache[entry].sector = s;
+}
+
 DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 {
 	DWORD i;
@@ -33,6 +51,7 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 			continue;
 
 		cache_hits++;
+		__cache_entry_move_up(i);
 		memcpy(buff, cache[i].buf, S_MAX_SIZ);
 		return RES_OK;
 	}
@@ -67,17 +86,7 @@ DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 		if (cache[i].sector != sector)
 			continue;
 
-		if (i != 0) {
-			BYTE *b = cache[i - 1].buf;
-			DWORD s = cache[i - 1].sector;
-
-			cache[i - 1].buf = cache[i].buf;
-			cache[i - 1].sector = cache[i].sector;
-
-			cache[i].buf = b;
-			cache[i].sector = s;
-		}
-
+		__cache_entry_move_up(i);
 		break;
 	}
 
