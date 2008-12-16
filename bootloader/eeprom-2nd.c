@@ -39,13 +39,11 @@ int main(void)
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, 0x1500");
 
-	print("Bootloader starting\n");
+	//print("Bootloader starting\n");
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
-
-	print_u32(elf_exec(KERNEL)* -1);
-        print("\n");
+	init_lcd();
 	
 	/* load the 'could not boot from SD card' image */
 	eeprom_load(0x10000, (u8 *) 0x10000000, (320 * 240) / 2);
@@ -56,7 +54,8 @@ int main(void)
 			*(char *) i ^= 0xff;
 	}
 #endif
-	init_lcd();
+	print_u32(elf_exec(KERNEL) * -1);
+        print("\n");
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
