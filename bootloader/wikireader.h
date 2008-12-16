@@ -114,7 +114,7 @@ static inline void init_ram(void)
         /* enable RAM self-refresh */
         REG_SDRAMC_REF = (1 << 25);
 
-        REG_SDRAMC_INI = 0x10;  /* exit setup mode */
+        REG_SDRAMC_INI = 0x14;  /* enter setup mode */
 
         /* SDRAM command sequence: PALL - REF - REF - MRS (for MT48LC16M16A2) */
         REG_SDRAMC_INI = 0x12;  /* INIPRE */
