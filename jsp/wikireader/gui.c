@@ -1,10 +1,22 @@
+#include <wikilib.h>
 #include <guilib.h>
+#include <malloc.h>
+#include <string.h>
 
-unsigned char *framebuffer = (unsigned char *) 0x10000000;
+/* FIXME: don't use bootloader includes */
+#include <regs.h>
+
+unsigned char *framebuffer;
+
+void fb_init(void)
+{
+	framebuffer = (unsigned char *) malloc((FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
+	REG_LCDC_MADD = (unsigned int) framebuffer;
+}
 
 void fb_clear(void)
 {
-//	memset(framebuffer, 0, (FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
+	memset(framebuffer, 0, (FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
 }
 
 void fb_refresh(void)
@@ -15,8 +27,6 @@ void fb_refresh(void)
 
 void fb_set_pixel(int x, int y, int val)
 {
-	return;
-
         if (x & 1) {
                 framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] &= 0xf0;
                 framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] |= val & 0xf;
