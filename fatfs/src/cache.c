@@ -10,14 +10,12 @@
 #define NO_ENTRY	(0xffffffff)
 #define N_ENTRIES	(1000)
 
+static int cache_hits = 0, cache_updates = 0;
 static struct cache_entry
 {
 	DWORD sector;
 	BYTE *buf;
 } cache[N_ENTRIES];
-
-
-int cache_hits = 0, cache_updates = 0;
 
 void dump_cache_stats(void)
 {
@@ -59,7 +57,6 @@ DSTATUS cache_read_sector (BYTE *buff, DWORD sector)
 	return RES_NOTRDY;
 }
 
-
 void cache_update_sector (const BYTE *buff, DWORD sector)
 {
 	DWORD i;
@@ -83,11 +80,10 @@ DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 		if (cache[i].sector == NO_ENTRY)
 			break;
 		
-		if (cache[i].sector != sector)
-			continue;
-
-		__cache_entry_move_up(i);
-		break;
+		if (cache[i].sector == sector) {
+			__cache_entry_move_up(i);
+			break;
+		}
 	}
 
 	/* if not, kick last entry */
@@ -105,7 +101,7 @@ DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 
 DSTATUS cache_init (void)
 {
-	int i;
+	DWORD i;
 
 	for (i = 0; i < N_ENTRIES; i++) {
 		cache[i].sector = NO_ENTRY;
