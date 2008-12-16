@@ -92,7 +92,7 @@ DSTATUS cache_write_sector (const BYTE *buff, DWORD sector)
 
 	/* if not, kick last entry */
 	if (i == N_ENTRIES)
-		i++;
+		i--;
 
 	cache_updates++;
 	cache[i].sector = sector;
