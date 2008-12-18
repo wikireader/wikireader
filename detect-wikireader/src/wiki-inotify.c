@@ -50,7 +50,7 @@ int init_monitor(void)
 	return 0;
 }
 
-void run_monitor(void)
+int run_monitor(void)
 {
 	int return_value;
 	fd_set descriptors;
@@ -90,6 +90,7 @@ void run_monitor(void)
 					strcat(path, "/");
 					strcat(path, event->name);
 					strcat(path, KERNEL);
+					sleep(2);
 					check_wikireader(path);
 				} else {
 					syslog(LOG_INFO, "The file %s was created.\n", event->name );
@@ -112,6 +113,7 @@ void run_monitor(void)
 		}
 	}
 
+	return 0;
 }
 
 void close_monitor(void)

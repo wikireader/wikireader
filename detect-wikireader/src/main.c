@@ -103,7 +103,9 @@ int daemon_init(void)
         }
         
 	int lfp;
-	lfp = open(LOCK_FILE, O_RDWR|O_CREAT, 0640);
+	lfp = open(LOCK_FILE, O_RDWR|O_CREAT, 
+		   S_IRUSR | S_IWUSR |
+		   S_IRGRP | S_IROTH);
 	if (lfp < 0) {
 		syslog(LOG_INFO, "can not open lock file."); 
 		exit(EXIT_FAILURE);
@@ -114,12 +116,12 @@ int daemon_init(void)
 	}
 
 	sprintf(str, "%d\n", getpid());	/* first instance continues */
-	write(lfp, str, strlen(str)); /* record pid to lockfile */
+	write(lfp, str, strlen(str));		 /* record pid to lockfile */
 
 	/* close all descriptors */
 	int desc;
 	for (desc = getdtablesize(); desc >= 0; --desc) 
-		close(desc); 
+		close(desc);
 
 	return 0;
 } 
