@@ -24,11 +24,12 @@ int check_wikireader(char *path)
 {
 	if (access(path, R_OK) == 0 ) {
 		syslog(LOG_INFO, "yes. this is wikireader sd card --%s--.", path );
-		/*TODO: open websit wiki.openmoko.com */
+		/*TODO: open websit wiki.openmoko.com
+		 * open wiki-reader simulator
+		 */
 		system("firefox   http://wiki.openmoko.org");
 		syslog(LOG_INFO, "firefox");
 	} else {
-		system("firefox   http://wiki.openmoko.org");
 		syslog(LOG_INFO, "no. this is not wikireader sd card --%s--.", path );
 	}
 
