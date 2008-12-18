@@ -1,0 +1,609 @@
+From 980d904b4c24c2ecd04d48f9de129b4380778ada Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Thu, 18 Dec 2008 01:01:20 +0100
+Subject: [PATCH] Hack in a copy of PangoFT2. And start painting
+
+    - We have the positions of each glyph now!
+    - Next step is to get the bitmap out of the
+      FT_Face!
+---
+ WebCore/platform/graphics/gtk/FontGtk.cpp |  531 ++++++++++++++++++++++++-----
+ 1 files changed, 442 insertions(+), 89 deletions(-)
+
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index e8e0342..d3b9bf9 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include "config.h"
++#define PANGO_ENABLE_BACKEND
+ #include "Font.h"
+ 
+ #include "GraphicsContext.h"
+@@ -39,8 +40,11 @@
+ 
+ #include <cairo.h>
+ #include <gdk/gdk.h>
++
++// We are a backend now!
+ #include <pango/pango.h>
+ #include <pango/pangocairo.h>
++#include <pango/pangoft2.h>
+ #if defined(USE_FREETYPE)
+ #include <pango/pangofc-fontmap.h>
+ #endif
+@@ -51,6 +55,420 @@
+ #define PANGO_VERSION_CHECK(major,minor,micro) 0
+ #endif
+ 
++
++// Export some internal data...
++
++// From panfoft2-private.h.... eeeek eeek eeek this needs to match
++// with the right version of pango-ft2
++double startX, startY;
++typedef struct _PangoFT2GlyphInfo PangoFT2GlyphInfo;
++typedef struct _PangoFT2Renderer  PangoFT2Renderer;
++
++struct _PangoFT2GlyphInfo
++{
++  PangoRectangle logical_rect;
++  PangoRectangle ink_rect;
++  void *cached_glyph;
++};
++
++#define PANGO_TYPE_FT2_FONT              (pango_ft2_font_get_type ())
++#define PANGO_FT2_FONT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), PANGO_TYPE_FT2_FONT, PangoFT2Font))
++#define PANGO_FT2_IS_FONT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_FT2_FONT))
++
++GType pango_ft2_font_get_type (void) G_GNUC_CONST;
++
++// From pangoft2-render.c LGPL (C) 2004 RedHat, (C) Tor Lillqvist
++typedef struct _WebKitFT2RendererClass WebKitFT2RendererClass;
++typedef struct _WebKitFT2Renderer WebKitFT2Renderer;
++
++#define WEBKIT_TYPE_FT2_RENDERER            (webkit_ft2_renderer_get_type())
++#define WEBKIT_FT2_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), WEBKIT_TYPE_FT2_RENDERER, WebKitFT2RendererClass))
++#define WEBKIT_IS_FT2_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), WEBKIT_TYPE_FT2_RENDERER))
++#define WEBKIT_FT2_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), WEBKIT_TYPE_FT2_RENDERER, WebKitFT2RendererClass))
++#define WEBKIT_FT2_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), WEBKIT_TYPE_FT2_RENDERER, WebKitFT2Renderer))
++
++struct _WebKitFT2Renderer
++{
++  PangoRenderer parent_instance;
++
++  FT_Bitmap *bitmap;
++};
++
++struct _WebKitFT2RendererClass
++{
++  PangoRendererClass parent_class;
++};
++
++static void webkit_ft2_renderer_draw_glyph     (PangoRenderer    *renderer,
++					       PangoFont        *font,
++					       PangoGlyph        glyph,
++					       double            x,
++					       double            y);
++
++static void
++webkit_ft2_renderer_init (WebKitFT2Renderer *renderer)
++{
++}
++
++static void
++webkit_ft2_renderer_class_init (WebKitFT2RendererClass *klass)
++{
++  PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
++
++  renderer_class->draw_glyph = webkit_ft2_renderer_draw_glyph;
++}
++
++G_DEFINE_TYPE (WebKitFT2Renderer, webkit_ft2_renderer, PANGO_TYPE_RENDERER)
++
++
++static void
++webkit_ft2_renderer_set_bitmap (WebKitFT2Renderer *renderer,
++			      FT_Bitmap         *bitmap)
++{
++  renderer->bitmap = bitmap;
++}
++
++typedef struct
++{
++  FT_Bitmap bitmap;
++  int bitmap_left;
++  int bitmap_top;
++} WebKitFT2RenderedGlyph;
++
++static void
++webkit_ft2_free_rendered_glyph (WebKitFT2RenderedGlyph *rendered)
++{
++  g_free (rendered->bitmap.buffer);
++  g_slice_free (WebKitFT2RenderedGlyph, rendered);
++}
++
++static WebKitFT2RenderedGlyph *
++webkit_ft2_font_render_box_glyph (int      width,
++				 int      height,
++				 int      top,
++				 gboolean invalid)
++{
++  WebKitFT2RenderedGlyph *box;
++  int i, j, offset1, offset2, line_width;
++
++  line_width = MAX ((height + 43) / 44, 1);
++  if (width < 1 || height < 1)
++    line_width = 0;
++
++  box = g_slice_new (WebKitFT2RenderedGlyph);
++
++  box->bitmap_left = 0;
++  box->bitmap_top = top;
++
++  box->bitmap.pixel_mode = ft_pixel_mode_grays;
++
++  box->bitmap.width = width;
++  box->bitmap.rows = height;
++  box->bitmap.pitch = height;
++
++  box->bitmap.buffer = (unsigned char*)g_malloc0 (box->bitmap.rows * box->bitmap.pitch);
++
++  /* draw the box */
++  for (j = 0; j < line_width; j++)
++    {
++      offset1 = box->bitmap.pitch * (MIN (1 + j, height - 1));
++      offset2 = box->bitmap.pitch * (MAX (box->bitmap.rows - 2 - j, 0));
++      for (i = 1;
++	   i < box->bitmap.width - 1;
++	   i++)
++	{
++	  box->bitmap.buffer[offset1 + i] = 0xff;
++	  box->bitmap.buffer[offset2 + i] = 0xff;
++	}
++    }
++  for (j = 0; j < line_width; j++)
++    {
++      offset1 = MIN (1 + j, width - 1);
++      offset2 = MAX (box->bitmap.width - 2 - j, 0);
++      for (i = box->bitmap.pitch;
++	   i < (box->bitmap.rows - 1) * box->bitmap.pitch;
++	   i += box->bitmap.pitch)
++	{
++	  box->bitmap.buffer[offset1 + i] = 0xff;
++	  box->bitmap.buffer[offset2 + i] = 0xff;
++	}
++    }
++
++  if (invalid)
++    {
++      /* XXX This may scrabble memory.  Didn't check close enough */
++      int inc = PANGO_SCALE * MAX (width - line_width, 0) / (height + 1);
++      offset1 = PANGO_SCALE;
++      offset2 = PANGO_SCALE * MAX (width - line_width - 1, 0) ;
++      for (i = box->bitmap.pitch;
++	   i < (box->bitmap.rows - 1) * box->bitmap.pitch;
++	   i += box->bitmap.pitch)
++        {
++	  for (j = 0; j < line_width; j++)
++	    {
++	      box->bitmap.buffer[PANGO_PIXELS (offset1) + i + j] = 0xff;
++	      box->bitmap.buffer[PANGO_PIXELS (offset2) + i + j] = 0xff;
++	    }
++	  offset1 += inc;
++	  offset2 -= inc;
++	}
++
++    }
++
++  return box;
++}
++
++static WebKitFT2RenderedGlyph *
++webkit_ft2_font_render_glyph (PangoFont *font,
++			     PangoGlyph glyph_index)
++{
++  FT_Face face;
++  gboolean invalid_input;
++
++  invalid_input = glyph_index == PANGO_GLYPH_INVALID_INPUT || (glyph_index & ~PANGO_GLYPH_UNKNOWN_FLAG) > 0x10FFFF;
++
++  if (glyph_index & PANGO_GLYPH_UNKNOWN_FLAG)
++    {
++      WebKitFT2RenderedGlyph *box;
++      PangoFontMetrics *metrics;
++
++      if (!font)
++	goto generic_box;
++
++      metrics = pango_font_get_metrics (font, NULL);
++      if (!metrics)
++	goto generic_box;
++
++      box = webkit_ft2_font_render_box_glyph (PANGO_PIXELS (metrics->approximate_char_width),
++					     PANGO_PIXELS (metrics->ascent + metrics->descent),
++					     PANGO_PIXELS (metrics->ascent),
++					     invalid_input);
++      pango_font_metrics_unref (metrics);
++
++      return box;
++    }
++
++  face = pango_ft2_font_get_face (font);
++
++  if (face)
++    {
++      WebKitFT2RenderedGlyph *rendered;
++
++      rendered = g_slice_new (WebKitFT2RenderedGlyph);
++
++      /* Draw glyph */
++      FT_Load_Glyph (face, glyph_index, FT_LOAD_DEFAULT);
++      FT_Render_Glyph (face->glyph, FT_RENDER_MODE_NORMAL);
++
++      rendered->bitmap = face->glyph->bitmap;
++      rendered->bitmap.buffer = (unsigned char*)g_memdup (face->glyph->bitmap.buffer,
++					  face->glyph->bitmap.rows * face->glyph->bitmap.pitch);
++      rendered->bitmap_left = face->glyph->bitmap_left;
++      rendered->bitmap_top = face->glyph->bitmap_top;
++
++      return rendered;
++    }
++  else
++    {
++generic_box:
++      return  webkit_ft2_font_render_box_glyph (PANGO_UNKNOWN_GLYPH_WIDTH,
++					       PANGO_UNKNOWN_GLYPH_HEIGHT,
++					       PANGO_UNKNOWN_GLYPH_HEIGHT,
++					       invalid_input);
++    }
++}
++
++static void
++webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
++			       PangoFont     *font,
++			       PangoGlyph     glyph,
++			       double         x,
++			       double         y)
++{
++  FT_Bitmap *bitmap = WEBKIT_FT2_RENDERER (renderer)->bitmap;
++  WebKitFT2RenderedGlyph *rendered_glyph;
++  guchar *src, *dest;
++
++  int x_start, x_limit;
++  int y_start, y_limit;
++  int ixoff = floor (x + 0.5);
++  int iyoff = floor (y + 0.5);
++  int ix, iy;
++
++  if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
++    {
++      /* Since we don't draw hexbox for FT2 renderer,
++       * unifiy the rendered bitmap in the cache by converting
++       * all missing glyphs to either INVALID_INPUT or UNKNOWN_FLAG.
++       */
++
++      gunichar wc = glyph & (~PANGO_GLYPH_UNKNOWN_FLAG);
++
++      if (G_UNLIKELY (glyph == PANGO_GLYPH_INVALID_INPUT || wc > 0x10FFFF))
++	glyph = PANGO_GLYPH_INVALID_INPUT;
++      else
++	glyph = PANGO_GLYPH_UNKNOWN_FLAG;
++    }
++
++  rendered_glyph = webkit_ft2_font_render_glyph (font, glyph);
++
++  x_start = MAX (0, - (ixoff + rendered_glyph->bitmap_left));
++  x_limit = MIN (rendered_glyph->bitmap.width,
++		 bitmap->width - (ixoff + rendered_glyph->bitmap_left));
++
++  y_start = MAX (0,  - (iyoff - rendered_glyph->bitmap_top));
++  y_limit = MIN (rendered_glyph->bitmap.rows,
++		 bitmap->rows - (iyoff - rendered_glyph->bitmap_top));
++  printf("Drawing: %u at %g,%g\n", glyph, x + startX, y + startY);
++
++  src = rendered_glyph->bitmap.buffer +
++    y_start * rendered_glyph->bitmap.pitch;
++
++  dest = bitmap->buffer +
++    (y_start + iyoff - rendered_glyph->bitmap_top) * bitmap->pitch +
++    x_start + ixoff + rendered_glyph->bitmap_left;
++
++  switch (rendered_glyph->bitmap.pixel_mode)
++    {
++    case ft_pixel_mode_grays:
++      src += x_start;
++      for (iy = y_start; iy < y_limit; iy++)
++	{
++	  guchar *s = src;
++	  guchar *d = dest;
++
++	  for (ix = x_start; ix < x_limit; ix++)
++	    {
++	      switch (*s)
++		{
++		case 0:
++		  break;
++		case 0xff:
++		  *d = 0xff;
++		default:
++		  *d = MIN ((gushort) *d + (gushort) *s, 0xff);
++		  break;
++		}
++
++	      s++;
++	      d++;
++	    }
++
++	  dest += bitmap->pitch;
++	  src  += rendered_glyph->bitmap.pitch;
++	}
++      break;
++
++    case ft_pixel_mode_mono:
++      src += x_start / 8;
++      for (iy = y_start; iy < y_limit; iy++)
++	{
++	  guchar *s = src;
++	  guchar *d = dest;
++
++	  for (ix = x_start; ix < x_limit; ix++)
++	    {
++	      if ((*s) & (1 << (7 - (ix % 8))))
++		*d |= 0xff;
++
++	      if ((ix % 8) == 7)
++		s++;
++	      d++;
++	    }
++
++	  dest += bitmap->pitch;
++	  src  += rendered_glyph->bitmap.pitch;
++	}
++      break;
++
++    default:
++#if 0
++      g_warning ("webkit_ft2_render: "
++		 "Unrecognized glyph bitmap pixel mode %d\n",
++		 rendered_glyph->bitmap.pixel_mode);
++#endif
++      break;
++    }
++
++
++#if 0
++  if (add_glyph_to_cache)
++    {
++      _webkit_ft2_font_set_glyph_cache_destroy (font,
++					       (GDestroyNotify) webkit_ft2_free_rendered_glyph);
++      _webkit_ft2_font_set_cache_glyph_data (font,
++					    glyph, rendered_glyph);
++    }
++#else
++    webkit_ft2_free_rendered_glyph(rendered_glyph);
++#endif
++}
++
++/**
++ * pango_ft2_render_layout_subpixel:
++ * @bitmap:    a <type>FT_Bitmap</type> to render the layout onto
++ * @layout:    a #PangoLayout
++ * @x:         the X position of the left of the layout (in Pango units)
++ * @y:         the Y position of the top of the layout (in Pango units)
++ *
++ * Render a #PangoLayout onto a FreeType2 bitmap, with he
++ * location specified in fixed-point Pango units rather than
++ * pixels. (Using this will avoid extra inaccuracies from
++ * rounding to integer pixels multiple times, even if the
++ * final glyph positions are integers.)
++ *
++ * Since: 1.6
++ */
++static void
++webkit_ft2_render_layout_line_subpixel (WebKitFT2Renderer *renderer,
++                                  FT_Bitmap   *bitmap,
++				  PangoLayoutLine *line,
++				  int          x,
++				  int          y)
++{
++  PangoContext *context;
++  PangoFontMap *fontmap;
++
++  g_return_if_fail (bitmap != NULL);
++  g_return_if_fail (line != NULL);
++
++  context = pango_layout_get_context (line->layout);
++  fontmap = pango_context_get_font_map (context);
++
++  webkit_ft2_renderer_set_bitmap (renderer, bitmap);
++
++  pango_renderer_draw_layout_line (PANGO_RENDERER(renderer), line, x, y);
++}
++
++// from viewer-pangoft2.c
++static FT_Bitmap*                                                                      
++create_surface (int      width,                                                            
++                int      height)                                                           
++{                                                                                                        
++  FT_Bitmap *bitmap;                                                                                     
++                                                                                                         
++  bitmap = g_slice_new (FT_Bitmap);                                                                      
++  bitmap->width = width;                                                                                 
++  bitmap->pitch = (bitmap->width + 3) & ~3;                                                              
++  bitmap->rows = height;                                                                                 
++  bitmap->buffer = (unsigned char*)g_malloc (bitmap->pitch * bitmap->rows); 
++  bitmap->num_grays = 256;                                                                               
++  bitmap->pixel_mode = ft_pixel_mode_grays;                                                              
++  memset (bitmap->buffer, 0x00, bitmap->pitch * bitmap->rows);                                           
++                                                                                                         
++  return bitmap;                                                                                         
++}
++
++static void                                                                                              
++destroy_surface (gpointer surface)                                                         
++{                                                                                                        
++  FT_Bitmap *bitmap = (FT_Bitmap *) surface;                                                             
++
++  g_free (bitmap->buffer);
++  g_slice_free (FT_Bitmap, bitmap);
++}
++
++
+ namespace WebCore {
+ 
+ #define IS_HIGH_SURROGATE(u)  ((UChar)(u) >= (UChar)0xd800 && (UChar)(u) <= (UChar)0xdbff)
+@@ -145,12 +563,14 @@ static gchar* convertUniCharToUTF8(const UChar* characters, gint length, int fro
+ static void setPangoAttributes(const Font* font, const TextRun& run, PangoLayout* layout)
+ {
+ #if defined(USE_FREETYPE)
++    #warning "fooo"
+     if (font->primaryFont()->m_font.m_pattern) {
+         PangoFontDescription* desc = pango_fc_font_description_from_pattern(font->primaryFont()->m_font.m_pattern, FALSE);
+         pango_layout_set_font_description(layout, desc);
+         pango_font_description_free(desc);
+     }
+ #elif defined(USE_PANGO)
++    #warning "boo"
+     if (font->primaryFont()->m_font.m_font) {
+         PangoFontDescription* desc = pango_font_describe(font->primaryFont()->m_font.m_font);
+         pango_layout_set_font_description(layout, desc);
+@@ -183,14 +603,21 @@ static void setPangoAttributes(const Font* font, const TextRun& run, PangoLayout
+     pango_attr_list_unref(list);
+ }
+ 
++// We should create the layout with our actual context but we can't access it from here.
++static PangoLayout* getDefaultPangoLayout(const TextRun& run)
++{
++    static PangoFontMap* map = pango_ft2_font_map_new();
++    static PangoContext* pangoContext = pango_font_map_create_context(map);
++    PangoLayout* layout = pango_layout_new(pangoContext);
++
++    return layout;
++}
++
++
+ // We will have to extract the glyph's here...
+ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const FloatPoint& point, int from, int to) const
+ {
+-    cairo_t* cr = context->platformContext();
+-    cairo_save(cr);
+-    cairo_translate(cr, point.x(), point.y());
+-
+-    PangoLayout* layout = pango_cairo_create_layout(cr);
++    PangoLayout* layout = getDefaultPangoLayout(run);
+     setPangoAttributes(this, run, layout);
+ 
+     gchar* utf8 = convertUniCharToUTF8(run.characters(), run.length(), 0, run.length());
+@@ -199,96 +626,22 @@ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const F
+     // Our layouts are single line
+     PangoLayoutLine* layoutLine = pango_layout_get_line_readonly(layout, 0);
+ 
+-    GdkRegion* partialRegion = NULL;
+-    if (to - from != run.length()) {
+-        // Clip the region of the run to be rendered
+-        char* start = g_utf8_offset_to_pointer(utf8, from);
+-        char* end = g_utf8_offset_to_pointer(start, to - from);
+-        int ranges[] = {start - utf8, end - utf8};
+-        partialRegion = gdk_pango_layout_line_get_clip_region(layoutLine, 0, 0, ranges, 1);
+-        gdk_region_shrink(partialRegion, 0, -pixelSize());
+-    }
++    // For the glyph transformation... run it through our custom renderer...
++    // this will make sure that every glyph gets drawn...
++    WebKitFT2Renderer* renderer = (WebKitFT2Renderer*)g_object_new (WEBKIT_TYPE_FT2_RENDERER, NULL);
++    FT_Bitmap* bitmap = create_surface(pango_layout_get_width(layout), pango_layout_get_height(layout));
++    printf("Data: %g,%g %s\n", point.x(), point.y(), utf8);
++    startX = point.x();
++    startY = point.y();
++    webkit_ft2_render_layout_line_subpixel(renderer, bitmap, layoutLine, point.x(), point.y());
++    destroy_surface(bitmap);
++    g_object_unref(renderer);
+ 
+     Color fillColor = context->fillColor();
+     float red, green, blue, alpha;
+ 
+-    // Text shadow, inspired by FontMac
+-    IntSize shadowSize;
+-    int shadowBlur = 0;
+-    Color shadowColor;
+-    bool hasShadow = context->textDrawingMode() == cTextFill &&
+-        context->getShadow(shadowSize, shadowBlur, shadowColor);
+-
+-    // TODO: Blur support
+-    if (hasShadow) {
+-        // Disable graphics context shadows (not yet implemented) and paint them manually
+-        context->clearShadow();
+-        Color shadowFillColor(shadowColor.red(), shadowColor.green(), shadowColor.blue(), shadowColor.alpha() * fillColor.alpha() / 255);
+-        cairo_save(cr);
+-
+-        shadowFillColor.getRGBA(red, green, blue, alpha);
+-        cairo_set_source_rgba(cr, red, green, blue, alpha);
+-
+-        cairo_translate(cr, shadowSize.width(), shadowSize.height());
+-
+-        if (partialRegion) {
+-            gdk_cairo_region(cr, partialRegion);
+-            cairo_clip(cr);
+-        }
+-
+-        pango_cairo_show_layout_line(cr, layoutLine);
+-
+-        cairo_restore(cr);
+-    }
+-
+-    fillColor.getRGBA(red, green, blue, alpha);
+-    cairo_set_source_rgba(cr, red, green, blue, alpha);
+-
+-    if (partialRegion) {
+-        gdk_cairo_region(cr, partialRegion);
+-        cairo_clip(cr);
+-    }
+-
+-    pango_cairo_show_layout_line(cr, layoutLine);
+-
+-    if (context->textDrawingMode() & cTextStroke) {
+-        Color strokeColor = context->strokeColor();
+-        strokeColor.getRGBA(red, green, blue, alpha);
+-        cairo_set_source_rgba(cr, red, green, blue, alpha);
+-        pango_cairo_layout_line_path(cr, layoutLine);
+-        cairo_set_line_width(cr, context->strokeThickness());
+-        cairo_stroke(cr);
+-    }
+-
+-    // Re-enable the platform shadow we disabled earlier
+-    if (hasShadow)
+-        context->setShadow(shadowSize, shadowBlur, shadowColor);
+-
+-    // Pango sometimes leaves behind paths we don't want
+-    cairo_new_path(cr);
+-
+-    if (partialRegion)
+-        gdk_region_destroy(partialRegion);
+-
+     g_free(utf8);
+     g_object_unref(layout);
+-
+-    cairo_restore(cr);
+-}
+-
+-// We should create the layout with our actual context but we can't access it from here.
+-static PangoLayout* getDefaultPangoLayout(const TextRun& run)
+-{
+-    static PangoFontMap* map = pango_cairo_font_map_get_default();
+-#if PANGO_VERSION_CHECK(1,21,5)
+-    static PangoContext* pangoContext = pango_font_map_create_context(map);
+-#else
+-    // Deprecated in Pango 1.21.
+-    static PangoContext* pangoContext = pango_cairo_font_map_create_context(PANGO_CAIRO_FONT_MAP(map));
+-#endif
+-    PangoLayout* layout = pango_layout_new(pangoContext);
+-
+-    return layout;
+ }
+ 
+ float Font::floatWidthForComplexText(const TextRun& run) const
+-- 
+1.5.6.3
+
