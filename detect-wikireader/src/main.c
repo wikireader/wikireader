@@ -26,11 +26,12 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+#include <getopt.h>
 #include "wiki-inotify.h"
 
 #define RUNNING_DIR "/"
-#define LOCK_FILE "/home/xiangfu/.detect-wikireader.lock"
-#define LOG_FILE "/home/xiangfu/detect-wikireader.log" 
+#define LOCK_FILE "/var/run/detect-wikireader.lock"
+#define LOG_FILE "/var/log/detect-wikireader.log" 
 
 int log_message(char *filename, char*message)
 {
@@ -64,7 +65,6 @@ void signal_handler(int signo)
 
 int daemon_init(void) 
 {
-	int lfp;
 	char str[10];
 
 	if (getppid() == 1) 
@@ -102,17 +102,18 @@ int daemon_init(void)
                 exit(EXIT_FAILURE);
         }
         
+	int lfp;
 	lfp = open(LOCK_FILE, O_RDWR|O_CREAT, 0640);
-	if (lfp<0) {
+	if (lfp < 0) {
 		syslog(LOG_INFO, "can not open lock file."); 
 		exit(EXIT_FAILURE);
 	}
-	if (lockf(lfp,F_TLOCK,0) < 0) {
+	if (lockf(lfp, F_TLOCK, 0) < 0) {
 		syslog(LOG_INFO, "can not lock."); 
 		exit(EXIT_FAILURE); 
 	}
 
-	sprintf(str,"%d\n",getpid());	/* first instance continues */
+	sprintf(str, "%d\n", getpid());	/* first instance continues */
 	write(lfp, str, strlen(str)); /* record pid to lockfile */
 
 	/* close all descriptors */
@@ -123,8 +124,50 @@ int daemon_init(void)
 	return 0;
 } 
 
+static void help(void)
+{
+	printf("Usage: detect-wikireader [options] ...\n"
+		"  -h --help\t\t\tPrint this help message\n"
+		"  -V --version\t\t\tPrint the version number\n"
+		);
+}
+static void print_version(void)
+{
+	/* printf("detect-wikireader version %s\n", VERSION "+svn" DETECE_WIKIREADER_VERSION); */
+}
 
-int main(void) {
+static struct option opts[] = {
+	{ "help", 0, 0, 'h' },
+	{ "version", 0, 0, 'V' },
+};
+
+int main(int argc, char **argv)
+{
+	printf("detect-wikireader - (C) 2007-2008 by OpenMoko Inc.\n"
+	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
+
+
+	while (1) {
+		int c, option_index = 0;
+		c = getopt_long(argc, argv, "hVvld:p:c:i:a:t:U:D:R", opts,
+				&option_index);
+		if (c == -1)
+			break;
+
+		switch (c) {
+		case 'h':
+			help();
+			exit(0);
+			break;
+		case 'V':
+			print_version();
+			exit(0);
+			break;
+		default:
+			help();
+			exit(2);
+		}
+	}
 
 	if (daemon_init() != 0) { 
 		printf("can't fork self\n"); 

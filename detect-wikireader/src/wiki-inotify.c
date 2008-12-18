@@ -33,7 +33,6 @@
 
 static int fd;
 static int wd;
-static int i = 0;
 static char buffer[BUF_LEN];
 static char path[PATH_LEN];
 

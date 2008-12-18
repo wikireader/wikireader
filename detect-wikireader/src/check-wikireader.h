@@ -20,4 +20,4 @@
 
 int check_wikireader(char *path);
 
-#endif _CHECK_WIKIREADER_H_
+#endif /* _CHECK_WIKIREADER_H_ */

@@ -23,4 +23,4 @@ int init_monitor(void);
 int run_monitor(void);
 int close_monitor(void);
 
-#endif _WIKI_INOTIFY_H_
+#endif /* _WIKI_INOTIFY_H_ */
