@@ -28,21 +28,12 @@
 #include <string.h>
 #include <getopt.h>
 #include "wiki-inotify.h"
+#include "config.h"
+#include "detect-wikireader-version.h"
 
 #define RUNNING_DIR "/"
-#define LOCK_FILE "/var/run/detect-wikireader.lock"
-#define LOG_FILE "/var/log/detect-wikireader.log" 
-
-int log_message(char *filename, char*message)
-{
-	FILE *logfile;
-	logfile=fopen(filename,"a");
-	if (!logfile) 
-		return -1;
-	fprintf(logfile,"%s\n",message);
-	fclose(logfile);
-	return 0;
-} 
+#define LOCK_FILE_NAME ".det-wikird.lock"
+static char* lock_file;
 
 void signal_handler(int signo)
 {
@@ -63,10 +54,36 @@ void signal_handler(int signo)
 	}
 }
 
+int check_lock_file()
+{
+	int lfp;
+	char* home = getenv("HOME");
+
+	lock_file = (char *)malloc(sizeof(char) * ( strlen(home) + strlen(LOCK_FILE_NAME)));
+	strcpy(lock_file, home);
+	strcat(lock_file, LOCK_FILE_NAME);
+
+	lfp = open(lock_file, O_RDWR|O_CREAT, 
+		   S_IRUSR | S_IWUSR |
+		   S_IRGRP | S_IROTH);
+	if (lfp < 0) {
+		syslog(LOG_INFO, "can not open lock file."); 
+		return -1;
+	}
+	if (lockf(lfp, F_TLOCK, 0) < 0) {
+		syslog(LOG_INFO, "can not lock."); 
+		return -1;
+	}
+
+	char str[10];
+	sprintf(str, "%d\n", getpid());	/* first instance continues */
+	write(lfp, str, strlen(str));		 /* record pid to lockfile */
+
+	return 0;
+}
+
 int daemon_init(void) 
 {
-	char str[10];
-
 	if (getppid() == 1) 
 		return -1; /* already a daemon */
 
@@ -102,21 +119,10 @@ int daemon_init(void)
                 exit(EXIT_FAILURE);
         }
         
-	int lfp;
-	lfp = open(LOCK_FILE, O_RDWR|O_CREAT, 
-		   S_IRUSR | S_IWUSR |
-		   S_IRGRP | S_IROTH);
-	if (lfp < 0) {
-		syslog(LOG_INFO, "can not open lock file."); 
+	if ((check_lock_file()) < 0) {
+		/* lock file file failure */
 		exit(EXIT_FAILURE);
 	}
-	if (lockf(lfp, F_TLOCK, 0) < 0) {
-		syslog(LOG_INFO, "can not lock."); 
-		exit(EXIT_FAILURE); 
-	}
-
-	sprintf(str, "%d\n", getpid());	/* first instance continues */
-	write(lfp, str, strlen(str));		 /* record pid to lockfile */
 
 	/* close all descriptors */
 	int desc;
@@ -135,7 +141,7 @@ static void help(void)
 }
 static void print_version(void)
 {
-	/* printf("detect-wikireader version %s\n", VERSION "+svn" DETECE_WIKIREADER_VERSION); */
+	printf("det-wikird version %s\n", VERSION "+svn" DETECT_WIKIREADER_VERSION);
 }
 
 static struct option opts[] = {
@@ -145,7 +151,7 @@ static struct option opts[] = {
 
 int main(int argc, char **argv)
 {
-	printf("detect-wikireader - (C) 2007-2008 by OpenMoko Inc.\n"
+	printf("det-wikird - (C) 2007-2008 by OpenMoko Inc.\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
 
 	while (1) {
@@ -187,6 +193,7 @@ int main(int argc, char **argv)
 	signal(SIGTERM,signal_handler); /* catch kill signal */
         
         /* Daemon-specific initialization goes here */
+
 	int rt;
 	if ((rt = init_monitor()) != 0) {
 		syslog(LOG_INFO, "init_monitor error: %d", rt); 
