@@ -148,10 +148,9 @@ int main(int argc, char **argv)
 	printf("detect-wikireader - (C) 2007-2008 by OpenMoko Inc.\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
 
-
 	while (1) {
 		int c, option_index = 0;
-		c = getopt_long(argc, argv, "hVvld:p:c:i:a:t:U:D:R", opts,
+		c = getopt_long(argc, argv, "hV", opts,
 				&option_index);
 		if (c == -1)
 			break;
