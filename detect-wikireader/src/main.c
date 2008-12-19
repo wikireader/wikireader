@@ -204,9 +204,8 @@ int main(int argc, char **argv)
         while (1) {
 		/* Do some task here ... */
 		run_monitor();           
-		sleep(1); /* wait 30 seconds */
+		sleep(1);
         }
 
 	exit(EXIT_SUCCESS);
-
 }
