@@ -1,0 +1,39 @@
+From 071bc6b02093d5a1c89fd21a12e43c30831a45a4 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Sun, 21 Dec 2008 00:34:04 +0100
+Subject: [PATCH] Determine the true position of a glyph
+
+Look at the font and use left bearing and top bearing to determine
+the position where the glyph should be displayed.
+---
+ WebCore/platform/graphics/gtk/FontGtk.cpp |   14 +++++++++++---
+ 1 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index 114f02f..f0012c4 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -340,9 +340,17 @@ webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
+     glyph->bitmap = rendered_glyph->bitmap.buffer;
+ 
+     glyph->glyph_index = glyph_index;
+-    glyph->x = floor(x);
+-    glyph->y = floor(y);
+-     
++
++
++
++    int ixoff = floor (x + 0.5);
++    int iyoff = floor (y + 0.5);
++    int x_start = MAX (0, - (ixoff + rendered_glyph->bitmap_left));
++    int y_start = MAX (0,  - (iyoff - rendered_glyph->bitmap_top));
++
++    glyph->x = x_start + ixoff + rendered_glyph->bitmap_left;
++    glyph->y = y_start + iyoff - rendered_glyph->bitmap_top;
++    
+     webkit_glyphs = g_list_append(webkit_glyphs, glyph);
+     pango_font_description_free(description);
+     webkit_ft2_free_rendered_glyph(rendered_glyph);
+-- 
+1.5.6.3
+
