@@ -1,0 +1,173 @@
+From b7bcc6325d550a086ad008e82db5d814e73e4a18 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Sat, 20 Dec 2008 22:10:17 +0100
+Subject: [PATCH] Write the glyphs to a file....
+
+---
+ WebCore/platform/graphics/gtk/FontGtk.cpp |    7 +-
+ WebKitTools/GtkLauncher/main.c            |  104 ++++++++++++++++++++++++++++-
+ 2 files changed, 105 insertions(+), 6 deletions(-)
+
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index cda196d..114f02f 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -38,6 +38,7 @@
+ #include "GraphicsContext.h"
+ #include "NotImplemented.h"
+ #include "SimpleFontData.h"
++#include "PlatformString.h"
+ 
+ #include <cairo.h>
+ #include <gdk/gdk.h>
+@@ -341,10 +342,9 @@ webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
+     glyph->glyph_index = glyph_index;
+     glyph->x = floor(x);
+     glyph->y = floor(y);
+-    
+-    
++     
++    webkit_glyphs = g_list_append(webkit_glyphs, glyph);
+     pango_font_description_free(description);
+-
+     webkit_ft2_free_rendered_glyph(rendered_glyph);
+ }
+ 
+@@ -544,7 +544,6 @@ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const F
+     // For the glyph transformation... run it through our custom renderer...
+     // this will make sure that every glyph gets drawn...
+     WebKitFT2Renderer* renderer = (WebKitFT2Renderer*)g_object_new (WEBKIT_TYPE_FT2_RENDERER, NULL);
+-    printf("Data: %g,%g %s\n", point.x(), point.y(), utf8);
+     startX = point.x();
+     startY = point.y();
+     webkit_ft2_render_layout_line_subpixel(renderer, layoutLine, 10, 80);
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 94f962e..69f95b9 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -35,12 +35,112 @@ static gchar* main_title;
+ static gint load_progress;
+ static guint status_context_id;
+ 
++/*
++ * write int... with paranoia... (to be added...)
++ */
++#define WRITE_INT(path, glyph, var)                               \
++    do {                                                          \
++    GString* path_##var = g_string_new(path);                     \
++    g_string_append_printf(path_##var, "/%s", #var);              \
++    GString* content_##var = g_string_new(NULL);                  \
++    g_string_append_printf(content_##var, "%d", glyph->var);      \
++    gchar* c_path_##var = g_string_free(path_##var, FALSE);       \
++    gchar* c_content_##var = g_string_free(content_##var, FALSE); \
++    GError* error = NULL;                                         \
++    g_file_set_contents(c_path_##var, c_content_##var,            \
++                        strlen(c_content_##var), &error);         \
++    if (error) {                                                  \
++        g_warning("failed to write '%s'", c_path_##var);          \
++        g_error_free(error);                                      \
++    }                                                             \
++    g_free(c_path_##var);                                         \
++    g_free(c_content_##var);                                      \
++    } while(0);
++
++#if 0
++#define WRITE_BITMAP(path, glyph, var, width, height) \
++    do {                                                          \
++    GString* path_##var = g_string_new(path);                     \
++    g_string_append_printf(path_##var, "/%s.pnm", #var);          \
++    GByteArray* content_##var = g_byte_array_new();               \
++    GString* header = g_string_new(NULL);                         \
++    g_string_append_printf(header, "P5\n%d %d\n255\n",            \
++                           glyph->width, glyph->height);          \
++    gchar* data = g_string_free(header, FALSE);                   \
++    g_byte_array_append(content_##var, data, strlen(data));       \
++    int row = 0;                                                  \
++    for (row = 0; row < glyph->height; ++row) {                   \
++        g_byte_array_append(content_##var,                        \
++                            glyph->bitmap + (row*glyph->width),   \
++                            (guint)glyph->width);                 \
++    }                                                             \
++    gchar* c_path_##var = g_string_free(path_##var, FALSE);       \
++    gchar* c_content_##var = g_byte_array_free(content_##var, FALSE); \
++    GError* error = NULL;                                         \
++    g_file_set_contents(c_path_##var, c_content_##var,            \
++                        strlen(c_content_##var), &error);         \
++    if (error) {                                                  \
++        g_warning("failed to write '%s'", c_path_##var);          \
++        g_error_free(error);                                      \
++    }                                                             \
++    g_free(c_path_##var);                                         \
++    g_free(c_content_##var);                                      \
++    g_free(data);                                                 \
++    } while(0);
++#else
++#define WRITE_BITMAP(path, glyph, var, width, height) \
++    do {                                                          \
++    GString* path_##var = g_string_new(path);                     \
++    g_string_append_printf(path_##var, "/%s.pnm", #var);          \
++    gchar* c_path_##var = g_string_free(path_##var, FALSE);       \
++    int row = 0;                                                  \
++    FILE* file = fopen(c_path_##var, "w");                        \
++    fprintf(file, "P5\n%d %d\n255\n", glyph->glyph_width, glyph->glyph_height); \
++    for (row = 0; row < glyph->glyph_height; row++)               \
++        fwrite(glyph->bitmap + row * glyph->glyph_width, 1, glyph->glyph_width, file); \
++    fclose(file); \
++    g_free(c_path_##var);                                         \
++    } while(0);
++#endif
+ 
+ /*
+  * For debugging purposes create a directory with the glyphs
+  */
+-static void create_font_dir(GList *glyphs)
++static void create_font_dir(WebKitGlyph* glyph, gpointer* data)
++{
++    /* escape the string */
++    int i = 0, length = strlen(glyph->face_and_config);
++    for (i = 0; i < length; ++i)
++        if (glyph->face_and_config[i] == ' ')
++            glyph->face_and_config[i] = '_';
++
++    /* Is there anything not Unix? */
++    GString* path = g_string_new("fonts/");
++    g_string_append_printf(path, "%s/%d",
++                           glyph->face_and_config,
++                           glyph->glyph_index);
++
++    gchar* c_path = g_string_free(path, FALSE);
++    printf("Creating directory: %s\n", c_path);
++    g_mkdir_with_parents(c_path, 0755);
++
++    /*
++     * write out the data
++     */
++    WRITE_INT(c_path, glyph, advance_x);
++    WRITE_INT(c_path, glyph, advance_y);
++    WRITE_INT(c_path, glyph, bitmap_left_bearing);
++    WRITE_INT(c_path, glyph, bitmap_top_bearing);
++    WRITE_INT(c_path, glyph, glyph_width);
++    WRITE_INT(c_path, glyph, glyph_height);
++    WRITE_BITMAP(c_path, glyph, bitmap, glyph_width, glyph_height);
++
++    g_free(c_path);
++}
++
++static void create_font_dirs(GList *glyphs)
+ {
++    g_list_foreach(glyphs, (GFunc)create_font_dir, 0);
+ }
+ 
+ /*
+@@ -74,7 +174,7 @@ update_title (GtkWindow* window)
+         GList *webkit_glyphs = NULL;
+         g_warning("Extracting data on fully loaded page");
+         webkit_web_view_extract_data(web_view, 640, 480, &webkit_glyphs, &link_list);
+-        create_font_dir(webkit_glyphs);
++        create_font_dirs(webkit_glyphs);
+         create_text_file(webkit_glyphs);
+         create_links(link_list);
+         g_warning("Done!");
+-- 
+1.5.6.3
+
