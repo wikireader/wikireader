@@ -1,1 +1,28 @@
 Hacks to webkit to get the things we want.... to happen
+
+
+The patches will patch the Gtk+ port of WebKit and the GtkLauncher
+executable to create a directory with glyph information and write
+one file with the positions of each glyph.
+The glyph data is pnm....
+
+
+= Run ./Programs/GtkLauncher on any url  =
+After load directories with the pattern fonts/Font_Name_Size/GlyphIndex/
+will be created. They contain font information and a bitmap of the glyph.
+
+You will also find a render_text.blib. Containing the position of
+each to be displayed glyph and the to be used font.
+
+= Conver pnm to png =
+Use this snippet to convert. This is needed as cairo only has a
+png loader builtin...
+
+for i in fonts/*/*/*.pnm; do pnmtopng $i > `dirname $i`/`basename $i pnm`png; done
+
+= Render render_text.blib with the fonts =
+Use the small cairo script render_text.py to convert the render_text.blib
+into a rendered image.
+
+
+
