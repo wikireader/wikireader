@@ -48,7 +48,7 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 void guilib_init(void)
 {
 	/* just some tests ... */
-	if (glyph_init(GLYPHFILE) == 0) {
+	if (glyph_init(GLYPHFILE) != 0) {
 		msg(MSG_INFO, "unable to load glyphfile %s\n", GLYPHFILE);
 		return;
 	}
