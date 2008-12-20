@@ -1,0 +1,533 @@
+From 3e589c4180a1017b70db2fc465a85fdfd5fde9d1 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Sat, 20 Dec 2008 20:13:06 +0100
+Subject: [PATCH] Add API to extract the required data of a a full page...
+
+Render everything into a list of WebKitGlyphs that contain
+everything we will need to process the text.
+---
+ WebCore/GNUmakefile.am                    |    1 +
+ WebCore/platform/ScrollView.h             |    2 +-
+ WebCore/platform/graphics/gtk/FontGtk.cpp |  203 ++++++++--------------------
+ WebKit/gtk/webkit/webkitwebview.cpp       |   39 ++++++
+ WebKit/gtk/webkit/webkitwebview.h         |   36 +++++
+ WebKitTools/GtkLauncher/main.c            |   31 +++++
+ 6 files changed, 166 insertions(+), 146 deletions(-)
+
+diff --git a/WebCore/GNUmakefile.am b/WebCore/GNUmakefile.am
+index f49ad96..f9c9e46 100644
+--- a/WebCore/GNUmakefile.am
++++ b/WebCore/GNUmakefile.am
+@@ -43,6 +43,7 @@ webcore_cppflags += \
+ 	-I$(srcdir)/WebCore/rendering \
+ 	-I$(srcdir)/WebCore/rendering/style \
+ 	-I$(srcdir)/WebCore/xml \
++	-I$(srcdir)/WebKit/gtk \
+ 	-I$(top_builddir)/WebCore/bindings/js
+ 
+ webcoregtk_cppflags += \
+diff --git a/WebCore/platform/ScrollView.h b/WebCore/platform/ScrollView.h
+index b2fa582..742b7a1 100644
+--- a/WebCore/platform/ScrollView.h
++++ b/WebCore/platform/ScrollView.h
+@@ -212,10 +212,10 @@ public:
+     void removePanScrollIcon();
+ 
+     virtual bool scrollbarCornerPresent() const;
++    virtual void paintContents(GraphicsContext*, const IntRect& damageRect) = 0;
+ 
+ protected:
+     virtual void repaintContentRectangle(const IntRect&, bool now = false);
+-    virtual void paintContents(GraphicsContext*, const IntRect& damageRect) = 0;
+     
+     virtual void contentsResized() = 0;
+     virtual void visibleContentsResized() = 0;
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index d3b9bf9..cda196d 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -34,6 +34,7 @@
+ #define PANGO_ENABLE_BACKEND
+ #include "Font.h"
+ 
++#include "CString.h"
+ #include "GraphicsContext.h"
+ #include "NotImplemented.h"
+ #include "SimpleFontData.h"
+@@ -49,14 +50,32 @@
+ #include <pango/pangofc-fontmap.h>
+ #endif
+ 
++#include "webkit/webkitwebview.h"
++
+ #if !defined(PANGO_VERSION_CHECK)
+ // PANGO_VERSION_CHECK() and pango_layout_get_line_readonly() appeared in 1.5.2
+ #define pango_layout_get_line_readonly pango_layout_get_line
+ #define PANGO_VERSION_CHECK(major,minor,micro) 0
+ #endif
+ 
++static void delete_glyph(WebKitGlyph* glyph, gpointer data)
++{
++    g_free(glyph->face_and_config);
++    g_free(glyph->bitmap);
++    g_slice_free(WebKitGlyph, glyph);
++}
+ 
+ // Export some internal data...
++bool webkit_render_foo = FALSE;
++GList *webkit_glyphs = 0;
++
++void webkit_clear_glyphs()
++{
++    g_list_foreach(webkit_glyphs, (GFunc)delete_glyph, 0);
++    g_list_free(webkit_glyphs);
++    webkit_glyphs = 0;
++}
++
+ 
+ // From panfoft2-private.h.... eeeek eeek eeek this needs to match
+ // with the right version of pango-ft2
+@@ -90,8 +109,6 @@ typedef struct _WebKitFT2Renderer WebKitFT2Renderer;
+ struct _WebKitFT2Renderer
+ {
+   PangoRenderer parent_instance;
+-
+-  FT_Bitmap *bitmap;
+ };
+ 
+ struct _WebKitFT2RendererClass
+@@ -121,24 +138,20 @@ webkit_ft2_renderer_class_init (WebKitFT2RendererClass *klass)
+ G_DEFINE_TYPE (WebKitFT2Renderer, webkit_ft2_renderer, PANGO_TYPE_RENDERER)
+ 
+ 
+-static void
+-webkit_ft2_renderer_set_bitmap (WebKitFT2Renderer *renderer,
+-			      FT_Bitmap         *bitmap)
+-{
+-  renderer->bitmap = bitmap;
+-}
+-
+ typedef struct
+ {
+   FT_Bitmap bitmap;
+   int bitmap_left;
+   int bitmap_top;
++  int advance_x;
++  int advance_y;
+ } WebKitFT2RenderedGlyph;
+ 
+ static void
+ webkit_ft2_free_rendered_glyph (WebKitFT2RenderedGlyph *rendered)
+ {
+-  g_free (rendered->bitmap.buffer);
++// not freed as it is copied to WebKitGlyph
++//  g_free (rendered->bitmap.buffer);
+   g_slice_free (WebKitFT2RenderedGlyph, rendered);
+ }
+ 
+@@ -157,6 +170,8 @@ webkit_ft2_font_render_box_glyph (int      width,
+ 
+   box = g_slice_new (WebKitFT2RenderedGlyph);
+ 
++  box->advance_x = -1;
++  box->advance_y = -1;
+   box->bitmap_left = 0;
+   box->bitmap_top = top;
+ 
+@@ -265,6 +280,8 @@ webkit_ft2_font_render_glyph (PangoFont *font,
+ 					  face->glyph->bitmap.rows * face->glyph->bitmap.pitch);
+       rendered->bitmap_left = face->glyph->bitmap_left;
+       rendered->bitmap_top = face->glyph->bitmap_top;
++      rendered->advance_x = face->glyph->advance.x >> 6;
++      rendered->advance_y = face->glyph->advance.y >> 6;
+ 
+       return rendered;
+     }
+@@ -281,127 +298,54 @@ generic_box:
+ static void
+ webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
+ 			       PangoFont     *font,
+-			       PangoGlyph     glyph,
++			       PangoGlyph     glyph_index,
+ 			       double         x,
+ 			       double         y)
+ {
+-  FT_Bitmap *bitmap = WEBKIT_FT2_RENDERER (renderer)->bitmap;
+   WebKitFT2RenderedGlyph *rendered_glyph;
+-  guchar *src, *dest;
+ 
+-  int x_start, x_limit;
+-  int y_start, y_limit;
+-  int ixoff = floor (x + 0.5);
+-  int iyoff = floor (y + 0.5);
+-  int ix, iy;
++  x = x + startX;
++  y = y + startY;
+ 
+-  if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
++  if (glyph_index & PANGO_GLYPH_UNKNOWN_FLAG)
+     {
+       /* Since we don't draw hexbox for FT2 renderer,
+        * unifiy the rendered bitmap in the cache by converting
+        * all missing glyphs to either INVALID_INPUT or UNKNOWN_FLAG.
+        */
+ 
+-      gunichar wc = glyph & (~PANGO_GLYPH_UNKNOWN_FLAG);
++      gunichar wc = glyph_index & (~PANGO_GLYPH_UNKNOWN_FLAG);
+ 
+-      if (G_UNLIKELY (glyph == PANGO_GLYPH_INVALID_INPUT || wc > 0x10FFFF))
+-	glyph = PANGO_GLYPH_INVALID_INPUT;
++      if (G_UNLIKELY (glyph_index == PANGO_GLYPH_INVALID_INPUT || wc > 0x10FFFF))
++	glyph_index = PANGO_GLYPH_INVALID_INPUT;
+       else
+-	glyph = PANGO_GLYPH_UNKNOWN_FLAG;
++	glyph_index = PANGO_GLYPH_UNKNOWN_FLAG;
+     }
+ 
+-  rendered_glyph = webkit_ft2_font_render_glyph (font, glyph);
+-
+-  x_start = MAX (0, - (ixoff + rendered_glyph->bitmap_left));
+-  x_limit = MIN (rendered_glyph->bitmap.width,
+-		 bitmap->width - (ixoff + rendered_glyph->bitmap_left));
+-
+-  y_start = MAX (0,  - (iyoff - rendered_glyph->bitmap_top));
+-  y_limit = MIN (rendered_glyph->bitmap.rows,
+-		 bitmap->rows - (iyoff - rendered_glyph->bitmap_top));
+-  printf("Drawing: %u at %g,%g\n", glyph, x + startX, y + startY);
+-
+-  src = rendered_glyph->bitmap.buffer +
+-    y_start * rendered_glyph->bitmap.pitch;
+-
+-  dest = bitmap->buffer +
+-    (y_start + iyoff - rendered_glyph->bitmap_top) * bitmap->pitch +
+-    x_start + ixoff + rendered_glyph->bitmap_left;
+-
+-  switch (rendered_glyph->bitmap.pixel_mode)
+-    {
+-    case ft_pixel_mode_grays:
+-      src += x_start;
+-      for (iy = y_start; iy < y_limit; iy++)
+-	{
+-	  guchar *s = src;
+-	  guchar *d = dest;
+-
+-	  for (ix = x_start; ix < x_limit; ix++)
+-	    {
+-	      switch (*s)
+-		{
+-		case 0:
+-		  break;
+-		case 0xff:
+-		  *d = 0xff;
+-		default:
+-		  *d = MIN ((gushort) *d + (gushort) *s, 0xff);
+-		  break;
+-		}
+-
+-	      s++;
+-	      d++;
+-	    }
+-
+-	  dest += bitmap->pitch;
+-	  src  += rendered_glyph->bitmap.pitch;
+-	}
+-      break;
+-
+-    case ft_pixel_mode_mono:
+-      src += x_start / 8;
+-      for (iy = y_start; iy < y_limit; iy++)
+-	{
+-	  guchar *s = src;
+-	  guchar *d = dest;
+-
+-	  for (ix = x_start; ix < x_limit; ix++)
+-	    {
+-	      if ((*s) & (1 << (7 - (ix % 8))))
+-		*d |= 0xff;
++    rendered_glyph = webkit_ft2_font_render_glyph (font, glyph_index);
+ 
+-	      if ((ix % 8) == 7)
+-		s++;
+-	      d++;
+-	    }
++    // Convert the glyph and add it to the list...
++    PangoFontDescription* description = pango_font_describe(font);
+ 
+-	  dest += bitmap->pitch;
+-	  src  += rendered_glyph->bitmap.pitch;
+-	}
+-      break;
+ 
+-    default:
+-#if 0
+-      g_warning ("webkit_ft2_render: "
+-		 "Unrecognized glyph bitmap pixel mode %d\n",
+-		 rendered_glyph->bitmap.pixel_mode);
+-#endif
+-      break;
+-    }
++    WebKitGlyph* glyph = g_slice_new(WebKitGlyph);
++    glyph->face_and_config = pango_font_description_to_string(description);
++    glyph->advance_x = rendered_glyph->advance_x;
++    glyph->advance_y = rendered_glyph->advance_y;
++    glyph->glyph_width  = rendered_glyph->bitmap.pitch;
++    glyph->glyph_height = rendered_glyph->bitmap.rows;
++    glyph->bitmap_left_bearing = rendered_glyph->bitmap_left;
++    glyph->bitmap_top_bearing = rendered_glyph->bitmap_top;
++    glyph->bitmap = rendered_glyph->bitmap.buffer;
+ 
++    glyph->glyph_index = glyph_index;
++    glyph->x = floor(x);
++    glyph->y = floor(y);
++    
++    
++    pango_font_description_free(description);
+ 
+-#if 0
+-  if (add_glyph_to_cache)
+-    {
+-      _webkit_ft2_font_set_glyph_cache_destroy (font,
+-					       (GDestroyNotify) webkit_ft2_free_rendered_glyph);
+-      _webkit_ft2_font_set_cache_glyph_data (font,
+-					    glyph, rendered_glyph);
+-    }
+-#else
+     webkit_ft2_free_rendered_glyph(rendered_glyph);
+-#endif
+ }
+ 
+ /**
+@@ -421,7 +365,6 @@ webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
+  */
+ static void
+ webkit_ft2_render_layout_line_subpixel (WebKitFT2Renderer *renderer,
+-                                  FT_Bitmap   *bitmap,
+ 				  PangoLayoutLine *line,
+ 				  int          x,
+ 				  int          y)
+@@ -429,46 +372,14 @@ webkit_ft2_render_layout_line_subpixel (WebKitFT2Renderer *renderer,
+   PangoContext *context;
+   PangoFontMap *fontmap;
+ 
+-  g_return_if_fail (bitmap != NULL);
+   g_return_if_fail (line != NULL);
+ 
+   context = pango_layout_get_context (line->layout);
+   fontmap = pango_context_get_font_map (context);
+ 
+-  webkit_ft2_renderer_set_bitmap (renderer, bitmap);
+-
+   pango_renderer_draw_layout_line (PANGO_RENDERER(renderer), line, x, y);
+ }
+ 
+-// from viewer-pangoft2.c
+-static FT_Bitmap*                                                                      
+-create_surface (int      width,                                                            
+-                int      height)                                                           
+-{                                                                                                        
+-  FT_Bitmap *bitmap;                                                                                     
+-                                                                                                         
+-  bitmap = g_slice_new (FT_Bitmap);                                                                      
+-  bitmap->width = width;                                                                                 
+-  bitmap->pitch = (bitmap->width + 3) & ~3;                                                              
+-  bitmap->rows = height;                                                                                 
+-  bitmap->buffer = (unsigned char*)g_malloc (bitmap->pitch * bitmap->rows); 
+-  bitmap->num_grays = 256;                                                                               
+-  bitmap->pixel_mode = ft_pixel_mode_grays;                                                              
+-  memset (bitmap->buffer, 0x00, bitmap->pitch * bitmap->rows);                                           
+-                                                                                                         
+-  return bitmap;                                                                                         
+-}
+-
+-static void                                                                                              
+-destroy_surface (gpointer surface)                                                         
+-{                                                                                                        
+-  FT_Bitmap *bitmap = (FT_Bitmap *) surface;                                                             
+-
+-  g_free (bitmap->buffer);
+-  g_slice_free (FT_Bitmap, bitmap);
+-}
+-
+-
+ namespace WebCore {
+ 
+ #define IS_HIGH_SURROGATE(u)  ((UChar)(u) >= (UChar)0xd800 && (UChar)(u) <= (UChar)0xdbff)
+@@ -617,6 +528,10 @@ static PangoLayout* getDefaultPangoLayout(const TextRun& run)
+ // We will have to extract the glyph's here...
+ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const FloatPoint& point, int from, int to) const
+ {
++    if (!webkit_render_foo)
++        return;
++
++
+     PangoLayout* layout = getDefaultPangoLayout(run);
+     setPangoAttributes(this, run, layout);
+ 
+@@ -629,12 +544,10 @@ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const F
+     // For the glyph transformation... run it through our custom renderer...
+     // this will make sure that every glyph gets drawn...
+     WebKitFT2Renderer* renderer = (WebKitFT2Renderer*)g_object_new (WEBKIT_TYPE_FT2_RENDERER, NULL);
+-    FT_Bitmap* bitmap = create_surface(pango_layout_get_width(layout), pango_layout_get_height(layout));
+     printf("Data: %g,%g %s\n", point.x(), point.y(), utf8);
+     startX = point.x();
+     startY = point.y();
+-    webkit_ft2_render_layout_line_subpixel(renderer, bitmap, layoutLine, point.x(), point.y());
+-    destroy_surface(bitmap);
++    webkit_ft2_render_layout_line_subpixel(renderer, layoutLine, 10, 80);
+     g_object_unref(renderer);
+ 
+     Color fillColor = context->fillColor();
+diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
+index e98d3f7..9f2b901 100644
+--- a/WebKit/gtk/webkit/webkitwebview.cpp
++++ b/WebKit/gtk/webkit/webkitwebview.cpp
+@@ -68,6 +68,10 @@
+ 
+ static const double defaultDPI = 96.0;
+ 
++extern bool webkit_render_foo;
++extern void webkit_clear_glyphs();
++extern GList* webkit_glyphs;
++
+ using namespace WebKit;
+ using namespace WebCore;
+ 
+@@ -2593,4 +2597,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
+     g_object_notify(G_OBJECT(webView), "full-content-zoom");
+ }
+ 
++
++////////////////////////////////////////////////////////////////////////////////////////////
++//
++// Hacks for extracting glyphs...
++//
++////////////////////////////////////////////////////////////////////////////////////////////
++bool webkit_web_view_extract_data(WebKitWebView* view, int view_width, int view_height, GList** glyphs, GList** link_list)
++{
++Frame* frame = core(view)->mainFrame();
++    if (!frame->view())
++        return false;
++
++    // Layout....
++    frame->view()->setScrollbarModes(ScrollbarAlwaysOff, ScrollbarAlwaysOff);
++    frame->view()->resize(view_width, view_height);
++    frame->forceLayout();
++    frame->view()->adjustViewSize();
++    frame->view()->layoutIfNeededRecursive();
++
++    // Paint... which will create the glyphs
++    webkit_render_foo = TRUE;
++    webkit_clear_glyphs();
++    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 1, 1);
++    cairo_t* cr = cairo_create(surface);
++    GraphicsContext context(cr);
++    frame->view()->paintContents(&context, IntRect(IntPoint(0, 0), frame->view()->contentsSize()));
++    cairo_destroy(cr);
++    cairo_surface_destroy(surface);
++    webkit_render_foo = FALSE;
++
++    *glyphs = webkit_glyphs;
++
++    return true;
++}
++
+ }
+diff --git a/WebKit/gtk/webkit/webkitwebview.h b/WebKit/gtk/webkit/webkitwebview.h
+index d737658..f5d0176 100644
+--- a/WebKit/gtk/webkit/webkitwebview.h
++++ b/WebKit/gtk/webkit/webkitwebview.h
+@@ -284,6 +284,42 @@ WEBKIT_API void
+ webkit_web_view_set_full_content_zoom           (WebKitWebView        *web_view,
+                                                  gboolean              full_content_zoom);
+ 
++
++/*
++ * Extensions to render stuff to a buffer
++ */
++typedef struct _WebKitGlyph {
++    /* Bitmap/Glyph information */
++    /* The font/face used. e.g. Arial 11p bold italic */
++    gchar* face_and_config;
++    int advance_x;
++    int advance_y;
++    int bitmap_left_bearing; 
++    int bitmap_top_bearing;
++    int glyph_width;
++    int glyph_height;
++    guchar* bitmap;
++
++    /* The actual occurence of the above glyph */
++    unsigned int glyph_index;
++    int x;
++    int y;
++} WebKitGlyph;
++
++/*
++ * A list of links on the website and their bounding rect
++ */
++typedef struct _WebKitLink {
++    int x;
++    int y;
++    int width;
++    int height;
++    gchar* destination;
++} WebKitLink;
++
++WEBKIT_API
++bool webkit_web_view_extract_data(WebKitWebView*, int view_width, int view_height, GList** webkit_glyphs, GList** link_list);
++
+ G_END_DECLS
+ 
+ #endif
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 8ed2690..94f962e 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -35,6 +35,25 @@ static gchar* main_title;
+ static gint load_progress;
+ static guint status_context_id;
+ 
++
++/*
++ * For debugging purposes create a directory with the glyphs
++ */
++static void create_font_dir(GList *glyphs)
++{
++}
++
++/*
++ * Write out the text....
++ */
++static void create_text_file(GList *glyphs)
++{
++}
++
++static void create_links(GList *links)
++{
++}
++
+ static void
+ activate_uri_entry_cb (GtkWidget* entry, gpointer data)
+ {
+@@ -50,6 +69,18 @@ update_title (GtkWindow* window)
+     g_string_append (string, " - WebKit Launcher");
+     if (load_progress < 100)
+         g_string_append_printf (string, " (%d%%)", load_progress);
++    else {
++        GList *link_list = NULL;
++        GList *webkit_glyphs = NULL;
++        g_warning("Extracting data on fully loaded page");
++        webkit_web_view_extract_data(web_view, 640, 480, &webkit_glyphs, &link_list);
++        create_font_dir(webkit_glyphs);
++        create_text_file(webkit_glyphs);
++        create_links(link_list);
++        g_warning("Done!");
++    }
++
++
+     gchar* title = g_string_free (string, FALSE);
+     gtk_window_set_title (window, title);
+     g_free (title);
+-- 
+1.5.6.3
+
