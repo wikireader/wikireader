@@ -58,8 +58,8 @@ static void help(void)
 	printf("Usage: detect-wikireader [options] ...\n"
 		"  -h --help\t\t\tPrint this help message\n"
 		"  -V --version\t\t\tPrint the version number\n"
-		"  -D --daemonize\t\t\tDaemonize after startup"
-		"  -k  --kill\t\t\tKill a running daemon\n"
+		"  -D --daemonize\t\tDaemonize after startup\n"
+		"  -k --kill\t\t\tKill a running daemon\n"
 		);
 }
 static void print_version(void)
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
 	while (1) {
 		int c, option_index = 0;
-		c = getopt_long(argc, argv, "hV", opts,
+		c = getopt_long(argc, argv, "hVDk", opts,
 				&option_index);
 		if (c == -1)
 			break;
