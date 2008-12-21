@@ -28,12 +28,11 @@
 #include <string.h>
 #include <getopt.h>
 #include "wiki-inotify.h"
+#include "daemon.h"
 #include "config.h"
 #include "detect-wikireader-version.h"
 
-#define RUNNING_DIR "/"
-#define LOCK_FILE_NAME ".det-wikird.lock"
-static char* lock_file;
+
 
 void signal_handler(int signo)
 {
@@ -54,89 +53,13 @@ void signal_handler(int signo)
 	}
 }
 
-int check_lock_file()
-{
-	int lfp;
-	char* home = getenv("HOME");
-
-	lock_file = (char *)malloc(sizeof(char) * ( strlen(home) + strlen(LOCK_FILE_NAME)));
-	strcpy(lock_file, home);
-	strcat(lock_file, LOCK_FILE_NAME);
-
-	lfp = open(lock_file, O_RDWR|O_CREAT, 
-		   S_IRUSR | S_IWUSR |
-		   S_IRGRP | S_IROTH);
-	if (lfp < 0) {
-		syslog(LOG_INFO, "can not open lock file."); 
-		return -1;
-	}
-	if (lockf(lfp, F_TLOCK, 0) < 0) {
-		syslog(LOG_INFO, "can not lock."); 
-		return -1;
-	}
-
-	char str[10];
-	sprintf(str, "%d\n", getpid());	/* first instance continues */
-	write(lfp, str, strlen(str));		 /* record pid to lockfile */
-
-	return 0;
-}
-
-int daemon_init(void) 
-{
-	if (getppid() == 1) 
-		return -1; /* already a daemon */
-
-        /* Our process ID and Session ID */
-        pid_t pid, sid;
-        
-        /* Fork off the parent process */
-        pid = fork();
-        if (pid < 0) {
-                exit(EXIT_FAILURE);
-        }
-        /* If we got a good PID, then
-           we can exit the parent process. */
-        if (pid > 0) {
-                exit(EXIT_SUCCESS);
-        }
-
-        /* Change the file mode mask */
-        umask(0);
-                
-        /* Open any logs here */        
-                
-        /* Create a new SID for the child process */
-        sid = setsid();
-        if (sid < 0) {
-                /* Log the failure */
-                exit(EXIT_FAILURE);
-        }
-        
-        /* Change the current working directory */
-        if ((chdir(RUNNING_DIR)) < 0) {
-                /* Log the failure */
-                exit(EXIT_FAILURE);
-        }
-        
-	if ((check_lock_file()) < 0) {
-		/* lock file file failure */
-		exit(EXIT_FAILURE);
-	}
-
-	/* close all descriptors */
-	int desc;
-	for (desc = getdtablesize(); desc >= 0; --desc) 
-		close(desc);
-
-	return 0;
-} 
-
 static void help(void)
 {
 	printf("Usage: detect-wikireader [options] ...\n"
 		"  -h --help\t\t\tPrint this help message\n"
 		"  -V --version\t\t\tPrint the version number\n"
+		"  -D --daemonize\t\t\tDaemonize after startup"
+		"  -k  --kill\t\t\tKill a running daemon\n"
 		);
 }
 static void print_version(void)
@@ -147,10 +70,14 @@ static void print_version(void)
 static struct option opts[] = {
 	{ "help", 0, 0, 'h' },
 	{ "version", 0, 0, 'V' },
+	{ "daemon", 0, 0, 'D' },
+	{ "kill", 0, 0, 'k' },
 };
 
 int main(int argc, char **argv)
 {
+	int daemon = 0;
+
 	printf("det-wikird - (C) 2007-2008 by OpenMoko Inc.\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
 
@@ -170,16 +97,23 @@ int main(int argc, char **argv)
 			print_version();
 			exit(0);
 			break;
+		case 'D':
+			daemon = 1;
+			break;
+		case 'k':
+			break;
 		default:
 			help();
 			exit(2);
 		}
 	}
 
-	if (daemon_init() != 0) { 
-		printf("can't fork self\n"); 
-		exit(EXIT_FAILURE); 
-	} 
+	if (daemon) {
+		if (daemon_init() != 0) { 
+			printf("can't fork self\n"); 
+			exit(EXIT_FAILURE); 
+		} 
+	}
 
 	openlog("openmoko-detect-wikireader", LOG_PID, LOG_USER); 
 	syslog(LOG_INFO, "program started."); 
