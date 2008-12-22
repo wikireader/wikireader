@@ -2,6 +2,8 @@
 
 #
 # Experiment with the encoding of the data
+last_glyph_index = 0
+glyph_map = {}
 
 
 # Load glyphs... share this with render_text.py
@@ -49,12 +51,54 @@ def delta_compress(glyphs):
                       'y' : glyph['y'] - last_y,
                       'font' : glyph['font'],
                       'glyph': glyph['glyph'] }
+
+        # Handle the line wrap... negative sign
+        if new_glyph['x'] < 0:
+            new_glyph['x'] = -glyph['x']
+
         last_x = glyph['x']
         last_y = glyph['y']
+
+        assert last_x > 0
+        assert last_y > 0
         new_glyphs.append(new_glyph)
     return new_glyphs
 
+def map_font_description_to_glyph_index(glyph):
+    key = "Glyph:%s-Font:%s" % (glyph['glyph'], glyph['font'])
+    if not key in glyph_map:
+        global last_glyph_index
+        glyph_map[key] = last_glyph_index
+        last_glyph_index = last_glyph_index + 1
+
+    return glyph_map[key]
+
+def rle_encode(glyphs):
+    import copy, struct
+    glyphs = copy.deepcopy(glyphs)
+
+    delta_compressed = open("delta_compressed", "w")
+    delta_compressed_glyph_index = open("delta_compressed_glyph_index", "w")
+
+    prev = None
+    smallest_x = 0
+    largest_x = 0
+    for glyph in glyphs:
+        glyph_index = map_font_description_to_glyph_index(glyph)
+
+        # Gather some information
+        if glyph['x'] < smallest_x:
+            smallest_x = glyph['x']
+        elif glyph['x'] > largest_x:
+            largest_x = glyph['x']
+        prev = glyph
+
+        delta_compressed.write("%(x)d,%(y)d,%(font)s,%(glyph)s" % glyph)
+        delta_compressed_glyph_index.write(struct.pack("hhH", glyph['x'], glyph['y'], glyph_index))
+
+    print largest_x, smallest_x
 
 
 glyphs = sort(load())
 delta = delta_compress(glyphs)
+rle_encode(delta)
