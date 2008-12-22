@@ -74,7 +74,39 @@ def map_font_description_to_glyph_index(glyph):
     return glyph_map[key]
 
 def rle_encode(glyphs):
-    import copy, struct
+    import math
+
+    def rle(x):
+        """
+        Runtime length encode the number
+        """
+        if x == 0:
+            return "0"
+
+        number_of_bits = int(math.ceil(math.log(x, 2)))
+        return number_of_bits * "y"
+
+    def bit_compress(x, y, glyph_index):
+        """
+        Compress x,y,glyph_index into the smallest possible
+        recoverable representation
+        """
+        assert glyph_index >= 0
+        assert y >= 0
+
+        if x < 0:
+            str = "1"
+        else:
+            str = "0"
+        #return "%s%s%s%s" % (str, rle(abs(x)), rle(y), rle(glyph_index))
+        
+        str = "%s%s%s" % (rle(abs(x)), rle(y), rle(glyph_index))
+        print len(str)
+        return str
+        
+
+
+    import copy
     glyphs = copy.deepcopy(glyphs)
 
     delta_compressed = open("delta_compressed", "w")
@@ -94,7 +126,7 @@ def rle_encode(glyphs):
         prev = glyph
 
         delta_compressed.write("%(x)d,%(y)d,%(font)s,%(glyph)s" % glyph)
-        delta_compressed_glyph_index.write(struct.pack("hhH", glyph['x'], glyph['y'], glyph_index))
+        delta_compressed_glyph_index.write(bit_compress(glyph['x'], glyph['y'], glyph_index))
 
     print largest_x, smallest_x
 
@@ -102,3 +134,4 @@ def rle_encode(glyphs):
 glyphs = sort(load())
 delta = delta_compress(glyphs)
 rle_encode(delta)
+print last_glyph_index
