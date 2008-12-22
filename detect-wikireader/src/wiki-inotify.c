@@ -27,7 +27,6 @@
 #define EVENT_SIZE  ( sizeof (struct inotify_event) )
 #define BUF_LEN     ( 2 * ( EVENT_SIZE + 16 ) )
 
-#define MONITOR_DIR "/media"
 #define PATH_LEN 100
 #define KERNEL "/kernel"
 
@@ -35,16 +34,18 @@ static int fd;
 static int wd;
 static char buffer[BUF_LEN];
 static char path[PATH_LEN];
+static char *monitor_dir;
 
-int init_monitor(void)
+int init_monitor(char * dir)
 {
+	monitor_dir = dir;
 	fd = inotify_init();
 
 	if ( fd < 0 ) {
 		exit(EXIT_FAILURE);
 	}
 
-	wd = inotify_add_watch( fd, MONITOR_DIR,
+	wd = inotify_add_watch( fd, monitor_dir,
 				IN_MODIFY | IN_CREATE | IN_DELETE );
 
 	return 0;
@@ -86,7 +87,7 @@ int run_monitor(void)
 			if ( event->mask & IN_CREATE ) {
 				if ( event->mask & IN_ISDIR ) {
 					syslog(LOG_INFO, "The directory %s was created.\n", event->name );       
-					strcpy(path, MONITOR_DIR);
+					strcpy(path, monitor_dir);
 					strcat(path, "/");
 					strcat(path, event->name);
 					strcat(path, KERNEL);

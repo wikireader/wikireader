@@ -33,6 +33,9 @@
 #include "detect-wikireader-version.h"
 
 
+	
+static int intervals = 1; /* default intervals is 1 second */
+static char *monitor_dir = "/media"; /* check whick dirtory */
 
 void signal_handler(int signo)
 {
@@ -60,6 +63,8 @@ static void help(void)
 		"  -V --version\t\t\tPrint the version number\n"
 		"  -D --daemonize\t\tDaemonize after startup\n"
 		"  -k --kill\t\t\tKill a running daemon\n"
+		"  -t --time\t\t\tCheck folder Intervals second(default 1 sec)\n"
+		"  -d --dirtory\t\t\tCheck whick folder (default /media)\n"
 		);
 }
 static void print_version(void)
@@ -72,6 +77,8 @@ static struct option opts[] = {
 	{ "version", 0, 0, 'V' },
 	{ "daemon", 0, 0, 'D' },
 	{ "kill", 0, 0, 'k' },
+	{ "time", 1, 0, 't' },
+	{ "dirtory", 1, 0, 'd' },
 };
 
 int main(int argc, char **argv)
@@ -83,7 +90,7 @@ int main(int argc, char **argv)
 
 	while (1) {
 		int c, option_index = 0;
-		c = getopt_long(argc, argv, "hVDk", opts,
+		c = getopt_long(argc, argv, "hVDkt:d:", opts,
 				&option_index);
 		if (c == -1)
 			break;
@@ -101,6 +108,12 @@ int main(int argc, char **argv)
 			daemon = 1;
 			break;
 		case 'k':
+			break;
+		case 't':
+			intervals = atoi(optarg);
+			break;
+		case 'd':
+			monitor_dir = optarg;
 			break;
 		default:
 			help();
@@ -129,7 +142,7 @@ int main(int argc, char **argv)
         /* Daemon-specific initialization goes here */
 
 	int rt;
-	if ((rt = init_monitor()) != 0) {
+	if ((rt = init_monitor(monitor_dir)) != 0) {
 		syslog(LOG_INFO, "init_monitor error: %d", rt); 
 		exit(EXIT_SUCCESS);
 	}
@@ -138,7 +151,7 @@ int main(int argc, char **argv)
         while (1) {
 		/* Do some task here ... */
 		run_monitor();           
-		sleep(1);
+		sleep(intervals);
         }
 
 	exit(EXIT_SUCCESS);

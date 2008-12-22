@@ -19,7 +19,7 @@
 #define _WIKI_INOTIFY_H_
 
 
-int init_monitor(void);
+int init_monitor(char *dir);
 int run_monitor(void);
 int close_monitor(void);
 
