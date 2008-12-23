@@ -2,3 +2,6 @@ Detect wikidevice SD card insertion
 	When the user put our wiki-reader SD card into 
 the desktop computer, we should be able to detect it, 
 then bring the user to wiki-reader community website
+
+Build deb package
+	depkg -b det-wikird.deb

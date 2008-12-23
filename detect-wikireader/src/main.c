@@ -79,6 +79,7 @@ static struct option opts[] = {
 	{ "kill", 0, 0, 'k' },
 	{ "time", 1, 0, 't' },
 	{ "dirtory", 1, 0, 'd' },
+	{ NULL, 0, NULL, 0 }
 };
 
 int main(int argc, char **argv)
