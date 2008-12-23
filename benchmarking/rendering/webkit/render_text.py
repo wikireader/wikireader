@@ -28,7 +28,7 @@ for line in input:
 max_height = max_height + 60
 
 
-destination_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 640, max_height)
+destination_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 240, max_height)
 context = cairo.Context(destination_surface)
 context.rectangle(0, 0, 640, max_height)
 context.fill()
