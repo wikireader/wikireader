@@ -8,6 +8,12 @@
 #     font faces we have....reducing the number of faces
 #     will reduce this number...
 #
+# What might work:
+#    -omit the sign of the x-delta and let it wrap
+#     around at the page width. So the maximum x
+#     number would be the page width...
+#
+#
 
 #
 # Experiment with the encoding of the data
@@ -66,9 +72,11 @@ def delta_compress(glyphs):
                       'font' : glyph['font'],
                       'glyph': glyph['glyph'] }
 
-        # Handle the line wrap... negative sign
+        # Handle the line wrap...
+        # The maximum delta can be 239.
         if new_glyph['x'] < 0:
-            new_glyph['x'] = -glyph['x']
+            x = 240 - last_x
+            new_glyph['x'] = x+glyph['x']
 
         last_x = glyph['x']
         last_y = glyph['y']
