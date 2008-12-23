@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+
+#
+# What is not working:
+#    -delta compress glyphs... the diff is too random
+#     the glyph_index gets pretty high with the more
+#     font faces we have....reducing the number of faces
+#     will reduce this number...
+#
+
 #
 # Experiment with the encoding of the data
 last_glyph_index = 0
