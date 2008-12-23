@@ -20,6 +20,11 @@ def load():
     glyphs = []
     for line in open("render_text.blib"):
         split = line.strip().split(',')  
+
+        # Throw away glyphs we will not render (normally zero spaced)
+        if split[3] == '3':
+            continue
+
         glyph = { 'x'     : int(split[0]),
             'y'     : int(split[1]),
             'font'  : split[2],
