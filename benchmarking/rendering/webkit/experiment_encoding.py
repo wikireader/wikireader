@@ -34,6 +34,10 @@ def load():
         if split[3] == '3':
             continue
 
+        # Throw out invisible text
+        if int(split[0]) > 240:
+            continue
+
         glyph = { 'x'     : int(split[0]),
             'y'     : int(split[1]),
             'font'  : split[2],
