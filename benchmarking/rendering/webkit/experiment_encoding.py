@@ -18,6 +18,9 @@
 #
 # Experiment with the encoding of the data
 last_glyph_index = 0
+package_one_byte = 0
+package_two_byte = 0
+package_three_byte = 0
 glyph_map = {}
 
 
@@ -103,28 +106,80 @@ def rle_encode(glyphs):
         Runtime length encode the number
         """
         if x == 0:
-            return "0"
+            return 1
 
-        number_of_bits = int(math.ceil(math.log(x, 2)))
-        return number_of_bits * "y"
+        # find the highest bit
+        highest_bit = 0
+        for i in range(0, int(math.ceil(math.log(x,2)))+1) :
+            mask = 1 << i
+            if (x & mask)>>i == 1:
+                highest_bit = i
 
-    def bit_compress(x, y, glyph_index):
+        return i
+
+    def zero_ones(x):
         """
-        Compress x,y,glyph_index into the smallest possible
-        recoverable representation
+        Count zero's and ones in the text...
         """
-        assert glyph_index >= 0
-        assert y >= 0
+        if x == 0:
+            return {'0' : 1, '1': 0}
 
-        if x < 0:
-            str = "1"
+        zeros = 0
+        ones = 0
+        for i in range(0, int(math.ceil(math.log(x,2)))+1) :
+            mask = 1 << i
+            if (x & mask)>>i == 1:
+                ones = ones + 1
+            else:
+                zeros = zeros + 1
+
+        return {'0' : zeros, '1': ones}
+                
+
+
+    def pack_glyph(x, y, glyph_index):
+        """
+        Pack the glyph together
+
+        0.) Byte sized packet...
+             0      7
+             0XXXYGGG
+        1.) Two Byte packet
+             0      78      15
+             10XXXXXYYYGGGGGG
+             X == X delta
+             Y == Y delta
+             G == glyph index
+        2.) Three Byte packet... to catch everything else...
+             0       ,       ,       ,
+             11XXXXXXXYYYYYYYGGGGGGGG
+
+        Alternatively....
+        a)
+            Bit 0 defines if the package is at an end...
+            Bit 12 00 => x, 01 => y, 10 => index
+            Bit ...
+        """
+        x_bits = rle(x)
+        y_bits = rle(y)
+        index_bits = rle(glyph_index)
+        number_bits = x_bits + y_bits + index_bits
+        if x_bits <= 3 and y_bits <= 1 and index_bits <= 3:
+            global package_one_byte
+            package_one_byte = package_one_byte + 1
+            pass
+        elif x_bits <= 5 and y_bits <= 3 and index_bits <= 6:
+            global package_two_byte
+            package_two_byte = package_two_byte + 1
+            pass
+        elif x_bits <= 7 and y_bits <= 7 and index_bits <= 8:
+            global package_three_byte
+            package_three_byte = package_three_byte + 1
+            pass
         else:
-            str = "0"
-        #return "%s%s%s%s" % (str, rle(abs(x)), rle(y), rle(glyph_index))
-        
-        str = "%s%s%s" % (rle(abs(x)), rle(y), rle(glyph_index))
-        print len(str)
-        return str
+            print "Fail:", number_bits, " components", "x: (", x, x_bits, zero_ones(x), ") y: (", y, y_bits, zero_ones(y), ") index: (", glyph_index, index_bits, zero_ones(glyph_index), ")"
+            assert False
+        return ""
         
 
 
@@ -148,7 +203,10 @@ def rle_encode(glyphs):
         prev = glyph
 
         delta_compressed.write("%(x)d,%(y)d,%(font)s,%(glyph)s" % glyph)
-        delta_compressed_glyph_index.write(bit_compress(glyph['x'], glyph['y'], glyph_index))
+        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph_index))
+        #delta_compressed_glyph_index.write(bit_compress(glyph['x'], glyph['y'], glyph_index))
+        #delta_compressed_glyph_index.write(struct.pack("hH", glyph['x']*(glyph['y']+1), glyph_index))
+        #delta_compressed_glyph_index.write("%d%d" % (glyph['x']*(glyph['y']*1), glyph_index))
 
     print largest_x, smallest_x
 
