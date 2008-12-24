@@ -109,6 +109,10 @@ int main(int argc, char **argv)
 			daemon = 1;
 			break;
 		case 'k':
+			if(kill_daemon(9, NULL) != 0) {
+				syslog(LOG_INFO, "kill daemon unsucess");
+			}
+			exit(0);
 			break;
 		case 't':
 			intervals = atoi(optarg);

@@ -20,6 +20,6 @@
 #define _DEAMON_H_
 
 int daemon_init(void);
+int kill_daemon(int sig, pid_t *pid);
 
-
-#endif _DAEMON_H_
+#endif /* _DAEMON_H_ */
