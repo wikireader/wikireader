@@ -1,4 +1,4 @@
-From df2920ec86a5fed8b63b3adb218f92bf917e374c Mon Sep 17 00:00:00 2001
+From 623c3d493ebcf14e75ca9fc0ba8700e94bbe7aea Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 16 Dec 2008 01:26:34 +0100
 Subject: [PATCH] Hook into the font drawing to get hold of the pango lyout..

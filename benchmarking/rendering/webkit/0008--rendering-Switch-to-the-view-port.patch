@@ -1,0 +1,25 @@
+From 8741ecbe01736a1d19554ad8211633da1fef8d4d Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Tue, 23 Dec 2008 21:33:25 +0100
+Subject: [PATCH] [rendering] Switch to the view port
+
+---
+ WebKitTools/GtkLauncher/main.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index cad1a8c..8b69dce 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -192,7 +192,7 @@ update_title (GtkWindow* window)
+         GList *link_list = NULL;
+         GList *webkit_glyphs = NULL;
+         g_warning("Extracting data on fully loaded page");
+-        webkit_web_view_extract_data(web_view, 640, 480, &webkit_glyphs, &link_list);
++        webkit_web_view_extract_data(web_view, 240, 208, &webkit_glyphs, &link_list);
+         create_font_dirs(webkit_glyphs);
+         create_text_file(webkit_glyphs);
+         create_links(link_list);
+-- 
+1.5.6.3
+

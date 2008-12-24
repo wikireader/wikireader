@@ -1,4 +1,4 @@
-From 3e589c4180a1017b70db2fc465a85fdfd5fde9d1 Mon Sep 17 00:00:00 2001
+From d45d60ebe4880aaf535d97d2e87a87d42a46f7af Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 20:13:06 +0100
 Subject: [PATCH] Add API to extract the required data of a a full page...

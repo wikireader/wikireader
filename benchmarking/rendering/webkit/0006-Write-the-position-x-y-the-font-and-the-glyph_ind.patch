@@ -1,4 +1,4 @@
-From 587788c640fda7077168b615658310c3547abf78 Mon Sep 17 00:00:00 2001
+From 8b561d72b55f46f8495ca25d5abc32dc84de9327 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:32:20 +0100
 Subject: [PATCH] Write the position (x,y), the font and the glyph_index on a line
