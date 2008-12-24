@@ -85,11 +85,15 @@ def delta_compress(glyphs):
             x = 240 - last_x
             new_glyph['x'] = x+glyph['x']
 
+        # Sanity
+        assert glyph['x'] >= 0
+        assert new_glyph['x'] >= 0
+
         last_x = glyph['x']
         last_y = glyph['y']
-
-        assert last_x > 0
+        assert last_x >= 0
         assert last_y > 0
+
         new_glyphs.append(new_glyph)
     return new_glyphs
 
