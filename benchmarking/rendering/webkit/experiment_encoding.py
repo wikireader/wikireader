@@ -251,7 +251,7 @@ def rle_encode(glyphs):
     smallest_x = 0
     largest_x = 0
     for glyph in glyphs:
-        glyph_index = map_font_description_to_glyph_index(glyph)
+        glyph['glyph_index'] = map_font_description_to_glyph_index(glyph)
 
         # Gather some information
         if glyph['x'] < smallest_x:
@@ -260,8 +260,11 @@ def rle_encode(glyphs):
             largest_x = glyph['x']
         prev = glyph
 
-        delta_compressed.write("%(x)d,%(y)d,%(font)s,%(glyph)s" % glyph)
-        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph_index))
+        if glyph['y'] == 0:
+            delta_compressed.write("%(x)d;%(glyph_index)d" % glyph)
+        else:
+            delta_compressed.write("%(x)d,%(y)d,%(glyph_index)d" % glyph)
+        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph['glyph_index']))
 
     # Write the pending bits
     delta_compressed_glyph_index.write(bit_writer.finish())
