@@ -145,10 +145,11 @@ def delta_compress(glyphs):
             new_glyph['x'] = x+glyph['x']
 
         # Sanity
+        print glyph_advance_x, glyph, last_x, new_glyph
         assert glyph['x'] >= 0
         assert new_glyph['x'] >= 0
 
-        last_x = glyph['x']
+        last_x = glyph['x'] + glyph_advance_x
         last_y = glyph['y']
         assert last_x >= 0
         assert last_y > 0
