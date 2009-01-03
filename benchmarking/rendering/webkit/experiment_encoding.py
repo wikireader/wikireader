@@ -345,7 +345,7 @@ def use_auto_kern(glyphs):
             write_pending(auto_kern, pending_glyphs, last_x, last_y)
             pending_glyphs = []
             last_x = glyph['x']
-            auto_kern.write("f%d, " % font)
+            auto_kern.write("f%d," % font)
 
         if last_y != glyph['y']:
             write_pending(auto_kern, pending_glyphs, last_x, last_y)
