@@ -43,6 +43,11 @@ class BitWriter:
         self.write_4bits( (bit&0xf0)>>4)
         self.write_4bits( (bit&0x0f)>>0)
 
+    def write_12bits(self, bit):
+        assert bit == (bit&0xfff)
+        self.write_4bits( (bit&0xf00)>>8)
+        self.write_8bits( (bit&0x0ff))
+
     def write_bit(self, bit):
         assert bit == (bit&0x1)
         if bit:
@@ -230,11 +235,11 @@ def rle_encode(glyphs):
             bit_writer.write_bit(1)
             bit_writer.write_bit(0)
             bit_writer.write_4bits(y)
-        elif y_bits <= 8:
+        elif y_bits <= 12:
             bit_writer.write_bit(1)
             bit_writer.write_bit(1)
             bit_writer.write_bit(1)
-            bit_writer.write_8bits(y)
+            bit_writer.write_12bits(y)
         else:
             print y, y_bits, glyph_index
             assert False
