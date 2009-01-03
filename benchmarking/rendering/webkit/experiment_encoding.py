@@ -314,13 +314,13 @@ def rle_encode(glyphs):
 
 def use_auto_kern(glyphs):
     """A function saving the text runs and hoping autokern will do its job"""
-    def write_pending(file, glyphs):
+    def write_pending(file, glyphs, last_x, last_y):
         """All glyphs are on the same height..."""
         if len(glyphs) == 0:
             return
 
         first_x = glyphs[0]['x']
-        first_y = glyphs[0]['y']
+        first_y = glyphs[0]['y'] - last_y
         file.write("p%d:%d; " % (first_x, first_y))
         list = []
         for glyph in glyphs:
@@ -330,6 +330,7 @@ def use_auto_kern(glyphs):
 
     auto_kern = open("auto_kern.ecoding", "w")
 
+    last_x = 0
     last_y = 0
     last_font = None
     pending_glyphs = []
@@ -337,20 +338,22 @@ def use_auto_kern(glyphs):
         font = map_font_to_index(glyph['font'])
 
         if last_font != font:
-            write_pending(auto_kern, pending_glyphs)
+            write_pending(auto_kern, pending_glyphs, last_x, last_y)
             pending_glyphs = []
+            last_x = glyph['x']
             auto_kern.write("f%d, " % font)
 
         if last_y != glyph['y']:
-            write_pending(auto_kern, pending_glyphs)
+            write_pending(auto_kern, pending_glyphs, last_x, last_y)
             pending_glyphs = []
+            last_x = glyph['x']
 
         pending_glyphs.append(glyph)
         last_y = glyph['y']
         last_font = font
 
     # Write out the last bits
-    write_pending(auto_kern, pending_glyphs)
+    write_pending(auto_kern, pending_glyphs, last_x, last_y)
             
         
 
