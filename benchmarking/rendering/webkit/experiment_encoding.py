@@ -334,8 +334,11 @@ def use_auto_kern(glyphs):
 
     auto_kern = open("auto_kern.ecoding", "w")
 
+    kern_info = {}
+
     last_x = 0
     last_y = 0
+    last_glyph = None
     last_font = None
     pending_glyphs = []
     for glyph in glyphs:
@@ -345,19 +348,40 @@ def use_auto_kern(glyphs):
             write_pending(auto_kern, pending_glyphs, last_x, last_y)
             pending_glyphs = []
             last_x = glyph['x']
+            last_glyph = None
             auto_kern.write("f%d," % font)
 
         if last_y != glyph['y']:
             write_pending(auto_kern, pending_glyphs, last_x, last_y)
             pending_glyphs = []
             last_x = glyph['x']
+            last_glyph = None
+
+        # Look into the kerning...
+        if last_glyph and last_glyph['x'] < glyph['x']:
+            kern = glyph['x'] - last_glyph['x']
+            glyph_pair = (last_glyph['glyph'], glyph['glyph'])
+            glyph_font = glyph['font']
+            if not glyph['font'] in kern_info:
+                kern_info[glyph_font] = {}
+                kern_info[glyph_font][glyph_pair] = kern
+                print "kern between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
+            elif not glyph_pair in kern_info[glyph_font]:
+                kern_info[glyph_font][glyph_pair] = kern
+                print "kern between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
+            else:
+                if kern != kern_info[glyph_font][glyph_pair]:
+                    print "Not matching kern: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
+
 
         pending_glyphs.append(glyph)
         last_y = glyph['y']
         last_font = font
+        last_glyph = glyph
 
     # Write out the last bits
     write_pending(auto_kern, pending_glyphs, last_x, last_y)
+    print kern_info
             
         
 
