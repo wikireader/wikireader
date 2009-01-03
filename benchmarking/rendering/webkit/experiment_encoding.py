@@ -319,9 +319,13 @@ def use_auto_kern(glyphs):
         if len(glyphs) == 0:
             return
 
-        first_x = glyphs[0]['x']
+        first_x = glyphs[0]['x'] - last_x
         first_y = glyphs[0]['y'] - last_y
-        file.write("p%d:%d; " % (first_x, first_y))
+
+        if first_x < 0:
+            first_x = (240 - last_x) + glyphs[0]['x']
+
+        file.write("p%d:%d;" % (first_x, first_y))
         list = []
         for glyph in glyphs:
             list.append("%d" % map_font_description_to_glyph_index(glyph))
