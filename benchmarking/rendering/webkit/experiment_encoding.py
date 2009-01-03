@@ -15,13 +15,17 @@
 #
 #
 
+import os
+
 #
 # Experiment with the encoding of the data
 last_glyph_index = 0
+last_font_index = 0
 package_one_byte = 0
 package_two_byte = 0
 package_three_byte = 0
 glyph_map = {}
+font_map = {}
 
 class BitWriter:
     def __init__(self):
@@ -121,10 +125,13 @@ def delta_compress(glyphs):
     last_y = 0
 
     for glyph in glyphs:
+        glyph_advance_x = int(open(os.path.join("fonts", glyph['font'], glyph['glyph'], "advance_x")).readline())
         new_glyph = { 'x' : glyph['x'] - last_x,
                       'y' : glyph['y'] - last_y,
                       'font' : glyph['font'],
-                      'glyph': glyph['glyph'] }
+                      'glyph': glyph['glyph'],
+                      'original_x' : glyph['x'],
+                      'original_y' : glyph['y'] }
 
         # Handle the line wrap...
         # The maximum delta can be 239.
@@ -145,13 +152,22 @@ def delta_compress(glyphs):
     return new_glyphs
 
 def map_font_description_to_glyph_index(glyph):
-    key = "Glyph:%s-Font:%s" % (glyph['glyph'], glyph['font'])
+    key = "Glyph:%s" % (glyph['glyph'])
     if not key in glyph_map:
         global last_glyph_index
         glyph_map[key] = last_glyph_index
         last_glyph_index = last_glyph_index + 1
 
     return glyph_map[key]
+
+def map_font_to_index(font):
+    key = "Font:%s" % (font)
+    if not key in font_map:
+        global last_font_index
+        font_map[key] = last_font_index
+        last_font_index = last_font_index + 1
+
+    return font_map[key]
 
 def rle_encode(glyphs):
     import math
@@ -172,7 +188,7 @@ def rle_encode(glyphs):
 
         return highest_bit+1
 
-    def pack_glyph(x, y, glyph_index):
+    def pack_glyph(x, y, glyph_index, old_font, new_font):
         """
         Pack the glyph together
 
@@ -188,8 +204,9 @@ def rle_encode(glyphs):
             Legal combinations as above
         10 = Y Position 4 Byte
         11 = Extended package...
-        111 - 8-Byte Y,Glyph
+        111 - 12-Byte Y,Glyph
         110 - Extended...
+        1101
 
         """
         x_bits = highest_bit(x)
@@ -232,9 +249,22 @@ def rle_encode(glyphs):
             bit_writer.write_bit(0)
             bit_writer.write_bit(1)
             bit_writer.write_8bits(glyph_index)
+        elif index_bits <= 12:
+            bit_writer.write_bit(1)
+            bit_writer.write_bit(1)
+            bit_writer.write_bit(1)
+            bit_writer.write_12bits(glyph_index)
         else:
             print x, x_bits, index_bits, glyph_index
             assert False
+
+        if last_font != new_font:
+            bit_writer.write_bit(1)
+            bit_writer.write_bit(1)
+            bit_writer.write_bit(0)
+            bit_writer.write_bit(1)
+
+            bit_writer.write_4bits(map_font_to_index(new_font))
 
 
         return bit_writer.consume()
@@ -250,6 +280,7 @@ def rle_encode(glyphs):
     prev = None
     smallest_x = 0
     largest_x = 0
+    last_font = None
     for glyph in glyphs:
         glyph['glyph_index'] = map_font_description_to_glyph_index(glyph)
 
@@ -260,11 +291,15 @@ def rle_encode(glyphs):
             largest_x = glyph['x']
         prev = glyph
 
+        if last_font != glyph['font']:
+            delta_compressed.write("+%d" % map_font_to_index(glyph['font']))
+
         if glyph['y'] == 0:
-            delta_compressed.write("%(x)d;%(glyph_index)d" % glyph)
+            delta_compressed.write("%(original_x)d;%(glyph_index)d:" % glyph)
         else:
-            delta_compressed.write("%(x)d,%(y)d,%(glyph_index)d" % glyph)
-        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph['glyph_index']))
+            delta_compressed.write("%(original_x)d,%(original_y)d,%(glyph_index)d:" % glyph)
+        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph['glyph_index'], last_font, glyph['font']))
+        last_font = glyph['font']
 
     # Write the pending bits
     delta_compressed_glyph_index.write(bit_writer.finish())
@@ -275,3 +310,4 @@ glyphs = sort(load())
 delta = delta_compress(glyphs)
 rle_encode(delta)
 print "Last glyph", last_glyph_index
+print "Last font", last_font_index
