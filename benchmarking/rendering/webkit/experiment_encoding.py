@@ -312,10 +312,53 @@ def rle_encode(glyphs):
     delta_compressed_glyph_index.write(bit_writer.finish())
     print "Larges and smallest x delta", largest_x, smallest_x
 
+def use_auto_kern(glyphs):
+    """A function saving the text runs and hoping autokern will do its job"""
+    def write_pending(file, glyphs):
+        """All glyphs are on the same height..."""
+        if len(glyphs) == 0:
+            return
+
+        first_x = glyphs[0]['x']
+        first_y = glyphs[0]['y']
+        file.write("p%d:%d; " % (first_x, first_y))
+        list = []
+        for glyph in glyphs:
+            list.append("%d" % map_font_description_to_glyph_index(glyph))
+        file.write(" ".join(list))
+ 
+
+    auto_kern = open("auto_kern.ecoding", "w")
+
+    last_y = 0
+    last_font = None
+    pending_glyphs = []
+    for glyph in glyphs:
+        font = map_font_to_index(glyph['font'])
+
+        if last_font != font:
+            write_pending(auto_kern, pending_glyphs)
+            pending_glyphs = []
+            auto_kern.write("f%d, " % font)
+
+        if last_y != glyph['y']:
+            write_pending(auto_kern, pending_glyphs)
+            pending_glyphs = []
+
+        pending_glyphs.append(glyph)
+        last_y = glyph['y']
+        last_font = font
+
+    # Write out the last bits
+    write_pending(auto_kern, pending_glyphs)
+            
+        
+
 
 raw_glyphs = load()
 glyphs = sort(copy.deepcopy(raw_glyphs))
 delta = delta_compress(glyphs)
 rle_encode(delta)
+use_auto_kern(raw_glyphs)
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index

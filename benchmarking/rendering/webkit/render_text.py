@@ -11,7 +11,7 @@ import cairo, os
 max_height = 0
 glyph_data = []
 
-input = open("render_text.blib")
+input = open("all_large_text")
 for line in input:
     split = line.strip().split(',')  
     glyph = { 'x'     : int(split[0]),
