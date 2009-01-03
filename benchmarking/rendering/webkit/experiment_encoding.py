@@ -15,6 +15,7 @@
 #
 #
 
+import copy
 import os
 
 #
@@ -312,7 +313,8 @@ def rle_encode(glyphs):
     print "Larges and smallest x delta", largest_x, smallest_x
 
 
-glyphs = sort(load())
+raw_glyphs = load()
+glyphs = sort(copy.deepcopy(raw_glyphs))
 delta = delta_compress(glyphs)
 rle_encode(delta)
 print "Last glyph", last_glyph_index
