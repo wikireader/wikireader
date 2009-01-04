@@ -1,0 +1,57 @@
+From af85a58f8c8e6bffd59cd8658da7893d11004d6f Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Sun, 4 Jan 2009 19:52:40 +0100
+Subject: [PATCH] Add an end of text run marker to the output
+
+---
+ WebCore/platform/graphics/gtk/FontGtk.cpp |    5 +++++
+ WebKitTools/GtkLauncher/main.c            |   10 ++++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index f0012c4..5ee6f88 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -557,6 +557,11 @@ void Font::drawComplexText(GraphicsContext* context, const TextRun& run, const F
+     webkit_ft2_render_layout_line_subpixel(renderer, layoutLine, 10, 80);
+     g_object_unref(renderer);
+ 
++    // Termination glyph
++    WebKitGlyph* glyph = g_slice_new(WebKitGlyph);
++    memset(glyph, 0, sizeof(*glyph));
++    webkit_glyphs = g_list_append(webkit_glyphs, glyph);
++
+     Color fillColor = context->fillColor();
+     float red, green, blue, alpha;
+ 
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 8b69dce..6efea8c 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -110,7 +110,12 @@ static guint status_context_id;
+ static void create_font_dir(WebKitGlyph* glyph, gpointer* data)
+ {
+     /* escape the string */
+-    int i = 0, length = strlen(glyph->face_and_config);
++    int i = 0, length;
++
++    if (!glyph->face_and_config)
++        return;
++
++    length = strlen(glyph->face_and_config);
+     for (i = 0; i < length; ++i)
+         if (glyph->face_and_config[i] == ' ')
+             glyph->face_and_config[i] = '_';
+@@ -151,7 +156,8 @@ static void append_glyph(WebKitGlyph* glyph, GString* string)
+ {
+     g_string_append_printf(string, "%d,%d,%s,%d\n",
+                            glyph->x, glyph->y,
+-                           glyph->face_and_config, glyph->glyph_index);
++                           glyph->face_and_config ? glyph->face_and_config : "0",
++                           glyph->glyph_index);
+ }
+ 
+ static void create_text_file(GList *glyphs)
+-- 
+1.5.6.3
+
