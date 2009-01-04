@@ -1,4 +1,4 @@
-From d45d60ebe4880aaf535d97d2e87a87d42a46f7af Mon Sep 17 00:00:00 2001
+From 20fff96ea0077af028fb326f2bac00f49078cf4d Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 20:13:06 +0100
 Subject: [PATCH] Add API to extract the required data of a a full page...
@@ -15,7 +15,7 @@ everything we will need to process the text.
  6 files changed, 166 insertions(+), 146 deletions(-)
 
 diff --git a/WebCore/GNUmakefile.am b/WebCore/GNUmakefile.am
-index f49ad96..f9c9e46 100644
+index bbd100c..23f5909 100644
 --- a/WebCore/GNUmakefile.am
 +++ b/WebCore/GNUmakefile.am
 @@ -43,6 +43,7 @@ webcore_cppflags += \
@@ -378,10 +378,10 @@ index d3b9bf9..cda196d 100644
  
      Color fillColor = context->fillColor();
 diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
-index e98d3f7..9f2b901 100644
+index edaf055..ae1d38d 100644
 --- a/WebKit/gtk/webkit/webkitwebview.cpp
 +++ b/WebKit/gtk/webkit/webkitwebview.cpp
-@@ -68,6 +68,10 @@
+@@ -101,6 +101,10 @@
  
  static const double defaultDPI = 96.0;
  
@@ -392,7 +392,7 @@ index e98d3f7..9f2b901 100644
  using namespace WebKit;
  using namespace WebCore;
  
-@@ -2593,4 +2597,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
+@@ -2625,4 +2629,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
      g_object_notify(G_OBJECT(webView), "full-content-zoom");
  }
  

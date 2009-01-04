@@ -1,4 +1,4 @@
-From 781bc52b8e1078a88a0093f6590732f3cfdf6f13 Mon Sep 17 00:00:00 2001
+From 5449d4068ea2d1c1661af8413d5c92f0b933af2b Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Thu, 18 Dec 2008 01:01:20 +0100
 Subject: [PATCH] Hack in a copy of PangoFT2. And start painting

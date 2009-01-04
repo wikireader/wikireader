@@ -1,4 +1,4 @@
-From 8741ecbe01736a1d19554ad8211633da1fef8d4d Mon Sep 17 00:00:00 2001
+From 3cb83ab8ab1b41a161c85726cb1ca9c9d2af348f Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 23 Dec 2008 21:33:25 +0100
 Subject: [PATCH] [rendering] Switch to the view port
