@@ -2,6 +2,8 @@
 #include <t_services.h>
 #include <stdarg.h>
 
+extern ER syslog_va(UINT prio, const char *format, va_list ap) throw();
+
 static int loglevel = MSG_LEVEL_MAX;
 
 void msg(int level, const char *format, ...)

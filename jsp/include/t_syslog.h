@@ -278,7 +278,6 @@ _syslog_6(UINT prio, UINT type, VP_INT arg1, VP_INT arg2, VP_INT arg3,
 /*
  *  ログ情報（コメント）を出力するためのライブラリ関数（vasyslog.c）
  */
-extern ER	syslog_va(UINT prio, const char *format, char *ap) throw();
 extern ER	syslog(UINT prio, const char *format, ...) throw();
 
 /* 
