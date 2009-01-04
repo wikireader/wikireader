@@ -87,13 +87,6 @@ def load():
     for line in open("render_text.blib"):
         split = line.strip().split(',')
 
-        # Throw away glyphs we will not render (normally zero spaced)
-        if split[3] == '3':
-            continue
-
-        # Throw out invisible text
-        if int(split[0]) > 240:
-            continue
 
         glyph = { 'x'     : int(split[0]),
             'y'     : int(split[1]),
@@ -131,7 +124,17 @@ def delta_compress(glyphs):
     last_y = 0
 
     for glyph in glyphs:
-        glyph_advance_x = int(open(os.path.join("fonts", glyph['font'], glyph['glyph'], "advance_x")).readline())
+        # Throw away glyphs we will not render (normally zero spaced)
+        if glyph['glyph'] == '3':
+            continue
+
+        if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
+            continue
+
+        # Throw out invisible text
+        if int(glyph['x']) > 240:
+            continue
+
         new_glyph = { 'x' : glyph['x'] - last_x,
                       'y' : glyph['y'] - last_y,
                       'font' : glyph['font'],
@@ -146,11 +149,10 @@ def delta_compress(glyphs):
             new_glyph['x'] = x+glyph['x']
 
         # Sanity
-        print glyph_advance_x, glyph, last_x, new_glyph
         assert glyph['x'] >= 0
         assert new_glyph['x'] >= 0
 
-        last_x = glyph['x'] + glyph_advance_x
+        last_x = glyph['x']
         last_y = glyph['y']
         assert last_x >= 0
         assert last_y > 0
@@ -342,6 +344,13 @@ def use_auto_kern(glyphs):
     last_font = None
     pending_glyphs = []
     for glyph in glyphs:
+        if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
+            write_pending(auto_kern, pending_glyphs, last_x, last_y)
+            pending_glyphs = []
+            last_x = glyph['x']
+            last_glyph = None
+            continue
+
         font = map_font_to_index(glyph['font'])
 
         if last_font != font:

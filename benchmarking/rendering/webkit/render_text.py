@@ -11,13 +11,19 @@ import cairo, os
 max_height = 0
 glyph_data = []
 
-input = open("all_large_text")
+input = open("render_text.blib")
 for line in input:
+
+    # We do not need these markers
+    if line.startswith("0,0,0,0"):
+        continue
+
     split = line.strip().split(',')  
     glyph = { 'x'     : int(split[0]),
               'y'     : int(split[1]),
               'font'  : split[2],
               'glyph' : split[3] }
+
     glyph_data.append(glyph)
 
     if max_height < glyph['y']:
