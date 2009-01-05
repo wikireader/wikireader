@@ -160,7 +160,7 @@ def delta_compress(glyphs):
         new_glyphs.append(new_glyph)
     return new_glyphs
 
-def map_font_description_to_glyph_index(glyph):
+def map_glyph_to_glyph_index(glyph):
     key = "Glyph:%s" % (glyph['glyph'])
     if not key in glyph_map:
         global last_glyph_index
@@ -291,7 +291,7 @@ def rle_encode(glyphs):
     largest_x = 0
     last_font = None
     for glyph in glyphs:
-        glyph['glyph_index'] = map_font_description_to_glyph_index(glyph)
+        glyph['glyph_index'] = map_glyph_to_glyph_index(glyph)
 
         # Gather some information
         if glyph['x'] < smallest_x:
@@ -330,7 +330,7 @@ def use_auto_kern(glyphs):
         file.write("p%d:%d;" % (first_x, first_y))
         list = []
         for glyph in glyphs:
-            list.append("%d" % map_font_description_to_glyph_index(glyph))
+            list.append("%d" % map_glyph_to_glyph_index(glyph))
         file.write(" ".join(list))
  
 
