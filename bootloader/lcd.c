@@ -37,6 +37,10 @@ void init_lcd(void)
         /* disable write protection of clock registers */
         REG_CMU_PROTECT = 0x96;
 	REG_CMU_GATEDCLK0 |= 0x7;
+#if 0
+	/* set the LCDC_CLK to 1/16 */
+	REG_CMU_CLKCNTL |= 0xF0000;
+#endif
 
 	/* re-enable write protection of clock registers */
 	REG_CMU_PROTECT = 0x00;
@@ -63,8 +67,12 @@ void init_lcd(void)
   	/* wf counter = 0 */
   	REG_LCDC_MR = 0x0;
 
-  	/* LCDC Display Mode Register */
+	/* LCDC Display Mode Register, grayscale */
+#if LCD_MONOCHROME
+	REG_LCDC_DMD = 0x22000010;
+#else
   	REG_LCDC_DMD = 0x22000012;
+#endif
 
 	/* relocate the frame buffer RAM */
   	REG_LCDC_MADD = LCD_VRAM;
