@@ -330,7 +330,7 @@ def use_auto_kern(glyphs):
         file.write("p%d:%d;" % (first_x, first_y))
         list = []
         for glyph in glyphs:
-            list.append("%d" % map_glyph_to_glyph_index(glyph))
+            list.append("%d " % map_glyph_to_glyph_index(glyph))
         file.write(" ".join(list))
  
 
