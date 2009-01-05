@@ -417,6 +417,7 @@ def use_auto_kern(glyphs):
 
         if first_x < 0:
             first_x = (240 - old_x) + run.x
+        assert first_x >= 0
 
         if first_y == 0:
             file.write("p%d;" % first_x)
@@ -461,7 +462,10 @@ def use_auto_kern(glyphs):
             glyph_occurences[glyph['glyph']] = 0
         glyph_occurences[glyph['glyph']] = glyph_occurences[glyph['glyph']] + 1
 
-        current.add_glyph(glyph)
+        if glyph['x'] < 240:
+            current.add_glyph(glyph)
+        else:
+            print "Omitting glyph due being out of space", glyph
 
         extract_spacing(last_glyph, glyph)
         last_glyph = glyph
@@ -488,9 +492,14 @@ def use_auto_kern(glyphs):
             auto_kern.write("f%d," % font)
             last_font = font
 
+        if text_run.x > 240:
+            print "Skipping due too large x position"
+            continue
+
         write_pending(auto_kern, text_run, last_x, last_y)
         last_y = text_run.y
         last_x = text_run.glyphs[-1]['x']
+        assert last_x <= 240
 
     # Write options
     mkdir("font-foo")
