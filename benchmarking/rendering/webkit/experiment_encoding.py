@@ -121,7 +121,7 @@ def load():
 
     return glyphs
 
-def sort(glyphs):
+def sort_glyphs(glyphs):
     # Sort glyphs so that glyphs are on the same line are next to each other
     def glyph_cmp(left, right):
         if left['y'] < right['y']:
@@ -537,9 +537,9 @@ def use_auto_kern(glyphs):
 
 
 raw_glyphs = load()
-#glyphs = sort(copy.deepcopy(raw_glyphs))
-#delta = delta_compress(glyphs)
-#rle_encode(delta)
 use_auto_kern(raw_glyphs)
+glyphs = sort_glyphs(copy.deepcopy(raw_glyphs))
+delta = delta_compress(glyphs)
+rle_encode(delta)
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
