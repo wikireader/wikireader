@@ -8,6 +8,7 @@
 //#define BOARD_PRT33L17LCD 1
 #define BOARD_PROTO1 1
 
+//#define LCD_MONOCHROME
 
 #if BOARD_PROTO1
 	#define EEPROM_SST25VF040 1
