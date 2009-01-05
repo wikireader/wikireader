@@ -46,11 +46,11 @@ int main(void)
 	init_lcd();
 	
 	/* load the 'could not boot from SD card' image */
-	eeprom_load(0x10000, (u8 *) 0x10000000, (320 * 240) / 2);
+	eeprom_load(0x10000, (u8 *) LCD_VRAM, (320 * 240) / 2);
 #if BOARD_PROTO1
 	{
 		int i;
-		for (i = 0x10000000; i < 0x10000000 + (320 * 240) / 2; i++)
+		for (i = LCD_VRAM; i < LCD_VRAM + (320 * 240) / 2; i++)
 			*(char *) i ^= 0xff;
 	}
 #endif
