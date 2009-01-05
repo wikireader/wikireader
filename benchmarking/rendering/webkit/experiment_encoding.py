@@ -29,6 +29,9 @@ glyph_map = {}
 font_map = {}
 kern_info = {}
 
+font_occurences = {}
+glyph_occurences = {}
+
 class BitWriter:
     def __init__(self):
         self.bits = []
@@ -87,6 +90,20 @@ def mkdir(path):
         os.mkdir(path)
     except:
         pass
+
+def determine_by_occurence(occurences):
+    items = []
+    for item in occurences.keys():
+        items.append((occurences[item], item))
+    items.sort(reverse=True)
+
+    i = 0
+    dict = {}
+    for (count, item) in items:
+        dict[item] = i
+        i = i + 1
+
+    return dict
 
 
 # Load glyphs... share this with render_text.py
@@ -169,7 +186,7 @@ def delta_compress(glyphs):
     return new_glyphs
 
 def map_glyph_to_glyph_index(glyph):
-    key = "%s" % (glyph['glyph'])
+    key = "%s" % glyph
     if not key in glyph_map:
         global last_glyph_index
         glyph_map[key] = last_glyph_index
@@ -299,7 +316,7 @@ def rle_encode(glyphs):
     largest_x = 0
     last_font = None
     for glyph in glyphs:
-        glyph['glyph_index'] = map_glyph_to_glyph_index(glyph)
+        glyph['glyph_index'] = map_glyph_to_glyph_index(glyph['glyph'])
 
         # Gather some information
         if glyph['x'] < smallest_x:
@@ -412,9 +429,9 @@ def use_auto_kern(glyphs):
             spacing = determine_space(last_glyph, glyph)
             if spacing:
                 (x,y) = spacing
-                list.append("%d-%d-%d" % (x,y, map_glyph_to_glyph_index(glyph)))
+                list.append("%d-%d-%d" % (x,y, map_glyph_to_glyph_index(glyph['glyph'])))
             else:
-                list.append("%d" % map_glyph_to_glyph_index(glyph))
+                list.append("%d" % map_glyph_to_glyph_index(glyph['glyph']))
             last_glyph = glyph
         file.write(" ".join(list))
  
@@ -432,7 +449,18 @@ def use_auto_kern(glyphs):
             continue
 
         if not current:
+            # Count
+            if not glyph['font'] in font_occurences:
+                font_occurences[glyph['font']] = 0
+            font_occurences[glyph['font']] = font_occurences[glyph['font']] + 1
+
             current = TextRun(glyph)
+
+        # Count more
+        if not glyph['glyph'] in glyph_occurences:
+            glyph_occurences[glyph['glyph']] = 0
+        glyph_occurences[glyph['glyph']] = glyph_occurences[glyph['glyph']] + 1
+
         current.add_glyph(glyph)
 
         extract_spacing(last_glyph, glyph)
@@ -445,13 +473,17 @@ def use_auto_kern(glyphs):
     # Sort by y position
     text_runs.sort(TextRun.cmp)
 
+    global glyph_map, font_map
+    glyph_map = determine_by_occurence(glyph_occurences)
+    font_map = determine_by_occurence(font_occurences)
+        
     auto_kern = open("auto_kern_encoding", "w")
     last_font = None
     last_x = 0
     last_y = 0
     for text_run in text_runs:
         # we mig have a new font now
-        font = map_font_to_index(glyph['font'])
+        font = map_font_to_index(text_run.font)
         if last_font != font:
             auto_kern.write("f%d," % font)
             last_font = font
