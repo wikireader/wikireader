@@ -82,6 +82,13 @@ class BitWriter:
 bit_writer = BitWriter()
 
 
+def mkdir(path):
+    try:
+        os.mkdir(path)
+    except:
+        pass
+
+
 # Load glyphs... share this with render_text.py
 def load():
     glyphs = []
@@ -162,7 +169,7 @@ def delta_compress(glyphs):
     return new_glyphs
 
 def map_glyph_to_glyph_index(glyph):
-    key = "Glyph:%s" % (glyph['glyph'])
+    key = "%s" % (glyph['glyph'])
     if not key in glyph_map:
         global last_glyph_index
         glyph_map[key] = last_glyph_index
@@ -171,7 +178,7 @@ def map_glyph_to_glyph_index(glyph):
     return glyph_map[key]
 
 def map_font_to_index(font):
-    key = "Font:%s" % (font)
+    key = "%s" % (font)
     if not key in font_map:
         global last_font_index
         font_map[key] = last_font_index
@@ -425,6 +432,43 @@ def use_auto_kern(glyphs):
 
     # Write out the last bits
     write_pending(auto_kern, pending_glyphs, last_x, last_y)
+    mkdir("font-foo")
+
+    for font in font_map.keys():
+        font_index = "%s" % font_map[font]
+        font_path = os.path.join("font-foo", font_index)
+        mkdir(font_path)
+        for glyph in glyph_map.keys():
+            try:
+                bitmap = file(os.path.join("fonts", font, glyph, "bitmap.png"), "r")
+            except:
+                continue
+
+            glyph_path = os.path.join(font_path, "glyphs")
+            mkdir(glyph_path)
+            glyph_path = os.path.join(glyph_path, "%s" % glyph_map[glyph])
+            mkdir(glyph_path)
+
+            sp = file(os.path.join(glyph_path, "original"), "w")
+            sp.write("%s" % glyph)
+            sp = file(os.path.join(glyph_path, "bitmap.png"), "w")
+            sp.write(bitmap.read())
+
+    for font in kern_info.keys():
+        font_index = "%s" % map_font_to_index(font)
+        font_path = os.path.join("font-foo", font_index)
+        mkdir(font_path)
+        for (l_glyph, r_glyph) in kern_info[font].keys():
+            glyph_path = os.path.join(font_path, "spacing")
+            mkdir(glyph_path)
+
+            glyph_path = os.path.join(glyph_path, "%s-%s" % (l_glyph, r_glyph))
+            mkdir(glyph_path)
+
+            # Copy some things
+            sp = file(os.path.join(glyph_path, "spacing"), "w")
+            sp.write("%d" % kern_info[font][(l_glyph, r_glyph)])
+            sp = file(os.path.join(glyph_path, "glyph"), "w")
     print kern_info
             
         
