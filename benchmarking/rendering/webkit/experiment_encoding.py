@@ -332,7 +332,9 @@ def extract_spacing(last_glyph, glyph):
         print "Something went wrong", last_glyph, glyph
         return
 
-    kern = glyph['x'] - last_glyph['x']
+    kern_x = glyph['x'] - last_glyph['x']
+    kern_y = glyph['y'] - last_glyph['y']
+    kern = (kern_x, kern_y)
     glyph_pair = (last_glyph['glyph'], glyph['glyph'])
     glyph_font = glyph['font']
     if not glyph['font'] in kern_info:
@@ -351,7 +353,9 @@ def determine_space(last_glyph, glyph):
         return None
 
 
-    kern = glyph['x'] - last_glyph['x']
+    kern_x = glyph['x'] - last_glyph['x']
+    kern_y = glyph['y'] - last_glyph['y']
+    kern = (kern_x, kern_y)
     glyph_pair = (last_glyph['glyph'], glyph['glyph'])
     glyph_font = glyph['font']
 
@@ -365,73 +369,98 @@ def determine_space(last_glyph, glyph):
 
 def use_auto_kern(glyphs):
     """A function saving the text runs and hoping autokern will do its job"""
-    def write_pending(file, glyphs, last_x, last_y):
-        """All glyphs are on the same height..."""
-        if len(glyphs) == 0:
-            return
+    class TextRun:
+        def __init__(self, glyph):
+            self.x = glyph['x']
+            self.y = glyph['y']
+            self.font = glyph['font']
+            self.glyphs = []
 
-        first_x = glyphs[0]['x'] - last_x
-        first_y = glyphs[0]['y'] - last_y
+        def add_glyph(self, glyph):
+            self.glyphs.append(glyph)
+    
+        def cmp(left, right):
+            if left.y < right.y:
+                return -1
+            elif left.y > right.y:
+                return 1
+
+            if left.x < right.x:
+                return -1
+            elif left.x > right.x:
+                return 1
+            return 0
+            
+            
+
+    def write_pending(file, run, old_x, old_y):
+        """All glyphs are on the same height..."""
+        first_x = run.x - old_x
+        first_y = run.y - old_y
 
         if first_x < 0:
-            first_x = (240 - last_x) + glyphs[0]['x']
+            first_x = (240 - old_x) + run.x
 
-        file.write("p%d:%d;" % (first_x, first_y))
+        if first_y == 0:
+            file.write("p%d;" % first_x)
+        else:
+            file.write("p%d:%d;" % (first_x, first_y))
+ 
         list = []
         last_glyph = None
-        for glyph in glyphs:
+        for glyph in run.glyphs:
             spacing = determine_space(last_glyph, glyph)
             if spacing:
-                list.append("%d-%d" % (spacing, map_glyph_to_glyph_index(glyph)))
+                (x,y) = spacing
+                list.append("%d-%d-%d" % (x,y, map_glyph_to_glyph_index(glyph)))
             else:
                 list.append("%d" % map_glyph_to_glyph_index(glyph))
             last_glyph = glyph
         file.write(" ".join(list))
  
 
-    auto_kern = open("auto_kern_encoding", "w")
-    auto_kern_bit = open("auto_kern_ecnoding_bit", "w")
-
-
-    last_x = 0
-    last_y = 0
+    text_runs = []
+    current = None
     last_glyph = None
-    last_font = None
-    pending_glyphs = []
+
+    # Two passes....
     for glyph in glyphs:
         if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
-            write_pending(auto_kern, pending_glyphs, last_x, last_y)
-            pending_glyphs = []
-            last_x = glyph['x']
+            text_runs.append(current)
+            current = None
             last_glyph = None
             continue
 
-        font = map_font_to_index(glyph['font'])
-
-        if last_font != font:
-            write_pending(auto_kern, pending_glyphs, last_x, last_y)
-            pending_glyphs = []
-            last_x = glyph['x']
-            last_glyph = None
-            auto_kern.write("f%d," % font)
-
-        if last_y != glyph['y']:
-            write_pending(auto_kern, pending_glyphs, last_x, last_y)
-            pending_glyphs = []
-            last_x = glyph['x']
-            last_glyph = None
+        if not current:
+            current = TextRun(glyph)
+        current.add_glyph(glyph)
 
         extract_spacing(last_glyph, glyph)
-
-
-
-        pending_glyphs.append(glyph)
-        last_y = glyph['y']
-        last_font = font
         last_glyph = glyph
 
-    # Write out the last bits
-    write_pending(auto_kern, pending_glyphs, last_x, last_y)
+    if current:
+        text_runs.append(current)
+        current = None
+
+    # Sort by y position
+    text_runs.sort(TextRun.cmp)
+
+    auto_kern = open("auto_kern_encoding", "w")
+    last_font = None
+    last_x = 0
+    last_y = 0
+    for text_run in text_runs:
+        # we mig have a new font now
+        font = map_font_to_index(glyph['font'])
+        if last_font != font:
+            auto_kern.write("f%d," % font)
+            last_font = font
+
+        write_pending(auto_kern, text_run, last_x, last_y)
+        last_y = text_run.y
+        last_x = text_run.glyphs[-1]['x']
+
+    # Write options
     mkdir("font-foo")
 
     for font in font_map.keys():
@@ -467,7 +496,8 @@ def use_auto_kern(glyphs):
 
             # Copy some things
             sp = file(os.path.join(glyph_path, "spacing"), "w")
-            sp.write("%d" % kern_info[font][(l_glyph, r_glyph)])
+            (x,y) = kern_info[font][(l_glyph, r_glyph)]
+            sp.write("%d,%d" % (x,y))
             sp = file(os.path.join(glyph_path, "glyph"), "w")
     print kern_info
             
