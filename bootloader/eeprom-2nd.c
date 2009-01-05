@@ -26,6 +26,10 @@
 
 #define KERNEL "/KERNEL"
 
+#define READ_AND_CLEAR_CAUSE(REG) \
+    data = REG; \
+    REG = 0xff;
+
 __attribute__((noreturn))
 int main(void)
 {
@@ -68,8 +72,21 @@ int main(void)
 
 	/* TODO */
 
-	asm("slp");
+	for(;;) {
+		unsigned char data;
+		READ_AND_CLEAR_CAUSE(REG_INT_FSIF01);
+                READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
+		READ_AND_CLEAR_CAUSE(REG_INT_FDMA);
+		READ_AND_CLEAR_CAUSE(REG_INT_F16T01);
+		READ_AND_CLEAR_CAUSE(REG_INT_F16T23);
+		READ_AND_CLEAR_CAUSE(REG_INT_F16T45);
+		READ_AND_CLEAR_CAUSE(REG_INT_FP47_FRTC_FAD);
+		READ_AND_CLEAR_CAUSE(REG_INT_FLCDC);
+		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
 
-	for(;;);
+		/* WAKEUP=1 */
+		REG_CMU_OPT |= 0x1;
+		asm("slp");
+        }
 }
 
