@@ -114,11 +114,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
             Message(hwnd, "Debug: A device has been inserted.");
             if (lpdb->dbch_devicetype == DBT_DEVTYP_VOLUME) {
                 PDEV_BROADCAST_VOLUME lpdbv = (PDEV_BROADCAST_VOLUME)lpdb;
-                Message(hwnd, "Debug: DBT");
 
-                if (lpdbv->dbcv_flags & DBTF_MEDIA) {
-                    wsprintf(g_Msg, "Drive %c: Media has arrived.\n",
-                             FirstDriveFromMask(lpdbv->dbcv_unitmask));
+                UINT   IsRAMDISK;    
+                char Driver[4] = {'A', ':', '\\', '\0'};
+                Driver[0] = FirstDriveFromMask(lpdbv->dbcv_unitmask);
+                IsRAMDISK=GetDriveType(Driver);    
+                if (IsRAMDISK == DRIVE_RAMDISK || 
+                    IsRAMDISK == DRIVE_FIXED || /* DRIVE_FIXED means harddisk */
+                    IsRAMDISK == DRIVE_REMOVABLE) {
+                    wsprintf(g_Msg, "Drive %s Media has arrived.\n", Driver);
                     Message(hwnd, NULL);
                 }
             }
