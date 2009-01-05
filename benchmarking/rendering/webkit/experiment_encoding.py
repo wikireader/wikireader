@@ -27,6 +27,7 @@ package_two_byte = 0
 package_three_byte = 0
 glyph_map = {}
 font_map = {}
+kern_info = {}
 
 class BitWriter:
     def __init__(self):
@@ -314,6 +315,47 @@ def rle_encode(glyphs):
     delta_compressed_glyph_index.write(bit_writer.finish())
     print "Larges and smallest x delta", largest_x, smallest_x
 
+def extract_spacing(last_glyph, glyph):
+    # Look into the kerning...
+    global kern_info
+    if not last_glyph:
+        return
+
+    if not last_glyph['x'] < glyph['x']:
+        print "Something went wrong", last_glyph, glyph
+        return
+
+    kern = glyph['x'] - last_glyph['x']
+    glyph_pair = (last_glyph['glyph'], glyph['glyph'])
+    glyph_font = glyph['font']
+    if not glyph['font'] in kern_info:
+        kern_info[glyph_font] = {}
+        kern_info[glyph_font][glyph_pair] = kern
+        #print "spacing between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
+    elif not glyph_pair in kern_info[glyph_font]:
+        kern_info[glyph_font][glyph_pair] = kern
+        #print "spacing between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
+    elif kern != kern_info[glyph_font][glyph_pair]:
+        print "Not matching spacing will need to fixup: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
+
+def determine_space(last_glyph, glyph):
+    global kern_info
+    if not last_glyph:
+        return None
+
+
+    kern = glyph['x'] - last_glyph['x']
+    glyph_pair = (last_glyph['glyph'], glyph['glyph'])
+    glyph_font = glyph['font']
+
+    try:
+        space = kern_info[glyph_font][glyph_pair]
+    except KeyError:
+        return None
+    if space == kern:
+        return None
+    return space
+
 def use_auto_kern(glyphs):
     """A function saving the text runs and hoping autokern will do its job"""
     def write_pending(file, glyphs, last_x, last_y):
@@ -329,14 +371,20 @@ def use_auto_kern(glyphs):
 
         file.write("p%d:%d;" % (first_x, first_y))
         list = []
+        last_glyph = None
         for glyph in glyphs:
-            list.append("%d " % map_glyph_to_glyph_index(glyph))
+            spacing = determine_space(last_glyph, glyph)
+            if spacing:
+                list.append("%d-%d " % (spacing, map_glyph_to_glyph_index(glyph)))
+            else:
+                list.append("%d " % map_glyph_to_glyph_index(glyph))
+            last_glyph = glyph
         file.write(" ".join(list))
  
 
-    auto_kern = open("auto_kern.ecoding", "w")
+    auto_kern = open("auto_kern_encoding", "w")
+    auto_kern_bit = open("auto_kern_ecnoding_bit", "w")
 
-    kern_info = {}
 
     last_x = 0
     last_y = 0
@@ -366,21 +414,8 @@ def use_auto_kern(glyphs):
             last_x = glyph['x']
             last_glyph = None
 
-        # Look into the kerning...
-        if last_glyph and last_glyph['x'] < glyph['x']:
-            kern = glyph['x'] - last_glyph['x']
-            glyph_pair = (last_glyph['glyph'], glyph['glyph'])
-            glyph_font = glyph['font']
-            if not glyph['font'] in kern_info:
-                kern_info[glyph_font] = {}
-                kern_info[glyph_font][glyph_pair] = kern
-                print "kern between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
-            elif not glyph_pair in kern_info[glyph_font]:
-                kern_info[glyph_font][glyph_pair] = kern
-                print "kern between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
-            else:
-                if kern != kern_info[glyph_font][glyph_pair]:
-                    print "Not matching kern: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
+        extract_spacing(last_glyph, glyph)
+
 
 
         pending_glyphs.append(glyph)
@@ -396,9 +431,9 @@ def use_auto_kern(glyphs):
 
 
 raw_glyphs = load()
-glyphs = sort(copy.deepcopy(raw_glyphs))
-delta = delta_compress(glyphs)
-rle_encode(delta)
+#glyphs = sort(copy.deepcopy(raw_glyphs))
+#delta = delta_compress(glyphs)
+#rle_encode(delta)
 use_auto_kern(raw_glyphs)
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
