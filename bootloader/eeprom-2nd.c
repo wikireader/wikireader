@@ -49,6 +49,12 @@ int main(void)
 	REG_PINTEL_SEPT07 |= 0x2;
 	REG_PINTPOL_SPP07 &= ~0x2;
 
+	/* some debug helper... P64 as output */
+#if 0
+	/* set P64 as output */
+	REG_P6_IOC6 |= 0x10;
+#endif
+
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 	init_lcd();
