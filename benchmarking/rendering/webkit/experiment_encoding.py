@@ -375,9 +375,9 @@ def use_auto_kern(glyphs):
         for glyph in glyphs:
             spacing = determine_space(last_glyph, glyph)
             if spacing:
-                list.append("%d-%d " % (spacing, map_glyph_to_glyph_index(glyph)))
+                list.append("%d-%d" % (spacing, map_glyph_to_glyph_index(glyph)))
             else:
-                list.append("%d " % map_glyph_to_glyph_index(glyph))
+                list.append("%d" % map_glyph_to_glyph_index(glyph))
             last_glyph = glyph
         file.write(" ".join(list))
  
