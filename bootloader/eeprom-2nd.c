@@ -40,6 +40,10 @@ int main(void)
 	asm("xld.w   %r15, 0x1500");
 
 	//print("Bootloader starting\n");
+	/* set FPT1 to another gpio, make it falling edge trieggered */
+	REG_PINTSEL_SPT03 |= 0xC;
+	REG_PINTEL_SEPT07 |= 0x2;
+	REG_PINTPOL_SPP07 &= ~0x2;
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
