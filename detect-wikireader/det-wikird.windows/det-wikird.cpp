@@ -25,6 +25,8 @@
 static char *AppTitle = "det-wikird Openmoko";
 #define MSG_BUFFER_LENGTH 100
 static char g_Msg[MSG_BUFFER_LENGTH];
+static HWND g_hwnd;
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 char FirstDriveFromMask(ULONG unitmask);
@@ -57,6 +59,7 @@ int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 
     if (!hwnd)
         return 0;
+    g_hwnd = hwnd;
 
     ShowWindow(hwnd,nCmdShow);
     UpdateWindow(hwnd);
@@ -82,7 +85,7 @@ int PaintMessage(HWND hwnd)
     return 0;
 }
 
-int Message(HWND hwnd, char *msg)
+int Message(char *msg)
 {
     if (msg != NULL) {
         if (strlen(g_Msg) + strlen(msg) < MSG_BUFFER_LENGTH) {
@@ -92,10 +95,55 @@ int Message(HWND hwnd, char *msg)
         else
             strcpy(g_Msg, msg);
     }
-    PaintMessage(hwnd); 
-    InvalidateRect(hwnd, NULL, TRUE);
-    UpdateWindow(hwnd);
+    PaintMessage(g_hwnd); 
+    InvalidateRect(g_hwnd, NULL, TRUE);
+    UpdateWindow(g_hwnd);
     return 0;
+}
+
+void openWeb()
+{
+    HKEY hkRoot,hSubKey;
+    char ValueName[256];
+    unsigned char DataValue[256];
+    unsigned long cbValueName=256;
+    unsigned long cbDataValue=256;
+    char ShellChar[256]; // shell command
+    DWORD dwType;
+
+    // open register root key
+    if(RegOpenKey(HKEY_CLASSES_ROOT,NULL,&hkRoot)==ERROR_SUCCESS)
+        {
+            // open subkey
+            if(RegOpenKeyEx(hkRoot,
+                            "htmlfile\\shell\\open\\command",
+                            0,
+                            KEY_ALL_ACCESS,
+                            &hSubKey)==ERROR_SUCCESS)
+                {
+                    // get the browers
+                    RegEnumValue(hSubKey,
+                                 0,
+                                 ValueName,
+                                 &cbValueName,
+                                 NULL,
+                                 &dwType,
+                                 DataValue,
+                                 &cbDataValue);
+                    // set main page value
+                    strcpy(ShellChar,(char *)DataValue);
+                    strcat(ShellChar,"http://wiki.openmoko.org");
+                    // run the browers
+                    WinExec(ShellChar,SW_SHOW);
+                }
+            else
+                Message("WEB browers open error.");
+        }
+    else
+        Message("WEB browers open error.");
+
+    RegCloseKey(hSubKey);
+    RegCloseKey(hkRoot);
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -114,7 +162,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
         switch (wparam) { 
         case DBT_DEVICEARRIVAL:
-            Message(hwnd, "Debug: A device has been inserted.");
+            Message("Debug: A device has been inserted.");
             if (lpdb->dbch_devicetype == DBT_DEVTYP_VOLUME) {
                 PDEV_BROADCAST_VOLUME lpdbv = (PDEV_BROADCAST_VOLUME)lpdb;
 
@@ -126,14 +174,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
                     IsRAMDISK == DRIVE_FIXED || /* DRIVE_FIXED means harddisk */
                     IsRAMDISK == DRIVE_REMOVABLE) {
                     wsprintf(g_Msg, "Drive %s Media has arrived.\n", Driver);
-                    Message(hwnd, NULL);
+                    Message(NULL);
 					/* check_wikireader(Driver); */
+                    openWeb();  /*FIXME:  there should check the wikireader the openWeb  */ 
                 }
             }
             break;
  
         case DBT_DEVICEREMOVECOMPLETE:
-            Message(hwnd, "Debug:  A device has been removed");
+            Message("Debug:  A device has been removed");
             break;
         }
         break;

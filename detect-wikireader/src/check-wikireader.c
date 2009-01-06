@@ -107,7 +107,6 @@ int check_wikireader(char *path)
 	r = read(file, &hdr, sizeof(hdr));
 	if ( r != sizeof(hdr)) {
 #ifdef WINDOWS
-
 #else
 		syslog(LOG_INFO, "can't read --%s-%d-%d-%d-", path, file, r, sizeof(hdr));
 #endif
