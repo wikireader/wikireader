@@ -1,6 +1,7 @@
 /*
     e07 bootloader suite
     Copyright (c) 2008 Daniel Mack <daniel@caiaq.de>
+    Copyright (c) 2009 Holger Hans Peter Freyther <zecke@openmoko.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -91,7 +92,9 @@ int main(void)
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
 
 		/* WAKEUP=1 */
+		REG_CMU_PROTECT = 0x96;
 		REG_CMU_OPT |= 0x1;
+		REG_CMU_PROTECT = 0x00;
 		asm("slp");
         }
 }
