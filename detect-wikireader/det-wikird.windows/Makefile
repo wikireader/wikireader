@@ -16,21 +16,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-PROGRAM = det-wikird.exe
 CC = gcc
-#INCLUDEDIRS = .
-CPPSOURCES = det-wikird.cpp
-CPPOBJECTS = det-wikird.obj
-CPPFLAGS = -mwindows
+SRC_DIR = ..\src
 
-$(PROGRAM): $(CPPSOURCES)
-	$(CC) $(CPPFLAGS) -o $@ $(CPPSOURCES)
+C_SRCS = $(SRC_DIR)\check-wikireader.h \
+		$(SRC_DIR)\check-wikireader.c \
+		det-wikird.cpp
 
-det-wikird.obj: det-wikird.cpp det-wikird.h
+C_FLAGS = -Wall -I. -I$(SRC_DIR) -mwindows -DWINDOWS -g
+
+TARGETS = det-wikird.exe
+
+all: $(TARGETS)
+
+$(TARGETS):$(C_OBJS)
+	$(CC) $(C_FLAGS) -o $(TARGETS) $(C_SRCS)
 
 clean:
-	del $(CPPOBJECTS) $(PROGRAM)
+	del *.o *.obj $(TARGETS)
 
 run:
-	$(PROGRAM)
-
+	$(TARGETS)

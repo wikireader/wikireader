@@ -15,10 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include <string.h>
 #include <unistd.h>
-#include <syslog.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#ifdef WINDOWS
+
+#else
+#include <syslog.h>
+#endif
+
+#define KERNEL "/kernel"
 
 #define ET_EXEC		2
 #define EM_C33		0x6b
@@ -47,48 +55,75 @@ typedef struct {
 
 extern char **environ;
 
+int check_elf(elf32_hdr *hdr)
+{
+	if ((*hdr).e_ident[0] != ELFMAG0 ||
+	    (*hdr).e_ident[1] != ELFMAG1 ||
+	    (*hdr).e_ident[2] != ELFMAG2 ||
+	    (*hdr).e_ident[3] != ELFMAG3) {
+#ifdef WINDOWS
+#else
+		syslog(LOG_INFO, "not ELF file");
+#endif
+		return -1;
+	}
+
+	if ((*hdr).e_type != ET_EXEC) {
+#ifdef WINDOWS
+#else
+		syslog(LOG_INFO, "invalid ELF file type");
+#endif
+		return -1;
+	}
+
+	if ((*hdr).e_machine != EM_C33) {
+#ifdef WINDOWS
+#else
+		syslog(LOG_INFO, "invalid ELF machine type");
+#endif
+		return -1;
+	}
+
+	return 0;
+}
+
 int check_wikireader(char *path)
 {
+	strcat(path, KERNEL);
+
 	elf32_hdr hdr;
 	int r;
 	int file;
 
 	if ( (file = open(path, O_RDWR, 
-			  S_IRUSR | S_IWUSR |
-			  S_IRGRP | S_IROTH) ) < 0) {
+			  S_IRUSR | S_IWUSR) ) < 0) {
+#ifdef WINDOWS
+#else
 		syslog(LOG_INFO, "can't open --%s--", path);
+#endif
 		return -1;
 	}
 
 	r = read(file, &hdr, sizeof(hdr));
 	if ( r != sizeof(hdr)) {
+#ifdef WINDOWS
+
+#else
 		syslog(LOG_INFO, "can't read --%s-%d-%d-%d-", path, file, r, sizeof(hdr));
+#endif
 		return -1;
 	}
 
-	if (hdr.e_ident[0] != ELFMAG0 ||
-	    hdr.e_ident[1] != ELFMAG1 ||
-	    hdr.e_ident[2] != ELFMAG2 ||
-	    hdr.e_ident[3] != ELFMAG3) {
-		syslog(LOG_INFO, "not ELF file");
-		return -1;
-	}
-
-	if (hdr.e_type != ET_EXEC) {
-		syslog(LOG_INFO, "invalid ELF file type");
-		return -1;
-	}
-
-	if (hdr.e_machine != EM_C33) {
-		syslog(LOG_INFO, "invalid ELF machine type");
-		return -1;
-	}
+	if (check_elf(&hdr) != 0)
+		return -1;;
 
 	/*TODO: open websit wiki.openmoko.com
 	 */
+#ifdef WINDOWS
+#else
 	syslog(LOG_INFO, "yes. this is wikireader sd card --%s--.", path );
 	system("firefox   http://wiki.openmoko.org");
-	syslog(LOG_INFO, "firefox");
+#endif
 
 	return 0;
 }

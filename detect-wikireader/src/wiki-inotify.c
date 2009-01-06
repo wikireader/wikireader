@@ -28,7 +28,6 @@
 #define BUF_LEN     ( 2 * ( EVENT_SIZE + 16 ) )
 
 #define PATH_LEN 100
-#define KERNEL "/kernel"
 
 static int fd;
 static int wd;
@@ -90,7 +89,6 @@ int run_monitor(void)
 					strcpy(path, monitor_dir);
 					strcat(path, "/");
 					strcat(path, event->name);
-					strcat(path, KERNEL);
 					sleep(2);
 					check_wikireader(path);
 				} else {

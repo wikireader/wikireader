@@ -20,6 +20,7 @@
 #include <string.h>
 #include <windows.h>
 #include <dbt.h> 
+#include <check-wikireader.h>
 
 static char *AppTitle = "det-wikird Openmoko";
 #define MSG_BUFFER_LENGTH 100
@@ -65,6 +66,8 @@ int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+    return 0;
 }
 
 int PaintMessage(HWND hwnd)
@@ -124,6 +127,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
                     IsRAMDISK == DRIVE_REMOVABLE) {
                     wsprintf(g_Msg, "Drive %s Media has arrived.\n", Driver);
                     Message(hwnd, NULL);
+					/* check_wikireader(Driver); */
                 }
             }
             break;
