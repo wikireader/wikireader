@@ -385,7 +385,26 @@ def determine_space(last_glyph, glyph):
     return space
 
 def use_auto_kern(glyphs):
-    """A function saving the text runs and hoping autokern will do its job"""
+    """
+    A function saving the text runs and hoping autokern will do its job
+
+
+    # The bitcode.....
+    0    - Glyph Position
+    10   - Paragraph
+    110  - Font Change
+
+    Parapgraph:
+        [0,1] - 0 no y change, 1 x and y change
+        number[number] 
+
+    Font/Paragraph... data encoding
+    0    - 4 Bit
+    10   - 8 bit
+    110  - 12 Bit
+
+    """
+
     class TextRun:
         def __init__(self, glyph):
             self.x = glyph['x']
@@ -407,8 +426,42 @@ def use_auto_kern(glyphs):
             elif left.x > right.x:
                 return 1
             return 0
+    
+    def write_number(writer, number):
+        """Find the best way to describe number and write it"""
+        writer.write_8bits(number) 
             
-            
+    def write_pending_bit(writer, run, old_x, old_y):
+        """All glyphs are on the same height..."""
+        first_x = run.x - old_x
+        first_y = run.y - old_y
+
+        if first_x < 0:
+            first_x = (240 - old_x) + run.x
+        assert first_x >= 0
+
+        writer.write_bit(1)
+        writer.write_bit(0)
+        if first_y == 0:
+            writer.write_bit(0)
+            write_number(writer, first_x)
+        else:
+            write.write_bit(1)
+            write_number(writer, first_x)
+            write_number(writer, first_y)
+ 
+        list = []
+        last_glyph = None
+        for glyph in run.glyphs:
+            spacing = determine_space(last_glyph, glyph)
+            if spacing:
+                print "Something broken with spacing", last_glyph, glyph
+                assert False
+            mapped_glyph = map_glyph_to_glyph_index(glyph['glyph'])
+            write.write_bit(0)
+            write_number(writer, mapped_glyph)
+            last_glyph = glyph
+        file.write(" ".join(list))
 
     def write_pending(file, run, old_x, old_y):
         """All glyphs are on the same height..."""
@@ -429,8 +482,8 @@ def use_auto_kern(glyphs):
         for glyph in run.glyphs:
             spacing = determine_space(last_glyph, glyph)
             if spacing:
-                (x,y) = spacing
-                list.append("%d-%d-%d" % (x,y, map_glyph_to_glyph_index(glyph['glyph'])))
+                print "Something broken with spacing write bit", last_glyph, glyph
+                assert False
             else:
                 list.append("%d" % map_glyph_to_glyph_index(glyph['glyph']))
             last_glyph = glyph
@@ -485,11 +538,16 @@ def use_auto_kern(glyphs):
     last_font = None
     last_x = 0
     last_y = 0
+    writer = BitWriter()
     for text_run in text_runs:
         # we mig have a new font now
         font = map_font_to_index(text_run.font)
         if last_font != font:
             auto_kern.write("f%d," % font)
+            write.write_bit(1)
+            write.write_bit(1)
+            write.write_but(0)
+            write_number(write, font)
             last_font = font
 
         if text_run.x > 240:
@@ -497,10 +555,13 @@ def use_auto_kern(glyphs):
             continue
 
         write_pending(auto_kern, text_run, last_x, last_y)
+        write_pending_bit(writer, text_run, last_x, last_y)
         last_y = text_run.y
         last_x = text_run.glyphs[-1]['x']
         assert last_x <= 240
 
+    auto_kern_bit = open("auto_kern_encoding_bit", "w")
+    auto_kern_bit.write(writer.finish())
     # Write options
     mkdir("font-foo")
 
