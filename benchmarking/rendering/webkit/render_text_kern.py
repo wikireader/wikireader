@@ -45,19 +45,30 @@ command = COMMAND_NONE
 
 pending_buf =  []
 
+def submit_glyph(glyph):
+    pass
+
 for char in input.read():
     if char == 'f':
+        submit_glyph(pending_buf)
+        pending_buf = []
+
         command = COMMAND_FONT
     elif char == ',' and command == COMMAND_FONT:
-        pass
+        print "Font", pending_buf
+        pending_buf = []
     elif char == 'p':
+        submit_glyph(pending_buf)
+        pending_buf = []
+
         command = COMMAND_POS
     elif char == ';' and command == COMMAND_POS:
-        pass
-    elif char == ' ' and command == COMMAND_POS:
+        print "Position", pending_buf
+        pendinf_buf = []
         command = COMMAND_GLYPH
     elif char == ' ' and command == COMMAND_GLYPH:
-        pass 
+        submit_glyph(pending_buf)
+        pending_buf = []
     elif char in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':']:
         pending_buf.append(char)
     else:
