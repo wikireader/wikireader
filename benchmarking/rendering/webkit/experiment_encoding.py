@@ -532,7 +532,10 @@ def use_auto_kern(glyphs):
             glyph_path = os.path.join(font_path, "spacing")
             mkdir(glyph_path)
 
-            glyph_path = os.path.join(glyph_path, "%s-%s" % (l_glyph, r_glyph))
+            mapped_l_glyph = map_glyph_to_glyph_index(l_glyph)
+            mapped_r_glyph = map_glyph_to_glyph_index(r_glyph)
+
+            glyph_path = os.path.join(glyph_path, "%s-%s" % (mapped_l_glyph, mapped_r_glyph))
             mkdir(glyph_path)
 
             # Copy some things
