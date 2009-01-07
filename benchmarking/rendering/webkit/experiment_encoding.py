@@ -17,6 +17,8 @@
 
 import copy
 import os
+import huffmanCode
+import math
 
 #
 # Experiment with the encoding of the data
@@ -28,6 +30,8 @@ package_three_byte = 0
 glyph_map = {}
 font_map = {}
 kern_info = {}
+huffman_fonts = {}
+huffman_glyphs = {}
 
 font_occurences = {}
 glyph_occurences = {}
@@ -59,6 +63,16 @@ class BitWriter:
             self.bits.append(1)
         else:
             self.bits.append(0)
+
+    def write_bits(self, bit_string):
+        for bit in bit_string:
+            if bit == '1':
+                self.write_bit(1)
+            elif bit == '0':
+                self.write_bit(0)
+            else:
+                print "Wrong", bit_string
+                assert False
 
     def consume(self):
         "Consume bits to a packed 8byte"
@@ -203,24 +217,24 @@ def map_font_to_index(font):
 
     return font_map[key]
 
+def highest_bit(x):
+    """
+    Runtime length encode the number
+    """
+    if x == 0:
+        return 1
+
+    # find the highest bit
+    highest_bit = 0
+    for i in range(0, int(math.ceil(math.log(x,2)))+1) :
+        mask = 1 << i
+        if (x & mask)>>i == 1:
+            highest_bit = i
+
+    return highest_bit+1
+
 def rle_encode(glyphs):
-    import math
 
-    def highest_bit(x):
-        """
-        Runtime length encode the number
-        """
-        if x == 0:
-            return 1
-
-        # find the highest bit
-        highest_bit = 0
-        for i in range(0, int(math.ceil(math.log(x,2)))+1) :
-            mask = 1 << i
-            if (x & mask)>>i == 1:
-                highest_bit = i
-
-        return highest_bit+1
 
     def pack_glyph(x, y, glyph_index, old_font, new_font):
         """
@@ -392,7 +406,7 @@ def use_auto_kern(glyphs):
     # The bitcode.....
     0    - Glyph Position
     10   - Paragraph
-    110  - Font Change
+    11   - Font Change
 
     Parapgraph:
         [0,1] - 0 no y change, 1 x and y change
@@ -401,7 +415,7 @@ def use_auto_kern(glyphs):
     Font/Paragraph... data encoding
     0    - 4 Bit
     10   - 8 bit
-    110  - 12 Bit
+    11   - 12 Bit
 
     """
 
@@ -429,7 +443,20 @@ def use_auto_kern(glyphs):
     
     def write_number(writer, number):
         """Find the best way to describe number and write it"""
-        writer.write_8bits(number) 
+        bits = highest_bit(number)
+        if bits <= 4:
+            writer.write_bit(0)
+            writer.write_4bits(number) 
+        elif bits <= 8:
+            writer.write_bit(1)
+            writer.write_bit(0)
+            writer.write_8bits(number) 
+        elif bits <= 12:
+            writer.write_bit(1)
+            writer.write_bit(1)
+            writer.write_12bits(number) 
+        else:
+            print "Can not encode...", number, bits
             
     def write_pending_bit(writer, run, old_x, old_y):
         """All glyphs are on the same height..."""
@@ -446,7 +473,7 @@ def use_auto_kern(glyphs):
             writer.write_bit(0)
             write_number(writer, first_x)
         else:
-            write.write_bit(1)
+            writer.write_bit(1)
             write_number(writer, first_x)
             write_number(writer, first_y)
  
@@ -457,11 +484,10 @@ def use_auto_kern(glyphs):
             if spacing:
                 print "Something broken with spacing", last_glyph, glyph
                 assert False
-            mapped_glyph = map_glyph_to_glyph_index(glyph['glyph'])
-            write.write_bit(0)
-            write_number(writer, mapped_glyph)
+            huffman_glyph = huffman_glyphs[glyph['glyph']]
+            writer.write_bit(0)
+            writer.write_bits(huffman_glyph)
             last_glyph = glyph
-        file.write(" ".join(list))
 
     def write_pending(file, run, old_x, old_y):
         """All glyphs are on the same height..."""
@@ -533,6 +559,18 @@ def use_auto_kern(glyphs):
     global glyph_map, font_map
     glyph_map = determine_by_occurence(glyph_occurences)
     font_map = determine_by_occurence(font_occurences)
+
+    # huffman foo...
+    global huffman_fonts, huffman_glyphs
+    font_input = []
+    for font in font_occurences:
+        font_input.append((font_occurences[font]/len(font_occurences), font))
+    huffman_fonts = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(font_input))
+
+    glyph_input = []
+    for glyph in glyph_occurences:
+        glyph_input.append((glyph_occurences[glyph]/len(glyph_occurences), glyph))
+    huffman_glyphs = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(glyph_input))
         
     auto_kern = open("auto_kern_encoding", "w")
     last_font = None
@@ -544,10 +582,9 @@ def use_auto_kern(glyphs):
         font = map_font_to_index(text_run.font)
         if last_font != font:
             auto_kern.write("f%d," % font)
-            write.write_bit(1)
-            write.write_bit(1)
-            write.write_but(0)
-            write_number(write, font)
+            writer.write_bit(1)
+            writer.write_bit(1)
+            writer.write_bits(huffman_fonts[text_run.font])
             last_font = font
 
         if text_run.x > 240:
@@ -565,10 +602,15 @@ def use_auto_kern(glyphs):
     # Write options
     mkdir("font-foo")
 
+
+
     for font in font_map.keys():
         font_index = "%s" % font_map[font]
         font_path = os.path.join("font-foo", font_index)
         mkdir(font_path)
+        sp = file(os.path.join(font_path, "huffman"), "w")
+        sp.write("%s" % huffman_fonts[font])
+
         for glyph in glyph_map.keys():
             try:
                 bitmap = file(os.path.join("fonts", font, glyph, "bitmap.png"), "r")
@@ -584,6 +626,8 @@ def use_auto_kern(glyphs):
             sp.write("%s" % glyph)
             sp = file(os.path.join(glyph_path, "bitmap.png"), "w")
             sp.write(bitmap.read())
+            sp = file(os.path.join(glyph_path, "huffman"), "w")
+            sp.write("%s" % huffman_glyphs[glyph])
 
     for font in kern_info.keys():
         font_index = "%s" % map_font_to_index(font)
