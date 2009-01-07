@@ -8,53 +8,65 @@ import cairo, os
 
 #
 # Load everything into ram...
-max_height = 0
+max_height = 10000
 glyph_data = []
 
-input = open("render_text.blib")
-for line in input:
-
-    # We do not need these markers
-    if line.startswith("0,0,0,0"):
-        continue
-
-    split = line.strip().split(',')  
-    glyph = { 'x'     : int(split[0]),
-              'y'     : int(split[1]),
-              'font'  : split[2],
-              'glyph' : split[3] }
-
-    glyph_data.append(glyph)
-
-    if max_height < glyph['y']:
-        max_height = glyph['y']
+input = open("auto_kern_encoding")
 
 
 # Assume the highest font has 60 pixels
 max_height = max_height + 60
 
+class Font:
+    """Simple font class"""
+    def __init__(self, name):
+        self.name = name
+
+    def spacing(self, lgyph, rglyph):
+        if not lgyph:
+            return (0, 0)
+        return (1,1)
+
+    def bitmap(self, glyph):
+        path = os.path.join(base_path, 'bitmap.png')
+        glyph_image = cairo.ImageSurface.create_from_png(path)
+        return None
 
 destination_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 240, max_height)
 context = cairo.Context(destination_surface)
-context.rectangle(0, 0, 640, max_height)
+context.rectangle(0, 0, 240, max_height)
 context.fill()
 
-for glyph in glyph_data:
-    base_path = os.path.join("fonts", glyph['font'], glyph['glyph'])
+COMMAND_NONE = 0
+COMMAND_FONT = 1
+COMMAND_POS = 2
+COMMAND_GLYPH = 3
+command = COMMAND_NONE
 
-    try:
-        path = os.path.join(base_path, 'bitmap.png')
-        glyph_image = cairo.ImageSurface.create_from_png(path)
-    except IOError, e:
-        print "Issue with", path, glyph, e
-        continue
+pending_buf =  []
 
-    x = glyph['x'] #+ int(open(os.path.join(base_path, 'bitmap_left_bearing')).readline().strip())
-    y = glyph['y'] #- int(open(os.path.join(base_path, 'bitmap_top_bearing')).readline().strip())
+for char in input.read():
+    if char == 'f':
+        command = COMMAND_FONT
+    elif char == ',' and command == COMMAND_FONT:
+        pass
+    elif char == 'p':
+        command = COMMAND_POS
+    elif char == ';' and command == COMMAND_POS:
+        pass
+    elif char == ' ' and command == COMMAND_POS:
+        command = COMMAND_GLYPH
+    elif char == ' ' and command == COMMAND_GLYPH:
+        pass 
+    elif char in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':']:
+        pending_buf.append(char)
+    else:
+        print "Unknwon char", char, type(char), command
+        assert False
 
-    context.translate(x, y)
-    context.set_source_surface(glyph_image, 10, 10)
-    context.paint()
-    context.translate(-x, -y)
+
+#    context.translate(x, y)
+#    context.set_source_surface(glyph_image, 10, 10)
+#    context.paint()
 
 destination_surface.write_to_png("rendered_result.png")
