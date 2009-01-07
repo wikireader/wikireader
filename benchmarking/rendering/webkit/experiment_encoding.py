@@ -404,9 +404,8 @@ def use_auto_kern(glyphs):
 
 
     # The bitcode.....
-    0    - Glyph Position
-    10   - Paragraph
-    11   - Font Change
+    0    - Paragraph
+    1    - Font Change
 
     Parapgraph:
         [0,1] - 0 no y change, 1 x and y change
@@ -467,7 +466,6 @@ def use_auto_kern(glyphs):
             first_x = (240 - old_x) + run.x
         assert first_x >= 0
 
-        writer.write_bit(1)
         writer.write_bit(0)
         if first_y == 0:
             writer.write_bit(0)
@@ -477,6 +475,7 @@ def use_auto_kern(glyphs):
             write_number(writer, first_x)
             write_number(writer, first_y)
  
+        write_number(writer, len(run.glyphs))
         list = []
         last_glyph = None
         for glyph in run.glyphs:
@@ -485,7 +484,6 @@ def use_auto_kern(glyphs):
                 print "Something broken with spacing", last_glyph, glyph
                 assert False
             huffman_glyph = huffman_glyphs[glyph['glyph']]
-            writer.write_bit(0)
             writer.write_bits(huffman_glyph)
             last_glyph = glyph
 
@@ -582,7 +580,6 @@ def use_auto_kern(glyphs):
         font = map_font_to_index(text_run.font)
         if last_font != font:
             auto_kern.write("f%d," % font)
-            writer.write_bit(1)
             writer.write_bit(1)
             writer.write_bits(huffman_fonts[text_run.font])
             last_font = font
