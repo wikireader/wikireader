@@ -20,17 +20,24 @@ max_height = max_height + 60
 class Font:
     """Simple font class"""
     def __init__(self, name):
-        self.name = name
+        assert len(name) != 0
+        self.name = "".join(name)
 
     def spacing(self, lgyph, rglyph):
         if not lgyph:
             return (0, 0)
-        return (1,1)
+
+        data = file(os.path.join("font-foo", self.name, "spacing", "%s-%s" % (lgyph, rglyph), "spacing"), "r").read().split(",")
+        return (int(data[0]), int(data[1]))
 
     def bitmap(self, glyph):
-        path = os.path.join(base_path, 'bitmap.png')
-        glyph_image = cairo.ImageSurface.create_from_png(path)
-        return None
+        try:
+            path = os.path.join("font-foo", self.name, "glyphs", glyph, 'bitmap.png')
+            glyph_image = cairo.ImageSurface.create_from_png(path)
+            return glyph_image
+        except:
+            print "Error with", path
+            return None
 
 destination_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 240, max_height)
 context = cairo.Context(destination_surface)
@@ -44,9 +51,29 @@ COMMAND_GLYPH = 3
 command = COMMAND_NONE
 
 pending_buf =  []
+current_font = None
+last_glyph = None
+x = 0
+y = 0
+paragraph_y = 0
 
 def submit_glyph(glyph):
-    pass
+    global last_glyph, x, y
+    if len(glyph) == 0:
+        return
+    glyph = "".join(glyph)
+    (x_space, y_space) = current_font.spacing(last_glyph, glyph)
+    x = (x + x_space) % 240
+    y = y + y_space
+    bitmap = current_font.bitmap(glyph)
+    if bitmap:
+        context.translate(x, y)
+        context.set_source_surface(bitmap, 10, 10)
+        context.paint()
+        context.translate(-x, -y)
+
+    print "Glyph", glyph
+    last_glyph = glyph
 
 for char in input.read():
     if char == 'f':
@@ -55,7 +82,9 @@ for char in input.read():
 
         command = COMMAND_FONT
     elif char == ',' and command == COMMAND_FONT:
-        print "Font", pending_buf
+        print "Font Change", pending_buf
+        current_font = Font(pending_buf)
+        last_glyph = None
         pending_buf = []
     elif char == 'p':
         submit_glyph(pending_buf)
@@ -63,9 +92,20 @@ for char in input.read():
 
         command = COMMAND_POS
     elif char == ';' and command == COMMAND_POS:
-        print "Position", pending_buf
-        pendinf_buf = []
+        data = "".join(pending_buf)
+        if ":" in data:
+            split = data.split(':')
+            last_x = int(split[0]) % 240
+            paragraph_y = paragraph_y + int(split[1])
+        else:
+            last_x = int(data)
+
+        x = (x + last_x) % 240
+        y = paragraph_y
+        print "Paragraph", x, paragraph_y
+        last_glyph = None
         command = COMMAND_GLYPH
+        pending_buf = []
     elif char == ' ' and command == COMMAND_GLYPH:
         submit_glyph(pending_buf)
         pending_buf = []
@@ -75,9 +115,10 @@ for char in input.read():
         print "Unknwon char", char, type(char), command
         assert False
 
+if command == COMMAND_GLYPH:
+    submit_glyph(pending_buf)
 
-#    context.translate(x, y)
-#    context.set_source_surface(glyph_image, 10, 10)
-#    context.paint()
+
+print x, y
 
 destination_surface.write_to_png("rendered_result.png")
