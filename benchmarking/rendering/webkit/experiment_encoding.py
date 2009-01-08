@@ -40,8 +40,23 @@ class BitWriter:
     def __init__(self):
         self.bits = []
 
+    def write_3bits(self, bit):
+        assert bit == (bit&0x7)
+        self.write_bit( (bit&0x4)>>2 )
+        self.write_bit( (bit&0x2)>>1 )
+        self.write_bit( (bit&0x1)>>0 )
+
     def write_4bits(self, bit):
         assert bit == (bit&0xf)
+        self.write_bit( (bit&0x8)>>3 )
+        self.write_bit( (bit&0x4)>>2 )
+        self.write_bit( (bit&0x2)>>1 )
+        self.write_bit( (bit&0x1)>>0 )
+
+    def write_6bits(self, bit):
+        assert bit == (bit&0x3F)
+        self.write_bit( (bit&0x20)>>5)
+        self.write_bit( (bit&0x10)>>4)
         self.write_bit( (bit&0x8)>>3 )
         self.write_bit( (bit&0x4)>>2 )
         self.write_bit( (bit&0x2)>>1 )
@@ -412,8 +427,8 @@ def use_auto_kern(glyphs):
         number[number] 
 
     Font/Paragraph... data encoding
-    0    - 4 Bit
-    10   - 8 bit
+    0    - 3 Bit
+    10   - 6 bit
     11   - 12 Bit
 
     """
@@ -443,13 +458,13 @@ def use_auto_kern(glyphs):
     def write_number(writer, number):
         """Find the best way to describe number and write it"""
         bits = highest_bit(number)
-        if bits <= 4:
+        if bits <= 3:
             writer.write_bit(0)
-            writer.write_4bits(number) 
-        elif bits <= 8:
+            writer.write_3bits(number) 
+        elif bits <= 6:
             writer.write_bit(1)
             writer.write_bit(0)
-            writer.write_8bits(number) 
+            writer.write_6bits(number) 
         elif bits <= 12:
             writer.write_bit(1)
             writer.write_bit(1)
