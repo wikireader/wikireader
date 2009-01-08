@@ -32,6 +32,7 @@ font_map = {}
 kern_info = {}
 huffman_fonts = {}
 huffman_glyphs = {}
+bit_occurences = {}
 
 font_occurences = {}
 glyph_occurences = {}
@@ -152,24 +153,6 @@ def load():
 
     return glyphs
 
-def map_glyph_to_glyph_index(glyph):
-    key = "%s" % glyph
-    if not key in glyph_map:
-        global last_glyph_index
-        glyph_map[key] = last_glyph_index
-        last_glyph_index = last_glyph_index + 1
-
-    return glyph_map[key]
-
-def map_font_to_index(font):
-    key = "%s" % (font)
-    if not key in font_map:
-        global last_font_index
-        font_map[key] = last_font_index
-        last_font_index = last_font_index + 1
-
-    return font_map[key]
-
 def highest_bit(x):
     """
     Runtime length encode the number
@@ -187,6 +170,7 @@ def highest_bit(x):
     return highest_bit+1
 
 def extract_spacing(last_glyph, glyph):
+    """Extract the spacing between two glyphs and save that"""
     # Look into the kerning...
     global kern_info
     if not last_glyph:
@@ -204,14 +188,14 @@ def extract_spacing(last_glyph, glyph):
     if not glyph['font'] in kern_info:
         kern_info[glyph_font] = {}
         kern_info[glyph_font][glyph_pair] = kern
-        #print "spacing between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
     elif not glyph_pair in kern_info[glyph_font]:
         kern_info[glyph_font][glyph_pair] = kern
-        #print "spacing between:", glyph_pair,  "  => %d" % (kern), last_glyph, glyph
     elif kern != kern_info[glyph_font][glyph_pair]:
         print "Not matching spacing will need to fixup: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
 
 def determine_space(last_glyph, glyph):
+    """Compare the spacing between the known spacing and this pair.
+    If it is different the caller code needs to have an override for that..."""
     global kern_info
     if not last_glyph:
         return None
@@ -231,7 +215,7 @@ def determine_space(last_glyph, glyph):
         return None
     return space
 
-def use_auto_kern(glyphs):
+def generate_encoding(glyphs):
     """
     A function saving the text runs and hoping autokern will do its job
 
@@ -245,9 +229,9 @@ def use_auto_kern(glyphs):
         number[number] 
 
     Font/Paragraph... data encoding
-    0    - 3 Bit
-    10   - 6 bit
-    11   - 12 Bit
+    0   - 4 bit
+    10  - 8 Bit
+    110 - 12 Bit
 
     """
 
@@ -276,13 +260,18 @@ def use_auto_kern(glyphs):
     def write_number(writer, number):
         """Find the best way to describe number and write it"""
         bits = highest_bit(number)
-        if bits <= 3:
+
+        if not bits in bit_occurences:
+            bit_occurences[bits] = 0
+        bit_occurences[bits] = bit_occurences[bits] + 1
+
+        if bits <= 4:
             writer.write_bit(0)
-            writer.write_3bits(number) 
-        elif bits <= 6:
+            writer.write_4bits(number) 
+        elif bits <= 8:
             writer.write_bit(1)
             writer.write_bit(0)
-            writer.write_6bits(number) 
+            writer.write_8bits(number) 
         elif bits <= 12:
             writer.write_bit(1)
             writer.write_bit(1)
@@ -489,6 +478,6 @@ def use_auto_kern(glyphs):
 
 
 raw_glyphs = load()
-use_auto_kern(raw_glyphs)
+generate_encoding(raw_glyphs)
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
