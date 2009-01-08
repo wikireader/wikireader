@@ -75,7 +75,7 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	printf("sizeof(node) = %lu\n", sizeof(struct node));
+	printf("sizeof(node) = %zu\n", sizeof(struct node));
 
 	do {
 		line = fgets(buffer, sizeof(buffer), words);
