@@ -89,7 +89,7 @@ class BitWriter:
                 print "Wrong", bit_string
                 assert False
 
-    def consume(self):
+    def _consume(self):
         "Consume bits to a packed 8byte"
         import struct
 
@@ -110,7 +110,7 @@ class BitWriter:
         for i in range(0,8-remainder):
             self.write_bit(0)
         assert len(self.bits)%8 == 0
-        return self.consume()
+        return self._consume()
 
 
 bit_writer = BitWriter()
