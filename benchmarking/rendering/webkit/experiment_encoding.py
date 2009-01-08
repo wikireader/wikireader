@@ -152,70 +152,6 @@ def load():
 
     return glyphs
 
-def sort_glyphs(glyphs):
-    # Sort glyphs so that glyphs are on the same line are next to each other
-    def glyph_cmp(left, right):
-        if left['y'] < right['y']:
-            return -1
-        elif left['y'] > right['y']:
-            return 1
-
-        if left['x'] < right['x']:
-            return -1
-        elif left['x'] > right['x']:
-            return 1
-        return 0
-
-    glyphs.sort(glyph_cmp)
-    return glyphs
-
-def delta_compress(glyphs):
-    """
-    Save the delta between the last and the current glyph. On a line
-    wrap the delat will be insanely huge and negative... we can detect
-    that later and enter a return -XYZ => - Positive option...
-    """
-    new_glyphs = []
-    last_x = 0
-    last_y = 0
-
-    for glyph in glyphs:
-        # Throw away glyphs we will not render (normally zero spaced)
-        if glyph['glyph'] == '3':
-            continue
-
-        if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
-            continue
-
-        # Throw out invisible text
-        if int(glyph['x']) > 240:
-            continue
-
-        new_glyph = { 'x' : glyph['x'] - last_x,
-                      'y' : glyph['y'] - last_y,
-                      'font' : glyph['font'],
-                      'glyph': glyph['glyph'],
-                      'original_x' : glyph['x'],
-                      'original_y' : glyph['y'] }
-
-        # Handle the line wrap...
-        # The maximum delta can be 239.
-        if new_glyph['x'] < 0:
-            x = 240 - last_x
-            new_glyph['x'] = x+glyph['x']
-
-        # Sanity
-        assert glyph['x'] >= 0
-        assert new_glyph['x'] >= 0
-
-        last_x = glyph['x']
-        last_y = glyph['y']
-        assert last_x >= 0
-        assert last_y > 0
-
-        new_glyphs.append(new_glyph)
-    return new_glyphs
-
 def map_glyph_to_glyph_index(glyph):
     key = "%s" % glyph
     if not key in glyph_map:
@@ -249,126 +185,6 @@ def highest_bit(x):
             highest_bit = i
 
     return highest_bit+1
-
-def rle_encode(glyphs):
-
-
-    def pack_glyph(x, y, glyph_index, old_font, new_font):
-        """
-        Pack the glyph together
-
-        Simple bitcode...
-        00 = X,Glyph Position 4 byte
-            Legal combination
-            X-Glyph-X
-            X-Y-Glyph-X
-            X-X would not be legal.. so combining these
-            is legal
-
-        01 = X,Glyph Position Position 8 byte
-            Legal combinations as above
-        10 = Y Position 4 Byte
-        11 = Extended package...
-        111 - 12-Byte Y,Glyph
-        110 - Extended...
-        1101
-
-        """
-        x_bits = highest_bit(x)
-        if x_bits <= 4:
-            bit_writer.write_bit(0)
-            bit_writer.write_bit(0)
-            bit_writer.write_4bits(x)
-        elif x_bits <= 8:
-            bit_writer.write_bit(0)
-            bit_writer.write_bit(1)
-            bit_writer.write_8bits(x)
-        else:
-            print x, x_bits, glyph_index
-            assert False
-
-        y_bits = highest_bit(y)
-        # If we have no delta... omit the data
-        if y == 0:
-            pass
-        elif y_bits <= 4:
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(0)
-            bit_writer.write_4bits(y)
-        elif y_bits <= 12:
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(1)
-            bit_writer.write_12bits(y)
-        else:
-            print y, y_bits, glyph_index
-            assert False
-
-
-        index_bits = highest_bit(glyph_index)
-        if index_bits <= 4:
-            bit_writer.write_bit(0)
-            bit_writer.write_bit(0)
-            bit_writer.write_4bits(glyph_index)
-        elif index_bits <= 8:
-            bit_writer.write_bit(0)
-            bit_writer.write_bit(1)
-            bit_writer.write_8bits(glyph_index)
-        elif index_bits <= 12:
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(1)
-            bit_writer.write_12bits(glyph_index)
-        else:
-            print x, x_bits, index_bits, glyph_index
-            assert False
-
-        if last_font != new_font:
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(1)
-            bit_writer.write_bit(0)
-            bit_writer.write_bit(1)
-
-            bit_writer.write_4bits(map_font_to_index(new_font))
-
-
-        return bit_writer.consume()
-
-
-
-    import copy
-    glyphs = copy.deepcopy(glyphs)
-
-    delta_compressed = open("delta_compressed", "w")
-    delta_compressed_glyph_index = open("delta_compressed_glyph_index", "w")
-
-    prev = None
-    smallest_x = 0
-    largest_x = 0
-    last_font = None
-    for glyph in glyphs:
-        glyph['glyph_index'] = map_glyph_to_glyph_index(glyph['glyph'])
-
-        # Gather some information
-        if glyph['x'] < smallest_x:
-            smallest_x = glyph['x']
-        elif glyph['x'] > largest_x:
-            largest_x = glyph['x']
-        prev = glyph
-
-        if last_font != glyph['font']:
-            delta_compressed.write("+%d" % map_font_to_index(glyph['font']))
-
-        if glyph['y'] == 0:
-            delta_compressed.write("%(original_x)d;%(glyph_index)d:" % glyph)
-        else:
-            delta_compressed.write("%(original_x)d,%(original_y)d,%(glyph_index)d:" % glyph)
-        delta_compressed_glyph_index.write(pack_glyph(glyph['x'], glyph['y'], glyph['glyph_index'], last_font, glyph['font']))
-        last_font = glyph['font']
-
-    # Write the pending bits
-    delta_compressed_glyph_index.write(bit_writer.finish())
-    print "Larges and smallest x delta", largest_x, smallest_x
 
 def extract_spacing(last_glyph, glyph):
     # Look into the kerning...
@@ -667,14 +483,12 @@ def use_auto_kern(glyphs):
             sp.write("%d,%d" % (x,y))
             sp = file(os.path.join(glyph_path, "glyph"), "w")
     print kern_info
+    print bit_occurences
             
         
 
 
 raw_glyphs = load()
 use_auto_kern(raw_glyphs)
-glyphs = sort_glyphs(copy.deepcopy(raw_glyphs))
-delta = delta_compress(glyphs)
-rle_encode(delta)
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
