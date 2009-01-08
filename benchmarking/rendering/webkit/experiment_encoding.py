@@ -93,14 +93,16 @@ class BitWriter:
         "Consume bits to a packed 8byte"
         import struct
 
-        result = ""
+        consumed = []
+
         while len(self.bits) >= 8:
             operate = self.bits[0:8]
             self.bits = self.bits[8:]
-
             data = (operate[0]<<7) | (operate[1]<<6) | (operate[2]<<5) | (operate[3]<<4) | (operate[4]<<3) | (operate[5]<<2) | (operate[6]<<1) | (operate[7]<<0)
-            result = "%s%s" % (result,struct.pack("<B", data))
-        return result
+            byte = struct.pack("<B", data)
+            consumed.append(byte)
+
+        return consumed
 
     def finish(self):
         "Consume everything that is still left"
@@ -609,8 +611,12 @@ def use_auto_kern(glyphs):
         last_x = text_run.glyphs[-1]['x']
         assert last_x <= 240
 
+
+
     auto_kern_bit = open("auto_kern_encoding_bit", "w")
-    auto_kern_bit.write(writer.finish())
+    bytes = writer.finish()
+    auto_kern_bit.write("".join(bytes))
+
     # Write options
     mkdir("font-foo")
 
