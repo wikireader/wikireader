@@ -113,8 +113,27 @@ class BitWriter:
         assert len(self.bits)%8 == 0
         return self._consume()
 
+class TextRun:
+    def __init__(self, glyph):
+        self.x = glyph['x']
+        self.y = glyph['y']
+        self.font = glyph['font']
+        self.glyphs = []
 
-bit_writer = BitWriter()
+    def add_glyph(self, glyph):
+        self.glyphs.append(glyph)
+
+    def cmp(left, right):
+        if left.y < right.y:
+            return -1
+        elif left.y > right.y:
+            return 1
+
+        if left.x < right.x:
+            return -1
+        elif left.x > right.x:
+            return 1
+        return 0
 
 
 def mkdir(path):
@@ -169,6 +188,25 @@ def highest_bit(x):
 
     return highest_bit+1
 
+def map_glyph_to_glyph_index(glyph):
+    key = "%s" % glyph
+    if not key in glyph_map:
+        global last_glyph_index
+        glyph_map[key] = last_glyph_index
+        last_glyph_index = last_glyph_index + 1
+
+    return glyph_map[key]
+
+def map_font_to_index(font):
+    key = "%s" % (font)
+    if not key in font_map:
+        global last_font_index
+        font_map[key] = last_font_index
+        last_font_index = last_font_index + 1
+
+    return font_map[key]
+
+
 def extract_spacing(last_glyph, glyph):
     """Extract the spacing between two glyphs and save that"""
     # Look into the kerning...
@@ -215,127 +253,7 @@ def determine_space(last_glyph, glyph):
         return None
     return space
 
-def generate_encoding(glyphs):
-    """
-    A function saving the text runs and hoping autokern will do its job
-
-
-    # The bitcode.....
-    0    - Paragraph
-    1    - Font Change
-
-    Parapgraph:
-        [0,1] - 0 no y change, 1 x and y change
-        number[number] 
-
-    Font/Paragraph... data encoding
-    0   - 4 bit
-    10  - 8 Bit
-    110 - 12 Bit
-
-    """
-
-    class TextRun:
-        def __init__(self, glyph):
-            self.x = glyph['x']
-            self.y = glyph['y']
-            self.font = glyph['font']
-            self.glyphs = []
-
-        def add_glyph(self, glyph):
-            self.glyphs.append(glyph)
-    
-        def cmp(left, right):
-            if left.y < right.y:
-                return -1
-            elif left.y > right.y:
-                return 1
-
-            if left.x < right.x:
-                return -1
-            elif left.x > right.x:
-                return 1
-            return 0
-    
-    def write_number(writer, number):
-        """Find the best way to describe number and write it"""
-        bits = highest_bit(number)
-
-        if not bits in bit_occurences:
-            bit_occurences[bits] = 0
-        bit_occurences[bits] = bit_occurences[bits] + 1
-
-        if bits <= 4:
-            writer.write_bit(0)
-            writer.write_4bits(number) 
-        elif bits <= 8:
-            writer.write_bit(1)
-            writer.write_bit(0)
-            writer.write_8bits(number) 
-        elif bits <= 12:
-            writer.write_bit(1)
-            writer.write_bit(1)
-            writer.write_12bits(number) 
-        else:
-            print "Can not encode...", number, bits
-            
-    def write_pending_bit(writer, run, old_x, old_y):
-        """All glyphs are on the same height..."""
-        first_x = run.x - old_x
-        first_y = run.y - old_y
-
-        if first_x < 0:
-            first_x = (240 - old_x) + run.x
-        assert first_x >= 0
-
-        writer.write_bit(0)
-        if first_y == 0:
-            writer.write_bit(0)
-            write_number(writer, first_x)
-        else:
-            writer.write_bit(1)
-            write_number(writer, first_x)
-            write_number(writer, first_y)
- 
-        write_number(writer, len(run.glyphs))
-        list = []
-        last_glyph = None
-        for glyph in run.glyphs:
-            spacing = determine_space(last_glyph, glyph)
-            if spacing:
-                print "Something broken with spacing", last_glyph, glyph
-                assert False
-            huffman_glyph = huffman_glyphs[glyph['glyph']]
-            writer.write_bits(huffman_glyph)
-            last_glyph = glyph
-
-    def write_pending(file, run, old_x, old_y):
-        """All glyphs are on the same height..."""
-        first_x = run.x - old_x
-        first_y = run.y - old_y
-
-        if first_x < 0:
-            first_x = (240 - old_x) + run.x
-        assert first_x >= 0
-
-        if first_y == 0:
-            file.write("p%d;" % first_x)
-        else:
-            file.write("p%d:%d;" % (first_x, first_y))
- 
-        list = []
-        last_glyph = None
-        for glyph in run.glyphs:
-            spacing = determine_space(last_glyph, glyph)
-            if spacing:
-                print "Something broken with spacing write bit", last_glyph, glyph
-                assert False
-            else:
-                list.append("%d" % map_glyph_to_glyph_index(glyph['glyph']))
-            last_glyph = glyph
-        file.write(" ".join(list))
- 
-
+def generate_text_runs(glyphs):
     text_runs = []
     current = None
     last_glyph = None
@@ -373,6 +291,9 @@ def generate_encoding(glyphs):
         text_runs.append(current)
         current = None
 
+    return (text_runs, glyph_occurences, font_occurences)
+
+def prepare_run(text_runs, glyph_occurences, font_occurences):
     # Sort by y position
     text_runs.sort(TextRun.cmp)
 
@@ -391,8 +312,85 @@ def generate_encoding(glyphs):
     for glyph in glyph_occurences:
         glyph_input.append((glyph_occurences[glyph]/len(glyph_occurences), glyph))
     huffman_glyphs = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(glyph_input))
+
+    return text_runs
         
-    auto_kern = open("auto_kern_encoding", "w")
+
+def write_to_file(text_runs):
+    """
+    A function saving the text runs and hoping autokern will do its job
+
+
+    # The bitcode.....
+    0    - Paragraph
+    1    - Font Change
+
+    Parapgraph:
+        [0,1] - 0 no y change, 1 x and y change
+        number[number] 
+
+    Font/Paragraph... data encoding
+    0   - 4 bit
+    10  - 8 Bit
+    110 - 12 Bit
+
+    """
+
+    
+    def write_number(writer, number):
+        """Find the best way to describe number and write it"""
+        bits = highest_bit(number)
+
+        if not bits in bit_occurences:
+            bit_occurences[bits] = 0
+        bit_occurences[bits] = bit_occurences[bits] + 1
+
+        if bits <= 4:
+            writer.write_bit(0)
+            writer.write_4bits(number) 
+        elif bits <= 8:
+            writer.write_bit(1)
+            writer.write_bit(0)
+            writer.write_8bits(number) 
+        elif bits <= 12:
+            writer.write_bit(1)
+            writer.write_bit(1)
+            writer.write_12bits(number) 
+        else:
+            print "Can not encode...", number, bits
+            assert False
+
+    def write_pending_bit(writer, run, old_x, old_y):
+        """All glyphs are on the same height..."""
+        first_x = run.x - old_x
+        first_y = run.y - old_y
+
+        if first_x < 0:
+            first_x = (240 - old_x) + run.x
+        assert first_x >= 0
+
+        writer.write_bit(0)
+        if first_y == 0:
+            writer.write_bit(0)
+            write_number(writer, first_x)
+        else:
+            writer.write_bit(1)
+            write_number(writer, first_x)
+            write_number(writer, first_y)
+ 
+        write_number(writer, len(run.glyphs))
+        list = []
+        last_glyph = None
+        for glyph in run.glyphs:
+            spacing = determine_space(last_glyph, glyph)
+            if spacing:
+                print "Something broken with spacing", last_glyph, glyph
+                assert False
+            huffman_glyph = huffman_glyphs[glyph['glyph']]
+            writer.write_bits(huffman_glyph)
+            last_glyph = glyph
+
+    # Code
     last_font = None
     last_x = 0
     last_y = 0
@@ -401,7 +399,6 @@ def generate_encoding(glyphs):
         # we mig have a new font now
         font = map_font_to_index(text_run.font)
         if last_font != font:
-            auto_kern.write("f%d," % font)
             writer.write_bit(1)
             writer.write_bits(huffman_fonts[text_run.font])
             last_font = font
@@ -410,7 +407,6 @@ def generate_encoding(glyphs):
             print "Skipping due too large x position"
             continue
 
-        write_pending(auto_kern, text_run, last_x, last_y)
         write_pending_bit(writer, text_run, last_x, last_y)
         last_y = text_run.y
         last_x = text_run.glyphs[-1]['x']
@@ -422,10 +418,11 @@ def generate_encoding(glyphs):
     bytes = writer.finish()
     auto_kern_bit.write("".join(bytes))
 
+def write_mappings():
+    """Write out the mappings used for this article"""
+
     # Write options
     mkdir("font-foo")
-
-
 
     for font in font_map.keys():
         font_index = "%s" % font_map[font]
@@ -478,6 +475,9 @@ def generate_encoding(glyphs):
 
 
 raw_glyphs = load()
-generate_encoding(raw_glyphs)
+(text_runs, glyph_occurences, font_occurences) = generate_text_runs(raw_glyphs)
+text_runs = prepare_run(text_runs, glyph_occurences, font_occurences)
+write_to_file(text_runs)
+write_mappings()
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
