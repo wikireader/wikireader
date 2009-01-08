@@ -26,10 +26,11 @@ static char *AppTitle = "det-wikird Openmoko";
 #define MSG_BUFFER_LENGTH 100
 static char g_Msg[MSG_BUFFER_LENGTH];
 static HWND g_hwnd;
-
+static bool g_bInSysTray = TRUE;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 char FirstDriveFromMask(ULONG unitmask);
+void MinimizeToSysTray();
 
 int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
@@ -61,7 +62,7 @@ int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
         return 0;
     g_hwnd = hwnd;
 
-    ShowWindow(hwnd,nCmdShow);
+    MinimizeToSysTray();
     UpdateWindow(hwnd);
 
     while (GetMessage(&msg,NULL,0,0) > 0)
@@ -187,11 +188,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
         }
         break;
 
+    case WM_USER:
+        switch(lparam)
+            {
+            case WM_LBUTTONDBLCLK:
+                if (g_bInSysTray)
+                    ShowWindow(g_hwnd,SW_SHOW);
+                else
+                    MinimizeToSysTray();
+                g_bInSysTray = !g_bInSysTray;
+                break;
+            case WM_LBUTTONUP:
+                break;
+            }
+        break;
     default:
         return DefWindowProc(hwnd, msg, wparam, lparam);
     }
 
-    return 0;
+    return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 /*------------------------------------------------------------------
 FirstDriveFromMask (unitmask)
@@ -215,3 +230,21 @@ char FirstDriveFromMask(ULONG unitmask)
         } 
     return (i + 'A'); 
 } 
+
+void MinimizeToSysTray() {
+	// Hide the window
+	ShowWindow(g_hwnd,SW_HIDE);
+
+	// Show the notification icon
+	NOTIFYICONDATA nid;
+	ZeroMemory(&nid,sizeof(nid));
+	nid.cbSize =	sizeof(nid);
+	nid.hWnd	=	g_hwnd;
+	nid.uID	=	0;
+	nid.uFlags =	NIF_ICON | NIF_MESSAGE | NIF_TIP ;
+	nid.uCallbackMessage	=	WM_USER;
+	nid.hIcon	=	LoadIcon(NULL, MAKEINTRESOURCE(NULL));
+	lstrcpy(nid.szTip,"WikiReader Detect (doucle click to maximize)\n Openmoko, Inc.");
+
+	Shell_NotifyIcon(NIM_ADD,&nid);
+}

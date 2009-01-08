@@ -27,7 +27,7 @@ C_FLAGS = -Wall -I. -I$(SRC_DIR) -mwindows -DWINDOWS -g
 
 TARGETS = det-wikird.exe
 
-all: $(TARGETS)
+all: clean $(TARGETS)
 
 $(TARGETS):$(C_OBJS)
 	$(CC) $(C_FLAGS) -o $(TARGETS) $(C_SRCS)
