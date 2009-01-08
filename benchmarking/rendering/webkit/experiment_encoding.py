@@ -32,46 +32,14 @@ font_map = {}
 kern_info = {}
 huffman_fonts = {}
 huffman_glyphs = {}
+huffman_x = {}
+huffman_y = {}
+huffman_length = {}
 bit_occurences = {}
-
-font_occurences = {}
-glyph_occurences = {}
 
 class BitWriter:
     def __init__(self):
         self.bits = []
-
-    def write_3bits(self, bit):
-        assert bit == (bit&0x7)
-        self.write_bit( (bit&0x4)>>2 )
-        self.write_bit( (bit&0x2)>>1 )
-        self.write_bit( (bit&0x1)>>0 )
-
-    def write_4bits(self, bit):
-        assert bit == (bit&0xf)
-        self.write_bit( (bit&0x8)>>3 )
-        self.write_bit( (bit&0x4)>>2 )
-        self.write_bit( (bit&0x2)>>1 )
-        self.write_bit( (bit&0x1)>>0 )
-
-    def write_6bits(self, bit):
-        assert bit == (bit&0x3F)
-        self.write_bit( (bit&0x20)>>5)
-        self.write_bit( (bit&0x10)>>4)
-        self.write_bit( (bit&0x8)>>3 )
-        self.write_bit( (bit&0x4)>>2 )
-        self.write_bit( (bit&0x2)>>1 )
-        self.write_bit( (bit&0x1)>>0 )
-
-    def write_8bits(self, bit):
-        assert bit == (bit&0xff)
-        self.write_4bits( (bit&0xf0)>>4)
-        self.write_4bits( (bit&0x0f)>>0)
-
-    def write_12bits(self, bit):
-        assert bit == (bit&0xfff)
-        self.write_4bits( (bit&0xf00)>>8)
-        self.write_8bits( (bit&0x0ff))
 
     def write_bit(self, bit):
         assert bit == (bit&0x1)
@@ -258,10 +226,42 @@ def generate_text_runs(glyphs):
     current = None
     last_glyph = None
 
+    last_x = 0
+    last_y = 0
+
+    font_occurences = {}
+    glyph_occurences = {}
+    length_occurences = {}
+    x_occurences = {}
+    y_occurences = {}
+
     # Two passes....
     for glyph in glyphs:
         if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
-            text_runs.append(current)
+            if current.x > 240:
+                print "Skipping due too large x position"
+            else:
+                current.first_x = current.x - last_x
+                if current.first_x < 0:
+                    current.first_x = (240 - last_x) + current.x
+                assert current.first_x >= 0
+                current.first_y = current.y - last_y
+                text_runs.append(current)
+                last_y = current.y
+                last_x = current.glyphs[-1]['x']
+                assert last_x <= 240
+
+                # Occurence accounting
+                if not len(current.glyphs) in length_occurences:
+                    length_occurences[len(current.glyphs)] = 0
+                length_occurences[len(current.glyphs)] = length_occurences[len(current.glyphs)] + 1
+                if not current.first_x in x_occurences:
+                    x_occurences[current.first_x] = 0
+                x_occurences[current.first_x] = x_occurences[current.first_x] + 1
+                if not current.first_y in y_occurences:
+                    y_occurences[current.first_y] = 0
+                y_occurences[current.first_y] = y_occurences[current.first_y] + 1
+
             current = None
             last_glyph = None
             continue
@@ -291,9 +291,9 @@ def generate_text_runs(glyphs):
         text_runs.append(current)
         current = None
 
-    return (text_runs, glyph_occurences, font_occurences)
+    return (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 
-def prepare_run(text_runs, glyph_occurences, font_occurences):
+def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences):
     # Sort by y position
     text_runs.sort(TextRun.cmp)
 
@@ -302,7 +302,7 @@ def prepare_run(text_runs, glyph_occurences, font_occurences):
     font_map = determine_by_occurence(font_occurences)
 
     # huffman foo...
-    global huffman_fonts, huffman_glyphs
+    global huffman_fonts, huffman_glyphs, huffman_x, huffman_y, huffman_length
     font_input = []
     for font in font_occurences:
         font_input.append((font_occurences[font]/len(font_occurences), font))
@@ -312,6 +312,21 @@ def prepare_run(text_runs, glyph_occurences, font_occurences):
     for glyph in glyph_occurences:
         glyph_input.append((glyph_occurences[glyph]/len(glyph_occurences), glyph))
     huffman_glyphs = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(glyph_input))
+
+    x_input = []
+    for x in x_occurences:
+        x_input.append((x_occurences[x]/len(x_occurences), x))
+    huffman_x = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(x_input))
+
+    y_input = []
+    for y in y_occurences:
+        y_input.append((y_occurences[y]/len(y_occurences), y))
+    huffman_y = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(y_input))
+
+    length_input = []
+    for length in length_occurences:
+        length_input.append((length_occurences[length]/len(length_occurences), length))
+    huffman_length = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(length_input))
 
     return text_runs
         
@@ -329,56 +344,23 @@ def write_to_file(text_runs):
         [0,1] - 0 no y change, 1 x and y change
         number[number] 
 
-    Font/Paragraph... data encoding
-    0   - 4 bit
-    10  - 8 Bit
-    110 - 12 Bit
-
+    Font:
+        Huffman code of the font
     """
 
     
-    def write_number(writer, number):
-        """Find the best way to describe number and write it"""
-        bits = highest_bit(number)
-
-        if not bits in bit_occurences:
-            bit_occurences[bits] = 0
-        bit_occurences[bits] = bit_occurences[bits] + 1
-
-        if bits <= 4:
-            writer.write_bit(0)
-            writer.write_4bits(number) 
-        elif bits <= 8:
-            writer.write_bit(1)
-            writer.write_bit(0)
-            writer.write_8bits(number) 
-        elif bits <= 12:
-            writer.write_bit(1)
-            writer.write_bit(1)
-            writer.write_12bits(number) 
-        else:
-            print "Can not encode...", number, bits
-            assert False
-
-    def write_pending_bit(writer, run, old_x, old_y):
+    def write_pending_bit(writer, run):
         """All glyphs are on the same height..."""
-        first_x = run.x - old_x
-        first_y = run.y - old_y
-
-        if first_x < 0:
-            first_x = (240 - old_x) + run.x
-        assert first_x >= 0
 
         writer.write_bit(0)
-        if first_y == 0:
-            writer.write_bit(0)
-            write_number(writer, first_x)
+        if run.first_y == 0:
+            writer.write_bits(huffman_x[run.first_x])
         else:
-            writer.write_bit(1)
-            write_number(writer, first_x)
-            write_number(writer, first_y)
+            writer.write_bits(huffman_x[run.first_x])
+            writer.write_bits(huffman_y[run.first_y])
  
-        write_number(writer, len(run.glyphs))
+        writer.write_bits(huffman_length[len(run.glyphs)])
+
         list = []
         last_glyph = None
         for glyph in run.glyphs:
@@ -392,8 +374,6 @@ def write_to_file(text_runs):
 
     # Code
     last_font = None
-    last_x = 0
-    last_y = 0
     writer = BitWriter()
     for text_run in text_runs:
         # we mig have a new font now
@@ -403,14 +383,7 @@ def write_to_file(text_runs):
             writer.write_bits(huffman_fonts[text_run.font])
             last_font = font
 
-        if text_run.x > 240:
-            print "Skipping due too large x position"
-            continue
-
-        write_pending_bit(writer, text_run, last_x, last_y)
-        last_y = text_run.y
-        last_x = text_run.glyphs[-1]['x']
-        assert last_x <= 240
+        write_pending_bit(writer, text_run)
 
 
 
@@ -475,8 +448,8 @@ def write_mappings():
 
 
 raw_glyphs = load()
-(text_runs, glyph_occurences, font_occurences) = generate_text_runs(raw_glyphs)
-text_runs = prepare_run(text_runs, glyph_occurences, font_occurences)
+(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = generate_text_runs(raw_glyphs)
+text_runs = prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 write_to_file(text_runs)
 write_mappings()
 print "Last glyph", last_glyph_index
