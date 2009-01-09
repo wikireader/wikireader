@@ -28,12 +28,15 @@
 #define KERNEL "/KERNEL"
 
 #define READ_AND_CLEAR_CAUSE(REG) \
-    data = REG; \
     REG = 0xff;
+
+static unsigned int *interrupt_foo;
+void foo(void);
 
 __attribute__((noreturn))
 int main(void)
 {
+	int i;
 	init_pins();
 	init_rs232();
 	init_ram();
@@ -44,6 +47,13 @@ int main(void)
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, 0x1500");
 
+        print("foo\n");
+        interrupt_foo = 0x0;
+        for (i = 0; i < 107; ++i)
+            interrupt_foo[i] = 0x41a;
+        print("done foo\n");
+        asm("ld.w %%ttbr, %0" :: "r"(interrupt_foo));
+
 	//print("Bootloader starting\n");
 	/* set FPT1 to another gpio, make it falling edge trieggered */
 	REG_PINTSEL_SPT03 |= 0xC;
@@ -51,15 +61,14 @@ int main(void)
 	REG_PINTPOL_SPP07 &= ~0x2;
 
 	/* some debug helper... P64 as output */
-#if 0
 	/* set P64 as output */
 	REG_P6_IOC6 |= 0x10;
-#endif
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 	init_lcd();
 	
+#if 0
 	/* load the 'could not boot from SD card' image */
 	eeprom_load(0x10000, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
 #if BOARD_PROTO1
@@ -71,6 +80,8 @@ int main(void)
 #endif
 	print_u32(elf_exec(KERNEL) * -1);
         print("\n");
+#endif
+        print("bootloader 4\n");
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
@@ -78,24 +89,54 @@ int main(void)
 	 * soon as a media switch is detected. */
 
 	/* TODO */
+	/* WAKEUP=1 */
+	REG_CMU_PROTECT = 0x96;
+	REG_CMU_OPT |= 0x1;
+
+	/* wakeup sources, turn keyboard control 0 to wakeup */
+	REG_KINTCOMP_SCPK0 = 0x1f;
+	REG_KINTCOMP_SMPK0 = 0x10;
+	REG_KINTSEL_SPPK01 = 0x40;
+	REG_INT_EK01_EP0_3 = 0x10;
+
+	REG_P6_P6D &= ~0x10;
 
 	for(;;) {
 		unsigned char data;
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF01);
+		READ_AND_CLEAR_CAUSE(REG_INT_F16T01);
                 READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
 		READ_AND_CLEAR_CAUSE(REG_INT_FDMA);
-		READ_AND_CLEAR_CAUSE(REG_INT_F16T01);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T23);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T45);
 		READ_AND_CLEAR_CAUSE(REG_INT_FP47_FRTC_FAD);
 		READ_AND_CLEAR_CAUSE(REG_INT_FLCDC);
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
 
-		/* WAKEUP=1 */
-		REG_CMU_PROTECT = 0x96;
-		REG_CMU_OPT |= 0x1;
-		REG_CMU_PROTECT = 0x00;
+		/* set SDCLKE enable.. */
+		REG_P2_03_CFP = 0x01;
+		REG_P2_47_CFP = 0;
+
+		/* for HALT D24 needs to be set even if it is R only.
+		 * disable the SDRAM Controller and disable the SDRAM clock
+		 * but keep the internal RAM clock on */
+		REG_SDRAMC_REF |= (1<<25);
+		REG_SDRAMC_APP = 0;
+		REG_CMU_GATEDCLK0 &= ~0x70;
+
 		asm("slp");
+                delay(10000);
+                print("woke up\n");
+
+	
+		/* restore */
+		REG_CMU_GATEDCLK0 |= 0x70;
+		REG_SDRAMC_APP |= 0x2;
         }
 }
 
+void foo() {
+    READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
+    REG_P6_P6D ^= 0x10;
+    asm("reti");
+}
