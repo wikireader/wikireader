@@ -90,10 +90,6 @@ static inline void init_ram(void)
         /* P20-P27 functions */
         REG_P2_03_CFP = 0x55;
         REG_P2_47_CFP = 0x55;
-        REG_P5_03_CFP |= 0x80;
-
-	/* P85 */
-	REG_P8_45_CFP &= 0x03;
 
         /* disable write protection of clock registers */
         REG_CMU_PROTECT = 0x96;
@@ -112,7 +108,7 @@ static inline void init_ram(void)
         REG_SDRAMC_CTL = 0x37e1;
 
         /* disable RAM self-refresh, ... */
-	REG_SDRAMC_REF = 0x8c | (1 << 23) | (0 << 16);
+	REG_SDRAMC_REF = 0x8c | (1 << 23) | (0x7f << 16);
 
 	/* enter RAM setup mode */
         REG_SDRAMC_INI = 0x14;
