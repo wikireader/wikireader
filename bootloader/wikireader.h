@@ -87,12 +87,6 @@ static inline void init_ram(void)
 {
 	int i;
 
-        /* disable write protection of clock registers */
-        REG_CMU_PROTECT = 0x96;
-
-        /* switch on SDRAM clk */
-        REG_CMU_GATEDCLK0 = 0x78;
-
         /* P20-P27 functions */
         REG_P2_03_CFP = 0x55;
         REG_P2_47_CFP = 0x55;
@@ -100,6 +94,12 @@ static inline void init_ram(void)
 
 	/* P85 */
 	REG_P8_45_CFP &= 0x03;
+
+        /* disable write protection of clock registers */
+        REG_CMU_PROTECT = 0x96;
+
+        /* switch on SDRAM clk */
+        REG_CMU_GATEDCLK0 = 0x78;
 
         /* re-enable write protection of clock registers */
         REG_CMU_PROTECT = 0x00;
@@ -111,10 +111,11 @@ static inline void init_ram(void)
         /* 4M x 16 bits x 1, 15 Trs/Trfc/Txsr cycles, 3 Tras, 2 Trp */
         REG_SDRAMC_CTL = 0x37e1;
 
-        /* enable RAM self-refresh */
-        REG_SDRAMC_REF = (1 << 25);
+        /* disable RAM self-refresh, ... */
+	REG_SDRAMC_REF = 0x8c | (1 << 23) | (0 << 16);
 
-        REG_SDRAMC_INI = 0x14;  /* enter setup mode */
+	/* enter RAM setup mode */
+        REG_SDRAMC_INI = 0x14;
 
         /* SDRAM command sequence: PALL - REF - REF - MRS (for MT48LC16M16A2) */
         REG_SDRAMC_INI = 0x12;  /* INIPRE */
@@ -131,7 +132,8 @@ static inline void init_ram(void)
         REG_SDRAMC_INI = 0x14;  /* INIMRS */
         MRSREG = 0x0;           /* dummy write */
 
-        REG_SDRAMC_INI = 0x10;  /* exit setup mode */
+	/* exit RAM setup mode */
+        REG_SDRAMC_INI = 0x10;
 }
 
 #if BOARD_PROTO1
