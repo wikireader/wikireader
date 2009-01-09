@@ -15,7 +15,7 @@ CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
-TARGETS=rs232 eeprom-1st eeprom-2nd e07load/e07load gfxtool/gfxtool
+TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
 all: $(TARGETS)
 
 .c.o:
@@ -48,12 +48,18 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o eeprom-2nd.lds
+eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o lcd.o eeprom-2nd.lds
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text	\
 				--only-section=.rodata		\
+				$< $@
+
+eeprom-2nd.bin: eeprom-2nd.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text	\
+				--only-section=.rodata		\
+				--pad-to=8192			\
 				$< $@
 
 # flash target
