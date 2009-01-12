@@ -53,7 +53,7 @@ for glyph in glyph_data:
     y = glyph['y'] #- int(open(os.path.join(base_path, 'bitmap_top_bearing')).readline().strip())
 
     context.translate(x, y)
-    context.set_source_surface(glyph_image, 10, 10)
+    context.set_source_surface(glyph_image)
     context.paint()
     context.translate(-x, -y)
 
