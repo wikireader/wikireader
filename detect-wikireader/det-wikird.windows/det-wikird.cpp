@@ -22,8 +22,10 @@
 #include <dbt.h> 
 #include <check-wikireader.h>
 
-static char *AppTitle = "det-wikird Openmoko";
+#define APPTITLE "det-wikird Openmoko"
+#define WEBSITE "http://wiki.openmoko.org"
 #define MSG_BUFFER_LENGTH 100
+
 static char g_Msg[MSG_BUFFER_LENGTH];
 static HWND g_hwnd;
 static bool g_bInSysTray = TRUE;
@@ -48,12 +50,12 @@ int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
     wc.hCursor=LoadCursor(NULL,IDC_ARROW);
     wc.hbrBackground=(HBRUSH)COLOR_WINDOWFRAME;
     wc.lpszMenuName=NULL;
-    wc.lpszClassName=AppTitle;
+    wc.lpszClassName=APPTITLE;
 
     if (!RegisterClass(&wc))
         return 0;
 
-    hwnd = CreateWindow(AppTitle,AppTitle,
+    hwnd = CreateWindow(APPTITLE, APPTITLE,
                         WS_OVERLAPPEDWINDOW,
                         CW_USEDEFAULT,CW_USEDEFAULT,300,100,
                         NULL,NULL,hInst,NULL);
@@ -133,7 +135,7 @@ void openWeb()
                                  &cbDataValue);
                     // set main page value
                     strcpy(ShellChar,(char *)DataValue);
-                    strcat(ShellChar,"http://wiki.openmoko.org");
+                    strcat(ShellChar, WEBSITE);
                     // run the browers
                     WinExec(ShellChar,SW_SHOW);
                 }
@@ -149,6 +151,8 @@ void openWeb()
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+    PDEV_BROADCAST_HDR lpdb = (PDEV_BROADCAST_HDR)lparam;
+
     switch (msg) {
     case WM_PAINT:
         PaintMessage(hwnd);
@@ -159,8 +163,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
         break;
 
     case WM_DEVICECHANGE:
-        PDEV_BROADCAST_HDR lpdb = (PDEV_BROADCAST_HDR)lparam;
-
         switch (wparam) { 
         case DBT_DEVICEARRIVAL:
             Message("Debug: A device has been inserted.");
@@ -174,10 +176,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
                 if (IsRAMDISK == DRIVE_RAMDISK || 
                     IsRAMDISK == DRIVE_FIXED || /* DRIVE_FIXED means harddisk */
                     IsRAMDISK == DRIVE_REMOVABLE) {
-                    wsprintf(g_Msg, "Drive %s Media has arrived.\n", Driver);
+                    wsprintf(g_Msg, "Drive %s Media has arrived.", Driver);
                     Message(NULL);
-					/* check_wikireader(Driver); */
-                    openWeb();  /*FIXME:  there should check the wikireader the openWeb  */ 
+                    if (check_wikireader(Driver) == 0) {
+                        openWeb();
+                        Message("openning http://wiki.openmoko.org");
+                    }
+                    else
+                        Message("this is not Openmoko Wiki Reader.");
                 }
             }
             break;

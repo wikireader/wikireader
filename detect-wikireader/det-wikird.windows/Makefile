@@ -16,24 +16,36 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-CC = gcc
-SRC_DIR = ..\src
+#CC = g++  # for Mingw under Windows
+CC = i586-mingw32msvc-g++ # for Mingw under Linux
+SRC_DIR = ../src
 
-C_SRCS = $(SRC_DIR)\check-wikireader.h \
-		$(SRC_DIR)\check-wikireader.c \
-		det-wikird.cpp
+CPP_SRCS = ./det-wikird.cpp
+CPP_OBJS = $(patsubst %.cpp,%.obj, $(CPP_SRCS))
+
+C_SRCS = $(SRC_DIR)/check-wikireader.c
+C_OBJS = $(patsubst %.c,%.o, $(C_SRCS))
 
 C_FLAGS = -Wall -I. -I$(SRC_DIR) -mwindows -DWINDOWS -g
 
 TARGETS = det-wikird.exe
 
-all: clean $(TARGETS)
+%.o : %.c
+	$(CC) $(C_FLAGS) -c $< -o $@
 
-$(TARGETS):$(C_OBJS)
-	$(CC) $(C_FLAGS) -o $(TARGETS) $(C_SRCS)
+%.obj : %.cpp
+	$(CC) $(C_FLAGS) -c $< -o $@
+
+$(C_OBJS): $(C_SRCS)
+$(CPP_OBJS): $(CPP_SRCS)
+
+all: $(TARGETS)
+
+$(TARGETS): $(CPP_OBJS) $(C_OBJS)
+	$(CC) $(C_FLAGS) -o $(TARGETS) $(CPP_OBJS) $(C_OBJS)
 
 clean:
-	del *.o *.obj $(TARGETS)
+	rm $(C_OBJS) $(CPP_OBJS) $(TARGETS)
 
 run:
 	$(TARGETS)
