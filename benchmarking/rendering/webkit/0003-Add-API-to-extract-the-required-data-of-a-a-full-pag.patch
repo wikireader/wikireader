@@ -1,4 +1,4 @@
-From 20fff96ea0077af028fb326f2bac00f49078cf4d Mon Sep 17 00:00:00 2001
+From 4d62b885fa4d7556c4b9992a55aecd0f644a2909 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 20:13:06 +0100
 Subject: [PATCH] Add API to extract the required data of a a full page...
@@ -15,7 +15,7 @@ everything we will need to process the text.
  6 files changed, 166 insertions(+), 146 deletions(-)
 
 diff --git a/WebCore/GNUmakefile.am b/WebCore/GNUmakefile.am
-index bbd100c..23f5909 100644
+index 3032d26..20f7274 100644
 --- a/WebCore/GNUmakefile.am
 +++ b/WebCore/GNUmakefile.am
 @@ -43,6 +43,7 @@ webcore_cppflags += \
@@ -27,10 +27,10 @@ index bbd100c..23f5909 100644
  
  webcoregtk_cppflags += \
 diff --git a/WebCore/platform/ScrollView.h b/WebCore/platform/ScrollView.h
-index b2fa582..742b7a1 100644
+index f588508..c3b0484 100644
 --- a/WebCore/platform/ScrollView.h
 +++ b/WebCore/platform/ScrollView.h
-@@ -212,10 +212,10 @@ public:
+@@ -221,10 +221,10 @@ public:
      void removePanScrollIcon();
  
      virtual bool scrollbarCornerPresent() const;
@@ -378,7 +378,7 @@ index d3b9bf9..cda196d 100644
  
      Color fillColor = context->fillColor();
 diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
-index edaf055..ae1d38d 100644
+index 478c773..7afb32d 100644
 --- a/WebKit/gtk/webkit/webkitwebview.cpp
 +++ b/WebKit/gtk/webkit/webkitwebview.cpp
 @@ -101,6 +101,10 @@
@@ -392,7 +392,7 @@ index edaf055..ae1d38d 100644
  using namespace WebKit;
  using namespace WebCore;
  
-@@ -2625,4 +2629,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
+@@ -2666,4 +2670,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
      g_object_notify(G_OBJECT(webView), "full-content-zoom");
  }
  
@@ -433,10 +433,10 @@ index edaf055..ae1d38d 100644
 +
  }
 diff --git a/WebKit/gtk/webkit/webkitwebview.h b/WebKit/gtk/webkit/webkitwebview.h
-index d737658..f5d0176 100644
+index 2bb8c61..3f0c247 100644
 --- a/WebKit/gtk/webkit/webkitwebview.h
 +++ b/WebKit/gtk/webkit/webkitwebview.h
-@@ -284,6 +284,42 @@ WEBKIT_API void
+@@ -296,6 +296,42 @@ WEBKIT_API void
  webkit_web_view_set_full_content_zoom           (WebKitWebView        *web_view,
                                                   gboolean              full_content_zoom);
  

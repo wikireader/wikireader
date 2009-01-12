@@ -1,0 +1,48 @@
+From a7c704e2e2920f5926749ca359b381987e6236a3 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Sun, 11 Jan 2009 15:08:48 +0100
+Subject: [PATCH] Change the font and default DPI for the wikidevice
+
+---
+ WebKit/gtk/webkit/webkitwebsettings.cpp |    4 ++--
+ WebKit/gtk/webkit/webkitwebview.cpp     |    2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/WebKit/gtk/webkit/webkitwebsettings.cpp b/WebKit/gtk/webkit/webkitwebsettings.cpp
+index aa38c6c..62e23e5 100644
+--- a/WebKit/gtk/webkit/webkitwebsettings.cpp
++++ b/WebKit/gtk/webkit/webkitwebsettings.cpp
+@@ -188,7 +188,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "default-font-size",
+                                     "Default Font Size",
+                                     "The default font size used to display text.",
+-                                    5, G_MAXINT, 12,
++                                    5, G_MAXINT, 8,
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -197,7 +197,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "default-monospace-font-size",
+                                     "Default Monospace Font Size",
+                                     "The default font size used to display monospace text.",
+-                                    5, G_MAXINT, 10,
++                                    5, G_MAXINT, 8,
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
+index 7afb32d..38cdda3 100644
+--- a/WebKit/gtk/webkit/webkitwebview.cpp
++++ b/WebKit/gtk/webkit/webkitwebview.cpp
+@@ -1572,6 +1572,8 @@ static void webkit_web_view_class_init(WebKitWebViewClass* webViewClass)
+ 
+ static gdouble webViewGetDPI(WebKitWebView* webView)
+ {
++    return 83.0;
++
+     WebKitWebViewPrivate* priv = webView->priv;
+     WebKitWebSettings* webSettings = priv->webSettings;
+     gboolean enforce96DPI;
+-- 
+1.5.6.3
+

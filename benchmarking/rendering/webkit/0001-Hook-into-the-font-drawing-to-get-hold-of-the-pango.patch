@@ -1,4 +1,4 @@
-From 450f42ac2c7cf512fd60a8ce60d0c76715bec2f7 Mon Sep 17 00:00:00 2001
+From fe87a8f6f7791a7c9d618952b287c41cdcfba2a1 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 16 Dec 2008 01:26:34 +0100
 Subject: [PATCH] Hook into the font drawing to get hold of the pango lyout..
@@ -13,7 +13,7 @@ to extract the glyph's and their advance...
  2 files changed, 6 insertions(+), 1 deletions(-)
 
 diff --git a/WebCore/platform/graphics/FontFastPath.cpp b/WebCore/platform/graphics/FontFastPath.cpp
-index 7ef5348..d5653fd 100644
+index 635aba9..ec6fd8f 100644
 --- a/WebCore/platform/graphics/FontFastPath.cpp
 +++ b/WebCore/platform/graphics/FontFastPath.cpp
 @@ -177,6 +177,10 @@ Font::CodePath Font::codePath()
