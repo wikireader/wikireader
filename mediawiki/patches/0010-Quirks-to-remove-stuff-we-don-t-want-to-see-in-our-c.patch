@@ -1,0 +1,77 @@
+From b4a77cf2b288d8a35be1ec6b26d877a12a10915e Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 19 Jan 2009 00:42:29 +0100
+Subject: [PATCH] Quirks to remove stuff we don't want to see in our content...
+
+---
+ skins/monobook/main.css |   57 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 57 insertions(+), 0 deletions(-)
+
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index da9054d..c2c568e 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -1537,3 +1537,60 @@ span.searchmatch {
+ .os-suggest {
+ 	font-size: 127%;
+ }
++
++
++/* hacks for the Wiki reader */
++table.infobox {
++    display: none;
++}
++
++table.sisterproject {
++    display: none;
++}
++
++table.infobox.geography {
++    display: table;
++    float: none;
++    clear: none;
++    width: 100%;
++}
++
++table.navbox {
++    display: none;
++}
++
++div.catlinks {
++    display: none;
++}
++
++div.printfooter {
++    display: none;
++}
++
++div.thumb {
++    display: none;
++}
++
++div.portal {
++    display: none;
++}
++
++div.noprint {
++    display: none;
++}
++
++div.nounderlines {
++    display: none;
++}
++
++div.infobox {
++    display: none;
++}
++
++table.collapsible {
++    display: none;
++}
++
++table.gallery {
++    display: none;
++}
+-- 
+1.6.0.2
+

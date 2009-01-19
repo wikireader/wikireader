@@ -1,0 +1,25 @@
+From fafc13c2759aa37335e7da826e194d6d0a7e7c27 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 19 Jan 2009 00:54:12 +0100
+Subject: [PATCH] Attempt to disable margings...
+
+---
+ skins/MonoBook.php |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/skins/MonoBook.php b/skins/MonoBook.php
+index cb6cd44..ec9911d 100644
+--- a/skins/MonoBook.php
++++ b/skins/MonoBook.php
+@@ -99,7 +99,7 @@ class MonoBookTemplate extends QuickTemplate {
+ 	</head>
+ <body<?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
+ <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
+- class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
++ class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>" style="margin: 0px;">
+ 	<div id="content">
+ 		<a name="top" id="top"></a>
+ 		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
+-- 
+1.6.0.2
+

@@ -1,0 +1,90 @@
+From 173f7698c1bab2284c32428ded18ca97a0798f24 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 19 Jan 2009 01:04:07 +0100
+Subject: [PATCH] Simplify the css rules...
+
+---
+ skins/monobook/main.css |   60 +++++++++-------------------------------------
+ 1 files changed, 12 insertions(+), 48 deletions(-)
+
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index e397b7d..00b2293 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -1540,14 +1540,6 @@ span.searchmatch {
+ 
+ 
+ /* hacks for the Wiki reader */
+-table.infobox {
+-    display: none;
+-}
+-
+-table.sisterproject {
+-    display: none;
+-}
+-
+ table.infobox.geography {
+     display: table;
+     float: none;
+@@ -1555,46 +1547,18 @@ table.infobox.geography {
+     width: 100%;
+ }
+ 
+-table.navbox {
+-    display: none;
+-}
+-
+-div.catlinks {
+-    display: none;
+-}
+-
+-div.printfooter {
+-    display: none;
+-}
+-
+-div.thumb {
+-    display: none;
+-}
+-
+-div.portal {
+-    display: none;
+-}
+-
+-div.noprint {
+-    display: none;
+-}
+-
+-div.nounderlines {
+-    display: none;
+-}
+-
+-div.infobox {
+-    display: none;
+-}
+-
+-table.collapsible {
+-    display: none;
+-}
+-
+-table.gallery {
+-    display: none;
+-}
+-
++table.infobox,
++table.sisterproject,
++table.navbox,
++div.catlinks,
++div.printfooter,
++div.thumb,
++div.portal,
++div.noprint,
++div.nounderlines,
++div.infobox,
++table.collapsible,
++table.gallery,
+ span#coordinates {
+     display: none;
+ }
+-- 
+1.6.0.2
+

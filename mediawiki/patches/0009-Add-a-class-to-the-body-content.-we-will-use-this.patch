@@ -1,0 +1,25 @@
+From 533b4b9578421e22faf9ce42062008cf96ad4103 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Sun, 18 Jan 2009 22:07:24 +0100
+Subject: [PATCH] Add a class to the body content... we will use this for some hacks
+
+---
+ skins/MonoBook.php |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/skins/MonoBook.php b/skins/MonoBook.php
+index a302248..c499ff7 100644
+--- a/skins/MonoBook.php
++++ b/skins/MonoBook.php
+@@ -104,7 +104,7 @@ class MonoBookTemplate extends QuickTemplate {
+ 		<a name="top" id="top"></a>
+ 		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
+ 		<h1 class="firstHeading"><?php $this->data['displaytitle']!=""?$this->html('title'):$this->text('title') ?></h1>
+-		<div id="bodyContent">
++		<div id="bodyContent" class="body-content-class">
+ 			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
+ 			<div id="contentSub"><?php $this->html('subtitle') ?></div>
+ 			<!-- start content -->
+-- 
+1.6.0.2
+

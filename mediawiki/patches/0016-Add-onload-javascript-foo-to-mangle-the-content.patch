@@ -1,0 +1,51 @@
+From 8c72f6def82d725fda1e95114a968b7c10019f8e Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 19 Jan 2009 01:50:09 +0100
+Subject: [PATCH] Add onload javascript foo to mangle the content...
+
+- Remove links to Image: articles (assuming my path layout in the URI)
+- Remove links to show/hide buttons... we are not interactive
+- Remove relative space divs like in the Taipei article they lead
+  to overlapping text on articles...
+---
+ skins/MonoBook.php |   24 ++++++++++++++++++++++++
+ 1 files changed, 24 insertions(+), 0 deletions(-)
+
+diff --git a/skins/MonoBook.php b/skins/MonoBook.php
+index ec9911d..bff7d39 100644
+--- a/skins/MonoBook.php
++++ b/skins/MonoBook.php
+@@ -122,6 +122,30 @@ class MonoBookTemplate extends QuickTemplate {
+ 
+ -->
+ <?php endif; ?>
++<script type="text/javascript">
++// Hide all images
++var nodes = document.querySelectorAll("a")
++for (i = 0; i < nodes.length; ++i) {
++    if (nodes[i].href.indexOf("/mediawiki/index.php/Image:") != -1) {
++        nodes[i].style.setProperty("display", "none");
++    }
++}
++
++// Hidle all toggle actions show/hide
++var nodes = document.querySelectorAll("a.NavToggle")
++for (i = 0; i < nodes.length; ++i) {
++    nodes[i].style.setProperty("display", "none");
++}
++
++// Remove relative spaced content...
++var nodes = document.querySelectorAll("div")
++for (i  = 0; i < nodes.length; ++i) {
++    var position = nodes[i].style.getPropertyValue("position")
++    if (position != null && position.indexOf("relative") != -1) {
++        nodes[i].style.setProperty("display", "none")
++    }
++}
++</script>
+ </body></html>
+ <?php
+ 	wfRestoreWarnings();
+-- 
+1.6.0.2
+

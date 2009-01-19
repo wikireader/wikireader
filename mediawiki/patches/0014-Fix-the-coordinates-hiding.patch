@@ -1,0 +1,24 @@
+From 12da1352f8c0c44f913cabddf5db9bc6d3a3bbdf Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Mon, 19 Jan 2009 01:00:16 +0100
+Subject: [PATCH] Fix the coordinates hiding...
+
+---
+ skins/monobook/main.css |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index f3d5390..e397b7d 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -1595,6 +1595,6 @@ table.gallery {
+     display: none;
+ }
+ 
+-span.coordinates {
++span#coordinates {
+     display: none;
+ }
+-- 
+1.6.0.2
+
