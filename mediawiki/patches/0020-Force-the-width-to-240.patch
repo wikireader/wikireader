@@ -1,0 +1,26 @@
+From 82df9e67c16ef624186710241cece20f03741d94 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
+Date: Mon, 19 Jan 2009 12:15:05 +0100
+Subject: [PATCH] Force the width to 240....
+
+---
+ skins/monobook/main.css |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index 4ca545b..9a91be2 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -42,8 +42,8 @@
+ */
+ 
+ body {
++    width: 240px;
+ 	font: x-small sans-serif;
+-	background: #f9f9f9 url(headbg.jpg) 0 0 no-repeat;
+ 	color: black;
+ 	margin: 0;
+ 	padding: 0;
+-- 
+1.6.0.2
+

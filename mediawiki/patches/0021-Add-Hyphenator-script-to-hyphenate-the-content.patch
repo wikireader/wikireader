@@ -1,0 +1,28 @@
+From b95f2df674e60763916abaa47889070d247b9d01 Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
+Date: Mon, 19 Jan 2009 13:43:11 +0100
+Subject: [PATCH] Add Hyphenator script to hyphenate the content..
+
+---
+ skins/MonoBook.php |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/skins/MonoBook.php b/skins/MonoBook.php
+index fc5d1b2..e61195e 100644
+--- a/skins/MonoBook.php
++++ b/skins/MonoBook.php
+@@ -155,6 +155,11 @@ for (i = 0; i < nodes.length; ++i) {
+     }
+ }
+ </script>
++<script src="http://hyphenator.googlecode.com/svn/trunk/Hyphenator.js" type="text/javascript"></script>
++<script type="text/javascript">
++    Hyphenator.setMinWordLength(4);
++    Hyphenator.run();
++</script>
+ </body></html>
+ <?php
+ 	wfRestoreWarnings();
+-- 
+1.6.0.2
+
