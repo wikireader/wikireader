@@ -35,7 +35,8 @@ void ExtractArticleUrl::handleArticle(const Article& article)
         || article.title().title().startsWith("Template:")
         || article.title().title().startsWith("Category:")
         || article.title().title().startsWith("Wikipedia:")
-        || article.title().title().startsWith("Talk:"))
+        || article.title().title().startsWith("Talk:")
+        || article.title().title().startsWith("Special:"))
         return;
 
     QTextStream stream(&m_file);
