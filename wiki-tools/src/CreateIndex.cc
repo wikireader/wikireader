@@ -127,12 +127,34 @@ void CreateIndex::doMatchAndWrite()
     QTextStream stream(&m_file); 
 
     /*
-     * reshuffle the maps. Now we actually have a multimap...
+     * reshuffle the maps. Now we actually have a multimap... but sometimes
+     * it does not make sense to add two identical versions... so add it to
+     * the multimap when we don't have the key yet or the values are different.
+     *
+     * E.g. currently we have
+     *   Doener c90b14
+     *   Doener kebab c90b14
+     *   Doener Kebab c90b14
+     *   Doener kebab c90b14
+     *
+     * Doener and Doener Kebab would be enough but
+     * Doener and Doener kebab would do as welll...
      */
     QMap<QString, QString>::const_iterator mapIt, mapEnd = m_titleMap.end();
     QMultiMap<LowercaseString, QString> titleMap;
-    for (mapIt = m_titleMap.begin(); mapIt != mapEnd; ++mapIt)
-        titleMap.insert(LowercaseString(mapIt.key()), mapIt.value());
+    for (mapIt = m_titleMap.begin(); mapIt != mapEnd; ++mapIt) {
+        LowercaseString lowercaseTitle(mapIt.key());
+
+        /* see if we have the value already... */
+        bool found = false;
+        QMap<LowercaseString, QString>::iterator existingValue = titleMap.find(lowercaseTitle);
+        for ( ; existingValue != titleMap.end() && !found; ++existingValue)
+            found = existingValue.value() == mapIt.value();
+
+        /* add it now */
+        if (!found)
+            titleMap.insert(lowercaseTitle, mapIt.value());
+    }
 
     /*
      * safe memory after we had doubled it... we could even avoid
