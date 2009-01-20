@@ -98,4 +98,3 @@ QByteArray Article::hash() const
     return m_result;
 }
 
-#include "Article.moc"
