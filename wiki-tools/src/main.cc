@@ -28,7 +28,7 @@
 
 #include "StreamReader.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QRegExp>
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
@@ -68,7 +68,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
 
 int main(int argc, char** argv)
 {
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
 
     QList<ArticleHandler*> handlers;
     StreamReader reader;
