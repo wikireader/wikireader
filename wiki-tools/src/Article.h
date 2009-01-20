@@ -37,10 +37,6 @@ public:
     QString textContent() const;
     QByteArray hash() const;
 
-
-    QString toPlainText() const;
-    QString toHtml() const ;
-
 private:
     Title   m_title;
     QString m_textContent;
@@ -49,8 +45,6 @@ private:
     mutable bool m_isRedirect;
     mutable bool m_determinedRedirect;
     mutable QString m_redirectsTo;
-    mutable QString m_plainText;
-    mutable QString m_htmlText;
 };
 
 #endif

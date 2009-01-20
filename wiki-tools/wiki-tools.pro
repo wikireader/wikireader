@@ -1,6 +1,5 @@
 TEMPLATE = app
 TARGET   = wiki-tools
-QT      += webkit
 
 INCLUDEPATH += src/ mozilla-sha1/
 
@@ -32,8 +31,6 @@ HEADERS += \
     src/CreateIndex.h \
     src/CreateText.h \
     src/ExtractWords.h \
-    src/ExtractHtmlText.h \
-    src/ExtractPlainText.h \
     src/ExtractText.h \
     src/ExtractTextCompressed.h \
     src/ExtractTextHashed.h \
@@ -43,8 +40,6 @@ SOURCES += \
     src/CreateIndex.cc \
     src/CreateText.cc \
     src/ExtractWords.cc \
-    src/ExtractHtmlText.cc \
-    src/ExtractPlainText.cc \
     src/ExtractText.cc \
     src/ExtractTextCompressed.cc \
     src/ExtractTextHashed.cc \

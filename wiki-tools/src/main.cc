@@ -20,8 +20,6 @@
 #include "CreateIndex.h"
 #include "CreateText.h"
 #include "ExtractWords.h"
-#include "ExtractHtmlText.h"
-#include "ExtractPlainText.h"
 #include "ExtractText.h"
 #include "ExtractTextCompressed.h"
 #include "ExtractTextHashed.h"
@@ -56,10 +54,6 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     //*handlers << new ExtractTextCompressed(QString("extracted.text.1.gz"), Compression::Method_Zlib, 1);
     //*handlers << new ExtractTextCompressed(QString("extracted.text.4.gz"), Compression::Method_Zlib, 4);
     //*handlers << new ExtractTextCompressed(QString("extracted.text.9.gz"), Compression::Method_Zlib, 9);
-
-    // Enable that if want to get plaintext/html (untested)
-    //*handlers << new ExtractPlainText(QString("extracted.plain.text"));
-    //*handlers << new ExtractHtmlText(QString("extracted.html.text"));
 
     // Enable that if you want to split articles
     //*handlers << new SplitArticles(50, QString("split_enwiki"));
