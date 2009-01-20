@@ -1,7 +1,7 @@
 /*
  * Wiki Handling Tool
  *
- * Copyright (C) 2008 Openmoko Inc.
+ * Copyright (C) 2008, 2009 Openmoko Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,11 +144,10 @@ void CreateIndex::doMatchAndWrite()
     QMultiMap<LowercaseString, QString>::const_iterator multiIt, multiEnd = titleMap.end();
     for (multiIt = titleMap.begin(); multiIt != multiEnd; ++multiIt) {
         QString title = multiIt.key().string();
-        QString indexLine = QString("%1%2%3%4%5\n").arg(title.toLower())
-                                                   .arg(m_splitChars)
+        QString indexLine = QString("%1%2%3\n")
                                                    .arg(title)
                                                    .arg(m_splitChars)
-                                                   .arg(multiIt.value());
+                                                   .arg(multiIt.value().left(6));
 
         if (m_match.exactMatch(title)) {
             if (longestTitle.length() < title.length())
