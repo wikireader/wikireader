@@ -1,9 +1,14 @@
-PROGRAMS = lcode lbigram
+PROGRAMS = lcode lbigram lsearcher
 all: $(PROGRAMS)
 
+CFLAGS = -DDEBUG -DINCLUDE_MAIN
+
 .c.o:
-	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
-	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
+	$(CC) -M $(CFLAGS) $< > $(<:.c=.d)
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
+lsearcher: lsearcher.o safe.o
+	$(CC) -o lsearcher lsearcher.o safe.o
 
 clean:
 	$(RM) *.d *.o $(PROGRAMS)
