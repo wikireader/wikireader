@@ -1,0 +1,24 @@
+From 28de051451a168ece39c1839e7957878ee94dd2c Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
+Date: Tue, 20 Jan 2009 00:28:51 +0100
+Subject: [PATCH] Hide wikitable on Ligature_(typography) and List_of_words_that_may_be_spelled_with_a_ligature
+
+---
+ skins/monobook/main.css |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/skins/monobook/main.css b/skins/monobook/main.css
+index 9a91be2..c9eba7f 100644
+--- a/skins/monobook/main.css
++++ b/skins/monobook/main.css
+@@ -1562,6 +1562,7 @@ div.listenlist,
+ table.collapsible,
+ table.gallery,
+ table.ambox,
++table.wikitable,
+ span#coordinates {
+     display: none;
+ }
+-- 
+1.6.0.2
+
