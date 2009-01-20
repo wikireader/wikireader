@@ -34,7 +34,8 @@ void ExtractArticleUrl::handleArticle(const Article& article)
     if (article.title().title().startsWith("Image:")
         || article.title().title().startsWith("Template:")
         || article.title().title().startsWith("Category:")
-        || article.title().title().startsWith("Wikipedia:"))
+        || article.title().title().startsWith("Wikipedia:")
+        || article.title().title().startsWith("Talk:"))
         return;
 
     QTextStream stream(&m_file);
