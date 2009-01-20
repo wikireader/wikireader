@@ -113,7 +113,7 @@ void CreateIndex::resolveRedirects()
         if (m_titleMap.contains(redirectsTo))
             m_titleMap.insert(title, m_titleMap.value(redirectsTo));
         else
-            m_notMatchStream << "Ignoring redirect for: " << title << " to: " << redirectsTo;
+            m_notMatchStream << "Ignoring redirect for: " << title << " to: " << redirectsTo << endl;
     }
 
     m_notMatchStream << "----------fail redirect titles count is: " << "\n";
