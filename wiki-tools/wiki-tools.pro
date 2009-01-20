@@ -30,6 +30,7 @@ LIBS += -lz -lbz2
 HEADERS += \
     src/CreateIndex.h \
     src/CreateText.h \
+    src/ExtractArticleUrl.h \
     src/ExtractWords.h \
     src/ExtractText.h \
     src/ExtractTextCompressed.h \
@@ -39,6 +40,7 @@ HEADERS += \
 SOURCES += \
     src/CreateIndex.cc \
     src/CreateText.cc \
+    src/ExtractArticleUrl.cc \
     src/ExtractWords.cc \
     src/ExtractText.cc \
     src/ExtractTextCompressed.cc \
