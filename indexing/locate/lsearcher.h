@@ -36,12 +36,12 @@ typedef unsigned char *ucaddr_t;
 
 typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];
-  uchar_t *addr;
-  uint32_t *prefixdb;
-  size_t size;
+  FILE *db_file;
+  fpos_t db_start;
+  uint32_t prefixdb[CHAR_MAX];
 } lindex;
 
 void kill_search();
-int search(lindex *, uchar_t *, resultf, donef, bool, bool);
+int search(lindex *, char *, resultf, donef, bool, bool);
 
 #endif
