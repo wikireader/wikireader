@@ -234,18 +234,6 @@ void scan(lindex *l, char *scan_file) {
     fclose(fp);
 }
 
-uchar_t *pathprep(char *path) {
-    char *patend;
-    size_t patlen = strlen(path);
-    char *patptr = malloc(patlen + 2);
-    bzero(patptr, patlen + 2);
-    *patptr = '\0';
-    strncpy(patptr, path, patlen);
-    patend = patptr + patlen - 1;
-    *(patptr + patlen) = '\0';
-    return (uchar_t *)patend;
-}
-
 int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool strict) {
 	register uchar_t *p, *s, *patend, *q, *foundchar;
 	register int c, cc;
@@ -255,10 +243,7 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
     /* use a lookup table for case insensitive search */
     uchar_t table[UCHAR_MAX + 1];
 
-    if(icase)
-        tolower_word(pathpart);
-
-    patend = pathprep(pathpart);
+    patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
     cc = *patend;
 
     /* set patend char to true */
