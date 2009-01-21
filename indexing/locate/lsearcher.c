@@ -92,14 +92,6 @@ static int eof = 0;
 
 static void read_block(int fd)
 {
-#ifdef DEBUG
-    off_t offset = lseek(fd, 0, SEEK_CUR);
-    if ((offset & ~BLOCK_ALIGNMENT) != offset && !eof) {
-        printf("Bad Bad... not reading block aligned: %d %d\n",
-               (int)offset, (int) offset & ~BLOCK_ALIGNMENT);
-    }
-#endif
-
     ++blocks_read;
     bytes_available = read(fd, &block, sizeof(block));
     eof = bytes_available != sizeof(block);
