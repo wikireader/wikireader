@@ -14,22 +14,22 @@ void search_progress(lindex *l, double *d) {
 }
 
 int check_bigram_char(int ch) {
-	/* legal bigram: 0, ASCII_MIN ... ASCII_MAX */
-	if (ch == 0 || (ch >= ASCII_MIN && ch <= ASCII_MAX))
-		return(ch);
+    /* legal bigram: 0, ASCII_MIN ... ASCII_MAX */
+    if (ch == 0 || (ch >= ASCII_MIN && ch <= ASCII_MAX))
+        return(ch);
 
-	fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
-		ASCII_MIN, ASCII_MAX, ch);
-	exit(1);
+    fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
+        ASCII_MIN, ASCII_MAX, ch);
+    exit(1);
 }
 
 uchar_t *tolower_word(uchar_t *word) {
-	register uchar_t *p;
+    register uchar_t *p;
 
-	for(p = word; *p != '\0'; p++)
-		*p = TOLOWER(*p);
+    for(p = word; *p != '\0'; p++)
+        *p = TOLOWER(*p);
 
-	return(word);
+    return(word);
 }
 
 int matches = 0;
@@ -40,15 +40,15 @@ bool handle_match(uchar_t *s) {
 }
 
 void init_index(lindex *l, ucaddr_t adr, size_t len, uint32_t *pdb) {
-	if (len < (2*NBG))
-		fatal("database too small");
+    if (len < (2*NBG))
+        fatal("database too small");
   uchar_t *p, *s;
   int c;
-	
-	for (c = 0, p = l->bigram1, s = l->bigram2; c < NBG; c++, len-= 2) {
-		p[c] = check_bigram_char(*adr++);
-		s[c] = check_bigram_char(*adr++);
-	}
+    
+    for (c = 0, p = l->bigram1, s = l->bigram2; c < NBG; c++, len-= 2) {
+        p[c] = check_bigram_char(*adr++);
+        s[c] = check_bigram_char(*adr++);
+    }
 
   l->addr = adr;
   l->size = len;
@@ -130,7 +130,7 @@ void scan(lindex *l, char *path) {
 uchar_t *pathprep(uchar_t *path) {
   uchar_t *patend;
   size_t patlen = strlen(path);
-	uchar_t *patptr = xalloc(patlen + 2);
+    uchar_t *patptr = xalloc(patlen + 2);
   *patptr = '\0';
   strncpy(patptr, path, patlen);
   patend = patptr + patlen - 1;
@@ -139,36 +139,36 @@ uchar_t *pathprep(uchar_t *path) {
 }
 
 int search(lindex *l, uchar_t *pathpart, resultf f, donef df, bool icase, bool strict) {
-	register uchar_t *p, *s, *patend, *q, *foundchar;
-	register int c, cc;
-	int count, found;
+    register uchar_t *p, *s, *patend, *q, *foundchar;
+    register int c, cc;
+    int count, found;
   size_t len = l->size;
   addr = l->addr;
-	uchar_t *cutoff, path[MAXSTR];
+    uchar_t *cutoff, path[MAXSTR];
   
   kill_switch = 0;
 
-	/* use a lookup table for case insensitive search */
-	uchar_t table[UCHAR_MAX + 1];
+    /* use a lookup table for case insensitive search */
+    uchar_t table[UCHAR_MAX + 1];
 
-	if(icase) tolower_word(pathpart);
+    if(icase) tolower_word(pathpart);
 
   patend = pathprep(pathpart);
-	cc = *patend;
+    cc = *patend;
 
-	/* set patend char to true */
+    /* set patend char to true */
   for (c = 0; c < UCHAR_MAX + 1; c++)
     table[c] = 0;
 
-	if(icase) {
+    if(icase) {
     table[TOLOWER(*patend)] = 1;
-	  table[toupper(*patend)] = 1;
+      table[toupper(*patend)] = 1;
   } else
     table[*patend] = 1;
 
-	/* main loop */
-	found = count = 0;
-	foundchar = 0;
+    /* main loop */
+    found = count = 0;
+    foundchar = 0;
 
   debug("checking for prefixdb... %p", l->prefixdb);
   int offset = -1;
@@ -182,7 +182,7 @@ int search(lindex *l, uchar_t *pathpart, resultf f, donef df, bool icase, bool s
     skip = true;
   }
 
-	c = *addr++;
+    c = *addr++;
   len--;
   while(len > 0) {
     if(kill_switch)
@@ -190,7 +190,7 @@ int search(lindex *l, uchar_t *pathpart, resultf f, donef df, bool icase, bool s
 
     if (c == SWITCH) {
       if(!skip)
-	count += *(int*) addr - OFFSET;
+    count += *(int*) addr - OFFSET;
       len -= sizeof(int);
       addr += sizeof(int);
     } else if(!skip) {
@@ -206,45 +206,45 @@ int search(lindex *l, uchar_t *pathpart, resultf f, donef df, bool icase, bool s
       if(kill_switch)
         return -1;
 
-			c = *addr++; 
+            c = *addr++; 
       len--;
 
-			if (c < PARITY) {
-				if (c <= UMLAUT) {
-					if (c == UMLAUT) {
-						c = (uchar_t)*addr++;
-						len--;
-					} else
-						break;
-				}
+            if (c < PARITY) {
+                if (c <= UMLAUT) {
+                    if (c == UMLAUT) {
+                        c = (uchar_t)*addr++;
+                        len--;
+                    } else
+                        break;
+                }
 
-				if (table[c])
-					foundchar = p;
-				*p++ = c;
-			} else {		
-				TO7BIT(c); 
+                if (table[c])
+                    foundchar = p;
+                *p++ = c;
+            } else {        
+                TO7BIT(c); 
 
         if (table[l->bigram1[c]] || table[l->bigram2[c]])
           foundchar = p + 1;
 
-				*p++ = l->bigram1[c];
-				*p++ = l->bigram2[c];
-			}
-		}
+                *p++ = l->bigram1[c];
+                *p++ = l->bigram2[c];
+            }
+        }
 
-		if (found) {
-			cutoff = path;
-			*p-- = '\0';
-			foundchar = p;
-		} else if (foundchar >= path + count) {
-			*p-- = '\0';
-			cutoff = path + count;
-		} else if(!strict)
-			continue;
+        if (found) {
+            cutoff = path;
+            *p-- = '\0';
+            foundchar = p;
+        } else if (foundchar >= path + count) {
+            *p-- = '\0';
+            cutoff = path + count;
+        } else if(!strict)
+            continue;
     else 
       *p-- = '\0';
 
-		found = 0;
+        found = 0;
     if(strict) {
       for(s = path, q = pathpart; *q; s++, q++)
         if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
@@ -271,7 +271,7 @@ int search(lindex *l, uchar_t *pathpart, resultf f, donef df, bool icase, bool s
         }
       }
     }
-	}
+    }
 
   if(strict) search(l, pathpart, f, df, icase, false);
   else if(df) df();
