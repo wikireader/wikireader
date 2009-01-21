@@ -297,14 +297,13 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
              *
              * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
              */
-            if (c < PARITY) {
-                if (c <= UMLAUT) {
-                    if (c == UMLAUT) {
-                        c = l_getc(l->db_file);
-                    } else
-                        break; /* SWITCH */
+            if (__builtin_expect(c < PARITY, true)) {
+                if (c < UMLAUT) {
+                    break; /* SWITCH */
+                } else if  (__builtin_expect(c == UMLAUT, false)) {
+                    c = l_getc(l->db_file);
                 }
-                if (c == lower_patend || c == upper_patend)
+                if (__builtin_expect(c == lower_patend || c == upper_patend, true))
                     foundchar = p;
                 *p++ = c;
             }
@@ -315,8 +314,8 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
                 p[0] = l->bigram1[c];
                 p[1] = l->bigram2[c];
 
-                if (p[0] == upper_patend || p[0] == lower_patend ||
-                    p[1] == upper_patend || p[1] == lower_patend)
+                if (__builtin_expect((p[0] == upper_patend || p[0] == lower_patend ||
+                    p[1] == upper_patend || p[1] == lower_patend), true))
                     foundchar = p + 1;
 
                 p += 2;
