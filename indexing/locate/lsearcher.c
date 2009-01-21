@@ -315,21 +315,21 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
                 p[1] = l->bigram2[c];
 
                 if (__builtin_expect((p[0] == upper_patend || p[0] == lower_patend ||
-                    p[1] == upper_patend || p[1] == lower_patend), true))
+                    p[1] == upper_patend || p[1] == lower_patend), false))
                     foundchar = p + 1;
 
                 p += 2;
             }
         }
 
-        if (found) {
+        if (__builtin_expect(found, false)) {
             cutoff = path;
             *p-- = '\0';
             foundchar = p;
         } else if (foundchar >= path + count) {
             *p-- = '\0';
             cutoff = path + count;
-        } else if(!strict) {
+        } else if(__builtin_expect(!strict, false)) {
             continue;
         } else { 
             *p-- = '\0';
