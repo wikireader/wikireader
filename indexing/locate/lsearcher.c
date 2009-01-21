@@ -252,8 +252,6 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
 	int count, found;
     uchar_t *cutoff = NULL, path[MAXSTR];
 
-    kill_switch = 0;
-
     /* use a lookup table for case insensitive search */
     uchar_t table[UCHAR_MAX + 1];
 
@@ -292,9 +290,6 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
 
 	c = l_getc(l->db_file);
 	for (; c != EOF; ) {
-        if(kill_switch)
-            return -1;
-
         if (c == SWITCH) {
 			int local_count =  l_getw(l->db_file) - OFFSET;
             if(!skip)
@@ -309,9 +304,6 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
         foundchar = p - 1;
 
 		for (;;) {
-            if(kill_switch)
-                return -1;
-
 			c = l_getc(l->db_file);
 			/*
 			 * == UMLAUT: 8 bit char followed
