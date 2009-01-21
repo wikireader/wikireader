@@ -51,7 +51,7 @@ int kill_switch;
 ucaddr_t addr = 0;
 
 void kill_search() {
-  kill_switch = 1;
+    kill_switch = 1;
 }
 
 int check_bigram_char(int ch) {
@@ -60,12 +60,12 @@ int check_bigram_char(int ch) {
         return(ch);
 
     fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
-        ASCII_MIN, ASCII_MAX, ch);
+            ASCII_MIN, ASCII_MAX, ch);
     exit(1);
 }
 
 char *tolower_word(char *word) {
-	register char *p;
+    register char *p;
 
     for(p = word; *p != '\0'; p++)
         *p = TOLOWER(*p);
@@ -76,8 +76,8 @@ char *tolower_word(char *word) {
 int matches = 0;
 
 bool handle_match(uchar_t *s) {
-  printf("%s\n", s);
-  return true;
+    printf("%s\n", s);
+    return true;
 }
 
 /*
@@ -235,9 +235,9 @@ void scan(lindex *l, char *scan_file) {
 }
 
 int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool strict) {
-	register uchar_t *p, *s, *patend, *q, *foundchar;
-	register int c, cc;
-	int count, found;
+    register uchar_t *p, *s, *patend, *q, *foundchar;
+    register int c, cc;
+    int count, found;
     uchar_t *cutoff = NULL, path[MAXSTR];
 
     /* use a lookup table for case insensitive search */
@@ -272,10 +272,10 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
         skip = true;
     }
 
-	c = l_getc(l->db_file);
-	for (; c != EOF; ) {
+    c = l_getc(l->db_file);
+    for (; c != EOF; ) {
         if (c == SWITCH) {
-			int local_count =  l_getw(l->db_file) - OFFSET;
+            int local_count =  l_getw(l->db_file) - OFFSET;
             if(!skip)
                 count += local_count;
         } else if(!skip) {
@@ -287,41 +287,41 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
         p = path + count;
         foundchar = p - 1;
 
-		for (;;) {
-			c = l_getc(l->db_file);
-			/*
-			 * == UMLAUT: 8 bit char followed
-			 * <= SWITCH: offset
-			 * >= PARITY: bigram
-			 * rest:      single ascii char
-			 *
-			 * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
-			 */
-			if (c < PARITY) {
-				if (c <= UMLAUT) {
-					if (c == UMLAUT) {
-						c = l_getc(l->db_file);
-					} else
-						break; /* SWITCH */
-				}
-				if (c == lower_patend || c == upper_patend)
-					foundchar = p;
-				*p++ = c;
-			}
-			else {	
-				/* bigrams are parity-marked */
-				TO7BIT(c);
+        for (;;) {
+            c = l_getc(l->db_file);
+            /*
+             * == UMLAUT: 8 bit char followed
+             * <= SWITCH: offset
+             * >= PARITY: bigram
+             * rest:      single ascii char
+             *
+             * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
+             */
+            if (c < PARITY) {
+                if (c <= UMLAUT) {
+                    if (c == UMLAUT) {
+                        c = l_getc(l->db_file);
+                    } else
+                        break; /* SWITCH */
+                }
+                if (c == lower_patend || c == upper_patend)
+                    foundchar = p;
+                *p++ = c;
+            }
+            else {	
+                /* bigrams are parity-marked */
+                TO7BIT(c);
 
                 p[0] = l->bigram1[c];
                 p[1] = l->bigram2[c];
 
-				if (p[0] == upper_patend || p[0] == lower_patend ||
+                if (p[0] == upper_patend || p[0] == lower_patend ||
                     p[1] == upper_patend || p[1] == lower_patend)
-				    foundchar = p + 1;
+                    foundchar = p + 1;
 
                 p += 2;
-			}
-		}
+            }
+        }
 
         if (found) {
             cutoff = path;
@@ -372,67 +372,67 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
 
 #ifdef INCLUDE_MAIN
 void usage(char *prog) {
-  fatal("%s -f <indexFile> [-c <scanFile>] [-s <search>]", prog);
+    fatal("%s -f <indexFile> [-c <scanFile>] [-s <search>]", prog);
 }
 
 int main(int argc, char **argv) {
-  extern char *optarg;
-  char scanFile[MAXSTR], indexFile[MAXSTR], needle[MAXSTR];
-  unsigned char ch; 
-  bool doScan = false, doSearch = false, haveScanFile = false, icase = true, twoRuns = false;
-  lindex l;
-  memset(&l, 0, sizeof(l));
+    extern char *optarg;
+    char scanFile[MAXSTR], indexFile[MAXSTR], needle[MAXSTR];
+    unsigned char ch; 
+    bool doScan = false, doSearch = false, haveScanFile = false, icase = true, twoRuns = false;
+    lindex l;
+    memset(&l, 0, sizeof(l));
 
-  debug = false;
+    debug = false;
 
-  while ((ch = getopt(argc, argv, "dac:s:f:hnp")) != 255) {
-    switch (ch) {
-    case 'c':
-      haveScanFile = true;
-      strncpy(scanFile, optarg, MAXSTR);
-      break;
-    case 'n':
-      doScan = true;
-    case 'd':
-      debug = true;
-      break;
-    case 'f':
-      strncpy(indexFile, optarg, MAXSTR);
-      break;
-    case 's':
-      doSearch = true;
-      strncpy(needle, optarg, MAXSTR);
-      break;
-    case 'a':
-      icase = false;
-      break;
-    case 'p':
-      twoRuns = true;
-      break;
-    case 'h':
-    default:
-      usage(argv[0]); 
+    while ((ch = getopt(argc, argv, "dac:s:f:hnp")) != 255) {
+        switch (ch) {
+        case 'c':
+            haveScanFile = true;
+            strncpy(scanFile, optarg, MAXSTR);
+            break;
+        case 'n':
+            doScan = true;
+        case 'd':
+            debug = true;
+            break;
+        case 'f':
+            strncpy(indexFile, optarg, MAXSTR);
+            break;
+        case 's':
+            doSearch = true;
+            strncpy(needle, optarg, MAXSTR);
+            break;
+        case 'a':
+            icase = false;
+            break;
+        case 'p':
+            twoRuns = true;
+            break;
+        case 'h':
+        default:
+            usage(argv[0]); 
+        }
     }
-  }
 
-  if(indexFile) 
-    load_index(&l, indexFile, (haveScanFile && doSearch) ? scanFile : NULL);
-  else {
-    debug("no index file");
-    usage(argv[0]);
-  }
+    if(indexFile) 
+        load_index(&l, indexFile, (haveScanFile && doSearch) ? scanFile : NULL);
+    else {
+        debug("no index file");
+        usage(argv[0]);
+    }
 
-  if(doScan)
-    scan(&l, scanFile);
-  else if(doSearch) {
-    search(&l, needle, handle_match, NULL, icase, true);
-    if (twoRuns)
-        search(&l, needle, handle_match, NULL, icase, false);
-  }else {
-    debug("no action");
-    usage(argv[0]);
-  }
+    if(doScan)
+        scan(&l, scanFile);
+    else if(doSearch) {
+        search(&l, needle, handle_match, NULL, icase, true);
+        if (twoRuns)
+            search(&l, needle, handle_match, NULL, icase, false);
+    } else {
+        debug("no action");
+        usage(argv[0]);
+    }
 
-  return 0;
+    return 0;
 }
 #endif
