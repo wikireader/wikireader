@@ -393,6 +393,7 @@ int main(int argc, char **argv) {
             break;
         case 'n':
             doScan = true;
+            break;
         case 'd':
             debug = true;
             break;
