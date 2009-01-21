@@ -59,15 +59,6 @@
 /* #define TO7BIT(x)     (x = ( ((u_char)x) & CHAR_MAX )) */
 #define TO7BIT(x)     (x = x & CHAR_MAX )
 
-
-#if UCHAR_MAX >= 4096
-   define TOLOWER(ch)	  tolower(ch)
-#else
-
-u_char myctype[UCHAR_MAX + 1];
-#define TOLOWER(ch)	(myctype[ch])
-#endif
-
 #define INTSIZE (sizeof(int))
 
 #define LOCATE_REG "*?[]\\"  /* fnmatch(3) meta characters */
