@@ -26,7 +26,7 @@ typedef void donef();
 typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];
   FILE *db_file;
-  fpos_t db_start;
+  off_t db_start;
   uint32_t prefixdb[CHAR_MAX];
 } lindex;
 

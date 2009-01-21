@@ -80,18 +80,43 @@ bool handle_match(uchar_t *s) {
   return true;
 }
 
+/*
+ * read a complete block and serve getc from this block...
+ */
+static char block[256];
+
+static int l_getc(FILE *stream)
+{
+    return getc(stream);
+}
+
+static int l_getw(FILE *stream)
+{
+    return getw(stream);
+}
+
+static void l_fseeko(FILE *stream, off_t offset, int whence)
+{
+    fseeko(stream, offset, whence);
+}
+
+static off_t l_ftello(FILE *stream)
+{
+    return ftello(stream);
+}
+
 void init_index(lindex *l, FILE *db_file, FILE *prefix_file) {
     uchar_t *p, *s;
     int c;
 
     for (c = 0, p = l->bigram1, s = l->bigram2; c < NBG; c++) {
-        p[c] = check_bigram_char(getc(db_file));
-        s[c] = check_bigram_char(getc(db_file));
+        p[c] = check_bigram_char(l_getc(db_file));
+        s[c] = check_bigram_char(l_getc(db_file));
     }
 
     /* database */
     l->db_file = db_file;
-    fgetpos(l->db_file, &l->db_start);
+    l->db_start = l_ftello(l->db_file);
 
     /* prefix table */
     if (prefix_file)
@@ -132,13 +157,13 @@ void scan(lindex *l, char *scan_file) {
     debug("scanning through plenty of chars...");
 
     file_offset = 1;
-    c = getc(l->db_file);
+    c = l_getc(l->db_file);
     for (; c != EOF; ) {
         off_t this_offset = file_offset - 1;
 
         /* go forward or backward */
         if (c == SWITCH) { /* big step, an integer */
-            count +=  getw(l->db_file) - OFFSET;
+            count +=  l_getw(l->db_file) - OFFSET;
             file_offset += sizeof(int);
         } else {	   /* slow step, =< 14 chars */
             count += c - OFFSET;
@@ -151,7 +176,7 @@ void scan(lindex *l, char *scan_file) {
         /* nothing got reused -> first char is different */
         if (count == 0) {
             for (;;) {
-                c = getc(l->db_file);
+                c = l_getc(l->db_file);
                 ++file_offset;
                 /*
                  * == UMLAUT: 8 bit char followed
@@ -164,7 +189,7 @@ void scan(lindex *l, char *scan_file) {
                 if (c < PARITY) {
                     if (c <= UMLAUT) {
                         if (c == UMLAUT) {
-                            c = getc(l->db_file);
+                            c = l_getc(l->db_file);
                             ++file_offset;
                         } else
                             break; /* SWITCH */
@@ -187,11 +212,11 @@ void scan(lindex *l, char *scan_file) {
         } else {
             /* skip stuff... until the next switch... */
             for (;;) {
-                c = getc(l->db_file);
+                c = l_getc(l->db_file);
                 ++file_offset;
                 if (c < PARITY && c <= UMLAUT) {
                     if (c == UMLAUT) {
-                        c = getc(l->db_file);
+                        c = l_getc(l->db_file);
                         ++file_offset;
                     } else
                         break; /* SWITCH */
@@ -256,22 +281,22 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
     int offset = -1;
     bool skip = false;
 
-    fsetpos(l->db_file, &l->db_start);
+    l_fseeko(l->db_file, l->db_start, SEEK_SET);
     offset = l->prefixdb[toupper(*pathpart)];
     debug("offset: %d", offset);
     if(strict && l->prefixdb && (offset > 0)) {
         debug("using prefix db");
-        fseek(l->db_file, offset, SEEK_CUR);
+        l_fseeko(l->db_file, offset, SEEK_CUR);
         skip = true;
     }
 
-	c = getc(l->db_file);
+	c = l_getc(l->db_file);
 	for (; c != EOF; ) {
         if(kill_switch)
             return -1;
 
         if (c == SWITCH) {
-			int local_count =  getw(l->db_file) - OFFSET;
+			int local_count =  l_getw(l->db_file) - OFFSET;
             if(!skip)
                 count += local_count;
         } else if(!skip) {
@@ -287,7 +312,7 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
             if(kill_switch)
                 return -1;
 
-			c = getc(l->db_file);
+			c = l_getc(l->db_file);
 			/*
 			 * == UMLAUT: 8 bit char followed
 			 * <= SWITCH: offset
@@ -299,7 +324,7 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
 			if (c < PARITY) {
 				if (c <= UMLAUT) {
 					if (c == UMLAUT) {
-						c = getc(l->db_file);
+						c = l_getc(l->db_file);
 					} else
 						break; /* SWITCH */
 				}
