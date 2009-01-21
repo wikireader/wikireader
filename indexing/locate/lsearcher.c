@@ -361,9 +361,7 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
         }
     }
 
-    if(strict)
-        search(l, pathpart, f, df, icase, false);
-    else if(df)
+    if(df)
         df();
     return 0;
 }
@@ -377,13 +375,13 @@ int main(int argc, char **argv) {
   extern char *optarg;
   char scanFile[MAXSTR], indexFile[MAXSTR], needle[MAXSTR];
   unsigned char ch; 
-  bool doScan = false, doSearch = false, haveScanFile = false, icase = true;
+  bool doScan = false, doSearch = false, haveScanFile = false, icase = true, twoRuns = false;
   lindex l;
   memset(&l, 0, sizeof(l));
 
   debug = false;
 
-  while ((ch = getopt(argc, argv, "dac:s:f:hn")) != 255) {
+  while ((ch = getopt(argc, argv, "dac:s:f:hnp")) != 255) {
     switch (ch) {
     case 'c':
       haveScanFile = true;
@@ -404,6 +402,9 @@ int main(int argc, char **argv) {
     case 'a':
       icase = false;
       break;
+    case 'p':
+      twoRuns = true;
+      break;
     case 'h':
     default:
       usage(argv[0]); 
@@ -419,9 +420,11 @@ int main(int argc, char **argv) {
 
   if(doScan)
     scan(&l, scanFile);
-  else if(doSearch)
+  else if(doSearch) {
     search(&l, needle, handle_match, NULL, icase, true);
-  else {
+    if (twoRuns)
+        search(&l, needle, handle_match, NULL, icase, false);
+  }else {
     debug("no action");
     usage(argv[0]);
   }
