@@ -1,7 +1,7 @@
 PROGRAMS = lcode lbigram lsearcher
 all: $(PROGRAMS)
 
-CFLAGS = -O3 -Wall -DDEBUG -DINCLUDE_MAIN
+CFLAGS = -ggdb3 -O3 -Wall -DDEBUG -DINCLUDE_MAIN
 
 .c.o:
 	$(CC) -M $(CFLAGS) $< > $(<:.c=.d)
