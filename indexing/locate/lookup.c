@@ -82,7 +82,7 @@ search_fast
     debug("checking for prefixdb... %p", l->prefixdb);
     int offset = -1;
     bool skip = false;
-    bool had_one_match = false;
+    bool had_one_count = false;
 
     offset = l->prefixdb[toupper(*pathpart)];
     debug("offset: %d", offset);
@@ -109,8 +109,12 @@ search_fast
         p = path + count;
 
 #if defined(LOOKUP_FAST)
-        if (count == 0 && had_one_match)
-            return 1;
+        if (count == 0) {
+            if (!had_one_count)
+                had_one_count = true;
+            else
+                return 1;
+        }
         skip = false;
 #elif defined(LOOKUP_SLOW)
         foundchar = p - 1;
@@ -163,7 +167,6 @@ search_fast
             if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
                 break;
         if(*q == '\0') {
-            had_one_match = true;
             if(!f(path))
                 return 0;
         }
