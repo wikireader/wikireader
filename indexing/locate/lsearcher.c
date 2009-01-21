@@ -322,11 +322,11 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
             }
         }
 
-        *p-- = '\0';
+        *p = '\0';
 
         if (__builtin_expect(found, false)) {
             cutoff = path;
-            foundchar = p + 1;
+            foundchar = p;
         } else if (__builtin_expect(foundchar >= path + count, true)) {
             cutoff = path + count;
         } else if(__builtin_expect(!strict, false)) {
