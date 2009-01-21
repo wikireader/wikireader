@@ -298,7 +298,7 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
              * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
              */
             if (__builtin_expect(c < PARITY, true)) {
-                if (c < UMLAUT) {
+                if (__builtin_expect(c < UMLAUT, false)) {
                     break; /* SWITCH */
                 } else if  (__builtin_expect(c == UMLAUT, false)) {
                     c = l_getc(l->db_file);
@@ -322,17 +322,15 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
             }
         }
 
+        *p-- = '\0';
+
         if (__builtin_expect(found, false)) {
             cutoff = path;
-            *p-- = '\0';
-            foundchar = p;
-        } else if (foundchar >= path + count) {
-            *p-- = '\0';
+            foundchar = p + 1;
+        } else if (__builtin_expect(foundchar >= path + count, true)) {
             cutoff = path + count;
         } else if(__builtin_expect(!strict, false)) {
             continue;
-        } else { 
-            *p-- = '\0';
         }
 
         found = 0;
