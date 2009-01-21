@@ -234,138 +234,14 @@ void scan(lindex *l, char *scan_file) {
     fclose(fp);
 }
 
-int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool strict) {
-    register uchar_t *p, *s, *patend, *q, *foundchar;
-    register int c, cc;
-    int count, found;
-    uchar_t *cutoff = NULL, path[MAXSTR];
 
-    /* use a lookup table for case insensitive search */
-    uchar_t lower_patend = 0xff;
-    uchar_t upper_patend = 0xff;
-
-    patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
-    cc = *patend;
-
-    if (icase) {
-        lower_patend = TOLOWER(*patend);
-        upper_patend = toupper(*patend);
-    } else {
-        /* well... it does not really matter */
-        lower_patend = *patend;
-    }
-
-    /* main loop */
-    found = count = 0;
-    foundchar = 0;
-
-    debug("checking for prefixdb... %p", l->prefixdb);
-    int offset = -1;
-    bool skip = false;
-
-    l_fseeko(l->db_file, l->db_start, SEEK_SET);
-    offset = l->prefixdb[toupper(*pathpart)];
-    debug("offset: %d", offset);
-    if(strict && l->prefixdb && (offset > 0)) {
-        debug("using prefix db");
-        l_fseeko(l->db_file, offset, SEEK_CUR);
-        skip = true;
-    }
-
-    c = l_getc(l->db_file);
-    for (; c != EOF; ) {
-        if (c == SWITCH) {
-            int local_count =  l_getw(l->db_file) - OFFSET;
-            if(!skip)
-                count += local_count;
-        } else if(!skip) {
-            count += c - OFFSET;
-        }
-
-        skip = false;
-
-        p = path + count;
-        foundchar = p - 1;
-
-        for (;;) {
-            c = l_getc(l->db_file);
-            /*
-             * == UMLAUT: 8 bit char followed
-             * <= SWITCH: offset
-             * >= PARITY: bigram
-             * rest:      single ascii char
-             *
-             * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
-             */
-            if (__builtin_expect(c < PARITY, true)) {
-                if (__builtin_expect(c < UMLAUT, false)) {
-                    break; /* SWITCH */
-                } else if  (__builtin_expect(c == UMLAUT, false)) {
-                    c = l_getc(l->db_file);
-                }
-                if (__builtin_expect(c == lower_patend || c == upper_patend, true))
-                    foundchar = p;
-                *p++ = c;
-            }
-            else {	
-                /* bigrams are parity-marked */
-                TO7BIT(c);
-
-                p[0] = l->bigram1[c];
-                p[1] = l->bigram2[c];
-
-                if (__builtin_expect((p[0] == upper_patend || p[0] == lower_patend ||
-                    p[1] == upper_patend || p[1] == lower_patend), false))
-                    foundchar = p + 1;
-
-                p += 2;
-            }
-        }
-
-        *p = '\0';
-
-        if (__builtin_expect(found, false)) {
-            cutoff = path;
-            foundchar = p;
-        } else if (__builtin_expect(foundchar >= path + count, true)) {
-            cutoff = path + count;
-        } else if(__builtin_expect(!strict, false)) {
-            continue;
-        }
-
-        found = 0;
-        if(strict) {
-            for(s = (uchar_t *)path, q = (uchar_t *)pathpart; *q; s++, q++)
-                if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
-                    break;
-            if(*q == '\0') {
-                if(!f(path))
-                    return 0;
-            }
-        } else {
-            for (s = foundchar; s >= cutoff; s--) {
-                if (*s == cc || (icase && TOLOWER(*s) == cc)) {
-                    for (p = patend - 1, q = s - 1; *p != '\0'; p--, q--)
-                        if (*q != *p && (!icase || TOLOWER(*q) != *p))
-                            break;
-                    if (*p == '\0' && \
-                            (icase ? \
-                             strncasecmp((const char *)path, pathpart, strlen(pathpart)) : \
-                             strncmp((const char *)path, pathpart, strlen(pathpart)))) {
-                        found = 1;
-                        if(!f(path))
-                            return 0;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    if(df)
-        df();
-    return 0;
-}
+/*
+ * Include almost the same function as search_fast and search_slow
+ *  - One cheats and is fast
+ *  - One is slow and doesn't cheat...
+ *  - We don't mix the two paths for performance reasons...
+ */
+#include "lookup.c"
 
 #ifdef INCLUDE_MAIN
 void usage(char *prog) {
