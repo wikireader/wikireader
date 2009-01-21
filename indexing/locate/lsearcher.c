@@ -241,20 +241,19 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
     uchar_t *cutoff = NULL, path[MAXSTR];
 
     /* use a lookup table for case insensitive search */
-    uchar_t table[UCHAR_MAX + 1];
+    uchar_t lower_patend = 0xff;
+    uchar_t upper_patend = 0xff;
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
     cc = *patend;
 
-    /* set patend char to true */
-    for (c = 0; c < UCHAR_MAX + 1; c++)
-        table[c] = 0;
-
-    if(icase) {
-        table[TOLOWER(*patend)] = 1;
-        table[toupper(*patend)] = 1;
-    } else
-        table[*patend] = 1;
+    if (icase) {
+        lower_patend = TOLOWER(*patend);
+        upper_patend = toupper(*patend);
+    } else {
+        /* well... it does not really matter */
+        lower_patend = *patend;
+    }
 
     /* main loop */
     found = count = 0;
@@ -305,19 +304,22 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
 					} else
 						break; /* SWITCH */
 				}
-				if (table[c])
+				if (c == lower_patend || c == upper_patend)
 					foundchar = p;
 				*p++ = c;
 			}
-			else {		
+			else {	
 				/* bigrams are parity-marked */
 				TO7BIT(c);
 
-				if (table[l->bigram1[c]] || table[l->bigram2[c]])
+                p[0] = l->bigram1[c];
+                p[1] = l->bigram2[c];
+
+				if (p[0] == upper_patend || p[0] == lower_patend ||
+                    p[1] == upper_patend || p[1] == lower_patend)
 				    foundchar = p + 1;
 
-				*p++ = l->bigram1[c];
-				*p++ = l->bigram2[c];
+                p += 2;
 			}
 		}
 
