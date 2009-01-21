@@ -83,17 +83,28 @@ bool handle_match(uchar_t *s) {
 /*
  * read a complete block and serve getc from this block...
  */
+#define BLOCK_ALIGNMENT 0xff
 static uchar_t block[256];
 static int bytes_available = 0;
+static int eof = 0;
 
 static void read_block(int fd)
 {
+#ifdef DEBUG
+    off_t offset = lseek(fd, 0, SEEK_CUR);
+    if ((offset & ~BLOCK_ALIGNMENT) != offset && !eof) {
+        printf("Bad Bad... not reading block aligned: %d %d\n",
+               (int)offset, (int) offset & ~BLOCK_ALIGNMENT);
+    }
+#endif
+
     bytes_available = read(fd, &block, sizeof(block));
+    eof = bytes_available != sizeof(block);
 }
 
 static int l_getc(int fd)
 {
-    if (bytes_available == 0)
+    if (bytes_available == 0 && !eof)
         read_block(fd);
 
     if (bytes_available <= 0)
@@ -114,11 +125,19 @@ static int l_getw(int fd)
 
 static void l_lseek(int fd, off_t offset, int whence)
 {
-    printf("seeking to: %u\n", offset);
-    lseek(fd, offset, whence);
+    lseek(fd, offset & ~BLOCK_ALIGNMENT, whence);
 
-    /* TODO XXX FIXME make offset 256 byte aligned and bytes_available to the rest of the block */
-    bytes_available = 0;
+    /*
+     * now read from this block and update bytes_available
+     * as we don't want to directly start there...
+     */
+    read_block(fd);
+
+    /* how much do we have left */
+    if (bytes_available < (offset & BLOCK_ALIGNMENT))
+        bytes_available = 0;
+    else
+        bytes_available -= offset & BLOCK_ALIGNMENT;
 }
 
 static off_t l_tell(int fd)
