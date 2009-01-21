@@ -241,7 +241,13 @@ void scan(lindex *l, char *scan_file) {
  *  - One is slow and doesn't cheat...
  *  - We don't mix the two paths for performance reasons...
  */
+#define LOOKUP_FAST
 #include "lookup.c"
+#undef LOOKUP_FAST
+
+#define LOOKUP_SLOW
+#include "lookup.c"
+#undef lOOKUP_SLOW
 
 #ifdef INCLUDE_MAIN
 void usage(char *prog) {
@@ -299,9 +305,9 @@ int main(int argc, char **argv) {
     if(doScan)
         scan(&l, scanFile);
     else if(doSearch) {
-        search(&l, needle, handle_match, NULL, icase, true);
+        search_fast(&l, needle, handle_match, NULL, icase);
         if (twoRuns)
-            search(&l, needle, handle_match, NULL, icase, false);
+            search_slow(&l, needle, handle_match, NULL, icase);
     } else {
         debug("no action");
         usage(argv[0]);

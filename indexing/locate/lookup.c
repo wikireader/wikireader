@@ -43,19 +43,26 @@
  * $DragonFly: src/usr.bin/locate/locate/fastfind.c,v 1.3 2005/08/04 17:31:23 drhodus Exp $
  */
 
-int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool strict) {
-    register uchar_t *p, *s, *patend, *q, *foundchar;
+int
+#if defined(LOOKUP_SLOW)
+search_slow
+#elif defined(LOOKUP_FAST)
+search_fast
+#endif
+(lindex *l, char *pathpart, resultf f, donef df, bool icase) {
+    register uchar_t *p, *s, *patend, *q;
     register int c, cc;
     int count, found;
-    uchar_t *cutoff = NULL, path[MAXSTR];
-
-    /* use a lookup table for case insensitive search */
-    uchar_t lower_patend = 0xff;
-    uchar_t upper_patend = 0xff;
+    uchar_t path[MAXSTR];
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
     cc = *patend;
 
+#if defined(LOOKUP_SLOW)
+    register uchar_t *foundchar;
+    uchar_t *cutoff = NULL;
+    uchar_t lower_patend = 0xff;
+    uchar_t upper_patend = 0xff;
     if (icase) {
         lower_patend = TOLOWER(*patend);
         upper_patend = toupper(*patend);
@@ -63,23 +70,30 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
         /* well... it does not really matter */
         lower_patend = *patend;
     }
+#endif
 
     /* main loop */
     found = count = 0;
-    foundchar = 0;
 
+    /* go back */
+    l_fseeko(l->db_file, l->db_start, SEEK_SET);
+
+#if defined(LOOKUP_FAST)
     debug("checking for prefixdb... %p", l->prefixdb);
     int offset = -1;
     bool skip = false;
 
-    l_fseeko(l->db_file, l->db_start, SEEK_SET);
     offset = l->prefixdb[toupper(*pathpart)];
     debug("offset: %d", offset);
-    if(strict && l->prefixdb && (offset > 0)) {
+    if(l->prefixdb && (offset > 0)) {
         debug("using prefix db");
         l_fseeko(l->db_file, offset, SEEK_CUR);
         skip = true;
     }
+#else
+    static bool const skip = false;
+    foundchar = 0;
+#endif:
 
     c = l_getc(l->db_file);
     for (; c != EOF; ) {
@@ -91,10 +105,13 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
             count += c - OFFSET;
         }
 
-        skip = false;
-
         p = path + count;
+
+#if defined(LOOKUP_FAST)
+        skip = false;
+#elif defined(LOOKUP_SLOW)
         foundchar = p - 1;
+#endif
 
         for (;;) {
             c = l_getc(l->db_file);
@@ -112,8 +129,10 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
                 } else if  (__builtin_expect(c == UMLAUT, false)) {
                     c = l_getc(l->db_file);
                 }
+#if defined(LOOKUP_SLOW)
                 if (__builtin_expect(c == lower_patend || c == upper_patend, true))
                     foundchar = p;
+#endif
                 *p++ = c;
             }
             else {	
@@ -123,52 +142,57 @@ int search(lindex *l, char *pathpart, resultf f, donef df, bool icase, bool stri
                 p[0] = l->bigram1[c];
                 p[1] = l->bigram2[c];
 
+#if defined(LOOKUP_SLOW)
                 if (__builtin_expect((p[0] == upper_patend || p[0] == lower_patend ||
                     p[1] == upper_patend || p[1] == lower_patend), false))
                     foundchar = p + 1;
+#endif
 
                 p += 2;
             }
         }
 
-        *p = '\0';
 
-        if (__builtin_expect(found, false)) {
+
+#if defined(LOOKUP_FAST)
+        *p = '\0';
+        for(s = (uchar_t *)path, q = (uchar_t *)pathpart; *q; s++, q++)
+            if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
+                break;
+        if(*q == '\0') {
+            if(!f(path))
+                return 0;
+        }
+#elif defined(LOOKUP_SLOW)
+        if (found) {
             cutoff = path;
+            *p-- = '\0';
             foundchar = p;
-        } else if (__builtin_expect(foundchar >= path + count, true)) {
+        } else if (foundchar >= path + count) {
+            *p-- = '\0';
             cutoff = path + count;
-        } else if(__builtin_expect(!strict, false)) {
+        } else {
             continue;
         }
 
         found = 0;
-        if(strict) {
-            for(s = (uchar_t *)path, q = (uchar_t *)pathpart; *q; s++, q++)
-                if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
-                    break;
-            if(*q == '\0') {
-                if(!f(path))
-                    return 0;
-            }
-        } else {
-            for (s = foundchar; s >= cutoff; s--) {
-                if (*s == cc || (icase && TOLOWER(*s) == cc)) {
-                    for (p = patend - 1, q = s - 1; *p != '\0'; p--, q--)
-                        if (*q != *p && (!icase || TOLOWER(*q) != *p))
-                            break;
-                    if (*p == '\0' && \
-                            (icase ? \
-                             strncasecmp((const char *)path, pathpart, strlen(pathpart)) : \
-                             strncmp((const char *)path, pathpart, strlen(pathpart)))) {
-                        found = 1;
-                        if(!f(path))
-                            return 0;
+        for (s = foundchar; s >= cutoff; s--) {
+            if (*s == cc || (icase && TOLOWER(*s) == cc)) {
+                for (p = patend - 1, q = s - 1; *p != '\0'; p--, q--)
+                    if (*q != *p && (!icase || TOLOWER(*q) != *p))
                         break;
-                    }
+                if (*p == '\0' && \
+                        (icase ? \
+                         strncasecmp((const char *)path, pathpart, strlen(pathpart)) : \
+                         strncmp((const char *)path, pathpart, strlen(pathpart)))) {
+                    found = 1;
+                    if(!f(path))
+                        return 0;
+                    break;
                 }
             }
         }
+#endif
     }
 
     if(df)
