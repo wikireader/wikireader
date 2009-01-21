@@ -76,7 +76,7 @@ search_fast
     found = count = 0;
 
     /* go back */
-    l_fseeko(l->db_file, l->db_start, SEEK_SET);
+    l_lseek(l->db_file, l->db_start, SEEK_SET);
 
 #if defined(LOOKUP_FAST)
     debug("checking for prefixdb... %p", l->prefixdb);
@@ -87,7 +87,7 @@ search_fast
     debug("offset: %d", offset);
     if(l->prefixdb && (offset > 0)) {
         debug("using prefix db");
-        l_fseeko(l->db_file, offset, SEEK_CUR);
+        l_lseek(l->db_file, l->db_start + offset, SEEK_SET);
         skip = true;
     }
 #else

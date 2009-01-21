@@ -83,29 +83,51 @@ bool handle_match(uchar_t *s) {
 /*
  * read a complete block and serve getc from this block...
  */
-static char block[256];
+static uchar_t block[256];
+static int bytes_available = 0;
 
-static int l_getc(FILE *stream)
+static void read_block(int fd)
 {
-    return getc(stream);
+    bytes_available = read(fd, &block, sizeof(block));
 }
 
-static int l_getw(FILE *stream)
+static int l_getc(int fd)
 {
-    return getw(stream);
+    if (bytes_available == 0)
+        read_block(fd);
+
+    if (bytes_available <= 0)
+        return EOF;
+    return block[sizeof(block) - bytes_available--];
 }
 
-static void l_fseeko(FILE *stream, off_t offset, int whence)
+static int l_getw(int fd)
 {
-    fseeko(stream, offset, whence);
+    int result = 0;
+    result |= l_getc(fd) <<  0;
+    result |= l_getc(fd) <<  8;
+    result |= l_getc(fd) << 16;
+    result |= l_getc(fd) << 24;
+
+    return result;
 }
 
-static off_t l_ftello(FILE *stream)
+static void l_lseek(int fd, off_t offset, int whence)
 {
-    return ftello(stream);
+    printf("seeking to: %u\n", offset);
+    lseek(fd, offset, whence);
+
+    /* TODO XXX FIXME make offset 256 byte aligned and bytes_available to the rest of the block */
+    bytes_available = 0;
 }
 
-void init_index(lindex *l, FILE *db_file, FILE *prefix_file) {
+static off_t l_tell(int fd)
+{
+    int offset = lseek(fd, 0, SEEK_CUR);
+    return offset - bytes_available;
+}
+
+void init_index(lindex *l, int db_file, int prefix_file) {
     uchar_t *p, *s;
     int c;
 
@@ -116,26 +138,25 @@ void init_index(lindex *l, FILE *db_file, FILE *prefix_file) {
 
     /* database */
     l->db_file = db_file;
-    l->db_start = l_ftello(l->db_file);
+    l->db_start = l_tell(l->db_file);
 
     /* prefix table */
-    if (prefix_file)
-        fread(&l->prefixdb, sizeof(uint32_t), CHAR_MAX, prefix_file);
+    if (prefix_file != -1)
+        read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
 }
 
 void load_index(lindex *l, char *path, char *ppath) {
-    FILE *db = NULL;
-    FILE *offset_file = NULL;
+    int db, offset_file = -1;
 
     debug("load_index(0x%p, %s, %s)", l, path, ppath);
 
-    db = fopen(path, "r");
-    if(ppath) offset_file = fopen(ppath, "r");
+    db = open(path, O_RDONLY);
+    if(ppath) offset_file = open(ppath, O_RDONLY);
 
     init_index(l, db, offset_file);
 
-    if (offset_file)
-        fclose(offset_file);
+    if (offset_file != -1)
+        close(offset_file);
 }
 
 /*
