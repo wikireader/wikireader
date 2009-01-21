@@ -77,12 +77,14 @@ int matches = 0;
 
 bool handle_match(uchar_t *s) {
     printf("%s\n", s);
-    return true;
+    return ++matches != 10;
 }
 
 /*
  * read a complete block and serve getc from this block...
  */
+static int blocks_read = 0;
+
 #define BLOCK_ALIGNMENT 0xff
 static uchar_t block[256];
 static int bytes_available = 0;
@@ -98,6 +100,7 @@ static void read_block(int fd)
     }
 #endif
 
+    ++blocks_read;
     bytes_available = read(fd, &block, sizeof(block));
     eof = bytes_available != sizeof(block);
 }
@@ -346,8 +349,12 @@ int main(int argc, char **argv) {
         scan(&l, scanFile);
     else if(doSearch) {
         search_fast(&l, needle, handle_match, NULL, icase);
-        if (twoRuns)
+        debug("During the search %d blocks were read", blocks_read);
+        if (twoRuns) {
+            blocks_read = 0;
             search_slow(&l, needle, handle_match, NULL, icase);
+            debug("During the slow search %d blocks were read", blocks_read);
+        }
     } else {
         debug("no action");
         usage(argv[0]);
