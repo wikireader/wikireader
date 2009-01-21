@@ -7,8 +7,8 @@ CFLAGS = -ggdb3 -O3 -Wall -DDEBUG -DINCLUDE_MAIN
 	$(CC) -M $(CFLAGS) $< > $(<:.c=.d)
 	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-lsearcher: lsearcher.o safe.o
-	$(CC) -o lsearcher lsearcher.o safe.o
+lsearcher: lsearcher.o
+	$(CC) -o lsearcher lsearcher.o
 
 clean:
 	$(RM) *.d *.o $(PROGRAMS)
