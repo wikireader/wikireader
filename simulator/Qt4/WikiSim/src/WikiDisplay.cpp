@@ -30,6 +30,7 @@ WikiDisplay::WikiDisplay(QWidget *parent)
 {
 	setMinimumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 	setMaximumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+	printf("initializing display for %dx%d pixels\n", FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 	framebuffer = new QByteArray(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT, 0);
 	keyEventQueue = new QQueue<QKeyEvent>;
 	mouseEventQueue = new QQueue<QMouseEvent>;
@@ -50,14 +51,15 @@ WikiDisplay::setPixel(int x, int y, int v)
 {
 	char *data = framebuffer->data();
 
-	v &= 0xf;
+	// 1 bpp only
+	v &= 1;
 
 	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT) {
 		printf("pixel position out of range: %d,%d\n", x, y);
 		return;
 	}
 
-	data[y * FRAMEBUFFER_WIDTH + x] |= v;
+	data[y * FRAMEBUFFER_WIDTH + x] = v;
 }
 
 void

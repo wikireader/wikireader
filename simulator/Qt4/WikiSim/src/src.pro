@@ -1,5 +1,6 @@
 SOURCES += ../../../../gui-lib/guilib.c
 SOURCES += ../../../../gui-lib/glyph.c
+SOURCES += ../../../../gui-lib/fontfile.c
 SOURCES += ../../../../wiki-lib/specific/file-io-posix.c
 SOURCES += ../../../../wiki-lib/specific/msg-printf.c
 SOURCES += ../../../../wiki-lib/specific/time-posix.c
