@@ -1,6 +1,7 @@
-#include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <wikilib.h>
 #include <file-io.h>
@@ -46,8 +47,16 @@ int wl_seek(int fd, unsigned int pos)
 	return lseek(fd, pos, SEEK_SET);
 }
 
-int wl_ftell(int fd)
+int wl_fsize(int fd, unsigned int *size)
 {
-	msg(MSG_ERROR, "%s() IS UNIMPLEMENTED!", __func__);
-	return -1;
+	int ret;
+	struct stat stat_buf;
+
+	ret = fstat(fd, &stat_buf);
+	if (ret < 0)
+		return ret;
+
+	*size = (unsigned int) stat_buf.st_size;
+	return 0;
 }
+

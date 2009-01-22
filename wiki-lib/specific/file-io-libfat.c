@@ -106,12 +106,11 @@ int wl_seek(int fd, unsigned int pos)
 	return 0;
 }
 
-int wl_ftell(int fd)
+int wl_fsize(int fd, unsigned int *size)
 {
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
 	
-	return fil_list[fd].fptr;
+	return fil_list[fd].f_size;
 }
-
 
