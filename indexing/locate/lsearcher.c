@@ -77,7 +77,7 @@ int matches = 0;
 
 bool handle_match(uchar_t *s) {
     printf("%s\n", s);
-    return ++matches != 10;
+    return true;
 }
 
 /*
