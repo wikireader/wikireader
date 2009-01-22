@@ -1,0 +1,25 @@
+This describes the format for the file containing information about fonts,
+glyphs and kerning information.
+
+
+header: (@byte 0)
+	unsigned int	file_size;
+	unsigned int	n_fonts;
+	unsigned int	font_offsets[n_fonts];
+
+	font:
+		unsigned int	n_glyphs;
+		unsigned int	glyph_offsets[n_glyphs];
+
+	glyph:
+		unsigned char w;
+		unsigned char h;
+		unsigned short n_spacing_hints;
+		unsigned char bitmap[(w*h)/8];
+
+		{
+			unsigned short next_glyph;
+			unsigned char x;
+			unsigned char y;
+		} * (n_spacing_hints)
+
