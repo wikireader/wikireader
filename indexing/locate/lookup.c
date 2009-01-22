@@ -166,9 +166,17 @@ search_fast
 
 #if defined(LOOKUP_FAST)
         *p = '\0';
-        for(s = (uchar_t *)path, q = (uchar_t *)pathpart; *q; s++, q++)
+        bool all_bigger = true;
+        int i = 0;
+        for(s = (uchar_t *)path, q = (uchar_t *)pathpart, i = 0; *q; s++, q++, ++i) {
+            all_bigger &= i == 0 || (icase && *s > *q) || (!icase && *s > *q);
             if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
                 break;
+        }
+
+        if (all_bigger)
+            return -1;
+
         if(*q == '\0') {
             if(!f(path))
                 return 0;
