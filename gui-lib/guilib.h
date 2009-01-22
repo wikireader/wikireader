@@ -2,8 +2,8 @@
 #define GUILIB_H
 
 /* this is hard-coded tu 4pp for now */
-#define FRAMEBUFFER_WIDTH  (320)
-#define FRAMEBUFFER_HEIGHT (240)
+#define FRAMEBUFFER_WIDTH  (240)
+#define FRAMEBUFFER_HEIGHT (208)
 #define FRAMEBUFFER_SIZE ((FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2)
 
 /* to be implemented by hardware abtraction layer */
