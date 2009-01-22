@@ -25,14 +25,16 @@ void fb_refresh(void)
 	return;
 }
 
+/* 1bpp implementation */
+
 void fb_set_pixel(int x, int y, int val)
 {
-        if (x & 1) {
-                framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] &= 0xf0;
-                framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] |= val & 0xf;
-        } else {
-                framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] &= 0x0f;
-                framebuffer[(y * FRAMEBUFFER_WIDTH + x) / 2] |= val << 4;
-        }
+	char mask = 1 << (x % 8);
+	unsigned int byte = (y * FRAMEBUFFER_WIDTH + x) / 8;
+
+	framebuffer[byte] &= ~mask;
+
+	if (val)
+		framebuffer[byte] |= mask;
 }
 
