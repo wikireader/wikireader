@@ -177,7 +177,7 @@ search_fast
                 break;
         }
 
-        if (all_bigger)
+        if (i != 1 && all_bigger)
             return -1;
 
         if(*q == '\0') {
