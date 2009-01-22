@@ -90,6 +90,9 @@ search_fast
         debug("using prefix db");
         l_lseek(l->db_file, l->db_start + offset, SEEK_SET);
         skip = true;
+    } else {
+        printf("Failed to seek... not searching\n");
+        return -1;
     }
 #else
     static bool const skip = false;
