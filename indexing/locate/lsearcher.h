@@ -27,7 +27,7 @@ typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];
   int db_file;
   off_t db_start;
-  uint32_t prefixdb[CHAR_MAX];
+  uint32_t prefixdb[34];
 } lindex;
 
 void kill_search();

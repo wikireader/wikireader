@@ -239,10 +239,14 @@ void scan(lindex *l, char *scan_file) {
             }
 
             *p-- = '\0';
-            if(isalnum(path[0])) {
-                /* ignore unicode chars for now */
-                l->prefixdb[path[0]] = this_offset;
+            if (path[0] >= 48 && path[0] <= 57) {
+                l->prefixdb[path[0]-48] = this_offset;
                 debug("%c starts at 0x%x", path[0], (int)this_offset);
+            } else if (path[0] >= 65 && path[0] <= 90) {
+                l->prefixdb[path[0]-65] = this_offset;
+                debug("%c starts at 0x%x", path[0], (int)this_offset);
+            } else {
+                debug("Unhandled char for prefix: '%c' at 0x%x", path[0], (int)this_offset);
             }
         } else {
             /* skip stuff... until the next switch... */
@@ -265,7 +269,7 @@ void scan(lindex *l, char *scan_file) {
     if (!fp)
         return;
 
-    fwrite(l->prefixdb, sizeof(uint32_t), CHAR_MAX, fp);
+    fwrite(l->prefixdb, sizeof(uint32_t), sizeof(l->prefixdb)/sizeof(l->prefixdb[0]), fp);
     fclose(fp);
 }
 
