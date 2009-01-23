@@ -84,13 +84,14 @@ search_fast
     bool skip = false;
     bool had_one_count = false;
 
-    if (*pathpart >= 48 && *pathpart <= 57)
-        offset = l->prefixdb[*pathpart-48];
-    else if(toupper(*pathpart) >= 65 && toupper(*pathpart) <= 90)
-        offset = l->prefixdb[toupper(*pathpart)-65];
+    offset = char_to_index(toupper(*pathpart));
+    if (offset >= 0 && offset <= 36)
+        offset = l->prefixdb[offset];
+    else
+        return -1;
 
-    if(l->prefixdb && (offset > 0)) {
-        debug("using prefix db");
+    if(l->prefixdb && (offset >= 0)) {
+        debug("using prefix db seek to 0x%x", offset);
         l_lseek(l->db_file, l->db_start + offset, SEEK_SET);
         skip = true;
     } else {

@@ -71,6 +71,19 @@ bool handle_match(uchar_t *s) {
     return true;
 }
 
+static int char_to_index(char c) {
+    if (c == 46)
+        return 0;
+    else if (c >= 48 && c <= 57)
+        return c - 48 + 1;
+    else if (c >= 65 && c <= 90)
+        return c - 65 + 1 + 10;
+    else if (c >= 97 && c <= 122)
+        return c - 97 + 1 + 10 + 26;
+
+    return -1;
+}
+
 /*
  * read a complete block and serve getc from this block...
  */
@@ -230,14 +243,15 @@ void scan(lindex *l, char *scan_file) {
             }
 
             *p-- = '\0';
-            if (path[0] >= 48 && path[0] <= 57) {
-                l->prefixdb[path[0]-48] = this_offset;
-                debug("%c starts at 0x%x", path[0], (int)this_offset);
-            } else if (path[0] >= 65 && path[0] <= 90) {
-                l->prefixdb[path[0]-65] = this_offset;
-                debug("%c starts at 0x%x", path[0], (int)this_offset);
-            } else {
-                debug("Unhandled char for prefix: '%c' at 0x%x", path[0], (int)this_offset);
+
+            if (count == 0) {
+                int index = char_to_index(path[0]);
+                if (index < 0 || index > 36)
+                    debug("Unhandled char for prefix: '%c' at 0x%x", path[0], (int)this_offset);
+                else {
+                    l->prefixdb[index] = this_offset;
+                    debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index);
+                }
             }
         } else {
             /* skip stuff... until the next switch... */
@@ -260,7 +274,7 @@ void scan(lindex *l, char *scan_file) {
     if (!fp)
         return;
 
-    fwrite(l->prefixdb, sizeof(uint32_t), sizeof(l->prefixdb)/sizeof(l->prefixdb[0]), fp);
+    fwrite(l->prefixdb, sizeof(l->prefixdb[0]), sizeof(l->prefixdb)/sizeof(l->prefixdb[0]), fp);
     fclose(fp);
 }
 
