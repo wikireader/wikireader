@@ -64,15 +64,6 @@ int check_bigram_char(int ch) {
     exit(1);
 }
 
-char *tolower_word(char *word) {
-    register char *p;
-
-    for(p = word; *p != '\0'; p++)
-        *p = TOLOWER(*p);
-
-    return(word);
-}
-
 int matches = 0;
 
 bool handle_match(uchar_t *s) {
