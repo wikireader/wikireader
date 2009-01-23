@@ -84,6 +84,10 @@ static int char_to_index(char c) {
     return -1;
 }
 
+static int create_index(int lindex, int rindex) {
+    return 61 * lindex + rindex;
+}
+
 /*
  * read a complete block and serve getc from this block...
  */
@@ -159,8 +163,10 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     l->db_start = l_tell(l->db_file);
 
     /* prefix table */
-    if (prefix_file != -1)
+    if (prefix_file != -1) {
         read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
+        read(prefix_file, &l->bigram, sizeof(l->bigram));
+    }
 }
 
 void load_index(lindex *l, char *path, char *ppath) {
@@ -213,7 +219,7 @@ void scan(lindex *l, char *scan_file) {
 
 
         /* nothing got reused -> first char is different */
-        if (count == 0) {
+        if (count == 0 || count == 1) {
             for (;;) {
                 c = l_getc(l->db_file);
                 ++file_offset;
@@ -252,6 +258,17 @@ void scan(lindex *l, char *scan_file) {
                     l->prefixdb[index] = this_offset;
                     debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index);
                 }
+            } else if (count == 1) {
+                int index_1 = char_to_index(path[0]);
+                int index_2 = char_to_index(path[1]);
+                if (index_1 < 0 || index_1 > 36 || index_2 < 0 || index_2 > 60)
+                    debug("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)",
+                          path[0], path[1], (int)this_offset, index_1, index_2);
+                else {
+                    l->bigram[create_index(index_1, index_2)] = this_offset;
+                    debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
+                          (int)this_offset, create_index(index_1, index_2), index_1, index_2);
+                }
             }
         } else {
             /* skip stuff... until the next switch... */
@@ -270,12 +287,16 @@ void scan(lindex *l, char *scan_file) {
     }
 
     /* write it out */
-    FILE *fp = fopen(scan_file, "w");
-    if (!fp)
+    int fp = open(scan_file, O_WRONLY|O_CREAT|O_TRUNC, 0655);
+    if (fp < 0)
         return;
 
-    fwrite(l->prefixdb, sizeof(l->prefixdb[0]), sizeof(l->prefixdb)/sizeof(l->prefixdb[0]), fp);
-    fclose(fp);
+    int ret = 0;
+    ret += write(fp, &l->prefixdb, sizeof(l->prefixdb));
+    ret += write(fp, &l->bigram, sizeof(l->bigram));
+
+    if (ret != sizeof(l->prefixdb) + sizeof(l->bigram))
+        fprintf(stderr, "Failed to write db\n");
 }
 
 

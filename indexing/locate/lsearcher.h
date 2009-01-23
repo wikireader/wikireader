@@ -28,6 +28,7 @@ typedef struct {
   int db_file;
   off_t db_start;
   uint32_t prefixdb[37];
+  uint32_t bigram[37 * 61];
 } lindex;
 
 void kill_search();

@@ -83,12 +83,26 @@ search_fast
     int offset = -1;
     bool skip = false;
     bool had_one_count = false;
+    int pattern_len = strlen(pathpart);
 
-    offset = char_to_index(toupper(*pathpart));
-    if (offset >= 0 && offset <= 36)
-        offset = l->prefixdb[offset];
-    else
-        return -1;
+    if (pattern_len == 1) {
+        offset = char_to_index(toupper(*pathpart));
+        if (offset >= 0 && offset <= 36)
+            offset = l->prefixdb[offset];
+        else
+            return -1;
+    } else {
+        int index_1 = char_to_index(toupper(pathpart[0]));
+        int index_2 = char_to_index(toupper(pathpart[1]));
+        if (index_1 >= 0 && index_1 <= 36 &&
+            index_2 >= 0 && index_2 <= 36) {
+            int index = create_index(index_1, index_2);
+            offset = l->bigram[index];
+            path[0] = toupper(pathpart[0]);
+            count = 1;
+        } else
+            return -1;
+    }
 
     if(l->prefixdb && (offset >= 0)) {
         debug("using prefix db seek to 0x%x", offset);
