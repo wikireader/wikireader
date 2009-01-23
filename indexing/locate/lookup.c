@@ -185,14 +185,35 @@ search_fast
 #if defined(LOOKUP_FAST)
         *p = '\0';
         bool all_bigger = true;
+        int longest_match = 0;
         int i = 0;
         for(s = (uchar_t *)path, q = (uchar_t *)pathpart, i = 0; *q; s++, q++, ++i) {
-            all_bigger &= i == 0 || (icase && *s > *q) || (!icase && *s > *q);
+            /*
+             * Okay some ugly states....
+             * 1.) the first letter is always capital so we special case 0
+             * 2.) for every but the last charachter we can match with >=
+             *     (common prefix) only the last char of the pattern needs
+             *     to be bigger. becuase from this point on everything else
+             *     will get bigger too.
+             */
+            if (i != 0 && all_bigger) {
+                if (i != pattern_len-1 && *s >= *q)
+                    ++longest_match;
+                else if (i == pattern_len-1 && *s > *q)
+                    ++longest_match;
+                else
+                    all_bigger = false;
+            } else if (i == 0) {
+                if (*s > toupper(*q)) {
+                    ++longest_match;
+                } 
+            }
+
             if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
                 break;
         }
 
-        if (i != 1 && all_bigger)
+        if (longest_match >= 1 && all_bigger)
             return -1;
 
         if(*q == '\0') {
