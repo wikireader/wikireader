@@ -74,7 +74,7 @@ search_fast
 
 #if defined(LOOKUP_FAST)
     int offset = -1;
-    bool skip = false;
+    state->skip = false;
     int pattern_len = strlen(pathpart);
 
     if (pattern_len > 1) {
@@ -100,13 +100,13 @@ search_fast
     if(l->prefixdb && (offset >= 0)) {
         debug("using prefix db seek to 0x%x", offset);
         l_lseek(l->db_file, l->db_start + offset, SEEK_SET);
-        skip = true;
+        state->skip = true;
     } else {
         printf("Failed to seek... not searching\n");
         return -1;
     }
 #else
-    static bool const skip = false;
+    state->skip = false;
     foundchar = 0;
 #endif:
 
@@ -114,16 +114,16 @@ search_fast
     for (; c != EOF; ) {
         if (c == SWITCH) {
             int local_count =  l_getw(l->db_file) - OFFSET;
-            if(!skip)
+            if(!state->skip)
                 state->count += local_count;
-        } else if(!skip) {
+        } else if(!state->skip) {
             state->count += c - OFFSET;
         }
 
         p = state->path + state->count;
 
 #if defined(LOOKUP_FAST)
-        skip = false;
+        state->skip = false;
 #elif defined(LOOKUP_SLOW)
         foundchar = p - 1;
 #endif
