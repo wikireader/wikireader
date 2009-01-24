@@ -219,73 +219,56 @@ void scan(lindex *l, char *scan_file) {
         p = path + count;
 
 
-        /* nothing got reused -> first char is different */
-        if (count == 0 || count == 1) {
-            for (;;) {
-                c = l_getc(l->db_file);
-                ++file_offset;
-                /*
-                 * == UMLAUT: 8 bit char followed
-                 * <= SWITCH: offset
-                 * >= PARITY: bigram
-                 * rest:      single ascii char
-                 *
-                 * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
-                 */
-                if (c < PARITY) {
-                    if (c <= UMLAUT) {
-                        if (c == UMLAUT) {
-                            c = l_getc(l->db_file);
-                            ++file_offset;
-                        } else
-                            break; /* SWITCH */
-                    }
-                    *p++ = c;
-                } else {		
-                    /* bigrams are parity-marked */
-                    TO7BIT(c);
-                    *p++ = l->bigram1[c];
-                    *p++ = l->bigram2[c];
-                }
-            }
-
-            *p-- = '\0';
-
-            if (count == 0) {
-                int index = char_to_index(path[0]);
-                if (index == -1) {
-                    printf("Unhandled char for prefix: '%c' at 0x%x\n",
-                           path[0], (int)this_offset);
-                } else if (index >= 0
-                           && l->prefixdb[index] == 0) {
-                    l->prefixdb[index] = this_offset;
-                    debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index);
-                }
-            } else if (count == 1) {
-                int index_1 = char_to_index(path[0]);
-                int index_2 = char_to_index(path[1]);
-                if (index_1 == -1 || index_2 == -1) {
-                    printf("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)\n",
-                           path[0], path[1], (int)this_offset, index_1, index_2);
-                } else if (index_1 >= 0 && index_2 >= 0
-                           && l->bigram[create_index(index_1, index_2)] == 0) {
-                    l->bigram[create_index(index_1, index_2)] = this_offset;
-                    debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
-                          (int)this_offset, create_index(index_1, index_2), index_1, index_2);
-                }
-            }
-        } else {
-            /* skip stuff... until the next switch... */
-            for (;;) {
-                c = l_getc(l->db_file);
-                ++file_offset;
-                if (c < PARITY && c <= UMLAUT) {
+        for (;;) {
+            c = l_getc(l->db_file);
+            ++file_offset;
+            /*
+             * == UMLAUT: 8 bit char followed
+             * <= SWITCH: offset
+             * >= PARITY: bigram
+             * rest:      single ascii char
+             *
+             * offset < SWITCH < UMLAUT < ascii < PARITY < bigram
+             */
+            if (c < PARITY) {
+                if (c <= UMLAUT) {
                     if (c == UMLAUT) {
                         c = l_getc(l->db_file);
                         ++file_offset;
                     } else
                         break; /* SWITCH */
                 }
+                *p++ = c;
+            } else {		
+                /* bigrams are parity-marked */
+                TO7BIT(c);
+                *p++ = l->bigram1[c];
+                *p++ = l->bigram2[c];
+            }
+        }
+
+        *p-- = '\0';
+
+        if (count == 0) {
+            int index = char_to_index(path[0]);
+            if (index == -1) {
+                printf("Unhandled char for prefix: '%c' at 0x%x\n",
+                        path[0], (int)this_offset);
+            } else if (index >= 0 && l->prefixdb[index] == 0) {
+                l->prefixdb[index] = this_offset;
+                debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index);
+            }
+        } else if (count == 1) {
+            int index_1 = char_to_index(path[0]);
+            int index_2 = char_to_index(path[1]);
+            if (index_1 == -1 || index_2 == -1) {
+                printf("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)\n",
+                        path[0], path[1], (int)this_offset, index_1, index_2);
+            } else if (index_1 >= 0 && index_2 >= 0
+                       && l->bigram[create_index(index_1, index_2)] == 0) {
+                l->bigram[create_index(index_1, index_2)] = this_offset;
+                debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
+                      (int)this_offset, create_index(index_1, index_2), index_1, index_2);
             }
         }
     }
