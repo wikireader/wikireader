@@ -95,7 +95,7 @@ search_fast
         }
     }
 
-    if (offset == -1) {
+    if (offset <= 0) {
         offset = char_to_index(toupper(*pathpart));
         if (offset >= 0)
             offset = l->prefixdb[offset];
