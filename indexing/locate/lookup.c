@@ -79,19 +79,12 @@ search_fast
     l_lseek(l->db_file, l->db_start, SEEK_SET);
 
 #if defined(LOOKUP_FAST)
-    debug("checking for prefixdb... %p", l->prefixdb);
     int offset = -1;
     bool skip = false;
     bool had_one_count = false;
     int pattern_len = strlen(pathpart);
 
-    if (pattern_len == 1) {
-        offset = char_to_index(toupper(*pathpart));
-        if (offset >= 0)
-            offset = l->prefixdb[offset];
-        else
-            return -1;
-    } else {
+    if (pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
         int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
@@ -99,7 +92,14 @@ search_fast
             offset = l->bigram[index];
             path[0] = toupper(pathpart[0]);
             count = 1;
-        } else
+        }
+    }
+
+    if (offset == -1) {
+        offset = char_to_index(toupper(*pathpart));
+        if (offset >= 0)
+            offset = l->prefixdb[offset];
+        else
             return -1;
     }
 
