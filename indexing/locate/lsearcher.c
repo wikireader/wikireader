@@ -88,9 +88,7 @@ static int char_to_index(char c) {
         return c - 48 + 1;
     else if (c >= 65 && c <= 90)
         return c - 65 + 1 + 10;
-    else if (c >= 97 && c <= 122)
-        return -2;
-
+    
     return -1;
 }
 
@@ -252,8 +250,8 @@ void scan(lindex *l, char *scan_file) {
 
         *p-- = '\0';
 
-        int index_1 = char_to_index(path[0]);
-        int index_2 = char_to_index(path[1]);
+        int index_1 = char_to_index(toupper(path[0]));
+        int index_2 = char_to_index(toupper(path[1]));
 
         if (index_1 == -1) {
             printf("Unhandled char for prefix: '%c' at 0x%x\n",
