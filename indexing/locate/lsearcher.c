@@ -50,6 +50,15 @@
 int kill_switch;
 ucaddr_t addr = 0;
 
+int matches = 0;
+
+static int blocks_read = 0;
+
+#define BLOCK_ALIGNMENT 0xff
+static uchar_t block[256];
+static int bytes_available = 0;
+static int eof = 0;
+
 void kill_search() {
     kill_switch = 1;
 }
@@ -63,8 +72,6 @@ int check_bigram_char(int ch) {
             ASCII_MIN, ASCII_MAX, ch);
     exit(1);
 }
-
-int matches = 0;
 
 bool handle_match(uchar_t *s) {
     printf("%s\n", s);
@@ -91,12 +98,6 @@ static int create_index(int lindex, int rindex) {
 /*
  * read a complete block and serve getc from this block...
  */
-static int blocks_read = 0;
-
-#define BLOCK_ALIGNMENT 0xff
-static uchar_t block[256];
-static int bytes_available = 0;
-static int eof = 0;
 
 static void read_block(int fd)
 {
