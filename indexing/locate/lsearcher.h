@@ -31,7 +31,7 @@ typedef struct {
   int db_file;
   off_t db_start;
   uint32_t prefixdb[MAX_UPPER_PREFIX_SIZE];
-  uint32_t bigram[MAX_UPPER_PREFIX_SIZE * MAX_ALL_PREFIX_SIZE];
+  uint32_t bigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
 } lindex;
 
 struct search_state {

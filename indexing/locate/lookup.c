@@ -53,7 +53,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
 
     if (state->offset == INT_MAX && state->pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
-        int index_2 = char_to_index(pathpart[1]);
+        int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
             state->offset = l->bigram[index];

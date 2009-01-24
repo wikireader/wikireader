@@ -95,7 +95,7 @@ static int char_to_index(char c) {
 }
 
 static int create_index(int lindex, int rindex) {
-    return (MAX_ALL_PREFIX_SIZE * lindex) + rindex;
+    return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
 }
 
 /*
@@ -261,7 +261,7 @@ void scan(lindex *l, char *scan_file) {
         *p-- = '\0';
 
         int index_1 = char_to_index(toupper(path[0]));
-        int index_2 = char_to_index(path[1]);
+        int index_2 = char_to_index(toupper(path[1]));
 
         if (index_1 == -1) {
             printf("Unhandled char for prefix: '%c' at 0x%x\n",
