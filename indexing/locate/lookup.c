@@ -76,7 +76,6 @@ search_fast
 #if defined(LOOKUP_FAST)
     int offset = -1;
     bool skip = false;
-    bool had_one_count = false;
     int pattern_len = strlen(pathpart);
 
     if (pattern_len > 1) {
@@ -125,12 +124,6 @@ search_fast
         p = path + count;
 
 #if defined(LOOKUP_FAST)
-        if (count == 0) {
-            if (!had_one_count)
-                had_one_count = true;
-            else
-                return 1;
-        }
         skip = false;
 #elif defined(LOOKUP_SLOW)
         foundchar = p - 1;
