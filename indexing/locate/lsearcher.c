@@ -54,8 +54,8 @@ int matches = 0;
 
 static int blocks_read = 0;
 
-#define BLOCK_ALIGNMENT 0xff
-static uchar_t block[256];
+#define BLOCK_ALIGNMENT 0x1ff
+static uchar_t block[512];
 static int bytes_available = 0;
 static int eof = 0;
 
