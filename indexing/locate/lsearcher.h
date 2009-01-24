@@ -23,12 +23,14 @@ typedef unsigned char uchar_t;
 typedef bool resultf(uchar_t *);
 typedef void donef();
 
+#define MAX_PREFIX_SIZE 38
+
 typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];
   int db_file;
   off_t db_start;
-  uint32_t prefixdb[37];
-  uint32_t bigram[37 * 61];
+  uint32_t prefixdb[MAX_PREFIX_SIZE];
+  uint32_t bigram[MAX_PREFIX_SIZE * MAX_PREFIX_SIZE];
 } lindex;
 
 void kill_search();

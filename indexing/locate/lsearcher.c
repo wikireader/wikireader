@@ -86,13 +86,13 @@ static int char_to_index(char c) {
     else if (c >= 65 && c <= 90)
         return c - 65 + 1 + 10;
     else if (c >= 97 && c <= 122)
-        return c - 97 + 1 + 10 + 26;
+        return -2;
 
     return -1;
 }
 
 static int create_index(int lindex, int rindex) {
-    return 61 * lindex + rindex;
+    return MAX_PREFIX_SIZE * lindex + rindex;
 }
 
 /*
@@ -253,19 +253,22 @@ void scan(lindex *l, char *scan_file) {
 
             if (count == 0) {
                 int index = char_to_index(path[0]);
-                if (index < 0 || index > 36)
-                    debug("Unhandled char for prefix: '%c' at 0x%x", path[0], (int)this_offset);
-                else {
+                if (index == -1) {
+                    printf("Unhandled char for prefix: '%c' at 0x%x\n",
+                           path[0], (int)this_offset);
+                } else if (index >= 0
+                           && l->prefixdb[index] == 0) {
                     l->prefixdb[index] = this_offset;
                     debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index);
                 }
             } else if (count == 1) {
                 int index_1 = char_to_index(path[0]);
                 int index_2 = char_to_index(path[1]);
-                if (index_1 < 0 || index_1 > 36 || index_2 < 0 || index_2 > 60)
-                    debug("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)",
-                          path[0], path[1], (int)this_offset, index_1, index_2);
-                else {
+                if (index_1 == -1 || index_2 == -1) {
+                    printf("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)\n",
+                           path[0], path[1], (int)this_offset, index_1, index_2);
+                } else if (index_1 >= 0 && index_2 >= 0
+                           && l->bigram[create_index(index_1, index_2)] == 0) {
                     l->bigram[create_index(index_1, index_2)] = this_offset;
                     debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
                           (int)this_offset, create_index(index_1, index_2), index_1, index_2);

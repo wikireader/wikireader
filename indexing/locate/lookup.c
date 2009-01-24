@@ -87,15 +87,14 @@ search_fast
 
     if (pattern_len == 1) {
         offset = char_to_index(toupper(*pathpart));
-        if (offset >= 0 && offset <= 36)
+        if (offset >= 0)
             offset = l->prefixdb[offset];
         else
             return -1;
     } else {
         int index_1 = char_to_index(toupper(pathpart[0]));
         int index_2 = char_to_index(toupper(pathpart[1]));
-        if (index_1 >= 0 && index_1 <= 36 &&
-            index_2 >= 0 && index_2 <= 36) {
+        if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
             offset = l->bigram[index];
             path[0] = toupper(pathpart[0]);
