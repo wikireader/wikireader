@@ -73,7 +73,7 @@ search_fast
     l_lseek(l->db_file, l->db_start, SEEK_SET);
 
 #if defined(LOOKUP_FAST)
-    int offset = -1;
+    state->offset = -1;
     state->skip = false;
     int pattern_len = strlen(pathpart);
 
@@ -82,24 +82,24 @@ search_fast
         int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
-            offset = l->bigram[index];
+            state->offset = l->bigram[index];
             state->path[0] = toupper(pathpart[0]);
-            if (offset != l->prefixdb[index_1])
+            if (state->offset != l->prefixdb[index_1])
                 state->count = 1;
         }
     }
 
-    if (offset <= 0) {
-        offset = char_to_index(toupper(*pathpart));
-        if (offset >= 0)
-            offset = l->prefixdb[offset];
+    if (state->offset <= 0) {
+        state->offset = char_to_index(toupper(*pathpart));
+        if (state->offset >= 0)
+            state->offset = l->prefixdb[state->offset];
         else
             return -1;
     }
 
-    if(l->prefixdb && (offset >= 0)) {
-        debug("using prefix db seek to 0x%x", offset);
-        l_lseek(l->db_file, l->db_start + offset, SEEK_SET);
+    if(l->prefixdb && (state->offset >= 0)) {
+        debug("using prefix db seek to 0x%x", state->offset);
+        l_lseek(l->db_file, l->db_start + state->offset, SEEK_SET);
         state->skip = true;
     } else {
         printf("Failed to seek... not searching\n");

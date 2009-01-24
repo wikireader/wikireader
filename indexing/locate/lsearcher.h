@@ -35,6 +35,7 @@ typedef struct {
 
 struct search_state {
     uchar_t path[MAXSTR];
+    int offset;
     int count;
     bool skip;
 };
