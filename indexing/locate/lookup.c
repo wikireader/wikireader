@@ -49,7 +49,7 @@ search_slow
 #elif defined(LOOKUP_FAST)
 search_fast
 #endif
-(lindex *l, char *pathpart, resultf f, donef df, bool icase) {
+(lindex *l, char *pathpart, resultf f, donef df) {
     register uchar_t *p, *s, *patend, *q;
     register int c, cc;
     int count, found;
@@ -63,13 +63,8 @@ search_fast
     uchar_t *cutoff = NULL;
     uchar_t lower_patend = 0xff;
     uchar_t upper_patend = 0xff;
-    if (icase) {
-        lower_patend = TOLOWER(*patend);
-        upper_patend = toupper(*patend);
-    } else {
-        /* well... it does not really matter */
-        lower_patend = *patend;
-    }
+    lower_patend = TOLOWER(*patend);
+    upper_patend = toupper(*patend);
 #endif
 
     /* main loop */
@@ -209,7 +204,7 @@ search_fast
                 } 
             }
 
-            if((icase && TOLOWER(*s) != *q) || (!icase && *s != *q))
+            if(TOLOWER(*s) != *q)
                 break;
         }
 
@@ -234,14 +229,12 @@ search_fast
 
         found = 0;
         for (s = foundchar; s >= cutoff; s--) {
-            if (*s == cc || (icase && TOLOWER(*s) == cc)) {
+            if (*s == cc || TOLOWER(*s) == cc) {
                 for (p = patend - 1, q = s - 1; *p != '\0'; p--, q--)
-                    if (*q != *p && (!icase || TOLOWER(*q) != *p))
+                    if (*q != *p && TOLOWER(*q) != *p)
                         break;
                 if (*p == '\0' && \
-                        (icase ? \
-                         strncasecmp((const char *)path, pathpart, strlen(pathpart)) : \
-                         strncmp((const char *)path, pathpart, strlen(pathpart)))) {
+                         strncasecmp((const char *)path, pathpart, strlen(pathpart))) {
                     found = 1;
                     if(!f(path))
                         return 0;

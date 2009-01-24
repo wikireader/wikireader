@@ -309,7 +309,7 @@ int main(int argc, char **argv) {
     extern char *optarg;
     char scanFile[MAXSTR], indexFile[MAXSTR], needle[MAXSTR];
     unsigned char ch; 
-    bool doScan = false, doSearch = false, haveScanFile = false, icase = true, twoRuns = false;
+    bool doScan = false, doSearch = false, haveScanFile = false, twoRuns = false;
     lindex l;
     memset(&l, 0, sizeof(l));
 
@@ -334,9 +334,6 @@ int main(int argc, char **argv) {
             doSearch = true;
             strncpy(needle, optarg, MAXSTR);
             break;
-        case 'a':
-            icase = false;
-            break;
         case 'p':
             twoRuns = true;
             break;
@@ -356,11 +353,11 @@ int main(int argc, char **argv) {
     if(doScan)
         scan(&l, scanFile);
     else if(doSearch) {
-        search_fast(&l, needle, handle_match, NULL, icase);
+        search_fast(&l, needle, handle_match, NULL);
         debug("During the search %d blocks were read", blocks_read);
         if (twoRuns) {
             blocks_read = 0;
-            search_slow(&l, needle, handle_match, NULL, icase);
+            search_slow(&l, needle, handle_match, NULL);
             debug("During the slow search %d blocks were read", blocks_read);
         }
     } else {
