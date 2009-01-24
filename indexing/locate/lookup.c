@@ -43,41 +43,15 @@
  * $DragonFly: src/usr.bin/locate/locate/fastfind.c,v 1.3 2005/08/04 17:31:23 drhodus Exp $
  */
 
-int
 #if defined(LOOKUP_SLOW)
-search_slow
+int search_slow
 #elif defined(LOOKUP_FAST)
-search_fast
-#endif
-(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
-    register uchar_t *p, *s, *patend, *q;
-    register int c, cc;
-    int found;
-
-    patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
-    cc = *patend;
-
-#if defined(LOOKUP_SLOW)
-    register uchar_t *foundchar;
-    uchar_t *cutoff = NULL;
-    uchar_t lower_patend = 0xff;
-    uchar_t upper_patend = 0xff;
-    lower_patend = TOLOWER(*patend);
-    upper_patend = toupper(*patend);
-#endif
-
-    /* main loop */
-    found = state->count = 0;
-
-    /* go back */
-    l_lseek(l->db_file, l->db_start, SEEK_SET);
-
-#if defined(LOOKUP_FAST)
+void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     state->offset = -1;
     state->skip = false;
-    int pattern_len = strlen(pathpart);
+    state->pattern_len = strlen(pathpart);
 
-    if (pattern_len > 1) {
+    if (state->pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
         int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
@@ -94,9 +68,36 @@ search_fast
         if (state->offset >= 0)
             state->offset = l->prefixdb[state->offset];
         else
-            return -1;
+            return;
     }
+}
 
+int search_fast
+#endif
+(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
+    register uchar_t *p, *s, *patend, *q;
+    register int c, cc;
+
+    patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
+    cc = *patend;
+
+#if defined(LOOKUP_SLOW)
+    int found;
+    register uchar_t *foundchar;
+    uchar_t *cutoff = NULL;
+    uchar_t lower_patend = 0xff;
+    uchar_t upper_patend = 0xff;
+    lower_patend = TOLOWER(*patend);
+    upper_patend = toupper(*patend);
+
+    /* main loop */
+    found = state->count = 0;
+#endif
+
+    /* go back */
+    l_lseek(l->db_file, l->db_start, SEEK_SET);
+
+#if defined(LOOKUP_FAST)
     if(l->prefixdb && (state->offset >= 0)) {
         debug("using prefix db seek to 0x%x", state->offset);
         l_lseek(l->db_file, l->db_start + state->offset, SEEK_SET);
@@ -184,9 +185,9 @@ search_fast
              *     will get bigger too.
              */
             if (i != 0 && all_bigger) {
-                if (i != pattern_len-1 && *s >= *q)
+                if (i != state->pattern_len-1 && *s >= *q)
                     ++longest_match;
-                else if (i == pattern_len-1 && *s > *q)
+                else if (i == state->pattern_len-1 && *s > *q)
                     ++longest_match;
                 else
                     all_bigger = false;

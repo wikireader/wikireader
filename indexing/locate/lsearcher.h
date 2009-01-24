@@ -38,6 +38,7 @@ struct search_state {
     int offset;
     int count;
     bool skip;
+    int pattern_len;
 };
 
 void kill_search();

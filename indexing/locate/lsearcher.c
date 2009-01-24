@@ -355,6 +355,7 @@ int main(int argc, char **argv) {
         scan(&l, scanFile);
     else if(doSearch) {
         struct search_state state;
+        prepare_search(&l, needle, &state);
         search_fast(&l, needle, &state, handle_match, NULL);
         debug("During the search %d blocks were read", blocks_read);
         if (twoRuns) {
