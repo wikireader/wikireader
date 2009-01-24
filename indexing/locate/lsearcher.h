@@ -35,6 +35,7 @@ typedef struct {
 
 struct search_state {
     uchar_t path[MAXSTR];
+    int count;
 };
 
 void kill_search();

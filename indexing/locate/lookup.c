@@ -52,7 +52,7 @@ search_fast
 (lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
     register uchar_t *p, *s, *patend, *q;
     register int c, cc;
-    int count, found;
+    int found;
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
     cc = *patend;
@@ -67,7 +67,7 @@ search_fast
 #endif
 
     /* main loop */
-    found = count = 0;
+    found = state->count = 0;
 
     /* go back */
     l_lseek(l->db_file, l->db_start, SEEK_SET);
@@ -85,7 +85,7 @@ search_fast
             offset = l->bigram[index];
             state->path[0] = toupper(pathpart[0]);
             if (offset != l->prefixdb[index_1])
-                count = 1;
+                state->count = 1;
         }
     }
 
@@ -115,12 +115,12 @@ search_fast
         if (c == SWITCH) {
             int local_count =  l_getw(l->db_file) - OFFSET;
             if(!skip)
-                count += local_count;
+                state->count += local_count;
         } else if(!skip) {
-            count += c - OFFSET;
+            state->count += c - OFFSET;
         }
 
-        p = state->path + count;
+        p = state->path + state->count;
 
 #if defined(LOOKUP_FAST)
         skip = false;
@@ -212,9 +212,9 @@ search_fast
             cutoff = state->path;
             *p-- = '\0';
             foundchar = p;
-        } else if (foundchar >= state->path + count) {
+        } else if (foundchar >= state->path + state->count) {
             *p-- = '\0';
-            cutoff = state->path + count;
+            cutoff = state->path + state->count;
         } else {
             continue;
         }
