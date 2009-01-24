@@ -91,7 +91,8 @@ search_fast
             int index = create_index(index_1, index_2);
             offset = l->bigram[index];
             path[0] = toupper(pathpart[0]);
-            count = 1;
+            if (offset != l->prefixdb[index_1])
+                count = 1;
         }
     }
 

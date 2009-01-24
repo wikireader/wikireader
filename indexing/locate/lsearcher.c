@@ -79,8 +79,10 @@ bool handle_match(uchar_t *s) {
 }
 
 static int char_to_index(char c) {
-    if (c == 46)
+    if (c == 32)
         return 0;
+    else if (c == 46)
+        return 1;
     else if (c >= 48 && c <= 57)
         return c - 48 + 1;
     else if (c >= 65 && c <= 90)
