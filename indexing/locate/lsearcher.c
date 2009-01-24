@@ -59,6 +59,7 @@ static uchar_t block[512];
 static int bytes_available = 0;
 static int eof = 0;
 
+
 void kill_search() {
     kill_switch = 1;
 }
@@ -353,11 +354,12 @@ int main(int argc, char **argv) {
     if(doScan)
         scan(&l, scanFile);
     else if(doSearch) {
-        search_fast(&l, needle, handle_match, NULL);
+        struct search_state state;
+        search_fast(&l, needle, &state, handle_match, NULL);
         debug("During the search %d blocks were read", blocks_read);
         if (twoRuns) {
             blocks_read = 0;
-            search_slow(&l, needle, handle_match, NULL);
+            search_slow(&l, needle, &state, handle_match, NULL);
             debug("During the slow search %d blocks were read", blocks_read);
         }
     } else {

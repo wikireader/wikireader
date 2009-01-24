@@ -33,7 +33,10 @@ typedef struct {
   uint32_t bigram[MAX_PREFIX_SIZE * MAX_PREFIX_SIZE];
 } lindex;
 
+struct search_state {
+    uchar_t path[MAXSTR];
+};
+
 void kill_search();
-int search(lindex *, char *, resultf, donef, bool, bool);
 
 #endif

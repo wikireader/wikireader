@@ -49,11 +49,10 @@ search_slow
 #elif defined(LOOKUP_FAST)
 search_fast
 #endif
-(lindex *l, char *pathpart, resultf f, donef df) {
+(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
     register uchar_t *p, *s, *patend, *q;
     register int c, cc;
     int count, found;
-    uchar_t path[MAXSTR];
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
     cc = *patend;
@@ -84,7 +83,7 @@ search_fast
         if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
             offset = l->bigram[index];
-            path[0] = toupper(pathpart[0]);
+            state->path[0] = toupper(pathpart[0]);
             if (offset != l->prefixdb[index_1])
                 count = 1;
         }
@@ -121,7 +120,7 @@ search_fast
             count += c - OFFSET;
         }
 
-        p = path + count;
+        p = state->path + count;
 
 #if defined(LOOKUP_FAST)
         skip = false;
@@ -175,7 +174,7 @@ search_fast
         bool all_bigger = true;
         int longest_match = 0;
         int i = 0;
-        for(s = (uchar_t *)path, q = (uchar_t *)pathpart, i = 0; *q; s++, q++, ++i) {
+        for(s = (uchar_t *)state->path, q = (uchar_t *)pathpart, i = 0; *q; s++, q++, ++i) {
             /*
              * Okay some ugly states....
              * 1.) the first letter is always capital so we special case 0
@@ -205,17 +204,17 @@ search_fast
             return -1;
 
         if(*q == '\0') {
-            if(!f(path))
+            if(!f(state->path))
                 return 0;
         }
 #elif defined(LOOKUP_SLOW)
         if (found) {
-            cutoff = path;
+            cutoff = state->path;
             *p-- = '\0';
             foundchar = p;
-        } else if (foundchar >= path + count) {
+        } else if (foundchar >= state->path + count) {
             *p-- = '\0';
-            cutoff = path + count;
+            cutoff = state->path + count;
         } else {
             continue;
         }
@@ -227,9 +226,9 @@ search_fast
                     if (*q != *p && TOLOWER(*q) != *p)
                         break;
                 if (*p == '\0' && \
-                         strncasecmp((const char *)path, pathpart, strlen(pathpart))) {
+                         strncasecmp((const char *)state->path, pathpart, strlen(pathpart))) {
                     found = 1;
-                    if(!f(path))
+                    if(!f(state->path))
                         return 0;
                     break;
                 }
