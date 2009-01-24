@@ -47,13 +47,13 @@
 int search_slow
 #elif defined(LOOKUP_FAST)
 void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
-    state->offset = -1;
+    state->offset = INT_MAX;
     state->skip = false;
     state->pattern_len = strlen(pathpart);
 
-    if (state->pattern_len > 1) {
+    if (state->offset == INT_MAX && state->pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
-        int index_2 = char_to_index(toupper(pathpart[1]));
+        int index_2 = char_to_index(pathpart[1]);
         if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
             state->offset = l->bigram[index];
@@ -63,7 +63,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
         }
     }
 
-    if (state->offset <= 0) {
+    if (state->offset == INT_MAX) {
         state->offset = char_to_index(toupper(*pathpart));
         if (state->offset >= 0)
             state->offset = l->prefixdb[state->offset];
@@ -98,7 +98,7 @@ int search_fast
     l_lseek(l->db_file, l->db_start, SEEK_SET);
 
 #if defined(LOOKUP_FAST)
-    if(l->prefixdb && (state->offset >= 0)) {
+    if(l->prefixdb && state->offset != INT_MAX) {
         debug("using prefix db seek to 0x%x", state->offset);
         l_lseek(l->db_file, l->db_start + state->offset, SEEK_SET);
         state->skip = true;

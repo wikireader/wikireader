@@ -75,7 +75,7 @@ int check_bigram_char(int ch) {
 }
 
 bool handle_match(uchar_t *s) {
-    printf("%s\n", s);
+    printf("%s first block: %d\n", s, blocks_read);
     return true;
 }
 
@@ -85,15 +85,17 @@ static int char_to_index(char c) {
     else if (c == 46)
         return 1;
     else if (c >= 48 && c <= 57)
-        return c - 48 + 1;
+        return c - 48 + 2;
     else if (c >= 65 && c <= 90)
-        return c - 65 + 1 + 10;
+        return c - 65 + 2 + 10;
+    else if (c >= 97 && c <= 122)
+        return c - 97 + 2 + 10 + 26;
     
     return -1;
 }
 
 static int create_index(int lindex, int rindex) {
-    return MAX_PREFIX_SIZE * lindex + rindex;
+    return (MAX_ALL_PREFIX_SIZE * lindex) + rindex;
 }
 
 /*
@@ -166,8 +168,12 @@ void init_index(lindex *l, int db_file, int prefix_file) {
 
     /* prefix table */
     if (prefix_file != -1) {
-        read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
-        read(prefix_file, &l->bigram, sizeof(l->bigram));
+        int r = 0;
+        r += read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
+        r += read(prefix_file, &l->bigram, sizeof(l->bigram));
+        if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
+            printf("Failed...to read prefix, bigram.\n");
+        }
     }
 }
 
@@ -201,7 +207,11 @@ void scan(lindex *l, char *scan_file) {
      * would have search times so high as to be useless 
      */
 
-    debug("scanning through plenty of chars...");
+    int i;
+    for (i = 0; i < sizeof(l->prefixdb)/sizeof(l->prefixdb[0]); ++i)
+        l->prefixdb[i] = INT_MAX;
+    for (i = 0; i < sizeof(l->bigram)/sizeof(l->bigram[0]); ++i)
+        l->bigram[i] = INT_MAX;
 
     file_offset = 1;
     c = l_getc(l->db_file);
@@ -251,20 +261,21 @@ void scan(lindex *l, char *scan_file) {
         *p-- = '\0';
 
         int index_1 = char_to_index(toupper(path[0]));
-        int index_2 = char_to_index(toupper(path[1]));
+        int index_2 = char_to_index(path[1]);
 
         if (index_1 == -1) {
             printf("Unhandled char for prefix: '%c' at 0x%x\n",
                    path[0], (int)this_offset);
-        } else if (l->prefixdb[index_1] == 0) {
+        } else if (l->prefixdb[index_1] == INT_MAX) {
             l->prefixdb[index_1] = this_offset;
-            debug("%c starts at 0x%x index: %d", path[0], (int)this_offset, index_1);
+            debug("%c '%s' starts at 0x%x index: %d",
+                  path[0], path, (int)this_offset, index_1);
         }
 
         if (index_2 == -1) {
             printf("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)\n",
                     path[0], path[1], (int)this_offset, index_1, index_2);
-        } else if (index_1 >= 0 && l->bigram[create_index(index_1, index_2)] == 0) {
+        } else if (index_1 >= 0 && l->bigram[create_index(index_1, index_2)] == INT_MAX) {
             l->bigram[create_index(index_1, index_2)] = this_offset;
             debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
                   (int)this_offset, create_index(index_1, index_2), index_1, index_2);
