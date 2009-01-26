@@ -41,7 +41,7 @@ int main(void)
 	SDCARD_CS_HI();
 	
 	/* value of default data area is hard-coded in this case */
-	asm("xld.w   %r15, 0x1500");
+	asm("xld.w   %r15, __dp");
 
 	//print("Bootloader starting\n");
 	/* set FPT1 to another gpio, make it falling edge trieggered */
