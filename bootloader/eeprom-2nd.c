@@ -55,10 +55,14 @@ int main(void)
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
-	init_lcd();
 	
 #if 0
+	/* attempt to boot */
+	print_u32(elf_exec(KERNEL) * -1);
+
+
 	/* load the 'could not boot from SD card' image */
+	init_lcd();
 	eeprom_load(0x10000, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
 #if BOARD_PROTO1
 	{
@@ -67,7 +71,6 @@ int main(void)
 			*(char *) i ^= 0xff;
 	}
 #endif
-	print_u32(elf_exec(KERNEL) * -1);
         print("\n");
 #endif
         print("bootloader 4\n");
