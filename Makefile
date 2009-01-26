@@ -66,7 +66,7 @@ wikireader: mini-libc fatfs
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
 mini-libc:
-	make -C mini-libc/
+	make -C toolchain/mini-libc/
 
 .PHONY: fatfs
 fatfs:

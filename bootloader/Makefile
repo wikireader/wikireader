@@ -6,7 +6,7 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 
-LIBDIR=$(PWD)/../mini-libc
+LIBDIR=$(PWD)/../toolchain/mini-libc
 FATFSDIR=$(PWD)/../fatfs
 LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
