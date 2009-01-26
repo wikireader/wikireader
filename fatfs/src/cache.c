@@ -4,11 +4,12 @@
 
 #include "integer.h"
 #include "diskio.h"
-#include "ff.h"
+#include "tff.h"
 #include "cache.h"
 
 #define NO_ENTRY	(0xffffffff)
 #define N_ENTRIES	(1000)
+#define S_MAX_SIZ       (512)
 
 static int cache_hits = 0, cache_updates = 0;
 static struct cache_entry

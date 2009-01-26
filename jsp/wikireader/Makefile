@@ -90,7 +90,7 @@ DBG_ASMOBJS= dbg_mon_sub.o
 GUILIB_COBJS= guilib.o glyph.o
 WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io.o time-toppers.o wikilib.o \
 		malloc-simple.o search-test.o
-FATLIB_COBJS= tff.o mmc.o fattime.o cache.o
+FATLIB_COBJS= tff.o mmc.o cache.o
 
 ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(WIKILIB_COBJS) \

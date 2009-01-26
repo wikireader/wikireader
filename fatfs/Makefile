@@ -16,16 +16,13 @@ CFLAGS+=-Iconfig/c33
 
 TARGETS=all
 
-all: lib/libfat.a lib/libtinyfat.a
+all: lib/libtinyfat.a
 
 .c.o: $<
 	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-lib/libfat.a: src/ff.o src/mmc.o src/fattime.o
-	$(AR) q $@ $^
-
-lib/libtinyfat.a: src/tff.o src/mmc.o src/fattime.o
+lib/libtinyfat.a: src/tff.o src/mmc.o
 	$(AR) q $@ $^
 
 clean:
