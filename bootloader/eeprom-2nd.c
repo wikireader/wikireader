@@ -56,7 +56,6 @@ int main(void)
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 	
-#if 0
 	/* attempt to boot */
 	print_u32(elf_exec(KERNEL) * -1);
 
@@ -72,7 +71,6 @@ int main(void)
 	}
 #endif
         print("\n");
-#endif
         print("bootloader 4\n");
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the
