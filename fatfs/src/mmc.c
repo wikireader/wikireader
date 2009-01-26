@@ -16,6 +16,11 @@
 
 #ifdef _USE_CACHE
 #include "cache.h"
+#else
+#define cache_init(...) do {} while(0)
+#define cache_read_sector(...) (0)
+#define cache_update_sector(...) do {} while(0)
+#define cache_write_sector(...) do {} while(0)
 #endif
 
 /* Definitions for MMC/SDC command */
@@ -367,9 +372,7 @@ DSTATUS disk_initialize (
 	BYTE n, cmd, ty, ocr[4];
 	DWORD timeout = 10000;
 
-#ifdef _USE_CACHE
 	cache_init();
-#endif
 
 	if (drv) return STA_NOINIT;			/* Supports only single drive */
 	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
@@ -447,27 +450,21 @@ DRESULT disk_read (
 	if (!(CardType & 8)) sector *= 512;	/* Convert to byte address if needed */
 
 	if (count == 1) {	/* Single block read */
-#ifdef _USE_CACHE
 		if (cache_read_sector (buff, sector) == RES_OK)
 			return RES_OK;
-#endif
 
 		if ((send_cmd(CMD17, sector) == 0)	/* READ_SINGLE_BLOCK */
 			&& rcvr_datablock(buff, 512))
 			count = 0;
 
-#ifdef _USE_CACHE
 		if (count == 0)
 			cache_write_sector(buff, sector);
-#endif
 	}
 	else {				/* Multiple block read */
 		if (send_cmd(CMD18, sector) == 0) {	/* READ_MULTIPLE_BLOCK */
 			do {
 				if (!rcvr_datablock(buff, 512)) break;
-#ifdef _USE_CACHE
 				cache_write_sector(buff, sector++);
-#endif
 				buff += 512;
 			} while (--count);
 			send_cmd(CMD12, 0);				/* STOP_TRANSMISSION */
@@ -503,9 +500,7 @@ DRESULT disk_write (
 			&& xmit_datablock(buff, 0xFE))
 			count = 0;
 
-#ifdef _USE_CACHE
 		cache_update_sector(buff, sector);
-#endif
 	}
 	else {				/* Multiple block write */
 		if (CardType & 6) send_cmd(ACMD23, count);
@@ -513,9 +508,7 @@ DRESULT disk_write (
 			do {
 				if (!xmit_datablock(buff, 0xFC)) break;
 				buff += 512;
-#ifdef _USE_CACHE
 				cache_update_sector(buff, sector++);
-#endif
 			} while (--count);
 			if (!xmit_datablock(0, 0xFD))	/* STOP_TRAN token */
 				count = 1;
