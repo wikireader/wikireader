@@ -27,11 +27,7 @@
 
 #define KERNEL "/KERNEL"
 
-#define READ_AND_CLEAR_CAUSE(REG) \
-    REG = 0xff;
-
-static unsigned int *interrupt_foo;
-void foo(void);
+static void power_tests();
 
 __attribute__((noreturn))
 int main(void)
@@ -46,13 +42,6 @@ int main(void)
 	
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, 0x1500");
-
-        print("foo\n");
-        interrupt_foo = 0x0;
-        for (i = 0; i < 107; ++i)
-            interrupt_foo[i] = 0x41a;
-        print("done foo\n");
-        asm("ld.w %%ttbr, %0" :: "r"(interrupt_foo));
 
 	//print("Bootloader starting\n");
 	/* set FPT1 to another gpio, make it falling edge trieggered */
@@ -89,6 +78,28 @@ int main(void)
 	 * soon as a media switch is detected. */
 
 	/* TODO */
+#ifdef POWER_MANAGEMENT
+	power_tests();
+#endif
+}
+
+#if POWER_MANAGEMENT
+#define READ_AND_CLEAR_CAUSE(REG) \
+    REG = 0xff;
+
+static void interrupt_handler() {
+	READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
+	REG_P6_P6D ^= 0x10;
+	asm("reti");
+}
+
+static void power_tests() {
+	int i;
+        unsigned int *interrupt_vector = 0x0;
+        for (i = 0; i < 107; ++i)
+            interrupt_vector[i] = interrupt_handler;
+        asm("ld.w %%ttbr, %0" :: "r"(interrupt_vector));
+
 	/* WAKEUP=1 */
 	REG_CMU_PROTECT = 0x96;
 	REG_CMU_OPT |= 0x1;
@@ -134,9 +145,6 @@ int main(void)
 		REG_SDRAMC_APP |= 0x2;
         }
 }
+#endif
 
-void foo() {
-    READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
-    REG_P6_P6D ^= 0x10;
-    asm("reti");
-}
+
