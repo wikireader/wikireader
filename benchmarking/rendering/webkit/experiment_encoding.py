@@ -36,6 +36,7 @@ huffman_x = {}
 huffman_y = {}
 huffman_length = {}
 bit_occurences = {}
+bigrams = {}
 
 class BitWriter:
     def __init__(self):
@@ -281,6 +282,14 @@ def generate_text_runs(glyphs):
 
         if glyph['x'] < 240:
             current.add_glyph(glyph)
+            # bigram...
+            if last_glyph and last_glyph['glyph'] != '0':
+                try:
+                    global bigrams
+                    pair = (last_glyph['glyph'], glyph['glyph'])
+                    bigrams[pair] = bigrams[pair] + 1
+                except:
+                    bigrams[pair] = 1
         else:
             print "Omitting glyph due being out of space", glyph
 
@@ -454,3 +463,4 @@ write_to_file(text_runs)
 write_mappings()
 print "Last glyph", last_glyph_index
 print "Last font", last_font_index
+print "Bigrams", bigrams
