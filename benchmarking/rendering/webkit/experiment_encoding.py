@@ -22,8 +22,6 @@ import math
 
 #
 # Experiment with the encoding of the data
-last_glyph_index = 0
-last_font_index = 0
 package_one_byte = 0
 package_two_byte = 0
 package_three_byte = 0
@@ -156,25 +154,6 @@ def highest_bit(x):
             highest_bit = i
 
     return highest_bit+1
-
-def map_glyph_to_glyph_index(glyph):
-    key = "%s" % glyph
-    if not key in glyph_map:
-        global last_glyph_index
-        glyph_map[key] = last_glyph_index
-        last_glyph_index = last_glyph_index + 1
-
-    return glyph_map[key]
-
-def map_font_to_index(font):
-    key = "%s" % (font)
-    if not key in font_map:
-        global last_font_index
-        font_map[key] = last_font_index
-        last_font_index = last_font_index + 1
-
-    return font_map[key]
-
 
 def extract_spacing(last_glyph, glyph):
     """Extract the spacing between two glyphs and save that"""
@@ -385,8 +364,8 @@ def write_to_file(text_runs):
     last_font = None
     writer = BitWriter()
     for text_run in text_runs:
-        # we mig have a new font now
-        font = map_font_to_index(text_run.font)
+        # we migt have a new font now
+        font = text_run.font
         if last_font != font:
             writer.write_bit(1)
             writer.write_bits(huffman_fonts[text_run.font])
@@ -406,43 +385,15 @@ def write_mappings():
     # Write options
     mkdir("font-foo")
 
-    for font in font_map.keys():
-        font_index = "%s" % font_map[font]
-        font_path = os.path.join("font-foo", font_index)
-        mkdir(font_path)
-        sp = file(os.path.join(font_path, "huffman"), "w")
-        sp.write("%s" % huffman_fonts[font])
-
-        for glyph in glyph_map.keys():
-            try:
-                bitmap = file(os.path.join("fonts", font, glyph, "bitmap.png"), "r")
-            except:
-                continue
-
-            glyph_path = os.path.join(font_path, "glyphs")
-            mkdir(glyph_path)
-            glyph_path = os.path.join(glyph_path, "%s" % glyph_map[glyph])
-            mkdir(glyph_path)
-
-            sp = file(os.path.join(glyph_path, "original"), "w")
-            sp.write("%s" % glyph)
-            sp = file(os.path.join(glyph_path, "bitmap.png"), "w")
-            sp.write(bitmap.read())
-            sp = file(os.path.join(glyph_path, "huffman"), "w")
-            sp.write("%s" % huffman_glyphs[glyph])
-
     for font in kern_info.keys():
-        font_index = "%s" % map_font_to_index(font)
+        font_index = "%s" % font
         font_path = os.path.join("font-foo", font_index)
         mkdir(font_path)
         for (l_glyph, r_glyph) in kern_info[font].keys():
             glyph_path = os.path.join(font_path, "spacing")
             mkdir(glyph_path)
 
-            mapped_l_glyph = map_glyph_to_glyph_index(l_glyph)
-            mapped_r_glyph = map_glyph_to_glyph_index(r_glyph)
-
-            glyph_path = os.path.join(glyph_path, "%s-%s" % (mapped_l_glyph, mapped_r_glyph))
+            glyph_path = os.path.join(glyph_path, "%s-%s" % (l_glyph, r_glyph))
             mkdir(glyph_path)
 
             # Copy some things
@@ -461,6 +412,4 @@ raw_glyphs = load()
 text_runs = prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 write_to_file(text_runs)
 write_mappings()
-print "Last glyph", last_glyph_index
-print "Last font", last_font_index
 print "Bigrams", bigrams
