@@ -95,7 +95,7 @@ static inline void init_ram(void)
         REG_CMU_PROTECT = 0x96;
 
         /* switch on SDRAM clk */
-        REG_CMU_GATEDCLK0 = 0x78;
+        REG_CMU_GATEDCLK0 |= 0x78;
 
         /* re-enable write protection of clock registers */
         REG_CMU_PROTECT = 0x00;
