@@ -22,17 +22,22 @@
 #include "wikireader.h"
 #include "misc.h"
 
+#define WAIT_FOR_EFSIF0_RDY()	\
+	do {			\
+		asm("nop");	\
+	} while (REG_EFSIF0_STATUS & (1 << 5));
+
 void print(const u8 *txt)
 {
 	while (txt && *txt) {
 		int delay = 0xff;
 
 		REG_EFSIF0_TXD = *txt;
-		do {} while (REG_EFSIF0_STATUS & (1 << 5));
+		WAIT_FOR_EFSIF0_RDY();
 
 		if (*txt == '\n') {
 			REG_EFSIF0_TXD = '\r';
-			do {} while (REG_EFSIF0_STATUS & (1 << 5));
+			WAIT_FOR_EFSIF0_RDY();
 		}
 
 		while (delay--)
