@@ -111,6 +111,6 @@ int wl_fsize(int fd, unsigned int *size)
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
 	
-	return fil_list[fd].f_size;
+	return fil_list[fd].fsize;
 }
 
