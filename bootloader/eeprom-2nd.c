@@ -35,7 +35,7 @@ int main(void)
 	int i;
 	init_pins();
 	init_rs232();
-	//init_ram();
+	init_ram();
 
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
@@ -44,7 +44,7 @@ int main(void)
 	asm("xld.w   %r15, __dp");
 
 	//print("Bootloader starting\n");
-	/* set FPT1 to another gpio, make it falling edge trieggered */
+	/* set FPT1 to another gpio, make it falling edge triggered */
 	REG_PINTSEL_SPT03 |= 0xC;
 	REG_PINTEL_SEPT07 |= 0x2;
 	REG_PINTPOL_SPP07 &= ~0x2;
@@ -87,6 +87,42 @@ int main(void)
 #define READ_AND_CLEAR_CAUSE(REG) \
     REG = 0xff;
 
+#define START 0x10000000
+#define SIZE  ((1024 * 1024 * 4) / 8)
+
+static void ram_write(void)
+{
+	unsigned int i;
+
+	for (i = 0; i < SIZE; i += 4) {
+		*(volatile unsigned int *) (START + i) = i;
+		if (i % 100000 == 0)
+			print(".");
+	}
+}
+
+static void ram_read(void)
+{
+	unsigned int i;
+
+	for (i = 0; i < SIZE; i += 4) {
+		unsigned int v = *(volatile unsigned int *) (START + i);
+		if (v != i) {
+			print("FAILED @");
+			print_u32(i);
+			print(" - ");
+			print_u32(v);
+			print("\n");
+			return;
+		}
+
+		if (i % 100000 == 0)
+			print(".");
+	}
+
+	print("PASSED\n");
+}
+
 static void power_tests()
 {
 	int i;
@@ -104,6 +140,9 @@ static void power_tests()
 
 	REG_P6_P6D &= ~0x10;
 
+	ram_write();
+	ram_read();
+
 	for(;;) {
 		unsigned char data;
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF01);
@@ -116,59 +155,73 @@ static void power_tests()
 		READ_AND_CLEAR_CAUSE(REG_INT_FLCDC);
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
 
-		/* set SDCLKE enable.. */
-		REG_P2_03_CFP = 0x01;
-		REG_P2_47_CFP = 0x00;
-	
-		REG_CMU_PROTECT = 0x96;
-
-		/* for HALT D24 needs to be set even if it is R only.
-		 * disable the SDRAM Controller and disable the SDRAM clock
+		/* disable the SDRAM Controller and disable the SDRAM clock
 		 * but keep the internal RAM clock on */
-		REG_SDRAMC_REF |= (1<<25);
+		REG_SDRAMC_REF = (1 << 23) | (0x7f << 16);
+
+		/* wait for the SELDO bit to be asserted */
+		do {
+			asm("nop");
+		} while (!(REG_SDRAMC_REF & (1 << 25)));
+
 		REG_SDRAMC_APP = 0;
 		REG_CMU_GATEDCLK0 &= ~0x70;
+		
+		/* release the SDRAMC pin functions */
+		REG_P2_03_CFP = 0x01;
+		REG_P2_47_CFP = 0x00;
 
+		/* turn off all unneeded clocks */
+		REG_CMU_PROTECT = 0x96;
+#if 0
 		//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
 		REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19);
 
-#if 0
 		REG_CMU_CLKCNTL &= 0xfffffe;
 		REG_CMU_CLKCNTL |= 0xa << 24;
 		REG_CMU_CLKCNTL |= 1 << 12;
 		REG_CMU_CLKCNTL &= ~1;
 #endif
 
-		REG_CMU_CLKCNTL = 0x0a711002;
-
-
+//		REG_CMU_CLKCNTL = 0x0a711002;
 		REG_CMU_PROTECT = 0;
 
-		//for(;;);
+
+
+		/*********************************************************/
 		asm("halt");
+		/*********************************************************/
 
-		REG_CMU_PROTECT = 0x96;
-
-		REG_CMU_GATEDCLK1 = 0xffffffff;
+		/* re-enable the SDRAMC pin functions */
 		REG_P2_03_CFP = 0x55;
 		REG_P2_47_CFP = 0x55;
-		REG_CMU_CLKCNTL = 0x00711003;
+
+		REG_CMU_PROTECT = 0x96;
+		
+		/* restore the SDRAMC function block */
+		REG_CMU_GATEDCLK0 |= 0x70;
+		REG_SDRAMC_APP |= 0x2;
+
+		/* disable self-refresh mode */
+		REG_SDRAMC_REF &= ~(1 << 23);
+
+
+
+		REG_CMU_GATEDCLK1 = 0xffffffff;
+		//REG_CMU_CLKCNTL = 0x00711003;
 
 
 #if 0
 		REG_CMU_CLKCNTL &= ~(1 << 12);
 		REG_CMU_CLKCNTL |= 1;
 #endif
-		REG_CMU_PROTECT = 0;
 
+		REG_CMU_PROTECT = 0;
                 delay(10000);
                 print("woke up\n");
+		init_ram();
+		ram_read();
 
-#if 0
-		/* restore */
-		REG_CMU_GATEDCLK0 |= 0x70;
-		REG_SDRAMC_APP |= 0x2;
-#endif
         }
 }
 #endif
