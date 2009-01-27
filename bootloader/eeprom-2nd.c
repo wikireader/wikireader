@@ -123,13 +123,16 @@ static void ram_read(void)
 	print("PASSED\n");
 }
 
+#define WAIT_FOR_CONDITION(cond)	\
+	do { asm("nop"); } while(!(cond))
+
 static void power_tests()
 {
 	int i;
 
 	/* WAKEUP=1 */
 	REG_CMU_PROTECT = 0x96;
-	REG_CMU_OPT |= 0x1;
+//	REG_CMU_OPT |= 0x1;
 	REG_CMU_PROTECT = 0;
 
 	/* wakeup sources, turn keyboard control 0 to wakeup */
@@ -145,83 +148,73 @@ static void power_tests()
 
 	for(;;) {
 		unsigned char data;
+#if 1
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF01);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T01);
-		READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
 		READ_AND_CLEAR_CAUSE(REG_INT_FDMA);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T23);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T45);
 		READ_AND_CLEAR_CAUSE(REG_INT_FP47_FRTC_FAD);
 		READ_AND_CLEAR_CAUSE(REG_INT_FLCDC);
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
+#endif
+		READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
+		
+		/* enable write access to clock control registers */
+		REG_CMU_PROTECT = 0x96;
 
-		/* disable the SDRAM Controller and disable the SDRAM clock
-		 * but keep the internal RAM clock on */
+		/* send the SDRAM to its self-refresh mode (which disables the clock) */
 		REG_SDRAMC_REF = (1 << 23) | (0x7f << 16);
 
 		/* wait for the SELDO bit to be asserted */
-		do {
-			asm("nop");
-		} while (!(REG_SDRAMC_REF & (1 << 25)));
+		WAIT_FOR_CONDITION(REG_SDRAMC_REF & (1 << 25));
 
+		/* switch off the SDRAMC application core */
 		REG_SDRAMC_APP = 0;
 		REG_CMU_GATEDCLK0 &= ~0x70;
-		
+
 		/* release the SDRAMC pin functions */
 		REG_P2_03_CFP = 0x01;
 		REG_P2_47_CFP = 0x00;
 
-		/* turn off all unneeded clocks */
-		REG_CMU_PROTECT = 0x96;
-#if 0
 		//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
-		REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19);
+		REG_CMU_GATEDCLK1 = 0x3f08002f;
 
-		REG_CMU_CLKCNTL &= 0xfffffe;
-		REG_CMU_CLKCNTL |= 0xa << 24;
-		REG_CMU_CLKCNTL |= 1 << 12;
-		REG_CMU_CLKCNTL &= ~1;
-#endif
-
-//		REG_CMU_CLKCNTL = 0x0a711002;
+		/* disable clocks we don't need in HALT mode */
+		//REG_CMU_CLKCNTL = (0xa << 24) | (8 << 16) | (1 << 12) | (1 << 1);
+		
+		/* write protect CMU registers */
 		REG_CMU_PROTECT = 0;
-
-
 
 		/*********************************************************/
 		asm("halt");
 		/*********************************************************/
 
+		REG_CMU_PROTECT = 0x96;
+
+		/* restore clock setup */
+		REG_CMU_CLKCNTL = 0x00770002;
+
 		/* re-enable the SDRAMC pin functions */
 		REG_P2_03_CFP = 0x55;
 		REG_P2_47_CFP = 0x55;
-
-		REG_CMU_PROTECT = 0x96;
 		
-		/* restore the SDRAMC function block */
+		/* re-enable all the clocks */
+		REG_CMU_GATEDCLK1 = 0x3f0fffff;
+
+		/* re-enable the SDRAMC function block */
 		REG_CMU_GATEDCLK0 |= 0x70;
 		REG_SDRAMC_APP |= 0x2;
 
 		/* disable self-refresh mode */
 		REG_SDRAMC_REF &= ~(1 << 23);
 
-
-
-		REG_CMU_GATEDCLK1 = 0xffffffff;
-		//REG_CMU_CLKCNTL = 0x00711003;
-
-
-#if 0
-		REG_CMU_CLKCNTL &= ~(1 << 12);
-		REG_CMU_CLKCNTL |= 1;
-#endif
-
 		REG_CMU_PROTECT = 0;
-                delay(10000);
+
+                delay(100);
                 print("woke up\n");
 		init_ram();
 		ram_read();
-
         }
 }
 #endif
