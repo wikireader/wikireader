@@ -35,7 +35,7 @@ int main(void)
 	int i;
 	init_pins();
 	init_rs232();
-	init_ram();
+	//init_ram();
 
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
@@ -57,21 +57,20 @@ int main(void)
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 	
 	/* attempt to boot */
-	print_u32(elf_exec(KERNEL) * -1);
+//	print_u32(elf_exec(KERNEL) * -1);
 
 
 	/* load the 'could not boot from SD card' image */
 	init_lcd();
 	eeprom_load(0x10000, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
-#if BOARD_PROTO1
+#if BOARD_PROTO1_
 	{
 		int i;
 		for (i = LCD_VRAM; i < LCD_VRAM + LCD_VRAM_SIZE; ++i)
 			*(char *) i ^= 0xff;
 	}
 #endif
-        print("\n");
-        print("bootloader 4\n");
+        print("boot\n");
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
@@ -88,22 +87,14 @@ int main(void)
 #define READ_AND_CLEAR_CAUSE(REG) \
     REG = 0xff;
 
-static void interrupt_handler() {
-	READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
-	REG_P6_P6D ^= 0x10;
-	asm("reti");
-}
-
-static void power_tests() {
+static void power_tests()
+{
 	int i;
-        unsigned int *interrupt_vector = 0x0;
-        for (i = 0; i < 107; ++i)
-            interrupt_vector[i] = interrupt_handler;
-        asm("ld.w %%ttbr, %0" :: "r"(interrupt_vector));
 
 	/* WAKEUP=1 */
 	REG_CMU_PROTECT = 0x96;
 	REG_CMU_OPT |= 0x1;
+	REG_CMU_PROTECT = 0;
 
 	/* wakeup sources, turn keyboard control 0 to wakeup */
 	REG_KINTCOMP_SCPK0 = 0x1f;
@@ -117,7 +108,7 @@ static void power_tests() {
 		unsigned char data;
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF01);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T01);
-                READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
+		READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
 		READ_AND_CLEAR_CAUSE(REG_INT_FDMA);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T23);
 		READ_AND_CLEAR_CAUSE(REG_INT_F16T45);
@@ -127,7 +118,9 @@ static void power_tests() {
 
 		/* set SDCLKE enable.. */
 		REG_P2_03_CFP = 0x01;
-		REG_P2_47_CFP = 0;
+		REG_P2_47_CFP = 0x00;
+	
+		REG_CMU_PROTECT = 0x96;
 
 		/* for HALT D24 needs to be set even if it is R only.
 		 * disable the SDRAM Controller and disable the SDRAM clock
@@ -136,16 +129,47 @@ static void power_tests() {
 		REG_SDRAMC_APP = 0;
 		REG_CMU_GATEDCLK0 &= ~0x70;
 
-		asm("slp");
+		//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
+		REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19);
+
+#if 0
+		REG_CMU_CLKCNTL &= 0xfffffe;
+		REG_CMU_CLKCNTL |= 0xa << 24;
+		REG_CMU_CLKCNTL |= 1 << 12;
+		REG_CMU_CLKCNTL &= ~1;
+#endif
+
+		REG_CMU_CLKCNTL = 0x0a711002;
+
+
+		REG_CMU_PROTECT = 0;
+
+		//for(;;);
+		asm("halt");
+
+		REG_CMU_PROTECT = 0x96;
+
+		REG_CMU_GATEDCLK1 = 0xffffffff;
+		REG_P2_03_CFP = 0x55;
+		REG_P2_47_CFP = 0x55;
+		REG_CMU_CLKCNTL = 0x00711003;
+
+
+#if 0
+		REG_CMU_CLKCNTL &= ~(1 << 12);
+		REG_CMU_CLKCNTL |= 1;
+#endif
+		REG_CMU_PROTECT = 0;
+
                 delay(10000);
                 print("woke up\n");
 
-	
+#if 0
 		/* restore */
 		REG_CMU_GATEDCLK0 |= 0x70;
 		REG_SDRAMC_APP |= 0x2;
+#endif
         }
 }
 #endif
-
 
