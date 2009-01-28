@@ -181,9 +181,10 @@ static void power_tests()
 
 		//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
 		REG_CMU_GATEDCLK1 = 0x3f08002f;
+		REG_CMU_GATEDCLK0 &= ~(1 << 1);
 
 		/* disable clocks we don't need in HALT mode */
-		//REG_CMU_CLKCNTL = (0xa << 24) | (8 << 16) | (1 << 12) | (1 << 1);
+		REG_CMU_CLKCNTL = (0xa << 24) | (8 << 16) | (1 << 12) | (1 << 1);
 		
 		/* write protect CMU registers */
 		REG_CMU_PROTECT = 0;
@@ -203,14 +204,7 @@ static void power_tests()
 		
 		/* re-enable all the clocks */
 		REG_CMU_GATEDCLK1 = 0x3f0fffff;
-
-		/* re-enable the SDRAMC function block */
-		REG_CMU_GATEDCLK0 |= 0x70;
-		REG_SDRAMC_APP |= 0x2;
-
-		/* disable self-refresh mode */
-		REG_SDRAMC_REF &= ~(1 << 23);
-
+		REG_CMU_GATEDCLK0 |= (1 << 1);
 		REG_CMU_PROTECT = 0;
 
                 delay(100);
