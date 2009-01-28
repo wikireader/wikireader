@@ -23,7 +23,7 @@ all: lib/libtinyfat.a
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
 lib/libtinyfat.a: src/tff.o src/mmc.o
-	$(AR) q $@ $^
+	$(AR) r $@ $^
 
 clean:
 	$(RM) src/*.d
