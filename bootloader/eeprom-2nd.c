@@ -57,7 +57,9 @@ int main(void)
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 	
 	/* attempt to boot */
-//	print_u32(elf_exec(KERNEL) * -1);
+#ifndef POWER_MANAGEMENT
+	print_u32(elf_exec(KERNEL) * -1);
+#endif
 
 
 	/* load the 'could not boot from SD card' image */
