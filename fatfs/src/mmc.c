@@ -18,7 +18,7 @@
 #include "cache.h"
 #else
 #define cache_init(...) do {} while(0)
-#define cache_read_sector(...) (0)
+#define cache_read_sector(...) (!RES_OK)
 #define cache_update_sector(...) do {} while(0)
 #define cache_write_sector(...) do {} while(0)
 #endif
