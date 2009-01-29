@@ -2,14 +2,14 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">0</int>
-		<string key="IBDocument.SystemVersion">9F33</string>
+		<string key="IBDocument.SystemVersion">9G55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">648</string>
-		<string key="IBDocument.AppKitVersion">949.34</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="344"/>
 			<integer value="372"/>
+			<integer value="344"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -756,7 +756,7 @@
 			<object class="NSWindowTemplate" id="972006081">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{335, 420}, {360, 330}}</string>
+				<string key="NSWindowRect">{{335, 450}, {360, 300}}</string>
 				<int key="NSWTFlags">1946157056</int>
 				<string key="NSWindowTitle">Wikireader Simulator</string>
 				<string key="NSWindowClass">MainWindow</string>
@@ -766,17 +766,10 @@
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSCustomView" id="433333198">
-							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 70}, {320, 240}}</string>
-							<reference key="NSSuperview" ref="439893737"/>
-							<string key="NSClassName">WikiDisplay</string>
-						</object>
 						<object class="NSSlider" id="236245149">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{103, 18}, {237, 15}}</string>
+							<string key="NSFrame">{{103, 20}, {237, 15}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSSliderCell" key="NSCell" id="223096294">
@@ -802,7 +795,7 @@
 						<object class="NSTextField" id="216467389">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 18}, {81, 17}}</string>
+							<string key="NSFrame">{{17, 20}, {81, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="254829407">
@@ -838,7 +831,7 @@
 						<object class="NSButton" id="282947478">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{14, 34}, {146, 32}}</string>
+							<string key="NSFrame">{{14, 36}, {146, 32}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="255198109">
@@ -858,7 +851,7 @@
 						<object class="NSButton" id="142760105">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{160, 40}, {126, 18}}</string>
+							<string key="NSFrame">{{160, 42}, {126, 18}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="982978737">
@@ -882,8 +875,15 @@
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
+						<object class="NSCustomView" id="433333198">
+							<reference key="NSNextResponder" ref="439893737"/>
+							<int key="NSvFlags">268</int>
+							<string key="NSFrame">{{20, 72}, {240, 208}}</string>
+							<reference key="NSSuperview" ref="439893737"/>
+							<string key="NSClassName">WikiDisplay</string>
+						</object>
 					</object>
-					<string key="NSFrameSize">{360, 330}</string>
+					<string key="NSFrameSize">{360, 300}</string>
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
@@ -1831,11 +1831,11 @@
 						<reference key="object" ref="439893737"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="433333198"/>
 							<reference ref="236245149"/>
 							<reference ref="216467389"/>
 							<reference ref="282947478"/>
 							<reference ref="142760105"/>
+							<reference ref="433333198"/>
 						</object>
 						<reference key="parent" ref="972006081"/>
 					</object>
@@ -2239,9 +2239,9 @@
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{498, 262}, {360, 330}}</string>
+					<string>{{445, 292}, {360, 300}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{498, 262}, {360, 330}}</string>
+					<string>{{445, 292}, {360, 300}}</string>
 					<reference ref="9"/>
 					<string>{{52, 145}, {520, 462}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

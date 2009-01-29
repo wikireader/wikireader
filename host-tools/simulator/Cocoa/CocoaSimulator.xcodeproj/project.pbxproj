@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		652D6E2E0F321B810005AB6D /* fontfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E2C0F321B810005AB6D /* fontfile.c */; };
+		652D6E300F321B950005AB6D /* search-test.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E2F0F321B950005AB6D /* search-test.c */; };
 		65D597020EEDA439000B81C5 /* guilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 65D6B0DF0EBF80E700AAF999 /* guilib.c */; };
 		65D618060EBF6288009078F8 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D618050EBF6288009078F8 /* Quartz.framework */; };
 		65D618100EBF647D009078F8 /* ImageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D6180F0EBF647D009078F8 /* ImageKit.framework */; };
@@ -17,7 +19,6 @@
 		65F440EC0EF18E6200877192 /* MainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F440EB0EF18E6200877192 /* MainWindow.m */; };
 		65F441A90EF29FA200877192 /* WikiDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F441A80EF29FA200877192 /* WikiDisplay.m */; };
 		65F441F70EF2B95E00877192 /* file-io.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F441F50EF2B95E00877192 /* file-io.c */; };
-		65F441F80EF2B95E00877192 /* search-test.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F441F60EF2B95E00877192 /* search-test.c */; };
 		65F441FD0EF2B99700877192 /* time-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F441FC0EF2B99700877192 /* time-posix.c */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -34,28 +35,31 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* CocoaSimulator_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocoaSimulator_Prefix.pch; sourceTree = "<group>"; };
+		652D6E2C0F321B810005AB6D /* fontfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fontfile.c; path = "../../../gui-lib/fontfile.c"; sourceTree = SOURCE_ROOT; };
+		652D6E2D0F321B810005AB6D /* fontfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fontfile.h; path = "../../../gui-lib/fontfile.h"; sourceTree = SOURCE_ROOT; };
+		652D6E2F0F321B950005AB6D /* search-test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "search-test.c"; path = "../../../wiki-lib/generic/search-test.c"; sourceTree = SOURCE_ROOT; };
+		652D6E320F321BCA0005AB6D /* malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = malloc.h; path = "../../../wiki-lib/include/malloc.h"; sourceTree = SOURCE_ROOT; };
+		652D6E330F321BCA0005AB6D /* search-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "search-test.h"; path = "../../../wiki-lib/include/search-test.h"; sourceTree = SOURCE_ROOT; };
 		65D618050EBF6288009078F8 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		65D6180F0EBF647D009078F8 /* ImageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageKit.framework; path = /System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/ImageKit.framework; sourceTree = "<absolute>"; };
 		65D6B0D90EBF805500AAF999 /* guilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guilib.h; sourceTree = "<group>"; };
 		65D6B0DF0EBF80E700AAF999 /* guilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = guilib.c; sourceTree = "<group>"; };
 		65F440530EEDD1B100877192 /* glyph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glyph.c; sourceTree = "<group>"; };
 		65F440540EEDD1B100877192 /* glyph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glyph.h; sourceTree = "<group>"; };
-		65F4409A0EEF16D400877192 /* file-io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "file-io.h"; path = "../../wiki-lib/include/file-io.h"; sourceTree = SOURCE_ROOT; };
-		65F4409B0EEF16EB00877192 /* file-io-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io-posix.c"; path = "../../wiki-lib/specific/file-io-posix.c"; sourceTree = SOURCE_ROOT; };
-		65F440C70EF189BF00877192 /* wikilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = wikilib.c; path = "../../wiki-lib/generic/wikilib.c"; sourceTree = SOURCE_ROOT; };
-		65F440C90EF189D200877192 /* msg-printf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "msg-printf.c"; path = "../../wiki-lib/specific/msg-printf.c"; sourceTree = SOURCE_ROOT; };
-		65F440CC0EF189E800877192 /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = input.h; path = "../../wiki-lib/include/input.h"; sourceTree = SOURCE_ROOT; };
-		65F440CD0EF189E800877192 /* msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = msg.h; path = "../../wiki-lib/include/msg.h"; sourceTree = SOURCE_ROOT; };
-		65F440CE0EF189E800877192 /* wikilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wikilib.h; path = "../../wiki-lib/include/wikilib.h"; sourceTree = SOURCE_ROOT; };
+		65F4409A0EEF16D400877192 /* file-io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "file-io.h"; path = "../../../wiki-lib/include/file-io.h"; sourceTree = SOURCE_ROOT; };
+		65F4409B0EEF16EB00877192 /* file-io-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io-posix.c"; path = "../../../wiki-lib/specific/file-io-posix.c"; sourceTree = SOURCE_ROOT; };
+		65F440C70EF189BF00877192 /* wikilib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = wikilib.c; path = "../../../wiki-lib/generic/wikilib.c"; sourceTree = SOURCE_ROOT; };
+		65F440C90EF189D200877192 /* msg-printf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "msg-printf.c"; path = "../../../wiki-lib/specific/msg-printf.c"; sourceTree = SOURCE_ROOT; };
+		65F440CC0EF189E800877192 /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = input.h; path = "../../../wiki-lib/include/input.h"; sourceTree = SOURCE_ROOT; };
+		65F440CD0EF189E800877192 /* msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = msg.h; path = "../../../wiki-lib/include/msg.h"; sourceTree = SOURCE_ROOT; };
+		65F440CE0EF189E800877192 /* wikilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wikilib.h; path = "../../../wiki-lib/include/wikilib.h"; sourceTree = SOURCE_ROOT; };
 		65F440EA0EF18E6200877192 /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		65F440EB0EF18E6200877192 /* MainWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindow.m; sourceTree = "<group>"; };
 		65F441A70EF29FA200877192 /* WikiDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiDisplay.h; sourceTree = "<group>"; };
 		65F441A80EF29FA200877192 /* WikiDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiDisplay.m; sourceTree = "<group>"; };
-		65F441F50EF2B95E00877192 /* file-io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io.c"; path = "../../wiki-lib/generic/file-io.c"; sourceTree = SOURCE_ROOT; };
-		65F441F60EF2B95E00877192 /* search-test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "search-test.c"; path = "../../wiki-lib/generic/search-test.c"; sourceTree = SOURCE_ROOT; };
-		65F441F90EF2B96E00877192 /* search-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "search-test.h"; path = "../../wiki-lib/include/search-test.h"; sourceTree = SOURCE_ROOT; };
-		65F441FA0EF2B97D00877192 /* wl-time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "wl-time.h"; path = "../../wiki-lib/include/wl-time.h"; sourceTree = SOURCE_ROOT; };
-		65F441FC0EF2B99700877192 /* time-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "time-posix.c"; path = "../../wiki-lib/specific/time-posix.c"; sourceTree = SOURCE_ROOT; };
+		65F441F50EF2B95E00877192 /* file-io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "file-io.c"; path = "../../../wiki-lib/generic/file-io.c"; sourceTree = SOURCE_ROOT; };
+		65F441FA0EF2B97D00877192 /* wl-time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "wl-time.h"; path = "../../../wiki-lib/include/wl-time.h"; sourceTree = SOURCE_ROOT; };
+		65F441FC0EF2B99700877192 /* time-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "time-posix.c"; path = "../../../wiki-lib/specific/time-posix.c"; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CocoaSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -110,6 +114,11 @@
 		29B97314FDCFA39411CA2CEA /* CocoaSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				652D6E320F321BCA0005AB6D /* malloc.h */,
+				652D6E330F321BCA0005AB6D /* search-test.h */,
+				652D6E2F0F321B950005AB6D /* search-test.c */,
+				652D6E2C0F321B810005AB6D /* fontfile.c */,
+				652D6E2D0F321B810005AB6D /* fontfile.h */,
 				65F441A70EF29FA200877192 /* WikiDisplay.h */,
 				65F441A80EF29FA200877192 /* WikiDisplay.m */,
 				65F440EA0EF18E6200877192 /* MainWindow.h */,
@@ -164,7 +173,7 @@
 				65D6B0D90EBF805500AAF999 /* guilib.h */,
 			);
 			name = "gui-lib";
-			path = "../../gui-lib";
+			path = "../../../gui-lib";
 			sourceTree = SOURCE_ROOT;
 		};
 		65F440970EEF168B00877192 /* wiki-lib */ = {
@@ -172,9 +181,7 @@
 			children = (
 				65F441FC0EF2B99700877192 /* time-posix.c */,
 				65F441FA0EF2B97D00877192 /* wl-time.h */,
-				65F441F90EF2B96E00877192 /* search-test.h */,
 				65F441F50EF2B95E00877192 /* file-io.c */,
-				65F441F60EF2B95E00877192 /* search-test.c */,
 				65F440CC0EF189E800877192 /* input.h */,
 				65F440CD0EF189E800877192 /* msg.h */,
 				65F440CE0EF189E800877192 /* wikilib.h */,
@@ -250,8 +257,9 @@
 				65F440EC0EF18E6200877192 /* MainWindow.m in Sources */,
 				65F441A90EF29FA200877192 /* WikiDisplay.m in Sources */,
 				65F441F70EF2B95E00877192 /* file-io.c in Sources */,
-				65F441F80EF2B95E00877192 /* search-test.c in Sources */,
 				65F441FD0EF2B99700877192 /* time-posix.c in Sources */,
+				652D6E2E0F321B810005AB6D /* fontfile.c in Sources */,
+				652D6E300F321B950005AB6D /* search-test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
