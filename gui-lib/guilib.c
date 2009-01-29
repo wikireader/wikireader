@@ -47,6 +47,8 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 
 void guilib_init(void)
 {
+	const struct glyph *g;
+
 	/* just some tests ... */
 	if (read_font_file(FONTFILE) != 0) {
 		msg(MSG_INFO, "unable to load font file %s", FONTFILE);
@@ -54,12 +56,7 @@ void guilib_init(void)
 	}
 
 	msg(MSG_INFO, "loaded font file %s", FONTFILE);
-//	render_string("Oh my god, it's techno music", 10, 10);
-//	render_string("WAR WAS?", 10, 30);
-	
-	const struct glyph *g = get_glyph(0, 0);
-	msg(MSG_INFO, "glyph: %d x %d ...", g->width, g->height);
-
+	g = get_glyph(0, 0);
 	render_glyph(10, 10, g);
 }
 
