@@ -1,14 +1,15 @@
-SOURCES += ../../../../gui-lib/guilib.c
-SOURCES += ../../../../gui-lib/glyph.c
-SOURCES += ../../../../gui-lib/fontfile.c
-SOURCES += ../../../../wiki-lib/specific/file-io-posix.c
-SOURCES += ../../../../wiki-lib/specific/msg-printf.c
-SOURCES += ../../../../wiki-lib/specific/time-posix.c
-SOURCES += ../../../../wiki-lib/generic/wikilib.c
-SOURCES += ../../../../wiki-lib/generic/file-io.c
-SOURCES += ../../../../wiki-lib/generic/search-test.c
-INCLUDEPATH += ../../../../gui-lib/
-INCLUDEPATH += ../../../../wiki-lib/include/
+TOPLEVEL = ../../../../../
+SOURCES += $$TOPLEVEL/gui-lib/guilib.c
+SOURCES += $$TOPLEVEL/gui-lib/glyph.c
+SOURCES += $$TOPLEVEL/gui-lib/fontfile.c
+SOURCES += $$TOPLEVEL/wiki-lib/specific/file-io-posix.c
+SOURCES += $$TOPLEVEL/wiki-lib/specific/msg-printf.c
+SOURCES += $$TOPLEVEL/wiki-lib/specific/time-posix.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/file-io.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/search-test.c
+INCLUDEPATH += $$TOPLEVEL/gui-lib/
+INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 
 SOURCES += main.cpp \
  WikiDisplay.cpp \
