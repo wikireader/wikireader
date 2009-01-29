@@ -48,7 +48,6 @@ void guilib_draw_hline(unsigned int x, unsigned int y1, unsigned int y2, unsigne
 void guilib_init(void)
 {
 	/* just some tests ... */
-	read_font_file(FONTFILE);
 	if (read_font_file(FONTFILE) != 0) {
 		msg(MSG_INFO, "unable to load font file %s", FONTFILE);
 		return;
