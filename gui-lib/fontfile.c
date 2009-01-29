@@ -2,7 +2,10 @@
 #include <msg.h>
 #include <file-io.h>
 #include <malloc.h>
-#include <fontfile.h>
+
+/* gui-lib includes */
+#include "glyph.h"
+#include "fontfile.h"
 
 /* reads the file described in glyphs/fonts/README */
 

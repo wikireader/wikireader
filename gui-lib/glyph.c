@@ -5,61 +5,26 @@
 /* gui-lib includes */
 #include "guilib.h"
 #include "glyph.h"
+#include "fontfile.h"
 
-#define FONTSIZE 5
-
-static int glyph_fd = -1;
-
-/* FIXME: solve this with memory management */
-static struct Glyph staticGlyph[2];
-static char _buf_a[200], _buf_b[200];
-
-int glyph_init(const char *filename)
+void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 {
-	glyph_fd = wl_open(filename, WL_O_RDONLY);
-	if (!glyph_fd)
-		return -1;
-
-	staticGlyph[0].data = _buf_a;
-	staticGlyph[1].data = _buf_b;
-	return 0;
+	int x, y, bit = 0;
+	const char *d = glyph->data;
+				
+	for (y = 0; y < glyph->height; y++)
+		for (x = 0; x < glyph->width; x++) {
+			fb_set_pixel(start_x + x, start_y + y, (*d >> bit) & 1);
+			bit++;
+			if (bit == 8) {
+				bit = 0;
+				d++;
+			}
+		}
 }
 
-static struct Glyph *get_glyph(int index)
-{
-	unsigned int offset, size;
-	static int cnt = 0;
-	struct Glyph *g = &staticGlyph[cnt++ & 1];
-
-	index &= 0xffff;
-	wl_seek(glyph_fd, index * sizeof(offset));
-	wl_read(glyph_fd, &offset, sizeof(offset));
-	if (offset == 0)
-		return NULL;
-
-	wl_seek(glyph_fd, offset);
-	wl_read(glyph_fd, &g->w, 1);
-	wl_read(glyph_fd, &g->h, 1);
-	size = (g->h * g->w) / 2;
-	wl_read(glyph_fd, g->data, size);
-
-	return g;
-}
-
-static inline char glyph_pixel(struct Glyph *g, int x, int y)
-{
-	int byte = y * g->w + x;
-	char v = g->data[byte / 2];
-	if (byte & 1)
-		return v & 0xf;
-	else
-		return v >> 4;
-}
-
-#ifndef MIN
-#define MIN(a,b) ((a) > (b) ? (b) : (a))
-#endif
-
+#if 0
+/* we might need that later ... */
 static int simple_kerning(struct Glyph *a, struct Glyph *b)
 {
 	int y, delta;
@@ -92,39 +57,4 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
 
 	return delta;
 }
-
-/* HACK - just a test */
-int render_string(const char *s, int off_x, int off_y)
-{
-	int x, y;
-	struct Glyph *last_glyph = NULL;
-	
-	guilib_fb_lock();
-	
-	while (*s) {
-		int index = *s++;
-		struct Glyph *g = get_glyph(index);
-
-		if (index == ' ') {
-			off_x += FONTSIZE;
-			continue;
-		}
-
-		if (!g || g->w == 0 || g->h == 0)
-			continue;
-		
-		off_x -= simple_kerning(last_glyph, g);
-
-		for (y = 0; y < g->h; y++)
-			for (x = 0; x < g->w; x++) 
-				fb_set_pixel(x + off_x, y + off_y,
-						glyph_pixel(g, x, y));
-
-		off_x += g->w + (FONTSIZE / 2);
-		last_glyph = g;
-	}
-
-	guilib_fb_unlock();
-	return 0;
-}
-
+#endif

@@ -1,6 +1,7 @@
 #include <file-io.h>
 #include <msg.h>
 #include "guilib.h"
+#include "glyph.h"
 #include "fontfile.h"
 
 /* The idea is that every function which calls painting routine calls guilib_fb_lock()
@@ -57,7 +58,9 @@ void guilib_init(void)
 //	render_string("Oh my god, it's techno music", 10, 10);
 //	render_string("WAR WAS?", 10, 30);
 	
-	struct glyph *g = get_glyph(0, 0);
+	const struct glyph *g = get_glyph(0, 0);
 	msg(MSG_INFO, "glyph: %d x %d ...", g->width, g->height);
+
+	render_glyph(10, 10, g);
 }
 
