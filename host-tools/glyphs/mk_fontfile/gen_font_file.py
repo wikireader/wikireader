@@ -81,7 +81,13 @@ def gen_font(fontid):
 			for n in range (0, w * h):
 				pixel = im.getPixel((n % w, n / w))
 				bit = n % 8;
-				outbyte |= 1 << (7 - bit);
+	
+				(r, g, b) = im.colorComponents(pixel)
+				color = (r + g + b) / 3
+
+				if (color > 127):
+					outbyte |= 1 << bit;
+				
 				if bit == 7:
 					out += struct.pack("B", outbyte)
 					outbyte = 0
