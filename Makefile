@@ -157,7 +157,7 @@ flash-bootloader: bootloader
 .PHONY: clean
 clean: 
 	make clean -C bootloader
-	make clean -C mini-libc
+	make clean -C toolchain/mini-libc
 	make clean -C fatfs
 	cd jsp && make clean -C wikireader
 	rm -rf toolchain/gcc-$(GCC_VERSION)
