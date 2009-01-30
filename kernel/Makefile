@@ -15,7 +15,8 @@ INCLUDES=				\
 	-I$(LIBDIR)/include/		\
 	-I$(FATFSDIR)/config/c33/	\
 	-I$(WIKILIBDIR)/include/	\
-	-I$(GUILIBDIR)/
+	-I$(GUILIBDIR)/			\
+	-I../bootloader/
 
 LIBS=					\
 	$(FATFSDIR)/lib/libtinyfat.a	\
@@ -31,7 +32,7 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
-OBJECTS=mahatma.o serial.o traps.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
+OBJECTS=mahatma.o gui.o serial.o traps.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
 TARGETS=mahatma.elf
 all: $(TARGETS)
 

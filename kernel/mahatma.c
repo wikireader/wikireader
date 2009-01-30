@@ -17,9 +17,14 @@ int wl_input_wait(struct wl_input_event *ev)
 	
 	while (1) {
 		asm("halt");
+
+		/* check whether there was any event in the system. If not,
+		 * just go back to halt mode */
 		if (serial_input_parse(ev))
 			break;
 	}
+
+	return 0;
 }
 
 int main(void)
