@@ -4,7 +4,6 @@ import gd
 import os
 import struct
 import array
-import getopt
 import sys
 
 fontpath = ""
@@ -107,7 +106,7 @@ def gen_font(fontid):
 				out += struct.pack("B", outbyte)
 				offset += 1
 
-#			im.close()
+			# im.close()
 
 		except:
 			print "unable to open bitmap file >%s<" % (imagefile)
@@ -121,9 +120,7 @@ def gen_font(fontid):
 		table += struct.pack("<I", i)
 
 	print "index to glyph 0 (font %s) is %d" % (fontid, offsettable[0])
-
 	return struct.pack("<I", n_glyphs) + table + out
-
 
 if (len(sys.argv) < 2):
 	usage()
@@ -141,6 +138,7 @@ except:
 	print "unable to open font path '%s'" % (fontpath)
 	sys.exit(1)
 
+# allocate the font offset table
 fonttable = [ 0 ] * len(fontlist)
 offset = len(fontlist) * 4
 fontnum = 0
