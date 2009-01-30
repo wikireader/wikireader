@@ -105,7 +105,7 @@ WikiDisplay::paintEvent(QPaintEvent *)
 		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
 			int r, g, b;
 			const char *data = framebuffer->data();
-			r = g = b = 255 - (data[y * FRAMEBUFFER_WIDTH + x] * 0xf);
+			r = g = b = 255 - (data[y * FRAMEBUFFER_WIDTH + x] * 0xff);
 			painter.setPen(QColor::fromRgb(r, g, b, 255));
 			painter.drawPoint(x, y);
 		}
