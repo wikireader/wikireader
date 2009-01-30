@@ -6,6 +6,7 @@
 /* local includes */
 #include "serial.h"
 #include "traps.h"
+#include "suspend.h"
 
 int wl_input_wait(struct wl_input_event *ev)
 {
@@ -16,6 +17,7 @@ int wl_input_wait(struct wl_input_event *ev)
 	 */
 	
 	while (1) {
+		system_suspend();
 		asm("halt");
 
 		/* check whether there was any event in the system. If not,
