@@ -1,10 +1,28 @@
+#include <input.h>
+
 #include "traps.h"
+#include "serial.h"
+#include "suspend.h"
 
 static void undef_irq_handler(void)
 {
 }
 
-#define N_TRAPS 107
+static void serial0_in_irq(void)
+{
+	system_resume();
+	serial_in(0);
+	// TODO: clear IRQ
+}
+
+static void serial0_out_irq(void)
+{
+	system_resume();
+	serial_out(0);
+	// TODO: clear IRQ
+}
+
+#define N_TRAPS 108
 typedef void (*irq_callback)(void);
 irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 0	*/
@@ -64,8 +82,8 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 54	*/
 	undef_irq_handler,	/* offset 55	*/
 	undef_irq_handler,	/* offset 56	*/
-	undef_irq_handler,	/* offset 57	*/
-	undef_irq_handler,	/* offset 58	*/
+	serial0_in_irq,		/* offset 57	serial 0 - receive buffer full		*/
+	serial0_out_irq,	/* offset 58	serial 0 - transmit buffer empty	*/
 	undef_irq_handler,	/* offset 59	*/
 	undef_irq_handler,	/* offset 60	*/
 	undef_irq_handler,	/* offset 61	*/
@@ -114,6 +132,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 104	*/
 	undef_irq_handler,	/* offset 105	*/
 	undef_irq_handler,	/* offset 106	*/
+	undef_irq_handler,	/* offset 107	*/
 };
 
 void traps_init(void)

@@ -2,11 +2,15 @@
 #include <guilib.h>
 #include <wikilib.h>
 #include <input.h>
+#include <malloc.h>
 
 /* local includes */
 #include "serial.h"
 #include "traps.h"
 #include "suspend.h"
+#include "msg.h"
+
+#define VERSION "0.1"
 
 int wl_input_wait(struct wl_input_event *ev)
 {
@@ -22,7 +26,7 @@ int wl_input_wait(struct wl_input_event *ev)
 
 		/* check whether there was any event in the system. If not,
 		 * just go back to halt mode */
-		if (serial_input_parse(ev))
+		if (serial_get_event(ev))
 			break;
 	}
 
@@ -36,8 +40,11 @@ int main(void)
 	serial_init();
 
 	/* generic init */
+	malloc_init();
 	wikilib_init();
 	guilib_init();
+
+	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.", VERSION);
 
 	/* the next function will loop forever and call wl_input_wait() */
 	wikilib_run();

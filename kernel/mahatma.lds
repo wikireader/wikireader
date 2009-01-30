@@ -7,6 +7,7 @@ SECTIONS
         /* section information */
 	. = 0x84000 ;
 	.dst_ram : {
+		traps.o(.data)
 		traps.o(.*)
 	}
 

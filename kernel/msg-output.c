@@ -38,6 +38,7 @@ int get_msg_char(char *c)
 			continue;
 		}
 
+		current_char++;
 		break;
 	}
 
