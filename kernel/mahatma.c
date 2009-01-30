@@ -9,6 +9,7 @@
 #include "traps.h"
 #include "suspend.h"
 #include "msg.h"
+#include "touchscreen.h"
 
 #define VERSION "0.1"
 
@@ -27,6 +28,9 @@ int wl_input_wait(struct wl_input_event *ev)
 		/* check whether there was any event in the system. If not,
 		 * just go back to halt mode */
 		if (serial_get_event(ev))
+			break;
+
+		if (touchscreen_get_event(ev))
 			break;
 	}
 
