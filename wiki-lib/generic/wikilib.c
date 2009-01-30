@@ -1,8 +1,8 @@
 #include <wikilib.h>
 #include <input.h>
 #include <msg.h>
-
-extern int search_test();
+#include <malloc.h>
+#include <file-io.h>
 
 int wikilib_init (void)
 {
@@ -11,7 +11,28 @@ int wikilib_init (void)
 
 int wikilib_run(void)
 {
-	search_test();
+	void *a;
+	int fd, i;
+
+	a = malloc(512);
+	msg(MSG_INFO, " a = %p", a);
+
+	
+	msg(MSG_INFO, " 1. run", a);
+	fd = wl_open("/kernel", WL_O_RDONLY);
+	wl_read(fd, a, 512);
+	wl_close(fd);
+
+	for (i = 0; i < 10; i++) {
+		msg(MSG_INFO, " 2. run", a);
+		fd = wl_open("/kernel", WL_O_RDONLY);
+		wl_read(fd, a, 512);
+		wl_read(fd, a, 512);
+		wl_read(fd, a, 512);
+		wl_close(fd);
+	}
+
+//	dump_cache_stats();
 
 	/* if you input 'E' the search_test will return */
 
