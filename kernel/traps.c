@@ -1,5 +1,6 @@
 #include <input.h>
 
+#include "regs.h"
 #include "traps.h"
 #include "serial.h"
 #include "suspend.h"
@@ -8,18 +9,48 @@ static void undef_irq_handler(void)
 {
 }
 
+static void serial0_err_irq(void)
+{
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 0;
+}
+
 static void serial0_in_irq(void)
 {
 	system_resume();
 	serial_in(0);
-	// TODO: clear IRQ
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 1;
 }
 
 static void serial0_out_irq(void)
 {
 	system_resume();
 	serial_out(0);
-	// TODO: clear IRQ
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 2;
+}
+
+static void serial1_err_irq(void)
+{
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 3;
+}
+
+static void serial1_in_irq(void)
+{
+	system_resume();
+	serial_in(1);
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 4;
+}
+
+static void serial1_out_irq(void)
+{
+	system_resume();
+	serial_out(1);
+	/* clear interrupt */
+	REG_INT_FSIF01 = 1 << 5;
 }
 
 #define N_TRAPS 108
@@ -81,13 +112,13 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 53	*/
 	undef_irq_handler,	/* offset 54	*/
 	undef_irq_handler,	/* offset 55	*/
-	undef_irq_handler,	/* offset 56	*/
+	serial0_err_irq,	/* offset 56	serial 0 - receive error		*/
 	serial0_in_irq,		/* offset 57	serial 0 - receive buffer full		*/
 	serial0_out_irq,	/* offset 58	serial 0 - transmit buffer empty	*/
 	undef_irq_handler,	/* offset 59	*/
-	undef_irq_handler,	/* offset 60	*/
-	undef_irq_handler,	/* offset 61	*/
-	undef_irq_handler,	/* offset 62	*/
+	serial1_err_irq,	/* offset 60	serial 1 - receive error		*/
+	serial1_in_irq,		/* offset 61	serial 1 - recevice buffer full		*/
+	serial1_out_irq,	/* offset 62	serial 1 - transmit buffer empty	*/
 	undef_irq_handler,	/* offset 63	*/
 	undef_irq_handler,	/* offset 64	*/
 	undef_irq_handler,	/* offset 65	*/
