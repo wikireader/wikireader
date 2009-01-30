@@ -5,6 +5,11 @@ OUTPUT_ARCH(c33)
 SECTIONS
 {
         /* section information */
+	. = 0x84000 ;
+	.dst_ram : {
+		traps.o(.*)
+	}
+
 	. = 0x10000000 ;
         .rodata : {
            __START_rodata = . ;

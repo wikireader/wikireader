@@ -25,14 +25,14 @@ LIBS=					\
 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= file-io-libfat.o file-io.o wikilib.o \
-                malloc-simple.o search-test.o
+                malloc-simple.o 
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
-OBJECTS=mahatma.o gui.o serial.o traps.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
+OBJECTS=mahatma.o msg.o gui.o serial.o traps.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
 TARGETS=mahatma.elf
 all: $(TARGETS)
 
