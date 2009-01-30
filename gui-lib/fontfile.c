@@ -2,6 +2,7 @@
 #include <msg.h>
 #include <file-io.h>
 #include <malloc.h>
+#include <wl-endian.h>
 
 /* gui-lib includes */
 #include "glyph.h"
@@ -45,17 +46,15 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 {
 	unsigned int font_start, n_glyphs, glyph_index, *glyph_table;
 
-	/* FIXME: endian safety */
-
 	/* the entry in the font_index table points to the position in our
 	 * file where the font definition starts */
-	font_start = font_index[font];
+	font_start = WL_LTONL(font_index[font]);
 
 	if (font_start > file_size)
 		return NULL;
 
 	/* the first integer at this position is the numbers of glyphs */
-	n_glyphs = *(unsigned int *) (file_buf + font_start);
+	n_glyphs = WL_LTONL(*(unsigned int *) (file_buf + font_start));
 	if (glyph >= n_glyphs)
 		return NULL;
 
@@ -65,8 +64,8 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 
 	/* look up our glyph and cast the struct */
 	glyph_table = (unsigned int *) (file_buf + font_start);
-	glyph_index = glyph_table[glyph];
-	
+	glyph_index = WL_LTONL(glyph_table[glyph]);
+
 	return (struct glyph *) (file_buf + font_start + glyph_index);
 }
 
