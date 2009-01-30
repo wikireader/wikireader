@@ -97,7 +97,7 @@ void print_u32(u32 val)
 	printbyte(val);
 }
 
-void msg(const char *fmt, ...)
+void msg(int level, const char *fmt, ...)
 {
 }
 

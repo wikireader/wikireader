@@ -11,6 +11,8 @@ SECTIONS
 	}
 
 	. = 0x10000000 ;
+	__dp = . ;
+
         .rodata : {
            __START_rodata = . ;
 	   __dp = . ;
