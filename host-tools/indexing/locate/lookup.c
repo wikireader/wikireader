@@ -95,12 +95,12 @@ int search_fast
 #endif
 
     /* go back */
-    l_lseek(l->db_file, l->db_start, SEEK_SET);
+    l_lseek(l->db_file, l->db_start);
 
 #if defined(LOOKUP_FAST)
     if(l->prefixdb && state->offset != INT_MAX) {
         debug("using prefix db seek to 0x%x", state->offset);
-        l_lseek(l->db_file, l->db_start + state->offset, SEEK_SET);
+        l_lseek(l->db_file, l->db_start + state->offset);
         state->skip = true;
     } else {
         printf("Failed to seek... not searching\n");
@@ -109,7 +109,7 @@ int search_fast
 #else
     state->skip = false;
     foundchar = 0;
-#endif:
+#endif
 
     c = l_getc(l->db_file);
     for (; c != EOF; ) {

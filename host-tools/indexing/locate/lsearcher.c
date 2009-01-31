@@ -45,6 +45,7 @@
 
 #include <ctype.h>
 #include <string.h>
+#include <file-io.h>
 #include "lsearcher.h"
 
 int kill_switch;
@@ -105,7 +106,7 @@ static int create_index(int lindex, int rindex) {
 static void read_block(int fd)
 {
     ++blocks_read;
-    bytes_available = read(fd, &block, sizeof(block));
+    bytes_available = wl_read(fd, &block, sizeof(block));
     eof = bytes_available != sizeof(block);
 }
 
@@ -130,9 +131,9 @@ static int l_getw(int fd)
     return result;
 }
 
-static void l_lseek(int fd, off_t offset, int whence)
+static void l_lseek(int fd, off_t offset)
 {
-    lseek(fd, offset & ~BLOCK_ALIGNMENT, whence);
+    wl_seek(fd, offset & ~BLOCK_ALIGNMENT);
 
     /*
      * now read from this block and update bytes_available
@@ -147,12 +148,6 @@ static void l_lseek(int fd, off_t offset, int whence)
         bytes_available -= offset & BLOCK_ALIGNMENT;
 }
 
-static off_t l_tell(int fd)
-{
-    int offset = lseek(fd, 0, SEEK_CUR);
-    return offset - bytes_available;
-}
-
 void init_index(lindex *l, int db_file, int prefix_file) {
     uchar_t *p, *s;
     int c;
@@ -164,31 +159,36 @@ void init_index(lindex *l, int db_file, int prefix_file) {
 
     /* database */
     l->db_file = db_file;
-    l->db_start = l_tell(l->db_file);
+    l->db_start = sizeof(l->bigram1) + sizeof(l->bigram2);
 
     /* prefix table */
     if (prefix_file != -1) {
         int r = 0;
-        r += read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
-        r += read(prefix_file, &l->bigram, sizeof(l->bigram));
+        r += wl_read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
+        r += wl_read(prefix_file, &l->bigram, sizeof(l->bigram));
         if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
             printf("Failed...to read prefix, bigram.\n");
         }
     }
 }
 
-void load_index(lindex *l, char *path, char *ppath) {
+int load_index(lindex *l, char *path, char *ppath) {
     int db, offset_file = -1;
 
     debug("load_index(0x%p, %s, %s)", l, path, ppath);
 
-    db = open(path, O_RDONLY);
-    if(ppath) offset_file = open(ppath, O_RDONLY);
+    db = wl_open(path, WL_O_RDONLY);
+    if (db < 0)
+        return false;
+
+    if(ppath) offset_file = wl_open(ppath, WL_O_RDONLY);
 
     init_index(l, db, offset_file);
 
     if (offset_file != -1)
-        close(offset_file);
+        wl_close(offset_file);
+
+    return db >= 0 && offset_file >= 0;
 }
 
 /*
@@ -353,9 +353,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    if(indexFile) 
-        load_index(&l, indexFile, (haveScanFile && doSearch) ? scanFile : NULL);
-    else {
+    if(!load_index(&l, indexFile, (haveScanFile && doSearch) ? scanFile : NULL)) {
         debug("no index file");
         usage(argv[0]);
     }
