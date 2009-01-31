@@ -43,6 +43,11 @@
  * $DragonFly: src/usr.bin/locate/locate/fastfind.c,v 1.3 2005/08/04 17:31:23 drhodus Exp $
  */
 
+#include <ctype.h>
+#include <string.h>
+#include <file-io.h>
+#include "lsearcher.h"
+
 #if defined(LOOKUP_SLOW)
 int search_slow
 #elif defined(LOOKUP_FAST)

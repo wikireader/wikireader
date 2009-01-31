@@ -44,4 +44,23 @@ struct search_state {
 
 void kill_search();
 
+int char_to_index(char c) {
+    if (c == 32)
+        return 0;
+    else if (c == 46)
+        return 1;
+    else if (c >= 48 && c <= 57)
+        return c - 48 + 2;
+    else if (c >= 65 && c <= 90)
+        return c - 65 + 2 + 10;
+    else if (c >= 97 && c <= 122)
+        return c - 97 + 2 + 10 + 26;
+    
+    return -1;
+}
+
+int create_index(int lindex, int rindex) {
+    return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
+}
+
 #endif

@@ -80,25 +80,6 @@ bool handle_match(uchar_t *s) {
     return true;
 }
 
-static int char_to_index(char c) {
-    if (c == 32)
-        return 0;
-    else if (c == 46)
-        return 1;
-    else if (c >= 48 && c <= 57)
-        return c - 48 + 2;
-    else if (c >= 65 && c <= 90)
-        return c - 65 + 2 + 10;
-    else if (c >= 97 && c <= 122)
-        return c - 97 + 2 + 10 + 26;
-    
-    return -1;
-}
-
-static int create_index(int lindex, int rindex) {
-    return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
-}
-
 /*
  * read a complete block and serve getc from this block...
  */
@@ -110,7 +91,7 @@ static void read_block(int fd)
     eof = bytes_available != sizeof(block);
 }
 
-static int l_getc(int fd)
+int l_getc(int fd)
 {
     if (bytes_available == 0 && !eof)
         read_block(fd);
@@ -120,7 +101,7 @@ static int l_getc(int fd)
     return block[sizeof(block) - bytes_available--];
 }
 
-static int l_getw(int fd)
+int l_getw(int fd)
 {
     int result = 0;
     result |= l_getc(fd) <<  0;
@@ -131,7 +112,7 @@ static int l_getw(int fd)
     return result;
 }
 
-static void l_lseek(int fd, off_t offset)
+void l_lseek(int fd, off_t offset)
 {
     wl_seek(fd, offset & ~BLOCK_ALIGNMENT);
 
@@ -302,14 +283,6 @@ void scan(lindex *l, char *scan_file) {
  *  - One is slow and doesn't cheat...
  *  - We don't mix the two paths for performance reasons...
  */
-#define LOOKUP_FAST
-#include "lookup.c"
-#undef LOOKUP_FAST
-
-#define LOOKUP_SLOW
-#include "lookup.c"
-#undef lOOKUP_SLOW
-
 #ifdef INCLUDE_MAIN
 void usage(char *prog) {
     fatal("%s -f <indexFile> [-c <scanFile>] [-s <search>]", prog);
