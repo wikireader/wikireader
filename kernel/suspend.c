@@ -50,6 +50,8 @@ void system_suspend(void)
 
 	/* write protect CMU registers */
 	REG_CMU_PROTECT = 0;	
+		
+	asm("halt");
 }
 
 void system_resume(void)

@@ -41,7 +41,6 @@ int wl_input_wait(struct wl_input_event *ev)
 	
 	while (1) {
 		system_suspend();
-		asm("halt");
 
 		/* check whether there was any event in the system. If not,
 		 * just go back to halt mode */

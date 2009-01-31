@@ -1,0 +1,55 @@
+/*
+ * mahatma - a simple kernel framework
+ * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * Copyright (c) 2008, 2009 Holger Hans Peter Freyther <zecke@openmoko.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+1) CONCEPT
+
+Mahatma is our mini-kernel. Is is in fact not even worth the name 'kernel',
+as it is not more than a thin abstraction layer and some calls to wiki-lib,
+the library which has all the core functionality.
+
+In short, the flow thru the system from Mahatma's point of view is as
+follows:
+
+* The kernel sets up the hardware and trap tables
+* wikilib_init() and guilib_init() are called to let the libraries do their
+  neccessary initialisations
+* As of calling wikilib_run(), the kernel gives control to wikilib's
+  application logic. This function does never return
+* Wikilib calls wl_input_wait() after some time to wait for new event so
+  arrive, this is where the kernel gets back control
+* As all possible input event will cause an interrupt to occur, Mahatma
+  makes the CPU enter HALT state and lets the interrupt controller do the
+  rest
+* The interrupt service routine for each IRQ handels the hardware
+* After that, each subsystem which is able to create input events is polled
+  once. If there was an incoming event, control is given back to wikilib to
+  handle it. Otherwise, Mahatma goes to sleep again so the game starts over.
+
+
+2) MEMORY MAP
+
+Because we want to switch off the external SDRAM during HALT mode, code
+doing that and calling __asm__("halt") must be located outside the RAM
+area mapped to external components. Mahatma's linker script stores routines
+which are involved in interrupt handling and system suspend/resume to the
+DST RAM section. In particular, all symbols and functions from traps.c and
+suspend.c are handled like that.
+
+

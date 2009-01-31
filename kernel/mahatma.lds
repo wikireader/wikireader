@@ -9,6 +9,7 @@ SECTIONS
 	.dst_ram : {
 		traps.o(.data)
 		traps.o(.*)
+		suspend.o(.*)
 	}
 
 	. = 0x10000000 ;
