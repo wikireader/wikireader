@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
     powerSwitch = new QPushButton("&power/lid switch");
     cardInserted = new QPushButton("SD &card inserted");
     batteryState = new QSlider(Qt::Horizontal);
+    search = new QPushButton("Search");
+    tree = new QPushButton("Tree");
+    random = new QPushButton("Random"); 
 
     powerSwitch->setCheckable(TRUE);
     powerSwitch->setChecked(TRUE);
@@ -50,6 +53,14 @@ MainWindow::MainWindow(QWidget *parent)
      * Display and three button side by side
      * below the three hardware buttons
      */
+    QHBoxLayout *buttonBox = new QHBoxLayout;
+    buttonBox->addItem(new QSpacerItem(1,1,
+                          QSizePolicy::MinimumExpanding,
+                          QSizePolicy::MinimumExpanding));
+    buttonBox->addWidget(search);
+    buttonBox->addWidget(tree);
+    buttonBox->addWidget(random);
+
     QVBoxLayout *controlSwitches = new QVBoxLayout;
     controlSwitches->addWidget(powerSwitch);
     controlSwitches->addWidget(cardInserted);
@@ -60,17 +71,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     QVBoxLayout *displayBox = new QVBoxLayout;
     displayBox->addWidget(display);
+    displayBox->addItem(buttonBox);
     displayBox->addItem(new QSpacerItem(1,1,
                           QSizePolicy::MinimumExpanding,
                           QSizePolicy::MinimumExpanding));
 
-    QHBoxLayout *area = new QHBoxLayout;
-    area->addItem(displayBox);
-    area->addItem(controlSwitches);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-
-    mainLayout->addItem(area);
+    QHBoxLayout *mainLayout = new QHBoxLayout;
+    mainLayout->addItem(displayBox);
+    mainLayout->addItem(controlSwitches);
+    mainLayout->addItem(new QSpacerItem(4,4,
+                          QSizePolicy::MinimumExpanding,
+                          QSizePolicy::MinimumExpanding));
     setLayout(mainLayout);
 }
 
