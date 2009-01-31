@@ -52,10 +52,8 @@ void system_suspend(void)
 	REG_CMU_PROTECT = 0;	
 		
 	asm("halt");
-}
 
-void system_resume(void)
-{
+	/* resume procedure */
 	REG_CMU_PROTECT = 0x96;
 
 	/* restore clock setup */
