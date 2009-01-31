@@ -7,9 +7,6 @@ enum {
 	WL_O_RDWR
 };
 
-/* generic functions */
-char *wl_fgets(char *dst, unsigned int size, int fd);
-
 /* those are implemented by the specific/file-io-*.c */
 int wl_open(const char *filename, int flags);
 void wl_close(int fd);

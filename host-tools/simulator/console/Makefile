@@ -6,7 +6,7 @@ WIKILIB_DIR = ../../wiki-lib
 
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR)
 LDFLAGS = -g -dynamic -lncurses
-C_OBJS = guilib.o glyph.o file-io-posix.o wikilib.o time-posix.o search-test.o file-io.o
+C_OBJS = guilib.o glyph.o file-io-posix.o wikilib.o time-posix.o
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR)
 

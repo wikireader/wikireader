@@ -6,8 +6,6 @@ SOURCES += $$TOPLEVEL/wiki-lib/specific/file-io-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/msg-printf.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/time-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
-SOURCES += $$TOPLEVEL/wiki-lib/generic/file-io.c
-SOURCES += $$TOPLEVEL/wiki-lib/generic/search-test.c
 INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 

@@ -41,7 +41,7 @@ LIBS=					\
 	`$(CC) -print-libgcc-file-name`
 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
-WIKILIB_COBJS= file-io-libfat.o file-io.o wikilib.o \
+WIKILIB_COBJS= file-io-libfat.o wikilib.o \
                 malloc-simple.o 
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific
 
