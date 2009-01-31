@@ -20,8 +20,9 @@
 #define SERIAL_H
 
 void serial_init(void);
-void serial_in(int port);
-void serial_out(int port);
+void serial_filled(int port);
+void serial_drained(int port);
+void serial_out(int port, char c);
 int serial_get_event(struct wl_input_event *ev);
 
 #endif /* SERIAL_H */

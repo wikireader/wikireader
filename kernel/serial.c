@@ -31,7 +31,7 @@ void serial_init(void)
 
 }
 
-void serial_in(int port)
+void serial_filled(int port)
 {
 	switch (port) {
 	case 0: /* debug console */
@@ -43,7 +43,7 @@ void serial_in(int port)
 	}
 }
 
-void serial_out(int port)
+void serial_drained(int port)
 {
 	char c;
 
@@ -55,6 +55,14 @@ void serial_out(int port)
 	case 1: /* touchscreen controller, nothing to do */
 		break;
 	}
+}
+
+void serial_out(int port, char c)
+{
+	if (port != 0)
+		return;
+	
+	REG_EFSIF0_TXD = c;
 }
 
 int serial_get_event(struct wl_input_event *ev)

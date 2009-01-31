@@ -36,7 +36,7 @@ static void serial0_err_irq(void)
 static void serial0_in_irq(void)
 {
 	system_resume();
-	serial_in(0);
+	serial_filled(0);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 1;
 }
@@ -44,7 +44,7 @@ static void serial0_in_irq(void)
 static void serial0_out_irq(void)
 {
 	system_resume();
-	serial_out(0);
+	serial_drained(0);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 2;
 }
@@ -58,7 +58,7 @@ static void serial1_err_irq(void)
 static void serial1_in_irq(void)
 {
 	system_resume();
-	serial_in(1);
+	serial_filled(1);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 4;
 }
@@ -66,7 +66,7 @@ static void serial1_in_irq(void)
 static void serial1_out_irq(void)
 {
 	system_resume();
-	serial_out(1);
+	serial_drained(1);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 5;
 }

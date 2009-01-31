@@ -36,6 +36,7 @@ static struct message messages[MAX_MSGS];
 static int current_msg_read = 0;
 static int current_msg_write = 0;
 static int lost_messages = 0;
+static int transfer_active = 0;
 
 int get_msg_char(char *c)
 {
@@ -44,8 +45,10 @@ int get_msg_char(char *c)
 	while (1) {
 		struct message *m;
 
-		if (current_msg_read == current_msg_write)
+		if (current_msg_read == current_msg_write) {
+			transfer_active = 0;
 			return 0;
+		}
 
 		m = messages + current_msg_read;
 		*c = m->text[current_char];
@@ -87,5 +90,12 @@ void msg(int level, const char *fmt, ...)
 	current_msg_write %= MAX_MSGS;
 	ENABLE_IRQ();
 	va_end(va);
+
+	if (!transfer_active) {
+		char c;
+
+		if (get_msg_char(&c))
+			serial_out(0, c);
+	}
 }
 
