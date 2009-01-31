@@ -51,6 +51,9 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(powerSwitch);
     layout->addWidget(cardInserted);
     layout->addWidget(batteryState);
+    layout->addItem(new QSpacerItem(1,1,
+                                    QSizePolicy::MinimumExpanding,
+                                    QSizePolicy::MinimumExpanding));
 
     setLayout(layout);
 }
