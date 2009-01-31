@@ -63,4 +63,8 @@ int create_index(int lindex, int rindex) {
     return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
 }
 
+int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
+void prepare_search(lindex *, char *pathpart, struct search_state *state);
+int search_fast(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
+
 #endif
