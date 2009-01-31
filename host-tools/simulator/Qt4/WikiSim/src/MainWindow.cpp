@@ -46,16 +46,32 @@ MainWindow::MainWindow(QWidget *parent)
 
     batteryState->setValue(100);
 
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(display);
-    layout->addWidget(powerSwitch);
-    layout->addWidget(cardInserted);
-    layout->addWidget(batteryState);
-    layout->addItem(new QSpacerItem(1,1,
-                                    QSizePolicy::MinimumExpanding,
-                                    QSizePolicy::MinimumExpanding));
+    /*
+     * Display and three button side by side
+     * below the three hardware buttons
+     */
+    QVBoxLayout *controlSwitches = new QVBoxLayout;
+    controlSwitches->addWidget(powerSwitch);
+    controlSwitches->addWidget(cardInserted);
+    controlSwitches->addWidget(batteryState);
+    controlSwitches->addItem(new QSpacerItem(1,1,
+                               QSizePolicy::MinimumExpanding,
+                               QSizePolicy::MinimumExpanding));
 
-    setLayout(layout);
+    QVBoxLayout *displayBox = new QVBoxLayout;
+    displayBox->addWidget(display);
+    displayBox->addItem(new QSpacerItem(1,1,
+                          QSizePolicy::MinimumExpanding,
+                          QSizePolicy::MinimumExpanding));
+
+    QHBoxLayout *area = new QHBoxLayout;
+    area->addItem(displayBox);
+    area->addItem(controlSwitches);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+
+    mainLayout->addItem(area);
+    setLayout(mainLayout);
 }
 
 MainWindow::~MainWindow()
