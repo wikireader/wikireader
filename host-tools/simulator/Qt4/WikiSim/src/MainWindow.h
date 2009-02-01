@@ -36,6 +36,9 @@ public:
 
 public slots:
     void powerButtonEvent(void);
+    void searchButtonEvent(void);
+    void treeButtonEvent(void);
+    void randomButtonEvent(void);
 
 private:
     QPushButton *powerSwitch;
