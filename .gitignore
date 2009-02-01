@@ -1,3 +1,9 @@
 *.sw?
 *.o
 *.pyc
+*.aux
+*.dvi
+*.log
+.DS_Store
+moc_*
+*.dSYM
