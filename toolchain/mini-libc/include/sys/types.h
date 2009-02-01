@@ -34,7 +34,7 @@
 #define	_SYS_TYPES_H_
 
 #include <sys/cdefs.h>
-#include <sys/inttypes.h>
+#include <inttypes.h>
 
 /* Machine type dependent parameters. */
 
