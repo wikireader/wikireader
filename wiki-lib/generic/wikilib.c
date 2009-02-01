@@ -3,6 +3,8 @@
 #include <msg.h>
 #include <malloc.h>
 #include <file-io.h>
+#include <search.h>
+#include <string.h>
 
 int wikilib_init (void)
 {
@@ -12,7 +14,8 @@ int wikilib_init (void)
 int wikilib_run(void)
 {
 	void *a;
-	int fd, i;
+	int fd, i, j;
+	char *result;
 
 	a = malloc(512);
 	msg(MSG_INFO, " a = %p", a);
@@ -34,6 +37,21 @@ int wikilib_run(void)
 
 //	dump_cache_stats();
 
+	/*
+	 * test searching code...
+	 */
+	search_init();
+	search_reset();
+
+	char *search_string = "india";
+	for (i = 0; i < (int)strlen(search_string); ++i) {
+		search_add(search_string[i]);
+		for (j = 0, result = search_fetch_result();
+				j < 5 && result; ++j, result = search_fetch_result())
+			msg(MSG_INFO, "Result: %s", result);
+		search_print_stats();
+	}
+	
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
