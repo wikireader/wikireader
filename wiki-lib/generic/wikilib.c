@@ -34,8 +34,6 @@ int wikilib_run(void)
 
 //	dump_cache_stats();
 
-	/* if you input 'E' the search_test will return */
-
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
