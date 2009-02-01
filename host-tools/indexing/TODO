@@ -5,3 +5,7 @@
   of input depth.
 * Push the 'start' position of a search match into the search_state. This
   can be used to optimize going back.
+  zecke: This might not be too good. The path, the count need to be stored
+  as well. and then just restarting the search should be done from the cache...
+  this needs to be measured and then be revaluated. the patch I came up with
+  was discarded.
