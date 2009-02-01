@@ -90,6 +90,11 @@ static inline void init_ram(void)
         /* P20-P27 functions */
         REG_P2_03_CFP = 0x55;
         REG_P2_47_CFP = 0x55;
+        REG_P5_03_CFP |= 0x80;
+
+        /* P85 */
+        REG_P8_45_CFP &= 0x03;
+
 
         /* disable write protection of clock registers */
         REG_CMU_PROTECT = 0x96;
