@@ -3,13 +3,15 @@ CC = gcc
 LD = ld
 GUILIB_DIR = ../../../gui-lib
 WIKILIB_DIR = ../../../wiki-lib
+INDEX_DIR = ../../indexing/locate
 
-CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR)
+CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(INDEX_DIR)
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-posix.o wikilib.o time-posix.o	\
-	fontfile.o
+	fontfile.o search.o lsearcher.o fast_search.o
 
-vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR)
+vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR) \
+	  $(INDEX_DIR)
 
 TARGETS = wikireader
 OBJS = $(C_OBJS) main.o
