@@ -10,8 +10,8 @@
 #import "WikiDisplay.h"
 
 @interface MainWindow : NSWindow {
-	NSCondition *condition;
 	IBOutlet WikiDisplay *imageView;
+	NSCondition *condition;
 	NSBitmapImageRep *imageRep;
 	NSTimer *refreshTimer;
 	unsigned char *frameBuffer;
@@ -22,5 +22,6 @@
 - (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y;
 - (NSCondition *) getCondition;
 - (NSImageView *) imageView;
+- (IBAction) buttonPressed: (id) sender;
 
 @end

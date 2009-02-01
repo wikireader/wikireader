@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		652D6E2E0F321B810005AB6D /* fontfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E2C0F321B810005AB6D /* fontfile.c */; };
+		652D6E580F35E1C70005AB6D /* search.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E570F35E1C70005AB6D /* search.c */; };
+		652D6E5C0F35E2250005AB6D /* lsearcher.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E5A0F35E2250005AB6D /* lsearcher.c */; };
+		652D6E5F0F35E2680005AB6D /* lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 652D6E5E0F35E2680005AB6D /* lookup.c */; };
 		65D597020EEDA439000B81C5 /* guilib.c in Sources */ = {isa = PBXBuildFile; fileRef = 65D6B0DF0EBF80E700AAF999 /* guilib.c */; };
 		65D618060EBF6288009078F8 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D618050EBF6288009078F8 /* Quartz.framework */; };
 		65D618100EBF647D009078F8 /* ImageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D6180F0EBF647D009078F8 /* ImageKit.framework */; };
@@ -36,7 +39,12 @@
 		652D6E2C0F321B810005AB6D /* fontfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fontfile.c; path = "../../../gui-lib/fontfile.c"; sourceTree = SOURCE_ROOT; };
 		652D6E2D0F321B810005AB6D /* fontfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fontfile.h; path = "../../../gui-lib/fontfile.h"; sourceTree = SOURCE_ROOT; };
 		652D6E320F321BCA0005AB6D /* malloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = malloc.h; path = "../../../wiki-lib/include/malloc.h"; sourceTree = SOURCE_ROOT; };
-		652D6E330F321BCA0005AB6D /* search-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "search-test.h"; path = "../../../wiki-lib/include/search-test.h"; sourceTree = SOURCE_ROOT; };
+		652D6E550F35E1B70005AB6D /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = search.h; path = "../../../wiki-lib/include/search.h"; sourceTree = SOURCE_ROOT; };
+		652D6E560F35E1B70005AB6D /* wl-endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "wl-endian.h"; path = "../../../wiki-lib/include/wl-endian.h"; sourceTree = SOURCE_ROOT; };
+		652D6E570F35E1C70005AB6D /* search.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = search.c; path = "../../../wiki-lib/generic/search.c"; sourceTree = SOURCE_ROOT; };
+		652D6E5A0F35E2250005AB6D /* lsearcher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lsearcher.c; path = ../../indexing/locate/lsearcher.c; sourceTree = SOURCE_ROOT; };
+		652D6E5B0F35E2250005AB6D /* lsearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lsearcher.h; path = ../../indexing/locate/lsearcher.h; sourceTree = SOURCE_ROOT; };
+		652D6E5E0F35E2680005AB6D /* lookup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lookup.c; path = ../../indexing/locate/lookup.c; sourceTree = SOURCE_ROOT; };
 		65D618050EBF6288009078F8 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		65D6180F0EBF647D009078F8 /* ImageKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageKit.framework; path = /System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/ImageKit.framework; sourceTree = "<absolute>"; };
 		65D6B0D90EBF805500AAF999 /* guilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guilib.h; sourceTree = "<group>"; };
@@ -110,12 +118,17 @@
 		29B97314FDCFA39411CA2CEA /* CocoaSimulator */ = {
 			isa = PBXGroup;
 			children = (
+				652D6E570F35E1C70005AB6D /* search.c */,
+				652D6E550F35E1B70005AB6D /* search.h */,
+				652D6E560F35E1B70005AB6D /* wl-endian.h */,
 				652D6E320F321BCA0005AB6D /* malloc.h */,
-				652D6E330F321BCA0005AB6D /* search-test.h */,
 				652D6E2C0F321B810005AB6D /* fontfile.c */,
 				652D6E2D0F321B810005AB6D /* fontfile.h */,
 				65F441A70EF29FA200877192 /* WikiDisplay.h */,
 				65F441A80EF29FA200877192 /* WikiDisplay.m */,
+				652D6E5E0F35E2680005AB6D /* lookup.c */,
+				652D6E5A0F35E2250005AB6D /* lsearcher.c */,
+				652D6E5B0F35E2250005AB6D /* lsearcher.h */,
 				65F440EA0EF18E6200877192 /* MainWindow.h */,
 				65F440EB0EF18E6200877192 /* MainWindow.m */,
 				65F440970EEF168B00877192 /* wiki-lib */,
@@ -252,6 +265,9 @@
 				65F441A90EF29FA200877192 /* WikiDisplay.m in Sources */,
 				65F441FD0EF2B99700877192 /* time-posix.c in Sources */,
 				652D6E2E0F321B810005AB6D /* fontfile.c in Sources */,
+				652D6E580F35E1C70005AB6D /* search.c in Sources */,
+				652D6E5C0F35E2250005AB6D /* lsearcher.c in Sources */,
+				652D6E5F0F35E2680005AB6D /* lookup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +307,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CocoaSimulator_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = CocoaSimulator;

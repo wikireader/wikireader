@@ -168,7 +168,27 @@ int wl_input_wait(struct wl_input_event *ev)
 // NSApplication delegates
 - (void)applicationDidBecomeActive: (NSNotification *) aNotification
 {
-	[NSThread detachNewThreadSelector:@selector(wikiLibThread:) toTarget: [NSApp mainWindow] withObject:nil];
+	[NSThread detachNewThreadSelector: @selector(wikiLibThread:)
+							 toTarget: [NSApp mainWindow]
+						   withObject: nil];
+}
+
+- (IBAction) buttonPressed: (id) sender
+{
+	NSEvent *curr = [NSApp currentEvent];
+	NSEvent *ev = [NSEvent keyEventWithType: NSKeyDown
+								   location: [curr locationInWindow]
+							  modifierFlags: 0
+							      timestamp: [curr timestamp]
+							   windowNumber: [curr windowNumber]
+							        context: [curr context]
+								 characters: @"x"
+				charactersIgnoringModifiers: nil
+								  isARepeat: NO
+								    keyCode: 0
+					];
+	
+	[NSApp sendEvent: ev];
 }
 
 @end
