@@ -24,43 +24,42 @@
 #include <QVBoxLayout>
 
 void
-MainWindow::powerButtonEvent(void)
+MainWindow::hwButtonEvent(int num)
 {
+	QKeyEvent event(QEvent::KeyPress, num + Qt::Key_F1, Qt::NoModifier);
+	display->keyEventQueue->enqueue(event);
+	display->waitCondition->wakeAll();
 }
 
 void
 MainWindow::searchButtonEvent(void)
 {
+	hwButtonEvent(0);
 }
 
 void
 MainWindow::treeButtonEvent(void)
 {
+	hwButtonEvent(1);
 }
 
 void
 MainWindow::randomButtonEvent(void)
 {
+	hwButtonEvent(2);
 }
 
 MainWindow::MainWindow(QWidget *parent)
  : QWidget(parent)
 {
     display = new WikiDisplay();
-    powerSwitch = new QPushButton("&power/lid switch");
-    batteryState = new QSlider(Qt::Horizontal);
     search = new QPushButton("Search");
     tree = new QPushButton("Tree");
     random = new QPushButton("Random"); 
 
-    powerSwitch->setCheckable(TRUE);
-    powerSwitch->setChecked(TRUE);
-    connect(powerSwitch, SIGNAL(clicked()), this, SLOT(powerButtonEvent()));
     connect(search, SIGNAL(clicked()), this, SLOT(searchButtonEvent()));
     connect(tree, SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
     connect(random, SIGNAL(clicked()), this, SLOT(randomButtonEvent()));
-
-    batteryState->setValue(100);
 
     /*
      * Display and three button side by side
@@ -74,13 +73,6 @@ MainWindow::MainWindow(QWidget *parent)
     buttonBox->addWidget(tree);
     buttonBox->addWidget(random);
 
-    QVBoxLayout *controlSwitches = new QVBoxLayout;
-    controlSwitches->addWidget(powerSwitch);
-    controlSwitches->addWidget(batteryState);
-    controlSwitches->addItem(new QSpacerItem(1,1,
-                               QSizePolicy::MinimumExpanding,
-                               QSizePolicy::MinimumExpanding));
-
     QVBoxLayout *displayBox = new QVBoxLayout;
     displayBox->addWidget(display);
     displayBox->addItem(buttonBox);
@@ -90,7 +82,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addItem(displayBox);
-    mainLayout->addItem(controlSwitches);
     mainLayout->addItem(new QSpacerItem(4,4,
                           QSizePolicy::MinimumExpanding,
                           QSizePolicy::MinimumExpanding));

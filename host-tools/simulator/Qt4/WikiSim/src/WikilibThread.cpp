@@ -63,14 +63,15 @@ int wl_input_wait(struct wl_input_event *ev)
 		if (!display->keyEventQueue->isEmpty()) {
 			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+			ev->key_event.keycode = keyEvent.text().at(0).unicode();
+			if (ev->key_event.keycode == 0)
+				ev->key_event.keycode = keyEvent.key();
 
 			switch (keyEvent.type()) {
 			case QEvent::KeyPress:
-				ev->key_event.keycode = keyEvent.text().at(0).unicode();
 				ev->key_event.value = 1;
 				break;
 			case QEvent::KeyRelease:
-				ev->key_event.keycode = keyEvent.text().at(0).unicode();
 				ev->key_event.value = 0;
 				break;
 			default:

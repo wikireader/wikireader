@@ -35,15 +35,12 @@ public:
     WikiDisplay *display;
 
 public slots:
-    void powerButtonEvent(void);
     void searchButtonEvent(void);
     void treeButtonEvent(void);
     void randomButtonEvent(void);
 
 private:
-    QPushButton *powerSwitch;
-    QSlider *batteryState;
-
+    void hwButtonEvent(int num);
     QPushButton *search, *tree, *random;
 };
 
