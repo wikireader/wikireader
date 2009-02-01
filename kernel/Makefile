@@ -26,6 +26,7 @@ WIKILIBDIR=$(PWD)/../wiki-lib/
 GUILIBDIR=$(PWD)/../gui-lib/
 LIBDIR=$(PWD)/../toolchain/mini-libc
 FATFSDIR=$(PWD)/../fatfs
+INDEX_DIR=$(PWD)/../host-tools/indexing/locate
 
 INCLUDES=				\
 	-I$(FATFSDIR)/src		\
@@ -33,7 +34,8 @@ INCLUDES=				\
 	-I$(FATFSDIR)/config/c33/	\
 	-I$(WIKILIBDIR)/include/	\
 	-I$(GUILIBDIR)/			\
-	-I../bootloader/
+	-I../bootloader/                \
+	-I$(INDEX_DIR)
 
 LIBS=					\
 	$(FATFSDIR)/lib/libtinyfat.a	\
@@ -42,8 +44,11 @@ LIBS=					\
 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= file-io-libfat.o wikilib.o \
-                malloc-simple.o 
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific
+                malloc-simple.o
+
+# searching
+WIKILIB_COBJS += search.o lsearcher.o fast_search.o
+vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
