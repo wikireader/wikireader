@@ -6,10 +6,12 @@ SOURCES += $$TOPLEVEL/wiki-lib/specific/file-io-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/msg-printf.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/time-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/search.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lookup.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lsearcher.c
 INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
+INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
 
 DEFINES += LOOKUP_FAST
 
