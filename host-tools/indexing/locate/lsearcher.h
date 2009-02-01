@@ -40,6 +40,7 @@ struct search_state {
     int count;
     bool skip;
     int pattern_len;
+    int last_c;
 };
 
 static inline int char_to_index(char c) {
@@ -63,6 +64,6 @@ static inline int create_index(int lindex, int rindex) {
 
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
 void prepare_search(lindex *, char *pathpart, struct search_state *state);
-int search_fast(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
+char *search_fast(lindex *l, char *pathpart, struct search_state *state);
 
 #endif

@@ -49,7 +49,7 @@
 #include "lsearcher.h"
 
 #if defined(LOOKUP_SLOW)
-int search_slow
+int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
 #elif defined(LOOKUP_FAST)
 void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     state->offset = INT_MAX;
@@ -82,22 +82,25 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
         state->skip = true;
     } else {
         printf("Failed to seek... not searching\n");
-        return ;
     }
+
+    state->last_c = l_getc(l->db_file);
 }
 
-int search_fast
+char *search_fast
+(lindex *l, char *pathpart, struct search_state *state) {
 #endif
-(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
+
     register uchar_t *p, *s, *patend, *q;
-    register int c, cc;
+    register int c;
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
-    cc = *patend;
 
 #if defined(LOOKUP_SLOW)
     int found;
     register uchar_t *foundchar;
+    register int cc;
+    cc = *patend;
     uchar_t *cutoff = NULL;
     uchar_t lower_patend = 0xff;
     uchar_t upper_patend = 0xff;
@@ -114,9 +117,11 @@ int search_fast
     l_lseek(l->db_file, l->db_start);
     state->skip = false;
     foundchar = 0;
+    c = l_getc(l->db_file);
+#else
+    c = state->last_c;
 #endif
 
-    c = l_getc(l->db_file);
     for (; c != EOF; ) {
         if (c == SWITCH) {
             int local_count =  l_getw(l->db_file) - OFFSET;
@@ -207,12 +212,16 @@ int search_fast
         }
 
         if (longest_match >= 1 && all_bigger)
-            return -1;
+            return NULL;
 
         if(*q == '\0') {
-            if(!f(state->path))
-                return 0;
+            state->last_c = c;
+            return state->path;
         }
+    }
+
+    return NULL;
+}
 #elif defined(LOOKUP_SLOW)
         if (found) {
             cutoff = state->path;
@@ -240,11 +249,12 @@ int search_fast
                 }
             }
         }
-#endif
+
     }
 
     if(df)
         df();
     return 0;
 }
+#endif
 
