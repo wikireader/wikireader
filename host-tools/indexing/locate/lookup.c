@@ -46,6 +46,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <file-io.h>
+#include <limits.h>
 #include "lsearcher.h"
 
 #if defined(LOOKUP_SLOW)
@@ -77,11 +78,11 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     }
 
     if(l->prefixdb && state->offset != INT_MAX) {
+#ifdef INCLUDE_MAIN
         debug("using prefix db seek to 0x%x", state->offset);
+#endif
         l_lseek(l->db_file, l->db_start + state->offset);
         state->skip = true;
-    } else {
-        printf("Failed to seek... not searching\n");
     }
 
     state->last_c = l_getc(l->db_file);
@@ -91,15 +92,15 @@ char *search_fast
 (lindex *l, char *pathpart, struct search_state *state) {
 #endif
 
-    register uchar_t *p, *s, *patend, *q;
-    register int c;
+    uchar_t *p, *s, *patend, *q;
+    int c;
 
     patend = (uchar_t *)(pathpart + strlen(pathpart) - 1);
 
 #if defined(LOOKUP_SLOW)
     int found;
-    register uchar_t *foundchar;
-    register int cc;
+    uchar_t *foundchar;
+    int cc;
     cc = *patend;
     uchar_t *cutoff = NULL;
     uchar_t lower_patend = 0xff;

@@ -44,6 +44,7 @@
  */
 
 #include <ctype.h>
+#include <limits.h>
 #include <string.h>
 #include <file-io.h>
 #include "lsearcher.h"
@@ -61,9 +62,13 @@ int check_bigram_char(int ch) {
     if (ch == 0 || (ch >= ASCII_MIN && ch <= ASCII_MAX))
         return(ch);
 
+#ifdef INCLUDE_MAIN
     fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
             ASCII_MIN, ASCII_MAX, ch);
     exit(1);
+#else
+    return -1;
+#endif
 }
 
 /*
@@ -104,7 +109,7 @@ int l_getw(int fd)
     return result;
 }
 
-void l_lseek(int fd, off_t offset)
+void l_lseek(int fd, unsigned int offset)
 {
     wl_seek(fd, offset & ~BLOCK_ALIGNMENT);
 
@@ -140,7 +145,9 @@ void init_index(lindex *l, int db_file, int prefix_file) {
         r += wl_read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
         r += wl_read(prefix_file, &l->bigram, sizeof(l->bigram));
         if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
+#ifdef INCLUDE_MAIN
             printf("Failed...to read prefix, bigram.\n");
+#endif
         }
     }
 }
@@ -148,7 +155,9 @@ void init_index(lindex *l, int db_file, int prefix_file) {
 int load_index(lindex *l, char *path, char *ppath) {
     int db, offset_file = -1;
 
+#ifdef INCLUDE_MAIN
     debug("load_index(0x%p, %s, %s)", l, path, ppath);
+#endif
 
     db = wl_open(path, WL_O_RDONLY);
     if (db < 0)
@@ -178,7 +187,7 @@ static bool handle_match(uchar_t *s) {
 static void scan(lindex *l, char *scan_file) {
     int c;
     int count = 0;
-    off_t file_offset = 0;
+    unsigned int file_offset = 0;
     uchar_t path[MAXSTR];
     uchar_t *p;
 
@@ -195,7 +204,7 @@ static void scan(lindex *l, char *scan_file) {
     file_offset = 1;
     c = l_getc(l->db_file);
     for (; c != EOF; ) {
-        off_t this_offset = file_offset - 1;
+        unsigned int this_offset = file_offset - 1;
 
         /* go forward or backward */
         if (c == SWITCH) { /* big step, an integer */

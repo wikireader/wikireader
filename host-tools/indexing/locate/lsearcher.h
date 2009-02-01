@@ -1,14 +1,8 @@
 #ifndef __LSEARCHER_H__
 #define __LSEARCHER_H__
 
-#include <sys/param.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdint.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
 
 
 #include "debug.h"
@@ -29,7 +23,7 @@ typedef void donef();
 typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];
   int db_file;
-  off_t db_start;
+  unsigned int db_start;
   uint32_t prefixdb[MAX_UPPER_PREFIX_SIZE];
   uint32_t bigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
 } lindex;
