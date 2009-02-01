@@ -51,6 +51,10 @@ int wl_input_wait(struct wl_input_event *ev)
 		case NSKeyDown:
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 			ev->key_event.keycode = [[currentEvent characters] characterAtIndex: 0];
+			
+			if (ev->key_event.keycode == '?')
+				ev->key_event.keycode = [currentEvent keyCode];
+
 			ev->key_event.value = ([currentEvent type] == NSKeyUp) ? 0 : 1;
 			break;
 		case NSLeftMouseUp:
@@ -175,6 +179,22 @@ int wl_input_wait(struct wl_input_event *ev)
 
 - (IBAction) buttonPressed: (id) sender
 {
+	unsigned int code;
+	
+	switch ([sender tag]) {
+	case 0:
+		code = WL_INPUT_KEY_SEARCH;
+		break;
+	case 1:
+		code = WL_INPUT_KEY_TREE;
+		break;
+	case 2:
+		code = WL_INPUT_KEY_RANDOM;
+		break;
+	default:
+		return;
+	}
+	
 	NSEvent *curr = [NSApp currentEvent];
 	NSEvent *ev = [NSEvent keyEventWithType: NSKeyDown
 								   location: [curr locationInWindow]
@@ -182,13 +202,13 @@ int wl_input_wait(struct wl_input_event *ev)
 							      timestamp: [curr timestamp]
 							   windowNumber: [curr windowNumber]
 							        context: [curr context]
-								 characters: @"x"
+								 characters: @"?"
 				charactersIgnoringModifiers: nil
 								  isARepeat: NO
-								    keyCode: 0
+								    keyCode: code
 					];
 	
-	[NSApp sendEvent: ev];
+	[NSApp postEvent: ev atStart: YES];
 }
 
 @end
