@@ -34,7 +34,7 @@ To back this up with numbers:
 2.) Compile CreateInex into wiki-tools
 3.) run wiki-tools and a indexfile.index will fall out
 4.) Sort
-    cat indexfile.index | LC_ALL=C sort -u > indexfile.index.sorted
+    cat indexfile.index | LC_ALL=C sort -u | ./sort.py > indexfile.index.sorted
 5.) Generate bigram
     locate/lbigram < indexfile.index.sorted | sort -nr | perl -ne '/^\s*[0-9]+\s(..)$/ && print $1' > indexfile.index.bigrams
 6.) Generate index

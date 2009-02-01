@@ -3,7 +3,5 @@
 * Merge the prefix, bigram and text into one file.
 * Make the prefixdb a trie so we can make it work on any level
   of input depth.
-* Implement a better 'sort' utility ignoring the 'pointer' and prefering
-  shorter lines over longer.
 * Push the 'start' position of a search match into the search_state. This
   can be used to optimize going back.
