@@ -33,8 +33,8 @@ struct message {
 };
 
 static struct message messages[MAX_MSGS];
-static int current_msg_read = 0;
-static int current_msg_write = 0;
+static unsigned int current_msg_read = 0;
+static unsigned int current_msg_write = 0;
 static int lost_messages = 0;
 static int transfer_active = 0;
 
