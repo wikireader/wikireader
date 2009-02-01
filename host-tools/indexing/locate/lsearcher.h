@@ -42,9 +42,7 @@ struct search_state {
     int pattern_len;
 };
 
-void kill_search();
-
-static int char_to_index(char c) {
+static inline int char_to_index(char c) {
     if (c == 32)
         return 0;
     else if (c == 46)
@@ -59,7 +57,7 @@ static int char_to_index(char c) {
     return -1;
 }
 
-static int create_index(int lindex, int rindex) {
+static inline int create_index(int lindex, int rindex) {
     return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
 }
 

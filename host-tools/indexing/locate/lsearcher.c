@@ -48,11 +48,6 @@
 #include <file-io.h>
 #include "lsearcher.h"
 
-int kill_switch;
-ucaddr_t addr = 0;
-
-int matches = 0;
-
 static int blocks_read = 0;
 
 #define BLOCK_ALIGNMENT 0x1ff
@@ -60,10 +55,6 @@ static uchar_t block[512];
 static int bytes_available = 0;
 static int eof = 0;
 
-
-void kill_search() {
-    kill_switch = 1;
-}
 
 int check_bigram_char(int ch) {
     /* legal bigram: 0, ASCII_MIN ... ASCII_MAX */
@@ -73,11 +64,6 @@ int check_bigram_char(int ch) {
     fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
             ASCII_MIN, ASCII_MAX, ch);
     exit(1);
-}
-
-bool handle_match(uchar_t *s) {
-    printf("%s first block: %d\n", s, blocks_read);
-    return true;
 }
 
 /*
@@ -172,12 +158,18 @@ int load_index(lindex *l, char *path, char *ppath) {
     return db >= 0 && offset_file >= 0;
 }
 
+#ifdef INCLUDE_MAIN
+static bool handle_match(uchar_t *s) {
+    printf("%s first block: %d\n", s, blocks_read);
+    return true;
+}
+
 /*
  * extract the start positions of 0-9 and A-Z from the index
  * the switch happens when the count is 0, meaning nothing
  * from the previous string should be taken...
  */
-void scan(lindex *l, char *scan_file) {
+static void scan(lindex *l, char *scan_file) {
     int c;
     int count = 0;
     off_t file_offset = 0;
@@ -188,7 +180,7 @@ void scan(lindex *l, char *scan_file) {
      * would have search times so high as to be useless 
      */
 
-    int i;
+    unsigned int i;
     for (i = 0; i < sizeof(l->prefixdb)/sizeof(l->prefixdb[0]); ++i)
         l->prefixdb[i] = INT_MAX;
     for (i = 0; i < sizeof(l->bigram)/sizeof(l->bigram[0]); ++i)
@@ -283,7 +275,6 @@ void scan(lindex *l, char *scan_file) {
  *  - One is slow and doesn't cheat...
  *  - We don't mix the two paths for performance reasons...
  */
-#ifdef INCLUDE_MAIN
 void usage(char *prog) {
     fatal("%s -f <indexFile> [-c <scanFile>] [-s <search>]", prog);
 }
