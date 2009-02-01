@@ -51,6 +51,7 @@ void search_add(char c)
 
 char* search_fetch_result()
 {
+    return search_fast(&global_search, search_string, &state);
 }
 
 void search_print_stats()
