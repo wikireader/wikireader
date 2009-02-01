@@ -39,7 +39,6 @@ public slots:
 
 private:
     QPushButton *powerSwitch;
-    QPushButton *cardInserted;
     QSlider *batteryState;
 
     QPushButton *search, *tree, *random;

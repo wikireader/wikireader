@@ -26,7 +26,21 @@
 void
 MainWindow::powerButtonEvent(void)
 {
-    printf(" --- power button clicked --- \n");
+}
+
+void
+MainWindow::searchButtonEvent(void)
+{
+}
+
+void
+MainWindow::treeButtonEvent(void)
+{
+}
+
+void
+MainWindow::randomButtonEvent(void)
+{
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -34,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     display = new WikiDisplay();
     powerSwitch = new QPushButton("&power/lid switch");
-    cardInserted = new QPushButton("SD &card inserted");
     batteryState = new QSlider(Qt::Horizontal);
     search = new QPushButton("Search");
     tree = new QPushButton("Tree");
@@ -43,9 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     powerSwitch->setCheckable(TRUE);
     powerSwitch->setChecked(TRUE);
     connect(powerSwitch, SIGNAL(clicked()), this, SLOT(powerButtonEvent()));
-
-    cardInserted->setCheckable(TRUE);
-    cardInserted->setChecked(TRUE);
+    connect(search, SIGNAL(clicked()), this, SLOT(searchButtonEvent()));
+    connect(tree, SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
+    connect(random, SIGNAL(clicked()), this, SLOT(randomButtonEvent()));
 
     batteryState->setValue(100);
 
@@ -63,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QVBoxLayout *controlSwitches = new QVBoxLayout;
     controlSwitches->addWidget(powerSwitch);
-    controlSwitches->addWidget(cardInserted);
     controlSwitches->addWidget(batteryState);
     controlSwitches->addItem(new QSpacerItem(1,1,
                                QSizePolicy::MinimumExpanding,
