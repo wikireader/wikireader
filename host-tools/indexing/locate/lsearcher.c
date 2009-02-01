@@ -170,6 +170,8 @@ int load_index(lindex *l, char *path, char *ppath) {
     if (offset_file != -1)
         wl_close(offset_file);
 
+    if (!ppath)
+        return db >= 0;
     return db >= 0 && offset_file >= 0;
 }
 
