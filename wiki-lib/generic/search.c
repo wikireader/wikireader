@@ -17,6 +17,7 @@
 
 #include <lsearcher.h>
 #include "search.h"
+#include "msg.h"
 
 static lindex global_search;
 static struct search_state state;
@@ -54,6 +55,8 @@ char* search_fetch_result()
     return search_fast(&global_search, search_string, &state);
 }
 
+extern unsigned int lsesrch_consume_block_stat();
 void search_print_stats()
 {
+    msg(MSG_INFO, "Block read for search: %d", lsesrch_consume_block_stat());
 }

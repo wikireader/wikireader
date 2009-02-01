@@ -69,6 +69,12 @@ int check_bigram_char(int ch) {
 /*
  * read a complete block and serve getc from this block...
  */
+unsigned int lsesrch_consume_block_stat()
+{
+    unsigned int blocks = blocks_read;
+    blocks_read = 0;
+    return blocks;
+}
 
 static void read_block(int fd)
 {
