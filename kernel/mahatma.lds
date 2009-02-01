@@ -40,6 +40,10 @@ SECTIONS
         }
         __END_text = . ;
 
+	.comment : {
+	   *(.comment)
+	}
+
         __START_data_lma = LOADADDR( .data );
         __END_data_lma = __START_data_lma + SIZEOF( .data );
 }
