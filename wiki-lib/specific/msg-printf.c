@@ -29,7 +29,7 @@ void msg(int level, const char *format, ...)
 	va_end(ap);
 
 	if (clear_color)
-		fprintf(stream, "\033[37m");
+		fprintf(stream, "\033[0;m");
 
 	fprintf(stream, "\n");
 }
