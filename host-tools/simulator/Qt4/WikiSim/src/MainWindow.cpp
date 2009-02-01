@@ -21,12 +21,15 @@
 #include "MainWindow.h"
 #include "WikiDisplay.h"
 
+/* wiki-lib includes */
+#include <input.h>
+
 #include <QVBoxLayout>
 
 void
 MainWindow::hwButtonEvent(int num)
 {
-	QKeyEvent event(QEvent::KeyPress, num + Qt::Key_F1, Qt::NoModifier);
+	QKeyEvent event(QEvent::KeyPress, num, Qt::NoModifier);
 	display->keyEventQueue->enqueue(event);
 	display->waitCondition->wakeAll();
 }
@@ -34,19 +37,19 @@ MainWindow::hwButtonEvent(int num)
 void
 MainWindow::searchButtonEvent(void)
 {
-	hwButtonEvent(0);
+	hwButtonEvent(WL_INPUT_KEY_SEARCH);
 }
 
 void
 MainWindow::treeButtonEvent(void)
 {
-	hwButtonEvent(1);
+	hwButtonEvent(WL_INPUT_KEY_TREE);
 }
 
 void
 MainWindow::randomButtonEvent(void)
 {
-	hwButtonEvent(2);
+	hwButtonEvent(WL_INPUT_KEY_RANDOM);
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -58,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     random = new QPushButton("Random"); 
 
     connect(search, SIGNAL(clicked()), this, SLOT(searchButtonEvent()));
-    connect(tree, SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
+    connect(tree,   SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
     connect(random, SIGNAL(clicked()), this, SLOT(randomButtonEvent()));
 
     /*
