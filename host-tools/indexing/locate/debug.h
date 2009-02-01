@@ -25,8 +25,6 @@
 
 #ifdef DEBUG
 static bool debug = true;
-#else
-static bool debug = false;
 #endif
 
 #endif

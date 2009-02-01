@@ -49,6 +49,10 @@
 #include <limits.h>
 #include "lsearcher.h"
 
+extern int l_getc(int fd);
+extern int l_getw(int fd);
+extern void l_lseek(int fd, unsigned int offset);
+
 #if defined(LOOKUP_SLOW)
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
 #elif defined(LOOKUP_FAST)
