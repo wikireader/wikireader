@@ -28,6 +28,7 @@
 #include "suspend.h"
 #include "msg.h"
 #include "touchscreen.h"
+#include "regs.h"
 
 #define VERSION "0.1"
 
@@ -56,8 +57,13 @@ int wl_input_wait(struct wl_input_event *ev)
 
 int main(void)
 {
+	/* set the default data pointer */
+	//asm("xld.w   %r15, __dp");
+	asm("xld.w   %r15, 0x10000000");
+	REG_EFSIF0_TXD = '?';
+
 	/* machine-specific init */
-	traps_init();
+//	traps_init();
 	serial_init();
 
 	/* generic init */

@@ -76,6 +76,8 @@ void msg(int level, const char *fmt, ...)
 	struct message *m;
 	va_list va;
 
+serial_out(0, '?');
+
 	if ((current_msg_write + 1) % MAX_MSGS == MAX_MSGS) {
 		lost_messages++;
 		return;

@@ -182,6 +182,7 @@ irq_callback trap_table[N_TRAPS] = {
 
 void traps_init(void)
 {
-	asm("ld.w %%ttbr, %0" :: "r"(trap_table));
+	void *foo = (void *) 0x84000;
+	asm("ld.w %%ttbr, %0" :: "r"(foo));
 }
 

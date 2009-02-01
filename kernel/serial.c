@@ -28,7 +28,10 @@ static char last_char = 0;
 
 void serial_init(void)
 {
+	REG_EFSIF0_TXD = '?';
 
+	//REG_INT_ESIF01 = 0x36;
+	REG_INT_ESIF01 = 0x6;
 }
 
 void serial_filled(int port)
