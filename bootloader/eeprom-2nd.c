@@ -44,6 +44,7 @@ int main(void)
 	asm("xld.w   %r15, __dp");
 
 	//print("Bootloader starting\n");
+#if BOARD_PROTO1
 	/* set FPT1 to another gpio, make it falling edge triggered */
 	REG_PINTSEL_SPT03 |= 0xC;
 	REG_PINTEL_SEPT07 |= 0x2;
@@ -52,6 +53,7 @@ int main(void)
 	/* some debug helper... P64 as output */
 	/* set P64 as output */
 	REG_P6_IOC6 |= 0x10;
+#endif
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
