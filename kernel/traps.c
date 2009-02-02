@@ -25,19 +25,23 @@
 
 static void undef_irq_handler(void)
 {
+	asm("reti");
 }
 
 static void serial0_err_irq(void)
 {
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 0;
+	asm("reti");
 }
 
 static void serial0_in_irq(void)
 {
 	serial_filled(0);
+	serial_out(0,  ".");
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 1;
+	asm("reti");
 }
 
 static void serial0_out_irq(void)
@@ -45,12 +49,14 @@ static void serial0_out_irq(void)
 	serial_drained(0);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 2;
+	asm("reti");
 }
 
 static void serial1_err_irq(void)
 {
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 3;
+	asm("reti");
 }
 
 static void serial1_in_irq(void)
@@ -58,6 +64,7 @@ static void serial1_in_irq(void)
 	serial_filled(1);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 4;
+	asm("reti");
 }
 
 static void serial1_out_irq(void)
@@ -65,6 +72,7 @@ static void serial1_out_irq(void)
 	serial_drained(1);
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 5;
+	asm("reti");
 }
 
 #define N_TRAPS 108
@@ -182,7 +190,10 @@ irq_callback trap_table[N_TRAPS] = {
 
 void traps_init(void)
 {
-	void *foo = (void *) 0x84000;
-	asm("ld.w %%ttbr, %0" :: "r"(foo));
+	/* relocate the trap table */
+	asm("ld.w %%ttbr, %0" :: "r"(trap_table));
+
+	/* set IE (PSR[4]) */
+	asm("psrset 4");
 }
 

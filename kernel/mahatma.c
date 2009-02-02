@@ -41,16 +41,12 @@ int main(void)
 	traps_init();
 	serial_init();
 
-	msg(MSG_INFO, "BLA");
-
-	for(;;);
-
 	/* generic init */
 	malloc_init();
 	wikilib_init();
 	guilib_init();
 
-	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.", VERSION);
+	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
 
 	/* the next function will loop forever and call wl_input_wait() */
 	wikilib_run();

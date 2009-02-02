@@ -38,10 +38,17 @@ static struct message messages[MAX_MSGS];
 static unsigned int current_msg_read = 0;
 static unsigned int current_msg_write = 0;
 static int lost_messages = 0;
+static unsigned int output_newline = 0;
 
 int get_msg_char(char *c)
 {
 	static int current_char = 0;
+
+	if (output_newline) {
+		*c = '\r';
+		output_newline = 0;
+		return 1;
+	}
 
 	while (1) {
 		struct message *m;
@@ -54,16 +61,20 @@ int get_msg_char(char *c)
 
 		if (*c == '\0') {
 			current_msg_read++;
+			current_msg_read %= MAX_MSGS;
 			current_char = 0;
 			continue;
 		}
 
+		if (*c == '\n')
+			output_newline = 1;
+		
 		current_char++;
 		break;
 	}
 
 	if (lost_messages) {
-		msg(MSG_WARNING, "%d messages lost.", lost_messages);
+		msg(MSG_WARNING, "%d messages lost.\n", lost_messages);
 		lost_messages = 0;
 	}
 
@@ -92,7 +103,6 @@ void msg(int level, const char *fmt, ...)
 
 	if (!serial_transfer_running(0)) {
 		char c;
-
 		if (get_msg_char(&c))
 			serial_out(0, c);
 	}

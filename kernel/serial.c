@@ -20,6 +20,7 @@
 #include <wikilib.h>
 #include <input.h>
 
+#include <msg.h>
 #include "regs.h"
 #include "msg-output.h"
 #include "touchscreen.h"
@@ -39,6 +40,7 @@ void serial_init(void)
 
 	//REG_INT_ESIF01 = 0x36;
 	REG_INT_ESIF01 = 0x6;
+	REG_INT_PLCDC_PSIO0 = 0x70;
 }
 
 void serial_filled(int port)
@@ -82,6 +84,8 @@ int serial_get_event(struct wl_input_event *ev)
 {
 	if (!last_char)
 		return 0;
+
+	msg(MSG_INFO, ".");
 
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 	ev->key_event.keycode = last_char;
