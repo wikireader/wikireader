@@ -25,10 +25,17 @@
 #include "touchscreen.h"
 
 static char last_char = 0;
+static int transfer_running[2];
+
+int serial_transfer_running(int port)
+{
+	return transfer_running[port];
+}
 
 void serial_init(void)
 {
-	REG_EFSIF0_TXD = '?';
+	transfer_running[0] = 0;
+	transfer_running[1] = 0;
 
 	//REG_INT_ESIF01 = 0x36;
 	REG_INT_ESIF01 = 0x6;
@@ -53,7 +60,9 @@ void serial_drained(int port)
 	switch (port) {
 	case 0: /* debug console */
 		if (get_msg_char(&c))
-			REG_EFSIF0_TXD = c;
+			serial_out(0, c);
+		else
+			transfer_running[0] = 0;
 		break;
 	case 1: /* touchscreen controller, nothing to do */
 		break;
@@ -64,7 +73,8 @@ void serial_out(int port, char c)
 {
 	if (port != 0)
 		return;
-	
+
+	transfer_running[port] = 1;
 	REG_EFSIF0_TXD = c;
 }
 

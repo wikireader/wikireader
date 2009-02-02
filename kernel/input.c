@@ -24,38 +24,29 @@
 
 /* local includes */
 #include "serial.h"
-#include "traps.h"
 #include "suspend.h"
-#include "msg.h"
 #include "touchscreen.h"
-#include "regs.h"
 
-#define VERSION "0.1"
-
-int main(void)
+int wl_input_wait(struct wl_input_event *ev)
 {
-	/* set the default data pointer */
-	asm("xld.w   %r15, __dp");
+	/* wl_input_wait() is called from the wikilib mainloop and we will
+	 * get here regularily when the system has no other duty. Hence,
+	 * the only thing we want to do here is go to sleep - the interrupt
+	 * sources are set up and will bring us back to life at some point
+	 */
+	
+	while (1) {
+		system_suspend();
 
-	/* machine-specific init */
-	traps_init();
-	serial_init();
+		/* check whether there was any event in the system. If not,
+		 * just go back to halt mode */
+		if (serial_get_event(ev))
+			break;
 
-	msg(MSG_INFO, "BLA");
+		if (touchscreen_get_event(ev))
+			break;
+	}
 
-	for(;;);
-
-	/* generic init */
-	malloc_init();
-	wikilib_init();
-	guilib_init();
-
-	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.", VERSION);
-
-	/* the next function will loop forever and call wl_input_wait() */
-	wikilib_run();
-
-	/* never reached */
 	return 0;
 }
 

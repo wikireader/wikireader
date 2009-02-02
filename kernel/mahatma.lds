@@ -36,6 +36,7 @@ SECTIONS
         
 	.text : {
            __START_text = . ;
+	   mahatma.o(*.text)
            *(.text)
         }
         __END_text = . ;

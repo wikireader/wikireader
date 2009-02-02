@@ -20,9 +20,11 @@
 #include <stdarg.h>
 #include <regs.h>
 
+#include <input.h>
 #include "types.h"
 #include "msg.h"
 #include "irq.h"
+#include "serial.h"
 
 #define MAX_MSGS	100
 #define MSG_LEN		80
@@ -36,19 +38,16 @@ static struct message messages[MAX_MSGS];
 static unsigned int current_msg_read = 0;
 static unsigned int current_msg_write = 0;
 static int lost_messages = 0;
-static int transfer_active = 0;
 
 int get_msg_char(char *c)
 {
 	static int current_char = 0;
-	
+
 	while (1) {
 		struct message *m;
 
-		if (current_msg_read == current_msg_write) {
-			transfer_active = 0;
+		if (current_msg_read == current_msg_write)
 			return 0;
-		}
 
 		m = messages + current_msg_read;
 		*c = m->text[current_char];
@@ -76,8 +75,6 @@ void msg(int level, const char *fmt, ...)
 	struct message *m;
 	va_list va;
 
-serial_out(0, '?');
-
 	if ((current_msg_write + 1) % MAX_MSGS == MAX_MSGS) {
 		lost_messages++;
 		return;
@@ -93,7 +90,7 @@ serial_out(0, '?');
 	ENABLE_IRQ();
 	va_end(va);
 
-	if (!transfer_active) {
+	if (!serial_transfer_running(0)) {
 		char c;
 
 		if (get_msg_char(&c))
