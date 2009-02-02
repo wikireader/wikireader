@@ -375,7 +375,7 @@ DSTATUS disk_initialize (
 	cache_init();
 
 	if (drv) return STA_NOINIT;			/* Supports only single drive */
-	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
+//	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
 
 	init_pins();
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (0 << 4);
