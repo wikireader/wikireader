@@ -383,11 +383,11 @@ def write_mappings():
     """Write out the mappings used for this article"""
 
     # Write options
-    mkdir("font-foo")
+    mkdir("fonts")
 
     for font in kern_info.keys():
         font_index = "%s" % font
-        font_path = os.path.join("font-foo", font_index)
+        font_path = os.path.join("fonts", font_index)
         mkdir(font_path)
         for (l_glyph, r_glyph) in kern_info[font].keys():
             glyph_path = os.path.join(font_path, "spacing")
