@@ -18,16 +18,16 @@ int wikilib_run(void)
 	char *result;
 
 	a = malloc(512);
-	msg(MSG_INFO, " a = %p", a);
+	msg(MSG_INFO, " a = %p\n", a);
 
 	
-	msg(MSG_INFO, " 1. run", a);
+	msg(MSG_INFO, " 1. run\n", a);
 	fd = wl_open("/kernel", WL_O_RDONLY);
 	wl_read(fd, a, 512);
 	wl_close(fd);
 
 	for (i = 0; i < 10; i++) {
-		msg(MSG_INFO, " 2. run", a);
+		msg(MSG_INFO, " 2. run\n", a);
 		fd = wl_open("/kernel", WL_O_RDONLY);
 		wl_read(fd, a, 512);
 		wl_read(fd, a, 512);
@@ -48,7 +48,7 @@ int wikilib_run(void)
 		search_add(search_string[i]);
 		for (j = 0, result = search_fetch_result();
 				j < 5 && result; ++j, result = search_fetch_result())
-			msg(MSG_INFO, "Result: %s", result);
+			msg(MSG_INFO, "Result: %s\n", result);
 		search_print_stats();
 	}
 	
@@ -58,7 +58,7 @@ int wikilib_run(void)
 
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			msg(MSG_INFO, "%s() got key: %d", __func__, ev.key_event.keycode);
+			msg(MSG_INFO, "%s() got key: %d\n", __func__, ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,

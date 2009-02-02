@@ -69,7 +69,6 @@ void msg(int level, const char *format, ...)
         va_start(ap, format);
 	attron(attrs);
 	vwprintw(stdscr, format, ap);
-	printw("\n");
 	attroff(attrs);
 	va_end(ap);
 }

@@ -31,7 +31,7 @@ void search_init()
 {
 	result = load_index(&global_search, "/wikipedia.index.db", "/wikipedia.index.jump");
 	if (!result) {
-        msg(MSG_ERROR, "Failed to initialize search.");
+        msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
 	}
 }
@@ -59,5 +59,5 @@ char* search_fetch_result()
 extern unsigned int lsesrch_consume_block_stat();
 void search_print_stats()
 {
-    msg(MSG_INFO, "Block read for search: %d", lsesrch_consume_block_stat());
+    msg(MSG_INFO, "Block read for search: %d\n", lsesrch_consume_block_stat());
 }

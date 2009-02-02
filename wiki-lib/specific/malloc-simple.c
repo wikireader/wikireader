@@ -68,7 +68,7 @@ static inline void __malloc_debug(void)
 		if (page_ctrl[i] & PAGE_INUSE)
 			used++;
 
-	msg(MSG_INFO, "malloc debug: %d pages free, %d used, %d total",
+	msg(MSG_INFO, "malloc debug: %d pages free, %d used, %d total\n",
 			N_PAGES - used, used, N_PAGES);
 }
 #else /* MALLOC_DEBUG */

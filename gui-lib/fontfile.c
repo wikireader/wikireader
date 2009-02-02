@@ -95,7 +95,7 @@ int read_font_file(const char *filename)
 
 	n_fonts = *(unsigned int *) file_buf;
 
-	msg(MSG_INFO, "font file has %d fonts", n_fonts);
+	msg(MSG_INFO, "font file has %d fonts\n", n_fonts);
 	file_buf += sizeof(n_fonts);
 
 	/* FIXME - this is not endian-safe */

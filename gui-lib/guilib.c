@@ -4,9 +4,10 @@
 #include "glyph.h"
 #include "fontfile.h"
 
-/* The idea is that every function which calls painting routine calls guilib_fb_lock()
- * before any operation and guilib_fb_unlock() after it. This way, only the last of
- * these functions in the calling stack will actually execute fb_refresh(). */
+/* The idea is that every function which calls painting routines calls
+ * guilib_fb_lock() before any operation and guilib_fb_unlock() after
+ * it. This way, only the last of these functions in the calling stack
+ * will actually execute fb_refresh(). */
 static int fb_ref = 0;
 
 void guilib_fb_lock(void)
@@ -51,7 +52,7 @@ void guilib_init(void)
 
 	/* just some tests ... */
 	if (read_font_file(FONTFILE) != 0) {
-		msg(MSG_INFO, "unable to load font file %s", FONTFILE);
+		msg(MSG_INFO, "unable to load font file %s\n", FONTFILE);
 		return;
 	}
 
