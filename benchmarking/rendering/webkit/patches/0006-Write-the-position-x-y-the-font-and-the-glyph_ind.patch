@@ -1,4 +1,4 @@
-From 05ac75b97bd6e50c6698c398fb3ef3d3d136c0a6 Mon Sep 17 00:00:00 2001
+From 8c9ce98282a45f939e56531173a0760b9a49bc4e Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:32:20 +0100
 Subject: [PATCH] Write the position (x,y), the font and the glyph_index on a line
@@ -13,7 +13,7 @@ information.
  1 files changed, 17 insertions(+), 0 deletions(-)
 
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index 0162462..cad1a8c 100644
+index 881d85f..d4247d3 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -147,9 +147,26 @@ static void create_font_dirs(GList *glyphs)

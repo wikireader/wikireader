@@ -1,4 +1,4 @@
-From d04218e3af3f324c45fe143873076d9e48455417 Mon Sep 17 00:00:00 2001
+From e19abab8be01f7167b81997b639c6ce5b6876670 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sun, 4 Jan 2009 19:52:40 +0100
 Subject: [PATCH] Add an end of text run marker to the output
@@ -25,7 +25,7 @@ index f0012c4..5ee6f88 100644
      float red, green, blue, alpha;
  
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index 8b69dce..6efea8c 100644
+index d038c81..819815e 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -110,7 +110,12 @@ static guint status_context_id;

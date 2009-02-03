@@ -1,4 +1,4 @@
-From 9e2ccd9531e290aba5d52b07fb8219bb2b84e331 Mon Sep 17 00:00:00 2001
+From 7b333374d2f8eed2f8d027fc480d5f8263597b12 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 23 Dec 2008 21:33:25 +0100
 Subject: [PATCH] [rendering] Switch to the view port
@@ -8,7 +8,7 @@ Subject: [PATCH] [rendering] Switch to the view port
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index cad1a8c..8b69dce 100644
+index d4247d3..d038c81 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -192,7 +192,7 @@ update_title (GtkWindow* window)

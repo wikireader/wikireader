@@ -1,4 +1,4 @@
-From 4d62b885fa4d7556c4b9992a55aecd0f644a2909 Mon Sep 17 00:00:00 2001
+From 98798fcce9b3fada2b64dc3af2d6dca8ab5fab84 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 20:13:06 +0100
 Subject: [PATCH] Add API to extract the required data of a a full page...
@@ -15,7 +15,7 @@ everything we will need to process the text.
  6 files changed, 166 insertions(+), 146 deletions(-)
 
 diff --git a/WebCore/GNUmakefile.am b/WebCore/GNUmakefile.am
-index 3032d26..20f7274 100644
+index 2da7c6b..7a1a523 100644
 --- a/WebCore/GNUmakefile.am
 +++ b/WebCore/GNUmakefile.am
 @@ -43,6 +43,7 @@ webcore_cppflags += \
@@ -378,10 +378,10 @@ index d3b9bf9..cda196d 100644
  
      Color fillColor = context->fillColor();
 diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
-index 478c773..7afb32d 100644
+index fcce609..8c3c52d 100644
 --- a/WebKit/gtk/webkit/webkitwebview.cpp
 +++ b/WebKit/gtk/webkit/webkitwebview.cpp
-@@ -101,6 +101,10 @@
+@@ -102,6 +102,10 @@
  
  static const double defaultDPI = 96.0;
  
@@ -392,7 +392,7 @@ index 478c773..7afb32d 100644
  using namespace WebKit;
  using namespace WebCore;
  
-@@ -2666,4 +2670,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
+@@ -2673,4 +2677,39 @@ void webkit_web_view_set_full_content_zoom(WebKitWebView* webView, gboolean zoom
      g_object_notify(G_OBJECT(webView), "full-content-zoom");
  }
  
@@ -411,7 +411,7 @@ index 478c773..7afb32d 100644
 +    // Layout....
 +    frame->view()->setScrollbarModes(ScrollbarAlwaysOff, ScrollbarAlwaysOff);
 +    frame->view()->resize(view_width, view_height);
-+    frame->forceLayout();
++    frame->view()->forceLayout();
 +    frame->view()->adjustViewSize();
 +    frame->view()->layoutIfNeededRecursive();
 +
@@ -480,7 +480,7 @@ index 2bb8c61..3f0c247 100644
  
  #endif
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index 8ed2690..94f962e 100644
+index 59f2230..023f1ca 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -35,6 +35,25 @@ static gchar* main_title;

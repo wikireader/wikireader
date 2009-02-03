@@ -1,4 +1,4 @@
-From 8d73ecf3f1dde831d49cbc6af69c157d7387c1a4 Mon Sep 17 00:00:00 2001
+From 213f37bbca9382957e99c63fe10e236784158d2b Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:10:17 +0100
 Subject: [PATCH] Write the glyphs to a file....
@@ -42,7 +42,7 @@ index cda196d..114f02f 100644
      startY = point.y();
      webkit_ft2_render_layout_line_subpixel(renderer, layoutLine, 10, 80);
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index 94f962e..69f95b9 100644
+index 023f1ca..c6c7d0d 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -35,12 +35,112 @@ static gchar* main_title;

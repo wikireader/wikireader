@@ -1,4 +1,4 @@
-From 667eaeeed0fdc09a79522f6078206dadc9e6327d Mon Sep 17 00:00:00 2001
+From fde52b5d7dee16bc3bddab9671ff1ae0f20a1791 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:22:01 +0100
 Subject: [PATCH] Use len attribute of GByteArray instead of strlen (which stops at the first null byte)
@@ -8,7 +8,7 @@ Subject: [PATCH] Use len attribute of GByteArray instead of strlen (which stops 
  1 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
-index 69f95b9..0162462 100644
+index c6c7d0d..881d85f 100644
 --- a/WebKitTools/GtkLauncher/main.c
 +++ b/WebKitTools/GtkLauncher/main.c
 @@ -57,7 +57,7 @@ static guint status_context_id;
