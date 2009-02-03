@@ -49,6 +49,12 @@
 #include <file-io.h>
 #include "lsearcher.h"
 
+#ifdef INCLUDE_MAIN
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#endif
+
 static int blocks_read = 0;
 
 #define BLOCK_ALIGNMENT 0x1ff
