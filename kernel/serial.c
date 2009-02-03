@@ -30,6 +30,16 @@ static int transfer_running[2];
 
 int serial_transfer_running(int port)
 {
+#if 0
+	switch (port) {
+	case 0:
+		return (REG_EFSIF0_STATUS >> 5) & 1;
+	case 1:
+		return (REG_EFSIF1_STATUS >> 5) & 1;
+	default:
+		return 0;
+	}
+#endif
 	return transfer_running[port];
 }
 

@@ -22,6 +22,7 @@
 #include "traps.h"
 #include "serial.h"
 #include "suspend.h"
+#include "irq.h"
 
 static void undef_irq_handler(void)
 {
@@ -192,8 +193,6 @@ void traps_init(void)
 {
 	/* relocate the trap table */
 	asm("ld.w %%ttbr, %0" :: "r"(trap_table));
-
-	/* set IE (PSR[4]) */
-	asm("psrset 4");
+	ENABLE_IRQ();
 }
 

@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include <regs.h>
 
 #include <input.h>
@@ -68,15 +69,17 @@ int get_msg_char(char *c)
 
 		if (*c == '\n')
 			output_newline = 1;
-		
+
 		current_char++;
 		break;
 	}
 
+/*
 	if (lost_messages) {
 		msg(MSG_WARNING, "%d messages lost.\n", lost_messages);
 		lost_messages = 0;
 	}
+*/
 
 	return 1;
 }
@@ -86,19 +89,22 @@ void msg(int level, const char *fmt, ...)
 	struct message *m;
 	va_list va;
 
-	if ((current_msg_write + 1) % MAX_MSGS == MAX_MSGS) {
+	/* is the read pointer one position ahead? */
+	if ((current_msg_write + 1) % MAX_MSGS == current_msg_read) {
 		lost_messages++;
 		return;
 	}
 
 	va_start(va, fmt);
-	DISABLE_IRQ();
+//	DISABLE_IRQ();
 	m = messages + current_msg_write;
 	m->level = level;
-	vsnprintf(m->text, MSG_LEN - 1, fmt, va);
+	memset(m->text, 0, MSG_LEN);
+	strncpy(m->text, fmt, MSG_LEN);
+////	vsnprintf(m->text, MSG_LEN - 1, fmt, va);
 	current_msg_write++;
 	current_msg_write %= MAX_MSGS;
-	ENABLE_IRQ();
+//	ENABLE_IRQ();
 	va_end(va);
 
 	if (!serial_transfer_running(0)) {
