@@ -76,21 +76,21 @@ def get_max(list):
 
 	return max
 
-def gen_font(fontid):
-	path = fontpath + "/" + fontid + "/"
-	glyphpath = path + "glyphs/"
-	glyphlist = os.listdir(glyphpath)
+def gen_font(font_name):
+	path = fontpath + "/" + font_name + "/"
+	glyphpath = path
+	glyphlist = filter(lambda x: x != 'spacing', os.listdir(glyphpath))
 
 	# the index table will take an unsigned int for each entry
 	n_glyphs = get_max(glyphlist) + 1
 	offsettable = [ 0 ] * n_glyphs
 	offset = n_glyphs * 4
 	out = ""
-	print "font %s has %d glyphs" % (fontid, n_glyphs)
+	print "font %s has %d glyphs" % (font_name, n_glyphs)
 
 	for glyphid in glyphlist:
 		imagefile = glyphpath + glyphid + "/bitmap.png"
-		spacing_hints = gen_spacing_hints(fontid, glyphid)
+		spacing_hints = gen_spacing_hints(font_name, glyphid)
 
 		try:
 			im = gd.image(imagefile)
@@ -102,7 +102,7 @@ def gen_font(fontid):
 			n_spacing_hints = len(spacing_hints) / 4;
 			header = struct.pack("<BBI", w, h, n_spacing_hints)
 
-			#print "%s/ %d,%d" % (fontid, w, h)
+			#print "%s/ %d,%d" % (font_name, w, h)
 
 			bit = 0;
 			outbyte = 0;
@@ -142,7 +142,7 @@ def gen_font(fontid):
 	for i in offsettable:
 		table += struct.pack("<I", i)
 
-	print "index to glyph 0 (font %s) is %d" % (fontid, offsettable[0])
+	print "index to glyph 0 (font %s) is %d" % (font_name, offsettable[0])
 	return struct.pack("<I", n_glyphs) + table + out
 
 if (len(sys.argv) < 2):
@@ -165,10 +165,12 @@ except:
 fonttable = [ 0 ] * len(fontlist)
 offset = len(fontlist) * 4
 fontnum = 0
+font_name_to_number = {}
 out = ""
 
 for _font in fontlist:
-	f = gen_font(str(fontnum))
+	font_name_to_number[_font] = fontnum
+	f = gen_font(_font)
 	out += f
 	fonttable[fontnum] = offset;
 	print "offset for font %d is %d" % (fontnum, offset)
