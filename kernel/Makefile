@@ -34,7 +34,7 @@ INCLUDES=				\
 	-I$(FATFSDIR)/config/c33/	\
 	-I$(WIKILIBDIR)/include/	\
 	-I$(GUILIBDIR)/			\
-	-I../bootloader/                \
+	-I../common/                    \
 	-I$(INDEX_DIR)
 
 LIBS=					\

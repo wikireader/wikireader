@@ -3,7 +3,7 @@ CC=$(GCC)
 
 LDFLAGS=
 
-CFLAGS=-Wall -I.
+CFLAGS=-Wall -I. -I../../common/
 
 all: e07load
 

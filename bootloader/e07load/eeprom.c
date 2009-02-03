@@ -23,7 +23,7 @@
 
 #include "eeprom.h"
 #include "misc.h"
-#include "../config.h"
+#include "config.h"
 
 enum {
 	SPI_WRITE = 0,
