@@ -37,7 +37,11 @@ def usage():
 
 def gen_spacing_hints(fontid, glyphid):
 	spacingpath = fontpath + "/" + fontid + "/spacing/"
-	all = os.listdir(spacingpath)
+	try:
+		all = os.listdir(spacingpath)
+	except:
+		return ""
+
 	filtered = array.array('I')
 	spacings = ""
 
