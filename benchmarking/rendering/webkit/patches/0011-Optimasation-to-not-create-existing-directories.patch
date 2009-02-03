@@ -1,0 +1,26 @@
+From 800f0c51026eff7ac32d1d3aaa9d9168cabfd676 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Mon, 19 Jan 2009 00:37:01 +0100
+Subject: [PATCH] Optimasation to not create existing directories
+
+---
+ WebKitTools/GtkLauncher/main.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 819815e..1067445 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -127,6 +127,9 @@ static void create_font_dir(WebKitGlyph* glyph, gpointer* data)
+                            glyph->glyph_index);
+ 
+     gchar* c_path = g_string_free(path, FALSE);
++    if (g_file_test(c_path, G_FILE_TEST_EXISTS))
++        return;
++
+     printf("Creating directory: %s\n", c_path);
+     g_mkdir_with_parents(c_path, 0755);
+ 
+-- 
+1.5.6.3
+

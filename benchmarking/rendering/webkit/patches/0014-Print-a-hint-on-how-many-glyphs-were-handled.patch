@@ -1,0 +1,42 @@
+From 416b9f8e494b9291163eac6863cc5cd7ba66a906 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Tue, 3 Feb 2009 00:41:39 +0100
+Subject: [PATCH] Print a hint on how many glyphs were handled...
+
+---
+ WebKitTools/GtkLauncher/main.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index d0c45ef..8b74e3a 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -35,6 +35,8 @@ static gchar* main_title;
+ static gint load_progress;
+ static guint status_context_id;
+ 
++static gint dumped_glyphs = 0;
++
+ /*
+  * write int... with paranoia... (to be added...)
+  */
+@@ -115,6 +117,7 @@ static void create_font_dir(WebKitGlyph* glyph, gpointer* data)
+     if (!glyph->face_and_config)
+         return;
+ 
++    ++dumped_glyphs;
+     length = strlen(glyph->face_and_config);
+     for (i = 0; i < length; ++i)
+         if (glyph->face_and_config[i] == ' ')
+@@ -205,7 +208,7 @@ update_title (GtkWindow* window)
+         create_font_dirs(webkit_glyphs);
+         create_text_file(webkit_glyphs);
+         create_links(link_list);
+-        g_warning("Done!");
++        g_warning("Done! Dumped: Glyphs: %d", dumped_glyphs);
+         gtk_main_quit ();
+     }
+ 
+-- 
+1.5.6.3
+

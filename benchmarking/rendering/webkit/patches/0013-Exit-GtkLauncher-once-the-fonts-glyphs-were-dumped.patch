@@ -1,0 +1,24 @@
+From d8cdf7ffe5241bdd737df66131559a0725597c6f Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Tue, 3 Feb 2009 00:27:32 +0100
+Subject: [PATCH] Exit GtkLauncher once the fonts/glyphs were dumped
+
+---
+ WebKitTools/GtkLauncher/main.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index fc59a9b..d0c45ef 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -206,6 +206,7 @@ update_title (GtkWindow* window)
+         create_text_file(webkit_glyphs);
+         create_links(link_list);
+         g_warning("Done!");
++        gtk_main_quit ();
+     }
+ 
+ 
+-- 
+1.5.6.3
+
