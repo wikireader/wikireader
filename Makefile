@@ -37,7 +37,7 @@ BINUTILS_URL= \
 
 DL=toolchain/dl
 
-# ----- up is configuration data --------------------------------------
+# ----- configuration data --------------------------------------
 
 # If the user hasn't checked out sources, he/she should run 'make checkout'
 # first, then run 'make'
@@ -61,7 +61,13 @@ wikireader: mini-libc fatfs
 	( cd jsp && \
 	make -C cfg && \
 	make -C wikireader && \
-	cp wikireader/sample1.elf ../kernel)
+	cp wikireader/sample1.elf ../KERNEL)
+
+.PHONY: mahatma
+mahatma: fatfs
+	( cd kernel	&& \
+	make		&& \
+	cp mahatma.elf ../KERNEL)
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
@@ -159,6 +165,7 @@ clean:
 	make clean -C bootloader
 	make clean -C toolchain/mini-libc
 	make clean -C fatfs
+	make clean -C kernel
 	cd jsp && make clean -C wikireader
 	rm -rf toolchain/gcc-$(GCC_VERSION)
 	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
