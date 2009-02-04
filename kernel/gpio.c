@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <input.h>
+#include <regs.h>
 
 static unsigned int gpio_state;
 static unsigned int last_state;
