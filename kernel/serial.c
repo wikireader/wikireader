@@ -24,13 +24,16 @@
 #include "regs.h"
 #include "msg-output.h"
 #include "touchscreen.h"
+#include "serial.h"
 
-static char last_char = 0;
-static int transfer_running[2];
+#define BUFSIZE 10
+
+static char console_buf[BUFSIZE];
+static int  console_read;
+static int  console_write;
 
 int serial_transfer_running(int port)
 {
-#if 0
 	switch (port) {
 	case 0:
 		return (REG_EFSIF0_STATUS >> 5) & 1;
@@ -39,28 +42,31 @@ int serial_transfer_running(int port)
 	default:
 		return 0;
 	}
-#endif
-	return transfer_running[port];
 }
 
 void serial_init(void)
 {
-	transfer_running[0] = 0;
-	transfer_running[1] = 0;
-
 	//REG_INT_ESIF01 = 0x36;
 	REG_INT_ESIF01 = 0x6;
 	REG_INT_PLCDC_PSIO0 = 0x70;
+
+	console_read = 0;
+	console_write = 0;
 }
 
-void serial_filled(int port)
+void serial_filled(int port, char c)
 {
+	if (c == 0)
+		return;
+
 	switch (port) {
 	case 0: /* debug console */
-		last_char = REG_EFSIF0_RXD;
+		console_buf[console_write] = c;
+		console_write++;
+		console_write %= BUFSIZE;
 		break;
 	case 1:
-		touchscreen_read_char(REG_EFSIF1_RXD);
+		touchscreen_read_char(c);
 		break;
 	}
 }
@@ -73,8 +79,6 @@ void serial_drained(int port)
 	case 0: /* debug console */
 		if (get_msg_char(&c))
 			serial_out(0, c);
-		else
-			transfer_running[0] = 0;
 		break;
 	case 1: /* touchscreen controller, nothing to do */
 		break;
@@ -86,22 +90,19 @@ void serial_out(int port, char c)
 	if (port != 0)
 		return;
 
-	transfer_running[port] = 1;
 	REG_EFSIF0_TXD = c;
 }
 
 int serial_get_event(struct wl_input_event *ev)
 {
-	if (!last_char)
+	if (console_read == console_write)
 		return 0;
 
-	msg(MSG_INFO, ".");
-
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-	ev->key_event.keycode = last_char;
+	ev->key_event.keycode = console_buf[console_read];
 	ev->key_event.value = 1;
-	last_char = 0;
-
+	console_read++;
+	console_read %= BUFSIZE;
 	return 1;
 }
 
