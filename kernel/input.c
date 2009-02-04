@@ -28,20 +28,6 @@
 #include "touchscreen.h"
 #include "gpio.h"
 
-static int check_input_sources(struct wl_input_event *ev)
-{
-	if (serial_get_event(ev))
-		return 1;
-
-	if (touchscreen_get_event(ev))
-		return 1;
-
-	if (gpio_get_event(ev))
-		return 1;
-
-	return 0;
-}
-
 int wl_input_wait(struct wl_input_event *ev)
 {
 	/* wl_input_wait() is called from the wikilib mainloop and we will
@@ -51,13 +37,16 @@ int wl_input_wait(struct wl_input_event *ev)
 	 */
 	
 	while (1) {
-		if (check_input_sources(ev))
+		if (serial_get_event(ev))
+			break;
+
+		if (touchscreen_get_event(ev))
+			break;
+
+		if (gpio_get_event(ev))
 			break;
 
 		system_suspend();
-
-		if (check_input_sources(ev))
-			break;
 	}
 
 	return 0;
