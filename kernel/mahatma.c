@@ -48,6 +48,8 @@ int main(void)
 	wikilib_init();
 //	guilib_init();
 
+	serial_reset();
+
 	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
 
 	/* the next function will loop forever and call wl_input_wait() */

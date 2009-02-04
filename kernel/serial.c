@@ -25,12 +25,13 @@
 #include "msg-output.h"
 #include "touchscreen.h"
 #include "serial.h"
+#include "irq.h"
 
 #define BUFSIZE 10
 
 static char console_buf[BUFSIZE];
-static int  console_read;
-static int  console_write;
+static int  console_read = 0;
+static int  console_write = 0;
 
 int serial_transfer_running(int port)
 {
@@ -50,6 +51,11 @@ void serial_init(void)
 	REG_INT_ESIF01 = 0x6;
 	REG_INT_PLCDC_PSIO0 = 0x70;
 
+	msg(MSG_INFO, "r %p w %p\n", &console_read, &console_write);
+}
+
+void serial_reset(void)
+{
 	console_read = 0;
 	console_write = 0;
 }
@@ -61,9 +67,12 @@ void serial_filled(int port, char c)
 
 	switch (port) {
 	case 0: /* debug console */
+		DISABLE_IRQ();
 		console_buf[console_write] = c;
 		console_write++;
 		console_write %= BUFSIZE;
+		ENABLE_IRQ();
+//		msg(MSG_INFO, " IN %d r %d w %d\n", c, console_read, console_write);
 		break;
 	case 1:
 		touchscreen_read_char(c);
@@ -97,12 +106,14 @@ int serial_get_event(struct wl_input_event *ev)
 {
 	if (console_read == console_write)
 		return 0;
-
+msg(MSG_INFO, " OUT. %d %d \n", console_read, console_write);
+	DISABLE_IRQ();
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 	ev->key_event.keycode = console_buf[console_read];
 	ev->key_event.value = 1;
 	console_read++;
 	console_read %= BUFSIZE;
+	ENABLE_IRQ();
 	return 1;
 }
 
