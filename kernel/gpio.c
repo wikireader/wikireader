@@ -56,6 +56,12 @@ int gpio_get_event(struct wl_input_event *ev)
 
 void gpio_init(void)
 {
+	/* wakeup sources, turn keyboard control 0 to wakeup */
+	REG_KINTCOMP_SCPK0 = 0x1f;
+	REG_KINTCOMP_SMPK0 = 0x10;
+	REG_KINTSEL_SPPK01 = 0x40;
+	REG_INT_EK01_EP0_3 = 0x10;
+
 	gpio_state = 0;
 	last_state = 0;
 }
