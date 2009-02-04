@@ -29,6 +29,7 @@
 #include "msg.h"
 #include "touchscreen.h"
 #include "regs.h"
+#include "gpio.h"
 
 #define VERSION "0.1"
 
@@ -38,13 +39,14 @@ int main(void)
 	asm("xld.w   %r15, __dp");
 
 	/* machine-specific init */
+	gpio_init();
 	traps_init();
 	serial_init();
 
 	/* generic init */
-	malloc_init();
+//	malloc_init();
 	wikilib_init();
-	guilib_init();
+//	guilib_init();
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
 
