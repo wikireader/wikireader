@@ -26,6 +26,21 @@
 #include "serial.h"
 #include "suspend.h"
 #include "touchscreen.h"
+#include "gpio.h"
+
+static int check_input_sources(struct wl_input_event *ev)
+{
+	if (serial_get_event(ev))
+		return 1;
+
+	if (touchscreen_get_event(ev))
+		return 1;
+
+	if (gpio_get_event(ev))
+		return 1;
+
+	return 0;
+}
 
 int wl_input_wait(struct wl_input_event *ev)
 {
@@ -36,14 +51,12 @@ int wl_input_wait(struct wl_input_event *ev)
 	 */
 	
 	while (1) {
-		system_suspend();
-
-		/* check whether there was any event in the system. If not,
-		 * just go back to halt mode */
-		if (serial_get_event(ev))
+		if (check_input_sources(ev))
 			break;
 
-		if (touchscreen_get_event(ev))
+		system_suspend();
+
+		if (check_input_sources(ev))
 			break;
 	}
 
