@@ -38,8 +38,9 @@ static void serial0_err_irq(void)
 
 static void serial0_in_irq(void)
 {
-	serial_filled(0);
-	serial_out(0,  ".");
+	while (REG_EFSIF0_STATUS & 0x1)
+		serial_filled(0, REG_EFSIF0_RXD);
+
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 1;
 	asm("reti");
@@ -62,7 +63,9 @@ static void serial1_err_irq(void)
 
 static void serial1_in_irq(void)
 {
-	serial_filled(1);
+	while (REG_EFSIF1_STATUS & 0x1)
+		serial_filled(1, REG_EFSIF1_RXD);
+
 	/* clear interrupt */
 	REG_INT_FSIF01 = 1 << 4;
 	asm("reti");
@@ -76,6 +79,19 @@ static void serial1_out_irq(void)
 	asm("reti");
 }
 
+static void kint_irq(void)
+{
+	serial_out(0, '>');
+	REG_INT_FK01_FP03 = 0x3f;
+	asm("reti");
+}
+
+static void unaligned_data_access(void)
+{
+	serial_out(0, '!');
+	asm("reti");
+}
+
 #define N_TRAPS 108
 typedef void (*irq_callback)(void);
 irq_callback trap_table[N_TRAPS] = {
@@ -85,7 +101,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 3	*/
 	undef_irq_handler,	/* offset 4	*/
 	undef_irq_handler,	/* offset 5	*/
-	undef_irq_handler,	/* offset 6	*/
+	unaligned_data_access,	/* offset 6 : unaligned data access exception */
 	undef_irq_handler,	/* offset 7	*/
 	undef_irq_handler,	/* offset 8	*/
 	undef_irq_handler,	/* offset 9	*/
@@ -99,8 +115,8 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 17	*/
 	undef_irq_handler,	/* offset 18	*/
 	undef_irq_handler,	/* offset 19	*/
-	undef_irq_handler,	/* offset 20	*/
-	undef_irq_handler,	/* offset 21	*/
+	kint_irq,		/* offset 20	*/
+	kint_irq,		/* offset 21	*/
 	undef_irq_handler,	/* offset 22	*/
 	undef_irq_handler,	/* offset 23	*/
 	undef_irq_handler,	/* offset 24	*/
@@ -191,8 +207,13 @@ irq_callback trap_table[N_TRAPS] = {
 
 void traps_init(void)
 {
+	/* WAKEUP=1 */
+	REG_CMU_PROTECT = 0x96;
+	REG_CMU_OPT |= 0x1;
+	REG_CMU_PROTECT = 0;
+
 	/* relocate the trap table */
-	asm("ld.w %%ttbr, %0" :: "r"(trap_table));
+	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
 	ENABLE_IRQ();
 }
 
