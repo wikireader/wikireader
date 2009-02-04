@@ -90,21 +90,22 @@ void msg(int level, const char *fmt, ...)
 	va_list va;
 
 	/* is the read pointer one position ahead? */
+#if 0
 	if ((current_msg_write + 1) % MAX_MSGS == current_msg_read) {
 		lost_messages++;
 		return;
 	}
+#endif
 
 	va_start(va, fmt);
-//	DISABLE_IRQ();
+	DISABLE_IRQ();
 	m = messages + current_msg_write;
 	m->level = level;
 	memset(m->text, 0, MSG_LEN);
-	strncpy(m->text, fmt, MSG_LEN);
-////	vsnprintf(m->text, MSG_LEN - 1, fmt, va);
+	vsnprintf(m->text, MSG_LEN - 1, fmt, va);
 	current_msg_write++;
 	current_msg_write %= MAX_MSGS;
-//	ENABLE_IRQ();
+	ENABLE_IRQ();
 	va_end(va);
 
 	if (!serial_transfer_running(0)) {
