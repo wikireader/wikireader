@@ -55,7 +55,7 @@ CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
-	serial.o traps.o input.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
+	gpio.o serial.o traps.o input.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
 TARGETS=mahatma.elf
 all: $(TARGETS)
 
