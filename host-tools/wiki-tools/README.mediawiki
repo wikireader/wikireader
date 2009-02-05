@@ -76,7 +76,7 @@ real    35m11.656s
 user    32m6.628s
 sys     0m23.289s
 
-time bzcat ./enwiki-latest-pages-articles.xml.bz2 | ./openmoko-wikipediareader.git/wiki-tools/wiki-tools 
+time bzcat ./enwiki-latest-pages-articles.xml.bz2 | ./wiki-tools 
 
 real    77m41.179s
 user    73m9.870s

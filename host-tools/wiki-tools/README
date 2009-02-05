@@ -5,6 +5,9 @@ You will need at least Qt4.4 for the XML StreamReader implementation and
 
 qmake-qt4; make
 
+= Usage =
+bzcat /PATH/TO/enwiki-latest-pages-articles.xml.bz2 | ./wiki-tools
+
 = Functionalities =
 == Extract Titles ==
 For testing indexing and finding articles we will need to extract every word
