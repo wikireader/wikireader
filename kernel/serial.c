@@ -30,8 +30,8 @@
 #define BUFSIZE 10
 
 static char console_buf[BUFSIZE];
-static int  console_read = 0;
-static int  console_write = 0;
+static unsigned int console_read = 0;
+static unsigned int console_write = 0;
 
 int serial_transfer_running(int port)
 {
