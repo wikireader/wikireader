@@ -81,6 +81,8 @@ static void serial1_out_irq(void)
 
 static void kint_irq(void)
 {
+	while(serial_transfer_running(0));
+
 	serial_out(0, '>');
 	REG_INT_FK01_FP03 = 0x3f;
 	asm("reti");
@@ -88,6 +90,8 @@ static void kint_irq(void)
 
 static void unaligned_data_access(void)
 {
+	while(serial_transfer_running(0));
+
 	serial_out(0, '!');
 	asm("reti");
 }
