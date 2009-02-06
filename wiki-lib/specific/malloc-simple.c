@@ -3,10 +3,10 @@
 #include <msg.h>
 #include <string.h>
 
-/* 4MB RAM size */
-#define MEM_SIZE	(4 * 1024 * 1024)
+/* 512kB RAM size */
+#define MEM_SIZE	(512 * 1024)
 #define RAM_START	(0x10000000)
-#define KERNEL_SIZE	(0x100000)
+#define KERNEL_SIZE	(0x20000)
 #define PAGE_SIZE 	(512)
 #define MALLOC_DEBUG
 
@@ -90,7 +90,8 @@ void *malloc(unsigned int size)
 		if (max == pages) {
 			__use_region(start, pages);
 			__malloc_debug();
-			return (void *) PAGE(start);
+			msg(MSG_INFO, " --- start = %d, mem = %p\n", start, PAGE(start));
+			return PAGE(start);
 		}
 
 		if (max == 0)
