@@ -25,9 +25,13 @@
 #include "irq.h"
 
 #define CLEAR_IRQ(reg,val)			\
+	asm("pushn %r12");			\
+	asm("pushn %r13");			\
 	asm("ld.w %%r12, %0" :: "r"((val)));	\
 	asm("xld.w %%r13, %0" :: "g"(&(reg))); 	\
 	asm("ld.b [%r13], %r12");		\
+	asm("popn %r13");			\
+	asm("popn %r12");			\
 	asm("reti");
 
 
