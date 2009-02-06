@@ -24,13 +24,8 @@
 #include "suspend.h"
 #include "irq.h"
 
-#define INT_ENTER()	\
-	asm("ld.w %r14, %sp");		\
-	asm("xld.w %r4, 0x1000");	\
-	asm("ld.w %sp, %r4");
-
-#define INT_EXIT()	\
-	asm("ld.w %sp, %r14");		\
+#define CLEAR_IRQ(reg,val)	\
+	reg = val;		\
 	asm("reti");
 
 static void undef_irq_handler(void)
@@ -40,77 +35,45 @@ static void undef_irq_handler(void)
 
 static void serial0_err_irq(void)
 {
-	INT_ENTER();
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 0;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 0);
 }
 
 static void serial0_in_irq(void)
 {
-	INT_ENTER();
-	while (REG_EFSIF0_STATUS & 0x1)
-		serial_filled(0, REG_EFSIF0_RXD);
-
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 1;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
 }
 
 static void serial0_out_irq(void)
 {
-	INT_ENTER();
-	serial_drained(0);
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 2;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 2);
 }
 
 static void serial1_err_irq(void)
 {
-	INT_ENTER();
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 3;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 3);
 }
 
 static void serial1_in_irq(void)
 {
-	INT_ENTER();
-	while (REG_EFSIF1_STATUS & 0x1)
-		serial_filled(1, REG_EFSIF1_RXD);
-
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 4;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 4);
 }
 
 static void serial1_out_irq(void)
 {
-	INT_ENTER();
-	serial_drained(1);
-	/* clear interrupt */
-	REG_INT_FSIF01 = 1 << 5;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FSIF01, 1 << 5);
 }
 
 static void kint_irq(void)
 {
-	INT_ENTER();
-	while(serial_transfer_running(0));
-
 	serial_out(0, '>');
-	REG_INT_FK01_FP03 = 0x3f;
-	INT_EXIT();
+	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
 }
 
 static void unaligned_data_access(void)
 {
-	INT_ENTER();
 	while(serial_transfer_running(0));
-
 	serial_out(0, '!');
-	INT_EXIT();
+	asm("reti");
 }
 
 #define N_TRAPS 108
