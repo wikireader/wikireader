@@ -49,13 +49,12 @@ int main(void)
 	serial_init();
 
 	/* generic init */
-	malloc_init();
-	wikilib_init();
-//	guilib_init();
-
 	if (f_mount(0, &fatfs) != FR_OK)
 		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
 
+	malloc_init();
+	wikilib_init();
+	guilib_init();
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
 
