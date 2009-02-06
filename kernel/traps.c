@@ -24,9 +24,12 @@
 #include "suspend.h"
 #include "irq.h"
 
-#define CLEAR_IRQ(reg,val)	\
-	reg = val;		\
+#define CLEAR_IRQ(reg,val)			\
+	asm("ld.w %%r12, %0" :: "r"((val)));	\
+	asm("xld.w %%r13, %0" :: "g"(&(reg))); 	\
+	asm("ld.b [%r13], %r12");		\
 	asm("reti");
+
 
 static void undef_irq_handler(void)
 {
