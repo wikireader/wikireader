@@ -24,14 +24,13 @@
 
 void system_suspend(void)
 {
+	asm("halt");
+	return;
         /* WAKEUP=1 */
 	REG_CMU_PROTECT = 0x96;
 	REG_CMU_OPT |= 0x1;
 	REG_CMU_GATEDCLK1 = 0xffffffff;
 	REG_CMU_PROTECT = 0;
-
-	//asm("halt");
-	return;
 
 	/* enable write access to clock control registers */
 	REG_CMU_PROTECT = 0x96;

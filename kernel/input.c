@@ -35,7 +35,7 @@ int wl_input_wait(struct wl_input_event *ev)
 	 * the only thing we want to do here is go to sleep - the interrupt
 	 * sources are set up and will bring us back to life at some point
 	 */
-	
+
 	while (1) {
 		if (serial_get_event(ev))
 			break;
