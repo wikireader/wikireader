@@ -21,6 +21,7 @@
 #include <wikilib.h>
 #include <input.h>
 #include <malloc.h>
+#include <tff.h>
 
 /* local includes */
 #include "serial.h"
@@ -32,6 +33,8 @@
 #include "gpio.h"
 
 #define VERSION "0.1"
+
+static FATFS fatfs;
 
 int main(void)
 {
@@ -46,9 +49,13 @@ int main(void)
 	serial_init();
 
 	/* generic init */
-//	malloc_init();
+	malloc_init();
 	wikilib_init();
 //	guilib_init();
+
+	if (f_mount(0, &fatfs) != FR_OK)
+		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
+
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
 
