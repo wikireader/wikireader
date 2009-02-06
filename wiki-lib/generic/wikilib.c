@@ -19,15 +19,16 @@ int wikilib_run(void)
 
 	a = malloc(512);
 	msg(MSG_INFO, " a = %p\n", a);
-
 	
-	msg(MSG_INFO, " 1. run\n", a);
+	msg(MSG_INFO, " 1. run\n");
 	fd = wl_open("/kernel", WL_O_RDONLY);
+	msg(MSG_INFO, " fd = %d\n", fd);
+
 	wl_read(fd, a, 512);
 	wl_close(fd);
 
 	for (i = 0; i < 10; i++) {
-		msg(MSG_INFO, " 2. run\n", a);
+		msg(MSG_INFO, " 2. run\n");
 		fd = wl_open("/kernel", WL_O_RDONLY);
 		wl_read(fd, a, 512);
 		wl_read(fd, a, 512);
@@ -35,6 +36,7 @@ int wikilib_run(void)
 		wl_close(fd);
 	}
 
+#if 0
 //	dump_cache_stats();
 
 	/*
@@ -51,7 +53,8 @@ int wikilib_run(void)
 			msg(MSG_INFO, "Result: %s\n", result);
 		search_print_stats();
 	}
-	
+#endif
+
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
