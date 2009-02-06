@@ -54,11 +54,10 @@ void serial_init(void)
 	console_write = 0;
 }
 
-void serial_check(void)
+void serial_filled_0(void)
 {
 	char c;
-
-	/* serial 0 in */
+	
 	while (REG_EFSIF0_STATUS & 0x1) {
 		c = REG_EFSIF0_RXD;
 		if (c == 0)
@@ -68,14 +67,14 @@ void serial_check(void)
 		console_write++;
 		console_write %= BUFSIZE;
 	}
+}
 
-	/* serial 1 in */
-	while (REG_EFSIF1_STATUS & 0x1) {
-		touchscreen_read_char(REG_EFSIF1_RXD);
-	}
+void serial_drained_0(void)
+{
+	char c;
 
 	/* serial 0 out */
-	if ((REG_EFSIF0_STATUS & 0x2) && get_msg_char(&c))
+	if (get_msg_char(&c))
 		REG_EFSIF0_TXD = c;
 }
 
@@ -89,8 +88,6 @@ void serial_out(int port, char c)
 
 int serial_get_event(struct wl_input_event *ev)
 {
-	serial_check();
-
 	if (console_read == console_write)
 		return 0;
 

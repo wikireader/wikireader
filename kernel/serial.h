@@ -24,5 +24,8 @@ int serial_transfer_running(int port);
 void serial_out(int port, char c);
 int serial_get_event(struct wl_input_event *ev);
 
+void serial_filled_0(void);
+void serial_drained_0(void);
+
 #endif /* SERIAL_H */
 

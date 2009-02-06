@@ -34,6 +34,20 @@
 	asm("popn %r12");			\
 	asm("reti");
 
+/* the following two macros assume that only
+ * %4, %r5 and %r6 are modified in the function(s)
+ * enclosed by them. Change appropriately if needed.
+ */
+
+#define SAVE_REGS()		\
+	asm("pushn %r4");	\
+	asm("pushn %r5");	\
+	asm("pushn %r6");
+
+#define RESTORE_REGS()		\
+	asm("popn %r6");	\
+	asm("popn %r5");	\
+	asm("popn %r4");
 
 static void undef_irq_handler(void)
 {
@@ -47,11 +61,17 @@ static void serial0_err_irq(void)
 
 static void serial0_in_irq(void)
 {
+	SAVE_REGS();
+	serial_filled_0();
+	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
 }
 
 static void serial0_out_irq(void)
 {
+	SAVE_REGS();
+	serial_drained_0();
+	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 2);
 }
 
