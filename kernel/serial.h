@@ -20,10 +20,7 @@
 #define SERIAL_H
 
 void serial_init(void);
-void serial_reset(void);
 int serial_transfer_running(int port);
-void serial_filled(int port, char c);
-void serial_drained(int port);
 void serial_out(int port, char c);
 int serial_get_event(struct wl_input_event *ev);
 
