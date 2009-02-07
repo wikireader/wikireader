@@ -22,7 +22,7 @@
 /  miss-aligned access results incorrect behavior, the _MCU_ENDIAN must be set to 2.
 /  If it is not the case, it can also be set to 1 for good code efficiency. */
 
-#define _FS_READONLY	0
+#define _FS_READONLY	1
 /* Setting _FS_READONLY to 1 defines read only configuration. This removes
 /  writing functions, f_write, f_sync, f_unlink, f_mkdir, f_chmod, f_rename,
 /  f_truncate and useless f_getfree. */
@@ -63,4 +63,4 @@
 #define _FAT32 1
 /* To enable FAT32 support in addition of FAT12/16, set _FAT32 to 1. For tinyfat*/
 
-#define _USE_CACHE 1
+#define _USE_CACHE 0
