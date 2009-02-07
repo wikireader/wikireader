@@ -31,31 +31,29 @@ INDEX_DIR=$(PWD)/../host-tools/indexing/locate
 INCLUDES=				\
 	-I$(FATFSDIR)/src		\
 	-I$(LIBDIR)/include/		\
-	-I$(FATFSDIR)/config/c33/	\
 	-I$(WIKILIBDIR)/include/	\
 	-I$(GUILIBDIR)/			\
 	-I../common/                    \
 	-I$(INDEX_DIR)
 
-LIBS=					\
-	$(FATFSDIR)/lib/libtinyfat.a	\
-	$(LIBDIR)/lib/libc.a 		\
+LIBS=	$(LIBDIR)/lib/libc.a		\
 	`$(CC) -print-libgcc-file-name`
 
+FATFS_COBJS= mmc.o tff.o cache.o 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= file-io-libfat.o wikilib.o \
                 malloc-simple.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR)
+vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(FATFSDIR)/src
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
-	gpio.o serial.o traps.o input.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
+	gpio.o serial.o traps.o input.o $(GUILIB_COBJS) $(WIKILIB_COBJS) $(FATFS_COBJS)
 TARGETS=mahatma.elf
 all: $(TARGETS)
 
