@@ -36,12 +36,8 @@
 
 static FATFS fatfs;
 
-DWORD get_fattime(void)
-{
-	/* FIXME: fill this function */
-	return 0;
-}
-
+/* make sure that this function is the first one in the
+ * linker list. This saves us from setting an extra entry point */
 int main(void)
 {
 	/* set the default data pointer */
@@ -68,6 +64,12 @@ int main(void)
 	wikilib_run();
 
 	/* never reached */
+	return 0;
+}
+
+DWORD get_fattime(void)
+{
+	/* FIXME: fill this function */
 	return 0;
 }
 
