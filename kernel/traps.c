@@ -23,6 +23,7 @@
 #include "serial.h"
 #include "suspend.h"
 #include "irq.h"
+#include "gpio.h"
 
 #define CLEAR_IRQ(reg,val)			\
 	asm("pushn %r12");			\
@@ -35,8 +36,9 @@
 	asm("reti");
 
 /* the following two macros assume that only
- * %4, %r5 and %r6 are modified in the function(s)
+ * %r4, %r5 and %r6 are modified in the function(s)
  * enclosed by them. Change appropriately if needed.
+ * Check the assembler output of your functions.
  */
 
 #define SAVE_REGS()		\
@@ -92,7 +94,9 @@ static void serial1_out_irq(void)
 
 static void kint_irq(void)
 {
-	serial_out(0, '>');
+	SAVE_REGS();
+	gpio_irq();
+	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
 }
 

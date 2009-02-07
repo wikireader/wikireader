@@ -20,18 +20,13 @@
 #include <input.h>
 #include <regs.h>
 
+#define N_PINS 32
+
 static unsigned int gpio_state;
 static unsigned int last_state;
 
-void gpio_input(int pin, int state)
+void gpio_irq(void)
 {
-	if (pin >= 32)
-		return;
-
-	if (state)
-		gpio_state |= 1 << pin;
-	else
-		gpio_state &= ~(1 << pin);
 }
 
 int gpio_get_event(struct wl_input_event *ev)
@@ -41,7 +36,7 @@ int gpio_get_event(struct wl_input_event *ev)
 //	if (!changed)
 		return 0;
 
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < N_PINS; i++) {
 		if (!(changed & (1 << i)))
 			continue;
 

@@ -20,7 +20,7 @@
 #define GPIO_H
 
 void gpio_init(void);
-void gpio_input(int pin);
+void gpio_irq(void);
 int gpio_get_event(struct wl_input_event *ev);
 
 #endif /* GPIO_H */
