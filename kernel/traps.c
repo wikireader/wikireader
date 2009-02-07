@@ -56,6 +56,12 @@ static void undef_irq_handler(void)
 	asm("reti");
 }
 
+static void bla(void)
+{
+	serial_out(0, '?');
+	asm("reti");
+}
+
 static void serial0_err_irq(void)
 {
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 0);
@@ -102,7 +108,6 @@ static void kint_irq(void)
 
 static void unaligned_data_access(void)
 {
-	while(serial_transfer_running(0));
 	serial_out(0, '!');
 	asm("reti");
 }
@@ -113,7 +118,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 0	*/
 	undef_irq_handler,	/* offset 1	*/
 	undef_irq_handler,	/* offset 2	*/
-	undef_irq_handler,	/* offset 3	*/
+	bla,	/* offset 3	*/
 	undef_irq_handler,	/* offset 4	*/
 	undef_irq_handler,	/* offset 5	*/
 	unaligned_data_access,	/* offset 6 : unaligned data access exception */
