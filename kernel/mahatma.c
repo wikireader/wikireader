@@ -36,6 +36,12 @@
 
 static FATFS fatfs;
 
+DWORD get_fattime(void)
+{
+	/* FIXME: fill this function */
+	return 0;
+}
+
 int main(void)
 {
 	/* set the default data pointer */
