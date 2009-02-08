@@ -62,7 +62,6 @@ WIKILIB_DIR_GENERIC= $(SRCDIR)/../wiki-lib/generic
 WIKILIB_DIR_SPECIFIC= $(SRCDIR)/../wiki-lib/specific
 FATLIB_DIR= $(SRCDIR)/../fatfs/src
 
-
 ### 2. If there are source files and so on in other directory, add Definitions
 STASK_DIR= $(SRCDIR)/systask
 UTASK_DIR= $(SRCDIR)/library
@@ -110,7 +109,7 @@ INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) 	\
 	-I$(SRCDIR)/../fatfs/config/c33		\
 	-I$(SRCDIR)/../gui-lib			\
 	-I$(SRCDIR)/../wiki-lib/include		\
-	-I$(SRCDIR)/../bootloader
+	-I$(SRCDIR)/../common
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe
