@@ -32,8 +32,7 @@
 	asm("xld.w %%r13, %0" :: "g"(&(reg))); 	\
 	asm("ld.b [%r13], %r12");		\
 	asm("popn %r13");			\
-	asm("popn %r12");			\
-	asm("reti");
+	asm("popn %r12");
 
 /* the following two macros assume that only
  * %r4, %r5 and %r6 are modified in the function(s)
@@ -51,15 +50,25 @@
 	asm("popn %r5");	\
 	asm("popn %r4");
 
+static void undef_irq_handler(void) __attribute__((interrupt_handler));
+static void bla(void) __attribute__((interrupt_handler));
+static void serial0_err_irq(void) __attribute__((interrupt_handler));
+static void serial0_in_irq(void) __attribute__((interrupt_handler));
+static void serial0_out_irq(void) __attribute__((interrupt_handler));
+static void serial1_err_irq(void) __attribute__((interrupt_handler));
+static void serial1_in_irq(void) __attribute__((interrupt_handler));
+static void serial1_out_irq(void) __attribute__((interrupt_handler));
+static void kint_irq(void) __attribute__((interrupt_handler));
+static void unaligned_data_access(void) __attribute__((interrupt_handler));
+
+
 static void undef_irq_handler(void)
 {
-	asm("reti");
 }
 
 static void bla(void)
 {
 	serial_out(0, '?');
-	asm("reti");
 }
 
 static void serial0_err_irq(void)
@@ -77,9 +86,7 @@ static void serial0_in_irq(void)
 
 static void serial0_out_irq(void)
 {
-	SAVE_REGS();
 	serial_drained_0();
-	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 2);
 }
 
@@ -109,7 +116,6 @@ static void kint_irq(void)
 static void unaligned_data_access(void)
 {
 	serial_out(0, '!');
-	asm("reti");
 }
 
 #define N_TRAPS 108
