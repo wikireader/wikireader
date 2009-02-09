@@ -51,7 +51,7 @@ WIKILIB_COBJS += search.o lsearcher.o fast_search.o
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -O2 -mc33pe $(INCLUDES)
 ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
 
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
