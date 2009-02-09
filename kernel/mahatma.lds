@@ -8,7 +8,10 @@ SECTIONS
 	.dst_ram  0x84000 : {
 		traps.o(.data)
 		traps.o(.*)
-		suspend.o(.*)
+	}
+
+	.iram 0x0 : {
+		suspend.o(.text)
 	}
 
 	__dp = 0x10000000 ;
