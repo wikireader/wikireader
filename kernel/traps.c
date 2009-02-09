@@ -51,7 +51,7 @@
 	asm("popn %r4");
 
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
-static void bla(void) __attribute__((interrupt_handler));
+static void illegal_instruction(void) __attribute__((interrupt_handler));
 static void serial0_err_irq(void) __attribute__((interrupt_handler));
 static void serial0_in_irq(void) __attribute__((interrupt_handler));
 static void serial0_out_irq(void) __attribute__((interrupt_handler));
@@ -66,7 +66,7 @@ static void undef_irq_handler(void)
 {
 }
 
-static void bla(void)
+static void illegal_instruction(void)
 {
 	serial_out(0, '?');
 }
@@ -79,6 +79,7 @@ static void serial0_err_irq(void)
 static void serial0_in_irq(void)
 {
 	SAVE_REGS();
+	system_resume();
 	serial_filled_0();
 	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
@@ -86,6 +87,7 @@ static void serial0_in_irq(void)
 
 static void serial0_out_irq(void)
 {
+	system_resume();
 	serial_drained_0();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 2);
 }
@@ -108,6 +110,7 @@ static void serial1_out_irq(void)
 static void kint_irq(void)
 {
 	SAVE_REGS();
+	system_resume();
 	gpio_irq();
 	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
@@ -124,7 +127,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	/* offset 0	*/
 	undef_irq_handler,	/* offset 1	*/
 	undef_irq_handler,	/* offset 2	*/
-	bla,	/* offset 3	*/
+	illegal_instruction,	/* offset 3	*/
 	undef_irq_handler,	/* offset 4	*/
 	undef_irq_handler,	/* offset 5	*/
 	unaligned_data_access,	/* offset 6 : unaligned data access exception */

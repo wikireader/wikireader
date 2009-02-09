@@ -24,17 +24,14 @@
 
 void system_suspend(void)
 {
-	asm("halt");
-	return;
+#if 0
         /* WAKEUP=1 */
 	REG_CMU_PROTECT = 0x96;
-	REG_CMU_OPT |= 0x1;
 	REG_CMU_GATEDCLK1 = 0xffffffff;
 	REG_CMU_PROTECT = 0;
-
-	/* enable write access to clock control registers */
-	REG_CMU_PROTECT = 0x96;
-
+#endif
+#if 0
+	REG_CMU_OPT |= 0x1;
 	/* send the SDRAM to its self-refresh mode (which disables the clock) */
 	REG_SDRAMC_REF = (1 << 23) | (0x7f << 16);
 
@@ -48,32 +45,49 @@ void system_suspend(void)
 	/* release the SDRAMC pin functions */
 	REG_P2_03_CFP = 0x01;
 	REG_P2_47_CFP = 0x00;
+#endif
 
+#if 1
 	//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
 	REG_CMU_GATEDCLK1 = 0x3f08002f;
 	REG_CMU_GATEDCLK0 &= ~(1 << 1);
 
 	/* disable clocks we don't need in HALT mode */
-	REG_CMU_CLKCNTL = (0xa << 24) | (8 << 16) | (1 << 12) | (1 << 1);
-
-	/* write protect CMU registers */
-	REG_CMU_PROTECT = 0;	
-		
+	REG_CMU_CLKCNTL = (0x5 << 24) | (8 << 16) | (1 << 12) | (1 << 1);
+#endif
+	
+	asm("xld.w %r10, 0xdeadbeef");
 	asm("halt");
+	system_resume();
+}
 
-	/* resume procedure */
-	REG_CMU_PROTECT = 0x96;
+void system_resume(void)
+{
+	int i, system_halted;
+
+	/* check whether we awoke from halt mode freshly */
+	asm("ld.w %0, %%r10" : "=r"(system_halted));
+	if (system_halted != 0xdeadbeef)
+		return;
+
+	/* wait for the clocks to stabilize */
+	for (i=0; i < 1000; i++)
+		asm("nop");
 
 	/* restore clock setup */
 	REG_CMU_CLKCNTL = 0x00770002;
 
+#if 0
 	/* re-enable the SDRAMC pin functions */
 	REG_P2_03_CFP = 0x55;
 	REG_P2_47_CFP = 0x55;
+#endif
 
 	/* re-enable all the clocks */
 	REG_CMU_GATEDCLK1 = 0x3f0fffff;
 	REG_CMU_GATEDCLK0 |= (1 << 1);
-	REG_CMU_PROTECT = 0;
+
+	asm("ld.w %r10, 0");
+	serial_out(0, 'X');
 }
 
