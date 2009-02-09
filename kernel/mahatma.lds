@@ -11,7 +11,7 @@ SECTIONS
 	}
 
 	.iram 0x0 : {
-		suspend.o(.text)
+		suspend.o(.*)
 	}
 
 	__dp = 0x10000000 ;
