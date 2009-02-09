@@ -47,17 +47,23 @@ void system_suspend(void)
 	REG_P2_47_CFP = 0x00;
 #endif
 
+	REG_EFSIF0_BRTRDL = 12 & 0xff;
+	REG_EFSIF0_BRTRDM = 12 >> 8;
+
+
 #if 1
 	//REG_CMU_GATEDCLK1 = (1 << 29) | (1 << 28) | (1 << 27) | (1 << 19) | (1 << 8);
 	REG_CMU_GATEDCLK1 = 0x3f08002f;
 	REG_CMU_GATEDCLK0 &= ~(1 << 1);
 
 	/* disable clocks we don't need in HALT mode */
-	REG_CMU_CLKCNTL = (0x5 << 24) | (8 << 16) | (1 << 12) | (1 << 1);
+	//REG_CMU_CLKCNTL = (0x5 << 24) | (8 << 16) | (1 << 12) | (1 << 1);
+	REG_CMU_CLKCNTL = 0x05970a02;
 #endif
 	
 	asm("xld.w %r10, 0xdeadbeef");
 	asm("halt");
+REG_P1_P1D = 0;
 	system_resume();
 }
 
@@ -70,12 +76,16 @@ void system_resume(void)
 	if (system_halted != 0xdeadbeef)
 		return;
 
-	/* wait for the clocks to stabilize */
-	for (i=0; i < 1000; i++)
-		asm("nop");
+REG_P1_P1D = 0;
+
+	REG_EFSIF0_BRTRDL = 51 & 0xff;
+	REG_EFSIF0_BRTRDM = 51 >> 8;
 
 	/* restore clock setup */
-	REG_CMU_CLKCNTL = 0x00770002;
+	REG_CMU_CLKCNTL = 0x00770003;
+
+	for (i = 0; i < 10000; i++)
+		asm("nop");
 
 #if 0
 	/* re-enable the SDRAMC pin functions */
@@ -88,6 +98,5 @@ void system_resume(void)
 	REG_CMU_GATEDCLK0 |= (1 << 1);
 
 	asm("ld.w %r10, 0");
-	serial_out(0, 'X');
 }
 
