@@ -11,23 +11,13 @@
 #include <guilib.h>
 #include <input.h>
 
+char *framebuffer;
+
 /* wikireader glue level */
 void fb_refresh(void)
 {
 	MainWindow *window = (MainWindow *) [NSApp mainWindow];
 	[window refreshDisplay];
-}
-
-void fb_set_pixel(int x, int y, int v)
-{
-	MainWindow *window = (MainWindow *) [NSApp mainWindow];
-	[window setPixel: v atX: x atY: y];
-}
-
-void fb_clear(void)
-{
-	MainWindow *window = (MainWindow *) [NSApp mainWindow];
-	[window clear];
 }
 
 int wl_input_wait(struct wl_input_event *ev)
@@ -105,26 +95,12 @@ int wl_input_wait(struct wl_input_event *ev)
 
 	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
 		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
-			NSUInteger val = 255 - (frameBuffer[y * FRAMEBUFFER_WIDTH + x] * 0xf);
+			NSUInteger val = guilib_get_pixel(x, y) * 0xff;
 			NSUInteger rgba[4] = { val, val, val, 0 };
 			[imageRep setPixel: rgba atX: x y: y];
 		}
 		
 	[imageView setNeedsDisplay];
-}
-
-- (void) clear
-{
-	memset(frameBuffer, 0, FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT);
-	[imageView setNeedsDisplay];
-}
-
-- (void) setPixel: (UInt32) val atX: (UInt32) x atY: (UInt32) y
-{
-	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT)
-		return;
-	
-	frameBuffer[y * FRAMEBUFFER_WIDTH + x] = val;
 }
 
 - (void) wikiLibThread : (id) param
@@ -138,6 +114,8 @@ int wl_input_wait(struct wl_input_event *ev)
 
 - (void) awakeFromNib 
 {
+	framebuffer = (char *) malloc(FRAMEBUFFER_SIZE);
+
 	if ([imageView frame].size.width != FRAMEBUFFER_WIDTH ||
 		[imageView frame].size.height != FRAMEBUFFER_HEIGHT) {
 			printf("ERROR! guilib's framebuffer size does not match canvas size!\n");
@@ -177,6 +155,7 @@ int wl_input_wait(struct wl_input_event *ev)
 						   withObject: nil];
 }
 
+// GUI callbacks
 - (IBAction) buttonPressed: (id) sender
 {
 	unsigned int code;
@@ -205,8 +184,7 @@ int wl_input_wait(struct wl_input_event *ev)
 								 characters: @"?"
 				charactersIgnoringModifiers: nil
 								  isARepeat: NO
-								    keyCode: code
-					];
+								    keyCode: code ];
 	
 	[NSApp postEvent: ev atStart: YES];
 }
