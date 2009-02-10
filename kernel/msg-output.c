@@ -93,7 +93,7 @@ void msg(int level, const char *fmt, ...)
 	DISABLE_IRQ();
 	
 	/* is the read pointer one position ahead? */
-	if (RING_SPACE() < 2) {
+	if (RING_SPACE() < 1) {
 		lost_messages++;
 		ENABLE_IRQ();
 		return;
