@@ -19,7 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define hex_print(p) printf("%s\n", p)
+#include <msg.h>
+#define hex_print(p) msg(MSG_INFO, "%s\n", p)
 
 static char nibble[] = {
 	'0', '1', '2', '3', '4', '5', '6', '7',
