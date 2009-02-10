@@ -48,8 +48,8 @@ int wikilib_run(void)
 	for (i = 0; i < (int)strlen(search_string); ++i) {
 		msg(MSG_INFO, "Adding to search : '%c'\n", search_string[i]);
 		search_add(search_string[i]);
-		for (j = 0, result = search_fetch_result();
-				j < 5 && result; ++j, result = search_fetch_result())
+		j = 0;
+		while (j++ < 5 && (result = search_fetch_result()))
 			msg(MSG_INFO, "Result: %s\n", result);
 		search_print_stats();
 	}

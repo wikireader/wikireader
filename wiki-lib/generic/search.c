@@ -48,6 +48,9 @@ void search_add(char c)
 
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
+	if (search_index >= 3)
+		return;
+
 	prepare_search(&global_search, search_string, &state);
 }
 
