@@ -14,7 +14,7 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 				
 	for (y = 0; y < glyph->height; y++)
 		for (x = 0; x < glyph->width; x++) {
-			fb_set_pixel(start_x + x, start_y + y, (*d >> bit) & 1);
+			guilib_set_pixel(start_x + x, start_y + y, (*d >> bit) & 1);
 			bit++;
 			if (bit == 8) {
 				bit = 0;

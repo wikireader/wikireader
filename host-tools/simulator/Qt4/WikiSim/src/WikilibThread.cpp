@@ -32,20 +32,12 @@ extern "C" {
 #include "wikilib.h"
 #include "input.h"
 
-/* this is the gui-lib glue layer */
-void fb_set_pixel(int x, int y, int v)
-{
-	window->display->setPixel(x, y, v);
-}
+char *framebuffer;
 
+/* this is the gui-lib glue layer */
 void fb_refresh(void)
 {
 	window->display->repaint();
-}
-
-void fb_clear(void)
-{
-	window->display->clear();
 }
 
 int wl_input_wait(struct wl_input_event *ev)
@@ -98,10 +90,12 @@ int wl_input_wait(struct wl_input_event *ev)
 WikilibThread::WikilibThread()
  : QThread()
 {
+	framebuffer = (char *) malloc(FRAMEBUFFER_SIZE);
 }
 
 WikilibThread::~WikilibThread()
 {
+	free(framebuffer);
 }
 
 void

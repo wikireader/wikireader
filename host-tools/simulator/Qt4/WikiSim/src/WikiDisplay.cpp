@@ -23,7 +23,10 @@
 #include <QString>
 
 #include "WikiDisplay.h"
+
+extern "C" {
 #include "guilib.h"
+}
 
 WikiDisplay::WikiDisplay(QWidget *parent)
  : QWidget(parent)
@@ -44,22 +47,6 @@ WikiDisplay::~WikiDisplay()
 	delete keyEventQueue;
 	delete waitCondition;
 	releaseKeyboard();
-}
-
-void
-WikiDisplay::setPixel(int x, int y, int v)
-{
-	char *data = framebuffer->data();
-
-	// 1 bpp only
-	v &= 1;
-
-	if (x >= FRAMEBUFFER_WIDTH || y >= FRAMEBUFFER_HEIGHT) {
-		printf("pixel position out of range: %d,%d\n", x, y);
-		return;
-	}
-
-	data[y * FRAMEBUFFER_WIDTH + x] = v;
 }
 
 void
@@ -87,12 +74,6 @@ WikiDisplay::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void
-WikiDisplay::clear(void)
-{
-	framebuffer->fill(0);
-}
-
-void
 WikiDisplay::paintEvent(QPaintEvent *)
 {
 	int x, y;
@@ -104,9 +85,8 @@ WikiDisplay::paintEvent(QPaintEvent *)
 	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
 		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
 			int r, g, b;
-			const char *data = framebuffer->data();
-			r = g = b = 255 - (data[y * FRAMEBUFFER_WIDTH + x] * 0xff);
-			painter.setPen(QColor::fromRgb(r, g, b, 255));
+			r = g = b = guilib_get_pixel(x, y) * 0xff;
+			painter.setPen(QColor::fromRgb(r, g, b, 0xff));
 			painter.drawPoint(x, y);
 		}
 }
