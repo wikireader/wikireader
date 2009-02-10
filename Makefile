@@ -107,8 +107,8 @@ binutils: $(DL)/$(BINUTILS_PACKAGE).ok
 	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1 && \
 	mkdir build && \
 	cd build  && \
-	../configure --prefix $(PWD)/../../install --target=c33-epson-elf && \
-	make && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/../../install --target=c33-epson-elf && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
 	make install )
 
 .PHONY: gcc
@@ -123,8 +123,8 @@ gcc: $(DL)/$(GCC_PACKAGE).ok binutils
 	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1 && \
 	mkdir build && \
 	cd build && \
-	../configure --prefix $(PWD)/../../install --target=c33-epson-elf --enable-languages=c && \
-	make && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/../../install --target=c33-epson-elf --enable-languages=c && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
 	make install )
 
 .PHONY: gdb
