@@ -30,8 +30,6 @@ void msg(int level, const char *format, ...)
 
 	if (clear_color)
 		fprintf(stream, "\033[0;m");
-
-	fprintf(stream, "\n");
 }
 
 void set_loglevel(int level)
