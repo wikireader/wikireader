@@ -36,8 +36,6 @@
 
 static FATFS fatfs;
 
-/* make sure that this function is the first one in the
- * linker list. This saves us from setting an extra entry point */
 int main(void)
 {
 	/* set the default data pointer */
@@ -49,6 +47,7 @@ int main(void)
 	gpio_init();
 	traps_init();
 	serial_init();
+	fb_init();
 
 	/* generic init */
 	if (f_mount(0, &fatfs) != FR_OK)
@@ -58,7 +57,12 @@ int main(void)
 	wikilib_init();
 	guilib_init();
 
+	REG_P1_IOC1 = 0x08;
+	REG_P1_P1D = 0x08;
+
 	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
+	
+	REG_CMU_PROTECT = 0x96;
 
 	/* the next function will loop forever and call wl_input_wait() */
 	wikilib_run();
