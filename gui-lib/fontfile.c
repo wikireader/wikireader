@@ -111,13 +111,13 @@ int read_font_file(const char *filename)
 		block_size = (len > BLOCK_SIZE) ? BLOCK_SIZE : len;
 	} while (r && len);
 
+	wl_close(fd);
 	n_fonts = *(unsigned int *) file_buf;
 
 	msg(MSG_INFO, "font file has %d fonts in %d bytes, buf %p\n", n_fonts, file_size, file_buf);
 	file_buf += sizeof(n_fonts);
 
-	/* FIXME - this is not endian-safe */
-	font_index = (unsigned int *) file_buf;
+	font_index = WL_LTONL((unsigned int *) file_buf);
 	return 0;
 }
 
