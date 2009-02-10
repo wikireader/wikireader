@@ -61,19 +61,18 @@ typedef struct {
 	u32 sh_entsize;		/* Entry size if section holds table */
 } __attribute__((packed)) elf32_sec;
 
-#define SHT_NULL        0               /* Section header table entry unused */
-#define SHT_PROGBITS    1               /* Program specific (private) data */
-#define SHT_SYMTAB      2               /* Link editing symbol table */
-#define SHT_STRTAB      3               /* A string table */
-#define SHT_RELA        4               /* Relocation entries with addends */
-#define SHT_HASH        5               /* A symbol hash table */
-#define SHT_DYNAMIC     6               /* Information for dynamic linking */
-#define SHT_NOTE        7               /* Information that marks file */
-#define SHT_NOBITS      8               /* Section occupies no space in file */
-#define SHT_REL         9               /* Relocation entries, no addends */
-#define SHT_SHLIB       10              /* Reserved, unspecified semantics */
-#define SHT_DYNSYM      11              /* Dynamic linking symbol table */
-
+#define SHT_NULL        0	/* Section header table entry unused */
+#define SHT_PROGBITS    1	/* Program specific (private) data */
+#define SHT_SYMTAB      2	/* Link editing symbol table */
+#define SHT_STRTAB      3	/* A string table */
+#define SHT_RELA        4	/* Relocation entries with addends */
+#define SHT_HASH        5	/* A symbol hash table */
+#define SHT_DYNAMIC     6	/* Information for dynamic linking */
+#define SHT_NOTE        7	/* Information that marks file */
+#define SHT_NOBITS      8	/* Section occupies no space in file */
+#define SHT_REL         9	/* Relocation entries, no addends */
+#define SHT_SHLIB       10	/* Reserved, unspecified semantics */
+#define SHT_DYNSYM      11	/* Dynamic linking symbol table */
 
 
 int elf_exec(const u8 *filename)
@@ -98,12 +97,12 @@ int elf_exec(const u8 *filename)
 	    hdr.e_ident[1] != ELFMAG1 ||
 	    hdr.e_ident[2] != ELFMAG2 ||
 	    hdr.e_ident[3] != ELFMAG3) {
-		/*print("invalid ELF magic\n");*/
+		/* print("invalid ELF magic\n"); */
 		return -4;
 	}
 
 	if (hdr.e_type != ET_EXEC) {
-		/*print("invalid ELF file type\n");*/
+		/* print("invalid ELF file type\n"); */
 		return -5;
 	}
 
