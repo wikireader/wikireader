@@ -45,7 +45,7 @@ int wl_open(const char *filename, int flags)
 		return -ret;
 
 	fil_used[i] = 1;
-	return 0;
+	return i;
 }
 
 void wl_close(int fd)
