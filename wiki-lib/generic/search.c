@@ -29,7 +29,7 @@ static char search_string[MAXSTR];
 
 void search_init()
 {
-	result = load_index(&global_search, "/wikipedia.index.db", "/wikipedia.index.jump");
+	result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
 	if (!result) {
         msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
