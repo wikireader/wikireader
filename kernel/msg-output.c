@@ -28,7 +28,7 @@
 #include "serial.h"
 
 #define MAX_MSGS	100
-#define MSG_LEN		80
+#define MSG_LEN		100
 
 struct message {
 	int level;
@@ -40,6 +40,9 @@ static unsigned int current_msg_read = 0;
 static unsigned int current_msg_write = 0;
 static int lost_messages = 0;
 static unsigned int output_newline = 0;
+
+#define RING_SPACE() \
+	((current_msg_read + current_msg_write + 1) % MAX_MSGS)
 
 int get_msg_char(char *c)
 {
@@ -74,7 +77,7 @@ int get_msg_char(char *c)
 		break;
 	}
 
-	if (lost_messages) {
+	if (lost_messages && (RING_SPACE() > 0)) {
 		msg(MSG_WARNING, "%d messages lost.\n", lost_messages);
 		lost_messages = 0;
 	}
@@ -90,7 +93,7 @@ void msg(int level, const char *fmt, ...)
 	DISABLE_IRQ();
 	
 	/* is the read pointer one position ahead? */
-	if ((current_msg_write + 1) % MAX_MSGS == current_msg_read) {
+	if (RING_SPACE() < 2) {
 		lost_messages++;
 		ENABLE_IRQ();
 		return;
