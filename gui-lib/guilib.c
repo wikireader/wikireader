@@ -43,6 +43,44 @@ void guilib_fb_unlock(void)
 		fb_refresh();
 }
 
+#define IMG_GET_PIXEL(img,x,y) \
+	(img->data[(x + img->width * y) / 8] >> (7 - (x + img->width * y) % 8) & 1)
+
+void guilib_blit_image(const struct guilib_image *img, int x, int y)
+{
+	int xx, yy;
+
+	/* special case: the image has the same width than the 
+	 * height and is rendered at y=0. Then we can go for a
+	 * simple memcpy() */
+
+	if (y == 0 && img->width == FRAMEBUFFER_WIDTH) {
+		memcpy(framebuffer + (x + FRAMEBUFFER_WIDTH * y) / 8,
+			img->data, (img->width * img->height) / 8);
+		return;
+	}
+
+	/* special case: the image will be blitted byte aligned.
+	 * we can simply copy over all the bytes, without bit
+	 * fiddling. */
+
+	if ((x & 7) == 0) {
+		int i;
+		char *d = framebuffer + (x + FRAMEBUFFER_WIDTH * y) / 8;
+
+		for (i = 0; i < (img->width * img->height) / 8; i++)
+			*d++ = img->data[i];
+
+		return;
+	}
+
+	/* hardest case - go for bit fiddling */
+	for (xx = 0; xx < img->width; xx++)
+		for (yy = 0; yy < img->height; yy++)
+			guilib_set_pixel(x + xx, y + yy,
+				IMG_GET_PIXEL(img, xx, yy));
+}
+
 #define FONTFILE "/tmp/fontfile.gen"
 
 void guilib_init(void)

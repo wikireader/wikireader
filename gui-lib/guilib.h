@@ -21,5 +21,11 @@ int  guilib_get_pixel(int x, int y);
 void guilib_fb_lock(void);
 void guilib_fb_unlock(void);
 
+struct guilib_image {
+	unsigned int width;
+	unsigned int height;
+	char data[];
+};
+
 #endif /* GUILIB_H */
 
