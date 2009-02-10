@@ -39,7 +39,7 @@ LIBS=					\
 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= file-io-libfat.o wikilib.o \
-                malloc-simple.o
+                malloc-simple.o hexdump.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
