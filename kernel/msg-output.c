@@ -44,7 +44,12 @@ static unsigned int output_newline = 0;
 #define RING_SPACE() \
 	((current_msg_read + current_msg_write + 1) % MAX_MSGS)
 
-int get_msg_char(char *c)
+int msg_output_pending (void)
+{
+	return (current_msg_read != current_msg_write);
+}
+
+int get_msg_char (char *c)
 {
 	static int current_char = 0;
 
@@ -85,7 +90,7 @@ int get_msg_char(char *c)
 	return 1;
 }
 
-void msg(int level, const char *fmt, ...)
+void msg (int level, const char *fmt, ...)
 {
 	struct message *m;
 	va_list va;

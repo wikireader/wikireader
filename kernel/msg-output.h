@@ -19,6 +19,7 @@
 #ifndef MSG_H
 #define MSG_H
 
+int msg_output_pending(void);
 int get_msg_char(char *c);
 
 #endif /* MSG_H */
