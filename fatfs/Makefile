@@ -1,18 +1,11 @@
-CROSS=c33-epson-elf-
-GCC=$(CROSS)gcc
-AS=$(CROSS)gcc
-LD=$(CROSS)ld
-AR=$(CROSS)ar
-HOSTCC=gcc
-CC=$(GCC)
-OBJCOPY=$(CROSS)objcopy
+include ../common/Makefile
 
+INCLUDES=-I../toolchain/mini-libc/include -I../common 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
-CFLAGS=-Wall -I../toolchain/mini-libc/include -I../common -gstabs -mlong-calls -fno-builtin -Os -mc33pe
-ASFLAGS=-c -xassembler-with-cpp -Wa,--gstabs -medda32 -mc33pe -mc33_ext
+CFLAGS=-Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 
 # For the c33
-CFLAGS+=-Iconfig/c33
+INCLUDES+=-Iconfig/c33
 
 TARGETS=all
 
