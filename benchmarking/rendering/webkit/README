@@ -1,10 +1,35 @@
 Hacks to webkit to get the things we want.... to happen
 
 
+== What ==
+
+* This is patching WebKit/Gtk+ to extract the used 'glyphs' and
+  their x/y position from a webpage. This then can be encoded
+  in various ways (for font collection generation or such)
+
+
+== Why ==
+
+* MediaWiki is simply a way to describe HTML (actually HTML is
+  embedded into the content) and WebKit was the most easy way to
+  get a moderm HTML renderer.
+
+* I'm the original author of the font rendering for WebKit/Gtk+
+  which allowed me to easily change the pango implementation to
+  keep a copy of the glyphs and their position on the screen.
+
+
+== How == 
+
 The patches will patch the Gtk+ port of WebKit and the GtkLauncher
 executable to create a directory with glyph information and write
 one file with the positions of each glyph.
 The glyph data is pnm....
+
+= Building =
+Get a recent webkit (e.g. r40817) and apply the patches from the
+current directory. Use ./WebKitTools/Script/build-webkit to build
+it.
 
 
 = Run ./Programs/GtkLauncher on any url  =

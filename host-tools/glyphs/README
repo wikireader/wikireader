@@ -1,0 +1,5 @@
+= Where do the fonts/ directory and glyphs come from? =
+
+Currently they are generated from a patched GtkLauncher (WebKit)
+when displaying a web page. But they could be generated from any
+source. See benchmarking/rendering/webkit for more information.
