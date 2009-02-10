@@ -36,7 +36,6 @@ int wikilib_run(void)
 		wl_close(fd);
 	}
 
-#if 0
 //	dump_cache_stats();
 
 	/*
@@ -47,13 +46,13 @@ int wikilib_run(void)
 
 	char *search_string = "india";
 	for (i = 0; i < (int)strlen(search_string); ++i) {
+		msg(MSG_INFO, "Adding to search : '%c'\n", search_string[i]);
 		search_add(search_string[i]);
 		for (j = 0, result = search_fetch_result();
 				j < 5 && result; ++j, result = search_fetch_result())
 			msg(MSG_INFO, "Result: %s\n", result);
 		search_print_stats();
 	}
-#endif
 
 	for (;;) {
 		struct wl_input_event ev;
