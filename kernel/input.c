@@ -27,6 +27,7 @@
 #include "suspend.h"
 #include "touchscreen.h"
 #include "gpio.h"
+#include "msg-output.h"
 
 int wl_input_wait(struct wl_input_event *ev)
 {
@@ -46,7 +47,12 @@ int wl_input_wait(struct wl_input_event *ev)
 		if (gpio_get_event(ev))
 			break;
 
-		system_suspend();
+		/* we only go to a power saving halt mode if there is no
+		 * messages pending */
+		if (msg_output_pending())
+			asm("halt");
+		else
+			system_suspend();
 	}
 
 	return 0;
