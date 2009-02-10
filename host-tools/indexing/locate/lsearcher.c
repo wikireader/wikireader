@@ -132,6 +132,8 @@ void l_lseek(int fd, unsigned int offset)
         bytes_available -= offset & BLOCK_ALIGNMENT;
 }
 
+#define SIZE_OF(array) (sizeof(array)/sizeof(array[0]))
+
 void init_index(lindex *l, int db_file, int prefix_file) {
     uchar_t *p, *s;
     int c;
@@ -148,8 +150,16 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     /* prefix table */
     if (prefix_file != -1) {
         int r = 0;
-        r += wl_read(prefix_file, &l->prefixdb, sizeof(l->prefixdb));
-        r += wl_read(prefix_file, &l->bigram, sizeof(l->bigram));
+        int i = 0;
+        uint32_t *prefixdb = &l->prefixdb[0];
+        uint32_t *bigramdb = &l->bigram[0];
+
+        for (i = 0;  i < SIZE_OF(l->prefixdb); ++i)
+            r += wl_read(prefix_file, prefixdb + i, sizeof(l->prefixdb[0]));
+
+        for (i = 0; i < SIZE_OF(l->bigram); ++i)
+            r += wl_read(prefix_file, bigramdb + i, sizeof(l->bigram[0]));
+
         if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
 #ifdef INCLUDE_MAIN
             printf("Failed...to read prefix, bigram.\n");
