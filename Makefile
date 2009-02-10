@@ -45,7 +45,8 @@ DL=toolchain/dl
 all:    mini-libc \
 	toolchain \
 	bootloader \
-	toppers
+	toppers \
+	kernel
 
 .PHONY:checkout
 checkout:
@@ -62,6 +63,12 @@ wikireader: mini-libc fatfs
 	make -C cfg && \
 	make -C wikireader && \
 	cp wikireader/sample1.elf ../KERNEL.toppers)
+
+.PHONY: kernel
+kernel: mini-libc fatfs
+	( cd kernel && \
+	make && \
+	cp mahatma.elf ../KERNEL)
 
 .PHONY: mahatma
 mahatma: fatfs
