@@ -1,7 +1,7 @@
 #
 # "WikiReaderMakefile" - a Makefile for setting up Wiki Reader
 #
-# (C) Copyright 2008 OpenMoko, Inc.
+# (C) Copyright 2008, 2009 OpenMoko, Inc.
 # Author: xiangfu liu <xiangfu@openmoko.org>
 # 
 # This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ DL=toolchain/dl
 all:    mini-libc \
 	toolchain \
 	bootloader \
-	wikireader 
+	toppers
 
 .PHONY:checkout
 checkout:
@@ -56,12 +56,12 @@ bootloader:mini-libc fatfs
 	( cd bootloader && \
 	make )
 
-.PHONY: wikireader
+.PHONY: toppers
 wikireader: mini-libc fatfs
 	( cd jsp && \
 	make -C cfg && \
 	make -C wikireader && \
-	cp wikireader/sample1.elf ../KERNEL)
+	cp wikireader/sample1.elf ../KERNEL.toppers)
 
 .PHONY: mahatma
 mahatma: fatfs
@@ -176,7 +176,7 @@ help:
 all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
-wikireader:		compile wikireader then you can see kernel file you need.\n\
+toppers:		compile a toppers kernel.\n\
 toolchain:		make toolchain-download gcc gdb binutils.\n\
 toolchain-download:	downlaod gcc and binutils code we need.\n\
 binutils: 		compile binutils.\n\
