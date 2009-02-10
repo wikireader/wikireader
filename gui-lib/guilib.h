@@ -8,6 +8,7 @@
 
 /* to be provided by the hardware implementation */
 extern char *framebuffer;
+extern void fb_refresh();
 
 /* implemented by guilib */
 void guilib_init(void);

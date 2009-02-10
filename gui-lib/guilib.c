@@ -18,6 +18,7 @@
 
 #include <file-io.h>
 #include <msg.h>
+#include <string.h>
 #include "guilib.h"
 #include "glyph.h"
 #include "fontfile.h"
