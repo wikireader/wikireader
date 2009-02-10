@@ -34,8 +34,6 @@ public:
     ~WikiDisplay();
 
     void paintEvent(QPaintEvent *);
-    void setPixel(int x, int y, int v);
-    void clear(void);
     QWaitCondition *waitCondition;
     QQueue<QKeyEvent> *keyEventQueue;
     QQueue<QMouseEvent> *mouseEventQueue;
