@@ -3,8 +3,14 @@
 =fontfile=
 
 =wikipedia dump=
-
 1. get the wikipedia dump by "make getwikidump"
 2. use wiki-tools to generate "indexfile.index"
-3. read the "host-tools/indexing/README" to create the wikipedia.index.db and wikipedia.index.jump 
+3. read the "host-tools/indexing/README" to create the "pedia.idx" and "pedia.jmp" 
+
+=kernel=
+now we use "mahatma.elf"  under kernel folder.
+
+==
+copy "pedia.idx" "pedia.jmp" to SD card.
+copy "mahatma.elf" to SD card and rename it to "kernel".
 
