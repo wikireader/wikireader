@@ -76,3 +76,39 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
 	return delta;
 }
 #endif
+
+/*
+ * static copy a char map... true for some fonts e.g.
+ * the DejaVu family
+ */
+static const int char_to_glyph[127] = {
+	28,
+};
+
+/**
+ * Simplistic string drawing
+ *
+ * @param font The font index to use
+ * @param string The string to draw. No text wrapping will be done
+ * @param start_x From where to start drawing (upper left)
+ * @param start_y From where to start drawing (upper left)
+ */
+int render_string(const int font, const char *string, int start_x, int start_y)
+{
+	int i;
+	const int text_length = strlen(string);
+
+	int x = start_x;
+
+	for (i = 0; i < text_length; ++i) {
+		struct glyph *glyph = get_glyph(font,
+				    char_to_glyph[string[i] & 0x7f]);
+
+		/* painting and advance */
+		/* TODO: use the above auto kerning for the advance */
+		render_glyph(x, start_y, glyph);
+		x += glyph->width + 1;
+	}
+
+	return x;
+}
