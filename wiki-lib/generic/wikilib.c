@@ -49,7 +49,7 @@ int wikilib_run(void)
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_KEYBOARD: {
 			char *result;
-			int j = 0;
+			int j = 0, y_pos = 10;
 
 			if (ev.key_event.keycode == 8) {
 				search_remove_char();
@@ -64,9 +64,14 @@ int wikilib_run(void)
 				continue;
 			}
 
-			while (j++ < 5 && (result = search_fetch_result()))
+			guilib_fb_lock();
+			guilib_clear();
+			while (j++ < 5 && (result = search_fetch_result())) {
+				y_pos += 2 + render_string(0, result, 1, y_pos);
 				msg(MSG_INFO, "Result: %s\n", result);
+			}
 			search_print_stats();
+			guilib_fb_unlock();
 
 			break;
 		}
