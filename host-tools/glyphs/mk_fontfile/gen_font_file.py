@@ -97,8 +97,14 @@ def gen_font(font_name):
 		spacing_hints = gen_spacing_hints(font_name, glyphid)
 
 		try:
-			im = gd.image(imagefile)
-			(w, h) = im.size()
+			try: 
+				im = gd.image(imagefile)
+				(w, h) = im.size()
+			except:
+				print "unable to open bitmap file >%s< using empty image" % (imagefile)
+				w = 1
+				h = int(open(os.path.join(glyphpath, glyphid, "advance_x")).read())
+				im = gd.image((w,h))
 
 			offsettable[int(glyphid)] = offset;
 
@@ -139,7 +145,7 @@ def gen_font(font_name):
 			# im.close()
 
 		except:
-			print "unable to open bitmap file >%s<" % (imagefile)
+			print "broken glyph... description >%s<" % (imagefile)
 			continue
 
 		out += spacing_hints
