@@ -129,17 +129,17 @@ static const int char_to_glyph[127] = {
     0, /* index:  44 */
     0, /* index:  45 */
     0, /* index:  46 */
-    0, /* index:  47 */
-    0, /* index:  48 */
-    0, /* index:  49 */
-    0, /* index:  50 */
-    0, /* index:  51 */
-    0, /* index:  52 */
-    0, /* index:  53 */
-    0, /* index:  54 */
-    0, /* index:  55 */
-    0, /* index:  56 */
-    0, /* index:  57 */
+    18, /* index:  47 */
+    19, /* index:  48 */
+    20, /* index:  49 */
+    21, /* index:  50 */
+    22, /* index:  51 */
+    23, /* index:  52 */
+    24, /* index:  53 */
+    25, /* index:  54 */
+    26, /* index:  55 */
+    27, /* index:  56 */
+    28, /* index:  57 */
     0, /* index:  58 */
     0, /* index:  59 */
     0, /* index:  60 */
