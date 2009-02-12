@@ -17,7 +17,7 @@ static void handle_search_key(char keycode)
 	search_remove_char();
     } else if (isalnum(keycode) || isspace(keycode)) {
 	msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
-	search_add(keycode);
+	search_add(tolower(keycode));
     } else {
 	msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
 	return;
