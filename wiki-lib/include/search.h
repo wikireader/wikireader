@@ -34,6 +34,11 @@ void search_reset();
 void search_add(char c);
 
 /**
+ * Remove the last char from the search
+ */
+void search_remove_char(void);
+
+/**
  * Fetch the results.
  *
  * Get a result and consume.... book keeping is left

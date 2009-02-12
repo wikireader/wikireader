@@ -54,6 +54,22 @@ void search_add(char c)
 	prepare_search(&global_search, search_string, &state);
 }
 
+/*
+ * TODO: Optimize going back... For the first three entries
+ * one could remember the &state and then seek back to the
+ * position and continue the search from there... For now do it
+ * the easy way and wait for user testing.
+ */
+void search_remove_char(void)
+{
+	if (search_index >= 1) {
+		search_index -= 1;
+	}
+
+	search_string[search_index] = '\0';
+	prepare_search(&global_search, search_string, &state);
+}
+
 char* search_fetch_result()
 {
     return search_fast(&global_search, search_string, &state);
