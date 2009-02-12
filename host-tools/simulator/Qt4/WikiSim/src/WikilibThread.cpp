@@ -37,7 +37,7 @@ char *framebuffer;
 /* this is the gui-lib glue layer */
 void fb_refresh(void)
 {
-	window->display->repaint();
+	window->display->update();
 }
 
 int wl_input_wait(struct wl_input_event *ev)
