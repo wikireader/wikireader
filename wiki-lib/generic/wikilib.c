@@ -1,10 +1,41 @@
 #include <wikilib.h>
+#include <guilib.h>
+#include <glyph.h>
 #include <input.h>
 #include <msg.h>
 #include <malloc.h>
 #include <file-io.h>
 #include <search.h>
 #include <string.h>
+
+static void handle_search_key(char keycode)
+{
+    char *result;
+    int j = 0, y_pos = 10;
+
+    if (keycode == 8) {
+	search_remove_char();
+    } else if (isalnum(keycode) || isspace(keycode)) {
+	msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
+	search_add(keycode);
+    } else {
+	msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
+	return;
+    }
+
+
+    /* paint the results */
+    guilib_fb_lock();
+    guilib_clear();
+
+    while (j++ < 5 && (result = search_fetch_result())) {
+	y_pos += 2 + render_string(0, result, 1, y_pos);
+	msg(MSG_INFO, "Result: %s\n", result);
+    }
+
+    search_print_stats();
+    guilib_fb_unlock();
+}
 
 int wikilib_init (void)
 {
@@ -47,34 +78,9 @@ int wikilib_run(void)
 		wl_input_wait(&ev);
 
 		switch (ev.type) {
-		case WL_INPUT_EV_TYPE_KEYBOARD: {
-			char *result;
-			int j = 0, y_pos = 10;
-
-			if (ev.key_event.keycode == 8) {
-				search_remove_char();
-			} else if (isalnum(ev.key_event.keycode) ||
-				    isspace(ev.key_event.keycode)) {
-				msg(MSG_INFO, "Adding to search : '%c'\n",
-					ev.key_event.keycode);
-				search_add(ev.key_event.keycode);
-			} else {
-				msg(MSG_INFO, "%s() unhandled key: %d\n", __func__,
-					ev.key_event.keycode);
-				continue;
-			}
-
-			guilib_fb_lock();
-			guilib_clear();
-			while (j++ < 5 && (result = search_fetch_result())) {
-				y_pos += 2 + render_string(0, result, 1, y_pos);
-				msg(MSG_INFO, "Result: %s\n", result);
-			}
-			search_print_stats();
-			guilib_fb_unlock();
-
+		case WL_INPUT_EV_TYPE_KEYBOARD:
+			handle_search_key(ev.key_event.keycode);
 			break;
-		}
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
 				ev.touch_event.x,
