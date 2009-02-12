@@ -89,6 +89,8 @@ MainWindow::MainWindow(QWidget *parent)
                           QSizePolicy::MinimumExpanding,
                           QSizePolicy::MinimumExpanding));
     setLayout(mainLayout);
+
+    display->setFocus();
 }
 
 MainWindow::~MainWindow()

@@ -38,7 +38,6 @@ WikiDisplay::WikiDisplay(QWidget *parent)
 	keyEventQueue = new QQueue<QKeyEvent>;
 	mouseEventQueue = new QQueue<QMouseEvent>;
 	waitCondition = new QWaitCondition();
-	grabKeyboard();
 }
 
 WikiDisplay::~WikiDisplay()
@@ -46,7 +45,6 @@ WikiDisplay::~WikiDisplay()
 	delete framebuffer;
 	delete keyEventQueue;
 	delete waitCondition;
-	releaseKeyboard();
 }
 
 void
