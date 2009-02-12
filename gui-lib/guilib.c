@@ -42,6 +42,14 @@ int guilib_get_pixel(int x, int y)
 	return (framebuffer[byte] >> (7 - bit)) & 1;
 }
 
+/**
+ * Clear the content of the screen.
+ */
+void guilib_clear(void)
+{
+	memset(framebuffer, 0, FRAMEBUFFER_SIZE);
+}
+
 /* The idea is that every function which calls painting routines calls
  * guilib_fb_lock() before any operation and guilib_fb_unlock() after
  * it. This way, only the last of these functions in the calling stack

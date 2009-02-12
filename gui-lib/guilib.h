@@ -17,6 +17,7 @@ void guilib_init(void);
  * the get method is only needed by the simulators */
 void guilib_set_pixel(int x, int y, int v);
 int  guilib_get_pixel(int x, int y);
+void guilib_clear(void);
 
 /* functions for graphics context management */
 void guilib_fb_lock(void);
