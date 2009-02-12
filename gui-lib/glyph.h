@@ -4,6 +4,7 @@
 struct glyph {
 	unsigned char width;
 	unsigned char height;
+	signed char top_bearing;
 	unsigned int n_spacing_hints;
 	const char data[0];
 } __attribute__((packed));

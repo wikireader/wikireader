@@ -14,6 +14,7 @@ header: (@byte 0)
 	glyph:
 		unsigned char w;
 		unsigned char h;
+		signed char top_bearing;
 		unsigned short n_spacing_hints;
 		unsigned char bitmap[(w*h)/8];
 

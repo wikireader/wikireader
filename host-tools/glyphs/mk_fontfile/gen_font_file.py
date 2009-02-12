@@ -102,9 +102,12 @@ def gen_font(font_name):
 
 			offsettable[int(glyphid)] = offset;
 
+			bearing_path = os.path.join(glyphpath, glyphid, "bitmap_top_bearing")
+			bearing = int(open(bearing_path).read())
+
 			# a spacing hint is always 4 bytes ...
 			n_spacing_hints = len(spacing_hints) / 4;
-			header = struct.pack("<BBI", w, h, n_spacing_hints)
+			header = struct.pack("<BBbI", w, h, bearing, n_spacing_hints)
 
 			#print "%s/ %d,%d" % (font_name, w, h)
 
