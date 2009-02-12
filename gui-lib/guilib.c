@@ -100,12 +100,10 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 				IMG_GET_PIXEL(img, xx, yy));
 }
 
-#define FONTFILE "/tmp/fontfile.gen"
+#define FONTFILE "/fontfile.gen"
 
 void guilib_init(void)
 {
-	const struct glyph *g;
-
 	memset(framebuffer, 0, FRAMEBUFFER_SIZE);
 
 	/* just some tests ... */
@@ -115,7 +113,5 @@ void guilib_init(void)
 	}
 
 	msg(MSG_INFO, "loaded font file %s\n", FONTFILE);
-	g = get_glyph(0, 0);
-	render_glyph(10, 10, g);
 }
 
