@@ -102,6 +102,7 @@ int render_string(const int font, const char *string, int start_x, int start_y)
 {
 	int i;
 	const int text_length = strlen(string);
+	int max_height = 0;
 
 	int x = start_x;
 
@@ -113,7 +114,10 @@ int render_string(const int font, const char *string, int start_x, int start_y)
 		/* TODO: use the above auto kerning for the advance */
 		render_glyph(x, start_y - glyph->top_bearing, glyph);
 		x += glyph->width + 1;
+
+		if (glyph->height > max_height)
+		    max_height = glyph->height;
 	}
 
-	return x;
+	return max_height;
 }
