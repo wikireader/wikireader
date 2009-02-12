@@ -1,6 +1,7 @@
 /*
  * guilib - a minimal pixel framework
  * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * Copyright (c) 2009 Holger Hans Peter Freyther <zecke@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +111,7 @@ int render_string(const int font, const char *string, int start_x, int start_y)
 
 		/* painting and advance */
 		/* TODO: use the above auto kerning for the advance */
-		render_glyph(x, start_y, glyph);
+		render_glyph(x, start_y - glyph->top_bearing, glyph);
 		x += glyph->width + 1;
 	}
 
