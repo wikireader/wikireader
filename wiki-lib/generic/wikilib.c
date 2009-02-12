@@ -28,7 +28,8 @@ static void handle_search_key(char keycode)
     guilib_fb_lock();
     guilib_clear();
 
-    while (j++ < 5 && (result = search_fetch_result())) {
+    y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
+    while (y_pos < 200 && (result = search_fetch_result())) {
 	y_pos += 2 + render_string(0, result, 1, y_pos);
 	msg(MSG_INFO, "Result: %s\n", result);
     }
