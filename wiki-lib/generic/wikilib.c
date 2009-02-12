@@ -54,6 +54,16 @@ int wikilib_run(void)
 		search_print_stats();
 	}
 
+
+	/*
+	 * test rendering of strings... it is asusmed that
+	 * font '6' has the necessary glaphs
+	 */
+	render_string(6, "0123456789 ", 10, 10);
+	render_string(6, "abcdefghijklmnopqrstuvwxyz ", 10, 25);
+	render_string(6, "ABCDEFGHIJKLMNOPQSRTUVWXYZ ", 10, 40);
+	render_string(6, ".,;", 10, 55);
+
 	for (;;) {
 		struct wl_input_event ev;
 		wl_input_wait(&ev);
