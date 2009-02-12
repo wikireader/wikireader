@@ -24,6 +24,7 @@ static struct search_state state;
 static int result;
 static int search_index;
 static char search_string[MAXSTR];
+static char need_init = 1;
 
 
 
@@ -48,10 +49,11 @@ void search_add(char c)
 
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
-	if (search_index >= 3)
+	if (search_index >= 3 && !need_init)
 		return;
 
 	prepare_search(&global_search, search_string, &state);
+	need_init = 0;
 }
 
 /*
@@ -67,12 +69,17 @@ void search_remove_char(void)
 	}
 
 	search_string[search_index] = '\0';
+	memset(&state, 0, sizeof(state));
+	need_init = 1;
 	prepare_search(&global_search, search_string, &state);
 }
 
 char* search_fetch_result()
 {
-    return search_fast(&global_search, search_string, &state);
+	if (search_index == 0)
+	    return NULL;
+
+	return search_fast(&global_search, search_string, &state);
 }
 
 extern unsigned int lsesrch_consume_block_stat();
