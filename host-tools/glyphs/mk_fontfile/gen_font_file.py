@@ -81,7 +81,7 @@ def get_max(list):
 	return max
 
 def gen_font(font_name):
-	path = fontpath + "/" + font_name + "/"
+	path = os.path.join(fontpath, font_name)
 	glyphpath = path
 	glyphlist = filter(lambda x: x != 'spacing', os.listdir(glyphpath))
 
@@ -93,7 +93,7 @@ def gen_font(font_name):
 	print "font %s has %d glyphs" % (font_name, n_glyphs)
 
 	for glyphid in glyphlist:
-		imagefile = glyphpath + glyphid + "/bitmap.png"
+		imagefile = os.path.join(glyphpath, glyphid, "bitmap.png")
 		spacing_hints = gen_spacing_hints(font_name, glyphid)
 
 		try:
