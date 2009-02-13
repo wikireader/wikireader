@@ -1,7 +1,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-void lcd_init(void);
+void init_lcd(void);
 
 #if LCD_MONOCHROME
 #define LCD_VRAM	(0x80000)
