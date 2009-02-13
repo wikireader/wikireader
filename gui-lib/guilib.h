@@ -4,7 +4,8 @@
 /* this is hard-coded to 1pp for now */
 #define FRAMEBUFFER_WIDTH  (240)
 #define FRAMEBUFFER_HEIGHT (208)
-#define FRAMEBUFFER_SIZE ((FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 8)
+#define FRAMEBUFFER_SCANLINE (320)
+#define FRAMEBUFFER_SIZE ((FRAMEBUFFER_SCANLINE * FRAMEBUFFER_HEIGHT) / 8)
 
 /* to be provided by the hardware implementation */
 extern unsigned char *framebuffer;

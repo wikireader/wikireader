@@ -25,8 +25,8 @@
 
 void guilib_set_pixel(int x, int y, int v)
 {
-	unsigned int byte = (x + FRAMEBUFFER_WIDTH * y) / 8;
-	unsigned int bit  = (x + FRAMEBUFFER_WIDTH * y) % 8;
+	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
+	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 
 	if (v)
 		framebuffer[byte] |= (1 << (7 - bit));
@@ -36,8 +36,8 @@ void guilib_set_pixel(int x, int y, int v)
 
 int guilib_get_pixel(int x, int y)
 {
-	unsigned int byte = (x + FRAMEBUFFER_WIDTH * y) / 8;
-	unsigned int bit  = (x + FRAMEBUFFER_WIDTH * y) % 8;
+	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
+	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 
 	return (framebuffer[byte] >> (7 - bit)) & 1;
 }
@@ -81,8 +81,8 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	 * height and is rendered at y=0. Then we can go for a
 	 * simple memcpy() */
 
-	if (y == 0 && img->width == FRAMEBUFFER_WIDTH) {
-		memcpy(framebuffer + (x + FRAMEBUFFER_WIDTH * y) / 8,
+	if (y == 0 && img->width == FRAMEBUFFER_SCANLINE) {
+		memcpy(framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8,
 			img->data, (img->width * img->height) / 8);
 		return;
 	}
@@ -93,7 +93,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 
 	if ((x & 7) == 0) {
 		int i;
-		char *d = framebuffer + (x + FRAMEBUFFER_WIDTH * y) / 8;
+		char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8;
 
 		for (i = 0; i < (img->width * img->height) / 8; i++)
 			*d++ = img->data[i];
