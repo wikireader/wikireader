@@ -28,6 +28,9 @@ void fb_init(void)
 {
 	init_lcd();
 	framebuffer = (unsigned char *) LCD_VRAM;
+
+	/* Clear the screen */
+	memset(LCD_VRAM, 0, LCD_VRAM_SIZE);
 }
 
 void fb_refresh(void)
