@@ -64,9 +64,10 @@ void search_add(char c)
  */
 void search_remove_char(void)
 {
-	if (search_index >= 1) {
-		search_index -= 1;
-	}
+	if (search_index == 0)
+		return;
+
+	search_index -= 1;
 
 	search_string[search_index] = '\0';
 	memset(&state, 0, sizeof(state));
