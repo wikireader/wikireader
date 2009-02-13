@@ -8,7 +8,10 @@ board (EVB).
 wget http://caiaq.de/download/openmoko/c33-toolchain.tar.bz2
 sudo tar jxf c33-toolchain.tar.bz2 -C /
 export PATH=/usr/local/c33/bin:$PATH
-
+or:
+wget http://wikipediardware.googlecode.com/svn/trunk/Makefile
+make toolchain
+export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
 
 ** Modify config.h
 
@@ -72,6 +75,17 @@ it, you're on the right track.
 If not, please refer to the Jumpers section in the User's Manual of
 DMT33E07 to get your jumpers right.  It should be set to "SD Card,
 RS232 Booting Supported".  After you're done, try again.
+
+
+** Wikipedia Dump
+
+downloader the index file(pedia.idx pedia.jmp) for search from:
+https://people.internal.openmoko.org/~zecke/
+or: 
+  1. get the wikipedia dump by "make getwikidump"
+  2. use wiki-tools to generate "indexfile.index"
+  3. read the "host-tools/indexing/README" to create the "pedia.idx" and "pedia.jmp" 
+copy those two file to the sd card
 
 
 ** Boot from SD
