@@ -9,6 +9,7 @@ INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(CO
 OBJCOPY_FLAGS=-I elf32-c33 -O binary 
 
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
+VPATH=$(COMMON)
 all: $(TARGETS)
 
 .c.o:
