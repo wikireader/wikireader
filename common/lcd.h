@@ -1,6 +1,8 @@
 #ifndef LCD_H
 #define LCD_H
 
+#include "config.h"
+
 void init_lcd(void);
 
 #if LCD_MONOCHROME
