@@ -179,7 +179,7 @@ clean:
 
 .PHONY:help
 help:
-	@echo "\n\
+	@echo -e "\n\
 all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
