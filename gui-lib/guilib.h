@@ -7,7 +7,7 @@
 #define FRAMEBUFFER_SIZE ((FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 8)
 
 /* to be provided by the hardware implementation */
-extern char *framebuffer;
+extern unsigned char *framebuffer;
 extern void fb_refresh();
 
 /* implemented by guilib */
