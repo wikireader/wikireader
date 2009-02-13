@@ -1,0 +1,94 @@
+From an application perspective with an EPSON DMT33E07 evaluation
+board (EVB).
+
+* Build
+
+** Get toolchain
+
+wget http://caiaq.de/download/openmoko/c33-toolchain.tar.bz2
+sudo tar jxf c33-toolchain.tar.bz2 -C /
+export PATH=/usr/local/c33/bin:$PATH
+
+
+** Modify config.h
+
+diff --git a/common/config.h b/common/config.h
+index 599831f..d0ea6a5 100644
+--- a/common/config.h
++++ b/common/config.h
+@@ -1,12 +1,12 @@
+ #ifndef CONFIG_H
+ #define CONFIG_H
+
+-//#define EEPROM1ST_LOAD_FROM_EEPROM 1
+-#define EEPROM1ST_LOAD_FROM_RS232 1
++#define EEPROM1ST_LOAD_FROM_EEPROM 1
++//#define EEPROM1ST_LOAD_FROM_RS232 1
+
+-//#define BOARD_S1C33E07 1
++#define BOARD_S1C33E07 1
+ //#define BOARD_PRT33L17LCD 1
+-#define BOARD_PROTO1 1
++//#define BOARD_PROTO1 1
+
+ //#define LCD_MONOCHROME 1
+ //#define POWER_MANAGEMENT 1
+
+
+** Make
+
+make bootloader
+make kernel
+
+
+* Run
+
+** Install bootloader
+
+Now you got binaries built.  To run them on the device, you have to
+get the hardware ready first.  With DMT33E07, you need to do the
+following:
+
+  1. Set pin #3 of SW1 to ON
+  2. Connect to serial port
+  3. Turn on the device
+
+On host PC:
+
+cd bootloader
+# read README.txt
+e07load/e07load wikireader.map  # use --tty if it's not /dev/ttyUSB0
+
+Test it:
+
+  1. Power down the device
+  2. Set pin #3 of SW1 to OFF
+  3. Power up the device
+
+If you don't have your SD card inserted, you should see a picture of
+Homer stating that he couldn't access SD card kernel.  If you do see
+it, you're on the right track.
+
+If not, please refer to the Jumpers section in the User's Manual of
+DMT33E07 to get your jumpers right.  It should be set to "SD Card,
+RS232 Booting Supported".  After you're done, try again.
+
+
+** Boot from SD
+
+Prepare a SD card, make a FAT filesystem on it, then copy kernel:
+
+cp kernel/mahatma.elf <your sd card mount point>/kernel
+
+For example:
+
+cp kernel/mahatma.elf /media/disk/kernel
+
+Now insert the SD card into the EVB then boot the device.
+
+
+* Development
+
+Refer to kernel/* and change code there to see what happens.  Use
+functions from wiki-lib and gui-lib to write your own application.
+When you're done, compile it and try it on the device.
