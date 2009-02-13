@@ -16,23 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <wikilib.h>
+#include <lcd.h>
 #include <guilib.h>
 #include <malloc.h>
 #include <string.h>
 #include <regs.h>
 
-char *framebuffer;
+unsigned char *framebuffer;
 
 void fb_init(void)
 {
-	framebuffer = (char *) 0x80000;
-	REG_LCDC_MADD = (unsigned int) framebuffer;
-}
-
-void fb_clear(void)
-{
-	memset(framebuffer, 0, (FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT) / 2);
+	init_lcd();
+	framebuffer = (unsigned char *) LCD_VRAM;
 }
 
 void fb_refresh(void)

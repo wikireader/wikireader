@@ -77,3 +77,9 @@ DWORD get_fattime(void)
 	return 0;
 }
 
+void delay(u32 nops)
+{
+    while (nops--)
+        asm("nop");
+}
+
