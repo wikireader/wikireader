@@ -5,10 +5,6 @@ board (EVB).
 
 ** Get toolchain
 
-wget http://caiaq.de/download/openmoko/c33-toolchain.tar.bz2
-sudo tar jxf c33-toolchain.tar.bz2 -C /
-export PATH=/usr/local/c33/bin:$PATH
-or:
 wget http://wikipediardware.googlecode.com/svn/trunk/Makefile
 make toolchain
 export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
