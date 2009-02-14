@@ -55,7 +55,7 @@ with
 
   >show tables;
   >delete from text;
-  >delete from article;
+  >delete from page;
 
 This will help to make the below import work properly
 
