@@ -68,7 +68,7 @@ static void handle_search_key(char keycode)
 static unsigned char buf[4];
 static void display()
 {
-	int fd = wl_open("/smplpedia.cde", WL_O_RDONLY);
+	int fd = wl_open("/smplpedi.cde", WL_O_RDONLY);
 	int font, x, y, glyph, len, i;
 	int run = 0, r_len;
 
