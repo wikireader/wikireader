@@ -21,6 +21,7 @@
 
 import sys
 import fontmap
+import struct
 import textrun
 
 
@@ -39,6 +40,20 @@ if len(sys.argv) < 3:
 
 glyphs = textrun.load(sys.argv[1])
 text_runs = textrun.generate_text_runs(glyphs, 240)[0]
+text_runs.sort(textrun.TextRun.cmp)
 fonts  = fontmap.load(sys.argv[2])
 
-print glyphs, fonts, text_runs
+# Now convert it...
+# Font Number
+# Number of 3-Tuples
+# X
+# Y
+# Glyph
+output = open("smplpedia.cde", "w")
+
+for run in text_runs:
+    output.write(struct.pack("<II", fonts[run.font], len(run.glyphs)))
+    for glyph in run.glyphs:
+        output.write(struct.pack("<III", glyph['x'], glyph['y'], int(glyph['glyph'])))
+
+print "Done. Have fun!"
