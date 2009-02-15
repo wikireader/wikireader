@@ -93,6 +93,9 @@ static void display()
 			READ_UINT(y, fd)
 			READ_UINT(glyph, fd)
 
+			if (x > FRAMEBUFFER_WIDTH)
+				break;
+
 			if (font >= guilib_nr_fonts())
 				continue;
 			render_glyph(x, y, get_glyph(font, glyph));
