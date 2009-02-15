@@ -44,11 +44,21 @@ static void handle_search_key(char keycode)
 
     /* paint the results */
     guilib_fb_lock();
-    guilib_clear();
+    int found = 0;
 
-    y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
     while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
+	if (!found) {
+	    guilib_clear();
+	    y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
+	    found = 1;
+	}
+
 	y_pos += 2 + render_string(0, result, 1, y_pos);
+    }
+
+    if (!found) {
+	guilib_clear();
+	y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
     }
 
     search_print_stats();
