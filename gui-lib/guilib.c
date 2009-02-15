@@ -25,6 +25,9 @@
 
 void guilib_set_pixel(int x, int y, int v)
 {
+	if (x < 0 || x > FRAMEBUFFER_WIDTH || y < 0 || y > FRAMEBUFFER_HEIGHT)
+		return;
+
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 
