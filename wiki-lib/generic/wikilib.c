@@ -65,7 +65,9 @@ static void handle_search_key(char keycode)
     guilib_fb_unlock();
 }
 
-static unsigned char buf[4];
+static unsigned char buf[512];
+static unsigned int *buf_ptr;
+static int available = 0;
 static void display()
 {
 	int fd = wl_open("/smplpedi.cde", WL_O_RDONLY);
@@ -73,9 +75,14 @@ static void display()
 	int run = 0, r_len;
 
 #define READ_UINT(var, fd) \
-	r_len = wl_read(fd, buf, 4); \
-	if (r_len != 4) break; \
-	var = *(unsigned int *)buf;
+	if (available == 0) { \
+	    available = wl_read(fd, buf, 512); \
+	    buf_ptr = (unsigned int*)&buf[0]; \
+	    if (available < 4) break; \
+	} \
+	var = *buf_ptr; \
+	buf_ptr++; \
+	available -= 4; \
 
 	do {
 		READ_UINT(font, fd)
