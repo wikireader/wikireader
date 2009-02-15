@@ -31,9 +31,6 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 	int x, y, bit = 0;
 	const char *d = glyph->data;
 
-	if (!glyph)
-		return;
-				
 	for (y = 0; y < glyph->height; y++)
 		for (x = 0; x < glyph->width; x++) {
 			guilib_set_pixel(start_x + x, start_y + y, (*d >> bit) & 1);
@@ -103,6 +100,9 @@ static const int char_to_glyph(char c)
  */
 int render_string(const int font, const char *string, int start_x, int start_y)
 {
+	if (font >= guilib_nr_fonts())
+		return 0;
+
 	int i;
 	const int text_length = strlen(string);
 	int max_height = 0;

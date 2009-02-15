@@ -85,6 +85,9 @@ static void display()
 			READ_UINT(x, fd)
 			READ_UINT(y, fd)
 			READ_UINT(glyph, fd)
+
+			if (font >= guilib_nr_fonts())
+				continue;
 			render_glyph(x, y, get_glyph(font, glyph));
 		}
 	} while(1);

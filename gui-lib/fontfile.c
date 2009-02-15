@@ -40,6 +40,11 @@ unsigned int	*font_index;
 unsigned int	 file_size;
 unsigned int	 n_fonts;
 
+unsigned int guilib_nr_fonts (void)
+{
+	return n_fonts;
+}
+
 int glyph_spacing (struct glyph *first, unsigned short second,
 		   unsigned char *x, unsigned char *y)
 {
@@ -63,9 +68,6 @@ int glyph_spacing (struct glyph *first, unsigned short second,
 const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 {
 	unsigned int font_start, n_glyphs, glyph_index, *glyph_table;
-
-	if (font >= n_fonts)
-		return NULL; 
 
 	/* the entry in the font_index table points to the position in our
 	 * file where the font definition starts */
