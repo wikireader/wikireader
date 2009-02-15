@@ -37,6 +37,31 @@ static void handle_search_key(char keycode)
     guilib_fb_unlock();
 }
 
+static unsigned char buf[4];
+static void display()
+{
+	int fd = wl_open("/smplpedia.cde", WL_O_RDONLY);
+	int font, x, y, glyph, len, i;
+	int run = 0, r_len;
+
+#define READ_UINT(var, fd) \
+	r_len = wl_read(fd, buf, 4); \
+	if (r_len != 4) break; \
+	var = *(unsigned int *)buf;
+
+	do {
+		READ_UINT(font, fd)
+		READ_UINT(len, fd)
+
+		for (i = 0; i < len; ++i) {
+			READ_UINT(x, fd)
+			READ_UINT(y, fd)
+			READ_UINT(glyph, fd)
+			render_glyph(x, y, get_glyph(font, glyph));
+		}
+	} while(1);
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -72,6 +97,8 @@ int wikilib_run(void)
 	 * test searching code...
 	 */
 	search_init();
+
+	display();
 
 	for (;;) {
 		struct wl_input_event ev;
