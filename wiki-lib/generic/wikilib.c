@@ -65,6 +65,8 @@ static void handle_search_key(char keycode)
     guilib_fb_unlock();
 }
 
+#define DISPLAY_PAGE 23
+
 static unsigned char buf[512];
 static unsigned int *buf_ptr;
 static int available = 0;
@@ -93,7 +95,9 @@ static void display()
 			READ_UINT(y, fd)
 			READ_UINT(glyph, fd)
 
-			if (x > FRAMEBUFFER_WIDTH)
+			if (y < DISPLAY_PAGE * FRAMEBUFFER_HEIGHT)
+				continue;
+			if (y > (DISPLAY_PAGE+1) * FRAMEBUFFER_HEIGHT)
 				break;
 
 			if (font >= guilib_nr_fonts())
