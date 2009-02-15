@@ -64,6 +64,9 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 {
 	unsigned int font_start, n_glyphs, glyph_index, *glyph_table;
 
+	if (font >= n_fonts)
+		return NULL; 
+
 	/* the entry in the font_index table points to the position in our
 	 * file where the font definition starts */
 	font_start = WL_LTONL(font_index[font]);

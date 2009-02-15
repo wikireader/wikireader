@@ -30,6 +30,9 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 {
 	int x, y, bit = 0;
 	const char *d = glyph->data;
+
+	if (!glyph)
+		return;
 				
 	for (y = 0; y < glyph->height; y++)
 		for (x = 0; x < glyph->width; x++) {
