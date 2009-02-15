@@ -98,7 +98,7 @@ static void display()
 
 			if (font >= guilib_nr_fonts())
 				continue;
-			render_glyph(x, y, get_glyph(font, glyph));
+			render_glyph(x % FRAMEBUFFER_WIDTH, y % FRAMEBUFFER_HEIGHT, get_glyph(font, glyph));
 		}
 	} while(1);
 }
