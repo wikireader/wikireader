@@ -98,7 +98,7 @@ static const int char_to_glyph(char c)
  * @param start_x From where to start drawing (upper left)
  * @param start_y From where to start drawing (upper left)
  */
-int render_string(const int font, const char *string, int start_x, int start_y)
+int render_string(const int font, int start_x, int start_y, const char *string)
 {
 	if (font >= guilib_nr_fonts())
 		return 0;

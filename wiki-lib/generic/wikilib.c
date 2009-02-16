@@ -49,16 +49,16 @@ static void handle_search_key(char keycode)
     while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
 	if (!found) {
 	    guilib_clear();
-	    y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
+	    y_pos += 2 + render_string(0, 1, y_pos, "Search results:");
 	    found = 1;
 	}
 
-	y_pos += 2 + render_string(0, result, 1, y_pos);
+	y_pos += 2 + render_string(0, 1, y_pos, result);
     }
 
     if (!found) {
 	guilib_clear();
-	y_pos += 2 + render_string(0, "Search results:", 1, y_pos);
+	y_pos += 2 + render_string(0, 1, y_pos, "Search results:");
     }
 
     search_print_stats();
