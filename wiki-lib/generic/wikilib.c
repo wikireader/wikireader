@@ -26,6 +26,9 @@
 #include <search.h>
 #include <string.h>
 
+static const char search_result[] = "Search results:";
+static const int search_result_len = 15;
+
 static void handle_search_key(char keycode)
 {
     char *result;
@@ -49,16 +52,16 @@ static void handle_search_key(char keycode)
     while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
 	if (!found) {
 	    guilib_clear();
-	    y_pos += 2 + render_string(0, 1, y_pos, "Search results:");
+	    y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
 	    found = 1;
 	}
 
-	y_pos += 2 + render_string(0, 1, y_pos, result);
+	y_pos += 2 + render_string(0, 1, y_pos, result, strlen(result) - 7);
     }
 
     if (!found) {
 	guilib_clear();
-	y_pos += 2 + render_string(0, 1, y_pos, "Search results:");
+	y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
     }
 
     search_print_stats();

@@ -9,7 +9,7 @@ struct glyph {
 	const char data[0];
 } __attribute__((packed));
 
-int render_string(const int font, int off_x, int off_y, const char*);
+int render_string(const int font, int off_x, int off_y, const char*, const int len);
 void render_glyph(int start_x, int start_y, const struct glyph *glyph);
 
 #endif /* GLYPH_H */
