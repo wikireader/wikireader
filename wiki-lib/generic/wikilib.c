@@ -73,7 +73,7 @@ static int available = 0;
 static void display()
 {
 	int fd = wl_open("/smplpedi.cde", WL_O_RDONLY);
-	int font, x, y, glyph, len, i;
+	unsigned int font, x, y, glyph, len, i;
 	int run = 0, r_len;
 
 #define READ_UINT(var, fd) \
