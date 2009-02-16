@@ -59,7 +59,7 @@ static int blocks_read = 0;
 
 #define BLOCK_ALIGNMENT 0x1ff
 static uchar_t block[512];
-static int bytes_available = 0;
+static unsigned int bytes_available = 0;
 static int eof = 0;
 
 
@@ -150,7 +150,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     /* prefix table */
     if (prefix_file != -1) {
         int r = 0;
-        int i = 0;
+        unsigned int i = 0;
         uint32_t *prefixdb = &l->prefixdb[0];
         uint32_t *bigramdb = &l->bigram[0];
 

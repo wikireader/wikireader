@@ -31,7 +31,7 @@ typedef struct {
 
 struct search_state {
     uchar_t path[MAXSTR];
-    int offset;
+    unsigned int offset;
     int count;
     bool skip;
     int pattern_len;

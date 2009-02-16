@@ -57,11 +57,11 @@ extern void l_lseek(int fd, unsigned int offset);
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
 #elif defined(LOOKUP_FAST)
 void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
-    state->offset = INT_MAX;
+    state->offset = UINT_MAX;
     state->skip = false;
     state->pattern_len = strlen(pathpart);
 
-    if (state->offset == INT_MAX && state->pattern_len > 1) {
+    if (state->offset == UINT_MAX && state->pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
         int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
@@ -73,15 +73,15 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
         }
     }
 
-    if (state->offset == INT_MAX) {
-        state->offset = char_to_index(toupper(*pathpart));
-        if (state->offset >= 0)
-            state->offset = l->prefixdb[state->offset];
+    if (state->offset == UINT_MAX) {
+        int index = char_to_index(toupper(*pathpart));
+        if (index >= 0)
+            state->offset = l->prefixdb[index];
         else
             return;
     }
 
-    if(l->prefixdb && state->offset != INT_MAX) {
+    if(l->prefixdb && state->offset != UINT_MAX) {
 #ifdef INCLUDE_MAIN
         debug("using prefix db seek to 0x%x", state->offset);
 #endif
