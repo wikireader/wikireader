@@ -76,7 +76,7 @@ void search_remove_char(void)
 
 	search_string[search_index] = '\0';
 	memset(&state, 0, sizeof(state));
-	need_init = 1;
+	need_init = 0;
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
 }
