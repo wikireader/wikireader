@@ -26,7 +26,6 @@ static struct search_state last_first_hit;
 static int search_index;
 static char search_string[MAXSTR];
 
-static char need_init = 1;
 static char first_hit = 0;
 
 
@@ -54,11 +53,10 @@ void search_add(char c)
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
 	first_hit = 0;
-	if (search_index >= 3 && !need_init)
+	if (search_index >= 3)
 		return;
 
 	prepare_search(&global_search, search_string, &state);
-	need_init = 0;
 }
 
 /*
@@ -76,7 +74,6 @@ void search_remove_char(void)
 
 	search_string[search_index] = '\0';
 	memset(&state, 0, sizeof(state));
-	need_init = 0;
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
 }
