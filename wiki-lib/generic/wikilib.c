@@ -19,12 +19,14 @@
 #include <wikilib.h>
 #include <guilib.h>
 #include <glyph.h>
+#include <fontfile.h>
 #include <input.h>
 #include <msg.h>
 #include <malloc.h>
 #include <file-io.h>
 #include <search.h>
 #include <string.h>
+#include <ctype.h>
 
 static const char search_result[] = "Search results:";
 static const int search_result_len = 15;
@@ -32,7 +34,7 @@ static const int search_result_len = 15;
 static void handle_search_key(char keycode)
 {
     char *result;
-    int j = 0, y_pos = 10;
+    int y_pos = 10;
 
     if (keycode == 8) {
 	search_remove_char();
@@ -77,7 +79,6 @@ static void display()
 {
 	int fd = wl_open("/smplpedi.cde", WL_O_RDONLY);
 	unsigned int font, x, y, glyph, len, i;
-	int run = 0, r_len;
 
 #define READ_UINT(var, fd) \
 	if (available == 0) { \
