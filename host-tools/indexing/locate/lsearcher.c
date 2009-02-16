@@ -199,6 +199,20 @@ int load_index(lindex *l, char *path, char *ppath) {
     return db >= 0 && offset_file >= 0;
 }
 
+void reset_state(lindex *l, struct search_state *target, const struct search_state *source)
+{
+    memcpy(target, source, sizeof(*target));
+    target->offset = target->this_offset;
+    target->skip = true;
+    l_lseek(l->db_file, l->db_start + target->offset);
+    target->last_c = l_getc(l->db_file);
+}
+
+void store_state(lindex *l, const struct search_state *source, struct search_state *dest)
+{
+    memcpy(dest, source, sizeof(*dest));
+}
+
 #ifdef INCLUDE_MAIN
 static bool handle_match(uchar_t *s) {
     printf("%s first block: %d\n", s, blocks_read);

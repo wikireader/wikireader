@@ -52,10 +52,17 @@ void search_add(char c)
 
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
-	first_hit = 0;
-	if (search_index >= 3)
-		return;
+	if (search_index >= 3) {
+		state.pattern_len = search_index;
+		if (first_hit) {
+			reset_state(&global_search, &state, &last_first_hit);
+		}
 
+		first_hit = 0;
+		return;
+	}
+
+	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
 }
 
@@ -87,6 +94,7 @@ char* search_fetch_result()
 
 	result = search_fast(&global_search, search_string, &state);
 	if (!first_hit) {
+		store_state(&global_search, &state, &last_first_hit);
 		first_hit = 1;
 	}
 

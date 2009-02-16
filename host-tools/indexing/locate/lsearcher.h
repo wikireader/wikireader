@@ -32,6 +32,7 @@ typedef struct {
 struct search_state {
     uchar_t path[MAXSTR];
     unsigned int offset;
+    unsigned int this_offset;
     int count;
     bool skip;
     int pattern_len;
@@ -59,6 +60,8 @@ static inline int create_index(int lindex, int rindex) {
 
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
 void prepare_search(lindex *, char *pathpart, struct search_state *state);
+void reset_state(lindex *, struct search_state *state, const struct search_state *out_state);
+void store_state(lindex *, const struct search_state *state, struct search_state *out_state);
 char *search_fast(lindex *l, char *pathpart, struct search_state *state);
 int load_index(lindex *l, char *path, char *prefix_path);
 

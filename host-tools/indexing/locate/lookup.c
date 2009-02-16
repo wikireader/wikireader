@@ -52,6 +52,7 @@
 extern int l_getc(int fd);
 extern int l_getw(int fd);
 extern void l_lseek(int fd, unsigned int offset);
+extern unsigned int l_offset(int fd);
 
 #if defined(LOOKUP_SLOW)
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
@@ -128,6 +129,7 @@ char *search_fast
 #endif
 
     for (; c != EOF; ) {
+        state->this_offset = l_offset(l->db_file) - 1 - l->db_start;
         if (c == SWITCH) {
             int local_count =  l_getw(l->db_file) - OFFSET;
             if(!state->skip)
