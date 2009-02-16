@@ -50,7 +50,8 @@ int wl_input_wait(struct wl_input_event *ev)
 
 	do {
 		mutex.lock();
-		w->wait(&mutex);
+		if (display->keyEventQueue->isEmpty() && display->mouseEventQueue->isEmpty())
+			w->wait(&mutex);
 
 		if (!display->keyEventQueue->isEmpty()) {
 			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
