@@ -60,6 +60,7 @@ static int blocks_read = 0;
 #define BLOCK_ALIGNMENT 0x1ff
 static uchar_t block[512];
 static unsigned int bytes_available = 0;
+static unsigned int _l_offset = 0;
 static int eof = 0;
 
 
@@ -92,6 +93,7 @@ static void read_block(int fd)
     ++blocks_read;
     bytes_available = wl_read(fd, &block, sizeof(block));
     eof = bytes_available != sizeof(block);
+    _l_offset += bytes_available;
 }
 
 int l_getc(int fd)
@@ -117,7 +119,8 @@ int l_getw(int fd)
 
 void l_lseek(int fd, unsigned int offset)
 {
-    wl_seek(fd, offset & ~BLOCK_ALIGNMENT);
+    _l_offset = offset & ~BLOCK_ALIGNMENT;
+    wl_seek(fd, _l_offset);
 
     /*
      * now read from this block and update bytes_available
@@ -130,6 +133,11 @@ void l_lseek(int fd, unsigned int offset)
         bytes_available = 0;
     else
         bytes_available -= offset & BLOCK_ALIGNMENT;
+}
+
+unsigned int l_offset(int fd)
+{
+    return _l_offset - bytes_available;
 }
 
 #define SIZE_OF(array) (sizeof(array)/sizeof(array[0]))
