@@ -88,6 +88,10 @@ copy those two file to the sd card
 
 Prepare a SD card, make a FAT filesystem on it, then copy kernel:
 
+Create a vfat on the whole device
+mkfs.vfat -I /dev/YOUR_DEVICE
+
+
 cp kernel/mahatma.elf <your sd card mount point>/kernel
 
 For example:
