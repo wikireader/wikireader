@@ -65,6 +65,25 @@ int glyph_spacing (struct glyph *first, unsigned short second,
 	return 0;
 }
 
+unsigned int read_u32(const unsigned char* start, unsigned int offset)
+{
+	if (offset % 4 != 0) {
+#if BYTE_ORDER == LITTLE_ENDIAN
+		return  (start+offset)[3] << 24 |
+			(start+offset)[2] << 16 |
+			(start+offset)[1] <<  8 |
+			(start+offset)[0] <<  0;
+#else
+		return  (start+offset)[0] << 24 |
+			(start+offset)[1] << 16 |
+			(start+offset)[2] <<  8 |
+			(start+offset)[3] <<  0;
+#endif
+	} else {
+		return *(unsigned int *)(start + offset);
+	}
+}
+
 const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 {
 	unsigned int font_start, n_glyphs, glyph_index, *glyph_table;
@@ -77,7 +96,7 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 		return NULL;
 
 	/* the first integer at this position is the numbers of glyphs */
-	n_glyphs = WL_LTONL(*(unsigned int *) (file_buf + font_start));
+	n_glyphs = WL_LTONL(read_u32(file_buf, font_start));
 	if (glyph >= n_glyphs)
 		return NULL;
 
@@ -87,7 +106,7 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 
 	/* look up our glyph and cast the struct */
 	glyph_table = (unsigned int *) (file_buf + font_start);
-	glyph_index = WL_LTONL(glyph_table[glyph]);
+	glyph_index = WL_LTONL(read_u32(file_buf, font_start + 4 * glyph));
 
 	return (struct glyph *) (file_buf + font_start + glyph_index);
 }
