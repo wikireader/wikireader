@@ -21,16 +21,19 @@
 
 static lindex global_search;
 static struct search_state state;
-static int result;
+static struct search_state last_first_hit;
+
 static int search_index;
 static char search_string[MAXSTR];
+
 static char need_init = 1;
+static char first_hit = 0;
 
 
 
 void search_init()
 {
-	result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
+	int result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
 	if (!result) {
         msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
@@ -40,6 +43,7 @@ void search_init()
 void search_reset()
 {
 	search_index = 0;
+	first_hit = 0;
 }
 
 void search_add(char c)
@@ -49,6 +53,7 @@ void search_add(char c)
 
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
+	first_hit = 0;
 	if (search_index >= 3 && !need_init)
 		return;
 
@@ -72,15 +77,23 @@ void search_remove_char(void)
 	search_string[search_index] = '\0';
 	memset(&state, 0, sizeof(state));
 	need_init = 1;
+	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
 }
 
 char* search_fetch_result()
 {
-	if (search_index == 0)
-	    return NULL;
+	char *result;
 
-	return search_fast(&global_search, search_string, &state);
+	if (search_index == 0)
+		return NULL;
+
+	result = search_fast(&global_search, search_string, &state);
+	if (!first_hit) {
+		first_hit = 1;
+	}
+
+	return result;
 }
 
 extern unsigned int lsesrch_consume_block_stat();
