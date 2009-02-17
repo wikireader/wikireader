@@ -1,1 +1,2 @@
-export PATH=$PWD/toolchain/install/bin:$PATH
+#!/bin/bash
+export PATH=$PWD/install/bin:$PATH
