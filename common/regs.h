@@ -1,5 +1,5 @@
-#ifndef S1C33E01_H
-#define S1C33E01_H
+#ifndef REGS_H
+#define REGS_H
 
 #define REG_BASE	(0x300000)
 #define REG_TYPE_8	volatile unsigned char
@@ -530,5 +530,5 @@
 #define REG_I2S_FIFO_EMPTY	*((REG_TYPE_32 *) (REG_BASE + 0x1c14))
 #define REG_I2S_FIFO		*((REG_TYPE_32 *) (REG_BASE + 0x1c20))
 
-#endif /* S1C33E01_H */
+#endif /* REGS_H */
 
