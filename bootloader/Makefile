@@ -42,7 +42,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o $(COMMON)/lcd.o eeprom-2nd.lds ../fatfs/lib/libtinyfat.a
+eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o eeprom-2nd.lds ../fatfs/lib/libtinyfat.a
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf
@@ -63,7 +63,7 @@ flash: $(TARGETS)
 clean::
 	make -C e07load clean
 	make -C gfxtool clean
-	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map $(COMMON)/*.[od]
+	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
 
 -include $(wildcard *.d) dummy
 
