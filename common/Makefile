@@ -22,3 +22,9 @@ HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
 CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+
+.c.o: $<
+	$(GCC) -M $(CFLAGS) $< > $(notdir $(<:.c=.d))
+	$(GCC) $(CFLAGS) -c $< -o $(notdir $(<:.c=.o))
+
+-include $(wildcard *.d) dummy

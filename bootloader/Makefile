@@ -12,10 +12,6 @@ TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxto
 VPATH=$(COMMON)
 all: $(TARGETS)
 
-.c.o:
-	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
-	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
-
 #### e07load
 e07load/e07load::
 	make -C e07load
@@ -64,6 +60,4 @@ clean::
 	make -C e07load clean
 	make -C gfxtool clean
 	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
-
--include $(wildcard *.d) dummy
 

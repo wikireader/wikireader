@@ -53,15 +53,8 @@ OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
 TARGETS=mahatma.elf
 all: $(TARGETS)
 
-#.c.o:
-#	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
-#	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
-
 mahatma.elf: $(OBJECTS) mahatma.lds
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map
-
--include $(wildcard *.d) dummy
-

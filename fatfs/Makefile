@@ -11,10 +11,6 @@ TARGETS=all
 
 all: lib/libtinyfat.a
 
-.c.o: $<
-	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
-	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
-
 lib/libtinyfat.a: src/tff.o src/mmc.o
 	$(AR) r $@ $^
 
