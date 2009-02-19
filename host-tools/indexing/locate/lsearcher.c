@@ -131,10 +131,7 @@ void l_lseek(int fd, unsigned int offset)
     read_block(fd);
 
     /* how much do we have left */
-    if (bytes_available < (offset & BLOCK_ALIGNMENT))
-        bytes_available = 0;
-    else
-        bytes_available -= offset & BLOCK_ALIGNMENT;
+    bytes_available -= offset & BLOCK_ALIGNMENT;
 }
 
 unsigned int l_offset(int fd)
