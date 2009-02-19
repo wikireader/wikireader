@@ -59,7 +59,7 @@ static int blocks_read = 0;
 
 #define BLOCK_ALIGNMENT 0x1ff
 static uchar_t block[512];
-static unsigned int bytes_available = 0;
+static int bytes_available = 0;
 static unsigned int _l_offset = 0;
 static int eof = 0;
 
