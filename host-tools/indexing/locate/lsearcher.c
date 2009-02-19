@@ -60,6 +60,7 @@ static int blocks_read = 0;
 #define BLOCK_ALIGNMENT 0x1ff
 static uchar_t block[512];
 static int bytes_available = 0;
+static int bytes_read = 0;
 static unsigned int _l_offset = 0;
 static int eof = 0;
 
@@ -91,7 +92,8 @@ unsigned int lsesrch_consume_block_stat()
 static void read_block(int fd)
 {
     ++blocks_read;
-    bytes_available = wl_read(fd, &block, sizeof(block));
+    bytes_read = wl_read(fd, &block, sizeof(block));
+    bytes_available = bytes_read;
     eof = bytes_available != sizeof(block) || bytes_available < 0;
     _l_offset += bytes_available;
 }
@@ -103,7 +105,7 @@ int l_getc(int fd)
 
     if (bytes_available <= 0)
         return EOF;
-    return block[sizeof(block) - bytes_available--];
+    return block[bytes_read - bytes_available--];
 }
 
 int l_getw(int fd)
