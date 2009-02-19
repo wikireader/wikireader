@@ -92,7 +92,7 @@ static void read_block(int fd)
 {
     ++blocks_read;
     bytes_available = wl_read(fd, &block, sizeof(block));
-    eof = bytes_available != sizeof(block);
+    eof = bytes_available != sizeof(block) || bytes_available < 0;
     _l_offset += bytes_available;
 }
 
