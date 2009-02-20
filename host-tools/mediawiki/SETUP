@@ -77,6 +77,16 @@ This will help to make the below import work properly
    # To generate interwiki data
    cat data/interwiki-links.sql | mysql -u wikiuser -p wikidb 
 
+   # Alternatively do
+   download the inrerwiki.sql.gz from the dump you are using
+   gunzip
+   remove drop table, alter table from the sql
+   mysql -u wikiuser -p wikidb
+   >delete from interwiki;
+   >CTRL+D
+   cat interwiki.sql | mysql -u wikiuser -p wikidb
+
+
 = Setting up/tuning mediawiki =
 == Installation extensions ==
 Your MediaWiki needs to enable certain extensions:
