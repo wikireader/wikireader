@@ -236,9 +236,11 @@ static void scan(lindex *l, char *scan_file) {
 
     unsigned int i;
     for (i = 0; i < sizeof(l->prefixdb)/sizeof(l->prefixdb[0]); ++i)
-        l->prefixdb[i] = INT_MAX;
+        l->prefixdb[i] = UINT_MAX;
     for (i = 0; i < sizeof(l->bigram)/sizeof(l->bigram[0]); ++i)
-        l->bigram[i] = INT_MAX;
+        l->bigram[i] = UINT_MAX;
+    for (i = 0; i < sizeof(l->trigram)/sizeof(l->trigram[0]); ++i)
+        l->trigram[i] = UINT_MAX;
 
     file_offset = 1;
     c = l_getc(l->db_file);
@@ -298,7 +300,7 @@ static void scan(lindex *l, char *scan_file) {
         if (index_1 == -1) {
             printf("Unhandled char for prefix: '%c' at 0x%x\n",
                    path[0], (int)this_offset);
-        } else if (l->prefixdb[index_1] == INT_MAX) {
+        } else if (l->prefixdb[index_1] == UINT_MAX) {
             l->prefixdb[index_1] = this_offset;
             debug("%c '%s' starts at 0x%x index: %d",
                   path[0], path, (int)this_offset, index_1);
@@ -307,7 +309,7 @@ static void scan(lindex *l, char *scan_file) {
         if (index_2 == -1) {
             printf("Unhandled char for prefix: '%c' '%c' at 0x%x (%d, %d)\n",
                     path[0], path[1], (int)this_offset, index_1, index_2);
-        } else if (index_1 >= 0 && l->bigram[create_index(index_1, index_2)] == INT_MAX) {
+        } else if (index_1 >= 0 && l->bigram[create_index(index_1, index_2)] == UINT_MAX) {
             l->bigram[create_index(index_1, index_2)] = this_offset;
             debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
                   (int)this_offset, create_index(index_1, index_2), index_1, index_2);
@@ -322,8 +324,9 @@ static void scan(lindex *l, char *scan_file) {
     int ret = 0;
     ret += write(fp, &l->prefixdb, sizeof(l->prefixdb));
     ret += write(fp, &l->bigram, sizeof(l->bigram));
+    ret += write(fp, &l->trigram, sizeof(l->trigram));
 
-    if (ret != sizeof(l->prefixdb) + sizeof(l->bigram))
+    if (ret != sizeof(l->prefixdb) + sizeof(l->bigram) + sizeof(l->trigram))
         fprintf(stderr, "Failed to write db\n");
 }
 
