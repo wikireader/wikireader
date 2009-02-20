@@ -291,6 +291,7 @@ static void scan(lindex *l, char *scan_file) {
 
         int index_1 = char_to_index(toupper(path[0]));
         int index_2 = char_to_index(toupper(path[1]));
+        int index_3 = char_to_index(toupper(path[2]));
 
         if ((this_offset & PREFIX_OFFSET_MASK) != this_offset) {
             fprintf(stderr, "Offset bigger than our offset mask: 0x%x\n", this_offset);
@@ -313,6 +314,14 @@ static void scan(lindex *l, char *scan_file) {
             l->bigram[create_index(index_1, index_2)] = this_offset;
             debug("%c%c starts at 0x%x index: %d %d %d", path[0], path[1],
                   (int)this_offset, create_index(index_1, index_2), index_1, index_2);
+        }
+
+        if (index_1 >= 0 && index_2 >= 0 && index_3 >= 0 &&
+            l->trigram[create_trigram_index(index_1, index_2, index_3)] == UINT_MAX) {
+            uint32_t offset = this_offset & PREFIX_OFFSET_MASK;
+            int index = create_trigram_index(index_1, index_2, index_3);
+            l->trigram[index] = offset;
+            debug("%3s starts at 0x%x index: %d", path, this_offset, index);
         }
     }
 

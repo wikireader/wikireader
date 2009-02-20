@@ -60,6 +60,11 @@ static inline int create_index(int lindex, int rindex) {
     return (MAX_UPPER_PREFIX_SIZE * lindex) + rindex;
 }
 
+static inline int create_trigram_index(int index_1, int index_2, int index_3) {
+    return (MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE * index_1) +
+            (MAX_UPPER_PREFIX_SIZE * index_2) + index_3;
+}
+
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df);
 void prepare_search(lindex *, char *pathpart, struct search_state *state);
 void reset_state(lindex *, struct search_state *state, const struct search_state *out_state);
