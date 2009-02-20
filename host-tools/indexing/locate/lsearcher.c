@@ -290,6 +290,11 @@ static void scan(lindex *l, char *scan_file) {
         int index_1 = char_to_index(toupper(path[0]));
         int index_2 = char_to_index(toupper(path[1]));
 
+        if ((this_offset & PREFIX_OFFSET_MASK) != this_offset) {
+            fprintf(stderr, "Offset bigger than our offset mask: 0x%x\n", this_offset);
+            exit(-1);
+        }
+
         if (index_1 == -1) {
             printf("Unhandled char for prefix: '%c' at 0x%x\n",
                    path[0], (int)this_offset);

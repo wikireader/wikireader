@@ -20,6 +20,7 @@ typedef void donef();
 
 #define MAX_UPPER_PREFIX_SIZE   38
 #define MAX_ALL_PREFIX_SIZE     (38+26)
+#define PREFIX_OFFSET_MASK      (0x0FFFFFFF) // (28 bit...)
 
 typedef struct {
   uchar_t bigram1[NBG], bigram2[NBG];

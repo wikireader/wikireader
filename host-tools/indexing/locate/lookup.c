@@ -67,7 +67,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
         int index_2 = char_to_index(toupper(pathpart[1]));
         if (index_1 >= 0 && index_2 >= 0) {
             int index = create_index(index_1, index_2);
-            state->offset = l->bigram[index];
+            state->offset = l->bigram[index] & PREFIX_OFFSET_MASK;
             state->path[0] = toupper(pathpart[0]);
             if (state->offset != l->prefixdb[index_1])
                 state->count = 1;
@@ -77,7 +77,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     if (state->offset == UINT_MAX) {
         int index = char_to_index(toupper(*pathpart));
         if (index >= 0)
-            state->offset = l->prefixdb[index];
+            state->offset = l->prefixdb[index] & PREFIX_OFFSET_MASK;
         else
             return;
     }
