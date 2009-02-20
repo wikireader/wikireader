@@ -75,7 +75,7 @@ This will help to make the below import work properly
   extensions one needs to install besides Tidy.
 
    # To generate interwiki data
-   cat data/interwiki-links.sql | mysqk -u wikiuser -p wikidb 
+   cat data/interwiki-links.sql | mysql -u wikiuser -p wikidb 
 
 = Setting up/tuning mediawiki =
 == Installation extensions ==
