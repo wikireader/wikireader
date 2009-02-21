@@ -160,6 +160,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
         unsigned int i = 0;
         uint32_t *prefixdb = &l->prefixdb[0];
         uint32_t *bigramdb = &l->bigram[0];
+        uint32_t *trigramdb = &l->trigram[0];
 
         for (i = 0;  i < SIZE_OF(l->prefixdb); ++i)
             r += wl_read(prefix_file, prefixdb + i, sizeof(l->prefixdb[0]));
@@ -167,7 +168,11 @@ void init_index(lindex *l, int db_file, int prefix_file) {
         for (i = 0; i < SIZE_OF(l->bigram); ++i)
             r += wl_read(prefix_file, bigramdb + i, sizeof(l->bigram[0]));
 
-        if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
+        for (i = 0; i < SIZE_OF(l->trigram); ++i)
+            r += wl_read(prefix_file, trigramdb + i, sizeof(l->trigram[0]));
+        l->trigram_loaded = 1;
+
+        if (r != sizeof(l->prefixdb) + sizeof(l->bigram) + sizeof(l->trigram)) {
 #ifdef INCLUDE_MAIN
             printf("Failed...to read prefix, bigram.\n");
 #endif
