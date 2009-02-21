@@ -319,6 +319,15 @@ static void scan(lindex *l, char *scan_file) {
         if (index_1 >= 0 && index_2 >= 0 && index_3 >= 0 &&
             l->trigram[create_trigram_index(index_1, index_2, index_3)] == UINT_MAX) {
             uint32_t offset = this_offset & PREFIX_OFFSET_MASK;
+
+            if (count >= 3) {
+                printf("Something is fishy... count was %d\n", count);
+                exit(-1);
+            }
+
+            offset |= (count & 0x3) << 30;
+            offset |= (isupper(path[1]) ? 1 : 0) << 29;
+
             int index = create_trigram_index(index_1, index_2, index_3);
             l->trigram[index] = offset;
             debug("%3s starts at 0x%x index: %d", path, this_offset, index);
