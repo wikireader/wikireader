@@ -181,7 +181,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
 }
 
 int load_trigram_chunk(lindex *l) {
-    if (l->offset_i < 0)
+    if (l->offset_file < 0)
         return 0;
 
     uint32_t *trigramdb = &l->trigram[0];
