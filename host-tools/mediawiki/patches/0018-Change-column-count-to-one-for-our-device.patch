@@ -1,14 +1,14 @@
-From 574f016c50ca01ccbe038d7d1a2d77b1d2dce5e5 Mon Sep 17 00:00:00 2001
+From da22ddd7badc430c8a1286a761d2301500f793b2 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
 Date: Mon, 19 Jan 2009 12:11:54 +0100
-Subject: [PATCH] Change column count to one for our device
+Subject: [PATCH 18/22] Change column count to one for our device
 
 ---
  skins/MonoBook.php |    9 +++++++++
  1 files changed, 9 insertions(+), 0 deletions(-)
 
 diff --git a/skins/MonoBook.php b/skins/MonoBook.php
-index bff7d39..fc5d1b2 100644
+index 78e80c8..e42bb7c 100644
 --- a/skins/MonoBook.php
 +++ b/skins/MonoBook.php
 @@ -145,6 +145,15 @@ for (i  = 0; i < nodes.length; ++i) {
@@ -28,5 +28,5 @@ index bff7d39..fc5d1b2 100644
  </body></html>
  <?php
 -- 
-1.6.0.2
+1.6.1
 

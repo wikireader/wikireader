@@ -1,7 +1,7 @@
-From 624df3103e59daa74e56fe590861c13e061a7045 Mon Sep 17 00:00:00 2001
+From fe244f19138d883df640f9156986c0aeb464c339 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 10 Nov 2008 23:11:30 +0100
-Subject: [PATCH] [mediawik] Remove the globalWrapper, move some bits to content..
+Subject: [PATCH 06/22] [mediawik] Remove the globalWrapper, move some bits to content..
 
     The CSS is starting to take shape. Many more things needs to be
     done though.
@@ -11,7 +11,7 @@ Subject: [PATCH] [mediawik] Remove the globalWrapper, move some bits to content.
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/skins/MonoBook.php b/skins/MonoBook.php
-index 2fd1ce5..a302248 100644
+index 8a3bcab..4bc6e98 100644
 --- a/skins/MonoBook.php
 +++ b/skins/MonoBook.php
 @@ -100,7 +100,6 @@ class MonoBookTemplate extends QuickTemplate {
@@ -31,7 +31,7 @@ index 2fd1ce5..a302248 100644
  <?php $this->html('reporttime') ?>
  <?php if ( $this->data['debug'] ): ?>
 diff --git a/skins/monobook/main.css b/skins/monobook/main.css
-index 0bf1c3b..da9054d 100644
+index 63ce572..d4b2b1f 100644
 --- a/skins/monobook/main.css
 +++ b/skins/monobook/main.css
 @@ -16,10 +16,12 @@
@@ -50,5 +50,5 @@ index 0bf1c3b..da9054d 100644
  #column-one {
  	padding-top: 160px;
 -- 
-1.6.0.2
+1.6.1
 

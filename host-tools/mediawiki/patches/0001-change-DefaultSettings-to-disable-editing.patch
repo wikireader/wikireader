@@ -1,7 +1,7 @@
-From 1c92a76bfce7b3331effbd0f47a60ac50790ce65 Mon Sep 17 00:00:00 2001
+From 49ec328f1493612fa52710646a3a514ea563207e Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Tue, 4 Nov 2008 23:24:00 +0100
-Subject: [PATCH] change DefaultSettings to disable editing
+Subject: [PATCH 01/22] change DefaultSettings to disable editing
 
 ---
  includes/DefaultSettings.php |    2 +-
@@ -9,23 +9,23 @@ Subject: [PATCH] change DefaultSettings to disable editing
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/includes/DefaultSettings.php b/includes/DefaultSettings.php
-index 6317573..88aa08b 100644
+index 34b9e4c..1dc9cef 100644
 --- a/includes/DefaultSettings.php
 +++ b/includes/DefaultSettings.php
-@@ -1120,7 +1120,7 @@ $wgGroupPermissions = array();
+@@ -1182,7 +1182,7 @@ $wgGroupPermissions = array();
  // Implicit group for all visitors
- $wgGroupPermissions['*'    ]['createaccount']    = true;
- $wgGroupPermissions['*'    ]['read']             = true;
--$wgGroupPermissions['*'    ]['edit']             = true;
-+$wgGroupPermissions['*'    ]['edit']             = false;
- $wgGroupPermissions['*'    ]['createpage']       = true;
- $wgGroupPermissions['*'    ]['createtalk']       = true;
- $wgGroupPermissions['*'    ]['writeapi']         = true;
+ $wgGroupPermissions['*']['createaccount']    = true;
+ $wgGroupPermissions['*']['read']             = true;
+-$wgGroupPermissions['*']['edit']             = true;
++$wgGroupPermissions['*']['edit']             = false;
+ $wgGroupPermissions['*']['createpage']       = true;
+ $wgGroupPermissions['*']['createtalk']       = true;
+ $wgGroupPermissions['*']['writeapi']         = true;
 diff --git a/includes/SkinTemplate.php b/includes/SkinTemplate.php
-index 33307e3..e9921e2 100644
+index bf6fad3..f6d716a 100644
 --- a/includes/SkinTemplate.php
 +++ b/includes/SkinTemplate.php
-@@ -165,7 +165,7 @@ class SkinTemplate extends Skin {
+@@ -166,7 +166,7 @@ class SkinTemplate extends Skin {
  		$this->thisurl = $this->mTitle->getPrefixedURL();
  		$this->loggedin = $wgUser->isLoggedIn();
  		$this->iscontent = ($this->mTitle->getNamespace() != NS_SPECIAL );
@@ -35,5 +35,5 @@ index 33307e3..e9921e2 100644
  
  		if ( $wgUser->isLoggedIn() || $this->showIPinHeader() ) {
 -- 
-1.6.0.2
+1.6.1
 

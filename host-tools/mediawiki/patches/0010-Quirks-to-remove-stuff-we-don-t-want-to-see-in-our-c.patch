@@ -1,17 +1,17 @@
-From b4a77cf2b288d8a35be1ec6b26d877a12a10915e Mon Sep 17 00:00:00 2001
+From 400e125d4de829023fbbf30c7a5e2e0722041431 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 19 Jan 2009 00:42:29 +0100
-Subject: [PATCH] Quirks to remove stuff we don't want to see in our content...
+Subject: [PATCH 10/22] Quirks to remove stuff we don't want to see in our content...
 
 ---
  skins/monobook/main.css |   57 +++++++++++++++++++++++++++++++++++++++++++++++
  1 files changed, 57 insertions(+), 0 deletions(-)
 
 diff --git a/skins/monobook/main.css b/skins/monobook/main.css
-index da9054d..c2c568e 100644
+index d4b2b1f..35461b9 100644
 --- a/skins/monobook/main.css
 +++ b/skins/monobook/main.css
-@@ -1537,3 +1537,60 @@ span.searchmatch {
+@@ -1540,3 +1540,60 @@ div#mw-search-interwiki-caption {
  .os-suggest {
  	font-size: 127%;
  }
@@ -73,5 +73,5 @@ index da9054d..c2c568e 100644
 +    display: none;
 +}
 -- 
-1.6.0.2
+1.6.1
 

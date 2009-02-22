@@ -1,25 +1,25 @@
-From f19249d8a9d027be72c89912a66df784b4d5a724 Mon Sep 17 00:00:00 2001
+From c6c8fa29def548451aafac3fce3c33b16251d167 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 19 Jan 2009 00:45:56 +0100
-Subject: [PATCH] We do want to hyphenate content...
+Subject: [PATCH 11/22] We do want to hyphenate content...
 
 ---
  skins/MonoBook.php |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/skins/MonoBook.php b/skins/MonoBook.php
-index c499ff7..cb6cd44 100644
+index ea3d31c..732fd7f 100644
 --- a/skins/MonoBook.php
 +++ b/skins/MonoBook.php
 @@ -104,7 +104,7 @@ class MonoBookTemplate extends QuickTemplate {
  		<a name="top" id="top"></a>
  		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
- 		<h1 class="firstHeading"><?php $this->data['displaytitle']!=""?$this->html('title'):$this->text('title') ?></h1>
+ 		<h1 id="firstHeading" class="firstHeading"><?php $this->data['displaytitle']!=""?$this->html('title'):$this->text('title') ?></h1>
 -		<div id="bodyContent" class="body-content-class">
 +		<div id="bodyContent" class="hyphenate">
  			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
  			<div id="contentSub"><?php $this->html('subtitle') ?></div>
  			<!-- start content -->
 -- 
-1.6.0.2
+1.6.1
 

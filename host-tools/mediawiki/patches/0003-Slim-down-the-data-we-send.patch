@@ -1,25 +1,25 @@
-From 783fdb46bdd1082104b523e9bbad9ec9f5527e55 Mon Sep 17 00:00:00 2001
+From 10cc5d7c9e497548e42ffd5da2448334fc56b27d Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Tue, 4 Nov 2008 23:52:04 +0100
-Subject: [PATCH] Slim down the data we send...
+Subject: [PATCH 03/22] Slim down the data we send...
 
 ---
- skins/MonoBook.php |  107 +---------------------------------------------------
- 1 files changed, 1 insertions(+), 106 deletions(-)
+ skins/MonoBook.php |  110 +---------------------------------------------------
+ 1 files changed, 1 insertions(+), 109 deletions(-)
 
 diff --git a/skins/MonoBook.php b/skins/MonoBook.php
-index 320b4d7..2fd1ce5 100644
+index b75ed43..8a3bcab 100644
 --- a/skins/MonoBook.php
 +++ b/skins/MonoBook.php
 @@ -40,11 +40,6 @@ class SkinMonoBook extends SkinTemplate {
  			$out->addStyle( $wgHandheldStyle, 'handheld' );
  		}
- 		
+ 
 -		$out->addStyle( 'monobook/IE50Fixes.css', 'screen', 'lt IE 5.5000' );
 -		$out->addStyle( 'monobook/IE55Fixes.css', 'screen', 'IE 5.5000' );
 -		$out->addStyle( 'monobook/IE60Fixes.css', 'screen', 'IE 6' );
 -		$out->addStyle( 'monobook/IE70Fixes.css', 'screen', 'IE 7' );
--		
+-
  		$out->addStyle( 'monobook/rtl.css', 'screen', '', 'rtl' );
  	}
  }
@@ -33,9 +33,9 @@ index 320b4d7..2fd1ce5 100644
  
 -		<!--[if lt IE 7]><script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath') ?>/common/IEFixes.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"></script>
 -		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
--		
+-
  		<?php print Skin::makeGlobalVariablesScript( $this->data ); ?>
-                 
+ 
  		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('stylepath' ) ?>/common/wikibits.js?<?php echo $GLOBALS['wgStyleVersion'] ?>"><!-- wikibits js --></script>
 @@ -104,8 +95,7 @@ class MonoBookTemplate extends QuickTemplate {
  <?php	}
@@ -47,9 +47,9 @@ index 320b4d7..2fd1ce5 100644
  	</head>
  <body<?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
  <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
-@@ -142,121 +132,26 @@ class MonoBookTemplate extends QuickTemplate {
- 	/*************************************************************************************************/
+@@ -143,124 +133,26 @@ class MonoBookTemplate extends QuickTemplate {
  	function searchBox() {
+ 		global $wgUseTwoButtonsSearchForm;
  ?>
 -	<div id="p-search" class="portlet">
 -		<h5><label for="searchInput"><?php $this->msg('search') ?></label></h5>
@@ -58,8 +58,11 @@ index 320b4d7..2fd1ce5 100644
 -				<input id="searchInput" name="search" type="text"<?php echo $this->skin->tooltipAndAccesskey('search');
 -					if( isset( $this->data['search'] ) ) {
 -						?> value="<?php $this->text('search') ?>"<?php } ?> />
--				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />&nbsp;
--				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> />
+-				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> /><?php if ($wgUseTwoButtonsSearchForm) { ?>&nbsp;
+-				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-fulltext' ); ?> /><?php } else { ?>
+-
+-				<div><a href="<?php $this->text('searchaction') ?>" rel="search"><?php $this->msg('powersearch-legend') ?></a></div><?php } ?>
+-
 -			</div></form>
 -		</div>
 -	</div>
@@ -92,8 +95,8 @@ index 320b4d7..2fd1ce5 100644
 -<?php 	}
 -		if($this->data['feeds']) { ?>
 -			<li id="feedlinks"><?php foreach($this->data['feeds'] as $key => $feed) {
--					?><span id="feed-<?php echo Sanitizer::escapeId($key) ?>"><a href="<?php
--					echo htmlspecialchars($feed['href']) ?>"<?php echo $this->skin->tooltipAndAccesskey('feed-'.$key) ?>><?php echo htmlspecialchars($feed['text'])?></a>&nbsp;</span>
+-					?><a id="<?php echo Sanitizer::escapeId( "feed-$key" ) ?>" href="<?php
+-					echo htmlspecialchars($feed['href']) ?>" rel="alternate" type="application/<?php echo $key ?>+xml" class="feedlink"<?php echo $this->skin->tooltipAndAccesskey('feed-'.$key) ?>><?php echo htmlspecialchars($feed['text'])?></a>&nbsp;
 -					<?php } ?></li><?php
 -		}
 -
@@ -107,7 +110,7 @@ index 320b4d7..2fd1ce5 100644
 -
 -		if(!empty($this->data['nav_urls']['print']['href'])) { ?>
 -				<li id="t-print"><a href="<?php echo htmlspecialchars($this->data['nav_urls']['print']['href'])
--				?>"<?php echo $this->skin->tooltipAndAccesskey('t-print') ?>><?php $this->msg('printableversion') ?></a></li><?php
+-				?>" rel="alternate"<?php echo $this->skin->tooltipAndAccesskey('t-print') ?>><?php $this->msg('printableversion') ?></a></li><?php
 -		}
 -
 -		if(!empty($this->data['nav_urls']['permalink']['href'])) { ?>
@@ -128,7 +131,7 @@ index 320b4d7..2fd1ce5 100644
  
  	/*************************************************************************************************/
  	function languageBox() {
--		if( $this->data['language_urls'] ) { 
+-		if( $this->data['language_urls'] ) {
  ?>
 -	<div id="p-lang" class="portlet">
 -		<h5><?php $this->msg('otherlanguages') ?></h5>
@@ -148,7 +151,7 @@ index 320b4d7..2fd1ce5 100644
  	/*************************************************************************************************/
  	function customBox( $bar, $cont ) {
  ?>
--	<div class='generated-sidebar portlet' id='p-<?php echo Sanitizer::escapeId($bar) ?>'<?php echo $this->skin->tooltip('p-'.$bar) ?>>
+-	<div class='generated-sidebar portlet' id='<?php echo Sanitizer::escapeId( "p-$bar" ) ?>'<?php echo $this->skin->tooltip('p-'.$bar) ?>>
 -		<h5><?php $out = wfMsg( $bar ); if (wfEmptyMsg($bar, $out)) echo $bar; else echo $out; ?></h5>
 -		<div class='pBody'>
 -<?php   if ( is_array( $cont ) ) { ?>
@@ -170,5 +173,5 @@ index 320b4d7..2fd1ce5 100644
  	}
  
 -- 
-1.6.0.2
+1.6.1
 

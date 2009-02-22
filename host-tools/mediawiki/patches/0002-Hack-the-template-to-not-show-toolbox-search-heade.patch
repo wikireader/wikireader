@@ -1,19 +1,19 @@
-From 6bbebd8d6a3389f9dde73eb2f757e2a4937b8f4e Mon Sep 17 00:00:00 2001
+From 1dec8bc64d149f8c77acca720ddf9939687967ab Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Tue, 4 Nov 2008 23:44:36 +0100
-Subject: [PATCH] Hack the template to not show toolbox, search, header, or anything else
+Subject: [PATCH 02/22] Hack the template to not show toolbox, search, header, or anything else
 
 ---
  includes/SkinTemplate.php  |   16 ++++++-
  includes/parser/Parser.php |    2 +
- skins/MonoBook.php         |  102 +-------------------------------------------
- 3 files changed, 17 insertions(+), 103 deletions(-)
+ skins/MonoBook.php         |  110 +-------------------------------------------
+ 3 files changed, 17 insertions(+), 111 deletions(-)
 
 diff --git a/includes/SkinTemplate.php b/includes/SkinTemplate.php
-index e9921e2..1347025 100644
+index f6d716a..57ed730 100644
 --- a/includes/SkinTemplate.php
 +++ b/includes/SkinTemplate.php
-@@ -257,8 +257,10 @@ class SkinTemplate extends Skin {
+@@ -258,8 +258,10 @@ class SkinTemplate extends Skin {
  		$tpl->set( "protect", count($this->mTitle->isProtected()) ? "unprotect" : "protect" );
  		$tpl->set( "helppage", wfMsg('helppage'));
  		*/
@@ -24,7 +24,7 @@ index e9921e2..1347025 100644
  		$tpl->setRef( 'stylepath', $wgStylePath );
  		$tpl->setRef( 'articlepath', $wgArticlePath );
  		$tpl->setRef( 'scriptpath', $wgScriptPath );
-@@ -444,8 +446,10 @@ class SkinTemplate extends Skin {
+@@ -445,8 +447,10 @@ class SkinTemplate extends Skin {
  			$tpl->set('body_ondblclick', false);
  		}
  		$tpl->set( 'body_onload', false );
@@ -35,7 +35,7 @@ index e9921e2..1347025 100644
  
  		// original version by hansm
  		if( !wfRunHooks( 'SkinTemplateOutputPageBeforeExec', array( &$this, &$tpl ) ) ) {
-@@ -555,6 +559,7 @@ class SkinTemplate extends Skin {
+@@ -556,6 +560,7 @@ class SkinTemplate extends Skin {
  				: 'login';
  			if( $this->showIPinHeader() ) {
  				$href = &$this->userpageUrlDetails['href'];
@@ -43,7 +43,7 @@ index e9921e2..1347025 100644
  				$personal_urls['anonuserpage'] = array(
  					'text' => $this->username,
  					'href' => $href,
-@@ -574,17 +579,21 @@ class SkinTemplate extends Skin {
+@@ -575,17 +580,21 @@ class SkinTemplate extends Skin {
  					'href' => self::makeSpecialUrl( 'Userlogin', 'returnto=' . $this->thisurl ),
  					'active' => $wgTitle->isSpecial( 'Userlogin' )
  				);
@@ -66,7 +66,7 @@ index e9921e2..1347025 100644
  		wfProfileOut( __METHOD__ );
  		return $personal_urls;
  	}
-@@ -847,8 +856,10 @@ class SkinTemplate extends Skin {
+@@ -850,8 +859,10 @@ class SkinTemplate extends Skin {
  		global $wgUseTrackbacks, $wgTitle, $wgUser, $wgRequest;
  		global $wgEnableUploads, $wgUploadNavigationUrl;
  
@@ -75,10 +75,10 @@ index e9921e2..1347025 100644
  
 +/*
 +		wfProfileIn( __METHOD__ );
- 		$action = $wgRequest->getText( 'action' );
+ 		$action = $wgRequest->getVal( 'action', 'view' );
  
  		$nav_urls = array();
-@@ -950,6 +961,7 @@ class SkinTemplate extends Skin {
+@@ -953,6 +964,7 @@ class SkinTemplate extends Skin {
  			);
  		}
  		wfProfileOut( __METHOD__ );
@@ -87,10 +87,10 @@ index e9921e2..1347025 100644
  	}
  
 diff --git a/includes/parser/Parser.php b/includes/parser/Parser.php
-index 94c7981..a18bc38 100644
+index f60ed17..8d331d3 100644
 --- a/includes/parser/Parser.php
 +++ b/includes/parser/Parser.php
-@@ -3471,9 +3471,11 @@ class Parser
+@@ -3384,9 +3384,11 @@ class Parser
  
  		# Allow user to stipulate that a page should have a "new section"
  		# link added via __NEWSECTIONLINK__
@@ -100,10 +100,10 @@ index 94c7981..a18bc38 100644
  		}
 +*/
  
- 		# if the string __FORCETOC__ (not case-sensitive) occurs in the HTML,
- 		# override above conditions and always show TOC above first header
+ 		# Allow user to remove the "new section"
+ 		# link via __NONEWSECTIONLINK__
 diff --git a/skins/MonoBook.php b/skins/MonoBook.php
-index db77791..320b4d7 100644
+index 366199d..b75ed43 100644
 --- a/skins/MonoBook.php
 +++ b/skins/MonoBook.php
 @@ -110,8 +110,7 @@ class MonoBookTemplate extends QuickTemplate {
@@ -116,7 +116,7 @@ index db77791..320b4d7 100644
  	<div id="content">
  		<a name="top" id="top"></a>
  		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
-@@ -119,112 +118,13 @@ class MonoBookTemplate extends QuickTemplate {
+@@ -119,120 +118,13 @@ class MonoBookTemplate extends QuickTemplate {
  		<div id="bodyContent">
  			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
  			<div id="contentSub"><?php $this->html('subtitle') ?></div>
@@ -139,7 +139,7 @@ index db77791..320b4d7 100644
 -			<ul>
 -	<?php		foreach($this->data['content_actions'] as $key => $tab) {
 -					echo '
--				 <li id="ca-' . Sanitizer::escapeId($key).'"';
+-				 <li id="' . Sanitizer::escapeId( "ca-$key" ) . '"';
 -					if( $tab['class'] ) {
 -						echo ' class="'.htmlspecialchars($tab['class']).'"';
 -					}
@@ -166,7 +166,7 @@ index db77791..320b4d7 100644
 -		<div class="pBody">
 -			<ul>
 -<?php 			foreach($this->data['personal_urls'] as $key => $item) { ?>
--				<li id="pt-<?php echo Sanitizer::escapeId($key) ?>"<?php
+-				<li id="<?php echo Sanitizer::escapeId( "pt-$key" ) ?>"<?php
 -					if ($item['active']) { ?> class="active"<?php } ?>><a href="<?php
 -				echo htmlspecialchars($item['href']) ?>"<?php echo $skin->tooltipAndAccesskey('pt-'.$key) ?><?php
 -				if(!empty($item['class'])) { ?> class="<?php
@@ -179,11 +179,11 @@ index db77791..320b4d7 100644
 -	<div class="portlet" id="p-logo">
 -		<a style="background-image: url(<?php $this->text('logopath') ?>);" <?php
 -			?>href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"<?php
--			echo $skin->tooltipAndAccesskey('n-mainpage') ?>></a>
+-			echo $skin->tooltipAndAccesskey('p-logo') ?>></a>
 -	</div>
 -	<script type="<?php $this->text('jsmimetype') ?>"> if (window.isMSIE55) fixalpha(); </script>
--<?php 
--		$sidebar = $this->data['sidebar'];		
+-<?php
+-		$sidebar = $this->data['sidebar'];
 -		if ( !isset( $sidebar['SEARCH'] ) ) $sidebar['SEARCH'] = true;
 -		if ( !isset( $sidebar['TOOLBOX'] ) ) $sidebar['TOOLBOX'] = true;
 -		if ( !isset( $sidebar['LANGUAGES'] ) ) $sidebar['LANGUAGES'] = true;
@@ -211,24 +211,32 @@ index db77791..320b4d7 100644
 -<?php	}
 -
 -		// Generate additional footer links
--?>
--			<ul id="f-list">
--<?php
 -		$footerlinks = array(
 -			'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
 -			'privacy', 'about', 'disclaimer', 'tagline',
 -		);
+-		$validFooterLinks = array();
 -		foreach( $footerlinks as $aLink ) {
 -			if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
--?>				<li id="<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
--<?php 		}
+-				$validFooterLinks[] = $aLink;
+-			}
 -		}
+-		if ( count( $validFooterLinks ) > 0 ) {
+-?>			<ul id="f-list">
+-<?php
+-			foreach( $validFooterLinks as $aLink ) {
+-				if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
+-?>					<li id="<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
+-<?php 			}
+-			}
 -?>
 -			</ul>
+-<?php	}
+-?>
 -		</div>
  </div>
  <?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
  <?php $this->html('reporttime') ?>
 -- 
-1.6.0.2
+1.6.1
 

@@ -1,17 +1,17 @@
-From fbd971cd0854208b35449eb26c3522f95b514d90 Mon Sep 17 00:00:00 2001
+From 49861e8f0c62c71ca2b0669c85841c2e4d706700 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
 Date: Thu, 6 Nov 2008 12:00:18 +0100
-Subject: [PATCH] Disable to toggle the table of contents
+Subject: [PATCH 05/22] Disable to toggle the table of contents
 
 ---
  skins/common/wikibits.js |   47 ----------------------------------------------
  1 files changed, 0 insertions(+), 47 deletions(-)
 
 diff --git a/skins/common/wikibits.js b/skins/common/wikibits.js
-index 514714d..e04f732 100644
+index 5abd738..37cfd42 100644
 --- a/skins/common/wikibits.js
 +++ b/skins/common/wikibits.js
-@@ -120,38 +120,6 @@ function toggleVisibility(_levelId, _otherId, _linkId) {
+@@ -103,38 +103,6 @@ if (wgBreakFrames) {
  	}
  }
  
@@ -50,7 +50,7 @@ index 514714d..e04f732 100644
  function changeText(el, newText) {
  	// Safari work around
  	if (el.innerText) {
-@@ -161,21 +129,6 @@ function changeText(el, newText) {
+@@ -144,21 +112,6 @@ function changeText(el, newText) {
  	}
  }
  
@@ -73,5 +73,5 @@ index 514714d..e04f732 100644
  var mwCustomEditButtons = []; // eg to add in MediaWiki:Common.js
  
 -- 
-1.6.0.2
+1.6.1
 

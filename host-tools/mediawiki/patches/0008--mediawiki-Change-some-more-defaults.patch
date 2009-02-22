@@ -1,7 +1,7 @@
-From 494d2034b95d30b201f0b574cd345ea522099db0 Mon Sep 17 00:00:00 2001
+From 9b4481472e58ee847dd951c1afc4d078c3ae02ca Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 10 Nov 2008 23:14:21 +0100
-Subject: [PATCH] [mediawiki] Change some more defaults
+Subject: [PATCH 08/22] [mediawiki] Change some more defaults
 
     Ja, Ja, alle Charme verloren...
 ---
@@ -9,19 +9,19 @@ Subject: [PATCH] [mediawiki] Change some more defaults
  1 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/includes/DefaultSettings.php b/includes/DefaultSettings.php
-index bc27ec0..27b01ce 100644
+index 47dd547..3062f88 100644
 --- a/includes/DefaultSettings.php
 +++ b/includes/DefaultSettings.php
-@@ -1121,7 +1121,7 @@ $wgGroupPermissions = array();
- $wgGroupPermissions['*'    ]['createaccount']    = true;
- $wgGroupPermissions['*'    ]['read']             = true;
- $wgGroupPermissions['*'    ]['edit']             = false;
--$wgGroupPermissions['*'    ]['createpage']       = true;
-+$wgGroupPermissions['*'    ]['createpage']       = false;
- $wgGroupPermissions['*'    ]['createtalk']       = true;
- $wgGroupPermissions['*'    ]['writeapi']         = true;
+@@ -1183,7 +1183,7 @@ $wgGroupPermissions = array();
+ $wgGroupPermissions['*']['createaccount']    = true;
+ $wgGroupPermissions['*']['read']             = true;
+ $wgGroupPermissions['*']['edit']             = false;
+-$wgGroupPermissions['*']['createpage']       = true;
++$wgGroupPermissions['*']['createpage']       = false;
+ $wgGroupPermissions['*']['createtalk']       = true;
+ $wgGroupPermissions['*']['writeapi']         = true;
  
-@@ -2241,7 +2241,7 @@ $wgHandheldForIPhone = false;
+@@ -2388,7 +2388,7 @@ $wgHandheldForIPhone = false;
   *
   */
  $wgDefaultUserOptions = array(
@@ -30,7 +30,7 @@ index bc27ec0..27b01ce 100644
  	'underline'               => 2,
  	'cols'                    => 80,
  	'rows'                    => 25,
-@@ -2260,12 +2260,12 @@ $wgDefaultUserOptions = array(
+@@ -2409,12 +2409,12 @@ $wgDefaultUserOptions = array(
  	'stubthreshold'           => 0,
  	'previewontop'            => 1,
  	'previewonfirst'          => 0,
@@ -46,5 +46,5 @@ index bc27ec0..27b01ce 100644
  	'date'                    => 'default',
  	'imagesize'               => 2,
 -- 
-1.6.0.2
+1.6.1
 

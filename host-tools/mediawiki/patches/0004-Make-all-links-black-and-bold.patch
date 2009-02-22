@@ -1,14 +1,14 @@
-From 40e706c04a912e0b4d363dd2a2043574231698bd Mon Sep 17 00:00:00 2001
+From 4d10cbca938abdaa64a758131e8743fc247e55c8 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
 Date: Thu, 6 Nov 2008 12:00:01 +0100
-Subject: [PATCH] Make all links black and bold
+Subject: [PATCH 04/22] Make all links black and bold
 
 ---
  skins/common/shared.css |    5 +++++
  1 files changed, 5 insertions(+), 0 deletions(-)
 
 diff --git a/skins/common/shared.css b/skins/common/shared.css
-index 9ce28a1..eb05e01 100644
+index a053de9..85e3594 100644
 --- a/skins/common/shared.css
 +++ b/skins/common/shared.css
 @@ -9,6 +9,11 @@
@@ -24,5 +24,5 @@ index 9ce28a1..eb05e01 100644
  /* this replaces the ugly <p><br /></p> we used to insert into the page source */
  #wikiPreview.ontop { margin-bottom: 1em; }
 -- 
-1.6.0.2
+1.6.1
 

@@ -1,17 +1,17 @@
-From 173f7698c1bab2284c32428ded18ca97a0798f24 Mon Sep 17 00:00:00 2001
+From c8e048934185aaac9722e8285f60d6e18a20e398 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 19 Jan 2009 01:04:07 +0100
-Subject: [PATCH] Simplify the css rules...
+Subject: [PATCH 15/22] Simplify the css rules...
 
 ---
  skins/monobook/main.css |   60 +++++++++-------------------------------------
  1 files changed, 12 insertions(+), 48 deletions(-)
 
 diff --git a/skins/monobook/main.css b/skins/monobook/main.css
-index e397b7d..00b2293 100644
+index aa7fb34..e83a520 100644
 --- a/skins/monobook/main.css
 +++ b/skins/monobook/main.css
-@@ -1540,14 +1540,6 @@ span.searchmatch {
+@@ -1543,14 +1543,6 @@ div#mw-search-interwiki-caption {
  
  
  /* hacks for the Wiki reader */
@@ -26,7 +26,7 @@ index e397b7d..00b2293 100644
  table.infobox.geography {
      display: table;
      float: none;
-@@ -1555,46 +1547,18 @@ table.infobox.geography {
+@@ -1558,46 +1550,18 @@ table.infobox.geography {
      width: 100%;
  }
  
@@ -86,5 +86,5 @@ index e397b7d..00b2293 100644
      display: none;
  }
 -- 
-1.6.0.2
+1.6.1
 

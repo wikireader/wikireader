@@ -1,17 +1,17 @@
-From 0fb8876112a78a195b83f816196f52703980a52f Mon Sep 17 00:00:00 2001
+From e7a54334d0e6c03a85eee6f2e3914ae41683ae07 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@imp050244.vpn.mi.fu-berlin.de>
 Date: Mon, 19 Jan 2009 12:12:13 +0100
-Subject: [PATCH] Hide these as well. sputnik audio links...
+Subject: [PATCH 19/22] Hide these as well. sputnik audio links...
 
 ---
  skins/monobook/main.css |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
 diff --git a/skins/monobook/main.css b/skins/monobook/main.css
-index 849f1a5..4ca545b 100644
+index 484354a..5578541 100644
 --- a/skins/monobook/main.css
 +++ b/skins/monobook/main.css
-@@ -1557,6 +1557,8 @@ div.portal,
+@@ -1560,6 +1560,8 @@ div.portal,
  div.noprint,
  div.nounderlines,
  div.infobox,
@@ -21,5 +21,5 @@ index 849f1a5..4ca545b 100644
  table.gallery,
  table.ambox,
 -- 
-1.6.0.2
+1.6.1
 

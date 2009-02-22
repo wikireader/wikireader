@@ -1,17 +1,17 @@
-From f6697f6d98f7f066e7f24c707c08c0649da56f62 Mon Sep 17 00:00:00 2001
+From 36ffb4cab6a0dbc1d04223f9e3cbe5d5c15236e7 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 19 Jan 2009 00:48:54 +0100
-Subject: [PATCH] Remove coordinates as it is floating and rather bad to read...
+Subject: [PATCH 12/22] Remove coordinates as it is floating and rather bad to read...
 
 ---
  skins/monobook/main.css |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/skins/monobook/main.css b/skins/monobook/main.css
-index c2c568e..f3d5390 100644
+index 35461b9..e1eb9d1 100644
 --- a/skins/monobook/main.css
 +++ b/skins/monobook/main.css
-@@ -1594,3 +1594,7 @@ table.collapsible {
+@@ -1597,3 +1597,7 @@ table.collapsible {
  table.gallery {
      display: none;
  }
@@ -20,5 +20,5 @@ index c2c568e..f3d5390 100644
 +    display: none;
 +}
 -- 
-1.6.0.2
+1.6.1
 

@@ -1,7 +1,7 @@
-From de8eb47bbd95d48126d7c1e6d949e410963fbf9f Mon Sep 17 00:00:00 2001
+From 206ebc11ab4916b0fc44e71be1922752657eb1c3 Mon Sep 17 00:00:00 2001
 From: Holger Freyther <ich@holger-freythers-macbook-pro.local>
 Date: Mon, 10 Nov 2008 23:13:01 +0100
-Subject: [PATCH] [mediawiki] Disable that for better debugging/development
+Subject: [PATCH 07/22] [mediawiki] Disable that for better debugging/development
 
     Okay, I can not read. I was not supposed to touch the DefaultSettings..
 
@@ -12,12 +12,12 @@ Subject: [PATCH] [mediawiki] Disable that for better debugging/development
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/includes/DefaultSettings.php b/includes/DefaultSettings.php
-index 88aa08b..bc27ec0 100644
+index 1dc9cef..47dd547 100644
 --- a/includes/DefaultSettings.php
 +++ b/includes/DefaultSettings.php
-@@ -1029,7 +1029,7 @@ $wgUseCategoryBrowser   = false;
-  * This can provide a significant speedup for medium to large pages,
-  * so you probably want to keep it on.
+@@ -1091,7 +1091,7 @@ $wgUseCategoryBrowser   = false;
+  * so you probably want to keep it on. Extensions that conflict with the 
+  * parser cache should disable the cache on a per-page basis instead.
   */
 -$wgEnableParserCache = true;
 +$wgEnableParserCache = false;
@@ -25,5 +25,5 @@ index 88aa08b..bc27ec0 100644
  /**
   * Append a configured value to the parser cache and the sitenotice key so
 -- 
-1.6.0.2
+1.6.1
 
