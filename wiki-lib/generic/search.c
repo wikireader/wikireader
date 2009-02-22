@@ -27,7 +27,7 @@ static int search_index;
 static char search_string[MAXSTR];
 
 static char first_hit = 0;
-
+static char trigram_loaded = 0;
 
 
 void search_init()
@@ -37,6 +37,15 @@ void search_init()
         msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
 	}
+}
+
+int search_load_trigram(void)
+{
+    if (!trigram_loaded) {
+	trigram_loaded = !load_trigram_chunk(&global_search);
+    }
+
+    return trigram_loaded;
 }
 
 void search_reset()
@@ -52,7 +61,7 @@ void search_add(char c)
 
 	search_string[search_index++] = c;
 	search_string[search_index] = '\0';
-	if (search_index >= 3) {
+	if (search_index >= 4) {
 		state.pattern_len = search_index;
 		if (first_hit) {
 			reset_state(&global_search, &state, &last_first_hit);

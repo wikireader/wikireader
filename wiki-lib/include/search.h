@@ -24,6 +24,11 @@
 void search_init();
 
 /**
+ * Load trigrams. return if done..
+ */
+int search_load_trigram(void);
+
+/**
  * For every new search call this
  */
 void search_reset();

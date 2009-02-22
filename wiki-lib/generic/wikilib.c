@@ -151,7 +151,8 @@ int wikilib_run(void)
 
 	for (;;) {
 		struct wl_input_event ev;
-		wl_input_wait(&ev);
+		int sleep = search_load_trigram();
+		wl_input_wait(&ev, sleep);
 
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_KEYBOARD:

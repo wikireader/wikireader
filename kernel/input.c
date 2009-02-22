@@ -29,7 +29,7 @@
 #include "gpio.h"
 #include "msg-output.h"
 
-int wl_input_wait(struct wl_input_event *ev)
+int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	/* wl_input_wait() is called from the wikilib mainloop and we will
 	 * get here regularily when the system has no other duty. Hence,
@@ -45,6 +45,10 @@ int wl_input_wait(struct wl_input_event *ev)
 			break;
 
 		if (gpio_get_event(ev))
+			break;
+
+		/* no power saving return */
+		if (!sleep)
 			break;
 
 		/* we only go to a power saving halt mode if there is no

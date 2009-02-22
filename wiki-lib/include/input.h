@@ -29,7 +29,7 @@ struct wl_input_event {
 	}; /* union */
 };
 
-int wl_input_wait(struct wl_input_event *ev);
+int wl_input_wait(struct wl_input_event *ev, int sleep);
 
 #endif /* WL_INPUT_H */
 

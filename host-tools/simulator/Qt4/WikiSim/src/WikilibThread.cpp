@@ -40,7 +40,7 @@ void fb_refresh(void)
 	window->display->update();
 }
 
-int wl_input_wait(struct wl_input_event *ev)
+int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	WikiDisplay *display = window->display;
 	QWaitCondition *w = display->waitCondition;
@@ -50,7 +50,7 @@ int wl_input_wait(struct wl_input_event *ev)
 
 	do {
 		mutex.lock();
-		if (display->keyEventQueue->isEmpty() && display->mouseEventQueue->isEmpty())
+		if (display->keyEventQueue->isEmpty() && display->mouseEventQueue->isEmpty() && sleep)
 			w->wait(&mutex);
 
 		if (!display->keyEventQueue->isEmpty()) {
@@ -81,7 +81,7 @@ int wl_input_wait(struct wl_input_event *ev)
 		}
 
 		mutex.unlock();
-	} while (ev->type == -1);
+	} while (ev->type == -1 && sleep);
 
 	return 0;
 }
