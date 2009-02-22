@@ -260,7 +260,7 @@ char *search_fast
 
         if(*q == '\0') {
             state->last_c = c;
-            return state->path;
+            return (char *)state->path;
         }
     }
 

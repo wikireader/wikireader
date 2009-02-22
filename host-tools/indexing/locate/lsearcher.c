@@ -434,7 +434,7 @@ int main(int argc, char **argv) {
         prepare_search(&l, needle, &state);
 
         while ((result = search_fast(&l, needle, &state))) {
-            handle_match(result);
+            handle_match((unsigned char *)result);
         }
 
         debug("During the search %d blocks were read", blocks_read);
