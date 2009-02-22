@@ -136,7 +136,6 @@ void l_lseek(int fd, unsigned int offset)
 
 unsigned int l_offset(int fd)
 {
-    fd = fd;
     return _l_offset - bytes_available;
 }
 
@@ -233,7 +232,6 @@ void reset_state(lindex *l, struct search_state *target, const struct search_sta
 
 void store_state(lindex *l, const struct search_state *source, struct search_state *dest)
 {
-    l = l;
     memcpy(dest, source, sizeof(*dest));
 }
 
