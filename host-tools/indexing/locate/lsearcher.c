@@ -136,6 +136,7 @@ void l_lseek(int fd, unsigned int offset)
 
 unsigned int l_offset(int fd)
 {
+    fd = fd;
     return _l_offset - bytes_available;
 }
 
@@ -185,7 +186,7 @@ int load_trigram_chunk(lindex *l) {
         return 0;
 
     uint32_t *trigramdb = &l->trigram[0];
-    int i;
+    unsigned int i;
     for (i = 0; l->offset_i < SIZE_OF(l->trigram) && i < 5; ++l->offset_i, ++i)
         l->offset_read += wl_read(l->offset_file, trigramdb + l->offset_i, sizeof(l->trigram[0]));
 
@@ -230,6 +231,7 @@ void reset_state(lindex *l, struct search_state *target, const struct search_sta
 
 void store_state(lindex *l, const struct search_state *source, struct search_state *dest)
 {
+    l = l;
     memcpy(dest, source, sizeof(*dest));
 }
 

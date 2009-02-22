@@ -34,7 +34,7 @@ typedef struct {
   /* prefix db... */
   int offset_file;
   int offset_read;
-  int offset_i;
+  unsigned int offset_i;
 } lindex;
 
 struct search_state {
