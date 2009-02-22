@@ -57,11 +57,46 @@ extern unsigned int l_offset(int fd);
 #if defined(LOOKUP_SLOW)
 int search_slow(lindex *l, char *pathpart, struct search_state *state, resultf f, donef df) {
 #elif defined(LOOKUP_FAST)
+
+/*
+ * Prepare the search. This includes:
+ *  - seeking to the right offset
+ *  - initializing state->path with the proper string
+ *  - set count to the proper value
+ *  - set skip to true to make it actually work...
+ *
+ *  Currently we have a index table for 3-, 2-chars and 1-char. The
+ *  table for 1-char and 2-chars is always available the table
+ *  for 3-chars might not be available immediately
+ */
 void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     state->offset = UINT_MAX;
     state->skip = false;
     state->pattern_len = strlen(pathpart);
 
+    /* 3-char index */
+    if (l->trigram_loaded && state->pattern_len > 2) {
+        int index_1 = char_to_index(toupper(pathpart[0]));
+        int index_2 = char_to_index(toupper(pathpart[1]));
+        int index_3 = char_to_index(toupper(pathpart[2]));
+
+        /*
+         * TODO: If ABC does not lead to a valid offset use
+         * ABB, ABA, AB9, AB8... as index.. This would mean
+         * we would still skip a lot of blocks... in contrast
+         * to to starting at AB.
+         */
+        if (index_1 >= 0 && index_2 >= 0 && index_3 >= 0) {
+            int index = create_trigram_index(index_1, index_2, index_3);
+            uint32_t offset = l->trigram[index];
+            state->offset = offset & PREFIX_OFFSET_MASK;
+            state->count = offset >> 30;
+            state->path[0] = toupper(pathpart[0]);
+            state->path[1] = (offset >> 29) & 0x1 ? toupper(pathpart[1]) : pathpart[1];
+        }
+    }
+
+    /* 2-chars index */
     if (state->offset == UINT_MAX && state->pattern_len > 1) {
         int index_1 = char_to_index(toupper(pathpart[0]));
         int index_2 = char_to_index(toupper(pathpart[1]));
@@ -74,6 +109,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
         }
     }
 
+    /* 1-char index */
     if (state->offset == UINT_MAX) {
         int index = char_to_index(toupper(*pathpart));
         if (index >= 0)
@@ -82,6 +118,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
             return;
     }
 
+    /* seek now */
     if(l->prefixdb && state->offset != UINT_MAX) {
 #ifdef INCLUDE_MAIN
         debug("using prefix db seek to 0x%x", state->offset);
