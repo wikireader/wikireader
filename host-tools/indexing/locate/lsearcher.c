@@ -154,13 +154,17 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     l->db_file = db_file;
     l->db_start = sizeof(l->bigram1) + sizeof(l->bigram2);
 
+    /* trigram init */
+    l->trigram_loaded = 0;
+    l->offset_i = 0;
+    l->offset_read = 0;
+
     /* prefix table */
     if (prefix_file != -1) {
         int r = 0;
         unsigned int i = 0;
         uint32_t *prefixdb = &l->prefixdb[0];
         uint32_t *bigramdb = &l->bigram[0];
-        uint32_t *trigramdb = &l->trigram[0];
 
         for (i = 0;  i < SIZE_OF(l->prefixdb); ++i)
             r += wl_read(prefix_file, prefixdb + i, sizeof(l->prefixdb[0]));
@@ -168,11 +172,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
         for (i = 0; i < SIZE_OF(l->bigram); ++i)
             r += wl_read(prefix_file, bigramdb + i, sizeof(l->bigram[0]));
 
-        for (i = 0; i < SIZE_OF(l->trigram); ++i)
-            r += wl_read(prefix_file, trigramdb + i, sizeof(l->trigram[0]));
-        l->trigram_loaded = 1;
-
-        if (r != sizeof(l->prefixdb) + sizeof(l->bigram) + sizeof(l->trigram)) {
+        if (r != sizeof(l->prefixdb) + sizeof(l->bigram)) {
 #ifdef INCLUDE_MAIN
             printf("Failed...to read prefix, bigram.\n");
 #endif
@@ -180,8 +180,27 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     }
 }
 
+int load_trigram_chunk(lindex *l) {
+    if (l->offset_i < 0)
+        return 0;
+
+    uint32_t *trigramdb = &l->trigram[0];
+    int i;
+    for (i = 0; l->offset_i < SIZE_OF(l->trigram) && i < 5; ++l->offset_i, ++i)
+        l->offset_read += wl_read(l->offset_file, trigramdb + l->offset_i, sizeof(l->trigram[0]));
+
+
+    if (l->offset_i == SIZE_OF(l->trigram)) {
+        l->trigram_loaded = 1;
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
 int load_index(lindex *l, char *path, char *ppath) {
-    int db, offset_file = -1;
+    int db;
+    l->offset_file = -1;
 
 #ifdef INCLUDE_MAIN
     debug("load_index(0x%p, %s, %s)", l, path, ppath);
@@ -191,16 +210,13 @@ int load_index(lindex *l, char *path, char *ppath) {
     if (db < 0)
         return false;
 
-    if(ppath) offset_file = wl_open(ppath, WL_O_RDONLY);
+    if(ppath) l->offset_file = wl_open(ppath, WL_O_RDONLY);
 
-    init_index(l, db, offset_file);
-
-    if (offset_file != -1)
-        wl_close(offset_file);
+    init_index(l, db, l->offset_file);
 
     if (!ppath)
         return db >= 0;
-    return db >= 0 && offset_file >= 0;
+    return db >= 0 && l->offset_file >= 0;
 }
 
 void reset_state(lindex *l, struct search_state *target, const struct search_state *source)
@@ -406,6 +422,9 @@ int main(int argc, char **argv) {
         debug("no index file");
         usage(argv[0]);
     }
+
+    /* load trigram */
+    while (load_trigram_chunk(&l));
 
     if(doScan)
         scan(&l, scanFile);

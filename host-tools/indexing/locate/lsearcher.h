@@ -30,6 +30,11 @@ typedef struct {
   uint32_t bigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
   int trigram_loaded;
   uint32_t trigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
+
+  /* prefix db... */
+  int offset_file;
+  int offset_read;
+  int offset_i;
 } lindex;
 
 struct search_state {
@@ -72,5 +77,6 @@ void reset_state(lindex *, struct search_state *state, const struct search_state
 void store_state(lindex *, const struct search_state *state, struct search_state *out_state);
 char *search_fast(lindex *l, char *pathpart, struct search_state *state);
 int load_index(lindex *l, char *path, char *prefix_path);
+int load_trigram_chunk(lindex *l);
 
 #endif
