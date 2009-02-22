@@ -193,6 +193,8 @@ int load_trigram_chunk(lindex *l) {
 
     if (l->offset_i == SIZE_OF(l->trigram)) {
         l->trigram_loaded = 1;
+        wl_close(l->offset_file);
+        l->offset_file = -1;
         return 0;
     } else {
         return 1;
