@@ -41,15 +41,11 @@ void search_init()
 
 int search_load_trigram(void)
 {
-#if 0
     if (!trigram_loaded) {
 	trigram_loaded = !load_trigram_chunk(&global_search);
     }
 
     return trigram_loaded;
-#else
-	return 1;
-#endif
 }
 
 void search_reset()
