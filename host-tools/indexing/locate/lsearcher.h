@@ -29,7 +29,7 @@ typedef struct {
   uint32_t prefixdb[MAX_UPPER_PREFIX_SIZE];
   uint32_t bigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
   int trigram_loaded;
-  uint32_t trigram[MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE * MAX_UPPER_PREFIX_SIZE];
+  uint32_t *trigram;
 
   /* prefix db... */
   int offset_file;

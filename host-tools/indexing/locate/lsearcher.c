@@ -64,6 +64,8 @@ static int bytes_read = 0;
 static unsigned int _l_offset = 0;
 static int eof = 0;
 
+#define TRIGRAM_SIZE (sizeof(uint32_t)*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE)
+
 
 int check_bigram_char(int ch) {
     /* legal bigram: 0, ASCII_MIN ... ASCII_MAX */
@@ -155,6 +157,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     l->db_start = sizeof(l->bigram1) + sizeof(l->bigram2);
 
     /* trigram init */
+    l->trigram = (uint32_t *)malloc(TRIGRAM_SIZE);
     l->trigram_loaded = 0;
     l->offset_i = 0;
     l->offset_read = 0;
@@ -184,14 +187,13 @@ int load_trigram_chunk(lindex *l) {
     if (l->offset_file < 0)
         return 0;
 
-    uint32_t *trigramdb = &l->trigram[0];
     unsigned int i;
-    for (i = 0; l->offset_i < SIZE_OF(l->trigram) && i < 5; ++l->offset_i, ++i)
-        l->offset_read += wl_read(l->offset_file, trigramdb + l->offset_i, sizeof(l->trigram[0]));
+    for (i = 0; l->offset_i < TRIGRAM_SIZE && i < 5; ++l->offset_i, ++i)
+        l->offset_read += wl_read(l->offset_file, l->trigram + l->offset_i, sizeof(uint32_t));
 
 
-    if (l->offset_i == SIZE_OF(l->trigram)) {
-        l->trigram_loaded = l->offset_read == sizeof(l->trigram);
+    if (l->offset_i == TRIGRAM_SIZE) {
+        l->trigram_loaded = l->offset_read == TRIGRAM_SIZE;
         wl_close(l->offset_file);
         l->offset_file = -1;
         return 0;
@@ -262,7 +264,7 @@ static void scan(lindex *l, char *scan_file) {
         l->prefixdb[i] = UINT_MAX;
     for (i = 0; i < sizeof(l->bigram)/sizeof(l->bigram[0]); ++i)
         l->bigram[i] = UINT_MAX;
-    for (i = 0; i < sizeof(l->trigram)/sizeof(l->trigram[0]); ++i)
+    for (i = 0; i < TRIGRAM_SIZE; ++i)
         l->trigram[i] = UINT_MAX;
 
     file_offset = 1;
@@ -365,9 +367,9 @@ static void scan(lindex *l, char *scan_file) {
     int ret = 0;
     ret += write(fp, &l->prefixdb, sizeof(l->prefixdb));
     ret += write(fp, &l->bigram, sizeof(l->bigram));
-    ret += write(fp, &l->trigram, sizeof(l->trigram));
+    ret += write(fp, l->trigram, TRIGRAM_SIZE);
 
-    if (ret != sizeof(l->prefixdb) + sizeof(l->bigram) + sizeof(l->trigram))
+    if (ret != sizeof(l->prefixdb) + sizeof(l->bigram) + TRIGRAM_SIZE)
         fprintf(stderr, "Failed to write db\n");
 }
 
