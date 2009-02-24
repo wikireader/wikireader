@@ -48,8 +48,10 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 			break;
 
 		/* no power saving return */
-		if (!sleep)
+		if (!sleep) {
+			ev->type = -1;
 			break;
+		}
 
 		/* we only go to a power saving halt mode if there is no
 		 * messages pending */
