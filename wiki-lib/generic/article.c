@@ -56,8 +56,7 @@ void article_display(int page)
 		return;
 
 	/* TODO it is not the most efficient thing to do */
-	if (current_page > page)
-		wl_seek(article_fd, 0);
+	wl_seek(article_fd, 0);
 
 
 	page_start = page * FRAMEBUFFER_HEIGHT;
