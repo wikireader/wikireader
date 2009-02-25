@@ -44,6 +44,7 @@ WIKILIB_COBJS= file-io-libfat.o wikilib.o \
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
+WIKILIB_COBJS += article.o
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)

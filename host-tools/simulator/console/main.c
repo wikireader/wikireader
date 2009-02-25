@@ -33,7 +33,10 @@ void fb_set_pixel(int x, int y, int val) {}
 void fb_refresh(void) {}
 void fb_clear(void) {}
 
-int wl_input_wait(struct wl_input_event *ev)
+static unsigned char framebuffer_data[FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT];
+unsigned char *framebuffer = &framebuffer_data[0];
+
+int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 	ev->key_event.keycode = getch();

@@ -5,6 +5,7 @@ SOURCES += $$TOPLEVEL/gui-lib/fontfile.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/file-io-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/msg-printf.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/time-posix.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/article.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/search.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/hexdump.c

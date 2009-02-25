@@ -8,7 +8,7 @@ INDEX_DIR = ../../indexing/locate
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(INDEX_DIR)
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-posix.o wikilib.o time-posix.o	\
-	fontfile.o search.o lsearcher.o fast_search.o
+	fontfile.o search.o lsearcher.o fast_search.o article.o
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR) \
 	  $(INDEX_DIR)

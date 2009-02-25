@@ -17,6 +17,7 @@
  */
 
 #include <wikilib.h>
+#include <article.h>
 #include <guilib.h>
 #include <glyph.h>
 #include <fontfile.h>
@@ -70,47 +71,6 @@ static void handle_search_key(char keycode)
     guilib_fb_unlock();
 }
 
-#define DISPLAY_PAGE 23
-
-static unsigned char buf[512];
-static unsigned int *buf_ptr;
-static int available = 0;
-static void display()
-{
-	int fd = wl_open("/smplpedi.cde", WL_O_RDONLY);
-	unsigned int font, x, y, glyph, len, i;
-
-#define READ_UINT(var, fd) \
-	if (available == 0) { \
-	    available = wl_read(fd, buf, 512); \
-	    buf_ptr = (unsigned int*)&buf[0]; \
-	    if (available < 4) break; \
-	} \
-	var = *buf_ptr; \
-	buf_ptr++; \
-	available -= 4; \
-
-	do {
-		READ_UINT(font, fd)
-		READ_UINT(len, fd)
-
-		for (i = 0; i < len; ++i) {
-			READ_UINT(x, fd)
-			READ_UINT(y, fd)
-			READ_UINT(glyph, fd)
-
-			if (y < DISPLAY_PAGE * FRAMEBUFFER_HEIGHT)
-				continue;
-			if (y > (DISPLAY_PAGE+1) * FRAMEBUFFER_HEIGHT)
-				break;
-
-			if (font >= guilib_nr_fonts())
-				continue;
-			render_glyph(x % FRAMEBUFFER_WIDTH, y % FRAMEBUFFER_HEIGHT, get_glyph(font, glyph));
-		}
-	} while(1);
-}
-
 int wikilib_init (void)
 {
 	return 0;
@@ -147,7 +107,8 @@ int wikilib_run(void)
 	 */
 	search_init();
 
-	display();
+	article_open("/smplpedi.cde");
+	article_display(23);
 
 	for (;;) {
 		struct wl_input_event ev;
