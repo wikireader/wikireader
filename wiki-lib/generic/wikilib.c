@@ -79,7 +79,9 @@ int wikilib_init (void)
 int wikilib_run(void)
 {
 	void *a;
-	int fd, i;
+	int fd, i, current_page = 0;
+	char got_escape = 0;
+	char last_key = 0;
 
 	a = malloc(512);
 	msg(MSG_INFO, " a = %p\n", a);
@@ -108,7 +110,7 @@ int wikilib_run(void)
 	search_init();
 
 	article_open("/smplpedi.cde");
-	article_display(23);
+	article_display(current_page);
 
 	for (;;) {
 		struct wl_input_event ev;
@@ -117,7 +119,28 @@ int wikilib_run(void)
 
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			handle_search_key(ev.key_event.keycode);
+
+			if (got_escape) {
+				if (last_key == 0) {
+					last_key = ev.key_event.keycode;
+				} else if (last_key == 91) {
+					if (ev.key_event.keycode == 66) {
+						article_display(++current_page);
+					} else if (ev.key_event.keycode == 65) {
+						article_display(--current_page);
+					}
+
+					last_key = 0;
+					got_escape = 0;
+				} else {
+					last_key = 0;
+					got_escape = 0;
+				}
+			} else if (ev.key_event.keycode == 27) {
+				got_escape = 1;
+			} else {
+				handle_search_key(ev.key_event.keycode);
+			}
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
