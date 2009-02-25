@@ -72,9 +72,9 @@ void article_display(int page)
 			READ_UINT(y, article_fd)
 			READ_UINT(glyph_index, article_fd)
 
-			if (y < page_start)
+			if (y < page_start || x > FRAMEBUFFER_WIDTH)
 				continue;
-			if (y > page_end)
+			if (y >= page_end)
 				break;
 
 			if (font >= guilib_nr_fonts())
@@ -84,7 +84,7 @@ void article_display(int page)
 			if (!glyph)
 				continue;
 
-			render_glyph(x % FRAMEBUFFER_WIDTH, y % FRAMEBUFFER_HEIGHT, glyph);
+			render_glyph(x, y % FRAMEBUFFER_HEIGHT, glyph);
 		}
 	} while(1);
 
