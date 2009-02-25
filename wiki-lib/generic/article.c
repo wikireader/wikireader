@@ -47,9 +47,10 @@ static int available = 0;
 
 void article_display(int page)
 {
-	unsigned int font, x, y, glyph, len, i;
+	unsigned int font, x, y, glyph_index, len, i;
 	unsigned int page_start;
 	unsigned int page_end;
+	const struct glyph *glyph;
 
 	if (page == current_page || article_fd < 0)
 		return;
@@ -69,7 +70,7 @@ void article_display(int page)
 		for (i = 0; i < len; ++i) {
 			READ_UINT(x, article_fd)
 			READ_UINT(y, article_fd)
-			READ_UINT(glyph, article_fd)
+			READ_UINT(glyph_index, article_fd)
 
 			if (y < page_start)
 				continue;
@@ -78,7 +79,12 @@ void article_display(int page)
 
 			if (font >= guilib_nr_fonts())
 				continue;
-			render_glyph(x % FRAMEBUFFER_WIDTH, y % FRAMEBUFFER_HEIGHT, get_glyph(font, glyph));
+
+			glyph = get_glyph(font, glyph_index);
+			if (!glyph)
+				continue;
+
+			render_glyph(x % FRAMEBUFFER_WIDTH, y % FRAMEBUFFER_HEIGHT, glyph);
 		}
 	} while(1);
 
