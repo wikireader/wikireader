@@ -37,6 +37,8 @@ index 599831f..d0ea6a5 100644
 ** Make
 
 make bootloader
+# enable #define LCD_MONOCHROME in config.h
+# because mahatma is 1bit by default
 make kernel
 
 
