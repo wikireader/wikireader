@@ -62,6 +62,9 @@ void article_display(int page)
 	page_start = page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 
+	guilib_fb_lock();
+	guilib_clear();
+
 	do {
 		READ_UINT(font, article_fd)
 		READ_UINT(len, article_fd)
@@ -87,6 +90,7 @@ void article_display(int page)
 		}
 	} while(1);
 
+	guilib_fb_unlock();
 	current_page = page;
 }
 
