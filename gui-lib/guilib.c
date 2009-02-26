@@ -33,9 +33,15 @@ void guilib_set_pixel(int x, int y, int v)
 		return;
 
 	if (v)
+#ifdef BOARD_S1C33E07
+		framebuffer[byte] &= ~(1 << (7 - bit));
+	else
+		framebuffer[byte] |= (1 << (7 - bit));
+#else
 		framebuffer[byte] |= (1 << (7 - bit));
 	else
 		framebuffer[byte] &= ~(1 << (7 - bit));
+#endif
 }
 
 int guilib_get_pixel(int x, int y)
@@ -43,7 +49,11 @@ int guilib_get_pixel(int x, int y)
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 
+#ifdef BOARD_S1C33E07
+	return (framebuffer[byte] >> (7 - bit)) ^ 1;
+#else
 	return (framebuffer[byte] >> (7 - bit)) & 1;
+#endif
 }
 
 /**
@@ -51,7 +61,11 @@ int guilib_get_pixel(int x, int y)
  */
 void guilib_clear(void)
 {
+#ifdef BOARD_S1C33E07
+	memset(framebuffer, ~0, LCD_VRAM_SIZE);
+#else
 	memset(framebuffer, 0, LCD_VRAM_SIZE);
+#endif
 }
 
 /* The idea is that every function which calls painting routines calls
@@ -116,7 +130,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 
 void guilib_init(void)
 {
-	memset(framebuffer, 0, FRAMEBUFFER_SIZE);
+	guilib_clear();
 
 	/* just some tests ... */
 	if (read_font_file(FONTFILE) != 0) {
