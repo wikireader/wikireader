@@ -56,9 +56,9 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 		if (!display->keyEventQueue->isEmpty()) {
 			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-			ev->key_event.keycode = keyEvent.text().at(0).unicode();
-			if (ev->key_event.keycode == 0)
-				ev->key_event.keycode = keyEvent.key();
+			ev->key_event.keycode = keyEvent.key();
+			if (!keyEvent.text().isEmpty())
+				ev->key_event.keycode = keyEvent.text().at(0).unicode();
 
 			switch (keyEvent.type()) {
 			case QEvent::KeyPress:

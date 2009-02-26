@@ -50,7 +50,15 @@ WikiDisplay::~WikiDisplay()
 void
 WikiDisplay::keyPressEvent(QKeyEvent *event)
 {
-	if (event->text().isEmpty())
+	/* send a vt100 sequence... */
+	if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Up) {
+		keyEventQueue->enqueue(QKeyEvent(QKeyEvent::KeyPress, 27, Qt::NoModifier));
+		keyEventQueue->enqueue(QKeyEvent(QKeyEvent::KeyPress, 91, Qt::NoModifier));
+		keyEventQueue->enqueue(QKeyEvent(QKeyEvent::KeyPress,
+				event->key() == Qt::Key_Down ? 66 : 65, Qt::NoModifier));
+		waitCondition->wakeAll();
+		return;
+	} else if (event->text().isEmpty())
 		return;
 
 	keyEventQueue->enqueue(*event);
