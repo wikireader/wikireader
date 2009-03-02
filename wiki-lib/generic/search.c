@@ -125,7 +125,7 @@ void search_print_stats()
 void search_display_results(void)
 {
 	char *result;
-	int y_pos = 10;
+	int y_pos = 0;
 
 	/* paint the results */
 	guilib_fb_lock();
@@ -134,16 +134,18 @@ void search_display_results(void)
 	while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
 		if (!found) {
 			guilib_clear();
-			y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
+			render_string(0, 1, 10, search_result, search_result_len);
+			y_pos = 20;
 			found = 1;
 		}
 
-		y_pos += 2 + render_string(0, 1, y_pos, result, strlen(result) - 7);
+		render_string(0, 1, y_pos, result, strlen(result) - 7);
+		y_pos += 9;
 	}
 
 	if (!found) {
 		guilib_clear();
-		y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
+		render_string(0, 1, 10, search_result, search_result_len);
 	}
 
 	search_print_stats();
