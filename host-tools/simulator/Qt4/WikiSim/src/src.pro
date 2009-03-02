@@ -14,6 +14,7 @@ SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lsearcher.c
 INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
+INCLUDEPATH += $$TOPLEVEL/common/
 
 SOURCES += main.cpp \
  WikiDisplay.cpp \

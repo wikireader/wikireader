@@ -4,8 +4,9 @@ LD = ld
 GUILIB_DIR = ../../../gui-lib
 WIKILIB_DIR = ../../../wiki-lib
 INDEX_DIR = ../../indexing/locate
+COMMON_DIR = ../../../common
 
-CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(INDEX_DIR)
+CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(INDEX_DIR) -I $(COMMON_DIR)
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-posix.o wikilib.o time-posix.o	\
 	fontfile.o search.o lsearcher.o fast_search.o article.o
