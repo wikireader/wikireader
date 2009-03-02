@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <lcd.h>
 #include <file-io.h>
 #include <msg.h>
 #include <string.h>
@@ -62,9 +61,9 @@ int guilib_get_pixel(int x, int y)
 void guilib_clear(void)
 {
 #ifdef DISPLAY_INVERTED
-	memset(framebuffer, ~0, LCD_VRAM_SIZE);
+	memset(framebuffer, ~0, FRAMEBUFFER_SIZE);
 #else
-	memset(framebuffer, 0, LCD_VRAM_SIZE);
+	memset(framebuffer, 0, FRAMEBUFFER_SIZE);
 #endif
 }
 
