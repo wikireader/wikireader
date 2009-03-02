@@ -33,7 +33,7 @@ void guilib_set_pixel(int x, int y, int v)
 		return;
 
 	if (v)
-#ifdef BOARD_S1C33E07
+#ifdef DISPLAY_INVERTED
 		framebuffer[byte] &= ~(1 << (7 - bit));
 	else
 		framebuffer[byte] |= (1 << (7 - bit));
@@ -49,7 +49,7 @@ int guilib_get_pixel(int x, int y)
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 
-#ifdef BOARD_S1C33E07
+#ifdef DISPLAY_INVERTED
 	return (framebuffer[byte] >> (7 - bit)) ^ 1;
 #else
 	return (framebuffer[byte] >> (7 - bit)) & 1;
@@ -61,7 +61,7 @@ int guilib_get_pixel(int x, int y)
  */
 void guilib_clear(void)
 {
-#ifdef BOARD_S1C33E07
+#ifdef DISPLAY_INVERTED
 	memset(framebuffer, ~0, LCD_VRAM_SIZE);
 #else
 	memset(framebuffer, 0, LCD_VRAM_SIZE);
