@@ -122,12 +122,19 @@ void search_print_stats()
     msg(MSG_INFO, "Block read for search: %d\n", lsesrch_consume_block_stat());
 }
 
+/*
+ * paint the results of the search...
+ * 
+ * - Every item gets put at a fixed position.
+ * - We will clear the content ony atfer the first the resul was fetched.
+ *   This will leave the old content on the screen until we have something
+ *   to show.
+ */
 void search_display_results(void)
 {
 	char *result;
 	int y_pos = 0;
 
-	/* paint the results */
 	guilib_fb_lock();
 	int found = 0;
 
