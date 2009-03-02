@@ -64,7 +64,8 @@ static int bytes_read = 0;
 static unsigned int _l_offset = 0;
 static int eof = 0;
 
-#define TRIGRAM_SIZE (sizeof(uint32_t)*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE)
+#define TRIGRAM_ITEMS   (MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE)
+#define TRIGRAM_SIZE    (sizeof(uint32_t)*TRIGRAM_ITEMS)
 
 
 int check_bigram_char(int ch) {
@@ -188,11 +189,11 @@ int load_trigram_chunk(lindex *l) {
         return 0;
 
     unsigned int i;
-    for (i = 0; l->offset_i < TRIGRAM_SIZE && i < 5; ++l->offset_i, ++i)
+    for (i = 0; l->offset_i < TRIGRAM_ITEMS && i < 5; ++l->offset_i, ++i)
         l->offset_read += wl_read(l->offset_file, l->trigram + l->offset_i, sizeof(uint32_t));
 
 
-    if (l->offset_i == TRIGRAM_SIZE) {
+    if (l->offset_i == TRIGRAM_ITEMS) {
         l->trigram_loaded = l->offset_read == TRIGRAM_SIZE;
         wl_close(l->offset_file);
         l->offset_file = -1;
@@ -264,7 +265,7 @@ static void scan(lindex *l, char *scan_file) {
         l->prefixdb[i] = UINT_MAX;
     for (i = 0; i < sizeof(l->bigram)/sizeof(l->bigram[0]); ++i)
         l->bigram[i] = UINT_MAX;
-    for (i = 0; i < TRIGRAM_SIZE; ++i)
+    for (i = 0; i < TRIGRAM_ITEMS; ++i)
         l->trigram[i] = UINT_MAX;
 
     file_offset = 1;
