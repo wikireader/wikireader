@@ -1,5 +1,3 @@
-include ../common/Makefile
-
 LIBDIR=$(PWD)/../toolchain/mini-libc
 FATFSDIR=$(PWD)/../fatfs
 COMMON=$(PWD)/../common
@@ -61,3 +59,4 @@ clean::
 	make -C gfxtool clean
 	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
 
+include ../common/Makefile

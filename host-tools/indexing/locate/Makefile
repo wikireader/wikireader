@@ -1,4 +1,5 @@
 PROGRAMS = lcode lbigram lsearcher
+.PHONY:	all
 all: $(PROGRAMS)
 
 CFLAGS = -ggdb3 -Os -Wall -DDEBUG -DINCLUDE_MAIN -I../../../wiki-lib/include/

@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include ../common/Makefile
 
 WIKILIBDIR=$(PWD)/../wiki-lib/
 GUILIBDIR=$(PWD)/../gui-lib/
@@ -52,6 +51,7 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
 	gpio.o serial.o traps.o input.o lcd.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
 TARGETS=mahatma.elf
+.PHONY:	all
 all: $(TARGETS)
 
 mahatma.elf: $(OBJECTS) mahatma.lds
@@ -59,3 +59,5 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map
+
+include ../common/Makefile
