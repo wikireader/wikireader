@@ -427,14 +427,14 @@ int main(int argc, char **argv) {
         usage(argv[0]);
     }
 
-    /* load trigram */
-    while (load_trigram_chunk(&l));
-
     if(doScan)
         scan(&l, scanFile);
     else if(doSearch) {
         struct search_state state;
         char *result;
+        /* load trigram */
+        while (load_trigram_chunk(&l));
+
         prepare_search(&l, needle, &state);
 
         while ((result = search_fast(&l, needle, &state))) {
