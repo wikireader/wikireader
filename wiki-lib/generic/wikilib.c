@@ -79,31 +79,9 @@ int wikilib_init (void)
 
 int wikilib_run(void)
 {
-	void *a;
-	int fd, i, current_page = 0;
+	int current_page = 0;
 	char got_escape = 0;
 	char last_key = 0;
-
-	a = malloc(512);
-	msg(MSG_INFO, " a = %p\n", a);
-	
-	msg(MSG_INFO, " 1. run\n");
-	fd = wl_open("/kernel", WL_O_RDONLY);
-	msg(MSG_INFO, " fd = %d\n", fd);
-
-	wl_read(fd, a, 512);
-	wl_close(fd);
-
-	for (i = 0; i < 10; i++) {
-		msg(MSG_INFO, " 2. run\n");
-		fd = wl_open("/kernel", WL_O_RDONLY);
-		wl_read(fd, a, 512);
-		wl_read(fd, a, 512);
-		wl_read(fd, a, 512);
-		wl_close(fd);
-	}
-
-//	dump_cache_stats();
 
 	/*
 	 * test searching code...
