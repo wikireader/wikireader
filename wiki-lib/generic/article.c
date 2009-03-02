@@ -16,6 +16,7 @@
  */
 
 #include "article.h"
+#include <string.h>
 #include <file-io.h>
 #include <guilib.h>
 #include <glyph.h>
