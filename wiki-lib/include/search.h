@@ -18,6 +18,12 @@
 #ifndef WL_SEARCH_H
 #define WL_SEARCH_H
 
+/*
+ * Highlevel search interface...
+ */
+void search_display_results(void);
+
+
 /**
  * Initialize the search engine. Once.
  */

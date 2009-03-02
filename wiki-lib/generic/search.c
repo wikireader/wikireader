@@ -19,6 +19,9 @@
 #include "search.h"
 #include "msg.h"
 
+#include <guilib.h>
+#include <glyph.h>
+
 static lindex global_search;
 static struct search_state state;
 static struct search_state last_first_hit;
@@ -28,6 +31,9 @@ static char search_string[MAXSTR];
 
 static char first_hit = 0;
 static char trigram_loaded = 0;
+
+static const char search_result[] = "Search results:";
+static const int search_result_len = 15;
 
 
 void search_init()
@@ -114,4 +120,32 @@ extern unsigned int lsesrch_consume_block_stat();
 void search_print_stats()
 {
     msg(MSG_INFO, "Block read for search: %d\n", lsesrch_consume_block_stat());
+}
+
+void search_display_results(void)
+{
+	char *result;
+	int y_pos = 10;
+
+	/* paint the results */
+	guilib_fb_lock();
+	int found = 0;
+
+	while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
+		if (!found) {
+			guilib_clear();
+			y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
+			found = 1;
+		}
+
+		y_pos += 2 + render_string(0, 1, y_pos, result, strlen(result) - 7);
+	}
+
+	if (!found) {
+		guilib_clear();
+		y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
+	}
+
+	search_print_stats();
+	guilib_fb_unlock();
 }

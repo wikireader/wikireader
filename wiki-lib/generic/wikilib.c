@@ -30,14 +30,8 @@
 #include <string.h>
 #include <ctype.h>
 
-static const char search_result[] = "Search results:";
-static const int search_result_len = 15;
-
 static void handle_search_key(char keycode)
 {
-    char *result;
-    int y_pos = 10;
-
     if (keycode == 8) {
 	search_remove_char();
     } else if (isalnum(keycode) || isspace(keycode)) {
@@ -48,28 +42,7 @@ static void handle_search_key(char keycode)
 	return;
     }
 
-
-    /* paint the results */
-    guilib_fb_lock();
-    int found = 0;
-
-    while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
-	if (!found) {
-	    guilib_clear();
-	    y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
-	    found = 1;
-	}
-
-	y_pos += 2 + render_string(0, 1, y_pos, result, strlen(result) - 7);
-    }
-
-    if (!found) {
-	guilib_clear();
-	y_pos += 2 + render_string(0, 1, y_pos, search_result, search_result_len);
-    }
-
-    search_print_stats();
-    guilib_fb_unlock();
+    search_display_results();
 }
 
 int wikilib_init (void)
