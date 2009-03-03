@@ -63,9 +63,12 @@ void guilib_invert(int start_line, int height)
 {
 	int x, y;
 
-	for (x = 0; x < FRAMEBUFFER_WIDTH; ++x)
-	    for (y = 0; y < height; ++y)
-		guilib_set_pixel(x, y + start_line, ~guilib_get_pixel(x, y + start_line) & 0x1);
+	for (y = 0; y < height; ++y) {
+		for (x = 0; x < FRAMEBUFFER_SCANLINE; x += 8) {
+			unsigned int byte = (x + FRAMEBUFFER_SCANLINE * (start_line + y)) / 8;
+			framebuffer[byte] = ~framebuffer[byte];
+		}
+	}
 }
 
 /**
