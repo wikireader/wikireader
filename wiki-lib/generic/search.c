@@ -42,7 +42,7 @@ static char search_pointers[NUMBER_OF_RESULTS][8];
 static int search_found = 0;
 
 /* -1 is unselected */
-static int search_current = 0;
+static int search_current = -1;
 
 static void invert_selection(int old_pos, int new_pos)
 {
