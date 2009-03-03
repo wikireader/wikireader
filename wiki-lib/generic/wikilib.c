@@ -30,6 +30,11 @@
 #include <string.h>
 #include <ctype.h>
 
+#define DISPLAY_MODE_INDEX      0
+#define DISPLAY_MODE_ARTICLE    1
+
+static int current_page = 0;
+
 static void handle_search_key(char keycode)
 {
     if (keycode == 8) {
@@ -45,6 +50,16 @@ static void handle_search_key(char keycode)
     search_display_results();
 }
 
+static void handle_cursor(struct wl_input_event *ev, int display_mode)
+{
+	if (display_mode == DISPLAY_MODE_ARTICLE) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			article_display(++current_page);
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			article_display(--current_page);
+	}
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -52,14 +67,14 @@ int wikilib_init (void)
 
 int wikilib_run(void)
 {
-	int current_page = 0;
+	int display_mode = DISPLAY_MODE_INDEX;
+
+	render_string(0, 60, 104, "Type any letter to search", 25);
+
 	/*
 	 * test searching code...
 	 */
 	search_init();
-
-	article_open("/smplpedi.cde");
-	article_display(current_page);
 
 	for (;;) {
 		struct wl_input_event ev;
@@ -68,13 +83,11 @@ int wikilib_run(void)
 
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_CURSOR:
-			if (ev.key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-				article_display(++current_page);
-			else if (ev.key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-				article_display(--current_page);
+			handle_cursor(&ev, display_mode);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			handle_search_key(ev.key_event.keycode);
+			if (display_mode == DISPLAY_MODE_INDEX)
+				handle_search_key(ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
