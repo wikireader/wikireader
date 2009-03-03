@@ -60,6 +60,15 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 			if (!keyEvent.text().isEmpty())
 				ev->key_event.keycode = keyEvent.text().at(0).unicode();
 
+			/* determine key type */
+			if (keyEvent.key() == Qt::Key_Down) {
+				ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
+				ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			} else if (keyEvent.key() == Qt::Key_Up) {
+				ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
+				ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			}
+
 			switch (keyEvent.type()) {
 			case QEvent::KeyPress:
 				ev->key_event.value = 1;

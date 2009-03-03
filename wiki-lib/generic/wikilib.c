@@ -53,9 +53,6 @@ int wikilib_init (void)
 int wikilib_run(void)
 {
 	int current_page = 0;
-	char got_escape = 0;
-	char last_key = 0;
-
 	/*
 	 * test searching code...
 	 */
@@ -70,29 +67,14 @@ int wikilib_run(void)
 		wl_input_wait(&ev, sleep);
 
 		switch (ev.type) {
+		case WL_INPUT_EV_TYPE_CURSOR:
+			if (ev.key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+				article_display(++current_page);
+			else if (ev.key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+				article_display(--current_page);
+			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-
-			if (got_escape) {
-				if (last_key == 0) {
-					last_key = ev.key_event.keycode;
-				} else if (last_key == 91) {
-					if (ev.key_event.keycode == 66) {
-						article_display(++current_page);
-					} else if (ev.key_event.keycode == 65) {
-						article_display(--current_page);
-					}
-
-					last_key = 0;
-					got_escape = 0;
-				} else {
-					last_key = 0;
-					got_escape = 0;
-				}
-			} else if (ev.key_event.keycode == 27) {
-				got_escape = 1;
-			} else {
-				handle_search_key(ev.key_event.keycode);
-			}
+			handle_search_key(ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,

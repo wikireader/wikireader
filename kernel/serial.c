@@ -99,6 +99,39 @@ int serial_get_event(struct wl_input_event *ev)
 	ev->key_event.value = 1;
 	console_read++;
 	console_read %= BUFSIZE;
-	return 1;
+
+	/*
+	 * VT10x scanner... to get up/down
+	 * After getting a key event we put it into the VT10x
+	 * filter and them might return 0 to swallow the event.
+	 */
+	static char got_escape = 0;
+	static char last_key = 0;
+
+	if (got_escape) {
+		if (last_key == 0) {
+			last_key = ev->key_event.keycode;
+		} else if (last_key == 91) {
+			if (ev->key_event.keycode == 66) {
+				ev->type = WL_INPUT_EV_TYPE_CURSOR;
+				ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
+			} else if (ev->key_event.keycode == 65) {
+				ev->type = WL_INPUT_EV_TYPE_CURSOR;
+				ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
+			}
+
+			last_key = 0;
+			got_escape = 0;
+			return 1;
+		} else {
+			last_key = 0;
+			got_escape = 0;
+		}
+	} else if (ev->key_event.keycode == 27) {
+		got_escape = 1;
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
