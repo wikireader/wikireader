@@ -111,6 +111,7 @@ WikilibThread::~WikilibThread()
 void
 WikilibThread::run()
 {
+	chdir("/");
 	wikilib_init();
 	guilib_init();
 	wikilib_run();
