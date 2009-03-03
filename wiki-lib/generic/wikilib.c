@@ -60,6 +60,14 @@ static void handle_cursor(struct wl_input_event *ev, int display_mode)
 	}
 }
 
+static void print_intro()
+{
+	guilib_fb_lock();
+	guilib_clear();
+	render_string(0, 60, 104, "Type any letter to search", 25);
+	guilib_fb_unlock();
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -69,7 +77,7 @@ int wikilib_run(void)
 {
 	int display_mode = DISPLAY_MODE_INDEX;
 
-	render_string(0, 60, 104, "Type any letter to search", 25);
+	print_intro();
 
 	/*
 	 * test searching code...
@@ -86,8 +94,22 @@ int wikilib_run(void)
 			handle_cursor(&ev, display_mode);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			if (display_mode == DISPLAY_MODE_INDEX)
-				handle_search_key(ev.key_event.keycode);
+			if (display_mode == DISPLAY_MODE_INDEX) {
+				if (ev.key_event.keycode == 13) {
+					display_mode = DISPLAY_MODE_ARTICLE;
+					current_page = 0;
+					article_open("/smplpedi.cde");
+					article_display(0);
+				} else {
+					handle_search_key(ev.key_event.keycode);
+				}
+			} else if (display_mode == DISPLAY_MODE_ARTICLE) {
+				if (ev.key_event.keycode == 8) {
+					display_mode = DISPLAY_MODE_INDEX;
+					print_intro();
+					search_reset();
+				}
+			}
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
