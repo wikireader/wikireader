@@ -211,7 +211,7 @@ void search_select_down(void)
 void search_select_up(void)
 {
 	/* top reached, not wrapping around */
-	if (search_current == 0)
+	if (search_current <= 0)
 		return;
 
 	invert_selection(search_current, search_current - 1);
