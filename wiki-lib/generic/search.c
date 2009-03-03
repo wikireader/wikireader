@@ -83,6 +83,19 @@ void search_reset()
 	first_hit = 0;
 }
 
+void search_reload()
+{
+	int old_current = search_current;
+	guilib_fb_lock();
+
+	reset_state(&global_search, &state, &last_first_hit);
+	search_display_results();
+	invert_selection(-1, old_current);
+	search_current = old_current;
+
+	guilib_fb_unlock();
+}
+
 void search_add(char c)
 {
 	if (search_index >= MAXSTR - 2)

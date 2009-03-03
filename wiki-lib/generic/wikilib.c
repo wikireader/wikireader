@@ -123,8 +123,7 @@ int wikilib_run(void)
 			} else if (display_mode == DISPLAY_MODE_ARTICLE) {
 				if (ev.key_event.keycode == 8) {
 					display_mode = DISPLAY_MODE_INDEX;
-					print_intro();
-					search_reset();
+					search_reload();
 				}
 			}
 			break;

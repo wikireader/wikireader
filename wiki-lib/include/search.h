@@ -43,6 +43,11 @@ int search_load_trigram(void);
 void search_reset();
 
 /**
+ * Repaint, reselect the current screen..
+ */
+void search_reload(void);
+
+/**
  * Search for another char. It needs to be lower case
  */
 void search_add(char c);
