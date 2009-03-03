@@ -56,6 +56,19 @@ int guilib_get_pixel(int x, int y)
 }
 
 /**
+ * Invert the pixels of lines starting at @param start_line
+ * and the following @param height lines.
+ */
+void guilib_invert(int start_line, int height)
+{
+	int x, y;
+
+	for (x = 0; x < FRAMEBUFFER_WIDTH; ++x)
+	    for (y = 0; y < height; ++y)
+		guilib_set_pixel(x, y + start_line, ~guilib_get_pixel(x, y + start_line) & 0x1);
+}
+
+/**
  * Clear the content of the screen.
  */
 void guilib_clear(void)

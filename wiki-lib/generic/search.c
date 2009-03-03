@@ -36,8 +36,8 @@ static const char search_result[] = "Search results:";
 static const int search_result_len = 15;
 
 #define RESULT_START 20
-#define RESULT_HEIGHT 9
-#define NUMBER_OF_RESULTS 21
+#define RESULT_HEIGHT 10
+#define NUMBER_OF_RESULTS 19
 static char search_pointers[NUMBER_OF_RESULTS][8];
 static int search_found = 0;
 
@@ -46,10 +46,16 @@ static int search_current = 0;
 
 static void invert_selection(int old_pos, int new_pos)
 {
-    if (old_pos != -1) {
-    }
+	int start = RESULT_START - RESULT_HEIGHT + 2;
 
-    ;
+	guilib_fb_lock();
+
+	if (old_pos != -1) {
+		guilib_invert(start + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	}
+
+	guilib_invert(start + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	guilib_fb_unlock();
 }
 
 
