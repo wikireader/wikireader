@@ -57,6 +57,11 @@ static void handle_cursor(struct wl_input_event *ev, int display_mode)
 			article_display(++current_page);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
 			article_display(--current_page);
+	} else if (display_mode == DISPLAY_MODE_INDEX) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			search_select_down();
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			search_select_up();
 	}
 }
 

@@ -163,3 +163,11 @@ void search_display_results(void)
 	search_print_stats();
 	guilib_fb_unlock();
 }
+
+void search_select_down(void)
+{
+}
+
+void search_select_up(void)
+{
+}
