@@ -35,6 +35,9 @@ static char trigram_loaded = 0;
 static const char search_result[] = "Search results:";
 static const int search_result_len = 15;
 
+static char search_pointers[21][8];
+static int search_found = 0;
+
 
 void search_init()
 {
@@ -136,21 +139,23 @@ void search_display_results(void)
 	int y_pos = 0;
 
 	guilib_fb_lock();
-	int found = 0;
+	search_found = 0;
 
 	while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
-		if (!found) {
+		if (!search_found) {
 			guilib_clear();
 			render_string(0, 1, 10, search_result, search_result_len);
 			y_pos = 20;
-			found = 1;
 		}
 
-		render_string(0, 1, y_pos, result, strlen(result) - 7);
+		const int len = strlen(result);
+		render_string(0, 1, y_pos, result, len - 7);
+		memcpy(&search_pointers[search_found][0], result + len - 6, 8);
 		y_pos += 9;
+		++search_found;
 	}
 
-	if (!found) {
+	if (!search_found) {
 		guilib_clear();
 		render_string(0, 1, 10, search_result, search_result_len);
 	}
