@@ -73,6 +73,14 @@ static void print_intro()
 	guilib_fb_unlock();
 }
 
+static void print_article_error()
+{
+	guilib_fb_lock();
+	guilib_clear();
+	render_string(0, 60, 104, "Opening the article failed.", 27);
+	guilib_fb_unlock();
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -101,10 +109,14 @@ int wikilib_run(void)
 		case WL_INPUT_EV_TYPE_KEYBOARD:
 			if (display_mode == DISPLAY_MODE_INDEX) {
 				if (ev.key_event.keycode == 13) {
-					display_mode = DISPLAY_MODE_ARTICLE;
-					current_page = 0;
-					article_open("/smplpedi.cde");
-					article_display(0);
+					const char *result = search_current_result();
+					if (result) {
+						if (article_open(result) < 0)
+							print_article_error();
+						display_mode = DISPLAY_MODE_ARTICLE;
+						current_page = 0;
+						article_display(0);
+					}
 				} else {
 					handle_search_key(ev.key_event.keycode);
 				}
