@@ -35,8 +35,20 @@ static char trigram_loaded = 0;
 static const char search_result[] = "Search results:";
 static const int search_result_len = 15;
 
-static char search_pointers[21][8];
+#define NUMBER_OF_RESULTS 21
+static char search_pointers[NUMBER_OF_RESULTS][8];
 static int search_found = 0;
+
+/* -1 is unselected */
+static int search_current = 0;
+
+static void invert_selection(int old_pos, int new_pos)
+{
+    if (old_pos != -1) {
+    }
+
+    ;
+}
 
 
 void search_init()
@@ -140,8 +152,9 @@ void search_display_results(void)
 
 	guilib_fb_lock();
 	search_found = 0;
+	search_current = -1;
 
-	while (y_pos < FRAMEBUFFER_HEIGHT && (result = search_fetch_result())) {
+	while (search_found < NUMBER_OF_RESULTS && (result = search_fetch_result())) {
 		if (!search_found) {
 			guilib_clear();
 			render_string(0, 1, 10, search_result, search_result_len);
@@ -166,8 +179,20 @@ void search_display_results(void)
 
 void search_select_down(void)
 {
+	/* bottom reached, not wrapping around */
+	if (search_current + 1 == search_found)
+		return;
+    
+	invert_selection(search_current, search_current + 1);
+	++search_current;
 }
 
 void search_select_up(void)
 {
+	/* top reached, not wrapping around */
+	if (search_current == 0)
+		return;
+
+	invert_selection(search_current, search_current - 1);
+	--search_current;
 }
