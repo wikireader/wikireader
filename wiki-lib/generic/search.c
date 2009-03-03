@@ -223,6 +223,5 @@ const char *search_current_result(void)
 	if (search_current < 0 || search_current >= search_found)
 		return NULL;
 
-	printf("foo\n");
 	return &search_pointers[search_current][0];
 }
