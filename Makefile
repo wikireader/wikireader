@@ -35,7 +35,9 @@ BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
-DL=toolchain/dl
+DL=./toolchain/dl
+PATCH_BINUTILS=./toolchain/.patch_binutils
+PATCH_GCC=./toolchain/.patch_gcc
 
 # ----- configuration data --------------------------------------
 
@@ -104,22 +106,26 @@ $(DL)/$(BINUTILS_PACKAGE).ok:
 	wget -c -O $(DL)/$(BINUTILS_PACKAGE) $(BINUTILS_URL)
 	touch $@
 
-.PHONY: binutils
-binutils: $(DL)/$(BINUTILS_PACKAGE).ok
+$(PATCH_BINUTILS):
 	mkdir -p install
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
 	( cd toolchain && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
-	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1 && \
-	mkdir build && \
+	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
+	touch $@
+
+.PHONY: binutils
+binutils: $(DL)/$(BINUTILS_PACKAGE).ok $(PATCH_BINUTILS)
+	(cd toolchain && \
+	cd binutils-$(BINUTILS_VERSION) && \
+	mkdir -p build && \
 	cd build  && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
 	make install )
 
-.PHONY: gcc
-gcc: $(DL)/$(GCC_PACKAGE).ok binutils
+$(PATCH_GCC):
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
@@ -127,8 +133,15 @@ gcc: $(DL)/$(GCC_PACKAGE).ok binutils
 	cd gcc-$(GCC_VERSION) && \
 	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
 	cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
-	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1 && \
-	mkdir build && \
+	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
+	touch $@
+
+.PHONY: gcc
+gcc: binutils $(DL)/$(GCC_PACKAGE).ok $(PATCH_GCC)
+	( cd toolchain && \
+	export PATH=$(PWD)/install/bin:\$(PATH)  && \
+	cd gcc-$(GCC_VERSION) && \
+	mkdir -p build && \
 	cd build && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
