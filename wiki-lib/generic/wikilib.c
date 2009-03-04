@@ -84,6 +84,18 @@ static void print_article_error()
 
 static void display_image()
 {
+	int x, y;
+	int fd = wl_open("image.pbm", WL_O_RDONLY);
+
+	guilib_fb_lock();
+	for (x = 0; x < FRAMEBUFFER_WIDTH; ++x) {
+		for (y = 0; y < FRAMEBUFFER_HEIGHT; ++y) {
+			guilib_set_pixel(x, y, 1);
+		}
+	}
+	guilib_fb_unlock();
+
+	wl_close(fd);
 }
 
 int wikilib_init (void)
