@@ -72,8 +72,9 @@ def generate_text_runs(glyphs, WIDTH):
                 current.first_y = current.y - last_y
                 text_runs.append(current)
                 last_y = current.y
-                last_x = current.glyphs[-1]['x']
-                assert last_x <= WIDTH
+                if len(current.glyphs) != 0:
+                    last_x = current.glyphs[-1]['x']
+                    assert last_x <= WIDTH
 
                 # Occurence accounting
                 if not len(current.glyphs) in length_occurences:
