@@ -38,7 +38,7 @@ static int current_page = 0;
 
 static void handle_search_key(char keycode)
 {
-	if (keycode == 8) {
+	if (keycode == KEY_BACKSPACE) {
 		search_remove_char();
 	} else if (isalnum(keycode) || isspace(keycode)) {
 		msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
@@ -138,7 +138,7 @@ int wikilib_run(void)
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
 			if (display_mode == DISPLAY_MODE_INDEX) {
-				if (ev.key_event.keycode == 13) {
+				if (ev.key_event.keycode == KEY_ENTURN) {
 					const char *result = search_current_result();
 					if (result) {
 						if (article_open(result) < 0)
@@ -147,14 +147,14 @@ int wikilib_run(void)
 						current_page = 0;
 						article_display(0);
 					}
-				} else if (ev.key_event.keycode == 35) {
+				} else if (ev.key_event.keycode == KEY_HASH) {
 					display_mode = DISPLAY_MODE_IMAGE;
 					display_image();
 				} else {
 					handle_search_key(ev.key_event.keycode);
 				}
 			} else if (display_mode == DISPLAY_MODE_ARTICLE) {
-				if (ev.key_event.keycode == 8) {
+				if (ev.key_event.keycode == KEY_BACKSPACE) {
 					display_mode = DISPLAY_MODE_INDEX;
 					search_reload();
 				}
