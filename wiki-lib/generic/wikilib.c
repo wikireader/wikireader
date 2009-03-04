@@ -32,6 +32,7 @@
 
 #define DISPLAY_MODE_INDEX      0
 #define DISPLAY_MODE_ARTICLE    1
+#define DISPLAY_MODE_IMAGE      2
 
 static int current_page = 0;
 
@@ -81,6 +82,10 @@ static void print_article_error()
 	guilib_fb_unlock();
 }
 
+static void display_image()
+{
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -117,6 +122,9 @@ int wikilib_run(void)
 						current_page = 0;
 						article_display(0);
 					}
+				} else if (ev.key_event.keycode == 35) {
+					display_mode = DISPLAY_MODE_IMAGE;
+					display_image();
 				} else {
 					handle_search_key(ev.key_event.keycode);
 				}
