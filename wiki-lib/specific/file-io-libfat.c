@@ -10,6 +10,7 @@
 
 static FIL fil_list[MAX_FILES];
 static int fil_used[MAX_FILES] = { 0 };
+static unsigned int fil_offset[MAX_FILES] = { 0 };
 
 int wl_open(const char *filename, int flags)
 {
@@ -45,6 +46,7 @@ int wl_open(const char *filename, int flags)
 		return -ret;
 
 	fil_used[i] = 1;
+	fil_offset[i] = 0;
 	return i;
 }
 
@@ -68,6 +70,7 @@ int wl_read(int fd, void *buf, unsigned int count)
 	if (ret)
 		return -ret;
 
+	fil_offset[fd] += rcount;
 	return rcount;
 }
 
@@ -87,7 +90,9 @@ int wl_write(int fd, void *buf, unsigned int count)
 	ret = f_write(fil_list + fd, buf, count, &wcount);
 	if (ret)
 		return -ret;
-	
+
+	fil_offset[fd] += wcount;
+
 	if (wcount != count)
 		return -1;
 
@@ -106,6 +111,7 @@ int wl_seek(int fd, unsigned int pos)
 	if (ret)
 		return -ret;
 
+	fil_offset[fd] = pos;
 	return 0;
 }
 
@@ -118,3 +124,7 @@ int wl_fsize(int fd, unsigned int *size)
 	return 0;
 }
 
+unsigned int wl_tell(int fd)
+{
+	return fil_offset[fd];
+}

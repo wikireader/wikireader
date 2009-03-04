@@ -14,6 +14,7 @@ int wl_read(int fd, void *buf, unsigned int count);
 int wl_write(int fd, void *buf, unsigned int count);
 int wl_seek(int fd, unsigned int pos);
 int wl_fsize(int fd, unsigned int *size);
+unsigned int wl_tell(int fd);
 
 #endif /* WL_FILE_IO_H */
 

@@ -60,3 +60,7 @@ int wl_fsize(int fd, unsigned int *size)
 	return 0;
 }
 
+unsigned int wl_tell(int fd)
+{
+	return lseek(fd, 0, SEEK_CUR);
+}
