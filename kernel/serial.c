@@ -127,6 +127,8 @@ int serial_get_event(struct wl_input_event *ev)
 			last_key = 0;
 			got_escape = 0;
 		}
+
+		return 0;
 	} else if (ev->key_event.keycode == 27) {
 		got_escape = 1;
 		return 0;
