@@ -21,30 +21,45 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <fontfile.h>
+#include <msg.h>
+
+struct page_offset {
+	int page;
+	unsigned int offset;
+};
+
+#define BUFSIZE	(10)
+static struct page_offset pages[BUFSIZE];
+static unsigned int bufpos = 0;
 
 static int article_fd = -1;
 static int current_page = -1;
+static unsigned int current_page_offset = -1;
+
+static void print_page_buffer(void)
+{
+	int i;
+	for (i = 0; i < BUFSIZE; ++i) {
+		msg(MSG_DEBUG, "%c ", i == bufpos ? '*' : ' ');
+		msg(MSG_DEBUG, "%d page %d offset %u\n",
+		    i, pages[i].page, pages[i].offset);
+	}
+	msg(MSG_DEBUG, "--------------------------\n");
+}
 
 int article_open(const char *article)
 {
 	article_close();
 	article_fd = wl_open(article, WL_O_RDONLY);
 	current_page = -1;
+	current_page_offset = -1;
+	/* reset ring buffer */
+	memset(pages, 0, sizeof(struct page_offset) * BUFSIZE);
 	return article_fd;
 }
 
-static unsigned char buf[512];
-static unsigned int *buf_ptr;
-static int available = 0;
 #define READ_UINT(var, fd) \
-	if (available == 0) { \
-	    available = wl_read(fd, buf, 512); \
-	    buf_ptr = (unsigned int*)&buf[0]; \
-	    if (available < 4) break; \
-	} \
-	var = *buf_ptr; \
-	buf_ptr++; \
-	available -= 4;
+	wl_read(fd, &var, 4);
 
 void article_display(int page)
 {
@@ -53,18 +68,37 @@ void article_display(int page)
 	unsigned int page_end;
 	const struct glyph *glyph;
 
-	if (page == current_page || article_fd < 0)
+	if (page < 0 || page == current_page || article_fd < 0)
 		return;
 
-	/* TODO it is not the most efficient thing to do */
-	wl_seek(article_fd, 0);
-
-
+	/* optimized for one page at a time scrolling */
+	if (page == 0) {
+		wl_seek(article_fd, 0);
+	} else if (page == current_page + 1) {
+		/* push into buffer */
+		pages[bufpos].page = current_page;
+		pages[bufpos].offset = current_page_offset;
+		bufpos = (bufpos + 1) % BUFSIZE;
+	} else if (page == current_page - 1) {
+		/* pop from buffer and seek to previous page.  if
+		 * buffer is empty, start looking from the
+		 * beginning. (stupid) */
+		bufpos = (bufpos + BUFSIZE - 1) % BUFSIZE;
+		if (pages[bufpos].page <= page)
+			wl_seek(article_fd, pages[bufpos].offset);
+		else
+			wl_seek(article_fd, 0);
+	} else {
+		wl_seek(article_fd, 0);
+	}
+	print_page_buffer();
 	page_start = page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 
 	guilib_fb_lock();
 	guilib_clear();
+
+	current_page_offset = wl_tell(article_fd);
 
 	do {
 		READ_UINT(font, article_fd)
@@ -78,7 +112,7 @@ void article_display(int page)
 			if (y < page_start || x > FRAMEBUFFER_WIDTH)
 				continue;
 			if (y >= page_end)
-				break;
+				continue;
 
 			if (font >= guilib_nr_fonts())
 				continue;
@@ -89,6 +123,8 @@ void article_display(int page)
 
 			render_glyph(x, y % FRAMEBUFFER_HEIGHT, glyph);
 		}
+		if (y >= page_end)
+			break;
 	} while(1);
 
 	guilib_fb_unlock();
