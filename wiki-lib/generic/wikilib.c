@@ -30,25 +30,25 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DISPLAY_MODE_INDEX      0
-#define DISPLAY_MODE_ARTICLE    1
-#define DISPLAY_MODE_IMAGE      2
+#define DISPLAY_MODE_INDEX	0
+#define DISPLAY_MODE_ARTICLE	1
+#define DISPLAY_MODE_IMAGE	2
 
 static int current_page = 0;
 
 static void handle_search_key(char keycode)
 {
-    if (keycode == 8) {
-	search_remove_char();
-    } else if (isalnum(keycode) || isspace(keycode)) {
-	msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
-	search_add(tolower(keycode));
-    } else {
-	msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
-	return;
-    }
+	if (keycode == 8) {
+		search_remove_char();
+	} else if (isalnum(keycode) || isspace(keycode)) {
+		msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
+		search_add(tolower(keycode));
+	} else {
+		msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
+		return;
+	}
 
-    search_display_results();
+	search_display_results();
 }
 
 static void handle_cursor(struct wl_input_event *ev, int display_mode)
