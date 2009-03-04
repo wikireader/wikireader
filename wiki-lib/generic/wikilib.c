@@ -84,13 +84,26 @@ static void print_article_error()
 
 static void display_image()
 {
-	int x, y;
+	int x, y, new_lines = 0;
+	char data;
 	int fd = wl_open("image.pbm", WL_O_RDONLY);
 
+	/* eat the header... three lines */
+	while (new_lines < 3) {
+		wl_read(fd, &data, 1);
+		if (data == '\n')
+		    ++new_lines;
+	}
+
 	guilib_fb_lock();
-	for (x = 0; x < FRAMEBUFFER_WIDTH; ++x) {
-		for (y = 0; y < FRAMEBUFFER_HEIGHT; ++y) {
-			guilib_set_pixel(x, y, 1);
+	for (y = 0; y < FRAMEBUFFER_HEIGHT; ++y) {
+		for (x = 0; x < FRAMEBUFFER_WIDTH; ++x) {
+			while (1) {
+				wl_read(fd, &data, 1);
+				if (data != '\n')
+					break;
+			}
+			guilib_set_pixel(x, y, data == '1');
 		}
 	}
 	guilib_fb_unlock();
