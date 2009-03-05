@@ -123,7 +123,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
 #ifdef INCLUDE_MAIN
         debug("using prefix db seek to 0x%x", state->offset);
 #endif
-        l_lseek(l->db_file, l->db_start + state->offset);
+        wl_seek(l->db_file, l->db_start + state->offset);
         state->skip = true;
     }
 
@@ -157,7 +157,7 @@ char *search_fast
 
 #if defined(LOOKUP_SLOW)
     /* go back */
-    l_lseek(l->db_file, l->db_start);
+    wl_seek(l->db_file, l->db_start);
     state->skip = false;
     foundchar = 0;
     c = l_getc(l->db_file);
@@ -166,7 +166,7 @@ char *search_fast
 #endif
 
     for (; c != EOF; ) {
-        state->this_offset = l_offset(l->db_file) - 1 - l->db_start;
+        state->this_offset = wl_tell(l->db_file) - 1 - l->db_start;
         if (c == SWITCH) {
             int local_count =  l_getw(l->db_file) - OFFSET;
             if(!state->skip)

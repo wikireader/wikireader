@@ -68,6 +68,10 @@ typedef struct {
 #define FOPEN_MAX 4
 #endif
 
+#ifndef __FD_SETSIZE
+#define __FD_SETSIZE 10
+#endif
+
 #ifdef __cplusplus
 }
 #endif //__cplusplus

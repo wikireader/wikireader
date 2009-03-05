@@ -47,6 +47,7 @@
 #include <limits.h>
 #include <string.h>
 #include <file-io.h>
+#include <msg.h>
 #include "lsearcher.h"
 
 #ifdef INCLUDE_MAIN
@@ -56,13 +57,6 @@
 #endif
 
 static int blocks_read = 0;
-
-#define BLOCK_ALIGNMENT 0x1ff
-static uchar_t block[512];
-static int bytes_available = 0;
-static int bytes_read = 0;
-static unsigned int _l_offset = 0;
-static int eof = 0;
 
 #define TRIGRAM_ITEMS   (MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE)
 #define TRIGRAM_SIZE    (sizeof(uint32_t)*TRIGRAM_ITEMS)
@@ -87,28 +81,17 @@ int check_bigram_char(int ch) {
  */
 unsigned int lsesrch_consume_block_stat()
 {
-    unsigned int blocks = blocks_read;
-    blocks_read = 0;
-    return blocks;
-}
-
-static void read_block(int fd)
-{
-    ++blocks_read;
-    bytes_read = wl_read(fd, &block, sizeof(block));
-    bytes_available = bytes_read;
-    eof = bytes_available != sizeof(block) || bytes_available < 0;
-    _l_offset += bytes_available;
+    return 0;
 }
 
 int l_getc(int fd)
 {
-    if (bytes_available == 0 && !eof)
-        read_block(fd);
-
-    if (bytes_available <= 0)
+    int r;
+    unsigned char c;
+    r = wl_read(fd, &c, 1);
+    if (r <= 0)
         return EOF;
-    return block[bytes_read - bytes_available--];
+    return (int) c;
 }
 
 int l_getw(int fd)
@@ -120,26 +103,6 @@ int l_getw(int fd)
     result |= l_getc(fd) << 24;
 
     return result;
-}
-
-void l_lseek(int fd, unsigned int offset)
-{
-    _l_offset = offset & ~BLOCK_ALIGNMENT;
-    wl_seek(fd, _l_offset);
-
-    /*
-     * now read from this block and update bytes_available
-     * as we don't want to directly start there...
-     */
-    read_block(fd);
-
-    /* how much do we have left */
-    bytes_available -= offset & BLOCK_ALIGNMENT;
-}
-
-unsigned int l_offset(int fd)
-{
-    return _l_offset - bytes_available;
 }
 
 #define SIZE_OF(array) (sizeof(array)/sizeof(array[0]))
@@ -229,7 +192,7 @@ void reset_state(lindex *l, struct search_state *target, const struct search_sta
     memcpy(target, source, sizeof(*target));
     target->offset = target->this_offset;
     target->skip = true;
-    l_lseek(l->db_file, l->db_start + target->offset);
+    wl_seek(l->db_file, l->db_start + target->offset);
     target->last_c = l_getc(l->db_file);
 }
 
