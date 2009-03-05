@@ -28,7 +28,7 @@
 #include <string.h>
 #include "image.h"
 
-static int bpp = 4;
+static int bpp = 1;
 
 static int output_bitpos = 0;
 static unsigned char output_char = 0;
