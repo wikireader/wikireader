@@ -63,18 +63,18 @@ void search_init()
 {
 	int result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
 	if (!result) {
-        msg(MSG_ERROR, "Failed to initialize search.\n");
+		msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
 	}
 }
 
 int search_load_trigram(void)
 {
-    if (!trigram_loaded) {
-	trigram_loaded = !load_trigram_chunk(&global_search);
-    }
+	if (!trigram_loaded) {
+		trigram_loaded = !load_trigram_chunk(&global_search);
+	}
 
-    return trigram_loaded;
+	return trigram_loaded;
 }
 
 void search_reset()
