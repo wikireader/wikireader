@@ -140,7 +140,6 @@ int elf_exec(const u8 *filename)
 	disable_card_power();
 
 	exec = (void *) hdr.e_entry;
-	hex_dump(exec, 256);
 	((void (*) (void)) exec) ();
 
 	/* never reached */
