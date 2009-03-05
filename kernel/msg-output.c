@@ -40,6 +40,8 @@ static unsigned int current_msg_read = 0;
 static unsigned int current_msg_write = 0;
 static int lost_messages = 0;
 static unsigned int output_newline = 0;
+/* output everything by default */
+static int loglevel = MSG_LEVEL_MAX;
 
 #define RING_SPACE() \
 	((current_msg_read + current_msg_write + 1) % MAX_MSGS)
@@ -95,6 +97,9 @@ void msg (int level, const char *fmt, ...)
 	struct message *m;
 	va_list va;
 
+	if (level > loglevel)
+		return;
+
 	DISABLE_IRQ();
 	
 	/* is the read pointer one position ahead? */
@@ -122,3 +127,10 @@ void msg (int level, const char *fmt, ...)
 	ENABLE_IRQ();
 }
 
+void set_loglevel (int level)
+{
+	if (level < MSG_ERROR || level > MSG_LEVEL_MAX)
+		return;
+
+	loglevel = level;
+}
