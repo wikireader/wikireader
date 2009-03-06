@@ -48,7 +48,7 @@ bootloader:mini-libc fatfs
 	make )
 
 .PHONY: toppers
-wikireader: mini-libc fatfs
+toppers: mini-libc fatfs
 	( cd jsp && \
 	make -C cfg && \
 	make -C wikireader && \
