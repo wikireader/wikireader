@@ -37,7 +37,6 @@ PATCH_GCC=./toolchain/.patch_gcc
 
 .PHONY: all
 all:    mini-libc \
-	toolchain \
 	bootloader \
 	toppers \
 	kernel
@@ -61,18 +60,18 @@ kernel: mini-libc fatfs
 	cp mahatma.elf ../KERNEL)
 
 .PHONY: mahatma
-mahatma: fatfs
+mahatma: mini-libc fatfs
 	( cd kernel	&& \
 	make		&& \
 	cp mahatma.elf ../KERNEL)
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
-mini-libc:
+mini-libc: toolchain
 	make -C toolchain/mini-libc/
 
 .PHONY: fatfs
-fatfs:
+fatfs: mini-libc
 	make -C fatfs/
 
 # ----- toolchain stuff  --------------------------------------
