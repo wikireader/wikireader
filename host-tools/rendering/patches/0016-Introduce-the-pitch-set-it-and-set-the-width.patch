@@ -1,0 +1,54 @@
+From c21dca6ce3fcdb0f721efe75e5ab8c3be9e449c8 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Thu, 5 Mar 2009 19:09:25 +0800
+Subject: [PATCH] Introduce the pitch, set it, and set the width...
+
+---
+ WebCore/platform/graphics/gtk/FontGtk.cpp |    3 ++-
+ WebKit/gtk/webkit/webkitwebview.h         |    1 +
+ WebKitTools/GtkLauncher/main.c            |    2 ++
+ 3 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/WebCore/platform/graphics/gtk/FontGtk.cpp b/WebCore/platform/graphics/gtk/FontGtk.cpp
+index 5ee6f88..fe210e5 100644
+--- a/WebCore/platform/graphics/gtk/FontGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontGtk.cpp
+@@ -333,8 +333,9 @@ webkit_ft2_renderer_draw_glyph (PangoRenderer *renderer,
+     glyph->face_and_config = pango_font_description_to_string(description);
+     glyph->advance_x = rendered_glyph->advance_x;
+     glyph->advance_y = rendered_glyph->advance_y;
+-    glyph->glyph_width  = rendered_glyph->bitmap.pitch;
++    glyph->glyph_width  = rendered_glyph->bitmap.width;
+     glyph->glyph_height = rendered_glyph->bitmap.rows;
++    glyph->glyph_pitch = rendered_glyph->bitmap.pitch;
+     glyph->bitmap_left_bearing = rendered_glyph->bitmap_left;
+     glyph->bitmap_top_bearing = rendered_glyph->bitmap_top;
+     glyph->bitmap = rendered_glyph->bitmap.buffer;
+diff --git a/WebKit/gtk/webkit/webkitwebview.h b/WebKit/gtk/webkit/webkitwebview.h
+index 1044db4..58f9ee1 100644
+--- a/WebKit/gtk/webkit/webkitwebview.h
++++ b/WebKit/gtk/webkit/webkitwebview.h
+@@ -318,6 +318,7 @@ typedef struct _WebKitGlyph {
+     int bitmap_top_bearing;
+     int glyph_width;
+     int glyph_height;
++    int glyph_pitch;
+     guchar* bitmap;
+ 
+     /* The actual occurence of the above glyph */
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 8b74e3a..fe25f33 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -27,6 +27,8 @@
+ #include <gtk/gtk.h>
+ #include <webkit/webkit.h>
+ 
++#include <string.h>
++
+ static GtkWidget* main_window;
+ static GtkWidget* uri_entry;
+ static GtkStatusbar* main_statusbar;
+-- 
+1.5.6.3
+

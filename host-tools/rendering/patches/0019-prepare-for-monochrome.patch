@@ -1,0 +1,35 @@
+From 2456e75af2824b0861779a2660eea9bbe8ed17c1 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Thu, 5 Mar 2009 20:32:37 +0800
+Subject: [PATCH] prepare for monochrome...
+
+---
+ WebKitTools/GtkLauncher/main.c |   11 +++++++----
+ 1 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index d2b8c42..1fa08fa 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -71,11 +71,14 @@ static gint dumped_glyphs = 0;
+                            glyph->width, glyph->height);          \
+     gchar* data = g_string_free(header, FALSE);                   \
+     g_byte_array_append(content_##var, data, strlen(data));       \
+-    int row = 0;                                                  \
++    int row = 0, width;                                           \
+     for (row = 0; row < glyph->height; ++row) {                   \
+-        g_byte_array_append(content_##var,                        \
+-                            glyph->bitmap + (row*glyph->glyph_pitch),\
+-                            (guint)glyph->width);                 \
++        unsigned char* row_start = glyph->bitmap + (row*glyph->glyph_pitch); \
++        for (width =  0; width < glyph->width; ++width) {         \
++            g_byte_array_append(content_##var,                    \
++                                row_start + width,                \
++                                1);                               \
++        }                                                         \
+     }                                                             \
+     gchar* c_path_##var = g_string_free(path_##var, FALSE);       \
+     int length = content_##var->len;                              \
+-- 
+1.5.6.3
+

@@ -43,7 +43,7 @@ each to be displayed glyph and the to be used font.
 Use this snippet to convert. This is needed as cairo only has a
 png loader builtin...
 
-for i in fonts/*/*/*.pnm; do pnmtopng $i > `dirname $i`/`basename $i pnm`png; done
+for i in fonts/*/*/*.pbm; do pnmtopng $i > `dirname $i`/`basename $i pbm`png; done
 
 = Render render_text.blib with the fonts =
 Use the small cairo script render_text.py to convert the render_text.blib

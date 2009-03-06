@@ -1,0 +1,46 @@
+From aad684d81779c73d33bfdad4ab587c8cacc7123d Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Thu, 5 Mar 2009 19:12:31 +0800
+Subject: [PATCH] Cleanup... our WRITE_BITMAP impl is working...
+
+---
+ WebKitTools/GtkLauncher/main.c |   16 ----------------
+ 1 files changed, 0 insertions(+), 16 deletions(-)
+
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index fe25f33..d8627e5 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -61,7 +61,6 @@ static gint dumped_glyphs = 0;
+     g_free(c_content_##var);                                      \
+     } while(0);
+ 
+-#if 1
+ #define WRITE_BITMAP(path, glyph, var, width, height) \
+     do {                                                          \
+     GString* path_##var = g_string_new(path);                     \
+@@ -92,21 +91,6 @@ static gint dumped_glyphs = 0;
+     g_free(c_content_##var);                                      \
+     g_free(data);                                                 \
+     } while(0);
+-#else
+-#define WRITE_BITMAP(path, glyph, var, width, height) \
+-    do {                                                          \
+-    GString* path_##var = g_string_new(path);                     \
+-    g_string_append_printf(path_##var, "/%s.pnm", #var);          \
+-    gchar* c_path_##var = g_string_free(path_##var, FALSE);       \
+-    int row = 0;                                                  \
+-    FILE* file = fopen(c_path_##var, "w");                        \
+-    fprintf(file, "P5\n%d %d\n255\n", glyph->glyph_width, glyph->glyph_height); \
+-    for (row = 0; row < glyph->glyph_height; row++)               \
+-        fwrite(glyph->bitmap + row * glyph->glyph_width, 1, glyph->glyph_width, file); \
+-    fclose(file); \
+-    g_free(c_path_##var);                                         \
+-    } while(0);
+-#endif
+ 
+ /*
+  * For debugging purposes create a directory with the glyphs
+-- 
+1.5.6.3
+
