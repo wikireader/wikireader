@@ -89,7 +89,7 @@ fatfs:
 
 # ----- toolchain stuff  --------------------------------------
 .PHONY: toolchain
-toolchain:toolchain-download binutils gcc gdb
+toolchain:toolchain-download gcc gdb binutils
 
 .PHONY:toolchain-download
 toolchain-download: \
@@ -129,6 +129,7 @@ $(PATCH_GCC):
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
+	export PATH=$(PWD)/install/bin:\$(PATH)  && \
 	cd gcc-$(GCC_VERSION) && \
 	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
 	cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
@@ -138,7 +139,7 @@ $(PATCH_GCC):
 .PHONY: gcc
 gcc: binutils $(DL)/$(GCC_PACKAGE).ok $(PATCH_GCC)
 	( cd toolchain && \
-	export PATH=$(PWD)/install/bin:$(PATH)  && \
+	export PATH=$(PWD)/install/bin:\$(PATH)  && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
@@ -149,9 +150,6 @@ gcc: binutils $(DL)/$(GCC_PACKAGE).ok $(PATCH_GCC)
 .PHONY: gdb
 gdb:
 
-# you may run this only once after make toolchain  
-export-path:
-	echo "export PATH=$(PWD)/install/bin:$(PATH)" >> ~/.bashrc
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
