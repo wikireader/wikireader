@@ -38,7 +38,9 @@ export PATH:=$(PWD)/install/bin:\$(PATH)
 all:    mini-libc \
 	bootloader \
 	toppers \
-	kernel
+	kernel \
+	simulator-qt4 \
+	simulator-console
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs
@@ -126,6 +128,14 @@ gcc: binutils gcc-patch
 	make install)
 	touch $@
 
+.PHONY: simulator-qt4
+simulator-qt4:
+	( cd host-tools/simulator/Qt4/WikiSim && qmake && make )
+
+.PHONY: simulator-console
+simulator-console:
+	( cd host-tools/simulator/console && make )	
+
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
 getwikidump:
@@ -161,6 +171,8 @@ gcc:			compile gcc.\n\
 mini-libc:			compile mini-libc (libc.a).\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
 				-make sure the serial console is /dev/ttyUSB0.\n\
+simulator-qt4		compile the Qt4 simulator\n\
+simulator-console	compile the console simulator\n\
 clean: 			clean all.\n\
 				openmoko, Inc.\n "
 
