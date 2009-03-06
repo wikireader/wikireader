@@ -30,6 +30,7 @@ BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
 DL=./toolchain/dl
+export PATH:=$(PWD)/install/bin:\$(PATH)
 
 # ----- configuration data --------------------------------------
 
@@ -108,7 +109,6 @@ gcc-patch: gcc-download
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
-	export PATH=$(PWD)/install/bin:\$(PATH)  && \
 	cd gcc-$(GCC_VERSION) && \
 	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
 	cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
