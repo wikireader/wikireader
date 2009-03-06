@@ -146,8 +146,8 @@ clean:
 	cd jsp && make clean -C wikireader
 	rm -rf toolchain/gcc-$(GCC_VERSION)
 	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
-	rm $(PATCH_BINUTILS)	
-	rm $(PATCH_GCC)
+	rm -f binutils-download binutils-patch binutils
+	rm -f gcc-download gcc-patch gcc
 
 .PHONY:help
 help:
