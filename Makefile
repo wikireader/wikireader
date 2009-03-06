@@ -30,8 +30,6 @@ BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
 DL=./toolchain/dl
-PATCH_BINUTILS=./toolchain/.patch_binutils
-PATCH_GCC=./toolchain/.patch_gcc
 
 # ----- configuration data --------------------------------------
 
@@ -67,34 +65,28 @@ mahatma: mini-libc fatfs
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
-mini-libc: toolchain
+mini-libc: gcc
 	make -C toolchain/mini-libc/
 
 .PHONY: fatfs
+
 fatfs: mini-libc
 	make -C fatfs/
 
 # ----- toolchain stuff  --------------------------------------
-.PHONY: toolchain
-toolchain:toolchain-download gcc gdb binutils
-
-.PHONY:toolchain-download
-toolchain-download: \
-	$(DL)/$(GCC_PACKAGE).ok \
-	  $(DL)/$(BINUTILS_PACKAGE).ok 
-
-$(DL)/$(GCC_PACKAGE).ok:
+gcc-download:
 	mkdir -p $(DL)
 	wget -c -O $(DL)/$(GCC_PACKAGE) $(GCC_URL)
 	touch $@
 
-$(DL)/$(BINUTILS_PACKAGE).ok:
+binutils-download:
 	mkdir -p $(DL)
 	wget -c -O $(DL)/$(BINUTILS_PACKAGE) $(BINUTILS_URL)
 	touch $@
 
-$(PATCH_BINUTILS):
+binutils-patch: binutils-download
 	mkdir -p install
+	rm -rf toolchain/binutils-$(BINUTILS_PACKAGE)
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
 	( cd toolchain && \
 	cd binutils-$(BINUTILS_VERSION) && \
@@ -102,17 +94,17 @@ $(PATCH_BINUTILS):
 	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
 	touch $@
 
-.PHONY: binutils
-binutils: $(DL)/$(BINUTILS_PACKAGE).ok $(PATCH_BINUTILS)
+binutils: binutils-patch
 	(cd toolchain && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	mkdir -p build && \
 	cd build  && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
-	make install )
+	make install)
+	touch $@
 
-$(PATCH_GCC):
+gcc-patch: gcc-download
 	mkdir -p install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
@@ -123,8 +115,7 @@ $(PATCH_GCC):
 	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
 	touch $@
 
-.PHONY: gcc
-gcc: binutils $(DL)/$(GCC_PACKAGE).ok $(PATCH_GCC)
+gcc: binutils gcc-patch
 	( cd toolchain && \
 	export PATH=$(PWD)/install/bin:\$(PATH)  && \
 	cd gcc-$(GCC_VERSION) && \
@@ -132,11 +123,8 @@ gcc: binutils $(DL)/$(GCC_PACKAGE).ok $(PATCH_GCC)
 	cd build && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
-	make install )
-
-.PHONY: gdb
-gdb:
-
+	make install)
+	touch $@
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
@@ -168,8 +156,6 @@ all:			compile all the source.\n\
 setup:			get all the source we need.\n\
 bootloader:		compile bootloader.\n\
 toppers:		compile a toppers kernel.\n\
-toolchain:		make toolchain-download gcc gdb binutils.\n\
-toolchain-download:	downlaod gcc and binutils code we need.\n\
 binutils: 		compile binutils.\n\
 gcc:			compile gcc.\n\
 mini-libc:			compile mini-libc (libc.a).\n\
