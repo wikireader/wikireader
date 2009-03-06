@@ -18,12 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
-# ----- SVN configuration data --------------------------------------
-
-WR_SVN_SITE := wikipediardware.googlecode.com
-WR_SVN_PATH := svn/trunk
-WR_PATH := .
-
 # ----- Toolchain configuration data --------------------------------------
 
 GCC_VERSION=3.3.2
@@ -41,18 +35,12 @@ PATCH_GCC=./toolchain/.patch_gcc
 
 # ----- configuration data --------------------------------------
 
-# If the user hasn't checked out sources, he/she should run 'make checkout'
-# first, then run 'make'
 .PHONY: all
 all:    mini-libc \
 	toolchain \
 	bootloader \
 	toppers \
 	kernel
-
-.PHONY:checkout
-checkout:
-	svn checkout http://${WR_SVN_SITE}/${WR_SVN_PATH}/  ${WR_PATH}
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs
@@ -156,24 +144,6 @@ gdb:
 getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
-# ----- update and other things --------------------------------------
-.PHONY: update
-update:
-	svn update
-
-.PHONY: update-bootloader
-update-bootloader: 
-	( cd bootloader && svn update )
-
-.PHONY: update-wikireader
-update-wikireader: 
-	( cd jsp && svn update )
-
-.PHONY: check-makefile
-check-makefile:
-	( wget -O - http://${WR_SVN_SITE}/${WR_SVN_PATH}/Makefile | \
-	  diff -u Makefile - )
-
 .PHONY: flash-bootloader
 flash-bootloader: bootloader
 	( cd bootloader && \
@@ -204,10 +174,6 @@ toolchain-download:	downlaod gcc and binutils code we need.\n\
 binutils: 		compile binutils.\n\
 gcc:			compile gcc.\n\
 mini-libc:			compile mini-libc (libc.a).\n\
-update:			both update-bootloader update-wikireader.\n\
-update-bootloader: 	update the bootloader source.\n\
-update-wikireader: 	update the wikireader source.\n\
-check-makefile:		diff the remote makefile.\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
 				-make sure the serial console is /dev/ttyUSB0.\n\
 clean: 			clean all.\n\
