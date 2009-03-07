@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <msg.h>
+#include <wikilib.h>
 
 extern int _wl_read(int fd, void *buf, unsigned int count);
 extern int _wl_open(const char *filename, int flags);
@@ -52,18 +53,28 @@ int wl_read(int fd, void *buf, unsigned int count)
 
 	while (left) {
 		int r;
-		if (fp->eof)
-			break;
 
-		if (fp->bytes_available == 0) {
+		if (fp->bytes_available != 0) {
+			r = MIN(fp->bytes_available, left);
+			memcpy(bufp, fp->block + fp->bytes_read - fp->bytes_available, r);
+			fp->bytes_available -= r;
+			left -= r;
+			bufp += r;
+			if (fp->eof)
+				break;
+		} else if (left >= BLOCK_SIZE) {
+			/* read directly into buf */
+			r = _wl_read(fd, bufp, BLOCK_SIZE);
+			if (r < 0)
+				return r;
+			left -= r;
+			bufp += r;
+			if (r < BLOCK_SIZE)
+				break;
+		} else {
 			if ((r = read_block(fd, fp)))
 				return r;
 		}
-		r = fp->bytes_available < left ? fp->bytes_available : left;
-		memcpy(bufp, fp->block + fp->bytes_read - fp->bytes_available, r);
-		fp->bytes_available -= r;
-		left -= r;
-		bufp += r;
 	}
 	return count - left;
 }
