@@ -132,7 +132,7 @@ def gen_font(font_name):
 				color = (r + g + b) / 3
 
 				if (color > 127):
-					outbyte |= 1 << bit;
+					outbyte |= 1 << 7 - bit;
 				
 				if bit == 7:
 					out += struct.pack("B", outbyte)

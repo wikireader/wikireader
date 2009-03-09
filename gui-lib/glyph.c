@@ -28,18 +28,33 @@
 
 void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 {
-	int x, y, bit = 0;
+	int x, y, w, bit = 0;
 	const char *d = glyph->data;
 
-	for (y = 0; y < glyph->height; y++)
-		for (x = 0; x < glyph->width; x++) {
-			guilib_set_pixel(start_x + x, start_y + y, (*d >> bit) & 1);
-			bit++;
+	for (y = start_y; y < start_y + glyph->height; ++y) {
+		for (x = start_x, w = glyph->width; w > 0;) {
+			int use;
+			unsigned byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
+
+			if (byte >= FRAMEBUFFER_SIZE)
+				return;
+
+			use = MIN(8 - (x % 8) , w);
+			use = MIN(8 - bit, use);
+#ifdef DISPLAY_INVERTED
+			framebuffer[byte] &= ~((*d << bit & (unsigned char)(0xff << (8 - use))) >> (x % 8));
+#else
+			framebuffer[byte] |= (*d << bit & (unsigned char)(0xff << (8 - use))) >> (x % 8);
+#endif
+			bit += use;
+			x += use;
+			w -= use;
 			if (bit == 8) {
 				bit = 0;
 				d++;
 			}
 		}
+	}
 }
 
 #if 0
