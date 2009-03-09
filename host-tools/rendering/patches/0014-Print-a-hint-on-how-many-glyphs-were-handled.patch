@@ -1,4 +1,4 @@
-From 416b9f8e494b9291163eac6863cc5cd7ba66a906 Mon Sep 17 00:00:00 2001
+From 1180a448d7ba12d8bf32a60f1e18fd5b52e5d2d8 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 3 Feb 2009 00:41:39 +0100
 Subject: [PATCH] Print a hint on how many glyphs were handled...

@@ -1,4 +1,4 @@
-From d8cdf7ffe5241bdd737df66131559a0725597c6f Mon Sep 17 00:00:00 2001
+From 6e2c71283b04d80237b51b9ed4960da3646c3b85 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Tue, 3 Feb 2009 00:27:32 +0100
 Subject: [PATCH] Exit GtkLauncher once the fonts/glyphs were dumped

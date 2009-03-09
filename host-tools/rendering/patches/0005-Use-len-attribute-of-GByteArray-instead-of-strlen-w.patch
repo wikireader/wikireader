@@ -1,4 +1,4 @@
-From fde52b5d7dee16bc3bddab9671ff1ae0f20a1791 Mon Sep 17 00:00:00 2001
+From aff548cdf8146b4e17807be71cacb3e330b9d226 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:22:01 +0100
 Subject: [PATCH] Use len attribute of GByteArray instead of strlen (which stops at the first null byte)

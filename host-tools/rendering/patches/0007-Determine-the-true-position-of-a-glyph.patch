@@ -1,4 +1,4 @@
-From b83e9a47ea6badd2835e417696fdba265970d598 Mon Sep 17 00:00:00 2001
+From 3ea9a60734bbbd4140406b850c56cac1b1fb26eb Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sun, 21 Dec 2008 00:34:04 +0100
 Subject: [PATCH] Determine the true position of a glyph

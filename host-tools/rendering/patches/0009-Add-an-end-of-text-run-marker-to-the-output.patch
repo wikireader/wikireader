@@ -1,4 +1,4 @@
-From e19abab8be01f7167b81997b639c6ce5b6876670 Mon Sep 17 00:00:00 2001
+From 3900be638ed7679c6b01fc3d03de254852099e5f Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sun, 4 Jan 2009 19:52:40 +0100
 Subject: [PATCH] Add an end of text run marker to the output

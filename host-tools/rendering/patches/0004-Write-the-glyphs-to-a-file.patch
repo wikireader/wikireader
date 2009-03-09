@@ -1,4 +1,4 @@
-From 213f37bbca9382957e99c63fe10e236784158d2b Mon Sep 17 00:00:00 2001
+From 43baa836e10f3544a7291ad97b04a6073ae483f2 Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Sat, 20 Dec 2008 22:10:17 +0100
 Subject: [PATCH] Write the glyphs to a file....

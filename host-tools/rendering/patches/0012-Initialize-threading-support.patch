@@ -1,4 +1,4 @@
-From 7fb2642827387a9d5b99a873477eecc5b3fb7ed8 Mon Sep 17 00:00:00 2001
+From 25ce3de48f8f33aa90363c5c275e002218b4316b Mon Sep 17 00:00:00 2001
 From: Holger Hans Peter Freyther <zecke@selfish.org>
 Date: Mon, 19 Jan 2009 00:37:23 +0100
 Subject: [PATCH] Initialize threading support...
