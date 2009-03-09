@@ -86,8 +86,6 @@ int main(int argc, char** argv)
     unsigned long long article_count = 0;
 
     do {
-        if ((++article_count % 1000) == 0)
-            printf("Handled another 1000 articles. Now: %lld\n", article_count);
 
         // Write whatever is available
         file.waitForReadyRead(-1);
@@ -95,9 +93,13 @@ int main(int argc, char** argv)
 
         // Did we finish parsing an article?
         QList<Article> articles = reader.popArticles();
-        foreach(ArticleHandler* handler, handlers)
-            foreach(Article article, articles)
+        foreach(Article article, articles) {
+            if ((++article_count % 1000) == 0)
+                printf("Handled another 1000 articles. Now: %lld\n", article_count);
+            foreach(ArticleHandler* handler, handlers) {
                 handler->handleArticle(article);
+            }
+        }
     } while (!reader.finished());
 
     INVOKE_HANDLERS(parsingFinished())
