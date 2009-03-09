@@ -40,5 +40,5 @@ void ExtractArticleUrl::handleArticle(const Article& article)
         return;
 
     QTextStream stream(&m_file);
-    stream << "http://127.0.0.1/mediawiki/index.php/" + article.title().title() << endl;
+    stream << "\%SETUP\%/" + article.title().title() << endl;
 }
