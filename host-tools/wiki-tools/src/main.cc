@@ -19,6 +19,7 @@
 
 #include "CreateIndex.h"
 #include "CreateText.h"
+#include "ExtractArticleUrl.h"
 #include "ExtractWords.h"
 #include "ExtractText.h"
 #include "ExtractTextCompressed.h"
@@ -39,6 +40,8 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     //                              QLatin1String("notmatch.title"), 
     //                              QRegExp("(^Image:.*)|(^Category:.*)|(^Talk:.*)|(^Template:.*)|(^Wikipedia:.*)|(^Special:.*)") ,
     //                              QRegExp("[0-9A-Za-z\\s\\.]*") );
+
+    //*handlers << new ExtractArticleUrl("urls.fetch");
 
     // Some example runs... take a look
     //*handlers << new CreateText(QString());
