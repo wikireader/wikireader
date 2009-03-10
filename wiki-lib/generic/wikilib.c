@@ -138,7 +138,7 @@ int wikilib_run(void)
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
 			if (display_mode == DISPLAY_MODE_INDEX) {
-				if (ev.key_event.keycode == KEY_ENTURN) {
+				if (ev.key_event.keycode == KEY_RETURN) {
 					const char *result = search_current_result();
 					if (result) {
 						if (article_open(result) < 0)

@@ -2,7 +2,7 @@
 #define WL_EVENT_H
 
 #define KEY_BACKSPACE	8
-#define KEY_ENTURN	13
+#define KEY_RETURN	13
 #define KEY_ESC		27
 #define KEY_SPACE	32
 #define KEY_HASH	35
