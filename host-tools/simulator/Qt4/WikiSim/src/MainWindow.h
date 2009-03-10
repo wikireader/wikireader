@@ -36,12 +36,12 @@ public:
 
 public slots:
     void searchButtonEvent(void);
-    void treeButtonEvent(void);
+    void historyButtonEvent(void);
     void randomButtonEvent(void);
 
 private:
     void hwButtonEvent(int num);
-    QPushButton *search, *tree, *random;
+    QPushButton *search, *history, *random;
 };
 
 #endif

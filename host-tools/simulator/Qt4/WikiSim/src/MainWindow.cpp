@@ -41,9 +41,9 @@ MainWindow::searchButtonEvent(void)
 }
 
 void
-MainWindow::treeButtonEvent(void)
+MainWindow::historyButtonEvent(void)
 {
-	hwButtonEvent(WL_INPUT_KEY_TREE);
+	hwButtonEvent(WL_INPUT_KEY_HISTORY);
 }
 
 void
@@ -57,15 +57,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     display = new WikiDisplay();
     search = new QPushButton("Search");
-    tree = new QPushButton("Tree");
+    history = new QPushButton("History");
     random = new QPushButton("Random"); 
 
     search->setFocusPolicy(Qt::NoFocus);
-    tree->setFocusPolicy(Qt::NoFocus);
+    history->setFocusPolicy(Qt::NoFocus);
     random->setFocusPolicy(Qt::NoFocus);
 
     connect(search, SIGNAL(clicked()), this, SLOT(searchButtonEvent()));
-    connect(tree,   SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
+    connect(history,SIGNAL(clicked()), this, SLOT(historyButtonEvent()));
     connect(random, SIGNAL(clicked()), this, SLOT(randomButtonEvent()));
 
     /*
@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
                           QSizePolicy::MinimumExpanding,
                           QSizePolicy::MinimumExpanding));
     buttonBox->addWidget(search);
-    buttonBox->addWidget(tree);
+    buttonBox->addWidget(history);
     buttonBox->addWidget(random);
 
     QVBoxLayout *displayBox = new QVBoxLayout;
