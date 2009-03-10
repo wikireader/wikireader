@@ -97,7 +97,7 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
  * static copy a char map... true for some fonts e.g.
  * the DejaVu family
  */
-static const int char_to_glyph(char c)
+static int char_to_glyph(char c)
 {
 	if (c < 30)
 		return 0;
@@ -116,7 +116,7 @@ static const int char_to_glyph(char c)
 int render_string(const int font, int start_x,
 		    int start_y, const char *string, const int text_length)
 {
-	if (font >= guilib_nr_fonts())
+	if ((unsigned int) font >= guilib_nr_fonts())
 		return 0;
 
 	int i;

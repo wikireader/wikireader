@@ -38,7 +38,7 @@ static unsigned int current_page_offset = -1;
 
 static void print_page_buffer(void)
 {
-	int i;
+	unsigned int i;
 	for (i = 0; i < BUFSIZE; ++i) {
 		msg(MSG_DEBUG, "%c ", i == bufpos ? '*' : ' ');
 		msg(MSG_DEBUG, "%d page %d offset %u\n",

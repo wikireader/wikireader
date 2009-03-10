@@ -127,7 +127,7 @@ int read_font_file(const char *filename)
 		return -1;
 
 	r = wl_read(fd, file_buf, file_size);
-	if (r < 0 || r != file_size)
+	if (r < 0 || (unsigned int) r != file_size)
 		return r;
 
 	wl_close(fd);

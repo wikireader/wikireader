@@ -108,7 +108,7 @@ void guilib_fb_unlock(void)
 
 void guilib_blit_image(const struct guilib_image *img, int x, int y)
 {
-	int xx, yy;
+	unsigned int xx, yy;
 
 	/* special case: the image has the same width than the 
 	 * height and is rendered at y=0. Then we can go for a
@@ -125,8 +125,8 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	 * fiddling. */
 
 	if ((x & 7) == 0) {
-		int i;
-		char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8;
+		unsigned int i;
+		unsigned char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8;
 
 		for (i = 0; i < (img->width * img->height) / 8; i++)
 			*d++ = img->data[i];
