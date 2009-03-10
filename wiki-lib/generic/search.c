@@ -152,12 +152,6 @@ char* search_fetch_result()
 	return result;
 }
 
-extern unsigned int lsesrch_consume_block_stat();
-void search_print_stats()
-{
-    msg(MSG_INFO, "Block read for search: %d\n", lsesrch_consume_block_stat());
-}
-
 /*
  * paint the results of the search...
  * 
@@ -194,7 +188,6 @@ void search_display_results(void)
 		render_string(0, 1, 10, search_result, search_result_len);
 	}
 
-	search_print_stats();
 	guilib_fb_unlock();
 }
 

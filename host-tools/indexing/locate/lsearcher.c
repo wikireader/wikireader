@@ -56,8 +56,6 @@
 #include <unistd.h>
 #endif
 
-static int blocks_read = 0;
-
 #define TRIGRAM_ITEMS   (MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE*MAX_UPPER_PREFIX_SIZE)
 #define TRIGRAM_SIZE    (sizeof(uint32_t)*TRIGRAM_ITEMS)
 
@@ -74,14 +72,6 @@ int check_bigram_char(int ch) {
 #else
     return -1;
 #endif
-}
-
-/*
- * read a complete block and serve getc from this block...
- */
-unsigned int lsesrch_consume_block_stat()
-{
-    return 0;
 }
 
 int l_getc(int fd)

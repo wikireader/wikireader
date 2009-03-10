@@ -66,6 +66,4 @@ void search_remove_char(void);
  */
 char* search_fetch_result();
 
-void search_print_stats();
-
 #endif
