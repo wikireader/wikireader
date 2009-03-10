@@ -85,6 +85,11 @@ int main(void)
 #ifdef POWER_MANAGEMENT
 	power_tests();
 #endif
+
+#ifdef BOARD_S1C33E07
+	while(1)
+		;
+#endif
 }
 
 #if POWER_MANAGEMENT
