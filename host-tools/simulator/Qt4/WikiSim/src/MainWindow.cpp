@@ -60,6 +60,10 @@ MainWindow::MainWindow(QWidget *parent)
     tree = new QPushButton("Tree");
     random = new QPushButton("Random"); 
 
+    search->setFocusPolicy(Qt::NoFocus);
+    tree->setFocusPolicy(Qt::NoFocus);
+    random->setFocusPolicy(Qt::NoFocus);
+
     connect(search, SIGNAL(clicked()), this, SLOT(searchButtonEvent()));
     connect(tree,   SIGNAL(clicked()), this, SLOT(treeButtonEvent()));
     connect(random, SIGNAL(clicked()), this, SLOT(randomButtonEvent()));
