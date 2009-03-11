@@ -54,7 +54,10 @@ static void invert_selection(int old_pos, int new_pos)
 		guilib_invert(start + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
 	}
 
-	guilib_invert(start + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	if (new_pos != -1 ) {
+		guilib_invert(start + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	}
+
 	guilib_fb_unlock();
 }
 
