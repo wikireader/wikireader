@@ -61,7 +61,7 @@ void history_display(void)
 
 void history_reset(void)
 {
-    current_start = 0;
+	current_start = 0;
 }
 
 void history_select_down(void)
@@ -74,7 +74,7 @@ void history_select_up(void)
 
 const char *history_current_target(void)
 {
-    return NULL;
+	return NULL;
 }
 
 void history_add(const char *text, const char *target)
