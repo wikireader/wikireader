@@ -24,6 +24,7 @@
 
 
 void history_display(void);
+void history_reset(void);
 void history_select_down(void);
 void history_select_up(void);
 const char *history_current_target(void);

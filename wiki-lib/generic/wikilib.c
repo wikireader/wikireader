@@ -159,6 +159,7 @@ int wikilib_run(void)
 				}
 			} else if (ev.key_event.keycode == WL_INPUT_KEY_HISTORY) {
 				display_mode = DISPLAY_MODE_HISTORY;
+				history_reset();
 				history_display();
 			} else if (display_mode == DISPLAY_MODE_INDEX) {
 				if (ev.key_event.keycode == KEY_RETURN) {
