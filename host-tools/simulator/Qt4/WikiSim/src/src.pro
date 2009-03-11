@@ -17,6 +17,7 @@ INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
 INCLUDEPATH += $$TOPLEVEL/common/
+DEPENDPATH = $$INCLUDEPATH
 
 SOURCES += main.cpp \
  WikiDisplay.cpp \
