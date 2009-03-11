@@ -157,7 +157,7 @@ int wikilib_run(void)
 					display_mode = DISPLAY_MODE_INDEX;
 					search_reload();
 				}
-			} else if (display_mode == WL_INPUT_KEY_HISTORY) {
+			} else if (ev.key_event.keycode == WL_INPUT_KEY_HISTORY) {
 				display_mode = DISPLAY_MODE_HISTORY;
 				history_display();
 			} else if (display_mode == DISPLAY_MODE_INDEX) {
