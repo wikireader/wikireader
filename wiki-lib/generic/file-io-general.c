@@ -70,10 +70,10 @@ int wl_read(int fd, void *buf, unsigned int count)
 			if (r < BLOCK_SIZE)
 				break;
 		} else {
-			if ((r = read_block(fd, fp)))
-				return r;
 			if (fp->eof)
 				break;
+			if ((r = read_block(fd, fp)))
+				return r;
 		}
 	}
 	return count - left;
