@@ -16,11 +16,27 @@
  */
 
 #include "history.h"
+#include <guilib.h>
+#include <lsearcher.h>
 
 #include <stdlib.h>
 
+struct history_item {
+	char title[MAXSTR];
+	char target[6];
+};
+
+static struct history_item history_items[100];
+static unsigned int items = 0;
+
 void history_display(void)
 {
+	guilib_fb_lock();
+
+	guilib_clear();
+	render_string(0, 1, 14, "History", 7);
+
+	guilib_fb_unlock();
 }
 
 void history_select_down(void)
