@@ -22,6 +22,7 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <fontfile.h>
+#include <history.h>
 #include <input.h>
 #include <msg.h>
 #include <malloc.h>
@@ -32,7 +33,8 @@
 
 #define DISPLAY_MODE_INDEX	0
 #define DISPLAY_MODE_ARTICLE	1
-#define DISPLAY_MODE_IMAGE	2
+#define DISPLAY_MODE_HISTORY	2
+#define DISPLAY_MODE_IMAGE	3
 
 static int current_page = 0;
 
@@ -63,6 +65,11 @@ static void handle_cursor(struct wl_input_event *ev, int display_mode)
 			search_select_down();
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
 			search_select_up();
+	} else if (display_mode == DISPLAY_MODE_HISTORY) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			history_select_down();
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			history_select_up();
 	}
 }
 
@@ -150,6 +157,9 @@ int wikilib_run(void)
 					display_mode = DISPLAY_MODE_INDEX;
 					search_reload();
 				}
+			} else if (display_mode == WL_INPUT_KEY_HISTORY) {
+				display_mode = DISPLAY_MODE_HISTORY;
+				history_display();
 			} else if (display_mode == DISPLAY_MODE_INDEX) {
 				if (ev.key_event.keycode == KEY_RETURN) {
 					const char *target = search_current_target();
@@ -159,6 +169,7 @@ int wikilib_run(void)
 						display_mode = DISPLAY_MODE_ARTICLE;
 						current_page = 0;
 						article_display(0);
+						history_add(search_current_title(), target);
 					}
 				} else if (ev.key_event.keycode == KEY_HASH) {
 					display_mode = DISPLAY_MODE_IMAGE;
@@ -170,6 +181,18 @@ int wikilib_run(void)
 				if (ev.key_event.keycode == KEY_BACKSPACE) {
 					display_mode = DISPLAY_MODE_INDEX;
 					search_reload();
+				}
+			} else if (display_mode == DISPLAY_MODE_HISTORY) {
+				if (ev.key_event.keycode == KEY_RETURN) {
+					const char *target = history_current_target();
+					if (target) {
+						if (article_open(target) < 0)
+							print_article_error();
+						display_mode = DISPLAY_MODE_ARTICLE;
+						current_page = 0;
+						article_display(0);
+						history_move_current_to_top();
+					}
 				}
 			}
 			break;

@@ -27,9 +27,8 @@ void history_display(void);
 void history_select_down(void);
 void history_select_up(void);
 const char *history_current_target(void);
-const char *history_current_title(void);
 
-void history_add(char *text, char *target);
-void history_move_to_top(char *text, char *target);
+void history_add(const char *text, const char *target);
+void history_move_current_to_top(void);
 
 #endif

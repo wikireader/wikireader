@@ -25,6 +25,7 @@ void search_display_results(void);
 void search_select_down(void);
 void search_select_up(void);
 const char *search_current_target(void);
+const char *search_current_title(void);
 
 
 /**

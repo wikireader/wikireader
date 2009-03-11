@@ -218,3 +218,8 @@ const char *search_current_target(void)
 
 	return &search_pointers[search_current][0];
 }
+
+const char *search_current_title(void)
+{
+	return NULL;
+}
