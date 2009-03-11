@@ -62,3 +62,6 @@
 #define INTSIZE (sizeof(int))
 
 #define LOCATE_REG "*?[]\\"  /* fnmatch(3) meta characters */
+
+/* number of chars allowed in a line */
+#define MAXSTR 256

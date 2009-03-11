@@ -96,8 +96,8 @@
 
 #define	BGBUFSIZE	(NBG * 2)	/* size of bigram buffer */
 
-u_char buf1[MAXPATHLEN] = " ";	
-u_char buf2[MAXPATHLEN];
+u_char buf1[MAXSTR] = " ";
+u_char buf2[MAXSTR];
 u_char bigrams[BGBUFSIZE + 1] = { 0 };
 
 #define LOOKUP 1 /* use a lookup array instead a function, 3x faster */

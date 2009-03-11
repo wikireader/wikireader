@@ -54,8 +54,8 @@
 #include <sys/param.h>			/* for MAXPATHLEN */
 #include "locate.h"
 
-u_char buf1[MAXPATHLEN] = " ";
-u_char buf2[MAXPATHLEN];
+u_char buf1[MAXSTR] = " ";
+u_char buf2[MAXSTR];
 u_int bigram[UCHAR_MAX + 1][UCHAR_MAX + 1];
 
 int

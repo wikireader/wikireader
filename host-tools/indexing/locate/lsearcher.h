@@ -9,7 +9,6 @@
 #include "debug.h"
 #include "locate.h"
 
-#define MAXSTR 1024
 #define TOLOWER(c) ('A' <= (c) && (c) <= 'Z' ? (c) | 0x20 : (c))
 
 
