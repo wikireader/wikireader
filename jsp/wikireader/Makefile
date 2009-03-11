@@ -89,7 +89,7 @@ DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io-general.o time-toppers.o wikilib.o \
-		malloc-simple.o article.o search.o
+		malloc-simple.o article.o search.o history.o
 FATLIB_COBJS= tff.o mmc.o cache.o
 SEARCH_COBJS= lsearcher.o fast_search.o
 

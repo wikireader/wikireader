@@ -9,7 +9,7 @@ COMMON_DIR = ../../../common
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(INDEX_DIR) -I $(COMMON_DIR)
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-general.o file-io-posix.o wikilib.o time-posix.o	\
-	fontfile.o search.o lsearcher.o fast_search.o article.o
+	fontfile.o search.o lsearcher.o fast_search.o article.o history.o
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR) \
 	  $(INDEX_DIR)

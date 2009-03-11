@@ -43,7 +43,7 @@ WIKILIB_COBJS= file-io-general.o file-io-libfat.o \
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
-WIKILIB_COBJS += article.o
+WIKILIB_COBJS += article.o history.o
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
