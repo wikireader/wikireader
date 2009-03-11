@@ -193,7 +193,7 @@ void store_state(lindex *l, const struct search_state *source, struct search_sta
 
 #ifdef INCLUDE_MAIN
 static bool handle_match(uchar_t *s) {
-    printf("%s first block: %d\n", s, blocks_read);
+    printf("%s\n", s);
     return true;
 }
 
@@ -395,11 +395,8 @@ int main(int argc, char **argv) {
             handle_match((unsigned char *)result);
         }
 
-        debug("During the search %d blocks were read", blocks_read);
         if (twoRuns) {
-            blocks_read = 0;
             search_slow(&l, needle, &state, handle_match, NULL);
-            debug("During the slow search %d blocks were read", blocks_read);
         }
     } else {
         debug("no action");
