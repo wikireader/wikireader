@@ -19,6 +19,7 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <lsearcher.h>
+#include <wikilib.h>
 
 #include <stdlib.h>
 
@@ -33,7 +34,6 @@ struct history_item {
 };
 
 static struct history_item history_items[100];
-static unsigned int items = 0;
 static unsigned int current_start = 0;
 static unsigned int used_items = 0;
 
@@ -77,8 +77,19 @@ const char *history_current_target(void)
 	return NULL;
 }
 
-void history_add(const char *text, const char *target)
+void history_add(const char *title, const char *target)
 {
+	/* make room ... */
+	static const unsigned int items = ARRAY_SIZE(history_items);
+
+	memmove(&history_items[1], &history_items[0], (items - 1) * sizeof(history_items[0]));
+	if (title)
+		strcpy(history_items[0].title, title);
+
+	if (target)
+		strcpy(history_items[0].target, target);
+
+	used_items = MIN(used_items + 1, ARRAY_SIZE(history_items));
 }
 
 void history_move_current_to_top(void)
