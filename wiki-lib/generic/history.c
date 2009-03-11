@@ -17,6 +17,7 @@
 
 #include "history.h"
 #include <guilib.h>
+#include <glyph.h>
 #include <lsearcher.h>
 
 #include <stdlib.h>
