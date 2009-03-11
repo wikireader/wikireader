@@ -160,20 +160,22 @@ def gen_font(font_name):
 	print "index to glyph 0 (font %s) is %d" % (font_name, offsettable[0])
 	return struct.pack("<I", n_glyphs) + table + out
 
+def get_default(list, item, default):
+	try:
+		return list[item]
+	except IndexError:
+		return default
+
 if (len(sys.argv) < 2):
 	usage()
 
 fontpath = sys.argv[1]
 
-if (len(sys.argv) > 2):
-	outfilename = sys.argv[2]
-else:
-	outfilename = outfilename_default
+outfilename = get_default(sys.argv, 2, outfilename_default)
+fontmapfilename = get_default(sys.argv, 3, fontmapfilename_default)
+default_font = get_default(sys.argv, 4, default_font)
 
-if (len(sys.argv) > 3):
-	fontmapfilename = sys.argv[3]
-else:
-	fontmapfilename = fontmapfilename_default
+print outfilename, fontmapfilename, default_font
 
 try:
 	fontlist = os.listdir(fontpath)
