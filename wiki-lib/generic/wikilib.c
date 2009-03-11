@@ -66,6 +66,11 @@ static void handle_cursor(struct wl_input_event *ev, int display_mode)
 	}
 }
 
+/* FIXME: implement toggling of the keyboard */
+static void toggle_soft_keyboard(void)
+{
+}
+
 static void print_intro()
 {
 	guilib_fb_lock();
@@ -137,7 +142,15 @@ int wikilib_run(void)
 			handle_cursor(&ev, display_mode);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			if (display_mode == DISPLAY_MODE_INDEX) {
+			if (ev.key_event.keycode == WL_INPUT_KEY_SEARCH) {
+				/* back to search */
+				if (display_mode == DISPLAY_MODE_INDEX) {
+					toggle_soft_keyboard();
+				} else {
+					display_mode = DISPLAY_MODE_INDEX;
+					search_reload();
+				}
+			} else if (display_mode == DISPLAY_MODE_INDEX) {
 				if (ev.key_event.keycode == KEY_RETURN) {
 					const char *result = search_current_result();
 					if (result) {
