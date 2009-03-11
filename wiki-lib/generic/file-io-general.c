@@ -60,8 +60,6 @@ int wl_read(int fd, void *buf, unsigned int count)
 			fp->bytes_available -= r;
 			left -= r;
 			bufp += r;
-			if (fp->eof)
-				break;
 		} else if (left >= BLOCK_SIZE) {
 			/* read directly into buf */
 			r = _wl_read(fd, bufp, BLOCK_SIZE);
@@ -74,6 +72,8 @@ int wl_read(int fd, void *buf, unsigned int count)
 		} else {
 			if ((r = read_block(fd, fp)))
 				return r;
+			if (fp->eof)
+				break;
 		}
 	}
 	return count - left;
