@@ -152,9 +152,9 @@ int wikilib_run(void)
 				}
 			} else if (display_mode == DISPLAY_MODE_INDEX) {
 				if (ev.key_event.keycode == KEY_RETURN) {
-					const char *result = search_current_result();
-					if (result) {
-						if (article_open(result) < 0)
+					const char *target = search_current_target();
+					if (target) {
+						if (article_open(target) < 0)
 							print_article_error();
 						display_mode = DISPLAY_MODE_ARTICLE;
 						current_page = 0;

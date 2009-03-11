@@ -211,7 +211,7 @@ void search_select_up(void)
 	--search_current;
 }
 
-const char *search_current_result(void)
+const char *search_current_target(void)
 {
 	if (search_current < 0 || search_current >= search_found)
 		return NULL;
