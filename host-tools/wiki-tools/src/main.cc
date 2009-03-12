@@ -32,16 +32,31 @@
 #include <QCoreApplication>
 #include <QRegExp>
 
-static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
+static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** argv)
 {
     // Enable that if you want to create an index
-    // *handlers << new CreateIndex(QLatin1String(" "), 
-    //                              QLatin1String("indexfile.index"), 
-    //                              QLatin1String("notmatch.title"), 
-    //                              QRegExp("(^Image:.*)|(^Category:.*)|(^Talk:.*)|(^Template:.*)|(^Wikipedia:.*)|(^Special:.*)") ,
-    //                              QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
+    bool createIndexList = false;
+    bool createUrlList = false;
 
-    //*handlers << new ExtractArticleUrl("urls.fetch");
+    for (int i = 0; i < argc; ++i) {
+        if (qstrcmp(argv[i], "--index") == 0)
+            createIndexList = true;
+        else if (qstrcmp(argv[i], "--url-list") == 0)
+            createUrlList = true;
+    }
+
+
+    if (createIndexList) {
+        *handlers << new CreateIndex(QLatin1String(" "),
+                                     QLatin1String("indexfile.index"),
+                                     QLatin1String("notmatch.title"),
+                                     QRegExp("(^Image:.*)|(^Category:.*)|(^Talk:.*)|(^Template:.*)|(^Wikipedia:.*)|(^Special:.*)"),
+                                     QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
+    }
+
+    if (createUrlList) {
+        *handlers << new ExtractArticleUrl("urls.fetch");
+    }
 
     // Some example runs... take a look
     //*handlers << new CreateText(QString());
