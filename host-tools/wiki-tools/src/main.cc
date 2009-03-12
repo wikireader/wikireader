@@ -39,7 +39,7 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int, char**)
     //                              QLatin1String("indexfile.index"), 
     //                              QLatin1String("notmatch.title"), 
     //                              QRegExp("(^Image:.*)|(^Category:.*)|(^Talk:.*)|(^Template:.*)|(^Wikipedia:.*)|(^Special:.*)") ,
-    //                              QRegExp("[0-9A-Za-z\\s\\.]*") );
+    //                              QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
 
     //*handlers << new ExtractArticleUrl("urls.fetch");
 
