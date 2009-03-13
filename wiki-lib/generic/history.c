@@ -36,10 +36,53 @@ struct history_item {
 static struct history_item history_items[100];
 static unsigned int current_start = 0;
 static unsigned int used_items = 0;
+static int history_current = -1;
+
+// Copy and pasted form search.c.... Find something better but I don't
+// want to use structs to have these variable..
+static void invert_selection(int old_pos, int new_pos)
+{
+	int start = RESULT_START - RESULT_HEIGHT + 2;
+
+	guilib_fb_lock();
+
+	if (old_pos != -1) {
+		guilib_invert(start + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	}
+
+	if (new_pos != -1 ) {
+		guilib_invert(start + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	}
+
+	guilib_fb_unlock();
+}
+
+void history_select_down(void)
+{
+	/* bottom reached, not wrapping around */
+	if (history_current + 1 == (int) used_items)
+		return;
+
+	invert_selection(history_current, history_current + 1);
+	++history_current;
+}
+
+void history_select_up(void)
+{
+	/* top reached, not wrapping around */
+	if (history_current <= 0)
+		return;
+
+	invert_selection(history_current, history_current - 1);
+	--history_current;
+}
+
 
 void history_display(void)
 {
 	unsigned int i;
+	history_current = -1;
+
 
 	guilib_fb_lock();
 
@@ -64,17 +107,12 @@ void history_reset(void)
 	current_start = 0;
 }
 
-void history_select_down(void)
-{
-}
-
-void history_select_up(void)
-{
-}
-
 const char *history_current_target(void)
 {
-	return NULL;
+	if (history_current < 0)
+		return NULL;
+
+	return &history_items[current_start + history_current].target[0];
 }
 
 void history_add(const char *title, const char *target)
