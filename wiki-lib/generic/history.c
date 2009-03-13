@@ -24,7 +24,7 @@
 #include <stdlib.h>
 
 
-#define RESULT_START 20
+#define RESULT_START 28
 #define RESULT_HEIGHT 10
 #define NUMBER_OF_RESULTS 19
 
@@ -40,7 +40,6 @@ static unsigned int used_items = 0;
 void history_display(void)
 {
 	unsigned int i;
-	int y_pos;
 
 	guilib_fb_lock();
 
@@ -50,8 +49,9 @@ void history_display(void)
 	if (used_items == 0) {
 		render_string(0, 1, 100, "No history.", 11);
 	} else {
-		for (i = current_start; i < used_items; ++i) {
-			render_string(0, 1, y_pos, history_items[0].title, strlen(history_items[0].title));
+		int y_pos = RESULT_START;
+		for (i = current_start; i < used_items && y_pos < FRAMEBUFFER_HEIGHT; ++i) {
+			render_string(0, 1, y_pos, history_items[i].title, strlen(history_items[i].title));
 			y_pos += RESULT_HEIGHT;
 		}
 	}
