@@ -30,7 +30,7 @@ BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
 DL=./toolchain/dl
-export PATH:=$(PWD)/install/bin:\$(PATH)
+export PATH:=$(PWD)/install/bin:$(PATH)
 
 # ----- configuration data --------------------------------------
 
@@ -119,7 +119,7 @@ gcc-patch: gcc-download
 
 gcc: binutils gcc-patch
 	( cd toolchain && \
-	export PATH=$(PWD)/install/bin:\$(PATH)  && \
+	export PATH=$(PWD)/install/bin:$(PATH) && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
