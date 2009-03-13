@@ -91,7 +91,7 @@ void article_display(int page)
 	} else {
 		wl_seek(article_fd, 0);
 	}
-	print_page_buffer();
+	//print_page_buffer();
 	page_start = page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 
