@@ -222,7 +222,31 @@ const char *search_current_target(void)
 	return &search_pointers[search_current][0];
 }
 
+/*
+ * We get the title by seeking back to the start and search again
+ * and copying out the result we want. The question is if this is
+ * faster or always copying the text. For now we try this approach
+ * because the blocks should be already cached.
+ *
+ */
 const char *search_current_title(void)
 {
+	static char current_title[MAXSTR];
+	char *result = NULL;
+	int number = 0;
+
+	if (search_found < 0 || search_current >= search_found)
+		return NULL;
+
+	reset_state(&global_search, &state, &last_first_hit);
+	while (number < NUMBER_OF_RESULTS && (result = search_fetch_result())) {
+		if (number == search_current) {
+			memcpy(&current_title[0], result, MAXSTR);
+			return &current_title[0];
+		}
+
+		++number;
+	}
+
 	return NULL;
 }
