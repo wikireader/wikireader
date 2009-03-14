@@ -75,26 +75,60 @@ DMT33E07 to get your jumpers right.  It should be set to "SD Card,
 RS232 Booting Supported".  After you're done, try again.
 
 
-** Wikipedia Dump
+** Wikipedia Index, Articles, etc.
 
-downloader the index file(pedia.idx pedia.jmp) for search from:
+The fast way: get everything from
 https://people.internal.openmoko.org/~zecke/
-or: 
-  1. get the wikipedia dump by "make getwikidump"
-  2. use wiki-tools to generate "indexfile.index"
-  3. read the "host-tools/indexing/README" to create the "pedia.idx" and "pedia.jmp" 
-copy those two file to the sd card
+
+or:
+
+*** Index
+
+ 1. get the wikipedia dump by "make getwikidump".
+
+ 2. use wiki-tools to generate "indexfile.index".
+     bzcat enwiki-latest-pages-articles.xml.bz2 | ./wiki-tools --index
+
+ 3. read the "host-tools/indexing/README" to create the "pedia.idx"
+     and "pedia.jmp".
+     ./create_index.sh ../wiki-tools/indexfile.index
+
+ 4. Put pedia.idx and pedia.jmp into sd card.
+
+
+*** Wikipedia Articles
+
+(TODO: more details required)
+
+ 1. get webkit r41057.  apply patches under
+    host-tools/rendering/patches
+
+ 2. build webkit.
+    ./WebKitTools/Scripts/build-webkit --gtk
+
+ 3. Use GtkLauncher to load host-tools/rendering/base_text.html
+    and several wikipedia articles you like.  For each article,
+    use
+    host-tools/rendering/simple_code.py
+    to generate `smplpedi.cde'.  Rename it according to the result of
+    lsearch.
+
+ 4. generate font file
+    host-tools/glyphs/mk_fontfile/gen_font_file.py
+    you can get 
+
+ 5. Put fontfile.gen along with the renamed smplpedi.cde files into
+    sd card.
 
 
 ** Boot from SD
 
 Prepare a SD card, make a FAT filesystem on it, then copy kernel:
 
-Create a vfat on the whole device
-mkfs.vfat -I /dev/YOUR_DEVICE
+ 1. Create a vfat on the whole device
+    mkfs.vfat -I /dev/YOUR_DEVICE
 
-
-cp kernel/mahatma.elf <your sd card mount point>/kernel
+ 2. cp kernel/mahatma.elf <your sd card>/kernel
 
 For example:
 
