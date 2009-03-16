@@ -7,6 +7,12 @@
 PROGRAM = testmini
 SOURCES = testmini.c minilzo.c
 
+all: enlzo delzo
+
+enlzo: enlzo.c minilzo.c
+
+delzo: delzo.c minilzo.c
+
 default:
 	@echo "Please choose one of the following targets:"
 	@echo "    gcc:   gcc"
@@ -108,6 +114,7 @@ dos32-watcomc dos32-wc:
 clean:
 	rm -f $(PROGRAM) $(PROGRAM).exe $(PROGRAM).map $(PROGRAM).tds
 	rm -f *.err *.o *.obj
+	rm -f enlzo delzo
 
 .PHONY: default clean
 
