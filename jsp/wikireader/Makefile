@@ -62,13 +62,14 @@ WIKILIB_DIR_GENERIC= $(SRCDIR)/../wiki-lib/generic
 WIKILIB_DIR_SPECIFIC= $(SRCDIR)/../wiki-lib/specific
 FATLIB_DIR= $(SRCDIR)/../fatfs/src
 INDEX_DIR=$(SRCDIR)/../host-tools/indexing/locate
+MINILZO_DIR=$(SRCDIR)/../minilzo
 
 ### 2. If there are source files and so on in other directory, add Definitions
 STASK_DIR= $(SRCDIR)/systask
 UTASK_DIR= $(SRCDIR)/library
 vpath %.c  $(CPU_DIR):$(SYS_DIR):$(KER_DIR):$(STASK_DIR):$(UTASK_DIR):\
 	$(GUILIB_DIR):$(WIKILIB_DIR_GENERIC):$(WIKILIB_DIR_SPECIFIC):\
-	$(FATLIB_DIR):$(INDEX_DIR)
+	$(FATLIB_DIR):$(INDEX_DIR):$(MINILZO_DIR)
 
 # Include CPU / target dependence definitions.
 # following definitions are used later section.
@@ -89,13 +90,15 @@ DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io-general.o time-toppers.o wikilib.o \
-		malloc-simple.o article.o search.o history.o
+		malloc-simple.o article.o search.o history.o compress.o
 FATLIB_COBJS= tff.o mmc.o cache.o
 SEARCH_COBJS= lsearcher.o fast_search.o
+MINILZO_COBJS= minilzo.o
 
 ALL_COBJS=   $(START_OBJS) $(APPLI_COBJS) $(STASK_COBJS) $(UTASK_COBJS) \
 	     $(DBG_COBJS) $(DBG_ASMOBJS) $(KERNEL_COBJS) $(WIKILIB_COBJS) \
-	     $(GUILIB_COBJS) $(FATLIB_COBJS) $(SEARCH_COBJS) $(KERNEL_LCOBJS)
+	     $(GUILIB_COBJS) $(FATLIB_COBJS) $(SEARCH_COBJS) $(KERNEL_LCOBJS) \
+	     $(MINILZO_COBJS)
 
 OBJLDS= 
 
@@ -112,7 +115,8 @@ INCLUDES:= $(INCLUDES) -I. -I$(INC_DIR) 	\
 	-I$(SRCDIR)/../gui-lib			\
 	-I$(SRCDIR)/../wiki-lib/include		\
 	-I$(SRCDIR)/../common			\
-	-I$(SRCDIR)/../host-tools/indexing/locate
+	-I$(SRCDIR)/../host-tools/indexing/locate \
+	-I$(SRCDIR)/../minilzo
 CDEFS:= $(CDEFS) -DTPS_ENA_LOGGING
 CFLAGS=  $(COPTS) $(CDEFS) $(INCLUDES)
 #ASFLAGS= -B$(TOPDIR)/ -c -xassembler-with-cpp -Wa,--gstabs -mc33pe
