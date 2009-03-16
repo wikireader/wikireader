@@ -22,6 +22,7 @@
 #include <file-io.h>
 #include <malloc.h>
 #include <wl-endian.h>
+#include <compress.h>
 
 /* gui-lib includes */
 #include "glyph.h"
@@ -112,25 +113,14 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 
 int read_font_file(const char *filename)
 {
-	int r;
-	int fd = wl_open(filename, WL_O_RDONLY);
+	void *buf;
 
-	if (fd < 0)
-		return fd;
-
-	/* read the whole file */
-	if (wl_fsize(fd, &file_size) < 0)
+	buf = decompress(filename, &file_size);
+	if (!buf)
 		return -1;
 
-	file_buf = malloc(file_size);
-	if (!file_buf)
-		return -1;
+	file_buf = buf;
 
-	r = wl_read(fd, file_buf, file_size);
-	if (r < 0 || (unsigned int) r != file_size)
-		return r;
-
-	wl_close(fd);
 	n_fonts = *(unsigned int *) file_buf;
 
 	msg(MSG_INFO, "font file has %d fonts in %d bytes, buf %p\n", n_fonts, file_size, file_buf);

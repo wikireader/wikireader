@@ -1997,7 +1997,7 @@ LZO_COMPILE_TIME_ASSERT_HEADER(sizeof(lzo_uintptr_t) >= sizeof(lzo_voidp))
 #  if !defined(LZO_DEBUG)
 #    define NDEBUG 1
 #  endif
-#  include <assert.h>
+#  define assert(e) ((void)0)
 #endif
 
 #if 0 && defined(__BOUNDS_CHECKING_ON)

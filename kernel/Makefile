@@ -22,6 +22,7 @@ LIBDIR=$(PWD)/../toolchain/mini-libc
 FATFSDIR=$(PWD)/../fatfs
 INDEX_DIR=$(PWD)/../host-tools/indexing/locate
 COMMON=$(PWD)/../common
+MINILZODIR=$(PWD)/../minilzo
 
 INCLUDES=				\
 	-I$(FATFSDIR)/src		\
@@ -30,7 +31,8 @@ INCLUDES=				\
 	-I$(WIKILIBDIR)/include/	\
 	-I$(GUILIBDIR)/			\
 	-I../common/                    \
-	-I$(INDEX_DIR)
+	-I$(INDEX_DIR)                  \
+	-I$(MINILZODIR)/
 
 LIBS=					\
 	$(FATFSDIR)/lib/libtinyfat.a	\
@@ -39,17 +41,24 @@ LIBS=					\
 
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= file-io-general.o file-io-libfat.o \
-                wikilib.o malloc-simple.o hexdump.o
+                wikilib.o malloc-simple.o hexdump.o \
+                compress.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
 WIKILIB_COBJS += article.o history.o
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON)
+
+# minilzo
+MINILZO_COBJS = minilzo.o
+
+vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
-	gpio.o serial.o traps.o input.o lcd.o $(GUILIB_COBJS) $(WIKILIB_COBJS)
+	gpio.o serial.o traps.o input.o lcd.o \
+	$(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
+
 TARGETS=mahatma.elf
 .PHONY:	all
 all: $(TARGETS)
