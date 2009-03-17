@@ -6,7 +6,7 @@ board (EVB).
 ** Get toolchain
 
 wget http://wikipediardware.googlecode.com/svn/trunk/Makefile
-make toolchain
+make gcc
 export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
 
 ** Modify config.h
