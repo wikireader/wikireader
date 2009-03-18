@@ -140,6 +140,13 @@ simulator-console:
 .PHONY: getwikidump
 getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+	
+.PHONY: webkit
+webkit:
+        svn co -r 41057 http://svn.webkit.org/repository/webkit/trunk webkit
+	(cd webkit && \
+	patch_path="../host-tools/rendering/patches/"; for file in `ls $$patch_path`; do echo "processing file: $$file"; patch -p1 < $$patch_path/$$file; done && \
+	./WebKitTools/Scripts/build-webkit --gtk --release)
 
 .PHONY: flash-bootloader
 flash-bootloader: bootloader

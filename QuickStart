@@ -114,11 +114,11 @@ to retrieve names / sizes / styles of the glyphs that need to be extracted
 and also remove the HTML markup.
 The extracted glyphs are packed into one file called 'fontfile.gen'.
 
- 1. get webkit r41057.  apply patches under
-    host-tools/rendering/patches
+ 1. You need to install libicu, gperf and sqlite:
+    apt-get install libicu-dev gperf libsqlite3-dev
 
- 2. build webkit.
-    ./WebKitTools/Scripts/build-webkit --gtk
+ 2. Run "make webkit" to checkout webkit revision 41057, apply the patches under
+    host-tools/rendering/patches and build webkit.
 
  3. Use GtkLauncher to load host-tools/rendering/base_text.html
     and several wikipedia articles you like.  For each article,
