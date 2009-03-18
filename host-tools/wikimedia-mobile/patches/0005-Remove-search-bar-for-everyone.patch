@@ -1,0 +1,28 @@
+From 48920a49965179de31e15d8315873bdfa329416e Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Wed, 18 Mar 2009 19:03:32 +0800
+Subject: [PATCH] Remove search bar for everyone..
+
+---
+ app/views/layout/application.html.haml |    5 -----
+ 1 files changed, 0 insertions(+), 5 deletions(-)
+
+diff --git a/app/views/layout/application.html.haml b/app/views/layout/application.html.haml
+index 3d4592b..6662454 100644
+--- a/app/views/layout/application.html.haml
++++ b/app/views/layout/application.html.haml
+@@ -11,11 +11,6 @@
+     = partial "layout/javascript" if request.device.supports_javascript
+   %body
+     #content_wrapper
+-      - if request.device.search_bar
+-        #header
+-          %a{:href => @main_page ? "/wiki/::Random" : "/wiki/::Home"}
+-            %img{:src => "/images/w.gif", :id => "logo"}/
+-          = search_bar
+       = catch_content :for_layout
+     #footer
+       = language_object["copyright"]
+-- 
+1.5.6.3
+

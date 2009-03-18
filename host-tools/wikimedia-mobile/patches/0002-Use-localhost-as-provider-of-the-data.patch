@@ -1,0 +1,48 @@
+From 729ec5ef5339e31d2d82069ac37ea654c0561e49 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Wed, 18 Mar 2009 17:50:10 +0800
+Subject: [PATCH] Use localhost as provider of the data...
+
+---
+ app/models/article.rb |    2 +-
+ app/models/server.rb  |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/app/models/article.rb b/app/models/article.rb
+index f451d9e..0cd72bc 100644
+--- a/app/models/article.rb
++++ b/app/models/article.rb
+@@ -51,7 +51,7 @@ class Article < Wikipedia::Resource
+ 
+   def fetch!(*paths)
+     if !paths.any?
+-      paths = (@paths ||= ["/wiki/#{escaped_title}", "/wiki/Special:Search?search=#{uri_escaped_title}"])
++      paths = (@paths ||= ["/mediawiki/index.php/#{escaped_title}", "/mediawiki/Special:Search?search=#{uri_escaped_title}"])
+     end
+     super(*paths)
+   end
+diff --git a/app/models/server.rb b/app/models/server.rb
+index 97c09f5..ec970af 100644
+--- a/app/models/server.rb
++++ b/app/models/server.rb
+@@ -10,7 +10,7 @@ class Server
+   # Whenever you create a new article
+   # you need to give it a host and a port
+   def initialize(language_code = "en", opts = {})
+-    @host = opts.fetch(:host, "#{language_code}.wikipedia.org")
++    @host = opts.fetch(:host, "127.0.0.1")
+     @port = opts.fetch(:port, "80")
+   end
+   
+@@ -24,7 +24,7 @@ class Server
+   end
+   
+   def file(title)
+-    Article.new(self, "File:" + title, "/wiki/File:#{title}")
++    Article.new(self, "File:" + title, "/mediawiki/index.php/File:#{title}")
+   end
+   
+   # In the future, this method might use a cache...
+-- 
+1.5.6.3
+

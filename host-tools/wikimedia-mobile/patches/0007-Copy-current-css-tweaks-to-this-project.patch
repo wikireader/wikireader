@@ -1,0 +1,44 @@
+From 5be27fc83b9831392b19f48f6ab17de8b7155f85 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Wed, 18 Mar 2009 19:23:18 +0800
+Subject: [PATCH] Copy current css tweaks to this project
+
+---
+ public/stylesheets/application.css |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+
+diff --git a/public/stylesheets/application.css b/public/stylesheets/application.css
+index 891bd67..090f34a 100644
+--- a/public/stylesheets/application.css
++++ b/public/stylesheets/application.css
+@@ -199,6 +199,27 @@ table.admin {
+ .floatright {
+   float: right; }
+ 
++
++table.infobox.geography {
++    display: table;
++    float: none;
++    clear: none;
++    width: 100%;
++}
++img,
++table.infobox,
++table.sisterproject,
++table.navbox,
++th.navbox-title,
++div.catlinks,
++div.printfooter,
++div.thumb,
++div.portal,
++div.noprint,
++div.nounderlines,
++div.infobox,
++div.medialist,
++div.listenlist,
+ span.flagicon {
+   display: none;
+ }
+-- 
+1.5.6.3
+

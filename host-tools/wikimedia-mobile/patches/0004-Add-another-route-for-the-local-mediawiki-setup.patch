@@ -1,0 +1,31 @@
+From 4e021454abd7bd912b36c159e4c3c9c52d1af6e4 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Wed, 18 Mar 2009 19:01:36 +0800
+Subject: [PATCH] Add another route for the local mediawiki setup...
+
+---
+ config/router.rb |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/config/router.rb b/config/router.rb
+index 12a1af2..e6423e1 100644
+--- a/config/router.rb
++++ b/config/router.rb
+@@ -35,6 +35,7 @@ Merb::Router.prepare do
+     match(/\/wiki\/::Home/).to(:action => "home")
+     match(/\/wiki\/::Random/).to(:action => "random")
+     match(/\/wiki[\/]?(.*)/).to(:action => "show", :title => "[1]")
++    match(/\/mediawiki\/index.php[\/]?(.*)/).to(:action => "show", :title => "[1]")
+ 
+     match("/w/index.php").to(:controller => "articles", :action => "show")
+   end
+@@ -42,4 +43,4 @@ Merb::Router.prepare do
+   # Disable this in production
+   #match("/statistics/:action").to(:controller => "statistics")
+ 
+-end
+\ No newline at end of file
++end
+-- 
+1.5.6.3
+

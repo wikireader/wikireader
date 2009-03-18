@@ -1,0 +1,12 @@
+We are using http://github.com/hcatlin/wikimedia-mobile/tree with some
+additional patches on top of that.
+
+The wikimedia-mobile is a merb based ruby application. It gets the
+original article from the original server, is providing another CSS
+and is patching the html a bit.
+
+
+Our patches are for:
+	- Getting stuff from localhost
+	- Ignoring the language
+	- Tweaking CSS to show less..
