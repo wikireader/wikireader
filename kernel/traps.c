@@ -34,22 +34,6 @@
 	asm("popn %r13");			\
 	asm("popn %r12");
 
-/* the following two macros assume that only
- * %r4, %r5 and %r6 are modified in the function(s)
- * enclosed by them. Change appropriately if needed.
- * Check the assembler output of your functions.
- */
-
-#define SAVE_REGS()		\
-	asm("pushn %r4");	\
-	asm("pushn %r5");	\
-	asm("pushn %r6");
-
-#define RESTORE_REGS()		\
-	asm("popn %r6");	\
-	asm("popn %r5");	\
-	asm("popn %r4");
-
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
 static void illegal_instruction(void) __attribute__((interrupt_handler));
 static void serial0_err_irq(void) __attribute__((interrupt_handler));
@@ -78,10 +62,8 @@ static void serial0_err_irq(void)
 
 static void serial0_in_irq(void)
 {
-	SAVE_REGS();
 	system_resume();
 	serial_filled_0();
-	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
 }
 
@@ -109,10 +91,8 @@ static void serial1_out_irq(void)
 
 static void kint_irq(void)
 {
-	SAVE_REGS();
 	system_resume();
 	gpio_irq();
-	RESTORE_REGS();
 	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
 }
 
