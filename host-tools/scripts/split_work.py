@@ -16,6 +16,7 @@ import os
 
 ITEMS_PER_PACKAGE = 1000
 NUMBER_OF_SLAVES = 4
+NUMBER_OF_JOBS = 6
 
 
 file = open("urls.fetch")
@@ -23,14 +24,21 @@ current_number = 0
 current_file = None
 file_no = 0
 
+last_thread = {}
+for thread in range(1, NUMBER_OF_SLAVES + 1):
+    last_thread[thread] = 0
+
 
 for line in file:
    if not current_file:
        file = "%.5d.work" % file_no
-       dir = "zecke-%d" % ((file_no % NUMBER_OF_SLAVES) + 1)
-       path = os.path.join(dir, file)
+       slave_nr = ((file_no % NUMBER_OF_SLAVES) + 1)
+       slave = "zecke-%d" % slave_nr
+       thread = "%d" % (last_thread[slave_nr] + 1)
+       path = os.path.join(slave, thread, file)
        current_file = open(path, "w")
        file_no = file_no + 1
+       last_thread[slave_nr] = (last_thread[slave_nr] + 1) % NUMBER_OF_JOBS
 
    print >> current_file, line.replace(" ", "_")[:-1] 
    current_number = current_number + 1
