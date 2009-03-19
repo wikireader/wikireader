@@ -1,0 +1,28 @@
+From 5335765d5282244c26b6769f8aad4663df4d7342 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Thu, 19 Mar 2009 15:01:07 +0800
+Subject: [PATCH] Hide more things, the things we used to hide with mediawiki
+
+---
+ public/stylesheets/application.css |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/public/stylesheets/application.css b/public/stylesheets/application.css
+index 090f34a..e78ba3e 100644
+--- a/public/stylesheets/application.css
++++ b/public/stylesheets/application.css
+@@ -210,6 +210,11 @@ img,
+ table.infobox,
+ table.sisterproject,
+ table.navbox,
++table.collapsible,
++table.gallery,
++table.ambox,
++table.wikitable,
++.error,
+ th.navbox-title,
+ div.catlinks,
+ div.printfooter,
+-- 
+1.5.6.3
+
