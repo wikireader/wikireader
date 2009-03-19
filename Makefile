@@ -154,6 +154,9 @@ flash-bootloader: bootloader
 		e07load/e07load wikireader.map )
 
 # ----- clean and help --------------------------------------
+.PHONY: complete-clean
+complete-clean: clean clean-toolchain
+
 .PHONY: clean
 clean: 
 	make clean -C bootloader
@@ -161,6 +164,9 @@ clean:
 	make clean -C fatfs
 	make clean -C kernel
 	cd jsp && make clean -C wikireader
+
+.PHONY: clean-toolchain
+clean-toolchain:
 	rm -rf toolchain/gcc-$(GCC_VERSION)
 	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
 	rm -f binutils-download binutils-patch binutils

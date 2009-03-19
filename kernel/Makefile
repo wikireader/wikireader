@@ -67,6 +67,6 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 clean::
-	rm -fr $(TARGETS) *.o *.elf *.d *.map
+	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33
 
 include ../common/Makefile

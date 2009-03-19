@@ -36,6 +36,9 @@ static int article_fd = -1;
 static int current_page = -1;
 static unsigned int current_page_offset = -1;
 
+
+#undef PRINT_PAGE_BUFFER
+#ifdef PRINT_PAGE_BUFFER
 static void print_page_buffer(void)
 {
 	unsigned int i;
@@ -46,6 +49,8 @@ static void print_page_buffer(void)
 	}
 	msg(MSG_DEBUG, "--------------------------\n");
 }
+#endif
+
 
 int article_open(const char *article)
 {
@@ -91,7 +96,9 @@ void article_display(int page)
 	} else {
 		wl_seek(article_fd, 0);
 	}
-	//print_page_buffer();
+#ifdef PRINT_PAGE_BUFFER
+	print_page_buffer();
+#endif
 	page_start = page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 

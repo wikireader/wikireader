@@ -125,7 +125,7 @@ int render_string(const int font, int start_x,
 	int x = start_x;
 
 	for (i = 0; i < text_length; ++i) {
-		struct glyph *glyph = get_glyph(font,
+		const struct glyph *glyph = get_glyph(font,
 				    char_to_glyph(string[i] & 0x7f));
 
 		/* painting and advance */

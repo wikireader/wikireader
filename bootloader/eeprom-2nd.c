@@ -27,12 +27,13 @@
 
 #define KERNEL "/KERNEL"
 
+#ifdef POWER_MANAGEMENT
 static void power_tests();
+#endif
 
 __attribute__((noreturn))
 int main(void)
 {
-	int i;
 	init_pins();
 	init_rs232();
 	init_ram();

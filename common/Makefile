@@ -21,10 +21,18 @@ LD=$(CROSS)ld
 HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
-CFLAGS=-Wall -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+CFLAGS=-Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+
+# protection in case some Makefile includes this too early
+.PHONY: this-is-included-too-early
+this-is-included-too-early:
+	@echo This is common/Makefile reporting an error
+	@echo move the '"include"' to the bottom of the Makefile.
+	@echo Otherwise the dependencies are not built in the correct order
+	@exit 1
 
 .c.o: $<
 	$(GCC) -M $(CFLAGS) $< > $(notdir $(<:.c=.d))
-	$(GCC) $(CFLAGS) -c $< -o $(notdir $(<:.c=.o))
+	$(GCC) $(CFLAGS) -c $< -o $(notdir $(<:.c=.o)) -Wa,-ahl=$(notdir $(<:.c=.asm33))
 
 -include $(wildcard *.d) dummy

@@ -27,6 +27,7 @@
 #include "serial.h"
 #include "traps.h"
 #include "suspend.h"
+#include "gui.h"
 #include "msg.h"
 #include "touchscreen.h"
 #include "regs.h"

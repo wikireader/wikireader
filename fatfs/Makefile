@@ -1,5 +1,3 @@
-include ../common/Makefile
-
 INCLUDES=-I../toolchain/mini-libc/include -I../common 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
@@ -16,5 +14,7 @@ lib/libtinyfat.a: tff.o mmc.o
 	$(AR) r $@ $^
 
 clean:
-	$(RM) *.[do]
+	$(RM) *.[do] *.asm33
 	$(RM) lib/*.a
+
+include ../common/Makefile
