@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MSG_OUTPUT_H
-#define MSG_OUTPUT_H
+#include <wikilib.h>
 
-void msg_init(void);
-void msg(int level, const char *fmt, ...);
+#include "misc.h"
 
-#endif /* MSG_OUTPUT_H */
+
+void delay(u32 nops)
+{
+    while (nops--)
+    {
+        asm volatile("nop");
+    }
+}

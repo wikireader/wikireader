@@ -16,16 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef _TYPES_H_
+#define _TYPES_H_
 
-typedef unsigned char	u8;
-typedef unsigned short	u16;
-typedef unsigned int	u32;
+// this is a hack for lcd.c which is shared with the boot loader
+#include <wikilib.h>
 
-typedef signed char	s8;
-typedef signed short	s16;
-typedef signed int	s32;
-
-#endif /* TYPES_H */
-
+#endif

@@ -16,12 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "types.h"
+#include "misc.h"
 #include "regs.h"
 #include "wikireader.h"
 #include "lcd.h"
-#include "types.h"
 
-extern void delay(u32);
 
 u8 spi_transmit_lcd(u8 out)
 {

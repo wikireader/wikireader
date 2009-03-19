@@ -54,9 +54,10 @@ MINILZO_COBJS = minilzo.o
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
+##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
 
 OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
-	gpio.o serial.o traps.o input.o lcd.o \
+	gpio.o serial.o traps.o input.o lcd.o misc.o \
 	$(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
 
 TARGETS=mahatma.elf

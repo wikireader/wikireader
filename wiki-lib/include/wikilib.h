@@ -1,6 +1,12 @@
 #ifndef WIKILIB_H
 #define WIKILIB_H
 
+#ifndef __cplusplus
+// for size_t / ssize_t
+#include <stddef.h>
+#include <stdbool.h>
+#endif
+
 #ifndef NULL
 #define NULL 0
 #endif
@@ -14,7 +20,7 @@
 #endif
 
 #ifndef ARRAY_SIZE
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+#define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))
 #endif
 
 typedef unsigned char u8;

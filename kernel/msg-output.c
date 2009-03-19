@@ -20,117 +20,101 @@
 #include <stdarg.h>
 #include <string.h>
 #include <regs.h>
-
+#include <wikilib.h>
 #include <input.h>
-#include "types.h"
+
 #include "msg.h"
 #include "irq.h"
 #include "serial.h"
 
-#define MAX_MSGS	100
-#define MSG_LEN		100
+typedef char message_line_type[80];
 
-struct message {
-	int level;
-	char text[MSG_LEN];
-};
+static serial_buffer_type messages[50];
+static message_line_type lines[ARRAY_SIZE(messages)];
 
-static struct message messages[MAX_MSGS];
-static unsigned int current_msg_read = 0;
-static unsigned int current_msg_write = 0;
-static int lost_messages = 0;
-static unsigned int output_newline = 0;
-/* output everything by default */
+static serial_buffer_type *free_list;
+
+static uint32_t lost_messages = 0;
+
+serial_callback_type free_buffer;
+
+// output everything by default
 static int loglevel = MSG_LEVEL_MAX;
 
-#define RING_SPACE() \
-	((current_msg_read + current_msg_write + 1) % MAX_MSGS)
 
-int msg_output_pending (void)
+void msg_init(void)
 {
-	return (current_msg_read != current_msg_write);
+  static bool initialised = false;
+  if (!initialised)
+  {
+    size_t i = 0;
+    free_list = NULL;
+
+    // create linked list of free buffers
+    for (i = 0; i < ARRAY_SIZE(messages); ++i)  \
+    {
+      messages[i].text = lines[i];
+      messages[i].size = sizeof(lines[i]);
+      messages[i].callback = free_buffer;
+      messages[i].link = free_list;
+      free_list = &messages[i];
+    }
+
+    serial_init();
+
+    initialised = true;
+  }
 }
 
-int get_msg_char (char *c)
+
+void msg(int level, const char *fmt, ...)
 {
-	static int current_char = 0;
+  serial_buffer_type *m;
+  va_list va;
 
-	if (output_newline) {
-		*c = '\r';
-		output_newline = 0;
-		return 1;
-	}
+  if (level > loglevel)
+  {
+    return;
+  }
 
-	while (1) {
-		struct message *m;
+  if (NULL == free_list)
+  {
+    lost_messages++;
+    return;
+  }
 
-		if (current_msg_read == current_msg_write)
-			return 0;
+  va_start(va, fmt);
 
-		m = messages + current_msg_read;
-		*c = m->text[current_char];
+  {
+    // critcal code, since free is called from interrupt state
+    DISABLE_IRQ();
+    m = free_list;
+    free_list = free_list->link;
+    ENABLE_IRQ();
+  }
 
-		if (*c == '\0') {
-			current_msg_read++;
-			current_msg_read %= MAX_MSGS;
-			current_char = 0;
-			continue;
-		}
+  //m->level = level;
+  vsnprintf(m->text, m->size, fmt, va);
 
-		if (*c == '\n')
-			output_newline = 1;
+  va_end(va);
 
-		current_char++;
-		break;
-	}
-
-	if (lost_messages && (RING_SPACE() > 0)) {
-		msg(MSG_WARNING, "%d messages lost.\n", lost_messages);
-		lost_messages = 0;
-	}
-
-	return 1;
+  serial_put(m);
 }
 
-void msg (int level, const char *fmt, ...)
+
+// this is called at interrupt state, keep it short
+void free_buffer(serial_buffer_type *buffer)
 {
-	struct message *m;
-	va_list va;
-
-	if (level > loglevel)
-		return;
-
-	DISABLE_IRQ();
-	
-	/* is the read pointer one position ahead? */
-	if (RING_SPACE() < 1) {
-		lost_messages++;
-		ENABLE_IRQ();
-		return;
-	}
-
-	va_start(va, fmt);
-	m = messages + current_msg_write;
-	m->level = level;
-	memset(m->text, 0, MSG_LEN);
-	vsnprintf(m->text, MSG_LEN - 1, fmt, va);
-	current_msg_write++;
-	current_msg_write %= MAX_MSGS;
-	va_end(va);
-
-	if (!serial_transfer_running(0)) {
-		char c;
-		if (get_msg_char(&c))
-			serial_out(0, c);
-	}
-
-	ENABLE_IRQ();
+  buffer->link = free_list;
+  free_list = buffer;
 }
+
 
 void set_loglevel (int level)
 {
-	if (level < MSG_ERROR || level > MSG_LEVEL_MAX)
-		return;
-
-	loglevel = level;
+  if (level < MSG_ERROR || level > MSG_LEVEL_MAX)
+  {
+    return;
+  }
+  loglevel = level;
 }

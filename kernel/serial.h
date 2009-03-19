@@ -20,8 +20,25 @@
 #define SERIAL_H
 
 void serial_init(void);
-int serial_transfer_running(int port);
+
+typedef struct serial_buffer_struct serial_buffer_type;
+
+typedef void serial_callback_type(serial_buffer_type *buffer);
+
+struct serial_buffer_struct
+{
+  char *text;
+  size_t size;
+  serial_buffer_type *link;
+  serial_callback_type *callback;
+};
+
+void serial_put(serial_buffer_type *buffer);
+
+bool serial_output_pending(void);
+
 void serial_out(int port, char c);
+
 int serial_get_event(struct wl_input_event *ev);
 
 void serial_filled_0(void);

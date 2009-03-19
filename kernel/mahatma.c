@@ -24,6 +24,7 @@
 #include <tff.h>
 
 /* local includes */
+#include "msg-output.h"
 #include "serial.h"
 #include "traps.h"
 #include "suspend.h"
@@ -32,10 +33,14 @@
 #include "touchscreen.h"
 #include "regs.h"
 #include "gpio.h"
+#include "gui.h"
 
 #define VERSION "0.1"
 
 static FATFS fatfs;
+//static unsigned int x = 0;
+//static unsigned int y = 1234;
+
 
 int main(void)
 {
@@ -47,21 +52,32 @@ int main(void)
 	/* machine-specific init */
 	gpio_init();
 	traps_init();
-	serial_init();
+	msg_init();
+
+        msg(MSG_INFO, "ready to begin...\n");
+
 	fb_init();
+        msg(MSG_INFO, "fb_init done\n");
 
 	/* generic init */
 	if (f_mount(0, &fatfs) != FR_OK)
 		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
 
+        msg(MSG_INFO, "f_mount done\n");
+ 
 	malloc_init();
+        msg(MSG_INFO, "malloc_init done\n");
+
 	wikilib_init();
+        msg(MSG_INFO, "wikilib_init done\n");
+
 	guilib_init();
+        msg(MSG_INFO, "guilib_init done\n");
 
 	REG_P1_IOC1 = 0x08;
 	REG_P1_P1D = 0x08;
 
-	msg(MSG_INFO, "Mahatma super slim kernel v%s booting.\n", VERSION);
+	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
 	
 	REG_CMU_PROTECT = 0x96;
 
@@ -77,10 +93,3 @@ DWORD get_fattime(void)
 	/* FIXME: fill this function */
 	return 0;
 }
-
-void delay(u32 nops)
-{
-    while (nops--)
-        asm("nop");
-}
-

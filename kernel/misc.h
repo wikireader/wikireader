@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MSG_OUTPUT_H
-#define MSG_OUTPUT_H
+#ifndef _MISC_H_
+#define _MISC_H_
 
-void msg_init(void);
-void msg(int level, const char *fmt, ...);
+void delay(u32 nops);
 
-#endif /* MSG_OUTPUT_H */
+#endif

@@ -145,7 +145,9 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 
 void guilib_init(void)
 {
+	msg(MSG_INFO, "guilib_init:: clear\n");
 	guilib_clear();
+	msg(MSG_INFO, "guilib_init:: font file %s\n", FONTFILE);
 
 	/* just some tests ... */
 	if (read_font_file(FONTFILE) != 0) {

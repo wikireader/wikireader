@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <wikilib.h>
 #include <input.h>
 
 #include "regs.h"
@@ -25,6 +26,14 @@
 #include "irq.h"
 #include "gpio.h"
 
+#if 0
+#define CLEAR_IRQ(reg,val) (reg) = (val)
+#elif 1
+#define CLEAR_IRQ(reg,val)			\
+	asm volatile("ld.w %%r12, %0" :: "r"((val)));	\
+	asm volatile("xld.w %%r13, %0" :: "g"(&(reg))); 	\
+	asm volatile("ld.b [%r13], %r12");
+#else
 #define CLEAR_IRQ(reg,val)			\
 	asm("pushn %r12");			\
 	asm("pushn %r13");			\
@@ -33,6 +42,8 @@
 	asm("ld.b [%r13], %r12");		\
 	asm("popn %r13");			\
 	asm("popn %r12");
+#endif
+
 
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
 static void illegal_instruction(void) __attribute__((interrupt_handler));
@@ -52,7 +63,7 @@ static void undef_irq_handler(void)
 
 static void illegal_instruction(void)
 {
-	serial_out(0, '?');
+  //serial_out(0, '?');
 }
 
 static void serial0_err_irq(void)
@@ -71,7 +82,6 @@ static void serial0_out_irq(void)
 {
 	system_resume();
 	serial_drained_0();
-	CLEAR_IRQ(REG_INT_FSIF01, 1 << 2);
 }
 
 static void serial1_err_irq(void)
@@ -98,7 +108,7 @@ static void kint_irq(void)
 
 static void unaligned_data_access(void)
 {
-	serial_out(0, '!');
+  //serial_out(0, '!');
 }
 
 #define N_TRAPS 108
@@ -225,4 +235,3 @@ void traps_init(void)
 	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
 	ENABLE_IRQ();
 }
-

@@ -15,14 +15,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "history.h"
+#include <wikilib.h>
 #include <guilib.h>
 #include <glyph.h>
 #include <lsearcher.h>
-#include <wikilib.h>
 
 #include <stdlib.h>
 
+#include "history.h"
 
 #define RESULT_START 28
 #define RESULT_HEIGHT 10
