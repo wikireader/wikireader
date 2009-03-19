@@ -49,6 +49,10 @@ static void print_page_buffer(void)
 	}
 	msg(MSG_DEBUG, "--------------------------\n");
 }
+#else
+static inline void print_page_buffer(void)
+{
+}
 #endif
 
 
@@ -96,9 +100,8 @@ void article_display(int page)
 	} else {
 		wl_seek(article_fd, 0);
 	}
-#ifdef PRINT_PAGE_BUFFER
 	print_page_buffer();
-#endif
+
 	page_start = page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 
