@@ -112,7 +112,10 @@ In order to generate the wiki fonts file and the wiki database it is
 necessary to download & run webkit. Webkit will parse the wikipedia database
 to retrieve names / sizes / styles of the glyphs that need to be extracted
 and also remove the HTML markup.
+
 The extracted glyphs are packed into one file called 'fontfile.gen'.
+This file must be compressed by "enlzo" later to improve the loading
+time.
 
  1. You need to install libicu, gperf and sqlite:
     apt-get install libicu-dev gperf libsqlite3-dev
@@ -127,9 +130,13 @@ The extracted glyphs are packed into one file called 'fontfile.gen'.
     to generate `smplpedi.cde'.  Rename it according to the result of
     lsearch.
 
- 4. generate font file
+ 4. Generate font file
     host-tools/glyphs/mk_fontfile/gen_font_file.py
-    you can get 
+    you can get fontfile.gen
+
+ 5. Read minilzo/README.  Build enlzo.
+    enlzo fontfile.gen > fontfile.lzo
+    mv fontfile.new fontfile.gen
 
  5. Put fontfile.gen along with the renamed smplpedi.cde files into
     sd card.
