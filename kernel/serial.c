@@ -179,17 +179,13 @@ void serial_drained_0(void)
 
 void serial_filled_0(void)
 {
-	while (REG_EFSIF0_STATUS & 0x1) {
+	while (REG_EFSIF0_STATUS & RDBFx) {
 		u8 c = REG_EFSIF0_RXD;
 		if (c == 0)
 			continue;
 
 		console_buffer[console_write] = c;
-		console_write++;
-                if (console_write >= sizeof(console_buffer))
-                {
-                  console_write  = 0;
-                }
+		BUFFER_NEXT(console_write, console_buffer);
 	}
 }
 
@@ -205,7 +201,7 @@ void serial_out(int port, char c)
 
 int serial_get_event(struct wl_input_event *ev)
 {
-	if (console_read == console_write)
+	if (BUFFER_EMPTY(console_write, console_read, console_buffer))
 		return 0;
 
 //	msg(MSG_INFO, " OUT. %d %d    %p %p\n", console_read, console_write,
@@ -214,7 +210,7 @@ int serial_get_event(struct wl_input_event *ev)
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 	ev->key_event.keycode = console_buffer[console_read];
 	ev->key_event.value = 1;
-	console_read = (console_read + 1) % ARRAY_SIZE(console_buffer);
+	BUFFER_NEXT(console_read, console_buffer);
 
 	/* Override for scrolling... */
 	if (ev->key_event.keycode == KEY_PLUS) {
