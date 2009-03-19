@@ -23,8 +23,6 @@
 
 void delay(u32 nops)
 {
-    while (nops--)
-    {
-        asm volatile("nop");
-    }
+	while (nops--)
+		asm volatile ("nop");
 }
