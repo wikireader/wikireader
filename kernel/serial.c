@@ -58,6 +58,15 @@ volatile bool linefeed;
 #define FSRX0  (1 << 1)
 #define FSERR0 (1 << 0)
 
+// Bits for: REG_EFSIFx_STATUS
+#define RXDxNUM1 (1 << 7)
+#define RXDxNUM0 (1 << 6)
+#define TENDx    (1 << 5)
+#define FERx     (1 << 4)
+#define PERx     (1 << 3)
+#define OERx     (1 << 2)
+#define TDBEx    (1 << 1)
+#define RDBFx    (1 << 0)
 
 void serial_init(void)
 {
@@ -83,7 +92,7 @@ void serial_init(void)
 
 bool serial_output_pending(void)
 {
-  return(sending);
+  return sending || (0 != (REG_EFSIF0_STATUS & TENDx));
 }
 
 
@@ -167,18 +176,6 @@ void serial_drained_0(void)
   }
 }
 
-
-int serial_transfer_running(int port)
-{
-	switch (port) {
-	case 0:
-		return (REG_EFSIF0_STATUS >> 5) & 1;
-	case 1:
-		return (REG_EFSIF1_STATUS >> 5) & 1;
-	default:
-		return 0;
-	}
-}
 
 void serial_filled_0(void)
 {
