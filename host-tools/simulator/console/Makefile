@@ -11,7 +11,7 @@ CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-general.o file-io-posix.o wikilib.o time-posix.o	\
 	fontfile.o search.o lsearcher.o fast_search.o article.o history.o compress.o \
-	minilzo.o 
+	minilzo.o keyboard.o
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR) \
 	  $(INDEX_DIR) $(MINILZO_DIR)

@@ -83,14 +83,14 @@ include $(SRCDIR)/kernel/Makefile.kernel
 ### 3. Regist object files of user program and necessary libraries.
 KERNEL_COBJS:= $(KERNEL_COBJS) startup.o banner.o 
 
-APPLI_COBJS= kernel_cfg.o sample1.o keyboard.o gui.o input.o 
+APPLI_COBJS= kernel_cfg.o sample1.o keyboard_hw.o gui.o input.o 
 STASK_COBJS= logtask.o serial.o timer.o
 UTASK_COBJS= log_output.o strerror.o t_perror.o vasyslog.o
 DBG_COBJS=   dbg_mon.o
 DBG_ASMOBJS= dbg_mon_sub.o
 GUILIB_COBJS= guilib.o glyph.o fontfile.o
 WIKILIB_COBJS= msg-toppers.o file-io-libfat.o file-io-general.o time-toppers.o wikilib.o \
-		malloc-simple.o article.o search.o history.o compress.o
+		malloc-simple.o article.o search.o history.o compress.o keyboard.o
 FATLIB_COBJS= tff.o mmc.o cache.o
 SEARCH_COBJS= lsearcher.o fast_search.o
 MINILZO_COBJS= minilzo.o

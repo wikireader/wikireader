@@ -12,6 +12,7 @@ SOURCES += $$TOPLEVEL/wiki-lib/generic/file-io-general.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/search.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/hexdump.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/keyboard.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/fast_search.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lsearcher.c
 SOURCES += $$TOPLEVEL/minilzo/minilzo.c

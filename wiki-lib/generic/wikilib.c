@@ -23,6 +23,7 @@
 #include <glyph.h>
 #include <fontfile.h>
 #include <history.h>
+#include <keyboard.h>
 #include <input.h>
 #include <msg.h>
 #include <malloc.h>
@@ -76,6 +77,7 @@ static void handle_cursor(struct wl_input_event *ev, int display_mode)
 /* FIXME: implement toggling of the keyboard */
 static void toggle_soft_keyboard(void)
 {
+	keyboard_set_visible(keyboard_is_visible());
 }
 
 static void print_intro()
