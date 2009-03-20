@@ -9,7 +9,7 @@ OBJCOPY_FLAGS=-I elf32-c33 -O binary
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
 VPATH=$(COMMON)
 
-ifeq ($(BOOTFROM),232)
+ifeq ($(MAKECMDGOALS),bootloader232)
 EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_RS232
 else
 EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_EEPROM
@@ -19,7 +19,11 @@ ifneq ($(MAKECMDGOALS),flash)
 $(shell [ -f last_bootfrom ] && [ -z "`grep '\$(EXTRA_CFLAGS)' last_bootfrom`" ] && rm last_bootfrom)
 endif
 
-all: $(TARGETS)
+
+bootloader:$(TARGETS)
+
+bootloader232:bootloader
+
 
 #### e07load
 e07load/e07load::

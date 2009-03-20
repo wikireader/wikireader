@@ -48,7 +48,7 @@ bootloader:mini-libc fatfs
 
 .PHONY: bootloader232
 bootloader232:mini-libc fatfs
-	$(MAKE) -C bootloader BOOTFROM=232
+	$(MAKE) -C bootloader bootloader232
 
 .PHONY: toppers
 toppers: mini-libc fatfs
