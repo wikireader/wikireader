@@ -8,3 +8,4 @@
 moc_*
 *.dSYM
 *.d
+*.asm33
