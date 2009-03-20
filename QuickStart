@@ -20,11 +20,6 @@ index 599831f..d0ea6a5 100644
  #ifndef CONFIG_H
  #define CONFIG_H
 
--//#define EEPROM1ST_LOAD_FROM_EEPROM 1
--#define EEPROM1ST_LOAD_FROM_RS232 1
-+#define EEPROM1ST_LOAD_FROM_EEPROM 1
-+//#define EEPROM1ST_LOAD_FROM_RS232 1
-
 -//#define BOARD_S1C33E07 1
 +#define BOARD_S1C33E07 1
  //#define BOARD_PRT33L17LCD 1
@@ -35,26 +30,22 @@ index 599831f..d0ea6a5 100644
  //#define POWER_MANAGEMENT 1
 
 
-** Make
+** Build the bootloader
 
-/**
- * - gfxtool inside of the bootloader has a dependency to libgd2
- * - an 'apt-get install libgd2-xpm-dev' will do
- */
+gfxtool inside of the bootloader has a dependency to libgd2,
+an 'apt-get install libgd2-xpm-dev' will do.
+
 make bootloader
 
-/**
- * - LCD_MONOCHROME is enabled per default
- */
-# enable #define LCD_MONOCHROME in config.h
-# because mahatma is 1bit by default
 
-make kernel
+To build the bootloader with the rs232 support (it expects 
+to receive the second stage bootloader via serial connection)
+run:
+
+make bootloader232
 
 
-* Run
-
-** Install bootloader
+** Install the bootloader
 
 Now you got binaries built.  To run them on the device, you have to
 get the hardware ready first.  With DMT33E07, you need to do the
@@ -64,11 +55,10 @@ following:
   2. Connect to serial port
   3. Turn on the device
 
-On host PC:
+Make sure not to have any terminal emulator running (e.g. minicom)
+before flashing the bootloader:
 
-cd bootloader
-# read README.txt
-e07load/e07load wikireader.map  # use --tty if it's not /dev/ttyUSB0
+make flash-bootloader
 
 Test it:
 
@@ -83,6 +73,14 @@ it, you're on the right track.
 If not, please refer to the Jumpers section in the User's Manual of
 DMT33E07 to get your jumpers right.  It should be set to "SD Card,
 RS232 Booting Supported".  After you're done, try again.
+
+
+** Build the kernel
+
+make kernel
+
+See "Boot from SD" to get more information about how to install
+the kernel.
 
 
 ** Wikipedia Index, Articles, etc.
