@@ -38,6 +38,7 @@
 #define DISPLAY_MODE_IMAGE	3
 
 static int current_page = 0;
+static int display_mode = DISPLAY_MODE_INDEX;
 
 static void handle_search_key(char keycode)
 {
@@ -54,7 +55,7 @@ static void handle_search_key(char keycode)
 	search_display_results();
 }
 
-static void handle_cursor(struct wl_input_event *ev, int display_mode)
+static void handle_cursor(struct wl_input_event *ev)
 {
 	if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
@@ -132,7 +133,6 @@ int wikilib_init (void)
 
 int wikilib_run(void)
 {
-	int display_mode = DISPLAY_MODE_INDEX;
 
 	print_intro();
 
@@ -148,7 +148,7 @@ int wikilib_run(void)
 
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_CURSOR:
-			handle_cursor(&ev, display_mode);
+			handle_cursor(&ev);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
 			if (ev.key_event.keycode == WL_INPUT_KEY_SEARCH) {
