@@ -23,6 +23,11 @@
 #include <fontfile.h>
 #include <msg.h>
 
+/*
+ * To enable debugging:
+ * #define PRINT_PAGE_BUFFER
+ */
+
 struct page_offset {
 	int page;
 	unsigned int offset;
@@ -37,7 +42,6 @@ static int current_page = -1;
 static unsigned int current_page_offset = -1;
 
 
-#undef PRINT_PAGE_BUFFER
 #ifdef PRINT_PAGE_BUFFER
 static void print_page_buffer(void)
 {
