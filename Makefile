@@ -3,7 +3,7 @@
 #
 # (C) Copyright 2008, 2009 OpenMoko, Inc.
 # Author: xiangfu liu <xiangfu@openmoko.org>
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # version 3 as published by the Free Software Foundation.
@@ -44,8 +44,11 @@ all:    mini-libc \
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs
-	( cd bootloader && \
-	make )
+	$(MAKE) -C bootloader
+
+.PHONY: bootloader232
+bootloader232:mini-libc fatfs
+	$(MAKE) -C bootloader BOOTFROM=232
 
 .PHONY: toppers
 toppers: mini-libc fatfs
@@ -134,13 +137,13 @@ simulator-qt4:
 
 .PHONY: simulator-console
 simulator-console:
-	( cd host-tools/simulator/console && make )	
+	( cd host-tools/simulator/console && make )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
 getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
-	
+
 .PHONY: webkit
 webkit:
         svn co -r 41057 http://svn.webkit.org/repository/webkit/trunk webkit
@@ -149,16 +152,15 @@ webkit:
 	./WebKitTools/Scripts/build-webkit --gtk --release)
 
 .PHONY: flash-bootloader
-flash-bootloader: bootloader
-	( cd bootloader && \
-		e07load/e07load wikireader.map )
+flash-bootloader:
+	$(MAKE) -C bootloader flash
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
 complete-clean: clean clean-toolchain
 
 .PHONY: clean
-clean: 
+clean:
 	make clean -C bootloader
 	make clean -C toolchain/mini-libc
 	make clean -C fatfs

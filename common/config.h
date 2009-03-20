@@ -1,9 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-//#define EEPROM1ST_LOAD_FROM_EEPROM 1
-#define EEPROM1ST_LOAD_FROM_RS232 1
-
 //#define BOARD_S1C33E07 1
 //#define BOARD_PRT33L17LCD 1
 #define BOARD_PROTO1 1

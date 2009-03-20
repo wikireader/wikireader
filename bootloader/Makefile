@@ -1,13 +1,24 @@
-LIBDIR=$(PWD)/../toolchain/mini-libc
-FATFSDIR=$(PWD)/../fatfs
-COMMON=$(PWD)/../common
+LIBDIR=../toolchain/mini-libc
+FATFSDIR=../fatfs
+COMMON=../common
 LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(COMMON)
-OBJCOPY_FLAGS=-I elf32-c33 -O binary 
+OBJCOPY_FLAGS=-I elf32-c33 -O binary
 
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
 VPATH=$(COMMON)
+
+ifeq ($(BOOTFROM),232)
+EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_RS232
+else
+EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_EEPROM
+endif
+
+ifneq ($(MAKECMDGOALS),flash)
+$(shell [ -f last_bootfrom ] && [ -z "`grep '\$(EXTRA_CFLAGS)' last_bootfrom`" ] && rm last_bootfrom)
+endif
+
 all: $(TARGETS)
 
 #### e07load
@@ -26,10 +37,13 @@ rs232: rs232.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### second boot loader
-eeprom-1st.o: eeprom-1st.c eeprom-2nd
-	$(GCC) -c $(CFLAGS) -DEEPROM_PAYLOAD_SIZE=`wc -c eeprom-2nd | cut -f1 -d' '` $<
+last_bootfrom:
+	$(shell echo $(EXTRA_CFLAGS) > last_bootfrom)
 
-eeprom-1st.elf: eeprom-1st.o eeprom.o 
+eeprom-1st.o: eeprom-1st.c eeprom-2nd last_bootfrom
+	$(GCC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DEEPROM_PAYLOAD_SIZE=`wc -c eeprom-2nd | cut -f1 -d' '` $<
+
+eeprom-1st.elf: eeprom-1st.o eeprom.o
 	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
 
 eeprom-1st: eeprom-1st.elf
@@ -57,6 +71,6 @@ flash: $(TARGETS)
 clean::
 	make -C e07load clean
 	make -C gfxtool clean
-	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map
+	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map last_bootfrom
 
 include ../common/Makefile
