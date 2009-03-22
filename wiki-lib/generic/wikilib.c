@@ -196,12 +196,11 @@ static void handle_touch(struct wl_input_event *ev)
 
 	if (display_mode == DISPLAY_MODE_INDEX) {
 		if (ev->touch_event.value == 0) {
-			/*
-			 * TODO: XXX: This could return the char and then we add it to
-			 * the search.
-			 */
-			keyboard_release(ev->touch_event.x, ev->touch_event.y);
-			open_article(search_release(ev->touch_event.x, ev->touch_event.y), ARTICLE_NEW);
+			char result = keyboard_release(ev->touch_event.x, ev->touch_event.y);
+			if (result != -1)
+				handle_search_key(result);
+			else
+				open_article(search_release(ev->touch_event.x, ev->touch_event.y), ARTICLE_NEW);
 		}
 	}
 }

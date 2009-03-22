@@ -25,6 +25,6 @@
 int keyboard_is_visible(void);
 void keyboard_set_visible(int);
 void keyboard_paint();
-void keyboard_release(int x, int y);
+char keyboard_release(int x, int y);
 
 #endif

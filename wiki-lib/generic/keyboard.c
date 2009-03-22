@@ -46,6 +46,7 @@ void keyboard_paint()
 /**
  * Coordinates are screen absolute ones
  */
-void keyboard_release(int x, int y)
+char keyboard_release(int x, int y)
 {
+	return -1;
 }
