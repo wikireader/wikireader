@@ -125,6 +125,57 @@ static void handle_cursor(struct wl_input_event *ev)
 	}
 }
 
+static void handle_key(int keycode)
+{
+	if (keycode == WL_INPUT_KEY_SEARCH) {
+		/* back to search */
+		if (display_mode == DISPLAY_MODE_INDEX) {
+			toggle_soft_keyboard();
+		} else {
+			display_mode = DISPLAY_MODE_INDEX;
+			search_reload();
+		}
+	} else if (keycode == WL_INPUT_KEY_HISTORY) {
+		display_mode = DISPLAY_MODE_HISTORY;
+		history_reset();
+		history_display();
+	} else if (display_mode == DISPLAY_MODE_INDEX) {
+		if (keycode == KEY_RETURN) {
+			const char *target = search_current_target();
+			if (target) {
+				if (article_open(target) < 0)
+					print_article_error();
+				display_mode = DISPLAY_MODE_ARTICLE;
+				current_page = 0;
+				article_display(0);
+				history_add(search_current_title(), target);
+			}
+		} else if (keycode == KEY_HASH) {
+			display_mode = DISPLAY_MODE_IMAGE;
+			display_image();
+		} else {
+			handle_search_key(keycode);
+		}
+	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
+		if (keycode == KEY_BACKSPACE) {
+			display_mode = DISPLAY_MODE_INDEX;
+			search_reload();
+		}
+	} else if (display_mode == DISPLAY_MODE_HISTORY) {
+		if (keycode == KEY_RETURN) {
+			const char *target = history_current_target();
+			if (target) {
+				if (article_open(target) < 0)
+					print_article_error();
+				display_mode = DISPLAY_MODE_ARTICLE;
+				current_page = 0;
+				article_display(0);
+				history_move_current_to_top();
+			}
+		}
+	}
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -150,53 +201,7 @@ int wikilib_run(void)
 			handle_cursor(&ev);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			if (ev.key_event.keycode == WL_INPUT_KEY_SEARCH) {
-				/* back to search */
-				if (display_mode == DISPLAY_MODE_INDEX) {
-					toggle_soft_keyboard();
-				} else {
-					display_mode = DISPLAY_MODE_INDEX;
-					search_reload();
-				}
-			} else if (ev.key_event.keycode == WL_INPUT_KEY_HISTORY) {
-				display_mode = DISPLAY_MODE_HISTORY;
-				history_reset();
-				history_display();
-			} else if (display_mode == DISPLAY_MODE_INDEX) {
-				if (ev.key_event.keycode == KEY_RETURN) {
-					const char *target = search_current_target();
-					if (target) {
-						if (article_open(target) < 0)
-							print_article_error();
-						display_mode = DISPLAY_MODE_ARTICLE;
-						current_page = 0;
-						article_display(0);
-						history_add(search_current_title(), target);
-					}
-				} else if (ev.key_event.keycode == KEY_HASH) {
-					display_mode = DISPLAY_MODE_IMAGE;
-					display_image();
-				} else {
-					handle_search_key(ev.key_event.keycode);
-				}
-			} else if (display_mode == DISPLAY_MODE_ARTICLE) {
-				if (ev.key_event.keycode == KEY_BACKSPACE) {
-					display_mode = DISPLAY_MODE_INDEX;
-					search_reload();
-				}
-			} else if (display_mode == DISPLAY_MODE_HISTORY) {
-				if (ev.key_event.keycode == KEY_RETURN) {
-					const char *target = history_current_target();
-					if (target) {
-						if (article_open(target) < 0)
-							print_article_error();
-						display_mode = DISPLAY_MODE_ARTICLE;
-						current_page = 0;
-						article_display(0);
-						history_move_current_to_top();
-					}
-				}
-			}
+			handle_key(ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
