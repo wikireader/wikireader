@@ -42,7 +42,7 @@ static int display_mode = DISPLAY_MODE_INDEX;
 
 static void toggle_soft_keyboard(void)
 {
-	keyboard_set_visible(keyboard_is_visible());
+	keyboard_set_visible(!keyboard_is_visible());
 }
 
 static void print_intro()
