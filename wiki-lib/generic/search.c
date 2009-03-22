@@ -18,6 +18,7 @@
 #include <lsearcher.h>
 #include "search.h"
 #include "msg.h"
+#include "keyboard.h"
 
 #include <guilib.h>
 #include <glyph.h>
@@ -38,6 +39,7 @@ static const int search_result_len = 15;
 #define RESULT_START 20
 #define RESULT_HEIGHT 10
 #define NUMBER_OF_RESULTS 19
+#define NUMBER_OF_RESULTS_KEYBOARD 10
 static char search_pointers[NUMBER_OF_RESULTS][8];
 static int search_found = 0;
 
@@ -167,12 +169,14 @@ void search_display_results(void)
 {
 	char *result;
 	int y_pos = 0;
+	const int results = keyboard_is_visible() ?
+				NUMBER_OF_RESULTS_KEYBOARD : NUMBER_OF_RESULTS;
 
 	guilib_fb_lock();
 	search_found = 0;
 	search_current = -1;
 
-	while (search_found < NUMBER_OF_RESULTS && (result = search_fetch_result())) {
+	while (search_found < results && (result = search_fetch_result())) {
 		if (!search_found) {
 			guilib_clear();
 			render_string(0, 1, 10, search_result, search_result_len);

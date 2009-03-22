@@ -40,9 +40,13 @@
 static int current_page = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
+/* this is only called for the index page */
 static void toggle_soft_keyboard(void)
 {
 	keyboard_set_visible(!keyboard_is_visible());
+
+	/* TODO: This can be optimized for showing the keyboard */
+	search_reload();
 }
 
 static void print_intro()
