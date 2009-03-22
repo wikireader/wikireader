@@ -40,41 +40,6 @@
 static int current_page = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
-static void handle_search_key(char keycode)
-{
-	if (keycode == KEY_BACKSPACE) {
-		search_remove_char();
-	} else if (isalnum(keycode) || isspace(keycode)) {
-		msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
-		search_add(tolower(keycode));
-	} else {
-		msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
-		return;
-	}
-
-	search_display_results();
-}
-
-static void handle_cursor(struct wl_input_event *ev)
-{
-	if (display_mode == DISPLAY_MODE_ARTICLE) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			article_display(++current_page);
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			article_display(--current_page);
-	} else if (display_mode == DISPLAY_MODE_INDEX) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			search_select_down();
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			search_select_up();
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			history_select_down();
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			history_select_up();
-	}
-}
-
 /* FIXME: implement toggling of the keyboard */
 static void toggle_soft_keyboard(void)
 {
@@ -124,6 +89,41 @@ static void display_image()
 	guilib_fb_unlock();
 
 	wl_close(fd);
+}
+
+static void handle_search_key(char keycode)
+{
+	if (keycode == KEY_BACKSPACE) {
+		search_remove_char();
+	} else if (isalnum(keycode) || isspace(keycode)) {
+		msg(MSG_INFO, "Adding to search : '%c'\n", keycode);
+		search_add(tolower(keycode));
+	} else {
+		msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
+		return;
+	}
+
+	search_display_results();
+}
+
+static void handle_cursor(struct wl_input_event *ev)
+{
+	if (display_mode == DISPLAY_MODE_ARTICLE) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			article_display(++current_page);
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			article_display(--current_page);
+	} else if (display_mode == DISPLAY_MODE_INDEX) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			search_select_down();
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			search_select_up();
+	} else if (display_mode == DISPLAY_MODE_HISTORY) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			history_select_down();
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			history_select_up();
+	}
 }
 
 int wikilib_init (void)
