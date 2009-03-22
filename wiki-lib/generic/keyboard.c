@@ -17,6 +17,11 @@
 
 #include "keyboard.h"
 
+/*
+ * The secret of the position and size of the keyboard
+ * is shared between search.c and this file.
+ */
+
 static int keyboard_visible = 1;
 
 int keyboard_is_visible(void)
@@ -30,16 +35,16 @@ void keyboard_set_visible(int visible)
 }
 
 /**
- * x,y is the point where the keyboard starts. Height
- * is coming from the implementation..
+ *
  */
-void keyboard_paint(int x, int y)
+void keyboard_paint()
 {
+	if (!keyboard_visible)
+		return;
 }
 
 /**
- * (0,0) is the start of the keyboard, coordinates
- * are normalized here.
+ * Coordinates are screen absolute ones
  */
 void keyboard_press(int x, int y)
 {

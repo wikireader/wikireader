@@ -47,6 +47,7 @@ static void toggle_soft_keyboard(void)
 
 	/* TODO: This can be optimized for showing the keyboard */
 	search_reload();
+	keyboard_paint();
 }
 
 static void print_intro()
@@ -107,6 +108,7 @@ static void handle_search_key(char keycode)
 	}
 
 	search_display_results();
+	keyboard_paint();
 }
 
 static void handle_cursor(struct wl_input_event *ev)
