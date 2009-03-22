@@ -37,6 +37,9 @@
 #define DISPLAY_MODE_HISTORY	2
 #define DISPLAY_MODE_IMAGE	3
 
+#define ARTICLE_NEW		0
+#define ARTICLE_HISTORY		1
+
 static int current_page = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
@@ -95,6 +98,24 @@ static void display_image()
 	wl_close(fd);
 }
 
+static void open_article(const char* target, int mode)
+{
+	if (!target)
+		return;
+
+	if (article_open(target) < 0)
+		print_article_error();
+	display_mode = DISPLAY_MODE_ARTICLE;
+	current_page = 0;
+	article_display(0);
+
+	if (mode == ARTICLE_NEW) {
+		history_add(search_current_title(), target);
+	} else if (mode == ARTICLE_HISTORY) {
+		history_move_current_to_top();
+	}
+}
+
 static void handle_search_key(char keycode)
 {
 	if (keycode == KEY_BACKSPACE) {
@@ -147,15 +168,7 @@ static void handle_key(int keycode)
 		history_display();
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == KEY_RETURN) {
-			const char *target = search_current_target();
-			if (target) {
-				if (article_open(target) < 0)
-					print_article_error();
-				display_mode = DISPLAY_MODE_ARTICLE;
-				current_page = 0;
-				article_display(0);
-				history_add(search_current_title(), target);
-			}
+			open_article(search_current_target(), ARTICLE_NEW);
 		} else if (keycode == KEY_HASH) {
 			display_mode = DISPLAY_MODE_IMAGE;
 			display_image();
@@ -169,15 +182,7 @@ static void handle_key(int keycode)
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
 		if (keycode == KEY_RETURN) {
-			const char *target = history_current_target();
-			if (target) {
-				if (article_open(target) < 0)
-					print_article_error();
-				display_mode = DISPLAY_MODE_ARTICLE;
-				current_page = 0;
-				article_display(0);
-				history_move_current_to_top();
-			}
+			open_article(history_current_target(), ARTICLE_HISTORY);
 		}
 	}
 }
