@@ -182,6 +182,14 @@ static void handle_key(int keycode)
 	}
 }
 
+static void handle_touch(struct wl_input_event *ev)
+{
+	msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
+		ev->touch_event.x,
+		ev->touch_event.y,
+		ev->touch_event.value);
+}
+
 int wikilib_init (void)
 {
 	return 0;
@@ -210,10 +218,7 @@ int wikilib_run(void)
 			handle_key(ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
-			msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
-				ev.touch_event.x,
-				ev.touch_event.y,
-				ev.touch_event.value);
+			handle_touch(&ev);
 			break;
 		}
 	}
