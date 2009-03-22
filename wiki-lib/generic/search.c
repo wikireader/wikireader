@@ -254,3 +254,17 @@ const char *search_current_title(void)
 
 	return NULL;
 }
+
+/*
+ *  - Check which item was hit
+ *  - Update the selection so search_current_title returns the
+ *    right item.
+ *  - return the right item
+ *
+ *  In practice updating search_current depending on the x,y
+ *  should be enough and then search_current_target can be returned.
+ */
+const char *search_release(int x, int y)
+{
+	return NULL;
+}

@@ -201,6 +201,7 @@ static void handle_touch(struct wl_input_event *ev)
 			 * the search.
 			 */
 			keyboard_release(ev->touch_event.x, ev->touch_event.y);
+			open_article(search_release(ev->touch_event.x, ev->touch_event.y), ARTICLE_NEW);
 		}
 	}
 }
