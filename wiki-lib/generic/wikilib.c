@@ -188,6 +188,11 @@ static void handle_touch(struct wl_input_event *ev)
 		ev->touch_event.x,
 		ev->touch_event.y,
 		ev->touch_event.value);
+
+	if (display_mode == DISPLAY_MODE_INDEX) {
+		if (ev->touch_event.value == 0) 
+			keyboard_release(ev->touch_event.x, ev->touch_event.y);
+	}
 }
 
 int wikilib_init (void)
