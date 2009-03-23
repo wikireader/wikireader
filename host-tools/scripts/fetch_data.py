@@ -14,17 +14,20 @@ display = 99 - int(job_dir.rsplit('/', 1)[1])
 os.system("Xvfb :%d -noreset &" % display)
 os.environ['DISPLAY'] = ":%d" % display
 
+
+def execute(hash, url):
+    print "Getting %s" % url
+    os.environ['url'] = url
+    os.environ['file'] = url.replace("http://127.0.0.1/mediawiki/index.php/", "")
+    os.system("$HOME/source/webkit-pedia.git/WebKitBuild/Release/Programs/GtkLauncher $url")
+    os.system("extract_spacing.py render_text.blib")
+    os.system("mv -f render_text.blib articles/$file")
+
+
 for work in glob.glob("*.work"):
     file = open(work)
     for line in file:
         data = line[:-1].split(" ", 1)
-        hash = data[0]
-        url = data[1]
-        print "Getting %s" % url
-        os.environ['file'] = url
-        os.system("$HOME/source/webkit-pedia.git/WebKitBuild/Release/Programs/GtkLauncher $file")
+        execute(data[0], data[1])
 
-        os.environ['file'] = url.replace("http://127.0.0.1/mediawiki/index.php/", "")
-        os.system("extract_spacing.py render_text.blib")
-        os.system("mv -f render_text.blib articles/$file")
 
