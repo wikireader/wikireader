@@ -17,10 +17,13 @@ os.environ['DISPLAY'] = ":%d" % display
 for work in glob.glob("*.work"):
     file = open(work)
     for line in file:
-        print "Getting %s" % line[:-1]
-        os.environ['file'] = line[:-1]
+        data = line[:-1].split(" ", 1)
+        hash = data[0]
+        url = data[1]
+        print "Getting %s" % url
+        os.environ['file'] = url
         os.system("$HOME/source/webkit-pedia.git/WebKitBuild/Release/Programs/GtkLauncher $file")
 
-        os.environ['file'] = line[:-1].replace("http://127.0.0.1/mediawiki/index.php/", "")
+        os.environ['file'] = url.replace("http://127.0.0.1/mediawiki/index.php/", "")
         os.system("mv -f render_text.blib articles/$file")
 

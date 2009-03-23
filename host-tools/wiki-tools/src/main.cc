@@ -43,6 +43,13 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** arg
             createIndexList = true;
         else if (qstrcmp(argv[i], "--url-list") == 0)
             createUrlList = true;
+        else if (qstrcmp(argv[i], "--help") == 0) {
+            printf("bzcat pages.bz2 | wiki-tools [options]\n");
+            printf("\t--index Create a list of titles/index. This takes a lot of\n"
+                   "\t\tmemory (2GB) to resolve redirects\n");
+            printf("\t--url-list Create a list of urls to fetch from wikipedia\n");
+            exit(0);
+        }
     }
 
 
