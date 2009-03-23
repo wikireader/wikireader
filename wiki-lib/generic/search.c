@@ -40,6 +40,7 @@ static const int search_result_len = 15;
 #define RESULT_HEIGHT 10
 #define NUMBER_OF_RESULTS 19
 #define NUMBER_OF_RESULTS_KEYBOARD 10
+#define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
 static char search_pointers[NUMBER_OF_RESULTS][8];
 static int search_found = 0;
 
@@ -48,7 +49,7 @@ static int search_current = -1;
 
 static void invert_selection(int old_pos, int new_pos)
 {
-	int start = RESULT_START - RESULT_HEIGHT + 2;
+	int start = PIXEL_START;
 
 	guilib_fb_lock();
 
@@ -266,5 +267,15 @@ const char *search_current_title(void)
  */
 const char *search_release(int x, int y)
 {
+	int i;
+	int result_start = PIXEL_START;
+
+	for (i = 0; i < search_found; ++i, result_start += RESULT_HEIGHT) {
+		if (y >= result_start && y < result_start + RESULT_HEIGHT) {
+			search_current = i;
+			return search_current_target();
+		}
+	}
+
 	return NULL;
 }
