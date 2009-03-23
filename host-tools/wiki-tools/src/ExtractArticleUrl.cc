@@ -40,5 +40,5 @@ void ExtractArticleUrl::handleArticle(const Article& article)
         return;
 
     QTextStream stream(&m_file);
-    stream << "\%SETUP\%/" + article.title().title() << endl;
+    stream << article.hash() << " " << "\%SETUP\%/" + article.title().title() << endl;
 }
