@@ -133,7 +133,7 @@ gcc: binutils gcc-patch
 
 .PHONY: simulator-qt4
 simulator-qt4:
-	( cd host-tools/simulator/Qt4/WikiSim && qmake && make )
+	( cd host-tools/simulator/Qt4/WikiSim && qmake-qt4 && make )
 
 .PHONY: simulator-console
 simulator-console:
@@ -157,7 +157,7 @@ flash-bootloader:
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
-complete-clean: clean clean-toolchain
+complete-clean: clean clean-toolchain clean-qt4-sim
 
 .PHONY: clean
 clean:
@@ -173,6 +173,13 @@ clean-toolchain:
 	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
 	rm -f binutils-download binutils-patch binutils
 	rm -f gcc-download gcc-patch gcc
+
+.PHONY: clean-qt4-sim
+clean-qt4-sim:
+	rm host-tools/simulator/Qt4/WikiSim/Makefile
+	rm host-tools/simulator/Qt4/WikiSim/src/Makefile
+	rm host-tools/simulator/Qt4/WikiSim/src/*.o
+	rm host-tools/simulator/Qt4/WikiSim/bin/*
 
 .PHONY:help
 help:
