@@ -1,0 +1,48 @@
+= Encoding of an Article/Page/HTML Page =
+
+Instead of plain text we store it in a pre rendered format that
+should be space efficient.
+
+This includes huffman codes for:
+    - fonts
+    - x,y movement
+    - glyphs
+    - glyphs for bigrams
+
+= Representation =
+
+ struct header {
+    int nr_fonts;
+    struct fonts {
+        int code_word;
+        int font_nr
+    }[nr_fonts];
+
+    int nr_x_y;
+    struct xy_movement {
+        int code_word;
+        int x_y;
+    }[nr_x_y];
+
+    int nr_glyphs
+    struct glyphs {
+        int code_word;
+        int glyph;
+    }[nr_glyphs];
+
+    int nr_bigrams;
+    struct bigrams{
+        int code_word;
+        int glyph1;
+        int glyph2;
+    }[nr_bigrams];
+ };
+
+The bigrams and glyphs are coming from the same huffman code. It is not yet decided how
+to remember how many bits of the code_word are actually used...
+
+this is followed by the stream of the article... this is not yet settled and
+is subject to change. For now we have two code words
+
+0 <font codeword>
+1 nr_glyphs <x codeword><y codeword><glyph codeword><glyph codeword>
