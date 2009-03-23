@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -61,119 +61,105 @@ volatile bool linefeed;
 // Bits for: REG_EFSIFx_STATUS
 #define RXDxNUM1 (1 << 7)
 #define RXDxNUM0 (1 << 6)
-#define TENDx    (1 << 5)
-#define FERx     (1 << 4)
-#define PERx     (1 << 3)
-#define OERx     (1 << 2)
-#define TDBEx    (1 << 1)
-#define RDBFx    (1 << 0)
+#define TENDx	 (1 << 5)
+#define FERx	 (1 << 4)
+#define PERx	 (1 << 3)
+#define OERx	 (1 << 2)
+#define TDBEx	 (1 << 1)
+#define RDBFx	 (1 << 0)
 
 void serial_init(void)
 {
-  static bool initialised = false;
-  if (!initialised)
-  {
-    //REG_INT_ESIF01 = 0x36;
-    //REG_INT_ESIF01 = 0x6;
-    REG_INT_ESIF01 = ESRX0;
+	static bool initialised = false;
+	if (!initialised) {
+		//REG_INT_ESIF01 = 0x36;
+		//REG_INT_ESIF01 = 0x6;
+		REG_INT_ESIF01 = ESRX0;
 
-    REG_INT_PLCDC_PSIO0 = 0x70;
-    console_read = 0;
-    console_write = 0;
-    send_queue_head = NULL;
-    send_queue_tail = NULL;
-    sending = false;
-    linefeed = false;
+		REG_INT_PLCDC_PSIO0 = 0x70;
+		console_read = 0;
+		console_write = 0;
+		send_queue_head = NULL;
+		send_queue_tail = NULL;
+		sending = false;
+		linefeed = false;
 
-    initialised = true;
-  }
+		initialised = true;
+	}
 }
 
 
 bool serial_output_pending(void)
 {
-  return sending || (0 != (REG_EFSIF0_STATUS & TENDx));
+	return sending || (0 != (REG_EFSIF0_STATUS & TENDx));
 }
 
 
 void serial_put(serial_buffer_type *buffer)
 {
-  if (NULL != buffer)
-  {
-    // critical code - disable uart tx interrupts
-    REG_INT_ESIF01 &= ~ESTX0;
-    buffer->link = NULL;
-    if (NULL != send_queue_tail)
-    {
-      send_queue_tail->link = buffer;
-    }
-    send_queue_tail = buffer;
-    if (NULL == send_queue_head)
-    {
-      send_queue_head = send_queue_tail;
-      transmit = send_queue_head->text;
-      REG_INT_FSIF01 = FSTX0;
-      {
-        u8 c = *transmit++;
-        if ('\n' == c)
-        {
-          c = '\r';
-          linefeed = true;
-        }
-        REG_EFSIF0_TXD = c;
-        sending = true;
-      }
+	if (NULL != buffer) {
+		// critical code - disable uart tx interrupts
+		REG_INT_ESIF01 &= ~ESTX0;
+		buffer->link = NULL;
+		if (NULL != send_queue_tail) {
+			send_queue_tail->link = buffer;
+		}
+		send_queue_tail = buffer;
+		if (NULL == send_queue_head) {
+			send_queue_head = send_queue_tail;
+			transmit = send_queue_head->text;
+			REG_INT_FSIF01 = FSTX0;
+			{
+				u8 c = *transmit++;
+				if ('\n' == c) {
+					c = '\r';
+					linefeed = true;
+				}
+				REG_EFSIF0_TXD = c;
+				sending = true;
+			}
 
-    }
-    REG_INT_ESIF01 |= ESTX0;
-  }
+		}
+		REG_INT_ESIF01 |= ESTX0;
+	}
 }
 
 
 void serial_drained_0(void)
 {
-  if (!linefeed && '\0' == *transmit)
-  {
-    serial_buffer_type *p = send_queue_head;
-    send_queue_head = send_queue_head->link;
-    if (NULL != p->callback)
-    {
-      p->callback(p);
-    }
-    if (NULL == send_queue_head)
-    {
-      transmit = NULL;
-      send_queue_tail = NULL;
-    }
-    else
-    {
-      transmit = send_queue_head->text;
-    }
-  }
-  if (NULL == transmit)
-  {
-    REG_INT_ESIF01 &= ~ESTX0;
-    sending = false;
-  }
-  else
-  {
-    REG_INT_FSIF01 |= FSTX0;
-    if (linefeed)
-    {
-      linefeed = false;
-      REG_EFSIF0_TXD = '\n';
-    }
-    else
-    {
-      u8 c = *transmit++;
-      if ('\n' == c)
-      {
-        c = '\r';
-        linefeed = true;
-      }
-      REG_EFSIF0_TXD = c;
-    }
-  }
+	if (!linefeed && '\0' == *transmit) {
+		serial_buffer_type *p = send_queue_head;
+		send_queue_head = send_queue_head->link;
+		if (NULL != p->callback) {
+			p->callback(p);
+		}
+		if (NULL == send_queue_head) {
+			transmit = NULL;
+			send_queue_tail = NULL;
+		}
+		else {
+			transmit = send_queue_head->text;
+		}
+	}
+	if (NULL == transmit) {
+		REG_INT_ESIF01 &= ~ESTX0;
+		sending = false;
+	}
+	else {
+		REG_INT_FSIF01 |= FSTX0;
+		if (linefeed) {
+			linefeed = false;
+			REG_EFSIF0_TXD = '\n';
+		}
+		else {
+			u8 c = *transmit++;
+			if ('\n' == c) {
+				c = '\r';
+				linefeed = true;
+			}
+			REG_EFSIF0_TXD = c;
+		}
+	}
 }
 
 
@@ -194,9 +180,9 @@ void serial_out(int port, char c)
 	if (port != 0)
 		return;
 
-        DISABLE_IRQ();
+	DISABLE_IRQ();
 	REG_EFSIF0_TXD = c;
-        ENABLE_IRQ();
+	ENABLE_IRQ();
 }
 
 int serial_get_event(struct wl_input_event *ev)
@@ -216,11 +202,11 @@ int serial_get_event(struct wl_input_event *ev)
 	if (ev->key_event.keycode == KEY_PLUS) {
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
-	} else if (ev->key_event.keycode == KEY_MINUS) {
+	}
+	else if (ev->key_event.keycode == KEY_MINUS) {
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
 	}
 
 	return 1;
 }
-
