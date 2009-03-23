@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import glob, os, sys
+import glob, os, sys, subprocess
 job_dir = sys.argv[1]
 
 
@@ -19,11 +19,10 @@ failed_urls = open("failed.urls", "w")
 
 def execute(hash, url):
     print "Getting %s" % url
-    os.environ['url'] = url
-    os.environ['file'] = url.replace("http://127.0.0.1/mediawiki/index.php/", "")
-    os.system("$HOME/source/webkit-pedia.git/WebKitBuild/Release/Programs/GtkLauncher $url")
-    os.system("extract_spacing.py render_text.blib")
-    os.system("mv -f render_text.blib articles/$file")
+    file = os.path.join("articles", url.replace("http://127.0.0.1/mediawiki/index.php/", url))
+    subprocess.check_call(["GtkLauncher", url])
+    subprocess.check_call(["extract_spacing.py", "render_text.blib"])
+    subprocess.check_call(["mv", "-f", "render_text.blib", file])
 
 
 for work in glob.glob("*.work"):
@@ -32,7 +31,7 @@ for work in glob.glob("*.work"):
         data = line[:-1].split(" ", 1)
         try:
             execute(data[0], data[1])
-        except:
+        except subprocess.CalledProcessError:
             print >> failed_urls, "%s %s" % (data[0], data[1])
 
 
