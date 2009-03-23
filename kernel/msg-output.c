@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -44,77 +44,72 @@ static int loglevel = MSG_LEVEL_MAX;
 
 void msg_init(void)
 {
-  static bool initialised = false;
-  if (!initialised)
-  {
-    size_t i = 0;
-    free_list = NULL;
+	static bool initialised = false;
+	if (!initialised) {
+		size_t i = 0;
+		free_list = NULL;
 
-    // create linked list of free buffers
-    for (i = 0; i < ARRAY_SIZE(messages); ++i)  \
-    {
-      messages[i].text = lines[i];
-      messages[i].size = sizeof(lines[i]);
-      messages[i].callback = free_buffer;
-      messages[i].link = free_list;
-      free_list = &messages[i];
-    }
+		// create linked list of free buffers
+		for (i = 0; i < ARRAY_SIZE(messages); ++i) {
+			messages[i].text = lines[i];
+			messages[i].size = sizeof(lines[i]);
+			messages[i].callback = free_buffer;
+			messages[i].link = free_list;
+			free_list = &messages[i];
+		}
 
-    serial_init();
+		serial_init();
 
-    initialised = true;
-  }
+		initialised = true;
+	}
 }
 
 
 void msg(int level, const char *fmt, ...)
 {
-  serial_buffer_type *m;
-  va_list va;
+	serial_buffer_type *m;
+	va_list va;
 
-  if (level > loglevel)
-  {
-    return;
-  }
+	if (level > loglevel) {
+		return;
+	}
 
-  if (NULL == free_list)
-  {
-    lost_messages++;
-    return;
-  }
+	if (NULL == free_list) {
+		lost_messages++;
+		return;
+	}
 
-  va_start(va, fmt);
+	va_start(va, fmt);
 
-  {
-    // critcal code, since free is called from interrupt state
-    DISABLE_IRQ();
-    m = free_list;
-    free_list = free_list->link;
-    ENABLE_IRQ();
-  }
+	{
+		// critcal code, since free is called from interrupt state
+		DISABLE_IRQ();
+		m = free_list;
+		free_list = free_list->link;
+		ENABLE_IRQ();
+	}
 
-  //m->level = level;
-  vsnprintf(m->text, m->size, fmt, va);
+	//m->level = level;
+	vsnprintf(m->text, m->size, fmt, va);
 
-  va_end(va);
+	va_end(va);
 
-  serial_put(m);
+	serial_put(m);
 }
 
 
 // this is called at interrupt state, keep it short
 void free_buffer(serial_buffer_type *buffer)
 {
-  buffer->link = free_list;
-  free_list = buffer;
+	buffer->link = free_list;
+	free_list = buffer;
 }
 
 
-void set_loglevel (int level)
+void set_loglevel(int level)
 {
-  if (level < MSG_ERROR || level > MSG_LEVEL_MAX)
-  {
-    return;
-  }
-  loglevel = level;
+	if (level < MSG_ERROR || level > MSG_LEVEL_MAX) {
+		return;
+	}
+	loglevel = level;
 }
