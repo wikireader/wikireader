@@ -1,0 +1,70 @@
+Compiling toolchain and source on an AMD64/IA64 system
+======================================================
+
+# get a root shell, (on ?ubuntu use this)
+sudo su -
+
+# install deboostrap (if you do not already have it)
+apt-get install debootstrap
+
+# make a directory for the 32 bit system
+mkdir /sid-i386
+
+# create a flag file in so 'ls /' will show where you are
+touch /sid-i386/This_is_sid-i386
+
+# in the next line s/us/tw/ or whatever you nearest repository is called
+debootstrap --arch=i386 sid /sid-i386 http://ftp.us.debian.org/debian/
+
+# watch it download the whole system ...
+
+# modify /etc/fstab (if your /home is symlink, use the absolute path)
+echo "proc /sid-i386/proc proc defaults 0 0" >> /etc/fstab
+echo "/home /sid-i386/home bind defaults,bind 0 0" >> /etc/fstab
+
+# mount the above
+mount /sid-i386/proc
+mount /sid-i386/home
+
+# OPTIONAL: add your favorite configs to sid's root e.g.
+cp -p /root/.joverc /sid-i386/root/
+cp -p /root/.bash* /sid-i386/root/
+
+# chroot into sid
+chroot /sid-i386 su -
+
+# install necessary packages
+apt-get update
+apt-get install gcc g++ gawk flex bison make patch wget
+apt-get install libgd2-noxpm-dev
+apt-get install --no-install-recommends libqt4-dev
+apt-get install libncurses5-dev
+
+# OPTIONAL: add your favorite programs e.g. jove editor
+apt-get --no-install-recommends jove
+
+# back to main system 
+exit
+
+# set up your username and group for sid
+ME=myusername
+grep "^${ME}:' /etc/passwd >> /sid-i386/etc/passwd
+grep "^${ME}:' /etc/shadow >> /sid-i386/etc/shadow
+ME=mygroup  # If different
+grep "^${ME}:' /etc/group >> /sid-i386/etc/group
+grep "^${ME}:' /etc/gshadow >> /sid-i386/etc/gshadow
+
+# exit from sudo root shell
+exit
+
+# now back to your normal login account
+
+# login as yourself under sid
+sudo chroot /sid-i386 su -l myusername
+
+# cd to your source
+cd wikipediardware
+make clean
+make
+
+# watch it build ...
