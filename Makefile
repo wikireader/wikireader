@@ -176,10 +176,7 @@ clean-toolchain:
 
 .PHONY: clean-sim-qt4
 clean-sim-qt4:
-	rm host-tools/simulator/Qt4/WikiSim/Makefile
-	rm host-tools/simulator/Qt4/WikiSim/src/Makefile
-	rm host-tools/simulator/Qt4/WikiSim/src/*.o
-	rm host-tools/simulator/Qt4/WikiSim/bin/*
+	(cd host-tools/simulator/Qt4/WikiSim; $(MAKE) distclean || true)
 
 .PHONY: clean-sim-console
 clean-sim-console:
