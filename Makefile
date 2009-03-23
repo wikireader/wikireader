@@ -146,7 +146,7 @@ getwikidump:
 
 .PHONY: webkit
 webkit:
-        svn co -r 41057 http://svn.webkit.org/repository/webkit/trunk webkit
+	svn co -r 41057 http://svn.webkit.org/repository/webkit/trunk webkit
 	(cd webkit && \
 	patch_path="../host-tools/rendering/patches/"; for file in `ls $$patch_path`; do echo "processing file: $$file"; patch -p1 < $$patch_path/$$file; done && \
 	./WebKitTools/Scripts/build-webkit --gtk --release)
@@ -157,7 +157,7 @@ flash-bootloader:
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
-complete-clean: clean clean-toolchain clean-qt4-sim
+complete-clean: clean clean-toolchain clean-sim-qt4 clean-sim-console
 
 .PHONY: clean
 clean:
@@ -174,12 +174,16 @@ clean-toolchain:
 	rm -f binutils-download binutils-patch binutils
 	rm -f gcc-download gcc-patch gcc
 
-.PHONY: clean-qt4-sim
-clean-qt4-sim:
+.PHONY: clean-sim-qt4
+clean-sim-qt4:
 	rm host-tools/simulator/Qt4/WikiSim/Makefile
 	rm host-tools/simulator/Qt4/WikiSim/src/Makefile
 	rm host-tools/simulator/Qt4/WikiSim/src/*.o
 	rm host-tools/simulator/Qt4/WikiSim/bin/*
+
+.PHONY: clean-sim-console
+clean-sim-console:
+	make clean -C host-tools/simulator/console	
 
 .PHONY:help
 help:

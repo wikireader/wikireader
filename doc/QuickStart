@@ -10,6 +10,10 @@ make gcc
 
 export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
 
+** Packages needed for simulators
+apt-get install --no-install-recommends libqt4-dev
+apt-get install libncurses5-dev
+
 ** Modify config.h
 
 diff --git a/common/config.h b/common/config.h
