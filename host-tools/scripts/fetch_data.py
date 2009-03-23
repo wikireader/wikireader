@@ -25,5 +25,6 @@ for work in glob.glob("*.work"):
         os.system("$HOME/source/webkit-pedia.git/WebKitBuild/Release/Programs/GtkLauncher $file")
 
         os.environ['file'] = url.replace("http://127.0.0.1/mediawiki/index.php/", "")
+        os.system("extract_spacing.py render_text.blib")
         os.system("mv -f render_text.blib articles/$file")
 
