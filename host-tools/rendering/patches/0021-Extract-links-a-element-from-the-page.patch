@@ -1,0 +1,97 @@
+From ac1bd6b1127f3d72022277838d8bf5cf0012ce2a Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Mon, 23 Mar 2009 15:02:29 +0100
+Subject: [PATCH] Extract links (a element) from the page...
+
+Corner cases such as a link wrapping around and spanning two
+lines should be handled already. The majority of work left to
+do is a good/compact way of storing these...
+---
+ WebKit/gtk/webkit/webkitwebview.cpp |   25 +++++++++++++++++++++++++
+ WebKitTools/GtkLauncher/main.c      |   18 ++++++++++++++++++
+ 2 files changed, 43 insertions(+), 0 deletions(-)
+
+diff --git a/WebKit/gtk/webkit/webkitwebview.cpp b/WebKit/gtk/webkit/webkitwebview.cpp
+index e6166b2..cfd1063 100644
+--- a/WebKit/gtk/webkit/webkitwebview.cpp
++++ b/WebKit/gtk/webkit/webkitwebview.cpp
+@@ -36,6 +36,8 @@
+ #include "AXObjectCache.h"
+ #include "NotImplemented.h"
+ #include "BackForwardList.h"
++#include "ClientRect.h"
++#include "ClientRectList.h"
+ #include "CString.h"
+ #include "ChromeClientGtk.h"
+ #include "ContextMenu.h"
+@@ -57,6 +59,8 @@
+ #include "FrameLoader.h"
+ #include "FrameView.h"
+ #include "Editor.h"
++#include "HTMLAnchorElement.h"
++#include "NodeList.h"
+ #include "PasteboardHelper.h"
+ #include "PlatformKeyboardEvent.h"
+ #include "PlatformWheelEvent.h"
+@@ -2776,6 +2780,27 @@ Frame* frame = core(view)->mainFrame();
+ 
+     *glyphs = webkit_glyphs;
+ 
++    // Extract links...
++    WebCore::ExceptionCode ec;
++    RefPtr<WebCore::NodeList> nodes = frame->document()->querySelectorAll("a", ec);
++    for (int i = 0; i < nodes->length(); ++i) {
++        WebCore::HTMLAnchorElement* element = static_cast<WebCore::HTMLAnchorElement*>(nodes->item(i));
++        RefPtr<WebCore::ClientRectList> list = element->getClientRects();
++
++        for (int j = 0; j < list->length(); ++j) {
++            ClientRect* rect = list->item(j);
++            String url = element->href();
++            WebKitLink* link = static_cast<WebKitLink*>(g_slice_new(WebKitLink));
++
++            link->destination = g_strdup(url.utf8().data());
++            link->x = floor(rect->left());
++            link->y = floor(rect->top());
++            link->width = floor(rect->width());
++            link->height = floor(rect->height());
++            *link_list = g_list_append(*link_list, link);
++        }
++    }
++
+     return true;
+ }
+ 
+diff --git a/WebKitTools/GtkLauncher/main.c b/WebKitTools/GtkLauncher/main.c
+index 92a90f4..ca9c1c8 100644
+--- a/WebKitTools/GtkLauncher/main.c
++++ b/WebKitTools/GtkLauncher/main.c
+@@ -177,8 +177,26 @@ static void create_text_file(GList *glyphs)
+     g_string_free(string, TRUE);
+ }
+ 
++static void append_link(WebKitLink* links, GString* string)
++{
++    g_string_append_printf(string, "%d,%d,%d,%d: %s\n",
++                           links->x, links->y, links->width, links->height,
++                           links->destination);
++}
++
+ static void create_links(GList *links)
+ {
++    GString* string = g_string_new(NULL);
++    g_list_foreach(links, (GFunc)append_link, string);
++
++    GError* error = NULL;
++    g_file_set_contents("render_text.links", string->str, string->len, &error);
++    if (error) {
++        g_warning("Failed to write the glyphs...");
++        g_error_free(error);
++    }
++
++    g_string_free(string, TRUE);
+ }
+ 
+ static void
+-- 
+1.6.0.4
+
