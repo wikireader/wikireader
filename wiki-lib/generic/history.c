@@ -104,7 +104,6 @@ void history_display(void)
 
 void history_reset(void)
 {
-	current_start = 0;
 }
 
 const char *history_current_target(void)
@@ -117,19 +116,28 @@ const char *history_current_target(void)
 
 void history_add(const char *title, const char *target)
 {
-	/* make room ... */
-	static const unsigned int items = ARRAY_SIZE(history_items);
-
-	memmove(&history_items[1], &history_items[0], (items - 1) * sizeof(history_items[0]));
-	if (title)
-		strcpy(history_items[0].title, title);
-
-	if (target)
-		strcpy(history_items[0].target, target);
-
-	used_items = MIN(used_items + 1, ARRAY_SIZE(history_items));
 }
 
 void history_move_current_to_top(void)
 {
+}
+
+const char *history_get_top_target()
+{
+	return history_get_item_target(0);
+}
+
+const char *history_get_item_title(int index)
+{
+	return NULL;
+}
+
+const char *history_get_item_target(int index)
+{
+	return NULL;
+}
+
+unsigned int history_item_size(void)
+{
+	return 0;
 }
