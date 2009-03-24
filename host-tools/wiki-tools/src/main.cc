@@ -57,7 +57,9 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** arg
         *handlers << new CreateIndex(QLatin1String(" "),
                                      QLatin1String("indexfile.index"),
                                      QLatin1String("notmatch.title"),
-                                     QRegExp("(^Image:.*)|(^Category:.*)|(^Talk:.*)|(^Template:.*)|(^Wikipedia:.*)|(^Special:.*)"),
+                                     QRegExp("(^Image:.*)|(^Category:.*)|"
+                                             "(^Talk:.*)|(^Template:.*)|"
+                                             "(^Wikipedia:.*)|(^Special:.*)"),
                                      QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
     }
 
