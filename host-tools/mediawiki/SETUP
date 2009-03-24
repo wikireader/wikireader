@@ -106,6 +106,7 @@ Your MediaWiki needs to enable certain extensions:
     $wgUseTidy = true;
     $wgTidyBin = '/space/dports/bin/tidy';
     $wgTidyConf = $IP.'/extensions/tidy/tidy.conf';
+    $wgExtraNamespaces = array(100 => "Portal", 101 => "Portal_talk");
 
     require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
     require_once( "$IP/extensions/Cite/Cite.php" );
