@@ -20,6 +20,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <wikilib.h>
 #include <guilib.h>
@@ -34,6 +35,22 @@ void fb_clear(void) {}
 static unsigned char framebuffer_data[FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT];
 unsigned char *framebuffer = &framebuffer_data[0];
 
+
+static int tests = 0;
+static int passed = 0;
+static int failed = 0;
+#define COMPARE_INT(actual, expected, statement, failure_text) \
+	++tests; \
+	if (actual statement expected) { \
+		printf("SUCCESS: %s\n", failure_text); \
+		++passed; \
+	} else { \
+		printf("FAIL: Got: %d Expected: %d Msg: %s\n", \
+				actual, expected, failure_text); \
+		++failed; \
+	}
+
+
 int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
@@ -46,9 +63,9 @@ int main(int argc, char *argv[])
 {
 	wikilib_init();
 	guilib_init();
-	wikilib_run();
 
-	/* never reached */
-	return 0;
+	printf("Test result: Executed tests: %d Passed: %d Failed: %d\n",
+			tests, passed, failed);
+	return failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
