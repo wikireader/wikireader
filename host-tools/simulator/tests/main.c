@@ -26,6 +26,7 @@
 #include <guilib.h>
 #include <msg.h>
 #include <input.h>
+#include <list.h>
 
 /* empty dummies - no framebuffer here */
 void fb_set_pixel(int x, int y, int val) {}
@@ -59,10 +60,60 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 	return 0;
 }
 
+
+/* Simple tests for the linked list */
+struct list_template {
+	struct wl_list list;
+	int index;
+	int index_2;
+	char member[8];
+};
+
+static int comp_node(void *value, unsigned int offset, struct wl_list *node)
+{
+	int *p = (void *)(node)+sizeof(struct wl_list)+offset;
+	int val = (int)(value);
+
+	return val == *p? 0: 1;
+}
+
+static void list_test(void) 
+{
+	int i;
+	struct list_template head;
+	struct list_template *tmp;
+	struct list_template alist[10];
+
+	/* init head of this lists */
+	head.index = -1;
+	wl_list_init(&head.list);
+
+	for (i = 0; i < 10; i++){
+		alist[i].index = i;
+		alist[i].index_2 = i+10;
+		wl_list_insert_after(&head.list, &alist[i].list);
+	}
+
+	COMPARE_INT(wl_list_size(&head.list), 10, ==, "All added");
+
+	wl_list_del(&alist[3].list);
+	COMPARE_INT(wl_list_size(&head.list), 9, ==, "Removed 3rd item");
+
+
+	tmp = wl_list_search(&head.list, (void*)(int)3, 0, &comp_node);
+	COMPARE_INT(tmp, &alist[3].list, !=, "Not found");
+
+	tmp = wl_list_search(&head.list, (void*)(int)2, 0, &comp_node);
+	COMPARE_INT(tmp, &alist[2].list, ==, "Found");
+}
+
 int main(int argc, char *argv[])
 {
 	wikilib_init();
 	guilib_init();
+
+	/* add tests here */
+	list_test();
 
 	printf("Test result: Executed tests: %d Passed: %d Failed: %d\n",
 			tests, passed, failed);
