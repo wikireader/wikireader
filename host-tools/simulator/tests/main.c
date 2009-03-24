@@ -21,12 +21,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <wikilib.h>
 #include <guilib.h>
 #include <msg.h>
 #include <input.h>
 #include <list.h>
+#include <history.h>
+
+#define MAX_HISTORY_RAW_DATA 	200
+#define MAX_HISTORY_ITEM 		100
 
 /* empty dummies - no framebuffer here */
 void fb_set_pixel(int x, int y, int val) {}
@@ -51,6 +56,18 @@ static int failed = 0;
 		++failed; \
 	}
 
+#define COMPARE_CHAR(actual, expected, failure_text) \
+	++tests; \
+	if (actual == NULL || expected == NULL)	\
+		break;							\
+	if (!strcmp(actual, expected)) { \
+		printf("SUCCESS: %s\n", failure_text); \
+		++passed; \
+	} else { \
+		printf("FAIL: Got: %s Expected: %s Msg: %s\n", \
+				actual, expected, failure_text); \
+		++failed; \
+	}
 
 int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
@@ -107,6 +124,61 @@ static void list_test(void)
 	COMPARE_INT(tmp, &alist[2].list, ==, "Found");
 }
 
+static int find_target(char *target)
+{
+	return -1;
+}
+
+static int count_target_num(char *target)
+{
+	return 0;
+}
+
+static void history_test()
+{
+	int i;
+	char title[256], target[6];
+
+	COMPARE_INT(0, history_item_size(), ==, "almost 0....");
+
+	/* feed history raw data items and check the latest viewed item */
+	for (i = 0; i < MAX_HISTORY_RAW_DATA ;i++) {
+		sprintf(title, "title_%d", i);
+		sprintf(target, "%d", i);
+		history_add(title, target);
+	}
+
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size(), ==, "almost 100....");
+
+	for (i = 0; i < MAX_HISTORY_ITEM; ++i) {
+		sprintf(title, "title_%d", 199 - i);
+		sprintf(target, "%d", 199 - i);
+		COMPARE_CHAR(title, history_get_item_title(i), "Iterate history title");
+		COMPARE_CHAR(target, history_get_item_target(i), "Iterate history target");
+	}
+
+	COMPARE_INT(NULL, history_get_item_title(-1), ==, "Provide a non-sense index");
+	COMPARE_INT(NULL, history_get_item_title(432423423432), ==, "Provide another non-sense index");
+
+	/* see the first item is existed or not */
+	sprintf(target, "%d", 1);
+	COMPARE_INT(0, find_target(target), ==,"Not existed");
+
+	/* add an existed item in the history, each item should be unique */
+	i = 1;
+	sprintf(title, "duplicate_%d", i);
+	sprintf(target, "%d", i);
+	history_add(title, target);
+	history_add(title, target);
+
+	COMPARE_INT(1, count_target_num(target), ==, "Check the number of existed target");
+
+	/* reset history, find with a specific item */
+	history_reset();
+	COMPARE_INT(0, history_item_size(), ==, "Top target does exist");
+
+}
+
 int main(int argc, char *argv[])
 {
 	wikilib_init();
@@ -114,6 +186,7 @@ int main(int argc, char *argv[])
 
 	/* add tests here */
 	list_test();
+	history_test();
 
 	printf("Test result: Executed tests: %d Passed: %d Failed: %d\n",
 			tests, passed, failed);
