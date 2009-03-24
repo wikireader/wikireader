@@ -67,7 +67,7 @@ BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 void xdelay(DWORD nops)
 {
 	while (nops--)
-		asm("nop");
+		asm volatile("nop");
 }
 
 /*-----------------------------------------------------------------------*/
@@ -332,6 +332,7 @@ BYTE send_cmd (
 	 **/
 	n = (cmd == CMD0 ? 21 : 10);
 	do {
+		xdelay(5000);
 		res = rcvr_spi();
 		n--;
 	} while (n && ((cmd == CMD0) || (res & 0x80) || (res == 0x1f) || (res == 0x3f)));
