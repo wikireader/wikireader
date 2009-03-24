@@ -186,7 +186,7 @@ BOOL rcvr_datablock (
 	DMAMSB = ((WORD)buff) >> 8;
 	DMALSB = ((WORD)buff) & 0x00FF;
 	SPSR   = (btr/512) << 4;		// enable transfer
-	
+
 	rcvr_spi();						/* Discard CRC */
 	rcvr_spi();
 #endif
@@ -245,7 +245,7 @@ BOOL xmit_datablock (
 		DMAMSB = ((WORD)buff) >> 8;
 		DMALSB = ((WORD)buff) & 0x00FF;
 		SPSR   = 0x90; // send 1 data block TO spi
-		
+
 		xmit_spi(0xFF);					/* CRC (Dummy) */
 		xmit_spi(0xFF);
 		resp = rcvr_spi();				/* Reveive data response */
@@ -324,11 +324,18 @@ BYTE send_cmd (
 
 	/* Receive command response */
 	if (cmd == CMD12) rcvr_spi();			/* Skip a stuff byte when stop reading */
-	n = 10;					/* Wait for a valid response in timeout of 10 attempts */
-	do
+
+	/***
+	 * wait for a valid response in timeout of 10 attempts or
+	 * in case of the init command read 21 bytes from the card
+	 * in order to make sure the card was initialized properly
+	 **/
+	n = (cmd == CMD0 ? 21 : 10);
+	do {
 		res = rcvr_spi();
-	while (((res & 0x80) || (res == 0x1f) || (res == 0x3f)) && --n);
-	
+		n--;
+	} while (n && ((cmd == CMD0) || (res & 0x80) || (res == 0x1f) || (res == 0x3f)));
+
 	return res;			/* Return with the response value */
 }
 
@@ -386,25 +393,26 @@ DSTATUS disk_initialize (
 	DESELECT();
 
 	ty = 0;
-	if (send_cmd(CMD0, 0) == 1) {			/* Enter Idle state */
-		if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDHC */
-			for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();			/* Get trailing return value of R7 resp */
-			if (ocr[2] == 0x01 && ocr[3] == 0xAA) {				/* The card can work at vdd range of 2.7-3.6V */
-				while (timeout-- && send_cmd(ACMD41, 1UL << 30));		/* Wait for leaving idle state (ACMD41 with HCS bit) */
-				if (timeout && send_cmd(CMD58, 0) == 0) {		/* Check CCS bit in the OCR */
-					for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();
-					ty = (ocr[0] & 0x40) ? 12 : 4;
-				}
+	send_cmd(CMD0, 0);			/* Enter Idle state */
+
+	if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDHC */
+		for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();			/* Get trailing return value of R7 resp */
+		if (ocr[2] == 0x01 && ocr[3] == 0xAA) {				/* The card can work at vdd range of 2.7-3.6V */
+			while (timeout-- && send_cmd(ACMD41, 1UL << 30));		/* Wait for leaving idle state (ACMD41 with HCS bit) */
+			if (timeout && send_cmd(CMD58, 0) == 0) {		/* Check CCS bit in the OCR */
+				for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();
+				ty = (ocr[0] & 0x40) ? 12 : 4;
 			}
-		} else {					/* SDSC or MMC */
-			if (send_cmd(ACMD41, 0) <= 1) 	{
-				ty = 2; cmd = ACMD41;		/* SDSC */
-			} else {
-				ty = 1; cmd = CMD1;		/* MMC */
-			}
-			while (timeout-- && send_cmd(cmd, 0));		/* Wait for leaving idle state */
-			if (!timeout || send_cmd(CMD16, 512) != 0)	/* Set R/W block length to 512 */
-				ty = 0;
+		}
+	} else {					/* SDSC or MMC */
+		if (send_cmd(ACMD41, 0) <= 1) 	{
+			ty = 2; cmd = ACMD41;		/* SDSC */
+		} else {
+			ty = 1; cmd = CMD1;		/* MMC */
+		}
+		while (timeout-- && send_cmd(cmd, 0));		/* Wait for leaving idle state */
+		if (!timeout || send_cmd(CMD16, 512) != 0) {	/* Set R/W block length to 512 */
+			ty = 0;
 		}
 	}
 	CardType = ty;
