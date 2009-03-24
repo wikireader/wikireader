@@ -41,6 +41,7 @@ void fb_clear(void) {}
 static unsigned char framebuffer_data[FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT];
 unsigned char *framebuffer = &framebuffer_data[0];
 
+static int test_strcmp(const char *actual, const char *expected);
 
 static int tests = 0;
 static int passed = 0;
@@ -58,16 +59,24 @@ static int failed = 0;
 
 #define COMPARE_CHAR(actual, expected, failure_text) \
 	++tests; \
-	if (actual == NULL || expected == NULL)	\
-		break;							\
-	if (!strcmp(actual, expected)) { \
+	if (!test_strcmp(actual, expected)) { \
 		printf("SUCCESS: %s\n", failure_text); \
 		++passed; \
 	} else { \
 		printf("FAIL: Got: %s Expected: %s Msg: %s\n", \
 				actual, expected, failure_text); \
 		++failed; \
-	}
+	}		\
+
+static int test_strcmp(const char *actual, const char *expected)
+{
+	if(actual == NULL && expected == NULL)
+		return 0;
+	else if (actual != NULL && expected != NULL)
+			return strcmp(actual, expected);
+	else
+		return 1;
+}
 
 int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
