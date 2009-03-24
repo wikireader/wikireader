@@ -39,6 +39,11 @@ void ExtractArticleUrl::handleArticle(const Article& article)
         || article.title().title().startsWith("Special:"))
         return;
 
+
+    QString title = article.title().title();
+    title = title.replace(" ", "_");
+    title = title.replace("%", "%25");
+
     QTextStream stream(&m_file);
-    stream << article.hash() << " " << "\%SETUP\%/" + article.title().title() << endl;
+    stream << article.hash() << " " << "\%SETUP\%/" + title << endl;
 }
