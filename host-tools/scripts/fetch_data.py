@@ -16,6 +16,9 @@ os.environ['DISPLAY'] = ":%d" % display
 
 failed_urls = open("failed.urls", "w")
 
+class TimeOutException(Exception):
+    pass
+
 
 def execute(hash, url):
     print "Getting %s" % url
@@ -32,6 +35,8 @@ for work in glob.glob("*.work"):
         try:
             execute(data[0], data[1])
         except subprocess.CalledProcessError:
-            print >> failed_urls, "%s %s" % (data[0], data[1])
+            print >> failed_urls, "ProcessError: %s %s" % (data[0], data[1])
+	except TimeOutException:
+	    print >> failed_urls, "Timeout: %s %s" % (data[0], data[1])
 
 
