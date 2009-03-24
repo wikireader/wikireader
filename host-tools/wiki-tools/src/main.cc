@@ -60,7 +60,8 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** arg
                                      QRegExp("(^Image:.*)|(^Category:.*)|"
                                              "(^Talk:.*)|(^Template:.*)|"
                                              "(^Wikipedia:.*)|(^Special:.*)|"
-                                             "(^Portal:.*)|(^MediaWiki:.*)"),
+                                             "(^Portal:.*)|(^MediaWiki:.*)|"
+                                             "(^Help:.*)"),
                                      QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
     }
 

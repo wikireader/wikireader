@@ -38,7 +38,8 @@ void ExtractArticleUrl::handleArticle(const Article& article)
         || article.title().title().startsWith("Talk:")
         || article.title().title().startsWith("Special:")
         || article.title().title().startsWith("Portal:")
-        || article.title().title().startsWith("MediaWiki:"))
+        || article.title().title().startsWith("MediaWiki:")
+        || article.title().title().startsWith("Help:"))
         return;
 
 
