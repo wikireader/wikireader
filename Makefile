@@ -153,7 +153,7 @@ webkit:
 
 .PHONY: flash-bootloader
 flash-bootloader:
-	$(MAKE) -C bootloader flash
+	$(MAKE) -C bootloader flash-bootloader
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean

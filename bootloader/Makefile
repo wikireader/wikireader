@@ -15,7 +15,7 @@ else
 EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_EEPROM
 endif
 
-ifneq ($(MAKECMDGOALS),flash)
+ifneq ($(MAKECMDGOALS),flash-bootloader)
 $(shell [ -f last_bootfrom ] && [ -z "`grep '\$(EXTRA_CFLAGS)' last_bootfrom`" ] && rm last_bootfrom)
 endif
 
@@ -69,10 +69,10 @@ eeprom-2nd.bin: eeprom-2nd.elf
 				$< $@
 
 # flash target
-flash: $(TARGETS)
+flash-bootloader: $(TARGETS)
 	@e07load/e07load wikireader.map
 
-clean::
+clean:
 	make -C e07load clean
 	make -C gfxtool clean
 	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map last_bootfrom
