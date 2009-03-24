@@ -22,10 +22,13 @@ class TimeOutException(Exception):
 
 def execute(hash, url):
     print "Getting %s" % url
-    file = os.path.join("articles", url.replace("http://127.0.0.1/mediawiki/index.php/", url))
+    file_base = os.path.join("articles", hash.left(1), hash.left(2))
+    render_text = "%s.blib" % os.path.join(file_base, hash)
+
     subprocess.check_call(["GtkLauncher", url])
     subprocess.check_call(["extract_spacing.py", "render_text.blib"])
-    subprocess.check_call(["mv", "-f", "render_text.blib", file])
+    subprocess.check_call(["mkdir", "-p", file_base])
+    subprocess.check_call(["mv", "-f", "render_text.blib", render_text])
 
 
 for work in glob.glob("*.work"):
