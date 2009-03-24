@@ -39,4 +39,7 @@ for work in glob.glob("*.work"):
 	except TimeOutException:
 	    print >> failed_urls, "Timeout: %s %s" % (data[0], data[1])
 
+    # mark it as done
+    os.rename(file, "%s.done" % os.path.splitext(file)[0])
+
 
