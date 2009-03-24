@@ -59,7 +59,8 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** arg
                                      QLatin1String("notmatch.title"),
                                      QRegExp("(^Image:.*)|(^Category:.*)|"
                                              "(^Talk:.*)|(^Template:.*)|"
-                                             "(^Wikipedia:.*)|(^Special:.*)"),
+                                             "(^Wikipedia:.*)|(^Special:.*)|"
+                                             "(^Portal:.*)"),
                                      QRegExp("[0-9A-Za-z':\\(\\)_\\-\\s\\.]*") );
     }
 
