@@ -20,17 +20,20 @@ class TimeOutException(Exception):
     pass
 
 
+def run_command(cmd):
+    subprocess.check_call(cmd)
+
 def execute(hash, url):
     print "Getting %s" % url
     file_base = os.path.join("articles", hash.left(1), hash.left(2))
     render_text = "%s.blib" % os.path.join(file_base, hash)
     render_link = "%s.link" % os.path.join(file_base, hash)
 
-    subprocess.check_call(["GtkLauncher", url])
-    subprocess.check_call(["extract_spacing.py", "render_text.blib"])
-    subprocess.check_call(["mkdir", "-p", file_base])
-    subprocess.check_call(["mv", "-f", "render_text.blib", render_text])
-    subprocess.check_call(["mv", "-f", "render_text.links", render_link])
+    run_command(["GtkLauncher", url])
+    run_command(["extract_spacing.py", "render_text.blib"])
+    run_command(["mkdir", "-p", file_base])
+    run_command(["mv", "-f", "render_text.blib", render_text])
+    run_command(["mv", "-f", "render_text.links", render_link])
 
 
 for work in glob.glob("*.work"):
