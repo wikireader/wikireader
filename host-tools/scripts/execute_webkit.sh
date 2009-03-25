@@ -3,7 +3,7 @@
 
 for job in work/`hostname`/*;
 do
-    ./fetch_data.py $job &
+    fetch_data.py $job &
 done
 
 

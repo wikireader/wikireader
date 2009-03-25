@@ -3,7 +3,7 @@
 
 for job in work/`hostname`/*;
 do
-    ./fetch_wget.sh $job &
+    fetch_wget.sh $job &
 done
 
 
