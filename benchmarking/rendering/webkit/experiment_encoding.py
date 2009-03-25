@@ -63,9 +63,8 @@ class BitWriter:
 
         consumed = []
 
-        while len(self.bits) >= 8:
-            operate = self.bits[0:8]
-            self.bits = self.bits[8:]
+        for index in range(0, len(self.bits), 8):
+            operate = self.bits[index:index+8]
             data = (operate[0]<<7) | (operate[1]<<6) | (operate[2]<<5) | (operate[3]<<4) | (operate[4]<<3) | (operate[5]<<2) | (operate[6]<<1) | (operate[7]<<0)
             byte = struct.pack("<B", data)
             consumed.append(byte)
