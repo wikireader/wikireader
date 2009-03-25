@@ -40,7 +40,7 @@ for line in file:
        file_no = file_no + 1
        last_thread[slave_nr] = (last_thread[slave_nr] + 1) % NUMBER_OF_JOBS
 
-   print >> current_file, line.replace(" ", "_")[:-1] 
+   print >> current_file, line[:-1] 
    current_number = current_number + 1
    if current_number % ITEMS_PER_PACKAGE == 0:
        current_file.close()
