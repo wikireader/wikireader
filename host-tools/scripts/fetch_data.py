@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import glob, os, sys, subprocess, signal
+import glob, os, sys, subprocess, signal, time
 job_dir = sys.argv[1]
 
 
@@ -13,6 +13,9 @@ except:
 display = 99 - int(job_dir.rsplit('/', 1)[1])
 os.system("Xvfb :%d -noreset &" % display)
 os.environ['DISPLAY'] = ":%d" % display
+
+# wait for the x server to start
+time.sleep(6)
 
 failed_urls = open("failed.urls", "w")
 current_pid = None
