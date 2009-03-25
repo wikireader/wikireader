@@ -29,7 +29,12 @@ def run_command(cmd):
     signal.alarm(120)
     proc = subprocess.Popen(cmd)
     current_pid = proc.pid
-    pid, sts = os.waitpid(proc.pid, 0)
+    while True:
+        try:
+            pid, sts = os.waitpid(proc.pid, 0)
+            break
+        except OSError:
+            pass
 
     # cancel timer and error checking
     signal.alarm(0)
