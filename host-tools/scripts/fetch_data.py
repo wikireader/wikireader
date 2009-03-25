@@ -11,7 +11,7 @@ except:
     pass
 
 display = 99 - int(job_dir.rsplit('/', 1)[1])
-os.system("Xvfb :%d -noreset &" % display)
+os.system("Xvfb :%d -noreset -ac &" % display)
 os.environ['DISPLAY'] = ":%d" % display
 
 # wait for the x server to start
