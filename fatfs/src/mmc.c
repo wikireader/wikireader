@@ -1,4 +1,4 @@
-/* Implementation taken from 
+/* Implementation taken from
  * 	http://vector06cc.googlecode.com/svn/trunk/firmware/floppysrc/
  * GPL and so on. */
 
@@ -394,7 +394,9 @@ DSTATUS disk_initialize (
 	DESELECT();
 
 	ty = 0;
-	send_cmd(CMD0, 0);			/* Enter Idle state */
+
+	if (send_cmd(CMD0, 0) == 0)			/* Enter Idle state */
+		goto power_off;
 
 	if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDHC */
 		for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();			/* Get trailing return value of R7 resp */
@@ -421,10 +423,13 @@ DSTATUS disk_initialize (
 
 	if (ty) {			/* Initialization succeded */
 		Stat &= ~STA_NOINIT;	/* Clear STA_NOINIT */
-	} else {			/* Initialization failed */
-		power_off();
+		goto out;
 	}
 
+power_off: /* Initialization failed */
+	power_off();
+
+out:
 	return Stat;
 }
 
