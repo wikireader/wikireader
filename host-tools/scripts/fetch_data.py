@@ -68,6 +68,7 @@ time.sleep(6)
 
 failed_urls = open("failed.urls", "w")
 
+signal.signal(signal.SIGALRM, alarm_handler)
 
 
 for work in glob.glob("*.work"):
