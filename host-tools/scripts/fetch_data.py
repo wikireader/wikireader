@@ -42,18 +42,18 @@ def run_command(cmd):
     signal.alarm(120)
     proc = subprocess.Popen(cmd)
     current_pid = proc.pid
-    pid, sts = os.waipid(proc.pid, 0)
+    pid, sts = os.waitpid(proc.pid, 0)
 
     # cancel timer and error checking
     signal.alarm(0)
     if sts > 0:
-        raise subprocess.CalledProcessError()
+        raise subprocess.CalledProcessError(sts, cmd)
     elif sts < 0:
         raise TimeOutException()
 
 def execute(hash, url):
     print "Getting %s" % url
-    file_base = os.path.join("articles", hash.left(1), hash.left(2))
+    file_base = os.path.join("articles", hash[0], hash[0:1])
     render_text = "%s.blib" % os.path.join(file_base, hash)
     render_link = "%s.link" % os.path.join(file_base, hash)
 
@@ -76,6 +76,6 @@ for work in glob.glob("*.work"):
 	    print >> failed_urls, "Timeout: %s %s" % (data[0], data[1])
 
     # mark it as done
-    subprocess.check_call(["touch", "%s.complete" % file])
+    subprocess.check_call(["touch", "%s.complete" % work])
 
 
