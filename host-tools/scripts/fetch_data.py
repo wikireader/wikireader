@@ -1,23 +1,7 @@
 #!/usr/bin/env python
 
 import glob, os, sys, subprocess, signal, time
-job_dir = sys.argv[1]
 
-
-os.chdir(job_dir)
-try:
-    os.mkdir("articles")
-except:
-    pass
-
-display = 99 - int(job_dir.rsplit('/', 1)[1])
-os.system("Xvfb :%d -noreset -ac &" % display)
-os.environ['DISPLAY'] = ":%d" % display
-
-# wait for the x server to start
-time.sleep(6)
-
-failed_urls = open("failed.urls", "w")
 current_pid = None
 
 class TimeOutException(Exception):
@@ -65,6 +49,25 @@ def execute(hash, url):
     run_command(["mkdir", "-p", file_base])
     run_command(["mv", "-f", "render_text.blib", render_text])
     run_command(["mv", "-f", "render_text.links", render_link])
+
+
+# main execution
+job_dir = sys.argv[1]
+os.chdir(job_dir)
+try:
+    os.mkdir("articles")
+except:
+    pass
+
+display = 99 - int(job_dir.rsplit('/', 1)[1])
+os.system("Xvfb :%d -noreset -ac &" % display)
+os.environ['DISPLAY'] = ":%d" % display
+
+# wait for the x server to start
+time.sleep(6)
+
+failed_urls = open("failed.urls", "w")
+
 
 
 for work in glob.glob("*.work"):
