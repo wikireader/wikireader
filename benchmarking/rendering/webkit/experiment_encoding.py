@@ -378,6 +378,13 @@ def write_to_file(text_runs):
     bytes = writer.finish()
     auto_kern_bit.write("".join(bytes))
 
+# Import Psyco if available
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    pass
+
 raw_glyphs = load()
 (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = generate_text_runs(raw_glyphs)
 text_runs = prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
