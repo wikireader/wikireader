@@ -135,29 +135,29 @@ static void list_test(void)
 
 static int find_target(char *target)
 {
-	return -1;
-}
-
-static int count_target_num(char *target)
-{
-	return 0;
+	if (history_find_item_target(target))
+		return 1;
+	else
+		return 0;
 }
 
 static void history_test()
 {
-	int i;
+	int i, count;
 	char title[256], target[6];
+
+	history_list_init();
 
 	COMPARE_INT(0, history_item_size(), ==, "almost 0....");
 
 	/* feed history raw data items and check the latest viewed item */
-	for (i = 0; i < MAX_HISTORY_RAW_DATA ;i++) {
+	for (i = 0; i < MAX_HISTORY_RAW_DATA ;++i) {
 		sprintf(title, "title_%d", i);
 		sprintf(target, "%d", i);
 		history_add(title, target);
 	}
 
-	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size(), ==, "almost 100....");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
 
 	for (i = 0; i < MAX_HISTORY_ITEM; ++i) {
 		sprintf(title, "title_%d", 199 - i);
@@ -180,12 +180,32 @@ static void history_test()
 	history_add(title, target);
 	history_add(title, target);
 
-	COMPARE_INT(1, count_target_num(target), ==, "Check the number of existed target");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
 
-	/* reset history, find with a specific item */
-	history_reset();
-	COMPARE_INT(0, history_item_size(), ==, "Top target does exist");
+	for (i = 0; i < 3; i++){
+		if (!strcmp(title,history_get_item_title(i)))
+			count++;
+	}
 
+	COMPARE_INT(1, count, ==, "Check the number of duplicated title");
+
+	for (i = 0; i < 10; ++i) {
+		sprintf(title, "title_%d", 199 - i);
+		sprintf(target, "%d", 199 - i);
+		history_add(title, target);
+	}
+
+	i = 1;
+	sprintf(title, "duplicate_%d", i);
+	count = 0;
+
+	for (i = 0; i < MAX_HISTORY_ITEM; i++){
+		if (!strcmp(title,history_get_item_title(i)))
+			count++;
+	}
+
+	COMPARE_INT(1, count, ==, "Check the number of duplicated title through out the list");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
 }
 
 int main(int argc, char *argv[])
