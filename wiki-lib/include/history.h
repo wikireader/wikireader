@@ -32,10 +32,16 @@ const char *history_current_target(void);
 void history_add(const char *text, const char *target);
 void history_move_current_to_top(void);
 
-const char *history_get_item_title(int index);
-const char *history_get_item_target(int index);
+const char *history_get_item_title(unsigned int index);
+const char *history_get_item_target(unsigned int index);
 
 unsigned int history_item_size(void);
+unsigned int free_item_size(void);
 
-const char *history_get_top_target();
+const char *history_get_top_target(void);
+
+void history_list_init();
+struct history_item *history_find_item_title(char *title);
+struct history_item *history_find_item_target(char *target);
+
 #endif
