@@ -49,8 +49,10 @@ static void toggle_soft_keyboard(void)
 	keyboard_set_visible(!keyboard_is_visible());
 
 	/* TODO: This can be optimized for showing the keyboard */
+	guilib_fb_lock();
 	search_reload();
 	keyboard_paint();
+	guilib_fb_unlock();
 }
 
 static void print_intro()
@@ -127,8 +129,10 @@ static void handle_search_key(char keycode)
 		return;
 	}
 
+	guilib_fb_lock();
 	search_display_results();
 	keyboard_paint();
+	guilib_fb_unlock();
 }
 
 static void handle_cursor(struct wl_input_event *ev)
