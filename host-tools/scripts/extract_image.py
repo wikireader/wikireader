@@ -22,7 +22,7 @@ import gd, sys
 
 def write_image(image, file):
     file.write("""/* This file is auto generated... */
-struct guilib_image image_data {
+struct guilib_image image_data = {
 \t.width = %d,
 \t.height = %d,
 \t.data = %s,
@@ -56,7 +56,7 @@ def load_image(filename):
     # build formatted_type..
     img_data['data'] = "".join(img_data['data'])
     img_data['formated_data'] = []
-    img_data['formated_data'].append('[')
+    img_data['formated_data'].append('{')
     words = 0
     for byte in img_data['data']:
         if words % 12 == 0:
@@ -66,7 +66,7 @@ def load_image(filename):
         if words != len(img_data['data']):
             img_data['formated_data'].append(', ')
 
-    img_data['formated_data'].append(']')
+    img_data['formated_data'].append('}')
     return img_data
 
 write_image(load_image(sys.argv[1]), sys.stdout)
