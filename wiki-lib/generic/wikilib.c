@@ -222,6 +222,7 @@ int wikilib_run(void)
 	 * test searching code...
 	 */
 	search_init();
+	history_list_init();
 
 	for (;;) {
 		struct wl_input_event ev;
