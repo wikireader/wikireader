@@ -378,37 +378,7 @@ def write_to_file(text_runs):
     bytes = writer.finish()
     auto_kern_bit.write("".join(bytes))
 
-def write_mappings():
-    """Write out the mappings used for this article"""
-
-    # Write options
-    mkdir("fonts")
-
-    for font in kern_info.keys():
-        font_index = "%s" % font
-        font_path = os.path.join("fonts", font_index)
-        mkdir(font_path)
-        for (l_glyph, r_glyph) in kern_info[font].keys():
-            glyph_path = os.path.join(font_path, "spacing")
-            mkdir(glyph_path)
-
-            glyph_path = os.path.join(glyph_path, "%s-%s" % (l_glyph, r_glyph))
-            mkdir(glyph_path)
-
-            # Copy some things
-            sp = file(os.path.join(glyph_path, "spacing"), "w")
-            (x,y) = kern_info[font][(l_glyph, r_glyph)]
-            sp.write("%d,%d" % (x,y))
-            sp = file(os.path.join(glyph_path, "glyph"), "w")
-    print kern_info
-    print bit_occurences
-            
-        
-
-
 raw_glyphs = load()
 (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = generate_text_runs(raw_glyphs)
 text_runs = prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 write_to_file(text_runs)
-write_mappings()
-print "Bigrams", bigrams
