@@ -45,10 +45,10 @@ static inline void wl_list_del(struct wl_list *node)
 	wl_list_init(node);
 }
 
-static inline int wl_list_size(struct wl_list *list)
+static inline unsigned int wl_list_size(struct wl_list *list)
 {
 	struct wl_list *node = list->next;
-	int count = 0;
+	unsigned int count = 0;
 
 	while (node != list) {
 		++count;
@@ -70,6 +70,32 @@ int (*comp)(void *value, unsigned int offset, const struct wl_list *node))
 		p = p->next;
 	}
 	return p == head ? NULL : p;
+}
+
+static struct wl_list * wl_list_find_nth_node(struct wl_list *list, unsigned int nth)
+{
+	struct wl_list *node = list->next;
+
+	while (nth) {
+		--nth;
+		node = node->next;
+	}
+
+	return node;
+}
+
+static struct wl_list *wl_list_remove_last(struct wl_list *list)
+{
+	struct wl_list *node = list->prev;
+
+	wl_list_del(node);
+	return node;
+}
+
+static void wl_list_move2_first(struct wl_list *list, struct wl_list *node)
+{
+	wl_list_link_node(node->prev, node->next);
+	wl_list_insert_after(list, node);
 }
 
 #endif /* LIST_H_*/
