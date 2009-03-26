@@ -17,6 +17,9 @@
 
 #include "keyboard.h"
 
+#include "guilib.h"
+#include "keyboard_image.h"
+
 /*
  * The secret of the position and size of the keyboard
  * is shared between search.c and this file.
@@ -41,6 +44,9 @@ void keyboard_paint()
 {
 	if (!keyboard_visible)
 		return;
+	guilib_fb_lock();
+	guilib_blit_image(&image_data, 0, FRAMEBUFFER_HEIGHT - image_data.height);
+	guilib_fb_unlock();
 }
 
 /**
