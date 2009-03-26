@@ -93,18 +93,20 @@ def write_mappings():
         font_index = "%s" % font
         font_path = os.path.join("fonts", font_index)
         mkdir(font_path)
-        for (l_glyph, r_glyph) in kern_info[font].keys():
-            glyph_path = os.path.join(font_path, "spacing")
-            mkdir(glyph_path)
+        glyph_path_base = os.path.join(font_path, "spacing")
+        mkdir(glyph_path_base)
 
-            glyph_path = os.path.join(glyph_path, "%s-%s" % (l_glyph, r_glyph))
+        for (l_glyph, r_glyph) in kern_info[font].keys():
+
+            glyph_path = os.path.join(glyph_path_base, "%s-%s" % (l_glyph, r_glyph))
             mkdir(glyph_path)
 
             # Copy some things
-            sp = file(os.path.join(glyph_path, "spacing"), "w")
-            (x,y) = kern_info[font][(l_glyph, r_glyph)]
-            sp.write("%d,%d" % (x,y))
-            sp = file(os.path.join(glyph_path, "glyph"), "w")
+            sp_path = os.path.join(glyph_path, "spacing")
+            if not os.path.exists(sp_path):
+                sp = file(sp_path, "w")
+                (x,y) = kern_info[font][(l_glyph, r_glyph)]
+                sp.write("%d,%d" % (x,y))
 
 
 raw_glyphs = load()
