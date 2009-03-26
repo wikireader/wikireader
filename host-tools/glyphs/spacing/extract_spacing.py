@@ -109,6 +109,14 @@ def write_mappings():
                 sp.write("%d,%d" % (x,y))
 
 
+# Import Psyco if available
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    pass
+
+
 raw_glyphs = load()
 generate_text_runs(raw_glyphs)
 write_mappings()
