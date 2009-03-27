@@ -45,7 +45,7 @@ def run_command(cmd):
 
 def execute(hash, url):
     print "Getting %s" % url
-    file_base = os.path.join("articles", hash[0], hash[0:1])
+    file_base = os.path.join("articles", hash[0], hash[1:3])
     render_text = "%s.blib" % os.path.join(file_base, hash)
     render_link = "%s.link" % os.path.join(file_base, hash)
 
