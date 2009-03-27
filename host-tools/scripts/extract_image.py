@@ -29,6 +29,20 @@ struct guilib_image image_data = {
 };
 """ % (image['width'], image['height'], "".join(image['formated_data'])))
 
+def str_to_byte(str):
+    """
+    Convert 11111111 to a byte
+    """
+    byte = 0
+    for i in range(0, len(str)):
+        if str[i] == '1':
+            val = 1
+        else:
+            val = 0
+
+        byte = byte | (val << 7-i)
+    return "0x%.2x" % byte
+
 def load_image(filename):
     img_data = {}
     img_data['data'] = []
@@ -37,7 +51,7 @@ def load_image(filename):
     data = False
     for line in image:
         if line_no == 0:
-            if line[:-1] != "P4":
+            if line[:-1] != "P1":
                 raise Exception("Wrong Image")
         elif not data and line[0] == '#':
             pass
@@ -57,14 +71,13 @@ def load_image(filename):
     img_data['data'] = "".join(img_data['data'])
     img_data['formated_data'] = []
     img_data['formated_data'].append('{')
-    words = 0
-    for byte in img_data['data']:
-        if words % 12 == 0:
+    bytes = 0
+    for i in range(0, len(img_data['data']), 8):
+        if bytes % 12 == 0:
             img_data['formated_data'].append('\n\t')
-        img_data['formated_data'].append("0x%.2x" % ord(byte))
-        words = words + 1
-        if words != len(img_data['data']):
-            img_data['formated_data'].append(', ')
+        img_data['formated_data'].append(str_to_byte(img_data['data'][i:i+8]))
+        img_data['formated_data'].append(', ')
+        bytes = bytes + 1
 
     img_data['formated_data'].append('}')
     return img_data
