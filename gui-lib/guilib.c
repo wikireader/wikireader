@@ -122,14 +122,14 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 
 	/* special case: the image will be blitted byte aligned.
 	 * we can simply copy over all the bytes, without bit
-	 * fiddling. */
+	 * fiddling. We can copy it line by line*/
 
-	if ((x & 7) == 0) {
+	if ((x & 7) == 0 && img->width == FRAMEBUFFER_WIDTH) {
 		unsigned int i;
-		unsigned char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8;
-
-		for (i = 0; i < (img->width * img->height) / 8; i++)
-			*d++ = img->data[i];
+		for (i = 0; i < img->height; ++i) {
+			unsigned char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * (y+i)) / 8;
+			memcpy(d, &img->data[(i*img->width) / 8], img->width / 8);
+		}
 
 		return;
 	}
