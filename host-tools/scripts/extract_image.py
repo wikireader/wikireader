@@ -22,7 +22,7 @@ import gd, sys
 
 def write_image(image, file):
     file.write("""/* This file is auto generated... */
-struct guilib_image image_data = {
+static struct guilib_image image_data = {
 \t.width = %d,
 \t.height = %d,
 \t.data = %s,
