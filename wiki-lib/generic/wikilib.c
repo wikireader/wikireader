@@ -41,6 +41,7 @@
 #define ARTICLE_HISTORY		1
 
 static int current_page = 0;
+static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
 static void repaint_search(void)
@@ -117,8 +118,10 @@ static void open_article(const char* target, int mode)
 	article_display(0);
 
 	if (mode == ARTICLE_NEW) {
+		last_display_mode = DISPLAY_MODE_INDEX;
 		history_add(search_current_title(), target);
 	} else if (mode == ARTICLE_HISTORY) {
+		last_display_mode = DISPLAY_MODE_HISTORY;
 		history_move_current_to_top();
 	}
 }
@@ -185,8 +188,13 @@ static void handle_key(int keycode)
 		}
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (keycode == WL_KEY_BACKSPACE) {
-			display_mode = DISPLAY_MODE_INDEX;
-			repaint_search();
+			if (last_display_mode == DISPLAY_MODE_INDEX) {
+				display_mode = DISPLAY_MODE_INDEX;
+				repaint_search();
+			} else if (last_display_mode == DISPLAY_MODE_HISTORY) {
+				display_mode = DISPLAY_MODE_HISTORY;
+				history_display();
+			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
 		if (keycode == WL_KEY_RETURN) {
