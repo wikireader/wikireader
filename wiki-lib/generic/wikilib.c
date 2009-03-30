@@ -43,16 +43,21 @@
 static int current_page = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
+static void repaint_search(void)
+{
+	guilib_fb_lock();
+	search_reload();
+	keyboard_paint();
+	guilib_fb_unlock();
+}
+
 /* this is only called for the index page */
 static void toggle_soft_keyboard(void)
 {
 	keyboard_set_visible(!keyboard_is_visible());
 
 	/* TODO: This can be optimized for showing the keyboard */
-	guilib_fb_lock();
-	search_reload();
-	keyboard_paint();
-	guilib_fb_unlock();
+	repaint_search();
 }
 
 static void print_intro()
@@ -163,7 +168,7 @@ static void handle_key(int keycode)
 			toggle_soft_keyboard();
 		} else {
 			display_mode = DISPLAY_MODE_INDEX;
-			search_reload();
+			repaint_search();
 		}
 	} else if (keycode == WL_INPUT_KEY_HISTORY) {
 		display_mode = DISPLAY_MODE_HISTORY;
@@ -181,7 +186,7 @@ static void handle_key(int keycode)
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (keycode == KEY_BACKSPACE) {
 			display_mode = DISPLAY_MODE_INDEX;
-			search_reload();
+			repaint_search();
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
 		if (keycode == KEY_RETURN) {
