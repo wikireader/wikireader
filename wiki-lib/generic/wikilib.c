@@ -125,7 +125,7 @@ static void open_article(const char* target, int mode)
 
 static void handle_search_key(char keycode)
 {
-	if (keycode == KEY_BACKSPACE) {
+	if (keycode == WL_KEY_BACKSPACE) {
 		search_remove_char();
 	} else if (isalnum(keycode) || isspace(keycode)) {
 		search_add(tolower(keycode));
@@ -175,21 +175,21 @@ static void handle_key(int keycode)
 		history_reset();
 		history_display();
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
-		if (keycode == KEY_RETURN) {
+		if (keycode == WL_KEY_RETURN) {
 			open_article(search_current_target(), ARTICLE_NEW);
-		} else if (keycode == KEY_HASH) {
+		} else if (keycode == WL_KEY_HASH) {
 			display_mode = DISPLAY_MODE_IMAGE;
 			display_image();
 		} else {
 			handle_search_key(keycode);
 		}
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
-		if (keycode == KEY_BACKSPACE) {
+		if (keycode == WL_KEY_BACKSPACE) {
 			display_mode = DISPLAY_MODE_INDEX;
 			repaint_search();
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (keycode == KEY_RETURN) {
+		if (keycode == WL_KEY_RETURN) {
 			open_article(history_current_target(), ARTICLE_HISTORY);
 		}
 	}

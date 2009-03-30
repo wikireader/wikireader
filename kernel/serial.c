@@ -199,11 +199,11 @@ int serial_get_event(struct wl_input_event *ev)
 	BUFFER_NEXT(console_read, console_buffer);
 
 	/* Override for scrolling... */
-	if (ev->key_event.keycode == KEY_PLUS) {
+	if (ev->key_event.keycode == WL_KEY_PLUS) {
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
 	}
-	else if (ev->key_event.keycode == KEY_MINUS) {
+	else if (ev->key_event.keycode == WL_KEY_MINUS) {
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
 	}

@@ -1,13 +1,13 @@
 #ifndef WL_EVENT_H
 #define WL_EVENT_H
 
-#define KEY_BACKSPACE	8
-#define KEY_RETURN	13
-#define KEY_ESC		27
-#define KEY_SPACE	32
-#define KEY_HASH	35
-#define KEY_PLUS	43
-#define KEY_MINUS	45
+#define WL_KEY_BACKSPACE	8
+#define WL_KEY_RETURN		13
+#define WL_KEY_ESC		27
+#define WL_KEY_SPACE		32
+#define WL_KEY_HASH		35
+#define WL_KEY_PLUS		43
+#define WL_KEY_MINUS		45
 
 enum {
 	WL_INPUT_KEY_SEARCH	= 0x1000,
