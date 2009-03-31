@@ -91,23 +91,21 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 struct list_template {
 	struct wl_list list;
 	int index;
-	int index_2;
-	char member[8];
 };
 
-static int comp_node(void *value, unsigned int offset, struct wl_list *node)
+static int comp_node(const void *value, unsigned int offset, const struct wl_list *node)
 {
 	int *p = (void *)(node)+sizeof(struct wl_list)+offset;
-	int val = (int)(value);
+	int val = (long)(value);
 
 	return val == *p? 0: 1;
 }
 
-static void list_test(void) 
+static void list_test(void)
 {
 	int i;
 	struct list_template head;
-	struct list_template *tmp;
+	struct list_template *tmp = NULL;
 	struct list_template alist[10];
 
 	/* init head of this lists */
@@ -116,7 +114,6 @@ static void list_test(void)
 
 	for (i = 0; i < 10; i++){
 		alist[i].index = i;
-		alist[i].index_2 = i+10;
 		wl_list_insert_after(&head.list, &alist[i].list);
 	}
 
@@ -125,12 +122,11 @@ static void list_test(void)
 	wl_list_del(&alist[3].list);
 	COMPARE_INT(wl_list_size(&head.list), 9, ==, "Removed 3rd item");
 
+	tmp = (struct list_template*) wl_list_search(&head.list, (void*)(int)3, 0, &comp_node);
+	COMPARE_INT(tmp == NULL ? -1:*(&tmp->index), alist[3].index, !=, "Not found");
 
-	tmp = wl_list_search(&head.list, (void*)(int)3, 0, &comp_node);
-	COMPARE_INT(tmp, &alist[3].list, !=, "Not found");
-
-	tmp = wl_list_search(&head.list, (void*)(int)2, 0, &comp_node);
-	COMPARE_INT(tmp, &alist[2].list, ==, "Found");
+	tmp = (struct list_template*) wl_list_search(&head.list, (void*)(int)2, 0, &comp_node);
+	COMPARE_INT(tmp == NULL ? -1:*(&tmp->index), alist[2].index, ==, "Found");
 }
 
 static int find_target(char *target)
@@ -143,7 +139,7 @@ static int find_target(char *target)
 
 static void history_test()
 {
-	int i, count;
+	int i, count = 0;
 	char title[256], target[6];
 
 	history_list_init();
@@ -166,8 +162,8 @@ static void history_test()
 		COMPARE_CHAR(target, history_get_item_target(i), "Iterate history target");
 	}
 
-	COMPARE_INT(NULL, history_get_item_title(-1), ==, "Provide a non-sense index");
-	COMPARE_INT(NULL, history_get_item_title(432423423432), ==, "Provide another non-sense index");
+	COMPARE_CHAR((char *)NULL, history_get_item_title(-1), "Provide a non-sense index");
+	COMPARE_CHAR((char *)NULL, history_get_item_title(4324234), "Provide another non-sense index");
 
 	/* see the first item is existed or not */
 	sprintf(target, "%d", 1);
