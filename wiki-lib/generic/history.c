@@ -173,7 +173,7 @@ const char *history_get_top_target(void)
 	return history_get_item_target(0);
 }
 
-struct history_item * __history_get_item(unsigned int index)
+static struct history_item * __history_get_item(unsigned int index)
 {
 	if (index > list_size)
 		return NULL;
@@ -211,7 +211,7 @@ unsigned int history_free_item_size(void)
 	return wl_list_size(&free_list.list);
 }
 
-void history_list_init()
+void history_list_init(void)
 {
 	int i;
 
