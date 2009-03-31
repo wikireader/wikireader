@@ -29,7 +29,6 @@
 
 #define RESULT_START 28
 #define RESULT_HEIGHT 10
-#define NUMBER_OF_RESULTS 19
 
 #define HISTORY_MAX_ITEM	100
 
@@ -43,16 +42,11 @@ struct history_item head, free_list;
 struct history_item pool[HISTORY_MAX_ITEM];
 
 unsigned int list_size = 0;
-
-struct history_item history_items[100];
-
-static unsigned int current_start = 0;
-static unsigned int used_items = 0;
 static int history_current = -1;
 
 // Copy and pasted form search.c.... Find something better but I don't
 // want to use structs to have these variable..
-static void invert_selection(int old_pos, int new_pos)
+static void __invert_selection(int old_pos, int new_pos)
 {
 	int start = RESULT_START - RESULT_HEIGHT + 2;
 
@@ -72,10 +66,10 @@ static void invert_selection(int old_pos, int new_pos)
 void history_select_down(void)
 {
 	/* bottom reached, not wrapping around */
-	if (history_current + 1 == (int) used_items)
+	if (history_current + 1 == (int) list_size)
 		return;
 
-	invert_selection(history_current, history_current + 1);
+	__invert_selection(history_current, history_current + 1);
 	++history_current;
 }
 
@@ -85,7 +79,7 @@ void history_select_up(void)
 	if (history_current <= 0)
 		return;
 
-	invert_selection(history_current, history_current - 1);
+	__invert_selection(history_current, history_current - 1);
 	--history_current;
 }
 
@@ -93,20 +87,20 @@ void history_select_up(void)
 void history_display(void)
 {
 	unsigned int i;
-	history_current = -1;
-
 
 	guilib_fb_lock();
 
 	guilib_clear();
 	render_string(0, 1, 14, "History", 7);
 
-	if (used_items == 0) {
+	if (list_size == 0) {
 		render_string(0, 1, 100, "No history.", 11);
 	} else {
 		int y_pos = RESULT_START;
-		for (i = current_start; i < used_items && y_pos < FRAMEBUFFER_HEIGHT; ++i) {
-			render_string(0, 1, y_pos, history_items[i].title, strlen(history_items[i].title));
+
+		for (i = 0; i <= list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+			const char *p = history_get_item_title(i);
+			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
 			y_pos += RESULT_HEIGHT;
 		}
 	}
@@ -116,14 +110,12 @@ void history_display(void)
 
 void history_reset(void)
 {
+	history_current = -1;
 }
 
 const char *history_current_target(void)
 {
-	if (history_current < 0)
-		return NULL;
-
-	return &history_items[current_start + history_current].target[0];
+	return history_get_item_target(history_current);
 }
 
 static int history_item_comp(const void *value, unsigned int offset, const struct wl_list *node)
