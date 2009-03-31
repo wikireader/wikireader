@@ -29,7 +29,7 @@
 #define RESULT_HEIGHT 10
 #define NUMBER_OF_RESULTS 19
 
-#define HISTORY_MAX_ITEM 	100
+#define HISTORY_MAX_ITEM	100
 
 struct history_item {
 	struct wl_list list;
@@ -124,20 +124,20 @@ const char *history_current_target(void)
 	return &history_items[current_start + history_current].target[0];
 }
 
-static int history_item_comp(void *value, unsigned int offset, struct wl_list *node)
+static int history_item_comp(const void *value, unsigned int offset, const struct wl_list *node)
 {
 	char *p = (void *)(node)+sizeof(struct wl_list)+offset;
 
 	return strcmp(p, (char *)value);
 }
 
-struct history_item *history_find_item_title(char *title)
+struct history_item *history_find_item_title(const char *title)
 {
 	return (struct history_item *)
 		(wl_list_search(&head.list, title, 0, history_item_comp));
 }
 
-struct history_item *history_find_item_target(char *target)
+struct history_item *history_find_item_target(const char *target)
 {
 	return (struct history_item *)
 		(wl_list_search(&head.list, target, (sizeof(char)*MAXSTR), history_item_comp));
@@ -148,19 +148,19 @@ void history_add(const char *title, const char *target)
 	struct history_item *node = NULL;
 
 	/* check this title is existed or not */
-	if (node = history_find_item_title(title)){
+	if ((node = history_find_item_title(title))){
 		wl_list_move2_first(&head.list, &node->list);
 		return;
 	}
 
 	/* check the list size, if it's over 100,kill one entry then */
 	if (list_size >= HISTORY_MAX_ITEM) {
-		node = wl_list_remove_last(&head.list);
+		node = (struct history_item *)wl_list_remove_last(&head.list);
 		wl_list_insert_after(&free_list.list, &node->list);
 	}
 
 	/* linked to the head list */
-	node = wl_list_remove_last(&free_list.list);
+	node = (struct history_item *)wl_list_remove_last(&free_list.list);
 
 	strcpy(node->title, title);
 	strcpy(node->target, target);

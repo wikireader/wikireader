@@ -1,5 +1,5 @@
 /*
- * 	Simple doubly linked list.
+ *	Simple doubly linked list.
  *
  *  This is a generic implementation.
  *	No dynamic memeory allocation required.
@@ -59,8 +59,8 @@ static inline unsigned int wl_list_size(struct wl_list *list)
 }
 
 static struct wl_list *
-wl_list_search(struct wl_list *head, void *value, unsigned int offset,
-int (*comp)(void *value, unsigned int offset, const struct wl_list *node))
+wl_list_search(struct wl_list *head, const void *value, unsigned int offset,
+int (*comp)(const void *value, unsigned int offset, const struct wl_list *node))
 {
 	struct wl_list *p = head->next;
 

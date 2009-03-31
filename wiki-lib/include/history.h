@@ -41,7 +41,7 @@ unsigned int free_item_size(void);
 const char *history_get_top_target(void);
 
 void history_list_init();
-struct history_item *history_find_item_title(char *title);
-struct history_item *history_find_item_target(char *target);
+struct history_item *history_find_item_title(const char *title);
+struct history_item *history_find_item_target(const char *target);
 
 #endif
