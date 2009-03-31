@@ -215,8 +215,13 @@ static void handle_touch(struct wl_input_event *ev)
 			char result = keyboard_release(ev->touch_event.x, ev->touch_event.y);
 			if (result != -1)
 				handle_search_key(result);
-			else
-				open_article(search_release(ev->touch_event.x, ev->touch_event.y), ARTICLE_NEW);
+			else {
+				const char *target = search_release(ev->touch_event.x, ev->touch_event.y);
+				if (target)
+					open_article(target, ARTICLE_NEW);
+				else
+					repaint_search();
+			}
 		}
 	}
 }
