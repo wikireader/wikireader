@@ -185,7 +185,7 @@ void search_display_results(void)
 		}
 
 		const int len = strlen(result);
-		render_string(0, 1, y_pos, result, len - 7);
+		render_string(0, 1, y_pos, result, len - (TARGET_SIZE + 1));
 		memcpy(&search_pointers[search_found][0], result + len - 6, 8);
 		y_pos += RESULT_HEIGHT;
 		++search_found;

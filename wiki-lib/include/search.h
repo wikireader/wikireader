@@ -18,6 +18,7 @@
 #ifndef WL_SEARCH_H
 #define WL_SEARCH_H
 
+#define TARGET_SIZE 	6
 /*
  * Highlevel search interface...
  */

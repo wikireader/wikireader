@@ -20,6 +20,7 @@
 #include <glyph.h>
 #include <lsearcher.h>
 #include <list.h>
+#include <search.h>
 
 #include <stdlib.h>
 
@@ -34,7 +35,7 @@
 struct history_item {
 	struct wl_list list;
 	char title[MAXSTR];
-	char target[6];
+	char target[TARGET_SIZE];
 };
 
 struct history_item head, free_list;
