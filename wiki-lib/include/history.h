@@ -1,5 +1,6 @@
 /*
  *  Copyright (c) 2009 Holger Hans Peter Freyther <zecke@openmoko.org>
+ *  Copyright (c) 2009 Matt Hsu <matt_hsu@openmoko.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
