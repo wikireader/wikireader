@@ -36,7 +36,7 @@ const char *history_get_item_title(unsigned int index);
 const char *history_get_item_target(unsigned int index);
 
 unsigned int history_item_size(void);
-unsigned int free_item_size(void);
+unsigned int history_free_item_size(void);
 
 const char *history_get_top_target(void);
 

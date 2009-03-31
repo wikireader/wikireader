@@ -213,7 +213,7 @@ unsigned int history_item_size(void)
 	return wl_list_size(&head.list);
 }
 
-unsigned int free_item_size(void)
+unsigned int history_free_item_size(void)
 {
 	return wl_list_size(&free_list.list);
 }

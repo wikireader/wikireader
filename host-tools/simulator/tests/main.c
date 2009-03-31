@@ -157,7 +157,7 @@ static void history_test()
 		history_add(title, target);
 	}
 
-	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 
 	for (i = 0; i < MAX_HISTORY_ITEM; ++i) {
 		sprintf(title, "title_%d", 199 - i);
@@ -180,7 +180,7 @@ static void history_test()
 	history_add(title, target);
 	history_add(title, target);
 
-	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 
 	for (i = 0; i < 3; i++){
 		if (!strcmp(title,history_get_item_title(i)))
@@ -205,7 +205,7 @@ static void history_test()
 	}
 
 	COMPARE_INT(1, count, ==, "Check the number of duplicated title through out the list");
-	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + free_item_size(), ==, "almost 100....");
+	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 }
 
 int main(int argc, char *argv[])
