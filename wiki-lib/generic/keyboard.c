@@ -20,6 +20,7 @@
 #include "guilib.h"
 #include "keyboard_image.h"
 #include "input.h"
+#include "wikilib.h"
 
 /* some control commands */
 #define INTERNAL_SHIFT   (-23)
@@ -114,5 +115,12 @@ void keyboard_paint()
  */
 char keyboard_release(int x, int y)
 {
+	unsigned int i;
+	for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
+		if (qwerty[i].left_x <= x && qwerty[i].right_x >= x
+		    && qwerty[i].left_y <= y && qwerty[i].right_y >= y)
+			return qwerty[i].key;
+	}
+
 	return -1;
 }
