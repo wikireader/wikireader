@@ -193,6 +193,7 @@ static void handle_key(int keycode)
 				repaint_search();
 			} else if (last_display_mode == DISPLAY_MODE_HISTORY) {
 				display_mode = DISPLAY_MODE_HISTORY;
+				history_reset();
 				history_display();
 			}
 		}
