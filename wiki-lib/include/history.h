@@ -31,7 +31,7 @@ void history_select_up(void);
 const char *history_current_target(void);
 
 void history_add(const char *text, const char *target);
-void history_move_current_to_top(void);
+void history_move_current_to_top(const char *target);
 
 const char *history_get_item_title(unsigned int index);
 const char *history_get_item_target(unsigned int index);

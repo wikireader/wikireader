@@ -122,7 +122,7 @@ static void open_article(const char* target, int mode)
 		history_add(search_current_title(), target);
 	} else if (mode == ARTICLE_HISTORY) {
 		last_display_mode = DISPLAY_MODE_HISTORY;
-		history_move_current_to_top();
+		history_move_current_to_top(target);
 	}
 }
 

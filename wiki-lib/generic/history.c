@@ -164,8 +164,12 @@ void history_add(const char *title, const char *target)
 	list_size++;
 }
 
-void history_move_current_to_top(void)
+void history_move_current_to_top(const char *target)
 {
+	struct history_item *node = NULL;
+
+	if ((node = history_find_item_target(target)))
+		wl_list_move2_first(&head.list, &node->list);
 }
 
 const char *history_get_top_target(void)
