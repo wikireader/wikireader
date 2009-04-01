@@ -99,7 +99,7 @@ int wl_seek(int fd, unsigned int pos)
 
 success:
 	/* TODO: if seek beyond eof ? */
-	fp->bytes_available = BLOCK_SIZE - pos & BLOCK_ALIGNMENT;
+	fp->bytes_available = BLOCK_SIZE - (pos & BLOCK_ALIGNMENT);
 	return 0;
 }
 
