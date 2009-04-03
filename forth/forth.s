@@ -326,6 +326,7 @@ no_branch:
         NEXT
         END_CODE
 
+
 ;;; .( Memory fetch & store )
 
         CODE    store, "!", FLAG_NORMAL              ; ( w a -- )
@@ -370,6 +371,7 @@ no_branch:
         NEXT
         END_CODE
 
+
 ;;; .( Return Stack )
 
         CODE    rp_fetch, "rp@", FLAG_NORMAL         ; ( -- a )
@@ -404,6 +406,7 @@ no_branch:
         pushn   %r0
         NEXT
         END_CODE
+
 
 ;;; .( Data Stack )
 
@@ -519,6 +522,7 @@ zero_less_l1:
 ;;; : INVERT ( w -- w ) -1 XOR ;
         COLON   invert, "invert", FLAG_NORMAL
         .long   dolit, -1, _xor, exit
+
 
 ;;; .( Arithmetic )
 
@@ -794,7 +798,7 @@ m_slash_mod_l3:
 
 
 ;;; .( Multiply )
-;;;
+
 ;;; : UM* ( u1 u2 -- ud )
 ;;;   0 SWAP ( u1 0 u2 ) 15
 ;;;   FOR DUP  UM+  >R >R DUP  UM+  R> + R>
@@ -841,7 +845,7 @@ m_slash_mod_l3:
 
 
 ;;; .( Bits & Bytes )
-;;;
+
 ;;; : BYTE+ ( b -- b ) [ =BYTE ] LITERAL + ;
         COLON   byte_plus, "byte+", FLAG_NORMAL
         .long   increment, exit
@@ -891,6 +895,7 @@ to_char_l1:
         COLON   aligned, "aligned", FLAG_IMMEDIATE
         .long   dolit, BYTES_PER_CELL - 1, plus
         .long   dolit, -BYTES_PER_CELL, _and, exit
+
 
 ;;; .( Memory access )
 
@@ -1015,7 +1020,7 @@ fill_l1:
 ;;; : <# ( -- ) PAD HLD ! ;
         COLON   less_hash, "<#", FLAG_NORMAL
         .long   pad, hld, store, exit
-;;;
+
 ;;; : HOLD ( c -- ) HLD @ BYTE- DUP HLD ! C! ;
         COLON   hold, "hold", FLAG_NORMAL
         .long   hld, fetch, byte_minus, dup, hld, store, cstore, exit
@@ -1116,8 +1121,9 @@ numberq_l6:
 	.long	r_from, twodrop
 	.long	r_from, base, store, exit
 
+
 ;;; .( Basic I/O )
-;;;
+
 ;;; : KEY? ( -- c T | F ) 'KEY? @EXECUTE ;
         COLON   key_query, "key?", FLAG_NORMAL
         .long   tkey_query, atexecute, exit
@@ -1227,7 +1233,7 @@ dot_l1:
 
 
 ;;; .( Parsing )
-;;;
+
 ;;; : (parse) ( b u c -- b u delta \ <string> )
 ;;;   temp !  OVER >R  DUP \ b u u
 ;;;   IF 1-  temp @ BL =
@@ -1298,7 +1304,7 @@ paren_parse_l8:
 ;;; : \ ( -- ) #TIB @ >IN ! ; IMMEDIATE
         COLON   backslash, "\\", FLAG_IMMEDIATE
         .long   hash_tib, fetch, to_in, store, exit
-;;;
+
 ;;; : CHAR ( -- c ) BL PARSE DROP C@ ;
         COLON   char, "char", FLAG_NORMAL
         .long   blank, parse, drop, cfetch, exit
@@ -1319,6 +1325,7 @@ paren_parse_l8:
 ;;; : WORD ( c -- a \ <string> ) PARSE HERE PACK$ ;
 	COLON   word, "word", FLAG_NORMAL
 	.long	parse, here, pack_dollar, exit
+
 
 ;;; .( Dictionary Search )
 
@@ -1420,7 +1427,7 @@ nameq_l3:
 
 
 ;;; .( Terminal )
-;;;
+
 ;;; : ^H ( b b b -- b b b ) \ backspace
 ;;;   >R OVER R@ < DUP
 ;;;   IF [ CTRL H ] LITERAL 'ECHO @EXECUTE THEN R> + ;
@@ -1485,8 +1492,9 @@ accept_l4:
 	.long	tib, dolit, 80, texpect, atexecute, hash_tib, store
 	.long	drop, dolit, 0, to_in, store, exit
 
+
 ;;; .( Error handling )
-;;;
+
 ;;; : CATCH ( ca -- err#/0 )
 ;;;   SP@ >R  HANDLER @ >R  RP@ HANDLER !
 ;;;   EXECUTE
@@ -1513,7 +1521,7 @@ accept_l4:
 ;;; : ABORT ( -- ) NULL$ THROW ;
         COLON   abort, "abort", FLAG_NORMAL
         .long   null_dollar, throw, exit
-;;;
+
 ;;; : (abort") ( f -- ) IF do$ THROW THEN do$ DROP ; COMPILE-ONLY
 	COLON   do_abort_quote, "(abort\042)", FLAG_COMPILE_ONLY
 	.long	qbranch, do_abort_quote_l1
@@ -1521,8 +1529,9 @@ accept_l4:
 do_abort_quote_l1:
 	.long	do_dollar, drop, exit
 
+
 ;;; .( Interpret )
-;;;
+
 ;;; : $INTERPRET ( a -- )
 ;;;   NAME?  ?DUP
 ;;;   IF @ [ =COMP ] LITERAL AND
@@ -1579,8 +1588,9 @@ eval_l1:
 eval_l2:
 	.long	drop, tprompt, atexecute, exit
 
+
 ;;; .( Device I/O )
-;;;
+
 ;;; CODE IO? ( -- f ) \ FFFF is an impossible character
 ;;;   XOR BX, BX
 ;;;   MOV DL, # $0FF  \ input
@@ -1627,7 +1637,7 @@ rx_query_no_character:
 
 
 ;;; .( Shell )
-;;;
+
 ;;; : PRESET ( -- ) SP0 @ SP!  [ =TIB ] LITERAL #TIB CELL+ ! ;
         COLON   preset, "preset", FLAG_NORMAL
 	.long	sp0, fetch, sp_store
@@ -1646,14 +1656,16 @@ rx_query_no_character:
 
 ;;; : FILE ( -- )
 ;;;   [ ' PACE ] LITERAL [ ' DROP ] LITERAL [ ' kTAP ] LITERAL XIO ;
-;;;
+;;; ** Missing **
+
 ;;; : HAND ( -- )
 ;;;   [ ' .OK  ] LITERAL 'EMIT @ [ ' kTAP ] LITERAL XIO ;
         COLON   hand, "hand", FLAG_NORMAL
         .long   dolit, dot_ok, temit, fetch, dolit, ktap, xio, exit
 
 ;;; CREATE I/O  ' ?RX , ' TX! , \ defaults
-;;;
+;;; ** Missing **
+
 ;;; : CONSOLE ( -- ) I/O 2@ 'KEY? 2! HAND ;
         COLON   console, "console", FLAG_NORMAL
         .long   dolit, rx_query, tkey_query, store
@@ -1958,7 +1970,7 @@ paren_dump_l1:
 paren_dump_l2:
         .long   donext, paren_dump_l1
         .long   exit
-;;;
+
 ;;; : DUMP ( b u -- )
 ;;;   BASE @ >R HEX  16 /
 ;;;   FOR CR 16 2DUP (dump) -ROT 2 SPACES _TYPE ENOUGH? 0= WHILE
@@ -1989,8 +2001,11 @@ dot_s_l2:
         .long   exit
 
 ;;; : !CSP ( -- ) SP@ CSP ! ;
+;;; ** Missing **
+
 ;;; : ?CSP ( -- ) SP@ CSP @ XOR ABORT" stack depth" ;
-;;;
+;;; ** Missing **
+
 ;;; : CODE>NAME ( ca -- na | F )
 ;;;   CURRENT
 ;;;   BEGIN CELL+ @ ?DUP WHILE 2DUP
@@ -2124,13 +2139,14 @@ words_l2:
 
 
 ;;; .( Hardware reset )
-;;;
+
 ;;; \ version
-;;;
+
 ;;; $100 CONSTANT VER ( -- u )
 ;;;   \ hi byte = major revision in decimal
 ;;;   \ lo byte = minor revision in decimal
-;;;
+;;; ** Missing **
+
 ;;; BANNER ( -- ) CR <message> CR
         COLON   banner, "banner", FLAG_NORMAL
         .long   cr
@@ -2139,7 +2155,8 @@ words_l2:
         .long   cr, exit
 
 ;;; CREATE 'BOOT  ' hi , \ application vector
-;;;
+;;; ** Missing **
+
 ;;; : COLD ( -- )
 ;;;   \ init CPU
 ;;;   \ init stacks
