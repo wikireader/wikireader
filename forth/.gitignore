@@ -1,5 +1,7 @@
 *.lst
 *.o
+*.d
+*.asm33
 *.map
 *.elf
 *~
