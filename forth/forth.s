@@ -876,7 +876,7 @@ m_slash_mod_l3:
         COLON   blank, "bl", FLAG_NORMAL
         .long   dolit, 32, exit
 
-;;; subsitute unprintable character with '.'
+;;; \ subsitute unprintable character with '.'
 ;;; : >CHAR ( c -- c )
 ;;;   127 AND DUP 127 BL WITHIN IF DROP [CHAR] . THEN ;
 	COLON   to_char, ">char", FLAG_NORMAL
@@ -886,6 +886,26 @@ m_slash_mod_l3:
 	.long	drop, dolit, '.'
 to_char_l1:
 	.long	exit
+
+;;; : CHAR>LOWER ( c -- c )
+;;;   DUP [CHAR] A [ CHAR Z 1+ ] LITERAL WITHIN
+;;;   IF [ CHAR a CHAR A - ] LITERAL + THEN ;
+        COLON   char_to_lower, "char>lower", FLAG_NORMAL
+        .long   dup, dolit, 'A', dolit, 'Z' + 1, within
+        .long   qbranch, char_to_lower_l1
+        .long   dolit, 'a' - 'A', plus
+char_to_lower_l1:
+        .long   exit
+
+;;; : CHAR>UPPER ( c -- c )
+;;;   DUP [CHAR] a [ CHAR z 1+ ] LITERAL WITHIN
+;;;   IF [ CHAR A CHAR a - ] LITERAL + THEN ;
+        COLON   char_to_upper, "char>upper", FLAG_NORMAL
+        .long   dup, dolit, 'a', dolit, 'z' + 1, within
+        .long   qbranch, char_to_upper_l1
+        .long   dolit, 'A' - 'a', plus
+char_to_upper_l1:
+        .long   exit
 
 ;;; : DEPTH ( -- n ) SP@ SP0 @ SWAP - 1 CELLS / ;
         COLON   depth, "depth", FLAG_NORMAL
@@ -1071,13 +1091,12 @@ sign_l1:
 ;;; .( Numeric Input ) \ single precision
 
 ;;; : DIGIT? ( c base -- u t )
-;;;   >R [CHAR] 0 - 9 OVER <
+;;;   >R CHAR>UPPER [CHAR] 0 - 9 OVER <
 ;;;   IF 7 - DUP 10 < OR THEN DUP R> U< ;
         COLON   digitq, "digit?", FLAG_NORMAL
-        .long	to_r, dolit, '0', minus
+        .long	to_r, char_to_lower, dolit, '0', minus
 	.long	dolit, 9, over, less
 	.long	qbranch, digitq_l1
-;	.long	dolit, 7, minus           ;*uppercase*
 	.long	dolit, 'a' - '0' - 10, minus    ;*lower case*
 	.long	dup, dolit, 10, less, _or
 digitq_l1:
