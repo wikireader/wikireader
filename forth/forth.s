@@ -1,28 +1,76 @@
 ;;; forth.s
 ;;; based on the public domain eforth implementations
 ;;; found in the files eforth.4th and eforth.S
+;;; These original implementations are in the Public Domain
+
+;;; This is exactly the same as eforth and is not ANSI Forth,
+;;; although my additions try to follow the ANSI standard
+
+;;; This file is placed under a two clause BSD-style license
+;;; as follows:
+
+;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
+;;;
+;;; Redistribution and use in source and binary forms, with or without
+;;; modification, are permitted provided that the following conditions are
+;;; met:
+;;;
+;;;  1. Redistributions of source code must retain the above copyright
+;;;     notice, this list of conditions and the following disclaimer.
+;;;
+;;;  2. Redistributions in binary form must reproduce the above copyright
+;;;     notice, this list of conditions and the following disclaimer in
+;;;     the documentation and/or other materials provided with the
+;;;     distribution.
+;;;
+;;; THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
+;;; EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+;;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+;;; PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE
+;;; FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+;;; CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+;;; SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+;;; BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+;;; WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+;;; OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+;;; IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 ;;; symbols used in the ( -- ) comments
 ;;;
-;;; a   aligned address (to 4 byte boundary)
-;;; b   byte address
-;;; c   character
-;;; ca  code address
-;;; cy  carry
-;;; d   signed double integer (2 cells)
-;;; F   logical false
-;;; f   flag 0 or non-zero
-;;; h   half-word address (to 2 byte boundary)
-;;; la  link address
-;;; n   signed integer
-;;; na  name address
-;;; pa  param address
-;;; T   logical true
-;;; t   flag T or F
-;;; u   unsigned integer
-;;; ud  unsigned double integer (2 cells)
-;;; va  vocabulary address
-;;; w   unspecified word value
+;;; a       aligned address (to 4 byte boundary)
+;;; b       byte address
+;;; c       character
+;;; ca      code address
+;;; cy      carry
+;;; d       signed double integer (2 cells)
+;;; dirid   directory handle (1..n)
+;;; F       logical false (zero)
+;;; f       flag 0 or non-zero
+;;; fam     file access mode
+;;; fileid  file handle (1..n)
+;;; h       half-word address (to 2 byte boundary)
+;;; ior     system dependent error code (zero => no error)
+;;; la      link address
+;;; n       signed integer
+;;; na      name address
+;;; pa      param address
+;;; T       logical true (non-zero)
+;;; t       flag T or F
+;;; u       unsigned integer
+;;; ud      unsigned double integer (2 cells)
+;;; va      vocabulary address
+;;; w       unspecified word value
+;;;
+;;; if characters are taken from the input buffer then
+;;; this form is used
+;;; ( -- \ <string> )   \ string is terminated by space
+;;; ( -- \ <string>% )  \ string terminated by %
+;;;                     \ % could be any char
+;;; ( c -- \ <string><char c> )
+;;;                     \ string terminated by value of c
+;;;                     \ where the character is passed on the stack
+
 
 ;;; Version (no minor values, just increment)
 BUILD_NUMBER = 1
@@ -1201,7 +1249,7 @@ dot_l1:
 
 ;;; .( Parsing )
 
-;;; : (parse) ( b u c -- b u delta \ <string> )
+;;; : (parse) ( b u c -- b u delta \ <string><char c> )
 ;;;   temp !  OVER >R  DUP \ b u u
 ;;;   IF 1-  temp @ BL =
 ;;;     IF \ b u' \ 'skip'
@@ -1688,7 +1736,7 @@ include_quote_l1:
         COLON   include_quote, "include\042", FLAG_NORMAL
         .long   dolit, '\"',  parse, included, exit
 
-;;; : INCLUDE ( -- \ <string><space> )
+;;; : INCLUDE ( -- \ <string> )
 ;;;   BL PARSE INCLUDED ;
         COLON   include, "include", FLAG_NORMAL
         .long   blank, parse, included, exit
@@ -1752,7 +1800,7 @@ quit_l4:
 
 ;;; .( Compiler Primitives )
 
-;;; : ' ( -- ca ) TOKEN NAME? IF EXIT THEN THROW ;
+;;; : ' ( -- ca \ <string> ) TOKEN NAME? IF EXIT THEN THROW ;
         COLON   tick, "'", FLAG_NORMAL
         .long   token, nameq
         .long   qbranch, tick_l1
@@ -1760,7 +1808,7 @@ quit_l4:
 tick_l1:
         .long   throw, exit
 
-;;; : ['] ( -- ) ' LITERAL ; IMMEDIATE COMPILE_ONLY
+;;; : ['] ( -- \ <string> ) ' LITERAL ; IMMEDIATE COMPILE_ONLY
 ;;; \ runtime ( -- ca )
         COLON   bracket_tick, "[']", FLAG_IMMEDIATE + FLAG_COMPILE_ONLY
         .long   tick, literal, exit
@@ -1786,7 +1834,7 @@ tick_l1:
         COLON   literal, "literal", FLAG_IMMEDIATE
         .long   compile, dolit, comma, exit
 
-;;; : $," ( -- ) [CHAR] " PARSE HERE PACK$ C@ 1+ ALLOT ;
+;;; : $," ( -- \ <string>" ) [CHAR] " PARSE HERE PACK$ C@ 1+ ALLOT ;
         COLON   dollar_comma_quote, "$,\042", FLAG_NORMAL
         .long   dolit, '\"', parse, here, pack_dollar, cfetch, increment, allot, exit
 
@@ -1849,11 +1897,11 @@ tick_l1:
 	COLON   abortquote, "abort\042", FLAG_IMMEDIATE
 	.long	compile, do_abort_quote, dollar_quote, exit
 
-;;; : $" ( -- \ <string> ) COMPILE ($") $," ; IMMEDIATE
+;;; : $" ( -- \ <string>" ) COMPILE ($") $," ; IMMEDIATE
         COLON   dollar_quote, "$\042", FLAG_IMMEDIATE
 	.long	compile, do_dollar_quote, dollar_comma_quote, exit
 
-;;; : ." ( -- \ <string> ) COMPILE ."| $," ; IMMEDIATE
+;;; : ." ( -- \ <string>" ) COMPILE ."| $," ; IMMEDIATE
         COLON   dot_quote, ".\042", FLAG_IMMEDIATE
 	.long	compile, do_dot_quote, dollar_comma_quote, exit
 
@@ -2169,7 +2217,7 @@ words_l2:
 
 
 ;;; .( File I/O )
-;;; : R/O              (  -- fam )
+;;; : R/O              ( -- fam )
         CODE    readonly, "r/o", FLAG_NORMAL
         xcall   FileSystem_ReadOnly
         sub     %r1, BYTES_PER_CELL
@@ -2177,7 +2225,7 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : W/O              (  -- fam )
+;;; : W/O              ( -- fam )
         CODE    writeonly, "w/o", FLAG_NORMAL
         xcall   FileSystem_WriteOnly
         sub     %r1, BYTES_PER_CELL
@@ -2185,7 +2233,7 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : R/W              (  -- fam )
+;;; : R/W              ( -- fam )
         CODE    readwrite, "r/w", FLAG_NORMAL
         xcall   FileSystem_ReadWrite
         sub     %r1, BYTES_PER_CELL
@@ -2202,7 +2250,7 @@ words_l2:
         END_CODE
 
 ;;; : S" ( -- \ <string> ) [COMPILE] $" COMPILE COUNT ; IMMEDIATE
-;;;      \ runtime (  -- b u )
+;;;      \ runtime ( -- b u )
         COLON   s_quote, "s\042", FLAG_IMMEDIATE
 	.long	dollar_quote, compile, count, exit
 
@@ -2356,7 +2404,7 @@ read_line_l5:
         NEXT
         END_CODE
 
-;;;  : FILESYSTEM-INIT (  --  )
+;;;  : FILESYSTEM-INIT ( -- )
         CODE   filesystem_init, "filesystem-init", FLAG_NORMAL
         xcall   FileSystem_initialise
         NEXT

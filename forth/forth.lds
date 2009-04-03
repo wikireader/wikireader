@@ -4,7 +4,6 @@ OUTPUT_ARCH(c33)
 
 SECTIONS
 {
-        /* section information */
 	.dst_ram  0x84000 : {
 /*
 		traps.o(.data)
@@ -62,11 +61,6 @@ SECTIONS
 	   forth.o(*.forth_param)
         }
 
-/*
-	.comment : {
-	   *(.comment)
-	}
-*/
         __START_data_lma = LOADADDR( .data );
         __END_data_lma = __START_data_lma + SIZEOF( .data );
 }
