@@ -2293,6 +2293,36 @@ read_line_l5:
         NEXT
         END_CODE
 
+;;; : OPEN-DIRECTORY   ( b u -- dirid ior )
+        CODE    open_directory, "open-directory", FLAG_NORMAL
+        ld.w    %r7, [%r1]                      ; count
+        xld.w   %r6, [%r1 + 4]                  ; buffer
+        xcall   FileSystem_OpenDirectory
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; count2
+        NEXT
+        END_CODE
+
+;;; : CLOSE-DIRECTORY  ( dirid -- ior )
+        CODE    close_directory, "close-directory", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; dirid
+        xcall   FileSystem_CloseDirectory
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : READ-DIRECTORY   ( b u dirid -- u2 ior )
+        CODE    read_directory, "read-directory", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; dirid
+        ld.w    %r8, [%r1]                      ; count
+        xld.w   %r7, [%r1 + 4]                  ; buffer
+        xcall   FileSystem_ReadDirectory
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; count2
+        NEXT
+        END_CODE
+
+
 ;;; \ simple test
 ;;; : print ( b u -- )
 ;;;         s" forth.s" r/o open-file
@@ -2316,22 +2346,50 @@ BUFFER_SIZE = 1024
         .space  BUFFER_SIZE
         .balign 4
 
+        COLON   dir, "dir", FLAG_NORMAL
+        .long   cr, do_dollar_quote
+        FSTRING "/"
+        .long   count, open_directory, qdup, qbranch, dir_l1
+        .long   cr, do_dot_quote
+        FSTRING "open-directory error = "
+        .long   dot, cr, drop, exit
+
+dir_l1:
+        .long   to_r
+dir_l2:
+        .long   buffer, buffer_size, r_fetch, read_directory
+        .long   qbranch, dir_l3
+        .long   cr, do_dot_quote
+        FSTRING "read error = "
+        .long   dot, cr, drop, branch, dir_l4
+dir_l3:
+        .long   qdup, qbranch, dir_l4
+        .long   buffer, swap, type, cr
+        .long   branch, dir_l2
+dir_l4:
+        .long   r_from, close_directory, drop, exit
+
+
         COLON   pf, "pf", FLAG_NORMAL
         .long   do_dollar_quote
         FSTRING "forth.s"
-        .long   print, exit
+        .long   count, print, exit
 
         COLON   pt, "pt", FLAG_NORMAL
         .long   do_dollar_quote
         FSTRING "test.dat"
-        .long   print, exit
+        .long   count, print, exit
+
+;;; : pr" ( -- ) [CHAR] " PARSE PRINT ;
+        COLON   pr_quote, "pr\042", FLAG_NORMAL
+        .long   dolit, '\"', parse, print, exit
 
         COLON   print, "print", FLAG_NORMAL
-        .long   count, readonly, open_file
+        .long   cr, readonly, open_file
         .long   qdup, qbranch, print_l1
         .long   cr, do_dot_quote
         FSTRING "open error = "
-        .long   dot, cr, exit
+        .long   dot, cr, drop, exit
 
 print_l1:
         .long   fd, store

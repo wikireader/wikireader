@@ -10,17 +10,25 @@
 
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
 
+
 // a type that can hold the path to the file
 typedef char FilenameType[81];
-
 
 // this determines the maximum files that can be open simultaneously
 static struct {
 	bool IsOpen;
 	FIL file;
 	FilenameType filename;
-} FileControlBlock[10];
+} FileControlBlock[20];
 
+// this determines the maximum directoriess that can be open simultaneously
+static struct {
+	bool IsOpen;
+	DIR directory;
+	FilenameType directoryname;
+} DirectoryControlBlock[10];
+
+// state for the entire file system
 static FATFS TheFileSystem;
 
 
@@ -44,7 +52,7 @@ static bool ForthBufferToCString(char *buffer, size_t length,
 	return false;
 }
 
-static bool ValidHandle(Forth_ReturnType *r, Forth_CellType handle)
+static bool ValidFileHandle(Forth_ReturnType *r, Forth_CellType handle)
 {
 	r->rc = FR_OK;
 	r->result = 0;
@@ -60,11 +68,30 @@ static bool ValidHandle(Forth_ReturnType *r, Forth_CellType handle)
 }
 
 
+static bool ValidDirectoryHandle(Forth_ReturnType *r, Forth_CellType handle)
+{
+	r->rc = FR_OK;
+	r->result = 0;
+	if (0 > handle || SizeOfArray(DirectoryControlBlock) < handle) {
+		r->rc = FR_INVALID_OBJECT;
+		return false;
+	}
+	if (!DirectoryControlBlock[handle].IsOpen) {
+		r->rc = FR_DENIED;
+		return false;
+	}
+	return true;
+}
+
+
 void FileSystem_initialise(void)
 {
 	size_t i = 0;
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		FileControlBlock[i].IsOpen = false;
+	}
+	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
+		DirectoryControlBlock[i].IsOpen = false;
 	}
 	f_mount(0, &TheFileSystem);  // only possible value is zero
 }
@@ -159,7 +186,7 @@ Forth_ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_Cell
 	Forth_ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -174,7 +201,7 @@ Forth_ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_Cel
 	Forth_ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -189,7 +216,7 @@ Forth_ReturnType FileSystem_sync(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -203,7 +230,7 @@ Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 {
 	Forth_ReturnType r = {0, FR_OK};
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -217,7 +244,7 @@ Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 {
 	Forth_ReturnType r = {0, FR_OK};
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -234,7 +261,7 @@ Forth_ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
 	Forth_ReturnType r = {0, FR_OK};
 	FILINFO stat;
 
-	if (!ValidHandle(&r, handle))
+	if (!ValidFileHandle(&r, handle))
 	{
 		return r;
 	}
@@ -266,6 +293,74 @@ Forth_CellType FileSystem_WriteOnly(void)
 Forth_CellType FileSystem_bin(Forth_CellType fam)
 {
 	return fam;
+}
+
+
+Forth_ReturnType FileSystem_OpenDirectory(const Forth_PointerType directoryname, Forth_CellType length)
+{
+	Forth_ReturnType r = {0, FR_OK};
+	size_t i = 0;
+	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
+		if (!DirectoryControlBlock[i].IsOpen) {
+			if (!ForthBufferToCString(DirectoryControlBlock[i].directoryname,
+						  sizeof(DirectoryControlBlock[i].directoryname),
+						  directoryname, length)) {
+				r.rc = FR_INVALID_NAME;
+				return r;
+			}
+			r.rc = f_opendir(&DirectoryControlBlock[i].directory, DirectoryControlBlock[i].directoryname);
+			if (FR_OK == r.rc) {
+				DirectoryControlBlock[i].IsOpen = true;
+				r.result = i;
+				return r;
+			}
+			break;
+		}
+	}
+	r.rc = FR_DENIED;
+	return r;
+}
+
+
+Forth_ReturnType FileSystem_CloseDirectory(Forth_CellType handle)
+{
+	Forth_ReturnType r = {0, FR_OK};
+
+	if (0 > handle || SizeOfArray(DirectoryControlBlock) < handle) {
+		r.rc = FR_DENIED;
+		return r;
+	}
+
+	if (DirectoryControlBlock[handle].IsOpen) {
+		//r.rc = f_dirclose(&DirectoryControlBlock[handle].directory);
+		DirectoryControlBlock[handle].IsOpen = false;
+	}
+	return r;
+}
+
+
+Forth_ReturnType FileSystem_ReadDirectory(Forth_CellType handle, void *buffer, Forth_CellType length)
+{
+	Forth_ReturnType r = {0, FR_OK};
+	FILINFO info;
+
+	if (!ValidDirectoryHandle(&r, handle))
+	{
+		return r;
+	}
+
+	r.rc = f_readdir(&DirectoryControlBlock[handle].directory, &info);
+	if (FR_OK == r.rc){
+		size_t count = strlen(info.fname);
+		if (count > length) {
+			count = length;
+		}
+		if (0 != count) {
+			memcpy(buffer, info.fname, count);
+		}
+		r.result = count;
+	}
+	return r;
 }
 
 
