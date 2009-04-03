@@ -203,17 +203,11 @@ main:
         xld.w   %r10, initial_stack_pointer
         xld.w   %r0, initial_return_pointer
         ld.w    %sp, %r0
-        xld.w   %r0, xmessage
-        xcall   sio_put_string
         xld.w   %r11, cold_start                ; initial ip value
         NEXT
 
 cold_start:
         .long   cold, branch, cold_start        ; just run cold in a loop
-
-xmessage:
-        .asciz  "start\r\n"
-        .balign 4
 
 debug_8:
         xcall   sio_put_string
@@ -2178,22 +2172,23 @@ words_l2:
         FSTRING ")"
         .long   cr, exit
 
-;;; CREATE 'BOOT  ' hi , \ application vector
-;;; ** Missing **
+;;; CREATE 'BOOT  ' BANNER , \ application vector
+        VARIABLE tboot, "'boot", FLAG_NORMAL
+        .long   banner
 
 ;;; : COLD ( -- )
 ;;;   \ init CPU
 ;;;   \ init stacks
 ;;;   \ init user area
 ;;;   \ init IP
-;;;   PRESET  'BOOT @EXECUTE
+;;;   PRESET
 ;;;   FORTH CONTEXT @ DUP CURRENT D! OVERT
+;;;   'BOOT @EXECUTE
 ;;;   QUIT ;
         COLON   cold, "cold", FLAG_NORMAL
         .long   preset
         .long   forth, context, fetch, dup, current, dstore, overt
-        ;.long   tboot, atexecute, quit
-        .long   banner
+        .long   tboot, atexecute
         .long   quit
 
         COLON   nop, "nop", FLAG_NORMAL
