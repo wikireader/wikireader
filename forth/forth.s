@@ -12,10 +12,11 @@
 ;;; d   signed double integer (2 cells)
 ;;; F   logical false
 ;;; f   flag 0 or non-zero
-;;; h   half-word address (t 2 byte boundary)
+;;; h   half-word address (to 2 byte boundary)
 ;;; la  link address
 ;;; n   signed integer
 ;;; na  name address
+;;; pa  param address
 ;;; T   logical true
 ;;; t   flag T or F
 ;;; u   unsigned integer
@@ -47,14 +48,15 @@ NORMAL = 0
 ;;; r8..r9 maybe used by extended instructions
 ;;; r10    stack pointer
 ;;; r11    ip
-;;; r12    work register
-;;; r13    not_user
+;;; r12    pp
+;;; r13    work regiter
 ;;; r14    not_used
 ;;; r15    __DP for C
 
         .macro  NEXT                            ; inner interpreter
-        ld.w    %r12, [%r11]+
-        jp      %r12
+        ld.w    %r12, [%r11]+                   ; incr IP
+        ld.w    %r13, [%r12]+                   ; %r12 -> param address
+        jp      %r13                            ; execute the code
         .endm
 
 
@@ -73,13 +75,18 @@ str_\@_finish:
 
 __last_name = 0                                 ; to link the list
 
-        .macro  HEADER, label, name, flags, padding
+        .macro  HEADER, label, name, flags, code
         .section .data
         .balign 4
-        .long   \label                          ; code
+        .global \label
+\label\():
+        .long   \code                           ; code
+        .long   param_\label                    ; param
         .long   \flags                          ; flags
+
 prev_\label = __last_name
         .long   prev_\label                     ; link
+
         .global name_\label
 name_\label\():
 __last_name = .
@@ -87,18 +94,16 @@ __last_name = .
 
         .section .text
         .balign 4
-        .if     \padding
-        nop                                     ; 16 bits of padding
-        .endif
-        .global \label
-\label\():
+
+        .global param_\label
+param_\label\():
         .endm
 
 
 ;;; code definitions
 
         .macro  CODE, label, name, flags
-        HEADER  \label, "\name", \flags, 0
+        HEADER  \label, "\name", \flags, param_\label
         .endm
 
         .macro  END_CODE
@@ -108,16 +113,14 @@ __last_name = .
 ;;; colon definitions
 
         .macro  COLON, label, name, flags
-        HEADER  \label, "\name", \flags, 1
-        xcall   dolist                          ; 3 * half words xcall
+        HEADER  \label, "\name", \flags, param_docolon
         .endm
 
 
 ;;; variable definitions
 
         .macro  VARIABLE, label, name, flags
-        HEADER  \label, "\name", \flags, 1
-        xcall   dovar                           ; 3 * half words xcall
+        HEADER  \label, "\name", \flags, param_dovar
         .endm
 
 
@@ -145,8 +148,7 @@ user_variables:
 \label\()_variable:
         .long   \defaults
 
-        HEADER  \label, "\name", \flags, 1
-	xcall   douser                          ; 3 * half word xcall
+        HEADER  \label, "\name", \flags, param_douser
 	.long   \label\()_variable
 
         .endm
@@ -172,9 +174,17 @@ main:
         xld.w   %r10, initial_stack_pointer
         xld.w   %r0, initial_return_pointer
         ld.w    %sp, %r0
-        xld.w   %r11, cold                      ; initial ip value
-        xjp     cold
+        xld.w   %r0, xmessage
+        xcall   sio_put_string
+        xld.w   %r11, cold_start                ; initial ip value
+        NEXT
 
+cold_start:
+        .long   cold, branch, cold_start        ; just run cold in a loop
+
+xmessage:
+        .asciz  "start\r\n"
+        .balign 4
 
 debug_8:
         xcall   sio_put_string
@@ -199,7 +209,7 @@ debug_8_loop:
         ret
 
 xdebug:
-        pushn   %r2
+        pushn   %r14
         xcall   sio_put_crlf
 
         xld.w   %r0, debug_message
@@ -214,7 +224,7 @@ xdebug:
         ld.w    %r1, %sp
         xcall   debug_8
 
-        popn    %r2
+        popn    %r14
         ret
 
 
@@ -239,27 +249,28 @@ sp_message:
 ;;; .( Special interpreters )
 
         CODE    dolit, "(dolit)", COMPILE_ONLY ; ( -- w ) COMPILE-ONLY
-        ld.w   %r12, [%r11]+
+        ld.w    %r12, [%r11]+
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r12
         NEXT
         END_CODE
 
-        CODE    dolist, "(dolist)", COMPILE_ONLY ; ( a -- ) \ call dolist list..
-        ld.w    %r12, %r11
-        ld.w    %r11, [%sp]
-        ld.w    [%sp], %r12
+        CODE    docolon, "(docolon)", COMPILE_ONLY ; ( -- )
+        ld.w    %r0, %r11                          ; save previous ip
+        pushn   %r0                                ; ...
+        ld.w    %r11, [%r12]                       ; ip = param address
         NEXT
         END_CODE
 
         CODE    execute, "execute", NORMAL      ; ( a -- )
-        ld.w    %r12, [%r10]+
-        jp      %r12
+        ld.w    %r12, [%r10]+                   ; point to code ptr
+        ld.w    %r13, [%r12]+                   ; code / param address
+        jp      %r13
         END_CODE
 
         CODE    exit, "exit", NORMAL            ; ( -- )
-        popn    %r0
-        ld.w    %r11, %r0
+        popn    %r0                             ; restore ip
+        ld.w    %r11, %r0                       ; ..
         NEXT
         END_CODE
 
@@ -560,18 +571,18 @@ abs_l1:
 
 ;;; .( User variables )
 ;;;
-;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY
-        CODE    douser, "(douser)", COMPILE_ONLY  ; ( a -- ) \ call douser, address
-        popn    %r0
-        ld.w    %r0, [%r0]
+;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY <- wrong!
+        CODE    douser, "(douser)", COMPILE_ONLY
+        ld.w    %r0, [%r12]
+        ld.w    %r0, [%r0]                      ; user is another pointer!
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY
+;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY <- wrong
         CODE   dovar, "(dovar)", COMPILE_ONLY
-        popn    %r0
+        ld.w    %r0, [%r12]                     ; %r0 = parameter address
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
@@ -1293,15 +1304,20 @@ paren_parse_l8:
 ;;; .( Dictionary Search )
 
 ;;;  0: code address
-;;;  4: flags
-;;;  8: link
-;;; 12: count (byte)  (name adress points here)
-;;; 13: name string (count bytes)
-;;; 13+count: zero
+;;;  4: param address
+;;;  8: flags
+;;; 12: link address
+;;; 16: count (byte)  (name adress points here)
+;;; 17: name string (count bytes)
+;;; 17+count: (zeros as required to .balign 4)
 DICTIONARY_HEADER_CELLS = 3                  ; code ptr, flags, link ptr
 
-;;; : NAME>CODE ( na -- ca ) 3 CELLS - ;
+;;; : NAME>CODE ( na -- ca ) 4 CELLS - ;
         COLON   name_to_code, "name>code", NORMAL
+        .long   dolit, 4, cells, minus, exit
+
+;;; : NAME>PARAM ( na -- pa ) 3 CELLS - ;
+        COLON   name_to_param, "name>param", NORMAL
         .long   dolit, 3, cells, minus, exit
 
 ;;; : NAME>FLAGS ( na -- fa ) 2 CELLS - ;
@@ -1311,6 +1327,10 @@ DICTIONARY_HEADER_CELLS = 3                  ; code ptr, flags, link ptr
 ;;; : NAME>LINK ( na -- la ) CELL- ;
         COLON   name_to_link, "name>link", NORMAL
         .long   cell_minus, exit
+
+;;; : CODE>NAME ( ca -- na ) 4 CELLS + ;
+        COLON   code_to_name, "code>name", NORMAL
+        .long   dolit, 4, cells, plus, exit
 
 ;;; return TRUE if counted strings are equal
 ;;; : SAME? ( a a -- a a f )
@@ -1349,7 +1369,7 @@ same_l3:
 ;;;   WHILE NAME>LINK            \ a la
 ;;;   REPEAT
 ;;;   \ a na
-;;;   NIP DUP NAME>CODE @ SWAP ;
+;;;   NIP DUP NAME>CODE SWAP ;
         COLON   find, "find", NORMAL
 find_l1:
         .long   fetch, dup, qbranch, find_l2
@@ -1362,7 +1382,7 @@ find_l3:
         .long   qbranch, find_l4
         .long   name_to_link, branch, find_l1
 find_l4:
-        .long   nip, dup, name_to_code, fetch, swap
+        .long   nip, dup, name_to_code, swap
         .long   exit
 
 
@@ -1796,7 +1816,7 @@ qunique_l1:
 ;;;     ( cp na la) CURRENT @ @  \ previous name
 ;;;     ( cp na la na') SWAP !
 ;;;     ( cp na ) DUP COUNT + ALIGNED NP !
-;;;     ( cp na ) NAME>CODE ! EXIT
+;;;     ( cp na ) NAME>PARAM ! EXIT
 ;;;   THEN $" name" THROW ;
         COLON   dollar_comma_n, "$,n", NORMAL
         .long   dolit, 0x12345678, DEBUG, drop
@@ -1815,7 +1835,7 @@ qunique_l1:
         .long   count, plus, aligned            ;skip over the name
         .long   np, store
         .long   dolit, 0x12340004, DEBUG, drop
-        .long   name_to_code
+        .long   name_to_param                   ;*****how about code docolon,dovar or same as param
         .long   dolit, 0x12340005, DEBUG, drop
         .long   store
         .long   exit
@@ -1967,29 +1987,29 @@ dot_s_l2:
 ;*to_name_l4:
 ;*        .long   drop, dolit, FALSE, exit
 
-;;; hacked version - the vocabulary structure is not workable yet
-        COLON   code_to_name, "code>name", NORMAL
-        .long   current
-;to_name_l1:
-        .long   cell_plus, fetch, qdup
-        .long   qbranch, to_name_l4
-        .long   twodup
-to_name_l2:
-        .long   fetch, dup
-        .long   qbranch, to_name_l3
-        .long   twodup, name_to_code, fetch, _xor
-        .long   qbranch, to_name_l3
-        .long   name_to_link
-        .long   branch, to_name_l2
-to_name_l3:
-        .long   nip, qdup
-       ;.long   qbranch, to_name_l1
-        .long   qbranch, to_name_l5
-        .long   nip, nip, exit
-to_name_l4:
-        .long   drop, dolit, FALSE, exit
-to_name_l5:
-        .long   twodrop, dolit, FALSE, exit
+;**;;; hacked version - the vocabulary structure is not workable yet
+;**        COLON   code_to_name, "code>name", NORMAL
+;**        .long   current
+;**;to_name_l1:
+;**        .long   cell_plus, fetch, qdup
+;**        .long   qbranch, to_name_l4
+;**        .long   twodup
+;**to_name_l2:
+;**        .long   fetch, dup
+;**        .long   qbranch, to_name_l3
+;**        .long   twodup, name_to_code, fetch, _xor
+;**        .long   qbranch, to_name_l3
+;**        .long   name_to_link
+;**        .long   branch, to_name_l2
+;**to_name_l3:
+;**        .long   nip, qdup
+;**       ;.long   qbranch, to_name_l1
+;**        .long   qbranch, to_name_l5
+;**        .long   nip, nip, exit
+;**to_name_l4:
+;**        .long   drop, dolit, FALSE, exit
+;**to_name_l5:
+;**        .long   twodrop, dolit, FALSE, exit
 
 
 ;;; disassembler for colon definitions
