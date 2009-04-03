@@ -1888,15 +1888,21 @@ dollar_compile_l3:
 	COLON   right_bracket, "]", FLAG_NORMAL
 	.long	dolit, dollar_compile, teval, store, exit
 
-;;; : : ( -- \ <string> ) TOKEN DUP $,n
-;;;   DUP [ ' (docolon) @ ] LITERAL NAME>CODE !
-;;;   0 NAME>FLAGS ! ] ;
-        COLON   colon, ":", FLAG_NORMAL
+;;; \ basic defining word call like: ' (doXXX) (DEFINE) THING
+;;; \ and it will place the address of the actual code for (doXXX)
+;;; \ into the code pointer for thing
+;;; : (DEFINE) ( code -- \ <string> ) TOKEN DUP $,n
+;;;            SWAP OVER NAME>CODE !
+;;;            [ =FLAG-NORMAL ] LITERAL SWAP NAME>FLAGS ! ;
+        COLON   paren_define, "(define)", FLAG_NORMAL
         .long   token, dup, dollar_comma_n
-        .long   dolit, param_docolon, over, name_to_code
-        .long   store
-        .long   dolit, 0, swap, name_to_flags
-        .long   store
+        .long   swap, over, name_to_code, store
+        .long   dolit, FLAG_NORMAL, swap, name_to_flags, store
+        .long   exit
+
+;;; : : ( -- \ <string> )  [ ' (docolon) @ ] (DEFINE) ] ;
+        COLON   colon, ":", FLAG_NORMAL
+        .long   dolit, param_docolon, paren_define
         .long   right_bracket, exit
 
 ;;; : IMMEDIATE ( -- )
@@ -1911,19 +1917,26 @@ dollar_compile_l3:
 ;;;             [ =FLAG-COMPILE-ONLY ] LITERAL OR SWAP ! ;
         COLON   _compile_only, "compile-only", FLAG_NORMAL
         .long   last, fetch, name_to_flags, dup, fetch
-        .long   dolit, FLAG_COMPILE-ONLY, _or, swap, store, exit
+        .long   dolit, FLAG_COMPILE_ONLY, _or, swap, store, exit
 
 
 ;;; .( Defining Words )
-;;;
-;;; : USER ( u -- \ <string> ) TOKEN $,n OVERT COMPILE (douser) , ;
-;;;
-;;; : CREATE ( -- \ <string> ) TOKEN $,n OVERT COMPILE (dovar) ;
-;;;
+
+;;; : USER ( -- \ <string> )  [ ' (douser) @ ] LITERAL (DEFINE) OVERT ;
+        COLON   user, "user", FLAG_NORMAL
+        .long   dolit, param_dovar, paren_define, overt, exit
+
+;;; : CREATE ( -- \ <string> )  [ ' (dovar) @ ] LITERAL (DEFINE) OVERT ;
+        COLON   create, "create", FLAG_NORMAL
+        .long   dolit, param_dovar, paren_define, overt, exit
+
 ;;; : VARIABLE ( -- \ <string> ) CREATE 0 , ;
-;;;
+        COLON   variable,"variable", FLAG_NORMAL
+        .long   create, dolit, 0, comma, exit
+
+
 ;;; .( Tools )
-;;;
+
 ;;; : (dump_ascii) ( b u -- ) FOR AFT COUNT >CHAR EMIT THEN NEXT DROP ;
         COLON   dump_ascii,"(dump_ascii)", FLAG_NORMAL
         .long   to_r
@@ -1933,7 +1946,7 @@ dump_ascii_l1:
 dump_ascii_l2:
         .long   donext, dump_ascii_l1
         .long   drop, exit
-;;;
+
 ;;; : (dump) ( b u -- b )
 ;;;   OVER 4 U.R SPACE FOR AFT COUNT 3 U.R THEN NEXT ;
         COLON   paren_dump, "(dump)", FLAG_NORMAL
