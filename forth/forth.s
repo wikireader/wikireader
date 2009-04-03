@@ -1580,10 +1580,10 @@ eval_l2:
 
 ;;; input character
         CODE    rx_query, "rx?", FLAG_NORMAL         ; ( -- c T | F )
-        xcall   sio_input_available
+        xcall   Serial_InputAvailable
         or      %r4, %r4
         jreq    rx_query_no_character
-        xcall   sio_get_char
+        xcall   Serial_GetChar
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
         ld.w    %r4, TRUE
@@ -1596,7 +1596,7 @@ rx_query_no_character:
 ;;; output a character
         CODE    tx_store, "tx!", FLAG_NORMAL         ; ( c -- )
         ld.w    %r6, [%r1]+
-        xcall   sio_put_char
+        xcall   Serial_PutChar
         NEXT
         END_CODE
 
@@ -2167,7 +2167,7 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : FILE-SIZE        ( fileid  -- ud ior )
+;;; : FILE-SIZE        ( fileid -- ud ior )
 ;;; : FILE-POSITION    ( fileid -- ud ior )
 ;;; : REPOSITION-FILE  ( ud fileid -- pos ior )
 
@@ -2303,7 +2303,7 @@ mkfile_l3:
         CODE    BREAKPOINT, "(brk)", FLAG_NORMAL     ;debug
         xcall   xdebug                               ;debug
         xld.w   %r6, bpt
-        xcall   sio_put_string
+        xcall   Serial_PutString
 s1:     jp      s1                                   ;debug
 bpt:    .asciz  "STOPPED\r\n"
         .balign 4
