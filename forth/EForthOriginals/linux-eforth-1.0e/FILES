@@ -1,0 +1,29 @@
+FILES
+	is this file, dude!
+README
+	is the generic README for this package
+README.eforth
+	is the READ.ME from original eForth
+README.linux
+	is about this port
+ChangeLog
+	is a list of changes made in that port of eForth
+Glossary
+	the EFORTH.GLO glossary from original eForth package,
+	with ^P converted in ^I as suggested.
+	It ends in an odd way and looks like it was cut,
+	but so did the original glossary found at above-mentionned address.
+	If you know of a more complete file, please do tell...
+TODO
+	a list of suggestions for people who'd want to hack
+	this port of eForth: pick one and implement it ;)
+Makefile
+	is so you can type "make" and have an eforth binary
+eforth.S
+	is the real thing, the source for eForth on Linux/i386
+eforth.4th
+	is the EFORTH.SRC from original eForth,
+	that describes in FORTH the model followed by the eForth implentation
+	(that was adapted and hand-compiled into the original EFORTH.ASM).
+test.4th
+	is a stupid script that I use to test whether eforth works.

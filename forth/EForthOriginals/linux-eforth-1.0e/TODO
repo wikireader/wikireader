@@ -1,0 +1,27 @@
+* Any taker to port eforth 2.51? Contact Bill Muench <BiMu@aol.com>...
+
+* We now have argc/argv/environ, so we can do everything in FORTH.
+ However, one task would still be to adapt this eForth so as to mix with C
+ (including dlopen(3) and such things).
+
+* define sensible startup behavior,
+ including parsing options, executing default configuration file,
+ executing command file.
+
+* define lots of words to do I/O, etc. i.e. make it a useful FORTH system ?
+
+* Allow the user to save an image of system memory. Here are the difficulties:
+ - the code to thread the dictionary should be run only once; it could be
+  dropped and overwritten after the first time it is run. Or maybe someone
+  could find a way to do it statically.
+ - the machine state (useful register values; size of data areas) should be
+  saved.
+ - the various data areas should be compacted.
+ - something should be done about open file descriptors, mmap(),
+  and other such state. But what?
+ - some garbage collecting could be done at that moment ?
+ - some user-defined objects (such as files) should have user-defined ways
+  to be saved and restored: buffers should be flushed, ways to reestablish
+  connections and reinitialize access of remote resources should be remembered
+  etc; memory mappings (including shared libraries) should be remembered, etc.
+  A lot of work, which goes far beyond a port of eForth...

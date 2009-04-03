@@ -1,0 +1,83 @@
+1999-06-16	Faré <fare@tunes.org>
+	Release e
+
+	* ported eforth to ELF instead of a.out (was about time!)
+	In particular, ELF introduces changes the .align behavior back
+	to what it was before linux a.out!
+	It also modifies the base address where programs are loaded in core.
+	Made good use of GNU as subsections.
+
+	* added minimal support for argc, argv, and environ.
+	see the beginning of eforth.S for initialization,
+	and test.4th for how to use it.
+
+	* added lots of additional documentation.
+	Modified and reformatted existing docs.
+
+1995-09-16	Faré <rideau@clipper.ens.fr>
+	Release d
+
+	* maintenance release
+
+1995-05-13	Faré <rideau@clipper.ens.fr>
+	Release c
+
+	* changed (and had to debug)-8 the NEXT macro into an ENTER/NEXT pair.
+
+	* added Glossary from original eForth
+
+1995-??-??	Faré <rideau@clipper.ens.fr>
+	Release b
+
+	* added support for Linux syscalls
+
+	* removed the need of the CPP hack, by using GAS = definitions instead
+	of CPP #define's whenever possible
+
+	* created macros to debug eforth with gdb...
+
+	* many "optimizations" in assembly code.
+	All this optimizing is just for fun,
+	as the eForth model has the CPU waste most of its time
+	jumping around anyway.
+
+	* e.g. added buffering of top of stack in %ebx
+	(enable/disable with BUFFER_TOS)
+
+	* created this Changelog, a TODO file, etc.
+
+1994-11-16	Faré <rideau@clipper.ens.fr>
+	Release a
+
+	* Converted DOS system calls
+	(as transmitted by DJGPP's GO32 DOS extender),
+	into Linux system calls.
+
+	* disabled input echoing and version message (words TAP and 'BOOT).
+
+	* CPP wanted considered $UPP and alikes as a whole,
+	and I had to separate the $ (for immediate addressing mode)
+	from the constant name for #define expansion.
+
+	* GAS had a nastier problem, much harder to find:
+	the .align's of the DJGPP version of GAS port
+	had the same syntax as under Linux, but not the same effect !
+	With the DJGPP version, GAS took an argument being
+	the number of bytes to align to, and filled with zeros,
+	while the Linux version took an argument being size in 16-bit words,
+	and filled with NOP's, unless told otherwise.
+	I isolated the alignment directive in a macro,
+	so you can adapt it easily should the directive change.
+
+	* LD assumed -N flag under DJGPP; I had to explicitly use
+	the -N flag of ld under Linux (the code is self-patching).
+
+	* To help debugging, I added some macros (currently disabled)
+	to dump information at some places in the sources. You may want
+	to reenable them if you to extend the system and face bugs.
+	See DBG, PRNUM, BRKPNT, BRK, and the same with underscore prefix
+	to disable.
+
+	* Finally, I used GNU unexpand -a to *dramatically* reduce
+	the size of the sources (31%) by automatically introducing tabs.
+	If you too as vandys, dislike tabs, use GNU expand to remove them !

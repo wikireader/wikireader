@@ -1,0 +1,88 @@
+*********************************************************************
+eForth is a simple Forth model which can be easily ported to a wide
+range of CPU's.  It is best put into ROM and communicate to the
+outside through a serial RS232 line.  Files can be downloaded through
+the serial line also.  This eForth Model includes an implementation
+on IBM-PC.  The assembly source code is designed so that one can use
+MASM to assemble object code for any target CPU.  Only 29 words are
+coded in machine instructions, which can be easily modified to run
+on a target CPU other than 8086.  The eForth Model and the IBM-PC
+implementation is in the public domain to encourage interested
+programmers to port this model to different CPU's.
+
+                                                C. H. Ting
+*********************************************************************
+
+                                                July 29, 1990
+
+Dear eForth Beta Tester:
+
+This is the eForth Model which I promised to give you for evaluation
+and implementation.  Bill Muench and I labored quite intensively
+over the last four weeks chasing bugs, discussing many implementation
+and stylistic issues and experimenting various approaches and
+solutions.  We barely made the releasing date, July 28, at the FORML
+session of the Silicon Valley FIG chapter meeting.  As thing usually
+go, after I printed the documentation, Bill found it was necessary to
+overhaul the system for good reasons.  When we arrived at the SVFIG
+meeting, the documentation showed a phase delay from the code to be
+formally released.  Sounds very familiar.  Did I tell the same story
+somewhere else?
+
+The solution is that we are including two versions of EFORTH.ASM on
+this diskette.  EFORTH.ASM is the new version that you should use
+to implement eForth on the CPU of your choice.  EFORTH.OLD contains
+the source code which generates the assembly listing as printed
+in the 'eForth Implementation Guide'.  EFORTH.ASM has much improved
+style and a set of new macros to assemble the headers.  It also
+fixed a bug in $," to aligned a compiled string to cell boundary.
+The order of words is also changed slightly to highlight the machine
+dependent I/O words.
+
+The files on this diskette are:
+
+EFORTH.ASM      The source code of eForth for IBM-PC 8086.
+EFORTH.SRC      The Forth source of eForth Model.
+EFORTH.GLO      The glossary of words in eForth.
+EFORTH.COM      The executable object of IBM-PC eForth.
+READ.ME         This file.
+
+The assembly commands are:
+
+>MASM EFORTH;
+>LINK EFORTH;
+>EXE2BIN EFORTH EFORTH.COM
+>EFORTH
+
+The manual undoubtly needs much improvement.  As we start porting
+eForth to other CPU's, we will discover more problems which need
+explanation, especially to the first time Forth users, who are the
+intended audience of the eForth Model.  Your feedback will be
+greatly appreciated.
+
+As machine dependency is consolidated into 29 code words, moving
+eForth to other CPU's will be much less of a chore comparing to other
+Forth models.  I am expecting that an implementation could be
+completed within 4 weeks, assuming that you are familiar with the
+instruction set of the target CPU and its enviornment.  I am especially
+interested in how long a student, upper level college or graduate,
+needs to implement it.  If you are teaching microprocessor in a
+school, please consider this model as a class assignment and
+monitor the reactions from the students.
+
+Please send me your implementation as soon as possible.  Please
+let me know of any deficiency in this model also.  This project
+could significantly broaden the user base of Forth.  We really
+hope that it will help Forth reclaim its glory as the language
+of choice for embedded systems.
+
+Thank you for your interests and encouragements in this project.
+I hope to hear from you soon.
+
+                                        C. H. Ting
+                                        156 14th Avenue
+                                        San Mateo, CA 94402
+                                        (415) 571-7639
+
+P.S. If you get this file from BBS, send me $15 for the manual
+'eForth Implementation Guide' if you need it.

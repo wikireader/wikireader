@@ -1,0 +1,30 @@
+--- Linux/i386 port of eForth v1.0 - UnRelease e ---
+Copyright (c) 1990 by Bill Muench and C. H. Ting (eForth 1.0)
+Copyright (c) 199x by Andy Valencia (port to DJGPP/GAS)
+Copyright (c) 1995 by Francois-Rene Rideau (port to Linux)
+
+Much of the code is derived from the following sources:
+	8086 figForth by Thomas Newman, 1981 and Joe smith, 1983
+	aFORTH by John Rible
+	bFORTH by Bill Muench
+
+This port of eForth v1.0 to Linux on i386 architecture is based
+on the DJGPP/GO32 version by Andy Valencia (now vandys@baruk.zendo.com)
+(vandys is also the author of the VSTa microkernel OS).
+
+See README.eforth for data on original eForth 1.0
+See README.linux for data on this Linux/i386 port.
+See FILES for a description of included files.
+
+For original packages, see:
+* original eForth:
+	ftp://ftp.forth.org/pub/Forth/Compilers/cross/eForth/eforth.lzh
+* original 32-bit port of eForth:
+	ftp://ftp.forth.org/pub/Forth/Compilers/cross/eForth/e4th386.lzh
+* repository for this package:
+	ftp://ftp.forth.org/pub/Forth/Compilers/native/unix/Linux/
+		linux-eforth-1.0e.tar.gz
+
+Share and enjoy!
+
+	-- #f d (fare@tunes.org)

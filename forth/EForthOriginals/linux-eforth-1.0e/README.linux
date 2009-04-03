@@ -1,0 +1,29 @@
+--- Linux/i386 port of eForth v1.0 - UnRelease e ---
+
+   Linux Specificities:
+* now uses elf-i386 object file format.
+  Old a.out still present but untested.
+* eForth boot message is disabled, use word ' hi to print it.
+* eForth reads from stdin, not manually echoing input
+  (under Linux, by default, the terminal traditionally does the echoing).
+* CR actually outputs a linefeed character, not a CRLF sequence
+* words argc, argv, and environ are defined to have grant access to
+  parameter data structures...
+* Unless you undefine __SYSCALL__ in the sources, words syscall0 - syscall5
+  are defined which do Linux system calls. Could be used as a basis to a
+  library to access system resources; linking with C could be done instead,
+  but then, you should get gforth, so that's not the goal.
+* Just for fun, I added TOS (top of stack) buffering in %ebx, and replaced
+  NEXT by an ENTER/NEXT pair (both can be disabled).
+* added some support for debugging (disabled as I only release working stuff :)
+* please do send me (fare@tunes.org) any improvement.
+
+   The best docs is the source.
+
+   Have fun hacking eForth !!!
+
+[ "Faré" | VN: Ð£ng-Vû Bân | Join the TUNES project!   http://www.tunes.org/  ]
+[ FR: François-René Rideau | TUNES is a Useful, Nevertheless Expedient System ]
+[ Reflection&Cybernethics  | Project for  a Free Reflective  Computing System ]
+In a five year period we can get one superb programming language.
+Only we can't control when the five year period will begin. -- Alan Perlis
