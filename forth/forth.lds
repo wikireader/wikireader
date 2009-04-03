@@ -39,11 +39,6 @@ SECTIONS
            *(.data)
         }
 
-        .user_defaults : {
-           __START_user_defaults = . ;
-           *(.user_defaults)
-        }
-
         .user_variables : {
            __START_user_variables = . ;
            *(.user_variables)

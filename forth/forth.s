@@ -163,10 +163,6 @@ param_\label\():
 
 ;;; user variables sections
 
-        .section .user_defaults, "a"
-        .balign 4
-user_defaults:
-
         .section .user_variables, "wa"
         .balign 4
 user_variables:
@@ -175,11 +171,6 @@ user_variables:
 ;;; define user variables
 
         .macro  USER, label, name, flags, defaults
-
-        .section .user_defaults
-        .global \label\()_default
-\label\()_default:
-        .long   \defaults
 
         .section .user_variables
         .global \label\()_variable
@@ -2521,6 +2512,53 @@ mkfile_l3:
         VARIABLE tboot, "'boot", FLAG_NORMAL
         .long   banner
 
+;;; MACRO INIT-USER-VARIABLES
+        .macro  INIT_USER_VARIABLES
+        .long   dolit, initial_stack_pointer, sp0, store
+        .long   dolit, initial_return_pointer, rp0, store
+
+        .long   dolit, rx_query, tkey_query, store
+        .long   dolit, tx_store, temit, store
+        .long   dolit, accept, texpect, store
+        .long   dolit, ktap, ttap, store
+        .long   dolit, tx_store, techo, store
+        .long   dolit, dot_ok, tprompt, store
+
+        .long   dolit, 10, base, store
+
+        .long   dolit, 0, temp, store
+
+        .long   dolit, 0, span, store
+
+        .long   dolit, 0, to_in, store
+        .long   dolit, 0, hash_tib, store
+        .long   dolit, terminal_buffer, hash_tib, cell_plus, store
+
+        .long   dolit, dollar_interpret, teval, store
+        .long   dolit, numberq, tnumber, store
+
+        .long   dolit, 0, hld, store
+
+        .long   dolit, 0, handler, store
+
+        .long   dolit, 0, context, store
+        .long   dolit, 0, context, dolit, 1, cells, plus, store
+        .long   dolit, 0, context, dolit, 2, cells, plus, store
+        .long   dolit, 0, context, dolit, 3, cells, plus, store
+        .long   dolit, 0, context, dolit, 4, cells, plus, store
+        .long   dolit, 0, context, dolit, 5, cells, plus, store
+        .long   dolit, 0, context, dolit, 6, cells, plus, store
+        .long   dolit, 0, context, dolit, 7, cells, plus, store
+        .long   dolit, 0, context, dolit, 8, cells, plus, store
+
+        .long   dolit, 0, current, store
+        .long   dolit, 0, current, cell_plus, store
+
+        .long   dolit, end_of_code, cp, store
+        .long   dolit, end_of_dictionary, cp, cell_plus, store
+        .long   dolit, last_name, cp, cell_plus, cell_plus, store
+        .endm
+
 ;;; : COLD ( -- )
 ;;;   \ init CPU
 ;;;   \ init stacks
@@ -2531,6 +2569,9 @@ mkfile_l3:
 ;;;   'BOOT @EXECUTE
 ;;;   QUIT ;
         COLON   cold, "cold", FLAG_NORMAL
+
+        INIT_USER_VARIABLES
+
         .long   preset, filesystem_init
         .long   forth, context, fetch, dup, current, dstore, overt
         .long   tboot, atexecute
