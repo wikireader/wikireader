@@ -8,3 +8,5 @@ eeprom-2nd.map
 gfxtool/gfxtool
 rs232
 
+eeprom-2nd.bin
+last_bootfrom

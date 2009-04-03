@@ -9,3 +9,9 @@ moc_*
 *.dSYM
 *.d
 *.asm33
+gcc
+gcc-*
+binutils
+binutils-*
+install
+KERNEL*
