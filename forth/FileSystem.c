@@ -6,42 +6,55 @@
 
 #include <tff.h>
 
+#include "forth.h"
+
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
 
+// a type that can hole the path to the file
+typedef unsigned char FilenameType[81];
+
+// this determines the maximum files that can be open simultaneously
 static struct {
 	bool IsOpen;
 	FIL file;
-	char filename[80]; // 8(name) + 1('.') + 3(ext) + 1('\0')
+	FilenameType filename;
 } FileControlBlock[10];
 
 static FATFS TheFileSystem;
 
 typedef struct {
-	unsigned int result;
-	unsigned int rc;
+	Forth_CellType result;
+	Forth_CellType rc;
 } ReturnType;
 
-// from sio.asm
-void sio_put_string(const char *s);
-void sio_put_hex(unsigned int x);
-void sio_put_hex(unsigned int x);
-#define puts(s) sio_put_string((s))
-#define puthex(x) sio_put_hex((x))
+
+static bool ValidHandle(ReturnType *r, Forth_CellType handle)
+{
+	r->rc = FR_OK;
+	r->result = 0;
+	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
+		r->rc = FR_DENIED;
+		return false;
+	}
+	if (!FileControlBlock[handle].IsOpen) {
+		r->rc = FR_DENIED;
+		return false;
+	}
+	return true;
+}
+
 
 void FileSystem_initialise(void)
 {
 	size_t i = 0;
-	puts("FileSystem_initialise 1\n");
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		FileControlBlock[i].IsOpen = false;
 	}
-	puts("FileSystem_initialise 2\n");
 	f_mount(0, &TheFileSystem);  // only possible value is zero
-	puts("FileSystem_initialise 3\n");
 }
 
 
-ReturnType FileSystem_open(const char *filename, unsigned int length, unsigned int fam)
+ReturnType FileSystem_open(const char *filename, Forth_CellType length, Forth_CellType fam)
 {
 	ReturnType r = {0, FR_OK};
 	if (NULL == filename || '\0' == *filename) {
@@ -57,20 +70,7 @@ ReturnType FileSystem_open(const char *filename, unsigned int length, unsigned i
 				}
 				memcpy(FileControlBlock[i].filename, filename, length);
 				FileControlBlock[i].filename[length] = '\0';
-
-				puts(" open = "); puthex(length);
-				puts(" : ");
-				puts(FileControlBlock[i].filename);
-				puts("\n");
-
 				r.rc = f_open(&FileControlBlock[i].file, FileControlBlock[i].filename, fam);
-
-				puts("rc = ");
-				puthex(r.rc);
-				puts("\nresult = ");
-				puthex(r.result);
-				puts("\n");
-
 				if (FR_OK == r.rc) {
 					FileControlBlock[i].IsOpen = true;
 					r.result = i;
@@ -85,13 +85,29 @@ ReturnType FileSystem_open(const char *filename, unsigned int length, unsigned i
 }
 
 
-ReturnType FileSystem_create(const char *filename, unsigned int length, unsigned int fam)
+ReturnType FileSystem_delete(const char *filename, Forth_CellType length)
+{
+	ReturnType r = {0, FR_OK};
+	FilenameType TempFilename;
+
+	if (sizeof(TempFilename) <= length) {
+		length = sizeof(TempFilename) - 1;
+	}
+	memcpy(TempFilename, filename, length);
+	TempFilename[length] = '\0';
+	r.rc = f_unlink(TempFilename);
+
+	return r;
+}
+
+
+ReturnType FileSystem_create(const char *filename, Forth_CellType length, Forth_CellType fam)
 {
 	return FileSystem_open(filename, length, fam | FA_CREATE_NEW | FA_CREATE_ALWAYS);
 }
 
 
-ReturnType FileSystem_close(int handle)
+ReturnType FileSystem_close(Forth_CellType handle)
 {
 	ReturnType r = {0, FR_OK};
 
@@ -109,17 +125,13 @@ ReturnType FileSystem_close(int handle)
 }
 
 
-ReturnType FileSystem_read(int handle, void *buffer, unsigned int length)
+ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
-	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
-		r.rc = FR_DENIED;
-		return r;
-	}
-	if (!FileControlBlock[handle].IsOpen) {
-		r.rc = FR_DENIED;
+	if (!ValidHandle(&r, handle))
+	{
 		return r;
 	}
 
@@ -128,17 +140,13 @@ ReturnType FileSystem_read(int handle, void *buffer, unsigned int length)
 	return r;
 }
 
-ReturnType FileSystem_write(int handle, void *buffer, unsigned int length)
+ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
-	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
-		r.rc = FR_DENIED;
-		return r;
-	}
-	if (!FileControlBlock[handle].IsOpen) {
-		r.rc = FR_DENIED;
+	if (!ValidHandle(&r, handle))
+	{
 		return r;
 	}
 
@@ -148,34 +156,87 @@ ReturnType FileSystem_write(int handle, void *buffer, unsigned int length)
 }
 
 
-unsigned int FileSystem_ReadOnly(void)
+ReturnType FileSystem_sync(Forth_CellType handle)
+{
+	ReturnType r = {0, FR_OK};
+
+	if (!ValidHandle(&r, handle))
+	{
+		return r;
+	}
+
+	r.rc = f_sync(&FileControlBlock[handle].file);
+	return r;
+}
+
+
+ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
+{
+	ReturnType r = {0, FR_OK};
+
+	if (!ValidHandle(&r, handle))
+	{
+		return r;
+	}
+
+	r.rc = f_lseek(&FileControlBlock[handle].file, pos);
+	return r;
+}
+
+
+ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
+{
+	ReturnType r = {0, FR_OK};
+
+	if (!ValidHandle(&r, handle))
+	{
+		return r;
+	}
+
+	// not available :- just error
+	//r.rc = f_ltell(&FileControlBlock[handle].file, pos);
+	r.rc = FR_DENIED;
+	return r;
+}
+
+
+ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
+{
+	ReturnType r = {0, FR_OK};
+	FILINFO stat;
+
+	if (!ValidHandle(&r, handle))
+	{
+		return r;
+	}
+
+	r.rc = f_stat(FileControlBlock[handle].filename, &stat);
+	r.result = stat.fsize;
+	return r;
+}
+
+
+Forth_CellType FileSystem_ReadOnly(void)
 {
 	return FA_READ;
 }
 
 
-unsigned int FileSystem_ReadWrite(void)
+Forth_CellType FileSystem_ReadWrite(void)
 {
 	return FA_READ | FA_WRITE;
 }
 
 
-unsigned int FileSystem_WriteOnly(void)
+Forth_CellType FileSystem_WriteOnly(void)
 {
 	return FA_WRITE;
 }
 
 
-unsigned int FileSystem_bin(unsigned int fam)
+Forth_CellType FileSystem_bin(Forth_CellType fam)
 {
 	return fam;
-}
-
-
-void JustTesting(void)
-{
-
-	puts("bye from C\n");
 }
 
 

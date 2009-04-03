@@ -654,7 +654,7 @@ abs_l1:
 
 ;;; .( Comparison )
 
-;;; : 0= ( w -- t ) IF 0 EXIT THEN -1 ;
+;;; : 0= ( w -- t ) IF FALSE EXIT THEN TRUE ;
         COLON   zero_equal, "0=", FLAG_NORMAL
         .long   qbranch, zero_equal_l1
         .long   dolit, FALSE, exit
@@ -839,7 +839,7 @@ m_slash_mod_l3:
 
 ;;; subsitute unprintable character with '.'
 ;;; : >CHAR ( c -- c )
-;;;   127 AND DUP 127 BL WITHIN IF DROP [ CHAR . ] LITERAL THEN ;
+;;;   127 AND DUP 127 BL WITHIN IF DROP [CHAR] . THEN ;
 	COLON   to_char, ">char", FLAG_NORMAL
 	.long	dolit, 0x7f, _and, dup
 	.long	dolit, 0x7f, blank, within
@@ -976,7 +976,7 @@ fill_l1:
 
 ;;; .( Numeric Output ) \ single precision
 
-;;; : DIGIT ( u -- c ) 9 OVER < 7 AND + [ CHAR 0 ] LITERAL + ;
+;;; : DIGIT ( u -- c ) 9 OVER < 7 AND + [CHAR] 0 + ;
         COLON   digit, "digit", FLAG_NORMAL
         .long   dolit, 9, over, less, dolit, 7, _and, plus, dolit, '0', plus, exit
 
@@ -1005,7 +1005,7 @@ hash_s_l1:
 hash_s_l2:
         .long   exit
 
-;;; : SIGN ( n -- ) 0< IF [ CHAR - ] LITERAL HOLD THEN ;
+;;; : SIGN ( n -- ) 0< IF [CHAR] - HOLD THEN ;
         COLON   sign, "sign", FLAG_NORMAL
         .long   zero_less, qbranch, sign_l1
         .long   dolit, '-', hold
@@ -1032,7 +1032,7 @@ sign_l1:
 ;;; .( Numeric Input ) \ single precision
 
 ;;; : DIGIT? ( c base -- u t )
-;;;   >R [ CHAR 0 ] LITERAL - 9 OVER <
+;;;   >R [CHAR] 0 - 9 OVER <
 ;;;   IF 7 - DUP 10 < OR THEN DUP R> U< ;
         COLON   digitq, "digit?", FLAG_NORMAL
         .long	to_r, dolit, '0', minus
@@ -1046,9 +1046,9 @@ digitq_l1:
 
 ;;; : NUMBER? ( a -- n T, a F )
 ;;;   BASE @ >R  0 OVER COUNT ( a 0 b n)
-;;;   OVER C@ [ CHAR $ ] LITERAL =
+;;;   OVER C@ [CHAR] $ =
 ;;;   IF HEX SWAP BYTE+ SWAP 1- THEN ( a 0 b' n')
-;;;   OVER C@ [ CHAR - ] LITERAL = >R ( a 0 b n)
+;;;   OVER C@ [CHAR] - = >R ( a 0 b n)
 ;;;   SWAP R@ - SWAP R@ + ( a 0 b" n") ?DUP
 ;;;   IF 1- ( a 0 b n)
 ;;;     FOR DUP >R C@ BASE @ DIGIT?
@@ -1260,11 +1260,11 @@ paren_parse_l8:
 	.long	r_from, paren_parse
 	.long	to_in, plus_store, exit
 
-;;; : .( ( -- ) [ CHAR ) ] LITERAL PARSE TYPE ; IMMEDIATE
+;;; : .( ( -- ) [CHAR] ) PARSE TYPE ; IMMEDIATE
         COLON   dot_paren, ".(", FLAG_IMMEDIATE
         .long   dolit, ')', parse, type, exit
 
-;;; : ( ( -- ) [ CHAR ) ] LITERAL PARSE 2DROP ; IMMEDIATE
+;;; : ( ( -- ) [CHAR] ) PARSE 2DROP ; IMMEDIATE
         COLON   paren, "(", FLAG_IMMEDIATE
         .long   dolit, ')', parse, twodrop, exit
 
@@ -1276,9 +1276,17 @@ paren_parse_l8:
         COLON   char, "char", FLAG_NORMAL
         .long   blank, parse, drop, cfetch, exit
 
+;;; : [CHAR] ( -- c ) CHAR LITERAL ; FLAG_IMMEDIATE | FLAG_COMPILE_ONLY
+        COLON   bracket_char, "[char]", FLAG_NORMAL
+        .long   char, literal, exit
+
 ;;; : CTRL ( -- c ) CHAR $001F AND ;
         COLON   ctrl, "ctrl", FLAG_NORMAL
-        .long   char, 0x1f, _and, exit
+        .long   char, dolit, 0x1f, _and, exit
+
+;;; : [CTRL] ( -- c ) CTRL LITERAL ; FLAG_IMMEDIATE | FLAG_COMPILE_ONLY
+        COLON   bracket_ctrl, "[ctrl]", FLAG_NORMAL
+        .long   ctrl, literal, exit
 
 ;;; this puts the name in the right place for being the next defined item
 ;;; : TOKEN ( -- a \ <string> ) \ and reserve space for dictionary header
@@ -1650,7 +1658,7 @@ rx_query_no_character:
 ;;;     UNTIL ( a)
 ;;;     CONSOLE  NULL$ OVER XOR
 ;;;     IF CR TIB #TIB @ TYPE
-;;;        CR >IN @ [ CHAR ^ ] LITERAL CHARS
+;;;        CR >IN @ [CHAR] ^ CHARS
 ;;;        CR .$ ."  ? "
 ;;;     THEN PRESET
 ;;;   AGAIN ;
@@ -1709,7 +1717,7 @@ tick_l1:
         COLON   literal, "literal", FLAG_IMMEDIATE
         .long   compile, dolit, comma, exit
 
-;;; : $," ( -- ) [ CHAR " ] LITERAL PARSE HERE PACK$ C@ 1+ ALLOT ;
+;;; : $," ( -- ) [CHAR] " PARSE HERE PACK$ C@ 1+ ALLOT ;
         COLON   dollar_comma_quote, "$,\042", FLAG_NORMAL
         .long   dolit, '\"', parse, here, pack_dollar, cfetch, increment, allot, exit
 
@@ -1918,6 +1926,15 @@ dollar_compile_l3:
         .long   dolit, param_doconst, paren_define, comma, overt, exit
 
 
+;;; .( special constants )
+
+        CONSTANT true, "true", FLAG_NORMAL
+        .long   TRUE
+
+        CONSTANT false, "false", FLAG_NORMAL
+        .long   FALSE
+
+
 ;;; .( Tools )
 
 ;;; : (dump_ascii) ( b u -- ) FOR AFT COUNT >CHAR EMIT THEN NEXT DROP ;
@@ -2015,15 +2032,15 @@ code_query_l5:
 ;;; SEE ( -- ) \  token
 ;;; BASE @
 ;;;   ' CODE>NAME NAME>PARAM DUP
-;;;  CR [ CHAR $ ] EMIT HEX 1 U.R [ CHAR : ] EMIT
+;;;  CR [CHAR] $ EMIT HEX 1 U.R [ CHAR : ] EMIT
 ;;;   @ CR ALIGNED CELL-
 ;;;   BEGIN
 ;;;     CELL+ DUP @ DUP IF CODE? THEN
 ;;;     ?DUP
 ;;;       IF    SPACE .ID
 ;;;       ELSE  DUP @ DUP DECIMAL U.
-;;;             [CHAR / ] EMIT
-;;;             [CHAR $ ] EMIT
+;;;             [CHAR] / EMIT
+;;;             [CHAR] $ EMIT
 ;;;             HEX 1 U.R \ number
 ;;;       THEN
 ;;;   ENOUGH? UNTIL DROP BASE !;
@@ -2115,7 +2132,16 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : CREATE-FILE      ( b u fam  -- fileid ior )
+;;; : DELETE-FILE      ( b u -- ior )
+        CODE    delete_file, "delete-file", FLAG_NORMAL
+        ld.w    %r7, [%r1]+                     ; count
+        ld.w    %r6, [%r1]                      ; string
+        xcall   FileSystem_delete
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : CREATE-FILE      ( b u fam -- fileid ior )
         CODE    create_file, "create-file", FLAG_NORMAL
         ld.w    %r8, [%r1]+                     ; fam
         ld.w    %r7, [%r1]                      ; count
@@ -2126,7 +2152,7 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : OPEN-FILE        ( b u fam  -- fileid ior )
+;;; : OPEN-FILE        ( b u fam -- fileid ior )
         CODE    open_file, "open-file", FLAG_NORMAL
         ld.w    %r8, [%r1]+                     ; fam
         ld.w    %r7, [%r1]                      ; count
@@ -2137,7 +2163,7 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : CLOSE-FILE       ( fileid  -- ior )
+;;; : CLOSE-FILE       ( fileid -- ior )
         CODE    close_file, "close-file", FLAG_NORMAL
         ld.w    %r6, [%r1]                      ; fileid
         xcall   FileSystem_close
@@ -2156,6 +2182,46 @@ words_l2:
         NEXT
         END_CODE
 
+;;; : READ-LINE        ( b u fileid -- u2 f ior )
+;;; \ EOF:                             0  T    0
+;;;       >R >R DUP R> R> SWAP         \ b0 b fileid u
+;;;       FOR AFT                      \ b0 b fileid
+;;;         BEGIN
+;;;           2DUP 1 SWAP READ-FILE    \ b0 b fileid 0/1 ior
+;;;           ?DUP IF >R 2DROP SWAP - R> R> DROP EXIT THEN
+;;;           0= IF DROP SWAP - DUP 0 R> DROP EXIT THEN \ u2 f 0
+;;;                                    \ b0 b fileid
+;;;           OVER C@ [CTRL] M XOR     \ b0 b fileid f
+;;;         UNTIL
+;;;         \ here have a non CR character
+;;;         OVER C@ [CTRL] J = IF DROP SWAP - TRUE 0 R> DROP EXIT THEN
+;;;         >R 1+ R>                   \ b0 b+1 fileid
+;;;       THEN NEXT
+;;; \ filled buffer without CR/LF      \ b0 b' fileid
+;;;       DROP SWAP - TRUE 0           \ u2 T 0
+;;; ;
+        COLON   read_line, "read-line", FLAG_NORMAL
+        .long   to_r, to_r, dup, r_from, r_from, swap
+
+        .long   to_r
+        .long   branch, read_line_l5
+read_line_l1:
+        .long   twodup, dolit, 1, swap, read_file
+        .long   qdup, qbranch, read_line_l2
+        .long   to_r, twodrop, swap, minus, true, r_from, r_from, drop, exit
+read_line_l2:
+        .long   zero_equal, qbranch, read_line_l3
+        .long   drop, swap, minus, dup, dolit, 0, r_from, drop, exit
+read_line_l3:
+        .long   over, cfetch, dolit, 13, _xor, qbranch, read_line_l1
+        .long   over, cfetch, dolit, 10, equal, qbranch, read_line_l4
+        .long   drop, swap, minus, true, dolit, 0, r_from, drop, exit
+read_line_l4:
+        .long   to_r, increment, r_from
+read_line_l5:
+        .long   donext, read_line_l1
+        .long   drop, swap, minus, true, dolit, 0, exit
+
 ;;; : WRITE-FILE       ( b u fileid -- u2 ior )
         CODE    write_file, "write-file", FLAG_NORMAL
         ld.w    %r6, [%r1]+                     ; fileid
@@ -2167,9 +2233,42 @@ words_l2:
         NEXT
         END_CODE
 
-;;; : FILE-SIZE        ( fileid -- ud ior )
-;;; : FILE-POSITION    ( fileid -- ud ior )
-;;; : REPOSITION-FILE  ( ud fileid -- pos ior )
+;;; : FLUSH-FILE       ( fileid -- ior )
+        CODE    flush_file, "flush-file", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; fileid
+        xcall   FileSystem_sync
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : FILE-SIZE        ( fileid -- u ior )
+        CODE    file_size, "file-size", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; fileid
+        xcall   FileSystem_lsize
+        ld.w    [%r1], %r4                      ; size
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : FILE-POSITION    ( fileid -- u ior )
+        CODE    file_position, "file-position", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; fileid
+        xcall   FileSystem_ltell
+        ld.w    [%r1], %r4                      ; pos
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : REPOSITION-FILE  ( u fileid -- ior )
+        CODE    reposition_file, "reposition-file", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; fileid
+        ld.w    %r7, [%r1]                      ; pos
+        xcall   FileSystem_lseek
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
 
 ;;;  : FILESYSTEM-INIT (  --  )
         CODE   filesystem_init, "filesystem-init", FLAG_NORMAL
@@ -2219,14 +2318,21 @@ BUFFER_SIZE = 1024
 
 print_l1:
         .long   fd, store
-        .long   buffer, buffer_size, fd, fetch, read_file
-        .long   qdup, qbranch, print_l2
-        .long   cr, do_dot_quote
-        FSTRING "read error = "
-        .long   dot, cr, exit
 
 print_l2:
-        .long   buffer, swap, type
+        .long   buffer, buffer_size, decrement, decrement
+        .long   fd, fetch, read_line
+        .long   qdup, qbranch, print_l3
+        .long   cr, do_dot_quote
+        FSTRING "read error = "
+        .long   dot, twodrop, cr, branch, print_l4
+
+print_l3:                                       ; u2 f
+        .long   qbranch, print_l4
+
+        .long   buffer, swap, type, cr
+        .long   branch, print_l2
+print_l4:
         .long   fd, fetch, close_file, drop
         .long   cr, exit
 
