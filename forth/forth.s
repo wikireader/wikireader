@@ -2082,6 +2082,136 @@ words_l2:
         .long   exit
 
 
+;;; .( File I/O )
+;;; : R/O              (  -- fam )
+        CODE    readonly, "r/o", FLAG_NORMAL
+        xcall   FileSystem_ReadOnly
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+
+;;; : W/O              (  -- fam )
+        CODE    writeonly, "w/o", FLAG_NORMAL
+        xcall   FileSystem_WriteOnly
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+
+;;; : R/W              (  -- fam )
+        CODE    readwrite, "r/w", FLAG_NORMAL
+        xcall   FileSystem_ReadWrite
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+
+;;; : BIN              ( fam -- fam2 )
+        CODE    bin, "bin", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; fam
+        xcall   FileSystem_bin
+        ld.w    [%r1], %r4                      ; fam2
+        NEXT
+        END_CODE
+
+;;; : CREATE-FILE      ( b u fam  -- fileid ior )
+        CODE    create_file, "create-file", FLAG_NORMAL
+        ld.w    %r8, [%r1]+                     ; fam
+        ld.w    %r7, [%r1]                      ; count
+        xld.w   %r6, [%r1 + 4]                  ; string
+        xcall   FileSystem_create
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; fd
+        NEXT
+        END_CODE
+
+;;; : OPEN-FILE        ( b u fam  -- fileid ior )
+        CODE    open_file, "open-file", FLAG_NORMAL
+        ld.w    %r8, [%r1]+                     ; fam
+        ld.w    %r7, [%r1]                      ; count
+        xld.w   %r6, [%r1 + 4]                  ; string
+        xcall   FileSystem_open
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; fd
+        NEXT
+        END_CODE
+
+;;; : CLOSE-FILE       ( fileid  -- ior )
+        CODE    close_file, "close-file", FLAG_NORMAL
+        ld.w    %r6, [%r1]                      ; fileid
+        xcall   FileSystem_close
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; : READ-FILE        ( b u fileid -- u2 ior )
+        CODE    read_file, "read-file", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; fileid
+        ld.w    %r8, [%r1]                      ; count
+        xld.w   %r7, [%r1 + 4]                  ; buffer
+        xcall   FileSystem_read
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; count2
+        NEXT
+        END_CODE
+
+;;; : WRITE-FILE       ( b u fileid -- u2 ior )
+;;; : FILE-SIZE        ( fileid  -- ud ior )
+;;; : FILE-POSITION    ( fileid -- ud ior )
+;;; : REPOSITION-FILE  ( ud fileid -- pos ior )
+
+;;;  : FILESYSTEM-INIT (  --  )
+        CODE   filesystem_init, "filesystem-init", FLAG_NORMAL
+        xcall   FileSystem_initialise
+        NEXT
+        END_CODE
+
+;;; \ simple test
+;;; : print ( b u -- )
+;;;         s" forth.s" r/o open-file
+;;;         0= if fd !
+;;;           buffer buffer-size fd @ read-file
+;;;           0= if  buffer swap type
+;;;           else   cr ." read error"
+;;;           then
+;;;           fd @ close-file drop
+;;;         else  cr ." open error
+;;;         then
+;;;         cr ;
+BUFFER_SIZE = 1024
+        CONSTANT buffer_size, "buffer-size", FLAG_NORMAL
+        .long   BUFFER_SIZE
+
+        VARIABLE fd, "fd", FLAG_NORMAL
+        .long   0
+
+        VARIABLE buffer, "buffer", FLAG_NORMAL
+        .space  BUFFER_SIZE
+        .balign 4
+
+        COLON   print, "print", FLAG_NORMAL
+        .long   do_dollar_quote
+        FSTRING "forth.s"
+        .long   count, readonly, open_file
+        .long   zero_equal, qbranch, print_l3
+        .long   fd, store
+        .long   buffer, buffer_size, fd, fetch, read_file
+        .long   zero_equal, qbranch, print_l1
+        .long   buffer, swap, type
+        .long   branch,  print_l2
+print_l1:
+        .long   cr, do_dot_quote
+        FSTRING "read error"
+print_l2:
+        .long   fd, fetch, close_file, drop
+print_l3:
+        .long   cr, do_dot_quote
+        FSTRING "open error"
+print_l4:
+        .long   cr, exit
+
+
 ;;; .( Hardware reset )
 
 ;;; \ version
@@ -2113,7 +2243,7 @@ words_l2:
 ;;;   'BOOT @EXECUTE
 ;;;   QUIT ;
         COLON   cold, "cold", FLAG_NORMAL
-        .long   preset
+        .long   preset, filesystem_init
         .long   forth, context, fetch, dup, current, dstore, overt
         .long   tboot, atexecute
         .long   quit
