@@ -1901,7 +1901,17 @@ dollar_compile_l3:
 
 ;;; : IMMEDIATE ( -- )
 ;;;             LAST @ NAME>FLAGS DUP @
-;;;             [ =FLAG-IMMEDIATE ] LITERAL OR ! ;
+;;;             [ =FLAG-IMMEDIATE ] LITERAL OR SWAP ! ;
+        COLON   _immediate, "immediate", FLAG_NORMAL
+        .long   last, fetch, name_to_flags, dup, fetch
+        .long   dolit, FLAG_IMMEDIATE, _or, swap, store, exit
+
+;;; : COMPILE-ONLY ( -- )
+;;;             LAST @ NAME>FLAGS DUP @
+;;;             [ =FLAG-COMPILE-ONLY ] LITERAL OR SWAP ! ;
+        COLON   _compile_only, "compile-only", FLAG_NORMAL
+        .long   last, fetch, name_to_flags, dup, fetch
+        .long   dolit, FLAG_COMPILE-ONLY, _or, swap, store, exit
 
 
 ;;; .( Defining Words )
