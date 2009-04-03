@@ -15,6 +15,14 @@ function switch_to(target) {
     document.getElementById("page").innerHTML = sections_html[target];    
 }
 
+function removeElements(func, that, name) {
+    list = func.call(that, name)
+    while (list.length != 0) {
+        list[0].parentNode.removeChild(list[0]);
+        list = func.call(that, name);
+    }
+}
+
 /*
  * Create a push button... and hook it up
  * with javascript
@@ -43,7 +51,12 @@ function extractToc(toc, _content, sections) {
             h2_header.innerHTML + '</a><br />';
     }
 
+    /* clean the content from things */
     content = _content.cloneNode(true);
+    removeElements(content.getElementsByTagName, content, "h2");
+    removeElements(content.getElementsByClassName, content, "content_block");
+
+    html += content.innerHTML;
         
     html += "</div>";
     html += "</div>";
