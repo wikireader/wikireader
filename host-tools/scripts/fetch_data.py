@@ -77,6 +77,11 @@ signal.signal(signal.SIGALRM, alarm_handler)
 
 
 for work in glob.glob("*.work"):
+    if os.path.exists("%s.complete" % work):
+        print "Skipping %s as it is completed." % work
+        continue
+
+    print "Opening %s" % work
     file = open(work)
     for line in file:
         data = line[:-1].split(" ", 1)
