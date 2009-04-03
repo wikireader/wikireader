@@ -1459,7 +1459,7 @@ accept_l4:
 
 ;;;  .( File input - substitutes for accept above )
 
-;;; VARIABLE SOURCE-ID  0 SOURCE-ID !
+;;; CREATE SOURCE-ID  0 ,
         VARIABLE source_id, "source-id", FLAG_NORMAL
         .long   0
 
