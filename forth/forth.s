@@ -1529,11 +1529,11 @@ dollar_interpret_l1:
 dollar_interpret_l2:
 	.long	throw
 
-;;; : [ ( -- ) [ ' $INTERPRET ] LITERAL 'EVAL ! ; IMMEDIATE
+;;; : [ ( -- ) ['] $INTERPRET 'EVAL ! ; IMMEDIATE
 	COLON   left_bracket, "[", FLAG_IMMEDIATE
 	.long	dolit, dollar_interpret, teval, store, exit
 
-;;; : .OK ( -- ) [ ' $INTERPRET ] LITERAL 'EVAL @ = IF ."  ok" THEN CR ;
+;;; : .OK ( -- ) ['] $INTERPRET 'EVAL @ = IF ."  ok" THEN CR ;
 	COLON   dot_ok, ".ok", FLAG_NORMAL
 	.long	dolit, dollar_interpret, teval, fetch, equal
 	.long	qbranch, dot_ok_l1
@@ -1620,7 +1620,7 @@ rx_query_no_character:
 	.long	exit
 
 ;;; : XIO ( a a a -- ) \ reset 'EXPECT 'TAP 'ECHO 'PROMPT
-;;;   [ ' accept ] LITERAL 'EXPECT !
+;;;   ['] accept 'EXPECT !
 ;;;   'TAP !  'ECHO !  'PROMPT ! ;
         COLON   xio, "xio", FLAG_NORMAL
         .long   dolit, accept, texpect, store
@@ -1630,11 +1630,11 @@ rx_query_no_character:
         .long   exit
 
 ;;; : FILE ( -- )
-;;;   [ ' PACE ] LITERAL [ ' DROP ] LITERAL [ ' kTAP ] LITERAL XIO ;
+;;;   ['] PACE ['] DROP ['] kTAP XIO ;
 ;;; ** Missing **
 
 ;;; : HAND ( -- )
-;;;   [ ' .OK  ] LITERAL 'EMIT @ [ ' kTAP ] LITERAL XIO ;
+;;;   ['] .OK  'EMIT @ ['] kTAP XIO ;
         COLON   hand, "hand", FLAG_NORMAL
         .long   dolit, dot_ok, temit, fetch, dolit, ktap, xio, exit
 
@@ -1654,7 +1654,7 @@ rx_query_no_character:
 ;;; : QUIT ( -- ) \ clear return stack ONLY
 ;;;   RP0 @ RP!
 ;;;   BEGIN [COMPILE] [
-;;;     BEGIN [ ' que ] LITERAL CATCH ?DUP
+;;;     BEGIN ['] que CATCH ?DUP
 ;;;     UNTIL ( a)
 ;;;     CONSOLE  NULL$ OVER XOR
 ;;;     IF CR TIB #TIB @ TYPE
@@ -1695,6 +1695,11 @@ quit_l4:
         .long   exit
 tick_l1:
         .long   throw, exit
+
+;;; : ['] ( -- ) ' LITERAL ; IMMEDIATE COMPILE_ONLY
+;;; \ runtime ( -- ca )
+        COLON   bracket_tick, "[']", FLAG_IMMEDIATE + FLAG_COMPILE_ONLY
+        .long   tick, literal, exit
 
 ;;; : ALLOT ( n -- ) CP +! ;
         COLON   allot, "allot", FLAG_NORMAL
@@ -1871,7 +1876,7 @@ dollar_compile_l3:
         .long   compile, exit
         .long   left_bracket, overt, exit
 
-;;; : ] ( -- ) [ ' $COMPILE ] LITERAL 'EVAL ! ;
+;;; : ] ( -- ) ['] $COMPILE 'EVAL ! ;
 	COLON   right_bracket, "]", FLAG_NORMAL
 	.long	dolit, dollar_compile, teval, store, exit
 
