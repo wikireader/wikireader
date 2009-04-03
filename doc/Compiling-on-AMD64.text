@@ -22,9 +22,19 @@ debootstrap --arch=i386 sid /sid-i386 http://ftp.us.debian.org/debian/
 echo "proc /sid-i386/proc proc defaults 0 0" >> /etc/fstab
 echo "/home /sid-i386/home bind defaults,bind 0 0" >> /etc/fstab
 
+# OPTIONAL:
+# if it is necessary to use RS232 from this chroot than maybe
+# the device directory should be mounted.  Only useful
+# if the command 'make flash-bootloader' is going to be used
+# and need access to /dev/ttyUSBx
+echo "/dev  /sid-i386/dev  bind defaults,bind 0 0" >> /etc/fstab
+
 # mount the above
 mount /sid-i386/proc
 mount /sid-i386/home
+
+# OPTIONAL: if the device directory was included above
+mount /sid-i386/dev
 
 # OPTIONAL: add your favorite configs to sid's root e.g.
 cp -p /root/.joverc /sid-i386/root/
@@ -43,7 +53,7 @@ apt-get install libncurses5-dev
 # OPTIONAL: add your favorite programs e.g. jove editor
 apt-get --no-install-recommends jove
 
-# back to main system 
+# exit from the sid-i386 chroot
 exit
 
 # set up your username and group for sid
