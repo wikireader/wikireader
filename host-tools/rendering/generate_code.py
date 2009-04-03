@@ -27,6 +27,69 @@ import fontmap
 import struct
 import textrun
 
+# Globals
+glyph_map = {}
+font_map = {}
+huffman_fonts = {}
+huffman_glyphs = {}
+huffman_x = {}
+huffman_y = {}
+huffman_length = {}
+
+
+def determine_by_occurence(occurences):
+    """Count the occurcences of something"""
+    items = []
+    for item in occurences.keys():
+        items.append((occurences[item], item))
+    items.sort(reverse=True)
+
+    i = 0
+    dict = {}
+    for (count, item) in items:
+        dict[item] = i
+        i = i + 1
+
+    return dict
+
+def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences):
+    """Count the occurences of fonts, glyphs and position"""
+
+    # Sort by y position
+    text_runs.sort(textrun.TextRun.cmp)
+
+    global glyph_map, font_map
+    glyph_map = determine_by_occurence(glyph_occurences)
+    font_map = determine_by_occurence(font_occurences)
+
+    # huffman foo...
+    global huffman_fonts, huffman_glyphs, huffman_x, huffman_y, huffman_length
+    font_input = []
+    for font in font_occurences:
+        font_input.append((font_occurences[font]/len(font_occurences), font))
+    huffman_fonts = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(font_input))
+
+    glyph_input = []
+    for glyph in glyph_occurences:
+        glyph_input.append((glyph_occurences[glyph]/len(glyph_occurences), glyph))
+    huffman_glyphs = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(glyph_input))
+
+    x_input = []
+    for x in x_occurences:
+        x_input.append((x_occurences[x]/len(x_occurences), x))
+    huffman_x = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(x_input))
+
+    y_input = []
+    for y in y_occurences:
+        y_input.append((y_occurences[y]/len(y_occurences), y))
+    huffman_y = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(y_input))
+
+    length_input = []
+    for length in length_occurences:
+        length_input.append((length_occurences[length]/len(length_occurences), length))
+    huffman_length = huffmanCode.createCodeWordMap(huffmanCode.makeHuffTree(length_input))
+
+    return text_runs
 
 def usage():
     print "Wikipedia huffman coding"
@@ -49,8 +112,8 @@ except ImportError:
 
 
 glyphs = textrun.load(sys.argv[1])
-text_runs = textrun.generate_text_runs(glyphs, 240)[0]
-text_runs.sort(textrun.TextRun.cmp)
+(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)[0]
+prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 fonts  = fontmap.load(sys.argv[2])
 
 output = open("huffmaned.cde", "w")

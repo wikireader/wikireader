@@ -282,7 +282,7 @@ def generate_text_runs(glyphs):
 
 def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences):
     # Sort by y position
-    text_runs.sort(TextRun.cmp)
+    text_runs.sort(textrun.TextRun.cmp)
 
     global glyph_map, font_map
     glyph_map = determine_by_occurence(glyph_occurences)
