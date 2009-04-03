@@ -1828,24 +1828,18 @@ qunique_l1:
 ;;;     ( cp na ) NAME>PARAM ! EXIT
 ;;;   THEN $" name" THROW ;
         COLON   dollar_comma_n, "$,n", NORMAL
-        .long   dolit, 0x12345678, DEBUG, drop
-        .long   dup, cfetch                     ;cfetch for string count (strlen ??)
+        .long   dup, cfetch                     ; cfetch for string count (strlen ??)
         .long   qbranch, dollar_comma_n_l1
         .long   qunique
         .long   dup, last, store
         .long   here, aligned, swap
-        .long   dolit, 0x12340001, DEBUG, drop
         .long   dup, name_to_link
         .long   current, fetch, fetch
         .long   swap, store
-        .long   dolit, 0x12340002, DEBUG, drop
         .long   dup
-        .long   dolit, 0x12340003, DEBUG, drop
-        .long   count, plus, aligned            ;skip over the name
+        .long   count, plus, aligned            ; skip over the name
         .long   np, store
-        .long   dolit, 0x12340004, DEBUG, drop
-        .long   name_to_param                   ;*****how about code docolon,dovar or same as param
-        .long   dolit, 0x12340005, DEBUG, drop
+        .long   name_to_param
         .long   store
         .long   exit
 dollar_comma_n_l1:
@@ -1901,12 +1895,9 @@ dollar_compile_l3:
 ;;;   0 NAME>FLAGS ! ] ;
         COLON   colon, ":", NORMAL
         .long   token, dup, dollar_comma_n
-        .long   dolit, 0xdecaffe, DEBUG, drop
         .long   dolit, param_docolon, over, name_to_code
-        .long   dolit, 0x1decaffe, DEBUG, drop
         .long   store
         .long   dolit, 0, swap, name_to_flags
-        .long   dolit, 0x2decaffe, DEBUG, drop
         .long   store
         .long   right_bracket, exit
 ;;;
