@@ -2157,6 +2157,16 @@ words_l2:
         END_CODE
 
 ;;; : WRITE-FILE       ( b u fileid -- u2 ior )
+        CODE    write_file, "write-file", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; fileid
+        ld.w    %r8, [%r1]                      ; count
+        xld.w   %r7, [%r1 + 4]                  ; buffer
+        xcall   FileSystem_write
+        ld.w    [%r1], %r5                      ; ior
+        xld.w   [%r1 + 4], %r4                  ; count2
+        NEXT
+        END_CODE
+
 ;;; : FILE-SIZE        ( fileid  -- ud ior )
 ;;; : FILE-POSITION    ( fileid -- ud ior )
 ;;; : REPOSITION-FILE  ( ud fileid -- pos ior )
@@ -2190,25 +2200,64 @@ BUFFER_SIZE = 1024
         .space  BUFFER_SIZE
         .balign 4
 
-        COLON   print, "print", FLAG_NORMAL
+        COLON   pf, "pf", FLAG_NORMAL
         .long   do_dollar_quote
         FSTRING "forth.s"
+        .long   print, exit
+
+        COLON   pt, "pt", FLAG_NORMAL
+        .long   do_dollar_quote
+        FSTRING "test.dat"
+        .long   print, exit
+
+        COLON   print, "print", FLAG_NORMAL
         .long   count, readonly, open_file
-        .long   zero_equal, qbranch, print_l3
+        .long   qdup, qbranch, print_l1
+        .long   cr, do_dot_quote
+        FSTRING "open error = "
+        .long   dot, cr, exit
+
+print_l1:
         .long   fd, store
         .long   buffer, buffer_size, fd, fetch, read_file
-        .long   zero_equal, qbranch, print_l1
-        .long   buffer, swap, type
-        .long   branch,  print_l2
-print_l1:
+        .long   qdup, qbranch, print_l2
         .long   cr, do_dot_quote
-        FSTRING "read error"
+        FSTRING "read error = "
+        .long   dot, cr, exit
+
 print_l2:
+        .long   buffer, swap, type
         .long   fd, fetch, close_file, drop
-print_l3:
+        .long   cr, exit
+
+some_text:
+        .ascii  "This is a test for file write\n"
+        .ascii  "with just a few lines of text\n"
+        .ascii  "0123456789\n"
+some_text_length = . - some_text
+        .balign 4
+
+        COLON   mkfile, "mkfile", FLAG_NORMAL
+        .long   do_dollar_quote
+        FSTRING "test.dat"
+        .long   count, writeonly, create_file
+        .long   qdup, qbranch, mkfile_l1
         .long   cr, do_dot_quote
-        FSTRING "open error"
-print_l4:
+        FSTRING "create error = "
+        .long   dot, cr, exit
+mkfile_l1:
+        .long   fd, store
+        .long   dolit, some_text, dolit, some_text_length, fd, fetch, write_file
+        .long   qdup, qbranch, mkfile_l2
+        .long   cr, do_dot_quote
+        FSTRING "write error = "
+        .long   dot, cr
+mkfile_l2:
+        .long   cr, do_dot_quote
+        FSTRING "write count = "
+        .long   dot, cr
+        .long   fd, fetch, close_file, drop
+mkfile_l3:
         .long   cr, exit
 
 
