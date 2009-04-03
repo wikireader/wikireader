@@ -89,7 +89,7 @@ __last_name = 0                                 ; to link the list
 
         .macro  HEADER, label, name, flags, code
 
-        .section .data
+        .section .forth_dict
         .balign 4
         .global \label
 \label\():
@@ -114,7 +114,7 @@ DICTIONARY_PARAM_OFFSET  = ( name_\label - l_param_\@ ) / BYTES_PER_CELL
 DICTIONARY_FLAGS_OFFSET  = ( name_\label - l_flags_\@ ) / BYTES_PER_CELL
 DICTIONARY_LINK_OFFSET   = ( name_\label - l_link_\@ ) / BYTES_PER_CELL
 
-        .section .text
+        .section .forth_param
         .balign 4
 
         .global param_\label
@@ -187,6 +187,7 @@ user_variables:
 
         .section .bss
 
+        .balign 4
 terminal_buffer:
         .space   65536
         .global initial_stack_pointer
@@ -198,6 +199,7 @@ initial_return_pointer:
 
 ;;; Program Code
         .section .text
+        .global main
 main:
         xld.w   %r15, __dp
         xld.w   %r10, initial_stack_pointer
@@ -206,6 +208,7 @@ main:
         xld.w   %r11, cold_start                ; initial ip value
         NEXT
 
+        .balign 4                               ; forth byte code must be aligned
 cold_start:
         .long   cold, branch, cold_start        ; just run cold in a loop
 

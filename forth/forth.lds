@@ -58,6 +58,16 @@ SECTIONS
         }
         __END_text = . ;
 
+        .forth_dict : {
+           __START_forth_dict = . ;
+	   forth.o(*.forth_dict)
+        }
+
+        .forth_text : {
+           __START_forth_text = . ;
+	   forth.o(*.forth_text)
+        }
+
 /*
 	.comment : {
 	   *(.comment)
