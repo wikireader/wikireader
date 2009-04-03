@@ -572,6 +572,7 @@ abs_l1:
 
 ;;; DUP USER SP0      1 CELL+ \ initial data stack pointer
         USER    sp0, "sp0", 0, initial_stack_pointer
+
 ;;; DUP USER RP0      1 CELL+ \ initial return stack pointer
         USER    rp0, "rp0", 0, initial_return_pointer
 
@@ -929,12 +930,29 @@ cmove_done:
 ;;;   FOR AFT DUP R@ + C@  BL XOR
 ;;;     IF R> BYTE+ EXIT THEN THEN
 ;;;   NEXT 0 ;
-;;;
+        COLON   minus_trailing, "-trailing", 0
+        .long   to_r
+minus_trailing_l1:
+        .long   dup, r_fetch, plus, cfetch,  blank, _xor
+        .long   qbranch, minus_trailing_l2
+        .long   r_from, byte_plus, exit
+minus_trailing_l2:
+        .long   donext, minus_trailing_l1
+        .long   dolit, 0, exit
+
 ;;; : FILL ( b u c -- )
 ;;;   SWAP FOR SWAP AFT 2DUP C! BYTE+ THEN NEXT 2DROP ;
-;;;
+        COLON   fill, "fill", 0
+        .long   SWAP, to_r
+fill_l1:
+        .long   twodup, cstore, byte_plus
+        .long   donext, fill_l1
+        .long   twodrop, exit
+
 ;;; : ERASE ( b u -- ) 0 FILL ;
-;;;
+        COLON   erase, "erase", 0
+        .long   dolit, 0, fill, exit
+
 ;;; : PACK$ ( b u a -- a ) \ null terminated
 ;;;   DUP >R  2DUP C! BYTE+ SWAP CMOVE  R> ;
         COLON   pack_dollar, "pack$", 0
@@ -985,7 +1003,9 @@ sign_l1:
         COLON   hash_greater, "#>", 0
         .long   drop, hld, fetch, pad, over, minus, exit
 
-;;; : str ( w -- b u ) DUP >R ABS <# #S R> SIGN #> ;
+;;; : (str) ( w -- b u ) DUP >R ABS <# #S R> SIGN #> ;
+        COLON   paren_str, "(str)"
+        .long   dup, to_r, abs, less_hash, hash_s, r_from, sign, hash_greater, exit
 
 ;;; : HEX ( -- ) 16 BASE ! ;
         COLON   hex, "hex", 0
@@ -1076,12 +1096,19 @@ key_l1:
 ;;; : SPACE ( -- ) BL EMIT ;
         COLON   space, "space", 0
         .long   blank, emit, exit
-;;;
+
 ;;; : CHARS ( +n c -- ) SWAP 0 MAX FOR AFT DUP EMIT THEN NEXT DROP ;
-;;;
+        COLON   chars, "chars", 0
+        .long   swap, dolit, 0, max
+        .long   to_r
+chars_l1:
+        .long   dup, emit
+        .long   donext, chars_l1
+        .long   drop, exit
+
 ;;; : SPACES ( +n -- ) BL CHARS ;
-;        COLON   spaces, "spaces", 0
-;        .long   blank, chars, exit
+        COLON   spaces, "spaces", 0
+        .long   blank, chars, exit
 
 ;;; : do$ ( -- a )
 ;;;   R> R@ R> COUNT + ALIGNED >R SWAP >R ; COMPILE-ONLY
@@ -1115,18 +1142,32 @@ type_l2:
         COLON   cr, "cr", 0
         .long   dolit, carriage_return, emit
         .long   dolit, line_feed, emit, exit
-;;;
-;;; :  .R ( n +n -- ) >R str      R> OVER - SPACES TYPE ;
+
+;;; :  .R ( n +n -- ) >R (str)      R> OVER - SPACES TYPE ;
+        COLON   dot_r, ".r", 0
+        .long   to_r, paren_str, r_from, over, minus, spaces, type, exit
+
 ;;; : U.R ( u +n -- ) >R <# #S #> R> OVER - SPACES TYPE ;
-;;;
+        COLON   u_dot_r, "u.", 0
+        .long   to_r, less_hash, hash_s, hash_greater, r_from, over, minus, spaces, type, exit
+
 ;;; : U. ( u -- ) <# #S #> SPACE TYPE ;
         COLON   u_dot, "u.", 0
         .long   less_hash, hash_s, hash_greater, space, type, exit
 
-;;; :  . ( w -- ) BASE @ 10 XOR IF U. EXIT THEN str SPACE TYPE ;
-;;;
+;;; :  . ( w -- ) BASE @ 10 XOR IF U. EXIT THEN (str) SPACE TYPE ;
+        COLON   dot, ".", 0
+        .long   base, fetch, dolit, 10, _xor
+        .long   qbranch, dot_l1
+        .long   u_dot, exit
+dot_l1:
+        .long   paren_str, space, type, exit
+
 ;;; : ? ( a -- ) @ . ;
-;;;
+        COLON   query, "?", 0
+        .long   fetch, dot, exit
+
+
 ;;; .( Parsing )
 ;;;
 ;;; : (parse) ( b u c -- b u delta \ <string> )
@@ -1189,8 +1230,16 @@ paren_parse_l8:
 	.long	to_in, plus_store, exit
 
 ;;; : .( ( -- ) [ CHAR ) ] LITERAL PARSE TYPE ; IMMEDIATE
+        COLON   dot_paren, ".(", IMMEDIATE
+        .long   dolit, ')', parse, type, exit
+
 ;;; : ( ( -- ) [ CHAR ) ] LITERAL PARSE 2DROP ; IMMEDIATE
+        COLON   paren, "(", IMMEDIATE
+        .long   dolit, ')', parse, twodrop, exit
+
 ;;; : \ ( -- ) #TIB @ >IN ! ; IMMEDIATE
+        COLON   backslash, "\\", IMMEDIATE
+        .long   hash_tib, fetch, to_in, store, exit
 ;;;
 ;;; : CHAR ( -- c ) BL PARSE DROP C@ ;
         COLON   char, "char", 0
@@ -1601,9 +1650,15 @@ quit_l4:
 
 
 ;;; .( Compiler Primitives )
-;;;
+
 ;;; : ' ( -- ca ) TOKEN NAME? IF EXIT THEN THROW ;
-;;;
+        COLON   tick, "'", 0
+        .long   token, nameq
+        .long   qbranch, tick_l1
+        .long   exit
+tick_l1:
+        .long   throw, exit
+
 ;;; : ALLOT ( n -- ) CP +! ;
         COLON   allot, "allot", 0
         .long   cp, plus_store, exit
@@ -1614,12 +1669,14 @@ quit_l4:
         .long   store, store, exit
 
 ;;; : [COMPILE] ( -- \ <string> ) ' , ; IMMEDIATE
-;;;
+        COLON   bracket_compile, "[compile]", IMMEDIATE
+        .long   tick, comma, exit
+
 ;;; : COMPILE ( -- ) R> DUP @ , CELL+ >R ; COMPILE-ONLY
         COLON   compile, "compile", COMPILE_ONLY
         .long   r_from, dup, fetch, comma, cell_plus, to_r, exit
 
-;;; : LITERAL ( w -- ) COMPILE doLIT , ; IMMEDIATE
+;;; : LITERAL ( w -- ) COMPILE (dolit) , ; IMMEDIATE
         COLON   literal, "literal", IMMEDIATE
         .long   compile, dolit, comma, exit
 
@@ -1628,27 +1685,60 @@ quit_l4:
         .long   dolit, '\"', parse, here, pack_dollar, cfetch, increment, allot, exit
 
 ;;; : RECURSE ( -- ) LAST @ CURRENT @ ! ; IMMEDIATE
-;;;
+        COLON   recurse, "recurse", IMMEDIATE
+        .long   last, fetch, current, fetch, store, exit
 
 
 ;;; .( Structures )
-;;;
+
 ;;; : FOR ( -- a ) COMPILE >R HERE ; IMMEDIATE
+        COLON   for, "for", IMMEDIATE
+        .long   compile, to_r, here, exit
+
 ;;; : BEGIN ( -- a ) HERE ; IMMEDIATE
+        COLON   begin, "begin", IMMEDIATE
+        .long   here, exit
+
 ;;; : NEXT ( a -- ) COMPILE (next) , ; IMMEDIATE
         COLON   next, "next", IMMEDIATE
 	.long	compile, donext, comma, exit
 
 ;;; : UNTIL ( a -- ) COMPILE ?branch , ; IMMEDIATE
+        COLON   until, "until", IMMEDIATE
+        .long   compile, qbranch, comma, exit
+
 ;;; : AGAIN ( a -- ) COMPILE  branch , ; IMMEDIATE
+        COLON   again, "again", IMMEDIATE
+        .long   compile, branch, comma, exit
+
 ;;; : IF ( -- A )   COMPILE ?branch HERE 0 , ; IMMEDIATE
+        COLON   if, "if", IMMEDIATE
+        .long   compile, qbranch, here, dolit, 0, comma, exit
+
 ;;; : AHEAD ( -- A ) COMPILE branch HERE 0 , ; IMMEDIATE
+        COLON   ahead, "ahead", IMMEDIATE
+        .long   compile, branch, here, dolit, 0, comma, exit
+
 ;;; : REPEAT ( A a -- ) [COMPILE] AGAIN HERE SWAP ! ; IMMEDIATE
+        COLON   repeat, "repeat", IMMEDIATE
+        .long   compile, again, here, swap, store, exit
+
 ;;; : THEN ( A -- ) HERE SWAP ! ; IMMEDIATE
+        COLON   then, "then", IMMEDIATE
+        .long  here, swap, store, exit
+
 ;;; : AFT ( a -- a A ) DROP [COMPILE] AHEAD [COMPILE] BEGIN SWAP ; IMMEDIATE
+        COLON   AFT, "aft", IMMEDIATE
+        .long   drop, compile, ahead, compile, begin, swap, exit
+
 ;;; : ELSE ( A -- A )  [COMPILE] AHEAD SWAP [COMPILE] THEN ; IMMEDIATE
+        COLON   else, "else", IMMEDIATE
+        .long   compile, ahead, swap, compile, then, exit
+
 ;;; : WHILE ( a -- A a )    [COMPILE] IF SWAP ; IMMEDIATE
-;;;
+        COLON   while, "while", IMMEDIATE,
+        .long   compile, if, swap, exit
+
 ;;; : ABORT" ( -- \ <string> ) COMPILE (abort") $," ; IMMEDIATE
 	COLON   abortquote, "abort\042", IMMEDIATE
 	.long	compile, do_abort_quote, dollar_quote, exit
@@ -1676,7 +1766,8 @@ quit_l4:
 ;;;     ( cp la na') OVER !
 ;;;     ( cp la) 1 CELLS - DUP NP ! ( ptr) ! EXIT
 ;;;   THEN $" name" THROW ;
-;;;
+
+
 ;;; .( FORTH Compiler )
 ;;;
 ;;; : $COMPILE ( a -- )
