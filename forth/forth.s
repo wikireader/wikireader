@@ -1977,33 +1977,6 @@ dot_s_l2:
 ;;; : ?CSP ( -- ) SP@ CSP @ XOR ABORT" stack depth" ;
 ;;; ** Missing **
 
-;;; : CODE>NAME ( ca -- na | F )
-;;;   CURRENT
-;;;   BEGIN CELL+ @ ?DUP WHILE 2DUP
-;;;     BEGIN @ DUP WHILE 2DUP NAME>CODE @ XOR
-;;;     WHILE NAME>LINK
-;;;     REPEAT      THEN NIP ?DUP
-;;;   UNTIL NIP NIP EXIT THEN DROP FALSE ;
-;*        COLON   code_to_name, "code>name", FLAG_NORMAL
-;*        .long   current
-;*to_name_l1:
-;*        .long   cell_plus, fetch, qdup
-;*        .long   qbranch, to_name_l4
-;*        .long   twodup
-;*to_name_l2:
-;*        .long   fetch, dup
-;*        .long   qbranch, to_name_l3
-;*        .long   twodup, name_to_code, fetch, _xor
-;*        .long   qbranch, to_name_l3
-;*        .long   name_to_link
-;*        .long   branch, to_name_l2
-;*to_name_l3:
-;*        .long   nip, qdup
-;*        .long   qbranch, to_name_l1
-;*        .long   nip, nip, exit
-;*to_name_l4:
-;*        .long   drop, dolit, FALSE, exit
-
 ;;; \ search to see if an unknown address is really forth code
 ;;; : CODE? ( ca -- na | F )
 ;;;   CURRENT
