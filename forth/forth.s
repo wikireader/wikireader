@@ -589,8 +589,8 @@ abs_l1:
 
 
 ;;; .( User variables )
-;;;
-;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY <- wrong!
+
+;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY  ( address passed via %r12 not stack )
         CODE    douser, "(douser)", FLAG_COMPILE_ONLY
         ld.w    %r0, [%r12]
         ld.w    %r0, [%r0]                      ; user is another pointer!
@@ -599,7 +599,7 @@ abs_l1:
         NEXT
         END_CODE
 
-;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY <- wrong
+;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY ( address passed via %r12 not stack )
         CODE   dovar, "(dovar)", FLAG_COMPILE_ONLY
         ld.w    %r0, [%r12]                     ; %r0 = parameter address
         xsub    %r10, BYTES_PER_CELL
