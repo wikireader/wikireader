@@ -33,7 +33,7 @@ for thread in range(1, NUMBER_OF_SLAVES + 1):
 for line in file:
    if not current_file:
        file = "%.5d.work" % file_no
-       wget_file = "%.5d.wget" % file_no
+       wget_file = os.path.join("wget", "%.5d.wget" % file_no)
        slave_nr = ((file_no % NUMBER_OF_SLAVES) + 1)
        slave = "zecke-%d" % slave_nr
        thread = "%d" % (last_thread[slave_nr] + 1)

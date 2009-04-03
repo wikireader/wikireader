@@ -5,6 +5,6 @@ for thread in `seq 1 6`;
 do
 	for slave in `seq 1 4`;
 	do
-		mkdir -p zecke-$slave/$thread;
+		mkdir -p zecke-$slave/$thread/wget;
 	done;
 done;
