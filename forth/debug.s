@@ -16,53 +16,54 @@ debug_8:
         pushn   %r2
         ld.w    %r1, %r7
 
-        xcall   sio_put_string
-        xcall   sio_put_space
+        xcall   Serial_PutString
+        xcall   Serial_PutSpace
 
         xld.w   %r2, 8
 
 debug_8_loop:
 
         ld.w    %r6, [%r1]+
-        xcall   sio_put_hex
-        xcall   sio_put_space
+        xcall   Serial_PutHex
+        xcall   Serial_PutSpace
 
         xsub    %r2, 1
         jrne    debug_8_loop
 
-        xcall   sio_put_crlf
+        xcall   Serial_PutCRLF
         popn    %r2
 
         ret
 
         .global xdebug
 xdebug:
-        xcall   sio_put_crlf
+        xcall   Serial_PutCRLF
 
         xld.w   %r6, debug_regs
-        xcall   sio_put_string
+        xcall   Serial_PutString
         ld.w    %r6, %r0
-        xcall   sio_put_hex
-        xcall   sio_put_space
+        xcall   Serial_PutHex
+        xcall   Serial_PutSpace
         ld.w    %r6, %r1
-        xcall   sio_put_hex
-        xcall   sio_put_space
+        xcall   Serial_PutHex
+        xcall   Serial_PutSpace
         ld.w    %r6, %r2
-        xcall   sio_put_hex
-        xcall   sio_put_space
+        xcall   Serial_PutHex
+        xcall   Serial_PutSpace
         ld.w    %r6, %r3
-        xcall   sio_put_hex
-        xcall   sio_put_space
+        xcall   Serial_PutHex
+        xcall   Serial_PutSpace
 
-        xcall   sio_put_space
+        xcall   Serial_PutSpace
         ld.w    %r6, %sp
-        xcall   sio_put_hex
+        xcall   Serial_PutHex
 
-        xcall   sio_put_crlf
+        xcall   Serial_PutCRLF
 
         xld.w   %r6, debug_data
         ld.w    %r7, %r1
         xcall   debug_8
+
 
         xld.w   %r6, debug_instr
         ld.w    %r7, %r0
