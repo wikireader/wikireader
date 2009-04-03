@@ -1924,7 +1924,7 @@ dollar_compile_l3:
 
 ;;; : USER ( -- \ <string> )  [ ' (douser) @ ] LITERAL (DEFINE) OVERT ;
         COLON   user, "user", FLAG_NORMAL
-        .long   dolit, param_dovar, paren_define, overt, exit
+        .long   dolit, param_douser, paren_define, overt, exit
 
 ;;; : CREATE ( -- \ <string> )  [ ' (dovar) @ ] LITERAL (DEFINE) OVERT ;
         COLON   create, "create", FLAG_NORMAL
