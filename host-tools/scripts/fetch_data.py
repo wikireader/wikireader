@@ -71,7 +71,7 @@ os.environ['DISPLAY'] = ":%d" % display
 # wait for the x server to start
 time.sleep(6)
 
-failed_urls = open("failed.urls", "w")
+failed_urls = open("failed.urls", "a")
 
 signal.signal(signal.SIGALRM, alarm_handler)
 
