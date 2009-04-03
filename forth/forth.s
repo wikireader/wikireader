@@ -1176,6 +1176,16 @@ type_l2:
 dot_l1:
         .long   paren_str, space, type, exit
 
+;;; : DEC. ( w -- ) \ decimal display
+;;;   BASE @ DECIMAL SWAP . BASE ! ;
+        COLON   dec_dot, "dec.", FLAG_NORMAL
+        .long   base, fetch, decimal, swap, dot, base, store, exit
+
+;;; : HEX. ( w -- ) \ hexadecimal display
+;;;   BASE @ HEX SWAP . BASE ! ;
+        COLON   hex_dot, "hex.", FLAG_NORMAL
+        .long   base, fetch, hex, swap, dot, base, store, exit
+
 ;;; : ? ( a -- ) @ . ;
         COLON   question, "?", FLAG_NORMAL
         .long   fetch, dot, exit
@@ -1266,16 +1276,16 @@ paren_parse_l8:
         COLON   char, "char", FLAG_NORMAL
         .long   blank, parse, drop, cfetch, exit
 
-;;; : [CHAR] ( -- c ) CHAR LITERAL ; FLAG_IMMEDIATE | FLAG_COMPILE_ONLY
-        COLON   bracket_char, "[char]", FLAG_NORMAL
+;;; : [CHAR] ( -- c ) CHAR LITERAL ; FLAG_IMMEDIATE FLAG_COMPILE_ONLY
+        COLON   bracket_char, "[char]", FLAG_IMMEDIATE + FLAG_COMPILE_ONLY
         .long   char, literal, exit
 
 ;;; : CTRL ( -- c ) CHAR $001F AND ;
         COLON   ctrl, "ctrl", FLAG_NORMAL
         .long   char, dolit, 0x1f, _and, exit
 
-;;; : [CTRL] ( -- c ) CTRL LITERAL ; FLAG_IMMEDIATE | FLAG_COMPILE_ONLY
-        COLON   bracket_ctrl, "[ctrl]", FLAG_NORMAL
+;;; : [CTRL] ( -- c ) CTRL LITERAL ; FLAG_IMMEDIATE FLAG_COMPILE_ONLY
+        COLON   bracket_ctrl, "[ctrl]", FLAG_IMMEDIATE + FLAG_COMPILE_ONLY
         .long   ctrl, literal, exit
 
 ;;; this puts the name in the right place for being the next defined item
@@ -1658,13 +1668,13 @@ rx_query_no_character:
         .long   source_id, store
         .long   dolit, file_reader, dolit, 0, dolit, drop, dolit, ktap, xio, exit
 
-;;; : INCLUDE" ( -- \ file" )
-;;;   [CHAR] " PARSE R/O OPEN-FILE  \ fileid ior
+;;; : INCLUDED ( b u -- )
+;;;   R/O OPEN-FILE  \ fileid ior
 ;;;   ?DUP IF    CR ." open error = " . DROP
 ;;;        ELSE  CR INCLUDE-FILE
 ;;;   THEN ;
-        COLON   include_quote, "include\042", FLAG_NORMAL
-        .long   dolit, '\"',  parse, readonly, open_file
+        COLON   included, "included", FLAG_NORMAL
+        .long   readonly, open_file
         .long   qdup, qbranch, include_quote_l1
         .long   cr, do_dot_quote
         FSTRING "open error = "
@@ -1672,6 +1682,16 @@ rx_query_no_character:
 include_quote_l1:
         .long	hash_tib, fetch, to_in, store   ; empty the buffer
         .long   cr, include_file, exit
+
+;;; : INCLUDE" ( -- \ <string>" )
+;;;   [CHAR] " PARSE INCLUDED ;
+        COLON   include_quote, "include\042", FLAG_NORMAL
+        .long   dolit, '\"',  parse, included, exit
+
+;;; : INCLUDE ( -- \ <string><space> )
+;;;   BL PARSE INCLUDED ;
+        COLON   include, "include", FLAG_NORMAL
+        .long   blank, parse, included, exit
 
 ;;; : HAND ( -- )
 ;;;   ['] accept  ['] .OK  'EMIT @ ['] kTAP XIO ;
@@ -2370,95 +2390,6 @@ read_line_l5:
         xld.w   [%r1 + 4], %r4                  ; count2
         NEXT
         END_CODE
-
-
-;;; \ simple test
-;;; : print ( b u -- )
-;;;         s" forth.s" r/o open-file
-;;;         0= if fd !
-;;;           buffer buffer-size fd @ read-file
-;;;           0= if  buffer swap type
-;;;           else   cr ." read error"
-;;;           then
-;;;           fd @ close-file drop
-;;;         else  cr ." open error
-;;;         then
-;;;         cr ;
-BUFFER_SIZE = 1024
-        CONSTANT buffer_size, "buffer-size", FLAG_NORMAL
-        .long   BUFFER_SIZE
-
-        VARIABLE fd, "fd", FLAG_NORMAL
-        .long   0
-
-        VARIABLE buffer, "buffer", FLAG_NORMAL
-        .space  BUFFER_SIZE
-        .balign 4
-
-        COLON   dir, "dir", FLAG_NORMAL
-        .long   cr, do_dollar_quote
-        FSTRING "/"
-        .long   count, open_directory, qdup, qbranch, dir_l1
-        .long   cr, do_dot_quote
-        FSTRING "open-directory error = "
-        .long   dot, cr, drop, exit
-
-dir_l1:
-        .long   to_r
-dir_l2:
-        .long   buffer, buffer_size, r_fetch, read_directory
-        .long   qbranch, dir_l3
-        .long   cr, do_dot_quote
-        FSTRING "read error = "
-        .long   dot, cr, drop, branch, dir_l4
-dir_l3:
-        .long   qdup, qbranch, dir_l4
-        .long   buffer, swap, type, cr
-        .long   branch, dir_l2
-dir_l4:
-        .long   r_from, close_directory, drop, exit
-
-
-        COLON   pf, "pf", FLAG_NORMAL
-        .long   do_dollar_quote
-        FSTRING "forth.s"
-        .long   count, print, exit
-
-        COLON   pt, "pt", FLAG_NORMAL
-        .long   do_dollar_quote
-        FSTRING "test.dat"
-        .long   count, print, exit
-
-;;; : pr" ( -- ) [CHAR] " PARSE PRINT ;
-        COLON   pr_quote, "pr\042", FLAG_NORMAL
-        .long   dolit, '\"', parse, print, exit
-
-        COLON   print, "print", FLAG_NORMAL
-        .long   cr, readonly, open_file
-        .long   qdup, qbranch, print_l1
-        .long   cr, do_dot_quote
-        FSTRING "open error = "
-        .long   dot, cr, drop, exit
-
-print_l1:
-        .long   fd, store
-
-print_l2:
-        .long   buffer, buffer_size, decrement, decrement
-        .long   fd, fetch, read_line
-        .long   qdup, qbranch, print_l3
-        .long   cr, do_dot_quote
-        FSTRING "read error = "
-        .long   dot, twodrop, cr, branch, print_l4
-
-print_l3:                                       ; u2 f
-        .long   qbranch, print_l4
-
-        .long   buffer, swap, type, cr
-        .long   branch, print_l2
-print_l4:
-        .long   fd, fetch, close_file, drop
-        .long   cr, exit
 
 
 ;;; .( Hardware reset )
