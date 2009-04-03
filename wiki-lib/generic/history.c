@@ -31,6 +31,7 @@
 #define RESULT_HEIGHT 10
 
 #define HISTORY_MAX_ITEM	100
+#define HISTORY_MAX_DISPLAY_ITEM	18
 
 struct history_item {
 	struct wl_list list;
@@ -38,26 +39,55 @@ struct history_item {
 	char target[TARGET_SIZE];
 };
 
+enum step_direction {
+	step_up 	= -1,
+	step_down	= 1,
+};
+
 struct history_item head, free_list;
 struct history_item pool[HISTORY_MAX_ITEM];
 
 unsigned int list_size = 0;
 static int history_current = -1;
+static int display_current = 0;
 
-// Copy and pasted form search.c.... Find something better but I don't
-// want to use structs to have these variable..
-static void __invert_selection(int old_pos, int new_pos)
+static void history_page_down_display(int current_item);
+static void history_page_up_display(int current_item);
+
+static inline int history_modulus(int modulus) {
+	return modulus % HISTORY_MAX_DISPLAY_ITEM;
+}
+
+static void __invert_selection(int pos, enum step_direction direction)
 {
 	int start = RESULT_START - RESULT_HEIGHT + 2;
 
 	guilib_fb_lock();
 
-	if (old_pos != -1) {
-		guilib_invert(start + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	if (pos == 0) {
+		if (direction == step_down) {
+			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+		}
+		else {
+			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + (pos + 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+		}
+	} else if (pos == 17) {
+		if (direction == step_up) {
+			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+		}
+		else {
+			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + (pos - 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+		}
 	}
-
-	if (new_pos != -1 ) {
-		guilib_invert(start + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
+	else if (direction == step_down) {
+		guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+		guilib_invert(start + (pos - 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+	}
+	else if (direction == step_up) {
+		guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+		guilib_invert(start + (pos + 1) * RESULT_HEIGHT, RESULT_HEIGHT);
 	}
 
 	guilib_fb_unlock();
@@ -65,24 +95,76 @@ static void __invert_selection(int old_pos, int new_pos)
 
 void history_select_down(void)
 {
-	/* bottom reached, not wrapping around */
-	if (history_current + 1 == (int) list_size)
+	if (history_current == (int)(list_size - 1))
 		return;
 
-	__invert_selection(history_current, history_current + 1);
 	++history_current;
+	display_current = history_modulus(history_current);
+
+	/* bottom reached, not wrapping around */
+	if (display_current == 0 && history_current != 0){
+		history_page_down_display(history_current);
+		__invert_selection(display_current, step_down);
+		return;
+	}
+
+	__invert_selection(display_current, step_down);
 }
 
 void history_select_up(void)
 {
-	/* top reached, not wrapping around */
 	if (history_current <= 0)
 		return;
 
-	__invert_selection(history_current, history_current - 1);
 	--history_current;
+	display_current = history_modulus(history_current);
+
+	if ( display_current+1 == HISTORY_MAX_DISPLAY_ITEM ){
+		history_page_up_display(history_current);
+		__invert_selection(display_current, step_up);
+		return;
+	}
+
+	__invert_selection(display_current, step_up);
 }
 
+static void history_page_down_display(int current_item)
+{
+	unsigned int i;
+	int y_pos = RESULT_START;
+
+	guilib_fb_lock();
+
+	guilib_clear();
+	render_string(0, 1, 14, "History", 7);
+
+	for (i = current_item; i < list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+		const char *p = history_get_item_title(i);
+		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
+		y_pos += RESULT_HEIGHT;
+	}
+
+	guilib_fb_unlock();
+}
+
+static void history_page_up_display(int current_item)
+{
+	unsigned int i;
+	int y_pos = RESULT_START;
+
+	guilib_fb_lock();
+
+	guilib_clear();
+	render_string(0, 1, 14, "History", 7);
+
+	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+		const char *p = history_get_item_title(i);
+		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
+		y_pos += RESULT_HEIGHT;
+	}
+
+	guilib_fb_unlock();
+}
 
 void history_display(void)
 {
@@ -151,6 +233,7 @@ void history_add(const char *title, const char *target)
 	if (list_size >= HISTORY_MAX_ITEM) {
 		node = (struct history_item *)wl_list_remove_last(&head.list);
 		wl_list_insert_after(&free_list.list, &node->list);
+		list_size--;
 	}
 
 	/* linked to the head list */
