@@ -32,7 +32,7 @@ vpath %.c :${COMMON}:${FATFS_SRC}
 all: forth.elf
 
 
-FORTH_OBJECTS = forth.o sio.o debug.o mmc.o tff.o FileSystem.o
+FORTH_OBJECTS = forth.o serial.o debug.o mmc.o tff.o FileSystem.o
 forth.elf: ${FORTH_OBJECTS} forth.lds
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 
