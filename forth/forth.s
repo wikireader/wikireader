@@ -2132,6 +2132,12 @@ words_l2:
         NEXT
         END_CODE
 
+;;; : S" ( -- \ <string> ) [COMPILE] $" COMPILE COUNT ; IMMEDIATE
+;;;      \ runtime (  -- b u )
+        COLON   s_quote, "s\042", FLAG_IMMEDIATE
+	.long	dollar_quote, compile, count, exit
+
+
 ;;; : DELETE-FILE      ( b u -- ior )
         CODE    delete_file, "delete-file", FLAG_NORMAL
         ld.w    %r7, [%r1]+                     ; count
