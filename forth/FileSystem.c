@@ -33,6 +33,7 @@
 #include <tff.h>
 
 #include "forth.h"
+#include "FileSystem.h"
 
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -41,18 +42,22 @@
 typedef char FilenameType[81];
 
 // this determines the maximum files that can be open simultaneously
-static struct {
+typedef struct {
 	bool IsOpen;
 	FIL file;
 	FilenameType filename;
-} FileControlBlock[20];
+} FileType;
+
+static FileType FileControlBlock[20];
 
 // this determines the maximum directoriess that can be open simultaneously
-static struct {
+typedef struct {
 	bool IsOpen;
 	DIR directory;
 	FilenameType directoryname;
-} DirectoryControlBlock[10];
+} DirectoryType;
+
+static DirectoryType DirectoryControlBlock[10];
 
 // state for the entire file system
 static FATFS TheFileSystem;
@@ -78,46 +83,52 @@ static bool ForthBufferToCString(char *buffer, size_t length,
 	return false;
 }
 
-static bool ValidFileHandle(Forth_ReturnType *r, Forth_CellType handle)
+
+// ensure: 1 <= handle <= array size
+static FileType *ValidateFileHandle(Forth_ReturnType *r, Forth_CellType handle)
 {
 	r->rc = FR_OK;
 	r->result = 0;
-	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
+	if (1 > handle || SizeOfArray(FileControlBlock) < handle) {
 		r->rc = FR_INVALID_OBJECT;
-		return false;
+		return NULL;
 	}
-	if (!FileControlBlock[handle].IsOpen) {
+	if (!FileControlBlock[handle - 1].IsOpen) {
 		r->rc = FR_DENIED;
-		return false;
+		return NULL;
 	}
-	return true;
+	return &FileControlBlock[handle - 1];
 }
 
 
-static bool ValidDirectoryHandle(Forth_ReturnType *r, Forth_CellType handle)
+// ensure: 1 <= handle <= array size
+static DirectoryType *ValidateDirectoryHandle(Forth_ReturnType *r, Forth_CellType handle)
 {
 	r->rc = FR_OK;
 	r->result = 0;
-	if (0 > handle || SizeOfArray(DirectoryControlBlock) < handle) {
+	if (1 > handle || SizeOfArray(DirectoryControlBlock) < handle) {
 		r->rc = FR_INVALID_OBJECT;
-		return false;
+		return NULL;
 	}
-	if (!DirectoryControlBlock[handle].IsOpen) {
+	if (!DirectoryControlBlock[handle - 1].IsOpen) {
 		r->rc = FR_DENIED;
-		return false;
+		return NULL;
 	}
-	return true;
+	return &DirectoryControlBlock[handle - 1];
 }
 
 
 void FileSystem_initialise(void)
 {
 	size_t i = 0;
+
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		FileControlBlock[i].IsOpen = false;
+		FileControlBlock[i].filename[0] = '\0';
 	}
 	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
 		DirectoryControlBlock[i].IsOpen = false;
+		DirectoryControlBlock[i].directoryname[0] = '\0';
 	}
 	f_mount(0, &TheFileSystem);  // only possible value is zero
 }
@@ -127,6 +138,7 @@ Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellTyp
 {
 	Forth_ReturnType r = {0, FR_OK};
 	size_t i = 0;
+
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		if (!FileControlBlock[i].IsOpen) {
 			if (!ForthBufferToCString(FileControlBlock[i].filename,
@@ -138,7 +150,7 @@ Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellTyp
 			r.rc = f_open(&FileControlBlock[i].file, FileControlBlock[i].filename, fam);
 			if (FR_OK == r.rc) {
 				FileControlBlock[i].IsOpen = true;
-				r.result = i;
+				r.result = i + 1;  // handle starts at one(1), not zero(0)
 				return r;
 			}
 			break;
@@ -194,14 +206,11 @@ Forth_ReturnType FileSystem_close(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
 
-	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
-		r.rc = FR_DENIED;
-		return r;
-	}
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (FileControlBlock[handle].IsOpen) {
-		r.rc = f_close(&FileControlBlock[handle].file);
-		FileControlBlock[handle].IsOpen = false;
+	if (NULL != file) {
+		r.rc = f_close(&file->file);
+		file->IsOpen = false;
 	}
 	return r;
 }
@@ -210,30 +219,28 @@ Forth_ReturnType FileSystem_close(Forth_CellType handle)
 Forth_ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	Forth_ReturnType r = {0, FR_OK};
-	UINT count = 0;
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		UINT count = 0;
+
+		r.rc = f_read(&file->file, buffer, length, &count);
+		r.result = count;
 	}
-
-	r.rc = f_read(&FileControlBlock[handle].file, buffer, length, &count);
-	r.result = count;
 	return r;
 }
 
 Forth_ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	Forth_ReturnType r = {0, FR_OK};
-	UINT count = 0;
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		UINT count = 0;
+
+		r.rc = f_write(&file->file, buffer, length, &count);
+		r.result = count;
 	}
-
-	r.rc = f_write(&FileControlBlock[handle].file, buffer, length, &count);
-	r.result = count;
 	return r;
 }
 
@@ -241,13 +248,11 @@ Forth_ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_Cel
 Forth_ReturnType FileSystem_sync(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		r.rc = f_sync(&file->file);
 	}
-
-	r.rc = f_sync(&FileControlBlock[handle].file);
 	return r;
 }
 
@@ -255,13 +260,11 @@ Forth_ReturnType FileSystem_sync(Forth_CellType handle)
 Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 {
 	Forth_ReturnType r = {0, FR_OK};
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		r.rc = f_lseek(&file->file, pos);
 	}
-
-	r.rc = f_lseek(&FileControlBlock[handle].file, pos);
 	return r;
 }
 
@@ -269,15 +272,13 @@ Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 {
 	Forth_ReturnType r = {0, FR_OK};
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		// not available :- just error
+		//r.rc = f_ltell(&file->file, pos);
+		r.rc = FR_DENIED;
 	}
-
-	// not available :- just error
-	//r.rc = f_ltell(&FileControlBlock[handle].file, pos);
-	r.rc = FR_DENIED;
 	return r;
 }
 
@@ -285,15 +286,14 @@ Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 Forth_ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
 {
 	Forth_ReturnType r = {0, FR_OK};
-	FILINFO stat;
+	FileType *file = ValidateFileHandle(&r, handle);
 
-	if (!ValidFileHandle(&r, handle))
-	{
-		return r;
+	if (NULL != file) {
+		FILINFO stat;
+
+		r.rc = f_stat(file->filename, &stat);
+		r.result = stat.fsize;
 	}
-
-	r.rc = f_stat(FileControlBlock[handle].filename, &stat);
-	r.result = stat.fsize;
 	return r;
 }
 
@@ -326,6 +326,7 @@ Forth_ReturnType FileSystem_OpenDirectory(const Forth_PointerType directoryname,
 {
 	Forth_ReturnType r = {0, FR_OK};
 	size_t i = 0;
+
 	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
 		if (!DirectoryControlBlock[i].IsOpen) {
 			if (!ForthBufferToCString(DirectoryControlBlock[i].directoryname,
@@ -337,7 +338,7 @@ Forth_ReturnType FileSystem_OpenDirectory(const Forth_PointerType directoryname,
 			r.rc = f_opendir(&DirectoryControlBlock[i].directory, DirectoryControlBlock[i].directoryname);
 			if (FR_OK == r.rc) {
 				DirectoryControlBlock[i].IsOpen = true;
-				r.result = i;
+				r.result = i + 1; // directory handle starts at one(1), not zero(0)
 				return r;
 			}
 			break;
@@ -351,15 +352,11 @@ Forth_ReturnType FileSystem_OpenDirectory(const Forth_PointerType directoryname,
 Forth_ReturnType FileSystem_CloseDirectory(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
+	DirectoryType *directory = ValidateDirectoryHandle(&r, handle);
 
-	if (0 > handle || SizeOfArray(DirectoryControlBlock) < handle) {
-		r.rc = FR_DENIED;
-		return r;
-	}
-
-	if (DirectoryControlBlock[handle].IsOpen) {
-		//r.rc = f_dirclose(&DirectoryControlBlock[handle].directory);
-		DirectoryControlBlock[handle].IsOpen = false;
+	if (NULL != directory) {
+		//r.rc = f_dirclose(&directory->directory);
+		directory->IsOpen = false;
 	}
 	return r;
 }
@@ -368,23 +365,23 @@ Forth_ReturnType FileSystem_CloseDirectory(Forth_CellType handle)
 Forth_ReturnType FileSystem_ReadDirectory(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	Forth_ReturnType r = {0, FR_OK};
-	FILINFO info;
+	DirectoryType *directory = ValidateDirectoryHandle(&r, handle);
 
-	if (!ValidDirectoryHandle(&r, handle))
-	{
-		return r;
-	}
+	if (NULL != directory) {
+		FILINFO info;
 
-	r.rc = f_readdir(&DirectoryControlBlock[handle].directory, &info);
-	if (FR_OK == r.rc){
-		size_t count = strlen(info.fname);
-		if (count > length) {
-			count = length;
+		r.rc = f_readdir(&directory->directory, &info);
+		if (FR_OK == r.rc){
+			size_t count = strlen(info.fname);
+
+			if (count > length) {
+				count = length;
+			}
+			if (0 != count) {
+				memcpy(buffer, info.fname, count);
+			}
+			r.result = count;
 		}
-		if (0 != count) {
-			memcpy(buffer, info.fname, count);
-		}
-		r.result = count;
 	}
 	return r;
 }
