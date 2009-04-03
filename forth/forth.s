@@ -72,25 +72,43 @@ str_\@_finish:
 
 
 ;;; the header
+;;;  0: code address
+;;;  4: param address
+;;;  8: flags
+;;; 12: link address
+;;; 16: count (byte)  (name adress points here)
+;;; 17: name string (count bytes)
+;;; 17+count: (zeros as required to .balign 4)
+
 
 __last_name = 0                                 ; to link the list
 
         .macro  HEADER, label, name, flags, code
+
         .section .data
         .balign 4
         .global \label
 \label\():
         .long   \code                           ; code
+l_param_\@:
         .long   param_\label                    ; param
+l_flags_\@:
         .long   \flags                          ; flags
 
 prev_\label = __last_name
+l_link_\@:
         .long   prev_\label                     ; link
 
         .global name_\label
 name_\label\():
 __last_name = .
         FSTRING "\name"
+
+DICTIONARY_HEADER_CELLS  = ( name_\label - \label ) / CELL_SIZE
+DICTIONARY_CODE_OFFSET   = ( name_\label - \label ) / CELL_SIZE
+DICTIONARY_PARAM_OFFSET  = ( name_\label - l_param_\@ ) / CELL_SIZE
+DICTIONARY_FLAGS_OFFSET  = ( name_\label - l_flags_\@ ) / CELL_SIZE
+DICTIONARY_LINK_OFFSET   = ( name_\label - l_link_\@ ) / CELL_SIZE
 
         .section .text
         .balign 4
@@ -1303,34 +1321,25 @@ paren_parse_l8:
 
 ;;; .( Dictionary Search )
 
-;;;  0: code address
-;;;  4: param address
-;;;  8: flags
-;;; 12: link address
-;;; 16: count (byte)  (name adress points here)
-;;; 17: name string (count bytes)
-;;; 17+count: (zeros as required to .balign 4)
-DICTIONARY_HEADER_CELLS = 3                  ; code ptr, flags, link ptr
-
-;;; : NAME>CODE ( na -- ca ) 4 CELLS - ;
+;;; : NAME>CODE ( na -- ca ) [ =DICTIONARY-CODE-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_code, "name>code", NORMAL
-        .long   dolit, 4, cells, minus, exit
+        .long   dolit, DICTIONARY_CODE_OFFSET, cells, minus, exit
 
-;;; : NAME>PARAM ( na -- pa ) 3 CELLS - ;
+;;; : NAME>PARAM ( na -- pa ) [ =DICTIONARY-PARAM-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_param, "name>param", NORMAL
-        .long   dolit, 3, cells, minus, exit
+        .long   dolit, DICTIONARY_PARAM_OFFSET, cells, minus, exit
 
-;;; : NAME>FLAGS ( na -- fa ) 2 CELLS - ;
+;;; : NAME>FLAGS ( na -- fa ) [ =DICTIONARY-FLAGS-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_flags, "name>flags", NORMAL
-        .long   dolit, 2, cells, minus, exit
+        .long   dolit, DICTIONARY_FLAGS_OFFSET, cells, minus, exit
 
-;;; : NAME>LINK ( na -- la ) CELL- ;
+;;; : NAME>LINK ( na -- la ) [ =DICTIONARY-LINK-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_link, "name>link", NORMAL
-        .long   cell_minus, exit
+        .long   dolit, DICTIONARY_LINK_OFFSET, cells, minus, exit
 
-;;; : CODE>NAME ( ca -- na ) 4 CELLS + ;
+;;; : CODE>NAME ( ca -- na )  [ =DICTIONARY-CODE-OFFSET ] LITERAL CELLS + ;
         COLON   code_to_name, "code>name", NORMAL
-        .long   dolit, 4, cells, plus, exit
+        .long   dolit, DICTIONARY_CODE_OFFSET, cells, plus, exit
 
 ;;; return TRUE if counted strings are equal
 ;;; : SAME? ( a a -- a a f )
@@ -1761,7 +1770,7 @@ tick_l1:
 
 ;;; : REPEAT ( A a -- ) [COMPILE] AGAIN HERE SWAP ! ; IMMEDIATE
         COLON   repeat, "repeat", IMMEDIATE
-        .long   compile, again, here, swap, store, exit
+        .long   again, here, swap, store, exit
 
 ;;; : THEN ( A -- ) HERE SWAP ! ; IMMEDIATE
         COLON   then, "then", IMMEDIATE
@@ -1769,15 +1778,15 @@ tick_l1:
 
 ;;; : AFT ( a -- a A ) DROP [COMPILE] AHEAD [COMPILE] BEGIN SWAP ; IMMEDIATE
         COLON   aft, "aft", IMMEDIATE
-        .long   drop, compile, ahead, compile, begin, swap, exit
+        .long   drop, ahead, begin, swap, exit
 
 ;;; : ELSE ( A -- A )  [COMPILE] AHEAD SWAP [COMPILE] THEN ; IMMEDIATE
         COLON   else, "else", IMMEDIATE
-        .long   compile, ahead, swap, compile, then, exit
+        .long   ahead, swap, then, exit
 
 ;;; : WHILE ( a -- A a )    [COMPILE] IF SWAP ; IMMEDIATE
         COLON   while, "while", IMMEDIATE,
-        .long   compile, if, swap, exit
+        .long   if, swap, exit
 
 ;;; : ABORT" ( -- \ <string> ) COMPILE (abort") $," ; IMMEDIATE
 	COLON   abortquote, "abort\042", IMMEDIATE
@@ -1887,14 +1896,23 @@ dollar_compile_l3:
 ;;; : CALL, ( ca -- ) \  DTC 8086 relative call
 ;;;   [ =CALL ] LITERAL , HERE CELL+ - , ;
 ;;;
-;;; : : ( -- \ <string> ) TOKEN $,n [ ' (dolist) ] LITERAL CALL, ] ;
+;;; : : ( -- \ <string> ) TOKEN DUP $,n
+;;;   DUP [ ' (docolon) @ ] LITERAL NAME>CODE !
+;;;   0 NAME>FLAGS ! ] ;
         COLON   colon, ":", NORMAL
-        .long   token, dollar_comma_n
+        .long   token, dup, dollar_comma_n
         .long   dolit, 0xdecaffe, DEBUG, drop
-;;;     [ ' (dolist) ] LITERAL CALL,
+        .long   dolit, param_docolon, over, name_to_code
+        .long   dolit, 0x1decaffe, DEBUG, drop
+        .long   store
+        .long   dolit, 0, swap, name_to_flags
+        .long   dolit, 0x2decaffe, DEBUG, drop
+        .long   store
         .long   right_bracket, exit
 ;;;
-;;; : IMMEDIATE ( -- ) [ =IMED ] LITERAL LAST @ C@ OR LAST @ C! ;
+;;; : IMMEDIATE ( -- )
+;;;             LAST @ NAME>FLAGS DUP @
+;;;             [ =IMED ] LITERAL OR ! ;
 ;;;
 ;;; .( Defining Words )
 ;;;
@@ -1987,60 +2005,83 @@ dot_s_l2:
 ;*to_name_l4:
 ;*        .long   drop, dolit, FALSE, exit
 
-;**;;; hacked version - the vocabulary structure is not workable yet
-;**        COLON   code_to_name, "code>name", NORMAL
-;**        .long   current
-;**;to_name_l1:
-;**        .long   cell_plus, fetch, qdup
-;**        .long   qbranch, to_name_l4
-;**        .long   twodup
-;**to_name_l2:
-;**        .long   fetch, dup
-;**        .long   qbranch, to_name_l3
-;**        .long   twodup, name_to_code, fetch, _xor
-;**        .long   qbranch, to_name_l3
-;**        .long   name_to_link
-;**        .long   branch, to_name_l2
-;**to_name_l3:
-;**        .long   nip, qdup
-;**       ;.long   qbranch, to_name_l1
-;**        .long   qbranch, to_name_l5
-;**        .long   nip, nip, exit
-;**to_name_l4:
-;**        .long   drop, dolit, FALSE, exit
-;**to_name_l5:
-;**        .long   twodrop, dolit, FALSE, exit
+;;; \ search to see if an unknown address is really forth code
+;;; : CODE? ( ca -- na | F )
+;;;   CURRENT
+;;;   BEGIN CELL+ @ ?DUP WHILE 2DUP
+;;;     BEGIN @ DUP WHILE 2DUP NAME>CODE XOR
+;;;     WHILE NAME>LINK
+;;;     REPEAT      THEN NIP ?DUP
+;;;   UNTIL NIP NIP EXIT THEN DROP FALSE ;
+;;; hacked version - the vocabulary structure is not workable yet
+        COLON   code_query, "code?", NORMAL
+        .long   current
+;code_query_l1:
+        .long   cell_plus, fetch, qdup
+        .long   qbranch, code_query_l4
+        .long   twodup
+code_query_l2:
+        .long   fetch, dup
+        .long   qbranch, code_query_l3
+        .long   twodup, name_to_code, _xor
+        .long   qbranch, code_query_l3
+        .long   name_to_link
+        .long   branch, code_query_l2
+code_query_l3:
+        .long   nip, qdup
+       ;.long   qbranch, code_query_l1
+        .long   qbranch, code_query_l5
+        .long   nip, nip, exit
+code_query_l4:
+        .long   drop, dolit, FALSE, exit
+code_query_l5:
+        .long   twodrop, dolit, FALSE, exit
 
 
 ;;; disassembler for colon definitions
 ;;; does no know how to stop - press enter twice to stop
 ;;; SEE ( -- ) \  token
-;;;   ' CR ALIGNED  \ skip over the "xcall dolist"
+;;; BASE @
+;;;   ' CODE>NAME NAME>PARAM DUP
+;;;  CR [ CHAR $ ] EMIT HEX 1 U.R [ CHAR : ] EMIT
+;;;   @ CR ALIGNED CELL-
 ;;;   BEGIN
-;;;     CELL+ DUP @ DUP IF CODE>NAME THEN
-;;;     NAME>CODE ?DUP
+;;;     CELL+ DUP @ DUP IF CODE? THEN
+;;;     ?DUP
 ;;;       IF    SPACE .ID
-;;;       ELSE  DUP @ U. \ number
+;;;       ELSE  DUP @ DUP DECIMAL U.
+;;;             [CHAR / ] EMIT
+;;;             [CHAR $ ] EMIT
+;;;             HEX 1 U.R \ number
 ;;;       THEN
-;;;   ENOUGH? UNTIL DROP ;
+;;;   ENOUGH? UNTIL DROP BASE !;
 
 	COLON see, "see", NORMAL
-	.long	tick
-	.long	cr, aligned
+        .long   base, fetch
+	.long	tick, code_to_name, name_to_param, dup
+        .long   cr
+        .long   dolit, '$', emit
+        .long   hex, dolit, 1, u_dot_r
+        .long   dolit, ':', emit
+
+        .long   fetch
+	.long	cr, aligned, cell_minus
 see_l1:
 	.long	cell_plus, dup, fetch, dup
 	.long	qbranch, see_l2
-	.long	code_to_name
+	.long	code_query
 see_l2:
 	.long	qdup
 	.long	qbranch, see_l3
 	.long	space, dot_id
 	.long	branch, see_l4
 see_l3:
-	.long	dup, fetch, u_dot
+	.long	dup, fetch, dup, decimal, u_dot
+        .long   dolit, '/', emit, dolit, '$', emit
+        .long   hex, dolit, 1, u_dot_r, cr
 see_l4:
 	.long	enoughq, qbranch, see_l1
-	.long	drop, exit
+	.long	drop, base, store, exit
 
 ;;; : .ID ( na -- )
 ;;;   ?DUP IF COUNT $001F AND TYPE EXIT THEN ." {noName}" ;
