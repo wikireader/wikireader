@@ -33,24 +33,23 @@ SECTIONS
         }
          __END_bss = . ;
 
+        . = ALIGN(1024);
         .data : {
            __START_data = . ;
-	   . = ALIGN(1024);
            *(.data)
         }
 
         .user_defaults : {
            __START_user_defaults = . ;
-	   . = ALIGN(1024);
-           *(.data)
+           *(.user_defaults)
         }
 
         .user_variables : {
            __START_user_variables = . ;
-	   . = ALIGN(1024);
-           *(.data)
+           *(.user_variables)
         }
 
+        . = ALIGN(1024);
 	.text : {
            __START_text = . ;
 	   forth.o(*.text)
@@ -63,9 +62,9 @@ SECTIONS
 	   forth.o(*.forth_dict)
         }
 
-        .forth_text : {
+        .forth_param : {
            __START_forth_text = . ;
-	   forth.o(*.forth_text)
+	   forth.o(*.forth_param)
         }
 
 /*

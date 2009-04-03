@@ -10,12 +10,12 @@ CROSS_LD = ${CROSS}ld
 RM = rm -f
 
 CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
-CROSS_ASFLAGS = -mc33p3 -mc33adv --fatal-warnings
+CROSS_ASFLAGS = -mc33p3 --fatal-warnings
 
 all: forth.elf
 
 
-FORTH_OBJECTS = forth.o sio.o
+FORTH_OBJECTS = forth.o sio.o debug.o
 forth.elf: ${FORTH_OBJECTS} forth.lds
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 

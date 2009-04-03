@@ -1,5 +1,5 @@
 ;;; forth.s
-;;; based on the public domain eforh implementations
+;;; based on the public domain eforth implementations
 ;;; found in the files eforth.4th and eforth.S
 
 ;;; symbols used in the ( -- ) comments
@@ -47,20 +47,24 @@ FLAG_COMPILE_ONLY = 0x40
 FLAG_NORMAL = 0
 
 
-;;; registers
-;;; r0..r7 general
-;;; r8..r9 maybe used by extended instructions
-;;; r10    stack pointer
-;;; r11    ip
-;;; r12    pp
-;;; r13    work regiter
-;;; r14    not_used
-;;; r15    __DP for C
+;;; registers (C preserves r0..r3)
+;;; r0     forth ip
+;;; r1     forth sp
+;;; r2     forth pp
+;;; r3     forth w
+;;; r4     C result low
+;;; r5     C result high
+;;; r6     C argument 1
+;;; r7     C argument 2
+;;; r8     C argument 3
+;;; r9     C argument 4
+;;; r10..r14  used by C and/or extended asm instructions
+;;; r15    __dp for C
 
         .macro  NEXT                            ; inner interpreter
-        ld.w    %r12, [%r11]+                   ; incr IP
-        ld.w    %r13, [%r12]+                   ; %r12 -> param address
-        jp      %r13                            ; execute the code
+        ld.w    %r2, [%r0]+                     ; incr IP (%r0)
+        ld.w    %r3, [%r2]+                     ; %r2 -> param address
+        jp      %r3                             ; execute the code
         .endm
 
 
@@ -84,6 +88,10 @@ str_\@_finish:
 ;;; 17: name string (count bytes)
 ;;; 17+count: (zeros as required to .balign 4)
 
+        .section .forth_dict, "wa"
+        .balign 4
+        .section .forth_param, "wax"
+        .balign 4
 
 __last_name = 0                                 ; to link the list
 
@@ -155,11 +163,12 @@ param_\label\():
 
 ;;; user variables sections
 
-        .section .user_defaults
-
+        .section .user_defaults, "a"
+        .balign 4
 user_defaults:
 
-        .section .user_variables
+        .section .user_variables, "wa"
+        .balign 4
 user_variables:
 
 
@@ -202,101 +211,40 @@ initial_return_pointer:
         .global main
 main:
         xld.w   %r15, __dp
-        xld.w   %r10, initial_stack_pointer
-        xld.w   %r0, initial_return_pointer
-        ld.w    %sp, %r0
-        xld.w   %r11, cold_start                ; initial ip value
+        xld.w   %r1, initial_stack_pointer
+        xld.w   %r4, initial_return_pointer
+        ld.w    %sp, %r4
+        xld.w   %r0, cold_start                 ; initial ip value
         NEXT
 
         .balign 4                               ; forth byte code must be aligned
 cold_start:
         .long   cold, branch, cold_start        ; just run cold in a loop
 
-debug_8:
-        xcall   sio_put_string
-
-        ld.w    %r0, %r1
-        xcall   sio_put_hex
-
-        xcall   sio_put_space
-
-        xld.w   %r2, 8
-
-debug_8_loop:
-        xcall   sio_put_space
-
-        ld.w    %r0, [%r1]+
-        xcall   sio_put_hex
-
-        xsub    %r2, 1
-        jrne    debug_8_loop
-
-        xcall   sio_put_crlf
-        ret
-
-xdebug:
-        pushn   %r14
-        xcall   sio_put_crlf
-
-        xld.w   %r0, debug_message
-        ld.w    %r1, %r11
-        xcall   debug_8
-
-        xld.w   %r0, debug_data
-        ld.w    %r1, %r10
-        xcall   debug_8
-
-        xld.w   %r0, debug_return
-        ld.w    %r1, %sp
-        xcall   debug_8
-
-        popn    %r14
-        ret
-
-
-debug_message:
-        .asciz  "debug:\r\nr11: "
-
-debug_data:
-        .asciz  "r10: "
-
-debug_return:
-        .asciz  "sp:  "
-
-message:
-        .asciz  "starting the test program\r\n"
-
-sp_message:
-        .asciz  "old %sp = "
-
-        .balign 4
-
 
 ;;; .( Special interpreters )
 
         CODE    dolit, "(dolit)", FLAG_COMPILE_ONLY ; ( -- w ) COMPILE-ONLY
-        ld.w    %r12, [%r11]+
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r12
+        ld.w    %r3, [%r0]+
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r3
         NEXT
         END_CODE
 
         CODE    docolon, "(docolon)", FLAG_COMPILE_ONLY ; ( -- )
-        ld.w    %r0, %r11                          ; save previous ip
-        pushn   %r0                                ; ...
-        ld.w    %r11, [%r12]                       ; ip = param address
+        pushn   %r0                             ; save previous ip
+        ld.w    %r0, [%r2]                      ; ip = param address
         NEXT
         END_CODE
 
-        CODE    execute, "execute", FLAG_NORMAL      ; ( a -- )
-        ld.w    %r12, [%r10]+                   ; point to code ptr
-        ld.w    %r13, [%r12]+                   ; code / param address
-        jp      %r13
+        CODE    execute, "execute", FLAG_NORMAL ; ( a -- )
+        ld.w    %r2, [%r1]+                     ; point to code ptr
+        ld.w    %r3, [%r2]+                     ; code / param address
+        jp      %r3                             ; execute the code
         END_CODE
 
-        CODE    exit, "exit", FLAG_NORMAL            ; ( -- )
+        CODE    exit, "exit", FLAG_NORMAL       ; ( -- )
         popn    %r0                             ; restore ip
-        ld.w    %r11, %r0                       ; ..
         NEXT
         END_CODE
 
@@ -306,30 +254,30 @@ sp_message:
 ;;; : (next) ( -- ) \ hiLevel model  16bit absolute branch
 ;;;   r> r> dup if 1- >r @ >r exit then drop cell+ >r ;
         CODE    donext, "(next)",  FLAG_COMPILE_ONLY
-        ld.w    %r0, [%sp]
-        or      %r0, %r0
+        ld.w    %r4, [%sp]
+        or      %r4, %r4
         jreq    donext_l1
-        xsub    %r0, 1
-        ld.w    [%sp], %r0
-        ld.w    %r11, [%r11]
+        xsub    %r4, 1
+        ld.w    [%sp], %r4
+        ld.w    %r0, [%r0]
         NEXT
 donext_l1:
-        popn    %r0
+        add     %sp, 1
 no_branch:
-        xadd    %r11, BYTES_PER_CELL
+        add     %r0, BYTES_PER_CELL
         NEXT
         END_CODE
 
         CODE    qbranch, "?branch", FLAG_COMPILE_ONLY ; ( f -- ) COMPILE-ONLY
-        ld.w    %r0, [%r10]+
-        or      %r0, %r0
+        ld.w    %r4, [%r1]+
+        or      %r4, %r4
         jrne    no_branch
-        ld.w    %r11, [%r11]
+        ld.w    %r0, [%r0]
         NEXT
         END_CODE
 
         CODE    branch, "branch", FLAG_COMPILE_ONLY  ; ( -- ) COMPILE-ONLY
-        ld.w    %r11, [%r11]
+        ld.w    %r0, [%r0]
         NEXT
         END_CODE
 
@@ -337,44 +285,44 @@ no_branch:
 ;;; .( Memory fetch & store )
 
         CODE    store, "!", FLAG_NORMAL              ; ( w a -- )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]+
-        ld.w    [%r0], %r1
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]+
+        ld.w    [%r4], %r5
         NEXT
         END_CODE
 
         CODE    fetch, "@", FLAG_NORMAL              ; ( a -- w )
-        ld.w    %r0, [%r10]
-        ld.w    %r0, [%r0]
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        ld.w    %r4, [%r4]
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    hstore, "h!", FLAG_NORMAL            ; ( c h -- )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]+
-        ld.h    [%r0], %r1
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]+
+        ld.h    [%r4], %r5
         NEXT
         END_CODE
 
         CODE    hfetch, "h@", FLAG_NORMAL            ; ( h -- c )
-        ld.w    %r0, [%r10]
-        ld.uh   %r0, [%r0]
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        ld.uh   %r4, [%r4]
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    cstore, "c!", FLAG_NORMAL            ; ( c b -- )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]+
-        ld.b    [%r0], %r1
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]+
+        ld.b    [%r4], %r5
         NEXT
         END_CODE
 
         CODE    cfetch, "c@", FLAG_NORMAL            ; ( b -- c )
-        ld.w    %r0, [%r10]
-        ld.ub   %r0, [%r0]
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        ld.ub   %r4, [%r4]
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -382,35 +330,37 @@ no_branch:
 ;;; .( Return Stack )
 
         CODE    rp_fetch, "rp@", FLAG_NORMAL         ; ( -- a )
-        ld.w    %r0, %sp
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, %sp
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    rp_store, "rp!", FLAG_COMPILE_ONLY  ; ( a -- ) COMPILE-ONLY
-        ld.w    %r0, [%r10]+
-        ld.w    %sp, %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %sp, %r4
         NEXT
         END_CODE
 
         CODE    r_from, "r>", FLAG_COMPILE_ONLY     ; ( -- w ) COMPILE-ONLY
-        popn    %r0
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%sp]
+        add     %sp, 1
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    r_fetch, "r@", FLAG_NORMAL           ; ( -- w )
-        ld.w    %r0, [%sp]
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%sp]
+        xsub    %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    to_r, ">r", FLAG_COMPILE_ONLY       ; ( w -- ) COMPILE-ONLY
-        ld.w    %r0, [%r10]+
-        pushn   %r0
+        ld.w    %r4, [%r1]+
+        sub     %sp, 1
+        ld.w    [%sp], %r4
         NEXT
         END_CODE
 
@@ -418,43 +368,43 @@ no_branch:
 ;;; .( Data Stack )
 
         CODE    sp_fetch, "sp@", FLAG_NORMAL         ; ( -- a )
-        ld.w    %r0, %r10
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, %r1
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    sp_store, "sp!", FLAG_NORMAL         ; ( a -- )
-        ld.w    %r10, [%r10]
+        ld.w    %r1, [%r1]
         NEXT
         END_CODE
 
         CODE    drop, "drop", FLAG_NORMAL            ; ( w -- )
-        ld.w    %r0, [%r10]+
+        ld.w    %r4, [%r1]+
         NEXT
         END_CODE
 
         CODE    dup, "dup", FLAG_NORMAL              ; ( w -- w w )
-        ld.w    %r0, [%r10]
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    swap, "swap", FLAG_NORMAL            ; ( w1 w2 -- w2 w1 )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]+
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r1
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]+
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r5
         NEXT
         END_CODE
 
         CODE    over, "over", FLAG_NORMAL           ; ( w1 w2 -- w1 w2 w1 )
-        xld.w   %r0, [%r10 + 4]
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        xld.w   %r4, [%r1 + 4]
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -490,39 +440,39 @@ qdup_l1:
 ;;; .( Logic )
 
         CODE    zero_less, "0<", FLAG_NORMAL         ; ( n -- t )
-        ld.w    %r0, [%r10]
-        or      %r0, %r0
+        ld.w    %r4, [%r1]
+        or      %r4, %r4
         jrlt    zero_less_l1
-        ld.w    %r0, FALSE
-        ld.w    [%r10], %r0
+        ld.w    %r4, FALSE
+        ld.w    [%r1], %r4
         NEXT
 zero_less_l1:
-        ld.w    %r0, TRUE
-        ld.w    [%r10], %r0
+        ld.w    %r4, TRUE
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    _and, "and", FLAG_NORMAL             ; ( w w -- w )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        and     %r0, %r1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        and     %r4, %r5
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    _or, "or", FLAG_NORMAL               ; ( w w -- w )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        or      %r0, %r1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        or      %r4, %r5
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
         CODE    _xor, "xor", FLAG_NORMAL             ; ( w w -- w )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        xor     %r0, %r1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        xor     %r4, %r5
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -534,39 +484,39 @@ zero_less_l1:
 ;;; .( Arithmetic )
 
         CODE    umplus, "um+", FLAG_NORMAL ; ( u u -- u cy ) \ or ( u u -- ud )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        add     %r0, %r1
-        ld.w    [%r10], %r0
-        ld.w    %r0, 0
-        adc     %r0, %r0
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        add     %r4, %r5
+        ld.w    [%r1], %r4
+        ld.w    %r4, 0
+        adc     %r4, %r4
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; : + ( u u -- u ) UM+ DROP ;
         CODE    plus, "+", FLAG_NORMAL               ; ( w w -- w )
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        add     %r0, %r1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        add     %r4, %r5
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; : 1+ ( w -- w+1 ) 1 + ;
         CODE    increment, "1+", FLAG_NORMAL
-        ld.w    %r0, [%r10]
-        xadd    %r0, 1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        xadd    %r4, 1
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; : 1- ( w -- w-1 ) 1 - ;
         CODE    decrement, "1-", FLAG_NORMAL
-        ld.w    %r0, [%r10]
-        xsub    %r0, 1
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]
+        xsub    %r4, 1
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -581,11 +531,11 @@ zero_less_l1:
 	.long	r_from, plus, exit
 
 ;;; : - ( w w -- w ) NEGATE + ;
-        CODE    minus, "-", FLAG_NORMAL              ; ( w w -- w )
-        ld.w    %r1, [%r10]+
-        ld.w    %r0, [%r10]
-        sub     %r0, %r1
-        ld.w    [%r10], %r0
+        CODE    minus, "-", FLAG_NORMAL         ; ( w w -- w )
+        ld.w    %r5, [%r1]+
+        ld.w    %r4, [%r1]
+        sub     %r4, %r5
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -601,29 +551,29 @@ abs_l1:
 
 ;;; .( User variables )
 
-;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY  ( address passed via %r12 not stack )
+;;; : (douser) ( -- a ) R> @ UP @ + ; COMPILE-ONLY  ( address passed via %r2 not stack )
         CODE    douser, "(douser)", FLAG_COMPILE_ONLY
-        ld.w    %r0, [%r12]
-        ld.w    %r0, [%r0]                      ; user is another pointer!
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r2]
+        ld.w    %r4, [%r4]                   ; user is another pointer!
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
-;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY ( address passed via %r12 not stack )
+;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY ( address passed via %r2 not stack )
         CODE   dovar, "(dovar)", FLAG_COMPILE_ONLY
-        ld.w    %r0, [%r12]                     ; %r0 = parameter address
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r2]                   ; %r4 = parameter address
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
-;;; : (doconst) ( -- a ) R> @ ; COMPILE-ONLY ( address passed via %r12 not stack )
+;;; : (doconst) ( -- a ) R> @ ; COMPILE-ONLY ( address passed via %r2 not stack )
         CODE   doconst, "(doconst)", FLAG_COMPILE_ONLY
-        ld.w    %r0, [%r12]                     ; %r0 = parameter address
-        ld.w    %r0, [%r0]                      ; read the constant value
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r2]                   ; %r4 = parameter address
+        ld.w    %r4, [%r4]                   ; read the constant value
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -638,6 +588,7 @@ abs_l1:
 
 ;;; DUP USER 'KEY?    1 CELL+ \ character input ready vector
         USER    tkey_query, "\047key?", FLAG_NORMAL, rx_query
+
 ;;; DUP USER 'EMIT    1 CELL+ \ character output vector
         USER    temit, "\047emit", FLAG_NORMAL, tx_store
 
@@ -821,38 +772,38 @@ m_slash_mod_l3:
 ;;;     IF >R OVER  UM+  R> + THEN
 ;;;   NEXT ROT DROP ;
         CODE    umult, "um*", FLAG_NORMAL
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        mltu.w  %r0, %r1
-        ld.w    %r0, %alr
-        ld.w    [%r10], %r0
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    %r0, %ahr
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        mltu.w  %r4, %r5
+        ld.w    %r4, %alr
+        ld.w    [%r1], %r4
+        sub     %r1, BYTES_PER_CELL
+        ld.w    %r4, %ahr
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; : * ( n n -- n ) UM* DROP ;
         CODE    times, "*", FLAG_NORMAL
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        mlt.w   %r0, %r1
-        ld.w    %r0, %alr
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        mlt.w   %r4, %r5
+        ld.w    %r4, %alr
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; : M* ( n n -- d )
 ;;;   2DUP XOR 0< >R  ABS SWAP ABS UM*  R> IF DNEGATE THEN ;
         CODE    multd, "m*", FLAG_NORMAL
-        ld.w    %r0, [%r10]+
-        ld.w    %r1, [%r10]
-        mlt.w   %r0, %r1
-        ld.w    %r0, %alr
-        ld.w    [%r10], %r0
-        ld.w    %r0, %ahr
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        ld.w    %r4, [%r1]+
+        ld.w    %r5, [%r1]
+        mlt.w   %r4, %r5
+        ld.w    %r4, %alr
+        ld.w    [%r1], %r4
+        ld.w    %r4, %ahr
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
@@ -973,15 +924,15 @@ atexecute_l1:
 ;;; : CMOVE ( b b u -- )
 ;;;   FOR AFT >R COUNT R@ C! R> 1+ THEN NEXT 2DROP ;
         CODE    cmove, "cmove", FLAG_NORMAL
-        ld.w    %r0, [%r10]+                    ; count
-        ld.w    %r1, [%r10]+                    ; dst
-        ld.w    %r2, [%r10]+                    ; src
-        or      %r0, %r0
+        ld.w    %r4, [%r1]+                     ; count
+        ld.w    %r5, [%r1]+                     ; dst
+        ld.w    %r6, [%r1]+                     ; src
+        or      %r4, %r4
         jreq    cmove_done
 cmove_loop:
-        ld.ub   %r3, [%r2]+
-        ld.b    [%r1]+, %r3
-        xsub    %r0, 1
+        ld.ub   %r7, [%r6]+
+        ld.b    [%r5]+, %r7
+        xsub    %r4, 1
         jrne    cmove_loop
 cmove_done:
         NEXT
@@ -1630,21 +1581,21 @@ eval_l2:
 ;;; input character
         CODE    rx_query, "rx?", FLAG_NORMAL         ; ( -- c T | F )
         xcall   sio_input_available
-        or      %r0, %r0
+        or      %r4, %r4
         jreq    rx_query_no_character
         xcall   sio_get_char
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
-        ld.w    %r0, TRUE
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        ld.w    %r4, TRUE
 rx_query_no_character:
-        xsub    %r10, BYTES_PER_CELL
-        ld.w    [%r10], %r0
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
         NEXT
         END_CODE
 
 ;;; output a character
         CODE    tx_store, "tx!", FLAG_NORMAL         ; ( c -- )
-        ld.w    %r0, [%r10]+
+        ld.w    %r6, [%r1]+
         xcall   sio_put_char
         NEXT
         END_CODE
@@ -2194,20 +2145,20 @@ words_l2:
         .long   tboot, atexecute
         .long   quit
 
-        COLON   nop, "nop", FLAG_NORMAL
+        COLON   nop, "nop", FLAG_NORMAL              ;debug
         .long   exit
 
         CODE    BREAKPOINT, "(brk)", FLAG_NORMAL     ;debug
-        xcall   xdebug                          ;debug
-        xld.w   %r0, bpt
+        xcall   xdebug                               ;debug
+        xld.w   %r6, bpt
         xcall   sio_put_string
-s1:     jp      s1                              ;debug
+s1:     jp      s1                                   ;debug
 bpt:    .asciz  "STOPPED\r\n"
         .balign 4
 
         CODE    DEBUG, "(debug)", FLAG_NORMAL        ;debug
-        xcall   xdebug                          ;debug
-        NEXT                                    ;debug
+        xcall   xdebug                               ;debug
+        NEXT                                         ;debug
 
         COLON   led, "led", FLAG_NORMAL              ;debug
         .long   invert, dolit, 0x04000000, hstore, exit
@@ -2234,7 +2185,7 @@ delay_l2:
 
 
 ;;; finish off the dictionary
-        .data
+        .section .forth_dict
         .balign 4
 
 end_of_dictionary:
@@ -2247,8 +2198,7 @@ last_name = __last_name                         ; should be the final name
 
 
 ;;; finish off the code
-        .text
-
+        .section .forth_param
         .balign 4
 
 end_of_code:

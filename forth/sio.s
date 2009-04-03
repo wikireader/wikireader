@@ -2,6 +2,13 @@
 
         .include "regs.inc"
 
+;;; register usage
+;;;  r0 .. r3  must be preserved
+;;;  r4        result low
+;;;  r5        result high
+;;;  r6 .. r9  arguments 1..4
+;;; r10 ..r14  reserved
+;;; r15        __dp value
 
         .section .text
 
@@ -22,13 +29,10 @@ RDBFx    = (1 << 0)
 ;;; output:
         .global sio_put_crlf
 sio_put_crlf:
-        pushn   %r0
-        xld.w   %r0, 0x0d
+        xld.w   %r6, 0x0d
         xcall   sio_put_char
-        xld.w   %r0, 0x0a
-        xcall   sio_put_char
-        popn    %r0
-        ret
+        xld.w   %r6, 0x0a
+        jp      sio_put_char
 
 
 ;;; print a space
@@ -36,136 +40,133 @@ sio_put_crlf:
 ;;; output:
         .global sio_put_space
 sio_put_space:
-        pushn   %r0
-        xld.w   %r0, 0x20
-        xcall   sio_put_char
-        popn    %r0
-        ret
+        xld.w   %r6, 0x20
+        jp      sio_put_char
 
 
 ;;; print a character
 ;;; input:
-;;;   r0 = char
+;;;   r6 = char
 ;;; output:
         .global sio_put_char
 sio_put_char:
-        pushn   %r2
-        xld.w   %r1, REG_EFSIF0_STATUS
+        xld.w   %r4, REG_EFSIF0_STATUS
 sio_put_char_wait:
-        ld.ub   %r2, [%r1]
-        xand    %r2, TDBEx
+        ld.ub   %r5, [%r4]
+        xand    %r5, TDBEx
         jreq    sio_put_char_wait
 
-        xld.w   %r1, REG_EFSIF0_TXD
-        ld.b	[%r1], %r0
-        popn    %r2
+        xld.w   %r5, REG_EFSIF0_TXD
+        ld.b	[%r5], %r6
         ret
 
 ;;; print a string
 ;;; input:
-;;;   r0 = address of '\0' terminated string
+;;;   r6 = address of '\0' terminated string
 ;;; output:
+;;; temporary:
+;;;   r9 = address during loop
         .global sio_put_string
 sio_put_string:
-        pushn   %r1
-        ld.w    %r1, %r0
+        ld.w    %r9, %r6
 sio_put_string_loop:
-        ld.ub   %r0, [%r1]+
-        cmp     %r0, 0
+        ld.ub   %r6, [%r9]+
+        cmp     %r6, 0
         jreq    sio_put_string_done
+        cmp     %r6, 10
+        jreq    sio_put_string_crlf
         xcall   sio_put_char
         jp      sio_put_string_loop
+sio_put_string_crlf:
+        xcall   sio_put_crlf
+        jp      sio_put_string_loop
 sio_put_string_done:
-        popn    %r1
         ret
 
 
 ;;; print a hex nibble
 ;;; input:
-;;;   r0 = 4 bit number to print
+;;;   r6 = 4 bit number to print
 ;;; output:
         .global sio_put_nibble
 sio_put_nibble:
-        pushn   %r0
-        xand    %r0, 0x0f
-        xadd    %r0, '0'
-        xcmp    %r0, '9'
+        xand    %r6, 0x0f
+        xadd    %r6, '0'
+        xcmp    %r6, '9'
         jrle    sio_put_nibble_l1
-        xadd    %r0, 'a' - '9' - 1
+        xadd    %r6, 'a' - '9' - 1
 sio_put_nibble_l1:
         xcall   sio_put_char
-        popn    %r0
         ret
 
 
 ;;; print a hex word
 ;;; input:
-;;;   r0 = 32 bit number to print
+;;;   r6 = 32 bit number to print
 ;;; output:
+;;; temporary:
+;;;   r9 = thet word being output
         .global sio_put_hex
 sio_put_hex:
-        pushn    %r1
-
-        ld.w    %r1, %r0
-        xsrl    %r0, 28
+        ld.w    %r9, %r6
+        xsrl    %r6, 28
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 24
+        ld.w    %r6, %r9
+        xsrl    %r6, 24
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 20
+        ld.w    %r6, %r9
+        xsrl    %r6, 20
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 16
+        ld.w    %r6, %r9
+        xsrl    %r6, 16
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 12
+        ld.w    %r6, %r9
+        xsrl    %r6, 12
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 8
+        ld.w    %r6, %r9
+        xsrl    %r6, 8
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
-        xsrl    %r0, 4
+        ld.w    %r6, %r9
+        xsrl    %r6, 4
         xcall   sio_put_nibble
 
-        ld.w    %r0, %r1
+        ld.w    %r6, %r9
         xcall   sio_put_nibble
 
-        popn    %r1
         ret
 
 
 ;;; read a character
 ;;; input:
 ;;; output:
-;;;   r0 = char
+;;;   r4 = char
         .global sio_get_char
 sio_get_char:
         call    sio_input_available
-        or      %r0, %r0
+        or      %r4, %r4
         jreq    sio_get_char
-        xld.w   %r0, REG_EFSIF0_RXD
-        ld.ub	%r0, [%r0]
+        xld.w   %r4, REG_EFSIF0_RXD
+        ld.ub	%r4, [%r4]
         ret
 
 
 ;;; see if input is available
 ;;; input:
 ;;; output:
-;;;   r0 = 0 => not ready
+;;;   r4 = 0 => not ready
 ;;;        1 => ready
         .global sio_input_available
 sio_input_available:
-        xld.w   %r0, REG_EFSIF0_STATUS
-        ld.ub   %r0, [%r0]
-        xand    %r0, RDBFx
+        xld.w   %r4, REG_EFSIF0_STATUS
+        ld.ub   %r4, [%r4]
+        xand    %r4, RDBFx
         jreq    sio_input_available_done
-        ld.w    %r0, 1
+        ld.w    %r4, 1
 sio_input_available_done:
         ret
