@@ -10,8 +10,9 @@
 
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
 
-// a type that can hole the path to the file
-typedef unsigned char FilenameType[81];
+// a type that can hold the path to the file
+typedef char FilenameType[81];
+
 
 // this determines the maximum files that can be open simultaneously
 static struct {
@@ -22,18 +23,33 @@ static struct {
 
 static FATFS TheFileSystem;
 
-typedef struct {
-	Forth_CellType result;
-	Forth_CellType rc;
-} ReturnType;
 
+static bool ForthBufferToCString(char *buffer, size_t length,
+				 Forth_PointerType SourceBuffer, Forth_CellType SourceLength)
+{
+	if (NULL == buffer || NULL == SourceBuffer) {
+		return false;
+	}
 
-static bool ValidHandle(ReturnType *r, Forth_CellType handle)
+	if (SourceLength >= length) {
+		--length;
+	} else {
+		length = SourceLength;
+	}
+	if (length > 0) {
+		memcpy(buffer, SourceBuffer, length);
+		buffer[length] = '\0';
+		return true;
+	}
+	return false;
+}
+
+static bool ValidHandle(Forth_ReturnType *r, Forth_CellType handle)
 {
 	r->rc = FR_OK;
 	r->result = 0;
 	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
-		r->rc = FR_DENIED;
+		r->rc = FR_INVALID_OBJECT;
 		return false;
 	}
 	if (!FileControlBlock[handle].IsOpen) {
@@ -54,30 +70,25 @@ void FileSystem_initialise(void)
 }
 
 
-ReturnType FileSystem_open(const char *filename, Forth_CellType length, Forth_CellType fam)
+Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellType length, Forth_CellType fam)
 {
-	ReturnType r = {0, FR_OK};
-	if (NULL == filename || '\0' == *filename) {
-		r.rc = FR_INVALID_NAME;
-		return r;
-	}
-	{
-		size_t i = 0;
-		for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
-			if (!FileControlBlock[i].IsOpen) {
-				if (sizeof(FileControlBlock[i].filename) <= length) {
-					length = sizeof(FileControlBlock[i].filename) - 1;
-				}
-				memcpy(FileControlBlock[i].filename, filename, length);
-				FileControlBlock[i].filename[length] = '\0';
-				r.rc = f_open(&FileControlBlock[i].file, FileControlBlock[i].filename, fam);
-				if (FR_OK == r.rc) {
-					FileControlBlock[i].IsOpen = true;
-					r.result = i;
-					return r;
-				}
-				break;
+	Forth_ReturnType r = {0, FR_OK};
+	size_t i = 0;
+	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
+		if (!FileControlBlock[i].IsOpen) {
+			if (!ForthBufferToCString(FileControlBlock[i].filename,
+						  sizeof(FileControlBlock[i].filename),
+						  filename, length)) {
+				r.rc = FR_INVALID_NAME;
+				return r;
 			}
+			r.rc = f_open(&FileControlBlock[i].file, FileControlBlock[i].filename, fam);
+			if (FR_OK == r.rc) {
+				FileControlBlock[i].IsOpen = true;
+				r.result = i;
+				return r;
+			}
+			break;
 		}
 	}
 	r.rc = FR_DENIED;
@@ -85,49 +96,67 @@ ReturnType FileSystem_open(const char *filename, Forth_CellType length, Forth_Ce
 }
 
 
-ReturnType FileSystem_delete(const char *filename, Forth_CellType length)
+Forth_ReturnType FileSystem_rename(const Forth_PointerType OldFilename, Forth_CellType OldLength,
+			     const Forth_PointerType NewFilename, Forth_CellType NewLength)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
+	FilenameType TempOldFilename;
+	FilenameType TempNewFilename;
+
+	if (!ForthBufferToCString(TempOldFilename, sizeof(TempOldFilename), OldFilename, OldLength)
+	    || !ForthBufferToCString(TempNewFilename, sizeof(TempNewFilename), NewFilename, NewLength)) {
+		r.rc = FR_INVALID_NAME;
+		return r;
+	}
+
+	r.rc = f_rename(TempOldFilename, TempNewFilename);
+
+	return r;
+}
+
+
+Forth_ReturnType FileSystem_delete(const Forth_PointerType filename, Forth_CellType length)
+{
+	Forth_ReturnType r = {0, FR_OK};
 	FilenameType TempFilename;
 
-	if (sizeof(TempFilename) <= length) {
-		length = sizeof(TempFilename) - 1;
+	if (!ForthBufferToCString(TempFilename, sizeof(TempFilename), filename, length)) {
+		r.rc = FR_INVALID_NAME;
+		return r;
 	}
-	memcpy(TempFilename, filename, length);
-	TempFilename[length] = '\0';
+
 	r.rc = f_unlink(TempFilename);
 
 	return r;
 }
 
 
-ReturnType FileSystem_create(const char *filename, Forth_CellType length, Forth_CellType fam)
+Forth_ReturnType FileSystem_create(const Forth_PointerType filename, Forth_CellType length, Forth_CellType fam)
 {
 	return FileSystem_open(filename, length, fam | FA_CREATE_NEW | FA_CREATE_ALWAYS);
 }
 
 
-ReturnType FileSystem_close(Forth_CellType handle)
+Forth_ReturnType FileSystem_close(Forth_CellType handle)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 
 	if (0 > handle || SizeOfArray(FileControlBlock) < handle) {
 		r.rc = FR_DENIED;
 		return r;
 	}
-	if (!FileControlBlock[handle].IsOpen) {
-		return r;
-	}
 
-	r.rc = f_close(&FileControlBlock[handle].file);
-	FileControlBlock[handle].IsOpen = false;
+	if (FileControlBlock[handle].IsOpen) {
+		r.rc = f_close(&FileControlBlock[handle].file);
+		FileControlBlock[handle].IsOpen = false;
+	}
 	return r;
 }
 
 
-ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType length)
+Forth_ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
 	if (!ValidHandle(&r, handle))
@@ -140,9 +169,9 @@ ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType l
 	return r;
 }
 
-ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType length)
+Forth_ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 	UINT count = 0;
 
 	if (!ValidHandle(&r, handle))
@@ -156,9 +185,9 @@ ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType 
 }
 
 
-ReturnType FileSystem_sync(Forth_CellType handle)
+Forth_ReturnType FileSystem_sync(Forth_CellType handle)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 
 	if (!ValidHandle(&r, handle))
 	{
@@ -170,9 +199,9 @@ ReturnType FileSystem_sync(Forth_CellType handle)
 }
 
 
-ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
+Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 
 	if (!ValidHandle(&r, handle))
 	{
@@ -184,9 +213,9 @@ ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 }
 
 
-ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
+Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 
 	if (!ValidHandle(&r, handle))
 	{
@@ -200,9 +229,9 @@ ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 }
 
 
-ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
+Forth_ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
 {
-	ReturnType r = {0, FR_OK};
+	Forth_ReturnType r = {0, FR_OK};
 	FILINFO stat;
 
 	if (!ValidHandle(&r, handle))

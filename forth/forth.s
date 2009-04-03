@@ -2141,6 +2141,17 @@ words_l2:
         NEXT
         END_CODE
 
+;;; : RENAME-FILE      ( b1 u1 b2 u2 -- ior )
+        CODE    rename_file, "rename-file", FLAG_NORMAL
+        ld.w    %r9, [%r1]+                     ; count2
+        ld.w    %r8, [%r1]+                     ; name2
+        ld.w    %r7, [%r1]+                     ; count1
+        ld.w    %r6, [%r1]                      ; name1
+        xcall   FileSystem_rename
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
 ;;; : CREATE-FILE      ( b u fam -- fileid ior )
         CODE    create_file, "create-file", FLAG_NORMAL
         ld.w    %r8, [%r1]+                     ; fam
