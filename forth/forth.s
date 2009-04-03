@@ -12,6 +12,7 @@
 ;;; d   signed double integer (2 cells)
 ;;; F   logical false
 ;;; f   flag 0 or non-zero
+;;; h   half-word address (t 2 byte boundary)
 ;;; la  link address
 ;;; n   signed integer
 ;;; na  name address
@@ -35,19 +36,10 @@ BITS_PER_CELL = 32                              ; bits per cell
 FALSE = 0
 TRUE = -1
 
-;;; flags
+;;; header flags
 IMMEDIATE = 0x80
 COMPILE_ONLY = 0x40
-
-
-
-;;; structure
-;;; 0 .. 3: [w] link
-;;; 4 .. 5: [h] flags
-;;; 6 .. 7: [h] count
-;;; 8 .. n: [w] name (word aligned)
-;;; n+1   : [h] code
-
+NORMAL = 0
 
 
 ;;; registers
@@ -56,10 +48,24 @@ COMPILE_ONLY = 0x40
 ;;; r10    stack pointer
 ;;; r11    ip
 ;;; r12    work register
+;;; r13    not_user
+;;; r14    not_used
+;;; r15    __DP for C
 
         .macro  NEXT                            ; inner interpreter
         ld.w    %r12, [%r11]+
         jp      %r12
+        .endm
+
+
+;;; inline forth counted strings
+
+        .macro  FSTRING, text
+        .byte   str_\@_finish - str_\@_start
+str_\@_start:
+        .ascii  "\text"
+str_\@_finish:
+        .balign 4
         .endm
 
 
@@ -77,12 +83,7 @@ prev_\label = __last_name
         .global name_\label
 name_\label\():
 __last_name = .
-        .byte   name\@\()_end - name\@\()_start
-name\@\()_start:
-        .ascii  "\name"
-name\@\()_end:
-        .byte   0                               ;debug
-        .balign 4
+        FSTRING "\name"
 
         .section .text
         .balign 4
@@ -150,6 +151,7 @@ user_variables:
 
         .endm
 
+
 ;;; miscellaneous variables
 
         .section .bss
@@ -157,7 +159,7 @@ user_variables:
 terminal_buffer:
         .space   65536
         .global initial_stack_pointer
-initial_stack_pointer:                          ; NOTE: stack underflows over return space!
+initial_stack_pointer:     ; NOTE: stack underflows over return space!
         .space   65536
         .global initial_return_pointer
 initial_return_pointer:
@@ -166,49 +168,39 @@ initial_return_pointer:
 ;;; Program Code
         .section .text
 main:
-        xld.w   %r0, message
-        xcall   puts
-        xcall   putcrlf
-
-        xld.w   %r0, sp_message
-        xcall   puts
-        ld.w    %r0, %sp
-        xcall   puthex
-        xcall   putcrlf
-
+        xld.w   %r15, __dp
         xld.w   %r10, initial_stack_pointer
         xld.w   %r0, initial_return_pointer
         ld.w    %sp, %r0
         xld.w   %r11, cold                      ; initial ip value
-
         xjp     cold
 
 
 debug_8:
-        xcall   puts
+        xcall   sio_put_string
 
         ld.w    %r0, %r1
-        xcall   puthex
+        xcall   sio_put_hex
 
-        xcall   putspace
+        xcall   sio_put_space
 
         xld.w   %r2, 8
 
 debug_8_loop:
-        xcall   putspace
+        xcall   sio_put_space
 
         ld.w    %r0, [%r1]+
-        xcall   puthex
+        xcall   sio_put_hex
 
         xsub    %r2, 1
         jrne    debug_8_loop
 
-        xcall   putcrlf
+        xcall   sio_put_crlf
         ret
 
 xdebug:
         pushn   %r2
-        xcall   putcrlf
+        xcall   sio_put_crlf
 
         xld.w   %r0, debug_message
         ld.w    %r1, %r11
@@ -246,33 +238,33 @@ sp_message:
 
 ;;; .( Special interpreters )
 
-        CODE    dolit, "(dolit)", COMPILE_ONLY  ; ( -- w ) COMPILE-ONLY
+        CODE    dolit, "(dolit)", COMPILE_ONLY ; ( -- w ) COMPILE-ONLY
         ld.w   %r12, [%r11]+
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r12
         NEXT
         END_CODE
 
-        CODE    dolist, "(dolist)", COMPILE_ONLY  ; ( a -- ) \ call dolist list..
+        CODE    dolist, "(dolist)", COMPILE_ONLY ; ( a -- ) \ call dolist list..
         ld.w    %r12, %r11
         ld.w    %r11, [%sp]
         ld.w    [%sp], %r12
         NEXT
         END_CODE
 
-        CODE    execute, "execute", 0           ; ( a -- )
+        CODE    execute, "execute", NORMAL      ; ( a -- )
         ld.w    %r12, [%r10]+
         jp      %r12
         END_CODE
 
-        CODE    exit, "exit", 0                 ; ( -- )
+        CODE    exit, "exit", NORMAL            ; ( -- )
         popn    %r0
         ld.w    %r11, %r0
         NEXT
         END_CODE
 
 
-;;; .( Loop & Branch  16bit absolute address )
+;;; .( Loop & Branch - absolute address )
 
 ;;; : (next) ( -- ) \ hiLevel model  16bit absolute branch
 ;;;   r> r> dup if 1- >r @ >r exit then drop cell+ >r ;
@@ -306,28 +298,42 @@ no_branch:
 
 ;;; .( Memory fetch & store )
 
-        CODE    store, "!", 0                   ; ( w a -- )
+        CODE    store, "!", NORMAL              ; ( w a -- )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]+
         ld.w    [%r0], %r1
         NEXT
         END_CODE
 
-        CODE    fetch, "@", 0                   ; ( a -- w )
+        CODE    fetch, "@", NORMAL              ; ( a -- w )
         ld.w    %r0, [%r10]
         ld.w    %r0, [%r0]
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    cstore, "c!", 0                 ; ( c b -- )
+        CODE    hstore, "h!", NORMAL            ; ( c h -- )
+        ld.w    %r0, [%r10]+
+        ld.w    %r1, [%r10]+
+        ld.h    [%r0], %r1
+        NEXT
+        END_CODE
+
+        CODE    hfetch, "h@", NORMAL            ; ( h -- c )
+        ld.w    %r0, [%r10]
+        ld.uh   %r0, [%r0]
+        ld.w    [%r10], %r0
+        NEXT
+        END_CODE
+
+        CODE    cstore, "c!", NORMAL            ; ( c b -- )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]+
         ld.b    [%r0], %r1
         NEXT
         END_CODE
 
-        CODE    cfetch, "c@", 0                 ; ( b -- c )
+        CODE    cfetch, "c@", NORMAL            ; ( b -- c )
         ld.w    %r0, [%r10]
         ld.ub   %r0, [%r0]
         ld.w    [%r10], %r0
@@ -336,34 +342,34 @@ no_branch:
 
 ;;; .( Return Stack )
 
-        CODE    rp_fetch, "rp@", 0              ; ( -- a )
+        CODE    rp_fetch, "rp@", NORMAL         ; ( -- a )
         ld.w    %r0, %sp
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    rp_store, "rp!", COMPILE_ONLY   ; ( a -- ) COMPILE-ONLY
+        CODE    rp_store, "rp!", COMPILE_ONLY  ; ( a -- ) COMPILE-ONLY
         ld.w    %r0, [%r10]+
         ld.w    %sp, %r0
         NEXT
         END_CODE
 
-        CODE    r_from, "r>", COMPILE_ONLY      ; ( -- w ) COMPILE-ONLY
+        CODE    r_from, "r>", COMPILE_ONLY     ; ( -- w ) COMPILE-ONLY
         popn    %r0
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    r_fetch, "r@", 0                ; ( -- w )
+        CODE    r_fetch, "r@", NORMAL           ; ( -- w )
         ld.w    %r0, [%sp]
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    to_r, ">r", COMPILE_ONLY        ; ( w -- ) COMPILE-ONLY
+        CODE    to_r, ">r", COMPILE_ONLY       ; ( w -- ) COMPILE-ONLY
         ld.w    %r0, [%r10]+
         pushn   %r0
         NEXT
@@ -371,31 +377,31 @@ no_branch:
 
 ;;; .( Data Stack )
 
-        CODE    sp_fetch, "sp@", 0              ; ( -- a )
+        CODE    sp_fetch, "sp@", NORMAL         ; ( -- a )
         ld.w    %r0, %r10
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    sp_store, "sp!", 0              ; ( a -- )
+        CODE    sp_store, "sp!", NORMAL         ; ( a -- )
         ld.w    %r10, [%r10]
         NEXT
         END_CODE
 
-        CODE    drop, "drop", 0                 ; ( w -- )
+        CODE    drop, "drop", NORMAL            ; ( w -- )
         ld.w    %r0, [%r10]+
         NEXT
         END_CODE
 
-        CODE    dup, "dup", 0                   ; ( w -- w w )
+        CODE    dup, "dup", NORMAL              ; ( w -- w w )
         ld.w    %r0, [%r10]
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
-        CODE    swap, "swap", 0                 ; ( w1 w2 -- w2 w1 )
+        CODE    swap, "swap", NORMAL            ; ( w1 w2 -- w2 w1 )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]+
         xsub    %r10, CELL_SIZE
@@ -405,7 +411,7 @@ no_branch:
         NEXT
         END_CODE
 
-        CODE    over, "over", 0                 ; ( w1 w2 -- w1 w2 w1 )
+        CODE    over, "over", NORMAL           ; ( w1 w2 -- w1 w2 w1 )
         xld.w   %r0, [%r10 + 4]
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
@@ -414,32 +420,36 @@ no_branch:
 
 
 ;;; : ?DUP ( w -- w w, 0 ) DUP IF DUP THEN ;
-	COLON   qdup, "?dup", 0
+	COLON   qdup, "?dup", NORMAL
 	.long	dup, qbranch, qdup_l1
 	.long	dup
 qdup_l1:
 	.long	exit
 
 ;;; : NIP ( w1 w2 -- w2 ) SWAP DROP ;
-        COLON   nip, "nip", 0
+        COLON   nip, "nip", NORMAL
         .long   swap, drop, exit
 
 ;;; : ROT ( w1 w2 w3 -- w2 w3 w1 ) >R SWAP R> SWAP ;
-        COLON   rot, "rot", 0
+        COLON   rot, "rot", NORMAL
         .long   to_r, swap, r_from, swap, exit
 
+;;; : -ROT ( w1 w2 w3 -- w3 w1 w2 ) ROT ROT ;
+        COLON   minus_rot, "-rot", NORMAL
+        .long   rot, rot, exit
+
 ;;; : 2DROP ( w w  -- ) DROP DROP ;
-        COLON   twodrop, "2drop", 0
+        COLON   twodrop, "2drop", NORMAL
         .long   drop, drop, exit
 
 ;;; : 2DUP ( w1 w2 -- w1 w2 w1 w2 ) OVER OVER ;
-        COLON   twodup, "2dup", 0
+        COLON   twodup, "2dup", NORMAL
         .long   over, over, exit
 
 
 ;;; .( Logic )
 
-        CODE    zero_less, "0<", 0               ; ( n -- t )
+        CODE    zero_less, "0<", NORMAL         ; ( n -- t )
         ld.w    %r0, [%r10]
         or      %r0, %r0
         jrlt    zero_less_l1
@@ -452,7 +462,7 @@ zero_less_l1:
         NEXT
         END_CODE
 
-        CODE    _and, "and", 0                  ; ( w w -- w )
+        CODE    _and, "and", NORMAL             ; ( w w -- w )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         and     %r0, %r1
@@ -460,7 +470,7 @@ zero_less_l1:
         NEXT
         END_CODE
 
-        CODE    _or, "or", 0                    ; ( w w -- w )
+        CODE    _or, "or", NORMAL               ; ( w w -- w )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         or      %r0, %r1
@@ -468,7 +478,7 @@ zero_less_l1:
         NEXT
         END_CODE
 
-        CODE    _xor, "xor", 0                  ; ( w w -- w )
+        CODE    _xor, "xor", NORMAL             ; ( w w -- w )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         xor     %r0, %r1
@@ -477,12 +487,12 @@ zero_less_l1:
         END_CODE
 
 ;;; : INVERT ( w -- w ) -1 XOR ;
-        COLON   invert, "invert", 0
+        COLON   invert, "invert", NORMAL
         .long   dolit, -1, _xor, exit
 
 ;;; .( Arithmetic )
 
-        CODE    umplus, "um+", 0                ; ( u u -- u cy ) \ or ( u u -- ud )
+        CODE    umplus, "um+", NORMAL ; ( u u -- u cy ) \ or ( u u -- ud )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         add     %r0, %r1
@@ -495,7 +505,7 @@ zero_less_l1:
         END_CODE
 
 ;;; : + ( u u -- u ) UM+ DROP ;
-        CODE    plus, "+", 0                    ; ( w w -- w )
+        CODE    plus, "+", NORMAL               ; ( w w -- w )
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         add     %r0, %r1
@@ -504,7 +514,7 @@ zero_less_l1:
         END_CODE
 
 ;;; : 1+ ( w -- w+1 ) 1 + ;
-        CODE    increment, "1+", 0
+        CODE    increment, "1+", NORMAL
         ld.w    %r0, [%r10]
         xadd    %r0, 1
         ld.w    [%r10], %r0
@@ -512,7 +522,7 @@ zero_less_l1:
         END_CODE
 
 ;;; : 1- ( w -- w-1 ) 1 - ;
-        CODE    decrement, "1-", 0
+        CODE    decrement, "1-", NORMAL
         ld.w    %r0, [%r10]
         xsub    %r0, 1
         ld.w    [%r10], %r0
@@ -524,13 +534,13 @@ zero_less_l1:
 	.long	invert, increment, exit
 
 ;;; : DNEGATE ( d -- -d ) INVERT >R INVERT 1 UM+ R> + ;
-	COLON   dnegate, "dnegate", 0
+	COLON   dnegate, "dnegate", NORMAL
 	.long	invert, to_r, invert
 	.long	dolit, 1, umplus
 	.long	r_from, plus, exit
 
 ;;; : - ( w w -- w ) NEGATE + ;
-        CODE    minus, "-", 0                   ; ( w w -- w )
+        CODE    minus, "-", NORMAL              ; ( w w -- w )
         ld.w    %r1, [%r10]+
         ld.w    %r0, [%r10]
         sub     %r0, %r1
@@ -541,7 +551,7 @@ zero_less_l1:
 
 ;;; : ABS ( n -- +n ) DUP 0< IF NEGATE THEN ;
 
-        COLON   abs, "abs", 0
+        COLON   abs, "abs", NORMAL
         .long   dup, zero_less, qbranch, abs_l1
         .long   negate
 abs_l1:
@@ -568,46 +578,46 @@ abs_l1:
         END_CODE
 
 ;;; 8 \ start offset
-        USER    user_reserved, "(ureserved)", 0, "0,0,0,0"
+        USER    user_reserved, "(ureserved)", NORMAL, "0,0,0,0"
 
 ;;; DUP USER SP0      1 CELL+ \ initial data stack pointer
-        USER    sp0, "sp0", 0, initial_stack_pointer
+        USER    sp0, "sp0", NORMAL, initial_stack_pointer
 
 ;;; DUP USER RP0      1 CELL+ \ initial return stack pointer
-        USER    rp0, "rp0", 0, initial_return_pointer
+        USER    rp0, "rp0", NORMAL, initial_return_pointer
 
 ;;; DUP USER 'KEY?    1 CELL+ \ character input ready vector
-        USER    tkey_query, "\047key?", 0, rx_query
+        USER    tkey_query, "\047key?", NORMAL, rx_query
 ;;; DUP USER 'EMIT    1 CELL+ \ character output vector
-        USER    temit, "\047emit", 0, tx_store
+        USER    temit, "\047emit", NORMAL, tx_store
 
 ;;; DUP USER 'EXPECT  1 CELL+ \ line input vector
-        USER    texpect, "\047expect", 0, accept
+        USER    texpect, "\047expect", NORMAL, accept
 
 ;;; DUP USER 'TAP     1 CELL+ \ input case vector
-        USER    ttap, "\047tap", 0, ktap
+        USER    ttap, "\047tap", NORMAL, ktap
 
 ;;; DUP USER 'ECHO    1 CELL+ \ input echo vector
-        USER    techo, "\047echo", 0, tx_store
+        USER    techo, "\047echo", NORMAL, tx_store
 
 ;;; DUP USER 'PROMPT  1 CELL+ \ operator prompt vector
-        USER    tprompt, "\047prompt", 0, dot_ok
+        USER    tprompt, "\047prompt", NORMAL, dot_ok
 
 ;;; DUP USER BASE     1 CELL+ \ number base
-        USER    base, "base", 0, 10
+        USER    base, "base", NORMAL, 10
 
 ;;; DUP USER temp     1 CELL+ \ scratch
         USER    temp, "temp", COMPILE_ONLY, 0
 
 ;;; DUP USER SPAN     1 CELL+ \ #chars input by EXPECT
-        USER    span, "span", 0, 0
+        USER    span, "span", NORMAL, 0
 
 ;;; DUP USER >IN      1 CELL+ \ input buffer offset
-        USER to_in, ">in", 0, 0
+        USER to_in, ">in", NORMAL, 0
 
 ;;; DUP USER #TIB     1 CELL+ \ #chars in the input buffer
 ;;;       1 CELLS ALLOT \   address  of input buffer
-        USER    hash_tib, "#tib", 0, "0,terminal_buffer"
+        USER    hash_tib, "#tib", NORMAL, "0,terminal_buffer"
 
 ;;; DUP USER UP       1 CELL+ \ user base pointer
         ;; not needed
@@ -616,74 +626,74 @@ abs_l1:
         ;; not needed
 
 ;;; DUP USER 'EVAL    1 CELL+ \ interpret/compile vector
-        USER    teval, "\047eval", 0, dollar_interpret
+        USER    teval, "\047eval", NORMAL, dollar_interpret
 
 ;;; DUP USER 'NUMBER  1 CELL+ \ numeric input vector
-        USER    tnumber, "\047number", 0, numberq
+        USER    tnumber, "\047number", NORMAL, numberq
 
 ;;; DUP USER HLD      1 CELL+ \ formated numeric string
-        USER    hld, "hld", 0, 0
+        USER    hld, "hld", NORMAL, 0
 
 ;;; DUP USER HANDLER  1 CELL+ \ error frame pointer
-        USER    handler, "handler", 0, 0
+        USER    handler, "handler", NORMAL, 0
 
 ;;; DUP USER CONTEXT  1 CELL+ \ first search vocabulary
 ;;;   =VOCS CELL+ \ vocabulary stack
-        USER    context, "context", 0, "0, 0,0,0,0, 0,0,0,0"
+        USER    context, "context", NORMAL, "0, 0,0,0,0, 0,0,0,0"
 
 ;;; DUP USER CURRENT  1 CELL+ \ definitions vocabulary
 ;;;       1 CELL+ \ newest vocabulary
-        USER    current, "current", 0, "0,0"
+        USER    current, "current", NORMAL, "0,0"
 
 ;;; DUP USER CP       1 CELL+ \ dictionary code pointer
 ;;;       1 CELL+ \ dictionary name pointer
 ;;;       1 CELL+ \ last name compiled
-        USER    cp, "cp", 0, "end_of_code, end_of_dictionary, last_name"
+        USER    cp, "cp", NORMAL, "end_of_code, end_of_dictionary, last_name"
 
 
 ;;; .( Comparison )
 
 ;;; : 0= ( w -- t ) IF 0 EXIT THEN -1 ;
-        COLON   zero_equal, "0=", 0
+        COLON   zero_equal, "0=", NORMAL
         .long   qbranch, zero_equal_l1
         .long   dolit, FALSE, exit
 zero_equal_l1:
         .long   dolit, TRUE, exit
 
 ;;; : = ( w w -- t ) XOR 0= ;
-        COLON   equal, "=", 0
+        COLON   equal, "=", NORMAL
         .long   _xor, zero_equal, exit
 
 ;;; : U< ( u u -- t ) 2DUP XOR 0< IF  NIP 0< EXIT THEN - 0< ;
-        COLON   uless, "u<", 0
+        COLON   uless, "u<", NORMAL
         .long   twodup, _xor, zero_less, qbranch, uless_l1
         .long   nip, zero_less, exit
 uless_l1:
         .long   minus, zero_less, exit
 
 ;;; :  < ( n n -- t ) 2DUP XOR 0< IF DROP 0< EXIT THEN - 0< ;
-        COLON   less, "<", 0
+        COLON   less, "<", NORMAL
         .long   twodup, _xor, zero_less, qbranch, less_l1
         .long   drop, zero_less, exit
 less_l1:
         .long   minus, zero_less, exit
 
 ;;; : MAX ( n n -- n ) 2DUP      < IF SWAP THEN DROP ;
-        COLON   max, "max", 0
+        COLON   max, "max", NORMAL
         .long   twodup, less, qbranch, max_l1
         .long   swap
 max_l1:
         .long   drop, exit
 
 ;;; : MIN ( n n -- n ) 2DUP SWAP < IF SWAP THEN DROP ;
-        COLON   min, "min", 0
+        COLON   min, "min", NORMAL
         .long   twodup, swap, less, qbranch, min_l1
         .long   swap
 min_l1:
         .long   drop, exit
 
 ;;; : WITHIN ( u ul uh -- t ) OVER - >R - R> U< ;
-        COLON   within, "within", 0
+        COLON   within, "within", NORMAL
         .long   over, minus, to_r, minus, r_from, uless, exit
 
 
@@ -697,7 +707,7 @@ min_l1:
 ;;;       IF >R DROP 1+ R> ELSE DROP THEN R>
 ;;;     NEXT DROP SWAP EXIT
 ;;;   THEN DROP 2DROP  -1 DUP ;
-        COLON   um_slash_mod, "um/mod", 0
+        COLON   um_slash_mod, "um/mod", NORMAL
 	.long	twodup, uless
 	.long	qbranch, um_slash_mod_l4
 	.long	negate, dolit, BITS_PER_CELL - 1, to_r
@@ -741,15 +751,15 @@ m_slash_mod_l3:
 	.long	exit
 
 ;;; : /MOD ( n n -- r q ) OVER 0< SWAP M/MOD ;
-        COLON   slash_mod, "/MOD", 0
+        COLON   slash_mod, "/mod", NORMAL
         .long   over, zero_less, swap, m_slash_mod, exit
 
 ;;; : MOD ( n n -- r ) /MOD DROP ;
-        COLON   mod, "/", 0
+        COLON   mod, "/", NORMAL
         .long   slash_mod, drop, exit
 
 ;;; : / ( n n -- q ) /MOD NIP ;
-        COLON   divide, "/", 0
+        COLON   divide, "/", NORMAL
         .long   slash_mod, nip, exit
 
 
@@ -760,7 +770,7 @@ m_slash_mod_l3:
 ;;;   FOR DUP  UM+  >R >R DUP  UM+  R> + R>
 ;;;     IF >R OVER  UM+  R> + THEN
 ;;;   NEXT ROT DROP ;
-        CODE    umult, "um*", 0
+        CODE    umult, "um*", NORMAL
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         mltu.w  %r0, %r1
@@ -773,7 +783,7 @@ m_slash_mod_l3:
         END_CODE
 
 ;;; : * ( n n -- n ) UM* DROP ;
-        CODE    times, "*", 0
+        CODE    times, "*", NORMAL
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         mlt.w   %r0, %r1
@@ -784,7 +794,7 @@ m_slash_mod_l3:
 
 ;;; : M* ( n n -- d )
 ;;;   2DUP XOR 0< >R  ABS SWAP ABS UM*  R> IF DNEGATE THEN ;
-        CODE    multd, "m*", 0
+        CODE    multd, "m*", NORMAL
         ld.w    %r0, [%r10]+
         ld.w    %r1, [%r10]
         mlt.w   %r0, %r1
@@ -803,46 +813,47 @@ m_slash_mod_l3:
 ;;; .( Bits & Bytes )
 ;;;
 ;;; : BYTE+ ( b -- b ) [ =BYTE ] LITERAL + ;
-        COLON   byte_plus, "byte+", 0
+        COLON   byte_plus, "byte+", NORMAL
         .long   increment, exit
 
 ;;; : BYTE- ( b -- b ) [ =BYTE ] LITERAL - ;
-        COLON   byte_minus, "byte-", 0
+        COLON   byte_minus, "byte-", NORMAL
         .long   decrement, exit
 
 ;;; : CELL+ ( a -- a ) [ =CELL ] LITERAL + ;
-        COLON   cell_plus, "cell+", 0
+        COLON   cell_plus, "cell+", NORMAL
         .long   dolit, CELL_SIZE, plus, exit
 
 ;;; : CELL- ( a -- a ) [ =CELL ] LITERAL - ;
-        COLON   cell_minus, "cell-", 0
+        COLON   cell_minus, "cell-", NORMAL
         .long   dolit, CELL_SIZE, minus, exit
 
 ;;; : CELLS ( n -- n ) [ =CELL ] LITERAL * ;
-        COLON   cells, "cells", 0
+        COLON   cells, "cells", NORMAL
         .long   dolit, CELL_SIZE, times, exit
 
 ;;; : BL ( -- 32 ) 32 ;
-        COLON   blank, "bl", 0
+        COLON   blank, "bl", NORMAL
         .long   dolit, 32, exit
 
+;;; subsitute unprintable character with '.'
 ;;; : >CHAR ( c -- c )
-;;;   127 AND DUP 127 BL WITHIN IF [ CHAR _ ] LITERAL NIP THEN ;
-	COLON   to_char, ">char", 0
+;;;   127 AND DUP 127 BL WITHIN IF DROP [ CHAR . ] LITERAL THEN ;
+	COLON   to_char, ">char", NORMAL
 	.long	dolit, 0x7f, _and, dup
 	.long	dolit, 0x7f, blank, within
 	.long	qbranch, to_char_l1
-	.long	drop, dolit, '_'
+	.long	drop, dolit, '.'
 to_char_l1:
 	.long	exit
 
 ;;; : DEPTH ( -- n ) SP@ SP0 @ SWAP - 1 CELLS / ;
-        COLON   depth, "depth", 0
+        COLON   depth, "depth", NORMAL
         .long   sp_fetch, sp0, fetch, swap, minus
         .long   dolit, 1, cells, divide, exit
 
 ;;; : PICK ( +n -- w ) 1+ CELLS SP@ + @ ;
-        COLON   pick, "pick", 0
+        COLON   pick, "pick", NORMAL
         .long   increment, cells, sp_fetch, plus, fetch, exit
 
 ;;; align to a CELL boundary
@@ -854,39 +865,39 @@ to_char_l1:
 ;;; .( Memory access )
 
 ;;; : +! ( n a -- ) SWAP OVER @ + SWAP ! ;
-        COLON   plus_store, "+!", 0
+        COLON   plus_store, "+!", NORMAL
         .long   swap, over, fetch, plus, swap, store, exit
 
 ;;; : 2! ( d a -- ) SWAP OVER ! CELL+ ! ;
-        COLON   dstore, "2!", 0
+        COLON   dstore, "2!", NORMAL
         .long   swap, over, store, cell_plus, store, exit
 
 ;;; : 2@ ( a -- d ) DUP CELL+ @ SWAP @ ;
-        COLON   dfetch, "2@", 0
+        COLON   dfetch, "2@", NORMAL
         .long   dup, cell_plus, fetch, swap, fetch, exit
 
 ;;; : COUNT ( b -- b +n ) DUP BYTE+ SWAP C@ ;
-        COLON   count, "count", 0
+        COLON   count, "count", NORMAL
         .long   dup, byte_plus, swap, cfetch, exit
 
 ;;; : HERE ( -- a ) CP @ ;
-        COLON   here, "here", 0
+        COLON   here, "here", NORMAL
         .long   cp, fetch, exit
 
 ;;; : PAD ( -- a ) HERE 80 + ;
-        COLON   pad, "pad", 0
+        COLON   pad, "pad", NORMAL
         .long   here, dolit, 80, plus, exit
 
 ;;; : TIB ( -- a ) #TIB CELL+ @ ;
-        COLON   tib, "tib", 0
+        COLON   tib, "tib", NORMAL
         .long   hash_tib, cell_plus, fetch, exit
 
 ;;; : NP ( -- a ) CP CELL+ ;
-        COLON   np, "np", 0
+        COLON   np, "np", NORMAL
         .long   cp, cell_plus, exit
 
 ;;; : LAST ( -- a ) NP CELL+ ;
-        COLON   last, "last", 0
+        COLON   last, "last", NORMAL
         .long   np, cell_plus, exit
 
 
@@ -896,13 +907,13 @@ to_char_l1:
 
 ;;; \ Make FORTH the context vocabulary
 ;;; : FORTH	( -- ) COMPILE (dovoc) [ =HEAD ] , [ =LINK ] , ;
-	COLON   forth, "forth", 0
+	COLON   forth, "forth", NORMAL
 	.long	dovoc
 	.long	last_name                       ; vocabulary head pointer
 	.long	last_name                       ; vocabulary link pointer
 
 ;;; : @EXECUTE ( a -- ) @ ?DUP IF EXECUTE THEN ;
-        COLON   atexecute, "@execute", 0
+        COLON   atexecute, "@execute", NORMAL
         .long   fetch, qdup, qbranch, atexecute_l1
         .long   execute
 atexecute_l1:
@@ -910,7 +921,7 @@ atexecute_l1:
 
 ;;; : CMOVE ( b b u -- )
 ;;;   FOR AFT >R COUNT R@ C! R> 1+ THEN NEXT 2DROP ;
-        CODE    cmove, "cmove", 0
+        CODE    cmove, "cmove", NORMAL
         ld.w    %r0, [%r10]+                    ; count
         ld.w    %r1, [%r10]+                    ; dst
         ld.w    %r2, [%r10]+                    ; src
@@ -930,7 +941,7 @@ cmove_done:
 ;;;   FOR AFT DUP R@ + C@  BL XOR
 ;;;     IF R> BYTE+ EXIT THEN THEN
 ;;;   NEXT 0 ;
-        COLON   minus_trailing, "-trailing", 0
+        COLON   minus_trailing, "-trailing", NORMAL
         .long   to_r
 minus_trailing_l1:
         .long   dup, r_fetch, plus, cfetch,  blank, _xor
@@ -942,20 +953,20 @@ minus_trailing_l2:
 
 ;;; : FILL ( b u c -- )
 ;;;   SWAP FOR SWAP AFT 2DUP C! BYTE+ THEN NEXT 2DROP ;
-        COLON   fill, "fill", 0
-        .long   SWAP, to_r
+        COLON   fill, "fill", NORMAL
+        .long   swap, to_r
 fill_l1:
         .long   twodup, cstore, byte_plus
         .long   donext, fill_l1
         .long   twodrop, exit
 
 ;;; : ERASE ( b u -- ) 0 FILL ;
-        COLON   erase, "erase", 0
+        COLON   erase, "erase", NORMAL
         .long   dolit, 0, fill, exit
 
 ;;; : PACK$ ( b u a -- a ) \ null terminated
 ;;;   DUP >R  2DUP C! BYTE+ SWAP CMOVE  R> ;
-        COLON   pack_dollar, "pack$", 0
+        COLON   pack_dollar, "pack$", NORMAL
 	.long	aligned, dup, to_r
 	.long	twodup, cstore, byte_plus
 	.long	swap, cmove, r_from, exit
@@ -964,27 +975,27 @@ fill_l1:
 ;;; .( Numeric Output ) \ single precision
 
 ;;; : DIGIT ( u -- c ) 9 OVER < 7 AND + [ CHAR 0 ] LITERAL + ;
-        COLON   digit, "digit", 0
+        COLON   digit, "digit", NORMAL
         .long   dolit, 9, over, less, dolit, 7, _and, plus, dolit, '0', plus, exit
 
 ;;; : EXTRACT ( n base -- n c ) 0 SWAP UM/MOD SWAP DIGIT ;
-        COLON   extract, "extract", 0
+        COLON   extract, "extract", NORMAL
         .long   dolit, 0, swap, um_slash_mod, swap, digit, exit
 
 ;;; : <# ( -- ) PAD HLD ! ;
-        COLON   less_hash, "<#", 0
+        COLON   less_hash, "<#", NORMAL
         .long   pad, hld, store, exit
 ;;;
 ;;; : HOLD ( c -- ) HLD @ BYTE- DUP HLD ! C! ;
-        COLON   hold, "hold", 0
+        COLON   hold, "hold", NORMAL
         .long   hld, fetch, byte_minus, dup, hld, store, cstore, exit
 
 ;;; : # ( u -- u ) BASE @ EXTRACT HOLD ;
-        COLON   hash, "#", 0
+        COLON   hash, "#", NORMAL
         .long   base, fetch, extract, hold, exit
 
 ;;; : #S ( u -- 0 ) BEGIN # DUP WHILE REPEAT ;
-        COLON   hash_s, "#s", 0
+        COLON   hash_s, "#s", NORMAL
 hash_s_l1:
         .long   hash, dup
         .long   qbranch, hash_s_l2
@@ -993,14 +1004,14 @@ hash_s_l2:
         .long   exit
 
 ;;; : SIGN ( n -- ) 0< IF [ CHAR - ] LITERAL HOLD THEN ;
-        COLON   sign, "sign", 0
+        COLON   sign, "sign", NORMAL
         .long   zero_less, qbranch, sign_l1
         .long   dolit, '-', hold
 sign_l1:
         .long   exit
 
 ;;; : #> ( w -- b u ) DROP HLD @ PAD OVER - ;
-        COLON   hash_greater, "#>", 0
+        COLON   hash_greater, "#>", NORMAL
         .long   drop, hld, fetch, pad, over, minus, exit
 
 ;;; : (str) ( w -- b u ) DUP >R ABS <# #S R> SIGN #> ;
@@ -1008,11 +1019,11 @@ sign_l1:
         .long   dup, to_r, abs, less_hash, hash_s, r_from, sign, hash_greater, exit
 
 ;;; : HEX ( -- ) 16 BASE ! ;
-        COLON   hex, "hex", 0
+        COLON   hex, "hex", NORMAL
         .long   dolit, 16, base, store, exit
 
 ;;; : DECIMAL ( -- ) 10 BASE ! ;
-        COLON   decimal, "decimal", 0
+        COLON   decimal, "decimal", NORMAL
         .long   dolit, 10, base, store, exit
 
 
@@ -1021,7 +1032,7 @@ sign_l1:
 ;;; : DIGIT? ( c base -- u t )
 ;;;   >R [ CHAR 0 ] LITERAL - 9 OVER <
 ;;;   IF 7 - DUP 10 < OR THEN DUP R> U< ;
-        COLON   digitq, "digit?", 0
+        COLON   digitq, "digit?", NORMAL
         .long	to_r, dolit, '0', minus
 	.long	dolit, 9, over, less
 	.long	qbranch, digitq_l1
@@ -1044,7 +1055,7 @@ digitq_l1:
 ;;;       ELSE R> R> ( b index) 2DROP ( digit number) 2DROP 0
 ;;;       THEN DUP
 ;;;   THEN R> ( n ?sign) 2DROP R> BASE ! ;
-        COLON   numberq, "number?", 0
+        COLON   numberq, "number?", NORMAL
 	.long	base, fetch, to_r, dolit, 0, over, count
 	.long	over, cfetch, dolit, '$', equal
 	.long	qbranch, numberq_l1
@@ -1078,36 +1089,45 @@ numberq_l6:
 ;;; .( Basic I/O )
 ;;;
 ;;; : KEY? ( -- c T | F ) 'KEY? @EXECUTE ;
-        COLON   key_query, "key?", 0
+        COLON   key_query, "key?", NORMAL
         .long   tkey_query, atexecute, exit
 
 ;;; : KEY ( -- c ) BEGIN KEY? UNTIL ;
-        COLON   key, "key", 0
+        COLON   key, "key", NORMAL
 key_l1:
         .long   key_query, qbranch, key_l1, exit
 
 ;;; : EMIT ( c -- ) 'EMIT @EXECUTE ;
-        COLON   emit, "emit", 0
+        COLON   emit, "emit", NORMAL
         .long   temit, atexecute, exit
 
-;;; : NUF? ( -- f ) KEY? DUP IF KEY 2DROP KEY 13 = THEN ;
-;;;
+;;; if key is pressed, wait for second key press
+;;; return true if the second key is enter
+;;; : ENOUGH? ( -- f ) KEY? DUP IF 2DROP KEY 13 = THEN ;
+        COLON   enoughq, "enough?", NORMAL
+        .long   key_query, dup
+        .long   qbranch, enoughq_l1
+        .long   twodrop, key, dolit, 13, equal
+enoughq_l1:
+        .long   exit
+
 ;;; :  PACE ( -- ) 11 EMIT ;
 ;;; : SPACE ( -- ) BL EMIT ;
-        COLON   space, "space", 0
+        COLON   space, "space", NORMAL
         .long   blank, emit, exit
 
 ;;; : CHARS ( +n c -- ) SWAP 0 MAX FOR AFT DUP EMIT THEN NEXT DROP ;
-        COLON   chars, "chars", 0
+        COLON   chars, "chars", NORMAL
         .long   swap, dolit, 0, max
-        .long   to_r
+        .long   to_r, branch, chars_l2
 chars_l1:
         .long   dup, emit
+chars_l2:
         .long   donext, chars_l1
         .long   drop, exit
 
 ;;; : SPACES ( +n -- ) BL CHARS ;
-        COLON   spaces, "spaces", 0
+        COLON   spaces, "spaces", NORMAL
         .long   blank, chars, exit
 
 ;;; : do$ ( -- a )
@@ -1116,12 +1136,12 @@ chars_l1:
 	.long	r_from, r_fetch, r_from, count, plus
 	.long	aligned, to_r, swap, to_r, exit
 
-;;; : $"| ( -- a ) do$ ; COMPILE-ONLY
-	COLON   dollar_quote_bar, "$\042|", COMPILE_ONLY
+;;; : ($") ( -- a ) do$ ; COMPILE-ONLY
+	COLON   do_dollar_quote, "($\042)", COMPILE_ONLY
 	.long	do_dollar, exit
 
 ;;; : TYPE ( b u -- ) FOR AFT COUNT EMIT THEN NEXT DROP ;
-	COLON   type, "type", 0
+	COLON   type, "type", NORMAL
 	.long	to_r
 	.long	branch, type_l2
 type_l1:
@@ -1131,32 +1151,32 @@ type_l2:
 	.long	drop, exit
 
 ;;; : .$ ( a -- ) COUNT TYPE ;
-        COLON   dot_dollar, ".$", 0
+        COLON   dot_dollar, ".$", NORMAL
         .long   count, type, exit
 
-;;; : ."| ( -- ) do$ .$ ; COMPILE-ONLY
-        COLON   dot_quote_bar, ".\042|", COMPILE_ONLY
+;;; : (.") ( -- ) do$ .$ ; COMPILE-ONLY
+        COLON   do_dot_quote, "(.\042)", COMPILE_ONLY
         .long   do_dollar, dot_dollar, exit
 
 ;;; : CR ( -- ) 13 EMIT 10 EMIT ;
-        COLON   cr, "cr", 0
+        COLON   cr, "cr", NORMAL
         .long   dolit, carriage_return, emit
         .long   dolit, line_feed, emit, exit
 
 ;;; :  .R ( n +n -- ) >R (str)      R> OVER - SPACES TYPE ;
-        COLON   dot_r, ".r", 0
+        COLON   dot_r, ".r", NORMAL
         .long   to_r, paren_str, r_from, over, minus, spaces, type, exit
 
 ;;; : U.R ( u +n -- ) >R <# #S #> R> OVER - SPACES TYPE ;
-        COLON   u_dot_r, "u.", 0
+        COLON   u_dot_r, "u.", NORMAL
         .long   to_r, less_hash, hash_s, hash_greater, r_from, over, minus, spaces, type, exit
 
 ;;; : U. ( u -- ) <# #S #> SPACE TYPE ;
-        COLON   u_dot, "u.", 0
+        COLON   u_dot, "u.", NORMAL
         .long   less_hash, hash_s, hash_greater, space, type, exit
 
 ;;; :  . ( w -- ) BASE @ 10 XOR IF U. EXIT THEN (str) SPACE TYPE ;
-        COLON   dot, ".", 0
+        COLON   dot, ".", NORMAL
         .long   base, fetch, dolit, 10, _xor
         .long   qbranch, dot_l1
         .long   u_dot, exit
@@ -1164,8 +1184,16 @@ dot_l1:
         .long   paren_str, space, type, exit
 
 ;;; : ? ( a -- ) @ . ;
-        COLON   query, "?", 0
+        COLON   question, "?", NORMAL
         .long   fetch, dot, exit
+
+;;; : H? ( h -- ) H@ . ;
+        COLON   hquestion, "h?", NORMAL
+        .long   hfetch, dot, exit
+
+;;; : C? ( b -- ) C@ . ;
+        COLON   cquestion, "c?", NORMAL
+        .long   cfetch, dot, exit
 
 
 ;;; .( Parsing )
@@ -1183,7 +1211,7 @@ dot_l1:
 ;;;     NEXT DUP >R  ELSE R> DROP DUP >R 1-
 ;;;                  THEN OVER -  R>  R> - EXIT
 ;;;   THEN ( b u) OVER R> - ;
-	COLON   paren_parse, "(parse)", 0
+	COLON   paren_parse, "(parse)", NORMAL
 	.long	temp, store, over, to_r, dup
 	.long	qbranch, paren_parse_l8
 	.long	decrement, temp, fetch, blank, equal
@@ -1223,7 +1251,7 @@ paren_parse_l8:
 
 ;;; : PARSE ( c -- b u \ <string> )
 ;;;   >R  TIB >IN @ +  #TIB @ >IN @ -  R> (parse) >IN +! ;
-	COLON   parse, "parse", 0
+	COLON   parse, "parse", NORMAL
 	.long	to_r, tib, to_in, fetch, plus
 	.long	hash_tib, fetch, to_in, fetch, minus
 	.long	r_from, paren_parse
@@ -1242,44 +1270,46 @@ paren_parse_l8:
         .long   hash_tib, fetch, to_in, store, exit
 ;;;
 ;;; : CHAR ( -- c ) BL PARSE DROP C@ ;
-        COLON   char, "char", 0
+        COLON   char, "char", NORMAL
         .long   blank, parse, drop, cfetch, exit
 
 ;;; : CTRL ( -- c ) CHAR $001F AND ;
-        COLON   ctrl, "ctrl", 0
+        COLON   ctrl, "ctrl", NORMAL
         .long   char, 0x1f, _and, exit
 
+;;; this puts the name in the right place for being the next defined item
 ;;; : TOKEN ( -- a \ <string> ) \ and reserve space for dictionary header
 ;;;   BL PARSE 31 MIN NP @ [ =DICTIONARY-HEADER-CELLS ] CELLS + PACK$ ;
-        COLON   token, "token", 0
+        COLON   token, "token", NORMAL
 	.long	blank, parse
 	.long	dolit, 31, min
 	.long	np, fetch, dolit, DICTIONARY_HEADER_CELLS, cells, plus, pack_dollar
 	.long	exit
 
 ;;; : WORD ( c -- a \ <string> ) PARSE HERE PACK$ ;
-	COLON   word, "word", 0
+	COLON   word, "word", NORMAL
 	.long	parse, here, pack_dollar, exit
 
 ;;; .( Dictionary Search )
+
 ;;;  0: code address
 ;;;  4: flags
 ;;;  8: link
 ;;; 12: count (byte)  (name adress points here)
 ;;; 13: name string (count bytes)
 ;;; 13+count: zero
-DICTIONARY_HEADER_CELLS = 3                     ; code ptr, flags, link ptr
+DICTIONARY_HEADER_CELLS = 3                  ; code ptr, flags, link ptr
 
 ;;; : NAME>CODE ( na -- ca ) 3 CELLS - ;
-        COLON   name_to_code, "name>code", 0
-        .long   dolit, 3, cells, minus, exit    ; *******should this fetch?*********
+        COLON   name_to_code, "name>code", NORMAL
+        .long   dolit, 3, cells, minus, exit
 
 ;;; : NAME>FLAGS ( na -- fa ) 2 CELLS - ;
-        COLON   name_to_flags, "name>flags", 0
+        COLON   name_to_flags, "name>flags", NORMAL
         .long   dolit, 2, cells, minus, exit
 
 ;;; : NAME>LINK ( na -- la ) CELL- ;
-        COLON   name_to_link, "name>link", 0
+        COLON   name_to_link, "name>link", NORMAL
         .long   cell_minus, exit
 
 ;;; return TRUE if counted strings are equal
@@ -1292,7 +1322,7 @@ DICTIONARY_HEADER_CELLS = 3                     ; code ptr, flags, link ptr
 ;;;     NEXT TRUE
 ;;;   ELSE 2DROP FALSE
 ;;;   THEN ;
-        COLON   sameq, "same?", 0
+        COLON   sameq, "same?", NORMAL
         .long   twodup, count, nip, swap, count, nip, twodup, equal
         .long   qbranch, same_l3
 	.long	drop, to_r
@@ -1320,7 +1350,7 @@ same_l3:
 ;;;   REPEAT
 ;;;   \ a na
 ;;;   NIP DUP NAME>CODE @ SWAP ;
-        COLON   find, "find", 0
+        COLON   find, "find", NORMAL
 find_l1:
         .long   fetch, dup, qbranch, find_l2
         .long   sameq, zero_equal
@@ -1341,7 +1371,7 @@ find_l4:
 ;;;   BEGIN R>  CELL+  DUP >R  @  ?DUP
 ;;;   WHILE find  ?DUP
 ;;;   UNTIL R> DROP EXIT THEN R> DROP  0 ;
-	COLON   nameq, "name?", 0
+	COLON   nameq, "name?", NORMAL
 	.long	context, dup, dfetch, _xor
 	.long	qbranch, nameq_l1
 	.long	cell_minus
@@ -1364,7 +1394,7 @@ nameq_l3:
 ;;; : ^H ( b b b -- b b b ) \ backspace
 ;;;   >R OVER R@ < DUP
 ;;;   IF [ CTRL H ] LITERAL 'ECHO @EXECUTE THEN R> + ;
-	COLON   bksp, "^h", 0
+	COLON   bksp, "^h", NORMAL
 	.long	to_r, over, r_from, swap, over, _xor
 	.long	qbranch, bksp_l1
 	.long	dolit, backspace, techo, atexecute, dolit, 1, minus
@@ -1376,14 +1406,14 @@ bksp_l1:
 
 ;;; : TAP ( bot eot cur key -- bot eot cur )
 ;;;   DUP 'ECHO @EXECUTE OVER C! 1+ ;
-        COLON   tap, "tap", 0
+        COLON   tap, "tap", NORMAL
         .long   dup, techo, atexecute, over, cstore, increment, exit
 
 ;;; : kTAP ( bot eot cur key -- bot eot cur )
 ;;;   DUP 13 XOR
 ;;;   IF [ CTRL H ] LITERAL XOR IF BL TAP ELSE ^H THEN EXIT
 ;;;   THEN DROP NIP DUP ;
-        COLON   ktap, "ktap", 0
+        COLON   ktap, "ktap", NORMAL
 	.long	dup, dolit, carriage_return, _xor
 	.long	qbranch, ktap_l2
 	.long	dolit, delete, _xor
@@ -1401,7 +1431,7 @@ ktap_l2:
 ;;;     IF TAP ELSE 'TAP @EXECUTE THEN
 ;;;   REPEAT DROP  OVER - ;
 
-        COLON   accept, "accept", 0
+        COLON   accept, "accept", NORMAL
         .long   over, plus, over
 accept_l1:
         .long   twodup, _xor, qbranch, accept_l4
@@ -1416,12 +1446,12 @@ accept_l4:
         .long   drop, over, minus, exit
 
 ;;; : EXPECT ( b u -- ) 'EXPECT @EXECUTE SPAN ! DROP ;
-        colon   expect, "expect", 0
+        colon   expect, "expect", NORMAL
 	.long	texpect, atexecute, span, store, drop, exit
 
 ;;; : QUERY ( -- )
 ;;;   TIB 80 'EXPECT @EXECUTE #TIB !  0 NIP >IN ! ;
-	COLON   query, "query", 0
+	COLON   query, "query", NORMAL
 	.long	tib, dolit, 80, texpect, atexecute, hash_tib, store
 	.long	drop, dolit, 0, to_in, store, exit
 
@@ -1431,7 +1461,7 @@ accept_l4:
 ;;;   SP@ >R  HANDLER @ >R  RP@ HANDLER !
 ;;;   EXECUTE
 ;;;   R> HANDLER !  R> DROP  0 ;
-	COLON   catch, "catch", 0
+	COLON   catch, "catch", NORMAL
 	.long	sp_fetch
         .long   to_r, handler, fetch, to_r
 	.long	rp_fetch, handler, store, execute
@@ -1440,18 +1470,18 @@ accept_l4:
 
 ;;; : THROW ( err# -- err# )
 ;;;   HANDLER @ RP!  R> HANDLER !  R> SWAP >R SP! DROP R> ;
-	COLON   throw, "throw", 0
+	COLON   throw, "throw", NORMAL
 	.long	handler, fetch, rp_store
 	.long	r_from, handler, store
 	.long	r_from, swap, to_r, sp_store
 	.long	drop, r_from, exit
 
 ;;; VARIABLE NULL$
-        VARIABLE null_dollar, "null$", 0
+        VARIABLE null_dollar, "null$", NORMAL
         .long   0
 
 ;;; : ABORT ( -- ) NULL$ THROW ;
-        COLON   abort, "abort", 0
+        COLON   abort, "abort", NORMAL
         .long   null_dollar, throw, exit
 ;;;
 ;;; : (abort") ( f -- ) IF do$ THROW THEN do$ DROP ; COMPILE-ONLY
@@ -1470,16 +1500,12 @@ do_abort_quote_l1:
 ;;;   THEN
 ;;;   'NUMBER @EXECUTE
 ;;;   IF EXIT THEN THROW ;
-	COLON   dollar_interpret, "$INTERPRET", 0
+	COLON   dollar_interpret, "$interpret", NORMAL
 	.long	nameq, qdup
 	.long	qbranch, dollar_interpret_l1
 	.long	name_to_flags, fetch, dolit, COMPILE_ONLY, _and
 	.long	do_abort_quote
-	.byte	compile_only_end - compile_only_start
-compile_only_start:
-	.ascii	" compile only"
-compile_only_end:
-	.balign 4
+	FSTRING " compile only "
 	.long	execute
         .long   exit
 dollar_interpret_l1:
@@ -1487,42 +1513,34 @@ dollar_interpret_l1:
 	.long	qbranch, dollar_interpret_l2
 	.long	exit
 dollar_interpret_l2:
-        .long   dolit, 0xdecaffe, DEBUG, drop
 	.long	throw
 
 ;;; : [ ( -- ) [ ' $INTERPRET ] LITERAL 'EVAL ! ; IMMEDIATE
 	COLON   left_bracket, "[", IMMEDIATE
 	.long	dolit, dollar_interpret, teval, store, exit
 
-
 ;;; : .OK ( -- ) [ ' $INTERPRET ] LITERAL 'EVAL @ = IF ."  ok" THEN CR ;
-	COLON   dot_ok, ".ok", 0
+	COLON   dot_ok, ".ok", NORMAL
 	.long	dolit, dollar_interpret, teval, fetch, equal
 	.long	qbranch, dot_ok_l1
-	.long	dot_quote_bar
-	.byte	3
-	.ascii	" Ok"
-        .balign 4
+	.long	do_dot_quote
+	FSTRING	" Ok"
 dot_ok_l1:
 	.long	cr, exit
 
 
 ;;; : ?STACK ( -- ) DEPTH 0< IF $" underflow" THROW THEN ;
-	COLON   qstack, "?stack", 0
+	COLON   qstack, "?stack", NORMAL
 	.long	depth, zero_less
 	.long	do_abort_quote
-	.byte	underflow_end - underflow_start
-underflow_start:
-	.ascii	" underflow"
-underflow_end:
-	.balign 4
+	FSTRING	" underflow"
 	.long	exit
 
 ;;; : EVAL ( -- )
 ;;;   BEGIN TOKEN DUP C@
 ;;;   WHILE 'EVAL @EXECUTE ?STACK
 ;;;   REPEAT DROP 'PROMPT @EXECUTE ;
-        COLON   eval, "eval", 0
+        COLON   eval, "eval", NORMAL
 eval_l1:
 	.long	token, dup, cfetch
 	.long	qbranch, eval_l2
@@ -1553,21 +1571,25 @@ eval_l2:
 ;;; END-CODE
 
 
-;;; this waits at present so never returns just FALSE
-        CODE    rx_query, "rx?", 0              ; ( -- c T | F )
-        xcall   getchar
+;;; input character
+        CODE    rx_query, "rx?", NORMAL         ; ( -- c T | F )
+        xcall   sio_input_available
+        or      %r0, %r0
+        jreq    rx_query_no_character
+        xcall   sio_get_char
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         ld.w    %r0, TRUE
+rx_query_no_character:
         xsub    %r10, CELL_SIZE
         ld.w    [%r10], %r0
         NEXT
         END_CODE
 
 ;;; output a character
-        CODE    tx_store, "tx!", 0              ; ( c -- )
+        CODE    tx_store, "tx!", NORMAL         ; ( c -- )
         ld.w    %r0, [%r10]+
-        xcall   putchar
+        xcall   sio_put_char
         NEXT
         END_CODE
 
@@ -1577,7 +1599,7 @@ eval_l2:
 ;;; .( Shell )
 ;;;
 ;;; : PRESET ( -- ) SP0 @ SP!  [ =TIB ] LITERAL #TIB CELL+ ! ;
-        COLON   preset, "preset", 0
+        COLON   preset, "preset", NORMAL
 	.long	sp0, fetch, sp_store
 	.long	dolit, terminal_buffer, hash_tib, cell_plus, store
 	.long	exit
@@ -1585,7 +1607,7 @@ eval_l2:
 ;;; : XIO ( a a a -- ) \ reset 'EXPECT 'TAP 'ECHO 'PROMPT
 ;;;   [ ' accept ] LITERAL 'EXPECT !
 ;;;   'TAP !  'ECHO !  'PROMPT ! ;
-        COLON   xio, "xio", 0
+        COLON   xio, "xio", NORMAL
         .long   dolit, accept, texpect, store
         .long   ttap, store
         .long   techo, store
@@ -1597,19 +1619,19 @@ eval_l2:
 ;;;
 ;;; : HAND ( -- )
 ;;;   [ ' .OK  ] LITERAL 'EMIT @ [ ' kTAP ] LITERAL XIO ;
-        COLON   hand, "hand", 0
+        COLON   hand, "hand", NORMAL
         .long   dolit, dot_ok, temit, fetch, dolit, ktap, xio, exit
 
 ;;; CREATE I/O  ' ?RX , ' TX! , \ defaults
 ;;;
 ;;; : CONSOLE ( -- ) I/O 2@ 'KEY? 2! HAND ;
-        COLON   console, "console", 0
+        COLON   console, "console", NORMAL
         .long   dolit, rx_query, tkey_query, store
         .long   dolit, tx_store, temit, store
         .long   hand, exit
 
 ;;; : que ( -- ) QUERY EVAL ;
-;        COLON   que, "que", 0
+;        COLON   que, "que", NORMAL
 ;        .long   query, eval, exit
 
 ;;; : QUIT ( -- ) \ clear return stack ONLY
@@ -1623,7 +1645,7 @@ eval_l2:
 ;;;        CR .$ ."  ? "
 ;;;     THEN PRESET
 ;;;   AGAIN ;
-        COLON   quit, "quit", 0
+        COLON   quit, "quit", NORMAL
 	.long	rp0, fetch, rp_store
 quit_l1:
 	.long	left_bracket
@@ -1636,10 +1658,8 @@ quit_l2:
 	.long	console, null_dollar, over, _xor
 	.long	qbranch, quit_l3
 	.long	space, count, type
-	.long	dot_quote_bar
-	.byte	3
-	.ascii	" ? "
-	.balign 4
+	.long	do_dot_quote
+	FSTRING	" ? "
 quit_l3:
         .long	r_from, dolit, dot_ok, _xor
 	.long	qbranch, quit_l4
@@ -1652,7 +1672,7 @@ quit_l4:
 ;;; .( Compiler Primitives )
 
 ;;; : ' ( -- ca ) TOKEN NAME? IF EXIT THEN THROW ;
-        COLON   tick, "'", 0
+        COLON   tick, "'", NORMAL
         .long   token, nameq
         .long   qbranch, tick_l1
         .long   exit
@@ -1660,11 +1680,11 @@ tick_l1:
         .long   throw, exit
 
 ;;; : ALLOT ( n -- ) CP +! ;
-        COLON   allot, "allot", 0
+        COLON   allot, "allot", NORMAL
         .long   cp, plus_store, exit
 
 ;;; : , ( w -- ) HERE ALIGNED DUP CELL+ CP ! ! ;
-        COLON   comma, ",", 0
+        COLON   comma, ",", NORMAL
         .long   here, aligned, dup, cell_plus, cp
         .long   store, store, exit
 
@@ -1681,7 +1701,7 @@ tick_l1:
         .long   compile, dolit, comma, exit
 
 ;;; : $," ( -- ) [ CHAR " ] LITERAL PARSE HERE PACK$ C@ 1+ ALLOT ;
-        COLON   dollar_comma_quote, "$,\042", 0
+        COLON   dollar_comma_quote, "$,\042", NORMAL
         .long   dolit, '\"', parse, here, pack_dollar, cfetch, increment, allot, exit
 
 ;;; : RECURSE ( -- ) LAST @ CURRENT @ ! ; IMMEDIATE
@@ -1728,7 +1748,7 @@ tick_l1:
         .long  here, swap, store, exit
 
 ;;; : AFT ( a -- a A ) DROP [COMPILE] AHEAD [COMPILE] BEGIN SWAP ; IMMEDIATE
-        COLON   AFT, "aft", IMMEDIATE
+        COLON   aft, "aft", IMMEDIATE
         .long   drop, compile, ahead, compile, begin, swap, exit
 
 ;;; : ELSE ( A -- A )  [COMPILE] AHEAD SWAP [COMPILE] THEN ; IMMEDIATE
@@ -1743,45 +1763,82 @@ tick_l1:
 	COLON   abortquote, "abort\042", IMMEDIATE
 	.long	compile, do_abort_quote, dollar_quote, exit
 
-;;; : $" ( -- \ <string> ) COMPILE $"| $," ; IMMEDIATE
+;;; : $" ( -- \ <string> ) COMPILE ($") $," ; IMMEDIATE
         COLON   dollar_quote, "$\042", IMMEDIATE
-	.long	compile, dollar_quote_bar, dollar_comma_quote, exit
+	.long	compile, do_dollar_quote, dollar_comma_quote, exit
 
 ;;; : ." ( -- \ <string> ) COMPILE ."| $," ; IMMEDIATE
         COLON   dot_quote, ".\042", IMMEDIATE
-	.long	compile, dot_quote_bar, dollar_comma_quote, exit
+	.long	compile, do_dot_quote, dollar_comma_quote, exit
+
 
 ;;; .( Name Compiler )
-;;;
+
 ;;; : ?UNIQUE ( a -- a )
-;;;   DUP NAME? IF ."  reDef " OVER .$ THEN DROP ;
-;;;
+;;;   DUP NAME? IF ."  redefined " OVER .$ THEN DROP ;
+        COLON   qunique, "?unique", NORMAL
+        .long   dup, nameq
+        .long   qbranch, qunique_l1
+        .long   do_dot_quote
+        FSTRING " redefined "
+        .long   over, dot_dollar
+qunique_l1:
+        .long   drop, exit
+
+;;; \ assumes the name is in the right place and the header
+;;; \ has already be reserved (TOKEN does this)
 ;;; : $,n ( na -- )
 ;;;   DUP C@
 ;;;   IF ?UNIQUE
-;;;     ( na) DUP LAST ! \ for OVERT
-;;;     ( na) HERE ALIGNED SWAP
-;;;     ( cp na) 1 CELLS -
-;;;     ( cp la) CURRENT @ @
-;;;     ( cp la na') OVER !
-;;;     ( cp la) 1 CELLS - DUP NP ! ( ptr) ! EXIT
+;;;     ( na ) DUP LAST ! \ for OVERT
+;;;     ( na ) HERE ALIGNED SWAP
+;;;     ( cp na ) DUP NAME>LINK
+;;;     ( cp na la) CURRENT @ @  \ previous name
+;;;     ( cp na la na') SWAP !
+;;;     ( cp na ) DUP COUNT + ALIGNED NP !
+;;;     ( cp na ) NAME>CODE ! EXIT
 ;;;   THEN $" name" THROW ;
+        COLON   dollar_comma_n, "$,n", NORMAL
+        .long   dolit, 0x12345678, DEBUG, drop
+        .long   dup, cfetch                     ;cfetch for string count (strlen ??)
+        .long   qbranch, dollar_comma_n_l1
+        .long   qunique
+        .long   dup, last, store
+        .long   here, aligned, swap
+        .long   dolit, 0x12340001, DEBUG, drop
+        .long   dup, name_to_link
+        .long   current, fetch, fetch
+        .long   swap, store
+        .long   dolit, 0x12340002, DEBUG, drop
+        .long   dup
+        .long   dolit, 0x12340003, DEBUG, drop
+        .long   count, plus, aligned            ;skip over the name
+        .long   np, store
+        .long   dolit, 0x12340004, DEBUG, drop
+        .long   name_to_code
+        .long   dolit, 0x12340005, DEBUG, drop
+        .long   store
+        .long   exit
+dollar_comma_n_l1:
+        .long   do_dollar_quote
+        FSTRING "name"
+        .long   throw
 
 
 ;;; .( FORTH Compiler )
-;;;
+
 ;;; : $COMPILE ( a -- )
 ;;;   NAME? ?DUP
-;;;   IF C@ [ =IMED ] LITERAL AND
+;;;   IF NAME>FLAGS @ [ =IMED ] LITERAL AND
 ;;;     IF EXECUTE ELSE , THEN EXIT
 ;;;   THEN
 ;;;   'NUMBER @EXECUTE
 ;;;   IF [COMPILE] LITERAL EXIT
 ;;;   THEN THROW ;
-	colon   dollar_compile, "$compile", 0
+	colon   dollar_compile, "$compile", NORMAL
 	.long	nameq, qdup
 	.long	qbranch, dollar_compile_l2
-	.long	fetch, dolit, IMMEDIATE, _and
+	.long	name_to_flags, fetch, dolit, IMMEDIATE, _and
 	.long	qbranch, dollar_compile_l1
 	.long	execute, exit
 dollar_compile_l1:
@@ -1794,20 +1851,28 @@ dollar_compile_l3:
 	.long	throw
 
 ;;; : OVERT ( -- ) LAST @ CURRENT @  ! ;
-        COLON   overt, "overt", 0
+        COLON   overt, "overt", NORMAL
         .long   last, fetch, current, fetch, store, exit
 
 ;;; : ; ( -- )
 ;;;   COMPILE EXIT [COMPILE] [ OVERT ; COMPILE-ONLY IMMEDIATE
-;;;
+        COLON   semicolon, "\073", COMPILE_ONLY + IMMEDIATE
+        .long   compile, exit
+        .long   left_bracket, overt, exit
+
 ;;; : ] ( -- ) [ ' $COMPILE ] LITERAL 'EVAL ! ;
-	COLON   right_bracket, "]", 0
+	COLON   right_bracket, "]", NORMAL
 	.long	dolit, dollar_compile, teval, store, exit
 
 ;;; : CALL, ( ca -- ) \  DTC 8086 relative call
 ;;;   [ =CALL ] LITERAL , HERE CELL+ - , ;
 ;;;
 ;;; : : ( -- \ <string> ) TOKEN $,n [ ' (dolist) ] LITERAL CALL, ] ;
+        COLON   colon, ":", NORMAL
+        .long   token, dollar_comma_n
+        .long   dolit, 0xdecaffe, DEBUG, drop
+;;;     [ ' (dolist) ] LITERAL CALL,
+        .long   right_bracket, exit
 ;;;
 ;;; : IMMEDIATE ( -- ) [ =IMED ] LITERAL LAST @ C@ OR LAST @ C! ;
 ;;;
@@ -1821,48 +1886,165 @@ dollar_compile_l3:
 ;;;
 ;;; .( Tools )
 ;;;
-;;; : _TYPE ( b u -- ) FOR AFT COUNT >CHAR EMIT THEN NEXT DROP ;
+;;; : (dump_ascii) ( b u -- ) FOR AFT COUNT >CHAR EMIT THEN NEXT DROP ;
+        COLON   dump_ascii,"(dump_ascii)", NORMAL
+        .long   to_r
+        .long   branch, dump_ascii_l2
+dump_ascii_l1:
+        .long   count, to_char, emit
+dump_ascii_l2:
+        .long   donext, dump_ascii_l1
+        .long   drop, exit
 ;;;
-;;; : dm+ ( b u -- b )
+;;; : (dump) ( b u -- b )
 ;;;   OVER 4 U.R SPACE FOR AFT COUNT 3 U.R THEN NEXT ;
+        COLON   paren_dump, "(dump)", NORMAL
+        .long   over, dolit, 8, u_dot_r, space
+        .long   to_r
+        .long   branch, paren_dump_l2
+paren_dump_l1:
+        .long   count, dolit, 3, u_dot_r
+paren_dump_l2:
+        .long   donext, paren_dump_l1
+        .long   exit
 ;;;
 ;;; : DUMP ( b u -- )
 ;;;   BASE @ >R HEX  16 /
-;;;   FOR CR 16 2DUP dm+ -ROT 2 SPACES _TYPE NUF? 0= WHILE
+;;;   FOR CR 16 2DUP (dump) -ROT 2 SPACES _TYPE ENOUGH? 0= WHILE
 ;;;   NEXT ELSE R> DROP THEN DROP  R> BASE ! ;
-;;;
+        COLON   dump, "dump", NORMAL
+        .long   base, fetch, to_r, hex, dolit, 16, divide
+        .long   to_r
+dump_l1:
+        .long   cr, dolit, 16, twodup, paren_dump, minus_rot, dolit, 2, spaces, dump_ascii
+        .long   enoughq, zero_equal, qbranch, dump_l2
+        .long   donext, dump_l1
+        .long   branch, dump_l3
+dump_l2:
+        .long   r_from, drop
+dump_l3:
+        .long   drop, r_from, base, store, exit
+
 ;;; : .S ( -- ) CR DEPTH FOR AFT R@ PICK . THEN NEXT ."  <tos" ;
-;;;
+        COLON   dot_s, ".s", NORMAL
+        .long   cr, depth, to_r
+        .long   branch, dot_s_l2
+dot_s_l1:
+        .long   r_fetch, pick, dot
+dot_s_l2:
+        .long   donext, dot_s_l1
+        .long   do_dot_quote
+        FSTRING " <tos"
+        .long   exit
+
 ;;; : !CSP ( -- ) SP@ CSP ! ;
 ;;; : ?CSP ( -- ) SP@ CSP @ XOR ABORT" stack depth" ;
 ;;;
-;;; : >NAME ( ca -- na, F )
+;;; : CODE>NAME ( ca -- na | F )
 ;;;   CURRENT
 ;;;   BEGIN CELL+ @ ?DUP WHILE 2DUP
-;;;     BEGIN @ DUP WHILE 2DUP NAME> XOR
-;;;     WHILE 1 CELLS -
+;;;     BEGIN @ DUP WHILE 2DUP NAME>CODE @ XOR
+;;;     WHILE NAME>LINK
 ;;;     REPEAT      THEN NIP ?DUP
-;;;   UNTIL NIP NIP EXIT THEN 0 NIP ;
-;;;
+;;;   UNTIL NIP NIP EXIT THEN DROP FALSE ;
+;*        COLON   code_to_name, "code>name", NORMAL
+;*        .long   current
+;*to_name_l1:
+;*        .long   cell_plus, fetch, qdup
+;*        .long   qbranch, to_name_l4
+;*        .long   twodup
+;*to_name_l2:
+;*        .long   fetch, dup
+;*        .long   qbranch, to_name_l3
+;*        .long   twodup, name_to_code, fetch, _xor
+;*        .long   qbranch, to_name_l3
+;*        .long   name_to_link
+;*        .long   branch, to_name_l2
+;*to_name_l3:
+;*        .long   nip, qdup
+;*        .long   qbranch, to_name_l1
+;*        .long   nip, nip, exit
+;*to_name_l4:
+;*        .long   drop, dolit, FALSE, exit
+
+;;; hacked version - the vocabulary structure is not workable yet
+        COLON   code_to_name, "code>name", NORMAL
+        .long   current
+;to_name_l1:
+        .long   cell_plus, fetch, qdup
+        .long   qbranch, to_name_l4
+        .long   twodup
+to_name_l2:
+        .long   fetch, dup
+        .long   qbranch, to_name_l3
+        .long   twodup, name_to_code, fetch, _xor
+        .long   qbranch, to_name_l3
+        .long   name_to_link
+        .long   branch, to_name_l2
+to_name_l3:
+        .long   nip, qdup
+       ;.long   qbranch, to_name_l1
+        .long   qbranch, to_name_l5
+        .long   nip, nip, exit
+to_name_l4:
+        .long   drop, dolit, FALSE, exit
+to_name_l5:
+        .long   twodrop, dolit, FALSE, exit
+
+
+;;; disassembler for colon definitions
+;;; does no know how to stop - press enter twice to stop
+;;; SEE ( -- ) \  token
+;;;   ' CR ALIGNED  \ skip over the "xcall dolist"
+;;;   BEGIN
+;;;     CELL+ DUP @ DUP IF CODE>NAME THEN
+;;;     NAME>CODE ?DUP
+;;;       IF    SPACE .ID
+;;;       ELSE  DUP @ U. \ number
+;;;       THEN
+;;;   ENOUGH? UNTIL DROP ;
+
+	COLON see, "see", NORMAL
+	.long	tick
+	.long	cr, aligned
+see_l1:
+	.long	cell_plus, dup, fetch, dup
+	.long	qbranch, see_l2
+	.long	code_to_name
+see_l2:
+	.long	qdup
+	.long	qbranch, see_l3
+	.long	space, dot_id
+	.long	branch, see_l4
+see_l3:
+	.long	dup, fetch, u_dot
+see_l4:
+	.long	enoughq, qbranch, see_l1
+	.long	drop, exit
+
 ;;; : .ID ( na -- )
 ;;;   ?DUP IF COUNT $001F AND TYPE EXIT THEN ." {noName}" ;
-        COLON   dot_id, ".id", 0
-        .long   count, type
-        .long   exit                            ;************************FIX*******************
+        COLON   dot_id, ".id", NORMAL
+        .long   qdup, qbranch, dot_id_l1
+        .long   count, type, exit
+dot_id_l1:
+	.long	do_dot_quote
+	FSTRING	"{no-name}"
+        .long   exit
 
 ;;; : WORDS ( -- )
 ;;;   CR  CONTEXT @
 ;;;   BEGIN @ ?DUP
-;;;   WHILE DUP SPACE .ID NAME>LINK  NUF?
-;;;   UNTIL ;
-        COLON   words, "words", 0
+;;;   WHILE DUP SPACE .ID NAME>LINK  ENOUGH?
+;;;   UNTIL DROP THEN ;
+        COLON   words, "words", NORMAL
         .long   cr, context, fetch
 words_l1:
         .long   fetch, qdup
         .long   qbranch, words_l2
         .long   dup, space, dot_id, name_to_link
-;        .long   nufq, qbranch, words_l1
-        .long   branch, words_l1
+        .long   enoughq, qbranch, words_l1
+        .long   drop
 words_l2:
         .long   exit
 
@@ -1875,11 +2057,13 @@ words_l2:
 ;;;   \ hi byte = major revision in decimal
 ;;;   \ lo byte = minor revision in decimal
 ;;;
-;;; : hi ( -- )
-;;;   !IO \ initialize IO device & sign on
-;;;   CR ." eForth v1.0"
-;;;   ; COMPILE-ONLY
-;;;
+;;; BANNER ( -- ) CR <message> CR
+        COLON   banner, "banner", NORMAL
+        .long   cr
+	.long	do_dot_quote
+	FSTRING	"S33 forth interpreter"
+        .long   cr, exit
+
 ;;; CREATE 'BOOT  ' hi , \ application vector
 ;;;
 ;;; : COLD ( -- )
@@ -1890,40 +2074,50 @@ words_l2:
 ;;;   PRESET  'BOOT @EXECUTE
 ;;;   FORTH CONTEXT @ DUP CURRENT D! OVERT
 ;;;   QUIT ;
-        COLON   cold, "cold", 0
+        COLON   cold, "cold", NORMAL
         .long   preset
         .long   forth, context, fetch, dup, current, dstore, overt
         ;.long   tboot, atexecute, quit
-
         .long   banner
-        .long   words, cr, cr                   ;debug
-
         .long   quit
 
-        COLON   nop, "nop", 0
+        COLON   nop, "nop", NORMAL
         .long   exit
 
-        CODE   BREAKPOINT, "(brk)", 0           ;debug
+        CODE    BREAKPOINT, "(brk)", NORMAL     ;debug
         xcall   xdebug                          ;debug
         xld.w   %r0, bpt
-        xcall   puts
+        xcall   sio_put_string
 s1:     jp      s1                              ;debug
 bpt:    .asciz  "STOPPED\r\n"
         .balign 4
 
-        CODE   DEBUG, "(debug)", 0              ;debug
+        CODE    DEBUG, "(debug)", NORMAL        ;debug
         xcall   xdebug                          ;debug
         NEXT                                    ;debug
 
-        COLON   banner, "banner", 0
-        .long   cr
-	.long	dot_quote_bar
-	.byte	b_end - b_start
-b_start:
-	.ascii	"S33 forth interpreter"
-b_end:
-	.balign 4
-        .long   cr, exit
+        COLON   led, "led", NORMAL              ;debug
+        .long   invert, dolit, 0x04000000, hstore, exit
+
+        COLON   delay, "delay", NORMAL          ;debug
+        .long   dolit, 50000
+delay_l1:
+        .long   decrement, qdup, qbranch, delay_l2
+        .long   branch, delay_l1
+delay_l2:
+        .long   exit
+
+        COLON   flash, "flash", NORMAL          ;debug
+        .long   dolit, 0, led, delay
+        .long   dolit, 1, led, delay
+        .long   dolit, 2, led, delay
+        .long   dolit, 3, led, delay
+        .long   dolit, 4, led, delay
+        .long   dolit, 5, led, delay
+        .long   dolit, 6, led, delay
+        .long   dolit, 7, led, delay
+        .long   dolit, 0, led
+        .long   exit
 
 
 ;;; finish off the dictionary
