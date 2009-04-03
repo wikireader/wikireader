@@ -24,6 +24,9 @@
 ;;; va  vocabulary address
 ;;; w   unspecified word value
 
+;;; Version (no minor values, just increment)
+BUILD_NUMBER = 1
+
 ;;; some character constants
 backspace = 0x08
 line_feed = 0x0a
@@ -140,6 +143,13 @@ param_\label\():
 
         .macro  VARIABLE, label, name, flags
         HEADER  \label, "\name", \flags, param_dovar
+        .endm
+
+
+;;; constant definitions
+
+        .macro  CONSTANT, label, name, flags
+        HEADER  \label, "\name", \flags, param_doconst
         .endm
 
 
@@ -606,6 +616,15 @@ abs_l1:
 ;;; : (dovar) ( -- a ) R> ; COMPILE-ONLY ( address passed via %r12 not stack )
         CODE   dovar, "(dovar)", FLAG_COMPILE_ONLY
         ld.w    %r0, [%r12]                     ; %r0 = parameter address
+        xsub    %r10, BYTES_PER_CELL
+        ld.w    [%r10], %r0
+        NEXT
+        END_CODE
+
+;;; : (doconst) ( -- a ) R> @ ; COMPILE-ONLY ( address passed via %r12 not stack )
+        CODE   doconst, "(doconst)", FLAG_COMPILE_ONLY
+        ld.w    %r0, [%r12]                     ; %r0 = parameter address
+        ld.w    %r0, [%r0]                      ; read the constant value
         xsub    %r10, BYTES_PER_CELL
         ld.w    [%r10], %r0
         NEXT
@@ -1943,8 +1962,12 @@ dollar_compile_l3:
         .long   dolit, param_dovar, paren_define, overt, exit
 
 ;;; : VARIABLE ( -- \ <string> ) CREATE 0 , ;
-        COLON   variable,"variable", FLAG_NORMAL
+        COLON   variable, "variable", FLAG_NORMAL
         .long   create, dolit, 0, comma, exit
+
+;;; : CONSTANT ( u -- \ <string> )  [ ' (doconst) @ ] LITERAL (DEFINE) OVERT ;
+        COLON   constant, "constant", FLAG_NORMAL
+        .long   dolit, param_doconst, paren_define, comma, overt, exit
 
 
 ;;; .( Tools )
@@ -2142,16 +2165,17 @@ words_l2:
 
 ;;; \ version
 
-;;; $100 CONSTANT VER ( -- u )
-;;;   \ hi byte = major revision in decimal
-;;;   \ lo byte = minor revision in decimal
-;;; ** Missing **
+;;; =BUILD-NUMBER CONSTANT BUILD ( -- u )
+        CONSTANT build, "build", FLAG_NORMAL
+        .long   BUILD_NUMBER
 
 ;;; BANNER ( -- ) CR <message> CR
         COLON   banner, "banner", FLAG_NORMAL
         .long   cr
 	.long	do_dot_quote
-	FSTRING	"S33 forth interpreter"
+	FSTRING	"S33 forth interpreter (build:"
+        .long   build, u_dot, do_dot_quote
+        FSTRING ")"
         .long   cr, exit
 
 ;;; CREATE 'BOOT  ' hi , \ application vector
