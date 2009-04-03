@@ -134,6 +134,21 @@ void FileSystem_initialise(void)
 }
 
 
+// closes all open handles, both files and directories
+void FileSystem_CloseAll(void)
+{
+	size_t i = 0;
+
+	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
+		FileSystem_close(i + 1);
+	}
+	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
+		FileSystem_CloseDirectory(i + 1);
+	}
+	FileSystem_initialise();
+}
+
+
 Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellType length, Forth_CellType fam)
 {
 	Forth_ReturnType r = {0, FR_OK};

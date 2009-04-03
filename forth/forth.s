@@ -1791,7 +1791,7 @@ include_quote_l1:
 ;;;     IF CR TIB #TIB @ TYPE
 ;;;        CR >IN @ [CHAR] ^ CHARS
 ;;;        CR .$ ."  ? "
-;;;     THEN PRESET
+;;;     THEN PRESET FILESYSTEM-CLOSE-ALL
 ;;;   AGAIN ;
         COLON   quit, "quit", FLAG_NORMAL
 	.long	rp0, fetch, rp_store
@@ -1814,6 +1814,7 @@ quit_l3:
 	.long	dolit, '?', emit
 quit_l4:
 	.long	preset
+        .long   filesystem_close_all
 	.long	branch, quit_l1
 
 
@@ -2426,6 +2427,12 @@ read_line_l5:
 ;;;  : FILESYSTEM-INIT ( -- )
         CODE   filesystem_init, "filesystem-init", FLAG_NORMAL
         xcall   FileSystem_initialise
+        NEXT
+        END_CODE
+
+;;; : FILESYSTEM-CLOSE-ALL ( -- )
+        CODE    filesystem_close_all, "filesystem-close-all", FLAG_NORMAL
+        xcall   FileSystem_CloseAll
         NEXT
         END_CODE
 
