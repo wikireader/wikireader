@@ -2460,36 +2460,6 @@ print_l4:
         .long   fd, fetch, close_file, drop
         .long   cr, exit
 
-some_text:
-        .ascii  "This is a test for file write\n"
-        .ascii  "with just a few lines of text\n"
-        .ascii  "0123456789\n"
-some_text_length = . - some_text
-        .balign 4
-
-        COLON   mkfile, "mkfile", FLAG_NORMAL
-        .long   do_dollar_quote
-        FSTRING "test.dat"
-        .long   count, writeonly, create_file
-        .long   qdup, qbranch, mkfile_l1
-        .long   cr, do_dot_quote
-        FSTRING "create error = "
-        .long   dot, cr, exit
-mkfile_l1:
-        .long   fd, store
-        .long   dolit, some_text, dolit, some_text_length, fd, fetch, write_file
-        .long   qdup, qbranch, mkfile_l2
-        .long   cr, do_dot_quote
-        FSTRING "write error = "
-        .long   dot, cr
-mkfile_l2:
-        .long   cr, do_dot_quote
-        FSTRING "write count = "
-        .long   dot, cr
-        .long   fd, fetch, close_file, drop
-mkfile_l3:
-        .long   cr, exit
-
 
 ;;; .( Hardware reset )
 
