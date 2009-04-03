@@ -1114,7 +1114,6 @@ key_l1:
 enoughq_l1:
         .long   exit
 
-;;; :  PACE ( -- ) 11 EMIT ;
 ;;; : SPACE ( -- ) BL EMIT ;
         COLON   space, "space", FLAG_NORMAL
         .long   blank, emit, exit
@@ -1260,9 +1259,9 @@ paren_parse_l8:
 	.long	r_from, paren_parse
 	.long	to_in, plus_store, exit
 
-;;; : .( ( -- ) [CHAR] ) PARSE TYPE ; IMMEDIATE
+;;; : .( ( -- ) [CHAR] ) PARSE CR TYPE ; IMMEDIATE
         COLON   dot_paren, ".(", FLAG_IMMEDIATE
-        .long   dolit, ')', parse, type, exit
+        .long   dolit, ')', parse, cr, type, exit
 
 ;;; : ( ( -- ) [CHAR] ) PARSE 2DROP ; IMMEDIATE
         COLON   paren, "(", FLAG_IMMEDIATE
@@ -1436,7 +1435,7 @@ ktap_l1:
 ktap_l2:
 	.long	drop, swap, drop, dup, exit
 
-;;; : accept ( b u -- b u )
+;;; : accept ( b u -- b u2 )
 ;;;   OVER + OVER
 ;;;   BEGIN 2DUP XOR
 ;;;   WHILE  KEY  DUP BL -  95 U<
@@ -1462,10 +1461,40 @@ accept_l4:
 	.long	texpect, atexecute, span, store, drop, exit
 
 ;;; : QUERY ( -- )
-;;;   TIB 80 'EXPECT @EXECUTE #TIB !  0 NIP >IN ! ;
+;;;   TIB 256 'EXPECT @EXECUTE #TIB !  0 NIP >IN ! ;
 	COLON   query, "query", FLAG_NORMAL
-	.long	tib, dolit, 80, texpect, atexecute, hash_tib, store
+	.long	tib, dolit, 256, texpect, atexecute, hash_tib, store
 	.long	drop, dolit, 0, to_in, store, exit
+
+;;;  .( File input - substitutes for accept above )
+
+;;; VARIABLE SOURCE-ID  0 SOURCE-ID !
+        VARIABLE source_id, "source-id", FLAG_NORMAL
+        .long   0
+
+;;; : FILE-READER ( b u -- b u2 )
+;;;   OVER SWAP SOURCE-ID @ READ-LINE    \ b u2 f ior
+;;;   ?DUP IF CR ." read error = " . CR  \ b u2
+;;;           SOURCE-ID @ CLOSE-FILE DROP
+;;;           2DROP 0 HAND               \ b 0
+;;;           EXIT THEN                  \ b 0
+;;;   0= IF   SOURCE-ID @ CLOSE-FILE DROP
+;;;           HAND THEN ;                \ b u
+        COLON   file_reader, "file-reader", FLAG_NORMAL
+        .long   over, swap, source_id, fetch, read_line
+        .long   qdup, qbranch, file_reader_l1
+        .long   cr, do_dot_quote
+        FSTRING "read error = "
+        .long   dot,  cr
+        .long   source_id, fetch, close_file, drop
+        .long   twodrop, dolit, 0
+        .long   hand, exit
+file_reader_l1:
+        .long   zero_equal, qbranch, file_reader_l2
+        .long   source_id, fetch, close_file, drop
+        .long   hand                            ; pop the include stack here, -> hand if empty
+file_reader_l2:
+        .long   exit
 
 
 ;;; .( Error handling )
@@ -1609,6 +1638,7 @@ rx_query_no_character:
         END_CODE
 
 ;;; : !IO ( -- ) ; IMMEDIATE \ initialize I/O device
+;;; *missing*
 
 
 ;;; .( Shell )
@@ -1619,24 +1649,47 @@ rx_query_no_character:
 	.long	dolit, terminal_buffer, hash_tib, cell_plus, store
 	.long	exit
 
-;;; : XIO ( a a a -- ) \ reset 'EXPECT 'TAP 'ECHO 'PROMPT
-;;;   ['] accept 'EXPECT !
-;;;   'TAP !  'ECHO !  'PROMPT ! ;
+;;; : XIO ( a a a a -- ) \ reset 'TAP 'ECHO 'PROMPT 'EXPECT
+;;;   ['] accept 'EXPECT !  'TAP !  'ECHO !  'PROMPT ! ;
         COLON   xio, "xio", FLAG_NORMAL
-        .long   dolit, accept, texpect, store
         .long   ttap, store
         .long   techo, store
         .long   tprompt, store
+        .long   texpect, store
         .long   exit
 
-;;; : FILE ( -- )
-;;;   ['] PACE ['] DROP ['] kTAP XIO ;
-;;; ** Missing **
+;;; : INCLUDE-FILE ( fileid -- )
+;;;   \ SOURCE-ID @ to a save stack somewhere
+;;;   SOURCE-ID !
+;;;   ['] FILE-READER ['] PACE ['] DROP ['] kTAP XIO ;
+        COLON   include_file, "include-file", FLAG_NORMAL
+;;;   \ SOURCE-ID @ to a save stack somewhere
+        .long   source_id, store
+        .long   dolit, file_reader, dolit, 0, dolit, drop, dolit, ktap, xio, exit
+
+;;; : INCLUDE" ( -- \ file" )
+;;;   [CHAR] " PARSE R/O OPEN-FILE  \ fileid ior
+;;;   ?DUP IF    CR ." open error = " . DROP
+;;;        ELSE  CR INCLUDE-FILE
+;;;   THEN ;
+        COLON   include_quote, "include\042", FLAG_NORMAL
+        .long   dolit, '\"',  parse, readonly, open_file
+        .long   qdup, qbranch, include_quote_l1
+        .long   cr, do_dot_quote
+        FSTRING "open error = "
+        .long   dot, drop, exit
+include_quote_l1:
+        .long	hash_tib, fetch, to_in, store   ; empty the buffer
+        .long   cr, include_file, exit
 
 ;;; : HAND ( -- )
-;;;   ['] .OK  'EMIT @ ['] kTAP XIO ;
+;;;   ['] accept  ['] .OK  'EMIT @ ['] kTAP XIO ;
         COLON   hand, "hand", FLAG_NORMAL
-        .long   dolit, dot_ok, temit, fetch, dolit, ktap, xio, exit
+        .long   dolit, accept, dolit, dot_ok, temit, fetch, dolit, ktap, xio
+
+        .long	hash_tib, fetch, to_in, store   ; empty the buffer
+
+        .long   exit
 
 ;;; CREATE I/O  ' ?RX , ' TX! , \ defaults
 ;;; ** Missing **
@@ -2497,29 +2550,6 @@ bpt:    .asciz  "STOPPED\r\n"
         CODE    DEBUG, "(debug)", FLAG_NORMAL        ;debug
         xcall   xdebug                               ;debug
         NEXT                                         ;debug
-
-        COLON   led, "led", FLAG_NORMAL              ;debug
-        .long   invert, dolit, 0x04000000, hstore, exit
-
-        COLON   delay, "delay", FLAG_NORMAL          ;debug
-        .long   dolit, 50000
-delay_l1:
-        .long   decrement, qdup, qbranch, delay_l2
-        .long   branch, delay_l1
-delay_l2:
-        .long   exit
-
-        COLON   flash, "flash", FLAG_NORMAL          ;debug
-        .long   dolit, 0, led, delay
-        .long   dolit, 1, led, delay
-        .long   dolit, 2, led, delay
-        .long   dolit, 3, led, delay
-        .long   dolit, 4, led, delay
-        .long   dolit, 5, led, delay
-        .long   dolit, 6, led, delay
-        .long   dolit, 7, led, delay
-        .long   dolit, 0, led
-        .long   exit
 
 
 ;;; finish off the dictionary
