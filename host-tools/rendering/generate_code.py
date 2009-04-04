@@ -91,6 +91,66 @@ def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_oc
 
     return text_runs
 
+def write_to_file(text_runs, fonts):
+    """
+    A function saving the text runs and hoping autokern will do its job
+
+
+    # The bitcode.....
+    0    - Paragraph
+    1    - Font Change
+
+    Parapgraph:
+        [0,1] - 0 no y change, 1 x and y change
+        number[number] 
+
+    Font:
+        Huffman code of the font
+    """
+
+    def write_header(writer):
+        pass
+    
+    def write_pending_bit(writer, run):
+        """All glyphs are on the same height..."""
+
+        writer.write_bit(0)
+        if run.first_y == 0:
+            writer.write_bits(huffman_x[run.first_x])
+        else:
+            writer.write_bits(huffman_x[run.first_x])
+            writer.write_bits(huffman_y[run.first_y])
+ 
+        writer.write_bits(huffman_length[len(run.glyphs)])
+
+        list = []
+        last_glyph = None
+        for glyph in run.glyphs:
+            huffman_glyph = huffman_glyphs[glyph['glyph']]
+            writer.write_bits(huffman_glyph)
+            last_glyph = glyph
+
+    # Code
+    last_font = None
+    writer = bitwriter.BitWriter()
+    write_header(writer)
+    for text_run in text_runs:
+        # we migt have a new font now
+        font = text_run.font
+        if last_font != font:
+            writer.write_bit(1)
+            writer.write_bits(huffman_fonts[text_run.font])
+            last_font = font
+
+        write_pending_bit(writer, text_run)
+
+
+
+    auto_kern_bit = open("huffmaned.cde", "w")
+    bytes = writer.finish()
+    auto_kern_bit.write("".join(bytes))
+
+
 def usage():
     print "Wikipedia huffman coding"
     print "Usage: %s <render_text.blib> <fontmap.map>" % sys.argv[0]
@@ -116,10 +176,6 @@ glyphs = textrun.load(sys.argv[1])
 prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
 fonts  = fontmap.load(sys.argv[2])
 
-output = open("huffmaned.cde", "w")
-
-for run in text_runs:
-    for glyph in run.glyphs:
-        pass
+write_to_file(text_runs, fonts)
 
 print "Done. Have fun!"
