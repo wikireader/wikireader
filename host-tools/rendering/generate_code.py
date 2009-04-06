@@ -124,11 +124,8 @@ def write_to_file(text_runs, fonts):
         """
 
         writer.write_bit(0)
-        if run.first_y == 0:
-            writer.write_bits(huffman_x[run.first_x])
-        else:
-            writer.write_bits(huffman_x[run.first_x])
-            writer.write_bits(huffman_y[run.first_y])
+        writer.write_bits(huffman_x[run.first_x])
+        writer.write_bits(huffman_y[run.first_y])
  
         writer.write_bits(huffman_length[len(run.glyphs)])
 
