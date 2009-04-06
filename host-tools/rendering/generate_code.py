@@ -109,10 +109,19 @@ def write_to_file(text_runs, fonts):
     """
 
     def write_header(writer):
+        """
+        Write out the header, the header is the code used
+        for this one article
+        """
+        
         pass
     
     def write_pending_bit(writer, run):
-        """All glyphs are on the same height..."""
+        """
+        The text run is sorted by paragrah and all glyphs of
+        one paragraph are on the same line and have roughly the
+        same height.
+        """
 
         writer.write_bit(0)
         if run.first_y == 0:
