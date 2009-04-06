@@ -137,9 +137,27 @@ static inline void init_ram(void)
 	REG_SDRAMC_INI = 0x10;
 }
 
-#if BOARD_PROTO1
-	#define enable_card_power()  do { REG_P3_P3D |=	 (1 << 3); } while(0)
-	#define disable_card_power() do { REG_P3_P3D &= ~(1 << 3); } while(0)
+#if BOARD_PROTO1 || BOARD_SAMO_A1
+// The ports are:
+//   P32 = SD_CARD_VCCEN  active low
+//   P33 = SD_CARD_PWR	  active high
+// Note:
+//   P33 is N/C on Caiac version and VCCEN derived from P32
+//     with a special driver chip
+
+#define P32_BIT (1 << 2)
+#define P33_BIT (1 << 3)
+
+// P32 = 0, P33 = 1
+#define P3_23_MASK (~(P32_BIT | P33_BIT))
+#define enable_card_power()  do {					\
+		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P33_BIT;	\
+	} while(0)
+
+#define disable_card_power() do {					\
+		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
+	} while(0)
+
 #else
 static inline void enable_card_power(void)
 {
