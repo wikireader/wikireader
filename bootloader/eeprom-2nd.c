@@ -45,7 +45,7 @@ int main(void)
 	asm("xld.w   %r15, __dp");
 
 	//print("Bootloader starting\n");
-#if BOARD_PROTO1
+#if BOARD_PROTO1 || BOARD_SAMO_A1
 	/* set FPT1 to another gpio, make it falling edge triggered */
 	REG_PINTSEL_SPT03 |= 0xC;
 	REG_PINTEL_SEPT07 |= 0x2;
@@ -68,7 +68,9 @@ int main(void)
 	/* load the 'could not boot from SD card' image */
 	init_lcd();
 	eeprom_load(0x10000, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
-#if BOARD_PROTO1_
+// make the define below clear to show that the code will not
+// be included, just adding a trailing '_' is easy to miss.
+#if BOARD_PROTO1_DO_NOT_USE
 	{
 		int i;
 		for (i = LCD_VRAM; i < LCD_VRAM + LCD_VRAM_SIZE; ++i)
