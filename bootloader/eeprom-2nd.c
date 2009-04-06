@@ -40,7 +40,7 @@ int main(void)
 
 	EEPROM_CS_HI();
 	SDCARD_CS_HI();
-	
+
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, __dp");
 
@@ -58,7 +58,7 @@ int main(void)
 
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
-	
+
 	/* attempt to boot */
 #ifndef POWER_MANAGEMENT
 	print_u32(elf_exec(KERNEL) * -1);
@@ -75,7 +75,7 @@ int main(void)
 			*(char *) i ^= 0xff;
 	}
 #endif
-        print("boot\n");
+	print("boot\n");
 
 	/* if we get here, boot_from_sdcard() failed to find a kernel on the
 	 * inserted media or there is no media. Thus, we register an
@@ -167,7 +167,7 @@ static void power_tests()
 		READ_AND_CLEAR_CAUSE(REG_INT_FSIF2_FSPI);
 #endif
 		READ_AND_CLEAR_CAUSE(REG_INT_FK01_FP03);
-		
+
 		/* enable write access to clock control registers */
 		REG_CMU_PROTECT = 0x96;
 
@@ -191,7 +191,7 @@ static void power_tests()
 
 		/* disable clocks we don't need in HALT mode */
 		REG_CMU_CLKCNTL = (0xa << 24) | (8 << 16) | (1 << 12) | (1 << 1);
-		
+
 		/* write protect CMU registers */
 		REG_CMU_PROTECT = 0;
 
@@ -207,17 +207,17 @@ static void power_tests()
 		/* re-enable the SDRAMC pin functions */
 		REG_P2_03_CFP = 0x55;
 		REG_P2_47_CFP = 0x55;
-		
+
 		/* re-enable all the clocks */
 		REG_CMU_GATEDCLK1 = 0x3f0fffff;
 		REG_CMU_GATEDCLK0 |= (1 << 1);
 		REG_CMU_PROTECT = 0;
 
-                delay(100);
-                print("woke up\n");
+		delay(100);
+		print("woke up\n");
 		init_ram();
 		ram_read();
-        }
+	}
 }
 #endif
 
