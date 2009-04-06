@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
+BOOTLOADER_TTY ?= $(shell echo -n /dev/ttyUSB && [ -e /dev/ttyUSB1 ] && echo 1 || echo 0)
+
 # ----- Toolchain configuration data --------------------------------------
 
 GCC_VERSION=3.3.2
@@ -152,7 +154,7 @@ webkit:
 
 .PHONY: flash-bootloader
 flash-bootloader: fatfs
-	$(MAKE) -C bootloader flash-bootloader
+	$(MAKE) -C bootloader BOOTLOADER_TTY="${BOOTLOADER_TTY}" flash-bootloader
 
 # ----- forth -----------------------------------------------
 .PHONY: forth

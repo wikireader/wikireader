@@ -9,6 +9,8 @@ OBJCOPY_FLAGS=-I elf32-c33 -O binary
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
 VPATH=$(COMMON)
 
+BOOTLOADER_TTY ?= /dev/ttyUSB0
+
 ifeq ($(MAKECMDGOALS),bootloader232)
 EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_RS232
 else
@@ -70,7 +72,7 @@ eeprom-2nd.bin: eeprom-2nd.elf
 
 # flash target
 flash-bootloader: $(TARGETS)
-	@e07load/e07load wikireader.map
+	@e07load/e07load --tty="${BOOTLOADER_TTY}" --verbose wikireader.map
 
 clean:
 	make -C e07load clean
