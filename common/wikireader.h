@@ -27,7 +27,7 @@ static inline void init_pins(void)
 	/* EEPROM WP# */
 	REG_P1_IOC1 = (1 << 4);
 	REG_P2_IOC2 = (1 << 6);
-#elif BOARD_PROTO1
+#elif BOARD_PROTO1 || BOARD_SAMO_A1
 	/* P13 & P14: debug LEDs */
 	REG_P1_IOC1 = 0x18;
 	/* SDCARD power */
@@ -42,6 +42,8 @@ static inline void init_pins(void)
 	REG_P8_IOC8 = (1 << 3);
 	/* EEPROM WP# */
 	REG_P1_IOC1 = (1 << 4);
+#else
+#error "unsupported board type"
 #endif
 
 	/* P50 & P52: CS lines */
@@ -137,7 +139,10 @@ static inline void init_ram(void)
 	REG_SDRAMC_INI = 0x10;
 }
 
-#if BOARD_PROTO1 || BOARD_SAMO_A1
+#if BOARD_PROTO1
+	#define enable_card_power()  do { REG_P3_P3D |=	 (1 << 3); } while(0)
+	#define disable_card_power() do { REG_P3_P3D &= ~(1 << 3); } while(0)
+#elif BOARD_SAMO_A1
 // The ports are:
 //   P32 = SD_CARD_VCCEN  active low
 //   P33 = SD_CARD_PWR	  active high
@@ -158,7 +163,8 @@ static inline void init_ram(void)
 		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
 	} while(0)
 
-#else
+#elif BOARD_S1C33E07 || BOARD_PRT33L17LCD
+
 static inline void enable_card_power(void)
 {
 	REG_SRAMC_A0_BSL |= 1 << 1;
@@ -170,6 +176,8 @@ static inline void disable_card_power(void)
 	REG_SRAMC_A0_BSL |= 1 << 1;
 	*(volatile unsigned int *) 0x200000 = 0;
 }
+#else
+#error "unsupported board type"
 #endif
 
 #define DEBUGLED1_ON()	do { REG_P1_P1D &= ~(1 << 4); } while (0)
@@ -192,7 +200,7 @@ static inline void disable_card_power(void)
 	#define SDCARD_CS_LO()	do { REG_PA_DATA &= ~(1 << 3); } while (0)
 	#define SDCARD_CS_HI()	do { REG_PA_DATA |=  (1 << 3); } while (0)
 	#define EEPROM_WP_HI()	do { REG_P2_P2D	 =   (1 << 6); } while (0)
-#elif BOARD_PROTO1
+#elif BOARD_PROTO1 || BOARD_SAMO_A1
 	#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 	#define EEPROM_WP_HI()	do {} while (0)
@@ -200,6 +208,8 @@ static inline void disable_card_power(void)
 	#define SDCARD_CS_LO()	do { REG_P8_P8D &= ~(1 << 4); } while (0)
 	#define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
 	#define EEPROM_WP_HI()	do { REG_P2_P2D	 =  (1 << 6); } while (0)
+#else
+#error "unsupported board type"
 #endif
 
 #endif /* WIKIREADER_H */
