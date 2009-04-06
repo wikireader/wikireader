@@ -53,31 +53,30 @@ bootloader232:mini-libc fatfs
 .PHONY: toppers
 toppers: mini-libc fatfs
 	( cd jsp && \
-	make -C cfg && \
-	make -C wikireader && \
+	$(MAKE) -C cfg && \
+	$(MAKE) -C wikireader && \
 	cp wikireader/sample1.elf ../KERNEL.toppers)
 
 .PHONY: kernel
 kernel: mini-libc fatfs
 	( cd kernel && \
-	make && \
+	$(MAKE) && \
 	cp mahatma.elf ../KERNEL)
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
-	( cd kernel	&& \
-	make		&& \
-	cp mahatma.elf ../KERNEL)
+	$(MAKE) -C kernel
+	cp -p kernel/mahatma.elf KERNEL
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
 mini-libc: gcc
-	make -C toolchain/mini-libc/
+	$(MAKE) -C toolchain/mini-libc/
 
 .PHONY: fatfs
 
 fatfs: mini-libc
-	make -C fatfs/
+	$(MAKE) -C fatfs/
 
 # ----- toolchain stuff  --------------------------------------
 gcc-download:
@@ -106,8 +105,8 @@ binutils: binutils-patch
 	mkdir -p build && \
 	cd build  && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
-	make install)
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
+	$(MAKE) install)
 	touch $@
 
 gcc-patch: gcc-download
@@ -127,17 +126,17 @@ gcc: binutils gcc-patch
 	mkdir -p build && \
 	cd build && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf --enable-languages=c && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" make && \
-	make install)
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
+	$(MAKE) install)
 	touch $@
 
 .PHONY: simulator-qt4
 simulator-qt4:
-	( cd host-tools/simulator/Qt4/WikiSim && qmake-qt4 && make )
+	( cd host-tools/simulator/Qt4/WikiSim && qmake-qt4 && $(MAKE) )
 
 .PHONY: simulator-console
 simulator-console:
-	( cd host-tools/simulator/console && make )
+	( cd host-tools/simulator/console && $(MAKE) )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
@@ -152,8 +151,13 @@ webkit:
 	./WebKitTools/Scripts/build-webkit --gtk --release)
 
 .PHONY: flash-bootloader
-flash-bootloader:
+flash-bootloader: fatfs
 	$(MAKE) -C bootloader flash-bootloader
+
+# ----- forth -----------------------------------------------
+.PHONY: forth
+forth:  gcc
+	$(MAKE) -C forth
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
@@ -161,11 +165,11 @@ complete-clean: clean clean-toolchain clean-sim-qt4 clean-sim-console
 
 .PHONY: clean
 clean:
-	make clean -C bootloader
-	make clean -C toolchain/mini-libc
-	make clean -C fatfs
-	make clean -C kernel
-	cd jsp && make clean -C wikireader
+	$(MAKE) clean -C bootloader
+	$(MAKE) clean -C toolchain/mini-libc
+	$(MAKE) clean -C fatfs
+	$(MAKE) clean -C kernel
+	cd jsp && $(MAKE) clean -C wikireader
 
 .PHONY: clean-toolchain
 clean-toolchain:
@@ -180,7 +184,7 @@ clean-sim-qt4:
 
 .PHONY: clean-sim-console
 clean-sim-console:
-	make clean -C host-tools/simulator/console	
+	$(MAKE) clean -C host-tools/simulator/console
 
 .PHONY:help
 help:
@@ -201,7 +205,7 @@ clean: 			clean all.\n\
 
 .PHONY:testhelp
 testhelp:
-	make --print-data-base --question |	\
+	$(MAKE) --print-data-base --question |	\
 	awk '/^[^.%][-A-Za-z0-9_]*:/		\
 		{ print substr($$1, 1, length($$1)-1) }' | 	\
 	sort |	\

@@ -16,13 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-WIKILIBDIR=$(PWD)/../wiki-lib/
-GUILIBDIR=$(PWD)/../gui-lib/
-LIBDIR=$(PWD)/../toolchain/mini-libc
-FATFSDIR=$(PWD)/../fatfs
-INDEX_DIR=$(PWD)/../host-tools/indexing/locate
-COMMON=$(PWD)/../common
-MINILZODIR=$(PWD)/../minilzo
+WIKILIBDIR=../wiki-lib/
+GUILIBDIR=../gui-lib/
+LIBDIR=../toolchain/mini-libc
+FATFSDIR=../fatfs
+INDEX_DIR=../host-tools/indexing/locate
+COMMON=../common
+MINILZODIR=../minilzo
 
 INCLUDES=				\
 	-I$(FATFSDIR)/src		\
