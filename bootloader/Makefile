@@ -77,6 +77,6 @@ flash-bootloader: $(TARGETS)
 clean:
 	make -C e07load clean
 	make -C gfxtool clean
-	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map last_bootfrom
+	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map last_bootfrom *.asm33
 
 include ../common/Makefile
