@@ -24,8 +24,8 @@ import bitwriter
 import sys
 import huffmanCode
 import fontmap
-import struct
 import textrun
+import codetree
 
 # Globals
 glyph_map = {}
@@ -108,13 +108,25 @@ def write_to_file(text_runs, fonts):
         Huffman code of the font
     """
 
-    def write_header(writer):
+    def write_header(file):
         """
         Write out the header, the header is the code used
         for this one article
         """
-        
-        pass
+        def write_foo(file, dict):
+            tree = codetree.CodeTree()
+            for word in dict.keys():
+                tree.addCodeWord(dict[word], word)
+            tree.writeTo(file)
+        write_foo(file, huffman_x)
+        write_foo(file, huffman_y)
+        write_foo(file, huffman_length)
+        write_foo(file, huffman_glyphs)
+
+        tree = codetree.CodeTree()
+        for word in huffman_fonts.keys():
+            tree.addCodeWord(huffman_fonts[word], fonts[word])
+        tree.writeTo(file)
     
     def write_pending_bit(writer, run):
         """
@@ -137,9 +149,11 @@ def write_to_file(text_runs, fonts):
             last_glyph = glyph
 
     # Code
+    auto_kern_bit = open("huffmaned.cde", "w")
+    write_header(auto_kern_bit)
+
     last_font = None
     writer = bitwriter.BitWriter()
-    write_header(writer)
     for text_run in text_runs:
         # we migt have a new font now
         font = text_run.font
@@ -152,7 +166,6 @@ def write_to_file(text_runs, fonts):
 
 
 
-    auto_kern_bit = open("huffmaned.cde", "w")
     bytes = writer.finish()
     auto_kern_bit.write("".join(bytes))
 
