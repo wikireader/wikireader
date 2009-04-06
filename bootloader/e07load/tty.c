@@ -43,15 +43,19 @@ int open_tty(const char *tty)
 	}
 
 	tcgetattr(fd, &options);
+
+	cfmakeraw(&options);
+
 	cfsetispeed(&options, DEFAULT_BAUD);
 	cfsetospeed(&options, DEFAULT_BAUD);
 	options.c_cflag |= CLOCAL | CREAD;
 	options.c_cflag &= ~PARENB;
 	options.c_cflag &= ~CSTOPB;
 	options.c_cflag |= CS8;
-	options.c_cflag |= CRTSCTS;
-	cfmakeraw(&options);
-	
+	//options.c_cflag |= CRTSCTS;
+	options.c_cflag &= ~CRTSCTS;
+	//cfmakeraw(&options);
+
 	if (tcsetattr(fd, TCSANOW, &options) < 0) {
 		close(fd);
 		error("unable to set serial tty configuration.\n");
