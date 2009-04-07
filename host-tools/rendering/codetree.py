@@ -57,4 +57,13 @@ class CodeTree:
         node.value = value
 
     def writeTo(self, file):
-        pass
+        """Write things in IN-ORDER into an array...."""
+        for node in self.nodes:
+            l_index = -1
+            r_index = -1
+
+            if node.left:
+                l_index = node.left.index
+            if node.right:
+                r_index = node.right.index
+            print "<%s, L:%d, R:%d>" % (node.value, l_index, r_index)
