@@ -13,29 +13,39 @@ This includes huffman codes for:
 
  struct header {
     int nr_fonts;
-    struct fonts {
-        int code_word;
-        int font_nr
+    struct huffman_tree {
+        int32_t value;
+        int16_t left_index;
+        int16_t right_index;
     }[nr_fonts];
 
-    int nr_x_y;
-    struct xy_movement {
-        int code_word;
-        int x_y;
-    }[nr_x_y];
-
-    int nr_glyphs
-    struct glyphs {
-        int code_word;
-        int glyph;
+    int nr_glyphs;
+    struct huffman_tree {
+        int32_t value;
+        int16_t left_index;
+        int16_t right_index;
     }[nr_glyphs];
 
-    int nr_bigrams;
-    struct bigrams{
-        int code_word;
-        int glyph1;
-        int glyph2;
-    }[nr_bigrams];
+    int nr_x;
+    struct huffman_tree {
+        int32_t value;
+        int16_t left_index;
+        int16_t right_index;
+    }[nr_x];
+
+    int nr_y;
+    struct huffman_tree {
+        int32_t value;
+        int16_t left_index;
+        int16_t right_index;
+    }[nr_y];
+
+    int nr_length;
+    struct huffman_tree {
+        int32_t value;
+        int16_t left_index;
+        int16_t right_index;
+    }[nr_length];
  };
 
 The bigrams and glyphs are coming from the same huffman code. It is not yet decided how

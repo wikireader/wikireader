@@ -58,12 +58,18 @@ class CodeTree:
 
     def writeTo(self, file):
         """Write things in IN-ORDER into an array...."""
+        file.write(struct.pack("<i", len(self.nodes)))
+
         for node in self.nodes:
             l_index = -1
             r_index = -1
+            value = -1
 
             if node.left:
                 l_index = node.left.index
             if node.right:
                 r_index = node.right.index
-            print "<%s, L:%d, R:%d>" % (node.value, l_index, r_index)
+            if node.value:
+                value = int(node.value)
+
+            file.write(struct.pack("<ihh", value, l_index, r_index))
