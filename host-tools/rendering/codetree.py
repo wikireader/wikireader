@@ -20,11 +20,41 @@
 import struct
 
 class CodeTree:
+    class Node:
+        def __init__(self, value, index):
+            self.index = index
+            self.left = None
+            self.right = None
+            self.value = value
+
+        def __str__(self):
+            return "Node: <%d,%s>" % (self.index, self.value)
+
     def __init__(self):
-        pass
+        self.nodes = []
+        self.root = self.Node(None, len(self.nodes))
+        self.nodes.append(self.root)
 
     def addCodeWord(self, codeword, value):
-        pass
+        """Add the codeword to the tree"""
+
+        node = self.root
+        for char in codeword:
+            if char == '0':
+                if not node.left:
+                    node.left = self.Node(None, len(self.nodes))
+                    self.nodes.append(node.left)
+            
+                node = node.left
+            elif char == '1':
+                if not node.right:
+                    node.right = self.Node(None, len(self.nodes))
+                    self.nodes.append(node.right)
+
+                node = node.right
+            else:
+                assert False
+        node.value = value
 
     def writeTo(self, file):
         pass
