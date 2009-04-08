@@ -47,9 +47,9 @@ void print(const u8 *txt)
 	}
 }
 
-static void printnibble(u8 nib)
+static void print_nibble(u8 nib)
 {
-	char a[2] = { '\0' };
+	char a[2] = "X";
 
 	nib &= 0xf;
 
@@ -61,33 +61,33 @@ static void printnibble(u8 nib)
 	print(a);
 }
 
-static void printbyte(u8 byte)
+void print_byte(u8 byte)
 {
-	printnibble(byte >> 4);
-	printnibble(byte);
+	print_nibble(byte >> 4);
+	print_nibble(byte);
 }
 
 void hex_dump(const u8 *buf, u32 size)
 {
 	int i, l;
-	char a[2] = { '\0' };
+	char a[2] = "X";
 
 	for (l = 0; l < size; l += 16) {
-		printbyte(l >> 24);
-		printbyte(l >> 16);
-		printbyte(l >> 8);
-		printbyte(l);
-		print("  ");
+		print_byte(l >> 24);
+		print_byte(l >> 16);
+		print_byte(l >> 8);
+		print_byte(l);
+		print("	 ");
 
 		for (i = 0; i < 16; i++) {
 			if (l + i < size) {
-				printbyte(buf[l + i]);
+				print_byte(buf[l + i]);
 				print(" ");
 			} else
-				print("   ");
+				print("	  ");
 		}
 
-		print("  |");
+		print("	 |");
 		for (i = 0; i < 16; i++) {
 			if (l + i < size) {
 				if (buf[l + i] >= ' ' && buf[l + i] <= '~')
@@ -107,10 +107,10 @@ void hex_dump(const u8 *buf, u32 size)
 void print_u32(u32 val)
 {
 	print("0x");
-	printbyte(val >> 24);
-	printbyte(val >> 16);
-	printbyte(val >> 8);
-	printbyte(val);
+	print_byte(val >> 24);
+	print_byte(val >> 16);
+	print_byte(val >> 8);
+	print_byte(val);
 }
 
 void delay(u32 nops)
