@@ -19,6 +19,7 @@
 # Boston, MA  02110-1301, USA
 
 BOOTLOADER_TTY ?= $(shell echo -n /dev/ttyUSB && [ -e /dev/ttyUSB1 ] && echo 1 || echo 0)
+FLASH_ROM_MAP_FILE ?= $(shell awk -f scripts/GetMap.awk common/config.h)
 
 # ----- Toolchain configuration data --------------------------------------
 
@@ -154,7 +155,13 @@ webkit:
 
 .PHONY: flash-bootloader
 flash-bootloader: fatfs
-	$(MAKE) -C bootloader BOOTLOADER_TTY="${BOOTLOADER_TTY}" flash-bootloader
+	$(MAKE) -C bootloader FLASH_ROM_MAP_FILE="${FLASH_ROM_MAP_FILE}" \
+	        BOOTLOADER_TTY="${BOOTLOADER_TTY}" flash-bootloader
+
+.PHONY: print-flash-config
+print-flash-config:
+	@echo FLASH_ROM_MAP_FILE = "${FLASH_ROM_MAP_FILE}"
+	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
 
 # ----- forth -----------------------------------------------
 .PHONY: forth

@@ -10,6 +10,7 @@ TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxto
 VPATH=$(COMMON)
 
 BOOTLOADER_TTY ?= /dev/ttyUSB0
+FLASH_ROM_MAP_FILE ?= wikireader.map
 
 ifeq ($(MAKECMDGOALS),bootloader232)
 EXTRA_CFLAGS = -DEEPROM1ST_LOAD_FROM_RS232
@@ -72,7 +73,7 @@ eeprom-2nd.bin: eeprom-2nd.elf
 
 # flash target
 flash-bootloader: $(TARGETS)
-	@e07load/e07load --tty="${BOOTLOADER_TTY}" --verbose wikireader.map
+	time e07load/e07load --tty="${BOOTLOADER_TTY}" "${FLASH_ROM_MAP_FILE}"
 
 clean:
 	make -C e07load clean
