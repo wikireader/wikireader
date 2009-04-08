@@ -275,9 +275,6 @@ static void eeprom_wait_ready (int fd)
 	char status;
 	unsigned char cmdbuf[3];
 
-	//usleep(8000);
-	//return;
-
 	do {
 		spi_cs_lo(fd);
 		cmdbuf[0] = SPI_WRITE;
@@ -306,7 +303,8 @@ static void eeprom_erase_block (int fd, int block)
 	if (block_erased[block])
 		return;
 
-	msg("erasing 4k block @addr 0x%08x\n", a);
+	msg("erase 4k sector @ 0x%08x\n", a);
+
 	eeprom_write_enable(fd, 1);
 
 	eeprom_wait_ready(fd);
@@ -331,7 +329,6 @@ static void eeprom_set_block_protection (int fd)
 {
 	unsigned char cmdbuf[4];
 
-	/* write configuration register */
 	spi_cs_lo(fd);
 	cmdbuf[0] = SPI_WRITE;
 	cmdbuf[1] = 2;
@@ -340,7 +337,6 @@ static void eeprom_set_block_protection (int fd)
 	write(fd, cmdbuf, 3);
 	spi_cs_hi(fd);
 
-	/* write status register */
 	spi_cs_lo(fd);
 	cmdbuf[0] = SPI_WRITE;
 	cmdbuf[1] = 2;
@@ -416,7 +412,7 @@ int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 		}
 	}
 
-	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
+	msg("write %d bytes to " EEPROM_NAME ", @ 0x%x ", len, offset);
 
 	rc = write_eeprom_block(fd, buf, pre_bytes, offset);
 	buf += pre_bytes;
@@ -447,89 +443,6 @@ abort:
 	return rc;
 }
 
-
-int write_eeprom_x (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
-{
-	unsigned char cmdbuf[8];
-	int i, first_block, last_block;
-
-	if (len & 1)
-		len++;
-
-	spi_cs_hi(fd);
-	eeprom_set_block_protection(fd);
-	eeprom_write_enable(fd, 1);
-
-	/* erase all 4k block we will touch */
-	first_block = offset >> 12;
-	last_block = (offset + len) >> 12;
-
-	for (i = first_block; i <= last_block; i++)
-		eeprom_erase_block(fd, i);
-
-	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
-
-	eeprom_write_enable(fd, 1);
-	eeprom_wait_ready(fd);
-
-	/* issue 1st AII command */
-	spi_cs_lo(fd);
-	cmdbuf[0] = SPI_WRITE;
-	cmdbuf[1] = 6;
-	cmdbuf[2] = 0x02;
-
-	if (offset & 1) {
-		cmdbuf[3] = (offset - 1) >> 16;
-		cmdbuf[4] = (offset - 1) >> 8;
-		cmdbuf[5] = (offset - 1) & 0xff;
-		cmdbuf[6] = 0x00;
-		cmdbuf[7] = *buf++;
-		--len;
-		++offset;
-	} else {
-		cmdbuf[3] = offset >> 16;
-		cmdbuf[4] = offset >> 8;
-		cmdbuf[5] = offset & 0xff;
-		cmdbuf[6] = *buf++;
-		cmdbuf[7] = *buf++;
-		len -= 2;
-		offset += 2;
-	}
-
-	write(fd, cmdbuf, sizeof(cmdbuf));
-	spi_cs_hi(fd);
-
-	while (len > 0) {
-		eeprom_write_enable(fd, 1);
-		eeprom_wait_ready(fd);
-
-		/* write next 2 bytes */
-		spi_cs_lo(fd);
-		cmdbuf[0] = SPI_WRITE;
-		cmdbuf[1] = 6;
-		cmdbuf[2] = 0x02;
-		cmdbuf[3] = offset >> 16;
-		cmdbuf[4] = offset >> 8;
-		cmdbuf[5] = offset & 0xff;
-		cmdbuf[6] = *buf++;
-		cmdbuf[7] = *buf++;
-		write(fd, cmdbuf, sizeof(cmdbuf));
-		spi_cs_hi(fd);
-		if ((len & 0x7f) == 0) {
-			printf(".");
-			fflush(stdout);
-			fflush(stderr);
-		}
-
-		len -= 2;
-		offset += 2;
-	}
-
-	eeprom_write_enable(fd, 0);
-
-	msg("\n");
-	return 0;
-}
 
 #else
 #error EEPROM write implementation missing.
