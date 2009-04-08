@@ -298,6 +298,21 @@ unsigned int history_free_item_size(void)
 	return wl_list_size(&free_list.list);
 }
 
+const char *history_release(int y)
+{
+	int i;
+	int start = RESULT_START - RESULT_HEIGHT + 2;
+
+	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += RESULT_HEIGHT) {
+		if (y >= start && y < start + RESULT_HEIGHT) {
+				return history_get_item_title(
+						(history_current/HISTORY_MAX_DISPLAY_ITEM)*HISTORY_MAX_DISPLAY_ITEM + i);
+		}
+	}
+
+	return NULL;
+}
+
 void history_list_init(void)
 {
 	int i;

@@ -45,4 +45,5 @@ void history_list_init(void);
 struct history_item *history_find_item_title(const char *title);
 struct history_item *history_find_item_target(const char *target);
 
+const char *history_release(int y);
 #endif
