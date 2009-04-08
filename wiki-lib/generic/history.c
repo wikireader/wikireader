@@ -31,7 +31,7 @@
 #define RESULT_HEIGHT 10
 
 #define HISTORY_MAX_ITEM	100
-#define HISTORY_MAX_DISPLAY_ITEM	18
+#define HISTORY_MAX_DISPLAY_ITEM	18U
 
 struct history_item {
 	struct wl_list list;
@@ -54,7 +54,7 @@ static int display_current = 0;
 static void history_page_down_display(int current_item);
 static void history_page_up_display(int current_item);
 
-static inline int history_modulus(int modulus) {
+static inline unsigned int history_modulus(int modulus) {
 	return modulus % HISTORY_MAX_DISPLAY_ITEM;
 }
 
