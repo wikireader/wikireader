@@ -351,7 +351,104 @@ static void eeprom_set_block_protection (int fd)
 }
 
 
-int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
+#define BLOCK_SIZE 128
+int write_eeprom_block(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
+{
+	unsigned char cmdbuf[6 + BLOCK_SIZE];
+
+	if (BLOCK_SIZE < len) {
+		len = BLOCK_SIZE;
+	}
+	if (0 == len) {
+		return 0; // nothing to do
+	}
+	if (0 >= len) {
+		return 1; // error
+	}
+
+	eeprom_wait_ready(fd);
+	eeprom_write_enable(fd, 1);
+
+	spi_cs_lo(fd);
+	cmdbuf[0] = SPI_WRITE;
+	cmdbuf[1] = len + 4;
+	cmdbuf[2] = 0x02;
+	cmdbuf[3] = offset >> 16;
+	cmdbuf[4] = offset >> 8;
+	cmdbuf[5] = offset & 0xff;
+
+	memcpy(&cmdbuf[6], buf, len);
+	write(fd, cmdbuf, len + 6);
+	spi_cs_hi(fd);
+
+	printf(".");
+	fflush(stdout);
+	fflush(stderr);
+
+	return 0;
+}
+
+
+int write_eeprom(int fd, unsigned char *buf, ssize_t len, ssize_t offset)
+{
+	int rc = 0;
+	unsigned int pre_bytes = (BLOCK_SIZE - offset) % BLOCK_SIZE;
+	unsigned int block_bytes = len - pre_bytes;
+	unsigned int post_bytes = block_bytes % BLOCK_SIZE;
+	unsigned int blocks = block_bytes / BLOCK_SIZE;
+
+	msg("pre = %d bytes\nblocks = %d * %d bytes\npost = %d bytes\n",
+	    pre_bytes, blocks, BLOCK_SIZE, post_bytes);
+
+	spi_cs_hi(fd);
+
+	eeprom_set_block_protection(fd);
+
+	/* erase all 4k blocks we will need */
+	{
+		unsigned int i, first_block, last_block;
+		first_block = offset >> 12;
+		last_block = (offset + len) >> 12;
+
+		for (i = first_block; i <= last_block; i++) {
+			eeprom_write_enable(fd, 1);
+			eeprom_erase_block(fd, i);
+		}
+	}
+
+	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
+
+	rc = write_eeprom_block(fd, buf, pre_bytes, offset);
+	buf += pre_bytes;
+	offset += pre_bytes;
+
+	if (0 != rc) {
+		goto abort;
+	}
+	{
+		unsigned int b = 0;
+		for (b = 0 ; b < blocks; ++b) {
+			rc = write_eeprom_block(fd, buf, BLOCK_SIZE, offset);
+			if (0 != rc) {
+				goto abort;
+			}
+
+			buf += BLOCK_SIZE;
+			offset += BLOCK_SIZE;
+		}
+	}
+	rc = write_eeprom_block(fd, buf, post_bytes, offset);
+
+abort:
+	eeprom_wait_ready(fd);
+	eeprom_write_enable(fd, 0);
+
+	msg("\n");
+	return rc;
+}
+
+
+int write_eeprom_x (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 {
 	unsigned char cmdbuf[8];
 	int i, first_block, last_block;
