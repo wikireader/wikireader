@@ -75,6 +75,9 @@
 ;;; Version (no minor values, just increment)
 BUILD_NUMBER = 1
 
+;;; set this to 1 to diable assembler optimisations
+PREFER_FORTH_CODE = 0
+
 ;;; some character constants
 backspace = 0x08
 line_feed = 0x0a
@@ -1401,6 +1404,8 @@ paren_parse_l8:
 ;;;     NEXT TRUE
 ;;;   ELSE 2DROP FALSE
 ;;;   THEN ;
+        .if     PREFER_FORTH_CODE
+
         COLON   sameq, "same?", FLAG_NORMAL
         .long   twodup, count, nip, swap, count, nip, twodup, equal
         .long   qbranch, same_l3
@@ -1417,6 +1422,37 @@ same_l2:
 	.long	dolit, TRUE, exit
 same_l3:
 	.long	twodrop, dolit, FALSE, exit
+
+        .else
+
+        CODE    sameq, "same?", FLAG_NORMAL
+        ld.w    %r4, [%r1]                      ; address 1
+        xld.w   %r5, [%r1 + 4]                  ; address 2
+        ld.ub   %r6, [%r4]+                     ; count 1
+        ld.ub   %r7, [%r5]+                     ; count 2
+        cmp     %r6, %r7                        ; counts must be equal
+        jrne    sameq_false                     ; ...no
+sameq_loop:
+        ld.ub   %r7,[%r4]+                      ; get byte from string 1
+        ld.ub   %r8,[%r5]+                      ; get byte from string 2
+        cmp     %r7, %r8                        ; check if equal
+        jrne    sameq_false                     ; ..not equal => flase result
+        sub     %r6, 1                          ; decrement counter
+        jrne    sameq_loop                      ; go back for more
+
+        sub     %r1, BYTES_PER_CELL
+        ld.w    %r4, TRUE                       ; matched
+        ld.w    [%r1], %r4                      ; ..
+        NEXT
+
+sameq_false:
+        sub     %r1, BYTES_PER_CELL
+        ld.w    %r4, FALSE                      ; match failed
+        xld.w   [%r1], %r4                      ; ..
+        NEXT
+        END_CODE
+
+        .endif
 
 ;;; : find ( a va -- ca na, a F )
 ;;;   BEGIN @ DUP                \ a na na
@@ -1443,7 +1479,6 @@ find_l3:
 find_l4:
         .long   nip, dup, name_to_code, swap
         .long   exit
-
 
 ;;; : NAME? ( a -- ca na, a F )
 ;;;   CONTEXT  DUP 2@ XOR IF CELL- THEN >R \ context<>also
