@@ -32,10 +32,13 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DISPLAY_MODE_INDEX	0
-#define DISPLAY_MODE_ARTICLE	1
-#define DISPLAY_MODE_HISTORY	2
-#define DISPLAY_MODE_IMAGE	3
+enum display_mode_e {
+
+	DISPLAY_MODE_INDEX,
+	DISPLAY_MODE_ARTICLE,
+	DISPLAY_MODE_HISTORY,
+	DISPLAY_MODE_IMAGE,
+};
 
 #define ARTICLE_NEW		0
 #define ARTICLE_HISTORY		1
@@ -224,6 +227,10 @@ static void handle_touch(struct wl_input_event *ev)
 					repaint_search();
 			}
 		}
+	} else if (display_mode == DISPLAY_MODE_HISTORY) {
+		const char *target = history_release(ev->touch_event.y);
+		if (target)
+			open_article(target, ARTICLE_NEW);
 	}
 }
 
