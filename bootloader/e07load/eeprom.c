@@ -56,7 +56,9 @@ static void eeprom_write_enable (int fd, int enable)
 	spi_cs_hi(fd);
 }
 
-#ifdef EEPROM_MP45PE80
+#if EEPROM_MP45PE80
+#define EEPROM_NAME "MP45PE8"
+
 static void eeprom_write_page (int fd, unsigned int addr)
 {
 	unsigned char cmdbuf[6];
@@ -77,7 +79,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	unsigned char cmdbuf[CHUNKSIZE + 4];
 
 	spi_cs_hi(fd);
-	msg("writing %d bytes to EEPROM, offset 0x%x ", len, offset);
+	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
 
 	for (a = 0; a < len;) {
 		int xlen = len - a;
@@ -116,6 +118,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 }
 
 #elif EEPROM_SST25VF040
+#define EEPROM_NAME "SST25VF040"
 
 static void eeprom_erase_block (int fd, int block)
 {
@@ -208,7 +211,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	for (i = first_block; i <= last_block; i++)
 		eeprom_erase_block(fd, i);
 
-	msg("writing %d bytes to EEPROM, offset 0x%x ", len, offset);
+	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
 	eeprom_write_enable(fd, 1);
 
 	/* issue 1st AII command */
@@ -265,6 +268,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 
 
 #elif EEPROM_PM25LV512
+#define EEPROM_NAME "PM25LV512"
 
 static void eeprom_wait_ready (int fd)
 {
@@ -316,11 +320,10 @@ static void eeprom_erase_block (int fd, int block)
 	cmdbuf[5] = a & 0xff;
 	write(fd, cmdbuf, sizeof(cmdbuf));
 	spi_cs_hi(fd);
-	usleep(100 * 1000);
 
 	eeprom_wait_ready(fd);
 
-	//block_erased[block] = 1;
+	block_erased[block] = 1;
 }
 
 
@@ -347,6 +350,7 @@ static void eeprom_set_block_protection (int fd)
 	spi_cs_hi(fd);
 }
 
+
 int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 {
 	unsigned char cmdbuf[8];
@@ -366,8 +370,10 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	for (i = first_block; i <= last_block; i++)
 		eeprom_erase_block(fd, i);
 
-	msg("writing %d bytes to EEPROM, offset 0x%x ", len, offset);
+	msg("writing %d bytes to " EEPROM_NAME ", offset 0x%x ", len, offset);
+
 	eeprom_write_enable(fd, 1);
+	eeprom_wait_ready(fd);
 
 	/* issue 1st AII command */
 	spi_cs_lo(fd);
@@ -379,7 +385,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 		cmdbuf[3] = (offset - 1) >> 16;
 		cmdbuf[4] = (offset - 1) >> 8;
 		cmdbuf[5] = (offset - 1) & 0xff;
-		cmdbuf[6] = 0x55;
+		cmdbuf[6] = 0x00;
 		cmdbuf[7] = *buf++;
 		--len;
 		++offset;
@@ -397,6 +403,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	spi_cs_hi(fd);
 
 	while (len > 0) {
+		eeprom_write_enable(fd, 1);
 		eeprom_wait_ready(fd);
 
 		/* write next 2 bytes */
@@ -409,7 +416,7 @@ int write_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 		cmdbuf[5] = offset & 0xff;
 		cmdbuf[6] = *buf++;
 		cmdbuf[7] = *buf++;
-		write(fd, cmdbuf, 8);
+		write(fd, cmdbuf, sizeof(cmdbuf));
 		spi_cs_hi(fd);
 		if ((len & 0x7f) == 0) {
 			printf(".");
@@ -451,7 +458,7 @@ int verify_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 	char cmdbuf[256 + 4];
 
 	spi_cs_hi(fd);
-	msg("verifying %d bytes of EEPROM, offset 0x%x ", len, offset);
+	msg("verifying %d bytes of " EEPROM_NAME ", offset 0x%x ", len, offset);
 	memset(verify_buf, 0, len);
 
 	for (a = 0; a < len;) {
@@ -472,7 +479,7 @@ int verify_eeprom (int fd, unsigned char *buf, ssize_t len, ssize_t offset)
 
 		if (memcmp(buf + a, verify_buf + a, i) != 0) {
 			msg("\n");
-			error("EEPROM verify failed in chunk @offset 0x%x, len = %d!\n", a, i);
+			error(EEPROM_NAME " verify failed in chunk @offset 0x%x, len = %d!\n", a, i);
 			hex_dump((unsigned char *) verify_buf + a, 0, i);
 			msg("expected:\n");
 			hex_dump((unsigned char *) buf + a, 0, i);
