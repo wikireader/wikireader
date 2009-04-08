@@ -107,7 +107,7 @@ int elf_exec(const u8 *filename)
 	}
 
 	if (hdr.e_machine != EM_C33) {
-		print("invalid ELF machine type\n");
+		print("FAIL: machine\n");
 		return -6;
 	}
 
@@ -120,9 +120,12 @@ int elf_exec(const u8 *filename)
 		case SHT_PROGBITS:
 			f_lseek(&file, sec.sh_offset);
 			if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size)
-				print("unable to load PROGBITS!\n");
-			else
-				print("PROGBITS loaded.\n");
+				print("FAIL: load\n");
+			else {
+				print("PROG: ");
+				print_u32(sec.sh_addr);
+				print("\n");
+			}
 			break;
 		case SHT_NOBITS:
 			/* clean .bss sections */
@@ -134,9 +137,9 @@ int elf_exec(const u8 *filename)
 	}
 
 	f_close(&file);
-	print("all sections loaded, jumping to ");
+	print("EXEC: ");
 	print_u32(hdr.e_entry);
-	print(". Sayonara.\n\n");
+	print("\n");
 	disable_card_power();
 
 	exec = (void *) hdr.e_entry;
