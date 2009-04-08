@@ -32,18 +32,23 @@ void eeprom_load(u32 addr, u8 *dest, u32 size)
 {
 	EEPROM_CS_LO();
 
-#ifdef EEPROM_SST25VF040
+#if EEPROM_SST25VF040 || EEPROM_PM25LV512
 	/* read high-speed */
 	spi_transmit(0x0b);
-#else
+#define REQUIRES_DUMMY_CYCLE 1
+#elif EEPROM_MP45PE80
+	/* read normal-speed */
 	spi_transmit(0x03);
+#define REQUIRES_DUMMY_CYCLE 0
+#else
+#error "Unsupported EEPROM"
 #endif
 
 	spi_transmit(addr >> 16);
 	spi_transmit(addr >> 8);
 	spi_transmit(addr);
 
-#ifdef EEPROM_SST25VF040
+#if REQUIRES_DUMMY_CYCLE
 	/* dummy cycle */
 	spi_transmit(0x00);
 #endif
