@@ -94,7 +94,7 @@ static inline void init_rs232(void)
 #if SDRAM_EM48AM1684VBD
 
 // number of refresh cycles for initialisation
-#define REFRESH_COUNT 8
+#define REFRESH_COUNT 12
 
 // mode register settings
 
@@ -166,8 +166,8 @@ static inline void init_ram(void)
 	// Tras = 42ns		     3 clocks  (1..8)
 	// Trc = 67ns		     4 clocks  (1..16)
 #define CLKS_TRP  4
-#define CLKS_TRAS 6
-#define CLKS_TRC  12
+#define CLKS_TRAS 8
+#define CLKS_TRC  15
 
 // memory size
 #define	ADDR_32M_x_16_bits_x_1	0x7
@@ -181,7 +181,7 @@ static inline void init_ram(void)
 
 #define ADDRESS_CONFIG ADDR_16M_x_16_bits_x_1
 
-	REG_SDRAMC_CTL = 0\
+	REG_SDRAMC_CTL = 0
 		| ((CLKS_TRP - 1) << 12)
 		| ((CLKS_TRAS - 1) << 8)
 		| ((CLKS_TRC - 1) << 4)
@@ -191,15 +191,21 @@ static inline void init_ram(void)
 	REG_SDRAMC_REF = 0x8c | (1 << 23) | (0x7f << 16);
 
 	// start SDRAM initialisation sequence
-	//REG_SDRAMC_INI = 0x14;
-
-	REG_SDRAMC_INI = PALL_CMD;
-	SDRAM_FIRST_BYTE = 0x0;
+	REG_SDRAMC_INI = MRS_CMD;
+	SDRAM_MODE_STORE = 0x0; // the value is part of the address
 	asm volatile ("nop");
 
 	REG_SDRAMC_INI = PALL_CMD;
 	SDRAM_FIRST_BYTE = 0x0;
 	asm volatile ("nop");
+
+	REG_SDRAMC_INI = PALL_CMD;
+	SDRAM_FIRST_BYTE = 0x0;
+	asm volatile ("nop");
+
+	//REG_SDRAMC_INI = MRS_CMD;
+	//SDRAM_MODE_STORE = 0x0; // the value is part of the address
+	//asm volatile ("nop");
 
 	{
 		unsigned int i = 0;
