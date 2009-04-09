@@ -28,7 +28,7 @@ void search_select_up(void);
 const char *search_current_target(void);
 const char *search_current_title(void);
 
-const char  *search_release(int x, int y);
+const char  *search_release(int y);
 
 /**
  * Initialize the search engine. Once.

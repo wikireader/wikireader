@@ -265,7 +265,7 @@ const char *search_current_title(void)
  *  In practice updating search_current depending on the x,y
  *  should be enough and then search_current_target can be returned.
  */
-const char *search_release(int x, int y)
+const char *search_release(int y)
 {
 	int i;
 	int result_start = PIXEL_START;
