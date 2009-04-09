@@ -46,17 +46,6 @@ int main(void)
 	/* value of default data area is hard-coded in this case */
 	asm("xld.w   %r15, __dp");
 
-#if BOARD_PROTO1 || BOARD_SAMO_A1
-	/* set FPT1 to another gpio, make it falling edge triggered */
-	REG_PINTSEL_SPT03 |= 0xC;
-	REG_PINTEL_SEPT07 |= 0x2;
-	REG_PINTPOL_SPP07 &= ~0x2;
-
-	/* some debug helper... P64 as output */
-	/* set P64 as output */
-	REG_P6_IOC6 |= 0x10;
-#endif
-
 	/* enable SPI: master mode, no DMA, 8 bit transfers */
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
 
@@ -95,41 +84,7 @@ int main(void)
 #define READ_AND_CLEAR_CAUSE(REG) \
     REG = 0xff;
 
-#define START 0x10000000
-#define SIZE  ((1024 * 1024 * 4) / 8)
-
-static void ram_write(void)
-{
-	unsigned int i;
-
-	for (i = 0; i < SIZE; i += 4) {
-		*(volatile unsigned int *) (START + i) = i;
-		if (i % 100000 == 0)
-			print(".");
-	}
-}
-
-static void ram_read(void)
-{
-	unsigned int i;
-
-	for (i = 0; i < SIZE; i += 4) {
-		unsigned int v = *(volatile unsigned int *) (START + i);
-		if (v != i) {
-			print("FAILED @");
-			print_u32(i);
-			print(" - ");
-			print_u32(v);
-			print("\n");
-			return;
-		}
-
-		if (i % 100000 == 0)
-			print(".");
-	}
-
-	print("PASSED\n");
-}
+#include "ramtest.h"
 
 #define WAIT_FOR_CONDITION(cond)	\
 	do { asm("nop"); } while(!(cond))
