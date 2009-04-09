@@ -40,6 +40,15 @@ static inline void init_pins(void)
 
 	/* P50 & P52: CS lines */
 	REG_P5_IOC5 = 0x07;
+
+	/* set FPT1 to another gpio, make it falling edge triggered */
+	REG_PINTSEL_SPT03 |= 0xC;
+	REG_PINTEL_SEPT07 |= 0x2;
+	REG_PINTPOL_SPP07 &= ~0x2;
+
+	/* some debug helper... P64 as output */
+	/* set P64 as output */
+	REG_P6_IOC6 |= 0x10;
 }
 
 // number of refresh cycles for initialisation
