@@ -180,6 +180,12 @@ Two modes are supported. Single conversion or batch conversion""")
                       action = "store", dest = "fontmap", default = "fontmap.map")
     parser.add_option("-o", "--output", help = "Output file",
                       action = "store", dest = "output_file", default = "huffmaned.cde")
+    parser.add_option("-b", "--batch", help = "start a batch job",
+                      action = "store_true", dest = "batch", default = False)
+    parser.add_option("-a", "--batch-output", help = "Output file for the batch",
+                      action = "store", dest = "output_batch_file", default = "wikipedia.set")
+    parser.add_option("-c", "--batch-offset", help = "File with offsets of articles",
+                      action = "store", dest = "output_marker", default = "wikipedia.offset")
 
     return parser.parse_args(sys.argv)
 
@@ -194,10 +200,11 @@ except ImportError:
     pass
 
 
-glyphs = textrun.load(args[1])
-(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
-prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
-fonts  = fontmap.load(options.fontmap)
-write_to_file(text_runs, fonts, options.output_file)
+if not options.batch:
+    glyphs = textrun.load(args[1])
+    (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
+    prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
+    fonts  = fontmap.load(options.fontmap)
+    write_to_file(text_runs, fonts, options.output_file)
 
 print "Done. Have fun!"
