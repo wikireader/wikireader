@@ -38,7 +38,7 @@ if len(sys.argv) < 3:
     usage()
     
 
-glyphs = textrun.load(sys.argv[1])
+glyphs = textrun.load(open(sys.argv[1]))
 text_runs = textrun.generate_text_runs(glyphs, 240)[0]
 text_runs.sort(textrun.TextRun.cmp)
 fonts  = fontmap.load(sys.argv[2])

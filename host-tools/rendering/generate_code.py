@@ -200,7 +200,7 @@ except ImportError:
 
 
 if not options.batch:
-    glyphs = textrun.load(args[1])
+    glyphs = textrun.load(open(args[1]))
     (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
     prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
     fonts  = fontmap.load(options.fontmap)

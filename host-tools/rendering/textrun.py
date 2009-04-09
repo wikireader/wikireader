@@ -32,7 +32,7 @@ class TextRun:
 # Load glyphs... share this with render_text.py
 def load(file):
     glyphs = []
-    for line in open(file):
+    for line in file:
         split = line.strip().split(',')
 
 
