@@ -187,6 +187,8 @@ Two modes are supported. Single conversion or batch conversion""")
                       action = "store", dest = "output_batch_file", default = "wikipedia.set")
     parser.add_option("-c", "--batch-offset", help = "File with offsets of articles",
                       action = "store", dest = "output_marker", default = "wikipedia.offset")
+    parser.add_option("-e", "--error-file", help = "File where to put errors",
+                      action = "store", dest = "error_file", default = "failed_blib.files")
 
     return parser.parse_args(sys.argv)
 
@@ -215,6 +217,7 @@ else:
     offset_marker = open(options.output_marker, "w")
     batch_output = open(options.output_batch_file, "w") 
     fonts  = fontmap.load(options.fontmap)
+    failed = open(options.error_file, "a")
 
     def convert(base_name, file_name):
         """
@@ -235,6 +238,9 @@ else:
             file = open(work)
             for line in file:
                 data = line[:-1].split(" ", 1)
-                convert(arg, data[0])
+                try:
+                    convert(arg, data[0])
+                except:
+                    print >> failed, "Error: %s from %s" % (data[0], work)
 
 print "Done. Have fun!"
