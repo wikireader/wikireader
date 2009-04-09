@@ -29,6 +29,7 @@ import codetree
 import optparse
 import os
 import gzip
+import glob
 
 # Globals
 glyph_map = {}
@@ -234,12 +235,13 @@ else:
         write_to_file(text_runs, fonts, batch_output)
 
     for arg in range(1, len(args)):
-        for work in os.path.join(arg, "*.work"):
+        for work in glob.glob(os.path.join(args[arg], "*.work")):
+            print "Working on %s" % work
             file = open(work)
             for line in file:
                 data = line[:-1].split(" ", 1)
                 try:
-                    convert(arg, data[0])
+                    convert(args[arg], data[0])
                 except:
                     print >> failed, "Error: %s from %s" % (data[0], work)
 
