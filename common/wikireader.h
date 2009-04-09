@@ -4,17 +4,17 @@
 #include "config.h"
 
 #if BOARD_S1C33E07
-	#include "boards/wikireader-s1c33e07.h"
+	#include "boards/s1c33e07.h"
 #elif BOARD_PROTO1
 	#define LCD_INVERTED		1
 	#define EEPROM_SST25VF040	1
-	#include "boards/wikireader-proto1.h"
+	#include "boards/proto1.h"
 #elif BOARD_SAMO_A1
 	#define EEPROM_PM25LV512	1
-	#include "boards/wikireader-samo1.h"
+	#include "boards/samo1.h"
 #elif BOARD_PRT33L17LCD
         #define EEPROM_MP45PE80         1
-	#include "boards/wikireader-prt33l17lcd.h"
+	#include "boards/prt33l17lcd.h"
 #else
 	#error "unsupported board type"
 #endif
