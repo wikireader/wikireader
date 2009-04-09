@@ -7,13 +7,13 @@
 	#include "boards/s1c33e07.h"
 #elif BOARD_PROTO1
 	#define LCD_INVERTED		1
-	#define EEPROM_SST25VF040	1
 	#include "boards/proto1.h"
+#elif BOARD_PROTO2
+	#define LCD_INVERTED		1
+	#include "boards/proto2.h"
 #elif BOARD_SAMO_A1
-	#define EEPROM_PM25LV512	1
 	#include "boards/samo1.h"
 #elif BOARD_PRT33L17LCD
-        #define EEPROM_MP45PE80         1
 	#include "boards/prt33l17lcd.h"
 #else
 	#error "unsupported board type"
