@@ -27,6 +27,8 @@ import fontmap
 import textrun
 import codetree
 import optparse
+import os
+import gzip
 
 # Globals
 glyph_map = {}
@@ -206,5 +208,33 @@ if not options.batch:
     fonts  = fontmap.load(options.fontmap)
     auto_kern_bit = open(options.output_file, "w")
     write_to_file(text_runs, fonts, auto_kern_bit)
+else:
+    # We got pointed to a list of directories and will collect the
+    # the 'work' files from there and will pick up the objects and then
+    # do some work on it.
+    offset_marker = open(options.output_marker, "w")
+    batch_output = open(options.output_batch_file, "w") 
+    fonts  = fontmap.load(options.fontmap)
+
+    def convert(base_name, file_name):
+        """
+        Convert a single file
+        """
+        file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
+        file_name = "%s.blib.gz" % file_name
+        glyphs = textrun.load(gzip.open(file_name, 'rb'))
+        (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
+        prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
+
+        # write the offset to another file...
+        print >> offset_marker, "%s %d" % (file_name, batch_output.tell())
+        write_to_file(text_runs, fonts, batch_output)
+
+    for arg in range(1, len(args)):
+        for work in os.path.join(arg, "*.work"):
+            file = open(work)
+            for line in file:
+                data = line[:-1].split(" ", 1)
+                convert(arg, data[0])
 
 print "Done. Have fun!"
