@@ -305,7 +305,7 @@ const char *history_release(int y)
 
 	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += RESULT_HEIGHT) {
 		if (y >= start && y < start + RESULT_HEIGHT) {
-				return history_get_item_target(
+				return history_get_item_target(history_current == -1 ? i :
 						(history_current/HISTORY_MAX_DISPLAY_ITEM)*HISTORY_MAX_DISPLAY_ITEM + i);
 		}
 	}
