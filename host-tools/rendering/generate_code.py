@@ -92,7 +92,7 @@ def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_oc
 
     return text_runs
 
-def write_to_file(text_runs, fonts, output_name):
+def write_to_file(text_runs, fonts, auto_kern_bit):
     """
     A function saving the text runs and hoping autokern will do its job
 
@@ -150,7 +150,6 @@ def write_to_file(text_runs, fonts, output_name):
             last_glyph = glyph
 
     # Code
-    auto_kern_bit = open(output_name, "w")
     write_header(auto_kern_bit)
 
     last_font = None
@@ -205,6 +204,7 @@ if not options.batch:
     (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
     prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
     fonts  = fontmap.load(options.fontmap)
-    write_to_file(text_runs, fonts, options.output_file)
+    auto_kern_bit = open(options.output_file, "w")
+    write_to_file(text_runs, fonts, auto_kern_bit)
 
 print "Done. Have fun!"
