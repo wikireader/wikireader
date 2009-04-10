@@ -530,5 +530,20 @@
 #define REG_I2S_FIFO_EMPTY	*((REG_TYPE_32 *) (REG_BASE + 0x1c14))
 #define REG_I2S_FIFO		*((REG_TYPE_32 *) (REG_BASE + 0x1c20))
 
+
+/***** Below here are bit masks for various registers *****/
+/**********************************************************/
+
+/* Bits for: REG_EFSIFx_STATUS */
+#define RXDxNUM1  (1 << 7)
+#define RXDxNUM0  (1 << 6)
+#define TENDx	  (1 << 5)
+#define FERx	  (1 << 4)
+#define PERx	  (1 << 3)
+#define OERx	  (1 << 2)
+#define TDBEx	  (1 << 1)
+#define RDBFx	  (1 << 0)
+
+
 #endif /* REGS_H */
 
