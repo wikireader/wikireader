@@ -56,7 +56,7 @@ def write_to_file(text_runs, fonts, auto_kern_bit):
 
     """
 
-    def write_pending_bit(file, run):
+    def write_pending_bit(output, run):
         """
         The text run is sorted by paragrah and all glyphs of
         one paragraph are on the same line and have roughly the
@@ -64,24 +64,26 @@ def write_to_file(text_runs, fonts, auto_kern_bit):
         """
 
         if run.first_y == 0:
-            file.write("%d," % (run.first_x))
+            output.append(",%d," % (run.first_x))
         else:
-            file.write("%d_%d," % (run.first_x, run.first_y))
+            output.append(",%d_%d," % (run.first_x, run.first_y))
  
         list = []
         for glyph in run.glyphs:
             list.append(glyph['glyph'])
-        file.write("-".join(list))
+        output.append("-".join(list))
 
     last_font = None
+    output = []
     for text_run in text_runs:
         # we migt have a new font now
         font = text_run.font
         if last_font != font:
-            auto_kern_bit.write("f%s," % fonts[font])
+            output.append("f%s" % fonts[font])
             last_font = font
 
-        write_pending_bit(auto_kern_bit, text_run)
+        write_pending_bit(output, text_run)
+    auto_kern_bit.write("".join(output))
 
 
 def parse():
