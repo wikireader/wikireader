@@ -28,6 +28,13 @@ import os
 import gzip
 import glob
 
+try:
+    import lzo
+    imported_lzo = True
+except:
+    print "WARNING: LZO not imported performance will be degraded"
+    imported_lzo = False
+
 def determine_by_occurence(occurences):
     """Count the occurcences of something"""
     items = []
@@ -83,7 +90,12 @@ def write_to_file(text_runs, fonts, auto_kern_bit):
             last_font = font
 
         write_pending_bit(output, text_run)
-    auto_kern_bit.write("".join(output))
+
+    text = "".join(output)
+    if imported_lzo:
+        auto_kern_bit.write(lzo.compress(text, 9))
+    else:
+        auto_kern_bit.write(text)
 
 
 def parse():
