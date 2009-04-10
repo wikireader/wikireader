@@ -21,6 +21,9 @@ LD=$(CROSS)ld
 HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
+OBJDUMP=$(CROSS)objdump
+STRIP=$(CROSS)strip
+
 CFLAGS=-Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 
 # protection in case some Makefile includes this too early
