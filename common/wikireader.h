@@ -12,7 +12,7 @@
 	#define LCD_INVERTED		1
 	#include "boards/proto2.h"
 #elif BOARD_SAMO_A1
-	#include "boards/samo1.h"
+	#include "boards/samo_a1.h"
 #elif BOARD_PRT33L17LCD
 	#include "boards/prt33l17lcd.h"
 #else

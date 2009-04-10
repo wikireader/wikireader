@@ -1,5 +1,6 @@
-#ifndef WIKIREADER_SAMO1_H
-#define WIKIREADER_SAMO1_H
+#if !defined(SAMO_A1_H)
+#define SAMO_A1_H 1
+
 
 static inline void init_pins(void)
 {
@@ -28,9 +29,6 @@ static inline void init_pins(void)
 	REG_P8_03_CFP = 0x15;
 	REG_P9_47_CFP = 0x55;
 
-	/* board specific things */
-	/* P13 & P14: debug LEDs */
-	REG_P1_IOC1 = 0x18;
 	/* SDCARD power */
 	REG_P3_IOC3 = 0x0f;
 	/* SDCARD CS# */
@@ -45,11 +43,8 @@ static inline void init_pins(void)
 	REG_PINTSEL_SPT03 |= 0xC;
 	REG_PINTEL_SEPT07 |= 0x2;
 	REG_PINTPOL_SPP07 &= ~0x2;
-
-	/* some debug helper... P64 as output */
-	/* set P64 as output */
-	REG_P6_IOC6 |= 0x10;
 }
+
 
 // number of refresh cycles for initialisation
 #define REFRESH_COUNT 12
@@ -195,9 +190,9 @@ static inline void init_ram(void)
 	REG_SDRAMC_INI = FINAL_CMD;
 
 	// wait for SDRAM to come on-line
-	//while (0 == (REG_SDRAMC_INI & 0x08)) {
-	//	asm volatile ("nop");
-	//}
+	while (0 == (REG_SDRAMC_INI & 0x08)) {
+		asm volatile ("nop");
+	}
 }
 
 // The ports are:
@@ -220,9 +215,9 @@ static inline void init_ram(void)
 		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
 	} while(0)
 
+
 #define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
 #define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 #define EEPROM_WP_HI()	do {} while (0)
 
-#endif /* WIKIREADER_H */
-
+#endif
