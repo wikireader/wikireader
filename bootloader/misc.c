@@ -22,43 +22,52 @@
 #include "wikireader.h"
 #include "misc.h"
 
-#define WAIT_FOR_EFSIF0_RDY()	\
-	do {			\
-		asm("nop");	\
-	} while (REG_EFSIF0_STATUS & (1 << 5));
 
-void print(const u8 *txt)
+int serial_input_available(void) {
+	return (0 != (REG_EFSIF0_STATUS	& RDBFx));
+}
+
+
+int serial_input_char(void)
+{
+	while (!serial_input_available()) {
+	}
+
+	return(REG_EFSIF0_RXD);
+}
+
+
+#define WAIT_FOR_EFSIF0_RDY()				\
+	do {						\
+	} while (0 == (REG_EFSIF0_STATUS & TDBEx))
+
+
+
+void print_char(const char c)
+{
+	if (c == '\n') {
+		WAIT_FOR_EFSIF0_RDY();
+		REG_EFSIF0_TXD = '\r';
+	}
+	WAIT_FOR_EFSIF0_RDY();
+	REG_EFSIF0_TXD = c;
+}
+
+
+void print(const char *txt)
 {
 	while (txt && *txt) {
-		int delay = 0xff;
-
-		REG_EFSIF0_TXD = *txt;
-		WAIT_FOR_EFSIF0_RDY();
-
-		if (*txt == '\n') {
-			REG_EFSIF0_TXD = '\r';
-			WAIT_FOR_EFSIF0_RDY();
-		}
-
-		while (delay--)
-			asm("nop");
-
-		txt++;
+		print_char(*txt++);
 	}
 }
 
 static void print_nibble(u8 nib)
 {
-	char a[2] = "X";
-
-	nib &= 0xf;
-
+	nib &= 0x0f;
 	if (nib >= 10)
-		a[0] = nib - 10 + 'a';
+		print_char(nib - 10 + 'a');
 	else
-		a[0] = nib + '0';
-
-	print(a);
+		print_char(nib + '0');
 }
 
 void print_byte(u8 byte)

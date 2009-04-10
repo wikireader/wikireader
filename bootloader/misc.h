@@ -1,11 +1,22 @@
 #ifndef MISC_H
 #define MISC_H
 
-void print(const u8 *txt);
+// character input
+int serial_input_available(void);
+int serial_input_char(void);
+
+// character output
+void print_char(char c);
+void print(const char *txt);
+
+// hexadecimal output
 void hex_dump(const u8 *buf, u32 size);
 void print_byte(u8 val);
 void print_u32(u32 val);
+
+// simple busy wait delay loops
 void delay(u32 nops);
+
 
 #endif /* MISC_H */
 
