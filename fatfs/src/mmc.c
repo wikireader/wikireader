@@ -140,6 +140,7 @@ void release_spi (void)
 static
 void power_on (void)
 {
+	DESELECT();
 	enable_card_power();
 	xdelay(100000);
 }
@@ -151,6 +152,7 @@ void power_off (void)
 	wait_ready();
 	release_spi();
 
+	DESELECT();
 	disable_card_power();
 	Stat |= STA_NOINIT;		/* Set STA_NOINIT */
 }
