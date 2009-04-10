@@ -10,3 +10,9 @@ rs232
 
 eeprom-2nd.bin
 last_bootfrom
+mbr
+menu
+hello
+*-loader
+*-test
+*.header

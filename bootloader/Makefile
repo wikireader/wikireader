@@ -71,6 +71,52 @@ eeprom-2nd.bin: eeprom-2nd.elf
 				--pad-to=8192			\
 				$< $@
 
+
+# Master boot record - a multiple program boot loader
+
+mbr.o: mbr.c last_bootfrom
+	$(GCC) -c $(CFLAGS) $<
+
+
+mbr.elf: mbr.o eeprom.o
+	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
+
+TARGETS += mbr
+mbr: mbr.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+	$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
+
+#### third boot loader
+
+
+# macro to create application rules
+# $call MAKE_APP, app_name, file1.o file2.o)
+# Note: 1. list of objects are _space_ separated
+#       2. eeprom is removed as this is provided by mbr
+
+MAKE_APP = $(eval $(call MAKE_APP1, ${1}, ${2}))
+
+define MAKE_APP1
+TARGETS += ${1}
+${1}.elf: ${1}.o $(filter-out eeprom.o,${2}) application.lds
+	$$(LD) -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -T application.lds -Map $$(@:.elf=.map)
+
+${1}: ${1}.elf ${1}.header
+	$$(OBJCOPY) $$(OBJCOPY_FLAGS) --only-section=.text	\
+				--only-section=.rodata		\
+				$$< $$@
+endef
+
+# Applications
+
+$(call MAKE_APP, menu, misc.o)
+$(call MAKE_APP, hello, misc.o)
+$(call MAKE_APP, memory-test, misc.o)
+$(call MAKE_APP, key-test, misc.o)
+$(call MAKE_APP, forth-loader, misc.o elf32.o)
+$(call MAKE_APP, kernel-loader, misc.o elf32.o)
+
+
 # flash target
 flash-bootloader: $(TARGETS)
 	time e07load/e07load --tty="${BOOTLOADER_TTY}" "${FLASH_ROM_MAP_FILE}"
@@ -78,6 +124,10 @@ flash-bootloader: $(TARGETS)
 clean:
 	make -C e07load clean
 	make -C gfxtool clean
-	rm -fr $(TARGETS) *.o *.elf *.d eeprom-2nd.map last_bootfrom *.asm33
+	rm -fr $(TARGETS) *.o *.elf *.bin *.d eeprom-2nd.map last_bootfrom *.asm33 *.header
 
 include ../common/Makefile
+
+# application headers
+%.header: %.c
+	awk -f ../scripts/GenerateApplicationHeader.awk "$<" >"$@"

@@ -83,32 +83,42 @@ int elf_exec(const u8 *filename)
 	void *exec;
 	FATFS fatfs;
 	FIL file;
+	int rc = 0;
 
-	if (f_mount(0, &fatfs) != FR_OK)
-		return -1;
+	if (f_mount(0, &fatfs) != FR_OK) {
+		rc = -1;
+		goto abort;
+	}
 
-	if (f_open(&file, filename, FA_READ) != FR_OK)
-		return -2;
+	if (f_open(&file, filename, FA_READ) != FR_OK) {
+		rc = -2;
+		goto abort;
+	}
 
-	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr))
-		return -3;
+	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr)) {
+		rc = -3;
+		goto abort;
+	}
 
 	if (hdr.e_ident[0] != ELFMAG0 ||
 	    hdr.e_ident[1] != ELFMAG1 ||
 	    hdr.e_ident[2] != ELFMAG2 ||
 	    hdr.e_ident[3] != ELFMAG3) {
 		/* print("invalid ELF magic\n"); */
-		return -4;
+		rc = -4;
+		goto abort;
 	}
 
 	if (hdr.e_type != ET_EXEC) {
 		/* print("invalid ELF file type\n"); */
-		return -5;
+		rc = -5;
+		goto abort;
 	}
 
 	if (hdr.e_machine != EM_C33) {
 		print("FAIL: machine\n");
-		return -6;
+		rc = -6;
+		goto abort;
 	}
 
 	for (i = 0; i < hdr.e_shnum; i++) {
@@ -145,7 +155,10 @@ int elf_exec(const u8 *filename)
 	exec = (void *) hdr.e_entry;
 	((void (*) (void)) exec) ();
 
-	/* never reached */
-	return 0;
+// make sure every thing is cleaned up if the load fails fail
+abort:
+	SDCARD_CS_HI();
+	disable_card_power();
+	return rc;
 }
 
