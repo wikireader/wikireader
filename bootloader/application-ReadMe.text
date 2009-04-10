@@ -1,0 +1,145 @@
+Multiple applications in flash
+==============================
+
+Some brief notes about mbr, menu, hello, *-test and *-loader
+
+
+1. Each application must: #include "application.h"
+2. Link with:             application.lds
+3. Do not add eeprom.o to list of objects as this is supplied by mbr
+   (the vector is defined in application.lds)
+   (still have to include "eeprom.h" though)
+4. Makefile has a MAKE_APP macro to simplify the rules
+5. application.c must start and end with special macros
+   and also define a title.  (see below)
+
+
+example: hello application:
+===========================
+
+************** start of hello.c **************
+
+#define APPLICATION_TITLE "hello world"
+
+#include "application.h"
+
+
+// main() must be first as the loader executes from the first program address
+int main(void)
+{
+	APPLICATION_INITIALISE();
+
+	print("hello world\n");
+
+	print(" 1 + 2 = ");
+	print_u32(1 + 2);
+	print_char('\n');
+
+	print("goodbye world\n");
+
+	APPLICATION_FINALISE(0);
+}
+
+************** end of hello.c **************
+
+
+The makefile must contain this line:
+    $(call MAKE_APP, hello, misc.o)
+
+i.e part of the makefile contains:
+==================================
+
+************** section of Makefile **************
+
+# Applications
+
+$(call MAKE_APP, menu, misc.o)
+$(call MAKE_APP, hello, misc.o)
+$(call MAKE_APP, memory-test, misc.o)
+
+************** end of section of Makefile **************
+
+
+
+Boot sequence for 8kByte applications
+=====================================
+
+1. internal ROM load mbr from FLASH @ 0 to RAM @ 0
+2. ROM jumps to RAM @ 0
+3. mbr reads flash from ((block << 13) + 0x300) to ram @ 0x200
+   where block is initially zero
+4. mbr call code at RAM 0x200
+5. if this code returns the the block = return code
+6. back to step 3
+
+Missing is argument value that is initially zero and gets the high 16
+bits of the return value which then gets passed as a parameter to the
+next program.
+
+
+The boot menu program
+=====================
+
+This is just like any other application program and does the following.
+
+It scans the first 4 bytes of each 8kByte flash block looking for
+"SAMO" if there is a match then a letter from A..G is output followed
+by upto 32 bytes of text from block offset 4 (this is derived from
+APPLICATION_TITLE in the .c file.
+
+Finally it waits fo a key press then return 1..7 to the mbr to load
+another program.
+
+The purpose is to select between various programs such as the elf file
+loader, memory-test, etc. which are part of the initial load sequence
+or testing.  Some of these (e.g. memory test) cannot run from SDRAM
+since the SDRAM is completely overwritten by the process and may not
+even work.
+
+The second reason is that it is not possible to fit all of the
+required code into a single 8kByte program, hence the need to "chain"
+between different programs.  (an ancient technique from pre-history
+when computers came with basic in ROM)
+
+(Missing: There ought to ba a way for the menu program to determine
+the flash size)
+
+
+Ordering the programs (example mapfile)
+=======================================
+
+mbr is located at 0x1
+menu at 0x300
+application headers are located at 0xN000
+and their code at 0xN300.
+(where n is an even digit)
+
+************** start of mapfile **************
+# samo_a1.map
+# FLASH = PM25LV512
+# SIZE  = 64kB
+
+0x1	mbr
+0x0300  menu
+
+0x2000  kernel-loader.header
+0x2300  kernel-loader
+
+0x4000  forth-loader.header
+0x4300  forth-loader
+
+0x6000  hello.header
+0x6300	hello
+
+0x8000	key-test.header
+0x8300	key-test
+
+0xa000	memory-test.header
+0xa300	memory-test
+
+#0xc000  <other>.header
+#0xc300  <other>
+
+#0xe000	gfxtool/failed_boot.p
+
+************** end of mapfile **************
