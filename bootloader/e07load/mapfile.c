@@ -35,9 +35,9 @@ int num_mapfile_entries = 0;
 static struct mapfile_entry
 {
 	unsigned long  addr;
-	ssize_t        size;
+	ssize_t	       size;
 	unsigned char *data;
-	char          *fname;
+	char	      *fname;
 } mapfile_entry[MAX_MAPFILE_ENTRIES];
 
 static int check_overlaps(void)
@@ -47,7 +47,7 @@ static int check_overlaps(void)
 	for (i = 0; i < num_mapfile_entries; i++) {
 		if (endptr > mapfile_entry[i].addr) {
 			error("region #%d (%s) is overlapped by region #%d (%s, %lu bytes)\n",
-				i, mapfile_entry[i].fname, 
+				i, mapfile_entry[i].fname,
 				i-1, mapfile_entry[i-1].fname,
 				(unsigned long) mapfile_entry[i-1].size);
 			return -1;
@@ -72,7 +72,7 @@ static unsigned char *read_file(const char *fname, ssize_t *len)
 
 	*len = statbuf.st_size;
 	buf = (unsigned char *) malloc(*len);
-	
+
 	file_fd = open(fname, O_RDONLY);
 	if (file_fd < 0) {
 		error("unable to open file %s: %s\n", fname, strerror(errno));
@@ -110,6 +110,7 @@ int mapfile_write_eeprom(int ttyfd)
 		struct mapfile_entry *e = mapfile_entry + i;
 
 		debug("%s(): area #%d\n", __func__, i);
+		msg("Programming data from: %s\n", e->fname);
 
 		if (write_eeprom(ttyfd, e->data, e->size, e->addr) < 0)
 			return -1;
@@ -125,7 +126,7 @@ int mapfile_parse(const char *filename)
 {
 	char buf[512];
 	FILE *f = fopen(filename, "r");
-	
+
 	if (!f) {
 		error("unable to open file %s: %s\n", filename, strerror(errno));
 		return -1;
@@ -156,7 +157,7 @@ int mapfile_parse(const char *filename)
 
 		if (!e->data)
 			return -1;
-		
+
 		e->fname = strdup(fname);
 		num_mapfile_entries++;
 	}
