@@ -22,6 +22,12 @@
  * keyboard functionality
  */
 
+enum keyboard_mode_e {
+	keyboard_none,
+	keyboard_char,
+	keybaord_num
+};
+
 int keyboard_is_visible(void);
 void keyboard_set_visible(int);
 void keyboard_paint();
