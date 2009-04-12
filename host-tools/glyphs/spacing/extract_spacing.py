@@ -36,6 +36,10 @@ def parse():
     parser = optparse.OptionParser(version = "Extract spacing from a rendertext file",
                                    usage = """%prog [options] input_file
 Two modes are supported. Single conversion and batch mode""")
+    parser.add_option("-b", "--batch", help = "start a batch job",
+                      action = "store_true", dest = "batch", default = False)
+
+
     return parser.parse_args(sys.argv)
 
 # Load glyphs... share this with render_text.py
@@ -119,6 +123,10 @@ except ImportError:
 
 
 opts, args = parse()
-raw_glyphs = load(file(args[1]))
-generate_text_runs(raw_glyphs)
-write_mappings()
+
+if not opts.batch:
+    raw_glyphs = load(file(args[1]))
+    generate_text_runs(raw_glyphs)
+    write_mappings()
+else:
+    pass
