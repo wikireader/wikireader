@@ -95,18 +95,12 @@ def write_mappings():
         mkdir(font_path)
         glyph_path_base = os.path.join(font_path, "spacing")
         mkdir(glyph_path_base)
+        spacing_file = open(os.path.join(glyph_path_base, "spacing-file"))
 
         for (l_glyph, r_glyph) in kern_info[font].keys():
-
-            glyph_path = os.path.join(glyph_path_base, "%s-%s" % (l_glyph, r_glyph))
-            mkdir(glyph_path)
-
-            # Copy some things
-            sp_path = os.path.join(glyph_path, "spacing")
-            if not os.path.exists(sp_path):
-                sp = file(sp_path, "w")
-                (x,y) = kern_info[font][(l_glyph, r_glyph)]
-                sp.write("%d,%d" % (x,y))
+            (x,y) = kern_info[font][(l_glyph, r_glyph)]
+            glyph_text =  "%s-%s: %d,%d" % (l_glyph, r_glyph, x, y)
+            print >> spacing_file, glyph_text
 
 
 # Import Psyco if available
