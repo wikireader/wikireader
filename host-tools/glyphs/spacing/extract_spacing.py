@@ -18,6 +18,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import gzip
+import glob
 import optparse
 import os
 import sys
@@ -34,6 +36,8 @@ def parse():
 Two modes are supported. Single conversion and batch mode""")
     parser.add_option("-b", "--batch", help = "start a batch job",
                       action = "store_true", dest = "batch", default = False)
+    parser.add_option("-e", "--error-file", help = "File where to put errors",
+                      action = "store", dest = "error_file", default = "failed_spacing.files")
 
 
     return parser.parse_args(sys.argv)
@@ -126,4 +130,27 @@ if not opts.batch:
     generate_text_runs(kern, raw_glyphs)
     write_mappings(kern)
 else:
-    pass
+    failed = open(opts.error_file, "a")
+
+    def convert(base_name, file_name):
+        """
+        Convert a single blib.gz
+        """
+        file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
+        file_name = "%s.blib.gz" % file_name
+        raw_glyphs = load(gzip.open(file_name, 'rb'))
+
+        kern = {}
+        generate_text_runs(kern, raw_glyphs)
+        write_mappings(kern)
+
+    for arg in range(1, len(args)):
+        for work in glob.glob(os.path.join(args[arg], "*.work")):
+            print "Working on %s" % work
+            for line in file:
+                data = line[:-1].split(" ", 1)
+                try:
+                    convert(args[arg], data[0])
+                except:
+                    print >> failed, "Error: %s from %s" % (data[0], work)
+
