@@ -22,10 +22,6 @@ import optparse
 import os
 import sys
 
-#
-# Experiment with the encoding of the data
-kern_info = {}
-
 def mkdir(path):
     try:
         os.mkdir(path)
@@ -57,9 +53,8 @@ def load(file):
 
     return glyphs
 
-def extract_spacing(last_glyph, glyph):
+def extract_spacing(kern_info, last_glyph, glyph):
     """Extract the spacing between two glyphs and save that"""
-    global kern_info
     if not last_glyph:
         return
 
@@ -80,7 +75,7 @@ def extract_spacing(last_glyph, glyph):
     elif kern != kern_info[glyph_font][glyph_pair]:
         print "Not matching spacing will need to fixup: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
 
-def generate_text_runs(glyphs):
+def generate_text_runs(kern_info, glyphs):
     current = None
     last_glyph = None
 
@@ -89,12 +84,12 @@ def generate_text_runs(glyphs):
             last_glyph = None
             continue
 
-        extract_spacing(last_glyph, glyph)
+        extract_spacing(kern_info, last_glyph, glyph)
         last_glyph = glyph
 
 
 
-def write_mappings():
+def write_mappings(kern_info):
     """Write out the mappings used for this article"""
 
     # Write options
@@ -126,7 +121,9 @@ opts, args = parse()
 
 if not opts.batch:
     raw_glyphs = load(file(args[1]))
-    generate_text_runs(raw_glyphs)
-    write_mappings()
+
+    kern = {}
+    generate_text_runs(kern, raw_glyphs)
+    write_mappings(kern)
 else:
     pass
