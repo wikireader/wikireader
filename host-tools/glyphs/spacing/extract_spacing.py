@@ -18,6 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import optparse
 import os
 import sys
 
@@ -31,10 +32,16 @@ def mkdir(path):
     except:
         pass
 
+def parse():
+    parser = optparse.OptionParser(version = "Extract spacing from a rendertext file",
+                                   usage = """%prog [options] input_file
+Two modes are supported. Single conversion and batch mode""")
+    return parser.parse_args(sys.argv)
+
 # Load glyphs... share this with render_text.py
-def load():
+def load(file):
     glyphs = []
-    for line in open(sys.argv[1]):
+    for line in file:
         split = line.strip().split(',')
 
 
@@ -111,6 +118,7 @@ except ImportError:
     pass
 
 
-raw_glyphs = load()
+opts, args = parse()
+raw_glyphs = load(file(args[1]))
 generate_text_runs(raw_glyphs)
 write_mappings()
