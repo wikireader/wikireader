@@ -11,8 +11,8 @@ base @
 .( wdt-low - force wdt pin low )
 
 : wdt-low ( -- )
-  $08 P6_P6D p!
-  0 P6_IOC6 p! ;
+  wdt-high
+  0 P6_P6D p! ;
 
 
 .( wdt-off - wdt pin high / short delay / then low )
