@@ -51,10 +51,11 @@ WIKILIB_COBJS += article.o history.o
 # minilzo
 MINILZO_COBJS = minilzo.o
 
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
-
+CFLAGS+=-DINCLUDED_FROM_KERNEL
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
+
+vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o
 OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o
