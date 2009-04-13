@@ -105,7 +105,7 @@ def write_mappings(kern_info):
         mkdir(font_path)
         glyph_path_base = os.path.join(font_path, "spacing")
         mkdir(glyph_path_base)
-        spacing_file = open(os.path.join(glyph_path_base, "spacing-file"), "a")
+        spacing_file = gzip.open(os.path.join(glyph_path_base, "spacing-file.gz"), "a")
 
         for (l_glyph, r_glyph) in kern_info[font].keys():
             (x,y) = kern_info[font][(l_glyph, r_glyph)]
