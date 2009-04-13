@@ -24,6 +24,14 @@
 
 #define DEST 0x200
 
+#if defined(EEPROM1ST_LOAD_FROM_RS232) && defined(EEPROM1ST_LOAD_FROM_EEPROM)
+#error "bootloader conflict:define either RS232 or EEPROM"
+#endif
+
+#if !defined(EEPROM1ST_LOAD_FROM_RS232) && !defined(EEPROM1ST_LOAD_FROM_EEPROM)
+#error "bootloader missing config:define either RS232 or EEPROM"
+#endif
+
 int main(void) {
 #ifdef EEPROM1ST_LOAD_FROM_RS232
 	unsigned int len = 8192 - 512;
