@@ -155,6 +155,16 @@ static void history_test()
 
 	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 
+	int found = 0;
+	sprintf(target, "%d", 199);
+
+	for (i = 20; i < 200; i++) {
+		if (!strcmp(target, history_release(i)))
+			found = 1;
+	}
+
+	COMPARE_INT(1, found, ==, "find item via history_release");
+
 	for (i = 0; i < MAX_HISTORY_ITEM; ++i) {
 		sprintf(title, "title_%d", 199 - i);
 		sprintf(target, "%d", 199 - i);
