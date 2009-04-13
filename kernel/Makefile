@@ -24,25 +24,24 @@ INDEX_DIR=../host-tools/indexing/locate
 COMMON=../common
 MINILZODIR=../minilzo
 
-INCLUDES=				\
-	-I$(FATFSDIR)/src		\
-	-I$(LIBDIR)/include/		\
-	-I$(FATFSDIR)/config/c33/	\
-	-I$(WIKILIBDIR)/include/	\
-	-I$(GUILIBDIR)/			\
-	-I../common/                    \
-	-I$(INDEX_DIR)                  \
-	-I$(MINILZODIR)/
+INCLUDES = -I$(FATFSDIR)/src
+INCLUDES += -I$(LIBDIR)/include/
+INCLUDES += -I$(FATFSDIR)/config/c33/
+INCLUDES += -I$(WIKILIBDIR)/include/
+INCLUDES += -I$(GUILIBDIR)/
+INCLUDES += -I../common/
+INCLUDES += -I$(INDEX_DIR)
+INCLUDES += -I$(MINILZODIR)/
 
-LIBS=					\
-	$(FATFSDIR)/lib/libtinyfat.a	\
-	$(LIBDIR)/lib/libc.a 		\
-	`$(CC) -print-libgcc-file-name`
+LIBS = $(FATFSDIR)/lib/libtinyfat.a
+LIBS += $(LIBDIR)/lib/libc.a
+LIBS += `$(CC) -print-libgcc-file-name`
 
-GUILIB_COBJS= guilib.o glyph.o fontfile.o
-WIKILIB_COBJS= file-io-general.o file-io-libfat.o \
-                wikilib.o malloc-simple.o hexdump.o \
-                compress.o keyboard.o
+GUILIB_COBJS = guilib.o glyph.o fontfile.o
+
+WIKILIB_COBJS = file-io-general.o file-io-libfat.o
+WIKILIB_COBJS += wikilib.o malloc-simple.o hexdump.o
+WIKILIB_COBJS += compress.o keyboard.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
@@ -56,9 +55,9 @@ vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
 
-OBJECTS=mahatma.o touchscreen.o suspend.o msg-output.o gui.o	\
-	gpio.o serial.o traps.o input.o lcd.o misc.o \
-	$(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
+OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o
+OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
 
 TARGETS=mahatma.elf
 .PHONY:	all
