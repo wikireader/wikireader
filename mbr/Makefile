@@ -32,8 +32,9 @@ mbr: mbr.elf
 # $call MAKE_APP, app_name, file1.o file2.o)
 # Note: 1. list of objects are _space_ separated
 #       2. eeprom is removed as this is provided by mbr
+#       3. strip and _NO_ spaces after comma (make passes all spaces to arguments)
 
-MAKE_APP = $(eval $(call MAKE_APP1, ${1}, ${2}))
+MAKE_APP = $(eval $(call MAKE_APP1,$(strip ${1}),${2}))
 
 
 define MAKE_APP1
@@ -53,12 +54,12 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP, menu, misc.o)
-$(call MAKE_APP, hello, misc.o)
-$(call MAKE_APP, memory-test, misc.o)
-$(call MAKE_APP, key-test, misc.o)
-$(call MAKE_APP, forth-loader, misc.o elf32.o)
-$(call MAKE_APP, kernel-loader, misc.o elf32.o)
+$(call MAKE_APP,menu,misc.o)
+$(call MAKE_APP,hello,misc.o)
+$(call MAKE_APP,memory-test,misc.o)
+$(call MAKE_APP,key-test,misc.o)
+$(call MAKE_APP,forth-loader,misc.o elf32.o)
+$(call MAKE_APP,kernel-loader,misc.o elf32.o)
 
 
 # rule to build all above applications
