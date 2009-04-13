@@ -147,6 +147,7 @@ else:
     for arg in range(1, len(args)):
         for work in glob.glob(os.path.join(args[arg], "*.work")):
             print "Working on %s" % work
+            file = open(work)
             for line in file:
                 data = line[:-1].split(" ", 1)
                 try:
