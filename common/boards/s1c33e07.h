@@ -116,6 +116,8 @@ static inline void disable_card_power(void)
 #define EEPROM_WP_HI()	do { REG_P2_P2D	 =   (1 << 6); } while (0)
 
 #define power_off()	do {} while(0)
+#define prepare_keys()  do {} while(0)
+#define get_key_state() 0
 
 #endif /* WIKIREADER_S1C33E07_H */
 

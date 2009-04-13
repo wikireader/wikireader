@@ -119,6 +119,8 @@ static inline void init_ram(void)
 #define EEPROM_WP_HI()	do {} while (0)
 
 #define power_off()	do {} while(0)
+#define prepare_keys()	do {} while(0)
+#define get_key_state()	0
 
 #endif /* WIKIREADER_PROTO1_H */
 
