@@ -19,21 +19,26 @@
 #include <stdio.h>
 #include <input.h>
 #include <regs.h>
+#include <msg.h>
+#include <wikireader.h>
 
-#define N_PINS 32
+#define N_PINS 3
 
-static unsigned int gpio_state;
-static unsigned int last_state;
+static unsigned char gpio_state;
+static unsigned char last_state;
 
 void gpio_irq(void)
 {
+	/* the current gpio state is our new comparison reference */
+	gpio_state = get_key_state();
+	REG_KINTCOMP_SCPK0 = gpio_state;
 }
 
 int gpio_get_event(struct wl_input_event *ev)
 {
 	unsigned int i, changed = gpio_state ^ last_state;
 
-//	if (!changed)
+	if (!changed)
 		return 0;
 
 	for (i = 0; i < N_PINS; i++) {
@@ -42,7 +47,7 @@ int gpio_get_event(struct wl_input_event *ev)
 
 		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 		ev->key_event.keycode = WL_INPUT_KEY_SEARCH + i;
-		ev->key_event.value = 1;
+		ev->key_event.value = !!(gpio_state & (1 << i));
 		last_state ^= (1 << i);
 		return 1;
 	}
@@ -52,12 +57,7 @@ int gpio_get_event(struct wl_input_event *ev)
 
 void gpio_init(void)
 {
-	/* wakeup sources, turn keyboard control 0 to wakeup */
-	REG_KINTCOMP_SCPK0 = 0x1f;
-	REG_KINTCOMP_SMPK0 = 0x10;
-	REG_KINTSEL_SPPK01 = 0x40;
-	REG_INT_EK01_EP0_3 = 0x10;
-
+	prepare_keys();
 	gpio_state = 0;
 	last_state = 0;
 }
