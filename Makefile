@@ -164,9 +164,15 @@ print-flash-config:
 	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
 
 # ----- forth -----------------------------------------------
+# items for testing
+
 .PHONY: forth
 forth:  gcc
 	$(MAKE) -C forth
+
+.PHONY: mbr
+mbr: gcc fatfs
+	$(MAKE) -C mbr
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
@@ -177,6 +183,8 @@ clean:
 	$(MAKE) clean -C bootloader
 	$(MAKE) clean -C toolchain/mini-libc
 	$(MAKE) clean -C fatfs
+	$(MAKE) clean -C mbr
+	$(MAKE) clean -C forth
 	$(MAKE) clean -C kernel
 	cd jsp && $(MAKE) clean -C wikireader
 
