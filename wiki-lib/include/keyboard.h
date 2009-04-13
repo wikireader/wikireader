@@ -25,7 +25,7 @@
 enum keyboard_mode_e {
 	keyboard_none,
 	keyboard_char,
-	keybaord_num
+	keyboard_num
 };
 
 int keyboard_is_visible(void);
