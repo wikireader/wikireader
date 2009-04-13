@@ -24,7 +24,7 @@ OBJCOPY=$(CROSS)objcopy
 OBJDUMP=$(CROSS)objdump
 STRIP=$(CROSS)strip
 
-CFLAGS=-Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+CFLAGS+=-Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 
 # protection in case some Makefile includes this too early
 .PHONY: this-is-included-too-early
