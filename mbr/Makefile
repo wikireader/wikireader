@@ -1,9 +1,24 @@
 LIBDIR = ../toolchain/mini-libc
 FATFSDIR = ../fatfs
+FATFS_MODE = read-only
 COMMON = ../common
-LIBS = $(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
+BOOTLOADER = ../bootloader
+
+FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
+E07LOAD ?= ${BOOTLOADER}/e07load/e07load
+RS232 ?= ${BOOTLOADER}/rs232
+
+LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a
+LIBS += $(LIBDIR)/lib/libc.a
+LIBS += $(shell $(CC) -print-libgcc-file-name)
+
 LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-INCLUDES = -I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(COMMON) -I../bootloader
+
+INCLUDES = -I$(FATFSDIR)/src
+INCLUDES += -I$(LIBDIR)/include/
+INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
+INCLUDES += -I$(COMMON) -I../bootloader
+
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 TARGETS = mbr
 APPLICATIONS =
@@ -66,6 +81,10 @@ $(call MAKE_APP,kernel-loader,misc.o elf32.o)
 
 .PHONY: all-applications
 all-applications: ${APPLICATIONS}
+
+
+flash-mbr: all
+	time ${E07LOAD} --tty="${BOOTLOADER_TTY}" --bootstrap="${RS232}" "${FLASH_ROM_MAP_FILE}"
 
 
 clean:
