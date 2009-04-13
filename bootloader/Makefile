@@ -1,9 +1,10 @@
 LIBDIR=../toolchain/mini-libc
 FATFSDIR=../fatfs
+FATFS_MODE = read-only
 COMMON=../common
-LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
+LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(COMMON)
+INCLUDES = -I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/${FATFS_MODE}/ -I$(COMMON)
 OBJCOPY_FLAGS=-I elf32-c33 -O binary
 
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
@@ -57,7 +58,7 @@ eeprom-1st: eeprom-1st.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 
 #### third boot loader
-eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o eeprom-2nd.lds ../fatfs/lib/libtinyfat.a
+eeprom-2nd.elf: eeprom-2nd.o misc.o eeprom.o elf32.o lcd.o eeprom-2nd.lds ../fatfs/lib/${FATFS_MODE}/libtinyfat.a
 	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 eeprom-2nd: eeprom-2nd.elf

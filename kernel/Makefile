@@ -20,20 +20,21 @@ WIKILIBDIR=../wiki-lib/
 GUILIBDIR=../gui-lib/
 LIBDIR=../toolchain/mini-libc
 FATFSDIR=../fatfs
+FATFS_MODE = read-write
 INDEX_DIR=../host-tools/indexing/locate
 COMMON=../common
 MINILZODIR=../minilzo
 
 INCLUDES = -I$(FATFSDIR)/src
 INCLUDES += -I$(LIBDIR)/include/
-INCLUDES += -I$(FATFSDIR)/config/c33/
+INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
 INCLUDES += -I$(WIKILIBDIR)/include/
 INCLUDES += -I$(GUILIBDIR)/
 INCLUDES += -I../common/
 INCLUDES += -I$(INDEX_DIR)
 INCLUDES += -I$(MINILZODIR)/
 
-LIBS = $(FATFSDIR)/lib/libtinyfat.a
+LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a
 LIBS += $(LIBDIR)/lib/libc.a
 LIBS += `$(CC) -print-libgcc-file-name`
 
