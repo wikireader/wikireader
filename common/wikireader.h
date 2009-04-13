@@ -64,10 +64,11 @@ static inline void init_rs232(void)
 	REG_EFSIF0_BRTRUN = 0x01;
 }
 
+#ifdef INCLUDED_FROM_KERNEL
 #if BOARD_PROTO2
 
 /* returns the battery voltage, in mV */
-static inline int get_battery_voltage(void)
+int get_battery_voltage(void)
 {
 	int val;
 
@@ -116,6 +117,8 @@ static inline int get_battery_voltage(void)
 	return 3000;
 }
 #endif
+
+#endif /* INCLUDED_FROM_KERNEL */
 
 #endif /* WIKIREADER_H */
 
