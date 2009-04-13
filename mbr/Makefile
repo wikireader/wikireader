@@ -1,15 +1,15 @@
-LIBDIR=../toolchain/mini-libc
-FATFSDIR=../fatfs
-COMMON=../common
-LIBS=$(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
-LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-INCLUDES=-I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(COMMON) -I../bootloader
-OBJCOPY_FLAGS=-I elf32-c33 -O binary
+LIBDIR = ../toolchain/mini-libc
+FATFSDIR = ../fatfs
+COMMON = ../common
+LIBS = $(FATFSDIR)/lib/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
+LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
+INCLUDES = -I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/ -I$(COMMON) -I../bootloader
+OBJCOPY_FLAGS = -I elf32-c33 -O binary
 TARGETS = mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH=$(COMMON):../bootloader
+VPATH = $(COMMON):../bootloader
 
 .PHONY: all
 all: $(TARGETS) all-applications
