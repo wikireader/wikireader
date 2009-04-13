@@ -1,5 +1,5 @@
 /*
- * hexdump implementation without depenecies to *printf()
+ * hexdump implementation without dependencies to *printf()
  * output is equal to 'hexdump -C'
  * should be compatible to 64bit architectures
  *
