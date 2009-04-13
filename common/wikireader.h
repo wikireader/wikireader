@@ -64,5 +64,53 @@ static inline void init_rs232(void)
 	REG_EFSIF0_BRTRUN = 0x01;
 }
 
+#if BOARD_PROTO2
+static inline int get_battery_voltage(void)
+{
+	int val;
+
+	/* switch on A/D converter clock and select MCLK/256 */
+	REG_AD_CLKCTL = 0xf;
+
+	/* A/D Trigger/Channel Select Register: channel 0,
+	 * one-shot, software triggered */
+	REG_AD_TRIG_CHNL = 0;
+
+	/* select P70 pin function for AIN0 */
+	REG_P7_03_CFP = 0x01;
+
+	/* A/D Control/Status Register: start conversion (9 clock cycles) */
+	REG_AD_EN_SMPL_STAT = 0x304;
+
+	/* A/D Control/Status Register: trigger ADST */
+	REG_AD_EN_SMPL_STAT |= (1 << 1);
+
+	/* wait for the conversion to complete */
+	do { asm("nop"); } while (!(REG_AD_EN_SMPL_STAT & (1 << 3)));
+
+	/* read the value */
+	val = REG_AD_ADD;
+
+	/* select P70 pin function for P70 */
+	REG_P7_03_CFP = 0;
+
+	/* A/D Control/Status Register: disable controller */
+	REG_AD_EN_SMPL_STAT = 0;
+	
+	/* switch off A/D converter clock */
+	REG_AD_CLKCTL = 0;
+
+	return val;
+}
+#else
+static inline int get_battery_voltage(void)
+{
+	/* return some sane value for platforms with no hardware support
+	 * for voltage measurement so the logic using this function will
+	 * not bail. */
+	return 1000;
+}
+#endif
+
 #endif /* WIKIREADER_H */
 
