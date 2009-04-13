@@ -65,6 +65,8 @@ static inline void init_rs232(void)
 }
 
 #if BOARD_PROTO2
+
+/* returns the battery voltage, in mV */
 static inline int get_battery_voltage(void)
 {
 	int val;
@@ -100,7 +102,10 @@ static inline int get_battery_voltage(void)
 	/* switch off A/D converter clock */
 	REG_AD_CLKCTL = 0;
 
-	return val;
+	/* The circuit divides the battery voltage by 220kOhm in series and
+	 * 1MOhm to GND. Measurement is done rail-to-rail in respect of AVDD.
+	 * This formula converts the cpatured value to mV. */
+	return (122 * val * AVDD_MILLIVOLTS) / (1023 * 100);
 }
 #else
 static inline int get_battery_voltage(void)
@@ -108,7 +113,7 @@ static inline int get_battery_voltage(void)
 	/* return some sane value for platforms with no hardware support
 	 * for voltage measurement so the logic using this function will
 	 * not bail. */
-	return 1000;
+	return 3000;
 }
 #endif
 
