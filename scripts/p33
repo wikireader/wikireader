@@ -1,0 +1,15 @@
+#!/bin/sh
+PortList='/dev/ttyUSB1 /dev/ttyUSB0'
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+for port in ${PortList}
+do
+  [ -e "${port}" ] && exec picocom --baud=57600 "${port}"
+done
+
+ERROR cannot find any ports: ${PortList}
