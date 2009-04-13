@@ -44,8 +44,6 @@ int main(void)
 {
 	/* set the default data pointer */
 	asm("xld.w   %r15, __dp");
-//	asm("xld.w   %r4, 0x1000");
-//	asm("ld.w   %sp, %r4");
 
 	/* machine-specific init */
 	gpio_init();
@@ -63,9 +61,6 @@ int main(void)
 	malloc_init();
 	wikilib_init();
 	guilib_init();
-
-	REG_P1_IOC1 = 0x08;
-	REG_P1_P1D = 0x08;
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
 	
