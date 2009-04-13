@@ -32,7 +32,20 @@ static inline void init_pins(void)
 
 	/* P50 & P52: CS lines */
 	REG_P5_IOC5 = 0x07;
+
+	/* use P64 and NMI pins for hardware watchdog logic */
+	REG_P6_IOC6 = 0x18;
+	REG_P6_P6D = 0x08;
+	REG_P6_P6D = 0x18;
 }
+
+#ifdef INCLUDED_FROM_KERNEL
+static inline void power_off(void)
+{
+	/* switch off condition: P64 high, P63 low */
+	REG_P6_P6D = 0x10;
+}
+#endif
 
 /* MRS command address for burst length=1, CAS latency = 2 */
 #define MRSREG		(*(volatile unsigned char *) 0x10000442)

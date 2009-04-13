@@ -118,5 +118,7 @@ static inline void init_ram(void)
 #define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 #define EEPROM_WP_HI()	do {} while (0)
 
+#define power_off()	do {} while(0)
+
 #endif /* WIKIREADER_PROTO1_H */
 

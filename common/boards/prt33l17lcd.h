@@ -113,5 +113,7 @@ static inline void disable_card_power(void)
 #define SDCARD_CS_HI()	do { REG_P8_P8D |=  (1 << 4); } while (0)
 #define EEPROM_WP_HI()	do { REG_P2_P2D	 =  (1 << 6); } while (0)
 
+#define power_off()	do {} while(0)
+
 #endif /* WIKIREADER_PRT33L17LCD_H */
 
