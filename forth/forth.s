@@ -703,6 +703,14 @@ abs_l1:
 zero_equal_l1:
         .long   dolit, TRUE, exit
 
+;;; \ convert any non-zero to a preper TRUE
+;;; : 0<> ( w -- t ) IF TRUE EXIT THEN FALSE ;
+        COLON   zero_not_equal, "0<>", FLAG_NORMAL
+        .long   qbranch, zero_not_equal_l1
+        .long   dolit, TRUE, exit
+zero_not_equal_l1:
+        .long   dolit, FALSE, exit
+
 ;;; : = ( w w -- t ) XOR 0= ;
         COLON   equal, "=", FLAG_NORMAL
         .long   _xor, zero_equal, exit
@@ -714,12 +722,20 @@ zero_equal_l1:
 uless_l1:
         .long   minus, zero_less, exit
 
+;;; : U> ( n n -- t ) SWAP U< ;
+        COLON   ugreater, "u>", FLAG_NORMAL
+        .long   swap, uless, exit
+
 ;;; :  < ( n n -- t ) 2DUP XOR 0< IF DROP 0< EXIT THEN - 0< ;
         COLON   less, "<", FLAG_NORMAL
         .long   twodup, _xor, zero_less, qbranch, less_l1
         .long   drop, zero_less, exit
 less_l1:
         .long   minus, zero_less, exit
+
+;;; : > ( n n -- t ) SWAP < ;
+        COLON   greater, ">", FLAG_NORMAL
+        .long   swap, less, exit
 
 ;;; : MAX ( n n -- n ) 2DUP      < IF SWAP THEN DROP ;
         COLON   max, "max", FLAG_NORMAL
