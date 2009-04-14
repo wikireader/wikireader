@@ -52,10 +52,13 @@ def generate_text_runs(glyphs, WIDTH):
 
     last_x = 0
     last_y = 0
+    skip_paragraph = False
 
     # Two passes....
     for glyph in glyphs:
         if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
+            if skip_paragraph:
+                print "Skipping paragraph due text being drawn over itself."
             if current.x > WIDTH:
                 print "Skipping due too large x position"
             else:
@@ -72,7 +75,14 @@ def generate_text_runs(glyphs, WIDTH):
 
             current = None
             last_glyph = None
+            skip_paragraph = False
             continue
+        elif skip_paragraph:
+            continue
+        elif last_glyph and last_glyph['x'] == glyph['x']:
+            skip_paragraph = True
+            continue
+            
 
         if not current:
             current = TextRun(glyph)
