@@ -169,7 +169,12 @@ forth:  gcc
 
 .PHONY: mbr
 mbr: gcc fatfs
-	$(MAKE) -C mbr
+	$(MAKE) -C $@
+
+.PHONY: flash-mbr
+flash-mbr: mbr
+	$(MAKE) -C bootloader rs232 e07load/e07load
+	$(MAKE) -C mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
