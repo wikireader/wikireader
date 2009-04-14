@@ -32,6 +32,8 @@
 
 #define MAX_HISTORY_RAW_DATA 	200
 #define MAX_HISTORY_ITEM 		100
+#define ILLEGAL_INPUT_LOW 		-1
+#define ILLEGAL_INPUT_HIGH 		4324234
 
 /* empty dummies - no framebuffer here */
 void fb_set_pixel(int x, int y, int val) {}
@@ -139,7 +141,7 @@ static int find_target(char *target)
 
 static void history_test()
 {
-	int i, count = 0;
+	int i, j, count = 0;
 	char title[256], target[6];
 
 	history_list_init();
@@ -155,15 +157,20 @@ static void history_test()
 
 	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 
+	/* the 1st page in history list should be  199~180 item now */
 	int found = 0;
-	sprintf(target, "%d", 199);
-
-	for (i = 20; i < 200; i++) {
-		if (!strcmp(target, history_release(i)))
-			found = 1;
+	for (i = 199; i > 180; i--) {
+		for (j = 20; j < (FRAMEBUFFER_HEIGHT-10); j++) {
+			if (!strcmp(target, history_release(j))) {
+				found = 1;
+				break;
+			}
+		}
+		COMPARE_INT(1, found, ==, "find item via history_release");
 	}
 
-	COMPARE_INT(1, found, ==, "find item via history_release");
+	COMPARE_CHAR((char *)NULL, history_release(ILLEGAL_INPUT_LOW), "history_release: Provide a non-sense index");
+	COMPARE_CHAR((char *)NULL, history_release(ILLEGAL_INPUT_HIGH), "history_release: Provide a non-sense index");
 
 	for (i = 0; i < MAX_HISTORY_ITEM; ++i) {
 		sprintf(title, "title_%d", 199 - i);
@@ -172,8 +179,8 @@ static void history_test()
 		COMPARE_CHAR(target, history_get_item_target(i), "Iterate history target");
 	}
 
-	COMPARE_CHAR((char *)NULL, history_get_item_title(-1), "Provide a non-sense index");
-	COMPARE_CHAR((char *)NULL, history_get_item_title(4324234), "Provide another non-sense index");
+	COMPARE_CHAR((char *)NULL, history_get_item_title(ILLEGAL_INPUT_LOW), "Provide a non-sense index");
+	COMPARE_CHAR((char *)NULL, history_get_item_title(ILLEGAL_INPUT_HIGH), "Provide another non-sense index");
 
 	/* see the first item is existed or not */
 	sprintf(target, "%d", 1);
