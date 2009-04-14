@@ -1,12 +1,12 @@
 /* Implementation taken from
- * 	http://vector06cc.googlecode.com/svn/trunk/firmware/floppysrc/
+ *	http://vector06cc.googlecode.com/svn/trunk/firmware/floppysrc/
  * GPL and so on. */
 
 /*-----------------------------------------------------------------------*/
-/* MMC/SDSC/SDHC (in SPI mode) control module  (C)ChaN, 2007             */
+/* MMC/SDSC/SDHC (in SPI mode) control module  (C)ChaN, 2007		 */
 /*-----------------------------------------------------------------------*/
-/* Only rcvr_spi(), xmit_spi(), disk_timerproc() and some macros         */
-/* are platform dependent.                                               */
+/* Only rcvr_spi(), xmit_spi(), disk_timerproc() and some macros	 */
+/* are platform dependent.						 */
 /*-----------------------------------------------------------------------*/
 
 #include <regs.h>
@@ -71,7 +71,7 @@ void xdelay(DWORD nops)
 }
 
 /*-----------------------------------------------------------------------*/
-/* Receive a byte from MMC via SPI  (Platform dependent)                 */
+/* Receive a byte from MMC via SPI  (Platform dependent)		 */
 /*-----------------------------------------------------------------------*/
 
 static void rcvr_spi_m(BYTE* dst)
@@ -90,7 +90,7 @@ BYTE rcvr_spi (void)
 }
 
 /*-----------------------------------------------------------------------*/
-/* Transmit a byte to MMC via SPI  (Platform dependent)                  */
+/* Transmit a byte to MMC via SPI  (Platform dependent)			 */
 /*-----------------------------------------------------------------------*/
 
 static void xmit_spi(BYTE dat)
@@ -101,7 +101,7 @@ static void xmit_spi(BYTE dat)
 
 
 /*-----------------------------------------------------------------------*/
-/* Wait for card ready                                                   */
+/* Wait for card ready							 */
 /*-----------------------------------------------------------------------*/
 
 static
@@ -121,7 +121,7 @@ BYTE wait_ready (void)
 }
 
 /*-----------------------------------------------------------------------*/
-/* Deselect the card and release SPI bus                                 */
+/* Deselect the card and release SPI bus				 */
 /*-----------------------------------------------------------------------*/
 
 static
@@ -132,13 +132,13 @@ void release_spi (void)
 }
 
 /*-----------------------------------------------------------------------*/
-/* Power Control  (Platform dependent)                                   */
+/* Power Control  (Platform dependent)					 */
 /*-----------------------------------------------------------------------*/
-/* When the target system does not support socket power control, there   */
-/* is nothing to do in these functions and chk_power always returns 1.   */
+/* When the target system does not support socket power control, there	 */
+/* is nothing to do in these functions and chk_power always returns 1.	 */
 
 static
-void power_on (void)
+void turn_on_power (void)
 {
 	DESELECT();
 	enable_card_power();
@@ -146,7 +146,7 @@ void power_on (void)
 }
 
 static
-void power_off (void)
+void turn_off_power (void)
 {
 	SELECT();				/* Wait for card ready */
 	wait_ready();
@@ -167,7 +167,7 @@ BYTE chk_power(void)		/* Socket power state: 0=off, 1=on */
 
 
 /*-----------------------------------------------------------------------*/
-/* Receive a data packet from MMC                                        */
+/* Receive a data packet from MMC					 */
 /*-----------------------------------------------------------------------*/
 
 #ifdef WITH_DMA
@@ -224,7 +224,7 @@ BOOL rcvr_datablock (
 #endif
 
 /*-----------------------------------------------------------------------*/
-/* Send a data packet to MMC                                             */
+/* Send a data packet to MMC						 */
 /*-----------------------------------------------------------------------*/
 
 #if _READONLY == 0
@@ -289,7 +289,7 @@ BOOL xmit_datablock (
 
 
 /*-----------------------------------------------------------------------*/
-/* Send a command packet to MMC                                          */
+/* Send a command packet to MMC						 */
 /*-----------------------------------------------------------------------*/
 
 static
@@ -351,7 +351,7 @@ BYTE send_cmd (
 ---------------------------------------------------------------------------*/
 
 /*-----------------------------------------------------------------------*/
-/* Poll the card                                                         */
+/* Poll the card							 */
 /*-----------------------------------------------------------------------*/
 DSTATUS disk_poll(BYTE drv) {
 	BYTE res, n;
@@ -372,7 +372,7 @@ DSTATUS disk_poll(BYTE drv) {
 }
 
 /*-----------------------------------------------------------------------*/
-/* Initialize Disk Drive                                                 */
+/* Initialize Disk Drive						 */
 /*-----------------------------------------------------------------------*/
 
 DSTATUS disk_initialize (
@@ -389,7 +389,7 @@ DSTATUS disk_initialize (
 
 	REG_SPI_CTL1 = 0x03 | (7 << 10) | (0 << 4);
 
-	power_on();					/* Force socket power on */
+	turn_on_power();					/* Force socket power on */
 	SELECT();
 	for (n = 10; n; n--) rcvr_spi();		/* 80 dummy clocks */
 	DESELECT();
@@ -397,7 +397,7 @@ DSTATUS disk_initialize (
 	ty = 0;
 
 	if (send_cmd(CMD0, 0) == 0)			/* Enter Idle state */
-		goto power_off;
+		goto switch_off_power;
 
 	if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDHC */
 		for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();			/* Get trailing return value of R7 resp */
@@ -409,7 +409,7 @@ DSTATUS disk_initialize (
 			}
 		}
 	} else {					/* SDSC or MMC */
-		if (send_cmd(ACMD41, 0) <= 1) 	{
+		if (send_cmd(ACMD41, 0) <= 1)	{
 			ty = 2; cmd = ACMD41;		/* SDSC */
 		} else {
 			ty = 1; cmd = CMD1;		/* MMC */
@@ -427,8 +427,8 @@ DSTATUS disk_initialize (
 		goto out;
 	}
 
-power_off: /* Initialization failed */
-	power_off();
+switch_off_power: /* Initialization failed */
+	turn_off_power();
 
 out:
 	return Stat;
@@ -437,7 +437,7 @@ out:
 
 
 /*-----------------------------------------------------------------------*/
-/* Get Disk Status                                                       */
+/* Get Disk Status							 */
 /*-----------------------------------------------------------------------*/
 
 DSTATUS disk_status (
@@ -449,7 +449,7 @@ DSTATUS disk_status (
 }
 
 /*-----------------------------------------------------------------------*/
-/* Read Sector(s)                                                        */
+/* Read Sector(s)							 */
 /*-----------------------------------------------------------------------*/
 
 DRESULT disk_read (
@@ -493,7 +493,7 @@ DRESULT disk_read (
 
 
 /*-----------------------------------------------------------------------*/
-/* Write Sector(s)                                                       */
+/* Write Sector(s)							 */
 /*-----------------------------------------------------------------------*/
 
 #if _READONLY == 0
@@ -538,7 +538,7 @@ DRESULT disk_write (
 
 
 /*-----------------------------------------------------------------------*/
-/* Miscellaneous Functions                                               */
+/* Miscellaneous Functions						 */
 /*-----------------------------------------------------------------------*/
 
 #if _USE_IOCTL != 0
@@ -561,11 +561,11 @@ DRESULT disk_ioctl (
 		switch (*ptr) {
 		case 0:		/* Sub control code == 0 (POWER_OFF) */
 			if (chk_power())
-				power_off();		/* Power off */
+				turn_off_power();		/* Power off */
 			res = RES_OK;
 			break;
 		case 1:		/* Sub control code == 1 (POWER_ON) */
-			power_on();				/* Power on */
+			turn_on_power();			/* Power on */
 			res = RES_OK;
 			break;
 		case 2:		/* Sub control code == 2 (POWER_GET) */
