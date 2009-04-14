@@ -49,6 +49,25 @@ def parse():
 	else:
 	    return opts, args
 
+def write_output(fontlist, fonttable, font_name_to_number):
+	global opts
+	outfile = open(opts.output, 'w')
+
+	# write the number of fonts in this file
+	outfile.write(struct.pack("<I", len(fontlist)))
+
+	for i in fonttable:
+		outfile.write(struct.pack("<I", i))
+
+	outfile.write(out)
+	outfile.close()
+
+	fontmap = open(opts.fontmap, 'w')
+	for font in font_name_to_number.keys():
+		print >> fontmap, "%s %d" % (font, font_name_to_number[font])
+	fontmap.close()
+	print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
+
 def gen_spacing_hints(fontid, glyphid):
 	global opts
 	spacingpath = opts.fontpath + "/" + fontid + "/spacing/"
@@ -201,21 +220,4 @@ for _font in fontlist:
 		fontnum += 1
 	print "offset for font %d is %d" % (font_name_to_number[_font], current_offset)
 
-outfile = open(opts.output, 'w')
-
-# write the number of fonts in this file
-outfile.write(struct.pack("<I", len(fontlist)))
-
-for i in fonttable:
-	outfile.write(struct.pack("<I", i))
-
-outfile.write(out)
-outfile.close()
-
-fontmap = open(opts.fontmap, 'w')
-for font in font_name_to_number.keys():
-    print >> fontmap, "%s %d" % (font, font_name_to_number[font])
-fontmap.close()
-
-print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
-
+write_output(fontlist, fonttable, font_name_to_number)
