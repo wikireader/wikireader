@@ -1950,7 +1950,7 @@ tick_l1:
 
 ;;; : ABORT" ( -- \ <string> ) COMPILE (abort") $," ; IMMEDIATE
 	COLON   abortquote, "abort\042", FLAG_IMMEDIATE
-	.long	compile, do_abort_quote, dollar_quote, exit
+	.long	compile, do_abort_quote, dollar_comma_quote, exit
 
 ;;; : $" ( -- \ <string>" ) COMPILE ($") $," ; IMMEDIATE
         COLON   dollar_quote, "$\042", FLAG_IMMEDIATE
