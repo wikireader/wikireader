@@ -77,7 +77,8 @@ def extract_spacing(kern_info, last_glyph, glyph):
     elif not glyph_pair in kern_info[glyph_font]:
         kern_info[glyph_font][glyph_pair] = kern
     elif kern != kern_info[glyph_font][glyph_pair]:
-        print "Not matching spacing will need to fixup: new: %d old: %d" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
+        print "Not matching spacing will need to fixup: new: %s old: %s" % (kern, kern_info[glyph_font][glyph_pair]), last_glyph, glyph
+        assert False
 
 def generate_text_runs(kern_info, glyphs):
     current = None
