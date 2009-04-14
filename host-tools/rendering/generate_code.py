@@ -35,22 +35,7 @@ except:
     print "WARNING: LZO not imported performance will be degraded"
     imported_lzo = False
 
-def determine_by_occurence(occurences):
-    """Count the occurcences of something"""
-    items = []
-    for item in occurences.keys():
-        items.append((occurences[item], item))
-    items.sort(reverse=True)
-
-    i = 0
-    dict = {}
-    for (count, item) in items:
-        dict[item] = i
-        i = i + 1
-
-    return dict
-
-def prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences):
+def prepare_run(text_runs):
     """Count the occurences of fonts, glyphs and position"""
 
     # Sort by y position
@@ -131,8 +116,8 @@ except ImportError:
 
 if not options.batch:
     glyphs = textrun.load(open(args[1]))
-    (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
-    prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
+    text_runs = textrun.generate_text_runs(glyphs, 240)
+    prepare_run(text_runs)
     fonts  = fontmap.load(options.fontmap)
     auto_kern_bit = open(options.output_file, "w")
     write_to_file(text_runs, fonts, auto_kern_bit)
@@ -152,8 +137,8 @@ else:
         file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
         file_name = "%s.blib.gz" % file_name
         glyphs = textrun.load(gzip.open(file_name, 'rb'))
-        (text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences) = textrun.generate_text_runs(glyphs, 240)
-        prepare_run(text_runs, glyph_occurences, font_occurences, x_occurences, y_occurences, length_occurences)
+        text_runs = textrun.generate_text_runs(glyphs, 240)
+        prepare_run(text_runs)
 
         # write the offset to another file...
         print >> offset_marker, "%s %d" % (file_name, batch_output.tell())
