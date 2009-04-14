@@ -1052,6 +1052,54 @@ fill_l1:
 	.long	swap, cmove, r_from, exit
 
 
+;;; .( stack handling )
+
+;;; \ usage example:
+;;; \ 25 ( stack-size-in-cells )
+;;; \ dup create my-stack 2 + cells allot
+;;; \ mystack !
+;;; \ stack = {size(N), ptr, value1, value2, ..., valueN}
+
+;;; : stack-clear ( a -- )
+;;;   cell+ 0 swap ! ;
+        COLON   stack_clear, "stack-clear", FLAG_NORMAL
+        .long   cell_plus, dolit, 0, swap, store, exit
+
+;;; : STACK-PUSH ( w a -- )
+;;;   DUP        \ w a a
+;;;   @          \ w a size
+;;;   SWAP CELL+ \ w size ptr
+;;;   >R R@ @ 1+ \ w size index
+;;;   SWAP OVER  \ w index size index
+;;;   < ABORT" stack overflow"
+;;;              \ w index
+;;;   DUP R@ !   \ w index
+;;;   CELLS R> + !
+;;; ;
+        COLON   stack_push, "stack-push", FLAG_NORMAL
+        .long   dup, fetch, swap, cell_plus
+        .long   to_r, r_fetch, fetch, increment
+        .long   swap, over, less
+        .long   do_abort_quote
+        FSTRING "stack overflow"
+        .long   dup, r_fetch, store
+        .long   cells, r_from, plus, store
+        .long   exit
+
+;;; : STACK-POP ( a -- w )
+;;;   CELL+ >R R@ @ 1- DUP 0< abort" stack underflow"
+;;;   DUP R@ ! 1+ CELLS R> + @
+;;; ;
+        COLON   stack_pop, "stack-pop", FLAG_NORMAL
+        .long   cell_plus, to_r, r_fetch, fetch
+        .long   decrement, dup, zero_less
+        .long   do_abort_quote
+        FSTRING "stack underflow"
+        .long   dup, r_fetch, store, increment
+        .long   cells, r_from, plus, fetch
+        .long   exit
+
+
 ;;; .( Numeric Output ) \ single precision
 
 ;;; : DIGIT ( u -- c ) 9 OVER < 7 AND + [CHAR] 0 + ;
@@ -1592,13 +1640,18 @@ accept_l4:
         .long   0
 
 ;;; : FILE-READER ( b u -- b u2 )
-;;;   OVER SWAP SOURCE-ID @ READ-LINE    \ b u2 f ior
-;;;   ?DUP IF CR ." read error = " . CR  \ b u2
-;;;           SOURCE-ID @ CLOSE-FILE DROP
-;;;           2DROP 0 HAND               \ b 0
-;;;           EXIT THEN                  \ b 0
-;;;   0= IF   SOURCE-ID @ CLOSE-FILE DROP
-;;;           HAND THEN ;                \ b u
+;;;     OVER SWAP SOURCE-ID @ READ-LINE    \ b u2 f ior
+;;;     ?DUP IF CR ." read error = " . CR  \ b u2
+;;;             SOURCE-ID @ CLOSE-FILE DROP
+;;;             2DROP HAND
+;;;             TRUE ABORT" file error"
+;;;     THEN
+;;;     IF    EXIT
+;;;     ELSE  SOURCE-ID @ CLOSE-FILE DROP
+;;;           FILEID-STACK STACK-POP DUP SOURCE-ID !
+;;;           0= IF HAND THEN
+;;;     THEN
+;;; ;
         COLON   file_reader, "file-reader", FLAG_NORMAL
         .long   over, swap, source_id, fetch, read_line
         .long   qdup, qbranch, file_reader_l1
@@ -1606,13 +1659,18 @@ accept_l4:
         FSTRING "read error = "
         .long   dot,  cr
         .long   source_id, fetch, close_file, drop
-        .long   twodrop, dolit, 0
-        .long   hand, exit
+        .long   twodrop, hand
+        .long   dolit, TRUE, do_abort_quote
+        FSTRING "file error"
 file_reader_l1:
-        .long   zero_equal, qbranch, file_reader_l2
-        .long   source_id, fetch, close_file, drop
-        .long   hand                            ; pop the include stack here, -> hand if empty
+        .long   qbranch, file_reader_l2
+        .long   exit
 file_reader_l2:
+        .long   source_id, fetch, close_file, drop
+        .long   fileid_stack, stack_pop, dup, source_id, store
+        .long   zero_equal, qbranch, file_reader_l3
+        .long   hand
+file_reader_l3:
         .long   exit
 
 
@@ -1762,10 +1820,15 @@ rx_query_no_character:
 
 ;;; .( Shell )
 
-;;; : PRESET ( -- ) SP0 @ SP!  [ =TIB ] LITERAL #TIB CELL+ ! ;
+;;; : PRESET ( -- ) SP0 @ SP!  [ =TIB ] LITERAL #TIB CELL+ !
+;;;   FILESYSTEM-CLOSE-ALL FILEID-STACK STACK-CLEAR
+;;;   0 SOURCE-ID ! ;
         COLON   preset, "preset", FLAG_NORMAL
 	.long	sp0, fetch, sp_store
 	.long	dolit, terminal_buffer, hash_tib, cell_plus, store
+        .long   filesystem_close_all
+        .long   fileid_stack, stack_clear
+        .long   dolit, 0, source_id, store
 	.long	exit
 
 ;;; : XIO ( a a a a -- ) \ reset 'TAP 'ECHO 'PROMPT 'EXPECT
@@ -1777,12 +1840,23 @@ rx_query_no_character:
         .long   texpect, store
         .long   exit
 
+;;; \ first cell stack size
+;;; \ second cell is the index
+;;; 20 DUP CREATE FILEID-STACK 2 + CELLS ALLOT
+;;; FILEID-STACK !
+        VARIABLE fileid_stack, "fileid-stack", FLAG_NORMAL
+        .long   20                              ; size
+        .long   0                               ; index
+        ;; there must be the 'size' field above
+        .long   0,0,0,0,0, 0,0,0,0,0
+        .long   0,0,0,0,0, 0,0,0,0,0
+
 ;;; : INCLUDE-FILE ( fileid -- )
-;;;   \ SOURCE-ID @ to a save stack somewhere
+;;;   SOURCE-ID @ FILEID-STACK STACK-PUSH
 ;;;   SOURCE-ID !
 ;;;   ['] FILE-READER ['] PACE ['] DROP ['] kTAP XIO ;
         COLON   include_file, "include-file", FLAG_NORMAL
-;;;   \ SOURCE-ID @ to a save stack somewhere
+        .long   source_id, fetch, fileid_stack, stack_push
         .long   source_id, store
         .long   dolit, file_reader, dolit, 0, dolit, drop, dolit, ktap, xio, exit
 
@@ -1842,7 +1916,7 @@ include_quote_l1:
 ;;;     IF CR TIB #TIB @ TYPE
 ;;;        CR >IN @ [CHAR] ^ CHARS
 ;;;        CR .$ ."  ? "
-;;;     THEN PRESET FILESYSTEM-CLOSE-ALL
+;;;     THEN PRESET
 ;;;   AGAIN ;
         COLON   quit, "quit", FLAG_NORMAL
 	.long	rp0, fetch, rp_store
@@ -1865,7 +1939,6 @@ quit_l3:
 	.long	dolit, '?', emit
 quit_l4:
 	.long	preset
-        .long   filesystem_close_all
 	.long	branch, quit_l1
 
 
