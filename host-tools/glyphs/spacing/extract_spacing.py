@@ -83,13 +83,24 @@ def extract_spacing(kern_info, last_glyph, glyph):
 def generate_text_runs(kern_info, glyphs):
     current = None
     last_glyph = None
+    last_x = -1 
+    skip_paragraph = False
 
     for glyph in glyphs:
         if glyph['x'] == 0 and glyph['y'] == 0 and glyph['font'] == '0' and glyph['glyph'] == '0':
             last_glyph = None
+            skip_paragraph = False
             continue
+        elif skip_paragraph:
+            continue
+        elif last_x == glyph['x']:
+            print "Skipping overlapping paragraph..."
+            skip_paragraph = True
+            continue
+            
 
         extract_spacing(kern_info, last_glyph, glyph)
+        last_x = glyph['x']
         last_glyph = glyph
 
 
