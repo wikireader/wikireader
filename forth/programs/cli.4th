@@ -146,5 +146,33 @@ base @ decimal
   bl parse 2dup delete-file drop
     create-big-file ;
 
+
+\                                        -
+.( scan <file>                           - read a file, no output )
+
+: scan-file  ( b u -- )
+  cr r/o open-file ?dup
+  if  cr ." open error = " dec. drop exit
+  then
+
+  >r \ save fileid
+
+  begin
+    here 256 r@ read-line ?dup  \ u2 f ior ior?
+    if  cr ." read error = " dec. 2drop
+        r> close-file exit
+    then
+  while   \ u2
+    [char] . emit
+  repeat
+  drop
+  r> close-file drop ;
+
+
+\ scan a specific file
+
+: scan ( -- \ <string><space> ) bl parse scan-file ;
+
+
 .( complete )
 base !
