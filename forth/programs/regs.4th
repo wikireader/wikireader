@@ -12,13 +12,13 @@ base @ decimal
   bl parse 2 - >r 2 + pad r@ over c!
   1+ r> cmove pad hex number? 0=
   if  drop  base !
-      abort" number required
+      abort" number required"
   then
   \ base addr
   bl parse >r pad r@ over c!
   1+ r> cmove pad decimal number? 0=
   if  drop  base !
-      abort" number required
+      abort" number required"
   then
   \ base addr bits
   create , ,
