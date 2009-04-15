@@ -1295,7 +1295,7 @@ type_l2:
         .long   to_r, paren_str, r_from, over, minus, spaces, type, exit
 
 ;;; : U.R ( u +n -- ) >R <# #S #> R> OVER - SPACES TYPE ;
-        COLON   u_dot_r, "u.", FLAG_NORMAL
+        COLON   u_dot_r, "u.r", FLAG_NORMAL
         .long   to_r, less_hash, hash_s, hash_greater, r_from, over, minus, spaces, type, exit
 
 ;;; : U. ( u -- ) <# #S #> SPACE TYPE ;
