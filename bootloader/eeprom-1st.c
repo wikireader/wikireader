@@ -53,7 +53,7 @@ int main(void) {
 #endif
 
 #ifdef EEPROM1ST_LOAD_FROM_RS232
-	init_rs232();
+	init_rs232_ch0();
 
 	/* read bytes from serial port and copy them to RAM */
 	while (len--) {

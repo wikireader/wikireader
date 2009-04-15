@@ -35,7 +35,7 @@
 	do {						\
 		asm volatile ("xld.w   %r15, __dp");	\
 		init_pins();				\
-		init_rs232();				\
+		init_rs232_ch0();				\
 		disable_card_power();			\
 		EEPROM_CS_HI();				\
 		SDCARD_CS_HI();				\

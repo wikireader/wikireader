@@ -37,7 +37,7 @@ __attribute__((noreturn))
 int main(void)
 {
 	init_pins();
-	init_rs232();
+	init_rs232_ch0();
 	init_ram();
 
 	EEPROM_CS_HI();

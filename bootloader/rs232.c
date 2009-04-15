@@ -33,7 +33,7 @@ int main(void)
 	u8 cmd, dat, len;
 
 	init_pins();
-	init_rs232();
+	init_rs232_ch0();
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
 
