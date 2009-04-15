@@ -130,6 +130,16 @@ str_\@_finish:
         .endm
 
 
+;;; macro to create offsets in bytes and cells
+
+        .macro  MAKE_OFFSET, label, value
+        .ifnotdef \label\()_BYTE
+\label\()_BYTES = \value
+\label\()_CELLS = \value
+        .endif
+        .endm
+
+
 ;;; the header
 ;;;  0: code address
 ;;;  4: param address
@@ -167,17 +177,18 @@ name_\label\():
 __last_name = .
         FSTRING "\name"
 
-DICTIONARY_HEADER_CELLS  = ( name_\label - \label ) / BYTES_PER_CELL
-DICTIONARY_CODE_OFFSET   = ( name_\label - \label ) / BYTES_PER_CELL
-DICTIONARY_PARAM_OFFSET  = ( name_\label - l_param_\@ ) / BYTES_PER_CELL
-DICTIONARY_FLAGS_OFFSET  = ( name_\label - l_flags_\@ ) / BYTES_PER_CELL
-DICTIONARY_LINK_OFFSET   = ( name_\label - l_link_\@ ) / BYTES_PER_CELL
+        MAKE_OFFSET DICTIONARY_HEADER,       "( name_\label - \label )"
+        MAKE_OFFSET DICTIONARY_CODE_OFFSET,  "( name_\label - \label )"
+        MAKE_OFFSET DICTIONARY_PARAM_OFFSET, "( name_\label - l_param_\@ )"
+        MAKE_OFFSET DICTIONARY_FLAGS_OFFSET, "( name_\label - l_flags_\@ )"
+        MAKE_OFFSET DICTIONARY_LINK_OFFSET,  "( name_\label - l_link_\@ )"
 
         .section .forth_param
         .balign 4
 
         .global param_\label
 param_\label\():
+
         .endm
 
 
@@ -1478,23 +1489,23 @@ paren_parse_l8:
 
 ;;; : NAME>CODE ( na -- ca ) [ =DICTIONARY-CODE-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_code, "name>code", FLAG_NORMAL
-        .long   dolit, DICTIONARY_CODE_OFFSET, cells, minus, exit
+        .long   dolit, DICTIONARY_CODE_OFFSET_BYTES, minus, exit
 
 ;;; : NAME>PARAM ( na -- pa ) [ =DICTIONARY-PARAM-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_param, "name>param", FLAG_NORMAL
-        .long   dolit, DICTIONARY_PARAM_OFFSET, cells, minus, exit
+        .long   dolit, DICTIONARY_PARAM_OFFSET_BYTES, minus, exit
 
 ;;; : NAME>FLAGS ( na -- fa ) [ =DICTIONARY-FLAGS-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_flags, "name>flags", FLAG_NORMAL
-        .long   dolit, DICTIONARY_FLAGS_OFFSET, cells, minus, exit
+        .long   dolit, DICTIONARY_FLAGS_OFFSET_BYTES, minus, exit
 
 ;;; : NAME>LINK ( na -- la ) [ =DICTIONARY-LINK-OFFSET ] LITERAL CELLS - ;
         COLON   name_to_link, "name>link", FLAG_NORMAL
-        .long   dolit, DICTIONARY_LINK_OFFSET, cells, minus, exit
+        .long   dolit, DICTIONARY_LINK_OFFSET_BYTES, minus, exit
 
 ;;; : CODE>NAME ( ca -- na )  [ =DICTIONARY-CODE-OFFSET ] LITERAL CELLS + ;
         COLON   code_to_name, "code>name", FLAG_NORMAL
-        .long   dolit, DICTIONARY_CODE_OFFSET, cells, plus, exit
+        .long   dolit, DICTIONARY_CODE_OFFSET_BYTES, plus, exit
 
 ;;; return TRUE if counted strings are equal
 ;;; : SAME? ( a a -- a a f )
@@ -1538,7 +1549,7 @@ sameq_loop:
         ld.ub   %r7,[%r4]+                      ; get byte from string 1
         ld.ub   %r8,[%r5]+                      ; get byte from string 2
         cmp     %r7, %r8                        ; check if equal
-        jrne    sameq_false                     ; ..not equal => flase result
+        jrne    sameq_false                     ; ..not equal => false result
         sub     %r6, 1                          ; decrement counter
         jrne    sameq_loop                      ; go back for more
 
@@ -1567,6 +1578,8 @@ sameq_false:
 ;;;   REPEAT
 ;;;   \ a na
 ;;;   NIP DUP NAME>CODE SWAP ;
+        .if     PREFER_FORTH_CODE
+
         COLON   find, "find", FLAG_NORMAL
 find_l1:
         .long   fetch, dup, qbranch, find_l2
@@ -1581,6 +1594,55 @@ find_l3:
 find_l4:
         .long   nip, dup, name_to_code, swap
         .long   exit
+
+        .else
+
+        CODE    find, "find", FLAG_NORMAL
+        ld.w    %r4, [%r1]                      ; va
+
+find_loop:
+        ld.w    %r4, [%r4]
+        or      %r4, %r4
+        jreq    find_not_found
+
+        ;; comparison of counted strings is inlined for speed
+
+        xld.w   %r5, [%r1 + 4]                  ; a
+        ld.w    %r6, %r4
+
+        ld.ub   %r7, [%r5]+                     ; count 1
+        ld.ub   %r8, [%r6]+                     ; count 2
+        cmp     %r7, %r8                        ; counts must be equal
+        jrne    find_next                       ; ...no
+
+find_cmp_loop:
+        ld.ub   %r8,[%r5]+                      ; get 1 byte from string 1
+        ld.ub   %r9,[%r6]+                      ; get 1 byte from string 2
+        cmp     %r8, %r9                        ; check if equal
+        jrne    find_next                       ; ..not equal => false result
+        sub     %r7, 1                          ; decrement counter
+        jrne    find_cmp_loop                   ; go back for more bytes
+
+find_found:
+        ld.w    [%r1], %r4                      ; na
+
+        xld.w   %r5, DICTIONARY_CODE_OFFSET_BYTES
+        sub     %r4, %r5                        ; NAME>CODE
+        xld.w   [%r1 + 4], %r4                  ; ca
+        NEXT
+
+find_next:
+        xld.w   %r5, DICTIONARY_LINK_OFFSET_BYTES
+        jp.d    find_loop                       ; try next word (delayed)
+        sub     %r4, %r5                        ; NAME>LINK
+
+find_not_found:
+        ld.w    %r4, FALSE
+        ld.w    [%r1], %r4                      ; F
+        NEXT
+        END_CODE
+
+        .endif
 
 ;;; : NAME? ( a -- ca na, a F )
 ;;;   CONTEXT  DUP 2@ XOR IF CELL- THEN >R \ context<>also
