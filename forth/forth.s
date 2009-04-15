@@ -869,6 +869,44 @@ m_slash_mod_l3:
 ;;; : */ ( n n n -- q ) */MOD NIP ;
 
 
+
+;;; .( bit shifts )
+
+;;; : 2* 2 * ;
+        CODE    _shl, "2*", FLAG_NORMAL
+        ld.w    %r4, [%r1]
+        sla     %r4, 1
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+
+;;; : 2/ 2 / ;
+        CODE    _shra, "2/", FLAG_NORMAL
+        ld.w    %r4, [%r1]
+        sra     %r4, 1
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+
+;;; : LSHIFT ( u u -- u ) UM+ DROP ;
+        CODE    lshift, "lshift", FLAG_NORMAL               ; ( w u -- w )
+        ld.w    %r4, [%r1]+                                 ; shift
+        ld.w    %r5, [%r1]                                  ; value
+        sla     %r5, %r4
+        ld.w    [%r1], %r5
+        NEXT
+        END_CODE
+
+;;; : RSHIFT ( u u -- u ) UM+ DROP ;
+        CODE    rshift, "rshift", FLAG_NORMAL               ; ( w u -- w )
+        ld.w    %r4, [%r1]+                                 ; shift
+        ld.w    %r5, [%r1]                                  ; value
+        srl     %r5, %r4
+        ld.w    [%r1], %r5
+        NEXT
+        END_CODE
+
+
 ;;; .( Bits & Bytes )
 
 ;;; : BYTE+ ( b -- b ) [ =BYTE ] LITERAL + ;
