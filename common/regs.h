@@ -544,6 +544,33 @@
 #define TDBEx	  (1 << 1)
 #define RDBFx	  (1 << 0)
 
+/* Bits for: REG_EFSIFx_CTL */
+#define TXENx 	  (0x1 << 7)
+#define TX_DISENx (0x0 << 7)
+#define RXENx 	  (0x1 << 6)
+#define RX_DISENx (0x0 << 6)
+#define PARx 	  (0x1 << 5)
+#define NO_PARx   (0x0 << 5)
+#define ODDx 	  (0x1 << 4)
+#define EVENx 	  (0x0 << 4)
+#define ONE_STPBx (0x1 << 3)
+#define TWO_STPBx (0x0 << 3)
+#define SCLKx 	  (0x1 << 2)
+#define INT_CLKx  (0x0 << 2)
+#define EIGHT_BIT_ASYNx   0x3
+#define SEVEN_BIT_ASYNx   0x2
+#define CLK_SLAVEx 	  0x1
+#define CLK_MASTERx 	  0x0
+
+/* Bits for: REG_EFSIFx_IrDA */
+#define DIVMD_8x	  (0x1 << 4)
+#define DIVMD_16x	  (0x0 << 4)
+#define IRMD_IRDAx		  0x10
+#define IRMD_GEN_IFx 	  0x00
+
+/* Bits for: REG_EFSIFx_BRTCTL */
+#define BRTRUN_STARx 	0x1
+#define BRTRUN_STOPx 	0x0
 
 #endif /* REGS_H */
 
