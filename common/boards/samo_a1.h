@@ -23,7 +23,8 @@ static inline void init_pins(void)
 	REG_P6_47_CFP = 0x54;
 
 	/* Serial interface */
-	REG_P0_03_CFP = 0x05;
+	REG_P0_03_CFP = 0x05; // Tx/Rx
+	REG_P0_47_CFP = 0x01; // Rx
 
 	/* LCD controller */
 	REG_P8_03_CFP = 0x15;
