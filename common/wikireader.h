@@ -73,12 +73,17 @@ static inline void init_rs232_ch1(void)
 }
 
 #ifdef INCLUDED_FROM_KERNEL
-#if BOARD_PROTO2
+#if BOARD_PROTO2 || BOARD_SAMO_A1
+
+#define ADC_FULL_SCALE	1023
+#define VADC_DIVISOR 100
+
+#define VADC_MULTIPLIER (VADC_DIVISOR * (ADC_SERIES_RESISTOR_K + ADC_SHUNT_RESISTOR_K) / ADC_SHUNT_RESISTOR_K)
 
 /* returns the battery voltage, in mV */
 int get_battery_voltage(void)
 {
-	int val;
+	unsigned int val;
 
 	/* switch on A/D converter clock and select MCLK/256 */
 	REG_AD_CLKCTL = 0xf;
@@ -97,7 +102,7 @@ int get_battery_voltage(void)
 	REG_AD_EN_SMPL_STAT |= (1 << 1);
 
 	/* wait for the conversion to complete */
-	do { asm("nop"); } while (!(REG_AD_EN_SMPL_STAT & (1 << 3)));
+	do { asm volatile ("nop"); } while (!(REG_AD_EN_SMPL_STAT & (1 << 3)));
 
 	/* read the value */
 	val = REG_AD_ADD;
@@ -107,14 +112,17 @@ int get_battery_voltage(void)
 
 	/* A/D Control/Status Register: disable controller */
 	REG_AD_EN_SMPL_STAT = 0;
-	
+
 	/* switch off A/D converter clock */
 	REG_AD_CLKCTL = 0;
 
-	/* The circuit divides the battery voltage by 220kOhm in series and
-	 * 1MOhm to GND. Measurement is done rail-to-rail in respect of AVDD.
-	 * This formula converts the cpatured value to mV. */
-	return (122 * val * AVDD_MILLIVOLTS) / (1023 * 100);
+	/* The circuit divides the battery voltage by
+	 * ADC_SERIES_RESISTOR_K kOhm in series and
+	 * ADC_SHUNT_RESISTOR_K kOhm to GND. Measurement is done
+	 * rail-to-rail in respect of AVDD_MILLIVOLTS.	This formula
+	 * converts the captured value to mV.
+	 */
+	return (val * (VADC_MULTIPLIER * AVDD_MILLIVOLTS)) / (ADC_FULL_SCALE * VADC_DIVISOR);
 }
 #else
 static inline int get_battery_voltage(void)

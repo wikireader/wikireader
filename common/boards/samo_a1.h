@@ -225,4 +225,8 @@ static inline void init_ram(void)
 #define prepare_keys()  do {} while(0)
 #define get_key_state() 0
 
+#define AVDD_MILLIVOLTS	       3000
+#define ADC_SERIES_RESISTOR_K  150
+#define ADC_SHUNT_RESISTOR_K   1000
+
 #endif
