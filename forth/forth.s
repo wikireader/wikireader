@@ -1882,12 +1882,14 @@ rx_query_no_character:
 ;;; \ second cell is the index
 ;;; 20 DUP CREATE FILEID-STACK 2 + CELLS ALLOT
 ;;; FILEID-STACK !
+        fileid_stack_length = 20
         VARIABLE fileid_stack, "fileid-stack", FLAG_NORMAL
-        .long   20                              ; size
+        .long   fileid_stack_length             ; size
         .long   0                               ; index
         ;; there must be the 'size' field above
-        .long   0,0,0,0,0, 0,0,0,0,0
-        .long   0,0,0,0,0, 0,0,0,0,0
+        .rept   fileid_stack_length
+        .long   0
+        .endr
 
 ;;; : INCLUDE-FILE ( fileid -- )
 ;;;   SOURCE-ID @ FILEID-STACK STACK-PUSH
