@@ -61,6 +61,17 @@ static inline void init_rs232_ch0(void)
 	REG_EFSIF0_BRTRUN |= BRTRUN_STARx;
 }
 
+static inline void init_rs232_ch1(void)
+{
+	REG_EFSIF1_CTL = RXENx | SERIAL_8N1;
+
+	REG_EFSIF1_IRDA = DIVMD_8x | IRMD_GEN_IFx;
+
+	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 38400));
+
+	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
+}
+
 #ifdef INCLUDED_FROM_KERNEL
 #if BOARD_PROTO2
 
