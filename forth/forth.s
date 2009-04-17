@@ -73,7 +73,7 @@
 
 
 ;;; Version (no minor values, just increment)
-BUILD_NUMBER = 1
+BUILD_NUMBER = 2
 
 ;;; set this to 1 to diable assembler optimisations
 PREFER_FORTH_CODE = 0
@@ -2827,6 +2827,9 @@ read_line_l5:
         .long   preset, filesystem_init
         .long   forth, context, fetch, dup, current, dstore, overt
         .long   tboot, atexecute
+        .long   do_dollar_quote
+        FSTRING "forth.4th"
+        .long   count, included
         .long   quit
 
         COLON   nop, "nop", FLAG_NORMAL              ;debug
