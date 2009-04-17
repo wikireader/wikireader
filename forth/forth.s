@@ -1065,6 +1065,32 @@ cmove_done:
         NEXT
         END_CODE
 
+;;; \ compile to memory blocks
+;;; : MEM= ( b b u -- f )
+        CODE    mem_equal, "mem=", FLAG_NORMAL
+        ld.w    %r4, [%r1]+                     ; count
+        ld.w    %r5, [%r1]+                     ; addr 2
+        ld.w    %r6, [%r1]                      ; addr 1
+        or      %r4, %r4
+        jreq    mem_equal_true
+mem_equal_loop:
+        ld.ub   %r7, [%r6]+
+        ld.ub   %r8, [%r5]+
+        cmp     %r7, %r8
+        jrne    mem_equal_false
+        xsub    %r4, 1
+        jrne    mem_equal_loop
+
+mem_equal_true:
+        ld.w    %r4, TRUE
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
+mem_equal_false:
+        ld.w    %r4, FALSE
+        ld.w    [%r1], %r4
+        NEXT
+        END_CODE
 
 ;;; : -TRAILING ( b u -- b u )
 ;;;   FOR AFT DUP R@ + C@  BL XOR
@@ -2688,6 +2714,31 @@ read_line_l5:
         xcall   FileSystem_ReadDirectory
         ld.w    [%r1], %r5                      ; ior
         xld.w   [%r1 + 4], %r4                  ; count2
+        NEXT
+        END_CODE
+
+
+;;; .( Access to low level sectors on disk )
+
+;;; \ buffer size = count * 512 bytes
+;;; : READ-SECTORS ( b count sector -- ior )
+        CODE    read_sectors, "read-sectors", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; sector
+        ld.w    %r8, [%r1]+                     ; count
+        xld.w   %r7, [%r1]                      ; buffer
+        xcall   FileSystem_AbsoluteRead
+        ld.w    [%r1], %r5                      ; ior
+        NEXT
+        END_CODE
+
+;;; \ buffer size = count * 512 bytes
+;;; : WRITE-SECTORS ( b count sector -- ior )
+        CODE    write_sectors, "write-sectors", FLAG_NORMAL
+        ld.w    %r6, [%r1]+                     ; sector
+        ld.w    %r8, [%r1]+                     ; count
+        xld.w   %r7, [%r1]                      ; buffer
+        xcall   FileSystem_AbsoluteWrite
+        ld.w    [%r1], %r5                      ; ior
         NEXT
         END_CODE
 

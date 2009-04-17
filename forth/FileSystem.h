@@ -57,4 +57,9 @@ Forth_ReturnType FileSystem_OpenDirectory(const Forth_PointerType directoryname,
 Forth_ReturnType FileSystem_CloseDirectory(Forth_CellType handle);
 Forth_ReturnType FileSystem_ReadDirectory(Forth_CellType handle, void *buffer, Forth_CellType length);
 
+
+Forth_ReturnType FileSystem_AbsoluteRead(Forth_CellType sector, void *buffer, Forth_CellType count);
+Forth_ReturnType FileSystem_AbsoluteWrite(Forth_CellType sector, const void *buffer, Forth_CellType count);
+
+
 #endif

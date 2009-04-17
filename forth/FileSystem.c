@@ -31,6 +31,7 @@
 #include <string.h>
 
 #include <tff.h>
+#include <diskio.h>
 
 #include "forth.h"
 #include "FileSystem.h"
@@ -400,6 +401,26 @@ Forth_ReturnType FileSystem_ReadDirectory(Forth_CellType handle, void *buffer, F
 	}
 	return r;
 }
+
+
+
+Forth_ReturnType FileSystem_AbsoluteRead(Forth_CellType sector, void *buffer, Forth_CellType count)
+{
+	Forth_ReturnType r = {0, FR_OK};
+
+	r.rc = disk_read(0, buffer, sector, count);
+	return r;
+}
+
+
+Forth_ReturnType FileSystem_AbsoluteWrite(Forth_CellType sector, const void *buffer, Forth_CellType count)
+{
+	Forth_ReturnType r = {0, FR_OK};
+
+	r.rc = disk_write(0, buffer, sector, count);
+	return r;
+}
+
 
 
 // 31-25: Year(0-127 +1980)
