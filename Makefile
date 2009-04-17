@@ -164,7 +164,7 @@ print-flash-config:
 # items for testing
 
 .PHONY: forth
-forth:  gcc
+forth:  gcc mini-libc
 	$(MAKE) -C forth
 
 .PHONY: mbr
