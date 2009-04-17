@@ -253,7 +253,7 @@ variable spin-pos
 \                                        -
 .( write-test                            - write absolute sectors )
 
-8 constant write-count
+1 constant write-count
 512 constant sector-size
 
 : buffer-1 ( -- b ) here 1024 + ;
