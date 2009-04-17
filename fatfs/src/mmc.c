@@ -64,10 +64,19 @@ DSTATUS Stat = STA_NOINIT;	/* Disk status */
 static
 BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 
-void xdelay(DWORD nops)
+void delay_us(unsigned int microsec)
 {
-	while (nops--)
-		asm volatile("nop");
+	while (microsec--) {
+		//asm volatile("nop");
+		// at 48 MHz this should take 1 micro second
+		asm volatile (
+			"\tld.w\t%r4,12\n"
+			"delay_loop:\n"
+			"\tnop\n"
+			"\tsub\t%r4,1\n"
+			"\tjrne\tdelay_loop"
+			);
+	}
 }
 
 /*-----------------------------------------------------------------------*/
@@ -113,7 +122,7 @@ BYTE wait_ready (void)
 	res = rcvr_spi();
 
 	while ((res != 0xff) && timeout--) {
-		xdelay(10);
+		delay_us(10);
 		res = rcvr_spi();
 	}
 
@@ -142,7 +151,7 @@ void turn_on_power (void)
 {
 	DESELECT();
 	enable_card_power();
-	xdelay(100000);
+	delay_us(10000);
 }
 
 static
@@ -309,6 +318,7 @@ BYTE send_cmd (
 
 	/* Select the card and wait for ready */
 	DESELECT();
+	delay_us(100);
 	SELECT();
 	if (cmd != CMD0 && wait_ready() != 0xff)
 		return 0xff;
@@ -334,7 +344,7 @@ BYTE send_cmd (
 	 **/
 	n = (cmd == CMD0 ? 21 : 10);
 	do {
-		xdelay(5000);
+		delay_us(50);
 		res = rcvr_spi();
 		n--;
 	} while (n && ((cmd == CMD0) || (res & 0x80) || (res == 0x1f) || (res == 0x3f)));
