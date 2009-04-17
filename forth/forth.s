@@ -825,7 +825,7 @@ m_slash_mod_l3:
         .long   over, zero_less, swap, m_slash_mod, exit
 
 ;;; : MOD ( n n -- r ) /MOD DROP ;
-        COLON   mod, "/", FLAG_NORMAL
+        COLON   mod, "mod", FLAG_NORMAL
         .long   slash_mod, drop, exit
 
 ;;; : / ( n n -- q ) /MOD NIP ;
