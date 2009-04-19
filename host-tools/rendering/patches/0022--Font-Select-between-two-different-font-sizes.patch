@@ -1,0 +1,36 @@
+From 36c5873bdb317ff4be73875fcddb9483765e558f Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Sun, 19 Apr 2009 21:57:44 +0200
+Subject: [PATCH] [Font] Select between two different font sizes
+
+---
+ WebCore/platform/graphics/Font.cpp |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
+
+diff --git a/WebCore/platform/graphics/Font.cpp b/WebCore/platform/graphics/Font.cpp
+index f8bec82..f49d7c4 100644
+--- a/WebCore/platform/graphics/Font.cpp
++++ b/WebCore/platform/graphics/Font.cpp
+@@ -74,6 +74,19 @@ Font::Font(const FontDescription& fd, short letterSpacing, short wordSpacing)
+     , m_wordSpacing(wordSpacing)
+     , m_isPlatformFont(false)
+ {
++    /*
++     * Select between two sizes.... we support.
++     * Everything that is smaller than MINIMAL_SIZE + 3 gets the
++     * minimal size, the rest gets the MAXIMAL_SIZE
++     */
++    static const unsigned MINIMAL_SIZE = 9;
++    static const unsigned MAXIMAL_SIZE = 14;
++
++    /* simple min/max filter */
++    if (m_fontDescription.computedPixelSize() < MINIMAL_SIZE + 3)
++        m_fontDescription.setComputedSize(MINIMAL_SIZE - 0.5f);
++    else
++        m_fontDescription.setComputedSize(MAXIMAL_SIZE - 0.5f);
+ }
+ 
+ Font::Font(const FontPlatformData& fontData, bool isPrinterFont)
+-- 
+1.6.0.4
+

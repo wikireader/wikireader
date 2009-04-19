@@ -1,0 +1,122 @@
+From cc68104ed4bad5443882d272582df6672a2429dd Mon Sep 17 00:00:00 2001
+From: Holger Freyther <ich@tamarin.(none)>
+Date: Sun, 19 Apr 2009 23:16:56 +0200
+Subject: [PATCH] [Font] Disable italic (by force), attempt to force Liberation
+
+Attempt to work around font config selection when using the
+generic sans-serif, serif, monospace names. These manage to
+pick up Dejavu, Liberation and Free* for various glyphs when
+using one font should be enough...
+---
+ WebCore/platform/graphics/Font.cpp                 |    9 +++++++++
+ .../platform/graphics/gtk/FontPlatformDataGtk.cpp  |    5 +----
+ WebKit/gtk/webkit/webkitwebsettings.cpp            |   12 ++++++------
+ 3 files changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/WebCore/platform/graphics/Font.cpp b/WebCore/platform/graphics/Font.cpp
+index f49d7c4..04b52f9 100644
+--- a/WebCore/platform/graphics/Font.cpp
++++ b/WebCore/platform/graphics/Font.cpp
+@@ -75,6 +75,15 @@ Font::Font(const FontDescription& fd, short letterSpacing, short wordSpacing)
+     , m_isPlatformFont(false)
+ {
+     /*
++     * force certain families.... The idea is to have three default
++     * fonts and allow to switch to non latin fonts to get certain
++     * other characters...
++     */
++    if (!fd.family().family().isEmpty()) {
++        m_fontDescription.setItalic(false);
++    }
++
++    /*
+      * Select between two sizes.... we support.
+      * Everything that is smaller than MINIMAL_SIZE + 3 gets the
+      * minimal size, the rest gets the MAXIMAL_SIZE
+diff --git a/WebCore/platform/graphics/gtk/FontPlatformDataGtk.cpp b/WebCore/platform/graphics/gtk/FontPlatformDataGtk.cpp
+index 17d789b..7f31230 100644
+--- a/WebCore/platform/graphics/gtk/FontPlatformDataGtk.cpp
++++ b/WebCore/platform/graphics/gtk/FontPlatformDataGtk.cpp
+@@ -47,12 +47,9 @@ FontPlatformData::FontPlatformData(const FontDescription& fontDescription, const
+ 
+     CString familyNameString = familyName.string().utf8();
+     const char* fcfamily = familyNameString.data();
+-    int fcslant = FC_SLANT_ROMAN;
+     // FIXME: Map all FontWeight values to fontconfig weights.
+     int fcweight = FC_WEIGHT_NORMAL;
+     double fcsize = fontDescription.computedPixelSize();
+-    if (fontDescription.italic())
+-        fcslant = FC_SLANT_ITALIC;
+     if (fontDescription.weight() >= FontWeight600)
+         fcweight = FC_WEIGHT_BOLD;
+ 
+@@ -90,7 +87,7 @@ FontPlatformData::FontPlatformData(const FontDescription& fontDescription, const
+         goto freePattern;
+     if (!FcPatternAddInteger(pattern, FC_WEIGHT, fcweight))
+         goto freePattern;
+-    if (!FcPatternAddInteger(pattern, FC_SLANT, fcslant))
++    if (!FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ROMAN))
+         goto freePattern;
+     if (!FcPatternAddDouble(pattern, FC_PIXEL_SIZE, fcsize))
+         goto freePattern;
+diff --git a/WebKit/gtk/webkit/webkitwebsettings.cpp b/WebKit/gtk/webkit/webkitwebsettings.cpp
+index 62e23e5..d041de7 100644
+--- a/WebKit/gtk/webkit/webkitwebsettings.cpp
++++ b/WebKit/gtk/webkit/webkitwebsettings.cpp
+@@ -134,7 +134,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "cursive-font-family",
+                                     "Cursive Font Family",
+                                     "The default Cursive font family used to display text.",
+-                                    "serif",
++                                    "Liberation Serif",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -143,7 +143,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "default-font-family",
+                                     "Default Font Family",
+                                     "The default font family used to display text.",
+-                                    "sans-serif",
++                                    "Liberation Sans",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -152,7 +152,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "fantasy-font-family",
+                                     "Fantasy Font Family",
+                                     "The default Fantasy font family used to display text.",
+-                                    "serif",
++                                    "Liberation Serif",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -161,7 +161,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "monospace-font-family",
+                                     "Monospace Font Family",
+                                     "The default font family used to display monospace text.",
+-                                    "monospace",
++                                    "Liberation Mono",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -170,7 +170,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "sans-serif-font-family",
+                                     "Sans Serif Font Family",
+                                     "The default Sans Serif font family used to display text.",
+-                                    "sans-serif",
++                                    "Liberation Sans",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+@@ -179,7 +179,7 @@ static void webkit_web_settings_class_init(WebKitWebSettingsClass* klass)
+                                     "serif-font-family",
+                                     "Serif Font Family",
+                                     "The default Serif font family used to display text.",
+-                                    "serif",
++                                    "Liberation Serif",
+                                     flags));
+ 
+     g_object_class_install_property(gobject_class,
+-- 
+1.6.0.4
+
