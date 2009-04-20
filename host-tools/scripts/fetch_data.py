@@ -50,7 +50,6 @@ def execute(hash, url):
     render_link = "%s.link" % os.path.join(file_base, hash)
 
     run_command(["GtkLauncher", url])
-    run_command(["extract_spacing.py", "render_text.blib"])
     run_command(["mkdir", "-p", file_base])
     run_command(["mv", "-f", "render_text.blib", render_text])
     run_command(["mv", "-f", "render_text.links", render_link])
