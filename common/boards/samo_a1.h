@@ -221,9 +221,31 @@ static inline void init_ram(void)
 #define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 #define EEPROM_WP_HI()	do {} while (0)
 
-#define power_off()	do {} while(0)
-#define prepare_keys()  do {} while(0)
-#define get_key_state() 0
+static inline void power_off(void)
+{
+	/* switch off condition: P64 high, P63 low */
+	REG_P6_P6D = 0x10;
+}
+
+static inline void prepare_keys(void)
+{
+	/* initial comparison is all buttons open */
+	REG_KINTCOMP_SCPK0 = 0x00;
+
+	/* enable mask for three buttons */
+	REG_KINTCOMP_SMPK0 = 0x07;
+
+	/* select P60/P61/P62 */
+	REG_KINTSEL_SPPK01 = 0x04;
+
+	/* only interested in KINT0 source */
+	REG_INT_EK01_EP0_3 = 0x10;
+}
+
+static inline unsigned char get_key_state(void)
+{
+	return REG_P6_P6D & 0x7;
+}
 
 #define AVDD_MILLIVOLTS	       3000
 #define ADC_SERIES_RESISTOR_K  150
