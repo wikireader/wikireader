@@ -28,6 +28,7 @@
 #define KERNEL "/KERNEL"
 
 //#define POWER_MANAGEMENT 1
+#define FAILED_BOOT_IMAGE_ADDR 		0xc000
 
 #ifdef POWER_MANAGEMENT
 static void power_tests();
@@ -56,7 +57,7 @@ int main(void)
 
 	/* load the 'could not boot from SD card' image */
 	init_lcd();
-	eeprom_load(0x10000, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
+	eeprom_load(FAILED_BOOT_IMAGE_ADDR, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
 
 #if LCD_INVERTED
 	{
