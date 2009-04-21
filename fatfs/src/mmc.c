@@ -149,7 +149,7 @@ void release_spi (void)
 static
 void turn_on_power (void)
 {
-	DESELECT();
+	release_spi();
 	enable_card_power();
 	delay_us(10000);
 }
@@ -161,7 +161,6 @@ void turn_off_power (void)
 	wait_ready();
 	release_spi();
 
-	DESELECT();
 	disable_card_power();
 	Stat |= STA_NOINIT;		/* Set STA_NOINIT */
 }
@@ -318,7 +317,7 @@ BYTE send_cmd (
 	}
 
 	/* Select the card and wait for ready */
-	DESELECT();
+	release_spi();
 	delay_us(100);
 	SELECT();
 	if (cmd != CMD0 && wait_ready() != 0xff)
@@ -403,7 +402,7 @@ DSTATUS disk_initialize (
 	turn_on_power();					/* Force socket power on */
 	SELECT();
 	for (n = 10; n; n--) rcvr_spi();		/* 80 dummy clocks */
-	DESELECT();
+	release_spi();
 
 	ty = 0;
 

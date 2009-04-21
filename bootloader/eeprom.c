@@ -30,6 +30,8 @@ static u8 spi_transmit(u8 out)
 
 void eeprom_load(u32 addr, u8 *dest, u32 size)
 {
+	EEPROM_CS_HI();
+	spi_transmit(0x00);
 	EEPROM_CS_LO();
 
 #if EEPROM_SST25VF040 || EEPROM_PM25LV512

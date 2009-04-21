@@ -87,17 +87,17 @@ int elf_exec(const u8 *filename)
 
 	if (f_mount(0, &fatfs) != FR_OK) {
 		rc = -1;
-		goto abort;
+		goto abort_umount;
 	}
 
 	if (f_open(&file, filename, FA_READ) != FR_OK) {
 		rc = -2;
-		goto abort;
+		goto abort_umount;
 	}
 
 	if (f_read(&file, &hdr, sizeof(hdr), &r) || r != sizeof(hdr)) {
 		rc = -3;
-		goto abort;
+		goto abort_close;
 	}
 
 	if (hdr.e_ident[0] != ELFMAG0 ||
@@ -106,19 +106,19 @@ int elf_exec(const u8 *filename)
 	    hdr.e_ident[3] != ELFMAG3) {
 		/* print("invalid ELF magic\n"); */
 		rc = -4;
-		goto abort;
+		goto abort_close;
 	}
 
 	if (hdr.e_type != ET_EXEC) {
 		/* print("invalid ELF file type\n"); */
 		rc = -5;
-		goto abort;
+		goto abort_close;
 	}
 
 	if (hdr.e_machine != EM_C33) {
 		print("FAIL: machine\n");
 		rc = -6;
-		goto abort;
+		goto abort_close;
 	}
 
 	for (i = 0; i < hdr.e_shnum; i++) {
@@ -129,9 +129,11 @@ int elf_exec(const u8 *filename)
 		switch (sec.sh_type) {
 		case SHT_PROGBITS:
 			f_lseek(&file, sec.sh_offset);
-			if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size)
+			if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size) {
 				print("FAIL: load\n");
-			else {
+				rc = -7;
+				goto abort_close;
+			} else {
 				print("PROG: ");
 				print_u32(sec.sh_addr);
 				print("\n");
@@ -154,9 +156,12 @@ int elf_exec(const u8 *filename)
 
 	exec = (void *) hdr.e_entry;
 	((void (*) (void)) exec) ();
+	goto abort_umount;
 
 // make sure every thing is cleaned up if the load fails fail
-abort:
+abort_close:
+	f_close(&file);
+abort_umount:
 	SDCARD_CS_HI();
 	disable_card_power();
 	return rc;
