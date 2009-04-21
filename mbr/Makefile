@@ -57,7 +57,7 @@ define MAKE_APP1
 APPLICATIONS += ${1}
 APPLICATIONS_CLEAN += ${1} ${1}.elf ${1}.header
 
-${1}.elf: ${1}.o $(filter-out eeprom.o,${2}) application.lds
+${1}.elf: ${1}.o $(filter-out eeprom.o,${2}) application.lds $$(LIBS)
 	$$(LD) -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -T application.lds -Map $$(@:.elf=.map)
 
 ${1}: ${1}.elf ${1}.header
