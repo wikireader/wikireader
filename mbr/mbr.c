@@ -61,11 +61,9 @@ void master_boot(void)
 	register int block = 0;
 
 	for (;;) {
+		asm volatile ("xld.w   %r15, __dp");
 		init_pins();
 		init_rs232_ch0();
-		disable_card_power();
-		SDCARD_CS_HI();
-		EEPROM_CS_HI();
 		//init_ram(); // but will be too big
 
 		PRINT_CHAR('>');
@@ -76,5 +74,6 @@ void master_boot(void)
 		eeprom_load((block << 13) | EEPROM_CODE_OFFSET, DEST, EEPROM_PAYLOAD_SIZE);
 
 		block = (APPLICATION)();
+		PRINT_CHAR('<');
 	}
 }

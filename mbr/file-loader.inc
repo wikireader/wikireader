@@ -25,16 +25,6 @@ int main(void)
 {
 	APPLICATION_INITIALISE();
 
-#if BOARD_PROTO1 || BOARD_SAMO_A1
-	/* set FPT1 to another gpio, make it falling edge triggered */
-	REG_PINTSEL_SPT03 |= 0xC;
-	REG_PINTEL_SEPT07 |= 0x2;
-	REG_PINTPOL_SPP07 &= ~0x2;
-#endif
-
-	// enable SPI: master mode, no DMA, 8 bit transfers
-	REG_SPI_CTL1 = 0x03 | (7 << 10) | (1 << 4);
-
 	// boot an elf file
 	{
 		int error = - elf_exec(LOAD_FILE);

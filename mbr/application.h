@@ -35,10 +35,7 @@
 	do {						\
 		asm volatile ("xld.w   %r15, __dp");	\
 		init_pins();				\
-		init_rs232_ch0();				\
-		disable_card_power();			\
-		EEPROM_CS_HI();				\
-		SDCARD_CS_HI();				\
+		init_rs232_ch0();			\
 		init_ram();				\
 	} while (0)
 
@@ -47,9 +44,7 @@
 // at present just returns the next_program number to
 #define APPLICATION_FINALISE(next_program)  \
 	do {				    \
-		disable_card_power();	    \
-		EEPROM_CS_HI();		    \
-		SDCARD_CS_HI();		    \
+		init_pins();		    \
 		return (next_program);	    \
 	} while (0)
 
