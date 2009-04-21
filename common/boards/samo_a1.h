@@ -1,6 +1,61 @@
 #if !defined(SAMO_A1_H)
 #define SAMO_A1_H 1
 
+// The ports are:
+//   P32 = SD_CARD_VCCEN  active low
+//   P33 = SD_CARD_PWR	  active high
+// Note:
+//   P33 is N/C on Caiac version and VCCEN derived from P32
+//     with a special driver chip
+
+#define P32_BIT (1 << 2)
+#define P33_BIT (1 << 3)
+
+// P32 = 0, P33 = 1
+#define P3_23_MASK (~(P32_BIT | P33_BIT))
+#define enable_card_power()  do {					\
+		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P33_BIT;	\
+	} while(0)
+
+#define disable_card_power() do {					\
+		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
+	} while(0)
+
+
+#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
+#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
+#define EEPROM_WP_HI()	do {} while (0)
+
+static inline void power_off(void)
+{
+	/* switch off condition: P64 high, P63 low */
+	REG_P6_P6D = 0x10;
+}
+
+static inline void prepare_keys(void)
+{
+	/* initial comparison is all buttons open */
+	REG_KINTCOMP_SCPK0 = 0x00;
+
+	/* enable mask for three buttons */
+	REG_KINTCOMP_SMPK0 = 0x07;
+
+	/* select P60/P61/P62 */
+	REG_KINTSEL_SPPK01 = 0x04;
+
+	/* only interested in KINT0 source */
+	REG_INT_EK01_EP0_3 = 0x10;
+}
+
+static inline unsigned char get_key_state(void)
+{
+	return REG_P6_P6D & 0x7;
+}
+
+#define AVDD_MILLIVOLTS	       3000
+#define ADC_SERIES_RESISTOR_K  150
+#define ADC_SHUNT_RESISTOR_K   1000
+
 
 static inline void init_pins(void)
 {
@@ -31,13 +86,17 @@ static inline void init_pins(void)
 	REG_P9_47_CFP = 0x55;
 
 	/* SDCARD power */
+	REG_P3_P3D = 0x0f;
 	REG_P3_IOC3 = 0x0f;
+	disable_card_power();
+
 	/* SDCARD CS# */
 	REG_P5_03_CFP = 0x01;
 
 	REG_MISC_PUP6 = (1 << 5);
 
 	/* P50 & P52: CS lines */
+	REG_P5_P5D = 0x07;  // all cs lines high
 	REG_P5_IOC5 = 0x07;
 
 	/* set FPT1 to another gpio, make it falling edge triggered */
@@ -195,60 +254,5 @@ static inline void init_ram(void)
 		asm volatile ("nop");
 	}
 }
-
-// The ports are:
-//   P32 = SD_CARD_VCCEN  active low
-//   P33 = SD_CARD_PWR	  active high
-// Note:
-//   P33 is N/C on Caiac version and VCCEN derived from P32
-//     with a special driver chip
-
-#define P32_BIT (1 << 2)
-#define P33_BIT (1 << 3)
-
-// P32 = 0, P33 = 1
-#define P3_23_MASK (~(P32_BIT | P33_BIT))
-#define enable_card_power()  do {					\
-		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P33_BIT;	\
-	} while(0)
-
-#define disable_card_power() do {					\
-		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
-	} while(0)
-
-
-#define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
-#define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
-#define EEPROM_WP_HI()	do {} while (0)
-
-static inline void power_off(void)
-{
-	/* switch off condition: P64 high, P63 low */
-	REG_P6_P6D = 0x10;
-}
-
-static inline void prepare_keys(void)
-{
-	/* initial comparison is all buttons open */
-	REG_KINTCOMP_SCPK0 = 0x00;
-
-	/* enable mask for three buttons */
-	REG_KINTCOMP_SMPK0 = 0x07;
-
-	/* select P60/P61/P62 */
-	REG_KINTSEL_SPPK01 = 0x04;
-
-	/* only interested in KINT0 source */
-	REG_INT_EK01_EP0_3 = 0x10;
-}
-
-static inline unsigned char get_key_state(void)
-{
-	return REG_P6_P6D & 0x7;
-}
-
-#define AVDD_MILLIVOLTS	       3000
-#define ADC_SERIES_RESISTOR_K  150
-#define ADC_SHUNT_RESISTOR_K   1000
 
 #endif
