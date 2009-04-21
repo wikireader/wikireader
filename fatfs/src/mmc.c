@@ -212,14 +212,15 @@ BOOL rcvr_datablock (
 )
 {
 	BYTE token;
-	/* 10 ms!? */
-	DWORD timeout = 1000;
+	DWORD timeout = 20000;
 
-	do {				/* Wait for data packet in timeout of 100ms */
+	do {				/* Wait for data packet in timeout of max 100ms */
+		delay_us(5);
 		token = rcvr_spi();
 	} while ((token == 0xFF) && timeout--);
+
 	if (token != 0xFE)
-		return FALSE;	/* If not valid data token, retutn with error */
+		return FALSE;	/* If not valid data token, return with error */
 
 	do {				/* Receive the data block into buffer */
 		rcvr_spi_m(buff++);
