@@ -41,6 +41,8 @@ def parse():
 			action = "store", dest = "fontmap", default = "fontmap.map");
 	parser.add_option("-d", "--default", help = "The font to be used as font 0.",
 			action = "store", dest = "default_font", default = "Liberation_Sans_9")
+	parser.add_option("-g", "--glyphmapfile", help = "Mapping of font/glyph to font/number",
+			action = "store", dest = "glyphmap", default = "glyphmap.map")
 	(opts, args) = parser.parse_args(sys.argv)
 
 	if not opts.fontpath:
