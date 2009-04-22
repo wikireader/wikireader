@@ -40,7 +40,7 @@ def parse():
 	parser.add_option("-m", "--fontmapfile", help = "The to be generated font name to number map",
 			action = "store", dest = "fontmap", default = "fontmap.map");
 	parser.add_option("-d", "--default", help = "The font to be used as font 0.",
-			action = "store", dest = "default_font", default = "DejaVu_Sans_9")
+			action = "store", dest = "default_font", default = "Liberation_Sans_9")
 	(opts, args) = parser.parse_args(sys.argv)
 
 	if not opts.fontpath:
