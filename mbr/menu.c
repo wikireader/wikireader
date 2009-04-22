@@ -48,7 +48,7 @@ int main(void)
 			print_char(('A' - 1) + i);
 			print(". ");
 			for (k = 0; k < sizeof(header.name); ++k) {
-				if ('\0' == header.name[k]) {
+				if ('\0' == header.name[k] || '\xff' == header.name[k]) {
 					break;
 				}
 				print_char(header.name[k]);
