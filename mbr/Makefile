@@ -59,12 +59,13 @@ define MAKE_APP1
 APPLICATIONS += ${1}
 APPLICATIONS_CLEAN += ${1} ${1}.elf ${1}.header
 
-${1}.elf: ${1}.o $(filter-out eeprom.o,${2}) application.lds $$(LIBS)
-	$$(LD) -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -T application.lds -Map $$(@:.elf=.map)
+${1}.elf: application.lds ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS)
+	$$(LD) -T application.lds -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -Map $$(@:.elf=.map)
 
 ${1}: ${1}.elf ${1}.header
 	$$(OBJCOPY) $$(OBJCOPY_FLAGS) --only-section=.text	\
 				--only-section=.rodata		\
+				--only-section=.data		\
 				$$< $$@
 endef
 

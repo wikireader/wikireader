@@ -31,12 +31,23 @@
 
 // setup and configure run time environment
 // the very first line of main() after the '}'
-#define APPLICATION_INITIALISE()			\
-	do {						\
-		asm volatile ("xld.w   %r15, __dp");	\
-		init_pins();				\
-		init_rs232_ch0();			\
-		init_ram();				\
+#define APPLICATION_INITIALISE()				\
+	do {							\
+		asm volatile ("\txld.w\t%r15, __dp\n"		\
+			      "\txld.w\t%r10, __SIZE_bss\n"	\
+			      "\tor\t%r10, %r10\n"		\
+			      "\tjreq\tclear_bss_done\n"	\
+			      "\txld.w\t%r9, __START_bss\n"	\
+			      "\txor\t%r8, %r8\n"		\
+			      "clear_bss_loop:\n"		\
+			      "\tld.w\t[%r9]+, %r8\n"		\
+			      "\tsub\t%r10, 4\n"		\
+			      "\tjrgt\tclear_bss_loop\n"	\
+			      "clear_bss_done:\n"		\
+			);					\
+		init_pins();					\
+		init_rs232_ch0();				\
+		init_ram();					\
 	} while (0)
 
 
@@ -44,7 +55,6 @@
 // at present just returns the next_program number to
 #define APPLICATION_FINALISE(next_program)  \
 	do {				    \
-		init_pins();		    \
 		return (next_program);	    \
 	} while (0)
 

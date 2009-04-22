@@ -66,11 +66,10 @@ void master_boot(void)
 		init_rs232_ch0();
 		//init_ram(); // but will be too big
 
-		PRINT_CHAR('>');
-
-		/* enable SPI: master mode, no DMA, 8 bit transfers */
+		// enable SPI: master mode, no DMA, 8 bit transfers
 		REG_SPI_CTL1 = 0x03 | (7 << 10);
 
+		PRINT_CHAR('>');
 		eeprom_load((block << 13) | EEPROM_CODE_OFFSET, DEST, EEPROM_PAYLOAD_SIZE);
 
 		block = (APPLICATION)();

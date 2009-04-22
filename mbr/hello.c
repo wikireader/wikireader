@@ -20,6 +20,10 @@
 
 #include "application.h"
 
+int x = 0xcafedeca;
+unsigned char c = 2;
+int y;
+unsigned char d;
 
 // main() must be first as the loader executes from the first program address
 int main(void)
@@ -31,6 +35,18 @@ int main(void)
 	print(" 1 + 2 = ");
 	print_u32(1 + 2);
 	print_char('\n');
+	{
+		print(" x = ");
+		print_u32((u32)&x);
+		print_char(':');
+		print_u32(x);
+		print_char('\n');
+		print(" y = ");
+		print_u32((u32)&y);
+		print_char(':');
+		print_u32(y);
+		print_char('\n');
+	}
 
 	print("goodbye world\n");
 
