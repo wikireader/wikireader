@@ -8,6 +8,8 @@
 #define WL_KEY_HASH		35
 #define WL_KEY_PLUS		43
 #define WL_KEY_MINUS		45
+#define WL_KEY_UP		65
+#define WL_KEY_DOWN		66
 
 enum {
 	WL_INPUT_KEY_SEARCH	= 0x1000,
