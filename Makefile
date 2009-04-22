@@ -39,6 +39,7 @@ export PATH:=$(PWD)/install/bin:$(PATH)
 .PHONY: all
 all:    mini-libc \
 	bootloader \
+	toppers \
 	kernel \
 	simulator-qt4 \
 	simulator-console
