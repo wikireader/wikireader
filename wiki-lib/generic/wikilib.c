@@ -73,7 +73,7 @@ static void print_intro()
 {
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(0, 60, 70, "Type any letter to search", 25);
+	render_string(0, 73, 70, "Type a word or phrase", 21);
 	keyboard_paint();
 	guilib_fb_unlock();
 }

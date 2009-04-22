@@ -56,9 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
  : QWidget(parent)
 {
     display = new WikiDisplay();
-    search = new QPushButton("Search");
-    history = new QPushButton("History");
-    random = new QPushButton("Random"); 
+    search = new QPushButton("find");
+    history = new QPushButton("hist");
+    random = new QPushButton("rand"); 
 
     search->setFocusPolicy(Qt::NoFocus);
     history->setFocusPolicy(Qt::NoFocus);
