@@ -41,7 +41,9 @@ mbr.elf: mbr.o eeprom.o
 mbr: mbr.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 	$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
-
+	@c=$$(wc --bytes < "$@") ; \
+	echo mbr size = $${c} bytes, max = 512 bytes ; \
+	[ "$${c}" -le 512 ] || exit 1
 
 # macro to create application rules
 # $call MAKE_APP, app_name, file1.o file2.o)
