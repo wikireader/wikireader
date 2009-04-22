@@ -170,8 +170,8 @@ void search_display_results(void)
 {
 	char *result;
 	int y_pos = 0;
-	const int results = keyboard_is_visible() ?
-				NUMBER_OF_RESULTS_KEYBOARD : NUMBER_OF_RESULTS;
+	const int results = keyboard_get_mode() == KEYBOARD_NONE ?
+				NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 
 	guilib_fb_lock();
 	search_found = 0;

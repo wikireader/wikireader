@@ -86,16 +86,16 @@ static struct keyboard_key qwerty[] = {
  * is shared between search.c and this file.
  */
 
-static int keyboard_visible = 1;
+static keyboard_mode_e kb_mode = KEYBOARD_CHAR;
 
-int keyboard_is_visible(void)
+void keyboard_set_mode(keyboard_mode_e mode)
 {
-	return keyboard_visible;
+	kb_mode = mode;
 }
 
-void keyboard_set_visible(int visible)
+keyboard_mode_e keyboard_get_mode()
 {
-	keyboard_visible = visible;
+	return kb_mode;
 }
 
 /**
@@ -103,7 +103,7 @@ void keyboard_set_visible(int visible)
  */
 void keyboard_paint()
 {
-	if (!keyboard_visible)
+	if (kb_mode == KEYBOARD_NONE)
 		return;
 	guilib_fb_lock();
 	guilib_blit_image(&image_data, 0, FRAMEBUFFER_HEIGHT - image_data.height);

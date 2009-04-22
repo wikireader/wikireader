@@ -59,7 +59,11 @@ static void repaint_search(void)
 /* this is only called for the index page */
 static void toggle_soft_keyboard(void)
 {
-	keyboard_set_visible(!keyboard_is_visible());
+	// Set the keyboard mode to what we want to change to.
+	if (keyboard_get_mode() == KEYBOARD_NONE)
+		keyboard_set_mode(KEYBOARD_CHAR);
+	else
+		keyboard_set_mode(KEYBOARD_NONE);
 
 	/* TODO: This can be optimized for showing the keyboard */
 	repaint_search();
@@ -69,7 +73,8 @@ static void print_intro()
 {
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(0, 60, 104, "Type any letter to search", 25);
+	render_string(0, 60, 70, "Type any letter to search", 25);
+	keyboard_paint();
 	guilib_fb_unlock();
 }
 
