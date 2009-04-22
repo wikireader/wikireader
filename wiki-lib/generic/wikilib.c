@@ -23,7 +23,7 @@
 #include <glyph.h>
 #include <fontfile.h>
 #include <history.h>
-#include <keyboard.h>
+#include <wl-keyboard.h>
 #include <input.h>
 #include <msg.h>
 #include <malloc.h>

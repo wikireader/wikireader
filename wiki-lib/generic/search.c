@@ -18,7 +18,7 @@
 #include <lsearcher.h>
 #include "search.h"
 #include "msg.h"
-#include "keyboard.h"
+#include "wl-keyboard.h"
 
 #include <guilib.h>
 #include <glyph.h>

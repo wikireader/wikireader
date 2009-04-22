@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "keyboard.h"
+#include "wl-keyboard.h"
 
 #include "guilib.h"
 #include "keyboard_image.h"
