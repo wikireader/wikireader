@@ -141,7 +141,7 @@ variable spin-pos
     1 of 2 [char] \ endof
     2 of 3 [char] | endof
     3 of 0 [char] / endof
-    0 [char] *
+    drop 0 [char] * 0
   endcase
 ;
 

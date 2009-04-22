@@ -27,7 +27,7 @@ base @ decimal
 \ fetch a peripheral register value
 : p@ ( reg-addr -- value )
   2@ \ address size
-  dup 32 = if  @
+  dup 32 = if  drop @
           else 16 = if    h@
                     else  c@
                     then
@@ -41,7 +41,7 @@ base @ decimal
 \ store a value to a peripheral register
 : p! ( value reg-addr -- )
   2@ \ address size
-  dup 32 = if  !
+  dup 32 = if  drop !
           else 16 = if    h!
                     else  c!
                     then
