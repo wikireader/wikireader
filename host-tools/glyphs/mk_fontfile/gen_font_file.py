@@ -71,6 +71,7 @@ def write_output(fontlist, fonttable, font_name_to_number):
 	print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
 
 def gen_spacing_hints(fontid, glyphid):
+	print "gen_spacing_hints is currently broken..."
 	global opts
 	spacingpath = opts.fontpath + "/" + fontid + "/spacing/"
 	try:
