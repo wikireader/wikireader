@@ -26,8 +26,6 @@ import struct
 import array
 import sys
 
-default_font = "DejaVu_Sans_9"
-
 font_name_to_number = {}
 
 def parse():
