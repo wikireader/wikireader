@@ -66,6 +66,9 @@ def write_output(fontlist, fonttable, font_name_to_number):
 	for font in font_name_to_number.keys():
 		print >> fontmap, "%s %d" % (font, font_name_to_number[font])
 	fontmap.close()
+
+	glyphmap = open(opts.glyphmap, 'w')
+	glyphmap.close()
 	print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
 
 def gen_spacing_hints(fontid, glyphid):
