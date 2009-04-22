@@ -1109,7 +1109,7 @@ minus_trailing_l2:
 ;;; : FILL ( b u c -- )
 ;;;   SWAP FOR SWAP AFT 2DUP C! BYTE+ THEN NEXT 2DROP ;
         COLON   fill, "fill", FLAG_NORMAL
-        .long   swap, to_r
+        .long   swap, to_r, swap
 fill_l1:
         .long   twodup, cstore, byte_plus
         .long   donext, fill_l1
@@ -2846,6 +2846,21 @@ bpt:    .asciz  "STOPPED\r\n"
         CODE    DEBUG, "(debug)", FLAG_NORMAL        ;debug
         xcall   xdebug                               ;debug
         NEXT                                         ;debug
+        END_CODE                                     ;debug
+
+;;; delay in micro seconds
+        CODE    delay_micro_seconds, "delay-us", FLAG_NORMAL
+        ld.w    %r5, [%r1]+
+delay_micro_seconds_outer:
+	ld.w    %r4, 12
+delay_micro_seconds_loop:
+	nop
+	sub     %r4, 1
+	jrne    delay_micro_seconds_loop
+	sub     %r5, 1
+	jrne    delay_micro_seconds_outer
+        NEXT
+        END_CODE
 
 
 ;;; finish off the dictionary
@@ -2866,5 +2881,5 @@ last_name = __last_name                         ; should be the final name
         .balign 4
 
 end_of_code:
-        .space  65536                           ; space for more code
-end_of_code_memory:
+;        .space  65536                           ; space for more code
+;end_of_code_memory:
