@@ -24,15 +24,35 @@
 ReturnType key_test(int block, int status)
 {
 	APPLICATION_INITIALISE();
+	{
+		unsigned int state = 0xffff; // impossible key state
+		print("press buttons on keypad. [any serial input to exit]\n");
 
-	print("press buttons on keypad. [any serial input to exit]\n");
-
-	while (!serial_input_available()) {
-		print("keys = 0x");
-		print_byte(REG_P6_P6D & 0x07);
-		print("\n");
+		while (!serial_input_available()) {
+			unsigned int keys = REG_P6_P6D & 0x07;
+			if (keys != state) {
+				state = keys;
+				print("keys = 0x");
+				print_byte(REG_P6_P6D & 0x07);
+				if (0 != (keys & 0x02)) {
+					print(" random");
+				} else {
+					print("       ");
+				}
+				if (0 != (keys & 0x04)) {
+					print(" tree");
+				} else {
+					print("     ");
+				}
+				if (0 != (keys & 0x01)) {
+					print(" search");
+				} else {
+					print("       ");
+				}
+				print("\n");
+			}
+		}
+		(void)serial_input_char();
 	}
-
-	(void)serial_input_char();
 	APPLICATION_FINALISE(0, 0);
 }
