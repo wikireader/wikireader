@@ -18,6 +18,10 @@
 
 #define APPLICATION_TITLE "forth"
 
-#define LOAD_FILE  "forth.elf"
+static const char *LoadList[] = {
+	"forth.elf",
+	"forth",
+	0
+};
 
 #include "file-loader.inc"

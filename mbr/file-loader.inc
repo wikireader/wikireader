@@ -27,10 +27,15 @@ int main(void)
 
 	// boot an elf file
 	{
-		int error = - elf_exec(LOAD_FILE);
-		print("load error = ");
-		print_u32(error);
-                print_char('\n');
+		unsigned int i;
+		for (i = 0; 0 != LoadList[i]; ++i) {
+			int error = - elf_exec(LoadList[i]);
+			print("load '");
+			print(LoadList[i]);
+			print("' error = ");
+			print_u32(error);
+			print_char('\n');
+		}
 	}
 
 	APPLICATION_FINALISE(0);

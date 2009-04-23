@@ -16,8 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define APPLICATION_TITLE "WikiReader system"
+#define APPLICATION_TITLE "Boot WikiReader"
 
-#define LOAD_FILE  "KERNEL"
+static const char *LoadList[] = {
+	"wikird.elf",
+	"kernel.elf",
+	"kernel",
+	0
+};
 
 #include "file-loader.inc"
