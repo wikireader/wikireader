@@ -26,7 +26,11 @@ import struct
 import array
 import sys
 
+# Fontname to Number (Int) map and
+# Font -> Glyph -> Integer mapping
 font_name_to_number = {}
+glyph_remap = {}
+
 
 def parse():
 	parser = optparse.OptionParser(version = "Wikipedia reader font file generator",
@@ -70,6 +74,31 @@ def write_output(fontlist, fonttable, font_name_to_number):
 	glyphmap = open(opts.glyphmap, 'w')
 	glyphmap.close()
 	print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
+
+def get_mapped_glyph(font_name, glyphid):
+	"""
+	Map glyphid to another integer. We attempt to have a quite
+	compact glyph structure and start with glyph number 0 is
+	every font. Only for our default font we will have a direct
+	mapping.
+	"""
+	global glyph_remap
+
+	if opts.default_font == font_name:
+		print "Default"
+		return glyphid
+
+	try:
+		font_section = glyph_remap[font_name]
+	except KeyError:
+		glyph_remap[font_name] = {}
+		font_section = glyph_remap[font_name]
+
+	try:
+		return font_section[glyphid]
+	except:
+		font_section[glyphid] = len(font_section)
+		return font_section[glyphid]
 
 def gen_spacing_hints(fontid, glyphid):
 	print "gen_spacing_hints is currently broken..."
@@ -121,7 +150,11 @@ def gen_font(font_name):
 	glyphlist = filter(lambda x: x != 'spacing', os.listdir(glyphpath))
 
 	# the index table will take an unsigned int for each entry
-	n_glyphs = get_max(glyphlist) + 1
+	if font_name == opts.default_font:
+		n_glyphs = get_max(glyphlist) + 1
+	else:
+		n_glyphs = len(glyphlist) + 1
+
 	offsettable = [ 0 ] * n_glyphs
 	offset = n_glyphs * 4
 	out = ""
@@ -141,7 +174,7 @@ def gen_font(font_name):
 				h = int(open(os.path.join(glyphpath, glyphid, "advance_x")).read())
 				im = gd.image((w,h))
 
-			offsettable[int(glyphid)] = offset;
+			offsettable[get_mapped_glyph(font_name, int(glyphid))] = offset;
 
 			bearing_path = os.path.join(glyphpath, glyphid, "bitmap_top_bearing")
 			bearing = int(open(bearing_path).read())
