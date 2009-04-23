@@ -33,8 +33,8 @@ static char search_string[MAXSTR];
 static char first_hit = 0;
 static char trigram_loaded = 0;
 
-static const char search_result[] = "Search results:";
-static const int search_result_len = 15;
+static const char search_result[] = "Search results for:";
+static const int search_result_len = 19;
 
 #define RESULT_START 20
 #define RESULT_HEIGHT 10
@@ -187,6 +187,7 @@ void search_display_results(void)
 			render_string(0, 1, 10, search_result, search_result_len);
 			y_pos = RESULT_START;
 		}
+		render_string(0, 87, 10, search_string, strlen(search_string));
 
 		const int len = strlen(result);
 		render_string(0, 1, y_pos, result, len - (TARGET_SIZE + 1));
@@ -198,6 +199,7 @@ void search_display_results(void)
 	if (!search_found) {
 		guilib_clear();
 		render_string(0, 1, 10, search_result, search_result_len);
+		render_string(0, 87, 10, search_string, strlen(search_string));
 		search_current = -1;
 	}
 	else {
