@@ -300,7 +300,7 @@ unsigned int history_free_item_size(void)
 
 const char *history_release(int y)
 {
-	int i;
+	unsigned int i;
 	int start = RESULT_START - RESULT_HEIGHT + 2;
 
 	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += RESULT_HEIGHT) {
