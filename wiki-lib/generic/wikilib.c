@@ -44,7 +44,6 @@ enum display_mode_e {
 #define ARTICLE_HISTORY		1
 #define DISPLAY_IMAGE_FILE	"image.pbm"
 
-static int current_page = 0;
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 
@@ -129,8 +128,7 @@ static void open_article(const char* target, int mode)
 	if (article_open(target) < 0)
 		print_article_error();
 	display_mode = DISPLAY_MODE_ARTICLE;
-	current_page = 0;
-	article_display(0);
+	article_display(ARTICLE_PAGE_0);
 
 	if (mode == ARTICLE_NEW) {
 		last_display_mode = DISPLAY_MODE_INDEX;
@@ -162,9 +160,9 @@ static void handle_cursor(struct wl_input_event *ev)
 {
 	if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			article_display(++current_page);
+			article_display(ARTICLE_PAGE_NEXT);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			article_display(--current_page);
+			article_display(ARTICLE_PAGE_PREV);
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 			search_select_down();
@@ -192,6 +190,8 @@ static void handle_key(int keycode)
 		display_mode = DISPLAY_MODE_HISTORY;
 		history_reset();
 		history_display();
+	} else if (keycode == WL_INPUT_KEY_RANDOM) {
+		/* msg(MSG_INFO, "random\n"); */
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == WL_KEY_RETURN) {
 			open_article(search_current_target(), ARTICLE_NEW);

@@ -39,6 +39,7 @@ static unsigned int bufpos = 0;
 
 static int article_fd = -1;
 static int current_page = -1;
+static unsigned int article_file_size = -1;
 static unsigned int current_page_offset = -1;
 
 
@@ -65,6 +66,7 @@ int article_open(const char *article)
 	article_close();
 	article_fd = wl_open(article, WL_O_RDONLY);
 	current_page = -1;
+	article_file_size = -1;
 	current_page_offset = -1;
 	/* reset ring buffer */
 	memset(pages, 0, sizeof(struct page_offset) * BUFSIZE);
@@ -72,41 +74,67 @@ int article_open(const char *article)
 }
 
 #define READ_UINT(var, fd) \
-	wl_read(fd, &var, 4);
+	res = wl_read(fd, &var, 4); \
+	if (res < 4) { \
+		msg(MSG_INFO, "Could not read article file - wl_read() returned: %i\n", res); \
+		current_page_offset = article_file_size; \
+		goto out; \
+	}
 
-void article_display(int page)
+void article_display(enum article_nav nav)
 {
 	unsigned int font, x, y, glyph_index, len, i;
 	unsigned int page_start;
 	unsigned int page_end;
+	int res;
 	const struct glyph *glyph;
 
-	if (page < 0 || page == current_page || article_fd < 0)
+	if (article_fd < 0)
 		return;
 
-	/* optimized for one page at a time scrolling */
-	if (page == 0) {
+	/* scroll one page at a time */
+	switch(nav) {
+	case ARTICLE_PAGE_0:
 		wl_seek(article_fd, 0);
-	} else if (page == current_page + 1) {
+		wl_fsize(article_fd, &article_file_size);
+		current_page = 0;
+		break;
+
+	case ARTICLE_PAGE_NEXT:
+		/* reached end of file */
+		if (current_page_offset == article_file_size)
+			return;
+
 		/* push into buffer */
 		pages[bufpos].page = current_page;
 		pages[bufpos].offset = current_page_offset;
 		bufpos = (bufpos + 1) % BUFSIZE;
-	} else if (page == current_page - 1) {
+		current_page++;
+		break;
+
+	case ARTICLE_PAGE_PREV:
+		/* displaying first page */
+		if (current_page == 0)
+			return;
+
 		/* pop from buffer and seek to previous page.  if
 		 * buffer is empty, start looking from the
 		 * beginning. (stupid) */
 		bufpos = (bufpos + BUFSIZE - 1) % BUFSIZE;
-		if (pages[bufpos].page <= page)
+		if (pages[bufpos].page < current_page)
 			wl_seek(article_fd, pages[bufpos].offset);
 		else
 			wl_seek(article_fd, 0);
-	} else {
-		wl_seek(article_fd, 0);
+		current_page--;
+		break;
+
+	default:
+		break;
 	}
+
 	print_page_buffer();
 
-	page_start = page * FRAMEBUFFER_HEIGHT;
+	page_start = current_page * FRAMEBUFFER_HEIGHT;
 	page_end = page_start + FRAMEBUFFER_HEIGHT;
 
 	guilib_fb_lock();
@@ -141,8 +169,8 @@ void article_display(int page)
 			break;
 	} while(1);
 
+out:
 	guilib_fb_unlock();
-	current_page = page;
 }
 
 void article_close(void)

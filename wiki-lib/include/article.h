@@ -20,11 +20,17 @@
 
 #include <wikilib.h>
 
+enum article_nav {
+	ARTICLE_PAGE_0 = 0,
+	ARTICLE_PAGE_NEXT,
+	ARTICLE_PAGE_PREV
+};
+
 /**
  * Return < 0 in case of error
  */
 int	article_open(const char *article);
-void	article_display(int page);
+void	article_display(enum article_nav nav);
 void	article_close(void);
 
 #endif
