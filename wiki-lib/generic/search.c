@@ -166,7 +166,7 @@ char* search_fetch_result()
  * paint the results of the search...
  * 
  * - Every item gets put at a fixed position.
- * - We will clear the content ony atfer the first the resul was fetched.
+ * - We will clear the content only atfer the first the resul was fetched.
  *   This will leave the old content on the screen until we have something
  *   to show.
  */
