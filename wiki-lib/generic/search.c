@@ -64,9 +64,8 @@ static void invert_selection(int old_pos, int new_pos)
 	guilib_fb_unlock();
 }
 
-static void search_deselect()
+static void search_reset_current()
 {
-	invert_selection(search_current, -1);
 	search_current = -1;
 }
 
@@ -118,13 +117,13 @@ void search_add(char c)
 		}
 
 		first_hit = 0;
-		search_deselect();
+		search_reset_current();
 		return;
 	}
 
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
-	search_deselect();
+	search_reset_current();
 }
 
 /*
@@ -144,7 +143,7 @@ void search_remove_char(void)
 	memset(&state, 0, sizeof(state));
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
-	search_deselect();
+	search_reset_current();
 }
 
 char* search_fetch_result()
