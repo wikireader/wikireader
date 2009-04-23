@@ -18,7 +18,6 @@
 
 #include "regs.h"
 #include "types.h"
-#include "types.h"
 #include "wikireader.h"
 #include "misc.h"
 
@@ -125,7 +124,7 @@ void print_u32(u32 val)
 void delay(u32 nops)
 {
 	while (nops--)
-		asm("nop");
+		asm volatile ("nop");
 }
 
 void delay_us(unsigned int microsec)
@@ -165,7 +164,7 @@ void printf(const char *fmt, ...)       /* format to be printed */
           s = NULL;                             /* (re)initialize */
           switch(c = *fmt++) {                  /* determine what to do */
 
-          /* Known keys are %d, %u, %x, %s, and %%. This is easily extended 
+          /* Known keys are %d, %u, %x, %s, and %%. This is easily extended
            * with number types like %b and %o by providing a different base.
            * Number type keys don't set a string to 's', but use the general
            * conversion after the switch statement.
