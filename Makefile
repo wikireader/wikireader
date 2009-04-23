@@ -178,10 +178,10 @@ flash-mbr: mbr
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
-complete-clean: clean clean-toolchain clean-sim-qt4 clean-sim-console
+complete-clean: clean clean-toolchain
 
 .PHONY: clean
-clean:
+clean: clean-sim-qt4 clean-sim-console
 	$(MAKE) clean -C bootloader
 	$(MAKE) clean -C toolchain/mini-libc
 	$(MAKE) clean -C fatfs
