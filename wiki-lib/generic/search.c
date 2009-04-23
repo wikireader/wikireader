@@ -98,7 +98,7 @@ void search_reload()
 	guilib_fb_lock();
 
 	reset_state(&global_search, &state, &last_first_hit);
-	search_display_results();
+	search_paint();
 
 	guilib_fb_unlock();
 }
@@ -169,8 +169,9 @@ char* search_fetch_result()
  * - We will clear the content only atfer the first the resul was fetched.
  *   This will leave the old content on the screen until we have something
  *   to show.
+ * - This code is drawing the current selection as well
  */
-void search_display_results(void)
+void search_paint(void)
 {
 	char *result;
 	int y_pos = 0;

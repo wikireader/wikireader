@@ -151,7 +151,7 @@ static void handle_search_key(char keycode)
 	}
 
 	guilib_fb_lock();
-	search_display_results();
+	search_paint();
 	keyboard_paint();
 	guilib_fb_unlock();
 }
