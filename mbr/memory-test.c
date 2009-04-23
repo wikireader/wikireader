@@ -39,14 +39,14 @@
 
 void memory_test(void *start, unsigned int length);
 
-// main() must be first as the loader executes from the first program address
-int main(void)
+// this must be the first executable code as the loader executes from the first program address
+ReturnType mem(int block, int status)
 {
 	APPLICATION_INITIALISE();
 
 	memory_test(RAM_START, RAM_SIZE);
 
-	APPLICATION_FINALISE(0);
+	APPLICATION_FINALISE(0, 0);
 }
 
 

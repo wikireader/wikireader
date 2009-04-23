@@ -21,7 +21,8 @@
 #include "elf32.h"
 
 
-int main(void)
+// this must be the first executable code as the loader executes from the first program address
+ReturnType file_loader(int block, int status)
 {
 	APPLICATION_INITIALISE();
 
@@ -38,5 +39,5 @@ int main(void)
 		}
 	}
 
-	APPLICATION_FINALISE(0);
+	APPLICATION_FINALISE(0, 0);
 }

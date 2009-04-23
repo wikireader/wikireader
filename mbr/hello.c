@@ -25,8 +25,8 @@ unsigned char c = 2;
 int y;
 unsigned char d;
 
-// main() must be first as the loader executes from the first program address
-int main(void)
+// this must be the first executable code as the loader executes from the first program address
+ReturnType hello(int block, int status)
 {
 	APPLICATION_INITIALISE();
 
@@ -50,5 +50,5 @@ int main(void)
 
 	print("goodbye world\n");
 
-	APPLICATION_FINALISE(0);
+	APPLICATION_FINALISE(0, 0);
 }

@@ -29,49 +29,69 @@ struct {
 	char name[32];
 } header;
 
+static const char spinner[4] = "-\\|/";
 
-// main() must be first as the loader executes from the first program address
-int main(void)
+// this must be the first executable code as the loader executes from the first program address
+ReturnType menu(int block, int status)
 {
 	int i = 0;
 	int k = 0;
 	u8 valid[MAXIMUM_BLOCKS] = {0};
 	APPLICATION_INITIALISE();
-
-	print("\n\nBoot Menu\n\n");
-
-	// not zero since this program should be in block zero
-	for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
-		eeprom_load((i << 13), (void *)&header, sizeof(header));
-
-		if (HEADER_MAGIC == header.magic) {
-			print_char(('A' - 1) + i);
-			print(". ");
-			for (k = 0; k < sizeof(header.name); ++k) {
-				if ('\0' == header.name[k] || '\xff' == header.name[k]) {
-					break;
-				}
-				print_char(header.name[k]);
+	if (0 != status) {
+		print("\nmenu? ");
+		for (i = 0; i <	 20; ++i) {
+			for (k = 0; k < sizeof(spinner); ++k) {
+				delay_us(10000);
+				print_char(spinner[k]);
+				print_char('\x08');
 			}
-			print_char('\n');
-			valid[i] = 1;
-		}
-	}
-	print("\nEnter selection: ");
-	for (;;) {
-		k = serial_input_char();
-		if ('A' <= k && 'Z' >= k) {
-			k += 'a' - 'A';
-		}
-		i = k - 'a' + 1;
-		if (0 < i && MAXIMUM_BLOCKS > i) {
-			if (valid[i]) {
-				print_char(k);
-				print_char('\n');
+			if (serial_input_available()) {
+				status = 0;
 				break;
 			}
 		}
 	}
+	print_char('\n');
+
+	if (0 == status) {
+		print("\nBoot Menu\n\n");
+
+		// not zero since this program should be in block zero
+		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
+			eeprom_load((i << 13), (void *)&header, sizeof(header));
+
+			if (HEADER_MAGIC == header.magic) {
+				print_char(('A' - 1) + i);
+				print(". ");
+				for (k = 0; k < sizeof(header.name); ++k) {
+					if ('\0' == header.name[k] || '\xff' == header.name[k]) {
+						break;
+					}
+					print_char(header.name[k]);
+				}
+				print_char('\n');
+				valid[i] = 1;
+			}
+		}
+		print("\nEnter selection: ");
+		for (;;) {
+			k = serial_input_char();
+			if ('A' <= k && 'Z' >= k) {
+				k += 'a' - 'A';
+			}
+			i = k - 'a' + 1;
+			if (0 < i && MAXIMUM_BLOCKS > i) {
+				if (valid[i]) {
+					print_char(k);
+					print_char('\n');
+					break;
+				}
+			}
+		}
+	} else {
+		i = block + 1;
+	}
 	// next program
-	APPLICATION_FINALISE(i);
+	APPLICATION_FINALISE(i, 0);
 }

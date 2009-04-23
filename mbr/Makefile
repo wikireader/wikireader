@@ -20,6 +20,11 @@ INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
 INCLUDES += -I$(COMMON) -I../bootloader
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
+
+OBJCOPY_SECTIONS = --only-section=.text
+OBJCOPY_SECTIONS += --only-section=.rodata
+OBJCOPY_SECTIONS += --only-section=.data
+
 TARGETS = mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
@@ -39,7 +44,7 @@ mbr.elf: mbr.o eeprom.o
 	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
 
 mbr: mbr.elf
-	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+	$(OBJCOPY) $(OBJCOPY_FLAGS) ${OBJCOPY_SECTIONS}	 --set-start=0 $< $@
 	$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \
@@ -63,10 +68,7 @@ ${1}.elf: application.lds ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS)
 	$$(LD) -T application.lds -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -Map $$(@:.elf=.map)
 
 ${1}: ${1}.elf ${1}.header
-	$$(OBJCOPY) $$(OBJCOPY_FLAGS) --only-section=.text	\
-				--only-section=.rodata		\
-				--only-section=.data		\
-				$$< $$@
+	$$(OBJCOPY) $$(OBJCOPY_FLAGS) $${OBJCOPY_SECTIONS} $$< $$@
 endef
 
 

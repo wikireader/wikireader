@@ -53,9 +53,20 @@
 
 // the last line of main() before the final '}'
 // at present just returns the next_program number to
-#define APPLICATION_FINALISE(next_program)  \
-	do {				    \
-		return (next_program);	    \
+#define APPLICATION_FINALISE(next_program, status)	\
+	do {						\
+		ReturnType rc = {next_program, status}; \
+		return (rc);				\
 	} while (0)
+
+
+__attribute__ ((packed))
+typedef struct {
+	unsigned int block;
+	unsigned int status;
+} ReturnType;
+
+typedef ReturnType application(int block, int status);
+
 
 #endif

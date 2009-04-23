@@ -23,14 +23,15 @@
 #include "eeprom.h"
 #include "config.h"
 
+#define APPLICATION_TITLE "mbr"
+#include "application.h"
+
+
 #define RAM_SIZE	   8192
 #define RAM_LOAD_ADDRESS   0x200
 #define EEPROM_CODE_OFFSET 0x300
 
 #define EEPROM_PAYLOAD_SIZE (RAM_SIZE - EEPROM_CODE_OFFSET)
-
-typedef int application(void);
-
 
 #define DEST ((u8 *)RAM_LOAD_ADDRESS)
 #define APPLICATION ((application *)RAM_LOAD_ADDRESS)
@@ -58,21 +59,26 @@ void start(void)
 __attribute__ ((noreturn))
 void master_boot(void)
 {
-	register int block = 0;
+	asm volatile ("xld.w   %r15, __dp");
+	{
+		register ReturnType rc = { 0, 0xffffffff };
 
-	for (;;) {
-		asm volatile ("xld.w   %r15, __dp");
-		init_pins();
-		init_rs232_ch0();
-		//init_ram(); // but will be too big
+		for (;;) {
+			asm volatile ("xld.w   %r15, __dp");
+			init_pins();
+			init_rs232_ch0();
+			//init_ram(); // but will be too big
 
-		// enable SPI: master mode, no DMA, 8 bit transfers
-		REG_SPI_CTL1 = 0x03 | (7 << 10);
+			// enable SPI: master mode, no DMA, 8 bit transfers
+			REG_SPI_CTL1 = 0x03 | (7 << 10);
 
-		PRINT_CHAR('>');
-		eeprom_load((block << 13) | EEPROM_CODE_OFFSET, DEST, EEPROM_PAYLOAD_SIZE);
+			//PRINT_CHAR('>');
+			PRINT_CHAR('\r');
+			PRINT_CHAR('\n');
+			eeprom_load((rc.block << 13) | EEPROM_CODE_OFFSET, DEST, EEPROM_PAYLOAD_SIZE);
 
-		block = (APPLICATION)();
-		PRINT_CHAR('<');
+			rc = (APPLICATION)(rc.block, rc.status);
+			//PRINT_CHAR('<');
+		}
 	}
 }
