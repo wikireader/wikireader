@@ -15,7 +15,8 @@ void print_byte(u8 val);
 void print_u32(u32 val);
 
 // simple busy wait delay loops
-void delay(u32 nops);
+void delay(u32 nops);  // deprecated
+void delay_us(unsigned int microsec);
 
 
 #endif /* MISC_H */

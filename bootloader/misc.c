@@ -128,6 +128,21 @@ void delay(u32 nops)
 		asm("nop");
 }
 
+void delay_us(unsigned int microsec)
+{
+	while (microsec--) {
+		//asm volatile("nop");
+		// at 48 MHz this should take 1 micro second
+		asm volatile (
+			"\tld.w\t%r4,12\n"
+			"delay_loop:\n"
+			"\tnop\n"
+			"\tsub\t%r4,1\n"
+			"\tjrne\tdelay_loop"
+			);
+	}
+}
+
 #if 0
 void printf(const char *fmt, ...)       /* format to be printed */
 {
