@@ -53,7 +53,7 @@ def parse():
 	else:
 	    return opts, args
 
-def write_output(fontlist, fonttable, font_name_to_number):
+def write_output(fontlist, fonttable, font_name_to_number, glyph_remap):
 	global opts
 	outfile = open(opts.output, 'w')
 
@@ -71,7 +71,11 @@ def write_output(fontlist, fonttable, font_name_to_number):
 		print >> fontmap, "%s %d" % (font, font_name_to_number[font])
 	fontmap.close()
 
+	# Write out the glyph remapping
 	glyphmap = open(opts.glyphmap, 'w')
+	for font in glyph_remap.keys():
+		for glyph in glyph_remap[font].keys():
+			print >> glyphmap, "%d %s %d" % (font_name_to_number[font], glyph, glyph_remap[font][glyph])
 	glyphmap.close()
 	print "generated file >%s<, size %d + %d" % (opts.output, len(out), 4)
 
@@ -257,4 +261,4 @@ for _font in fontlist:
 		fontnum += 1
 	print "offset for font %d is %d" % (font_name_to_number[_font], current_offset)
 
-write_output(fontlist, fonttable, font_name_to_number)
+write_output(fontlist, fonttable, font_name_to_number, glyph_remap)
