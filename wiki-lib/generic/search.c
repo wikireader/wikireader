@@ -64,6 +64,11 @@ static void invert_selection(int old_pos, int new_pos)
 	guilib_fb_unlock();
 }
 
+static void search_deselect()
+{
+	invert_selection(search_current, -1);
+	search_current = -1;
+}
 
 void search_init()
 {
@@ -91,13 +96,10 @@ void search_reset()
 
 void search_reload()
 {
-	int old_current = search_current;
 	guilib_fb_lock();
 
 	reset_state(&global_search, &state, &last_first_hit);
 	search_display_results();
-	invert_selection(-1, old_current);
-	search_current = old_current;
 
 	guilib_fb_unlock();
 }
@@ -116,11 +118,13 @@ void search_add(char c)
 		}
 
 		first_hit = 0;
+		search_deselect();
 		return;
 	}
 
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
+	search_deselect();
 }
 
 /*
@@ -140,6 +144,7 @@ void search_remove_char(void)
 	memset(&state, 0, sizeof(state));
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
+	search_deselect();
 }
 
 char* search_fetch_result()
@@ -175,7 +180,6 @@ void search_display_results(void)
 
 	guilib_fb_lock();
 	search_found = 0;
-	search_current = -1;
 
 	while (search_found < results && (result = search_fetch_result())) {
 		if (!search_found) {
@@ -190,10 +194,19 @@ void search_display_results(void)
 		y_pos += RESULT_HEIGHT;
 		++search_found;
 	}
-
+	
 	if (!search_found) {
 		guilib_clear();
 		render_string(0, 1, 10, search_result, search_result_len);
+		search_current = -1;
+	}
+	else {
+		if (search_current == -1) {
+			invert_selection (search_current, 0);
+			++search_current;
+		}
+		else
+			invert_selection (search_current, -1);
 	}
 
 	guilib_fb_unlock();
