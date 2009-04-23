@@ -25,7 +25,6 @@ import fontmap
 import textrun
 import optparse
 import os
-import gzip
 import glob
 
 try:
@@ -135,8 +134,8 @@ else:
         Convert a single file
         """
         file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
-        file_name = "%s.blib.gz" % file_name
-        glyphs = textrun.load(gzip.open(file_name, 'rb'))
+        file_name = "%s.blib" % file_name
+        glyphs = textrun.load(open(file_name, 'rb'))
         text_runs = textrun.generate_text_runs(glyphs, 240)
         prepare_run(text_runs)
 

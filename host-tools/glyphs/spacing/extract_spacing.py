@@ -146,11 +146,11 @@ else:
 
     def convert(base_name, file_name):
         """
-        Convert a single blib.gz
+        Convert a single blib
         """
         file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
-        file_name = "%s.blib.gz" % file_name
-        raw_glyphs = load(gzip.open(file_name, 'rb'))
+        file_name = "%s.blib" % file_name
+        raw_glyphs = load(open(file_name, 'rb'))
 
         kern = {}
         generate_text_runs(kern, raw_glyphs)
