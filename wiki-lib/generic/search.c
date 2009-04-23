@@ -200,14 +200,13 @@ void search_display_results(void)
 		render_string(0, 1, 10, search_result, search_result_len);
 		render_string(0, 87, 10, search_string, strlen(search_string));
 		search_current = -1;
-	}
-	else {
+	} else {
 		if (search_current == -1) {
-			invert_selection (search_current, 0);
+			invert_selection(search_current, 0);
 			++search_current;
+		} else {
+			invert_selection(search_current, -1);
 		}
-		else
-			invert_selection (search_current, -1);
 	}
 
 	guilib_fb_unlock();
