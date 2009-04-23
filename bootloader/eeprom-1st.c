@@ -20,7 +20,6 @@
 #include "types.h"
 #include "wikireader.h"
 #include "eeprom.h"
-#include "config.h"
 
 #define DEST 0x200
 

@@ -1,6 +1,8 @@
 #ifndef WIKIREADER_PRT33L17LCD_H
 #define WIKIREADER_PRT33L17LCD_H
 
+#define EEPROM_MP45PE80		1
+
 static inline void init_pins(void)
 {
 #if 0 // not enough space for adding this

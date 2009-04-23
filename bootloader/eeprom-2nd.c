@@ -59,7 +59,7 @@ int main(void)
 	init_lcd();
 	eeprom_load(FAILED_BOOT_IMAGE_ADDR, (u8 *) LCD_VRAM, LCD_VRAM_SIZE);
 
-#if LCD_INVERTED
+#if DISPLAY_INVERTED
 	{
 		int i;
 		for (i = LCD_VRAM; i < LCD_VRAM + LCD_VRAM_SIZE; ++i)

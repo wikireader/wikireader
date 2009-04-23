@@ -19,7 +19,6 @@
 #include "regs.h"
 #include "types.h"
 #include "wikireader.h"
-#include "config.h"
 
 enum {
 	SPI_WRITE = 0,

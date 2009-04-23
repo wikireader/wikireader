@@ -21,7 +21,6 @@
 #include "types.h"
 #include "wikireader.h"
 #include "eeprom.h"
-#include "config.h"
 
 #define APPLICATION_TITLE "mbr"
 #include "application.h"

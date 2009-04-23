@@ -25,6 +25,8 @@
 #include "guilib.h"
 #include "glyph.h"
 #include "fontfile.h"
+#include <regs.h>
+#include <wikireader.h>
 
 void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 {
@@ -104,7 +106,7 @@ static int char_to_glyph(char c)
 	else
 		return c - 29;
 }
- 
+
 /**
  * Simplistic string drawing
  *

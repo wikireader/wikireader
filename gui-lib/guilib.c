@@ -22,6 +22,8 @@
 #include "guilib.h"
 #include "glyph.h"
 #include "fontfile.h"
+#include <regs.h>
+#include <wikireader.h>
 
 void guilib_set_pixel(int x, int y, int v)
 {
@@ -98,7 +100,7 @@ void guilib_fb_unlock(void)
 {
 	if (fb_ref == 0)
 		return;
-	
+
 	if (--fb_ref == 0)
 		fb_refresh();
 }
@@ -110,7 +112,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 {
 	unsigned int xx, yy;
 
-	/* special case: the image has the same width than the 
+	/* special case: the image has the same width than the
 	 * height and is rendered at y=0. Then we can go for a
 	 * simple memcpy() */
 

@@ -1,6 +1,9 @@
 #ifndef WIKIREADER_PROTO1_H
 #define WIKIREADER_PROTO1_H
 
+#define DISPLAY_INVERTED	1
+#define EEPROM_SST25VF040	1
+
 static inline void init_pins(void)
 {
 #if 0 // not enough space for adding this
@@ -110,7 +113,7 @@ static inline void init_ram(void)
 	/* exit RAM setup mode */
 	REG_SDRAMC_INI = 0x10;
 }
-	
+
 #define enable_card_power()  do { REG_P3_P3D |=	 (1 << 3); } while(0)
 #define disable_card_power() do { REG_P3_P3D &= ~(1 << 3); } while(0)
 

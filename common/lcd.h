@@ -1,11 +1,13 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "config.h"
+#include "regs.h"
+#include "types.h"
+#include "wikireader.h"
 
 void init_lcd(void);
 
-#ifdef BOARD_S1C33E07
+#if BOARD_S1C33E07 || BOARD_SAMO_A1
 #define LCD_WIDTH	(320)
 #define LCD_HEIGHT	(240)
 #else

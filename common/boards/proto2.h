@@ -1,6 +1,9 @@
 #ifndef WIKIREADER_PROTO2_H
 #define WIKIREADER_PROTO2_H
 
+#define DISPLAY_INVERTED	1
+#define EEPROM_SST25VF040	1
+
 /* this is the board support file for caiaq's 2nd prototype */
 
 static inline void init_pins(void)
@@ -121,7 +124,7 @@ static inline void init_ram(void)
 	/* exit RAM setup mode */
 	REG_SDRAMC_INI = 0x10;
 }
-	
+
 #define enable_card_power()  do { REG_P3_P3D |=	 (1 << 3); } while(0)
 #define disable_card_power() do { REG_P3_P3D &= ~(1 << 3); } while(0)
 

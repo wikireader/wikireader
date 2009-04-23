@@ -6,17 +6,15 @@
 #if BOARD_S1C33E07
 	#include "boards/s1c33e07.h"
 #elif BOARD_PROTO1
-	#define LCD_INVERTED		1
 	#include "boards/proto1.h"
 #elif BOARD_PROTO2
-	#define LCD_INVERTED		1
 	#include "boards/proto2.h"
 #elif BOARD_SAMO_A1
 	#include "boards/samo_a1.h"
 #elif BOARD_PRT33L17LCD
 	#include "boards/prt33l17lcd.h"
 #else
-	#error "unsupported board type"
+	#error "unsupported board type - see common/config.h"
 #endif
 
 #define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)

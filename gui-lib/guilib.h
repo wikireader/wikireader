@@ -1,12 +1,6 @@
 #ifndef GUILIB_H
 #define GUILIB_H
 
-#include <config.h>
-
-#ifdef BOARD_S1C33E07
-#define DISPLAY_INVERTED
-#endif
-
 /* this is hard-coded to 1pp for now */
 #define FRAMEBUFFER_WIDTH  (240)
 #define FRAMEBUFFER_HEIGHT (208)

@@ -23,7 +23,8 @@
 
 #include "eeprom.h"
 #include "misc.h"
-#include "config.h"
+#include "regs.h"
+#include "wikireader.h"
 
 enum {
 	SPI_WRITE = 0,
