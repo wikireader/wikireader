@@ -24,7 +24,7 @@
 /* wiki-lib includes */
 #include <input.h>
 #include <regs.h>
-#include <s1c33e07.h>
+#include <wikireader.h>
 
 #include <QVBoxLayout>
 
