@@ -55,8 +55,6 @@ static PyObject *LzoError;
 static /* const */ char compress__doc__[] =
 "compress(string) -- Compress string using the default compression level, "
 "returning a string containing compressed data.\n"
-"compress(string, level) -- Compress string, using the chosen compression "
-"level (either 1 or 9).  Return a string containing the compressed data.\n"
 ;
 
 static PyObject *
@@ -70,12 +68,11 @@ compress(PyObject *dummy, PyObject *args)
     lzo_uint out_len;
     lzo_uint new_len;
     int len;
-    int level = 1;
     int err;
 
     /* init */
     UNUSED(dummy);
-    if (!PyArg_ParseTuple(args, "s#|i", &in, &len, &level))
+    if (!PyArg_ParseTuple(args, "s#", &in, &len))
         return NULL;
     if (len < 0)
         return NULL;
@@ -83,13 +80,10 @@ compress(PyObject *dummy, PyObject *args)
     out_len = in_len + in_len / 64 + 16 + 3;
 
     /* alloc buffers */
-    result_str = PyString_FromStringAndSize(NULL, 5 + out_len);
+    result_str = PyString_FromStringAndSize(NULL, 4 + out_len);
     if (result_str == NULL)
         return PyErr_NoMemory();
-    if (level == 1)
-        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1X_1_MEM_COMPRESS);
-    else
-        wrkmem = (lzo_voidp) PyMem_Malloc(LZO1X_999_MEM_COMPRESS);
+    wrkmem = (lzo_voidp) PyMem_Malloc(LZO1X_1_MEM_COMPRESS);
     if (wrkmem == NULL)
     {
         Py_DECREF(result_str);
@@ -99,16 +93,7 @@ compress(PyObject *dummy, PyObject *args)
     /* compress */
     out = (lzo_bytep) PyString_AsString(result_str);
     new_len = out_len;
-    if (level == 1)
-    {
-        out[0] = 0xf0;
-        err = lzo1x_1_compress(in, in_len, out+5, &new_len, wrkmem);
-    }
-    else
-    {
-        out[0] = 0xf1;
-        err = lzo1x_999_compress(in, in_len, out+5, &new_len, wrkmem);
-    }
+    err = lzo1x_1_compress(in, in_len, out+4, &new_len, wrkmem);
     PyMem_Free(wrkmem);
     if (err != LZO_E_OK || new_len > out_len)
     {
@@ -119,14 +104,14 @@ compress(PyObject *dummy, PyObject *args)
     }
 
     /* save uncompressed length */
-    out[1] = (unsigned char) ((in_len >> 24) & 0xff);
+    out[0] = (unsigned char) ((in_len >>  0) & 0xff);
+    out[1] = (unsigned char) ((in_len >>  8) & 0xff);
     out[2] = (unsigned char) ((in_len >> 16) & 0xff);
-    out[3] = (unsigned char) ((in_len >>  8) & 0xff);
-    out[4] = (unsigned char) ((in_len >>  0) & 0xff);
+    out[3] = (unsigned char) ((in_len >> 24) & 0xff);
 
     /* return */
     if (new_len != out_len)
-        _PyString_Resize(&result_str, 5 + new_len);
+        _PyString_Resize(&result_str, 4 + new_len);
     return result_str;
 }
 
