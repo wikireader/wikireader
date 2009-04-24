@@ -113,123 +113,124 @@ static void unaligned_data_access(void)
 
 #define N_TRAPS 108
 typedef void (*irq_callback)(void);
+
 irq_callback trap_table[N_TRAPS] = {
-	undef_irq_handler,	/* offset 0	*/
-	undef_irq_handler,	/* offset 1	*/
-	undef_irq_handler,	/* offset 2	*/
-	illegal_instruction,	/* offset 3	*/
-	undef_irq_handler,	/* offset 4	*/
-	undef_irq_handler,	/* offset 5	*/
-	unaligned_data_access,	/* offset 6 : unaligned data access exception */
-	undef_irq_handler,	/* offset 7	*/
-	undef_irq_handler,	/* offset 8	*/
-	undef_irq_handler,	/* offset 9	*/
-	undef_irq_handler,	/* offset 10	*/
-	undef_irq_handler,	/* offset 11	*/
-	undef_irq_handler,	/* offset 12	*/
-	undef_irq_handler,	/* offset 13	*/
-	undef_irq_handler,	/* offset 14	*/
-	undef_irq_handler,	/* offset 15	*/
-	undef_irq_handler,	/* offset 16	*/
-	undef_irq_handler,	/* offset 17	*/
-	undef_irq_handler,	/* offset 18	*/
-	undef_irq_handler,	/* offset 19	*/
-	kint_irq,		/* offset 20	*/
-	kint_irq,		/* offset 21	*/
-	undef_irq_handler,	/* offset 22	*/
-	undef_irq_handler,	/* offset 23	*/
-	undef_irq_handler,	/* offset 24	*/
-	undef_irq_handler,	/* offset 25	*/
-	undef_irq_handler,	/* offset 26	*/
-	undef_irq_handler,	/* offset 27	*/
-	undef_irq_handler,	/* offset 28	*/
-	undef_irq_handler,	/* offset 29	*/
-	undef_irq_handler,	/* offset 30	*/
-	undef_irq_handler,	/* offset 31	*/
-	undef_irq_handler,	/* offset 32	*/
-	undef_irq_handler,	/* offset 33	*/
-	undef_irq_handler,	/* offset 34	*/
-	undef_irq_handler,	/* offset 35	*/
-	undef_irq_handler,	/* offset 36	*/
-	undef_irq_handler,	/* offset 37	*/
-	undef_irq_handler,	/* offset 38	*/
-	undef_irq_handler,	/* offset 39	*/
-	undef_irq_handler,	/* offset 40	*/
-	undef_irq_handler,	/* offset 41	*/
-	undef_irq_handler,	/* offset 42	*/
-	undef_irq_handler,	/* offset 43	*/
-	undef_irq_handler,	/* offset 44	*/
-	undef_irq_handler,	/* offset 45	*/
-	undef_irq_handler,	/* offset 46	*/
-	undef_irq_handler,	/* offset 47	*/
-	undef_irq_handler,	/* offset 48	*/
-	undef_irq_handler,	/* offset 49	*/
-	undef_irq_handler,	/* offset 50	*/
-	undef_irq_handler,	/* offset 51	*/
-	undef_irq_handler,	/* offset 52	*/
-	undef_irq_handler,	/* offset 53	*/
-	undef_irq_handler,	/* offset 54	*/
-	undef_irq_handler,	/* offset 55	*/
-	serial0_err_irq,	/* offset 56	serial 0 - receive error		*/
-	serial0_in_irq,		/* offset 57	serial 0 - receive buffer full		*/
-	serial0_out_irq,	/* offset 58	serial 0 - transmit buffer empty	*/
-	undef_irq_handler,	/* offset 59	*/
-	serial1_err_irq,	/* offset 60	serial 1 - receive error		*/
-	serial1_in_irq,		/* offset 61	serial 1 - recevice buffer full		*/
-	serial1_out_irq,	/* offset 62	serial 1 - transmit buffer empty	*/
-	undef_irq_handler,	/* offset 63	*/
-	undef_irq_handler,	/* offset 64	*/
-	undef_irq_handler,	/* offset 65	*/
-	undef_irq_handler,	/* offset 66	*/
-	undef_irq_handler,	/* offset 67	*/
-	undef_irq_handler,	/* offset 68	*/
-	undef_irq_handler,	/* offset 69	*/
-	undef_irq_handler,	/* offset 70	*/
-	undef_irq_handler,	/* offset 71	*/
-	undef_irq_handler,	/* offset 72	*/
-	undef_irq_handler,	/* offset 73	*/
-	undef_irq_handler,	/* offset 74	*/
-	undef_irq_handler,	/* offset 75	*/
-	undef_irq_handler,	/* offset 76	*/
-	undef_irq_handler,	/* offset 77	*/
-	undef_irq_handler,	/* offset 78	*/
-	undef_irq_handler,	/* offset 79	*/
-	undef_irq_handler,	/* offset 80	*/
-	undef_irq_handler,	/* offset 81	*/
-	undef_irq_handler,	/* offset 82	*/
-	undef_irq_handler,	/* offset 83	*/
-	undef_irq_handler,	/* offset 84	*/
-	undef_irq_handler,	/* offset 85	*/
-	undef_irq_handler,	/* offset 86	*/
-	undef_irq_handler,	/* offset 87	*/
-	undef_irq_handler,	/* offset 88	*/
-	undef_irq_handler,	/* offset 89	*/
-	undef_irq_handler,	/* offset 90	*/
-	undef_irq_handler,	/* offset 91	*/
-	undef_irq_handler,	/* offset 92	*/
-	undef_irq_handler,	/* offset 93	*/
-	undef_irq_handler,	/* offset 94	*/
-	undef_irq_handler,	/* offset 95	*/
-	undef_irq_handler,	/* offset 96	*/
-	undef_irq_handler,	/* offset 97	*/
-	undef_irq_handler,	/* offset 98	*/
-	undef_irq_handler,	/* offset 99	*/
-	undef_irq_handler,	/* offset 100	*/
-	undef_irq_handler,	/* offset 101	*/
-	undef_irq_handler,	/* offset 102	*/
-	undef_irq_handler,	/* offset 103	*/
-	undef_irq_handler,	/* offset 104	*/
-	undef_irq_handler,	/* offset 105	*/
-	undef_irq_handler,	/* offset 106	*/
-	undef_irq_handler,	/* offset 107	*/
+	undef_irq_handler,	//   0 Reset
+	undef_irq_handler,	//   1 *reserved*
+	undef_irq_handler,	//   2 ext exception
+	illegal_instruction,	//   3 Undefined instruction exception
+	undef_irq_handler,	//   4 *reserved*
+	undef_irq_handler,	//   5 *reserved*
+	unaligned_data_access,	//   6 Address misaligned exception
+	undef_irq_handler,	//   7 NMI
+	undef_irq_handler,	//   8 *reserved*
+	undef_irq_handler,	//   9 *reserved*
+	undef_irq_handler,	//  10 *reserved*
+	undef_irq_handler,	//  11 Illegal interrupt exception
+	undef_irq_handler,	//  12 Software exception 0
+	undef_irq_handler,	//  13 Software exception 1
+	undef_irq_handler,	//  14 Software exception 2
+	undef_irq_handler,	//  15 Software exception 3
+	undef_irq_handler,	//  16 Port input interrupt 0
+	undef_irq_handler,	//  17 Port input interrupt 1
+	undef_irq_handler,	//  18 Port input interrupt 2
+	undef_irq_handler,	//  19 Port input interrupt 3
+	kint_irq,		//  20 Key input interrupt 0
+	kint_irq,		//  21 Key input interrupt 1
+	undef_irq_handler,	//  22 High-speed DMA Ch.0
+	undef_irq_handler,	//  23 High-speed DMA Ch.1
+	undef_irq_handler,	//  24 High-speed DMA Ch.2
+	undef_irq_handler,	//  25 High-speed DMA Ch.3
+	undef_irq_handler,	//  26 Intelligent DMA
+	undef_irq_handler,	//  27 *reserved*
+	undef_irq_handler,	//  28 *reserved*
+	undef_irq_handler,	//  29 *reserved*
+	undef_irq_handler,	//  30 16-bit timer 0 - compare-match B
+	undef_irq_handler,	//  31 16-bit timer 0 - compare-match A
+	undef_irq_handler,	//  32 *reserved*
+	undef_irq_handler,	//  33 *reserved*
+	undef_irq_handler,	//  34 16-bit timer 1 - compare-match B
+	undef_irq_handler,	//  35 16-bit timer 1 - compare-match A
+	undef_irq_handler,	//  36 *reserved*
+	undef_irq_handler,	//  37 *reserved*
+	undef_irq_handler,	//  38 16-bit timer 2 - compare-match B
+	undef_irq_handler,	//  39 16-bit timer 2 - compare-match A
+	undef_irq_handler,	//  40 *reserved*
+	undef_irq_handler,	//  41 *reserved*
+	undef_irq_handler,	//  42 16-bit timer 3 - compare-match B
+	undef_irq_handler,	//  43 16-bit timer 3 - compare-match A
+	undef_irq_handler,	//  44 *reserved*
+	undef_irq_handler,	//  45 *reserved*
+	undef_irq_handler,	//  46 16-bit timer 4 - compare-match B
+	undef_irq_handler,	//  47 16-bit timer 4 - compare-match A
+	undef_irq_handler,	//  48 *reserved*
+	undef_irq_handler,	//  49 *reserved*
+	undef_irq_handler,	//  50 16-bit timer 5 - compare-match B
+	undef_irq_handler,	//  51 16-bit timer 5 - compare-match A
+	undef_irq_handler,	//  52 *reserved*
+	undef_irq_handler,	//  53 *reserved*
+	undef_irq_handler,	//  54 *reserved*
+	undef_irq_handler,	//  55 *reserved*
+	serial0_err_irq,	//  56 Serial interface Ch.0 - Receive error
+	serial0_in_irq,		//  57 Serial interface Ch.0 - Receive buffer full
+	serial0_out_irq,	//  58 Serial interface Ch.0 - Transmit buffer empty
+	undef_irq_handler,	//  59 *reserved*
+	serial1_err_irq,	//  60 Serial interface Ch.1 - Receive error
+	serial1_in_irq,		//  61 Serial interface Ch.1 - Receive buffer full
+	serial1_out_irq,	//  62 Serial interface Ch.1 - Transmit buffer empty
+	undef_irq_handler,	//  63 A/D converter - Result out of range
+	undef_irq_handler,	//  64 A/D converter - End of conversion
+	undef_irq_handler,	//  65 RTC
+	undef_irq_handler,	//  66 *reserved*
+	undef_irq_handler,	//  67 *reserved*
+	undef_irq_handler,	//  68 Port input interrupt 4
+	undef_irq_handler,	//  69 Port input interrupt 5
+	undef_irq_handler,	//  70 Port input interrupt 6
+	undef_irq_handler,	//  71 Port input interrupt 7
+	undef_irq_handler,	//  72 *reserved*
+	undef_irq_handler,	//  73 LCDC
+	undef_irq_handler,	//  74 *reserved*
+	undef_irq_handler,	//  75 *reserved*
+	undef_irq_handler,	//  76 Serial interface Ch.2 - Receive error
+	undef_irq_handler,	//  77 Serial interface Ch.2 - Receive buffer full
+	undef_irq_handler,	//  78 Serial interface Ch.2 - Transmit buffer empty
+	undef_irq_handler,	//  79 *reserved*
+	undef_irq_handler,	//  80 *reserved*
+	undef_irq_handler,	//  81 SPI - Receive DMA request
+	undef_irq_handler,	//  82 SPI - Transmit DMA request
+	undef_irq_handler,	//  83 *reserved*
+	undef_irq_handler,	//  84 Port input interrupt 8  / SPI       - SPI interrupt
+	undef_irq_handler,	//  85 Port input interrupt 9  / USB PDREQ - USB DMA request
+	undef_irq_handler,	//  86 Port input interrupt 10 / USB       - USBinterrupt
+	undef_irq_handler,	//  87 Port input interrupt 11 / DCSIO     - DCSIO interrupt
+	undef_irq_handler,	//  88 Port input interrupt 12
+	undef_irq_handler,	//  89 Port input interrupt 13
+	undef_irq_handler,	//  90 Port input interrupt 14
+	undef_irq_handler,	//  91 Port input interrupt 15
+	undef_irq_handler,	//  92 *reserved*
+	undef_irq_handler,	//  93 *reserved*
+	undef_irq_handler,	//  94 I2S interface - I2S FIFO empty
+	undef_irq_handler,	//  95 *reserved*
+	undef_irq_handler,	//  96 *reserved*
+	undef_irq_handler,	//  97 *reserved*
+	undef_irq_handler,	//  98 *reserved*
+	undef_irq_handler,	//  99 *reserved*
+	undef_irq_handler,	// 100 *reserved*
+	undef_irq_handler,	// 101 *reserved*
+	undef_irq_handler,	// 102 *reserved*
+	undef_irq_handler,	// 103 *reserved*
+	undef_irq_handler,	// 104 *reserved*
+	undef_irq_handler,	// 105 *reserved*
+	undef_irq_handler,	// 106 *reserved*
+	undef_irq_handler,	// 107 *reserved*
 };
 
 void traps_init(void)
 {
 	/* WAKEUP=1 */
-	REG_CMU_PROTECT = 0x96;
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_OPT |= 0x1;
-	REG_CMU_PROTECT = 0;
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
 	/* relocate the trap table */
 	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
