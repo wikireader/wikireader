@@ -22,6 +22,7 @@
 
 import sys
 import fontmap
+import glyphmap
 import textrun
 import optparse
 import os
@@ -41,13 +42,25 @@ def prepare_run(text_runs):
     text_runs.sort(textrun.TextRun.cmp)
     return text_runs
 
-def write_to_file(text_runs, fonts, auto_kern_bit):
+def map_glyph(glyphmap, font_id, glyph_id):
+    """
+    gen_font_file.py has repaced some glyphs to create a more
+    dense datastructure. We have to apply the glyph remapping
+    for the given font to identify the right font. If the glyph
+    is not remapped we will use the original glyph-id.
+    """
+    try:
+        glyphmap[font_id][glyph_id]
+    except KeyError:
+        return glyph_id
+
+def write_to_file(text_runs, fonts, glyphmap, auto_kern_bit):
     """
     A function saving the text runs and hoping autokern will do its job
 
     """
 
-    def write_pending_bit(output, run):
+    def write_pending_bit(output, font_id, run):
         """
         The text run is sorted by paragrah and all glyphs of
         one paragraph are on the same line and have roughly the
@@ -61,7 +74,7 @@ def write_to_file(text_runs, fonts, auto_kern_bit):
  
         list = []
         for glyph in run.glyphs:
-            list.append(glyph['glyph'])
+            list.append(map_glyph(glyphmap, font_id, glyph['glyph']))
         output.append("-".join(list))
 
     last_font = None
@@ -73,7 +86,7 @@ def write_to_file(text_runs, fonts, auto_kern_bit):
             output.append("f%s" % fonts[font])
             last_font = font
 
-        write_pending_bit(output, text_run)
+        write_pending_bit(output, fonts[last_font], text_run)
 
     text = "".join(output)
     if imported_lzo:
@@ -89,6 +102,8 @@ Two modes are supported. Single conversion or batch conversion""")
 
     parser.add_option("-f", "--fontmap", help = "specify the fontmap.map to use",
                       action = "store", dest = "fontmap", default = "fontmap.map")
+    parser.add_option("-g", "--glyphmap", help = "specify the glyphmap.map to use",
+                      action = "store", dest = "glyphmap", default = "glyphmap.map")
     parser.add_option("-o", "--output", help = "Output file",
                       action = "store", dest = "output_file", default = "huffmaned.cde")
     parser.add_option("-b", "--batch", help = "start a batch job",
@@ -117,16 +132,18 @@ if not options.batch:
     glyphs = textrun.load(open(args[1]))
     text_runs = textrun.generate_text_runs(glyphs, 240)
     prepare_run(text_runs)
-    fonts  = fontmap.load(options.fontmap)
+    fontmap  = fontmap.load(options.fontmap)
+    glyphmap = glyphmap.load(options.glyphmap)
     auto_kern_bit = open(options.output_file, "w")
-    write_to_file(text_runs, fonts, auto_kern_bit)
+    write_to_file(text_runs, fontmap, glyphmap, auto_kern_bit)
 else:
     # We got pointed to a list of directories and will collect the
     # the 'work' files from there and will pick up the objects and then
     # do some work on it.
     offset_marker = open(options.output_marker, "w")
     batch_output = open(options.output_batch_file, "w") 
-    fonts  = fontmap.load(options.fontmap)
+    fontmap  = fontmap.load(options.fontmap)
+    glyphmap = glyphmap.load(options.glyphmap)
     failed = open(options.error_file, "a")
 
     def convert(base_name, file_name):
@@ -141,7 +158,7 @@ else:
 
         # write the offset to another file...
         print >> offset_marker, "%s %d" % (file_name, batch_output.tell())
-        write_to_file(text_runs, fonts, batch_output)
+        write_to_file(text_runs, fontmap, glyphmap, batch_output)
 
     for arg in range(1, len(args)):
         for work in glob.glob(os.path.join(args[arg], "*.work")):
