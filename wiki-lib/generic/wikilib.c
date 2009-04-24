@@ -58,14 +58,21 @@ static void repaint_search(void)
 /* this is only called for the index page */
 static void toggle_soft_keyboard(void)
 {
-	// Set the keyboard mode to what we want to change to.
-	if (keyboard_get_mode() == KEYBOARD_NONE)
-		keyboard_set_mode(KEYBOARD_CHAR);
-	else
-		keyboard_set_mode(KEYBOARD_NONE);
+	guilib_fb_lock();
 
-	/* TODO: This can be optimized for showing the keyboard */
-	repaint_search();
+	// Set the keyboard mode to what we want to change to.
+	switch (keyboard_get_mode()) {
+	case KEYBOARD_NONE:
+		keyboard_set_mode(KEYBOARD_CHAR);
+		keyboard_paint();
+		break;
+	default:
+		keyboard_set_mode(KEYBOARD_NONE);
+		search_reload();
+		break;
+	}
+
+	guilib_fb_unlock();
 }
 
 static void print_intro()
