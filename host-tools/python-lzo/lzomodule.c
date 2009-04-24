@@ -310,11 +310,11 @@ crc32(PyObject *dummy, PyObject *args)
 
 static /* const */ PyMethodDef methods[] =
 {
-    {"adler32",    (PyCFunction)adler32,    METH_VARARGS, adler32__doc__},
+    /*{"adler32",    (PyCFunction)adler32,    METH_VARARGS, adler32__doc__},*/
     {"compress",   (PyCFunction)compress,   METH_VARARGS, compress__doc__},
-    {"crc32",      (PyCFunction)crc32,      METH_VARARGS, crc32__doc__},
-    {"decompress", (PyCFunction)decompress, METH_VARARGS, decompress__doc__},
-    {"optimize",   (PyCFunction)optimize,   METH_VARARGS, optimize__doc__},
+    /*{"crc32",      (PyCFunction)crc32,      METH_VARARGS, crc32__doc__},*/
+    /*{"decompress", (PyCFunction)decompress, METH_VARARGS, decompress__doc__},*/
+    /*{"optimize",   (PyCFunction)optimize,   METH_VARARGS, optimize__doc__},*/
     {NULL, NULL, 0, NULL}
 };
 
