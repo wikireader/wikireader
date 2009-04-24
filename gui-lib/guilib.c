@@ -127,10 +127,18 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	 * fiddling. We can copy it line by line*/
 
 	if ((x & 7) == 0 && img->width == FRAMEBUFFER_WIDTH) {
-		unsigned int i;
-		for (i = 0; i < img->height; ++i) {
-			unsigned char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * (y+i)) / 8;
-			memcpy(d, &img->data[(i*img->width) / 8], img->width / 8);
+		for (xx = 0; xx < img->height; ++xx) {
+			unsigned char *d = framebuffer + (x + FRAMEBUFFER_SCANLINE * (y+xx)) / 8;
+			const unsigned char *s = &img->data[(xx*img->width) / 8];
+
+			for(yy = 0; yy < img->width / 8; yy++) {
+#ifdef DISPLAY_INVERTED
+				*d++ = ~ *s++;
+#else
+				*d++ = *s++;
+#endif
+
+			}
 		}
 
 		return;
