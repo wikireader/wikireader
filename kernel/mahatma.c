@@ -63,8 +63,6 @@ int main(void)
 	guilib_init();
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
-	
-	REG_CMU_PROTECT = 0x96;
 
 	/* the next function will loop forever and call wl_input_wait() */
 	wikilib_run();
