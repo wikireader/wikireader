@@ -20,6 +20,7 @@ INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
 INCLUDEPATH += $$TOPLEVEL/common/
+INCLUDEPATH += $$TOPLEVEL/common/boards/
 INCLUDEPATH += $$TOPLEVEL/minilzo/
 DEPENDPATH = $$INCLUDEPATH
 

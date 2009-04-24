@@ -189,7 +189,7 @@ static void handle_key(int keycode)
 {
 	/* handle wikireader hw buttons */
 	switch(keycode) {
-	case WL_INPUT_KEY_SEARCH_DOWN:
+	case WL_INPUT_KEY_SEARCH_UP:
 		/* back to search */
 		if (display_mode == DISPLAY_MODE_INDEX) {
 			toggle_soft_keyboard();
@@ -199,7 +199,7 @@ static void handle_key(int keycode)
 		}
 		return;
 
-	case WL_INPUT_KEY_HISTORY_DOWN:
+	case WL_INPUT_KEY_HISTORY_UP:
 		/* show history */
 		display_mode = DISPLAY_MODE_HISTORY;
 		history_reset();
@@ -207,8 +207,8 @@ static void handle_key(int keycode)
 		return;
 
 	case WL_INPUT_KEY_RANDOM_DOWN:
-	case WL_INPUT_KEY_SEARCH_UP:
-	case WL_INPUT_KEY_HISTORY_UP:
+	case WL_INPUT_KEY_SEARCH_DOWN:
+	case WL_INPUT_KEY_HISTORY_DOWN:
 	case WL_INPUT_KEY_RANDOM_UP:
 		return;
 	}
