@@ -1,10 +1,40 @@
 #ifndef REGS_H
 #define REGS_H
 
-#define REG_BASE	(0x300000)
+#define REG_BASE	0x00300000
+#define REG_BASE_ID	0x00020000
 #define REG_TYPE_8	volatile unsigned char
 #define REG_TYPE_16	volatile unsigned short
 #define REG_TYPE_32	volatile unsigned long
+
+
+// CPU identification
+#define CORE_ID *((REG_TYPE_8 *)REG_BASE_ID + 0)
+#define  CORE_ID_STANDARD       0x02
+#define  CORE_ID_STANDARD_DESC "C33 standard macro core"
+#define  CORE_ID_MINI           0x03
+#define  CORE_ID_MINI_DESC      "C33 mini-macro core"
+#define  CORE_ID_ADVANCED       0x04
+#define  CORE_ID_ADVANCED_DESC  "C33 advanced macro core"
+#define  CORE_ID_PE             0x05
+#define  CORE_ID_PE_DESC        "C33 PE Core"
+#define  CORE_ID_PE_LE          0x06
+#define  CORE_ID_PE_LE_DESC     "C33 PE little endian core"
+
+#define PRODUCT_ID *((REG_TYPE_8 *)REG_BASE_ID + 1)
+#define  PRODUCT_ID_3           0x03
+#define  PRODUCT_ID_3_DESC      "S1C333"
+#define  PRODUCT_ID_4           0x04
+#define  PRODUCT_ID_4_DESC      "S1C334"
+#define  PRODUCT_ID_3E          0x0E
+#define  PRODUCT_ID_3E_DESC     "S1C33E"
+#define  PRODUCT_ID_3L          0x15
+#define  PRODUCT_ID_3L_DESC     "S1C33L"
+
+#define MODEL_ID *((REG_TYPE_8 *)REG_BASE_ID + 2)
+#define VERSION_ID *((REG_TYPE_8 *)REG_BASE_ID + 3)
+
+
 
 /* Misc Register #1 */
 #define REG_MISC_RTCWT 		*((REG_TYPE_8 *) (REG_BASE + 0x10))
@@ -531,10 +561,130 @@
 #define REG_I2S_FIFO		*((REG_TYPE_32 *) (REG_BASE + 0x1c20))
 
 
+/**********************************************************/
 /***** Below here are bit masks for various registers *****/
 /**********************************************************/
 
-/* Bits for: REG_EFSIFx_STATUS */
+
+/*
+ * Clock Management Unit
+ */
+
+// codes for: REG_CMU_PROTECT
+#define CMU_PROTECT_OFF 0x96
+#define CMU_PROTECT_ON  0x00
+
+// bits for: REG_CMU_CLKCNTL
+#define CMU_CLK_SEL_OSC3_DIV_32     (10 << 24)
+#define CMU_CLK_SEL_OSC3_DIV_16     (9 << 24)
+#define CMU_CLK_SEL_OSC3_DIV_8      (8 << 24)
+#define CMU_CLK_SEL_OSC3_DIV_4      (7 << 24)
+#define CMU_CLK_SEL_OSC3_DIV_2      (6 << 24)
+#define CMU_CLK_SEL_OSC3_DIV_1      (5 << 24)
+#define CMU_CLK_SEL_LCDC_CLK        (4 << 24)
+#define CMU_CLK_SEL_MCLK            (3 << 24)
+#define CMU_CLK_SEL_PLL             (2 << 24)
+#define CMU_CLK_SEL_OSC1            (1 << 24)
+#define CMU_CLK_SEL_OSC3            (0 << 24)
+
+#define PLLINDIV_10   (9 << 20)
+#define PLLINDIV_9    (8 << 20)
+#define PLLINDIV_8    (7 << 20)
+#define PLLINDIV_7    (6 << 20)
+#define PLLINDIV_6    (5 << 20)
+#define PLLINDIV_5    (4 << 20)
+#define PLLINDIV_4    (3 << 20)
+#define PLLINDIV_3    (2 << 20)
+#define PLLINDIV_2    (1 << 20)
+#define PLLINDIV_1    (0 << 20)
+
+#define LCDCDIV_16    (15 << 16)
+#define LCDCDIV_15    (14 << 16)
+#define LCDCDIV_14    (13 << 16)
+#define LCDCDIV_13    (12 << 16)
+#define LCDCDIV_12    (11 << 16)
+#define LCDCDIV_11    (10 << 16)
+#define LCDCDIV_10    (9 << 16)
+#define LCDCDIV_9     (8 << 16)
+#define LCDCDIV_8     (7 << 16)
+#define LCDCDIV_7     (6 << 16)
+#define LCDCDIV_6     (5 << 16)
+#define LCDCDIV_5     (4 << 16)
+#define LCDCDIV_4     (3 << 16)
+#define LCDCDIV_3     (2 << 16)
+#define LCDCDIV_2     (1 << 16)
+#define LCDCDIV_1     (0 << 16)
+
+#define MCLKDIV       (1 << 12)
+
+#define OSC3DIV_32    (5 << 8)
+#define OSC3DIV_16    (4 << 8)
+#define OSC3DIV_8     (3 << 8)
+#define OSC3DIV_4     (2 << 8)
+#define OSC3DIV_2     (1 << 8)
+#define OSC3DIV_1     (0 << 8)
+
+
+#define OSCSEL_PLL    (3 << 2)
+#define OSCSEL_OSC3x  (2 << 2)
+#define OSCSEL_OSC1   (1 << 2)
+#define OSCSEL_OSC3   (0 << 2)
+
+#define SOSC3  (1 << 1)
+#define SOSC1  (1 << 0)
+
+// Bits for: REG_CMU_GATEDCLK0
+#define USBSAPB_CKE    (1 << 9)
+#define USB_CKE        (1 << 8)
+#define SDAPCPU_HCKE   (1 << 7)
+#define SDAPCPU_CKE    (1 << 6)
+#define SDAPLCDC_CKE   (1 << 5)
+#define SDSAPB_CKE     (1 << 4)
+#define DSTRAM_CKE     (1 << 3)
+#define LCDCAHBIF_CKE  (1 << 2)
+#define LCDCSAPB_CKE   (1 << 1)
+#define LCDC_CKE       (1 << 0)
+
+// Bits for: REG_CMU_GATEDCLK1
+#define CPUAHB_HCKE    (1 << 29)
+#define LCDCAHB_HCKE   (1 << 28)
+#define GPIONSTP_HCKE  (1 << 27)
+#define SRAMC_HCKE     (1 << 26)
+#define EFSIOBR_HCKE   (1 << 25)
+#define MISC_HCKE      (1 << 24)
+#define IVRAMARB_CKE   (1 << 19)
+#define TM5_CKE        (1 << 18)
+#define TM4_CKE        (1 << 17)
+#define TM3_CKE        (1 << 16)
+#define TM2_CKE        (1 << 15)
+#define TM1_CKE        (1 << 14)
+#define TM0_CKE        (1 << 13)
+#define EGPIO_MISC_CK  (1 << 12)
+#define I2S_CKE        (1 << 11)
+#define DCSIO_CKE      (1 << 10)
+#define WDT_CKE        (1 << 9)
+#define GPIO_CKE       (1 << 8)
+#define SRAMSAPB_CKE   (1 << 7)
+#define SPI_CKE        (1 << 6)
+#define EFSIOSAPB_CKE  (1 << 5)
+#define CARD_CKE       (1 << 4)
+#define ADC_CKE        (1 << 3)
+#define ITC_CKE        (1 << 2)
+#define DMA_CKE        (1 << 1)
+#define RTCSAPB_CKE    (1 << 0)
+
+// Bits for: REG_CMU_OPT
+#define OSCTM_SHIFT 8
+#define OSC3OFF     (1 << 3)
+#define TMHSP       (1 << 2)
+#define WAKEUPWT    (1 << 0)
+
+
+/*
+ * Serial Controller
+ */
+
+// Bits for: REG_EFSIFx_STATUS
 #define RXDxNUM1  (1 << 7)
 #define RXDxNUM0  (1 << 6)
 #define TENDx	  (1 << 5)
@@ -544,7 +694,7 @@
 #define TDBEx	  (1 << 1)
 #define RDBFx	  (1 << 0)
 
-/* Bits for: REG_EFSIFx_CTL */
+// Bits for: REG_EFSIFx_CTL
 #define TXENx 	  (0x1 << 7)
 #define TX_DISENx (0x0 << 7)
 #define RXENx 	  (0x1 << 6)
@@ -562,15 +712,87 @@
 #define CLK_SLAVEx 	  0x1
 #define CLK_MASTERx 	  0x0
 
-/* Bits for: REG_EFSIFx_IrDA */
+// Bits for: REG_EFSIFx_IrDA
 #define DIVMD_8x	  (0x1 << 4)
 #define DIVMD_16x	  (0x0 << 4)
 #define IRMD_IRDAx		  0x10
 #define IRMD_GEN_IFx 	  0x00
 
-/* Bits for: REG_EFSIFx_BRTCTL */
+// Bits for: REG_EFSIFx_BRTCTL
 #define BRTRUN_STARx 	0x1
 #define BRTRUN_STOPx 	0x0
+
+
+/*
+ * Interrupt Controller
+ */
+
+// Bits for: REG_INT_ESIF01
+#define ESTX1  (1 << 5)
+#define ESRX1  (1 << 4)
+#define ESERR1 (1 << 3)
+#define ESTX0  (1 << 2)
+#define ESRX0  (1 << 1)
+#define ESERR0 (1 << 0)
+
+// Bits for: REG_INT_FSIF01
+#define FSTX1  (1 << 5)
+#define FSRX1  (1 << 4)
+#define FSERR1 (1 << 3)
+#define FSTX0  (1 << 2)
+#define FSRX0  (1 << 1)
+#define FSERR0 (1 << 0)
+
+
+/*
+ * SDRAM Controller
+ */
+
+// bits for: REG_SDRAMC_CTL
+#define T24NS_SHIFT  12
+#define T60NS_SHIFT  8
+#define T80NS_SHIFT  4
+
+#define	ADDRC_32M_x_16_bits_x_1 0x7
+#define	ADDRC_16M_x__8_bits_x_2 0x6
+#define	ADDRC__8M_x__8_bits_x_2 0x5
+#define	ADDRC__2M_x__8_bits_x_2 0x4
+#define	ADDRC_16M_x_16_bits_x_1 0x3
+#define	ADDRC__8M_x_16_bits_x_1 0x2
+#define	ADDRC__4M_x_16_bits_x_1 0x1
+#define	ADDRC__1M_x_16_bits_x_1 0x0
+
+
+// Bits for: REG_SDRAMC_REF
+#define SELDO (1 << 25)
+#define SCKON (1 << 24)
+#define SELEN (1 << 23)
+#define SELCO_SHIFT 16
+#define AURCO_SHIFT  0
+
+// Bits for: REG_SDRAMC_INI
+#define SDON   (1 << 4)
+#define SDEN   (1 << 3)
+#define INIMRS (1 << 2)
+#define INIPRE (1 << 1)
+#define INIREF (1 << 0)
+
+// SDRAM controller commands for REG_SDRAMC_INI
+#define SDRAM_CMD_FIRST (SDON)
+#define SDRAM_CMD_FINAL (SDON)
+#define SDRAM_CMD_REF   (SDON | INIREF)
+#define SDRAM_CMD_PALL  (SDON | INIPRE)
+#define SDRAM_CMD_MRS   (SDON | INIMRS)
+
+// bits for: REG_SDRAMC_APP
+#define ARBON  (1 << 31)
+#define DBF    (1 << 5)
+#define INCR   (1 << 4)
+#define CAS1   (1 << 3)
+#define CAS0   (1 << 2)
+#define APPON  (1 << 1)
+#define IQB    (1 << 0)
+
 
 #endif /* REGS_H */
 
