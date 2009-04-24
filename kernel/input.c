@@ -54,9 +54,7 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 
 		/* we only go to a power saving halt mode if there is no
 		 * messages pending */
-		if (serial_output_pending())
-			asm("halt");
-		else
+		if (!serial_output_pending())
 			system_suspend();
 	}
 
