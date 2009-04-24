@@ -240,11 +240,18 @@ except:
 	sys.exit(1)
 
 # allocate the font offset table
-fonttable = [ 0 ] * len(fontlist)
+fonttable = [ 0 ] * (len(fontlist) + 1)
 offset = len(fontlist) * 4
 fontnum = 1
 font_name_to_number = {}
 out = ""
+
+# special case the default font...
+current_offset = offset
+f = gen_font(opts.default_font)
+out += f
+offset += len(f)
+fonttable[0] = current_offset
 
 for _font in fontlist:
 	current_offset = offset
@@ -252,13 +259,9 @@ for _font in fontlist:
 	out += f
 	offset += len(f)
 
-	if _font == opts.default_font:
-		font_name_to_number[_font] = 0
-		fonttable[0] = current_offset
-	else:
-		font_name_to_number[_font] = fontnum
-		fonttable[fontnum] = current_offset;
-		fontnum += 1
+	font_name_to_number[_font] = fontnum
+	fonttable[fontnum] = current_offset;
+	fontnum += 1
 	print "offset for font %d is %d" % (font_name_to_number[_font], current_offset)
 
 write_output(fontlist, fonttable, font_name_to_number, glyph_remap)
