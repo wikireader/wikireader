@@ -34,7 +34,6 @@ static unsigned int console_write;
 serial_buffer_type *send_queue_head;
 serial_buffer_type *send_queue_tail;
 const char *transmit;
-volatile bool sending;
 volatile bool linefeed;
 
 
@@ -42,38 +41,10 @@ volatile bool linefeed;
 #define BUFFER_EMPTY(w, r, b) ((w) == (r))
 #define BUFFER_NEXT(p, b) (p) = (((p) + 1) % ARRAY_SIZE(b))
 
-// Bits for: REG_INT_ESIF01
-#define ESTX1  (1 << 5)
-#define ESRX1  (1 << 4)
-#define ESERR1 (1 << 3)
-#define ESTX0  (1 << 2)
-#define ESRX0  (1 << 1)
-#define ESERR0 (1 << 0)
-
-// Bits for: REG_INT_FSIF01
-#define FSTX1  (1 << 5)
-#define FSRX1  (1 << 4)
-#define FSERR1 (1 << 3)
-#define FSTX0  (1 << 2)
-#define FSRX0  (1 << 1)
-#define FSERR0 (1 << 0)
-
-// Bits for: REG_EFSIFx_STATUS
-#define RXDxNUM1 (1 << 7)
-#define RXDxNUM0 (1 << 6)
-#define TENDx	 (1 << 5)
-#define FERx	 (1 << 4)
-#define PERx	 (1 << 3)
-#define OERx	 (1 << 2)
-#define TDBEx	 (1 << 1)
-#define RDBFx	 (1 << 0)
-
 void serial_init(void)
 {
 	static bool initialised = false;
 	if (!initialised) {
-		//REG_INT_ESIF01 = 0x36;
-		//REG_INT_ESIF01 = 0x6;
 		REG_INT_ESIF01 = ESRX0;
 
 		REG_INT_PLCDC_PSIO0 = 0x70;
@@ -81,7 +52,6 @@ void serial_init(void)
 		console_write = 0;
 		send_queue_head = NULL;
 		send_queue_tail = NULL;
-		sending = false;
 		linefeed = false;
 
 		initialised = true;
@@ -91,7 +61,7 @@ void serial_init(void)
 
 bool serial_output_pending(void)
 {
-	return sending || (0 != (REG_EFSIF0_STATUS & TENDx));
+	return 0 != (REG_EFSIF0_STATUS & TENDx);
 }
 
 
@@ -116,7 +86,6 @@ void serial_put(serial_buffer_type *buffer)
 					linefeed = true;
 				}
 				REG_EFSIF0_TXD = c;
-				sending = true;
 			}
 
 		}
@@ -143,7 +112,6 @@ void serial_drained_0(void)
 	}
 	if (NULL == transmit) {
 		REG_INT_ESIF01 &= ~ESTX0;
-		sending = false;
 	}
 	else {
 		REG_INT_FSIF01 |= FSTX0;
