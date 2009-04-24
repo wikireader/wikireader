@@ -1,0 +1,13 @@
+=======================================================================
+User visible changes for Python-LZO
+=======================================================================
+
+Changes in 1.08 (17 Jul 2002)
+  * build system updated to use distutils
+  * all Python versions supported, tested with 1.5.2 up to 2.2.1
+  * requires LZO library v1.08 or newer
+  * [info: version jumped from 1.00 to 1.08 to match the LZO version]
+
+Changes in 1.00 (21 Aug 1998)
+  * first public release - requires LZO library v1.03 or newer
+

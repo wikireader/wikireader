@@ -1,0 +1,18 @@
+Installation
+============
+
+  Quick Instructions
+  ------------------
+  `make test install' or `make PYTHON=python2.2.1 test install'
+
+  Short Instructions
+  ------------------
+  1. Build and install Python (1.5.2 or newer)
+  2. Build and install the LZO library (1.07 or newer)
+  3. Run `make'
+  4. Test the module by runnning `make test'
+  5. Optional: run `make strip'
+  6. Run `make install' to install the module (when logged in as root)
+
+See `setup.py' for more possible configuration details.
+

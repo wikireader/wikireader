@@ -1,0 +1,15 @@
+#
+# MANIFEST.in
+# Manifest template for creating the source distribution.
+#
+# written by Markus F. X. J. Oberhumer <markus@oberhumer.com>
+#
+include COPYING
+include README
+include INSTALL
+include MANIFEST.in
+include Makefile
+include NEWS
+include lzomodule.c
+include setup.py
+include tests/*.py
