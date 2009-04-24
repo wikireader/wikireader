@@ -3,19 +3,6 @@
 
 #include "config.h"
 
-#if BOARD_S1C33E07
-	#include "boards/s1c33e07.h"
-#elif BOARD_PROTO1
-	#include "boards/proto1.h"
-#elif BOARD_PROTO2
-	#include "boards/proto2.h"
-#elif BOARD_SAMO_A1
-	#include "boards/samo_a1.h"
-#elif BOARD_PRT33L17LCD
-	#include "boards/prt33l17lcd.h"
-#else
-	#error "unsupported board type - see common/config.h"
-#endif
 
 #define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)
 #define DEBUGLED1_OFF() do { REG_P1_P1D |=  (1 << 4); } while (0)
@@ -32,17 +19,44 @@
 #define TFT_CTL1_LO()   do { REG_P8_P8D &= ~(1 << 3); } while (0)
 #define TFT_CTL1_HI()   do { REG_P8_P8D |=  (1 << 3); } while (0)
 
+// macro to busy wait
+#define BUSY_WAIT_FOR(cond)                     \
+	do {                                    \
+		asm volatile ("\tnop\n");       \
+	} while (0 == (cond))
+
+
 #define MCLK 		48000000
 #define DIV 		8
 
 #define CALC_BAUD(fbrclk, divmd, bps)  ((fbrclk / divmd)/(2 * bps) - 1)
 
-#define SET_BRTRD(ch, value) 	do {		\
-									REG_EFSIF##ch##_BRTRDM = value >> 8;	\
-									REG_EFSIF##ch##_BRTRDL = value & 0xff; \
-								} while(0)
+#define SET_BRTRD(ch, value) do {                       \
+		REG_EFSIF##ch##_BRTRDM = value >> 8;    \
+		REG_EFSIF##ch##_BRTRDL = value & 0xff;  \
+	} while(0)
 
 #define SERIAL_8N1 (NO_PARx | ONE_STPBx | INT_CLKx | EIGHT_BIT_ASYNx)
+
+
+// include the board specific macros and functions
+
+#if BOARD_S1C33E07
+#include "boards/s1c33e07.h"
+#elif BOARD_PROTO1
+#include "boards/proto1.h"
+#elif BOARD_PROTO2
+#include "boards/proto2.h"
+#elif BOARD_SAMO_A1
+#include "boards/samo_a1.h"
+#elif BOARD_PRT33L17LCD
+#include "boards/prt33l17lcd.h"
+#else
+#error "unsupported board type - see common/config.h"
+#endif
+
+
+// common functions
 
 static inline void init_rs232_ch0(void)
 {

@@ -159,30 +159,13 @@ static inline void init_pins(void)
 #define CLKS_TRAS 8
 #define CLKS_TRC  15
 
-// memory size
-#define	ADDR_32M_x_16_bits_x_1	0x7
-#define	ADDR_16M_x__8_bits_x_2	0x6
-#define	ADDR__8M_x__8_bits_x_2	0x5
-#define	ADDR__2M_x__8_bits_x_2	0x4
-#define	ADDR_16M_x_16_bits_x_1	0x3
-#define	ADDR__8M_x_16_bits_x_1	0x2
-#define	ADDR__4M_x_16_bits_x_1	0x1
-#define	ADDR__1M_x_16_bits_x_1	0x0
+#define ADDRESS_CONFIG ADDRC_16M_x_16_bits_x_1
 
-#define ADDRESS_CONFIG ADDR_16M_x_16_bits_x_1
-
-#define SDRAM_CONFIGURATION (0				\
-			     | ((CLKS_TRP - 1) << 12)	\
-			     | ((CLKS_TRAS - 1) << 8)	\
-			     | ((CLKS_TRC - 1) << 4)	\
+#define SDRAM_CONFIGURATION (0                                  \
+			     | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
+			     | ((CLKS_TRAS - 1) << T60NS_SHIFT)	\
+			     | ((CLKS_TRC - 1) << T80NS_SHIFT)	\
 			     | ADDRESS_CONFIG)
-
-// SDRAM controller commands
-#define FIRST_CMD 0x10
-#define FINAL_CMD 0x10
-#define REF_CMD	  0x11
-#define PALL_CMD  0x12
-#define MRS_CMD	  0x14
 
 static inline void init_ram(void)
 {
@@ -193,26 +176,46 @@ static inline void init_ram(void)
 	// enable SDA10 on P53
 	REG_P5_03_CFP = (REG_P5_03_CFP & 0x3f) | 0x80;
 
-	// What does this do?
-	//REG_P8_45_CFP &= 0x03;
-
 	// enable SDRAM clocks
-	REG_CMU_PROTECT = 0x96;	 // protect off
-	REG_CMU_GATEDCLK0 |= 0x78;
-	REG_CMU_PROTECT = 0x00;	 // protect off
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+	REG_CMU_GATEDCLK0 |=
+		//USBSAPB_CKE |
+		//USB_CKE |
+		//SDAPCPU_HCKE |
+		SDAPCPU_CKE |
+		SDAPLCDC_CKE |
+		SDSAPB_CKE |
+		DSTRAM_CKE |
+		//LCDCAHBIF_CKE |
+		//LCDCSAPB_CKE |
+		//LCDC_CKE |
+		0;
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
 	// SDRAM configuration register
 	REG_SDRAMC_CTL = SDRAM_CONFIGURATION;
 
 	// enable RAM self-refresh
-	REG_SDRAMC_REF = 0x8c | (1 << 23) | (0x7f << 16) | (1 << 24);
+	REG_SDRAMC_REF =
+		//SELDO |
+		SCKON |
+		SELEN |
+		(0x7f << SELCO_SHIFT) |
+		(0x8c << AURCO_SHIFT) |
+		0;
 
 	// enable SDRAM
-	REG_SDRAMC_INI = FIRST_CMD;
+	REG_SDRAMC_INI = SDRAM_CMD_FIRST;
 
-	// SDRAMC = ARBON | CAS=2 | APPON | IQB
-	// (DBF, INCON = disabled
-	REG_SDRAMC_APP = 0x8000000b;
+	REG_SDRAMC_APP =
+		ARBON |
+		//DBF |
+		//INCR |
+		CAS1 |
+		//CAS0 |
+		APPON |
+		IQB |
+		0;
 
 	{
 		unsigned int i = 0;
@@ -220,43 +223,37 @@ static inline void init_ram(void)
 				asm volatile ("nop");
 		}
 	}
-	// start SDRAM initialisation sequence
-	//REG_SDRAMC_INI = 0x10;
-	//SDRAM_MODE_STORE = 0x0; // the value is part of the address
-	//asm volatile ("nop");
 
-	REG_SDRAMC_INI = PALL_CMD;
+	REG_SDRAMC_INI = SDRAM_CMD_PALL;
 	SDRAM_FIRST_BYTE = 0x0;
 	asm volatile ("nop");
 
-	REG_SDRAMC_INI = PALL_CMD;
+	REG_SDRAMC_INI = SDRAM_CMD_PALL;
 	SDRAM_FIRST_BYTE = 0x0;
 	asm volatile ("nop");
 
-	REG_SDRAMC_INI = MRS_CMD;
+	REG_SDRAMC_INI = SDRAM_CMD_MRS;
 	SDRAM_MODE_STORE = 0x0; // the value is part of the address
 	asm volatile ("nop");
 
 	{
 		unsigned int i = 0;
 		for (i = 0; i < REFRESH_COUNT; ++i) {
-			REG_SDRAMC_INI = REF_CMD;
+			REG_SDRAMC_INI = SDRAM_CMD_REF;
 			SDRAM_FIRST_BYTE = 0x0;
 			asm volatile ("nop");
 		}
 	}
 
-	//REG_SDRAMC_INI = MRS_CMD;
+	//REG_SDRAMC_INI = SDRAM_CMD_MRS;
 	//SDRAM_MODE_STORE = 0x0; // the value is part of the address
 	//asm volatile ("nop");
 
 	// finished the setup sequence
-	REG_SDRAMC_INI = FINAL_CMD;
+	REG_SDRAMC_INI = SDRAM_CMD_FINAL;
 
 	// wait for SDRAM to come on-line
-	while (0 == (REG_SDRAMC_INI & 0x08)) {
-		asm volatile ("nop");
-	}
+	BUSY_WAIT_FOR(REG_SDRAMC_INI & SDEN);
 }
 
 enum {
