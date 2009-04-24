@@ -31,6 +31,10 @@ struct {
 
 static const char spinner[4] = "-\\|/";
 
+
+void print_cpu_type(void);
+
+
 // this must be the first executable code as the loader executes from the first program address
 ReturnType menu(int block, int status)
 {
@@ -39,6 +43,7 @@ ReturnType menu(int block, int status)
 	u8 valid[MAXIMUM_BLOCKS] = {0};
 	APPLICATION_INITIALISE();
 	if (0 != status) {
+		print_cpu_type();
 		print("\nmenu? ");
 		for (i = 0; i <	 20; ++i) {
 			for (k = 0; k < sizeof(spinner); ++k) {
@@ -94,4 +99,48 @@ ReturnType menu(int block, int status)
 	}
 	// next program
 	APPLICATION_FINALISE(i, 0);
+}
+
+void print_cpu_type(void)
+{
+	print("CPU: ");
+	switch (CORE_ID) {
+	case  CORE_ID_STANDARD:
+		print(CORE_ID_STANDARD_DESC);
+		break;
+	case  CORE_ID_MINI:
+		print(CORE_ID_MINI_DESC);
+		break;
+	case  CORE_ID_ADVANCED:
+		print(CORE_ID_ADVANCED_DESC);
+		break;
+	case  CORE_ID_PE:
+		print(CORE_ID_PE_DESC);
+		break;
+	case  CORE_ID_PE_LE:
+		print(CORE_ID_PE_LE_DESC);
+		break;
+	default:
+		print("CORE unknown");
+		break;
+	}
+	print("  ");
+	switch (PRODUCT_ID) {
+	case  PRODUCT_ID_3:
+		print(PRODUCT_ID_3_DESC);
+		break;
+	case  PRODUCT_ID_4:
+		print(PRODUCT_ID_4_DESC);
+		break;
+	case  PRODUCT_ID_3E:
+		print(PRODUCT_ID_3E_DESC);
+		break;
+	case  PRODUCT_ID_3L:
+		print(PRODUCT_ID_3L_DESC);
+		break;
+	}
+	print_byte(MODEL_ID);
+	print(" V 0x");
+	print_byte(VERSION_ID);
+	print_char('\n');
 }
