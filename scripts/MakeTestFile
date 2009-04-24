@@ -1,0 +1,61 @@
+#!/bin/sh
+# create a test pattern to check SD Card reading
+
+usage()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '[--verbose] [--overwrite] filename length'
+  echo '       filename = name of file to create, cannot already exist'
+  echo '       length   = size (kBytes) to create'
+  exit 1
+}
+
+verbose=0
+overwrite=0
+while :
+do
+  case "$1" in
+    --verbose)
+      verbose=1
+      shift
+      ;;
+    --overwrite)
+      overwrite=1
+      shift
+      ;;
+    --help)
+      usage
+      ;;
+    -*)
+      usage invalid option
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+filename="$1"; shift
+[ -z "${filename}" ] && usage missing filename
+[ 1 -eq ${overwrite} ] && rm -f "${filename}"
+[ -e "${filename}" ] && usage file, ${filename} already exists
+
+length="$1"; shift
+[ -z "${length}" ] && usage missing length
+[ 0 -eq ${length} ] && usage length cannot be zero
+
+
+awk '
+BEGIN {
+  BlockCount = '"${length}"'
+  pattern = ""
+  for (i = 0; i < 1024; ++i)
+  {
+    pattern = pattern sprintf("%c", i)
+  }
+
+  for (block = 0; block < BlockCount; ++block)
+  {
+    printf "%s", pattern
+  }
+}' > "${filename}"
