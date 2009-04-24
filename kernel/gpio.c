@@ -46,8 +46,8 @@ int gpio_get_event(struct wl_input_event *ev)
 			continue;
 
 		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-		ev->key_event.keycode = WL_INPUT_KEY_SEARCH + i;
 		ev->key_event.value = !!(gpio_state & (1 << i));
+		ev->key_event.keycode = WL_BUTTON_BASE + (i * 2) + ev->key_event.value;
 		last_state ^= (1 << i);
 		return 1;
 	}

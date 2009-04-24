@@ -178,7 +178,9 @@ static void handle_cursor(struct wl_input_event *ev)
 
 static void handle_key(int keycode)
 {
-	if (keycode == WL_INPUT_KEY_SEARCH) {
+	/* handle wikireader hw buttons */
+	switch(keycode) {
+	case WL_INPUT_KEY_SEARCH_DOWN:
 		/* back to search */
 		if (display_mode == DISPLAY_MODE_INDEX) {
 			toggle_soft_keyboard();
@@ -186,13 +188,25 @@ static void handle_key(int keycode)
 			display_mode = DISPLAY_MODE_INDEX;
 			repaint_search();
 		}
-	} else if (keycode == WL_INPUT_KEY_HISTORY) {
+		return;
+
+	case WL_INPUT_KEY_HISTORY_DOWN:
+		/* show history */
 		display_mode = DISPLAY_MODE_HISTORY;
 		history_reset();
 		history_display();
-	} else if (keycode == WL_INPUT_KEY_RANDOM) {
-		/* msg(MSG_INFO, "random\n"); */
-	} else if (display_mode == DISPLAY_MODE_INDEX) {
+		return;
+
+	case WL_INPUT_KEY_RANDOM_DOWN:
+	case WL_INPUT_KEY_SEARCH_UP:
+	case WL_INPUT_KEY_HISTORY_UP:
+	case WL_INPUT_KEY_RANDOM_UP:
+		return;
+	}
+
+	/* key events from the serial console & touchscreen */
+	switch (display_mode) {
+	case DISPLAY_MODE_INDEX:
 		if (keycode == WL_KEY_RETURN) {
 			open_article(search_current_target(), ARTICLE_NEW);
 		} else if (keycode == WL_KEY_HASH) {
@@ -201,7 +215,9 @@ static void handle_key(int keycode)
 		} else {
 			handle_search_key(keycode);
 		}
-	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
+		break;
+
+	case DISPLAY_MODE_ARTICLE:
 		if (keycode == WL_KEY_BACKSPACE) {
 			if (last_display_mode == DISPLAY_MODE_INDEX) {
 				display_mode = DISPLAY_MODE_INDEX;
@@ -212,10 +228,12 @@ static void handle_key(int keycode)
 				history_display();
 			}
 		}
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (keycode == WL_KEY_RETURN) {
+		break;
+
+	default:
+		if (keycode == WL_KEY_RETURN)
 			open_article(history_current_target(), ARTICLE_HISTORY);
-		}
+		break;
 	}
 }
 
