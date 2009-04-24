@@ -31,6 +31,8 @@
 #include <search.h>
 #include <string.h>
 #include <ctype.h>
+#include <regs.h>
+#include <wikireader.h>
 
 enum display_mode_e {
 
