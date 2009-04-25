@@ -23,6 +23,10 @@
 #define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))
 #endif
 
+#ifndef STATIC_ASSERT
+#define STATIC_ASSERT(exp, name) typedef int dummy##name [(exp) ? 1 : -1];
+#endif
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned long u32;

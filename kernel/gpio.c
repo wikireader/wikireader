@@ -21,8 +21,25 @@
 #include <regs.h>
 #include <msg.h>
 #include <wikireader.h>
+#include <wikilib.h>
+
+
+#if BOARD_SAMO_A1
+static const int keymap[] = {
+	WL_INPUT_KEY_RANDOM,
+	WL_INPUT_KEY_SEARCH,
+	WL_INPUT_KEY_HISTORY,
+};
+#else
+static const int keymap[] = {
+	WL_INPUT_KEY_SEARCH,
+	WL_INPUT_KEY_HISTORY,
+	WL_INPUT_KEY_RANDOM,
+};
+#endif
 
 #define N_PINS 3
+STATIC_ASSERT(ARRAY_SIZE(keymap) == N_PINS, right_pins)
 
 static unsigned char gpio_state;
 static unsigned char last_state;
@@ -46,7 +63,7 @@ int gpio_get_event(struct wl_input_event *ev)
 			continue;
 
 		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-		ev->key_event.keycode = WL_INPUT_KEY_SEARCH + i;
+		ev->key_event.keycode = keymap[i];
 		ev->key_event.value = !!(gpio_state & (1 << i));
 		last_state ^= (1 << i);
 		return 1;
