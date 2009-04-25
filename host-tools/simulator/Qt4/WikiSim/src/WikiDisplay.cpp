@@ -85,7 +85,7 @@ WikiDisplay::paintEvent(QPaintEvent *)
 	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
 		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
 			int r, g, b;
-			r = g = b = guilib_get_pixel(x, y) * 0xff;
+			r = g = b = guilib_get_pixel(x, y) ? 0xFF: 0;
 			painter.setPen(QColor::fromRgb(r, g, b, 0xff));
 			painter.drawPoint(x, y);
 		}

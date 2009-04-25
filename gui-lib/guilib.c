@@ -49,12 +49,11 @@ int guilib_get_pixel(int x, int y)
 {
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
-
+	int bit_set = (framebuffer[byte] & 1<<(7-bit)) != 0;
 #ifdef DISPLAY_INVERTED
-	return (framebuffer[byte] >> (7 - bit)) ^ 1;
-#else
-	return (framebuffer[byte] >> (7 - bit)) & 1;
+	bit_set = !bit_set;
 #endif
+	return bit_set;
 }
 
 /**
