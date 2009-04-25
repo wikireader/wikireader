@@ -62,16 +62,13 @@ static void toggle_soft_keyboard(void)
 {
 	guilib_fb_lock();
 
-	// Set the keyboard mode to what we want to change to.
-	switch (keyboard_get_mode()) {
-	case KEYBOARD_NONE:
+	/* Set the keyboard mode to what we want to change to. */
+	if (keyboard_get_mode() == KEYBOARD_NONE) {
 		keyboard_set_mode(KEYBOARD_CHAR);
 		keyboard_paint();
-		break;
-	default:
+	} else {
 		keyboard_set_mode(KEYBOARD_NONE);
 		search_reload();
-		break;
 	}
 
 	guilib_fb_unlock();
