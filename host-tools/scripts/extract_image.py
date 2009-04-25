@@ -18,7 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import gd, sys
+import sys
 
 def write_image(image, file):
     file.write("""/* This file is auto generated... */
