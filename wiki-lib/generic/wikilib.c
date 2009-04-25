@@ -180,7 +180,7 @@ static void handle_cursor(struct wl_input_event *ev)
 	}
 }
 
-static void handle_key(int keycode)
+static void handle_key_release(int keycode)
 {
 	if (keycode == WL_INPUT_KEY_SEARCH) {
 		/* back to search */
@@ -276,7 +276,8 @@ int wikilib_run(void)
 			handle_cursor(&ev);
 			break;
 		case WL_INPUT_EV_TYPE_KEYBOARD:
-			handle_key(ev.key_event.keycode);
+			if (ev.key_event.value != 0)
+				handle_key_release(ev.key_event.keycode);
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			handle_touch(&ev);
