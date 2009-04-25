@@ -121,15 +121,5 @@ static inline void disable_card_power(void)
 #define prepare_keys()  do {} while(0)
 #define get_key_state() 0
 
-enum {
-	WL_BUTTON_BASE            = 0x1000,
-	WL_INPUT_KEY_SEARCH_UP    = WL_BUTTON_BASE + 0,
-	WL_INPUT_KEY_SEARCH_DOWN  = WL_BUTTON_BASE + 1,
-	WL_INPUT_KEY_HISTORY_UP   = WL_BUTTON_BASE + 2,
-	WL_INPUT_KEY_HISTORY_DOWN = WL_BUTTON_BASE + 3,
-	WL_INPUT_KEY_RANDOM_UP    = WL_BUTTON_BASE + 4,
-	WL_INPUT_KEY_RANDOM_DOWN  = WL_BUTTON_BASE + 5,
-};
-
 #endif /* WIKIREADER_S1C33E07_H */
 

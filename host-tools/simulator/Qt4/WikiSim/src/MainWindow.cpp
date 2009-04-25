@@ -23,8 +23,6 @@
 
 /* wiki-lib includes */
 #include <input.h>
-#include <regs.h>
-#include <wikireader.h>
 
 #include <QVBoxLayout>
 
@@ -39,19 +37,19 @@ MainWindow::hwButtonEvent(int num)
 void
 MainWindow::searchButtonEvent(void)
 {
-	hwButtonEvent(WL_INPUT_KEY_SEARCH_UP);
+	hwButtonEvent(WL_INPUT_KEY_SEARCH);
 }
 
 void
 MainWindow::historyButtonEvent(void)
 {
-	hwButtonEvent(WL_INPUT_KEY_HISTORY_UP);
+	hwButtonEvent(WL_INPUT_KEY_HISTORY);
 }
 
 void
 MainWindow::randomButtonEvent(void)
 {
-	hwButtonEvent(WL_INPUT_KEY_RANDOM_UP);
+	hwButtonEvent(WL_INPUT_KEY_RANDOM);
 }
 
 MainWindow::MainWindow(QWidget *parent)
