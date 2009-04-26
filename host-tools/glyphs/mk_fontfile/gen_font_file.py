@@ -25,6 +25,7 @@ import os
 import struct
 import array
 import sys
+import spacing
 
 # Fontname to Number (Int) map and
 # Font -> Glyph -> Integer mapping
@@ -104,37 +105,19 @@ def get_mapped_glyph(font_name, glyphid):
 		font_section[glyphid] = len(font_section)
 		return font_section[glyphid]
 
-def gen_spacing_hints(fontid, glyphid):
-	print "gen_spacing_hints is currently broken..."
-	global opts
-	spacingpath = opts.fontpath + "/" + fontid + "/spacing/"
+def gen_spacing_hints(fontname, spacing_file, glyphid):
 	try:
-		all = os.listdir(spacingpath)
-	except:
+		other_glyphs = spacing_file[glyphid]
+	except KeyError:
+		# Okay, we don't have anything right to this glyph
 		return ""
 
-	filtered = array.array('I')
 	spacings = ""
-
-	for s in all:
-		if s[:len(glyphid) + 1] == glyphid + "-":
-			c = int(s[len(glyphid)+1:])
-			filtered.append(c)
-
-	for other in filtered:
-		fname = spacingpath + "/" + glyphid + "-" + str(other) + "/spacing"
-		try:
-			f = open(fname, 'r')
-			s = f.read()
-			f.close()
-			a = s.split(",");
-			x = int(a[0])
-			y = int(a[1])
-			spacings += struct.pack("<hbb", other, x, y)
-		except:
-			print "unable to parse %s" % (fname)
-			raise
-			continue
+	for other in other_glyphs:
+		assert other.left == int(glyphid)
+		spacings += struct.pack("<hbb",
+				get_mapped_glyph(fontname, other.right),
+				other.x, other.y)
 
 	return spacings
 
@@ -152,6 +135,9 @@ def gen_font(font_name):
 	path = os.path.join(opts.fontpath, font_name)
 	glyphpath = path
 	glyphlist = filter(lambda x: x != 'spacing', os.listdir(glyphpath))
+
+	spacing_file = spacing.load(open(
+				os.path.join(glyphpath, "spacing", "spacing-file")))
 
 	# the index table will take an unsigned int for each entry
 	if font_name == opts.default_font:
