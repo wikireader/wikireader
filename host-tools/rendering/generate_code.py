@@ -114,8 +114,12 @@ Two modes are supported. Single conversion or batch conversion""")
                       action = "store", dest = "output_marker", default = "wikipedia.offset")
     parser.add_option("-e", "--error-file", help = "File where to put errors",
                       action = "store", dest = "error_file", default = "failed_blib.files")
+    parser.add_option("-j", "--job", help = "specify the job number",
+                      action = "store", dest = "jobnumber", default = "1")
 
-    return parser.parse_args(sys.argv)
+    opts, args = parser.parse_args(sys.argv)
+    opts.jobnumber = int(opts.jobnumber)
+    return opts, args
 
 
 options, args = parse()
@@ -157,7 +161,8 @@ else:
         prepare_run(text_runs)
 
         # write the offset to another file...
-        print >> offset_marker, "%s %d" % (file_name, batch_output.tell())
+        print >> offset_marker, \
+                    "INSERT INTO Offsets (offset, file, hash) VALUES (%d, %d, '%s');" % (batch_output.tell(), options.jobnumber, file_name)
         write_to_file(text_runs, fontmap, glyphmap, batch_output)
 
     for arg in range(1, len(args)):
