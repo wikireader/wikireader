@@ -249,12 +249,14 @@ fontnum = 1
 font_name_to_number = {}
 out = ""
 
-# special case the default font...
+# special case the default font... and then forget about it
 current_offset = offset
 f = gen_font(opts.default_font)
 out += f
 offset += len(f)
 fonttable[0] = current_offset
+# Forget so the glyph mapping gets effective
+opts.default_font = None
 
 for _font in fontlist:
 	current_offset = offset
