@@ -89,7 +89,7 @@ def get_mapped_glyph(font_name, glyphid):
 	global glyph_remap
 
 	if opts.default_font == font_name:
-		print "Default"
+		print "Default mapping %d" % glyphid
 		return glyphid
 
 	try:
