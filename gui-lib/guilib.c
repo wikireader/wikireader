@@ -25,13 +25,31 @@
 #include <regs.h>
 #include <wikireader.h>
 
+#define EXTRACT_PIXEL(x, y) \
+	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8; \
+	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8; \
+								\
+	if (byte >= FRAMEBUFFER_SIZE)				\
+		return;
+
+/*
+ * Special version for really setting the pixel as it
+ * should be... This does not take DISPLAY_INVERTED into
+ * account.
+ */
+static void guilib_set_pixel_plain(int x, int y, int v)
+{
+	EXTRACT_PIXEL(x, y)
+
+	if (v)
+		framebuffer[byte] |= (1 << (7 - bit));
+	else
+		framebuffer[byte] &= ~(1 << (7 - bit));
+}
+
 void guilib_set_pixel(int x, int y, int v)
 {
-	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
-	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
-
-	if (byte >= FRAMEBUFFER_SIZE)
-		return;
+	EXTRACT_PIXEL(x, y)
 
 	if (v)
 #ifdef DISPLAY_INVERTED
@@ -138,7 +156,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	/* hardest case - go for bit fiddling */
 	for (xx = 0; xx < img->width; xx++)
 		for (yy = 0; yy < img->height; yy++)
-			guilib_set_pixel(x + xx, y + yy,
+			guilib_set_pixel_plain(x + xx, y + yy,
 				IMG_GET_PIXEL(img, xx, yy));
 }
 
