@@ -166,7 +166,10 @@ def gen_font(font_name):
 
 	for glyphid in glyphlist:
 		imagefile = os.path.join(glyphpath, glyphid, "bitmap.png")
-		spacing_hints = gen_spacing_hints(font_name, glyphid)
+		if font_name == opts.default_font:
+			spacing_hints = ""
+		else:
+			spacing_hints = gen_spacing_hints(font_name, spacing_file, glyphid)
 
 		try:
 			try: 
