@@ -24,19 +24,22 @@
 #include <QTextStream>
 #include <QRegExp>
 #include <QMap>
+#include <QSqlDatabase>
+
 /**
  * Extract Titles and build a simple index
  *   Title => Hash
  */
-class CreateIndex : public FileOutputArticleHandler {
+class CreateIndex : public ArticleHandler {
   public:
     CreateIndex(const QString& splitChars, 
-                const QString& indexFileName, 
+                const QSqlDatabase& db,
                 const QString& notMatchName,
                 const QRegExp& notArticle,
                 const QRegExp& match);
 
     void handleArticle(const Article&);
+    void parsingStarts() {}
     void parsingFinished();
 
   private:
@@ -53,6 +56,8 @@ class CreateIndex : public FileOutputArticleHandler {
 
     QFile m_notMatchFile;
     QTextStream m_notMatchStream;
+
+    QSqlDatabase m_database;
 };
 
 #endif

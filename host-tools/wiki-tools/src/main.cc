@@ -31,6 +31,7 @@
 
 #include <QCoreApplication>
 #include <QRegExp>
+#include <QSqlDatabase>
 
 static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** argv)
 {
@@ -54,8 +55,15 @@ static void setupHandlers(QList<ArticleHandler*>* handlers, int argc, char** arg
 
 
     if (createIndexList) {
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "indexdb");
+        db.setDatabaseName("indexdb.sqlite3");
+        if (!db.open()) {
+            fprintf(stderr, "Failed to open sqlite3 database.\n");
+            exit(-1);
+        }
+
         *handlers << new CreateIndex(QLatin1String(" "),
-                                     QLatin1String("indexfile.index"),
+                                     db,
                                      QLatin1String("notmatch.title"),
                                      QRegExp("(^Image:.*)|(^Category:.*)|"
                                              "(^Talk:.*)|(^Template:.*)|"

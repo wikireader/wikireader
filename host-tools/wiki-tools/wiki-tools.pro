@@ -48,3 +48,5 @@ SOURCES += \
     src/ExtractTitles.cc \
     src/SplitArticles.cc \
     src/main.cc
+
+QT += sql
