@@ -42,7 +42,6 @@ enum display_mode_e {
 
 #define ARTICLE_NEW		0
 #define ARTICLE_HISTORY		1
-#define DISPLAY_IMAGE_FILE	"image.pbm"
 
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
@@ -89,14 +88,16 @@ static void print_article_error()
 	guilib_fb_unlock();
 }
 
+#ifdef ENABLE_IMAGE_DISPLAY
 static int display_image()
 {
+	static const char *image_file = "image.pbm";
 	int x, y, new_lines = 0;
 	char data;
-	int fd = wl_open(DISPLAY_IMAGE_FILE, WL_O_RDONLY);
+	int fd = wl_open(image_file, WL_O_RDONLY);
 
 	if (fd < 0) {
-		msg(MSG_INFO, "Could not display file '%s': file not found\n", DISPLAY_IMAGE_FILE);
+		msg(MSG_INFO, "Could not display file '%s': file not found\n", image_file);
 		return -1;
 	}
 
@@ -123,6 +124,7 @@ static int display_image()
 	wl_close(fd);
 	return 1;
 }
+#endif
 
 static void open_article(const char* target, int mode)
 {
@@ -199,9 +201,11 @@ static void handle_key_release(int keycode)
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == WL_KEY_RETURN) {
 			open_article(search_current_target(), ARTICLE_NEW);
+#ifdef ENABLE_IMAGE_DISPLAY
 		} else if (keycode == WL_KEY_HASH) {
 			if (display_image() == 1)
 				display_mode = DISPLAY_MODE_IMAGE;
+#endif
 		} else {
 			handle_search_key(keycode);
 		}
