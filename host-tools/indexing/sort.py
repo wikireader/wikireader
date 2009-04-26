@@ -12,6 +12,8 @@ import sys
 
 lines = []
 
+OFFSET_SIZE = 6
+
 def text_cmp(_a,_b):
     a = _a[0].upper()
     b = _b[0].upper()
@@ -26,8 +28,10 @@ def text_cmp(_a,_b):
 for line in sys.stdin.readlines():
     # take a line: 'Alina Kabaieva 6b6318\n'
     # and split into ('Alina Kabaieva', '6b6318')
-    split = line.rsplit(' ', 1)
-    lines.append((split[0], split[1][:-1]))
+    line = line.strip()
+    lines.append((
+                 line[:-OFFSET_SIZE],
+                 line[-OFFSET_SIZE + 1:]))
 
 lines.sort(text_cmp)
 for line in lines:
