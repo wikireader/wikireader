@@ -1,6 +1,16 @@
 #!/bin/sh
 # send a 4 byte (32 bit LE) count then a file to standard output
 
+FileList='
+kernel.elf
+kernel/kernel.elf
+mahatma.elf
+kernel/mahatma.elf
+KERNEL
+forth.elf
+forth/forth.elf
+'
+
 usage()
 {
   [ -z "$1" ] || echo error: $* >&2
@@ -8,12 +18,23 @@ usage()
   exit 1
 }
 
-[ -z "$1" ] && usage missing argument
-
 FileName="$1"
 
-
-[ -e "${FileName}" ] || usage file, ${FileName} does not exist
+if [ -z "${FileName}" ]
+then
+  for f in ${FileList}
+  do
+    echo trying: ${f} >&2
+    if [ -e "${f}" ]
+    then
+      FileName="${f}"
+      break
+    fi
+  done
+  [ -z "${FileName}" ] && usage missing argument
+else
+  [ -e "${FileName}" ] || usage file, "'"${FileName}'"' does not exist
+fi
 
 size=$(ls -l "${FileName}" | awk '{print $5}')
 
