@@ -92,6 +92,8 @@ void rs232_elf_load(void)
 	void *exec;
 	elf32_sec *sec;
 
+	print("Waiting for file from the serial line ... \n");
+
 	for (i = 0; i < sizeof(u32); i++) {
 		((unsigned char *)&file_size)[i] = serial_input_char();
 	}
