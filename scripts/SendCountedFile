@@ -1,0 +1,28 @@
+#!/bin/sh
+# send a 4 byte (32 bit LE) count then a file to standard output
+
+usage()
+{
+  [ -z "$1" ] || echo error: $* >&2
+  echo usage: $(basename "$0") '<filename>' >&2
+  exit 1
+}
+
+[ -z "$1" ] && usage missing argument
+
+FileName="$1"
+
+
+[ -e "${FileName}" ] || usage file, ${FileName} does not exist
+
+size=$(ls -l "${FileName}" | awk '{print $5}')
+
+printf 'File: "%s", size = 0x%x [%d]\n' ${FileName} ${size} ${size} >&2
+
+b1=$(printf '%02x' $((${size} & 0xff)))
+b2=$(printf '%02x' $((( ${size} >> 8 ) & 0xff)))
+b3=$(printf '%02x' $((( ${size} >> 16 ) & 0xff)))
+b4=$(printf '%02x' $((( ${size} >> 24 ) & 0xff)))
+
+printf "\x${b1}\x${b2}\x${b3}\x${b4}"
+cat ${FileName}
