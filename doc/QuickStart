@@ -14,24 +14,10 @@ export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
 apt-get install --no-install-recommends libqt4-dev
 apt-get install libncurses5-dev
 
+
 ** Modify config.h
 
-diff --git a/common/config.h b/common/config.h
-index 599831f..d0ea6a5 100644
---- a/common/config.h
-+++ b/common/config.h
-@@ -1,12 +1,12 @@
- #ifndef CONFIG_H
- #define CONFIG_H
-
--//#define BOARD_S1C33E07 1
-+#define BOARD_S1C33E07 1
- //#define BOARD_PRT33L17LCD 1
--#define BOARD_PROTO1 1
-+//#define BOARD_PROTO1 1
-
- //#define LCD_MONOCHROME 1
- //#define POWER_MANAGEMENT 1
+Enable the corresponding board config in common/config.h.
 
 
 ** Build the bootloader
@@ -77,6 +63,32 @@ it, you're on the right track.
 If not, please refer to the Jumpers section in the User's Manual of
 DMT33E07 to get your jumpers right.  It should be set to "SD Card,
 RS232 Booting Supported".  After you're done, try again.
+
+
+** Build the mbr bootloader
+
+Build this bootloader to get advanced bootloader options such as
+a bootmenu, forth support or loading the kernel via the serial line.
+
+make mbr
+
+
+** Flash mbr
+
+make flash-mbr
+
+
+** Boot via serial line
+
+First you need to activate the "boot via serial line".
+
+make mbr-rs232
+
+Flash mbr as described above. After flashing the board will wait for
+an incoming kernel file and boot it. You can use picocom to send the
+kernel. Run "scripts/p33" to connect to the device, reset the board
+and hit CTRL + A followed by CTRL + S in the picocom terminal to send
+the kernel file.
 
 
 ** Build the kernel
