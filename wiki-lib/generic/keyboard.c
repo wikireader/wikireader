@@ -116,10 +116,13 @@ void keyboard_paint()
 char keyboard_release(int x, int y)
 {
 	unsigned int i;
-	for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
-		if (qwerty[i].left_x <= x && qwerty[i].right_x >= x
-		    && qwerty[i].left_y <= y && qwerty[i].right_y >= y)
-			return qwerty[i].key;
+	
+	if (kb_mode == KEYBOARD_CHAR) {
+		for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
+			if (qwerty[i].left_x <= x && qwerty[i].right_x >= x
+			&& qwerty[i].left_y <= y && qwerty[i].right_y >= y)
+				return qwerty[i].key;
+		}
 	}
 
 	return -1;
