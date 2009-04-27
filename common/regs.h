@@ -794,5 +794,15 @@
 #define IQB    (1 << 0)
 
 
+// Bits for: REG_CH1_INT_PRIORITY
+#define SERIAL_CH1_INT_PRI_7  	0x7
+#define SERIAL_CH1_INT_PRI_6  	0x6
+#define SERIAL_CH1_INT_PRI_5  	0x5
+#define SERIAL_CH1_INT_PRI_4  	0x4
+#define SERIAL_CH1_INT_PRI_3  	0x3
+#define SERIAL_CH1_INT_PRI_2  	0x2
+#define SERIAL_CH1_INT_PRI_1  	0x1
+#define SERIAL_CH1_INT_PRI_0  	0x0
+
 #endif /* REGS_H */
 
