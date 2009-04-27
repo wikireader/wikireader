@@ -39,6 +39,7 @@ export PATH:=$(PWD)/install/bin:$(PATH)
 .PHONY: all
 all:    mini-libc \
 	bootloader \
+	toppers \
 	kernel \
 	simulator-qt4 \
 	simulator-console
@@ -59,7 +60,10 @@ toppers: mini-libc fatfs
 	cp wikireader/sample1.elf ../KERNEL.toppers)
 
 .PHONY: kernel
-kernel: mahatma
+kernel: mini-libc fatfs
+	( cd kernel && \
+	$(MAKE) && \
+	cp mahatma.elf ../KERNEL)
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
