@@ -50,6 +50,7 @@ int main(void)
 	traps_init();
 	msg_init();
 
+	touchscreen_init();
         msg(MSG_INFO, "Starting\n");
 
 	fb_init();
