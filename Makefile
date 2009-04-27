@@ -167,6 +167,10 @@ forth:  gcc mini-libc
 mbr: gcc fatfs
 	$(MAKE) -C $@
 
+.PHONY: mbr-rs232
+mbr-rs232: gcc fatfs
+	$(MAKE) -C mbr mbr-rs232
+
 .PHONY: flash-mbr
 flash-mbr: mbr
 	$(MAKE) -C bootloader rs232 e07load/e07load

@@ -25,7 +25,7 @@ OBJCOPY_SECTIONS = --only-section=.text
 OBJCOPY_SECTIONS += --only-section=.rodata
 OBJCOPY_SECTIONS += --only-section=.data
 
-TARGETS = mbr
+TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
@@ -35,6 +35,9 @@ VPATH = $(COMMON):../bootloader
 all: $(TARGETS) all-applications
 
 # Master boot record - a multiple program boot loader
+
+$(FLASH_ROM_MAP_FILE):
+	cp SAMO_A1.mapfile-default $(FLASH_ROM_MAP_FILE)
 
 mbr.o: mbr.c
 	$(GCC) -c $(CFLAGS) $<
@@ -49,6 +52,9 @@ mbr: mbr.elf
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \
 	[ "$${c}" -le 512 ] || exit 1
+
+mbr-rs232: SAMO_A1.mapfile-rs232 mbr
+	cp SAMO_A1.mapfile-rs232 $(FLASH_ROM_MAP_FILE)
 
 # macro to create application rules
 # $call MAKE_APP, app_name, file1.o file2.o)
@@ -80,6 +86,7 @@ $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,key-test,misc.o)
 $(call MAKE_APP,forth-loader,misc.o elf32.o)
 $(call MAKE_APP,kernel-loader,misc.o elf32.o)
+$(call MAKE_APP,rs232-loader,misc.o)
 
 
 # rule to build all above applications
