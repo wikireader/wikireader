@@ -19,8 +19,9 @@
 #ifndef TOUCHSCREEN_H
 #define TOUCHSCREEN_H
 
-void touchscreen_read_char(char c);
+void touchscreen_parsing_packets();
 int touchscreen_get_event(struct wl_input_event *ev);
 
+void touchscreen_init(void);
 #endif /* TOUCHSCREEN_H */
 
