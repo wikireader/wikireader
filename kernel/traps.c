@@ -25,6 +25,7 @@
 #include "suspend.h"
 #include "irq.h"
 #include "gpio.h"
+#include "touchscreen.h"
 
 #if 0
 #define CLEAR_IRQ(reg,val) (reg) = (val)
@@ -91,6 +92,8 @@ static void serial1_err_irq(void)
 
 static void serial1_in_irq(void)
 {
+	system_resume();
+	touchscreen_parsing_packets();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 4);
 }
 
