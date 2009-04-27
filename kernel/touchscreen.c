@@ -1,6 +1,7 @@
 /*
  * mahatma - a simple kernel framework
  * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * Copyright (c) 2008, 2009 Matt Hsu <matt_hsu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
