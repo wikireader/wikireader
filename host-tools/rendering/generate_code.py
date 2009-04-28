@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 """
- A code utilizing huffman to convert a .blib file to something that
- compresses nicely and can be uniquely decoded. This version is without
- some optimisations like bigrams.
+ A code to convert a .blib file to something can be easily compressible
+ and is not as redundant as the .blib format.
 
  Copyright (C) 2008, 2009 Holger Hans Peter Freyther <zecke@openmoko.org>
 
