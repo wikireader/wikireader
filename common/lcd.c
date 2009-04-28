@@ -23,28 +23,35 @@
 #include "lcd.h"
 
 
+#if LCD_USES_SPI
 u8 spi_transmit_lcd(u8 out)
 {
 	REG_SPI_TXD = out;
 	do {} while (REG_SPI_STAT & (1 << 6));
 	return REG_SPI_RXD;
 }
+#endif
 
 void init_lcd(void)
 {
-	LCD_CS_LO();
-	TFT_CTL1_LO();
+	TFT_CTL1_HI();  // selects 4 bit mode for LCD interface
+	LCD_DISPLAY_OFF();
 
-        /* disable write protection of clock registers */
-        REG_CMU_PROTECT = 0x96;
-	REG_CMU_GATEDCLK0 |= 0x7;
+	// set up LCD clocks
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+	REG_CMU_GATEDCLK0 |=
+		LCDCAHBIF_CKE |
+		LCDCSAPB_CKE |
+		LCDC_CKE |
+		0;
 #if 0
-	/* set the LCDC_CLK to 1/16 */
-	REG_CMU_CLKCNTL |= 0xF0000;
+	REG_CMU_CLKCNTL = (REG_CMU_CLKCNTL & ~LCDCDIV_MASK) | LCDCDIV_16;
 #endif
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	/* re-enable write protection of clock registers */
-	REG_CMU_PROTECT = 0x00;
+
+#if LCD_USES_SPI
+	LCD_CS_LO();
 
 	/* SPI setup - should move somewhere else */
 	REG_SPI_WAIT = 0x00000000;
@@ -55,40 +62,108 @@ void init_lcd(void)
 	LCD_CS_HI();
 	delay(10);
 	LCD_CS_LO();
+#endif
 
 	/* power down LCDC */
-  	REG_LCDC_PS = 0x00000000;
+	REG_LCDC_PS =
+		//INTF |
+		//VNDPF |
+		//PSAVE_NORMAL |
+		//PSAVE_DOZE |
+		PSAVE_POWER_SAVE |
+		0;
 
-  	/* HT = (47+1) * 8 = 384 characters, HDP = (39+1) * 8 = 320 characters */
-  	REG_LCDC_HD = 0x002f0027;
+	/* HT = (47+1) * 8 = 384 characters, HDP = (39+1) * 8 = 320 characters */
+#define HDP (LCD_WIDTH / 8 - 1)
 
-  	/* VT = 244 + 1 = 255 lines, VDP = 239 + 1 = 480 lines */
-  	REG_LCDC_VD = 0x00f400ef;
+	REG_LCDC_HD =
+		((HDP + 8) << HTCNT_SHIFT) |
+		(HDP << HDPCNT_SHIFT) |
+		0;
 
-  	/* wf counter = 0 */
-  	REG_LCDC_MR = 0x0;
+	/* VT = 244 + 1 = 255 lines, VDP = 239 + 1 = 480 lines */
+#define VDP (LCD_HEIGHT - 1)
+
+	REG_LCDC_VD =
+		((VDP + 1) << VTCNT_SHIFT) |
+		(VDP << VDPCNT_SHIFT) |
+		0;
+
+	/* wf counter = 0 */
+	REG_LCDC_MR = 0;
 
 	/* LCDC Display Mode Register, grayscale */
 #if LCD_MONOCHROME
-	REG_LCDC_DMD = 0x22000010;
+	REG_LCDC_DMD =
+		//TFTSEL |
+		//COLOR |
+		FPSMASK |
+
+		//DWD_8_BIT_2 |
+		//DWD_8_BIT_1 |
+		DWD_4_BIT |
+
+		//SWINV |
+		//BLANK |
+		//FRMRPT |
+		//DITHEN |
+		LUTPASS |
+
+		//BPP_16 |
+		//BPP_12 |
+		//BPP_8 |
+		//BPP_4 |
+		//BPP_2 |
+		BPP_1 |
+		0;
+
 #else
-  	REG_LCDC_DMD = 0x22000012;
+	REG_LCDC_DMD =
+		//TFTSEL |
+		//COLOR |
+		FPSMASK |
+
+		//DWD_8_BIT_2 |
+		//DWD_8_BIT_1 |
+		DWD_4_BIT |
+
+		//SWINV |
+		//BLANK |
+		//FRMRPT |
+		//DITHEN |
+		LUTPASS |
+
+		//BPP_16 |
+		//BPP_12 |
+		//BPP_8 |
+		BPP_4 |
+		//BPP_2 |
+		//BPP_1 |
+		0;
 #endif
 
 	/* relocate the frame buffer RAM */
-  	REG_LCDC_MADD = LCD_VRAM;
+	REG_LCDC_MADD = LCD_VRAM;
 
+#if LCD_USES_SPI
 	/* LCDC on */
 	spi_transmit_lcd(0xa8);
 
 	LCD_CS_HI();
 	delay(10);
 	LCD_CS_LO();
+#endif
 
-  	/* set reg_power_save = 11b (normal mode) */
-  	REG_LCDC_PS |= 0x00000003;
+	/* set reg_power_save = 11b (normal mode) */
+	REG_LCDC_PS =
+		//INTF |
+		//VNDPF |
+		PSAVE_NORMAL |
+		//PSAVE_DOZE |
+		//PSAVE_POWER_SAVE |
+		0;
 
-	delay(0x10000);
-	TFT_CTL1_HI();
+	delay_us(1000);
+
+	LCD_DISPLAY_ON();
 }
-

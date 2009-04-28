@@ -7,12 +7,22 @@
 
 void init_lcd(void);
 
-#if BOARD_S1C33E07 || BOARD_SAMO_A1
+#if BOARD_SAMO_A1
+
 #define LCD_WIDTH	(320)
 #define LCD_HEIGHT	(240)
+
+#elif BOARD_S1C33E07
+
+#define LCD_USES_SPI 1
+#define LCD_WIDTH	(320)
+#define LCD_HEIGHT	(240)
+
 #else
+
 #define LCD_WIDTH	(240)
 #define LCD_HEIGHT	(208)
+
 #endif
 
 #if LCD_MONOCHROME
