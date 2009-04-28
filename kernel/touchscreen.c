@@ -149,6 +149,7 @@ int touchscreen_get_event(struct wl_input_event *ev)
 					ev->touch_event.x, ev->touch_event.y, ev->touch_event.value);
 
 		touch_state = WL_INPUT_TOUCH_NONE;
+		return 1;
 	}
 
 	return 0;
