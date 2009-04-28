@@ -29,6 +29,12 @@ enum {
 	WL_INPUT_KEY_CURSOR_DOWN
 };
 
+enum {
+	WL_INPUT_TOUCH_UP = 0,
+	WL_INPUT_TOUCH_DOWN,
+	WL_INPUT_TOUCH_NONE
+};
+
 struct wl_input_event {
 	int type;
 
