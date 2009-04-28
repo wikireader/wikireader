@@ -16,6 +16,9 @@
 #define LCD_CS_LO()     do { REG_P8_P8D &= ~(1 << 5); } while (0)
 #define LCD_CS_HI()     do { REG_P8_P8D |=  (1 << 5); } while (0)
 
+#define LCD_DISPLAY_ON()   do { REG_P3_P3D |= (1 << 0); } while (0)
+#define LCD_DISPLAY_OFF()  do { REG_P3_P3D &= ~(1 << 0); } while (0)
+
 #define TFT_CTL1_LO()   do { REG_P8_P8D &= ~(1 << 3); } while (0)
 #define TFT_CTL1_HI()   do { REG_P8_P8D |=  (1 << 3); } while (0)
 
