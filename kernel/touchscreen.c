@@ -59,6 +59,9 @@ static void (*parsing_touch_handling[PARSING_LAST])(u8 c) = {
 
 u8 x_buffer[4];
 u8 y_buffer[4];
+u8 p_buffer[2];
+
+static volatile int touch_state = WL_INPUT_TOUCH_NONE;
 
 static inline void parsing_init_handler(u8 c)
 {
@@ -110,12 +113,21 @@ static inline void parsing_press_handler(u8 c)
 {
 	static u8 count = 0;
 
+	p_buffer[count] = (c - ASCII_DIGIT_OFFSET);
+
 	if (count == 2){
+		touch_state  = p_buffer[1];
 		ctp_event = PARSING_INIT;
 		count = 0;
 	}
 	else
 		count++;
+}
+
+static inline int calc_coord(u8 *axis_array)
+{
+	return ((axis_array[0] << 12) + (axis_array[1] << 8)
+						+ (axis_array[2] << 4) + axis_array[3]);
 }
 
 void touchscreen_parsing_packets()
@@ -128,6 +140,17 @@ void touchscreen_parsing_packets()
 
 int touchscreen_get_event(struct wl_input_event *ev)
 {
+	if (touch_state != WL_INPUT_TOUCH_NONE){
+		ev->type = WL_INPUT_EV_TYPE_TOUCH;
+		ev->touch_event.x = calc_coord(x_buffer);
+		ev->touch_event.y = calc_coord(y_buffer);
+		ev->touch_event.value = touch_state;
+		msg(MSG_DEBUG, "coord: %d, %d, %d\n\r",
+					ev->touch_event.x, ev->touch_event.y, ev->touch_event.value);
+
+		touch_state = WL_INPUT_TOUCH_NONE;
+	}
+
 	return 0;
 }
 
