@@ -33,7 +33,7 @@ then
   done
   [ -z "${FileName}" ] && usage missing argument
 else
-  [ -e "${FileName}" ] || usage file, "'"${FileName}'"' does not exist
+  [ -e "${FileName}" ] || usage file, "'"${FileName}'"' does not exist >&2
 fi
 
 size=$(ls -l "${FileName}" | awk '{print $5}')
@@ -46,4 +46,4 @@ b3=$(printf '%02x' $((( ${size} >> 16 ) & 0xff)))
 b4=$(printf '%02x' $((( ${size} >> 24 ) & 0xff)))
 
 printf "\x${b1}\x${b2}\x${b3}\x${b4}"
-cat ${FileName}
+dd if="${FileName}" bs=1
