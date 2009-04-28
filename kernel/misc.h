@@ -20,5 +20,6 @@
 #define _MISC_H_
 
 void delay(u32 nops);
+void delay_us(u32 microseconds);
 
 #endif
