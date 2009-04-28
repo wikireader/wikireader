@@ -587,6 +587,7 @@
 #define CMU_CLK_SEL_OSC1            (1 << 24)
 #define CMU_CLK_SEL_OSC3            (0 << 24)
 
+#define PLLINDIV_MASK (15 << 20)
 #define PLLINDIV_10   (9 << 20)
 #define PLLINDIV_9    (8 << 20)
 #define PLLINDIV_8    (7 << 20)
@@ -598,6 +599,7 @@
 #define PLLINDIV_2    (1 << 20)
 #define PLLINDIV_1    (0 << 20)
 
+#define LCDCDIV_MASK  (15 << 16)
 #define LCDCDIV_16    (15 << 16)
 #define LCDCDIV_15    (14 << 16)
 #define LCDCDIV_14    (13 << 16)
@@ -617,6 +619,7 @@
 
 #define MCLKDIV       (1 << 12)
 
+#define OSC3DIV_MASK  (7 << 8)
 #define OSC3DIV_32    (5 << 8)
 #define OSC3DIV_16    (4 << 8)
 #define OSC3DIV_8     (3 << 8)
@@ -624,7 +627,7 @@
 #define OSC3DIV_2     (1 << 8)
 #define OSC3DIV_1     (0 << 8)
 
-
+#define OSCSEL_MASK   (3 << 2)
 #define OSCSEL_PLL    (3 << 2)
 #define OSCSEL_OSC3x  (2 << 2)
 #define OSCSEL_OSC1   (1 << 2)
@@ -784,7 +787,7 @@
 #define SDRAM_CMD_PALL  (SDON | INIPRE)
 #define SDRAM_CMD_MRS   (SDON | INIMRS)
 
-// bits for: REG_SDRAMC_APP
+// Bits for: REG_SDRAMC_APP
 #define ARBON  (1 << 31)
 #define DBF    (1 << 5)
 #define INCR   (1 << 4)
@@ -792,7 +795,6 @@
 #define CAS0   (1 << 2)
 #define APPON  (1 << 1)
 #define IQB    (1 << 0)
-
 
 // Bits for: REG_CH1_INT_PRIORITY
 #define SERIAL_CH1_INT_PRI_7  	0x7
@@ -803,6 +805,48 @@
 #define SERIAL_CH1_INT_PRI_2  	0x2
 #define SERIAL_CH1_INT_PRI_1  	0x1
 #define SERIAL_CH1_INT_PRI_0  	0x0
+
+
+/*
+ * LCD controller
+ */
+
+// Bits for: REG_LCDC_PS
+#define INTF              (1 << 31)
+#define VNDPF             (1 << 7)
+#define PSAVE_NORMAL      (3 << 0)
+#define PSAVE_DOZE        (2 << 0)
+#define PSAVE_POWER_SAVE  (0 << 0)
+
+// Bits for: REG_LCDC_HD
+#define HTCNT_SHIFT    16
+#define HDPCNT_SHIFT   0
+
+// Bits for: REG_LCDC_VD
+#define VTCNT_SHIFT    16
+#define VDPCNT_SHIFT   0
+
+// Bits for: REG_LCDC_DMD
+#define TFTSEL         (1 << 31)
+#define COLOR          (1 << 30)
+#define FPSMASK        (1 << 29)
+
+#define DWD_8_BIT_2    (3 << 26)
+#define DWD_8_BIT_1    (1 << 26)
+#define DWD_4_BIT      (0 << 26)
+
+#define SWINV          (1 << 25)
+#define BLANK          (1 << 24)
+#define FRMRPT         (1 << 7)
+#define DITHEN         (1 << 6)
+#define LUTPASS        (1 << 4)
+
+#define BPP_16         (5 << 0)
+#define BPP_12         (4 << 0)
+#define BPP_8          (3 << 0)
+#define BPP_4          (2 << 0)
+#define BPP_2          (1 << 0)
+#define BPP_1          (0 << 0)
 
 #endif /* REGS_H */
 
