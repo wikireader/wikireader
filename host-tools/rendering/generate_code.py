@@ -90,7 +90,7 @@ def write_to_file(text_runs, fonts, glyphmap, auto_kern_bit):
 
     text = "".join(output)
     if imported_lzo:
-        auto_kern_bit.write(lzo.compress(text, 9))
+        auto_kern_bit.write(lzo.compress(text))
     else:
         auto_kern_bit.write(text)
 
