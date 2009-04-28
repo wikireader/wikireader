@@ -2,7 +2,7 @@
 #define SAMO_A1_H 1
 
 /* as long as we use the EVBs display ... */
-#define DISPLAY_INVERTED	1
+//#define DISPLAY_INVERTED 	1
 #define EEPROM_PM25LV512	1
 
 // The ports are:
