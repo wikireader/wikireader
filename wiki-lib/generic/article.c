@@ -35,6 +35,7 @@ static unsigned int article_data_length = 0;
 static int current_page = -1;
 static unsigned int current_page_offset = -1;
 static char filename_buf[8 + 1 + 3 + 1];
+static char byte_buffer[12];
 
 enum ParseMode {
 	Parse_Start,
@@ -42,6 +43,27 @@ enum ParseMode {
 	Parse_Position,
 	Parse_Glyph
 };
+
+static int decimal_to_int(const char *data, int len)
+{
+	int number = 0, i;
+	int accu = 1;
+
+	for (i = len-1; i >= 0; --i) {
+		if (data[i] < 0x30 || data[i] > 0x39) {
+			if (data[i] == '-') {
+				return -1 * number;
+			} else {
+				return 0;
+			}
+		}
+
+		number += (data[i] - 0x30) * accu;
+		accu *= 10;
+	}
+
+	return number;
+}
 
 int article_open(const char *target)
 {
@@ -89,12 +111,33 @@ exit_1:
 
 void article_display(enum article_nav nav)
 {
-	int last_x, last_y, last_font, last_number;
-	int i;
+	int last_x = 0, last_y = 0, last_font = 0;
+	int has_x = 0;
 	int mode = Parse_Start;
+	unsigned int byte_offset = 0;
+	struct glyph *last_glyph = NULL;
+	int i;
 
 	guilib_fb_lock();
 	guilib_clear();
+
+/* Change the mode and reset state */
+#define CHANGE_MODE(new_mode)	\
+	mode = new_mode;	\
+	byte_offset = 0;	\
+	if (new_mode == Parse_Position) \
+		has_x = 0;
+
+/*
+ * Consume a byte by putting into the byte structure. This
+ * can then be converted into a integer...
+ */
+#define CONSUME_BYTE() \
+	byte_buffer[byte_offset++ % sizeof(byte_buffer)] = article_data[i];
+#define PARSE_INT() \
+	decimal_to_int(byte_buffer, byte_offset % sizeof(byte_buffer));
+
+
 
 #warning BROKEN...Only paint one page
 	//current_page_offset = 0;
@@ -108,27 +151,45 @@ void article_display(enum article_nav nav)
 
 		if (mode == Parse_Start) {
 			if (article_data[i] == 'f') {
-				mode = Parse_Font;
+				CHANGE_MODE(Parse_Font)
 			} else {
+				/* error */
 			}
 		} else if (mode == Parse_Font) {
 			if (article_data[i] == ',') {
-				mode = Parse_Position;
+				last_font = PARSE_INT();
+				CHANGE_MODE(Parse_Position)
 			} else {
+				CONSUME_BYTE()
 			}
 		} else if (mode == Parse_Position) {
 			if (article_data[i] == ',') {
-				mode = Parse_Glyph;
+				CHANGE_MODE(Parse_Glyph)
+			} else if (article_data[i] == '_') {
+				if (has_x) {
+					last_y += PARSE_INT();
+				} else {
+					last_x += PARSE_INT();
+					has_x = 1;
+				}
+			} else {
+				CONSUME_BYTE()
 			}
 		} else if (mode == Parse_Glyph) {
 			if (article_data[i] == '-') {
 			} else if (article_data[i] == 'f') {
 				printf("Switch back to fonts\n");
-				mode = Parse_Font;
+				CHANGE_MODE(Parse_Font)
 			} else if (article_data[i] == ',') {
 				printf("Position change..\n");
-				mode = Parse_Position;
+				CHANGE_MODE(Parse_Position)
+			} else {
+				CONSUME_BYTE()
+				continue;
 			}
+
+			/* time to paint here */
+			int glyph = PARSE_INT();
 		}
 	}
     
