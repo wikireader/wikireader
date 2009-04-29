@@ -49,12 +49,15 @@ bool Article::isRedirect() const
     if (m_determinedRedirect)
         return m_isRedirect;
 
-    // in Python notation re.compile("^\#REDIRECT \[\[(?P<title>[a-zA-Z0-9- \t]*)\]\]$")
+    // in Python notation re.compile("^\#REDIRECT\s\[\[(?P<title>[a-zA-Z0-9- \t]*)\]\]$")
     // and done manually here. This means the string is walked multiple times but only
     // in the case of a #REDIRECT.
     m_determinedRedirect = true;
 
-    if (!m_textContent.startsWith("#REDIRECT [[", Qt::CaseInsensitive))     
+    bool redirectSpace  = m_textContent.startsWith("#REDIRECT [[", Qt::CaseInsensitive);
+    bool redirectDirect = m_textContent.startsWith("#REDIRECT[[", Qt::CaseInsensitive);
+
+    if (!redirectSpace && !redirectDirect)
         return m_isRedirect;
 
     if (m_textContent.contains("\n"))
@@ -64,7 +67,14 @@ bool Article::isRedirect() const
         return m_isRedirect;
 
     m_isRedirect = true;
-    m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT [[" - 1);
+    if (redirectSpace)
+        m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT [[" - 1);
+    else
+        m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT[[" - 1);
+
+    if (m_redirectsTo.contains("|"))
+        m_redirectsTo = m_redirectsTo.left(m_redirectsTo.indexOf("|"));
+
     m_redirectsTo = m_redirectsTo.left(m_redirectsTo.indexOf("]]"));
     return m_isRedirect;
 }
