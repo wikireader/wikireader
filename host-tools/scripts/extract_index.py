@@ -43,4 +43,4 @@ cursor = connection.execute("SELECT IndexTable.title, Offsets.file, Offsets.offs
 for row in cursor:
     title = row[0].encode("utf-8")
     data = struct.pack("<bI", row[1], row[2])
-    print >> output, "%s %s" % (title, data)
+    print >> output, "%s%s" % (title, data)
