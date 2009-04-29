@@ -149,11 +149,11 @@ else:
     glyphmap = glyphmap.load(options.glyphmap)
     failed = open(options.error_file, "a")
 
-    def convert(base_name, file_name):
+    def convert(base_name, hash):
         """
         Convert a single file
         """
-        file_name = os.path.join(base_name, "articles", file_name[0], file_name[1:3], file_name)
+        file_name = os.path.join(base_name, "articles", hash[0], hash[1:3], hash)
         file_name = "%s.blib" % file_name
         glyphs = textrun.load(open(file_name, 'rb'))
         text_runs = textrun.generate_text_runs(glyphs, 240)
@@ -161,7 +161,7 @@ else:
 
         # write the offset to another file...
         print >> offset_marker, \
-                    "INSERT INTO Offsets (offset, file, hash) VALUES (%d, %d, '%s');" % (batch_output.tell(), options.jobnumber, file_name)
+                    "INSERT INTO Offsets (offset, file, hash) VALUES (%d, %d, '%s');" % (batch_output.tell(), options.jobnumber, hash)
         write_to_file(text_runs, fontmap, glyphmap, batch_output)
 
     for arg in range(1, len(args)):
