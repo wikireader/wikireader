@@ -41,7 +41,7 @@ static const int search_result_len = 19;
 #define NUMBER_OF_RESULTS 19
 #define NUMBER_OF_RESULTS_KEYBOARD 11
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
-static char search_pointers[NUMBER_OF_RESULTS][8];
+static char search_pointers[NUMBER_OF_RESULTS][TARGET_SIZE + 1];
 static int search_found = 0;
 
 /* -1 is unselected */
