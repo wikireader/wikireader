@@ -61,6 +61,11 @@ void ArticleRedirectTest::testRedirect_data()
             << QString::fromLatin1("#REDIRECT[[Brethren of Purity|Brethren of Sincerity]]")
             << true
             << QString::fromLatin1("Brethren of Purity");
+
+    QTest::newRow("redirect 5")
+            << QString::fromLatin1("#REDIRECT [[Analysis of variance]]\n{{R from CamelCase}}")
+            << true
+            << QString::fromLatin1("Analysis of variance");
 }
 
 void ArticleRedirectTest::testRedirect()
