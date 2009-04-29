@@ -53,12 +53,12 @@ def parse():
 	else:
 	    return opts, args
 
-def write_output(fontlist, fonttable, font_name_to_number, glyph_remap):
+def write_output(fonttable, font_name_to_number, glyph_remap):
 	global opts
 	outfile = open(opts.output, 'w')
 
 	# write the number of fonts in this file
-	outfile.write(struct.pack("<I", len(fontlist)))
+	outfile.write(struct.pack("<I", len(fonttable)))
 
 	for i in fonttable:
 		outfile.write(struct.pack("<I", i))
@@ -226,7 +226,7 @@ except:
 
 # allocate the font offset table
 fonttable = [ 0 ] * (len(fontlist) + 1)
-offset = len(fontlist) * 4
+offset = len(fonttable) * 4
 fontnum = 1
 font_name_to_number = {}
 out = ""
@@ -251,4 +251,4 @@ for _font in fontlist:
 	fontnum += 1
 	print "offset for font %d is %d" % (font_name_to_number[_font], current_offset)
 
-write_output(fontlist, fonttable, font_name_to_number, glyph_remap)
+write_output(fonttable, font_name_to_number, glyph_remap)
