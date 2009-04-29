@@ -57,6 +57,10 @@ void ArticleRedirectTest::testRedirect_data()
             << QString::fromLatin1("{{Otherusesof|A}}")
             << false
             << QString();
+    QTest::newRow("redirect 4")
+            << QString::fromLatin1("#REDIRECT[[Brethren of Purity|Brethren of Sincerity]]")
+            << true
+            << QString::fromLatin1("Brethren of Purity");
 }
 
 void ArticleRedirectTest::testRedirect()
