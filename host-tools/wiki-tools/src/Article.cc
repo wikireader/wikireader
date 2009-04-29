@@ -23,7 +23,7 @@
 #include <QApplication>
 #include <QRegExp>
 
-static QRegExp s_redirectStart = QRegExp("^#REDIRECT(\\s|:)*\\[\\[(.)*\\]\\](.)*$", Qt::CaseInsensitive);
+static QRegExp s_redirectStart = QRegExp("^(\\s)*#REDIRECT(\\s|:)*\\[\\[(.)*\\]\\](.)*$", Qt::CaseInsensitive);
 
 Article::Article()
     : m_isEmpty(true)
