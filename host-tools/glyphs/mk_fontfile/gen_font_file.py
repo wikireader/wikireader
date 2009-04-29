@@ -23,7 +23,6 @@ import gd
 import optparse
 import os
 import struct
-import array
 import sys
 import spacing
 

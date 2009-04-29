@@ -19,8 +19,8 @@
 """
 
 import gd
-import os
 import sys
+import struct
 
 def usage():
 	print "guilib image file generator"
