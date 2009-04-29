@@ -26,6 +26,7 @@ import textrun
 import optparse
 import os
 import glob
+import struct
 
 try:
     import lzo
@@ -89,9 +90,12 @@ def write_to_file(text_runs, fonts, glyphmap, auto_kern_bit):
 
     text = "".join(output)
     if imported_lzo:
-        auto_kern_bit.write(lzo.compress(text))
+        compressed = lzo.compress(text)
     else:
-        auto_kern_bit.write(text)
+        compressed = text
+
+    auto_kern_bit.write(struct.pack("<I", len(compressed)))
+    auto_kern_bit.write(compressed)
 
 
 def parse():
