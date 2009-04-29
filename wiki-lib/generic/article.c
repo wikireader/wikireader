@@ -21,6 +21,7 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <fontfile.h>
+#include <search.h>
 #include <limits.h>
 #include <msg.h>
 
@@ -194,6 +195,30 @@ void article_close(void)
 void article_extract_file_and_offset(const char *target,
 				    unsigned int *file, unsigned int *offset)
 {
-	*file = 0x2342;
-	*offset = 0x2342;
+	int len, i;
+	unsigned int out_offset = 0;
+	unsigned int accu = 1;
+	/* naughty... spank... */
+	if (!target || (len = strlen(target)) != TARGET_SIZE)
+		goto error_out;
+
+	for (i = 0; i < len; ++i) {
+		if (target[i] < 0x30 || target[i] > 0x39)
+			goto error_out;
+	}
+
+
+	for (i = len-1; i >= 1; --i) {
+		out_offset += (target[i] - 0x30) * accu;
+		accu *= 10;
+	}
+
+	*offset = out_offset;
+	*file = target[0] - 0x30;
+	return;
+
+error_out:
+	*file = UINT_MAX;
+	*offset = UINT_MAX;
+	return;
 }
