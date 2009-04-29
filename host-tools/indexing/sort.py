@@ -12,7 +12,7 @@ import sys
 
 lines = []
 
-OFFSET_SIZE = 5
+OFFSET_SIZE = 11
 
 def text_cmp(_a,_b):
     a = _a[0].upper()

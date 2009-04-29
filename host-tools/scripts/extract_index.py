@@ -22,7 +22,6 @@
 import optparse
 import sys
 import sqlite3
-import struct
 
 
 def parse():
@@ -42,5 +41,4 @@ cursor = connection.execute("SELECT IndexTable.title, Offsets.file, Offsets.offs
 
 for row in cursor:
     title = row[0].encode("utf-8")
-    data = struct.pack("<bI", row[1], row[2])
-    print >> output, "%s%s" % (title, data)
+    print >> output, "%s%d%.10d" % (title, (row[1] % 10), row[2])
