@@ -36,6 +36,12 @@ static int current_page = -1;
 static unsigned int current_page_offset = -1;
 static char filename_buf[8 + 1 + 3 + 1];
 
+enum ParseMode {
+	Parse_Start,
+	Parse_Font,
+	Parse_Position,
+	Parse_Glyph
+};
 
 int article_open(const char *target)
 {
@@ -81,24 +87,51 @@ exit_1:
 	return -3;
 }
 
-#define READ_UINT(var, fd) \
-	res = wl_read(fd, &var, 4); \
-	if (res < 4) { \
-		msg(MSG_INFO, "Could not read article file - wl_read() returned: %i\n", res); \
-		current_page_offset = article_data_length; \
-		goto out; \
-	}
-
 void article_display(enum article_nav nav)
 {
+	int last_x, last_y, last_font, last_number;
+	int i;
+	int mode = Parse_Start;
+
 	guilib_fb_lock();
 	guilib_clear();
 
 #warning BROKEN...Only paint one page
 	//current_page_offset = 0;
 
-	// TODO: Decoding routines...
+	/* display one page of text... */
 
+        // TODO: Decoding routines...
+	for (i = 0; i < article_data_length; ++i) {
+		if (last_y > guilib_framebuffer_height())
+			break;
+
+		if (mode == Parse_Start) {
+			if (article_data[i] == 'f') {
+				mode = Parse_Font;
+			} else {
+			}
+		} else if (mode == Parse_Font) {
+			if (article_data[i] == ',') {
+				mode = Parse_Position;
+			} else {
+			}
+		} else if (mode == Parse_Position) {
+			if (article_data[i] == ',') {
+				mode = Parse_Glyph;
+			}
+		} else if (mode == Parse_Glyph) {
+			if (article_data[i] == '-') {
+			} else if (article_data[i] == 'f') {
+				printf("Switch back to fonts\n");
+				mode = Parse_Font;
+			} else if (article_data[i] == ',') {
+				printf("Position change..\n");
+				mode = Parse_Position;
+			}
+		}
+	}
+    
 	guilib_fb_unlock();
 }
 
