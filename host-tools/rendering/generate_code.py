@@ -168,6 +168,7 @@ else:
                     "INSERT INTO Offsets (offset, file, hash) VALUES (%d, %d, '%s');" % (batch_output.tell(), options.jobnumber, hash)
         write_to_file(text_runs, fontmap, glyphmap, batch_output)
 
+    print >> offset_marker, "BEGIN TRANSACTION;"
     for arg in range(1, len(args)):
         for work in glob.glob(os.path.join(args[arg], "*.work")):
             print "Working on %s" % work
@@ -178,5 +179,6 @@ else:
                     convert(args[arg], data[0])
                 except:
                     print >> failed, "Error: %s from %s" % (data[0], work)
+    print >> offset_marker, "COMMIT;"
 
 print "Done. Have fun!"
