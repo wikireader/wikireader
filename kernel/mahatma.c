@@ -43,7 +43,7 @@ static FATFS fatfs;
 int main(void)
 {
 	/* set the default data pointer */
-	asm("xld.w   %r15, __dp");
+	asm volatile ("xld.w   %r15, __dp");
 
 	/* machine-specific init */
 	gpio_init();
@@ -69,11 +69,5 @@ int main(void)
 	wikilib_run();
 
 	/* never reached */
-	return 0;
-}
-
-DWORD get_fattime(void)
-{
-	/* FIXME: fill this function */
 	return 0;
 }
