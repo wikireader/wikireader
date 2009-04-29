@@ -24,6 +24,9 @@
 #include <search.h>
 #include <limits.h>
 #include <msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <decompress.h>
 
 /*
  * To enable debugging:
@@ -39,10 +42,13 @@ struct page_offset {
 static struct page_offset pages[BUFSIZE];
 static unsigned int bufpos = 0;
 
-static int article_fd = -1;
+/* decompressed article */
+static char *article_data = NULL;
+static unsigned int article_data_length = 0;
+
 static int current_page = -1;
-static unsigned int article_file_size = -1;
 static unsigned int current_page_offset = -1;
+static char filename_buf[8 + 1 + 3 + 1];
 
 
 #ifdef PRINT_PAGE_BUFFER
@@ -63,48 +69,76 @@ static inline void print_page_buffer(void)
 #endif
 
 
-int article_open(const char *article)
+int article_open(const char *target)
 {
+	unsigned int file, offset, lzo_len;
+	int r, article_fd;
 	article_close();
-	article_fd = wl_open(article, WL_O_RDONLY);
-	current_page = -1;
-	article_file_size = -1;
-	current_page_offset = -1;
-	/* reset ring buffer */
-	memset(pages, 0, sizeof(struct page_offset) * BUFSIZE);
-	return article_fd;
+
+	/* find out which file */
+	article_extract_file_and_offset(target, &file, &offset);
+	if (file == UINT_MAX && offset == UINT_MAX)
+		return -1;
+
+	/* open it */
+	snprintf(&filename_buf[0], sizeof(filename_buf),
+		"wikiset%d.set", file % 10);
+	article_fd = wl_open(filename_buf, WL_O_RDONLY);
+	if (article_fd < 0)
+		return -2;
+
+	/* seek in it */
+	if (wl_seek(article_fd, offset) < 0)
+		goto exit_1;
+
+	/* read size */
+	/* FIXME: endian... */
+	r = wl_read(article_fd, &lzo_len, sizeof(u_int32_t));
+	if (r != sizeof(u_int32_t))
+		goto exit_1;
+
+	/* decompress it */
+	article_data = decompress_block(article_fd,
+					lzo_len + sizeof(u_int32_t),
+					&article_data_length);
+	if (!article_data)
+		goto exit_1;
+
+	/* decompress */
+	wl_close(article_fd);
+	return 1;
+
+exit_1:
+	wl_close(article_fd);
+	return -3;
 }
 
 #define READ_UINT(var, fd) \
 	res = wl_read(fd, &var, 4); \
 	if (res < 4) { \
 		msg(MSG_INFO, "Could not read article file - wl_read() returned: %i\n", res); \
-		current_page_offset = article_file_size; \
+		current_page_offset = article_data_length; \
 		goto out; \
 	}
 
 void article_display(enum article_nav nav)
 {
-	unsigned int font, x, y, glyph_index, len, i;
 	unsigned int page_start;
 	unsigned int page_end;
-	int res;
-	const struct glyph *glyph;
 
-	if (article_fd < 0)
+	if (!article_data)
 		return;
 
 	/* scroll one page at a time */
 	switch(nav) {
 	case ARTICLE_PAGE_0:
-		wl_seek(article_fd, 0);
-		wl_fsize(article_fd, &article_file_size);
 		current_page = 0;
+		current_page_offset = 0;
 		break;
 
 	case ARTICLE_PAGE_NEXT:
 		/* reached end of file */
-		if (current_page_offset == article_file_size)
+		if (current_page_offset == article_data_length)
 			return;
 
 		/* push into buffer */
@@ -124,9 +158,9 @@ void article_display(enum article_nav nav)
 		 * beginning. (stupid) */
 		bufpos = (bufpos + BUFSIZE - 1) % BUFSIZE;
 		if (pages[bufpos].page < current_page)
-			wl_seek(article_fd, pages[bufpos].offset);
+			current_page_offset = pages[bufpos].offset;
 		else
-			wl_seek(article_fd, 0);
+			current_page_offset = 0;
 		current_page--;
 		break;
 
@@ -142,44 +176,25 @@ void article_display(enum article_nav nav)
 	guilib_fb_lock();
 	guilib_clear();
 
-	current_page_offset = wl_tell(article_fd);
+#warning BROKEN...
+	//current_page_offset = 0;
 
-	do {
-		READ_UINT(font, article_fd)
-		READ_UINT(len, article_fd)
+	// TODO: Decoding routines...
 
-		for (i = 0; i < len; ++i) {
-			READ_UINT(x, article_fd)
-			READ_UINT(y, article_fd)
-			READ_UINT(glyph_index, article_fd)
-
-			if (y < page_start || x > guilib_framebuffer_width())
-				continue;
-			if (y >= page_end)
-				continue;
-
-			if (font >= guilib_nr_fonts())
-				continue;
-
-			glyph = get_glyph(font, glyph_index);
-			if (!glyph)
-				continue;
-
-			render_glyph(x, y % guilib_framebuffer_height(), glyph);
-		}
-		if (y >= page_end)
-			break;
-	} while(1);
-
-out:
 	guilib_fb_unlock();
 }
 
 void article_close(void)
 {
-	if (article_fd >= 0) {
-		wl_close(article_fd);
-		article_fd = -1;
+	current_page = -1;
+	current_page_offset = -1;
+	/* reset ring buffer */
+	memset(pages, 0, sizeof(struct page_offset) * BUFSIZE);
+
+	if (article_data) {
+		free(article_data);
+		article_data = NULL;
+		article_data_length = 0;
 	}
 }
 
