@@ -34,10 +34,6 @@ void fb_set_pixel(int x, int y, int val) {}
 void fb_refresh(void) {}
 void fb_clear(void) {}
 
-// cannot call funtion at compile time
-//static unsigned char framebuffer_data[guilib_framebuffer_size()];
-//unsigned char *framebuffer = &framebuffer_data[0];
-// now need to malloc
 unsigned char *framebuffer = NULL;
 
 int wl_input_wait(struct wl_input_event *ev, int sleep)

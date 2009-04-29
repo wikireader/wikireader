@@ -40,8 +40,7 @@ void fb_set_pixel(int x, int y, int val) {}
 void fb_refresh(void) {}
 void fb_clear(void) {}
 
-static unsigned char framebuffer_data[FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT];
-unsigned char *framebuffer = &framebuffer_data[0];
+unsigned char *framebuffer = NULL;
 
 static int test_strcmp(const char *actual, const char *expected);
 
@@ -160,7 +159,7 @@ static void history_test()
 	/* the 1st page in history list should be  199~180 item now */
 	int found = 0;
 	for (i = 199; i > 180; i--) {
-		for (j = 20; j < (FRAMEBUFFER_HEIGHT-10); j++) {
+		for (j = 20; j < (guilib_framebuffer_height()-10); j++) {
 			if (!strcmp(target, history_release(j))) {
 				found = 1;
 				break;
@@ -223,6 +222,8 @@ static void history_test()
 
 int main(int argc, char *argv[])
 {
+	framebuffer = (char *)malloc(guilib_framebuffer_size());
+
 	wikilib_init();
 	guilib_init();
 
