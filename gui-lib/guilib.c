@@ -23,7 +23,16 @@
 #include "glyph.h"
 #include "fontfile.h"
 #include <regs.h>
+#include <lcd.h>
 #include <wikireader.h>
+
+
+// just redfine, fix later
+#define FRAMEBUFFER_WIDTH    LCD_WIDTH_PIXELS
+#define FRAMEBUFFER_HEIGHT   LCD_HEIGHT_LINES
+#define FRAMEBUFFER_SCANLINE LCD_VRAM_WIDTH_PIXELS
+#define FRAMEBUFFER_SIZE     LCD_VRAM_SIZE
+
 
 #define EXTRACT_PIXEL(x, y) \
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8; \
@@ -31,6 +40,23 @@
 								\
 	if (byte >= FRAMEBUFFER_SIZE)				\
 		return;
+
+
+unsigned int guilib_framebuffer_width(void)
+{
+	return FRAMEBUFFER_WIDTH;
+}
+
+unsigned int guilib_framebuffer_height(void)
+{
+	return FRAMEBUFFER_HEIGHT;
+}
+
+unsigned int guilib_framebuffer_size(void)
+{
+	return FRAMEBUFFER_SIZE;
+}
+
 
 /*
  * Special version for really setting the pixel as it

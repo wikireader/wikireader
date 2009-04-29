@@ -106,7 +106,7 @@ void keyboard_paint()
 	if (kb_mode == KEYBOARD_NONE)
 		return;
 	guilib_fb_lock();
-	guilib_blit_image(&image_data, 0, FRAMEBUFFER_HEIGHT - image_data.height);
+	guilib_blit_image(&image_data, 0, guilib_framebuffer_height() - image_data.height);
 	guilib_fb_unlock();
 }
 
@@ -116,7 +116,7 @@ void keyboard_paint()
 char keyboard_release(int x, int y)
 {
 	unsigned int i;
-	
+
 	if (kb_mode == KEYBOARD_CHAR) {
 		for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
 			if (qwerty[i].left_x <= x && qwerty[i].right_x >= x

@@ -26,6 +26,7 @@
 #include "glyph.h"
 #include "fontfile.h"
 #include <regs.h>
+#include <lcd.h>
 #include <wikireader.h>
 
 void render_glyph(int start_x, int start_y, const struct glyph *glyph)
@@ -36,9 +37,9 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 	for (y = start_y; y < start_y + glyph->height; ++y) {
 		for (x = start_x, w = glyph->width; w > 0;) {
 			int use;
-			unsigned byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
+			unsigned byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 
-			if (byte >= FRAMEBUFFER_SIZE)
+			if (byte >= LCD_VRAM_SIZE)
 				return;
 
 			use = MIN(8 - (x % 8) , w);

@@ -134,8 +134,8 @@ void article_display(enum article_nav nav)
 
 	print_page_buffer();
 
-	page_start = current_page * FRAMEBUFFER_HEIGHT;
-	page_end = page_start + FRAMEBUFFER_HEIGHT;
+	page_start = current_page * guilib_framebuffer_height();
+	page_end = page_start + guilib_framebuffer_height();
 
 	guilib_fb_lock();
 	guilib_clear();
@@ -151,7 +151,7 @@ void article_display(enum article_nav nav)
 			READ_UINT(y, article_fd)
 			READ_UINT(glyph_index, article_fd)
 
-			if (y < page_start || x > FRAMEBUFFER_WIDTH)
+			if (y < page_start || x > guilib_framebuffer_width())
 				continue;
 			if (y >= page_end)
 				continue;
@@ -163,7 +163,7 @@ void article_display(enum article_nav nav)
 			if (!glyph)
 				continue;
 
-			render_glyph(x, y % FRAMEBUFFER_HEIGHT, glyph);
+			render_glyph(x, y % guilib_framebuffer_height(), glyph);
 		}
 		if (y >= page_end)
 			break;

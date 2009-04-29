@@ -31,10 +31,10 @@ extern "C" {
 WikiDisplay::WikiDisplay(QWidget *parent)
  : QWidget(parent)
 {
-	setMinimumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
-	setMaximumSize(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
-	printf("initializing display for %dx%d pixels\n", FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
-	framebuffer = new QByteArray(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT, 0);
+	setMinimumSize(guilib_framebuffer_width(), guilib_framebuffer_height());
+	setMaximumSize(guilib_framebuffer_width(), guilib_framebuffer_height());
+	printf("initializing display for %dx%d pixels\n", guilib_framebuffer_width(), guilib_framebuffer_height());
+	framebuffer = new QByteArray(guilib_framebuffer_width() * guilib_framebuffer_height(), 0);
 	keyEventQueue = new QQueue<QKeyEvent>;
 	mouseEventQueue = new QQueue<QMouseEvent>;
 	waitCondition = new QWaitCondition();
@@ -76,14 +76,14 @@ WikiDisplay::mouseReleaseEvent(QMouseEvent *event)
 void
 WikiDisplay::paintEvent(QPaintEvent *)
 {
-	int x, y;
+	unsigned int x, y;
 
 	QPainter painter(this);
 	painter.setBrush(Qt::SolidPattern);
-	painter.fillRect(0, 0, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT, Qt::white);
+	painter.fillRect(0, 0, guilib_framebuffer_width(), guilib_framebuffer_height(), Qt::white);
 
-	for (x = 0; x < FRAMEBUFFER_WIDTH; x++)
-		for (y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
+	for (x = 0; x < guilib_framebuffer_width(); x++)
+		for (y = 0; y < guilib_framebuffer_height(); y++) {
 			int r, g, b;
 			r = g = b = guilib_get_pixel(x, y) ? 0xFF: 0;
 			painter.setPen(QColor::fromRgb(r, g, b, 0xff));

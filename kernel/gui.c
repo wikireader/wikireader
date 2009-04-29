@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <lcd.h>
 #include <guilib.h>
 #include <malloc.h>
 #include <string.h>
 #include <regs.h>
+#include <lcd.h>
 
 unsigned char *framebuffer;
 

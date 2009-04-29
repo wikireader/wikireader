@@ -100,7 +100,7 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 WikilibThread::WikilibThread()
  : QThread()
 {
-	framebuffer = (unsigned char *) malloc(FRAMEBUFFER_SIZE);
+	framebuffer = (unsigned char *) malloc(guilib_framebuffer_size());
 }
 
 WikilibThread::~WikilibThread()

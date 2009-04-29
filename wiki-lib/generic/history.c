@@ -138,7 +138,7 @@ static void history_page_down_display(int current_item)
 	guilib_clear();
 	render_string(0, 1, 14, "History", 7);
 
-	for (i = current_item; i < list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+	for (i = current_item; i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
 		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
 		y_pos += RESULT_HEIGHT;
@@ -157,7 +157,7 @@ static void history_page_up_display(int current_item)
 	guilib_clear();
 	render_string(0, 1, 14, "History", 7);
 
-	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
 		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
 		y_pos += RESULT_HEIGHT;
@@ -180,7 +180,7 @@ void history_display(void)
 	} else {
 		int y_pos = RESULT_START;
 
-		for (i = 0; i <= list_size && y_pos < FRAMEBUFFER_HEIGHT; i++) {
+		for (i = 0; i <= list_size && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_get_item_title(i);
 			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
 			y_pos += RESULT_HEIGHT;
