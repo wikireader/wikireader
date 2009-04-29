@@ -60,9 +60,6 @@ bool Article::isRedirect() const
     if (!redirectSpace && !redirectDirect)
         return m_isRedirect;
 
-    if (m_textContent.contains("\n"))
-        return m_isRedirect;
-
     if (!m_textContent.contains("]]"))
         return m_isRedirect;
 
