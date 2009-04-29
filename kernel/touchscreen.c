@@ -126,8 +126,9 @@ static inline void parsing_press_handler(u8 c)
 
 static inline int calc_coord(u8 *axis_array)
 {
-	return ((axis_array[0] << 12) + (axis_array[1] << 8)
-						+ (axis_array[2] << 4) + axis_array[3]);
+	/* resolution is 480 * 408 */
+	return (((axis_array[0] << 12) + (axis_array[1] << 8)
+						+ (axis_array[2] << 4) + axis_array[3]) >> 1);
 }
 
 void touchscreen_parsing_packets()
@@ -142,11 +143,15 @@ int touchscreen_get_event(struct wl_input_event *ev)
 {
 	if (touch_state != WL_INPUT_TOUCH_NONE){
 		ev->type = WL_INPUT_EV_TYPE_TOUCH;
-		ev->touch_event.x = calc_coord(x_buffer);
-		ev->touch_event.y = calc_coord(y_buffer);
+
+		if (touch_state) {
+			ev->touch_event.x = calc_coord(x_buffer);
+			ev->touch_event.y = calc_coord(y_buffer);
+		}
+
 		ev->touch_event.value = touch_state;
-		msg(MSG_DEBUG, "coord: %d, %d, %d\n\r",
-					ev->touch_event.x, ev->touch_event.y, ev->touch_event.value);
+		//msg(MSG_DEBUG, "coord: %d, %d, %d\n\r",
+					//ev->touch_event.x, ev->touch_event.y, ev->touch_event.value);
 
 		touch_state = WL_INPUT_TOUCH_NONE;
 		return 1;
