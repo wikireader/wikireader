@@ -3,27 +3,15 @@
 #include <minilzo.h>
 #include <sys/types.h>
 
-/*
-   This function will decompress what's in <filename> and put it into
-   a malloc block.  It's the caller's responsibility to free it.
- */
-void *decompress(const char *filename, unsigned int *size)
+void *decompress_block(const int fd, unsigned int in_len, unsigned int *out_size)
 {
-    int fd, r;
+    int r;
     lzo_uint out_len;
     void *in = NULL, *out = NULL;
-    unsigned int in_len;
     u_int32_t uint32;
 
     if (lzo_init() != LZO_E_OK)
 	return NULL;
-
-    fd = wl_open(filename, WL_O_RDONLY);
-    if (fd < 0)
-	return NULL;
-
-    if (wl_fsize(fd, &in_len))
-	goto error_exit;
 
     /* read the expected out_len */
     r = wl_read(fd, &uint32, sizeof(u_int32_t));
@@ -41,7 +29,7 @@ void *decompress(const char *filename, unsigned int *size)
 	goto error_exit;
 
     r = wl_read(fd, in, in_len);
-    if (r != in_len)
+    if (r < 0 || (unsigned int)r != in_len)
 	goto error_exit;
 
     r = lzo1x_decompress(in, in_len, out, &out_len, NULL);
@@ -49,18 +37,40 @@ void *decompress(const char *filename, unsigned int *size)
 	goto error_exit;
 
     free(in);
-    wl_close(fd);
-
-    *size = out_len;
+    *out_size = out_len;
     return out;
 
 error_exit:
-    wl_close(fd);
     if (in)
 	free(in);
 
     if (out)
 	free(out);
 
+    return NULL;
+}
+/*
+   This function will decompress what's in <filename> and put it into
+   a malloc block.  It's the caller's responsibility to free it.
+ */
+void *decompress(const char *filename, unsigned int *size)
+{
+    int fd;
+    void *out = NULL;
+    unsigned int in_len;
+
+    fd = wl_open(filename, WL_O_RDONLY);
+    if (fd < 0)
+	return NULL;
+
+    if (wl_fsize(fd, &in_len))
+	goto error_exit;
+    out = decompress_block(fd, in_len, size);
+
+    wl_close(fd);
+    return out;
+
+error_exit:
+    wl_close(fd);
     return NULL;
 }
