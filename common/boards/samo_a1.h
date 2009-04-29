@@ -86,7 +86,7 @@ static inline void init_pins(void)
 	REG_P0_47_CFP = 0x01; // Rx
 
 	/* LCD controller */
-	REG_P8_03_CFP = 0x15;
+	REG_P8_03_CFP = 0x55;
 	REG_P9_47_CFP = 0x55;
 
 	/* SDCARD power */

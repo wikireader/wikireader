@@ -34,7 +34,6 @@ u8 spi_transmit_lcd(u8 out)
 
 void init_lcd(void)
 {
-	TFT_CTL1_HI();  // selects 4 bit mode for LCD interface
 	LCD_DISPLAY_OFF();
 
 	// set up LCD clocks
@@ -74,15 +73,16 @@ void init_lcd(void)
 		0;
 
 	/* HT = (47+1) * 8 = 384 characters, HDP = (39+1) * 8 = 320 characters */
-#define HDP (LCD_WIDTH / 8 - 1)
+#define HDP (LCD_VRAM_WIDTH_BYTES - 1)
+#define HT (HDP + 8)
 
 	REG_LCDC_HD =
-		((HDP + 8) << HTCNT_SHIFT) |
+		(HT << HTCNT_SHIFT) |
 		(HDP << HDPCNT_SHIFT) |
 		0;
 
 	/* VT = 244 + 1 = 255 lines, VDP = 239 + 1 = 480 lines */
-#define VDP (LCD_HEIGHT - 1)
+#define VDP (LCD_VRAM_HEIGHT_LINES - 1)
 
 	REG_LCDC_VD =
 		((VDP + 1) << VTCNT_SHIFT) |

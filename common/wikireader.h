@@ -19,8 +19,9 @@
 #define LCD_DISPLAY_ON()   do { REG_P3_P3D |= (1 << 0); } while (0)
 #define LCD_DISPLAY_OFF()  do { REG_P3_P3D &= ~(1 << 0); } while (0)
 
-#define TFT_CTL1_LO()   do { REG_P8_P8D &= ~(1 << 3); } while (0)
-#define TFT_CTL1_HI()   do { REG_P8_P8D |=  (1 << 3); } while (0)
+// remove this later - this pin is used by LCD controller!
+//#define TFT_CTL1_LO()   do { REG_P8_P8D &= ~(1 << 3); } while (0)
+//#define TFT_CTL1_HI()   do { REG_P8_P8D |=  (1 << 3); } while (0)
 
 // macro to busy wait
 #define BUSY_WAIT_FOR(cond)                     \

@@ -133,12 +133,12 @@ void system_suspend(void)
 		0;
 
 	REG_CMU_CLKCNTL =
-		//CMU_CLK_SEL_OSC3_DIV_32 |
+		CMU_CLK_SEL_OSC3_DIV_32 |
 		//CMU_CLK_SEL_OSC3_DIV_16 |
 		//CMU_CLK_SEL_OSC3_DIV_8 |
 		//CMU_CLK_SEL_OSC3_DIV_4 |
 		//CMU_CLK_SEL_OSC3_DIV_2 |
-		CMU_CLK_SEL_OSC3_DIV_1 |
+		//CMU_CLK_SEL_OSC3_DIV_1 |
 		//CMU_CLK_SEL_LCDC_CLK |
 		//CMU_CLK_SEL_MCLK |
 		//CMU_CLK_SEL_PLL |
@@ -163,8 +163,8 @@ void system_suspend(void)
 		//LCDCDIV_12 |
 		//LCDCDIV_11 |
 		//LCDCDIV_10 |
-		//LCDCDIV_9 |
-		LCDCDIV_8 |
+		LCDCDIV_9 |
+		//LCDCDIV_8 |
 		//LCDCDIV_7 |
 		//LCDCDIV_6 |
 		//LCDCDIV_5 |
@@ -216,7 +216,7 @@ void system_resume(void)
 	// restore baud rate
 
 	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, 57600));
-	//SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 38400));
+	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 38400));
 
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 
@@ -293,9 +293,9 @@ void system_resume(void)
 		SDAPLCDC_CKE |
 		SDSAPB_CKE |
 		DSTRAM_CKE |
-		//LCDCAHBIF_CKE |
-		//LCDCSAPB_CKE |
-		//LCDC_CKE |
+		LCDCAHBIF_CKE |
+		LCDCSAPB_CKE |
+		LCDC_CKE |
 		0;
 	REG_CMU_GATEDCLK1 =
 		CPUAHB_HCKE |
