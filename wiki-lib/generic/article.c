@@ -28,20 +28,6 @@
 #include <stdlib.h>
 #include <decompress.h>
 
-/*
- * To enable debugging:
- * #define PRINT_PAGE_BUFFER
- */
-
-struct page_offset {
-	int page;
-	unsigned int offset;
-};
-
-#define BUFSIZE	(10)
-static struct page_offset pages[BUFSIZE];
-static unsigned int bufpos = 0;
-
 /* decompressed article */
 static char *article_data = NULL;
 static unsigned int article_data_length = 0;
@@ -49,24 +35,6 @@ static unsigned int article_data_length = 0;
 static int current_page = -1;
 static unsigned int current_page_offset = -1;
 static char filename_buf[8 + 1 + 3 + 1];
-
-
-#ifdef PRINT_PAGE_BUFFER
-static void print_page_buffer(void)
-{
-	unsigned int i;
-	for (i = 0; i < BUFSIZE; ++i) {
-		msg(MSG_DEBUG, "%c ", i == bufpos ? '*' : ' ');
-		msg(MSG_DEBUG, "%d page %d offset %u\n",
-		    i, pages[i].page, pages[i].offset);
-	}
-	msg(MSG_DEBUG, "--------------------------\n");
-}
-#else
-static inline void print_page_buffer(void)
-{
-}
-#endif
 
 
 int article_open(const char *target)
@@ -123,60 +91,10 @@ exit_1:
 
 void article_display(enum article_nav nav)
 {
-	unsigned int page_start;
-	unsigned int page_end;
-
-	if (!article_data)
-		return;
-
-	/* scroll one page at a time */
-	switch(nav) {
-	case ARTICLE_PAGE_0:
-		current_page = 0;
-		current_page_offset = 0;
-		break;
-
-	case ARTICLE_PAGE_NEXT:
-		/* reached end of file */
-		if (current_page_offset == article_data_length)
-			return;
-
-		/* push into buffer */
-		pages[bufpos].page = current_page;
-		pages[bufpos].offset = current_page_offset;
-		bufpos = (bufpos + 1) % BUFSIZE;
-		current_page++;
-		break;
-
-	case ARTICLE_PAGE_PREV:
-		/* displaying first page */
-		if (current_page == 0)
-			return;
-
-		/* pop from buffer and seek to previous page.  if
-		 * buffer is empty, start looking from the
-		 * beginning. (stupid) */
-		bufpos = (bufpos + BUFSIZE - 1) % BUFSIZE;
-		if (pages[bufpos].page < current_page)
-			current_page_offset = pages[bufpos].offset;
-		else
-			current_page_offset = 0;
-		current_page--;
-		break;
-
-	default:
-		break;
-	}
-
-	print_page_buffer();
-
-	page_start = current_page * guilib_framebuffer_height();
-	page_end = page_start + guilib_framebuffer_height();
-
 	guilib_fb_lock();
 	guilib_clear();
 
-#warning BROKEN...
+#warning BROKEN...Only paint one page
 	//current_page_offset = 0;
 
 	// TODO: Decoding routines...
@@ -188,8 +106,6 @@ void article_close(void)
 {
 	current_page = -1;
 	current_page_offset = -1;
-	/* reset ring buffer */
-	memset(pages, 0, sizeof(struct page_offset) * BUFSIZE);
 
 	if (article_data) {
 		free(article_data);
