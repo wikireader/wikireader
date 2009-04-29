@@ -140,7 +140,7 @@ static void history_page_down_display(int current_item)
 
 	for (i = current_item; i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
-		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
+		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
 		y_pos += RESULT_HEIGHT;
 	}
 
@@ -159,7 +159,7 @@ static void history_page_up_display(int current_item)
 
 	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
-		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
+		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
 		y_pos += RESULT_HEIGHT;
 	}
 
@@ -182,7 +182,7 @@ void history_display(void)
 
 		for (i = 0; i <= list_size && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_get_item_title(i);
-			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE+1));
+			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
 			y_pos += RESULT_HEIGHT;
 		}
 	}
