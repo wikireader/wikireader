@@ -89,6 +89,13 @@ void ArticleRedirectTest::testRedirect_data()
             << QString::fromLatin1("    #REDIRECT [[German submarine U-745]] {{R from alternative name}}")
             << true
             << QString::fromLatin1("German submarine U-745");
+
+#ifdef SUPPORT_SOFT_REDIRECT
+    QTest::newRow("softredirect 1")
+            << QString::fromLatin1("{{Softredirect|wikia:Naruto:Shikaku Nara}}")
+            << true
+            << QString::fromLatin1("Naruto:Skikaku Nara");
+#endif
 }
 
 void ArticleRedirectTest::testRedirect()
