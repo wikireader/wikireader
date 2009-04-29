@@ -77,6 +77,10 @@ void ArticleRedirectTest::testRedirect_data()
             << QString::fromLatin1("#REDIRECT  [[Abatement]]\n")
             << true
             << QString::fromLatin1("Abatement");
+    QTest::newRow("redirect 8")
+            << QString::fromLatin1("#Redirect[[Her Majesty's Diplomatic Service]]")
+            << true
+            << QString::fromLatin1("Her Majesty's Diplomatic Service");
 }
 
 void ArticleRedirectTest::testRedirect()
