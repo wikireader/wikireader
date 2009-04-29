@@ -11,8 +11,8 @@
 0x4000  forth-loader.header
 0x4300  forth-loader
 
-0x6000  hello.header
-0x6300	hello
+0x6000  lcd-test.header
+0x6300	lcd-test
 
 0x8000	key-test.header
 0x8300	key-test
@@ -20,7 +20,8 @@
 0xa000	memory-test.header
 0xa300	memory-test
 
-#0xc000  <other>.header
-#0xc300  <other>
+0xc000  hello.header
+0xc300  hello
 
-#0xe000	gfxtool/failed_boot.p
+#0xe000  <other>.header
+#0xe300  <other>

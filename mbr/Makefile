@@ -87,6 +87,7 @@ $(call MAKE_APP,key-test,misc.o)
 $(call MAKE_APP,forth-loader,misc.o elf32.o)
 $(call MAKE_APP,kernel-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
+$(call MAKE_APP,lcd-test,misc.o lcd.o)
 
 
 # rule to build all above applications

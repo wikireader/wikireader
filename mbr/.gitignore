@@ -6,6 +6,7 @@ key-test
 last_bootfrom
 mbr
 memory-test
+lcd-test
 menu
 misc
 SAMO_A1.mapfile
