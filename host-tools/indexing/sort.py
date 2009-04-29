@@ -31,7 +31,7 @@ for line in sys.stdin.readlines():
     line = line.strip()
     lines.append((
                  line[:-OFFSET_SIZE],
-                 line[-OFFSET_SIZE + 1:]))
+                 line[-OFFSET_SIZE:]))
 
 lines.sort(text_cmp)
 for line in lines:
