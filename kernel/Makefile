@@ -42,7 +42,7 @@ GUILIB_COBJS = guilib.o glyph.o fontfile.o
 
 WIKILIB_COBJS = file-io-general.o file-io-libfat.o
 WIKILIB_COBJS += wikilib.o malloc-simple.o hexdump.o
-WIKILIB_COBJS += compress.o keyboard.o
+WIKILIB_COBJS += decompress.o keyboard.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o

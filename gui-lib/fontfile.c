@@ -22,7 +22,7 @@
 #include <file-io.h>
 #include <malloc.h>
 #include <wl-endian.h>
-#include <compress.h>
+#include <decompress.h>
 
 /* gui-lib includes */
 #include "glyph.h"
