@@ -191,7 +191,7 @@ void search_paint(void)
 
 		const int len = strlen(result);
 		render_string(0, 1, y_pos, result, len - (TARGET_SIZE));
-		memcpy(&search_pointers[search_found][0], result + len - TARGET_SIZE, 8);
+		memcpy(&search_pointers[search_found][0], result + len - TARGET_SIZE, TARGET_SIZE);
 		y_pos += RESULT_HEIGHT;
 		++search_found;
 	}
