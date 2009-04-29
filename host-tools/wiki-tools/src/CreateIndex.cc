@@ -79,11 +79,11 @@ CreateIndex::CreateIndex(const QString& splitChars, const QSqlDatabase& db,
                     "hash TEXT NOT NULL)");
     query.exec("CREATE TABLE IF NOT EXISTS Offsets ("
                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    "file NUMERIC UNIQUE NOT NULL,"
+                    "file NUMERIC NOT NULL,"
                     "offset NUMERIC UNIQUE NOT NULL,"
                     "hash TEXT UNIQUE NOT NULL)");
     query.exec("CREATE INDEX IF NOT EXISTS IndexHash ON IndexTable (hash)");
-    query.exec("CREATE UNIQUE INDEX IF NOT EXISTS OffsetsHash On Offsets (hash)");
+    query.exec("CREATE INDEX IF NOT EXISTS OffsetsHash On Offsets (hash)");
 }
 
 void CreateIndex::handleArticle(const Article& article)
