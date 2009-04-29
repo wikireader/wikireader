@@ -67,7 +67,7 @@ int article_open(const char *target)
 
 	/* decompress it */
 	article_data = decompress_block(article_fd,
-					lzo_len + sizeof(u_int32_t),
+					lzo_len,
 					&article_data_length);
 	if (!article_data)
 		goto exit_1;
