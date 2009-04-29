@@ -1,7 +1,7 @@
 /*
  * Wiki Handling Tool
  *
- * Copyright (C) 2008 Openmoko Inc.
+ * Copyright (C) 2008, 2009 Openmoko Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
 #include "sha1.h"
 
 #include <QApplication>
+#include <QRegExp>
+
+static QRegExp s_redirectStart = QRegExp("^#REDIRECT\\s*\\[\\[(.)*\\]\\](.)*$", Qt::CaseInsensitive);
 
 Article::Article()
     : m_isEmpty(true)
@@ -54,20 +57,16 @@ bool Article::isRedirect() const
     // in the case of a #REDIRECT.
     m_determinedRedirect = true;
 
-    bool redirectSpace  = m_textContent.startsWith("#REDIRECT [[", Qt::CaseInsensitive);
-    bool redirectDirect = m_textContent.startsWith("#REDIRECT[[", Qt::CaseInsensitive);
+    bool match = s_redirectStart.exactMatch(m_textContent);
 
-    if (!redirectSpace && !redirectDirect)
+    if (!match)
         return m_isRedirect;
 
     if (!m_textContent.contains("]]"))
         return m_isRedirect;
 
     m_isRedirect = true;
-    if (redirectSpace)
-        m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT [[" - 1);
-    else
-        m_redirectsTo = m_textContent.mid(sizeof "#REDIRECT[[" - 1);
+    m_redirectsTo = m_textContent.mid(m_textContent.indexOf("[[") + 2);
 
     if (m_redirectsTo.contains("|"))
         m_redirectsTo = m_redirectsTo.left(m_redirectsTo.indexOf("|"));
