@@ -41,7 +41,7 @@ def parse():
 			action = "store", dest = "output", default = "fontfile.gen")
 	parser.add_option("-m", "--fontmapfile", help = "The to be generated font name to number map",
 			action = "store", dest = "fontmap", default = "fontmap.map");
-	parser.add_option("-d", "--default", help = "The font to be used as font 0.",
+	parser.add_option("-d", "--default", help = "The font to be used as font 0. A path to that directory with glyphs.",
 			action = "store", dest = "default_font", default = "Liberation_Sans_9")
 	parser.add_option("-g", "--glyphmapfile", help = "Mapping of font/glyph to font/number",
 			action = "store", dest = "glyphmap", default = "glyphmap.map")
@@ -129,10 +129,7 @@ def get_max(list):
 
 	return max
 
-def gen_font(font_name):
-	global opts
-	path = os.path.join(opts.fontpath, font_name)
-	glyphpath = path
+def gen_font(font_name, glyphpath):
 	glyphlist = filter(lambda x: x != 'spacing', os.listdir(glyphpath))
 
 	spacing_file = spacing.load(open(
@@ -236,7 +233,7 @@ out = ""
 
 # special case the default font... and then forget about it
 current_offset = offset
-f = gen_font(opts.default_font)
+f = gen_font(opts.default_font, opts.default_font)
 out += f
 offset += len(f)
 fonttable[0] = current_offset
@@ -245,7 +242,7 @@ opts.default_font = None
 
 for _font in fontlist:
 	current_offset = offset
-	f = gen_font(_font)
+	f = gen_font(_font, os.path.join(opts.fontpath, _font))
 	out += f
 	offset += len(f)
 
