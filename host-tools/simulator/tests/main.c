@@ -29,6 +29,8 @@
 #include <input.h>
 #include <list.h>
 #include <history.h>
+#include <article.h>
+#include <limits.h>
 
 #define MAX_HISTORY_RAW_DATA 	200
 #define MAX_HISTORY_ITEM 		100
@@ -54,6 +56,17 @@ static int failed = 0;
 		++passed; \
 	} else { \
 		printf("FAIL: Got: %d Expected: %d Msg: %s\n", \
+				actual, expected, failure_text); \
+		++failed; \
+	}
+
+#define COMPARE_UINT(actual, expected, statement, failure_text) \
+	++tests; \
+	if (actual statement expected) { \
+		printf("SUCCESS: %s\n", failure_text); \
+		++passed; \
+	} else { \
+		printf("FAIL: Got: %u Expected: %u Msg: %s\n", \
 				actual, expected, failure_text); \
 		++failed; \
 	}
@@ -220,6 +233,36 @@ static void history_test()
 	COMPARE_INT(MAX_HISTORY_ITEM, history_item_size() + history_free_item_size(), ==, "almost 100....");
 }
 
+static void article_test()
+{
+	unsigned int target, offset;
+
+	/* invalid input */
+	article_extract_file_and_offset(NULL, &target, &offset);
+	COMPARE_UINT(target, UINT_MAX, ==, "target UINT_MAX on NULL");
+	COMPARE_UINT(offset, UINT_MAX, ==, "offset UINT_MAX on NULL");
+
+	/* too short text */
+	article_extract_file_and_offset("4936430663", &target, &offset);
+	COMPARE_UINT(target, UINT_MAX, ==, "target UINT_MAX on NULL");
+	COMPARE_UINT(offset, UINT_MAX, ==, "offset UINT_MAX on NULL");
+
+	/* non number */
+	article_extract_file_and_offset("4936a306639", &target, &offset);
+	COMPARE_UINT(target, UINT_MAX, ==, "target UINT_MAX on NULL");
+	COMPARE_UINT(offset, UINT_MAX, ==, "offset UINT_MAX on NULL");
+
+	/* some simple test */
+	article_extract_file_and_offset("43364306639", &target, &offset);
+	COMPARE_UINT(target, 4u, ==, "target is four...");
+	COMPARE_UINT(offset, 3364306639u, ==, "offset is big enough... biggger than fat limit though");
+
+	/* some simple test */
+	article_extract_file_and_offset("00000000039", &target, &offset);
+	COMPARE_UINT(target, 0u, ==, "target is four...");
+	COMPARE_UINT(offset, 39u, ==, "offset is big enough... biggger than fat limit though");
+}
+
 int main(int argc, char *argv[])
 {
 	framebuffer = (char *)malloc(guilib_framebuffer_size());
@@ -230,6 +273,7 @@ int main(int argc, char *argv[])
 	/* add tests here */
 	list_test();
 	history_test();
+	article_test();
 
 	printf("Test result: Executed tests: %d Passed: %d Failed: %d\n",
 			tests, passed, failed);

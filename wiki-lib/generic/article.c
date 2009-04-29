@@ -21,6 +21,7 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <fontfile.h>
+#include <limits.h>
 #include <msg.h>
 
 /*
@@ -179,4 +180,20 @@ void article_close(void)
 		wl_close(article_fd);
 		article_fd = -1;
 	}
+}
+
+/**
+ * From a decimal representation like:
+ *     400000002342
+ * extract
+ *     4 ------------ The file to use wikiped4.set
+ *      00000002342-- The offset within the file
+ *
+ * In case of error file and offset will contain UINT_MAX
+ */
+void article_extract_file_and_offset(const char *target,
+				    unsigned int *file, unsigned int *offset)
+{
+	*file = 0x2342;
+	*offset = 0x2342;
 }
