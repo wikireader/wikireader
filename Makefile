@@ -34,6 +34,13 @@ BINUTILS_URL= \
 DL=./toolchain/dl
 export PATH:=$(PWD)/install/bin:$(PATH)
 
+CONFIG_FILE := "common/config.h"
+CONFIG_FILE_EXISTS := $(shell [ -f $(CONFIG_FILE) ] && echo 1)
+
+ifeq ($(CONFIG_FILE_EXISTS),)
+$(error The config file $(CONFIG_FILE) could not be found - please set your board type)
+endif
+
 # ----- configuration data --------------------------------------
 
 .PHONY: all
