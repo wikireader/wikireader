@@ -16,16 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
 #include "regs.h"
 #include "wikireader.h"
 #include "irq.h"
 #include "diskio.h"
-#include "tff.h"
 #include "suspend.h"
 
-
-#include "msg.h"
 
 #define SUSPEND_SDRAM 1
 
