@@ -19,7 +19,17 @@
 #define APPLICATION_TITLE "boot menu"
 
 #include "application.h"
+#include "lcd.h"
 #include "eeprom.h"
+
+
+struct guilib_image
+{
+	u32 width;
+	u32 height;
+	u8 data[];
+};
+#include "splash.h"
 
 #define MAXIMUM_BLOCKS 8
 #define HEADER_MAGIC  0x4f4d4153
@@ -32,16 +42,61 @@ struct {
 static const char spinner[4] = "-\\|/";
 
 
+int process(int block, int status);
 void print_cpu_type(void);
 
 
 // this must be the first executable code as the loader executes from the first program address
 ReturnType menu(int block, int status)
 {
+	register int i = 0;
+	APPLICATION_INITIALISE();
+	init_lcd();
+	i = process(block, status);
+
+	// next program
+	APPLICATION_FINALISE(i, 0);
+}
+
+static void fill(u8 value)
+{
+	int x = 0;
+	int y = 0;
+	u8 *fb = (u8*)LCD_VRAM;
+
+	for (y = 0; y < LCD_HEIGHT_LINES; ++y) {
+		for (x = 0; x < LCD_VRAM_WIDTH_BYTES; ++x) {
+			*fb++ = value;
+		}
+	}
+}
+static void display_image(u8 background, u8 toggle)
+{
+	int xOffset = (LCD_WIDTH_PIXELS - splash_image.width) / (2 * 8);
+	u8 *fb = (u8*)LCD_VRAM;
+	unsigned int y = 0;
+	unsigned int x = 0;
+	unsigned int width = (splash_image.width + 7) / 8;
+	const u8 *src = splash_image.data;
+
+	fill(background);
+	fb += (LCD_HEIGHT_LINES - splash_image.height) / 2 * LCD_VRAM_WIDTH_BYTES;
+	for (y = 0; y < splash_image.height; ++y) {
+		for (x = 0; x < width; ++x) {
+			fb[x + xOffset] = toggle ^ *src++;
+		}
+		fb += LCD_VRAM_WIDTH_BYTES;
+	}
+}
+
+int process(int block, int status)
+{
 	int i = 0;
 	int k = 0;
 	u8 valid[MAXIMUM_BLOCKS] = {0};
-	APPLICATION_INITIALISE();
+
+	display_image(0x00, 0xff);
+
 	if (0 != status) {
 		print_cpu_type();
 		print("\nmenu? ");
@@ -97,8 +152,7 @@ ReturnType menu(int block, int status)
 	} else {
 		i = block + 1;
 	}
-	// next program
-	APPLICATION_FINALISE(i, 0);
+	return i;
 }
 
 void print_cpu_type(void)

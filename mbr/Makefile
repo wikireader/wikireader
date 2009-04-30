@@ -57,12 +57,12 @@ mbr-rs232: SAMO_A1.mapfile-rs232 mbr
 	cp SAMO_A1.mapfile-rs232 $(FLASH_ROM_MAP_FILE)
 
 # macro to create application rules
-# $call MAKE_APP, app_name, file1.o file2.o)
-# Note: 1. list of objects are _space_ separated
+# $call MAKE_APP, app_name, file1.o file2.o, <optional pre-depends>)
+# Note: 1. list of objects/pre-depends are _space_ separated
 #       2. eeprom is removed as this is provided by mbr
 #       3. strip and _NO_ spaces after comma (make passes all spaces to arguments)
 
-MAKE_APP = $(eval $(call MAKE_APP1,$(strip ${1}),${2}))
+MAKE_APP = $(eval $(call MAKE_APP1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
 
 define MAKE_APP1
@@ -70,8 +70,8 @@ define MAKE_APP1
 APPLICATIONS += ${1}
 APPLICATIONS_CLEAN += ${1} ${1}.elf ${1}.header
 
-${1}.elf: application.lds ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS)
-	$$(LD) -T application.lds -o $$@ $$(LDFLAGS) $$^ $$(LIBS) -Map $$(@:.elf=.map)
+${1}.elf: ${3} application.lds ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS)
+	$$(LD) -T application.lds -o $$@ $$(LDFLAGS) ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS) -Map $$(@:.elf=.map)
 
 ${1}: ${1}.elf ${1}.header
 	$$(OBJCOPY) $$(OBJCOPY_FLAGS) $${OBJCOPY_SECTIONS} $$< $$@
@@ -80,7 +80,7 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP,menu,misc.o)
+$(call MAKE_APP,menu,misc.o lcd.o, splash.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,key-test,misc.o)
@@ -88,6 +88,12 @@ $(call MAKE_APP,forth-loader,misc.o elf32.o)
 $(call MAKE_APP,kernel-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
 $(call MAKE_APP,lcd-test,misc.o lcd.o)
+
+
+# application pre-depends
+
+splash.h: splash.png
+	../host-tools/imagetool/imagetool.py splash.png splash.h splash_image
 
 
 # rule to build all above applications
@@ -101,7 +107,7 @@ flash-mbr: all
 
 
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map
+	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h
 
 # application headers
 %.header: %.c
