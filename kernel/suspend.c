@@ -16,21 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "types.h"
 #include "regs.h"
 #include "wikireader.h"
 #include "irq.h"
+#include "diskio.h"
+#include "tff.h"
 #include "suspend.h"
 
+
+#include "msg.h"
 
 #define SUSPEND_SDRAM 1
 
 void system_suspend(void)
 {
-	DISABLE_IRQ();
+	register int card_state = check_card_power();
 
+	disable_card_power();
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
-	disable_card_power();
+
+	DISABLE_IRQ();
+	// no more function calls after this point
+	// all code must be in-line
 
 #if SUSPEND_SDRAM
 
@@ -86,7 +95,7 @@ void system_suspend(void)
 	//REG_EFSIF0_BRTRDM = 12 >> 8;
 
 	SET_BRTRD(0, CALC_BAUD(MCLK / 4, DIV, 57600));
-	//SET_BRTRD(1, CALC_BAUD(MCLK / 4, DIV, 38400));
+	SET_BRTRD(1, CALC_BAUD(MCLK / 4, DIV, 38400));
 
 	// turn off un necessary clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
@@ -126,10 +135,10 @@ void system_suspend(void)
 		//SPI_CKE |
 		EFSIOSAPB_CKE |
 		//CARD_CKE |
-		ADC_CKE |
+		//ADC_CKE |
 		ITC_CKE |
-		DMA_CKE |
-		RTCSAPB_CKE |
+		//DMA_CKE |
+		//RTCSAPB_CKE |
 		0;
 
 	REG_CMU_CLKCNTL =
@@ -162,8 +171,8 @@ void system_suspend(void)
 		//LCDCDIV_13 |
 		//LCDCDIV_12 |
 		//LCDCDIV_11 |
-		//LCDCDIV_10 |
-		LCDCDIV_9 |
+		LCDCDIV_10 |
+		//LCDCDIV_9 |
 		//LCDCDIV_8 |
 		//LCDCDIV_7 |
 		//LCDCDIV_6 |
@@ -193,25 +202,9 @@ void system_suspend(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	asm volatile ("xld.w %r10, 0x2c0ffe5");
-	ENABLE_IRQ();
+	// end of suspend, wait for interrupt
 	asm volatile ("halt");
-
-	REG_P1_P1D = 0;  // why?
-
-	system_resume();
-}
-
-void system_resume(void)
-{
-	int i, system_halted;
-
-	/* check whether we awoke from halt mode freshly */
-	asm volatile ("ld.w %0, %%r10" : "=r"(system_halted));
-	if (system_halted != 0x2c0ffe5)
-		return;
-
-	REG_P1_P1D = 0; // why?
+	// interrupt is on hold until end of resume
 
 	// restore baud rate
 
@@ -281,8 +274,12 @@ void system_resume(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	for (i = 0; i < 10000; i++)
-		asm volatile ("nop");
+	{
+		register unsigned int i = 0;
+		for (i = 0; i < 10000; i++) {
+			asm volatile ("nop");
+		}
+	}
 
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_GATEDCLK0 =
@@ -317,12 +314,12 @@ void system_resume(void)
 		WDT_CKE |
 		GPIO_CKE |
 		SRAMSAPB_CKE |
-		//SPI_CKE |
+		SPI_CKE |
 		EFSIOSAPB_CKE |
 		//CARD_CKE |
 		ADC_CKE |
 		ITC_CKE |
-		DMA_CKE |
+		//DMA_CKE |
 		//RTCSAPB_CKE |
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
@@ -352,7 +349,12 @@ void system_resume(void)
 		0;
 #endif
 
+	ENABLE_IRQ();
+	// it is now possible to call other functions
+	// as SDRAM is operational again
 
-	asm("ld.w %r10, 0");
+	// resume SD card
+	if (card_state) {
+		disk_initialize(0);
+	}
 }
-

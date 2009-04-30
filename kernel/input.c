@@ -23,10 +23,16 @@
 #include <malloc.h>
 
 /* local includes */
+#include "types.h"
+#include "regs.h"
+#include "wikireader.h"
+#include "misc.h"
+#include "tff.h"
 #include "serial.h"
 #include "suspend.h"
 #include "touchscreen.h"
 #include "gpio.h"
+#include "input.h"
 
 int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
@@ -54,8 +60,10 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 
 		/* we only go to a power saving halt mode if there is no
 		 * messages pending */
-		if (!serial_output_pending())
+		if (!serial_output_pending()) {
 			system_suspend();
+		}
+
 	}
 
 	return 0;

@@ -22,7 +22,6 @@
 #include "regs.h"
 #include "traps.h"
 #include "serial.h"
-#include "suspend.h"
 #include "irq.h"
 #include "gpio.h"
 #include "touchscreen.h"
@@ -74,14 +73,12 @@ static void serial0_err_irq(void)
 
 static void serial0_in_irq(void)
 {
-	system_resume();
 	serial_filled_0();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
 }
 
 static void serial0_out_irq(void)
 {
-	system_resume();
 	serial_drained_0();
 }
 
@@ -92,7 +89,6 @@ static void serial1_err_irq(void)
 
 static void serial1_in_irq(void)
 {
-	system_resume();
 	touchscreen_parsing_packets();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 4);
 }
@@ -104,7 +100,6 @@ static void serial1_out_irq(void)
 
 static void kint_irq(void)
 {
-	system_resume();
 	gpio_irq();
 	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
 }
