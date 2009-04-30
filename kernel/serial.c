@@ -162,6 +162,9 @@ int serial_get_event(struct wl_input_event *ev)
 //		ev, &ev->type);
 
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+	if (0x7f == console_buffer[console_read]) {
+		console_buffer[console_read] = 0x08;
+	}
 	ev->key_event.keycode = console_buffer[console_read];
 	ev->key_event.value = 1;
 	BUFFER_NEXT(console_read, console_buffer);
