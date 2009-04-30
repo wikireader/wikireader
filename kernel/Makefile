@@ -46,7 +46,7 @@ WIKILIB_COBJS += decompress.o keyboard.o
 
 # searching
 WIKILIB_COBJS += search.o lsearcher.o fast_search.o
-WIKILIB_COBJS += article.o history.o
+WIKILIB_COBJS += article.o history.o wom_reader.o
 
 # minilzo
 MINILZO_COBJS = minilzo.o

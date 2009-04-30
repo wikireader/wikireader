@@ -10,6 +10,7 @@ SOURCES += $$TOPLEVEL/wiki-lib/generic/article.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/history.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/file-io-general.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c
+SOURCES += $$TOPLEVEL/wiki-lib/generic/wom_reader.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/search.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/hexdump.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/keyboard.c

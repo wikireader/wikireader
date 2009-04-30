@@ -17,6 +17,7 @@
  */
 
 #include <stdlib.h>
+#include <inttypes.h>
 #include <wikilib.h>
 #include <article.h>
 #include <guilib.h>
@@ -31,6 +32,8 @@
 #include <search.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdio.h>
+#include "wom_reader.h"
 
 enum display_mode_e {
 
@@ -145,6 +148,46 @@ static void open_article(const char* target, int mode)
 	}
 }
 
+#ifdef WOM_ON
+
+static char s_current_search_str[256];
+static size_t s_current_search_len = 0;
+static wom_file_t * s_womh = 0;
+
+#define LINE_ADVANCE 10
+
+static void handle_search_key(char keycode)
+{
+	const wom_index_entry_t* idx;
+	uint8_t display_y;
+
+	msg(MSG_INFO, "O ui\thandle_search_key() key %xh ('%c')\n", keycode, keycode);
+	if (keycode == WL_KEY_BACKSPACE) {
+		if (s_current_search_len) s_current_search_len--;
+	} else if (isalnum(keycode) || isspace(keycode)) {
+		if (s_current_search_len >= sizeof(s_current_search_str))
+			goto xout;
+		s_current_search_str[s_current_search_len++] = tolower(keycode);
+	} else
+		goto xout;
+
+	guilib_clear();
+	render_string(0 /* font */, 15 /* x */, 20 /* y */, (char*) s_current_search_str, s_current_search_len);
+	display_y = 35;
+	idx = wom_find_article(s_womh, s_current_search_str, s_current_search_len);
+	while (idx) {
+		render_string(0 /* font */, 15 /* x */, display_y, (char*) idx->abbreviated_uri, idx->uri_len);
+		display_y += LINE_ADVANCE;
+		idx = wom_get_next_article(s_womh);
+	}
+	keyboard_paint();
+	return;
+xout:
+	msg(MSG_INFO, "X ui\thandle_search_key() failed.\n");
+}
+
+#endif
+
 static void handle_search_key(char keycode)
 {
 	if (keycode == WL_KEY_BACKSPACE) {
@@ -256,6 +299,10 @@ static void handle_touch(struct wl_input_event *ev)
 
 int wikilib_init (void)
 {
+#ifdef WOM_ON
+	// tbd: where is the current directory for the simulator? -> '/' should not be necessary
+	s_womh = wom_open("/wikipedia.dat");
+#endif
 	return 0;
 }
 

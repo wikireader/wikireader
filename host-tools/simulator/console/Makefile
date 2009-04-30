@@ -16,7 +16,7 @@ CFLAGS += -I $(MINILZO_DIR)
 LDFLAGS = -g -dynamic -lncurses
 C_OBJS = guilib.o glyph.o file-io-general.o file-io-posix.o wikilib.o time-posix.o	\
 	fontfile.o search.o lsearcher.o fast_search.o article.o history.o decompress.o \
-	minilzo.o keyboard.o
+	minilzo.o keyboard.o wom_reader.o
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR) \
 	  $(INDEX_DIR) $(MINILZO_DIR)

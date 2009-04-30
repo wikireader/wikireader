@@ -11,5 +11,6 @@ enum {
 
 void msg(int level, const char *format, ...);
 void set_loglevel(int level);
+void hexdump(const char *p, unsigned int len);
 
 #endif /* WL_MSG_H */
