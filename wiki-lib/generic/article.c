@@ -115,7 +115,7 @@ void article_display(enum article_nav nav)
 	int has_x = 0;
 	int mode = Parse_Start;
 	unsigned int byte_offset = 0;
-	struct glyph *last_glyph = NULL;
+	//struct glyph *last_glyph = NULL;
 	int i;
 
 	guilib_fb_lock();
@@ -139,12 +139,12 @@ void article_display(enum article_nav nav)
 
 
 
-#warning BROKEN...Only paint one page
+//#warning BROKEN...Only paint one page
 	//current_page_offset = 0;
 
 	/* display one page of text... */
 
-        // TODO: Decoding routines...
+	// TODO: Decoding routines...
 	for (i = 0; i < article_data_length; ++i) {
 		if (last_y > guilib_framebuffer_height())
 			break;
@@ -178,10 +178,10 @@ void article_display(enum article_nav nav)
 		} else if (mode == Parse_Glyph) {
 			if (article_data[i] == '-') {
 			} else if (article_data[i] == 'f') {
-				printf("Switch back to fonts\n");
+				//printf("Switch back to fonts\n");
 				CHANGE_MODE(Parse_Font)
 			} else if (article_data[i] == ',') {
-				printf("Position change..\n");
+				//printf("Position change..\n");
 				CHANGE_MODE(Parse_Position)
 			} else {
 				CONSUME_BYTE()
@@ -190,9 +190,10 @@ void article_display(enum article_nav nav)
 
 			/* time to paint here */
 			int glyph = PARSE_INT();
+			(void) glyph;
 		}
 	}
-    
+
 	guilib_fb_unlock();
 }
 
