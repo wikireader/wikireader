@@ -4,7 +4,7 @@
 int wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-	syscall(serial_rea_dat(TASK_PORTID, &ev->key_event.keycode, 1));
+	syscall((int)serial_rea_dat(TASK_PORTID, &ev->key_event.keycode, 1));
 
 	/* force the result to 8bit */
 	ev->key_event.keycode &= 0xff;

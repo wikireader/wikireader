@@ -131,7 +131,7 @@ void history_select_up(void)
 static void history_page_down_display(int current_item)
 {
 	unsigned int i;
-	int y_pos = RESULT_START;
+	unsigned int y_pos = RESULT_START;
 
 	guilib_fb_lock();
 
@@ -150,7 +150,7 @@ static void history_page_down_display(int current_item)
 static void history_page_up_display(int current_item)
 {
 	unsigned int i;
-	int y_pos = RESULT_START;
+	unsigned int y_pos = RESULT_START;
 
 	guilib_fb_lock();
 
@@ -178,7 +178,7 @@ void history_display(void)
 	if (list_size == 0) {
 		render_string(0, 1, 100, "No history.", 11);
 	} else {
-		int y_pos = RESULT_START;
+		unsigned int y_pos = RESULT_START;
 
 		for (i = 0; i <= list_size && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_get_item_title(i);

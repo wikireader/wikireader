@@ -1,5 +1,6 @@
 #include <string.h>
 #include <malloc.h>
+#include <stdlib.h>
 #include <msg.h>
 
 #include "integer.h"

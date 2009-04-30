@@ -78,7 +78,7 @@ void msg(int level, const char *format, ...)
 
 int main(int argc, char *argv[])
 {
-	framebuffer = (char *)malloc(guilib_framebuffer_size());
+	framebuffer = (unsigned char *)malloc(guilib_framebuffer_size());
 
 	initscr();
 	keypad(stdscr, TRUE);

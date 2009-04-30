@@ -17,7 +17,6 @@
  */
 
 #include <guilib.h>
-#include <malloc.h>
 #include <string.h>
 #include <regs.h>
 #include <lcd.h>

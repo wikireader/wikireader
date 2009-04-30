@@ -1,6 +1,7 @@
 #include <wikilib.h>
 #include <guilib.h>
 #include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* FIXME: don't use bootloader includes */
