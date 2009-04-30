@@ -31,6 +31,7 @@
 
 
 #define MCLK 		48000000
+#define MCLK_MHz	(MCLK / 1000000)
 #define DIV 		8
 
 #define CALC_BAUD(fbrclk, divmd, bps)  ((fbrclk / divmd)/(2 * bps) - 1)

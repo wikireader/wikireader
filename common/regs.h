@@ -848,5 +848,44 @@
 #define BPP_2          (1 << 0)
 #define BPP_1          (0 << 0)
 
+
+/*
+ * Timers
+ */
+
+// Bits for: REG_T16_ADVMODE
+#define T16ADV    (1 << 0)
+
+// Bits for: REG_T16_CNT_PAUSE
+#define PAUSE5    (1 << 5)
+#define PAUSE4    (1 << 4)
+#define PAUSE3    (1 << 3)
+#define PAUSE2    (1 << 2)
+#define PAUSE1    (1 << 1)
+#define PAUSE0    (1 << 0)
+
+// Bits for: REG_T16_CTLx
+#define INITOLx    (1 << 8)
+//#define (TMODEx)   (1 << 7) - reserved, do not set to 1
+#define SELFMx     (1 << 6)
+#define SELCRBx    (1 << 5)
+#define OUTINVx    (1 << 4)
+#define CKSLx      (1 << 3)
+#define PTMx       (1 << 2)
+#define PRESETx    (1 << 1)
+#define PRUNx      (1 << 0)
+
+//Bits for: REG_T16_CLKCTL_x
+#define P16TONx               (1 << 3)
+#define P16TSx_MCLK_DIV_4096  (7 << 0)
+#define P16TSx_MCLK_DIV_1024  (6 << 0)
+#define P16TSx_MCLK_DIV_256   (5 << 0)
+#define P16TSx_MCLK_DIV_64    (4 << 0)
+#define P16TSx_MCLK_DIV_16    (3 << 0)
+#define P16TSx_MCLK_DIV_4     (2 << 0)
+#define P16TSx_MCLK_DIV_2     (1 << 0)
+#define P16TSx_MCLK_DIV_1     (0 << 0)
+
+
 #endif /* REGS_H */
 
