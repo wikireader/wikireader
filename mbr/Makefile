@@ -3,6 +3,7 @@ FATFSDIR = ../fatfs
 FATFS_MODE = read-only
 COMMON = ../common
 BOOTLOADER = ../bootloader
+WIKILIB_DIR = ../wiki-lib
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 E07LOAD ?= ${BOOTLOADER}/e07load/e07load
@@ -17,7 +18,7 @@ LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 INCLUDES = -I$(FATFSDIR)/src
 INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(COMMON) -I../bootloader
+INCLUDES += -I$(COMMON) -I$(WIKILIB_DIR)/include
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
@@ -29,7 +30,7 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH = $(COMMON):../bootloader
+VPATH = $(COMMON) $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific
 
 .PHONY: all
 all: $(TARGETS) all-applications

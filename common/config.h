@@ -7,7 +7,7 @@
 //#define BOARD_PRT33L17LCD 1
 //#define BOARD_PROTO1 1
 //#define BOARD_PROTO2	1
-//#define BOARD_SAMO_A1 1
+#define BOARD_SAMO_A1 1
 
 #define LCD_MONOCHROME 1
 

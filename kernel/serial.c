@@ -174,7 +174,7 @@ int serial_get_event(struct wl_input_event *ev)
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
 	}
-	else if ((ev->key_event.keycode == WL_KEY_MINUS)  || (ev->key_event.keycode == WL_KEY_UP)) {
+	else if ((ev->key_event.keycode == WL_KEY_MINUS) || (ev->key_event.keycode == WL_KEY_UP)) {
 		ev->type = WL_INPUT_EV_TYPE_CURSOR;
 		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
 	}

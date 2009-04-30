@@ -2,13 +2,14 @@ LIBDIR=../toolchain/mini-libc
 FATFSDIR=../fatfs
 FATFS_MODE = read-only
 COMMON=../common
+WIKILIB_DIR = ../wiki-lib
 LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a $(LIBDIR)/lib/libc.a `$(CC) -print-libgcc-file-name`
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-INCLUDES = -I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/${FATFS_MODE}/ -I$(COMMON)
+INCLUDES = -I$(FATFSDIR)/src -I$(LIBDIR)/include/ -I$(FATFSDIR)/config/c33/${FATFS_MODE}/ -I$(COMMON) -I$(WIKILIB_DIR)/include
 OBJCOPY_FLAGS=-I elf32-c33 -O binary
 
 TARGETS=rs232 eeprom-1st eeprom-2nd eeprom-2nd.bin e07load/e07load gfxtool/gfxtool
-VPATH=$(COMMON)
+VPATH=$(COMMON) $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific
 
 BOOTLOADER_TTY ?= /dev/ttyUSB0
 FLASH_ROM_MAP_FILE ?= wikireader.map
