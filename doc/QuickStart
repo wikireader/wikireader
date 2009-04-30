@@ -67,6 +67,9 @@ RS232 Booting Supported".  After you're done, try again.
 
 ** Build the mbr bootloader
 
+* Required packages
+  - python-gd
+
 Build this bootloader to get advanced bootloader options such as
 a bootmenu, forth support or loading the kernel via the serial line.
 
