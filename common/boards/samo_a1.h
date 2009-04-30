@@ -16,14 +16,22 @@
 #define P33_BIT (1 << 3)
 
 // P32 = 0, P33 = 1
-#define P3_23_MASK (~(P32_BIT | P33_BIT))
-#define enable_card_power()  do {					\
-		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P33_BIT;	\
-	} while(0)
+#define P3_23_MASK (P32_BIT | P33_BIT)
 
-#define disable_card_power() do {					\
-		REG_P3_P3D = (REG_P3_P3D & P3_23_MASK) | P32_BIT;	\
-	} while(0)
+static inline void enable_card_power(void)
+{
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P33_BIT;
+}
+
+static inline void disable_card_power(void)
+{
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P32_BIT;
+}
+
+static inline int check_card_power(void)
+{
+	return (REG_P3_P3D & P3_23_MASK) == P33_BIT;
+}
 
 
 #define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
