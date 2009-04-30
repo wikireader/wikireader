@@ -47,7 +47,7 @@ try:
 	im = gd.image(imagefile)
 	(w, h) = im.size()
 
-	out =  "static struct guilib_image %s = {\n" % (imagename)
+	out =  "static const struct guilib_image %s = {\n" % (imagename)
 	out += "\t.width = %d,\n" % (w)
 	out += "\t.height = %d,\n" % (h)
 	out += "\t.data = {\n"
