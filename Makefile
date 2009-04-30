@@ -59,10 +59,7 @@ toppers: mini-libc fatfs
 	cp wikireader/sample1.elf ../KERNEL.toppers)
 
 .PHONY: kernel
-kernel: mini-libc fatfs
-	( cd kernel && \
-	$(MAKE) && \
-	cp mahatma.elf ../KERNEL)
+kernel: mahatma
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
@@ -132,11 +129,11 @@ gcc: binutils gcc-patch
 	touch $@
 
 .PHONY: simulator-qt4
-simulator-qt4:
+simulator-qt4: kernel
 	( cd host-tools/simulator/Qt4/WikiSim && qmake-qt4 && $(MAKE) )
 
 .PHONY: simulator-console
-simulator-console:
+simulator-console: kernel
 	( cd host-tools/simulator/console && $(MAKE) )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
