@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "types.h"
-#include "misc.h"
+#include <types.h>
+#include <misc.h>
 #include "regs.h"
 #include "wikireader.h"
 #include "lcd.h"
