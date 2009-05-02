@@ -10,12 +10,6 @@
 #include "msg.h"
 #include "wom_file_format.h"
 
-// DP = Debug Print
-#define DP(on, varformat) (on) ? msg varformat : (void) 0
-
-// DX = Debug Fail
-#define DX() DP(1, (MSG_ERROR, "X %s line %d (%s())\n", __BASE_FILE__, __LINE__, __FUNCTION__))
-
 typedef struct wom_file wom_file_t;
 
 wom_file_t* wom_open(const char* filename);

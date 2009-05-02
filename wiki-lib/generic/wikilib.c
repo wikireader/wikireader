@@ -35,6 +35,8 @@
 #include <stdio.h>
 #include "wom_reader.h"
 
+// #define WOM_ON
+
 enum display_mode_e {
 
 	DISPLAY_MODE_INDEX,
@@ -159,11 +161,15 @@ static wom_file_t * s_womh = 0;
 static void handle_search_key(char keycode)
 {
 	const wom_index_entry_t* idx;
-	uint8_t display_y;
+	int num_results;
 
 	msg(MSG_INFO, "O ui\thandle_search_key() key %xh ('%c')\n", keycode, keycode);
 	if (keycode == WL_KEY_BACKSPACE) {
 		if (s_current_search_len) s_current_search_len--;
+		if (!s_current_search_len) {
+			print_intro();
+			return;
+		}
 	} else if (isalnum(keycode) || isspace(keycode)) {
 		if (s_current_search_len >= sizeof(s_current_search_str))
 			goto xout;
@@ -173,11 +179,12 @@ static void handle_search_key(char keycode)
 
 	guilib_clear();
 	render_string(0 /* font */, 15 /* x */, 20 /* y */, (char*) s_current_search_str, s_current_search_len);
-	display_y = 35;
+	num_results = 0;
 	idx = wom_find_article(s_womh, s_current_search_str, s_current_search_len);
 	while (idx) {
-		render_string(0 /* font */, 15 /* x */, display_y, (char*) idx->abbreviated_uri, idx->uri_len);
-		display_y += LINE_ADVANCE;
+		render_string(0 /* font */, 15 /* x */, 35 + num_results++ * LINE_ADVANCE, (char*) idx->abbreviated_uri, idx->uri_len);
+		if (num_results >= ((keyboard_get_mode() == KEYBOARD_NONE) ? 19 : 11))
+			break;
 		idx = wom_get_next_article(s_womh);
 	}
 	keyboard_paint();
@@ -186,7 +193,7 @@ xout:
 	msg(MSG_INFO, "X ui\thandle_search_key() failed.\n");
 }
 
-#endif
+#else // !WOM_ON
 
 static void handle_search_key(char keycode)
 {
@@ -204,6 +211,8 @@ static void handle_search_key(char keycode)
 	keyboard_paint();
 	guilib_fb_unlock();
 }
+
+#endif // WOM_ON
 
 static void handle_cursor(struct wl_input_event *ev)
 {
@@ -301,7 +310,7 @@ int wikilib_init (void)
 {
 #ifdef WOM_ON
 	// tbd: where is the current directory for the simulator? -> '/' should not be necessary
-	s_womh = wom_open("/wikipedia.dat");
+	s_womh = wom_open("/home/user/wikipediardware/wom_creator/wikipedia.dat");
 #endif
 	return 0;
 }
