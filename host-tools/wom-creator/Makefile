@@ -10,9 +10,9 @@
 RM = rm -f
 CC = gcc
 LD = ld
-GUILIB_DIR = ../gui-lib
-WIKILIB_DIR = ../wiki-lib
-COMMON_DIR = ../common
+GUILIB_DIR = ../../gui-lib
+WIKILIB_DIR = ../../wiki-lib
+COMMON_DIR = ../../common
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(COMMON_DIR)
 LDFLAGS = -g -dynamic
 OBJS = wom_creator.o hexdump.o msg-printf.o
