@@ -44,6 +44,7 @@ typedef struct wom_header
 	// FAT cluster chain for the large articles area will be slow.
 } wom_header_t;
 
+// -> index section == .jmp & .idx file
 #define END_OF_INDEX_PAGE 0xFFFFFFFF
 
 typedef struct wom_index_entry

@@ -168,13 +168,13 @@ int main(int argc, char** argv)
 				continue;
 			}
 			cur_dest_off = ftell(dest_f);
-			if (WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE) < 6 + uri_len) {
+			if (6 + uri_len > WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE)) {
 				if (WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE) >= sizeof(uint32_t)) {
 					uint32_val = END_OF_INDEX_PAGE;
 					if (fwrite(&uint32_val, 1 /* size */, sizeof(uint32_val), dest_f) != sizeof(uint32_val))
 						fprintf(stderr, "X Error writing file.\n");
 				}
-				if (fseek(dest_f, WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE), SEEK_CUR))
+				if (fseek(dest_f, WOM_PAGE_SIZE - (ftell(dest_f) % WOM_PAGE_SIZE), SEEK_CUR))
 					fprintf(stderr, "X Error seeking in file.\n");
 			}
 			// offset_into_articles unknown and can only be written after 2nd run over articles below
