@@ -17,11 +17,14 @@ SOURCES += $$TOPLEVEL/wiki-lib/generic/keyboard.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/fast_search.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lsearcher.c
 SOURCES += $$TOPLEVEL/minilzo/minilzo.c
+SOURCES += $$TOPLEVEL/common/fatfs_stdio.c
 INCLUDEPATH += $$TOPLEVEL/gui-lib/
 INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
 INCLUDEPATH += $$TOPLEVEL/common/
 INCLUDEPATH += $$TOPLEVEL/minilzo/
+INCLUDEPATH += $$TOPLEVEL/fatfs/src
+INCLUDEPATH += $$TOPLEVEL/fatfs/config/c33/read-write
 DEPENDPATH = $$INCLUDEPATH
 
 SOURCES += main.cpp \
