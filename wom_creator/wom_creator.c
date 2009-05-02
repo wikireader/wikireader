@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 	FILE* blib_f = 0;
 	uint8_t wom_page_buf[WOM_PAGE_SIZE];
 	char line_buf[STR_BUF_LEN], hash[STR_BUF_LEN], article_title[STR_BUF_LEN], work_path_base[STR_BUF_LEN], font_and_size[STR_BUF_LEN];
-	uint32_t cur_page, index_first_page, bitmaps_first_page, articles_first_page, cur_dest_off, dest_file_len, last_index_off, last_bitmap_off;
+	uint32_t cur_page, index_first_page, bitmaps_first_page, articles_first_page, cur_dest_off, dest_file_len, last_index_off, last_bitmap_off, uint32_val;
 	char blib_path[256];
 	int cur_work_arg, i, j, x_coord, y_coord, font_code;
 	stats_t stats = {0};
@@ -162,12 +162,26 @@ int main(int argc, char** argv)
 		if (fseek(dest_f, cur_page * WOM_PAGE_SIZE, SEEK_SET))
 			fprintf(stderr, "X Error seeking in file.\n");
 		for (i = 0; i < num_titles_used; i++) {
+			uri_len = strlen(article_titles[i].title);
+			if (uri_len > WOM_PAGE_SIZE-6) {
+				DP(1, (MSG_INFO, "X title too long\n"));
+				continue;
+			}
+			cur_dest_off = ftell(dest_f);
+			if (WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE) < 6 + uri_len) {
+				if (WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE) >= sizeof(uint32_t)) {
+					uint32_val = END_OF_INDEX_PAGE;
+					if (fwrite(&uint32_val, 1 /* size */, sizeof(uint32_val), dest_f) != sizeof(uint32_val))
+						fprintf(stderr, "X Error writing file.\n");
+				}
+				if (fseek(dest_f, WOM_PAGE_SIZE - (cur_dest_off % WOM_PAGE_SIZE), SEEK_CUR))
+					fprintf(stderr, "X Error seeking in file.\n");
+			}
 			// offset_into_articles unknown and can only be written after 2nd run over articles below
 			article_titles[i].index_file_off = ftell(dest_f);
 			if (fseek(dest_f, sizeof(uint32_t), SEEK_CUR))
 				fprintf(stderr, "X Error seeking in file.\n");
 			// write uri_len
-			uri_len = strlen(article_titles[i].title);
 			if (fwrite(&uri_len, 1 /* size */, sizeof(uri_len), dest_f) != sizeof(uri_len))
 				fprintf(stderr, "X Error writing file.\n");
 			// write abbreviated_uri[]
