@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <guilib.h>
 #include "file-io.h"
 #include "wom_reader.h"
 #include "tff.h"

@@ -128,6 +128,21 @@ void guilib_clear(void)
 #endif
 }
 
+/**
+ * Clear the area specified on the screen.
+ */
+void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y)
+{
+	int height;
+
+	for (height = 0; height <= end_y - start_y; height++)
+#ifdef DISPLAY_INVERTE		
+		memset(&framebuffer[(FRAMEBUFFER_SCANLINE * (start_y+height) + start_x)/8], ~0, end_x - start_x + 1);
+#else
+		memset(&framebuffer[(FRAMEBUFFER_SCANLINE * (start_y+height) + start_x)/8], 0, end_x - start_x + 1);
+#endif
+}
+
 /* The idea is that every function which calls painting routines calls
  * guilib_fb_lock() before any operation and guilib_fb_unlock() after
  * it. This way, only the last of these functions in the calling stack

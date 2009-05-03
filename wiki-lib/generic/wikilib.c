@@ -77,6 +77,7 @@ static void toggle_soft_keyboard(void)
 	/* Set the keyboard mode to what we want to change to. */
 	if (keyboard_get_mode() == KEYBOARD_NONE) {
 		keyboard_set_mode(KEYBOARD_CHAR);
+		guilib_clear_area(0, (unsigned int)RESULT_HEIGHT * NUMBER_OF_RESULTS_KEYBOARD + PIXEL_START, guilib_framebuffer_width(), guilib_framebuffer_height() - keyboard_height() - 1);
 		keyboard_paint();
 	} else {
 		keyboard_set_mode(KEYBOARD_NONE);

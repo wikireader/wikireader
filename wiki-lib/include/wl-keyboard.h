@@ -22,14 +22,15 @@
  * keyboard functionality
  */
 
-typedef enum {
+enum {
 	KEYBOARD_NONE,
 	KEYBOARD_CHAR,
 	KEYBOARD_NUM
-} keyboard_mode_e;
+};
 
-void keyboard_set_mode(keyboard_mode_e mode);
-keyboard_mode_e keyboard_get_mode();
+void keyboard_set_mode(int mode);
+int keyboard_get_mode();
+unsigned int keyboard_height();
 void keyboard_paint();
 char keyboard_release(int x, int y);
 

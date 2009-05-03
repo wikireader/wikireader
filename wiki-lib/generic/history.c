@@ -27,8 +27,8 @@
 
 #include "history.h"
 
-#define RESULT_START 28
-#define RESULT_HEIGHT 10
+#define HISTORY_RESULT_START 28
+#define HISTORY_RESULT_HEIGHT 10
 
 #define HISTORY_MAX_ITEM	100
 #define HISTORY_MAX_DISPLAY_ITEM	18U
@@ -60,34 +60,34 @@ static inline unsigned int history_modulus(int modulus) {
 
 static void __invert_selection(int pos, enum step_direction direction)
 {
-	int start = RESULT_START - RESULT_HEIGHT + 2;
+	int start = HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2;
 
 	guilib_fb_lock();
 
 	if (pos == 0) {
 		if (direction == step_down) {
-			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 		}
 		else {
-			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
-			guilib_invert(start + (pos + 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
+			guilib_invert(start + (pos + 1) * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 		}
 	} else if (pos == 17) {
 		if (direction == step_up) {
-			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 		}
 		else {
-			guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
-			guilib_invert(start + (pos - 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+			guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
+			guilib_invert(start + (pos - 1) * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 		}
 	}
 	else if (direction == step_down) {
-		guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
-		guilib_invert(start + (pos - 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+		guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
+		guilib_invert(start + (pos - 1) * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 	}
 	else if (direction == step_up) {
-		guilib_invert(start + pos * RESULT_HEIGHT, RESULT_HEIGHT);
-		guilib_invert(start + (pos + 1) * RESULT_HEIGHT, RESULT_HEIGHT);
+		guilib_invert(start + pos * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
+		guilib_invert(start + (pos + 1) * HISTORY_RESULT_HEIGHT, HISTORY_RESULT_HEIGHT);
 	}
 
 	guilib_fb_unlock();
@@ -131,7 +131,7 @@ void history_select_up(void)
 static void history_page_down_display(int current_item)
 {
 	unsigned int i;
-	unsigned int y_pos = RESULT_START;
+	unsigned int y_pos = HISTORY_RESULT_START;
 
 	guilib_fb_lock();
 
@@ -141,7 +141,7 @@ static void history_page_down_display(int current_item)
 	for (i = current_item; i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
 		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
-		y_pos += RESULT_HEIGHT;
+		y_pos += HISTORY_RESULT_HEIGHT;
 	}
 
 	guilib_fb_unlock();
@@ -150,7 +150,7 @@ static void history_page_down_display(int current_item)
 static void history_page_up_display(int current_item)
 {
 	unsigned int i;
-	unsigned int y_pos = RESULT_START;
+	unsigned int y_pos = HISTORY_RESULT_START;
 
 	guilib_fb_lock();
 
@@ -160,7 +160,7 @@ static void history_page_up_display(int current_item)
 	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
 		render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
-		y_pos += RESULT_HEIGHT;
+		y_pos += HISTORY_RESULT_HEIGHT;
 	}
 
 	guilib_fb_unlock();
@@ -178,12 +178,12 @@ void history_display(void)
 	if (list_size == 0) {
 		render_string(0, 1, 100, "No history.", 11);
 	} else {
-		unsigned int y_pos = RESULT_START;
+		unsigned int y_pos = HISTORY_RESULT_START;
 
 		for (i = 0; i <= list_size && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_get_item_title(i);
 			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
-			y_pos += RESULT_HEIGHT;
+			y_pos += HISTORY_RESULT_HEIGHT;
 		}
 	}
 
@@ -301,10 +301,10 @@ unsigned int history_free_item_size(void)
 const char *history_release(int y)
 {
 	unsigned int i;
-	int start = RESULT_START - RESULT_HEIGHT + 2;
+	int start = HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2;
 
-	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += RESULT_HEIGHT) {
-		if (y >= start && y < start + RESULT_HEIGHT) {
+	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += HISTORY_RESULT_HEIGHT) {
+		if (y >= start && y < start + HISTORY_RESULT_HEIGHT) {
 				return history_get_item_target(history_current == -1 ? i :
 						(history_current/HISTORY_MAX_DISPLAY_ITEM)*HISTORY_MAX_DISPLAY_ITEM + i);
 		}
