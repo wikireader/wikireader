@@ -44,6 +44,11 @@ article_titles_t article_titles[NUM_TITLE_SLOTS];
 int32_t num_titles_avail = NUM_TITLE_SLOTS;
 int32_t num_titles_used = 0;
 
+int article_title_compare_f(const article_titles_t* t1, const article_titles_t* t2)
+{
+	return strcmp(t1->title, t2->title);
+}
+
 typedef struct stats
 {
 	time_t start_time, stop_time;
@@ -150,6 +155,7 @@ int main(int argc, char** argv)
 		fclose(work_f);
 		work_f = 0;
 	}
+	qsort(article_titles, num_titles_used, sizeof(article_titles[0]), article_title_compare_f);
 
 	//
 	// 2. Write index (ca. 1% of total output size)
@@ -315,6 +321,8 @@ int main(int argc, char** argv)
 				fprintf(stderr, "X Error seeking in file.\n");
 				continue;
 			}
+			DP(DBG_WOM_CREATOR, (MSG_INFO, "O Article '%s' start_off %u end_off %u (index_off %u)\n", article_titles[i].title,
+				article_start_off, cur_dest_off, article_titles[i].index_file_off));
 		}
 	}
 	//
@@ -442,8 +450,8 @@ static int load_bitmap(font_bitmaps_t* font_bitmaps, int num_bitmaps_avail, int*
 		for (i = 0; i < strlen(line_buf); i++) {
 			if (line_buf[i] == '\n') break;
 			if (line_buf[i] < '0' || line_buf[i] > '1') goto xout_pbmf;
-			if (line_buf[i] == '1')
-				new_bitmap->bits[cur_y * bytes_per_line + cur_x/8] |= 1<<(cur_x%8);
+			if (line_buf[i] == '0')
+				new_bitmap->bits[cur_y * bytes_per_line + cur_x/8] |= 0x80>>(cur_x%8);
 			cur_x++;
 			if (cur_x % new_bitmap->pbm_width == 0) {
 				cur_y++;

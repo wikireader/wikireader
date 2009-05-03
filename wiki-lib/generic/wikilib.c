@@ -36,6 +36,7 @@
 #include "wom_reader.h"
 
 // #define WOM_ON
+#define DBG_WL 0
 
 enum display_mode_e {
 
@@ -50,6 +51,15 @@ enum display_mode_e {
 
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
+
+#ifdef WOM_ON
+
+static char s_current_search_str[256];
+static size_t s_current_search_len = 0;
+static wom_file_t * s_womh = 0;
+static wom_index_entry_t* s_cur_selected_search_idx = 0;
+
+#endif
 
 static void repaint_search(void)
 {
@@ -133,6 +143,7 @@ static int display_image()
 
 static void open_article(const char* target, int mode)
 {
+#ifndef WOM_ON
 	if (!target)
 		return;
 
@@ -148,13 +159,16 @@ static void open_article(const char* target, int mode)
 		last_display_mode = DISPLAY_MODE_HISTORY;
 		history_move_current_to_top(target);
 	}
+#else
+	if (s_cur_selected_search_idx) {
+		DP(DBG_WL, (MSG_INFO, "O open_article() '%.*s'\n", s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri));
+		wom_draw(s_womh, s_cur_selected_search_idx->offset_into_articles,
+			framebuffer, 0 /* y_start_in_article */, 208 /* lines_to_draw */);
+	}
+#endif
 }
 
 #ifdef WOM_ON
-
-static char s_current_search_str[256];
-static size_t s_current_search_len = 0;
-static wom_file_t * s_womh = 0;
 
 #define LINE_ADVANCE 10
 
@@ -181,6 +195,7 @@ static void handle_search_key(char keycode)
 	render_string(0 /* font */, 15 /* x */, 20 /* y */, (char*) s_current_search_str, s_current_search_len);
 	num_results = 0;
 	idx = wom_find_article(s_womh, s_current_search_str, s_current_search_len);
+	s_cur_selected_search_idx = idx; // tbd: ugly, pointer not allocated etc. Watch lifetime!
 	while (idx) {
 		render_string(0 /* font */, 15 /* x */, 35 + num_results++ * LINE_ADVANCE, (char*) idx->abbreviated_uri, idx->uri_len);
 		if (num_results >= ((keyboard_get_mode() == KEYBOARD_NONE) ? 19 : 11))
@@ -310,7 +325,7 @@ int wikilib_init (void)
 {
 #ifdef WOM_ON
 	// tbd: where is the current directory for the simulator? -> '/' should not be necessary
-	s_womh = wom_open("/home/user/wikipediardware/wom_creator/wikipedia.dat");
+	s_womh = wom_open("/home/user/wikipediardware/host-tools/wom-creator/wikipedia.dat");
 #endif
 	return 0;
 }
