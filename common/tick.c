@@ -19,6 +19,182 @@
 #include "regs.h"
 #include "tick.h"
 
+#define HARDWARE_LINK 1
+
+#if HARDWARE_LINK
+
+
+void tick_initialise()
+{
+	// enable clocks
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+	REG_CMU_GATEDCLK1 |=
+		//CPUAHB_HCKE |
+		//LCDCAHB_HCKE |
+		//GPIONSTP_HCKE |
+		//SRAMC_HCKE |
+		//EFSIOBR_HCKE |
+		//MISC_HCKE |
+		//IVRAMARB_CKE |
+		//TM5_CKE |
+		//TM4_CKE |
+		//TM3_CKE |
+		//TM2_CKE |
+		//TM1_CKE |
+		TM0_CKE |
+		//EGPIO_MISC_CK |
+		//I2S_CKE |
+		//DCSIO_CKE |
+		//WDT_CKE |
+		//GPIO_CKE |
+		//SRAMSAPB_CKE |
+		//SPI_CKE |
+		//EFSIOSAPB_CKE |
+		//CARD_CKE |
+		//ADC_CKE |
+		//ITC_CKE |
+		//DMA_CKE |
+		//RTCSAPB_CKE |
+		0;
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	// enable EXCL2
+	REG_P6_47_CFP = (REG_P6_47_CFP & ~0x03) | 0x02;
+
+	// enable TM0
+	REG_P1_03_CFP = (REG_P6_47_CFP & ~0x03) | 0x01;
+
+	// Advanced Mode
+	REG_T16_ADVMODE = T16ADV;
+
+	// 16 bit Timer 0
+	// Stop timer
+	REG_T16_CTL0 =
+		//INITOLx |
+		//SELFMx |
+		//SELCRBx |
+		//OUTINVx |
+		//CKSLx |
+		PTMx |
+		//PRESETx |
+		//PRUNx |
+		0;
+
+	// Set prescale
+	REG_T16_CLKCTL_0 =
+		P16TONx |
+		//P16TSx_MCLK_DIV_4096 |
+		//P16TSx_MCLK_DIV_1024 |
+		//P16TSx_MCLK_DIV_256 |
+		//P16TSx_MCLK_DIV_64 |
+		//P16TSx_MCLK_DIV_16 |
+		//P16TSx_MCLK_DIV_4 |
+		//P16TSx_MCLK_DIV_2 |
+		P16TSx_MCLK_DIV_1 |
+		0;
+
+	// Set count
+	REG_T16_CR0A = 32768;
+	REG_T16_CR0B = 65535;
+
+	// Reset
+	REG_T16_CTL0 |= PRESETx;
+
+
+	// 16 bit Timer 2
+	// Stop timer
+	REG_T16_CTL2 =
+		//INITOLx |
+		//SELFMx |
+		//SELCRBx |
+		//OUTINVx |
+		CKSLx |
+		//PTMx |
+		//PRESETx |
+		//PRUNx |
+		0;
+
+	// Set prescale
+	REG_T16_CLKCTL_2 =
+		P16TONx |
+		//P16TSx_MCLK_DIV_4096 |
+		//P16TSx_MCLK_DIV_1024 |
+		//P16TSx_MCLK_DIV_256 |
+		//P16TSx_MCLK_DIV_64 |
+		//P16TSx_MCLK_DIV_16 |
+		//P16TSx_MCLK_DIV_4 |
+		//P16TSx_MCLK_DIV_2 |
+		P16TSx_MCLK_DIV_1 |
+		0;
+
+	// Set count
+	REG_T16_CR2A = 32768;
+	REG_T16_CR2B = 65535;
+
+	// Reset
+	REG_T16_CTL2 |= PRESETx;
+
+	tick_start();
+}
+
+
+void tick_start()
+{
+	// Set PAUSE On
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		PAUSE2 |
+		//PAUSE1 |
+		PAUSE0 |
+		0;
+	// Run
+	REG_T16_CTL0 |= PRUNx;
+	REG_T16_CTL2 |= PRUNx;
+
+	// Set PAUSE Off
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		//PAUSE2 |
+		//PAUSE1 |
+		//PAUSE0 |
+		0;
+}
+
+unsigned long tick_get(void)
+{
+	register unsigned long count;
+
+	// Set PAUSE On
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		PAUSE2 |
+		//PAUSE1 |
+		PAUSE0 |
+		0;
+
+	count = (REG_T16_TC2 << 16) | REG_T16_TC0;
+
+	// Set PAUSE Off
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		//PAUSE2 |
+		//PAUSE1 |
+		//PAUSE0 |
+		0;
+
+	return count;
+}
+
+#else
+
 void tick_initialise()
 {
 	// enable clocks
@@ -208,3 +384,4 @@ unsigned long tick_get(void)
 
 	return count;
 }
+#endif
