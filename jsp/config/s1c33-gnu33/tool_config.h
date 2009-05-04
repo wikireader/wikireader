@@ -62,8 +62,18 @@
 #ifndef _MACRO_ONLY
 
 Inline void
-call_atexit()
+call_atexit(void)
 {
+#if 1
+#warning "This code is to unbreak the link - it ought to work, but test carefully!"
+	asm volatile (
+		"\txld.w\t%r5, software_term_hook\n"
+		"\tor\t%r5, %r5\n"
+		"\tjreq\tcall_atexit_l1\n"
+		"\tcall\t%r5\n"
+		"call_atexit_l1:\n"
+		);
+#else
 	extern void	software_term_hook(void);
 	volatile FP	fp = software_term_hook;
 
@@ -75,6 +85,7 @@ call_atexit()
 	if (fp != 0) {
 		(*fp)();
 	}
+#endif
 }
 
 #endif /* _MACRO_ONLY */
