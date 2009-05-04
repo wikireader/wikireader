@@ -39,7 +39,7 @@ CONFIG_FILE_DEFAULT := "common/config.h-default"
 CONFIG_FILE_EXISTS := $(shell [ -f $(CONFIG_FILE) ] && echo 1)
 
 ifeq ($(CONFIG_FILE_EXISTS),)
-$(error Please rename $(CONFIG_FILE_DEFAULT) to $(CONFIG_FILE), then set your board type)
+$(error Please copy $(CONFIG_FILE_DEFAULT) to $(CONFIG_FILE), then set your board type)
 endif
 
 # ----- configuration data --------------------------------------
