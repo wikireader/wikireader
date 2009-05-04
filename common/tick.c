@@ -166,8 +166,8 @@ void tick_start()
 		PAUSE0 |
 		0;
 	// Run
-	REG_T16_CTL0 = PRUNx;
-	REG_T16_CTL1 = PRUNx;
+	REG_T16_CTL0 |= PRUNx;
+	REG_T16_CTL1 |= PRUNx;
 
 	// Set PAUSE Off
 	REG_T16_CNT_PAUSE =
@@ -183,6 +183,28 @@ void tick_start()
 unsigned long tick_get(void)
 {
 	register unsigned long count;
+
+	// Set PAUSE On
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		//PAUSE2 |
+		PAUSE1 |
+		PAUSE0 |
+		0;
+
 	count = REG_T16_TC1 * 4096 + REG_T16_TC0;
+
+	// Set PAUSE Off
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		//PAUSE2 |
+		//PAUSE1 |
+		//PAUSE0 |
+		0;
+
 	return count;
 }
