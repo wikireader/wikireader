@@ -26,14 +26,13 @@
 #include "gpio.h"
 #include "touchscreen.h"
 
-#if 0
-#define CLEAR_IRQ(reg,val) (reg) = (val)
-#elif 1
-#define CLEAR_IRQ(reg,val)			\
-	asm volatile("ld.w %%r12, %0" :: "r"((val)));	\
-	asm volatile("xld.w %%r13, %0" :: "g"(&(reg))); 	\
-	asm volatile("ld.b [%r13], %r12");
+#if 1
+#define CLEAR_IRQ(reg,val)                      \
+	do {                                    \
+		(reg) = (val);                  \
+	} while (0)
 #else
+#error "this consumes too much stack"
 #define CLEAR_IRQ(reg,val)			\
 	asm("pushn %r12");			\
 	asm("pushn %r13");			\
