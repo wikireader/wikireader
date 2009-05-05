@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# (de)activate profiling
+PROFILER_ON = -DPROFILER_ON
 
 WIKILIBDIR=../wiki-lib/
 GUILIBDIR=../gui-lib/
@@ -59,14 +61,14 @@ KBD_IMG_SRC_P1 = ../images/keyboard_abc_mono2-plain.pbm
 KBD_IMG_INC = $(WIKILIBDIR)include/keyboard_image.h
 KBD_CONVERT = ../scripts/kbd_to_include.py
 
-CFLAGS+=-DINCLUDED_FROM_KERNEL
+CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
 
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
-OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o
+OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
 OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
 
 ifeq ($(PNM2PLAIN_PATH),)

@@ -33,6 +33,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <profile.h>
 #include "wom_reader.h"
 
 // #define WOM_ON
@@ -269,10 +270,13 @@ static void handle_key_release(int keycode)
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == WL_KEY_RETURN) {
 			open_article(search_current_target(), ARTICLE_NEW);
-#ifdef ENABLE_IMAGE_DISPLAY
+#if ENABLE_IMAGE_DISPLAY
 		} else if (keycode == WL_KEY_HASH) {
 			if (display_image() == 1)
 				display_mode = DISPLAY_MODE_IMAGE;
+#else
+		} else if (keycode == WL_KEY_HASH) {
+			prof_demo();
 #endif
 		} else {
 			handle_search_key(keycode);

@@ -22,6 +22,7 @@
 #include <input.h>
 #include <malloc.h>
 #include <tff.h>
+#include <profile.h>
 
 /* local includes */
 #include "msg-output.h"
@@ -62,6 +63,7 @@ int main(void)
 	malloc_init();
 	wikilib_init();
 	guilib_init();
+	profile_init();
 
 	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
 
