@@ -28,22 +28,30 @@
 
 enum {
 	PROF_add,
-	PROF_subst,
+	PROF_subt,
 	PROF_mult,
 	PROF_div,
 	PROF_mod,
 	PROF_delay,
+	PROF_memset,
+	PROF_memcpy,
+	PROF_memcmp,
+	PROF_fread,
 	PROF_COUNT /* keep COUNT the last item */
 };
 
 #if PROFILER_ON
 #define PROF_TO_STRING \
 	[PROF_add]	= "addition", \
-	[PROF_subst]	= "substitution", \
-	[PROF_mult]	= "multiplication", \
+	[PROF_subt]	= "subtract", \
+	[PROF_mult]	= "multipl ", \
 	[PROF_div]      = "division", \
-	[PROF_mod]	= "modulo", \
-	[PROF_delay]	= "delay",
+	[PROF_mod]	= "modulo  ", \
+	[PROF_delay]	= "delay   ", \
+	[PROF_memset]	= "memset  ", \
+	[PROF_memcpy]	= "memcpy  ", \
+	[PROF_memcmp]	= "memcmp  ", \
+	[PROF_fread]	= "fread   ",
 #endif
 
 struct prof_container {
