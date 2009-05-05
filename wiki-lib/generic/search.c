@@ -245,7 +245,6 @@ const char *search_current_target(void)
  */
 const char *search_current_title(void)
 {
-	static char current_title[MAXSTR];
 	char *result = NULL;
 	int number = 0;
 
@@ -254,10 +253,8 @@ const char *search_current_title(void)
 
 	reset_state(&global_search, &state, &last_first_hit);
 	while (number < NUMBER_OF_RESULTS && (result = search_fetch_result())) {
-		if (number == search_current) {
-			memcpy(&current_title[0], result, MAXSTR);
-			return &current_title[0];
-		}
+		if (number == search_current)
+			return result;
 
 		++number;
 	}
