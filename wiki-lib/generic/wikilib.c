@@ -274,7 +274,7 @@ static void handle_key_release(int keycode)
 		} else if (keycode == WL_KEY_HASH) {
 			if (display_image() == 1)
 				display_mode = DISPLAY_MODE_IMAGE;
-#else
+#elif PROFILER_ON
 		} else if (keycode == WL_KEY_HASH) {
 			prof_demo();
 #endif
