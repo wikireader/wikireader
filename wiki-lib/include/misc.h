@@ -1,14 +1,14 @@
 #ifndef MISC_H
 #define MISC_H
 
-#include <stdlib.h>
+#include <inttypes.h>
 
 // character input
 int serial_input_available(void);
 int serial_input_char(void);
 
 // character output
-void print_char(char c);
+int print_char(int c);
 void print(const char *txt);
 
 // decimal output

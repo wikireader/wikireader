@@ -18,6 +18,7 @@
 // SD card block sizes for 8 GiB SDHC cards seem to always be 512.
 // On our factory SD card, we set a FAT32 cluster size of 64KiB to format the 8GiB card with 1 partition.
 // 64KiB is the maximum FAT32 cluster size, Win98 and higher should support it (needs some testing).
+// Format with 'mkdosfs -F 32 -s 128' (tbd: check whether '-f 1' to use only 1 FAT brings us something)
 
 // tbd: this needs more work, for example right now an article name must fit into one page. If the page size would go to, for example to 512 bytes, we would need to support article names over multiple pages.
 #define WOM_PAGE_SIZE		4096

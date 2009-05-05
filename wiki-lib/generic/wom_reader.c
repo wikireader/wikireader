@@ -14,6 +14,7 @@
 #include "file-io.h"
 #include "wom_reader.h"
 #include "tff.h"
+#include "misc.h"
 
 #define DBG_WOM_READER 0
 
@@ -29,14 +30,23 @@ wom_file_t* wom_open(const char* filename)
 {
 	wom_file_t* womh;
 	UINT num_read;
+	FRESULT fr;
 
 	womh = (wom_file_t*) malloc(sizeof(*womh));
 	if (!womh) goto xout;
-	if (f_open(&womh->fileh, filename, FA_READ) != FR_OK) goto xout_womh;
-	if (f_read(&womh->fileh, &womh->hdr, sizeof(womh->hdr), &num_read) != FR_OK) goto xout_fileh;
-	if (num_read != sizeof(womh->hdr)) goto xout_fileh;
+	fr = f_open(&womh->fileh, filename, FA_READ);
+	if (fr != FR_OK) {
+		DP(1, ("X wom\tf_open() '%s' failed with code %d\n", filename, fr));
+		goto xout_womh;
+	}
+	fr = f_read(&womh->fileh, &womh->hdr, sizeof(womh->hdr), &num_read);
+	if (fr != FR_OK || num_read != sizeof(womh->hdr)) {
+		DP(1, ("X wom\tf_read() %i bytes failed, code %d / num_read %i\n", sizeof(womh->hdr), fr, num_read));
+		goto xout_fileh;
+	}
+//hex_dump((char*) &womh->hdr, sizeof(womh->hdr));
 	
-	DP(DBG_WOM_READER, (MSG_INFO, "O wom\twom_open() '%s' succeeded.\n", filename));
+	DP(DBG_WOM_READER, ("O wom\twom_open() '%s' succeeded.\n", filename));
 	return womh;
 
 xout_fileh:
@@ -44,7 +54,7 @@ xout_fileh:
 xout_womh:
 	free(womh);
 xout:
-	DX();
+	DP(1, ("X wom\twom_open() '%s' failed.\n", filename));
 	return 0;
 }
 
@@ -61,23 +71,28 @@ const wom_index_entry_t* wom_find_article(wom_file_t* womh, const char* search_s
 	FRESULT fr;
 	UINT num_read;
 
-	DP(DBG_WOM_READER, (MSG_INFO, "O wom_find_article('%.*s')\n", search_str_len, search_string));
+	DP(DBG_WOM_READER, ("O wom_find_article('%.*s')\n", search_str_len, search_string));
 	if (!womh) goto xout;
 	for (womh->cur_search_page = womh->hdr.index_first_page;
 		womh->cur_search_page < womh->hdr.index_first_page + womh->hdr.index_num_pages; womh->cur_search_page++) {
 		if (f_lseek(&womh->fileh, womh->cur_search_page * WOM_PAGE_SIZE) != FR_OK) goto xout;
 		fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
 		if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
+//hex_dump((char*) womh->page_buffer, WOM_PAGE_SIZE);
 		womh->next_search_offset = 0;
 		while (womh->next_search_offset <= WOM_PAGE_SIZE-6) {
 			idx = (wom_index_entry_t*) &womh->page_buffer[womh->next_search_offset];
 			if (idx->offset_into_articles == END_OF_INDEX_PAGE)
 				break;
 			womh->next_search_offset += 6 + idx->uri_len;
-			if (!strncasecmp(idx->abbreviated_uri, search_string, min(idx->uri_len, search_str_len)))
+			if (!strncasecmp(idx->abbreviated_uri, search_string, min(idx->uri_len, search_str_len))) {
+				DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u).\n",
+					idx->uri_len, idx->abbreviated_uri, idx->uri_len));
 				return idx;
+			}
 		}
 	}
+	DP(DBG_WOM_READER, ("O No match.\n"));
 	return 0;
 xout:
 	DX();
@@ -90,6 +105,7 @@ const wom_index_entry_t* wom_get_next_article(wom_file_t* womh)
 	UINT num_read;
 	FRESULT fr;
 
+	DP(DBG_WOM_READER, ("O wom_get_next_article()\n"));
 	if (!womh) goto xout;
 	// Upon entry, womh->page_buffer is assumed to contain womh->cur_search_page, and
 	// womh->next_search_offset points to where the next index should be.
@@ -99,6 +115,8 @@ const wom_index_entry_t* wom_get_next_article(wom_file_t* womh)
 			if (idx->offset_into_articles == END_OF_INDEX_PAGE)
 				break;
 			womh->next_search_offset += 6 + idx->uri_len;
+			DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u).\n",
+				idx->uri_len, idx->abbreviated_uri, idx->uri_len));
 			return idx;
 		}
 		womh->cur_search_page++;
@@ -107,6 +125,7 @@ const wom_index_entry_t* wom_get_next_article(wom_file_t* womh)
 		if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
 		womh->next_search_offset = 0;
 	}
+	DP(DBG_WOM_READER, ("O No more match.\n"));
 	return 0;
 xout:
 	DX();
@@ -122,7 +141,7 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 	FRESULT fr;
 
 	if (!womh) goto xout;
-	DP(DBG_WOM_READER, (MSG_INFO, "O wom\twom_draw() offset_into_articles %u y_start %i lines_to_draw %i\n",
+	DP(DBG_WOM_READER, ("O wom\twom_draw() offset_into_articles %u y_start %i lines_to_draw %i\n",
 		offset_into_articles, y_start_in_article, lines_to_draw));
 	if (f_lseek(&womh->fileh, offset_into_articles) != FR_OK) goto xout;
 	fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);

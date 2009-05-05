@@ -29,6 +29,10 @@
 #include <lcd.h>
 #include <wikireader.h>
 
+#include "msg.h"
+
+#define DBG_GLYPH 0
+
 void render_glyph(int start_x, int start_y, const struct glyph *glyph)
 {
 	int x, y, w, bit = 0;
@@ -119,13 +123,14 @@ static int char_to_glyph(char c)
 int render_string(const int font, int start_x,
 		    int start_y, const char *string, const int text_length)
 {
-	if ((unsigned int) font >= guilib_nr_fonts())
-		return 0;
-
 	int i;
 	int max_height = 0;
-
 	int x = start_x;
+
+	DP(DBG_GLYPH, ("O render_string() font %i x/y %i/%i string '%.*s' (len %i)\n",
+		font, start_x, start_y, text_length, string, text_length));
+	if ((unsigned int) font >= guilib_nr_fonts())
+		goto xout;
 
 	for (i = 0; i < text_length; ++i) {
 		const struct glyph *glyph = get_glyph(font,
@@ -139,6 +144,9 @@ int render_string(const int font, int start_x,
 		if (glyph->height > max_height)
 		    max_height = glyph->height;
 	}
-
+	DP(DBG_GLYPH, ("O render_string() max_height %i\n", max_height));
 	return max_height;
+xout:
+	DX();
+	return 0;
 }

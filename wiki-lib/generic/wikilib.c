@@ -58,9 +58,22 @@ static int display_mode = DISPLAY_MODE_INDEX;
 static char s_current_search_str[256];
 static size_t s_current_search_len = 0;
 static wom_file_t * s_womh = 0;
-static wom_index_entry_t* s_cur_selected_search_idx = 0;
+static const wom_index_entry_t* s_cur_selected_search_idx = 0;
 
 #endif
+
+// tbd: needs better location, just parked here for now
+void debug_printf(const char* fmt, ...)
+{
+	va_list arg_list;
+	va_start(arg_list, fmt);
+#ifdef __c33
+	vuprintf(print_char, fmt, arg_list);
+#else
+	vprintf(fmt, arg_list);
+#endif
+	va_end(arg_list);
+}
 
 static void repaint_search(void)
 {
@@ -163,10 +176,11 @@ static void open_article(const char* target, int mode)
 	}
 #else
 	if (s_cur_selected_search_idx) {
-		DP(DBG_WL, (MSG_INFO, "O open_article() '%.*s'\n", s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri));
+		DP(DBG_WL, ("O open_article() '%.*s'\n", s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri));
 		wom_draw(s_womh, s_cur_selected_search_idx->offset_into_articles,
 			framebuffer, 0 /* y_start_in_article */, 208 /* lines_to_draw */);
-	}
+	} else
+		print_article_error();
 #endif
 }
 
@@ -329,8 +343,13 @@ static void handle_touch(struct wl_input_event *ev)
 int wikilib_init (void)
 {
 #ifdef WOM_ON
+#ifdef __c33
+	// tbd: name more than 8.3 could not be found
+	s_womh = wom_open("wiki.dat");
+#else
 	// tbd: where is the current directory for the simulator? -> '/' should not be necessary
-	s_womh = wom_open("/home/user/wikipediardware/host-tools/wom-creator/wikipedia.dat");
+	s_womh = wom_open("/home/user/wikipediardware/host-tools/wom-creator/wiki.dat");
+#endif
 #endif
 	return 0;
 }

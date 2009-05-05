@@ -38,7 +38,7 @@ int serial_input_char(void)
 	do {						\
 	} while (0 == (REG_EFSIF0_STATUS & TDBEx))
 
-void print_char(const char c)
+int print_char(int c)
 {
 	if (c == '\n') {
 		WAIT_FOR_EFSIF0_RDY();
@@ -46,6 +46,7 @@ void print_char(const char c)
 	}
 	WAIT_FOR_EFSIF0_RDY();
 	REG_EFSIF0_TXD = c;
+	return 0;
 }
 
 void print(const char *txt)

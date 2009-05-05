@@ -20,6 +20,7 @@
  */
 
 #include <msg.h>
+#include "misc.h"
 #define hex_print(p) msg(MSG_INFO, "%s\n", p)
 
 static char nibble[] = {
@@ -72,7 +73,6 @@ void hexdump(const char *p, unsigned int len)
 			line[(wordlen * 2) + 53 + i] =
 				(v >= ' ' && v <= '~') ? v : '.';
 		}
-
 		hex_print(line);
 	}
 }

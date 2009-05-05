@@ -38,7 +38,7 @@ static int read_block(int fd, struct wl_file *fp)
 {
 	int r;
 	r = _wl_read(fd, fp->block, BLOCK_SIZE);
-	DP(DBG_FILEIO, (MSG_INFO, "O read_block() r %i\n", r));
+	DP(DBG_FILEIO, ("O read_block() r %i\n", r));
 	if (r < 0)
 		return r;
 	fp->bytes_read = r;
@@ -54,7 +54,7 @@ int wl_read(int fd, void *buf, unsigned int count)
 	struct wl_file *fp = file_list + fd;
 	char *bufp = (char *) buf;
 
-	DP(DBG_FILEIO, (MSG_INFO, "O wl_read() fd %i count %u\n", fd, count));
+	DP(DBG_FILEIO, ("O wl_read() fd %i count %u\n", fd, count));
 	while (left) {
 		int r;
 
@@ -68,7 +68,7 @@ int wl_read(int fd, void *buf, unsigned int count)
 			/* read directly into buf */
 			r = _wl_read(fd, bufp, BLOCK_SIZE);
 			if (r < 0) {
-				DP(DBG_FILEIO, (MSG_INFO, "O wl_read() return %i\n", r));
+				DP(DBG_FILEIO, ("O wl_read() return %i\n", r));
 				return r;
 			}
 			left -= r;
@@ -79,12 +79,12 @@ int wl_read(int fd, void *buf, unsigned int count)
 			if (fp->eof)
 				break;
 			if ((r = read_block(fd, fp))) {
-				DP(DBG_FILEIO, (MSG_INFO, "O wl_read() return %i\n", r));
+				DP(DBG_FILEIO, ("O wl_read() return %i\n", r));
 				return r;
 			}
 		}
 	}
-	DP(DBG_FILEIO, (MSG_INFO, "O wl_read() return %i\n", count - left));
+	DP(DBG_FILEIO, ("O wl_read() return %i\n", count - left));
 	return count - left;
 }
 
@@ -94,7 +94,7 @@ int wl_seek(int fd, unsigned int pos)
 	struct wl_file *fp = file_list + fd;
 	unsigned int l_offset = pos & ~BLOCK_ALIGNMENT;
 
-	DP(DBG_FILEIO, (MSG_INFO, "O wl_seek() fd %i pos %u\n", fd, pos));
+	DP(DBG_FILEIO, ("O wl_seek() fd %i pos %u\n", fd, pos));
 	if (l_offset + BLOCK_SIZE == fp->l_offset)
 		goto success;
 
