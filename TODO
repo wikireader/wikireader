@@ -1,0 +1,31 @@
+
+Assorted TODO thoughts...
+
+*) up-level gcc compiler
+   EPSON does not want to do it, they say they prefer stability over new features.
+   Sending patches upstream would require copyright transfer to FSF, would need to contact Seiko/EPSON.
+   S1C33 is it's own core (available in 4- to 32-bit variants), so it's quite a few patches...
+
+*) enable C99 in compiler, use C99 types more consistantly
+
+*) C++ support
+
+*) directory reorg
+   ./
+     samo-lib (move all of wiki-lib, gui-lib into this folder)
+       fatfs
+       minilzo
+       mini-libc
+       toppers
+       mahatma
+       mbr
+     host-tools
+       binutils-2.10.1
+       gcc-3.3.2
+       patches
+       e07load
+       .. flash scripts ..
+     wiki-app
+       <current host-tools stuff in subfolders>
+     sample-apps
+     doc
