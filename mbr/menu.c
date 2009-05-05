@@ -21,6 +21,7 @@
 #include "application.h"
 #include "lcd.h"
 #include "eeprom.h"
+#include "wikireader.h"
 
 
 struct guilib_image
@@ -98,8 +99,14 @@ int process(int block, int status)
 	display_image(0x00, 0xff);
 
 	if (0 != status) {
+		print("\nCPU: ");
 		print_cpu_type();
-		print("\nmenu? ");
+		print("\nBAT: ");
+		print_dec32(get_battery_voltage());
+		print(" mV\nREV: A");
+		print_dec32(board_revision());
+
+		print("\n\nmenu? ");
 		for (i = 0; i <	 20; ++i) {
 			for (k = 0; k < sizeof(spinner); ++k) {
 				delay_us(10000);
@@ -155,9 +162,9 @@ int process(int block, int status)
 	return i;
 }
 
+
 void print_cpu_type(void)
 {
-	print("CPU: ");
 	switch (CORE_ID) {
 	case  CORE_ID_STANDARD:
 		print(CORE_ID_STANDARD_DESC);
@@ -196,5 +203,4 @@ void print_cpu_type(void)
 	print_byte(MODEL_ID);
 	print(" V 0x");
 	print_byte(VERSION_ID);
-	print_char('\n');
 }
