@@ -16,9 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # (de)activate profiling
-#ifndef SIMULATOR 
 PROFILER_ON = -DPROFILER_ON
-#endif
 
 WIKILIBDIR=../wiki-lib/
 GUILIBDIR=../gui-lib/
