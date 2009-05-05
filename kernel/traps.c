@@ -60,6 +60,7 @@ static void unaligned_data_access(void) __attribute__((interrupt_handler));
 void panic(const char *s, const uint32_t *stack)
 {
 	uint32_t *sp = (uint32_t *)((uint32_t)stack & ~3);
+	print_char('\n');
 	print(s);
 	print("\nsp = ");
 	print_u32((uint32_t)stack);
@@ -110,9 +111,19 @@ static void nmi_handler(void)
 	PANIC("Non-maskable interrupt");
 }
 
+static void illegal_irq_handler(void)
+{
+	PANIC("Illegal interrupt");
+}
+
 static void illegal_instruction(void)
 {
 	PANIC("Illegal instruction");
+}
+
+static void unaligned_data_access(void)
+{
+	PANIC("Unaligned data access");
 }
 
 static void serial0_err_irq(void)
@@ -153,10 +164,6 @@ static void kint_irq(void)
 	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
 }
 
-static void unaligned_data_access(void)
-{
-  //serial_out(0, '!');
-}
 
 #define N_TRAPS 108
 typedef void (*irq_callback)(void);
@@ -173,7 +180,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	//   8 *reserved*
 	undef_irq_handler,	//   9 *reserved*
 	undef_irq_handler,	//  10 *reserved*
-	undef_irq_handler,	//  11 Illegal interrupt exception
+	illegal_irq_handler,	//  11 Illegal interrupt exception
 	undef_irq_handler,	//  12 Software exception 0
 	undef_irq_handler,	//  13 Software exception 1
 	undef_irq_handler,	//  14 Software exception 2
