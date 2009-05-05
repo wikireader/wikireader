@@ -21,7 +21,6 @@
 #include "wikireader.h"
 #include "misc.h"
 
-
 int serial_input_available(void) {
 	return (0 != (REG_EFSIF0_STATUS	& RDBFx));
 }
@@ -35,12 +34,9 @@ int serial_input_char(void)
 	return(REG_EFSIF0_RXD);
 }
 
-
 #define WAIT_FOR_EFSIF0_RDY()				\
 	do {						\
 	} while (0 == (REG_EFSIF0_STATUS & TDBEx))
-
-
 
 void print_char(const char c)
 {
@@ -52,7 +48,6 @@ void print_char(const char c)
 	REG_EFSIF0_TXD = c;
 }
 
-
 void print(const char *txt)
 {
 	while (txt && *txt) {
@@ -60,7 +55,7 @@ void print(const char *txt)
 	}
 }
 
-static void print_nibble(u8 nib)
+static void print_nibble(uint8_t nib)
 {
 	nib &= 0x0f;
 	if (nib >= 10)
@@ -69,13 +64,13 @@ static void print_nibble(u8 nib)
 		print_char(nib + '0');
 }
 
-void print_byte(u8 byte)
+void print_byte(uint8_t byte)
 {
 	print_nibble(byte >> 4);
 	print_nibble(byte);
 }
 
-void hex_dump(const u8 *buf, u32 size)
+void hex_dump(const uint8_t *buf, uint32_t size)
 {
 	int i, l;
 	char a[2] = "X";
@@ -112,7 +107,7 @@ void hex_dump(const u8 *buf, u32 size)
 	}
 }
 
-void print_u32(u32 val)
+void print_u32(uint32_t val)
 {
 	print("0x");
 	print_byte(val >> 24);
@@ -121,8 +116,7 @@ void print_u32(u32 val)
 	print_byte(val);
 }
 
-
-void print_dec32(u32 value)
+void print_dec32(uint32_t value)
 {
 	char c[33];
 	int i;
@@ -137,8 +131,7 @@ void print_dec32(u32 value)
 	print(&c[i]);
 }
 
-
-void delay(u32 nops)
+void delay(uint32_t nops)
 {
 	while (nops--)
 		asm volatile ("nop");
@@ -158,78 +151,3 @@ void delay_us(unsigned int microsec)
 			);
 	}
 }
-
-#if 0
-void printf(const char *fmt, ...)       /* format to be printed */
-{
-  int c;                                        /* next character in fmt */
-  int d;
-  unsigned long u;                              /* hold number argument */
-  int base;                                     /* base of number arg */
-  int negative;                                 /* print minus sign */
-  static char x2c[] = "0123456789ABCDEF";       /* nr conversion table */
-  char ascii[8 * sizeof(long) / 3 + 2];         /* string for ascii number */
-  char *s;                                      /* string to be printed */
-  va_list argp;                                 /* optional arguments */
-
-  va_start(argp, fmt);                          /* init variable arguments */
-
-  while((c=*fmt++) != 0) {
-
-      if (c == '%') {                           /* expect format '%key' */
-	  negative = 0;                         /* (re)initialize */
-	  s = NULL;                             /* (re)initialize */
-	  switch(c = *fmt++) {                  /* determine what to do */
-
-	  /* Known keys are %d, %u, %x, %s, and %%. This is easily extended
-	   * with number types like %b and %o by providing a different base.
-	   * Number type keys don't set a string to 's', but use the general
-	   * conversion after the switch statement.
-	   */
-	  case 'd':                             /* output decimal */
-	      d = va_arg(argp, signed int);
-	      if (d < 0) { negative = 1; u = -d; }  else { u = d; }
-	      base = 10;
-	      break;
-	  case 'u':                             /* output unsigned long */
-	      u = va_arg(argp, unsigned long);
-	      base = 10;
-	      break;
-	  case 'x':                             /* output hexadecimal */
-	      u = va_arg(argp, unsigned long);
-	      base = 0x10;
-	      break;
-	  case 's':                             /* output string */
-	      s = va_arg(argp, char *);
-	      if (s == NULL) s = "(null)";
-	      break;
-	  case '%':                             /* output percent */
-	      s = "%";
-	      break;
-
-	  /* Unrecognized key. */
-	  default:                              /* echo back %key */
-	      s = "%?";
-	      s[1] = c;                         /* set unknown key */
-	  }
-
-	  /* Assume a number if no string is set. Convert to ascii. */
-	  if (s == NULL) {
-	      s = ascii + sizeof(ascii)-1;
-	      *s = 0;
-	      do {  *--s = x2c[(u % base)]; }   /* work backwards */
-	      while ((u /= base) > 0);
-	  }
-
-	  /* This is where the actual output for format "%key" is done. */
-	  if (negative) kputc('-');             /* print sign if negative */
-	  while(*s != 0) { kputc(*s++); }       /* print string/ number */
-      }
-      else {
-	  kputc(c);                             /* print and continue */
-      }
-  }
-  va_end(argp);                                 /* end variable arguments */
-}
-#endif
-
