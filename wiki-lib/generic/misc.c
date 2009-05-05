@@ -130,13 +130,13 @@ void delay(u32 nops)
 void delay_us(unsigned int microsec)
 {
 	while (microsec--) {
-		//asm volatile("nop");
 		// at 48 MHz this should take 1 micro second
 		asm volatile (
-			"\tld.w\t%r4,12\n"
+			"\tld.w\t%r4, 6\n"
 			"delay_loop:\n"
 			"\tnop\n"
-			"\tsub\t%r4,1\n"
+			"\tnop\n"
+			"\tsub\t%r4, 1\n"
 			"\tjrne\tdelay_loop"
 			);
 	}
@@ -160,56 +160,56 @@ void printf(const char *fmt, ...)       /* format to be printed */
   while((c=*fmt++) != 0) {
 
       if (c == '%') {                           /* expect format '%key' */
-          negative = 0;                         /* (re)initialize */
-          s = NULL;                             /* (re)initialize */
-          switch(c = *fmt++) {                  /* determine what to do */
+	  negative = 0;                         /* (re)initialize */
+	  s = NULL;                             /* (re)initialize */
+	  switch(c = *fmt++) {                  /* determine what to do */
 
-          /* Known keys are %d, %u, %x, %s, and %%. This is easily extended
-           * with number types like %b and %o by providing a different base.
-           * Number type keys don't set a string to 's', but use the general
-           * conversion after the switch statement.
-           */
-          case 'd':                             /* output decimal */
-              d = va_arg(argp, signed int);
-              if (d < 0) { negative = 1; u = -d; }  else { u = d; }
-              base = 10;
-              break;
-          case 'u':                             /* output unsigned long */
-              u = va_arg(argp, unsigned long);
-              base = 10;
-              break;
-          case 'x':                             /* output hexadecimal */
-              u = va_arg(argp, unsigned long);
-              base = 0x10;
-              break;
-          case 's':                             /* output string */
-              s = va_arg(argp, char *);
-              if (s == NULL) s = "(null)";
-              break;
-          case '%':                             /* output percent */
-              s = "%";
-              break;
+	  /* Known keys are %d, %u, %x, %s, and %%. This is easily extended
+	   * with number types like %b and %o by providing a different base.
+	   * Number type keys don't set a string to 's', but use the general
+	   * conversion after the switch statement.
+	   */
+	  case 'd':                             /* output decimal */
+	      d = va_arg(argp, signed int);
+	      if (d < 0) { negative = 1; u = -d; }  else { u = d; }
+	      base = 10;
+	      break;
+	  case 'u':                             /* output unsigned long */
+	      u = va_arg(argp, unsigned long);
+	      base = 10;
+	      break;
+	  case 'x':                             /* output hexadecimal */
+	      u = va_arg(argp, unsigned long);
+	      base = 0x10;
+	      break;
+	  case 's':                             /* output string */
+	      s = va_arg(argp, char *);
+	      if (s == NULL) s = "(null)";
+	      break;
+	  case '%':                             /* output percent */
+	      s = "%";
+	      break;
 
-          /* Unrecognized key. */
-          default:                              /* echo back %key */
-              s = "%?";
-              s[1] = c;                         /* set unknown key */
-          }
+	  /* Unrecognized key. */
+	  default:                              /* echo back %key */
+	      s = "%?";
+	      s[1] = c;                         /* set unknown key */
+	  }
 
-          /* Assume a number if no string is set. Convert to ascii. */
-          if (s == NULL) {
-              s = ascii + sizeof(ascii)-1;
-              *s = 0;
-              do {  *--s = x2c[(u % base)]; }   /* work backwards */
-              while ((u /= base) > 0);
-          }
+	  /* Assume a number if no string is set. Convert to ascii. */
+	  if (s == NULL) {
+	      s = ascii + sizeof(ascii)-1;
+	      *s = 0;
+	      do {  *--s = x2c[(u % base)]; }   /* work backwards */
+	      while ((u /= base) > 0);
+	  }
 
-          /* This is where the actual output for format "%key" is done. */
-          if (negative) kputc('-');             /* print sign if negative */
-          while(*s != 0) { kputc(*s++); }       /* print string/ number */
+	  /* This is where the actual output for format "%key" is done. */
+	  if (negative) kputc('-');             /* print sign if negative */
+	  while(*s != 0) { kputc(*s++); }       /* print string/ number */
       }
       else {
-          kputc(c);                             /* print and continue */
+	  kputc(c);                             /* print and continue */
       }
   }
   va_end(argp);                                 /* end variable arguments */
