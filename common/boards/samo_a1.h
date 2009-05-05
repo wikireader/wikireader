@@ -5,6 +5,13 @@
 //#define DISPLAY_INVERTED 	1
 #define EEPROM_PM25LV512	1
 
+
+static inline int board_revision(void)
+{
+	return (REG_PA_DATA & 0x07) + 1;
+}
+
+
 // The ports are:
 //   P32 = SD_CARD_VCCEN  active low
 //   P33 = SD_CARD_PWR	  active high

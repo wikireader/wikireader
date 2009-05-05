@@ -4,6 +4,11 @@
 #define DISPLAY_INVERTED	1
 #define EEPROM_SST25VF040	1
 
+static inline int board_revision(void)
+{
+	return 2;
+}
+
 /* this is the board support file for caiaq's 2nd prototype */
 
 static inline void init_pins(void)

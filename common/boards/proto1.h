@@ -4,6 +4,12 @@
 #define DISPLAY_INVERTED	1
 #define EEPROM_SST25VF040	1
 
+static inline int board_revision(void)
+{
+	return 1;
+}
+
+
 static inline void init_pins(void)
 {
 #if 0 // not enough space for adding this
