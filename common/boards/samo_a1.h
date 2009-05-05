@@ -71,7 +71,8 @@ static inline unsigned char get_key_state(void)
 
 static inline void init_pins(void)
 {
-#if 0 // not enough space for adding this
+#if 1
+	// not enough space for adding this
 	// A low on pin P63 shuts down the power supply - so try
 	// to keep it high, without any glitched or we will power down
 	// immediately.
@@ -111,10 +112,14 @@ static inline void init_pins(void)
 	REG_P5_P5D = 0x07;  // all cs lines high
 	REG_P5_IOC5 = 0x07;
 
+
+	REG_INT_FK01_FP03 = 0x3f; // clear outstanding interrupts
+#if _not_used_
 	/* set FPT1 to another gpio, make it falling edge triggered */
 	REG_PINTSEL_SPT03 |= 0xC;
 	REG_PINTEL_SEPT07 |= 0x2;
 	REG_PINTPOL_SPP07 &= ~0x2;
+#endif
 }
 
 
