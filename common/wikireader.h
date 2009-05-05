@@ -46,7 +46,7 @@
 
 // include the board specific macros and functions
 
-#if BOARD_S1C33E07
+#if BOARD_S1C33E07 || SIMULATOR
 #include "boards/s1c33e07.h"
 #elif BOARD_PROTO1
 #include "boards/proto1.h"
