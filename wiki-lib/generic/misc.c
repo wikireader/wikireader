@@ -70,10 +70,11 @@ void print_byte(uint8_t byte)
 	print_nibble(byte);
 }
 
-void hex_dump(const uint8_t *buf, uint32_t size)
+void hex_dump(const void *buffer, uint32_t size)
 {
 	int i, l;
 	char a[2] = "X";
+	const uint8_t *buf = (const uint8_t *)buffer;
 
 	for (l = 0; l < size; l += 16) {
 		print_byte(l >> 24);
@@ -131,7 +132,7 @@ void print_dec32(uint32_t value)
 	print(&c[i]);
 }
 
-void delay(uint32_t nops)
+void delay(unsigned int nops)
 {
 	while (nops--)
 		asm volatile ("nop");
