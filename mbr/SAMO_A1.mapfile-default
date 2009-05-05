@@ -23,5 +23,5 @@
 0xc000  hello.header
 0xc300  hello
 
-#0xe000  <other>.header
-#0xe300  <other>
+0xe000  rs232-loader.header
+0xe300  rs232-loader
