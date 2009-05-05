@@ -121,6 +121,23 @@ void print_u32(u32 val)
 	print_byte(val);
 }
 
+
+void print_dec32(u32 value)
+{
+	char c[33];
+	int i;
+
+	c[sizeof(c) - 1] = '\0';
+	for (i = sizeof(c) - 2; i >= 0; --i) {
+		c[i] = value % 10 + '0';
+		value /= 10;
+	}
+	for (i = 0; '0' == c[i] && i < sizeof(c) - 2; ++i) {
+	}
+	print(&c[i]);
+}
+
+
 void delay(u32 nops)
 {
 	while (nops--)

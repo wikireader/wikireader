@@ -9,6 +9,9 @@ int serial_input_char(void);
 void print_char(char c);
 void print(const char *txt);
 
+// decimal output
+void print_dec32(u32 value);
+
 // hexadecimal output
 void hex_dump(const u8 *buf, u32 size);
 void print_byte(u8 val);
