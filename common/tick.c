@@ -94,7 +94,7 @@ void tick_initialise()
 		0;
 
 	// Set count
-	REG_T16_CR0A = 32768;
+	REG_T16_CR0A = 0;
 	REG_T16_CR0B = 65535;
 
 	// Reset
@@ -128,7 +128,7 @@ void tick_initialise()
 		0;
 
 	// Set count
-	REG_T16_CR2A = 32768;
+	REG_T16_CR2A = 0;
 	REG_T16_CR2B = 65535;
 
 	// Reset
