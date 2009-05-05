@@ -18,7 +18,7 @@
 # (de)activate profiling
 #ifndef SIMULATOR 
 PROFILER_ON = -DPROFILER_ON
-#ednif
+#endif
 
 WIKILIBDIR=../wiki-lib/
 GUILIBDIR=../gui-lib/
