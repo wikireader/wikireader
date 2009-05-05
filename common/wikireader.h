@@ -89,16 +89,16 @@ static inline void init_rs232_ch1(void)
 	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
 }
 
-#ifdef INCLUDED_FROM_KERNEL
+#if      1 //def INCLUDED_FROM_KERNEL
 #if BOARD_PROTO2 || BOARD_SAMO_A1
 
-#define ADC_FULL_SCALE	1023
-#define VADC_DIVISOR 100
+#define ADC_FULL_SCALE	1024
+#define VADC_DIVISOR 128
 
 #define VADC_MULTIPLIER (VADC_DIVISOR * (ADC_SERIES_RESISTOR_K + ADC_SHUNT_RESISTOR_K) / ADC_SHUNT_RESISTOR_K)
 
 /* returns the battery voltage, in mV */
-int get_battery_voltage(void)
+static inline int get_battery_voltage(void)
 {
 	unsigned int val;
 
