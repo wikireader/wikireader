@@ -43,8 +43,12 @@ static FATFS fatfs;
 
 int main(void)
 {
-	/* set the default data pointer */
-	asm volatile ("xld.w   %r15, __dp");
+	/* set the initial stack and data pointers */
+	asm volatile (
+		"\txld.w\t%r15, __MAIN_STACK\n"
+		"\tld.w\t%sp, %r15\n"
+		"\txld.w\t%r15, __dp\n"
+		);
 
 	/* machine-specific init */
 	gpio_init();
@@ -52,7 +56,7 @@ int main(void)
 	msg_init();
 
 	touchscreen_init();
-        msg(MSG_INFO, "Starting\n");
+	msg(MSG_INFO, "Starting\n");
 
 	fb_init();
 

@@ -23,6 +23,7 @@
 #include "traps.h"
 #include "serial.h"
 #include "irq.h"
+#include "misc.h"
 #include "gpio.h"
 #include "touchscreen.h"
 
@@ -56,13 +57,62 @@ static void kint_irq(void) __attribute__((interrupt_handler));
 static void unaligned_data_access(void) __attribute__((interrupt_handler));
 
 
+void panic(const char *s, const uint32_t *stack)
+{
+	uint32_t *sp = (uint32_t *)((uint32_t)stack & ~3);
+	print(s);
+	print("\nsp = ");
+	print_u32((uint32_t)stack);
+	print_char('\n');
+
+	{
+		register unsigned int i = 0;
+		register unsigned int j = 0;
+		register unsigned int p = 0;
+		for (i = 0; i < 8; ++i) {
+			print("sp[");
+			print_dec32(p);
+			print("] = ");
+			for (j = 0; j < 4; ++j) {
+				print_u32(sp[p++]);
+				print_char(' ');
+			}
+			print_char('\n');
+		}
+	}
+
+	hex_dump(stack, 256);
+
+	for (;;) {
+	}
+}
+
+#define PANIC(str)                                              \
+	do {                                                    \
+		asm volatile(                                   \
+			"\txld.w\t%%r6, %0\n"                   \
+			"\tld.w\t%%r7, %%sp\n"                  \
+			"\txld.w\t%%r4, __PANIC_STACK\n"        \
+			"\tld.w\t%%sp, %%r4\n"                  \
+			"\txcall\tpanic\n"                      \
+			:                                       \
+			: "i"((str))                            \
+			);                                      \
+	} while (0)
+
 static void undef_irq_handler(void)
 {
+	PANIC("Undefined interrupt");
+}
+
+static void nmi_handler(void)
+{
+	PANIC("Non-maskable interrupt");
 }
 
 static void illegal_instruction(void)
 {
-  //serial_out(0, '?');
+	PANIC("Illegal instruction");
 }
 
 static void serial0_err_irq(void)
@@ -119,7 +169,7 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	//   4 *reserved*
 	undef_irq_handler,	//   5 *reserved*
 	unaligned_data_access,	//   6 Address misaligned exception
-	undef_irq_handler,	//   7 NMI
+	nmi_handler,		//   7 NMI
 	undef_irq_handler,	//   8 *reserved*
 	undef_irq_handler,	//   9 *reserved*
 	undef_irq_handler,	//  10 *reserved*
