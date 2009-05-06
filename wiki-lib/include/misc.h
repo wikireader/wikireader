@@ -3,18 +3,18 @@
 
 #include <inttypes.h>
 
-inline uint16_t __swab16(uint16_t x)
+static inline uint16_t __swab16(uint16_t x)
 {
 	return (((x & 0x00ffU) << 8) |
-            ((x & 0xff00U) >> 8));
+	    ((x & 0xff00U) >> 8));
 }
 
-inline uint32_t __swab32(uint32_t x)
+static inline uint32_t __swab32(uint32_t x)
 {
 	return (((x & 0x000000ffUL) << 24) |
-            ((x & 0x0000ff00UL) << 8) |
-            ((x & 0x00ff0000UL) >> 8) |
-            ((x & 0xff000000UL) >> 24));
+	    ((x & 0x0000ff00UL) << 8) |
+	    ((x & 0x00ff0000UL) >> 8) |
+	    ((x & 0xff000000UL) >> 24));
 }
 
 #define __be32_to_cpu(x) __swab32((uint32_t)(x))

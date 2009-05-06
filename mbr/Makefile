@@ -52,7 +52,7 @@ mbr: mbr.elf
 	$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \
-	[ "$${c}" -le 512 ] || $(RM) $@ && exit 1
+	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
 
 mbr-rs232: SAMO_A1.mapfile-rs232 mbr
 	cp SAMO_A1.mapfile-rs232 $(FLASH_ROM_MAP_FILE)
