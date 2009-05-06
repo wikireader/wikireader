@@ -45,17 +45,21 @@ typedef struct wom_header
 	// FAT cluster chain for the large articles area will be slow.
 } wom_header_t;
 
-// -> index section == .jmp & .idx file
-#define END_OF_INDEX_PAGE 0xFFFFFFFF
+//
+// tbd: whole index section should be replaced by .jmp & .idx system
+//
 
-typedef struct wom_index_entry
-{
-	uint32_t offset_into_articles; // may be END_OF_INDEX_PAGE to signal that no more indices are coming on this page
-	int16_t uri_len; // an index must fit into 1 page, i.e. uri_len <= WOM_PAGE_SIZE-6
-	// Full URI would be:	http://en.wikipedia.org/wiki/Time_t
-	// Abbreviated:		en/Time_t
-	char abbreviated_uri[]; // not zero terminated, use uri_len instead
-} wom_index_entry_t;
+#define END_OF_INDEX_PAGE 0xFFFFFFFF
+// may be END_OF_INDEX_PAGE to signal that no more indices are coming on this page
+#define WOM_INDEX_OFF_INTO_ARTICLE	0
+
+// signed 16-bit value, an index must fit into 1 page, i.e. uri_len <= WOM_PAGE_SIZE-6
+#define WOM_INDEX_URI_LEN		4
+
+// Full URI would be:	http://en.wikipedia.org/wiki/Time_t
+// Abbreviated:		en/Time_t
+// UTF-8, not zero terminated, use uri_len instead
+#define WOM_INDEX_ABBREVIATED_URI	6
 
 typedef struct wom_bitmap
 {

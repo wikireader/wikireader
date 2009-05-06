@@ -36,7 +36,7 @@
 #include <profile.h>
 #include "wom_reader.h"
 
-// #define WOM_ON
+#define WOM_ON
 #define DBG_WL 0
 
 enum display_mode_e {
@@ -58,7 +58,7 @@ static int display_mode = DISPLAY_MODE_INDEX;
 static char s_current_search_str[256];
 static size_t s_current_search_len = 0;
 static wom_file_t * s_womh = 0;
-static const wom_index_entry_t* s_cur_selected_search_idx = 0;
+static const wom_article_index_t* s_cur_selected_search_idx = 0;
 
 #endif
 
@@ -190,7 +190,7 @@ static void open_article(const char* target, int mode)
 
 static void handle_search_key(char keycode)
 {
-	const wom_index_entry_t* idx;
+	const wom_article_index_t* idx;
 	int num_results;
 
 	msg(MSG_INFO, "O ui\thandle_search_key() key %xh ('%c')\n", keycode, keycode);

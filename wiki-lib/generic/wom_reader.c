@@ -20,10 +20,12 @@
 
 struct wom_file
 {
-	FIL fileh;
+	// sort for better alignment
 	uint8_t page_buffer[WOM_PAGE_SIZE];
-	wom_header_t hdr;
 	uint32_t cur_search_page, next_search_offset;
+	wom_article_index_t article_idx;
+	FIL fileh;
+	wom_header_t hdr;
 };
 
 wom_file_t* wom_open(const char* filename)
@@ -34,6 +36,7 @@ wom_file_t* wom_open(const char* filename)
 
 	womh = (wom_file_t*) malloc(sizeof(*womh));
 	if (!womh) goto xout;
+	memset(womh, 0, sizeof(*womh));
 	fr = f_open(&womh->fileh, filename, FA_READ);
 	if (fr != FR_OK) {
 		DP(1, ("X wom\tf_open() '%s' failed with code %d\n", filename, fr));
@@ -44,8 +47,7 @@ wom_file_t* wom_open(const char* filename)
 		DP(1, ("X wom\tf_read() %i bytes failed, code %d / num_read %i\n", sizeof(womh->hdr), fr, num_read));
 		goto xout_fileh;
 	}
-//hex_dump((char*) &womh->hdr, sizeof(womh->hdr));
-	
+
 	DP(DBG_WOM_READER, ("O wom\twom_open() '%s' succeeded.\n", filename));
 	return womh;
 
@@ -65,11 +67,10 @@ void wom_close(wom_file_t* womh)
 	free(womh);
 }
 
-const wom_index_entry_t* wom_find_article(wom_file_t* womh, const char* search_string, size_t search_str_len)
+const wom_article_index_t* wom_find_article(wom_file_t* womh, const char* search_string, size_t search_str_len)
 {
-	wom_index_entry_t* idx;
-	FRESULT fr;
 	UINT num_read;
+	FRESULT fr;
 
 	DP(DBG_WOM_READER, ("O wom_find_article('%.*s')\n", search_str_len, search_string));
 	if (!womh) goto xout;
@@ -78,17 +79,22 @@ const wom_index_entry_t* wom_find_article(wom_file_t* womh, const char* search_s
 		if (f_lseek(&womh->fileh, womh->cur_search_page * WOM_PAGE_SIZE) != FR_OK) goto xout;
 		fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
 		if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
-//hex_dump((char*) womh->page_buffer, WOM_PAGE_SIZE);
 		womh->next_search_offset = 0;
 		while (womh->next_search_offset <= WOM_PAGE_SIZE-6) {
-			idx = (wom_index_entry_t*) &womh->page_buffer[womh->next_search_offset];
-			if (idx->offset_into_articles == END_OF_INDEX_PAGE)
+			womh->article_idx.offset_into_articles = __get_unaligned_4(
+				&womh->page_buffer[womh->next_search_offset + WOM_INDEX_OFF_INTO_ARTICLE]);
+			womh->article_idx.uri_len = __get_unaligned_2(
+				&womh->page_buffer[womh->next_search_offset + WOM_INDEX_URI_LEN]);
+			womh->article_idx.abbreviated_uri = &womh->page_buffer[womh->next_search_offset + WOM_INDEX_ABBREVIATED_URI];
+
+			if (womh->article_idx.offset_into_articles == END_OF_INDEX_PAGE)
 				break;
-			womh->next_search_offset += 6 + idx->uri_len;
-			if (!strncasecmp(idx->abbreviated_uri, search_string, min(idx->uri_len, search_str_len))) {
-				DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u).\n",
-					idx->uri_len, idx->abbreviated_uri, idx->uri_len));
-				return idx;
+			womh->next_search_offset += 6 + womh->article_idx.uri_len;
+			if (!strncasecmp(womh->article_idx.abbreviated_uri, search_string, min(womh->article_idx.uri_len, search_str_len))) {
+				DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u) at page %i off %i.\n",
+					womh->article_idx.uri_len, womh->article_idx.abbreviated_uri, womh->article_idx.uri_len,
+					womh->cur_search_page, womh->next_search_offset - 6 - womh->article_idx.uri_len));
+				return &womh->article_idx;
 			}
 		}
 	}
@@ -99,9 +105,8 @@ xout:
 	return 0;
 }
 
-const wom_index_entry_t* wom_get_next_article(wom_file_t* womh)
+const wom_article_index_t* wom_get_next_article(wom_file_t* womh)
 {
-	wom_index_entry_t* idx;
 	UINT num_read;
 	FRESULT fr;
 
@@ -111,13 +116,19 @@ const wom_index_entry_t* wom_get_next_article(wom_file_t* womh)
 	// womh->next_search_offset points to where the next index should be.
 	while (womh->cur_search_page < womh->hdr.index_first_page + womh->hdr.index_num_pages) {
 		while (womh->next_search_offset <= WOM_PAGE_SIZE-6) {
-			idx = (wom_index_entry_t*) &womh->page_buffer[womh->next_search_offset];
-			if (idx->offset_into_articles == END_OF_INDEX_PAGE)
+			womh->article_idx.offset_into_articles = __get_unaligned_4(
+				&womh->page_buffer[womh->next_search_offset + WOM_INDEX_OFF_INTO_ARTICLE]);
+			womh->article_idx.uri_len = __get_unaligned_2(
+				&womh->page_buffer[womh->next_search_offset + WOM_INDEX_URI_LEN]);
+			womh->article_idx.abbreviated_uri = &womh->page_buffer[womh->next_search_offset + WOM_INDEX_ABBREVIATED_URI];
+
+			if (womh->article_idx.offset_into_articles == END_OF_INDEX_PAGE)
 				break;
-			womh->next_search_offset += 6 + idx->uri_len;
-			DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u).\n",
-				idx->uri_len, idx->abbreviated_uri, idx->uri_len));
-			return idx;
+			womh->next_search_offset += 6 + womh->article_idx.uri_len;
+			DP(DBG_WOM_READER, ("O Found '%.*s' (uri_len %u) at page %i off %i.\n",
+				womh->article_idx.uri_len, womh->article_idx.abbreviated_uri, womh->article_idx.uri_len,
+				womh->cur_search_page, womh->next_search_offset - 6 - womh->article_idx.uri_len));
+			return &womh->article_idx;
 		}
 		womh->cur_search_page++;
 		if (f_lseek(&womh->fileh, womh->cur_search_page * WOM_PAGE_SIZE) != FR_OK) goto xout;
@@ -158,7 +169,7 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 		}
 		cur_x += womh->page_buffer[i];
 		cur_y += (int8_t) womh->page_buffer[i+1];
-		bitmap_off = *(uint32_t*)&womh->page_buffer[i+2];
+		bitmap_off = __get_unaligned_4(&womh->page_buffer[i+2]);
 		i+=5;
 
 		if (cur_y >= 190) break;
