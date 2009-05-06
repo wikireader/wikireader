@@ -290,7 +290,8 @@ static void handle_key_release(int keycode)
 				display_mode = DISPLAY_MODE_IMAGE;
 #elif PROFILER_ON
 		} else if (keycode == WL_KEY_HASH) {
-			perf_test();
+			/* activate if you want to run performance tests */
+			/* perf_test(); */
 			prof_print();
 #endif
 		} else {
