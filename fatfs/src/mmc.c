@@ -86,7 +86,7 @@ void delay_us(unsigned int microsec)
 static void rcvr_spi_m(BYTE* dst)
 {
 	REG_SPI_TXD = 0xff;
-	do {} while (REG_SPI_STAT & (1 << 6));
+	do {} while (REG_SPI_STAT & BSYF);
 	*dst = REG_SPI_RXD;
 }
 
@@ -94,7 +94,7 @@ static
 BYTE rcvr_spi (void)
 {
 	REG_SPI_TXD = 0xff;
-	do {} while (REG_SPI_STAT & (1 << 6));
+	do {} while (REG_SPI_STAT & BSYF);
 	return REG_SPI_RXD;
 }
 
@@ -105,7 +105,7 @@ BYTE rcvr_spi (void)
 static void xmit_spi(BYTE dat)
 {
 	REG_SPI_TXD = dat;
-	do {} while (REG_SPI_STAT & (1 << 6));
+	do {} while (REG_SPI_STAT & BSYF);
 }
 
 
@@ -397,7 +397,17 @@ DSTATUS disk_initialize (
 	if (drv) return STA_NOINIT;			/* Supports only single drive */
 //	if (Stat & STA_NODISK) return Stat;		/* No card in the socket */
 
-	REG_SPI_CTL1 = 0x03 | (7 << 10) | (0 << 4);
+	//REG_SPI_CTL1 = 0x03 | (7 << 10) | (0 << 4);
+	REG_SPI_CTL1 =
+		BPT_8_BITS |
+		//CPHA |
+		//CPOL |
+		MCBR_MCLK_DIV_4 |
+		//TXDE |
+		//RXDE |
+		MODE_MASTER |
+		ENA |
+		0;
 
 	turn_on_power();					/* Force socket power on */
 	SELECT();

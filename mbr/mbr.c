@@ -68,8 +68,17 @@ void master_boot(void)
 			init_rs232_ch0();
 			//init_ram(); // but will be too big
 
-			// enable SPI: master mode, no DMA, 8 bit transfers
-			REG_SPI_CTL1 = 0x03 | (7 << 10);
+			// enable SPI
+			REG_SPI_CTL1 =
+				BPT_8_BITS |
+				//CPHA |
+				//CPOL |
+				MCBR_MCLK_DIV_4 |
+				//TXDE |
+				//RXDE |
+				MODE_MASTER |
+				ENA |
+				0;
 
 			//PRINT_CHAR('>');
 			PRINT_CHAR('\r');

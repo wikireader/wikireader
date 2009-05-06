@@ -24,7 +24,7 @@
 static u8 spi_transmit(u8 out)
 {
 	REG_SPI_TXD = out;
-	do {} while (~REG_SPI_STAT & (1 << 2));
+	do {} while (~REG_SPI_STAT & RDFF);
 	return REG_SPI_RXD;
 }
 

@@ -887,5 +887,44 @@
 #define P16TSx_MCLK_DIV_1     (0 << 0)
 
 
+/*
+ * SPI module
+ */
+
+// Bits for: REG_SPI_CTL1
+
+#define BPT_32_BITS        (31 << 10)
+#define BPT_16_BITS        (15 << 10)
+#define BPT_8_BITS         ( 7 << 10)
+#define BPT_1_BITS         ( 0 << 10)
+
+#define CPHA               (1 <<  9)
+#define CPOL               (1 <<  8)
+
+#define MCBR_MCLK_DIV_512  (7 <<  4)
+#define MCBR_MCLK_DIV_256  (6 <<  4)
+#define MCBR_MCLK_DIV_128  (5 <<  4)
+#define MCBR_MCLK_DIV_64   (4 <<  4)
+#define MCBR_MCLK_DIV_32   (3 <<  4)
+#define MCBR_MCLK_DIV_16   (2 <<  4)
+#define MCBR_MCLK_DIV_8    (1 <<  4)
+#define MCBR_MCLK_DIV_4    (0 <<  4)
+
+#define TXDE               (1 <<  3)
+#define RXDE               (1 <<  2)
+
+#define MODE_MASTER        (1 <<  1)
+#define MODE_SLAVE         (0 <<  1)
+
+#define ENA                (1 <<  0)
+
+// Bits for: REG_SPI_STAT
+#define BSYF   (1 << 6)
+#define MFEF   (1 << 5)
+#define TDEF   (1 << 4)
+#define RDOF   (1 << 3)
+#define RDFF   (1 << 2)
+
+
 #endif /* REGS_H */
 

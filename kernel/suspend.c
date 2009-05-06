@@ -269,14 +269,14 @@ void system_suspend(void)
 		//SOSC1 |
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
-
+#if 0
 	{
 		register unsigned int i = 0;
 		for (i = 0; i < 10000; i++) {
 			asm volatile ("nop");
 		}
 	}
-
+#endif
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_GATEDCLK0 =
 		//USBSAPB_CKE |
