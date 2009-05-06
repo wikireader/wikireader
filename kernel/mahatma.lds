@@ -67,4 +67,6 @@ SECTIONS
         __END_heap = __MAIN_STACK_LIMIT & (~ 1023);
         __SIZE_heap = __END_heap - __START_heap;
 
+	__SIZE_kernel = ADDR(.comment) - ADDR(.text);
+
 }
