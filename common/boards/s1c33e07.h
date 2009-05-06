@@ -3,6 +3,11 @@
 
 #define EEPROM_MP45PE80		1
 
+static inline int board_revision(void)
+{
+	return 0;
+}
+
 static inline void init_pins(void)
 {
 #if 0 // not enough space for adding this
