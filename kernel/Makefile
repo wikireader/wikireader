@@ -53,6 +53,9 @@ WIKILIB_COBJS += article.o history.o wom_reader.o
 # minilzo
 MINILZO_COBJS = minilzo.o
 
+# performance
+# PERF_COBJ = perf.o
+
 # convert the keyboard file
 PNM2PLAIN_NAME = pnmtoplainpnm
 PNM2PLAIN_PATH := $(shell which $(PNM2PLAIN_NAME))
@@ -68,8 +71,8 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o perf.o
-OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
+OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 ifeq ($(PNM2PLAIN_PATH),)
 $(error Could not find $(PNM2PLAIN_NAME) - please install netpbm)
