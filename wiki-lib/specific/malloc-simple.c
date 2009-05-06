@@ -2,25 +2,28 @@
 #include <wikilib.h>
 #include <msg.h>
 #include <string.h>
+#include <stdlib.h>
+
+extern uint8_t __START_heap;
+extern uint8_t __END_heap;
 
 /* 512kB RAM size */
-#define MEM_SIZE	(512 * 1024)
-#define RAM_START	(0x10000000)
-#define KERNEL_SIZE	(0x20000)
+#define MEM_SIZE	(&__END_heap - &__START_heap)
+#define RAM_START	(&__START_heap)
 #define PAGE_SIZE 	(512)
 #define MALLOC_DEBUG
 
 /* no user-definable options below this line */
 #define N_PAGES		(MEM_SIZE / PAGE_SIZE)
-#define MALLOC_START	((N_PAGES * sizeof(unsigned char)) + RAM_START + KERNEL_SIZE)
-#define PAGE(n)		((unsigned char *) (MALLOC_START + (n * PAGE_SIZE)))
+#define MALLOC_START	((N_PAGES * sizeof(uint8_t)) + RAM_START)
+#define PAGE(n)		((uint8_t *) (MALLOC_START + (n * PAGE_SIZE)))
 
 #define PAGE_INUSE		(1 << 0)
 #define PAGE_DOMAIN_SHIFT	(4)
 #define PAGE_DOMAIN_MASK	(0xf)
 #define PAGE_DOMAIN(n)		((page_ctrl[n] >> PAGE_DOMAIN_SHIFT) & PAGE_DOMAIN_MASK)
 
-unsigned char *page_ctrl = (unsigned char *) (RAM_START + KERNEL_SIZE);
+uint8_t *page_ctrl = RAM_START;
 
 void malloc_init(void)
 {
@@ -105,13 +108,13 @@ void *malloc(unsigned int size)
 
 void free(void *ptr)
 {
-	unsigned int page;
-	unsigned char domain;
+	uint32_t page;
+	uint8_t domain;
 
-	if (!ptr || (unsigned int) ptr < MALLOC_START)
+	if (!ptr || (uint8_t *)ptr < MALLOC_START)
 		return;
 
-	page = ((unsigned int) ptr - MALLOC_START) / PAGE_SIZE;
+	page = ((uint8_t *)ptr - MALLOC_START) / PAGE_SIZE;
 	if (page > N_PAGES)
 		return;
 
