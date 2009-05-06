@@ -294,6 +294,16 @@ void tick_initialise()
 	// Set count
 	REG_T16_CR1B = 65535;
 
+	// Set PAUSE On
+	REG_T16_CNT_PAUSE =
+		//PAUSE5 |
+		//PAUSE4 |
+		//PAUSE3 |
+		//PAUSE2 |
+		PAUSE1 |
+		PAUSE0 |
+		0;
+
 	// Reset
 	REG_T16_CTL1 |= PRESETx;
 
