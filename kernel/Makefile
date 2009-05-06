@@ -68,7 +68,7 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o perf.o
 OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS)
 
 ifeq ($(PNM2PLAIN_PATH),)

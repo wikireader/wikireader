@@ -27,12 +27,12 @@
 #include <wl-keyboard.h>
 #include <input.h>
 #include <msg.h>
-#include <malloc.h>
 #include <file-io.h>
 #include <search.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <perf.h>
 #include <profile.h>
 #include "wom_reader.h"
 
@@ -290,7 +290,8 @@ static void handle_key_release(int keycode)
 				display_mode = DISPLAY_MODE_IMAGE;
 #elif PROFILER_ON
 		} else if (keycode == WL_KEY_HASH) {
-			prof_demo();
+			perf_test();
+			prof_print();
 #endif
 		} else {
 			handle_search_key(keycode);

@@ -37,6 +37,11 @@ enum {
 	PROF_memcpy,
 	PROF_memcmp,
 	PROF_fread,
+	PROF_sd_read,
+	PROF_sd_cmd,
+	PROF_sd_block,
+	PROF_sd_data,
+	PROF_sd_spi,
 	PROF_COUNT /* keep COUNT the last item */
 };
 
@@ -51,7 +56,12 @@ enum {
 	[PROF_memset]	= "memset  ", \
 	[PROF_memcpy]	= "memcpy  ", \
 	[PROF_memcmp]	= "memcmp  ", \
-	[PROF_fread]	= "fread   ",
+	[PROF_fread]	= "fread   ", \
+	[PROF_sd_read]	= "sd read ", \
+	[PROF_sd_cmd]	= "sd cmd  ", \
+	[PROF_sd_block]	= "sd block", \
+	[PROF_sd_data]	= "sd data ", \
+	[PROF_sd_spi]	= "sd spi  ",
 #endif
 
 struct prof_container {
@@ -59,6 +69,8 @@ struct prof_container {
 	unsigned long total_time;
 	unsigned long calls;
 };
+
+extern struct prof_container prof_container[PROF_COUNT];
 
 void profile_init(void);
 void prof_start(unsigned long index);
