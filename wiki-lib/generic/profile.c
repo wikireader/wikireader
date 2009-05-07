@@ -55,9 +55,9 @@ void prof_stop(unsigned long index)
 	prof_container[index].total_time += tmp_tick - prof_container[index].start_time;
 }
 
-void prof_print(void) {
-
-	unsigned long index;
+void prof_print(void)
+{
+	unsigned long index, count = 0;
 
 	msg(MSG_INFO, "\nProfile data:\n");
 
@@ -66,6 +66,8 @@ void prof_print(void) {
 		if (prof_container[index].calls == 0)
 			continue;
 
+		count++;
+
 		msg(MSG_INFO, "   %s: total cpu time = %u, calls: %u, avg time per call = %u\n",
 			prof_to_string[index],
 			prof_container[index].total_time / MCLK_MHz, prof_container[index].calls,
@@ -73,6 +75,8 @@ void prof_print(void) {
 
 	}
 
+	if (count == 0)
+		msg(MSG_INFO, "   no profile data available\n");
 }
 
 void prof_demo(void)
