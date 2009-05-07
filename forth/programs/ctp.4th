@@ -7,7 +7,8 @@ base @ decimal
 $01 constant RDBFx
 
 
-38400 constant ctp-bps
+\ 38400 constant ctp-bps
+9600 constant ctp-bps
 48000000 constant cpu-clock
 8 constant divmd
 cpu-clock divmd /
@@ -45,8 +46,8 @@ constant ctp-brtrd
 : ctp ( -- )
   ctp-init hex
   begin
-    ctp-get emit
-    \ 3 u.r
+    ctp-get \ emit
+    3 u.r
   enough? until
   decimal
 ;
