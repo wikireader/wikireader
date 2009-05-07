@@ -48,6 +48,7 @@
 #include <string.h>
 #include <file-io.h>
 #include <msg.h>
+#include <malloc-simple.h>
 #include "lsearcher.h"
 
 #ifdef INCLUDE_MAIN
@@ -66,7 +67,7 @@ int check_bigram_char(int ch) {
         return(ch);
 
 #ifdef INCLUDE_MAIN
-    fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",  
+    fatal("locate database header corrupt, bigram char outside 0, %d-%d: %d",
             ASCII_MIN, ASCII_MAX, ch);
     exit(1);
 #else
@@ -111,7 +112,7 @@ void init_index(lindex *l, int db_file, int prefix_file) {
     l->db_start = sizeof(l->bigram1) + sizeof(l->bigram2);
 
     /* trigram init */
-    l->trigram = (uint32_t *)malloc(TRIGRAM_SIZE);
+    l->trigram = (uint32_t *)malloc_simple(TRIGRAM_SIZE, MEM_TAG_INDEX_M1);
     l->trigram_loaded = 0;
     l->offset_i = 0;
     l->offset_read = 0;
@@ -210,7 +211,7 @@ static void scan(lindex *l, char *scan_file) {
     uchar_t *p;
 
     /* don't bother supporting >2gb... an index file that large
-     * would have search times so high as to be useless 
+     * would have search times so high as to be useless
      */
 
     unsigned int i;
@@ -258,7 +259,7 @@ static void scan(lindex *l, char *scan_file) {
                         break; /* SWITCH */
                 }
                 *p++ = c;
-            } else {		
+            } else {
                 /* bigrams are parity-marked */
                 TO7BIT(c);
                 *p++ = l->bigram1[c];
@@ -341,7 +342,7 @@ void usage(char *prog) {
 int main(int argc, char **argv) {
     extern char *optarg;
     char scanFile[MAXSTR], indexFile[MAXSTR], needle[MAXSTR];
-    unsigned char ch; 
+    unsigned char ch;
     bool doScan = false, doSearch = false, haveScanFile = false, twoRuns = false;
     lindex l;
     memset(&l, 0, sizeof(l));
@@ -372,7 +373,7 @@ int main(int argc, char **argv) {
             break;
         case 'h':
         default:
-            usage(argv[0]); 
+            usage(argv[0]);
         }
     }
 

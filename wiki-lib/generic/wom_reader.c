@@ -5,12 +5,13 @@
 //		modify it under the terms of the GNU General Public License
 //		as published by the Free Software Foundation; either version
 //		3 of the License, or (at your option) any later version.
-//           
+//
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <guilib.h>
+#include <malloc-simple.h>
 #include "file-io.h"
 #include "wom_reader.h"
 #include "tff.h"
@@ -34,7 +35,7 @@ wom_file_t* wom_open(const char* filename)
 	UINT num_read;
 	FRESULT fr;
 
-	womh = (wom_file_t*) malloc(sizeof(*womh));
+	womh = (wom_file_t*) malloc_simple(sizeof(*womh), MEM_TAG_WOMR_M1);
 	if (!womh) goto xout;
 	memset(womh, 0, sizeof(*womh));
 	fr = f_open(&womh->fileh, filename, FA_READ);
@@ -54,7 +55,7 @@ wom_file_t* wom_open(const char* filename)
 xout_fileh:
 	f_close(&womh->fileh);
 xout_womh:
-	free(womh);
+	free_simple(womh, MEM_TAG_WOMR_F1);
 xout:
 	DP(1, ("X wom\twom_open() '%s' failed.\n", filename));
 	return 0;
@@ -64,7 +65,7 @@ void wom_close(wom_file_t* womh)
 {
 	if (!womh) return;
 	f_close(&womh->fileh);
-	free(womh);
+	free_simple(womh, MEM_TAG_WOMR_F2);
 }
 
 const wom_article_index_t* wom_find_article(wom_file_t* womh, const char* search_string, size_t search_str_len)

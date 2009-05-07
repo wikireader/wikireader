@@ -20,7 +20,6 @@
 #include <guilib.h>
 #include <wikilib.h>
 #include <input.h>
-#include <malloc.h>
 
 /* local includes */
 #include "serial.h"

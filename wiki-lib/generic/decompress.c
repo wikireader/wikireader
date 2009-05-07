@@ -2,6 +2,7 @@
 #include <file-io.h>
 #include <minilzo.h>
 #include <sys/types.h>
+#include <malloc-simple.h>
 
 void *decompress_block(const int fd, unsigned int in_len, unsigned int *out_size)
 {
@@ -20,11 +21,11 @@ void *decompress_block(const int fd, unsigned int in_len, unsigned int *out_size
     in_len -= r;
 
     /* malloc in_len last because we will free it first */
-    out = malloc(uint32);
+    out = malloc_simple(uint32, MEM_TAG_DECOMP_M1);
     if (!out)
 	goto error_exit;
 
-    in = malloc(in_len);
+    in = malloc_simple(in_len, MEM_TAG_DECOMP_M2);
     if (!in)
 	goto error_exit;
 
@@ -36,16 +37,16 @@ void *decompress_block(const int fd, unsigned int in_len, unsigned int *out_size
     if (r != LZO_E_OK || out_len != uint32)
 	goto error_exit;
 
-    free(in);
+    free_simple(in, MEM_TAG_DECOMP_F3);
     *out_size = out_len;
     return out;
 
 error_exit:
     if (in)
-	free(in);
+	free_simple(in, MEM_TAG_DECOMP_F2);
 
     if (out)
-	free(out);
+	free_simple(out, MEM_TAG_DECOMP_F1);
 
     return NULL;
 }

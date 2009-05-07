@@ -20,7 +20,6 @@
 #include <wikilib.h>
 #include <msg.h>
 #include <file-io.h>
-#include <malloc.h>
 #include <wl-endian.h>
 #include <decompress.h>
 
@@ -54,7 +53,7 @@ int glyph_spacing (struct glyph *first, unsigned short second,
 	struct glyph_spacing *space = (struct glyph_spacing *)
 					(tmp + sizeof(*first) +
 					((first->width * first->height) + 7) / 8);
-	
+
 	for (i = 0; i < first->n_spacing_hints; i++, space++)
 		if (space->next_glyph == second) {
 			*x = space->x;

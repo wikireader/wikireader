@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <decompress.h>
+#include <malloc-simple.h>
 
 /* decompressed article */
 static char *article_data = NULL;
@@ -203,7 +204,7 @@ void article_close(void)
 	current_page_offset = -1;
 
 	if (article_data) {
-		free(article_data);
+		free_simple(article_data, MEM_TAG_ARTICLE_F1);
 		article_data = NULL;
 		article_data_length = 0;
 	}

@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <perf.h>
 #include <profile.h>
+#include <malloc-simple.h>
 #include "wom_reader.h"
 
 #define WOM_ON
@@ -292,6 +293,7 @@ static void handle_key_release(int keycode)
 		} else if (keycode == WL_KEY_HASH) {
 			/* activate if you want to run performance tests */
 			/* perf_test(); */
+			malloc_status_simple();
 			prof_print();
 #endif
 		} else {

@@ -20,7 +20,8 @@
 #include <guilib.h>
 #include <wikilib.h>
 #include <input.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <malloc-simple.h>
 #include <tff.h>
 #include <profile.h>
 
@@ -64,7 +65,7 @@ int main(void)
 	if (f_mount(0, &fatfs) != FR_OK)
 		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
 
-	malloc_init();
+	malloc_init_simple();
 	wikilib_init();
 	guilib_init();
 	profile_init();
