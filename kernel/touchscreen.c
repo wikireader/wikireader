@@ -26,24 +26,20 @@
 #include "touchscreen.h"
 #include "msg-output.h"
 
-#define ASCII_A 				65
-#define ASCII_ALPHA_OFFSET 		55
-#define ASCII_DIGIT_OFFSET 		48
+#define AA_PREFIX  		0xaa
 
 enum parsing_state {
 
 	PARSING_INIT = 0,
-	PARSING_A = 1,
-	PARSING_X = 2,
-	PARSING_Y = 3,
-	PARSING_PRESS = 4,
-	PARSING_LAST = 5
+	PARSING_X = 1,
+	PARSING_Y = 2,
+	PARSING_PRESS = 3,
+	PARSING_LAST = 4
 };
 
 enum parsing_state ctp_event = PARSING_INIT;
 
 static inline void parsing_init_handler(u8 c);
-static inline void parsing_a_handler(u8 c);
 static inline void parsing_x_handler(u8 c);
 static inline void parsing_y_handler(u8 c);
 static inline void parsing_press_handler(u8 c);
@@ -51,27 +47,19 @@ static inline void parsing_press_handler(u8 c);
 static void (*parsing_touch_handling[PARSING_LAST])(u8 c) = {
 
 	&parsing_init_handler,
-	&parsing_a_handler,
 	&parsing_x_handler,
 	&parsing_y_handler,
 	&parsing_press_handler,
 };
 
-u8 x_buffer[4];
-u8 y_buffer[4];
-u8 p_buffer[2];
+u8 x_buffer[2];
+u8 y_buffer[2];
 
 static volatile int touch_state = WL_INPUT_TOUCH_NONE;
 
 static inline void parsing_init_handler(u8 c)
 {
-	if (c == ASCII_A)
-		ctp_event = PARSING_A;
-}
-
-static inline void parsing_a_handler(u8 c)
-{
-	if (c == ASCII_A)
+	if (c == AA_PREFIX)
 		ctp_event = PARSING_X;
 }
 
@@ -79,12 +67,9 @@ static inline void parsing_x_handler(u8 c)
 {
 	static u8 count = 0;
 
-	if (c < ASCII_A)
-		x_buffer[count] = (c - ASCII_DIGIT_OFFSET);
-	else
-		x_buffer[count] = (c - ASCII_ALPHA_OFFSET);
+	x_buffer[count] = c;
 
-	if (count == 3){
+	if (count == 1){
 		ctp_event = PARSING_Y;
 		count = 0;
 	}
@@ -96,12 +81,9 @@ static inline void parsing_y_handler(u8 c)
  {
 	static u8 count = 0;
 
-	if (c < ASCII_A)
-		y_buffer[count] = (c - ASCII_DIGIT_OFFSET);
-	else
-		y_buffer[count] = (c - ASCII_ALPHA_OFFSET);
+	y_buffer[count] = c;
 
-	if (count == 3){
+	if (count == 1){
 		ctp_event = PARSING_PRESS;
 		count = 0;
 	}
@@ -111,24 +93,17 @@ static inline void parsing_y_handler(u8 c)
 
 static inline void parsing_press_handler(u8 c)
 {
-	static u8 count = 0;
-
-	p_buffer[count] = (c - ASCII_DIGIT_OFFSET);
-
-	if (count == 2){
-		touch_state  = p_buffer[1];
-		ctp_event = PARSING_INIT;
-		count = 0;
-	}
-	else
-		count++;
+	touch_state  = c;
+	ctp_event = PARSING_INIT;
 }
 
 static inline int calc_coord(u8 *axis_array)
 {
-	/* resolution is 480 * 408 */
-	return (((axis_array[0] << 12) + (axis_array[1] << 8)
-						+ (axis_array[2] << 4) + axis_array[3]) >> 1);
+	/*
+	 * the output resolution is 480 * 416,
+	 * here we divide 2 as the real resolution
+	 */
+    return (((axis_array[0] << 8) + axis_array[1]) >> 1);
 }
 
 void touchscreen_parsing_packets()
@@ -150,9 +125,6 @@ int touchscreen_get_event(struct wl_input_event *ev)
 		}
 
 		ev->touch_event.value = touch_state;
-		//msg(MSG_DEBUG, "coord: %d, %d, %d\n\r",
-					//ev->touch_event.x, ev->touch_event.y, ev->touch_event.value);
-
 		touch_state = WL_INPUT_TOUCH_NONE;
 		return 1;
 	}
