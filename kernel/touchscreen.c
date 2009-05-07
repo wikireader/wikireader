@@ -24,7 +24,7 @@
 
 #include "wikireader.h"
 #include "touchscreen.h"
-#include "msg-output.h"
+#include "irq.h"
 
 #define AA_PREFIX  		0xaa
 
@@ -136,7 +136,9 @@ void touchscreen_init(void)
 {
 	init_rs232_ch1();
 
+	DISABLE_IRQ();
 	REG_INT_ESIF01 |= ESRX1;
 
 	REG_INT_PSI01_PAD |= SERIAL_CH1_INT_PRI_7;
+	ENABLE_IRQ();
 }

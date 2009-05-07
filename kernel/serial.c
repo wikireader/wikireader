@@ -45,6 +45,7 @@ void serial_init(void)
 {
 	static bool initialised = false;
 	if (!initialised) {
+		DISABLE_IRQ();
 		REG_INT_ESIF01 = ESRX0;
 
 		REG_INT_PLCDC_PSIO0 = 0x70;
@@ -55,6 +56,7 @@ void serial_init(void)
 		linefeed = false;
 
 		initialised = true;
+		ENABLE_IRQ();
 	}
 }
 
@@ -69,7 +71,9 @@ void serial_put(serial_buffer_type *buffer)
 {
 	if (NULL != buffer) {
 		// critical code - disable uart tx interrupts
+		DISABLE_IRQ();
 		REG_INT_ESIF01 &= ~ESTX0;
+		ENABLE_IRQ();
 		buffer->link = NULL;
 		if (NULL != send_queue_tail) {
 			send_queue_tail->link = buffer;
@@ -78,7 +82,9 @@ void serial_put(serial_buffer_type *buffer)
 		if (NULL == send_queue_head) {
 			send_queue_head = send_queue_tail;
 			transmit = send_queue_head->text;
+			DISABLE_IRQ();
 			REG_INT_FSIF01 = FSTX0;
+			ENABLE_IRQ();
 			{
 				u8 c = *transmit++;
 				if ('\n' == c) {
@@ -89,11 +95,14 @@ void serial_put(serial_buffer_type *buffer)
 			}
 
 		}
+		DISABLE_IRQ();
 		REG_INT_ESIF01 |= ESTX0;
+		ENABLE_IRQ();
 	}
 }
 
 
+// in interrupt state
 void serial_drained_0(void)
 {
 	if (!linefeed && '\0' == *transmit) {
@@ -131,6 +140,7 @@ void serial_drained_0(void)
 }
 
 
+// in interrupt state
 void serial_filled_0(void)
 {
 	while (REG_EFSIF0_STATUS & RDBFx) {
