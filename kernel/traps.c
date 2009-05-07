@@ -47,6 +47,7 @@
 
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
 static void illegal_instruction(void) __attribute__((interrupt_handler));
+static void illegal_irq_handler(void) __attribute__((interrupt_handler));
 static void serial0_err_irq(void) __attribute__((interrupt_handler));
 static void serial0_in_irq(void) __attribute__((interrupt_handler));
 static void serial0_out_irq(void) __attribute__((interrupt_handler));
@@ -62,7 +63,7 @@ void panic(const char *s, const uint32_t *stack)
 	uint32_t *sp = (uint32_t *)((uint32_t)stack & ~3);
 	print_char('\n');
 	print(s);
-	print("\nsp = ");
+	print("\nSP  = ");
 	print_u32((uint32_t)stack);
 	print_char('\n');
 
@@ -70,6 +71,26 @@ void panic(const char *s, const uint32_t *stack)
 		register unsigned int i = 0;
 		register unsigned int j = 0;
 		register unsigned int p = 0;
+		for (i = 0; i <= 15; ++i) {
+			print("R");
+			print_dec32(i);
+			if ( i < 10) {
+				print_char(' ');
+			}
+			print(" = ");
+			print_u32(sp[p]);
+			print("  [");
+			print_dec32(sp[p++]);
+			print("]\n");
+		}
+		print("PS");
+		print("  = ");
+		print_u32(sp[p++]);
+		print_char('\n');
+		print("IP");
+		print("  = ");
+		print_u32(sp[p++]);
+		print_char('\n');
 		for (i = 0; i < 8; ++i) {
 			print("sp[");
 			print_dec32(p);
@@ -91,6 +112,7 @@ void panic(const char *s, const uint32_t *stack)
 #define PANIC(str)                                              \
 	do {                                                    \
 		asm volatile(                                   \
+			"\tpushn\t%%r15\n"                      \
 			"\txld.w\t%%r6, %0\n"                   \
 			"\tld.w\t%%r7, %%sp\n"                  \
 			"\txld.w\t%%r4, __PANIC_STACK\n"        \
