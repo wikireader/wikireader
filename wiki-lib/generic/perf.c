@@ -26,9 +26,11 @@
 #include <string.h>
 #include <diskio.h>
 #include <file-io.h>
-#include <msg.h>
 #include <regs.h>
 #include <wikireader.h>
+#include <stdlib.h>
+#include <malloc-simple.h>
+#include <msg.h>
 
 
 #define MB 1024 * 1024
@@ -36,9 +38,30 @@
 
 void perf_test(void)
 {
-	char mem_src[MB], mem_dst[MB], file[MB];
-	int fd, read;
+	char *mem_src = NULL, *mem_dst = NULL, *file = NULL;
+	int fd = -1, read;
 	unsigned int file_size;
+
+	mem_src = malloc_simple(MB, MEM_TAG_PERF_M1);
+	if (!mem_src) {
+		msg(MSG_INFO, "no mem_src: out of mem ?\n");
+		malloc_status_simple();
+		goto out;
+	}
+
+	mem_dst = malloc_simple(MB, MEM_TAG_PERF_M2);
+	if (!mem_dst) {
+		msg(MSG_INFO, "no mem_dst: out of mem ?\n");
+		malloc_status_simple();
+		goto out;
+	}
+
+	file = malloc_simple(MB, MEM_TAG_PERF_M3);
+	if (!file) {
+		msg(MSG_INFO, "no file: out of mem ?\n");
+		malloc_status_simple();
+		goto out;
+	}
 
 	prof_start(PROF_memset);
 	memset(mem_src, 1, MB);
@@ -54,7 +77,7 @@ void perf_test(void)
 
 	prof_start(PROF_sd_read);
 	for (fd = 0; fd < 8; fd++) {
-		read = my_disk_read(0, file + (fd * 512 * 256), fd * 255, 255);
+		read = disk_read(0, file + (fd * 512 * 256), fd * 255, 255);
 
 		if (read != RES_OK) {
 			prof_stop(PROF_sd_read);
@@ -75,7 +98,7 @@ void perf_test(void)
 
 	if (file_size > MB) {
 		msg(MSG_INFO, "Could not read file '8dcec2': file size bigger than %i bytes\n", MB);
-		goto close;
+		goto out;
 	}
 
 	prof_start(PROF_fread);
@@ -84,7 +107,7 @@ void perf_test(void)
 
 	if (read != file_size) {
 		msg(MSG_INFO, "Could not read file '8dcec2': read process aborted after %i bytes\n", read);
-		goto close;
+		goto out;
 	}
 
 	msg(MSG_INFO, "memcpy speed: 1MB/%dms, SD card: 1MB/%dms, fatfs: 1MB/%dms\n",
@@ -95,9 +118,19 @@ void perf_test(void)
 		(prof_container[PROF_fread].calls == 0 ? 0 :
 		((prof_container[PROF_fread].total_time / MCLK_MHz) / prof_container[PROF_fread].calls / (file_size / 100 / KB) / 100)));
 
-close:
-	wl_close(fd);
 out:
+	if (fd)
+		wl_close(fd);
+
+	if (file)
+		free_simple(file, MEM_TAG_PERF_F3);
+
+	if (mem_dst)
+		free_simple(mem_dst, MEM_TAG_PERF_F4);
+
+	if (mem_src)
+		free_simple(mem_src, MEM_TAG_PERF_F5);
+
 	return;
 }
 

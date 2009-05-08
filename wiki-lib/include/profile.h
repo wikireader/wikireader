@@ -42,7 +42,8 @@ enum {
 	PROF_sd_block,
 	PROF_sd_data,
 	PROF_sd_spi,
-	PROF_COUNT /* keep COUNT the last item */
+	PROF_sd_rcvr,
+	PROF_COUNT, /* keep COUNT the last item */
 };
 
 #if PROFILER_ON
@@ -61,7 +62,8 @@ enum {
 	[PROF_sd_cmd]	= "sd cmd  ", \
 	[PROF_sd_block]	= "sd block", \
 	[PROF_sd_data]	= "sd data ", \
-	[PROF_sd_spi]	= "sd spi  ",
+	[PROF_sd_spi]	= "sd spi  ", \
+	[PROF_sd_rcvr]	= "sd rcvr ",
 #endif
 
 struct prof_container {
