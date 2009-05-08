@@ -8,6 +8,7 @@
 //
 
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
 #include <stdio.h>
 #include <guilib.h>

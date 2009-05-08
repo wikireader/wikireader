@@ -1,22 +1,23 @@
-#include <stdlib.h>
+
+#include <inttypes.h>
+#include <malloc-simple.h>
 #include <file-io.h>
 #include <minilzo.h>
-#include <sys/types.h>
-#include <malloc-simple.h>
+
 
 void *decompress_block(const int fd, unsigned int in_len, unsigned int *out_size)
 {
     int r;
     lzo_uint out_len;
     void *in = NULL, *out = NULL;
-    u_int32_t uint32;
+    uint32_t uint32;
 
     if (lzo_init() != LZO_E_OK)
 	return NULL;
 
     /* read the expected out_len */
-    r = wl_read(fd, &uint32, sizeof(u_int32_t));
-    if (r != sizeof(u_int32_t))
+    r = wl_read(fd, &uint32, sizeof(uint32_t));
+    if (r != sizeof(uint32_t))
 	goto error_exit;
     in_len -= r;
 
