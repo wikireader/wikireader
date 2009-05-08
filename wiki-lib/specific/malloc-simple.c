@@ -27,9 +27,15 @@
 #include <msg.h>
 #include <string.h>
 
+extern uint8_t __START_heap;
+extern uint8_t __END_heap;
+
+#define MEM_SIZE	(&__END_heap - &__START_heap)
+#define RAM_START	(&__START_heap)
 
 #define MAGIC_NUMBER	0x12345678
 #define NUM_PAGES	(MEM_SIZE / PAGE_SIZE)
+#define CTRL_PAGE	1
 #define GET_PAGE(curr_page, num_pages)	(((uint8_t *)(curr_page)) + ((num_pages) * PAGE_SIZE))
 
 enum mem_status {
@@ -70,7 +76,7 @@ static struct malloc_page *page_new(struct malloc_page *curr_page, uint32_t need
 	new_page->prev = curr_page;
 
 	/* one more for the malloc control page */
-	new_page->size = curr_page->size - needed_pages - 1;
+	new_page->size = curr_page->size - needed_pages - CTRL_PAGE;
 	curr_page->size = needed_pages;
 
 	return new_page;
@@ -102,7 +108,7 @@ void *malloc_simple(uint32_t size, uint32_t tag)
 			continue;
 
 		/* end of memory reached - out of memory */
-		if ((curr_page->next == NULL) && (curr_page->size < needed_pages + 1))
+		if ((curr_page->next == NULL) && (curr_page->size < needed_pages + CTRL_PAGE))
 			break;
 
 		/* the memory lying ahead has no control structure - we need to create it */
@@ -143,15 +149,17 @@ void free_simple(void *ptr, uint32_t tag)
 	my_page->status = MEM_UNUSED;
 	my_page->free_tag = tag;
 
+// 	msg(MSG_INFO, "PRINT: freeing: alloc tag: %d, free tag %d\n", my_page->alloc_tag, tag);
+
 	/* we may be able to merge larger chunks of free space that follows the current chunk */
 	for (curr_page = my_page->next; curr_page != NULL; curr_page = curr_page->next) {
 		if (curr_page->status != MEM_UNUSED)
 			break;
 
+		my_page->size += curr_page->size + CTRL_PAGE;
+
 		my_page->next = curr_page->next;
 		curr_page->next->prev = my_page;
-
-		my_page->size += curr_page->size + 1;
 	}
 
 	/* merge free space that preceeds the current chunk */
@@ -159,10 +167,11 @@ void free_simple(void *ptr, uint32_t tag)
 		if (curr_page->status != MEM_UNUSED)
 			break;
 
-		curr_page->size += curr_page->next->size + 1;
+		curr_page->size += curr_page->next->size + CTRL_PAGE;
 
-		/* save the alloc_tag from the item that is being deleted now */
+		/* save the tags from the item that is being deleted now */
 		curr_page->alloc_tag = curr_page->next->alloc_tag;
+		curr_page->free_tag = curr_page->next->free_tag;
 
 		curr_page->next = curr_page->next->next;
 		curr_page->next->prev = curr_page;
@@ -189,7 +198,7 @@ void malloc_status_simple(void)
 
 #if MEMORY_DEBUG
 		if (curr_page->magicNumber != MAGIC_NUMBER)
-			msg(MSG_INFO, "MEMORY DEBUG: invalid magic number (%08x) - allocate tag: %d\n", curr_page->magicNumber, curr_page->alloc_tag);
+			msg(MSG_INFO, "MEMORY DEBUG: invalid magic number (%08x - expected %08x) - alloc tag: %d, prev alloc tag: %d\n", curr_page->magicNumber, MAGIC_NUMBER, curr_page->alloc_tag, (curr_page->prev != NULL ? curr_page->prev->alloc_tag : 0));
 
 		if (curr_page->status == MEM_INUSE)
 			msg(MSG_INFO, "MEMORY DEBUG: used mem - alloc tag: %d, size: %d\n", curr_page->alloc_tag, curr_page->size * PAGE_SIZE);

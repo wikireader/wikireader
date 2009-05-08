@@ -24,12 +24,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-extern uint8_t __START_heap;
-extern uint8_t __END_heap;
-
-#define MEM_SIZE	(&__END_heap - &__START_heap)
-#define RAM_START	(&__START_heap)
-
 /* page size should not be smaller than struct malloc_page */
 #define PAGE_SIZE 	(256)
 #define MEMORY_DEBUG	1
@@ -50,11 +44,15 @@ enum {
 	MEM_TAG_PERF_M1,
 	MEM_TAG_PERF_M2,
 	MEM_TAG_PERF_M3,
+	MEM_TAG_PERF_M4,
+	MEM_TAG_PERF_M5,
 	MEM_TAG_PERF_F1,
 	MEM_TAG_PERF_F2,
 	MEM_TAG_PERF_F3,
 	MEM_TAG_PERF_F4,
 	MEM_TAG_PERF_F5,
+	MEM_TAG_PERF_F6,
+	MEM_TAG_PERF_F7,
 };
 
 void malloc_init_simple(void);
