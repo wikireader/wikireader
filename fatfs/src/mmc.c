@@ -83,12 +83,20 @@ void delay_us(unsigned int microsec)
 /* Receive a byte from MMC via SPI  (Platform dependent)		 */
 /*-----------------------------------------------------------------------*/
 
-static void rcvr_spi_m(BYTE* dst)
+/* using this as a macro increases read performance by 80% */
+/*  static void rcvr_spi_m(BYTE* dst)
 {
 	REG_SPI_TXD = 0xff;
 	do {} while (REG_SPI_STAT & BSYF);
 	*dst = REG_SPI_RXD;
-}
+}*/
+
+#define RCVR_SPI_M(dst) \
+	do { \
+		REG_SPI_TXD = 0xff; \
+		do {} while (~REG_SPI_STAT & RDFF); \
+		*(dst)++ = REG_SPI_RXD; \
+	} while (0) \
 
 static
 BYTE rcvr_spi (void)
@@ -222,8 +230,8 @@ BOOL rcvr_datablock (
 		return FALSE;	/* If not valid data token, return with error */
 
 	do {				/* Receive the data block into buffer */
-		rcvr_spi_m(buff++);
-		rcvr_spi_m(buff++);
+		RCVR_SPI_M(buff);
+		RCVR_SPI_M(buff);
 	} while (btr -= 2);
 	rcvr_spi();			/* Discard CRC */
 	rcvr_spi();
