@@ -1,0 +1,11 @@
+
+INSTALLATION:
+
+Copy the image in question into the mbr folder and name it "splash.png". 
+Run "make mbr" to have the image merged into the mbr binary. Reflash the
+device and enjoy. :-)
+
+If you want to create your own image make sure to have a monochrome image
+where the image width is dividable by 8 and does not exeed 160 pixels. 
+
+
