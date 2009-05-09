@@ -18,12 +18,14 @@
 #ifndef WL_SEARCH_H
 #define WL_SEARCH_H
 
-#define TARGET_SIZE 11
+#define TARGET_SIZE 6 
 #define RESULT_START 20
 #define RESULT_HEIGHT 10
+#define MAX_RESULTS 30
 #define NUMBER_OF_RESULTS 19
 #define NUMBER_OF_RESULTS_KEYBOARD 11
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
+
 /*
  * Highlevel search interface...
  */

@@ -23,6 +23,12 @@
 #include <guilib.h>
 #include <glyph.h>
 
+static struct search_results {
+	char list[MAX_RESULTS][MAXSTR];
+	unsigned int count;
+	unsigned int first_item;	// The index of the first item being displayed on the screen. 0 based.
+} result_list;
+
 static lindex global_search;
 static struct search_state state;
 static struct search_state last_first_hit;
@@ -33,10 +39,8 @@ static char search_string[MAXSTR];
 static char first_hit = 0;
 static char trigram_loaded = 0;
 
-static const char search_result[] = "Search results for:";
-static const int search_result_len = 19;
+static const char search_result_str[] = "Search results for:";
 
-static char search_pointers[NUMBER_OF_RESULTS][TARGET_SIZE + 1];
 static int search_found = 0;
 
 /* -1 is unselected */
@@ -64,6 +68,21 @@ static void search_reset_current()
 	search_current = -1;
 }
 
+static void search_reset_list()
+{
+	result_list.count = 0;
+	result_list.first_item = 0;
+}
+
+static int get_display_count()
+{
+	int display_count = keyboard_get_mode() == KEYBOARD_NONE ?
+						NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+	return display_count <= result_list.count-result_list.first_item ? 
+				display_count : 
+				result_list.count-result_list.first_item;
+}
+
 void search_init()
 {
 	int result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
@@ -71,6 +90,7 @@ void search_init()
 		msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
 	}
+	search_reset_list();
 }
 
 int search_load_trigram(void)
@@ -90,11 +110,45 @@ void search_reset()
 
 void search_reload()
 {
+	int available_display_count = get_display_count();
+	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+	int y_pos = 0;
+
 	guilib_fb_lock();
+	guilib_clear();
+	render_string(0, 1, 10, search_result_str, strlen(search_result_str));
+	render_string(0, 87, 10, search_string, strlen(search_string));
+	y_pos = RESULT_START;
 
-	reset_state(&global_search, &state, &last_first_hit);
-	search_paint();
+	if (available_display_count < screen_display_count) {
+		char * result;
+		int len;
 
+		while (available_display_count < screen_display_count && 
+				result_list.count < MAX_RESULTS && 
+				(result = search_fetch_result())) {
+			len = strlen(result);
+			memcpy(&result_list.list[result_list.count], result, len);
+			result_list.list[result_list.count][len] = 0;
+msg(MSG_INFO, "new list[%d] '%s'\n", result_list.count, result_list.list[result_list.count]);
+			++available_display_count;
+			++result_list.count;
+		}
+	}
+	
+	if (available_display_count) {
+		int i;
+
+		for (i = 0; i < available_display_count; i++) {
+			render_string(0, 1, y_pos,
+				result_list.list[result_list.first_item+i], 
+				strlen(result_list.list[result_list.first_item+i]) - TARGET_SIZE);
+			y_pos += RESULT_HEIGHT;
+		}
+		invert_selection(search_current, -1);
+	}
+	
 	guilib_fb_unlock();
 }
 
@@ -175,25 +229,29 @@ void search_paint(void)
 
 	guilib_fb_lock();
 	search_found = 0;
+	search_reset_list();
 
 	while (search_found < results && (result = search_fetch_result())) {
 		if (!search_found) {
 			guilib_clear();
-			render_string(0, 1, 10, search_result, search_result_len);
+			render_string(0, 1, 10, search_result_str, strlen(search_result_str));
 			y_pos = RESULT_START;
 		}
 		render_string(0, 87, 10, search_string, strlen(search_string));
-
 		const int len = strlen(result);
 		render_string(0, 1, y_pos, result, len - (TARGET_SIZE));
-		memcpy(&search_pointers[search_found][0], result + len - TARGET_SIZE, TARGET_SIZE);
+		memcpy(&result_list.list[result_list.count], result, len);
+msg(MSG_INFO, "list[%d] '%s'\n", result_list.count, result_list.list[result_list.count]);
+
+		result_list.list[result_list.count][len] = 0;
 		y_pos += RESULT_HEIGHT;
 		++search_found;
+		++result_list.count;
 	}
 	
 	if (!search_found) {
 		guilib_clear();
-		render_string(0, 1, 10, search_result, search_result_len);
+		render_string(0, 1, 10, search_result_str, strlen(search_result_str));
 		render_string(0, 87, 10, search_string, strlen(search_string));
 		search_current = -1;
 	} else {
@@ -233,33 +291,15 @@ const char *search_current_target(void)
 	if (search_current < 0 || search_current >= search_found)
 		return NULL;
 
-	return &search_pointers[search_current][0];
+	return result_list.list[search_current]+(strlen(result_list.list[search_current])-TARGET_SIZE);
 }
 
-/*
- * We get the title by seeking back to the start and search again
- * and copying out the result we want. The question is if this is
- * faster or always copying the text. For now we try this approach
- * because the blocks should be already cached.
- *
- */
 const char *search_current_title(void)
 {
-	char *result = NULL;
-	int number = 0;
-
 	if (search_found < 0 || search_current >= search_found)
 		return NULL;
 
-	reset_state(&global_search, &state, &last_first_hit);
-	while (number < NUMBER_OF_RESULTS && (result = search_fetch_result())) {
-		if (number == search_current)
-			return result;
-
-		++number;
-	}
-
-	return NULL;
+	return result_list.list[search_current];
 }
 
 /*
