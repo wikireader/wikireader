@@ -68,6 +68,15 @@ static void search_reset_current()
 	search_current = -1;
 }
 
+/**
+ * Fetch the results.
+ *
+ * Get a result and consume.... book keeping is left
+ * to the user. Null pointer returned at the end of the
+ * search.
+ */
+static char* search_fetch_result();
+
 static void search_reset_list()
 {
 	result_list.count = 0;
@@ -195,7 +204,7 @@ void search_remove_char(void)
 	search_reset_current();
 }
 
-char* search_fetch_result()
+static char* search_fetch_result()
 {
 	char *result;
 
@@ -269,7 +278,7 @@ msg(MSG_INFO, "list[%d] '%s'\n", result_list.count, result_list.list[result_list
 void search_select_down(void)
 {
 	/* bottom reached, not wrapping around */
-	if (search_current + 1 == search_found)
+	if (search_current + 1 >= search_found)
 		return;
     
 	invert_selection(search_current, search_current + 1);

@@ -67,13 +67,4 @@ void search_add(char c);
  */
 void search_remove_char(void);
 
-/**
- * Fetch the results.
- *
- * Get a result and consume.... book keeping is left
- * to the user. Null pointer returned at the end of the
- * search.
- */
-char* search_fetch_result();
-
 #endif

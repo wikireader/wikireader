@@ -1,25 +1,11 @@
-/*
- * Copyright (C) 2009
- *
- * Marek Lindner
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of version 2 of the GNU General Public
- * License as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301, USA
- *
- */
-
-
+//
+// Authors:	Marek Lindner <marek@openmoko.com>
+//
+//		This program is free software; you can redistribute it and/or
+//		modify it under the terms of the GNU General Public License
+//		as published by the Free Software Foundation; either version
+//		3 of the License, or (at your option) any later version.
+//
 
 #include <stdlib.h>
 #include <malloc-simple.h>
@@ -27,12 +13,32 @@
 #include <msg.h>
 #include <string.h>
 
+#ifndef __c33 // ugly hack but for now it works...
+
+void malloc_init_simple(void) { }
+void malloc_status_simple(void) { }
+
+void *malloc_simple(uint32_t size, uint32_t tag)
+{
+	return malloc(size);
+}
+
+void free_simple(void *ptr, uint32_t tag)
+{
+	free(ptr);
+}
+
+#else // __c33
+
 extern uint8_t __START_heap;
 extern uint8_t __END_heap;
 
 #define MEM_SIZE	(&__END_heap - &__START_heap)
 #define RAM_START	(&__START_heap)
 
+/* page size should not be smaller than struct malloc_page */
+#define PAGE_SIZE 	(256)
+#define MEMORY_DEBUG	1
 #define MAGIC_NUMBER	0x12345678
 #define NUM_PAGES	(MEM_SIZE / PAGE_SIZE)
 #define CTRL_PAGE	1
@@ -211,3 +217,5 @@ void malloc_status_simple(void)
 	msg(MSG_INFO, " * memory allocated: %d\n * memory fragmented: %d\n", mem_inuse * PAGE_SIZE, mem_frag * PAGE_SIZE);
 	msg(MSG_INFO, " * num control pages: %d\n * free memory: %d\n * total memory: %d\n", malloc_pages, free_mem * PAGE_SIZE, MEM_SIZE);
 }
+
+#endif // __c33

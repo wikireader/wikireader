@@ -159,6 +159,7 @@ static int display_image()
 
 static void open_article(const char* target, int mode)
 {
+	DP(DBG_WL, ("O open_article() target '%s' mode %i\n", target, mode));
 #ifndef WOM_ON
 	if (!target)
 		return;
@@ -177,7 +178,9 @@ static void open_article(const char* target, int mode)
 	}
 #else
 	if (s_cur_selected_search_idx) {
-		DP(DBG_WL, ("O open_article() '%.*s'\n", s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri));
+		DP(DBG_WL, ("O open_article() '%.*s' offset_into_articles %u\n",
+			s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri,
+			s_cur_selected_search_idx->offset_into_articles));
 		wom_draw(s_womh, s_cur_selected_search_idx->offset_into_articles,
 			framebuffer, 0 /* y_start_in_article */, 208 /* lines_to_draw */);
 	} else
