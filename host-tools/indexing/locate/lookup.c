@@ -73,6 +73,7 @@ void prepare_search(lindex *l, char *pathpart, struct search_state *state) {
     state->offset = UINT_MAX;
     state->skip = false;
     state->pattern_len = strlen(pathpart);
+    state->count = 0;
 
     /* 3-char index */
     if (l->trigram_loaded && state->pattern_len > 2) {
