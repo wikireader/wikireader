@@ -49,7 +49,7 @@ all:    mini-libc \
 	bootloader \
 	kernel \
 	qt4-simulator \
-	simulator-console
+	console-simulator
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs
@@ -140,9 +140,9 @@ gcc: binutils gcc-patch
 qt4-simulator: kernel
 	( cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE) )
 
-.PHONY: simulator-console
-simulator-console: kernel
-	( cd host-tools/simulator/console && $(MAKE) )
+.PHONY: console-simulator
+console-simulator: kernel
+	( cd host-tools/console-simulator && $(MAKE) )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump
@@ -189,7 +189,7 @@ flash-mbr: mbr
 complete-clean: clean clean-toolchain
 
 .PHONY: clean
-clean: clean-qt4-simulator clean-sim-console
+clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C bootloader
 	$(MAKE) clean -C toolchain/mini-libc
 	$(MAKE) clean -C fatfs
@@ -209,9 +209,9 @@ clean-toolchain:
 clean-qt4-simulator:
 	(cd host-tools/qt4-simulator; $(MAKE) distclean || true)
 
-.PHONY: clean-sim-console
-clean-sim-console:
-	$(MAKE) clean -C host-tools/simulator/console
+.PHONY: clean-console-simulator
+clean-console-simulator:
+	$(MAKE) clean -C host-tools/console-simulator
 
 .PHONY:help
 help:
@@ -226,7 +226,7 @@ mini-libc:			compile mini-libc (libc.a).\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
 				-make sure the serial console is /dev/ttyUSB0.\n\
 qt4-simulator		compile the Qt4 simulator\n\
-simulator-console	compile the console simulator\n\
+console-simulator	compile the console simulator\n\
 clean: 			clean all.\n\
 				openmoko, Inc.\n "
 
