@@ -37,7 +37,7 @@
 #include <malloc-simple.h>
 #include "wom_reader.h"
 
-#define WOM_ON
+//#define WOM_ON
 #define DBG_WL 0
 
 enum display_mode_e {
@@ -92,7 +92,7 @@ static void toggle_soft_keyboard(void)
 	/* Set the keyboard mode to what we want to change to. */
 	if (keyboard_get_mode() == KEYBOARD_NONE) {
 		keyboard_set_mode(KEYBOARD_CHAR);
-		guilib_clear_area(0, (unsigned int)RESULT_HEIGHT * NUMBER_OF_RESULTS_KEYBOARD + PIXEL_START, guilib_framebuffer_width(), guilib_framebuffer_height() - keyboard_height() - 1);
+		search_reload();
 		keyboard_paint();
 	} else {
 		keyboard_set_mode(KEYBOARD_NONE);
@@ -235,14 +235,14 @@ static void handle_search_key(char keycode)
 	if (keycode == WL_KEY_BACKSPACE) {
 		search_remove_char();
 	} else if (isalnum(keycode) || isspace(keycode)) {
-		search_add(tolower(keycode));
+		search_add_char(tolower(keycode));
 	} else {
 		msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
 		return;
 	}
 
 	guilib_fb_lock();
-	search_paint();
+	search_reload();
 	keyboard_paint();
 	guilib_fb_unlock();
 }

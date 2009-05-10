@@ -29,13 +29,11 @@
 /*
  * Highlevel search interface...
  */
-void search_paint(void);
 void search_select_down(void);
 void search_select_up(void);
 const char *search_current_target(void);
 const char *search_current_title(void);
-
-const char  *search_release(int y);
+const char *search_release(int y);
 
 /**
  * Initialize the search engine. Once.
@@ -48,11 +46,6 @@ void search_init();
 int search_load_trigram(void);
 
 /**
- * For every new search call this
- */
-void search_reset();
-
-/**
  * Repaint, reselect the current screen..
  */
 void search_reload(void);
@@ -60,7 +53,7 @@ void search_reload(void);
 /**
  * Search for another char. It needs to be lower case
  */
-void search_add(char c);
+void search_add_char(char c);
 
 /**
  * Remove the last char from the search
