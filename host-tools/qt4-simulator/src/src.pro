@@ -1,4 +1,4 @@
-TOPLEVEL = ../../../../../
+TOPLEVEL = ../../../
 SOURCES += $$TOPLEVEL/gui-lib/guilib.c
 SOURCES += $$TOPLEVEL/gui-lib/glyph.c
 SOURCES += $$TOPLEVEL/gui-lib/fontfile.c

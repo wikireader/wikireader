@@ -138,7 +138,7 @@ gcc: binutils gcc-patch
 
 .PHONY: simulator-qt4
 simulator-qt4: kernel
-	( cd host-tools/simulator/Qt4/WikiSim && qmake-qt4 && $(MAKE) )
+	( cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE) )
 
 .PHONY: simulator-console
 simulator-console: kernel
