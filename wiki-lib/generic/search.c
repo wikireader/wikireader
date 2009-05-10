@@ -199,15 +199,15 @@ const char *search_current_target(void)
 	if (result_list.cur_selected >= result_list.count)
 		return NULL;
 
-	return result_list.list[result_list.cur_selected]+(strlen(result_list.list[result_list.cur_selected])-TARGET_SIZE);
+	return result_list.list[result_list.cur_selected+result_list.first_item]+(strlen(result_list.list[result_list.cur_selected+result_list.first_item])-TARGET_SIZE);
 }
 
 const char *search_current_title(void)
 {
-	if (result_list.cur_selected >= result_list.count)
+	if (result_list.cur_selected >= result_list.count - result_list.first_item)
 		return NULL;
 
-	return result_list.list[result_list.cur_selected];
+	return result_list.list[result_list.cur_selected+result_list.first_item];
 }
 
 /*
