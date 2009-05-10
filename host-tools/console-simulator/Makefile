@@ -1,12 +1,12 @@
 RM = rm -f
 CC = gcc
 LD = ld
-GUILIB_DIR = ../../../gui-lib
-WIKILIB_DIR = ../../../wiki-lib
-INDEX_DIR = ../../indexing/locate
-COMMON_DIR = ../../../common
-MINILZO_DIR = ../../../minilzo
-FATFS_DIR = ../../../fatfs
+GUILIB_DIR = ../../gui-lib
+WIKILIB_DIR = ../../wiki-lib
+INDEX_DIR = ../indexing/locate
+COMMON_DIR = ../../common
+MINILZO_DIR = ../../minilzo
+FATFS_DIR = ../../fatfs
 
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -Werror
 CFLAGS += -I $(WIKILIB_DIR)/include
