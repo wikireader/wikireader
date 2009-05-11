@@ -1,4 +1,4 @@
-INCLUDES = -I../toolchain/mini-libc/include -I../common
+INCLUDES = -I../../toolchain/mini-libc/include -I../../common
 LDFLAGS = -static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS = -Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 VPATH = src
@@ -20,13 +20,13 @@ lib/$(strip ${1})/libtinyfat.a: lib/$(strip ${1})
 build-$(strip ${1}): Makefile
 	$${RM} -r $$@
 	mkdir -p $$@
-	@echo INCLUDES = $${INCLUDES} | sed 's@\.\./@../../@g' >> $$@/Makefile
-	@echo LDFLAGS = $${LDFLAGS} | sed 's@\.\./@../../@g' >> $$@/Makefile
-	@echo CFLAGS = $${CFLAGS} | sed 's@\.\./@../../@g' >> $$@/Makefile
+	@echo INCLUDES = $${INCLUDES} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
+	@echo LDFLAGS = $${LDFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
+	@echo CFLAGS = $${CFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo VPATH = ../src >> $$@/Makefile
 	@echo INCLUDES += -I../config/c33/$(strip ${1})/ >> $$@/Makefile
 	@echo TARGETS = all >> $$@/Makefile
-	@echo include ../../common/Makefile >> $$@/Makefile
+	@echo include ../../../common/Makefile >> $$@/Makefile
 endef
 
 # macros to generate rules
@@ -60,4 +60,4 @@ clean:
 	$(RM) *.[do] *.asm33
 	$(RM) -r $(foreach type, ${TYPE_LIST}, build-${type})
 
-include ../common/Makefile
+include ../../common/Makefile

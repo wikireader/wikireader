@@ -82,7 +82,7 @@ mini-libc: gcc
 .PHONY: fatfs
 
 fatfs: mini-libc
-	$(MAKE) -C fatfs/
+	$(MAKE) -C samo-lib/fatfs/
 
 # ----- toolchain stuff  --------------------------------------
 gcc-download:
@@ -195,7 +195,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C host-tools/jackknife
 	$(MAKE) clean -C host-tools/e07load
 	$(MAKE) clean -C mbr
-	$(MAKE) clean -C fatfs
+	$(MAKE) clean -C samo-lib/fatfs
 	$(MAKE) clean -C mbr
 	$(MAKE) clean -C forth
 	$(MAKE) clean -C kernel
