@@ -13,7 +13,7 @@ Assorted TODO thoughts...
      host-tools
        binutils-2.10.1
        gcc-3.3.2
-       patches
+       toolchain-patches
        e07load
        .. flash scripts ..
        .. simulators ..
