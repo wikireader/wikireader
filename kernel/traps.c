@@ -303,6 +303,8 @@ irq_callback trap_table[N_TRAPS] = {
 
 void traps_init(void)
 {
+	DISABLE_IRQ();
+
 	/* WAKEUP=1 */
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_OPT |= 0x1;
