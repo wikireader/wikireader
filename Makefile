@@ -101,8 +101,8 @@ binutils-patch: binutils-download
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
 	( cd toolchain && \
 	cd binutils-$(BINUTILS_VERSION) && \
-	cat ../patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
-	cat ../patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
+	cat ../../host-tools/patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
+	cat ../../host-tools/patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
 	touch $@
 
 binutils: binutils-patch
@@ -120,9 +120,9 @@ gcc-patch: gcc-download
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
 	( cd toolchain && \
 	cd gcc-$(GCC_VERSION) && \
-	cat ../patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
-	cat ../patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
-	cat ../patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
+	cat ../../host-tools/patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
+	cat ../../host-tools/patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
+	cat ../../host-tools/patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
 	touch $@
 
 gcc: binutils gcc-patch
