@@ -1,5 +1,5 @@
 LIBDIR = ../toolchain/mini-libc
-FATFSDIR = ../fatfs
+FATFSDIR = ../samo-lib/fatfs
 FATFS_MODE = read-only
 COMMON = ../common
 HOST_TOOLS = ../host-tools
