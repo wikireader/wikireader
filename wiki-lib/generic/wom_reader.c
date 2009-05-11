@@ -157,24 +157,38 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 	DP(DBG_WOM_READER, ("O wom\twom_draw() offset_into_articles %u y_start %i lines_to_draw %i\n",
 		offset_into_articles, y_start_in_article, lines_to_draw));
 	if (f_lseek(&womh->fileh, offset_into_articles) != FR_OK) goto xout;
-	fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
-	if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
 
 	cur_x = cur_y = 0;
+	guilib_fb_lock();
 	guilib_clear();
-	for (i = 0; i+6 < WOM_PAGE_SIZE; i++) { // tbd: only one page now
+		
+	for (i = 0;; i++) {
+		if (i == 0 || i >= WOM_PAGE_SIZE) {
+			i = 0;
+			fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
+			if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
+		}
 		if (womh->page_buffer[i] == WOM_END_OF_ARTICLE)
 			break;
 		if (womh->page_buffer[i] == WOM_Y_ADVANCE_ONLY) {
 			cur_y += (int8_t) womh->page_buffer[++i];
 			continue;
 		}
+		if (womh->page_buffer[i] == WOM_PAGE_PADDING) {
+			i = WOM_PAGE_SIZE;
+			continue;
+		}
 		cur_x += womh->page_buffer[i];
+//printf("1 cur_y %lu\n", cur_y);
 		cur_y += (int8_t) womh->page_buffer[i+1];
+//printf("2 cur_y %lu\n", cur_y);
 		bitmap_off = __get_unaligned_4(&womh->page_buffer[i+2]);
 		i+=5;
 
-		if (cur_y >= 190) break;
+		if (cur_y >= y_start_in_article + lines_to_draw + 300 /* hack */) {
+//printf("cur_y %lu y_start %i lines_to_draw %i\n", cur_y, y_start_in_article, lines_to_draw);
+break;
+}
 
 		if (bitmap_off) {
 			uint8_t bits[2+64];
@@ -183,18 +197,22 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 			if (f_lseek(&womh->fileh, bitmap_off) != FR_OK) continue;
 			fr = f_read(&womh->fileh, bits, sizeof(bits), &num_read);
 			if (fr != FR_OK || num_read != sizeof(bits)) continue;
+			if (cur_y + bits[1] < y_start_in_article) continue;
 			bytes_per_line = (bits[0]+7)/8;
 			for (bit_y = 0; bit_y < bits[1]; bit_y++) {
+				if (cur_y + bit_y >= y_start_in_article + lines_to_draw)
+					break;
 				for (bit_x = 0; bit_x < bytes_per_line; bit_x++) {
 					uint8_t this_byte = bits[2+bit_y*bytes_per_line + bit_x];
 					for (j = 0; j < 8; j++) {
 						if (this_byte & 0x80>>j)
-							guilib_set_pixel(cur_x + bit_x*8 + j, cur_y+bit_y, 1);
+							guilib_set_pixel(cur_x + bit_x*8 + j, cur_y+bit_y-y_start_in_article, 1);
 					}
 				}
 			}
 		}
 	}
+	guilib_fb_unlock();
 	return;
 xout:
 	DX();

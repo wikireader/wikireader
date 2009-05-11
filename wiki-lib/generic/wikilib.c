@@ -1,20 +1,12 @@
-/*
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
- * Copyright (c) 2009 Holger Hans Peter Freyther <zecke@openmoko.org>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+//
+// Authors:	Daniel Mack <daniel@caiaq.de>
+// 		Holger Hans Peter Freyther <zecke@openmoko.org>
+//
+//		This program is free software; you can redistribute it and/or
+//		modify it under the terms of the GNU General Public License
+//		as published by the Free Software Foundation; either version
+//		3 of the License, or (at your option) any later version.
+//           
 
 #include <stdlib.h>
 #include <inttypes.h>
@@ -37,7 +29,6 @@
 #include <malloc-simple.h>
 #include "wom_reader.h"
 
-//#define WOM_ON
 #define DBG_WL 0
 
 enum display_mode_e {
@@ -53,28 +44,7 @@ enum display_mode_e {
 
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
-
-#ifdef WOM_ON
-
-static char s_current_search_str[256];
-static size_t s_current_search_len = 0;
-static wom_file_t * s_womh = 0;
-static const wom_article_index_t* s_cur_selected_search_idx = 0;
-
-#endif
-
-// tbd: needs better location, just parked here for now
-void debug_printf(const char* fmt, ...)
-{
-	va_list arg_list;
-	va_start(arg_list, fmt);
-#ifdef __c33
-	vuprintf(print_char, fmt, arg_list);
-#else
-	vprintf(fmt, arg_list);
-#endif
-	va_end(arg_list);
-}
+wom_file_t * g_womh = 0;
 
 static void repaint_search(void)
 {
@@ -157,10 +127,33 @@ static int display_image()
 }
 #endif
 
+static unsigned int s_article_y_pos;
+static uint32_t s_article_offset = 0;
+
+int article_open(const char *article)
+{
+	DP(DBG_WL, ("O article_open() '%s'\n", article));
+	s_article_offset = strtoul(article, 0 /* endptr */, 16 /* base */);
+	s_article_y_pos = 0;
+	article_display(ARTICLE_PAGE_0);
+	return 0;
+}
+
+void article_display(enum article_nav nav)
+{
+	unsigned int screen_height = guilib_framebuffer_height();
+
+	DP(DBG_WL, ("O article_display() %i article_offset %u article_y_pos %u\n", nav, s_article_offset, s_article_y_pos));
+	if (nav == ARTICLE_PAGE_NEXT)
+		s_article_y_pos += screen_height;
+	else if (nav == ARTICLE_PAGE_PREV)
+		s_article_y_pos = (s_article_y_pos <= screen_height) ? 0 : s_article_y_pos - screen_height;
+	wom_draw(g_womh, s_article_offset, framebuffer, s_article_y_pos, screen_height);
+}
+
 static void open_article(const char* target, int mode)
 {
 	DP(DBG_WL, ("O open_article() target '%s' mode %i\n", target, mode));
-#ifndef WOM_ON
 	if (!target)
 		return;
 
@@ -176,59 +169,7 @@ static void open_article(const char* target, int mode)
 		last_display_mode = DISPLAY_MODE_HISTORY;
 		history_move_current_to_top(target);
 	}
-#else
-	if (s_cur_selected_search_idx) {
-		DP(DBG_WL, ("O open_article() '%.*s' offset_into_articles %u\n",
-			s_cur_selected_search_idx->uri_len, s_cur_selected_search_idx->abbreviated_uri,
-			s_cur_selected_search_idx->offset_into_articles));
-		wom_draw(s_womh, s_cur_selected_search_idx->offset_into_articles,
-			framebuffer, 0 /* y_start_in_article */, 208 /* lines_to_draw */);
-	} else
-		print_article_error();
-#endif
 }
-
-#ifdef WOM_ON
-
-#define LINE_ADVANCE 10
-
-static void handle_search_key(char keycode)
-{
-	const wom_article_index_t* idx;
-	int num_results;
-
-	msg(MSG_INFO, "O ui\thandle_search_key() key %xh ('%c')\n", keycode, keycode);
-	if (keycode == WL_KEY_BACKSPACE) {
-		if (s_current_search_len) s_current_search_len--;
-		if (!s_current_search_len) {
-			print_intro();
-			return;
-		}
-	} else if (isalnum(keycode) || isspace(keycode)) {
-		if (s_current_search_len >= sizeof(s_current_search_str))
-			goto xout;
-		s_current_search_str[s_current_search_len++] = tolower(keycode);
-	} else
-		goto xout;
-
-	guilib_clear();
-	render_string(0 /* font */, 15 /* x */, 20 /* y */, (char*) s_current_search_str, s_current_search_len);
-	num_results = 0;
-	idx = wom_find_article(s_womh, s_current_search_str, s_current_search_len);
-	s_cur_selected_search_idx = idx; // tbd: ugly, pointer not allocated etc. Watch lifetime!
-	while (idx) {
-		render_string(0 /* font */, 15 /* x */, 35 + num_results++ * LINE_ADVANCE, (char*) idx->abbreviated_uri, idx->uri_len);
-		if (num_results >= ((keyboard_get_mode() == KEYBOARD_NONE) ? 19 : 11))
-			break;
-		idx = wom_get_next_article(s_womh);
-	}
-	keyboard_paint();
-	return;
-xout:
-	msg(MSG_INFO, "X ui\thandle_search_key() failed.\n");
-}
-
-#else // !WOM_ON
 
 static void handle_search_key(char keycode)
 {
@@ -246,8 +187,6 @@ static void handle_search_key(char keycode)
 	keyboard_paint();
 	guilib_fb_unlock();
 }
-
-#endif // WOM_ON
 
 static void handle_cursor(struct wl_input_event *ev)
 {
@@ -287,7 +226,9 @@ static void handle_key_release(int keycode)
 		/* msg(MSG_INFO, "random\n"); */
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == WL_KEY_RETURN) {
-			open_article(search_current_target(), ARTICLE_NEW);
+			const char* target = search_current_title();
+			if (target && strlen(target) >= TARGET_SIZE)
+				open_article(&target[strlen(target)-TARGET_SIZE], ARTICLE_NEW);
 #if ENABLE_IMAGE_DISPLAY
 		} else if (keycode == WL_KEY_HASH) {
 			if (display_image() == 1)
@@ -333,9 +274,9 @@ static void handle_touch(struct wl_input_event *ev)
 			if (result != -1)
 				handle_search_key(result);
 			else {
-				const char *target = search_release(ev->touch_event.y);
-				if (target)
-					open_article(target, ARTICLE_NEW);
+				const char *title= search_release(ev->touch_event.y);
+				if (title && strlen(title) >= TARGET_SIZE)
+					open_article(&title[strlen(title)-TARGET_SIZE], ARTICLE_NEW);
 				else
 					repaint_search();
 			}
@@ -349,15 +290,8 @@ static void handle_touch(struct wl_input_event *ev)
 
 int wikilib_init (void)
 {
-#ifdef WOM_ON
-#ifdef __c33
-	// tbd: name more than 8.3 could not be found
-	s_womh = wom_open("wiki.dat");
-#else
-	// tbd: where is the current directory for the simulator? -> '/' should not be necessary
-	s_womh = wom_open("/home/user/wikipediardware/host-tools/wom-creator/wiki.dat");
-#endif
-#endif
+	// tbd: name more than 8.3 could not be found on the device (fatfs)
+	g_womh = wom_open("wiki.dat");
 	return 0;
 }
 

@@ -12,6 +12,9 @@
 
 typedef struct wom_file wom_file_t;
 
+// tbd: temporary - remove global!
+extern wom_file_t * g_womh;
+
 wom_file_t* wom_open(const char* filename);
 void wom_close(wom_file_t* womh);
 

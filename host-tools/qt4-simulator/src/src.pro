@@ -7,7 +7,6 @@ SOURCES += $$TOPLEVEL/wiki-lib/specific/msg-printf.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/time-posix.c
 SOURCES += $$TOPLEVEL/wiki-lib/specific/malloc-simple.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/decompress.c
-SOURCES += $$TOPLEVEL/wiki-lib/generic/article.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/history.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/file-io-general.c
 SOURCES += $$TOPLEVEL/wiki-lib/generic/wikilib.c

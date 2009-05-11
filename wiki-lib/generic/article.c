@@ -45,6 +45,9 @@ enum ParseMode {
 	Parse_Glyph
 };
 
+static void article_close(void);
+static void article_extract_file_and_offset(const char *target, unsigned int *file, unsigned int *offset);
+
 static int decimal_to_int(const char *data, int len)
 {
 	int number = 0, i;
@@ -198,7 +201,7 @@ void article_display(enum article_nav nav)
 	guilib_fb_unlock();
 }
 
-void article_close(void)
+static void article_close(void)
 {
 	current_page = -1;
 	current_page_offset = -1;
@@ -219,7 +222,7 @@ void article_close(void)
  *
  * In case of error file and offset will contain UINT_MAX
  */
-void article_extract_file_and_offset(const char *target,
+static void article_extract_file_and_offset(const char *target,
 				    unsigned int *file, unsigned int *offset)
 {
 	int len, i;

@@ -13,8 +13,10 @@
 #include "wl-keyboard.h"
 #include <guilib.h>
 #include <glyph.h>
+#include "wom_reader.h"
 
 #define DBG_SEARCH 0
+#define WOM_ON
 
 static struct search_results {
 	char list[MAX_RESULTS][MAXSTR];
@@ -30,7 +32,7 @@ static struct search_state last_first_hit;
 static char search_string[MAXSTR];
 static int search_str_len = 0;
 
-static char first_hit = 0;
+static char s_find_first = 1;
 static char trigram_loaded = 0;
 
 static void invert_selection(int old_pos, int new_pos)
@@ -45,25 +47,35 @@ static void invert_selection(int old_pos, int new_pos)
 	guilib_fb_unlock();
 }
 
-static char* search_fetch_result()
+static const char* search_fetch_result()
 {
-	char *result;
-
 	if (search_str_len == 0)
 		return NULL;
-
-	result = search_fast(&global_search, search_string, &state);
-	if (!first_hit) {
+#ifdef WOM_ON
+	const wom_article_index_t* idx;
+	static char result_buf[MAXSTR]; // we know that the returned pointer is copied immediately
+	if (s_find_first) {
+		s_find_first = 0;
+		idx = wom_find_article(g_womh, search_string, search_str_len);
+	} else
+		idx = wom_get_next_article(g_womh);
+	if (!idx) return 0;
+	sprintf(result_buf, "%.*s%.6x", idx->uri_len, idx->abbreviated_uri, (unsigned int) idx->offset_into_articles);
+	DP(DBG_SEARCH, ("O search_fetch_result() '%s'\n", result_buf));
+	return result_buf;
+#else // !WOM_ON
+	char* result = search_fast(&global_search, search_string, &state);
+	if (s_find_first) {
+		s_find_first = 0;
 		store_state(&global_search, &state, &last_first_hit);
-		first_hit = 1;
 	}
-
 	return result;
+#endif
 }
 
 void search_init()
 {
-	int result = load_index(&global_search, "/pedia.idx", "/pedia.jmp");
+	int result = load_index(&global_search, "pedia.idx", "pedia.jmp");
 	if (!result) {
 		msg(MSG_ERROR, "Failed to initialize search.\n");
 		/* XXX, FIXME, handle the error */
@@ -87,7 +99,7 @@ void search_reload()
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	unsigned int available_count;
 	int y_pos, len;
-	char * result;
+	const char * result;
 
 	DP(DBG_SEARCH, ("O search_reload() start: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
 	guilib_fb_lock();
@@ -150,14 +162,11 @@ void search_add_char(char c)
 	search_string[search_str_len] = '\0';
 	if (search_str_len >= 4) {
 		state.pattern_len = search_str_len;
-		if (first_hit) {
+		if (!s_find_first) // already found something before?
 			reset_state(&global_search, &state, &last_first_hit);
-			first_hit = 0;
-		}
-	} else {
-		first_hit = 0;
+	} else
 		prepare_search(&global_search, search_string, &state);
-	}
+	s_find_first = 1;
 	result_list.cur_selected = 0;
 	result_list.first_item = 0;
 	result_list.count = 0;
@@ -177,7 +186,7 @@ void search_remove_char(void)
 
 	search_string[--search_str_len] = '\0';
 	memset(&state, 0, sizeof(state));
-	first_hit = 0;
+	s_find_first = 1;
 	prepare_search(&global_search, search_string, &state);
 	if (search_str_len == 0)
 		result_list.cur_selected = -1;
@@ -231,20 +240,17 @@ void search_select_up(void)
 	}
 }
 
-const char *search_current_target(void)
-{
-	if (result_list.cur_selected >= result_list.count)
-		return NULL;
-
-	return result_list.list[result_list.cur_selected+result_list.first_item]+(strlen(result_list.list[result_list.cur_selected+result_list.first_item])-TARGET_SIZE);
-}
-
 const char *search_current_title(void)
 {
-	if (result_list.cur_selected >= result_list.count - result_list.first_item)
-		return NULL;
+	const char* title;
 
-	return result_list.list[result_list.cur_selected+result_list.first_item];
+	if (result_list.cur_selected >= result_list.count - result_list.first_item) {
+		DP(DBG_SEARCH, ("O search_current_title() NO TITLE\n"));
+		return NULL;
+	}
+	title = result_list.list[result_list.cur_selected+result_list.first_item];
+	DP(DBG_SEARCH, ("O search_current_title() '%s'\n", title));
+	return title;
 }
 
 /*
@@ -264,7 +270,7 @@ const char *search_release(int y)
 	for (i = 0; i < result_list.count; ++i, result_start += RESULT_HEIGHT) {
 		if (y >= result_start && y < result_start + RESULT_HEIGHT) {
 			result_list.cur_selected = i;
-			return search_current_target();
+			return search_current_title();
 		}
 	}
 

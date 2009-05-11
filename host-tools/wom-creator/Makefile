@@ -15,7 +15,7 @@ WIKILIB_DIR = ../../wiki-lib
 COMMON_DIR = ../../common
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(COMMON_DIR)
 LDFLAGS = -g -dynamic
-OBJS = wom_creator.o hexdump.o msg-printf.o
+OBJS = wom_creator.o hexdump.o msg-printf.o malloc-simple.o
 TARGETS = wom_creator
 
 vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR)

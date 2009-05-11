@@ -70,6 +70,7 @@ typedef struct wom_bitmap
 
 #define WOM_END_OF_ARTICLE	0xFF
 #define WOM_Y_ADVANCE_ONLY	0xFE
+#define WOM_PAGE_PADDING	0xFD
 
 typedef struct wom_page_element
 {
@@ -77,6 +78,7 @@ typedef struct wom_page_element
 	// So if we want to go from 230 to 10, the x_delta value would be 36.
 	// x_delta == 0xFF signals the end of the article, no other values in this structure follow anymore
 	// x_delta == 0xFE means that this entry is only used to advance the y coordinate by 127 rows. No other values in this structure follow anymore.
+	// x_delta == 0xFD means that the following element would not have fit into the same page. 0xFD padding bytes will follow until the end of the page is reached.
 	uint8_t x_delta;
 
 	int8_t y_delta;

@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 			strcpy(article_titles[num_titles_used].blib_path, blib_path);
 			num_titles_used++;
 
-			DP(DBG_WOM_CREATOR, (MSG_INFO, "O Processing article '%s' in '%s'\n", article_title, blib_path));
+			DP(DBG_WOM_CREATOR, ("O Processing article '%s' in '%s'\n", article_title, blib_path));
 			stats.min_chars_in_title = stats.min_chars_in_title ? min(stats.min_chars_in_title, strlen(article_title)) : strlen(article_title);
 			stats.max_chars_in_title = max(stats.max_chars_in_title, strlen(article_title));
 			blib_f = fopen(blib_path, "r");
@@ -140,7 +140,7 @@ int main(int argc, char** argv)
 				stats.num_characters++;
 				if (strncmp(font_and_size, "Liberation_Sans", 15 /* strlen */)) {
 					stats.num_skipped_chars++;
-					DP(DBG_WOM_CREATOR, (MSG_INFO, "X Skipping non-'Liberation Sans' character ('%s').\n", font_and_size));
+					DP(DBG_WOM_CREATOR, ("X Skipping non-'Liberation Sans' character ('%s').\n", font_and_size));
 					continue;
 				}
 
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 				}
 			}
 			fclose(blib_f);
-//break; // temporarily only one article
+break; // temporarily only one article
 		}
 		fclose(work_f);
 		work_f = 0;
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
 		for (i = 0; i < num_titles_used; i++) {
 			uri_len = strlen(article_titles[i].title);
 			if (uri_len > WOM_PAGE_SIZE-6) {
-				DP(1, (MSG_INFO, "X title too long\n"));
+				DP(1, ("X title too long\n"));
 				continue;
 			}
 			cur_dest_off = ftell(dest_f);
@@ -267,15 +267,15 @@ int main(int argc, char** argv)
 						break;
 				}
 				if (j >= num_bitmaps_used) {
-					DP(DBG_WOM_CREATOR, (MSG_INFO, "X Skipping missing glyph.\n"));
+					DP(DBG_WOM_CREATOR, ("X Skipping missing glyph.\n"));
 					continue;
 				}
 				// tbd: we should make y ascending only, determine the baseline etc.
 				if (y_coord + 128 < cur_display_y) {
-					DP(1, (MSG_INFO, "X y_coord out of range (y_coord %i cur_display_y %i)\n", y_coord, cur_display_y));
+					DP(1, ("X y_coord out of range (y_coord %i cur_display_y %i)\n", y_coord, cur_display_y));
 					continue;
 				}
-				DP(y_coord >= cur_display_y + 128, (MSG_INFO, "X Long empty section (%i rows)\n", y_coord - cur_display_y));
+				DP(y_coord >= cur_display_y + 128, ("X Long empty section (%i rows)\n", y_coord - cur_display_y));
 // tbd: if y coordinates are ascending only, we may want to cut out large empty vertical spaces
 				while (y_coord >= cur_display_y + 128) {
 					wom_page_buf[0] = WOM_Y_ADVANCE_ONLY;
@@ -294,6 +294,23 @@ int main(int argc, char** argv)
 				cur_display_y = y_coord;
 				// write uint32_t offset after x and y coordinates
 				*(uint32_t*)&wom_page_buf[2] = font_bitmaps[j].bitmaps_file_off;
+				// write padding
+				{
+					size_t cur_dest_pos = ftell(dest_f);
+					uint8_t padding_bytes[5] = {WOM_PAGE_PADDING, WOM_PAGE_PADDING, WOM_PAGE_PADDING, WOM_PAGE_PADDING, WOM_PAGE_PADDING};
+					unsigned int num_padding_bytes;
+					if ((cur_dest_pos + 5) / WOM_PAGE_SIZE != cur_dest_pos / WOM_PAGE_SIZE) {
+						num_padding_bytes = WOM_PAGE_SIZE - cur_dest_pos % WOM_PAGE_SIZE;
+						if (num_padding_bytes > 5) {
+							fprintf(stderr, "X num_padding_bytes %u\n", num_padding_bytes);
+							num_padding_bytes = 5;
+						}
+						if (fwrite(padding_bytes, 1 /* size */, num_padding_bytes, dest_f) != num_padding_bytes) {
+							fprintf(stderr, "X Error writing to file.\n");
+							continue;
+						}
+					}
+				}
 				if (fwrite(wom_page_buf, 1 /* size */, 6, dest_f) != 6) {
 					fprintf(stderr, "X Error writing to file.\n");
 					continue;
@@ -321,8 +338,24 @@ int main(int argc, char** argv)
 				fprintf(stderr, "X Error seeking in file.\n");
 				continue;
 			}
-			DP(DBG_WOM_CREATOR, (MSG_INFO, "O Article '%s' start_off %u end_off %u (index_off %u)\n", article_titles[i].title,
+			DP(DBG_WOM_CREATOR, ("O Article '%s' start_off %u end_off %u (index_off %u)\n", article_titles[i].title,
 				article_start_off, cur_dest_off, article_titles[i].index_file_off));
+		}
+		// Pad to full page
+		{
+			size_t cur_dest_pos = ftell(dest_f);
+			uint8_t padding_byte = WOM_PAGE_PADDING;
+			unsigned int num_padding_bytes;
+			if (cur_dest_pos % WOM_PAGE_SIZE) {
+				num_padding_bytes = WOM_PAGE_SIZE - cur_dest_pos % WOM_PAGE_SIZE;
+				DP(DBG_WOM_CREATOR, ("O Padding %i bytes.\n", num_padding_bytes));
+				for (i = 0; i < num_padding_bytes; i++) {
+					if (fwrite(&padding_byte, 1 /* size */, 1 /* nitems */, dest_f) != 1) {
+						fprintf(stderr, "X Error writing to file.\n");
+							continue;
+					}
+				}
+			}
 		}
 	}
 	//
@@ -461,7 +494,7 @@ static int load_bitmap(font_bitmaps_t* font_bitmaps, int num_bitmaps_avail, int*
 	}
 	fclose(pbm_f);
 	(*num_bitmaps_used)++;
-	DP(DBG_WOM_CREATOR, (MSG_INFO, "O load_bitmap() '%s' code %d width %d height %d\n",
+	DP(DBG_WOM_CREATOR, ("O load_bitmap() '%s' code %d width %d height %d\n",
 		new_bitmap->font_size, new_bitmap->font_code, new_bitmap->pbm_width, new_bitmap->pbm_height));
 	return 1;
 xout_pbmf:

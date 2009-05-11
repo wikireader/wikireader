@@ -201,7 +201,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 				IMG_GET_PIXEL(img, xx, yy));
 }
 
-#define FONTFILE "/fontfile.gen"
+#define FONTFILE "fontfile.gen"
 
 void guilib_init(void)
 {

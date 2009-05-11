@@ -31,7 +31,5 @@ enum article_nav {
  */
 int	article_open(const char *article);
 void	article_display(enum article_nav nav);
-void	article_close(void);
-void	article_extract_file_and_offset(const char *target, unsigned int *file, unsigned int *offset);
 
 #endif

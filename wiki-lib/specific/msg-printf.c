@@ -36,4 +36,3 @@ void set_loglevel(int level)
 {
 	loglevel = level;
 }
-

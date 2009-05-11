@@ -3,7 +3,7 @@ Assorted TODO thoughts...
 
 *) directory reorg
    ./
-     samo-lib (move all of wiki-lib, gui-lib into this folder)
+     samo-lib (move generic stuff from wiki-lib, gui-lib into this folder)
        fatfs
        minilzo
        mini-libc
@@ -16,7 +16,9 @@ Assorted TODO thoughts...
        patches
        e07load
        .. flash scripts ..
-     wiki-app
+       .. simulators ..
+     wiki-app (move all wiki-specific stuff from wiki-lib, gui-lib into this folder)
+       wom-creator
        <current host-tools stuff in subfolders>
      sample-apps
      doc
