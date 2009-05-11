@@ -19,8 +19,8 @@
 static struct search_results {
 	char list[MAX_RESULTS][MAXSTR];
 	unsigned int count;
-	unsigned int cur_selected;
-	int first_item;		// Index of the first item displayed on the list. 0 based.
+	int cur_selected;	// -1 when no selection.
+	unsigned int first_item;// Index of the first item displayed on the list. 0 based.
 } result_list;
 
 static lindex global_search;
@@ -70,6 +70,7 @@ void search_init()
 	}
 	result_list.count = 0;
 	result_list.first_item = 0;
+	result_list.cur_selected = -1;
 }
 
 int search_load_trigram(void)
@@ -84,17 +85,22 @@ void search_reload()
 	static const char search_result_str[] = "Search results for:";
 	unsigned int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-	unsigned int available_count = result_list.count - result_list.first_item;
+	unsigned int available_count;
 	int y_pos, len;
 	char * result;
 
-	DP(DBG_SEARCH, ("O search_reload() screen_display_count %u cur_selected %u available_count %u\n", screen_display_count, result_list.cur_selected, available_count));
+	DP(DBG_SEARCH, ("O search_reload() screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
 	guilib_fb_lock();
 	guilib_clear();
 	render_string(0, 1, 10, search_result_str, strlen(search_result_str));
+
+	if (!search_str_len) goto out;
+
 	render_string(0, 87, 10, search_string, strlen(search_string));
 	y_pos = RESULT_START;
 
+	int found = 0;
+	available_count = result_list.count - result_list.first_item;
 	while (available_count < screen_display_count && 
 		result_list.count < MAX_RESULTS && 
 		(result = search_fetch_result())) {
@@ -103,13 +109,19 @@ void search_reload()
 		result_list.list[result_list.count][len] = 0;
 		++result_list.count;
 		++available_count;
+		found = 1;
 	}
 	
+	if (!found && result_list.count - 2 < result_list.cur_selected + result_list.first_item) {
+		--result_list.first_item;
+		++available_count;
+	}
 	if (result_list.count) {
 		unsigned int i;
 		unsigned int count = available_count < screen_display_count ?
 					available_count : screen_display_count;
 
+		
 		for (i = result_list.first_item; i < count+result_list.first_item; i++) {
 			render_string(0, 1, y_pos, result_list.list[i], strlen(result_list.list[i]) - TARGET_SIZE);
 			y_pos += RESULT_HEIGHT;
@@ -118,7 +130,7 @@ void search_reload()
 			result_list.cur_selected = count - 1;
 		invert_selection(result_list.cur_selected, -1);
 	}
-	
+out:
 	guilib_fb_unlock();
 }
 
@@ -152,13 +164,18 @@ void search_add_char(char c)
  */
 void search_remove_char(void)
 {
+	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
 	if (search_str_len == 0)
 		return;
+
 	search_string[--search_str_len] = '\0';
 	memset(&state, 0, sizeof(state));
 	first_hit = 0;
 	prepare_search(&global_search, search_string, &state);
-	result_list.cur_selected = 0;
+	if (search_str_len == 0)
+		result_list.cur_selected = -1;
+	else
+		result_list.cur_selected = 0;
 	result_list.first_item = 0;
 	result_list.count = 0;
 }
@@ -170,6 +187,11 @@ void search_select_down(void)
 	unsigned int available_count = result_list.count - result_list.first_item;
 	unsigned int actual_display_count = available_count < screen_display_count ?
 					available_count : screen_display_count;
+
+	DP(DBG_SEARCH, ("O search_select_down() cur_selected %d\n", result_list.cur_selected));
+	/* no selection, do nothing */
+	if (result_list.cur_selected < 0)
+		return;
 
 	/* bottom reached, not wrapping around */
 	if (result_list.cur_selected + 1 < actual_display_count ) {
@@ -186,12 +208,20 @@ void search_select_down(void)
 
 void search_select_up(void)
 {
-	/* top reached, not wrapping around */
-	if (result_list.cur_selected <= 0)
+	DP(DBG_SEARCH, ("O search_select_up() cur_selected %d\n", result_list.cur_selected));
+	/* no selection, do nothing */
+	if (result_list.cur_selected < 0)
 		return;
 
-	invert_selection(result_list.cur_selected, result_list.cur_selected - 1);
-	--result_list.cur_selected;
+	if (result_list.cur_selected > 0) {
+		invert_selection(result_list.cur_selected, result_list.cur_selected - 1);
+		--result_list.cur_selected;
+	}
+	else if (result_list.first_item > 0) {
+		--result_list.first_item;
+		search_reload();
+		keyboard_paint();
+	}
 }
 
 const char *search_current_target(void)
