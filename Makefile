@@ -31,8 +31,8 @@ BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
-DL=./toolchain/dl
-export PATH:=$(PWD)/install/bin:$(PATH)
+DL=./host-tools/toolchain-download
+export PATH:=$(PWD)/host-tools/toolchain-install/bin:$(PATH)
 
 CONFIG_FILE := "common/config.h"
 CONFIG_FILE_DEFAULT := "common/config.h-default"
@@ -96,42 +96,42 @@ binutils-download:
 	touch $@
 
 binutils-patch: binutils-download
-	mkdir -p install
-	rm -rf toolchain/binutils-$(BINUTILS_PACKAGE)
-	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C toolchain/
-	( cd toolchain && \
+	mkdir -p host-tools/toolchain-install
+	rm -rf host-tools/binutils-$(BINUTILS_PACKAGE)
+	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C host-tools/
+	( cd host-tools && \
 	cd binutils-$(BINUTILS_VERSION) && \
-	cat ../../host-tools/patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
-	cat ../../host-tools/patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
+	cat ../toolchain-patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
+	cat ../toolchain-patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
 	touch $@
 
 binutils: binutils-patch
-	(cd toolchain && \
+	(cd host-tools && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	mkdir -p build && \
 	cd build  && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/host-tools/toolchain-install --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install)
 	touch $@
 
 gcc-patch: gcc-download
-	mkdir -p install
-	tar -xvzf $(DL)/$(GCC_PACKAGE) -C toolchain/
-	( cd toolchain && \
+	mkdir -p host-tools/toolchain-install
+	tar -xvzf $(DL)/$(GCC_PACKAGE) -C host-tools/
+	( cd host-tools && \
 	cd gcc-$(GCC_VERSION) && \
-	cat ../../host-tools/patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
-	cat ../../host-tools/patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
-	cat ../../host-tools/patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
+	cat ../toolchain-patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
+	cat ../toolchain-patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
+	cat ../toolchain-patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
 	touch $@
 
 gcc: binutils gcc-patch
-	( cd toolchain && \
-	export PATH=$(PWD)/install/bin:$(PATH) && \
+	( cd host-tools && \
+	export PATH=$(PWD)/host-tools/toolchain-install/bin:$(PATH) && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/install --target=c33-epson-elf --enable-languages=c && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/host-tools/toolchain-install --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install)
 	touch $@
