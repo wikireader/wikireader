@@ -77,7 +77,7 @@ mahatma: mini-libc fatfs
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
 mini-libc: gcc
-	$(MAKE) -C toolchain/mini-libc/
+	$(MAKE) -C samo-lib/mini-libc/
 
 .PHONY: fatfs
 
@@ -191,7 +191,7 @@ complete-clean: clean clean-toolchain
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
-	$(MAKE) clean -C toolchain/mini-libc
+	$(MAKE) clean -C samo-lib/mini-libc
 	$(MAKE) clean -C host-tools/jackknife
 	$(MAKE) clean -C host-tools/e07load
 	$(MAKE) clean -C mbr
@@ -225,7 +225,7 @@ bootloader:		compile bootloader.\n\
 toppers:		compile a toppers kernel.\n\
 binutils: 		compile binutils.\n\
 gcc:			compile gcc.\n\
-mini-libc:			compile mini-libc (libc.a).\n\
+mini-libc:		compile mini-libc (libc.a).\n\
 flash-bootloader: 	flash bootloader to you E07 board\n\
 				-make sure the serial console is /dev/ttyUSB0.\n\
 qt4-simulator		compile the Qt4 simulator\n\
