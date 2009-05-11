@@ -1,4 +1,4 @@
-INCLUDES = -I../../toolchain/mini-libc/include -I../../common
+INCLUDES = -I../../samo-lib/mini-libc/include -I../../common
 LDFLAGS = -static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS = -Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 VPATH = src

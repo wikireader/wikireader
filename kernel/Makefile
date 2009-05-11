@@ -20,7 +20,7 @@ PROFILER_ON = -DPROFILER_ON
 
 WIKILIBDIR=../wiki-lib/
 GUILIBDIR=../gui-lib/
-LIBDIR=../toolchain/mini-libc
+LIBDIR=../samo-lib/mini-libc
 FATFSDIR=../samo-lib/fatfs
 FATFS_MODE = read-write
 INDEX_DIR=../host-tools/indexing/locate

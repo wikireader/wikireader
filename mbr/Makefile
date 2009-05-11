@@ -1,4 +1,4 @@
-LIBDIR = ../toolchain/mini-libc
+LIBDIR = ../samo-lib/mini-libc
 FATFSDIR = ../samo-lib/fatfs
 FATFS_MODE = read-only
 COMMON = ../common
