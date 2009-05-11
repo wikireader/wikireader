@@ -18,6 +18,7 @@
 
 #define APPLICATION_TITLE "boot menu"
 
+#include <stdbool.h>
 #include "application.h"
 #include "lcd.h"
 #include "eeprom.h"
@@ -26,9 +27,9 @@
 
 struct guilib_image
 {
-	u32 width;
-	u32 height;
-	u8 data[];
+	uint32_t width;
+	uint32_t height;
+	uint8_t data[];
 };
 #include "splash.h"
 
@@ -36,7 +37,7 @@ struct guilib_image
 #define HEADER_MAGIC  0x4f4d4153
 
 struct {
-	u32 magic;
+	uint32_t magic;
 	char name[32];
 } header;
 
@@ -45,6 +46,7 @@ static const char spinner[4] = "-\\|/";
 
 int process(int block, int status);
 void print_cpu_type(void);
+void battery_status(void);
 
 
 // this must be the first executable code as the loader executes from the first program address
@@ -59,11 +61,11 @@ ReturnType menu(int block, int status)
 	APPLICATION_FINALISE(i, 0);
 }
 
-static void fill(u8 value)
+static void fill(uint8_t value)
 {
 	int x = 0;
 	int y = 0;
-	u8 *fb = (u8*)LCD_VRAM;
+	uint8_t *fb = (uint8_t*)LCD_VRAM;
 
 	for (y = 0; y < LCD_HEIGHT_LINES; ++y) {
 		for (x = 0; x < LCD_VRAM_WIDTH_BYTES; ++x) {
@@ -71,14 +73,14 @@ static void fill(u8 value)
 		}
 	}
 }
-static void display_image(u8 background, u8 toggle)
+static void display_image(uint8_t background, uint8_t toggle)
 {
 	int xOffset = (LCD_WIDTH_PIXELS - splash_image.width) / (2 * 8);
-	u8 *fb = (u8*)LCD_VRAM;
+	uint8_t *fb = (uint8_t*)LCD_VRAM;
 	unsigned int y = 0;
 	unsigned int x = 0;
 	unsigned int width = (splash_image.width + 7) / 8;
-	const u8 *src = splash_image.data;
+	const uint8_t *src = splash_image.data;
 
 	fill(background);
 	fb += (LCD_HEIGHT_LINES - splash_image.height) / 2 * LCD_VRAM_WIDTH_BYTES;
@@ -94,7 +96,7 @@ int process(int block, int status)
 {
 	int i = 0;
 	int k = 0;
-	u8 valid[MAXIMUM_BLOCKS] = {0};
+	uint8_t valid[MAXIMUM_BLOCKS] = {0};
 
 	display_image(0x00, 0xff);
 
@@ -112,6 +114,7 @@ int process(int block, int status)
 				delay_us(10000);
 				print_char(spinner[k]);
 				print_char('\x08');
+				battery_status();
 			}
 			if (serial_input_available()) {
 				status = 0;
@@ -143,6 +146,9 @@ int process(int block, int status)
 		}
 		print("\nEnter selection: ");
 		for (;;) {
+			while (!serial_input_available()) {
+				battery_status();
+			}
 			k = serial_input_char();
 			if ('A' <= k && 'Z' >= k) {
 				k += 'a' - 'A';
@@ -203,4 +209,64 @@ void print_cpu_type(void)
 	print_byte(MODEL_ID);
 	print(" V 0x");
 	print_byte(VERSION_ID);
+}
+
+
+void battery_status(void)
+{
+	static bool initialised;
+	uint8_t *fb = (uint8_t*)LCD_VRAM;
+	static const char pos[] = {
+		0x03, 0x02, 0x02, 0x0e,
+		0x08, 0x08, 0x08, 0x08,
+		0x0e, 0x02, 0x02, 0x03,
+	};
+	static const char neg[] = {
+		0xff, 0xff, 0xfc
+	};
+	static const char body[] = {
+		0x00, 0x00, 0x04
+	};
+	register int i;
+	register int j;
+	register uint32_t indicator = 0;
+
+	unsigned int v = get_battery_voltage();
+	if (v < BATTERY_EMPTY) {
+		v = BATTERY_EMPTY;
+	} else if (v > BATTERY_FULL) {
+		v = BATTERY_FULL;
+	}
+
+	int full = 20 * (v - BATTERY_EMPTY) / (BATTERY_FULL - BATTERY_EMPTY);
+
+	if (!initialised) {
+		uint8_t *p = fb + 2 * LCD_VRAM_WIDTH_BYTES;
+		initialised = true;
+		for (i = 0; i < sizeof(pos); ++i) {
+			p[0] = pos[i];
+			if (0 == i || sizeof(pos) - 1 == i) {
+				for (j = 0; j < sizeof(neg); ++j) {
+					p[j + 1] = neg[j];
+				}
+			} else {
+				for (j = 0; j < sizeof(body); ++j) {
+					p[j + 1] = body[j];
+				}
+			}
+			p += LCD_VRAM_WIDTH_BYTES;
+		}
+
+	}
+	for (i = 0; i < full; ++i) {
+		indicator |= 0x10 << i;
+	}
+
+	fb += 4 * LCD_VRAM_WIDTH_BYTES;
+	for (i = 0; i < 8; ++i) {
+		fb[1] = indicator >> 16;
+		fb[2] = indicator >> 8;
+		fb[3] = (indicator >> 0) | 0x04;
+		fb += LCD_VRAM_WIDTH_BYTES;
+	}
 }
