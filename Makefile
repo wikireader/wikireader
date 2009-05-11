@@ -46,7 +46,7 @@ endif
 
 .PHONY: all
 all:    mini-libc \
-	bootloader \
+	mbr \
 	kernel \
 	qt4-simulator \
 	console-simulator
@@ -181,7 +181,8 @@ mbr-rs232: gcc fatfs
 
 .PHONY: flash-mbr
 flash-mbr: mbr
-	$(MAKE) -C bootloader rs232 e07load/e07load
+	$(MAKE) -C host-tools/e07load
+	$(MAKE) -C host-tools/jackknife
 	$(MAKE) -C mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
 
 # ----- clean and help --------------------------------------
@@ -190,8 +191,10 @@ complete-clean: clean clean-toolchain
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
-	$(MAKE) clean -C bootloader
 	$(MAKE) clean -C toolchain/mini-libc
+	$(MAKE) clean -C host-tools/jackknife
+	$(MAKE) clean -C host-tools/e07load
+	$(MAKE) clean -C mbr
 	$(MAKE) clean -C fatfs
 	$(MAKE) clean -C mbr
 	$(MAKE) clean -C forth

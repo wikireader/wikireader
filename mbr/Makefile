@@ -2,12 +2,12 @@ LIBDIR = ../toolchain/mini-libc
 FATFSDIR = ../fatfs
 FATFS_MODE = read-only
 COMMON = ../common
-BOOTLOADER = ../bootloader
+HOST_TOOLS = ../host-tools
 WIKILIB_DIR = ../wiki-lib
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
-E07LOAD ?= ${BOOTLOADER}/e07load/e07load
-RS232 ?= ${BOOTLOADER}/rs232
+E07LOAD ?= ${HOST_TOOLS}/e07load/e07load
+RS232 ?= ${HOST_TOOLS}/jackknife/rs232
 
 LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a
 LIBS += $(LIBDIR)/lib/libc.a
