@@ -97,8 +97,11 @@ static inline void init_rs232_ch1(void)
 
 #define VADC_MULTIPLIER (VADC_DIVISOR * (ADC_SERIES_RESISTOR_K + ADC_SHUNT_RESISTOR_K) / ADC_SHUNT_RESISTOR_K)
 
+#define BATTERY_FULL 3000
+#define BATTERY_EMPTY 2000
+
 /* returns the battery voltage, in mV */
-static inline int get_battery_voltage(void)
+static inline unsigned int get_battery_voltage(void)
 {
 	unsigned int val;
 
@@ -142,12 +145,12 @@ static inline int get_battery_voltage(void)
 	return (val * (VADC_MULTIPLIER * AVDD_MILLIVOLTS)) / (ADC_FULL_SCALE * VADC_DIVISOR);
 }
 #else
-static inline int get_battery_voltage(void)
+static inline unsigned int get_battery_voltage(void)
 {
 	/* return some sane value for platforms with no hardware support
 	 * for voltage measurement so the logic using this function will
 	 * not bail. */
-	return 3000;
+	return BATTERY_FULL;
 }
 #endif
 
