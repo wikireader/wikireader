@@ -89,7 +89,7 @@ void search_reload()
 	int y_pos, len;
 	char * result;
 
-	DP(DBG_SEARCH, ("O search_reload() screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
+	DP(DBG_SEARCH, ("O search_reload() start: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
 	guilib_fb_lock();
 	guilib_clear();
 	render_string(0, 1, 10, search_result_str, strlen(search_result_str));
@@ -111,8 +111,14 @@ void search_reload()
 		++available_count;
 		found = 1;
 	}
+
+	if (!result_list.count) {
+		result_list.cur_selected = -1;
+		result_list.first_item = 0;
+		goto out;
+	}
 	
-	if (!found && result_list.count - 2 < result_list.cur_selected + result_list.first_item) {
+	if (!found && result_list.first_item+result_list.cur_selected >= result_list.count ) {
 		--result_list.first_item;
 		++available_count;
 	}
@@ -126,11 +132,12 @@ void search_reload()
 			render_string(0, 1, y_pos, result_list.list[i], strlen(result_list.list[i]) - TARGET_SIZE);
 			y_pos += RESULT_HEIGHT;
 		}
-		if (result_list.cur_selected >= count)
-			result_list.cur_selected = count - 1;
+		if (result_list.cur_selected >= screen_display_count)
+			result_list.cur_selected = screen_display_count - 1;
 		invert_selection(result_list.cur_selected, -1);
 	}
 out:
+	DP(DBG_SEARCH, ("O search_reload() end: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
 	guilib_fb_unlock();
 }
 
@@ -188,7 +195,6 @@ void search_select_down(void)
 	unsigned int actual_display_count = available_count < screen_display_count ?
 					available_count : screen_display_count;
 
-	DP(DBG_SEARCH, ("O search_select_down() cur_selected %d\n", result_list.cur_selected));
 	/* no selection, do nothing */
 	if (result_list.cur_selected < 0)
 		return;
@@ -204,6 +210,7 @@ void search_select_down(void)
 		search_reload();
 		keyboard_paint();
 	}
+	DP(DBG_SEARCH, ("O search_select_down() cur_selected %d\n", result_list.cur_selected));
 }
 
 void search_select_up(void)
