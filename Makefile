@@ -61,10 +61,10 @@ bootloader232:mini-libc fatfs
 
 .PHONY: toppers
 toppers: mini-libc fatfs
-	( cd jsp && \
+	( cd samo-lib/toppers-jsp && \
 	$(MAKE) -C cfg && \
 	$(MAKE) -C wikireader && \
-	cp wikireader/sample1.elf ../KERNEL.toppers)
+	cp wikireader/sample1.elf ../../KERNEL.toppers)
 
 .PHONY: kernel
 kernel: mahatma
@@ -199,7 +199,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C mbr
 	$(MAKE) clean -C forth
 	$(MAKE) clean -C kernel
-	cd jsp && $(MAKE) clean -C wikireader
+	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
 
 .PHONY: clean-toolchain
 clean-toolchain:
