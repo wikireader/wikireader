@@ -6,7 +6,7 @@ WIKILIB_DIR = ../../wiki-lib
 INDEX_DIR = ../indexing/locate
 COMMON_DIR = ../../common
 MINILZO_DIR = ../../minilzo
-FATFS_DIR = ../../fatfs
+FATFS_DIR = ../../samo-lib/fatfs
 
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -Werror
 CFLAGS += -I $(WIKILIB_DIR)/include

@@ -23,8 +23,8 @@ INCLUDEPATH += $$TOPLEVEL/wiki-lib/include/
 INCLUDEPATH += $$TOPLEVEL/host-tools/indexing/locate/
 INCLUDEPATH += $$TOPLEVEL/common/
 INCLUDEPATH += $$TOPLEVEL/minilzo/
-INCLUDEPATH += $$TOPLEVEL/fatfs/src
-INCLUDEPATH += $$TOPLEVEL/fatfs/config/c33/read-write
+INCLUDEPATH += $$TOPLEVEL/samo-lib/fatfs/src
+INCLUDEPATH += $$TOPLEVEL/samo-lib/fatfs/config/c33/read-write
 DEPENDPATH = $$INCLUDEPATH
 
 SOURCES += main.cpp \
