@@ -188,6 +188,7 @@ flash-mbr: mbr
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
 complete-clean: clean clean-toolchain
+	rm -f binutils-download gcc-download
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
@@ -203,10 +204,11 @@ clean: clean-qt4-simulator clean-console-simulator
 
 .PHONY: clean-toolchain
 clean-toolchain:
-	rm -rf toolchain/gcc-$(GCC_VERSION)
-	rm -rf toolchain/binutils-$(BINUTILS_VERSION)
-	rm -f binutils-download binutils-patch binutils
-	rm -f gcc-download gcc-patch gcc
+	rm -rf host-tools/toolchain-install
+	rm -rf host-tools/gcc-$(GCC_VERSION)
+	rm -rf host-tools/binutils-$(BINUTILS_VERSION)
+	rm -f binutils-patch binutils
+	rm -f gcc-patch gcc
 
 .PHONY: clean-qt4-simulator
 clean-qt4-simulator:
