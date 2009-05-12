@@ -22,7 +22,7 @@
 #include <wikilib.h>
 #include <regs.h>
 
-#include "wikireader.h"
+#include "samo.h"
 #include "touchscreen.h"
 #include "irq.h"
 

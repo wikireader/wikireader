@@ -22,7 +22,7 @@
 #include "application.h"
 #include "lcd.h"
 #include "eeprom.h"
-#include "wikireader.h"
+#include "samo.h"
 
 
 struct guilib_image

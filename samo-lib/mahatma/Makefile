@@ -24,7 +24,7 @@ LIBDIR=../mini-libc
 FATFSDIR=../fatfs
 FATFS_MODE = read-write
 INDEX_DIR=../../host-tools/indexing/locate
-COMMON=../../common
+SAMO_LIB=../../samo-lib
 MINILZODIR=../minilzo
 
 INCLUDES = -I$(FATFSDIR)/src
@@ -32,7 +32,7 @@ INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
 INCLUDES += -I$(WIKILIBDIR)/include/
 INCLUDES += -I$(GUILIBDIR)/
-INCLUDES += -I../../common/
+INCLUDES += -I../../samo-lib/
 INCLUDES += -I$(INDEX_DIR)
 INCLUDES += -I$(MINILZODIR)/
 
@@ -68,7 +68,7 @@ CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
 
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(COMMON):$(MINILZODIR)
+vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(SAMO_LIB):$(MINILZODIR)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
 OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
@@ -94,4 +94,4 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
 
-include ../../common/Makefile
+include ../../samo-lib/Makefile

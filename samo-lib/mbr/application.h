@@ -21,7 +21,7 @@
 
 #include "regs.h"
 #include "types.h"
-#include "wikireader.h"
+#include "samo.h"
 #include "misc.h"
 
 

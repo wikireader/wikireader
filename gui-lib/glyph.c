@@ -27,7 +27,7 @@
 #include "fontfile.h"
 #include <regs.h>
 #include <lcd.h>
-#include <wikireader.h>
+#include <samo.h>
 
 #include "msg.h"
 

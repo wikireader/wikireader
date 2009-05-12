@@ -34,8 +34,8 @@ BINUTILS_URL= \
 DL=./host-tools/toolchain-download
 export PATH:=$(PWD)/host-tools/toolchain-install/bin:$(PATH)
 
-CONFIG_FILE := "common/config.h"
-CONFIG_FILE_DEFAULT := "common/config.h-default"
+CONFIG_FILE := "samo-lib/config.h"
+CONFIG_FILE_DEFAULT := "samo-lib/config.h-default"
 CONFIG_FILE_EXISTS := $(shell [ -f $(CONFIG_FILE) ] && echo 1)
 
 ifeq ($(CONFIG_FILE_EXISTS),)
@@ -48,8 +48,7 @@ endif
 all:    mini-libc \
 	mbr \
 	mahatma \
-	qt4-simulator \
-	console-simulator
+	qt4-simulator
 
 .PHONY: bootloader
 bootloader:mini-libc fatfs

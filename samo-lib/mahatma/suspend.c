@@ -17,7 +17,7 @@
  */
 
 #include "regs.h"
-#include "wikireader.h"
+#include "samo.h"
 #include "irq.h"
 #include "diskio.h"
 #include "suspend.h"

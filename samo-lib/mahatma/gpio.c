@@ -20,7 +20,7 @@
 #include <input.h>
 #include <regs.h>
 #include <msg.h>
-#include <wikireader.h>
+#include <samo.h>
 #include <wikilib.h>
 
 

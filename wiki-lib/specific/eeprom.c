@@ -18,7 +18,7 @@
 
 #include "regs.h"
 #include "types.h"
-#include "wikireader.h"
+#include "samo.h"
 #include "eeprom.h"
 
 static u8 spi_transmit(u8 out)

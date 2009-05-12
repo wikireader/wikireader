@@ -10,7 +10,7 @@
 /*-----------------------------------------------------------------------*/
 
 #include <regs.h>
-#include <wikireader.h>
+#include <samo.h>
 #include "diskio.h"
 #include "ff_config.h"
 

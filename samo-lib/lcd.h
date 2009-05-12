@@ -1,7 +1,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "wikireader.h"
+#include "samo.h"
 
 void init_lcd(void);
 

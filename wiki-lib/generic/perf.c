@@ -27,7 +27,7 @@
 #include <diskio.h>
 #include <file-io.h>
 #include <regs.h>
-#include <wikireader.h>
+#include <samo.h>
 #include <stdlib.h>
 #include <malloc-simple.h>
 #include <msg.h>

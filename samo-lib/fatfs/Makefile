@@ -1,4 +1,4 @@
-INCLUDES = -I../../samo-lib/mini-libc/include -I../../common
+INCLUDES = -I../../samo-lib/mini-libc/include -I../../samo-lib
 LDFLAGS = -static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS = -Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 VPATH = src
@@ -26,7 +26,7 @@ build-$(strip ${1}): Makefile
 	@echo VPATH = ../src >> $$@/Makefile
 	@echo INCLUDES += -I../config/c33/$(strip ${1})/ >> $$@/Makefile
 	@echo TARGETS = all >> $$@/Makefile
-	@echo include ../../../common/Makefile >> $$@/Makefile
+	@echo include ../../../samo-lib/Makefile >> $$@/Makefile
 endef
 
 # macros to generate rules
@@ -55,9 +55,8 @@ $(call MAKE_RULE,read-write,tff.o)
 $(call MAKE_RULE,read-write,mmc.o)
 $(call MAKE_RULE,read-write,GetFATTime.o)
 
-
 clean:
 	$(RM) *.[do] *.asm33
 	$(RM) -r $(foreach type, ${TYPE_LIST}, build-${type})
 
-include ../../common/Makefile
+include ../../samo-lib/Makefile

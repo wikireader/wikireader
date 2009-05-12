@@ -2,10 +2,9 @@ LIB_PREFIX=../../samo-lib
 LIBDIR=${LIB_PREFIX}/mini-libc
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 OBJCOPY_FLAGS=-I elf32-c33 -O binary
-CFLAGS += -I../../common -I${LIBDIR}/include
+CFLAGS += -I../../samo-lib -I${LIBDIR}/include
 
 TARGETS=rs232
-
 
 all: $(TARGETS)
 
@@ -18,5 +17,5 @@ rs232: rs232.elf
 clean:
 	rm -fr $(TARGETS) *.o *.elf *.bin *.d *.asm33
 
-include ../../common/Makefile
+include ../../samo-lib/Makefile
 

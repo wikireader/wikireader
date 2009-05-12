@@ -19,7 +19,7 @@
 #include <types.h>
 #include <misc.h>
 #include "regs.h"
-#include "wikireader.h"
+#include "samo.h"
 #include "lcd.h"
 
 

@@ -1,7 +1,7 @@
 LIBDIR = ../mini-libc
 FATFSDIR = ../fatfs
 FATFS_MODE = read-only
-COMMON = ../../common
+SAMO_LIB = ../../samo-lib
 HOST_TOOLS = ../../host-tools
 WIKILIB_DIR = ../../wiki-lib
 
@@ -18,7 +18,7 @@ LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 INCLUDES = -I$(FATFSDIR)/src
 INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(COMMON) -I$(WIKILIB_DIR)/include
+INCLUDES += -I$(SAMO_LIB) -I$(WIKILIB_DIR)/include
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
@@ -30,7 +30,7 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH = $(COMMON) $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific
+VPATH = $(SAMO_LIB) $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific
 
 .PHONY: all
 all: $(TARGETS) all-applications
@@ -107,4 +107,4 @@ clean:
 %.header: %.c
 	awk -f ../../scripts/GenerateApplicationHeader.awk "$<" >"$@"
 
-include ../../common/Makefile
+include ../../samo-lib/Makefile

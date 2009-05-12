@@ -26,7 +26,7 @@
 #include <string.h>
 #include <msg.h>
 #include <regs.h>
-#include <wikireader.h>
+#include <samo.h>
 
 
 #if PROFILER_ON

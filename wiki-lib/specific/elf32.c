@@ -18,7 +18,7 @@
 
 #include "regs.h"
 #include "types.h"
-#include "wikireader.h"
+#include "samo.h"
 #include "misc.h"
 #include <tff.h>
 #include <string.h>
