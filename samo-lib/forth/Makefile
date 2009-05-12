@@ -26,7 +26,7 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export PATH:=../install/bin:${PATH}
+export PATH:=../../host-tools/toolchain-install/bin:${PATH}
 
 CROSS = c33-epson-elf-
 CROSS_GCC = ${CROSS}gcc
@@ -36,9 +36,8 @@ CROSS_STRIP = ${CROSS}strip
 CROSS_OBJDUMP = ${CROSS}objdump
 CROSS_OBJCOPY = ${CROSS}objcopy
 
-
-COMMON = ../common
-LIB_PREFIX = ../samo-lib
+COMMON = ../../common
+LIB_PREFIX = ..
 
 FATFSDIR = ${LIB_PREFIX}/fatfs
 FATFS_SRC = ${FATFSDIR}/src
@@ -76,6 +75,4 @@ clean:
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
-
-
-include ../common/Makefile
+include ../../common/Makefile

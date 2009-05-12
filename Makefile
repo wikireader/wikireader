@@ -169,7 +169,7 @@ print-flash-config:
 
 .PHONY: forth
 forth:  gcc mini-libc
-	$(MAKE) -C forth
+	$(MAKE) -C samo-lib/forth
 
 .PHONY: mbr
 mbr: gcc fatfs
@@ -198,7 +198,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C mbr
 	$(MAKE) clean -C samo-lib/fatfs
 	$(MAKE) clean -C mbr
-	$(MAKE) clean -C forth
+	$(MAKE) clean -C samo-lib/forth
 	$(MAKE) clean -C kernel
 	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
 
