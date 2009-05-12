@@ -18,13 +18,13 @@
 # (de)activate profiling
 PROFILER_ON = -DPROFILER_ON
 
-WIKILIBDIR=../wiki-lib/
-GUILIBDIR=../gui-lib/
-LIBDIR=../samo-lib/mini-libc
-FATFSDIR=../samo-lib/fatfs
+WIKILIBDIR=../../wiki-lib/
+GUILIBDIR=../../gui-lib/
+LIBDIR=../mini-libc
+FATFSDIR=../fatfs
 FATFS_MODE = read-write
-INDEX_DIR=../host-tools/indexing/locate
-COMMON=../common
+INDEX_DIR=../../host-tools/indexing/locate
+COMMON=../../common
 MINILZODIR=../minilzo
 
 INCLUDES = -I$(FATFSDIR)/src
@@ -32,7 +32,7 @@ INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
 INCLUDES += -I$(WIKILIBDIR)/include/
 INCLUDES += -I$(GUILIBDIR)/
-INCLUDES += -I../common/
+INCLUDES += -I../../common/
 INCLUDES += -I$(INDEX_DIR)
 INCLUDES += -I$(MINILZODIR)/
 
@@ -59,10 +59,10 @@ MINILZO_COBJS = minilzo.o
 # convert the keyboard file
 PNM2PLAIN_NAME = pnmtoplainpnm
 PNM2PLAIN_PATH := $(shell which $(PNM2PLAIN_NAME))
-KBD_IMG_SRC_P4 = ../images/keyboard_abc_mono2.pbm
-KBD_IMG_SRC_P1 = ../images/keyboard_abc_mono2-plain.pbm
+KBD_IMG_SRC_P4 = ../../images/keyboard_abc_mono2.pbm
+KBD_IMG_SRC_P1 = ../../images/keyboard_abc_mono2-plain.pbm
 KBD_IMG_INC = $(WIKILIBDIR)include/keyboard_image.h
-KBD_CONVERT = ../scripts/kbd_to_include.py
+KBD_CONVERT = ../../scripts/kbd_to_include.py
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
@@ -94,4 +94,4 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
 
-include ../common/Makefile
+include ../../common/Makefile

@@ -47,7 +47,7 @@ endif
 .PHONY: all
 all:    mini-libc \
 	mbr \
-	kernel \
+	mahatma \
 	qt4-simulator \
 	console-simulator
 
@@ -66,13 +66,10 @@ toppers: mini-libc fatfs
 	$(MAKE) -C wikireader && \
 	cp wikireader/sample1.elf ../../KERNEL.toppers)
 
-.PHONY: kernel
-kernel: mahatma
-
 .PHONY: mahatma
 mahatma: mini-libc fatfs
-	$(MAKE) -C kernel
-	cp -p kernel/mahatma.elf KERNEL
+	$(MAKE) -C samo-lib/mahatma
+	cp -p samo-lib/mahatma/mahatma.elf KERNEL
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
@@ -137,11 +134,11 @@ gcc: binutils gcc-patch
 	touch $@
 
 .PHONY: qt4-simulator
-qt4-simulator: kernel
+qt4-simulator: mahatma
 	( cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE) )
 
 .PHONY: console-simulator
-console-simulator: kernel
+console-simulator: mahatma
 	( cd host-tools/console-simulator && $(MAKE) )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
@@ -199,7 +196,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/fatfs
 	$(MAKE) clean -C mbr
 	$(MAKE) clean -C samo-lib/forth
-	$(MAKE) clean -C kernel
+	$(MAKE) clean -C samo-lib/mahatma
 	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
 
 .PHONY: clean-toolchain
