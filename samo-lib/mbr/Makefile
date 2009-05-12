@@ -105,6 +105,6 @@ clean:
 
 # application headers
 %.header: %.c
-	awk -f ../../scripts/GenerateApplicationHeader.awk "$<" >"$@"
+	awk -f ../GenerateApplicationHeader.awk "$<" >"$@"
 
-include ../../samo-lib/Makefile
+include ../Makefile
