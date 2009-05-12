@@ -36,14 +36,14 @@ CROSS_STRIP = ${CROSS}strip
 CROSS_OBJDUMP = ${CROSS}objdump
 CROSS_OBJCOPY = ${CROSS}objcopy
 
-COMMON = ../../common
+SAMO_LIB = ../../samo-lib
 LIB_PREFIX = ..
 
 FATFSDIR = ${LIB_PREFIX}/fatfs
 FATFS_SRC = ${FATFSDIR}/src
 LIBDIR = ${LIB_PREFIX}/mini-libc
 
-INCLUDES += -I${COMMON}
+INCLUDES += -I${SAMO_LIB}
 INCLUDES += -I${FATFS_SRC}
 INCLUDES += -I$(LIBDIR)/include
 
@@ -56,7 +56,7 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-vpath %.c :${COMMON}:${FATFS_SRC}
+vpath %.c :${SAMO_LIB}:${FATFS_SRC}
 
 
 all: forth.elf
@@ -75,4 +75,4 @@ clean:
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
-include ../../common/Makefile
+include ../../samo-lib/Makefile

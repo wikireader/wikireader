@@ -18,21 +18,19 @@
 # (de)activate profiling
 PROFILER_ON = -DPROFILER_ON
 
-WIKILIBDIR=../../wiki-lib/
-GUILIBDIR=../../gui-lib/
+WIKI_APP=../../wiki-app/
 LIBDIR=../mini-libc
 FATFSDIR=../fatfs
 FATFS_MODE = read-write
 INDEX_DIR=../../host-tools/indexing/locate
-SAMO_LIB=../../samo-lib
+SAMO_LIB=..
 MINILZODIR=../minilzo
 
 INCLUDES = -I$(FATFSDIR)/src
 INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(WIKILIBDIR)/include/
-INCLUDES += -I$(GUILIBDIR)/
-INCLUDES += -I../../samo-lib/
+INCLUDES += -I$(WIKI_APP)/
+INCLUDES += -I../
 INCLUDES += -I$(INDEX_DIR)
 INCLUDES += -I$(MINILZODIR)/
 
@@ -42,13 +40,13 @@ LIBS += `$(CC) -print-libgcc-file-name`
 
 GUILIB_COBJS = guilib.o glyph.o fontfile.o
 
-WIKILIB_COBJS = file-io-general.o file-io-libfat.o
-WIKILIB_COBJS += wikilib.o malloc-simple.o hexdump.o
-WIKILIB_COBJS += decompress.o keyboard.o
+WIKIAPP_COBJS = file-io-general.o file-io-libfat.o
+WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o
+WIKIAPP_COBJS += decompress.o keyboard.o
 
 # searching
-WIKILIB_COBJS += search.o lsearcher.o fast_search.o
-WIKILIB_COBJS += article.o history.o wom_reader.o
+WIKIAPP_COBJS += search.o lsearcher.o fast_search.o
+WIKIAPP_COBJS += article.o history.o wom_reader.o
 
 # minilzo
 MINILZO_COBJS = minilzo.o
@@ -61,18 +59,18 @@ PNM2PLAIN_NAME = pnmtoplainpnm
 PNM2PLAIN_PATH := $(shell which $(PNM2PLAIN_NAME))
 KBD_IMG_SRC_P4 = ../../images/keyboard_abc_mono2.pbm
 KBD_IMG_SRC_P1 = ../../images/keyboard_abc_mono2-plain.pbm
-KBD_IMG_INC = $(WIKILIBDIR)include/keyboard_image.h
+KBD_IMG_INC = $(WIKI_APP)/keyboard_image.h
 KBD_CONVERT = ../../scripts/kbd_to_include.py
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
 
-vpath %.c $(GUILIBDIR):$(WIKILIBDIR)/generic:$(WIKILIBDIR)/specific:$(INDEX_DIR):$(SAMO_LIB):$(MINILZODIR)
+vpath %.c $(WIKI_APP):$(INDEX_DIR):$(SAMO_LIB):$(MINILZODIR)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
 OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
-OBJECTS += $(GUILIB_COBJS) $(WIKILIB_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
+OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 ifeq ($(PNM2PLAIN_PATH),)
 $(error Could not find $(PNM2PLAIN_NAME) - please install netpbm)
@@ -94,4 +92,4 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
 
-include ../../samo-lib/Makefile
+include ../Makefile

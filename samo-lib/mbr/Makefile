@@ -3,7 +3,7 @@ FATFSDIR = ../fatfs
 FATFS_MODE = read-only
 SAMO_LIB = ../../samo-lib
 HOST_TOOLS = ../../host-tools
-WIKILIB_DIR = ../../wiki-lib
+WIKI_APP = ../../wiki-app
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 E07LOAD ?= ${HOST_TOOLS}/e07load/e07load
@@ -18,7 +18,7 @@ LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 INCLUDES = -I$(FATFSDIR)/src
 INCLUDES += -I$(LIBDIR)/include/
 INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(SAMO_LIB) -I$(WIKILIB_DIR)/include
+INCLUDES += -I$(SAMO_LIB) -I$(WIKI_APP)
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
@@ -30,7 +30,7 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH = $(SAMO_LIB) $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific
+VPATH = $(SAMO_LIB) $(WIKI_APP)
 
 .PHONY: all
 all: $(TARGETS) all-applications
