@@ -57,8 +57,8 @@ MINILZO_COBJS = minilzo.o
 # convert the keyboard file
 PNM2PLAIN_NAME = pnmtoplainpnm
 PNM2PLAIN_PATH := $(shell which $(PNM2PLAIN_NAME))
-KBD_IMG_SRC_P4 = ../../images/keyboard_abc_mono2.pbm
-KBD_IMG_SRC_P1 = ../../images/keyboard_abc_mono2-plain.pbm
+KBD_IMG_SRC_P4 = $(WIKI_APP)/keyboard_abc_mono2.pbm
+KBD_IMG_SRC_P1 = $(WIKI_APP)/keyboard_abc_mono2-plain.pbm
 KBD_IMG_INC = $(WIKI_APP)/keyboard_image.h
 KBD_CONVERT = ../../scripts/kbd_to_include.py
 
