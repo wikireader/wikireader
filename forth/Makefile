@@ -38,9 +38,11 @@ CROSS_OBJCOPY = ${CROSS}objcopy
 
 
 COMMON = ../common
-FATFSDIR = ../fatfs
+LIB_PREFIX = ../samo-lib
+
+FATFSDIR = ${LIB_PREFIX}/fatfs
 FATFS_SRC = ${FATFSDIR}/src
-LIBDIR=../toolchain/mini-libc
+LIBDIR = ${LIB_PREFIX}/mini-libc
 
 INCLUDES += -I${COMMON}
 INCLUDES += -I${FATFS_SRC}
