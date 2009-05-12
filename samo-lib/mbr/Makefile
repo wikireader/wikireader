@@ -1,9 +1,9 @@
-LIBDIR = ../samo-lib/mini-libc
-FATFSDIR = ../samo-lib/fatfs
+LIBDIR = ../mini-libc
+FATFSDIR = ../fatfs
 FATFS_MODE = read-only
-COMMON = ../common
-HOST_TOOLS = ../host-tools
-WIKILIB_DIR = ../wiki-lib
+COMMON = ../../common
+HOST_TOOLS = ../../host-tools
+WIKILIB_DIR = ../../wiki-lib
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 E07LOAD ?= ${HOST_TOOLS}/e07load/e07load
@@ -43,7 +43,6 @@ $(FLASH_ROM_MAP_FILE):
 mbr.o: mbr.c
 	$(GCC) -c $(CFLAGS) $<
 
-
 mbr.elf: mbr.o eeprom.o
 	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
 
@@ -65,7 +64,6 @@ mbr-rs232: SAMO_A1.mapfile-rs232 mbr
 
 MAKE_APP = $(eval $(call MAKE_APP1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
-
 define MAKE_APP1
 
 APPLICATIONS += ${1}
@@ -78,7 +76,6 @@ ${1}: ${1}.elf ${1}.header
 	$$(OBJCOPY) $$(OBJCOPY_FLAGS) $${OBJCOPY_SECTIONS} $$< $$@
 endef
 
-
 # Applications for the boot loader
 
 $(call MAKE_APP,menu,misc.o lcd.o, splash.h)
@@ -90,29 +87,24 @@ $(call MAKE_APP,kernel-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
 $(call MAKE_APP,lcd-test,misc.o lcd.o)
 
-
 # application pre-depends
 
 splash.h: splash.png
-	../host-tools/imagetool/imagetool.py splash.png splash.h splash_image
-
+	$(HOST_TOOLS)/imagetool/imagetool.py splash.png splash.h splash_image
 
 # rule to build all above applications
 
 .PHONY: all-applications
 all-applications: ${APPLICATIONS}
 
-
 flash-mbr: all
 	time ${E07LOAD} --tty="${BOOTLOADER_TTY}" --bootstrap="${RS232}" "${FLASH_ROM_MAP_FILE}"
-
 
 clean:
 	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h
 
 # application headers
 %.header: %.c
-	awk -f ../scripts/GenerateApplicationHeader.awk "$<" >"$@"
+	awk -f ../../scripts/GenerateApplicationHeader.awk "$<" >"$@"
 
-
-include ../common/Makefile
+include ../../common/Makefile

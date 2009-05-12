@@ -170,17 +170,17 @@ forth:  gcc mini-libc
 
 .PHONY: mbr
 mbr: gcc fatfs
-	$(MAKE) -C $@
+	$(MAKE) -C samo-lib/mbr
 
 .PHONY: mbr-rs232
 mbr-rs232: gcc fatfs
-	$(MAKE) -C mbr mbr-rs232
+	$(MAKE) -C samo-lib/mbr mbr-rs232
 
 .PHONY: flash-mbr
 flash-mbr: mbr
 	$(MAKE) -C host-tools/e07load
 	$(MAKE) -C host-tools/jackknife
-	$(MAKE) -C mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
+	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
@@ -192,9 +192,8 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/mini-libc
 	$(MAKE) clean -C host-tools/jackknife
 	$(MAKE) clean -C host-tools/e07load
-	$(MAKE) clean -C mbr
+	$(MAKE) clean -C samo-lib/mbr
 	$(MAKE) clean -C samo-lib/fatfs
-	$(MAKE) clean -C mbr
 	$(MAKE) clean -C samo-lib/forth
 	$(MAKE) clean -C samo-lib/mahatma
 	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
