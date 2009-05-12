@@ -149,15 +149,14 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 {
 	UINT num_read;
 	uint8_t cur_x;
-	uint32_t cur_y, bitmap_off;
+	uint32_t cur_y, bitmap_off, next_page_off;
 	int i, j;
 	FRESULT fr;
 
 	if (!womh) goto xout;
 	DP(DBG_WOM_READER, ("O wom\twom_draw() offset_into_articles %u y_start %i lines_to_draw %i\n",
 		offset_into_articles, y_start_in_article, lines_to_draw));
-	if (f_lseek(&womh->fileh, offset_into_articles) != FR_OK) goto xout;
-
+	next_page_off = offset_into_articles;
 	cur_x = cur_y = 0;
 	guilib_fb_lock();
 	guilib_clear();
@@ -165,8 +164,10 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 	for (i = 0;; i++) {
 		if (i == 0 || i >= WOM_PAGE_SIZE) {
 			i = 0;
+			if (f_lseek(&womh->fileh, next_page_off) != FR_OK) goto xout;
 			fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
 			if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
+			next_page_off += num_read;
 		}
 		if (womh->page_buffer[i] == WOM_END_OF_ARTICLE)
 			break;
@@ -179,16 +180,12 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 			continue;
 		}
 		cur_x += womh->page_buffer[i];
-//printf("1 cur_y %lu\n", cur_y);
 		cur_y += (int8_t) womh->page_buffer[i+1];
-//printf("2 cur_y %lu\n", cur_y);
 		bitmap_off = __get_unaligned_4(&womh->page_buffer[i+2]);
 		i+=5;
 
-		if (cur_y >= y_start_in_article + lines_to_draw + 300 /* hack */) {
-//printf("cur_y %lu y_start %i lines_to_draw %i\n", cur_y, y_start_in_article, lines_to_draw);
-break;
-}
+		if (cur_y >= y_start_in_article + lines_to_draw + 300 /* hack */)
+			break;
 
 		if (bitmap_off) {
 			uint8_t bits[2+64];
