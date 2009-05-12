@@ -1,7 +1,0 @@
-- in case the bootloader fails to read a kernel from sd card:
-	- register IRQ handler on CD pin
-	- go to deep sleep
-	- try again to boot when CD toggles
-
-- adaptions to custom design (not to break the original support)
-
