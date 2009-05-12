@@ -1,7 +1,8 @@
-LIBDIR=../../toolchain/mini-libc
+LIB_PREFIX=../../samo-lib
+LIBDIR=${LIB_PREFIX}/mini-libc
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
 OBJCOPY_FLAGS=-I elf32-c33 -O binary
-CFLAGS += -I../../common -I../../toolchain/mini-libc/include
+CFLAGS += -I../../common -I${LIBDIR}/include
 
 TARGETS=rs232
 
