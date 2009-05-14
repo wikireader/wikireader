@@ -50,14 +50,6 @@ all:    mini-libc \
 	mahatma \
 	qt4-simulator
 
-.PHONY: bootloader
-bootloader:mini-libc fatfs
-	$(MAKE) -C bootloader
-
-.PHONY: bootloader232
-bootloader232:mini-libc fatfs
-	$(MAKE) -C bootloader bootloader232
-
 .PHONY: toppers
 toppers: mini-libc fatfs
 	( cd samo-lib/toppers-jsp && \
@@ -151,10 +143,6 @@ webkit:
 	(cd webkit && \
 	patch_path="../host-tools/rendering/patches/"; for file in `ls $$patch_path`; do echo "processing file: $$file"; patch -p1 < $$patch_path/$$file; done && \
 	./WebKitTools/Scripts/build-webkit --gtk --release)
-
-.PHONY: flash-bootloader
-flash-bootloader: fatfs
-	$(MAKE) -C bootloader BOOTLOADER_TTY="${BOOTLOADER_TTY}" flash-bootloader
 
 .PHONY: print-flash-config
 print-flash-config:
