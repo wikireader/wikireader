@@ -14,22 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-CROSS=c33-epson-elf-
-GCC=$(CROSS)gcc
-AS=$(CROSS)as
-LD=$(CROSS)ld
-HOSTCC=gcc
-CC=$(GCC)
-OBJCOPY=$(CROSS)objcopy
-OBJDUMP=$(CROSS)objdump
-STRIP=$(CROSS)strip
 
-CFLAGS+=-Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+CFLAGS += -Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
 
 # protection in case some Makefile includes this too early
 .PHONY: this-is-included-too-early
 this-is-included-too-early:
-	@echo This is common/Makefile reporting an error
+	@echo This is rules.mk reporting an error
 	@echo move the '"include"' to the bottom of the Makefile.
 	@echo Otherwise the dependencies are not built in the correct order
 	@exit 1

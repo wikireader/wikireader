@@ -1,10 +1,13 @@
-LIB_PREFIX=../../samo-lib
-LIBDIR=${LIB_PREFIX}/mini-libc
-LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-OBJCOPY_FLAGS=-I elf32-c33 -O binary
-CFLAGS += -I../../samo-lib -I${LIBDIR}/include
+SAMO_LIB = ../../samo-lib
 
-TARGETS=rs232
+include ${SAMO_LIB}/Mk/definitions.mk
+
+LDFLAGS = -static --strip-all -s --no-gc-sections -N -L${MINI_LIBC}
+OBJCOPY_FLAGS = -I elf32-c33 -O binary
+
+CFLAGS += -I${SAMO_LIB_INCLUDE} -I${MINI_LIBC_INCLUDE}
+
+TARGETS = rs232
 
 all: $(TARGETS)
 
@@ -13,9 +16,11 @@ rs232.elf: rs232.o
 
 rs232: rs232.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+	@c=$$(wc --bytes < "$@") ; \
+	echo mbr size = $${c} bytes, max = 512 bytes ; \
+	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
 
 clean:
 	rm -fr $(TARGETS) *.o *.elf *.bin *.d *.asm33
 
-include ../../samo-lib/Makefile
-
+include ${SAMO_LIB}/Mk/rules.mk

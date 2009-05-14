@@ -18,24 +18,23 @@
 # (de)activate profiling
 PROFILER_ON = -DPROFILER_ON
 
-WIKI_APP=../../wiki-app/
-LIBDIR=../mini-libc
-FATFSDIR=../fatfs
+
+SAMO_LIB = ../../samo-lib
 FATFS_MODE = read-write
-INDEX_DIR=../../host-tools/indexing/locate
-SAMO_LIB=..
-MINILZODIR=../minilzo
 
-INCLUDES = -I$(FATFSDIR)/src
-INCLUDES += -I$(LIBDIR)/include/
-INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(WIKI_APP)/
-INCLUDES += -I../
-INCLUDES += -I$(INDEX_DIR)
-INCLUDES += -I$(MINILZODIR)/
+include ${SAMO_LIB}/Mk/definitions.mk
 
-LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a
-LIBS += $(LIBDIR)/lib/libc.a
+
+INCLUDES =
+INCLUDES += -I$(MINI_LIBC_INCLUDE)
+INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
+INCLUDES += -I$(WIKI_APP_INCLUDE)
+INCLUDES += -I${SAMO_LIB_INCLUDE}
+INCLUDES += -I$(INDEXING_INCLUDE)
+INCLUDES += -I$(MINILZO_INCLUDE)
+
+LIBS = ${FATFS_LIB}
+LIBS += ${MINI_LIBC_LIB}
 LIBS += `$(CC) -print-libgcc-file-name`
 
 GUILIB_COBJS = guilib.o glyph.o fontfile.o
@@ -63,10 +62,10 @@ KBD_IMG_INC = $(WIKI_APP)/keyboard_image.h
 KBD_CONVERT = ../../wiki-app/kbd_to_include.py
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
-LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
-##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(LIBDIR)
+LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
+##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(MINI_LIBC)
 
-vpath %.c $(WIKI_APP):$(INDEX_DIR):$(SAMO_LIB):$(MINILZODIR)
+vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
 OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
@@ -92,4 +91,5 @@ mahatma.elf: $(OBJECTS) mahatma.lds
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
 
-include ../Makefile
+
+include ${SAMO_LIB}/Mk/rules.mk

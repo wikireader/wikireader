@@ -26,29 +26,18 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+SAMO_LIB = ../../samo-lib
+
+include ${SAMO_LIB}/Mk/definitions.mk
+
 export PATH:=../../host-tools/toolchain-install/bin:${PATH}
 
-CROSS = c33-epson-elf-
-CROSS_GCC = ${CROSS}gcc
-CROSS_AS = ${CROSS}as
-CROSS_LD = ${CROSS}ld
-CROSS_STRIP = ${CROSS}strip
-CROSS_OBJDUMP = ${CROSS}objdump
-CROSS_OBJCOPY = ${CROSS}objcopy
+INCLUDES += -I${SAMO_LIB_INCLUDE}
+INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
+INCLUDES += -I${MINI_LIBC_INCLUDE}
 
-SAMO_LIB = ../../samo-lib
-LIB_PREFIX = ..
-
-FATFSDIR = ${LIB_PREFIX}/fatfs
-FATFS_SRC = ${FATFSDIR}/src
-LIBDIR = ${LIB_PREFIX}/mini-libc
-
-INCLUDES += -I${SAMO_LIB}
-INCLUDES += -I${FATFS_SRC}
-INCLUDES += -I$(LIBDIR)/include
-
-LIBS +=	$(LIBDIR)/lib/libc.a
-LIBS += $$($(CROSS_GCC) -print-libgcc-file-name)
+LIBS +=	${MINI_LIBC_LIB}
+LIBS += $$(${CROSS_GCC} -print-libgcc-file-name)
 
 RM = rm -f
 
@@ -56,7 +45,7 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-vpath %.c :${SAMO_LIB}:${FATFS_SRC}
+vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}
 
 
 all: forth.elf
@@ -75,4 +64,4 @@ clean:
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
-include ../../samo-lib/Makefile
+include ${SAMO_LIB}/Mk/rules.mk

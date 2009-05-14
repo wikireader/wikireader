@@ -1,5 +1,11 @@
-INCLUDES = -I../../samo-lib/mini-libc/include -I../../samo-lib
-LDFLAGS = -static -s --no-gc-sections -N -L$(LIBDIR)
+SAMO_LIB = ../../samo-lib
+
+include ${SAMO_LIB}/Mk/definitions.mk
+
+
+INCLUDES = -I${MINI_LIBC_INCLUDE}
+INCLUDES += -I${SAMO_LIB_INCLUDE}
+LDFLAGS = -static -s --no-gc-sections -N -L$(MINI_LIBC)
 CFLAGS = -Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe
 VPATH = src
 
@@ -20,13 +26,15 @@ lib/$(strip ${1})/libtinyfat.a: lib/$(strip ${1})
 build-$(strip ${1}): Makefile
 	$${RM} -r $$@
 	mkdir -p $$@
+	@echo SAMO_LIB = ../$${SAMO_LIB} >> $$@/Makefile
+	@echo include ../$${SAMO_LIB}/Mk/definitions.mk >> $$@/Makefile
 	@echo INCLUDES = $${INCLUDES} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo LDFLAGS = $${LDFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo CFLAGS = $${CFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo VPATH = ../src >> $$@/Makefile
 	@echo INCLUDES += -I../config/c33/$(strip ${1})/ >> $$@/Makefile
 	@echo TARGETS = all >> $$@/Makefile
-	@echo include ../../../samo-lib/Makefile >> $$@/Makefile
+	@echo include ../$${SAMO_LIB}/Mk/rules.mk >> $$@/Makefile
 endef
 
 # macros to generate rules
@@ -59,4 +67,4 @@ clean:
 	$(RM) *.[do] *.asm33
 	$(RM) -r $(foreach type, ${TYPE_LIST}, build-${type})
 
-include ../../samo-lib/Makefile
+include ${SAMO_LIB}/Mk/rules.mk

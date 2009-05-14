@@ -1,24 +1,24 @@
-LIBDIR = ../mini-libc
-FATFSDIR = ../fatfs
 FATFS_MODE = read-only
 SAMO_LIB = ../../samo-lib
-HOST_TOOLS = ../../host-tools
-WIKI_APP = ../../wiki-app
+
+include ${SAMO_LIB}/Mk/definitions.mk
+
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 E07LOAD ?= ${HOST_TOOLS}/e07load/e07load
 RS232 ?= ${HOST_TOOLS}/jackknife/rs232
 
-LIBS = $(FATFSDIR)/lib/${FATFS_MODE}/libtinyfat.a
-LIBS += $(LIBDIR)/lib/libc.a
+LIBS = ${FATFS_LIB}
+LIBS += ${MINI_LIBC_LIB}
 LIBS += $(shell $(CC) -print-libgcc-file-name)
 
-LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(LIBDIR)
+LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 
-INCLUDES = -I$(FATFSDIR)/src
-INCLUDES += -I$(LIBDIR)/include/
-INCLUDES += -I$(FATFSDIR)/config/c33/${FATFS_MODE}/
-INCLUDES += -I$(SAMO_LIB) -I$(WIKI_APP)
+INCLUDES = -I${FATFS_INCLUDE}
+INCLUDES += -I${FATFS_CONFIG_INCLUDE}
+INCLUDES += -I${MINI_LIBC_INCLUDE}
+INCLUDES += -I$(SAMO_LIB_INCLUDE)
+INCLUDES += -I$(WIKI_APP_INCLUDE)
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
@@ -30,7 +30,7 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH = $(SAMO_LIB) $(WIKI_APP)
+VPATH = $(SAMO_LIB_SRC) $(WIKI_APP_SRC)
 
 .PHONY: all
 all: $(TARGETS) all-applications
@@ -40,15 +40,16 @@ all: $(TARGETS) all-applications
 $(FLASH_ROM_MAP_FILE):
 	cp SAMO_A1.mapfile-default $(FLASH_ROM_MAP_FILE)
 
-mbr.o: mbr.c
-	$(GCC) -c $(CFLAGS) $<
+#mbr.o: mbr.c
+#	$(GCC) -c $(CFLAGS) $<
 
 mbr.elf: mbr.o eeprom.o
-	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0'
+	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0',-Map,$(@:.elf=.map)
 
 mbr: mbr.elf
+	${RM} "$@"
 	$(OBJCOPY) $(OBJCOPY_FLAGS) ${OBJCOPY_SECTIONS}	 --set-start=0 $< $@
-	$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
+	#$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \
 	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
@@ -105,6 +106,6 @@ clean:
 
 # application headers
 %.header: %.c
-	awk -f ../GenerateApplicationHeader.awk "$<" >"$@"
+	awk -f GenerateApplicationHeader.awk "$<" >"$@"
 
-include ../Makefile
+include ${SAMO_LIB}/Mk/rules.mk
