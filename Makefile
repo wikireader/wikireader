@@ -165,7 +165,6 @@ mbr-rs232: gcc fatfs
 
 .PHONY: flash-mbr
 flash-mbr: mbr
-	$(MAKE) -C host-tools/e07load
 	$(MAKE) -C host-tools/jackknife
 	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
 
@@ -178,7 +177,6 @@ complete-clean: clean clean-toolchain
 clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/mini-libc
 	$(MAKE) clean -C host-tools/jackknife
-	$(MAKE) clean -C host-tools/e07load
 	$(MAKE) clean -C samo-lib/mbr
 	$(MAKE) clean -C samo-lib/fatfs
 	$(MAKE) clean -C samo-lib/forth

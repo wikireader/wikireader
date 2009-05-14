@@ -7,14 +7,14 @@ OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
 CFLAGS += -I${SAMO_LIB_INCLUDE} -I${MINI_LIBC_INCLUDE}
 
-TARGETS = rs232
+TARGETS = jackknife
 
 all: $(TARGETS)
 
-rs232.elf: rs232.o
+jackknife.elf: jackknife.o
 	$(GCC) -o $@ $(LDFLAGS) $< -Wl,'-Ttext=0'
 
-rs232: rs232.elf
+jackknife: jackknife.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \

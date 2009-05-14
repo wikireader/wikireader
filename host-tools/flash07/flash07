@@ -1,0 +1,190 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# COPYRIGHT: Openmoko Inc. 2009
+# LICENSE: GPL Version 3 or later
+# DESCRIPTION: Simple FLASH programmer
+# AUTHOR: Christopher Hall <hsw@openmoko.com>
+
+try:
+    from serial.serialposix import *
+except:
+    print 'error: Missing python module: python-serial'
+    print '       sudo apt-get install python-serial'
+    exit(1)
+
+import time
+import re
+import getopt
+import os.path
+import sys
+
+import Dump
+import SPI
+import FLASHROM
+
+
+VALID_CPU_IDS = [0x060e0721]
+JACKKNIFE_ID = 0x3f3f3f3f
+
+ROM_LIST = {
+'A1': FLASHROM.PM25LV512,
+'A2': FLASHROM.PM25LV512,
+}
+
+
+class SerialPort():
+
+    def __init__(self, port = '/dev/ttyUSB1', bps = 57600, timeout = 1.0):
+        self.s = Serial(port = port)
+        self.s.xonxoff = False
+        self.s.rtscts = False
+        self.s.baudrate = bps
+        self.s.timeout = timeout
+        print self.s.baudrate, self.s.bytesize, self.s.parity, self.s.stopbits
+        self.s.open()
+        self.spi_channel = SPI.SPI(self.s)
+
+    def __del__(self):
+        self.s.close()
+
+    def flush(self):
+        print 'flush:', self.s.inWaiting()
+        if 0 < self.s.inWaiting():
+            self.s.read(self.s.inWaiting())
+
+    def getID(self):
+        self.flush()
+        self.s.write('\x80\x80\x80\x80')
+        time.sleep(0.1)
+        self.id = 0
+        for b in self.s.read(4):
+            self.id = (self.id << 8) | ord(b)
+        return self.id
+
+    def send(self, boot):
+        for v in boot:
+            self.s.write(v)
+        time.sleep(0.1)
+        readback = self.s.read(512)
+        return len(readback) == 512 and readback == boot
+
+    def spi(self):
+        return self.spi_channel
+
+
+class MapFile:
+    MAP_LINE_RE = re.compile(r'^\s*(0x[0-9a-f]+)\s+(\S+)\s*(#.*)?$', re.IGNORECASE)
+    MAP_COMMENT_RE = re.compile(r'^\s*(#.*)?$', re.IGNORECASE)
+
+    def __init__(self, filename, romSize = 65536):
+        self.rom = []
+        self.status = True
+        for line in open(filename, 'rt'):
+            m = MapFile.MAP_LINE_RE.match(line)
+            c = MapFile.MAP_COMMENT_RE.match(line)
+            if m:
+                offset = eval(m.group(1))
+                file = m.group(2)
+                if not os.path.isfile(file):
+                    file = os.path.join(os.path.dirname(filename), file)
+                if not os.path.isfile(file):
+                    print 'Missing program: "%s"' % m.group(2)
+                    self.status = False
+                data = open(file, 'rb').read()
+                data_len = len(data)
+                self.rom.append((offset, file, data_len, data))
+            elif not c:
+                print 'invalid map line:', line
+                self.status = False
+
+    def items(self):
+      return self.rom
+
+    def ok(self):
+      return self.status
+
+
+def usage(message):
+    if None != message:
+        print 'error:', message
+    print 'usage: %s [--verbose] --boot=<boot> --map-file=<map>' % os.path.basename(__file__)
+    exit(1)
+
+def main():
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hvb:m:p:', ['help', 'verbose', 'boot=', 'map-file=', 'port='])
+    except getopt.GetoptError, err:
+        usage(err)
+
+    verbose = False
+    bootfile = 'jackknife'
+    mapfile = ''
+    port = '/dev/ttyUSB1'
+
+    for opt, arg in opts:
+        if opt == '-v':
+            verbose = True
+        elif opt in ('-h', '--help'):
+            usage(None)
+        elif opt in ('-b', '--boot'):
+            bootfile = arg
+        elif opt in ('-m', '--map-file'):
+            mapfile = arg
+        elif opt in ('-p', '--port'):
+            port = arg
+        else:
+            usage('unhandled option: ' + o)
+
+    if not os.path.isfile(bootfile):
+        usage('bootfile: "%s" does not exist' % bootfile)
+    if not os.path.isfile(mapfile):
+        usage('mapfile: "%s" does not exist' % mapfile)
+
+    f = open(bootfile, 'rb')
+    boot = f.read()
+    f.close
+    l = len(boot)
+    if l < 512:
+        boot += '\x00' * (512 - l)
+
+    map = MapFile(mapfile)
+    if not map.ok():
+        usage('Invalid mapfile')
+
+    if verbose:
+        for r in map.items():
+            print '0x%04x %s (%d bytes)' % (r[0], r[1], r[2])
+
+    s = SerialPort()
+
+    id = s.getID()
+    while not id in VALID_CPU_IDS:
+        print 'Press Reset'
+        time.sleep(1)
+        id = s.getID()
+
+    print 'CPU Identifier = 0x%08x' % id
+
+    if not s.send(boot):
+        usage('Transmission of Boot Block failed')
+
+    board = s.spi().version()
+    if None == board or len(board) == 0:
+        usage('cannot determine board type');
+
+    if board in ROM_LIST:
+        print 'board = %s  rom = %s' % (board, ROM_LIST[board])
+    else:
+        usage('unknown board: %s' % board);
+
+    rom = ROM_LIST[board](s.spi())
+    for r in map.items():
+        offset, name, length, data = r[0], r[1], r[2], r[3]
+        print '0x%04x %s (%d bytes)' % (offset, name, length)
+        rom.program(data, offset)
+        rom.verify(data, offset)
+
+    s = None
+
+if __name__ == '__main__':
+    main()

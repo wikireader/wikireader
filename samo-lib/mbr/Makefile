@@ -5,8 +5,8 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
-E07LOAD ?= ${HOST_TOOLS}/e07load/e07load
-RS232 ?= ${HOST_TOOLS}/jackknife/rs232
+FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
+BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
 
 LIBS = ${FATFS_LIB}
 LIBS += ${MINI_LIBC_LIB}
@@ -99,7 +99,7 @@ splash.h: splash.png
 all-applications: ${APPLICATIONS}
 
 flash-mbr: all
-	time ${E07LOAD} --tty="${BOOTLOADER_TTY}" --bootstrap="${RS232}" "${FLASH_ROM_MAP_FILE}"
+	time ${FLASH07} --port="${BOOTLOADER_TTY}" --boot="${BOOT_FILE}" --map-file="${FLASH_ROM_MAP_FILE}"
 
 clean:
 	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h
