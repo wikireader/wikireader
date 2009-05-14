@@ -1,5 +1,5 @@
-#ifndef WIKIREADER_H
-#define WIKIREADER_H
+#if !defined(_SAMO_H)
+#define _SAMO_H 1
 
 #include "config.h"
 
@@ -89,7 +89,6 @@ static inline void init_rs232_ch1(void)
 	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
 }
 
-#if      1 //def INCLUDED_FROM_KERNEL
 #if BOARD_PROTO2 || BOARD_SAMO_A1
 
 #define ADC_FULL_SCALE	1024
@@ -154,7 +153,5 @@ static inline unsigned int get_battery_voltage(void)
 }
 #endif
 
-#endif /* INCLUDED_FROM_KERNEL */
-
-#endif /* WIKIREADER_H */
+#endif
 
