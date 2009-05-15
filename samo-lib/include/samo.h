@@ -57,7 +57,7 @@
 #elif BOARD_PRT33L17LCD
 #include "boards/prt33l17lcd.h"
 #else
-#error "unsupported board type - see samo.h"
+#error "unsupported board type - see config.h"
 #endif
 
 
