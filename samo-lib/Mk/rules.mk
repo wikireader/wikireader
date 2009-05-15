@@ -25,8 +25,12 @@ this-is-included-too-early:
 	@echo Otherwise the dependencies are not built in the correct order
 	@exit 1
 
-.c.o: $<
-	$(GCC) -M $(CFLAGS) $< > $(notdir $(<:.c=.d))
-	$(GCC) $(CFLAGS) -c $< -o $(notdir $(<:.c=.o)) -Wa,-ahl=$(notdir $(<:.c=.asm33))
+%.o: %.c
+	$(GCC) -M $(CFLAGS) $< > ${@:.o=.d}
+	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
+
+${BUILD_PREFIX}%.o: %.c
+	$(GCC) -M $(CFLAGS) $< > ${@:.o=.d}
+	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
 
 -include $(wildcard *.d) dummy
