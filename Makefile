@@ -68,9 +68,12 @@ mini-libc: gcc
 	$(MAKE) -C samo-lib/mini-libc/
 
 .PHONY: fatfs
-
-fatfs: mini-libc
+fatfs: mini-libc drivers
 	$(MAKE) -C samo-lib/fatfs/
+
+.PHONY: drivers
+drivers: mini-libc
+	$(MAKE) -C samo-lib/drivers/
 
 # ----- toolchain stuff  --------------------------------------
 gcc-download:
@@ -178,6 +181,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/mini-libc
 	$(MAKE) clean -C host-tools/jackknife
 	$(MAKE) clean -C samo-lib/mbr
+	$(MAKE) clean -C samo-lib/drivers
 	$(MAKE) clean -C samo-lib/fatfs
 	$(MAKE) clean -C samo-lib/forth
 	$(MAKE) clean -C samo-lib/mahatma

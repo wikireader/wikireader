@@ -40,6 +40,11 @@ FATFS_INCLUDE = ${FATFS}/src
 FATFS_SRC = ${FATFS}/src
 FATFS_LIB = ${FATFS}/lib/${FATFS_MODE}/libtinyfat.a
 
+DRIVERS = ${SAMO_LIB}/drivers
+DRIVERS_INCLUDE = ${DRIVERS}/include
+DRIVERS_SRC = ${DRIVERS}/src
+DRIVERS_LIB = ${DRIVERS}/lib/libdrivers.a
+
 WIKI_APP = ${SAMO_LIB}/../wiki-app/
 WIKI_APP_INCLUDE = ${WIKI_APP}
 WIKI_APP_SRC = ${WIKI_APP}
