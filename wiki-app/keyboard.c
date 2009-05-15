@@ -21,6 +21,9 @@
 #include "keyboard_image.h"
 #include "input.h"
 #include "wikilib.h"
+#include "msg.h"
+
+#define DBG_KEYBOARD 0
 
 /* some control commands */
 #define INTERNAL_SHIFT   (-23)
@@ -39,46 +42,44 @@ struct keyboard_key {
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, keycode) { .left_x = l_x, .right_x = r_x, .left_y = l_y, .right_y = r_y, .key = keycode, }
 static struct keyboard_key qwerty[] = {
-	KEY(0, 130, 20, 154, 'q'),
-	KEY(0, 156, 20, 180, 'a'),
-	KEY(0, 182, 20, 208, 'z'),
+	KEY(0, 128, 22, 153, 'q'),
+	KEY(0, 155, 22, 180, 'a'),
+	KEY(0, 182, 22, 207, 'z'),
 
-	KEY(22, 130, 42, 154, 'w'),
-	KEY(22, 156, 42, 180, 's'),
-	KEY(22, 182, 42, 208, 'x'),
+	KEY(24, 128, 46, 153, 'w'),
+	KEY(24, 155, 46, 180, 's'),
+	KEY(24, 182, 46, 207, 'x'),
 
-	KEY(44, 130, 64, 154, 'e'),
-	KEY(44, 156, 64, 180, 'd'),
-	KEY(44, 182, 64, 208, 'c'),
+	KEY(48, 128, 70, 153, 'e'),
+	KEY(48, 155, 70, 180, 'd'),
+	KEY(48, 182, 70, 207, 'c'),
 
-	KEY(66, 130, 86, 154, 'r'),
-	KEY(66, 156, 86, 180, 'f'),
-	KEY(66, 182, 86, 208, 'v'),
+	KEY(72, 128, 94, 153, 'r'),
+	KEY(72, 155, 94, 180, 'f'),
+	KEY(72, 182, 94, 208, 'v'),
 
-	KEY(88, 130, 108, 154, 't'),
-	KEY(88, 156, 108, 180, 'g'),
-	KEY(88, 182, 130, 208, ' '),
+	KEY(96, 128, 118, 153, 't'),
+	KEY(96, 155, 118, 180, 'g'),
+	KEY(96, 182, 142, 207, ' '),
 
-	KEY(110, 130, 130, 154, 'y'),
-	KEY(110, 156, 130, 180, 'h'),
+	KEY(120, 128, 142, 153, 'y'),
+	KEY(120, 155, 142, 180, 'h'),
 
-	KEY(132, 130, 152, 154, 'u'),
-	KEY(132, 156, 152, 180, 'j'),
-	KEY(132, 182, 152, 208, 'b'),
+	KEY(144, 128, 166, 153, 'u'),
+	KEY(144, 155, 166, 180, 'j'),
+	KEY(144, 182, 166, 207, 'b'),
 
-	KEY(154, 130, 174, 154, 'i'),
-	KEY(154, 156, 174, 180, 'k'),
-	KEY(154, 182, 174, 208, 'n'),
+	KEY(168, 128, 190, 153, 'i'),
+	KEY(168, 155, 190, 180, 'k'),
+	KEY(168, 182, 190, 207, 'n'),
 
-	KEY(176, 130, 196, 154, 'o'),
-	KEY(174, 156, 196, 180, 'l'),
-	KEY(174, 182, 196, 208, 'm'),
+	KEY(192, 128, 214, 153, 'o'),
+	KEY(192, 155, 214, 180, 'l'),
+	KEY(192, 182, 214, 207, 'm'),
 
-	KEY(198, 130, 218, 154, 'p'),
-
-	KEY(220, 130, 240, 154, WL_KEY_BACKSPACE),
-	KEY(198, 156, 240, 180, INTERNAL_SHIFT),
-	KEY(198, 182, 240, 208, INTERNAL_NUMBER),
+	KEY(216, 128, 239, 153, 'p'),
+	KEY(216, 155, 239, 180, WL_KEY_BACKSPACE),
+	KEY(216, 182, 239, 207, INTERNAL_NUMBER),
 };
 
 /*
@@ -125,8 +126,10 @@ char keyboard_release(int x, int y)
 	if (kb_mode == KEYBOARD_CHAR) {
 		for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
 			if (qwerty[i].left_x <= x && qwerty[i].right_x >= x
-			&& qwerty[i].left_y <= y && qwerty[i].right_y >= y)
+			&& qwerty[i].left_y <= y && qwerty[i].right_y >= y) {
+				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty[i].key));
 				return qwerty[i].key;
+			}
 		}
 	}
 
