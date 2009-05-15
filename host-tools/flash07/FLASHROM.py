@@ -161,7 +161,7 @@ class FLASHROM:
 
 class PM25LV512(FLASHROM):
 
-    def __init__(self, spi, name = 'PM25LV512', program_block_size = 256, verify_block_size = 128):
+    def __init__(self, spi, name = 'PM25LV512', program_block_size = 256, verify_block_size = 256):
         FLASHROM.__init__(self, name, program_block_size, verify_block_size)
         self.spi = spi
 

@@ -34,13 +34,12 @@ ROM_LIST = {
 
 class SerialPort():
 
-    def __init__(self, port = '/dev/ttyUSB1', bps = 57600, timeout = 1.0):
+    def __init__(self, port = '/dev/ttyUSB1', bps = 57600, timeout = 0.2):
         self.s = Serial(port = port)
         self.s.xonxoff = False
         self.s.rtscts = False
         self.s.baudrate = bps
         self.s.timeout = timeout
-        print self.s.baudrate, self.s.bytesize, self.s.parity, self.s.stopbits
         self.s.open()
         self.spi_channel = SPI.SPI(self.s)
 
@@ -64,7 +63,6 @@ class SerialPort():
     def send(self, boot):
         for v in boot:
             self.s.write(v)
-        time.sleep(0.1)
         readback = self.s.read(512)
         return len(readback) == 512 and readback == boot
 

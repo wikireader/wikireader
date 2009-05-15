@@ -36,7 +36,7 @@ class SPI:
         self.deselect()
         self.internal_send(COMMAND_BOARD_REVISION)
         time.sleep(0.1)
-        buffer = self.s.read(10)
+        buffer = self.s.read(2)
         return buffer
 
     def command(self, buffer):
