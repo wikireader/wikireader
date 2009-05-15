@@ -39,7 +39,7 @@ CONFIG_FILE_DEFAULT := "samo-lib/include/config.h-default"
 CONFIG_FILE_EXISTS := $(shell [ -f $(CONFIG_FILE) ] && echo 1)
 
 ifeq ($(CONFIG_FILE_EXISTS),)
-$(error Please copy $(CONFIG_FILE_DEFAULT) to $(CONFIG_FILE), then set your board type)
+$(shell cp $(CONFIG_FILE_DEFAULT) $(CONFIG_FILE))
 endif
 
 # ----- configuration data --------------------------------------
