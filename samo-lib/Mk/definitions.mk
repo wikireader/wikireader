@@ -70,7 +70,10 @@ INDEXING_SRC = ${INDEXING}
 
 # cross compiler definitions
 
+export PATH:=${SAMO_LIB}/../host-tools/toolchain-install/bin:${PATH}
+
 CROSS = c33-epson-elf-
+
 GCC = $(CROSS)gcc
 AS = $(CROSS)as
 LD = $(CROSS)ld
@@ -86,3 +89,5 @@ CROSS_LD = ${CROSS}ld
 CROSS_STRIP = ${CROSS}strip
 CROSS_OBJDUMP = ${CROSS}objdump
 CROSS_OBJCOPY = ${CROSS}objcopy
+
+RM = rm -f
