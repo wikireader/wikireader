@@ -1,5 +1,5 @@
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
 FATFS_MODE = read-only
-SAMO_LIB = ../../samo-lib
 
 include ${SAMO_LIB}/Mk/definitions.mk
 

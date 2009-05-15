@@ -26,7 +26,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SAMO_LIB = ../../samo-lib
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
+FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
 

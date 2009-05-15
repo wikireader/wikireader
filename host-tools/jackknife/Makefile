@@ -1,4 +1,4 @@
-SAMO_LIB = ../../samo-lib
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
 
 include ${SAMO_LIB}/Mk/definitions.mk
 

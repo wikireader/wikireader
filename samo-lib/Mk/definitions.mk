@@ -15,7 +15,10 @@
 #
 
 FATFS_MODE ?= read-only
-SAMO_LIB ?= ../samo_lib
+
+# autodetect samo-lib
+# copy this line into the Makefile
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
 
 # standard definitions for _ALL_ Makefiles
 

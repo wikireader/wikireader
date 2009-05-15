@@ -1,4 +1,4 @@
-SAMO_LIB = ../../samo-lib
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
@@ -26,15 +26,15 @@ lib/$(strip ${1})/libtinyfat.a: lib/$(strip ${1})
 build-$(strip ${1}): Makefile
 	$${RM} -r $$@
 	mkdir -p $$@
-	@echo SAMO_LIB = ../$${SAMO_LIB} >> $$@/Makefile
-	@echo include ../$${SAMO_LIB}/Mk/definitions.mk >> $$@/Makefile
+	@echo SAMO_LIB = $${SAMO_LIB} >> $$@/Makefile
+	@echo include $${SAMO_LIB}/Mk/definitions.mk >> $$@/Makefile
 	@echo INCLUDES = $${INCLUDES} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo LDFLAGS = $${LDFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo CFLAGS = $${CFLAGS} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo VPATH = ../src >> $$@/Makefile
 	@echo INCLUDES += -I../config/c33/$(strip ${1})/ >> $$@/Makefile
 	@echo TARGETS = all >> $$@/Makefile
-	@echo include ../$${SAMO_LIB}/Mk/rules.mk >> $$@/Makefile
+	@echo include $${SAMO_LIB}/Mk/rules.mk >> $$@/Makefile
 endef
 
 # macros to generate rules

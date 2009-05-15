@@ -19,7 +19,7 @@
 PROFILER_ON = -DPROFILER_ON
 
 
-SAMO_LIB = ../../samo-lib
+SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
 FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
