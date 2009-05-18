@@ -120,6 +120,11 @@ int process(int block, int status)
 				status = 0;
 				break;
 			}
+			if (0 != (REG_P6_P6D & 0x07)) {
+				status = 1;
+				++block;
+				break;
+			}
 		}
 	}
 	print_char('\n');
