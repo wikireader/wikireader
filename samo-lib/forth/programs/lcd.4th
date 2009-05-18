@@ -38,18 +38,32 @@ lcd-clear-1
 
 .( lcd-set-pixel )
 
-: lcd-set-pixel ( pixel x y -- )
+: lcd-set-pixel ( x y -- )
   LCD_VRAM_WIDTH_BYTES * LCD_VRAM + >r
-  8 /mod r> + swap    ( pixel c-addr bit-number )
-  $80 swap rshift     ( pixel c-addr bit )
-  rot 0= if
-    $ff xor over c@   ( c-addr ~bit byte )
-    and swap c!
-  else
-    over c@ or swap c!
-  then
+  8 /mod r> + swap    ( c-addr bit-number )
+  $80 swap rshift     ( c-addr bit )
+  over c@ or swap c!
 ;
 
+: lcd-clear-pixel ( x y -- )
+  LCD_VRAM_WIDTH_BYTES * LCD_VRAM + >r
+  8 /mod r> + swap    ( c-addr bit-number )
+  $80 swap rshift     ( c-addr bit )
+  $ff xor over c@     ( c-addr ~bit byte )
+  and swap c!
+;
+
+: lcd-set-point ( x y -- )
+  2dup lcd-set-pixel
+  2dup 1+ lcd-set-pixel
+  2dup 1- lcd-set-pixel
+  2dup 2 + lcd-set-pixel
+  2dup 2 - lcd-set-pixel
+  2dup swap 1+ swap lcd-set-pixel
+  2dup swap 1- swap lcd-set-pixel
+  2dup swap 2 + swap lcd-set-pixel
+  2dup swap 2 - swap lcd-set-pixel
+  2drop ;
 
 .( font-8x8 )
 
