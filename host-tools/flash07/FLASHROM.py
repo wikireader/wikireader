@@ -211,4 +211,54 @@ class PM25LV512(FLASHROM):
     def read_block(self, address, read_length):
         return self.spi.transact([0x03, (address >> 16), (address >> 8), address], 1, read_length)
 
+class EN25F05(FLASHROM):
+
+    def __init__(self, spi, name = 'EN25F05', program_block_size = 256, verify_block_size = 256):
+        FLASHROM.__init__(self, name, program_block_size, verify_block_size)
+        self.spi = spi
+
+
+    def write_enable(self, enable):
+        if enable:
+            e = 0x06
+        else:
+            e = 0x04
+        self.spi.command(e)
+
+
+    def wait_ready(self):
+        status = 0x01
+        while 0x01 == (status & 0x01):
+            status = ord(self.spi.transact(0x05, 1, 1)[0])
+
+
+    def erase_block(self, block):
+        a = block << 12
+        block &= (1 << 12) - 1
+        if block in self.erased:
+            return
+        msg('erase 4k sector @0x%08x\n' % a)
+        self.write_enable(True)
+        self.wait_ready()
+        self.spi.command([0x20, (a >> 16), (a >> 8), (a & 0xff)])
+        self.wait_ready()
+        self.erased.add(block)
+
+    def set_block_protection(self):
+        self.spi.command([0xf1, 0x00])
+        self.spi.command([0x01, 0x02])
+
+
+    def write_block(self, buffer, address):
+        if 0 == len(buffer):
+            return True
+
+        self.wait_ready()
+        self.write_enable(True)
+        self.spi.command([0x02, (address >> 16), (address >> 8), address, buffer])
+        return True
+
+
+    def read_block(self, address, read_length):
+        return self.spi.transact([0x03, (address >> 16), (address >> 8), address], 1, read_length)
 
