@@ -920,6 +920,14 @@ m_slash_mod_l3:
 
 ;;; .( Bits & Bytes )
 
+;;; : CHAR+ ( b -- b ) [ =BYTE ] LITERAL + ;
+        COLON   char_plus, "char+", FLAG_NORMAL
+        .long   increment, exit
+
+;;; : CHAR- ( b -- b ) [ =BYTE ] LITERAL - ;
+        COLON   char_minus, "char-", FLAG_NORMAL
+        .long   decrement, exit
+
 ;;; : BYTE+ ( b -- b ) [ =BYTE ] LITERAL + ;
         COLON   byte_plus, "byte+", FLAG_NORMAL
         .long   increment, exit
@@ -2094,6 +2102,11 @@ tick_l1:
         .long   here, aligned, dup, cell_plus, cp
         .long   store, store, exit
 
+;;; : c, ( w -- ) HERE DUP CHAR+ CP ! C! ;
+        COLON   c_comma, "c,", FLAG_NORMAL
+        .long   here, dup, char_plus, cp
+        .long   store, cstore, exit
+
 ;;; : [COMPILE] ( -- \ <string> ) ' , ; IMMEDIATE
         COLON   bracket_compile, "[compile]", FLAG_IMMEDIATE
         .long   tick, comma, exit
@@ -2830,6 +2843,15 @@ read_line_l5:
         .long   do_dollar_quote
         FSTRING "forth.4th"
         .long   count, included
+
+        .long   do_dollar_quote
+        FSTRING "auto.4th"
+        .long   count, readonly, open_file
+        .long   qbranch, have_auto
+        .long   drop, branch, run_quit
+have_auto:
+        .long   include_file
+run_quit:
         .long   quit
 
         COLON   nop, "nop", FLAG_NORMAL              ;debug
