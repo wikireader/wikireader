@@ -64,6 +64,8 @@ enum {
 	[PROF_sd_data]	= "sd data ", \
 	[PROF_sd_spi]	= "sd spi  ", \
 	[PROF_sd_rcvr]	= "sd rcvr ",
+
+extern struct prof_container prof_container[PROF_COUNT];
 #endif
 
 struct prof_container {
@@ -71,8 +73,6 @@ struct prof_container {
 	unsigned long total_time;
 	unsigned long calls;
 };
-
-extern struct prof_container prof_container[PROF_COUNT];
 
 void profile_init(void);
 void prof_start(unsigned long index);
