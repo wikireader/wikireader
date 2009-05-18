@@ -44,6 +44,7 @@ enum display_mode_e {
 
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
+static struct keyboard_key * pre_key= NULL;
 wom_file_t * g_womh = 0;
 
 static void repaint_search(void)
@@ -263,22 +264,38 @@ static void handle_key_release(int keycode)
 
 static void handle_touch(struct wl_input_event *ev)
 {
-	msg(MSG_INFO, "%s() touch event @%d,%d val %d\n", __func__,
+	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x,
 		ev->touch_event.y,
-		ev->touch_event.value);
+		ev->touch_event.value));
 
 	if (display_mode == DISPLAY_MODE_INDEX) {
+		struct keyboard_key * key;
+
+		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-			char result = keyboard_release(ev->touch_event.x, ev->touch_event.y);
-			if (result != -1)
-				handle_search_key(result);
+			pre_key = NULL;
+			if (key)
+				handle_search_key(key->key);
 			else {
 				const char *title= search_release(ev->touch_event.y);
+
 				if (title && strlen(title) >= TARGET_SIZE)
 					open_article(&title[strlen(title)-TARGET_SIZE], ARTICLE_NEW);
 				else
 					repaint_search();
+			}
+		} else {
+			if (key) {
+				if (!pre_key || (pre_key && pre_key->key != key->key)) {
+					if (pre_key)
+						guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
+					guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
+					pre_key = key;
+				}
+			} else {
+				if (pre_key)
+					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
 			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {

@@ -28,10 +28,20 @@ enum {
 	KEYBOARD_NUM
 };
 
+struct keyboard_key {
+	/*
+	 * a rect described by top left and
+	 * bottom right point.
+	 */
+	int left_x, right_x;
+	int left_y, right_y;
+	char key;
+};
+
 void keyboard_set_mode(int mode);
 int keyboard_get_mode();
 unsigned int keyboard_height();
 void keyboard_paint();
-char keyboard_release(int x, int y);
+struct keyboard_key * keyboard_get_data(int x, int y);
 
 #endif

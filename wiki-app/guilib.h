@@ -17,6 +17,7 @@ void guilib_init(void);
 void guilib_set_pixel(int x, int y, int v);
 int  guilib_get_pixel(int x, int y);
 void guilib_invert(int start, int lines);
+void guilib_invert_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y);
 void guilib_clear(void);
 void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y);
 

@@ -68,9 +68,9 @@ static void guilib_set_pixel_plain(int x, int y, int v)
 	EXTRACT_PIXEL(x, y)
 
 	if (v)
-		framebuffer[byte] |= (1 << (7 - bit));
+		framebuffer[byte] |= 0x80 >> bit;
 	else
-		framebuffer[byte] &= ~(1 << (7 - bit));
+		framebuffer[byte] &= ~(0x80 >> bit);
 }
 
 void guilib_set_pixel(int x, int y, int v)
@@ -93,7 +93,7 @@ int guilib_get_pixel(int x, int y)
 {
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
-	int bit_set = (framebuffer[byte] & 1<<(7-bit)) != 0;
+	int bit_set = (framebuffer[byte] & 0x80>>bit) != 0;
 #ifdef DISPLAY_INVERTED
 	bit_set = !bit_set;
 #endif
@@ -112,6 +112,21 @@ void guilib_invert(int start_line, int height)
 		for (x = 0; x < FRAMEBUFFER_SCANLINE; x += 8) {
 			unsigned int byte = (x + FRAMEBUFFER_SCANLINE * (start_line + y)) / 8;
 			framebuffer[byte] = ~framebuffer[byte];
+		}
+	}
+}
+
+/**
+ * Invert the area specified on the screen.
+ */
+void guilib_invert_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y)
+{
+	unsigned int x, y;
+
+	for (y = start_y; y <= end_y; ++y) {
+		for (x = start_x; x <= end_x; x++) {
+			unsigned int pixel = guilib_get_pixel(x, y);
+			guilib_set_pixel_plain(x, y, !pixel);
 		}
 	}
 }
