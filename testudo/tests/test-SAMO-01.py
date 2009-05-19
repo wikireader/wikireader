@@ -38,16 +38,31 @@ RELAY_LCD_V4 = 16
 
 LCD_V0 = 21.0
 
-# (relay_name, required_value, percent_low, percent_high)
-VOLTAGE_LIST = {
-    "1V8": (RELAY_1V8, 1.8, -5, 5),
-    "3V": (RELAY_3V, 3.0, -5, 5),
-    "V0": (RELAY_LCD_V0, LCD_V0, -5, 5),
-    "V1": (RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5, 5),
-    "V2": (RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5, 5),
-    "V3": (RELAY_LCD_V3, LCD_V0 * 2.0 / 15.0, -5, 5),
-    "V4": (RELAY_LCD_V4, LCD_V0 * 1.0 / 15.0, -5, 5)
-}
+# ("text", relay_name, required_value, percent_low, percent_high)
+VOLTAGE_LIST = (
+    ("1V8", RELAY_1V8, 1.8, -5, 5),
+    ("3V", RELAY_3V, 3.0, -5, 5),
+    ("V0", RELAY_LCD_V0, LCD_V0, -5, 5),
+    ("V1", RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5, 5),
+    ("V2", RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5, 5),
+    ("V3", RELAY_LCD_V3, LCD_V0 * 2.0 / 15.0, -5, 5),
+    ("V4", RELAY_LCD_V4, LCD_V0 * 1.0 / 15.0, -5, 5)
+)
+
+# amps
+MAXIMUM_LEAKAGE_CURRENT = 0.002
+MINIMUM_ON_CURRENT = 0.005
+
+# seconds
+MINIMUM_ON_TIME = 0.01
+MAXIMUM_ON_TIME = 1.2
+MINIMUM_OFF_TIME = 1.7
+MAXIMUM_OFF_TIME = 4.0
+ON_OFF_DELTA = 0.1
+
+# 1/10 seconds
+ON_OFF_SCAN = int(5 / ON_OFF_DELTA)
+
 
 def setUp():
     """Set up power supply and turn on
@@ -57,10 +72,10 @@ def setUp():
     if debug:
         print 'setUp: **initialising**'
 
-    relay = RelayBoard()
+    relay = RelayBoard.PIC16F873A()
 
     dvm = Agilent.DMM34401A()
-    dvn.setVoltageDC();
+    dvm.setVoltageDC()
 
     psu = Keithley.PSU2303()
     psu.setCurrent(0.35)
@@ -70,13 +85,16 @@ def setUp():
         psu.settings()
         psu.measure()
     psu.message('Test in progress  Do NOT Touch  ')
+    relay.on(RELAY_VBATT)
+
 
 def tearDown():
     """Shutdown the power supply"""
     global debug, psu, dvm, relay
+    relay.off(RELAY_VBATT)
+    psu.powerOff()
     psu.setCurrent(0)
     psu.setVoltage(0)
-    psu.powerOff()
     psu.messageOff()
     if debug:
         print 'tearDown: **cleanup**'
@@ -87,32 +105,42 @@ def tearDown():
     del relay
     relay = None
 
+
 def testZzz():
     """Run this last"""
     pass
 
+
 def test001_leakage():
     """Make sure power is off and no leakage"""
     global debug, psu, dvm, relay
-    relay.on(RELAY_VBATT)
+    relay.off(RELAY_POWER_SWITCH)
+    time.sleep(0.2)
+    psu.powerOn()
+    time.sleep(0.5)
+    if debug:
+        psu.settings()
+        psu.measure()
     i = psu.current
-    assert abs(i) < 0.001, "Leakage current too high"
+    assert abs(i) < MAXIMUM_LEAKAGE_CURRENT, "Leakage current %7.3f mA is too high" % (i * 1000)
+
 
 def test002_on():
     """Turn on power and wait for current to rise"""
     global debug, psu, dvm, relay
     relay.on(RELAY_POWER_SWITCH)
-    sleep(0.25)
-    relay.off(RELAY_POWER_SWITCH)
-
-    for i in range(20):
-        if psu.current > 0.01:
+    t = time.time()
+    for i in range(ON_OFF_SCAN):
+        if psu.current >= MINIMUM_ON_CURRENT:
             break
-        if debug:
-            psu.measure()
-        sleep(0.1)
-    sleep(0.5)
-    assert psu.current > 0.01, "Failed to Power On"
+        time.sleep(ON_OFF_DELTA)
+    t = time.time() - t
+    relay.off(RELAY_POWER_SWITCH)
+    time.sleep(0.5)
+    assert psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On"
+    assert t > MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME)
+    assert t < MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME)
+
 
 def test003_check_booted():
     """How to find out if booted?"""
@@ -120,53 +148,51 @@ def test003_check_booted():
     for i in range(10):
         if debug:
             psu.measure()
-        sleep(0.1)
+        time.sleep(0.1)
         i = psu.current
         assert abs(i) > 0.01, "Device failed to power up"
 
 def test004_measure_voltages():
     """Measure voltages"""
     global debug, psu, dvm, relay
-    for v in VOLTAGE_LIST:
-        r = VOLTAGE_LIST[v][0]
-        min = VOLTAGE_LIST[v][1] * (100 + VOLTAGE_LIST[v][2]) / 100
-        max = VOLTAGE_LIST[v][1] * (100 + VOLTAGE_LIST[v][3]) / 100
+    for item in VOLTAGE_LIST:
+        v = item[0]
+        r = item[1]
+        min = item[2] * (100 + item[3]) / 100
+        max = item[2] * (100 + item[4]) / 100
         relay.on(r)
-        sleep(0.25)
-        actual = dvm.voltage()
+        time.sleep(0.5)
+        actual = dvm.voltage + DIODE_VOLTAGE_DROP
         if debug:
-            print 'V[%s] = %7.3f V' % (v, actual)
-        assert actual >= min, "Low Voltage %s = %7.3f < %f7.3" % (v, actual, min)
-        assert actual <= man, "High Voltage %s = %7.3f > %f7.3" % (v, actual, max)
+            print '%s = %7.3f V' % (v, actual)
+        assert actual >= min, "Low Voltage %s = %7.3f < %7.3f" % (v, actual, min)
+        assert actual <= max, "High Voltage %s = %7.3f > %7.3f" % (v, actual, max)
         relay.off(r)
-        sleep(0.25)
+        time.sleep(0.5)
+
 
 def test005_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
     relay.on(RELAY_POWER_SWITCH)
-    sleep(3.0)
+    t = time.time()
+    for i in range(ON_OFF_SCAN):
+        if psu.current < MINIMUM_ON_CURRENT:
+            break
+        time.sleep(ON_OFF_DELTA)
+    t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
-    sleep(0.25)
+    time.sleep(2)
     i = psu.current
-    assert abs(i) < 0.001, "Device failed to turn off"
+    assert abs(i) < MAXIMUM_LEAKAGE_CURRENT, "Failed to power off , %7.3f mA" % (i * 1000)
+    assert t > MINIMUM_OFF_TIME, "Off too short, %5.1f s < %5.1f" % (t, MINIMUM_OFF_TIME)
+    assert t < MAXIMUM_OFF_TIME, "Off too long, %5.1f s > %5.1f" % (t, MAXIMUM_OFF_TIME)
 
 
 def test006_on():
     """Turn on power and wait for current to rise"""
     global debug, psu, dvm, relay
-    relay.on(RELAY_POWER_SWITCH)
-    sleep(0.25)
-    relay.off(RELAY_POWER_SWITCH)
-
-    for i in range(20):
-        if psu.current > 0.01:
-            break
-        if debug:
-            psu.measure()
-        sleep(0.1)
-    sleep(0.5)
-    assert psu.current > 0.01, "Failed to Power On"
+    test002_on()
 
 
 def test007_program_flash():
@@ -178,7 +204,7 @@ def test007_program_flash():
 
 
     def callback(s):
-        sys.stdout.flush();
+        sys.stdout.flush()
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
             sleep(0.2)
@@ -229,11 +255,4 @@ def test007_keys():
 def test008_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
-    relay.on(RELAY_POWER_SWITCH)
-    sleep(3.0)
-    relay.off(RELAY_POWER_SWITCH)
-    sleep(0.25)
-    i = psu.current
-    assert abs(i) < 0.001, "Device failed to turn off"
-
-
+    test005_power_off()

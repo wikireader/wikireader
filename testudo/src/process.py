@@ -57,7 +57,7 @@ class Process:
                         self.callback(data)
                     currentLine = sRight
                 elif (e & (select.POLLOUT | select.POLLERR)) == select.POLLOUT:
-                    os.write(fd, "no\n");
+                    os.write(fd, "no\n")
                 if (e & select.POLLHUP) != 0:
                     run = False
                     break
@@ -70,13 +70,13 @@ class Process:
 if __name__ == '__main__':
     result = ''
     def cap(s):
-        sys.stdout.write('cap>> ');
-        sys.stdout.write(s);
-        sys.stdout.write('***');
-        sys.stdout.flush();
+        sys.stdout.write('cap>> ')
+        sys.stdout.write(s)
+        sys.stdout.write('***')
+        sys.stdout.flush()
         if 'Press Reset' == s.strip():
-            sys.stdout.write('-=<>=-');
-            sys.stdout.flush();
+            sys.stdout.write('-=<>=-')
+            sys.stdout.flush()
 
 
     p = Process(sys.argv[1:], cap)

@@ -16,7 +16,7 @@ except:
 from time import sleep
 
 
-class RelayBoard():
+class PIC16F873A():
 
     def __init__(self, port = '/dev/ttyUSB0', bps = 19200, timeout = 0.1):
         self.relay = Serial(port = port)
@@ -28,6 +28,7 @@ class RelayBoard():
         self.allOff()
 
     def __del__(self):
+        self.allOff()
         self.relay.close()
 
     def allOff(self):
@@ -68,25 +69,19 @@ class RelayBoard():
 
     def on(self, n):
         """Turn relay on (and update pending relays)"""
-        self.set(n):
-        self.update();
+        self.set(n)
+        self.update()
 
     def off(self, n):
         """Turn relay off (and update pending relays)"""
-        self.clear(n):
-        self.update();
+        self.clear(n)
+        self.update()
 
 
 def main():
     r = RelayBoard()
-    r.set(4)
-    r.set(7)
-    r.update()
-    sleep(0.25)
-    r.allOff()
-    sleep(0.1)
 
-    for x in range(5):
+    for x in range(2):
         for i in range(1, 17):
             r.set(i)
             r.update()
