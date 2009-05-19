@@ -154,7 +154,7 @@ def main():
         for r in map.items():
             print '0x%04x %s (%d bytes)' % (r[0], r[1], r[2])
 
-    s = SerialPort()
+    s = SerialPort(port = port)
 
     id = s.getID()
     while not id in VALID_CPU_IDS:
