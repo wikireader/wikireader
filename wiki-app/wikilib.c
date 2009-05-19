@@ -294,8 +294,10 @@ static void handle_touch(struct wl_input_event *ev)
 					pre_key = key;
 				}
 			} else {
-				if (pre_key)
+				if (pre_key) {
 					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
+					pre_key = NULL;
+				}
 			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
