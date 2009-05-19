@@ -131,6 +131,12 @@ void FileSystem_initialise(void)
 		DirectoryControlBlock[i].IsOpen = false;
 		DirectoryControlBlock[i].directoryname[0] = '\0';
 	}
+	memset(&TheFileSystem, 0, sizeof(TheFileSystem));
+	{
+		uint8_t b = 0;
+		disk_ioctl(0, CTRL_POWER, &b);
+		disk_initialize(0);
+	}
 	f_mount(0, &TheFileSystem);  // only possible value is zero
 }
 
