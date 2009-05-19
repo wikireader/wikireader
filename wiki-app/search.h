@@ -59,4 +59,23 @@ void search_add_char(char c);
  */
 void search_remove_char(void);
 
+/**
+ * Return search result count
+ */
+unsigned int search_result_count();
+
+/**
+ * Return the index of search result currently selected item
+ */
+int search_result_selected();
+
+/**
+ * Return the index of the first item displayed on the screen
+ */
+unsigned int search_result_first_item();
+
+void invert_selection(int old_pos, int new_pos);
+
+void search_set_selection(int new_selection);
+
 #endif

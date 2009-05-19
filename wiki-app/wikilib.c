@@ -45,6 +45,8 @@ enum display_mode_e {
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
+static unsigned int article_touch_y_pos = 0;
+static unsigned int article_touch_down_handled = 0;
 wom_file_t * g_womh = 0;
 
 static void repaint_search(void)
@@ -287,24 +289,50 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 		} else {
 			if (key) {
-				if (!pre_key || (pre_key && pre_key->key != key->key)) {
-					if (pre_key)
-						guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-					guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
-					pre_key = key;
-				}
+				if (pre_key && pre_key->key == key->key) goto out;
+
+				if (pre_key)
+					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
+				guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
+				pre_key = key;
 			} else {
 				if (pre_key) {
 					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
 					pre_key = NULL;
 				}
+
+				if (!search_result_count()) goto out;
+
+				unsigned int new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
+				if (new_selection == search_result_selected()) goto out;
+				if (new_selection >= search_result_count()-search_result_first_item())
+					goto out;
+				invert_selection(search_result_selected(), new_selection);
+				search_set_selection(new_selection);
 			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
 		const char *target = history_release(ev->touch_event.y);
 		if (target)
 			open_article(target, ARTICLE_NEW);
+	} else {
+		if (ev->touch_event.value == 0) {
+			if (article_touch_y_pos > ev->touch_event.y &&
+					abs(article_touch_y_pos - ev->touch_event.y) > 20)
+				article_display(ARTICLE_PAGE_NEXT);
+			else if (article_touch_y_pos < ev->touch_event.y &&
+					abs(article_touch_y_pos - ev->touch_event.y) > 20)
+				article_display(ARTICLE_PAGE_PREV);
+			article_touch_down_handled = 0;
+		} else {
+			if (!article_touch_down_handled) {
+				article_touch_y_pos = ev->touch_event.y;
+				article_touch_down_handled = 1;
+			}
+		}
 	}
+out:
+	return;
 }
 
 int wikilib_init (void)

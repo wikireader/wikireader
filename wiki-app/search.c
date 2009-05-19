@@ -35,7 +35,7 @@ static int search_str_len = 0;
 static char s_find_first = 1;
 static char trigram_loaded = 0;
 
-static void invert_selection(int old_pos, int new_pos)
+void invert_selection(int old_pos, int new_pos)
 {
 	guilib_fb_lock();
 
@@ -95,15 +95,18 @@ int search_load_trigram(void)
 void search_reload()
 {
 	static const char search_result_str[] = "Search results for:";
-	unsigned int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-	unsigned int available_count;
+	int available_count;
 	int y_pos, len;
 	const char * result;
 
 	DP(DBG_SEARCH, ("O search_reload() start: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
 	guilib_fb_lock();
-	guilib_clear();
+	if (keyboard_get_mode() == KEYBOARD_NONE)
+		guilib_clear();
+	else
+		guilib_clear_area(0, 0, 239, RESULT_START+(NUMBER_OF_RESULTS_KEYBOARD-1)*RESULT_HEIGHT);
 	render_string(0, 1, 10, search_result_str, strlen(search_result_str));
 
 	if (!search_str_len) goto out;
@@ -198,10 +201,10 @@ void search_remove_char(void)
 
 void search_select_down(void)
 {
-	unsigned int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-	unsigned int available_count = result_list.count - result_list.first_item;
-	unsigned int actual_display_count = available_count < screen_display_count ?
+	int available_count = result_list.count - result_list.first_item;
+	int actual_display_count = available_count < screen_display_count ?
 					available_count : screen_display_count;
 
 	/* no selection, do nothing */
@@ -275,4 +278,24 @@ const char *search_release(int y)
 	}
 
 	return NULL;
+}
+
+unsigned int search_result_count()
+{
+	return result_list.count;
+}
+
+int search_result_selected()
+{
+	return result_list.cur_selected;
+}
+
+unsigned int search_result_first_item()
+{
+	return result_list.first_item;
+}
+
+void search_set_selection(int new_selection)
+{
+	result_list.cur_selected = new_selection;
 }
