@@ -11,6 +11,7 @@ import RelayBoard
 import communication
 import process
 
+import sys
 import time
 
 
@@ -196,6 +197,7 @@ def test006_on():
 
 
 def test007_program_flash():
+    """Program the boot loader into FLASH memory"""
     global debug, psu, dvm, relay
     relay.set(RELAY_RESET)
     relay.set(RELAY_PROGRAM_FLASH)
@@ -203,15 +205,16 @@ def test007_program_flash():
     relay.set(RELAY_TXD)
     relay.update()
 
-
     def callback(s):
+        global debug, psu, dvm, relay
+        sys.stdout.write(s)
         sys.stdout.flush()
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
             time.sleep(0.2)
             relay.off(RELAY_RESET)
 
-    p = process.Process('make flash-mbr', callback)
+    p = process.Process(['make', 'flash-mbr'], callback)
 
     rc = p.run()
     assert 0 == rc, 'Flashing failed'
@@ -219,6 +222,7 @@ def test007_program_flash():
 
 
 def test008_keys():
+    """Test the three function keys"""
     global debug, psu, dvm, relay
     p = communication.SerialPort()
 
