@@ -1,7 +1,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "samo.h"
+#include <config.h>
 
 void init_lcd(void);
 

@@ -22,6 +22,9 @@
  * keyboard functionality
  */
 
+#define KEYBOARD_WIDTH	240
+#define KEYBOARD_HEIGHT	80
+
 enum {
 	KEYBOARD_NONE,
 	KEYBOARD_CHAR,

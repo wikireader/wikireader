@@ -13,6 +13,7 @@
 #include "wl-keyboard.h"
 #include <guilib.h>
 #include <glyph.h>
+#include <lcd.h>
 #include "wom_reader.h"
 
 #define DBG_SEARCH 0
@@ -106,7 +107,7 @@ void search_reload()
 	if (keyboard_get_mode() == KEYBOARD_NONE)
 		guilib_clear();
 	else
-		guilib_clear_area(0, 0, 239, RESULT_START+(NUMBER_OF_RESULTS_KEYBOARD-1)*RESULT_HEIGHT);
+		guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT + 1);
 	render_string(0, 1, 10, search_result_str, strlen(search_result_str));
 
 	if (!search_str_len) goto out;
