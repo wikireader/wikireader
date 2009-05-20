@@ -91,6 +91,8 @@ void delay_us(unsigned int microsec)
 	*dst = REG_SPI_RXD;
 }*/
 
+#include <serial.h>
+
 #define RCVR_SPI_M(dst) \
 	do { \
 		REG_SPI_TXD = 0xff; \
@@ -101,9 +103,11 @@ void delay_us(unsigned int microsec)
 static
 BYTE rcvr_spi (void)
 {
+	BYTE tmp;
 	REG_SPI_TXD = 0xff;
 	do {} while (REG_SPI_STAT & BSYF);
-	return REG_SPI_RXD;
+	tmp = REG_SPI_RXD;
+	return tmp;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -393,7 +397,7 @@ DSTATUS disk_poll(BYTE drv) {
 /* Initialize Disk Drive						 */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_initialize (
+DSTATUS mmc_disk_initialize (
 	BYTE drv		/* Physical drive nmuber (0) */
 )
 {
@@ -434,6 +438,8 @@ DSTATUS disk_initialize (
 			if (timeout && send_cmd(CMD58, 0) == 0) {		/* Check CCS bit in the OCR */
 				for (n = 0; n < 4; n++) ocr[n] = rcvr_spi();
 				ty = (ocr[0] & 0x40) ? 12 : 4;
+				if (ty == 12)
+					Serial_PutString("SD_TYPE_SDHC_CCS\n");
 			}
 		}
 	} else {					/* SDSC or MMC */
@@ -480,7 +486,7 @@ DSTATUS disk_status (
 /* Read Sector(s)							 */
 /*-----------------------------------------------------------------------*/
 
-DRESULT disk_read (
+DRESULT mmc_disk_read (
 	BYTE drv,			/* Physical drive nmuber (0) */
 	BYTE *buff,			/* Pointer to the data buffer to store read data */
 	DWORD sector,		/* Start sector number (LBA) */
@@ -490,11 +496,19 @@ DRESULT disk_read (
 	if (drv || !count) return RES_PARERR;
 	if (Stat & STA_NOINIT) return RES_NOTRDY;
 
+	Serial_PutString("read sector: 0x");
+	Serial_PutHex(sector);
+	Serial_PutString("\n");
+
 	if (!(CardType & 8)) sector *= 512;	/* Convert to byte address if needed */
 
 	if (count == 1) {	/* Single block read */
 		if (cache_read_sector (buff, sector) == RES_OK)
 			return RES_OK;
+
+		Serial_PutString("cmd17 sector: 0x");
+		Serial_PutHex(sector);
+		Serial_PutString("\n");
 
 		if ((send_cmd(CMD17, sector) == 0)	/* READ_SINGLE_BLOCK */
 			&& rcvr_datablock(buff, 512))
@@ -505,6 +519,9 @@ DRESULT disk_read (
 	}
 	else {				/* Multiple block read */
 		if (send_cmd(CMD18, sector) == 0) {	/* READ_MULTIPLE_BLOCK */
+			Serial_PutString("cmd18 sector: 0x");
+			Serial_PutHex(sector);
+			Serial_PutString("\n");
 			do {
 				if (!rcvr_datablock(buff, 512)) break;
 				cache_write_sector(buff, sector++);

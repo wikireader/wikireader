@@ -33,9 +33,11 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 export PATH:=../../host-tools/toolchain-install/bin:${PATH}
 
+INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
+
 
 LIBS +=	${MINI_LIBC_LIB}
 LIBS += $$(${CROSS_GCC} -print-libgcc-file-name)
@@ -46,13 +48,13 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}
+vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}:${DRIVERS_SRC}
 
 
 all: forth.elf
 
 
-FORTH_OBJECTS = forth.o serial.o debug.o mmc.o tff.o FileSystem.o
+FORTH_OBJECTS = forth.o serial.o debug.o sd_spi.o sd_api.o mmc.o tff.o FileSystem.o
 forth.elf: ${FORTH_OBJECTS} forth.lds
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 	${CROSS_STRIP} --remove-section=.comment $@

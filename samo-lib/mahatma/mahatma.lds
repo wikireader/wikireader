@@ -30,6 +30,14 @@ SECTIONS
 	/*__dp = ORIGIN(sdram);*/
 	__dp = 0x10000000;
 
+	/**
+	 * assign 2K of the RAM for IDMA transfer
+	 * must be aligned to a 16 bytes boundry
+	 */
+	.idma : {
+	   . = . + 2048;
+        } > sdram
+
 	.text : {
 	   mahatma.o(*.text)
            *(.text)
@@ -50,6 +58,9 @@ SECTIONS
        .comment : {
           mahatma.o(.comment)
        } > sdram
+
+        __START_idma = ADDR(.idma);
+        __END_idma = __START_idma + SIZEOF(.idma);
 
         __START_text = ADDR(.text);
         __END_text = __START_text + SIZEOF(.text);

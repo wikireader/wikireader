@@ -19,8 +19,16 @@ SECTIONS
 */
 
 	__dp = 0x10000000 ;
-        .rodata 0x10000000 : {
 
+	/**
+	 * assign 2K of the RAM for IDMA transfer
+	 * must be aligned to a 16 bytes boundry
+	 */
+	.idma 0x10000000 : {
+	   . = . + 2048;
+        }
+
+        .rodata : {
            __START_rodata = . ;
            *(.rodata)
         }
@@ -60,6 +68,9 @@ SECTIONS
            __START_forth_text = . ;
 	   forth.o(*.forth_param)
         }
+
+        __START_idma = ADDR(.idma);
+        __END_idma = __START_idma + SIZEOF(.idma);
 
         __START_data_lma = LOADADDR( .data );
         __END_data_lma = __START_data_lma + SIZEOF( .data );

@@ -925,6 +925,12 @@
 #define RDOF   (1 << 3)
 #define RDFF   (1 << 2)
 
+// Bits for REG_HS_CNTLMODE
+#define HSDMAADV (1 << 0)
+
+// Bits for DMA advanced channels
+#define DMA_ENABLED  (1 << 0)
+#define DMA_DISABLED (0 << 0)
 
 #endif /* REGS_H */
 

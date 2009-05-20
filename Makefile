@@ -151,7 +151,7 @@ webkit:
 # forth interpreter
 
 .PHONY: forth
-forth:  gcc mini-libc
+forth:  gcc mini-libc fatfs drivers
 	$(MAKE) -C samo-lib/forth
 
 

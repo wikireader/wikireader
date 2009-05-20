@@ -19,19 +19,22 @@ SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || r
 include ${SAMO_LIB}/Mk/definitions.mk
 
 
+INCLUDES += -I${FORTH_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
+INCLUDES += -I${WIKI_APP_INCLUDE}
 INCLUDES += -I${FATFS_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
 INCLUDES += -I${SAMO_LIB_INCLUDE}
+INCLUDES += -I${MAHATMA_INCLUDE}
 
 BUILD_PREFIX := build/
 
-vpath %.c src
+vpath %.c :src:${MAHATMA_SRC}:${FATFS_SRC}
 
 TARGETS = lib/libdrivers.a
 
 # list of library modules
-OBJECTS += drv1.o
+OBJECTS += serial.o sd_spi.o sd_api.o
 #OBJECTS += drv2.o
 
 

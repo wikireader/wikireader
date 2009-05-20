@@ -57,10 +57,10 @@ $(foreach type, ${TYPE_LIST}, $(eval $(call BUILD,${type})))
 # create all the individual object file rules
 
 $(call MAKE_RULE,read-only,tff.o)
-$(call MAKE_RULE,read-only,mmc.o)
+# $(call MAKE_RULE,read-only,mmc.o)
 
 $(call MAKE_RULE,read-write,tff.o)
-$(call MAKE_RULE,read-write,mmc.o)
+# $(call MAKE_RULE,read-write,mmc.o)
 $(call MAKE_RULE,read-write,GetFATTime.o)
 
 clean:

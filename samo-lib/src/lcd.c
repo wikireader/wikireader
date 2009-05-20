@@ -24,6 +24,7 @@
 
 
 #if LCD_USES_SPI
+#error no SPI
 u8 spi_transmit_lcd(u8 out)
 {
 	REG_SPI_TXD = out;
