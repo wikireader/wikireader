@@ -233,34 +233,32 @@ def test008_keys():
     p = communication.SerialPort(port = CPU_SERIAL)
 
     relay.on(RELAY_RESET)
-    relay.off(RELAY_PROGRAM_FLASH)
-    relay.off(RELAY_RANDOM_KEY)
-    relay.off(RELAY_TREE_KEY)
-    relay.off(RELAY_SEARCH_KEY)
-
-    relay.on(RELAY_RXD)
-    relay.on(RELAY_TXD)
+    relay.clear(RELAY_PROGRAM_FLASH)
+    relay.clear(RELAY_RANDOM_KEY)
+    relay.clear(RELAY_TREE_KEY)
+    relay.clear(RELAY_SEARCH_KEY)
+    relay.set(RELAY_RXD)
+    relay.set(RELAY_TXD)
+    relay.update()
     time.sleep(0.2)
     relay.off(RELAY_RESET)
 
     p.waitFor('menu?')
     p.send('d')
 
-    for r, k in [(RELAY_RANDOM_KEY, '0x02'), (RELAY_TREE_KEY, '0x04'), (RELAY_SEARCH_KEY, '0x04')]:
+    for r, k in [(RELAY_RANDOM_KEY, '0x02'), (RELAY_TREE_KEY, '0x04'), (RELAY_SEARCH_KEY, '0x01')]:
         relay.off(r)
         p.waitFor('keys = ')
         key = p.read(4)
         if debug:
             print 'key (none) =', key
         assert '0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key)
-        time.sleep(0.2)
         relay.on(r)
         p.waitFor('keys = ')
         key = p.read(4)
         if debug:
             print 'key (press) =', key
         assert k == key, 'Invalid keys: wanted %s, got %s' % (k, key)
-        time.sleep(0.2)
         relay.off(r)
 
     p.waitFor('keys = ')
