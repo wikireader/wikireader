@@ -18,8 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
-BOOTLOADER_TTY ?= $(shell echo -n /dev/ttyUSB && [ -e /dev/ttyUSB1 ] && echo 1 || echo 0)
-
 # ----- Toolchain configuration data --------------------------------------
 
 GCC_VERSION=3.3.2
@@ -147,16 +145,39 @@ webkit:
 	patch_path="../host-tools/rendering/patches/"; for file in `ls $$patch_path`; do echo "processing file: $$file"; patch -p1 < $$patch_path/$$file; done && \
 	./WebKitTools/Scripts/build-webkit --gtk --release)
 
-.PHONY: print-flash-config
-print-flash-config:
-	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
+
 
 # ----- forth -----------------------------------------------
-# items for testing
+# forth interpreter
 
 .PHONY: forth
 forth:  gcc mini-libc
 	$(MAKE) -C samo-lib/forth
+
+
+# ----- mbr -------------------------------------------------
+# master boot record
+
+define FindTTY
+for i in 2 1 0;
+do
+  d="/dev/ttyUSB$${i}";
+  if [ -e "$${d}" ];
+  then
+    echo -n $${d};
+    exit 0;
+  fi;
+done;
+echo -n /dev/TTY-NOT-FOUND;
+exit 1;
+endef
+
+BOOTLOADER_TTY ?= $(shell ${FindTTY})
+
+
+.PHONY: print-mbr-tty
+print-mbr-tty:
+	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
 
 .PHONY: mbr
 mbr: gcc fatfs
@@ -170,6 +191,7 @@ mbr-rs232: gcc fatfs
 flash-mbr: mbr
 	$(MAKE) -C host-tools/jackknife
 	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
+
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
