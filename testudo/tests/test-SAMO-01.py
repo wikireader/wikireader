@@ -191,7 +191,7 @@ def test005_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
     relay.clear(RELAY_PROGRAM_FLASH)
-    relay.clear(RELAY_POWER_SWITCH)
+    relay.set(RELAY_POWER_SWITCH)
     relay.update()
     t = time.time()
     for i in range(ON_OFF_SCAN):
