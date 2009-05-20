@@ -19,6 +19,8 @@ psu = None
 dvm = None
 relay = None
 
+RELAY_SERIAL = '/dev/ttyUSB0'
+CPU_SERIAL = '/dev/ttyUSB2'
 
 RELAY_VBATT = 1
 RELAY_RESET = 2
@@ -73,7 +75,7 @@ def setUp():
     if debug:
         print 'setUp: **initialising**'
 
-    relay = RelayBoard.PIC16F873A()
+    relay = RelayBoard.PIC16F873A(port = RELAY_SERIAL)
 
     dvm = Agilent.DMM34401A()
     dvm.setVoltageDC()
@@ -207,24 +209,25 @@ def test007_program_flash():
 
     def callback(s):
         global debug, psu, dvm, relay
-        sys.stdout.write(s)
-        sys.stdout.flush()
+        if debug > 100:
+            sys.stdout.write(s)
+            sys.stdout.flush()
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
             time.sleep(0.2)
             relay.off(RELAY_RESET)
 
-    p = process.Process(['make', 'flash-mbr'], callback)
+    p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL], callback)
 
     rc = p.run()
-    assert 0 == rc, 'Flashing failed'
+    assert rc, 'Flashing failed'
     relay.off(RELAY_PROGRAM_FLASH)
 
 
 def test008_keys():
     """Test the three function keys"""
     global debug, psu, dvm, relay
-    p = communication.SerialPort()
+    p = communication.SerialPort(port = CPU_SERIAL)
 
     relay.on(RELAY_RESET)
     relay.off(RELAY_PROGRAM_FLASH)
@@ -244,14 +247,20 @@ def test008_keys():
         relay.off(r)
         p.waitFor('keys = ')
         key = p.read(4)
+        if debug:
+            print 'key (none) =', key
         assert '0x00' == key, 'Invalid keys: wanted, got %s' % ('0x00', key)
         relay.on(r)
         p.waitFor('keys = ')
         key = p.read(4)
+        if debug:
+            print 'key (press) =', key
         assert k == key, 'Invalid keys: wanted, got %s' % (k, key)
         relay.off(r)
         p.waitFor('keys = ')
         key = p.read(4)
+        if debug:
+            print 'key (release) =', key
         assert '0x00' == key, 'Invalid keys: wanted, got %s' % ('0x00', key)
 
     del p
