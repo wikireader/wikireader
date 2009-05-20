@@ -31,7 +31,6 @@ class SerialPort():
         self.s.close()
 
     def flush(self):
-        print 'flush:', self.s.inWaiting()
         if 0 < self.s.inWaiting():
             self.s.read(self.s.inWaiting())
 
