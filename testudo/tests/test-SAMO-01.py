@@ -155,13 +155,16 @@ def test002_on():
 def test003_check_current():
     """Monitor current to see ok"""
     global debug, psu, dvm, relay
-    for i in range(10):
+    for i in range(20):
         if debug:
             psu.measure()
         time.sleep(0.1)
         i = psu.current
+        info('Supply current = %f7.3 mA' % i)
         fail_unless(abs(i) > MINIMUM_ON_CURRENT, "Device failed to power up")
         fail_if(abs(i) > MAXIMUM_ON_CURRENT, "Device current too high")
+     i = psu.current
+     info('Supply current = %f7.3 mA' % i)
 
 def test004_measure_voltages():
     """Measure voltages"""
