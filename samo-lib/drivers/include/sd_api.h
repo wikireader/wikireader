@@ -30,6 +30,7 @@ enum {
 #define SD_SUCCESS	0
 #define SD_FAILURE	-1
 
+#include <inttypes.h>
 #include <regs.h>
 #include <samo.h>
 

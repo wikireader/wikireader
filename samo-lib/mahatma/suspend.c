@@ -19,7 +19,7 @@
 #include "regs.h"
 #include "samo.h"
 #include "irq.h"
-#include "diskio.h"
+#include <diskio.h>
 #include "suspend.h"
 
 
