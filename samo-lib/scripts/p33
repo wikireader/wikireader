@@ -1,7 +1,7 @@
 #!/bin/sh
 # run picocom
 
-PortList='/dev/ttyUSB1 /dev/ttyUSB0'
+PortList='/dev/ttyUSB2 /dev/ttyUSB1 /dev/ttyUSB0'
 SendFile="$(dirname "$0")/SendCountedFile"
 bps=57600
 
