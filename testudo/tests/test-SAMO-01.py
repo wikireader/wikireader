@@ -132,6 +132,7 @@ def test001_leakage():
         psu.settings()
         psu.measure()
     i = psu.current
+    info('Leakage current = %7.3f mA' % (1000 * i))
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Leakage current %7.3f mA is too high" % (i * 1000))
 
 
@@ -147,6 +148,7 @@ def test002_on():
     t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
     time.sleep(0.5)
+    info('On current = %7.3f mA' % (1000 * i))
     fail_unless(psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On")
     fail_if(t < MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME))
     fail_if(t > MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME))
@@ -160,11 +162,10 @@ def test003_check_current():
             psu.measure()
         time.sleep(0.1)
         i = psu.current
-        info('Supply current = %f7.3 mA' % i)
+        info('Supply current = %7.3f mA' % (1000 * i))
         fail_unless(abs(i) > MINIMUM_ON_CURRENT, "Device failed to power up")
         fail_if(abs(i) > MAXIMUM_ON_CURRENT, "Device current too high")
-     i = psu.current
-     info('Supply current = %f7.3 mA' % i)
+
 
 def test004_measure_voltages():
     """Measure voltages"""
