@@ -11,7 +11,7 @@ import RelayBoard
 import communication
 import process
 
-from time import sleep
+import time
 
 
 psu = None
@@ -36,7 +36,7 @@ RELAY_LCD_V2 = 14
 RELAY_LCD_V3 = 15
 RELAY_LCD_V4 = 16
 
-LCD_V0 = 21.0
+LCD_V0 = 23.0
 
 # ("text", relay_name, required_value, percent_low, percent_high)
 VOLTAGE_LIST = (
@@ -162,7 +162,7 @@ def test004_measure_voltages():
         max = item[2] * (100 + item[4]) / 100
         relay.on(r)
         time.sleep(0.5)
-        actual = dvm.voltage + DIODE_VOLTAGE_DROP
+        actual = dvm.voltage
         if debug:
             print '%s = %7.3f V' % (v, actual)
         assert actual >= min, "Low Voltage %s = %7.3f < %7.3f" % (v, actual, min)
@@ -197,27 +197,28 @@ def test006_on():
 
 def test007_program_flash():
     global debug, psu, dvm, relay
-    relay.on(RELAY_RESET)
-    relay.on(RELAY_PROGRAM_FLASH)
-    relay.on(RELAY_RXD)
-    relay.on(RELAY_TXD)
+    relay.set(RELAY_RESET)
+    relay.set(RELAY_PROGRAM_FLASH)
+    relay.set(RELAY_RXD)
+    relay.set(RELAY_TXD)
+    relay.update()
 
 
     def callback(s):
         sys.stdout.flush()
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
-            sleep(0.2)
+            time.sleep(0.2)
             relay.off(RELAY_RESET)
 
-    p = process.Process('make flash-mbr')
+    p = process.Process('make flash-mbr', callback)
 
     rc = p.run()
     assert 0 == rc, 'Flashing failed'
     relay.off(RELAY_PROGRAM_FLASH)
 
 
-def test007_keys():
+def test008_keys():
     global debug, psu, dvm, relay
     p = communication.SerialPort()
 
@@ -229,7 +230,7 @@ def test007_keys():
 
     relay.on(RELAY_RXD)
     relay.on(RELAY_TXD)
-    sleep(0.2)
+    time.sleep(0.2)
     relay.off(RELAY_RESET)
 
     p.waitFor('menu?')
@@ -252,7 +253,7 @@ def test007_keys():
     del p
     p = None
 
-def test008_power_off():
+def test009_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
     test005_power_off()
