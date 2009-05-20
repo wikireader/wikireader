@@ -18,11 +18,19 @@ DIRECTORY_IGNORE_LIST = ['CVS', '.svn', '.git', '00IGNORE']
 
 # display a functions documentation string
 def displayDoc(message):
+    if None == message:
+        message = '*empty documentation string*'
     wrapper = textwrap.TextWrapper(initial_indent = '    \ ', subsequent_indent = '    | ')
     print wrapper.fill(message)
 
-def info(x):
-    print 'INFO:', x
+def info(message):
+    global verbose
+    if verbose:
+        print 'INFO:', message
+
+def fail_if(cond, message):
+    if cond:
+        raise AssertionError, message
 
 # the main script running application
 # this can throw exceptions if compile or setUp fail
@@ -41,7 +49,9 @@ def runTests(name, debug):
 
     global_variables = {
         'debug': debug,
-        'info': lambda x : info(x),
+        'info': lambda message : info(message),
+        'fail_unless': lambda cond, message : fail_if(not cond, message),
+        'fail_if': lambda cond, message : fail_if(cond, message),
         }
     eval('0', global_variables) # populate global_variables
 
@@ -51,7 +61,7 @@ def runTests(name, debug):
     s.sort()
 
     if verbose:
-        print 'TEST: Run: %s.setUp' % module_name
+        print 'TEST: %s.setUp' % module_name
         displayDoc(inspect.getdoc(global_variables['setUp']))
 
     eval('setUp()', global_variables)
@@ -59,16 +69,17 @@ def runTests(name, debug):
     try:
         for f in s:
             if verbose:
-                print 'TEST: Run: %s.%s' % (module_name, f)
+                print 'TEST: %s.%s' % (module_name, f)
                 displayDoc(inspect.getdoc(global_variables[f]))
             eval(f + '()', global_variables)
+            print 'PASS: %s.%s' % (module_name, f)
         if verbose:
             print 'PASS: all tests completed'
     except AssertionError, e:
         print 'FAIL:', e
     finally:
         if verbose:
-            print 'TEST: Run: %s.tearDown' % module_name
+            print 'TEST: %s.tearDown' % module_name
             displayDoc(inspect.getdoc(global_variables['tearDown']))
         eval('tearDown()', global_variables)
 
@@ -76,13 +87,13 @@ def runTests(name, debug):
 # run one test script catching errors
 def runOneTest(name, debug):
     if verbose:
-        print 'TEST: %s' % name
+        print 'FILE: %s' % name
     try:
         runTests(name, debug)
     except SyntaxError, s:
-        print 'Test module compile failed: ', s
+        print 'FAIL: Test module compile failed: ', s
     except Exception, e:
-        print 'Test module run failed', e
+        print 'FAIL: Test module run failed', e
 
 
 # process a directory tree

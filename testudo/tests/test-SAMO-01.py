@@ -68,14 +68,20 @@ ON_OFF_DELTA = 0.1
 # 1/10 seconds
 ON_OFF_SCAN = int(5 / ON_OFF_DELTA)
 
+# function keys
+KEY_LIST = [
+    ('Random', RELAY_RANDOM_KEY, '0x02'),
+    ('Tree',   RELAY_TREE_KEY,   '0x04'),
+    ('Search', RELAY_SEARCH_KEY, '0x01')
+]
+
 
 def setUp():
     """Set up power supply and turn on
 
        Also put a message on the PSU LCD to warn operator"""
     global debug, psu, dvm, relay
-    if debug:
-        print 'setUp: **initialising**'
+    info('setUp: **initialising**')
 
     relay = RelayBoard.PIC16F873A(port = RELAY_SERIAL)
 
@@ -101,8 +107,7 @@ def tearDown():
     psu.setCurrent(0)
     psu.setVoltage(0)
     psu.messageOff()
-    if debug:
-        print 'tearDown: **cleanup**'
+    info('tearDown: **cleanup**')
     del psu
     psu = None
     del dvm
@@ -127,7 +132,7 @@ def test001_leakage():
         psu.settings()
         psu.measure()
     i = psu.current
-    assert abs(i) < MAXIMUM_LEAKAGE_CURRENT, "Leakage current %7.3f mA is too high" % (i * 1000)
+    fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Leakage current %7.3f mA is too high" % (i * 1000))
 
 
 def test002_on():
@@ -142,9 +147,9 @@ def test002_on():
     t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
     time.sleep(0.5)
-    assert psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On"
-    assert t > MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME)
-    assert t < MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME)
+    fail_unless(psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On")
+    fail_if(t < MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME))
+    fail_if(t > MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME))
 
 
 def test003_check_current():
@@ -155,8 +160,8 @@ def test003_check_current():
             psu.measure()
         time.sleep(0.1)
         i = psu.current
-        assert abs(i) > MINIMUM_ON_CURRENT, "Device failed to power up"
-        assert abs(i) < MAXIMUM_ON_CURRENT, "Device current too high"
+        fail_unless(abs(i) > MINIMUM_ON_CURRENT, "Device failed to power up")
+        fail_if(abs(i) > MAXIMUM_ON_CURRENT, "Device current too high")
 
 def test004_measure_voltages():
     """Measure voltages"""
@@ -169,10 +174,9 @@ def test004_measure_voltages():
         relay.on(r)
         time.sleep(0.5)
         actual = dvm.voltage
-        if debug:
-            print '%s = %7.3f V' % (v, actual)
-        assert actual >= min, "Low Voltage %s = %7.3f < %7.3f" % (v, actual, min)
-        assert actual <= max, "High Voltage %s = %7.3f > %7.3f" % (v, actual, max)
+        info('%s = %7.3f V' % (v, actual))
+        fail_if(actual < min, "Low Voltage %s = %7.3f < %7.3f" % (v, actual, min))
+        fail_if(actual > max, "High Voltage %s = %7.3f > %7.3f" % (v, actual, max))
         relay.off(r)
         time.sleep(0.5)
 
@@ -190,9 +194,9 @@ def test005_power_off():
     relay.off(RELAY_POWER_SWITCH)
     time.sleep(2)
     i = psu.current
-    assert abs(i) < MAXIMUM_LEAKAGE_CURRENT, "Failed to power off , %7.3f mA" % (i * 1000)
-    assert t > MINIMUM_OFF_TIME, "Off too short, %5.1f s < %5.1f" % (t, MINIMUM_OFF_TIME)
-    assert t < MAXIMUM_OFF_TIME, "Off too long, %5.1f s > %5.1f" % (t, MAXIMUM_OFF_TIME)
+    fail_unless(abs(i) < MAXIMUM_LEAKAGE_CURRENT, "Failed to power off , %7.3f mA" % (i * 1000))
+    fail_if(t < MINIMUM_OFF_TIME, "Off too short, %5.1f s < %5.1f" % (t, MINIMUM_OFF_TIME))
+    fail_if(t > MAXIMUM_OFF_TIME, "Off too long, %5.1f s > %5.1f" % (t, MAXIMUM_OFF_TIME))
 
 
 def test006_on():
@@ -223,7 +227,7 @@ def test007_program_flash():
     p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL], callback)
 
     rc = p.run()
-    assert rc, 'Flashing failed'
+    fail_unless(rc, 'Flashing failed')
     relay.off(RELAY_PROGRAM_FLASH)
 
 
@@ -246,26 +250,23 @@ def test008_keys():
     p.waitFor('menu?')
     p.send('d')
 
-    for r, k in [(RELAY_RANDOM_KEY, '0x02'), (RELAY_TREE_KEY, '0x04'), (RELAY_SEARCH_KEY, '0x01')]:
+    for desc, r, k in KEY_LIST:
         relay.off(r)
         p.waitFor('keys = ')
         key = p.read(4)
-        if debug:
-            print 'key (none) =', key
-        assert '0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key)
+        info('key (none) = %s' % key)
+        fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
         relay.on(r)
         p.waitFor('keys = ')
         key = p.read(4)
-        if debug:
-            print 'key (press) =', key
-        assert k == key, 'Invalid keys: wanted %s, got %s' % (k, key)
+        info('key (%s)[%s] = %s' % (desc, k, key))
+        fail_unless(k == key, 'Invalid keys: wanted %s, got %s' % (k, key))
         relay.off(r)
 
     p.waitFor('keys = ')
     key = p.read(4)
-    if debug:
-        print 'key (release) =', key
-    assert '0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key)
+    info('key (none) = %s' % key)
+    fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
 
     del p
     p = None
