@@ -139,7 +139,9 @@ def test001_leakage():
 def test002_on():
     """Turn on power and wait for current to rise"""
     global debug, psu, dvm, relay
-    relay.on(RELAY_POWER_SWITCH)
+    relay.set(RELAY_PROGRAM_FLASH)
+    relay.set(RELAY_POWER_SWITCH)
+    relay.update()
     t = time.time()
     for i in range(ON_OFF_SCAN):
         if psu.current >= MINIMUM_ON_CURRENT:
@@ -148,7 +150,7 @@ def test002_on():
     t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
     time.sleep(0.5)
-    info('On current = %7.3f mA' % (1000 * i))
+    info('On current = %7.3f mA' % (1000 * psu.current))
     fail_unless(psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On")
     fail_if(t < MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME))
     fail_if(t > MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME))
@@ -188,7 +190,9 @@ def test004_measure_voltages():
 def test005_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
-    relay.on(RELAY_POWER_SWITCH)
+    relay.clear(RELAY_PROGRAM_FLASH)
+    relay.clear(RELAY_POWER_SWITCH)
+    relay.update()
     t = time.time()
     for i in range(ON_OFF_SCAN):
         if psu.current < MINIMUM_ON_CURRENT:
@@ -220,6 +224,8 @@ def test007_program_flash():
 
     def callback(s):
         global debug, psu, dvm, relay
+        i = psu.current
+        info('Supply current = %7.3f mA' % (1000 * i))
         if debug > 100:
             sys.stdout.write(s)
             sys.stdout.flush()
@@ -263,6 +269,8 @@ def test008_keys():
         relay.on(r)
         p.waitFor('keys = ')
         key = p.read(4)
+        i = psu.current
+        info('Supply current = %7.3f mA' % (1000 * i))
         info('key (%s)[%s] = %s' % (desc, k, key))
         fail_unless(k == key, 'Invalid keys: wanted %s, got %s' % (k, key))
         relay.off(r)
