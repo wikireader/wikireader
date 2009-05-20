@@ -4,6 +4,7 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 
 INCLUDES = -I${MINI_LIBC_INCLUDE}
+INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${SAMO_LIB_INCLUDE}
 LDFLAGS = -static -s --no-gc-sections -N -L$(MINI_LIBC)
 CFLAGS = -Wall $(INCLUDES) -gstabs -mlong-calls -fno-builtin -Os -mc33pe

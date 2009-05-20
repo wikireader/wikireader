@@ -52,8 +52,10 @@
 
 #include <string.h>
 #include "tff.h"		/* Tiny-FatFs declarations */
-#include "diskio.h"		/* Include file for user provided disk functions */
+#include <diskio.h>		/* Include file for user provided disk functions */
 
+
+typedef unsigned char DSTATUS;
 
 static
 FATFS *FatFs;			/* Pointer to the file system objects (logical drive) */
