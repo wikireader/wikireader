@@ -158,14 +158,6 @@ void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int 
 			guilib_set_pixel_plain(x, y, 0);
 #endif
 	}
-	/*int height;
-
-	for (height = start_y; height <= end_y; height++)
-#ifdef DISPLAY_INVERTE		
-		memset(&framebuffer[(FRAMEBUFFER_SCANLINE * height + start_x)/8], ~0, end_x - start_x + 1);
-#else
-		memset(&framebuffer[(FRAMEBUFFER_SCANLINE * height + start_x)/8], 0, end_x - start_x + 1);
-#endif*/
 }
 
 /* The idea is that every function which calls painting routines calls
