@@ -12,6 +12,9 @@
 #include <inttypes.h>
 #include <file-io.h>
 #include <string.h>
+#include <tff.h>
+#include <search.h>
+#include <ctype.h>
 #include "random.h"
 #include "wikilib.h"
 #include "msg.h"
@@ -22,14 +25,11 @@
 int random_article(void)
 {
 	uint32_t offset;
-	int32_t fd, res;
+	int32_t fd, res, i;
 	uint8_t buff[TITLE_LEN], *eol_ptr;
+	const char *target;
 
 	//TODO: EOF
-// 	memset(buff, 'A', TITLE_LEN);
-// 	buff[TITLE_LEN - 1] = 0;
-
-	debug_printf("random button pressed\n");
 
 	fd = wl_open(RAND_OFFSET_PATH, WL_O_RDONLY);
 	offset = 0;
@@ -67,20 +67,30 @@ int random_article(void)
 	eol_ptr = strchr(buff, '\n');
 	*eol_ptr = '\0';
 	debug_printf("opening (%i): %s\n", strlen(buff), buff);
-	open_article(buff, ARTICLE_NEW);
+
+	/* hackish solution to get the article displayed - no idea how can one make such a stupid API */
+	for (i = 0; i < TITLE_LEN; i++)
+		search_remove_char();
+
+	for (i = 0; i < strlen(buff); i++)
+		search_add_char(tolower(buff[i]));
+
+	target = search_fetch_result();
+	open_article(&target[strlen(target)-TARGET_SIZE], ARTICLE_NEW);
 
 	// save new offset
 	offset += strlen(buff) + 1;
 
-	fd = wl_open(RAND_OFFSET_PATH, WL_O_WRONLY);
+	fd = wl_open(RAND_OFFSET_PATH, WL_O_CREATE);
 
 	if (fd >= 0) {
 		debug_printf("saving: %u\n", (unsigned int)offset);
 		res = wl_write(fd, &offset, sizeof(uint32_t));
 		wl_close(fd);
+	} else {
+		debug_printf("can't save: %u %i\n", (unsigned int)offset, fd);
 	}
 
-	debug_printf("done\n");
 	return 1;
 }
 

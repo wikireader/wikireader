@@ -42,13 +42,13 @@ void invert_selection(int old_pos, int new_pos)
 
 	if (old_pos != -1)
 		guilib_invert(PIXEL_START + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
-	if (new_pos != -1 )
+	if (new_pos != -1)
 		guilib_invert(PIXEL_START + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
 
 	guilib_fb_unlock();
 }
 
-static const char* search_fetch_result()
+const char* search_fetch_result()
 {
 	if (search_str_len == 0)
 		return NULL;
@@ -96,7 +96,7 @@ int search_load_trigram(void)
 void search_reload()
 {
 	static const char search_result_str[] = "Search results for:";
-	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int available_count;
 	int y_pos, len;
@@ -117,8 +117,8 @@ void search_reload()
 
 	int found = 0;
 	available_count = result_list.count - result_list.first_item;
-	while (available_count < screen_display_count && 
-		result_list.count < MAX_RESULTS && 
+	while (available_count < screen_display_count &&
+		result_list.count < MAX_RESULTS &&
 		(result = search_fetch_result())) {
 		len = strlen(result);
 		memcpy(&result_list.list[result_list.count], result, len);
@@ -133,7 +133,7 @@ void search_reload()
 		result_list.first_item = 0;
 		goto out;
 	}
-	
+
 	if (!found && result_list.first_item+result_list.cur_selected >= result_list.count ) {
 		--result_list.first_item;
 		++available_count;
@@ -143,7 +143,7 @@ void search_reload()
 		unsigned int count = available_count < screen_display_count ?
 					available_count : screen_display_count;
 
-		
+
 		for (i = result_list.first_item; i < count+result_list.first_item; i++) {
 			render_string(0, 1, y_pos, result_list.list[i], strlen(result_list.list[i]) - TARGET_SIZE);
 			y_pos += RESULT_HEIGHT;
@@ -202,7 +202,7 @@ void search_remove_char(void)
 
 void search_select_down(void)
 {
-	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int available_count = result_list.count - result_list.first_item;
 	int actual_display_count = available_count < screen_display_count ?
@@ -217,7 +217,7 @@ void search_select_down(void)
 		invert_selection(result_list.cur_selected, result_list.cur_selected + 1);
 		++result_list.cur_selected;
 	}
-	else if (result_list.count < MAX_RESULTS || 
+	else if (result_list.count < MAX_RESULTS ||
 			result_list.cur_selected + 1 < available_count) {
 		++result_list.first_item;
 		search_reload();

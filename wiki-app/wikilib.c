@@ -6,7 +6,7 @@
 //		modify it under the terms of the GNU General Public License
 //		as published by the Free Software Foundation; either version
 //		3 of the License, or (at your option) any later version.
-//           
+//
 
 #include <stdlib.h>
 #include <inttypes.h>
@@ -28,6 +28,7 @@
 #include <profile.h>
 #include <malloc-simple.h>
 #include "wom_reader.h"
+#include "random.h"
 
 #define DBG_WL 0
 
@@ -226,7 +227,7 @@ static void handle_key_release(int keycode)
 		history_reset();
 		history_display();
 	} else if (keycode == WL_INPUT_KEY_RANDOM) {
-		/* msg(MSG_INFO, "random\n"); */
+		random_article();
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keycode == WL_KEY_RETURN) {
 			const char* target = search_current_title();

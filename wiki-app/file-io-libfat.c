@@ -32,6 +32,12 @@ int _wl_open(const char *filename, int flags)
 		ff_flags |= FA_WRITE;
 #endif
 		break;
+	case WL_O_CREATE:
+		ff_flags = 0;
+#if !_FS_READONLY
+		ff_flags = FA_WRITE | FA_CREATE_ALWAYS;
+#endif
+		break;
 	}
 
 	for (i = 0; i < MAX_FILES; i++)
@@ -87,7 +93,7 @@ int wl_write(int fd, void *buf, unsigned int count)
 
 	if (fd < 0 || fd >= MAX_FILES || !fil_used[fd])
 		return -1;
-	
+
 	ret = f_write(fil_list + fd, buf, count, &wcount);
 	if (ret)
 		return -ret;

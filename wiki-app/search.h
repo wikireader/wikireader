@@ -18,7 +18,7 @@
 #ifndef WL_SEARCH_H
 #define WL_SEARCH_H
 
-#define TARGET_SIZE 6 
+#define TARGET_SIZE 6
 #define RESULT_START 20
 #define RESULT_HEIGHT 10
 #define MAX_RESULTS 30
@@ -32,6 +32,7 @@
 void search_select_down(void);
 void search_select_up(void);
 const char *search_current_title(void);
+const char *search_fetch_result();
 
 /**
  * Initialize the search engine. Once.

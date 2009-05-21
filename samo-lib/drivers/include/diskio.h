@@ -24,8 +24,8 @@
 /* Prototypes for disk control functions */
 
 uint8_t disk_initialize(uint8_t disk_idx) {
-// 	return mmc_disk_initialize(0);
-	return SdInitialize();
+	return mmc_disk_initialize(0);
+// 	return SdInitialize();
 }
 
 uint8_t disk_status(uint8_t disk_idx)
@@ -34,12 +34,12 @@ uint8_t disk_status(uint8_t disk_idx)
 }
 
 uint8_t disk_read(uint8_t disk_idx, uint8_t *buff, uint32_t sect_addr, uint16_t size) {
-// 	return mmc_disk_read(disk_idx, buff, sect_addr, size);
-	return SdRdSect((unsigned short)disk_idx, sect_addr, size, buff);
+	return mmc_disk_read(disk_idx, buff, sect_addr, size);
+// 	return SdRdSect((unsigned short)disk_idx, sect_addr, size, buff);
 }
 
 #if _READONLY == 0
-uint8_t disk_write(uint8_t disk_idx, const uint8_t *buff, uint16_t sect_addr, uint16_t size) {
+uint8_t disk_write(uint8_t disk_idx, const uint8_t *buff, uint32_t sect_addr, uint16_t size) {
 	return mmc_disk_write(disk_idx, buff, sect_addr, size);
 }
 #endif

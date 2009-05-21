@@ -4,7 +4,8 @@
 enum {
 	WL_O_RDONLY = 0,
 	WL_O_WRONLY,
-	WL_O_RDWR
+	WL_O_RDWR,
+	WL_O_CREATE,
 };
 
 /* those are implemented by the specific/file-io-*.c */
