@@ -11,7 +11,8 @@
 
 #include <regs.h>
 #include <samo.h>
-#include "diskio.h"
+#include <diskio.h>
+#include <tff.h>
 #include "ff_config.h"
 
 #ifdef _USE_CACHE
@@ -50,6 +51,10 @@
 //#define SOCKPORT	PINB			/* Socket contact port */
 //#define SOCKWP		0x20			/* Write protect switch (PB5) */
 //#define SOCKINS		0x10			/* Card detect switch (PB4) */
+
+typedef unsigned char DSTATUS;
+// typedef unsigned char BYTE;
+// typedef short DWORD;
 
 
 /*--------------------------------------------------------------------------
@@ -474,7 +479,7 @@ out:
 /* Get Disk Status							 */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_status (
+DSTATUS mmc_disk_status (
 	BYTE drv		/* Physical drive nmuber (0) */
 )
 {
@@ -542,7 +547,7 @@ DRESULT mmc_disk_read (
 /*-----------------------------------------------------------------------*/
 
 #if _READONLY == 0
-DRESULT disk_write (
+DRESULT mmc_disk_write (
 	BYTE drv,		/* Physical drive nmuber (0) */
 	const BYTE *buff,	/* Pointer to the data to be written */
 	DWORD sector,		/* Start sector number (LBA) */
@@ -587,7 +592,7 @@ DRESULT disk_write (
 /*-----------------------------------------------------------------------*/
 
 #if _USE_IOCTL != 0
-DRESULT disk_ioctl (
+DRESULT mmc_disk_ioctl (
 	BYTE drv,		/* Physical drive nmuber (0) */
 	BYTE ctrl,		/* Control code */
 	void *buff		/* Buffer to send/receive control data */

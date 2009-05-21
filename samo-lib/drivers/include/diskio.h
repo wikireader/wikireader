@@ -18,8 +18,8 @@
 #include "sd_api.h"
 #include <inttypes.h>
 
-uint8_t mmc_disk_initialize(uint8_t disk_idx);
-uint8_t mmc_disk_read(uint8_t disk_idx, uint8_t *buff, uint16_t sector, uint8_t count);
+// uint8_t mmc_disk_initialize(uint8_t disk_idx);
+// uint8_t mmc_disk_read(uint8_t disk_idx, uint8_t *buff, uint16_t sector, uint8_t count);
 
 
 /* Results of Disk Functions */

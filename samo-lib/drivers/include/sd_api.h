@@ -37,8 +37,6 @@ enum {
 #define SD_CS_L SDCARD_CS_LO()
 #define SD_CS_H SDCARD_CS_HI()
 
-extern uint8_t send_cmd(uint8_t cmd, uint32_t arg);
-
 // Functions
 extern int SdMediaReset(void);
 extern int SdInitialize(void);
