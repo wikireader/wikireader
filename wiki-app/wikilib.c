@@ -138,7 +138,6 @@ int article_open(const char *article)
 	DP(DBG_WL, ("O article_open() '%s'\n", article));
 	s_article_offset = strtoul(article, 0 /* endptr */, 16 /* base */);
 	s_article_y_pos = 0;
-	article_display(ARTICLE_PAGE_0);
 	return 0;
 }
 
@@ -193,6 +192,7 @@ static void handle_search_key(char keycode)
 
 static void handle_cursor(struct wl_input_event *ev)
 {
+	DP(DBG_WL, ("O handle_cursor()\n"));
 	if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 			article_display(ARTICLE_PAGE_NEXT);
@@ -213,6 +213,7 @@ static void handle_cursor(struct wl_input_event *ev)
 
 static void handle_key_release(int keycode)
 {
+	DP(DBG_WL, ("O handle_key_release()\n"));
 	if (keycode == WL_INPUT_KEY_SEARCH) {
 		/* back to search */
 		if (display_mode == DISPLAY_MODE_INDEX) {
@@ -267,9 +268,7 @@ static void handle_key_release(int keycode)
 static void handle_touch(struct wl_input_event *ev)
 {
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
-		ev->touch_event.x,
-		ev->touch_event.y,
-		ev->touch_event.value));
+		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	if (display_mode == DISPLAY_MODE_INDEX) {
 		struct keyboard_key * key;
