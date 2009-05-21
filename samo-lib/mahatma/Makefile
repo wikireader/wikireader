@@ -29,13 +29,12 @@ INCLUDES =
 INCLUDES += -I$(MINI_LIBC_INCLUDE)
 INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
-INCLUDES += -I$(WIKI_APP_INCLUDE)
 INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I$(INDEXING_INCLUDE)
 INCLUDES += -I$(MINILZO_INCLUDE)
+INCLUDES += -I$(WIKI_APP_INCLUDE)
 
 LIBS = ${FATFS_LIB}
-LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
 LIBS += `$(CC) -print-libgcc-file-name`
 
@@ -43,7 +42,7 @@ GUILIB_COBJS = guilib.o glyph.o fontfile.o
 
 WIKIAPP_COBJS = file-io-general.o file-io-libfat.o
 WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o
-WIKIAPP_COBJS += decompress.o keyboard.o
+WIKIAPP_COBJS += decompress.o keyboard.o random.o
 
 # searching
 WIKIAPP_COBJS += search.o lsearcher.o fast_search.o
@@ -67,10 +66,10 @@ CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(MINI_LIBC)
 
-vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC)
+vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC):$(DRIVERS_SRC)
 
 OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o sd_spi.o sd_api.o mmc.o
 OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 ifeq ($(PNM2PLAIN_PATH),)

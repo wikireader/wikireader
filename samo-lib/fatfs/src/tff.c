@@ -55,8 +55,6 @@
 #include <diskio.h>		/* Include file for user provided disk functions */
 
 
-typedef unsigned char DSTATUS;
-
 static
 FATFS *FatFs;			/* Pointer to the file system objects (logical drive) */
 static
@@ -823,7 +821,6 @@ FRESULT f_open (
 	BYTE *dir;
 	char fn[8+3+1];
 
-
 	fp->fs = NULL;		/* Clear file object */
 #if !_FS_READONLY
 	mode &= (FA_READ|FA_WRITE|FA_CREATE_ALWAYS|FA_OPEN_ALWAYS|FA_CREATE_NEW);
@@ -924,7 +921,6 @@ FRESULT f_read (
 	UINT rcnt, cc;
 	CLUST clust;
 	BYTE *rbuff = buff;
-
 
 	*br = 0;
 	res = validate(fp->fs, fp->id);					/* Check validity of the object */

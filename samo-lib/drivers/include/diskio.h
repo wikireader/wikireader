@@ -16,20 +16,8 @@
 #define _USE_IOCTL	1
 
 #include "sd_api.h"
+#include "mmc.h"
 #include <inttypes.h>
-
-// uint8_t mmc_disk_initialize(uint8_t disk_idx);
-// uint8_t mmc_disk_read(uint8_t disk_idx, uint8_t *buff, uint16_t sector, uint8_t count);
-
-
-/* Results of Disk Functions */
-typedef enum {
-	RES_OK = 0,		/* 0: Successful */
-	RES_ERROR,		/* 1: R/W Error */
-	RES_WRPRT,		/* 2: Write Protected */
-	RES_NOTRDY,		/* 3: Not Ready */
-	RES_PARERR,		/* 4: Invalid Parameter */
-} DRESULT;
 
 
 /*---------------------------------------*/
@@ -45,15 +33,14 @@ uint8_t disk_status(uint8_t disk_idx)
 	return 0;
 }
 
-uint8_t disk_read(uint8_t disk_idx, uint8_t *buff, uint16_t sect_addr, uint16_t size) {
+uint8_t disk_read(uint8_t disk_idx, uint8_t *buff, uint32_t sect_addr, uint16_t size) {
 // 	return mmc_disk_read(disk_idx, buff, sect_addr, size);
-	return SdRdSect((unsigned short)disk_idx, sect_addr, (unsigned long)size, buff);
+	return SdRdSect((unsigned short)disk_idx, sect_addr, size, buff);
 }
 
-#if	_READONLY == 0
+#if _READONLY == 0
 uint8_t disk_write(uint8_t disk_idx, const uint8_t *buff, uint16_t sect_addr, uint16_t size) {
-	// TODO
-	return 0;
+	return mmc_disk_write(disk_idx, buff, sect_addr, size);
 }
 #endif
 
