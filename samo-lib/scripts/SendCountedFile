@@ -36,6 +36,11 @@ else
   [ -e "${FileName}" ] || usage file, "'"${FileName}'"' does not exist >&2
 fi
 
+if [ -L "${FileName}" ]
+then
+  FileName=$(readlink -m "${FileName}")
+fi
+
 size=$(ls -l "${FileName}" | awk '{print $5}')
 
 printf 'File: "%s", size = 0x%x [%d]\n' ${FileName} ${size} ${size} >&2
