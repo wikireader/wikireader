@@ -4,7 +4,10 @@ SEARCH_DIR(.);
 
 MEMORY
 {
-        iram (rwx): ORIGIN = 0, LENGTH = 8k
+        a0ram  (rwx): ORIGIN = 0x00000000, LENGTH = 8k
+        ivram  (rwx): ORIGIN = 0x00080000, LENGTH = 12k
+        dstram (rwx): ORIGIN = 0x00084000, LENGTH = 2k
+        sdram  (rwx): ORIGIN = 0x10000000, LENGTH = 32M
 }
 
 SECTIONS
@@ -17,7 +20,7 @@ SECTIONS
         .text 0x200 :
         {
                 *(.text) ;
-        } > iram
+        } > a0ram
 
         __START_text = LOADADDR(.text);
         __SIZE_text = SIZEOF(.text);
@@ -25,7 +28,7 @@ SECTIONS
         .rodata :
         {
                 *(.rodata) ;
-        } > iram
+        } > a0ram
 
         __START_rodata =  LOADADDR(.rodata);
         __SIZE_rodata =  SIZEOF(.rodata);
@@ -33,7 +36,7 @@ SECTIONS
         .data :
         {
                 *(.data) ;
-        } > iram
+        } > a0ram
 
         __START_data =  LOADADDR(.data);
         __SIZE_data =  SIZEOF(.data);
@@ -41,8 +44,15 @@ SECTIONS
 	.bss :
         {
                 *(.bss) ;
-        } > iram
+        } > a0ram
 
         __START_bss = LOADADDR(.bss);
         __SIZE_bss = SIZEOF(.bss);
+
+	.idma : {
+	   . = . + 2048;
+        } > dstram
+
+        __START_idma = LOADADDR(.bss);
+        __SIZE_idma = SIZEOF(.bss);
 }
