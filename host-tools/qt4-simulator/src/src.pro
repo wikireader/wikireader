@@ -12,6 +12,7 @@ SOURCES += $$TOPLEVEL/wiki-app/file-io-general.c
 SOURCES += $$TOPLEVEL/wiki-app/wikilib.c
 SOURCES += $$TOPLEVEL/wiki-app/wom_reader.c
 SOURCES += $$TOPLEVEL/wiki-app/search.c
+SOURCES += $$TOPLEVEL/wiki-app/random.c
 SOURCES += $$TOPLEVEL/wiki-app/hexdump.c
 SOURCES += $$TOPLEVEL/wiki-app/keyboard.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/fast_search.c
