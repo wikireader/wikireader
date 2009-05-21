@@ -14,6 +14,7 @@
 #include <guilib.h>
 #include <glyph.h>
 #include <lcd.h>
+#include "wikilib.h"
 #include "wom_reader.h"
 
 #define DBG_SEARCH 0
@@ -35,18 +36,6 @@ static int search_str_len = 0;
 
 static char s_find_first = 1;
 static char trigram_loaded = 0;
-
-void invert_selection(int old_pos, int new_pos)
-{
-	guilib_fb_lock();
-
-	if (old_pos != -1)
-		guilib_invert(PIXEL_START + old_pos * RESULT_HEIGHT, RESULT_HEIGHT);
-	if (new_pos != -1)
-		guilib_invert(PIXEL_START + new_pos * RESULT_HEIGHT, RESULT_HEIGHT);
-
-	guilib_fb_unlock();
-}
 
 const char* search_fetch_result()
 {
@@ -134,7 +123,7 @@ void search_reload()
 		goto out;
 	}
 
-	if (!found && result_list.first_item+result_list.cur_selected >= result_list.count ) {
+	if (!found && result_list.first_item && result_list.first_item+result_list.cur_selected >= result_list.count) {
 		--result_list.first_item;
 		++available_count;
 	}
@@ -146,11 +135,12 @@ void search_reload()
 
 		for (i = result_list.first_item; i < count+result_list.first_item; i++) {
 			render_string(0, 1, y_pos, result_list.list[i], strlen(result_list.list[i]) - TARGET_SIZE);
+			DP(DBG_SEARCH, ("O result[%d] '%s'\n", i, &result_list.list[i]));
 			y_pos += RESULT_HEIGHT;
 		}
 		if (result_list.cur_selected >= screen_display_count)
 			result_list.cur_selected = screen_display_count - 1;
-		invert_selection(result_list.cur_selected, -1);
+		invert_selection(result_list.cur_selected, -1, PIXEL_START, RESULT_HEIGHT);
 	}
 out:
 	DP(DBG_SEARCH, ("O search_reload() end: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list.cur_selected, result_list.first_item));
@@ -171,7 +161,7 @@ void search_add_char(char c)
 	} else
 		prepare_search(&global_search, search_string, &state);
 	s_find_first = 1;
-	result_list.cur_selected = 0;
+	result_list.cur_selected = -1;
 	result_list.first_item = 0;
 	result_list.count = 0;
 }
@@ -192,10 +182,7 @@ void search_remove_char(void)
 	memset(&state, 0, sizeof(state));
 	s_find_first = 1;
 	prepare_search(&global_search, search_string, &state);
-	if (search_str_len == 0)
-		result_list.cur_selected = -1;
-	else
-		result_list.cur_selected = 0;
+	result_list.cur_selected = -1;
 	result_list.first_item = 0;
 	result_list.count = 0;
 }
@@ -214,7 +201,7 @@ void search_select_down(void)
 
 	/* bottom reached, not wrapping around */
 	if (result_list.cur_selected + 1 < actual_display_count ) {
-		invert_selection(result_list.cur_selected, result_list.cur_selected + 1);
+		invert_selection(result_list.cur_selected, result_list.cur_selected + 1, PIXEL_START, RESULT_HEIGHT);
 		++result_list.cur_selected;
 	}
 	else if (result_list.count < MAX_RESULTS ||
@@ -234,7 +221,7 @@ void search_select_up(void)
 		return;
 
 	if (result_list.cur_selected > 0) {
-		invert_selection(result_list.cur_selected, result_list.cur_selected - 1);
+		invert_selection(result_list.cur_selected, result_list.cur_selected - 1, PIXEL_START, RESULT_HEIGHT);
 		--result_list.cur_selected;
 	}
 	else if (result_list.first_item > 0) {

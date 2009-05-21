@@ -133,6 +133,18 @@ static int display_image()
 static unsigned int s_article_y_pos;
 static uint32_t s_article_offset = 0;
 
+void invert_selection(int old_pos, int new_pos, int start_pos, int height)
+{
+	guilib_fb_lock();
+
+	if (old_pos != -1)
+		guilib_invert(start_pos + old_pos * height, height);
+	if (new_pos != -1)
+		guilib_invert(start_pos + new_pos * height, height);
+
+	guilib_fb_unlock();
+}
+
 int article_open(const char *article)
 {
 	DP(DBG_WL, ("O article_open() '%s'\n", article));
@@ -224,7 +236,6 @@ static void handle_key_release(int keycode)
 		}
 	} else if (keycode == WL_INPUT_KEY_HISTORY) {
 		display_mode = DISPLAY_MODE_HISTORY;
-		history_reset();
 		history_display();
 	} else if (keycode == WL_INPUT_KEY_RANDOM) {
 		random_article();
@@ -286,7 +297,7 @@ static void handle_touch(struct wl_input_event *ev)
 				handle_search_key(key->key);
 			}
 			else {
-				if (!touch_down_on_list) {
+				if (!touch_down_on_list || ev->touch_event.y < RESULT_START - RESULT_HEIGHT) {
 					touch_down_on_keyboard = 0;
 					touch_down_on_list = 0;
 					goto out;
@@ -330,14 +341,24 @@ static void handle_touch(struct wl_input_event *ev)
 				avail_count = search_result_count()-search_result_first_item() > avail_count ? avail_count : search_result_count()-search_result_first_item();
 				if (new_selection >= avail_count) goto out;
 				if (touch_down_on_keyboard) goto out;
-				invert_selection(search_result_selected(), new_selection);
+				invert_selection(search_result_selected(), new_selection, PIXEL_START, RESULT_HEIGHT);
 				search_set_selection(new_selection);
 			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		const char *target = history_release(ev->touch_event.y);
-		if (target)
-			open_article(target, ARTICLE_NEW);
+		unsigned int new_selection = ((unsigned int)ev->touch_event.y - HISTORY_RESULT_START - 2) / HISTORY_RESULT_HEIGHT;
+		if (new_selection >= history_get_count()) goto out;
+
+		if (ev->touch_event.value == 0) {
+			const char *target = history_get_item_target(history_get_selection());
+			if (target)
+				open_article(target, ARTICLE_NEW);
+		} else {
+			if (ev->touch_event.y < HISTORY_PIXEL_START) goto out;
+			if (new_selection == history_get_selection()) goto out;
+			invert_selection(history_get_selection(), new_selection, HISTORY_PIXEL_START, HISTORY_RESULT_HEIGHT);
+			history_set_selection(new_selection);
+		}
 	} else {
 		if (ev->touch_event.value == 0) {
 			if (article_touch_y_pos > ev->touch_event.y &&

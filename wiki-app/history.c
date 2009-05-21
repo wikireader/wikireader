@@ -27,10 +27,7 @@
 
 #include "history.h"
 
-#define HISTORY_RESULT_START 28
-#define HISTORY_RESULT_HEIGHT 10
-
-#define HISTORY_MAX_ITEM	100
+#define HISTORY_MAX_ITEM	19
 #define HISTORY_MAX_DISPLAY_ITEM	18U
 
 struct history_item {
@@ -155,7 +152,7 @@ static void history_page_up_display(int current_item)
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(0, 1, 14, "History", 7);
+	render_string(0, 1, 14, "History:", 8);
 
 	for (i = ((current_item + 1) - HISTORY_MAX_DISPLAY_ITEM); i < list_size && y_pos < guilib_framebuffer_height(); i++) {
 		const char *p = history_get_item_title(i);
@@ -173,10 +170,10 @@ void history_display(void)
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(0, 1, 14, "History", 7);
+	render_string(0, 1, 14, "History:", 8);
 
 	if (list_size == 0) {
-		render_string(0, 1, 100, "No history.", 11);
+		render_string(0, 95, 90, "No history", 10);
 	} else {
 		unsigned int y_pos = HISTORY_RESULT_START;
 
@@ -185,6 +182,7 @@ void history_display(void)
 			render_string(0, 1, y_pos, p, strlen(p)- (TARGET_SIZE));
 			y_pos += HISTORY_RESULT_HEIGHT;
 		}
+		invert_selection(history_current, -1, HISTORY_PIXEL_START, HISTORY_RESULT_HEIGHT);
 	}
 
 	guilib_fb_unlock();
@@ -311,6 +309,21 @@ const char *history_release(int y)
 	}
 
 	return NULL;
+}
+
+const int history_get_selection()
+{
+	return history_current;
+}
+
+void history_set_selection(int selection)
+{
+	history_current = selection;
+}
+
+unsigned int history_get_count()
+{
+	return list_size;
 }
 
 void history_list_init(void)

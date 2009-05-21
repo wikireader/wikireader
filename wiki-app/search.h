@@ -74,8 +74,6 @@ int search_result_selected();
  */
 unsigned int search_result_first_item();
 
-void invert_selection(int old_pos, int new_pos);
-
 void search_set_selection(int new_selection);
 
 #endif

@@ -21,6 +21,7 @@
 
 #define TITLE_LEN 256
 
+#define DBG_RANDOM 0
 
 int random_article(void)
 {
@@ -42,12 +43,12 @@ int random_article(void)
 
 		wl_close(fd);
 	} else {
-		debug_printf("offset file not found\n");
+		DP(1, ("X offset file not found\n"));
 	}
 
 	fd = wl_open(RAND_SRC_PATH, WL_O_RDONLY);
 	if (fd < 0) {
-		debug_printf("rand src not found\n");
+		DP(1, ("X rand src not found\n"));
 		return -1;
 	}
 
@@ -55,7 +56,7 @@ int random_article(void)
 	if (offset > 0)
 		wl_seek(fd, offset);
 
-	debug_printf("reading\n");
+	DP(DBG_RANDOM, ("O reading\n"));
 	res = wl_read(fd, buff, TITLE_LEN);
 
 	if (res != TITLE_LEN)
@@ -66,7 +67,7 @@ int random_article(void)
 	// find end of line
 	eol_ptr = strchr(buff, '\n');
 	*eol_ptr = '\0';
-	debug_printf("opening (%i): %s\n", strlen(buff), buff);
+	DP(DBG_RANDOM, ("O opening (%i): %s\n", strlen(buff), buff));
 
 	/* hackish solution to get the article displayed - no idea how can one make such a stupid API */
 	for (i = 0; i < TITLE_LEN; i++)
@@ -84,11 +85,11 @@ int random_article(void)
 	fd = wl_open(RAND_OFFSET_PATH, WL_O_CREATE);
 
 	if (fd >= 0) {
-		debug_printf("saving: %u\n", (unsigned int)offset);
+		DP(DBG_RANDOM, ("O saving: %u\n", (unsigned int)offset));
 		res = wl_write(fd, &offset, sizeof(uint32_t));
 		wl_close(fd);
 	} else {
-		debug_printf("can't save: %u %i\n", (unsigned int)offset, fd);
+		DP(DBG_RANDOM, ("O can't save: %u %i\n", (unsigned int)offset, fd));
 	}
 
 	return 1;

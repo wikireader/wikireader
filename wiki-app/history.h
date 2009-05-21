@@ -19,10 +19,12 @@
 #ifndef WL_HISTORY_H
 #define WL_HISTORY_H
 
+#define HISTORY_RESULT_START 28
+#define HISTORY_RESULT_HEIGHT 10
+#define HISTORY_PIXEL_START (HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2)
 /*
  * Interface for the History feature
  */
-
 
 void history_display(void);
 void history_reset(void);
@@ -40,6 +42,9 @@ unsigned int history_item_size(void);
 unsigned int history_free_item_size(void);
 
 const char *history_get_top_target(void);
+const int history_get_selection();
+void history_set_selection(int selection);
+unsigned int history_get_count();
 
 void history_list_init(void);
 struct history_item *history_find_item_title(const char *title);
