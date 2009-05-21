@@ -39,14 +39,13 @@ enum display_mode_e {
 	DISPLAY_MODE_IMAGE,
 };
 
-#define ARTICLE_NEW		0
-#define ARTICLE_HISTORY		1
-
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
 static unsigned int article_touch_y_pos = 0;
 static unsigned int article_touch_down_handled = 0;
+static unsigned int touch_down_on_keyboard = 0;
+static unsigned int touch_down_on_list = 0;
 wom_file_t * g_womh = 0;
 
 static void repaint_search(void)
@@ -153,7 +152,7 @@ void article_display(enum article_nav nav)
 	wom_draw(g_womh, s_article_offset, framebuffer, s_article_y_pos, screen_height);
 }
 
-static void open_article(const char* target, int mode)
+void open_article(const char* target, int mode)
 {
 	DP(DBG_WL, ("O open_article() target '%s' mode %i\n", target, mode));
 	if (!target)
@@ -276,25 +275,46 @@ static void handle_touch(struct wl_input_event *ev)
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
 			pre_key = NULL;
-			if (key)
-				handle_search_key(key->key);
-			else {
-				const char *title= search_release(ev->touch_event.y);
+			if (key) {
+				if (!touch_down_on_keyboard) {
+					touch_down_on_keyboard = 0;
+					touch_down_on_list = 0;
+					goto out;
+				}
 
+				handle_search_key(key->key);
+			}
+			else {
+				if (!touch_down_on_list) {
+					touch_down_on_keyboard = 0;
+					touch_down_on_list = 0;
+					goto out;
+				}
+
+				const char *title= search_current_title();
 				if (title && strlen(title) >= TARGET_SIZE)
 					open_article(&title[strlen(title)-TARGET_SIZE], ARTICLE_NEW);
 				else
 					repaint_search();
 			}
+			touch_down_on_keyboard = 0;
+			touch_down_on_list = 0;
 		} else {
 			if (key) {
+				if (!touch_down_on_keyboard && !touch_down_on_list)
+					touch_down_on_keyboard = 1;
+
 				if (pre_key && pre_key->key == key->key) goto out;
 
 				if (pre_key)
 					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-				guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
-				pre_key = key;
+				if (touch_down_on_keyboard) {
+					guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
+					pre_key = key;
+				}
 			} else {
+				if (!touch_down_on_keyboard && !touch_down_on_list)
+					touch_down_on_list = 1;
 				if (pre_key) {
 					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
 					pre_key = NULL;
@@ -304,8 +324,11 @@ static void handle_touch(struct wl_input_event *ev)
 
 				unsigned int new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
 				if (new_selection == search_result_selected()) goto out;
-				if (new_selection >= search_result_count()-search_result_first_item())
-					goto out;
+
+				unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ? NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+				avail_count = search_result_count()-search_result_first_item() > avail_count ? avail_count : search_result_count()-search_result_first_item();
+				if (new_selection >= avail_count) goto out;
+				if (touch_down_on_keyboard) goto out;
 				invert_selection(search_result_selected(), new_selection);
 				search_set_selection(new_selection);
 			}

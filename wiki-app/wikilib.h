@@ -35,8 +35,13 @@ typedef signed char s8;
 typedef signed short s16;
 typedef signed int s32;
 
+#define ARTICLE_NEW		0
+#define ARTICLE_HISTORY		1
+
 /* function prototypes */
 int wikilib_init (void);
 int wikilib_run (void);
+
+void open_article(const char* target, int mode);
 
 #endif /* WIKILIB_H */

@@ -257,30 +257,6 @@ const char *search_current_title(void)
 	return title;
 }
 
-/*
- *  - Check which item was hit
- *  - Update the selection so search_current_title returns the
- *    right item.
- *  - return the right item
- *
- *  In practice updating search_current depending on the x,y
- *  should be enough and then search_current_target can be returned.
- */
-const char *search_release(int y)
-{
-	unsigned int i;
-	int result_start = PIXEL_START;
-
-	for (i = 0; i < result_list.count; ++i, result_start += RESULT_HEIGHT) {
-		if (y >= result_start && y < result_start + RESULT_HEIGHT) {
-			result_list.cur_selected = i;
-			return search_current_title();
-		}
-	}
-
-	return NULL;
-}
-
 unsigned int search_result_count()
 {
 	return result_list.count;
