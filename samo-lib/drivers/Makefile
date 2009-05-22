@@ -41,9 +41,6 @@ OBJECTS += delay_us.o
 OBJECTS += delay_nop.o
 OBJECTS += lcd.o
 
-# does not build - not used??
-#OBJECTS += fatfs_stdio.o
-
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
 .PHONY: all
