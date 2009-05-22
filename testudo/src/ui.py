@@ -12,33 +12,111 @@ pygtk.require('2.0')
 import gtk
 
 import os.path
+import threading
 
 import sequencer
+
+
+def threaded(f):
+    """Create a simple wrapper that allows a task to run in the background"""
+    def wrapper(*args):
+        t = threading.Thread(target = f, args = args)
+        t.daemon = True
+        t.start()
+        return t
+    return wrapper
+
+
+class TestException(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return self.value
+
+
+class StopTestException(TestException):
+    pass
+
 
 class Sample:
 
     def delete_event(self, widget, event, data = None):
-        #print 'delete event occurred'
-        return False
+        #print "delete event occurred"
+        self.testStop = True
+        if not self.testRunning:
+            gtk.main_quit()
+        return self.testRunning
 
     def destroy(self, widget, data=None):
         #print 'destroy signal occurred'
-        gtk.main_quit()
+        if not self.testRunning:
+            gtk.main_quit()
 
-    def run(self, widget, data=None):
-        end = self.textbuffer.get_end_iter()
-        self.textbuffer.insert(end, 'starting\n')
-        sequencer.runOneTest(self, self.fileName, 0)
+    def clearScreen(self, widget, data = None):
+        """Initiate the test"""
+        if not self.testRunning:
+            start = self.buffer.get_start_iter()
+            end = self.buffer.get_end_iter()
+            self.buffer.delete(start, end)
+
+    def startCallback(self, widget, data = None):
+        """Initiate the test"""
+        if '' == self.fileName:
+            self.status.set_text('load a file first')
+            return
+        if not self.testRunning:
+            self.testStop = False
+            self.status.set_text('Running')
+            self.testRunning = True
+            # loop here
+            self.runTest('testing')
+
+    def stopCallback(self, widget, data = None):
+        """Request test stop"""
+        if self.testRunning:
+            self.testStop = True
+            self.status.set_text('.....Stopping.....')
+
+    @threaded
+    def runTest(self, data = None):
+        """main test routine2"""
+
+        self.write('\n*** Start of Test ***\n\n')
+
+        try:
+            sequencer.runOneTest(self, self.fileName, 0)
+
+        except StopTestException, e:
+            self.write('\n*** Test stop exception ***\n')
+            self.write('FAIL: %s\n' % str(e))
+        except TestException, e:
+            self.write('\n*** Test terminated ***\n')
+            self.write('FAIL: %s\n' % str(e))
+        except Exception, e:
+            self.write('\n*** Test aborted ***\n')
+            self.write('FAIL: Python Exception: %s\n' % str(e))
+        finally:
+            self.write('\n*** End of Test ***\n')
+            self.testStop = False
+            self.testRunning = False
+            self.status.set_text('Stopped')
 
     def write(self, message):
-        end = self.textbuffer.get_end_iter()
-        self.textbuffer.insert(end, message)
+        gtk.gdk.threads_enter()
+        self.buffer.insert(self.buffer.get_end_iter(), message)
+        e = self.buffer.create_mark('*End*', self.buffer.get_end_iter())
+        self.view.scroll_to_mark(e, 0.0, True, 0.0, 0.0)
+        self.buffer.delete_mark(e)
+        gtk.gdk.threads_leave()
 
     def press2(self, widget, data=None):
-        end = self.textbuffer.get_end_iter()
-        self.textbuffer.insert(end, 'just a few sample words and the file is: %s\n' % self.fileName)
+        self.write('wait in line, stop pushing\n')
 
     def menuitem_response(self, event):
+        if self.testRunning:
+            return
         if 'file.open' == event:
             self.open_file()
         elif 'file.save' == event:
@@ -67,11 +145,11 @@ class Sample:
         if response == gtk.RESPONSE_OK:
             self.fileName = chooser.get_filename()
             self.status.set_text('Current test: %s' % self.fileName)
-            start = self.textbuffer.get_start_iter()
-            end = self.textbuffer.get_end_iter()
-            self.textbuffer.delete(start, end)
-            end = self.textbuffer.get_end_iter()
-            self.textbuffer.insert(end, 'Loaded: %s\n\n' % self.fileName)
+            start = self.buffer.get_start_iter()
+            end = self.buffer.get_end_iter()
+            self.buffer.delete(start, end)
+            end = self.buffer.get_end_iter()
+            self.buffer.insert(end, 'Loaded: %s\n\n' % self.fileName)
         else:
             self.fileName = ''
             self.status.set_text('No test loaded')
@@ -99,13 +177,15 @@ class Sample:
                 response = gtk.RESPONSE_YES
         if gtk.RESPONSE_YES == response:
             with open(chooser.get_filename(), 'w') as f:
-                start = self.textbuffer.get_start_iter()
-                end = self.textbuffer.get_end_iter()
-                f.write(self.textbuffer.get_text(start, end, include_hidden_chars = True))
+                start = self.buffer.get_start_iter()
+                end = self.buffer.get_end_iter()
+                f.write(self.buffer.get_text(start, end, include_hidden_chars = True))
         chooser.destroy()
 
     def __init__(self):
         self.fileName = ''
+        self.testRunning = False
+        self.testStop = False
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 
@@ -160,12 +240,12 @@ class Sample:
 
         scrolled = gtk.ScrolledWindow()
         scrolled.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC, vscrollbar_policy = gtk.POLICY_AUTOMATIC)
-        textview = gtk.TextView()
-        textview.set_editable(False)
-        self.textbuffer = textview.get_buffer()
-        scrolled.add(textview)
+        self.view = gtk.TextView()
+        self.view.set_editable(False)
+        self.buffer = self.view.get_buffer()
+        scrolled.add(self.view)
         scrolled.show()
-        textview.show()
+        self.view.show()
         vbox1.pack_start(scrolled, expand = True, fill = True, padding = 0)
 
         button_box = gtk.HButtonBox()
@@ -173,15 +253,20 @@ class Sample:
         button_box.show()
 
         button1 = gtk.Button('Run')
-        button1.connect('clicked', self.run, None)
+        button1.connect('clicked', self.startCallback, None)
         button1.show()
 
         button2 = gtk.Button('Push Me')
         button2.connect('clicked', self.press2, None)
         button2.show()
 
+        button3 = gtk.Button('Clear Screen')
+        button3.connect('clicked', self.clearScreen, None)
+        button3.show()
+
         button_box.add(button1)
         button_box.add(button2)
+        button_box.add(button3)
 
         vbox1.pack_end(button_box, expand = False, fill = False, padding = 0)
 
