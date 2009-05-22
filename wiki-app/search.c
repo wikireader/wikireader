@@ -153,6 +153,9 @@ void search_add_char(char c)
 	if (search_str_len >= MAXSTR - 2)
 		return;
 
+	if (!search_str_len && c == 0x20)
+		return;
+
 	search_string[search_str_len++] = c;
 	search_string[search_str_len] = '\0';
 	if (search_str_len >= 4) {
