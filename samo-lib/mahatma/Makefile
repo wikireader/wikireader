@@ -24,8 +24,6 @@ FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
-
-INCLUDES =
 INCLUDES += -I$(MINI_LIBC_INCLUDE)
 INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
@@ -34,9 +32,15 @@ INCLUDES += -I$(INDEXING_INCLUDE)
 INCLUDES += -I$(MINILZO_INCLUDE)
 INCLUDES += -I$(WIKI_APP_INCLUDE)
 
-LIBS = ${FATFS_LIB}
+LIBS += ${FATFS_LIB}
+LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
 LIBS += `$(CC) -print-libgcc-file-name`
+
+BUILD_PREFIX := build/
+
+vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC)
+
 
 GUILIB_COBJS = guilib.o glyph.o fontfile.o
 
@@ -66,10 +70,10 @@ CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(MINI_LIBC)
 
-vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC):$(DRIVERS_SRC)
 
-OBJECTS = mahatma.o touchscreen.o suspend.o msg-output.o gui.o tick.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o sd_spi.o sd_api.o mmc.o
+OBJECTS = mahatma.o
+OBJECTS += touchscreen.o suspend.o msg-output.o gui.o tick.o
+OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
 OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 ifeq ($(PNM2PLAIN_PATH),)
@@ -87,7 +91,7 @@ $(KBD_IMG_INC): $(KBD_CONVERT) $(KBD_IMG_SRC_P1)
 	$(KBD_CONVERT) $(KBD_IMG_SRC_P1) > $@
 
 mahatma.elf: $(OBJECTS) mahatma.lds
-	$(LD) -o $@ $(LDFLAGS) $^ $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
+	$(LD) -o $@ $(LDFLAGS) ${OBJECTS} $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
 
 clean::
 	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
