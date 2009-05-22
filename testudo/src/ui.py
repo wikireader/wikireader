@@ -85,14 +85,16 @@ class Sample:
 
         try:
             for cycle in range(1, count + 1):
-
                 self.write('\n*** Start of Test %d of %d ***\n\n' % (cycle, count))
 
+                t = time.time()
                 sequencer.runOneTest(self, self.fileName, 0)
+                t = time.time() - t
+
+                self.write('\n*** End of Test %d of %d [%7.3f seconds]***\n' % (cycle, count, t))
+
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
-
-                self.write('\n*** End of Test %d of %d ***\n' % (cycle, count))
 
         except StopTestException, e:
             self.write('\n*** Test stop exception ***\n')
