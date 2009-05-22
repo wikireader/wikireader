@@ -24,6 +24,7 @@
 
 #define DBG_RANDOM 0
 
+
 int random_article(void)
 {
 	uint32_t offset;
@@ -31,8 +32,7 @@ int random_article(void)
 	uint8_t buff[TITLE_LEN], *eol_ptr;
 	const wom_article_index_t* idx;
 	char target_buf[32];
-
-	//TODO: EOF
+	unsigned int file_size = 0;
 
 	fd = wl_open(RAND_OFFSET_PATH, WL_O_RDONLY);
 	offset = 0;
@@ -44,30 +44,48 @@ int random_article(void)
 			offset = 0;
 
 		wl_close(fd);
-	} else {
-		DP(1, ("X offset file not found\n"));
 	}
 
+read_src:
 	fd = wl_open(RAND_SRC_PATH, WL_O_RDONLY);
 	if (fd < 0) {
 		DP(1, ("X rand src not found\n"));
 		return -1;
 	}
 
-	/* seek in it */
+	/* old saved offset must be discarded if it is too large */
+	wl_fsize(fd, &file_size);
+	if (offset > file_size)
+		offset = 0;
+
+	/* seek in our random article source */
 	if (offset > 0)
-		wl_seek(fd, offset);
+		res = wl_seek(fd, offset);
 
-	DP(DBG_RANDOM, ("O reading\n"));
-	res = wl_read(fd, buff, TITLE_LEN);
+	if (TITLE_LEN > file_size - offset)
+		res = file_size - offset;
+	else
+		res = TITLE_LEN - 1;
 
-	if (res != TITLE_LEN)
-		return -2;
-
+	res = wl_read(fd, buff, res);
 	wl_close(fd);
 
-	// find end of line
+	/* find end of line */
+	buff[res] = '\0';
 	eol_ptr = strchr(buff, '\n');
+
+	/* no end of line found - retry at the beginning of the file */
+	if (eol_ptr == NULL) {
+		if (offset != 0) {
+			DP(DBG_RANDOM, ("O no article index found: resetting offset\n"));
+			offset = 0;
+			goto read_src;
+		}
+
+		DP(1, ("O no article index found: %s\n", buff));
+		return -2;
+	}
+
 	*eol_ptr = '\0';
 	DP(DBG_RANDOM, ("O opening (%i): %s\n", strlen(buff), buff));
 
@@ -77,7 +95,7 @@ int random_article(void)
 		open_article(target_buf, ARTICLE_NEW);
 	}
 
-	// save new offset
+	/* save new offset */
 	offset += strlen(buff) + 1;
 
 	fd = wl_open(RAND_OFFSET_PATH, WL_O_CREATE);

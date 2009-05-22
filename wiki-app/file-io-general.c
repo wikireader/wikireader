@@ -90,11 +90,14 @@ int wl_read(int fd, void *buf, unsigned int count)
 
 int wl_seek(int fd, unsigned int pos)
 {
+	DP(DBG_FILEIO, ("O wl_seek() fd %i pos %u\n", fd, pos));
+	return _wl_seek(fd, pos);
+
+#if 0
 	int r;
 	struct wl_file *fp = file_list + fd;
 	unsigned int l_offset = pos & ~BLOCK_ALIGNMENT;
 
-	DP(DBG_FILEIO, ("O wl_seek() fd %i pos %u\n", fd, pos));
 	if (l_offset + BLOCK_SIZE == fp->l_offset)
 		goto success;
 
@@ -111,6 +114,7 @@ success:
 	/* TODO: if seek beyond eof ? */
 	fp->bytes_available = BLOCK_SIZE - (pos & BLOCK_ALIGNMENT);
 	return 0;
+#endif
 }
 
 int wl_tell(int fd)
