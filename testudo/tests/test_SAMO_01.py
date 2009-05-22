@@ -230,9 +230,7 @@ def test007_program_flash():
         global debug, psu, dvm, relay
         i = psu.current
         info('Supply current = %7.3f mA' % (1000 * i))
-        if debug > 100:
-            sys.stdout.write(s)
-            sys.stdout.flush()
+        info(s)
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
             time.sleep(0.2)
