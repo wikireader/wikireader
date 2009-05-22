@@ -70,23 +70,29 @@ class Sample:
             self.testStop = False
             self.status.set_text('Running')
             self.testRunning = True
-            # loop here
-            self.runTest('testing')
+            count = self.repeat.get_value_as_int()
+            self.runTest(count)
 
     def stopCallback(self, widget, data = None):
         """Request test stop"""
         if self.testRunning:
             self.testStop = True
-            self.status.set_text('.....Stopping.....')
+            self.status.set_text('.....Stopping at end of this test cycle.....')
 
     @threaded
-    def runTest(self, data = None):
+    def runTest(self, count):
         """main test routine2"""
 
-        self.write('\n*** Start of Test ***\n\n')
-
         try:
-            sequencer.runOneTest(self, self.fileName, 0)
+            for cycle in range(1, count + 1):
+
+                self.write('\n*** Start of Test %d of %d ***\n\n' % (cycle, count))
+
+                sequencer.runOneTest(self, self.fileName, 0)
+                if self.testStop:
+                    raise StopTestException('Stop button pressed')
+
+                self.write('\n*** End of Test %d of %d ***\n' % (cycle, count))
 
         except StopTestException, e:
             self.write('\n*** Test stop exception ***\n')
@@ -110,9 +116,6 @@ class Sample:
         self.view.scroll_to_mark(e, 0.0, True, 0.0, 0.0)
         self.buffer.delete_mark(e)
         gtk.gdk.threads_leave()
-
-    def press2(self, widget, data=None):
-        pass
 
     def menuitem_response(self, event):
         if self.testRunning:
@@ -256,8 +259,8 @@ class Sample:
         button1.connect('clicked', self.startCallback, None)
         button1.show()
 
-        button2 = gtk.Button('Push Me')
-        button2.connect('clicked', self.press2, None)
+        button2 = gtk.Button('Stop')
+        button2.connect('clicked', self.stopCallback, None)
         button2.show()
 
         button3 = gtk.Button('Clear Screen')
@@ -269,6 +272,23 @@ class Sample:
         button_box.add(button3)
 
         vbox1.pack_end(button_box, expand = False, fill = False, padding = 0)
+
+        hbox = gtk.HBox(homogeneous = False, spacing = 5)
+
+        label = gtk.Label('Auto-Repeat')
+        hbox.pack_start(label, expand = False, fill = True, padding = 0)
+
+        adj = gtk.Adjustment(value = 1, lower = 1, upper = 1000,
+                             step_incr = 1, page_incr = 10, page_size = 0)
+        self.repeat = gtk.SpinButton(adjustment = adj, climb_rate = 0.0, digits = 0)
+        self.repeat.set_wrap(False)
+        self.repeat.set_numeric(True)
+
+        hbox.pack_start(self.repeat, expand = False, fill = True, padding = 0)
+
+        hbox.show_all()
+
+        vbox1.pack_start(hbox, expand = False, fill = False, padding = 0)
 
         self.status = gtk.Label('No test Loaded')
         self.status.set_alignment(0, 0)
