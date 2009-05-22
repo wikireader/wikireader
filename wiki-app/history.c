@@ -228,6 +228,8 @@ void history_add(const char *title, const char *target)
 		return;
 	}
 
+	history_current = 0;
+
 	/* check this title is existed or not */
 	if ((node = history_find_item_title(title))){
 		wl_list_move2_first(&head.list, &node->list);

@@ -29,6 +29,7 @@
 
 #define ARTICLE_NEW		0
 #define ARTICLE_HISTORY		1
+#define ARTICLE_BROWSE		2
 
 typedef unsigned char u8;
 typedef unsigned short u16;

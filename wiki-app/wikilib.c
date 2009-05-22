@@ -40,13 +40,18 @@ enum display_mode_e {
 	DISPLAY_MODE_IMAGE,
 };
 
+struct pos {
+	unsigned int x;
+	unsigned int y;
+};
+
 static int last_display_mode = 0;
 static int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
-static unsigned int article_touch_y_pos = 0;
 static unsigned int article_touch_down_handled = 0;
 static unsigned int touch_down_on_keyboard = 0;
 static unsigned int touch_down_on_list = 0;
+static struct pos article_touch_down_pos;
 wom_file_t * g_womh = 0;
 
 static void repaint_search(void)
@@ -319,16 +324,34 @@ static void handle_touch(struct wl_input_event *ev)
 		}
 	} else {
 		if (ev->touch_event.value == 0) {
-			if (article_touch_y_pos > ev->touch_event.y &&
-					abs(article_touch_y_pos - ev->touch_event.y) > 20)
+			if (article_touch_down_pos.y > ev->touch_event.y &&
+					abs(article_touch_down_pos.y - ev->touch_event.y) > 20)
 				article_display(ARTICLE_PAGE_NEXT);
-			else if (article_touch_y_pos < ev->touch_event.y &&
-					abs(article_touch_y_pos - ev->touch_event.y) > 20)
+			else if (article_touch_down_pos.y < ev->touch_event.y &&
+					abs(article_touch_down_pos.y - ev->touch_event.y) > 20)
 				article_display(ARTICLE_PAGE_PREV);
+			else if (article_touch_down_pos.x < ev->touch_event.x &&
+					abs(article_touch_down_pos.x - ev->touch_event.x) > 20 && history_get_selection()+1 < history_get_count()) {
+				const char *target = history_get_item_target(history_get_selection()+1);
+				if (target) {
+					open_article(target, ARTICLE_BROWSE);
+					history_set_selection(history_get_selection()+1);
+				}
+			}
+			else if (article_touch_down_pos.x > ev->touch_event.x &&
+					abs(article_touch_down_pos.x - ev->touch_event.x) > 20 && history_get_selection() > 0) {
+				const char *target = history_get_item_target(history_get_selection()-1);
+				if (target) {
+					open_article(target, ARTICLE_BROWSE);
+					history_set_selection(history_get_selection()-1);
+				}
+			}
+				
 			article_touch_down_handled = 0;
 		} else {
 			if (!article_touch_down_handled) {
-				article_touch_y_pos = ev->touch_event.y;
+				article_touch_down_pos.x = ev->touch_event.x;
+				article_touch_down_pos.y = ev->touch_event.y;
 				article_touch_down_handled = 1;
 			}
 		}
