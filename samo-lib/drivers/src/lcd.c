@@ -16,10 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <types.h>
-#include <misc.h>
+#include <stdlib.h>
 #include "regs.h"
 #include "samo.h"
+#include "delay.h"
 #include "lcd.h"
 
 

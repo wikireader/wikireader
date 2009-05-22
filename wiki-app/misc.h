@@ -67,9 +67,5 @@ void hex_dump(const void *buffer, uint32_t size);
 void print_byte(uint8_t val);
 void print_u32(uint32_t val);
 
-// simple busy wait delay loops
-void delay(unsigned int nops);  // deprecated
-void delay_us(unsigned int microsec);
-
 #endif /* MISC_H */
 

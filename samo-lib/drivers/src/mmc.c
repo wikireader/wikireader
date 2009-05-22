@@ -13,6 +13,7 @@
 #include <samo.h>
 #include <diskio.h>
 #include <mmc.h>
+#include <delay.h>
 #include "ff_config.h"
 
 #ifdef _USE_CACHE
@@ -65,21 +66,6 @@ DSTATUS Stat = STA_NOINIT;	/* Disk status */
 
 static
 BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
-
-void delay_us(unsigned int microsec)
-{
-	while (microsec--) {
-		//asm volatile("nop");
-		// at 48 MHz this should take 1 micro second
-		asm volatile (
-			"\tld.w\t%r4,12\n"
-			"delay_loop:\n"
-			"\tnop\n"
-			"\tsub\t%r4,1\n"
-			"\tjrne\tdelay_loop"
-			);
-	}
-}
 
 /*-----------------------------------------------------------------------*/
 /* Receive a byte from MMC via SPI  (Platform dependent)		 */

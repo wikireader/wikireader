@@ -39,7 +39,7 @@ LIBS += $$($(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
 
-vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(SAMO_LIB_SRC):$(MINILZO_SRC)
+vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(MINILZO_SRC)
 
 
 GUILIB_COBJS = guilib.o glyph.o fontfile.o
@@ -76,12 +76,10 @@ OBJECTS += touchscreen.o
 OBJECTS += suspend.o
 OBJECTS += msg-output.o
 OBJECTS += gui.o
-OBJECTS += tick.o
 OBJECTS += gpio.o
 OBJECTS += serial.o
 OBJECTS += traps.o
 OBJECTS += input.o
-OBJECTS += lcd.o
 OBJECTS += misc.o
 OBJECTS += profile.o
 OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)

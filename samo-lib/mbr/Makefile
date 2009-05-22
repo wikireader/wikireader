@@ -18,6 +18,7 @@ LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 INCLUDES = -I${FATFS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
+INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I$(SAMO_LIB_INCLUDE)
 INCLUDES += -I$(WIKI_APP_INCLUDE)
 
@@ -31,7 +32,7 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr
 APPLICATIONS =
 APPLICATION_CLEAN =
 
-VPATH = $(SAMO_LIB_SRC) $(WIKI_APP_SRC)
+vpath %.c $(WIKI_APP_SRC)
 
 .PHONY: all
 all: $(TARGETS) all-applications
@@ -80,14 +81,14 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP,menu,misc.o lcd.o, splash.h)
+$(call MAKE_APP,menu,misc.o,splash.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,key-test,misc.o)
 $(call MAKE_APP,forth-loader,misc.o elf32.o)
 $(call MAKE_APP,kernel-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
-$(call MAKE_APP,lcd-test,misc.o lcd.o)
+$(call MAKE_APP,lcd-test,misc.o)
 
 # application pre-depends
 

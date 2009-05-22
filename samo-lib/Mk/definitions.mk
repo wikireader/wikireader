@@ -27,7 +27,6 @@ SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || r
 SAMO_LIB_MK =  ${SAMO_LIB}/Mk
 
 SAMO_LIB_INCLUDE = ${SAMO_LIB}/include
-SAMO_LIB_SRC = ${SAMO_LIB}/src
 
 MINI_LIBC = ${SAMO_LIB}/mini-libc
 MINI_LIBC_INCLUDE = ${MINI_LIBC}/include

@@ -132,24 +132,3 @@ void print_dec32(uint32_t value)
 	}
 	print(&c[i]);
 }
-
-void delay(unsigned int nops)
-{
-	while (nops--)
-		asm volatile ("nop");
-}
-
-void delay_us(unsigned int microsec)
-{
-	while (microsec--) {
-		// at 48 MHz this should take 1 micro second
-		asm volatile (
-			"\tld.w\t%r4, 6\n"
-			"delay_loop:\n"
-			"\tnop\n"
-			"\tnop\n"
-			"\tsub\t%r4, 1\n"
-			"\tjrne\tdelay_loop"
-			);
-	}
-}

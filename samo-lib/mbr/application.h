@@ -22,6 +22,7 @@
 #include "regs.h"
 #include "types.h"
 #include "samo.h"
+#include "delay.h"
 #include "misc.h"
 
 

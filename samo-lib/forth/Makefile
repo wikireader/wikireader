@@ -51,7 +51,7 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-vpath %.c :${SAMO_LIB_SRC}
+#vpath %.c src
 
 
 all: forth.elf

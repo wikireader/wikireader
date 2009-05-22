@@ -25,6 +25,7 @@
 #include <tick.h>
 #include <string.h>
 #include <msg.h>
+#include <delay.h>
 #include <regs.h>
 #include <samo.h>
 
