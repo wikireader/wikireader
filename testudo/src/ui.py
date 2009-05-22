@@ -112,7 +112,7 @@ class Sample:
         gtk.gdk.threads_leave()
 
     def press2(self, widget, data=None):
-        self.write('wait in line, stop pushing\n')
+        pass
 
     def menuitem_response(self, event):
         if self.testRunning:
@@ -280,6 +280,7 @@ class Sample:
         self.window.show()
 
     def main(self):
+        gtk.gdk.threads_init()
         gtk.main()
 
 if __name__ == '__main__':
