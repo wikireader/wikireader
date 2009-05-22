@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 2 or later
-# DESCRIPTION: Sample test
+# DESCRIPTION: Main board test
 # AUTHOR: Christopher Hall <hsw@openmoko.com>
 
 import Keithley
