@@ -35,12 +35,10 @@ class Sample:
         self.textbuffer.insert(end, message)
 
     def press2(self, widget, data=None):
-        print 'Click2'
         end = self.textbuffer.get_end_iter()
         self.textbuffer.insert(end, 'just a few sample words and the file is: %s\n' % self.fileName)
 
     def menuitem_response(self, event):
-        print 'menu =', event
         if 'file.open' == event:
             self.open_file()
         elif 'file.save' == event:
@@ -69,6 +67,11 @@ class Sample:
         if response == gtk.RESPONSE_OK:
             self.fileName = chooser.get_filename()
             self.status.set_text('Current test: %s' % self.fileName)
+            start = self.textbuffer.get_start_iter()
+            end = self.textbuffer.get_end_iter()
+            self.textbuffer.delete(start, end)
+            end = self.textbuffer.get_end_iter()
+            self.textbuffer.insert(end, 'Loaded: %s\n\n' % self.fileName)
         else:
             self.fileName = ''
             self.status.set_text('No test loaded')
