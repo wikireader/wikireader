@@ -93,7 +93,7 @@ class Sample:
                 sequencer.runOneTest(self, self.fileName, 0)
                 t = time.time() - t
 
-                self.write('\n*** End of Test %d of %d [%7.3f seconds]***\n' % (cycle, count, t))
+                self.write('\n*** End of Test %d of %d [%7.3f seconds] ***\n' % (cycle, count, t))
 
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
