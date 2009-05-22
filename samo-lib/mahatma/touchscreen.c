@@ -21,6 +21,7 @@
 #include <msg.h>
 #include <wikilib.h>
 #include <regs.h>
+#include <delay.h>
 
 #include "samo.h"
 #include "touchscreen.h"
@@ -137,6 +138,12 @@ void touchscreen_init(void)
 	init_rs232_ch1();
 
 	DISABLE_IRQ();
+	// CTP_INIT_Reset_function
+	REG_P0_IOC0 |= 0x80;
+	REG_P0_P0D  |= 0x80;
+	delay_us(20);
+	REG_P0_P0D  &= ~0x80;
+
 	REG_INT_ESIF01 |= ESRX1;
 
 	REG_INT_PSI01_PAD |= SERIAL_CH1_INT_PRI_7;
