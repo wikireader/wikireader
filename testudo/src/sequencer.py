@@ -15,18 +15,20 @@ import textwrap
 
 DIRECTORY_IGNORE_LIST = ['CVS', '.svn', '.git', '00IGNORE']
 
+verbose = True
+
 
 # display a functions documentation string
-def displayDoc(message):
+def displayDoc(fd, message):
     if None == message:
         message = '*empty documentation string*'
     wrapper = textwrap.TextWrapper(initial_indent = '    \ ', subsequent_indent = '    | ')
-    print wrapper.fill(message)
+    fd.write(wrapper.fill(message))
 
-def info(message):
+def info(fd, message):
     global verbose
     if verbose:
-        print 'INFO:', message
+        fd.write('INFO:%s\n' % message)
 
 def fail_if(cond, message):
     if cond:
@@ -35,7 +37,7 @@ def fail_if(cond, message):
 # the main script running application
 # this can throw exceptions if compile or setUp fail
 # If setUp succeeds the tearDown will be run
-def runTests(name, debug):
+def runTests(fd, name, debug):
     global verbose
 
     module_name = name
@@ -45,11 +47,13 @@ def runTests(name, debug):
         module_name = name[:-4]
 
     if verbose:
-        print 'TEST: Load Module:', module_name
+        fd.write('TEST: Load Module: %s\n' % module_name)
 
     global_variables = {
+        'module_name': module_name,
         'debug': debug,
-        'info': lambda message : info(message),
+        'test_fd': fd,
+        'info': lambda message : info(fd, message),
         'fail_unless': lambda cond, message : fail_if(not cond, message),
         'fail_if': lambda cond, message : fail_if(cond, message),
         }
@@ -61,46 +65,46 @@ def runTests(name, debug):
     s.sort()
 
     if verbose:
-        print 'TEST: %s.setUp' % module_name
-        displayDoc(inspect.getdoc(global_variables['setUp']))
+        fd.write('TEST: %s.setUp\n' % module_name)
+        displayDoc(fd, inspect.getdoc(global_variables['setUp']))
 
     eval('setUp()', global_variables)
 
     try:
         for f in s:
             if verbose:
-                print 'TEST: %s.%s' % (module_name, f)
-                displayDoc(inspect.getdoc(global_variables[f]))
+                fd.write('TEST: %s.%s\n' % (module_name, f))
+                displayDoc(fd, inspect.getdoc(global_variables[f]))
             eval(f + '()', global_variables)
-            print 'PASS: %s.%s' % (module_name, f)
+            fd.write('PASS: %s.%s\n' % (module_name, f))
         if verbose:
-            print 'PASS: all tests completed'
+            fd.write('PASS: all tests completed\n')
     except AssertionError, e:
-        print 'FAIL:', e
+        fd.write('FAIL: %s\n', e)
     finally:
         if verbose:
-            print 'TEST: %s.tearDown' % module_name
-            displayDoc(inspect.getdoc(global_variables['tearDown']))
+            fd.write('TEST: %s.tearDown\n' % module_name)
+            displayDoc(fd, inspect.getdoc(global_variables['tearDown']))
         eval('tearDown()', global_variables)
 
 
 # run one test script catching errors
-def runOneTest(name, debug):
+def runOneTest(fd, name, debug):
     if verbose:
-        print 'FILE: %s' % name
+        fd.write('FILE: %s\n' % name)
     try:
-        runTests(name, debug)
+        runTests(fd, name, debug)
     except SyntaxError, s:
-        print 'FAIL: Test module compile failed: ', s
+        fd.write('FAIL: Test module compile failed: %s\n' % s)
     except Exception, e:
-        print 'FAIL: Test module run failed', e
+        fd.write('FAIL: Test module run failed: %s\n' % e)
 
 
 # process a directory tree
-def processTree(top_dir, debug):
+def processTree(fd, top_dir, debug):
     for root, dirs, files in os.walk(top_dir):
         if verbose:
-            print 'Directory:', root
+            fd.write('Directory: %s\n' % root)
         for r in DIRECTORY_IGNORE_LIST:
             if r in dirs:
                 dirs.remove(r)
@@ -108,7 +112,7 @@ def processTree(top_dir, debug):
         tests = filter(lambda f: f.startswith('test') and f.endswith('.py'), files)
         tests.sort()
         for t in tests:
-            runOneTest(os.path.join(root, t), debug)
+            runOneTest(fd, os.path.join(root, t), debug)
 
 
 # display error and usage message; then exit
@@ -157,9 +161,10 @@ def main():
     # list of Python test files in sorted order
     for arg in args:
         if os.path.isdir(arg):
-            processTree(arg, debug)
+            processTree(sys.stdout, arg, debug)
         else:
-            runOneTest(arg, debug)
+            #runOneTest(sys.stdout, arg, debug)
+            runOneTest(sys.stdout, arg, debug)
 
 # execute the main program if run as a script
 if __name__ == '__main__':
