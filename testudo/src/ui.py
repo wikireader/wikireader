@@ -32,8 +32,7 @@ class Sample:
 
     def write(self, message):
         end = self.textbuffer.get_end_iter()
-        self.textbuffer.insert(end, '%s\n' % message)
-
+        self.textbuffer.insert(end, message)
 
     def press2(self, widget, data=None):
         print 'Click2'
@@ -187,8 +186,6 @@ class Sample:
         self.status.set_alignment(0, 0)
         vbox1.pack_start(self.status, expand = False, fill = False, padding = 0)
         self.status.show()
-
-
 
         self.window.add(vbox1)
 

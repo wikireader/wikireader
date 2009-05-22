@@ -24,6 +24,7 @@ def displayDoc(fd, message):
         message = '*empty documentation string*'
     wrapper = textwrap.TextWrapper(initial_indent = '    \ ', subsequent_indent = '    | ')
     fd.write(wrapper.fill(message))
+    fd.write('\n')
 
 def info(fd, message):
     global verbose
@@ -52,7 +53,6 @@ def runTests(fd, name, debug):
     global_variables = {
         'module_name': module_name,
         'debug': debug,
-        'test_fd': fd,
         'info': lambda message : info(fd, message),
         'fail_unless': lambda cond, message : fail_if(not cond, message),
         'fail_if': lambda cond, message : fail_if(cond, message),
@@ -80,7 +80,7 @@ def runTests(fd, name, debug):
         if verbose:
             fd.write('PASS: all tests completed\n')
     except AssertionError, e:
-        fd.write('FAIL: %s\n', e)
+        fd.write('FAIL: %s\n' % e)
     finally:
         if verbose:
             fd.write('TEST: %s.tearDown\n' % module_name)
