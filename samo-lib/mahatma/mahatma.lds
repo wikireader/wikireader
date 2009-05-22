@@ -13,7 +13,7 @@ MEMORY
 SECTIONS
 {
 	.iram : {
-		suspend.o(.*)
+		*suspend.o(.*)
 	} > a0ram
 
         /*__PANIC_STACK = ORIGIN(a0ram) + LENGTH(a0ram) - 4; */
@@ -23,7 +23,7 @@ SECTIONS
         __MAIN_STACK = 0x10000000 + 32M - 4;
         __MAIN_STACK_LIMIT = __MAIN_STACK - 1M;
 	.dst_ram : {
-		traps.o(.data)
+		*traps.o(.data)
 		/* traps.o(.*) */
 	} > dstram
 
@@ -39,7 +39,7 @@ SECTIONS
         } > sdram
 
 	.text : {
-	   mahatma.o(*.text)
+	   *mahatma.o(*.text)
            *(.text)
         } > sdram
 
@@ -56,7 +56,7 @@ SECTIONS
         } > sdram
 
        .comment : {
-          mahatma.o(.comment)
+          *mahatma.o(.comment)
        } > sdram
 
         __START_idma = ADDR(.idma);

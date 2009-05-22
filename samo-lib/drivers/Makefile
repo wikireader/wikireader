@@ -37,12 +37,13 @@ OBJECTS += sd_spi.o
 OBJECTS += sd_api.o
 OBJECTS += mmc.o
 
+BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
 .PHONY: all
 all:  ${TARGETS}
 
-lib/libdrivers.a: lib build $(addprefix ${BUILD_PREFIX},${OBJECTS})
-	${AR} r "$@" $(addprefix ${BUILD_PREFIX},${OBJECTS})
+lib/libdrivers.a: lib build  ${BUILD_OBJECTS}
+	${AR} r "$@" ${BUILD_OBJECTS}
 
 lib:
 	${MKDIR} "$@"

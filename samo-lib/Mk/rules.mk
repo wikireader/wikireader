@@ -34,3 +34,4 @@ ${BUILD_PREFIX}%.o: %.c
 	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
 
 -include $(wildcard *.d) dummy
+-include $(wildcard ${BUILD_PREFIX}*.d) dummy

@@ -35,7 +35,7 @@ INCLUDES += -I$(WIKI_APP_INCLUDE)
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += `$(CC) -print-libgcc-file-name`
+LIBS += $$($(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
 
@@ -72,15 +72,28 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 
 
 OBJECTS = mahatma.o
-OBJECTS += touchscreen.o suspend.o msg-output.o gui.o tick.o
-OBJECTS += gpio.o serial.o traps.o input.o lcd.o misc.o profile.o
+OBJECTS += touchscreen.o
+OBJECTS += suspend.o
+OBJECTS += msg-output.o
+OBJECTS += gui.o
+OBJECTS += tick.o
+OBJECTS += gpio.o
+OBJECTS += serial.o
+OBJECTS += traps.o
+OBJECTS += input.o
+OBJECTS += lcd.o
+OBJECTS += misc.o
+OBJECTS += profile.o
 OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 ifeq ($(PNM2PLAIN_PATH),)
-$(error Could not find $(PNM2PLAIN_NAME) - please install netpbm)
+$(error Could not find $(PNM2PLAIN_NAME) - please: sudo apt-get install netpbm)
 endif
 
+BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
+
 TARGETS=$(KBD_IMG_INC) mahatma.elf
+
 .PHONY:	all
 all: $(TARGETS)
 
@@ -90,11 +103,21 @@ $(KBD_IMG_SRC_P1): $(KBD_IMG_SRC_P4)
 $(KBD_IMG_INC): $(KBD_CONVERT) $(KBD_IMG_SRC_P1)
 	$(KBD_CONVERT) $(KBD_IMG_SRC_P1) > $@
 
-mahatma.elf: $(OBJECTS) mahatma.lds
-	$(LD) -o $@ $(LDFLAGS) ${OBJECTS} $(LIBS) -T $(<:.o=.lds) -Map $(<:.o=.map)
+lib/libmahatma.a: lib build ${BUILD_OBJECTS}
+	${AR} r "$@" ${BUILD_OBJECTS}
 
-clean::
-	rm -fr $(TARGETS) *.o *.elf *.d *.map *.asm33 $(KBD_IMG_INC) $(KBD_IMG_SRC_P1)
+mahatma.elf: build build/mahatma.o lib/libmahatma.a mahatma.lds
+	$(LD) -o $@ ${LDFLAGS} build/mahatma.o lib/libmahatma.a ${LIBS} -T ${@:.elf=.lds} -Map ${@:.elf=.map}
+
+build:
+	${MKDIR} "$@"
+
+lib:
+	${MKDIR} "$@"
+
+clean:
+	${RM} -r ${TARGETS} build
+	${RM} -r *.o *.elf *.d *.map *.asm33 ${KBD_IMG_INC} ${KBD_IMG_SRC_P1}
 
 
 include ${SAMO_LIB}/Mk/rules.mk
