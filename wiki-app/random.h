@@ -9,8 +9,8 @@
 
 
 
-#define RAND_SRC_PATH "/rand_art.txt"
-#define RAND_OFFSET_PATH "/rand_off.txt"
+#define RAND_SRC_PATH "rand_art.txt"
+#define RAND_OFFSET_PATH "rand_off.txt"
 
 
 int random_article(void);

@@ -22,10 +22,11 @@
 #include <lsearcher.h>
 #include <list.h>
 #include <search.h>
-
 #include <stdlib.h>
-
 #include "history.h"
+#include "msg.h"
+
+#define DBG_HISTORY 0
 
 #define HISTORY_MAX_ITEM	19
 #define HISTORY_MAX_DISPLAY_ITEM	18U
@@ -220,6 +221,12 @@ struct history_item *history_find_item_target(const char *target)
 void history_add(const char *title, const char *target)
 {
 	struct history_item *node = NULL;
+
+	DP(DBG_HISTORY, ("O history_add() title '%s' target '%s'\n", title, target));
+	if (!title || !target) {
+		DX();
+		return;
+	}
 
 	/* check this title is existed or not */
 	if ((node = history_find_item_title(title))){

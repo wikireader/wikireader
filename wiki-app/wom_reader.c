@@ -50,7 +50,8 @@ wom_file_t* wom_open(const char* filename)
 		goto xout_fileh;
 	}
 
-	DP(DBG_WOM_READER, ("O wom\twom_open() '%s' succeeded.\n", filename));
+	DP(DBG_WOM_READER, ("O wom\twom_open() '%s' succeeded (index first/pages/entries %u/%u/%u).\n", filename,
+		womh->hdr.index_first_page, womh->hdr.index_num_pages, womh->hdr.index_num_entries));
 	return womh;
 
 xout_fileh:
@@ -74,13 +75,17 @@ const wom_article_index_t* wom_find_article(wom_file_t* womh, const char* search
 	UINT num_read;
 	FRESULT fr;
 
-	DP(DBG_WOM_READER, ("O wom_find_article('%.*s')\n", search_str_len, search_string));
+	DP(DBG_WOM_READER, ("O wom_find_article('%.*s') index_first_page %u\n", search_str_len, search_string,
+		womh->hdr.index_first_page));
 	if (!womh) goto xout;
 	for (womh->cur_search_page = womh->hdr.index_first_page;
 		womh->cur_search_page < womh->hdr.index_first_page + womh->hdr.index_num_pages; womh->cur_search_page++) {
 		if (f_lseek(&womh->fileh, womh->cur_search_page * WOM_PAGE_SIZE) != FR_OK) goto xout;
 		fr = f_read(&womh->fileh, womh->page_buffer, WOM_PAGE_SIZE, &num_read);
-		if (fr != FR_OK || num_read != WOM_PAGE_SIZE) goto xout;
+		if (fr != FR_OK || num_read != WOM_PAGE_SIZE) {
+			DP(1, ("X f_read() result %u num_read %u\n", fr, num_read));
+			goto xout;
+		}
 		womh->next_search_offset = 0;
 		while (womh->next_search_offset <= WOM_PAGE_SIZE-6) {
 			womh->article_idx.offset_into_articles = __get_unaligned_4(

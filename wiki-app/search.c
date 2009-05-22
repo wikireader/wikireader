@@ -39,6 +39,7 @@ static char trigram_loaded = 0;
 
 const char* search_fetch_result()
 {
+	DP(DBG_SEARCH, ("O search_fetch_result() called\n"));
 	if (search_str_len == 0)
 		return NULL;
 #ifdef WOM_ON

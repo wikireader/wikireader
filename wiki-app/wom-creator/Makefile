@@ -10,15 +10,14 @@
 RM = rm -f
 CC = gcc
 LD = ld
-GUILIB_DIR = ../../gui-lib
-WIKILIB_DIR = ../../wiki-lib
-COMMON_DIR = ../../common
-CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKILIB_DIR)/include -I $(GUILIB_DIR) -I $(COMMON_DIR)
+WIKIAPP_DIR = ../
+SAMOLIB_DIR = ../../samo-lib
+CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -I $(WIKIAPP_DIR) -I $(SAMOLIB_DIR)
 LDFLAGS = -g -dynamic
 OBJS = wom_creator.o hexdump.o msg-printf.o malloc-simple.o
 TARGETS = wom_creator
 
-vpath %.c $(WIKILIB_DIR)/generic $(WIKILIB_DIR)/specific $(GUILIB_DIR)
+vpath %.c $(WIKIAPP_DIR)
 
 all: $(TARGETS)
 

@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 				}
 			}
 			fclose(blib_f);
-break; // temporarily only one article
+//break; // temporarily only one article
 		}
 		fclose(work_f);
 		work_f = 0;

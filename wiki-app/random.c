@@ -18,6 +18,7 @@
 #include "random.h"
 #include "wikilib.h"
 #include "msg.h"
+#include "wom_reader.h"
 
 #define TITLE_LEN 256
 
@@ -26,9 +27,10 @@
 int random_article(void)
 {
 	uint32_t offset;
-	int32_t fd, res, i;
+	int32_t fd, res;
 	uint8_t buff[TITLE_LEN], *eol_ptr;
-	const char *target;
+	const wom_article_index_t* idx;
+	char target_buf[32];
 
 	//TODO: EOF
 
@@ -69,15 +71,11 @@ int random_article(void)
 	*eol_ptr = '\0';
 	DP(DBG_RANDOM, ("O opening (%i): %s\n", strlen(buff), buff));
 
-	/* hackish solution to get the article displayed - no idea how can one make such a stupid API */
-	for (i = 0; i < TITLE_LEN; i++)
-		search_remove_char();
-
-	for (i = 0; i < strlen(buff); i++)
-		search_add_char(tolower(buff[i]));
-
-	target = search_fetch_result();
-	open_article(&target[strlen(target)-TARGET_SIZE], ARTICLE_NEW);
+	idx = wom_find_article(g_womh, buff, strlen(buff));
+	if (idx) {
+		sprintf(target_buf, "%.6x", (unsigned int) idx->offset_into_articles);
+		open_article(target_buf, ARTICLE_NEW);
+	}
 
 	// save new offset
 	offset += strlen(buff) + 1;
