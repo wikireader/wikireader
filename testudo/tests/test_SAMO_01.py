@@ -1,4 +1,4 @@
-# test SAMO
+# test main board
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 2 or later
@@ -41,6 +41,10 @@ RELAY_LCD_V4 = 16
 
 # volts
 LCD_V0 = 23.0
+
+# power supply (volts, amps)
+SUPPLY_STANDARD_VOLTAGE = 3.0
+SUPPLY_CURRENT_LIMIT = 0.35
 
 # ("text", relay_name, required_value, percent_low, percent_high)
 VOLTAGE_LIST = (
@@ -89,8 +93,8 @@ def setUp():
     dvm.setVoltageDC()
 
     psu = Keithley.PSU2303()
-    psu.setCurrent(0.35)
-    psu.setVoltage(3.0)
+    psu.setCurrent(SUPPLY_CURRENT_LIMIT)
+    psu.setVoltage(SUPPLY_STANDARD_VOLTAGE)
     psu.powerOff()
     if debug:
         psu.settings()
@@ -132,7 +136,7 @@ def test001_leakage():
         psu.settings()
         psu.measure()
     i = psu.current
-    info('Leakage current = %7.3f mA' % (1000 * i))
+    info('Leakage current = %7.3f mA @ %5.1f V' % (1000 * i, psu.voltage))
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Leakage current %7.3f mA is too high" % (i * 1000))
 
 
@@ -150,7 +154,7 @@ def test002_on():
     t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
     time.sleep(0.5)
-    info('On current = %7.3f mA' % (1000 * psu.current))
+    info('On current = %7.3f mA @ %5.1f V' % (1000 * psu.current, psu.voltage))
     fail_unless(psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On")
     fail_if(t < MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME))
     fail_if(t > MAXIMUM_ON_TIME, "On too long, %5.1f s > %5.1f" % (t, MAXIMUM_ON_TIME))
@@ -164,7 +168,7 @@ def test003_check_current():
             psu.measure()
         time.sleep(0.1)
         i = psu.current
-        info('Supply current = %7.3f mA' % (1000 * i))
+        info('Supply current = %7.3f mA @ %5.1f V' % (1000 * i, psu.voltage))
         fail_unless(abs(i) > MINIMUM_ON_CURRENT, "Device failed to power up")
         fail_if(abs(i) > MAXIMUM_ON_CURRENT, "Device current too high")
 
@@ -282,6 +286,7 @@ def test008_keys():
 
     del p
     p = None
+
 
 def test009_power_off():
     """Check power off function"""
