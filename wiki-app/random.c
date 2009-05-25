@@ -82,7 +82,7 @@ read_src:
 			goto read_src;
 		}
 
-		DP(1, ("O no article index found: %s\n", buff));
+		DP(1, ("X no article index found: %s\n", buff));
 		return -2;
 	}
 
