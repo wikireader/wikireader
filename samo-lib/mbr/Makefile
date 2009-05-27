@@ -8,9 +8,9 @@ FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
 
-LIBS = ${FATFS_LIB}
-LIBS += ${MINI_LIBC_LIB}
+LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
+LIBS += ${MINI_LIBC_LIB}
 LIBS += $(shell $(CC) -print-libgcc-file-name)
 
 LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
