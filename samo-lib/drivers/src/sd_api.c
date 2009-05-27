@@ -11,6 +11,7 @@
 
 #include "sd_spi.h"
 #include <inttypes.h>
+#include <delay.h>
 #include <sd_api.h>
 #include <diskio.h>	// return definitions
 #include <string.h>
@@ -97,20 +98,6 @@ static void PutIntIntoBuf(unsigned char* pucBuf, unsigned long ulValue)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
-void delay_us(unsigned int microsec)
-{
-	while (microsec--) {
-		// at 48 MHz this should take 1 micro second
-		asm volatile (
-			"\tld.w\t%r4,12\n"
-			"delay_loop:\n"
-			"\tnop\n"
-			"\tsub\t%r4,1\n"
-			"\tjrne\tdelay_loop"
-			);
-	}
-}
 
 static void turn_on_power(void)
 {
