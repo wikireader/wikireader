@@ -43,9 +43,6 @@ class DMM34401A(Gpib):
         self.write(':measure:current:dc?\n')
         return float(self.read().strip('\r\n \t'))
 
-    def messageOff(self):
-        self.write(':display:window:text:state 0\n')
-
 
 def main():
     dmm = DMM34401A()
