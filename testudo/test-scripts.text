@@ -1,0 +1,236 @@
+1. Running a set of test scripts 2by sequencer.py
+
+   This program can run one or more scripts from the command line;
+   each script is run in the order that it appears.
+
+   If a directory is given, then the entire tree is searched for .py
+   files beginning with 'test', these files are sorted and each is
+   run.  Any one failing file will not affect the whole run.  After
+   the files have bee processed the sub directories are processed.
+
+
+2. User interface for running individual test files (ui.py)
+
+   This is a GUI to run an individual test script one or more times.
+
+   First select Open from the file menu then choose the script to run.
+
+   Select the number of iterations (between 1 and 1000) using the spin
+   button.  left mouse click increments or decrements by 1; middle
+   button by +/-10  and the right button will set 1 or 1000.
+
+   Just below this is the status line that indicated if the test is
+   running or stopped.
+
+   Finally click the run button the tests will then be run.  Failing a
+   test will not stop the entire sequence.  The stop button with abort
+   the run at the end of one pass of the script.  The status line will
+   indicate that the sequence will be stopped.
+
+   The contents of the log window can be saved as a text file by
+   selecting "Save" from the file menu.
+
+   The log window is cleared when a new test is loaded, or if the
+   "Clear screen" button is clicked (when a test is not running).
+
+
+3. Test script.
+
+   This is a python program the file name must begin with 'test' and
+   end with '.py'.
+
+   the script consists of several funtions.
+
+   a) setUp
+
+        This is the first function run and is used to configure any
+        global resources require by the tests themselves.  For example
+        it might initialise and turn on a power supply.
+
+
+   b) tearDown
+
+        This is run at the end of all the tests in this script or if
+        any individual test function fails.  This would most likely
+        turn of the power and free the global resources allocated by
+        the setUp function.
+
+
+   c) testXXXXXXX
+
+        These routines comprise the test steps, they are sorted by
+        name before running them to ensure that the test order is
+        always the same.  Do not rely on the order of tests in the
+        file, bu choose a name ing scheme.
+        For example:  test_0001_on test_002_next test_003_more
+
+
+   Test scripts make use of imported modules to control the external
+   devices by various interfaces such as USB or GPIB. here is a simple example
+   of the setUp and TearDown functions.  It also shows use of the debug
+   global variable that is provided by the sequencer.py program.
+
+       dvm = None
+       psu = None
+
+       def setUp():
+         """Set up power supply and turn on
+
+           Also put a message on the PSU LCD to warn operator"""
+        global debug, psu, dvm
+        info('setUp: **initialising**')
+        dvm = Agilent.DMM34401A()
+        dvm.setVoltageDC()
+        psu = Keithley.PSU2303()
+        psu.setCurrent(SUPPLY_CURRENT_LIMIT)
+        psu.setVoltage(SUPPLY_STANDARD_VOLTAGE)
+        psu.powerOff()
+        if debug > 50:
+            psu.settings()
+            psu.measure()
+        psu.message('Test in progress  Do NOT Touch  ')
+
+
+      def tearDown():
+        """Shutdown the power supply"""
+        global debug, psu, dvm
+        psu.powerOff()
+        psu.setCurrent(0)
+        psu.setVoltage(0)
+        psu.messageOff()
+        info('tearDown: **cleanup**')
+        del psu
+        psu = None
+        del dvm
+        dvm = None
+        del relay
+        relay = None
+
+
+   The individual test functions can use the value of debug to display
+   various messages; but they will normally indicate progress using
+   the info function.  The test function can indicate failure at any
+   point using fail_if or fail_unless functions: These API calls are
+   summarised here:
+
+
+   a) info(message)
+
+      e.g.  info('set point = %7.3f V @ %7.3f mA' %(v, i))
+
+      This displays the text 'INFO:' and the message to standard output.
+
+      When running under the ui the message will appear in the log buffer.
+
+
+   b) fail_if(condition, message)
+
+      e.g. fail_if(i > 100, 'current %7.3f is too high' % i)
+
+
+      If the condition is True then output 'FAIL:' followed by the
+      message to standard output, or the log buffer if running under
+      the ui program.
+
+
+   c) fail_unless(condition, message)
+
+
+      e.g. fail_unless(i > 10, 'failed to reach minimum current')
+
+      If the condition is False the perform the same action as b
+      above.
+
+
+4) Keithley Power supply 2303 API
+
+   Create a power supply object at a specific GPIB address
+
+     psu = Keithley.PSU2303(address = 5, gpib_card = 0)
+
+   Set the voltage and current
+
+     psu.setVoltage(v, max = 4)
+     psu.setCurrent(i, max = 1)
+
+   Control the output circuit
+
+     psu.powerOff()
+     psu.powerOn()
+
+   Measure the actual output
+
+     v = psu.voltage
+     i = psu.current
+
+   Display some text on the power supply's LCD
+
+     psu.message(text)
+     psu.messageOff()
+
+   Some routines used for debugging
+
+     psu.settings()
+     psu.measure():
+
+
+5) Agilent 34401A Digital Multimeter
+
+   Create a digital multimeter object at a specific GPIB address
+
+     dmm = Agilent.DMM34401A(address = 22, gpib_card = 0)
+
+   Select operating mode
+
+     dmm.setVoltageDC()
+     dmm.setCurrentDC()
+
+   Read a value depends of the last mode selected
+
+     v = dmm.voltage
+     i = dmm.current
+
+
+6) 16 channel USB relay board
+
+   Create a relay board object at a specific USB port
+
+     relay = RelayBoard.PIC16F873A(port = '/dev/ttyUSB0', bps = 19200, timeout = 0.1)
+
+   Turn off all relays immediately
+
+     relay.allOff()
+
+   Mark a relay as pending on, the current state of the relay is not affected
+   (n in the range 1 .. 16)
+
+     relay.set(n)
+
+   Mark a relay as pending off, the current state of the relay is not affected
+   (n in the range 1 .. 16)
+
+     relay.clear(n)
+
+   Update all pending on/off changes to the relay board, all relays
+   will be affected simultaneously
+
+     relay.update()
+
+   Read the state of the last packet sent to the relays as a 16 bit
+   integer, bit zero represents relay 1
+
+      s = relay.state()
+
+   Read the pending state that would be sent if the update funtion is
+   called as a 16 bit integer, bit zero represents relay 1
+
+      p = pending()
+
+   Turn on a relay immediately, this is euivalent to set+update
+
+      relay.on(n)
+
+   Turn off a relay immediately, this is euivalent to clear+update
+
+      relay.off(n)
+
