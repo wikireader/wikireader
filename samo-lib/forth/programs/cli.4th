@@ -5,7 +5,7 @@ base @ decimal
 \ just some simple commands to work with the file system
 
 : print-file-size ( b u -- )
-  r/o open-file ?dup
+  r/o open-file
   if   drop 0
   else dup file-size drop   \ fileid size
        swap close-file drop \ size
@@ -22,7 +22,6 @@ base @ decimal
       dec. drop exit
   then
   >r    \ save dirid
-
   begin
     here 256 r@ read-directory ?dup
     if  cr ." directory read error = "
@@ -35,7 +34,7 @@ base @ decimal
     space type cr
   repeat
   drop
-  r> close-directory drop ;
+  r>  close-directory drop ;
 
 \                                        -
 .( dir                                   - list the root directory )
@@ -281,7 +280,7 @@ variable spin-pos
         true exit
      then
   then
-  buffer-1 buffer-2 write-count mem= 0=
+  buffer-1 write-count buffer-2 write-count compare
   if cr ." verify failed"
      r> drop
      true exit

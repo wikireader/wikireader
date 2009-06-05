@@ -1,5 +1,4 @@
 .( gpio tests )
-include regs.4th
 
 base @ decimal
 
@@ -21,9 +20,9 @@ base @ decimal
 
 : wdt-off ( -- )
   wdt-high
-  500000 for next
+  500000 0 ?do loop
   wdt-low
-  500000 for next ;
+  500000 0 ?do loop ;
 
 
 .( off - normal auto power off )
@@ -73,8 +72,8 @@ constant MULTIPLIER
 
 .( bv = display battery mV )
 : bv
-  cr ." battery ="
-  battery_adc dup . ."  counts =="
+  cr ." battery = "
+  battery_adc dup . ." counts == "
   AVDD_MILLIVOLTS * MULTIPLIER *
   ADC_FULL_SCALE / DIVISOR /
   . ." mV"

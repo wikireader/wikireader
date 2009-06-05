@@ -1,5 +1,4 @@
 .( scan-disk )
-include lcd.4th
 
 base @ decimal
 

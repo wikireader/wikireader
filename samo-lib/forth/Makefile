@@ -1,6 +1,6 @@
 # Makefile
-
-#	Copyright 2009 Christopher Hall <hsw@openmoko.com>
+#
+# Copyright 2009 Christopher Hall <hsw@openmoko.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -31,43 +31,53 @@ FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
-export PATH:=../../host-tools/toolchain-install/bin:${PATH}
 
-INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I${WIKI_APP_INCLUDE}
+INCLUDES += -I.
 INCLUDES += -I${DRIVERS_INCLUDE}
+INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
 
-
-LIBS +=	${FATFS_LIB}
-LIBS +=	${DRIVERS_LIB}
-LIBS +=	${MINI_LIBC_LIB}
+LIBS += ${FATFS_LIB}
+LIBS += ${DRIVERS_LIB}
+LIBS += ${MINI_LIBC_LIB}
 LIBS += $$(${CROSS_GCC} -print-libgcc-file-name)
 
-RM = rm -f
 
 CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-#vpath %.c src
+vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}
 
 
 all: forth.elf
 
-
-FORTH_OBJECTS = forth.o serial.o debug.o FileSystem.o
+FORTH_OBJECTS = forth.o serial.o ctp.o debug.o FileSystem.o
 forth.elf: ${FORTH_OBJECTS} forth.lds
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 	${CROSS_STRIP} --remove-section=.comment $@
 	${CROSS_OBJDUMP} --section-headers $@
 
 
+forth.s: header.s meta.fs symbols.fi ansi-forth.fs trailer.s
+	${RM} "$@"
+	cat header.s >> "$@"
+	gforth ansi-forth.fs >> "$@"
+	cat trailer.s  >> "$@"
+
+symbols.fi : ansi-forth.fs sym.awk
+	awk -f sym.awk ansi-forth.fs > "$@"
+
+
 clean:
-	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33
+	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi
 
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
 include ${SAMO_LIB}/Mk/rules.mk
+
+
+
+

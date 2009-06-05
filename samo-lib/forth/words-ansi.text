@@ -1,0 +1,371 @@
+   !              store                       CORE
+   #              number-sign                 CORE
+   #>             number-sign-greater         CORE
+   #S             number-sign-s               CORE
+   #TIB           number-t-i-b                CORE EXT
+   '              tick                        CORE
+   (              paren                       CORE
+   (              paren                       FILE
+   (LOCAL)        paren-local-paren           LOCAL
+   *              star                        CORE
+   */             star-slash                  CORE
+   */MOD          star-slash-mod              CORE
+   +              plus                        CORE
+   +!             plus-store                  CORE
+   +LOOP          plus-loop                   CORE
+   ,              comma                       CORE
+   -              minus                       CORE
+   -TRAILING      dash-trailing               STRING
+   .              dot                         CORE
+   ."             dot-quote                   CORE
+   .(             dot-paren                   CORE EXT
+   .R             dot-r                       CORE EXT
+   .S             dot-s                       TOOLS
+   /              slash                       CORE
+   /MOD           slash-mod                   CORE
+   /STRING        slash-string                STRING
+   0<             zero-less                   CORE
+   0<>            zero-not-equals             CORE EXT
+   0=             zero-equals                 CORE
+   0>             zero-greater                CORE EXT
+   1+             one-plus                    CORE
+   1-             one-minus                   CORE
+   2!             two-store                   CORE
+   2*             two-star                    CORE
+   2/             two-slash                   CORE
+   2>R            two-to-r                    CORE EXT
+   2@             two-fetch                   CORE
+   2CONSTANT      two-constant                DOUBLE
+   2DROP          two-drop                    CORE
+   2DUP           two-dupe                    CORE
+   2LITERAL       two-literal                 DOUBLE
+   2OVER          two-over                    CORE
+   2R>            two-r-from                  CORE EXT
+   2R@            two-r-fetch                 CORE EXT
+   2ROT           two-rote                    DOUBLE EXT
+   2SWAP          two-swap                    CORE
+   2VARIABLE      two-variable                DOUBLE
+   :              colon                       CORE
+   :NONAME        colon-no-name               CORE EXT
+   ;              semicolon                   CORE
+   ;CODE          semicolon-code              TOOLS EXT
+   <              less-than                   CORE
+   <#             less-number-sign            CORE
+   <>             not-equals                  CORE EXT
+   =              equals                      CORE
+   >              greater-than                CORE
+   >BODY          to-body                     CORE
+   >FLOAT         to-float                    FLOATING
+   >IN            to-in                       CORE
+   >NUMBER        to-number                   CORE
+   >R             to-r                        CORE
+   ?              question                    TOOLS
+   ?DO            question-do                 CORE EXT
+   ?DUP           question-dupe               CORE
+   @              fetch                       CORE
+   ABORT                                      CORE
+   ABORT                                      EXCEPTION EXT
+   ABORT"         abort-quote                 CORE
+   ABORT"         abort-quote                 EXCEPTION EXT
+   ABS            abs                         CORE
+   ACCEPT                                     CORE
+   AGAIN                                      CORE EXT
+   AHEAD                                      TOOLS EXT
+   ALIGN                                      CORE
+   ALIGNED                                    CORE
+   ALLOCATE                                   MEMORY
+   ALLOT                                      CORE
+   ALSO                                       SEARCH EXT
+   AND                                        CORE
+   ASSEMBLER                                  TOOLS EXT
+   AT-XY          at-x-y                      FACILITY
+   BASE                                       CORE
+   BEGIN                                      CORE
+   BIN                                        FILE
+   BL             b-l                         CORE
+   BLANK                                      STRING
+   BLK            b-l-k                       BLOCK
+   BLOCK                                      BLOCK
+   BUFFER                                     BLOCK
+   BYE                                        TOOLS EXT
+   C!             c-store                     CORE
+   C"             c-quote                     CORE EXT
+   C,             c-comma                     CORE
+   C@             c-fetch                     CORE
+   CASE                                       CORE EXT
+   CATCH                                      EXCEPTION
+   CELL+          cell-plus                   CORE
+   CELLS                                      CORE
+   CHAR           char                        CORE
+   CHAR+          char-plus                   CORE
+   CHARS          chars                       CORE
+   CLOSE-FILE                                 FILE
+   CMOVE          c-move                      STRING
+   CMOVE>         c-move-up                   STRING
+   CODE                                       TOOLS EXT
+   COMPARE                                    STRING
+   COMPILE,       compile-comma               CORE EXT
+   CONSTANT                                   CORE
+   CONVERT                                    CORE EXT
+   COUNT                                      CORE
+   CR             c-r                         CORE
+   CREATE                                     CORE
+   CREATE-FILE                                FILE
+   CS-PICK        c-s-pick                    TOOLS EXT
+   CS-ROLL        c-s-roll                    TOOLS EXT
+   D+             d-plus                      DOUBLE
+   D-             d-minus                     DOUBLE
+   D.             d-dot                       DOUBLE
+   D.R            d-dot-r                     DOUBLE
+   D0<            d-zero-less                 DOUBLE
+   D0=            d-zero-equals               DOUBLE
+   D2*            d-two-star                  DOUBLE
+   D2/            d-two-slash                 DOUBLE
+   D<             d-less-than                 DOUBLE
+   D=             d-equals                    DOUBLE
+   D>F            d-to-f                      FLOATING
+   D>S            d-to-s                      DOUBLE
+   DABS           d-abs                       DOUBLE
+   DECIMAL                                    CORE
+   DEFINITIONS                                SEARCH
+   DELETE-FILE                                FILE
+   DEPTH                                      CORE
+   DF!            d-f-store                   FLOATING EXT
+   DF@            d-f-fetch                   FLOATING EXT
+   DFALIGN        d-f-align                   FLOATING EXT
+   DFALIGNED      d-f-aligned                 FLOATING EXT
+   DFLOAT+        d-float-plus                FLOATING EXT
+   DFLOATS        d-floats                    FLOATING EXT
+   DMAX           d-max                       DOUBLE
+   DMIN           d-min                       DOUBLE
+   DNEGATE        d-negate                    DOUBLE
+   DO                                         CORE
+   DOES>          does                        CORE
+   DROP                                       CORE
+   DU<            d-u-less                    DOUBLE EXT
+   DUMP                                       TOOLS
+   DUP            dupe                        CORE
+   EDITOR                                     TOOLS EXT
+   EKEY           e-key                       FACILITY EXT
+   EKEY>CHAR      e-key-to-char               FACILITY EXT
+   EKEY?          e-key-question              FACILITY EXT
+   ELSE                                       CORE
+   EMIT                                       CORE
+   EMIT?          emit-question               FACILITY EXT
+   EMPTY-BUFFERS                              BLOCK EXT
+   ENDCASE        end-case                    CORE EXT
+   ENDOF          end-of                      CORE EXT
+   ENVIRONMENT?   environment-query           CORE
+   ERASE                                      CORE EXT
+   EVALUATE                                   CORE
+   EVALUATE                                   BLOCK
+   EXECUTE                                    CORE
+   EXIT                                       CORE
+   EXPECT                                     CORE EXT
+   F!             f-store                     FLOATING
+   F*             f-star                      FLOATING
+   F**            f-star-star                 FLOATING EXT
+   F+             f-plus                      FLOATING
+   F-             f-minus                     FLOATING
+   F.             f-dot                       FLOATING EXT
+   F/             f-slash                     FLOATING
+   F0<            f-zero-less-than            FLOATING
+   F0=            f-zero-equals               FLOATING
+   F<             f-less-than                 FLOATING
+   F>D            f-to-d                      FLOATING
+   F@             f-fetch                     FLOATING
+   FABS           f-abs                       FLOATING EXT
+   FACOS          f-a-cos                     FLOATING EXT
+   FACOSH         f-a-cosh                    FLOATING EXT
+   FALIGN         f-align                     FLOATING
+   FALIGNED       f-aligned                   FLOATING
+   FALOG          f-a-log                     FLOATING EXT
+   FALSE                                      CORE EXT
+   FASIN          f-a-sine                    FLOATING EXT
+   FASINH         f-a-cinch                   FLOATING EXT
+   FATAN          f-a-tan                     FLOATING EXT
+   FATAN2         f-a-tan-two                 FLOATING EXT
+   FATANH         f-a-tan-h                   FLOATING EXT
+   FCONSTANT      f-constant                  FLOATING
+   FCOS           f-cos                       FLOATING EXT
+   FCOSH          f-cosh                      FLOATING EXT
+   FDEPTH         f-depth                     FLOATING
+   FDROP          f-drop                      FLOATING
+   FDUP           f-dupe                      FLOATING
+   FE.            f-e-dot                     FLOATING EXT
+   FEXP           f-e-x-p                     FLOATING EXT
+   FEXPM1         f-e-x-p-m-one               FLOATING EXT
+   FILE-POSITION                              FILE
+   FILE-SIZE                                  FILE
+   FILE-STATUS                                FILE EXT
+   FILL                                       CORE
+   FIND                                       CORE
+   FIND                                       SEARCH
+   FLITERAL       f-literal                   FLOATING
+   FLN            f-l-n                       FLOATING EXT
+   FLNP1          f-l-n-p-one                 FLOATING EXT
+   FLOAT+         float-plus                  FLOATING
+   FLOATS                                     FLOATING
+   FLOG           f-log                       FLOATING EXT
+   FLOOR                                      FLOATING
+   FLUSH                                      BLOCK
+   FLUSH-FILE                                 FILE EXT
+   FM/MOD         f-m-slash-mod               CORE
+   FMAX           f-max                       FLOATING
+   FMIN           f-min                       FLOATING
+   FNEGATE        f-negate                    FLOATING
+   FORGET                                     TOOLS EXT
+   FORTH                                      SEARCH EXT
+   FORTH-WORDLIST                             SEARCH
+   FOVER          f-over                      FLOATING
+   FREE                                       MEMORY
+   FROT           f-rote                      FLOATING
+   FROUND         f-round                     FLOATING
+   FS.            f-s-dot                     FLOATING EXT
+   FSIN           f-sine                      FLOATING EXT
+   FSINCOS        f-sine-cos                  FLOATING EXT
+   FSINH          f-cinch                     FLOATING EXT
+   FSQRT          f-square-root               FLOATING EXT
+   FSWAP          f-swap                      FLOATING
+   FTAN           f-tan                       FLOATING EXT
+   FTANH          f-tan-h                     FLOATING EXT
+   FVARIABLE      f-variable                  FLOATING
+   F~             f-proximate                 FLOATING EXT
+   GET-CURRENT                                SEARCH
+   GET-ORDER                                  SEARCH
+   HERE                                       CORE
+   HEX                                        CORE EXT
+   HOLD                                       CORE
+   I                                          CORE
+   IF                                         CORE
+   IMMEDIATE                                  CORE
+   INCLUDE-FILE                               FILE
+   INCLUDED                                   FILE
+   INVERT                                     CORE
+   J                                          CORE
+   KEY                                        CORE
+   KEY?           key-question                FACILITY
+   LEAVE                                      CORE
+   LIST                                       BLOCK EXT
+   LITERAL                                    CORE
+   LOAD                                       BLOCK
+   LOCALS|        locals-bar                  LOCAL EXT
+   LOOP                                       CORE
+   LSHIFT         l-shift                     CORE
+   M*             m-star                      CORE
+   M*/            m-star-slash                DOUBLE
+   M+             m-plus                      DOUBLE
+   MARKER                                     CORE EXT
+   MAX                                        CORE
+   MIN                                        CORE
+   MOD                                        CORE
+   MOVE                                       CORE
+   MS                                         FACILITY EXT
+   NEGATE                                     CORE
+   NIP                                        CORE EXT
+   OF                                         CORE EXT
+   ONLY                                       SEARCH EXT
+   OPEN-FILE                                  FILE
+   OR                                         CORE
+   ORDER                                      SEARCH EXT
+   OVER                                       CORE
+   PAD                                        CORE EXT
+   PAGE                                       FACILITY
+   PARSE                                      CORE EXT
+   PICK                                       CORE EXT
+   POSTPONE                                   CORE
+   PRECISION                                  FLOATING EXT
+   PREVIOUS                                   SEARCH EXT
+   QUERY                                      CORE EXT
+   QUIT                                       CORE
+   R/O            r-o                         FILE
+   R/W            r-w                         FILE
+   R>             r-from                      CORE
+   R@             r-fetch                     CORE
+   READ-FILE                                  FILE
+   READ-LINE                                  FILE
+   RECURSE                                    CORE
+   REFILL                                     CORE EXT
+   REFILL                                     BLOCK EXT
+   REFILL                                     FILE EXT
+   RENAME-FILE                                FILE EXT
+   REPEAT                                     CORE
+   REPOSITION-FILE                            FILE
+   REPRESENT                                  FLOATING
+   RESIZE                                     MEMORY
+   RESIZE-FILE                                FILE
+   RESTORE-INPUT                              CORE EXT
+   ROLL                                       CORE EXT
+   ROT            rote                        CORE
+   RSHIFT         r-shift                     CORE
+   S"             s-quote                     CORE
+   S"             s-quote                     FILE
+   S>D            s-to-d                      CORE
+   SAVE-BUFFERS                               BLOCK
+   SAVE-INPUT                                 CORE EXT
+   SCR            s-c-r                       BLOCK EXT
+   SEARCH                                     STRING
+   SEARCH-WORDLIST                            SEARCH
+   SEE                                        TOOLS
+   SET-CURRENT                                SEARCH
+   SET-ORDER                                  SEARCH
+   SET-PRECISION                              FLOATING EXT
+   SF!            s-f-store                   FLOATING EXT
+   SF@            s-f-fetch                   FLOATING EXT
+   SFALIGN        s-f-align                   FLOATING EXT
+   SFALIGNED      s-f-aligned                 FLOATING EXT
+   SFLOAT+        s-float-plus                FLOATING EXT
+   SFLOATS        s-floats                    FLOATING EXT
+   SIGN                                       CORE
+   SLITERAL                                   STRING
+   SM/REM         s-m-slash-rem               CORE
+   SOURCE                                     CORE
+   SOURCE-ID      source-i-d                  CORE EXT
+   SOURCE-ID      source-i-d                  FILE
+   SPACE                                      CORE
+   SPACES                                     CORE
+   SPAN                                       CORE EXT
+   STATE                                      CORE
+   STATE                                      TOOLS EXT
+   SWAP                                       CORE
+   THEN                                       CORE
+   THROW                                      EXCEPTION
+   THRU                                       BLOCK EXT
+   TIB            t-i-b                       CORE EXT
+   TIME&DATE      time-and-date               FACILITY EXT
+   TO                                         CORE EXT
+   TO                                         LOCAL
+   TRUE                                       CORE EXT
+   TUCK                                       CORE EXT
+   TYPE                                       CORE
+   U.             u-dot                       CORE
+   U.R            u-dot-r                     CORE EXT
+   U<             u-less-than                 CORE
+   U>             u-greater-than              CORE EXT
+   UM*            u-m-star                    CORE
+   UM/MOD         u-m-slash-mod               CORE
+   UNLOOP                                     CORE
+   UNTIL                                      CORE
+   UNUSED                                     CORE EXT
+   UPDATE                                     BLOCK
+   VALUE                                      CORE EXT
+   VARIABLE                                   CORE
+   W/O            w-o                         FILE
+   WHILE                                      CORE
+   WITHIN                                     CORE EXT
+   WORD                                       CORE
+   WORDLIST                                   SEARCH
+   WORDS                                      TOOLS
+   WRITE-FILE                                 FILE
+   WRITE-LINE                                 FILE
+   XOR            x-or                        CORE
+   [              left-bracket                CORE
+   [']            bracket-tick                CORE
+   [CHAR]         bracket-char                CORE
+   [COMPILE]      bracket-compile             CORE EXT
+   [ELSE]         bracket-else                TOOLS EXT
+   [IF]           bracket-if                  TOOLS EXT
+   [THEN]         bracket-then                TOOLS EXT
+   \              backslash                   CORE EXT
+   \              backslash                   BLOCK EXT
+   ]              right-bracket               CORE

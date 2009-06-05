@@ -5,3 +5,5 @@
 *.map
 *.elf
 *~
+forth.s
+symbols.fi
