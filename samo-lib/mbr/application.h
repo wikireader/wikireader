@@ -48,6 +48,7 @@
 			);					\
 		init_pins();					\
 		init_rs232_ch0();				\
+		init_rs232_ch1();				\
 		init_ram();					\
 	} while (0)
 
