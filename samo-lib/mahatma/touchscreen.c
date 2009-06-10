@@ -104,7 +104,9 @@ static inline int calc_coord(u8 *axis_array)
 	 * the output resolution is 480 * 416,
 	 * here we divide 2 as the real resolution
 	 */
-    return (((axis_array[0] << 8) + axis_array[1]) >> 1);
+	/*Change the shift bit to 7 for the new data format of the CTP*/
+	return (((axis_array[0] << 7) + axis_array[1]) >> 1);
+
 }
 
 void touchscreen_parsing_packets()
@@ -136,7 +138,8 @@ int touchscreen_get_event(struct wl_input_event *ev)
 void touchscreen_init(void)
 {
 	init_rs232_ch1();
-
+	/*Pull up RXD*/
+	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
 	DISABLE_IRQ();
 	// CTP_INIT_Reset_function
 	REG_P0_IOC0 |= 0x80;
