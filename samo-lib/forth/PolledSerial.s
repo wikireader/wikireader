@@ -1,4 +1,4 @@
-;;; Serial - simple serial I/O
+;;; PolledSerial - simple serial I/O
 
 ;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
 ;;;
@@ -26,6 +26,7 @@
 ;;; OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 ;;; IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
         .include "regs.inc"
 
 ;;; register usage
@@ -38,17 +39,48 @@
 
         .section .text
 
+;;; wait for serial output ready
+;;; input:
+;;; output:
+;;;   r4 = true if space in buffer, false if buffer is full
+        .global PolledSerial_PutReady
+PolledSerial_PutReady:
+        xld.w   %r4, R8_EFSIF0_STATUS
+        ld.ub   %r5, [%r4]
+        and     %r5, TDBEx
+        jreq    PolledSerial_PutReady_done
+        ld.w    %r4, 1
+
+PolledSerial_PutReady_done:
+        ret
+
+;;; print a character
+;;; input:
+;;;   r6 = char
+;;; output:
+        .global PolledSerial_PutChar
+PolledSerial_PutChar:
+        xld.w   %r4, R8_EFSIF0_STATUS
+PolledSerial_PutChar_wait:
+        ld.ub   %r5, [%r4]
+        and     %r5, TDBEx
+        jreq    PolledSerial_PutChar_wait
+
+        xld.w   %r5, R8_EFSIF0_TXD
+        ld.b	[%r5], %r6
+        ret
+
 
 ;;; read a character
 ;;; input:
 ;;; output:
 ;;;   r4 = char
-        .global CTP_GetChar
-CTP_GetChar:
-        call    CTP_InputAvailable
+        .global PolledSerial_GetChar
+PolledSerial_GetChar:
+        call    PolledSerial_InputAvailable
         or      %r4, %r4
-        jreq    CTP_GetChar
-        xld.w   %r4, R8_EFSIF1_RXD
+        jreq    PolledSerial_GetChar
+        xld.w   %r4, R8_EFSIF0_RXD
         ld.ub	%r4, [%r4]
         ret
 
@@ -58,12 +90,12 @@ CTP_GetChar:
 ;;; output:
 ;;;   r4 = 0 => not ready
 ;;;        1 => ready
-        .global CTP_InputAvailable
-CTP_InputAvailable:
-        xld.w   %r4, R8_EFSIF1_STATUS
+        .global PolledSerial_InputAvailable
+PolledSerial_InputAvailable:
+        xld.w   %r4, R8_EFSIF0_STATUS
         ld.ub   %r4, [%r4]
-        xand    %r4, RDBFx
-        jreq    CTP_InputAvailable_done
+        and     %r4, RDBFx
+        jreq    PolledSerial_InputAvailable_done
         ld.w    %r4, 1
-CTP_InputAvailable_done:
+PolledSerial_InputAvailable_done:
         ret

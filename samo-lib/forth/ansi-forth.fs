@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-1
+2
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -809,12 +809,22 @@ end-code
   false state !
   0 terminal-count !
   cold-last-name forth-wordlist !
+  rp0 @ rp!
+  sp0 @ sp!
+
   only forth definitions
 
   cr  ." moko forth interpreter for S33C (build:"
   build-number 0 u.r
   ." )" cr
-  quit-reset  quit
+  quit-reset
+
+  \ initial code to run
+  s" forth.ini"  r/o open-file 0= if  \ ignore any errors
+    include-file
+  then
+
+  quit
 ;
 
 code cold-cp0             :: cold-c-p-zero           ( -- a-addr )
@@ -1091,7 +1101,17 @@ code emit                 :: emit                    ( char -- )
         NEXT
 end-code
 
-\ emit?                   :: emit-question           ( -- flag )
+code emit?                :: emit-question           ( -- flag )
+        xcall   Serial_PutReady
+        or      %r4, %r4
+        jreq    emit_question_no_space
+        ld.w    %r4, TRUE
+emit_question_no_space:
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
 \ empty-buffers           :: empty-buffers           ( -- )
 
 : endcase                 :: end-case                ( C: case-sys -- ) ( x -- )
@@ -1748,7 +1768,48 @@ end-code
 \ save-buffers            :: save-buffers            ( -- )
 \ save-input              :: save-input              ( -- xn ... x1 n )
 \ scr                     :: s-c-r                   ( -- a-addr )
-\ search                  :: search                  ( c-addr1 u1 c-addr2 u2 -- c-addr3 u3 flag )
+
+code search               :: search                  ( c-addr1 u1 c-addr2 u2 -- c-addr3 u3 flag )
+        ld.w    %r4, [%r1]+                          ; u2
+        ld.w    %r5, [%r1]+                          ; c-addr2
+        ld.w    %r6, [%r1]                           ; u1
+        xld.w   %r7, [%r1 + BYTES_PER_CELL]          ; c-addr1
+
+search_loop:
+        cmp     %r4, %r6                             ; u2 > u1
+        jrugt   search_not_found                     ; ...yes
+
+        ld.w    %r8, %r4                             ; count
+        ld.w    %r9, %r7                             ; string
+        ld.w    %r10, %r5                            ; match
+
+search_compare:
+        ld.ub   %r13, [%r9]+                         ; get byte of string
+        ld.ub   %r14, [%r10]+                        ; get byte of match
+        cmp     %r13, %r14
+        jrne    search_next_position                 ; loop back if no match
+        sub     %r8, 1
+        jrne    search_compare                       ; loop to comare bytes
+
+search_found:
+        ld.w    [%r1], %r6                           ; u1
+        xld.w   [%r1 + BYTES_PER_CELL], %r7          ; c-addr1
+        sub     %r1, BYTES_PER_CELL
+        ld.w    %r4, TRUE
+        ld.w    [%r1], %r4
+        NEXT
+
+search_next_position:
+        add     %r7, 1                               ; next address
+        sub     %r6, 1                               ; decrement length
+        jp      search_loop                          ; back for next compare
+
+search_not_found:
+        sub     %r1, BYTES_PER_CELL
+        ld.w    %r4, FALSE
+        ld.w    [%r1], %r4
+        NEXT                                         ; c-addr1 u1 false
+end-code
 
 code search-wordlist      :: search-wordlist         ( c-addr u wid -- 0 | xt 1 | xt -1 )
         ld.w    %r4, [%r1]+                          ; wid
@@ -2502,7 +2563,7 @@ constant lcd-vram-size    :: lcd-vram-size           ( -- u )
 ;
 
 : lcd-clear-pixel         :: lcd-clear-pixel         ( x y -- )
-  LCD-VRAM-WIDTH-BYTES * LCD-VRAM + >r
+  lcd-vram-width-bytes * lcd-vram + >r
   8 /mod r> + swap    ( c-addr bit-number )
   128 swap rshift     ( c-addr bit )
   255 xor over c@     ( c-addr ~bit byte )
@@ -2599,12 +2660,24 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 : lcd-cls                 :: lcd-cls                 ( -- )
   lcd-clear lcd-home ;
 
+: lcd-scroll              :: lcd-scroll              ( -- )
+
+  font-height lcd-vram-width-bytes * dup   ( u u )
+  lcd-vram + swap                          ( src u )
+
+  lcd-vram-size swap - 0 ?do
+    dup c@ i lcd-vram + c! char+
+  loop
+  drop ;
+
 : lcd-cr                  :: lcd-cr                  ( -- )
   0 lcd-x !
   lcd-y @ font-height + dup lcd-height-lines 1- > if
-    drop 0
+    drop
+    lcd-scroll
+  else
+    lcd-y !
   then
-  lcd-y !
 ;
 
 : lcd-emit                :: lcd-emit                ( c -- )
@@ -2660,7 +2733,7 @@ end-code
 code   (brk)              :: breakpoint              ( -- )
         xcall   xdebug                               ;debug
         xld.w   %r6, bpt
-        xcall   Serial_PutString
+        xcall   Debug_PutString
 s1:     jp      s1                                   ;debug
 bpt:    .asciz  "STOPPED\r\n"
         .balign 4

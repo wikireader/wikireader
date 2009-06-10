@@ -35,12 +35,16 @@
 ;;; and the USB symbols are mixed case with no usb prefix
 ;;; the 'p' was deleted and USB_ added to USB symbols
 
-;;; create a macro before including this file
+;;; create two macros before including this file
 ;;; here is an example that simple defines symbols
 ;;; for each item:
 ;;;
 ;;;     .macro  REGDEF, address, bits, name
 ;;;     R\bits\()_\name = \address
+;;;     .endm
+;;;
+;;;     .macro  REGBIT, name, value
+;;;     \name = \value
 ;;;     .endm
 
         REGDEF  0x00300010   8  MISC_RTCWT
@@ -59,12 +63,12 @@
         REGDEF  0x00300266   8  INT_P16T01
         REGDEF  0x00300267   8  INT_P16T23
         REGDEF  0x00300268   8  INT_P16T45
-        REGDEF  0x00300269   8  INT_PLCDC_PSI00
-        REGDEF  0x0030026A   8  INT_PSI01_PAD
+        REGDEF  0x00300269   8  INT_PLCDC_PSIO0
+        REGDEF  0x0030026A   8  INT_PSIO1_PAD
         REGDEF  0x0030026B   8  INT_PRTC
         REGDEF  0x0030026C   8  INT_PP45L
         REGDEF  0x0030026D   8  INT_PP67L
-        REGDEF  0x0030026E   8  INT_PSI02_PSPI
+        REGDEF  0x0030026E   8  INT_PSIO2_PSPI
         REGDEF  0x00300270   8  INT_EK01_EP03
         REGDEF  0x00300271   8  INT_EDMA
         REGDEF  0x00300272   8  INT_E16T01
@@ -518,3 +522,487 @@
         REGDEF  0x00301C10  32  I2S_HSDMAMD
         REGDEF  0x00301C14  32  I2S_FIFO_EMPTY
         REGDEF  0x00301C20  32  I2S_FIFO
+
+
+
+;;; bit definitions for various registers
+
+
+;;;
+;;; Clock Management Unit
+;;;
+
+;;; codes for: REG_CMU_PROTECT
+        REGBIT  CMU_PROTECT_OFF 0x96
+        REGBIT  CMU_PROTECT_ON  0x00
+
+;;; bits for: REG_CMU_CLKCNTL
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_32     "(10 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_16     "(9 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_8      "(8 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_4      "(7 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_2      "(6 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3_DIV_1      "(5 << 24)"
+        REGBIT  CMU_CLK_SEL_LCDC_CLK        "(4 << 24)"
+        REGBIT  CMU_CLK_SEL_MCLK            "(3 << 24)"
+        REGBIT  CMU_CLK_SEL_PLL             "(2 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC1            "(1 << 24)"
+        REGBIT  CMU_CLK_SEL_OSC3            "(0 << 24)"
+
+        REGBIT  PLLINDIV_MASK "(15 << 20)"
+        REGBIT  PLLINDIV_10   "(9 << 20)"
+        REGBIT  PLLINDIV_9    "(8 << 20)"
+        REGBIT  PLLINDIV_8    "(7 << 20)"
+        REGBIT  PLLINDIV_7    "(6 << 20)"
+        REGBIT  PLLINDIV_6    "(5 << 20)"
+        REGBIT  PLLINDIV_5    "(4 << 20)"
+        REGBIT  PLLINDIV_4    "(3 << 20)"
+        REGBIT  PLLINDIV_3    "(2 << 20)"
+        REGBIT  PLLINDIV_2    "(1 << 20)"
+        REGBIT  PLLINDIV_1    "(0 << 20)"
+
+        REGBIT  LCDCDIV_MASK  "(15 << 16)"
+        REGBIT  LCDCDIV_16    "(15 << 16)"
+        REGBIT  LCDCDIV_15    "(14 << 16)"
+        REGBIT  LCDCDIV_14    "(13 << 16)"
+        REGBIT  LCDCDIV_13    "(12 << 16)"
+        REGBIT  LCDCDIV_12    "(11 << 16)"
+        REGBIT  LCDCDIV_11    "(10 << 16)"
+        REGBIT  LCDCDIV_10    "(9 << 16)"
+        REGBIT  LCDCDIV_9     "(8 << 16)"
+        REGBIT  LCDCDIV_8     "(7 << 16)"
+        REGBIT  LCDCDIV_7     "(6 << 16)"
+        REGBIT  LCDCDIV_6     "(5 << 16)"
+        REGBIT  LCDCDIV_5     "(4 << 16)"
+        REGBIT  LCDCDIV_4     "(3 << 16)"
+        REGBIT  LCDCDIV_3     "(2 << 16)"
+        REGBIT  LCDCDIV_2     "(1 << 16)"
+        REGBIT  LCDCDIV_1     "(0 << 16)"
+
+        REGBIT  MCLKDIV       "(1 << 12)"
+
+        REGBIT  OSC3DIV_MASK  "(7 << 8)"
+        REGBIT  OSC3DIV_32    "(5 << 8)"
+        REGBIT  OSC3DIV_16    "(4 << 8)"
+        REGBIT  OSC3DIV_8     "(3 << 8)"
+        REGBIT  OSC3DIV_4     "(2 << 8)"
+        REGBIT  OSC3DIV_2     "(1 << 8)"
+        REGBIT  OSC3DIV_1     "(0 << 8)"
+
+        REGBIT  OSCSEL_MASK   "(3 << 2)"
+        REGBIT  OSCSEL_PLL    "(3 << 2)"
+        REGBIT  OSCSEL_OSC3x  "(2 << 2)"
+        REGBIT  OSCSEL_OSC1   "(1 << 2)"
+        REGBIT  OSCSEL_OSC3   "(0 << 2)"
+
+        REGBIT  SOSC3  "(1 << 1)"
+        REGBIT  SOSC1  "(1 << 0)"
+
+;;; Bits for: REG_CMU_GATEDCLK0
+        REGBIT  USBSAPB_CKE    "(1 << 9)"
+        REGBIT  USB_CKE        "(1 << 8)"
+        REGBIT  SDAPCPU_HCKE   "(1 << 7)"
+        REGBIT  SDAPCPU_CKE    "(1 << 6)"
+        REGBIT  SDAPLCDC_CKE   "(1 << 5)"
+        REGBIT  SDSAPB_CKE     "(1 << 4)"
+        REGBIT  DSTRAM_CKE     "(1 << 3)"
+        REGBIT  LCDCAHBIF_CKE  "(1 << 2)"
+        REGBIT  LCDCSAPB_CKE   "(1 << 1)"
+        REGBIT  LCDC_CKE       "(1 << 0)"
+
+;;; Bits for: REG_CMU_GATEDCLK1
+        REGBIT  CPUAHB_HCKE    "(1 << 29)"
+        REGBIT  LCDCAHB_HCKE   "(1 << 28)"
+        REGBIT  GPIONSTP_HCKE  "(1 << 27)"
+        REGBIT  SRAMC_HCKE     "(1 << 26)"
+        REGBIT  EFSIOBR_HCKE   "(1 << 25)"
+        REGBIT  MISC_HCKE      "(1 << 24)"
+        REGBIT  IVRAMARB_CKE   "(1 << 19)"
+        REGBIT  TM5_CKE        "(1 << 18)"
+        REGBIT  TM4_CKE        "(1 << 17)"
+        REGBIT  TM3_CKE        "(1 << 16)"
+        REGBIT  TM2_CKE        "(1 << 15)"
+        REGBIT  TM1_CKE        "(1 << 14)"
+        REGBIT  TM0_CKE        "(1 << 13)"
+        REGBIT  EGPIO_MISC_CK  "(1 << 12)"
+        REGBIT  I2S_CKE        "(1 << 11)"
+        REGBIT  DCSIO_CKE      "(1 << 10)"
+        REGBIT  WDT_CKE        "(1 << 9)"
+        REGBIT  GPIO_CKE       "(1 << 8)"
+        REGBIT  SRAMSAPB_CKE   "(1 << 7)"
+        REGBIT  SPI_CKE        "(1 << 6)"
+        REGBIT  EFSIOSAPB_CKE  "(1 << 5)"
+        REGBIT  CARD_CKE       "(1 << 4)"
+        REGBIT  ADC_CKE        "(1 << 3)"
+        REGBIT  ITC_CKE        "(1 << 2)"
+        REGBIT  DMA_CKE        "(1 << 1)"
+        REGBIT  RTCSAPB_CKE    "(1 << 0)"
+
+;;; Bits for: REG_CMU_OPT
+        REGBIT  OSCTM_SHIFT 8
+        REGBIT  OSC3OFF     "(1 << 3)"
+        REGBIT  TMHSP       "(1 << 2)"
+        REGBIT  WAKEUPWT    "(1 << 0)"
+
+
+;;;
+;;; Serial Controller
+;;;
+
+;;; Bits for: REG_EFSIFx_STATUS
+        REGBIT  RXDxNUM1  "(1 << 7)"
+        REGBIT  RXDxNUM0  "(1 << 6)"
+        REGBIT  TENDx	  "(1 << 5)"
+        REGBIT  FERx	  "(1 << 4)"
+        REGBIT  PERx	  "(1 << 3)"
+        REGBIT  OERx	  "(1 << 2)"
+        REGBIT  TDBEx	  "(1 << 1)"
+        REGBIT  RDBFx	  "(1 << 0)"
+
+;;; Bits for: REG_EFSIFx_CTL
+        REGBIT  TXENx 	  "(0x1 << 7)"
+        REGBIT  TX_DISENx "(0x0 << 7)"
+        REGBIT  RXENx 	  "(0x1 << 6)"
+        REGBIT  RX_DISENx "(0x0 << 6)"
+        REGBIT  PARx 	  "(0x1 << 5)"
+        REGBIT  NO_PARx   "(0x0 << 5)"
+        REGBIT  ODDx 	  "(0x1 << 4)"
+        REGBIT  EVENx 	  "(0x0 << 4)"
+        REGBIT  ONE_STPBx "(0x1 << 3)"
+        REGBIT  TWO_STPBx "(0x0 << 3)"
+        REGBIT  SCLKx 	  "(0x1 << 2)"
+        REGBIT  INT_CLKx  "(0x0 << 2)"
+        REGBIT  EIGHT_BIT_ASYNx   0x3
+        REGBIT  SEVEN_BIT_ASYNx   0x2
+        REGBIT  CLK_SLAVEx 	  0x1
+        REGBIT  CLK_MASTERx 	  0x0
+
+;;; Bits for: REG_EFSIFx_IrDA
+        REGBIT  DIVMD_8x	  "(0x1 << 4)"
+        REGBIT  DIVMD_16x	  "(0x0 << 4)"
+        REGBIT  IRMD_IRDAx		  0x10
+        REGBIT  IRMD_GEN_IFx 	  0x00
+
+;;; Bits for: REG_EFSIFx_BRTCTL
+        REGBIT  BRTRUN_STARx 	0x1
+        REGBIT  BRTRUN_STOPx 	0x0
+
+
+;;;
+;;; Interrupt Controller
+;;;
+
+;;; Bits for: REG_INT_ESIF01
+        REGBIT  ESTX1  "(1 << 5)"
+        REGBIT  ESRX1  "(1 << 4)"
+        REGBIT  ESERR1 "(1 << 3)"
+        REGBIT  ESTX0  "(1 << 2)"
+        REGBIT  ESRX0  "(1 << 1)"
+        REGBIT  ESERR0 "(1 << 0)"
+
+;;; Bits for: REG_INT_FSIF01
+        REGBIT  FSTX1  "(1 << 5)"
+        REGBIT  FSRX1  "(1 << 4)"
+        REGBIT  FSERR1 "(1 << 3)"
+        REGBIT  FSTX0  "(1 << 2)"
+        REGBIT  FSRX0  "(1 << 1)"
+        REGBIT  FSERR0 "(1 << 0)"
+
+
+;;;
+;;; SDRAM Controller
+;;;
+
+;;; bits for: REG_SDRAMC_CTL
+        REGBIT  T24NS_SHIFT  12
+        REGBIT  T60NS_SHIFT  8
+        REGBIT  T80NS_SHIFT  4
+
+        REGBIT  ADDRC_32M_x_16_bits_x_1 0x7
+        REGBIT  ADDRC_16M_x__8_bits_x_2 0x6
+        REGBIT  ADDRC__8M_x__8_bits_x_2 0x5
+        REGBIT  ADDRC__2M_x__8_bits_x_2 0x4
+        REGBIT  ADDRC_16M_x_16_bits_x_1 0x3
+        REGBIT  ADDRC__8M_x_16_bits_x_1 0x2
+        REGBIT  ADDRC__4M_x_16_bits_x_1 0x1
+        REGBIT  ADDRC__1M_x_16_bits_x_1 0x0
+
+
+;;; Bits for: REG_SDRAMC_REF
+        REGBIT  SELDO "(1 << 25)"
+        REGBIT  SCKON "(1 << 24)"
+        REGBIT  SELEN "(1 << 23)"
+        REGBIT  SELCO_SHIFT 16
+        REGBIT  AURCO_SHIFT  0
+
+;;; Bits for: REG_SDRAMC_INI
+        REGBIT  SDON   "(1 << 4)"
+        REGBIT  SDEN   "(1 << 3)"
+        REGBIT  INIMRS "(1 << 2)"
+        REGBIT  INIPRE "(1 << 1)"
+        REGBIT  INIREF "(1 << 0)"
+
+;;; SDRAM controller commands for REG_SDRAMC_INI
+        REGBIT  SDRAM_CMD_FIRST "(SDON)"
+        REGBIT  SDRAM_CMD_FINAL "(SDON)"
+        REGBIT  SDRAM_CMD_REF   "(SDON | INIREF)"
+        REGBIT  SDRAM_CMD_PALL  "(SDON | INIPRE)"
+        REGBIT  SDRAM_CMD_MRS   "(SDON | INIMRS)"
+
+;;; Bits for: REG_SDRAMC_APP
+        REGBIT  ARBON  "(1 << 31)"
+        REGBIT  DBF    "(1 << 5)"
+        REGBIT  INCR   "(1 << 4)"
+        REGBIT  CAS1   "(1 << 3)"
+        REGBIT  CAS0   "(1 << 2)"
+        REGBIT  APPON  "(1 << 1)"
+        REGBIT  IQB    "(1 << 0)"
+
+;;; Bits for: REG_CH1_INT_PRIORITY
+        REGBIT  SERIAL_CH1_INT_PRI_7  	0x7
+        REGBIT  SERIAL_CH1_INT_PRI_6  	0x6
+        REGBIT  SERIAL_CH1_INT_PRI_5  	0x5
+        REGBIT  SERIAL_CH1_INT_PRI_4  	0x4
+        REGBIT  SERIAL_CH1_INT_PRI_3  	0x3
+        REGBIT  SERIAL_CH1_INT_PRI_2  	0x2
+        REGBIT  SERIAL_CH1_INT_PRI_1  	0x1
+        REGBIT  SERIAL_CH1_INT_PRI_0  	0x0
+
+
+;;;
+;;; LCD controller
+;;;
+
+;;; Bits for: REG_LCDC_PS
+        REGBIT  INTF              "(1 << 31)"
+        REGBIT  VNDPF             "(1 << 7)"
+        REGBIT  PSAVE_NORMAL      "(3 << 0)"
+        REGBIT  PSAVE_DOZE        "(2 << 0)"
+        REGBIT  PSAVE_POWER_SAVE  "(0 << 0)"
+
+;;; Bits for: REG_LCDC_HD
+        REGBIT  HTCNT_SHIFT    16
+        REGBIT  HDPCNT_SHIFT   0
+
+;;; Bits for: REG_LCDC_VD
+        REGBIT  VTCNT_SHIFT    16
+        REGBIT  VDPCNT_SHIFT   0
+
+;;; Bits for: REG_LCDC_DMD
+        REGBIT  TFTSEL         "(1 << 31)"
+        REGBIT  COLOR          "(1 << 30)"
+        REGBIT  FPSMASK        "(1 << 29)"
+
+        REGBIT  DWD_8_BIT_2    "(3 << 26)"
+        REGBIT  DWD_8_BIT_1    "(1 << 26)"
+        REGBIT  DWD_4_BIT      "(0 << 26)"
+
+        REGBIT  SWINV          "(1 << 25)"
+        REGBIT  BLANK          "(1 << 24)"
+        REGBIT  FRMRPT         "(1 << 7)"
+        REGBIT  DITHEN         "(1 << 6)"
+        REGBIT  LUTPASS        "(1 << 4)"
+
+        REGBIT  BPP_16         "(5 << 0)"
+        REGBIT  BPP_12         "(4 << 0)"
+        REGBIT  BPP_8          "(3 << 0)"
+        REGBIT  BPP_4          "(2 << 0)"
+        REGBIT  BPP_2          "(1 << 0)"
+        REGBIT  BPP_1          "(0 << 0)"
+
+
+;;;
+;;; Timers
+;;;
+
+;;; Bits for: REG_T16_ADVMODE
+        REGBIT  T16ADV    "(1 << 0)"
+
+;;; Bits for: REG_T16_CNT_PAUSE
+        REGBIT  PAUSE5    "(1 << 5)"
+        REGBIT  PAUSE4    "(1 << 4)"
+        REGBIT  PAUSE3    "(1 << 3)"
+        REGBIT  PAUSE2    "(1 << 2)"
+        REGBIT  PAUSE1    "(1 << 1)"
+        REGBIT  PAUSE0    "(1 << 0)"
+
+;;; Bits for: REG_T16_CTLx
+        REGBIT  INITOLx    "(1 << 8)"
+;;;     REGBIT  (TMODEx)   "(1 << 7)" - reserved, do not set to 1
+        REGBIT  SELFMx     "(1 << 6)"
+        REGBIT  SELCRBx    "(1 << 5)"
+        REGBIT  OUTINVx    "(1 << 4)"
+        REGBIT  CKSLx      "(1 << 3)"
+        REGBIT  PTMx       "(1 << 2)"
+        REGBIT  PRESETx    "(1 << 1)"
+        REGBIT  PRUNx      "(1 << 0)"
+
+;;;Bits for: REG_T16_CLKCTL_x
+        REGBIT  P16TONx               "(1 << 3)"
+        REGBIT  P16TSx_MCLK_DIV_4096  "(7 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_1024  "(6 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_256   "(5 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_64    "(4 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_16    "(3 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_4     "(2 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_2     "(1 << 0)"
+        REGBIT  P16TSx_MCLK_DIV_1     "(0 << 0)"
+
+
+;;;
+;;; SPI module
+;;;
+
+;;; Bits for: REG_SPI_CTL1
+
+        REGBIT  BPT_32_BITS        "(31 << 10)"
+        REGBIT  BPT_16_BITS        "(15 << 10)"
+        REGBIT  BPT_8_BITS         "( 7 << 10)"
+        REGBIT  BPT_1_BITS         "( 0 << 10)"
+
+        REGBIT  CPHA               "(1 << 9)"
+        REGBIT  CPOL               "(1 << 8)"
+
+        REGBIT  MCBR_MCLK_DIV_512  "(7 << 4)"
+        REGBIT  MCBR_MCLK_DIV_256  "(6 << 4)"
+        REGBIT  MCBR_MCLK_DIV_128  "(5 << 4)"
+        REGBIT  MCBR_MCLK_DIV_64   "(4 << 4)"
+        REGBIT  MCBR_MCLK_DIV_32   "(3 << 4)"
+        REGBIT  MCBR_MCLK_DIV_16   "(2 << 4)"
+        REGBIT  MCBR_MCLK_DIV_8    "(1 << 4)"
+        REGBIT  MCBR_MCLK_DIV_4    "(0 << 4)"
+
+        REGBIT  TXDE               "(1 << 3)"
+        REGBIT  RXDE               "(1 << 2)"
+
+        REGBIT  MODE_MASTER        "(1 << 1)"
+        REGBIT  MODE_SLAVE         "(0 << 1)"
+
+        REGBIT  ENA                "(1 << 0)"
+
+;;; Bits for: REG_SPI_STAT
+        REGBIT  BSYF   "(1 << 6)"
+        REGBIT  MFEF   "(1 << 5)"
+        REGBIT  TDEF   "(1 << 4)"
+        REGBIT  RDOF   "(1 << 3)"
+        REGBIT  RDFF   "(1 << 2)"
+
+;;; Bits for REG_HS_CNTLMODE
+        REGBIT  HSDMAADV "(1 << 0)"
+
+;;; Bits for DMA advanced channels
+        REGBIT  DMA_ENABLED  "(1 << 0)"
+        REGBIT  DMA_DISABLED "(0 << 0)"
+
+
+
+;;; Interrupt vectors
+
+        VECTOR  Reset 0
+        VECTOR  reserved_1 1
+        VECTOR  ext_exception 2
+        VECTOR  Undefined_instruction_exception 3
+        VECTOR  reserved_4 4
+        VECTOR  reserved_5 5
+        VECTOR  Address_misaligned_exception _6
+        VECTOR  NMI _7
+        VECTOR  reserved_8 8
+        VECTOR  reserved_9 9
+        VECTOR  reserved_10 10
+        VECTOR  Illegal_interrupt_exception 11
+        VECTOR  Software_exception_0 12
+        VECTOR  Software_exception_1 13
+        VECTOR  Software_exception_2 14
+        VECTOR  Software_exception_3 15
+        VECTOR  Port_input_interrupt_0 16
+        VECTOR  Port_input_interrupt_1 17
+        VECTOR  Port_input_interrupt_2 18
+        VECTOR  Port_input_interrupt_3 19
+        VECTOR  Key_input_interrupt_0 20
+        VECTOR  Key_input_interrupt_1 21
+        VECTOR  High_speed_DMA_Ch_0 22
+        VECTOR  High_speed_DMA_Ch_1 23
+        VECTOR  High_speed_DMA_Ch_2 24
+        VECTOR  High_speed_DMA_Ch_3 25
+        VECTOR  Intelligent_DMA 26
+        VECTOR  reserved_27 27
+        VECTOR  reserved_28 28
+        VECTOR  reserved_29 29
+        VECTOR  16_bit_timer_0_compare_match_B 30
+        VECTOR  16_bit_timer_0_compare_match_A 31
+        VECTOR  reserved_32 32
+        VECTOR  reserved_33 33
+        VECTOR  16_bit_timer_1_compare_match_B 34
+        VECTOR  16_bit_timer_1_compare_match_A 35
+        VECTOR  reserved_36 36
+        VECTOR  reserved_37 37
+        VECTOR  16_bit_timer_2_compare_match_B 38
+        VECTOR  16_bit_timer_2_compare_match_A 39
+        VECTOR  reserved_40 40
+        VECTOR  reserved_41 41
+        VECTOR  16_bit_timer_3_compare_match_B 42
+        VECTOR  16_bit_timer_3_compare_match_A 43
+        VECTOR  reserved_44 44
+        VECTOR  reserved_45 45
+        VECTOR  16_bit_timer_4_compare_match_B 46
+        VECTOR  16_bit_timer_4_compare_match_A 47
+        VECTOR  reserved_48 48
+        VECTOR  reserved_49 49
+        VECTOR  16_bit_timer_5_compare_match_B 50
+        VECTOR  16_bit_timer_5_compare_match_A 51
+        VECTOR  reserved_52 52
+        VECTOR  reserved_53 53
+        VECTOR  reserved_54 54
+        VECTOR  reserved_55 55
+        VECTOR  Serial_interface_Ch_0_Receive_error 56
+        VECTOR  Serial_interface_Ch_0_Receive_buffer_full 57
+        VECTOR  Serial_interface_Ch_0_Transmit_buffer_empty 58
+        VECTOR  reserved_59 59
+        VECTOR  Serial_interface_Ch_1_Receive_error 60
+        VECTOR  Serial_interface_Ch_1_Receive_buffer_full 61
+        VECTOR  Serial_interface_Ch_1_Transmit_buffer_empty 62
+        VECTOR  A_D_converter_Result_out_of_range 63
+        VECTOR  A_D_converter_End_of_conversion 64
+        VECTOR  RTC 65
+        VECTOR  reserved_66 66
+        VECTOR  reserved_67 67
+        VECTOR  Port_input_interrupt_4 68
+        VECTOR  Port_input_interrupt_5 69
+        VECTOR  Port_input_interrupt_6 70
+        VECTOR  Port_input_interrupt_7 71
+        VECTOR  reserved_72 72
+        VECTOR  LCDC 73
+        VECTOR  reserved_74 74
+        VECTOR  reserved_75 75
+        VECTOR  Serial_interface_Ch_2_Receive_error 76
+        VECTOR  Serial_interface_Ch_2_Receive_buffer_full 77
+        VECTOR  Serial_interface_Ch_2_Transmit_buffer_empty 78
+        VECTOR  reserved_79 79
+        VECTOR  reserved_80 80
+        VECTOR  SPI_Receive_DMA_request 81
+        VECTOR  SPI_Transmit_DMA_request 82
+        VECTOR  reserved_83 83
+        VECTOR  Port_input_interrupt_8_SPI_SPI_interrupt 84
+        VECTOR  Port_input_interrupt_9_USB_PDREQ_USB_DMA_request 85
+        VECTOR  Port_input_interrupt_10_USB_USBinterrupt 86
+        VECTOR  Port_input_interrupt_11_DCSIO_DCSIO_interrupt 87
+        VECTOR  Port_input_interrupt_12 88
+        VECTOR  Port_input_interrupt_13 89
+        VECTOR  Port_input_interrupt_14 90
+        VECTOR  Port_input_interrupt_15 91
+        VECTOR  reserved_92 92
+        VECTOR  reserved_93 93
+        VECTOR  I2S_interface_I2S_FIFO_empty 94
+        VECTOR  reserved_95 95
+        VECTOR  reserved_96 96
+        VECTOR  reserved_97 97
+        VECTOR  reserved_98 98
+        VECTOR  reserved_99 99
+        VECTOR  reserved_100 100
+        VECTOR  reserved_101 101
+        VECTOR  reserved_102 102
+        VECTOR  reserved_103 103
+        VECTOR  reserved_104 104
+        VECTOR  reserved_105 105
+        VECTOR  reserved_106 106
+        VECTOR  reserved_107 107

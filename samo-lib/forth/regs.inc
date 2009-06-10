@@ -1,6 +1,6 @@
-;;; header.s
-;;;
-;;; Copyright 2009 Christopher Hall <hsw@openmoko.com>
+;;; regs.inc - macros for register definitions
+
+;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
 ;;;
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions are
@@ -27,27 +27,31 @@
 ;;; IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-;;; macro for regs.inc
+vector_count = 0
+
         .macro  REGDEF, address, bits, name
-	CREATE	0 "\name" \name 0
-	.long	\address, \bits
+        R\bits\()_\name = \address
         .endm
 
         .macro  REGBIT, name, value
-\name = \value
+        \name = \value
         .endm
 
         .macro  VECTOR, name, value
-Vector_\()\name = \value
+        Vector_\()\name = \value
+vector_count = vector_count + 1
         .endm
 
         .include "c33regs.inc"
 
 
-;;; finish off the dictionary
-        .section .forth_dict
-        .balign 4
 
-dictionary_end:
+;;; miscellaneous macros
 
-last_name = __last_name                         ; should be the final name
+        .macro  DISABLE_INTERRUPTS
+        psrclr  4                                     ; disable interrupts
+        .endm
+
+        .macro  ENABLE_INTERRUPTS
+        psrset  4                                     ; enable interrupts
+        .endm

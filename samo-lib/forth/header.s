@@ -220,9 +220,15 @@ main:
         xld.w   %r1, initial_stack_pointer
         xld.w   %r4, initial_return_pointer
         ld.w    %sp, %r4
+
+        xcall   Vector_initialise
+
+        xcall   Serial_initialise
+
         xld.w   %r0, cold_start                 ; initial ip value
-;       xcall   xdebug
+;;;       xcall   xdebug
         NEXT
+
 
 ;;; headerless code to initially boot the system
         .balign 4                               ; forth byte code must be aligned

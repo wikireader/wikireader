@@ -53,7 +53,7 @@ vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}
 
 all: forth.elf
 
-FORTH_OBJECTS = forth.o serial.o ctp.o debug.o FileSystem.o
+FORTH_OBJECTS = forth.o PolledSerial.o ctp.o debug.o FileSystem.o iserial.o vector.o
 forth.elf: ${FORTH_OBJECTS} forth.lds
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 	${CROSS_STRIP} --remove-section=.comment $@

@@ -36,55 +36,163 @@
 ;;; r10 ..r14  reserved
 ;;; r15        __dp value
 
+
         .section .text
+
+;;; print cr and lf
+;;; input:
+;;; output:
+        .global Debug_PutCRLF
+Debug_PutCRLF:
+        xld.w   %r6, 0x0d
+        xcall   PolledSerial_PutChar
+        xld.w   %r6, 0x0a
+        jp      PolledSerial_PutChar
+
+
+;;; print a space
+;;; input:
+;;; output:
+        .global Debug_PutSpace
+Debug_PutSpace:
+        xld.w   %r6, 0x20
+        jp      PolledSerial_PutChar
+
+
+;;; print a string
+;;; input:
+;;;   r6 = address of '\0' terminated string
+;;; output:
+;;; temporary:
+;;;   r9 = address during loop
+        .global Debug_PutString
+Debug_PutString:
+        ld.w    %r9, %r6
+Debug_PutString_loop:
+        ld.ub   %r6, [%r9]+
+        cmp     %r6, 0
+        jreq    Debug_PutString_done
+        cmp     %r6, 10
+        jreq    Debug_PutString_crlf
+        xcall   PolledSerial_PutChar
+        jp      Debug_PutString_loop
+Debug_PutString_crlf:
+        xcall   Debug_PutCRLF
+        jp      Debug_PutString_loop
+Debug_PutString_done:
+        ret
+
+
+;;; print a hex nibble
+;;; input:
+;;;   r6 = 4 bit number to print
+;;; output:
+        .global Debug_PutNibble
+Debug_PutNibble:
+        xand    %r6, 0x0f
+        xadd    %r6, '0'
+        xcmp    %r6, '9'
+        jrle    Debug_PutNibble_l1
+        xadd    %r6, 'a' - '9' - 1
+Debug_PutNibble_l1:
+        xcall   PolledSerial_PutChar
+        ret
+
+
+;;; print a hex word
+;;; input:
+;;;   r6 = 32 bit number to print
+;;; output:
+;;; temporary:
+;;;   r9 = thet word being output
+        .global Debug_PutHex
+Debug_PutHex:
+        ld.w    %r9, %r6
+        xsrl    %r6, 28
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 24
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 20
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 16
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 12
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 8
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xsrl    %r6, 4
+        xcall   Debug_PutNibble
+
+        ld.w    %r6, %r9
+        xcall   Debug_PutNibble
+
+        ret
+
+
 
 debug_8:
         pushn   %r2
         ld.w    %r1, %r7
 
-        xcall   Serial_PutString
-        xcall   Serial_PutSpace
+        xcall   Debug_PutString
+        xcall   Debug_PutSpace
 
         xld.w   %r2, 8
 
 debug_8_loop:
 
         ld.w    %r6, [%r1]+
-        xcall   Serial_PutHex
-        xcall   Serial_PutSpace
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
 
         xsub    %r2, 1
         jrne    debug_8_loop
 
-        xcall   Serial_PutCRLF
+        xcall   Debug_PutCRLF
         popn    %r2
 
         ret
 
+;;; print a hex word
+;;; input:
+;;; output:
+;;; temporary:
         .global xdebug
 xdebug:
-        xcall   Serial_PutCRLF
+        xcall   Debug_PutCRLF
 
         xld.w   %r6, debug_regs
-        xcall   Serial_PutString
+        xcall   Debug_PutString
         ld.w    %r6, %r0
-        xcall   Serial_PutHex
-        xcall   Serial_PutSpace
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
         ld.w    %r6, %r1
-        xcall   Serial_PutHex
-        xcall   Serial_PutSpace
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
         ld.w    %r6, %r2
-        xcall   Serial_PutHex
-        xcall   Serial_PutSpace
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
         ld.w    %r6, %r3
-        xcall   Serial_PutHex
-        xcall   Serial_PutSpace
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
 
-        xcall   Serial_PutSpace
+        xcall   Debug_PutSpace
         ld.w    %r6, %sp
-        xcall   Serial_PutHex
+        xcall   Debug_PutHex
 
-        xcall   Serial_PutCRLF
+        xcall   Debug_PutCRLF
 
         xld.w   %r6, debug_data
         ld.w    %r7, %r1

@@ -16,8 +16,8 @@ variable ctp-y
     begin
       ctp-key $aa =
     until
-    ctp-key 8 lshift ctp-key or 2/
-    ctp-key 8 lshift ctp-key or 2/
+    ctp-key 7 lshift ctp-key or 2/
+    ctp-key 7 lshift ctp-key or 2/
     ctp-key 1 =
   until
 ;

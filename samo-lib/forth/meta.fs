@@ -458,6 +458,12 @@ meta-compiler
   .long ." type" cr
 ;
 
+: s" ( "string" -- )
+  .long ." paren_s_quote_paren" cr
+  .lstring
+;
+
+
 : abort" ( -- \ "<string>" )
   .long ." question_branch, L" gen-label dup . cr
   .long ." paren_s_quote_paren" cr

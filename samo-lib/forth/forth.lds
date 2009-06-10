@@ -13,6 +13,7 @@ MEMORY
 SECTIONS
 {
 	.dst_ram : {
+           __START_VectorTable = . ;
 /*
 		traps.o(.data)
 		traps.o(.*)
@@ -66,6 +67,7 @@ SECTIONS
 	   forth.o(*.forth_dict)
         } > sdram
         __END_forth_dict = . ;
+
 
         __START_idma = ADDR(.idma);
         __END_idma = __START_idma + SIZEOF(.idma);
