@@ -113,6 +113,7 @@ static inline void init_pins(void)
 	REG_P5_03_CFP = 0x01;
 
 	/* pull ups */
+	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
 	REG_MISC_PUP6 = (1 << 5) | (1 << 3);
 
 	/* P50 & P52: CS lines */
