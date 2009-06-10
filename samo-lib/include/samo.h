@@ -76,6 +76,9 @@ static inline void init_rs232_ch0(void)
 
 	/* baud rate timer: run! */
 	REG_EFSIF0_BRTRUN |= BRTRUN_STARx;
+
+	/* clear interrupt flags */
+	REG_INT_FSIF01 = FSRX0 | FSTX0 | FSERR0;
 }
 
 static inline void init_rs232_ch1(void)
@@ -87,6 +90,8 @@ static inline void init_rs232_ch1(void)
 	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 9600));
 
 	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
+
+	REG_INT_FSIF01 = FSRX1 | FSTX1 | FSERR1;
 }
 
 #if BOARD_PROTO2 || BOARD_SAMO_A1
