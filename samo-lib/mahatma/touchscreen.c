@@ -138,8 +138,6 @@ int touchscreen_get_event(struct wl_input_event *ev)
 void touchscreen_init(void)
 {
 	init_rs232_ch1();
-	/*Pull up RXD*/
-	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
 	DISABLE_IRQ();
 	// CTP_INIT_Reset_function
 	REG_P0_IOC0 |= 0x80;
