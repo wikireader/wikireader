@@ -114,6 +114,19 @@ CTP_GetPosition:
 ;;; output:
         .global CTP_initialise
 CTP_initialise:
+	xld.w   %r4, R8_P0_P0D                        ; CTP reset = 1
+        ld.ub   %r5, [%r4]
+        xoor    %r5, 0x80
+        ld.b    [%r4], %r5
+
+        xld.w   %r6, 200                              ; delay for reset pulse
+        xcall   delay_us
+
+	xld.w   %r4, R8_P0_P0D                        ; CTP reset = 0
+        ld.ub   %r5, [%r4]
+        xand    %r5, ~0x80
+        ld.b    [%r4], %r5
+
         xld.w   %r6, Vector_Serial_interface_Ch_1_Receive_buffer_full
         xld.w   %r7, CTP_RxInterrupt
         xcall   Vector_set
@@ -152,6 +165,11 @@ CTP_initialise:
         xand    %r5, 0xf0
         xoor    %r5, 0x07
         ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_EFSIF1_STATUS
+        ld.b    %r5, [%r4]
+        xld.w   %r4, R8_EFSIF1_RXD
+        ld.b    %r5, [%r4]
 
         ENABLE_INTERRUPTS
 
