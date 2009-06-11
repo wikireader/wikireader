@@ -162,7 +162,7 @@ Serial_GetChar:
         ret
 
 
-;;; see if input is available
+;;; initialisation
 ;;; input:
 ;;; output:
         .global Serial_initialise
@@ -198,7 +198,8 @@ Serial_initialise:
         ld.b    [%r4], %r5
 
 	xld.w   %r4, R8_INT_ESIF01
-        xld.w   %r5, ESRX0 | ESERR0
+        ld.b    %r5, [%r4]
+        xoor    %r5, ESRX0 | ESERR0
         ld.b    [%r4], %r5
 
 	xld.w   %r4, R8_INT_PLCDC_PSIO0

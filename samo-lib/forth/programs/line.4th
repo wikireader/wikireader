@@ -2,57 +2,41 @@
 
 base @ decimal
 
-.( ctp-read )
-
-variable ctp-x
-variable ctp-y
-variable ctp-state
-
-
-: ctp-read ( -- x y f )
-  begin
-    ctp-key dup $aa =
-    if
-      0 ctp-state !
-    then
-    ctp-state @
-    case
-      0 of drop 1 ctp-state +! endof
-      1 of 7 lshift ctp-x ! 1 ctp-state +! endof
-      2 of ctp-x @ or ctp-x ! 1 ctp-state +! endof
-      3 of 7 lshift ctp-y ! 1 ctp-state +! endof
-      4 of ctp-y @ or ctp-y ! 1 ctp-state +! endof
-      5 of ctp-x @ 2/ swap ctp-y @ 2/ swap 1 ctp-state +! exit endof
-    endcase
-  again
-;
-
-
-.( draw )
-
 variable down
 
 : draw ( -- )
-  lcd-clear
-  false down !
-  begin
-    ctp-read
-    if
-      down @
-      if
-        lcd-line-to
-      else
-        lcd-move-to
-        true down !
-      then
-    else
-      false down !
-    then
+    lcd-clear
+    false down !
+    begin
+        ctp-pos? if
+            ctp-pos dup 0<
+            if
+                2drop
+                false down !
+            else
+                down @
+                if
+                    lcd-line-to
+                else
+                    lcd-move-to
+                    true down !
+                then
+            then
+        then
 
-    P6_P6D p@ $07 and 0<> if
-      lcd-clear
-    then
-  enough? until
+        P6_P6D p@ $07 and
+        case
+            $02 of   \ left button
+                lcd-clear
+                false down !
+            endof
+            $04 of   \ centre button
+            endof
+            $01 of   \ right button
+                exit
+            endof
+        endcase
+    again
 ;
 
 draw

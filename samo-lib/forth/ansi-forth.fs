@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-2
+3
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -2708,19 +2708,21 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 \ CTP
 \ ===
 
-code ctp-key              :: c-t-p-key               ( -- char )
-        xcall   CTP_GetChar
+code ctp-pos              :: c-t-p-pos               ( -- x y )
+        xcall   CTP_GetPosition
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r5
         NEXT
 end-code
 
-code ctp-key?             :: c-t-p-key-question      ( -- flag )
-        xcall   CTP_InputAvailable
+code ctp-pos?             :: c-t-p-pos-question      ( -- flag )
+        xcall   CTP_PositionAvailable
         or      %r4, %r4
-        jreq    ctp_key_question_no_character
+        jreq    ctp_pos_question_no_character
         ld.w    %r4, TRUE
-ctp_key_question_no_character:
+ctp_pos_question_no_character:
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
         NEXT

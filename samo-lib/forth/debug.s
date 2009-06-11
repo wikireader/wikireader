@@ -47,7 +47,7 @@ Debug_PutCRLF:
         xld.w   %r6, 0x0d
         xcall   PolledSerial_PutChar
         xld.w   %r6, 0x0a
-        jp      PolledSerial_PutChar
+        xjp     PolledSerial_PutChar
 
 
 ;;; print a space
@@ -56,7 +56,7 @@ Debug_PutCRLF:
         .global Debug_PutSpace
 Debug_PutSpace:
         xld.w   %r6, 0x20
-        jp      PolledSerial_PutChar
+        xjp     PolledSerial_PutChar
 
 
 ;;; print a string

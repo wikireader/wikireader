@@ -222,8 +222,8 @@ main:
         ld.w    %sp, %r4
 
         xcall   Vector_initialise
-
         xcall   Serial_initialise
+        xcall   CTP_initialise
 
         xld.w   %r0, cold_start                 ; initial ip value
 ;;;       xcall   xdebug
