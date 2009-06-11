@@ -93,12 +93,19 @@ static inline void init_pins(void)
 	REG_P8_03_CFP = 0x3f;
 	REG_P8_45_CFP = 0x03;
 
+	/* P07 = reset CTP */
+	REG_P0_IOC0 = 0x80;
+	// REG_P0_P0D  = 0x80;
+
 	/* P65-67: SPI */
 	REG_P6_47_CFP = 0x54;
 
 	/* Serial interface */
 	REG_P0_03_CFP = 0x05; // Tx/Rx
 	REG_P0_47_CFP = 0x01; // Rx
+
+	/* SDCARD CS# */
+	REG_P5_03_CFP = 0x01;
 
 	/* LCD controller */
 	REG_P8_03_CFP = 0x55;
@@ -108,9 +115,6 @@ static inline void init_pins(void)
 	REG_P3_P3D = 0x0f;
 	REG_P3_IOC3 = 0x0f;
 	disable_card_power();
-
-	/* SDCARD CS# */
-	REG_P5_03_CFP = 0x01;
 
 	/* pull ups */
 	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
@@ -122,6 +126,7 @@ static inline void init_pins(void)
 
 
 	REG_INT_FK01_FP03 = 0x3f; // clear outstanding interrupts
+
 #if _not_used_
 	/* set FPT1 to another gpio, make it falling edge triggered */
 	REG_PINTSEL_SPT03 |= 0xC;
