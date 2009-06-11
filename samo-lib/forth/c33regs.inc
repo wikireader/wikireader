@@ -904,8 +904,8 @@
         VECTOR  Undefined_instruction_exception 3
         VECTOR  reserved_4 4
         VECTOR  reserved_5 5
-        VECTOR  Address_misaligned_exception _6
-        VECTOR  NMI _7
+        VECTOR  Address_misaligned_exception 6
+        VECTOR  NMI 7
         VECTOR  reserved_8 8
         VECTOR  reserved_9 9
         VECTOR  reserved_10 10
