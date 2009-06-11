@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-3
+4
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -201,7 +201,7 @@ end-code
   postpone (+loop) compile, here swap ! ; immediate compile-only
 
 : ,                       :: comma                   ( x -- )
-  here aligned dup cell+ cp ! ! ;
+  align here dup cell+ cp ! ! ;
 
 code -                    :: minus                   ( n1|u1 n2|u2 -- n3|u3 )
         ld.w    %r5, [%r1]+
@@ -1193,7 +1193,8 @@ code filesystem-init      :: filesystem-init         ( -- )
 end-code
 
 : fill                    :: fill                    ( c-addr u char -- )
-  swap 0 ?do 2dup c! loop 2drop ;
+  rot rot \ char c-addr u
+  0 ?do 2dup c! 1+ loop 2drop ;
 
 \ find                    :: find                    ( c-addr -- c-addr 0  |  xt 1  |  xt -1 )
 
