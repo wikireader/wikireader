@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-5
+6
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -2563,9 +2563,20 @@ lcd-vram-width-bytes lcd-vram-height-lines *
 constant lcd-vram-size    :: lcd-vram-size           ( -- u )
 
 : lcd-clear               :: lcd-clear               ( -- )
-  lcd-vram-size 0 ?do
-    0 i lcd-vram + c!
+  lcd-vram lcd-vram-size 0 fill
+;
+
+: lcd-set-all             :: lcd-set-all             ( -- )
+  lcd-vram lcd-vram-size 255 fill
+;
+
+\ line is 0 .. lcd-height-lines - 1; u is number of line to invert
+: lcd-invert-lines        :: lcd-invert-lines        ( line u -- )
+  swap lcd-vram-width-bytes * lcd-vram + swap lcd-vram-width-bytes *
+  0 ?do
+    dup c@ 255 xor over c! char+
   loop
+  drop
 ;
 
 : lcd-set-pixel           :: lcd-set-pixel           ( x y -- )
