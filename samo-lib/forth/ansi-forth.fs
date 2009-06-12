@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-4
+5
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -210,6 +210,9 @@ code -                    :: minus                   ( n1|u1 n2|u2 -- n3|u3 )
         ld.w    [%r1], %r4
         NEXT
 end-code
+
+: -rot                    :: minus-rote              ( x1 x2 x3 -- x3 x1 x2 )
+  rot rot ;
 
 : -trailing               :: dash-trailing           ( c-addr u1 -- c-addr u2 )
   dup 1- swap 0 ?do
@@ -1763,6 +1766,15 @@ end-code
   allot drop
 ; immediate compile-only
 
+: s'                      :: s-apostrophe            ( C: "ccc<quote>" -- ) ( -- c-addr u )
+  postpone (s")
+  [char] ' parse     ( c-addr u)
+  dup ,              \ save length
+  2dup here          ( c-addr u c-addr u c-addr2 )
+  swap cmove         ( c-addr u -- )
+  allot drop
+; immediate compile-only
+
 : s>d                     :: s-to-d                  ( n -- d )
   dup 0< if -1 else 0 then ;
 
@@ -2662,14 +2674,27 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
   lcd-clear lcd-home ;
 
 : lcd-scroll              :: lcd-scroll              ( -- )
+  font-height lcd-vram-width-bytes * dup dup   \ u u u
+  lcd-vram + swap                              \ u c-addr u
 
-  font-height lcd-vram-width-bytes * dup   ( u u )
-  lcd-vram + swap                          ( src u )
+  lcd-vram-size swap -                         \ u c-addr n
+  lcd-vram swap cmove                          \ u
 
-  lcd-vram-size swap - 0 ?do
-    dup c@ i lcd-vram + c! char+
-  loop
-  drop ;
+  lcd-vram lcd-vram-size + 1-                  \ u c-addr
+  over - swap 0 fill
+
+;
+
+: lcd-scroll>             :: lcd-scroll-up           ( -- )
+  font-height lcd-vram-width-bytes * dup dup   \ u u u
+  lcd-vram + swap                              \ u c-addr u
+
+  lcd-vram-size swap -                         \ u c-addr n
+  lcd-vram -rot                                \ u c-addr2 c-addr n
+  cmove>                                       \ u
+
+  lcd-vram swap 0 fill
+;
 
 : lcd-cr                  :: lcd-cr                  ( -- )
   0 lcd-x !
@@ -2682,6 +2707,9 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 ;
 
 : lcd-emit                :: lcd-emit                ( c -- )
+  lcd-x @ lcd-width-pixels 1- > if
+    lcd-cr
+  then
   lcd-y @ lcd-vram-width-bytes * lcd-vram +
   lcd-x @ 3 rshift +           ( c c-addr )
   swap                         ( c-addr c )
@@ -2690,11 +2718,7 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
     2dup c@ swap c!
     char+ swap lcd-vram-width-bytes + swap
   loop 2drop
-  lcd-x @ font-width + dup lcd-width-pixels 1- > if
-    drop lcd-cr
-  else
-    lcd-x !
-  then
+  font-width lcd-x +!
 ;
 
 : lcd-type                :: lcd-type                ( caddr u -- )
