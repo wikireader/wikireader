@@ -249,7 +249,7 @@ Serial_RxInterrupt_loop:
 
 Serial_RxInterrupt_no_store:
 
-        ld.ub   %r4, [%r0]
+        ld.ub   %r4, [%r0]                            ; read status
         ld.w    %r5, 0
         ld.b    [%r0], %r5                            ; clear error flags
 
