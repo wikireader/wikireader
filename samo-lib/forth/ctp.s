@@ -155,7 +155,7 @@ CTP_initialise:
         xld.w   %r5, FSTX1 | FSERR1 | FSRX1
         ld.b    [%r4], %r5
 
-	xld.w   %r4, R8_INT_ESIF01
+	xld.w   %r4, R8_INT_ESIF01                    ; enable interrupt
         ld.b    %r5, [%r4]
         xoor    %r5, ESRX1 | ESERR1
         ld.b    [%r4], %r5
@@ -169,7 +169,11 @@ CTP_initialise:
         xld.w   %r4, R8_EFSIF1_STATUS
         ld.b    %r5, [%r4]
         xld.w   %r4, R8_EFSIF1_RXD
-        ld.b    %r5, [%r4]
+        ld.b    %r5, [%r4]                            ; FIFO 1
+        ld.b    %r5, [%r4]                            ; FIFO 2
+        ld.b    %r5, [%r4]                            ; FIFO 3
+        ld.b    %r5, [%r4]                            ; FIFO 4
+        ld.b    %r5, [%r4]                            ; UART
 
         ENABLE_INTERRUPTS
 
