@@ -1,4 +1,4 @@
-;;; Serial - simple serial I/O
+;;; ctp - serial input dripver for CTP
 
 ;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
 ;;;

@@ -43,7 +43,6 @@ LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
 LIBS += $$(${CROSS_GCC} -print-libgcc-file-name)
 
-
 CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
@@ -77,7 +76,3 @@ clean:
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
 include ${SAMO_LIB}/Mk/rules.mk
-
-
-
-
