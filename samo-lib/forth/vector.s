@@ -45,9 +45,11 @@
         .global undefined_interrupt
 undefined_interrupt:
         xcall   panic
+        nop
 undefined_interrupt_size = . -undefined_interrupt
         .rept   vector_count
         xcall   panic
+        nop
         .endr
 
 
@@ -70,6 +72,10 @@ Vector_initialise:
 
         ld.w    %r5, CMU_PROTECT_ON
         ld.w    [%r4], %r5
+
+        xld.w   %r4, R8_RST_RESET
+        xld.w   %r5, DENONLY | IDMAONLY | RSTONLY
+        ld.b    [%r4], %r5
 
         xld.w   %r8, __START_VectorTable
 	ld.w    %ttbr, %r8
@@ -213,12 +219,18 @@ panic:
         xcall   Debug_PutCRLF
 
 ;;;
-        ld.w    %r6, [%r0]+
+        ld.w    %r6, [%r0]
         xld.w   %r7, undefined_interrupt
         sub     %r6, %r7
         xcall   Debug_PutHex
         xcall   Debug_PutSpace
         xld.w   %r6, undefined_interrupt_size
+        xcall   Debug_PutHex
+        xcall   Debug_PutSpace
+        ld.w    %r6, [%r0]+
+        xld.w   %r7, undefined_interrupt
+        sub     %r6, %r7
+        sra     %r6, 3
         xcall   Debug_PutHex
         xcall   Debug_PutCRLF
 ;;;
