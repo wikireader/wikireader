@@ -708,6 +708,11 @@
         REGBIT  FSRX0  "(1 << 1)"
         REGBIT  FSERR0 "(1 << 0)"
 
+;;;  Bits for: REG_RST_RESET
+        REGBIT  DENONLY  "(1 << 2)"
+        REGBIT  IDMAONLY "(1 << 1)"
+        REGBIT  RSTONLY  "(1 << 0)"
+
 
 ;;;
 ;;; SDRAM Controller
