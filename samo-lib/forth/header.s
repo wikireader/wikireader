@@ -106,7 +106,7 @@ str_\@_finish:
         .section .forth_dict, "wa"
         .balign 4
 
-__last_name = 0                                 ; to link the list
+__last_name = 0                                       ; to link the list
 
         .macro  HEADER, label, name, flags, code
 
@@ -114,15 +114,15 @@ __last_name = 0                                 ; to link the list
         .balign 4
         .global \label
 \label\():
-        .long   \code                           ; code
+        .long   \code                                 ; code
 l_param_\@:
-        .long   param_\label                    ; param
+        .long   param_\label                          ; param
 l_flags_\@:
-        .long   \flags                          ; flags
+        .long   \flags                                ; flags
 
 prev_\label = __last_name
 l_link_\@:
-        .long   prev_\label                     ; link
+        .long   prev_\label                           ; link
 
         .global name_\label
 name_\label\():
@@ -204,7 +204,7 @@ terminal_buffer_length = . -terminal_buffer_start
 stack_pointer_low_limit:
         .space   65536
         .global initial_stack_pointer
-initial_stack_pointer:     ; NOTE: stack underflows over return space!
+initial_stack_pointer:                                ; NOTE: stack underflows over return space!
 
 return_pointer_low_limit:
         .space   65536
@@ -221,18 +221,21 @@ main:
         xld.w   %r4, initial_return_pointer
         ld.w    %sp, %r4
 
+        ld.w    %r0, 0                                ; clear status register
+        ld.w    %psr, %r0
+
         xcall   Vector_initialise
         xcall   Serial_initialise
         xcall   CTP_initialise
 
-        xld.w   %r0, cold_start                 ; initial ip value
+        xld.w   %r0, cold_start                       ; initial ip value
 ;;;       xcall   xdebug
         NEXT
 
 
 ;;; headerless code to initially boot the system
-        .balign 4                               ; forth byte code must be aligned
+        .balign 4                                     ; forth byte code must be aligned
 cold_start:
-        .long   cold                            ; initial forth code
-        .long   branch, cold_start              ; just run cold_start in a loop
+        .long   cold                                  ; initial forth code
+        .long   branch, cold_start                    ; just run cold_start in a loop
 
