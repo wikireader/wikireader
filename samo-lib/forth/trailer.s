@@ -34,6 +34,8 @@
         .endm
 
         .macro  REGBIT, name, value
+	CONSTANT 0 "\name" \name 0
+        .long   \value
 \name = \value
         .endm
 
