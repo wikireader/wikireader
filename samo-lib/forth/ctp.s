@@ -92,10 +92,12 @@ CTP_PositionAvailable_buffer_empty:
 ;;;   r4 = x  (-1 => end of touch)
 ;;;   r5 = y  (-1 => end of touch)
         .global CTP_GetPosition
+CTP_GetPosition_wait:
+        ;xcall   suspend                               ; suspend until more input
 CTP_GetPosition:
         call    CTP_PositionAvailable
         or      %r4, %r4
-        jreq    CTP_GetPosition
+        jreq    CTP_GetPosition_wait
         ld.w    %r7, %r5
 
         xld.w   %r4, RxBuffer
@@ -106,6 +108,23 @@ CTP_GetPosition:
         ld.w    %r4, [%r5]+                           ; x
         ld.w    %r5, [%r5]                            ; y
         ld.w    [%r6], %r7                            ; update RxRead
+        ret
+
+
+;;; flush the buffer
+;;; input:
+;;; output:
+        .global CTP_flush
+CTP_flush:
+        xld.w   %r4, RxRead
+        xld.w   %r5, RxWrite
+        ld.w    %r6, 0
+
+	DISABLE_INTERRUPTS
+        ld.w    [%r4], %r6
+        ld.w    [%r5], %r6
+	ENABLE_INTERRUPTS
+
         ret
 
 
@@ -157,6 +176,7 @@ CTP_initialise:
 
 	xld.w   %r4, R8_INT_ESIF01                    ; enable interrupt
         ld.b    %r5, [%r4]
+        xand    %r5, ~(ESRX1 | ESERR1 | ESTX1)
         xoor    %r5, ESRX1 | ESERR1
         ld.b    [%r4], %r5
 
