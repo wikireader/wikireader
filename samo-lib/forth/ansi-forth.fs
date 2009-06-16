@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-6
+7
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -962,6 +962,9 @@ end-code
 \ cs-pick                 :: c-s-pick                ( C: destu ... orig0|dest0 -- destu ... orig0|dest0 destu ) ( S: u -- )
 \ cs-roll                 :: c-s-roll                ( C: origu|destu origu-1|destu-1 ... orig0|dest0 -- origu-1|destu-1 ... orig0|dest0 origu|destu )( S: u -- )
 
+: ctrl                    :: ctrl                    ( "<spaces>name" -- char )
+  bl parse drop c@ 31 and ;
+
 variable current          :: current                 ( -- addr )
 
 code d+                   :: d-plus                  ( d1|ud1 d2|ud2 -- d3|ud3 )
@@ -1341,6 +1344,11 @@ key_question_no_character:
         NEXT
 end-code
 
+code key-flush            :: key-flush               ( -- )
+        xcall   Serial_FlushInput
+        NEXT
+end-code
+
 \ for create to store the last definitions xt
 variable last-definition  :: last-definition         ( -- a-addr )
 
@@ -1600,6 +1608,7 @@ end-code
   filesystem-close-all
   fileid-stack stack-clear
   0 source-id !
+  key-flush
 ;
 
 code r/o                  :: r-o                     ( -- fam )
@@ -2181,16 +2190,17 @@ end-code
 : [                       :: left-bracket            ( -- )
   false state ! ; immediate
 
-: [']                     :: bracket-tick            ( "<spaces>name" -- ) ( -- xt )
+: [']                     :: bracket-tick            ( C: "<spaces>name" -- ) ( -- xt )
   ' postpone literal ; immediate compile-only
 
-: [char]                  :: bracket-char            ( "<spaces>name" -- ) ( -- char )
+: [char]                  :: bracket-char            ( C: "<spaces>name" -- ) ( -- char )
   char postpone literal ; immediate compile-only
 
-: [compile]               :: bracket-compile         ( "<spaces>name" -- )
+: [compile]               :: bracket-compile         ( C: "<spaces>name" -- )
   -30 throw ;
 
-: [ctrl] char and postpone literal ; immediate compile-only
+: [ctrl]                  :: bracket-ctrl            ( C: "<spaces>name" -- ) ( -- char )
+  ctrl postpone literal ; immediate compile-only
 
 \ [else]                  :: bracket-else            ( "<spaces>name" ... -- )
 \ [if]                    :: bracket-if              ( flag | flag "<spaces>name" ... -- )
@@ -2269,6 +2279,12 @@ end-code
 
 : hex.                    :: hex-dot                 ( n -- )
   base @ hex swap u. base ! ;
+
+code delay-us             :: delay-u-s               ( microseconds -- )
+        ld.w    %r6, [%r1]+                          ; microseconds
+        xcall   delay_us
+        NEXT
+end-code
 
 
 \ peripheral port access
@@ -2431,6 +2447,42 @@ create font-8x13          :: font-8x13               ( -- c-addr )
 ( 007C ) 00 c, 00 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 00 c, 00 c,
 ( 007D ) 00 c, 00 c, 70 c, 08 c, 08 c, 10 c, 0C c, 10 c, 08 c, 08 c, 70 c, 00 c, 00 c,
 ( 007E ) 00 c, 00 c, 24 c, 54 c, 48 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+
+( spare codes )
+( 007F ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0080 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0081 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0082 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0083 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0084 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0085 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0086 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0087 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0088 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0089 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008A ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008B ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008C ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008D ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008E ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 008F ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0090 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0091 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0092 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0093 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0094 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0095 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0096 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0097 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0098 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 0099 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009A ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009B ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009C ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009D ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009E ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+( 009F ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
+
 ( 00A0 ) 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c, 00 c,
 ( 00A1 ) 00 c, 00 c, 10 c, 00 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 10 c, 00 c, 00 c,
 ( 00A2 ) 00 c, 00 c, 10 c, 38 c, 54 c, 50 c, 50 c, 54 c, 38 c, 10 c, 00 c, 00 c, 00 c,
@@ -2743,6 +2795,11 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 
 \ CTP
 \ ===
+
+code ctp-flush            :: c-t-p-flush             ( -- )
+        xcall   CTP_flush
+        NEXT
+end-code
 
 code ctp-pos              :: c-t-p-pos               ( -- x y )
         xcall   CTP_GetPosition
