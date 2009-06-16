@@ -746,6 +746,12 @@
 #define FSRX0  (1 << 1)
 #define FSERR0 (1 << 0)
 
+// Bits for: REG_RST_RESET
+#define DENONLY  (1 << 2)
+#define IDMAONLY (1 << 1)
+#define RSTONLY  (1 << 0)
+
+
 
 /*
  * SDRAM Controller
