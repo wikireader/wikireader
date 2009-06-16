@@ -100,21 +100,31 @@ Serial_PutReady_buffer_full:
 ;;; temporary:
 ;;;   r4..r9
         .global Serial_PutChar
+Serial_PutChar_wait:
+        ;xcall   suspend                               ; suspend until buffer space available
 Serial_PutChar:
         call    Serial_PutReady                       ; wait for buffer space
         or      %r4, %r4
-        jreq    Serial_PutChar
+        jreq    Serial_PutChar_wait
 
         xld.w   %r4, TxBuffer                         ; buffer
         add     %r4, %r8                              ; buffer + offset
         ld.b    [%r4], %r6                            ; store byte
-        ld.w    [%r5], %r9                            ; update TxWrite
 
         xld.w   %r4, R8_INT_ESIF01
         DISABLE_INTERRUPTS
         ld.ub   %r8, [%r4]
+        xand    %r8, ESTX0                            ; is Tx0 interrupt enabled
+        jrne    Serial_PutChar_l1
+        ld.ub   %r8, [%r4]
         xoor    %r8, ESTX0                            ; enable Tx0 interrupt
         ld.b    [%r4], %r8
+        xld.w   %r5, R8_EFSIF0_TXD
+        ld.b    [%r5], %r6
+        jp      Serial_PutChar_l2
+Serial_PutChar_l1:
+        ld.w    [%r5], %r9                            ; update TxWrite
+Serial_PutChar_l2:
         ENABLE_INTERRUPTS
         ret
 
@@ -149,16 +159,34 @@ Serial_InputAvailable_buffer_empty:
 ;;; output:
 ;;;   r4 = char
         .global Serial_GetChar
+Serial_GetChar_wait:
+        ;xcall   suspend                               ; suspend until more input
 Serial_GetChar:
         call    Serial_InputAvailable
         or      %r4, %r4
-        jreq    Serial_GetChar
+        jreq    Serial_GetChar_wait
         xld.w   %r4, RxBuffer
         add     %r4, %r5
         ld.ub	%r4, [%r4]
         add     %r5, 1
         xand    %r5, (BufferSize - 1)
         ld.w    [%r6], %r5                            ; update RxRead
+        ret
+
+
+;;; flush input buffer
+;;; input:
+;;; output:
+        .global Serial_FlushInput
+Serial_FlushInput:
+        xld.w   %r4, RxRead
+        xld.w   %r5, RxWrite
+        ld.w    %r6, 0
+
+	DISABLE_INTERRUPTS
+        ld.w    [%r4], %r6
+        ld.w    [%r5], %r6
+	ENABLE_INTERRUPTS
         ret
 
 
@@ -193,13 +221,18 @@ Serial_initialise:
 
 	DISABLE_INTERRUPTS
 
+        xld.w   %r4, R8_EFSIF_ADV                     ; set normal mode
+        ld.w    %r5, 0
+        ld.b    [%r4], %r5
+
         xld.w   %r4, R8_INT_FSIF01                    ; clear the interrupt
         xld.w   %r5, FSTX0 | FSERR0 | FSRX0
         ld.b    [%r4], %r5
 
 	xld.w   %r4, R8_INT_ESIF01
         ld.b    %r5, [%r4]
-        xoor    %r5, ESRX0 | ESERR0
+        xand    %r5, ~(ESRX0 | ESERR0 | ESTX0)
+        xoor    %r5, ESRX0
         ld.b    [%r4], %r5
 
 	xld.w   %r4, R8_INT_PLCDC_PSIO0
@@ -220,6 +253,7 @@ Serial_initialise:
 Serial_RxInterrupt:
         pushn   %r14
 
+Serial_RxInterrupt_1:
         xld.w   %r0, R8_INT_FSIF01                    ; clear the interrupt
         xld.w   %r2, FSRX0 | FSERR0
         ld.b	[%r0], %r2
@@ -315,6 +349,10 @@ Serial_RxErrorInterrupt_done:
 Serial_TxInterrupt:
         pushn   %r14
 
+        xld.w   %r0, R8_INT_FSIF01
+        xld.w   %r2, FSTX0
+        ld.b    [%r0], %r2                            ; clear Tx0 interrupt
+
         xld.w   %r0, TxRead
         xld.w   %r1, TxWrite
         ld.w    %r2, [%r0]                            ; read
@@ -322,30 +360,32 @@ Serial_TxInterrupt:
         cmp     %r1, %r2                              ; read == write?
         jreq    Serial_TxInterrupt_buffer_empty       ; ...yes => all sent
 
-        xld.w   %r1, TxBuffer                         ; base address
-        add     %r1, %r2
-        ld.ub   %r3, [%r1]                            ; get the byte to send
+        xld.w   %r3, TxBuffer                         ; base address
+        add     %r3, %r2
+        ld.ub   %r4, [%r3]                            ; get the byte to send
 
         add     %r2, 1                                ; increment offset
         xand    %r2, (BufferSize - 1)                 ; mod buffer size
         ld.w    [%r0], %r2                            ; update offset
 
-        xld.w   %r0, R8_INT_FSIF01
-        ld.b    %r2, [%r0]
-        xoor    %r2, FSTX0
-        ld.b    [%r0], %r2                            ; clear Tx0 interrupt
+        xld.w   %r5, R8_EFSIF0_TXD                    ; transmit the byte
+        ld.b	[%r5], %r4
 
-        xld.w   %r1, R8_EFSIF0_TXD                    ; transmit the byte
-        ld.b	[%r1], %r3
-
-        popn    %r14
-        reti
+        cmp     %r1, %r2                              ; read == write?
+        jrne    Serial_TxInterrupt_exit               ; ...no => more to send
 
 Serial_TxInterrupt_buffer_empty:
         xld.w   %r0, R8_INT_ESIF01
         ld.b    %r2, [%r0]
         xand    %r2, ~ESTX0
         ld.b    [%r0], %r2                            ; disable Tx0 interrupt
+
+Serial_TxInterrupt_exit:
+
+        xld.w   %r0, R8_EFSIF0_STATUS                 ; check if pending receive
+        ld.ub   %r4, [%r0]
+        xand    %r4, RDBFx
+        jrne    Serial_RxInterrupt_1                  ; if pending receive
 
         popn    %r14
         reti
