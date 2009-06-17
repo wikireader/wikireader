@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-7
+8
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -198,6 +198,7 @@ code +!                   :: plus-store              ( n|u a-addr -- )
 end-code
 
 : +loop                   :: plus-loop               ( C: do-sys -- ) ( -- ) ( R: loop-sys1 --  | loop-sys2 )
+  align
   postpone (+loop) compile, here swap ! ; immediate compile-only
 
 : ,                       :: comma                   ( x -- )
@@ -556,6 +557,7 @@ no_branch:
 end-code
 
 : ?do                     :: question-do             ( C: -- do-sys ) ( n1|u1 n2|u2 -- ) ( R: --  | loop-sys )
+  align
   postpone (?do) here 0 compile, here ; immediate compile-only
 
 code ?dup                 :: question-dupe           ( x -- 0 | x x )
@@ -629,6 +631,7 @@ end-code
   postpone  branch compile, ; immediate compile-only
 
 : ahead                   :: ahead                   ( C: -- orig ) ( -- )
+  align
   postpone branch here 0 compile, ; immediate compile-only
 
 : align                   :: align                   ( -- )
@@ -664,7 +667,7 @@ end-code
 variable base             :: base                    ( -- a-addr )
 
 : begin                   :: begin                   ( -- )
-  here ; immediate compile-only
+  align here ; immediate compile-only
 
 code bin                  :: bin                     ( fam1 -- fam2 )
         ld.w    %r6, [%r1]                           ; fam
@@ -1044,6 +1047,7 @@ end-code
   invert >r invert 1 um+ r> + ;
 
 : do                      :: do                      ( C: -- do-sys ) ( n1|u1 n2|u2 -- ) ( R: -- loop-sys )
+  align
   postpone (do) here 0 compile, here ; immediate compile-only
 
 \ do-vocabulary           :: do-vocabulary           ( -- )
@@ -1288,6 +1292,7 @@ code i                    :: i                       ( -- n|u ) ( R: loop-sys --
 end-code
 
 : if                      :: if                      ( C: -- orig ) ( x -- )
+  align
   postpone ?branch here 0 compile, ; immediate compile-only
 
 : immediate               :: immediate               ( -- )
@@ -1362,6 +1367,7 @@ variable last-definition  :: last-definition         ( -- a-addr )
 \ locals|                 :: locals-bar              ( "<spaces>name1" "<spaces>name2" ... "<spaces>namen" | -- ) ( xn ... x2 x1 -- )
 
 : loop                    :: loop                    ( C: do-sys -- ) ( -- ) ( R: loop-sys1 -- | loop-sys2 )
+  align
   postpone (loop) compile, here swap ! ; immediate compile-only
 
 
@@ -1720,6 +1726,7 @@ code rename-file          :: rename-file             ( c-addr1 u1 c-addr2 u2 -- 
 end-code
 
 : repeat                  :: repeat                  ( C: orig dest -- ) ( -- )
+  align
   postpone again here swap ! ; immediate compile-only
 
 code reposition-file      :: reposition-file         ( ud fileid -- ior )
@@ -1767,6 +1774,7 @@ code rshift               :: r-shift                 ( x1 u -- x2 )
 end-code
 
 : s"                      :: s-quote                 ( C: "ccc<quote>" -- ) ( -- c-addr u )
+  align
   postpone (s")
   [char] " parse     ( c-addr u)
   dup ,              \ save length
@@ -1776,6 +1784,7 @@ end-code
 ; immediate compile-only
 
 : s'                      :: s-apostrophe            ( C: "ccc<quote>" -- ) ( -- c-addr u )
+  align
   postpone (s")
   [char] ' parse     ( c-addr u)
   dup ,              \ save length
@@ -1930,8 +1939,8 @@ end-code
       over ['] (+loop) = or  ( xt flag )
       if
         drop cell+
-        dup @ dup decimal u.
-        space [char] / emit space
+        dup @ dup decimal space u.
+        [char] / emit space
         [char] $ emit
         hex 1 u.r \ number
       else
@@ -2043,6 +2052,7 @@ end-code
 variable terminal-count   :: terminal-count          ( -- a-addr )
 
 : then                    :: then                    ( C: orig -- ) ( -- )
+  align
   here swap ! ; immediate compile-only
 
 : throw                   :: throw                   ( k*x n -- k*x | i*x n )
@@ -2614,7 +2624,7 @@ constant lcd-width-bytes  :: lcd-width-bytes         ( -- u )
 lcd-vram-width-bytes lcd-vram-height-lines *
 constant lcd-vram-size    :: lcd-vram-size           ( -- u )
 
-: lcd-clear               :: lcd-clear               ( -- )
+: lcd-clear-all           :: lcd-clear-all           ( -- )
   lcd-vram lcd-vram-size 0 fill
 ;
 
@@ -2727,14 +2737,27 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 : lcd-move-to             :: lcd-move-to             ( x y -- )
   lcd-y ! lcd-x ! ;
 
+
+\ TEXT functions
+
+\ move cursor to first line, first character
+: lcd-home                :: lcd-home                ( -- )
+  0 0 lcd-move-to ;
+
+\ character based positioning
+lcd-width-pixels font-width /
+constant lcd-text-columns :: lcd-text-columns        ( -- u)
+lcd-height-lines font-height /
+constant lcd-text-rows    :: lcd-text-rows           ( -- u)
+
+\ in character coordinated (0, 0) .. (lcd-last-columns - 1, lcd-text-rows - 1)
 : lcd-at-xy               :: lcd-at-xy               ( x y -- )
+  font-height * swap
+  font-width * swap
   lcd-move-to ;
 
-: lcd-home                :: lcd-home                ( -- )
-  0 0 lcd-at-xy ;
-
 : lcd-cls                 :: lcd-cls                 ( -- )
-  lcd-clear lcd-home ;
+  lcd-clear-all lcd-home ;
 
 : lcd-scroll              :: lcd-scroll              ( -- )
   font-height lcd-vram-width-bytes * dup dup   \ u u u
