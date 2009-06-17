@@ -60,7 +60,7 @@ variable in-sequence
 variable flag
 
 : draw-lines ( -- flag )
-    lcd-clear
+    lcd-cls
     4 0 ?do
         i box-origin draw-box
     loop
@@ -135,7 +135,7 @@ variable flag
     else
         s" FAIL"
     then
-    lcd-width-pixels 2/ lcd-height-lines 2/ lcd-move-to
+    lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
     2dup lcd-type
     500000 delay-us
     cr type ." : CTP" cr

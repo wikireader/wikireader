@@ -68,7 +68,7 @@ constant MULTIPLIER
 
 \ display battery mV
 : battery-millivolts
-    0 80 lcd-move-to
+    0 8 lcd-at-xy
     s" battery = " lcd-type
     battery-adc dup lcd-number
     s"  counts" lcd-type lcd-cr
@@ -82,14 +82,13 @@ variable measure-count
 
 : gpio-test-menu ( -- )
     lcd-cls
-    0 0 lcd-move-to
     s" GPIO TESTS" lcd-type
     begin
         P6_P6D p@ $07 and
         0=
     until
 
-    80 lcd-height-lines font-height - lcd-move-to
+    10 lcd-text-rows 1- lcd-at-xy
     s" WDT   OFF    EXIT" lcd-type
 
     begin

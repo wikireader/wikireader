@@ -5,7 +5,7 @@ base @ decimal
 variable down
 
 : draw ( -- )
-    lcd-clear
+    lcd-cls
     false down !
     begin
         ctp-pos? if
@@ -27,7 +27,7 @@ variable down
         P6_P6D p@ $07 and
         case
             $02 of   \ left button
-                lcd-clear
+                lcd-cls
                 false down !
             endof
             $04 of   \ centre button

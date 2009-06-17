@@ -49,7 +49,7 @@ decimal
     until
 
     500000 delay-us
-    80 lcd-height-lines font-height - lcd-move-to
+    10 lcd-text-rows 1- lcd-at-xy
     s" PASS         FAIL" lcd-type
 
     begin
@@ -108,7 +108,7 @@ decimal
         s" FAIL"
     then
     lcd-cls
-    lcd-width-pixels 2/ lcd-height-lines 2/ lcd-move-to
+    lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
     2dup lcd-type
     500000 delay-us
     cr type ." : LCD" cr

@@ -7,7 +7,7 @@ base @ decimal
 variable pixel
 
 : draw ( -- )
-    lcd-clear
+    lcd-clear-all
     1 pixel !
     begin
         ctp-pos? if
@@ -26,7 +26,7 @@ variable pixel
         P6_P6D p@ $07 and
         case
             $02 of   \ left button
-                lcd-clear
+                lcd-clear-all
                 1 pixel !
             endof
             $04 of   \ centre button
