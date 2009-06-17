@@ -8,11 +8,11 @@ base @ decimal
     lcd-cls
     s" CTP Accuracy Testing" lcd-type
 
-    0  67 lcd-at-xy s"  67" lcd-type
-    0 135 lcd-at-xy s" 135" lcd-type
+    0  67 lcd-move-to s"  67" lcd-type
+    0 135 lcd-move-to s" 135" lcd-type
 
-    80  160 lcd-at-xy s" 79" lcd-type
-    160 160 lcd-at-xy s" 159" lcd-type
+    80  160 lcd-move-to s" 79" lcd-type
+    160 160 lcd-move-to s" 159" lcd-type
 
     79  67  lcd-set-point
     159 67  lcd-set-point
@@ -25,7 +25,7 @@ base @ decimal
             if
                 2drop
             else
-                20 32 lcd-at-xy
+                20 32 lcd-move-to
                 swap
                 lcd-number
                 s"   " lcd-type
