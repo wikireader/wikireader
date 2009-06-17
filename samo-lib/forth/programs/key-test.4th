@@ -9,7 +9,7 @@ constant pos-2
 + constant pos-3
 
 : show-state ( flag pos -- )
-    lcd-text-rows 1- .s lcd-at-xy .s
+    lcd-text-rows 1- lcd-at-xy
     if  \ pad with spaces to make strings the same length
         s" ON "
     else
