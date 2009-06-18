@@ -16,15 +16,32 @@ enum {
 void msg(int level, const char *format, ...);
 void set_loglevel(int level);
 void hexdump(const char *p, unsigned int len);
-void debug_printf(const char* fmt, ...);
+static inline void debug_printf(const char* fmt, ...)
+{
+	va_list arg_list;
+	va_start(arg_list, fmt);
+	msg(MSG_INFO, fmt);
+	va_end(arg_list);
+}
+
+// a simplistic ASSERT based on MSG_ERROR
+#define ASSERT(cond) ASSERT_((cond), __FILE__, __LINE__)
+#define ASSERT_(cond, file, line) ASSERT__(cond, file, line)
+#define ASSERT__(cond, file, line)                                      \
+	do {                                                            \
+		if (!(cond)) {                                          \
+			msg(MSG_ERROR, "assert failure in: "            \
+			    #file " line:" #line                        \
+			    " for: " #cond "\n");                       \
+			for (;;) {                                      \
+			}                                               \
+		}                                                       \
+	} while (0)
 
 // DP = Debug Print
 #define DP(on, varformat) (on) ? debug_printf varformat : (void) 0
 
 // DX = Debug Fail
 #define DX() DP(1, ("X %s line %d (%s())\n", __BASE_FILE__, __LINE__, __FUNCTION__))
-
-#define min(a, b)	((a) < (b) ? (a) : (b))
-#define max(a, b)	((a) > (b) ? (a) : (b))
 
 #endif /* WL_MSG_H */
