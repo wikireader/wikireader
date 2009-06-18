@@ -89,7 +89,14 @@ void panic(const char *s, const uint32_t *stack)
 		print_char('\n');
 		print("IP");
 		print("  = ");
-		print_u32(sp[p++]);
+		i = sp[p++];
+		print_u32(i);
+		print(" [-1..]: ");
+		for (j = 0; j < 8; j += 2) {
+			print_char(' ');
+			print_byte(((uint8_t *)i)[j - 2]);
+			print_byte(((uint8_t *)i)[j - 1]);
+		}
 		print_char('\n');
 		for (i = 0; i < 8; ++i) {
 			print("sp[");
@@ -115,8 +122,6 @@ void panic(const char *s, const uint32_t *stack)
 			"\tpushn\t%%r15\n"                      \
 			"\txld.w\t%%r6, %0\n"                   \
 			"\tld.w\t%%r7, %%sp\n"                  \
-			"\txld.w\t%%r4, __PANIC_STACK\n"        \
-			"\tld.w\t%%sp, %%r4\n"                  \
 			"\txcall\tpanic\n"                      \
 			:                                       \
 			: "i"((str))                            \
