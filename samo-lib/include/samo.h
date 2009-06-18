@@ -61,6 +61,15 @@
 #endif
 
 
+#if !defined(CONSOLE_BPS)
+#define CONSOLE_BPS 57600
+#endif
+
+#if !defined(CTP_BPS)
+#define CTP_BPS     38400
+#endif
+
+
 // common functions
 
 static inline void init_rs232_ch0(void)
@@ -72,7 +81,7 @@ static inline void init_rs232_ch0(void)
 	REG_EFSIF0_IRDA = DIVMD_8x | IRMD_GEN_IFx;
 
 	/* set up baud rate timer reload data */
-	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, 57600));
+	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, CONSOLE_BPS));
 
 	/* baud rate timer: run! */
 	REG_EFSIF0_BRTRUN |= BRTRUN_STARx;
@@ -87,7 +96,7 @@ static inline void init_rs232_ch1(void)
 
 	REG_EFSIF1_IRDA = DIVMD_8x | IRMD_GEN_IFx;
 
-	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 9600));
+	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, CTP_BPS));
 
 	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
 
