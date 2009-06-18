@@ -217,26 +217,4 @@ void malloc_status_simple(void)
 	msg(MSG_INFO, " * num control pages: %d\n * free memory: %d\n * total memory: %d\n", malloc_pages, free_mem * PAGE_SIZE, MEM_SIZE);
 }
 
-ldiv_t ldiv(long int number, long int denom)
-{
-	ldiv_t r;
-	// tbd: why does this give a linker error when using signed values? __divsi3?
-	r.quot = (unsigned long int) number / denom;
-	r.rem = (unsigned long int) number % denom;
-	return r;
-}
-
-#endif // __c33
-
-// tbd: ugly, just parked here for now...
-void debug_printf(const char* fmt, ...)
-{
-	va_list arg_list;
-	va_start(arg_list, fmt);
-#ifdef __c33
-	vuprintf(print_char, fmt, arg_list);
-#else
-	vprintf(fmt, arg_list);
 #endif
-	va_end(arg_list);
-}
