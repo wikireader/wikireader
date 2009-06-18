@@ -40,6 +40,7 @@ OBJECTS += tick.o
 OBJECTS += delay_us.o
 OBJECTS += delay_nop.o
 OBJECTS += lcd.o
+OBJECTS += suspend.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
@@ -47,6 +48,7 @@ BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 all:  ${TARGETS}
 
 lib/libdrivers.a: lib build  ${BUILD_OBJECTS}
+	${RM} "$@"
 	${AR} r "$@" ${BUILD_OBJECTS}
 
 lib:
