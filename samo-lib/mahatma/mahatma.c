@@ -29,7 +29,6 @@
 #include "msg-output.h"
 #include "serial.h"
 #include "traps.h"
-#include "suspend.h"
 #include "gui.h"
 #include "msg.h"
 #include "touchscreen.h"
@@ -49,6 +48,8 @@ int main(void)
 		"\txld.w\t%r15, __MAIN_STACK\n"
 		"\tld.w\t%sp, %r15\n"
 		"\txld.w\t%r15, __dp\n"
+		"\tld.w\t%r4, 0\n"
+		"\tld.w\t%psr, %r4\n"
 		);
 
 	/* machine-specific init */
