@@ -165,6 +165,7 @@ CTP_initialise:
         xld.w   %r4, RxWrite
         ld.w    [%r4], %r5
 
+        ld.w    %r5, -1
         xld.w   %r4, state
         ld.w    [%r4], %r5
 
@@ -224,9 +225,16 @@ CTP_RxInterrupt:
 CTP_RxInterrupt_loop:
         ld.ub	%r9, [%r1]                            ; the received byte
 
-        xcmp    %r9, 0xaa                             ; header byte
-        jreq    CTP_RxInterrupt_reset
+        xcmp    %r9, 0xaa                             ; header byte?
+        jreq    CTP_RxInterrupt_header                ; ...yes
+        or      %r10, %r10                            ; header already received?
+        jrlt    CTP_RxInterrupt_next                  ; ...no
+        xcmp    %r9, 0xff                             ; 0xff byte?
+        jreq    CTP_RxInterrupt_valid_byte            ; ...yes, allow it
+        xcmp    %r9, 0x7f                             ; invalid byte?
+        jrugt   CTP_RxInterrupt_wait_header           ; ...yes, just wait for next header
 
+CTP_RxInterrupt_valid_byte:
         ld.w    %r7, %r5                              ; x
         xcmp    %r10, 1
         jrult   CTP_RxInterrupt_xy_high               ; 0
@@ -241,7 +249,7 @@ CTP_RxInterrupt_loop:
 
         cmp     %r9, 1                                ; touch?
         jrult   CTP_RxInterrupt_no_touch              ; ...no
-        jrne    CTP_RxInterrupt_reset                 ; invalid
+        jrne    CTP_RxInterrupt_wait_header           ; invalid state, wait for next header
 
         ld.w    %r12, [%r5]                           ; x value
         ld.w    %r13, [%r6]                           ; y value
@@ -263,12 +271,16 @@ CTP_RxInterrupt_no_touch:
         xadd    %r9, ItemSize                         ; next position
         xand    %r9, (BufferSize - 1)                 ; mod buffer size
         cmp     %r11, %r9                             ; read == write?
-        jreq    CTP_RxInterrupt_reset                 ; ...yes => buffer overrun, value lost
+        jreq    CTP_RxInterrupt_wait_header           ; ...yes => buffer overrun, value lost
 
         ld.w    [%r3], %r9                            ; update RxWrite
 
-CTP_RxInterrupt_reset:
-        ld.w    %r10, 0                               ; reset the state
+CTP_RxInterrupt_wait_header:                          ; set to wait for header state
+        ld.w    %r10, -1
+        jp      CTP_RxInterrupt_next
+
+CTP_RxInterrupt_header:
+        ld.w    %r10, 0                               ; set to header state
         jp      CTP_RxInterrupt_next
 
 CTP_RxInterrupt_xy_high:
