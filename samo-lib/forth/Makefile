@@ -41,19 +41,16 @@ INCLUDES += -I${MINI_LIBC_INCLUDE}
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += $$(${CROSS_GCC} -print-libgcc-file-name)
+LIBS += $(shell ${CROSS_GCC} -print-libgcc-file-name)
 
 CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-vpath %.c :${SAMO_LIB_SRC}:${FATFS_SRC}
-
-
 all: forth.elf
 
 FORTH_OBJECTS = forth.o PolledSerial.o ctp.o debug.o FileSystem.o iserial.o vector.o
-forth.elf: ${FORTH_OBJECTS} forth.lds
+forth.elf: ${FORTH_OBJECTS} forth.lds ${LIBS}
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 	${CROSS_STRIP} --remove-section=.comment $@
 	${CROSS_OBJDUMP} --section-headers $@
