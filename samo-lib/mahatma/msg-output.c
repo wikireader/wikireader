@@ -27,7 +27,7 @@
 #include "irq.h"
 #include "serial.h"
 
-typedef char message_line_type[80];
+typedef char message_line_type[128];
 
 static serial_buffer_type messages[50];
 static message_line_type lines[ARRAY_SIZE(messages)];
