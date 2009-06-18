@@ -13,19 +13,15 @@ MEMORY
 SECTIONS
 {
 	.dst_ram : {
-           __START_VectorTable = . ;
-/*
-		traps.o(.data)
-		traps.o(.*)
-*/
+                 __START_VectorTable = . ;
 	} > dstram
 
-
-/*
-	.iram : {
-		suspend.o(.*)
-	} > iram
-*/
+        .a0ram : {
+		 *(.suspend_text)
+		 *(.suspend_rodata)
+		 *(.suspend_data)
+		 *(.suspend_bss)
+	} > a0ram
 
 	__dp = 0x10000000 ;
 
