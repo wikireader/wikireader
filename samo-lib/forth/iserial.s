@@ -101,7 +101,7 @@ Serial_PutReady_buffer_full:
 ;;;   r4..r9
         .global Serial_PutChar
 Serial_PutChar_wait:
-        ;xcall   suspend                               ; suspend until buffer space available
+        xcall   suspend                               ; suspend until buffer space available
 Serial_PutChar:
         call    Serial_PutReady                       ; wait for buffer space
         or      %r4, %r4
@@ -160,7 +160,7 @@ Serial_InputAvailable_buffer_empty:
 ;;;   r4 = char
         .global Serial_GetChar
 Serial_GetChar_wait:
-        ;xcall   suspend                               ; suspend until more input
+        xcall   suspend                               ; suspend until more input
 Serial_GetChar:
         call    Serial_InputAvailable
         or      %r4, %r4

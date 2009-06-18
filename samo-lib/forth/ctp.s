@@ -93,7 +93,7 @@ CTP_PositionAvailable_buffer_empty:
 ;;;   r5 = y  (-1 => end of touch)
         .global CTP_GetPosition
 CTP_GetPosition_wait:
-        ;xcall   suspend                               ; suspend until more input
+        xcall   suspend                               ; suspend until more input
 CTP_GetPosition:
         call    CTP_PositionAvailable
         or      %r4, %r4
