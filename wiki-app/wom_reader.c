@@ -17,6 +17,15 @@
 #include "wom_reader.h"
 #include "tff.h"
 #include "misc.h"
+#include "msg.h"
+
+#if !defined min
+#define min(a, b)	((a) < (b) ? (a) : (b))
+#endif
+
+#if !defined max
+#define max(a, b)	((a) > (b) ? (a) : (b))
+#endif
 
 #define DBG_WOM_READER 0
 
@@ -165,7 +174,7 @@ void wom_draw(wom_file_t* womh, uint32_t offset_into_articles, uint8_t* frame_bu
 	cur_x = cur_y = 0;
 	guilib_fb_lock();
 	guilib_clear();
-		
+
 	for (i = 0;; i++) {
 		if (i == 0 || i >= WOM_PAGE_SIZE) {
 			i = 0;
