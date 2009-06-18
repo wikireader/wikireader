@@ -54,12 +54,7 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 
 /* the timers needed for profiling don't work with suspend enabled */
 #if !PROFILER_ON
-		/* we only go to a power saving halt mode if there is no
-		 * messages pending
-		 */
-		if (!serial_output_pending()) {
-			system_suspend();
-		}
+		suspend();
 #endif
 
 	}

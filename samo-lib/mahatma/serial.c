@@ -22,7 +22,6 @@
 
 #include <msg.h>
 #include "regs.h"
-#include "touchscreen.h"
 #include "serial.h"
 #include "irq.h"
 
@@ -58,12 +57,6 @@ void serial_init(void)
 		initialised = true;
 		ENABLE_IRQ();
 	}
-}
-
-
-bool serial_output_pending(void)
-{
-	return 0 != (REG_EFSIF0_STATUS & TENDx);
 }
 
 
