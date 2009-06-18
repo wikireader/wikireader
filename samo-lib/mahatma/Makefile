@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # (de)activate profiling
-PROFILER_ON = -DPROFILER_ON
+#PROFILER_ON = -DPROFILER_ON
 
 
 SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
@@ -35,7 +35,7 @@ INCLUDES += -I$(WIKI_APP_INCLUDE)
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += $$($(CC) -print-libgcc-file-name)
+LIBS += $(shell $(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
 
@@ -73,7 +73,6 @@ LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 
 OBJECTS = mahatma.o
 OBJECTS += touchscreen.o
-OBJECTS += suspend.o
 OBJECTS += msg-output.o
 OBJECTS += gui.o
 OBJECTS += gpio.o
@@ -104,7 +103,7 @@ $(KBD_IMG_INC): $(KBD_CONVERT) $(KBD_IMG_SRC_P1)
 lib/libmahatma.a: lib build ${BUILD_OBJECTS}
 	${AR} r "$@" ${BUILD_OBJECTS}
 
-mahatma.elf: build build/mahatma.o lib/libmahatma.a mahatma.lds
+mahatma.elf: build build/mahatma.o lib/libmahatma.a mahatma.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/mahatma.o lib/libmahatma.a ${LIBS} -T ${@:.elf=.lds} -Map ${@:.elf=.map}
 
 build:
@@ -114,8 +113,7 @@ lib:
 	${MKDIR} "$@"
 
 clean:
-	${RM} -r ${TARGETS} build
+	${RM} -r ${TARGETS} build lib
 	${RM} -r *.o *.elf *.d *.map *.asm33 ${KBD_IMG_INC} ${KBD_IMG_SRC_P1}
-
 
 include ${SAMO_LIB}/Mk/rules.mk

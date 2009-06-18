@@ -13,11 +13,11 @@ MEMORY
 SECTIONS
 {
 	.iram : {
-		*suspend.o(.*)
+		 *(.suspend_text)
+		 *(.suspend_rodata)
+		 *(.suspend_data)
+		 *(.suspend_bss)
 	} > a0ram
-
-        /*__PANIC_STACK = ORIGIN(a0ram) + LENGTH(a0ram) - 4; */
-        __PANIC_STACK = 0x00000000 + 8k - 4;
 
         /*__MAIN_STACK = ORIGIN(sdram) + LENGTH(sdram) - 4; */
         __MAIN_STACK = 0x10000000 + 32M - 4;
@@ -55,9 +55,9 @@ SECTIONS
            *(.bss)
         } > sdram
 
-       .comment : {
+        .comment : {
           *mahatma.o(.comment)
-       } > sdram
+        } > sdram
 
         __START_idma = ADDR(.idma);
         __END_idma = __START_idma + SIZEOF(.idma);
