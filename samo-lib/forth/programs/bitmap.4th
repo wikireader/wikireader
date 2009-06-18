@@ -27,17 +27,26 @@ decimal
     lcd-cls s" loading..." lcd-type
     bl parse get-file ;
 
+
 variable top
+variable last-x
 variable last-y
+
+
+: home-page ( -- )
+    top @ LCDC_MADD p!
+;
 
 : scroll
     begin
         ctp-pos? if
             ctp-pos dup 0<
             if
-                2drop 0 last-y !
+                2drop
+                0 last-x !
+                0 last-y !
             else
-                nip \ y
+                \ x y
                 last-y @ ?dup if
                     swap dup last-y ! -
                     32 * LCDC_MADD p@ +
@@ -50,25 +59,35 @@ variable last-y
                 else
                     last-y !
                 then
+                last-x @ if
+                    >r \ x
+                    last-x @ r@ - dup abs 150 >
+                    if
+                        0<
+                        if
+
+                        else
+                            home-page
+                        then
+                        r> last-x !
+                    else
+                        drop r> drop
+                    then
+                else
+                    last-x !
+                then
             then
         then
 
         P6_P6D p@ $07 and
         case
             $02 of   \ left button
-                LCDC_MADD p@ 32 + LCDC_MADD p!
+                home-page
             endof
             $04 of   \ centre button
-                top @ LCDC_MADD p!
             endof
             $01 of   \ right button
-                LCDC_MADD p@ 32 -
-                dup top @ <
-                if
-                    drop
-                else
-                    LCDC_MADD p!
-                then
+                exit
             endof
         endcase
     again
@@ -81,5 +100,8 @@ here top !
 get sans.img
 
 .( scroll - using function keys L=down C=home R=up )
+LCDC_MADD p@
 top @ LCDC_MADD p!
 scroll
+LCDC_MADD p!
+lcd-cls

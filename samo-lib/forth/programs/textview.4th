@@ -77,8 +77,8 @@ variable cursor-b
             if
                 2drop 0 last-y ! 0 last-x !
             else
-                >r \ y
                 last-y @ if
+                    >r \ y
                     last-y @ r@ - dup abs font-height >
                     if
                         0<
@@ -89,13 +89,13 @@ variable cursor-b
                         then
                         r> last-y !
                     else
-                        drop
+                        drop r> drop
                     then
                 else
-                    r> last-y !
+                    last-y !
                 then
-                >r \ x
                 last-x @ if
+                    >r \ x
                     last-x @ r@ - dup abs 150 >
                     if
                         0<
@@ -106,10 +106,10 @@ variable cursor-b
                         then
                         r> last-x !
                     else
-                        drop
+                        drop r> drop
                     then
                 else
-                    r> last-x !
+                    last-x !
                 then
             then
         then
@@ -117,13 +117,12 @@ variable cursor-b
         P6_P6D p@ $07 and
         case
             $02 of   \ left button
-                next-line
-            endof
-            $04 of   \ centre button
                 home-page
             endof
+            $04 of   \ centre button
+            endof
             $01 of   \ right button
-                prev-line
+                exit
             endof
         endcase
     again
