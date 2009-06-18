@@ -58,7 +58,7 @@ toppers: mini-libc fatfs
 .PHONY: mahatma
 mahatma: mini-libc fatfs
 	$(MAKE) -C samo-lib/mahatma
-	cp -p samo-lib/mahatma/mahatma.elf KERNEL
+	cp -p samo-lib/mahatma/mahatma.elf kernel.elf
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
