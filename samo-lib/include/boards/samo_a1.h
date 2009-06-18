@@ -5,6 +5,8 @@
 //#define DISPLAY_INVERTED 	1
 #define EEPROM_PM25LV512	1
 
+#define CONSOLE_BPS 57600
+#define CTP_BPS     9600
 
 static inline int board_revision(void)
 {
@@ -119,7 +121,7 @@ static inline void init_pins(void)
 	/* pull ups */
 	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
 	REG_MISC_PUP6 = (1 << 5) | (1 << 3);
-	
+
 	/* P50 & P52: CS lines */
 	REG_P5_P5D = 0x07;  // all cs lines high
 	REG_P5_IOC5 = 0x07;
