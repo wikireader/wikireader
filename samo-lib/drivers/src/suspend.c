@@ -23,21 +23,23 @@
 #include "suspend.h"
 
 
-#define SUSPEND_SDRAM 1
-
-void system_suspend(void)
+void suspend(void) __attribute__ ((section (".suspend_text")));
+void suspend(void)
 {
 	register int card_state = check_card_power();
+	// cannot suspend if serial port is running
+	if (0 != (REG_EFSIF0_STATUS & TENDx)) {
+		return;
+	}
 
 	disable_card_power();
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
 
 	DISABLE_IRQ();
+
 	// no more function calls after this point
 	// all code must be in-line
-
-#if SUSPEND_SDRAM
 
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_OPT |= WAKEUPWT;
@@ -69,7 +71,7 @@ void system_suspend(void)
 	REG_CMU_GATEDCLK0 &= ~(
 		//USBSAPB_CKE |
 		//USB_CKE |
-		//SDAPCPU_HCKE |
+		SDAPCPU_HCKE |
 		SDAPCPU_CKE |
 		SDAPLCDC_CKE |
 		SDSAPB_CKE |
@@ -84,14 +86,10 @@ void system_suspend(void)
 	REG_P2_P2D = ~0;
 	REG_P2_03_CFP = 0x01;
 	REG_P2_47_CFP = 0x00;
-#endif
 
 	// adjust baud rate for lower clock frequency
-	//REG_EFSIF0_BRTRDL = 12 & 0xff;
-	//REG_EFSIF0_BRTRDM = 12 >> 8;
-
-	SET_BRTRD(0, CALC_BAUD(MCLK / 4, DIV, 57600));
-	SET_BRTRD(1, CALC_BAUD(MCLK / 4, DIV, 38400));
+	SET_BRTRD(0, CALC_BAUD(MCLK / 4, DIV, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK / 4, DIV, CTP_BPS));
 
 	// turn off un necessary clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
@@ -111,7 +109,7 @@ void system_suspend(void)
 		CPUAHB_HCKE |
 		LCDCAHB_HCKE |
 		GPIONSTP_HCKE |
-		SRAMC_HCKE |
+		//SRAMC_HCKE |
 		EFSIOBR_HCKE |
 		MISC_HCKE |
 
@@ -203,9 +201,8 @@ void system_suspend(void)
 	// interrupt is on hold until end of resume
 
 	// restore baud rate
-
-	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, 57600));
-	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, 38400));
+	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, CTP_BPS));
 
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 
@@ -222,9 +219,9 @@ void system_suspend(void)
 		//CMU_CLK_SEL_OSC1 |
 		CMU_CLK_SEL_OSC3 |
 
-		//PLLINDIV_10 |
+		PLLINDIV_10 |
 		//PLLINDIV_9 |
-		PLLINDIV_8 |
+		//PLLINDIV_8 |
 		//PLLINDIV_7 |
 		//PLLINDIV_6 |
 		//PLLINDIV_5 |
@@ -268,16 +265,7 @@ void system_suspend(void)
 		SOSC3 |
 		//SOSC1 |
 		0;
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
-#if 0
-	{
-		register unsigned int i = 0;
-		for (i = 0; i < 10000; i++) {
-			asm volatile ("nop");
-		}
-	}
-#endif
-	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+
 	REG_CMU_GATEDCLK0 =
 		//USBSAPB_CKE |
 		//USB_CKE |
@@ -294,7 +282,7 @@ void system_suspend(void)
 		CPUAHB_HCKE |
 		LCDCAHB_HCKE |
 		GPIONSTP_HCKE |
-		SRAMC_HCKE |
+		//SRAMC_HCKE |
 		EFSIOBR_HCKE |
 		MISC_HCKE |
 		IVRAMARB_CKE |
@@ -309,7 +297,7 @@ void system_suspend(void)
 		DCSIO_CKE |
 		WDT_CKE |
 		GPIO_CKE |
-		SRAMSAPB_CKE |
+		//SRAMSAPB_CKE |
 		SPI_CKE |
 		EFSIOSAPB_CKE |
 		//CARD_CKE |
@@ -320,9 +308,7 @@ void system_suspend(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-
-#if SUSPEND_SDRAM
-	/* re-enable the SDRAMC pin functions */
+	// re-enable the SDRAMC pin functions
 	REG_P2_03_CFP = 0x55;
 	REG_P2_47_CFP = 0x55;
 
@@ -343,7 +329,6 @@ void system_suspend(void)
 		(0x7f << SELCO_SHIFT) |
 		(0x8c << AURCO_SHIFT) |
 		0;
-#endif
 
 	ENABLE_IRQ();
 	// it is now possible to call other functions

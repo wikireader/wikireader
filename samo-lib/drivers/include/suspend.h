@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HALT_H
-#define HALT_H
+#ifndef SUSPEND_H
+#define SUSPEND_H
 
-void system_suspend();
-void system_resume();
+void suspend();
 
-#endif /* HALT_H */
+#endif
 
