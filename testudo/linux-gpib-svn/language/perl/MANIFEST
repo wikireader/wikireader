@@ -1,0 +1,9 @@
+Changes
+LinuxGpib.pm
+LinuxGpib.xs
+Makefile.PL
+MANIFEST
+README
+test.pl
+typemap
+

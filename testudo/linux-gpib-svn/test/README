@@ -1,0 +1,33 @@
+libgpib_test is used by developers to test the library, feel free to add
+tests for untested functions.  It requires two gpib boards on the same GPIB
+bus, exactly one of which is the system controller.  Two instances of
+libgpib_test must be run, one with the --master option and one with
+--slave.  Their stdin and stdout need to be connected to each other (see the
+"runtest" script in this directory) so they can synchronize at various
+points in the tests.  The runtest script will pass any command line
+options to both the master and slave invocations of libgpib_test.
+
+Example:
+./runtest --pad 2
+
+libgpib_test options:
+
+-n, --num_loops N
+	loop through tests N times
+-M, --minor
+	Specify board index to use
+-m, --master
+	Use bus master gpib board
+-S, --slave
+	Use slave gpib board
+-p, --pad N
+	For master, open device with primary address N.  For slave,
+	sets board's primary address to N.
+-s, --sad
+	For master, open device with secondary address N.  For slave,
+	sets board's secondary address to N.  N must be in the range
+	[0, 30].  If this option is not specified, then secondary
+	addressing is disabled.
+-v, --verbose
+	Produce verbose debugging output (doesn't do much yet).
+

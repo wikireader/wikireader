@@ -1,0 +1,51 @@
+
+This is a python GPIB interface to use gpib library calls from python language.
+(Quick hacked)
+
+27 January 2004 -- added functions gpib.readbin() and gpib.writebin(), as well
+as variables gpib.ibsta() and gpib.ibcnt(). -- John Ackermann <jra@febo.com>
+
+Installation:
+
+'make' then 'make install'
+
+To use the GPIB extension directly the call syntax is similar as in the C library:
+
+  ##
+  # Include the GPIB extension
+  ##
+  import gpib
+
+  ##
+  # find & initialize the device
+  ##
+  device = gpib.find("my_device")
+  
+  ##
+  # write a string to the device
+  ##
+  gpib.write(device,"A Command_String")
+
+  ##
+  # write a binary string to the device
+  ##
+  gpib.writebin(device,"A Command_String",16)
+
+  ##
+  # read a 25 byte string
+  ##
+  result = gpib.read(device,25)
+
+  print 'the result is: ' + result
+
+  ##
+  # read a binary string
+  ##
+  result = gpib.readbin(device,4096)  #length of result equals ibcnt
+
+To use the Gpib Class module see gpibtest.py
+
+
+Have Fun!
+
+clausi

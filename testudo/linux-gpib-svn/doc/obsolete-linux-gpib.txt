@@ -1,0 +1,715 @@
+
+
+Linux-GPIB User's Guide
+
+Copyright cfl 1994 Claus Schroeter (clausi@chemie.fu-berlin.de)
+
+Version 1.1 (4/8/96)
+
+The Linux-GPIB Package is a Driver and User-Interface Package for usual GPIB cards. This Document describes the basic steps for installation and usage of the package.
+
+Contents 1 Introduction 5
+
+1.1 Short Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5 1.2 Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+
+1.2.1 Additional Documentation . . . . . . . . . . . . . . . . . . . . . . . 7 1.3 Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+
+1.3.1 Hardware . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 1.3.2 Additional Software . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+
+2 Installing the Software 9
+
+2.1 Preparing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9 2.2 Compile-Time Options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.3 Compiling the Sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.4 Configuring Driver/library Characteristics . . . . . . . . . . . . . . . . . . . 10
+
+2.4.1 Configuring the Driver . . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.4.2 Configuring the Library . . . . . . . . . . . . . . . . . . . . . . . . . 12 2.4.3 Using ibconf . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+3 The Driver Module 15
+
+3.1 Special Configurations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 3.2 Testing the Configuration with ibchk . . . . . . . . . . . . . . . . . . . . . 15 3.3 Testing the Library . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 3.4 Using the VFS Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 3.5 Multiprocessing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+1
+
+2 CONTENTS 4 Using the GPIB Library 19
+
+4.1 What is goin' on behind the scenes? . . . . . . . . . . . . . . . . . . . . . . 19 4.2 How The Library is organized . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+
+4.2.1 Compatibility with NI-488.2TMLibrary . . . . . . . . . . . . . . . . . 22 4.2.2 Device Management . . . . . . . . . . . . . . . . . . . . . . . . . . . 26 4.2.3 Error Logging . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26 4.2.4 Device Status and Error Codes . . . . . . . . . . . . . . . . . . . . . 27 4.3 Getting Started . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 4.4 Using Remote GPIB . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+4.4.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 4.4.2 Programming With rGPIB . . . . . . . . . . . . . . . . . . . . . . . 30 4.4.3 Configuring the Library for rGPIB . . . . . . . . . . . . . . . . . . . 31
+
+5 The Application Suite 35
+
+5.1 What is ibsh? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35 5.2 Using ibsh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+
+5.2.1 Module Loading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 5.3 Writing Modules for ibsh . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+
+5.3.1 Some modules included . . . . . . . . . . . . . . . . . . . . . . . . . 37 5.4 Configuration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+
+A Library Reference 41
+
+A.1 Management Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 A.2 Device Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 A.3 Bus Level Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+
+CONTENTS 3 Copyrights
+
+8 The Package and this document is free software; you can redistribute it and/or modifyit under the terms of the GNU General Public License as published by the Free Software Foundation; This package is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+4 CONTENTS
+
+Introduction 1.1 Short Overview
+
+Let's understand this package as the begin of a larger project to make linux more useable to people dealing with automation, process control and engineering in laboratory and industrial environment. Realize that there is much work todo (with this and other projects dealing with this stuff).
+
+The IEEE488 or GPIB Standard, first developed by HP (1965) (called HPIB) provides a wide spreaded construction kit that makes measurement, data aquisition and control as simple as possible.
+
+Til now this bus-system wasn't availiable for linux users because the Hardware wasn't supported yet. I want to fill this gap step by step. My second Idea is to make it as simple as possible for the (perhaps unexperienced) user to write applications. This can be done step by step too.
+
+Under DOS a wide Variety of nice (colorful) Software exists to simplify the GPIB Handling. That makes a lot of people afraid to going to Linux. I want to fill this gap too. The first step i did was to implement a interface to TCL/TK, a powerful Toolkit Language by John Ousterhout, to the GPIB library. With this simple a-few-hundred-lines C interface users could write very poverful Programs with comfortable graphical User Interfaces under X11 within some Minutes (depending on the knowledge of tcl/tk).
+
+At this time a lot of extensions exists for Tcl/Tk so that it were possible to provide GPIB functions over a network or write client/server Measurement systems. There are no limits to the phantasies what to do with this tool.
+
+As i mentioned this should be the first step. So i made a driver for the mostly used Card (AT-GPIB from NI) and i hope the support for other cards follows soon.
+
+5
+
+6 Chapter 1. Introduction 1.2 Features The Package consists of four Parts:
+
+n^ The driver Module
+
+This piece of code does all the dirty work, write magic numbers in magic places and gives the results back.
+
+The Driver has been designed as loadable Module and is full Runtime configurable. You can change the functionality, base-address etc at runtime without rebuilding the kernel. To Install the driver, minor changes to the Kernel are required.
+
+Normally once the module has been build you could use it for many purposes without recompiling.
+
+The driver-module can be used either with the gpib-library or as normal character driver using the VFS interface.
+
+ng The GPIB Library.
+
+This Library provides higher level calls to C-Programs, that makes the work easier. Tere are simple to understand functions that provide Device-Management, configuration and read/write commands to the GPIB the bus.
+
+The function names of the most Library functions are similar to the National Instruments NI488.2TMLibrary. Porting of your programs should be simple.
+
+The library does the whole driver runtime configuration that could be specified in a special configuration file.
+
+A simple Errorlogging Mechanism is provided so that every Operation on the driver could be backtraced on /dev/console or whereever.
+
+rGPIB a client-server model extension is included in the library with this feature the bus can be virtually extended over the network.
+
+o"" The TCL/TK extension
+
+I think this is the most popular thing of this Package.
+
+With the TCL/tk Interface you can test your hardware, play around and write simple applications with graphical user interfaces within some minutes.
+
+ibsh the TCL/Tk interpreter is included in the package, ibsh can be dynamically extended with loadable TCL-Modules. Some useful widgets are also included as dials, meters, rasters and so on.
+
+A Software Diagnostic Program that checks your Setup for installation errors is also provided.
+
+1.3. Requirements 7 1.2.1 Additional Documentation For finding routines and driver conventions quick and easy a handy Quick-Reference-Guide is included in the documentation (refcard.ps).
+
+1.3 Requirements 1.3.1 Hardware The following GPIB Hardware is supported by this Package:
+
+ffl National Instruments AT-GPIB Boards
+
+There are three types supported - one with NEC7210 TLC and TURBO488 chip, one with NAT4882/TURBO488 chips and the newest one with TNT4882 ASIC.
+
+ffl National Instruments PCII Boards ffl National Instruments PCIIa Boards ffl IBM GPIB Adapter (PCIIa compatible) ffl Hewlett Packard HP82355 and 27209 boards.
+
+1.3.2 Additional Software You will need Linux-1.1.61 or higher to work with this Package. To install the driver to your kernel you will need the modutils package (insmod/rmmod). This should be in /sbin if You have the slackware distribution installed.
+
+If you want (and i bet you will) the TCL/tk Interface you need a working tcl/tk library (my version was tcl7.3 and tk3.6 but i think you can use newer versions as well). You also can get a shared binary version from sunsite or tsx-11. The installation should be very simple. It's recommended to have the Tcl/Tk sources availiable if you want to write own Widgets for Tk or if you Want to add other TCL/Tk extensions to ibsh. For the unpatient installer I added the necessary files to ../tcldev so everything should compile smootly.
+
+The original National Instruments sample files could be helpful for beginners to understand how to write GPIB Programs. Additionally I added some sample programs in ./examples.
+
+8 Chapter 1. Introduction
+
+Installing the Software 2.1 Preparing There are some things you must do before you can slip into any Linux GPIB stuff.
+
+u"" cd to the directory where You want to install the Linux-GPIB sources (say /usr/local/src). u* Unpack the gpib-linux!version?.base.tgz and optionally the other package files
+
+gpib-linux!version?.ibsh.tgz (the ibsh sources) and gpib-linux!version?.tcl.tgz (additional tcl stuff ) to this directory. (Oh what stupid, if you read this you will have done this yet :-) )
+
+y" Now install the additional Software (mentioned above) first. On newer distributions
+
+as Slackware-2.0 you will not need to install the modutils Package. Check out if insmod,rmmod,lsmod exists in /sbin. If You haven't the tcl package installed, It's recommended to make a Directory (or symbolic link) tcldev in your Source Directory where the whole Tcl Stuff lives, the configuration expects at least two directories inside ../tcldev. See applications/ibsh/Makefile for details. If you install the Tcl Sources compile them and make install to put the binaries to the right places. Edit ibsh/Makefile for your requirements.
+
+z' Read all README files ! There is important information about how to configure special
+
+cards etc.
+
+z^ Configure your board-jumpers to the desired base-address,IRQ, and DMA You should
+
+take care that the base and/or DMA setting does not conflict with other hardware settings.
+
+z. Turn off your system and install your board in your computer. Take care that at least
+
+one GPIB device is connected to your bus before you start building the package.
+
+9
+
+10 Chapter 2. Installing the Software 2.2 Compile-Time Options There are some Options that could be set for the driver. You can decide if you want continous Debugging or if the driver should run in DMA transfer mode.
+
+Compile time options are set with the configuration script provided with the package. First time you're building the package the configuration will be done automatically. Later you can reconfigure your driver with make config
+
+2.3 Compiling the Sources Change to the toplevel Directory (say /usr/local/src/atgpib-linux!version?). Now type make and answer the Questions from the Configuration and select the desired options in the option menu.
+
+If the setup has been done the setup-script now will compile the package. If everything has been finished the script will attempt to load and check the configuration with the ibchk utility.
+
+If everything is OK you could now test your driver. If you think it works fine you may type make install to install Linux-GPIB on your system.
+
+You will get an object file gpib!id?.o (id is the id number given in driver/Makefile ) If the driver has sucessfully been build try to load it (directly via insmod gpib!id?.o or by typing make load)
+
+If no error message occurs you have loaded the driver succesfully into the kernel. Look at the File /usr/adm/messages, you should see some messages related to GPIB.
+
+2.4 Configuring Driver/library Characteristics 2.4.1 Configuring the Driver Everything the driver Module needs to know from the User is the Base Address, the IRQ Level and DMA channel, it's Major Number and optionally the Debug Level.
+
+The Base, IRQ and DMA settings depends on your board jumper settings. Refer to your Hardware installation Guide for details.
+
+The Major Number is used to decide wich driver inode file is suitable to which module. This Number has to be unique for your System. To find out which Majors are used by other Drivers check out /proc/devices
+
+2.4. Configuring Driver/library Characteristics 11 The Debug Level determines wich actions of the Module should be logged by syslogd to /usr/adm/messages.
+
+The Driver Module is Configurable with three Methods:
+
+ffl Via the compile-time options. ffl At Loading time you could specify options:
+
+/sbin/insmod gpib0.o [[option=value] ....]
+
+option could be one of
+
+ibbase specifies the Hardware address of the GPIB board (default is 0x2c0) ibdma specifies the DMA Channel for the board ( default is 5) ibirq specifies the IRQ Level for the board (default is 11) ibmajor specifies the Major Number for the module (default is 31) Realize that this
+
+Number must match your driver inode's Major Number
+
+dbgMask sets your debugging level if you selected DEBUG Mode in the configuration. If you want to use the module with debugging enabled you should set the default debug level to NONE (Configuration).
+
+ffl With Library routines and the library configuration script.
+
+2.4.1.1 Specifying Debug Levels If you enabled the Debugging Option in your Configuration Script you could backtrace every action that your driver is doing. One of the consequences of this Method is your /usr/adm/messages logging file will get very large. To prevent a messy logfile you could select what actions should be logged. The Meaning of the 8 debug-level bits are in Table 2.4.1.1.
+
+Example: Load the Module with
+
+/sbin/insmod gpib0.o dbgMask=0x06 and start the ibchk program. Your Kernel Logfile (/usr/adm/messages) will show up messages like shown in Example 2.4.1.1.
+
+Now you can backtrace any function that is called during program operation. If you're using the GPIB library, the debugging level can also be set from /etc/gpib.conf debug = !level? option in the config section.
+
+12 Chapter 2. Installing the Software Example 2.4.1 Driver Logging Nov 20 13:37:56 clausi kernel: AT-GPIB Driver -- Major=31 Base=0x2c0 Irq=11 DMA=5 enabled Nov 20 13:37:56 clausi kernel: -- DebugMask = 0x106 Nov 20 13:37:56 clausi kernel: -- Kernel Release 1.1.51 Nov 20 13:37:56 clausi kernel: gpib - ibinstall:in Nov 20 13:37:56 clausi kernel: gpib - ibinstall:out Nov 20 13:38:16 clausi kernel: gpib - ibopen:in
+
+.
+
+2.4.2 Configuring the Library The GPIB Library can be configured via the /etc/gpib.conf file. A simple utility program ibconf comes with the Package that allows quick and easy installation see 2.4.3 how to use it.
+
+8 8 Realize that the driver does not know anything about this configuration if the Library is not used. If you want to use the driver without the library you must pay attention that your base address, IRQ and DMA has been set at compiling- or loading-time.
+
+You're able to define mnemonics for your devices like "dvm" or "scope". The default configuration file is /etc/gpib.conf but you can override this by setting the IB CONFIG environment variable to the desired path. Look at the default config file to understand the mechanism. You can also set the base address and the IRQ level of the card. Edit the configuration for your requirements.
+
+You can set the board characteristics as base adress and irq within the config file for several
+
+0 All actions will be logged 1 Log every Function Entry 2 Log every Function Exits 3 Branches (as DMA start etc) 4 Data given to functions 5 Interrupts and Timeouts 6 Register i/o 7 Reserved
+
+Table 2.1: Debugging level Bits
+
+2.4. Configuring Driver/library Characteristics 13 boards. The syntax is as follows:
+
+Example 2.4.2 The Config-File Syntax
+
+config - options ""
+
+device - options "" . . .
+
+config - options ""
+
+device - options "" . . .
+
+You can have MAX BOARDS GPIB-cards in your PC1. Each config section begins the definition for devices connected to this board. The first config will refer to /dev/gpib0, the second to /dev/gpib1 and so on.
+
+Device Names consists of Letters and numbers and must begin with a letter. Example: You have two gpib-boards in your computer one at 2c0h (default) and one at 3c0 with interrupt 10 and 11. A scope has been connected to the first board with GPIB adress 7 and a DVM has been connected to the second board. Your config file will look like
+
+Example 2.4.3 A sample Config File
+
+config - base=0x2c0 irq=11 ""
+
+device - name=scope pad=7 ""
+
+config - base=0x3c0 irq=10 ""
+
+device - name=dvm pad=3 ""
+
+* The 'name' and the 'pad' option are required. The EOS modes can be specified for each device seperately. This will be useful for situations where different devices with different fixed-eos handling are used on the same bus. The configuration provides an initialization string per device this string will be send to the device if ibfind() is called.
+
+There are some other useful options look at ./util/template/gpib.conf.dist for ex1The default of maximal 4 GPIB boards should be sufficient
+
+14 Chapter 2. Installing the Software amples. You can have one master device per GPIB-bus (Usually the GPIB-Adapter) To perform low level board commands to the whole bus this device must be configured as
+
+controller. You can configure this special device with one devicefg entry while setting the master flag on this configuration. Note that only one device on the bus can be the controller at the same time.
+
+2.4.3 Using ibconf If TCL/Tk is installed on your system you can use the GPIB configuration utility to simplify the configuration process. The utility program comes with the Linux-GPIB Package in ./applications/ibconf. With ibconf it is possible to configure the GPIB Library software characteristics in a comfortable way without editing the /etc/gpib.conf file directly.
+
+Main Menu
+
+Status Bar
+
+Button Bar Devices
+
+Figure 2.1: The ibconf program With ibconf you can change old entrys or add new device entrys to the configuration. The Board characteristics can also be changed. Figure ?? shows the layout of ibconf main dialog, on the left side you'll see a listbox with the configured device entrys a button bar on the right side provides the basic editing functions as adding new, deleting or configuring old devices. The Board characteristics configuration dialog can be reached within the 'Boards' pulldown-menu.
+
+The Driver Module 3.1 Special Configurations The users of GPIB will mostly be satisfied if strings can be transfered over the bus. This strings are usually not very large (a few bytes). One exeption are devices with large data buffers (as scopes or scanners etc). Reading or writing this buffers will consume some more time as single byte transfer does. Use DMA Transfer Mode will speed up this. The problem with DMA Transfer under Linux is the continous Memory block that you need for this transfer, it has to be aligned to a page boundary and must be in the lower 16M of System Memory. For drivers compiled into the kernel this is not a big problem as this requirements could be satisfied at boot time. A Module runs after the kernel has been loaded into the memory so there is no guarantee that memory pages you can get from kernel are located below 16M.
+
+If you have more than 16Mb or if you use the module with kernels !1.3.xx the dynamic DMA memory allocation mechanism often fails because the memory gets more and more fragmented. If you see error messages like 'Can't get memory Pages' in /usr/adm/messages this is a sign for this problem. In this case you should set the dma-bufzize option in /etc/gpib.conf (or using ibconf). The value has to be a multiple of 1024. With this option set a static buffer is allocated only once at board initialization, so the problem of memory fragmentation should disappear.
+
+3.2 Testing the Configuration with ibchk For a simple error check run util/ibchk. ibchk will test your Configuration against the Hardware preset board characteristics and reports useful error messages if something is going wrong. Ibchk looks if the device file has been created with the correct major number or if a gpib board is present at the desired base adress, it looks for reused interrupts or dma channels and reports any errors with suggestions to fix them. Since ibchk doesn't know anything about your GPIB Bus Configuration, your device setups can't be tested
+
+15
+
+16 Chapter 3. The Driver Module
+
+MSB LSB 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0
+
+r r r S S S S S r r r P P P P P
+
+Table 3.1: Minor Number Bits (P=Sad,S=Sad,r=reserved) with ibchk. Ibchk is not a program that should be used as programming example as it looks very deep into the driver specialities to do its job.
+
+3.3 Testing the Library This is your task because I don't know anything about your devices connected to your gpib. I added a sample lib/ibtest.c you can change it for your devices. If you build ibsh you can do this via tcl. Look at ibsh/demos/ibtest.tcl for example.
+
+8 Note: Realize that the GPIB driver used with the GPIB library serves not as a usual character driver since all operations are done via ioctl calls. A User Program need to be linked to the GPIB Library if you want to use the config file Mechanism.
+
+3.4 Using the VFS Interface The driver module provides a simple Mechanism to send or receive bytes to or from the bus via normal read/write operations. In this case where simple i/o is sufficient the driver can be used as normal character driver. To use the full functionality of the driver it is recommended to use the GPIB-Library for your application programs.
+
+In VFS-mode the driver automatically initializes the Bus for transfer and implicitely set up the device addresses decoding the MINOR number of the device special file.
+
+If you want to use the VFS mode you have to create one device special for each device connected to the bus using the mknod command. It would be useful to create an own subdirectory within /dev, for example /dev/GPIB.
+
+Example 3.4 shows how to create the inode files for three imaginary devices one called "tektronix604" with PAD=7, one called "counter" with PAD=2 and one called "dvm" with PAD=5. To access this devices you can simply use shell commands as shown in the Example or you can use the read() or write() C-Library calls.
+
+3.5. Multiprocessing 17 Example 3.4.1 Creating device specials for VFS Mode
+
+mknod /dev/GPIB/tektronix604 c 31 7 mknod /dev/GPIB/counter c 31 2 mknod /dev/GPIB/dvm c 31 5
+
+echo "D1Ready" ?/dev/GPIB/dvm
+
+Currently the VFS Mode is under construction so features as setting EOS modes and issueing commands to the bus via VFS are not possible.
+
+3.5 Multiprocessing While sending or recieving commands, the bus system runs through different states to distinguish between the different phases of the transfer. A running transfer can't be interrupted until the bus reaches it's initial state because the usual TLC's cannot save the bus state on a exeptional condition. So it's the software's task to pay attention in which state the bus transfer can be interrupted to give other processes a chance to make their transfers.
+
+The linux-GPIB driver is capable to share the bus between different processes on a percommand mechanism. That means that each request is queued but one command can be transferred at the same time and other processes must wait for its completion. For the linux-GPIB programmer that means that he has to keep the transfers as short as possible if he want to have the Multiprocessing feeling.
+
+18 Chapter 3. The Driver Module
+
+Using the GPIB Library 4.1 What is goin' on behind the scenes? From User's Side of View GPIB is a simple thing: You have some devices as Scopes, Digital Multimeters, Counters and so on. Each of this device has a Plug on the rear side of it's case and is labeled to understand ieee488 commands. You buy one of this expensive Cables and plug it from device to computer - and ready to go (You think).
+
+Yes from Hardware side (outside the devices) this seems to be simple but to write Programs using GPIB you have to know more about what is going on between the computer and the devices.
+
+I think we should not explain all the Lines of the cables in detail but it's not wrong to know a little about what's going on behind this plugs.
+
+As mentioned in each device's Manual (i bet) you can select a GPIB-Adress for each device. This 'device adress' has to be unique for the bus. With this adress the bus-controller can find the device on the bus.
+
+The GPIB bus can connenct many devices that could communicate independently over the bus. A device that has the controller capability could take control over the bus and send commands to the devices. Only one device can be the controller at the same time.
+
+The dataflow direction is controlled by the Talker and the Listener States of the Devices. More than one device could be in listener or in talker state.
+
+If the Controller want to write out some bytes to a device it sets the device in listener state and itself to talker state, then the desired bytes are written over the bus (See Figure 4.1).
+
+For read operations the controller will become the listener and the device will be adressed as talker, then the bytes will be read (See Figure 4.2).
+
+Similar to SCSI, each device (that means the interface of the device) can be in different states during the transmission Process. Some states are controlled by some Lines on the Bus (ATN,REN,IFC,SRQ,RQS) and some states could be reached with commands on the
+
+19
+
+20 Chapter 4. Using the GPIB Library
+
+GPIB-Bus Device 1 addressed
+
+as Listener
+
+Controller, addressed
+
+as Talker
+
+Figure 4.1: States During Write Operation Data-Bus (D0:::D7). IFC (Interface Clear) resets all device-controllers to its initial State (Similar to a Chip Reset), this message will be send on initialization process of the system-controller.
+
+ATN (Attention) and REN (Remote Enable) are used to signal a bus action to the devicecontrollers, this line is driven by the system-controller whenever you apply a command on the bus.
+
+SRQ (Service Request) and RQS (Request Service) are used from device-controller to signal a special state to the system-controller, this message usualy will be send if the device has done the requested operation.
+
+The so called multiline Messages (that means commands over the Data Lines while ATN is active) are grouped in unadressed Commands (Comands for all Devices on the Bus) and adressed Commands (for one or more specified Device).
+
+Unadressed Commands are DCL (Device Clear), LLO (Local Lockout), PPU (parallel Unconfigure), SPD (Serial Poll Disable) and SPE (Serial Poll Enable).
+
+Adressed commands are GET (Group Execute Trigger), GTL (go to Local), PPC (Parallel Poll Configure), SDC (Selected Device Clear) and TCT (take Control).
+
+The Adresses itself will be send as special Multiline Messages. All devices on the bus can be adressed as Talker and as Listener. Each Transfer on the bus in adressed mode (usual with computer controlled GPIB) needs to set the Talker and Listener Adresses properly depending on which Direction the Transfer will be made. As soon as ATN is inactive every Byte on the bus is interpreted as valid Data. The additional Messages UNL (Unlisten) and
+
+4.1. What is goin' on behind the scenes? 21
+
+GPIB-Bus Device 1 addressed Controller, addressed
+
+as Talker as Listener
+
+Figure 4.2: States During Read Operation UNT (Untalk) reset the desired Listener or Talker to its normal state. Imagine you want to send a simple string "ABC" to your device, how is it done by the controller ?
+
+The controller will activate ATN and send the Listener Adress of the desired device(s) then it sends its own Talker Adress. Now ATN will be deactivated and the data Bytes "ABC" will go over the bus. To finish the transmission the EOI Line will be activated. Now the controller can send the next string to the device or send UNL and UNT to unlisten the device.
+
+As i concealed the controller has to setup the command Phase with IFC and REN first. Lets show this Transfer on a nice Diagram: The following Diagram shows how multiline Messages are coded on the eight Data Lines (a X means any Bit 0 or 1).
+
+You will not need this for Programming with the GPIB Library but it will be helpful for advanced GPIB-Programmers or for finding bugs in the driver sourcecode.
+
+22 Chapter 4. Using the GPIB Library
+
+ATN command EOI
+
+1 0 ATN starts the 'Command Phase' 1 UNL 0 Send Unlisten 1 LAD1 0 Adress first Device as Listener 1 LAD2 0 Adress second Device as Listener
+
+... 1 LADn 0 Adress Device n as Listener 1 TAD 0 Adress One Device as Talker 0 DAB1 0 Deactivate ATN, send first Data Byte 0 DAB2 0 Send 2nd Data Byte
+
+... 0 DABn 1 Send last Data Byte together with EOI 0 EOS Send EOS Message
+
+Table 4.1: Bus Commands during Transfer
+
+4.2 How The Library is organized 4.2.1 Compatibility with NI-488.2
+
+TMLibrary
+
+The essential GPIB-Bus Handling functions should be compatible to NI-488.2TMLibrary calls. Porting of User Programs from DOS to Linuxshould be simple. A short overview shows which functions are present in both librarys.
+
+4.2. How The Library is organized 23
+
+Message Mnemonic ATN DIO-Lines
+
+Bit 7654 3210
+
+Attention ATN 1 XXXX XXXX Data Byte DAB 0 DDDD DDDD Device Clear DCL 1 X001 0100 End of String EOS 0 EEEE EEEE Group Execute Trigger GET 1 X000 1000 Go To Local GTL 1 X000 0001 Local Lock out LLO 1 X001 0001 Talker Adress TAD 1 X10T TTTT Listener Adress LAD 1 X01L LLLL Par. Poll Configure PPC 1 X000 0101 Par. Poll Enable PPE 1 X110 SPPP Par. Poll Disable PPD 1 X111 DDDD Par. Poll Unconfigure PPU 1 X001 0101 Selected Dev. Clear SDC 1 X000 0100 Ser. Poll Disable SPD 1 X001 1001 Ser. Poll Enable SPE 1 X001 1000 Take Control TCT 1 X000 1001 Unlisten UNL 1 X011 1111 Untalk UNT 1 X101 1111
+
+Table 4.2: Multiline Messages
+
+24 Chapter 4. Using the GPIB Library
+
+Function NI-488.2 Library LinuxGPIB Library ibbna ffl ibcac ffl ffl ibclr ffl ffl ibcmd ffl ffl ibcmda ffl ibconfig not identical ffl ibdev ffl ibdma ffl ibeos ffl ffl ibeot ffl ffl ibevent ffl ibfind ffl ffl ibFindDevIndex ffl ibgts ffl ffl ibist ffl iblines ffl ffl ibln ffl ibloc ffl ibonl ffl ffl ibpad ffl ffl ibParseConfigFile ffl ibPutErrlog ffl ibPutErrMsg ffl ibpct ffl ibppc ffl ibrd ffl ffl ibrda ffl ibrdf ffl
+
+4.2. How The Library is organized 25
+
+Function NI-488.2 Library LinuxGPIB Library ibrpp ffl ffl ibrsc ffl ibrsp ffl ffl ibrsv ffl ffl ibsad ffl ffl ibsic ffl ffl ibsre ffl ffl ibsrq ffl ibstop ffl ibtmo ffl ffl ibtrap ffl ibtrg ffl ffl ibwait ffl ffl ibwrt ffl ffl ibwrta ffl ibwrtf ffl
+
+Due to the fact that You're using a Unix compatible operating system with all its advantages and due to the different architecture of the driver there are some incompatibilites in the functionality of the Driver/Library that should be mentioned1.
+
+7 NI-488TMuses decl.h as header file to its applications. Linux-GPIB uses ib.h 7 NI-488TMautomatically performs IFC, REN, and LLO to the bus when the first device
+
+function is called. Linux-GPIB performs this commands only for the first call to ibfind() and only for the first process using the bus (If you don't want any of this commands at init time you can configure this in /etc/gpib.conf ).
+
+7 NI-488TMcan be configured so thet the board will request to be the Controller-InCharge whenever a device function is called. Linux-GPIB always assumes the board is currently Controller-In-Charge.
+
+7 if(ibfind,"gpib0") ! 0) f...g will work for NI-488 (since MS-DOS has 16 bit
+
+integers), but will not work with Linux-GPIB. You should use if(ibfind,"gpib0") & ERR ) f...g instead.
+
+1Thanks to Glenn!
+
+26 Chapter 4. Using the GPIB Library 4.2.2 Device Management Each device connected to the bus must have a unique GPIB-Adress set. This can be done via the Front Panel Buttons or rear panel DIP-Switch depending on the Device. Refer to the 'Selecting GPIB Adress' Section of Your Device's User Manual.
+
+The Configuration File for the GPIB Library assigns your Devices with the Interface board. You must give each Device an unique name wich identifies the Device and set The Primary Adress for this Device.
+
+If you make a call to ibfind first time the following actions will be done by ibfind automagically:
+
+ffl ibfind looks if the IB CONFIG Environment is set and parses the configuration file.
+
+If is not set it parses the default config file (/etc/gpib.conf).
+
+ffl Each device found in the config file will be added to the device descriptor table. ffl The Error Logging File will be opened (see Error Logging) ffl The device driver (e.g. /dev/gpib0) will be opened and the configuration of the driver
+
+will be made ( set irq,dma and base-adress).
+
+ffl The driver will be set in Active State via ibonl.
+
+4.2.3 Error Logging Every time a library call results to an error, a Message is logged to the Errorloging file specified in the errlog variable. If no errlog variable has been specified in the config file Error Logging will be done to stderr.
+
+If you work with X11 you could use xconsole to Log your Errors set the errlog variable to /dev/console for this.
+
+Each Message has the following format:
+
+routine : [time](device) ! state ? error !explanation? If the error occurs while no device is active device is empty. state is a combination of states as described below. A verbose explanation of the error follows the message. With this feature a error can be easyly backtraced.
+
+For example means that ibwrt failed while performing the ioctl to the device (in ibBoardFunc) the reason of the error is a not responding device (no listener).
+
+4.2. How The Library is organized 27 Example 4.2.1 Error Messages dvwrt :[Sun Sep 11 15:41:02 1994](-)! ERR CMPL CIC TACS? ENOL !No Listener? ibBoardFunc :[Sun Sep 11 15:41:02 1994](-)! ERR CMPL CIC TACS? ENOL !No Listener?
+
+4.2.4 Device Status and Error Codes As the Driver and the Library should be NI-488.2TMcompatible, two global variables exists for driver state and error reporting. An additional variable carries information about the number of bytes transferred on a I/O operation.
+
+int ibsta; int iberr; int ibcnt;
+
+4.2.4.1 Status Word The Meaning of the Status Bits shows the following table:
+
+State Description
+
+ERR Function Terminated on error TIMO Time Limit on I/O or wait function exceeded
+
+END EOI Terminated ibrd SRQI SRQ is asserted CMPL I/O is complete
+
+CIC Controller in Charge ATN Attention is asserted TACS Board is adressed as TALKER LACS Board is adressed as LISTENER
+
+For detailed Information on these codes See Ni-488.2TMSoftware Reference Manual for MSDOS (Part Number 320282-01)
+
+28 Chapter 4. Using the GPIB Library 4.2.4.2 Error Codes
+
+Error Code Description
+
+EDVR system error
+
+ECIC not CIC ENOL no listeners EADR CIC and not addressed before I/O EARG bad argument to function call
+
+ESAC not SAC EABO I/O operation was aborted
+
+ENEB non-existent board (GPIB interface offline) EDMA DMA hardware error detected
+
+EBTO DMA hardware uP bus timeout
+
+EOIP new I/O attempted with old I/O in progress ECAP no capability for intended opeation
+
+EFSO file system operation error EOWN shareable board exclusively owned
+
+EBUS bus error
+
+ESTB lost serial poll bytes ESRQ SRQ stuck on
+
+ECFG
+
+\Lambda  Config file not found
+
+EPAR
+
+\Lambda  Parse Error in Config
+
+ETAB
+
+\Lambda  Table Overflow
+
+ENSD
+
+\Lambda  Device not found in Configuration
+
+\Lambda = Linux GPIB Library only
+
+If iberr is EDVR ibcnt is set to errno and further Explanation is written to Error Logging file.
+
+For detailed Information on these codes See Ni-488.2TMSoftware Reference Manual for MSDOS (Part Number 320282-01)
+
+4.3 Getting Started The simplest task using a GPIB device is sending or receiving strings over the bus for example to setup device characteristics or receiving measurements from the device. For easy understanding let us imagine a virtual Digital Voltmeter (DVM) that understands commands to set the Voltage Range and returns a measurement result on readout.
+
+Program 4.3.1 shows how such task could be solved using Device-Level Functions.
+
+4.3. Getting Started 29 Example 4.3.1 A Simple C-Program #include !stdio.h? #include !ib.h?
+
+main()- int dvm; /* The Unit descriptor of the device */ char cmd[80]; /* A buffer for the string */
+
+/* get device from configuration */ if( (dvm=ibfind("dvm")) & ERR )- printf("Can't find DVM!"n"); exit(1); ""
+
+/* Clear the Device */ if( ibclr(dvm) & ERR )- printf("Clear Error!"n"); exit(1); ""
+
+/* Now Setup a few things */ strcpy(cmd,"D0 R1 S0"); if( ibwrt(dvm,cmd,strlen(cmd)) & ERR )- printf("Write Error!"n"); exit(1); ""
+
+/* now Read back the result */ if( ibrd(dvm,cmd,79) & ERR )- printf("Read Error!"n"); exit(1); ""
+
+/* print out result */ printf(""n Result=%s",cmd);
+
+""
+
+30 Chapter 4. Using the GPIB Library 4.4 Using Remote GPIB 4.4.1 Introduction The basic idea of Remote-GPIB (rGPIB) was to design a Virtual Extension to the Bus using a usual Network Protocol. With rGPIB it should be possible to write or read from devices that are connected to another machine's GPIB. The user of both the client and the server should not need to get familiar with programming all the network stuff. The rGPIB feature could be used for testing application on a foreign machine without having a GPIB-board in the local machine or for building up simple test systems for sensoric environments without any need of expensive hard and software. Additionally more than one client can request one machine's GPIB to share the devices on the bus over the network. Programming with rGPIB should be very simple as the networking code uses the lower transport levels of the GPIB-Library directly. In other words the changes to existing programs are minimal. The ibsh interpreter can be used as well for distributed GPIB applications with minimal changes to the TCL/TK code
+
+First i will explain some basic concepts about rGPIB: The requests are given over the network to the target host, the other host takes the requests and passes it to the GPIB the responses are routed back to the client machine. Figure 4.3 shows how the concept has been implemented.
+
+The GPIB Library contains the client-stubs to send the requests via RPC to the server. The server uses the GPIB library to send the requests to the GPIB.
+
+4.4.1.1 Security Unfortunately the DES Encryption software is not availiable outside the US so that other algorithms must be used for the authentication protocol. For the first guess i use a normal AUTH UNIX RPC authentication what is easily possible to break through but for the normal use this should be sufficient.
+
+4.4.2 Programming With rGPIB Programming with rGPIB should be as easy as programming a application without the networking support. The only exeption is that a new device naming scheme has been introduced to achieve the desired functionality.
+
+Device names now can contain the network name of the target machine for Example: Now a network unit descriptor is returned by ibfind(). Now the GPIB-Library routes requests to this descriptor automatically to the desired host's rGPIB server and the results
+
+4.4. Using Remote GPIB 31 Example 4.4.1 Programming rGPIB
+
+int dev; dev = ibfind("beaver.chemie.fu-berlin.de:scope");
+
+back to the client application. So from the Programmers point of view there is basically no difference between applications using the rGPIB and normal applications.
+
+4.4.3 Configuring the Library for rGPIB Some new Configuration-Options are added to the Library configuration mechanism to provide a minimal security to the server. Hosts providing their GPIB over the network can be configured so that only certain hosts can send requests to the server. For this the busmaster entry contains a new option network that specifies a group of hosts or single hosts that are allowed to access the GPIB.
+
+Example 4.4.2 The configuration for network access device - name = gpib0 /* name of the bus should be compilant
+
+* to the usual conventions gpib0,gpib1... */ pad=0 sad=0
+
+/*
+
+* This line denotes the device as busmaster * realize that only one device per board can be the busmaster */
+
+master /* This Line specifies which clients can access the GPIB-Server
+
+* entrys are separated by colons, wildcards can be specified * to match more than one host * ( don't forget the last colon ) */
+
+network *.chemie.fu-berlin.de:clausi: ""
+
+32 Chapter 4. Using the GPIB Library Example 4.4.2 shows how the access mechanism can be configured. Wildcards (*) can be used to specify a whole group of hosts. The host entrys must be colon separated and the line must end with a colon. A single * means that access control is disabled. The client side should be configured to have a verbose host and domainname, check out hostname and domainname for this.
+
+4.4.3.1 Important Notes Since the rGPIB feature uses RPC to comunicate with the server you need the RPC portmapper running on both the client and the server machine. Look at your /etc/rc.d/rc.inet2 uncomment de desired lines if necessary and reboot your system. Now rpcinfo -p localhost should show the portmapper running.
+
+The client and server stubs and the XDR files are generated automatically by the TIRPC rpc source generator that is included as binary in ./lib/utils the original sources can be obtained on sunsite (system/Network/sunacm/Netkit-B-0.05.tar.gz)
+
+4.4. Using Remote GPIB 33
+
+GPIB-Library GPIB-Library
+
+Server Stubs Server Stubs
+
+GPIB-LibraryClient Stubs Application host1
+
+ host2
+
+host3
+
+Figure 4.3: The distributed GPIB model
+
+34 Chapter 4. Using the GPIB Library
+
+The Application Suite 5.1 What is ibsh? Usually writing nice applications with a graphical user interface (GUI) is a really hard job since a lot of X-Toolkit,Motif or plain X11 routines has to be learned before. Thanks to J.Ousterhout's TCL/Tk Language this is not necessary anymore since comfortable, nice and colorful applications can be written within a very short time in TCL/Tk. Depending on the complexity of the application, the code can be more and more integrated into the TCL/Tk interpreter that minimizes the redundancy of code. The Tk widget set is very powerful and the functionality grows with the number of availiable extensions.
+
+ibsh has been designed as a basic-TCL/Tk interpreter with the capability to load Modules (DLLs) dynamically at runtime1, this saves memory and speeds up the development of new modules. Each Module availiable with this package can be staticaly linked to ibsh alternatively. 2
+
+The user could write Modules to handle special data types, calibrate data, support own hardware or whatever. The implementation of new modules should be very simple as only few changes to existing tcl-extensions are needed.
+
+The referencing of undefined symbols in the dll-modules is done automatically if the missing symbols are located in either libm.a,libc.a or libX11.a, if additional libraries are needed there is a simple control mechanism for explicit linking of desired libraries.
+
+ibsh comes along with several useful packages as basic data visualization extension kit as meters, dials, barcharts, turndials and a powerful plotting extension, a raster widget can be used as pixel display and if a soundcard or pcsnd driver is installed a sound extension can be used to signal exceptional conditions or whatever. With the basic functionality (without the Add-On Packages) of TCL/Tk a wide variety of applications can be made. The AddOn Packages make ibsh more scaleable, new modules can be tested without recompiling
+
+1The GPIB extension is included by default of course. 2Yes I know there is a dynamic loading extension called tcldl but I think its usage is a little bit confusing
+
+expecially for beginners. So I designed my own dll extension.
+
+35
+
+36 Chapter 5. The Application Suite the whole package. Alternatively if needed, modules can be linked statically with ibsh at compilation time.
+
+5.2 Using ibsh Due to the fact that ibsh is implemented on the top on the standard TCL/Tk interpreter you need not to learn a complete new language (assuming you're familiar with TCL/Tk). The GPIB commands are implemented as special command set: each gpib related command begins with gpib. A special extension is the capability to load modules at runtime so one need not to recompile ibsh if more extensions are desired. If ibsh has been installed correctly (with make install), dynamic loadable Modules will reside in /usr/local/lib/ibsh/modules, this can be changed editing the toplevel Makefile for ibsh. If no path has been specified on a module-loading command this path will be taken as default.
+
+5.2.1 Module Loading Example 5.2.1 Examples for dynamic module loading with ibsh #!/usr/local/lib/ibsh -f # ## now load modules
+
+dll load Turndial dll load Meters
+
+.... # # turndial .t pack .t
+
+#end
+
+Example 5.2.1 shows how the two widget librarys 'Turndial' and 'Meters' can be loaded. While dll modules are loaded the loader looks for undefined symbols in the module and links some standard librarys automatically until all symbols have been resolved. To have access to this mechanism for each module an associative array exists with the same name
+
+5.3. Writing Modules for ibsh 37 as the module that can be set to the library path and the library names. Example 5.2.2 Accessing the link mechanism #!/usr/local/lib/ibsh -f # ## now load modules
+
+set Mymodule(dll.libpath) ~:/usr/local/bin:/usr/mymodule/libs:. set Mymodule(dll.libs) "mylib1.a mylib2.a"
+
+dll load Mymodule
+
+Example 5.2.2 shows how new module specific librarys can be set to the desired path. Realize that using this feature will override the default settings, under some circumstances it could be neccessary to bind the standard librarys libm.a and libX11.a explicitely.
+
+5.3 Writing Modules for ibsh To write own modules for ibsh you should get familiar with the TCL C-Interface Mechanism first. The ibsh-specific code consists of two additional routines one Module init() routine that hooks own TCL-commands into ibsh's gearbox and one Module cleanup() that destroys the command bindings.
+
+Example 5.3.1 shows the code for a really dumb sample module that can be loaded with ibsh.
+
+Realize that the name of the Module functions and the name of the dll file must be the same.
+
+5.3.1 Some modules included I added some useful modules to the package by default and I think it will be very useful for lab-related application programs. The following list should give some more information about some extension modules:
+
+Graph.dll Contains XY-graph plots and barcharts and hypertext widgets, I think this will
+
+be the most used module for experimentalists.
+
+Meters.dll A Meter Widget and stripcharts. Useful where data should be observed on a
+
+short view.
+
+38 Chapter 5. The Application Suite Example 5.3.1 A simple ibsh module /*
+
+* * Module.c * * Sample Module for ibsh * * (c) 1995 C. Schroeter (clausi@chemie.fu-berlin.de) * * */
+
+#include !stdio.h? #include !stdlib.h? #include !string.h?
+
+#include !tcl.h? int Module.init ( Tcl.Interp *interp )- extern int MyModuleCmd .ANSI.ARGS.(( ClientData clientData,
+
+Tcl.Interp *interp,
+
+int argc, char *argv[] ));
+
+Tcl.CreateCommand(interp,"mycmd",MyModuleCmd,
+
+(ClientData) NULL, (Tcl.CmdDeleteProc *) NULL );
+
+return TCL.OK; ""
+
+int Module.cleanup ( Tcl.Interp *interp )- Tcl.DeleteCommand(interp,"mycmd"); "" int MyModuleCmd ( ClientData clientData,
+
+Tcl.Interp *interp,
+
+int argc, char *argv[] ) -
+
+printf("MyModuleCmd invoked !"n"); return TCL.OK; ""
+
+5.4. Configuration 39 Turndial.dll A circular dial widget (volume knob), nice and handy. Useful where screen
+
+space is a factor.
+
+Raster.dll A pixel-oriented raster display. Could be useful displaying pictures (this won't
+
+be necessary in Tk4.0)
+
+Sound.dll A quick hack to make events audible. Under some cicumstances this can be
+
+useful (process control).
+
+It would be nice if there would be a vector-data processing module so that data could be manipulated within the application program :-).
+
+5.4 Configuration ibsh can be configured at compiling time via the toplevel Makefile in ./applications/ibsh to search its modules in another path or to link modules statically if they're needed very often. For Details see the Makefile in ./applications/ibsh .
+
+40 Chapter 5. The Application Suite
+
+Library Reference A.1 Management Functions ud = ibfind(char *name) Returns a Unit Descriptor that will be assigned to the device
+
+designated by name.The device name can be specified in the form host:device to get a remote unit descriptor using the rGPIB system.
+
+ibonl(int ud,int bool) Sets the board 'online' if called with bool ? 0 and closes the
+
+driver if called with 0. If device Functions are used this routine will be called implicitely with the first call to ibfind().
+
+ibsic(int ud) Sends the IFC (interface clear) Message to the controller. Sets the Board
+
+to active state. This routine is called implicitely if is a device descriptor and set-ifc is enabled.
+
+ibsre(int ud,int bool) Send Remote Enable Message (assert the REN line). ibeos(int ud, int eos) Sets the EOS byte. This command does not overwrite the EOSbyte set in the library configuration.
+
+ibtmo(int ud,int tmo) Set the default timeout value. ibpad(int ud,int pad) Set the controller's primary address. ibsad(int ud,int sad) Set the controller's Secondary address 1. ibeot(int ud,int bool) Switch EOT Message on or off. Normally EOI is sent out with
+
+the last byte this can be disabled using ibeot()
+
+1Not supported with HP boards
+
+41
+
+42 Appendix A. Library Reference A.2 Device Functions ibwrt(int ud,char *msg,int nbytes) Writes the Message to the bus. The device and
+
+the controller are addressed implicitely, that means set to the desired talker/listener states before the message will be sent.
+
+ibrd(int ud,char *buf,int nbytes) Get a string from the bus and store it into buffer.
+
+Implicit addressing is done as on ibwrt()
+
+ibclr(int ud) Sends a 'Device Clear' Message to the device. ibrpp(int ud,char *ppr) Request Parrallel Poll, the poll byte is stored in ppr. ibwait(int ud,int mask) Wait for event masked with mask. Normally one of SRQI or
+
+RQS together with TIMO.
+
+ibrsp(int ud,char *spr) Request Serial Poll. The poll byte is stored in spr. ibtrg(int ud) Send a device trigger message to the device.
+
+A.3 Bus Level Functions ibcmd(int ud,char *cmd,int nbytes) Sends a message to the bus while ATN is asserted. ibwrt(int ud,char *msg,int nbytes) Sends a message without implicit addressing. The
+
+difference between a device descriptor and a bus-level descriptor is that no implicid addressing is done. A virtual device name that has the master flag set will map to bus-level descriptors.
+
+ibrd(int ud,char *buf,int nbytes) Reads bytes from the bus without imlicit addressing.
+
+ibcac(int ud,int bool) Become Active Controller. Sends TCS or TCA Message. This
+
+will set the ATN line to true.
+
+ibgts(int ud,int bool) Go to standby. This will release the ATN line. ibrsv(int ud,int v) Request Service. Sends out serial poll status. If bit 7 is set to 1 the
+
+SRQ line is pulled true.

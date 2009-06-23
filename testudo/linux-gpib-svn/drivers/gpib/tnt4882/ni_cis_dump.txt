@@ -1,0 +1,14 @@
+
+Socket 0:
+  dev_info
+    NULL 0ns, 512b
+  vers_1 4.1, "National Instruments", "PCMCIA-GPIB", "Rev. C", ""
+  config base 0x0100 mask 0x000f last_index 0x01
+  cftable_entry 0x01 [default]
+    [bvd] [wp] [rdybsy] [mwait]
+    Vcc Vnom 5V
+    timing wait 120us
+    io 0x0000-0x001f [lines=5] [8bit] [16bit]
+    irq mask 0xffff [level]
+  manfid 0x010b, 0x4882
+

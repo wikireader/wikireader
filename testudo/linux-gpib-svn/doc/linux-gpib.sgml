@@ -1,0 +1,5610 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.2//EN"
+	[
+<!ENTITY version SYSTEM "gpib_version.txt">
+<!ENTITY license SYSTEM "fdl.xml">
+]>
+
+<article>
+
+<articleinfo>
+<title>
+	Linux-GPIB &version Documentation
+</title>
+
+<author>
+	<firstname>Frank</firstname>
+	<othername>Mori</othername>
+	<surname>Hess</surname>
+	<affiliation>
+	<address>
+		fmhess@users.sourceforge.net
+	</address>
+	</affiliation>
+</author>
+
+<copyright>
+<year>2003-2006, 2008</year>
+<holder>Frank Mori Hess</holder>
+</copyright>
+</articleinfo>
+
+<section>
+<title>
+Copying
+</title>
+<para>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled
+<link LINKEND="gfdl">"GNU Free Documentation License"</link>.
+</para>
+<para>
+Alternatively, you may redistribute and/or modify this document under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+</para>
+</section>
+
+<section ID="configuration">
+<title>
+	Configuration
+</title>
+<para>
+Configuration of the GPIB library is accomplished through the
+configuration file
+<link LINKEND="configuration-gpib-conf">/etc/gpib.conf</link>,
+and the administration program
+<link LINKEND="configuration-gpib-config">gpib_config</link>.
+</para>
+<refentry ID="configuration-gpib-conf">
+<refmeta>
+	<refentrytitle>gpib.conf</refentrytitle>
+	<manvolnum>5</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>gpib.conf</refname>
+	<refpurpose>GPIB library configuration file</refpurpose>
+</refnamediv>
+<refsect1>
+<title>Description</title>
+<para>
+The library, and the administration tool
+<link LINKEND="configuration-gpib-config">gpib_config</link>
+read their configuration information from the
+file /etc/gpib.conf.  A template gpib.conf
+file can be found in the util/templates/ subdirectory of the linux-gpib
+package.
+</para>
+<para>
+The configuration file must contain one or more 'interface' entries, and
+can contain zero or more 'device' entries.  'device' entries are only
+required if you wish to open device descriptors with
+<link LINKEND="reference-function-ibfind">ibfind()</link> instead
+of using <link LINKEND="reference-function-ibdev">ibdev()</link>.
+Several example entries, and a table summarizing the possible
+options follow.
+</para>
+<para>
+<programlisting>
+
+interface {
+	minor = 0
+	board_type = "ni_pci"
+	pad = 0
+	master = yes
+}
+
+interface {
+	minor = 1
+	board_type = "ines_pci"
+	name = "joe"
+	pad = 5
+	sad = 0
+	timeout = T10s
+	pci_bus = 0
+	pci_slot = 0xd
+	master = no
+}
+
+interface {
+	minor = 2
+	board_type = "pcII"
+	pad = 3
+	sad = 0x62
+	eos = 0x0d
+	set-reos = yes
+	set-bin = no
+	set-xeos = no
+	set-eot = yes
+	base = 0x300
+	irq  = 5
+	dma  = 0
+	master = no
+}
+
+device {
+	minor = 0
+	name = "counter"
+	pad = 24
+}
+
+device {
+	minor = 0
+	name = "voltmeter"
+	pad = 7
+	sad = 110
+	eos = 0xa
+	set-reos = yes
+	set-bin = no
+	set-xeos = yes
+	set-eot = no
+	timeout = T1s
+}
+
+</programlisting>
+</para>
+<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>configuration options</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>option name</entry>
+	<entry>description</entry>
+	<entry>used by interface or device entries</entry>
+	<entry>required or optional</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>base</entry>
+	<entry>Specifies the base ioport or io memory address for a
+	board that lacks plug-and-play capability.</entry>
+	<entry>interface</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>board_type</entry>
+	<entry>Specifies the type of interface board.  See the drivers.txt
+	file for a list of possible board types, and the kernel driver
+	module that supports them.</entry>
+	<entry>interface</entry>
+	<entry>required</entry>
+	</row>
+	<row>
+	<entry>dma</entry>
+	<entry>Specifies the dma channel for a board that lacks plug-and-play
+	capability.</entry>
+	<entry>interface</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>eos</entry>
+	<entry>Sets the end-of-string byte for board or device descriptors
+	obtained with ibfind().  See also the set-reos, set-bin, and set-xeos
+	options.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>irq</entry>
+	<entry>Specifies the interrupt level for a board that lacks
+	plug-and-play capability.</entry>
+	<entry>interface</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>master</entry>
+	<entry>Set to 'yes' if you want the interface board to
+	be the system controller of the bus.  There can only
+	be one system controller on a bus.</entry>
+	<entry>interface</entry>
+	<entry>required</entry>
+	</row>
+	<row>
+	<entry>minor</entry>
+	<entry>'minor' specifies the minor number of the device file this
+	interface board will use.  A 'minor' of 0 corresponds
+	to /dev/gpib0, 1 is /dev/gpib1, etc.  The minor number is also
+	equal to the 'board index' which can be used as a board descriptor,
+	and is passed as one of the arguments of <link LINKEND="reference-function-ibdev">
+	ibdev()</link>
+	</entry>
+	<entry>interface</entry>
+	<entry>required</entry>
+	</row>
+	<row>
+	<entry>name</entry>
+	<entry>The 'name' specifies the name which can be used with ibfind()
+	to get a descriptor for the board or device associated with this entry.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>pad</entry>
+	<entry>Specifies the primary GPIB address (valid addresses are 0 to 30).
+	For interfaces, this is the primary address that the board will be
+	assigned when it is first brought online.  For devices, this is address
+	that will be used by device descriptors obtained with ibfind().</entry>
+	<entry>interface or device</entry>
+	<entry>required</entry>
+	</row>
+	<row>
+	<entry>pci_bus</entry>
+	<entry>Useful for distinguishing between multiple PCI cards.  If
+	you have more than one PCI card that with the same 'board_type', you can
+	use the 'pci_bus' and 'pci_slot' options to specify the particular
+	card you are interested in.  </entry>
+	<entry>interface</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>pci_slot</entry>
+	<entry>Can be used in conjunction with 'pci_bus' to specify
+	a particular pci card.</entry>
+	<entry>interface</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>sad</entry>
+	<entry>Specifies the secondary GPIB address.  Valid values are 0, or
+	0x60 to 0x7e hexadecimal (96 to 126 decimal).  A value of 0 means
+	secondary addressing is disabled (the default).  Secondary addresses
+	from 0 to 30
+	are specified by the library's convention of adding an offset of 0x60.
+	</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>set-bin</entry>
+	<entry>Enables 8-bit comparisons when matching the
+	end-of-string byte, instead of only comparing the
+	7 least significant bits.  Only affects descriptors
+	returned by ibfind(), and has same effect as setting
+	the BIN bit in a
+	<link LINKEND="reference-function-ibeos">ibeos()</link>
+	call.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>set-eot</entry>
+	<entry>Enables assertion of the EOI line at the
+	end of writes, for descriptors
+	returned by ibfind().  See
+	<link LINKEND="reference-function-ibeot">ibeot()</link>.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>set-reos</entry>
+	<entry>Enables the termination of reads on reception of the
+	end-of-string byte for descriptors returned by ibfind().
+	Same as setting the REOS bit in a
+	<link LINKEND="reference-function-ibeos">ibeos()</link>
+	call.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>set-xeos</entry>
+	<entry>Enables the assertion of EOI on transmission of the
+	end-of-string byte for descriptors returned by ibfind().
+	Same as setting the XEOS bit in a
+	<link LINKEND="reference-function-ibeos">ibeos()</link>
+	call.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	<row>
+	<entry>timeout</entry>
+	<entry>Sets the io timeout for a board or device descriptor opened through
+	ibfind().  The possible settings are the same as the constants
+	used by <link LINKEND="reference-function-ibtmo">ibtmo()</link>.</entry>
+	<entry>interface or device</entry>
+	<entry>optional</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+</para>
+</refsect1>
+</refentry>
+
+<refentry ID="configuration-gpib-config">
+<refmeta>
+	<refentrytitle>gpib_config</refentrytitle>
+	<manvolnum>8</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>gpib_config</refname>
+	<refpurpose>GPIB administration program</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<cmdsynopsis>
+<command>gpib_config</command>
+<arg>--minor <replaceable>number</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis>
+<command>gpib_config</command>
+<arg>--board-type <replaceable>board_type</replaceable></arg>
+<arg>--dma <replaceable>number</replaceable></arg>
+<arg>--file <replaceable>file_path</replaceable></arg>
+<arg>--iobase <replaceable>number</replaceable></arg>
+<arg>--ifc</arg>
+<arg>--no-ifc</arg>
+<arg>--irq <replaceable>number</replaceable></arg>
+<arg>--minor <replaceable>number</replaceable></arg>
+<arg>--pad <replaceable>number</replaceable></arg>
+<arg>--pci-bus <replaceable>number</replaceable></arg>
+<arg>--pci-slot <replaceable>number</replaceable></arg>
+<arg>--sad <replaceable>number</replaceable></arg>
+<arg>--sre</arg>
+<arg>--no-sre</arg>
+<arg>--system-controller</arg>
+<arg>--no-system-controller</arg>
+</cmdsynopsis>
+</refsynopsisdiv>
+<refsect1>
+<title>Description</title>
+<para>gpib_config must be run after the kernel driver module for
+a GPIB interface board is loaded.  It performs configuration of
+driver settings
+that cannot be performed by libgpib at runtime.  This includes
+configuration which requires root privilege (for example, setting the
+base address or irq of a board), and configuration which should only
+be performed once and not automatically redone every time a program
+using libgpib is run (for example, setting the board's GPIB address).
+</para>
+<para>
+The board to be configured by gpib_config is selected by the
+<option>--minor</option> option.  By default, the board settings
+are read from the
+<link LINKEND="configuration-gpib-conf">gpib.conf</link>
+configuration file.  However, individual settings can be
+overiden by use of command-line options (see below).
+</para>
+</refsect1>
+<refsect1>
+<title>Options</title>
+<para><option>-b, --iobase <replaceable>number</replaceable></option></para>
+<para>Set io base address to <replaceable>number</replaceable> for boards
+without plug-and-play cabability.</para>
+<para><option>-d, --dma <replaceable>number</replaceable></option></para>
+<para>Specify isa dma channel <replaceable>number</replaceable> for boards
+without plug-and-play cabability.</para>
+<para><option>-I, --init-data <replaceable>file_path</replaceable></option></para>
+<para>Upload binary initialization data (firmware) from <replaceable>file_path</replaceable>
+to board.</para>
+<para><option>-i, --irq <replaceable>number</replaceable></option></para>
+<para>Specify irq line <replaceable>number</replaceable> for boards without
+plug-and-play cabability.</para>
+<para><option>-f, --file <replaceable>file_path</replaceable></option></para>
+<para>Specify file path for configuration file.  The values in the configuration
+file will be used as defaults for unspecified options.  The default configuration
+file is "/etc/gpib.conf".</para>
+<para><option>-h, --help</option></para>
+<para>Print help on options and exit.</para>
+<para><option>-l, --pci-slot <replaceable>number</replaceable></option></para>
+<para>Specify pci slot <replaceable>number</replaceable> to select a specific
+pci board. If used, you must also specify the pci bus with <option>--pci-bus</option>.
+</para>
+<para><option>-m, --minor <replaceable>number</replaceable></option></para>
+<para>
+Configure gpib device file with minor number <replaceable>number</replaceable>
+(default is 0).</para>
+<para><option>-p, --pad <replaceable>number</replaceable></option></para>
+<para>
+Specify primary gpib address.  <replaceable>number</replaceable> should be in
+the range 0 through 30.
+</para>
+<para><option>-s, --sad <replaceable>number</replaceable></option></para>
+<para>
+Specify secondary gpib address.  <replaceable>number</replaceable>
+should be 0 (disabled) or in the range 96 through 126 (0x60 through 0x7e hexadecimal).
+</para>
+<para><option>-t, --board-type <replaceable>board_type</replaceable></option></para>
+<para>Set board type to <replaceable>board_type</replaceable>.</para>
+<para><option>-u, --pci-bus <replaceable>number</replaceable></option></para>
+<para>Specify pci bus <replaceable>number</replaceable> to select a specific
+pci board.  If used, you must also specify the pci slot with <option>--pci-slot</option>.
+</para>
+<para><option>--[no-]ifc</option></para>
+<para> Perform (or not) interface clear after bringing board online.
+Default is <option>--ifc</option>.</para>
+<para><option>--[no-]sre</option></para>
+<para>Assert (or not) remote enable line after bringing board online.
+Default is <option>--sre</option>.</para>
+<para><option>--[no-]system-controller</option></para>
+<para>Configure board as system controller (or not).</para>
+</refsect1>
+</refentry>
+</section>
+
+<section ID="supported-hardware">
+<title>
+	Supported Hardware
+</title>
+<section ID="hardware-matrix">
+<title>
+	Supported Hardware Matrix
+</title>
+<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>Linux-GPIB Supported Hardware Matrix</title>
+	<tgroup COLS="4" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>make</entry>
+	<entry>model</entry>
+	<entry>kernel driver module</entry>
+	<entry>board_type (for /etc/gpib.conf)</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>Agilent (HP)</entry>
+	<entry><link LINKEND="hp-82341">82341C</link></entry>
+	<entry>hp_82341.ko</entry>
+	<entry>hp_82341</entry>
+	</row>
+	<row>
+	<entry>Agilent (HP)</entry>
+	<entry><link LINKEND="hp-82341">82341D</link></entry>
+	<entry>hp_82341.ko</entry>
+	<entry>hp_82341</entry>
+	</row>
+	<row>
+	<entry>Agilent (HP)</entry>
+	<entry><link LINKEND="agilent-82350b">82350A</link></entry>
+	<entry>agilent_82350b.ko</entry>
+	<entry>agilent_82350b</entry>
+	</row>
+	<row>
+	<entry>Agilent</entry>
+	<entry><link LINKEND="agilent-82350b">82350B</link></entry>
+	<entry>agilent_82350b.ko</entry>
+	<entry>agilent_82350b</entry>
+	</row>
+	<row>
+	<entry>Agilent</entry>
+	<entry><link LINKEND="agilent-82357a">82357A</link></entry>
+	<entry>agilent_82357a.ko</entry>
+	<entry>agilent_82357a</entry>
+	</row>
+	<row>
+	<entry>Agilent</entry>
+	<entry><link LINKEND="agilent-82357a">82357B</link></entry>
+	<entry>agilent_82357a.ko</entry>
+	<entry>agilent_82357a</entry>
+	</row>
+	<row>
+	<entry>Capital Equipment Corporation</entry>
+	<entry>PC-488</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcII</entry>
+	</row>
+	<row>
+	<entry>Capital Equipment Corporation</entry>
+	<entry>PCI-488</entry>
+	<entry>cec_gpib.ko</entry>
+	<entry>cec_pci</entry>
+	</row>
+	<row>
+	<entry>CONTEC</entry>
+	<entry>GP-IB(PC)</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcIIa</entry>
+	</row>
+	<row>
+	<entry>Hameg</entry>
+	<entry>HO80</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcII</entry>
+	</row>
+	<row>
+	<entry>Hameg</entry>
+	<entry>HO80-2</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_isa</entry>
+	</row>
+	<row>
+	<entry>Hewlett Packard</entry>
+	<entry>HP82335</entry>
+	<entry>hp82335.ko</entry>
+	<entry>hp82335</entry>
+	</row>
+	<row>
+	<entry>Hewlett Packard</entry>
+	<entry>HP27209</entry>
+	<entry>hp82335.ko</entry>
+	<entry>hp82335</entry>
+	</row>
+	<row>
+	<entry>Ines</entry>
+	<entry>GPIB-HS-NT</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_isa</entry>
+	</row>
+	<row>
+	<entry>Ines</entry>
+	<entry>GPIB for Compact PCI</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_pci, ines_pci_unaccel</entry>
+	</row>
+	<row>
+	<entry>Ines</entry>
+	<entry>GPIB for PCI</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_pci, ines_pci_unaccel</entry>
+	</row>
+	<row>
+	<entry>Ines</entry>
+	<entry>GPIB for PCMCIA</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_pcmcia, ines_pcmcia_unaccel</entry>
+	</row>
+	<row>
+	<entry>Ines</entry>
+	<entry>GPIB PC/104</entry>
+	<entry>ines_gpib.ko</entry>
+	<entry>ines_isa</entry>
+	</row>
+	<row>
+	<entry>Iotech</entry>
+	<entry>GP488B</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcIIa</entry>
+	</row>
+	<row>
+	<entry>Keithley</entry>
+	<entry>KPCI-488</entry>
+	<entry>cec_gpib.ko</entry>
+	<entry>cec_pci</entry>
+	</row>
+	<row>
+	<entry>Keithley</entry>
+	<entry>MBC-488</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcII</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>CPCI-GPIB</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_pci, cbi_pci_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>ISA-GPIB</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_isa, cbi_isa_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>ISA-GPIB/LC</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_isa_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>ISA-GPIB-PC2A</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcIIa (nec7210 chip), pcIIa_cb7210 (cb7210 chip)</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>PCI-GPIB/1M</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_pci, cbi_pci_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>PCI-GPIB/300K</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_pci_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>PCMCIA-GPIB</entry>
+	<entry>cb7210.ko</entry>
+	<entry>cbi_pcmcia, cbi_pcmcia_unaccel</entry>
+	</row>
+	<row>
+	<entry>Measurement Computing (Computer Boards)</entry>
+	<entry>USB-488</entry>
+	<entry>ni_usb_gpib.ko</entry>
+	<entry>ni_usb_b</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>AT-GPIB (with NAT4882 chip)</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_nat4882_isa, ni_nat4882_isa_accel</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>AT-GPIB (with NEC7210 chip)</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_nec_isa, ni_nec_isa_accel</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>AT-GPIB/TNT</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_isa, ni_isa_accel</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry><link LINKEND="ni-usb-b">GPIB-USB-B</link></entry>
+	<entry>ni_usb_gpib.ko</entry>
+	<entry>ni_usb_b</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry><link LINKEND="ni-usb-hs">GPIB-USB-HS</link></entry>
+	<entry>ni_usb_gpib.ko</entry>
+	<entry>ni_usb_b</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCI-GPIB</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_pci</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCI-GPIB+</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_pci</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCM-GPIB</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_pci</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PXI-GPIB</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_pci</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCII</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcII</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCIIa</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcIIa</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCII/IIa</entry>
+	<entry>pc2_gpib.ko</entry>
+	<entry>pcII or pcII_IIa (depending on board switch)</entry>
+	</row>
+	<row>
+	<entry>National Instruments</entry>
+	<entry>PCMCIA-GPIB</entry>
+	<entry>tnt4882.ko</entry>
+	<entry>ni_pcmcia, ni_pcmcia_accel</entry>
+	</row>
+	<row>
+	<entry>Quancom</entry>
+	<entry>PCIGPIB-1</entry>
+	<entry>ines_gpib.ko (Ines iGPIB 72010 chip) or cb7210.ko (Measurement Computing cb7210 chip)</entry>
+	<entry>ines_pci or ines_pci_unaccel (Ines iGPIB 72010 chip),
+	cbi_pci_unaccel (Measurement Computing cb7210 chip)</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+</para>
+</section>
+<section ID="board-specific-notes">
+<title>Board-Specific Notes</title>
+<section ID="hp-82341">
+<title>Agilent (HP) 82341</title>
+<para>
+After power-up, the Agilent 82341 boards require a firmware upload before they
+can be used.  This can be accomplished using the "--init-data" option of
+<link LINKEND="configuration-gpib-config">gpib_config</link>.  The
+firmware data can be found in the gpib_firmware
+tarball available from the
+<ulink URL="http://linux-gpib.sourceforge.net/">Linux-GPIB home page</ulink>.
+Note the C and D versions use different firmware data.
+</para>
+<para>
+If you specify a non-zero base address in /etc/gpib.conf, the driver will
+assume you are trying to configure a 82341C.  Otherwise, the driver will
+use the kernel's ISAPNP support to attempt to configure an 82341D.
+</para>
+<para>
+The 82341 does not support detection of an end-of-string character
+in hardware, it only automatically detects the when the EOI
+line is asserted.  Thus if you use the REOS
+flag for a read, the board's fifos will
+not be used for the transfer.  This will greatly reduce the maximum transfer
+rate for your board (which may or may not be noticeable depending on the
+device you are talking to).
+</para>
+</section>
+<section ID="agilent-82350b">
+<title>Agilent 82350A/B</title>
+<para>
+The Agilent 82350A and 82350B do not support detection of an end-of-string character
+during reads in hardware, they can only detect assertion of the EOI
+line.  Thus if you use the REOS
+flag for a read, the boards' fifos will
+not be used for the transfer.  This will greatly reduce the maximum transfer
+rate for your board (which may or may not be noticeable depending on the
+device you are talking to).
+</para>
+<para>
+After power-up, the 82350A boards require a firmware upload before they
+can be used.  This can be accomplished using the "--init-data" option of
+<link LINKEND="configuration-gpib-config">gpib_config</link>.  The
+firmware data can be found in the gpib_firmware
+tarball available from the
+<ulink URL="http://linux-gpib.sourceforge.net/">Linux-GPIB home page</ulink>.
+The 82350B does not require a firmware upload.
+</para>
+</section>
+<section ID="agilent-82357a">
+<title>Agilent 82357A/B</title>
+<para>
+The Agilent 82357A and 82357B require a firmware upload
+(before gpib_config is run) to become functional
+after being plugged in.  The linux-gpib tarball contains hotplug scripts
+for automatically running the fxload program to upload the firmware (and
+to run gpib_config after the firmware is uploaded).
+However, the actual firmware
+data itself must be obtained seperately, as part of the gpib_firmware
+tarball available from the
+<ulink URL="http://linux-gpib.sourceforge.net/">Linux-GPIB home page</ulink>.
+</para>
+<para>
+The 82357A/B have a few limitation due to their firmware code:
+<itemizedlist>
+<listitem>
+<para>
+They cannot be run as a device, but must be the system controller.
+</para>
+</listitem>
+<listitem>
+<para>
+They cannot be assigned a secondary address.
+</para>
+</listitem>
+<listitem>
+<para>
+They cannot do 7 bit compares when looking for an end-of-string character (they always
+compare all 8 bits).
+</para>
+</listitem>
+</itemizedList>
+</para>
+</section>
+<section ID="ni-usb-b">
+<title>National Instruments GPIB-USB-B</title>
+<para>
+The USB-B requires a firmware upload (before gpib_config is
+run) to become functional
+after being plugged in.  The linux-gpib tarball contains hotplug scripts
+for automatically running the fxload program to upload the firmware (and
+to run gpib_config after the firmware is uploaded).
+However, the actual firmware
+data itself must be obtained seperately, as part of the gpib_firmware
+tarball available from the
+<ulink URL="http://linux-gpib.sourceforge.net/">Linux-GPIB home page</ulink>.
+</para>
+</section>
+<section ID="ni-usb-hs">
+<title>National Instruments GPIB-USB-HS</title>
+<para>
+Unlike the USB-B, the USB-HS does not require a firmware upload to become
+functional
+after being plugged in.  The linux-gpib tarball contains hotplug scripts
+which will automatically run gpib_config after the device is plugged in.
+</para>
+</section>
+</section>
+</section>
+
+<section ID="reference">
+<title>
+	Linux-GPIB Reference
+</title>
+<para>
+	Reference for libgpib functions, macros, and constants.
+</para>
+<section>
+<title>Global Variables</title>
+
+<refentry ID="reference-globals-ibcnt">
+<refmeta>
+	<refentrytitle>ibcnt and ibcntl</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibcnt and ibcntl</refname>
+	<refpurpose>hold number of bytes transferred, or errno</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<programlisting>
+#include &lt;gpib/ib.h&gt;
+
+volatile int ibcnt;
+volatile long ibcntl;
+</programlisting>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibcnt and ibcntl are set after IO operations to the the the number of
+	bytes sent or received.  They are also set to the value of errno after
+	EDVR or EFSO errors.
+	</para>
+	<para>
+	If you wish to avoid using a global variable, you may instead use
+	<link LINKEND="reference-function-thread-ibcnt">ThreadIbcnt()
+	or ThreadIbcntl()</link>
+	which return thread-specific values.
+	</para>
+
+</refsect1>
+</refentry>
+
+<refentry ID="reference-globals-iberr">
+<refmeta>
+	<refentrytitle>iberr</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>iberr</refname>
+	<refpurpose>holds error code</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<programlisting>
+#include &lt;gpib/ib.h&gt;
+
+volatile int iberr;
+</programlisting>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	iberr is set whenever a function from the 'traditional' or 'multidevice'
+	API fails with an error.  The meaning of each possible value of iberr
+	is summarized
+	in the following table:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>iberr error codes</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value</entry>
+	<entry>meaning</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>EDVR</entry>
+	<entry>0</entry>
+	<entry>A system call has failed.  ibcnt/ibcntl will be set to the
+	value of errno.</entry>
+	</row>
+	<row>
+	<entry>ECIC</entry>
+	<entry>1</entry>
+	<entry>Your interface board needs to be controller-in-charge, but
+	is not.</entry>
+	</row>
+	<row>
+	<entry>ENOL</entry>
+	<entry>2</entry>
+	<entry>You have attempted to write data or command bytes, but
+	there are no listeners currently addressed.</entry>
+	</row>
+	<row>
+	<entry>EADR</entry>
+	<entry>3</entry>
+	<entry>The interface board has failed to address itself properly
+	before starting an io operation.</entry>
+	</row>
+	<row>
+	<entry>EARG</entry>
+	<entry>4</entry>
+	<entry>One or more arguments to the function call were invalid.</entry>
+	</row>
+	<row>
+	<entry>ESAC</entry>
+	<entry>5</entry>
+	<entry>The interface board needs to be system controller, but is not.
+	</entry>
+	</row>
+	<row>
+	<entry>EABO</entry>
+	<entry>6</entry>
+	<entry>A read or write of data bytes has been aborted, possibly due
+	to a timeout or reception of a device clear command.</entry>
+	</row>
+	<row>
+	<entry>ENEB</entry>
+	<entry>7</entry>
+	<entry>The GPIB interface board does not exist, its driver is not
+	loaded, or it is not configured properly.</entry>
+	</row>
+	<row>
+	<entry>EDMA</entry>
+	<entry>8</entry>
+	<entry>Not used (DMA error), included for compatibility purposes.</entry>
+	</row>
+	<row>
+	<entry>EOIP</entry>
+	<entry>10</entry>
+	<entry>Function call can not proceed due to an asynchronous IO operation
+	(ibrda(), ibwrta(), or ibcmda()) in progress.</entry>
+	</row>
+	<row>
+	<entry>ECAP</entry>
+	<entry>11</entry>
+	<entry>Incapable of executing function call, due the GPIB board lacking
+	the capability, or
+	the capability being disabled in software.</entry>
+	</row>
+	<row>
+	<entry>EFSO</entry>
+	<entry>12</entry>
+	<entry>File system error.  ibcnt/ibcntl will be set to the value of errno.</entry>
+	</row>
+	<row>
+	<entry>EBUS</entry>
+	<entry>14</entry>
+	<entry>An attempt to write command bytes to the bus has timed out.</entry>
+	</row>
+	<row>
+	<entry>ESTB</entry>
+	<entry>15</entry>
+	<entry>One or more serial poll status bytes have been lost.  This can
+	occur due to
+	too many status bytes accumulating (through automatic serial polling)
+	without being read.</entry>
+	</row>
+	<row>
+	<entry>ESRQ</entry>
+	<entry>16</entry>
+	<entry>The serial poll request service line is stuck on.  This can occur
+	if a physical device on the bus requests service, but its GPIB address has
+	not been opened
+	(via ibdev() for example) by any process.  Thus the automatic serial
+	polling routines are unaware of the device's existence and will never
+	serial poll it.
+	</entry>
+	</row>
+	<row>
+	<entry>ETAB</entry>
+	<entry>20</entry>
+	<entry>This error can be returned by
+	<link LINKEND="reference-function-ibevent">ibevent()</link>, FindLstn(), or
+	FindRQS().  See their descriptions for more information.</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+	<para>
+	If you wish to avoid using a global variable, you may instead use
+	<link LINKEND="reference-function-thread-iberr">ThreadIberr()</link>
+	which returns a thread-specific value.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-globals-ibsta">
+<refmeta>
+	<refentrytitle>ibsta</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibsta</refname>
+	<refpurpose>holds status</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+<programlisting>
+#include &lt;gpib/ib.h&gt;
+
+volatile int ibsta;
+</programlisting>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibsta is set whenever a function from the 'traditional' or 'multidevice'
+	API is called.  Each of the bits in ibsta has a different meaning, summarized
+	in the following table:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>ibsta Bits</title>
+	<tgroup COLS="4" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>bit</entry>
+	<entry>value (hexadecimal)</entry>
+	<entry>meaning</entry>
+	<entry>used for board/device</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>DCAS</entry>
+	<entry>0x1</entry>
+	<entry>DCAS is set when a board receives the device clear command
+	(that is, the
+	SDC or DCL <link LINKEND="reference-command-bytes">command byte</link>).
+	It is cleared on the next 'traditional' or
+	'multidevice' function call following ibwait() (with DCAS set in the
+	wait mask), or following a read
+	or write (ibrd(), ibwrt(), Receive(), etc.).
+	The DCAS and DTAS bits will only be set if the event queue is disabled.
+	The event queue may be disabled with
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>DTAS</entry>
+	<entry>0x2</entry>
+	<entry>DTAS is set when a board has received a device trigger command
+	(that is,
+	the GET <link LINKEND="reference-command-bytes">command byte</link>).
+	It is cleared on the next 'traditional' or
+	'multidevice' function call following ibwait() (with DTAS in the wait
+	mask).
+	The DCAS and DTAS bits will only be set if the event queue is disabled.
+	The event queue may be disabled with
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>LACS</entry>
+	<entry>0x4</entry>
+	<entry>Board is currently addressed as a listener.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>TACS</entry>
+	<entry>0x8</entry>
+	<entry>Board is currently addressed as talker.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>ATN</entry>
+	<entry>0x10</entry>
+	<entry>The ATN line is asserted.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>CIC</entry>
+	<entry>0x20</entry>
+	<entry>Board is controller-in-charge, so it is able to set the ATN line.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>REM</entry>
+	<entry>0x40</entry>
+	<entry>Board is in 'remote' state.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>LOK</entry>
+	<entry>0x80</entry>
+	<entry>Board is in 'lockout' state.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>CMPL</entry>
+	<entry>0x100</entry>
+	<entry>I/O operation is complete.  Useful for determining when
+	an asynchronous io operation (ibrda(), ibwrta(), etc) has
+	completed.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>EVENT</entry>
+	<entry>0x200</entry>
+	<entry>One or more clear, trigger, or interface clear events have been received,
+	and are available in the event queue
+	(see <link LINKEND="reference-function-ibevent">ibevent()</link>).
+	The EVENT bit will only be set if the event queue is enabled.  The
+	event queue may be enabled with
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>SPOLL</entry>
+	<entry>0x400</entry>
+	<entry>If this bit is enabled (see ibconfig()), it is set when the board is
+	serial polled.  The SPOLL bit is cleared when the board requests service
+	(see ibrsv()) or you call ibwait() on the board with SPOLL in the wait mask.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>RQS</entry>
+	<entry>0x800</entry>
+	<entry>RQS indicates that the device has requested service, and one
+	or more status bytes are available for reading with ibrsp().  RQS will
+	only be set if you have automatic serial polling enabled (see
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>).</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>SRQI</entry>
+	<entry>0x1000</entry>
+	<entry>SRQI indicates that a device connected to the board is asserting
+	the SRQ line.  It
+	is only set if the board is the controller-in-charge.  If
+	automatic serial polling is enabled (see
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>),
+	SRQI will generally be cleared,
+	since when a device requests service it will be automatically
+	polled and then unassert SRQ.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>END</entry>
+	<entry>0x2000</entry>
+	<entry>END is set if the last io operation ended with the EOI
+	line asserted, and may be set on reception of the end-of-string character.
+	The
+	IbcEndBitIsNormal option of ibconfig() can be used to configure
+	whether or not END should be set on reception of the eos character.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>TIMO</entry>
+	<entry>0x4000</entry>
+	<entry>TIMO indicates that the last io operation or ibwait() timed out.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>ERR</entry>
+	<entry>0x8000</entry>
+	<entry>ERR is set if the last 'traditional' or 'multidevice' function
+	call failed.  The global variable <link LINKEND="reference-globals-iberr">iberr</link>
+	 will be set indicate the
+	cause of the error.</entry>
+	<entry>board or device</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+	<para>
+	If you wish to avoid using a global variable, you may instead use
+	<link LINKEND="reference-function-thread-ibsta">ThreadIbsta()</link>
+	which returns a thread-specific value.
+	</para>
+</refsect1>
+</refentry>
+
+</section>
+
+<section>
+<title>
+	'Traditional' API Functions
+</title>
+
+<refentry ID="reference-function-ibask">
+<refmeta>
+	<refentrytitle>ibask</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibask</refname>
+	<refpurpose>query configuration (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibask</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>option</parameter></paramdef>
+		<paramdef>int *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Queries various configuration settings associated with the
+	board or device descriptor <parameter>ud</parameter>.  The
+	<parameter>option</parameter> argument specifies the particular
+	setting you wish to query.  The result of the query is written
+	to the location specified by <parameter>result</parameter>.
+	To change the descriptor's configuration, see
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>.
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>ibask options</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>option</entry>
+	<entry>value (hexadecimal)</entry>
+	<entry>result of query</entry>
+	<entry>used for board/device</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>IbaPAD</entry>
+	<entry>0x1</entry>
+	<entry>GPIB primary address</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaSAD</entry>
+	<entry>0x2</entry>
+	<entry>GPIB secondary address (0 for none, 0x60 to 0x7e for secondary
+	addresses 0 to 30)</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaTMO</entry>
+	<entry>0x3</entry>
+	<entry>Timeout setting for io operations (a number from 0 to 17).  See
+	<link LINKEND="reference-function-ibtmo">ibmto()</link>.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaEOT</entry>
+	<entry>0x4</entry>
+	<entry>Nonzero if EOI is asserted with last byte on writes.
+	See <link LINKEND="reference-function-ibeot">ibeot()</link>.
+	</entry>
+	<entry></entry>
+	</row>
+	<row>
+	<entry>IbaPPC</entry>
+	<entry>0x5</entry>
+	<entry>Parallel poll configuration.  See
+	<link LINKEND="reference-function-ibppc">ibppc()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaREADDR</entry>
+	<entry>0x6</entry>
+	<entry>Useless, included for compatibility only.</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbaAUTOPOLL</entry>
+	<entry>0x7</entry>
+	<entry>Nonzero if automatic serial polling is enabled.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaCICPROT</entry>
+	<entry>0x8</entry>
+	<entry>Useless, included for compatibility only.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaSC</entry>
+	<entry>0xa</entry>
+	<entry>Nonzero if board is system controller.
+	See <link LINKEND="reference-function-ibrsc">ibrsc()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaSRE</entry>
+	<entry>0xb</entry>
+	<entry>Nonzero if board autmatically asserts REN line when
+	it becomes the system controller.  See
+	<link LINKEND="reference-function-ibsre">ibsre()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaEOSrd</entry>
+	<entry>0xc</entry>
+	<entry>Nonzero if termination of reads on reception of the end-of-string
+	character is enabled.  See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the REOS bit.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaEOSwrt</entry>
+	<entry>0xd</entry>
+	<entry>Nonzero if EOI is asserted whenever end-of-string character is
+	sent.  See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the XEOS bit.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaEOScmp</entry>
+	<entry>0xe</entry>
+	<entry>Nonzero if all 8 bits are used to match end-of-string
+	character.  Zero if only least significant 7 bits are used.
+	See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the BIN bit.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaEOSchar</entry>
+	<entry>0xf</entry>
+	<entry>The end-of-string byte.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaPP2</entry>
+	<entry>0x10</entry>
+	<entry>Nonzero if in local parallel poll configure mode.  Zero
+	if in remote parallel poll configure mode.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaTIMING</entry>
+	<entry>0x11</entry>
+	<entry>Number indicating T1 delay.  1 for 2 microseconds, 2 for 500
+	nanoseconds, 3 for 350 nanoseconds.  The values are declared in
+	the header files as the constants T1_DELAY_2000ns, T1_DELAY_500ns,
+	and T1_DELAY_350ns.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaReadAdjust</entry>
+	<entry>0x13</entry>
+	<entry>Nonzero if byte pairs are automatically swapped during
+	reads.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaWriteAdjust</entry>
+	<entry>0x14</entry>
+	<entry>Nonzero if byte pairs are automatically swapped during
+	writes.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaEventQueue</entry>
+	<entry>0x15</entry>
+	<entry>Nonzero if event queue is enabled.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaSPollBit</entry>
+	<entry>0x16</entry>
+	<entry>Nonzero if the use of the SPOLL bit in ibsta is enabled.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaSendLLO</entry>
+	<entry>0x17</entry>
+	<entry>Nonzero if devices connected to this board are automatically
+	put into local lockout
+	mode when brought online with ibfind() or ibdev().</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaSPollTime</entry>
+	<entry>0x18</entry>
+	<entry>Timeout for serial polls.  The value of the result
+	is between 0 and 17, and has the same meaning as in
+	<link LINKEND="reference-function-ibtmo">ibtmo()</link>.
+	</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbaPPollTime</entry>
+	<entry>0x18</entry>
+	<entry>Timeout for parallel polls.  The value of the result
+	is between 0 and 17, and has the same meaning as in
+	<link LINKEND="reference-function-ibtmo">ibtmo()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaEndBitIsNormal</entry>
+	<entry>0x1a</entry>
+	<entry>Nonzero if END bit of ibsta is set on reception of end-of-string
+	character or EOI.  Zero if END bit is only set on EOI.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbaUnAddr</entry>
+	<entry>0x1b</entry>
+	<entry>Nonzero if UNT (untalk) and UNL (unlisten) commands are automatically
+	sent after a completed io operation using this descriptor.</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbaHSCableLength</entry>
+	<entry>0x1f</entry>
+	<entry>Useless, included only for compatibility.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaIst</entry>
+	<entry>0x20</entry>
+	<entry>Individual status bit, a.k.a. 'ist'.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaRsv</entry>
+	<entry>0x21</entry>
+	<entry>The current status byte this board will use to respond to
+	serial polls.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbaBNA</entry>
+	<entry>0x200</entry>
+	<entry>Board index (minor number) of interface board which is
+	the controller-in-charge of this device's GPIB bus.</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>Iba7BitEOS</entry>
+	<entry>0x1000</entry>
+	<entry>Nonzero if board supports 7 bit EOS comparisons.
+	See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the BIN bit.  This is a Linux-GPIB extension.
+</entry>
+	<entry>board</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibbna">
+<refmeta>
+	<refentrytitle>ibbna</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibbna</refname>
+	<refpurpose>change access board (device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibbna</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const char *<parameter>name</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibbna() changes the GPIB interface board used to access the device
+	specified by <parameter>ud</parameter>.  Subsequent device level
+	calls using the descriptor <parameter>ud</parameter> will assume
+	the device is connected to the interface board specified by
+	<parameter>name</parameter>.  	If you wish to specify a
+	device's new access board by board index instead
+	of name, you can use the IbcBNA option of ibconfig().
+	</para>
+	<para>
+	The name of a board can be specified
+	in the configuration file <link LINKEND="configuration">gpib.conf</link>.
+	</para>
+	<para>
+	On success, iberr is set to the board index of the device's old access board.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibcac">
+<refmeta>
+	<refentrytitle>ibcac</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibcac</refname>
+	<refpurpose>assert ATN (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibcac</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>synchronous</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibcac() causes the board specified by the board descriptor <parameter>ud</parameter>
+	to become active controller by asserting the ATN line.
+	The board must be controller-in-change in order to assert ATN.
+	If <parameter>synchronous</parameter> is nonzero, then
+	the board will wait for a data
+	byte on the bus to complete its transfer before asserting ATN.
+	If the synchronous attempt times out, or <parameter>synchronous</parameter>
+	is zero, then ATN will be asserted immediately.
+	</para>
+	<para>
+	It is generally not necessary to call ibcac().  It is provided
+	for advanced users who want direct, low-level access to the GPIB bus.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibclr">
+<refmeta>
+	<refentrytitle>ibclr</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibclr</refname>
+	<refpurpose>clear device (device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibclr</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibclr() sends the clear command to the device specified by <parameter>ud</parameter>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibcmd">
+<refmeta>
+	<refentrytitle>ibcmd</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibcmd</refname>
+	<refpurpose>write command bytes (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibcmd</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const void *<parameter>commands</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibcmd() writes the <link LINKEND="reference-command-bytes">command bytes</link>
+	contained
+	in the array <parameter>commands</parameter>
+	to the bus.  The number of bytes written from the array is specified by
+	<parameter>num_bytes</parameter>.  The <parameter>ud</parameter> argument is a
+	board descriptor, and the
+	board must be controller-in-charge.  Most of the
+	possible command bytes are declared as constants in the header files.
+	In particular, the constants GTL, SDC, PPConfig, GET, TCT, LLO, DCL, PPU, SPE,
+	SPD, UNL, UNT,and PPD are available.  Additionally, the inline functions
+	MTA(), MLA(), MSA(), and PPE_byte() are available for producing
+	'my talk address', 'my listen address', 'my secondary address', and
+	'parallel poll enable' command bytes respectively.
+	</para>
+	<para>
+	It is generally not necessary to call ibcmd().  It is provided
+	for advanced users who want direct, low-level access to the GPIB bus.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibcmda">
+<refmeta>
+	<refentrytitle>ibcmda</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibcmda</refname>
+	<refpurpose>write command bytes asynchronously (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibcmda</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const void *<parameter>commands</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibcmda() is similar to
+	<link LINKEND="reference-function-ibcmd">ibcmd()</link>
+	except it operates asynchronously.  ibcmda() does not
+	wait for the sending of the command bytes to complete, but
+	rather returns immediately.
+	</para>
+	<para>
+	While an asynchronous
+	operation is in progress, most library functions will
+	fail with an EOIP error.  In order to sucessfully
+	complete an
+	asynchronous operation, you must call
+	<link LINKEND="reference-function-ibwait">ibwait()</link>
+	until the CMPL bit is set ibsta.  Asynchronous
+	operations
+	may also be aborted with an
+	<link LINKEND="reference-function-ibstop">ibstop()</link>
+	or
+	<link LINKEND="reference-function-ibonl">ibonl()</link>
+	call.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibconfig">
+<refmeta>
+	<refentrytitle>ibconfig</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibconfig</refname>
+	<refpurpose>change configuration (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibconfig</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>option</parameter></paramdef>
+		<paramdef>int <parameter>setting</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Changes various configuration settings associated with the
+	board or device descriptor <parameter>ud</parameter>.  The
+	<parameter>option</parameter> argument specifies the particular
+	setting you wish to modify.  The <parameter>setting</parameter>
+	argument specifies the option's new configuration.
+	To query the descriptor's configuration, see
+	<link LINKEND="reference-function-ibask">ibask()</link>.
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>ibconfig options</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>option</entry>
+	<entry>value (hexadecimal)</entry>
+	<entry>effect</entry>
+	<entry>used for board/device</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>IbcPAD</entry>
+	<entry>0x1</entry>
+	<entry>Sets GPIB primary address.  Same as
+	<link LINKEND="reference-function-ibpad">ibpad()</link>
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcSAD</entry>
+	<entry>0x2</entry>
+	<entry>Sets GPIB secondary address.  Same as
+	<link LINKEND="reference-function-ibsad">ibsad()</link>
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcTMO</entry>
+	<entry>0x3</entry>
+	<entry>Sets timeout for io operations.  Same as
+	<link LINKEND="reference-function-ibtmo">ibmto()</link>.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcEOT</entry>
+	<entry>0x4</entry>
+	<entry>If setting is nonzero, EOI is asserted with last byte on writes.
+	Same as <link LINKEND="reference-function-ibeot">ibeot()</link>.
+	</entry>
+	<entry></entry>
+	</row>
+	<row>
+	<entry>IbcPPC</entry>
+	<entry>0x5</entry>
+	<entry>Sets parallel poll configuration.  Same as
+	<link LINKEND="reference-function-ibppc">ibppc()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcREADDR</entry>
+	<entry>0x6</entry>
+	<entry>Useless, included for compatibility only.</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbcAUTOPOLL</entry>
+	<entry>0x7</entry>
+	<entry>If setting is nonzero then automatic serial polling is enabled.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcCICPROT</entry>
+	<entry>0x8</entry>
+	<entry>Useless, included for compatibility only.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcSC</entry>
+	<entry>0xa</entry>
+	<entry>If setting is nonzero, board becomes system controller.
+	Same as <link LINKEND="reference-function-ibrsc">ibrsc()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcSRE</entry>
+	<entry>0xb</entry>
+	<entry>If setting is nonzero then board asserts REN line.  Otherwise
+	REN is unasserted.  Same as
+	<link LINKEND="reference-function-ibsre">ibsre()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcEOSrd</entry>
+	<entry>0xc</entry>
+	<entry>If setting is nonzero then reads are terminated on reception
+	of the end-of-string character.
+	See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the REOS bit.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcEOSwrt</entry>
+	<entry>0xd</entry>
+	<entry>If setting is nonzero then EOI is asserted whenever
+	the end-of-string character is
+	sent.  See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the XEOS bit.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcEOScmp</entry>
+	<entry>0xe</entry>
+	<entry>If setting is nonzero then all 8 bits are used to match
+	the end-of-string
+	character.  Otherwise only the least significant 7 bits are used.
+	See <link LINKEND="reference-function-ibeos">ibeos()</link>,
+	in particular the BIN bit.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcEOSchar</entry>
+	<entry>0xf</entry>
+	<entry>Sets the end-of-string byte.
+	See <link LINKEND="reference-function-ibeos">ibeos()</link>.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcPP2</entry>
+	<entry>0x10</entry>
+	<entry>If setting is nonzero then the board is put into
+	local parallel poll configure mode, and will not change
+	its parallel poll configuration in response to receiving
+	'parallel poll enable' command bytes from the controller-in-charge.
+	Otherwise the board is put in remote parallel poll configure mode.
+	Some older hardware does not support local parallel poll
+	configure mode.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcTIMING</entry>
+	<entry>0x11</entry>
+	<entry>Sets the T1 delay.  Use setting of 1 for 2 microseconds, 2 for 500
+	nanoseconds, or 3 for 350 nanoseconds.  These values are declared in
+	the header files as the constants T1_DELAY_2000ns, T1_DELAY_500ns,
+	and T1_DELAY_350ns.  A 2 microsecond T1 delay is safest, but
+	will limit maximum transfer speeds to a few hundred kilobytes
+	per second.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcReadAdjust</entry>
+	<entry>0x13</entry>
+	<entry>If setting is nonzero then byte pairs are automatically swapped
+	during reads.  Presently, this feature is unimplemented.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcWriteAdjust</entry>
+	<entry>0x14</entry>
+	<entry>If setting is nonzero then byte pairs are automatically swapped
+	during writes.  Presently, this feature is unimplemented.
+	</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcEventQueue</entry>
+	<entry>0x15</entry>
+	<entry>If setting is nonzero then the event queue is enabled.  The
+	event queue is disabled by default.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcSPollBit</entry>
+	<entry>0x16</entry>
+	<entry>If the setting is nonzero then the use of the SPOLL bit in ibsta is enabled.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcSendLLO</entry>
+	<entry>0x17</entry>
+	<entry>If the setting is nonzero then devices connected to this board are automatically
+	put into local lockout
+	mode when brought online with ibfind() or ibdev().</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcSPollTime</entry>
+	<entry>0x18</entry>
+	<entry>Sets timeout for serial polls.  The setting must be
+	between 0 and 17, which correspond to the same time periods as in
+	<link LINKEND="reference-function-ibtmo">ibtmo()</link>.
+	</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbcPPollTime</entry>
+	<entry>0x18</entry>
+	<entry>Sets timeout for parallel polls.  The setting must be
+	between 0 and 17, which correspond to the same time periods as in
+	<link LINKEND="reference-function-ibtmo">ibtmo()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcEndBitIsNormal</entry>
+	<entry>0x1a</entry>
+	<entry>If setting is nonzero then the END bit of ibsta is set on
+	reception of the end-of-string character or EOI (default).  Otherwise
+	END bit is only set on EOI.</entry>
+	<entry>board or device</entry>
+	</row>
+	<row>
+	<entry>IbcUnAddr</entry>
+	<entry>0x1b</entry>
+	<entry>If setting is nonzero then UNT (untalk) and UNL (unlisten) commands
+	are automatically sent after a completed io operation using this descriptor.
+	This option is off by default.</entry>
+	<entry>device</entry>
+	</row>
+	<row>
+	<entry>IbcHSCableLength</entry>
+	<entry>0x1f</entry>
+	<entry>Useless, included only for compatibility.</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcIst</entry>
+	<entry>0x20</entry>
+	<entry>Sets the individual status bit, a.k.a. 'ist'.  Same
+	as <link LINKEND="reference-function-ibist">ibist()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcRsv</entry>
+	<entry>0x21</entry>
+	<entry>Sets the current status byte this board will use to respond to
+	serial polls.  Same as <link LINKEND="reference-function-ibrsv">ibrsv()</link>.
+	</entry>
+	<entry>board</entry>
+	</row>
+	<row>
+	<entry>IbcBNA</entry>
+	<entry>0x200</entry>
+	<entry>Changes the GPIB interface board used to access a device.  The
+	setting specifies the board index of the new access board.  This configuration
+	option is similar to <link LINKEND="reference-function-ibbna">ibbna()</link>
+	except the new board is specified by its board index instead of a name.
+	</entry>
+	<entry>device</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibdev">
+<refmeta>
+	<refentrytitle>ibdev</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibdev</refname>
+	<refpurpose>open a device (device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibdev</function></funcdef>
+		<paramdef>int <parameter>board_index</parameter></paramdef>
+		<paramdef>int <parameter>pad</parameter></paramdef>
+		<paramdef>int <parameter>sad</parameter></paramdef>
+		<paramdef>int <parameter>timeout</parameter></paramdef>
+		<paramdef>int <parameter>send_eoi</parameter></paramdef>
+		<paramdef>int <parameter>eos</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibdev() is used to obtain a device descriptor, which can then be used by
+	other functions in the library.  The argument <parameter>board_index</parameter>
+	specifies which GPIB interface board the device is connected to.
+	The <parameter>pad</parameter> and <parameter>sad</parameter> arguments specify
+	the GPIB address of the device to be opened (see <link LINKEND="reference-function-ibpad">
+	ibpad()</link> and <link LINKEND="reference-function-ibsad">ibsad()</link>).
+	The timeout for io operations is specified by <parameter> timeout </parameter>
+	(see <link LINKEND="reference-function-ibtmo">ibtmo()</link>). If
+	<parameter>send_eoi</parameter> is nonzero, then the EOI
+	line will be asserted with the last byte sent during writes (see
+	<link LINKEND="reference-function-ibeot">ibeot()</link>).
+	Finally, the <parameter>eos</parameter>
+	argument specifies the end-of-string character and whether or not its
+	reception should terminate reads (see <link LINKEND="reference-function-ibeos">
+	ibeos()</link>).
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	If sucessful, returns a (non-negative) device descriptor.  On failure, -1 is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibeos">
+<refmeta>
+	<refentrytitle>ibeos</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibeos</refname>
+	<refpurpose>set end-of-string mode (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibeos</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>eosmode</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibeos() is used to set the end-of-string character and mode.  The least
+	significant 8 bits of <parameter>eosmode</parameter> specify the
+	eos character.  You may also bitwise-or one or more of the following
+	bits to set the eos mode:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>End-of-String Mode Bits</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value (hexadecimal)</entry>
+	<entry>meaning</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>REOS</entry>
+	<entry>0x400</entry>
+	<entry>Enable termination of reads when eos character is received.</entry>
+	</row>
+	<row>
+	<entry>XEOS</entry>
+	<entry>0x800</entry>
+	<entry>Assert the EOI line whenever the eos character is sent during writes.</entry>
+	</row>
+	<row>
+	<entry>BIN</entry>
+	<entry>0x1000</entry>
+	<entry>Match eos character using all 8 bits (instead of only looking at
+	the 7 least significant bits).</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+		The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibeot">
+<refmeta>
+	<refentrytitle>ibeot</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibeot</refname>
+	<refpurpose>assert EOI with last data byte (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibeot</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>send_eoi</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	If <parameter>send_eoi</parameter> is non-zero, then the EOI
+	line will be asserted with the last byte sent by
+	calls to <link LINKEND="reference-function-ibwrt">ibwrt()</link>
+	and related functions.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibevent">
+<refmeta>
+	<refentrytitle>ibevent</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibevent</refname>
+	<refpurpose>get events from event queue (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibevent</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>short *<parameter>event</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibevent() is used to obtain the oldest event stored in the event
+	queue of the board specified by the board descriptor
+	<parameter>ud</parameter>.  The EVENT bit of
+	<link LINKEND="reference-globals-ibsta">ibsta</link> indicates
+	that the event queue contains 1 or more events.
+	An event may be a clear command, a trigger command, or reception
+	of an interface clear.  The type of event is stored in the location
+	specified by <parameter>event</parameter> and may be set to any of the
+	following values:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="0">
+	<title>events</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value</entry>
+	<entry>description</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>EventNone</entry>
+	<entry>0</entry>
+	<entry>The board's event queue is empty</entry>
+	</row>
+	<row>
+	<entry>EventDevTrg</entry>
+	<entry>1</entry>
+	<entry>The board has received a trigger command from the controller-in-charge.</entry>
+	</row>
+	<row>
+	<entry>EventDevClr</entry>
+	<entry>2</entry>
+	<entry>The board has received a clear command from the controller-in-charge.</entry>
+	</row>
+	<row>
+	<entry>EventIFC</entry>
+	<entry>3</entry>
+	<entry>The board has received an interface clear from the system controller.
+	Note, some models of GPIB interface board lack the ability to report interface
+	clear events.</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+	<para>
+	The event queue is disabled by default.  It may be enabled by a call to
+	<link LINKEND="reference-function-ibconfig">ibconfig()</link>.
+	Each interface board has a single event queue which is shared across
+	all processes and threads. So, only one process can retrieve any given event
+	from the queue.  Also, the queue is of finite size so events may be lost
+	(ibevent() will return an error) if it is neglected too long.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibfind">
+<refmeta>
+	<refentrytitle>ibfind</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibfind</refname>
+	<refpurpose>open a board or device (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibfind</function></funcdef>
+		<paramdef>const char *<parameter>name</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibfind() returns a board or device descriptor based on the information
+	found in the <link LINKEND="configuration">configuration file</link>.
+	It is not required to use this function, since device descriptors
+	can be obtained with <link LINKEND="reference-function-ibdev">ibdev()</link>
+	and the 'board index' (minor number in the configuration file)
+	can be used directly as a board descriptor.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	If sucessful, returns a (non-negative) board or device descriptor.
+	On failure, -1 is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibgts">
+<refmeta>
+	<refentrytitle>ibgts</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibgts</refname>
+	<refpurpose>release ATN (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibgts</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>shadow_handshake</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibgts() is the complement of <link LINKEND="reference-function-ibcac">ibcac()</link>,
+	and causes the board specified by the board descriptor <parameter>ud</parameter>
+	to go to standby by releasing the ATN line.
+	The board must be controller-in-change to change the state of the ATN line.
+	If <parameter>shadow_handshake</parameter> is nonzero, then
+	the board will handshake any data
+	bytes it receives until it encounters an EOI or end-of-string character,
+	or the ATN line is asserted again.  The received data is discarded.
+	</para>
+	<para>
+	It is generally not necessary to call ibgts().  It is provided
+	for advanced users who want direct, low-level access to the GPIB bus.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibist">
+<refmeta>
+	<refentrytitle>ibist</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibist</refname>
+	<refpurpose>set individual status bit (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibist</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>ist</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	If <parameter>ist</parameter> is nonzero, then the individual status bit
+	of the board specified by the board descriptor <parameter>ud</parameter>
+	is set.  If <parameter>ist</parameter> is zero then the individual status
+	bit is cleared.  The individual status bit is sent by the board in response
+	to parallel polls.
+	</para>
+	<para>
+	On success, <link LINKEND="reference-globals-iberr">iberr</link> is set
+	to the previous ist value.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+		The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-iblines">
+<refmeta>
+	<refentrytitle>iblines</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>iblines</refname>
+	<refpurpose>monitor bus lines (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>iblines</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>short *<parameter>line_status</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	iblines() is used to obtain the status of the control and
+	handshaking <link LINKEND="gpib-protocol-bus-lines">bus lines</link> of the
+	bus.  The board used to monitor the bus
+	is specified by the <parameter>ud</parameter> argument,
+	and the status of the various bus lines are written to
+	the location specified by <parameter>line_status</parameter>.
+	</para>
+	<para>
+	Some older chips are not capable of reporting the status
+	of the bus lines, so each line has two corresponding bits in
+	<parameter>line_status</parameter>.  One bit indicates if
+	the board can monitor the line, and the other bit indicates
+	the line's state.
+	The meaning of the <parameter>line_status</parameter> bits are
+	as follows:
+	</para>
+		<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="0">
+	<title>line status bits</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value</entry>
+	<entry>description</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>ValidDAV</entry>
+	<entry>0x1</entry>
+	<entry>The BusDAV bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidNDAC</entry>
+	<entry>0x2</entry>
+	<entry>The BusNDAC bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidNRFD</entry>
+	<entry>0x4</entry>
+	<entry>The BusNRFD bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidIFC</entry>
+	<entry>0x8</entry>
+	<entry>The BusIFC bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidREN</entry>
+	<entry>0x10</entry>
+	<entry>The BusREN bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidSRQ</entry>
+	<entry>0x20</entry>
+	<entry>The BusSRQ bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidATN</entry>
+	<entry>0x40</entry>
+	<entry>The BusATN bit is valid.</entry>
+	</row>
+	<row>
+	<entry>ValidEOI</entry>
+	<entry>0x80</entry>
+	<entry>The BusEOI bit is valid.</entry>
+	</row>
+	<row>
+	<entry>BusDAV</entry>
+	<entry>0x100</entry>
+	<entry>Set/cleared if the DAV line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusNDAC</entry>
+	<entry>0x200</entry>
+	<entry>Set/cleared if the NDAC line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusNRFD</entry>
+	<entry>0x400</entry>
+	<entry>Set/cleared if the NRFD line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusIFC</entry>
+	<entry>0x800</entry>
+	<entry>Set/cleared if the IFC line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusREN</entry>
+	<entry>0x1000</entry>
+	<entry>Set/cleared if the REN line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusSRQ</entry>
+	<entry>0x2000</entry>
+	<entry>Set/cleared if the SRQ line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusATN</entry>
+	<entry>0x4000</entry>
+	<entry>Set/cleared if the ATN line is asserted/unasserted.</entry>
+	</row>
+	<row>
+	<entry>BusEOI</entry>
+	<entry>0x8000</entry>
+	<entry>Set/cleared if the EOI line is asserted/unasserted.</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	<para>
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibln">
+<refmeta>
+	<refentrytitle>ibln</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibln</refname>
+	<refpurpose>check if listener is present (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibln</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>pad</parameter></paramdef>
+		<paramdef>int <parameter>sad</parameter></paramdef>
+		<paramdef>short *<parameter>found_listener</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibln() checks for the presence of a device, by attempting to address
+	it as a listener.  <parameter>ud</parameter> specifies the GPIB
+	interface board which should check for listeners.  If <parameter>ud</parameter>
+	is a device descriptor, then the device's access board is used.
+	</para>
+	<para>
+	The GPIB address to check is specified by the
+	<parameter>pad</parameter> and <parameter>sad</parameter> arguments.
+	<parameter>pad</parameter> specifies the primary address, 0 through 30
+	are valid values.  <parameter>sad</parameter> gives the secondary
+	address, and may be a value from 0x60 through 0x7e (96 through 126), or
+	one of the constants NO_SAD or ALL_SAD.  NO_SAD indicates that no
+	secondary addressing is to be used, and ALL_SAD indicates that
+	all secondary addresses should be checked.
+	</para>
+	<para>
+	If the board finds a listener at the specified GPIB address(es), then the
+	variable specified by the pointer <parameter>found_listener</parameter>
+	is set to a nonzero value.  If no listener is found, the variable is set
+	to zero.
+	</para>
+	<para>
+	The board must be controller-in-charge to perform this function.  Also,
+	it must have the capability to monitor the NDAC
+	<link LINKEND="gpib-protocol-bus-lines">bus line</link>
+	(see <link LINKEND="reference-function-iblines">iblines()</link>).
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibloc">
+<refmeta>
+	<refentrytitle>ibloc</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibloc</refname>
+	<refpurpose>go to local mode (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibloc</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Causes the board or device specified by the descriptor <parameter>ud</parameter>
+	to go to local mode.  If <parameter>ud</parameter> is a board descriptor,
+	and the board is in local lockout, then the function will fail.
+	</para>
+	<para>
+	Note, if the system controller is asserting the REN line, then devices on
+	the bus will
+	return to remote mode the next time they are addressed by the controller
+	in charge.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibonl">
+<refmeta>
+	<refentrytitle>ibonl</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibonl</refname>
+	<refpurpose>close or reinitialize descriptor (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibonl</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>online</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	If the <parameter>online</parameter> is zero, then ibonl() frees the
+	resources associated with the board or device descriptor
+	<parameter>ud</parameter>.  The descriptor cannot be used again after the
+	ibonl() call.
+	</para>
+	<para>
+	If the <parameter>online</parameter> is nonzero, then all the settings
+	associated with the descriptor (GPIB address, end-of-string mode, timeout,
+	etc.) are reset to their 'default' values.  The 'default' values are
+	the settings the descriptor had when it was first obtained with
+	<link LINKEND="reference-function-ibdev">ibdev()</link> or
+	<link LINKEND="reference-function-ibfind">ibfind()</link>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibpad">
+<refmeta>
+	<refentrytitle>ibpad</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibpad</refname>
+	<refpurpose>set primary GPIB address (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibpad</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>pad</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibpad() sets the GPIB primary address to <parameter>pad</parameter>
+	for the device or board specified by the descriptor <parameter>ud</parameter>.
+	If <parameter>ud</parameter> is a device descriptor, then the setting is
+	local to the descriptor (it does not affect the behaviour of calls using
+	other descriptors, even if they refer to the same physical device).  If
+	<parameter>ud</parameter> is a board descriptor, then the board's
+	primary address is changed immediately, which is a global change affecting
+	anything (even other processes) using the board.  Valid GPIB primary
+	addresses are in the range from 0 to 30.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibpct">
+<refmeta>
+	<refentrytitle>ibpct</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibpct</refname>
+	<refpurpose>pass control (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibpct</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibpct() passes control to the device specified by the device
+	descriptor <parameter>ud</parameter>.  The device becomes
+	the new controller-in-charge.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibppc">
+<refmeta>
+	<refentrytitle>ibppc</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibppc</refname>
+	<refpurpose>parallel poll configure (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibppc</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>configuration</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Configures the parallel poll response of the device or board specified
+	by <parameter>ud</parameter>.  The <parameter>configuration</parameter>
+	should either be set to the 'PPD' constant to disable parallel poll
+	responses, or set to the return value of the
+	<link LINKEND="reference-function-ppe-byte">PPE_byte()</link> inline
+	function to enable and
+	configure the parallel poll response.
+	</para>
+	<para>
+	After configuring the parallel poll response of devices on a bus,
+	you may use
+	<link LINKEND="reference-function-ibrpp">ibrpp()</link> to
+	parallel poll the devices.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrd">
+<refmeta>
+	<refentrytitle>ibrd</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrd</refname>
+	<refpurpose>read data bytes (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrd</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>void *<parameter>buffer</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibrd() is used to read data bytes from a device or board.  The argument
+	<parameter>ud</parameter> can be either a device or board descriptor.
+  Up to
+	<parameter>num_bytes</parameter> bytes
+	are read into the user-supplied array <parameter>buffer</parameter>.
+	The read may be terminated by a
+	timeout occuring(see <link LINKEND="reference-function-ibtmo">ibtmo()</link>),
+	the talker asserting the EOI line, the board receiving the
+	end-of-string character (see
+	<link LINKEND="reference-function-ibeos">ibeos()</link>), receiving a device
+	clear command, or receiving an interface clear.
+	</para>
+	<para>
+	If <parameter>ud</parameter> is a device descriptor, then the library
+	automatically handles addressing the device as talker and the interface
+	board as listener before performing the read.
+	</para>
+	<para>
+	If <parameter>ud</parameter> is a board descriptor, no addressing
+	is performed and the board must be addressed as a listener
+	by the controller-in-charge.
+	</para>
+	<para>
+	After the ibrd() call, ibcnt and ibcntl are set to the number of bytes
+	read.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrda">
+<refmeta>
+	<refentrytitle>ibrda</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrda</refname>
+	<refpurpose>read data bytes asynchronously (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrda</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>void *<parameter>buffer</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibrda() is similar to
+	<link LINKEND="reference-function-ibrd">ibrd()</link>
+	except it operates asynchronously.  ibrda() does not
+	wait for the reception of the data bytes to complete, but
+	rather returns immediately.
+	</para>
+	<para>
+	While an asynchronous
+	operation is in progress, most library functions will
+	fail with an EOIP error.  In order to sucessfully
+	complete an
+	asynchronous operation, you must call
+	<link LINKEND="reference-function-ibwait">ibwait()</link>
+	until the CMPL bit is set ibsta.  Asynchronous
+	operations
+	may also be aborted with an
+	<link LINKEND="reference-function-ibstop">ibstop()</link>
+	or
+	<link LINKEND="reference-function-ibonl">ibonl()</link>
+	call.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrdf">
+<refmeta>
+	<refentrytitle>ibrdf</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrdf</refname>
+	<refpurpose>read data bytes to file (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrdf</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const char *<parameter>file_path</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibrdf() is similar to <link LINKEND="reference-function-ibrd">ibrd()</link>
+	except that the data bytes read are stored in a file instead
+	of an array in memory.  <parameter>file_path</parameter> specifies
+	the save file.  If the file already exists, the data will be appended
+	onto the end of the file.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrpp">
+<refmeta>
+	<refentrytitle>ibrpp</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrpp</refname>
+	<refpurpose>perform a parallel poll (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrpp</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>char *<parameter>ppoll_result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibrpp() causes the interface board to perform a parallel poll, and stores
+	the resulting parallel poll byte in the
+	location specified by <parameter>ppoll_result</parameter>.  Bits 0 to 7
+	of the parallel poll byte correspond to the dio lines 1 to 8, with
+	a 1 indicating the corresponding dio line is asserted.  The devices
+	on the bus you wish to poll should be configured beforehand with
+	<link LINKEND="reference-function-ibppc">ibppc()</link>.  The board
+	which performs the parallel poll must be controller-in-charge, and
+	is specified by the descriptor <parameter>ud</parameter>.
+	If <parameter>ud</parameter> is a device descriptor instead of
+	a board descriptor, the device's access board performs the
+	parallel poll.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+		The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrsc">
+<refmeta>
+	<refentrytitle>ibrsc</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrsc</refname>
+	<refpurpose>request system control (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrsc</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>request_control</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	If <parameter>request_control</parameter> is nonzero, then the board
+	specified by the board descriptor <parameter>ud</parameter> is
+	made system controller.  If <parameter>request_control</parameter>
+	is zero, then the board releases system control.
+	</para>
+	<para>
+	The system controller has the ability
+	to assert the REN and IFC lines, and is typically also the
+	controller-in-charge.  A GPIB bus may not have more than one
+	system controller.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+		The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrsp">
+<refmeta>
+	<refentrytitle>ibrsp</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrsp</refname>
+	<refpurpose>conduct serial poll (device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrsp</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>char *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibrsp() serial polls the device specified by <parameter>ud</parameter>.
+	The status byte is stored in the location specified by <parameter>result</parameter>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibrsv">
+<refmeta>
+	<refentrytitle>ibrsv</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibrsv</refname>
+	<refpurpose>request service (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibrsv</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>status_byte</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	The serial poll response byte of the board specified by the board
+	descriptor <parameter>ud</parameter> is set to <parameter>status_byte</parameter>.
+	If the request service bit (0x40 hexadecimal) in <parameter>status_byte</parameter>
+	is set, then the board will also request service by asserting the RQS line.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+		The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibsad">
+<refmeta>
+	<refentrytitle>ibsad</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibsad</refname>
+	<refpurpose>set secondary GPIB address (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibsad</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>sad</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibsad() sets the GPIB secondary address
+	of the device or board specified by the descriptor <parameter>ud</parameter>.
+	If <parameter>ud</parameter> is a device descriptor, then the setting is
+	local to the descriptor (it does not affect the behaviour of calls using
+	other descriptors, even if they refer to the same physical device).  If
+	<parameter>ud</parameter> is a board descriptor, then the board's
+	secondary address is changed immediately, which is a global change affecting
+	anything (even other processes) using the board.
+	</para>
+	<para>
+	This library follows NI's unfortunate convention of adding 0x60 hexadecimal (96
+	decimal) to
+	secondary addresses.  That is, if you wish to set the secondary address
+	to 3, you should set <parameter>sad</parameter> to 0x63.  Setting
+	<parameter>sad</parameter> to 0 disables the use of secondary addressing.
+	Valid GPIB secondary addresses are in the range from 0 to 30 (which correspond
+	to <parameter>sad</parameter> values of 0x60 to 0x7e).
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibsic">
+<refmeta>
+	<refentrytitle>ibsic</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibsic</refname>
+	<refpurpose>perform interface clear (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibsic</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibsic() resets the GPIB bus by asserting the 'interface clear' (IFC)
+	bus line
+	for a duration of at least 100 microseconds.  The board specified
+	by <parameter>ud</parameter> must be the system controller
+	in order to assert IFC.  The interface clear causes all devices
+	to untalk and unlisten, puts them into
+	serial poll disabled state (don't worry, you will still be able
+	to conduct serial polls), and the board becomes
+	controller-in-charge.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibsre">
+<refmeta>
+	<refentrytitle>ibsre</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibsre</refname>
+	<refpurpose>set remote enable (board)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibsre</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>enable</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	If <parameter>enable</parameter> is nonzero, then the board specified
+	by the board descriptor <parameter>ud</parameter> asserts the REN line.
+	If <parameter>enable</parameter> is zero, the REN line is unasserted.
+	The board must be the system controller.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibstop">
+<refmeta>
+	<refentrytitle>ibstop</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibstop</refname>
+	<refpurpose>abort asynchronous i/o operation (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibstop</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibstop() aborts an asynchronous i/o operation (for example, one
+	started with
+	<link LINKEND="reference-function-ibcmda">ibcmda()</link>,
+	<link LINKEND="reference-function-ibrda">ibrda()</link>, or
+	<link LINKEND="reference-function-ibwrta">ibwrta()</link>).
+	</para>
+	<para>
+	The return value of ibstop() is counter-intuitive.  On successfully
+	aborting an asynchronous operation, the ERR bit is set in
+	<link LINKEND="reference-globals-ibsta">ibsta</link>, and
+	<link LINKEND="reference-globals-iberr">iberr</link> is
+	set to EABO.  If the ERR bit is not set in ibsta, then
+	there was no asynchronous i/o operation in progress.  If the
+	function failed, the ERR bit will be set and iberr will be
+	set to some value other than EABO.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibtmo">
+<refmeta>
+	<refentrytitle>ibtmo</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibtmo</refname>
+	<refpurpose>adjust io timeout (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibtmo</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>timeout</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibtmo() sets timeout for IO operations performed using the board
+	or device descriptor
+	<parameter>ud</parameter>.  The actual amount of time before
+	a timeout occurs may be greater than the period specified, but
+	never less.
+	<parameter>timeout</parameter> is specified by using one of
+	the following constants:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="0">
+	<title>Timeout constants</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value</entry>
+	<entry>timeout</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>TNONE</entry>
+	<entry>0</entry>
+	<entry>Never timeout.</entry>
+	</row>
+	<row>
+	<entry>T10us</entry>
+	<entry>1</entry>
+	<entry>10 microseconds</entry>
+	</row>
+	<row>
+	<entry>T30us</entry>
+	<entry>2</entry>
+	<entry>30 microseconds</entry>
+	</row>
+	<row>
+	<entry>T100us</entry>
+	<entry>3</entry>
+	<entry>100 microseconds</entry>
+	</row>
+	<row>
+	<entry>T300us</entry>
+	<entry>4</entry>
+	<entry>300 microseconds</entry>
+	</row>
+	<row>
+	<entry>T1ms</entry>
+	<entry>5</entry>
+	<entry>1 millisecond</entry>
+	</row>
+	<row>
+	<entry>T3ms</entry>
+	<entry>6</entry>
+	<entry>3 milliseconds</entry>
+	</row>
+	<row>
+	<entry>T10ms</entry>
+	<entry>7</entry>
+	<entry>10 milliseconds</entry>
+	</row>
+	<row>
+	<entry>T30ms</entry>
+	<entry>8</entry>
+	<entry>30 milliseconds</entry>
+	</row>
+	<row>
+	<entry>T100ms</entry>
+	<entry>9</entry>
+	<entry>100 milliseconds</entry>
+	</row>
+	<row>
+	<entry>T300ms</entry>
+	<entry>10</entry>
+	<entry>300 milliseconds</entry>
+	</row>
+	<row>
+	<entry>T1s</entry>
+	<entry>11</entry>
+	<entry>1 second</entry>
+	</row>
+	<row>
+	<entry>T3s</entry>
+	<entry>12</entry>
+	<entry>3 seconds</entry>
+	</row>
+	<row>
+	<entry>T10s</entry>
+	<entry>13</entry>
+	<entry>10 seconds</entry>
+	</row>
+	<row>
+	<entry>T30s</entry>
+	<entry>14</entry>
+	<entry>30 seconds</entry>
+	</row>
+	<row>
+	<entry>T100s</entry>
+	<entry>15</entry>
+	<entry>100 seconds</entry>
+	</row>
+	<row>
+	<entry>T300s</entry>
+	<entry>16</entry>
+	<entry>300 seconds</entry>
+	</row>
+	<row>
+	<entry>T1000s</entry>
+	<entry>17</entry>
+	<entry>1000 seconds</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibtrg">
+<refmeta>
+	<refentrytitle>ibtrg</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibtrg</refname>
+	<refpurpose>trigger device (device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibtrg</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibtrg() sends a GET (group execute trigger)
+	<link LINKEND="reference-command-bytes">command byte</link> to the
+	device specified by the device descriptor <parameter>ud</parameter>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibwait">
+<refmeta>
+	<refentrytitle>ibwait</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibwait</refname>
+	<refpurpose>wait for event (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibwait</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>int <parameter>status_mask</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibwait() will sleep until one of the conditions specified in
+	<parameter>status_mask</parameter> is true.  The meaning of
+	the bits in <parameter>status_mask</parameter> are the same
+	as the bits of the <link LINKEND="reference-globals-ibsta">ibsta</link>
+	status variable.
+	</para>
+	<para>
+	If <parameter>status_mask</parameter> is zero, then ibwait() will
+	return immediately.  This is useful if you simply wish to get an
+	updated ibsta.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibwrt">
+<refmeta>
+	<refentrytitle>ibwrt</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibwrt</refname>
+	<refpurpose>write data bytes (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibwrt</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const void *<parameter>data</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibwrt() is used to write data bytes to a device or board.  The argument
+	<parameter>ud</parameter> can be either a device or board descriptor.
+	<parameter>num_bytes</parameter> specifies how many bytes
+	are written from the user-supplied array <parameter>data</parameter>.
+	EOI may be asserted with the last byte sent or when the end-of-string
+	character is sent (see <link LINKEND="reference-function-ibeos">
+	ibeos()</link> and <link LINKEND="reference-function-ibeot">
+	ibeot()</link>).  The write operation
+	may be interrupted by a timeout (see <link LINKEND="reference-function-ibtmo">
+	ibtmo()</link>), the board receiving a device clear command, or
+	receiving an interface clear.
+	</para>
+	<para>
+	If <parameter>ud</parameter> is a device descriptor, then the library
+	automatically handles addressing the device as listener and the interface
+	board as talker, before sending the data bytes onto the bus.
+	</para>
+	<para>
+	If <parameter>ud</parameter>
+	is a board descriptor, the board simply writes the data onto the bus.  The
+	controller-in-charge must address the board as talker.
+	</para>
+	<para>
+	After the ibwrt() call, ibcnt and ibcntl are set to the number of bytes
+	written.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibwrta">
+<refmeta>
+	<refentrytitle>ibwrta</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibwrta</refname>
+	<refpurpose>write data bytes asynchronously (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibwrta</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const void *<parameter>buffer</parameter></paramdef>
+		<paramdef>long <parameter>num_bytes</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibwrta() is similar to
+	<link LINKEND="reference-function-ibwrt">ibwrt()</link>
+	except it operates asynchronously.  ibwrta() does not
+	wait for the sending of the data bytes to complete, but
+	rather returns immediately.
+	</para>
+	<para>
+	While an asynchronous
+	operation is in progress, most library functions will
+	fail with an EOIP error.  In order to sucessfully
+	complete an
+	asynchronous operation, you must call
+	<link LINKEND="reference-function-ibwait">ibwait()</link>
+	and until the CMPL bit is set ibsta.  Asynchronous
+	operations
+	may also be aborted with an
+	<link LINKEND="reference-function-ibstop">ibstop()</link>
+	or
+	<link LINKEND="reference-function-ibonl">ibonl()</link>
+	call.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ibwrtf">
+<refmeta>
+	<refentrytitle>ibwrtf</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ibwrtf</refname>
+	<refpurpose>write data bytes from file (board or device)</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ibwrtf</function></funcdef>
+		<paramdef>int <parameter>ud</parameter></paramdef>
+		<paramdef>const char *<parameter>file_path</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ibwrtf() is similar to <link LINKEND="reference-function-ibwrt">ibwrt()</link>
+	except that the data to be written is taken from a file instead
+	of an array in memory.  <parameter>file_path</parameter> specifies
+	the file, which is written byte for byte onto the bus.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link> is returned.
+	</para>
+</refsect1>
+</refentry>
+
+</section>
+
+<section>
+<title>
+	"Multidevice" API Functions
+</title>
+<para>
+The "Multidevice" API functions provide similar functionality to the "Traditional" API functions.
+However, some of the "multidevice" functions can be
+to be performed on multiple devices simultaneously.  For example,
+<link LINKEND="reference-function-sendlist">SendList()</link>
+can be used to write a message to multiple devices.  Such functions take an array of Addr4882_t
+as an argument.  The end of the array is specified by setting the last element to the
+constant NOADDR.
+</para>
+<refentry ID="reference-function-allspoll">
+<refmeta>
+	<refentrytitle>AllSPoll</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>AllSPoll</refname>
+	<refpurpose>serial poll multiple devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>AllSPoll</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t *<parameter>addressList</parameter></paramdef>
+		<paramdef>short *<parameter>resultList</parameter></paramdef>
+	</funcprototype>
+	<funcprototype>
+		<funcdef>void <function>AllSpoll</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t *<parameter>addressList</parameter></paramdef>
+		<paramdef>short *<parameter>resultList</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	AllSPoll() causes the interface board specified by <parameter>board_desc</parameter>
+	to serial poll all the GPIB addresses specified in the <parameter>addressList</parameter>
+	array.  The results of the serial polls are stored into <parameter>resultList</parameter>.
+	If you only wish to serial poll a single device,
+	<link LINKEND="reference-function-readstatusbyte">ReadStatusByte()</link> or
+	<link LINKEND="reference-function-ibrsp">ibrsp()</link> may be
+	more convenient.
+	</para>
+	<para>
+	This function may also be invoked with the alternate capitalization 'AllSpoll'
+	for compatibility with NI's library.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-devclear">
+<refmeta>
+	<refentrytitle>DevClear</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>DevClear</refname>
+	<refpurpose>clear a device</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>DevClear</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	DevClear() causes the interface board specified by <parameter>board_desc</parameter>
+	to send the clear command to the GPIB addresses specified by <parameter>address</parameter>.  The results of the serial polls are stored into <parameter>resultList</parameter>.
+	If you wish to clear multiple devices simultaneously, use
+	<link LINKEND="reference-function-devclearlist">DevClearList()</link>
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-devclearlist">
+<refmeta>
+	<refentrytitle>DevClearList</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>DevClearList</refname>
+	<refpurpose>clear multiple devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>DevClearList</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	DevClear() causes the interface board specified by <parameter>board_desc</parameter>
+	to send the clear command simultaneously to all the GPIB addresses specified by the
+	<parameter>addressList</parameter> array.  If <parameter>addressList</parameter> is
+	empty or NULL, then the clear command is sent to all devices on the bus.
+	If you only wish to clear a single device,
+	<link LINKEND="reference-function-devclear">DevClear()</link>
+	or <link LINKEND="reference-function-ibclr">ibclr()</link> may
+	be slightly more convenient.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-enablelocal">
+<refmeta>
+	<refentrytitle>EnableLocal</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>EnableLocal</refname>
+	<refpurpose>put devices into local mode.</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>EnableLocal</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	EnableLocal() addresses
+	all of the devices in the <parameter>addressList</parameter> array as listeners
+	then sends the GTL (go to local) command byte, causing them to enter local mode.
+	This requires that the board is the controller-in-charge.
+	Note that while the REN (remote enable) bus line is asserted, the devices
+	will return to remote mode the next time they are addressed.
+	</para>
+	<para>
+	If <parameter>addressList</parameter> is empty or NULL, then the REN
+	line is unasserted and all devices enter local mode.  The board must
+	be system controller to change the state of the REN line.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-enableremote">
+<refmeta>
+	<refentrytitle>EnableRemote</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>EnableRemote</refname>
+	<refpurpose>put devices into remote mode.</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>EnableRemote</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	EnableRemote() asserts the REN (remote enable) line, and addresses
+	all of the devices
+	in the <parameter>addressList</parameter> array as listeners (causing
+	them to enter remote mode).  The board must be system controller.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-findlstn">
+<refmeta>
+	<refentrytitle>FindLstn</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>FindLstn</refname>
+	<refpurpose>find devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>FindLstn</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>padList[]</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>resultList[]</parameter></paramdef>
+		<paramdef>int <parameter>maxNumResults</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	FindLstn() will check the primary addresses in the <parameter>padList</parameter>
+	array for devices.  The GPIB addresses of all devices found will be stored in the
+	<parameter>resultList</parameter> array, and
+	<link LINKEND="reference-globals-ibcnt">ibcnt</link>
+	will be set to the number
+	of devices found.  The <parameter>maxNumResults</parameter> parameter
+	limits the maximum number of results that will be returned, and is usually
+	set to the number of elements in the <parameter>resultList</parameter> array.
+	If more than <parameter>maxNumResults</parameter> devices are found, an
+	ETAB error is returned in <link LINKEND="reference-globals-iberr">iberr</link>.
+	The <parameter>padList</parameter> should consist of primary addresses only,
+	with no secondary addresses (all possible secondary addresses will be checked
+	as necessary).
+	</para>
+	<para>
+	Your GPIB board must have the capability to monitor the NDAC bus line in order
+	to use this function (see <link LINKEND="reference-function-iblines">iblines</link>).
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-findrqs">
+<refmeta>
+	<refentrytitle>FindRQS</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>FindRQS</refname>
+	<refpurpose>find device requesting service and read its status byte</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>FindRQS</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+		<paramdef>short *<parameter>status</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	FindRQS will serial poll the GPIB addresses specified in the
+	<parameter>addressList</parameter> array until it finds a device
+	requesting service.  The status byte of the device requesting
+	service is stored in the location specified by <parameter>status</parameter>.
+	The <parameter>addressList</parameter> array index of the device requesting
+	service is returned in <link LINKEND="reference-globals-ibcnt">ibcnt</link>.
+	If no device requesting service is found,
+	an ETAB error is returned in <link LINKEND="reference-globals-iberr">iberr</link>.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-passcontrol">
+<refmeta>
+	<refentrytitle>PassControl</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>PassControl</refname>
+	<refpurpose>make device controller-in-charge</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>PassControl</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	PassControl() causes the board specified by <parameter>board_desc</parameter>
+	to pass control to the device specified by <parameter>address</parameter>.
+	On success, the device becomes the new controller-in-charge.
+	</para>
+</refsect1>
+
+</refentry>
+<refentry ID="reference-function-ppoll">
+<refmeta>
+	<refentrytitle>PPoll</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>PPoll</refname>
+	<refpurpose>parallel poll devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>PPoll</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>short *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	PPoll() is similar to the 'traditional' API function
+	<link LINKEND="reference-function-ibrpp">ibrpp()</link>.
+	It causes the interface board to perform a parallel poll, and stores
+	the parallel poll byte in the
+	location specified by <parameter>result</parameter>.  Bits 0 to 7
+	of the parallel poll byte correspond to the dio lines 1 to 8, with
+	a 1 indicating the corresponding dio line is asserted.  The devices
+	on the bus you wish to poll should be configured beforehand with
+	<link LINKEND="reference-function-ppollconfig">PPollConfig()</link>.
+	The board must be controller-in-charge to perform a parallel poll.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ppollconfig">
+<refmeta>
+	<refentrytitle>PPollConfig</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>PPollConfig</refname>
+	<refpurpose>configure a device's parallel poll response</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>PPollConfig</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+		<paramdef>int <parameter>dio_line</parameter></paramdef>
+		<paramdef>int <parameter>line_sense</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	PPollConfig() configures the device specified by <parameter>address</parameter>
+	to respond to parallel polls.
+	The <parameter>dio_line</parameter> (valid values are 1 through 8)
+	specifies which dio line the device being configured should use to send
+	back its parallel poll response.  The <parameter>line_sense</parameter> argument
+	specifies the polarity of the response.  If <parameter>line_sense</parameter>
+	is nonzero, then the specified dio line will be asserted to indicate
+	that the 'individual status bit' (or 'ist') is 1.  If <parameter>sense</parameter>
+	is zero, then the specified dio line will be asserted when ist is zero.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ppollunconfig">
+<refmeta>
+	<refentrytitle>PPollUnconfig</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>PPollUnconfig</refname>
+	<refpurpose>disable devices' parallel poll response</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>PPollUnconfig</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	PPollUnconfig() configures the devices specified by <parameter>addressList</parameter>
+	to ignore parallel polls.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-rcvrespmsg">
+<refmeta>
+	<refentrytitle>RcvRespMsg</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>RcvRespMsg</refname>
+	<refpurpose>read data</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>RcvRespMsg</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>void *<parameter>buffer</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+		<paramdef>int <parameter>termination</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	RcvRespMsg() reads data from the bus.
+	A device must have already been addressed as talker (and the
+	board as listener) before calling this function.  Addressing may
+	be accomplished with the
+	<link LINKEND="reference-function-receivesetup">ReceiveSetup()</link>
+	function.
+	</para>
+	<para>
+	Up to <parameter>count</parameter> bytes are read into the array
+	specified by <parameter>buffer</parameter>.  The <parameter>termination</parameter>
+	argument specifies the 8-bit end-of-string character (which must
+	be a value from 0 to 255) whose
+	reception will terminate a read.  <parameter>termination</parameter>
+	can also be set to the 'STOPend' constant, in which case no
+	end-of-string character will be used.  Assertion of the EOI line
+	will always end a read.
+	</para>
+	<para>
+	You may find it simpler to use the slightly higher level function
+	<link LINKEND="reference-function-receive">Receive()</link>, since
+	it does not require
+	addressing and reading of data to be performed separately.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-readstatusbyte">
+<refmeta>
+	<refentrytitle>ReadStatusByte</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ReadStatusByte</refname>
+	<refpurpose>serial poll a device</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>ReadStatusByte</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+		<paramdef>short *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ReadStatusByte() causes the board specified by
+	the board descriptor <parameter>board_desc</parameter> to serial poll
+	the GPIB address specified by <parameter>address</parameter>.  The
+	status byte is stored at the location specified by the <parameter>result</parameter>
+	pointer.  If you wish to serial poll multiple devices, it
+	may be slightly more efficient to use
+	<link LINKEND="reference-function-allspoll">AllSPoll()</link>.
+	Serial polls may also be conducted with the 'traditional API' function
+	<link LINKEND="reference-function-ibrsp">ibrsp()</link>.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-receive">
+<refmeta>
+	<refentrytitle>Receive</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>Receive</refname>
+	<refpurpose>perform receive addressing and read data</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>Receive</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+		<paramdef>void *<parameter>buffer</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+		<paramdef>int <parameter>termination</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Receive() performs the necessary addressing, then reads data from the device
+	specified by <parameter>address</parameter>.
+	It is equivalent to a
+	<link LINKEND="reference-function-receivesetup">ReceiveSetup()</link>
+	call followed by a
+	<link LINKEND="reference-function-rcvrespmsg">RcvRespMsg()</link>
+	call.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-receivesetup">
+<refmeta>
+	<refentrytitle>ReceiveSetup</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ReceiveSetup</refname>
+	<refpurpose>perform receive addressing</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>ReceiveSetup</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ReceiveSetup() addresses the device specified by <parameter>address</parameter>
+	as talker, and addresses the interface board as listener.  A subsequent
+	<link LINKEND="reference-function-rcvrespmsg">RcvRespMsg()</link> call
+	will read data from the device.
+	</para>
+	<para>
+	You may find it simpler to use the slightly higher level function
+	<link LINKEND="reference-function-receive">Receive()</link>, since
+	it does not require
+	addressing and reading of data to be performed separately.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-resetsys">
+<refmeta>
+	<refentrytitle>ResetSys</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ResetSys</refname>
+	<refpurpose>reset system</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>ResetSys</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ResetSys() has the following effects:
+	<itemizedlist>
+	<listitem>
+	<para>
+	The remote enable bus line is asserted.
+	</para>
+	</listitem>
+	<listitem>
+	<para>
+	An interface clear is performed (the interface clear bus line is asserted
+	for at least 100 microseconds).
+	</para>
+	</listitem>
+	<listitem>
+	<para>
+	The device clear command is sent to all the devices on the bus.
+	</para>
+	</listitem>
+	<listitem>
+	<para>
+	The *RST message is sent to every device specified in the <parameter>addressList</parameter>.
+	</para>
+	</listitem>
+	</itemizedlist>
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-send">
+<refmeta>
+	<refentrytitle>Send</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>Send</refname>
+	<refpurpose>perform send addressing and write data</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>Send</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+		<paramdef>const void *<parameter>data</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+		<paramdef>int <parameter>eot_mode</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Send() addresses the device specified by <parameter>address</parameter>
+	as listener, then writes data onto the bus.
+	It is equivalent to a
+	<link LINKEND="reference-function-sendlist">SendList()</link>
+	except it only uses a single GPIB address to specify the listener
+	instead of allowing an array of listeners.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-sendcmds">
+<refmeta>
+	<refentrytitle>SendCmds</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendCmds</refname>
+	<refpurpose>write command bytes onto bus</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendCmds</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const void *<parameter>cmds</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendCmds() writes <parameter>count</parameter>
+	<link LINKEND="reference-command-bytes">command byte</link>
+	onto the
+	the GPIB bus from the array <parameter>cmds</parameter>.
+	</para>
+	<para>
+	It is generally not necessary to call SendCmds().  It is provided
+	for advanced users who want direct, low-level access to the GPIB bus.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-senddatabytes">
+<refmeta>
+	<refentrytitle>SendDataBytes</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendDataBytes</refname>
+	<refpurpose>write data</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendDataBytes</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const void *<parameter>data</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+		<paramdef>int <parameter>eot_mode</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendDataBytes() writes data to the bus.
+	One or more devices must have already been addressed as listener (and the
+	board as talker) before calling this function.  Addressing may
+	be accomplished with the
+	<link LINKEND="reference-function-sendsetup">SendSetup()</link>
+	function.
+	</para>
+	<para>
+	<parameter>count</parameter> bytes are written from the array
+	specified by <parameter>data</parameter>.  The <parameter>eot_mode</parameter>
+	argument specifies how the message should be terminated, and may be any of
+	the following values:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="0">
+	<title>eot modes</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>constant</entry>
+	<entry>value</entry>
+	<entry>description</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>NULLend</entry>
+	<entry>0</entry>
+	<entry>Do not assert EOI or add a newline at the end of the write.</entry>
+	</row>
+	<row>
+	<entry>DABend</entry>
+	<entry>1</entry>
+	<entry>Assert EOI with the last byte of the write.</entry>
+	</row>
+	<row>
+	<entry>NLend</entry>
+	<entry>2</entry>
+	<entry>Append a newline, and assert EOI with the newline at the end of the write.</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+	<para>
+	You may find it simpler to use the slightly higher level functions
+	<link LINKEND="reference-function-send">Send()</link> or
+	<link LINKEND="reference-function-sendlist">SendList()</link>, since
+	they does not require
+	addressing and writing of data to be performed separately.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-sendifc">
+<refmeta>
+	<refentrytitle>SendIFC</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendIFC</refname>
+	<refpurpose>perform interface clear</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendIFC</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendIFC() resets the GPIB bus by asserting the 'interface clear' (IFC)
+	bus line
+	for a duration of at least 100 microseconds.  The board specified
+	by <parameter>board_desc</parameter> must be the system controller
+	in order to assert IFC.  The interface clear causes all devices
+	to untalk and unlisten, puts them into
+	serial poll disabled state (don't worry, you will still be able
+	to conduct serial polls), and the board becomes
+	controller-in-charge.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-sendlist">
+<refmeta>
+	<refentrytitle>SendList</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendList</refname>
+	<refpurpose>write data to multiple devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendList</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+		<paramdef>const void *<parameter>data</parameter></paramdef>
+		<paramdef>long <parameter>count</parameter></paramdef>
+		<paramdef>int <parameter>eot_mode</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendList() addresses the devices in <parameter>addressList</parameter>
+	as listeners, then writes the contents of the array <parameter>data</parameter>
+	to them.
+	It is equivalent to a
+	<link LINKEND="reference-function-sendsetup">SendSetup()</link>
+	call followed by a
+	<link LINKEND="reference-function-senddatabytes">SendDataBytes()</link>
+	call.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-sendllo">
+<refmeta>
+	<refentrytitle>SendLLO</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendLLO</refname>
+	<refpurpose>put devices into local lockout mode</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendLLO</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendLLO() asserts the 'remote enable' bus line, then sends the
+	LLO
+	<link LINKEND="reference-command-bytes">command byte</link>.
+	Any devices currently addressed as listener will be put into
+	RWLS (remote with lockout state), and all other devices
+	will enter LWLS (local with lockout state).  Local lockout means
+	the remote/local mode of devices cannot be changed though the
+	devices' front-panel controls.  Unasserting the REN line should
+	bring the devices out of lockout state.
+	</para>
+	<para>
+	The
+	<link LINKEND="reference-function-setrwls">SetRWLS()</link>
+	performs a similar function, except it lets you
+	specifiy which devices you wish to address as listener before
+	sending the LLO command.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-sendsetup">
+<refmeta>
+	<refentrytitle>SendSetup</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SendSetup</refname>
+	<refpurpose>perform send addressing</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SendSetup</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SendSetup() addresses the devices in <parameter>addressList</parameter>
+	as listeners, and addresses the interface board as talker.
+  A subsequent
+	<link LINKEND="reference-function-senddatabytes">SendDataBytes()</link> call
+	will write data to the devices.
+	</para>
+	<para>
+	You may find it simpler to use the slightly higher level functions
+	<link LINKEND="reference-function-send">Send()</link> or
+	<link LINKEND="reference-function-sendlist">SendList()</link>, since
+	they does not require
+	addressing and writing of data to be performed separately.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-setrwls">
+<refmeta>
+	<refentrytitle>SetRWLS</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>SetRWLS</refname>
+	<refpurpose>put devices into remote with lockout state</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>SetRWLS</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	SetRWLS() asserts the 'remote enable' bus line,
+	addresses the devices in the <parameter>addressList</parameter>
+	array as listeners, then sends the
+	LLO
+	<link LINKEND="reference-command-bytes">command byte</link>.
+	The devices addressed as listener will be put into
+	RWLS (remote with lockout state), and all other devices
+	will enter LWLS (local with lockout state).  Local lockout means
+	the remote/local mode of devices cannot be changed though the
+	devices' front-panel controls.  Unasserting the REN line should
+	bring the devices out of the lockout state.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-testsrq">
+<refmeta>
+	<refentrytitle>TestSRQ</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>TestSRQ</refname>
+	<refpurpose>query state of SRQ bus line</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>TestSRQ</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>short *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	TestSRQ() checks the state of the SRQ
+	<link LINKEND="gpib-protocol-bus-lines">bus line</link> and
+	writes its state to the location specified by <parameter>result</parameter>.
+	A '1' indicates the SRQ line is asserted, and a '0' indicates
+	the line is not asserted.
+	</para>
+	<para>
+	Some boards lack the capability to report the status of the SRQ
+	line.  In such a case, an ECAP error is returned in
+	<link LINKEND="reference-globals-iberr">iberr</link>.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-testsys">
+<refmeta>
+	<refentrytitle>TestSys</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>TestSys</refname>
+	<refpurpose>perform self-test queries on devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>TestSys</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>const Addr4882_t <parameter>addressList[]</parameter></paramdef>
+		<paramdef>short <parameter>results[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	TestSys() sends the '*TST?' message to all the devices in the
+	<parameter>addressList</parameter> array, then reads their
+	responses into the <parameter>results</parameter> array.
+	This will cause devices that conform to the IEEE 488.2 standard
+	to perform a self-test and respond with a zero on success.
+	A non-zero response indicates an error during the self-test.
+	</para>
+	<para>
+	The number of devices which responded with nonzero values from
+	their self-tests is returned in
+	<link LINKEND="reference-globals-ibcnt">ibcnt and ibcntl</link>.
+	If a device fails to respond to the *TST? query, an error
+	will be flagged in
+	<link LINKEND="reference-globals-ibsta">ibsta</link> (this
+	is different than NI's documented behaviour which is broken).
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-trigger">
+<refmeta>
+	<refentrytitle>Trigger</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>Trigger</refname>
+	<refpurpose>trigger a device</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>Trigger</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	Trigger() is equivalent to a
+	<link LINKEND="reference-function-triggerlist">TriggerList()</link>
+	call with a single address.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-triggerlist">
+<refmeta>
+	<refentrytitle>TriggerList</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>Trigger</refname>
+	<refpurpose>trigger multiple devices</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>TriggerList</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>Addr4882_t <parameter>addressList[]</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	TriggerList() sends a GET (group execute trigger)
+	<link LINKEND="reference-command-bytes">command byte</link> to all
+	the
+	devices specified in the <parameter>addressList</parameter> array.
+	If no addresses are specified in <parameter>addressList</parameter>
+	then the GET command byte is sent without performing any addressing.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-waitsrq">
+<refmeta>
+	<refentrytitle>WaitSRQ</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>WaitSRQ</refname>
+	<refpurpose>sleep until the SRQ bus line is asserted</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>void <function>WaitSRQ</function></funcdef>
+		<paramdef>int <parameter>board_desc</parameter></paramdef>
+		<paramdef>short *<parameter>result</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	WaitSRQ() sleeps until either the SRQ
+	<link LINKEND="gpib-protocol-bus-lines">bus line</link> is
+	asserted, or a timeout (see <link LINKEND="reference-function-ibtmo">ibtmo()</link>)
+	occurs.  A '1' will be written to the location specified by
+	<parameter>result</parameter> if SRQ was asserted, and a
+	'0' will be written if the function timed out.
+	</para>
+</refsect1>
+</refentry>
+
+</section>
+
+<section>
+<title>
+	Utility Functions
+</title>
+
+<refentry ID="reference-function-get-pad">
+<refmeta>
+	<refentrytitle>GetPAD</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>GetPAD</refname>
+	<refpurpose>extract primary address from an Addr4882_t value</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>static __inline__ unsigned int <function>GetPAD</function></funcdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	GetPAD() extracts the primary address packed into the Addr4882_t
+	value <parameter>address</parameter>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The primary GPIB address (from 0 through 30) stored in <parameter>address</parameter>.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-get-sad">
+<refmeta>
+	<refentrytitle>GetSAD</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>GetSAD</refname>
+	<refpurpose>extract secondary address from an Addr4882_t value</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>static __inline__ unsigned int <function>GetSAD</function></funcdef>
+		<paramdef>Addr4882_t <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	GetSAD() extracts the secondary address packed into the Addr4882_t
+	value <parameter>address</parameter>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The secondary GPIB address (from 0x60 through 0x7e, or 0 for none) stored in
+	<parameter>address</parameter>.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-make-addr">
+<refmeta>
+	<refentrytitle>MakeAddr</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>MakeAddr</refname>
+	<refpurpose>pack primary and secondary address into an Addr4882_t value</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>static __inline__ Addr4882_t <function>MakeAddr</function></funcdef>
+		<paramdef>unsigned int <parameter>pad</parameter></paramdef>
+		<paramdef>unsigned int <parameter>sad</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	MakeAddr() generates an Addr4882_t value that corresponds to the
+	specified primary address <parameter>pad</parameter> and secondary
+	address <parameter>sad</parameter>.  It does so by putting
+	<parameter>pad</parameter> into the least significant byte and
+	left shifting <parameter>sad</parameter> up to the next byte.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Examples
+	</title>
+<programlisting>
+Addr4882_t addressList[ 5 ];
+
+addressList[ 0 ] = 5 /* primary address 5, no secondary address */
+addressList[ 1 ] = MakeAddr(3, 0); /* primary address 3, no secondary address */
+addressList[ 2 ] = MakeAddr(7, 0x70); /* primary address 3, secondary address 16 */
+addressList[ 3 ] = MakeAddr(20, MSA(9)); /* primary address 20, secondary address 9 */
+addressList[ 4 ] = NOADDR;
+</programlisting>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	An Addr4882_t value corresponding to the specified primary and
+	secondary GPIB address.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-mla">
+<refmeta>
+	<refentrytitle>MLA</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>MLA</refname>
+	<refpurpose>generate 'my listen address' command byte</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>uint8_t <function>MLA</function></funcdef>
+		<paramdef>unsigned int <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	MLA() returns a 'my listen address'
+	<link LINKEND="reference-command-bytes">command byte</link> corresponding
+	to the <parameter>address</parameter> argument.  The <parameter>address</parameter>
+	my be between 0 and 30.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The appropriate MLA command byte is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-msa">
+<refmeta>
+	<refentrytitle>MSA</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>MSA</refname>
+	<refpurpose>generate 'my secondary address' command byte</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>uint8_t <function>MSA</function></funcdef>
+		<paramdef>unsigned int <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	MSA() returns a 'my secondary address'
+	<link LINKEND="reference-command-bytes">command byte</link> corresponding
+	to the <parameter>address</parameter> argument.  The <parameter>address</parameter>
+	my be between 0 and 30.  This macro is also useful for mangling
+	secondary addresses from the 'real' values between 0 and 30 to the
+	range 0x60 to 0x7e used by most of the library's functions.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The appropriate MSA command byte is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-mta">
+<refmeta>
+	<refentrytitle>MTA</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>MTA</refname>
+	<refpurpose>generate 'my talk address' command byte</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>uint8_t <function>MTA</function></funcdef>
+		<paramdef>unsigned int <parameter>address</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	MTA() returns a 'my talk address'
+	<link LINKEND="reference-command-bytes">command byte</link> corresponding
+	to the <parameter>address</parameter> argument.  The <parameter>address</parameter>
+	my be between 0 and 30.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The appropriate MTA command byte is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-ppe-byte">
+<refmeta>
+	<refentrytitle>PPE_byte</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>PPE_byte</refname>
+	<refpurpose>generate 'parallel poll enable' command byte</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>uint8_t <function>PPE_byte</function></funcdef>
+		<paramdef>unsigned int <parameter>dio_line</parameter></paramdef>
+		<paramdef>int <parameter>sense</parameter></paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	PPE_byte() returns a 'parallel poll enable'
+	<link LINKEND="reference-command-bytes">command byte</link> corresponding
+	to the <parameter>dio_line</parameter> and <parameter>sense</parameter>
+	arguments.  The <parameter>dio_line</parameter> (valid values are 1 through 8)
+	specifies which dio line the device being configured should use to send
+	back its parallel poll response.  The <parameter>sense</parameter> argument
+	specifies the polarity of the response.  If <parameter>sense</parameter>
+	is nonzero, then the specified dio line will be asserted to indicate
+	that the 'individual status bit' (or 'ist') is 1.  If <parameter>sense</parameter>
+	is zero, then the specified dio line will be asserted when ist is zero.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The appropriate PPE command byte is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-thread-ibcnt">
+<refmeta>
+	<refentrytitle>ThreadIbcnt and ThreadIbcntl</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ThreadIbcnt and ThreadIbcntl</refname>
+	<refpurpose>thread-specific ibcnt and ibcntl values</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ThreadIbcnt</function></funcdef>
+		<paramdef>void</paramdef>
+	</funcprototype>
+	<funcprototype>
+		<funcdef>long <function>ThreadIbcntl</function></funcdef>
+		<paramdef>void</paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ThreadIbcnt() and ThreadIbcntl() return thread-local versions
+	 of the global
+	variables <link LINKEND="reference-globals-ibcnt">ibcnt and ibcntl</link>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibcnt">ibcnt or ibcntl</link>
+	corresponding to the last 'traditional' or 'multidevice' function
+	called in the current thread is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-thread-iberr">
+<refmeta>
+	<refentrytitle>ThreadIberr</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ThreadIberr</refname>
+	<refpurpose>thread-specific iberr value</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ThreadIberr</function></funcdef>
+		<paramdef>void</paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ThreadIberr() returns a thread-local version of the global
+	variable <link LINKEND="reference-globals-iberr">iberr</link>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-iberr">iberr</link>
+	corresponding to the last 'traditional' or 'multidevice' function
+	called by the current thread is returned.
+	</para>
+</refsect1>
+</refentry>
+
+<refentry ID="reference-function-thread-ibsta">
+<refmeta>
+	<refentrytitle>ThreadIbsta</refentrytitle>
+	<manvolnum>3</manvolnum>
+</refmeta>
+<refnamediv>
+	<refname>ThreadIbsta</refname>
+	<refpurpose>thread-specific ibsta value</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<funcsynopsis>
+	<funcsynopsisinfo>#include &lt;gpib/ib.h&gt;</funcsynopsisinfo>
+	<funcprototype>
+		<funcdef>int <function>ThreadIbsta</function></funcdef>
+		<paramdef>void</paramdef>
+	</funcprototype>
+	</funcsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<title>
+	Description
+	</title>
+	<para>
+	ThreadIbsta() returns a thread-local version of the global
+	variable <link LINKEND="reference-globals-ibsta">ibsta</link>.
+	</para>
+</refsect1>
+<refsect1>
+	<title>
+	Return value
+	</title>
+	<para>
+	The value of <link LINKEND="reference-globals-ibsta">ibsta</link>
+	corresponding to the last 'traditional' or 'multidevice' function
+	called by the current thread is returned.
+	</para>
+</refsect1>
+</refentry>
+
+</section>
+
+</section>
+
+<section ID="gpib-protocol">
+<title>GPIB protocol</title>
+
+<section ID="reference-command-bytes">
+	<title>GPIB command bytes</title>
+	<para>
+	The meaning and values of the possible GPIB command bytes
+	are as follows:
+	</para>
+	<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>GPIB command bytes</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>byte value (hexadecimal)</entry>
+	<entry>name</entry>
+	<entry>description</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>0x1</entry>
+	<entry>GTL</entry>
+	<entry>Go to local</entry>
+	</row>
+	<row>
+	<entry>0x4</entry>
+	<entry>SDC</entry>
+	<entry>Selected device clear</entry>
+	</row>
+	<row>
+	<entry>0x5</entry>
+	<entry>PPConfig (also 'PPC' on non-powerpc architectures)</entry>
+	<entry>Parallel poll configure</entry>
+	</row>
+	<row>
+	<entry>0x8</entry>
+	<entry>GET</entry>
+	<entry>Group execute trigger</entry>
+	</row>
+	<row>
+	<entry>0x9</entry>
+	<entry>TCT</entry>
+	<entry>Take control</entry>
+	</row>
+	<row>
+	<entry>0x11</entry>
+	<entry>LLO</entry>
+	<entry>Local lockout</entry>
+	</row>
+	<row>
+	<entry>0x14</entry>
+	<entry>DCL</entry>
+	<entry>Device clear</entry>
+	</row>
+	<row>
+	<entry>0x15</entry>
+	<entry>PPU</entry>
+	<entry>Parallel poll unconfigure</entry>
+	</row>
+	<row>
+	<entry>0x18</entry>
+	<entry>SPE</entry>
+	<entry>Serial poll enable</entry>
+	</row>
+	<row>
+	<entry>0x19</entry>
+	<entry>SPD</entry>
+	<entry>Serial poll disable</entry>
+	</row>
+	<row>
+	<entry>0x20 to 0x3e</entry>
+	<entry>MLA0 to MLA30</entry>
+	<entry>My (primary) listen address 0 to 30</entry>
+	</row>
+	<row>
+	<entry>0x3f</entry>
+	<entry>UNL</entry>
+	<entry>Unlisten</entry>
+	</row>
+	<row>
+	<entry>0x40 to 0x5e</entry>
+	<entry>MTA0 to MTA30</entry>
+	<entry>My (primary) talk address 0 to 30</entry>
+	</row>
+	<row>
+	<entry>0x5f</entry>
+	<entry>UNT</entry>
+	<entry>Untalk</entry>
+	</row>
+	<row>
+	<entry>0x60 to 0x6f</entry>
+	<entry>MSA0 to MSA15, also PPE</entry>
+	<entry>When following a talk or listen address, this is
+	'my secondary address' 0 to 15.  When following a parallel
+	poll configure, this is 'parallel poll enable'.  For
+	parallel poll enable, the least significant 3 bits
+	of the command byte specify which DIO line the device
+	should use to send its parallel poll response.  The
+	fourth least significant bit (0x8)
+	indicates the 'sense' or polarity the device should use
+	when responding.
+	</entry>
+	</row>
+	<row>
+	<entry>0x70 to 0x7d</entry>
+	<entry>MSA16 to MSA29, also PPD</entry>
+	<entry>When following a talk or listen address, this is
+	'my secondary address' 16 to 29.  When following a parallel
+	poll configure, this is 'parallel poll disable'.</entry>
+	</row>
+	<row>
+	<entry>0x7e</entry>
+	<entry>MSA30</entry>
+	<entry>My secondary address 30</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+	</para>
+</section>
+
+<section ID="gpib-protocol-bus-lines">
+<title>GPIB bus lines</title>
+<para>
+Physically, the GPIB bus consists of 8 data lines, 3 handshaking
+lines, and 5 control lines (and 8 ground
+lines).  Brief descriptions
+of how they are used follow:
+</para>
+<para>
+	<table COLSEP="1" ROWSEP="1" ORIENT="port" PGWIDE="1">
+	<title>GPIB bus lines</title>
+	<tgroup COLS="3" ALIGN="left" >
+	<thead>
+	<row>
+	<entry>bus line</entry>
+	<entry>description</entry>
+	<entry>pin number</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+	<entry>DIO1 through DIO8</entry>
+	<entry>Data input/output bits.  These 8 lines are used to read and write the 8 bits
+	of a data or command byte that is being sent over the bus.</entry>
+	<entry>DIO1 to DIO4 use pins 1 to 4, DIO5 to DIO8 use pins 13 to 16</entry>
+	</row>
+	<row>
+	<entry>EOI</entry>
+	<entry>End-or-identify.  This line is asserted with the last byte of
+	data during a write, to indicate the end of the message.  It can
+	also be asserted along with the ATN line to conduct a parallel poll.</entry>
+	<entry>5</entry>
+	</row>
+	<row>
+	<entry>DAV</entry>
+	<entry>Data valid.  This is a handshaking line, used to signal that
+	the value being sent with DIO1-DIO8 is valid.  During transfers the
+	DIO1-DIO8 lines are set, then the DAV line is asserted after
+	a delay called the 'T1 delay'.  The T1 delay lets the data lines
+	settle to stable values before they are read.</entry>
+	<entry>6</entry>
+	</row>
+	<row>
+	<entry>NRFD</entry>
+	<entry>Not ready for data.  NRFD is a handshaking line asserted by
+	listeners to indicate
+	they are not ready to receive a new data byte.</entry>
+	<entry>7</entry>
+	</row>
+	<row>
+	<entry>NDAC</entry>
+	<entry>Not data accepted.  NDAC is a handshaking line asserted by
+	listeners to indicate
+	they have not yet read the byte contained on the DIO lines.</entry>
+	<entry>8</entry>
+	</row>
+	<row>
+	<entry>IFC</entry>
+	<entry>Interface clear.  The system controller can assert this line
+	(it should be asserted for at least 100 microseconds) to reset
+	the bus and make itself controller-in-charge.</entry>
+	<entry>9</entry>
+	</row>
+	<row>
+	<entry>SRQ</entry>
+	<entry>Service request.  Devices on the bus can assert this line
+	to request service from the controller-in-charge.  The controller
+	can then poll the devices until it finds the device requesting
+	service, and perform whatever action is necessary.</entry>
+	<entry>10</entry>
+	</row>
+	<row>
+	<entry>ATN</entry>
+	<entry>Attention.  ATN is asserted to indicate that the DIO lines
+	contain a <link LINKEND="reference-command-bytes">command byte</link>
+	(as opposed to a data byte).  Also, it is asserted with EOI
+	when conducting parallel polls.</entry>
+	<entry>11</entry>
+	</row>
+	<row>
+	<entry>REN</entry>
+	<entry>Remote enable.  Asserted by the system controller, it enables
+	devices to enter remote mode.  When REN is asserted, a device will
+	enter remote mode when it is addressed by the controller.  When
+	REN is false, all devices will immediately return to local mode.
+	</entry>
+	<entry>17</entry>
+	</row>
+	</tbody>
+	</tgroup>
+	</table>
+</para>
+</section>
+
+</section>
+
+&license
+
+</article>
+

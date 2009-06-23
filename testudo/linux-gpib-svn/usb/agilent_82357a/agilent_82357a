@@ -1,0 +1,65 @@
+#!/bin/sh
+
+GPIB_CONFIG_OPTIONS="--minor 0"
+DATADIR=/usr/share
+FXLOAD=fxload
+FXLOAD_OPTIONS=
+
+PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/bin:/usr/bin:/usr/local/bin
+FIRMWARE=
+
+# pre-renumeration device IDs
+case $PRODUCT in
+# 82357a with firmware already loaded
+957/107/*)
+	gpib_config $GPIB_CONFIG_OPTIONS
+	;;
+
+# 82357a without firmware
+957/7/*)
+	FIRMWARE=$DATADIR/usb/agilent_82357a/82357a_fw.hex
+	;;
+
+# 82357b with firmware already loaded
+957/718/*)
+	gpib_config $GPIB_CONFIG_OPTIONS
+	;;
+
+# 82357b without firmware
+957/518/*)
+	FIRMWARE=$DATADIR/usb/agilent_82357a/measat_releaseX1.8.hex
+	FXLOAD_OPTIONS="-t fx2"
+	;;
+
+esac
+
+
+# quit unless we were called to download some firmware 
+if [ "$FIRMWARE" = "" ]; then
+    # OR:  restructure to do other things for
+    # specific post-renumeration devices
+    exit 0
+fi
+
+# missing firmware?
+if [ ! -r $FIRMWARE ]; then
+    if [ -x /usr/bin/logger ]; then
+	/usr/bin/logger -t $0 "missing $FIRMWARE for $PRODUCT ??"
+    fi
+    exit 1
+fi
+
+# missing fxload?
+if ! which $FXLOAD; then
+    if [ -x /usr/bin/logger ]; then
+	/usr/bin/logger -t $0 "missing $FXLOAD ??"
+    fi
+    exit 1
+fi
+
+if [ -x /usr/bin/logger ]; then
+    /usr/bin/logger -t $0 "load $FIRMWARE for $PRODUCT to $DEVICE"
+fi
+
+$FXLOAD $FXLOAD_OPTIONS -I $FIRMWARE
+

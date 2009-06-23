@@ -1,0 +1,7 @@
+'make' to compile, 'make install' to install.  To load this extension
+just add the line
+
+load [info library]/libgpib_tcl.so
+
+near the beginning of your scripts.
+

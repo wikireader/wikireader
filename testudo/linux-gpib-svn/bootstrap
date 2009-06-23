@@ -1,0 +1,12 @@
+#!/bin/sh
+#run this script to create the 'configure' script
+if [ ! -f NEWS ] ; then
+	touch NEWS
+fi
+
+aclocal -I m4 && \
+libtoolize --copy --force && \
+autoheader && \
+autoconf && \
+automake -a -c 
+

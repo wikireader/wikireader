@@ -1,0 +1,43 @@
+=====================================================
+
+
+	The Linux GPIB Package
+	-----------------------------------
+		(c) 1994-1996 by C.Schroeter
+		(c) 2001-2006 by Frank Mori Hess
+
+=====================================================
+
+This is Linux-GPIB the IEEE-488 card support
+package and measurement suite for LINUX.
+
+This version of Linux-GPIB requires a version 2.6.x 
+of the Linux kernel.  2.6.x kernels older than 2.6.8
+are not supported.  2.4.x kernels are supported by
+Linux-GPIB versions 3.1.x.
+
+See the INSTALL file for instructions on building and
+installing this software package.
+
+Send comments, questions and suggestions to
+to the linux-gpib mailing list
+linux-gpib-general@lists.sourceforge.net
+
+*************** COPYRIGHT NOTICE ***********************
+
+If you want to distribute software which makes use of
+this package, please read the COPYING file carefully.
+
+********************************************************
+
+
+
+
+
+
+
+
+
+
+
+

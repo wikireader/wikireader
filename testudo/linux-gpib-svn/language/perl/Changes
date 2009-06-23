@@ -1,0 +1,6 @@
+Revision history for Perl extension LinuxGpib.
+
+0.01  Sun Oct  6 15:22:15 2002
+	- original version; created by h2xs 1.21 with options
+		-Oxan LinuxGpib /usr/local/include/gpib/ib.h
+

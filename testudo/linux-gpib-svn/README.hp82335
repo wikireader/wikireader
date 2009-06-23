@@ -1,0 +1,214 @@
+
+HP 82335 and 27209
+
+-----------------------------------------------------------------------------------
+Configuring the cards:
+-----------------------------------------------------------------------------------
+
+The 27209 and the 82335 cards are "memory mapped",
+and are different from most I/O cards, which use an port address space.
+The legal mappings are into 16 KB blocks of the "reserved" 384 KB of DOS RAM and
+are as follows:
+
+                              +---------------+
+                              | select code 8 | E0000  <-- not recommended
+                              +---------------+
+   default switch setting --> | select code 7 | DC000
+                              +---------------+
+                              | select code 6 | D8000
+                              +---------------+
+                              | select code 5 | D4000
+                              +---------------+
+                              | select code 4 | D0000
+                              +---------------+
+                              | select code 3 | CC000
+                              +---------------+
+                              | select code 2 | C8000
+                              +---------------+
+
+The HP 27209 card is also known under the product numbers 82990, 61062, and
+88500; it's the same card no matter what the number. The card has the layout:
+
+   +-----------------------------------------+
+   | 27209                                   |
+   |                                         +----
+   |                                         |
+   |                                         |
+   |                                         |
+   |                                         +--+
+   |                                         |  |
+   |                                         |  |
+   |                                         |  |
+   |   1 +--------+                          |  |
+   |     |        | Configuration Switches   +--+
+   |   0 +--------+ (8)                      |
+   |      87654321                           |
+   |                                         |
+   +---+                             +-------+
+       |                             |       |
+       +-----------------------------+       |
+                                             |
+
+The switches have the default settings:
+
+        27209 Default Switch Settings
+     +---------------------------------+
+   0 | +-+ +-+ +-+ +-+ +-+ +-+ +-+ +-+ |
+     | |X| | | | | | | |X| | | |X| |X| |
+     | +-+ +-+ +-+ +-+ +-+ +-+ +-+ +-+ |
+     | | | |X| |X| |X| | | |X| | | | | |
+   1 | +-+ +-+ +-+ +-+ +-+ +-+ +-+ +-+ |
+     +---------------------------------+
+        1   2   3   4   5   6   7   8
+
+Note that the diagram is upside-down relative to the DIP switch orientation in
+the board-layout diagram; this can be confusing, so I recommend that you hold
+the card upside-down while setting the switches so the orientation matches this
+illustration.
+
+=> Switches 1 to 4 control the card's memory address as follows:
+
+   ___________________________
+
+   switch   select  address
+   1234     code
+   ___________________________
+
+   0000       16    C0000
+   0001        1    C4000
+   0010        2    C8000
+   0011        3    CC000
+   0100        4    D0000
+   0101        5    D4000
+   0110        6    D8000
+   0111        7    DC000
+   1000        8    E0000
+   1001        9    E4000
+   1010       10    E8000
+   1011       11    EC000
+   1100       12    F0000
+   1101       13    F4000
+   1110       14    F8000
+   1111       15    FC000
+   ___________________________
+
+The default address is DC000, or select code 7.
+
+Switch 5 was defined to allow certain antique HP Vectra PCs to boot DOS off an
+external HPIB disk drive (when the appropriate software was installed). This
+switch should always be set to 0, since you may hang your PC if it is set to 1.
+
+Switch 6 does nothing useful, but it should be left set to 1.
+
+Switches 7 and 8 control the PC IRQ level of the card:
+
+   ________________
+
+   PC IRQ    7    8
+   ________________
+
+   3         0    0
+   4         0    1
+   5         1    0
+   6         1    1
+   ________________
+
+The default IRQ level is 3.
+
+* The HP 82335 has the same form-factor, but a different layout. (The two cards
+are easy to distinguish in practice. All the chips on the 27209 are laid out
+horizontally, parallel to the PC-bus edge connector; all the chips on the 82335
+are laid out vertically, at a right angle to the PC-bus edge connector.)
+
+   +-----------------------------------------+
+   | 82335                                   |
+   |                                         +----
+   |                  1    0                 |
+   |                1 +----+                 |
+   |                2 |    |                 |
+   |                3 |    | Configuration   +--+
+   |                4 |    | Switches        |  |
+   |                5 |    | (8)             |  |
+   |                6 |    |                 |  |
+   |                7 |    |                 |  |
+   |                8 +----+                 +--+
+   |                                         |
+   |                                         |
+   |                                         |
+   +---+                             +-------+
+       |                             |       |
+       +-----------------------------+       |
+                                             |
+
+The default settings of the switch are as follows:
+
+      +-----------------+
+   1  |   +----+----+   |  0
+      | 1 |    |XXXX| 0 |
+      |   +----+----+   |
+      | 2 |XXXX|    | 1 |
+      |   +----+----+   |
+      | 3 |XXXX|    | 1 |
+      |   +----+----+   |
+      | 4 |XXXX|    | 1 |
+      |   +----+----+   |
+      | 5 |    |XXXX| 0 |
+      |   +----+----+   |
+      | 6 |    |XXXX| 0 |
+      |   +----+----+   |
+      | 7 |    |XXXX| 0 |
+      |   +----+----+   |
+      | 8 |    |XXXX| 0 |
+      |   +----+----+   |
+      +-----------------+
+
+The switch numbering is on the left; the actual values of the default settings
+are on the right. Note that if the DIP uses slide switches, a "0" corresponds
+to the slide pushed to the right; if the DIP uses rocker switches, a "0"
+corresponds to the switch depressed on the right.
+
+Switches 1-4 control the card's PC bus address and interface select code (ISC);
+they operate the same as they do with the 27209:
+
+   ___________________________
+
+   switch   select  address
+   1234     code
+   ___________________________
+
+   0000       16    C0000
+   0001        1    C4000
+   0010        2    C8000
+   0011        3    CC000
+   0100        4    D0000
+   0101        5    D4000
+   0110        6    D8000
+   0111        7    DC000
+   1000        8    E0000
+   1001        9    E4000
+   1010       10    E8000
+   1011       11    EC000
+   1100       12    F0000
+   1101       13    F4000
+   1110       14    F8000
+   1111       15    FC000
+   ___________________________
+
+
+The default setting is ISC 7. Switches 5 & 6 control the PC interrupt level;
+they operate as do switches 7 and 8 on the 27209 card:
+
+   ________________
+
+   PC IRQ    5    6
+   ________________
+
+   3         0    0
+   4         0    1
+   5         1    0
+   7         1    1
+   ________________
+
+The default setting is IRQ 3. Switches 7 and 8 are not used.
+
+

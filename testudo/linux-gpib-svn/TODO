@@ -1,0 +1,50 @@
+cleanup and improve organization of code - lots of work to do here
+
+generally make this software suck less
+
+fix crash on pcmcia card removal when program has board open
+
+have library parse dmesg automatically on error
+
+report error when user tries to read/write to interface board which is
+bus master
+
+a kcontrol module for configuring boards might be nice
+
+possible problems when autopoll happens without remote enable
+
+timeouts on write should handle data that was able to report
+number of bytes sent before timeout occurred.
+
+stuck SRQ handling
+
+add query to ibask() for support of IFC events
+
+fix support parallel poll timeout support (should be hardware-based)
+
+better error message when gpib_config has not been run
+
+specifying config file with gpib_config --file can cause problems,
+since library doesn't know anything about it unless IB_CONFIG
+is set in the environment as well.  Should warn about this somewhere.
+
+add links to web page (maybe comedi and vimms)
+
+split off parts of library that need libpthread, so we can
+provide a pthread free version (that would lack ibwrta(), etc.).
+
+lock on board online/offline
+
+libgpib_test: add test for serial poll without autopolling
+
+remove devices that time out from autopoll list
+
+better error on unknown board_type
+
+being addressed as listener should abort writes, being addressed
+as talker should abort reads
+
+maybe use 1-1 relationship between file descriptors and
+gpib device/board descriptors instead of maintaining our own
+lists of gpib device descriptors.
+

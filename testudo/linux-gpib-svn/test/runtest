@@ -1,0 +1,24 @@
+#!/bin/bash
+# Note: it is possible to run the two instances of libgpib_test on different
+# computers by calling one through ssh instead of running it directly.
+COMMON_OPTIONS="$*"
+MASTER_OPTIONS="--master"
+SLAVE_OPTIONS="--slave"
+MYFIFO="/tmp/libgpib_test_fifo"
+
+rm -f $MYFIFO
+mknod $MYFIFO p
+./libgpib_test $COMMON_OPTIONS $MASTER_OPTIONS 0< $MYFIFO 2> master_out | \
+	./libgpib_test $COMMON_OPTIONS $SLAVE_OPTIONS 1>> $MYFIFO 2>slave_out
+rm -f $MYFIFO
+
+echo
+echo ==========
+echo "Output of master run:"
+echo ==========
+cat master_out
+echo
+echo ==========
+echo "Output of slave run:"
+echo ==========
+cat slave_out

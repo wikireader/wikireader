@@ -1,0 +1,31 @@
+First a dump from a revision 1.1 card:
+
+Socket 0:
+dev_info
+NULL 0ns, 512b
+attr_dev_info
+EEPROM 250ns, 512b
+vers_1 4.1, "ines, inc.", "IEEE488.2 PCMCIA", "Rev 1.1",
+"Compat: NEC 7210"
+config base 0x0100 mask 0x0003 last_index 0x01
+cftable_entry 0x30 [default]
+Vcc Vnom 5V
+timing wait 120us
+io 0x0000-0x001f [lines=5] [8bit] [16bit]
+irq mask 0xffff [pulse]
+manfid 0x01b4, 0x4730
+
+
+Now a revision 1.0 card (note, they're using National Instruments manfid!):
+
+dev_info
+NULL 0ns, 512b
+vers_1 4.1, "ines GmbH", "IEEE488.2 PCMCIA", "Rev 1.0",
+"Compat: NEC 7210"
+config base 0x0100 mask 0x0003 last_index 0x01
+cftable_entry 0x31 [default]
+Vcc Vnom 5V
+timing wait 120us
+io 0x0000-0x001f [lines=5] [8bit] [16bit]
+irq mask 0xffff [pulse]
+manfid 0x010b, 0x4882

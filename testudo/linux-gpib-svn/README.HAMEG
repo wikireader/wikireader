@@ -1,0 +1,73 @@
+The HAMEG HO-80 IEEE-488 card is driven by an NEC |PD7210C controller.
+It supports the full IEEE 488-1978 standard. With Linux-IEEE this card is
+compatible to an PCII card. Against the PCII you have to pay attention on some
+different jumper setting. In opposit to the PCII th HO-80 contains an 8kB 
+BIOS-ROM. This ROM is not used by Linux-IEEE.
+All settings ar taken using two DIL-switches (SW1 and SW2) and two
+jumper-blocks (K1 and K2).
+With SW1 the I/O adress, with K1 the IRQ, with SW2 the ROM-base
+and with K2 th DMA-channel is selected.
+
+SW1:
+           
+   Position:   1    2    3    4    5    6    7   8
+   Adress  :  A9   A8   A7   A6   A5   A4   A3  Bus-Master
+
+For setting the I/O Adress 2B8h you have to convert it to binary:
+
+               1    0    1    0    1    1    1   0   0   0
+
+The last three Bits represent the adresslines A2, A1 and A0.
+These three Bits are not used.
+Now setting up SW1 is easy :-) To get an 1 the switch is turned off, an for
+an 0 the switch is turned on. So the following settings result:
+
+   Position:   1    2    3    4    5    6    7
+   Setting :  off  on   off  on   off  off  off
+
+With SW1-8 the Bus-Master for the IEEE-488 Bus is selected.
+SW1-8 off: HO-80 is Bus-Master
+SW2-8 on : HO-80 is not Bus-Master
+
+Remember: Only one device can be Bus-Master. Normally th PC is used for this
+job. 
+   
+SW2:
+
+   Position:   1    2    3    4    5    6    7
+   Adress  :  A19  A18  A17  A16  A15  A14  A13
+   Count   :  512K 256K 128K 64K  32K  16K  8K
+
+By default the ROM is at Adress DE000h. (SW1 settings: 00100000). To change
+the Adress of the ROM you can calculate the settings according to the
+settings of SW1. On most Systems these Setting will work. If this
+Memoryarea is used by an other Adapter (LAN, VGA....) you must change thes
+settings. The Area E0000h and above is not usable! At E0000h the System BIOS
+starts.
+
+K1 IRQ setting:
+
+        o o  IRQ7  LPT1   (normally usable)
+        o o  IRQ6  Floppy (normally not usable)
+        o=o  IRQ5  LPT2   (normally usable)
+        o o  IRQ4  COM1   (normally not usable)
+        o o  IRQ3  COM2   (normally not usable)
+        o o  IRQ2         (only usable when IRQ9 is not used)
+
+K2 DMA setting:
+
+        o o  DACK1
+        o=o  DACK3
+        o o  DRQ1
+        o=o  DRQ3
+        o o  not used
+
+On an AT-PC DACK3 and DRQ3 are recommended. If DMA3 ist used by an other
+Card try DMA1 (DACK1 and DRQ1). If both are used leave all jumpers open and
+compile the driver without DMA support.
+
+I use this Card with my Graphtec MP1000 flatbed Plotter, an CBM 4031 Floppy
+Drive and some Measurement equipment. If you have problems with tis Card
+feel free to mail me. I'll try to help you fixing up the problem.
+
+Andreas.Tauscher@allgaeu.org or tauscher@felix.rz.fh-ulm.de

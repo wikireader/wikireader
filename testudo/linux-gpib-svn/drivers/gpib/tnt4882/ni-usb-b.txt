@@ -1,0 +1,197 @@
+ibclr 
+
+03 00 00 00 (command block addresses and send SDC) (register write to device 2, address 3, value 1) 04 00 00 00
+
+readback:
+(03 status block) (0c status block) (09 status block) 01 00 00 00 04 00 00 00
+
+
+ibconfig IbcTIMING 2
+09 03 00 01 0a e9 01 0a a4 01 17 00 04 00 00 00
+
+board ibrpp
+07 TIMEOUT 00 00 04 00 00 00
+readback:
+(07 status block) PPOLLBYTE 00 00 00 04 00 00 00
+
+board ibrsv
+09 01 00 01 06 SPOLL_BYTE 00 00 04 00 00 00
+
+device ibwrt
+
+03 00 00 00 0c CNT1 NOT_READDR TIMEOUT MTA (MSA if enabled) UNL MLA (MSA if enabled) (pad with zeros to 32 bit boundary) 0d CNT1 (CNT2 guess) TIMEOUT (eosmode high byte) (eosmode low byte) (08 when eot, 00 without) 00 data[0] ... data[n-1] (pad with zeros to 32 bit boundary) 09 01 00 02 03 01 00 00 04 00 00 00
+
+readback:
+(03 status block) (0c status block) (0d status block)
+(09 status block) 01 00 00 00 04 00 00 00
+
+
+device ibrd
+
+03 00 00 00 0c CNT1 NOT_READDR TIMEOUT UNL MLA (MSA if enabled) MTA (MSA if enabled) (pad with 00 to 32 bit boundary) 0a (eosmode high byte) (eosmode low byte) TIMEOUT
+CNT1 CNT2 00 00 09 02 00 (triplet 01 0a 51: holdoff handshake immediately) (triplet 01 0a 55: clear END) 00 00 00
+09 01 00 02 03 01 00 00 04 00 00 00
+
+readback:
+(03 status block) (0c status block)
+    00000010: 11 00 00 00 11 00 00 00 11 00 00 00 11 00 00 00
+    00000020: 11 00 00 00 11 00 00 00 11 00 00 00 11 00 00 00
+    00000030: 11 00 00 00 11 00 00 00 11 00 00 00 11 00 00 00
+    00000040: (see board ibrd readback) (09 status block) 01 00 00 00 04 00 00 00
+
+board ibwrt
+
+0d CNT1 CNT2 (fX where X is timeout, AUXRJ?) 00 00 (08 when eot, 00 without) 00 data[0] ... data[n-1] (pad with zeros to 32 bit boundary) 04 00 00 00
+
+readback:
+(0d status block) 04 00 00 00
+
+
+board ibrd
+
+0a (eosmode high byte) (eosmode low byte) TIMEOUT
+CNT1 CNT2 00 00 09 02 00 (triplet 01 0a 51: holdoff handshake immediately) (triplet 01 0a 55: clear END) 00 00 00 04 00 00 00
+
+readback (success):
+36 data[0] data[1] ... data[15]
+36 data[16] data[17] ... data[N-1] (pad with 00 to 16 byte boundary)
+(38 status block) ADR1 (N mod 15) 00 00 (09 status block) 02 00 00 00 04 00 00 00
+
+readback (timeout, nothing received):
+(38 status block) ADR1 00 00 00 (09 status block) 02 00 00 00 04 00 00 00
+
+
+ibsre 1:
+(register read: 08 03 01 0d 01 0c 01 1f) (register write: 09 01 00 01 0a 1f 00 00)
+(termination 04 00 00 00)
+readback:
+(register read readback: 34 00 00 04 35 03 00 00) (register write readback: 09 00 00 00 ff ff ff ff 01 00 00 00) (termination 04 00 00 00)
+
+ibsre 0:
+08 03 01 0d 01 0c 01 1f 09 01 00 01 0a 17 00 00
+04 00 00 00
+readback:
+34 00 00 05 35 03 00 00 09 00 00 00 ff ff ff ff
+01 00 00 00 04 00 00 00
+
+ibrsc 0:
+(register write x 4) (triplet 01 0a 17) (triplet 01 0a 16) (triplet 01 0a 14)
+	(triplet 01 1c 02)  (pad with 00) 04 00 00 00
+readback (09 status block) (4 writes completed) 04 00 00 00 
+
+ibrsc 1:
+(register write x 2) (triplet 01 1c 03) (triplet 01 0a 16) (pad with 00) 04 00 00 00
+readback (09 status block) (2 writes completed) 04 00 00 00 
+
+
+board ibcmd
+
+0c CNT1 00 (fX where X is timeout) cmd[0] ... cmd[n-1] (pad with zeros to 32 bit boundary) 04 00 00 00
+
+readback:
+(0c status block) 04 00 00 00
+
+
+board ibpad 
+
+09 02 00 01 0c (PAD, this is ADR register at offset 0c) 02 00 PAD 00 00 00 04 00 00 00
+
+readback:
+(09 status block) 02 00 00 00 04 00 00 00
+
+
+board ibsad
+
+09 03 00 01 0c (0x80 + 0 to 31 for sad, or 0xe0 if disabled, this is the ADR register at offset 0x0c) 01 08 (32 enabled 31 no sad, this is ADMR at offset 0x08) 02 01 MSA 04 00 00 00
+
+readback:
+(09 status block) 03 00 00 00 04 00 00 00
+
+
+ibsic
+
+0f 00 00 00 04 00 00 00
+readback:
+(0f status block) 04 00 00 00
+
+
+ibwait 0
+[56110 ms]  >>>  URB 16 going down  >>> 
+-- URB_FUNCTION_VENDOR_DEVICE:
+  TransferFlags          = 00000003 (USBD_TRANSFER_DIRECTION_IN, USBD_SHORT_TRANSFER_OK)
+  TransferBufferLength = 00000008
+  TransferBuffer       = e6261e90
+  TransferBufferMDL    = 00000000
+  UrbLink                 = 00000000
+  RequestTypeReservedBits = 00000000
+  Request                 = 00000021
+  Value                   = 00000200
+  Index                   = 00000000
+[56114 ms] UsbSnoop - MyInternalIOCTLCompletion(c19a4720) : fido=00000000, Irp=e62c6b20, Context=e628f020, IRQL=2
+[56114 ms]  <<<  URB 16 coming back  <<< 
+-- URB_FUNCTION_CONTROL_TRANSFER:
+  PipeHandle           = e62568ac
+  TransferFlags        = 00000003 (USBD_TRANSFER_DIRECTION_IN, USBD_SHORT_TRANSFER_OK)
+  TransferBufferLength = 00000008
+  TransferBuffer       = e6261e90
+  TransferBufferMDL    = e628f060
+    00000000: (21 status block)
+  UrbLink              = 00000000
+  SetupPacket          =
+    00000000: c0 21 00 02 00 00 08 00
+
+ibwait SRQI
+value 300, index 1000 (index is wait mask)
+updated status comes back on endpoint 0x84 pipe, xfer buffer length 0x11
+
+
+iblines
+
+register level read of tnt4882 registers 0d, 0c, 1f
+
+
+***
+notes:
+
+TIMEOUT = fX where X is timeout number, for parallel polls timeout number 0
+	is default (2us).  01 is timeout 16, ff is timeout 17 (bug same as 15?).
+
+ERRCODE = 00 on success, 08 on ENOL error, 0a on timeout
+
+NOT_READDR = 00 forces command string containing talk/listen addresses to be sent.  02 means it is not sent.
+
+tnt4882 registers: CNT1, CNT2, ADR1, AUXMR, etc.
+
+01 00 00 00 = ibcac 0
+01 01 00 00 = ibcac 1
+
+03 00 00 00 = ?? device level function ??
+
+04 00 00 00 = end of message
+
+06 00 00 00 = ibgts
+
+08 N pair1 pair2 ... pairN = register level read
+pair = device address
+readback = 34 value1 value2 value3 34 value4 ... 35 (N: 1 to 3, number of valid values from last 4 byte 34 block) (pad with zeros)
+
+09 N 00 triplet1 triplet2 ... tripletN (pad to 32 bit boundary) = register level write.
+triplet = device address value
+device 1 is tnt4482
+device 2 is ??
+device 2 address 0 = board PAD
+device 2 address 1 = board MSA
+device 2 address 3 = ?? writes 1 during device read, write, and clear.
+	Maybe this asks for extended status response back from multi-	command usb message
+
+readback status block format:
+(ID) (ibsta high byte) (ibsta low byte) ERRCODE CNT1 CNT2 ff ff
+
+09 status blocks are followed by number of (successful?) register writes.
+
+***
+
+
+
+
+

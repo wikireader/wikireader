@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+#
+#
+if [ ! "$1" = "" ];then
+cd $1
+fi
+for i in `ls --sort=time`;do
+if [ -d $i -a -r $i/Makefile ];then
+echo $i
+fi
+done

@@ -1,0 +1,182 @@
+
+These are some register descriptions I (Frank) received from Measurement
+Computing tech support.
+
+ISA-GPIB Card Register Desriptions
+**********************************
+
+The functions and register widths of Base (0 through 7) R/W are dependent on the
+state of bits 0 and 1 in register Base+8 (T_ENB and R_ENB) respectively.
+
+1. If both bits are set low then the first eight registers are simply those of
+the CBI7210.2 (IEEE488) controller and the board is operating in the STD
+(standard) mode.  For a detailed account of those registers pleas refer to the
+CBI7210.2 data sheet.
+
+2. If either of the bits is set high then the HS (high speed) transfer mode
+(transmit or receive) has been selected and addresses Base+0 and Base+1 of the
+CBI7210.2 can no longer be accsesed in the traditional sense.  In HS mode Base+0
+becomes a 16 bit register for high speed transfer of data between the CBI7210.2
+and the PC bus via FIFO buffers.
+
+When the CBI-488.2/HS is configured for STD mode, Base+0 through Base+7 are
+specific to the CBI7210.2. For bit specific information on these registers
+please see the CBI7210.2 data sheet.  Base+8 and Base+9 bit functions are
+identical for both the STD and HS modes and are described below.
+
+When the CBI-488.2/HS is configured for HS mode, Base+0 is 16 bits wide
+and transfers or receives data.  The CBI7210.2 registers which are accessed at
+Base+0 and Base+1 in STD mode are not available in HS mode.
+
+
+Base+8 and Base+9 Writes
+************************
+
+
+Write Base+8, Bit 0, T_ENB:
+
+A one in this location puts the board in HS transmit mode and prepares the
+state machines for high speed transfer operations (PC Bus to CBI7210.2).  When
+T_ENB is asserted in conjunction with the R_ENB (Base+8, Bit 1) the following
+conditions are cleared:
+
+1. Clears the transmit state machine to an initial condition
+
+2. Clears any residual interrupts left latched on the CBI-488.2/HS
+
+3. Resets all control bits in Base+8 to 0.
+
+4. Enables T_Empty Interrupts
+
+
+Write Base+8, Bit 1, R_ENB:
+
+A one in this location puts the board in HS receive mode and prepares the state
+machines for high speed receive operations (CBI7210.2 to PC Bus).  When R_ENB is
+asserted in conjunction with the T_ENB (Base+8, Bit0) the following conditions
+are cleared (see above).
+
+R_ENB    T_ENB    Function
+**************************
+0        0        STD Mode
+0        1        HS Mode, Transmit 16 bit data
+1        0        HS Mode, Receive 16 bit data
+1        1        Clear Function
+
+
+Write Base+8, Bit 2, Undefined.
+
+
+Write Base + 8, Bit 3, HF_INT_ENB:
+
+This bit has meaning in HS mode only.  The half full flag on the transmit FIFO
+is used to interrupt the PC when the transmit FIFO is half empty so that the PC
+can refill the FIFO with 1/2 FIFO's worth of data.  On the receive FIFO, the
+half full flag is used to interrupt the PC when the receive FIFO is half full so
+that the PC can retrieve 1/2 FIFO's worth of data.  The HF_INT_ENB bit is used
+by the software to enable and disable the HF_INT from generating interrupts from
+either of the FIFO's.  When HF_INT_ENB is set to a 1 the half full interrupts
+are enabled, they are ignored when this bit is set to 0.
+
+
+Write Base+8, Bit 4, CLR_SRQINT:
+
+The CBI7210.2 generates an SRQ interrupt in response to serial poll requests.
+The CBI-488.2/HS latches this bit to preserve the identity of the interrupt
+source.  The CLR_SRQINT bit is used to clear this latched condition
+individually.
+
+
+Write Base+8, Bit 5, CLR_EOIINT:
+
+The CBI7210.2 generates an EOI interrupt in response to the last byte transfer.
+The CBI488.2/HS latches this bit to preserve the identity of the interrupt
+source.  The CLR_EOIINT bit is used to clear this latched condition
+individually.  This bit also clears T_Empty+Int bit.
+
+
+Write Base+8, Bit 6, CLR_HFINT:
+
+When enabled, the transmit and receive FIFO's generate half full interrupts in
+response to half full conditions.  The CBI488.2/HS latches this bit to preserve
+the identity of the interrupt source.  The CLR_HFINT bit is used to clear this
+latched condition individually.
+
+
+Write Base+8, Bit 7, SC:
+
+The SC bit determines whether the CBI488.2/HS is the system controller or not.
+When this bit is set to a 1 then the CBI-488.2/HS is the system controller.
+When the bit is set to 0 the CBI-488.2/HS is not the system controller.
+
+
+Write Base+9, Bit 0,1,2, IRQ_A0,A1,A2:
+
+Interrupt select address bits.  Any write to Base+9 clears both the Transmit and
+Receive FIFO's.
+
+Interrupt Selected    IRQ_A2    IRQ_A1    IRQ_A0
+************************************************
+None                  0         0         0
+2                     0         0         1
+3                     0         1         0
+4                     0         1         1
+5                     1         0         0
+7                     1         0         1
+10                    1         1         0
+11                    1         1         1
+
+
+Write Base+9, Bit 7, 7210Clear:
+
+To clear the CBI7210.2 write a 1 to bit 7 of Base+9 and then return this bit
+to 0.  Any write to Base+9 clears both the Transmit and Receive FIFO's.
+
+
+Read Base+8, Bit 0, FIFO_FULL - Active High:
+
+Since the last time the FIFO was reset by asserting (Base+9, Bit 7), one or both
+of the FIFOs has reached a full condition.  This condition indicates that bad
+data exists and appropriate action should be taken.
+
+
+Read Base+8, Bit 1, HF_INT - Active High:
+
+An interrupt condition has been caused by a half full condition from the
+transmit or receive FIFO.  this bit can be cleared by CLR_HFINT.
+
+
+Read Base+8, Bit 2, SRQ_INT:
+
+An interrupt condition has been caused by an SRQ from the CBI7210.2.  This bit
+can be cleared by CLR_SRQINT.
+
+
+Read Base+8, Bit 3, EOI_INT:
+
+An interrupt condition has been caused by an EOI from the CBI7210.2.  This bit
+can be cleared by CLR_EOIINT.
+
+
+Read Base+8, Bit 4, T_EMPTY_MSB - Active Low - (MSB):
+
+When this bit is high the transmit msb FIFO contains data.  When this bit is 0
+the transmit FIFO has been read empty or just been cleared.
+
+
+Read Base+8, Bit 5, R_EMPTY_MSB - Active Low - (MSB):
+
+When this bit is high the receive msb FIFO contains data.  When this bit is 0
+the receive FIFO has been read empty or just been cleared.
+
+
+Read Base+8, Bit 6, T_EMPTY_LSB - Active Low - (LSB):
+
+When this bit is high the transmit lsb FIFO contains data.  When this bit is 0
+the transmit FIFO has been read empty or just been cleared.
+
+
+Read Base+8, Bit 7, R_EMPTY_LSB - Active Low - (LSB):
+
+When this bit is high the receive lsb FIFO contains data.  When this bit is 0
+the receive FIFO has been read empty or just been cleared.

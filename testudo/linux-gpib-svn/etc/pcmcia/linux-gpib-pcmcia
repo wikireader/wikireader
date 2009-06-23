@@ -1,0 +1,51 @@
+#! /bin/sh
+
+if [ -r ./shared ] ; then . ./shared ; else . /etc/pcmcia/shared ; fi
+
+# Get device attributes
+get_info $DEVICE
+
+# Load site-specific settings
+start_fn () { return; }
+stop_fn () { return; }
+. $0.opts
+
+case "$ACTION" in
+
+'start')
+
+    export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH;
+    # you might need to change --minor to match /etc/gpib.conf setting
+    gpib_config --minor 0 
+
+    start_fn $DEVICE
+    ;;
+
+'stop')
+
+    stop_fn $DEVICE
+
+    ;;
+
+'check')
+    ;;
+
+'cksum')
+    ;;
+
+'restart')
+    ;;
+
+'suspend'|'resume')
+    ;;
+
+*)
+    usage
+    ;;
+
+esac
+
+exit 0
+
+
+

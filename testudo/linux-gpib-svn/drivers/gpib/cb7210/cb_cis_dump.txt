@@ -1,0 +1,17 @@
+Socket 0:
+  dev_info
+    fn_specific 250ns, 512b
+  manfid 0x01c5, 0x0005
+  funcid unknown
+  vers_1 4.1, "ComputerBoards, Inc.", "PCM-GPIB", "(c)1997", "R6.0"
+  config base 0x02ea mask 0x0003 last_index 0x23
+  cftable_entry 0x20 [default]
+    Vcc Vnom 5V
+    io 0x0300-0x030f [lines=10] [8bit] [16bit] [range]
+    irq mask 0x86bc [level]
+  cftable_entry 0x21
+    io 0x0200-0x020f [lines=10] [8bit] [16bit] [range]
+  cftable_entry 0x22
+    io 0x0340-0x034f [lines=10] [8bit] [16bit] [range]
+  cftable_entry 0x23
+    io 0x0380-0x038f [lines=10] [8bit] [16bit] [range]
