@@ -109,9 +109,9 @@ int process(int block, int status)
 		print_dec32(board_revision());
 
 		print("\n\nmenu? ");
-		for (i = 0; i <	 20; ++i) {
+		for (i = 0; i <	4 * sizeof(spinner); ++i) {
 			for (k = 0; k < sizeof(spinner); ++k) {
-				delay_us(10000);
+				delay_us(5000);
 				print_char(spinner[k]);
 				print_char('\x08');
 				battery_status();

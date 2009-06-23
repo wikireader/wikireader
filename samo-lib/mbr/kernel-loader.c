@@ -19,9 +19,8 @@
 #define APPLICATION_TITLE "Boot WikiReader"
 
 static const char *LoadList[] = {
-	"wikird.elf",
 	"kernel.elf",
-	"kernel",
+	"forth.elf",
 	0
 };
 

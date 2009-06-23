@@ -20,7 +20,6 @@
 
 static const char *LoadList[] = {
 	"forth.elf",
-	"forth",
 	0
 };
 
