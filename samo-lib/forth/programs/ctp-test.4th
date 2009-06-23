@@ -1,19 +1,9 @@
 \ ctp testing
 
-decimal
+base @ decimal
 
 30 constant box-width
 30 constant box-height
-
-: draw-box ( x y -- )
-
-    2dup lcd-move-to
-
-    over box-width + over lcd-line-to
-    over box-width + over box-height + lcd-line-to
-    over over box-height + lcd-line-to
-    lcd-line-to
-;
 
 
 : within-box ( x y x0 y0 x1 y1 -- flag )
@@ -35,11 +25,11 @@ decimal
         endof
 
         2 of
-            lcd-width-pixels box-width - lcd-height-lines box-height - 1-
+            lcd-width-pixels box-width - lcd-height-pixels box-height - 1-
         endof
 
         3 of
-            0 lcd-height-lines box-height - 1-
+            0 lcd-height-pixels box-height - 1-
         endof
     endcase
 ;
@@ -61,8 +51,13 @@ variable flag
 
 : draw-lines ( -- flag )
     lcd-cls
+    button-flush
+    key-flush
+    ctp-flush
     4 0 ?do
-        i box-origin draw-box
+        i box-origin
+        lcd-move-to lcd-black
+        box-width box-height lcd-box
     loop
 
     false down !
@@ -114,17 +109,25 @@ variable flag
             then
         then
 
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                true exit
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                false exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                    true exit
+                endof
+                button-centre of
+                endof
+                button-right of
+                    false exit
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+
+\        wait-for-event
     again
 ;
 
@@ -141,5 +144,4 @@ variable flag
     cr type ." : CTP" cr
 ;
 
-
-ctp-test
+base !

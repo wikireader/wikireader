@@ -1,6 +1,6 @@
 \ function key tests
 
-decimal
+base @ decimal
 
 
 10 constant pos-1
@@ -47,4 +47,4 @@ constant pos-2
     until
 ;
 
-keys-test-menu
+base !

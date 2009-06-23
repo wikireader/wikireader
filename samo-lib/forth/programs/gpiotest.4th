@@ -1,6 +1,6 @@
 \ gpio tests
 
-decimal
+base @ decimal
 
 
 \ watchdog off
@@ -113,4 +113,4 @@ variable measure-count
     again
 ;
 
-gpio-test-menu
+base !

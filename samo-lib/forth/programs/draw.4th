@@ -1,13 +1,15 @@
-.( ctp tests )
+\ draw with dots
 
 base @ decimal
 
-.( draw )
 
 variable pixel
 
-: draw ( -- )
+: dot-draw ( -- )
     lcd-clear-all
+    button-flush
+    key-flush
+    ctp-flush
     1 pixel !
     begin
         ctp-pos? if
@@ -23,24 +25,29 @@ variable pixel
             then
         then
 
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                lcd-clear-all
-                1 pixel !
-            endof
-            $04 of   \ centre button
-                lcd-set-all
-                0 pixel !
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                    lcd-clear-all
+                    1 pixel !
+                endof
+                button-centre of
+                    lcd-set-all
+                    0 pixel !
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+        wait-for-event
     again
 ;
 
-draw
-
-.( complete )
 base !
+

@@ -1,12 +1,14 @@
-.( display and ctp accuracy )
+\ display and ctp accuracy
 
 base @ decimal
 
-.( ctp-accuracy )
-
 : ctp-accuracy ( -- )
+    button-flush
+    key-flush
+    ctp-flush
     lcd-cls
     s" CTP Accuracy Testing" lcd-type
+    24 lcd-text-rows 1- lcd-at-xy s" exit" lcd-type
 
     0  67 lcd-move-to s"  67" lcd-type
     0 135 lcd-move-to s" 135" lcd-type
@@ -24,8 +26,13 @@ base @ decimal
             ctp-pos dup 0<
             if
                 2drop
+                20 32 lcd-move-to
+                bl lcd-emit
+                bl lcd-emit
             else
                 20 32 lcd-move-to
+                [char] * lcd-emit
+                bl lcd-emit
                 swap
                 lcd-number
                 s"   " lcd-type
@@ -33,20 +40,26 @@ base @ decimal
             then
         then
 
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                endof
+                button-centre of
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+
+        wait-for-event
     again
 ;
 
-ctp-accuracy
-
-.( complete )
 base !
+

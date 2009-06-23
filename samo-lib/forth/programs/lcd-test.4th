@@ -2,7 +2,7 @@
 decimal
 
 : eye ( -- )
-  lcd-cls
+  lcd-cls lcd-black
   76 0 ?do 75 i -
     120 over - 100 lcd-move-to
     120 over 25 + lcd-line-to
@@ -113,5 +113,3 @@ decimal
     500000 delay-us
     cr type ." : LCD" cr
 ;
-
-test-lcd

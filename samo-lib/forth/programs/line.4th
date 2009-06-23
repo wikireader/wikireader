@@ -1,12 +1,16 @@
-.( ctp line drawing )
+\ ctp line drawing
 
 base @ decimal
 
 variable down
 
-: draw ( -- )
+: line-draw ( -- )
     lcd-cls
+    button-flush
+    key-flush
+    ctp-flush
     false down !
+    lcd-black
     begin
         ctp-pos? if
             ctp-pos dup 0<
@@ -24,22 +28,26 @@ variable down
             then
         then
 
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                lcd-cls
-                false down !
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                    lcd-cls
+                    false down !
+                endof
+                button-centre of
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+        wait-for-event
     again
 ;
 
-draw
-
-.( complete )
 base !

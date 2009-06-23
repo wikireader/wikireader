@@ -54,7 +54,7 @@ variable cursor-b
 
 : next-line ( -- )
     lcd-scroll
-    0 lcd-height-lines font-height - lcd-move-to
+    0 lcd-height-pixels font-height - lcd-move-to
     cursor-b @ 30 lcd-type
     30 dup cursor-t +! cursor-b +!
 ;

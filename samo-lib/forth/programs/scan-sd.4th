@@ -1,6 +1,6 @@
 \ scan-disk
 
-decimal
+base @ decimal
 
 variable error-count
 
@@ -43,4 +43,4 @@ variable error-count
     again
 ;
 
-test-sd
+base !
