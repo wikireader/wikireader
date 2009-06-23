@@ -1,4 +1,4 @@
-;;; ctp - serial input dripver for CTP
+;;; ctp - serial input driver for CTP
 
 ;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
 ;;;

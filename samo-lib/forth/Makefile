@@ -49,7 +49,15 @@ CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 all: forth.elf
 
-FORTH_OBJECTS = forth.o PolledSerial.o ctp.o debug.o FileSystem.o iserial.o vector.o
+FORTH_OBJECTS = forth.o
+FORTH_OBJECTS += button.o
+FORTH_OBJECTS += ctp.o
+FORTH_OBJECTS += debug.o
+FORTH_OBJECTS += FileSystem.o
+FORTH_OBJECTS += iserial.o
+FORTH_OBJECTS += PolledSerial.o
+FORTH_OBJECTS += vector.o
+
 forth.elf: ${FORTH_OBJECTS} forth.lds ${LIBS}
 	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
 	${CROSS_STRIP} --remove-section=.comment $@

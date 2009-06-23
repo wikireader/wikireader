@@ -30,15 +30,15 @@
 vector_count = 0
 
         .macro  REGDEF, address, bits, name
-        R\bits\()_\name = \address
+R\bits\()_\name = \address
         .endm
 
         .macro  REGBIT, name, value
-        \name = \value
+\name = \value
         .endm
 
         .macro  VECTOR, name, value
-        Vector_\()\name = \value
+Vector_\()\name = \value
 vector_count = vector_count + 1
         .endm
 

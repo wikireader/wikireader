@@ -224,8 +224,9 @@ main:
         ld.w    %r0, 0                                ; clear status register
         ld.w    %psr, %r0
 
-        xcall   Vector_initialise
+        xcall   Vector_initialise                     ; must be first
         xcall   Serial_initialise
+        xcall   Button_initialise
         xcall   CTP_initialise
 
         xld.w   %r0, cold_start                       ; initial ip value

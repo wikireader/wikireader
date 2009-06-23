@@ -29,6 +29,7 @@
 
 ;;; macro for regs.inc
         .macro  REGDEF, address, bits, name
+R\()\bits\()_\name = \address
 	CREATE	0 "\name" \name 0
 	.long	\address, \bits
         .endm

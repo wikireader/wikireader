@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-8
+9
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -354,7 +354,9 @@ end-code
   over over ;
 
 \ 2literal                :: two-literal             ( x1 x2 -- )
-\ 2over                   :: two-over                ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 )
+
+: 2over                   :: two-over                ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 )
+  3 pick 3 pick ;
 
 code 2r>                  :: two-r-from              ( -- x1 x2 ) ( R: x1 x2 -- )
         ld.w    %r4, [%sp]                           ; x2
@@ -2604,7 +2606,7 @@ constant font-height      :: font-height             ( -- u )
 constant lcd-width-pixels :: lcd-width-pixels        ( -- u )
 
 208
-constant lcd-height-lines :: lcd-height-lines        ( -- u )
+constant lcd-height-pixels :: lcd-height-pixels        ( -- u )
 
 hex 80000 decimal
 constant lcd-vram         :: lcd-vram                ( -- u )
@@ -2612,8 +2614,8 @@ constant lcd-vram         :: lcd-vram                ( -- u )
 lcd-width-pixels 31 + 32 / 32 *
 constant lcd-vram-width-pixels :: lcd-vram-width-pixels  ( -- u )
 
-lcd-height-lines
-constant lcd-vram-height-lines :: lcd-vram-height-lines  ( -- u )
+lcd-height-pixels
+constant lcd-vram-height-pixels :: lcd-vram-height-pixels  ( -- u )
 
 lcd-vram-width-pixels 8 /
 constant lcd-vram-width-bytes  :: lcd-vram-width-bytes   ( -- u )
@@ -2621,7 +2623,7 @@ constant lcd-vram-width-bytes  :: lcd-vram-width-bytes   ( -- u )
 lcd-width-pixels 8 /
 constant lcd-width-bytes  :: lcd-width-bytes         ( -- u )
 
-lcd-vram-width-bytes lcd-vram-height-lines *
+lcd-vram-width-bytes lcd-vram-height-pixels *
 constant lcd-vram-size    :: lcd-vram-size           ( -- u )
 
 : lcd-clear-all           :: lcd-clear-all           ( -- )
@@ -2632,7 +2634,7 @@ constant lcd-vram-size    :: lcd-vram-size           ( -- u )
   lcd-vram lcd-vram-size 255 fill
 ;
 
-\ line is 0 .. lcd-height-lines - 1; u is number of line to invert
+\ line is 0 .. lcd-height-pixels - 1; u is number of line to invert
 : lcd-invert-lines        :: lcd-invert-lines        ( line u -- )
   swap lcd-vram-width-bytes * lcd-vram + swap lcd-vram-width-bytes *
   0 ?do
@@ -2641,20 +2643,53 @@ constant lcd-vram-size    :: lcd-vram-size           ( -- u )
   drop
 ;
 
-: lcd-set-pixel           :: lcd-set-pixel           ( x y -- )
-  lcd-vram-width-bytes * lcd-vram + >r
-  8 /mod r> + swap    ( c-addr bit-number )
-  128 swap rshift     ( c-addr bit )
-  over c@ or swap c!
-;
+code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
+        ld.w    %r6, [%r1]+                           ; y
+        ld.w    %r7, [%r1]+                           ; x
 
-: lcd-clear-pixel         :: lcd-clear-pixel         ( x y -- )
-  lcd-vram-width-bytes * lcd-vram + >r
-  8 /mod r> + swap    ( c-addr bit-number )
-  128 swap rshift     ( c-addr bit )
-  255 xor over c@     ( c-addr ~bit byte )
-  and swap c!
-;
+        ld.w    %r4, %r7
+        xand    %r4, 7                                ; bit number
+        xld.w   %r5, 0x80
+        srl     %r5, %r4                              ; r5 = bit mask
+
+        sll     %r6, 5                                ; y * 32 (= vram width)
+        srl     %r7, 3                                ; x /8   (= x offset)
+        add     %r6, %r7                              ; r6 = byte offset
+
+        xld.w   %r4, R32_LCDC_MADD                    ; address of lcd memory
+        xld.w   %r4, [%r4]
+
+        add     %r4, %r6                              ; r4 = byte address to be modified
+
+        ld.ub   %r6, [%r4]                            ; or in the bit
+        or      %r6, %r5
+        ld.b    [%r4], %r6
+        NEXT
+end-code
+code lcd-clear-pixel       :: lcd-clear-pixel         ( x y -- )
+        ld.w    %r6, [%r1]+                           ; y
+        ld.w    %r7, [%r1]+                           ; x
+
+        ld.w    %r4, %r7
+        xand    %r4, 7                                ; bit number
+        xld.w   %r5, 0x80
+        srl     %r5, %r4                              ; r5 = bit mask
+        xor     %r5, -1                               ; complement
+
+        sll     %r6, 5                                ; y * 32 (= vram width)
+        srl     %r7, 3                                ; x /8   (= x offset)
+        add     %r6, %r7                              ; r6 = byte offset
+
+        xld.w   %r4, R32_LCDC_MADD                    ; address of lcd memory
+        xld.w   %r4, [%r4]
+
+        add     %r4, %r6                              ; r4 = byte address to be modified
+
+        ld.ub   %r6, [%r4]                            ; and out the bit
+        and     %r6, %r5
+        ld.b    [%r4], %r6
+        NEXT
+end-code
 
 : lcd-set-point           :: lcd-set-point           ( x y -- )
   2dup lcd-set-pixel
@@ -2677,6 +2712,17 @@ variable lcd-dy           :: lcd-dy                  ( -- a-addr )
 variable lcd-stepx        :: lcd-stepx               ( -- a-addr )
 variable lcd-stepy        :: lcd-stepy               ( -- a-addr )
 
+variable lcd-line-colour  :: lcd-line-colour         ( -- a-addr )
+
+: lcd-black               :: lcd-black               ( -- )
+  true lcd-line-colour !
+;
+
+: lcd-white               :: lcd-white               ( -- )
+  false lcd-line-colour !
+;
+
+\ draw a line in lcd-line-colour
 : lcd-line                :: lcd-line                ( x0 y0 x1 y1 -- )
   \ Bresenham Algorithm
 
@@ -2690,7 +2736,12 @@ variable lcd-stepy        :: lcd-stepy               ( -- a-addr )
   dup 0< if negate -1 else 1 then            ( x0 y0 dx stepx )
   lcd-stepx ! 2* lcd-dx !                    ( x0 y0 )
 
-  2dup lcd-set-pixel                         ( x0 y0 )
+  2dup                                       ( x0 y0 )
+  lcd-line-colour @ if
+    lcd-set-pixel
+  else
+    lcd-clear-pixel
+  then
 
   lcd-dx @ lcd-dy @ 2dup > if                ( x0 y0 dx dy )
 
@@ -2705,7 +2756,12 @@ variable lcd-stepy        :: lcd-stepy               ( -- a-addr )
         then
         swap lcd-stepx @ + swap              ( x0+stepx y0 )
         r> lcd-dy @ + >r                     \ fraction += dy
-        2dup lcd-set-pixel                   ( x0 y0 )
+        2dup                                 ( x0 y0 )
+        lcd-line-colour @ if
+          lcd-set-pixel
+        else
+          lcd-clear-pixel
+        then
     repeat
 
   else                                       ( x0 y0 dx dy )
@@ -2722,7 +2778,12 @@ variable lcd-stepy        :: lcd-stepy               ( -- a-addr )
         then
         swap lcd-stepy @ + swap              ( y0+stepy x0+stepx )
         r> lcd-dx @ + >r                     \ fraction += dx
-        2dup swap lcd-set-pixel              ( y0 x0 )
+        2dup swap                            ( y0 x0 )
+        lcd-line-colour @ if
+          lcd-set-pixel
+        else
+          lcd-clear-pixel
+        then
     repeat
 
   then
@@ -2737,6 +2798,21 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 : lcd-move-to             :: lcd-move-to             ( x y -- )
   lcd-y ! lcd-x ! ;
 
+: lcd-line-rel            :: lcd-line-rel            ( dx dy -- )
+  lcd-y @ + swap lcd-x @ + swap
+  2dup lcd-x @ lcd-y @ lcd-line lcd-move-to ;
+
+: lcd-move-rel            :: lcd-move-rel            ( dx dy -- )
+  lcd-y +! lcd-x +! ;
+
+\ from current x-y
+: lcd-box                 :: lcd-box                 ( w h -- )
+    over lcd-x @ + lcd-y @ lcd-line-to
+    lcd-x @ over lcd-y @ + lcd-line-to
+    lcd-x @ rot - lcd-y @ lcd-line-to
+    lcd-x @ lcd-y @ rot - lcd-line-to
+;
+
 
 \ TEXT functions
 
@@ -2747,7 +2823,7 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 \ character based positioning
 lcd-width-pixels font-width /
 constant lcd-text-columns :: lcd-text-columns        ( -- u)
-lcd-height-lines font-height /
+lcd-height-pixels font-height /
 constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 
 \ in character coordinated (0, 0) .. (lcd-last-columns - 1, lcd-text-rows - 1)
@@ -2757,7 +2833,7 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
   lcd-move-to ;
 
 : lcd-cls                 :: lcd-cls                 ( -- )
-  lcd-clear-all lcd-home ;
+  lcd-clear-all lcd-black lcd-home ;
 
 : lcd-scroll              :: lcd-scroll              ( -- )
   font-height lcd-vram-width-bytes * dup dup   \ u u u
@@ -2784,7 +2860,7 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 
 : lcd-cr                  :: lcd-cr                  ( -- )
   0 lcd-x !
-  lcd-y @ font-height + dup lcd-height-lines 1- > if
+  lcd-y @ font-height + dup lcd-height-pixels 1- > if
     drop
     lcd-scroll
   else
@@ -2841,6 +2917,61 @@ code ctp-pos?             :: c-t-p-pos-question      ( -- flag )
 ctp_pos_question_no_character:
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
+        NEXT
+end-code
+
+
+\ Buttons
+\ =======
+
+0
+constant button-none      :: button-none             ( -- u )
+
+2
+constant button-left      :: button-left             ( -- u )
+
+4
+constant button-centre    :: button-centre           ( -- u )
+
+1
+constant button-right     :: button-right            ( -- u )
+
+code button-flush         :: button-flush            ( -- )
+        xcall   Button_flush
+        NEXT
+end-code
+
+code button               :: button                  ( -- u )
+        xcall   Button_get
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code button?              :: button-question         ( -- flag )
+        xcall   Button_available
+        or      %r4, %r4
+        jreq    button_question_no_data
+        ld.w    %r4, TRUE
+button_question_no_data:
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+
+\ Suspend and wait for event
+\ ==========================
+
+: wait-for-event          :: wait-for-event          ( -- )
+  button?
+  key? or
+  ctp-pos? or
+  0= if (halt) then
+;
+
+code (halt)               :: paren-halt              ( -- )
+        xcall   suspend
         NEXT
 end-code
 
