@@ -15,6 +15,11 @@ def msg(s):
     sys.stdout.write(s)
     sys.stdout.flush()
 
+def msg(s):
+    if sys.stdout.isatty():
+        sys.stdout.write(s)
+        sys.stdout.flush()
+
 spin_count = 0
 
 def spin_reset():
@@ -25,16 +30,16 @@ def spin_reset():
 def spin():
     global spin_count
     if 1 == spin_count:
-        msg('\x08-')
+        tty_msg('\x08-')
         spin_count = 2
     elif 2 == spin_count:
-        msg('\x08\\')
+        tty_msg('\x08\\')
         spin_count = 3
     elif 3 == spin_count:
-        msg('\x08|')
+        tty_msg('\x08|')
         spin_count = 0
     else:
-        msg('/')
+        tty_msg('/')
         spin_count = 1
 
 
