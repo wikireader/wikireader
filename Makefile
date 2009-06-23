@@ -30,7 +30,7 @@ BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
 DL=./host-tools/toolchain-download
-export PATH:=$(PWD)/host-tools/toolchain-install/bin:$(PATH)
+export PATH:=$(shell readlink -m ./host-tools/toolchain-install/bin):$(PATH)
 
 CONFIG_FILE := "samo-lib/include/config.h"
 CONFIG_FILE_DEFAULT := "samo-lib/include/config.h-default"
@@ -99,7 +99,7 @@ binutils: binutils-patch
 	cd binutils-$(BINUTILS_VERSION) && \
 	mkdir -p build && \
 	cd build  && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/host-tools/toolchain-install --target=c33-epson-elf && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install)
 	touch $@
@@ -116,11 +116,11 @@ gcc-patch: gcc-download
 
 gcc: binutils gcc-patch
 	( cd host-tools && \
-	export PATH=$(PWD)/host-tools/toolchain-install/bin:$(PATH) && \
+	export PATH=$(shell readlink -m ./host-tools/toolchain-install/bin):$(PATH) && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(PWD)/host-tools/toolchain-install --target=c33-epson-elf --enable-languages=c && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install)
 	touch $@
