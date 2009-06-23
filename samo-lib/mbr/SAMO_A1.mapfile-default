@@ -4,6 +4,7 @@
 
 0x1	mbr
 0x0300  menu
+0x1fe0  serial.header
 
 0x2000  kernel-loader.header
 0x2300  kernel-loader

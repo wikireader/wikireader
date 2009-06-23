@@ -101,7 +101,12 @@ splash.h: splash.png
 all-applications: ${APPLICATIONS}
 
 flash-mbr: all
-	time ${FLASH07} --port="${BOOTLOADER_TTY}" --boot="${BOOT_FILE}" --map-file="${FLASH_ROM_MAP_FILE}"
+	( echo -n ${SERIAL_NUMBER} ; \
+	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
+	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
+	) | dd bs=1 count=32 > serial.header
+	time ${FLASH07} --port="${BOOTLOADER_TTY}" --boot="${BOOT_FILE}" \
+	--map-file="${FLASH_ROM_MAP_FILE}"
 
 clean:
 	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h

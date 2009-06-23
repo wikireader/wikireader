@@ -35,11 +35,14 @@ struct guilib_image
 
 #define MAXIMUM_BLOCKS 8
 #define HEADER_MAGIC  0x4f4d4153
+#define SERIAL_NUMBER_OFFSET 0x1fe0
 
 struct {
 	uint32_t magic;
 	char name[32];
 } header;
+
+char SerialNumber[32];
 
 static const char spinner[4] = "-\\|/";
 
@@ -107,6 +110,15 @@ int process(int block, int status)
 		print_dec32(get_battery_voltage());
 		print(" mV\nREV: A");
 		print_dec32(board_revision());
+		eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
+		print("\nS/N: ");
+		for (i = 0; i <	32; ++i) {
+			const char c = SerialNumber[i];
+			if ('\0' == c) {
+				break;
+			}
+			print_char(c);
+		}
 
 		print("\n\nmenu? ");
 		for (i = 0; i <	4 * sizeof(spinner); ++i) {

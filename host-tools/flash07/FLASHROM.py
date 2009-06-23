@@ -15,7 +15,7 @@ def msg(s):
     sys.stdout.write(s)
     sys.stdout.flush()
 
-def msg(s):
+def tty_msg(s):
     if sys.stdout.isatty():
         sys.stdout.write(s)
         sys.stdout.flush()

@@ -173,7 +173,7 @@ exit 1;
 endef
 
 BOOTLOADER_TTY ?= $(shell ${FindTTY})
-
+SERIAL_NUMBER ?= No Serial Number
 
 .PHONY: print-mbr-tty
 print-mbr-tty:
@@ -190,7 +190,7 @@ mbr-rs232: gcc fatfs
 .PHONY: flash-mbr
 flash-mbr: mbr
 	$(MAKE) -C host-tools/jackknife
-	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" $@
+	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
 
 # ----- clean and help --------------------------------------

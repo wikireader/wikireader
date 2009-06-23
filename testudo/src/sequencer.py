@@ -38,7 +38,7 @@ def fail_if(cond, message):
 # the main script running application
 # this can throw exceptions if compile or setUp fail
 # If setUp succeeds the tearDown will be run
-def runTests(fd, name, debug):
+def runTests(fd, name, debug, **kwargs):
     global verbose
 
     module_name = name
@@ -56,6 +56,7 @@ def runTests(fd, name, debug):
         'info': lambda message : info(fd, message),
         'fail_unless': lambda cond, message : fail_if(not cond, message),
         'fail_if': lambda cond, message : fail_if(cond, message),
+        'global_args': kwargs,
         }
     eval('0', global_variables) # populate global_variables
 
@@ -89,11 +90,11 @@ def runTests(fd, name, debug):
 
 
 # run one test script catching errors
-def runOneTest(fd, name, debug):
+def runOneTest(fd, name, debug, **kwargs):
     if verbose:
         fd.write('FILE: %s\n' % name)
     try:
-        runTests(fd, name, debug)
+        runTests(fd, name, debug, **kwargs)
     except SyntaxError, s:
         fd.write('FAIL: Test module compile failed: %s\n' % s)
     except Exception, e:

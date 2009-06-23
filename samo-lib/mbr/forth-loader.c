@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define APPLICATION_TITLE "forth"
+#define APPLICATION_TITLE "Boot forth"
 
 static const char *LoadList[] = {
 	"forth.elf",

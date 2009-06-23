@@ -15,6 +15,12 @@ import sys
 import time
 
 
+if 'serial_number' in global_args:
+    serial_number = global_args['serial_number']
+else:
+    serial_number = 'No Serial Number'
+
+
 psu = None
 dvm = None
 relay = None
@@ -240,7 +246,8 @@ def test007_program_flash():
             time.sleep(0.2)
             relay.off(RELAY_RESET)
 
-    p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL], callback)
+    p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL,
+                         "SERIAL_NUMBER='" + serial_number + "'"], callback)
 
     rc = p.run()
     fail_unless(rc, 'Flashing failed')

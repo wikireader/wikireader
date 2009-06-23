@@ -12,6 +12,7 @@ pygtk.require('2.0')
 import gtk
 
 import sys
+import datetime
 import time
 import os.path
 import threading
@@ -86,11 +87,15 @@ class Sample:
         """main test routine2"""
 
         try:
+            if '' == self.serialNumber.get_text():
+                raise StopTestException('Serial number invalid')
+
             for cycle in range(1, count + 1):
-                self.write('\n*** Start of Test %d of %d ***\n\n' % (cycle, count))
+                self.write('\n*** Start of Test %d of %d for PCBA SN: %s ***\n\n' %
+                           (cycle, count, self.serialNumber.get_text()))
 
                 t = time.time()
-                sequencer.runOneTest(self, self.fileName, 0)
+                sequencer.runOneTest(self, self.fileName, 0, serial_number = self.serialNumber.get_text())
                 t = time.time() - t
 
                 self.write('\n*** End of Test %d of %d [%7.3f seconds] ***\n' % (cycle, count, t))
@@ -169,7 +174,9 @@ class Sample:
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(select_multiple = False)
         chooser.set_current_folder('/tmp')
-        chooser.set_current_name('test-log.text')
+        chooser.set_current_name(self.serialNumber.get_text() + '-' +
+                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '.text')
+
         response = chooser.run()
         if gtk.RESPONSE_OK == response:
             file = chooser.get_filename()
@@ -289,6 +296,13 @@ class Sample:
         self.repeat.set_numeric(True)
 
         hbox.pack_start(self.repeat, expand = False, fill = True, padding = 0)
+
+        label = gtk.Label('Serial Number')
+        hbox.pack_start(label, expand = True, fill = True, padding = 0)
+
+        self.serialNumber = gtk.Entry()
+        self.serialNumber.set_max_length(32)
+        hbox.pack_start(self.serialNumber, expand = True, fill = True, padding = 0)
 
         hbox.show_all()
 
