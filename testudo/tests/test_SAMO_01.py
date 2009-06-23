@@ -167,7 +167,7 @@ def test002_on():
 
 
 def test003_check_current():
-    """Monitor current to see ok"""
+    """Monitor current to check if correct"""
     global debug, psu, dvm, relay
     averageCurrent = 0.0
     samples = 20
