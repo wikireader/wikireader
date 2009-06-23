@@ -1,0 +1,19 @@
+#! /bin/sh -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+case "$1" in
+    start)
+	gpib_config
+	chmod 666 /dev/gpib*
+    ;;
+    stop)
+	chmod 660 /dev/gpib*
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
