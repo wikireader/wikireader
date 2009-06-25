@@ -55,7 +55,7 @@ SUPPLY_CURRENT_LIMIT = 0.35
 # ("text", relay_name, required_value, percent_low, percent_high)
 VOLTAGE_LIST = (
     ("1V8", RELAY_1V8, 1.8, -5, 5),
-    ("3V0", RELAY_3V, 3.0, -5, 5),
+    ("3V0", RELAY_3V, 3.0, -3, 10),
     ("V0 ", RELAY_LCD_V0, LCD_V0, -5, 5),
     ("V1 ", RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5, 5),
     ("V2 ", RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5, 5),
