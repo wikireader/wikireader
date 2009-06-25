@@ -27,16 +27,17 @@ base @ decimal
             if
                 2drop
                 20 32 lcd-move-to
-                bl lcd-emit
-                bl lcd-emit
+                2 lcd-spaces
             else
                 20 32 lcd-move-to
                 [char] * lcd-emit
-                bl lcd-emit
+                lcd-space
+                [char] X lcd-emit
                 swap
-                lcd-number
-                s"   " lcd-type
-                lcd-number
+                4 lcd-u.r
+                4 lcd-spaces
+                [char] Y lcd-emit
+                4 lcd-u.r
             then
         then
 
