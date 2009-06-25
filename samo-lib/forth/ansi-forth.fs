@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-9
+10
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -2643,6 +2643,8 @@ constant lcd-vram-size    :: lcd-vram-size           ( -- u )
   drop
 ;
 
+\ pixel code in assembler for speed
+
 code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
         ld.w    %r6, [%r1]+                           ; y
         ld.w    %r7, [%r1]+                           ; x
@@ -2666,6 +2668,7 @@ code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
         ld.b    [%r4], %r6
         NEXT
 end-code
+
 code lcd-clear-pixel       :: lcd-clear-pixel         ( x y -- )
         ld.w    %r6, [%r1]+                           ; y
         ld.w    %r7, [%r1]+                           ; x
@@ -2691,6 +2694,7 @@ code lcd-clear-pixel       :: lcd-clear-pixel         ( x y -- )
         NEXT
 end-code
 
+\ draw a small '+' centred at (x, y)
 : lcd-set-point           :: lcd-set-point           ( x y -- )
   2dup lcd-set-pixel
   2dup 1+ lcd-set-pixel
@@ -2814,7 +2818,8 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 ;
 
 
-\ TEXT functions
+\ LCD TEXT functions
+\ ==================
 
 \ move cursor to first line, first character
 : lcd-home                :: lcd-home                ( -- )
@@ -2883,13 +2888,50 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
   font-width lcd-x +!
 ;
 
+: lcd-space               :: lcd-space               ( -- )
+  bl lcd-emit ;
+
+: lcd-spaces              :: lcd-spaces              ( u -- )
+  dup 0> if
+    0 ?do lcd-space loop
+  else
+    drop
+  then ;
+
 : lcd-type                :: lcd-type                ( caddr u -- )
   0 ?do
     dup c@ lcd-emit char+
   loop drop ;
 
+
+\ LCD numeic output
+\ =================
+
+\ these are all separate functions as most test programs
+\ will output results to the console (emit . u.) etc.
+\ and will display on the lcd.  Switching vectors around
+\ will be slower.
+
 : lcd-number              :: lcd-number              ( n -- )
   s>d <# # # # # # # # # #> lcd-type ;
+
+: lcd-d.                  :: lcd-d-dot               ( d -- )
+  swap over dabs <# #s rot sign #> lcd-type lcd-space ;
+
+: lcd-d.r                 :: lcd-d-dot-r             ( d n -- )
+  >r swap over dabs <# #s rot sign #> r> over - lcd-spaces lcd-type ;
+
+: lcd-.r                  :: lcd-dot-r               ( n1 n2 -- )
+  >r s>d r> lcd-d.r ;
+
+: lcd-u.                  :: lcd-u-dot               ( u -- )
+  0 <# #s #> lcd-type lcd-space ;
+
+: lcd-u.r                 :: lcd-u-dot-r             ( u n -- )
+  >r 0 <# #s #> r> over - lcd-spaces lcd-type ;
+
+: lcd-.                   :: lcd-dot                 ( n -- )
+  s>d lcd-d. ;
 
 
 \ CTP
