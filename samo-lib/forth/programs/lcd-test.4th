@@ -2,7 +2,7 @@
 decimal
 
 : eye ( -- )
-  lcd-cls lcd-black
+  \ lcd-cls
   76 0 ?do 75 i -
     120 over - 100 lcd-move-to
     120 over 25 + lcd-line-to
@@ -42,67 +42,82 @@ decimal
 ;
 
 
-: test-menu ( -- flag )
-    begin
-        P6_P6D p@ $07 and
-        0=
-    until
+: test-lcd-menu ( -- flag )
+    button-flush
+    ctp-flush
+    key-flush
 
-    500000 delay-us
+    200000 delay-us
     10 lcd-text-rows 1- lcd-at-xy
     s" PASS         FAIL" lcd-type
 
+    button-flush
     begin
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                true
-                exit
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                false
-                exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                    true exit
+                endof
+                button-centre of
+                endof
+                button-right of
+                    false exit
+                endof
+            endcase
+        then
+
+        ctp-pos? if
+            ctp-flush
+        then
+
+        key? if
+            key-flush
+        then
+
+        wait-for-event
     again
 ;
 
-\ test sequence
-
-: test-sequence ( -- )
-    eye
-    test-menu 0= if
-        cr ." FAIL: eye test" cr
-        false exit
+: test-lcd-pass-fail ( c-addr u -- flag )
+    test-lcd-menu
+    if
+        s" PASS: "
+        true >r
+    else
+        s" FAIL: "
+        false >r
     then
-
-    lcd-set-all
-    test-menu 0= if
-        cr ." FAIL: all black" cr
-        false exit
-    then
-
-    stripe
-    test-menu 0= if
-        cr ." FAIL: stripe" cr
-        false exit
-    then
-
-    charset-test
-    test-menu 0= if
-        cr ." FAIL: text" cr
-        false exit
-    then
-
-    \ all tests passed
-    true
+    type type cr
+    r>
 ;
 
-: test-lcd
+: test-lcd-sequence ( -- flag )
+    eye
+    s" LCD eye test"
+    test-lcd-pass-fail
+
+    lcd-set-all
+    s" LCD all black pixels"
+    test-lcd-pass-fail
+    and
+
+    stripe
+    s" LCD moving stripes"
+    test-lcd-pass-fail
+    and
+
+    charset-test
+    s" LCD text"
+    test-lcd-pass-fail
+    and
+;
+
+: test-lcd-main
     lcd-cls
-    test-sequence if
+    s" LCD Test" lcd-type
+    cr
+    test-lcd-sequence if
         s" PASS"
     else
         s" FAIL"
@@ -111,5 +126,5 @@ decimal
     lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
     2dup lcd-type
     500000 delay-us
-    cr type ." : LCD" cr
+    type ." : LCD test" cr
 ;

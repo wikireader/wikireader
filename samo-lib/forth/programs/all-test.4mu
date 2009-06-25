@@ -1,0 +1,9 @@
+include lcd-test.4th
+include ctp-test.4th
+include key-test.4th
+test-keys-main
+test-lcd-main
+test-ctp-main
+
+\ signal to capture program
+cr .( *END-TEST*) cr

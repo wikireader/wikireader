@@ -2,8 +2,8 @@
 
 base @ decimal
 
-30 constant box-width
-30 constant box-height
+40 constant box-width
+40 constant box-height
 
 
 : within-box ( x y x0 y0 x1 y1 -- flag )
@@ -16,61 +16,119 @@ base @ decimal
 
 : box-origin ( u -- x y )
     case
-        0 of
+        0 of  \ top left
             0 0
         endof
-
-        1 of
+        1 of  \ top right
             lcd-width-pixels box-width - 0
         endof
-
-        2 of
+        2 of  \ bottom right
             lcd-width-pixels box-width - lcd-height-pixels box-height - 1-
         endof
-
-        3 of
+        3 of  \ bottom left
             0 lcd-height-pixels box-height - 1-
+        endof
+        4 of  \ centre
+            lcd-width-pixels 2/ box-width 2/ -
+            lcd-height-pixels 2/ box-height 2/ -
         endof
     endcase
 ;
 
 
+: left-origin ( u -- x y )
+    case
+        0 of  \ top left
+            0 box-origin
+        endof
+        1 of  \ centre
+            4 box-origin
+        endof
+        2 of  \ bottom right
+            2 box-origin
+        endof
+    endcase
+;
+
+
+: right-origin ( u -- x y )
+    case
+        0 of  \ top right
+            1 box-origin
+        endof
+        1 of  \ centre
+            4 box-origin
+        endof
+        2 of  \ bottom left
+            3 box-origin
+        endof
+    endcase
+;
+
+
+variable 'origin
+
 : inside-box ( x y u -- flag )
-    box-origin          \ x y x0 y0
+    'origin @ execute   \ x y x0 y0
     over box-width +    \ x y x0 y0 x1
     over box-height +   \ x y x0 y0 x1 yi
     within-box
 ;
 
 
+variable check-boxes
+variable required-lines
+
+: draw-boxes ( u -- )
+    case
+        1 of
+            3 check-boxes !
+            2 required-lines !
+            ['] left-origin 'origin !
+        endof
+        2 of
+            3 check-boxes !
+            2 required-lines !
+            ['] right-origin 'origin !
+        endof
+        4 check-boxes !
+        4 required-lines !
+        ['] box-origin 'origin !
+    endcase
+
+    lcd-cls
+    check-boxes @ 0
+    ?do
+        i 'origin @ execute
+        lcd-move-to lcd-black
+        box-width box-height lcd-box
+        8 4 lcd-move-rel
+        i [char] 1 + lcd-emit
+    loop
+;
+
+
 variable down
-variable check
+variable check-counter
 variable inside
 variable in-sequence
 variable flag
 
 : draw-lines ( -- flag )
-    lcd-cls
     button-flush
     key-flush
     ctp-flush
-    4 0 ?do
-        i box-origin
-        lcd-move-to lcd-black
-        box-width box-height lcd-box
-    loop
-
     false down !
     false inside !
     true in-sequence !
-    0 check !
+    0 check-counter !
     begin
         ctp-pos? if
             ctp-pos dup 0<
             if
                 2drop
                 down @ if
-                    check @ 4 =
+                    check-counter @ required-lines @ =
                     inside @ and
                     in-sequence @ and
                     exit
@@ -79,11 +137,13 @@ variable flag
                 down @
                 if
                     false flag !
-                    4 0 ?do
+                    check-boxes @ 0
+                    ?do
                         2dup
                         i inside-box if
                             true flag !
-                            i check @ 3 and <> if
+                            i check-counter @ check-boxes @ mod <>
+                            if
                                 false in-sequence !
                             then
                         then
@@ -96,11 +156,9 @@ variable flag
                     else       \ out of box
                         inside @ if
                             false inside !
-                            1 check +!
-                            cr check ?
+                            1 check-counter +!
                         then
                     then
-
                     lcd-line-to
                 else
                     lcd-move-to
@@ -113,7 +171,6 @@ variable flag
             button
             case
                 button-left of
-                    true exit
                 endof
                 button-centre of
                 endof
@@ -131,17 +188,27 @@ variable flag
     again
 ;
 
-: ctp-test ( -- )
+: test-ctp-sequence ( -- )
+    true
+    3 0 ?do
+        i draw-boxes
+        draw-lines and
+    loop
+;
+
+: test-ctp-main ( -- )
     lcd-cls
-    draw-lines if
+    cr
+    test-ctp-sequence if
         s" PASS"
     else
         s" FAIL"
     then
+    lcd-cls
     lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
     2dup lcd-type
     500000 delay-us
-    cr type ." : CTP" cr
+    type ." : CTP test" cr
 ;
 
 base !

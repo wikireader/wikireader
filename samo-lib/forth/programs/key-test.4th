@@ -3,48 +3,139 @@
 base @ decimal
 
 
-10 constant pos-1
+9 constant pos-1
 7 dup pos-1 + dup
 constant pos-2
 + constant pos-3
 
-: show-state ( flag pos -- )
+: show-message ( flag pos -- )
     lcd-text-rows 1- lcd-at-xy
-    if  \ pad with spaces to make strings the same length
-        s" ON "
-    else
-        s" OFF"
-    then
+    case
+        0 of s"        " endof
+        1 of s" Press  " endof
+        2 of s" Release" endof
+    endcase
     lcd-type
 ;
 
+variable keys-timeout
 
-: keys-test-menu ( -- )
+: test-key-button ( -- u )
+    button-flush
+    ctp-flush
+    key-flush
+    0 keys-timeout !
+    5000 delay-us
+    button-flush
+    begin
+        ctp-pos? if
+            ctp-flush
+        then
+        key? if
+            key-flush
+        then
+
+        button? if
+            button exit
+        then
+
+        1000 delay-us
+        1 keys-timeout +!
+        keys-timeout @ 3000 >
+        if
+            -1 \ all normal keys are positive
+            exit
+        then
+    again
+;
+
+: check-button ( c-addr u c-addr u button -- flag )
+    test-key-button = dup >r
+    if
+        ." PASS: "
+    else
+        ." FAIL: "
+    then
+    type ."  button " type cr
+    r>
+;
+
+: test-keys-stage-1 ( -- flag )
+    1 pos-1 show-message
+    s" pressed" s" left" button-left check-button
+
+    0 pos-1 show-message
+    200000 delay-us
+
+    2 pos-1 show-message
+    s" released" s" left" button-none check-button
+    and
+
+    0 pos-1 show-message
+    200000 delay-us
+;
+
+: test-keys-stage-2 ( -- flag )
+    1 pos-2 show-message
+    s" pressed" s" centre" button-centre check-button
+
+    0 pos-2 show-message
+    200000 delay-us
+
+    2 pos-2 show-message
+    s" released" s" centre" button-none check-button
+    and
+
+    0 pos-2 show-message
+    200000 delay-us
+;
+
+: test-keys-stage-3 ( -- flag )
+    1 pos-3 show-message
+    s" pressed" s" right" button-right check-button
+
+    0 pos-3 show-message
+    200000 delay-us
+
+    2 pos-3 show-message
+    s" released" s" right" button-none check-button
+    and
+
+    0 pos-3 show-message
+    200000 delay-us
+;
+
+: test-keys-sequence ( -- )
     lcd-cls
+    button-flush
+    ctp-flush
+    key-flush
+
     s" KEY TESTS" lcd-type
-    false pos-1 show-state
-    false pos-2 show-state
-    false pos-3 show-state
-    begin
-        P6_P6D p@ $07 and
-        0=
-    until
 
-    begin
-        0 10 lcd-at-xy
-        P6_P6D p@ $07 and lcd-number
+    lcd-cr lcd-cr
+    s" Press and release each key in" lcd-type
+    s" sequence as indicated by the" lcd-type
+    s" prompts above the keys." lcd-type
 
-        P6_P6D p@ $02 and
-        pos-1 show-state
+    test-keys-stage-1
+    test-keys-stage-2 and
+    test-keys-stage-3 and
+;
 
-        P6_P6D p@ $04 and
-        pos-2 show-state
-
-        P6_P6D p@ $01 and
-        pos-3 show-state
-
-        P6_P6D p@ $07 and $07 =
-    until
+: test-keys-main
+    lcd-cls
+    cr
+    test-keys-sequence if
+        s" PASS"
+    else
+        s" FAIL"
+    then
+    lcd-cls
+    lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
+    2dup lcd-type
+    500000 delay-us
+    type ." : KEY test" cr
 ;
 
 base !

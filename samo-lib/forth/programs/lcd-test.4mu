@@ -1,2 +1,2 @@
 include lcd-test.4th
-test-lcd
+test-lcd-main
