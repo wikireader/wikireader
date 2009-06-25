@@ -334,7 +334,7 @@ variable q-frac
         bl
     then
     lcd-emit
-    s>d <# # # # # # # # # #> lcd-type
+    8 lcd-u.r
     [char] . lcd-emit
     s>d <# # # # # # # # # #> lcd-type
 ;
@@ -344,7 +344,7 @@ variable q-frac
     total-int @
     total-sign @
     5 1 output-number
-    bl lcd-emit [char] T lcd-emit
+    lcd-space [char] T lcd-emit
 
     v-frac @
     v-int @
@@ -367,7 +367,7 @@ variable q-frac
     mem-int @
     mem-sign @
     5 lcd-text-rows 2 - output-number
-    bl lcd-emit [char] M lcd-emit
+    lcd-space [char] M lcd-emit
 ;
 
 : clear-mem ( -- )
