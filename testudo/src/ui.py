@@ -19,6 +19,7 @@ import threading
 
 import sequencer
 
+SaveFilesFolder = '/tmp'
 
 def threaded(f):
     """Create a simple wrapper that allows a task to run in the background"""
@@ -168,14 +169,15 @@ class Sample:
         chooser.destroy()
 
     def save_file(self):
+        global SaveFilesFolder
         chooser = gtk.FileChooserDialog(title = 'Save As...', action = gtk.FILE_CHOOSER_ACTION_SAVE,
                                         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                                    gtk.STOCK_SAVE_AS, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(select_multiple = False)
-        chooser.set_current_folder('/tmp')
+        chooser.set_current_folder(SaveFilesFolder)
         chooser.set_current_name(self.serialNumber.get_text() + '-' +
-                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '.text')
+                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '.1.text')
 
         response = chooser.run()
         if gtk.RESPONSE_OK == response:
