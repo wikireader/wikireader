@@ -204,8 +204,10 @@ class Sample:
             tag = '.FAIL'
         else:
             tag = '.OK'
-        chooser.set_current_name(self.serialNumber.get_text() + '-' +
-                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt)
+        sn = self.serialNumber.get_text()
+        if '' == sn:
+            sn = 'NO-SERIAL-NUMBER'
+        chooser.set_current_name(sn + '-' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt)
 
         response = chooser.run()
         if gtk.RESPONSE_OK == response:
@@ -230,6 +232,7 @@ class Sample:
         self.fileName = ''
         self.testRunning = False
         self.testStop = False
+        self.testFailed = False
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 
