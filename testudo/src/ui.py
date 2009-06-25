@@ -20,6 +20,8 @@ import threading
 import sequencer
 
 SaveFilesFolder = '/tmp'
+FileExt = '.1.text'
+
 
 def threaded(f):
     """Create a simple wrapper that allows a task to run in the background"""
@@ -71,6 +73,7 @@ class Sample:
             self.status.set_text('load a file first')
             return
         if not self.testRunning:
+            self.testFailed = False
             self.testStop = False
             self.status.set_text('Running')
             self.testRunning = True
@@ -117,10 +120,15 @@ class Sample:
             self.write('\n*** End of Test ***\n')
             self.testStop = False
             self.testRunning = False
-            self.status.set_text('Stopped')
+            if self.testFailed:
+                self.status.set_text('Stopped [FAILURE]')
+            else:
+                self.status.set_text('Stopped [SUCCESS]')
 
     def write(self, message):
         gtk.gdk.threads_enter()
+        if 'FAIL:' == message[0:5]:
+            self.testFailed = True
         self.buffer.insert(self.buffer.get_end_iter(), message)
         e = self.buffer.create_mark('*End*', self.buffer.get_end_iter())
         self.view.scroll_to_mark(e, 0.0, True, 0.0, 0.0)
@@ -169,15 +177,19 @@ class Sample:
         chooser.destroy()
 
     def save_file(self):
-        global SaveFilesFolder
+        global SaveFilesFolder, FileExt
         chooser = gtk.FileChooserDialog(title = 'Save As...', action = gtk.FILE_CHOOSER_ACTION_SAVE,
                                         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                                    gtk.STOCK_SAVE_AS, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(select_multiple = False)
         chooser.set_current_folder(SaveFilesFolder)
+        if self.testFailed:
+            tag = '.FAIL'
+        else:
+            tag = '.OK'
         chooser.set_current_name(self.serialNumber.get_text() + '-' +
-                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '.1.text')
+                                 datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt)
 
         response = chooser.run()
         if gtk.RESPONSE_OK == response:
