@@ -34,7 +34,7 @@
 // redirect Qi routines to the correct EEPROM routines
 #define puts print
 #define print32 print_u32
-#define printdec print_u32
+#define printdec print_dec32
 
 
 void memory_test(void *start, unsigned int length);
