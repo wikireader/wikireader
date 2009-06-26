@@ -17,6 +17,10 @@
 
 #include <inttypes.h>
 #include "regs.h"
+
+// override the default console bps for faster programming
+#define CONSOLE_BPS 115200
+
 #include "samo.h"
 
 
