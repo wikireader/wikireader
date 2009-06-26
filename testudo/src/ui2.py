@@ -192,8 +192,8 @@ class Sample:
                 try:
                     gtk.gdk.threads_enter()
                     self.save_file(True)
-                except:
-                    message = ' (ERROR: Save Data FAILED)'
+                except Exception, e:
+                    message = ' (ERROR: Save Data FAILED: %s)' % str(e)
                 finally:
                     gtk.gdk.threads_leave()
 

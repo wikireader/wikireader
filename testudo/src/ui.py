@@ -145,8 +145,8 @@ class Sample:
                 try:
                     gtk.gdk.threads_enter()
                     self.save_file(True)
-                except:
-                    message = ' (ERROR: Save Data FAILED)'
+                except Exception, e:
+                    message = ' (ERROR: Save Data FAILED: %s)' % str(e)
                 finally:
                     gtk.gdk.threads_leave()
 
@@ -249,7 +249,7 @@ class Sample:
 
 
         if gtk.RESPONSE_YES == response:
-            with open(fileName(), 'w') as f:
+            with open(fileName, 'w') as f:
                 start = self.buffer.get_start_iter()
                 end = self.buffer.get_end_iter()
                 f.write(self.buffer.get_text(start, end, include_hidden_chars = True))
