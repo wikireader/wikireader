@@ -26,7 +26,7 @@ import threading
 
 import sequencer
 
-SaveFilesFolder = '/log/files/stage1'
+SaveFilesFolder = '/log/files/stage2'
 FileExt = '.2.text'
 
 if not os.path.isdir(SaveFilesFolder):
@@ -37,13 +37,15 @@ if not os.path.isdir(SaveFilesFolder):
 
 class SerialPort():
 
-    def __init__(self, port = '/dev/ttyUSB1', bps = 57600, timeout = 0.2):
+    def __init__(self, port = '/dev/ttyUSB1', bps = 19200, timeout = 0.2):
         self.s = Serial(port = port)
         self.s.xonxoff = False
         self.s.rtscts = False
         self.s.baudrate = bps
         self.s.timeout = timeout
         self.s.open()
+
+        print'bps =', self.s.baudrate
 
     def __del__(self):
         self.s.close()
@@ -58,17 +60,6 @@ class SerialPort():
 
     def readChar(self):
         return self.s.read(1)
-
-    def readLine(self):
-        line = ''
-        while True:
-            c = self.readChar()
-            if '\r' == c or '' == c:
-                continue
-            if '\n' == c:
-                break
-            line = line + c
-        return line
 
 
 def threaded(f):
@@ -134,35 +125,53 @@ class Sample:
     def runTest(self):
         """main test routine"""
 
+        auto = self.autoSave.get_active()
+        if auto:
+            try:
+                gtk.gdk.threads_enter()
+                start = self.buffer.get_start_iter()
+                end = self.buffer.get_end_iter()
+                self.buffer.delete(start, end)
+            finally:
+                gtk.gdk.threads_leave()
+
         try:
             s = None
+
             s = SerialPort()
             if '' == self.serialNumber.get_text():
                 raise StopTestException('Serial number invalid')
             serialNumber = self.serialNumber.get_text()
+            self.write('\n*** Start of Test for device SN: %s ***\n\n' %
+                       (serialNumber))
+            t = time.time()
             run = True
             while run:
-                self.write('\n*** Start of Test for device SN: %s ***\n\n' %
-                           (serialNumber))
 
-                t = time.time()
-                while True:
-                    if self.testStop:
-                        raise StopTestException('Stop button pressed')
-                    line = s.readLine()
-                    self.write(line)
-                    self.write('\n')
-                    if '*END-TEST*' == line:
-                        run = False
-                        break;
-                t = time.time() - t
-
-                self.write('\n*** End of Test [%7.3f seconds] ***\n' % (t))
+                line = ''
+                while not self.testStop:
+                    c = s.readChar()
+                    if '\n' == c:
+                        break
+                    if '' == c or ' ' > c:
+                        continue
+                    line = line + c
 
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
 
+                self.write(line)
+                self.write('\n')
+                if '*END-TEST*' == line:
+                    run = False
+
+            t = time.time() - t
+
+            self.write('\n*** End of Test [%7.3f seconds] ***\n' % (t))
+
         except StopTestException, e:
+            # no save on manual abort
+            auto = False
             self.write('\n*** Test stop exception ***\n')
             self.write('FAIL: %s\n' % str(e))
         except TestException, e:
@@ -177,10 +186,23 @@ class Sample:
             self.write('\n*** End of Test ***\n')
             self.testStop = False
             self.testRunning = False
-            if self.testFailed:
-                self.status.set_text('Stopped [FAILURE]')
+            if auto:
+                self.status.set_text('Saving log file...')
+                message = ' (Data Saved)'
+                try:
+                    gtk.gdk.threads_enter()
+                    self.save_file(True)
+                except:
+                    message = ' (ERROR: Save Data FAILED)'
+                finally:
+                    gtk.gdk.threads_leave()
+
             else:
-                self.status.set_text('Stopped [SUCCESS]')
+                message = ''
+            if self.testFailed:
+                self.status.set_text('Stopped [FAILURE]' + message)
+            else:
+                self.status.set_text('Stopped [SUCCESS]' + message)
 
     def write(self, message):
         gtk.gdk.threads_enter()
@@ -198,14 +220,9 @@ class Sample:
         if 'file.save' == event:
             self.save_file()
 
-    def save_file(self):
+    def save_file(self, autoSave = False):
         global SaveFilesFolder, FileExt
-        chooser = gtk.FileChooserDialog(title = 'Save As...', action = gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                                   gtk.STOCK_SAVE_AS, gtk.RESPONSE_OK))
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        chooser.set_select_multiple(select_multiple = False)
-        chooser.set_current_folder(SaveFilesFolder)
+
         if self.testFailed:
             tag = '.FAIL'
         else:
@@ -213,26 +230,41 @@ class Sample:
         sn = self.serialNumber.get_text()
         if '' == sn:
             sn = 'NO-SERIAL-NUMBER'
-        chooser.set_current_name(sn + '-' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt)
 
-        response = chooser.run()
-        if gtk.RESPONSE_OK == response:
-            file = chooser.get_filename()
-            if os.path.exists(file):
-                dialog = gtk.Dialog(title = 'Overwrite file:' + file, parent = None,
-                                    flags = gtk.DIALOG_MODAL,
-                                    buttons = (gtk.STOCK_NO, gtk.RESPONSE_NO,
-                                               gtk.STOCK_YES, gtk.RESPONSE_YES))
-                response = dialog.run()
-                dialog.destroy()
-            else:
-                response = gtk.RESPONSE_YES
+        fileName = sn + '-' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt
+
+        if autoSave:
+            fileName = os.path.join(SaveFilesFolder, fileName)
+            response = gtk.RESPONSE_YES
+        else:
+            chooser = gtk.FileChooserDialog(title = 'Save As...', action = gtk.FILE_CHOOSER_ACTION_SAVE,
+                                            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                                       gtk.STOCK_SAVE_AS, gtk.RESPONSE_OK))
+            chooser.set_default_response(gtk.RESPONSE_OK)
+            chooser.set_select_multiple(select_multiple = False)
+            chooser.set_current_folder(SaveFilesFolder)
+            chooser.set_current_name(fileName)
+
+            response = chooser.run()
+            if gtk.RESPONSE_OK == response:
+                fileName = chooser.get_filename()
+                if os.path.exists(fileName):
+                    dialog = gtk.Dialog(title = 'Overwrite file:' + file, parent = None,
+                                        flags = gtk.DIALOG_MODAL,
+                                        buttons = (gtk.STOCK_NO, gtk.RESPONSE_NO,
+                                                   gtk.STOCK_YES, gtk.RESPONSE_YES))
+                    response = dialog.run()
+                    dialog.destroy()
+                else:
+                    response = gtk.RESPONSE_YES
+            chooser.destroy()
+
+
         if gtk.RESPONSE_YES == response:
-            with open(chooser.get_filename(), 'w') as f:
+            with open(fileName, 'w') as f:
                 start = self.buffer.get_start_iter()
                 end = self.buffer.get_end_iter()
                 f.write(self.buffer.get_text(start, end, include_hidden_chars = True))
-        chooser.destroy()
 
     def __init__(self):
         self.fileName = ''
@@ -241,6 +273,8 @@ class Sample:
         self.testFailed = False
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+
+        self.window.set_title('Production Test Stage 2 - Full Set')
 
         self.window.connect('delete_event', self.delete_event)
         self.window.connect('destroy', self.destroy)
@@ -320,6 +354,10 @@ class Sample:
         vbox1.pack_end(button_box, expand = False, fill = False, padding = 0)
 
         hbox = gtk.HBox(homogeneous = False, spacing = 5)
+
+        self.autoSave = gtk.CheckButton("Auto-save")
+        self.autoSave.set_active(True)
+        hbox.pack_start(self.autoSave, expand = False, fill = True, padding = 0)
 
         label = gtk.Label('Serial Number')
         hbox.pack_start(label, expand = True, fill = True, padding = 0)
