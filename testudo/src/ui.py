@@ -19,6 +19,8 @@ import threading
 
 import sequencer
 
+OpenFilesFolder = 'testudo/tests'
+
 SaveFilesFolder = '/log/files/stage1'
 FileExt = '.1.text'
 
@@ -176,12 +178,13 @@ class Sample:
             self.save_file()
 
     def open_file(self):
+        global OpenFilesFolder
         chooser = gtk.FileChooserDialog(title = 'Open...', action = gtk.FILE_CHOOSER_ACTION_OPEN,
                                         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_select_multiple(select_multiple = False)
-        #chooser.set_current_folder('/')
+        chooser.set_current_folder(OpenFilesFolder)
         #chooser.set_current_name('')
 
         filter = gtk.FileFilter()
