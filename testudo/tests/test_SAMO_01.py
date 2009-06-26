@@ -126,11 +126,6 @@ def tearDown():
     relay = None
 
 
-def testZzz():
-    """Run this last"""
-    pass
-
-
 def test001_leakage():
     """Make sure power is off and no leakage"""
     global debug, psu, dvm, relay
@@ -293,11 +288,18 @@ def test008_keys():
     info('key (none) = %s' % key)
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
 
+    info('sending auto power off sequence')
+    p.send('\n0\n')
     del p
     p = None
 
+    time.sleep(0.5)
+    i = psu.current
+    info('Supply current = %7.3f mA' % (1000 * i))
+    fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Failed auto power off, current %7.3f mA is too high" % (i * 1000))
 
-def test009_power_off():
-    """Check power off function"""
-    global debug, psu, dvm, relay
-    test005_power_off()
+
+#def test009_power_off():
+#    """Check power off function"""
+#    global debug, psu, dvm, relay
+#    test005_power_off()
