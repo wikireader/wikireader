@@ -582,8 +582,7 @@ variable box-number
             endcase
         then
 
-        \ ctp is still resetting!
-\        wait-for-event
+        wait-for-event
     again
 ;
 
