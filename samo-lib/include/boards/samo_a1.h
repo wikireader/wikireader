@@ -5,8 +5,14 @@
 //#define DISPLAY_INVERTED 	1
 #define EEPROM_PM25LV512	1
 
-#define CONSOLE_BPS 57600
+#if !defined(CONSOLE_BPS)
+//#define CONSOLE_BPS 57600
+#define CONSOLE_BPS 19200
+#endif
+
+#if !defined(CTP_BPS)
 #define CTP_BPS     9600
+#endif
 
 static inline int board_revision(void)
 {
@@ -49,7 +55,8 @@ static inline int check_card_power(void)
 static inline void power_off(void)
 {
 	/* switch off condition: P64 high, P63 low */
-	REG_P6_P6D = 0x10;
+	REG_P0_IOC0 = 0x08;
+	REG_P0_P0D = 0x08;
 }
 
 static inline void prepare_keys(void)
@@ -88,7 +95,6 @@ static inline void init_pins(void)
 	// p60-63: wdt - ensure that P63(#WDTNMI) pin is set high
 	REG_P6_P6D |= (1 << 3);		 // P63 = 1 (for safety)
 	REG_P6_03_CFP &= 0x3f;		 // P63 = input
-	REG_MISC_PUP6 |= (1 << 3);	 // P63 pullup = on
 #endif
 	/* P85: LCD_CS, P83: TFT_CTL1 */
 	REG_P8_IOC8 = 0x28;
@@ -120,7 +126,7 @@ static inline void init_pins(void)
 
 	/* pull ups */
 	REG_MISC_PUP0 = (1 << 0) | (1 << 4);
-	REG_MISC_PUP6 = (1 << 5) | (1 << 3);
+	REG_MISC_PUP6 = (1 << 5) | (1 << 4) | (1 << 3);
 
 	/* P50 & P52: CS lines */
 	REG_P5_P5D = 0x07;  // all cs lines high
