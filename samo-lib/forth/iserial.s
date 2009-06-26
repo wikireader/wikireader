@@ -294,6 +294,9 @@ Serial_RxInterrupt_done:
         popn    %r14
         reti
 
+
+;;; not being used - errors are treated as normal characters
+        .if 0
 ;;; discard erroneous bytes from receive FIFO
 ;;; input:
 ;;; output:
@@ -341,6 +344,9 @@ Serial_RxErrorInterrupt_done:
 
         popn    %r14
         reti
+
+        .endif
+
 
 ;;; send one byte
 ;;; input:
