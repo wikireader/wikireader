@@ -19,8 +19,13 @@ import threading
 
 import sequencer
 
-SaveFilesFolder = '/tmp'
+SaveFilesFolder = '/log/files/stage1'
 FileExt = '.1.text'
+
+if not os.path.isdir(SaveFilesFolder):
+    print 'error: %s is not a directory' % SaveFilesFolder
+    print '       sudo mkdir -p %s' % SaveFilesFolder
+    exit(1)
 
 
 def threaded(f):
