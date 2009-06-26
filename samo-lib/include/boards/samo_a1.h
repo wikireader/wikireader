@@ -52,12 +52,41 @@ static inline int check_card_power(void)
 #define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
 #define EEPROM_WP_HI()	do {} while (0)
 
+
+#define POWER_OFF_CYCLES 500000
+// toggle watchdog output to force power off
 static inline void power_off(void)
 {
-	/* switch off condition: P64 high, P63 low */
-	REG_P0_IOC0 = 0x08;
-	REG_P0_P0D = 0x08;
+	register int i;
+
+	REG_P6_03_CFP &= ~0xc0; // select P63 as GPIO
+	REG_P6_IOC6 |= (1 << 3);
+	for (;;) {
+		REG_P6_P6D |= (1 << 3); // P63 = High
+		for (i = 0; i < POWER_OFF_CYCLES; ++i) {
+			asm volatile ("nop");
+		}
+
+		REG_P6_P6D &= ~(1 << 3); // P63 = low
+		for (i = 0; i < POWER_OFF_CYCLES; ++i) {
+			asm volatile ("nop");
+		}
+	}
+
+	// P04 high to switch off
+	//REG_P0_IOC0 = 0x08;
+	//REG_P0_P0D = 0x08;
 }
+
+// true if power switch is pressed
+// possible detect this an do orderly shut down
+// really need to be an interrupt
+// this is just a reminder
+//static inline int power_switch_pressed(void)
+//{
+//	return 0 != (REG_P0_P0D & 0x08);
+//}
+
 
 static inline void prepare_keys(void)
 {

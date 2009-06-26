@@ -142,8 +142,7 @@ int process(int block, int status)
 	print_char('\n');
 
 	if (0 == status) {
-		print("\nBoot Menu\n\n");
-
+		print("\nBoot Menu\n\n0. Power Off\n");
 		// not zero since this program should be in block zero
 		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
 			eeprom_load((i << 13), (void *)&header, sizeof(header));
@@ -167,15 +166,19 @@ int process(int block, int status)
 				battery_status();
 			}
 			k = serial_input_char();
-			if ('A' <= k && 'Z' >= k) {
-				k += 'a' - 'A';
-			}
-			i = k - 'a' + 1;
-			if (0 < i && MAXIMUM_BLOCKS > i) {
-				if (valid[i]) {
-					print_char(k);
-					print_char('\n');
-					break;
+			if ('0' == k) {
+				power_off();
+			} else {
+				if ('A' <= k && 'Z' >= k) {
+					k += 'a' - 'A';
+				}
+				i = k - 'a' + 1;
+				if (0 < i && MAXIMUM_BLOCKS > i) {
+					if (valid[i]) {
+						print_char(k);
+						print_char('\n');
+						break;
+					}
 				}
 			}
 		}
