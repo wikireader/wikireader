@@ -12,14 +12,14 @@
 0x4000  forth-loader.header
 0x4300  forth-loader
 
-0x6000  lcd-test.header
-0x6300	lcd-test
+0x6000	memory-test.header
+0x6300	memory-test
 
 0x8000	key-test.header
 0x8300	key-test
 
-0xa000	memory-test.header
-0xa300	memory-test
+0xa000  lcd-test.header
+0xa300	lcd-test
 
 #0xc000  hello.header
 #0xc300  hello
