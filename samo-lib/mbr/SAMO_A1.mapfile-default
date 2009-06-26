@@ -21,8 +21,8 @@
 0xa000	memory-test.header
 0xa300	memory-test
 
-0xc000  hello.header
-0xc300  hello
+#0xc000  hello.header
+#0xc300  hello
 
 0xe000  rs232-loader.header
 0xe300  rs232-loader
