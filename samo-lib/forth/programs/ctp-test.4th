@@ -188,11 +188,18 @@ variable flag
     again
 ;
 
-: test-ctp-sequence ( -- )
+: test-ctp-sequence ( -- flag )
     true
     3 0 ?do
         i draw-boxes
-        draw-lines and
+        draw-lines dup
+        if
+            s" PASS"
+        else
+            s" FAIL"
+        then
+        type ." : CTP item " i 1+ . cr
+        and
     loop
 ;
 
