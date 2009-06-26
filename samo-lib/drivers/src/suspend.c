@@ -26,6 +26,12 @@
 void suspend(void) __attribute__ ((section (".suspend_text")));
 void suspend(void)
 {
+	// if in CTP receive sequence
+	//REG_MISC_PUP6 |= 0x10;
+	if (0 == (REG_P6_P6D & 0x10)) {
+		return;
+	}
+
 	register int card_state = check_card_power();
 	// cannot suspend if serial port is running
 	if (0 != (REG_EFSIF0_STATUS & TENDx)) {
@@ -86,10 +92,6 @@ void suspend(void)
 	REG_P2_P2D = ~0;
 	REG_P2_03_CFP = 0x01;
 	REG_P2_47_CFP = 0x00;
-
-	// adjust baud rate for lower clock frequency
-	SET_BRTRD(0, CALC_BAUD(MCLK / 4, DIV, CONSOLE_BPS));
-	SET_BRTRD(1, CALC_BAUD(MCLK / 4, DIV, CTP_BPS));
 
 	// turn off un necessary clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
@@ -163,9 +165,9 @@ void suspend(void)
 		//LCDCDIV_15 |
 		//LCDCDIV_14 |
 		//LCDCDIV_13 |
-		//LCDCDIV_12 |
+		LCDCDIV_12 |
 		//LCDCDIV_11 |
-		LCDCDIV_10 |
+		//LCDCDIV_10 |
 		//LCDCDIV_9 |
 		//LCDCDIV_8 |
 		//LCDCDIV_7 |
@@ -178,10 +180,10 @@ void suspend(void)
 
 		//MCLKDIV |
 
-		//OSC3DIV_32 |
+		OSC3DIV_32 |
 		//OSC3DIV_16 |
 		//OSC3DIV_8 |
-		OSC3DIV_4 |
+		//OSC3DIV_4 |
 		//OSC3DIV_2 |
 		//OSC3DIV_1 |
 
@@ -195,6 +197,10 @@ void suspend(void)
 		//SOSC1 |
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	// adjust baud rate for lower clock frequency
+	SET_BRTRD(1, CALC_BAUD(MCLK / 32, DIV, CTP_BPS));
+	SET_BRTRD(0, CALC_BAUD(MCLK / 32, DIV, CONSOLE_BPS));
 
 	// end of suspend, wait for interrupt
 	asm volatile ("halt");
