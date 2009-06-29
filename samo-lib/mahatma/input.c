@@ -37,14 +37,17 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 	 */
 
 	while (1) {
-		if (serial_get_event(ev))
+		if (serial_get_event(ev)) {
 			break;
+		}
 
-		if (touchscreen_get_event(ev))
+		if (touchscreen_get_event(ev)) {
 			break;
+		}
 
-		if (gpio_get_event(ev))
+		if (gpio_get_event(ev)) {
 			break;
+		}
 
 		/* no power saving return */
 		if (!sleep) {
