@@ -27,125 +27,132 @@
 #include "touchscreen.h"
 #include "irq.h"
 
-#define AA_PREFIX  		0xaa
+typedef enum {
+	STATE_WAITING,
+	STATE_X_HIGH,
+	STATE_X_LOW,
+	STATE_Y_HIGH,
+	STATE_Y_LOW,
+	STATE_TOUCH,
+} StateType;
 
-enum parsing_state {
+static volatile StateType touch_state;
 
-	PARSING_INIT = 0,
-	PARSING_X = 1,
-	PARSING_Y = 2,
-	PARSING_PRESS = 3,
-	PARSING_LAST = 4
-};
+static volatile uint32_t x, y;
 
-enum parsing_state ctp_event = PARSING_INIT;
+typedef struct {
+	uint32_t x;
+	uint32_t y;
+	bool t;
+} ItemType;
 
-static inline void parsing_init_handler(u8 c);
-static inline void parsing_x_handler(u8 c);
-static inline void parsing_y_handler(u8 c);
-static inline void parsing_press_handler(u8 c);
+static volatile int queue_head;
+static volatile int queue_tail;
 
-static void (*parsing_touch_handling[PARSING_LAST])(u8 c) = {
+static volatile ItemType queue[32];
 
-	&parsing_init_handler,
-	&parsing_x_handler,
-	&parsing_y_handler,
-	&parsing_press_handler,
-};
 
-u8 x_buffer[2];
-u8 y_buffer[2];
+#define BUFFER_FULL(w, r, b) ((((w) + 1) % ARRAY_SIZE(b)) == (r))
+#define BUFFER_EMPTY(w, r, b) ((w) == (r))
+#define BUFFER_NEXT(p, b) (p) = (((p) + 1) % ARRAY_SIZE(b))
 
-static volatile int touch_state = WL_INPUT_TOUCH_NONE;
 
-static inline void parsing_init_handler(u8 c)
+
+void touchscreen_handler(void)
 {
-	if (c == AA_PREFIX)
-		ctp_event = PARSING_X;
-}
+	while (0 != (REG_EFSIF1_STATUS & RDBFx)) {
+		register uint32_t c = REG_EFSIF1_RXD;
 
-static inline void parsing_x_handler(u8 c)
-{
-	static u8 count = 0;
+		if (0xaa == c) {
+			touch_state = STATE_X_HIGH;
+		} else if (0 != (0x80 & c) && (0xff != c)) {
+			touch_state = STATE_WAITING;
+		} else {
+			switch (touch_state) {
+			case STATE_WAITING:
+				break;
+			case STATE_X_HIGH:
+				if (0xff != c) {
+					x = c << 7;
+				}
+				++touch_state;
+				break;
+			case STATE_X_LOW:
+				if (0xff != c) {
+					x |= c;
+				}
+				++touch_state;
+				break;
+			case STATE_Y_HIGH:
+				if (0xff != c) {
+					y = c << 7;
+				}
+				++touch_state;
+				break;
+			case STATE_Y_LOW:
+				if (0xff != c) {
+					y |= c;
+				}
+				++touch_state;
+				break;
+			case STATE_TOUCH:
+				if (!BUFFER_FULL(queue_head, queue_tail, queue)) {
+					if (0x01 == c) {
+						queue[queue_head].x = x;
+						queue[queue_head].y = y;
+						queue[queue_head].t = WL_INPUT_TOUCH_DOWN;
+						BUFFER_NEXT(queue_head, queue);
+					} else if (0x00 == c) {
+						queue[queue_head].x = x;
+						queue[queue_head].y = y;
+						queue[queue_head].t = WL_INPUT_TOUCH_UP;
+						BUFFER_NEXT(queue_head, queue);
+					}
+				}
+				touch_state = STATE_WAITING;
+				break;
+			}
 
-	x_buffer[count] = c;
-
-	if (count == 1){
-		ctp_event = PARSING_Y;
-		count = 0;
+		}
 	}
-	else
-		count++;
-}
-
-static inline void parsing_y_handler(u8 c)
- {
-	static u8 count = 0;
-
-	y_buffer[count] = c;
-
-	if (count == 1){
-		ctp_event = PARSING_PRESS;
-		count = 0;
-	}
-	else
-		count++;
-}
-
-static inline void parsing_press_handler(u8 c)
-{
-	touch_state  = c;
-	ctp_event = PARSING_INIT;
-}
-
-static inline int calc_coord(u8 *axis_array)
-{
-	/*
-	 * the output resolution is 480 * 416,
-	 * here we divide 2 as the real resolution
-	 */
-	/*Change the shift bit to 7 for the new data format of the CTP*/
-	return (((axis_array[0] << 7) + axis_array[1]) >> 1);
-
-}
-
-void touchscreen_parsing_packets()
-{
-	while (REG_EFSIF1_STATUS & RDBFx) {
-		u8 c = REG_EFSIF1_RXD;
-		(*parsing_touch_handling[ctp_event])(c);
-	}
+	REG_EFSIF1_STATUS = 0; // clear errors
 }
 
 int touchscreen_get_event(struct wl_input_event *ev)
 {
-	if (touch_state != WL_INPUT_TOUCH_NONE){
+	if (!BUFFER_EMPTY(queue_head, queue_tail, queue)) {
 		ev->type = WL_INPUT_EV_TYPE_TOUCH;
-
-		if (touch_state) {
-			ev->touch_event.x = calc_coord(x_buffer);
-			ev->touch_event.y = calc_coord(y_buffer);
-		}
-
-		ev->touch_event.value = touch_state;
-		touch_state = WL_INPUT_TOUCH_NONE;
+		ev->touch_event.x = queue[queue_tail].x >> 1;
+		ev->touch_event.y = queue[queue_tail].y >> 1;
+		ev->touch_event.value = queue[queue_tail].t
+			? WL_INPUT_TOUCH_DOWN
+			: WL_INPUT_TOUCH_UP;
+		BUFFER_NEXT(queue_tail, queue);
 		return 1;
 	}
-
 	return 0;
 }
 
 void touchscreen_init(void)
 {
+	touch_state = STATE_WAITING;
+	x = 0;
+	y = 0;
+
+	queue_head = 0;
+	queue_tail = 0;
+
 	init_rs232_ch1();
+
 	DISABLE_IRQ();
+
 	// CTP_INIT_Reset_function
 	REG_P0_IOC0 |= 0x80;
 	REG_P0_P0D  |= 0x80;
 	delay_us(20);
 	REG_P0_P0D  &= ~0x80;
 
-	REG_INT_ESIF01 |= ESRX1;
+	REG_INT_ESIF01 |= ESRX1 | ESERR1;
 
 	REG_INT_PSI01_PAD |= SERIAL_CH1_INT_PRI_7;
 	ENABLE_IRQ();

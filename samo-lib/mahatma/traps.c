@@ -171,12 +171,13 @@ static void serial0_out_irq(void)
 
 static void serial1_err_irq(void)
 {
+	touchscreen_handler();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 3);
 }
 
 static void serial1_in_irq(void)
 {
-	touchscreen_parsing_packets();
+	touchscreen_handler();
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 4);
 }
 
