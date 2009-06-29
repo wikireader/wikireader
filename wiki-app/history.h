@@ -42,7 +42,7 @@ unsigned int history_item_size(void);
 unsigned int history_free_item_size(void);
 
 const char *history_get_top_target(void);
-const int history_get_selection();
+int history_get_selection();
 void history_set_selection(int selection);
 unsigned int history_get_count();
 

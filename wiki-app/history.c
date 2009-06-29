@@ -320,7 +320,7 @@ const char *history_release(int y)
 	return NULL;
 }
 
-const int history_get_selection()
+int history_get_selection()
 {
 	return history_current;
 }
