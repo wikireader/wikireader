@@ -25,8 +25,8 @@ psu = None
 dvm = None
 relay = None
 
-RELAY_SERIAL = '/dev/ttyUSB0'
-CPU_SERIAL = '/dev/ttyUSB2'
+RELAY_SERIAL = '/dev/USBrelay'
+CPU_SERIAL = '/dev/USBconsole'
 
 RELAY_VBATT = 1
 RELAY_RESET = 2
