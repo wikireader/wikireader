@@ -248,7 +248,7 @@ static void handle_touch(struct wl_input_event *ev)
 		struct keyboard_key * key;
 
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
-		if (ev->touch_event.value == 0) {
+		if (ev->touch_event.value == WL_INPUT_TOUCH_UP) {
 			pre_key = NULL;
 			if (key) {
 				if (!touch_down_on_keyboard) {
@@ -312,7 +312,7 @@ static void handle_touch(struct wl_input_event *ev)
 		unsigned int new_selection = ((unsigned int)ev->touch_event.y - HISTORY_RESULT_START - 2) / HISTORY_RESULT_HEIGHT;
 		if (new_selection >= history_get_count()) goto out;
 
-		if (ev->touch_event.value == 0) {
+		if (ev->touch_event.value == WL_INPUT_TOUCH_UP) {
 			const char *target = history_get_item_target(history_get_selection());
 			if (target)
 				open_article(target, ARTICLE_NEW);
@@ -323,7 +323,7 @@ static void handle_touch(struct wl_input_event *ev)
 			history_set_selection(new_selection);
 		}
 	} else {
-		if (ev->touch_event.value == 0) {
+		if (ev->touch_event.value == WL_INPUT_TOUCH_UP) {
 			if (article_touch_down_pos.y > ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 20)
 				article_display(ARTICLE_PAGE_NEXT);
@@ -346,7 +346,7 @@ static void handle_touch(struct wl_input_event *ev)
 					history_set_selection(history_get_selection()-1);
 				}
 			}
-				
+
 			article_touch_down_handled = 0;
 		} else {
 			if (!article_touch_down_handled) {
