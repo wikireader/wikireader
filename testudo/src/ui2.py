@@ -37,7 +37,7 @@ if not os.path.isdir(SaveFilesFolder):
 
 class SerialPort():
 
-    def __init__(self, port = '/dev/ttyUSB1', bps = 19200, timeout = 0.2):
+    def __init__(self, port = '/dev/USBconsole', bps = 19200, timeout = 0.2):
         self.s = Serial(port = port)
         self.s.xonxoff = False
         self.s.rtscts = False

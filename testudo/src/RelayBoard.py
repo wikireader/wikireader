@@ -18,7 +18,7 @@ from time import sleep
 
 class PIC16F873A():
 
-    def __init__(self, port = '/dev/ttyUSB0', bps = 19200, timeout = 0.1):
+    def __init__(self, port = '/dev/USBrelay', bps = 19200, timeout = 0.1):
         self.relay = Serial(port = port)
         self.relay.xonxoff = False
         self.relay.rtscts = False
