@@ -38,8 +38,6 @@ static const char *prof_to_string[] = { PROF_TO_STRING };
 
 void profile_init(void)
 {
-	tick_initialise();
-
 	memset(&prof_container, 0, sizeof(prof_container));
 }
 

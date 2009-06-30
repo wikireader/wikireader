@@ -30,6 +30,7 @@
 #include "serial.h"
 #include "traps.h"
 #include "gui.h"
+#include "tick.h"
 #include "msg.h"
 #include "touchscreen.h"
 #include "regs.h"
@@ -55,6 +56,7 @@ int main(void)
 	/* machine-specific init */
 	gpio_init();
 	traps_init();
+	tick_initialise();
 	msg_init();
 
 	touchscreen_init();
