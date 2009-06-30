@@ -93,6 +93,10 @@ void suspend(void)
 	REG_P2_03_CFP = 0x01;
 	REG_P2_47_CFP = 0x00;
 
+	// adjust baud rate for lower clock frequency
+	SET_BRTRD(1, CALC_BAUD(MCLK, 32, DIV, CTP_BPS));
+	SET_BRTRD(0, CALC_BAUD(MCLK, 32, DIV, CONSOLE_BPS));
+
 	// turn off un necessary clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 	REG_CMU_GATEDCLK0 &= ~(
@@ -198,18 +202,11 @@ void suspend(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	// adjust baud rate for lower clock frequency
-	SET_BRTRD(1, CALC_BAUD(MCLK / 32, DIV, CTP_BPS));
-	SET_BRTRD(0, CALC_BAUD(MCLK / 32, DIV, CONSOLE_BPS));
-
 	// end of suspend, wait for interrupt
 	asm volatile ("halt");
 	// interrupt is on hold until end of resume
 
-	// restore baud rate
-	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, CONSOLE_BPS));
-	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, CTP_BPS));
-
+	// restore clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
 
 	REG_CMU_CLKCNTL =
@@ -313,6 +310,10 @@ void suspend(void)
 		//RTCSAPB_CKE |
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	// restore baud rate
+	SET_BRTRD(0, CALC_BAUD(MCLK, 1, DIV, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK, 1, DIV, CTP_BPS));
 
 	// re-enable the SDRAMC pin functions
 	REG_P2_03_CFP = 0x55;

@@ -718,12 +718,11 @@
 // Bits for: REG_EFSIFx_IrDA
 #define DIVMD_8x	  (0x1 << 4)
 #define DIVMD_16x	  (0x0 << 4)
-#define IRMD_IRDAx		  0x10
-#define IRMD_GEN_IFx 	  0x00
+#define IRMD_IRDAx	  (0x2 << 0)
+#define IRMD_GEN_IFx 	  (0x0 << 0)
 
 // Bits for: REG_EFSIFx_BRTCTL
-#define BRTRUN_STARx 	0x1
-#define BRTRUN_STOPx 	0x0
+#define BRTRUNx 	0x1
 
 
 /*

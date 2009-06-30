@@ -34,11 +34,14 @@
 #define MCLK_MHz	(MCLK / 1000000)
 #define DIV 		8
 
-#define CALC_BAUD(fbrclk, divmd, bps)  ((fbrclk / divmd)/(2 * bps) - 1)
+//#define CALC_BAUD(fbrclk, divmd, bps)  ((fbrclk / divmd)/(2 * bps) - 1)
+#define CALC_BAUD(fbrclk, div, divmd, bps)  (((((10 * fbrclk) / div / divmd)/(2 * bps)) + 5) / 10 - 1)
 
 #define SET_BRTRD(ch, value) do {                       \
+		REG_EFSIF##ch##_BRTRUN = 0;             \
 		REG_EFSIF##ch##_BRTRDM = value >> 8;    \
 		REG_EFSIF##ch##_BRTRDL = value & 0xff;  \
+		REG_EFSIF##ch##_BRTRUN = BRTRUNx;       \
 	} while(0)
 
 #define SERIAL_8N1 (NO_PARx | ONE_STPBx | INT_CLKx | EIGHT_BIT_ASYNx)
@@ -81,10 +84,7 @@ static inline void init_rs232_ch0(void)
 	REG_EFSIF0_IRDA = DIVMD_8x | IRMD_GEN_IFx;
 
 	/* set up baud rate timer reload data */
-	SET_BRTRD(0, CALC_BAUD(MCLK, DIV, CONSOLE_BPS));
-
-	/* baud rate timer: run! */
-	REG_EFSIF0_BRTRUN |= BRTRUN_STARx;
+	SET_BRTRD(0, CALC_BAUD(MCLK, 1, DIV, CONSOLE_BPS));
 
 	/* clear interrupt flags */
 	REG_INT_FSIF01 = FSRX0 | FSTX0 | FSERR0;
@@ -96,9 +96,7 @@ static inline void init_rs232_ch1(void)
 
 	REG_EFSIF1_IRDA = DIVMD_8x | IRMD_GEN_IFx;
 
-	SET_BRTRD(1, CALC_BAUD(MCLK, DIV, CTP_BPS));
-
-	REG_EFSIF1_BRTRUN |= BRTRUN_STARx;
+	SET_BRTRD(1, CALC_BAUD(MCLK, 1, DIV, CTP_BPS));
 
 	REG_INT_FSIF01 = FSRX1 | FSTX1 | FSERR1;
 }
