@@ -41,10 +41,10 @@
 
 static FATFS fatfs;
 
-
+__attribute ((noreturn))
 int main(void)
 {
-	/* set the initial stack and data pointers */
+	// set the initial stack and data pointers
 	asm volatile (
 		"\txld.w\t%r15, __MAIN_STACK\n"
 		"\tld.w\t%sp, %r15\n"
@@ -53,31 +53,35 @@ int main(void)
 		"\tld.w\t%psr, %r4\n"
 		);
 
-	/* machine-specific init */
-	gpio_init();
+	// critical first initialisation
 	traps_init();
 	tick_initialise();
 	msg_init();
 
-	touchscreen_init();
+	// start of normal initialisation
+	// eanything below here can use debug outputs
 	msg(MSG_INFO, "Starting\n");
 
+	// initialise remainder of I/O
+	gpio_init();
+	touchscreen_init();
 	fb_init();
 
-	/* generic init */
+	// set up memory manager before remaining initialisation
+	malloc_init_simple();
+
 	if (f_mount(0, &fatfs) != FR_OK)
 		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
 
-	malloc_init_simple();
 	wikilib_init();
 	guilib_init();
 	profile_init();
 
+	// initialisation complete
 	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
 
-	/* the next function will loop forever and call wl_input_wait() */
-	wikilib_run();
-
-	/* never reached */
-	return 0;
+	// the next function will loop forever and call wl_input_wait()
+	for (;;) {
+		wikilib_run();
+	}
 }

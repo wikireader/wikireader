@@ -88,26 +88,6 @@ static inline void power_off(void)
 //}
 
 
-static inline void prepare_keys(void)
-{
-	/* initial comparison is all buttons open */
-	REG_KINTCOMP_SCPK0 = 0x00;
-
-	/* enable mask for three buttons */
-	REG_KINTCOMP_SMPK0 = 0x07;
-
-	/* select P60/P61/P62 */
-	REG_KINTSEL_SPPK01 = 0x04;
-
-	/* only interested in KINT0 source */
-	REG_INT_EK01_EP0_3 = 0x10;
-}
-
-static inline unsigned char get_key_state(void)
-{
-	return REG_P6_P6D & 0x7;
-}
-
 #define AVDD_MILLIVOLTS	       3000
 #define ADC_SERIES_RESISTOR_K  150
 #define ADC_SHUNT_RESISTOR_K   1000

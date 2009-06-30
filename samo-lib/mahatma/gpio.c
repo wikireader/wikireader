@@ -19,9 +19,11 @@
 #include <stdio.h>
 #include <input.h>
 #include <regs.h>
-#include <msg.h>
+#include <irq.h>
 #include <samo.h>
 #include <wikilib.h>
+
+#include "gpio.h"
 
 
 #if BOARD_SAMO_A1
@@ -38,35 +40,32 @@ static const int keymap[] = {
 };
 #endif
 
-#define N_PINS 3
-STATIC_ASSERT(ARRAY_SIZE(keymap) == N_PINS, right_pins)
-
-static unsigned char gpio_state;
-static unsigned char last_state;
+static volatile uint8_t gpio_state;
+static volatile uint8_t last_state;
 
 void gpio_irq(void)
 {
-	/* the current gpio state is our new comparison reference */
-	gpio_state = get_key_state();
+	gpio_state =  REG_P6_P6D & 0x7;
 	REG_KINTCOMP_SCPK0 = gpio_state;
 }
 
 int gpio_get_event(struct wl_input_event *ev)
 {
-	unsigned int i, changed = gpio_state ^ last_state;
+	unsigned int i;
+	uint8_t keys = gpio_state;
+	uint8_t changed = keys ^ last_state;
 
-	if (!changed)
-		return 0;
-
-	for (i = 0; i < N_PINS; i++) {
-		if (!(changed & (1 << i)))
-			continue;
-
-		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-		ev->key_event.keycode = keymap[i];
-		ev->key_event.value = !!(gpio_state & (1 << i));
-		last_state ^= (1 << i);
-		return 1;
+	if (0 != changed) {
+		for (i = 0; i < ARRAY_SIZE(keymap); i++) {
+			uint8_t bit = 1 << i;
+			if (0 != (changed & bit)) {
+				ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+				ev->key_event.keycode = keymap[i];
+				ev->key_event.value = 0 != (keys & bit);
+				last_state ^= bit;
+				return 1;
+			}
+		}
 	}
 
 	return 0;
@@ -74,8 +73,23 @@ int gpio_get_event(struct wl_input_event *ev)
 
 void gpio_init(void)
 {
-	prepare_keys();
+	DISABLE_IRQ();
+
+	// initial comparison is all buttons open
+	REG_KINTCOMP_SCPK0 = 0x00;
+
+	// enable mask for three buttons
+	REG_KINTCOMP_SMPK0 = 0x07;
+
+	// select P60/P61/P62
+	REG_KINTSEL_SPPK01 = 0x04;
+
+	// only interested in KINT0 source
+	REG_INT_EK01_EP0_3 = 0x10;
+
+	// assume all keys are initially up
 	gpio_state = 0;
 	last_state = 0;
-}
 
+	ENABLE_IRQ();
+}
