@@ -16,6 +16,7 @@ import datetime
 import time
 import os.path
 import threading
+import traceback
 
 import sequencer
 
@@ -137,6 +138,9 @@ class Sample:
         except Exception, e:
             self.write('\n*** Test aborted ***\n')
             self.write('FAIL: Python Exception: %s\n' % str(e))
+            self.write('TRACE:\n')
+            self.write(traceback.format_exc())
+            self.write('END_TRACE:\n')
         finally:
             self.write('\n*** End of Test ***\n')
             self.testStop = False

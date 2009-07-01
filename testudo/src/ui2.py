@@ -23,6 +23,7 @@ import datetime
 import time
 import os.path
 import threading
+import traceback
 
 import Keithley
 
@@ -163,8 +164,7 @@ class Sample:
                        (serialNumber))
             t = time.time()
 
-            self.write('*** Press device power on button to begin test ***\n\n' %
-                       (serialNumber))
+            self.write('*** Press device power on button to begin test ***\n\n')
 
             run = True
             while run:
@@ -203,7 +203,7 @@ class Sample:
                     i = psu.current
                     self.write('INFO: current = %7.3f mA @ %5.1f V\n' % (1000 * i, psu.voltage))
                     if abs(i) > MAXIMUM_ON_CURRENT:
-                        raise StopTestException('Device overcurrent: %7.3f mA' % (1000 * i)
+                        raise StopTestException('Device overcurrent: %7.3f mA' % (1000 * i))
 
                 if '*END-TEST*' == line:
                     run = False
@@ -223,6 +223,9 @@ class Sample:
         except Exception, e:
             self.write('\n*** Test aborted ***\n')
             self.write('FAIL: Python Exception: %s\n' % str(e))
+            self.write('TRACE:\n')
+            self.write(traceback.format_exc())
+            self.write('END_TRACE:\n')
         finally:
             if None != s:
                 del s
