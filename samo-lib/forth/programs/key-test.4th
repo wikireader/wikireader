@@ -41,7 +41,7 @@ variable keys-timeout
 
         1000 delay-us
         1 keys-timeout +!
-        keys-timeout @ 3000 >
+        keys-timeout @ 6000 >
         if
             -1 \ all normal keys are positive
             exit
