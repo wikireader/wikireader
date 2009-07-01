@@ -24,8 +24,18 @@ import time
 import os.path
 import threading
 
+import Keithley
+
 import sequencer
 
+
+# power supply (volts, amps)
+SUPPLY_STANDARD_VOLTAGE = 3.0
+SUPPLY_CURRENT_LIMIT = 0.35
+MAXIMUM_SUSPEND_CURRENT = 0.02
+MAXIMUM_ON_CURRENT = 0.15
+
+# paths to files
 SaveFilesFolder = '/log/files/stage2'
 FileExt = '.2.text'
 
@@ -137,14 +147,25 @@ class Sample:
 
         try:
             s = None
+            psu = None
 
             s = SerialPort()
             if '' == self.serialNumber.get_text():
                 raise StopTestException('Serial number invalid')
             serialNumber = self.serialNumber.get_text()
+
+            psu = Keithley.PSU2303()
+            psu.setCurrent(SUPPLY_CURRENT_LIMIT)
+            psu.setVoltage(SUPPLY_STANDARD_VOLTAGE)
+            psu.powerOn()
+
             self.write('\n*** Start of Test for device SN: %s ***\n\n' %
                        (serialNumber))
             t = time.time()
+
+            self.write('*** Press device power on button to begin test ***\n\n' %
+                       (serialNumber))
+
             run = True
             while run:
 
@@ -162,6 +183,28 @@ class Sample:
 
                 self.write(line)
                 self.write('\n')
+                if '*SUSPEND*' == line:
+                    samples = 20
+                    total = 0
+                    for j in range(samples):
+                        i = psu.current
+                        total = total + i
+                        self.write('INFO: suspend current = %7.3f mA @ %5.1f V\n' %
+                                   (1000 * i, psu.voltage))
+                        time.sleep(0.1)
+                    self.write('INFO: average suspend current = %7.3f mA @ %5.1f V\n' %
+                               (1000 * total / samples, psu.voltage))
+                    if abs(i) > MAXIMUM_SUSPEND_CURRENT:
+                        s.write('N')
+                    else:
+                        s.write('Y')
+
+                else:
+                    i = psu.current
+                    self.write('INFO: current = %7.3f mA @ %5.1f V\n' % (1000 * i, psu.voltage))
+                    if abs(i) > MAXIMUM_ON_CURRENT:
+                        raise StopTestException('Device overcurrent: %7.3f mA' % (1000 * i)
+
                 if '*END-TEST*' == line:
                     run = False
 
@@ -183,6 +226,9 @@ class Sample:
         finally:
             if None != s:
                 del s
+            if None != psu:
+                psu.powerOff()
+                del psu
             self.write('\n*** End of Test ***\n')
             self.testStop = False
             self.testRunning = False
