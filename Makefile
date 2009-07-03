@@ -159,9 +159,9 @@ forth:  gcc mini-libc fatfs drivers
 # master boot record
 
 define FindTTY
-for i in 2 1 0;
+for i in USBconsole ttyUSB2 ttyUSB1 ttyUSB0;
 do
-  d="/dev/ttyUSB$${i}";
+  d="/dev/$${i}";
   if [ -e "$${d}" ];
   then
     echo -n $${d};
