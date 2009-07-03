@@ -24,11 +24,12 @@
  */
 
 
-#define APPLICATION_TITLE "32MB memory test";
+#define APPLICATION_TITLE "Memory Test";
+#define APPLICATION_TITLE2 "Memory Check";
 #include "application.h"
 
 
-#define RAM_START ((u8 *)0x10000000)
+#define RAM_START ((uint8_t *)0x10000000)
 #define RAM_SIZE  (32 * 1024 * 1024)
 
 // redirect Qi routines to the correct EEPROM routines
@@ -38,23 +39,27 @@
 
 
 void memory_test(void *start, unsigned int length);
+void memory_check(void *start, unsigned int length);
 
 // this must be the first executable code as the loader executes from the first program address
 ReturnType mem(int block, int status)
 {
 	APPLICATION_INITIALISE();
 
-	memory_test(RAM_START, RAM_SIZE);
-
+	if (0 == status) {
+		memory_test(RAM_START, RAM_SIZE);
+	} else {
+		memory_check(RAM_START, RAM_SIZE);
+	}
 	APPLICATION_FINALISE(0, 0);
 }
 
 
-int memory_test_const32(void * start, unsigned int length, u32 value)
+int memory_test_const32(void * start, unsigned int length, uint32_t value)
 {
 	int errors = 0;
-	u32 * p = (u32 *)start;
-	u32 * pend = (u32 *)(start + length);
+	uint32_t * p = (uint32_t *)start;
+	uint32_t * pend = (uint32_t *)(start + length);
 	int count = length >> 2;
 
 	puts(".");
@@ -62,7 +67,7 @@ int memory_test_const32(void * start, unsigned int length, u32 value)
 	while (p < pend)
 		*p++ = value;
 
-	p = (u32 *)start;
+	p = (uint32_t *)start;
 	count = length >> 2;
 
 	while (count--)
@@ -70,38 +75,38 @@ int memory_test_const32(void * start, unsigned int length, u32 value)
 			puts("*A*");
 			print32((long)p - 4);
 			puts("=");
-			print32((u32)p[-4]);
+			print32((uint32_t)p[-4]);
 			puts("/");
-			print32((u32)value);
+			print32((uint32_t)value);
 			errors++;
 		}
 
 	return errors;
 }
 
-int memory_test_ads(void * start, unsigned int length, u32 mask)
+int memory_test_ads(void * start, unsigned int length, uint32_t mask)
 {
 	int errors = 0;
-	u32 * p = (u32 *)start;
-	u32 * pend = (u32 *)(start + length);
+	uint32_t * p = (uint32_t *)start;
+	uint32_t * pend = (uint32_t *)(start + length);
 
 	puts(".");
 
 	while (p < pend)
-		if ((u32)p & mask)
+		if ((uint32_t)p & mask)
 			*p++ = 0xffffffff;
 		else
 			*p++ = 0;
 
-	p = (u32 *)start;
+	p = (uint32_t *)start;
 
 	while (p < pend) {
-		if ((u32)p & mask) {
+		if ((uint32_t)p & mask) {
 			if (*p++ != 0xffffffff) {
 				puts("*B:");
 				print32((long)p - 4);
 				puts("/");
-				print32((u32)mask);
+				print32((uint32_t)mask);
 				errors++;
 			}
 		} else {
@@ -109,7 +114,7 @@ int memory_test_ads(void * start, unsigned int length, u32 mask)
 				puts("*C:");
 				print32((long)p - 4);
 				puts("/");
-				print32((u32)mask);
+				print32((uint32_t)mask);
 				errors++;
 			}
 		}
@@ -120,7 +125,7 @@ int memory_test_ads(void * start, unsigned int length, u32 mask)
 int memory_test_walking1(void * start, unsigned int length)
 {
 	int errors = 0;
-	u32 value = 1;
+	uint32_t value = 1;
 
 	while (value) {
 		errors += memory_test_const32(start, length, value);
@@ -147,7 +152,7 @@ void memory_test(void *start, unsigned int length)
 	int mask;
 
 	puts("\nMemory: ");
-	print32((u32)start);
+	print32((uint32_t)start);
 	puts(" length ");
 	printdec(length >> 20);
 	puts(" MB\n");
@@ -196,4 +201,56 @@ void memory_test(void *start, unsigned int length)
 
 		series++;
 	}
+}
+
+
+void memory_check(void *start, unsigned int length)
+{
+	int i;
+	int pass = 1;
+	uint32_t mega = length >> 20;
+	volatile uint32_t *memory = (uint32_t *)start;
+
+	puts("\nMemory: ");
+	print32((uint32_t)start);
+	puts(" length ");
+	printdec(mega);
+	puts(" MB  [");
+
+	for (i = 0; i < mega; ++i) {
+		int j;
+		int flag = 1;
+		for (j = 0; j < (1 << 20) ; j += 256) {
+			volatile uint32_t *p = (volatile uint32_t *)&memory[(i << 20) + j];
+			uint32_t s = *p;
+			*p = ~s;
+			if (*p != ~s) {
+				flag = 0;
+				pass = 0;
+				break;
+			}
+			*p = 0x5aa55aa5;
+			if (*p != 0x5aa55aa5) {
+				flag = 0;
+				pass = 0;
+				break;
+			}
+			*p = 0xa55aa55a;
+			if (*p != 0xa55aa55a) {
+				flag = 0;
+				pass = 0;
+				break;
+			}
+			*p = s;
+			if (*p != s) {
+				flag = 0;
+				pass = 0;
+				break;
+			}
+		}
+		print_char(flag ? '.' : 'F');
+	}
+	print("]\n");
+	print(pass ? "PASS" : "FAIL");
+	print(": Memory Check\n");
 }

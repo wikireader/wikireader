@@ -35,19 +35,30 @@ struct guilib_image
 
 #define MAXIMUM_BLOCKS 8
 #define HEADER_MAGIC  0x4f4d4153
+#define MAXIMUM_APPS 8
 #define SERIAL_NUMBER_OFFSET 0x1fe0
+
+// NameType length is defined in the awk script: GenerateApplicationHeader.awk
+typedef char NameType[32];
 
 struct {
 	uint32_t magic;
-	char name[32];
+	uint32_t count;
+	NameType name[8];
 } header;
 
 char SerialNumber[32];
 
+typedef struct {
+	int block;
+	int offset;
+} ProcessReturnType;
+
 static const char spinner[4] = "-\\|/";
 
 
-int process(int block, int status);
+
+ProcessReturnType process(int block, int status);
 void print_cpu_type(void);
 void battery_status(void);
 
@@ -55,13 +66,14 @@ void battery_status(void);
 // this must be the first executable code as the loader executes from the first program address
 ReturnType menu(int block, int status)
 {
-	register int i = 0;
+	ProcessReturnType result;
+
 	APPLICATION_INITIALISE();
 	init_lcd();
-	i = process(block, status);
+	result = process(block, status);
 
 	// next program
-	APPLICATION_FINALISE(i, 0);
+	APPLICATION_FINALISE(result.block, result.offset);
 }
 
 static void fill(uint8_t value)
@@ -95,15 +107,36 @@ static void display_image(uint8_t background, uint8_t toggle)
 	}
 }
 
-int process(int block, int status)
+static void PrintName(const NameType name)
 {
+	int k;
+	for (k = 0; k < sizeof(NameType); ++k) {
+		if ('\0' == name[k] || '\xff' == name[k]) {
+			break;
+		}
+		print_char(name[k]);
+	}
+}
+
+
+// process:
+// status == 0 => return from a program, therefore must display menu
+//        != 0 => automatic boot, therefore check keys
+//                   run app[0] with status set to:
+//                      0 if no keys pressed
+//                      1 if any keys pressed
+
+ProcessReturnType process(int block, int status)
+{
+	ProcessReturnType rc = {0, 0};
 	int i = 0;
 	int k = 0;
-	uint8_t valid[MAXIMUM_BLOCKS] = {0};
 
 	display_image(0x00, 0xff);
 
 	if (0 != status) {
+		bool MenuFlag = false;
+
 		print("\nCPU: ");
 		print_cpu_type();
 		print("\nBAT: ");
@@ -121,6 +154,7 @@ int process(int block, int status)
 		}
 
 		print("\n\nmenu? ");
+		status = 0;
 		for (i = 0; i <	4 * sizeof(spinner); ++i) {
 			for (k = 0; k < sizeof(spinner); ++k) {
 				delay_us(5000);
@@ -129,63 +163,70 @@ int process(int block, int status)
 				battery_status();
 			}
 			if (serial_input_available()) {
-				status = 0;
+				MenuFlag = true;
 				break;
 			}
 			if (0 != (REG_P6_P6D & 0x07)) {
 				status = 1;
-				++block;
 				break;
 			}
 		}
+
+		print_char('\n');
+
+		if (!MenuFlag) {
+			rc.block = block + 1;
+			rc.offset = status;
+			return rc;
+		}
 	}
-	print_char('\n');
 
-	if (0 == status) {
-		print("\nBoot Menu\n\n0. Power Off\n");
-		// not zero since this program should be in block zero
-		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
-			eeprom_load((i << 13), (void *)&header, sizeof(header));
+	{
+	ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
 
-			if (HEADER_MAGIC == header.magic) {
-				print_char(('A' - 1) + i);
+	print("\nBoot Menu\n\n0. Power Off\n");
+	// not zero since this program should be in block zero
+	int MenuItem = 0;
+	for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
+		eeprom_load((i << 13), (void *)&header, sizeof(header));
+
+		if (HEADER_MAGIC == header.magic && 0 < header.count && MAXIMUM_APPS >= header.count) {
+			for (k = 0; k < header.count; ++k) {
+				print_char(MenuItem + 'A');
 				print(". ");
-				for (k = 0; k < sizeof(header.name); ++k) {
-					if ('\0' == header.name[k] || '\xff' == header.name[k]) {
-						break;
-					}
-					print_char(header.name[k]);
-				}
+				PrintName(header.name[k]);
 				print_char('\n');
-				valid[i] = 1;
+				app[MenuItem].block = i;
+				app[MenuItem].offset = k;
+				++MenuItem;
 			}
 		}
-		print("\nEnter selection: ");
-		for (;;) {
-			while (!serial_input_available()) {
-				battery_status();
-			}
-			k = serial_input_char();
-			if ('0' == k) {
-				power_off();
-			} else {
-				if ('A' <= k && 'Z' >= k) {
-					k += 'a' - 'A';
-				}
-				i = k - 'a' + 1;
-				if (0 < i && MAXIMUM_BLOCKS > i) {
-					if (valid[i]) {
-						print_char(k);
-						print_char('\n');
-						break;
-					}
-				}
-			}
-		}
-	} else {
-		i = block + 1;
 	}
-	return i;
+	print("\nEnter selection: ");
+	for (;;) {
+		while (!serial_input_available()) {
+			battery_status();
+		}
+		k = serial_input_char();
+		if ('0' == k) {
+			power_off();
+		} else {
+			if ('A' <= k && 'Z' >= k) {
+				k += 'a' - 'A';
+			}
+			i = k - 'a';
+			if (0 <= i && MAXIMUM_APPS * MAXIMUM_BLOCKS > i) {
+				if (0 != app[i].block) {
+					print_char(k);
+					print_char('\n');
+					rc = app[i];
+					break;
+				}
+			}
+		}
+	}
+	}
+	return rc;
 }
 
 

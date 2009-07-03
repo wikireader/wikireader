@@ -59,6 +59,7 @@ mbr: mbr.elf
 mbr-rs232: SAMO_A1.mapfile-rs232 mbr
 	cp SAMO_A1.mapfile-rs232 $(FLASH_ROM_MAP_FILE)
 
+
 # macro to create application rules
 # $call MAKE_APP, app_name, file1.o file2.o, <optional pre-depends>)
 # Note: 1. list of objects/pre-depends are _space_ separated
@@ -85,10 +86,9 @@ $(call MAKE_APP,menu,misc.o,splash.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,key-test,misc.o)
-$(call MAKE_APP,forth-loader,misc.o elf32.o)
-$(call MAKE_APP,kernel-loader,misc.o elf32.o)
+$(call MAKE_APP,file-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
-$(call MAKE_APP,lcd-test,misc.o)
+#$(call MAKE_APP,lcd-test,misc.o)
 
 # application pre-depends
 

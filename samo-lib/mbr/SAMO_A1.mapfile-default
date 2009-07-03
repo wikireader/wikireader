@@ -6,11 +6,12 @@
 0x0300  menu
 0x1fe0  serial.header
 
-0x2000  kernel-loader.header
-0x2300  kernel-loader
+0x2000  file-loader.header
+0x2300  file-loader
 
-0x4000  forth-loader.header
-0x4300  forth-loader
+0x4000  *ERASE
+#0x4000  forth-loader.header
+#0x4300  forth-loader
 
 0x6000	memory-test.header
 0x6300	memory-test
@@ -18,11 +19,14 @@
 0x8000	key-test.header
 0x8300	key-test
 
-0xa000  lcd-test.header
-0xa300	lcd-test
+0xa000  *ERASE
+#0xa000  lcd-test.header
+#0xa300	lcd-test
 
+0xc000  *ERASE
 #0xc000  hello.header
 #0xc300  hello
 
-0xe000  rs232-loader.header
-0xe300  rs232-loader
+0xe000  *ERASE
+#0xe000  rs232-loader.header
+#0xe300  rs232-loader

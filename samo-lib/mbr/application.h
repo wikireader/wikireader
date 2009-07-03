@@ -25,6 +25,9 @@
 #include "delay.h"
 #include "misc.h"
 
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))
+#endif
 
 #if !defined(APPLICATION_TITLE)
 #error "APPLICATION_TITLE must be defined before including application.h"

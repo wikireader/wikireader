@@ -1,21 +1,26 @@
-# generat an application header
+# generate an application header
 
 BEGIN {
         NAME_LENGTH = 32
         for (i = 0; i < NAME_LENGTH; ++i) {
                 padding = padding "\0"
         }
-        name = substr("No Name" padding, 0, NAME_LENGTH)
+        n = 0
+        name[0] = substr("No Name" padding, 0, NAME_LENGTH)
 }
 
 END {
-        printf "SAMO" name
+        printf("SAMO%c\0\0\0", n)
+        for (i = 0; i < n; ++i) {
+                printf(name[i])
+        }
 }
 
-/^[[:space:]]*#[[:space:]]*define[[:space:]]+APPLICATION_TITLE[[:space:]]+/ {
-        line = gensub("^.*APPLICATION_TITLE[[:space:]]*\"", "", 1, $0)
+/^[[:space:]]*#[[:space:]]*define[[:space:]]+APPLICATION_TITLE[[:digit:]]*[[:space:]]+/ {
+        line = gensub("^.*APPLICATION_TITLE[[:digit:]]*[[:space:]]*\"", "", 1, $0)
         line = gensub("\".*$", "", 1, line)
         if ("" != line) {
-                name = substr(line padding, 0, NAME_LENGTH)
+                name[n] = substr(line padding, 0, NAME_LENGTH)
+                n = n + 1
         }
 }

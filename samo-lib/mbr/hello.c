@@ -17,6 +17,8 @@
 */
 
 #define APPLICATION_TITLE "hello world"
+#define APPLICATION_TITLE2 "hello you"
+#define APPLICATION_TITLE3 "hello me"
 
 #include "application.h"
 
@@ -32,8 +34,12 @@ ReturnType hello(int block, int status)
 
 	print("hello world\n");
 
+	print(" status = ");
+	print_dec32(status);
+	print_char('\n');
+
 	print(" 1 + 2 = ");
-	print_u32(1 + 2);
+	print_dec32(1 + 2);
 	print_char('\n');
 	{
 		print(" x = ");

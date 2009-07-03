@@ -16,10 +16,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// these items correspond to the load list
+#define APPLICATION_TITLE "Boot WikiReader"
+#define APPLICATION_TITLE2 "Boot Forth"
+
 #include "application.h"
 #include "eeprom.h"
 #include "elf32.h"
 
+// each file can have a title above
+// so that the menu program can set a start point
+static const char *LoadList[8] = {
+	"kernel.elf",
+	"forth.elf"
+};
 
 // this must be the first executable code as the loader executes from the first program address
 ReturnType file_loader(int block, int status)
@@ -28,8 +38,11 @@ ReturnType file_loader(int block, int status)
 
 	// boot an elf file
 	{
-		unsigned int i;
-		for (i = 0; 0 != LoadList[i]; ++i) {
+		unsigned int i = status;
+		if (ARRAY_SIZE(LoadList) <= i) {
+			i = 0;
+		}
+		for (; i < ARRAY_SIZE(LoadList); ++i) {
 			int error = - elf_exec(LoadList[i]);
 			print("load '");
 			print(LoadList[i]);
