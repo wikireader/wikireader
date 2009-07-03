@@ -1,0 +1,21 @@
+# udev rules file for Neo Freerunner Debug Board v3
+#
+
+ACTION!="add", GOTO="neo_dbg_rules_one"
+SUBSYSTEM!="usb_device", GOTO="neo_dbg_rules_one"
+
+SYSFS{idVendor}=="1457", SYSFS{idProduct}=="5118", MODE="664", GROUP="users"
+
+LABEL="neo_dbg_rules_one"
+
+
+# this would fix the symlinks to a specific USB port
+#DEVPATH=="*/2-1.1:1.0/*", KERNEL=="ttyUSB[0-9]*", SYSFS{manufacturer}=="FTDI", NAME="%k", SYMLINK="USBjtag"
+#DEVPATH=="*/2-1.1:1.1/*", KERNEL=="ttyUSB[0-9]*", SYSFS{manufacturer}=="FTDI", NAME="%k", SYMLINK="USBconsole"
+
+
+# use any USB port, but only plug in one board
+DEVPATH=="*.1:1.0/*", KERNEL=="ttyUSB[0-9]*", SYSFS{manufacturer}=="FTDI", \
+  NAME="%k", SYMLINK+="USBjtag"
+DEVPATH=="*.1:1.1/*", KERNEL=="ttyUSB[0-9]*", SYSFS{manufacturer}=="FTDI", \
+  NAME="%k", SYMLINK+="USBconsole"

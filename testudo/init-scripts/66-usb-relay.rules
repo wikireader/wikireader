@@ -1,0 +1,3 @@
+# udev rules USB relay controller
+
+DEVPATH!="*.1:1.0/*", DEVPATH=="*:1.0/*", KERNEL=="ttyUSB[0-9]*", SYSFS{manufacturer}=="FTDI", NAME="%k", SYMLINK="USBrelay"
