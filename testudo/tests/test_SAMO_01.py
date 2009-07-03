@@ -265,8 +265,23 @@ def test008_keys():
     time.sleep(0.2)
     relay.off(RELAY_RESET)
 
-    p.waitFor('menu?')
-    p.send('d')
+    p.waitFor('menu\?')
+    p.send(' ')
+
+    m_mem = p.waitFor('(.)\.\s+[mM]emory\s+[cC]heck')
+    m_key = p.waitFor('(.)\.\s+[kK]ey\s+[tT]est')
+
+    p.waitFor('[sS]election:')
+    p.send(m_mem.group(1))
+
+    m_mem = p.waitFor('[mM]emory:[^\]]+\]')
+    info(m_mem.group(0))
+
+    m_mem = p.waitFor('(PASS|FAIL):\s+[mM]emory\s+[cC]heck')
+    fail_unless('PASS' == m_mem.group(1), 'Memory check')
+
+    p.waitFor('[sS]election:')
+    p.send(m_key.group(1))
 
     for desc, r, k in KEY_LIST:
         relay.off(r)

@@ -15,6 +15,7 @@ except:
 
 import sys
 import time
+import re
 
 
 class SerialPort():
@@ -35,20 +36,16 @@ class SerialPort():
             self.s.read(self.s.inWaiting())
 
     def waitFor(self, s, timeout = 30):
-        length = len(s)
-        available = self.s.inWaiting()
-        if available > length:
-            available = length
-        buffer = self.s.read(available)
+        regexp = re.compile(s)
+        buffer = ''
         while True:
-            if s == buffer:
-                return True
+            m = regexp.search(buffer)
+            if m:
+                return m
             while 0 == self.s.inWaiting():
                 time.sleep(0.01)
 
             buffer = buffer + self.s.read(1)
-            if len(buffer) > length:
-                buffer = buffer[1:]
 
     def send(self, s):
         self.s.write(s)
