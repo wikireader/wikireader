@@ -85,12 +85,15 @@ class MapFile:
             if m:
                 offset = eval(m.group(1))
                 file = m.group(2)
-                if not os.path.isfile(file):
-                    file = os.path.join(os.path.dirname(filename), file)
-                if not os.path.isfile(file):
-                    print 'Missing program: "%s"' % m.group(2)
-                    self.status = False
-                data = open(file, 'rb').read()
+                if '*ERASE' == file:
+                    data = '\xff'
+                else:
+                    if not os.path.isfile(file):
+                        file = os.path.join(os.path.dirname(filename), file)
+                    if not os.path.isfile(file):
+                        print 'Missing program: "%s"' % m.group(2)
+                        self.status = False
+                    data = open(file, 'rb').read()
                 data_len = len(data)
                 self.rom.append((offset, file, data_len, data))
             elif not c:
