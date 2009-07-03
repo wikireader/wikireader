@@ -280,10 +280,16 @@ class Sample:
         if '' == sn:
             sn = 'NO-SERIAL-NUMBER'
 
-        fileName = sn + '-' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + tag + FileExt
+        t = datetime.datetime.now()
+        theDate = t.strftime('%Y%m%d')
+        theTime = t.strftime('%H%M%S')
+        fileName = sn + '-' + theDate + '-' + theTime + tag + FileExt
 
         if autoSave:
-            fileName = os.path.join(SaveFilesFolder, fileName)
+            datedFolder = os.path.join(SaveFilesFolder, theDate)
+            if not os.path.isdir(datedFolder):
+                os.mkdir(datedFolder)
+            fileName = os.path.join(datedFolder, fileName)
             response = gtk.RESPONSE_YES
         else:
             chooser = gtk.FileChooserDialog(title = 'Save As...', action = gtk.FILE_CHOOSER_ACTION_SAVE,
