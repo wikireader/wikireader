@@ -262,7 +262,7 @@ def test008_keys():
     relay.on(RELAY_RESET)
     relay.clear(RELAY_PROGRAM_FLASH)
     relay.clear(RELAY_RANDOM_KEY)
-    relay.clear(RELAY_TREE_KEY)
+    relay.clear(RELAY_HISTORY_KEY)
     relay.clear(RELAY_SEARCH_KEY)
     relay.set(RELAY_RXD)
     relay.set(RELAY_TXD)
