@@ -34,7 +34,7 @@ main()
 
   fsck.vfat -y "${dev}"
   mount -t "${fstype}" "${dev}" "${mountpoint}" || ERROR mount failed
-  rm "${mountpoint}"/fsck*.rec
+  rm -f "${mountpoint}"/fsck*.rec
 
   df -h "${mountpoint}"
 
