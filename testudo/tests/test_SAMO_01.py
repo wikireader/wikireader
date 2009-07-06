@@ -73,7 +73,8 @@ MINIMUM_ON_TIME = 0.01
 MAXIMUM_ON_TIME = 1.2
 MINIMUM_OFF_TIME = 1.7
 MAXIMUM_OFF_TIME = 4.0
-ON_OFF_DELTA = 0.1
+ON_OFF_DELTA = 0.01
+AVERAGING_DELAY = 0.05
 
 # 1/10 seconds
 ON_OFF_SCAN = int(5 / ON_OFF_DELTA)
@@ -169,7 +170,7 @@ def test003_check_current():
     for i in range(samples):
         if debug:
             psu.measure()
-        time.sleep(0.1)
+        time.sleep(AVERAGING_DELAY)
         i = psu.current
         averageCurrent = averageCurrent + i
         info('Supply current = %7.3f mA @ %5.1f V' % (1000 * i, psu.voltage))
