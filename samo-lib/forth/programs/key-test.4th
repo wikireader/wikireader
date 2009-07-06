@@ -20,6 +20,10 @@ constant pos-2
 
 variable keys-timeout
 
+750000 constant button-delay
+1000 constant millisec
+30000 constant max-key-wait
+
 : test-key-button ( -- u )
     button-flush
     ctp-flush
@@ -39,9 +43,9 @@ variable keys-timeout
             button exit
         then
 
-        1000 delay-us
+        millisec delay-us
         1 keys-timeout +!
-        keys-timeout @ 6000 >
+        keys-timeout @ max-key-wait >
         if
             -1 \ all normal keys are positive
             exit
@@ -65,14 +69,14 @@ variable keys-timeout
     s" pressed" s" left" button-left check-button
 
     0 pos-1 show-message
-    200000 delay-us
+    button-delay delay-us
 
     2 pos-1 show-message
     s" released" s" left" button-none check-button
     and
 
     0 pos-1 show-message
-    200000 delay-us
+    button-delay delay-us
 ;
 
 : test-keys-stage-2 ( -- flag )
@@ -80,14 +84,14 @@ variable keys-timeout
     s" pressed" s" centre" button-centre check-button
 
     0 pos-2 show-message
-    200000 delay-us
+    button-delay delay-us
 
     2 pos-2 show-message
     s" released" s" centre" button-none check-button
     and
 
     0 pos-2 show-message
-    200000 delay-us
+    button-delay delay-us
 ;
 
 : test-keys-stage-3 ( -- flag )
@@ -95,14 +99,14 @@ variable keys-timeout
     s" pressed" s" right" button-right check-button
 
     0 pos-3 show-message
-    200000 delay-us
+    button-delay delay-us
 
     2 pos-3 show-message
     s" released" s" right" button-none check-button
     and
 
     0 pos-3 show-message
-    200000 delay-us
+    button-delay delay-us
 ;
 
 : test-keys-sequence ( -- )
