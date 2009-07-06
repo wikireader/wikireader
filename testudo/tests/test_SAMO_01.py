@@ -74,7 +74,11 @@ MAXIMUM_ON_TIME = 1.2
 MINIMUM_OFF_TIME = 1.7
 MAXIMUM_OFF_TIME = 4.0
 ON_OFF_DELTA = 0.01
-AVERAGING_DELAY = 0.05
+AVERAGING_DELAY = 0.02
+SETTLING_TIME = 0.5
+VOLTAGE_SAMPLE_TIME = 0.2
+VOLTAGE_SAMPLE_OFF = 0.02
+RESET_TIME = 0.2
 
 # 1/10 seconds
 ON_OFF_SCAN = int(5 / ON_OFF_DELTA)
@@ -131,9 +135,9 @@ def test001_leakage():
     """Make sure power is off and no leakage"""
     global debug, psu, dvm, relay
     relay.off(RELAY_POWER_SWITCH)
-    time.sleep(0.2)
+    time.sleep(RESET_TIME)
     psu.powerOn()
-    time.sleep(0.5)
+    time.sleep(SETTLING_TIME)
     if debug:
         psu.settings()
         psu.measure()
@@ -155,7 +159,7 @@ def test002_on():
         time.sleep(ON_OFF_DELTA)
     t = time.time() - t
     relay.off(RELAY_POWER_SWITCH)
-    time.sleep(0.5)
+    time.sleep(SETTLING_TIME)
     info('On current = %7.3f mA @ %5.1f V' % (1000 * psu.current, psu.voltage))
     fail_unless(psu.current >= MINIMUM_ON_CURRENT, "Failed to Power On")
     fail_if(t < MINIMUM_ON_TIME, "On too short, %5.1f s < %5.1f" % (t, MINIMUM_ON_TIME))
@@ -188,13 +192,13 @@ def test004_measure_voltages():
         min = item[2] * (100 + item[3]) / 100
         max = item[2] * (100 + item[4]) / 100
         relay.on(r)
-        time.sleep(0.5)
+        time.sleep(VOLTAGE_SAMPLE_TIME)
         actual = dvm.voltage
         info('%s = %7.3f V' % (v, actual))
         fail_if(actual < min, "Low Voltage %s = %7.3f < %7.3f" % (v, actual, min))
         fail_if(actual > max, "High Voltage %s = %7.3f > %7.3f" % (v, actual, max))
         relay.off(r)
-        time.sleep(0.5)
+        time.sleep(VOLTAGE_SAMPLE_OFF)
 
 
 def test005_power_off():
@@ -239,7 +243,7 @@ def test007_program_flash():
         info(s.replace('\10', ''))  # remove backspaces
         if 'Press Reset' == s.strip():
             relay.on(RELAY_RESET)
-            time.sleep(0.2)
+            time.sleep(RESET_TIME)
             relay.off(RELAY_RESET)
 
     p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL,
@@ -263,7 +267,7 @@ def test008_keys():
     relay.set(RELAY_RXD)
     relay.set(RELAY_TXD)
     relay.update()
-    time.sleep(0.2)
+    time.sleep(RESET_TIME)
     relay.off(RELAY_RESET)
 
     p.waitFor('menu\?')
@@ -309,7 +313,7 @@ def test008_keys():
     del p
     p = None
 
-    time.sleep(0.5)
+    time.sleep(SETTLING_TIME)
     i = psu.current
     info('Supply current = %7.3f mA' % (1000 * i))
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Failed auto power off, current %7.3f mA is too high" % (i * 1000))
