@@ -9,16 +9,20 @@ programs="${prefix}/programs"
 
 case "$1" in
 
-  2|--2|stage2|--stage2)
-    sudo ${COPY} "${prefix}/forth.elf" "${programs}/"*test.4th  "${programs}/"all-test.4mu:forth.ini
+  all|--all)
+    sudo ${COPY} kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
     ;;
 
   forth|--forth)
     sudo ${COPY} "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
     ;;
 
-  all|--all)
-    sudo ${COPY} kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
+  2|--2|stage2|--stage2)
+    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"*test.4th  "${programs}/"all-test.4mu:forth.ini
+    ;;
+
+  mtbf|--mtbf)
+    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"mtbf.4th "${programs}/"mtbf.4mu:forth.ini
     ;;
 
   *)
@@ -28,7 +32,8 @@ case "$1" in
     echo
     echo '  all   - copy kernel.elf and all the forth programs'
     echo '  forth - copy all of forth'
-    echo '  2     - make a stage-2 test card'
+    echo '  2     - make a stage 2 test card'
+    echo '  mtbf  - make an mtbf test card'
     exit 1
     ;;
 esac
