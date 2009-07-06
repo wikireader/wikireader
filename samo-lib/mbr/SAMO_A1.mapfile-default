@@ -12,27 +12,28 @@
 0x4000  memory-test.header
 0x4300  memory-test
 
-0x6000  key-test.header
-0x6300  key-test
+0x6000  hw-test.header
+0x6300  hw-test
 
 # additional examples
 # choose either:
 #  1. the two *ERASE lines to remove a program
-#     (erase erases a 4 kByte sector)
+#     (*ERASE erases a 4 kByte sector)
 #  2. the program.header and program lines
 #     The program will remain in FLASH until it
 #     is erased
 
 #0x8000  *ERASE
 #0x9000  *ERASE
-#0x8000  lcd-test.header
-#0x8300  lcd-test
+#0x8000  a-test.header
+#0x8300  a-test
 
 #0xa000  *ERASE
 #0xb000  *ERASE
 #0xa000  other-test.header
 #0xa300  other-test
 
+# sample application
 #0xc000  *ERASE
 #0xd000  *ERASE
 #0xc000  hello.header

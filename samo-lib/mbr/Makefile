@@ -85,7 +85,7 @@ endef
 $(call MAKE_APP,menu,misc.o,splash.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
-$(call MAKE_APP,key-test,misc.o)
+$(call MAKE_APP,hw-test,misc.o)
 $(call MAKE_APP,file-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
 #$(call MAKE_APP,lcd-test,misc.o)
