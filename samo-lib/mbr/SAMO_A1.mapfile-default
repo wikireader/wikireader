@@ -1,32 +1,45 @@
 # samo_a1.map
-# FLASH = PM25LV512
-# SIZE  = 64kB
+# FLASH SIZE  = 64kB
+# SECTOR SIZE =  4kB
 
-0x1	mbr
+0x1     mbr
 0x0300  menu
 0x1fe0  serial.header
 
 0x2000  file-loader.header
 0x2300  file-loader
 
-0x4000  *ERASE
-#0x4000  forth-loader.header
-#0x4300  forth-loader
+0x4000  memory-test.header
+0x4300  memory-test
 
-0x6000	memory-test.header
-0x6300	memory-test
+0x6000  key-test.header
+0x6300  key-test
 
-0x8000	key-test.header
-0x8300	key-test
+# additional examples
+# choose either:
+#  1. the two *ERASE lines to remove a program
+#     (erase erases a 4 kByte sector)
+#  2. the program.header and program lines
+#     The program will remain in FLASH until it
+#     is erased
 
-0xa000  *ERASE
-#0xa000  lcd-test.header
-#0xa300	lcd-test
+#0x8000  *ERASE
+#0x9000  *ERASE
+#0x8000  lcd-test.header
+#0x8300  lcd-test
 
-0xc000  *ERASE
+#0xa000  *ERASE
+#0xb000  *ERASE
+#0xa000  other-test.header
+#0xa300  other-test
+
+#0xc000  *ERASE
+#0xd000  *ERASE
 #0xc000  hello.header
 #0xc300  hello
 
-0xe000  *ERASE
+# for developers
+#0xe000  *ERASE
+#0xf000  *ERASE
 #0xe000  rs232-loader.header
 #0xe300  rs232-loader
