@@ -1,2 +1,2 @@
 include gpiotest.4th
-gpio-test-menu
+test-gpio-main

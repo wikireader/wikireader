@@ -4,8 +4,16 @@ include lcd-test.4th
 test-lcd-main
 include ctp-test.4th
 test-ctp-main
-include susptest.4th
-test-suspend-main
+include gpiotest.4th
+test-gpio-main
 
-\ signal to capture program
-cr .( *END-TEST*) cr
+: all-again ( -- )
+    begin
+        test-keys-main
+        test-lcd-main
+        test-ctp-main
+        test-gpio-main
+    again
+;
+
+all-again

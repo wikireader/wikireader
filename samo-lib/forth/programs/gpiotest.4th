@@ -80,7 +80,7 @@ constant MULTIPLIER
 
 variable measure-count
 
-: gpio-test-menu ( -- )
+: test-gpio-main ( -- )
     lcd-cls
     s" GPIO TESTS" lcd-type
     begin

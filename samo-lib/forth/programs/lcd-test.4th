@@ -115,14 +115,13 @@ decimal
 
 : test-lcd-main
     lcd-cls
-    s" LCD Test" lcd-type
-    cr
     test-lcd-sequence if
         s" PASS"
     else
         s" FAIL"
     then
     lcd-cls
+    s" LCD Test" lcd-type
     lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
     2dup lcd-type
     500000 delay-us

@@ -18,7 +18,7 @@ case "$1" in
     ;;
 
   2|--2|stage2|--stage2)
-    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"*test.4th  "${programs}/"all-test.4mu:forth.ini
+    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"*test.4th  "${programs}/"stage2.4th:forth.ini
     ;;
 
   mtbf|--mtbf)
