@@ -1,0 +1,34 @@
+#!/bin/sh
+# copy specic sets of file to SD Card
+
+COPY="$(dirname "$0")/CopyToSD"
+
+prefix=samo-lib/forth
+programs="${prefix}/programs"
+
+
+case "$1" in
+
+  2|--2|stage2|--stage2)
+    sudo ${COPY} "${prefix}/forth.elf" "${programs}/"*test.4th  "${programs}/"all-test.4mu:forth.ini
+    ;;
+
+  forth|--forth)
+    sudo ${COPY} "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
+    ;;
+
+  all|--all)
+    sudo ${COPY} kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
+    ;;
+
+  *)
+    echo usage: $(basename "$0") '<option>'
+    echo
+    echo The following options are available:
+    echo
+    echo '  all   - copy kernel.elf and all the forth programs'
+    echo '  forth - copy all of forth'
+    echo '  2     - make a stage-2 test card'
+    exit 1
+    ;;
+esac

@@ -1,0 +1,87 @@
+#!/bin/sh
+# copy files to SD card
+
+
+ERROR()
+{
+  echo ERROR: $*
+  exit 1
+}
+
+main()
+{
+  dev=/dev/sdb1
+  mountpoint=/mnt
+  fstype=vfat
+
+  umount "${mountpoint}" "${dev}" 2> /dev/null
+
+  count=0
+  while [ ! -b "${dev}" ]
+  do
+    if [ $count -eq 0 ]
+    then
+      echo
+      echo -n Insert SD Card
+      count=30
+    else
+      count=$((${count} - 1))
+    fi
+    echo -n .
+    sleep 1
+  done
+  echo
+
+  fsck.vfat -y "${dev}"
+  mount -t "${fstype}" "${dev}" "${mountpoint}" || ERROR mount failed
+  rm "${mountpoint}"/fsck*.rec
+
+  df -h "${mountpoint}"
+
+  for item in "$@"
+  do
+    item="${item}:"
+    src="${item%%:*}"
+    item="${item#*:}:"
+    dst="${item%%:*}"
+    item="${item#*:}:"
+    cp "${src}" "${mountpoint}/${dst}"
+  done
+
+  ls -l "${mountpoint}"
+
+  umount "${mountpoint}" || ERROR umount failed
+  sleep 1
+  echo -n ""
+
+  count=0
+  while [ -b "${dev}" ]
+  do
+    if [ $count -eq 0 ]
+    then
+      echo
+      echo -n Remove SD Card
+      count=30
+    else
+      count=$((${count} - 1))
+    fi
+    echo -n .
+    sleep 1
+  done
+  echo
+}
+
+if [ -z "${SUDO_UID}" -o -z "${SUDO_GID}" ]
+then
+  echo re-run with sudo
+  sudo -K
+  exec sudo "$0" "$@"
+  exit 1
+fi
+
+if [ -n "${SUDO_UID}" -a -n "${SUDO_GID}" ]
+then
+  main "$@"
+else
+  echo sudo failed
+fi
