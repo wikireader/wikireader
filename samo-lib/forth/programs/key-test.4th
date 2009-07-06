@@ -20,7 +20,7 @@ constant pos-2
 
 variable keys-timeout
 
-750000 constant button-delay
+500000 constant button-delay
 1000 constant millisec
 30000 constant max-key-wait
 
