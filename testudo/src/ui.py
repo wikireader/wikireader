@@ -398,6 +398,9 @@ class Sample:
         self.window.show()
 
         self.serialNumber.grab_focus()
+        self.serialNumber.set_activates_default(True)
+        button1.set_flags(gtk.CAN_DEFAULT)
+        button1.grab_default()
 
     def main(self):
         gtk.gdk.threads_init()
