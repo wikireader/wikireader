@@ -151,6 +151,8 @@ class Sample:
                 try:
                     gtk.gdk.threads_enter()
                     self.save_file(True)
+                    self.serialNumber.set_text('')
+                    self.serialNumber.grab_focus()
                 except Exception, e:
                     message = ' (ERROR: Save Data FAILED: %s)' % str(e)
                 finally:
@@ -394,6 +396,8 @@ class Sample:
         self.window.add(vbox1)
 
         self.window.show()
+
+        self.serialNumber.grab_focus()
 
     def main(self):
         gtk.gdk.threads_init()
