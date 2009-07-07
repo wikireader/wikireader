@@ -66,5 +66,6 @@ $(call MAKE_RULE,read-write,GetFATTime.o)
 clean:
 	$(RM) *.[do] *.asm33
 	$(RM) -r $(foreach type, ${TYPE_LIST}, build-${type})
+	$(RM) -r $(foreach type, ${TYPE_LIST}, lib/${type}/libtinyfat.a)
 
 include ${SAMO_LIB}/Mk/rules.mk
