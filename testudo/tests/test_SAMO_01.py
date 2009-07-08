@@ -46,21 +46,24 @@ RELAY_LCD_V3 = 15
 RELAY_LCD_V4 = 16
 
 # volts
-LCD_V0 = 23.0
+LCD_V0 = 21.0
 
 # power supply (volts, amps)
 SUPPLY_STANDARD_VOLTAGE = 3.0
 SUPPLY_CURRENT_LIMIT = 0.35
 
-# ("text", relay_name, required_value, percent_low, percent_high)
+# specify the voltages actual and +/- percentages
+# or minimum/maximum
 VOLTAGE_LIST = (
-    ("1V8", RELAY_1V8, 1.8, -5, 5),
-    ("3V0", RELAY_3V, 3.0, -3, 10),
-    ("V0 ", RELAY_LCD_V0, LCD_V0, -5, 5),
-    ("V1 ", RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5, 5),
-    ("V2 ", RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5, 5),
-    ("V3 ", RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -5, 5),
-    ("V4 ", RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -5, 5)
+#   ("text", relay_name,   required_value,       percent_low, percent_high)
+#   ("text", relay_name,   None,                 minimum, maximum)
+    ("1V8",  RELAY_1V8,    1.8,                  -5,   5),
+    ("3V ",  RELAY_3V,     None                   3.1, 3.3),
+    ("V0 ",  RELAY_LCD_V0, LCD_V0,               -1.5, 1.5),
+    ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -1.5, 1.5),
+    ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -1.5, 1.5),
+    ("V3 ",  RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -1.5, 1.5),
+    ("V4 ",  RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -1.5, 1.5)
 )
 
 # amps
@@ -189,8 +192,12 @@ def test004_measure_voltages():
     for item in VOLTAGE_LIST:
         v = item[0]
         r = item[1]
-        min = item[2] * (100 + item[3]) / 100
-        max = item[2] * (100 + item[4]) / 100
+        if None == item[2]:
+            min = item[3]
+            max = item[4]
+        else:
+            min = item[2] * (100 + item[3]) / 100
+            max = item[2] * (100 + item[4]) / 100
         relay.on(r)
         time.sleep(VOLTAGE_SAMPLE_TIME)
         actual = dvm.voltage
