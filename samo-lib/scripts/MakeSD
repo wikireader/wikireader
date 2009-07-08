@@ -6,23 +6,32 @@ COPY="$(dirname "$0")/CopyToSD"
 prefix=samo-lib/forth
 programs="${prefix}/programs"
 
+sdcard=''
+for item in /media/SAMO* /media/disk
+do
+  if [ -d "${item}" ]
+  then
+    sdcard="${item}"
+    break
+  fi
+done
 
 case "$1" in
 
   all|--all)
-    sudo ${COPY} kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
+    ${COPY} --sdcard="${sdcard}" kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
     ;;
 
   forth|--forth)
-    sudo ${COPY} "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
+    ${COPY} --sdcard="${sdcard}" "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th  "${programs}/"*.ini
     ;;
 
   2|--2|stage2|--stage2)
-    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"*test.4th  "${programs}/"stage2.4th:forth.ini
+    ${COPY} --sdcard="${sdcard}" "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"*test.4th  "${programs}/"stage2.4th:forth.ini
     ;;
 
   mtbf|--mtbf)
-    sudo ${COPY} "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"mtbf.4th "${programs}/"mtbf.4mu:forth.ini
+    ${COPY} --sdcard="${sdcard}" "${prefix}/forth.elf" "${prefix}/forth.elf:kernel.elf" "${programs}/"mtbf.4th "${programs}/"mtbf.4mu:forth.ini
     ;;
 
   *)
@@ -30,10 +39,20 @@ case "$1" in
     echo
     echo The following options are available:
     echo
-    echo '  all   - copy kernel.elf and all the forth programs'
-    echo '  forth - copy all of forth'
-    echo '  2     - make a stage 2 test card'
-    echo '  mtbf  - make an mtbf test card'
+    echo '       all   - copy kernel.elf and all the forth programs'
+    echo '       forth - copy all of forth (leaving existing kernel)'
+    echo '       2     - make a stage 2 production test card'
+    echo '       mtbf  - make an mtbf test card'
+    echo
+    echo 'If the card is not mounted, the script will use sudo'
+    echo 'to mount/umount the card.'
+    echo
+    echo 'Note: to format SD Card use a command like:'
+    echo '      sudo mkfs.vfat -n SAMO-8G /dev/sdb1'
+    echo '      sudo mkfs.vfat -n SAMO-4G /dev/sdb1'
+    echo '      sudo mkfs.vfat -n SAMO-512M /dev/sdb1'
+    echo
+    echo '(Change /dev/sdb1 to your drive and partition)'
     exit 1
     ;;
 esac

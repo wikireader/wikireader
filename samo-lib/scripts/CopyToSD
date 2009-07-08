@@ -4,39 +4,21 @@
 
 ERROR()
 {
-  echo ERROR: $*
+  echo error: $*
   exit 1
 }
 
-main()
+USAGE()
 {
-  dev=/dev/sdb1
-  mountpoint=/mnt
-  fstype=vfat
+  [ -z "$1" ] || echo error: $*
+  echo usage $(basename "$0") '[--sdcard=/media/disk]' '<files...>'
+  exit 1
+}
 
-  umount "${mountpoint}" "${dev}" 2> /dev/null
-
-  count=0
-  while [ ! -b "${dev}" ]
-  do
-    if [ $count -eq 0 ]
-    then
-      echo
-      echo -n Insert SD Card
-      count=30
-    else
-      count=$((${count} - 1))
-    fi
-    echo -n .
-    sleep 1
-  done
-  echo
-
-  fsck.vfat -y "${dev}"
-  mount -t "${fstype}" "${dev}" "${mountpoint}" || ERROR mount failed
-  rm -f "${mountpoint}"/fsck*.rec
-
-  df -h "${mountpoint}"
+CopyFiles()
+{
+  local item mountpoint src dst
+  mountpoint=$1; shift
 
   for item in "$@"
   do
@@ -49,28 +31,117 @@ main()
   done
 
   ls -l "${mountpoint}"
+}
+
+SpinCount=0
+Spinner()
+{
+  SpinCount=$((${SpinCount} + 1))
+  case "${SpinCount}" in
+    1)
+      printf -- '|\x08'
+      ;;
+    2)
+      printf -- '/\x08'
+      ;;
+    3)
+      printf -- '-\x08'
+      ;;
+    4)
+      printf -- '\\\x08'
+      SpinCount=0
+      ;;
+  esac
+}
+
+InsertCard()
+{
+  local dev mountpoint fstype
+
+  dev="$1"; shift
+  mountpoint="$1"; shift
+
+  fstype=vfat
+
+  umount "${mountpoint}" "${dev}" 2> /dev/null
+
+  echo -n 'Insert SD Card '
+  while [ ! -b "${dev}" ]
+  do
+    Spinner
+    sleep 1
+  done
+  echo
+
+  fsck.vfat -y "${dev}"
+  mount -t "${fstype}" "${dev}" "${mountpoint}" || ERROR mount failed
+  rm -f "${mountpoint}"/fsck*.rec
+
+  df -h "${mountpoint}"
+}
+
+
+RemoveCard()
+{
+  local dev mountpoint fstype
+
+  dev="$1"; shift
+  mountpoint="$1"; shift
 
   umount "${mountpoint}" || ERROR umount failed
   sleep 1
   echo -n ""
 
-  count=0
+  echo -n 'Remove SD Card '
   while [ -b "${dev}" ]
   do
-    if [ $count -eq 0 ]
-    then
-      echo
-      echo -n Remove SD Card
-      count=30
-    else
-      count=$((${count} - 1))
-    fi
-    echo -n .
+    Spinner
     sleep 1
   done
   echo
 }
 
+main()
+{
+  dev=/dev/sdb1
+  mountpoint=/mnt
+
+  InsertCard "${dev}" "${mountpoint}"
+  CopyFiles "${mountpoint}" "$@"
+  RemoveCard "${dev}" "${mountpoint}"
+}
+
+
+sdcard=''
+# if a mounted sdcard is given then no need for sudo
+while [ $#0 -gt 0 ]
+do
+  case "$1" in
+    --sdcard=*)
+      sdcard="${1#*=}"
+        ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      USAGE invalid option: $1
+      ;;
+    *)
+      break
+      ;;
+  esac
+  shift
+done
+
+if [ -d "${sdcard}" ]
+then
+
+  CopyFiles "${sdcard}" "$@"
+  exit
+fi
+
+# nee sudo to mount
 if [ -z "${SUDO_UID}" -o -z "${SUDO_GID}" ]
 then
   echo re-run with sudo
