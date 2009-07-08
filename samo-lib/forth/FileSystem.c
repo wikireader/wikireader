@@ -47,6 +47,9 @@ typedef struct {
 	bool IsOpen;
 	FIL file;
 	FilenameType filename;
+	uint8_t ReadBuffer[1024];
+	int ReadRemaining;
+	int ReadOffset;
 } FileType;
 
 static FileType FileControlBlock[20];
@@ -172,6 +175,8 @@ Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellTyp
 			r.rc = f_open(&FileControlBlock[i].file, FileControlBlock[i].filename, fam);
 			if (FR_OK == r.rc) {
 				FileControlBlock[i].IsOpen = true;
+				FileControlBlock[i].ReadRemaining = 0;
+				FileControlBlock[i].ReadOffset = 0;
 				r.result = i + 1;  // handle starts at one(1), not zero(0)
 				return r;
 			}
@@ -237,17 +242,30 @@ Forth_ReturnType FileSystem_close(Forth_CellType handle)
 	return r;
 }
 
-
 Forth_ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_CellType length)
 {
 	Forth_ReturnType r = {0, FR_OK};
 	FileType *file = ValidateFileHandle(&r, handle);
 
 	if (NULL != file) {
-		UINT count = 0;
-
-		r.rc = f_read(&file->file, buffer, length, &count);
-		r.result = count;
+		//UINT count = 0;
+		if (0 == file->ReadRemaining) {
+			r.rc = f_read(&file->file, file->ReadBuffer, sizeof(file->ReadBuffer), &file->ReadRemaining);
+			file->ReadOffset = 0;
+		}
+		if (length <= file->ReadRemaining) {
+			r.result = length;
+			memcpy(buffer, &file->ReadBuffer[file->ReadOffset], length);
+			file->ReadRemaining -= length;
+			file->ReadOffset += length;
+		} else {
+			r.result = file->ReadRemaining;
+			memcpy(buffer, &file->ReadBuffer[file->ReadOffset], file->ReadRemaining);
+			file->ReadRemaining = 0;
+			file->ReadOffset = 0;
+		}
+		//r.rc = f_read(&file->file, buffer, length, &count);
+		//r.result = count;
 	}
 	return r;
 }
