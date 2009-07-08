@@ -39,15 +39,25 @@
 
         .section .text
 
+;;; print a character
+;;; (redirect to required serial driver)
+;;; input:
+;;;   r6 = char
+;;; output:
+        .global Debug_PutChar
+Debug_PutChar:
+;        xjp     Serial_PutChar
+        xjp     PolledSerial_PutChar
+
 ;;; print cr and lf
 ;;; input:
 ;;; output:
         .global Debug_PutCRLF
 Debug_PutCRLF:
         xld.w   %r6, 0x0d
-        xcall   PolledSerial_PutChar
+        xcall   Debug_PutChar
         xld.w   %r6, 0x0a
-        xjp     PolledSerial_PutChar
+        xjp     Debug_PutChar
 
 
 ;;; print a space
@@ -56,7 +66,7 @@ Debug_PutCRLF:
         .global Debug_PutSpace
 Debug_PutSpace:
         xld.w   %r6, 0x20
-        xjp     PolledSerial_PutChar
+        xjp     Debug_PutChar
 
 
 ;;; print a string
@@ -74,7 +84,7 @@ Debug_PutString_loop:
         jreq    Debug_PutString_done
         cmp     %r6, 10
         jreq    Debug_PutString_crlf
-        xcall   PolledSerial_PutChar
+        xcall   Debug_PutChar
         jp      Debug_PutString_loop
 Debug_PutString_crlf:
         xcall   Debug_PutCRLF
@@ -95,7 +105,7 @@ Debug_PutNibble:
         jrle    Debug_PutNibble_l1
         xadd    %r6, 'a' - '9' - 1
 Debug_PutNibble_l1:
-        xcall   PolledSerial_PutChar
+        xcall   Debug_PutChar
         ret
 
 
