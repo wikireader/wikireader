@@ -58,7 +58,7 @@ VOLTAGE_LIST = (
 #   ("text", relay_name,   required_value,       percent_low, percent_high)
 #   ("text", relay_name,   None,                 minimum, maximum)
     ("1V8",  RELAY_1V8,    1.8,                  -5,   5),
-    ("3V ",  RELAY_3V,     None                   3.1, 3.3),
+    ("3V ",  RELAY_3V,     None,                  3.1, 3.3),
     ("V0 ",  RELAY_LCD_V0, LCD_V0,               -1.5, 1.5),
     ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -1.5, 1.5),
     ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -1.5, 1.5),
