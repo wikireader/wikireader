@@ -31,11 +31,8 @@
 
 #include <stdbool.h>
 
-void Serial_PutString(const char *string);
-void Serial_PutSpace(void);
-void Serial_PutCRLF(void);
 void Serial_PutChar(unsigned char c);
-void Serial_PutHex(unsigned long int value);
+bool Serial_PutReady(void);
 
 unsigned char Serial_GetChar(void);
 bool Serial_InputAvailable(void);
