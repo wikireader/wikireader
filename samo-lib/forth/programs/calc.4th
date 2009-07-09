@@ -541,6 +541,8 @@ variable box-number
                     box-number @ dup
                     box-data 2drop
                     unhighlight-box
+                    1 1 lcd-at-xy 2 lcd-spaces
+                    0 0 unhighlight-box
                     process
                     -1 box-number !
                 then
@@ -554,11 +556,15 @@ variable box-number
                         if
                             box-number @
                             box-data 2drop
+                            1 1 lcd-at-xy 2 lcd-spaces
                             unhighlight-box
+                            0 0 unhighlight-box
                         then
                         i dup box-number !
-                        box-data 2drop
+                        box-data
+                        swap 1 1 lcd-at-xy lcd-emit lcd-emit
                         highlight-box
+                        0 0 highlight-box
                     then
                 loop
                 2drop
