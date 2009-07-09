@@ -89,7 +89,7 @@ str_\@_finish:
         .macro  MAKE_OFFSET, label, value
         .ifnotdef \label\()_BYTES
 \label\()_BYTES = \value
-\label\()_CELLS = \value
+\label\()_CELLS = \value / BYTES_PER_CELL
         .endif
         .endm
 

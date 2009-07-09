@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-10
+11
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -1243,7 +1243,8 @@ end-code
 
 : forth                   :: forth                   ( -- )
   get-order dup 0> if nip else 1+ then
-  forth-wordlist swap ;
+  forth-wordlist swap set-order
+;
 
 variable forth-wordlist   :: forth-wordlist          ( -- wid )
 
@@ -1846,59 +1847,57 @@ end-code
 
 code search-wordlist      :: search-wordlist         ( c-addr u wid -- 0 | xt 1 | xt -1 )
         ld.w    %r4, [%r1]+                          ; wid
+        ld.w    %r5, [%r1]                           ; u = name length
+        xld.w   %r6, [%r1 + BYTES_PER_CELL]          ; c-addr = name to find
+        xld.w   %r12, DICTIONARY_LINK_OFFSET_BYTES
+        add     %r4, %r12                            ; NAME>LINK
 
-find_loop:
+sw2_next:
+        sub     %r4, %r12                            ; NAME>LINK
+
         ld.w    %r4, [%r4]                           ; address of name
         or      %r4, %r4                             ; or zero if end of list
-        jreq    find_not_found
+        jreq    sw2_not_found
 
         ;; comparison of counted strings is inlined for speed
-
-        xld.w   %r5, [%r1]                           ; u = name length
 
         ld.w    %r7, %r4                             ; address of name in dictionary
         ld.w    %r8, [%r7]+                          ; dictionary name length
 
         cmp     %r5, %r8                             ; counts must be equal
-        jrne    find_next                            ; ...no
+        jrne    sw2_next                             ; ...no
 
-        xld.w   %r6, [%r1 + BYTES_PER_CELL]          ; c-addr = name to find
+        ld.w    %r9, %r6                             ; c-addr = name to find
 
-find_cmp_loop:
-        ld.ub   %r8,[%r6]+                           ; get 1 byte from string 1
-        ld.ub   %r9,[%r7]+                           ; get 1 byte from string 2
-        cmp     %r8, %r9                             ; check if equal
-        jrne    find_next                            ; ..not equal => false result
-        sub     %r5, 1                               ; decrement counter
-        jrne    find_cmp_loop                        ; go back for more bytes
+sw2_cmp_loop:
+        ld.ub   %r10,[%r9]+                          ; get 1 byte from string 1
+        ld.ub   %r11,[%r7]+                          ; get 1 byte from string 2
+        cmp     %r10, %r11                           ; check if equal
+        jrne    sw2_next                             ; ..not equal => false result
+        sub     %r8, 1                               ; decrement counter
+        jrne    sw2_cmp_loop                         ; go back for more bytes
 
-find_found:
-        ld.w    %r5, %r4                             ; NAME>FLAGS
-        xld.w   %r6, DICTIONARY_FLAGS_OFFSET_BYTES
-        sub     %r5, %r6
+sw2_found:
+        ld.w    %r9, %r4                             ; NAME>FLAGS
+        xld.w   %r10, DICTIONARY_FLAGS_OFFSET_BYTES
+        sub     %r9, %r10
 
-        ld.w    %r6, 1                               ; immediate == 1
-        ld.w    %r5, [%r5]
-        and     %r5, FLAG_IMMEDIATE
-        jrne    find_is_immediate
+        ld.w    %r9, [%r9]
+        and     %r9, FLAG_IMMEDIATE
+        jrne.d  sw2_is_immediate
+        ld.w    %r10, 1                              ; immediate == 1
 
-        not     %r6, %r6                             ; nomal == -1
-        add     %r6, 1
+        ld.w    %r10, -1                             ; nomal == -1
 
-find_is_immediate:
-        ld.w    [%r1], %r6                           ; 1 (immediate) | -1 (normal)
+sw2_is_immediate:
+        ld.w    [%r1], %r10                          ; 1 (immediate) | -1 (normal)
 
-        xld.w   %r5, DICTIONARY_CODE_OFFSET_BYTES
-        sub     %r4, %r5                             ; NAME>CODE
+        xld.w   %r9, DICTIONARY_CODE_OFFSET_BYTES
+        sub     %r4, %r9                             ; NAME>CODE
         xld.w   [%r1 + BYTES_PER_CELL], %r4          ; ca
         NEXT
 
-find_next:
-        xld.w   %r5, DICTIONARY_LINK_OFFSET_BYTES
-        jp.d    find_loop                            ; try next word (delayed)
-        sub     %r4, %r5                             ; NAME>LINK
-
-find_not_found:
+sw2_not_found:
         ld.w    %r4, [%r1]+                          ; drop u
         ld.w    %r4, FALSE
         ld.w    [%r1], %r4                           ; FALSE
@@ -1962,7 +1961,8 @@ end-code
   dup -1 = if
     drop
     \ root-wordlist dup 2  \ do not have this yet, so use forth instead
-    forth-wordlist dup 2
+    \ forth-wordlist dup 2
+    forth-wordlist 1
   then
   \ **********************VALIDATE context size*************************
   dup #order !
