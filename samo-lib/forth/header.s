@@ -97,11 +97,12 @@ str_\@_finish:
 ;;; the header
 ;;;  0: code address
 ;;;  4: param address
-;;;  8: flags
-;;; 12: link address
-;;; 16: count (name address points here)
-;;; 20: name string (byte count)
-;;; 24+count: (zeros as required to .balign 4)
+;;;  8: does address
+;;; 12: flags
+;;; 16: link address
+;;; 20: count (name address points here)
+;;; 24: name string (byte count)
+;;; 28+count: (zeros as required to .balign 4)
 
         .section .forth_dict, "wa"
         .balign 4
@@ -117,6 +118,8 @@ __last_name = 0                                       ; to link the list
         .long   \code                                 ; code
 l_param_\@:
         .long   param_\label                          ; param
+l_does_\@:
+        .long   0                                     ; does
 l_flags_\@:
         .long   \flags                                ; flags
 
@@ -138,6 +141,7 @@ param_\label\():
 
         MAKE_OFFSET DICTIONARY_CODE_TO_NAME_OFFSET,  "( name_\label - \label )"
         MAKE_OFFSET DICTIONARY_CODE_TO_PARAM_OFFSET, "( l_param_\@ - \label )"
+        MAKE_OFFSET DICTIONARY_CODE_TO_DOES_OFFSET,  "( l_does_\@ - \label )"
         MAKE_OFFSET DICTIONARY_CODE_TO_LINK_OFFSET,  "( l_link_\@ - \label )"
         MAKE_OFFSET DICTIONARY_CODE_TO_FLAGS_OFFSET, "( l_flags_\@ - \label )"
 

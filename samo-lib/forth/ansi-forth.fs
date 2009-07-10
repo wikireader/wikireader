@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-11
+12
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -70,7 +70,6 @@ code (colon)              :: paren-colon-paren       ( R: -- nest-sys )
         NEXT
 end-code
 compile-only
-
 
 code (const)              :: paren-const-paren       ( %r2: address -- )
         ld.w    %r4, [%r2]                           ; %r4 = parameter address
@@ -110,6 +109,17 @@ code (do)                 :: paren-do-paren          ( limit index -- ) ( R: -- 
         add     %r0, BYTES_PER_CELL                  ; skip the branch address
         NEXT
 end-code
+compile-only
+
+code (does>)              :: paren-does-paren        ( R: -- nest-sys )
+        pushn   %r0                                  ; save previous ip
+        ld.w    %r3, [%r2]+                          ; w = param address
+        sub     %r1, BYTES_PER_CELL                  ; push w
+        ld.w    [%r1], %r3                           ; ..
+        ld.w    %r0, [%r2]                           ; ip = does address
+        NEXT
+end-code
+compile-only
 
 code (lit)                :: paren-lit-paren         ( -- x)
         ld.w    %r3, [%r0]+
@@ -117,6 +127,7 @@ code (lit)                :: paren-lit-paren         ( -- x)
         ld.w    [%r1], %r3
         NEXT
 end-code
+compile-only
 
 \ (local)                 :: paren-local-paren       ( c-addr u -- )
 
@@ -135,6 +146,7 @@ code (+loop)              :: paren-plus-loop-paren   ( x -- ) ( R: stop count+x 
         ld.w    %r0, [%r0]                           ; ...no, branch back
         NEXT
 end-code
+compile-only
 
 code (loop)               :: paren-loop-paren        ( x -- ) ( R: stop count+x -- )
         ld.w    %r5, [%sp]                           ; count
@@ -468,6 +480,14 @@ code >code                :: to-code                 ( name-a-addr -- xt )
         ld.w    %r4, [%r1]                           ; xt
         xld.w   %r5, DICTIONARY_CODE_TO_NAME_OFFSET_BYTES
         sub     %r4, %r5
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code >does                :: to-does                 ( xt -- a-addr )
+        ld.w    %r4, [%r1]                           ; xt
+        xld.w   %r5, DICTIONARY_CODE_TO_DOES_OFFSET_BYTES
+        add     %r4, %r5
         ld.w    [%r1], %r4
         NEXT
 end-code
@@ -941,6 +961,7 @@ variable cp               :: cp                      ( -- addr )
   here last-definition !                             \ the last definition cp for immediate etc.
   ['] (var) @ ,                                      \ code pointer
   0 ,                                                \ param pointer
+  0 ,                                                \ does pointer
   0 ,                                                \ flags
   0 ,                                                \ link
   dup ,                                              \ name length
@@ -1058,7 +1079,16 @@ end-code
 \     r> swap set-order
 \ ;
 
-\ does>                   :: does                    ( C: colon-sys1 -- colon-sys2 ) ( -- ) ( R: nest-sys1 -- )
+: does>                   :: does                    ( C: colon-sys1 -- colon-sys2 ) ( -- ) ( R: nest-sys1 -- )
+  last-definition @
+  0= if
+    -22 throw
+  then
+
+  ['] (does>) @ last-definition @ !
+
+  r> last-definition @ >does !
+; compile-only
 
 code drop                 :: drop                    ( x -- )
         ld.w    %r4, [%r1]+
@@ -1918,13 +1948,21 @@ end-code
 
 : see                     :: see                     ( "<spaces>name" -- )
   base @
-  ' dup @ ['] (colon) @ <> if
-    drop
-    ." not a colon definition"
-    base ! exit
+  '
+  dup @ ['] (does>) @ = if
+    dup >does @                 \ xt does
+  else
+      dup @ ['] (colon) @ = if
+      dup >body @               \ xt body
+    else
+      drop
+      ." not a colon definition"
+      base ! exit
+    then
   then
-  dup >flags @ ." flags = " hex . cr
-  >body @
+
+  swap >flags @ ." flags = $" hex . cr
+
   aligned
   begin
     dup  [char] $ emit hex 1 u.r [char] : emit space
@@ -2170,8 +2208,13 @@ end-code
 : within                  :: within                  ( n1|u1 n2|u2 n3|u3 -- flag )
   over - >r - r> u< ;
 
+\ deprecated - do not create
 \ word                    :: word                    ( char "<chars>ccc<char>" -- c-addr )
-\ wordlist                :: wordlist                ( -- wid )
+
+: wordlist                :: wordlist                ( -- wid )
+  align here    \ addr
+  0 ,           \ space for 1 pointer initially null
+;
 
 : words                   :: words                   ( -- )
   cr  context @
