@@ -60,7 +60,7 @@ void tick_initialise()
 	REG_P6_47_CFP = (REG_P6_47_CFP & ~0x03) | 0x02;
 
 	// enable TM0
-	REG_P1_03_CFP = (REG_P6_47_CFP & ~0x03) | 0x01;
+	REG_P1_03_CFP = (REG_P1_03_CFP & ~0x03) | 0x01;
 
 	// Advanced Mode
 	REG_T16_ADVMODE = T16ADV;
