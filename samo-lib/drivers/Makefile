@@ -37,6 +37,7 @@ OBJECTS += sd_spi.o
 OBJECTS += sd_api.o
 OBJECTS += mmc.o
 OBJECTS += tick.o
+OBJECTS += contrast.o
 OBJECTS += delay_us.o
 OBJECTS += delay_nop.o
 OBJECTS += lcd.o

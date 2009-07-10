@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include "application.h"
 #include "lcd.h"
+#include "contrast.h"
 #include "eeprom.h"
 #include "samo.h"
 
@@ -70,6 +71,8 @@ ReturnType menu(int block, int status)
 
 	APPLICATION_INITIALISE();
 	init_lcd();
+	contrast_initialise(CONTRAST_MAX);
+	contrast_set(CONTRAST_DEFAULT);
 	result = process(block, status);
 
 	// next program
@@ -205,7 +208,19 @@ ProcessReturnType process(int block, int status)
 	print("\nEnter selection: ");
 	for (;;) {
 		while (!serial_input_available()) {
+			switch (REG_P6_P6D & 0x07) {
+			case 1:
+				contrast_set(contrast_get() + 1);
+				break;
+			case 2:
+				contrast_set(contrast_get() - 1);
+				break;
+			case 4:
+				contrast_set(CONTRAST_DEFAULT);
+				break;
+			}
 			battery_status();
+			delay_us(1000);
 		}
 		k = serial_input_char();
 		if ('0' == k) {

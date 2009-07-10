@@ -124,7 +124,7 @@ void suspend(void)
 		//TM4_CKE |
 		//TM3_CKE |
 		//TM2_CKE |
-		//TM1_CKE |
+		TM1_CKE |
 		//TM0_CKE |
 		//EGPIO_MISC_CK |
 		//I2S_CKE |
@@ -293,7 +293,7 @@ void suspend(void)
 		//TM4_CKE |
 		//TM3_CKE |
 		TM2_CKE |      // for tick.c
-		//TM1_CKE |
+		TM1_CKE |
 		TM0_CKE |      // for tick.c
 		EGPIO_MISC_CK |
 		//I2S_CKE |
