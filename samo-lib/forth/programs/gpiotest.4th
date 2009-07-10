@@ -27,26 +27,40 @@ base @ decimal
 $08 dup P0_IOC0 p! P0_P0D p! ;
 
 
-\ read battery voltage
+\ read ADC channels 0..2
 
-: battery-adc ( -- w )
+: read-adc ( -- u2 u1 u0 )
 
-  $0f AD_CLKCTL p!
-  0 AD_TRIG_CHNL p!
-  $01 P7_03_CFP p!
-  $0304 AD_EN_SMPL_STAT p!
+    \ configure adc
+    $000f AD_CLKCTL p!
+    $0100 AD_ADVMODE p!
+    $1000 AD_TRIG_CHNL p!
+    $0304 AD_EN_SMPL_STAT p!
 
-  AD_EN_SMPL_STAT p@ $02 or AD_EN_SMPL_STAT p!
+    \ enable pins adc0..adc2
+    $15 P7_03_CFP p!
 
-  begin
-    AD_EN_SMPL_STAT  p@ $08 and 0= while
-  repeat
+    \ start the adc
+    AD_EN_SMPL_STAT p@ $02 or AD_EN_SMPL_STAT p!
 
-  AD_ADD p@ \ -- w
+    \ wait for conversion complete
+    \ begin
+    \     AD_EN_SMPL_STAT p@ $08 and
+    \ until
 
-  0 P7_03_CFP p!
-  0 AD_EN_SMPL_STAT p!
-  0 AD_CLKCTL p!
+    begin
+        AD_END p@ $04 and
+    until
+
+    \ read the data
+    AD_CH2_BUF p@
+    AD_CH1_BUF p@
+    AD_CH0_BUF p@
+
+    \ turn adc off
+    0 P7_03_CFP p!
+    0 AD_EN_SMPL_STAT p!
+    0 AD_CLKCTL p!
 
 ;
 
@@ -66,21 +80,130 @@ DIVISOR ADC_LIMITING_RESISTOR ADC_SHUNT_RESISTOR + *
 ADC_SHUNT_RESISTOR /
 constant MULTIPLIER
 
-\ display battery mV
-: battery-millivolts
-    0 8 lcd-at-xy
+\ display battery
+: battery-display ( u -- )
+    dup
+    0 3 lcd-at-xy
     s" battery = " lcd-type
-    battery-adc dup lcd-number
+    5 lcd-u.r
     s"  counts" lcd-type lcd-cr
     s"           " lcd-type
     AVDD_MILLIVOLTS * MULTIPLIER *
     ADC_FULL_SCALE / DIVISOR /
-    lcd-number s"  mV" lcd-type
+    5 lcd-u.r s"  mV" lcd-type
 ;
 
+\ display thermistor
+
+: thermistor-display ( u -- )
+    0 6 lcd-at-xy
+    s" thermistor = " lcd-type
+    5 lcd-u.r
+    s"  counts" lcd-type
+;
+
+\ display lcd_contrast
+
+: contrast-display ( u -- )
+    0 8 lcd-at-xy
+    s" contrast = " lcd-type
+    5 lcd-u.r
+    s"  counts" lcd-type
+;
+
+
+\ configure timer1
+
+: tm1-configure ( max -- )
+
+    \ enable TM1 output
+    \ P1_03_CFP p@ ~$0c and $04 or P1_03_CFP p!
+    P1_03_CFP p@ $f3 and $04 or P1_03_CFP p!
+
+    T16ADV T16_ADVMODE p!
+
+    \ Stop timer
+    0
+    \ INITOLx or
+    \ SELFMx or
+    \ SELCRBx or
+    \ OUTINVx or
+    \ CKSLx or
+    PTMx or
+    \ PRESETx or
+    \ PRUNx or
+    T16_CTL1 p!
+
+    \ Set prescale
+    0
+    P16TONx or
+    \ P16TSx_MCLK_DIV_4096 or
+    \ P16TSx_MCLK_DIV_1024 or
+    \ P16TSx_MCLK_DIV_256 or
+    \ P16TSx_MCLK_DIV_64 or
+    \ P16TSx_MCLK_DIV_16 or
+    \ P16TSx_MCLK_DIV_4 or
+    \ P16TSx_MCLK_DIV_2 or
+    P16TSx_MCLK_DIV_1 or
+    T16_CLKCTL_1 p!
+
+    \ Set count
+    dup
+    T16_CR1A p!
+    T16_CR1B p!
+
+    \ Reset
+    T16_CTL1 p@ PRESETx or T16_CTL1 p!
+
+    \ Set PAUSE On
+    0
+    \ PAUSE5 or
+    \ PAUSE4 or
+    \ PAUSE3 or
+    \ PAUSE2 or
+    PAUSE1 or
+    \ PAUSE0 or
+    T16_CNT_PAUSE p!
+
+    \ Run
+    T16_CTL1 p@ PRUNx or T16_CTL1 p!
+
+    \ Set PAUSE Off
+    0
+    \ PAUSE5 or
+    \ PAUSE4 or
+    \ PAUSE3 or
+    \ PAUSE2 or
+    \ PAUSE1 or
+    \ PAUSE0 or
+    T16_CNT_PAUSE p!
+;
+
+: pwm-set ( u -- )
+    dup
+    0 T16_CR1B p@ within
+    if
+        T16_CR1A p!
+    else
+        drop
+    then
+;
+
+: pwm-get ( -- u )
+    T16_CR1A p@
+;
+
+
+\ main
 variable measure-count
 
+variable last-x
+
 : test-gpio-main ( -- )
+    key-flush
+    ctp-flush
+    button-flush
+
     lcd-cls
     s" GPIO TESTS" lcd-type
     begin
@@ -88,28 +211,57 @@ variable measure-count
         0=
     until
 
+    3 12 lcd-at-xy
+    s" <-- change contrast -->" lcd-type
+
     10 lcd-text-rows 1- lcd-at-xy
     s" WDT   OFF    EXIT" lcd-type
 
+    4095 tm1-configure 2048 pwm-set
+    0 last-x !
+
     begin
         1 measure-count +!
-        measure-count @ 2000 = if
+        measure-count @ $3ff = if
             0 measure-count !
-            battery-millivolts
+            read-adc
+            battery-display
+            thermistor-display
+            contrast-display
+            0 10 lcd-at-xy
+            s" pwm = " lcd-type
+            pwm-get 5 lcd-u.r
         then
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                wdt-off
-                exit
-            endof
-            $04 of   \ centre button
-                off
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+
+        ctp-pos? if
+            ctp-pos 0< if
+                drop 0 last-x !
+            else
+                last-x @ 0= if
+                    last-x !
+                else
+                    dup
+                    last-x @
+                    - pwm-get + pwm-set
+                    last-x !
+                then
+            then
+        then
+
+        button? if
+            button
+            case
+                button-left of
+                    wdt-off
+                endof
+                button-centre of
+                    off
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
     again
 ;
 
