@@ -6,7 +6,15 @@ base @ decimal
 variable pixel
 
 : dot-draw ( -- )
-    lcd-clear-all
+    lcd-cls
+    s" CTP Dot Plotting" lcd-type
+    lcd-cr lcd-cr
+    s" Touch screen to place dot" lcd-type
+    9 lcd-text-rows 1- lcd-at-xy
+    s" Clear" lcd-type
+    10 lcd-spaces
+    s" Exit" lcd-type
+
     button-flush
     key-flush
     ctp-flush

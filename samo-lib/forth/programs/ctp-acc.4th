@@ -8,7 +8,7 @@ base @ decimal
     ctp-flush
     lcd-cls
     s" CTP Accuracy Testing" lcd-type
-    24 lcd-text-rows 1- lcd-at-xy s" exit" lcd-type
+    24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
 
     0  67 lcd-move-to s"  67" lcd-type
     0 135 lcd-move-to s" 135" lcd-type

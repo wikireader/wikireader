@@ -522,7 +522,7 @@ variable box-number
     key-flush
     ctp-flush
 
-    24 lcd-text-rows 1- lcd-at-xy s" exit" lcd-type
+    24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
     position-count 0 ?do
         i box-data >r >r 2dup draw-box
         8 + >r font-width + r> lcd-move-to

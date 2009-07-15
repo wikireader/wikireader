@@ -27,7 +27,7 @@ variable error-count
 : test-sd
     lcd-cls s" Reading SD card" lcd-type
     dup 0 5 lcd-at-xy s" sector count:" lcd-type
-    24 lcd-text-rows 1- lcd-at-xy s" exit" lcd-type
+    24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
     begin
         0 scan-disk-from
         P6_P6D p@ $07 and

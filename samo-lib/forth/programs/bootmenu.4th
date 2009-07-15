@@ -1,4 +1,4 @@
-.( autostart )
+\ boot menu
 decimal
 
 lcd-cls
@@ -112,7 +112,7 @@ variable menu-cursor
 
 : menu ( -- )
     read-items
-    24 lcd-text-rows 1- lcd-at-xy s" exit" lcd-type
+    22 lcd-text-rows 1- lcd-at-xy s" Console" lcd-type
     ctp-flush
     key-flush
     button-flush
@@ -160,5 +160,4 @@ cold
 cold
 cold
 
-.( autostart - exiting )
 decimal

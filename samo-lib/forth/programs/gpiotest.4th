@@ -65,7 +65,7 @@ $08 dup P0_IOC0 p! P0_P0D p! ;
 ;
 
 \ values for ADC full scale
-3000 constant AVDD_MILLIVOLTS
+3150 constant AVDD_MILLIVOLTS
 1023 constant ADC_FULL_SCALE
 
 \ resistor divider in kilo ohms
@@ -215,7 +215,7 @@ variable last-x
     s" <-- change contrast -->" lcd-type
 
     10 lcd-text-rows 1- lcd-at-xy
-    s" WDT   OFF    EXIT" lcd-type
+    s" WDT   Off    Exit" lcd-type
 
     4095 tm1-configure 2048 pwm-set
     0 last-x !
