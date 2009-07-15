@@ -1,7 +1,7 @@
 \ gpio tests
 
 base @ decimal
-
+only forth also c33
 
 \ watchdog off
 
@@ -84,10 +84,10 @@ constant MULTIPLIER
 : battery-display ( u -- )
     dup
     0 3 lcd-at-xy
-    s" battery = " lcd-type
+    s" battery    = " lcd-type
     5 lcd-u.r
     s"  counts" lcd-type lcd-cr
-    s"           " lcd-type
+    s"              " lcd-type
     AVDD_MILLIVOLTS * MULTIPLIER *
     ADC_FULL_SCALE / DIVISOR /
     5 lcd-u.r s"  mV" lcd-type
@@ -106,7 +106,7 @@ constant MULTIPLIER
 
 : contrast-display ( u -- )
     0 8 lcd-at-xy
-    s" contrast = " lcd-type
+    s" contrast   = " lcd-type
     5 lcd-u.r
     s"  counts" lcd-type
 ;
@@ -229,7 +229,7 @@ variable last-x
             thermistor-display
             contrast-display
             0 10 lcd-at-xy
-            s" pwm = " lcd-type
+            s" pwm        = " lcd-type
             pwm-get 5 lcd-u.r
         then
 
@@ -261,6 +261,10 @@ variable last-x
                     exit
                 endof
             endcase
+        then
+
+        key? if
+            key-flush
         then
     again
 ;
