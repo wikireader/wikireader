@@ -3,22 +3,31 @@ decimal
 
 lcd-cls
 
-\ 16 line screen = title + blank + 14 items
-14 constant max-items
-8 1+ 3 + 1+ constant item-length  \ 8.3\0
+\ dos file name <count>8.3
+8 1+ 3 + 1+ constant item-length
+
+8 constant menu-item-length
+2 constant first-menu-line
+lcd-text-columns menu-item-length /mod dup constant items-per-line
+1- / menu-item-length + constant display-item-width
+
+\ 16 line screen = title + blank + 12 items + blank + soft-keys
+12 items-per-line * constant max-items
 
 
-max-items item-length * constant items-size
+: menu-data ( u -- )
+    create
+    item-length * allot
+    align
+  does>   ( index -- c-addr )
+    swap item-length * +
+;
 
-create items items-size allot
+max-items menu-data menu
 
 variable menu-count
 
 : read-items ( -- )
-    items items-size 0 fill
-
-    lcd-cls
-    s" Forth programs" lcd-type lcd-cr lcd-cr
 
     s" /" open-directory ?dup
     if  cr ." open-directory error = "
@@ -36,18 +45,17 @@ variable menu-count
             here swap ( c-addr u )
             2dup s" .4MU" search if
                 4 = if
-                    drop 2dup
+                    drop
                     menu-count @
-                    dup max-items < 0= if
-                        cr ." too many menu items"
-                        -1 throw
+                    dup max-items <
+                    if
+                        menu \ src count dest
+                        2dup c! char+  \ save count (byte)
+                        swap cmove
+                        1 menu-count +!
+                    else
+                        drop
                     then
-                    item-length * items + \ src count dest
-                    swap cmove
-                    4 -
-                    bl lcd-emit
-                    lcd-type lcd-cr
-                    1 menu-count +!
                 else
                     drop 2drop
                 then
@@ -59,45 +67,36 @@ variable menu-count
     r> close-directory drop
 ;
 
-: menu-select ( -- n)
-    button-flush
-    key-flush
-    ctp-flush
-    begin
-        ctp-pos? if
-            ctp-pos dup 0<
-            if
-                2drop 0
-            else
-                nip font-height / 1+
-            then
-            exit
-        then
+: item-position ( u -- x y )
+    items-per-line /mod  \ col row
+    >r
+    display-item-width *
+    r>
+    first-menu-line +
+;
 
-        button? if
-            button
-            case
-                button-left of
-                    -2
-                    exit
-                endof
-                button-centre of
-                    -4
-                    exit
-                endof
-                button-right of
-                    -1
-                    exit
-                endof
-            endcase
-        then
+: display-item ( u -- )
+    dup item-position
+    lcd-at-xy
+    menu dup char+ swap c@
+    4 - \ ignore the .4mu extension
+    lcd-type
+;
 
-        key? if
-            key-flush
-        then
+: display-highlighted-item ( u -- )
+    lcd-white
+    display-item
+    lcd-black
+;
 
-        wait-for-event
-    again
+: display-items ( -- )
+    lcd-cls
+    s" Forth programs" lcd-type
+
+    menu-count @ 0
+    ?do
+        i display-item
+    loop
 ;
 
 
@@ -110,46 +109,82 @@ variable menu-count
 
 variable menu-cursor
 
-: menu ( -- )
+: boot-menu ( -- )
     read-items
+    display-items
     22 lcd-text-rows 1- lcd-at-xy s" Console" lcd-type
     ctp-flush
     key-flush
     button-flush
+    -1 menu-cursor !
+
     begin
-        menu-select dup 2 >
-        if
-            dup 3 - menu-count @ < if
-                menu-cursor @ ?dup if
-                    1- font-height * font-height lcd-invert-lines
+        ctp-pos? if
+            ctp-char dup 0<
+            if
+                2drop
+                menu-cursor @ 0< 0= if
+                    menu-cursor @ menu
+                    dup char+ swap c@
+                    ['] run-program catch
+                    cold \ restart menu
                 then
-                dup menu-cursor !
-                1- font-height * font-height lcd-invert-lines
-                0
+                -1 menu-cursor !
+            else
+                menu-cursor @ 0< 0=
+                if
+                    menu-cursor @ display-item
+                    -1 menu-cursor !
+                then
+                first-menu-line - dup 0< 0=
+                if
+                    items-per-line *
+                    swap
+                    display-item-width /
+                    +
+                    dup menu-count @ <
+                    if
+                        dup menu-cursor !
+                        display-highlighted-item
+                    else
+                        drop
+                    then
+                else
+                    2drop
+                then
             then
-        else
-            menu-cursor @ ?dup if
-                3 -  item-length * items +
-                dup
-                begin
-                    dup c@
-                while
-                        1+
-                repeat
-                over - ['] run-program catch
-                cold \ restart menu
-            then
-            0 menu-cursor !
         then
-        -1 =
-    until
-    lcd-cls
-    s" serial console active" lcd-type
-    -1 throw \ will abort menu and return to command prompt
+
+        button? if
+            button
+            case
+                button-power of
+                    power-off
+                endof
+                button-left of
+                endof
+                button-centre of
+                endof
+                button-right of
+                    lcd-cls
+                    s" Serial Console Active" lcd-type lcd-cr lcd-cr
+                    s" Connect Debug Cable at:" lcd-type lcd-cr
+                    s"   19200 8N1" lcd-type lcd-cr
+                    cold0 \ does not return
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+
+        wait-for-event
+    again
 ;
 
 \ start menu
-menu
+boot-menu
 
 \ ensure restart will occur if any program exits
 cold
