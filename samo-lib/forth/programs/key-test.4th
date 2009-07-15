@@ -20,17 +20,13 @@ constant pos-2
 
 variable keys-timeout
 
-500000 constant button-delay
+25000 constant debounce-delay
 1000 constant millisec
+
 30000 constant max-key-wait
 
 : test-key-button ( -- u )
-    button-flush
-    ctp-flush
-    key-flush
     0 keys-timeout !
-    5000 delay-us
-    button-flush
     begin
         ctp-pos? if
             ctp-flush
@@ -40,7 +36,14 @@ variable keys-timeout
         then
 
         button? if
-            button exit
+            button
+            debounce-delay delay-us
+            begin
+                button?
+            while
+                    drop button
+            repeat
+            exit
         then
 
         millisec delay-us
@@ -67,49 +70,43 @@ variable keys-timeout
 : test-keys-stage-1 ( -- flag )
     1 pos-1 show-message
     s" pressed" s" left" button-left check-button
-
     0 pos-1 show-message
-    button-delay delay-us
-
-    2 pos-1 show-message
-    s" released" s" left" button-none check-button
-    and
-
-    0 pos-1 show-message
-    button-delay delay-us
+    dup
+    if
+        2 pos-1 show-message
+        s" released" s" left" button-none check-button
+        0 pos-1 show-message
+        and
+    then
 ;
 
 : test-keys-stage-2 ( -- flag )
     1 pos-2 show-message
     s" pressed" s" centre" button-centre check-button
-
     0 pos-2 show-message
-    button-delay delay-us
-
-    2 pos-2 show-message
-    s" released" s" centre" button-none check-button
-    and
-
-    0 pos-2 show-message
-    button-delay delay-us
+    dup
+    if
+        2 pos-2 show-message
+        s" released" s" centre" button-none check-button
+        0 pos-2 show-message
+        and
+    then
 ;
 
 : test-keys-stage-3 ( -- flag )
     1 pos-3 show-message
     s" pressed" s" right" button-right check-button
-
     0 pos-3 show-message
-    button-delay delay-us
-
-    2 pos-3 show-message
-    s" released" s" right" button-none check-button
-    and
-
-    0 pos-3 show-message
-    button-delay delay-us
+    dup
+    if
+        2 pos-3 show-message
+        s" released" s" right" button-none check-button
+        0 pos-3 show-message
+        and
+    then
 ;
 
-: test-keys-sequence ( -- )
+: test-keys-sequence ( -- flag )
     lcd-cls
     button-flush
     ctp-flush
@@ -127,7 +124,7 @@ variable keys-timeout
     test-keys-stage-3 and
 ;
 
-: test-keys-main
+: test-keys-main ( -- )
     lcd-cls
     test-keys-sequence if
         s" PASS"
