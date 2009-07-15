@@ -53,6 +53,10 @@ RxRead:
 RxWrite:
         .long   0
 
+
+ButtonMask = 0x07                                     ; only 3 bits used
+
+
         .section .text
 
 
@@ -100,6 +104,18 @@ Button_get:
 
         ld.ub   %r4, [%r5]+                           ; value
         ld.w    [%r6], %r7                            ; update RxRead
+        ret
+
+
+;;; poll the buttons
+;;; input:
+;;; output:
+;;;   r4 = button
+        .global Button_poll
+Button_poll:
+        xld.w   %r4, R8_P6_P6D                        ; address of buttond port
+        ld.ub   %r4, [%r4]                            ; read buttond
+        xand    %r4, ButtonMask                       ; mask unused bits
         ret
 
 
@@ -184,7 +200,7 @@ Button_RxInterrupt:
         xld.w   %r3, RxWrite
 
         ld.ub   %r10, [%r0]                           ; button
-        xand    %r10, 7                               ; only 3 bits used
+        xand    %r10, ButtonMask                      ; mask unused bits
         ld.b    [%r1], %r10                           ; update change of state
 
         ld.w    %r9, [%r3]                            ; RxWrite
