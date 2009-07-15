@@ -55,6 +55,7 @@ RxWrite:
 
 
 ButtonMask = 0x07                                     ; only 3 bits used
+PowerButton = 0x10                                    ; above ButtonMask
 
 
         .section .text
@@ -149,6 +150,10 @@ Button_initialise:
         xld.w   %r7, Button_RxInterrupt
         xcall   Vector_set
 
+        xld.w   %r6, Vector_Port_input_interrupt_3
+        xld.w   %r7, Button_P0Interrupt
+        xcall   Vector_set
+
         ld.w    %r5, 0
 
         xld.w   %r4, RxRead
@@ -158,8 +163,12 @@ Button_initialise:
 
 	DISABLE_INTERRUPTS
 
-        xld.w   %r4, R8_INT_FK01_FP03
-        xld.w   %r5, 0x3f
+        xld.w   %r4, R8_INT_PK01L                     ; key priority
+        xld.w   %r5, 0x66
+        ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_INT_FK01_FP03                 ; clear key interrupts
+        xld.w   %r5, FK1 | FK0 | FP3 | FP2 | FP1 | FP0
         ld.b    [%r4], %r5
 
         xld.w   %r4, R8_KINTCOMP_SCPK0                ; comparison = all buttons off
@@ -174,8 +183,24 @@ Button_initialise:
         xld.w   %r5, 0x04
         ld.b    [%r4], %r5
 
-        xld.w   %r4, R8_INT_EK01_EP03                 ; enable KINT0
-        xld.w   %r5, 0x10
+        xld.w   %r4, R8_INT_PP01L                     ; P0 prority
+        xld.w   %r5, 0x06
+        ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_PINTSEL_SPT03                 ; select P03 interrupt
+        xld.w   %r5, 0x00
+        ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_PINTPOL_SPP07                 ; P03 active high
+        xld.w   %r5, SPPT3
+        ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_PINTEL_SEPT07                 ; P03 edge trigered
+        xld.w   %r5, SEPT3
+        ld.b    [%r4], %r5
+
+        xld.w   %r4, R8_INT_EK01_EP03                 ; enable KINT0 and Port0
+        xld.w   %r5, EK0 | EP3
         ld.b    [%r4], %r5
 
         ENABLE_INTERRUPTS
@@ -191,7 +216,7 @@ Button_RxInterrupt:
         pushn   %r14
 
         xld.w   %r4, R8_INT_FK01_FP03
-        xld.w   %r5, 0x3f
+        xld.w   %r5, FK1 | FK0
         ld.b    [%r4], %r5
 
         xld.w   %r0, R8_P6_P6D
@@ -221,5 +246,41 @@ Button_RxInterrupt:
 
 Button_RxInterrupt_buffer_full:
 
+        popn    %r14
+        reti
+
+
+;;; receive power button short pulse
+;;; input:
+;;; output:
+        .global Button_P0Interrupt
+Button_P0Interrupt:
+        pushn   %r14
+        xld.w   %r4, R8_INT_FK01_FP03
+        xld.w   %r5, FP3
+        ld.b    [%r4], %r5
+
+
+        xld.w   %r2, RxRead
+        xld.w   %r3, RxWrite
+        xld.w   %r10, PowerButton
+
+        ld.w    %r9, [%r3]                            ; RxWrite
+
+        xld.w   %r11, RxBuffer                        ; buffer start
+        add     %r11, %r9                             ; + offset
+
+        ld.b    [%r11]+, %r10                         ; store button
+
+        ld.w    %r11, [%r2]                           ; RxRead
+
+        xadd    %r9, 1                                ; next position
+        xand    %r9, (BufferSize - 1)                 ; mod buffer size
+        cmp     %r11, %r9                             ; read == write?
+        jreq    Button_P0Interrupt_buffer_full        ; ...yes => buffer overrun, value lost
+
+        ld.w    [%r3], %r9                            ; update RxWrite
+
+Button_P0Interrupt_buffer_full:
         popn    %r14
         reti

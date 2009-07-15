@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-12
+13
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -3066,6 +3066,9 @@ constant button-centre    :: button-centre           ( -- u )
 1
 constant button-right     :: button-right            ( -- u )
 
+16
+constant button-power     :: button-power            ( -- u )
+
 code button-flush         :: button-flush            ( -- )
         xcall   Button_flush
         NEXT
@@ -3109,6 +3112,26 @@ end-code
 
 code (halt)               :: paren-halt              ( -- )
         xcall   suspend
+        NEXT
+end-code
+
+
+\ power off
+\ =========
+
+code power-off            :: power-off               ( -- )
+        xld.w   %r4, R8_P6_P6D
+        xld.w   %r5, R8_P6_IOC6
+        xld.w   %r6, 0x08
+        ld.b    [%r5], %r6
+        ld.b    [%r4], %r6
+        xld.w   %r6, 1000
+        xcall   delay_us
+        xld.w   %r4, R8_P6_P6D
+        xld.w   %r6, 0x00
+        ld.b    [%r4], %r6
+        xld.w   %r6, 1000
+        xcall   delay_us
         NEXT
 end-code
 

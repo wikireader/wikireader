@@ -708,10 +708,26 @@
         REGBIT  FSRX0  "(1 << 1)"
         REGBIT  FSERR0 "(1 << 0)"
 
-;;;  Bits for: REG_RST_RESET
+;;; Bits for: REG_RST_RESET
         REGBIT  DENONLY  "(1 << 2)"
         REGBIT  IDMAONLY "(1 << 1)"
         REGBIT  RSTONLY  "(1 << 0)"
+
+;;; Bits for: REG_INT_EK01_EP03
+        REGBIT  EK1 "(1 << 5)"
+        REGBIT  EK0 "(1 << 4)"
+        REGBIT  EP3 "(1 << 3)"
+        REGBIT  EP2 "(1 << 2)"
+        REGBIT  EP1 "(1 << 1)"
+        REGBIT  EP0 "(1 << 0)"
+
+;;; Bits for: INT_FK01_FP03
+        REGBIT  FK1 "(1 << 5)"
+        REGBIT  FK0 "(1 << 4)"
+        REGBIT  FP3 "(1 << 3)"
+        REGBIT  FP2 "(1 << 2)"
+        REGBIT  FP1 "(1 << 1)"
+        REGBIT  FP0 "(1 << 0)"
 
 
 ;;;
@@ -899,9 +915,49 @@
         REGBIT  DMA_ENABLED  "(1 << 0)"
         REGBIT  DMA_DISABLED "(0 << 0)"
 
+;;; Bits for REG_PINTPOL_SPP07
+        REGBIT  SPPT7 "(1 << 7)"
+        REGBIT  SPPT6 "(1 << 6)"
+        REGBIT  SPPT5 "(1 << 5)"
+        REGBIT  SPPT4 "(1 << 4)"
+        REGBIT  SPPT3 "(1 << 3)"
+        REGBIT  SPPT2 "(1 << 2)"
+        REGBIT  SPPT1 "(1 << 1)"
+        REGBIT  SPPT0 "(1 << 0)"
 
+;;; Bits for REG_PINTPOL_SPP815
+        REGBIT  SPPTF "(1 << 7)"
+        REGBIT  SPPTE "(1 << 6)"
+        REGBIT  SPPTD "(1 << 5)"
+        REGBIT  SPPTC "(1 << 4)"
+        REGBIT  SPPTB "(1 << 3)"
+        REGBIT  SPPTA "(1 << 2)"
+        REGBIT  SPPT9 "(1 << 1)"
+        REGBIT  SPPT8 "(1 << 0)"
 
+;;; Bits for REG_PINTEL_SEPT07
+        REGBIT  SEPT7 "(1 << 7)"
+        REGBIT  SEPT6 "(1 << 6)"
+        REGBIT  SEPT5 "(1 << 5)"
+        REGBIT  SEPT4 "(1 << 4)"
+        REGBIT  SEPT3 "(1 << 3)"
+        REGBIT  SEPT2 "(1 << 2)"
+        REGBIT  SEPT1 "(1 << 1)"
+        REGBIT  SEPT0 "(1 << 0)"
+
+;;; Bits for REG_PINTEL_SEPT815
+        REGBIT  SEPTF "(1 << 7)"
+        REGBIT  SEPTE "(1 << 6)"
+        REGBIT  SEPTD "(1 << 5)"
+        REGBIT  SEPTC "(1 << 4)"
+        REGBIT  SEPTB "(1 << 3)"
+        REGBIT  SEPTA "(1 << 2)"
+        REGBIT  SEPT9 "(1 << 1)"
+        REGBIT  SEPT8 "(1 << 0)"
+
+;;;
 ;;; Interrupt vectors
+;;;
 
         VECTOR  Reset 0
         VECTOR  reserved_1 1
