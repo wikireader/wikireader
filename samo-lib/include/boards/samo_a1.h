@@ -88,7 +88,11 @@ static inline void power_off(void)
 //}
 
 
+#if BOARD_SAMO_A3
+#define AVDD_MILLIVOLTS	       3150
+#else
 #define AVDD_MILLIVOLTS	       3000
+#endif
 #define ADC_SERIES_RESISTOR_K  150
 #define ADC_SHUNT_RESISTOR_K   1000
 

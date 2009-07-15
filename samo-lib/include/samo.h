@@ -55,7 +55,7 @@
 #include "boards/proto1.h"
 #elif BOARD_PROTO2
 #include "boards/proto2.h"
-#elif BOARD_SAMO_A1
+#elif BOARD_SAMO_A1 || BOARD_SAMO_A3
 #include "boards/samo_a1.h"
 #elif BOARD_PRT33L17LCD
 #include "boards/prt33l17lcd.h"
