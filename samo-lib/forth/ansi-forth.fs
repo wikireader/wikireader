@@ -833,23 +833,8 @@ end-code
 \ code                    :: code                    ( C: "<spaces>name" -- )
 
 : cold                    :: cold                    ( i*x -- )
-  0 >in !
-  10 base !
-  cold-cp0 cp !
-  0 current !
-  0 handler !
-  pad hld !
-  cold-rp0 rp0 !
-  cold-sp0 sp0 !
-  0 source-id !
-  false state !
-  0 terminal-count !
-  cold-last-names
-  root-wordlist !
-  forth-wordlist !
-  c33-wordlist !
-  rp0 @ rp!
-  sp0 @ sp!
+  cold-rp0 rp!
+  cold-reset
 
   only forth definitions
 
@@ -863,6 +848,20 @@ end-code
     include-file
   then
 
+  quit
+;
+
+\ like cold but no forth.ini
+: cold0                   :: cold0                   ( i*x -- )
+  cold-rp0 rp!
+  cold-reset
+
+  only forth definitions
+
+  cr  ." moko forth interpreter for S33C (build:"
+  build-number 0 u.r
+  ." )" cr
+  quit-reset
   quit
 ;
 
@@ -885,6 +884,25 @@ code cold-last-names      :: cold-last-names         ( -- a-addr a-addr a-addr )
         ld.w    [%r1], %r4
         NEXT
 end-code
+
+: cold-reset              :: cold-reset              ( i*x -- )
+  cold-sp0 sp!
+  0 >in !
+  10 base !
+  cold-cp0 cp !
+  0 current !
+  0 handler !
+  pad hld !
+  cold-rp0 rp0 !
+  cold-sp0 sp0 !
+  0 source-id !
+  false state !
+  0 terminal-count !
+  cold-last-names
+  root-wordlist !
+  forth-wordlist !
+  c33-wordlist !
+;
 
 code cold-rp0             :: cold-r-p-zero           ( -- a-addr )
         xld.w   %r4, initial_return_pointer
@@ -1668,6 +1686,8 @@ end-code
   fileid-stack stack-clear
   0 source-id !
   key-flush
+  ctp-flush
+  button-flush
   only forth definitions
 ;
 
@@ -2700,15 +2720,6 @@ constant lcd-vram-size    :: lcd-vram-size           ( -- u )
   lcd-vram lcd-vram-size 255 fill
 ;
 
-\ line is 0 .. lcd-height-pixels - 1; u is number of line to invert
-: lcd-invert-lines        :: lcd-invert-lines        ( line u -- )
-  swap lcd-vram-width-bytes * lcd-vram + swap lcd-vram-width-bytes *
-  0 ?do
-    dup c@ 255 xor over c! char+
-  loop
-  drop
-;
-
 \ pixel code in assembler for speed
 
 code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
@@ -2948,7 +2959,9 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
   swap                         ( c-addr c )
   font-height * font-8x13 +    ( lcd-addr font-addr )
   font-height 0 ?do
-    2dup c@ swap c!
+    2dup c@
+    lcd-line-colour @ 0= if invert then
+    swap c!
     char+ swap lcd-vram-width-bytes + swap
   loop 2drop
   font-width lcd-x +!
@@ -3008,6 +3021,7 @@ code ctp-flush            :: c-t-p-flush             ( -- )
         NEXT
 end-code
 
+\ (-1, -1) => release
 code ctp-pos              :: c-t-p-pos               ( -- x y )
         xcall   CTP_GetPosition
         sub     %r1, BYTES_PER_CELL
@@ -3016,6 +3030,14 @@ code ctp-pos              :: c-t-p-pos               ( -- x y )
         ld.w    [%r1], %r5
         NEXT
 end-code
+
+\ as character co-ordinate: (0, 0)   => top left
+\                           (-1, -1) => release
+: ctp-char                :: c-t-p-char              ( -- x y )
+  ctp-pos dup 0< if exit then
+  swap font-width /
+  swap font-height /
+;
 
 code ctp-pos?             :: c-t-p-pos-question      ( -- flag )
         xcall   CTP_PositionAvailable
