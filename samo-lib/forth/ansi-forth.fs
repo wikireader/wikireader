@@ -732,6 +732,14 @@ code c@                   :: c-fetch                 ( c-addr -- char )
         NEXT
 end-code
 
+: c33                     :: c-3-3                   ( -- )
+  get-order dup 0> if nip else 1+ then
+  c33-wordlist swap set-order
+;
+
+
+variable c33-wordlist     :: c33-wordlist            ( -- wid )
+
 : case                    :: case                    ( C: -- case-sys ) ( -- )
   0 ; immediate compile-only
 
@@ -836,7 +844,10 @@ end-code
   0 source-id !
   false state !
   0 terminal-count !
-  cold-last-name forth-wordlist !
+  cold-last-names
+  root-wordlist !
+  forth-wordlist !
+  c33-wordlist !
   rp0 @ rp!
   sp0 @ sp!
 
@@ -862,8 +873,14 @@ code cold-cp0             :: cold-c-p-zero           ( -- a-addr )
         NEXT
 end-code
 
-code cold-last-name       :: cold-last-name          ( -- a-addr )
-        xld.w   %r4, last_name                       ; name of last word
+code cold-last-names      :: cold-last-names         ( -- a-addr a-addr a-addr )
+        xld.w   %r4, c33_last_name                   ; name of last word
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        xld.w   %r4, forth_last_name                 ; name of last word
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        xld.w   %r4, root_last_name                  ; name of last word
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
         NEXT
@@ -1271,11 +1288,13 @@ end-code
 
 \ forget                  :: forget                  ( "<spaces>name" -- )
 
+cross-root-definition
 : forth                   :: forth                   ( -- )
   get-order dup 0> if nip else 1+ then
   forth-wordlist swap set-order
 ;
 
+cross-root-definition
 variable forth-wordlist   :: forth-wordlist          ( -- wid )
 
 \ free                    :: free                    ( a-addr -- ior )
@@ -1496,6 +1515,7 @@ code or                   :: or                      ( x1 x2 -- x3 )
         NEXT
 end-code
 
+\ cross-root-definition
 \ order                   :: order                   ( -- )
 \  get-order 0 ?do
 \    cr 2 spaces .vocab
@@ -1648,6 +1668,7 @@ end-code
   fileid-stack stack-clear
   0 source-id !
   key-flush
+  only forth definitions
 ;
 
 code r/o                  :: r-o                     ( -- fam )
@@ -1777,6 +1798,8 @@ end-code
 \ restore-input           :: restore-input           ( xn ... x1 n -- flag )
 
 \ roll                    :: roll                    ( xu xu-1 ... x0 u -- xu-1 ... x0 xu )
+
+variable root-wordlist    :: root-wordlist           ( -- wid )
 
 : rot                     :: rote                    ( x1 x2 x3 -- x2 x3 x1 )
   >r swap r> swap ;
@@ -1995,12 +2018,11 @@ end-code
 : set-current             :: set-current             ( wid -- )
   current ! ;
 
+cross-root-definition
 : set-order               :: set-order               ( widn ... wid1 n -- )
   dup -1 = if
     drop
-    \ root-wordlist dup 2  \ do not have this yet, so use forth instead
-    \ forth-wordlist dup 2
-    forth-wordlist 1
+    root-wordlist dup 2
   then
   \ **********************VALIDATE context size*************************
   dup #order !
@@ -2216,6 +2238,7 @@ end-code
   0 ,           \ space for 1 pointer initially null
 ;
 
+cross-root-definition
 : words                   :: words                   ( -- )
   cr  context @
   begin @ ?dup
@@ -3039,6 +3062,13 @@ code button?              :: button-question         ( -- flag )
         jreq    button_question_no_data
         ld.w    %r4, TRUE
 button_question_no_data:
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code button-poll          :: button-poll             ( -- u )
+        xcall   Button_poll
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
         NEXT

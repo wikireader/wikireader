@@ -30,12 +30,12 @@
 ;;; macro for regs.inc
         .macro  REGDEF, address, bits, name
 R\()\bits\()_\name = \address
-	CREATE	0 "\name" \name 0
+	CREATE	c33_dict "\name" \name 0
 	.long	\address, \bits
         .endm
 
         .macro  REGBIT, name, value
-	CONSTANT 0 "\name" \name 0
+	CONSTANT c33_dict "\name" \name 0
         .long   \value
 \name = \value
         .endm
@@ -53,4 +53,6 @@ Vector_\()\name = \value
 
 dictionary_end:
 
-last_name = __last_name                         ; should be the final name
+root_last_name  = __root_dict_last_name         ; should be the final name
+forth_last_name = __forth_dict_last_name        ; should be the final name
+c33_last_name   = __c33_dict_last_name          ; should be the final name

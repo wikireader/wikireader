@@ -107,9 +107,11 @@ str_\@_finish:
         .section .forth_dict, "wa"
         .balign 4
 
-__last_name = 0                                       ; to link the list
+__forth_dict_last_name = 0                            ; to link the list
+__root_dict_last_name = 0                             ; to link the list
+__c33_dict_last_name = 0                              ; to link the list
 
-        .macro  HEADER, label, name, flags, code
+        .macro  HEADER, dict_name, label, name, flags, code
 
         .section .forth_dict
         .balign 4
@@ -123,13 +125,13 @@ l_does_\@:
 l_flags_\@:
         .long   \flags                                ; flags
 
-prev_\label = __last_name
+prev_\label = __\()\dict_name\()_last_name
 l_link_\@:
         .long   prev_\label                           ; link
 
         .global name_\label
 name_\label\():
-__last_name = .
+__\()\dict_name\()_last_name = .
         LSTRING "\name"
 
         .balign 4
@@ -156,8 +158,8 @@ param_\label\():
 
 ;;; code definitions
 
-        .macro  CODE, sequence, name, label, flags
-        HEADER  \label, "\name", \flags, param_\label
+        .macro  CODE, dict_name, name, label, flags
+        HEADER  \dict_name, \label, "\name", \flags, param_\label
         .endm
 
         .macro  END_CODE
@@ -166,32 +168,32 @@ param_\label\():
 
 ;;; colon definitions
 
-        .macro  COLON, sequence, name, label, flags
-        HEADER  \label, "\name", \flags, param_paren_colon_paren
+        .macro  COLON, dict_name, name, label, flags
+        HEADER  \dict_name, \label, "\name", \flags, param_paren_colon_paren
         .endm
 
         .macro  END_COLON
-        .long   exit
+;        .long   exit
         .long   0
         .endm
 
 
 ;;; variable definitions
 
-        .macro  VARIABLE, sequence, name, label, flags
-        HEADER  \label, "\name", \flags, param_paren_var_paren
+        .macro  VARIABLE, dict_name, name, label, flags
+        HEADER  \dict_name, \label, "\name", \flags, param_paren_var_paren
         .endm
 
 
-        .macro  CREATE, sequence, name, label, flags
-        HEADER  \label, "\name", \flags, param_paren_var_paren
+        .macro  CREATE, dict_name, name, label, flags
+        HEADER  \dict_name, \label, "\name", \flags, param_paren_var_paren
         .endm
 
 
 ;;; constant definitions
 
-        .macro  CONSTANT, sequence, name, label, flags
-        HEADER  \label, "\name", \flags, param_paren_const_paren
+        .macro  CONSTANT, dict_name, name, label, flags
+        HEADER  \dict_name, \label, "\name", \flags, param_paren_const_paren
         .endm
 
 

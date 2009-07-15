@@ -39,7 +39,6 @@ vocabulary meta-assemble  immediate
 only forth
 also meta-compiler definitions
 
-variable word-count
 variable label-count
 variable meta-state
 variable suppress-once
@@ -60,6 +59,20 @@ create last-name-buffer  4096 allot
 : get-last-name ( -- c-addr u )
   last-name-buffer last-name-count @ ;
 
+variable cross-dict-flag
+
+: cross-dict-name ( -- )
+  cross-dict-flag @
+  0 cross-dict-flag !
+  case
+    0 of
+      ." forth_dict"
+    endof
+    1 of
+      ." root_dict"
+    endof
+  endcase
+  space ;
 
 : gen-label ( -- n )
   1 label-count +! label-count @ ;
@@ -204,9 +217,13 @@ only forth
 also meta-interpret definitions
 meta-compiler
 
+\ the next definition will be in this dictionary
+: cross-root-definition ( -- ) 1 cross-dict-flag ! ;
+
+
 : code ( -- \ string )
-  1 word-count +! cr
-  tab ." CODE" tab word-count ?
+  cr
+  tab ." CODE" tab cross-dict-name
   34 emit
   parse-word escaped-type
   34 emit space
@@ -227,15 +244,15 @@ meta-compiler
 : ] ( -- )  _compile ;
 
 : : ( -- \ word )
-  1 word-count +! cr
-  tab ." COLON" tab word-count ?
+  cr
+  tab ." COLON" tab cross-dict-name
   quoted-parse-word
   _compile
 ;
 
 : constantX ( x -- \ word )
-  1 word-count +! cr
-  tab ." CONSTANT" tab word-count ?
+  cr
+  tab ." CONSTANT" tab cross-dict-name
   quoted-parse-word
   parse-word 2drop \ ignore ::
   space parse-word type-nodash ."  0" cr
@@ -243,8 +260,8 @@ meta-compiler
 ;
 
 : constant ( x -- \ word )
-  1 word-count +! cr
-  tab ." CONSTANT" tab word-count ?
+  cr
+  tab ." CONSTANT" tab cross-dict-name
   dup constant
   latestxt >name cell+ dup cell+ swap @ 255 and
   34 emit
@@ -256,8 +273,8 @@ meta-compiler
 ;
 
 : variable ( -- \ word )
-  1 word-count +! cr
-  tab ." VARIABLE" tab word-count ?
+  cr
+  tab ." VARIABLE" tab cross-dict-name
   quoted-parse-word
   parse-word 2drop \ ignore ::
   space parse-word type-nodash ."  0" cr
@@ -265,8 +282,8 @@ meta-compiler
 ;
 
 : create ( -- \ word )
-  1 word-count +! cr
-  tab ." CREATE" tab word-count ?
+  cr
+  tab ." CREATE" tab cross-dict-name
   quoted-parse-word
   space parse-word 2drop \ ignore ::
   space parse-word type-nodash ."  0" cr
