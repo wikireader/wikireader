@@ -22,10 +22,18 @@
 #include <input.h>
 
 /* local includes */
+#include "regs.h"
+#include "samo.h"
 #include "serial.h"
 #include "suspend.h"
 #include "touchscreen.h"
 #include "gpio.h"
+
+// the / 32 is because the suspend routine operates with MCLK=CLK/32
+#define TIMEOUT_VALUE (MCLK / 32 * SUSPEND_AUTO_POWER_OFF_SECONDS)
+#if TIMEOUT_VALUE > 0x3fffffff
+#error "SUSPEND_AUTO_POWER_OFF_SECONDS is too large"
+#endif
 
 
 int wl_input_wait(struct wl_input_event *ev, int sleep)
@@ -57,7 +65,7 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 
 /* the timers needed for profiling don't work with suspend enabled */
 #if !PROFILER_ON
-		suspend();
+		suspend(TIMEOUT_VALUE);
 #endif
 
 	}

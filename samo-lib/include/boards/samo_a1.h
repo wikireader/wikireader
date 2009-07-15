@@ -99,7 +99,6 @@ static inline void power_off(void)
 
 static inline void init_pins(void)
 {
-#if 0
 	// not enough space for adding this
 	// A low on pin P63 shuts down the power supply - so try
 	// to keep it high, without any glitched or we will power down
@@ -107,8 +106,7 @@ static inline void init_pins(void)
 	// This _must_ be the setting performed.
 	// p60-63: wdt - ensure that P63(#WDTNMI) pin is set high
 	REG_P6_P6D |= (1 << 3);		 // P63 = 1 (for safety)
-	REG_P6_03_CFP &= 0x3f;		 // P63 = input
-#endif
+
 	/* P85: LCD_CS, P83: TFT_CTL1 */
 	REG_P8_IOC8 = 0x28;
 	REG_P8_03_CFP = 0x3f;
@@ -144,7 +142,6 @@ static inline void init_pins(void)
 	/* P50 & P52: CS lines */
 	REG_P5_P5D = 0x07;  // all cs lines high
 	REG_P5_IOC5 = 0x07;
-
 
 	REG_INT_FK01_FP03 = 0x3f; // clear outstanding interrupts
 

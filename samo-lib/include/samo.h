@@ -3,12 +3,15 @@
 
 #include "config.h"
 
+// available range 10 .. 715 seconds (10 sec .. 11 min 55 sec)
+#define SUSPEND_AUTO_POWER_OFF_SECONDS 120
 
-#define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)
-#define DEBUGLED1_OFF() do { REG_P1_P1D |=  (1 << 4); } while (0)
 
-#define DEBUGLED2_ON()  do { REG_P1_P1D &= ~(1 << 3); } while (0)
-#define DEBUGLED2_OFF() do { REG_P1_P1D |=  (1 << 3); } while (0)
+//#define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)
+//#define DEBUGLED1_OFF() do { REG_P1_P1D |=  (1 << 4); } while (0)
+
+//#define DEBUGLED2_ON()  do { REG_P1_P1D &= ~(1 << 3); } while (0)
+//#define DEBUGLED2_OFF() do { REG_P1_P1D |=  (1 << 3); } while (0)
 
 #define EEPROM_CS_LO()  do { REG_P5_P5D &= ~(1 << 2); } while (0)
 #define EEPROM_CS_HI()  do { REG_P5_P5D |=  (1 << 2); } while (0)
@@ -33,6 +36,7 @@
 #define MCLK 		48000000
 #define MCLK_MHz	(MCLK / 1000000)
 #define DIV 		8
+
 
 //#define CALC_BAUD(fbrclk, divmd, bps)  ((fbrclk / divmd)/(2 * bps) - 1)
 #define CALC_BAUD(fbrclk, div, divmd, bps)  (((((10 * fbrclk) / div / divmd)/(2 * bps)) + 5) / 10 - 1)

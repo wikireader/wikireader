@@ -23,8 +23,10 @@
 #include "suspend.h"
 
 
-void suspend(void) __attribute__ ((section (".suspend_text")));
-void suspend(void)
+void suspend(int WatchdogTimeout) __attribute__ ((section (".suspend_text")));
+void suspend2(int WatchdogTimeout) __attribute__ ((section (".suspend_text")));
+
+void suspend(int WatchdogTimeout)
 {
 	// if in CTP receive sequence
 	//REG_MISC_PUP6 |= 0x10;
@@ -44,6 +46,20 @@ void suspend(void)
 
 	DISABLE_IRQ();
 
+	suspend2(WatchdogTimeout);
+
+	ENABLE_IRQ();
+	// it is now possible to call other functions
+	// as SDRAM is operational again
+
+	// resume SD card
+	if (card_state) {
+		disk_initialize(0);
+	}
+}
+
+void suspend2(int WatchdogTimeout)
+{
 	// no more function calls after this point
 	// all code must be in-line
 
@@ -129,8 +145,8 @@ void suspend(void)
 		//EGPIO_MISC_CK |
 		//I2S_CKE |
 		//DCSIO_CKE |
-		//WDT_CKE |
-		//GPIO_CKE |
+		WDT_CKE |
+		GPIO_CKE |
 		//SRAMSAPB_CKE |
 		//SPI_CKE |
 		EFSIOSAPB_CKE |
@@ -202,9 +218,28 @@ void suspend(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
+	if (0 < WatchdogTimeout) {
+		// enable watchdog
+		REG_WD_WP = WD_WP_OFF;
+		REG_WD_COMP = WatchdogTimeout;
+		REG_WD_CNTL = WDRESEN;
+		REG_WD_EN =
+			//CLKSEL |
+			//CLKEN  |
+			RUNSTP |
+			NMIEN  |     // so that low pulse is output
+			RESEN  |     // reset takes priority
+			0;
+		REG_WD_WP = WD_WP_ON;
+
+		REG_P6_03_CFP |= 0xc0; // select P63 as #WDT_NMI
+	}
+
 	// end of suspend, wait for interrupt
 	asm volatile ("halt");
 	// interrupt is on hold until end of resume
+
+	REG_P6_03_CFP &= ~0xc0; // select P63 as GPIO
 
 	// restore clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
@@ -298,7 +333,7 @@ void suspend(void)
 		EGPIO_MISC_CK |
 		//I2S_CKE |
 		//DCSIO_CKE |
-		WDT_CKE |
+		//WDT_CKE |
 		GPIO_CKE |
 		//SRAMSAPB_CKE |
 		SPI_CKE |
@@ -336,13 +371,4 @@ void suspend(void)
 		(0x7f << SELCO_SHIFT) |
 		(0x8c << AURCO_SHIFT) |
 		0;
-
-	ENABLE_IRQ();
-	// it is now possible to call other functions
-	// as SDRAM is operational again
-
-	// resume SD card
-	if (card_state) {
-		disk_initialize(0);
-	}
 }

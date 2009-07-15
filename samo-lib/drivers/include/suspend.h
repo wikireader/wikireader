@@ -19,7 +19,7 @@
 #ifndef SUSPEND_H
 #define SUSPEND_H
 
-void suspend();
+void suspend(int WatchdogTimeout);
 
 #endif
 

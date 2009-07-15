@@ -194,8 +194,10 @@
         REGDEF  0x0030055E  16  AD_ADVMODE
         REGDEF  0x00300660  16  WD_WP
         REGDEF  0x00300662  16  WD_EN
+        REGDEF  0x00300664  32  WD_COMP
         REGDEF  0x00300664  16  WD_COMP_LOW
         REGDEF  0x00300666  16  WD_COMP_HIGH
+        REGDEF  0x00300668  32  WD_CNT
         REGDEF  0x00300668  16  WD_CNT_LOW
         REGDEF  0x0030066A  16  WD_CNT_HIGH
         REGDEF  0x0030066C  16  WD_CNTL
@@ -731,6 +733,51 @@
 
 
 ;;;
+;;; GPIO
+;;;
+
+;;; Bits for REG_PINTPOL_SPP07
+        REGBIT  SPPT7 "(1 << 7)"
+        REGBIT  SPPT6 "(1 << 6)"
+        REGBIT  SPPT5 "(1 << 5)"
+        REGBIT  SPPT4 "(1 << 4)"
+        REGBIT  SPPT3 "(1 << 3)"
+        REGBIT  SPPT2 "(1 << 2)"
+        REGBIT  SPPT1 "(1 << 1)"
+        REGBIT  SPPT0 "(1 << 0)"
+
+;;; Bits for REG_PINTPOL_SPP815
+        REGBIT  SPPTF "(1 << 7)"
+        REGBIT  SPPTE "(1 << 6)"
+        REGBIT  SPPTD "(1 << 5)"
+        REGBIT  SPPTC "(1 << 4)"
+        REGBIT  SPPTB "(1 << 3)"
+        REGBIT  SPPTA "(1 << 2)"
+        REGBIT  SPPT9 "(1 << 1)"
+        REGBIT  SPPT8 "(1 << 0)"
+
+;;; Bits for REG_PINTEL_SEPT07
+        REGBIT  SEPT7 "(1 << 7)"
+        REGBIT  SEPT6 "(1 << 6)"
+        REGBIT  SEPT5 "(1 << 5)"
+        REGBIT  SEPT4 "(1 << 4)"
+        REGBIT  SEPT3 "(1 << 3)"
+        REGBIT  SEPT2 "(1 << 2)"
+        REGBIT  SEPT1 "(1 << 1)"
+        REGBIT  SEPT0 "(1 << 0)"
+
+;;; Bits for REG_PINTEL_SEPT815
+        REGBIT  SEPTF "(1 << 7)"
+        REGBIT  SEPTE "(1 << 6)"
+        REGBIT  SEPTD "(1 << 5)"
+        REGBIT  SEPTC "(1 << 4)"
+        REGBIT  SEPTB "(1 << 3)"
+        REGBIT  SEPTA "(1 << 2)"
+        REGBIT  SEPT9 "(1 << 1)"
+        REGBIT  SEPT8 "(1 << 0)"
+
+
+;;;
 ;;; SDRAM Controller
 ;;;
 
@@ -869,6 +916,24 @@
         REGBIT  P16TSx_MCLK_DIV_2     "(1 << 0)"
         REGBIT  P16TSx_MCLK_DIV_1     "(0 << 0)"
 
+;;;
+;;; watchdog
+;;;
+
+;;; Bits for: REG_WD_WP
+        REGBIT  WD_WP_OFF 0x96
+        REGBIT  WD_WP_ON  0x00
+
+;;; Bits for: REG_WD_EN
+        REGBIT  CLKSEL  "(1 << 6)"
+        REGBIT  CLKEN   "(1 << 5)"
+        REGBIT  RUNSTP  "(1 << 4)"
+        REGBIT  NMIEN   "(1 << 1)"
+        REGBIT  RESEN   "(1 << 0)"
+
+;;; Bits for: REG_WD_CNTL
+        REGBIT  WDRESEN "(1 << 0)"
+
 
 ;;;
 ;;; SPI module
@@ -915,45 +980,6 @@
         REGBIT  DMA_ENABLED  "(1 << 0)"
         REGBIT  DMA_DISABLED "(0 << 0)"
 
-;;; Bits for REG_PINTPOL_SPP07
-        REGBIT  SPPT7 "(1 << 7)"
-        REGBIT  SPPT6 "(1 << 6)"
-        REGBIT  SPPT5 "(1 << 5)"
-        REGBIT  SPPT4 "(1 << 4)"
-        REGBIT  SPPT3 "(1 << 3)"
-        REGBIT  SPPT2 "(1 << 2)"
-        REGBIT  SPPT1 "(1 << 1)"
-        REGBIT  SPPT0 "(1 << 0)"
-
-;;; Bits for REG_PINTPOL_SPP815
-        REGBIT  SPPTF "(1 << 7)"
-        REGBIT  SPPTE "(1 << 6)"
-        REGBIT  SPPTD "(1 << 5)"
-        REGBIT  SPPTC "(1 << 4)"
-        REGBIT  SPPTB "(1 << 3)"
-        REGBIT  SPPTA "(1 << 2)"
-        REGBIT  SPPT9 "(1 << 1)"
-        REGBIT  SPPT8 "(1 << 0)"
-
-;;; Bits for REG_PINTEL_SEPT07
-        REGBIT  SEPT7 "(1 << 7)"
-        REGBIT  SEPT6 "(1 << 6)"
-        REGBIT  SEPT5 "(1 << 5)"
-        REGBIT  SEPT4 "(1 << 4)"
-        REGBIT  SEPT3 "(1 << 3)"
-        REGBIT  SEPT2 "(1 << 2)"
-        REGBIT  SEPT1 "(1 << 1)"
-        REGBIT  SEPT0 "(1 << 0)"
-
-;;; Bits for REG_PINTEL_SEPT815
-        REGBIT  SEPTF "(1 << 7)"
-        REGBIT  SEPTE "(1 << 6)"
-        REGBIT  SEPTD "(1 << 5)"
-        REGBIT  SEPTC "(1 << 4)"
-        REGBIT  SEPTB "(1 << 3)"
-        REGBIT  SEPTA "(1 << 2)"
-        REGBIT  SEPT9 "(1 << 1)"
-        REGBIT  SEPT8 "(1 << 0)"
 
 ;;;
 ;;; Interrupt vectors

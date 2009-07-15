@@ -194,8 +194,10 @@
 /* Watchdog Timer */
 #define REG_WD_WP		*((REG_TYPE_16 *) (REG_BASE + 0x660))
 #define REG_WD_EN		*((REG_TYPE_16 *) (REG_BASE + 0x662))
+#define REG_WD_COMP		*((REG_TYPE_32 *) (REG_BASE + 0x664))
 #define REG_WD_COMP_LOW		*((REG_TYPE_16 *) (REG_BASE + 0x664))
 #define REG_WD_COMP_HIGH	*((REG_TYPE_16 *) (REG_BASE + 0x666))
+#define REG_WD_CNT		*((REG_TYPE_32 *) (REG_BASE + 0x668))
 #define REG_WD_CNT_LOW		*((REG_TYPE_16 *) (REG_BASE + 0x668))
 #define REG_WD_CNT_HIGH		*((REG_TYPE_16 *) (REG_BASE + 0x66a))
 #define REG_WD_CNTL		*((REG_TYPE_16 *) (REG_BASE + 0x66c))
@@ -751,6 +753,67 @@
 #define RSTONLY  (1 << 0)
 
 
+// Bits for: REG_INT_EK01_EP03
+#define EK1 (1 << 5)
+#define EK0 (1 << 4)
+#define EP3 (1 << 3)
+#define EP2 (1 << 2)
+#define EP1 (1 << 1)
+#define EP0 (1 << 0)
+
+// Bits for: INT_FK01_FP03
+#define FK1 (1 << 5)
+#define FK0 (1 << 4)
+#define FP3 (1 << 3)
+#define FP2 (1 << 2)
+#define FP1 (1 << 1)
+#define FP0 (1 << 0)
+
+
+/*
+ * GPIO
+ */
+
+// Bits for REG_PINTPOL_SPP07
+#define SPPT7 (1 << 7)
+#define SPPT6 (1 << 6)
+#define SPPT5 (1 << 5)
+#define SPPT4 (1 << 4)
+#define SPPT3 (1 << 3)
+#define SPPT2 (1 << 2)
+#define SPPT1 (1 << 1)
+#define SPPT0 (1 << 0)
+
+// Bits for REG_PINTPOL_SPP815
+#define SPPTF (1 << 7)
+#define SPPTE (1 << 6)
+#define SPPTD (1 << 5)
+#define SPPTC (1 << 4)
+#define SPPTB (1 << 3)
+#define SPPTA (1 << 2)
+#define SPPT9 (1 << 1)
+#define SPPT8 (1 << 0)
+
+// Bits for REG_PINTEL_SEPT07
+#define SEPT7 (1 << 7)
+#define SEPT6 (1 << 6)
+#define SEPT5 (1 << 5)
+#define SEPT4 (1 << 4)
+#define SEPT3 (1 << 3)
+#define SEPT2 (1 << 2)
+#define SEPT1 (1 << 1)
+#define SEPT0 (1 << 0)
+
+// Bits for REG_PINTEL_SEPT815
+#define SEPTF (1 << 7)
+#define SEPTE (1 << 6)
+#define SEPTD (1 << 5)
+#define SEPTC (1 << 4)
+#define SEPTB (1 << 3)
+#define SEPTA (1 << 2)
+#define SEPT9 (1 << 1)
+#define SEPT8 (1 << 0)
+
 
 /*
  * SDRAM Controller
@@ -890,6 +953,25 @@
 #define P16TSx_MCLK_DIV_4     (2 << 0)
 #define P16TSx_MCLK_DIV_2     (1 << 0)
 #define P16TSx_MCLK_DIV_1     (0 << 0)
+
+
+/*
+ * watchdog
+ */
+
+// Bits for: REG_WD_WP
+#define WD_WP_OFF 0x96
+#define WD_WP_ON  0x00
+
+// Bits for: REG_WD_EN
+#define CLKSEL  (1 << 6)
+#define CLKEN   (1 << 5)
+#define RUNSTP  (1 << 4)
+#define NMIEN   (1 << 1)
+#define RESEN   (1 << 0)
+
+// Bits for: REG_WD_CNTL
+#define WDRESEN (1 << 0)
 
 
 /*
