@@ -56,6 +56,7 @@
 #elif BOARD_PROTO2
 #include "boards/proto2.h"
 #elif BOARD_SAMO_A1 || BOARD_SAMO_A3
+#define BOARD_SAMO_Ax 1
 #include "boards/samo_a1.h"
 #elif BOARD_PRT33L17LCD
 #include "boards/prt33l17lcd.h"
@@ -101,7 +102,7 @@ static inline void init_rs232_ch1(void)
 	REG_INT_FSIF01 = FSRX1 | FSTX1 | FSERR1;
 }
 
-#if BOARD_PROTO2 || BOARD_SAMO_A1
+#if BOARD_PROTO2 || BOARD_SAMO_Ax
 
 #define ADC_FULL_SCALE	1024
 #define VADC_DIVISOR 128
@@ -156,6 +157,7 @@ static inline unsigned int get_battery_voltage(void)
 	return (val * (VADC_MULTIPLIER * AVDD_MILLIVOLTS)) / (ADC_FULL_SCALE * VADC_DIVISOR);
 }
 #else
+#error "Battery voltage not implemented"
 static inline unsigned int get_battery_voltage(void)
 {
 	/* return some sane value for platforms with no hardware support

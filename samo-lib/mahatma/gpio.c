@@ -26,7 +26,7 @@
 #include "gpio.h"
 
 
-#if BOARD_SAMO_A1
+#if BOARD_SAMO_Ax
 static const int keymap[] = {
 	WL_INPUT_KEY_RANDOM,
 	WL_INPUT_KEY_SEARCH,

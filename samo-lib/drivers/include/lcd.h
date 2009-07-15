@@ -5,7 +5,7 @@
 
 void init_lcd(void);
 
-#if BOARD_SAMO_A1
+#if BOARD_SAMO_Ax
 
 #define LCD_WIDTH_PIXELS  240
 #define LCD_HEIGHT_LINES  208
