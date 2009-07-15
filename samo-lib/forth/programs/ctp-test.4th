@@ -114,7 +114,9 @@ variable inside
 variable in-sequence
 variable flag
 
-: draw-lines ( -- flag )
+: draw-lines ( u -- flag )
+    draw-boxes
+
     button-flush
     key-flush
     ctp-flush
@@ -188,11 +190,32 @@ variable flag
     again
 ;
 
+variable retry-count
+
+: test-ctp-tries ( u -- flag )
+    3 0 ?do
+        i 0<>
+        if
+            lcd-cls
+            s" CTP Test" lcd-type
+            lcd-text-columns 2/ lcd-text-rows 2/ lcd-at-xy
+            s" RETRY " lcd-type i lcd-.
+            500000 delay-us
+        then
+        dup draw-lines
+        if
+            unloop
+            drop
+            true exit
+        then
+    loop
+    drop false
+;
+
 : test-ctp-sequence ( -- flag )
     true
     3 0 ?do
-        i draw-boxes
-        draw-lines dup
+        i test-ctp-tries dup
         if
             s" PASS"
         else
