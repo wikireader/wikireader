@@ -95,17 +95,25 @@ constant MULTIPLIER
 
 \ display thermistor
 
+766386 constant thermal-k0
+-1129  constant thermal-k1
+10000  constant thermal-divisor
+
 : thermistor-display ( u -- )
+    dup
     0 6 lcd-at-xy
     s" thermistor = " lcd-type
     5 lcd-u.r
-    s"  counts" lcd-type
+    s"  counts" lcd-type lcd-cr
+    thermal-k1 * thermal-k0 + thermal-divisor /
+    s"              " lcd-type
+    5 lcd-u.r s"  C" lcd-type
 ;
 
 \ display lcd_contrast
 
 : contrast-display ( u -- )
-    0 8 lcd-at-xy
+    0 9 lcd-at-xy
     s" contrast   = " lcd-type
     5 lcd-u.r
     s"  counts" lcd-type
