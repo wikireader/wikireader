@@ -19,27 +19,36 @@ variable error-count
         dup 14 5 lcd-at-xy lcd-number
         dup scan-sector if drop exit then
         1+
-        P6_P6D p@ $07 and
+        button?
     until
     drop
 ;
 
 : test-sd
+    key-flush
+    ctp-flush
+    button-flush
     lcd-cls s" Reading SD card" lcd-type
     dup 0 5 lcd-at-xy s" sector count:" lcd-type
-    24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
+    9 lcd-text-rows 1- lcd-at-xy s" Clear          Exit" lcd-type
     begin
         0 scan-disk-from
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+        ctp-pos? if ctp-flush then
+        key? if key-flush then
+        button?
+        if
+            button
+            case
+                button-left of
+                    0 error-count !
+                endof
+                button-centre of
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
     again
 ;
 
