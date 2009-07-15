@@ -22,6 +22,9 @@ int _wl_open(const char *filename, int flags)
 	case WL_O_RDWR:
 		f = O_RDWR;
 		break;
+	case WL_O_CREATE:
+		f = O_WRONLY | O_TRUNC | O_CREAT;
+		break;
 	}
 
 	return open(filename, f);
