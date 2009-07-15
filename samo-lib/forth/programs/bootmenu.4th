@@ -117,9 +117,6 @@ variable menu-cursor
     key-flush
     button-flush
     begin
-        P6_P6D p@ $07 and 0=
-    until
-    begin
         menu-select dup 2 >
         if
             dup 3 - menu-count @ < if
