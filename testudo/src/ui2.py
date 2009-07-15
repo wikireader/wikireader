@@ -34,6 +34,7 @@ import sequencer
 SUPPLY_STANDARD_VOLTAGE = 3.0
 SUPPLY_CURRENT_LIMIT = 0.35
 MAXIMUM_SUSPEND_CURRENT = 0.02
+MINIMUM_ON_CURRENT = 0.002
 MAXIMUM_ON_CURRENT = 0.15
 
 # paths to files
@@ -55,8 +56,7 @@ class SerialPort():
         self.s.baudrate = bps
         self.s.timeout = timeout
         self.s.open()
-
-        print'bps =', self.s.baudrate
+        self.resetLow()
 
     def __del__(self):
         self.s.close()
@@ -71,6 +71,32 @@ class SerialPort():
 
     def readChar(self):
         return self.s.read(1)
+
+    def resetLow(self):
+        self.s.setDTR(True)
+
+    def resetHigh(self):
+        self.s.setDTR(False)
+
+class ProgramPin():
+
+    def __init__(self, port = '/dev/USBjtag', bps = 19200, timeout = 0.2):
+        self.s = Serial(port = port)
+        self.s.xonxoff = False
+        self.s.rtscts = False
+        self.s.baudrate = bps
+        self.s.timeout = timeout
+        self.s.open()
+        self.setHigh()
+
+    def __del__(self):
+        self.s.close()
+
+    def setHigh(self):
+        self.s.setDTR(False)
+
+    def setLow(self):
+        self.s.setDTR(True)
 
 
 def threaded(f):
@@ -148,12 +174,15 @@ class Sample:
 
         try:
             s = None
+            program = None
             psu = None
 
             s = SerialPort()
             if '' == self.serialNumber.get_text():
                 raise StopTestException('Serial number invalid')
             serialNumber = self.serialNumber.get_text()
+
+            program = ProgramPin()
 
             psu = Keithley.PSU2303()
             psu.setCurrent(SUPPLY_CURRENT_LIMIT)
@@ -166,6 +195,7 @@ class Sample:
 
             self.write('*** Press device power on button to begin test ***\n\n')
 
+            starting = True
             run = True
             while run:
 
@@ -175,6 +205,13 @@ class Sample:
                     if '\n' == c:
                         break
                     if '' == c or ' ' > c:
+                        if starting:
+                            i = psu.current
+                            self.write('INFO: starting, current = %7.3f mA @ %5.1f V\n' %
+                                   (1000 * i, psu.voltage))
+                            if MINIMUM_ON_CURRENT < i:
+                                starting = False
+                                s.resetHigh()
                         continue
                     line = line + c
 
@@ -229,6 +266,8 @@ class Sample:
         finally:
             if None != s:
                 del s
+            if None != program:
+                del program
             if None != psu:
                 psu.powerOff()
                 del psu
