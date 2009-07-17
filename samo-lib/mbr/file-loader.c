@@ -17,8 +17,9 @@
 */
 
 // these items correspond to the load list
-#define APPLICATION_TITLE "Boot WikiReader"
+#define APPLICATION_TITLE  "Boot WikiReader"
 #define APPLICATION_TITLE2 "Boot Forth"
+#define APPLICATION_TITLE3 "Boot Test Program"
 
 #include "application.h"
 #include "eeprom.h"
@@ -26,9 +27,13 @@
 
 // each file can have a title above
 // so that the menu program can set a start point
-static const char *LoadList[8] = {
-	"kernel.elf",
-	"forth.elf"
+static const struct {
+	const char *filename;
+	int arg;
+} LoadList[] = {
+	{"kernel.elf", 0},
+	{"forth.elf",  0},
+	{"forth.elf",  1},
 };
 
 // this must be the first executable code as the loader executes from the first program address
@@ -43,9 +48,9 @@ ReturnType file_loader(int block, int status)
 			i = 0;
 		}
 		for (; i < ARRAY_SIZE(LoadList); ++i) {
-			int error = - elf_exec(LoadList[i]);
+			int error = - elf_exec(LoadList[i].filename, LoadList[i].arg);
 			print("load '");
-			print(LoadList[i]);
+			print(LoadList[i].filename);
 			print("' error = ");
 			print_u32(error);
 			print_char('\n');

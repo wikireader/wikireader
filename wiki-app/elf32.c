@@ -75,7 +75,7 @@ typedef struct {
 #define SHT_DYNSYM	11	/* Dynamic linking symbol table */
 
 
-int elf_exec(const u8 *filename)
+int elf_exec(const u8 *filename, int arg)
 {
 	elf32_hdr hdr;
 	elf32_sec sec;
@@ -155,7 +155,7 @@ int elf_exec(const u8 *filename)
 	disable_card_power();
 
 	exec = (void *) hdr.e_entry;
-	((void (*) (void)) exec) ();
+	((void (*) (int)) exec) (arg);
 	goto abort_umount;
 
 // make sure every thing is cleaned up if the load fails fail
