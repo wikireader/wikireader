@@ -3133,9 +3133,9 @@ end-code
 \ =========
 
 code power-off            :: power-off               ( -- )
-        xld.w   %r4, R8_P6__03_CFP
+        xld.w   %r4, R8_P6_03_CFP
         xld.w   %r5, ~0xc0
-        ld.ub   [%r4], %r5      ; select P63 as GPIO
+        ld.b    [%r4], %r5      ; select P63 as GPIO
 
         xld.w   %r4, R8_P6_P6D
         xld.w   %r5, R8_P6_IOC6
