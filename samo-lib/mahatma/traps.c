@@ -25,7 +25,7 @@
 #include "irq.h"
 #include "misc.h"
 #include "button.h"
-#include "touchscreen.h"
+#include "ctp.h"
 
 #define CLEAR_IRQ(reg,val)                      \
 	do {                                    \
@@ -39,8 +39,6 @@ static void illegal_irq_handler(void) __attribute__((interrupt_handler));
 static void serial0_err_irq(void) __attribute__((interrupt_handler));
 static void serial0_in_irq(void) __attribute__((interrupt_handler));
 static void serial0_out_irq(void) __attribute__((interrupt_handler));
-static void serial1_err_irq(void) __attribute__((interrupt_handler));
-static void serial1_in_irq(void) __attribute__((interrupt_handler));
 static void serial1_out_irq(void) __attribute__((interrupt_handler));
 static void unaligned_data_access(void) __attribute__((interrupt_handler));
 
@@ -156,18 +154,6 @@ static void serial0_out_irq(void)
 	serial_drained_0();
 }
 
-static void serial1_err_irq(void)
-{
-	touchscreen_handler();
-	CLEAR_IRQ(REG_INT_FSIF01, 1 << 3);
-}
-
-static void serial1_in_irq(void)
-{
-	touchscreen_handler();
-	CLEAR_IRQ(REG_INT_FSIF01, 1 << 4);
-}
-
 static void serial1_out_irq(void)
 {
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 5);
@@ -238,8 +224,8 @@ irq_callback trap_table[N_TRAPS] = {
 	serial0_in_irq,		//  57 Serial interface Ch.0 - Receive buffer full
 	serial0_out_irq,	//  58 Serial interface Ch.0 - Transmit buffer empty
 	undef_irq_handler,	//  59 *reserved*
-	serial1_err_irq,	//  60 Serial interface Ch.1 - Receive error
-	serial1_in_irq,		//  61 Serial interface Ch.1 - Receive buffer full
+	CTP_interrupt,		//  60 Serial interface Ch.1 - Receive error
+	CTP_interrupt,		//  61 Serial interface Ch.1 - Receive buffer full
 	serial1_out_irq,	//  62 Serial interface Ch.1 - Transmit buffer empty
 	undef_irq_handler,	//  63 A/D converter - Result out of range
 	undef_irq_handler,	//  64 A/D converter - End of conversion
