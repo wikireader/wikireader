@@ -24,6 +24,7 @@ base @ decimal
 
 : unhighlight-box ( x y -- )
     lcd-white (highlight-box)
+    lcd-black
 ;
 
 : within-box ( x y x0 y0 x1 y1 -- flag )

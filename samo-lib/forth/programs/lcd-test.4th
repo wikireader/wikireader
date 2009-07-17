@@ -42,6 +42,14 @@ decimal
 ;
 
 
+: character-X-test ( -- )
+    lcd-cls
+    lcd-text-rows lcd-text-columns * 0 ?do
+        [char] X lcd-emit
+    loop
+;
+
+
 : test-lcd-menu ( -- flag )
     button-flush
     ctp-flush
@@ -102,12 +110,7 @@ decimal
     test-lcd-pass-fail
     and
 
-    stripe
-    s" LCD moving stripes"
-    test-lcd-pass-fail
-    and
-
-    charset-test
+    character-X-test
     s" LCD text"
     test-lcd-pass-fail
     and
