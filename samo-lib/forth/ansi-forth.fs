@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-14
+15
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -842,9 +842,13 @@ end-code
   build-number 0 u.r
   ." )" cr
   quit-reset
-
   \ initial code to run
-  s" forth.ini"  r/o open-file 0= if  \ ignore any errors
+  cold-arg if
+    s" forth.tst"
+  else
+    s" forth.ini"
+  then
+  r/o open-file 0= if  \ ignore any errors
     include-file
   then
 
@@ -864,6 +868,14 @@ end-code
   quit-reset
   quit
 ;
+
+code cold-arg             :: cold-arg                ( -- a-addr )
+        xld.w   %r4, initial_argument
+        ld.w    %r4, [%r4]
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
 
 code cold-cp0             :: cold-c-p-zero           ( -- a-addr )
         xld.w   %r4, dictionary_end
@@ -3121,6 +3133,10 @@ end-code
 \ =========
 
 code power-off            :: power-off               ( -- )
+        xld.w   %r4, R8_P6__03_CFP
+        xld.w   %r5, ~0xc0
+        ld.ub   [%r4], %r5      ; select P63 as GPIO
+
         xld.w   %r4, R8_P6_P6D
         xld.w   %r5, R8_P6_IOC6
         xld.w   %r6, 0x08

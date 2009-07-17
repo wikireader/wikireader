@@ -202,6 +202,9 @@ param_\label\():
         .section .bss
 
         .balign 4
+initial_argument:                                     ; parameter from boot loader
+        .space  4
+
 terminal_buffer_start:
         .space   65536
 terminal_buffer_length = . -terminal_buffer_start
@@ -226,6 +229,9 @@ main:
         xld.w   %r1, initial_stack_pointer
         xld.w   %r4, initial_return_pointer
         ld.w    %sp, %r4
+
+        xld.w   %r4, initial_argument                 ; save initial argument
+        ld.w    [%r4], %r6
 
         ld.w    %r0, 0                                ; clear status register
         ld.w    %psr, %r0
