@@ -215,14 +215,18 @@ class Sample:
                         continue
                     line = line + c
                     if 'menu?' == line:
-                        s.write('c')
+                        s.write('\n')
 
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
 
                 self.write(line)
                 self.write('\n')
-                if '*SUSPEND*' == line:
+
+                if '. Boot Test Program' == line[1:]:
+                    s.write(line[0:1])
+
+                elif '*SUSPEND*' == line:
                     samples = 20
                     total = 0
                     for j in range(samples):
