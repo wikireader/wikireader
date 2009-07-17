@@ -6,6 +6,9 @@
 // available range 10 .. 715 seconds (10 sec .. 11 min 55 sec)
 #define SUSPEND_AUTO_POWER_OFF_SECONDS 120
 
+#if !defined(ARRAY_SIZE)
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+#endif
 
 //#define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)
 //#define DEBUGLED1_OFF() do { REG_P1_P1D |=  (1 << 4); } while (0)

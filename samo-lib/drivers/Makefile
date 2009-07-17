@@ -41,6 +41,7 @@ OBJECTS += contrast.o
 OBJECTS += delay_us.o
 OBJECTS += delay_nop.o
 OBJECTS += lcd.o
+OBJECTS += button.o
 OBJECTS += suspend.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})

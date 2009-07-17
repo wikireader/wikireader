@@ -14,7 +14,8 @@
 enum {
 	WL_INPUT_KEY_SEARCH	= 0x1000,
 	WL_INPUT_KEY_HISTORY	= 0x1001,
-	WL_INPUT_KEY_RANDOM	= 0x1002
+	WL_INPUT_KEY_RANDOM	= 0x1002,
+	WL_INPUT_KEY_POWER	= 0x1003,
 };
 
 enum {
@@ -51,7 +52,7 @@ struct wl_input_event {
 	}; /* union */
 };
 
-int wl_input_wait(struct wl_input_event *ev, int sleep);
+void wl_input_wait(struct wl_input_event *ev, int sleep);
 
 #endif /* WL_INPUT_H */
 

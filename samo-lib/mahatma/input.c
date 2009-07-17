@@ -36,7 +36,7 @@
 #endif
 
 
-int wl_input_wait(struct wl_input_event *ev, int sleep)
+void wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	/* wl_input_wait() is called from the wikilib mainloop and we will
 	 * get here regularily when the system has no other duty. Hence,
@@ -69,7 +69,5 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 #endif
 
 	}
-
-	return 0;
 }
 

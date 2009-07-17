@@ -24,25 +24,13 @@
 #include "serial.h"
 #include "irq.h"
 #include "misc.h"
-#include "gpio.h"
+#include "button.h"
 #include "touchscreen.h"
 
-#if 1
 #define CLEAR_IRQ(reg,val)                      \
 	do {                                    \
 		(reg) = (val);                  \
 	} while (0)
-#else
-#error "this consumes too much stack"
-#define CLEAR_IRQ(reg,val)			\
-	asm("pushn %r12");			\
-	asm("pushn %r13");			\
-	asm("ld.w %%r12, %0" :: "r"((val)));	\
-	asm("xld.w %%r13, %0" :: "g"(&(reg))); 	\
-	asm("ld.b [%r13], %r12");		\
-	asm("popn %r13");			\
-	asm("popn %r12");
-#endif
 
 
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
@@ -54,7 +42,6 @@ static void serial0_out_irq(void) __attribute__((interrupt_handler));
 static void serial1_err_irq(void) __attribute__((interrupt_handler));
 static void serial1_in_irq(void) __attribute__((interrupt_handler));
 static void serial1_out_irq(void) __attribute__((interrupt_handler));
-static void kint_irq(void) __attribute__((interrupt_handler));
 static void unaligned_data_access(void) __attribute__((interrupt_handler));
 
 
@@ -186,12 +173,6 @@ static void serial1_out_irq(void)
 	CLEAR_IRQ(REG_INT_FSIF01, 1 << 5);
 }
 
-static void kint_irq(void)
-{
-	gpio_irq();
-	CLEAR_IRQ(REG_INT_FK01_FP03, 0x3f);
-}
-
 
 #define N_TRAPS 108
 typedef void (*irq_callback)(void);
@@ -216,9 +197,9 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	//  16 Port input interrupt 0
 	undef_irq_handler,	//  17 Port input interrupt 1
 	undef_irq_handler,	//  18 Port input interrupt 2
-	undef_irq_handler,	//  19 Port input interrupt 3
-	kint_irq,		//  20 Key input interrupt 0
-	kint_irq,		//  21 Key input interrupt 1
+	Button_PowerInterrupt,	//  19 Port input interrupt 3
+	Button_KeyInterrupt,	//  20 Key input interrupt 0
+	Button_KeyInterrupt,	//  21 Key input interrupt 1
 	undef_irq_handler,	//  22 High-speed DMA Ch.0
 	undef_irq_handler,	//  23 High-speed DMA Ch.1
 	undef_irq_handler,	//  24 High-speed DMA Ch.2

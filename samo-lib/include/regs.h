@@ -61,7 +61,7 @@
 #define REG_INT_PP45L			*((REG_TYPE_8 *) (REG_BASE + 0x26c))
 #define REG_INT_PP67L			*((REG_TYPE_8 *) (REG_BASE + 0x26d))
 #define REG_INT_PSI02_PSPI		*((REG_TYPE_8 *) (REG_BASE + 0x26e))
-#define REG_INT_EK01_EP0_3		*((REG_TYPE_8 *) (REG_BASE + 0x270))
+#define REG_INT_EK01_EP03		*((REG_TYPE_8 *) (REG_BASE + 0x270))
 #define REG_INT_EDMA			*((REG_TYPE_8 *) (REG_BASE + 0x271))
 #define REG_INT_E16T01			*((REG_TYPE_8 *) (REG_BASE + 0x272))
 #define REG_INT_E16T23			*((REG_TYPE_8 *) (REG_BASE + 0x273))
