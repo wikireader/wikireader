@@ -10,6 +10,10 @@
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #endif
 
+#if !defined(SAMO_RESTRICTIONS)
+#define SAMO_RESTRICTIONS 0
+#endif
+
 //#define DEBUGLED1_ON()  do { REG_P1_P1D &= ~(1 << 4); } while (0)
 //#define DEBUGLED1_OFF() do { REG_P1_P1D |=  (1 << 4); } while (0)
 

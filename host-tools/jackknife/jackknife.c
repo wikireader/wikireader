@@ -21,6 +21,7 @@
 // override the default console bps for faster programming
 #define CONSOLE_BPS 115200
 
+#define SAMO_RESTRICTIONS 1
 #include "samo.h"
 
 

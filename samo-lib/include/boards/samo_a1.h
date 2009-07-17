@@ -33,10 +33,21 @@ static inline int board_revision(void)
 // P32 = 0, P33 = 1
 #define P3_23_MASK (P32_BIT | P33_BIT)
 
+#if !SAMO_RESTRICTIONS
+// this need delay - but jackknife cannot include it or it will be too big
+// so jacknife excludes this
+#include <delay.h>
+
 static inline void enable_card_power(void)
 {
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P32_BIT;
+	delay_us(10);
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK);
+	delay_us(1000);
 	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P33_BIT;
 }
+
+#endif
 
 static inline void disable_card_power(void)
 {
