@@ -214,6 +214,8 @@ class Sample:
                                 s.resetHigh()
                         continue
                     line = line + c
+                    if 'menu?' == line:
+                        s.write('c')
 
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
