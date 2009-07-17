@@ -267,7 +267,8 @@ class Sample:
             with open(fileName, 'w') as f:
                 start = self.buffer.get_start_iter()
                 end = self.buffer.get_end_iter()
-                f.write(self.buffer.get_text(start, end, include_hidden_chars = True))
+                text = self.buffer.get_text(start, end, include_hidden_chars = True)
+                f.write('\r\n'.join(text.split('\n')))
 
     def __init__(self):
         self.fileName = ''
