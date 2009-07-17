@@ -105,7 +105,7 @@ static inline void init_pins(void)
 	// immediately.
 	// This _must_ be the setting performed.
 	// p60-63: wdt - ensure that P63(#WDTNMI) pin is set high
-	REG_P6_P6D |= (1 << 3);		 // P63 = 1 (for safety)
+	//REG_P6_P6D |= (1 << 3);		 // P63 = 1 (for safety)
 
 	/* P85: LCD_CS, P83: TFT_CTL1 */
 	REG_P8_IOC8 = 0x28;
