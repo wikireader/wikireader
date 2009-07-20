@@ -21,7 +21,7 @@
 
 #include "contrast.h"
 
-void contrast_initialise(unsigned int max_value)
+void Contrast_initialise(unsigned int max_value)
 {
 	// enable clocks - for all timers that will be used
 	// even if internal clocking is not used.
@@ -119,12 +119,12 @@ void contrast_initialise(unsigned int max_value)
 		0;
 }
 
-int contrast_get(void)
+int Contrast_get(void)
 {
 	return REG_T16_CR1A;
 }
 
-void contrast_set(int value)
+void Contrast_set(int value)
 {
 	if (value > REG_T16_CR1B) {
 		value = REG_T16_CR1B;

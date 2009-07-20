@@ -23,8 +23,8 @@
 #define CONTRAST_DEFAULT 2048
 #define CONTRAST_MAX 4095
 
-void contrast_initialise(unsigned int max_value);
-void contrast_set(int value);
-int contrast_get(void);
+void Contrast_initialise(unsigned int max_value);
+void Contrast_set(int value);
+int Contrast_get(void);
 
 #endif
