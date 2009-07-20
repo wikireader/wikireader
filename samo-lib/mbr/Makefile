@@ -45,8 +45,8 @@ $(FLASH_ROM_MAP_FILE):
 #mbr.o: mbr.c
 #	$(GCC) -c $(CFLAGS) $<
 
-mbr.elf: mbr.o eeprom.o
-	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0',-Map,$(@:.elf=.map)
+mbr.elf: mbr.o
+	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0',-Map,$(@:.elf=.map) ${LIBS}
 
 mbr: mbr.elf
 	${RM} "$@"

@@ -16,19 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "regs.h"
-#include "types.h"
-#include "samo.h"
+#include <stdlib.h>
+
+#include <regs.h>
+#include <samo.h>
+
 #include "eeprom.h"
 
-static u8 spi_transmit(u8 out)
+static uint8_t spi_transmit(uint8_t out)
 {
 	REG_SPI_TXD = out;
 	do {} while (~REG_SPI_STAT & RDFF);
 	return REG_SPI_RXD;
 }
 
-void eeprom_load(u32 addr, u8 *dest, u32 size)
+void eeprom_load(uint32_t addr, uint8_t *dest, uint32_t size)
 {
 	EEPROM_CS_HI();
 	spi_transmit(0x00);
