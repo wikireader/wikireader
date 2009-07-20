@@ -42,11 +42,16 @@ endif
 
 # ----- configuration data --------------------------------------
 
+ALL_TARGETS =
+ALL_TARGETS += mbr
+ALL_TARGETS += jackknife
+ALL_TARGETS += forth
+ALL_TARGETS += mahatma
+#ALL_TARGETS += toppers # not working
+ALL_TARGETS += qt4-simulator
+
 .PHONY: all
-all:    mini-libc \
-	mbr \
-	mahatma \
-	qt4-simulator
+all:    ${ALL_TARGETS}
 
 .PHONY: toppers
 toppers: mini-libc fatfs
@@ -187,9 +192,12 @@ mbr: gcc fatfs
 mbr-rs232: gcc fatfs
 	$(MAKE) -C samo-lib/mbr mbr-rs232
 
-.PHONY: flash-mbr
-flash-mbr: mbr
+.PHONY: jackknife
+jackknife:
 	$(MAKE) -C host-tools/jackknife
+
+.PHONY: flash-mbr
+flash-mbr: mbr jackknife
 	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
 
@@ -227,20 +235,24 @@ clean-console-simulator:
 
 .PHONY:help
 help:
-	@echo -e "\n\
-all:			compile all the source.\n\
-setup:			get all the source we need.\n\
-bootloader:		compile bootloader.\n\
-toppers:		compile a toppers kernel.\n\
-binutils: 		compile binutils.\n\
-gcc:			compile gcc.\n\
-mini-libc:		compile mini-libc (libc.a).\n\
-flash-bootloader: 	flash bootloader to you E07 board\n\
-				-make sure the serial console is /dev/ttyUSB0.\n\
-qt4-simulator		compile the Qt4 simulator\n\
-console-simulator	compile the console simulator\n\
-clean: 			clean all.\n\
-				openmoko, Inc.\n "
+	@echo
+	@echo 'Some of the more useful targets:'
+	@echo
+	@echo '  all                   - compile all the source'
+	@echo '  mbr                   - compile bootloader'
+	@echo '  mahatma               - compile kernel'
+	@echo '  forth                 - compile forth'
+	@echo '  mbr                   - compile bootloader'
+	@echo '  gcc                   - compile gcc toolchain'
+	@echo '  flash-mbr             - flash bootloader to the E07 board'
+	@echo '  qt4-simulator         - compile the Qt4 simulator'
+	@echo '  console-simulator     - compile the console simulator'
+	@echo '  clean                 - clean everything except the toochain'
+	@echo '  clean-toolchain       - clean just the toochain'
+	@echo '  sd                    - copy kernel, forth and programs to SD Card'
+	@echo '  p33                   - terminal emulator (console debugging)'
+	@echo
+
 
 .PHONY:testhelp
 testhelp:
@@ -249,3 +261,12 @@ testhelp:
 		{ print substr($$1, 1, length($$1)-1) }' | 	\
 	sort |	\
 	pr --omit-pagination --width=80 --columns=1
+
+
+.PHONY: sd
+sd:
+	./samo-lib/scripts/MakeSD all
+
+.PHONY: p33
+p33:
+	./samo-lib/scripts/p33
