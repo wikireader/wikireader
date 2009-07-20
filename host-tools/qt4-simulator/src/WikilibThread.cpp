@@ -40,7 +40,7 @@ void fb_refresh(void)
 	window->display->update();
 }
 
-int wl_input_wait(struct wl_input_event *ev, int sleep)
+void wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	WikiDisplay *display = window->display;
 	QWaitCondition *w = display->waitCondition;
@@ -91,8 +91,6 @@ int wl_input_wait(struct wl_input_event *ev, int sleep)
 
 		mutex.unlock();
 	} while (ev->type == -1 && sleep);
-
-	return 0;
 }
 
 } /* extern "C" */
