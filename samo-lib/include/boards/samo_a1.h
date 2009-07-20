@@ -107,6 +107,9 @@ static inline void power_off(void)
 #define ADC_SERIES_RESISTOR_K  150
 #define ADC_SHUNT_RESISTOR_K   1000
 
+#define BATTERY_FULL  3000
+#define BATTERY_EMPTY 2100
+
 
 static inline void init_pins(void)
 {

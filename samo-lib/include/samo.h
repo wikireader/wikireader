@@ -2,12 +2,17 @@
 #define _SAMO_H 1
 
 #include "config.h"
+#include <regs.h>
 
 // available range 10 .. 715 seconds (10 sec .. 11 min 55 sec)
 #define SUSPEND_AUTO_POWER_OFF_SECONDS 120
 
 #if !defined(ARRAY_SIZE)
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+#endif
+
+#if !defined(NULL)
+#define NULL 0
 #endif
 
 #if !defined(SAMO_RESTRICTIONS)
@@ -113,70 +118,4 @@ static inline void init_rs232_ch1(void)
 	REG_INT_FSIF01 = FSRX1 | FSTX1 | FSERR1;
 }
 
-#if BOARD_PROTO2 || BOARD_SAMO_Ax
-
-#define ADC_FULL_SCALE	1024
-#define VADC_DIVISOR 128
-
-#define VADC_MULTIPLIER (VADC_DIVISOR * (ADC_SERIES_RESISTOR_K + ADC_SHUNT_RESISTOR_K) / ADC_SHUNT_RESISTOR_K)
-
-#define BATTERY_FULL 3000
-#define BATTERY_EMPTY 2000
-
-/* returns the battery voltage, in mV */
-static inline unsigned int get_battery_voltage(void)
-{
-	unsigned int val;
-
-	/* switch on A/D converter clock and select MCLK/256 */
-	REG_AD_CLKCTL = 0xf;
-
-	/* A/D Trigger/Channel Select Register: channel 0,
-	 * one-shot, software triggered */
-	REG_AD_TRIG_CHNL = 0;
-
-	/* select P70 pin function for AIN0 */
-	REG_P7_03_CFP = 0x01;
-
-	/* A/D Control/Status Register: start conversion (9 clock cycles) */
-	REG_AD_EN_SMPL_STAT = 0x304;
-
-	/* A/D Control/Status Register: trigger ADST */
-	REG_AD_EN_SMPL_STAT |= (1 << 1);
-
-	/* wait for the conversion to complete */
-	do { asm volatile ("nop"); } while (!(REG_AD_EN_SMPL_STAT & (1 << 3)));
-
-	/* read the value */
-	val = REG_AD_ADD;
-
-	/* select P70 pin function for P70 */
-	REG_P7_03_CFP = 0;
-
-	/* A/D Control/Status Register: disable controller */
-	REG_AD_EN_SMPL_STAT = 0;
-
-	/* switch off A/D converter clock */
-	REG_AD_CLKCTL = 0;
-
-	/* The circuit divides the battery voltage by
-	 * ADC_SERIES_RESISTOR_K kOhm in series and
-	 * ADC_SHUNT_RESISTOR_K kOhm to GND. Measurement is done
-	 * rail-to-rail in respect of AVDD_MILLIVOLTS.	This formula
-	 * converts the captured value to mV.
-	 */
-	return (val * (VADC_MULTIPLIER * AVDD_MILLIVOLTS)) / (ADC_FULL_SCALE * VADC_DIVISOR);
-}
-#else
-#error "Battery voltage not implemented"
-static inline unsigned int get_battery_voltage(void)
-{
-	/* return some sane value for platforms with no hardware support
-	 * for voltage measurement so the logic using this function will
-	 * not bail. */
-	return BATTERY_FULL;
-}
 #endif
-
-#endif
-

@@ -44,6 +44,7 @@ OBJECTS += eeprom.o
 OBJECTS += lcd.o
 OBJECTS += button.o
 OBJECTS += ctp.o
+OBJECTS += analog.o
 OBJECTS += suspend.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})

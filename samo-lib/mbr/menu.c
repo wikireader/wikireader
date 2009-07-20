@@ -22,6 +22,7 @@
 #include <samo.h>
 #include <lcd.h>
 #include <contrast.h>
+#include <analog.h>
 #include <eeprom.h>
 
 #include "application.h"
@@ -72,6 +73,7 @@ ReturnType menu(int block, int status)
 
 	APPLICATION_INITIALISE();
 	init_lcd();
+	Analog_initialise();
 	Contrast_initialise(CONTRAST_MAX);
 	Contrast_set(CONTRAST_DEFAULT);
 	result = process(block, status);
@@ -140,11 +142,16 @@ ProcessReturnType process(int block, int status)
 
 	if (0 != status) {
 		bool MenuFlag = false;
-
+		int bv, t, cv;
+		Analog_get(&bv, &t, &cv);
 		print("\nCPU: ");
 		print_cpu_type();
 		print("\nBAT: ");
-		print_dec32(get_battery_voltage());
+		print_dec32(bv);
+		print(" mV\nTMP: ");
+		print_int32(t);
+		print(" DegC\nLCD: ");
+		print_dec32(cv);
 		print(" mV\nREV: A");
 		print_dec32(board_revision());
 		eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
@@ -308,14 +315,15 @@ void battery_status(void)
 	register int j;
 	register uint32_t indicator = 0;
 
-	unsigned int v = get_battery_voltage();
+	unsigned int v;
+	Analog_get(&v, NULL, NULL);
 	if (v < BATTERY_EMPTY) {
 		v = BATTERY_EMPTY;
 	} else if (v > BATTERY_FULL) {
 		v = BATTERY_FULL;
 	}
 
-	int full = 20 * (v - BATTERY_EMPTY) / (BATTERY_FULL - BATTERY_EMPTY);
+	unsigned int full = 20 * (v - BATTERY_EMPTY) / (BATTERY_FULL - BATTERY_EMPTY);
 
 	if (!initialised) {
 		uint8_t *p = fb + 2 * LCD_VRAM_WIDTH_BYTES;
