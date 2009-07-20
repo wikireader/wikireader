@@ -118,6 +118,15 @@ void print_u32(uint32_t val)
 	print_byte(val);
 }
 
+void print_int32(int32_t value)
+{
+	if (0 > value) {
+		print("-");
+		value = - value;
+	}
+	print_dec32(value);
+}
+
 void print_dec32(uint32_t value)
 {
 	char c[33];

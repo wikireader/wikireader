@@ -60,6 +60,7 @@ int print_char(int c);
 void print(const char *txt);
 
 // decimal output
+void print_int32(int32_t value);
 void print_dec32(uint32_t value);
 
 // hexadecimal output
