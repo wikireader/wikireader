@@ -57,26 +57,34 @@ class SerialPort():
         self.s.timeout = timeout
         self.s.open()
         self.resetLow()
+	self.s.flushOutput()
+	self.s.flushInput()
 
     def __del__(self):
         self.s.close()
 
     def flush(self):
+	self.s.flushInput()
         print 'flush:', self.s.inWaiting()
         if 0 < self.s.inWaiting():
             self.s.read(self.s.inWaiting())
 
     def write(self, text):
         self.s.write(text)
+        self.s.flush()
 
     def readChar(self):
         return self.s.read(1)
 
     def resetLow(self):
         self.s.setDTR(True)
+	self.s.flushInput()
+	self.s.flushOutput()
 
     def resetHigh(self):
         self.s.setDTR(False)
+	self.s.flushInput()
+	self.s.flushOutput()
 
 class ProgramPin():
 
@@ -212,10 +220,14 @@ class Sample:
                             if MINIMUM_ON_CURRENT < i:
                                 starting = False
                                 s.resetHigh()
+                                s.write('  ')
+				time.sleep(0.02)
+                                s.write('                           ')
                         continue
                     line = line + c
                     if 'menu?' == line:
-                        s.write('\n')
+                        s.write(' ')
+                        self.write('Menu detected\n')
 
                 if self.testStop:
                     raise StopTestException('Stop button pressed')
