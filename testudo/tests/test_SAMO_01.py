@@ -59,11 +59,11 @@ VOLTAGE_LIST = (
 #   ("text", relay_name,   None,                 minimum, maximum)
     ("1V8",  RELAY_1V8,    1.8,                  -5,   5),
     ("3V ",  RELAY_3V,     None,                  3.1, 3.3),
-    ("V0 ",  RELAY_LCD_V0, LCD_V0,               -1.5, 1.5),
-    ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -1.5, 1.5),
-    ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -1.5, 1.5),
-    ("V3 ",  RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -1.5, 1.5),
-    ("V4 ",  RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -1.5, 1.5)
+    ("V0 ",  RELAY_LCD_V0, LCD_V0,               -5.0, 5.0),
+    ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5.0, 5.0),
+    ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5.0, 5.0),
+    ("V3 ",  RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -5.0, 5.0),
+    ("V4 ",  RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -5.0, 5.0)
 )
 
 # amps
@@ -314,6 +314,8 @@ def test008_keys():
     key = p.read(4)
     info('key (none) = %s' % key)
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
+
+    test004_measure_voltages()
 
     info('sending auto power off sequence')
     p.send('\n0\n')
