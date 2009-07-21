@@ -161,15 +161,23 @@ class Sample:
             else:
                 message = ''
             if self.testFailed:
+                self.write('\nFAIL: one or more tested FAILED\n', True)
                 self.status.set_text('Stopped [FAILURE]' + message)
             else:
+                self.write('\nPASS: all tests completed\n', True)
                 self.status.set_text('Stopped [SUCCESS]' + message)
 
-    def write(self, message):
+
+
+    def write(self, message, big = False):
         gtk.gdk.threads_enter()
         if 'FAIL:' == message[0:5]:
             self.testFailed = True
-        self.buffer.insert(self.buffer.get_end_iter(), message)
+        if big:
+            self.buffer.insert_with_tags(self.buffer.get_end_iter(), message,
+                                  self.buffer.get_tag_table().lookup("big_text"))
+        else:
+            self.buffer.insert(self.buffer.get_end_iter(), message)
         e = self.buffer.create_mark('*End*', self.buffer.get_end_iter())
         self.view.scroll_to_mark(e, 0.0, True, 0.0, 0.0)
         self.buffer.delete_mark(e)
@@ -334,6 +342,9 @@ class Sample:
         self.view = gtk.TextView()
         self.view.set_editable(False)
         self.buffer = self.view.get_buffer()
+        tag = self.buffer.create_tag("big_text",
+                                     size_points=24.0)
+
         scrolled.add(self.view)
         scrolled.show()
         self.view.show()
