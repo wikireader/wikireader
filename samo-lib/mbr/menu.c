@@ -203,10 +203,11 @@ ProcessReturnType process(int block, int status)
 	for (;;) {
 		ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
 
-		print("\nBoot Menu\n\n0. Power Off\n");
+		print("\nBoot Menu\n\n");
+		print("0. Power Off\n");
 		print("1. Display Board Information\n");
-		// not zero since this program should be in block zero
 		int MenuItem = 0;
+		// not zero since this program should be in block zero
 		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
 			eeprom_load((i << 13), (void *)&header, sizeof(header));
 
@@ -223,22 +224,25 @@ ProcessReturnType process(int block, int status)
 			}
 		}
 		print("\nEnter selection: ");
-		while (!serial_input_available()) {
-			switch (REG_P6_P6D & 0x07) {
-			case 1:
-				Contrast_set(Contrast_get() + 1);
-				break;
-			case 2:
-				Contrast_set(Contrast_get() - 1);
-				break;
-			case 4:
-				Contrast_set(Contrast_default);
-				break;
+		k = ' ';
+		while (k <= ' ') {
+			while (!serial_input_available()) {
+				switch (REG_P6_P6D & 0x07) {
+				case 1:
+					Contrast_set(Contrast_get() + 1);
+					break;
+				case 2:
+					Contrast_set(Contrast_get() - 1);
+					break;
+				case 4:
+					Contrast_set(Contrast_default);
+					break;
+				}
+				battery_status();
+				delay_us(1000);
 			}
-			battery_status();
-			delay_us(1000);
+			k = serial_input_char();
 		}
-		k = serial_input_char();
 		if ('0' == k) {
 			power_off();
 		} else if ('1' == k) {
