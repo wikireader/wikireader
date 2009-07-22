@@ -74,8 +74,7 @@ ReturnType menu(int block, int status)
 	APPLICATION_INITIALISE();
 	init_lcd();
 	Analog_initialise();
-	Contrast_initialise(CONTRAST_MAX);
-	Contrast_set(CONTRAST_DEFAULT);
+	Contrast_initialise();
 	result = process(block, status);
 
 	// next program
@@ -201,30 +200,29 @@ ProcessReturnType process(int block, int status)
 		}
 	}
 
-	{
-	ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
+	for (;;) {
+		ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
 
-	print("\nBoot Menu\n\n0. Power Off\n");
-	print("1. Display Board Information\n");
-	// not zero since this program should be in block zero
-	int MenuItem = 0;
-	for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
-		eeprom_load((i << 13), (void *)&header, sizeof(header));
+		print("\nBoot Menu\n\n0. Power Off\n");
+		print("1. Display Board Information\n");
+		// not zero since this program should be in block zero
+		int MenuItem = 0;
+		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
+			eeprom_load((i << 13), (void *)&header, sizeof(header));
 
-		if (HEADER_MAGIC == header.magic && 0 < header.count && MAXIMUM_APPS >= header.count) {
-			for (k = 0; k < header.count; ++k) {
-				print_char(MenuItem + 'A');
-				print(". ");
-				PrintName(header.name[k]);
-				print_char('\n');
-				app[MenuItem].block = i;
-				app[MenuItem].offset = k;
-				++MenuItem;
+			if (HEADER_MAGIC == header.magic && 0 < header.count && MAXIMUM_APPS >= header.count) {
+				for (k = 0; k < header.count; ++k) {
+					print_char(MenuItem + 'A');
+					print(". ");
+					PrintName(header.name[k]);
+					print_char('\n');
+					app[MenuItem].block = i;
+					app[MenuItem].offset = k;
+					++MenuItem;
+				}
 			}
 		}
-	}
-	print("\nEnter selection: ");
-	for (;;) {
+		print("\nEnter selection: ");
 		while (!serial_input_available()) {
 			switch (REG_P6_P6D & 0x07) {
 			case 1:
@@ -234,7 +232,7 @@ ProcessReturnType process(int block, int status)
 				Contrast_set(Contrast_get() - 1);
 				break;
 			case 4:
-				Contrast_set(CONTRAST_DEFAULT);
+				Contrast_set(Contrast_default);
 				break;
 			}
 			battery_status();
@@ -259,7 +257,6 @@ ProcessReturnType process(int block, int status)
 				}
 			}
 		}
-	}
 	}
 	return rc;
 }

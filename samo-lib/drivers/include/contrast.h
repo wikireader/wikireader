@@ -19,11 +19,13 @@
 #if !defined(_CONTRAST_H_)
 #define _CONTRAST_H_ 1
 
-#define CONTRAST_MIN 0
-#define CONTRAST_DEFAULT 2048
-#define CONTRAST_MAX 4095
+typedef enum {
+	Contrast_minimum = 0,
+	Contrast_default = 2048,
+	Contrast_maximum = 4095,
+} ContrastType;
 
-void Contrast_initialise(unsigned int max_value);
+void Contrast_initialise(void);
 void Contrast_set(int value);
 int Contrast_get(void);
 
