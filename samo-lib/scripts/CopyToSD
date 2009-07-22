@@ -73,7 +73,7 @@ InsertCard()
   done
   echo
 
-  fsck.vfat -y "${dev}"
+  fsck.vfat -a "${dev}"
   mount -t "${fstype}" "${dev}" "${mountpoint}" || ERROR mount failed
   rm -f "${mountpoint}"/fsck*.rec
 
