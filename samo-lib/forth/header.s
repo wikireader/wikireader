@@ -240,6 +240,8 @@ main:
         xcall   Serial_initialise
         xcall   Button_initialise
         xcall   CTP_initialise
+        xcall   Contrast_initialise
+        xcall   Analog_initialise
 
         xld.w   %r0, cold_start                       ; initial ip value
 ;;;       xcall   xdebug

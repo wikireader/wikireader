@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-15
+16
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -3151,6 +3151,56 @@ code power-off            :: power-off               ( -- )
         xcall   delay_us
         NEXT
 end-code
+
+
+\ analog I/O
+\ ==========
+
+code analog-scan          :: analog-scan             ( -- )
+        xcall   Analog_scan
+        NEXT
+end-code
+
+code battery-mv           :: battery-mv              ( -- u )
+        xcall   Analog_BatteryMilliVolts
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code temperature-c        :: temperature-c           ( -- u )
+        xcall   Analog_TemperatureCelcius
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code contrast-mv          :: contrast-mv             ( -- u )
+        xcall   Analog_ContrastMilliVolts
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+code set-contrast-pwm     :: set-contrast-pwm        ( u -- )
+        ld.w    %r6, [%r1]+
+        xcall   Contrast_set
+        NEXT
+end-code
+
+code get-contrast-pwm     :: get-contrast-pwm        ( -- u )
+        xcall   Contrast_get
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
+
+0
+constant minimum-contrast-pwm :: minimum-contrast-pwm ( -- u)
+2048
+constant nominal-contrast-pwm :: nominal-contrast-pwm ( -- u)
+4095
+constant maximum-contrast-pwm :: maximum-contrast-pwm ( -- u)
 
 
 \ debugging
