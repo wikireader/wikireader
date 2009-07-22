@@ -161,10 +161,10 @@ class Sample:
             else:
                 message = ''
             if self.testFailed:
-                self.write('\nFAIL: one or more tested FAILED\n', 'big-red')
+                self.write('\nFAIL: one or more tests FAILED\n', 'fail-text')
                 self.status.set_text('Stopped [FAILURE]' + message)
             else:
-                self.write('\nPASS: all tests completed\n', 'big-green')
+                self.write('\nPASS: all tests completed\n', 'pass-text')
                 self.status.set_text('Stopped [SUCCESS]' + message)
 
 
@@ -342,12 +342,12 @@ class Sample:
         self.view = gtk.TextView()
         self.view.set_editable(False)
         self.buffer = self.view.get_buffer()
-        tag_red = self.buffer.create_tag("big-red",
+        tag_fail = self.buffer.create_tag("fail-text",
                                          size_points = 24.0,
                                          foreground = "red")
-        tag_green = self.buffer.create_tag("big-green",
-                                           size_points = 24.0,
-                                           foreground = "green")
+        tag_pass = self.buffer.create_tag("pass-text",
+                                          size_points = 24.0,
+                                          foreground = "green")
 
         scrolled.add(self.view)
         scrolled.show()
