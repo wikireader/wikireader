@@ -125,6 +125,34 @@ static void PrintName(const NameType name)
 }
 
 
+static void DisplayInfo(void)
+{
+	Analog_scan();
+	print("\nCPU: ");
+	print_cpu_type();
+	print("\nBAT: ");
+	print_dec32(Analog_BatteryMilliVolts());
+	print(" mV\nTMP: ");
+	print_int32(Analog_TemperatureCelcius());
+	print(" DegC\nLCD: ");
+	print_dec32(Analog_ContrastMilliVolts());
+	print(" mV\nREV: A");
+	print_dec32(board_revision());
+	eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
+	print("\nS/N: ");
+
+	int i;
+	for (i = 0; i <	32; ++i) {
+		const char c = SerialNumber[i];
+		if ('\0' == c) {
+			break;
+		}
+		print_char(c);
+	}
+	print("\n");
+}
+
+
 // process:
 // status == 0 => return from a program, therefore must display menu
 //        != 0 => automatic boot, therefore check keys
@@ -138,31 +166,12 @@ ProcessReturnType process(int block, int status)
 	int i = 0;
 	int k = 0;
 
+	Analog_scan(); // update analog values
 	display_image(0x00, 0xff);
 
 	if (0 != status) {
 		bool MenuFlag = false;
-		int bv, t, cv;
-		Analog_get(&bv, &t, &cv);
-		print("\nCPU: ");
-		print_cpu_type();
-		print("\nBAT: ");
-		print_dec32(bv);
-		print(" mV\nTMP: ");
-		print_int32(t);
-		print(" DegC\nLCD: ");
-		print_dec32(cv);
-		print(" mV\nREV: A");
-		print_dec32(board_revision());
-		eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
-		print("\nS/N: ");
-		for (i = 0; i <	32; ++i) {
-			const char c = SerialNumber[i];
-			if ('\0' == c) {
-				break;
-			}
-			print_char(c);
-		}
+		DisplayInfo();
 
 		print("\n\nmenu? ");
 		status = 0;
@@ -196,6 +205,7 @@ ProcessReturnType process(int block, int status)
 	ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
 
 	print("\nBoot Menu\n\n0. Power Off\n");
+	print("1. Display Board Information\n");
 	// not zero since this program should be in block zero
 	int MenuItem = 0;
 	for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
@@ -233,6 +243,8 @@ ProcessReturnType process(int block, int status)
 		k = serial_input_char();
 		if ('0' == k) {
 			power_off();
+		} else if ('1' == k) {
+			DisplayInfo();
 		} else {
 			if ('A' <= k && 'Z' >= k) {
 				k += 'a' - 'A';
@@ -315,8 +327,8 @@ void battery_status(void)
 	register int j;
 	register uint32_t indicator = 0;
 
-	unsigned int v;
-	Analog_get(&v, NULL, NULL);
+	Analog_scan();
+	int v = Analog_BatteryMilliVolts();
 	if (v < BATTERY_EMPTY) {
 		v = BATTERY_EMPTY;
 	} else if (v > BATTERY_FULL) {

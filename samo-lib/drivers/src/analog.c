@@ -40,14 +40,16 @@
 #define THERMISTOR_DIVISOR 10000
 
 
-void Analog_initialise(void)
-{
-	//static bool initialised = false;
-	//if (!initialised) {
-	//}
-}
+// Contrast voltage
 
-void Analog_get(int *BatteryMilliVolts, int *TemperatureCelcius, int *ContrastMilliVolts)
+#define CONTRAST_MULTIPLIER 45826
+#define CONTRAST_DIVISOR     1000
+
+
+static int adc[3];
+
+
+static void StartADC(void)
 {
 	// configure adc
 	REG_AD_CLKCTL = 0x000f;
@@ -66,22 +68,53 @@ void Analog_get(int *BatteryMilliVolts, int *TemperatureCelcius, int *ContrastMi
 		asm volatile ("nop");
 	}
 
-	// read the data
-	if (NULL != BatteryMilliVolts) {
-		*BatteryMilliVolts = (REG_AD_CH0_BUF * (VADC_MULTIPLIER * AVDD_MILLIVOLTS))
-			/ (ADC_FULL_SCALE * VADC_DIVISOR);
-	}
+}
 
-	if (NULL != TemperatureCelcius) {
-		*TemperatureCelcius = (REG_AD_CH1_BUF * THERMISTOR_K1 + THERMISTOR_K0) / THERMISTOR_DIVISOR;
-	}
-
-	if (NULL != ContrastMilliVolts) {
-		*ContrastMilliVolts = REG_AD_CH2_BUF;
-	}
-
+static void StopADC(void)
+{
 	// turn adc off
 	REG_P7_03_CFP  = 0;
 	REG_AD_EN_SMPL_STAT= 0;
 	REG_AD_CLKCTL = 0;
+}
+
+void Analog_initialise(void)
+{
+	static bool initialised = false;
+	if (!initialised) {
+		initialised = true;
+		StartADC();
+		adc[0] = REG_AD_CH0_BUF;
+		adc[1] = REG_AD_CH1_BUF;
+		adc[2] = REG_AD_CH2_BUF;
+		StopADC();
+	}
+	Analog_scan();
+	Analog_scan();
+	Analog_scan();
+	Analog_scan();
+}
+
+void Analog_scan(void)
+{
+	StartADC();
+	adc[0] += (REG_AD_CH0_BUF - adc[0] + 4) / 8;
+	adc[1] += (REG_AD_CH1_BUF - adc[1] + 4) / 8;
+	adc[2] += (REG_AD_CH2_BUF - adc[2] + 4) / 8;
+	StopADC();
+}
+
+int Analog_BatteryMilliVolts(void)
+{
+	return (adc[0] * (VADC_MULTIPLIER * AVDD_MILLIVOLTS)) / (ADC_FULL_SCALE * VADC_DIVISOR);
+}
+
+int Analog_TemperatureCelcius(void)
+{
+	return (adc[1] * THERMISTOR_K1 + THERMISTOR_K0) / THERMISTOR_DIVISOR;
+}
+
+int Analog_ContrastMilliVolts(void)
+{
+	return (adc[2] * CONTRAST_MULTIPLIER) / CONTRAST_DIVISOR;
 }

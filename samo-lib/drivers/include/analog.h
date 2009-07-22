@@ -23,6 +23,14 @@
 
 void Analog_initialise(void);
 
-void Analog_get(int *BatteryMilliVolts, int *TemperatureCelcius, int *ContrastMilliVolts);
+// this performs the ADC conversion and filtering
+// call this periodically
+void Analog_scan(void);
+
+// routines to convert the current filtered value
+// to enfineering units
+int Analog_BatteryMilliVolts(void);
+int Analog_TemperatureCelcius(void);
+int Analog_ContrastMilliVolts(void);
 
 #endif
