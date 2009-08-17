@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-16
+17
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -3201,6 +3201,17 @@ constant minimum-contrast-pwm :: minimum-contrast-pwm ( -- u)
 constant nominal-contrast-pwm :: nominal-contrast-pwm ( -- u)
 4095
 constant maximum-contrast-pwm :: maximum-contrast-pwm ( -- u)
+
+
+\ Timer
+\ =====
+
+code timer-read           :: timer-read               ( -- u )
+        xcall   Tick_get
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4
+        NEXT
+end-code
 
 
 \ debugging
