@@ -324,10 +324,14 @@ void suspend2(int WatchdogTimeout)
 		EFSIOBR_HCKE |
 		MISC_HCKE |
 		IVRAMARB_CKE |
-		//TM5_CKE |
+#if !BOARD_SAMO_A3
+		TM5_CKE |      // for tick.c
+#endif
 		//TM4_CKE |
 		//TM3_CKE |
+#if BOARD_SAMO_A3
 		TM2_CKE |      // for tick.c
+#endif
 		TM1_CKE |      // for contrast.c
 		TM0_CKE |      // for tick.c
 		EGPIO_MISC_CK |

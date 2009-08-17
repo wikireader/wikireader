@@ -1,7 +1,7 @@
 #if !defined(_SAMO_H)
 #define _SAMO_H 1
 
-#include "config.h"
+#include <config.h>
 #include <regs.h>
 
 // available range 10 .. 715 seconds (10 sec .. 11 min 55 sec)
@@ -66,16 +66,16 @@
 // include the board specific macros and functions
 
 #if BOARD_S1C33E07 || SIMULATOR
-#include "boards/s1c33e07.h"
+#include <boards/s1c33e07.h>
 #elif BOARD_PROTO1
-#include "boards/proto1.h"
+#include <boards/proto1.h>
 #elif BOARD_PROTO2
-#include "boards/proto2.h"
-#elif BOARD_SAMO_A1 || BOARD_SAMO_A3
+#include <boards/proto2.h>
+#elif BOARD_SAMO_A1 || BOARD_SAMO_A3 || BOARD_SAMO_A5
 #define BOARD_SAMO_Ax 1
-#include "boards/samo_a1.h"
+#include <boards/samo_a1.h>
 #elif BOARD_PRT33L17LCD
-#include "boards/prt33l17lcd.h"
+#include <boards/prt33l17lcd.h>
 #else
 #error "unsupported board type - see config.h"
 #endif

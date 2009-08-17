@@ -55,7 +55,7 @@ int main(void)
 
 	// critical first initialisation
 	traps_init();
-	tick_initialise();
+	Tick_initialise();
 	msg_init();
 
 	// start of normal initialisation

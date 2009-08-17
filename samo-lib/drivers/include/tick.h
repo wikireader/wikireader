@@ -19,9 +19,9 @@
 #if !defined(_TICK_H_)
 #define _TICK_H_ 1
 
-void tick_initialise();
-void tick_stop();
-void tick_start();
-unsigned long tick_get(void);
+void Tick_initialise();
+//void Tick_stop();
+void Tick_start();
+unsigned long Tick_get(void);
 
 #endif

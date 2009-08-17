@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "regs.h"
+#include <regs.h>
+#include <samo.h>
+
 #include "tick.h"
 
 
-void tick_initialise()
+void Tick_initialise()
 {
 	// enable clocks - for all timers that will be used
 	// even if internal clocking is not used.
@@ -34,10 +36,14 @@ void tick_initialise()
 		//EFSIOBR_HCKE |
 		//MISC_HCKE |
 		//IVRAMARB_CKE |
-		//TM5_CKE |
+#if !BOARD_SAMO_A3
+		TM5_CKE |
+#endif
 		//TM4_CKE |
 		//TM3_CKE |
+#if BOARD_SAMO_A3
 		TM2_CKE |
+#endif
 		//TM1_CKE |
 		TM0_CKE |
 		//EGPIO_MISC_CK |
@@ -56,8 +62,13 @@ void tick_initialise()
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
+#if BOARD_SAMO_A3
 	// enable EXCL2
 	REG_P6_47_CFP = (REG_P6_47_CFP & ~0x03) | 0x02;
+#else
+	// enable EXCL5
+	REG_P7_4_CFP = (REG_P7_4_CFP & ~0x03) | 0x02;
+#endif
 
 	// enable TM0
 	REG_P1_03_CFP = (REG_P1_03_CFP & ~0x03) | 0x01;
@@ -99,6 +110,7 @@ void tick_initialise()
 	REG_T16_CTL0 |= PRESETx;
 
 
+#if BOARD_SAMO_A3
 	// 16 bit Timer 2
 	// Stop timer
 	REG_T16_CTL2 =
@@ -131,25 +143,67 @@ void tick_initialise()
 
 	// Reset
 	REG_T16_CTL2 |= PRESETx;
+#else
+	// 16 bit Timer 5
+	// Stop timer
+	REG_T16_CTL5 =
+		//INITOLx |
+		//SELFMx |
+		//SELCRBx |
+		//OUTINVx |
+		CKSLx |
+		//PTMx |
+		//PRESETx |
+		//PRUNx |
+		0;
 
-	tick_start();
+	// Set prescale
+	REG_T16_CLKCTL_5 =
+		P16TONx |
+		//P16TSx_MCLK_DIV_4096 |
+		//P16TSx_MCLK_DIV_1024 |
+		//P16TSx_MCLK_DIV_256 |
+		//P16TSx_MCLK_DIV_64 |
+		//P16TSx_MCLK_DIV_16 |
+		//P16TSx_MCLK_DIV_4 |
+		//P16TSx_MCLK_DIV_2 |
+		P16TSx_MCLK_DIV_1 |
+		0;
+
+	// Set count
+	REG_T16_CR5A = 0;
+	REG_T16_CR5B = 65535;
+
+	// Reset
+	REG_T16_CTL5 |= PRESETx;
+#endif
+
+	Tick_start();
 }
 
 
-void tick_start()
+void Tick_start()
 {
 	// Set PAUSE On
 	REG_T16_CNT_PAUSE =
-		//PAUSE5 |
+#if !BOARD_SAMO_A3
+		PAUSE5 |
+#endif
 		//PAUSE4 |
 		//PAUSE3 |
+#if BOARD_SAMO_A3
 		PAUSE2 |
+#endif
 		//PAUSE1 |
 		PAUSE0 |
 		0;
 	// Run
 	REG_T16_CTL0 |= PRUNx;
+#if BOARD_SAMO_A3
 	REG_T16_CTL2 |= PRUNx;
+#else
+	REG_T16_CTL5 |= PRUNx;
+#endif
 
 	// Set PAUSE Off
 	REG_T16_CNT_PAUSE =
@@ -162,21 +216,29 @@ void tick_start()
 		0;
 }
 
-unsigned long tick_get(void)
+unsigned long Tick_get(void)
 {
 	register unsigned long count;
 
 	// Set PAUSE On
 	REG_T16_CNT_PAUSE =
-		//PAUSE5 |
+#if !BOARD_SAMO_A3
+		PAUSE5 |
+#endif
 		//PAUSE4 |
 		//PAUSE3 |
+#if BOARD_SAMO_A3
 		PAUSE2 |
+#endif
 		//PAUSE1 |
 		PAUSE0 |
 		0;
 
+#if BOARD_SAMO_A3
 	count = (REG_T16_TC2 << 16) | REG_T16_TC0;
+#else
+	count = (REG_T16_TC5 << 16) | REG_T16_TC0;
+#endif
 
 	// Set PAUSE Off
 	REG_T16_CNT_PAUSE =
