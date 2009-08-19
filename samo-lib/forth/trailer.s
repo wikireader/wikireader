@@ -1,4 +1,4 @@
-;;; header.s
+;;; trailer.s
 ;;;
 ;;; Copyright 2009 Christopher Hall <hsw@openmoko.com>
 ;;;
