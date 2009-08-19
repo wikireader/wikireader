@@ -243,6 +243,7 @@ main:
         xcall   Contrast_initialise
         xcall   Analog_initialise
         xcall   Tick_initialise
+        xcall   Temperature_initialise
 
         xld.w   %r0, cold_start                       ; initial ip value
 ;;;       xcall   xdebug

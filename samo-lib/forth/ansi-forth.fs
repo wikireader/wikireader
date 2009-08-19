@@ -34,7 +34,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-17
+18
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -3116,6 +3116,7 @@ end-code
 \ ==========================
 
 : wait-for-event          :: wait-for-event          ( -- )
+ (temperature-comp)
   button?
   key? or
   ctp-pos? or
@@ -3125,6 +3126,11 @@ end-code
 code (halt)               :: paren-halt              ( -- )
         xld.w   %r6, 0                               ; no timeout
         xcall   suspend
+        NEXT
+end-code
+
+code (temperature-comp)   :: temperature-comp        ( -- )
+        xcall   Temperature_control
         NEXT
 end-code
 
