@@ -19,7 +19,9 @@
 // these items correspond to the load list
 #define APPLICATION_TITLE  "Boot WikiReader"
 #define APPLICATION_TITLE2 "Boot Forth"
-#define APPLICATION_TITLE3 "Boot Test Program"
+#define APPLICATION_TITLE3 "Boot Calculator"
+#define APPLICATION_TITLE4 "Boot Forth (alt)"
+#define APPLICATION_TITLE5 "Boot Test Program"
 
 #include "application.h"
 #include "eeprom.h"
@@ -31,9 +33,11 @@ static const struct {
 	const char *filename;
 	int arg;
 } LoadList[] = {
-	{"kernel.elf", 0},
-	{"forth.elf",  0},
-	{"forth.elf",  1},
+	{"kernel.elf", 0},  // status = 0
+	{"forth.elf",  0},  // status = 1
+	{"forth.elf",  1},  // status = 2
+	{"forth.elf",  2},  // status = 3
+	{"forth.elf",  3},  // only from boot menu
 };
 
 // this must be the first executable code as the loader executes from the first program address

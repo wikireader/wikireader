@@ -157,7 +157,7 @@ static void DisplayInfo(void)
 //        != 0 => automatic boot, therefore check keys
 //                   run app[0] with status set to:
 //                      0 if no keys pressed
-//                      1 if any keys pressed
+//                      1,2 or 3 if any keys left, centre or right are pressed
 
 ProcessReturnType process(int block, int status)
 {
@@ -185,8 +185,15 @@ ProcessReturnType process(int block, int status)
 				MenuFlag = true;
 				break;
 			}
-			if (0 != (REG_P6_P6D & 0x07)) {
+			k = REG_P6_P6D & 0x07;
+			if (1 == k) {         // right button
 				status = 1;
+				break;
+			} else if (4 == k) {  // centre button
+				status = 2;
+				break;
+			} else if (2 == k) {  // right button
+				status = 3;
 				break;
 			}
 		}
