@@ -3,7 +3,7 @@
 base @ decimal
 
 \ display battery
-: battery-display ( u -- )
+: battery-display ( -- )
     0 2 lcd-at-xy
     s" battery    = " lcd-type
     battery-mv 5 lcd-u.r
@@ -12,12 +12,22 @@ base @ decimal
 
 \ display thermistor
 
-: thermistor-display ( u -- )
+: thermistor-display ( -- )
     0 4 lcd-at-xy
     s" thermistor = " lcd-type
     temperature-c 5 lcd-u.r
     s"  C" lcd-type
 ;
+
+
+\ display the current timer value
+
+: timer-display ( -- )
+    0 6 lcd-at-xy
+    s" timer      = " lcd-type
+    timer-read 12 lcd-u.r
+;
+
 
 \ display lcd_contrast
 
@@ -26,6 +36,12 @@ base @ decimal
     s" contrast   = " lcd-type
     contrast-mv 5 lcd-u.r
     s"  mV" lcd-type
+;
+
+: pwm-display ( -- )
+    0 10 lcd-at-xy
+    s" pwm        = " lcd-type
+    get-contrast-pwm 5 lcd-u.r
 ;
 
 
@@ -57,10 +73,9 @@ variable last-x
             analog-scan
             battery-display
             thermistor-display
+            timer-display
             contrast-display
-            0 10 lcd-at-xy
-            s" pwm        = " lcd-type
-            get-contrast-pwm 5 lcd-u.r
+            pwm-display
         then
 
         ctp-pos? if
