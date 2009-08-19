@@ -1,5 +1,5 @@
 /*
- * analog - driver for analog inputs
+ * temperature controller driver
  * Copyright (c) 2009 Openmoko
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if  !defined(_ANALOG_H_)
-#define _ANALOG_H_ 1
+#if  !defined(_TEMPERATURE_H_)
+#define _TEMPERATURE_H_ 1
 
 #include <stdbool.h>
 
-void Analog_initialise(void);
+void Temperature_initialise(void);
 
-// this performs the ADC conversion and filtering
 // call this periodically
-void Analog_scan(void);
-
-// routines to convert the current filtered value
-// to enfineering units
-int Analog_BatteryMilliVolts(void);
-int Analog_TemperatureCelcius(void);
-int Analog_ContrastMilliVolts(void);
+void Temperature_control(void);
 
 #endif

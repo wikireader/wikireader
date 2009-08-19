@@ -89,10 +89,10 @@ void Analog_initialise(void)
 		adc[2] = REG_AD_CH2_BUF;
 		StopADC();
 	}
-	Analog_scan();
-	Analog_scan();
-	Analog_scan();
-	Analog_scan();
+	int i;
+	for (i = 0; i < 12; ++i) {
+		Analog_scan();
+	}
 }
 
 void Analog_scan(void)

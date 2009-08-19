@@ -1,5 +1,5 @@
 /*
- * tick a 16+12 = 28 bit timer
+ * continuously incrementing 32 bit timer
  * Copyright (c) 2009 Openmoko
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,11 @@
 #define _TICK_H_ 1
 
 void Tick_initialise();
-//void Tick_stop();
-void Tick_start();
+
+enum {
+	Tick_TicksPerMicroSecond = 24,
+};
+
 unsigned long Tick_get(void);
 
 #endif

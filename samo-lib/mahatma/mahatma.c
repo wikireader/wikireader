@@ -23,17 +23,19 @@
 #include <stdlib.h>
 #include <malloc-simple.h>
 #include <tff.h>
+#include <regs.h>
 #include <profile.h>
+#include <tick.h>
+#include <analog.h>
+#include <temperature.h>
 
 /* local includes */
 #include "msg-output.h"
 #include "serial.h"
 #include "traps.h"
 #include "gui.h"
-#include "tick.h"
 #include "msg.h"
 #include "touchscreen.h"
-#include "regs.h"
 #include "gpio.h"
 #include "gui.h"
 
@@ -56,6 +58,8 @@ int main(void)
 	// critical first initialisation
 	traps_init();
 	Tick_initialise();
+	Analog_initialise();
+	Temperature_initialise();
 	msg_init();
 
 	// start of normal initialisation

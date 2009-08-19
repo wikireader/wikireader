@@ -46,6 +46,7 @@ OBJECTS += button.o
 OBJECTS += ctp.o
 OBJECTS += analog.o
 OBJECTS += suspend.o
+OBJECTS += temperature.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 

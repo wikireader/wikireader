@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* wikilib and guilib includes */
+#include <stdlib.h>
 #include <guilib.h>
 #include <wikilib.h>
 #include <input.h>
 
-/* local includes */
-#include "regs.h"
-#include "samo.h"
+#include <regs.h>
+#include <samo.h>
+#include <suspend.h>
+#include <temperature.h>
+
 #include "serial.h"
-#include "suspend.h"
 #include "touchscreen.h"
 #include "gpio.h"
 
@@ -67,6 +68,7 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 #if !PROFILER_ON
 		suspend(TIMEOUT_VALUE);
 #endif
+		Temperature_control();
 
 	}
 }
