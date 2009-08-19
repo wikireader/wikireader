@@ -1,6 +1,7 @@
 \ bitmap.4th
 
 decimal
+also c33
 
 : get-file  ( b u -- )
     cr r/o open-file ?dup
@@ -54,7 +55,11 @@ variable last-y
                     if
                         drop
                     else
+                        \ begin
+                        \     LCDC_PS p@ $80 and
+                        \ until
                         LCDC_MADD p!
+                        \ 30000 delay-us
                     then
                 else
                     last-y !
@@ -79,23 +84,33 @@ variable last-y
             then
         then
 
-        P6_P6D p@ $07 and
-        case
-            $02 of   \ left button
-                home-page
-            endof
-            $04 of   \ centre button
-            endof
-            $01 of   \ right button
-                exit
-            endof
-        endcase
+        button? if
+            button
+            case
+                button-left of
+                    home-page
+                endof
+                button-centre of
+                endof
+                button-right of
+                    exit
+                endof
+            endcase
+        then
+
+        key? if
+            key-flush
+        then
+
+        \ cannot suspend or LCD image will blank
+        \ as image is in SDRAM
+        \ wait-for-event
     again
 ;
 
 \ load image
 
-here top !
+align  here top !
 
 get sans.img
 
