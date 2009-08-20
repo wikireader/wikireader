@@ -252,7 +252,9 @@ variable q-frac
 
 : div-gr ( -- flag )
     r-int @ total-int @ >
-    ?dup if exit then
+    if
+        true exit
+    then
     r-int @ total-int @ =
     r-frac @ total-frac @ > and
 ;
@@ -297,7 +299,12 @@ variable q-frac
     v-frac @ dup r-frac ! rs-frac !
     0 q-int ! 0 q-frac !
 
-    0  \ shift count
+    \ shift count
+    div-gr if
+        1
+    else
+        0
+    then
     begin
         div-gr 0=
     while
@@ -308,7 +315,7 @@ variable q-frac
     repeat
     rs-frac @ r-frac !
     rs-int  @ r-int  !
-     \ loop count on stack
+    \ loop count on stack
     frac-digits +
     0 ?do
         div-q*10
@@ -516,6 +523,7 @@ variable q-frac
 
 variable down
 variable box-number
+variable can-exit
 
 : calculator ( -- )
     lcd-cls
@@ -523,7 +531,10 @@ variable box-number
     key-flush
     ctp-flush
 
-    24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
+    can-exit @ if
+        24 lcd-text-rows 1- lcd-at-xy s" Exit" lcd-type
+    then
+
     position-count 0 ?do
         i box-data >r >r 2dup draw-box
         8 + >r font-width + r> lcd-move-to
@@ -584,7 +595,12 @@ variable box-number
                 button-centre of
                 endof
                 button-right of
-                    exit
+                    can-exit @ if
+                        exit
+                    then
+                endof
+                button-power of
+                    power-off
                 endof
             endcase
         then
