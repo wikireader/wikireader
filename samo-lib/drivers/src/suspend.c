@@ -272,11 +272,11 @@ void suspend2(int WatchdogTimeout)
 		//LCDCDIV_15 |
 		//LCDCDIV_14 |
 		//LCDCDIV_13 |
-		//LCDCDIV_12 |
+		LCDCDIV_12 |
 		//LCDCDIV_11 |
 		//LCDCDIV_10 |
 		//LCDCDIV_9 |
-		LCDCDIV_8 |
+		//LCDCDIV_8 |
 		//LCDCDIV_7 |
 		//LCDCDIV_6 |
 		//LCDCDIV_5 |
