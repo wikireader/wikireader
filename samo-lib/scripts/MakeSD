@@ -19,11 +19,11 @@ done
 case "$1" in
 
   all|--all)
-    ${COPY} --sdcard="${sdcard}" kernel.elf "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th "${programs}/"*.ini "${programs}/"*.tst
+    ${COPY} --sdcard="${sdcard}" kernel.elf "${prefix}/"*.elf "${programs}/"*.4mu "${programs}/"*.4th "${programs}/"*.ini "${programs}/"*.tst
     ;;
 
   forth|--forth)
-    ${COPY} --sdcard="${sdcard}" "${prefix}/forth.elf" "${programs}/"*.4mu "${programs}/"*.4th "${programs}/"*.ini "${programs}/"*.tst
+    ${COPY} --sdcard="${sdcard}" "${prefix}/"*.elf "${programs}/"*.4mu "${programs}/"*.4th "${programs}/"*.ini "${programs}/"*.tst
     ;;
 
   2|--2|stage2|--stage2)
