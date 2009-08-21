@@ -1,0 +1,173 @@
+8-bit microcontroller implements digital lowpass filter
+
+A simple assembler routine fits a digital lowpass filter into a
+microcontroller.
+
+Abel Raynus, Armatron International, Malden, MA; Edited by Charles H
+Small and Fran Granville -- EDN, 1/24/2008
+
+Filtering occurs frequently in the analog world. Unfortunately, in the
+digital world, engineers apply it mainly to the DSPs (digital-signal
+processors) and not to the small 8-bit microcontrollers that designers
+commonly use. This situation occurs because the math for the filter
+design is more complicated than most engineers are willing to deal
+with. Moreover, digital filtering requires calculations on integers
+instead of on floating-point numbers. This scenario causes two
+problems. First, the rounding-off error from the limited number of
+bits can degrade the filter response or even make it unstable. Second,
+you must handle the fractional values with integer math.
+
+Several ways exist to solve these issues. For example, you can use
+operations with 16-, 32-, and 64-bit numbers, or you can scale for
+better accuracy. These and other methods usually require more memory,
+and, as a result, the program often does not fit into a small
+microcontroller. A literature search shows that published
+digital-filter firmware is written in C. Programs in C need more
+memory than those written in assembler. This situation often makes
+them unacceptable for small microcontrollers with limited memory
+resources.
+
+Listing 1 shows a simple engineering method to design single-pole,
+lowpass-digital-filter firmware for 8-bit microcontrollers. The
+low-end Freescale MC68HC908QT2 is the target of the assembler program,
+but you can apply this Design Idea to any type of microcontroller
+because it uses only standard assembler instructions.
+
+Leaving aside the sophisticated design methods based on Z
+transformation with its extensive math, this idea uses another
+approach based on a recursive equation. You calculate each
+output-signal sample as the sum of the input signal and the previous
+output signal with corresponding coefficients. A recursive equation
+defines a single-pole lowpass filter as: Y[n]=X[n]×a0+Y[n–1]×b1, where
+X[n] and Y[n] are input and output values of sample [n], Y[n–1] is an
+output value of the previous sample [n–1], and a0 and b1 are weight
+coefficients that decrement δ controls. The coefficients have the
+value of 0<δ<1, a0=1–δ, and b1=δ. Physically, δ is the amount of
+decay between adjacent output samples when the input signal drops from
+a high level to a low level. You can directly specify the value of δ
+or find it from the desired time constant of the filter, d, which is
+the number of samples it takes the output to rise to 63.2% of the
+steady-state level for a lowpass filter. A fixed relationship exists
+between d and δ: δ=e–1/d, where e is the base of natural
+logarithms. The preceding equations yield
+Y[n]=Y[n–1]+(1–δ)×(X[n]–Y[n–1]).
+
+Instead of multiplying a decimal-point number, 1–δ, it is more
+convenient for assembler programming to divide by the reciprocal
+integer, F=1/(1–δ): Y[n]=Y[n–1]+(X[n]–Y[n–1])/F. Thus, you can
+determine the digital filter’s parameters using the following steps:
+
+  1. Choose the parameter F. For assembler, it is convenient to
+     perform division as right shifts. For right shifts, the value of
+     F should be 2S, where S is the number of shifts. Let F equal 8,
+     which you reach after three right shifts.
+
+  2. Calculate the decrement: δ=1–1/F=1–1/8=0.875.
+
+  3. Calculate the time constant as d=–1/lnδ=–1/ln0.875=7.49 samples.
+
+The equation Y[n]=Y[n–1]+(X[n]–Y[n–1])/F determines the design of the
+microcontroller’s algorithm for the filter. The algorithm needs three
+registers: input for X[n], output for Y[n], and an increment register
+to keep the (X[n]–Y[n–1])/F term. The size of these registers depends
+on the inputs. In this application, the signals from the built-in
+8-bit ADC range from 00 to $FF and must go through the lowpass
+filter. So, the input and the output registers are 1 byte in size. To
+increase the accuracy of division, add half the divisor to the
+dividend. This action increases the increment register to 2 bytes.
+
+Numerically performing the filtering function provides the benefit of
+consistency because component tolerances, temperature drift, and aging
+do not affect the filter’s algorithm. The implementation of the
+digital filter in the microcontroller gives the additional benefit of
+flexibility to adjust the filter’s parameters, because this
+flexibility depends only on the firmware.
+
+
+Listing 1:
+==========
+
+
+**************************************************************************
+*               DIGITAL SINGLE POLE LOW-PASS FILTER                      *
+**************************************************************************
+* Fosc=12.8MHz, Prescaler=64;  ##T=50*Tms  CT=50                         *
+* Input:  AD3  (pin2) Range: $00-$FF                                     *
+* Sample rate=10ms                                                       *
+* Filter parameters:b1=0.875;a0=0.125; F=1/a0=8; d=7.5                   *
+**************************************************************************
+$nolist
+$include 'Fr908QT2.asm'
+$list
+
+PERIOD           EQU    $01F4                 ; Sample rate =10ms; (50 * 10 = 500 = $01f4),
+S                EQU    3                     ; Number of right shifts to divide by F=8
+HAlFF            EQU    4                     ; Half of devisor F=8 (for rounding during division)
+
+*VARIABLES
+                 ORG    RAM
+INPUT            RMB    1                     ; X{n}
+OUTPUT           RMB    1                     ; Y[n]
+INCREMENT        RMB    2                     ; X[n] - Y[n-1]
+SampleCNT        RMB    1                     ; Sample counter for testing only
+
+*INITIALIZATION
+                 ORG    ROM
+init             RSP                          ; $FF-->SP
+                 CLRA
+                 CLR    INPUT                 ; Clear registers
+                 CLR    OUTPUT
+                 CLR    INCREMENT
+                 CLR    INCREMENT+1
+                 CLR    SampleCNT
+                 LDA    $FFC0                 ; adjusting frequency
+                 STA    $0038
+                 MOV    #$01,CONFIG1          ; cop disabled
+                 MOV    #$41,CONFIG2          ; RST-active in pin,IRQ-active in pin
+                 CLRH                         ; clear H:X
+                 CLRX
+                 CLR    prtA                  ; clear prtA
+                 MOV    #pA0.,DDRA            ; set pA0 output,pA1-pA5 inputs
+                 MOV    #0,TSC0               ; clear TSC0
+                 LDHX   #PERIOD               ; PERIOD -->TmodH & TmodL
+                 STHX   TmodH
+                 MOV    #%00010110,TSC        ; clear TIMER,start TIMER,prescaler:64
+********************************************************************************
+
+MAIN             BRCLR  TOF,TSC,*             ; wait for the end of PERIOD
+                 BCLR   TOF,TSC               ; TOF reset
+
+ReadADC          MOV    #3,ADSCR              ; start ADC3
+                 BRCLR  COCO,ADSCR,*          ; wait for ADC3 end
+                 MOV    ADR,INPUT             ; ADR->INPUT
+                 INC    SampleCNT
+
+Filtering        JSR    Filter
+                 BRA    MAIN
+
+********************* DIGITAL LOW_PASS FILTER ************************************
+
+Filter           LDA    INPUT                 ; Calculate (X[n] - Y[n-1])
+                 SUB    OUTPUT
+                 STA    INCREMENT+1
+
+                 clc
+                 LDA    INCREMENT+1           ; Calculate (X[n]-Y[n-1])+halfF
+                 ADD    #HALFF                ; (for rounding the result of division)
+                 STA    INCREMENT+1
+                 LDA    INCREMENT
+                 ADC    #0
+                 STA    INCREMENT
+                 LDA    #S                    ; division on F=8, by S=3 right shifts,
+mf1              ASR    INCREMENT
+                 ROR    INCREMENT+1
+                 DBNZA  mf1
+
+                 LDA    OUTPUT                ; Calculate Y[n]=Y[n-1] + (X[n]-Y[n-1])/8
+                 ADD    INCREMENT+1
+                 STA    OUTPUT
+                 RTS
+************************************************************************************
+                 ORG    $FFFE                 ; Position to reset vector
+                 FDB    init                  ; Set start address
+$nolist
