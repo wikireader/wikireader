@@ -35,9 +35,9 @@ static const struct {
 } LoadList[] = {
 	{"kernel.elf", 0},  // status = 0
 	{"forth.elf",  0},  // status = 1
-	{"forth.elf",  1},  // status = 2
-	{"forth.elf",  2},  // status = 3
-	{"forth.elf",  3},  // only from boot menu
+	{"calc.elf",   0},  // status = 2
+	{"forth.elf",  0},  // status = 3
+	{"forth.elf",  1},  // only from boot menu
 };
 
 // this must be the first executable code as the loader executes from the first program address
@@ -52,6 +52,9 @@ ReturnType file_loader(int block, int status)
 			i = 0;
 		}
 		for (; i < ARRAY_SIZE(LoadList); ++i) {
+			print("load: ");
+			print(LoadList[i].filename);
+			print_char('\n');
 			int error = - elf_exec(LoadList[i].filename, LoadList[i].arg);
 			print("load '");
 			print(LoadList[i].filename);
