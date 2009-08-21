@@ -26,15 +26,16 @@
 \ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 \ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-include meta.fs
-
+\ set up for running the meta compiliation
+only forth definitions
+also meta-compiler
 meta-compile
 
 \ possible formats:
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-18
+19
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -842,6 +843,12 @@ end-code
   build-number 0 u.r
   ." )" cr
   quit-reset
+
+  \ predefined program to run
+  'cold-run @ ?dup if
+    execute
+  then
+
   \ initial code to run
   cold-arg if
     s" forth.tst"
@@ -3124,7 +3131,14 @@ end-code
 ;
 
 code (halt)               :: paren-halt              ( -- )
-        xld.w   %r6, 0                               ; no timeout
+MCLK = 48000000                                      ; master clock
+SUSPEND_AUTO_POWER_OFF_SECONDS = 180
+TIMEOUT_VALUE = (MCLK / 32 * SUSPEND_AUTO_POWER_OFF_SECONDS)
+.if TIMEOUT_VALUE > 0x3fffffff
+        .error "SUSPEND_AUTO_POWER_OFF_SECONDS is too large"
+.endif
+;       xld.w   %r6, 0                               ; no timeout
+        xld.w   %r6, TIMEOUT_VALUE                   ; have timeout
         xcall   suspend
         NEXT
 end-code

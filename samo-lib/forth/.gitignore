@@ -6,4 +6,5 @@
 *.elf
 *~
 forth.s
-symbols.fi
+calc.s
+*.fi

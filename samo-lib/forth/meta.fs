@@ -49,16 +49,6 @@ variable suppress-once
   refill 0= abort" premature EOF"
 ;
 
-variable last-name-count
-create last-name-buffer  4096 allot
-
-: save-last-name ( c-addr u -- )
-  dup last-name-count !
-  last-name-buffer swap cmove ;
-
-: get-last-name ( -- c-addr u )
-  last-name-buffer last-name-count @ ;
-
 variable cross-dict-flag
 
 : cross-dict-name ( -- )
@@ -113,6 +103,8 @@ variable cross-dict-flag
 
 : .byte ( -- )    tab ." .byte" tab ;
 
+: suppress true suppress-once ! ;
+
 : output-symbol-pre ( -- f )
     suppress-once @ 0= dup if
       .long
@@ -158,11 +150,41 @@ variable cross-dict-flag
 : _literal ( u -- )
   .long ." paren_lit_paren, " . cr ;
 
-: quoted-parse-word ( c-addr -- )
+variable last-parsed-word-xt
+
+: quoted-parse-word ( flag -- )
+  0 last-parsed-word-xt !
+  parse-word 2dup
   34 emit
-  parse-word escaped-type
+  escaped-type
   34 emit
+  space
+  ['] meta-words >body
+  search-wordlist if
+    suppress dup last-parsed-word-xt ! execute
+  else
+    ." !!ERROR: not found in symbol.fi!!"
+  then
+  space
+  if
+    last-parsed-word-xt @ ?dup if
+      ." flags_"
+      suppress execute
+    then
+  else
+    ." 0"
+  then
+  cr
 ;
+
+: set-flags-to-zero ( -- )
+  last-parsed-word-xt @ ?dup if
+    ." flags_"
+    suppress execute
+    ."  = 0" cr
+  then
+;
+
 
 : meta-constant  ( C: x "<spaces>name" -- ) ( -- x )
  >r get-order get-current
@@ -172,6 +194,7 @@ variable cross-dict-flag
  set-current set-order ;
 
 : meta-compile ( -- )
+  ." ;;; Meta Compiler starting" cr
   begin
     \ cr ." >> "
     bl word dup count nip if
@@ -195,21 +218,16 @@ variable cross-dict-flag
       then
     else
       drop
-      refill 0= if bye then
+      refill 0= if
+        ." ;;; Meta Compiler exiting" cr cr
+        only [compile] forth
+        exit
+      then
     then
   again
 ;
 
-
-\ just print out the assembler code for each word
-only forth
-also meta-words definitions
-meta-compiler
-
-include symbols.fi
-
-
-\ word that are more than just a simple print
+\ words that are more than just a simple print
 \ these override the meta-words versions
 \ used in interpret mode
 
@@ -220,17 +238,14 @@ meta-compiler
 \ the next definition will be in this dictionary
 : cross-root-definition ( -- ) 1 cross-dict-flag ! ;
 
+: :: ( -- \ word )
+  parse-word 2drop ;
 
 : code ( -- \ string )
   cr
   tab ." CODE" tab cross-dict-name
-  34 emit
-  parse-word escaped-type
-  34 emit space
-  parse-word 2drop \ ignore ::
-  parse-word 2dup save-last-name 2dup type-nodash
-  ."  flags_" type-nodash
-  cr
+  true quoted-parse-word
+  \ rest of line is ignored
   begin
     getline
     tib #tib @ s" end-code" str= 0= while
@@ -238,7 +253,7 @@ meta-compiler
   repeat
   getline
   tab ." END_CODE" cr
-  ." flags_" get-last-name type-nodash ."  = 0" cr
+  set-flags-to-zero
 ;
 
 : ] ( -- )  _compile ;
@@ -246,18 +261,10 @@ meta-compiler
 : : ( -- \ word )
   cr
   tab ." COLON" tab cross-dict-name
-  quoted-parse-word
+  true quoted-parse-word
   _compile
 ;
 
-: constantX ( x -- \ word )
-  cr
-  tab ." CONSTANT" tab cross-dict-name
-  quoted-parse-word
-  parse-word 2drop \ ignore ::
-  space parse-word type-nodash ."  0" cr
-  .long . cr
-;
 
 : constant ( x -- \ word )
   cr
@@ -267,26 +274,42 @@ meta-compiler
   34 emit
   escaped-type
   34 emit
-  parse-word 2drop \ ignore ::
-  space parse-word type-nodash ."  0" cr
-  .long . cr
+  parse-word 2drop parse-word 2drop \ ignore :: <word>
+  space
+  latestxt >name cell+ dup cell+ swap @ 255 and
+  ['] meta-words >body
+  search-wordlist if
+    suppress execute ."  0"
+  else
+    ." !!ERROR: not found in symbol.fi!!
+  then
+  cr .long . cr
 ;
 
 : variable ( -- \ word )
   cr
   tab ." VARIABLE" tab cross-dict-name
-  quoted-parse-word
-  parse-word 2drop \ ignore ::
-  space parse-word type-nodash ."  0" cr
+  false quoted-parse-word
   .long 0 . cr
 ;
 
 : create ( -- \ word )
   cr
   tab ." CREATE" tab cross-dict-name
-  quoted-parse-word
-  space parse-word 2drop \ ignore ::
-  space parse-word type-nodash ."  0" cr
+  false quoted-parse-word
+;
+
+
+: <',> ( -- \ word)
+  get-order
+  only postpone meta-words
+  bl word
+  find if
+    execute
+  else
+    ." .error ***unknown***" cr
+  then
+  set-order
 ;
 
 : allot ( u -- )
@@ -305,14 +328,20 @@ meta-compiler
 ;
 
 : immediate ( -- )
-  ." flags_" get-last-name type-nodash ."  = "
-  ." flags_" get-last-name type-nodash ."  + FLAG_IMMEDIATE"
-  cr ;
+  last-parsed-word-xt @ ?dup if
+    dup
+    ." flags_" suppress execute ."  = "
+    ." flags_" suppress execute ."  + FLAG_IMMEDIATE"
+    cr
+  then ;
 
 : compile-only ( -- )
-  ." flags_" get-last-name type-nodash ."  = "
-  ." flags_" get-last-name type-nodash ."  + FLAG_COMPILE_ONLY"
-  cr ;
+  last-parsed-word-xt @ ?dup if
+    dup
+    ." flags_" suppress execute ."  = "
+    ." flags_" suppress execute ."  + FLAG_COMPILE_ONLY"
+    cr
+  then ;
 
 
 \ should not be here **************************************************
@@ -333,8 +362,7 @@ also meta-assemble definitions
 meta-compiler
 
 : :: ( -- \ word )
-  space parse-word 2dup save-last-name
-  2dup type-nodash ."  flags_" type-nodash cr ;
+  parse-word 2drop ;
 
 : .( ( -- \ string )
   [char] ) parse type ;
@@ -349,7 +377,7 @@ meta-compiler
 
 : ; .long ." exit" cr
   tab ." END_COLON" cr
-  ." flags_" get-last-name type-nodash ."  = 0" cr
+  set-flags-to-zero
   _interpret ;
 
 : [ ( -- )
@@ -435,7 +463,7 @@ meta-compiler
   bl word
   find if
     .long ." paren_lit_paren, "
-    true suppress-once !
+    suppress
     execute
     cr
   else
@@ -454,7 +482,7 @@ meta-compiler
     endof
     -1 of
       .long ." paren_lit_paren, "
-      true suppress-once !
+      suppress
       execute
       ." , compile_comma" cr
     endof
@@ -488,8 +516,3 @@ meta-compiler
   .long ." type, abort" cr
   ." L" . [char] : emit cr
 ;
-
-\ set up for running the meta compiliation
-
-only forth definitions
-also meta-compiler

@@ -47,31 +47,58 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 
 
-all: forth.elf
+all: forth.elf calc.elf
 
-FORTH_OBJECTS = forth.o
-FORTH_OBJECTS += button.o
-FORTH_OBJECTS += ctp.o
-FORTH_OBJECTS += debug.o
-FORTH_OBJECTS += FileSystem.o
-FORTH_OBJECTS += iserial.o
-FORTH_OBJECTS += PolledSerial.o
-FORTH_OBJECTS += vector.o
+OBJECTS =
+OBJECTS += button.o
+OBJECTS += ctp.o
+OBJECTS += debug.o
+OBJECTS += FileSystem.o
+OBJECTS += iserial.o
+OBJECTS += PolledSerial.o
+OBJECTS += vector.o
 
-forth.elf: ${FORTH_OBJECTS} forth.lds ${LIBS}
-	${CROSS_LD} ${CROSS_LDFLAGS} -T ${@:.elf=.lds} -Map ${@:.elf=.map} -o $@ ${FORTH_OBJECTS} ${LIBS}
-	${CROSS_STRIP} --remove-section=.comment $@
-	${CROSS_OBJDUMP} --section-headers $@
-
-
-forth.s: header.s meta.fs symbols.fi ansi-forth.fs trailer.s
+forth.s: header.s meta.fs forth-symbols.fi ansi-forth.fs forth-vector.fi trailer.s
 	${RM} "$@"
 	cat header.s >> "$@"
-	gforth ansi-forth.fs >> "$@"
+	gforth meta.fs forth-symbols.fi ansi-forth.fs forth-vector.fi -e "bye" >> "$@"
 	cat trailer.s  >> "$@"
 
-symbols.fi : ansi-forth.fs sym.awk
-	awk -f sym.awk ansi-forth.fs > "$@"
+forth-symbols.fi : sym.awk ansi-forth.fs forth-vector.fi
+	awk -f sym.awk ansi-forth.fs forth-vector.fi > "$@"
+
+forth-vector.fi: Makefile
+	${RM} "$@"
+	echo "\\ generated file - do not modify" >> "$@"
+	echo >> "$@"
+	echo "only forth definitions" >> "$@"
+	echo "also meta-compiler" >> "$@"
+	echo "meta-compile" >> "$@"
+	echo >> "$@"
+	echo "variable 'cold-run :: tick-cold-run" >> "$@"
+
+
+calc.s: header.s meta.fs calc-symbols.fi ansi-forth.fs calc.fi trailer.s
+	${RM} "$@"
+	cat header.s >> "$@"
+	gforth meta.fs calc-symbols.fi ansi-forth.fs calc.fi -e "bye" >> "$@"
+	cat trailer.s  >> "$@"
+
+calc-symbols.fi : sym.awk ansi-forth.fs calc.fi
+	awk -f sym.awk ansi-forth.fs calc.fi > "$@"
+
+calc.fi: programs/calc.4th
+	${RM} "$@"
+	echo "\\ generated file - do not modify" >> "$@"
+	echo >> "$@"
+	echo "only forth definitions" >> "$@"
+	echo "also meta-compiler" >> "$@"
+	echo "meta-compile" >> "$@"
+	echo >> "$@"
+	cat $^ >> "$@"
+	echo >> "$@"
+	echo "create  'cold-run :: tick-cold-run" >> "$@"
+	echo "<',> calculator" >> "$@"
 
 
 clean:
@@ -79,5 +106,12 @@ clean:
 
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
+
+
+%.elf: %.o ${OBJECTS} %.lds ${LIBS}
+	${CROSS_LD} ${CROSS_LDFLAGS} -T "${@:.elf=.lds}" -Map "${@:.elf=.map}" -o "$@" "$<" ${OBJECTS} ${LIBS}
+	${CROSS_STRIP} --remove-section=.comment "$@"
+	${CROSS_OBJDUMP} --section-headers "$@"
+
 
 include ${SAMO_LIB}/Mk/rules.mk
