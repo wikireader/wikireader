@@ -3153,10 +3153,22 @@ end-code
 \ =========
 
 code power-off            :: power-off               ( -- )
+        xld.w   %r4, R8_P3_IOC3
+        ld.b    %r5, [%r4]
+        xoor    %r5, 0x08                            ; P03 as output
+        ld.b    [%r4], %r5
+        xld.w   %r4, R8_P3_P3D
+        ld.b    %r5, [%r4]
+        xand    %r5,~0x08                            ; P03 = 0
+        ld.b    [%r4], %r5
+
+        xld.w   %r6, 1000
+        xcall   delay_us
+
         xld.w   %r4, R8_P6_03_CFP
         xld.w   %r5, ~0xc0
         ld.b    [%r4], %r5      ; select P63 as GPIO
-
+power_off_loop:
         xld.w   %r4, R8_P6_P6D
         xld.w   %r5, R8_P6_IOC6
         xld.w   %r6, 0x08
@@ -3169,6 +3181,7 @@ code power-off            :: power-off               ( -- )
         ld.b    [%r4], %r6
         xld.w   %r6, 1000
         xcall   delay_us
+        jp      power_off_loop
         NEXT
 end-code
 
