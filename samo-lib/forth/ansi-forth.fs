@@ -35,7 +35,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-19
+20
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -2286,11 +2286,10 @@ cross-root-definition
 
 code write-file           :: write-file              ( c-addr u fileid -- ior )
         ld.w    %r6, [%r1]+                          ; fileid
-        ld.w    %r8, [%r1]                           ; count
-        xld.w   %r7, [%r1 + BYTES_PER_CELL]          ; buffer
+        ld.w    %r8, [%r1]+                          ; count
+        xld.w   %r7, [%r1]                           ; buffer
         xcall   FileSystem_write
         ld.w    [%r1], %r5                           ; ior
-        xld.w   [%r1 + BYTES_PER_CELL], %r4          ; count2
         NEXT
 end-code
 
