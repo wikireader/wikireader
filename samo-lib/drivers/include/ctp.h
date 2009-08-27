@@ -24,6 +24,8 @@
 
 void CTP_initialise(void);
 
+void CTP_flush(void);
+
 bool CTP_available(void);
 bool CTP_get(int *x, int *y, bool *pressed);
 

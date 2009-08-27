@@ -153,11 +153,26 @@ void CTP_interrupt(void)
 }
 
 
+void CTP_flush(void)
+{
+	DISABLE_IRQ();
+
+	touch_state = STATE_WAITING;
+	x = 0;
+	y = 0;
+
+	CTPwrite = 0;
+	CTPread = 0;
+
+	ENABLE_IRQ();
+}
+
 
 bool CTP_available(void)
 {
 	return !BUFFER_EMPTY(CTPwrite, CTPread, CTPbuffer);
 }
+
 
 bool CTP_get(int *x, int *y, bool *pressed)
 {
