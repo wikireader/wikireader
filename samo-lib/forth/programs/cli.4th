@@ -99,17 +99,16 @@ base @ decimal
 .( mkfile <file>                         - create a text file with dummy data )
 
 : (wrl) ( b u fileid -- f )
-  >r r@ write-file ?dup \ u2 ior ior?
+  >r r@ write-file ?dup \ ior ior?
   if  cr ." write error = " dec.
-      r> 2drop false exit
+      r> drop false exit
   then
-  drop
   pad [ctrl] j over c!
-  1 r> write-file ?dup \ u2 ior ior?
+  1 r> write-file ?dup \ ior ior?
   if  cr ." write error = " dec.
-      drop false exit
+      false exit
   then
-  drop true ;
+  true ;
 
 
 : mkfile ( -- \ filename )
