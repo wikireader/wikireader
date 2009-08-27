@@ -250,8 +250,9 @@ class EN25F05(FLASHROM):
         self.erased.add(block)
 
     def set_block_protection(self):
-        self.spi.command([0xf1, 0x00])
-        self.spi.command([0x01, 0x02])
+        pass
+        #self.spi.command([0xf1, 0x00])
+        #self.spi.command([0x01, 0x02])
 
 
     def write_block(self, buffer, address):
