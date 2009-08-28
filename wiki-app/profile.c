@@ -43,12 +43,12 @@ void profile_init(void)
 
 void prof_start(unsigned long index)
 {
-	prof_container[index].start_time = tick_get();
+	prof_container[index].start_time = Tick_get();
 }
 
 void prof_stop(unsigned long index)
 {
-	unsigned long tmp_tick = tick_get();
+	unsigned long tmp_tick = Tick_get();
 
 	prof_container[index].calls++;
 	prof_container[index].total_time += tmp_tick - prof_container[index].start_time;

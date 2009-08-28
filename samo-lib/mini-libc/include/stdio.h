@@ -69,7 +69,7 @@ typedef struct {
 #endif
 
 #ifndef __FD_SETSIZE
-#define __FD_SETSIZE 10
+#define __FD_SETSIZE 32
 #endif
 
 #ifdef __cplusplus

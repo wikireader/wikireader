@@ -19,20 +19,42 @@
 #define WL_SEARCH_H
 
 #define TARGET_SIZE 6
-#define RESULT_START 20
-#define RESULT_HEIGHT 10
-#define MAX_RESULTS 30
-#define NUMBER_OF_RESULTS 19
-#define NUMBER_OF_RESULTS_KEYBOARD 11
+//#define RESULT_START 20
+#define RESULT_START 35
+//#define RESULT_HEIGHT 10
+#define RESULT_HEIGHT 19
+#define MAX_RESULTS 20
+#define MAX_TITLE_SEARCH 64
+#define NUMBER_OF_RESULTS 9
+#define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
+/* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */
+#define MAX_DAT_FILES 16
+#define MAX_COMPRESSED_ARTICLE 256*1024
+
+typedef struct _ARTICLE_PTR {
+	long offset_dat;	/* offset to pedia?.dat for the article content */
+	long offset_fnd;	/* offset to pedia.fnd for the title (for search) */
+	long file_id_compressed_len; 	/* byte 0: bit0~1 - compress method (00 - lzo, 01 - bzlib, 10 - 7z), bit 2~7 pedia file id */
+					/* byte 1~3: compressed article length */
+} ARTICLE_PTR;
+
+typedef struct _TITLE_SEARCH { /* used to mask the porinter to the remainder of the title for search */
+	long idxArticle;
+	char cZero; /* null character for backward search */
+	char sTitleSearch[MAX_TITLE_SEARCH]; /* null terminated title for search (with bigram encoded) */
+} TITLE_SEARCH;
 
 /*
  * Highlevel search interface...
  */
 void search_select_down(void);
 void search_select_up(void);
-const char *search_current_title(void);
-const char *search_fetch_result();
+int search_current_selection(void);
+// const char *search_fetch_result();
+int retrieve_article(long idx_article);
+void memrcpy(char *dest, char *src, int len); // memory copy starting from the last byte
+void random_article(void);
 
 /**
  * Initialize the search engine. Once.
@@ -75,5 +97,9 @@ int search_result_selected();
 unsigned int search_result_first_item();
 
 void search_set_selection(int new_selection);
+
+void search_open_article(int new_selection);
+
+int set_result_list_base(int offset,int offset_count);
 
 #endif

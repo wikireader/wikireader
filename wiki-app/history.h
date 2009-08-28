@@ -19,36 +19,50 @@
 #ifndef WL_HISTORY_H
 #define WL_HISTORY_H
 
-#define HISTORY_RESULT_START 28
-#define HISTORY_RESULT_HEIGHT 10
+#include "search.h"
+
+#define HISTORY_RESULT_START 35
+//#define HISTORY_RESULT_HEIGHT 10
+#define HISTORY_RESULT_HEIGHT 19
 #define HISTORY_PIXEL_START (HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2)
 /*
  * Interface for the History feature
  */
 
-void history_display(void);
+void history_display(int index);
 void history_reset(void);
 void history_select_down(void);
 void history_select_up(void);
-const char *history_current_target(void);
+//const char *history_current_target(void);
 
-void history_add(const char *text, const char *target);
-void history_move_current_to_top(const char *target);
+void history_add(const long idx_article, const char *title);
+//void history_move_current_to_top(const char *target);
 
-const char *history_get_item_title(unsigned int index);
-const char *history_get_item_target(unsigned int index);
-
-unsigned int history_item_size(void);
-unsigned int history_free_item_size(void);
-
-const char *history_get_top_target(void);
-int history_get_selection();
+//const char *history_get_item_title(unsigned int index);
+//const char *history_get_item_target(unsigned int index);
+//
+//unsigned int history_item_size(void);
+//unsigned int history_free_item_size(void);
+//
+//const char *history_get_top_target(void);
+const int history_get_selection();
 void history_set_selection(int selection);
 unsigned int history_get_count();
 
 void history_list_init(void);
-struct history_item *history_find_item_title(const char *title);
-struct history_item *history_find_item_target(const char *target);
+void history_list_save(void);
+//struct history_item *history_find_item_title(const char *title);
+//struct history_item *history_find_item_target(const char *target);
+//
+//const char *history_release(int y);
 
-const char *history_release(int y);
+int set_history_list_base(int offset,int offset_count);
+int history_get_base();
+void history_open_article(int new_selection);
+void history_reload();
+
+typedef struct _HISTORY {
+	long idx_article;
+	char title[MAX_TITLE_SEARCH];
+} HISTORY;
 #endif

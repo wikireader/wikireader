@@ -49,6 +49,8 @@ ALL_TARGETS += forth
 ALL_TARGETS += mahatma
 #ALL_TARGETS += toppers # not working
 ALL_TARGETS += qt4-simulator
+ALL_TARGETS += wiki-xml
+ALL_TARGETS += pcf2bmf
 
 .PHONY: all
 all:    ${ALL_TARGETS}
@@ -137,6 +139,16 @@ qt4-simulator: mahatma
 .PHONY: console-simulator
 console-simulator: mahatma
 	( cd host-tools/console-simulator && $(MAKE) )
+
+# ----- new wiki rendering  --------------------------------------
+.PHONY: wiki-xml
+wiki-xml:
+	( cd host-tools/wiki-xml && $(MAKE) )
+
+# ----- pcf2bmf  --------------------------------------
+.PHONY: pcf2bmf
+pcf2bmf:
+	( cd host-tools/pcf2bmf && $(MAKE) )
 
 # ----- wiki Dump and Algorithm  --------------------------------------
 .PHONY: getwikidump

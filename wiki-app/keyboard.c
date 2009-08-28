@@ -18,7 +18,7 @@
 #include "wl-keyboard.h"
 
 #include "guilib.h"
-#include "keyboard_image.h"
+#include "keyboard_all_image.h"
 #include "input.h"
 #include "wikilib.h"
 #include "msg.h"
@@ -29,9 +29,13 @@
 #define INTERNAL_SHIFT   (-23)
 #define INTERNAL_NUMBER  (-42)
 
+
+static struct guilib_image *image_data;
+int keyboard_type = 0;
+
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, keycode) { .left_x = l_x, .right_x = r_x, .left_y = l_y, .right_y = r_y, .key = keycode, }
-static struct keyboard_key qwerty[] = {
+static struct keyboard_key qwerty_char[] = {
 	KEY(0, 128, 22, 153, 'q'),
 	KEY(0, 155, 22, 180, 'a'),
 	KEY(0, 182, 22, 207, 'z'),
@@ -71,6 +75,46 @@ static struct keyboard_key qwerty[] = {
 	KEY(217, 155, 239, 180, WL_KEY_BACKSPACE),
 	KEY(217, 182, 239, 207, INTERNAL_NUMBER),
 };
+static struct keyboard_key qwerty_num[] = {
+	KEY(0, 128, 22, 153, '1'),
+	KEY(0, 155, 22, 180, '@'),
+	KEY(0, 182, 22, 207, '#'),
+
+	KEY(24, 128, 46, 153, '2'),
+	KEY(24, 155, 46, 180, '/'),
+	KEY(24, 182, 46, 207, '?'),
+
+	KEY(48, 128, 70, 153, '3'),
+	KEY(48, 155, 70, 180, ':'),
+	KEY(48, 182, 70, 207, '!'),
+
+	KEY(72, 128, 94, 153, '4'),
+	KEY(72, 155, 94, 180, ';'),
+	KEY(72, 182, 94, 208, '.'),
+
+	KEY(96, 128, 119, 153, '5'),
+	KEY(96, 155, 119, 180, '('),
+	KEY(96, 182, 143, 207, ' '),
+
+	KEY(121, 128, 143, 153, '6'),
+	KEY(121, 155, 143, 180, ')'),
+
+	KEY(145, 128, 167, 153, '7'),
+	KEY(145, 155, 167, 180, '$'),
+	KEY(145, 182, 167, 207, ','),
+
+	KEY(169, 128, 191, 153, '8'),
+	KEY(169, 155, 191, 180, '^'),
+	KEY(169, 182, 191, 207, '.'),
+
+	KEY(193, 128, 215, 153, '9'),
+	KEY(193, 155, 215, 180, '-'),
+	KEY(193, 182, 215, 207, '"'),
+
+	KEY(217, 128, 239, 153, '0'),
+	KEY(217, 155, 239, 180, WL_KEY_BACKSPACE),
+	KEY(217, 182, 239, 207, INTERNAL_NUMBER),
+};
 
 /*
  * The secret of the position and size of the keyboard
@@ -82,6 +126,12 @@ static int kb_mode = KEYBOARD_CHAR;
 void keyboard_set_mode(int mode)
 {
 	kb_mode = mode;
+
+        if(kb_mode == KEYBOARD_CHAR) 
+           image_data = &image_data_char;
+        else if(kb_mode == KEYBOARD_NUM)
+           image_data = &image_data_num;
+
 }
 
 int keyboard_get_mode()
@@ -94,16 +144,23 @@ int keyboard_get_mode()
  */
 void keyboard_paint()
 {
+        //msg(MSG_INFO,"enter keyboard_paint,ke_mode=%d\n",kb_mode);
 	if (kb_mode == KEYBOARD_NONE)
 		return;
+
+        if(kb_mode == KEYBOARD_CHAR) 
+           image_data = &image_data_char;
+        else if(kb_mode == KEYBOARD_NUM)
+           image_data = &image_data_num;
+
 	guilib_fb_lock();
-	guilib_blit_image(&image_data, 0, guilib_framebuffer_height() - image_data.height);
+	guilib_blit_image(image_data, 0, guilib_framebuffer_height() - image_data->height);
 	guilib_fb_unlock();
 }
 
 unsigned int keyboard_height()
 {
-	return image_data.height;
+	return image_data->height;
 }
 
 /**
@@ -114,11 +171,20 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	unsigned int i;
 
 	if (kb_mode == KEYBOARD_CHAR) {
-		for (i = 0; i < ARRAY_SIZE(qwerty); ++i) {
-			if (qwerty[i].left_x <= x && qwerty[i].right_x >= x
-			&& qwerty[i].left_y <= y && qwerty[i].right_y >= y) {
-				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty[i].key));
-				return &qwerty[i];
+		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
+			if (qwerty_char[i].left_x <= x && qwerty_char[i].right_x >= x
+			&& qwerty_char[i].left_y <= y && qwerty_char[i].right_y >= y) {
+				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_char[i].key));
+				return &qwerty_char[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_NUM) {
+		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
+			if (qwerty_num[i].left_x <= x && qwerty_num[i].right_x >= x
+			&& qwerty_num[i].left_y <= y && qwerty_num[i].right_y >= y) {
+				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_num[i].key));
+				return &qwerty_num[i];
 			}
 		}
 	}

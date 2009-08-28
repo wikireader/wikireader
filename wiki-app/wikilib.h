@@ -47,5 +47,4 @@ int wikilib_init (void);
 int wikilib_run (void);
 void open_article(const char *target, int mode);
 void invert_selection(int old_pos, int new_pos, int start_pos, int height);
-
 #endif /* WIKILIB_H */

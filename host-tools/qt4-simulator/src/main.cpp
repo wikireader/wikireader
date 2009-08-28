@@ -26,8 +26,12 @@
 
 MainWindow *window;
 
+long idx_init_article = 0;
+
 int main(int argc, char *argv[])
 {
+	if (argc > 1)
+		idx_init_article = atol(argv[1]);
 	WikilibThread *thread = new WikilibThread();
 	QApplication app(argc, argv);
 

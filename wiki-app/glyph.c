@@ -28,6 +28,7 @@
 #include <regs.h>
 #include <lcd.h>
 #include <samo.h>
+#include "lcd_buf_draw.h"
 
 #include "msg.h"
 
@@ -120,7 +121,7 @@ static int char_to_glyph(char c)
  * @param start_x From where to start drawing (upper left)
  * @param start_y From where to start drawing (upper left)
  */
-int render_string(const int font, int start_x,
+/*int render_string(const int font, int start_x,
 		    int start_y, const char *string, const int text_length)
 {
 	int i;
@@ -136,8 +137,8 @@ int render_string(const int font, int start_x,
 		const struct glyph *glyph = get_glyph(font,
 				    char_to_glyph(string[i] & 0x7f));
 
-		/* painting and advance */
-		/* TODO: use the above auto kerning for the advance */
+		// painting and advance 
+		// TODO: use the above auto kerning for the advance 
 		render_glyph(x, start_y - glyph->top_bearing, glyph);
 		x += glyph->width + 1;
 
@@ -149,4 +150,19 @@ int render_string(const int font, int start_x,
 xout:
 	DX();
 	return 0;
+}*/
+int render_string(const int font, int start_x,
+				  int start_y, const char *string, const int text_length)
+{
+	int i;
+	int x = start_x;
+	
+        char_to_glyph(32);
+	
+	for (i = 0; i < text_length; ++i) {
+	    x = draw_bmf_char(string[i],font-1,x,start_y);
+            if(x<0)
+                return 0;
+	}
+	return x;
 }
