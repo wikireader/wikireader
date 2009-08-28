@@ -84,6 +84,8 @@ int article_touch_count = 0;
 int touch_history = 0;
 int start_history_selection_time = 0;
 extern int article_offset;
+int ramdom_press = 0;
+extern int stop_render_article;
 
 
 static void repaint_search(void)
@@ -407,7 +409,17 @@ static void handle_key_release(int keycode)
 		//history_display(0);
                 history_reload();
 	} else if (keycode == WL_INPUT_KEY_RANDOM) {
+                
+                if(article_buf_pointer!=NULL)
+                {
+                  //article_offset = 0;
+                  //article_buf_pointer = NULL;
+                  ramdom_press = true;
+                  stop_render_article = 1;
+                  return;
+                }
                 article_offset = 0;
+                article_buf_pointer = NULL;
                 display_mode = DISPLAY_MODE_ARTICLE;
 	        last_display_mode = DISPLAY_MODE_INDEX;
 	        random_article();
@@ -511,6 +523,7 @@ static void handle_touch(struct wl_input_event *ev)
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
+        msg(MSG_INFO,"handle_touch,display_mode:%d\n",display_mode);
 
 	if (display_mode == DISPLAY_MODE_INDEX) {
 		struct keyboard_key * key;
@@ -750,18 +763,26 @@ static void handle_touch(struct wl_input_event *ev)
                             count_next = article_touch_count+1;
                         while(true)
                         {
+                            //msg(MSG_INFO,"count_next:%d,article_touch_count:%d,touch_y_last_article_list[count_next]:%d\n",count_next,article_touch_count,touch_y_last_article_list[count_next]);
+
                             if(touch_y_last_article_list[count_next]>0)
                               break;
                             count_next++;
-                            if(count_next == article_touch_count)
-                              break;
                             if(count_next>=9)
                              count_next = 0;
+                            if(count_next == article_touch_count)
+                              break;
                         }
                         distance = abs(touch_y_last_article_list[count_next]-ev->touch_event.y);
                         //if(abs(touch_y_last_article_list[count_next]-ev->touch_event.y)!=0)
                             //return;
+                        if((end_move_time-touch_time_last_article_list[count_next])==0)
+                        {
+                             msg(MSG_INFO,"time diff is 0\n");
+                             return;
+                        }
                         speed= distance*1000000*24/(end_move_time-touch_time_last_article_list[count_next]);
+                        msg(MSG_INFO,"scroll speed:%d\n",speed);
                         for(i=0;i<10;i++)
                         {
                           touch_y_last_article_list[i]=0;
@@ -807,25 +828,26 @@ static void handle_touch(struct wl_input_event *ev)
 			if (article_touch_down_pos.y > ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
 				//article_display(ARTICLE_PAGE_NEXT);
-                                display_article_with_pcf_smooth(LCD_HEIGHT_LINES+speed*2);
+                                display_article_with_pcf_smooth(LCD_HEIGHT_LINES);
 			else if (article_touch_down_pos.y < ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
 				//article_display(ARTICLE_PAGE_PREV);
-                                display_article_with_pcf_smooth(-LCD_HEIGHT_LINES-speed*2);
+                                display_article_with_pcf_smooth(-LCD_HEIGHT_LINES);
                         else if(get_article_link_number()>=0)
                         {
+                             msg(MSG_INFO,"article_link_number:%d\n",get_article_link_number());
                              open_article_link_with_link_number(get_article_link_number());
                         }
                         else if(abs(article_touch_down_pos.y - ev->touch_event.y)<10 && abs(article_touch_down_pos.x - ev->touch_event.x)<10)
                         {
-                              open_article_link(article_touch_down_pos.x,article_touch_down_pos.y);                           
+                             msg(MSG_INFO,"open_article_link\n");                              //open_article_link(article_touch_down_pos.x,article_touch_down_pos.y);                           
                         }
                         else if(abs(article_touch_down_pos.y - ev->touch_event.y) > 10)
                         {
                               if(article_touch_down_pos.y<ev->touch_event.y)
                                  display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y-speed*2);
                               else
-                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y+speed*2);
+                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y);
 
                         }
                         
@@ -843,7 +865,12 @@ static void handle_touch(struct wl_input_event *ev)
                                article_touch_count = 0;
                            touch_y_last_article_list[article_touch_count] = ev->touch_event.y;
                            touch_time_last_article_list[article_touch_count] = last_article_move_time;
+
+                           msg(MSG_INFO,"last_article_move_time:%d,article_touch_count:%d\n",last_article_move_time,article_touch_count);
+
                            article_touch_count++;
+                           if(article_touch_count>=10)
+                              article_touch_count = 0;
                         }
                         if(touch_y_last_unreleased == 0)
                         {
@@ -926,6 +953,15 @@ int wikilib_run(void)
                   sleep = 0;
                 else
                 {
+                  if(ramdom_press)
+                  {
+                    ramdom_press = false;
+                    article_offset = 0;
+                    display_mode = DISPLAY_MODE_ARTICLE;
+	            last_display_mode = DISPLAY_MODE_INDEX;
+	            random_article();
+                    continue;
+                  }
                   history_list_save();
 		  sleep = 1;
 		}

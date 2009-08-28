@@ -70,6 +70,7 @@ int article_scroll_delay_time,article_offset,base_delay_time;
 int article_distance,article_offset,article_scroll_increment;
 int time_scroll_article_start;
 int article_scroll_delay_time_total;
+int stop_render_article = 0;
 
 int is_supported_search_char(char c)
 {
@@ -298,7 +299,7 @@ void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,char **pUTF8,int st
 	lcd_draw_buf_external.current_y = start_y+2;
 	lcd_draw_buf_external.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
         lcd_draw_buf_external.screen_buf = (unsigned char*)framebuffer_copy;
-	lcd_draw_buf_external.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace;
+	lcd_draw_buf_external.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
     
 	lcd_draw_buf_external.align_adjustment = 0;
         
@@ -339,7 +340,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				lcd_draw_buf.current_x = 0;
 				lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 				lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
-				lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace;
+				lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 				lcd_draw_buf.align_adjustment = 0;
 				if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 					lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
@@ -446,6 +447,9 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	
 	while (**pUTF8 > MAX_ESC_CHAR) /* stop at end of string or escape character */
 	{
+               #ifdef INCLUDED_FROM_KERNEL
+               //msg(MSG_INFO,"**pUTF8:%x\n",*pUTF8);
+               #endif
 		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			buf_draw_char(u);
@@ -466,7 +470,7 @@ void repaint_framebuffer(unsigned char *buf,int pos)
 	framebuffersize = framebuffer_size();
 	
 	guilib_fb_lock();
-	//guilib_clear();
+	guilib_clear();
 
 	memcpy(framebuffer,buf+pos,framebuffersize);
 	guilib_fb_unlock();
@@ -724,6 +728,7 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 }
 void init_render_article()
 {
+
 	if(lcd_draw_buf.current_y>0)
 	    memset(lcd_draw_buf.screen_buf,0,lcd_draw_buf.current_y*LCD_VRAM_WIDTH_PIXELS/8);
 
@@ -746,6 +751,12 @@ int render_article_with_pcf()
 		return 0;
 	
 	buf_draw_UTF8_str(&article_buf_pointer);
+        if(stop_render_article == 1 && display_first_page == 1)
+        {
+           article_buf_pointer = NULL;
+           stop_render_article = 0;
+           return 0;
+        }
 	if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
 	{
 		repaint_framebuffer(lcd_draw_buf.screen_buf,(request_y_pos-LCD_HEIGHT_LINES)*LCD_VRAM_WIDTH_PIXELS/8);
@@ -861,7 +872,7 @@ void display_article_with_pcf_smooth(int start_y)
            increment = -2;
            article_scroll_increment = -2;
         }
-        time = 1000;
+        time = 2000;
         article_scroll_delay_time = time;
         add = 100;
         base_delay_time = add;
@@ -1116,7 +1127,7 @@ int display_link_article(long article_link_number)
 	if(article_buf_pointer!=NULL)
 	{
 		init_render_article();
-//		render_article_with_pcf(&article_buf_pointer);
+		//render_article_with_pcf(&article_buf_pointer);
 		return 0;
 	}
 	return -1;
@@ -1174,7 +1185,7 @@ void display_external_link_str(int external_link_number,char *external_link_str)
        buf_draw_UTF8_str_in_copy_buffer(framebuffer_copy,&external_link_str,start_x,end_x,start_y,end_y,offset_x);
 
        repaint_framebuffer(framebuffer_copy,0);
-#endif       
+#endif
  }
 void display_str(char *str)
 {
