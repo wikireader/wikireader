@@ -1,0 +1,7 @@
+*.map
+*.elf
+*.o
+*.d
+*.asm33
+build
+lib

@@ -46,6 +46,7 @@ ALL_TARGETS =
 ALL_TARGETS += mbr
 ALL_TARGETS += jackknife
 ALL_TARGETS += forth
+ALL_TARGETS += flash
 ALL_TARGETS += mahatma
 #ALL_TARGETS += toppers # not working
 ALL_TARGETS += qt4-simulator
@@ -170,6 +171,14 @@ webkit:
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
 	$(MAKE) -C samo-lib/forth
+
+
+# ----- flash -----------------------------------------------
+# flash programmer that runs on the device
+
+.PHONY: flash
+flash:  gcc mini-libc fatfs drivers
+	$(MAKE) -C samo-lib/flash
 
 
 # ----- mbr -------------------------------------------------
