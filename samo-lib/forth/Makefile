@@ -45,6 +45,7 @@ LIBS += $(shell ${CROSS_GCC} -print-libgcc-file-name)
 
 CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
+CLEAN_FILES =
 
 
 all: forth.elf calc.elf
@@ -58,6 +59,7 @@ OBJECTS += iserial.o
 OBJECTS += PolledSerial.o
 OBJECTS += vector.o
 
+CLEAN_FILES += forth.s
 forth.s: header.s meta.fs forth-symbols.fi ansi-forth.fs forth-vector.fi trailer.s
 	${RM} "$@"
 	cat header.s >> "$@"
@@ -78,6 +80,7 @@ forth-vector.fi: Makefile
 	echo "variable 'cold-run :: tick-cold-run" >> "$@"
 
 
+CLEAN_FILES += calc.s
 calc.s: header.s meta.fs calc-symbols.fi ansi-forth.fs calc.fi trailer.s
 	${RM} "$@"
 	cat header.s >> "$@"
@@ -103,6 +106,7 @@ calc.fi: programs/calc.4th
 
 clean:
 	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi
+	${RM} ${CLEAN_FILES}
 
 %.o: %.s
 	${CROSS_AS} -o $@ ${CROSS_ASFLAGS} -ahlsm=${@:.o=.lst} $<
