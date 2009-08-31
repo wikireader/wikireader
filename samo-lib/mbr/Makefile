@@ -105,7 +105,7 @@ flash-mbr: all
 	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
 	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
 	) | dd bs=1 count=32 > serial.header
-	time ${FLASH07} --port="${BOOTLOADER_TTY}" --boot="${BOOT_FILE}" \
+	time ${FLASH07} --port="${BOOTLOADER_TTY}" --aux-port="${BOOTLOADER_AUX}" --boot="${BOOT_FILE}" \
 	--map-file="${FLASH_ROM_MAP_FILE}"
 
 clean:

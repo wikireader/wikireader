@@ -60,6 +60,11 @@ class SerialPort():
         if 0 < self.s.inWaiting():
             self.s.read(self.s.inWaiting())
 
+    def reset(self):
+        self.s.setDTR(1)
+        time.sleep(0.1)
+        self.s.setDTR(0)
+
     def getID(self):
         self.flush()
         self.s.write('\x80\x80\x80\x80')
@@ -77,6 +82,28 @@ class SerialPort():
 
     def spi(self):
         return self.spi_channel
+
+
+class AuxSerialPort():
+
+#    def __init__(self, port = '/dev/ttyUSB1', bps = 57600, timeout = 0.2):
+    def __init__(self, port = '/dev/ttyUSB1', bps = 115200, timeout = 0.2):
+        self.s = Serial(port = port)
+        self.s.xonxoff = False
+        self.s.rtscts = False
+        self.s.baudrate = bps
+        self.s.timeout = timeout
+        self.s.open()
+        self.spi_channel = SPI.SPI(self.s)
+
+    def program(self):
+        self.s.setDTR(1)
+
+    def normal(self):
+        self.s.setDTR(0)
+
+    def __del__(self):
+        self.s.close()
 
 
 class MapFile:
@@ -122,13 +149,14 @@ def usage(message):
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvb:m:p:', ['help', 'verbose', 'boot=', 'map-file=', 'port='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvb:m:p:a:', ['help', 'verbose', 'boot=', 'map-file=', 'port=', 'aux-port='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
     bootfile = 'jackknife'
     mapfile = ''
+    aux_port = ''
     port = '/dev/ttyUSB1'
 
     for opt, arg in opts:
@@ -142,6 +170,8 @@ def main():
             mapfile = arg
         elif opt in ('-p', '--port'):
             port = arg
+        elif opt in ('-a', '--aux-port'):
+            aux_port = arg
         else:
             usage('unhandled option: ' + o)
 
@@ -167,9 +197,15 @@ def main():
 
     s = SerialPort(port = port)
 
+    aux = None
+    if '' != aux_port:
+        aux = AuxSerialPort(port = aux_port)
+        aux.program()
+
     id = s.getID()
     while not id in VALID_CPU_IDS:
         print 'Press Reset'
+        s.reset
         time.sleep(1)
         id = s.getID()
 
@@ -194,7 +230,11 @@ def main():
         rom.program(data, offset)
         rom.verify(data, offset)
 
+    if None != aux:
+        aux.normal()
+
     s = None
+    aux = None
 
 if __name__ == '__main__':
     main()

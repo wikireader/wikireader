@@ -198,12 +198,28 @@ echo -n /dev/TTY-NOT-FOUND;
 exit 1;
 endef
 
+define FindAUX
+for i in USBjtag;
+do
+  d="/dev/$${i}";
+  if [ -e "$${d}" ];
+  then
+    echo -n $${d};
+    exit 0;
+  fi;
+done;
+echo -n /dev/TTY-NOT-FOUND;
+exit 1;
+endef
+
 BOOTLOADER_TTY ?= $(shell ${FindTTY})
+BOOTLOADER_AUX ?= $(shell ${FindAUX})
 SERIAL_NUMBER ?= No Serial Number
 
 .PHONY: print-mbr-tty
 print-mbr-tty:
 	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
+	@echo BOOTLOADER_AUX = "${BOOTLOADER_AUX}"
 
 .PHONY: mbr
 mbr: gcc fatfs
@@ -219,7 +235,7 @@ jackknife:
 
 .PHONY: flash-mbr
 flash-mbr: mbr jackknife
-	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
+	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
 
 # ----- clean and help --------------------------------------
