@@ -205,7 +205,7 @@ def main():
     id = s.getID()
     while not id in VALID_CPU_IDS:
         print 'Press Reset'
-        s.reset
+        s.reset()
         time.sleep(1)
         id = s.getID()
 
