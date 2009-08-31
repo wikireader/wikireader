@@ -19,10 +19,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <regs.h>
-#include <irq.h>
 #include <samo.h>
 #include <delay.h>
 
+#include "interrupt.h"
 #include "ctp.h"
 
 typedef enum {
@@ -57,36 +57,40 @@ static volatile ItemType CTPbuffer[256];
 
 void CTP_initialise(void)
 {
-	touch_state = STATE_WAITING;
-	x = 0;
-	y = 0;
+	static bool initialised = false;
+	if (!initialised) {
+		initialised = true;
+		touch_state = STATE_WAITING;
+		x = 0;
+		y = 0;
 
-	CTPwrite = 0;
-	CTPread = 0;
+		CTPwrite = 0;
+		CTPread = 0;
 
-	init_rs232_ch1();
+		init_rs232_ch1();
 
-	DISABLE_IRQ();
+		InterruptType s = Interrupt_disable();
 
-	// CTP_INIT_Reset_function
-	REG_P0_IOC0 |= 0x80;
-	REG_P0_P0D  |= 0x80;
-	delay_us(20);
-	REG_P0_P0D  &= ~0x80;
+		// CTP_INIT_Reset_function
+		REG_P0_IOC0 |= 0x80;
+		REG_P0_P0D  |= 0x80;
+		delay_us(20);
+		REG_P0_P0D  &= ~0x80;
 
-	REG_INT_ESIF01 |= ESRX1 | ESERR1;
+		REG_INT_ESIF01 |= ESRX1 | ESERR1;
 
-	REG_INT_PSI01_PAD |= SERIAL_CH1_INT_PRI_7;
-	int i;
-	for (i = 0; i < 6; ++i) {
-		// flush FIFO
-		register uint32_t c = REG_EFSIF1_RXD;
-		(void)c;
+		REG_INT_PSI01_PAD |= SERIAL_CH1_INT_PRI_7;
+		int i;
+		for (i = 0; i < 6; ++i) {
+			// flush FIFO
+			register uint32_t c = REG_EFSIF1_RXD;
+			(void)c;
+		}
+
+		REG_INT_FSIF01 = FSTX1 | FSRX1 | FSERR1; // clear the interrupt
+
+		Interrupt_enable(s);
 	}
-
-	REG_INT_FSIF01 = FSTX1 | FSRX1 | FSERR1; // clear the interrupt
-
-	ENABLE_IRQ();
 }
 
 
@@ -155,7 +159,7 @@ void CTP_interrupt(void)
 
 void CTP_flush(void)
 {
-	DISABLE_IRQ();
+	InterruptType s = Interrupt_disable();
 
 	touch_state = STATE_WAITING;
 	x = 0;
@@ -164,7 +168,7 @@ void CTP_flush(void)
 	CTPwrite = 0;
 	CTPread = 0;
 
-	ENABLE_IRQ();
+	Interrupt_enable(s);
 }
 
 

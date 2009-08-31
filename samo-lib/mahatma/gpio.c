@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <input.h>
 #include <regs.h>
-#include <irq.h>
 #include <samo.h>
 #include <wikilib.h>
 #include <button.h>

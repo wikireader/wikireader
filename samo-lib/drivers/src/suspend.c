@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "regs.h"
-#include "samo.h"
-#include "irq.h"
+#include <regs.h>
+#include <samo.h>
+#include <interrupt.h>
 #include <diskio.h>
+
 #include "suspend.h"
 
 
@@ -44,11 +45,11 @@ void suspend(int WatchdogTimeout)
 	SDCARD_CS_HI();
 	EEPROM_CS_HI();
 
-	DISABLE_IRQ();
+	InterruptType s = Interrupt_disable();
 
 	suspend2(WatchdogTimeout);
 
-	ENABLE_IRQ();
+	Interrupt_enable(s);
 	// it is now possible to call other functions
 	// as SDRAM is operational again
 
@@ -133,7 +134,7 @@ void suspend2(int WatchdogTimeout)
 		GPIONSTP_HCKE |
 		//SRAMC_HCKE |
 		EFSIOBR_HCKE |
-		MISC_HCKE |
+		//MISC_HCKE |
 
 		IVRAMARB_CKE |
 		//TM5_CKE |

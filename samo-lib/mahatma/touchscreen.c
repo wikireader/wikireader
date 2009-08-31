@@ -25,7 +25,6 @@
 
 #include "samo.h"
 #include "touchscreen.h"
-#include "irq.h"
 
 int touchscreen_get_event(struct wl_input_event *ev)
 {

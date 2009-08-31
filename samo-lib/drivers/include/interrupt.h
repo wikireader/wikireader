@@ -1,6 +1,6 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * interrupt - interrupt enable/disable
+ * Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IRQ_H
-#define IRQ_H
+#if  !defined(_INTERRUPT_H_)
+#define _INTERRUPT_H_ 1
 
-#define DISABLE_IRQ()	do { asm volatile ("psrclr 4"); } while(0)
-#define ENABLE_IRQ()	do { asm volatile ("psrset 4"); } while(0)
+typedef enum {
+	Interrupt_disabled = 0,
+	Interrupt_enabled = 1,
+} InterruptType;
 
-#endif /* IRQ_H */
 
+inline InterruptType Interrupt_disable(void)
+{
+	register InterruptType state;
+	asm volatile (
+		"\tld.w\t%0, %%psr\n"
+		"\txand\t%0, 0x010\n"
+		"\tsra\t%0, 4\n"
+		"\tpsrclr 4"
+		: "=r" (state)
+		:
+		);
+	return state;
+}
+
+inline void Interrupt_enable(InterruptType state)
+{
+	if (0 != state) {
+		asm volatile ("psrset 4");
+	}
+}
+
+
+#endif

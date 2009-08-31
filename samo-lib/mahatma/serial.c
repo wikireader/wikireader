@@ -21,9 +21,10 @@
 #include <input.h>
 
 #include <msg.h>
-#include "regs.h"
+#include <regs.h>
+#include <interrupt.h>
+
 #include "serial.h"
-#include "irq.h"
 
 
 static u8 console_buffer[16];
@@ -44,7 +45,7 @@ void serial_init(void)
 {
 	static bool initialised = false;
 	if (!initialised) {
-		DISABLE_IRQ();
+		InterruptType s = Interrupt_disable();
 		REG_INT_ESIF01 = ESRX0;
 
 		REG_INT_PLCDC_PSIO0 = 0x70;
@@ -55,7 +56,7 @@ void serial_init(void)
 		linefeed = false;
 
 		initialised = true;
-		ENABLE_IRQ();
+		Interrupt_enable(s);
 	}
 }
 
@@ -64,9 +65,9 @@ void serial_put(serial_buffer_type *buffer)
 {
 	if (NULL != buffer) {
 		// critical code - disable uart tx interrupts
-		DISABLE_IRQ();
+		InterruptType s = Interrupt_disable();
 		REG_INT_ESIF01 &= ~ESTX0;
-		ENABLE_IRQ();
+		Interrupt_enable(s);
 		buffer->link = NULL;
 		if (NULL != send_queue_tail) {
 			send_queue_tail->link = buffer;
@@ -75,9 +76,9 @@ void serial_put(serial_buffer_type *buffer)
 		if (NULL == send_queue_head) {
 			send_queue_head = send_queue_tail;
 			transmit = send_queue_head->text;
-			DISABLE_IRQ();
+			s = Interrupt_disable();
 			REG_INT_FSIF01 = FSTX0;
-			ENABLE_IRQ();
+			Interrupt_enable(s);
 			{
 				u8 c = *transmit++;
 				if ('\n' == c) {
@@ -88,9 +89,9 @@ void serial_put(serial_buffer_type *buffer)
 			}
 
 		}
-		DISABLE_IRQ();
+		s = Interrupt_disable();
 		REG_INT_ESIF01 |= ESTX0;
-		ENABLE_IRQ();
+		Interrupt_enable(s);
 	}
 }
 
@@ -151,9 +152,9 @@ void serial_out(int port, char c)
 	if (port != 0)
 		return;
 
-	DISABLE_IRQ();
+	InterruptType s = Interrupt_disable();
 	REG_EFSIF0_TXD = c;
-	ENABLE_IRQ();
+	Interrupt_enable(s);
 }
 
 int serial_get_event(struct wl_input_event *ev)

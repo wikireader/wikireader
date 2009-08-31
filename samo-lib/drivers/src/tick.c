@@ -20,6 +20,7 @@
 #include <regs.h>
 #include <samo.h>
 
+#include "interrupt.h"
 #include "tick.h"
 
 
@@ -28,6 +29,7 @@ void Tick_initialise()
 	static bool initialised = false;
 	if (!initialised) {
 		initialised = true;
+		InterruptType s = Interrupt_disable();
 		// enable clocks - for all timers that will be used
 		// even if internal clocking is not used.
 		// modify drivers/src/suspend.c to match this.
@@ -212,6 +214,7 @@ void Tick_initialise()
 			//PAUSE1 |
 			//PAUSE0 |
 			0;
+		Interrupt_enable(s);
 	}
 }
 
@@ -219,6 +222,8 @@ void Tick_initialise()
 unsigned long Tick_get(void)
 {
 	register unsigned long count;
+
+	InterruptType s = Interrupt_disable();
 
 	// Set PAUSE On
 	REG_T16_CNT_PAUSE =
@@ -250,5 +255,6 @@ unsigned long Tick_get(void)
 		//PAUSE0 |
 		0;
 
+	Interrupt_enable(s);
 	return count;
 }

@@ -19,13 +19,14 @@
 #include <wikilib.h>
 #include <input.h>
 
-#include "regs.h"
+#include <regs.h>
+#include <interrupt.h>
+#include <misc.h>
+#include <button.h>
+#include <ctp.h>
+
 #include "traps.h"
 #include "serial.h"
-#include "irq.h"
-#include "misc.h"
-#include "button.h"
-#include "ctp.h"
 
 #define CLEAR_IRQ(reg,val)                      \
 	do {                                    \
@@ -276,7 +277,7 @@ irq_callback trap_table[N_TRAPS] = {
 
 void traps_init(void)
 {
-	DISABLE_IRQ();
+	(void)Interrupt_disable();
 
 	/* WAKEUP=1 */
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
@@ -285,5 +286,26 @@ void traps_init(void)
 
 	/* relocate the trap table */
 	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
-	ENABLE_IRQ();
+	Interrupt_enable(true);
+	void traps_check(void);
+	print("traps_init\n");
+	traps_check();
+}
+
+void traps_check(void)
+{
+	register uint32_t *tt, nh;
+	asm volatile (
+		"xld.w %0, trap_table\n"
+		"xld.w %1, nmi_handler\n"
+		: "=r"(tt), "=r"(nh)
+		:
+		);
+	if (tt[7] != nh) {
+		print("trap_table is corrupt\n");
+		print_u32(tt[7]);
+		print(" should be ");
+		print_u32(nh);
+		print("\n");
+	}
 }

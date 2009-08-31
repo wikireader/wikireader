@@ -19,9 +19,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <regs.h>
-#include <irq.h>
 #include <samo.h>
 
+#include "tick.h"
+#include "interrupt.h"
 #include "button.h"
 
 
@@ -29,6 +30,7 @@
 
 
 static struct {
+	unsigned long ticks;
 	ButtonType button;
 	bool pressed;
 } ButtonBuffer[16];
@@ -45,8 +47,9 @@ void Button_initialise(void)
 {
 	static bool initialised = false;
 	if (!initialised) {
+		Tick_initialise();
 
-		DISABLE_IRQ();
+		InterruptType s = Interrupt_disable();
 
 		ButtonRead = 0;
 		ButtonWrite = 0;
@@ -78,7 +81,7 @@ void Button_initialise(void)
 
 		REG_INT_EK01_EP03 = EK0 | EP3;     // enable KINT0 and Port0
 
-		ENABLE_IRQ();
+		Interrupt_enable(s);
 	}
 }
 
@@ -91,7 +94,7 @@ void Button_KeyInterrupt(void)
 	REG_KINTCOMP_SCPK0 = bits;
 
 	static bool state[3] = {false, false, false};
-
+	unsigned long ticks = Tick_get();
 	int i;
 	for (i = 0; i < ARRAY_SIZE(state); ++i) {
 
@@ -100,6 +103,7 @@ void Button_KeyInterrupt(void)
 
 			ButtonBuffer[ButtonWrite].button = i;
 			ButtonBuffer[ButtonWrite].pressed = pressed;
+			ButtonBuffer[ButtonWrite].ticks = ticks;
 			state[i] = pressed;
 
 			if (!BUFFER_FULL(ButtonWrite, ButtonRead, ButtonBuffer)) {
@@ -115,6 +119,7 @@ void Button_PowerInterrupt(void)
 
 	ButtonBuffer[ButtonWrite].button = Button_PowerKey;
 	ButtonBuffer[ButtonWrite].pressed = true;
+	ButtonBuffer[ButtonWrite].ticks = Tick_get();
 
 	if (!BUFFER_FULL(ButtonWrite, ButtonRead, ButtonBuffer)) {
 		BUFFER_NEXT(ButtonWrite, ButtonBuffer);
@@ -134,6 +139,21 @@ bool Button_get(ButtonType *button, bool *pressed)
 
 	*button = ButtonBuffer[ButtonRead].button;
 	*pressed = ButtonBuffer[ButtonRead].pressed;
+	unsigned long ticks = ButtonBuffer[ButtonRead].ticks;
 	BUFFER_NEXT(ButtonRead, ButtonBuffer);
+	delay_us(1000);
+
+#define DEBOUNCE_TIME (5 * 24000)
+
+	while (!BUFFER_EMPTY(ButtonWrite, ButtonRead, ButtonBuffer)) {
+		if (ButtonBuffer[ButtonRead].ticks - ticks > DEBOUNCE_TIME) {
+			return true;
+		}
+		*button = ButtonBuffer[ButtonRead].button;
+		*pressed = ButtonBuffer[ButtonRead].pressed;
+		ticks = ButtonBuffer[ButtonRead].ticks;
+		BUFFER_NEXT(ButtonRead, ButtonBuffer);
+	}
+
 	return true;
 }

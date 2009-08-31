@@ -22,9 +22,9 @@
 #include <regs.h>
 #include <wikilib.h>
 #include <input.h>
+#include <interrupt.h>
 
 #include "msg.h"
-#include "irq.h"
 #include "serial.h"
 
 typedef char message_line_type[128];
@@ -83,10 +83,10 @@ void msg(int level, const char *fmt, ...)
 
 	{
 		// critcal code, since free is called from interrupt state
-		DISABLE_IRQ();
+		InterruptType s = Interrupt_disable();
 		m = free_list;
 		free_list = free_list->link;
-		ENABLE_IRQ();
+		Interrupt_enable(s);
 	}
 
 	//m->level = level;
