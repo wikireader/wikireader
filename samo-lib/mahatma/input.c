@@ -25,6 +25,7 @@
 #include <samo.h>
 #include <suspend.h>
 #include <temperature.h>
+#include <ctp.h>
 
 #include "serial.h"
 #include "touchscreen.h"
@@ -55,6 +56,9 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 		}
 
 		if (gpio_get_event(ev)) {
+			if (ev->key_event.value) {
+				CTP_flush();  // flush and reset the CTP
+			}
 			break;
 		}
 
