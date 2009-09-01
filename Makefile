@@ -249,6 +249,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C host-tools/jackknife
 	$(MAKE) clean -C host-tools/wiki-xml
 	$(MAKE) clean -C host-tools/pcf2bmf
+	$(MAKE) clean -C host-tools/flash07
 	$(MAKE) clean -C samo-lib/mbr
 	$(MAKE) clean -C samo-lib/drivers
 	$(MAKE) clean -C samo-lib/fatfs
