@@ -94,7 +94,7 @@ C_STD_LIB_OPERATIONS = \
 
 
 
-TARGETS=lib/libc.a
+TARGETS=lib lib/libc.a
 all: $(TARGETS)
 
 .c.o:
@@ -103,6 +103,10 @@ all: $(TARGETS)
 
 lib/libc.a: $(C_STRING_OPERATIONS) $(C_BSD_OPERATIONS) $(C_STD_LIB_OPERATIONS)
 	$(AR) q lib/libc.a $^
+
+.PHONY: lib
+lib:
+	-mkdir "$@"
 
 clean::
 	rm -rf $(TARGETS) *.o *.elf *.d

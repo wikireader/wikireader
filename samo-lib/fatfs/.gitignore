@@ -1,4 +1,2 @@
-lib/*.a
-src/*.o
-src/*.d
+lib
 build-*
