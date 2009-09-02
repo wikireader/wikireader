@@ -20,10 +20,16 @@
 #include "LzmaEnc.h"
 #include "bigram.h"
 
+#define MAX_LOCAL_TEXT_BUF 256000
 #define LIST_TYPE_ORDERED 1
 #define LIST_TYPE_UNORDERED 2
+#define LIST_TYPE_DEFINITION 3
 #define PIXELS_PER_INDENT 32
 #define PIXELS_FIRST_INDENT 10
+#define MAX_LIST_DEPTH 10
+#define LIST_LI 1
+#define LIST_DT 2
+#define LIST_DD 3
 struct render_buf {
 	int nCurrentLineIdx;
 	int nCurrentFontIdx;
@@ -33,16 +39,15 @@ struct render_buf {
 	long current_x;
 	long current_y;
 	int current_indent;
-	int ol_depth;
-	int ul_depth;
-	int current_list_type;
-	int current_ol_count;
+	int list_depth;
+	char list_type[MAX_LIST_DEPTH];
+	int ol_count[MAX_LIST_DEPTH];
 	int nLinks;
 } render_buf;
 char render_buf_sLines[64*1024][256];
 
 #define MAX_LINKS 10240
-#define MAX_LINK_STRING 2048
+#define MAX_LINK_STRING 256
 #define MAX_CLASS_STRING 2048
 #define MAX_CELL_STRING 4096
 struct link {
@@ -80,12 +85,13 @@ char word_break_after_chars[] = { 0x0A, 0x0D, 0x20, 0x28, 0x29, 0x2F, 0x3A, 0x7B
 #define WIKI_TAG_PAIR_NOWIKI		12
 #define WIKI_TAG_PAIR_PRE		13
 #define WIKI_TAG_PAIR_PRE_LINE		14
-#define WIKI_TAG_PAIR_OL		15
-#define WIKI_TAG_PAIR_UL		16
-#define WIKI_TAG_PAIR_DL		17
-#define WIKI_TAG_PAIR_DI		18
-#define WIKI_TAG_PAIR_REF		19
-#define WIKI_TAG_PAIR_COMMENT		20
+#define WIKI_TAG_PAIR_SEP		15
+#define WIKI_TAG_PAIR_OL		16
+#define WIKI_TAG_PAIR_UL		17
+#define WIKI_TAG_PAIR_DT		18
+#define WIKI_TAG_PAIR_DD		19
+#define WIKI_TAG_PAIR_REF		20
+#define WIKI_TAG_PAIR_COMMENT		21
 #define MAX_WIKI_TAG_PAIRS WIKI_TAG_PAIR_COMMENT + 1
 struct wiki_tag_pair {
 	char sTagStart[MAX_TAG_LEN];
@@ -96,7 +102,7 @@ struct wiki_tag_pair {
 	int bBeginOfLine;
 } wiki_tag_pairs[MAX_WIKI_TAG_PAIRS] = {
 	{"{{", "}}", 2, 2, 1, 0}, 			// template
-	{"[[", "]", 2, 1, 0, 0}, 			// link
+	{"[[", "]", 2, 1, 1, 0}, 			// link
 	{"{|", "|}", 2, 2, 0, 0}, 			// table
 	{"[", "]", 1, 1, 0, 0},				// external link
 	{"======", "======", 6, 6, 0, 1},		// H6
@@ -110,10 +116,11 @@ struct wiki_tag_pair {
 	{"&lt;nowiki&gt;", "&lt;/nowiki&gt;", 14, 15, 0, 0}, // nowiki
 	{"&lt;pre&gt;", "&lt;/pre&gt;", 11, 12, 0, 0}, 	// preserve format
 	{" ", "\n", 1, 1, 0, 1},			// line with preserved format
+	{"#####", "\n", 5, 1, 1, 1},			// separator line
 	{"#", "\n", 1, 1, 1, 1},			// ordered list
 	{"*", "\n", 1, 1, 1, 1},			// unordered list
-	{";", "\n", 1, 1, 1, 1},			// definition list
-	{":", "\n", 1, 1, 1, 1},			// definition item
+	{";", "\n", 1, 1, 1, 1},			// definition term
+	{":", "\n", 1, 1, 1, 1},			// definition
 	{"&lt;ref", "&lt;/ref&gt;", 7, 12, 2, 0}, 	// reference (to be filtered out)
 	{"&lt;!--", "--&gt;", 7, 6, 0, 0}		// comment
 };
@@ -132,24 +139,33 @@ struct wiki_tag_pair {
 #define TAG_PAIR_H5		11
 #define TAG_PAIR_H6		12
 #define TAG_PAIR_A		13
-#define TAG_PAIR_BI		14
-#define TAG_PAIR_B		15
-#define TAG_PAIR_I		16
-#define TAG_PAIR_DEL		17
-#define TAG_PAIR_INS		18
-#define TAG_PAIR_LI		19
-#define TAG_PAIR_OL		20
-#define TAG_PAIR_P_END          21
-#define TAG_PAIR_P		22
-#define TAG_PAIR_REF		23
-#define TAG_PAIR_SUP		24
-#define TAG_PAIR_TABLE		25
-#define TAG_PAIR_TD		26
-#define TAG_PAIR_TH		27
-#define TAG_PAIR_TR		28
-#define TAG_PAIR_UL		29
-#define TAG_PAIR_HTTP		30
-#define TAG_PAIR_UNKNOWN	31
+#define TAG_PAIR_BIG_BIG_BIG	14
+#define TAG_PAIR_BIG_BIG	15
+#define TAG_PAIR_BIG		16
+#define TAG_PAIR_BI		17
+#define TAG_PAIR_B		18
+#define TAG_PAIR_I		19
+#define TAG_PAIR_DEL		20
+#define TAG_PAIR_INS		21
+#define TAG_PAIR_LI		22
+#define TAG_PAIR_OL		23
+#define TAG_PAIR_EOL		24
+#define TAG_PAIR_DL		25
+#define TAG_PAIR_EDL		26
+#define TAG_PAIR_DT		27
+#define TAG_PAIR_DD		28
+#define TAG_PAIR_P_END          29
+#define TAG_PAIR_P		30
+#define TAG_PAIR_REF		31
+#define TAG_PAIR_SUP		32
+#define TAG_PAIR_TABLE		33
+#define TAG_PAIR_TD		34
+#define TAG_PAIR_TH		35
+#define TAG_PAIR_TR		36
+#define TAG_PAIR_UL		37
+#define TAG_PAIR_EUL		38
+#define TAG_PAIR_HTTP		39
+#define TAG_PAIR_UNKNOWN	40
 #define MAX_TAG_PAIRS TAG_PAIR_UNKNOWN
 struct tag_pair {
 	char sTagStart[MAX_TAG_LEN];
@@ -172,13 +188,21 @@ struct tag_pair {
 	{"<h5", "</h5>", 3, 5, 1},		// Header 5
 	{"<h6", "</h6>", 3, 5, 1},		// Header 6
 	{"<a", "</a>", 2, 4, 1},		// <a> </a>
+	{"<big><big><big", "</big></big></big>", 14, 18, 1},// big big big
+	{"<big><big", "</big></big>", 9, 12, 1},// big big
+	{"<big", "</big>", 4, 6, 1},		// big
 	{"<b><i", "</i></b>", 5, 8, 1},		// bold
 	{"<b", "</b>", 2, 4, 1},		// bold
 	{"<i", "</i>", 2, 4, 1},		// italic
 	{"<del", "</del>", 4, 6, 1},		// deleted text (striked out)
 	{"<ins", "</ins>", 4, 6, 1},		// inserted text (underlined)
 	{"<li", "</li>", 3, 5, 1},		// list item
-	{"<ol", "</ol>", 3, 5, 1},		// order list
+	{"<ol", "", 3, 0, 0},			// order list start
+	{"</ol", "", 4, 0, 0},			// order list end
+	{"<dl", "", 3, 0, 0},			// definition list start
+	{"</dl", "", 4, 0, 0},			// definition list end
+	{"<dt", "</dt>", 3, 5, 1},		// definition term
+	{"<dd", "</dd>", 3, 5, 1},		// definition
 	{"<p/", "", 3, 0, 0},
 	{"<p", "</p>", 2, 4, 1},		// <p>
 	{"<ref", "</ref>", 4, 6, 1},		// <ref> </ref>
@@ -187,7 +211,8 @@ struct tag_pair {
 	{"<td", "</td>", 3, 5, 1},		// table data
 	{"<th", "</th>", 3, 5, 1},		// table header
 	{"<tr", "</tr>", 3, 5, 1},		// table row
-	{"<ul", "</ul>", 3, 5, 1},		// unorder list
+	{"<ul", "", 3, 0, 0},			// unorder list start
+	{"</ul", "", 4, 0, 0},			// unorder list end
 	{"<http:", "", 6, 0, 0}
 };
 
@@ -441,7 +466,7 @@ char *find_wiki_tag_end(char *pText, int idxTag, int lenText, int *lenTagEnd)
 	
 	while (lenText > 0)
 	{
-		if (!strncmp(pText, wiki_tag_pairs[idxTag].sTagEnd, wiki_tag_pairs[idxTag].lenTagEnd))
+		if (lenText >= wiki_tag_pairs[idxTag].lenTagEnd && !strncmp(pText, wiki_tag_pairs[idxTag].sTagEnd, wiki_tag_pairs[idxTag].lenTagEnd))
 		{
 			*lenTagEnd = wiki_tag_pairs[idxTag].lenTagEnd;
 			if (idxTag == WIKI_TAG_PAIR_LINK && pText[1] == ']')
@@ -452,20 +477,20 @@ char *find_wiki_tag_end(char *pText, int idxTag, int lenText, int *lenTagEnd)
 		bFound = 0;
 		if (wiki_tag_pairs[idxTag].bGotChild == 2) // special process for <ref>
 		{
-			if (!bGtFound && !strncmp(pText, "/&gt;", 5))
+			if (lenText >= 5 && !bGtFound && !strncmp(pText, "/&gt;", 5))
 			{
 				*lenTagEnd = 5;
 				return pText;
 			}
 			
-			if (!strncmp(pText, "&gt;", 4))
+			if (lenText >= 4 && !strncmp(pText, "&gt;", 4))
 				bGtFound = 1;
 		}
 		else if (wiki_tag_pairs[idxTag].bGotChild)
 		{
 			for (i=0; i < MAX_WIKI_TAG_PAIRS && !bFound; i++)
 			{
-				if (!strncmp(pText, wiki_tag_pairs[i].sTagStart, wiki_tag_pairs[i].lenTagStart) &&
+				if (lenText >= wiki_tag_pairs[i].lenTagStart && !strncmp(pText, wiki_tag_pairs[i].sTagStart, wiki_tag_pairs[i].lenTagStart) &&
 					!wiki_tag_pairs[i].bBeginOfLine)
 				{
 					bFound = 1;
@@ -520,10 +545,10 @@ int find_next_wiki_tag(char *pText, int lenText, int *lenBeforeTag,
 	{
 		for (i=0; i < MAX_WIKI_TAG_PAIRS && !bFound; i++)
 		{
-			if (!strncmp(pText, wiki_tag_pairs[i].sTagStart, wiki_tag_pairs[i].lenTagStart) &&
+			if (lenText >= wiki_tag_pairs[i].lenTagStart && !strncmp(pText, wiki_tag_pairs[i].sTagStart, wiki_tag_pairs[i].lenTagStart) &&
 				(!wiki_tag_pairs[i].bBeginOfLine || *bBeginOfLine))
 			{
-				showMsg(5, "found wiki tag %d [%s] pText %x, lenText %d\n", i, wiki_tag_pairs[i].sTagStart, pText, lenText);
+				showMsg(5, "found wiki tag %d [%s] pText %x [%c], lenText %d\n", i, wiki_tag_pairs[i].sTagStart, pText, *pText, lenText);
 				bFound = 1;
 				idxTag = i;
 				pText += wiki_tag_pairs[i].lenTagStart;
@@ -596,6 +621,8 @@ int find_next_tag(char *pText, int lenText, int *lenBeforeTag, char **pTagDesc, 
 	while (lenText > 0 && !bFound)
 	{
 		p = strnchr(pText, '<', lenText);
+		while (p && lenText > 1 && (p[1] == ' ' || p[1] == '\n'))
+			p = strnchr(p + 1, '<', lenText - (p - pText) - 1);
 		if (p)
 		{
 			*lenBeforeTag = p - pText;
@@ -625,7 +652,10 @@ int find_next_tag(char *pText, int lenText, int *lenBeforeTag, char **pTagDesc, 
 			{
 				bFound = 1;
 				idxTag = TAG_PAIR_UNKNOWN;
-				get_tagend_str(bufTagEnd, &pText, &lenText); // build end tag and move pText to the end of start tag
+				if (*(pText + 1) == '/')
+					bufTagEnd[0] = '\0';
+				else
+					get_tagend_str(bufTagEnd, &pText, &lenText); // build end tag and move pText to the end of start tag
 				pTagEnd = bufTagEnd;
 			}
 
@@ -1160,7 +1190,9 @@ void render_string(char *pContentCurrent, long lenToProcess, int nFontIdx, int n
 		if (render_buf.current_x < 0) /* new line */
 		{
 			render_buf.current_x = 0;
-			render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace;
+			if (*pBuf == ' ')
+				pBuf++;
+			render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 			if (render_buf.nCurrentFontIdx == DEFAULT_FONT_IDX)
 			{
 				render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
@@ -1360,53 +1392,62 @@ void render_text_node(int idxNode, int nFontIdx, int nRenderType)
 	render_buf.nCurrentRenderType = nOrigRenderType;
 }
 
-void render_OL(int idxNode)
-{
-	int last_list_type = render_buf.current_list_type;
-	int last_ol_count = render_buf.current_ol_count;
-
-	render_buf.current_list_type = LIST_TYPE_ORDERED;
-	render_buf.current_ol_count = 0;
-	render_buf.ol_depth++;
-	render_newline(2);
-	render_text_node(idxNode, -1, -1);
-	render_buf.ol_depth--;
-	render_newline(2);
-	render_buf.current_list_type = last_list_type;
-	render_buf.current_ol_count = last_ol_count;
-	render_buf.current_indent = 0;
-}
-
-void render_UL(int idxNode)
-{
-	int idxNextChildNode;
-	int last_list_type = render_buf.current_list_type;
-
-	render_buf.current_list_type = LIST_TYPE_UNORDERED;
-	render_buf.ul_depth++;
-	render_newline(2);
-	render_text_node(idxNode, -1, -1);
-	render_buf.ul_depth--;
-	render_newline(2);
-	render_buf.current_list_type = last_list_type;
-	render_buf.current_indent = 0;
-}
-
 void render_LI(int idxNode)
 {
 	int indent;
 	char *pForwardPixels;
 	char li_str[10];
+	int nDepth = 0;
+	int i;
 
-	if (render_buf.current_list_type == LIST_TYPE_UNORDERED)
+	if (render_buf.list_depth > 0)
+		indent = (render_buf.list_depth - 1) * PIXELS_PER_INDENT + PIXELS_FIRST_INDENT;
+	else
+		indent = 0;
+	if (indent > LCD_BUF_WIDTH_PIXELS / 3 * 2)
+		indent = LCD_BUF_WIDTH_PIXELS / 3 * 2;
+
+	if (render_buf.list_depth > 0 && render_buf.list_type[render_buf.list_depth - 1] == 'O')
 	{
-		if (render_buf.ul_depth > 0)
-			indent = (render_buf.ul_depth - 1) * PIXELS_PER_INDENT + PIXELS_FIRST_INDENT;
-		else
-			indent = 0;
-		if (indent > LCD_BUF_WIDTH_PIXELS / 3 * 2)
-			indent = LCD_BUF_WIDTH_PIXELS / 3 * 2;
-		switch (render_buf.ul_depth)
+		render_buf.ol_count[render_buf.list_depth - 1]++;
+		for (i = 0; i < render_buf.list_depth; i++)
+			if (render_buf.list_type[render_buf.list_depth - 1] == 'O')
+				nDepth++;
+		switch (nDepth)
+		{
+			case 1:
+				sprintf(li_str, "%d. ", render_buf.ol_count[render_buf.list_depth - 1]);
+				break;
+			case 2:
+				if (render_buf.ol_count[render_buf.list_depth - 1] >= 26 * 26)
+					sprintf(li_str, "%c%c%c. ", 'A' + render_buf.ol_count[render_buf.list_depth - 1] / 26 * 26 - 1, 
+						'A' + (render_buf.ol_count[render_buf.list_depth - 1] % 26 * 26) / 26 - 1,
+						'A' + (render_buf.ol_count[render_buf.list_depth - 1] % 26) - 1);
+				else if (render_buf.ol_count[render_buf.list_depth - 1] >= 26)
+					sprintf(li_str, "%c%c. ", 'A' + render_buf.ol_count[render_buf.list_depth - 1] / 26 - 1, 
+						'A' + (render_buf.ol_count[render_buf.list_depth - 1] % 26) - 1);
+				else
+					sprintf(li_str, "%c. ", 'A' + render_buf.ol_count[render_buf.list_depth - 1] - 1);
+				break;
+			default:
+				if (render_buf.ol_count[render_buf.list_depth - 1] >= 26 * 26)
+					sprintf(li_str, "%c%c%c. ", 'a' + render_buf.ol_count[render_buf.list_depth - 1] / 26 * 26 - 1, 
+						'a' + (render_buf.ol_count[render_buf.list_depth - 1] % 26 * 26) / 26 - 1,
+						'a' + (render_buf.ol_count[render_buf.list_depth - 1] % 26) - 1);
+				else if (render_buf.ol_count[render_buf.list_depth - 1] >= 26)
+					sprintf(li_str, "%c%c. ", 'a' + render_buf.ol_count[render_buf.list_depth - 1] / 26 - 1, 
+						'a' + (render_buf.ol_count[render_buf.list_depth - 1] % 26) - 1);
+				else
+					sprintf(li_str, "%c. ", 'a' + render_buf.ol_count[render_buf.list_depth - 1] - 1);
+				break;
+		}
+	}
+	else
+	{
+		for (i = 0; i < render_buf.list_depth; i++)
+			if (render_buf.list_type[render_buf.list_depth - 1] == 'U')
+				nDepth++;
+		switch (nDepth)
 		{
 			case 1:
 				li_str[0] = 0xE2;
@@ -1431,49 +1472,11 @@ void render_LI(int idxNode)
 				break;
 		}
 	}
-	else
-	{
-		if (render_buf.ol_depth > 0)
-			indent = (render_buf.ol_depth - 1) * PIXELS_PER_INDENT + PIXELS_FIRST_INDENT;
-		else
-			indent = 0;
-		if (indent > LCD_BUF_WIDTH_PIXELS / 3 * 2)
-			indent = LCD_BUF_WIDTH_PIXELS / 3 * 2;
-		render_buf.current_ol_count++;
-		switch (render_buf.ol_depth)
-		{
-			case 1:
-				sprintf(li_str, "%d. ", render_buf.current_ol_count);
-				break;
-			case 2:
-				if (render_buf.ol_depth >= 26 * 26)
-					sprintf(li_str, "%c%c%c. ", 'A' + render_buf.ol_depth / 26 * 26 - 1,
-						'A' + (render_buf.ol_depth % 26 * 26) / 26 - 1,
-						'A' + (render_buf.ol_depth % 26) - 1);
-				else if (render_buf.ol_depth >= 26 * 26)
-					sprintf(li_str, "%c%c. ", 'A' + render_buf.ol_depth / 26 - 1,
-						'A' + (render_buf.ol_depth % 26) - 1);
-				else
-					sprintf(li_str, "%c. ", 'A' + render_buf.ol_depth - 1);
-				break;
-			default:
-				if (render_buf.ol_depth >= 26 * 26)
-					sprintf(li_str, "%c%c%c. ", 'a' + render_buf.ol_depth / 26 * 26 - 1,
-						'a' + (render_buf.ol_depth % 26 * 26) / 26 - 1,
-						'a' + (render_buf.ol_depth % 26) - 1);
-				else if (render_buf.ol_depth >= 26 * 26)
-					sprintf(li_str, "%c%c. ", 'a' + render_buf.ol_depth / 26 - 1,
-						'a' + (render_buf.ol_depth % 26) - 1);
-				else
-					sprintf(li_str, "%c. ", 'a' + render_buf.ol_depth - 1);
-				break;
-		}
-	}
 
 	if (render_buf.current_x < 0) /* new line */
 	{
 		render_buf.current_x = 0;
-		render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace;
+		render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 		if (render_buf.nCurrentFontIdx == DEFAULT_FONT_IDX)
 		{
 			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
@@ -1487,6 +1490,7 @@ void render_LI(int idxNode)
 				(char)(render_buf.nCurrentFontIdx | (render_buf.nCurrentLineHeight << 3));
 		}
 	}
+
 	render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] = (char)ESC_7_FORWARD;
 	pForwardPixels = &(render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx]);
 	render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] = 0;
@@ -1498,6 +1502,76 @@ void render_LI(int idxNode)
 		*pForwardPixels = (char)(indent - render_buf.current_x);
 		render_buf.current_x += indent - render_buf.current_x;
 	}
+	render_buf.current_indent = indent;
+	render_text_node(idxNode, -1, -1);
+	render_newline(0);
+}
+
+void render_DT(int idxNode)
+{
+	int indent;
+	char *pForwardPixels;
+
+	if (render_buf.list_depth > 1)
+		indent = (render_buf.list_depth - 2) * PIXELS_PER_INDENT + PIXELS_FIRST_INDENT;
+	else
+		indent = 0;
+	if (indent > LCD_BUF_WIDTH_PIXELS / 3 * 2)
+		indent = LCD_BUF_WIDTH_PIXELS / 3 * 2;
+
+	if (render_buf.current_x < 0) /* new line */
+	{
+		render_buf.current_x = 0;
+		render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
+		if (render_buf.nCurrentFontIdx == DEFAULT_FONT_IDX)
+		{
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)ESC_1_NEW_LINE_DEFAULT_FONT;
+		}
+		else
+		{
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)ESC_3_NEW_LINE_WITH_FONT;
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)(render_buf.nCurrentFontIdx | (render_buf.nCurrentLineHeight << 3));
+		}
+	}
+
+	render_buf.current_indent = indent;
+	render_text_node(idxNode, -1, -1);
+	render_newline(0);
+}
+
+void render_DD(int idxNode)
+{
+	int indent;
+	char *pForwardPixels;
+
+	if (render_buf.list_depth > 0)
+		indent = (render_buf.list_depth - 1) * PIXELS_PER_INDENT + PIXELS_FIRST_INDENT;
+	else
+		indent = 0;
+	if (indent > LCD_BUF_WIDTH_PIXELS / 3 * 2)
+		indent = LCD_BUF_WIDTH_PIXELS / 3 * 2;
+
+	if (render_buf.current_x < 0) /* new line */
+	{
+		render_buf.current_x = 0;
+		render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
+		if (render_buf.nCurrentFontIdx == DEFAULT_FONT_IDX)
+		{
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)ESC_1_NEW_LINE_DEFAULT_FONT;
+		}
+		else
+		{
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)ESC_3_NEW_LINE_WITH_FONT;
+			render_buf_sLines[render_buf.nLines-1][render_buf.nCurrentLineIdx++] =
+				(char)(render_buf.nCurrentFontIdx | (render_buf.nCurrentLineHeight << 3));
+		}
+	}
+
 	render_buf.current_indent = indent;
 	render_text_node(idxNode, -1, -1);
 	render_newline(0);
@@ -1551,7 +1625,7 @@ void render_table(int idxNode)
 	else
 		render_buf.current_x = -1;
 	render_buf.nCurrentLineIdx = 0;
-	render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace;
+	render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 	render_buf.nLines++;
 	memset(render_buf_sLines[render_buf.nLines-1], 0, 256);
 
@@ -1583,7 +1657,7 @@ void render_table(int idxNode)
 
 	render_buf.current_x = -1;
 	render_buf.nCurrentLineIdx = 0;
-	render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace;
+	render_buf.nCurrentLineHeight = pcfFonts[render_buf.nCurrentFontIdx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 	render_buf.nLines++;
 	memset(render_buf_sLines[render_buf.nLines-1], 0, 256);
 }
@@ -1783,6 +1857,10 @@ void render_article_node(int idxNode)
 		case TAG_PAIR_A:
 			render_link(idxNode);
 			break;
+		case TAG_PAIR_BIG_BIG:
+		case TAG_PAIR_BIG:
+			render_node_with_font(idxNode, BOLD_FONT_IDX);
+			break;
 		case TAG_PAIR_BI:
 			render_node_with_font(idxNode, BOLD_ITALIC_FONT_IDX);
 			break;
@@ -1808,10 +1886,41 @@ void render_article_node(int idxNode)
 			render_TD(idxNode);
 			break;
 		case TAG_PAIR_OL:
-			render_OL(idxNode);
+			render_newline(2);
+			if (render_buf.list_depth < MAX_LIST_DEPTH - 1)
+			{
+				render_buf.list_type[render_buf.list_depth] = 'O';
+				render_buf.ol_count[render_buf.list_depth] = 0;
+				render_buf.list_depth++;
+			}
 			break;
 		case TAG_PAIR_UL:
-			render_UL(idxNode);
+			render_newline(2);
+			if (render_buf.list_depth < MAX_LIST_DEPTH - 1)
+			{
+				render_buf.list_type[render_buf.list_depth] = 'U';
+				render_buf.ol_count[render_buf.list_depth] = 0;
+				render_buf.list_depth++;
+			}
+			break;
+		case TAG_PAIR_DL:
+			render_newline(2);
+			if (render_buf.list_depth < MAX_LIST_DEPTH - 1)
+			{
+				render_buf.list_type[render_buf.list_depth] = 'D';
+				render_buf.ol_count[render_buf.list_depth] = 0;
+				render_buf.list_depth++;
+			}
+			break;
+		case TAG_PAIR_EOL:
+		case TAG_PAIR_EUL:
+		case TAG_PAIR_EDL:
+			render_newline(2);
+			if (render_buf.list_depth > 0)
+			{
+				render_buf.list_depth--;
+				render_buf.current_indent = 0;
+			}
 			break;
 		case TAG_PAIR_LI:
 			get_key_value(keyval, sizeof(keyval), "class", article_nodes[idxNode].pTagDesc, article_nodes[idxNode].lenTagDesc);
@@ -1820,6 +1929,12 @@ void render_article_node(int idxNode)
 			{
 				render_LI(idxNode);
 			}
+			break;
+		case TAG_PAIR_DT:
+			render_DT(idxNode);
+			break;
+		case TAG_PAIR_DD:
+			render_DD(idxNode);
 			break;
 		case TAG_PAIR_SCRIPT:
 		case TAG_PAIR_REF:
@@ -2022,12 +2137,269 @@ void trim_blanks(char *pSrc, int lenSrc)
 		pSrc[lenSrc - lenLeadingBlanks - lenTrailingBlanks] = '\0';
 }
 
+long cpy_wiki_buf(char *sBuf, long lenBuf, long maxLenBuf, char *pTagContent, int lenTagContent)
+{
+	int copy_len;
+	
+	if (lenBuf + lenTagContent > maxLenBuf - 1)
+	{
+		showMsg(0, "cpy_wiki_buf %d > %d\n", lenBuf + lenTagContent, maxLenBuf);
+		copy_len = maxLenBuf - 1 - lenBuf;
+	}
+	else
+		copy_len = lenTagContent;
+	memcpy(&sBuf[lenBuf], pTagContent, copy_len);
+	return lenBuf + copy_len;
+}
+
+long parse_wiki_tags(char *sText, long nTextLen, char *sBuf, long maxLenBuf)
+{
+	int idxChildTag;
+	int idxMyNode;
+	int idxChildNode;
+	int idxPreviousChild;
+	int lenBeforeTag;
+	char *pTagContent;
+	int lenTagContent;
+	char *pAfterTag;
+	int lenAfterTag;
+	char *sLocalTextBuf;
+	char *sLocalText;
+	long lenBuf = 0;
+	char sLink[MAX_LINK_STRING];
+	char sLinkDisplay[MAX_LINK_STRING];
+	char *pWikiText;
+	int bBeginOfLine = 1;
+	char sListStack[MAX_LIST_DEPTH];
+	int nListStack = 0;
+	char sListStackPrev[MAX_LIST_DEPTH];
+	int nListStackPrev = 0;
+	int nListType, nListTypeFinal;
+	char *sLocalBuf;
+
+	sLocalText = (char *)malloc(MAX_LOCAL_TEXT_BUF);
+	sLocalBuf = (char *)malloc(MAX_LOCAL_TEXT_BUF);
+	if (!sLocalText || !sLocalBuf)
+	{
+		showMsg(0, "wikiRender malloc error\n");
+		exit(-1);
+	}
+	pWikiText = sText;
+	idxChildTag = find_next_wiki_tag(pWikiText, nTextLen, &lenBeforeTag, &pTagContent, &lenTagContent, &pAfterTag, &lenAfterTag, &bBeginOfLine);
+
+	while (lenBuf < maxLenBuf - 1 && idxChildTag >= 0)
+	{
+		if (lenBeforeTag > 0)
+		{
+			if (nListStackPrev > 0)
+			{
+				nListStack = 0;
+				process_list_stack(sListStack, nListStack, sListStackPrev, nListStackPrev, sBuf, &lenBuf);
+				nListStackPrev = 0;
+			}
+			lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pWikiText, lenBeforeTag);
+		}
+
+		switch (idxChildTag)
+		{
+			case WIKI_TAG_PAIR_OL:
+				sListStack[0] = 'O';
+				nListStack = 1;
+				nListType = LIST_LI;
+				break;
+			case WIKI_TAG_PAIR_UL:
+				sListStack[0] = 'U';
+				nListType = LIST_LI;
+				nListStack = 1;
+				break;
+			case WIKI_TAG_PAIR_DT:
+				sListStack[0] = 'D';
+				nListStack = 1;
+				nListType = LIST_DT;
+				break;
+			case WIKI_TAG_PAIR_DD:
+				sListStack[0] = 'D';
+				nListStack = 1;
+				nListType = LIST_DD;
+				break;
+			default:
+				nListStack = 0;
+				if (nListStackPrev > 0)
+				{
+					process_list_stack(sListStack, nListStack, sListStackPrev, nListStackPrev, sBuf, &lenBuf);
+					nListStackPrev = 0;
+				}
+		}	
+
+		switch (idxChildTag)
+		{
+			case WIKI_TAG_PAIR_SEP:
+			case WIKI_TAG_PAIR_COMMENT:
+			case WIKI_TAG_PAIR_TEMPLATE:
+				break;
+			case WIKI_TAG_PAIR_TABLE:
+				parse_wiki_table(sBuf, &lenBuf, pTagContent, lenTagContent);
+				break;
+			case WIKI_TAG_PAIR_LINK:
+				if (lenAfterTag > 0 && *pAfterTag == ']') // fix the "[[xxx]" problem
+				{
+					pAfterTag++;
+					lenAfterTag--;
+				}
+				if (!parse_link_string(pTagContent, lenTagContent, sLink, sLinkDisplay))
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<a title=\"", 10);
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLink, strlen(sLink));
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "\">", 2);
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLinkDisplay, strlen(sLinkDisplay));
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</a>", 4);
+				}
+				break;
+			case WIKI_TAG_PAIR_EXTERNAL_LINK:
+				parse_external_link_string(pTagContent, lenTagContent, sLinkDisplay);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLinkDisplay, strlen(sLinkDisplay));
+				break;
+			case WIKI_TAG_PAIR_H6:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h6>", 8);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h6>", 5);
+				break;
+			case WIKI_TAG_PAIR_H5:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h5>", 8);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h5>", 5);
+				break;
+			case WIKI_TAG_PAIR_H4:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h4>", 8);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h4>", 5);
+				break;
+			case WIKI_TAG_PAIR_H3:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h3>", 8);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h3>", 5);
+				break;
+			case WIKI_TAG_PAIR_H2:
+				if (unsupported_section(pTagContent, lenTagContent))
+				{
+					skip_until_next_wiki_tag(&pAfterTag, &lenAfterTag, WIKI_TAG_PAIR_H2);
+					bBeginOfLine = 1;
+				}
+				else
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h2>", 8);
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h2>", 5);
+				}
+				break;
+			case WIKI_TAG_PAIR_BOLD_ITALIC:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<b><i>", 6);
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</i></b>", 8);
+				break;
+			case WIKI_TAG_PAIR_BOLD:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<b>", 3);
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</b>", 4);
+				break;
+			case WIKI_TAG_PAIR_ITALIC:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<i>", 3);
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</i>", 4);
+				break;
+			case WIKI_TAG_PAIR_NOWIKI:
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<nowiki>", 8);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</nowiki>", 9);
+				break;
+			case WIKI_TAG_PAIR_PRE:	
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<pre>", 5);
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</pre>", 6);
+//				break;
+//			case WIKI_TAG_PAIR_PRE_LINE:
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<pre>", 5);
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
+//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</pre>\n", 7);
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				break;
+			case WIKI_TAG_PAIR_OL:
+			case WIKI_TAG_PAIR_UL:
+			case WIKI_TAG_PAIR_DT:
+			case WIKI_TAG_PAIR_DD:
+				nListTypeFinal = parse_list_stack(sListStack, &nListStack, &pTagContent, &lenTagContent);
+				if (nListTypeFinal)
+					nListType = nListTypeFinal;
+				process_list_stack(sListStack, nListStack, sListStackPrev, nListStackPrev, sBuf, &lenBuf);
+				if (nListType == LIST_LI)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<li>", 4);
+				}
+				else if (nListType == LIST_DT)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<dt>", 4);
+				}
+				else if (nListType == LIST_DD)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<dd>", 4);
+				}
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				if (nListType == LIST_LI)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</li>", 5);
+				}
+				else if (nListType == LIST_DT)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</dt>", 5);
+				}
+				else if (nListType == LIST_DD)
+				{
+					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</dd>", 5);
+				}
+				break;
+			case WIKI_TAG_PAIR_REF:
+				break;
+			default:
+				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
+				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
+				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
+				break;
+		}
+		nListStackPrev = nListStack;
+		memcpy(sListStackPrev, sListStack, sizeof(sListStack));
+		pWikiText = pAfterTag;
+		nTextLen = lenAfterTag;
+		idxChildTag = find_next_wiki_tag(pWikiText, nTextLen, &lenBeforeTag, &pTagContent, &lenTagContent, &pAfterTag, &lenAfterTag, &bBeginOfLine);
+	}
+
+	if (lenBeforeTag > 0)
+	{
+		lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pWikiText, lenBeforeTag);
+	}
+	sBuf[lenBuf] = '\0';
+	lenBuf = replace_ampersand_char_crlf(sText, sBuf);
+	free(sLocalBuf);
+	free(sLocalText);
+	return lenBuf;
+}
+
 int get_next_cell(char **pRow, int *lenRow, char *sDelimiter, char *sCellText)
 {
-	char *p, *p2;
+	char *p, *p2, *p3;
 	char *pNextCell;
 	int lenCell;
 	int rc = 0;
+	char sLocalBuf[MAX_CELL_STRING];
 	
 	sCellText[0] = '\0';
 	if (*lenRow > 0)
@@ -2046,7 +2418,8 @@ int get_next_cell(char **pRow, int *lenRow, char *sDelimiter, char *sCellText)
 		}
 		p = strnchr(*pRow, '|', lenCell);
 		p2 = strnstr(*pRow, "{{", lenCell);
-		if (p && p2 && p2 < p) // resolve the confusion of '|' in {{ }}
+		p3 = strnstr(*pRow, "[[", lenCell);
+		if (p && ((p2 && p2 < p) || (p3 && p3 < p))) // resolve the confusion of '|' in {{ }} or in [[ ]]
 			p = NULL;
 		if (p)
 		{
@@ -2063,6 +2436,7 @@ int get_next_cell(char **pRow, int *lenRow, char *sDelimiter, char *sCellText)
 		}
 		sCellText[lenCell] = '\0';
 		trim_blanks(sCellText, lenCell);
+		parse_wiki_tags(sCellText, lenCell, sLocalBuf, MAX_CELL_STRING);
 		rc = 1;
 		*pRow = pNextCell;
 	}
@@ -2078,8 +2452,7 @@ void parse_wiki_table(char *sLocalTextBuf, int *lenLocalTextBuf, char *pTagConte
 	int bBlankBeforeCell = 0;
 	int lenRow;
 	
-	memcpy(&sLocalTextBuf[*lenLocalTextBuf], "<br>", 4);
-	(*lenLocalTextBuf) += 4;
+	*lenLocalTextBuf = cpy_wiki_buf(sLocalTextBuf, *lenLocalTextBuf, MAX_LOCAL_TEXT_BUF, "<br>", 4);
 	pLineEnd = strnchr(pTagContent, '\n', lenTagContent);
 	if (pLineEnd)
 	{
@@ -2116,8 +2489,7 @@ void parse_wiki_table(char *sLocalTextBuf, int *lenLocalTextBuf, char *pTagConte
 		else if (!memcmp(pTagContent, "|-", 2)) // row
 		{
 			if (bBrBeforeRow) {
-				memcpy(&sLocalTextBuf[*lenLocalTextBuf], "<br>", 4);
-				(*lenLocalTextBuf) += 4;
+				*lenLocalTextBuf = cpy_wiki_buf(sLocalTextBuf, *lenLocalTextBuf, MAX_LOCAL_TEXT_BUF, "<br>", 4);
 				bBrBeforeRow = 0;
 			}
 			bBlankBeforeCell = 0;
@@ -2270,35 +2642,39 @@ int unsupported_section(char *pTagContent, int lenTagContent)
 		return 0;
 }
 
-void skip_until_next_tag(char **pAfterTag, int *lenAfterTag, char *sTagStart, int lenTagStart, char *sNotTagStart, int lenNotTagStart)
+void skip_until_next_wiki_tag(char **pAfterTag, int *lenAfterTag, int idxTagMatch)
 {
 	int bDone = 0;
+	int idxTag;
+	char *pWikiText;
+	int nTextLen;
+	int lenBeforeTag;
+	char *pTagContent;
+	int lenTagContent;
+	int bBeginOfLine = 1;
 
-	while (!bDone && *lenAfterTag)
+	while (!bDone && *lenAfterTag > 0)
 	{
-		if (!memcmp(*pAfterTag, sTagStart, lenTagStart) && memcmp(*pAfterTag, sNotTagStart, lenNotTagStart))
-			bDone = 1;
-		else
+		pWikiText = *pAfterTag;
+		nTextLen = *lenAfterTag;
+		idxTag = find_next_wiki_tag(pWikiText, nTextLen, &lenBeforeTag, &pTagContent, &lenTagContent, pAfterTag, lenAfterTag, &bBeginOfLine);
+		if (idxTag == idxTagMatch)
 		{
-			(*pAfterTag)++;
-			(*lenAfterTag)--;
+			*pAfterTag = pWikiText + lenBeforeTag;
+			*lenAfterTag = nTextLen - lenBeforeTag;
+			bDone = 1;
 		}
 	}
 }
 
-#define MAX_LIST_DEPTH 10
-#define LIST_LI 1
-#define LIST_DT 2
-#define LIST_DI 3
-
-int parse_list_stack(char *sListStack, int *nListStack, char *pTagContent, int lenTagContent)
+int parse_list_stack(char *sListStack, int *nListStack, char **pTagContent, int *lenTagContent)
 {
 	int bDone = 0;
 	int rc = 0;
 	
-	while (!bDone && lenTagContent > 0 && *nListStack < MAX_LIST_DEPTH)
+	while (!bDone && *lenTagContent > 0 && *nListStack < MAX_LIST_DEPTH - 1)
 	{
-		switch (*pTagContent)
+		switch (**pTagContent)
 		{
 			case '#':
 				sListStack[(*nListStack)++] = 'O';
@@ -2314,13 +2690,16 @@ int parse_list_stack(char *sListStack, int *nListStack, char *pTagContent, int l
 				break;
 			case ':':
 				sListStack[(*nListStack)++] = 'D';
-				rc = LIST_DI;
+				rc = LIST_DD;
 				break;
 			default:
 				bDone = 1;
 		}
-		pTagContent++;
-		lenTagContent--;
+		if (!bDone)
+		{
+			(*pTagContent)++;
+			(*lenTagContent)--;
+		}
 	}
 	return rc;
 }
@@ -2331,7 +2710,7 @@ void process_list_stack(char *sListStack, int nListStack, char *sListStackPrev, 
 	int nListSame = 0;
 	
 	i = 0;
-	while (i < nListStack && i < nListStackPrev && nListStackPrev && sListStack[i] == sListStackPrev[i])
+	while (i < nListStack && i < nListStackPrev && sListStack[i] == sListStackPrev[i])
 	{
 		nListSame++;
 		i++;
@@ -2387,259 +2766,6 @@ void process_list_stack(char *sListStack, int nListStack, char *sListStackPrev, 
 	
 }
 
-long cpy_wiki_buf(char *sBuf, long lenBuf, long maxLenBuf, char *pTagContent, int lenTagContent)
-{
-	int copy_len;
-	
-	if (lenBuf + lenTagContent > maxLenBuf - 1)
-	{
-		showMsg(0, "cpy_wiki_buf %d > %d\n", lenBuf + lenTagContent, maxLenBuf);
-		copy_len = maxLenBuf - 1 - lenBuf;
-	}
-	else
-		copy_len = lenTagContent;
-	memcpy(&sBuf[lenBuf], pTagContent, copy_len);
-	return lenBuf + copy_len;
-}
-
-#define MAX_LOCAL_TEXT_BUF 128000
-
-long parse_wiki_tags(char *sText, long nTextLen, char *sBuf, long maxLenBuf)
-{
-	int idxChildTag;
-	int idxMyNode;
-	int idxChildNode;
-	int idxPreviousChild;
-	int lenBeforeTag;
-	char *pTagContent;
-	int lenTagContent;
-	char *pAfterTag;
-	int lenAfterTag;
-	char *sLocalTextBuf;
-	char *sLocalText;
-	long lenBuf = 0;
-	char sLink[MAX_LINK_STRING];
-	char sLinkDisplay[MAX_LINK_STRING];
-	char *pWikiText;
-	int bBeginOfLine = 1;
-	char sListStack[MAX_LIST_DEPTH];
-	int nListStack = 0;
-	char sListStackPrev[MAX_LIST_DEPTH];
-	int nListStackPrev = 0;
-	int nListType, nListTypeFinal;
-	char *sLocalBuf;
-
-	sLocalText = (char *)malloc(MAX_LOCAL_TEXT_BUF);
-	sLocalBuf = (char *)malloc(MAX_LOCAL_TEXT_BUF);
-	if (!sLocalText || !sLocalBuf)
-	{
-		showMsg(0, "wikiRender malloc error\n");
-		exit(-1);
-	}
-	pWikiText = sText;
-	idxChildTag = find_next_wiki_tag(pWikiText, nTextLen, &lenBeforeTag, &pTagContent, &lenTagContent, &pAfterTag, &lenAfterTag, &bBeginOfLine);
-
-	while (lenBuf < maxLenBuf - 1 && idxChildTag >= 0)
-	{
-		if (lenBeforeTag > 0)
-		{
-			lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pWikiText, lenBeforeTag);
-		}
-		
-		switch (idxChildTag)
-		{
-			case WIKI_TAG_PAIR_OL:
-				sListStack[0] = 'O';
-				nListStack = 1;
-				nListType = LIST_LI;
-				break;
-			case WIKI_TAG_PAIR_UL:
-				sListStack[0] = 'U';
-				nListType = LIST_LI;
-				nListStack = 1;
-				break;
-			case WIKI_TAG_PAIR_DL:
-				sListStack[0] = 'D';
-				nListStack = 1;
-				nListType = LIST_DT;
-				break;
-			case WIKI_TAG_PAIR_DI:
-				sListStack[0] = 'D';
-				nListStack = 1;
-				nListType = LIST_DI;
-				break;
-			default:
-				nListStack = 0;
-				if (nListStackPrev)
-				{
-					process_list_stack(sListStack, nListStack, sListStackPrev, nListStackPrev, sBuf, &lenBuf);
-					nListStackPrev = 0;
-				}
-		}	
-
-		switch (idxChildTag)
-		{
-			case WIKI_TAG_PAIR_COMMENT:
-			case WIKI_TAG_PAIR_TEMPLATE:
-				break;
-			case WIKI_TAG_PAIR_TABLE:
-				parse_wiki_table(sBuf, &lenBuf, pTagContent, lenTagContent);
-				break;
-			case WIKI_TAG_PAIR_LINK:
-				if (lenAfterTag > 0 && *pAfterTag == ']') // fix the "[[xxx]" problem
-				{
-					pAfterTag++;
-					lenAfterTag--;
-				}
-				if (!parse_link_string(pTagContent, lenTagContent, sLink, sLinkDisplay))
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<a title=\"", 10);
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLink, strlen(sLink));
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "\">", 2);
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLinkDisplay, strlen(sLinkDisplay));
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</a>", 4);
-				}
-				break;
-			case WIKI_TAG_PAIR_EXTERNAL_LINK:
-				parse_external_link_string(pTagContent, lenTagContent, sLinkDisplay);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLinkDisplay, strlen(sLinkDisplay));
-				break;
-			case WIKI_TAG_PAIR_H6:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h6>", 8);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h6>", 5);
-				break;
-			case WIKI_TAG_PAIR_H5:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h5>", 8);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h5>", 5);
-				break;
-			case WIKI_TAG_PAIR_H4:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h4>", 8);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h4>", 5);
-				break;
-			case WIKI_TAG_PAIR_H3:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h3>", 8);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h3>", 5);
-				break;
-			case WIKI_TAG_PAIR_H2:
-				if (unsupported_section(pTagContent, lenTagContent))
-				{
-					skip_until_next_tag(&pAfterTag, &lenAfterTag, 
-						wiki_tag_pairs[WIKI_TAG_PAIR_H2].sTagStart, wiki_tag_pairs[WIKI_TAG_PAIR_H2].lenTagStart,
-						wiki_tag_pairs[WIKI_TAG_PAIR_H3].sTagStart, wiki_tag_pairs[WIKI_TAG_PAIR_H3].lenTagStart);
-					bBeginOfLine = 1;
-				}
-				else
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<br><h2>", 8);
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</h2>", 5);
-				}
-				break;
-			case WIKI_TAG_PAIR_BOLD_ITALIC:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<b><i>", 6);
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</i></b>", 8);
-				break;
-			case WIKI_TAG_PAIR_BOLD:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<b>", 3);
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</b>", 4);
-				break;
-			case WIKI_TAG_PAIR_ITALIC:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<i>", 3);
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</i>", 4);
-				break;
-			case WIKI_TAG_PAIR_NOWIKI:
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<nowiki>", 8);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</nowiki>", 9);
-				break;
-			case WIKI_TAG_PAIR_PRE:	
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<pre>", 5);
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</pre>", 6);
-//				break;
-			case WIKI_TAG_PAIR_PRE_LINE:
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<pre>", 5);
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pTagContent, lenTagContent);
-//				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</pre>\n", 7);
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				break;
-			case WIKI_TAG_PAIR_OL:
-			case WIKI_TAG_PAIR_UL:
-			case WIKI_TAG_PAIR_DL:
-			case WIKI_TAG_PAIR_DI:
-				nListTypeFinal = parse_list_stack(sListStack, &nListStack, pTagContent, lenTagContent);
-				if (nListTypeFinal)
-					nListType = nListTypeFinal;
-				process_list_stack(sListStack, nListStack, sListStackPrev, nListStackPrev, sBuf, &lenBuf);
-				if (nListType == LIST_LI)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<li>", 4);
-				}
-				else if (nListType == LIST_DT)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<dt>", 4);
-				}
-				else if (nListType == LIST_DI)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "<di>", 4);
-				}
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				if (nListType == LIST_LI)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</li>", 5);
-				}
-				else if (nListType == LIST_DT)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</dt>", 5);
-				}
-				else if (nListType == LIST_DI)
-				{
-					lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, "</di>", 5);
-				}
-				break;
-			case WIKI_TAG_PAIR_REF:
-				break;
-			default:
-				cpy_wiki_buf(sLocalText, 0, MAX_LOCAL_TEXT_BUF, pTagContent, lenTagContent);
-				lenTagContent = parse_wiki_tags(sLocalText, lenTagContent, sLocalBuf, MAX_LOCAL_TEXT_BUF);
-				lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, sLocalText, lenTagContent);
-				break;
-		}
-		nListStackPrev = nListStack;
-		memcpy(sListStackPrev, sListStack, sizeof(sListStack));
-		pWikiText = pAfterTag;
-		nTextLen = lenAfterTag;
-		idxChildTag = find_next_wiki_tag(pWikiText, nTextLen, &lenBeforeTag, &pTagContent, &lenTagContent, &pAfterTag, &lenAfterTag, &bBeginOfLine);
-	}
-
-	if (lenBeforeTag > 0)
-	{
-		lenBuf = cpy_wiki_buf(sBuf, lenBuf, maxLenBuf, pWikiText, lenBeforeTag);
-	}
-	sBuf[lenBuf] = '\0';
-	lenBuf = replace_ampersand_char_crlf(sText, sBuf);
-	free(sLocalBuf);
-	free(sLocalText);
-	return lenBuf;
-}
-
 long wikiRender(MYSQL *conn, char *sRendered, long *nRenderedLines, int *nArticleLinks, int *nExternalLinks,
 	char *sTitle, int nTitleLen, char *sText, long nTextLen)
 {
@@ -2664,10 +2790,7 @@ long wikiRender(MYSQL *conn, char *sRendered, long *nRenderedLines, int *nArticl
 	render_buf.current_x = -1;
 	render_buf.current_y = 0;
 	render_buf.current_indent = 0;
-	render_buf.ol_depth = 0;
-	render_buf.ul_depth = 0;
-	render_buf.current_list_type = 0;
-	render_buf.current_ol_count = 0;
+	render_buf.list_depth = 0;
 	render_buf.nLinks = 0;
 	render_buf.nCurrentFontIdx = DEFAULT_FONT_IDX;
 	render_buf.nCurrentRenderType = RENDER_TYPE_NORMAL;
@@ -2876,6 +2999,8 @@ off64_t next_article(FILE *fd, off64_t file_offset_for_pass_1, char *sTitle, cha
 						nCopyLen = sizeof(sTag) - 1;
 					memcpy(sTag, &buf[nOffsetS +1], nCopyLen);
 					sTag[nCopyLen] = '\0';
+					if (!strcmp(sTag, "page"))
+						nTagDepth = 0;
 					if ((nOffsetS = strnChrOffset(sTag, ' ', strlen(sTag))) >= 0)
 						sTag[nOffsetS] = '\0';
 					if (sTag[0] == '/' && nTagDepth > 0)
@@ -2944,7 +3069,7 @@ off64_t next_article(FILE *fd, off64_t file_offset_for_pass_1, char *sTitle, cha
 			}
 			else
 			{
-				if (posBuf > 0)
+				if (nOffsetS > 0)
 					file_offset_for_pass_1 = file_offset_for_pass_1 - (lenBuf - nOffsetS + 1);
 				fseeko64(fd, file_offset_for_pass_1, SEEK_SET);
 				posBuf = lenBuf;
@@ -2983,7 +3108,8 @@ off64_t next_article(FILE *fd, off64_t file_offset_for_pass_1, char *sTitle, cha
 		memcpy(sTitle, &sTitle[9], strlen(sTitle) - 8);
 	}
 	else if (!strncmp(sTitle, "Category:", 9) || !strncmp(sTitle, "Wikipedia:", 10) ||
-		!strncmp(sTitle, "MediaWiki:", 10) || !strncmp(sTitle, "File:", 5) )
+		!strncmp(sTitle, "MediaWiki:", 10) || !strncmp(sTitle, "File:", 5) ||
+		!strncmp(sTitle, "Talk:", 5) || !strncmp(sTitle, "Help:", 5) )
 	{
 		*nType = 3;
 	}
