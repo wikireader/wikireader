@@ -135,8 +135,17 @@ static void DisplayInfo(void)
 	print_int32(Analog_TemperatureCelcius());
 	print(" DegC\nLCD: ");
 	print_dec32(Analog_ContrastMilliVolts());
-	print(" mV\nREV: A");
-	print_dec32(board_revision());
+	print(" mV\nREV: ");
+	{
+		int rev = board_revision();
+		if (rev >= 6) {
+			rev -= 5;
+			print_char('V');
+		} else {
+			print_char('A');
+		}
+		print_dec32(rev);
+	}
 	eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
 	print("\nS/N: ");
 
