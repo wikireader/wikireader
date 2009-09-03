@@ -24,9 +24,13 @@
 #include "bmf.h"
 #include "lcd_buf_draw.h"
 #include "search.h"
+#include "bigram.h"
 
 #define ARTICLE_LINK_COUNT 1000
 #define EXTERNAL_LINK_COUNT 1000
+#define LCD_UPDATE_MILLISEC 20000
+
+int get_time_tick(void);
 
 pcffont_bmf_t pcfFonts[FONT_COUNT];
 static int lcd_draw_buf_inited = 0;
@@ -69,13 +73,15 @@ int link_article_number_cur;
 int article_scroll_delay_time,article_offset,base_delay_time;
 int article_distance,article_offset,article_scroll_increment;
 int time_scroll_article_start;
-int article_scroll_delay_time_total;
+int article_scroll_delay_time_total,time_scroll_article_last=0;
 int stop_render_article = 0;
 
 int is_supported_search_char(char c)
 {
-	return ((',' <= c && c <= ';') || ('a' <= c && c <= 'z') || ('?' <= c && c <= 'Z') || 
-		(' ' <= c && c <= '$') || ('\'' <= c && c <= ')'));
+	if (c && (strchr(SUPPORTED_SEARCH_CHARS, c) || ('A' <= c && c <= 'Z')))
+		return 1;
+	else
+		return 0;
 }
 
 void init_lcd_draw_buf()
@@ -729,8 +735,11 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 void init_render_article()
 {
 
-	if(lcd_draw_buf.current_y>0)
-	    memset(lcd_draw_buf.screen_buf,0,lcd_draw_buf.current_y*LCD_VRAM_WIDTH_PIXELS/8);
+	//if(lcd_draw_buf.current_y>0)
+	  //  memset(lcd_draw_buf.screen_buf,0,lcd_draw_buf.current_y*LCD_VRAM_WIDTH_PIXELS/8);
+	if (lcd_draw_buf.screen_buf)
+		memset(lcd_draw_buf.screen_buf, 0, LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
+
 
 	lcd_draw_buf.current_x = 0;
 	lcd_draw_buf.current_y = 0;
@@ -785,10 +794,11 @@ void display_article_with_pcf(int start_y)
         is_display_external_link = 0;
 
         lcd_draw_cur_y_pos_last = lcd_draw_cur_y_pos;
-
+        //sprintf(msg_out,"lcd_draw_cur_y_pos:%d,start_y:%d,lcd_draw_buf.current_y:%ld\n",lcd_draw_cur_y_pos,start_y,lcd_draw_buf.current_y);
+        //msg_info(msg_out);
         if(lcd_draw_buf.current_y<=LCD_HEIGHT_LINES)
             return;
-
+        
 //        if(is_rendering && (lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES) > lcd_draw_buf.current_y)
         if(article_buf_pointer && (lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES) > lcd_draw_buf.current_y)
         {
@@ -814,7 +824,7 @@ void display_article_with_pcf(int start_y)
         if(lcd_draw_cur_y_pos < 0)
            lcd_draw_cur_y_pos = 0;
         else if((lcd_draw_cur_y_pos+LCD_HEIGHT_LINES)>lcd_draw_buf.current_y)
-           lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES+20;
+           lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 	
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
@@ -872,7 +882,7 @@ void display_article_with_pcf_smooth(int start_y)
            increment = -2;
            article_scroll_increment = -2;
         }
-        time = 2000;
+        time = LCD_UPDATE_MILLISEC;
         article_scroll_delay_time = time;
         add = 100;
         base_delay_time = add;
@@ -915,6 +925,14 @@ void scroll_article()
         if(article_offset<=0)
           return;
 
+        delay_time = 0;
+        /*int time_now = get_time_tick();
+        if((time_now-time_scroll_article_last)<article_scroll_delay_time*24)
+          return;
+        time_scroll_article_last = (int)time_now;
+        article_scroll_delay_time_total+=article_scroll_delay_time;
+        article_scroll_delay_time+=base_delay_time;
+        */
         if(article_scroll_delay_time_total>=1000000*3)
             article_offset = 0;
 
@@ -956,7 +974,16 @@ unsigned char * open_article_with_pcf_link(long idx_article)
         file_buffer[0] = '\0';
 		
 	if (retrieve_article(idx_article))
-		return NULL; // article not exist		
+        {
+            #ifdef INCLUDED_FROM_KERNEL
+            //msg(MSG_INFO,"retrieve_article failed,idx_article:%d\n",idx_article);
+            #endif
+	    return NULL; // article not exist		
+        }
+        #ifdef INCLUDED_FROM_KERNEL
+        //msg(MSG_INFO,"retrieve_article ok,idx_article:%d\n",idx_article);
+        #endif
+
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 	//msg(MSG_INFO,"offset_article:%d\n",article_header.offset_article);
 	offset = sizeof(ARTICLE_HEADER);
@@ -1020,10 +1047,10 @@ int isArticleLinkSelected(int x,int y)
 	  int article_link_start_x_pos;
 	  int article_link_end_y_pos;
 	  int article_link_end_x_pos;
-	  char msg[1024];
+	  //char msg[1024];
 
-          sprintf(msg,"article link count:%d,x:%d,y:%d\n",article_link_count,x,y);
-          msg_info(msg);
+          //sprintf(msg,"article link count:%d,x:%d,y:%d\n",article_link_count,x,y);
+          //msg_info(msg);
 	  for(i = 0 ; i < article_link_count; i++)
 	  {
 	  	article_link_start_y_pos = articleLink[i].start_xy >>8;
@@ -1031,10 +1058,11 @@ int isArticleLinkSelected(int x,int y)
 	  	article_link_end_y_pos = articleLink[i].end_xy >>8;
 	  	article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
             
-                sprintf(msg,"article link:%d,start_x:%d,end_x:%d,start_y:%d,end_y:%d\n",i,article_link_start_x_pos,article_link_end_x_pos,article_link_start_y_pos,article_link_end_y_pos);
-                msg_info(msg);
+                //sprintf(msg,"article link:%d,start_x:%d,end_x:%d,start_y:%d,end_y:%d\n",i,article_link_start_x_pos,article_link_end_x_pos,article_link_start_y_pos,article_link_end_y_pos);
+                //msg_info(msg);
 	  	
-	  	if((lcd_draw_cur_y_pos+y)>=article_link_start_y_pos && (lcd_draw_cur_y_pos+y)<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
+	  	//if((lcd_draw_cur_y_pos+y)>=article_link_start_y_pos && (lcd_draw_cur_y_pos+y)<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
+	  	if((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
 	  		return i;
 	  		  	
 	  }
@@ -1123,6 +1151,7 @@ int load_init_article(long idx_init_article)
 
 int display_link_article(long article_link_number)
 {
+        init_render_article();
 	article_buf_pointer = open_article_with_pcf_link(article_link_number);
 	if(article_buf_pointer!=NULL)
 	{
@@ -1465,9 +1494,9 @@ int get_article_link_number()
 {
     return link_article_number_cur;
 }
-unsigned int get_time_tick(void)
+int get_time_tick(void)
 {
-        long clock_ticks;
+        int clock_ticks;
 
 #ifdef INCLUDED_FROM_KERNEL
 	clock_ticks = Tick_get();
@@ -1475,5 +1504,5 @@ unsigned int get_time_tick(void)
 	clock_ticks = clock();
 #endif
 
-	return (unsigned int)clock_ticks;
+	return clock_ticks;
 }

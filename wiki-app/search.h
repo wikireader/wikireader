@@ -20,7 +20,7 @@
 
 #define TARGET_SIZE 6
 //#define RESULT_START 20
-#define RESULT_START 35
+#define RESULT_START 33
 //#define RESULT_HEIGHT 10
 #define RESULT_HEIGHT 19
 #define MAX_RESULTS 20
@@ -100,6 +100,10 @@ void search_set_selection(int new_selection);
 
 void search_open_article(int new_selection);
 
-int set_result_list_base(int offset,int offset_count);
-
+int  set_result_list_base(int offset,int offset_count);
+void search_fetch();
+void search_result_display();
+void search_reload_ex();
+void clear_search_string();
+int  get_search_string_len();
 #endif

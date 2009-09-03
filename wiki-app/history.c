@@ -213,7 +213,7 @@ void history_reload()
 
 		}
 		//invert_selection(history_current, -1, HISTORY_PIXEL_START, HISTORY_RESULT_HEIGHT);
-		invert_selection(history_current, -1, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
+		//invert_selection(history_current, -1, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
 	}
 
 	guilib_fb_unlock();

@@ -23,7 +23,7 @@
  */
 
 #define KEYBOARD_WIDTH	240
-#define KEYBOARD_HEIGHT	80
+#define KEYBOARD_HEIGHT	82
 
 enum {
 	KEYBOARD_NONE,
