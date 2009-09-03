@@ -611,7 +611,7 @@ int main(int argc, char **argv)
 			unlink("pedia.idx");
 			unlink("pedia.fnd");
 			unlink("pedia.pfx");
-			if (max_article_idx > 1000)
+			if (max_article_idx > 2000)
 				process_pass_3(conn, conn2, 1);
 			else
 				process_pass_3(conn, conn2, 0);
