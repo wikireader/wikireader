@@ -56,6 +56,31 @@ ALL_TARGETS += pcf2bmf
 .PHONY: all
 all:    ${ALL_TARGETS}
 
+
+# ----- installation ------------------------------------------
+
+DESTDIR_PATH := $(shell readlink -m "${DESTDIR}")
+VERSION_TAG := $(shell basename "${DESTDIR}")
+VERSION_FILE := ${DESTDIR_PATH}/version.txt
+SHA_LEVEL := 256
+CHECKSUM_FILE := ${DESTDIR_PATH}/sha${SHA_LEVEL}.txt
+
+.PHONY: install
+install: validate-destdir forth-install mahatma-install version
+
+.PHONY: validate-destdir version
+version:
+	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}"
+	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
+	cd "${DESTDIR_PATH}" && sha${SHA_LEVEL}sum * >> "${CHECKSUM_FILE}"
+
+.PHONY: validate-destdir
+validate-destdir:
+	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
+	@if [ -z "${DESTDIR}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
+
+
+# ----- main program ------------------------------------------
 .PHONY: toppers
 toppers: mini-libc fatfs
 	( cd samo-lib/toppers-jsp && \
@@ -67,6 +92,12 @@ toppers: mini-libc fatfs
 mahatma: mini-libc fatfs
 	$(MAKE) -C samo-lib/mahatma
 	cp -p samo-lib/mahatma/mahatma.elf kernel.elf
+
+
+.PHONY: mahatma-install
+mahatma-install: mahatma validate-destdir
+	$(MAKE) -C samo-lib/mahatma install DESTDIR="${DESTDIR_PATH}"
+
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
@@ -171,6 +202,10 @@ webkit:
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
 	$(MAKE) -C samo-lib/forth
+
+.PHONY: forth-install
+forth-install: forth
+	$(MAKE) -C samo-lib/forth install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- flash -----------------------------------------------
@@ -280,9 +315,12 @@ help:
 	@echo 'Some of the more useful targets:'
 	@echo
 	@echo '  all                   - compile all the source'
+	@echo '  install               - install forth & mahatma in DESTDIR'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  mahatma               - compile kernel'
+	@echo '  mahatma-install       - install mahatma as kernel in DESTDIR'
 	@echo '  forth                 - compile forth'
+	@echo '  forth-install         - install forth files in DESTDIR'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'

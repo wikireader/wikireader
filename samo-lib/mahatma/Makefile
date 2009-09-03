@@ -126,6 +126,12 @@ build:
 lib:
 	${MKDIR} "$@"
 
+.PHONY: install
+install: all
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	${COPY} mahatma.elf "${DESTDIR}"/kernel.elf
+
+.PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build lib
 	${RM} -r *.o *.elf *.d *.map *.asm33 ${KBD_IMG_INC} ${KBD_IMG_SRC_P1}

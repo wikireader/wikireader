@@ -47,8 +47,12 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 CLEAN_FILES =
 
+TARGETS = forth.elf calc.elf
+FORTH_PROGRAMS = programs/*.4?? programs/*.ini programs/*.tst
 
-all: forth.elf calc.elf
+.PHONY: all
+all: ${TARGETS}
+
 
 OBJECTS =
 OBJECTS += button.o
@@ -104,6 +108,14 @@ calc.fi: programs/calc.4th
 	echo "<',> calculator" >> "$@"
 
 
+.PHONY: install
+install: all
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	${COPY} ${TARGETS} "${DESTDIR}"
+	${COPY} ${FORTH_PROGRAMS} "${DESTDIR}"
+
+
+.PHONY: clean
 clean:
 	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi
 	${RM} ${CLEAN_FILES}

@@ -110,3 +110,4 @@ CROSS_OBJCOPY = ${CROSS}objcopy
 
 RM = rm -f
 MKDIR = mkdir -p
+COPY = cp -p
