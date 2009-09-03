@@ -13,6 +13,10 @@ MEMORY
 SECTIONS
 {
 	.iram : {
+		 LONG(4)
+                 LONG(8)
+                 LONG(12)
+                 LONG(0xcafedeca)
 		 *(.suspend_text)
 		 *(.suspend_rodata)
 		 *(.suspend_data)
