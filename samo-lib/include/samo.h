@@ -74,6 +74,9 @@
 #elif BOARD_SAMO_A1 || BOARD_SAMO_A3 || BOARD_SAMO_A5
 #define BOARD_SAMO_Ax 1
 #include <boards/samo_a1.h>
+#elif BOARD_SAMO_V1 || BOARD_SAMO_V2
+#define BOARD_SAMO_Vx 1
+#include <boards/samo_a1.h>
 #elif BOARD_PRT33L17LCD
 #include <boards/prt33l17lcd.h>
 #else

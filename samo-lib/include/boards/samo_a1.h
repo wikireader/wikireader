@@ -99,7 +99,9 @@ static inline void power_off(void)
 //}
 
 
-#if BOARD_SAMO_A3
+#if BOARD_SAMO_Vx
+#define AVDD_MILLIVOLTS	       3300
+#elif BOARD_SAMO_A3 || BOARD_SAMO_A5
 #define AVDD_MILLIVOLTS	       3150
 #else
 #define AVDD_MILLIVOLTS	       3000
