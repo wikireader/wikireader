@@ -2,7 +2,7 @@
  * CDDL HEADER START
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").  
+ * Common Development and Distribution License (the "License").
  * You may not use this file except in compliance with the License.
  *
  * You can obtain a copy of the license at src/OPENSOLARIS.LICENSE
@@ -49,7 +49,7 @@
  *
  * X Window System is a trademark of X Consortium, Inc.
  */
-#pragma ident   "@(#)pcf.c	1.3 00/02/02 SMI"
+//#pragma ident   "@(#)pcf.c	1.3 00/02/02 SMI"
 #include <stdio.h>
 #include <fcntl.h>
 /* #include <unistd.h> */
@@ -97,7 +97,9 @@ typedef struct font_bmf_ex{
        INT32  pos;
 }font_bmf_ex;
 
+#ifdef DEBUG
 static void dump_Fmetrics(pcffont_t *);
+#endif
 static code_int getcode(CompressedFile *);
 static void BufFileClose(BufFilePtr,int);
 static int get_font_property(FontPtr, char *, ulong_t *);
@@ -127,11 +129,11 @@ static int BufFileRawClose (BufFilePtr, int);
 static int bitmapGetGlyphs(FontPtr, unsigned long, unsigned char *, FontEncoding , unsigned long * , CharInfoPtr *);
 static int bitmapGetMetrics(FontPtr, unsigned long, unsigned char *, FontEncoding, unsigned long *, xCharInfo **);
 static void pcfUnloadFont(FontPtr);
-static int handle_cuferr(int , ucs4_t *, int *);
-static int handle_illegalchar(ucs4_t *, int *);
-static int handle_nonidentchar(ucs4_t *, int *);
+//static int handle_cuferr(int , ucs4_t *, int *);
+//static int handle_illegalchar(ucs4_t *, int *);
+//static int handle_nonidentchar(ucs4_t *, int *);
 static int handle_nobitmap(ucs4_t *, pcffont_t *, pcf_charmet_t *, pcf_bm_t **) ;
-static int handle_nongraphchar(ucs4_t *, int *);
+//static int handle_nongraphchar(ucs4_t *, int *);
 static pcf_bm_t * xpcf_getcbm(ucs4_t , pcffont_t *, pcf_charmet_t *);
 static void BitOrderInvert(unsigned char *, int);
 static Bool pcfHasType ( PCFTablePtr, int, CARD32);
@@ -144,7 +146,7 @@ static Bool NameEqual (char *, char *,int );
 static int Hash(char *, int);
 static Bool ResizeHashTable();
 void put_PSbitmap(ucs4_t , pcf_bm_t *, pcf_charmet_t *, pcf_SCcharmet_t *);
-static int gzcatfile(char *);
+//static int gzcatfile(char *);
 void init_putPS(void);
 unsigned long * Xrealloc(unsigned long   *, int);
 unsigned long * Xalloc(int);
@@ -165,7 +167,7 @@ ucs4_t REFERENCEchar = (ucs4_t) 0x20;
 
 /* extern pcffont_t *pcf_fonts;
 extern pcffont_t	*CurrentFont; */
-static pcffont_t *pcf_fonts;
+//static pcffont_t *pcf_fonts;
 static pcffont_t	*CurrentFont;
 static int position;
 static CharInfoRec nonExistantChar;
@@ -220,8 +222,8 @@ static unsigned char _reverse_byte[0x100] = {
 void
 draw_bitmap(int line_ascent, int line_descent, int line_space, pcf_bm_t *bitmap, pcf_charmet_t *Cmetrics)
 {
-    int i;
-	int j;
+    //int i;
+    int j;
     int k;
     int m;
     int n;
@@ -229,11 +231,11 @@ draw_bitmap(int line_ascent, int line_descent, int line_space, pcf_bm_t *bitmap,
     if (bitmap == NULL)
 	return;
 
-	    fprintf(stdout,"[ %d %d %d %d %d %d %d %d %d ]\n", 
-    	    Cmetrics->width, Cmetrics->height,
-    	    Cmetrics->widthBits, Cmetrics->widthBytes,
-    	    Cmetrics->ascent, Cmetrics->descent,
-			Cmetrics->LSBearing, Cmetrics->RSBearing, 
+	    fprintf(stdout,"[ %d %d %d %d %d %d %d %d %d ]\n",
+	    Cmetrics->width, Cmetrics->height,
+	    Cmetrics->widthBits, Cmetrics->widthBytes,
+	    Cmetrics->ascent, Cmetrics->descent,
+			Cmetrics->LSBearing, Cmetrics->RSBearing,
 			Cmetrics->origin_xoff);
 
     k = Cmetrics->widthBytes * Cmetrics->height;
@@ -254,7 +256,7 @@ draw_bitmap(int line_ascent, int line_descent, int line_space, pcf_bm_t *bitmap,
 			{
 				if (m <= Cmetrics->width)
 				{
-	    			fprintf(stdout, ".");
+				fprintf(stdout, ".");
 					m++;
 				}
 				fprintf(stdout, "\n");
@@ -263,9 +265,9 @@ draw_bitmap(int line_ascent, int line_descent, int line_space, pcf_bm_t *bitmap,
 			if (m <= Cmetrics->width)
 			{
 				if (bitmap[j] & (1<<n))
-	    			fprintf(stdout, "*");
+				fprintf(stdout, "*");
 				else
-	    			fprintf(stdout, ".");
+				fprintf(stdout, ".");
 			}
 			m++;
 			n--;
@@ -285,7 +287,7 @@ draw_bitmap(int line_ascent, int line_descent, int line_space, pcf_bm_t *bitmap,
 }
 
 void
-put_PSbitmap(ucs4_t code, pcf_bm_t *bitmap, 
+put_PSbitmap(ucs4_t code, pcf_bm_t *bitmap,
 	pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *Smetrics)
 {
     int j;
@@ -294,12 +296,12 @@ put_PSbitmap(ucs4_t code, pcf_bm_t *bitmap,
     if (bitmap == NULL)
 	return;
 
-    fprintf(stdout,"/C%x { GR %.2f %.2f S %d %d T [%d 0 0 -%d 0 %d]\n\t{<", 
-    	    code,
-    	    Smetrics->widthBits, Smetrics->height,
-    	    Cmetrics->widthBits, Cmetrics->height,
-    	    Cmetrics->widthBits, Cmetrics->height,
-    	    Cmetrics->ascent);
+    fprintf(stdout,"/C%x { GR %.2f %.2f S %d %d T [%d 0 0 -%d 0 %d]\n\t{<",
+	    code,
+	    Smetrics->widthBits, Smetrics->height,
+	    Cmetrics->widthBits, Cmetrics->height,
+	    Cmetrics->widthBits, Cmetrics->height,
+	    Cmetrics->ascent);
 
     k = Cmetrics->widthBytes * Cmetrics->height;
 
@@ -311,7 +313,7 @@ put_PSbitmap(ucs4_t code, pcf_bm_t *bitmap,
     for (j = 0; j < k; j++)
 	fprintf(stdout,"%.2x", bitmap[j]);
 
-    fprintf(stdout,">} IG } def\n"); 
+    fprintf(stdout,">} IG } def\n");
     fprintf(stdout,"C%x\n", code);
 
     /*
@@ -335,15 +337,15 @@ get_SCmetrics(pcffont_t *font, ucs4_t val)
 		return NULL;
 	} else if (v != val) {	/* return NULL if val got mapped to */
 				/* another character */
-		return NULL; 
+		return NULL;
 	} else {
 		return &sm;
 	}
 }
 
 void
-pcf_postscript(ucs4_t c, pcf_bm_t *pcfbm, 
-    	pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *scCmetrics)
+pcf_postscript(ucs4_t c, pcf_bm_t *pcfbm,
+	pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *scCmetrics)
 {
 
 
@@ -351,13 +353,13 @@ pcf_postscript(ucs4_t c, pcf_bm_t *pcfbm,
 
 }
 
-int 
+int
 load_pcf( pcffont_t *font ) {
 
 
 #ifdef SDEBUG
 	fprintf(stderr, "%f --- target_ptsz\n", target_ptsz);
-#endif	
+#endif
 
 	if (load_pcf_font(font) == -1) {
 	/*
@@ -367,7 +369,7 @@ load_pcf( pcffont_t *font ) {
 		*/
 		return -1;
 	}
-	
+
 	scaling_factors(font, 1, 1, 1);
 	scale_Fmetrics(font);
 	font->loaded = 1;
@@ -385,11 +387,11 @@ load_pcf_font(pcffont_t *font)
     ulong_t value;
 
     if ((ff = FontFileOpen(font->file)) == NULL)
-        return -1;
+	return -1;
 
 
     if (pcfReadFont(&fr, ff, MSBFirst, MSBFirst, 1, 1) != Successful)
-    	return -1;
+	return -1;
     fi = &(fr.info);
 
     font->Fmetrics.ascent = fi->fontAscent;
@@ -406,15 +408,15 @@ load_pcf_font(pcffont_t *font)
     Generate_new_font_with_header(font);
 
     if (get_font_property(&fr, "POINT_SIZE", &value) == -1)
-    	return -1;
+	return -1;
     font->Fmetrics.ptsz = (int) value;
 
     if (get_font_property(&fr, "RESOLUTION_X", &value) == -1)
-    	return -1;
+	return -1;
     font->Fmetrics.Xres = (int) value;
 
     if (get_font_property(&fr, "RESOLUTION_Y", &value) == -1)
-    	return -1;
+	return -1;
     font->Fmetrics.Yres = (int) value;
 
 #ifdef SDEBUG
@@ -440,7 +442,7 @@ void Generate_new_font(pcffont_t *font)
     int offset = 0;
     int count = 0;
     int font_count;
-     
+
     strcpy(name,sOutFilename);
     font_count = font->Fmetrics.lastchar;
     buf = (char*)malloc(font_count*sizeof(font_bmf));
@@ -453,59 +455,59 @@ void Generate_new_font(pcffont_t *font)
        memset(&font_create,0,sizeof(font_bmf));
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-           LSBearing  = ci->metrics.leftSideBearing;
-           RSBearing  = ci->metrics.rightSideBearing;
-           ascent     = ci->metrics.ascent;
-           descent     = ci->metrics.descent;
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
+	   LSBearing  = ci->metrics.leftSideBearing;
+	   RSBearing  = ci->metrics.rightSideBearing;
+	   ascent     = ci->metrics.ascent;
+	   descent     = ci->metrics.descent;
 
-           /*if(i==0)
-           {
-              width = font->Fmetrics.linespace;
-              height = font->Fmetrics.ascent;
-              widthBytes = font->Fmetrics.descent;
-           }*/
-           
-           if(i==32 && width==0)
-           {
-              width = 2;
-              height = 1;
-              widthBytes = 1;
-              widthBits = 8;
-              RSBearing = 2;
-           }
+	   /*if(i==0)
+	   {
+	      width = font->Fmetrics.linespace;
+	      height = font->Fmetrics.ascent;
+	      widthBytes = font->Fmetrics.descent;
+	   }*/
 
-           font_create.width = (INT8)width;
-           font_create.height = (INT8)height;
-           font_create.widthBytes =(INT8)widthBytes;
-           font_create.widthBits =(INT8)widthBits;
-           font_create.ascent =(INT8)ascent;
-           font_create.descent =(INT8)descent;
-           font_create.LSBearing = (INT8)LSBearing;
-           font_create.RSBearing = (INT8)RSBearing;
-           //printf("before memcpy bitmap\n");
-           //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
-           if((widthBytes*height)>48)
-           {
-              //free(buf);
-              printf("widthBytes*height>=48\n");
-              memcpy(font_create.bitmap,ci->bits,48);
-              //return;
-           }
-           else
-               memcpy(font_create.bitmap,ci->bits,widthBytes*height);
+	   if(i==32 && width==0)
+	   {
+	      width = 2;
+	      height = 1;
+	      widthBytes = 1;
+	      widthBits = 8;
+	      RSBearing = 2;
+	   }
+
+	   font_create.width = (INT8)width;
+	   font_create.height = (INT8)height;
+	   font_create.widthBytes =(INT8)widthBytes;
+	   font_create.widthBits =(INT8)widthBits;
+	   font_create.ascent =(INT8)ascent;
+	   font_create.descent =(INT8)descent;
+	   font_create.LSBearing = (INT8)LSBearing;
+	   font_create.RSBearing = (INT8)RSBearing;
+	   //printf("before memcpy bitmap\n");
+	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
+	   if((widthBytes*height)>48)
+	   {
+	      //free(buf);
+	      printf("widthBytes*height>=48\n");
+	      memcpy(font_create.bitmap,ci->bits,48);
+	      //return;
+	   }
+	   else
+	       memcpy(font_create.bitmap,ci->bits,widthBytes*height);
 
 
        }
        count++;
        memcpy(buf+offset,&font_create,sizeof(font_bmf));
        offset+=sizeof(font_bmf);
-       
+
        if(i>nFontCount)
-          break;
+	  break;
     }
     printf("count is:%d,before open file\n",count);
     fd = fopen(name, "wb");
@@ -524,13 +526,13 @@ void Generate_new_font_with_header(pcffont_t *font)
     char name[256];
     int offset = 0;
     int count = 0;
-    int last_char = 0;
-    int bitmap_offset = 0;
+    //int last_char = 0;
+    //int bitmap_offset = 0;
     int header_len = 0;
-    int last_val = 0;
-    int bmf_buffer_len = 0;
+    //int last_val = 0;
+    //int bmf_buffer_len = 0;
     font_bmf_header  font_header_t;
-     
+
     strcpy(name,sOutFilename);
     //font_count = font->Fmetrics.lastchar;
 
@@ -555,47 +557,47 @@ void Generate_new_font_with_header(pcffont_t *font)
        memset(&font_create,0,sizeof(font_bmf));
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-           LSBearing  = ci->metrics.leftSideBearing;
-           RSBearing  = ci->metrics.rightSideBearing;
-           ascent     = ci->metrics.ascent;
-           descent     = ci->metrics.descent;
-           
-           if(i==32 && width==0)
-           {
-              width = 2;
-              height = 1;
-              widthBytes = 1;
-              widthBits = 8;
-              RSBearing = 2;
-           }
- 
-           font_create.width = (INT8)width;
-           font_create.height = (INT8)height;
-           font_create.widthBytes =(INT8)widthBytes;
-           font_create.widthBits =(INT8)widthBits;
-           font_create.ascent =(INT8)ascent;
-           font_create.descent =(INT8)descent;
-           font_create.LSBearing = (INT8)LSBearing;
-           font_create.RSBearing = (INT8)RSBearing;
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
+	   LSBearing  = ci->metrics.leftSideBearing;
+	   RSBearing  = ci->metrics.rightSideBearing;
+	   ascent     = ci->metrics.ascent;
+	   descent     = ci->metrics.descent;
 
-           //printf("char:%d,height:%d,widthBytes:%d\n",i,font_create.height,font_create.widthBytes);
+	   if(i==32 && width==0)
+	   {
+	      width = 2;
+	      height = 1;
+	      widthBytes = 1;
+	      widthBits = 8;
+	      RSBearing = 2;
+	   }
 
-           if(font_create.height<0)
-              font_create.height = 0;
-           if(font_create.widthBytes<0)
-              font_create.widthBytes = 0;
-           
-           if((widthBytes*height)>48)
-           {
-              //printf("widthBytes*height>=48\n");
-              memcpy(font_create.bitmap,ci->bits,48);
-           }
-           else
-              memcpy(font_create.bitmap,ci->bits,widthBytes*height);
+	   font_create.width = (INT8)width;
+	   font_create.height = (INT8)height;
+	   font_create.widthBytes =(INT8)widthBytes;
+	   font_create.widthBits =(INT8)widthBits;
+	   font_create.ascent =(INT8)ascent;
+	   font_create.descent =(INT8)descent;
+	   font_create.LSBearing = (INT8)LSBearing;
+	   font_create.RSBearing = (INT8)RSBearing;
+
+	   //printf("char:%d,height:%d,widthBytes:%d\n",i,font_create.height,font_create.widthBytes);
+
+	   if(font_create.height<0)
+	      font_create.height = 0;
+	   if(font_create.widthBytes<0)
+	      font_create.widthBytes = 0;
+
+	   if((widthBytes*height)>48)
+	   {
+	      //printf("widthBytes*height>=48\n");
+	      memcpy(font_create.bitmap,ci->bits,48);
+	   }
+	   else
+	      memcpy(font_create.bitmap,ci->bits,widthBytes*height);
 
        }
 
@@ -626,7 +628,7 @@ void Generate_new_font_with_header(pcffont_t *font)
     int last_val = 0;
     int bmf_buffer_len = 0;
     font_bmf_header  font_header_t;
-     
+
     strcpy(name,sOutFilename);
     //font_count = font->Fmetrics.lastchar;
 
@@ -636,24 +638,24 @@ void Generate_new_font_with_header(pcffont_t *font)
     font_header_t.last_char = font->Fmetrics.lastchar;
 
     count = font->Fmetrics.lastchar;
-    
+
     for(i=0; i<count;i++)
     {
        ci = font->bitmaps[i];
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           if((widthBytes*height)>last_val)
-               last_val = widthBytes*height;
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   if((widthBytes*height)>last_val)
+	       last_val = widthBytes*height;
        }
     }
     printf("last val:%d\n",last_val);
     last_val = 64;
     font_header_t.bmp_buffer_len = last_val;
     bmf_buffer_len = last_val;
- 
+
 
     buf = (char*)malloc(count*(sizeof(font_bmf_ex)+bmf_buffer_len)+sizeof(font_bmf_header));
     memset(buf,0,count*(sizeof(font_bmf_ex)+bmf_buffer_len)+sizeof(font_bmf_header));
@@ -672,45 +674,45 @@ void Generate_new_font_with_header(pcffont_t *font)
        memset(&font_create,0,sizeof(font_bmf_ex));
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-           LSBearing  = ci->metrics.leftSideBearing;
-           RSBearing  = ci->metrics.rightSideBearing;
-           ascent     = ci->metrics.ascent;
-           descent     = ci->metrics.descent;
-           
-           if(i==32 && width==0)
-           {
-              width = 2;
-              height = 1;
-              widthBytes = 1;
-              widthBits = 8;
-              RSBearing = 2;
-           }
- 
-           font_create.width = (INT8)width;
-           font_create.height = (INT8)height;
-           font_create.widthBytes =(INT8)widthBytes;
-           font_create.widthBits =(INT8)widthBits;
-           font_create.ascent =(INT8)ascent;
-           font_create.descent =(INT8)descent;
-           font_create.LSBearing = (INT8)LSBearing;
-           font_create.RSBearing = (INT8)RSBearing;
-           
-           if(width==0 || height==0 || widthBytes==0)
-                font_create.pos = 0;
-           else
-           {
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
+	   LSBearing  = ci->metrics.leftSideBearing;
+	   RSBearing  = ci->metrics.rightSideBearing;
+	   ascent     = ci->metrics.ascent;
+	   descent     = ci->metrics.descent;
+
+	   if(i==32 && width==0)
+	   {
+	      width = 2;
+	      height = 1;
+	      widthBytes = 1;
+	      widthBits = 8;
+	      RSBearing = 2;
+	   }
+
+	   font_create.width = (INT8)width;
+	   font_create.height = (INT8)height;
+	   font_create.widthBytes =(INT8)widthBytes;
+	   font_create.widthBits =(INT8)widthBits;
+	   font_create.ascent =(INT8)ascent;
+	   font_create.descent =(INT8)descent;
+	   font_create.LSBearing = (INT8)LSBearing;
+	   font_create.RSBearing = (INT8)RSBearing;
+
+	   if(width==0 || height==0 || widthBytes==0)
+		font_create.pos = 0;
+	   else
+	   {
 		if((widthBytes*height)>bmf_buffer_len)
 		   memcpy(buf+header_len+bitmap_offset,ci->bits,bmf_buffer_len);
 		else
 		   memcpy(buf+header_len+bitmap_offset,ci->bits,widthBytes*height);
 
-                font_create.pos = header_len+bitmap_offset;//record char pos
-                bitmap_offset+=bmf_buffer_len;
-           }
+		font_create.pos = header_len+bitmap_offset;//record char pos
+		bitmap_offset+=bmf_buffer_len;
+	   }
 
        }
        memcpy(buf+offset,&font_create,sizeof(font_bmf_ex));
@@ -739,7 +741,7 @@ void Generate_new_font_with_header(pcffont_t *font)
     int header_len = 0;
     int last_val = 0;
     font_bmf_header  font_header_t;
-     
+
     strcpy(name,sOutFilename);
     //font_count = font->Fmetrics.lastchar;
 
@@ -749,26 +751,26 @@ void Generate_new_font_with_header(pcffont_t *font)
     font_header_t.last_char = font->Fmetrics.lastchar;
 
     count = font->Fmetrics.lastchar;
-    
+
     for(i=0; i<count;i++)
     {
        ci = font->bitmaps[i];
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           if(widthBytes*height>last_val)
-           {
-               last_val = widthBytes*height;
-               //printf("char:%d,width:%d,height:%d,widthBytes:%d\n",i,width,height,widthBytes);
-           }
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   if(widthBytes*height>last_val)
+	   {
+	       last_val = widthBytes*height;
+	       //printf("char:%d,width:%d,height:%d,widthBytes:%d\n",i,width,height,widthBytes);
+	   }
        }
     }
     printf("last char:%d\n",last_char);
     font_header_t.bmp_buffern_len = last_val;
- 
- 
+
+
 
     buf = (char*)malloc(count*(sizeof(font_bmf_ex)+64)+sizeof(font_bmf_header));
     memset(buf,0,count*(sizeof(font_bmf_ex)+64)+sizeof(font_bmf_header));
@@ -787,45 +789,45 @@ void Generate_new_font_with_header(pcffont_t *font)
        memset(&font_create,0,sizeof(font_bmf_ex));
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-           LSBearing  = ci->metrics.leftSideBearing;
-           RSBearing  = ci->metrics.rightSideBearing;
-           ascent     = ci->metrics.ascent;
-           descent     = ci->metrics.descent;
-           
-           if(i==32 && width==0)
-           {
-              width = 2;
-              height = 1;
-              widthBytes = 1;
-              widthBits = 8;
-              RSBearing = 2;
-           }
- 
-           font_create.width = (INT8)width;
-           font_create.height = (INT8)height;
-           font_create.widthBytes =(INT8)widthBytes;
-           font_create.widthBits =(INT8)widthBits;
-           font_create.ascent =(INT8)ascent;
-           font_create.descent =(INT8)descent;
-           font_create.LSBearing = (INT8)LSBearing;
-           font_create.RSBearing = (INT8)RSBearing;
-           
-           if(width==0 || height==0 || widthBytes==0)
-                font_create.pos = 0;
-           else
-           {
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
+	   LSBearing  = ci->metrics.leftSideBearing;
+	   RSBearing  = ci->metrics.rightSideBearing;
+	   ascent     = ci->metrics.ascent;
+	   descent     = ci->metrics.descent;
+
+	   if(i==32 && width==0)
+	   {
+	      width = 2;
+	      height = 1;
+	      widthBytes = 1;
+	      widthBits = 8;
+	      RSBearing = 2;
+	   }
+
+	   font_create.width = (INT8)width;
+	   font_create.height = (INT8)height;
+	   font_create.widthBytes =(INT8)widthBytes;
+	   font_create.widthBits =(INT8)widthBits;
+	   font_create.ascent =(INT8)ascent;
+	   font_create.descent =(INT8)descent;
+	   font_create.LSBearing = (INT8)LSBearing;
+	   font_create.RSBearing = (INT8)RSBearing;
+
+	   if(width==0 || height==0 || widthBytes==0)
+		font_create.pos = 0;
+	   else
+	   {
 		if((widthBytes*height)>64)
 		   memcpy(buf+header_len+bitmap_offset,ci->bits,64);
 		else
 		   memcpy(buf+header_len+bitmap_offset,ci->bits,widthBytes*height);
 
-                font_create.pos = header_len+bitmap_offset;//record char pos
-                bitmap_offset+=64;
-           }
+		font_create.pos = header_len+bitmap_offset;//record char pos
+		bitmap_offset+=64;
+	   }
 
        }
        memcpy(buf+offset,&font_create,sizeof(font_bmf_ex));
@@ -850,7 +852,7 @@ void Generate_new_font_with_header(pcffont_t *font)
     int offset = 0;
     int count = 0;
     font_bmf_header  font_header_t;
-     
+
     strcpy(name,sOutFilename);
     //font_count = font->Fmetrics.lastchar;
 
@@ -860,7 +862,7 @@ void Generate_new_font_with_header(pcffont_t *font)
     //font_header_t.ptsz = font->Fmetrics.ptsz;
     //font_header_t.ptsz = font->Fmetrics.ptsz;
     //font_header_t.Yres = font->Fmetrics.Yres;
-    
+
 
     buf = (char*)malloc(65535*sizeof(font_bmf)+sizeof(font_bmf_header));
     memset(buf,0,65535*sizeof(font_bmf)+sizeof(font_bmf_header));
@@ -877,36 +879,36 @@ void Generate_new_font_with_header(pcffont_t *font)
        memset(&font_create,0,sizeof(font_bmf));
        if(ci != NULL)
        {
-           width      = GLYPHWIDTHPIXELS(ci);
-           height     = GLYPHHEIGHTPIXELS(ci);
-           widthBytes = GLYPHWIDTHBYTES(ci);
-           widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-           LSBearing  = ci->metrics.leftSideBearing;
-           RSBearing  = ci->metrics.rightSideBearing;
-           ascent     = ci->metrics.ascent;
-           descent     = ci->metrics.descent;
-           
+	   width      = GLYPHWIDTHPIXELS(ci);
+	   height     = GLYPHHEIGHTPIXELS(ci);
+	   widthBytes = GLYPHWIDTHBYTES(ci);
+	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
+	   LSBearing  = ci->metrics.leftSideBearing;
+	   RSBearing  = ci->metrics.rightSideBearing;
+	   ascent     = ci->metrics.ascent;
+	   descent     = ci->metrics.descent;
 
-           font_create.width = (INT8)width;
-           font_create.height = (INT8)height;
-           font_create.widthBytes =(INT8)widthBytes;
-           font_create.widthBits =(INT8)widthBits;
-           font_create.ascent =(INT8)ascent;
-           font_create.descent =(INT8)descent;
-           font_create.LSBearing = (INT8)LSBearing;
-           font_create.RSBearing = (INT8)RSBearing;
-           //printf("before memcpy bitmap\n");
-           //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
-           if((widthBytes*height)>64)
-           {
-              //free(buf);
-              printf("char:%d,widthBytes:%d*height:%d>=64:%d\n",i,widthBytes,height,widthBytes*height);
-              memcpy(font_create.bitmap,ci->bits,64);
-              //return;
-           }
-           else
-              memcpy(font_create.bitmap,ci->bits,widthBytes*height);
-           count++;
+
+	   font_create.width = (INT8)width;
+	   font_create.height = (INT8)height;
+	   font_create.widthBytes =(INT8)widthBytes;
+	   font_create.widthBits =(INT8)widthBits;
+	   font_create.ascent =(INT8)ascent;
+	   font_create.descent =(INT8)descent;
+	   font_create.LSBearing = (INT8)LSBearing;
+	   font_create.RSBearing = (INT8)RSBearing;
+	   //printf("before memcpy bitmap\n");
+	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
+	   if((widthBytes*height)>64)
+	   {
+	      //free(buf);
+	      printf("char:%d,widthBytes:%d*height:%d>=64:%d\n",i,widthBytes,height,widthBytes*height);
+	      memcpy(font_create.bitmap,ci->bits,64);
+	      //return;
+	   }
+	   else
+	      memcpy(font_create.bitmap,ci->bits,widthBytes*height);
+	   count++;
 
 
        }
@@ -925,8 +927,8 @@ void
 scaling_factors(pcffont_t *font, double ptsz, int Xres, int Yres)
 {
     font->Yscale = 1;
-    font->Xscale = 1; 
-//    font->Yscale = ((ptsz * (double)Yres) 
+    font->Xscale = 1;
+//    font->Yscale = ((ptsz * (double)Yres)
 //	/ ((double)font->Fmetrics.ptsz * (double)font->Fmetrics.Xres));
 //
 //    font->Xscale = ((((double)Xres * (double)font->Fmetrics.Yres)
@@ -934,18 +936,18 @@ scaling_factors(pcffont_t *font, double ptsz, int Xres, int Yres)
 //	    * (font->Yscale));
 #if 0
     if (xsflag == OPTARG_SET)
-    	font->Xscale = xs_argval;
+	font->Xscale = xs_argval;
     else if (xsflag == OPTARG_ADD)
-    	font->Xscale += xs_argval;
+	font->Xscale += xs_argval;
     else if (xsflag == OPTARG_SUB) 	/* for clarity, we subract a positive */
-    	font->Xscale -= xs_argval; 	/* rather than add a negative. */
+	font->Xscale -= xs_argval; 	/* rather than add a negative. */
 
     if (ysflag == OPTARG_SET)
-    	font->Yscale = ys_argval;
+	font->Yscale = ys_argval;
     else if (ysflag == OPTARG_ADD)
-    	font->Yscale += ys_argval;
+	font->Yscale += ys_argval;
     else if (ysflag == OPTARG_SUB)
-    	font->Yscale -= ys_argval;
+	font->Yscale -= ys_argval;
 #endif
 #ifdef SDEBUG
 	fprintf(stderr,"%f -- font->Yscale\n %f -- font->Xscale\n", font->Yscale, font->Xscale);
@@ -991,7 +993,7 @@ scale_Cmetrics(pcf_charmet_t *Cm, pcf_SCcharmet_t *Sm)
 }
 int
 pres_pcfbm(ucs4_t *val, pcffont_t *font, pcf_bm_t **bitmap,
-    	pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *scCmetrics, int dontcache)
+	pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *scCmetrics, int dontcache)
 {
 	ucs4_t v;
 #if SDEBUG
@@ -1028,18 +1030,18 @@ dump_Cmetrics(pcf_charmet_t *cm)
 {
     dprintf2("cmetrics: ascent:%d, descent:%d, ", cm->ascent, cm->descent);
 
-    dprintf3("width:%d, height:%d, widthBytes:%d, ", 
-    	cm->width, cm->height, cm->widthBytes);
+    dprintf3("width:%d, height:%d, widthBytes:%d, ",
+	cm->width, cm->height, cm->widthBytes);
 
-    dprintf3("LSB:%d,RSB: %d, xoff:%d\n ", 
+    dprintf3("LSB:%d,RSB: %d, xoff:%d\n ",
 	cm->LSBearing, cm->RSBearing, cm->origin_xoff);
 }
 static void
 dump_Fmetrics(pcffont_t *fm)
 {
     dprintf6("Fmetrics: ascent:%d, descent:%d, linespace:%d, "
-	"ptsz:%d, Xres:%d, Yres:%d\n", fm->ascent, fm->descent, 
-    	fm->linespace, fm->ptsz, fm->Xres, fm->Yres);
+	"ptsz:%d, Xres:%d, Yres:%d\n", fm->ascent, fm->descent,
+	fm->linespace, fm->ptsz, fm->Xres, fm->Yres);
 }
 #endif
 
@@ -1080,7 +1082,7 @@ FourByteSwap(unsigned char *buf, int nbytes)
 {
     register unsigned char c;
 
-    for (; nbytes > 0; nbytes -= 4, buf += 4) 
+    for (; nbytes > 0; nbytes -= 4, buf += 4)
     {
 	c = buf[0];
 	buf[0] = buf[3];
@@ -1090,11 +1092,14 @@ FourByteSwap(unsigned char *buf, int nbytes)
 	buf[2] = c;
     }
 }
+
+#if 0
 static int
 handle_nongraphchar(ucs4_t *val, int *ndx)
 {
 	return XU_IGNORE;
 }
+#endif
 
 static Bool
 pcfHasType (PCFTablePtr tables, int ntables, CARD32 type)
@@ -1134,8 +1139,8 @@ xpcf_getcbm(ucs4_t code, pcffont_t *font, pcf_charmet_t *Cmetrics)
 	return NULL;
 
     j = (code - (((code - font->Fmetrics.firstchar) / 256)
-    	* (font->Fmetrics.firstCol + (255 - font->Fmetrics.lastCol))))
-    	- font->Fmetrics.firstchar;
+	* (font->Fmetrics.firstCol + (255 - font->Fmetrics.lastCol))))
+	- font->Fmetrics.firstchar;
 #ifdef SDEBUG
 	fprintf(stderr, "%d is -- codewidth of C%x\n", wcwidth(code), code);
 	fprintf(stderr, "%d is -- j value      C%x\n", wcwidth(code), code);
@@ -1153,7 +1158,7 @@ xpcf_getcbm(ucs4_t code, pcffont_t *font, pcf_charmet_t *Cmetrics)
 				code = 0;
 				goto onemoretime;
 				}
-        return NULL;
+	return NULL;
 	}
 
     ci = font->bitmaps[j];
@@ -1174,12 +1179,12 @@ xpcf_getcbm(ucs4_t code, pcffont_t *font, pcf_charmet_t *Cmetrics)
 
 #if 0
     if (cwflag) {
-    	if (cwflag == OPTARG_ADD)
-    	    Cmetrics->origin_xoff += cw_argval;
-    	else if (cwflag == OPTARG_SUB)
-    	    Cmetrics->origin_xoff -= cw_argval;
-    	else if (cwflag == OPTARG_SET)
-    	    Cmetrics->origin_xoff = cw_argval;
+	if (cwflag == OPTARG_ADD)
+	    Cmetrics->origin_xoff += cw_argval;
+	else if (cwflag == OPTARG_SUB)
+	    Cmetrics->origin_xoff -= cw_argval;
+	else if (cwflag == OPTARG_SET)
+	    Cmetrics->origin_xoff = cw_argval;
     }
 #endif
 
@@ -1200,33 +1205,33 @@ RepadBitmap (char *pSrc, char *pDst, unsigned srcPad, unsigned dstPad, int width
     char    *pTmpSrc,*pTmpDst;
 
     switch (srcPad) {
-    case 1:	
+    case 1:
 	srcWidthBytes = (width+7)>>3;
 	break;
     case 2:
 	srcWidthBytes = ((width+15)>>4)<<1;
 	break;
-    case 4:	
+    case 4:
 	srcWidthBytes = ((width+31)>>5)<<2;
 	break;
-    case 8:	
-	srcWidthBytes = ((width+63)>>6)<<3; 
+    case 8:
+	srcWidthBytes = ((width+63)>>6)<<3;
 	break;
     default:
 	return 0;
     }
     switch (dstPad) {
-    case 1:	
+    case 1:
 	dstWidthBytes = (width+7)>>3;
 	break;
     case 2:
 	dstWidthBytes = ((width+15)>>4)<<1;
 	break;
-    case 4:	
+    case 4:
 	dstWidthBytes = ((width+31)>>5)<<2;
 	break;
-    case 8:	
-	dstWidthBytes = ((width+63)>>6)<<3; 
+    case 8:
+	dstWidthBytes = ((width+63)>>6)<<3;
 	break;
     default:
 	return 0;
@@ -1242,7 +1247,7 @@ RepadBitmap (char *pSrc, char *pDst, unsigned srcPad, unsigned dstPad, int width
 	for (col = 0; col < width; col++)
 	    *pTmpDst++ = *pTmpSrc++;
 	while (col < dstWidthBytes)
- 	{
+	{
 	    *pTmpDst++ = '\0';
 	    col++;
 	}
@@ -1250,6 +1255,7 @@ RepadBitmap (char *pSrc, char *pDst, unsigned srcPad, unsigned dstPad, int width
     }
     return dstWidthBytes * height;
 }
+#if 0
 static int
 handle_cuferr(int err, ucs4_t *v, int *ndx)
 {
@@ -1274,6 +1280,7 @@ handle_nonidentchar(ucs4_t *val, int *ndx)
 {
 	return XU_IGNORE;
 }
+#endif
 
 static int
 handle_nobitmap(ucs4_t *val, pcffont_t *font, pcf_charmet_t *Cm, pcf_bm_t **bitmap) {
@@ -1281,7 +1288,7 @@ handle_nobitmap(ucs4_t *val, pcffont_t *font, pcf_charmet_t *Cm, pcf_bm_t **bitm
 	/* Becasue NOBITMAPREPL is hard coded for FALLBACK_FONT */
 	if(strstr(font->file, FALLBACK_FONT)==NULL)
 		return XU_IGNORE;
-	*val = NOBITMAPREPL;	
+	*val = NOBITMAPREPL;
 	if ((fv = font->cuf(*val)) < 0) return XU_IGNORE;
 	if ((*bitmap = xpcf_getcbm(fv, font, Cm)) == NULL) return XU_IGNORE;
 	return(1);
@@ -1375,7 +1382,7 @@ static Bool ResizeReverseMap ()
     reverseMap = (AtomListPtr *) Xrealloc ((ulong_t *)reverseMap, reverseMapSize * sizeof (AtomListPtr));
     if (!reverseMap)
 	return FALSE;
-    else 
+    else
 	return TRUE;
 }
 
@@ -1422,7 +1429,7 @@ getcode(CompressedFile *file)
 		file->maxcode = MAXCODE(file->n_bits);
 	}
 	if ( file->clear_flg > 0) {
-    	    file->maxcode = MAXCODE (file->n_bits = INIT_BITS);
+	    file->maxcode = MAXCODE (file->n_bits = INIT_BITS);
 	    file->clear_flg = 0;
 	}
 	bits = file->n_bits;
@@ -1466,8 +1473,8 @@ getcode(CompressedFile *file)
 	bits -= 8;
     }
     /* high order bits. */
-    if (rmask[bits])	
-    	code |= (*bp & rmask[bits]) << r_off;
+    if (rmask[bits])
+	code |= (*bp & rmask[bits]) << r_off;
     file->offset += file->n_bits;
 
     return code;
@@ -1490,12 +1497,12 @@ get_font_property(FontPtr Fp, char *name, ulong_t *value)
     n = Fp->info.nprops;
 
     for (j = 0; j < n; j++) {
-    	if (!(prop_name = NameForAtom(Fp->info.props[j].name)))
-    	    continue;
-    	if (eq(name, prop_name)) {
+	if (!(prop_name = NameForAtom(Fp->info.props[j].name)))
+	    continue;
+	if (eq(name, prop_name)) {
 	    *value = (ulong_t) Fp->info.props[j].value;
-    	    return 0;
-    	}
+	    return 0;
+	}
     }
 
     return -1;
@@ -1545,8 +1552,8 @@ BufCompressedClose (BufFilePtr f, int doClose)
 static int
 BufCompressedSkip (BufFilePtr f, int bytes)
 {
-    int		    c;
-    while (bytes--) { 
+    //int		    c;
+    while (bytes--) {
 	if (BufFileGet(f) == BUFFILEEOF)
 		return BUFFILEEOF;
     }
@@ -1583,43 +1590,43 @@ BufCompressedFill (BufFilePtr f)
 	code = getcode (file);
 	if (code == -1)
 	    break;
-    
-    	if ( (code == CLEAR) && file->block_compress ) {
+
+	if ( (code == CLEAR) && file->block_compress ) {
 	    for ( code = 255; code >= 0; code-- )
-	    	file->tab_prefix[code] = 0;
+		file->tab_prefix[code] = 0;
 	    file->clear_flg = 1;
 	    file->free_ent = FIRST - 1;
 	    if ( (code = getcode (file)) == -1 )	/* O, untimely death! */
-	    	break;
-    	}
-    	incode = code;
-    	/*
-     	 * Special case for KwKwK string.
-     	 */
-    	if ( code >= file->free_ent ) {
+		break;
+	}
+	incode = code;
+	/*
+	 * Special case for KwKwK string.
+	 */
+	if ( code >= file->free_ent ) {
 	    *stackp++ = finchar;
 	    code = oldcode;
-    	}
-    
-    	/*
-     	 * Generate output characters in reverse order
-     	 */
-    	while ( code >= 256 )
-    	{
+	}
+
+	/*
+	 * Generate output characters in reverse order
+	 */
+	while ( code >= 256 )
+	{
 	    *stackp++ = file->tab_suffix[code];
 	    code = file->tab_prefix[code];
-    	}
+	}
 	finchar = file->tab_suffix[code];
 	*stackp++ = finchar;
-    
-    	/*
-     	 * Generate the new entry.
-     	 */
-    	if ( (code=file->free_ent) < file->maxmaxcode ) {
+
+	/*
+	 * Generate the new entry.
+	 */
+	if ( (code=file->free_ent) < file->maxmaxcode ) {
 	    file->tab_prefix[code] = (unsigned short)oldcode;
 	    file->tab_suffix[code] = finchar;
 	    file->free_ent = code+1;
-    	} 
+	}
 	/*
 	 * Remember previous code.
 	 */
@@ -1834,24 +1841,24 @@ Hash(char *string, int len)
 	return -h;
     return h;
 }
-static Atom 
+static Atom
 MakeAtom(char *string, unsigned len, int makeit)
 {
     AtomListPtr	a;
     int		hash;
-    int		h;
+    int		h = 0;
     int		r;
 
     hash = Hash (string, len);
     if (hashTable)
     {
-    	h = hash & hashMask;
+	h = hash & hashMask;
 	if (hashTable[h])
 	{
 	    if (hashTable[h]->hash == hash && hashTable[h]->len == len &&
-	    	NameEqual (hashTable[h]->name, string, len))
+		NameEqual (hashTable[h]->name, string, len))
 	    {
-	    	return hashTable[h]->atom;
+		return hashTable[h]->atom;
 	    }
 	    r = (hash % rehash) | 1;
 	    for (;;)
@@ -1867,7 +1874,7 @@ MakeAtom(char *string, unsigned len, int makeit)
 		    return hashTable[h]->atom;
 		}
 	    }
-    	}
+	}
     }
     if (!makeit)
 	return None;
@@ -1952,7 +1959,7 @@ pcfGetProperties(FontInfoPtr pFontInfo, FontFilePtr file, PCFTablePtr tables, in
     if (nprops & 3)
     {
 	i = 4 - (nprops & 3);
-	FontFileSkip(file, i);
+	(void)FontFileSkip(file, i);
 	position += i;
     }
     string_size = pcfGetINT32(file, format);
@@ -2064,7 +2071,7 @@ pcfGetAccel(FontInfoPtr pFontInfo, FontFilePtr file, PCFTablePtr tables, int nta
 	goto Bail;
     format = pcfGetLSB32(file);
     if (!PCF_FORMAT_MATCH(format, PCF_DEFAULT_FORMAT) &&
-	!PCF_FORMAT_MATCH(format, PCF_ACCEL_W_INKBOUNDS)) 
+	!PCF_FORMAT_MATCH(format, PCF_ACCEL_W_INKBOUNDS))
     {
 	goto Bail;
     }
@@ -2343,7 +2350,7 @@ pcfReadFont(FontPtr pFont, FontFilePtr file, int bit, int byte, int glyph, int s
 	char       *padbitmaps;
 	int         sizepadbitmaps;
 	int         old,
-	            _new;
+		    _new;
 	xCharInfo  *metric;
 
 	sizepadbitmaps = bitmapSizes[PCF_SIZE_TO_INDEX(glyph)];
@@ -2445,8 +2452,8 @@ pcfReadFont(FontPtr pFont, FontFilePtr file, int bit, int byte, int glyph, int s
     bitmapFont->pDefault = (CharInfoPtr) 0;
     if (pFont->info.defaultCh != (unsigned short) NO_SUCH_CHAR) {
 	int         r,
-	            c,
-	            cols;
+		    c,
+		    cols;
 
 	r = pFont->info.defaultCh >> 8;
 	c = pFont->info.defaultCh & 0xFF;
@@ -2555,7 +2562,7 @@ int wcwidth(wchar_t ucs)
 
   /* binary search in table of non-spacing characters */
   if (bisearch(ucs, combining,
-               sizeof(combining) / sizeof(struct interval) - 1))
+	       sizeof(combining) / sizeof(struct interval) - 1))
     return 0;
 
   /* if we arrive here, ucs is not a combining or C0/C1 control character */
