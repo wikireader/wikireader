@@ -58,12 +58,12 @@ VOLTAGE_LIST = (
 #   ("text", relay_name,   required_value,       percent_low, percent_high)
 #   ("text", relay_name,   None,                 minimum, maximum)
     ("1V8",  RELAY_1V8,    1.8,                  -5,   5),
-    ("3V ",  RELAY_3V,     None,                  3.1, 3.3),
-    ("V0 ",  RELAY_LCD_V0, LCD_V0,               -5.0, 5.0),
-    ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -5.0, 5.0),
-    ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -5.0, 5.0),
-    ("V3 ",  RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -5.0, 5.0),
-    ("V4 ",  RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -5.0, 5.0)
+    ("3V ",  RELAY_3V,     None,                  3.2, 3.4),
+    ("V0 ",  RELAY_LCD_V0, LCD_V0,               -7.0, 7.0),
+    ("V1 ",  RELAY_LCD_V1, LCD_V0 * 14.0 / 15.0, -7.0, 7.0),
+    ("V2 ",  RELAY_LCD_V2, LCD_V0 * 13.0 / 15.0, -7.0, 7.0),
+    ("V3 ",  RELAY_LCD_V3, LCD_V0 *  2.0 / 15.0, -7.0, 7.0),
+    ("V4 ",  RELAY_LCD_V4, LCD_V0 *  1.0 / 15.0, -7.0, 7.0)
 )
 
 # amps
@@ -81,7 +81,7 @@ AVERAGING_DELAY = 0.02
 SETTLING_TIME = 0.25
 VOLTAGE_SAMPLE_TIME = 0.02
 VOLTAGE_SAMPLE_OFF = 0.01
-RESET_TIME = 0.2
+RESET_TIME = 0.5
 
 # 1/10 seconds
 ON_OFF_SCAN = int(5 / ON_OFF_DELTA)
