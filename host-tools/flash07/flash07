@@ -80,7 +80,19 @@ class SerialPort():
         for v in boot:
             self.s.write(v)
         readback = self.s.read(512)
-        return len(readback) == 512 and readback == boot
+        if len(readback) == 512 and readback == boot:
+            return True
+        l = len(readback)
+        print 'Boot block readback mismatches'
+        for i in range(512):
+            if i >= l:
+                rb = '--'
+            else:
+                rb = '%02x' % (ord(readback[i]))
+            v = '%02x' % (ord(boot[i]))
+            if rb != v:
+                print 'BOOT[%3d] = %s -> %s' % (i, v, rb)
+        return False
 
     def spi(self):
         return self.spi_channel
