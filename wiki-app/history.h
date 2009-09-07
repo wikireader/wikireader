@@ -25,6 +25,8 @@
 //#define HISTORY_RESULT_HEIGHT 10
 #define HISTORY_RESULT_HEIGHT 19
 #define HISTORY_PIXEL_START (HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2)
+#define MESSAGE_HISTORY_TITLE "History"
+#define MESSAGE_NO_HISTORY "No history"
 /*
  * Interface for the History feature
  */

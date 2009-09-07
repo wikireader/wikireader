@@ -23,7 +23,7 @@
 #define RESULT_START 33
 //#define RESULT_HEIGHT 10
 #define RESULT_HEIGHT 19
-#define MAX_RESULTS 20
+#define MAX_RESULTS 9
 #define MAX_TITLE_SEARCH 64
 #define NUMBER_OF_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
@@ -31,6 +31,8 @@
 /* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */
 #define MAX_DAT_FILES 16
 #define MAX_COMPRESSED_ARTICLE 256*1024
+#define MESSAGE_TYPE_A_WORD "Type a Word or Phrase"
+#define MESSAGE_NO_RESULTS "No entries found"
 
 typedef struct _ARTICLE_PTR {
 	long offset_dat;	/* offset to pedia?.dat for the article content */
@@ -55,6 +57,7 @@ int search_current_selection(void);
 int retrieve_article(long idx_article);
 void memrcpy(char *dest, char *src, int len); // memory copy starting from the last byte
 void random_article(void);
+void get_article_title_from_idx(long idx, char *title);
 
 /**
  * Initialize the search engine. Once.
@@ -99,6 +102,7 @@ unsigned int search_result_first_item();
 void search_set_selection(int new_selection);
 
 void search_open_article(int new_selection);
+int fetch_search_result(long input_offset_fnd, int bInit);
 
 int  set_result_list_base(int offset,int offset_count);
 void search_fetch();

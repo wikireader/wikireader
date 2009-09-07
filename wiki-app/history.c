@@ -161,10 +161,10 @@ void history_display(int index)
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, 3, 5, "History", 7);
+	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
 
 	if (history_count == 0) {
-		render_string(SEARCH_LIST_FONT_IDX, 85, 90, "No history", 10);
+		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
 	} else {
 		unsigned int y_pos = HISTORY_RESULT_START;
                 msg(MSG_INFO,"history_count:%d\n",history_count);
@@ -172,7 +172,7 @@ void history_display(int index)
 		//for (i = history_count-index-1; i >=0 && y_pos < guilib_framebuffer_height(); i--) {
 		for (i = index; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_list[i].title;
-			render_string(SEARCH_LIST_FONT_IDX, 3, y_pos, p, strlen(p));
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
                         linespace = GetFontLinespace(0);
                         //y_pos += linespace;
 			y_pos += HISTORY_RESULT_HEIGHT;
@@ -195,16 +195,16 @@ void history_reload()
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, 3, 5, "History", 7);
+	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
 
 	if (history_count == 0) {
-		render_string(SEARCH_LIST_FONT_IDX, 95, 90, "No history", 10);
+		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
 	} else {
 		unsigned int y_pos = HISTORY_RESULT_START;
                 msg(MSG_INFO,"history_count:%d\n",history_count);
 		for (i = 0; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
 			const char *p = history_list[i].title;
-			render_string(SEARCH_LIST_FONT_IDX, 3, y_pos, p, strlen(p));
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
 			y_pos += HISTORY_RESULT_HEIGHT;
                         linespace = GetFontLinespace(0);
                         //y_pos += linespace;

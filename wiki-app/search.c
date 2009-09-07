@@ -27,6 +27,7 @@
 #include "bigram.h"
 #include "history.h"
 #include <tick.h>
+#include <input.h>
 
 extern int _wl_read(int fd, void *buf, unsigned int count);
 extern int _wl_open(const char *filename, int flags);
@@ -47,6 +48,7 @@ typedef struct _search_results {
 	long offset_next;		// offset (pedia.fnd) of the next title after the list
 	unsigned int count;
 	unsigned int base;		// the starting list index for the circular list. it is also the first item displayed
+	int result_populated;
 	int cur_selected;		// -1 when no selection.
 //	unsigned int first_item;	// Index of the first item displayed on the list. 0 based.
 } SEARCH_RESULTS;
@@ -107,6 +109,22 @@ static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 //	return result;
 //#endif
 //}
+
+void get_article_title_from_idx(long idx, char *title)
+{
+	ARTICLE_PTR article_ptr;
+	TITLE_SEARCH title_search;
+	
+	_wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
+	_wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
+	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
+	{
+		_wl_seek(search_info->fd_fnd, article_ptr.offset_fnd);
+		_wl_read(search_info->fd_fnd, (void *)&title_search, sizeof(title_search));
+		bigram_decode(title, title_search.sTitleSearch);
+		title[MAX_TITLE_SEARCH - 1] = '\0';
+	}
+}
 
 int search_string_cmp(char *title, char *search, int len)  // assuming search consists of lowercase only
 {
@@ -193,7 +211,7 @@ static void print_article_error()
 {
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SEARCH_LIST_FONT_IDX, 30, 104, "Opening the article failed.", 27);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Opening the article failed.", 27);
 	guilib_fb_unlock();
 }
 
@@ -210,17 +228,31 @@ int is_proper_string(char *s, int len)
 	return 0;
 }
 
-void fetch_search_result(long offset_fnd)
+int fetch_search_result(long input_offset_fnd, int bInit)
 {
-	char *buf_to_read;
-	int len_to_read;
+	char *buf_to_read = NULL;
+	int len_to_read = 0;
 	int len;
-	TITLE_SEARCH *pTitleSearch;
-	int idxNextTitleSearch;
-	int bDone = 0;
+	static TITLE_SEARCH *pTitleSearch;
 	int rc;
+	static int idxNextTitleSearch = 0;
+	static long offset_fnd = 0;
 	
-	if (search_info->offset_current >= 0 && search_info->offset_current <= offset_fnd &&   
+	if (bInit)
+	{
+		result_list->result_populated = 0;
+		offset_fnd = input_offset_fnd;
+		result_list->count = 0;
+		result_list->base = 0;
+		result_list->cur_selected = 0;
+		idxNextTitleSearch = 0;
+	}
+	if (result_list->result_populated)
+		return 0;
+	
+	if (search_info->offset_current == offset_fnd)
+		len_to_read = 0;
+	else if (search_info->offset_current >= 0 && search_info->offset_current <= offset_fnd &&   
 		offset_fnd < search_info->offset_current + sizeof(search_info->buf))
 	{
 		len_to_read = offset_fnd - search_info->offset_current;
@@ -239,15 +271,21 @@ void fetch_search_result(long offset_fnd)
 		buf_to_read = search_info->buf;
 		len_to_read = sizeof(search_info->buf);
 	}
-	_wl_seek(search_info->fd_fnd, offset_fnd);
-	len = _wl_read(search_info->fd_fnd, buf_to_read, len_to_read);
-	search_info->offset_current = offset_fnd;
-	search_info->buf_len = sizeof(search_info->buf) - (len_to_read - len);
-	result_list->count = 0;
-	result_list->base = 0;
-	result_list->cur_selected = 0;
-	idxNextTitleSearch = 0;
-	while (!bDone && result_list->count < MAX_RESULTS)
+
+	if (len_to_read > 0)
+	{
+		_wl_seek(search_info->fd_fnd, offset_fnd);
+		len = _wl_read(search_info->fd_fnd, buf_to_read, len_to_read);
+		if (len <= 0)
+		{
+			result_list->result_populated = 1;
+			goto out;
+		}
+		search_info->offset_current = offset_fnd;
+		search_info->buf_len = sizeof(search_info->buf) - (len_to_read - len);
+	}
+	
+	if (!result_list->result_populated)
 	{
 		pTitleSearch = (TITLE_SEARCH *)&search_info->buf[idxNextTitleSearch];
 		if (idxNextTitleSearch < search_info->buf_len &&
@@ -265,8 +303,8 @@ void fetch_search_result(long offset_fnd)
 					len = _wl_read(search_info->fd_fnd, search_info->buf, sizeof(search_info->buf));
 					if (len <= 0)
 					{
-						bDone = 1;
-						continue;
+						result_list->result_populated = 1;
+						goto out;
 					}
 					search_info->offset_current = offset_fnd;
 					search_info->buf_len = len;
@@ -279,30 +317,46 @@ void fetch_search_result(long offset_fnd)
 				idxNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 				result_list->offset_next = offset_fnd + idxNextTitleSearch;
 				result_list->count++;
+				if (result_list->count >= MAX_RESULTS)
+				{
+					result_list->result_populated = 1;
+					goto out;
+				}
 			}
 			else if (rc < 0)
 			{
 				idxNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 			}
 			else
-				bDone = 1;
+			{
+				result_list->result_populated = 1;
+				goto out;
+			}
 		}
 		else
 		{
-			 offset_fnd = offset_fnd + idxNextTitleSearch;
+			offset_fnd = offset_fnd + idxNextTitleSearch;
 			_wl_seek(search_info->fd_fnd, offset_fnd);
 			len = _wl_read(search_info->fd_fnd, search_info->buf, sizeof(search_info->buf));
 			if (len <= 0)
 			{
-				bDone = 1;
-				continue;
+				result_list->result_populated = 1;
+				goto out;
 			}
 			search_info->offset_current = offset_fnd;
 			search_info->buf_len = len;
 			idxNextTitleSearch = 0;
-			pTitleSearch = (TITLE_SEARCH *)&search_info->buf[idxNextTitleSearch];
 		}
 	}
+out:
+	if (result_list->result_populated)
+	{
+		if (!bInit) // just completed search result
+			search_reload_ex();
+		return 0;
+	}
+	else
+		return 1;
 }
 
 int search_populate_result()
@@ -340,10 +394,27 @@ int search_populate_result()
 		{
 			found = 1;
 			search_info->offset_search_result = search_info->prefix_index_table[idx_prefix_index_table];
-			fetch_search_result(search_info->prefix_index_table[idx_prefix_index_table]);
+			fetch_search_result(search_info->prefix_index_table[idx_prefix_index_table], 1);
 		}
 	}
 	return found;
+}
+
+void capitalize(char *in_str, char *out_str)
+{
+	char cPrev = ' ';
+	
+	while (*in_str)
+	{
+		if (cPrev == ' ' && 'a' <= *in_str && *in_str <= 'z')
+			*out_str = *in_str -= 32;
+		else
+			*out_str = *in_str;
+		cPrev = *in_str;
+		in_str++;
+		out_str++;
+	}
+	*out_str = '\0';
 }
 
 void search_reload()
@@ -368,15 +439,13 @@ void search_reload()
 
 	if (!search_str_len)
 	{
-		render_string(MESSAGE_FONT_IDX, 40, 55, "Type a word or phrase", 21);
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
 
 	//render_string(4, 87, 10, search_string, strlen(search_string));
-	strcpy(temp_search_string, search_string);
-	if ('a' <= temp_search_string[0] && temp_search_string[0] <= 'z')
-		temp_search_string[0] -= 32;
-	render_string(SEARCH_HEADING_FONT_IDX, 3, 5, temp_search_string, strlen(temp_search_string));
+	capitalize(search_string, temp_search_string);
+	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, temp_search_string, strlen(temp_search_string));
 	y_pos = RESULT_START;
 
 //	int found = 0;
@@ -395,6 +464,7 @@ void search_reload()
 	if (!result_list->count) {
 //		result_list->cur_selected = -1;
 //		result_list->first_item = 0;
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
 		goto out;
 	}
 
@@ -412,7 +482,7 @@ void search_reload()
 			if (j >= MAX_RESULTS)
 				j -= MAX_RESULTS;
 			title = result_list->list[j];
-			render_string(SEARCH_LIST_FONT_IDX, 3, y_pos, title, strlen(title));
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
 			DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
 			y_pos += RESULT_HEIGHT;
                         if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
@@ -435,9 +505,12 @@ void search_reload_ex()
 	char *title;
 	char temp_search_string[MAX_TITLE_SEARCH];
 
+
 	guilib_fb_lock();
 	if (keyboard_get_mode() == KEYBOARD_NONE)
+        {
 		guilib_clear();
+        }
 	else
         {
                 if(search_string_changed_remove)
@@ -456,24 +529,23 @@ void search_reload_ex()
 
 	if (!search_str_len)
 	{
-		render_string(MESSAGE_FONT_IDX, 40, 55, "Type a word or phrase", 21);
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
 
-	strcpy(temp_search_string, search_string);
-	if ('a' <= temp_search_string[0] && temp_search_string[0] <= 'z')
-		temp_search_string[0] -= 32;
-	start_x_search = render_string(SEARCH_HEADING_FONT_IDX, 3, 5, temp_search_string, strlen(temp_search_string));
+	capitalize(search_string, temp_search_string);
+	start_x_search = render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, temp_search_string, strlen(temp_search_string));
         search_string_pos[search_str_len]=start_x_search;
         msg(MSG_INFO,"start_x_search:%d\n",start_x_search);
 	y_pos = RESULT_START;
 
 
-	if (!result_list->count) {
+	if (result_list->result_populated && !result_list->count) {
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
 		goto out;
 	}
 
-	if (result_list->count) {
+	if (result_list->result_populated && result_list->count) {
 		unsigned int i, j;
 		unsigned int count = result_list->count < screen_display_count ?
 					result_list->count : screen_display_count;
@@ -483,7 +555,7 @@ void search_reload_ex()
 			if (j >= MAX_RESULTS)
 				j -= MAX_RESULTS;
 			title = result_list->list[j];
-			render_string(SEARCH_LIST_FONT_IDX, 3, y_pos, title, strlen(title));
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
 			DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
 			y_pos += RESULT_HEIGHT;
                         if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
@@ -508,7 +580,7 @@ void search_result_display()
 
 	if (!search_str_len)
 	{
-		render_string(MESSAGE_FONT_IDX, 40, 55, "Type a word or phrase", 21);
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
 
@@ -516,6 +588,7 @@ void search_result_display()
 	y_pos = RESULT_START;
 
 	if (!result_list->count) {
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
 		goto out;
 	}
 
@@ -529,7 +602,7 @@ void search_result_display()
 			if (j >= MAX_RESULTS)
 				j -= MAX_RESULTS;
 			title = result_list->list[j];
-			render_string(SEARCH_LIST_FONT_IDX, 3, y_pos, title, strlen(title));
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
 			DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
 			y_pos += RESULT_HEIGHT;
                         if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
@@ -569,9 +642,9 @@ void search_add_char(char c)
 //	result_list->count = 0;
          #ifdef INCLUDED_FROM_KERNEL
         time_search_last=get_time_search();
-        search_string_changed = true;
-        return;
+        //return;
         #endif
+        search_string_changed = true;
 	search_populate_result();
         msg(MSG_INFO,"search_result_count:%d\n",result_list->count);
         result_list->cur_selected = -1;
@@ -592,6 +665,7 @@ void search_fetch()
 void search_remove_char(void)
 {
 	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
+        msg(MSG_INFO,"enter search_remove_char\n");
 	if (search_str_len == 0)
 		return;
 
@@ -605,10 +679,10 @@ void search_remove_char(void)
 
          #ifdef INCLUDED_FROM_KERNEL
         time_search_last=get_time_search();
+        //return;
+        #endif
         search_string_changed = true;
         search_string_changed_remove = true;
-        return;
-        #endif
 	search_populate_result();
         result_list->cur_selected = -1;
 }
@@ -651,7 +725,7 @@ int result_list_down(int nRows)
 					bDone = 1;
 			}
 			else
-				fetch_search_result(result_list->offset_list[result_list->base]);
+				fetch_search_result(result_list->offset_list[result_list->base], 1);
 		}
 	}
 	return (nRows - nRowsToMove);
@@ -725,7 +799,7 @@ int result_list_up(int nRows)
 					bDone = 1;
 			}
 			else
-				fetch_search_result(result_list->offset_next - sizeof(search_info->buf));
+				fetch_search_result(result_list->offset_next - sizeof(search_info->buf), 1);
 		}
 	}
 	return nRows - nRowsToMove;

@@ -155,10 +155,25 @@ int render_string(const int font, int start_x,
 				  int start_y, const char *string, const int text_length)
 {
 	int i;
-	int x = start_x;
+	int x;
 	
         char_to_glyph(32);
 	
+	if (start_x < 0) // to be centered
+	{
+		int width = 0;
+		long len = text_length;
+		char *p = (char *)string;
+		int nCharBytes;
+		
+		while (len > 0)
+			width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
+		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
+		if (start_x < 0)
+			start_x = 0;
+	}
+
+	x = start_x;	
 	for (i = 0; i < text_length; ++i) {
 	    x = draw_bmf_char(string[i],font-1,x,start_y);
             if(x<0)

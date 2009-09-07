@@ -94,6 +94,8 @@ bool press_delete_button = false;
 extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
+bool article_moved = false;
+int  article_scroll_pixel = 10;
 
 static void repaint_search(void)
 {
@@ -127,7 +129,7 @@ static void print_intro()
 
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(MESSAGE_FONT_IDX, 40, 55, "Type a word or phrase", 21);
+	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
     
 	//membuffer = malloc_simple(1024*1024,MEM_TAG_ARTICLE_F1);
 	keyboard_paint();
@@ -654,6 +656,8 @@ static void handle_touch(struct wl_input_event *ev)
                 }
 	} else {
 		if (ev->touch_event.value == 0) {
+                        article_moved = false;
+                        article_scroll_pixel = 10;
                         int end_move_time,time_diff;
                         //int speed = 0,count_next=0,distance=0,i=0;
 
@@ -710,21 +714,19 @@ static void handle_touch(struct wl_input_event *ev)
                            return;
 
                         #endif*/
-
-			/*if (article_touch_down_pos.y > ev->touch_event.y &&
+                         #ifndef INCLUDED_FROM_KERNEL
+			if (article_touch_down_pos.y > ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf_smooth(LCD_HEIGHT_LINES);
+                                display_article_with_pcf(LCD_HEIGHT_LINES);
 			else if (article_touch_down_pos.y < ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf_smooth(-LCD_HEIGHT_LINES);
+                                display_article_with_pcf(-LCD_HEIGHT_LINES);
                         else if(abs(article_touch_down_pos.y - ev->touch_event.y) > 10)
                         {
-                              if(article_touch_down_pos.y<ev->touch_event.y)
-                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y-speed*2);
-                              else
-                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y);
+                                 display_article_with_pcf(article_touch_down_pos.y-ev->touch_event.y);
 
-                        }*/
+                        }
+                        #endif
                         
 				
 			article_touch_down_handled = 0;
@@ -752,14 +754,18 @@ static void handle_touch(struct wl_input_event *ev)
                            touch_y_last_unreleased = ev->touch_event.y;
                            start_move_time = get_time();
                         }
-                        else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=1)
+                        else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
                         {
                               //msg(MSG_INFO,"touch_y_last_unreleased-ev->touch_event.y>10:%d\n",abs(touch_y_last_unreleased - ev->touch_event.y));
 
                               display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
                               touch_y_last_unreleased = ev->touch_event.y;
+                              article_moved = true;
+                              article_scroll_pixel = 1;
                         }
-                        else
+                        if(article_moved)
+                           goto out;
+
                         {
 			      article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
 			      //msg(MSG_INFO,"article_link_number:%d\n",article_link_number);
@@ -768,7 +774,7 @@ static void handle_touch(struct wl_input_event *ev)
                               {
 				invert_link(article_link_number);
 				invert_link(last_article_link_number);
-                                set_article_link_number(article_link_number);                                msg(MSG_INFO,"set article_link_number:%d\n",article_link_number);
+                                set_article_link_number(article_link_number);       msg(MSG_INFO,"set article_link_number:%d\n",article_link_number);
 
                               }
                               else if(article_link_number<0 && last_article_link_number>=0)
@@ -839,7 +845,7 @@ int wikilib_run(void)
                   sleep = 0;
                 }
                 #ifdef INCLUDED_FROM_KERNEL
-		if (display_mode==DISPLAY_MODE_INDEX && search_string_changed)
+		/*if (display_mode==DISPLAY_MODE_INDEX && search_string_changed)
                 {
                    sleep = 0;
                    delay_us(10000);
@@ -856,22 +862,31 @@ int wikilib_run(void)
 
                        search_string_changed = false;
                    }
-                }
+                }*/
 
-                if(display_mode == DISPLAY_MODE_INDEX && press_delete_button && get_search_string_len()>0)
+               if(display_mode == DISPLAY_MODE_INDEX)
                 {
-                    sleep = 0;
-                    time_now = get_time();
-                    //msg(MSG_INFO,"diff time:%d\n",time_now-start_search_time);
-                    if((time_now-start_search_time)>1000000*24*2)
+                    if (press_delete_button && get_search_string_len()>0)
                     {
-                       clear_search_string();
-                       search_string_changed_remove = true;
-                       search_reload_ex();
-                       press_delete_button = false;
-                    }
+	                 sleep = 0;
+	                 time_now = get_time();
+	                 //msg(MSG_INFO,"diff time:%d\n",time_now-start_search_time);
+	                 if((time_now-start_search_time)>1000000*24*2)
+	                 {
+	                     clear_search_string();
+	                     search_string_changed_remove = true;
+	                     search_reload_ex();
+	                     press_delete_button = false;
+	                 }
+	            }
+	            
                 }
                 #endif
+
+                if (display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0))
+	        {
+	            sleep = 0;
+                }	            	
 
 		wl_input_wait(&ev, sleep);
                 //msg(MSG_INFO,"wl_input_wait over\n");

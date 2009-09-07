@@ -18,7 +18,8 @@
 #include <input.h>
 #include "delay.h"
 #include <tick.h>
-
+#include "history.h"
+#include "search.h"
 #endif
 
 #include "bmf.h"
@@ -1329,9 +1330,17 @@ msg(MSG_INFO, "open link %d, idx %ld\n", article_link_number, articleLink[articl
 }
 void open_article_link_with_link_number(int article_link_number)
 {
-   if(article_link_number<0)
-       return;
-   display_link_article(articleLink[article_link_number].article_id);
+#ifndef WIKIPCF
+ 	char title[MAX_TITLE_SEARCH];
+ 	
+	if (article_link_number < 0 || articleLink[article_link_number].article_id <= 0)
+		return;
+	if (!display_link_article(articleLink[article_link_number].article_id))
+	{
+		get_article_title_from_idx(articleLink[article_link_number].article_id, title);
+		history_add(articleLink[article_link_number].article_id, title);
+	}
+#endif
 }
 void msg_info(char *data)
 {
