@@ -9,8 +9,12 @@ import sys
 
 def hex(list):
     a = 0
+    nl = False
     for b in list:
         if 0 == a & 0x0f:
+            if nl:
+                sys.stdout.write('\n')
+            nl = True
             sys.stdout.write('%04x  ' % a)
         sys.stdout.write('%02x ' % (ord(b)))
         a = a + 1
