@@ -59,8 +59,8 @@ struct link {
 	char sLink[MAX_LINK_STRING];
 } links[MAX_LINKS];
 
-char word_break_before_chars[] = { 0x0A, 0x0D, 0x20, 0x28, 0x29, 0x7B, 0x7C, 0x7D };
-char word_break_after_chars[] = { 0x0A, 0x0D, 0x20, 0x28, 0x29, 0x2F, 0x3A, 0x7B, 0x7C, 0x7D};
+char word_break_before_chars[] = "\n\r ";
+char word_break_after_chars[] = "\n\r )*+,-./:;<=>?]|}";
 #define WORD_BREAK_FLEX_CHAR_MASK1 0xF3000
 #define WORD_BREAK_FLEX_CHAR_MASK2 0xF4000
 #define WORD_BREAK_FLEX_CHAR_MASK3 0xF8000
@@ -793,7 +793,8 @@ int unsupported_article(char *pHtmlFile)
 		!strncmp(pHtmlFile, "Talk:", 5) || !strncmp(pHtmlFile, "User:", 5) ||
 		!strncmp(pHtmlFile, "Wikipedia:", 10) || !strncmp(pHtmlFile, "Category:", 9) ||
 		!strncmp(pHtmlFile, "File:", 5) || !strncmp(pHtmlFile, "Template:", 9) ||
-		!strncmp(pHtmlFile, "Portal:", 7) || !strncmp(pHtmlFile, "Image:", 6))
+		!strncmp(pHtmlFile, "Portal:", 7) || !strncmp(pHtmlFile, "Image:", 6) ||
+		!strncmp(pHtmlFile, "MediaWiki:", 10))
 	{
 		return 1;
 	}
@@ -1170,10 +1171,13 @@ void get_key_value(char *value, int val_len, char *key, char *str, int len)
 	if (p)
 	{
 		p += strlen(key);
-		if (p[0] == '=' && p[1] == '"')
+		if (p[0] == '=' && (p[1] == '"' || p[1] =='\''))
 		{
 			p += 2;
-			p2 = strnchr(p, '"', len - strlen(key) - 2);
+			if (p[1] == '"')
+				p2 = strnchr(p, '"', len - strlen(key) - 2);
+			else
+				p2 = strnchr(p, '\'', len - strlen(key) - 2);
 			if (p2)
 			{
 				int copy_len;
@@ -1717,11 +1721,11 @@ void render_link(int idxNode)
 	{
 		get_file_name_from_path(sLink, sRef);
 	}
-	else if (!strcmp(sClass, "external autonumber") || !strncmp(sRef, "#cite_note", 10))
+	else if (!strcmp(sClass, "external autonumber") || !strncmp(sRef, "#cite_note", 10) || !strncmp(sRef, "internal", 8))
 		return; // skip external reference or citation
 
 
-	if (strncmp(article_nodes[idxNode].pContent, "File:", 5) && strncmp(article_nodes[idxNode].pContent, "http:", 5))
+	if (article_nodes[idxNode].len > 0 && strncmp(article_nodes[idxNode].pContent, "File:", 5) && strncmp(article_nodes[idxNode].pContent, "http:", 5))
 	{
 		if (!strncmp(sLink, "http:", 5) || unsupported_article(sLink))
 			sLink[0] = '\0';
@@ -2321,9 +2325,7 @@ int parse_link_string(char *pTagContent, int lenTagContent, char *sLink, char *s
 	char *p;
 	int len;
 	
-	if (!strncmp(pTagContent, "Category:", 9) || !strncmp(pTagContent, "Wikipedia:", 10) ||
-		!strncmp(pTagContent, "MediaWiki:", 10) || !strncmp(pTagContent, "File:", 5) ||
-		!strncmp(pTagContent, "Image:", 6))
+	if (unsupported_article(pTagContent))
 	{
 		return -1;
 	}
@@ -2973,7 +2975,7 @@ void locate_wiki_tags(char *sText, long nTextLen)
 	if (lenContentBeforeTag > 0)
 	{
 		wiki_nodes[nWikiNodeCount].idxTag = WIKI_TAG_PAIR_TEXT;
-		wiki_nodes[nWikiNodeCount].bTagStart = 0;
+		wiki_nodes[nWikiNodeCount].bTagStart = 1;
 		wiki_nodes[nWikiNodeCount].pTag = pContentBeforeTag;
 		wiki_nodes[nWikiNodeCount++].lenTag = lenContentBeforeTag;
 	}
@@ -3430,9 +3432,7 @@ off64_t next_article(FILE *fd, off64_t file_offset_for_pass_1, char *sTitle, cha
 		*nType = 2;
 		memcpy(sTitle, &sTitle[9], strlen(sTitle) - 8);
 	}
-	else if (!strncmp(sTitle, "Category:", 9) || !strncmp(sTitle, "Wikipedia:", 10) ||
-		!strncmp(sTitle, "MediaWiki:", 10) || !strncmp(sTitle, "File:", 5) ||
-		!strncmp(sTitle, "Talk:", 5) || !strncmp(sTitle, "Help:", 5) )
+	else if (unsupported_article(sTitle))
 	{
 		*nType = 3;
 	}
