@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# COPYRIGHT: Openmoko Inc. 2009
+# LICENSE: GPL Version 3 or later
+# DESCRIPTION: Simple FLASH programmer
+# AUTHOR: Christopher Hall <hsw@openmoko.com>
+
+import time
+import getopt
+import os.path
+import sys
+
+import MapFile
+import Dump
+
+def usage(message):
+    if None != message:
+        print 'error:', message
+    print 'usage: %s [--verbose] --image=<rom.image> --map-file=<map>' % os.path.basename(__file__)
+    exit(1)
+
+def main():
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:m:', ['help', 'verbose', 'image-file=', 'map-file='])
+    except getopt.GetoptError, err:
+        usage(err)
+
+    verbose = False
+    imagefile = 'flash.image'
+    mapfile = ''
+
+    for opt, arg in opts:
+        if opt in ('-v', '--verbose'):
+            verbose = True
+        elif opt in ('-h', '--help'):
+            usage(None)
+        elif opt in ('-i', '--image-file'):
+            imagefile = arg
+        elif opt in ('-m', '--map-file'):
+            mapfile = arg
+        else:
+            usage('unhandled option: ' + opt)
+
+    if not os.path.isfile(mapfile):
+        usage('mapfile: "%s" does not exist' % mapfile)
+
+    map = MapFile.MapFile(mapfile)
+    if not map.ok():
+        usage('Invalid mapfile')
+
+    rom_image = 65536 * '\xff'
+    for r in map.items():
+        offset, filename, bytecount, data = r
+        if verbose:
+            print '0x%04x %s (%d bytes)' % (offset, filename, bytecount)
+        rom_image = rom_image[0:offset] + data + rom_image[offset + bytecount:65536]
+
+    if verbose:
+        Dump.hex(rom_image)
+
+    fh = open(imagefile, 'w')
+    fh.write(rom_image)
+    fh.close()
+
+
+if __name__ == '__main__':
+    main()

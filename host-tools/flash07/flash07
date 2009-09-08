@@ -18,6 +18,7 @@ import getopt
 import os.path
 import sys
 
+import MapFile
 import Dump
 import SPI
 import FLASHROM
@@ -120,41 +121,6 @@ class AuxSerialPort():
         self.s.close()
 
 
-class MapFile:
-    MAP_LINE_RE = re.compile(r'^\s*(0x[0-9a-f]+)\s+(\S+)\s*(#.*)?$', re.IGNORECASE)
-    MAP_COMMENT_RE = re.compile(r'^\s*(#.*)?$', re.IGNORECASE)
-
-    def __init__(self, filename, romSize = 65536):
-        self.rom = []
-        self.status = True
-        for line in open(filename, 'rt'):
-            m = MapFile.MAP_LINE_RE.match(line)
-            c = MapFile.MAP_COMMENT_RE.match(line)
-            if m:
-                offset = eval(m.group(1))
-                file = m.group(2)
-                if '*ERASE' == file:
-                    data = '\xff'
-                else:
-                    if not os.path.isfile(file):
-                        file = os.path.join(os.path.dirname(filename), file)
-                    if not os.path.isfile(file):
-                        print 'Missing program: "%s"' % m.group(2)
-                        self.status = False
-                    data = open(file, 'rb').read()
-                data_len = len(data)
-                self.rom.append((offset, file, data_len, data))
-            elif not c:
-                print 'invalid map line:', line
-                self.status = False
-
-    def items(self):
-      return self.rom
-
-    def ok(self):
-      return self.status
-
-
 def usage(message):
     if None != message:
         print 'error:', message
@@ -174,7 +140,7 @@ def main():
     port = '/dev/ttyUSB1'
 
     for opt, arg in opts:
-        if opt == '-v':
+        if opt in ('-v', '--verbose'):
             verbose = True
         elif opt in ('-h', '--help'):
             usage(None)
@@ -187,7 +153,7 @@ def main():
         elif opt in ('-a', '--aux-port'):
             aux_port = arg
         else:
-            usage('unhandled option: ' + o)
+            usage('unhandled option: ' + opt)
 
     if not os.path.isfile(bootfile):
         usage('bootfile: "%s" does not exist' % bootfile)
@@ -201,7 +167,7 @@ def main():
     if l < 512:
         boot += '\x00' * (512 - l)
 
-    map = MapFile(mapfile)
+    map = MapFile.MapFile(mapfile)
     if not map.ok():
         usage('Invalid mapfile')
 
