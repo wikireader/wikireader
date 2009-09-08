@@ -6,6 +6,7 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
+IMAGE07 ?= ${HOST_TOOLS}/flash07/image07
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
 
 LIBS += ${FATFS_LIB}
@@ -28,19 +29,22 @@ OBJCOPY_SECTIONS = --only-section=.text
 OBJCOPY_SECTIONS += --only-section=.rodata
 OBJCOPY_SECTIONS += --only-section=.data
 
-TARGETS = $(FLASH_ROM_MAP_FILE) mbr
+TARGETS = $(FLASH_ROM_MAP_FILE) mbr serial.header
 APPLICATIONS =
 APPLICATION_CLEAN =
 
 vpath %.c $(WIKI_APP_SRC)
 
 .PHONY: all
-all: $(TARGETS) all-applications
+all: $(TARGETS) all-applications flash.rom
 
 # Master boot record - a multiple program boot loader
 
 $(FLASH_ROM_MAP_FILE):
 	cp SAMO_A1.mapfile-default $(FLASH_ROM_MAP_FILE)
+
+flash.rom: ${FLASH_ROM_MAP_FILE} ${TARGETS} all-applications
+	${IMAGE07} --image-file="$@" --map-file="${FLASH_ROM_MAP_FILE}"
 
 #mbr.o: mbr.c
 #	$(GCC) -c $(CFLAGS) $<
@@ -101,15 +105,18 @@ splash.h: splash.png
 all-applications: ${APPLICATIONS}
 
 flash-mbr: all
-	( echo -n ${SERIAL_NUMBER} ; \
-	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
-	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
-	) | dd bs=1 count=32 > serial.header
 	time ${FLASH07} --port="${BOOTLOADER_TTY}" --aux-port="${BOOTLOADER_AUX}" --boot="${BOOT_FILE}" \
 	--map-file="${FLASH_ROM_MAP_FILE}"
 
+.PHONY: always-build
+serial.header: always-build
+	( echo -n ${SERIAL_NUMBER} ; \
+	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
+	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
+	) | dd bs=1 count=32 > "$@"
+
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h
+	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h *.rom
 
 # application headers
 %.header: %.c
