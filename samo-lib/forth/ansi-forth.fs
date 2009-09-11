@@ -3122,7 +3122,7 @@ end-code
 \ ==========================
 
 : wait-for-event          :: wait-for-event          ( -- )
- (temperature-comp)
+ \ (temperature-comp)
   button?
   key? or
   ctp-pos? or

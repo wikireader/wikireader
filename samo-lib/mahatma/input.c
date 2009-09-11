@@ -72,7 +72,7 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 #if !PROFILER_ON
 		suspend(TIMEOUT_VALUE);
 #endif
-		Temperature_control();
+//		Temperature_control();
 
 	}
 }
