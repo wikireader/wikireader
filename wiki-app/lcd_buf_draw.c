@@ -22,6 +22,10 @@
 #include "search.h"
 #endif
 
+#ifdef INCLUDED_FROM_KERNEL
+#include "glyph.h"
+#endif
+
 #include "bmf.h"
 #include "lcd_buf_draw.h"
 #include "search.h"
@@ -77,14 +81,6 @@ int time_scroll_article_start;
 int article_scroll_delay_time_total,time_scroll_article_last=0;
 int stop_render_article = 0;
 
-int is_supported_search_char(char c)
-{
-	if (c && (strchr(SUPPORTED_SEARCH_CHARS, c) || ('A' <= c && c <= 'Z')))
-		return 1;
-	else
-		return 0;
-}
-
 void init_lcd_draw_buf()
 {
 	int i,framebuffersize,fd;
@@ -95,9 +91,6 @@ void init_lcd_draw_buf()
                 framebuffer_copy = (unsigned char*)Xalloc(framebuffersize);
 
 		lcd_draw_buf.screen_buf = (unsigned char *)Xalloc(LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
-
-                sprintf(msg_out,"malloc for lcd_draw_buf.screen_buf,size:%d\n",LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
-                msg_info(msg_out);
 
 		for (i=0; i < FONT_COUNT; i++)
 		{
@@ -130,13 +123,6 @@ void init_lcd_draw_buf()
                        			pcfFonts[i].bPartialFont = 0;
 				}
 				pcfFonts[i].fd = fd;
-				sprintf(msg_out, "load_pcf  ok,pcf filename:%s,ascent:%d,descent:%d,linespace:%d\n",
-					pcfFonts[i].file,
-					pcfFonts[i].Fmetrics.ascent,
-					pcfFonts[i].Fmetrics.descent,
-					pcfFonts[i].Fmetrics.linespace);
-			
-				msg_info(msg_out);
 			
 		        }
 
@@ -323,6 +309,7 @@ void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,char **pUTF8,int st
 void buf_draw_UTF8_str(unsigned char **pUTF8)
 {
 	unsigned char c, c2;
+	char c3;
 	long v_line_bottom;
 	ucs4_t u;
 	int font_idx;
@@ -370,7 +357,6 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				lcd_draw_buf.pPcfFont = &pcfFonts[font_idx - 1];
 				lcd_draw_buf.line_height = c2 >> 3;
 				lcd_draw_buf.align_adjustment = 0;
-                                //msg(MSG_INFO,"ESC_3,font:%d,line_height:%d\n",font_idx,lcd_draw_buf.line_height);
 				if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 					lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 				break;
@@ -390,15 +376,15 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			case ESC_5_RESET_TO_DEFAULT_FONT: /* reset to the default font */
 				lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
 				break;
-			case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default alignment */
-				lcd_draw_buf.align_adjustment = 0;
+			case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
+				lcd_draw_buf.vertical_adjustment = 0;
 				break;
 			case ESC_7_FORWARD: /* forward */
 				c2 = **pUTF8;
 				(*pUTF8)++;
 				lcd_draw_buf.current_x += c2;
-				if (lcd_draw_buf.current_x > LCD_BUF_WIDTH_PIXELS)
-					lcd_draw_buf.current_x = LCD_BUF_WIDTH_PIXELS;
+				if (lcd_draw_buf.current_x > LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.vertical_adjustment)
+					lcd_draw_buf.current_x = LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.vertical_adjustment;
 				break;
 			case ESC_8_BACKWARD: /* backward */
 				c2 = **pUTF8;
@@ -408,21 +394,22 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				else
 					lcd_draw_buf.current_x -= c2;
 				break;
-			case ESC_9_ALIGN_ADJUSTMENT: /* alignment adjustment */
-				c2 = **pUTF8;
+			case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
+				c3 = **pUTF8;
 				(*pUTF8)++;
-				lcd_draw_buf.align_adjustment += (signed char)c2;
-				if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.align_adjustment >= LCD_BUF_HEIGHT_PIXELS)
-					lcd_draw_buf.align_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
-				if (lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment < lcd_draw_buf.line_height - 1)
-					lcd_draw_buf.align_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+				lcd_draw_buf.vertical_adjustment += c3;
+				//if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.align_adjustment >= LCD_BUF_HEIGHT_PIXELS)
+				//	lcd_draw_buf.align_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+				//if (lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment < lcd_draw_buf.line_height - 1)
+				//	lcd_draw_buf.align_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
 				break;
 			case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
 				c2 = **pUTF8;
 				(*pUTF8)++;
 				if ((long)c2 > lcd_draw_buf.current_x)
 					c2 = (unsigned char)lcd_draw_buf.current_x;
-				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN, lcd_draw_buf.current_x + LCD_LEFT_MARGIN);
+				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN, 
+					lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment);
 				break;
 			case ESC_11_VERTICAL_LINE: /* drawing vertical line */
 				c2 = **pUTF8;
@@ -440,7 +427,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 				lcd_draw_buf.line_height = 1;
 				lcd_draw_buf.align_adjustment = 0;
-				buf_draw_horizontal_line(LCD_LEFT_MARGIN, LCD_BUF_WIDTH_PIXELS);
+				buf_draw_horizontal_line(LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment, LCD_BUF_WIDTH_PIXELS);
 				break;
 			case ESC_13_FULL_VERTICAL_LINE: /* drawing vertical line from top of the line to the bottom */
 				lcd_draw_buf.current_x += 1;
@@ -455,7 +442,6 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	while (**pUTF8 > MAX_ESC_CHAR) /* stop at end of string or escape character */
 	{
                #ifdef INCLUDED_FROM_KERNEL
-               //msg(MSG_INFO,"**pUTF8:%x\n",*pUTF8);
                #endif
 		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
@@ -464,8 +450,6 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
                         {
                            repaint_framebuffer(lcd_draw_buf.screen_buf,0);
                            display_first_page = 1;
-                           sprintf(msg_out,"display first page\n");
-                           msg_info(msg_out);
                         }
 		}
 	}
@@ -497,11 +481,9 @@ void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 
         for(i = start_x;i<end_x;i++)
         {
-            //msg(MSG_INFO,"x:%d,y:%d,endx:%d\n",i,h_line_y,end_x);
             lcd_set_pixel(lcd_draw_buf.screen_buf,i, h_line_y);
         }
 
-        //msg(MSG_INFO,"draw horizontal over\n");
 }
 
 void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y)
@@ -509,10 +491,10 @@ void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y)
 	unsigned long idx_in_byte;
 	unsigned char *p;
 
-	if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN < LCD_BUF_WIDTH_PIXELS)
+	if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment < LCD_BUF_WIDTH_PIXELS)
 	{
-		idx_in_byte = 7 - ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN) & 0x07);
-		p = lcd_draw_buf.screen_buf + start_y * LCD_BUF_WIDTH_BYTES + ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN)>> 3);
+		idx_in_byte = 7 - ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment) & 0x07);
+		p = lcd_draw_buf.screen_buf + start_y * LCD_BUF_WIDTH_BYTES + ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment)>> 3);
 		while (start_y <= end_y)
 		{
 			*p |= 1 << idx_in_byte;
@@ -578,7 +560,6 @@ void buf_draw_char(ucs4_t u)
 
 	if(pres_bmfbm(u, lcd_draw_buf.pPcfFont, &bitmap, &Cmetrics)<0)
         {
-          //msg(MSG_INFO,"char%d return -1\n",u);
           return;
         }
         if(u==32)
@@ -592,42 +573,45 @@ void buf_draw_char(ucs4_t u)
 
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
 	
-	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN;
-	y_base = lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment;
-	x_offset = 0;
-	y_offset = lcd_draw_buf.line_height - (lcd_draw_buf.pPcfFont->Fmetrics.descent + Cmetrics.ascent);
-        
-	x_bit_idx = x_base & 0x07;
-	//p = lcd_draw_buf.screen_buf + (y_base + y_offset) * LCD_BUF_WIDTH_BYTES + (x_base >> 3);
-
-	for (i = 0; i < bytes_to_process; i++)
-	{
-		j = 7;
-		while (j >= 0)
+	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
+	if (x_base + Cmetrics.LSBearing + Cmetrics.width < LCD_BUF_WIDTH_PIXELS)
+	{ // only draw the chracter if not exceeding the LCD width
+		y_base = lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment;
+		x_offset = 0;
+		y_offset = lcd_draw_buf.line_height - (lcd_draw_buf.pPcfFont->Fmetrics.descent + Cmetrics.ascent);
+	        
+		x_bit_idx = x_base & 0x07;
+		//p = lcd_draw_buf.screen_buf + (y_base + y_offset) * LCD_BUF_WIDTH_BYTES + (x_base >> 3);
+	
+		for (i = 0; i < bytes_to_process; i++)
 		{
-			if (x_offset >= Cmetrics.widthBits)
+			j = 7;
+			while (j >= 0)
 			{
-				x_offset = 0;
-				y_offset++;
-				p = lcd_draw_buf.screen_buf + (y_base + y_offset) * LCD_BUF_WIDTH_BYTES + x_base;
+				if (x_offset >= Cmetrics.widthBits)
+				{
+					x_offset = 0;
+					y_offset++;
+					p = lcd_draw_buf.screen_buf + (y_base + y_offset) * LCD_BUF_WIDTH_BYTES + x_base;
+				}
+				if (x_offset < Cmetrics.width)
+				{
+					if (bitmap[i] & (1 << j))
+	                                {
+					    //*p |= 1 << ((x_base + x_offset) & 0x07);
+	                                    lcd_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
+	                                }
+	                                     
+				}
+				x_offset++;
+				x_bit_idx++;
+				if (!(x_bit_idx & 0x07))
+				{
+					x_bit_idx = 0;
+					p++;
+				}
+				j--;
 			}
-			if (x_offset < Cmetrics.width)
-			{
-				if (bitmap[i] & (1 << j))
-                                {
-				    //*p |= 1 << ((x_base + x_offset) & 0x07);
-                                    lcd_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
-                                }
-                                     
-			}
-			x_offset++;
-			x_bit_idx++;
-			if (!(x_bit_idx & 0x07))
-			{
-				x_bit_idx = 0;
-				p++;
-			}
-			j--;
 		}
 	}
 	lcd_draw_buf.current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
@@ -748,6 +732,7 @@ void init_render_article()
 	lcd_draw_buf.pPcfFont = NULL;
 	lcd_draw_buf.line_height = 0;
 	lcd_draw_buf.align_adjustment = 0;
+	lcd_draw_buf.vertical_adjustment = 0;
 
 	display_first_page = 0;
 
@@ -806,17 +791,12 @@ void display_article_with_pcf(int start_y)
             request_display_next_page = 1;
             request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
 
-            sprintf(msg_out,"request y_pos:%d < rendered y_pos:%d,display rendering\n",(int)lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES,(int)lcd_draw_buf.current_y);
-            msg_info(msg_out);
-
             display_str("rendering...");
 
             return;
         }
         if(lcd_draw_cur_y_pos == 0 && start_y<0)
         {
-           sprintf(msg_out,"cur_y_pos is 0,can not scroll up yet\n");
-           msg_info(msg_out);
            return;
         }
 
@@ -854,17 +834,12 @@ void display_article_with_pcf_smooth(int start_y)
             request_display_next_page = 1;
             request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
 
-            sprintf(msg_out,"request y_pos:%d < rendered y_pos:%d,display rendering\n",(int)lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES,(int)lcd_draw_buf.current_y);
-            msg_info(msg_out);
-
             display_str("rendering...");
 
             return;
         }
         if(lcd_draw_cur_y_pos == 0 && start_y<0)
         {
-           sprintf(msg_out,"cur_y_pos is 0,can not scroll up yet\n");
-           msg_info(msg_out);
            return;
         }
         
@@ -976,28 +951,16 @@ unsigned char * open_article_with_pcf_link(long idx_article)
 		
 	if (retrieve_article(idx_article))
         {
-            #ifdef INCLUDED_FROM_KERNEL
-            //msg(MSG_INFO,"retrieve_article failed,idx_article:%d\n",idx_article);
-            #endif
 	    return NULL; // article not exist		
         }
-        #ifdef INCLUDED_FROM_KERNEL
-        //msg(MSG_INFO,"retrieve_article ok,idx_article:%d\n",idx_article);
-        #endif
 
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
-	//msg(MSG_INFO,"offset_article:%d\n",article_header.offset_article);
 	offset = sizeof(ARTICLE_HEADER);
 		
 	if(article_header.article_link_count>ARTICLE_LINK_COUNT)
 	    article_header.article_link_count = ARTICLE_LINK_COUNT;
 	if(article_header.external_link_count>EXTERNAL_LINK_COUNT)
 	    article_header.external_link_count = EXTERNAL_LINK_COUNT;
-
-//        sprintf(msg_out,"link number:%d\n",article_header.article_link_count);     msg_info(msg_out);
-
-//        sprintf(msg_out,"external link number:%d\n",article_header.external_link_count);
-//        msg_info(msg_out);
 
 	for(i = 0; i< article_header.article_link_count;i++)
 	{
@@ -1009,8 +972,6 @@ unsigned char * open_article_with_pcf_link(long idx_article)
 	    end_y   = articleLink[i].end_xy  >>8;
 	    end_x   = articleLink[i].end_xy & 0x000000ff;
            
-//            sprintf(msg_out,"link startx:%d,starty:%d,endx:%d,endy:%d\n",start_x,start_y,end_x,end_y);
-//            msg_info(msg_out);
 
 	}
         article_link_count = article_header.article_link_count;
@@ -1055,9 +1016,9 @@ int isArticleLinkSelected(int x,int y)
 	  for(i = 0 ; i < article_link_count; i++)
 	  {
 	  	article_link_start_y_pos = articleLink[i].start_xy >>8;
-	  	article_link_start_x_pos = (articleLink[i].start_xy & 0x000000ff) + LCD_LEFT_MARGIN;
+	  	article_link_start_x_pos = (articleLink[i].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
 	  	article_link_end_y_pos = articleLink[i].end_xy >>8;
-	  	article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
+	  	article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
             
                 //sprintf(msg,"article link:%d,start_x:%d,end_x:%d,start_y:%d,end_y:%d\n",i,article_link_start_x_pos,article_link_end_x_pos,article_link_start_y_pos,article_link_end_y_pos);
                 //msg_info(msg);
@@ -1168,8 +1129,6 @@ void get_external_link_str(char *str,int external_link_number)
 
        offset_str = sizeof(ARTICLE_HEADER)+article_link_count*sizeof(ARTICLE_LINK)+ external_link_count*sizeof(EXTERNAL_LINK)+externalLink[external_link_number].offset_link_str;
        
-       //msg(MSG_INFO,"link_number:%d,len:%d,offset:%d\n",external_link_number,externalLink[external_link_number].link_str_len,offset_str);
-        
        if(externalLink[external_link_number].link_str_len>=256)
           len = 255; 
        else
@@ -1178,7 +1137,6 @@ void get_external_link_str(char *str,int external_link_number)
        memcpy(str,file_buffer+offset_str,len);
        str[len]='\0';
 
-       //msg(MSG_INFO,"external link str:%s\n",str);
 }
 
 void display_external_link_str(int external_link_number,char *external_link_str)
@@ -1207,9 +1165,7 @@ void display_external_link_str(int external_link_number,char *external_link_str)
        external_str_width = get_external_str_pixel_width(&p);
        offset_x = 500 - external_str_width/2;
        offset_y = div_wiki(offset_x,200);
-       //msg(MSG_INFO,"offset_y:%d\n",offset_y);
        offset_x = offset_x - offset_y*200;
-       //msg(MSG_INFO,"offset_x:%d\n",offset_x);
        start_y = start_y+15*offset_y;
 
        buf_draw_UTF8_str_in_copy_buffer(framebuffer_copy,&external_link_str,start_x,end_x,start_y,end_y,offset_x);
@@ -1289,9 +1245,9 @@ void invert_link(int article_link_number)
 
 #ifndef WIKIPCF
      start_y = articleLink[article_link_number].start_xy >>8;
-     start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN;
+     start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
      end_y   = articleLink[article_link_number].end_xy  >>8;
-     end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
+     end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
      
      guilib_fb_lock();
      guilib_invert_area(start_x, start_y - lcd_draw_cur_y_pos, end_x, end_y - lcd_draw_cur_y_pos);
@@ -1306,9 +1262,6 @@ void open_article_link(int x,int y)
       article_link_number = isArticleLinkSelected(x,y);
       if(article_link_number >= 0)
       {
-#ifndef WIKIPCF
-msg(MSG_INFO, "open link %d, idx %ld\n", article_link_number, articleLink[article_link_number].article_id);
-#endif
          display_link_article(articleLink[article_link_number].article_id);
       }
       else
@@ -1377,41 +1330,226 @@ int framebuffer_height()
 
 }
 
-#define SHOW_KEY_X 200
-#define SHOW_KEY_Y 16
-void show_key(char c)
+int strchr_idx(char *s, char c)
 {
-	static int bKeyShowed = 0;
-	static char local_lcd_buf[30][3];
-	int i, j;
+	int rc = -1;
+	int i = 0;
+	
+	while (rc < 0 && s[i])
+	{
+		if (s[i] == c)
+			rc = i;
+		i++;
+	}
+	return rc;
+}
 
+void get_show_key_xy(char c, int *x, int *y)
+{
+	int idx;
+	
+	if ((idx = strchr_idx("QWERTYUIOP", c)) >= 0)
+	{
+		*y = 86;
+		if (idx == 0)
+			*x = 0;
+		else if (idx == 9)
+			*x = 208;
+		else
+			*x = idx * 24 - 6;
+	}
+	else if ((idx = strchr_idx("1234567890", c)) >= 0)
+	{
+		*y = 86;
+		if (idx == 0)
+			*x = 0;
+		else if (idx == 9)
+			*x = 208;
+		else
+			*x = idx * 24 - 6;
+	}
+	else if ((idx = strchr_idx("ASDFGHJKL", c)) >= 0)
+	{
+		*y = 110;
+		if (idx == 0)
+			*x = 0;
+		else
+			*x = idx * 24 - 6;
+	}
+	else if ((idx = strchr_idx("*$%#()-+=", c)) >= 0)
+	{
+		*y = 110;
+		if (idx == 0)
+			*x = 0;
+		else
+			*x = idx * 24 - 6;
+	}
+	else if ((idx = strchr_idx("ZXCV BNM", c)) >= 0)
+	{
+		*y = 134;
+		if (idx == 0)
+			*x = 0;
+		else if (idx < 4)
+			*x = idx * 24 - 6;
+		else if (idx == 4)
+			*x = 4 * 24 + 8;
+		else
+			*x = (idx + 1) * 24 - 6;
+	}
+	else if ((idx = strchr_idx("@?!& ,.'", c)) >= 0)
+	{
+		*y = 134;
+		if (idx == 0)
+			*x = 0;
+		else if (idx < 4)
+			*x = idx * 24 - 6;
+		else if (idx == 4)
+			*x = 4 * 24 + 8;
+		else
+			*x = (idx + 1) * 24 - 6;
+	}
+}
+
+void show_key(char c)
+{/*
+	static int bKeyShowed = 0;
+	static char local_lcd_buf[30][5];
+	char c2;
+	int i, j, k;
+	static int x = 0;
+	static int y = 0;
+	int x_remainder;
+	int width;
+	long len;
+	char *p;
+	int nCharBytes;
+		
 	if (!c || c < ' ' || c > '~')
 	{
 		if (bKeyShowed)
 		{
+			x_remainder = x % 8;
 			bKeyShowed = 0;
 			for (i=0; i < 30; i++)
-				for (j = 0; j < 3; j++)
-					lcd_set_framebuffer_byte(local_lcd_buf[i][j], SHOW_KEY_X + j * 8, SHOW_KEY_Y + i);
+			{
+				for (j = 0; j < 5; j++)
+				{
+					if (x_remainder)
+						lcd_set_framebuffer_byte(local_lcd_buf[i][j], x -  x_remainder + j * 8, y + i);
+					else if (0 <= j && j < 4)
+						lcd_set_framebuffer_byte(local_lcd_buf[i][j], x + (j - 1) * 8, y + i);
+				}
+			}
 		}
 	}
 	else
 	{
 		if ('a' <= c && c <= 'z')
 			c = 'A' + (c - 'a');
-		if (!bKeyShowed)
+		get_show_key_xy(c, &x, &y);
+		bKeyShowed = 1;
+		x_remainder = x % 8;
+		for (i=0; i < 30; i++)
 		{
-			bKeyShowed = 1;
-			for (i=0; i < 30; i++)
-				for (j = 0; j < 3; j++)
-					local_lcd_buf[i][j] = lcd_get_framebuffer_byte(SHOW_KEY_X + j * 8, SHOW_KEY_Y + i);
+			for (j = 0; j < 5; j++)
+			{
+				if (x_remainder)
+					local_lcd_buf[i][j] = lcd_get_framebuffer_byte(x -  x_remainder + j * 8, y + i);
+				else if (0 <= j && j < 4)
+					local_lcd_buf[i][j] = lcd_get_framebuffer_byte(x + j * 8, y + i);
+			}
 		}
 		for (i=0; i < 30; i++)
-			for (j = 0; j < 3; j++)
-					lcd_set_framebuffer_byte(0, SHOW_KEY_X + j * 8, SHOW_KEY_Y + i);
-		draw_bmf_char((ucs4_t)c, SEARCH_HEADING_FONT_IDX - 1, SHOW_KEY_X +3, SHOW_KEY_Y + 3);
+		{
+			for (j = 0; j < 5; j++)
+			{
+				if (i == 1 || i == 28)
+				{
+					if (x_remainder)
+					{
+						if (j == 0)
+						{
+							c2 = local_lcd_buf[i][j];
+							c2 &= 0xFE << (8 - x_remainder);
+							if (1 <= x_remainder && x_remainder <= 6)
+							{
+								for (k = 0; k <= (8 - x_remainder - 2); k++)
+									c2 |= 0x01 << k;
+							}
+						}
+						else if (j == 4)
+						{
+							c2 = local_lcd_buf[i][j];
+							c2 &= 0xEF >> x_remainder;
+							if (1 < i && i < 28 && 2 <= x_remainder)
+							{
+								for (k = 0; k <= (x_remainder - 2); k++)
+									c2 |= 0x80 >> k;
+							}
+						}
+						else
+							c2 = 0xFF;
+						lcd_set_framebuffer_byte(c2, x -  x_remainder + j * 8, y + i);
+					}
+					else if (0 <= j && j < 4)
+					{
+						if (j == 0)
+							lcd_set_framebuffer_byte(0x7F, x + j * 8, y + i);
+						else if (j == 3)
+							lcd_set_framebuffer_byte(0xFE, x + j * 8, y + i);
+						else
+							lcd_set_framebuffer_byte(0xFF, x + j * 8, y + i);
+					}
+				}
+				else
+				{
+					if (x_remainder)
+					{
+						if (j == 0)
+						{
+							c2 = local_lcd_buf[i][j];
+							c2 &= 0xFE << (8 - x_remainder);
+							if (1 < i && i < 28 && 1 <= x_remainder && x_remainder <= 6)
+								c2 |= 0x01 << (8 - x_remainder - 2);
+						}
+						else if (j == 4)
+						{
+							c2 = local_lcd_buf[i][j];
+							c2 &= 0xEF >> x_remainder;
+							if (1 < i && i < 28 && 2 <= x_remainder)
+								c2 |= 0x80 >> (x_remainder - 2);
+						}
+						else
+						{
+							c2 = 0;
+							if (1 < i && i < 28)
+							{
+								if (j == 1 && x_remainder > 6)
+									c2 |= 0x80;
+								else if (j == 4 && x_remainder < 2)
+									c2 |= 0x01;
+							}
+						}
+						lcd_set_framebuffer_byte(c2, x -  x_remainder + j * 8, y + i);
+					}
+					else if (0 <= j && j < 4)
+					{
+						if (1 < i && i < 28 && j == 0)
+							lcd_set_framebuffer_byte(0x40, x + j * 8, y + i);
+						else if (1 < i && i < 28 && j == 3)
+							lcd_set_framebuffer_byte(0x02, x + j * 8, y + i);
+						else
+							lcd_set_framebuffer_byte(0, x + j * 8, y + i);
+					}
+				}
+			}
+		}
+		p = &c;
+		len = 1;
+		width = get_UTF8_char_width(SEARCH_HEADING_FONT_IDX, &p, &len, &nCharBytes);
+		draw_bmf_char((ucs4_t)c, SEARCH_HEADING_FONT_IDX - 1, x + (32 - width) / 2, y + 4);
 	}
-}
+*/}
 
 int draw_bmf_char(ucs4_t u,int font,int x,int y)
 {
@@ -1426,15 +1564,12 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y)
 	int i; // bitmap byte index 
 	int j; // bitmap bit index 
 	pcffont_bmf_t *pPcfFont;
-        char msg[1024];
 
 	pPcfFont = &pcfFonts[font];
 	
 	pres_bmfbm(u, pPcfFont, &bitmap, &Cmetrics);
    	if (bitmap == NULL)
         {
-            sprintf(msg,"char:%d bitmap is null\n",u);
-            msg_info(msg);
             return -1;
         }
 
@@ -1514,4 +1649,23 @@ int get_time_tick(void)
 #endif
 
 	return clock_ticks;
+}
+
+void msg_on_lcd(int x, int y, char *msg)
+{
+#ifdef INCLUDED_FROM_KERNEL
+//	guilib_fb_lock();
+	guilib_clear_area(x, y, 239, 18);
+	render_string(DEFAULT_FONT_IDX, x, y, msg, strlen(msg)); 
+//	guilib_fb_unlock();
+#endif
+}
+
+void msg_on_lcd_clear(int x, int y)
+{
+#ifdef INCLUDED_FROM_KERNEL
+//	guilib_fb_lock();
+	guilib_clear_area(x, y, 239, y+18);
+//	guilib_fb_unlock();
+#endif
 }

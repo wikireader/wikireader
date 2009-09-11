@@ -81,7 +81,6 @@ static inline unsigned int history_modulus(int modulus) {
 
 void history_select_down(void)
 {
-msg(MSG_INFO, "history select down\n");
 //	if (history_current == (int)(list_size - 1))
 //		return;
 //
@@ -100,7 +99,6 @@ msg(MSG_INFO, "history select down\n");
 
 void history_select_up(void)
 {
-msg(MSG_INFO, "history select up\n");
 //	if (history_current <= 0)
 //		return;
 //
@@ -161,17 +159,16 @@ void history_display(int index)
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
+	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
 
 	if (history_count == 0) {
 		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
 	} else {
 		unsigned int y_pos = HISTORY_RESULT_START;
-                msg(MSG_INFO,"history_count:%d\n",history_count);
 		//for (i = index; i <= history_count && y_pos < guilib_framebuffer_height(); i++) {
 		//for (i = history_count-index-1; i >=0 && y_pos < guilib_framebuffer_height(); i--) {
 		for (i = index; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
-			const char *p = history_list[i].title;
+			char *p = history_list[i].title;
 			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
                         linespace = GetFontLinespace(0);
                         //y_pos += linespace;
@@ -195,15 +192,14 @@ void history_reload()
 	guilib_fb_lock();
 
 	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
+	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
 
 	if (history_count == 0) {
 		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
 	} else {
 		unsigned int y_pos = HISTORY_RESULT_START;
-                msg(MSG_INFO,"history_count:%d\n",history_count);
 		for (i = 0; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
-			const char *p = history_list[i].title;
+			char *p = history_list[i].title;
 			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
 			y_pos += HISTORY_RESULT_HEIGHT;
                         linespace = GetFontLinespace(0);
@@ -276,7 +272,6 @@ void history_add(const long idx_article, const char *title)
         if (history_count == MAX_HISTORY)
         	history_count--;
         memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
-        msg(MSG_INFO,"idx_article:%d,title:%s\n",idx_article,title);
         history_list[0].idx_article = idx_article;
         strcpy(history_list[0].title, title);
         history_count++;
@@ -435,7 +430,6 @@ int set_history_list_base(int offset,int offset_count)
    else
        history_base = first_item_count;
 
-   msg(MSG_INFO,"base from %d to %d,offset:%d\n",base_last,history_base,offset);
    if(base_last!=history_base)
       return 1;
    else
@@ -447,7 +441,6 @@ void history_open_article(int new_selection)
         long idx_article;
         char title[MAX_TITLE_SEARCH];
         
-        msg(MSG_INFO,"history open article index:%d\n",new_selection);
 	history_current = new_selection;
 	idx_article = history_list[history_current + history_base].idx_article;
 	strcpy(title, history_list[history_current + history_base].title);

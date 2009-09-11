@@ -51,7 +51,7 @@ WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o
 WIKIAPP_COBJS += decompress.o keyboard.o
 
 # searching
-WIKIAPP_COBJS += search.o lsearcher.o fast_search.o
+WIKIAPP_COBJS += search.o lsearcher.o fast_search.o search_hash.o
 WIKIAPP_COBJS += article.o history.o wom_reader.o
 
 # BZLIB

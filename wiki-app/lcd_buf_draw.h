@@ -42,7 +42,7 @@ Assumptions:
 
 5 - escape character 5 (reset to the default font) 
 
-6 - escape character 6 (reset to the default alignment)
+6 - escape character 6 (reset to the default vertical alignment)
 
 7 - escape character 7 (forward), the byte after it stands for the pixels of move right (as the starting point of the next character).
     The next character or drawing line starts at the position after the movement.
@@ -52,8 +52,9 @@ Assumptions:
     The next character or line starts at the position after the movement. 
     The leftmost position after the movement is the leftmost pixel of the screen.
 
-9 - escape character 9 (alignment adjustment), the byte after it stand for the pixels to adjust to the default horizontal alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
-
+9 - escape character 9 (alignment vertical adjustment), the byte after it stand for the pixels to adjust to the default vertical alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
+    It takes effect for all lines after that until another excape character 9 or escape character 6 is encountered.
+    
 10 - escape character 10 (drawing horizontal line from right to left, 1 pixel thick), the next byte after it stands for the length of the line in pixels.
      The line starts at 1 pixel left to the starting position of the next character.
      Move forward/backward or set the alignment adjustment before drawing lines as necessary.
@@ -141,6 +142,7 @@ typedef struct _LCD_DRAW_BUF
 	int drawing;
 	int line_height;
 	int align_adjustment;
+	int vertical_adjustment;
 } LCD_DRAW_BUF;
 
 /* Structure of a single article in a file with mutiple articles */
@@ -194,7 +196,6 @@ int isArticleLinkSelected(int x,int y);
 void invert_link(int article_link_number);
 int draw_bmf_char(ucs4_t u,int font,int x,int y);
 int GetFontLinespace(int font);
-int is_supported_search_char(char c);
 void show_key(char c);
 void set_article_link_number(int num);
 int  get_article_link_number();
@@ -206,6 +207,8 @@ void scroll_article();
 int load_init_article(long);
 #endif
 #endif
+void msg_on_lcd(int x, int y, char *msg);
+void msg_on_lcd_clear(int x, int y);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];

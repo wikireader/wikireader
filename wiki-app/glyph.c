@@ -29,6 +29,7 @@
 #include <lcd.h>
 #include <samo.h>
 #include "lcd_buf_draw.h"
+#include "search.h"
 
 #include "msg.h"
 
@@ -105,14 +106,14 @@ static int simple_kerning(struct Glyph *a, struct Glyph *b)
  * static copy a char map... true for some fonts e.g.
  * the DejaVu family
  */
-static int char_to_glyph(char c)
+/*static int char_to_glyph(char c)
 {
 	if (c < 30)
 		return 0;
 	else
 		return c - 29;
 }
-
+*/
 /**
  * Simplistic string drawing
  *
@@ -152,22 +153,35 @@ xout:
 	return 0;
 }*/
 int render_string(const int font, int start_x,
-				  int start_y, const char *string, const int text_length)
+				  int start_y, char *string, int text_length)
 {
 	int i;
 	int x;
+	int width;
+	long len = text_length;
+	long lenLast = 0;
+	long widthLast = 0;
+	char *p = (char *)string;
+	int nCharBytes;
 	
-        char_to_glyph(32);
+	if (start_x < 0)
+		width = 0;
+	else
+		width = start_x;
+	while (len > 0 && width < LCD_BUF_WIDTH_PIXELS)
+	{
+		lenLast = len;
+		widthLast = width;
+		width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
+	}
+	if (width > LCD_BUF_WIDTH_PIXELS)
+	{
+		text_length -= lenLast;
+		width = widthLast;
+	}
 	
 	if (start_x < 0) // to be centered
 	{
-		int width = 0;
-		long len = text_length;
-		char *p = (char *)string;
-		int nCharBytes;
-		
-		while (len > 0)
-			width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
 		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
 		if (start_x < 0)
 			start_x = 0;
@@ -180,4 +194,51 @@ int render_string(const int font, int start_x,
                 return 0;
 	}
 	return x;
+}
+
+// if search string is longer than the LCD width, keep the right of it to fit
+int render_string_right(const int font, int start_x,
+				  int start_y, char *string, int text_length)
+{
+	int i;
+	int x;
+	int utf8_chars = 0;
+	int widths[MAX_TITLE_SEARCH];
+	int lens[MAX_TITLE_SEARCH];
+	int width = start_x;
+	long len = text_length;
+	char *p = (char *)string;
+	int nCharBytes;
+	int rc;
+	
+	while (len > 0 && utf8_chars < MAX_TITLE_SEARCH)
+	{
+		lens[utf8_chars] = len;
+		widths[utf8_chars] = get_UTF8_char_width(font, &p, &len, &nCharBytes);
+		width += widths[utf8_chars];
+		utf8_chars++;
+	}
+	
+	rc = width;
+	if (width > LCD_BUF_WIDTH_PIXELS)
+	{
+		int width_to_descrease = width - LCD_BUF_WIDTH_PIXELS;
+		
+		width = 0;
+		for (i = 0; i < utf8_chars && width < width_to_descrease; i++)
+			width += widths[i];
+		if (i < utf8_chars)
+		{
+			string = &string[text_length - lens[i]];
+			text_length = lens[i];
+		}
+	}
+	
+	x = start_x;	
+	for (i = 0; i < text_length; ++i) {
+	    x = draw_bmf_char(string[i],font-1,x,start_y);
+            if(x<0)
+                return 0;
+	}
+	return rc;
 }

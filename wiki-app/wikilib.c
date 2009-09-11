@@ -33,6 +33,7 @@
 #include <lcd.h>
 #include <tick.h>
 #include "delay.h"
+#include "search_hash.h"
 
 //#include <t_services.h>
 //#include <kernel.h>
@@ -129,7 +130,6 @@ static void print_intro()
 
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
     
 	//membuffer = malloc_simple(1024*1024,MEM_TAG_ARTICLE_F1);
 	keyboard_paint();
@@ -226,12 +226,10 @@ void article_display_pcf(int yPixel)
     int framebuffersize;
 	
 	framebuffersize  = 	guilib_framebuffer_size();
-	msg(MSG_INFO,"framebuffersize is:%d\n",framebuffer);
 
 	pos = curBufferPos+((yPixel*LCD_VRAM_WIDTH_PIXELS)/8);
 	if(pos<0 || pos>membuffersize)
 	{
-		msg(MSG_INFO,"pos is:%d,membuffersize is:%d\n",pos,membuffersize);
 		return;
 	}
 
@@ -243,11 +241,8 @@ void article_display_pcf(int yPixel)
 
 	else
 	{
-		msg(MSG_INFO,"copysize:%d<=framebuffersize:%d\n",copysize,framebuffersize);
 		return;
 	}
-
-	msg(MSG_INFO,"pos is:%d,membuffersize is:%d,copysize is:%d\n",pos,membuffersize,copysize);
 
 	guilib_fb_lock();
 	guilib_clear();
@@ -258,40 +253,6 @@ void article_display_pcf(int yPixel)
 	
 	curBufferPos = pos;
 }
-
-/*void open_article_pcf(char* filename)
-{
-	int len = render_text(membuffer,filename,73,70);
-	membuffersize = len;
-	
-	msg(MSG_INFO,"render len is:%d\n",len);
-
-    int framebuffersize = 	guilib_framebuffer_size();
-
-	msg(MSG_INFO,"framebuffersize  is:%d\n",framebuffersize);
-
-	display_mode = DISPLAY_MODE_ARTICLE;
-	
-	last_display_mode = DISPLAY_MODE_INDEX;
-
-	if(len > framebuffersize)
-		len = framebuffersize;
-
-	if(len>0)
-	{
-		guilib_fb_lock();
-		guilib_clear();
-		
-		memcpy(framebuffer,membuffer,len);
-
-		guilib_fb_unlock();
-
-		curBufferPos = 0;
-	}
-	
-	
-
-}*/
 
 void open_article(const char* target, int mode)
 {
@@ -334,7 +295,6 @@ static void handle_search_key(char keycode)
                 }
 		else
                 {
-                   msg(MSG_INFO, "%s() unhandled key: %d\n", __func__, keycode);
 		   return;
                 }
 	}
@@ -349,7 +309,6 @@ static void handle_search_key(char keycode)
 static void handle_cursor(struct wl_input_event *ev)
 {
 	DP(DBG_WL, ("O handle_cursor()\n"));
-	msg(MSG_INFO,"handle_cursor,ev->key_event.keycode:%d\n",ev->key_event.keycode);
 	if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 			//article_display_pcf(50);
@@ -399,7 +358,6 @@ static void handle_key_release(int keycode)
 //	static long idx_article = 0;
 
 	DP(DBG_WL, ("O handle_key_release()\n"));
-	msg(MSG_INFO,"handle_key_release,keycode:%d\n",keycode);
 	if (keycode == WL_INPUT_KEY_SEARCH) {
                 article_offset = 0;
 		article_buf_pointer = NULL;
@@ -419,13 +377,11 @@ static void handle_key_release(int keycode)
                 history_reload();
 	} else if (keycode == WL_INPUT_KEY_RANDOM) {
                 
-                msg(MSG_INFO,"article_buf_pointe==NULL\n");
                 article_offset = 0;
                 article_buf_pointer = NULL;
                 display_mode = DISPLAY_MODE_ARTICLE;
 	        last_display_mode = DISPLAY_MODE_INDEX;
 	        random_article();
-                msg(MSG_INFO,"random_article over\n");
  
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
@@ -472,19 +428,16 @@ static void handle_touch(struct wl_input_event *ev)
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
-        msg(MSG_INFO,"handle_touch,display_mode:%d\n",display_mode);
 
 	if (display_mode == DISPLAY_MODE_INDEX) {
 		struct keyboard_key * key;
 		article_buf_pointer = NULL;
-                msg(MSG_INFO,"handle_touch,display_mode==INDEX\n");
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
 			show_key(0);
                         enter_touch_y_pos_record = enter_touch_y_pos;
                         enter_touch_y_pos = -1;
                         touch_search = 0;
-                        msg(MSG_INFO,"ev->touch_event.value == 0\n");
                         press_delete_button = false;
 			pre_key = NULL;
 			if (key) {
@@ -495,7 +448,6 @@ static void handle_touch(struct wl_input_event *ev)
 				}
                                 int search_time_press_delete;
                                 search_time_press_delete = get_time();
-                                msg(MSG_INFO,"search_time_press_delete\n");
 				handle_search_key(key->key);
 			}
 			else {
@@ -519,13 +471,11 @@ static void handle_touch(struct wl_input_event *ev)
 			touch_down_on_keyboard = 0;
 			touch_down_on_list = 0;
 		} else {
-                        msg(MSG_INFO,"ev->touch_event.value != 0\n");
                         if(enter_touch_y_pos<0)  //record first touch y pos
                            enter_touch_y_pos = ev->touch_event.y;
                         last_index_y_pos = ev->touch_event.y;
                         start_search_time = get_time();
 			if (key) {
-                                msg(MSG_INFO,"press soft key:%d\n",key->key);
                                 if(key->key==8)//press "<" button
                                     press_delete_button = true;
 				if (!touch_down_on_keyboard && !touch_down_on_list)
@@ -543,7 +493,6 @@ static void handle_touch(struct wl_input_event *ev)
 					pre_key = key;
 				}
 			} else {
-                                msg(MSG_INFO,"key is null\n");
 				if (!touch_down_on_keyboard && !touch_down_on_list)
 					touch_down_on_list = 1;
 				if (pre_key) {
@@ -575,8 +524,6 @@ static void handle_touch(struct wl_input_event *ev)
                                 else
                                     new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
                                 
-                                msg(MSG_INFO,"ev->touch_event.y - RESULT_START:%d,new_selection:%d\n",ev->touch_event.y - RESULT_START,new_selection);
-
 				if (new_selection == search_result_selected()) goto out;
 
 				unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ? NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
@@ -584,8 +531,6 @@ static void handle_touch(struct wl_input_event *ev)
 				if (new_selection >= avail_count) goto out;
 				if (touch_down_on_keyboard) goto out;
                                 
-                                msg(MSG_INFO,"invert last_select:%d,new selection:%d\n",search_result_selected(),new_selection);
-
 				//invert_selection(search_result_selected(), new_selection, RESULT_START, RESULT_HEIGHT);
 				invert_selection(-1, new_selection, RESULT_START, RESULT_HEIGHT);
 
@@ -597,7 +542,6 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-                msg(MSG_INFO,"history touch event\n");
 		article_buf_pointer = NULL;
                 int end_history_time,time_diff_history;
                 //int offset,offset_count;
@@ -643,8 +587,6 @@ static void handle_touch(struct wl_input_event *ev)
 		    else
 			new_selection = ((unsigned int)ev->touch_event.y - HISTORY_RESULT_START ) / HISTORY_RESULT_HEIGHT ;
 
-	            msg(MSG_INFO,"new_selection:%d\n",new_selection);
-
 		    if (new_selection >= history_get_count()) goto out;
 	
 	            invert_selection(-1, new_selection, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
@@ -676,7 +618,6 @@ static void handle_touch(struct wl_input_event *ev)
                         }
                         if(get_article_link_number()>=0)
                         {
-                             msg(MSG_INFO,"article_link_number:%d\n",get_article_link_number());
                              open_article_link_with_link_number(get_article_link_number());
                              return;
                         }
@@ -714,25 +655,26 @@ static void handle_touch(struct wl_input_event *ev)
                            return;
 
                         #endif*/
-                         #ifndef INCLUDED_FROM_KERNEL
-			if (article_touch_down_pos.y > ev->touch_event.y &&
+
+			/*if (article_touch_down_pos.y > ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf(LCD_HEIGHT_LINES);
+                                display_article_with_pcf_smooth(LCD_HEIGHT_LINES);
 			else if (article_touch_down_pos.y < ev->touch_event.y &&
 					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf(-LCD_HEIGHT_LINES);
+                                display_article_with_pcf_smooth(-LCD_HEIGHT_LINES);
                         else if(abs(article_touch_down_pos.y - ev->touch_event.y) > 10)
                         {
-                                 display_article_with_pcf(article_touch_down_pos.y-ev->touch_event.y);
+                              if(article_touch_down_pos.y<ev->touch_event.y)
+                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y-speed*2);
+                              else
+                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y);
 
-                        }
-                        #endif
+                        }*/
                         
 				
 			article_touch_down_handled = 0;
 		} else {
                         article_offset = 0;
-                        //msg(MSG_INFO,"article_offset set to 0:%d\n",article_offset);
                         //if(abs(touch_y_last_article-ev->touch_event.y)>=5)
                         {
 			   last_article_move_time = get_time();
@@ -742,8 +684,6 @@ static void handle_touch(struct wl_input_event *ev)
                                article_touch_count = 0;
                            touch_y_last_article_list[article_touch_count] = ev->touch_event.y;
                            touch_time_last_article_list[article_touch_count] = last_article_move_time;
-
-                           //msg(MSG_INFO,"last_article_move_time:%d,article_touch_count:%d\n",last_article_move_time,article_touch_count);
 
                            article_touch_count++;
                            if(article_touch_count>=10)
@@ -756,8 +696,6 @@ static void handle_touch(struct wl_input_event *ev)
                         }
                         else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
                         {
-                              //msg(MSG_INFO,"touch_y_last_unreleased-ev->touch_event.y>10:%d\n",abs(touch_y_last_unreleased - ev->touch_event.y));
-
                               display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
                               touch_y_last_unreleased = ev->touch_event.y;
                               article_moved = true;
@@ -768,18 +706,16 @@ static void handle_touch(struct wl_input_event *ev)
 
                         {
 			      article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
-			      //msg(MSG_INFO,"article_link_number:%d\n",article_link_number);
                               last_article_link_number = get_article_link_number();
 			      if(article_link_number>=0 && article_link_number!=last_article_link_number)
                               {
 				invert_link(article_link_number);
 				invert_link(last_article_link_number);
-                                set_article_link_number(article_link_number);       msg(MSG_INFO,"set article_link_number:%d\n",article_link_number);
+                                set_article_link_number(article_link_number);
 
                               }
                               else if(article_link_number<0 && last_article_link_number>=0)
                               {
-                                msg(MSG_INFO,"set article_link_number:-1\n");
                                 invert_link(last_article_link_number);
                                 set_article_link_number(-1);
                               }
@@ -830,10 +766,15 @@ int wikilib_run(void)
 		last_display_mode = DISPLAY_MODE_INDEX;
 	}
 #endif
+	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 
 	for (;;) {
                 if(render_article_with_pcf())
                   sleep = 0;
+                else if (init_search_hash())
+                {
+                	sleep = 0;
+                }
                 else
                 {
                   history_list_save();
@@ -870,7 +811,6 @@ int wikilib_run(void)
                     {
 	                 sleep = 0;
 	                 time_now = get_time();
-	                 //msg(MSG_INFO,"diff time:%d\n",time_now-start_search_time);
 	                 if((time_now-start_search_time)>1000000*24*2)
 	                 {
 	                     clear_search_string();
@@ -889,7 +829,6 @@ int wikilib_run(void)
                 }	            	
 
 		wl_input_wait(&ev, sleep);
-                //msg(MSG_INFO,"wl_input_wait over\n");
 		switch (ev.type) {
 		case WL_INPUT_EV_TYPE_CURSOR:
 			handle_cursor(&ev);

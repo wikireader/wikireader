@@ -19,6 +19,7 @@
 #include "Bra.h"
 #include "LzmaEnc.h"
 #include "bigram.h"
+#include "search_hash.h"
 
 #define MAX_LOCAL_TEXT_BUF 512000
 #define LIST_TYPE_ORDERED 1
@@ -3878,7 +3879,7 @@ void generate_pedia_idx(MYSQL *conn, long *nIdxCount, ARTICLE_PTR **articlePtrs)
 }
 
 // pedia.idx format:
-//	The first 4 bytes contains the article count.
+//	The first 4 bytes contain the article count.
 // 	Each article got a ARTICLE_PTR structure entry in pedia.idx.
 // 	The first ARTICLE_PTR entry is for article idx 1.
 //
@@ -3892,6 +3893,7 @@ void generate_pedia_idx(MYSQL *conn, long *nIdxCount, ARTICLE_PTR **articlePtrs)
 //		idx of article (pointing to pedia.idx)
 //		variable length and null terminated remainder (starting from the 3rd character)
 #define SIZE_FIRST_THREE_CHAR_INDEXING SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
+#define SEQUENTIAL_SEARCH_COUNT_THRESHOLD 16
 void generate_pedia_files(MYSQL *conn, int bSplitted)
 {
 	FILE *fdPfx, *fdFnd, *fdIdx;
@@ -3912,6 +3914,12 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	long nIdxCount;
 	char t1, t2, t3, sStart[4], sEnd[4];
 	long nTitlesProcessed = 0;
+	int nSequentialSearchCounts[MAX_SEARCH_STRING_HASHED_LEN];
+	long offsetSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
+	long hashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
+	int i, j;
+	int bMatched;
+	int lenMatched;
 
 	fdIdx = fopen("pedia.idx", "wb");
 	if (!fdIdx)
@@ -3931,6 +3939,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 		showMsg(0, "cannot open file pedia.fnd, error: %s\n", strerror(errno));
 		exit(-1);
 	}
+	init_search_hash();
 
 	rc = mysql_query(conn, "select idx "
 		"from entries where idx is not null order by idx desc limit 1");
@@ -3952,11 +3961,17 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	generate_pedia_idx(conn, &nIdxCount, &articlePtrs);
 
 	firstThreeCharIndexing = (long *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
-	fwrite(&aBigram[0][0], 1, 128*2, fdFnd);
+	fwrite(&aBigram[0][0], 1, SIZE_BIGRAM_BUF, fdFnd);
 
 	sLastTitleSearch[0] = '\0';
 	lastIdxArticle = 0;
 	memset((void*)firstThreeCharIndexing, 0, SIZE_FIRST_THREE_CHAR_INDEXING);
+	for (i=0; i < MAX_SEARCH_STRING_HASHED_LEN; i++)
+	{
+		nSequentialSearchCounts[i] = 0;
+		offsetSequentialSearch[i] = 0;
+		hashSequentialSearch[i] = 0;
+	}
 
 	sStart[3] = '\0';
 	sEnd[3] = '\0';
@@ -4051,11 +4066,13 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 						titleSearch.idxArticle = 0;
 				}
 				if (!titleSearch.idxArticle ||
-					(!strcmp(sLastTitleSearch, row[2]) && titleSearch.idxArticle == lastIdxArticle))
+					(strlen(sLastTitleSearch) == strlen(row[2]) &&
+					!search_string_cmp(row[2], sLastTitleSearch, strlen(sLastTitleSearch)) && 
+					titleSearch.idxArticle == lastIdxArticle))
 				{
 					continue; // skipping redundant title for search
 				}
-				strcpy(sLastTitleSearch, row[2]);
+
 				lastIdxArticle = titleSearch.idxArticle;
 				switch (strlen(row[2])) // title_search
 				{
@@ -4084,6 +4101,66 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 				idxFirstThreeCharIndexing = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
 					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
 				offset_fnd = ftell(fdFnd);
+
+				lenMatched = 0;
+				if (strlen(sLastTitleSearch) > 3)
+				{
+					int lenLastTitleSearch = strlen(sLastTitleSearch);
+					int lenTitleSearch = strlen(row[2]);
+					int len;
+					char sSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+					
+					// only care the length up to MAX_SEARCH_STRING_HASHED_LEN
+					if (lenLastTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
+						lenLastTitleSearch = MAX_SEARCH_STRING_HASHED_LEN;
+					if (lenTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
+						lenTitleSearch = MAX_SEARCH_STRING_HASHED_LEN;
+					memcpy(sSearchString, sLastTitleSearch, lenLastTitleSearch);
+					
+					bMatched = 1;
+					for (len = 4; len <= lenLastTitleSearch || len <= lenTitleSearch; len++)
+					{
+						if (bMatched)
+						{
+							if (len > lenTitleSearch || search_string_cmp(row[2], sLastTitleSearch, len))
+								bMatched = 0;
+							else
+							{
+								lenMatched = len;
+								if (!hashSequentialSearch[len - 1])
+									nSequentialSearchCounts[len - 1] += 1;
+							}
+						}
+
+						if (len <= lenLastTitleSearch && nSequentialSearchCounts[len - 1] > SEQUENTIAL_SEARCH_COUNT_THRESHOLD)
+						{
+							hashSequentialSearch[len - 1] = add_search_hash(sSearchString, len, offsetSequentialSearch[len - 1]);
+							// reset sequential counts 
+							for (j = len; j <= lenLastTitleSearch; j++)
+							{
+								nSequentialSearchCounts[j - 1] = 0;
+							}
+						}
+					}
+				}
+
+				i = lenMatched;
+				while (i < MAX_TITLE_LEN && row[2][i])
+				{
+					if ('A' <= row[2][i] && row[2][i] <= 'Z')
+						sLastTitleSearch[i] = row[2][i] + 32;
+					else
+						sLastTitleSearch[i] = row[2][i];
+					if (3 <= i && i < MAX_SEARCH_STRING_HASHED_LEN)
+					{
+						offsetSequentialSearch[i] = offset_fnd;
+						nSequentialSearchCounts[i] = 0;
+						hashSequentialSearch[i] = 0;
+					}
+					i++;
+				}
+				sLastTitleSearch[i] = '\0';
+
 				if (idxFirstThreeCharIndexing != lastIdxFirstThreeCharIndexing)
 				{
 					if (c2 != '\0' && firstThreeCharIndexing[bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT] == 0)
@@ -4115,6 +4192,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	fwrite((void*)firstThreeCharIndexing, 1, SIZE_FIRST_THREE_CHAR_INDEXING, fdPfx);
 	fwrite((void*)&nIdxCount, 1, sizeof(nIdxCount), fdIdx);
 	fwrite((void*)articlePtrs, sizeof(ARTICLE_PTR),  nIdxCount, fdIdx);
+	save_search_hash();
 	free(firstThreeCharIndexing);
 	free(articlePtrs);
 	fclose(fdPfx);

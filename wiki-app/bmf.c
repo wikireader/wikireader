@@ -73,10 +73,6 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 
             font_header =  sizeof(font_bmf_header);
             size = val*sizeof(charmetric_bmf)+font_header;
-     /*#ifndef WIKIPCF
-         if(val>256)
-         msg(MSG_INFO,"font:%x,supplement_font:%x,char:%d,font file:%s,\n",font,font->supplement_font,val,font->file);
-     #endif*/
 
             if(val <= 256)
             {
@@ -121,9 +117,6 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
                   //return -1;
               }
             }
-     /*#ifndef WIKIPCF
-         msg(MSG_INFO,"char:%d,width:%d,height:%d,widthBytes:%d,font file:%s\n",val,Cmetrics->width,Cmetrics->height,Cmetrics->widthBytes,font->file);
-     #endif*/
         
         if(Cmetrics->width>0)
             *bitmap = (bmf_bm_t*)Cmetrics+8;

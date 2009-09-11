@@ -33,6 +33,7 @@
 #define MAX_COMPRESSED_ARTICLE 256*1024
 #define MESSAGE_TYPE_A_WORD "Type a Word or Phrase"
 #define MESSAGE_NO_RESULTS "No entries found"
+#define MESSAGE_SEARCHING "searching..."
 
 typedef struct _ARTICLE_PTR {
 	long offset_dat;	/* offset to pedia?.dat for the article content */

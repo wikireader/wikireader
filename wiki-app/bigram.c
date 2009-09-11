@@ -114,3 +114,42 @@ void bigram_decode(char *outStr, char *inStr)
 	*outStr = '\0';
 }
 
+int is_supported_search_char(char c)
+{
+	if (c && (strchr(SUPPORTED_SEARCH_CHARS, c) || ('A' <= c && c <= 'Z')))
+		return 1;
+	else
+		return 0;
+}
+
+int search_string_cmp(char *title, char *search, int len)  // assuming search consists of lowercase only
+{
+	int rc = 0;
+	char c = 0;
+	
+	while (!rc && len > 0)
+	{
+		c = *title;
+		if (c && !is_supported_search_char(c))
+		{
+			title++;
+		}
+		else
+		{
+			if ('A' <= c && c <= 'Z')
+				c += 32;
+			if (c == *search)
+			{
+				title++;
+				search++;
+				len--;
+			}
+			else if (c > *search)
+				rc = 1;
+			else
+				rc = -1;
+		}
+	}
+	return rc;
+}
+		

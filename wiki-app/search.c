@@ -26,6 +26,7 @@
 #include "lcd_buf_draw.h"
 #include "bigram.h"
 #include "history.h"
+#include "search_hash.h"
 #include <tick.h>
 #include <input.h>
 
@@ -56,7 +57,6 @@ static SEARCH_RESULTS *result_list;
 
 typedef struct _search_info {
 	int fd_pfx;
-	int fd_fnd;
 	int fd_idx;
 	int fd_dat[MAX_DAT_FILES];
 	long max_article_idx;
@@ -119,37 +119,11 @@ void get_article_title_from_idx(long idx, char *title)
 	_wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
 	{
-		_wl_seek(search_info->fd_fnd, article_ptr.offset_fnd);
-		_wl_read(search_info->fd_fnd, (void *)&title_search, sizeof(title_search));
+		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
 		bigram_decode(title, title_search.sTitleSearch);
 		title[MAX_TITLE_SEARCH - 1] = '\0';
 	}
 }
-
-int search_string_cmp(char *title, char *search, int len)  // assuming search consists of lowercase only
-{
-	int rc = 0;
-	char c;
-	
-	while (!rc && len > 0)
-	{
-		c = *title;
-		if ('A' <= c && c <= 'Z')
-			c += 32;
-		if (c == *search)
-		{
-			title++;
-			search++;
-			len--;
-		}
-		else if (c > *search)
-			rc = 1;
-		else
-			rc = -1;
-	}
-	return rc;
-}
-		
 
 int load_prefix_index(void)
 {
@@ -158,14 +132,12 @@ int load_prefix_index(void)
 	if (!prefix_index_loaded)
 	{
 		search_info->fd_pfx = _wl_open("pedia.pfx", WL_O_RDONLY);
-		search_info->fd_fnd = _wl_open("pedia.fnd", WL_O_RDONLY);
-		init_bigram(search_info->fd_fnd);
 		search_info->fd_idx = _wl_open("pedia.idx", WL_O_RDONLY);
 		for (i=0; i < MAX_DAT_FILES; i++)
 			search_info->fd_dat[i] = -1;
 		search_info->offset_current = -1;
 		search_info->offset_search_result = -1;
-		if (search_info->fd_pfx >= 0 && search_info->fd_fnd >= 0 && search_info->fd_idx >= 0)
+		if (search_info->fd_pfx >= 0 && search_info->fd_idx >= 0)
 		{
 			_wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
 			if (_wl_read(search_info->fd_pfx, (void *)search_info->prefix_index_table, SIZE_PREFIX_INDEX_TABLE) == 
@@ -252,20 +224,20 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 	
 	if (search_info->offset_current == offset_fnd)
 		len_to_read = 0;
-	else if (search_info->offset_current >= 0 && search_info->offset_current <= offset_fnd &&   
-		offset_fnd < search_info->offset_current + sizeof(search_info->buf))
-	{
-		len_to_read = offset_fnd - search_info->offset_current;
-		memcpy(search_info->buf, &search_info->buf[len_to_read], sizeof(search_info->buf) - len_to_read); // retaining reusable content
-		buf_to_read = &(search_info->buf[sizeof(search_info->buf) - len_to_read]);
-	}
-	else if (search_info->offset_current >= 0 && search_info->offset_current - sizeof(search_info->buf) <= offset_fnd &&
-		offset_fnd < search_info->offset_current)
-	{
-		len_to_read = search_info->offset_current - offset_fnd;
-		memrcpy(&search_info->buf[len_to_read], search_info->buf, sizeof(search_info->buf) - (search_info->offset_current - offset_fnd)); // retaining reusable content
-		buf_to_read = search_info->buf;
-	}
+//	else if (search_info->offset_current >= 0 && search_info->offset_current <= offset_fnd &&   
+//		offset_fnd < search_info->offset_current + sizeof(search_info->buf))
+//	{
+//		len_to_read = offset_fnd - search_info->offset_current;
+//		memcpy(search_info->buf, &search_info->buf[len_to_read], sizeof(search_info->buf) - len_to_read); // retaining reusable content
+//		buf_to_read = &(search_info->buf[sizeof(search_info->buf) - len_to_read]);
+//	}
+//	else if (search_info->offset_current >= 0 && search_info->offset_current - sizeof(search_info->buf) <= offset_fnd &&
+//		offset_fnd < search_info->offset_current)
+//	{
+//		len_to_read = search_info->offset_current - offset_fnd;
+//		memrcpy(&search_info->buf[len_to_read], search_info->buf, sizeof(search_info->buf) - (search_info->offset_current - offset_fnd)); // retaining reusable content
+//		buf_to_read = search_info->buf;
+//	}
 	else
 	{
 		buf_to_read = search_info->buf;
@@ -274,8 +246,7 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 
 	if (len_to_read > 0)
 	{
-		_wl_seek(search_info->fd_fnd, offset_fnd);
-		len = _wl_read(search_info->fd_fnd, buf_to_read, len_to_read);
+		len = copy_fnd_to_buf(offset_fnd, buf_to_read, len_to_read);
 		if (len <= 0)
 		{
 			result_list->result_populated = 1;
@@ -298,9 +269,8 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 			{
 				if (!result_list->count)
 				{
-					 offset_fnd =  offset_fnd + idxNextTitleSearch;
-					_wl_seek(search_info->fd_fnd, offset_fnd);
-					len = _wl_read(search_info->fd_fnd, search_info->buf, sizeof(search_info->buf));
+					offset_fnd =  offset_fnd + idxNextTitleSearch;
+					len = copy_fnd_to_buf(offset_fnd, search_info->buf, sizeof(search_info->buf));
 					if (len <= 0)
 					{
 						result_list->result_populated = 1;
@@ -326,6 +296,8 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 			else if (rc < 0)
 			{
 				idxNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+				offset_fnd = offset_fnd + idxNextTitleSearch;
+				idxNextTitleSearch = 0;
 			}
 			else
 			{
@@ -336,8 +308,7 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 		else
 		{
 			offset_fnd = offset_fnd + idxNextTitleSearch;
-			_wl_seek(search_info->fd_fnd, offset_fnd);
-			len = _wl_read(search_info->fd_fnd, search_info->buf, sizeof(search_info->buf));
+			len = copy_fnd_to_buf(offset_fnd, search_info->buf, sizeof(search_info->buf));
 			if (len <= 0)
 			{
 				result_list->result_populated = 1;
@@ -356,7 +327,15 @@ out:
 		return 0;
 	}
 	else
+	{
+//		if (bInit)
+//		{
+//			guilib_fb_lock();
+//			render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_SEARCHING, strlen(MESSAGE_SEARCHING));
+//			guilib_fb_unlock();
+//		}
 		return 1;
+	}
 }
 
 int search_populate_result()
@@ -364,6 +343,12 @@ int search_populate_result()
 	int idx_prefix_index_table;
 	char c1, c2, c3;
 	int found = 0;
+	int i;
+	int lenCompared;
+	int lenCopied;
+	static int lenHashedSearchString = 0;
+	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 	
 	result_list->count = 0;
 	result_list->base = 0;
@@ -390,31 +375,101 @@ int search_populate_result()
 		}
 		idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
 			bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-		if (search_info->prefix_index_table[idx_prefix_index_table])
+				
+		if (search_str_len > 3)
+		{
+			// check the length of the hashed search string can be reused
+			if (search_str_len > lenHashedSearchString)
+				lenCompared = lenHashedSearchString;
+			else
+				lenCompared = search_str_len;
+			for (i = 0; i < lenCompared; i++)
+			{
+				if (sHashedSearchString[i] != search_string[i]);
+					lenHashedSearchString = i;
+			}
+			
+			if (lenHashedSearchString > 3)
+			{
+				if (search_str_len > lenHashedSearchString)
+				{
+					if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+						lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
+					else
+						lenCopied = search_str_len - lenHashedSearchString;
+					memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
+					for (i = 3; i < lenHashedSearchString + lenCopied; i++)
+					{
+						if (i >= lenHashedSearchString)
+							offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+						if (offsetHasedSearchString[i])
+						{
+							found = 1;
+							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
+						}
+					}
+					lenHashedSearchString += lenCopied;
+				}
+				
+				if (!found)
+				{
+					for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
+					{
+						if (offsetHasedSearchString[i])
+						{
+							found = 1;
+							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
+						}
+						else
+							break;
+					}
+				}
+			}
+			else
+			{
+				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+					lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
+				else
+					lenHashedSearchString = search_str_len;
+				memcpy(sHashedSearchString, search_string, lenHashedSearchString);
+				for (i = 3; i < lenHashedSearchString; i++)
+				{
+					offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+					if (offsetHasedSearchString[i])
+					{
+						found = 1;
+						search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
+					}
+				}
+			}
+		}
+		
+		if (!found && search_info->prefix_index_table[idx_prefix_index_table])
 		{
 			found = 1;
 			search_info->offset_search_result = search_info->prefix_index_table[idx_prefix_index_table];
-			fetch_search_result(search_info->prefix_index_table[idx_prefix_index_table], 1);
 		}
+		fetch_search_result(search_info->offset_search_result, 1);
 	}
 	return found;
 }
 
-void capitalize(char *in_str, char *out_str)
+void capitalize(char *in_str, char *out_str, int len)
 {
-	char cPrev = ' ';
+	//char cPrev = ' ';
+	int i = 0;
 	
-	while (*in_str)
+	while (i < len)
 	{
-		if (cPrev == ' ' && 'a' <= *in_str && *in_str <= 'z')
-			*out_str = *in_str -= 32;
+		//if (cPrev == ' ' && 'a' <= in_str[i] && in_str[i] <= 'z')
+		if (i == 0 && 'a' <= in_str[i] && in_str[i] <= 'z')
+			out_str[i] = in_str[i] - 32;
 		else
-			*out_str = *in_str;
-		cPrev = *in_str;
-		in_str++;
-		out_str++;
+			out_str[i] = in_str[i];
+		//cPrev = in_str[i];
+		i++;
 	}
-	*out_str = '\0';
+	out_str[i] = '\0';
 }
 
 void search_reload()
@@ -444,8 +499,10 @@ void search_reload()
 	}
 
 	//render_string(4, 87, 10, search_string, strlen(search_string));
-	capitalize(search_string, temp_search_string);
-	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, temp_search_string, strlen(temp_search_string));
+	capitalize(search_string, temp_search_string, search_str_len);
+	if (search_str_len > 1 && search_string_pos[search_str_len - 1] >= LCD_BUF_WIDTH_PIXELS)
+		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
 	y_pos = RESULT_START;
 
 //	int found = 0;
@@ -502,8 +559,10 @@ void search_reload_ex()
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos,start_x_search=0;
+	static int last_start_x_search=0;
 	char *title;
 	char temp_search_string[MAX_TITLE_SEARCH];
+	
 
 
 	guilib_fb_lock();
@@ -520,7 +579,12 @@ void search_reload_ex()
                     else
                        start_x_search = search_string_pos[search_str_len];
                     search_string_changed_remove = false;
-		    guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
+                    if (start_x_search < LCD_BUF_WIDTH_PIXELS)
+			guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
+		    else
+		    {
+		    	guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+         	    }
                 }
 
 
@@ -533,10 +597,17 @@ void search_reload_ex()
 		goto out;
 	}
 
-	capitalize(search_string, temp_search_string);
-	start_x_search = render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 5, temp_search_string, strlen(temp_search_string));
+	capitalize(search_string, temp_search_string, search_str_len);
+	if (last_start_x_search >= LCD_BUF_WIDTH_PIXELS)
+		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
+	if (last_start_x_search < LCD_BUF_WIDTH_PIXELS && start_x_search >= LCD_BUF_WIDTH_PIXELS)
+	{	
+		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
+	}
+	last_start_x_search = start_x_search;
         search_string_pos[search_str_len]=start_x_search;
-        msg(MSG_INFO,"start_x_search:%d\n",start_x_search);
 	y_pos = RESULT_START;
 
 
@@ -646,7 +717,6 @@ void search_add_char(char c)
         #endif
         search_string_changed = true;
 	search_populate_result();
-        msg(MSG_INFO,"search_result_count:%d\n",result_list->count);
         result_list->cur_selected = -1;
 }
 void search_fetch()
@@ -665,7 +735,6 @@ void search_fetch()
 void search_remove_char(void)
 {
 	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
-        msg(MSG_INFO,"enter search_remove_char\n");
 	if (search_str_len == 0)
 		return;
 
@@ -939,69 +1008,26 @@ start:
 			if (search_info->fd_dat[dat_file_id] < 0)
 			{
 				sprintf(file_name, "pedia%d.dat", dat_file_id);
-                                msg(MSG_INFO,"wl_open file:%s\n",file_name);
 				search_info->fd_dat[dat_file_id] = _wl_open(file_name, WL_O_RDONLY);
-                                msg(MSG_INFO,"search_info->fd_dat[dat_file_id]:%d,dat_file_id:%d\n",search_info->fd_dat[dat_file_id],dat_file_id);
 			}
 			if (search_info->fd_dat[dat_file_id] >= 0)
 			{
 				_wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat);
 				_wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
-				/*if ((article_ptr.file_id_compressed_len & 0x40000000) == 0x40000000)
+				propsSize = (unsigned int)compressed_buf[0];
+				memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
+				dat_article_len -= LZMA_PROPS_SIZE + 1;
+				rc = (int)LzmaDecode(file_buffer, &file_buffer_len, compressed_buf + LZMA_PROPS_SIZE + 1, &dat_article_len,
+					propsEncoded, propsSize, LZMA_FINISH_ANY, &status, &g_Alloc);
+				if (rc == SZ_OK || rc == SZ_ERROR_INPUT_EOF) /* not sure why it generate SZ_ERROR_INPUT_EOF yet but result ok */
 				{
-                                        msg(MSG_INFO,"1-BZ2_bzBuffToBuffDecompress\n");
-					rc = BZ2_bzBuffToBuffDecompress(file_buffer, &file_buffer_len, compressed_buf, dat_article_len, 1, 0);
-                                        msg(MSG_INFO,"BZ2_bzBuffToBuffDecompress over\n");
-					if (rc == BZ_OK)
-					{
-						file_buffer[file_buffer_len] = '\0';
-						return 0;
-					}
-				}*/
-				//else if ((article_ptr.file_id_compressed_len & 0x80000000) == 0x80000000)
-				{
-					propsSize = (unsigned int)compressed_buf[0];
-					memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
-					dat_article_len -= LZMA_PROPS_SIZE + 1;
-                                        msg(MSG_INFO,"2-LzmaDecode\n");
-					rc = (int)LzmaDecode(file_buffer, &file_buffer_len, compressed_buf + LZMA_PROPS_SIZE + 1, &dat_article_len,
-						propsEncoded, propsSize, LZMA_FINISH_ANY, &status, &g_Alloc);
-					if (rc == SZ_OK || rc == SZ_ERROR_INPUT_EOF) /* not sure why it generate SZ_ERROR_INPUT_EOF yet but result ok */
-					{
-                                                msg(MSG_INFO,"LzmaDecode ok\n");
-						file_buffer[file_buffer_len] = '\0';
-						return 0;
-					}
-                                        else
-                                        {
-					   wl_close(search_info->fd_idx);
-					   search_info->fd_idx = _wl_open("pedia.idx", WL_O_RDONLY);
-
-                                           msg(MSG_INFO,"LzmaDecode failed,close file\n");
-	                                  wl_close(search_info->fd_dat[dat_file_id]);
-                                          search_info->fd_dat[dat_file_id] = -1;
-                                        }
+					file_buffer[file_buffer_len] = '\0';
+					return 0;
 				}
-				/*else
-				{
-                                        msg(MSG_INFO,"3-lzo1x_decompress\n");
-					rc = lzo1x_decompress((void *)compressed_buf, (lzo_uint)dat_article_len, (void *)file_buffer, 
-						&lzo_file_buffer_len, wrkmem);
-                                        msg(MSG_INFO,"lzo1x_decompress over\n");			
-                                        if (rc == LZO_E_OK)
-					{
-						file_buffer[lzo_file_buffer_len] = '\0';
-						return 0;
-					}
-				}*/
 			}
-                        else
-                        {
-                        }
 		}
                 else
                 {
-			msg(MSG_INFO,"close index file\n");
 			wl_close(search_info->fd_idx);
 			search_info->fd_idx = _wl_open("pedia.idx", WL_O_RDONLY);
                         if(open_number<2)
@@ -1063,8 +1089,7 @@ long find_closest_idx(long idx, char *title)
 	else
 	{
 		count = 0;
-		_wl_seek(search_info->fd_fnd, article_ptr.offset_fnd);
-		_wl_read(search_info->fd_fnd, (void *)&title_search, sizeof(title_search));
+		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
 		bigram_decode(title, title_search.sTitleSearch);
 		title[MAX_TITLE_SEARCH - 1] = '\0';
 		return idx;
@@ -1075,7 +1100,7 @@ void random_article(void)
 {
 	long idx_article;
 	char title[MAX_TITLE_SEARCH];
-	long clock_ticks;
+	unsigned long clock_ticks;
 		
 #ifdef INCLUDED_FROM_KERNEL
 	clock_ticks = Tick_get();
@@ -1098,11 +1123,9 @@ int set_result_list_base(int offset,int offset_count)
    int base_last;
     
    base_last = result_list->base;
-   msg(MSG_INFO,"in set_result_list_base,offset_count :%d\n",offset_count);
 
    if(result_list->count <= screen_display_count)
    {
-     msg(MSG_INFO,"result_list->count:%d<=screen_display_count:%d\n",result_list->count,screen_display_count); 
      return 0;
    }
 
@@ -1111,13 +1134,10 @@ int set_result_list_base(int offset,int offset_count)
    else
       first_item_count = result_list->base-offset_count;
 
-   msg(MSG_INFO,"first_item_count:%d\n",first_item_count);
-
    if(first_item_count<0)
        result_list->base = 0;
    else if(first_item_count > (result_list->count - screen_display_count))
    {
-       msg(MSG_INFO,"first_item_count:%d>(result_list->count:%d - screen_display_count:%d)\n",first_item_count,result_list->count,screen_display_count);
        result_list->base = result_list->count-screen_display_count;
        if(result_list->base < 0)
            result_list->base = 0;
@@ -1126,7 +1146,6 @@ int set_result_list_base(int offset,int offset_count)
    else
        result_list->base = first_item_count;
 
-   msg(MSG_INFO,"base from %d to %d,offset:%d\n",base_last,result_list->base,offset);
    if(base_last!=result_list->base)
       return 1;
    else
