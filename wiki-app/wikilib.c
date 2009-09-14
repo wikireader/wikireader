@@ -11,10 +11,8 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <wikilib.h>
-#include <article.h>
 #include <guilib.h>
 #include <glyph.h>
-#include <fontfile.h>
 #include <history.h>
 #include <wl-keyboard.h>
 #include <input.h>
@@ -27,7 +25,6 @@
 #include <perf.h>
 #include <profile.h>
 #include <malloc-simple.h>
-#include "wom_reader.h"
 #include <bmf.h>
 #include <lcd_buf_draw.h>
 #include <lcd.h>
@@ -69,7 +66,6 @@ static unsigned int start_move_time = 0;
 int    last_index_y_pos;
 int    enter_touch_y_pos = -1;
 int    last_history_y_pos;
-wom_file_t * g_womh = 0;
 char * articleBuffer = 0;
 int articleLength = 0;
 unsigned char * membuffer = 0;
@@ -78,7 +74,7 @@ int curBufferPos  = 0;
 unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
-int start_search_time,end_search_time,start_search_selection_time;
+int start_search_time,end_search_time,start_search_selection_time, last_delete_time;
 int last_article_link_number = -1;
 int last_article_move_time,touch_y_last_article;
 int touch_y_last_article_list[10],touch_time_last_article_list[10];
@@ -96,7 +92,8 @@ extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
-int  article_scroll_pixel = 10;
+#define INITIAL_ARTICLE_SCROLL_PIXEL 5
+int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 
 static void repaint_search(void)
 {
@@ -114,11 +111,11 @@ static void toggle_soft_keyboard(void)
 	/* Set the keyboard mode to what we want to change to. */
 	if (keyboard_get_mode() == KEYBOARD_NONE || search_result_count()==0) {
 		keyboard_set_mode(KEYBOARD_CHAR);
-		search_reload();
+//		search_reload_ex();
 		keyboard_paint();
 	} else {
 		keyboard_set_mode(KEYBOARD_NONE);
-		search_reload();
+		search_reload_ex();
 	}
 
 	//guilib_fb_unlock();
@@ -165,6 +162,9 @@ int article_open(const char *article)
 	return 0;
 }
 
+
+#if 0
+// this is no longer used
 void article_display(enum article_nav nav)
 {
 	unsigned int screen_height = guilib_framebuffer_height();
@@ -176,7 +176,11 @@ void article_display(enum article_nav nav)
 		s_article_y_pos = (s_article_y_pos <= screen_height) ? 0 : s_article_y_pos - screen_height;
 //	wom_draw(g_womh, s_article_offset, framebuffer, s_article_y_pos, screen_height);
 }
-/*int article_open_pcf(const char *filename)
+#endif
+
+#if 0
+// this is no longer used
+int article_open_pcf(const char *filename)
 {
 
 	FILE * pFile;
@@ -218,7 +222,9 @@ void article_display(enum article_nav nav)
 	render_article(articleBuffer,articleLength,framebuffer_article);
     
 	return lSize;
-}*/
+}
+#endif
+
 void article_display_pcf(int yPixel)
 {
 	int pos;
@@ -370,7 +376,7 @@ static void handle_key_release(int keycode)
                         keyboard_set_mode(KEYBOARD_CHAR);
 			repaint_search();
 		}
-	} else if (keycode == WL_INPUT_KEY_HISTORY) {
+	} else if (keycode == WL_INPUT_KEY_HISTORY && display_mode != DISPLAY_MODE_HISTORY) {
                 article_offset = 0;
 		article_buf_pointer = NULL;
 		display_mode = DISPLAY_MODE_HISTORY;
@@ -475,6 +481,7 @@ static void handle_touch(struct wl_input_event *ev)
                            enter_touch_y_pos = ev->touch_event.y;
                         last_index_y_pos = ev->touch_event.y;
                         start_search_time = get_time();
+                        last_delete_time = start_search_time;
 			if (key) {
                                 if(key->key==8)//press "<" button
                                     press_delete_button = true;
@@ -599,7 +606,7 @@ static void handle_touch(struct wl_input_event *ev)
 	} else {
 		if (ev->touch_event.value == 0) {
                         article_moved = false;
-                        article_scroll_pixel = 10;
+                        article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
                         int end_move_time,time_diff;
                         //int speed = 0,count_next=0,distance=0,i=0;
 
@@ -811,12 +818,19 @@ int wikilib_run(void)
                     {
 	                 sleep = 0;
 	                 time_now = get_time();
-	                 if((time_now-start_search_time)>1000000*24*2)
+	                 if((time_now-start_search_time)>1000000*24*4)
 	                 {
 	                     clear_search_string();
 	                     search_string_changed_remove = true;
 	                     search_reload_ex();
 	                     press_delete_button = false;
+	                 }
+	                 else if ((time_now-start_search_time)>1000000*18 && (time_now-last_delete_time)>1000000*12)
+	                 {
+	                     search_remove_char();
+	                     search_string_changed_remove = true;
+	                     search_reload_ex();
+	                     last_delete_time = time_now;
 	                 }
 	            }
 	            

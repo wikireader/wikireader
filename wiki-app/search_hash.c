@@ -185,6 +185,8 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	char sDecoded[MAX_TITLE_SEARCH * 2];
 	int bFound = 0;
 	
+	if (nHashEntriesLoaded == 0)
+		return 0;
 	nHashKey = hash_key(sSearchString, len);
 	if (nHashKey > nHashEntriesLoaded && init_search_hash()) // if the required entry not loaded then return not found
 		return 0;

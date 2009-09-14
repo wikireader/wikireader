@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <wikilib.h>
 #include <msg.h>
@@ -86,7 +87,81 @@ unsigned int read_u32(const unsigned char* start, unsigned int offset)
 const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 {
 	unsigned int font_start, n_glyphs, glyph_index, *glyph_table;
+	struct glyph *p_glyph;
+	static char glyph_buf[16];
 
+	// some glyphs in use are not defined correctly and are returned with the static definitions
+	if (font == 0)
+	{
+		if (glyph + 29 == '.')
+		{
+			p_glyph = (struct glyph *)glyph_buf;
+			p_glyph->width = 1;
+			p_glyph->height = 1;
+			p_glyph->top_bearing = 1;
+			p_glyph->n_spacing_hints = 0;
+			p_glyph->data[0] = 0x80;
+			return p_glyph;
+		}
+		else if (glyph + 29 == ';')
+		{
+			p_glyph = (struct glyph *)glyph_buf;
+			p_glyph->width = 1;
+			p_glyph->height = 4;
+			p_glyph->top_bearing = 3;
+			p_glyph->n_spacing_hints = 0;
+			p_glyph->data[0] = 0xB0;
+			return p_glyph;
+		}
+		else if (glyph + 29 == '-')
+		{
+			p_glyph = (struct glyph *)glyph_buf;
+			p_glyph->width = 3;
+			p_glyph->height = 1;
+			p_glyph->top_bearing = 4;
+			p_glyph->n_spacing_hints = 0;
+			p_glyph->data[0] = 0xE0;
+			return p_glyph;
+		}
+		else if (glyph + 29 == 'x')
+		{
+			p_glyph = (struct glyph *)glyph_buf;
+			p_glyph->width = 5;
+			p_glyph->height = 5;
+			p_glyph->top_bearing = 5;
+			p_glyph->n_spacing_hints = 0;
+			p_glyph->data[0] = 0x8A;
+			p_glyph->data[1] = 0x88;
+			p_glyph->data[2] = 0xA8;
+			p_glyph->data[3] = 0x80;
+			return p_glyph;
+		}
+		if (glyph + 29 == '`')
+		{
+			p_glyph = (struct glyph *)glyph_buf;
+			p_glyph->width = 8;
+			p_glyph->height = 7;
+			p_glyph->top_bearing = 7;
+			p_glyph->n_spacing_hints = 0;
+			p_glyph->data[0] = 0x3C;
+			p_glyph->data[1] = 0x5A;
+			p_glyph->data[2] = 0xA5;
+			p_glyph->data[3] = 0xB9;
+			p_glyph->data[4] = 0xA9;
+			p_glyph->data[5] = 0x66;
+			p_glyph->data[6] = 0x3C;
+/*			p_glyph->data[0] = 0x3E;
+			p_glyph->data[1] = 0x2E;
+			p_glyph->data[2] = 0xA8;
+			p_glyph->data[3] = 0xB7;
+			p_glyph->data[4] = 0x9A;
+			p_glyph->data[5] = 0x4B;
+			p_glyph->data[6] = 0x18;
+			p_glyph->data[7] = 0xF8;
+*/			return p_glyph;
+		}
+	}
+				
 	/* the entry in the font_index table points to the position in our
 	 * file where the font definition starts */
 	font_start = WL_LTONL(font_index[font]);
@@ -107,7 +182,8 @@ const struct glyph *get_glyph(unsigned int font, unsigned int glyph)
 	glyph_table = (unsigned int *) (file_buf + font_start);
 	glyph_index = WL_LTONL(read_u32(file_buf, font_start + 4 * glyph));
 
-	return (struct glyph *) (file_buf + font_start + glyph_index);
+	p_glyph = (struct glyph *) (file_buf + font_start + glyph_index);
+	return p_glyph;
 }
 
 int read_font_file(const char *filename)

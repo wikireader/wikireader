@@ -21,7 +21,6 @@
 #include <string.h>
 #include "guilib.h"
 #include "glyph.h"
-#include "fontfile.h"
 #include <regs.h>
 #include <lcd.h>
 #include <samo.h>
@@ -218,16 +217,8 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 				IMG_GET_PIXEL(img, xx, yy));
 }
 
-#define FONTFILE "fontfile.gen"
-
 void guilib_init(void)
 {
 	guilib_clear();
-
-	/* just some tests ... */
-	if (read_font_file(FONTFILE) != 0) {
-		msg(MSG_INFO, "unable to load font file %s\n", FONTFILE);
-		return;
-	}
 }
 

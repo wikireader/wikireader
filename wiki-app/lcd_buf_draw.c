@@ -20,9 +20,6 @@
 #include <tick.h>
 #include "history.h"
 #include "search.h"
-#endif
-
-#ifdef INCLUDED_FROM_KERNEL
 #include "glyph.h"
 #endif
 
@@ -441,8 +438,6 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	
 	while (**pUTF8 > MAX_ESC_CHAR) /* stop at end of string or escape character */
 	{
-               #ifdef INCLUDED_FROM_KERNEL
-               #endif
 		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			buf_draw_char(u);
@@ -456,8 +451,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 }
 void repaint_framebuffer(unsigned char *buf,int pos)
 {
-	int framebuffersize;
 #ifndef WIKIPCF
+	int framebuffersize;
 	framebuffersize = framebuffer_size();
 	
 	guilib_fb_lock();
@@ -739,6 +734,81 @@ void init_render_article()
 //	is_rendering = 1;
 }
 
+#define LICENSE_TEXT_FONT 0
+#define LICENSE_TEXT_LINE_HEIGHT 12
+#define SPACE_BEFORE_LICENSE_TEXT 100
+#define APACE_AFTER_LICENSE_TEXT 5
+#define LICENSE_TEXT_1 "2009.8.25"
+#define LICENSE_TEXT_2 "Text is available under the Creative Commons"
+#define LICENSE_TEXT_3 "Attribution-ShareAlike License; additional terms may"
+#define LICENSE_TEXT_4 "apply.  See Terms of Use for details.  Wikipedia`"
+#define LICENSE_TEXT_5 "is a registered trademark of the Wikimedia Foundation,"
+#define LICENSE_TEXT_6 "Inc., a non-profit organization."
+void render_wikipedia_license_text()
+{
+#ifndef WIKIPCF
+	long start_x, start_y, end_x, end_y;
+	
+	// if not enough space at the end, then skip
+	if (lcd_draw_buf.current_y < LCD_BUF_HEIGHT_PIXELS - SPACE_BEFORE_LICENSE_TEXT - LICENSE_TEXT_LINE_HEIGHT * 6 - APACE_AFTER_LICENSE_TEXT)
+	{
+		lcd_draw_buf.line_height = LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.current_y += SPACE_BEFORE_LICENSE_TEXT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_1, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += 2;
+		start_x = 117;
+		end_x = 199;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		if (article_link_count < ARTICLE_LINK_COUNT)
+		{
+			start_y = lcd_draw_buf.current_y + 1;
+			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
+			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
+			articleLink[article_link_count++].article_id = 1;
+		}
+		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_2, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += 2;
+		start_x = 0;
+		end_x = 134;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		if (article_link_count < ARTICLE_LINK_COUNT)
+		{
+			start_y = lcd_draw_buf.current_y + 1;
+			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
+			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
+			articleLink[article_link_count++].article_id = 1;
+		}
+		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_3, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += 2;
+		start_x = 50;
+		end_x = 107;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		if (article_link_count < ARTICLE_LINK_COUNT)
+		{
+			start_y = lcd_draw_buf.current_y + 1;
+			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
+			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
+			articleLink[article_link_count++].article_id = 2;
+		}
+		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_4, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_5, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_6, lcd_draw_buf.screen_buf);
+		lcd_draw_buf.current_y += APACE_AFTER_LICENSE_TEXT;
+	}
+#endif
+}
+
 int render_article_with_pcf()
 {
 
@@ -760,6 +830,7 @@ int render_article_with_pcf()
         if(!*article_buf_pointer)
         {
 //            is_rendering = 0;
+            render_wikipedia_license_text();
             if(display_first_page == 0)
                 repaint_framebuffer(lcd_draw_buf.screen_buf,0);
 
@@ -791,7 +862,7 @@ void display_article_with_pcf(int start_y)
             request_display_next_page = 1;
             request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
 
-            display_str("rendering...");
+            display_str("Please wait...");
 
             return;
         }
@@ -834,7 +905,7 @@ void display_article_with_pcf_smooth(int start_y)
             request_display_next_page = 1;
             request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
 
-            display_str("rendering...");
+            display_str("Please wait...");
 
             return;
         }
@@ -901,6 +972,8 @@ void scroll_article()
         if(article_offset<=0)
           return;
 
+	if (!display_first_page)
+		return;
         delay_time = 0;
         /*int time_now = get_time_tick();
         if((time_now-time_scroll_article_last)<article_scroll_delay_time*24)
@@ -916,8 +989,8 @@ void scroll_article()
 
 	if(lcd_draw_cur_y_pos < 0)
 	   lcd_draw_cur_y_pos = 0;
-	else if((lcd_draw_cur_y_pos+LCD_HEIGHT_LINES)>lcd_draw_buf.current_y)
-	   lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES+20;
+	else if (lcd_draw_cur_y_pos > lcd_draw_buf.current_y)
+	   lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 	
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
@@ -1141,12 +1214,12 @@ void get_external_link_str(char *str,int external_link_number)
 
 void display_external_link_str(int external_link_number,char *external_link_str)
 {
+#ifndef WIKIPCF
+
        int framebuffersize,start_x,end_x,start_y,end_y;
        int offset_x,offset_y;
        int external_str_width;
        char *p;
-
-#ifndef WIKIPCF
 
        p = external_link_str;
 
@@ -1185,18 +1258,16 @@ void display_str(char *str)
        framebuffersize = framebuffer_size();
        memset(framebuffer_copy,0,framebuffersize);
 
-       start_x = framebuffer_width()/2-100;
-       end_x   = framebuffer_width()/2+100;
-       start_y = framebuffer_height()/2-50;
-       end_y   = framebuffer_height()/2+50;
+       start_x = 0;
+       end_x   = framebuffer_width();
+       start_y = framebuffer_height()/2-9;
+       end_y   = framebuffer_height()/2+9;
 
-       drawline_in_framebuffer_copy(framebuffer_copy,start_x,start_y,end_x,end_y);
+//       drawline_in_framebuffer_copy(framebuffer_copy,start_x,start_y,end_x,end_y);
 
        str_width = get_external_str_pixel_width(&p);
-       offset_x = 500 - str_width/2;
-       offset_y = div_wiki(offset_x,200)+1;
-       offset_x = offset_x - offset_y*200;
-       start_y = start_y+15*offset_y;
+       offset_x = (end_x - str_width) / 2 - start_x;
+       offset_y = 0;
        buf_draw_UTF8_str_in_copy_buffer((char *)framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x);
 
        repaint_framebuffer(framebuffer_copy,0);
@@ -1238,12 +1309,12 @@ void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,
 }
 void invert_link(int article_link_number)
 {
+#ifndef WIKIPCF
      int start_x,start_y,end_x,end_y;
 
      if(article_link_number<0)
         return;
 
-#ifndef WIKIPCF
      start_y = articleLink[article_link_number].start_xy >>8;
      start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
      end_y   = articleLink[article_link_number].end_xy  >>8;
@@ -1285,13 +1356,16 @@ void open_article_link_with_link_number(int article_link_number)
 {
 #ifndef WIKIPCF
  	char title[MAX_TITLE_SEARCH];
+ 	long idx;
  	
 	if (article_link_number < 0 || articleLink[article_link_number].article_id <= 0)
 		return;
-	if (!display_link_article(articleLink[article_link_number].article_id))
+	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
+	idx = articleLink[article_link_number].article_id;
+	if (!display_link_article(idx))
 	{
-		get_article_title_from_idx(articleLink[article_link_number].article_id, title);
-		history_add(articleLink[article_link_number].article_id, title);
+		get_article_title_from_idx(idx, title);
+		history_add(idx, title);
 	}
 #endif
 }
