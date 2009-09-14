@@ -52,6 +52,7 @@ ALL_TARGETS += mahatma
 ALL_TARGETS += qt4-simulator
 ALL_TARGETS += wiki-xml
 ALL_TARGETS += pcf2bmf
+ALL_TARGETS += fonts
 
 .PHONY: all
 all:    ${ALL_TARGETS}
@@ -83,10 +84,10 @@ validate-destdir:
 # ----- main program ------------------------------------------
 .PHONY: toppers
 toppers: mini-libc fatfs
-	( cd samo-lib/toppers-jsp && \
+	cd samo-lib/toppers-jsp && \
 	$(MAKE) -C cfg && \
 	$(MAKE) -C wikireader && \
-	cp wikireader/sample1.elf ../../KERNEL.toppers)
+	cp wikireader/sample1.elf ../../KERNEL.toppers
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
@@ -127,73 +128,81 @@ binutils-patch: binutils-download
 	mkdir -p host-tools/toolchain-install
 	rm -rf host-tools/binutils-$(BINUTILS_PACKAGE)
 	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C host-tools/
-	( cd host-tools && \
+	cd host-tools && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	cat ../toolchain-patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
-	cat ../toolchain-patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1)
+	cat ../toolchain-patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1
 	touch $@
 
 binutils: binutils-patch
-	(cd host-tools && \
+	cd host-tools && \
 	cd binutils-$(BINUTILS_VERSION) && \
 	mkdir -p build && \
 	cd build  && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
-	$(MAKE) install)
+	$(MAKE) install
 	touch $@
 
 gcc-patch: gcc-download
 	mkdir -p host-tools/toolchain-install
 	tar -xvzf $(DL)/$(GCC_PACKAGE) -C host-tools/
-	( cd host-tools && \
+	cd host-tools && \
 	cd gcc-$(GCC_VERSION) && \
 	cat ../toolchain-patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
 	cat ../toolchain-patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
-	cat ../toolchain-patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1)
+	cat ../toolchain-patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1
 	touch $@
 
 gcc: binutils gcc-patch
-	( cd host-tools && \
+	cd host-tools && \
 	export PATH=$(shell readlink -m ./host-tools/toolchain-install/bin):$(PATH) && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
-	$(MAKE) install)
+	$(MAKE) install
 	touch $@
 
 .PHONY: qt4-simulator
 qt4-simulator: mahatma
-	( cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE) )
+	cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE)
 
 .PHONY: console-simulator
 console-simulator: mahatma
-	( cd host-tools/console-simulator && $(MAKE) )
+	cd host-tools/console-simulator && $(MAKE)
 
 # ----- new wiki rendering  --------------------------------------
 .PHONY: wiki-xml
 wiki-xml:
-	( cd host-tools/wiki-xml && $(MAKE) )
+	cd host-tools/wiki-xml && $(MAKE)
 
 # ----- pcf2bmf  --------------------------------------
 .PHONY: pcf2bmf
 pcf2bmf:
-	( cd host-tools/pcf2bmf && $(MAKE) )
+	cd host-tools/pcf2bmf && $(MAKE)
 
-# ----- wiki Dump and Algorithm  --------------------------------------
+
+# ----- fonts  --------------------------------------
+.PHONY: fonts
+fonts: pcf2bmf
+	cd host-tools/fonts && $(MAKE)
+
+
+# ----- build the database  --------------------------------------
+
+XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
+
+.PHONY: index
+index: fonts
+	cd host-tools/offline-renderer && $(MAKE) index XML_FILES="${XML_FILES_PATH}"
+
+
+# ----- wiki Dump  --------------------------------------
 .PHONY: getwikidump
 getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
-
-.PHONY: webkit
-webkit:
-	svn co -r 41057 http://svn.webkit.org/repository/webkit/trunk webkit
-	(cd webkit && \
-	patch_path="../host-tools/rendering/patches/"; for file in `ls $$patch_path`; do echo "processing file: $$file"; patch -p1 < $$patch_path/$$file; done && \
-	./WebKitTools/Scripts/build-webkit --gtk --release)
-
 
 
 # ----- forth -----------------------------------------------
@@ -285,6 +294,8 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C host-tools/wiki-xml
 	$(MAKE) clean -C host-tools/pcf2bmf
 	$(MAKE) clean -C host-tools/flash07
+	$(MAKE) clean -C host-tools/fonts
+	$(MAKE) clean -C host-tools/offline-renderer
 	$(MAKE) clean -C samo-lib/mbr
 	$(MAKE) clean -C samo-lib/drivers
 	$(MAKE) clean -C samo-lib/fatfs
