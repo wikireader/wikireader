@@ -52,7 +52,7 @@ WIKIAPP_COBJS += decompress.o keyboard.o
 
 # searching
 WIKIAPP_COBJS += search.o lsearcher.o fast_search.o search_hash.o
-WIKIAPP_COBJS += article.o history.o wom_reader.o
+WIKIAPP_COBJS += history.o
 
 # BZLIB
 BZLIB_COBJS = blocksort.o  \
