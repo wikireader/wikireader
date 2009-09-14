@@ -98,7 +98,10 @@ def main():
 
     # add redirect to article_index
     for item in redirects:
-        article_index[item] = find(item)
+        try:
+            article_index[item] = find(item)
+        except KeyError:
+            print 'Invalid redirect:' item
 
     output_fnd(fnd_name)
     output_pfx(pfx_name)
