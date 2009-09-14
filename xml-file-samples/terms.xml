@@ -1,0 +1,150 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikimedia Foundation</sitename>
+    <base>http://wikimediafoundation.org/wiki/Home</base>
+    <generator>MediaWiki 1.16alpha-wmf</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikimedia</namespace>
+      <namespace key="5">Wikimedia talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Terms of Use</title>
+    <id>9171</id>
+    <revision>
+      <id>39565</id>
+      <timestamp>2009-07-08T13:55:38Z</timestamp>
+      <contributor>
+        <username>Kaganer</username>
+        <id>151</id>
+      </contributor>
+      <minor/>
+      <comment>Undo revision 39564 by [[Special:Contributions/Kaganer|Kaganer]] ([[User talk:Kaganer|Talk]])</comment>
+      <text xml:space="preserve">{{ToULang}}
+{{Info|These Terms of Use apply to any Wikimedia Foundation project which explicitly refers to them in the site footer and on the edit screen.}} __NOTOC__
+
+: '''''Imagine a world in which every single human being can freely share in the sum of all knowledge. That's our commitment.'' &lt;br/&gt;&amp;mdash; [[Vision|Wikimedia Foundation Vision Statement]]'''
+
+==== Information for text contributors to Wikimedia projects ====
+
+To grow the commons of free knowledge and free culture, all users contributing to Wikimedia projects are required to grant broad permissions to the general public to re-distribute and re-use their contributions freely, as long as the use is attributed and the same freedom to re-use and re-distribute applies to any derivative works. Therefore, for any text you hold the copyright to, by submitting it, you agree to license it under the [http://creativecommons.org/licenses/by-sa/3.0/ Creative Commons Attribution/Share-Alike License 3.0 (Unported)]. For compatibility reasons, you are also required to license it under the [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License] (unversioned, with no invariant sections, front-cover texts, or back-cover texts). Re-users can choose the license(s) they wish to comply with. Please note that these licenses ''do'' allow commercial uses of your contributions, as long as such uses are compliant with the terms.
+
+As an author, you agree to be attributed in any of the following fashions: a) through a hyperlink (where possible) or URL to the article or articles you contributed to, b) through a hyperlink (where possible) or URL to an alternative, stable online copy which is freely accessible, which conforms with the license, and which provides credit to the authors in a manner equivalent to the credit given on this website, or c) through a list of all authors. (Any list of authors may be filtered to exclude very small or irrelevant contributions.)
+
+''Importing text:''
+
+If you want to import text that you have found elsewhere or that you have co-authored with others, you can only do so if it is available under terms that are compatible with the CC-BY-SA license.  You do not need to ensure or guarantee that the imported text is available under the GNU Free Documentation License. Furthermore, please note that you cannot import information which is available ''only'' under the GFDL. In other words, you may only import text that is (a) single-licensed under terms compatible with the CC-BY-SA license or (b) dual-licensed with the GFDL and another license with terms compatible with the CC-BY-SA license
+
+If you import text under a compatible license which requires attribution, you must, in a reasonable fashion, credit the author(s). Where such credit is commonly given through page histories (such as Wikimedia-internal copying), it is sufficient to give attribution in the edit summary, which is recorded in the page history, when importing the text.  Regardless of the license, the text you import may be rejected if the required attribution is deemed too intrusive.
+
+==== Information for non-text media contributors ====
+
+Non-text media on Wikimedia Foundation projects are available under a variety of different licenses that support the general goal of allowing unrestricted re-use and re-distribution. The requirements for such licenses are given in the [[wmf:Resolution:Licensing_policy|Wikimedia Foundation Licensing Policy]]. Individual communities may elaborate upon and refine these requirements.
+
+==== Information for re-users ====
+
+You can re-use content from Wikimedia projects freely, with the exception of content that is used under &quot;fair use&quot; exemptions, or similar exemptions of copyright law. Please follow the guidelines below:
+
+''Re-use of text:''
+
+* Attribution: To re-distribute a text page in any form, provide credit to the authors either by including a) a hyperlink (where possible) or URL to the page or pages you are re-using, b) a hyperlink (where possible) or URL to an alternative, stable online copy which is freely accessible, which conforms with the license, and which provides credit to the authors in a manner equivalent to the credit given on this website, or c) a list of all authors. (Any list of authors may be filtered to exclude very small or irrelevant contributions.) This applies to text developed by the Wikimedia community. Text from external sources may attach additional attribution requirements to the work, which we will strive to indicate clearly to you. For example, a page may have a banner or other notation indicating that some or all of its content was originally published somewhere else. Where such notations are visible in the page itself, they should generally be preserved by re-users.
+
+* Copyleft/Share Alike: If you make modifications or additions to the page you re-use, you must license them under the Creative Commons Attribution-Share-Alike License 3.0 or later.
+
+* Indicate changes: If you make modifications or additions, you must indicate in a reasonable fashion that the original work has been modified. If you are re-using the page in a wiki, for example, indicating this in the page history is sufficient.
+
+* Licensing notice: Each copy or modified version that you distribute must include a licensing notice stating that the work is released under CC-BY-SA and either a) a hyperlink or URL to the text of the license or b) a copy of the license. For this purpose, a suitable URL is: http://creativecommons.org/licenses/by-sa/3.0/
+
+* For further information, please refer to the [http://creativecommons.org/licenses/by-sa/3.0/legalcode legal code of the CC-BY-SA License].
+
+''Additional availability of text under the GNU Free Documentation License:'' 
+
+* For compatibility reasons, any page which does not incorporate text that is exclusively available under CC-BY-SA or a CC-BY-SA-compatible license is also available under the terms of the [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License]. In order to determine whether a page is available under the GFDL, review the page footer, page history, and discussion page for attribution of single-licensed content that is not GFDL-compatible. All text published before June 15th, 2009 was released under the GFDL, and you may also use the page history to retrieve content published before that date to ensure GFDL compatibility.
+
+''Re-use of non-text media:''
+
+* Where not otherwise noted, non-text media files are available under various free culture licenses, consistent with the [[wmf:Resolution:Licensing_policy|Wikimedia Foundation Licensing Policy]]. Please view the media description page for details about the license of any specific media file.
+
+==== Precedence of English terms ====
+
+These site terms are not to be modified. If there is any inconsistency between these terms and any translation into other languages, the English language version takes precedence.
+
+[[Category:English]]
+[[Category:Policy]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:Info</title>
+    <id>9170</id>
+    <revision>
+      <id>39411</id>
+      <timestamp>2009-06-15T23:44:49Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>17</id>
+      </contributor>
+      <comment>from meta</comment>
+      <text xml:space="preserve">{| class=&quot;InformationBox&quot;
+|style=&quot;width:42px;text-align:center&quot;| [[Image:Information icon.svg|32px|Information]]
+|style=&quot;vertical-align:middle&quot;|
+{{{1}}}
+|}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:ToULang</title>
+    <id>9177</id>
+    <revision>
+      <id>40194</id>
+      <timestamp>2009-09-07T00:05:23Z</timestamp>
+      <contributor>
+        <username>Cbrown1023</username>
+        <id>194</id>
+      </contributor>
+      <comment>&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;</comment>
+      <text xml:space="preserve">&lt;div class=&quot;divlang&quot;&gt;
+&lt;ul&gt;
+&lt;li class=&quot;firstlang&quot;&gt;[[Условия за ползване|{{#language:bg}}]]&lt;/li&gt;
+&lt;li&gt;[[Condicions d'ús          |{{#language:ca}}]]&lt;/li&gt;
+&lt;li&gt;[[Podmínky užití           |{{#language:cs}}]]&lt;/li&gt;
+&lt;li&gt;[[Όροι Χρήσης              |{{#language:el}}]]&lt;/li&gt;
+&lt;li&gt;[[Terms of Use             |{{#language:en}}]]&lt;/li&gt;
+&lt;li&gt;[[Términos de Uso          |{{#language:es}}]]&lt;/li&gt;
+&lt;li&gt;[[Käyttöehdot              |{{#language:fi}}]]&lt;/li&gt;
+&lt;li&gt;[[Conditions d'utilisation |{{#language:fr}}]]&lt;/li&gt;
+&lt;li&gt;[[תנאי שימוש               |{{#language:he}}]]&lt;/li&gt;
+&lt;li&gt;[[Condizioni d'uso         |{{#language:it}}]]&lt;/li&gt;
+&lt;li&gt;[[利用規約                  |{{#language:ja}}]]&lt;/li&gt;
+&lt;li&gt;[[Услови на употреба       |{{#language:mk}}]]&lt;/li&gt;
+&lt;li&gt;[[Vilkårene                |{{#language:nb}}]]&lt;/li&gt;
+&lt;li&gt;[[Gebruiksvoorwaarden      |{{#language:nl}}]]&lt;/li&gt;
+&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;
+&lt;li&gt;[[Условия использования    |{{#language:ru}}]]&lt;/li&gt;
+&lt;li&gt;[[Умови використання       |{{#language:uk}}]]&lt;/li&gt;
+&lt;li&gt;[[Điều khoản Sử dụng       |{{#language:vi}}]]&lt;/li&gt;
+&lt;li&gt;[[使用条款|‪中文(简体)‬]]&lt;/li&gt;
+&lt;li&gt;[[使用條款|‪中文(繁體)‬]]&lt;/li&gt;
+&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/i&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;noinclude&gt;
+[[Category:Other languages templates|{{PAGENAME}}]]&lt;/noinclude&gt;</text>
+    </revision>
+  </page>
+</mediawiki>
