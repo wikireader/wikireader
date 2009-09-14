@@ -1,0 +1,8 @@
+article_idx.py
+*.pyc
+all-articles.html
+*.fnd
+*.pfx
+*.dat
+*.idx-tmp
+*.idx
