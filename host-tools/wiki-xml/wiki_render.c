@@ -3993,7 +3993,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 					"left outer join entries e2 on (e1.entry_type = 1 && e2.title = e1.redirect_title) "
 					"where (e1.entry_type=0 or e1.entry_type=1) and "
 					"	e1.title_search < '000'"
-					"order by e1.title_search, e1.idx, e2.idx");
+					"order by e1.title_search, e1.entry_type, e1.idx, e2.idx");
 			}
 			else if (t1 == 'Z' && t2 == 'Z' && t3 == 'Z')
 			{
@@ -4004,7 +4004,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 					"left outer join entries e2 on (e1.entry_type = 1 && e2.title = e1.redirect_title) "
 					"where (e1.entry_type=0 or e1.entry_type=1) and "
 					"	'ZZZ' <= e1.title_search "
-					"order by e1.title_search, e1.idx, e2.idx");
+					"order by e1.title_search, e1.entry_type, e1.idx, e2.idx");
 			}
 			else
 			{
@@ -4018,7 +4018,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 					"left outer join entries e2 on (e1.entry_type = 1 && e2.title = e1.redirect_title) "
 					"where (e1.entry_type=0 or e1.entry_type=1) and "
 					"	'%s' <= e1.title_search and e1.title_search < '%s'"
-					"order by e1.title_search, e1.idx, e2.idx", sStart, sEnd);
+					"order by e1.title_search, e1.entry_type, e1.idx, e2.idx", sStart, sEnd);
 			}
 		}
 		else
@@ -4030,7 +4030,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 					"from entries e1 "
 					"left outer join entries e2 on (e1.entry_type = 1 && e2.title = e1.redirect_title) "
 					"where (e1.entry_type=0 or e1.entry_type=1)"
-					"order by e1.title_search, e1.idx, e2.idx");
+					"order by e1.title_search, e1.entry_type, e1.idx, e2.idx");
 			}
 			else
 				sSQL[0] = '\0';
