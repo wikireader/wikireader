@@ -1,6 +1,6 @@
 article_idx.py
 *.pyc
-all-articles.html
+all_articles.html
 *.fnd
 *.pfx
 *.dat

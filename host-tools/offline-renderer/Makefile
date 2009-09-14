@@ -20,6 +20,10 @@ index: pylzma
 # sudo apt-get install python-dev
 .PHONY: pylzma
 pylzma:
+	for f in /usr/lib/python*/site-packages/pylzma.so ; \
+	do \
+	   [ -e "$${f}" ] && exit 0 ; \
+	done ; \
 	cd ${PYLZMA_DIR} && \
 	python setup.py build && \
 	sudo python setup.py install
@@ -39,7 +43,8 @@ clean: pylzma-clean
 .PHONY: pylzma-clean
 pylzma-clean:
 	cd ${PYLZMA_DIR} && \
-	python setup.py clean
+	python setup.py clean && \
+	${RM} -r build
 
 
 include ${SAMO_LIB}/Mk/rules.mk
