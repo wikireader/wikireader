@@ -1,6 +1,0 @@
-*.o
-*.app
-*.moc
-tst_wikitools
-Makefile
-.*.sw?
