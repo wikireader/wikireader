@@ -9,8 +9,11 @@
 import os, sys, re, subprocess
 import getopt
 import os.path
+import article_off
 
 verbose = False
+
+PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
 # Regular expressions for parsing the XML
 start_text = re.compile(r'<text xml:space="preserve">', re.IGNORECASE)
@@ -34,18 +37,31 @@ redirect = re.compile(r'<text xml:space="preserve">#redirect.*</text>', re.IGNOR
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--out=file]' % os.path.basename(__file__)
+    print 'usage: %s [--verbose] [--out=file] [--start=n] [--count=n] [--just-cat]' % os.path.basename(__file__)
+    print '       --verbose   Enable verbose output'
+    print '       --out=file  HTML output [all_articles.html]'
+    print '       --start=n   First artcle to process [1] (1k => 1000)'
+    print '       --count=n   Number of artcles to process [all] (1k => 1000)'
+    print '       --just-cat  Replace php parset be "cat" for debugging'
     exit(1)
 
 def main():
     global verbose
+    global PARSER_COMMAND
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvo:p:', ['help', 'verbose', 'out=', 'prefix='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvo:s:cj', ['help', 'verbose', 'out=',
+                                                              'start=', 'count=',
+                                                              'just-cat',
+                                                              ])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
     out_name = 'all_articles.html'
+    start_article = 1
+    article_count = 'all'
+    processing_articles = True
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -54,29 +70,56 @@ def main():
             usage(None)
         elif opt in ('-o', '--out'):
             out_name = arg
+        elif opt in ('-j', '--just-cat'):
+            PARSER_COMMAND = 'cat'
+        elif opt in ('-s', '--start'):
+            start_article = int(arg)
+            if start_article <= 1:
+                start_article = 1
+        elif opt in ('-c', '--count'):
+            if arg[-1] == 'k':
+                arg = arg[:-1] + '000'
+            if arg != 'all':
+                article_count = int(arg)
+            if article_count <= 0:
+                article_count = 'all'
         else:
             usage('unhandled option: ' + opt)
 
-    newf = subprocess.Popen('(cd mediawiki-offline && php wr_parser.php -) > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
+    parsing_articles = start_article == 1 and article_count == 'all'
+
+    if not parsing_articles:
+        (seek, filename) = article_off.offset(start_article)
+
+    newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
 
     for f in args:
-        process_file(f, newf)
+        if not parsing_articles:
+            if f == filename:
+                parsing_articles = True
+                article_count = process_file(f, seek, article_count, newf)
+        else:
+            article_count = process_file(f, 0, article_count, newf)
+
+        if article_count != 'all' and article_count == 0:
+            break
 
     newf.close()
 
 
-def process_file (file_name, newf):
+def process_file(file_name, seek, count, newf):
     global verbose
     global start_text, title_tag, end_article
     global begin_ignore, end_ignore, inline_comment, line_break
     global entities, img, no_parse
 
-    cnt = 1
-
     if verbose:
         print 'Reading:', file_name
 
     f = open(file_name, 'r')
+    if seek > 0:
+        f.seek(seek)
+
     line    = f.readline()
     parse   = False
     ignore  = False
@@ -99,15 +142,14 @@ def process_file (file_name, newf):
         elif not skip and not parse and "<text xml:space=\"preserve\">" in line:
             line = start_text.sub('', line)
             parse = True
-            newf.write(title);
 
-            if verbose:
-                print "[PA %d] " %cnt + title
-                cnt += 1
-
-            newf.write('\n__NOTOC__\n')
-            ignore = False
-            had_blank = False
+            if parse:
+                newf.write(title);
+                if verbose:
+                    print "[PA] " + title
+                newf.write('\n__NOTOC__\n')
+                ignore = False
+                had_blank = False
 
         if parse:
             line = inline_comment.sub('', line.strip())
@@ -115,6 +157,10 @@ def process_file (file_name, newf):
             line = entities.sub(r'&\1;', line)
             if end_article.search(line):
                 newf.write('***EOF***\n')
+                if count != 'all':
+                    count -= 1
+                    if count <= 0:
+                        break
                 parse = False
 
             elif begin_ignore.search(line):
@@ -138,6 +184,7 @@ def process_file (file_name, newf):
 
 
     f.close()
+    return count
 
 
 # run the program

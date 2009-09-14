@@ -13,12 +13,12 @@ import htmlentitydefs
 class LittleParser(HTMLParser):
     def __init__ (self):
         HTMLParser.__init__(self)
-	self.buffer = u''
+        self.buffer = u''
 
-    def handle_charref (self, name):
+    def handle_charref(self, name):
         self.buffer += unichr(int(name))
 
-    def handle_entityref (self, name):
+    def handle_entityref(self, name):
         self.buffer += unichr(htmlentitydefs.name2codepoint[name])
 
     def handle_data(self, data):

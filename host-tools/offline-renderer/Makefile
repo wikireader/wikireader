@@ -2,6 +2,18 @@ SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || r
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
+# whilch block to render
+RENDER_BLOCK ?= 0
+START ?= 1
+COUNT ?= all
+MODULO ?= 10
+DESTDIR ?= .
+FONT_PATH ?= ${HOST_TOOLS}/fonts
+WORKDIR ?= /tmp
+
+PREFIX := ${DESTDIR}/pedia
+ARTICLES := ${WORKDIR}/artcles-${RENDER_BLOCK}.html
+
 PYLZMA_DIR := pylzma-0.3.0
 
 TARGETS =
@@ -12,10 +24,21 @@ all: index
 .PHONY: index
 index: pylzma
 	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
-	./make_article_idx.py --verbose ${XML_FILES}
-	./parse_articles.py --verbose ${XML_FILES}
-	./make_wrformat.py --verbose --font-path=${HOST_TOOLS}/fonts all_articles.html
-	./combine_idx.py --verbose
+	./make_article_idx.py --verbose --modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
+
+.PHONY: article_idx.py
+article_idx.py:
+	@echo Run '"'make index'"' first
+
+.PHONY: parse
+parse:
+	./parse_articles.py --verbose --out="${ARTICLES}" --start="${START}" --count="${COUNT}" ${XML_FILES}
+	./make_wrformat.py --verbose --font-path="${FONT_PATH}" --number="${RENDER_BLOCK}" \
+		--prefix="${PREFIX}" "${ARTICLES}"
+
+.PHONY: combine
+combine:
+	./combine_idx.py --verbose --prefix="${PREFIX}"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma

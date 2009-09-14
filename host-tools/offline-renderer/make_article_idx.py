@@ -23,11 +23,11 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 #    print ord(c)
 
 
-x1 = re.compile(r'</?title>')
-x2 = re.compile(r'[^"]*\[\[([^"]*)\]\]')
+title_tag = re.compile(r'</?title>')
+redirect_list = re.compile(r'[^"]*\[\[([^"]*)\]\]')
 
 # Filter out Wikipedia's non article namespaces
-x3 = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
+non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
 
 
 verbose = False
@@ -37,24 +37,38 @@ article_index = {}
 article_fnd = {}
 index_matrix = {}
 
-idx = 1 # first article number
+article_file_offsets = {}
+modulo = 1
+
+idx = 1 # first article number; cumulative count of all articles
 
 
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--out=file] [--prefix=name]' % os.path.basename(__file__)
+    print 'usage: %s [--verbose] [--out=file] [--offsets=file] [--modulo=n] [--prefix=name]' % os.path.basename(__file__)
+    print '       --verbose      Enable verbose output'
+    print '       --out=file     Python dictionary output [article_idx.py]'
+    print '       --offsets=file Python dictionary output [article_idx.py]'
+    print '       --modulo=n     only save the offsets for "mod n" articles [1] (1k => 1000)'
+    print '       --out=file     Python dictionary output [article_idx.py]'
+    print '       --prefix=name  Device file name portion for .fnd/.pfx [pedia]'
     exit(1)
 
 def main():
     global verbose
+    global modulo
+    global redirect, article_index
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvo:p:', ['help', 'verbose', 'out=', 'prefix='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:m:p:', ['help', 'verbose', 'out=',
+                                                                'offsets=', 'modulo=', 'prefix='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
     out_name = "article_idx.py"
+    off_name = "article_off.py"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
 
@@ -65,6 +79,14 @@ def main():
             usage(None)
         elif opt in ('-o', '--out'):
             out_name = arg
+        elif opt in ('-f', '--offsets'):
+            off_name = arg
+        elif opt in ('-m', '--modulo'):
+            if arg[-1] == 'k':
+                arg = arg[:-1] + '000'
+            modulo = int(arg)
+            if modulo < 1:
+                modulo = 1
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
@@ -78,14 +100,14 @@ def main():
     for item in redirects:
         article_index[item] = find(item)
 
-    output_fnd (fnd_name)
-    output_pfx (pfx_name)
-    output_index (out_name)
+    output_fnd(fnd_name)
+    output_pfx(pfx_name)
+    output_index(out_name)
+    output_offsets(off_name)
 
 
-
-def generate_bigram (text):
-    global bigram, redirects, article_index, article_fnd, idx
+def generate_bigram(text):
+    global bigram, redirects, article_index, article_fnd
     if len(text) > 2:
         try:
             if ord(text[0]) < 128 and ord(text[1]) < 128:
@@ -101,14 +123,18 @@ def generate_bigram (text):
             bigram[text[2:4]] = 1
 
 
-def process_file (filename):
-    global x1, x2, x3
+def process_file(filename):
+    global title_tag, redirect_list, non_articles
     global redirects, article_index, idx
+    global article_offsets
+    global modulo
     global verbose
 
     skip  = False
     redirect = False
     f = open(filename, 'r')
+    current_offset = 0
+    article_file_offsets[idx] = (0, filename) # start of file
 
     line  = f.readline()
 
@@ -117,20 +143,23 @@ def process_file (filename):
         if "<title>" in line:
             redirect = False
 
-            if x3.search(line):
+            if non_articles.search(line):
                 skip = True    # we only need articles
             else:
-                title = tparser.translate(x1.sub('', line.strip()))
-                # title = x1.sub('', line).strip()
+                title = tparser.translate(title_tag.sub('', line.strip()))
+                # title = title_tag.sub('', line).strip()
                 # ??? not here ?? title = map_accented_chars(title)
                 if verbose:
                     print 'Title:', title
                 generate_bigram(title)
 
+        if '</page>' in line:
+            current_offset = f.tell();
+
         if skip is False and "#redirect" in line:
             x = re.compile(r'<text xml:space="preserve">')
             line = x.sub('', line)
-            redirect_title = tparser.translate(x2.match(line).group(1))
+            redirect_title = tparser.translate(redirect_list.match(line).group(1))
             redirect = True
             redirects[title] = redirect_title
             if verbose:
@@ -140,6 +169,8 @@ def process_file (filename):
             skip = False
             if not redirect:
                 article_index[title] = idx
+                if idx % modulo == 0:
+                    article_file_offsets[idx] = (current_offset, filename)
                 idx = idx + 1
 
                 if verbose:
@@ -150,7 +181,7 @@ def process_file (filename):
     f.close()
 
 
-def find (title):
+def find(title):
     """get index from article title
 
     also handles redirects
@@ -165,7 +196,7 @@ def find (title):
     return number
 
 
-def bigram_encode (title):
+def bigram_encode(title):
     global bigram
     result = ''
     while len(title) >= 2:
@@ -188,8 +219,7 @@ def bigram_encode (title):
     return result
 
 
-
-def output_fnd (fnd_name):
+def output_fnd(fnd_name):
     """create bigram table"""
     global bigram, article_index, article_fnd
     global index_matrix
@@ -236,7 +266,7 @@ def output_fnd (fnd_name):
     out_f.close()
 
 
-def output_pfx (pfx_name):
+def output_pfx(pfx_name):
     """output the pfx matrix"""
     global index_matrix
 
@@ -255,7 +285,7 @@ def output_pfx (pfx_name):
     out_f.close()
 
 
-def output_index (out_name):
+def output_index(out_name):
     """output python code for redirected titles to article hash table"""
     global article_index, article_fnd
 
@@ -292,6 +322,34 @@ def output_index (out_name):
     # end of python output, close dictionary
     out_f.write("}\n")
     out_f.close()
+
+
+def output_offsets(filename):
+    """output python code for article file positions"""
+    global article_file_offsets
+
+    f = open(filename, "w")
+
+    # write article indexs into a python dictionary
+    f.write("#! /usr/bin/env python\n")
+    f.write("# -*- coding: utf-8 -*-\n\n")
+
+    f.write("def offset(idx):\n")
+    f.write("    global article_file_offsets\n")
+    f.write("    if idx not in article_file_offsets:\n")
+    f.write("        return 0\n")
+    f.write("    return article_file_offsets[idx]\n")
+    f.write("\n")
+
+    f.write("article_file_offsets = {\n")
+
+    # output python code for article hash table
+    for i, v in article_file_offsets.items():
+        f.write('    %d: (%d, """%s"""),\n' % (i, v[0], v[1]))
+
+    # end of python output, close dictionary
+    f.write("}\n")
+    f.close()
 
 
 # run the program

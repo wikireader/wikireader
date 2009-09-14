@@ -95,6 +95,11 @@ def usage(message):
     if None != message:
         print 'error:', message
     print 'usage: %s [--verbose] [--number=n] [--prefix=name] [--test=filename] [--font-path=path]' % os.path.basename(__file__)
+    print '       --verbose        Enable verbose output'
+    print '       --number=n       Number for the .dat/.idx-tmp files [0]'
+    print '       --test=file      Output the uncompressed file for testing'
+    print '       --font-path=dir  Path to font files (*.bmf) [fonts]'
+    print '       --prefix=name    Device file name portion for .dat/.idx-tmp [pedia]'
     exit(1)
 
 def main():

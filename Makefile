@@ -193,10 +193,54 @@ fonts: pcf2bmf
 # ----- build the database  --------------------------------------
 
 XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
+RENDER_BLOCK ?= 0
 
 .PHONY: index
 index: fonts
-	cd host-tools/offline-renderer && $(MAKE) index XML_FILES="${XML_FILES_PATH}"
+	cd host-tools/offline-renderer && $(MAKE) index \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+
+.PHONY: parse
+parse:
+	cd host-tools/offline-renderer && $(MAKE) parse \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+
+.PHONY: combine
+combine:
+	cd host-tools/offline-renderer && $(MAKE) combine \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+
+MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
+
+define MAKE_BLOCK1
+
+.PHONY: block${1}
+block${1}:
+	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse && sleep 1
+endef
+
+count_k := 200
+$(call MAKE_BLOCK,0,1,$(shell expr ${count_k} '*' 1000 - 1))
+ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22 23
+$(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${count_k})k,${count_k}k))
+
+
+MAKE_RENDER = $(eval $(call MAKE_RENDER1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
+
+define MAKE_RENDER1
+
+.PHONY: render${1}
+render${1}: $$(foreach i,${2},block$$(strip $${i}))
+
+endef
+
+$(call MAKE_RENDER,1, 0  1  2  3)
+$(call MAKE_RENDER,2, 4  5  6  7)
+$(call MAKE_RENDER,3, 8  9 10 11)
+$(call MAKE_RENDER,4,12 13 14 15)
+$(call MAKE_RENDER,5,16 17 18 19)
+$(call MAKE_RENDER,6,20 21)
+$(call MAKE_RENDER,7,22 23)
 
 
 # ----- wiki Dump  --------------------------------------

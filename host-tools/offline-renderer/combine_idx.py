@@ -11,27 +11,60 @@ import os.path
 import struct
 
 
-in_format = 'pedia%d.idx-tmp'
-out_name = 'pedia.idx'
+def usage(message):
+    if None != message:
+        print 'error:', message
+    print 'usage: %s [--verbose] [--prefix=name]' % os.path.basename(__file__)
+    print '       --verbose      Enable verbose output'
+    print '       --prefix=name  Device file name portion for .idx [pedia]'
+    exit(1)
 
-out = open(out_name, 'wb')
+def main():
+    global verbose
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:p:', ['help', 'verbose', 'out=', 'offsets=', 'prefix='])
+    except getopt.GetoptError, err:
+        usage(err)
 
-article_count = 0
-i = 0
-data = {}
-while True:
-    in_name = in_format % i
-    if not os.path.isfile(in_name):
-        break
-    print 'combining: %s' % in_name
-    data[i] = open(in_name, 'rb').read()
-    article_count += len(data[i]) / 12 # sizeof(struct)
-    i += 1
+    verbose = False
+    in_format = 'pedia%d.idx-tmp'
+    out_name = 'pedia.idx'
 
-out.write(struct.pack('L', article_count))
+    for opt, arg in opts:
+        if opt in ('-v', '--verbose'):
+            verbose = True
+        elif opt in ('-h', '--help'):
+            usage(None)
+            off_name = arg
+        elif opt in ('-p', '--prefix'):
+            in_format = arg + '%d.idx-tmp'
+            out_name = arg + '.idx'
+        else:
+            usage('unhandled option: ' + opt)
 
-for j in range(i):
-    out.write(data[j])
+    out = open(out_name, 'wb')
 
-out.close()
+    article_count = 0
+    i = 0
+    data = {}
+    while True:
+        in_name = in_format % i
+        if not os.path.isfile(in_name):
+            break
+        if verbose:
+            print 'combining: %s' % in_name
+        data[i] = open(in_name, 'rb').read()
+        article_count += len(data[i]) / 12 # sizeof(struct)
+        i += 1
 
+    out.write(struct.pack('L', article_count))
+
+    for j in range(i):
+        out.write(data[j])
+
+    out.close()
+
+
+# run the program
+if __name__ == "__main__":
+    main()
