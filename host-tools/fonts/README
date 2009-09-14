@@ -1,0 +1,55 @@
+Instructions to create bmf files:
+
+   1. Use an ubuntu machine
+   2. Install ttf2bdf and bdftopcf
+
+      sudo apt-get install freetype1-tools
+
+   3. Install gbdfed
+
+      sudo apt-get install gbdfed
+
+   4. Convert the ttf files to bdf first
+
+        ttf2bdf LiberationSans-Bold.ttf -p 14 -o title.bdf
+        ttf2bdf LiberationSans-Bold.ttf -p 12 -o subtitle.bdf
+        ttf2bdf LiberationSerif-Italic.ttf -p 11 -o texti.bdf
+        ttf2bdf LiberationSerif-BoldItalic.ttf -p 11 -o textbi.bdf
+        ttf2bdf LiberationSerif-Regular.ttf -p 11 -o text.bdf
+        ttf2bdf LiberationSerif-Bold.ttf -p 11 -o textb.bdf
+
+   5. Run gbdfed to fix the problem bitmaps
+
+        gbdfed
+
+        Select bdf file to edit:
+
+        Double click the character to edit.  Switch page as necessary.
+        Update and Close after editing is done.  Save the bdf file
+        after all done.  Your browser may not support display of this
+        image.  Specifically for this letter “m”, we need to use the
+        left arrow to move it to one column left and add another
+        dotted column at the right.
+
+        Note: We use 25AA, 2022 and 25E6 for unordered list bullets.
+              Need to check if they are ok.
+
+   6. Convert the fixed bdf files to pcf
+
+        bdftopcf title.bdf -o title.pcf
+        bdftopcf subtitle.bdf -o subtitle.pcf
+        bdftopcf texti.bdf -o texti.pcf
+        bdftopcf textbi.bdf -o textbi.pcf
+        bdftopcf text.bdf -o text.pcf
+        bdftopcf textb.bdf -o textb.pcf
+
+   7. Convert the pcf files to bmf
+
+        Ensure host-tools have been built
+
+        host-tools/pcf2bmf/pcf2bmf -f title.pcf -o title.bmf
+        host-tools/pcf2bmf/pcf2bmf -f subtitle.pcf -o subtitle.bmf
+        host-tools/pcf2bmf/pcf2bmf -f texti.pcf -o texti.bmf
+        host-tools/pcf2bmf/pcf2bmf -f textbi.pcf -o textbi.bmf
+        host-tools/pcf2bmf/pcf2bmf -f text.pcf -o text.bmf
+        host-tools/pcf2bmf/pcf2bmf -f textb.pcf -o textb.bmf
