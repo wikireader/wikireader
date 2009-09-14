@@ -345,7 +345,7 @@ void history_add(const long idx_article, const char *title)
 //	return NULL;
 //}
 //
-const int history_get_selection()
+int history_get_selection()
 {
 	return history_current;
 }
