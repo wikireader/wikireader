@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python -tt -OO
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
@@ -24,7 +24,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 
 
 title_tag = re.compile(r'</?title>')
-redirect_list = re.compile(r'[^"]*\[\[([^"]*)\]\]')
+redirected_to = (r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
@@ -93,6 +93,9 @@ def main():
         else:
             usage('unhandled option: ' + opt)
 
+    a = len(article_index)
+    r = len(redirects)
+
     for f in args:
         process_file(f)
 
@@ -101,7 +104,17 @@ def main():
         try:
             article_index[item] = find(item)
         except KeyError:
-            print 'Invalid redirect:' item
+            print 'Invalid redirect:' item, '->', redirects[item]
+
+    m = len(article_index)
+    s = a + r
+    print 'Articles:   %10d' % a
+    print 'Redirects:  %10d' % r
+    print 'Sum:        %10d' % s
+    print 'Merged:     %10d' % m
+    print 'Difference: %10d' % (m - s)
+
+    a = len(article_index)
 
     output_fnd(fnd_name)
     output_pfx(pfx_name)
@@ -127,7 +140,7 @@ def generate_bigram(text):
 
 
 def process_file(filename):
-    global title_tag, redirect_list, non_articles
+    global title_tag, redirected_to, non_articles
     global redirects, article_index, idx
     global article_offsets
     global modulo
@@ -145,6 +158,7 @@ def process_file(filename):
 
         if "<title>" in line:
             redirect = False
+            skip = False
 
             if non_articles.search(line):
                 skip = True    # we only need articles
@@ -159,14 +173,14 @@ def process_file(filename):
         if '</page>' in line:
             current_offset = f.tell();
 
-        if skip is False and "#redirect" in line:
-            x = re.compile(r'<text xml:space="preserve">')
-            line = x.sub('', line)
-            redirect_title = tparser.translate(redirect_list.match(line).group(1))
-            redirect = True
-            redirects[title] = redirect_title
-            if verbose:
-                print 'Redirect:', title
+        if not skip and "#redirect" in line:
+            match = redirected_to.search(line)
+            if match:
+                redirect_title = tparser.translate(match.group(1))
+                redirect = True
+                redirects[title] = redirect_title
+                if verbose:
+                    print 'Redirect:', title
 
         if not skip and "</text>" in line:
             skip = False

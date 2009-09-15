@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python -tt -OO
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
@@ -18,6 +18,7 @@ import getopt
 import os.path
 
 verbose = False
+article_count = 0
 
 
 fh       = '4b' # struct font_bmf_header (header)
@@ -107,6 +108,7 @@ def main():
     global f_out, output, i_out
     global font_id_values
     global file_number
+    global article_count
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvn:p:t:f:', ['help', 'verbose', 'number=', 'prefix=',
@@ -184,6 +186,8 @@ def main():
     if i_out != None:
         i_out.close()
 
+    print 'Wrote %d articles' % article_count
+
 
 #
 # Get the width of a character in a given font face
@@ -223,7 +227,9 @@ def get_lineheight (face):
             BOLD_ITALIC_FONT_IDX: P_LSPACE,
             BOLD_FONT_IDX:        P_LSPACE,
             TITLE_FONT_IDX:       H1_LSPACE,
-            SUBTITLE_FONT_IDX:    H2_LSPACE
+            SUBTITLE_FONT_IDX:    H2_LSPACE,
+            DEFAULT_ALL_FONT_IDX: P_LSPACE,
+            BOLD_ALL_FONT_IDX:    P_LSPACE,
         }
 
     return values[face]
@@ -414,7 +420,6 @@ def make_link (url, x0, x1, text):
     global g_starty, g_curr_face, g_link_cnt, g_links
 
     if article_idx.idx(url):
-        x0 -= 1 # draw 1 more pixel
         esc_code10(x1 - x0)
         g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
@@ -428,13 +433,16 @@ def esc_code0 (num_pixels):
 
 # new line with default font and default line space
 def esc_code1 ():
-    global g_starty
+    global g_starty, g_curr_face
+
     output.write(struct.pack('B', 2))
     g_starty += get_lineheight(DEFAULT_FONT_IDX)
+    g_curr_face = DEFAULT_FONT_IDX
 
 # new line with current font and current line space
 def esc_code2 ():
     global g_starty, g_curr_face
+
     output.write(struct.pack('B', 3))
     g_starty += get_lineheight(g_curr_face)
 
@@ -449,11 +457,17 @@ def esc_code3 (face):
 
 # change font with current horizontal alignment (in pixels)
 def esc_code4 (face, halign=0):
+    global g_curr_face
+
     output.write(struct.pack('BB', 5, face|(halign<<3)))
+    g_curr_face = face
 
 # set font as default
 def esc_code5 ():
+    global g_curr_face
+
     output.write(struct.pack('B', 6))
+    g_curr_face = DEFAULT_FONT_IDX
 
 # set default alignment
 def esc_code6 ():
@@ -470,6 +484,7 @@ def esc_code8 (num_pixels):
 # alignment adjustment
 def esc_code9 (num_pixels):
     global g_halign
+
     output.write(struct.pack('Bb', 10, num_pixels))
     g_halign = num_pixels
 
@@ -811,11 +826,11 @@ def write_article ():
     global compress
     global verbose
     global output, f_out, i_out
-    cnt = 1
+    global article_count
 
+    article_count += 1
     if verbose:
-        print "[MWR %d]" % cnt + g_this_article_title
-        cnt += 1
+        print "[MWR %d] %s" % (cnt, g_this_article_title)
         sys.stdout.flush()
 
     output.flush()
@@ -825,7 +840,7 @@ def write_article ():
 
     for i in g_links:
         (x0, y0, x1, y1, url) = g_links[i]
-        links_stream.write(struct.pack('LLL', (y0 << 8) | x0, y1 << 8 | x1, link_number(url)))
+        links_stream.write(struct.pack('LLL', (y0 << 8) | x0, (y1 << 8) | x1, link_number(url)))
 
     links_stream.flush()
     links = links_stream.getvalue()

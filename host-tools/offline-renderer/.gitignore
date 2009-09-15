@@ -1,6 +1,7 @@
 article_idx.py
 article_off.py
 *.pyc
+*.pyo
 all_articles.html
 *.fnd
 *.pfx

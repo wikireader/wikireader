@@ -61,7 +61,7 @@ build:
 
 .PHONY: clean
 clean: pylzma-clean
-	${RM} -r build ${TARGETS} article_idx.py *.pyc all_articles.html *.dat *.idx *.idx-tmp *.pfx *.fnd
+	${RM} -r build ${TARGETS} article_idx.py *.pyc *.pyo all_articles.html *.dat *.idx *.idx-tmp *.pfx *.fnd
 
 .PHONY: pylzma-clean
 pylzma-clean:
