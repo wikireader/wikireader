@@ -16,36 +16,47 @@ ARTICLES := ${WORKDIR}/artcles-${RENDER_BLOCK}.html
 
 PYLZMA_DIR := pylzma-0.3.0
 
+ifneq ($(strip ${VERBOSE}),)
+VERBOSE = --verbose
+endif
+
 TARGETS =
 
 .PHONY: all
 all: index
 
-.PHONY: index
-index: pylzma
+.PHONY: check-paths
+check-paths:
 	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
-	./make_article_idx.py --verbose --modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	@if [ ! -d "${FONT_PATH}" ] ; then echo FONT_PATH: "'"${FONT_PATH}"'" is not a directory ; exit 1; fi
+
+.PHONY: index
+index: pylzma check-paths
+	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	time ./make_article_idx.py ${VERBOSE} --modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: article_idx.py
 article_idx.py:
 	@echo Run '"'make index'"' first
 
 .PHONY: parse
-parse:
-	./parse_articles.py --verbose --out="${ARTICLES}" --start="${START}" --count="${COUNT}" ${XML_FILES}
-	./make_wrformat.py --verbose --font-path="${FONT_PATH}" --number="${RENDER_BLOCK}" \
+parse: check-paths
+	time ./parse_articles.py ${VERBOSE} --out="${ARTICLES}" --start="${START}" --count="${COUNT}" ${XML_FILES}
+	time ./make_wrformat.py ${VERBOSE} --font-path="${FONT_PATH}" --number="${RENDER_BLOCK}" \
 		--prefix="${PREFIX}" "${ARTICLES}"
 
 .PHONY: combine
-combine:
-	./combine_idx.py --verbose --prefix="${PREFIX}"
+combine: check-paths
+	time ./combine_idx.py ${VERBOSE} --prefix="${PREFIX}"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma
 pylzma:
-	for f in /usr/lib/python*/site-packages/pylzma.so ; \
+	for dir in /usr/lib/python* /usr/local/lib/python* /opt/lib/python* ; \
 	do \
-	   [ -e "$${f}" ] && exit 0 ; \
+	   [ -e "$${dir}/site-packages/pylzma.so" ] && exit 0 ; \
 	done ; \
 	cd ${PYLZMA_DIR} && \
 	python setup.py build && \

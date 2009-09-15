@@ -93,11 +93,12 @@ def main():
         else:
             usage('unhandled option: ' + opt)
 
-    a = len(article_index)
-    r = len(redirects)
-
     for f in args:
         process_file(f)
+
+    # record initial counts
+    a = len(article_index)
+    r = len(redirects)
 
     # add redirect to article_index
     for item in redirects:
@@ -106,6 +107,7 @@ def main():
         except KeyError:
             print 'Invalid redirect:', item, '->', redirects[item]
 
+    # record combined count and display statistics
     m = len(article_index)
     s = a + r
     print 'Articles:   %10d' % a

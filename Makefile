@@ -196,19 +196,19 @@ XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
 RENDER_BLOCK ?= 0
 
 .PHONY: index
-index: fonts
+index: fonts validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) index \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
-parse:
+parse: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) parse \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
-combine:
+combine: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) combine \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
 
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
