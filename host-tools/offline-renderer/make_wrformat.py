@@ -1,4 +1,4 @@
-#! /usr/bin/env python -tt -OO
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later

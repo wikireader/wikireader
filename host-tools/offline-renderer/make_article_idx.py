@@ -1,4 +1,4 @@
-#! /usr/bin/env python -tt -OO
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
@@ -24,7 +24,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 
 
 title_tag = re.compile(r'</?title>')
-redirected_to = (r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)\]\]', re.IGNORECASE)
+redirected_to = re.compile(r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
@@ -58,7 +58,7 @@ def usage(message):
 def main():
     global verbose
     global modulo
-    global redirect, article_index
+    global redirects, article_index
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:m:p:', ['help', 'verbose', 'out=',
@@ -104,7 +104,7 @@ def main():
         try:
             article_index[item] = find(item)
         except KeyError:
-            print 'Invalid redirect:' item, '->', redirects[item]
+            print 'Invalid redirect:', item, '->', redirects[item]
 
     m = len(article_index)
     s = a + r
@@ -204,8 +204,10 @@ def find(title):
     also handles redirects
     """
     global redirects, article_index
-
-    title = redirects[title]
+    try:
+        title = redirects[title]
+    except KeyError:
+        title = redirects[title[0].lower() + title[1:]]
     try:
         number = article_index[title]
     except KeyError:
