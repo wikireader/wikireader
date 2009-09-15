@@ -27,7 +27,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 title_tag = re.compile(r'</?title>', re.IGNORECASE)
 
 # redirect: <text.....#redirect.....[[title#relative link]].....
-redirected_to = re.compile(r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)(#.*)?\]\]', re.IGNORECASE)
+redirected_to = re.compile(r'<text\s+xml:space="preserve">.*?#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
