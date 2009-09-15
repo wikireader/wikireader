@@ -16,6 +16,7 @@ TARGETS += texti.bmf
 TARGETS += textbi.bmf
 TARGETS += text.bmf
 TARGETS += textb.bmf
+#TARGETS += small.bmf
 TARGETS += textall.bmf
 TARGETS += textallb.bmf
 
