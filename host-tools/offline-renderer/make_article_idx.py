@@ -172,8 +172,6 @@ def process_file(filename):
                 skip = True    # we only need articles
             else:
                 title = tparser.translate(title_tag.sub('', line.strip())).strip(u'\u200e\u200f')
-                # title = title_tag.sub('', line).strip()
-                # ??? not here ?? title = map_accented_chars(title)
                 if verbose:
                     print 'Title:', title
                 generate_bigram(title)
@@ -326,6 +324,11 @@ def output_pfx(pfx_name):
     out_f.close()
 
 
+def backslash(text):
+    """replace all " by \\" """
+    return r'\"'.join(text.split('"'))
+
+
 def output_index(out_name):
     """output python code for redirected titles to article hash table"""
     global article_index, article_fnd
@@ -354,12 +357,8 @@ def output_index(out_name):
 
     # output python code for article hash table
     for item in article_index:
-        out_f.write('    """%s""": [%d, %d],\n' % (item.encode('utf-8'), article_index[item], article_fnd[item]))
-
-    # and the redirects
-    #for item in redirects:
-    #    out_f.write('*** "%s": [%d, %d],\n' % (item.encode('utf-8'), find(item), 0))
-
+        out_f.write('    "%s": [%d, %d],\n' % (backslash(item.encode('utf-8')),
+                                                   article_index[item], article_fnd[item]))
     # end of python output, close dictionary
     out_f.write("}\n")
     out_f.close()
@@ -386,7 +385,7 @@ def output_offsets(filename):
 
     # output python code for article hash table
     for i, v in article_file_offsets.items():
-        f.write('    %d: (%d, """%s"""),\n' % (i, v[0], v[1]))
+        f.write('    %d: (%d, "%s"),\n' % (backslash(i), v[0], v[1]))
 
     # end of python output, close dictionary
     f.write("}\n")
