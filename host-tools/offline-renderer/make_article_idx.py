@@ -385,7 +385,7 @@ def output_offsets(filename):
 
     # output python code for article hash table
     for i, v in article_file_offsets.items():
-        f.write('    %d: (%d, "%s"),\n' % (backslash(i), v[0], v[1]))
+        f.write('    %d: (%d, "%s"),\n' % (i, v[0], backslash(v[1])))
 
     # end of python output, close dictionary
     f.write("}\n")
