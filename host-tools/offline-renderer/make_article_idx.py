@@ -23,11 +23,17 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 #    print ord(c)
 
 
-title_tag = re.compile(r'</?title>')
-redirected_to = re.compile(r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)\]\]', re.IGNORECASE)
+# titles
+title_tag = re.compile(r'</?title>', re.IGNORECASE)
+
+# redirect: <text.....#redirect.....[[title#relative link]].....
+redirected_to = re.compile(r'<text\s+xml:space="preserve">.*#redirect[^\[]*\[\[(.*)(#.*)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
+
+# underscore and space
+whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
 
 verbose = False
@@ -142,7 +148,7 @@ def generate_bigram(text):
 
 
 def process_file(filename):
-    global title_tag, redirected_to, non_articles
+    global title_tag, redirected_to, non_articles, whitespaces
     global redirects, article_index, idx
     global article_offsets
     global modulo
@@ -179,6 +185,7 @@ def process_file(filename):
             match = redirected_to.search(line)
             if match:
                 redirect_title = tparser.translate(match.group(1))
+                redirect_title = whitespaces.sub(' ', redirect_title).strip()
                 redirect = True
                 redirects[title] = redirect_title
                 if verbose:
@@ -222,9 +229,17 @@ def find(title):
     return number
 
 
+import unicodedata
+def strip_accents(s):
+   return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
+
+
 def bigram_encode(title):
     global bigram
+
     result = ''
+    title = strip_accents(title)
+
     while len(title) >= 2:
         if ord(title[0]) < 128:
             b = title[0:2]
@@ -235,13 +250,13 @@ def bigram_encode(title):
                 result += chr(ord(title[0:1]))
                 title = title[1:]
         else:
-            result += '?'
+            #result += '?'
             title = title[1:]
     if len(title) == 1:
         if ord(title[0]) < 128:
             result += chr(ord(title[0]))
-        else:
-            result += '?'
+        #else:
+        #    result += '?'
     return result
 
 
