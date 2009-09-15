@@ -9,6 +9,7 @@
 from HTMLParser import HTMLParser
 import unicodedata
 import htmlentitydefs
+import urllib
 
 class LittleParser(HTMLParser):
     def __init__ (self):
@@ -27,5 +28,5 @@ class LittleParser(HTMLParser):
     def translate(self, text):
         self.reset()
         self.buffer = u''
-        self.feed(text)
+        self.feed(urllib.unquote(text))
         return self.buffer

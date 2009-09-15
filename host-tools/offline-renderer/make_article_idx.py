@@ -171,7 +171,7 @@ def process_file(filename):
             if non_articles.search(line):
                 skip = True    # we only need articles
             else:
-                title = tparser.translate(title_tag.sub('', line.strip()))
+                title = tparser.translate(title_tag.sub('', line.strip())).strip(u'\u200e\u200f')
                 # title = title_tag.sub('', line).strip()
                 # ??? not here ?? title = map_accented_chars(title)
                 if verbose:
@@ -185,7 +185,7 @@ def process_file(filename):
             match = redirected_to.search(line)
             if match:
                 redirect_title = tparser.translate(match.group(1))
-                redirect_title = whitespaces.sub(' ', redirect_title).strip()
+                redirect_title = whitespaces.sub(' ', redirect_title).strip().strip(u'\u200e\u200f')
                 redirect = True
                 redirects[title] = redirect_title
                 if verbose:
