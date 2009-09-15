@@ -45,6 +45,7 @@ static void help(void)
 		"\t\t\t2 - Render articles and generate both single article files and dat files\n"
 		"\t\t\t3 - Generate ouptput files\n"
 		"\t\t\t4 - Count the rendered article files (generated in pass 3)\n"
+		"\t\t\t5 - Generate pedia.hsh from pedia.pfx and fnd\n"
 		"  -n --new\t\t\tStart from scratch (for pass 1).  If not specified, default to continue from the last processed.\n"
 		"  -b --batch\t\t\tBatch (for pass 3, 0~7, 0 - 1~249999, 1 - 250000~499999, 2 - 500000~999999, etc)\n"
 		"  -g --begin\t\t\tBeginning idx to process (for pass 3)\n"
@@ -408,6 +409,11 @@ int main(int argc, char **argv)
 		}
 	}
 
+	if (pass == 5)
+	{
+		generate_pedia_hsh();
+		exit(0);
+	}
 	if (!titlesToProcess)
 		titlesToProcess = 1024;
 	if (!sFileName[0])

@@ -35,6 +35,7 @@ void process_pass_3(MYSQL *conn, MYSQL *conn2, int bSplitted);
 void memrcpy(void *dest, void *src, int len); // memory copy starting from the last byte
 void replace_ampersand_char(char *);
 void pad_backslash(char *s, int size);
+void generate_pedia_hsh(void);
 extern void showMsg(int currentLevel, char *format, ...);
 extern int msgLevel(void);
 

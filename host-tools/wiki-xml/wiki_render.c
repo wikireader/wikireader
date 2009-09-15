@@ -3893,7 +3893,6 @@ void generate_pedia_idx(MYSQL *conn, long *nIdxCount, ARTICLE_PTR **articlePtrs)
 //		idx of article (pointing to pedia.idx)
 //		variable length and null terminated remainder (starting from the 3rd character)
 #define SIZE_FIRST_THREE_CHAR_INDEXING SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
-#define SEQUENTIAL_SEARCH_COUNT_THRESHOLD 16
 void generate_pedia_files(MYSQL *conn, int bSplitted)
 {
 	FILE *fdPfx, *fdFnd, *fdIdx;
@@ -3914,12 +3913,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	long nIdxCount;
 	char t1, t2, t3, sStart[4], sEnd[4];
 	long nTitlesProcessed = 0;
-	int nSequentialSearchCounts[MAX_SEARCH_STRING_HASHED_LEN];
-	long offsetSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
-	long hashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
 	int i, j;
-	int bMatched;
-	int lenMatched;
 
 	fdIdx = fopen("pedia.idx", "wb");
 	if (!fdIdx)
@@ -3966,12 +3960,6 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	sLastTitleSearch[0] = '\0';
 	lastIdxArticle = 0;
 	memset((void*)firstThreeCharIndexing, 0, SIZE_FIRST_THREE_CHAR_INDEXING);
-	for (i=0; i < MAX_SEARCH_STRING_HASHED_LEN; i++)
-	{
-		nSequentialSearchCounts[i] = 0;
-		offsetSequentialSearch[i] = 0;
-		hashSequentialSearch[i] = 0;
-	}
 
 	sStart[3] = '\0';
 	sEnd[3] = '\0';
@@ -4102,65 +4090,6 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
 				offset_fnd = ftell(fdFnd);
 
-				lenMatched = 0;
-				if (strlen(sLastTitleSearch) > 3)
-				{
-					int lenLastTitleSearch = strlen(sLastTitleSearch);
-					int lenTitleSearch = strlen(row[2]);
-					int len;
-					char sSearchString[MAX_SEARCH_STRING_HASHED_LEN];
-					
-					// only care the length up to MAX_SEARCH_STRING_HASHED_LEN
-					if (lenLastTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
-						lenLastTitleSearch = MAX_SEARCH_STRING_HASHED_LEN;
-					if (lenTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
-						lenTitleSearch = MAX_SEARCH_STRING_HASHED_LEN;
-					memcpy(sSearchString, sLastTitleSearch, lenLastTitleSearch);
-					
-					bMatched = 1;
-					for (len = 4; len <= lenLastTitleSearch || len <= lenTitleSearch; len++)
-					{
-						if (bMatched)
-						{
-							if (len > lenTitleSearch || search_string_cmp(row[2], sLastTitleSearch, len))
-								bMatched = 0;
-							else
-							{
-								lenMatched = len;
-								if (!hashSequentialSearch[len - 1])
-									nSequentialSearchCounts[len - 1] += 1;
-							}
-						}
-
-						if (len <= lenLastTitleSearch && nSequentialSearchCounts[len - 1] > SEQUENTIAL_SEARCH_COUNT_THRESHOLD)
-						{
-							hashSequentialSearch[len - 1] = add_search_hash(sSearchString, len, offsetSequentialSearch[len - 1]);
-							// reset sequential counts 
-							for (j = len; j <= lenLastTitleSearch; j++)
-							{
-								nSequentialSearchCounts[j - 1] = 0;
-							}
-						}
-					}
-				}
-
-				i = lenMatched;
-				while (i < MAX_TITLE_LEN && row[2][i])
-				{
-					if ('A' <= row[2][i] && row[2][i] <= 'Z')
-						sLastTitleSearch[i] = row[2][i] + 32;
-					else
-						sLastTitleSearch[i] = row[2][i];
-					if (3 <= i && i < MAX_SEARCH_STRING_HASHED_LEN)
-					{
-						offsetSequentialSearch[i] = offset_fnd;
-						nSequentialSearchCounts[i] = 0;
-						hashSequentialSearch[i] = 0;
-					}
-					i++;
-				}
-				sLastTitleSearch[i] = '\0';
-
 				if (idxFirstThreeCharIndexing != lastIdxFirstThreeCharIndexing)
 				{
 					if (c2 != '\0' && firstThreeCharIndexing[bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT] == 0)
@@ -4192,12 +4121,175 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 	fwrite((void*)firstThreeCharIndexing, 1, SIZE_FIRST_THREE_CHAR_INDEXING, fdPfx);
 	fwrite((void*)&nIdxCount, 1, sizeof(nIdxCount), fdIdx);
 	fwrite((void*)articlePtrs, sizeof(ARTICLE_PTR),  nIdxCount, fdIdx);
-	save_search_hash();
 	free(firstThreeCharIndexing);
 	free(articlePtrs);
 	fclose(fdPfx);
 	fclose(fdFnd);
 	fclose(fdIdx);
+}
+
+int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBufFnd, 
+	int lenHashSequentialSearch, char *sHashSequentialSearch, long *offsetHashSequentialSearch, long *countHashSequentialSearchForNextChar)
+{
+	int lenTitleSearch = strlen(sLocalTitleSearch);
+	int lenSame;
+	int i;
+	
+	for (lenSame = 0; lenSame < lenTitleSearch && lenSame < lenHashSequentialSearch; lenSame++)
+	{
+		if (tolower(sLocalTitleSearch[lenSame]) != sHashSequentialSearch[lenSame])
+			break;
+	}
+	
+	for (i = lenHashSequentialSearch; i > lenSame && i > MAX_SEARCH_STRING_ALL_HASHED_LEN; i--)
+	{
+		if (countHashSequentialSearchForNextChar[i - 2] > SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD) // count is stored in the previous array entry
+		{
+			add_search_hash(sHashSequentialSearch, i, offsetHashSequentialSearch[i - 1]);
+		}
+	}
+	
+	if (lenSame > MAX_SEARCH_STRING_ALL_HASHED_LEN)
+		countHashSequentialSearchForNextChar[lenSame - 1]++; // count for the next character in the hash string
+		
+	if (lenTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
+		lenHashSequentialSearch = MAX_SEARCH_STRING_HASHED_LEN;
+	else
+		lenHashSequentialSearch = lenTitleSearch;
+	
+	for (i = lenSame; i < lenHashSequentialSearch; i++)
+	{
+		sHashSequentialSearch[i] = tolower(sLocalTitleSearch[i]);
+		if (i < MAX_SEARCH_STRING_ALL_HASHED_LEN)
+		{
+			countHashSequentialSearchForNextChar[i] = 0;
+		}
+		else
+		{
+			offsetHashSequentialSearch[i] = offsetBufFnd;
+			countHashSequentialSearchForNextChar[i] = countHashSequentialSearchForNextChar[i - 1];
+		}
+	}
+	
+	return lenHashSequentialSearch;
+}
+void build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long lenBufFnd)
+{
+	int i;
+	int lenTitleSearch;
+	TITLE_SEARCH *pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
+	int rc;
+	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
+	char c;
+	char sLocalTitleSearch[MAX_TITLE_LEN];
+	int lenHashSequentialSearch = 0;
+	char sHashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
+	long offsetHashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
+	long countHashSequentialSearchForNextChar[MAX_SEARCH_STRING_HASHED_LEN];
+	
+	showMsg(3, "build_hash_tree [%s]\n", sTitleSearch);
+	lenTitleSearch = strlen(sTitleSearch);
+	if (lenTitleSearch < MAX_SEARCH_STRING_ALL_HASHED_LEN)
+	{
+		for (i = 0; i < strlen(pSupportedChars); i++)
+		{
+			c = pSupportedChars[i];
+			sTitleSearch[lenTitleSearch] = c;
+			sTitleSearch[lenTitleSearch + 1] = '\0';
+			bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
+			while (offsetBufFnd < lenBufFnd && 
+				(rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
+			{
+showMsg(0, "sLocalTitleSearch [%s] [%s]\n", sLocalTitleSearch, sTitleSearch);
+				lenHashSequentialSearch = process_hash_sequential_search(sLocalTitleSearch, offsetBufFnd, 
+					lenHashSequentialSearch, sHashSequentialSearch, offsetHashSequentialSearch, countHashSequentialSearchForNextChar);
+				offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+				pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
+				bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
+			}
+
+			if (offsetBufFnd < lenBufFnd && !rc)
+			{
+				add_search_hash(sTitleSearch, strlen(sTitleSearch), offsetBufFnd);
+				build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
+			}
+		}
+	}
+}
+
+void generate_pedia_hsh(void)
+{
+	FILE *fdPfx, *fdFnd;
+	char sTitleSearch[MAX_TITLE_LEN];
+	long *firstThreeCharIndexing;
+	int idxFirstThreeCharIndexing;
+	char *bufFnd;
+	long lenBufFnd;
+	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
+	char c1, c2, c3;
+	int i, j, k;
+
+	fdPfx = fopen("pedia.pfx", "rb");
+	if (!fdPfx)
+	{
+		showMsg(0, "cannot open file pedia.pfx, error: %s\n", strerror(errno));
+		exit(-1);
+	}
+	fdFnd = fopen("pedia.fnd", "rb");
+	if (!fdFnd)
+	{
+		showMsg(0, "cannot open file pedia.fnd, error: %s\n", strerror(errno));
+		exit(-1);
+	}
+	
+	init_bigram(fdFnd);
+	init_search_hash();
+
+	firstThreeCharIndexing = (long *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
+	if (!firstThreeCharIndexing)
+	{
+		showMsg(0, "malloc firstThreeCharIndexing error\n");
+		exit(1);
+	}
+	fread((void*)firstThreeCharIndexing, 1, SIZE_FIRST_THREE_CHAR_INDEXING, fdPfx);
+	fseek(fdFnd, 0, SEEK_END);
+	lenBufFnd = ftell(fdFnd);
+	fseek(fdFnd, 0, SEEK_SET);
+	bufFnd = malloc(lenBufFnd);
+	if (!bufFnd)
+	{
+		showMsg(0, "malloc bufFnd error\n");
+		exit(1);
+	}
+	lenBufFnd = fread(bufFnd, 1, lenBufFnd, fdFnd);
+
+	for (i = 0; i < strlen(pSupportedChars); i++)
+	{
+		c1 = pSupportedChars[i];
+		for (j = 0; j < strlen(pSupportedChars); j++)
+		{
+			c2 = pSupportedChars[j];
+			for (k = 0; k < strlen(pSupportedChars); k++)
+			{
+				c3 = pSupportedChars[k];
+				idxFirstThreeCharIndexing = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
+					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
+				if (firstThreeCharIndexing[idxFirstThreeCharIndexing])
+				{
+					sTitleSearch[0] = c1;
+					sTitleSearch[1] = c2;
+					sTitleSearch[2] = c3;
+					sTitleSearch[3] = '\0';
+					build_hash_tree(sTitleSearch, firstThreeCharIndexing[idxFirstThreeCharIndexing], bufFnd, lenBufFnd);
+				}
+			}
+		}
+	}
+	save_search_hash();
+	free(firstThreeCharIndexing);
+	free(bufFnd);
+	fclose(fdPfx);
+	fclose(fdFnd);
 }
 
 void process_pass_3(MYSQL *conn, MYSQL *conn2, int bSplitted)
