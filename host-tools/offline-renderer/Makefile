@@ -57,6 +57,7 @@ pylzma:
 	for dir in /usr/lib/python* /usr/local/lib/python* /opt/lib/python* ; \
 	do \
 	   [ -e "$${dir}/site-packages/pylzma.so" ] && exit 0 ; \
+	   [ -e "$${dir}/dist-packages/pylzma.so" ] && exit 0 ; \
 	done ; \
 	cd ${PYLZMA_DIR} && \
 	python setup.py build && \
