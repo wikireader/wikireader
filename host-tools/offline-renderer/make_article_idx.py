@@ -206,14 +206,19 @@ def find(title):
     also handles redirects
     """
     global redirects, article_index
+
     try:
         title = redirects[title]
     except KeyError:
-        title = redirects[title[0].lower() + title[1:]]
+        title = redirects[title[0].swapcase() + title[1:]]
+
     try:
         number = article_index[title]
     except KeyError:
-        number = find(title)
+        try:
+            number = article_index[title[0].swapcase() + title[1:]]
+        except:
+            number = find(title)
     return number
 
 
