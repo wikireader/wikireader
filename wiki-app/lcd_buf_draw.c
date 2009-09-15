@@ -185,6 +185,9 @@ char* FontFile(int idx) {
 //		case MESSAGE_FONT_IDX - 1:
 //			return FONT_FILE_MESSAGE;
 //			break;
+		case SMALL_FONT_IDX - 1:
+			return FONT_FILE_SMALL;
+			break;
 		default:
 			return FONT_FILE_DEFAULT;
 			break;
@@ -734,16 +737,26 @@ void init_render_article()
 //	is_rendering = 1;
 }
 
-#define LICENSE_TEXT_FONT 0
+#define LICENSE_TEXT_FONT SMALL_FONT_IDX
 #define LICENSE_TEXT_LINE_HEIGHT 12
-#define SPACE_BEFORE_LICENSE_TEXT 100
+#define SPACE_BEFORE_LICENSE_TEXT 80
 #define APACE_AFTER_LICENSE_TEXT 5
-#define LICENSE_TEXT_1 "2009.8.25"
-#define LICENSE_TEXT_2 "Text is available under the Creative Commons"
-#define LICENSE_TEXT_3 "Attribution-ShareAlike License; additional terms may"
-#define LICENSE_TEXT_4 "apply.  See Terms of Use for details.  Wikipedia`"
-#define LICENSE_TEXT_5 "is a registered trademark of the Wikimedia Foundation,"
-#define LICENSE_TEXT_6 "Inc., a non-profit organization."
+#define LICENSE_TEXT_1 "Text is available under the Creative Commons"
+#define LICENSE_TEXT_2 "Attribution-ShareAlike License; additional terms may"
+#define LICENSE_TEXT_3 "apply.  See Terms of Use for details.  Wikipedia`"
+#define LICENSE_TEXT_4 "is a registered trademark of the Wikimedia Foundation,"
+#define LICENSE_TEXT_5 "Inc., a non-profit organization.  2009.8.25"
+void draw_license_text(unsigned char *s)
+{
+	ucs4_t u;
+	unsigned char **p = &s;
+
+	while (**p && (u = UTF8_to_UCS4(p)))
+	{
+		buf_draw_char(u);
+	}
+}
+
 void render_wikipedia_license_text()
 {
 #ifndef WIKIPCF
@@ -753,9 +766,11 @@ void render_wikipedia_license_text()
 	if (lcd_draw_buf.current_y < LCD_BUF_HEIGHT_PIXELS - SPACE_BEFORE_LICENSE_TEXT - LICENSE_TEXT_LINE_HEIGHT * 6 - APACE_AFTER_LICENSE_TEXT)
 	{
 		lcd_draw_buf.line_height = LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += SPACE_BEFORE_LICENSE_TEXT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_1, lcd_draw_buf.screen_buf);
-		lcd_draw_buf.current_y += 2;
+		lcd_draw_buf.pPcfFont = &pcfFonts[LICENSE_TEXT_FONT - 1];
+		
+		draw_license_text(LICENSE_TEXT_1);
 		start_x = 117;
 		end_x = 199;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
@@ -767,10 +782,9 @@ void render_wikipedia_license_text()
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 1;
 		}
-		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_2, lcd_draw_buf.screen_buf);
-		lcd_draw_buf.current_y += 2;
+		draw_license_text(LICENSE_TEXT_2);
 		start_x = 0;
 		end_x = 134;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
@@ -782,10 +796,9 @@ void render_wikipedia_license_text()
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 1;
 		}
-		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_3, lcd_draw_buf.screen_buf);
-		lcd_draw_buf.current_y += 2;
+		draw_license_text(LICENSE_TEXT_3);
 		start_x = 50;
 		end_x = 107;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
@@ -797,14 +810,13 @@ void render_wikipedia_license_text()
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 2;
 		}
-		lcd_draw_buf.current_y -= 2;
+		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_4, lcd_draw_buf.screen_buf);
+		draw_license_text(LICENSE_TEXT_4);
+		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_5, lcd_draw_buf.screen_buf);
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_glyphs_to_buf(LICENSE_TEXT_FONT, LCD_LEFT_MARGIN, lcd_draw_buf.current_y, LICENSE_TEXT_6, lcd_draw_buf.screen_buf);
-		lcd_draw_buf.current_y += APACE_AFTER_LICENSE_TEXT;
+		draw_license_text(LICENSE_TEXT_5);
+		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT + APACE_AFTER_LICENSE_TEXT;
 	}
 #endif
 }
@@ -1044,7 +1056,9 @@ unsigned char * open_article_with_pcf_link(long idx_article)
 	    start_x = articleLink[i].start_xy & 0x000000ff;
 	    end_y   = articleLink[i].end_xy  >>8;
 	    end_x   = articleLink[i].end_xy & 0x000000ff;
-           
+//#ifndef WIKIPCF
+//msg(MSG_INFO, " %x, %x, (%d, %d) (%d, %d) %ld\n", articleLink[i].start_xy, articleLink[i].end_xy, start_x, start_y, end_x, end_y, articleLink[i].article_id);
+//#endif          
 
 	}
         article_link_count = article_header.article_link_count;
@@ -1316,7 +1330,9 @@ void invert_link(int article_link_number)
         return;
 
      start_y = articleLink[article_link_number].start_xy >>8;
-     start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
+     start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment - 1;
+     if (start_x < 0)
+     	start_x = 0;
      end_y   = articleLink[article_link_number].end_xy  >>8;
      end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
      

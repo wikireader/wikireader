@@ -271,11 +271,11 @@ int fetch_search_result(long input_offset_fnd, int bInit)
 			bigram_decode(result_list->list[result_list->count], pTitleSearch->sTitleSearch);
 			rc = search_string_cmp(result_list->list[result_list->count], search_string, search_str_len);
 #ifndef INCLUDED_FROM_KERNEL
-msg(0, "rc %d, [%s], [", rc, result_list->list[result_list->count]);
+msg(MSG_INFO, "rc %d, [%s], [", rc, result_list->list[result_list->count]);
 int i;
 for (i=0;i<search_str_len;i++)
-msg(0, "%c", search_string[i]);
-msg(0, "]\n");
+msg(MSG_INFO, "%c", search_string[i]);
+msg(MSG_INFO, "]\n");
 #endif
 			if (!rc) // match!
 			{
@@ -365,6 +365,7 @@ int search_populate_result()
 	result_list->count = 0;
 	result_list->base = 0;
 	result_list->cur_selected = 0;
+	search_info->offset_search_result = -1;
 	if (search_str_len > 0)
 	{
 		switch(search_str_len)
@@ -414,7 +415,8 @@ int search_populate_result()
 					{
 						if (i >= lenHashedSearchString)
 							offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-						if (offsetHasedSearchString[i])
+						if (offsetHasedSearchString[i] && 
+							(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 						{
 							found = 1;
 							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -427,7 +429,8 @@ int search_populate_result()
 				{
 					for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
 					{
-						if (offsetHasedSearchString[i])
+						if (offsetHasedSearchString[i] && 
+							(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 						{
 							found = 1;
 							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -447,7 +450,8 @@ int search_populate_result()
 				for (i = 3; i < lenHashedSearchString; i++)
 				{
 					offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-					if (offsetHasedSearchString[i])
+					if (offsetHasedSearchString[i] && 
+						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 					{
 						found = 1;
 						search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -456,15 +460,16 @@ int search_populate_result()
 			}
 		}
 		
-#ifndef INCLUDED_FROM_KERNEL
-msg(MSG_INFO, "found %d, %x, %x\n", search_info->offset_search_result, search_info->prefix_index_table[idx_prefix_index_table]);
-#endif
-		if (!found && search_info->prefix_index_table[idx_prefix_index_table])
+		if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN) && 
+			search_info->prefix_index_table[idx_prefix_index_table])
 		{
 			found = 1;
 			search_info->offset_search_result = search_info->prefix_index_table[idx_prefix_index_table];
 		}
-		fetch_search_result(search_info->offset_search_result, 1);
+		if (search_info->offset_search_result > 0)
+			fetch_search_result(search_info->offset_search_result, 1);
+		else
+			result_list->result_populated = 1;
 	}
 	return found;
 }
@@ -509,6 +514,8 @@ void search_reload()
 
 	if (!search_str_len)
 	{
+		result_list->count = 0;
+		result_list->cur_selected = -1;
 		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
@@ -578,7 +585,7 @@ void search_reload_ex()
 	static int last_start_x_search=0;
 	char *title;
 	char temp_search_string[MAX_TITLE_SEARCH];
-	
+	static int bNoResultLastTime = 0;
 
 
 	guilib_fb_lock();
@@ -613,7 +620,10 @@ void search_reload_ex()
 
 	if (!search_str_len)
 	{
+		bNoResultLastTime = 0;
 		guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+		result_list->count = 0;
+		result_list->cur_selected = -1;
 		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
@@ -635,10 +645,15 @@ void search_reload_ex()
 	if (result_list->result_populated)
 	{
 		if (result_list->result_populated && !result_list->count) {
-			guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
-			render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
+			if (!bNoResultLastTime)
+			{
+				guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+				render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
+				bNoResultLastTime = 1;
+			}
 			goto out;
 		}
+		bNoResultLastTime = 0;
 	
 		if (result_list->result_populated) {
 			unsigned int i, j;
@@ -684,6 +699,8 @@ void search_result_display()
 
 	if (!search_str_len)
 	{
+		result_list->count = 0;
+		result_list->cur_selected = -1;
 		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
 		goto out;
 	}
@@ -720,15 +737,15 @@ out:
 	guilib_fb_unlock();
 }
 
-void search_add_char(char c)
+int search_add_char(char c)
 {
         if(c == 0x20 && search_str_len>0 && search_string[search_str_len-1] == 0x20)
-                return;
+                return -1;
 	if (search_str_len >= MAX_TITLE_SEARCH - 2)
-		return;
+		return -1;
 
 	if (!search_str_len && c == 0x20)
-		return;
+		return -1;
 
 	if ('A' <= c && c <= 'Z')
 		c += 32;
@@ -751,6 +768,7 @@ void search_add_char(char c)
         search_string_changed = true;
 	search_populate_result();
         result_list->cur_selected = -1;
+        return 0;
 }
 void search_fetch()
 {
@@ -764,12 +782,14 @@ void search_fetch()
  * one could remember the &state and then seek back to the
  * position and continue the search from there... For now do it
  * the easy way and wait for user testing.
+ *
+ * return value - 0: remove ok, -1: no key to remove
  */
-void search_remove_char(void)
+int search_remove_char(void)
 {
 	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
 	if (search_str_len == 0)
-		return;
+		return -1;
 
 	search_string[--search_str_len] = '\0';
 //	memset(&state, 0, sizeof(state));
@@ -787,6 +807,7 @@ void search_remove_char(void)
         search_string_changed_remove = true;
 	search_populate_result();
         result_list->cur_selected = -1;
+        return 0;
 }
 
 int result_list_down(int nRows)
@@ -989,11 +1010,15 @@ unsigned int search_result_count()
 {
 	return result_list->count;
 }
-void clear_search_string()
+int clear_search_string()
 {
+      if (search_str_len == 0)
+          return -1;
+      	
       result_list->count = 0;
       strcpy(search_string,"");
       search_str_len = 0;
+      return 0;
 }
 int get_search_string_len()
 {

@@ -123,7 +123,7 @@ Assumptions:
 // The above are the primary fonts for the article body.  The index of any one of them needs to be under 7. 
 #define DEFAULT_ALL_FONT_IDX		7  
 #define BOLD_ALL_FONT_IDX		8 
-//#define KEY_FONT_IDX			9
+#define SMALL_FONT_IDX			9
 #define SEARCH_HEADING_FONT_IDX		TITLE_FONT_IDX 
 #define SEARCH_LIST_FONT_IDX		DEFAULT_FONT_IDX
 #define MESSAGE_FONT_IDX		BOLD_FONT_IDX

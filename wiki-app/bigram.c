@@ -6,7 +6,13 @@
 
 char aBigram[128][2];
 int aCharIdx[128];
-#ifndef WIKIPCF
+#ifdef WIKIPCF
+void init_bigram(FILE *fd)
+{
+	init_char_idx();
+	fread(aBigram, 1, sizeof(aBigram), fd);
+}
+#else
 extern int _wl_read(int, void*, unsigned int);
 
 void init_bigram(int fd)

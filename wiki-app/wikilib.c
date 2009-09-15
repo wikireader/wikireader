@@ -284,20 +284,22 @@ void open_article(const char* target, int mode)
 
 static void handle_search_key(char keycode)
 {
-        int mode;
+//        int mode;
+	int rc = 0;
 
 	if (keycode == WL_KEY_BACKSPACE) {
-		search_remove_char();
+		rc = search_remove_char();
 	} else if (is_supported_search_char(keycode)) {
-		search_add_char(tolower(keycode));
+		rc = search_add_char(tolower(keycode));
 	} else {
                 if(keycode == -42)
                 {
-                  mode = keyboard_get_mode();
-                  if(mode == KEYBOARD_CHAR)
-                      keyboard_set_mode(KEYBOARD_NUM);                  
-                  else if(mode == KEYBOARD_NUM)
-                      keyboard_set_mode(KEYBOARD_CHAR);                  
+//                  mode = keyboard_get_mode();
+//                  if(mode == KEYBOARD_CHAR)
+//                      keyboard_set_mode(KEYBOARD_NUM);                  
+//                  else if(mode == KEYBOARD_NUM)
+//                      keyboard_set_mode(KEYBOARD_CHAR);   
+			rc = -1;               
                 }
 		else
                 {
@@ -307,6 +309,7 @@ static void handle_search_key(char keycode)
 
 	guilib_fb_lock();
 	//search_reload();
+	if (!rc)
         search_reload_ex();
 	keyboard_paint();
 	guilib_fb_unlock();
@@ -431,6 +434,7 @@ static void handle_touch(struct wl_input_event *ev)
         int article_link_number=-1;
         int enter_touch_y_pos_record;
         //int time_diff_search;
+        int mode;
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
@@ -484,7 +488,21 @@ static void handle_touch(struct wl_input_event *ev)
                         last_delete_time = start_search_time;
 			if (key) {
                                 if(key->key==8)//press "<" button
+                                {
                                     press_delete_button = true;
+                               }
+				else if(key->key == -42)
+				{
+					mode = keyboard_get_mode();
+					if(mode == KEYBOARD_CHAR)
+						keyboard_set_mode(KEYBOARD_NUM);                  
+					else if(mode == KEYBOARD_NUM)
+						keyboard_set_mode(KEYBOARD_CHAR);                  
+					guilib_fb_lock();
+					keyboard_paint();
+					guilib_fb_unlock();
+				}
+
 				if (!touch_down_on_keyboard && !touch_down_on_list)
 					touch_down_on_keyboard = 1;
 
@@ -818,18 +836,22 @@ int wikilib_run(void)
                     {
 	                 sleep = 0;
 	                 time_now = get_time();
-	                 if((time_now-start_search_time)>1000000*24*4)
+	                 if((time_now-start_search_time)>1000000*12*7)
 	                 {
-	                     clear_search_string();
+	                     if (!clear_search_string())
+	                 {
 	                     search_string_changed_remove = true;
 	                     search_reload_ex();
+	                     }
 	                     press_delete_button = false;
 	                 }
-	                 else if ((time_now-start_search_time)>1000000*18 && (time_now-last_delete_time)>1000000*12)
+	                 else if ((time_now-start_search_time)>1000000*12 && (time_now-last_delete_time)>1000000*7)
 	                 {
-	                     search_remove_char();
+	                     if (!search_remove_char())
+	                 {
 	                     search_string_changed_remove = true;
 	                     search_reload_ex();
+		             }
 	                     last_delete_time = time_now;
 	                 }
 	            }

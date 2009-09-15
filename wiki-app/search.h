@@ -78,12 +78,12 @@ void search_reload(void);
 /**
  * Search for another char. It needs to be lower case
  */
-void search_add_char(char c);
+int search_add_char(char c);
 
 /**
  * Remove the last char from the search
  */
-void search_remove_char(void);
+int search_remove_char(void);
 
 /**
  * Return search result count
@@ -109,6 +109,6 @@ int  set_result_list_base(int offset,int offset_count);
 void search_fetch();
 void search_result_display();
 void search_reload_ex();
-void clear_search_string();
+int clear_search_string();
 int  get_search_string_len();
 #endif
