@@ -873,7 +873,7 @@ def write_article():
 
     article_count += 1
     if verbose:
-        print "[MWR %d] %s" % (cnt, g_this_article_title)
+        print "[MWR %d] %s" % (article_count, g_this_article_title)
         sys.stdout.flush()
 
     output.flush()

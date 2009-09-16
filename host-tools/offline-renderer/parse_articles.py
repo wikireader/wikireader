@@ -22,7 +22,16 @@ end_article = re.compile(r'==\s*External\s+links\s*==|</text>', re.IGNORECASE)
 
 begin_ignore = re.compile(r'^\s*(&lt;!--|&lt;gallery&gt;)\s*$', re.IGNORECASE)
 end_ignore = re.compile(r'^\s*(--&gt;|&lt;/gallery&gt;)\s*$', re.IGNORECASE)
-inline_comment= re.compile(r'(&lt;!--.*?--&gt;|&lt;ref.*?&lt;/ref&gt;)', re.IGNORECASE)
+inline_comment = re.compile(r'(&lt;!--.*?--&gt;|&lt;ref.*?&lt;/ref&gt;)', re.IGNORECASE)
+inline_ref = re.compile(r'(&lt;ref\s+name.*?/&gt;)', re.IGNORECASE)
+
+comment_start = re.compile(r'&lt;!--.*$', re.IGNORECASE)
+comment_end =  re.compile(r'^.*--&gt;', re.IGNORECASE)
+
+ref_start = re.compile(r'&lt;ref.*?&gt;.*$', re.IGNORECASE)
+ref_end = re.compile(r'^.*&lt;/ref&gt;', re.IGNORECASE)
+
+delete_tags = re.compile(r'&lt;.*?&gt;', re.IGNORECASE)
 
 line_break = re.compile(r'&lt;br /&gt;', re.IGNORECASE)
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
@@ -143,11 +152,15 @@ def process_file(file_name, seek, count, newf):
     parse   = False
     ignore  = False
     skip    = False
+    comment = False
+    ref = False
 
     while line:
 
         if "<title>" in line:
             parse = False
+            comment = False
+            ref = False
             if no_parse.search(line):
                 skip = True    # we only need articles
             else:
@@ -172,32 +185,58 @@ def process_file(file_name, seek, count, newf):
 
         if parse:
             line = inline_comment.sub('', line.strip())
-            line = line_break.sub('\n', line)
-            line = entities.sub(r'&\1;', line)
-            if end_article.search(line):
-                newf.write('***EOF***\n')
-                if count != 'all':
-                    count -= 1
-                    if count <= 0:
-                        break
-                parse = False
+            line = inline_ref.sub('', line)
+            if comment:
+                if comment_end.search(line):
+                    line = comment_end.sub('', line)
+                    comment = False
+                else:
+                    line = None
+            else:
+                if comment_start.search(line):
+                    line = comment_start.sub('', line)
+                    comment = True
 
-            elif begin_ignore.search(line):
-                ignore = True
-
-            elif end_ignore.search(line):
-                ignore = False
-
-            elif not ignore:
-                line2 = img.sub('', line)
-                if line2 == line:
-                    if line.strip() == '':
-                        if not had_blank:
-                            newf.write('\n');
-                            had_blank = True
+            if line != None:
+                if ref:
+                    if ref_end.search(line):
+                        line = ref_end.sub('', line)
+                        ref = False
                     else:
-                        had_blank = False
-                        newf.write(line + '\n');
+                        line = None
+                else:
+                    if ref_start.search(line):
+                        line = ref_start.sub('', line)
+                        ref = True
+
+            if line != None:
+                line = delete_tags.sub('', line)
+                line = line_break.sub('\n', line)
+                line = entities.sub(r'&\1;', line)
+                if end_article.search(line):
+                    newf.write('***EOF***\n')
+                    if count != 'all':
+                        count -= 1
+                        if count <= 0:
+                            break
+                    parse = False
+
+                elif begin_ignore.search(line):
+                    ignore = True
+    
+                elif end_ignore.search(line):
+                    ignore = False
+    
+                elif not ignore:
+                    line2 = img.sub('', line)
+                    if line2 == line:
+                        if line.strip() == '':
+                            if not had_blank:
+                                newf.write('\n');
+                                had_blank = True
+                        else:
+                            had_blank = False
+                            newf.write(line + '\n');
 
         line = f.readline()
 

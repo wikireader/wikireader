@@ -338,7 +338,7 @@ def output_index(filename):
 
     print 'Writing:', filename
     output = open(filename, 'wb')
-    pickle.dump(article_index, output)
+    cPickle.dump(article_index, output)
     output.close()
 
 
@@ -348,7 +348,7 @@ def output_offsets(filename):
 
     print 'Writing:', filename
     output = open(filename, 'wb')
-    pickle.dump(article_file_offsets, output)
+    cPickle.dump(article_file_offsets, output)
     output.close()
 
 
