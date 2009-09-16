@@ -27,7 +27,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 title_tag = re.compile(r'</?title>', re.IGNORECASE)
 
 # redirect: <text.....#redirect.....[[title#relative link]].....
-redirected_to = re.compile(r'<text\s+xml:space="preserve">.*?#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
+redirected_to = re.compile(r'<text\s+xml:space="preserve">\s*#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
@@ -325,8 +325,8 @@ def output_pfx(pfx_name):
 
 
 def backslash(text):
-    """replace all " by \\" """
-    return r'\"'.join(text.split('"'))
+    """replace all " by \\"  and \\ by \\\\ """
+    return '\\"'.join('\\\\'.join(text.split('\\')).split('"'))
 
 
 def output_index(out_name):
