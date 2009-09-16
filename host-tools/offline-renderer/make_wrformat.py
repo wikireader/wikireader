@@ -415,7 +415,7 @@ def render_text(buffer, maxwidth, indent = 0, nl = True):
             if nl:
                 if font != item[1]:
                     font = item[1]
-                    esc_code3(font)
+                    esc_code3(font)                    
                 else:
                     esc_code2()
                 nl = False
@@ -424,14 +424,14 @@ def render_text(buffer, maxwidth, indent = 0, nl = True):
                 if font != item[1]:
                     font = item[1]
                     esc_code4(font)
-            if item[2]: # have url
+            if item[2]: # has url
                 text = item[0].rstrip()
                 output.write(text.encode('utf-8'))
-                x1 = x0 + get_textwidth (text, item[1])
+                x1 = x0 + item[3]       #get_textwidth (text, item[1])
                 make_link(item[2], x0, x1, text)
                 x0 = x1
             else:
-                x0 += get_textwidth (item[0], item[1])
+                x0 += item[3]           #get_textwidth (item[0], item[1])
                 output.write(item[0].encode('utf-8'))
         nl = True
 
