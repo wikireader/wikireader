@@ -11,6 +11,7 @@ import struct
 import littleparser
 import getopt
 import os.path
+import cPickle
 
 
 tparser = littleparser.LittleParser() # for handling titles
@@ -39,8 +40,10 @@ whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 verbose = False
 bigram = {}
 redirects = {}
+
+# format: [article_number, fnd_index]
 article_index = {}
-article_fnd = {}
+
 index_matrix = {}
 
 article_file_offsets = {}
@@ -52,13 +55,13 @@ idx = 1 # first article number; cumulative count of all articles
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--out=file] [--offsets=file] [--modulo=n] [--prefix=name]' % os.path.basename(__file__)
-    print '       --verbose      Enable verbose output'
-    print '       --out=file     Python dictionary output [article_idx.py]'
-    print '       --offsets=file Python dictionary output [article_idx.py]'
-    print '       --modulo=n     only save the offsets for "mod n" articles [1] (1k => 1000)'
-    print '       --out=file     Python dictionary output [article_idx.py]'
-    print '       --prefix=name  Device file name portion for .fnd/.pfx [pedia]'
+    print 'usage: %s <options> {xlm-file...}' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --verbose               Enable verbose output'
+    print '       --article-index=file    Article index dictionary output [articles.pickle]'
+    print '       --article-offsets=file  Article file offsets dictionary output [offsets.pickle]'
+    print '       --modulo=n              only save the offsets for "mod n" articles [1] (1k => 1000)'
+    print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
     exit(1)
 
 def main():
@@ -67,14 +70,14 @@ def main():
     global redirects, article_index
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:m:p:', ['help', 'verbose', 'out=',
-                                                                'offsets=', 'modulo=', 'prefix='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:m:p:', ['help', 'verbose', 'article-index=',
+                                                                'article-offsets=', 'modulo=', 'prefix='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
-    out_name = "article_idx.py"
-    off_name = "article_off.py"
+    art_name = "articles.pickle"
+    off_name = "offsets.pickle"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
 
@@ -83,9 +86,9 @@ def main():
             verbose = True
         elif opt in ('-h', '--help'):
             usage(None)
-        elif opt in ('-o', '--out'):
-            out_name = arg
-        elif opt in ('-f', '--offsets'):
+        elif opt in ('-i', '--article-index'):
+            art_name = arg
+        elif opt in ('-o', '--article-offsets'):
             off_name = arg
         elif opt in ('-m', '--modulo'):
             if arg[-1] == 'k':
@@ -126,12 +129,12 @@ def main():
 
     output_fnd(fnd_name)
     output_pfx(pfx_name)
-    output_index(out_name)
+    output_index(art_name)
     output_offsets(off_name)
 
 
 def generate_bigram(text):
-    global bigram, redirects, article_index, article_fnd
+    global bigram, redirects, article_index
     if len(text) > 2:
         try:
             if ord(text[0]) < 128 and ord(text[1]) < 128:
@@ -192,7 +195,7 @@ def process_file(filename):
         if not skip and "</text>" in line:
             skip = False
             if not redirect:
-                article_index[title] = idx
+                article_index[title] = [idx, -1]
                 if idx % modulo == 0:
                     article_file_offsets[idx] = (current_offset, filename)
                 idx = idx + 1
@@ -209,6 +212,7 @@ def find(title):
     """get index from article title
 
     also handles redirects
+    returns: [index, fnd]
     """
     global redirects, article_index
 
@@ -218,13 +222,13 @@ def find(title):
         title = redirects[title[0].swapcase() + title[1:]]
 
     try:
-        number = article_index[title]
+        result = article_index[title]
     except KeyError:
         try:
-            number = article_index[title[0].swapcase() + title[1:]]
+            result = article_index[title[0].swapcase() + title[1:]]
         except:
-            number = find(title)
-    return number
+            result = find(title)
+    return result
 
 
 import unicodedata
@@ -258,11 +262,13 @@ def bigram_encode(title):
     return result
 
 
-def output_fnd(fnd_name):
+def output_fnd(filename):
     """create bigram table"""
-    global bigram, article_index, article_fnd
+    global bigram, article_index
     global index_matrix
-    out_f = open(fnd_name, 'w')
+
+    print 'Writing:', filename
+    out_f = open(filename, 'w')
 
     sortedgram = [ (value, key) for key, value in bigram.iteritems() ]
     sortedgram.sort()
@@ -281,8 +287,6 @@ def output_fnd(fnd_name):
         bigram['zz'] = chr(i + 128)
         i += 1
 
-
-
     # create pfx matrix and write encoded titles
     article_list = article_index.keys()
     article_list.sort()
@@ -299,17 +303,18 @@ def output_fnd(fnd_name):
             index_matrix[key2] = offset
         if key3 not in index_matrix:
             index_matrix[key3] = offset
-        article_fnd[title] = offset
-        out_f.write(struct.pack('Lb', article_index[title], 0) + bigram_encode(title) + '\0')
+        article_index[title][1] = offset
+        out_f.write(struct.pack('Lb', article_index[title][0], 0) + bigram_encode(title) + '\0')
 
     out_f.close()
 
 
-def output_pfx(pfx_name):
+def output_pfx(filename):
     """output the pfx matrix"""
     global index_matrix
 
-    out_f = open(pfx_name, 'w')
+    print 'Writing:', filename
+    out_f = open(filename, 'w')
     list = '\0' + KEYPAD_KEYS
     for k1 in list:
         for k2 in list:
@@ -324,72 +329,24 @@ def output_pfx(pfx_name):
     out_f.close()
 
 
-def backslash(text):
-    """replace all " by \\"  and \\ by \\\\ """
-    return '\\"'.join('\\\\'.join(text.split('\\')).split('"'))
+def output_index(filename):
+    """output the article data"""
+    global article_index
 
-
-def output_index(out_name):
-    """output python code for redirected titles to article hash table"""
-    global article_index, article_fnd
-
-    out_f = open(out_name, "w")
-
-    # write article indexs into a python dictionary
-    out_f.write("#! /usr/bin/env python\n")
-    out_f.write("# -*- coding: utf-8 -*-\n\n")
-
-    out_f.write("def idx(title):\n")
-    out_f.write("    global article_indices\n")
-    out_f.write("    if title not in article_indices:\n")
-    out_f.write("        return 0\n")
-    out_f.write("    return article_indices[title][0]\n")
-    out_f.write("\n")
-
-    out_f.write("def fnd(title):\n")
-    out_f.write("    global article_indices\n")
-    out_f.write("    if title not in article_indices:\n")
-    out_f.write("        return 0\n")
-    out_f.write("    return article_indices[title][1]\n")
-    out_f.write("\n")
-
-    out_f.write("article_indices = {\n")
-
-    # output python code for article hash table
-    for item in article_index:
-        out_f.write('    "%s": [%d, %d],\n' % (backslash(item.encode('utf-8')),
-                                                   article_index[item], article_fnd[item]))
-    # end of python output, close dictionary
-    out_f.write("}\n")
-    out_f.close()
+    print 'Writing:', filename
+    output = open(filename, 'wb')
+    pickle.dump(article_index, output)
+    output.close()
 
 
 def output_offsets(filename):
-    """output python code for article file positions"""
+    """output file offsets"""
     global article_file_offsets
 
-    f = open(filename, "w")
-
-    # write article indexs into a python dictionary
-    f.write("#! /usr/bin/env python\n")
-    f.write("# -*- coding: utf-8 -*-\n\n")
-
-    f.write("def offset(idx):\n")
-    f.write("    global article_file_offsets\n")
-    f.write("    if idx not in article_file_offsets:\n")
-    f.write("        return 0\n")
-    f.write("    return article_file_offsets[idx]\n")
-    f.write("\n")
-
-    f.write("article_file_offsets = {\n")
-
-    # output python code for article hash table
-    for i, v in article_file_offsets.items():
-        f.write('    %d: (%d, "%s"),\n' % (i, v[0], backslash(v[1])))
-
-    # end of python output, close dictionary
-    f.write("}\n")
-    f.close()
+    print 'Writing:', filename
+    output = open(filename, 'wb')
+    pickle.dump(article_file_offsets, output)
+    output.close()
 
 
 # run the program

@@ -12,7 +12,9 @@ FONT_PATH ?= ${HOST_TOOLS}/fonts
 WORKDIR ?= /tmp
 
 PREFIX := ${DESTDIR}/pedia
-ARTICLES := ${WORKDIR}/artcles-${RENDER_BLOCK}.html
+ARTICLES := ${WORKDIR}/articles.pickle
+OFFSETS := ${WORKDIR}/offsets.pickle
+HTML_ARTICLES := ${WORKDIR}/articles-${RENDER_BLOCK}.html
 
 PYLZMA_DIR := pylzma-0.3.0
 
@@ -29,13 +31,14 @@ all: index
 check-paths:
 	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	@if [ ! -d "${WORKDIR}" ] ; then echo WORKDIR: "'"${WORKDIR}"'" is not a directory ; exit 1; fi
 	@if [ ! -d "${FONT_PATH}" ] ; then echo FONT_PATH: "'"${FONT_PATH}"'" is not a directory ; exit 1; fi
 
 .PHONY: index
 index: pylzma check-paths
-	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
-	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	time ./make_article_idx.py ${VERBOSE} --modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
+	time ./make_article_idx.py ${VERBOSE} \
+		--article-index="${ARTICLES}" --article-offsets="${OFFSETS}" \
+		--modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: article_idx.py
 article_idx.py:
@@ -43,9 +46,14 @@ article_idx.py:
 
 .PHONY: parse
 parse: check-paths
-	time ./parse_articles.py ${VERBOSE} --out="${ARTICLES}" --start="${START}" --count="${COUNT}" ${XML_FILES}
-	time ./make_wrformat.py ${VERBOSE} --font-path="${FONT_PATH}" --number="${RENDER_BLOCK}" \
-		--prefix="${PREFIX}" "${ARTICLES}"
+	time ./parse_articles.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
+		--start="${START}" --count="${COUNT}" \
+		--article-offsets="${OFFSETS}" \
+		${XML_FILES}
+	time ./make_wrformat.py ${VERBOSE} --font-path="${FONT_PATH}" \
+		--number="${RENDER_BLOCK}" \
+		--article-index="${ARTICLES}" \
+		--prefix="${PREFIX}" "${HTML_ARTICLES}"
 
 .PHONY: combine
 combine: check-paths

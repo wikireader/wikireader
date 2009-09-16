@@ -14,9 +14,10 @@ import struct
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--prefix=name]' % os.path.basename(__file__)
-    print '       --verbose      Enable verbose output'
-    print '       --prefix=name  Device file name portion for .idx [pedia]'
+    print 'usage: %s <options>' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --verbose               Enable verbose output'
+    print '       --prefix=name           Device file name portion for .idx [pedia]'
     exit(1)
 
 def main():

@@ -9,17 +9,17 @@
 import sys, os, struct, os.path, re
 import io
 from HTMLParser import HTMLParser
-import article_idx
 import pylzma
 import unicodedata
 import htmlentitydefs
 import codecs
 import getopt
 import os.path
+import cPickle
+
 
 verbose = False
 article_count = 0
-
 
 fh       = '4b' # struct font_bmf_header (header)
 cmr      = '8b48s'  # struct charmetric_bmf (font)
@@ -88,6 +88,8 @@ i_out = None
 f_out = None
 file_number = 0
 
+article_index = None
+
 output = None
 compress = True
 
@@ -95,12 +97,14 @@ compress = True
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--number=n] [--prefix=name] [--test=filename] [--font-path=path]' % os.path.basename(__file__)
-    print '       --verbose        Enable verbose output'
-    print '       --number=n       Number for the .dat/.idx-tmp files [0]'
-    print '       --test=file      Output the uncompressed file for testing'
-    print '       --font-path=dir  Path to font files (*.bmf) [fonts]'
-    print '       --prefix=name    Device file name portion for .dat/.idx-tmp [pedia]'
+    print 'usage: %s <options> {html-files...}' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --verbose               Enable verbose output'
+    print '       --number=n              Number for the .dat/.idx-tmp files [0]'
+    print '       --test=file             Output the uncompressed file for testing'
+    print '       --font-path=dir         Path to font files (*.bmf) [fonts]'
+    print '       --article-index=file    Article index dictionary input [articles.pickle]'
+    print '       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]'
     exit(1)
 
 def main():
@@ -109,9 +113,11 @@ def main():
     global font_id_values
     global file_number
     global article_count
+    global article_index
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvn:p:t:f:', ['help', 'verbose', 'number=', 'prefix=',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvn:p:i:t:f:', ['help', 'verbose', 'number=', 'prefix=',
+                                                                'article-index=',
                                                                 'test=', 'font-path='])
     except getopt.GetoptError, err:
         usage(err)
@@ -119,6 +125,7 @@ def main():
     verbose = False
     data_file = 'pedia%d.dat'
     index_file = 'pedia%d.idx-tmp'
+    art_file = 'articles.pickle'
     file_number = 0
     test_file = ''
     font_path = "fonts"
@@ -130,6 +137,8 @@ def main():
             usage(None)
         elif opt in ('-t', '--test'):
             test_file = arg
+        elif opt in ('-i', '--article-index'):
+            art_file = arg
         elif opt in ('-n', '--number'):
             file_number = arg
         elif opt in ('-p', '--prefix'):
@@ -160,6 +169,9 @@ def main():
         BOLD_ALL_FONT_IDX: f_fontallb
     }
 
+    f = open(art_file, 'rb')
+    article_index = cPickle(f)
+    f.close()
 
     output = io.BytesIO('')
 
@@ -418,8 +430,9 @@ def render_text (buffer, maxwidth, indent = 0, nl = True):
 # make_link
 def make_link (url, x0, x1, text):
     global g_starty, g_curr_face, g_link_cnt, g_links
+    global article_index
 
-    if article_idx.idx(url):
+    if url in article_index:
         esc_code10(x1 - x0)
         g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
@@ -814,8 +827,10 @@ class WrProcess(HTMLParser):
 
 
 def link_number(url):
+    global article_index
+
     try:
-        n=article_idx.idx(url)
+        n = article_index[url][0]
     except KeyError:
         n = -1
     return n
@@ -827,6 +842,7 @@ def write_article ():
     global verbose
     global output, f_out, i_out
     global article_count
+    global article_index
 
     article_count += 1
     if verbose:
@@ -861,7 +877,7 @@ def write_article ():
         f_out.write(body)
     output.truncate(0)
     if compress:
-        i_out.write(struct.pack('LLL', file_offset, article_idx.fnd(g_this_article_title), (0x80 << 24) | (file_number << 24) | len(body)))
+        i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
 
 
 

@@ -9,7 +9,6 @@
 import os, sys, re, subprocess
 import getopt
 import os.path
-import article_off
 
 verbose = False
 
@@ -37,12 +36,14 @@ redirect = re.compile(r'<text xml:space="preserve">#redirect.*</text>', re.IGNOR
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--out=file] [--start=n] [--count=n] [--just-cat]' % os.path.basename(__file__)
-    print '       --verbose   Enable verbose output'
-    print '       --out=file  HTML output [all_articles.html]'
-    print '       --start=n   First artcle to process [1] (1k => 1000)'
-    print '       --count=n   Number of artcles to process [all] (1k => 1000)'
-    print '       --just-cat  Replace php parset be "cat" for debugging'
+    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --verbose               Enable verbose output'
+    print '       --xhtml=file            XHTML output [all_articles.html]'
+    print '       --start=n               First artcle to process [1] (1k => 1000)'
+    print '       --count=n               Number of artcles to process [all] (1k => 1000)'
+    print '       --article-offsets=file  Article file offsets dictionary input [offsets.pickle]'
+    print '       --just-cat              Replace php parset be "cat" for debugging'
     exit(1)
 
 def main():
@@ -50,8 +51,9 @@ def main():
     global PARSER_COMMAND
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvo:s:cj', ['help', 'verbose', 'out=',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:co:j', ['help', 'verbose', 'xhtml=',
                                                               'start=', 'count=',
+                                                              'article-offsets='
                                                               'just-cat',
                                                               ])
     except getopt.GetoptError, err:
@@ -59,6 +61,7 @@ def main():
 
     verbose = False
     out_name = 'all_articles.html'
+    off_name = 'offsets.pickle'
     start_article = 1
     article_count = 'all'
     processing_articles = True
@@ -68,8 +71,10 @@ def main():
             verbose = True
         elif opt in ('-h', '--help'):
             usage(None)
-        elif opt in ('-o', '--out'):
+        elif opt in ('-x', '--xhtml'):
             out_name = arg
+        elif opt in ('-o', '--article-offsets'):
+            off_name = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-s', '--start'):
@@ -86,10 +91,15 @@ def main():
         else:
             usage('unhandled option: ' + opt)
 
+
+    f = open(off_file, 'rb')
+    article_file_offsets = cPickle.load(f)
+    f.close()
+
     parsing_articles = start_article == 1 and article_count == 'all'
 
     if not parsing_articles:
-        (seek, filename) = article_off.offset(start_article)
+        (seek, filename) = article_file_offsets[start_article]
 
     newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
 
