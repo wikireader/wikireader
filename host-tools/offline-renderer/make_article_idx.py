@@ -96,9 +96,9 @@ def main():
             try:
                 modulo = int(arg)
             except ValueError:
-                usage('%=%s" is not numeric' % (opt, arg))
+                usage('%s=%s" is not numeric' % (opt, arg))
             if modulo < 1:
-                usage('%=%s" must be >= 1' % (opt, arg))
+                usage('%s=%s" must be >= 1' % (opt, arg))
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'

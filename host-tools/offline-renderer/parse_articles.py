@@ -79,12 +79,14 @@ def main():
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-s', '--start'):
+            if arg[-1] == 'k':
+                arg = arg[:-1] + '000'
             try:
                 start_article = int(arg)
             except ValueError:
-                usage('%=%s" is not numeric' % (opt, arg))
+                usage('%s=%s" is not numeric' % (opt, arg))
             if start_article < 1:
-                usage('%=%s" must be >= 1' % (opt, arg))
+                usage('%s=%s" must be >= 1' % (opt, arg))
         elif opt in ('-c', '--count'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -92,9 +94,9 @@ def main():
                 try:
                     article_count = int(arg)
                 except ValueError:
-                    usage('%=%s" is not numeric' % (opt, arg))
+                    usage('%s=%s" is not numeric' % (opt, arg))
             if article_count <= 0:
-                usage('%=%s" must be > zero' % (opt, arg))
+                usage('%s=%s" must be > zero' % (opt, arg))
         else:
             usage('unhandled option: ' + opt)
 

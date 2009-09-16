@@ -143,7 +143,7 @@ def main():
             try:
                 file_number = int(arg)
             except ValueError:
-                usage('%=%s" is not numeric' % (opt, arg))
+                usage('%s=%s" is not numeric' % (opt, arg))
         elif opt in ('-p', '--prefix'):
             data_file = arg + '%d.dat'
             index_file = arg + '%d.idx-tmp'
