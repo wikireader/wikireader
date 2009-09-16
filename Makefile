@@ -216,13 +216,20 @@ define MAKE_BLOCK1
 
 .PHONY: block${1}
 block${1}:
-	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse && sleep 1
+	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 endef
 
-count_k := 200
+# ------------------------------------------------
+# set this to make even distibution over 24 blocks
+# need a better way of setting this
+# ------------------------------------------------
+count_k := 286
+
+# the first(0) and last(23) are special
 $(call MAKE_BLOCK,0,1,$(shell expr ${count_k} '*' 1000 - 1))
-ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22 23
+ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22
 $(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${count_k})k,${count_k}k))
+$(call MAKE_BLOCK,23,$(shell expr 23 '*' ${count_k})k,all)
 
 
 MAKE_RENDER = $(eval $(call MAKE_RENDER1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
@@ -234,13 +241,14 @@ render${1}: $$(foreach i,${2},block$$(strip $${i}))
 
 endef
 
-$(call MAKE_RENDER,1, 0  1  2  3)
-$(call MAKE_RENDER,2, 4  5  6  7)
-$(call MAKE_RENDER,3, 8  9 10 11)
-$(call MAKE_RENDER,4,12 13 14 15)
-$(call MAKE_RENDER,5,16 17 18 19)
-$(call MAKE_RENDER,6,20 21)
-$(call MAKE_RENDER,7,22 23)
+$(call MAKE_RENDER,1, 0  1  2)
+$(call MAKE_RENDER,2, 3  4  5)
+$(call MAKE_RENDER,3, 6  7  8)
+$(call MAKE_RENDER,4, 9 10 11)
+$(call MAKE_RENDER,5,12 13 14)
+$(call MAKE_RENDER,6,15 16 17)
+$(call MAKE_RENDER,7,18 19 20)
+$(call MAKE_RENDER,8,21 22 23)
 
 
 # ----- wiki Dump  --------------------------------------
