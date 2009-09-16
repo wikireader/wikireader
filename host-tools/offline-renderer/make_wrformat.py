@@ -107,6 +107,7 @@ def usage(message):
     print '       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]'
     exit(1)
 
+
 def main():
     global verbose, compress
     global f_out, output, i_out
@@ -234,7 +235,7 @@ def get_utf8_cwidth(c, face):
     return width
 
 
-def get_lineheight (face):
+def get_lineheight(face):
 
     values = {
             ITALIC_FONT_IDX:      P_LSPACE,
@@ -250,7 +251,7 @@ def get_lineheight (face):
     return values[face]
 
 
-def get_textwidth (text, face):
+def get_textwidth(text, face):
     width = 0
     for c in text:
         width += get_utf8_cwidth(ord(c), face) + LINE_SPACE_ADDON
@@ -261,13 +262,14 @@ def get_textwidth (text, face):
 #    0     1     2    3             4
 # [ (text, face, url, total_width, [char_width]) ]
 
-def get_bufferwidth (buffer):
+def get_bufferwidth(buffer):
     width = 0
     for b in buffer:
         width += b[3]
     return width
 
-def resize_item (item):
+
+def resize_item(item):
     total_width = 0
     char_widths = []
     for c in item[0]:
@@ -277,7 +279,7 @@ def resize_item (item):
     return item[:-2] + (total_width, char_widths)
 
 
-def remove_one_char (buffer, remainder):
+def remove_one_char(buffer, remainder):
     if buffer == []:
         return (buffer, remainder)
     last_item = buffer[-1]
@@ -302,7 +304,7 @@ def remove_one_char (buffer, remainder):
         return (buffer[:-1] + [last_item], remainder)
 
 
-def merge_two (first, second):
+def merge_two(first, second):
     if first == []:
         return second
     if second == []:
@@ -316,7 +318,7 @@ def merge_two (first, second):
     return first + second
 
 
-def split_buffer (buffer, remainder):
+def split_buffer(buffer, remainder):
     if buffer == []:
         return (buffer, remainder)
     last_item = buffer[-1]
@@ -344,13 +346,13 @@ def split_buffer (buffer, remainder):
             return (buffer, merge_two(cut, remainder))
 
 
-def truncate_buffer (buffer, maxwidth):
+def truncate_buffer(buffer, maxwidth):
     remainder = buffer
     too_long = False
 
     width = 0
     buffer = []
-    while remainder and width < maxwidth:
+    while remainder and width <= maxwidth:
         width += remainder[0][3]
         buffer.append(remainder[0])
         remainder = remainder[1:]
@@ -367,7 +369,8 @@ def truncate_buffer (buffer, maxwidth):
         width = get_bufferwidth(buffer)
     return (buffer, remainder)
 
-def lstrip_buffer (buffer):
+
+def lstrip_buffer(buffer):
     if buffer == []:
         return buffer
     first = buffer[0]
@@ -377,7 +380,8 @@ def lstrip_buffer (buffer):
         return buffer
     return strip_buffer(buffer[1:])
 
-def rstrip_buffer (buffer):
+
+def rstrip_buffer(buffer):
     if buffer == []:
          return buffer
     last = buffer[-1]
@@ -387,13 +391,16 @@ def rstrip_buffer (buffer):
         return buffer
     return strip_buffer(buffer[:-1])
 
-def strip_buffer (buffer):
+
+def strip_buffer(buffer):
     return(lstrip_buffer(rstrip_buffer(buffer)))
 
-def append_buffer (buffer, text, face, url):
+
+def append_buffer(buffer, text, face, url):
         buffer.append(resize_item((text, face, url, 0, [])))
 
-def render_text (buffer, maxwidth, indent = 0, nl = True):
+
+def render_text(buffer, maxwidth, indent = 0, nl = True):
 
     font = -1
     x0 = indent
@@ -430,8 +437,7 @@ def render_text (buffer, maxwidth, indent = 0, nl = True):
 
 
 
-# make_link
-def make_link (url, x0, x1, text):
+def make_link(url, x0, x1, text):
     global g_starty, g_curr_face, g_link_cnt, g_links
     global article_index
 
@@ -440,30 +446,34 @@ def make_link (url, x0, x1, text):
         g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
 
-# blank line height in pixels
-def esc_code0 (num_pixels):
+
+def esc_code0(num_pixels):
+    """blank line height in pixels"""
     global g_starty
 
     output.write(struct.pack('BB', 1, num_pixels))
     g_starty += num_pixels
 
-# new line with default font and default line space
-def esc_code1 ():
+
+def esc_code1():
+    """new line with default font and default line space"""
     global g_starty, g_curr_face
 
     output.write(struct.pack('B', 2))
     g_starty += get_lineheight(DEFAULT_FONT_IDX)
     g_curr_face = DEFAULT_FONT_IDX
 
-# new line with current font and current line space
-def esc_code2 ():
+
+def esc_code2():
+    """new line with current font and current line space"""
     global g_starty, g_curr_face
 
     output.write(struct.pack('B', 3))
     g_starty += get_lineheight(g_curr_face)
 
-# new line using new font face.
-def esc_code3 (face):
+
+def esc_code3(face):
+    """new line using new font face."""
     global g_starty, g_curr_face
 
     num_pixels = get_lineheight(face)
@@ -471,47 +481,55 @@ def esc_code3 (face):
     g_starty += num_pixels
     g_curr_face = face
 
-# change font with current horizontal alignment (in pixels)
-def esc_code4 (face, halign=0):
+def esc_code4(face, halign=0):
+    """change font with current horizontal alignment (in pixels)"""
     global g_curr_face
 
     output.write(struct.pack('BB', 5, face|(halign<<3)))
     g_curr_face = face
 
-# set font as default
-def esc_code5 ():
+
+def esc_code5():
+    """set font as default"""
     global g_curr_face
 
     output.write(struct.pack('B', 6))
     g_curr_face = DEFAULT_FONT_IDX
 
-# set default alignment
-def esc_code6 ():
+
+def esc_code6():
+    """set default alignment"""
     output.write(struct.pack('B', 7))
 
-# move right num_pixels
-def esc_code7 (num_pixels):
+
+def esc_code7(num_pixels):
+    """move right num_pixels"""
     output.write(struct.pack('BB', 8, num_pixels))
 
-# move left num_pixels
-def esc_code8 (num_pixels):
+
+def esc_code8(num_pixels):
+    """move left num_pixels"""
     output.write(struct.pack('BB', 9, num_pixels))
 
-# alignment adjustment
-def esc_code9 (num_pixels):
+
+def esc_code9(num_pixels):
+    """alignment adjustment"""
     global g_halign
 
     output.write(struct.pack('Bb', 10, num_pixels))
     g_halign = num_pixels
 
-# draw line from right to left
-def esc_code10 (num_pixels):
+
+def esc_code10(num_pixels):
+    """draw line from right to left"""
     output.write(struct.pack('BB', 11, num_pixels))
+
 
 #
 # Parse the HTML into the WikiReader's format
 #
 class WrProcess(HTMLParser):
+
     def __init__ (self, f):
         HTMLParser.__init__(self)
         self.in_html = False
@@ -543,6 +561,7 @@ class WrProcess(HTMLParser):
         self.link_y = 0
         self.url = None
         self.feed(f.read())
+
 
     def handle_starttag(self, tag, attrs):
 
@@ -769,7 +788,8 @@ class WrProcess(HTMLParser):
             self.flush_buffer()
             self.in_br = False
 
-    def enter_list (self, list_type):
+
+    def enter_list(self, list_type):
         self.flush_buffer()
         esc_code0(LIST_MARGIN_TOP)
         self.level += 1
@@ -779,20 +799,24 @@ class WrProcess(HTMLParser):
             self.lwidth -= LIST_INDENT
             self.indent += LIST_INDENT
 
-    def leave_list (self):
+
+    def leave_list(self):
         self.flush_buffer()
         self.level -= 1
         if self.level < LIMAX_INDENT_LEVELS:
             self.lwidth += LIST_INDENT
             self.indent -= LIST_INDENT
 
-    def handle_charref (self, name):
+
+    def handle_charref(self, name):
         self.handle_data(unichr(int(name)))
 
-    def handle_entityref (self, name):
+
+    def handle_entityref(self, name):
         self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
 
-    def handle_data (self, data):
+
+    def handle_data(self, data):
         global g_this_article_title
 
         if self.in_title:
@@ -824,7 +848,7 @@ class WrProcess(HTMLParser):
         append_buffer(self.buffer, data, face, url)
 
 
-    def flush_buffer (self, new_line = True):
+    def flush_buffer(self, new_line = True):
         render_text(self.buffer, self.lwidth, self.indent, new_line)
         self.buffer = []
 
@@ -840,7 +864,7 @@ def link_number(url):
 
 
 # write this article
-def write_article ():
+def write_article():
     global compress
     global verbose
     global output, f_out, i_out
@@ -881,7 +905,6 @@ def write_article ():
     output.truncate(0)
     if compress:
         i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
-
 
 
 # run the program
