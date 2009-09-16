@@ -140,7 +140,10 @@ def main():
         elif opt in ('-i', '--article-index'):
             art_file = arg
         elif opt in ('-n', '--number'):
-            file_number = arg
+            try:
+                file_number = int(arg)
+            except ValueError:
+                usage('%=%s" is not numeric' % (opt, arg))
         elif opt in ('-p', '--prefix'):
             data_file = arg + '%d.dat'
             index_file = arg + '%d.idx-tmp'
@@ -170,7 +173,7 @@ def main():
     }
 
     f = open(art_file, 'rb')
-    article_index = cPickle(f)
+    article_index = cPickle.load(f)
     f.close()
 
     output = io.BytesIO('')

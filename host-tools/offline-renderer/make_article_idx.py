@@ -93,9 +93,12 @@ def main():
         elif opt in ('-m', '--modulo'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
-            modulo = int(arg)
+            try:
+                modulo = int(arg)
+            except ValueError:
+                usage('%=%s" is not numeric' % (opt, arg))
             if modulo < 1:
-                modulo = 1
+                usage('%=%s" must be >= 1' % (opt, arg))
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'

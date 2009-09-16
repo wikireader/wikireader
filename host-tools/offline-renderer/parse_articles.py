@@ -9,6 +9,7 @@
 import os, sys, re, subprocess
 import getopt
 import os.path
+import cPickle
 
 verbose = False
 
@@ -53,7 +54,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:co:j', ['help', 'verbose', 'xhtml=',
                                                               'start=', 'count=',
-                                                              'article-offsets='
+                                                              'article-offsets=',
                                                               'just-cat',
                                                               ])
     except getopt.GetoptError, err:
@@ -78,21 +79,27 @@ def main():
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-s', '--start'):
-            start_article = int(arg)
-            if start_article <= 1:
-                start_article = 1
+            try:
+                start_article = int(arg)
+            except ValueError:
+                usage('%=%s" is not numeric' % (opt, arg))
+            if start_article < 1:
+                usage('%=%s" must be >= 1' % (opt, arg))
         elif opt in ('-c', '--count'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
             if arg != 'all':
-                article_count = int(arg)
+                try:
+                    article_count = int(arg)
+                except ValueError:
+                    usage('%=%s" is not numeric' % (opt, arg))
             if article_count <= 0:
-                article_count = 'all'
+                usage('%=%s" must be > zero' % (opt, arg))
         else:
             usage('unhandled option: ' + opt)
 
 
-    f = open(off_file, 'rb')
+    f = open(off_name, 'rb')
     article_file_offsets = cPickle.load(f)
     f.close()
 
