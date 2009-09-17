@@ -91,24 +91,27 @@ if ($argv[1] == "-") {
 $body = '';
 $cnt = 0;
 
-// make sure output buffering is off before we start it
-// this will ensure same effect whether or not ob is enabled already
+# make sure output buffering is off before we start it
+# this will ensure same effect whether or not ob is enabled already
 while (ob_get_level()) {
     ob_end_flush();
 }
 
-// start output buffering
+# start output buffering
 if (ob_get_length() === false) {
     ob_start();
 }
 
+$i = 0;
 while (!feof($fp)) {
     $line = fgets($fp, 8192);
 
 	if ($line == "***EOF***\n") {
 		echo wfParseTextAndWrapWOC(&$body);
-		ob_flush();
-		flush();
+		if ($i++ % 1000 == 0 ) {	# flush every 1000 articles
+			ob_flush();				# otherwise PHP runs out of
+			flush();				# memory
+		}
 		$body = '';
 	} else {
 		$body .= $line;
