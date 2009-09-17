@@ -189,6 +189,10 @@ pcf2bmf:
 fonts: pcf2bmf
 	cd host-tools/fonts && $(MAKE)
 
+.PHONY: fonts-install
+fonts-install: fonts validate-destdir
+	cd host-tools/fonts && $(MAKE) DESTDIR="${DESTDIR_PATH}" install
+
 
 # ----- build the database  --------------------------------------
 
@@ -378,12 +382,18 @@ help:
 	@echo 'Some of the more useful targets:'
 	@echo
 	@echo '  all                   - compile all the source'
-	@echo '  install               - install forth & mahatma in DESTDIR'
+	@echo '  install               - install forth, mahatma, fonts in DESTDIR'
+	@echo '  index                 - convert XML_FILES to index files in DESTDIR'
+	@echo '  render<1..8>          - render XML_FILES into 3 data files in DESTDIR'
+	@echo '  parse                 - render XML_FILES into one big data files in DESTDIR'
+	@echo '  combine               - combine temporary indices to one file in DESTDIR'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  mahatma               - compile kernel'
 	@echo '  mahatma-install       - install mahatma as kernel in DESTDIR'
 	@echo '  forth                 - compile forth'
 	@echo '  forth-install         - install forth files in DESTDIR'
+	@echo '  fonts                 - compile fonts'
+	@echo '  fonts-install         - install font files in DESTDIR'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
