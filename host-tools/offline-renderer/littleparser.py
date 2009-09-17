@@ -23,7 +23,10 @@ class LittleParser(HTMLParser):
         self.buffer += unichr(htmlentitydefs.name2codepoint[name])
 
     def handle_data(self, data):
-        self.buffer += unicode(data, 'utf-8')
+        if type(data) == unicode:
+            self.buffer += data
+        else:
+            self.buffer += unicode(data, 'utf-8')
 
     def translate(self, text):
         self.reset()
