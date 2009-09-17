@@ -103,7 +103,7 @@ unsigned int search_result_first_item();
 void search_set_selection(int new_selection);
 
 void search_open_article(int new_selection);
-int fetch_search_result(long input_offset_fnd, int bInit);
+int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, int bInit);
 
 int  set_result_list_base(int offset,int offset_count);
 void search_fetch();

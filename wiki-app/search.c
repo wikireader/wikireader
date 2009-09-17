@@ -64,7 +64,6 @@ typedef struct _search_info {
 	char buf[MAX_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
 	int buf_len;
 	long offset_current;		// offset (pedia.fnd) of the content of buffer
-	long offset_search_result;	// offset (pedia.fnd) of the first search_string match
 } SEARCH_INFO;
 static SEARCH_INFO *search_info;
 
@@ -137,7 +136,6 @@ int load_prefix_index(void)
 		for (i=0; i < MAX_DAT_FILES; i++)
 			search_info->fd_dat[i] = -1;
 		search_info->offset_current = -1;
-		search_info->offset_search_result = -1;
 		if (search_info->fd_pfx >= 0 && search_info->fd_idx >= 0)
 		{
 			_wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
@@ -205,67 +203,121 @@ int is_proper_string(char *s, int len)
 	return 0;
 }
 
-int fetch_search_result(long input_offset_fnd, int bInit)
+char *strnstr(char *s1, char *s2, int len)
 {
-	char *buf_to_read = NULL;
-	int len_to_read = 0;
+	int bFound = 0;
+	int s2_len = strlen(s2);
+
+	while (!bFound && len >= s2_len)
+	{
+		if (!memcmp(s1, s2, s2_len))
+			bFound = 1;
+		else
+		{
+			s1++;
+			len--;
+		}
+	}
+
+	if (bFound)
+		return s1;
+	else
+		return NULL;
+}
+
+char *locate_double_null(char *pBuf, int len)
+{
+	int i = 0;
+	int bLastCharNull = 0;
+	int bFound = 0;
+	
+	while (!bFound && i < len)
+	{
+		if (pBuf[i])
+			bLastCharNull = 0;
+		else
+		{
+			if (bLastCharNull)
+				bFound = 1;
+			else
+				bLastCharNull = 1;
+		}
+		i++;
+	}
+	if (bFound)
+		return &pBuf[i-1];
+	else
+		return NULL;
+}
+
+TITLE_SEARCH *locate_proper_title_search(char *buf_middle, int len)
+{
+	TITLE_SEARCH *pTitleSearch;
+	char *p;
+	char *pBuf = buf_middle;
+	
+	// locate the bouble null character for the end of TITLE_SEARCH.idxArticle and TITLE_SEARCH.cZero
+	// the last (most significant) byte of idxArticle should always be 0
+	while (len > 0 && (p = locate_double_null(pBuf, len)))
+	{
+		len -= p - pBuf;
+		while (len > 0 && !(*p))
+		{
+			p++;
+			len--;
+		}
+		if (p - pBuf >= sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero))
+		{
+			pTitleSearch = (TITLE_SEARCH *)(p - (sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero)));
+			if (is_proper_string(pTitleSearch->sTitleSearch, len))
+				return pTitleSearch;
+		}
+		pBuf = p;
+	}
+	
+	return NULL;
+}
+
+int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, int bInit)
+{
 	int len;
-	static TITLE_SEARCH *pTitleSearch;
 	int rc;
-	static int idxNextTitleSearch = 0;
-	static long offset_fnd = 0;
+	char buf_middle[sizeof(TITLE_SEARCH) * 2];
+	long offset_middle;
+	static TITLE_SEARCH *pTitleSearch;
+	static int offsetNextTitleSearch = 0;
+	static long offset_fnd_start = -1;
+	static long offset_fnd_end = -1;
 	
 	if (bInit)
 	{
 		result_list->result_populated = 0;
-		offset_fnd = input_offset_fnd;
+		offset_fnd_start = input_offset_fnd_start;
+		offset_fnd_end = input_offset_fnd_end;
 		result_list->count = 0;
 		result_list->base = 0;
 		result_list->cur_selected = 0;
-		idxNextTitleSearch = 0;
+		offsetNextTitleSearch = 0;
 	}
 	if (result_list->result_populated)
 		return 0;
 	
-	if (search_info->offset_current == offset_fnd)
-		len_to_read = 0;
-//	else if (search_info->offset_current >= 0 && search_info->offset_current <= offset_fnd &&   
-//		offset_fnd < search_info->offset_current + sizeof(search_info->buf))
-//	{
-//		len_to_read = offset_fnd - search_info->offset_current;
-//		memcpy(search_info->buf, &search_info->buf[len_to_read], sizeof(search_info->buf) - len_to_read); // retaining reusable content
-//		buf_to_read = &(search_info->buf[sizeof(search_info->buf) - len_to_read]);
-//	}
-//	else if (search_info->offset_current >= 0 && search_info->offset_current - sizeof(search_info->buf) <= offset_fnd &&
-//		offset_fnd < search_info->offset_current)
-//	{
-//		len_to_read = search_info->offset_current - offset_fnd;
-//		memrcpy(&search_info->buf[len_to_read], search_info->buf, sizeof(search_info->buf) - (search_info->offset_current - offset_fnd)); // retaining reusable content
-//		buf_to_read = search_info->buf;
-//	}
-	else
+	if (search_info->offset_current != offset_fnd_start)
 	{
-		buf_to_read = search_info->buf;
-		len_to_read = sizeof(search_info->buf);
-	}
-
-	if (len_to_read > 0)
-	{
-		len = copy_fnd_to_buf(offset_fnd, buf_to_read, len_to_read);
-		if (len <= 0)
+		search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
+		search_info->offset_current = offset_fnd_start;
+		if (search_info->buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
 		{
 			result_list->result_populated = 1;
 			goto out;
 		}
-		search_info->offset_current = offset_fnd;
-		search_info->buf_len = sizeof(search_info->buf) - (len_to_read - len);
 	}
 	
 	if (!result_list->result_populated)
 	{
-		pTitleSearch = (TITLE_SEARCH *)&search_info->buf[idxNextTitleSearch];
-		if (idxNextTitleSearch < search_info->buf_len &&
-			is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - idxNextTitleSearch - 
+		pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
+		if (offsetNextTitleSearch < search_info->buf_len &&
+			is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - offsetNextTitleSearch - 
 			sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
 			bigram_decode(result_list->list[result_list->count], pTitleSearch->sTitleSearch);
@@ -281,23 +333,22 @@ msg(MSG_INFO, "]\n");
 			{
 				if (!result_list->count)
 				{
-					offset_fnd =  offset_fnd + idxNextTitleSearch;
-					len = copy_fnd_to_buf(offset_fnd, search_info->buf, sizeof(search_info->buf));
-					if (len <= 0)
+					offset_fnd_start =  offset_fnd_start + offsetNextTitleSearch;
+					search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
+					search_info->offset_current = offset_fnd_start;
+					if (search_info->buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
 					{
 						result_list->result_populated = 1;
 						goto out;
 					}
-					search_info->offset_current = offset_fnd;
-					search_info->buf_len = len;
-					idxNextTitleSearch = 0;
-					pTitleSearch = (TITLE_SEARCH *)&search_info->buf[idxNextTitleSearch];
+					offsetNextTitleSearch = 0;
+					pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
 				}
 				memcpy((void *)&result_list->idx_article[result_list->count], 
 					(void *)&pTitleSearch->idxArticle, sizeof(long)); // use memcpy to avoid "Unaligned data access"
-				result_list->offset_list[result_list->count] = offset_fnd + idxNextTitleSearch;
-				idxNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
-				result_list->offset_next = offset_fnd + idxNextTitleSearch;
+				result_list->offset_list[result_list->count] = offset_fnd_start + offsetNextTitleSearch;
+				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
 				result_list->count++;
 				if (result_list->count >= MAX_RESULTS)
 				{
@@ -307,9 +358,52 @@ msg(MSG_INFO, "]\n");
 			}
 			else if (rc < 0)
 			{
-				idxNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
-				offset_fnd = offset_fnd + idxNextTitleSearch;
-				idxNextTitleSearch = 0;
+				if (offset_fnd_end <= 0)
+				{
+					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+					offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
+				}
+				else // binary search
+				{
+					offset_middle = offset_fnd_start + (offset_fnd_end - offset_fnd_start) / 2 - MAX_TITLE_SEARCH; // position to the middle of the range - max length of title
+					if (offset_middle <= offset_fnd_start)
+						offset_fnd_end = -1;
+					else
+					{
+						len = copy_fnd_to_buf(offset_middle, buf_middle, sizeof(buf_middle));
+						if (len >= sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
+						{
+							pTitleSearch = locate_proper_title_search(buf_middle, len);
+							if (pTitleSearch)
+							{
+								char local_title_search[MAX_TITLE_SEARCH];
+								
+								offset_middle += (char *)pTitleSearch - buf_middle;
+								bigram_decode(local_title_search, pTitleSearch->sTitleSearch);
+								rc = search_string_cmp(local_title_search, search_string, search_str_len);
+								if (rc >= 0)	// the first mactch will be in front or at offset_middle
+								{
+									offset_fnd_end = offset_middle;
+								}
+								else		// the first mactch will be after offset_middle
+								{
+									offset_fnd_start = offset_middle;
+									search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
+									search_info->offset_current = offset_fnd_start;
+									if (search_info->buf_len <= 0)
+									{
+										result_list->result_populated = 1;
+										goto out;
+									}
+									offsetNextTitleSearch = 0;
+								}
+							}
+						}
+						else
+							offset_fnd_end = -1;
+					}
+				}
+				offsetNextTitleSearch = 0;
 			}
 			else
 			{
@@ -319,16 +413,15 @@ msg(MSG_INFO, "]\n");
 		}
 		else
 		{
-			offset_fnd = offset_fnd + idxNextTitleSearch;
-			len = copy_fnd_to_buf(offset_fnd, search_info->buf, sizeof(search_info->buf));
-			if (len <= 0)
+			offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
+			search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
+			search_info->offset_current = offset_fnd_start;
+			if (search_info->buf_len <= 0)
 			{
 				result_list->result_populated = 1;
 				goto out;
 			}
-			search_info->offset_current = offset_fnd;
-			search_info->buf_len = len;
-			idxNextTitleSearch = 0;
+			offsetNextTitleSearch = 0;
 		}
 	}
 out:
@@ -350,8 +443,9 @@ out:
 	}
 }
 
-int search_populate_result()
+long get_search_result_start()
 {
+	long offset_search_result_start = -1;
 	int idx_prefix_index_table;
 	char c1, c2, c3;
 	int found = 0;
@@ -362,11 +456,82 @@ int search_populate_result()
 	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 	
-	result_list->count = 0;
-	result_list->base = 0;
-	result_list->cur_selected = 0;
-	search_info->offset_search_result = -1;
-	if (search_str_len > 0)
+	if (search_str_len > 3)
+	{
+		// check the length of the hashed search string can be reused
+		if (search_str_len > lenHashedSearchString)
+			lenCompared = lenHashedSearchString;
+		else
+			lenCompared = search_str_len;
+		lenHashedSearchString = 0;
+		for (i = 0; i < lenCompared; i++)
+		{
+			if (sHashedSearchString[i] != search_string[i])
+				lenHashedSearchString = i;
+		}
+		
+		// Check if hashed
+		if (lenHashedSearchString > 3)
+		{
+			if (search_str_len > lenHashedSearchString)
+			{
+				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+					lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
+				else
+					lenCopied = search_str_len - lenHashedSearchString;
+				memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
+				// check the extended part first
+				for (i = 3; i < lenHashedSearchString + lenCopied; i++)
+				{
+					if (i >= lenHashedSearchString)
+						offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+					if (offsetHasedSearchString[i] && 
+						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					{
+						found = 1;
+						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+					}
+				}
+				lenHashedSearchString += lenCopied;
+			}
+			
+			if (!found) // not hashed at the extended part
+			{
+				for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
+				{
+					if (offsetHasedSearchString[i] && 
+						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					{
+						found = 1;
+						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+					}
+					else
+						break;
+				}
+			}
+		}
+		else
+		{
+			if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+				lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
+			else
+				lenHashedSearchString = search_str_len;
+			memcpy(sHashedSearchString, search_string, lenHashedSearchString);
+			for (i = 3; i < lenHashedSearchString; i++)
+			{
+				offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+				if (offsetHasedSearchString[i] && 
+					(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+				{
+					found = 1;
+					offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+				}
+			}
+		}
+	}
+
+	if (!found && (init_search_hash() || // hash table in loading
+		3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
 	{
 		switch(search_str_len)
 		{
@@ -388,92 +553,140 @@ int search_populate_result()
 		}
 		idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
 			bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-				
-		if (search_str_len > 3)
-		{
-			// check the length of the hashed search string can be reused
-			if (search_str_len > lenHashedSearchString)
-				lenCompared = lenHashedSearchString;
-			else
-				lenCompared = search_str_len;
-			lenHashedSearchString = 0;
-			for (i = 0; i < lenCompared; i++)
-			{
-				if (sHashedSearchString[i] != search_string[i])
-					lenHashedSearchString = i;
-			}
-			
-			// Check if hashed
-			if (lenHashedSearchString > 3)
-			{
-				if (search_str_len > lenHashedSearchString)
-				{
-					if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-						lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
-					else
-						lenCopied = search_str_len - lenHashedSearchString;
-					memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
-					// check the extended part first
-					for (i = 3; i < lenHashedSearchString + lenCopied; i++)
-					{
-						if (i >= lenHashedSearchString)
-							offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-						if (offsetHasedSearchString[i] && 
-							(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-						{
-							found = 1;
-							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
-						}
-					}
-					lenHashedSearchString += lenCopied;
-				}
-				
-				if (!found) // not hashed at the extended part
-				{
-					for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
-					{
-						if (offsetHasedSearchString[i] && 
-							(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-						{
-							found = 1;
-							search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
-						}
-						else
-							break;
-					}
-				}
-			}
-			else
-			{
-				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-					lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
-				else
-					lenHashedSearchString = search_str_len;
-				memcpy(sHashedSearchString, search_string, lenHashedSearchString);
-				for (i = 3; i < lenHashedSearchString; i++)
-				{
-					offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-					if (offsetHasedSearchString[i] && 
-						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-					{
-						found = 1;
-						search_info->offset_search_result = offsetHasedSearchString[i]; // use the longest hashed search string
-					}
-				}
-			}
-		}
-		
-		if (!found && (init_search_hash() || // hash table in loading
-			3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN) && 
-			search_info->prefix_index_table[idx_prefix_index_table])
+		if (search_info->prefix_index_table[idx_prefix_index_table])
 		{
 			found = 1;
-			search_info->offset_search_result = search_info->prefix_index_table[idx_prefix_index_table];
+			offset_search_result_start = search_info->prefix_index_table[idx_prefix_index_table];
 		}
-		if (search_info->offset_search_result > 0)
-			fetch_search_result(search_info->offset_search_result, 1);
+	}
+
+	return offset_search_result_start;
+}
+
+int next_search_string(char *local_search_string, int len_local_search_string)
+{
+	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
+	int idxChar;
+
+	if (len_local_search_string > MAX_SEARCH_STRING_HASHED_LEN)
+		len_local_search_string = MAX_SEARCH_STRING_HASHED_LEN;
+	if (len_local_search_string > 0)
+	{
+		idxChar = 0;
+		while (idxChar < strlen(pSupportedChars) && pSupportedChars[idxChar] != local_search_string[len_local_search_string - 1])
+			idxChar++;
+		if (idxChar >= strlen(pSupportedChars) - 1)
+		{
+			len_local_search_string--;
+			len_local_search_string = next_search_string(local_search_string, len_local_search_string);
+		}
 		else
+			local_search_string[len_local_search_string - 1] = pSupportedChars[idxChar + 1];
+	}
+	return len_local_search_string;
+}
+
+long get_search_result_end()
+{
+	long offset_search_result_end = -1;
+	char local_search_string[MAX_TITLE_SEARCH];
+	int len_local_search_string;
+	int last_len_local_search_string;
+	int found = 0;
+	int idx_prefix_index_table;
+	char c1, c2, c3;
+	
+	if (search_str_len  > MAX_SEARCH_STRING_ALL_HASHED_LEN)
+		len_local_search_string = MAX_SEARCH_STRING_ALL_HASHED_LEN;
+	else
+		len_local_search_string = search_str_len;
+	memcpy(local_search_string, search_string, len_local_search_string);
+
+	while (!found && len_local_search_string > 3)
+	{
+		last_len_local_search_string = len_local_search_string;
+		len_local_search_string = next_search_string(local_search_string, len_local_search_string);
+		if (!memcmp(search_string, local_search_string, len_local_search_string))
+			found = 1; // returns -1 directly
+		else
+		{
+			offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
+			if (offset_search_result_end > 0) 
+			{
+				found = 1;
+			}
+		}
+		len_local_search_string = last_len_local_search_string - 1;
+	}
+	
+	if (!found)
+	{
+		if (len_local_search_string > 3)
+			len_local_search_string = 3;
+		
+		while (!found && len_local_search_string > 0)
+		{
+			last_len_local_search_string = len_local_search_string;
+			len_local_search_string = next_search_string(local_search_string, len_local_search_string);
+			if (!memcmp(search_string, local_search_string, len_local_search_string))
+				found = 1; // returns -1 directly
+			else
+			{
+				switch(len_local_search_string)
+				{
+					case 1:
+						c1 = local_search_string[0];
+						c2 = '\0';
+						c3 = '\0';
+						break;
+					case 2:
+						c1 = local_search_string[0];
+						c2 = local_search_string[1];
+						c3 = '\0';
+						break;
+					default:
+						c1 = local_search_string[0];
+						c2 = local_search_string[1];
+						c3 = local_search_string[2];
+						break;
+				}
+				idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
+					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
+				if (search_info->prefix_index_table[idx_prefix_index_table])
+				{
+					found = 1;
+					offset_search_result_end = search_info->prefix_index_table[idx_prefix_index_table];
+				}
+			}
+			len_local_search_string = last_len_local_search_string - 1;
+		}
+	}
+
+	return offset_search_result_end;
+}
+
+int search_populate_result()
+{
+	int found = 0;
+	long offset_search_result_start = -1;
+	long offset_search_result_end = -1;
+
+	result_list->count = 0;
+	result_list->base = 0;
+	result_list->cur_selected = 0;
+	if (search_str_len > 0)
+	{
+		offset_search_result_start = get_search_result_start();
+		if (offset_search_result_start > 0)
+		{
+			found = 1;
+			offset_search_result_end = get_search_result_end();
+			fetch_search_result(offset_search_result_start, offset_search_result_end, 1);
+		}
+		else
+		{
 			result_list->result_populated = 1;
+		}
 	}
 	return found;
 }
@@ -852,7 +1065,7 @@ int result_list_down(int nRows)
 					bDone = 1;
 			}
 			else
-				fetch_search_result(result_list->offset_list[result_list->base], 1);
+				fetch_search_result(result_list->offset_list[result_list->base], -1, 1);
 		}
 	}
 	return (nRows - nRowsToMove);
@@ -926,7 +1139,7 @@ int result_list_up(int nRows)
 					bDone = 1;
 			}
 			else
-				fetch_search_result(result_list->offset_next - sizeof(search_info->buf), 1);
+				fetch_search_result(result_list->offset_next - sizeof(search_info->buf), -1, 1);
 		}
 	}
 	return nRows - nRowsToMove;

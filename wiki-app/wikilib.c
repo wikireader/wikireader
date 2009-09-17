@@ -310,7 +310,7 @@ static void handle_search_key(char keycode)
 	guilib_fb_lock();
 	//search_reload();
 	if (!rc)
-        search_reload_ex();
+		search_reload_ex();
 	keyboard_paint();
 	guilib_fb_unlock();
 }
@@ -839,18 +839,18 @@ int wikilib_run(void)
 	                 if((time_now-start_search_time)>1000000*12*7)
 	                 {
 	                     if (!clear_search_string())
-	                 {
-	                     search_string_changed_remove = true;
-	                     search_reload_ex();
+	                     {
+	                     	search_string_changed_remove = true;
+	                     	search_reload_ex();
 	                     }
 	                     press_delete_button = false;
 	                 }
 	                 else if ((time_now-start_search_time)>1000000*12 && (time_now-last_delete_time)>1000000*7)
 	                 {
 	                     if (!search_remove_char())
-	                 {
-	                     search_string_changed_remove = true;
-	                     search_reload_ex();
+	                     {
+		                     search_string_changed_remove = true;
+		                     search_reload_ex();
 		             }
 	                     last_delete_time = time_now;
 	                 }
@@ -859,7 +859,7 @@ int wikilib_run(void)
                 }
                 #endif
 
-                if (display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0))
+                if (display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0, 0))
 	        {
 	            sleep = 0;
                 }	            	
