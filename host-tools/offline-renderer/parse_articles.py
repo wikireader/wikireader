@@ -37,6 +37,7 @@ line_break = re.compile(r'&lt;br /&gt;', re.IGNORECASE)
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
 img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
+language = re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
 no_parse = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
@@ -139,7 +140,7 @@ def process_file(file_name, seek, count, newf):
     global verbose
     global start_text, title_tag, end_article
     global begin_ignore, end_ignore, inline_comment, line_break
-    global entities, img, no_parse
+    global entities, img, language, no_parse
 
     if verbose:
         print 'Reading:', file_name
@@ -217,10 +218,6 @@ def process_file(file_name, seek, count, newf):
                         ref = True
 
             if line != None:
-                line = delete_tags.sub('', line)
-                line = line_break.sub('\n', line)
-                line = entities.sub(r'&\1;', line)
-
                 if begin_ignore.search(line):
                     ignore = True
     
@@ -228,6 +225,10 @@ def process_file(file_name, seek, count, newf):
                     ignore = False
     
                 elif not ignore:
+                    line = delete_tags.sub('', line)
+                    line = line_break.sub('\n', line)
+                    line = entities.sub(r'&\1;', line)
+                    line = language.sub('', line)
                     line2 = img.sub('', line)
                     if line2 == line:
                         if line.strip() == '':
