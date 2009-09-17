@@ -9,7 +9,7 @@
 import os, sys, re
 import os.path
 import struct
-
+import getopt
 
 def usage(message):
     if None != message:

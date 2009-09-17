@@ -194,6 +194,12 @@ function &wfParseTextWOC($text) {
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
 
+  # fix blank tags and pre as start of article
+  $articleText = preg_replace('/<(dt|dd|li)>\s*<\/(dt|dd|li)>/', '', $articleText);
+  $articleText = preg_replace('/<p>\s*<br\s*\/>\s*<\/p>|(<(ul|dl|ol)>\s*)+(<\/(ul|dl|ol)>\s*)+/', '', $articleText);
+  $articleText = preg_replace('/^\s*<pre>(.*?)<\/pre>/s', '<p>$1</p>', $articleText);
+  $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
+
   return array( &$articleTitle, &$articleText );
 }
 
