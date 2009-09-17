@@ -695,6 +695,7 @@ class WrProcess(HTMLParser):
 
 
     def handle_endtag(self, tag):
+        global g_this_article_title
 
         if tag == 'html':
             self.in_html = False
