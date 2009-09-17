@@ -427,11 +427,16 @@ def render_text(buffer, maxwidth, indent = 0, nl = True):
             if item[2]: # has url
                 text = item[0].rstrip()
                 output.write(text.encode('utf-8'))
-                x1 = x0 + item[3]       #get_textwidth (text, item[1])
-                make_link(item[2], x0, x1, text)
+                x1 = x0 + get_textwidth(text, item[1])
+                try:
+                    make_link(item[2], x0, x1, text)
+                except struct.error:
+                    print 'invalid link:', item[2], x0, x1, text
+                    print '..', indent, maxwidth
+                    print 'B:', buffer
                 x0 = x1
             else:
-                x0 += item[3]           #get_textwidth (item[0], item[1])
+                x0 += item[3]           # get_textwidth(item[0], item[1])
                 output.write(item[0].encode('utf-8'))
         nl = True
 
