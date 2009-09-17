@@ -820,7 +820,10 @@ class WrProcess(HTMLParser):
         global g_this_article_title
 
         if self.in_title:
-            g_this_article_title = data
+            if 'NO TITLE' == g_this_article_title:
+                g_this_article_title = data
+            else:
+                g_this_article_title += data
 
         # only parse valid tags in <body>
         # skip tables for now
@@ -905,7 +908,6 @@ def write_article():
     output.truncate(0)
     if compress:
         i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
-
 
 # run the program
 if __name__ == "__main__":

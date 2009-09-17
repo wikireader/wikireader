@@ -166,8 +166,6 @@ def process_file(file_name, seek, count, newf):
             else:
                 skip = False
                 title = title_tag.sub('', line.strip())
-                #title = title_tag.sub('', line.strip())
-
 
         if redirect.search(line):
             pass
@@ -183,7 +181,16 @@ def process_file(file_name, seek, count, newf):
                 ignore = False
                 had_blank = False
 
+        if parse and end_article.search(line):
+            newf.write('***EOF***\n')
+            if count != 'all':
+                count -= 1
+                if count <= 0:
+                    break
+            parse = False
+
         if parse:
+
             line = inline_comment.sub('', line.strip())
             line = inline_ref.sub('', line)
             if comment:
@@ -213,15 +220,8 @@ def process_file(file_name, seek, count, newf):
                 line = delete_tags.sub('', line)
                 line = line_break.sub('\n', line)
                 line = entities.sub(r'&\1;', line)
-                if end_article.search(line):
-                    newf.write('***EOF***\n')
-                    if count != 'all':
-                        count -= 1
-                        if count <= 0:
-                            break
-                    parse = False
 
-                elif begin_ignore.search(line):
+                if begin_ignore.search(line):
                     ignore = True
     
                 elif end_ignore.search(line):

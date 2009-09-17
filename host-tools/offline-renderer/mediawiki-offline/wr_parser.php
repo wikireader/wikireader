@@ -171,12 +171,16 @@ function &wfParseTextWOC($text) {
   $articleTitle = trim(substr($text, 0, $nlidx));
   $articleMarkup = substr($text, $nlidx + 1);
   $title = new Title();
+  #$output = $wgParser->preparse($articleMarkup, $title, $wgParserOptions, null);
   $output = $wgParser->parse($articleMarkup, $title, $wgParserOptions, true, true, null);
   $articleText = $output->getText();
 
   # $$$ MOSKO: change the links
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
+
+  #$articleText = html_entity_decode($articleText, ENT_COMPAT, 'UTF-8');
+	#$articleText = str_replace('&', '&amp;', $articleText);
 
   return array( &$articleTitle, &$articleText );
 }
