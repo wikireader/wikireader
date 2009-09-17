@@ -1264,15 +1264,18 @@ void display_external_link_str(int external_link_number,char *external_link_str)
  }
 void display_str(char *str)
 {
-       int framebuffersize,start_x,end_x,start_y,end_y;
+       int start_x,end_x,start_y,end_y;
        int offset_x,offset_y;
        int str_width;
        char *p;
 
        p = str;
 
+#ifndef WIKIPCF
+       int framebuffersize;
        framebuffersize = framebuffer_size();
        memset(framebuffer_copy,0,framebuffersize);
+#endif
 
        start_x = 0;
        end_x   = framebuffer_width();
