@@ -415,7 +415,7 @@ def render_text(buffer, maxwidth, indent = 0, nl = True):
             if nl:
                 if font != item[1]:
                     font = item[1]
-                    esc_code3(font)                    
+                    esc_code3(font)
                 else:
                     esc_code2()
                 nl = False
@@ -587,6 +587,7 @@ class WrProcess(HTMLParser):
 
         if tag == 'title':
             self.in_title = True
+            g_this_article_title = ''
 
         if tag == 'body':
             self.in_body = True
@@ -702,6 +703,7 @@ class WrProcess(HTMLParser):
 
         if tag == 'title':
             self.in_title = False
+            g_this_article_title = g_this_article_title.strip()
 
         if tag == 'body':
             self.in_body = False
@@ -820,10 +822,7 @@ class WrProcess(HTMLParser):
         global g_this_article_title
 
         if self.in_title:
-            if 'NO TITLE' == g_this_article_title:
-                g_this_article_title = data
-            else:
-                g_this_article_title += data
+            g_this_article_title += data
 
         # only parse valid tags in <body>
         # skip tables for now
