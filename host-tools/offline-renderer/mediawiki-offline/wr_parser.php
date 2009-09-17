@@ -199,7 +199,7 @@ function &wfParseTextWOC($text) {
   $articleText = preg_replace('/^\s*<pre>(.*?)<\/pre>/s', '<p>$1</p>', $articleText);
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
-  $articleText = preg_replace('/<a\s+name="[rR]eferences"\s+id="[rR]eferences"><\/a><h2>\s+<span\s+class="mw-headline">\s*[rR]eferences\s*<\/span><\/h2>\s*$/', '', $articleText);
+  $articleText = preg_replace('/<a\s+name="([rR]eferences|[nN]otes)"\s+id="([rR]eferences|[nN]otes)"><\/a><h2>\s+<span\s+class="mw-headline">\s*([rR]eferences|[nN]otes)\s*<\/span><\/h2>\s*$/', '', $articleText);
   return array( &$articleTitle, &$articleText );
 }
 
