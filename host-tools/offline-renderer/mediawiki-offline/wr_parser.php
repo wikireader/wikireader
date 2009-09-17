@@ -91,12 +91,24 @@ if ($argv[1] == "-") {
 $body = '';
 $cnt = 0;
 
+// make sure output buffering is off before we start it
+// this will ensure same effect whether or not ob is enabled already
+while (ob_get_level()) {
+    ob_end_flush();
+}
+
+// start output buffering
+if (ob_get_length() === false) {
+    ob_start();
+}
+
 while (!feof($fp)) {
-    #$line = fgets($fp, 4096);
     $line = fgets($fp, 8192);
 
 	if ($line == "***EOF***\n") {
 		echo wfParseTextAndWrapWOC(&$body);
+		ob_flush();
+		flush();
 		$body = '';
 	} else {
 		$body .= $line;
@@ -178,9 +190,6 @@ function &wfParseTextWOC($text) {
   # $$$ MOSKO: change the links
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
-
-  #$articleText = html_entity_decode($articleText, ENT_COMPAT, 'UTF-8');
-	#$articleText = str_replace('&', '&amp;', $articleText);
 
   return array( &$articleTitle, &$articleText );
 }
