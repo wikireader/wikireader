@@ -157,8 +157,8 @@ def process_file(file_name, seek, count, newf):
     ref = False
 
     while line:
-
-        if "<title>" in line:
+        lower_line = line.lower()
+        if "<title>" in lower_line:
             parse = False
             comment = False
             ref = False
@@ -168,9 +168,9 @@ def process_file(file_name, seek, count, newf):
                 skip = False
                 title = title_tag.sub('', line.strip())
 
-        if redirect.search(line):
+        if "#redirect" in lower_line and redirect.search(line):
             pass
-        elif not skip and not parse and "<text xml:space=\"preserve\">" in line:
+        elif not skip and not parse and "<text xml:space=\"preserve\">" in lower_line:
             line = start_text.sub('', line)
             parse = True
 

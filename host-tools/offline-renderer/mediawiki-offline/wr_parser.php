@@ -186,11 +186,10 @@ function &wfParseTextWOC($text) {
   $articleTitle = trim(substr($text, 0, $nlidx));
   $articleMarkup = substr($text, $nlidx + 1);
   $title = new Title();
-  #$output = $wgParser->preparse($articleMarkup, $title, $wgParserOptions, null);
   $output = $wgParser->parse($articleMarkup, $title, $wgParserOptions, true, true, null);
   $articleText = $output->getText();
 
-  # $$$ MOSKO: change the links
+  # change the links
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
 
@@ -199,7 +198,8 @@ function &wfParseTextWOC($text) {
   $articleText = preg_replace('/<p>\s*<br\s*\/>\s*<\/p>|(<(ul|dl|ol)>\s*)+(<\/(ul|dl|ol)>\s*)+/', '', $articleText);
   $articleText = preg_replace('/^\s*<pre>(.*?)<\/pre>/s', '<p>$1</p>', $articleText);
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
-
+  $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
+  $articleText = preg_replace('/<a\s+name="[rR]eferences"\s+id="[rR]eferences"><\/a><h2>\s+<span\s+class="mw-headline">\s*[rR]eferences\s*<\/span><\/h2>\s*$/', '', $articleText);
   return array( &$articleTitle, &$articleText );
 }
 

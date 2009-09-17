@@ -169,8 +169,9 @@ def process_file(filename):
     line  = f.readline()
 
     while line:
+        lower_line = line.lower()
 
-        if "<title>" in line:
+        if "<title>" in lower_line:
             redirect = False
             skip = False
 
@@ -182,10 +183,10 @@ def process_file(filename):
                     print 'Title:', title
                 generate_bigram(title)
 
-        if '</page>' in line:
+        if '</page>' in lower_line:
             current_offset = f.tell();
 
-        if not skip and "#redirect" in line:
+        if not skip and "#redirect" in lower_line:
             match = redirected_to.search(line)
             if match:
                 redirect_title = tparser.translate(match.group(1)).strip().strip(u'\u200e\u200f')
@@ -195,7 +196,7 @@ def process_file(filename):
                 if verbose:
                     print 'Redirect:', title
 
-        if not skip and "</text>" in line:
+        if not skip and "</text>" in lower_line:
             skip = False
             if not redirect:
                 article_index[title] = [idx, -1]
