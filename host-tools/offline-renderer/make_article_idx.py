@@ -188,12 +188,7 @@ def process_file(filename):
         if not skip and "#redirect" in line:
             match = redirected_to.search(line)
             if match:
-                # Need a double translation for user input like:
-                #   #redirect [[Misty (Pok&eacute;mon)]
-                # which gets saved as:
-                #   <text xml:space="preserve">#redirect [[Misty (Pok&amp;eacute;mon)]]</text>
                 redirect_title = tparser.translate(match.group(1)).strip().strip(u'\u200e\u200f')
-                redirect_title = tparser.translate(redirect_title.strip().strip(u'\u200e\u200f'))
                 redirect_title = whitespaces.sub(' ', redirect_title).strip()
                 redirect = True
                 redirects[title] = redirect_title

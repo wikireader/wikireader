@@ -10,8 +10,19 @@ from HTMLParser import HTMLParser
 import unicodedata
 import htmlentitydefs
 import urllib
+import re
+
+entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
 class LittleParser(HTMLParser):
+    """Translate text
+
+    handles all of these:
+      &eacute;
+      %20
+      &#12ac;
+      &amp;mu;
+    """
     def __init__ (self):
         HTMLParser.__init__(self)
         self.buffer = u''
@@ -29,7 +40,10 @@ class LittleParser(HTMLParser):
             self.buffer += unicode(data, 'utf-8')
 
     def translate(self, text):
+        global entities
+
         self.reset()
         self.buffer = u''
-        self.feed(urllib.unquote(text))
+        text = entities.sub(r'&\1;', urllib.unquote(text))
+        self.feed(text)
         return self.buffer
