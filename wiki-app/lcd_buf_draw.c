@@ -408,7 +408,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				(*pUTF8)++;
 				if ((long)c2 > lcd_draw_buf.current_x)
 					c2 = (unsigned char)lcd_draw_buf.current_x;
-				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN, 
+				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment, 
 					lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment);
 				break;
 			case ESC_11_VERTICAL_LINE: /* drawing vertical line */
@@ -743,9 +743,9 @@ void init_render_article()
 #define APACE_AFTER_LICENSE_TEXT 5
 #define LICENSE_TEXT_1 "Text is available under the Creative Commons"
 #define LICENSE_TEXT_2 "Attribution-ShareAlike License; additional terms may"
-#define LICENSE_TEXT_3 "apply.  See Terms of Use for details.  Wikipedia`"
-#define LICENSE_TEXT_4 "is a registered trademark of the Wikimedia Foundation,"
-#define LICENSE_TEXT_5 "Inc., a non-profit organization.  2009.8.25"
+#define LICENSE_TEXT_3 "apply.  See Terms of Use for details.  Wikipedia®"
+#define LICENSE_TEXT_4 "is a registered trademark of the Wikimedia"
+#define LICENSE_TEXT_5 "Foundation, Inc., a non-profit organization.  2009.8.25"
 void draw_license_text(unsigned char *s)
 {
 	ucs4_t u;
@@ -768,11 +768,13 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.line_height = LICENSE_TEXT_LINE_HEIGHT;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += SPACE_BEFORE_LICENSE_TEXT;
+		lcd_draw_buf.vertical_adjustment = 0;
+		lcd_draw_buf.align_adjustment = 0;
 		lcd_draw_buf.pPcfFont = &pcfFonts[LICENSE_TEXT_FONT - 1];
 		
 		draw_license_text(LICENSE_TEXT_1);
 		start_x = 117;
-		end_x = 199;
+		end_x = 196;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)
 		{
@@ -786,7 +788,7 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
 		draw_license_text(LICENSE_TEXT_2);
 		start_x = 0;
-		end_x = 134;
+		end_x = 130;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)
 		{
@@ -799,7 +801,7 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
 		draw_license_text(LICENSE_TEXT_3);
-		start_x = 50;
+		start_x = 51;
 		end_x = 107;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)

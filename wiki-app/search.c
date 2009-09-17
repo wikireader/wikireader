@@ -396,12 +396,14 @@ int search_populate_result()
 				lenCompared = lenHashedSearchString;
 			else
 				lenCompared = search_str_len;
+			lenHashedSearchString = 0;
 			for (i = 0; i < lenCompared; i++)
 			{
 				if (sHashedSearchString[i] != search_string[i])
 					lenHashedSearchString = i;
 			}
 			
+			// Check if hashed
 			if (lenHashedSearchString > 3)
 			{
 				if (search_str_len > lenHashedSearchString)
@@ -411,6 +413,7 @@ int search_populate_result()
 					else
 						lenCopied = search_str_len - lenHashedSearchString;
 					memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
+					// check the extended part first
 					for (i = 3; i < lenHashedSearchString + lenCopied; i++)
 					{
 						if (i >= lenHashedSearchString)
@@ -425,7 +428,7 @@ int search_populate_result()
 					lenHashedSearchString += lenCopied;
 				}
 				
-				if (!found)
+				if (!found) // not hashed at the extended part
 				{
 					for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
 					{
@@ -460,7 +463,8 @@ int search_populate_result()
 			}
 		}
 		
-		if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN) && 
+		if (!found && (init_search_hash() || // hash table in loading
+			3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN) && 
 			search_info->prefix_index_table[idx_prefix_index_table])
 		{
 			found = 1;

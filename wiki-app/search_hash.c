@@ -94,10 +94,6 @@ long add_search_hash(char *sInput, int len, long offset_fnd)
 	long nHashKey;
 	char sSearchString[MAX_SEARCH_STRING_HASHED_LEN + 1];
 
-char s[100];
-memcpy(s, sInput, len);
-s[len]='\0';
-printf("add hash [%s] %x\n", s, offset_fnd); 
 	memcpy(sSearchString, sInput, len);
 	sSearchString[len] = '\0';
 	nHashKey = hash_key(sSearchString, len);
@@ -120,7 +116,8 @@ printf("add hash [%s] %x\n", s, offset_fnd);
 				}
 				else
 				{
-					search_hash_table[nHashKey].next_entry_idx = nHashEntries | (len << 28);
+					search_hash_table[nHashKey].next_entry_idx |= nHashEntries;
+					search_hash_table[nHashEntries].next_entry_idx = len << 28;
 					search_hash_table[nHashEntries].offset_fnd = offset_fnd;
 					strncpy(search_hash_strings[nHashEntries].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
 					search_hash_strings[nHashEntries].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
@@ -133,7 +130,7 @@ printf("add hash [%s] %x\n", s, offset_fnd);
 	{
 		search_hash_table[nHashKey].next_entry_idx = (len << 28);
 		search_hash_table[nHashKey].offset_fnd = offset_fnd;
-		strncpy(search_hash_strings[nHashEntries].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
+		strncpy(search_hash_strings[nHashKey].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
 		search_hash_strings[nHashKey].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
 	}
 	return nHashKey;
@@ -207,16 +204,15 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 			copy_fnd_to_buf(search_hash_table[nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
 			bigram_decode(sDecoded, title_search.sTitleSearch);
 		}
+		else
+			sDecoded[0] = '\0';
 		lenHashed = (search_hash_table[nHashKey].next_entry_idx >> 28) & 0x000000FF;
 		sDecoded[lenHashed] = '\0';
-#ifndef INCLUDED_FROM_KERNEL
-msg(MSG_INFO, "get_search_hash_offset_fnd [%s][%s]\n", sSearchString, sDecoded);
-#endif
 		if (!search_string_cmp(sDecoded, sSearchString, len))
 			bFound = 1;
 		if (!bFound)
 		{
-			if (search_hash_table[nHashKey].next_entry_idx)
+			if (search_hash_table[nHashKey].next_entry_idx  & 0x0FFFFFFF)
 			{
 				nHashJumps++;
 				nHashKey = search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF;
@@ -227,9 +223,6 @@ msg(MSG_INFO, "get_search_hash_offset_fnd [%s][%s]\n", sSearchString, sDecoded);
 				nHashKey = -1;
 		}
 	}
-#ifndef INCLUDED_FROM_KERNEL
-msg(MSG_INFO, "bfound %d %x nHashJumps %d\n", bFound, search_hash_table[nHashKey].offset_fnd, nHashJumps);
-#endif
 	if (bFound)
 	{
 		return search_hash_table[nHashKey].offset_fnd;

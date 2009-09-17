@@ -4129,29 +4129,34 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 }
 
 int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBufFnd, 
-	int lenHashSequentialSearch, char *sHashSequentialSearch, long *offsetHashSequentialSearch, long *countHashSequentialSearchForNextChar)
+	int lenHashSequentialSearch, char *sHashSequentialSearch, long *countHashSequentialSearchForNextChar)
 {
 	int lenTitleSearch = strlen(sLocalTitleSearch);
 	int lenSame;
 	int i;
+	int bHashAdded = 0;
 	
 	for (lenSame = 0; lenSame < lenTitleSearch && lenSame < lenHashSequentialSearch; lenSame++)
 	{
 		if (tolower(sLocalTitleSearch[lenSame]) != sHashSequentialSearch[lenSame])
 			break;
+		countHashSequentialSearchForNextChar[lenSame]++;
 	}
-	
-	for (i = lenHashSequentialSearch; i > lenSame && i > MAX_SEARCH_STRING_ALL_HASHED_LEN; i--)
+
+	for (i = lenSame; i < lenHashSequentialSearch; i++)
 	{
-		if (countHashSequentialSearchForNextChar[i - 2] > SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD) // count is stored in the previous array entry
+		if (!bHashAdded && i >= MAX_SEARCH_STRING_ALL_HASHED_LEN && i < lenTitleSearch &&
+			countHashSequentialSearchForNextChar[i] >= SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
 		{
-			add_search_hash(sHashSequentialSearch, i, offsetHashSequentialSearch[i - 1]);
+			add_search_hash(sLocalTitleSearch, i + 1, offsetBufFnd);
+			bHashAdded = 1;
 		}
+		if (lenSame == MAX_SEARCH_STRING_ALL_HASHED_LEN)
+			countHashSequentialSearchForNextChar[i]++;
+		else
+			countHashSequentialSearchForNextChar[i] = 0;
 	}
-	
-	if (lenSame > MAX_SEARCH_STRING_ALL_HASHED_LEN)
-		countHashSequentialSearchForNextChar[lenSame - 1]++; // count for the next character in the hash string
-		
+
 	if (lenTitleSearch > MAX_SEARCH_STRING_HASHED_LEN)
 		lenHashSequentialSearch = MAX_SEARCH_STRING_HASHED_LEN;
 	else
@@ -4160,20 +4165,13 @@ int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBufFnd,
 	for (i = lenSame; i < lenHashSequentialSearch; i++)
 	{
 		sHashSequentialSearch[i] = tolower(sLocalTitleSearch[i]);
-		if (i < MAX_SEARCH_STRING_ALL_HASHED_LEN)
-		{
-			countHashSequentialSearchForNextChar[i] = 0;
-		}
-		else
-		{
-			offsetHashSequentialSearch[i] = offsetBufFnd;
-			countHashSequentialSearchForNextChar[i] = countHashSequentialSearchForNextChar[i - 1];
-		}
 	}
 	
+
 	return lenHashSequentialSearch;
 }
-void build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long lenBufFnd)
+
+long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long lenBufFnd)
 {
 	int i;
 	int lenTitleSearch;
@@ -4184,37 +4182,47 @@ void build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long l
 	char sLocalTitleSearch[MAX_TITLE_LEN];
 	int lenHashSequentialSearch = 0;
 	char sHashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
-	long offsetHashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
 	long countHashSequentialSearchForNextChar[MAX_SEARCH_STRING_HASHED_LEN];
 	
-	showMsg(3, "build_hash_tree [%s]\n", sTitleSearch);
+	showMsg(3, "build_hash_tree [%s] %x\n", sTitleSearch, offsetBufFnd);
+	memset(countHashSequentialSearchForNextChar, 0, sizeof(countHashSequentialSearchForNextChar));
 	lenTitleSearch = strlen(sTitleSearch);
 	if (lenTitleSearch < MAX_SEARCH_STRING_ALL_HASHED_LEN)
 	{
 		for (i = 0; i < strlen(pSupportedChars); i++)
 		{
 			c = pSupportedChars[i];
-			sTitleSearch[lenTitleSearch] = c;
-			sTitleSearch[lenTitleSearch + 1] = '\0';
-			bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
-			while (offsetBufFnd < lenBufFnd && 
-				(rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
+			if (c != ' ' || sTitleSearch[lenTitleSearch -1] != ' ') // no two continuous blanks
 			{
-showMsg(0, "sLocalTitleSearch [%s] [%s]\n", sLocalTitleSearch, sTitleSearch);
-				lenHashSequentialSearch = process_hash_sequential_search(sLocalTitleSearch, offsetBufFnd, 
-					lenHashSequentialSearch, sHashSequentialSearch, offsetHashSequentialSearch, countHashSequentialSearchForNextChar);
-				offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
-				pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
+				sTitleSearch[lenTitleSearch] = c;
+				sTitleSearch[lenTitleSearch + 1] = '\0';
 				bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
-			}
-
-			if (offsetBufFnd < lenBufFnd && !rc)
-			{
-				add_search_hash(sTitleSearch, strlen(sTitleSearch), offsetBufFnd);
-				build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
+				while (offsetBufFnd < lenBufFnd && 
+					(rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
+				{
+					lenHashSequentialSearch = process_hash_sequential_search(sLocalTitleSearch, offsetBufFnd, 
+						lenHashSequentialSearch, sHashSequentialSearch, countHashSequentialSearchForNextChar);
+					offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+					pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
+					bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
+				}
+	
+				if (offsetBufFnd < lenBufFnd && !rc)
+				{
+					add_search_hash(sTitleSearch, strlen(sTitleSearch), offsetBufFnd);
+					lenHashSequentialSearch = 0;
+					memset(countHashSequentialSearchForNextChar, 0, sizeof(countHashSequentialSearchForNextChar));
+					offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+					if (offsetBufFnd < lenBufFnd)
+					{
+						offsetBufFnd = build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
+						pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
+					}
+				}
 			}
 		}
 	}
+	return offsetBufFnd;
 }
 
 void generate_pedia_hsh(void)
@@ -4228,6 +4236,7 @@ void generate_pedia_hsh(void)
 	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
 	char c1, c2, c3;
 	int i, j, k;
+	long offsetBufFnd = 0;
 
 	fdPfx = fopen("pedia.pfx", "rb");
 	if (!fdPfx)
@@ -4266,21 +4275,26 @@ void generate_pedia_hsh(void)
 	for (i = 0; i < strlen(pSupportedChars); i++)
 	{
 		c1 = pSupportedChars[i];
-		for (j = 0; j < strlen(pSupportedChars); j++)
-		{
-			c2 = pSupportedChars[j];
-			for (k = 0; k < strlen(pSupportedChars); k++)
+		if (c1 != ' ') // no initial blank
+		{	
+			for (j = 0; j < strlen(pSupportedChars); j++)
 			{
-				c3 = pSupportedChars[k];
-				idxFirstThreeCharIndexing = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
-					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-				if (firstThreeCharIndexing[idxFirstThreeCharIndexing])
+				c2 = pSupportedChars[j];
+				for (k = 0; k < strlen(pSupportedChars); k++)
 				{
-					sTitleSearch[0] = c1;
-					sTitleSearch[1] = c2;
-					sTitleSearch[2] = c3;
-					sTitleSearch[3] = '\0';
-					build_hash_tree(sTitleSearch, firstThreeCharIndexing[idxFirstThreeCharIndexing], bufFnd, lenBufFnd);
+					c3 = pSupportedChars[k];
+					idxFirstThreeCharIndexing = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
+						bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
+					if (firstThreeCharIndexing[idxFirstThreeCharIndexing])
+					{
+						sTitleSearch[0] = c1;
+						sTitleSearch[1] = c2;
+						sTitleSearch[2] = c3;
+						sTitleSearch[3] = '\0';
+						if (!offsetBufFnd)
+							offsetBufFnd = firstThreeCharIndexing[idxFirstThreeCharIndexing];
+						offsetBufFnd = build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
+					}
 				}
 			}
 		}

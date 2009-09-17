@@ -6,7 +6,7 @@
 #define MAX_SEARCH_HASH_KEY (256 * 1024)
 #define MAX_SEARCH_STRING_HASHED_LEN 15
 #define MAX_SEARCH_STRING_ALL_HASHED_LEN 5
-#define SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD 256
+#define SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD 64
 
 typedef struct _search_hash_table {
 	long offset_fnd; // offset to pedia.fnd for the search title hashed
