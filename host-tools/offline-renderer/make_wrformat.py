@@ -181,14 +181,14 @@ def main():
 
     if test_file == '':
         compress = True
-        i_out = open('pedia%d.idx-tmp' % file_number, 'w')
-        f_out = open('pedia%d.dat' % file_number, "w")
+        i_out = open(index_file % file_number, 'w')
+        f_out = open(data_file % file_number, 'w')
     else:
         compress = False
         fout = open(test_file, 'w')
 
     for name in args:
-        f = codecs.open(name, "r", 'utf-8')
+        f = codecs.open(name, 'r', 'utf-8')
         WrProcess(f)
         f.close()
 
