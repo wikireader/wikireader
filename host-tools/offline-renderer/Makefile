@@ -35,7 +35,7 @@ check-paths:
 	@if [ ! -d "${FONT_PATH}" ] ; then echo FONT_PATH: "'"${FONT_PATH}"'" is not a directory ; exit 1; fi
 
 .PHONY: index
-index: pylzma check-paths
+index: check-paths
 	time ./make_article_idx.py ${VERBOSE} \
 		--article-index="${ARTICLES}" --article-offsets="${OFFSETS}" \
 		--modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
@@ -45,7 +45,7 @@ article_idx.py:
 	@echo Run '"'make index'"' first
 
 .PHONY: parse
-parse: check-paths
+parse: pylzma check-paths
 	time ./parse_articles.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
 		--article-offsets="${OFFSETS}" \
