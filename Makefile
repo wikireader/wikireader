@@ -258,7 +258,7 @@ ARTICLE_COUNT_K ?= 128
 
 # the first(0) and last(23) are special
 $(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
-ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22
+ITEMS := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
 $(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${ARTICLE_COUNT_K})k,${ARTICLE_COUNT_K}k))
 $(call MAKE_BLOCK,23,$(shell expr 23 '*' ${ARTICLE_COUNT_K})k,all)
 
