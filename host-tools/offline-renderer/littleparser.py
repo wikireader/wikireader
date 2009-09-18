@@ -44,6 +44,10 @@ class LittleParser(HTMLParser):
 
         self.reset()
         self.buffer = u''
-        text = entities.sub(r'&\1;', urllib.unquote(text))
-        self.feed(text)
+        unq = entities.sub(r'&\1;', urllib.unquote(text))
+        try:
+            self.feed(unq)
+        except KeyError:
+            print 'failed on: "%s" using-> "%s"' % (text, unq)
+            return unq
         return self.buffer
