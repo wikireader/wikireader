@@ -236,12 +236,12 @@ render${1}: stamp-r-render${1}
 
 stamp-r-parse${1}:
 	rm -f "$$@"
-	$${MAKE} RENDER_BLOCK=${1} parse
+	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 	touch "$$@"
 
 stamp-r-render${1}:
 	rm -f "$$@"
-	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} render
+	$${MAKE} RENDER_BLOCK=${1} render
 	touch "$$@"
 
 .PHONY: stamp-r-clean${1}
