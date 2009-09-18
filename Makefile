@@ -254,7 +254,7 @@ endef
 # set this to make even distibution over 24 blocks
 # need a better way of setting this
 # ------------------------------------------------
-ARTICLE_COUNT_K ?= 286
+ARTICLE_COUNT_K ?= 128
 
 # the first(0) and last(23) are special
 $(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
