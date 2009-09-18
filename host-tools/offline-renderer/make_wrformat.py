@@ -214,17 +214,19 @@ width_cache = {}
 
 def get_utf8_cwidth(c, face):
     global width_cache, font_id_values
+    if type(c) != unicode:
+	c = unicode(c, 'utf-8')
 
     if (c, face) in width_cache:
         return width_cache[(c, face)]
 
     f = font_id_values[face]
 
-    f.seek(c*cmr_size+fh_size);
+    f.seek(ord(c) * cmr_size + fh_size);
     buffer = f.read(cmr_size)
     if len(buffer) != 0:
         width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = struct.unpack(cmr, buffer)
-        width += LSBearing
+        width += LSBearing + LINE_SPACE_ADDON
     else:
         width = 0
     if width == 0:
@@ -398,7 +400,7 @@ def strip_buffer(buffer):
     return(lstrip_buffer(rstrip_buffer(buffer)))
 
 
-def append_buffer(buffer, text, face, url):
+def Xappend_buffer(buffer, text, face, url):
         buffer.append(resize_item((text, face, url, 0, [])))
 
 
@@ -539,23 +541,26 @@ class WrProcess(HTMLParser):
 
     def __init__ (self, f):
         HTMLParser.__init__(self)
-        self.wrap = WordWrap.WordWrap(get_utf8_cwidth)
-        self.reset()
+        self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
+        self.local_init()
         self.feed(f.read())
 
-    def reset(self):
+    def local_init(self):
+
         global g_starty, g_curr_face, g_halign
         global g_this_article_title, g_links, g_link_cnt
 
         self.in_html = False
         self.in_title = False
         self.in_body = False
+
         self.in_h1 = False
         self.in_h2 = False
         self.in_h3 = False
         self.in_h4 = False
         self.in_h5 = False
         self.in_h6 = False
+
         self.in_table = 0
         self.in_p  = False
         self.in_b  = False
@@ -566,11 +571,12 @@ class WrProcess(HTMLParser):
         self.in_i  = False
         self.in_a  = False
         self.in_br = False
+
         self.quote = 0
         self.level = 0
         self.lwidth = DEFAULT_LWIDTH
         self.indent = 0
-        self.buffer = []
+        #self.buffer = []
         self.li_cnt = {}
         self.li_type = {}
         self.link_x = 0
@@ -591,7 +597,7 @@ class WrProcess(HTMLParser):
         attrs = dict(attrs)
 
         if tag == 'html':
-            self.reset()
+            self.local_init()
             self.in_html = True
 
         if tag == 'title':
@@ -681,14 +687,16 @@ class WrProcess(HTMLParser):
             self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
-                append_buffer(self.buffer, ("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
+                #append_buffer(self.buffer, ("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
+                self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
             else:
                 if self.level > LIMAX_INDENT_LEVELS:    # we only have 3 types of bullets
                     bullet_num = 3;
                 else:
                     bullet_num = self.level
 
-                append_buffer(self.buffer, bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
+                #append_buffer(self.buffer, bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
+                self.wordwrap.append(bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
 
             self.flush_buffer()
             if self.level < LIMAX_INDENT_LEVELS:
@@ -864,20 +872,22 @@ class WrProcess(HTMLParser):
         if self.in_a:
             url = self.url
 
-        selp.wrap.append(data, face, url)
+        self.wordwrap.append(data, face, url)
 
 
     def flush_buffer(self, new_line = True):
         global output
         font = -1
 
-        while self.wrap.have():
+        while self.wordwrap.have():
             url = None
             x0 = self.indent
             url_x0 = x0
-            line = self.wrap.wrap(self.lwidth)
+            line = self.wordwrap.wrap(self.lwidth)
+            if line == []:
+                break
 
-            if nl:
+            if new_line:
                 if font != line[0][1]:
                     font = line[0][1]
                     esc_code3(font)
@@ -887,7 +897,7 @@ class WrProcess(HTMLParser):
                 if font != line[0][1]:
                     font = line[0][1]
                     esc_code4(font)
-                nl = True
+                new_line = True
 
 
             for i in line:
@@ -895,19 +905,19 @@ class WrProcess(HTMLParser):
                     font = i[1]
                     esc_code4(font)
 
-                output.write(text.encode('utf-8'))
-
                 if url != i[2]:
                     if url != None:
-                        make_link(url, url_x0, x0, 'SOME TEXT')
+                        make_link(url, url_x0, x0, i[0])
                     url = i[2]
                     if url != None:
                         url_x0 = x0
                 x0 += i[3]
-            if url != None:
-                make_link(url, url_x0, x0)
+                output.write(i[0].encode('utf-8'))
 
-        self.buffer = []
+            if url != None:
+                make_link(url, url_x0, x0, line[-1][0])
+
+        #self.buffer = []
 
 
 def link_number(url):

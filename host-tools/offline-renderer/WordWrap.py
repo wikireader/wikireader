@@ -74,10 +74,12 @@ class WordWrap():
 
     def wrap(self, width):
         if [] == self.buffer:
-            return ''
+            return []
 
         while self.buffer[0][0] == ' ':
             del self.buffer[0]
+            if self.buffer == []:
+                return []
 
         if self.buffer[0][3] > width:
             (r, self.buffer[0]) = self.split(self.buffer[0], width)
