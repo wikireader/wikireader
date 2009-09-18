@@ -537,6 +537,13 @@ class WrProcess(HTMLParser):
 
     def __init__ (self, f):
         HTMLParser.__init__(self)
+        self.reset()
+        self.feed(f.read())
+
+    def reset(self):
+        global g_starty, g_curr_face, g_halign
+        global g_this_article_title, g_links, g_link_cnt
+
         self.in_html = False
         self.in_title = False
         self.in_body = False
@@ -556,6 +563,7 @@ class WrProcess(HTMLParser):
         self.in_i  = False
         self.in_a  = False
         self.in_br = False
+        self.quote = 0
         self.level = 0
         self.lwidth = DEFAULT_LWIDTH
         self.indent = 0
@@ -565,8 +573,12 @@ class WrProcess(HTMLParser):
         self.link_x = 0
         self.link_y = 0
         self.url = None
-        self.feed(f.read())
-
+        g_starty = 0
+        g_curr_face = DEFAULT_FONT_IDX
+        g_halign = 0
+        g_this_article_title = 'NO TITLE'
+        g_links = {}
+        g_link_cnt = 0
 
     def handle_starttag(self, tag, attrs):
 
@@ -576,19 +588,8 @@ class WrProcess(HTMLParser):
         attrs = dict(attrs)
 
         if tag == 'html':
+            self.reset()
             self.in_html = True
-
-            # reset the global variables
-            # (There should be a better place to put this stuff $$$
-            g_starty = 0
-            g_curr_face = DEFAULT_FONT_IDX
-            g_halign = 0
-            g_this_article_title = 'NO TITLE'
-            g_links = {}
-            g_link_cnt = 0
-            self.level = 0
-            self.lwidth = DEFAULT_LWIDTH
-            self.indent = 0
 
         if tag == 'title':
             self.in_title = True
@@ -641,10 +642,12 @@ class WrProcess(HTMLParser):
 
         if tag == 'blockquote':
             self.flush_buffer()
-            esc_code0(BLOCKQUOTE_MARGIN_TOP)
-            self.indent += BLOCKQUOTE_MARGIN_LEFT
-            self.lwidth -= BLOCKQUOTE_MARGIN_LEFT + BLOCKQUOTE_MARGIN_RIGHT
-            esc_code9(BLOCKQUOTE_MARGIN_LEFT)
+            self.quote += 1
+            if self.quote < MAX_QUOTE_LEVEL:
+                esc_code0(BLOCKQUOTE_MARGIN_TOP)
+                self.indent += BLOCKQUOTE_MARGIN_LEFT
+                self.lwidth -= BLOCKQUOTE_MARGIN_LEFT + BLOCKQUOTE_MARGIN_RIGHT
+                esc_code9(BLOCKQUOTE_MARGIN_LEFT)
 
         if tag == 'b':
             self.in_b = True
@@ -744,7 +747,8 @@ class WrProcess(HTMLParser):
             self.flush_buffer()
 
         if tag == 'table':
-            self.in_table -= 1
+            if self.in_table > 0:
+                self.in_table -= 1
 
         if tag == 'p':
             self.flush_buffer()
@@ -752,9 +756,12 @@ class WrProcess(HTMLParser):
 
         if tag == 'blockquote':
             self.flush_buffer()
-            self.indent -= BLOCKQUOTE_MARGIN_LEFT
-            self.lwidth += BLOCKQUOTE_MARGIN_LEFT + BLOCKQUOTE_MARGIN_RIGHT
-            esc_code9(-BLOCKQUOTE_MARGIN_LEFT)
+            if self.quote > 0:
+                if self.quote < MAX_QUOTE_LEVEL:
+                    self.indent -= BLOCKQUOTE_MARGIN_LEFT
+                    self.lwidth += BLOCKQUOTE_MARGIN_LEFT + BLOCKQUOTE_MARGIN_RIGHT
+                    esc_code9(-BLOCKQUOTE_MARGIN_LEFT)
+                self.quote -= 1
 
         if tag == 'b':
             self.in_b = False
@@ -810,10 +817,11 @@ class WrProcess(HTMLParser):
 
     def leave_list(self):
         self.flush_buffer()
-        self.level -= 1
-        if self.level < LIMAX_INDENT_LEVELS:
-            self.lwidth += LIST_INDENT
-            self.indent -= LIST_INDENT
+        if self.level > 0:
+            if self.level < LIMAX_INDENT_LEVELS:
+                self.lwidth += LIST_INDENT
+                self.indent -= LIST_INDENT
+            self.level -= 1
 
 
     def handle_charref(self, name):

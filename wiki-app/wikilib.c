@@ -311,7 +311,7 @@ static void handle_search_key(char keycode)
 	//search_reload();
 	if (!rc)
 		search_reload_ex();
-	keyboard_paint();
+//	keyboard_paint();
 	guilib_fb_unlock();
 }
 
@@ -366,6 +366,7 @@ static void handle_key_release(int keycode)
 {
 //	static long idx_article = 0;
 
+	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
 	DP(DBG_WL, ("O handle_key_release()\n"));
 	if (keycode == WL_INPUT_KEY_SEARCH) {
                 article_offset = 0;
@@ -444,7 +445,8 @@ static void handle_touch(struct wl_input_event *ev)
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-			show_key(0);
+			//show_key(0);
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
                         enter_touch_y_pos_record = enter_touch_y_pos;
                         enter_touch_y_pos = -1;
                         touch_search = 0;
@@ -508,23 +510,26 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if (pre_key && pre_key->key == key->key) goto out;
 
-				if (pre_key) {
-					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-					show_key(0);
-				}
+				//if (pre_key) {
+					//guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
+					//show_key(0);
+					//keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY);
+				//}
 				if (touch_down_on_keyboard) {
-					guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
-					show_key(key->key);
+					//guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
+					//show_key(key->key);
+					keyboard_key_invert(key);
 					pre_key = key;
 				}
 			} else {
 				if (!touch_down_on_keyboard && !touch_down_on_list)
 					touch_down_on_list = 1;
-				if (pre_key) {
-					guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-					show_key(0);
+				//if (pre_key) {
+					//guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
+					//show_key(0);
+					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
 					pre_key = NULL;
-				}
+				//}
 
 				if (!search_result_count()) goto out;
 
@@ -805,11 +810,16 @@ int wikilib_run(void)
                   history_list_save();
 		  sleep = 1;
 		}
-                if(article_offset>0)
+
+                if (article_offset>0)
                 {
                   scroll_article();
                   sleep = 0;
                 }
+                
+                if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK)) // reset invert is timeout
+                	sleep = 0;
+
                 #ifdef INCLUDED_FROM_KERNEL
 		/*if (display_mode==DISPLAY_MODE_INDEX && search_string_changed)
                 {

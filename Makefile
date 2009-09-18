@@ -61,6 +61,7 @@ all:    ${ALL_TARGETS}
 # ----- installation ------------------------------------------
 
 DESTDIR_PATH := $(shell readlink -m "${DESTDIR}")
+WORKDIR_PATH := $(shell readlink -m "${WORKDIR}")
 VERSION_TAG := $(shell basename "${DESTDIR}")
 VERSION_FILE := ${DESTDIR_PATH}/version.txt
 SHA_LEVEL := 256
@@ -200,59 +201,94 @@ XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
 RENDER_BLOCK ?= 0
 
 .PHONY: index
-index: fonts validate-destdir
+index: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) index \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
 parse: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) parse \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
+
+.PHONY: render
+render: fonts validate-destdir
+	cd host-tools/offline-renderer && $(MAKE) render \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
 combine: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) combine \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
 define MAKE_BLOCK1
 
-.PHONY: block${1}
-block${1}:
-	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
+.PHONY: parse${1}
+parse${1}: stamp-r-parse${1}
+
+.PHONY: render${1} fonts parse${1}
+render${1}: stamp-r-render${1}
+
+stamp-r-parse${1}:
+	rm -f "$$@"
+	$${MAKE} RENDER_BLOCK=${1} parse
+	touch "$$@"
+
+stamp-r-render${1}:
+	rm -f "$$@"
+	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} render
+	touch "$$@"
+
+.PHONY: stamp-r-clean${1}
+stamp-r-clean${1}:
+	rm -f stamp-r-parse${1} stamp-r-render${1}
+
 endef
 
 # ------------------------------------------------
 # set this to make even distibution over 24 blocks
 # need a better way of setting this
 # ------------------------------------------------
-count_k := 286
+ARTICLE_COUNT_K ?= 286
 
 # the first(0) and last(23) are special
-$(call MAKE_BLOCK,0,1,$(shell expr ${count_k} '*' 1000 - 1))
+$(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
 ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22
-$(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${count_k})k,${count_k}k))
-$(call MAKE_BLOCK,23,$(shell expr 23 '*' ${count_k})k,all)
+$(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${ARTICLE_COUNT_K})k,${ARTICLE_COUNT_K}k))
+$(call MAKE_BLOCK,23,$(shell expr 23 '*' ${ARTICLE_COUNT_K})k,all)
 
 
-MAKE_RENDER = $(eval $(call MAKE_RENDER1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
+MAKE_FARM = $(eval $(call MAKE_FARM1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
-define MAKE_RENDER1
+define MAKE_FARM1
 
-.PHONY: render${1}
-render${1}: $$(foreach i,${2},block$$(strip $${i}))
+.PHONY: farm${1}-parse
+farm${1}-parse: $$(foreach i,${2},parse$$(strip $${i}))
+
+.PHONY: farm${1}-render
+farm${1}-render: $$(foreach i,${2},render$$(strip $${i}))
+
+.PHONY: farm${1}-clean
+farm${1}-clean: $$(foreach i,${2},stamp-r-clean$$(strip $${i}))
+
+.PHONY: farm${1}
+farm${1}: farm${1}-parse farm${1}-render
 
 endef
 
-$(call MAKE_RENDER,1, 0  1  2)
-$(call MAKE_RENDER,2, 3  4  5)
-$(call MAKE_RENDER,3, 6  7  8)
-$(call MAKE_RENDER,4, 9 10 11)
-$(call MAKE_RENDER,5,12 13 14)
-$(call MAKE_RENDER,6,15 16 17)
-$(call MAKE_RENDER,7,18 19 20)
-$(call MAKE_RENDER,8,21 22 23)
+$(call MAKE_FARM,1, 0  1  2)
+$(call MAKE_FARM,2, 3  4  5)
+$(call MAKE_FARM,3, 6  7  8)
+$(call MAKE_FARM,4, 9 10 11)
+$(call MAKE_FARM,5,12 13 14)
+$(call MAKE_FARM,6,15 16 17)
+$(call MAKE_FARM,7,18 19 20)
+$(call MAKE_FARM,8,21 22 23)
 
 
 # ----- wiki Dump  --------------------------------------
@@ -359,6 +395,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/flash
 	$(MAKE) clean -C samo-lib/mahatma
 	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
+	${RM} stamp-r-*
 
 .PHONY: clean-toolchain
 clean-toolchain:
@@ -384,9 +421,12 @@ help:
 	@echo '  all                   - compile all the source'
 	@echo '  install               - install forth, mahatma, fonts in DESTDIR'
 	@echo '  index                 - convert XML_FILES to index files in DESTDIR'
-	@echo '  render<1..8>          - render XML_FILES into 3 data files in DESTDIR'
 	@echo '  parse                 - render XML_FILES into one big data files in DESTDIR'
 	@echo '  combine               - combine temporary indices to one file in DESTDIR'
+	@echo '  farm<1..8>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
+	@echo '  farm<1..8>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
+	@echo '  farm<1..8>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
+	@echo '  farm<1..8>-clean      - remove stamp files to repeat process'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  mahatma               - compile kernel'
 	@echo '  mahatma-install       - install mahatma as kernel in DESTDIR'

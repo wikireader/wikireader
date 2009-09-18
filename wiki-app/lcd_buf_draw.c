@@ -649,6 +649,11 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 
 	if(pres_bmfbm(u, lcd_draw_buf_external->pPcfFont, &bitmap, &Cmetrics)<0)
           return;
+        if(u==32)
+        {
+	   lcd_draw_buf_external->current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
+           return;
+        }
    	if (bitmap == NULL)
 	  return;
 
@@ -1272,8 +1277,9 @@ void display_str(char *str)
        p = str;
 
 #ifndef WIKIPCF
-       int framebuffersize;
-       framebuffersize = framebuffer_size();
+       // framebuffer_size ==0 iwhen WIKPCF is defined
+       // This causes fatal linker errors of recent gcc (Ubuntu 9.04)
+       int framebuffersize = framebuffer_size();
        memset(framebuffer_copy,0,framebuffersize);
 #endif
 
