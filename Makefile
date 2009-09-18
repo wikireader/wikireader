@@ -203,22 +203,26 @@ RENDER_BLOCK ?= 0
 .PHONY: index
 index: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) index \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
 parse: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) parse \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: render
 render: fonts validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) render \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
 combine: validate-destdir
 	cd host-tools/offline-renderer && $(MAKE) combine \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" DESTDIR="${DESTDIR_PATH}"
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
