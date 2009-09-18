@@ -60,6 +60,7 @@ def usage(message):
     print '       --verbose               Enable verbose output'
     print '       --article-index=file    Article index dictionary output [articles.pickle]'
     print '       --article-offsets=file  Article file offsets dictionary output [offsets.pickle]'
+    print '       --article-counts=file   File to store the counts [counts.text]'
     print '       --modulo=n              only save the offsets for "mod n" articles [1] (1k => 1000)'
     print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
     exit(1)
@@ -70,14 +71,19 @@ def main():
     global redirects, article_index
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:m:p:', ['help', 'verbose', 'article-index=',
-                                                                'article-offsets=', 'modulo=', 'prefix='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:m:p:',
+                                   ['help', 'verbose',
+                                    'article-index=',
+                                    'article-offsets=',
+                                    'article-counts=',
+                                    'modulo=', 'prefix='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
     art_name = "articles.pickle"
     off_name = "offsets.pickle"
+    cnt_name = "counts.text"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
 
@@ -90,6 +96,8 @@ def main():
             art_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
+        elif opt in ('-c', '--article-counts'):
+            cnt_name = arg
         elif opt in ('-m', '--modulo'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -122,13 +130,17 @@ def main():
     # record combined count and display statistics
     m = len(article_index)
     s = a + r
-    print 'Articles:   %10d' % a
-    print 'Redirects:  %10d' % r
-    print 'Sum:        %10d' % s
-    print 'Merged:     %10d' % m
-    print 'Difference: %10d' % (m - s)
 
-    a = len(article_index)
+    cf = open(cnt_name, 'w')
+
+    for f in (sys.stdout, cf):
+        f.write('Articles:   %10d\n' % a)
+        f.write('Redirects:  %10d\n' % r)
+        f.write('Sum:        %10d\n' % s)
+        f.write('Merged:     %10d\n' % m)
+        f.write('Difference: %10d\n' % (m - s))
+
+    cf.close()
 
     output_fnd(fnd_name)
     output_pfx(pfx_name)

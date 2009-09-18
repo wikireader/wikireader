@@ -1,5 +1,5 @@
-article_idx.py
-article_off.py
+*.pickle
+counts.text
 *.pyc
 *.pyo
 all_articles.html

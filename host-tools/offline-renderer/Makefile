@@ -13,6 +13,7 @@ WORKDIR ?= /tmp
 
 PREFIX := $(shell readlink -m ${DESTDIR}/pedia)
 ARTICLES := $(shell readlink -m ${WORKDIR}/articles.pickle)
+COUNTS_FILE := $(shell readlink -m ${WORKDIR}/counts.text)
 OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.pickle)
 HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
@@ -49,6 +50,7 @@ check-html:
 index: check-dirs check-xml
 	time ./make_article_idx.py ${VERBOSE} \
 		--article-index="${ARTICLES}" --article-offsets="${OFFSETS}" \
+		--article-counts="${COUNTS_FILE}" \
 		--modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse

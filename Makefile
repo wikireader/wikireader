@@ -236,12 +236,12 @@ render${1}: stamp-r-render${1}
 
 stamp-r-parse${1}:
 	rm -f "$$@"
-	$${MAKE} RENDER_BLOCK=${1} parse
+	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 	touch "$$@"
 
 stamp-r-render${1}:
 	rm -f "$$@"
-	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} render
+	$${MAKE} RENDER_BLOCK=${1} render
 	touch "$$@"
 
 .PHONY: stamp-r-clean${1}
@@ -254,11 +254,11 @@ endef
 # set this to make even distibution over 24 blocks
 # need a better way of setting this
 # ------------------------------------------------
-ARTICLE_COUNT_K ?= 286
+ARTICLE_COUNT_K ?= 128
 
 # the first(0) and last(23) are special
 $(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
-ITEMS := 1 2 3 4 5 6 7 8 9 10 11 13 14 15 16 17 18 19 20 21 22
+ITEMS := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
 $(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${ARTICLE_COUNT_K})k,${ARTICLE_COUNT_K}k))
 $(call MAKE_BLOCK,23,$(shell expr 23 '*' ${ARTICLE_COUNT_K})k,all)
 
