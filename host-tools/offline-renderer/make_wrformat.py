@@ -16,6 +16,7 @@ import codecs
 import getopt
 import os.path
 import cPickle
+import WordWrap
 
 
 verbose = False
@@ -28,6 +29,7 @@ fh_size  = struct.calcsize(fh)
 cmr_size = struct.calcsize(cmr)
 
 # font face defines
+# ******************************************This HAS TO BE CHANGED **************Update from 'C' code *****************
 ITALIC_FONT_IDX         = 1
 DEFAULT_FONT_IDX        = 2
 BOLD_ITALIC_FONT_IDX    = 3
@@ -537,6 +539,7 @@ class WrProcess(HTMLParser):
 
     def __init__ (self, f):
         HTMLParser.__init__(self)
+        self.wrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.reset()
         self.feed(f.read())
 
@@ -861,11 +864,49 @@ class WrProcess(HTMLParser):
         if self.in_a:
             url = self.url
 
-        append_buffer(self.buffer, data, face, url)
+        selp.wrap.append(data, face, url)
 
 
     def flush_buffer(self, new_line = True):
-        render_text(self.buffer, self.lwidth, self.indent, new_line)
+        global output
+        font = -1
+
+        while self.wrap.have():
+            url = None
+            x0 = self.indent
+            url_x0 = x0
+            line = self.wrap.wrap(self.lwidth)
+
+            if nl:
+                if font != line[0][1]:
+                    font = line[0][1]
+                    esc_code3(font)
+                else:
+                    esc_code2()
+            else:
+                if font != line[0][1]:
+                    font = line[0][1]
+                    esc_code4(font)
+                nl = True
+
+
+            for i in line:
+                if font != i[1]:
+                    font = i[1]
+                    esc_code4(font)
+
+                output.write(text.encode('utf-8'))
+
+                if url != i[2]:
+                    if url != None:
+                        make_link(url, url_x0, x0, 'SOME TEXT')
+                    url = i[2]
+                    if url != None:
+                        url_x0 = x0
+                x0 += i[3]
+            if url != None:
+                make_link(url, url_x0, x0)
+
         self.buffer = []
 
 
