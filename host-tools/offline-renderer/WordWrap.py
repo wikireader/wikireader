@@ -38,7 +38,7 @@ class WordWrap():
             word_len = [self.char_width_funtion(c, face) for c in w]
             self.buffer.append((w, face, url, sum(word_len), word_len))
             self.buffer.append(space)
-        if not trailing_space and self.buffer[-1][0] == ' ':
+        if self.buffer != [] and not trailing_space and self.buffer[-1][0] == ' ':
             del self.buffer[-1]
 
 
