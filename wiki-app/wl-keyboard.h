@@ -31,6 +31,12 @@ enum {
 	KEYBOARD_NUM
 };
 
+enum {
+	KEYBOARD_RESET_INVERT_DELAY,
+	KEYBOARD_RESET_INVERT_NOW,
+	KEYBOARD_RESET_INVERT_CHECK
+};
+
 struct keyboard_key {
 	/*
 	 * a rect described by top left and
@@ -46,5 +52,7 @@ int keyboard_get_mode();
 unsigned int keyboard_height();
 void keyboard_paint();
 struct keyboard_key * keyboard_get_data(int x, int y);
+void keyboard_key_invert(struct keyboard_key *key);
+int keyboard_key_reset_invert(int bFlag);
 
 #endif
