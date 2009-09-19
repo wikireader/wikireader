@@ -131,7 +131,7 @@ def main():
     art_file = 'articles.pickle'
     file_number = 0
     test_file = ''
-    font_path = "fonts"
+    font_path = "../fonts"
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -971,7 +971,12 @@ def write_article():
         f_out.write(body)
     output.truncate(0)
     if compress:
-        i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
+        try:
+            i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
+        except KeyError:
+            print g_this_article_title
+            print file_offset, article_index[g_this_article_title][1]
+            print article_count, article_index
 
 # run the program
 if __name__ == "__main__":
