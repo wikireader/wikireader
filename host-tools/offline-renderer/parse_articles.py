@@ -16,7 +16,7 @@ verbose = False
 PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
 # Regular expressions for parsing the XML
-start_text = re.compile(r'<text xml:space="preserve">', re.IGNORECASE)
+start_text = re.compile(r'<text\s+xml:space="preserve">', re.IGNORECASE)
 title_tag = re.compile(r'</?title>', re.IGNORECASE)
 end_article = re.compile(r'==\s*External\s+links\s*==|</text>', re.IGNORECASE)
 
@@ -33,7 +33,7 @@ ref_end = re.compile(r'^.*&lt;/ref&gt;', re.IGNORECASE)
 
 delete_tags = re.compile(r'&lt;.*?&gt;', re.IGNORECASE)
 
-line_break = re.compile(r'&lt;br /&gt;', re.IGNORECASE)
+line_break = re.compile(r'&lt;br\s+/&gt;', re.IGNORECASE)
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
 img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
@@ -42,7 +42,8 @@ language = re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE
 # Filter out Wikipedia's non article namespaces
 no_parse = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
 
-redirect = re.compile(r'<text xml:space="preserve">#redirect.*</text>', re.IGNORECASE)
+redirect = re.compile(r'<text\s+xml:space="preserve">\s*#redirect.*</text>', re.IGNORECASE)
+
 
 def usage(message):
     if None != message:
@@ -168,8 +169,10 @@ def process_file(file_name, seek, count, newf):
                 skip = False
                 title = title_tag.sub('', line.strip())
 
-        if "#redirect" in lower_line and redirect.search(line):
-            pass
+        if "#redirect" in lower_line:
+            match = redirect.search(line)
+            if match:
+                pass
         elif not skip and not parse and "<text xml:space=\"preserve\">" in lower_line:
             line = start_text.sub('', line)
             parse = True

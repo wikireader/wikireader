@@ -975,7 +975,7 @@ def write_article():
             i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
         except KeyError:
             print g_this_article_title
-            print file_offset, article_index[g_this_article_title][1]
+            print file_offset 
             print article_count, article_index
 
 # run the program
