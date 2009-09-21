@@ -27,6 +27,9 @@
 
 #include "application.h"
 
+#if !defined(BATTERY_METER)
+#define BATTERY_METER 1
+#endif
 
 struct guilib_image
 {
@@ -34,7 +37,10 @@ struct guilib_image
 	uint32_t height;
 	uint8_t data[];
 };
+typedef struct guilib_image ImageType;
+
 #include "splash.h"
+#include "empty.h"
 
 #define MAXIMUM_BLOCKS 8
 #define HEADER_MAGIC  0x4f4d4153
@@ -63,6 +69,7 @@ static const char spinner[4] = "-\\|/";
 
 ProcessReturnType process(int block, int status);
 void print_cpu_type(void);
+bool battery_empty(void);
 void battery_status(void);
 
 
@@ -81,6 +88,7 @@ ReturnType menu(int block, int status)
 	APPLICATION_FINALISE(result.block, result.offset);
 }
 
+
 static void fill(uint8_t value)
 {
 	int x = 0;
@@ -93,24 +101,27 @@ static void fill(uint8_t value)
 		}
 	}
 }
-static void display_image(uint8_t background, uint8_t toggle)
+
+
+static void display_image(const ImageType *image, uint8_t background, uint8_t toggle)
 {
-	int xOffset = (LCD_WIDTH_PIXELS - splash_image.width) / (2 * 8);
+	int xOffset = (LCD_WIDTH_PIXELS - image->width) / (2 * 8);
 	uint8_t *fb = (uint8_t*)LCD_VRAM;
 	unsigned int y = 0;
 	unsigned int x = 0;
-	unsigned int width = (splash_image.width + 7) / 8;
-	const uint8_t *src = splash_image.data;
+	unsigned int width = (image->width + 7) / 8;
+	const uint8_t *src = image->data;
 
 	fill(background);
-	fb += (LCD_HEIGHT_LINES - splash_image.height) / 2 * LCD_VRAM_WIDTH_BYTES;
-	for (y = 0; y < splash_image.height; ++y) {
+	fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
+	for (y = 0; y < image->height; ++y) {
 		for (x = 0; x < width; ++x) {
 			fb[x + xOffset] = toggle ^ *src++;
 		}
 		fb += LCD_VRAM_WIDTH_BYTES;
 	}
 }
+
 
 static void PrintName(const NameType name)
 {
@@ -175,7 +186,11 @@ ProcessReturnType process(int block, int status)
 	int k = 0;
 
 	Analog_scan(); // update analog values
-	display_image(0x00, 0xff);
+	if (battery_empty()) {
+		display_image(&empty_image, 0x00, 0xff);
+	} else {
+		display_image(&splash_image, 0x00, 0xff);
+	}
 
 	if (0 != status) {
 		bool MenuFlag = false;
@@ -214,6 +229,8 @@ ProcessReturnType process(int block, int status)
 			rc.offset = status;
 			return rc;
 		}
+	}
+	for (;;) {
 	}
 
 	for (;;) {
@@ -325,8 +342,17 @@ void print_cpu_type(void)
 }
 
 
+bool battery_empty(void)
+{
+	Analog_scan();
+	int v = Analog_BatteryMilliVolts();
+	return v <= BATTERY_EMPTY;
+}
+
+
 void battery_status(void)
 {
+#if BATTERY_METER
 	static bool initialised;
 	uint8_t *fb = (uint8_t*)LCD_VRAM;
 	static const char pos[] = {
@@ -383,4 +409,5 @@ void battery_status(void)
 		fb[3] = (indicator >> 0) | 0x04;
 		fb += LCD_VRAM_WIDTH_BYTES;
 	}
+#endif
 }

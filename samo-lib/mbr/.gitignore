@@ -13,4 +13,5 @@ menu
 misc
 SAMO_A1.mapfile
 splash.h
+empty.h
 flash.rom

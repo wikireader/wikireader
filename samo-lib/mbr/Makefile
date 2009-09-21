@@ -3,6 +3,9 @@ FATFS_MODE = read-only
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
+# set this to 0 or 1 to control the battery indicator in menu.c
+BATTERY_METER ?= 0
+
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
@@ -33,6 +36,8 @@ TARGETS = $(FLASH_ROM_MAP_FILE) mbr serial.header
 APPLICATIONS =
 APPLICATION_CLEAN =
 
+CFLAGS += -DBATTERY_METER="${BATTERY_METER}"
+
 vpath %.c $(WIKI_APP_SRC)
 
 .PHONY: all
@@ -45,9 +50,6 @@ $(FLASH_ROM_MAP_FILE):
 
 flash.rom: ${FLASH_ROM_MAP_FILE} ${TARGETS} all-applications
 	${IMAGE07} --image-file="$@" --map-file="${FLASH_ROM_MAP_FILE}"
-
-#mbr.o: mbr.c
-#	$(GCC) -c $(CFLAGS) $<
 
 mbr.elf: mbr.o
 	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0',-Map,$(@:.elf=.map) ${LIBS}
@@ -86,7 +88,7 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP,menu,misc.o,splash.h)
+$(call MAKE_APP,menu,misc.o,splash.h empty.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,hw-test,misc.o)
@@ -98,6 +100,9 @@ $(call MAKE_APP,rs232-loader,misc.o)
 
 splash.h: splash.png
 	$(HOST_TOOLS)/imagetool/imagetool.py splash.png splash.h splash_image
+
+empty.h: empty.png
+	$(HOST_TOOLS)/imagetool/imagetool.py empty.png empty.h empty_image
 
 # rule to build all above applications
 
