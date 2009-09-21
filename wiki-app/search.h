@@ -35,6 +35,12 @@
 #define MESSAGE_NO_RESULTS "No entries found"
 #define MESSAGE_SEARCHING "searching..."
 
+enum {
+	SEARCH_RELOAD_NORMAL,
+	SEARCH_RELOAD_KEEP_RESULT,
+	SEARCH_RELOAD_NO_POPULATE
+};
+
 typedef struct _ARTICLE_PTR {
 	long offset_dat;	/* offset to pedia?.dat for the article content */
 	long offset_fnd;	/* offset to pedia.fnd for the title (for search) */
@@ -83,7 +89,7 @@ int search_add_char(char c);
 /**
  * Remove the last char from the search
  */
-int search_remove_char(void);
+int search_remove_char(int bPopulate);
 
 /**
  * Return search result count
@@ -108,7 +114,7 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 int  set_result_list_base(int offset,int offset_count);
 void search_fetch();
 void search_result_display();
-void search_reload_ex();
+void search_reload_ex(int flag);
 int clear_search_string();
 int  get_search_string_len();
 #endif

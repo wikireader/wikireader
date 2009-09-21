@@ -115,7 +115,7 @@ static void toggle_soft_keyboard(void)
 		keyboard_paint();
 	} else {
 		keyboard_set_mode(KEYBOARD_NONE);
-		search_reload_ex();
+		search_reload_ex(SEARCH_RELOAD_KEEP_RESULT);
 	}
 
 	//guilib_fb_unlock();
@@ -288,7 +288,7 @@ static void handle_search_key(char keycode)
 	int rc = 0;
 
 	if (keycode == WL_KEY_BACKSPACE) {
-		rc = search_remove_char();
+		rc = search_remove_char(1);
 	} else if (is_supported_search_char(keycode)) {
 		rc = search_add_char(tolower(keycode));
 	} else {
@@ -310,7 +310,7 @@ static void handle_search_key(char keycode)
 	guilib_fb_lock();
 	//search_reload();
 	if (!rc)
-		search_reload_ex();
+		search_reload_ex(SEARCH_RELOAD_NORMAL);
 //	keyboard_paint();
 	guilib_fb_unlock();
 }
@@ -550,7 +550,7 @@ static void handle_touch(struct wl_input_event *ev)
 
 				int new_selection;
                                 if((ev->touch_event.y - RESULT_START)<0)
-                                    new_selection = 0;
+                                    new_selection = -1;
                                 else
                                     new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
                                 
@@ -780,7 +780,6 @@ int wikilib_run(void)
         int sleep,time_now;
         struct wl_input_event ev;
 
-	print_intro();
 
 	/*
 	 * test searching code...
@@ -789,6 +788,7 @@ int wikilib_run(void)
 	search_init();
 	history_list_init();
 	malloc_status_simple();
+	print_intro();
 #ifndef INCLUDED_FROM_KERNEL
 	if (!load_init_article(idx_init_article))
 	{
@@ -801,10 +801,6 @@ int wikilib_run(void)
 	for (;;) {
                 if(render_article_with_pcf())
                   sleep = 0;
-                else if (init_search_hash())
-                {
-                	sleep = 0;
-                }
                 else
                 {
                   history_list_save();
@@ -851,16 +847,16 @@ int wikilib_run(void)
 	                     if (!clear_search_string())
 	                     {
 	                     	search_string_changed_remove = true;
-	                     	search_reload_ex();
+				search_reload_ex(SEARCH_RELOAD_NORMAL);
 	                     }
 	                     press_delete_button = false;
 	                 }
 	                 else if ((time_now-start_search_time)>1000000*12 && (time_now-last_delete_time)>1000000*7)
 	                 {
-	                     if (!search_remove_char())
+	                     if (!search_remove_char(0))
 	                     {
 		                     search_string_changed_remove = true;
-		                     search_reload_ex();
+		                     search_reload_ex(SEARCH_RELOAD_NO_POPULATE);
 		             }
 	                     last_delete_time = time_now;
 	                 }

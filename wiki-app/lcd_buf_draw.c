@@ -105,16 +105,6 @@ void init_lcd_draw_buf()
 					pcfFonts[i].bPartialFont = 1;
 					pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
 				}
-				else if (i == BOLD_ITALIC_FONT_IDX - 1)
-				{
-					pcfFonts[i].bPartialFont = 1;
-					pcfFonts[i].supplement_font = &pcfFonts[BOLD_ALL_FONT_IDX - 1];
-				}
-				else if (i == BOLD_FONT_IDX - 1)
-				{
-					pcfFonts[i].bPartialFont = 1;
-					pcfFonts[i].supplement_font = &pcfFonts[BOLD_ALL_FONT_IDX - 1];
-				}
 				else
 				{
                        			pcfFonts[i].bPartialFont = 0;
@@ -149,44 +139,14 @@ char* FontFile(int idx) {
 		case ITALIC_FONT_IDX - 1:
 			return FONT_FILE_ITALIC;
 			break;
-		case BOLD_ITALIC_FONT_IDX - 1:
-			return FONT_FILE_BOLD_ITALIC;
-			break;
-		case BOLD_FONT_IDX - 1:
-			return FONT_FILE_BOLD;
-			break;
 		case DEFAULT_ALL_FONT_IDX - 1:
 			return FONT_FILE_DEFAULT_ALL;
 			break;
-		case BOLD_ALL_FONT_IDX - 1:
-			return FONT_FILE_BOLD_ALL;
-			break;
-//		case BIG_BOLD_ITALIC_FONT_IDX - 1:
-//			return FONT_FILE_BIG_BOLD_ITALIC;
-//			break;
-//		case BIG_BOLD_FONT_IDX - 1:
-//			return FONT_FILE_BIG_BOLD;
-//			break;
 		case TITLE_FONT_IDX - 1:
 			return FONT_FILE_TITLE;
 			break;
 		case SUBTITLE_FONT_IDX - 1:
 			return FONT_FILE_SUBTITLE;
-			break;
-//		case KEY_FONT_IDX - 1:
-//			return FONT_FILE_KEY;
-//			break;
-//		case SEARCH_HEADING_FONT_IDX - 1:
-//			return FONT_FILE_SEARCH_HEADING;
-//			break;
-//		case SEARCH_LIST_FONT_IDX - 1:
-//			return FONT_FILE_SEARCH_LIST;
-//			break;
-//		case MESSAGE_FONT_IDX - 1:
-//			return FONT_FILE_MESSAGE;
-//			break;
-		case SMALL_FONT_IDX - 1:
-			return FONT_FILE_SMALL;
 			break;
 		default:
 			return FONT_FILE_DEFAULT;
@@ -448,6 +408,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
                         {
                            repaint_framebuffer(lcd_draw_buf.screen_buf,0);
                            display_first_page = 1;
+                           lcd_draw_cur_y_pos = 0;
+                           article_offset = 0;
                         }
 		}
 	}
@@ -738,19 +700,22 @@ void init_render_article()
 	lcd_draw_buf.vertical_adjustment = 0;
 
 	display_first_page = 0;
+	lcd_draw_cur_y_pos = 0;
+	article_offset = 0;
 
 //	is_rendering = 1;
 }
 
-#define LICENSE_TEXT_FONT SMALL_FONT_IDX
-#define LICENSE_TEXT_LINE_HEIGHT 12
-#define SPACE_BEFORE_LICENSE_TEXT 80
+#define LICENSE_TEXT_FONT ITALIC_FONT_IDX
+#define SPACE_BEFORE_LICENSE_TEXT 40
 #define APACE_AFTER_LICENSE_TEXT 5
-#define LICENSE_TEXT_1 "Text is available under the Creative Commons"
-#define LICENSE_TEXT_2 "Attribution-ShareAlike License; additional terms may"
-#define LICENSE_TEXT_3 "apply.  See Terms of Use for details.  Wikipedia®"
-#define LICENSE_TEXT_4 "is a registered trademark of the Wikimedia"
-#define LICENSE_TEXT_5 "Foundation, Inc., a non-profit organization.  2009.8.25"
+#define LICENSE_TEXT_1 "Text is available under the Creative"
+#define LICENSE_TEXT_2 "Commons Attribution-ShareAlike"
+#define LICENSE_TEXT_3 "License; additional terms may apply."
+#define LICENSE_TEXT_4 "See Terms of Use for details."
+#define LICENSE_TEXT_5 "Wikipedia® is a registered trademark"
+#define LICENSE_TEXT_6 "of the Wikimedia Foundation, Inc., a"
+#define LICENSE_TEXT_7 "non-profit organization.  2009.9.9"
 void draw_license_text(unsigned char *s)
 {
 	ucs4_t u;
@@ -768,9 +733,9 @@ void render_wikipedia_license_text()
 	long start_x, start_y, end_x, end_y;
 	
 	// if not enough space at the end, then skip
-	if (lcd_draw_buf.current_y < LCD_BUF_HEIGHT_PIXELS - SPACE_BEFORE_LICENSE_TEXT - LICENSE_TEXT_LINE_HEIGHT * 6 - APACE_AFTER_LICENSE_TEXT)
+	if (lcd_draw_buf.current_y < LCD_BUF_HEIGHT_PIXELS - SPACE_BEFORE_LICENSE_TEXT - lcd_draw_buf.line_height * 7 - APACE_AFTER_LICENSE_TEXT)
 	{
-		lcd_draw_buf.line_height = LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.line_height = pcfFonts[LICENSE_TEXT_FONT - 1].Fmetrics.linespace;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += SPACE_BEFORE_LICENSE_TEXT;
 		lcd_draw_buf.vertical_adjustment = 0;
@@ -778,52 +743,69 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.pPcfFont = &pcfFonts[LICENSE_TEXT_FONT - 1];
 		
 		draw_license_text(LICENSE_TEXT_1);
-		start_x = 117;
-		end_x = 196;
+		start_x = lcd_draw_buf.current_x - 51;
+		end_x = lcd_draw_buf.current_x;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)
 		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			start_y = lcd_draw_buf.current_y;
+			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1;
 			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 1;
 		}
 		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_license_text(LICENSE_TEXT_2);
 		start_x = 0;
-		end_x = 130;
+		end_x = lcd_draw_buf.current_x;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)
 		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			start_y = lcd_draw_buf.current_y;
+			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1;
 			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 1;
 		}
 		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_license_text(LICENSE_TEXT_3);
-		start_x = 51;
-		end_x = 107;
+		start_x = 0;
+		end_x = 43;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < ARTICLE_LINK_COUNT)
 		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + 1 + LICENSE_TEXT_LINE_HEIGHT;
+			start_y = lcd_draw_buf.current_y;
+			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1;
+			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
+			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
+			articleLink[article_link_count++].article_id = 1;
+		}
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_license_text(LICENSE_TEXT_4);
+		start_x = 23;
+		end_x = 104;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		if (article_link_count < ARTICLE_LINK_COUNT)
+		{
+			start_y = lcd_draw_buf.current_y;
+			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1;
 			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));;
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));;
 			articleLink[article_link_count++].article_id = 2;
 		}
 		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
-		draw_license_text(LICENSE_TEXT_4);
-		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_license_text(LICENSE_TEXT_5);
-		lcd_draw_buf.current_y += LICENSE_TEXT_LINE_HEIGHT + APACE_AFTER_LICENSE_TEXT;
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_license_text(LICENSE_TEXT_6);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_license_text(LICENSE_TEXT_7);
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height + APACE_AFTER_LICENSE_TEXT;
 	}
 #endif
 }

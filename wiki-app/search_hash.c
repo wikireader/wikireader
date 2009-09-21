@@ -33,8 +33,9 @@ long nNeedMoreEntries = 0;
 #else
 int fdHsh = 999;
 int fdFnd = 999;
-int nHashEntriesLoaded = 0;
+int *bHashBlockLoaded;
 #define FND_BUF_COUNT 2048
+#define ENTRIES_PER_HASH_BLOCK 256
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
 struct _fnd_buf {
@@ -146,40 +147,20 @@ void save_search_hash(void)
 		printf("Search hash table need %ld more entries!\n", nNeedMoreEntries);
 }
 #else
-int init_search_hash(void)
+void init_search_hash(void)
 {
-	if (fdHsh == 999)
-	{
-		int i;
-		
-		fdHsh = _wl_open("pedia.hsh", WL_O_RDONLY);
-		_wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
-		search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
-		fdFnd = _wl_open("pedia.fnd", WL_O_RDONLY);
-		init_bigram(fdFnd);
-		fnd_bufs = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
-		for (i = 0; i < FND_BUF_COUNT; i++)
-			fnd_bufs[i].offset = 0;
-	}
+	int i;
 
-	if (fdHsh < 0)
-	{
-		return 0;
-	}
-	else
-	{
-		int nEntriesToRead = 1024;
-		
-		if (nEntriesToRead > nHashEntries - nHashEntriesLoaded)
-			nEntriesToRead = nHashEntries - nHashEntriesLoaded;
-		_wl_read(fdHsh, &search_hash_table[nHashEntriesLoaded], sizeof(SEARCH_HASH_TABLE) * nEntriesToRead);
-		nHashEntriesLoaded += nEntriesToRead;
-		if (nHashEntriesLoaded >= nHashEntries)
-		{
-			fdHsh = -1;
-		}
-		return 1;
-	}
+	fdHsh = _wl_open("pedia.hsh", WL_O_RDONLY);
+	_wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
+	search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
+	bHashBlockLoaded = (int *)malloc_simple(sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
+	memset((char *)bHashBlockLoaded, 0, sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK));
+	fdFnd = _wl_open("pedia.fnd", WL_O_RDONLY);
+	init_bigram(fdFnd);
+	fnd_bufs = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
+	for (i = 0; i < FND_BUF_COUNT; i++)
+		fnd_bufs[i].offset = 0;
 }
 
 int nHashJumps;
@@ -190,13 +171,19 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	char sDecoded[MAX_TITLE_SEARCH * 2];
 	int bFound = 0;
 	int lenHashed;
+	int idxBlock;
 	
 	nHashJumps = 0;
-	if (nHashEntriesLoaded == 0)
-		return 0;
 	nHashKey = hash_key(sSearchString, len);
-	if (nHashKey > nHashEntriesLoaded && init_search_hash()) // if the required entry not loaded then return not found
-		return 0;
+	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
+	if (!bHashBlockLoaded[idxBlock])
+	{
+		_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
+		_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
+		bHashBlockLoaded[idxBlock]++;
+	}
+
 	while (!bFound && nHashKey >= 0 && search_hash_table[nHashKey].offset_fnd)
 	{
 		if (search_hash_table[nHashKey].offset_fnd > 0)
@@ -216,8 +203,14 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 			{
 				nHashJumps++;
 				nHashKey = search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF;
-				if (nHashKey > nHashEntriesLoaded && init_search_hash()) // if the required entry not loaded then return not found
-					return 0;
+				idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
+				if (!bHashBlockLoaded[idxBlock])
+				{
+					_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
+					_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
+					bHashBlockLoaded[idxBlock]++;
+				}
 			}
 			else
 				nHashKey = -1;

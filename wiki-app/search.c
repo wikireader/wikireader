@@ -61,6 +61,7 @@ typedef struct _search_info {
 	int fd_dat[MAX_DAT_FILES];
 	long max_article_idx;
 	long prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
+	int b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
 	char buf[MAX_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
 	int buf_len;
 	long offset_current;		// offset (pedia.fnd) of the content of buffer
@@ -139,9 +140,8 @@ int load_prefix_index(void)
 		if (search_info->fd_pfx >= 0 && search_info->fd_idx >= 0)
 		{
 			_wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
-			if (_wl_read(search_info->fd_pfx, (void *)search_info->prefix_index_table, SIZE_PREFIX_INDEX_TABLE) == 
-				SIZE_PREFIX_INDEX_TABLE)
-				prefix_index_loaded = 1;
+			memset((char *)search_info->b_prefix_index_block_loaded, 0, sizeof(search_info->b_prefix_index_block_loaded));
+			prefix_index_loaded = 1;
 		}
 	}
 	return prefix_index_loaded;
@@ -160,6 +160,7 @@ void search_init()
 	result_list->base = 0;
 //	result_list->first_item = 0;
 	result_list->cur_selected = 0;
+	init_search_hash();
 }
 
 void memrcpy(char *dest, char *src, int len) // memory copy starting from the last byte
@@ -428,7 +429,7 @@ out:
 	if (result_list->result_populated)
 	{
 		if (!bInit) // just completed search result
-			search_reload_ex();
+			search_reload_ex(SEARCH_RELOAD_NORMAL);
 		return 0;
 	}
 	else
@@ -443,6 +444,20 @@ out:
 	}
 }
 
+long get_prefix_index_table(int idx_prefix_index_table)
+{
+	int idxBlock = idx_prefix_index_table / (SEARCH_CHR_COUNT * SEARCH_CHR_COUNT);
+
+	if (!search_info->b_prefix_index_block_loaded[idxBlock])
+	{
+		_wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
+		_wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]),
+			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
+		search_info->b_prefix_index_block_loaded[idxBlock]++;
+	}
+	return search_info->prefix_index_table[idx_prefix_index_table];
+}
+
 long get_search_result_start()
 {
 	long offset_search_result_start = -1;
@@ -452,6 +467,7 @@ long get_search_result_start()
 	int i;
 	int lenCompared;
 	int lenCopied;
+	long offset;
 	static int lenHashedSearchString = 0;
 	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
@@ -530,8 +546,7 @@ long get_search_result_start()
 		}
 	}
 
-	if (!found && (init_search_hash() || // hash table in loading
-		3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
+	if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
 	{
 		switch(search_str_len)
 		{
@@ -553,10 +568,10 @@ long get_search_result_start()
 		}
 		idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT + 
 			bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-		if (search_info->prefix_index_table[idx_prefix_index_table])
+		if ((offset = get_prefix_index_table(idx_prefix_index_table)))
 		{
 			found = 1;
-			offset_search_result_start = search_info->prefix_index_table[idx_prefix_index_table];
+			offset_search_result_start = offset;
 		}
 	}
 
@@ -793,7 +808,7 @@ out:
 //	DP(DBG_SEARCH, ("O search_reload() end: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list->cur_selected, result_list->first_item));
 	guilib_fb_unlock();
 }
-void search_reload_ex()
+void search_reload_ex(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
@@ -809,7 +824,12 @@ void search_reload_ex()
 	if (keyboard_get_mode() == KEYBOARD_NONE)
         {
 		if (result_list->result_populated)
-			guilib_clear();
+		{
+			if (flag == SEARCH_RELOAD_KEEP_RESULT)
+				guilib_clear_area(0, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT, 239, LCD_HEIGHT_LINES - 1);
+			else
+				guilib_clear();
+		}
 		else
 			guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
         }
@@ -859,7 +879,7 @@ void search_reload_ex()
 	y_pos = RESULT_START;
 
 
-	if (result_list->result_populated)
+	if (result_list->result_populated && flag != SEARCH_RELOAD_NO_POPULATE)
 	{
 		if (result_list->result_populated && !result_list->count) {
 			if (!bNoResultLastTime)
@@ -995,14 +1015,9 @@ void search_fetch()
 }
 
 /*
- * TODO: Optimize going back... For the first three entries
- * one could remember the &state and then seek back to the
- * position and continue the search from there... For now do it
- * the easy way and wait for user testing.
- *
  * return value - 0: remove ok, -1: no key to remove
  */
-int search_remove_char(void)
+int search_remove_char(int bPopulate)
 {
 	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
 	if (search_str_len == 0)
@@ -1022,7 +1037,8 @@ int search_remove_char(void)
         #endif
         search_string_changed = true;
         search_string_changed_remove = true;
-	search_populate_result();
+	if (bPopulate || !search_str_len)
+		search_populate_result();
         result_list->cur_selected = -1;
         return 0;
 }

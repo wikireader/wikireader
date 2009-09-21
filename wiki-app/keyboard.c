@@ -258,7 +258,7 @@ int keyboard_key_reset_invert(int bFlag)
 		}
 		else if (bFlag == KEYBOARD_RESET_INVERT_CHECK && keyboard_key_invert_dalay)
 		{
-			if (get_time() - start_time > 1000000 * 6)
+			if (get_time() - start_time > 1000000 * 8)
 				bFlag = KEYBOARD_RESET_INVERT_NOW; // reset invert immediately
 			else
 				rc = 1;

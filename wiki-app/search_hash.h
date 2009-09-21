@@ -22,7 +22,7 @@ void init_search_hash(void);
 long add_search_hash(char *sSearchString, int len, long offset_fnd);
 void save_search_hash(void);
 #else
-int init_search_hash(void);
+void init_search_hash(void);
 int copy_fnd_to_buf(long offset, char *buf, int len);
 int copy_str_to_buf(long offset, char *buf, int len);
 long get_search_hash_offset_fnd(char *sSearchString, int len);

@@ -56,18 +56,10 @@
 #define FONT_COUNT 9
 
 #define FONT_FILE_DEFAULT "text.bmf"
-#define FONT_FILE_BOLD "textb.bmf"
 #define FONT_FILE_ITALIC "texti.bmf"
-#define FONT_FILE_BOLD_ITALIC "textbi.bmf"
 #define FONT_FILE_TITLE "title.bmf"
 #define FONT_FILE_SUBTITLE "subtitle.bmf"
-//#define FONT_FILE_SEARCH_HEADING "heading.bmf"
-//#define FONT_FILE_SEARCH_LIST "list.bmf"
-//#define FONT_FILE_MESSAGE "message.bmf"
 #define FONT_FILE_DEFAULT_ALL "textall.bmf"
-#define FONT_FILE_BOLD_ALL "textallb.bmf"
-#define FONT_FILE_SMALL "small.bmf"
-//#define FONT_FILE_KEY "key.bmf"
 
 
 #ifdef WIKIPCF

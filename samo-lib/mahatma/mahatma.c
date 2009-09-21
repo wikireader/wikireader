@@ -78,7 +78,7 @@ int main(void)
 		msg(MSG_INFO, "unable to mount FAT filesystem!\n");
 
 	wikilib_init();
-	guilib_init();
+	//guilib_init();
 	profile_init();
 
 	// initialisation complete
