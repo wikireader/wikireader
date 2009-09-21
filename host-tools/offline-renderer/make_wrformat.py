@@ -539,11 +539,16 @@ def esc_code10(num_pixels):
 #
 class WrProcess(HTMLParser):
 
+    READ_BLOCK_SIZE = 64 * (1024 * 1024)
+
     def __init__ (self, f):
         HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
-        self.feed(f.read())
+        block = f.read(self.READ_BLOCK_SIZE)
+        while block:
+            self.feed(block)
+            block = f.read(self.READ_BLOCK_SIZE)
 
     def local_init(self):
 
