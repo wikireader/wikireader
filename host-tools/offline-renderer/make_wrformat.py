@@ -972,11 +972,13 @@ def write_article():
     output.truncate(0)
     if compress:
         try:
-            i_out.write(struct.pack('LLL', file_offset, article_index[g_this_article_title][1], (0x80 << 24) | (file_number << 24) | len(body)))
+            index = article_index[g_this_article_title]
+            i_out.write(struct.pack('LLL', file_offset, index[1], (0x80 << 24) | (file_number << 24) | len(body)))
         except KeyError:
-            print g_this_article_title
-            print file_offset 
-            print article_count, article_index
+            print 'Error in: write_article, Title not found'
+            print 'Title:', g_this_article_title
+            print 'Offset:', file_offset 
+            print 'Count:', article_count
 
 # run the program
 if __name__ == "__main__":
