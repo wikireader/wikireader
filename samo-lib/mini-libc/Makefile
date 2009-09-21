@@ -106,7 +106,7 @@ lib/libc.a: $(C_STRING_OPERATIONS) $(C_BSD_OPERATIONS) $(C_STD_LIB_OPERATIONS)
 
 .PHONY: lib
 lib:
-	-mkdir "$@"
+	-mkdir -p "$@"
 
 clean::
 	rm -rf $(TARGETS) *.o *.elf *.d
