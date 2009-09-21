@@ -214,6 +214,8 @@ width_cache = {}
 
 def get_utf8_cwidth(c, face):
     global width_cache, font_id_values
+    global cmr, fh, cmr_size, fh_size
+
     if type(c) != unicode:
 	c = unicode(c, 'utf-8')
 
@@ -955,13 +957,13 @@ def write_article():
 
     for i in g_links:
         (x0, y0, x1, y1, url) = g_links[i]
-        links_stream.write(struct.pack('LLL', (y0 << 8) | x0, (y1 << 8) | x1, link_number(url)))
+        links_stream.write(struct.pack('III', (y0 << 8) | x0, (y1 << 8) | x1, link_number(url)))
 
     links_stream.flush()
     links = links_stream.getvalue()
     links_stream.close()
 
-    header = struct.pack('L2H', 8 + len(links), g_link_cnt, 0)
+    header = struct.pack('I2H', 8 + len(links), g_link_cnt, 0)
     body = output.getvalue()
 
     file_offset = f_out.tell()
@@ -978,11 +980,11 @@ def write_article():
     if compress:
         try:
             index = article_index[g_this_article_title]
-            i_out.write(struct.pack('LLL', file_offset, index[1], (0x80 << 24) | (file_number << 24) | len(body)))
+            i_out.write(struct.pack('III', file_offset, index[1], (0x80 << 24) | (file_number << 24) | len(body)))
         except KeyError:
             print 'Error in: write_article, Title not found'
             print 'Title:', g_this_article_title
-            print 'Offset:', file_offset 
+            print 'Offset:', file_offset
             print 'Count:', article_count
 
 # run the program

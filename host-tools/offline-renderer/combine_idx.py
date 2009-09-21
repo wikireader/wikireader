@@ -58,7 +58,7 @@ def main():
         article_count += len(data[i]) / 12 # sizeof(struct)
         i += 1
 
-    out.write(struct.pack('L', article_count))
+    out.write(struct.pack('I', article_count))
 
     for j in range(i):
         out.write(data[j])

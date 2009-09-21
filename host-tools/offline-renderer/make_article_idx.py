@@ -320,7 +320,7 @@ def output_fnd(filename):
         if key3 not in index_matrix:
             index_matrix[key3] = offset
         article_index[title][1] = offset
-        out_f.write(struct.pack('Lb', article_index[title][0], 0) + bigram_encode(title) + '\0')
+        out_f.write(struct.pack('Ib', article_index[title][0], 0) + bigram_encode(title) + '\0')
 
     out_f.close()
 
@@ -340,7 +340,7 @@ def output_pfx(filename):
                     offset = index_matrix[key]
                 else:
                     offset = 0
-                out_f.write(struct.pack('L', offset))
+                out_f.write(struct.pack('I', offset))
 
     out_f.close()
 
