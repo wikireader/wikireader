@@ -230,8 +230,6 @@ ProcessReturnType process(int block, int status)
 			return rc;
 		}
 	}
-	for (;;) {
-	}
 
 	for (;;) {
 		ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
