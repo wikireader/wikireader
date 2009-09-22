@@ -29,15 +29,11 @@ fh_size  = struct.calcsize(fh)
 cmr_size = struct.calcsize(cmr)
 
 # font face defines
-# ******************************************This HAS TO BE CHANGED **************Update from 'C' code *****************
 ITALIC_FONT_IDX         = 1
 DEFAULT_FONT_IDX        = 2
-BOLD_ITALIC_FONT_IDX    = 3
-BOLD_FONT_IDX           = 4
-TITLE_FONT_IDX          = 5
-SUBTITLE_FONT_IDX       = 6
-DEFAULT_ALL_FONT_IDX    = 7
-BOLD_ALL_FONT_IDX       = 8
+TITLE_FONT_IDX          = 3
+SUBTITLE_FONT_IDX       = 4
+DEFAULT_ALL_FONT_IDX    = 5
 
 # Screen dimensions
 LCD_WIDTH               = 240
@@ -156,23 +152,17 @@ def main():
             usage('unhandled option: ' + opt)
 
     f_fontr  = open(os.path.join(font_path, "text.bmf"), "r")
-    f_fontb  = open(os.path.join(font_path, "textb.bmf"), "r")
     f_fonti  = open(os.path.join(font_path, "texti.bmf"), "r")
-    f_fontbi = open(os.path.join(font_path, "textbi.bmf"), "r")
     f_fontt  = open(os.path.join(font_path, "title.bmf"), "r")
     f_fontst = open(os.path.join(font_path, "subtitle.bmf"), "r")
     f_fontall = open(os.path.join(font_path, "textall.bmf"), "r")
-    f_fontallb = open(os.path.join(font_path, "textallb.bmf"), "r")
 
     font_id_values = {
         ITALIC_FONT_IDX: f_fonti,
         DEFAULT_FONT_IDX: f_fontr,
-        BOLD_ITALIC_FONT_IDX: f_fontbi,
-        BOLD_FONT_IDX: f_fontb,
         TITLE_FONT_IDX: f_fontt,
         SUBTITLE_FONT_IDX: f_fontst,
-        DEFAULT_ALL_FONT_IDX: f_fontall,
-        BOLD_ALL_FONT_IDX: f_fontallb
+        DEFAULT_ALL_FONT_IDX: f_fontall
     }
 
     f = open(art_file, 'rb')
@@ -232,8 +222,6 @@ def get_utf8_cwidth(c, face):
     else:
         width = 0
     if width == 0:
-        if face == BOLD_ITALIC_FONT_IDX or face == BOLD_FONT_IDX:
-            return get_utf8_cwidth(c, BOLD_ALL_FONT_IDX)
         if face != DEFAULT_ALL_FONT_IDX:
             return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
 
@@ -246,12 +234,9 @@ def get_lineheight(face):
     values = {
             ITALIC_FONT_IDX:      P_LSPACE,
             DEFAULT_FONT_IDX:     P_LSPACE,
-            BOLD_ITALIC_FONT_IDX: P_LSPACE,
-            BOLD_FONT_IDX:        P_LSPACE,
             TITLE_FONT_IDX:       H1_LSPACE,
             SUBTITLE_FONT_IDX:    H2_LSPACE,
-            DEFAULT_ALL_FONT_IDX: P_LSPACE,
-            BOLD_ALL_FONT_IDX:    P_LSPACE,
+            DEFAULT_ALL_FONT_IDX: P_LSPACE
         }
 
     return values[face]
@@ -694,7 +679,6 @@ class WrProcess(HTMLParser):
             self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
-                #append_buffer(self.buffer, ("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
             else:
                 if self.level > LIMAX_INDENT_LEVELS:    # we only have 3 types of bullets
@@ -702,7 +686,6 @@ class WrProcess(HTMLParser):
                 else:
                     bullet_num = self.level
 
-                #append_buffer(self.buffer, bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
                 self.wordwrap.append(bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
 
             self.flush_buffer()
