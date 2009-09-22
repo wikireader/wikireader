@@ -31,7 +31,7 @@ title_tag = re.compile(r'</?title>', re.IGNORECASE)
 redirected_to = re.compile(r'<text\s+xml:space="preserve">\s*#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
-non_articles = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
+non_articles = re.compile(r'User:|Wikipedia:|File:|MediaWiki:|Template:|Help:|Category:|Portal:', re.IGNORECASE)
 
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
@@ -301,7 +301,7 @@ def output_fnd(filename):
 
     # create pfx matrix and write encoded titles
     article_list = article_index.keys()
-    article_list.sort()
+    article_list.sort(key = str.lower)
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
     for title in article_list:

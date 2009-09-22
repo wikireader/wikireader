@@ -41,10 +41,12 @@ entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
 language = re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
 
-# Filter out Wikipedia's non article namespaces
-no_parse = re.compile(r'User\:|Wikipedia\:|File\:|MediaWiki\:|Template\:|Help\:|Category\:|Portal\:', re.IGNORECASE)
 
-redirect = re.compile(r'<text\s+xml:space="preserve">\s*#redirect.*</text>', re.IGNORECASE)
+# redirect: <text.....#redirect.....[[title#relative link]].....
+redirected_to = re.compile(r'<text\s+xml:space="preserve">\s*#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
+
+# Filter out Wikipedia's non article namespaces
+non_articles = re.compile(r'User:|Wikipedia:|File:|MediaWiki:|Template:|Help:|Category:|Portal:', re.IGNORECASE)
 
 
 def usage(message):
@@ -154,7 +156,7 @@ def process_file(file_name, seek, count, newf):
     global verbose
     global start_text, title_tag, end_article
     global begin_ignore, end_ignore, inline_comment, line_break
-    global entities, img, language, no_parse
+    global entities, img, language, non_articles, redirected_to
     global total_articles
 
     if verbose:
@@ -176,14 +178,14 @@ def process_file(file_name, seek, count, newf):
             parse = False
             comment = False
             ref = False
-            if no_parse.search(line):
+            if non_articles.search(line):
                 skip = True    # we only need articles
             else:
                 skip = False
-                title = title_tag.sub('', line.strip())
+                title = title_tag.sub('', line).strip()
 
         if "#redirect" in lower_line:
-            match = redirect.search(line)
+            match = redirected_to.search(line)
             if match:
                 skip = True    # we only need articles
                 continue
