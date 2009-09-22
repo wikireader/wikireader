@@ -172,8 +172,10 @@ def process_file(file_name, seek, count, newf):
         if "#redirect" in lower_line:
             match = redirect.search(line)
             if match:
-                pass
-        elif not skip and not parse and "<text xml:space=\"preserve\">" in lower_line:
+                skip = True    # we only need articles
+                continue
+
+        if not skip and not parse and "<text xml:space=\"preserve\">" in lower_line:
             line = start_text.sub('', line)
             parse = True
 
@@ -223,10 +225,10 @@ def process_file(file_name, seek, count, newf):
             if line != None:
                 if begin_ignore.search(line):
                     ignore = True
-    
+
                 elif end_ignore.search(line):
                     ignore = False
-    
+
                 elif not ignore:
                     line = delete_tags.sub('', line)
                     line = line_break.sub('\n', line)
