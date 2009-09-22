@@ -224,12 +224,19 @@ combine: validate-destdir
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
+stamp-r-index:
+	rm -f "$@"
+	cd host-tools/offline-renderer && $(MAKE) index \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
+	touch "$@"
+
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
 define MAKE_BLOCK1
 
 .PHONY: parse${1}
-parse${1}: stamp-r-parse${1}
+parse${1}: stamp-r-index stamp-r-parse${1}
 
 .PHONY: render${1} fonts parse${1}
 render${1}: stamp-r-render${1}
@@ -239,6 +246,7 @@ stamp-r-parse${1}:
 	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 	touch "$$@"
 
+.NOTPARALLEL: stamp-r-render${1}
 stamp-r-render${1}:
 	rm -f "$$@"
 	$${MAKE} RENDER_BLOCK=${1} render
