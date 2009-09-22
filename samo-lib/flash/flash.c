@@ -48,9 +48,7 @@ typedef enum {
 } SPI_type;
 
 
-static const char *filename = "flash.rom";
-
-static bool process(void);
+static bool process(const char *filename);
 static void SendCommand(uint8_t command);
 static void WaitReady(void);
 static void WriteEnable(void);
@@ -64,33 +62,48 @@ static void SPI_put(uint8_t c);
 static uint8_t SPI_get(void);
 
 
-int main(void)
+int flash(int arg)
 {
 	// set the initial stack and data pointers
 	asm volatile (
 		"\txld.w\t%r15, __MAIN_STACK\n"
 		"\tld.w\t%sp, %r15\n"
 		"\txld.w\t%r15, __dp\n"
-		"\tld.w\t%r4, 0\n"
-		"\tld.w\t%psr, %r4\n"
+		"\tld.w\t%r5, 0\n"
+		"\tld.w\t%psr, %r5\n"
 		);
-	print("Flash Program\n");
+	print("Flash Program: ");
+	const char *filename = "flash.rom";
+
+	if (0 == arg) {
+		print("Internal");
+		// set P05 low to disable external boot FLASH ROM
+		REG_P5_P5D &= ~0x20;
+		REG_P5_IOC5 |= 0x20;
+	} else {
+		print("Test Jig");
+		filename = "test-jig.rom";
+		// set P05 high to enable external boot FLASH ROM
+		REG_P5_P5D |= 0x20;
+		REG_P5_IOC5 |= 0x20;
+	}
+	print(" FLASH\n");
 
 	int i = 0;
 	for (i = 0; i < ProgramRetries; ++i) {
-		if (process()) {
+		if (process(filename)) {
 			print("Finished sucessfully\n");
 			break;
 		} else {
 			print("Error occurred\n");
 		}
 	}
-	for (;;) {
 
+	for (;;) {
 	}
 }
 
-static bool process(void)
+static bool process(const char *filename)
 {
 	bool result = true;
 	uint8_t b = 0;
