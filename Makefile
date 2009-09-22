@@ -231,6 +231,10 @@ stamp-r-index:
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 	touch "$@"
 
+.PHONY: clean-index
+clean-index:
+	rm -f stamp-r-index
+
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
 define MAKE_BLOCK1
