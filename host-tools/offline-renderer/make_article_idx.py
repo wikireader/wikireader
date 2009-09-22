@@ -301,7 +301,7 @@ def output_fnd(filename):
 
     # create pfx matrix and write encoded titles
     article_list = article_index.keys()
-    article_list.sort(key = str.lower)
+    article_list.sort(key = unicode.lower)
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
     for title in article_list:
