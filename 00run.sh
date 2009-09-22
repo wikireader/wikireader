@@ -11,4 +11,4 @@ ERROR()
 [ -z "$1" ] && ERROR missing argument
 
 set -x
-time make "farm$1$2" DESTDIR=image WORKDIR=work XML_FILES="${xml}"
+time make -j3 "farm$1$2" DESTDIR=image WORKDIR=work XML_FILES="${xml}"
