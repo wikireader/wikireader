@@ -92,26 +92,32 @@ void init_lcd_draw_buf()
 		for (i=0; i < FONT_COUNT; i++)
 		{
 			pcfFonts[i].file = FontFile(i);
-                        fd = load_bmf(&pcfFonts[i]);
-			if(fd >= 0)
-		        {
-				if (i == ITALIC_FONT_IDX - 1)
-			   	{
-					pcfFonts[i].bPartialFont = 1;
-					pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
-			   	}
-			   	else if (i == DEFAULT_FONT_IDX - 1)
-			   	{
-					pcfFonts[i].bPartialFont = 1;
-					pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
+			if (!pcfFonts[i].file[0])
+			{
+				pcfFonts[i].fd = -1;
+			}
+			else
+			{
+	                        fd = load_bmf(&pcfFonts[i]);
+				if(fd >= 0)
+			        {
+					if (i == ITALIC_FONT_IDX - 1)
+				   	{
+						pcfFonts[i].bPartialFont = 1;
+						pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
+				   	}
+				   	else if (i == DEFAULT_FONT_IDX - 1)
+				   	{
+						pcfFonts[i].bPartialFont = 1;
+						pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
+					}
+					else
+					{
+	                       			pcfFonts[i].bPartialFont = 0;
+					}
+					pcfFonts[i].fd = fd;
 				}
-				else
-				{
-                       			pcfFonts[i].bPartialFont = 0;
-				}
-				pcfFonts[i].fd = fd;
-			
-		        }
+			}
 
 		}
 		lcd_draw_buf_inited = 1;
@@ -139,6 +145,9 @@ char* FontFile(int idx) {
 		case ITALIC_FONT_IDX - 1:
 			return FONT_FILE_ITALIC;
 			break;
+		case DEFAULT_FONT_IDX - 1:
+			return FONT_FILE_DEFAULT;
+			break;
 		case DEFAULT_ALL_FONT_IDX - 1:
 			return FONT_FILE_DEFAULT_ALL;
 			break;
@@ -149,7 +158,7 @@ char* FontFile(int idx) {
 			return FONT_FILE_SUBTITLE;
 			break;
 		default:
-			return FONT_FILE_DEFAULT;
+			return "";
 			break;
 	}
 }

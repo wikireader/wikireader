@@ -447,11 +447,11 @@ out:
 long get_prefix_index_table(int idx_prefix_index_table)
 {
 	int idxBlock = idx_prefix_index_table / (SEARCH_CHR_COUNT * SEARCH_CHR_COUNT);
-
+	
 	if (!search_info->b_prefix_index_block_loaded[idxBlock])
 	{
 		_wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
-		_wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]),
+		_wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]), 
 			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
 		search_info->b_prefix_index_block_loaded[idxBlock]++;
 	}

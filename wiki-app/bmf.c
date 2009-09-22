@@ -68,7 +68,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 
             memset(buffer,0,1024);
 
-            if(font==NULL)
+            if(font==NULL || font->fd < 0)
                 return -1;
 
             font_header =  sizeof(font_bmf_header);

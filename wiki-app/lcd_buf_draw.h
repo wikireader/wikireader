@@ -116,12 +116,12 @@ Assumptions:
 // For example, return bitmaps in DEFAULT_FONT_IDX if not found in ITALIC_FONT_IDX.
 #define ITALIC_FONT_IDX			1 
 #define DEFAULT_FONT_IDX		2 
-#define TITLE_FONT_IDX			3
-#define SUBTITLE_FONT_IDX		4
+#define BOLD_ITALIC_FONT_IDX		3 
+#define BOLD_FONT_IDX			4 
+#define TITLE_FONT_IDX			5 
+#define SUBTITLE_FONT_IDX		6
 // The above are the primary fonts for the article body.  The index of any one of them needs to be under 7. 
-#define DEFAULT_ALL_FONT_IDX		5
-#define BOLD_FONT_IDX			DEFAULT_FONT_IDX
-#define BOLD_ITALIC_FONT_IDX		ITALIC_FONT_IDX
+#define DEFAULT_ALL_FONT_IDX		7  
 #define SEARCH_HEADING_FONT_IDX		TITLE_FONT_IDX 
 #define SEARCH_LIST_FONT_IDX		DEFAULT_FONT_IDX
 #define MESSAGE_FONT_IDX		BOLD_FONT_IDX

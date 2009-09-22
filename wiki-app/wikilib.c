@@ -847,7 +847,7 @@ int wikilib_run(void)
 	                     if (!clear_search_string())
 	                     {
 	                     	search_string_changed_remove = true;
-				search_reload_ex(SEARCH_RELOAD_NORMAL);
+	                     	search_reload_ex(SEARCH_RELOAD_NORMAL);
 	                     }
 	                     press_delete_button = false;
 	                 }

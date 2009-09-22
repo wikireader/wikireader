@@ -150,7 +150,7 @@ void save_search_hash(void)
 void init_search_hash(void)
 {
 	int i;
-
+	
 	fdHsh = _wl_open("pedia.hsh", WL_O_RDONLY);
 	_wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
 	search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
@@ -179,11 +179,11 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	if (!bHashBlockLoaded[idxBlock])
 	{
 		_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-		_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+		_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
 			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 		bHashBlockLoaded[idxBlock]++;
 	}
-
+	
 	while (!bFound && nHashKey >= 0 && search_hash_table[nHashKey].offset_fnd)
 	{
 		if (search_hash_table[nHashKey].offset_fnd > 0)
@@ -207,7 +207,7 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 				if (!bHashBlockLoaded[idxBlock])
 				{
 					_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-					_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+					_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
 						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 					bHashBlockLoaded[idxBlock]++;
 				}
