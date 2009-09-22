@@ -12,6 +12,8 @@ import os.path
 import cPickle
 
 verbose = False
+total_articles = 0
+
 
 PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
@@ -56,18 +58,22 @@ def usage(message):
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
     print '       --article-offsets=file  Article file offsets dictionary input [offsets.pickle]'
     print '       --just-cat              Replace php parset be "cat" for debugging'
+    print '       --no-output             Do not run any parsing'
     exit(1)
 
 def main():
     global verbose
     global PARSER_COMMAND
+    global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:co:j', ['help', 'verbose', 'xhtml=',
-                                                              'start=', 'count=',
-                                                              'article-offsets=',
-                                                              'just-cat',
-                                                              ])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:jn',
+                                   ['help', 'verbose', 'xhtml=',
+                                    'start=', 'count=',
+                                    'article-offsets=',
+                                    'just-cat',
+                                    'no-output',
+                                    ])
     except getopt.GetoptError, err:
         usage(err)
 
@@ -77,6 +83,7 @@ def main():
     start_article = 1
     article_count = 'all'
     processing_articles = True
+    do_output = True
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -89,6 +96,8 @@ def main():
             off_name = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
+        elif opt in ('-n', '--no-output'):
+            do_output = False
         elif opt in ('-s', '--start'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -112,16 +121,18 @@ def main():
             usage('unhandled option: ' + opt)
 
 
-    f = open(off_name, 'rb')
-    article_file_offsets = cPickle.load(f)
-    f.close()
-
     parsing_articles = start_article == 1 and article_count == 'all'
 
     if not parsing_articles:
+        f = open(off_name, 'rb')
+        article_file_offsets = cPickle.load(f)
+        f.close()
         (seek, filename) = article_file_offsets[start_article]
 
-    newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
+    if do_output:
+        newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
+    else:
+        newf = None
 
     for f in args:
         if not parsing_articles:
@@ -134,7 +145,9 @@ def main():
         if article_count != 'all' and article_count == 0:
             break
 
-    newf.close()
+    if newf:
+        newf.close()
+    print 'Total: %d' % total_articles
 
 
 def process_file(file_name, seek, count, newf):
@@ -142,6 +155,7 @@ def process_file(file_name, seek, count, newf):
     global start_text, title_tag, end_article
     global begin_ignore, end_ignore, inline_comment, line_break
     global entities, img, language, no_parse
+    global total_articles
 
     if verbose:
         print 'Reading:', file_name
@@ -150,14 +164,13 @@ def process_file(file_name, seek, count, newf):
     if seek > 0:
         f.seek(seek)
 
-    line    = f.readline()
     parse   = False
     ignore  = False
     skip    = False
     comment = False
     ref = False
 
-    while line:
+    for line in f:
         lower_line = line.lower()
         if "<title>" in lower_line:
             parse = False
@@ -175,25 +188,34 @@ def process_file(file_name, seek, count, newf):
                 skip = True    # we only need articles
                 continue
 
-        if not skip and not parse and "<text xml:space=\"preserve\">" in lower_line:
+        if skip:
+            continue
+
+        if not parse and "<text xml:space=\"preserve\">" in lower_line:
             line = start_text.sub('', line)
             parse = True
 
             if parse:
-                newf.write(title);
+                total_articles += 1
+                if newf:
+                    newf.write(title);
+                    newf.write('\n__NOTOC__\n')
+                elif total_articles % 1000 == 0:
+                    print 'Count: %d' % total_articles
                 if verbose:
                     print "[PA] " + title
-                newf.write('\n__NOTOC__\n')
                 ignore = False
                 had_blank = False
 
         if parse and end_article.search(line):
-            newf.write('***EOF***\n')
+            if newf:
+                newf.write('***EOF***\n')
             if count != 'all':
                 count -= 1
                 if count <= 0:
                     break
             parse = False
+            continue
 
         if parse:
 
@@ -204,48 +226,45 @@ def process_file(file_name, seek, count, newf):
                     line = comment_end.sub('', line)
                     comment = False
                 else:
-                    line = None
+                    continue
             else:
                 if comment_start.search(line):
                     line = comment_start.sub('', line)
                     comment = True
 
-            if line != None:
-                if ref:
-                    if ref_end.search(line):
-                        line = ref_end.sub('', line)
-                        ref = False
-                    else:
-                        line = None
+            if ref:
+                if ref_end.search(line):
+                    line = ref_end.sub('', line)
+                    ref = False
                 else:
-                    if ref_start.search(line):
-                        line = ref_start.sub('', line)
-                        ref = True
+                    continue
+            else:
+                if ref_start.search(line):
+                    line = ref_start.sub('', line)
+                    ref = True
 
-            if line != None:
-                if begin_ignore.search(line):
-                    ignore = True
+            if begin_ignore.search(line):
+                ignore = True
 
-                elif end_ignore.search(line):
-                    ignore = False
+            elif end_ignore.search(line):
+                ignore = False
 
-                elif not ignore:
-                    line = delete_tags.sub('', line)
-                    line = line_break.sub('\n', line)
-                    line = entities.sub(r'&\1;', line)
-                    line = language.sub('', line)
-                    line2 = img.sub('', line)
-                    if line2 == line:
-                        if line.strip() == '':
-                            if not had_blank:
+            elif not ignore:
+                line = delete_tags.sub('', line)
+                line = line_break.sub('\n', line)
+                line = entities.sub(r'&\1;', line)
+                line = language.sub('', line)
+                line2 = img.sub('', line)
+                if line2 == line:
+                    if line.strip() == '':
+                        if not had_blank:
+                            if newf:
                                 newf.write('\n');
-                                had_blank = True
-                        else:
-                            had_blank = False
+                            had_blank = True
+                    else:
+                        had_blank = False
+                        if newf:
                             newf.write(line + '\n');
-
-        line = f.readline()
-
 
     f.close()
     return count
