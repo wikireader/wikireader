@@ -154,6 +154,8 @@ void keyboard_paint()
            image_data = &image_data_char;
         else if(kb_mode == KEYBOARD_NUM)
            image_data = &image_data_num;
+        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
+           image_data = &image_data_clear_history;
 
 	guilib_fb_lock();
 	guilib_blit_image(image_data, 0, guilib_framebuffer_height() - image_data->height);

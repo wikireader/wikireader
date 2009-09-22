@@ -16,18 +16,6 @@
 
 #include "bmf.h"
 
-#ifdef WIKIPCF
-#define openfile open
-#define seekfile lseek
-#define readfile read
-#define closefile close
-#else
-#define openfile wl_open
-#define seekfile wl_seek
-#define readfile wl_read
-#define closefile wl_close
-#endif
-
 int load_bmf(pcffont_bmf_t *font)
 {
     int fd,file_size,read_size;
@@ -86,8 +74,8 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 #ifdef WIKIPCF
                 lseek(font->fd,offset,SEEK_SET);
 #else
-                closefile(font->fd);
-                font->fd = openfile(font->file,0);
+                //closefile(font->fd);
+                //font->fd = openfile(font->file,0);
                 //wl_seek(font->fd,0);
                 wl_seek(font->fd,offset);
 

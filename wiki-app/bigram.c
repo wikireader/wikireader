@@ -3,6 +3,9 @@
 #include "msg.h"
 #include "bigram.h"
 #include "lcd_buf_draw.h"
+#ifndef WIKIPCF
+#include "file-io.h"
+#endif
 
 char aBigram[128][2];
 int aCharIdx[128];
@@ -13,12 +16,11 @@ void init_bigram(FILE *fd)
 	fread(aBigram, 1, sizeof(aBigram), fd);
 }
 #else
-extern int _wl_read(int, void*, unsigned int);
 
 void init_bigram(int fd)
 {
 	init_char_idx();
-	_wl_read(fd, aBigram, sizeof(aBigram));
+	wl_read(fd, aBigram, sizeof(aBigram));
 }
 #endif
 

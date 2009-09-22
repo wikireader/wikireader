@@ -53,7 +53,7 @@
 #ifndef _BMF_H
 #define _BMF_H
 
-#define FONT_COUNT 7
+#define FONT_COUNT 5
 
 #define FONT_FILE_DEFAULT "text.bmf"
 #define FONT_FILE_ITALIC "texti.bmf"
@@ -65,7 +65,7 @@
 #ifdef WIKIPCF
 #define openfile open
 #define seekfile lseek
-#define read_file read
+#define readfile read
 #define closefile close
 #else
 #define openfile wl_open

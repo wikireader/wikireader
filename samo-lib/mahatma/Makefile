@@ -46,7 +46,7 @@ vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(BZLIB_SRC):$(MINILZO_SRC):$(LZMA_SRC
 
 GUILIB_COBJS = guilib.o bmf.o lcd_buf_draw.o bigram.o glyph.o fontfile.o
 
-WIKIAPP_COBJS = file-io-general.o file-io-libfat.o
+WIKIAPP_COBJS = file-io-libfat.o
 WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o
 WIKIAPP_COBJS += decompress.o keyboard.o
 

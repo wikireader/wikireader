@@ -13,7 +13,7 @@ static FIL fil_list[MAX_FILES];
 static int fil_used[MAX_FILES] = { 0 };
 static unsigned int fil_offset[MAX_FILES] = { 0 };
 
-int _wl_open(const char *filename, int flags)
+int wl_open(const char *filename, int flags)
 {
 	FIL *fil;
 	int i, ret, ff_flags = 0;
@@ -66,7 +66,7 @@ void wl_close(int fd)
 	fil_used[fd] = 0;
 }
 
-int _wl_read(int fd, void *buf, unsigned int count)
+int wl_read(int fd, void *buf, unsigned int count)
 {
 	int ret, rcount = -1;
 
@@ -107,7 +107,7 @@ int wl_write(int fd, void *buf, unsigned int count)
 }
 #endif /* _FS_READONLY */
 
-int _wl_seek(int fd, unsigned int pos)
+int wl_seek(int fd, unsigned int pos)
 {
 	int ret;
 
@@ -131,7 +131,7 @@ int wl_fsize(int fd, unsigned int *size)
 	return 0;
 }
 
-unsigned int _wl_tell(int fd)
+unsigned int wl_tell(int fd)
 {
 	return fil_offset[fd];
 }

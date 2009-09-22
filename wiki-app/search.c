@@ -30,11 +30,6 @@
 #include <tick.h>
 #include <input.h>
 
-extern int _wl_read(int fd, void *buf, unsigned int count);
-extern int _wl_open(const char *filename, int flags);
-extern int _wl_seek(int fd, unsigned int pos);
-extern int _wl_tell(int fd);
-
 #define DBG_SEARCH 0
 
 unsigned int get_time_search(void);
@@ -116,8 +111,8 @@ void get_article_title_from_idx(long idx, char *title)
 	TITLE_SEARCH title_search;
 	
 	title[0] = '\0';
-	_wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
-	_wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
+	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
+	wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
 	{
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
@@ -132,14 +127,14 @@ int load_prefix_index(void)
 	
 	if (!prefix_index_loaded)
 	{
-		search_info->fd_pfx = _wl_open("pedia.pfx", WL_O_RDONLY);
-		search_info->fd_idx = _wl_open("pedia.idx", WL_O_RDONLY);
+		search_info->fd_pfx = wl_open("pedia.pfx", WL_O_RDONLY);
+		search_info->fd_idx = wl_open("pedia.idx", WL_O_RDONLY);
 		for (i=0; i < MAX_DAT_FILES; i++)
 			search_info->fd_dat[i] = -1;
 		search_info->offset_current = -1;
 		if (search_info->fd_pfx >= 0 && search_info->fd_idx >= 0)
 		{
-			_wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
+			wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
 			memset((char *)search_info->b_prefix_index_block_loaded, 0, sizeof(search_info->b_prefix_index_block_loaded));
 			prefix_index_loaded = 1;
 		}
@@ -300,7 +295,7 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		result_list->cur_selected = 0;
 		offsetNextTitleSearch = 0;
 	}
-	if (result_list->result_populated)
+	if (result_list->result_populated || offset_fnd_start < 0)
 		return 0;
 	
 	if (search_info->offset_current != offset_fnd_start)
@@ -450,8 +445,8 @@ long get_prefix_index_table(int idx_prefix_index_table)
 	
 	if (!search_info->b_prefix_index_block_loaded[idxBlock])
 	{
-		_wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
-		_wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]), 
+		wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
+		wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]), 
 			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
 		search_info->b_prefix_index_block_loaded[idxBlock]++;
 	}
@@ -1292,8 +1287,8 @@ int retrieve_article(long idx_article)
 		compressed_buf = (char *)malloc_simple(MAX_COMPRESSED_ARTICLE, MEM_TAG_INDEX_M1);
 //start:
 	if (compressed_buf && 0 < idx_article && idx_article <= search_info->max_article_idx) {
-		_wl_seek(search_info->fd_idx, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
-		_wl_read(search_info->fd_idx, &article_ptr, sizeof(article_ptr));
+		wl_seek(search_info->fd_idx, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
+		wl_read(search_info->fd_idx, &article_ptr, sizeof(article_ptr));
 		dat_file_id = ((article_ptr.file_id_compressed_len  & 0x3FFFFFFF)>> 24);
 		dat_article_len = article_ptr.file_id_compressed_len & 0x00FFFFFF;
 		if (dat_article_len > 0)
@@ -1301,12 +1296,12 @@ int retrieve_article(long idx_article)
 			if (search_info->fd_dat[dat_file_id] < 0)
 			{
 				sprintf(file_name, "pedia%d.dat", dat_file_id);
-				search_info->fd_dat[dat_file_id] = _wl_open(file_name, WL_O_RDONLY);
+				search_info->fd_dat[dat_file_id] = wl_open(file_name, WL_O_RDONLY);
 			}
 			if (search_info->fd_dat[dat_file_id] >= 0)
 			{
-				_wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat);
-				_wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
+				wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat);
+				wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
 				propsSize = (unsigned int)compressed_buf[0];
 				memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
 				dat_article_len -= LZMA_PROPS_SIZE + 1;
@@ -1322,7 +1317,7 @@ int retrieve_article(long idx_article)
 //                else
 //                {
 //			wl_close(search_info->fd_idx);
-//			search_info->fd_idx = _wl_open("pedia.idx", WL_O_RDONLY);
+//			search_info->fd_idx = wl_open("pedia.idx", WL_O_RDONLY);
 //                        if(open_number<2)
 //                        {
 //                           open_number++;
@@ -1373,8 +1368,8 @@ long find_closest_idx(long idx, char *title)
 	title[0] = '\0';
 	if (idx > search_info->max_article_idx)
 		idx -= search_info->max_article_idx;
-	_wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
-	_wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
+	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
+	wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (!article_ptr.file_id_compressed_len || !article_ptr.offset_fnd)
 	{
 		if (count < 10)

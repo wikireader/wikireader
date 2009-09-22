@@ -15,11 +15,6 @@
 #include "search_hash.h"
 #include "lcd_buf_draw.h"
 
-extern int _wl_read(int fd, void *buf, unsigned int count);
-extern int _wl_open(const char *filename, int flags);
-extern int _wl_seek(int fd, unsigned int pos);
-extern int _wl_tell(int fd);
-
 // pedia.hsh format:
 //	The first 4 bytes contain the hash entry count
 //	Each hash entry is defined as struct SEARCH_HASH_TABLE
@@ -151,12 +146,12 @@ void init_search_hash(void)
 {
 	int i;
 	
-	fdHsh = _wl_open("pedia.hsh", WL_O_RDONLY);
-	_wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
+	fdHsh = wl_open("pedia.hsh", WL_O_RDONLY);
+	wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
 	search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
 	bHashBlockLoaded = (int *)malloc_simple(sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
 	memset((char *)bHashBlockLoaded, 0, sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK));
-	fdFnd = _wl_open("pedia.fnd", WL_O_RDONLY);
+	fdFnd = wl_open("pedia.fnd", WL_O_RDONLY);
 	init_bigram(fdFnd);
 	fnd_bufs = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
 	for (i = 0; i < FND_BUF_COUNT; i++)
@@ -178,8 +173,8 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
 	if (!bHashBlockLoaded[idxBlock])
 	{
-		_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-		_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
+		wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
+		wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
 			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 		bHashBlockLoaded[idxBlock]++;
 	}
@@ -206,8 +201,8 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 				idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
 				if (!bHashBlockLoaded[idxBlock])
 				{
-					_wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-					_wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
+					wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
+					wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
 						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 					bHashBlockLoaded[idxBlock]++;
 				}
@@ -258,11 +253,11 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		else // the block of the offset to be read into the null entry
 		{
 			blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
-			_wl_seek(fdFnd, blocked_offset);
-			fnd_bufs[i].len = _wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
+			wl_seek(fdFnd, blocked_offset);
+			fnd_bufs[i].len = wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
 			if (fnd_bufs[i].len < FND_BUF_BLOCK_SIZE)
 			{
-				lenFnd = _wl_tell(fdFnd);
+				lenFnd = wl_tell(fdFnd);
 				if (fnd_bufs[i].len <= 0)
 				{
 					fnd_bufs[i].offset = 0;
@@ -280,11 +275,11 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	{
 		i = iLeastUsed;
 		blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
-		_wl_seek(fdFnd, blocked_offset);
-		fnd_bufs[i].len = _wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
+		wl_seek(fdFnd, blocked_offset);
+		fnd_bufs[i].len = wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
 		if (fnd_bufs[i].len < FND_BUF_BLOCK_SIZE)
 		{
-			lenFnd = _wl_tell(fdFnd);
+			lenFnd = wl_tell(fdFnd);
 			if (fnd_bufs[i].len <= 0)
 			{
 				fnd_bufs[i].offset = 0;

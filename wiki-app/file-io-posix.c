@@ -8,7 +8,7 @@
 #include <msg.h>
 #include <wl-time.h>
 
-int _wl_open(const char *filename, int flags)
+int wl_open(const char *filename, int flags)
 {
 	int f = 0;
 
@@ -35,7 +35,7 @@ void wl_close(int fd)
 	close(fd);
 }
 
-int _wl_read(int fd, void *buf, unsigned int count)
+int wl_read(int fd, void *buf, unsigned int count)
 {
 	return read(fd, buf, count);
 }
@@ -45,7 +45,7 @@ int wl_write(int fd, void *buf, unsigned int count)
 	return write(fd, buf, count);
 }
 
-int _wl_seek(int fd, unsigned int pos)
+int wl_seek(int fd, unsigned int pos)
 {
 	return lseek(fd, pos, SEEK_SET);
 }
@@ -63,7 +63,7 @@ int wl_fsize(int fd, unsigned int *size)
 	return 0;
 }
 
-unsigned int _wl_tell(int fd)
+unsigned int wl_tell(int fd)
 {
 	return lseek(fd, 0, SEEK_CUR);
 }

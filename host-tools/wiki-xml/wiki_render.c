@@ -1784,13 +1784,13 @@ void render_article_node(int idxNode)
 			break;
 		case TAG_PAIR_BIG_BIG:
 		case TAG_PAIR_BIG:
-			render_node_with_font(idxNode, BOLD_FONT_IDX);
+			render_node_with_font(idxNode, DEFAULT_FONT_IDX);
 			break;
 		case TAG_PAIR_BI:
-			render_node_with_font(idxNode, BOLD_ITALIC_FONT_IDX);
+			render_node_with_font(idxNode, ITALIC_FONT_IDX);
 			break;
 		case TAG_PAIR_B:
-			render_node_with_font(idxNode, BOLD_FONT_IDX);
+			render_node_with_font(idxNode, DEFAULT_FONT_IDX);
 			break;
 		case TAG_PAIR_I:
 			render_node_with_font(idxNode, ITALIC_FONT_IDX);
@@ -4291,7 +4291,7 @@ void generate_pedia_hsh(void)
 						sTitleSearch[1] = c2;
 						sTitleSearch[2] = c3;
 						sTitleSearch[3] = '\0';
-						if (!offsetBufFnd)
+						//if (!offsetBufFnd)
 							offsetBufFnd = firstThreeCharIndexing[idxFirstThreeCharIndexing];
 						offsetBufFnd = build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
 					}
