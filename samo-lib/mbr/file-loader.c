@@ -22,6 +22,8 @@
 #define APPLICATION_TITLE3 "Boot Calculator"
 #define APPLICATION_TITLE4 "Boot Forth (alt)"
 #define APPLICATION_TITLE5 "Boot Test Program"
+#define APPLICATION_TITLE6 "FLASH MBR"
+#define APPLICATION_TITLE7 "FLASH Test Jig"
 
 #include "application.h"
 #include "eeprom.h"
@@ -38,6 +40,8 @@ static const struct {
 	{"calc.elf",   0},  // status = 2
 	{"forth.elf",  0},  // status = 3
 	{"forth.elf",  1},  // only from boot menu
+	{"flash.elf",  0},  // only from boot menu
+	{"flash.elf",  1},  // only from boot menu
 };
 
 // this must be the first executable code as the loader executes from the first program address
