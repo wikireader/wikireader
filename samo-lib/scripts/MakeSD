@@ -47,7 +47,7 @@ do
 
     flash\=*|--flash\=*)
       image=${1#*=}
-      ${COPY} --sdcard="${sdcard}" "${FlashPrefix}/flash.elf:kernel.elf" "${image}":flash.rom
+      ${COPY} --sdcard="${sdcard}" "${FlashPrefix}/flash.elf" "${image}":flash.rom
       ;;
 
     *)
