@@ -4291,7 +4291,7 @@ void generate_pedia_hsh(void)
 						sTitleSearch[1] = c2;
 						sTitleSearch[2] = c3;
 						sTitleSearch[3] = '\0';
-						//if (!offsetBufFnd)
+						if (!offsetBufFnd)
 							offsetBufFnd = firstThreeCharIndexing[idxFirstThreeCharIndexing];
 						offsetBufFnd = build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
 					}
