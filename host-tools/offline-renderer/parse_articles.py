@@ -48,7 +48,6 @@ redirected_to = re.compile(r'<text\s+xml:space="preserve">\s*#redirect[^\[]*\[\[
 # Filter out Wikipedia's non article namespaces
 non_articles = re.compile(r'User:|Wikipedia:|File:|MediaWiki:|Template:|Help:|Category:|Portal:', re.IGNORECASE)
 
-
 def usage(message):
     if None != message:
         print 'error:', message
@@ -266,6 +265,7 @@ def process_file(file_name, seek, count, newf):
                     else:
                         had_blank = False
                         if newf:
+                            line = line.replace('%edit%', 'edit')
                             newf.write(line + '\n');
 
     f.close()
