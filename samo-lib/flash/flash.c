@@ -23,6 +23,20 @@
 #include <misc.h>
 #include <regs.h>
 #include <samo.h>
+#include <lcd.h>
+
+struct guilib_image
+{
+	uint32_t width;
+	uint32_t height;
+	uint8_t data[];
+};
+typedef struct guilib_image ImageType;
+
+#include "program.h"
+#include "ok.h"
+#include "fail.h"
+
 
 
 // size of the flash memory
@@ -61,6 +75,8 @@ static void ChipErase(void);
 static void SPI_put(uint8_t c);
 static uint8_t SPI_get(void);
 
+static void fill(uint8_t value);
+static void display_image(const ImageType *image, uint8_t background, uint8_t toggle);
 
 int flash(int arg)
 {
@@ -72,6 +88,7 @@ int flash(int arg)
 		"\tld.w\t%r5, 0\n"
 		"\tld.w\t%psr, %r5\n"
 		);
+
 	print("Flash Program: ");
 	const char *filename = "flash.rom";
 
@@ -87,15 +104,19 @@ int flash(int arg)
 		REG_P5_P5D |= 0x20;
 		REG_P5_IOC5 |= 0x20;
 	}
+
 	print(" FLASH\n");
 
 	int i = 0;
 	for (i = 0; i < ProgramRetries; ++i) {
+		display_image(&program_image, 0x00, 0xff);
 		if (process(filename)) {
 			print("Finished sucessfully\n");
+			display_image(&ok_image, 0x00, 0xff);
 			break;
 		} else {
 			print("Error occurred\n");
+			display_image(&fail_image, 0x00, 0xff);
 		}
 	}
 
@@ -338,4 +359,38 @@ static uint8_t SPI_get(void)
 	while (0 == (REG_SPI_STAT & RDFF)) {
 	}
 	return REG_SPI_RXD;
+}
+
+
+static void fill(uint8_t value)
+{
+	int x = 0;
+	int y = 0;
+	uint8_t *fb = (uint8_t*)LCD_VRAM;
+
+	for (y = 0; y < LCD_HEIGHT_LINES; ++y) {
+		for (x = 0; x < LCD_VRAM_WIDTH_BYTES; ++x) {
+			*fb++ = value;
+		}
+	}
+}
+
+
+static void display_image(const ImageType *image, uint8_t background, uint8_t toggle)
+{
+	int xOffset = (LCD_WIDTH_PIXELS - image->width) / (2 * 8);
+	uint8_t *fb = (uint8_t*)LCD_VRAM;
+	unsigned int y = 0;
+	unsigned int x = 0;
+	unsigned int width = (image->width + 7) / 8;
+	const uint8_t *src = image->data;
+
+	fill(background);
+	fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
+	for (y = 0; y < image->height; ++y) {
+		for (x = 0; x < width; ++x) {
+			fb[x + xOffset] = toggle ^ *src++;
+		}
+		fb += LCD_VRAM_WIDTH_BYTES;
+	}
 }

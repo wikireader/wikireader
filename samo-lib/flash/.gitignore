@@ -5,3 +5,6 @@
 *.asm33
 build
 lib
+ok.h
+fail.h
+program.h

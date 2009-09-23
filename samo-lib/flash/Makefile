@@ -44,7 +44,7 @@ OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(MINILZO_COBJS) $(PERF_COBJ)
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
-TARGETS=flash.elf
+TARGETS = ok.h fail.h program.h flash.elf
 
 .PHONY:	all
 all: $(TARGETS)
@@ -54,6 +54,15 @@ lib/libflash.a: lib build ${BUILD_OBJECTS}
 
 flash.elf: build build/flash.o lib/libflash.a flash.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/flash.o lib/libflash.a ${LIBS} -T ${@:.elf=.lds} -Map ${@:.elf=.map}
+
+
+ok.h: ok.png
+fail.h: fail.png
+program.h: program.png
+
+%.h: %.png
+	$(HOST_TOOLS)/imagetool/imagetool.py "$<" "$@" "${@:.h=_image}"
+
 
 build:
 	${MKDIR} "$@"
