@@ -250,7 +250,7 @@ stamp-r-parse${1}:
 	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 	touch "$$@"
 
-.NOTPARALLEL: stamp-r-render${1}
+#.NOTPARALLEL: stamp-r-render${1}
 stamp-r-render${1}:
 	rm -f "$$@"
 	$${MAKE} RENDER_BLOCK=${1} render
