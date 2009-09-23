@@ -178,7 +178,9 @@ def process_file(filename):
     current_offset = 0
     article_file_offsets[idx] = (0, filename) # start of file
 
-    for line in f:
+    line = f.readline()
+
+    while line:
         lower_line = line.lower()
 
         if "<title>" in lower_line:
@@ -216,6 +218,8 @@ def process_file(filename):
 
                 if not verbose and idx % 10000 == 0:
                     print idx
+
+        line = f.readline()
 
     f.close()
 
