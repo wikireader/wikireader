@@ -4212,7 +4212,7 @@ long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long l
 					add_search_hash(sTitleSearch, strlen(sTitleSearch), offsetBufFnd);
 					lenHashSequentialSearch = 0;
 					memset(countHashSequentialSearchForNextChar, 0, sizeof(countHashSequentialSearchForNextChar));
-					offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
+					//offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 					if (offsetBufFnd < lenBufFnd)
 					{
 						offsetBufFnd = build_hash_tree(sTitleSearch, offsetBufFnd, bufFnd, lenBufFnd);
