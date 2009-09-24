@@ -23,6 +23,7 @@
 #include <delay.h>
 
 #include "interrupt.h"
+#include "tick.h"
 #include "ctp.h"
 
 typedef enum {
@@ -41,6 +42,7 @@ static volatile uint32_t x, y;
 typedef struct {
 	uint32_t x;
 	uint32_t y;
+	uint32_t ticks;
 	bool pressed;
 } ItemType;
 
@@ -60,6 +62,9 @@ void CTP_initialise(void)
 	static bool initialised = false;
 	if (!initialised) {
 		initialised = true;
+
+		Tick_initialise();
+
 		touch_state = STATE_WAITING;
 		x = 0;
 		y = 0;
@@ -139,11 +144,13 @@ void CTP_interrupt(void)
 						CTPbuffer[CTPwrite].x = x;
 						CTPbuffer[CTPwrite].y = y;
 						CTPbuffer[CTPwrite].pressed = true;
+						CTPbuffer[CTPwrite].ticks = Tick_get();
 						BUFFER_NEXT(CTPwrite, CTPbuffer);
 					} else if (0x00 == c) {
 						CTPbuffer[CTPwrite].x = x;
 						CTPbuffer[CTPwrite].y = y;
 						CTPbuffer[CTPwrite].pressed = false;
+						CTPbuffer[CTPwrite].ticks = Tick_get();
 						BUFFER_NEXT(CTPwrite, CTPbuffer);
 					}
 				}
@@ -178,7 +185,7 @@ bool CTP_available(void)
 }
 
 
-bool CTP_get(int *x, int *y, bool *pressed)
+bool CTP_get(int *x, int *y, bool *pressed, unsigned long *ticks)
 {
 	if (BUFFER_EMPTY(CTPwrite, CTPread, CTPbuffer)) {
 		return false;
@@ -187,6 +194,7 @@ bool CTP_get(int *x, int *y, bool *pressed)
 	*x = CTPbuffer[CTPread].x;
 	*y = CTPbuffer[CTPread].y;
 	*pressed = CTPbuffer[CTPread].pressed;
+	*ticks = CTPbuffer[CTPread].ticks;
 	BUFFER_NEXT(CTPread, CTPbuffer);
 	return true;
 }
