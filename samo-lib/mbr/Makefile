@@ -121,7 +121,7 @@ serial.header: always-build
 	) | dd bs=1 count=32 > "$@"
 
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h *.rom
+	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h empty.h *.rom
 
 # application headers
 %.header: %.c
