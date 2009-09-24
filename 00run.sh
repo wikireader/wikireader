@@ -129,6 +129,7 @@ fi
 
 case "${run}" in
   [yY]|[yY][eE][sS])
+    ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
     ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
     ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
     ;;
