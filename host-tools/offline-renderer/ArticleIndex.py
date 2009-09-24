@@ -30,7 +30,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 redirected_to = re.compile(r'#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
-non_articles = re.compile(r'User:|Wikipedia:|File:|MediaWiki:|T(emplate)?:|Help:|Cat(egory)?:|P(ortal)?:', re.IGNORECASE)
+non_articles = re.compile(r'(User|Wikipedia|File|Talk|MediaWiki|T(emplate)?|Help|Cat(egory)?|P(ortal)?)\s*:', re.IGNORECASE)
 
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
@@ -178,6 +178,7 @@ class FileProcessing(FileScanner.FileScanner):
         if match:
             redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
             redirect_title = whitespaces.sub(' ', redirect_title).strip()
+            redirect_title.lstrip(':')
             if non_articles.search(text):
                 if verbose:
                     print 'Non-article Redirect:', text
