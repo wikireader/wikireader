@@ -30,14 +30,16 @@ int touchscreen_get_event(struct wl_input_event *ev)
 {
 	int x, y;
 	bool pressed;
+	unsigned long ticks;
 
-	if (!CTP_get(&x, &y, &pressed)) {
+	if (!CTP_get(&x, &y, &pressed, &ticks)) {
 		return 0;
 	}
 
 	ev->type = WL_INPUT_EV_TYPE_TOUCH;
 	ev->touch_event.x = x >> 1;
 	ev->touch_event.y = y >> 1;
+	ev->touch_event.ticks = ticks;
 	ev->touch_event.value = pressed
 		? WL_INPUT_TOUCH_DOWN
 		: WL_INPUT_TOUCH_UP;

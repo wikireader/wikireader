@@ -48,6 +48,7 @@ struct wl_input_event {
 		struct {
 			int x, y;
 			int value;
+			unsigned long ticks;
 		} touch_event;
 	}; /* union */
 };
