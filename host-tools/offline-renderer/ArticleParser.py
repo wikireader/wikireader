@@ -20,15 +20,15 @@ PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
 end_article = re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL)
 
-gallery = re.compile(r'\s*&lt;gallery&gt;.*?&lt;/gallery&gt;', re.IGNORECASE + re.DOTALL)
+gallery = re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL)
 
-comment = re.compile(r'(&lt;!--.*?--&gt;|&lt;ref.*?&lt;/ref&gt;)', re.IGNORECASE + re.DOTALL)
+comment = re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL)
 
-inline_ref = re.compile(r'(&lt;ref\s+name.*?/&gt;)', re.IGNORECASE)
+inline_ref = re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE)
 
-delete_tags = re.compile(r'&lt;.*?&gt;', re.IGNORECASE)
+delete_tags = re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE)
 
-line_break = re.compile(r'&lt;br\s+/&gt;', re.IGNORECASE)
+line_break = re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE)
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
 img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
