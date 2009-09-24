@@ -513,7 +513,7 @@ class WrProcess(HTMLParser):
 
 
     def handle_endtag(self, tag):
-        global g_this_article_title
+        global g_this_article_title, article_index
 
         if tag == 'html':
             self.in_html = False
@@ -529,7 +529,12 @@ class WrProcess(HTMLParser):
             self.flush_buffer()
 
         if tag == 'h1':
+			# If restricted decrease width temp
+			#old_w = self.lwidth
+			# if article_index[g_this_article_title][2]:
+			#     self.lwidth -= ????
             self.flush_buffer()
+ 			#self.lwidth = old_w
             self.in_h1 = False
             esc_code0(H1_MARGIN_BOTTOM)
 

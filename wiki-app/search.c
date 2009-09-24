@@ -1300,7 +1300,7 @@ int retrieve_article(long idx_article)
 			}
 			if (search_info->fd_dat[dat_file_id] >= 0)
 			{
-				wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat);
+				wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
 				wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
 				propsSize = (unsigned int)compressed_buf[0];
 				memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
