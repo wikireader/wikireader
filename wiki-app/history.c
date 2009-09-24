@@ -27,6 +27,10 @@
 #include "search.h"
 #include "msg.h"
 #include "lcd_buf_draw.h"
+#ifndef INCLUDED_FROM_KERNEL
+#include <stdio.h>
+#include <errno.h>
+#endif
 
 #define DBG_HISTORY 0
 
@@ -250,6 +254,7 @@ void history_add(const long idx_article, const char *title)
 	int i = 0;
 	int bFound = 0;
 	
+	history_changed = 1;
 	history_base = 0;
 	history_current = 0;
 	while (!bFound && i < history_count)
@@ -260,6 +265,7 @@ void history_add(const long idx_article, const char *title)
                     history_tmp = history_list[i];
                     memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
                     history_list[0]=history_tmp;
+		    history_list[0].last_y_pos = 0;
 		    bFound = 1;
                 }
 		else
@@ -274,9 +280,30 @@ void history_add(const long idx_article, const char *title)
         memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
         history_list[0].idx_article = idx_article;
         strcpy(history_list[0].title, title);
+        history_list[0].last_y_pos = 0;
         history_count++;
-        
-	history_changed = 1;
+}
+
+void history_log_y_pos(const long y_pos)
+{
+	//history_changed = 1;
+	history_list[0].last_y_pos = y_pos;
+}
+
+long history_get_y_pos(const long idx_article)
+{
+	int i = 0;
+	
+	while (i < history_count)
+	{
+		if (idx_article == history_list[i].idx_article)
+                {
+     			return history_list[i].last_y_pos;
+                }
+		else
+			i++;
+	}
+	return 0;
 }
 
 //void history_move_current_to_top(const char *target)
@@ -359,6 +386,13 @@ unsigned int history_get_count()
 {
 	return history_count;
 }
+
+void history_clear()
+{
+	history_count = 0;
+	history_changed = 1;
+}
+
 int history_get_base()
 {
 	return history_base;
@@ -369,31 +403,29 @@ void history_list_init(void)
 	int len;
 	int fd_hst;
 
+	history_count = 0;
 	fd_hst = wl_open("pedia.hst", WL_O_RDONLY);
 	if (fd_hst >= 0)
 	{
-		len = wl_read(fd_hst, (void *)history_list, sizeof(history_list));
-		history_count = len / sizeof(HISTORY);
+		while ((len = wl_read(fd_hst, (void *)&history_list[history_count], sizeof(HISTORY))) >= sizeof(HISTORY))
+		{
+			history_count++;
+		}
 		wl_close(fd_hst);
 	}
-	else
-		history_count = 0;
 	history_base = 0;
 }
 
 void history_list_save(void)
 {
 	int fd_hst;
-	int rc;
 	
 	if (history_changed)
 	{
-		fd_hst = wl_open("pedia.hst", WL_O_WRONLY);
-		if (fd_hst < 0)
-			fd_hst = wl_open("pedia.hst", WL_O_CREATE);
+		fd_hst = wl_open("pedia.hst", WL_O_CREATE);
 		if (fd_hst >= 0)
 		{
-			rc = wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
+			wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
 			wl_close(fd_hst);
 		}
 		history_changed = 0;

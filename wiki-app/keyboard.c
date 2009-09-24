@@ -117,6 +117,10 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
+static struct keyboard_key clear_history[] = {
+	KEY(144, 181, 191, 207, 'Y'),
+	KEY(192, 181, 239, 207, 'N'),
+};
 
 /*
  * The secret of the position and size of the keyboard
@@ -133,6 +137,8 @@ void keyboard_set_mode(int mode)
            image_data = &image_data_char;
         else if(kb_mode == KEYBOARD_NUM)
            image_data = &image_data_num;
+        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
+           image_data = &image_data_clear_history;
 
 }
 
@@ -193,6 +199,14 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 			&& qwerty_num[i].left_y + KEY_GAP3 <= y && qwerty_num[i].right_y - KEY_GAP4 >= y) {
 				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_num[i].key));
 				return &qwerty_num[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_CLEAR_HISTORY) {
+		for (i = 0; i < ARRAY_SIZE(clear_history); ++i) {
+			if (clear_history[i].left_x + KEY_GAP1 <= x && clear_history[i].right_x - KEY_GAP2 >= x
+			&& clear_history[i].left_y + KEY_GAP3 <= y && clear_history[i].right_y - KEY_GAP4 >= y) {
+				return &clear_history[i];
 			}
 		}
 	}

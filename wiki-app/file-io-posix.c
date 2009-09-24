@@ -27,7 +27,7 @@ int wl_open(const char *filename, int flags)
 		break;
 	}
 
-	return open(filename, f);
+	return open(filename, f, S_IRWXU);
 }
 
 void wl_close(int fd)

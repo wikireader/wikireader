@@ -33,6 +33,7 @@
 
 void history_display(int index);
 void history_reset(void);
+void history_clear(void);
 void history_select_down(void);
 void history_select_up(void);
 //const char *history_current_target(void);
@@ -62,9 +63,12 @@ int set_history_list_base(int offset,int offset_count);
 int history_get_base();
 void history_open_article(int new_selection);
 void history_reload();
+void history_log_y_pos(const long y_pos);
+long history_get_y_pos(const long idx_article);
 
 typedef struct _HISTORY {
 	long idx_article;
+	long last_y_pos;
 	char title[MAX_TITLE_SEARCH];
 } HISTORY;
 #endif
