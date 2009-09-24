@@ -8,6 +8,7 @@
 
 import sys
 import re
+import FilterWords
 
 class FileScanner():
 
@@ -92,8 +93,6 @@ class FileScanner():
 
 
 
-
-
 class foo(FileScanner):
 
     def __init__(self):
@@ -103,44 +102,48 @@ class foo(FileScanner):
 
     def title(self, text, seek):
         self.count += 1
-        print 'T:%d %d : %s' % (self.count, seek, text)
         if ':' in text:
             return False
+        #print 'T:%d %d : %s' % (self.count, seek, text)
         return True
 
 
     def redirect(self, title, text, seek):
-        print 'S:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
+        pass
+        #print 'S:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
 
 
     def body(self, title, text, seek):
-        if filter(text):
+        if not filter(text, title):
             self.articles += 1
             self.article_index[title] = [self.articles, seek, len(text)]
-
-            print 'B:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
+            #print 'B:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
+        
 
 
 non_letters = re.compile('[\d\W]+')
-bad_words = { 'kenji':1, 'tokyo':200}
-max_score = 5
+max_score = 1
 
-def filter(text):
+def filter(text, title):
     global non_letters, bad_words, max_score
     score = 0
+    contains = ""
     for w in non_letters.split(text):
         word = w.lower()
-        if word in bad_words:
-            score += bad_words[word]
-    print 'SCORE:', score
+        if word in FilterWords.filter_words:
+            score += FilterWords.filter_words[word]
+            contains += word + ","
+    
+    if score >= max_score:
+        print 'TITLE: %s *** SCORE=%d *** WORDS {%s}' % (title, score, contains)
 
     return score < max_score
 
 def main():
     p = foo()
 
-    #f = open('xml-file-samples/classical_composers.xml', 'r')
-    f = open('xml-file-samples/t1.xml', 'r')
+    #f = open('../../xml-file-samples/filter_test.xml', 'r')
+    f = open('/home/mosko/Documents/xml_files/enwiki-20090909-pages-articles.xml', 'r')
     p.process(f)
     f.close()
 
