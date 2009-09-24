@@ -6,7 +6,6 @@ include ${SAMO_LIB}/Mk/definitions.mk
 RENDER_BLOCK ?= 0
 START ?= 1
 COUNT ?= all
-MODULO ?= 10
 DESTDIR ?= .
 FONT_PATH ?= $(shell readlink -m ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
@@ -48,21 +47,20 @@ check-html:
 
 .PHONY: index
 index: check-dirs check-xml
-	time ./make_article_idx.py ${VERBOSE} \
+	time ./ArticleIndex.py ${VERBOSE} \
 		--article-index="${ARTICLES}" --article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
-		--modulo="${MODULO}" --prefix="${PREFIX}" ${XML_FILES}
+		--prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse
-parse: check-dirs check-xml check-html
-	time ./parse_articles.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
+parse: check-dirs check-html
+	time ./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
-		--article-offsets="${OFFSETS}" \
-		${XML_FILES}
+		--article-offsets="${OFFSETS}"
 
 .PHONY: render
 render: pylzma check-dirs check-fonts check-html
-	time ./make_wrformat.py ${VERBOSE} --number="${RENDER_BLOCK}" \
+	time ./ArticleRenderer.py ${VERBOSE} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
 		--prefix="${PREFIX}" "${HTML_ARTICLES}"

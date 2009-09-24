@@ -10,10 +10,26 @@ import sys
 import re
 import FilterWords
 
-class FileScanner():
 
-    def __init__(self):
-        pass
+class FileScanner(object):
+
+    def __init__(self, *args, **kw):
+        super(FileScanner, self).__init__(*args, **kw)
+        self.file_list = []
+        self.current_file_id = -1  # no file yet
+
+
+    def file_id(self):
+        return self.current_file_id
+
+
+    def current_filename(self):
+        return self.file_list[self.current_file_id]
+
+
+    def all_file_names(self):
+        return self.file_list
+
 
     def title(self, text, seek):
         return True
@@ -48,11 +64,16 @@ class FileScanner():
         (text_end, text_end_len, 2),
         ]
 
-    def process(self, file):
+    def process(self, filename):
+        self.file_list += [filename]
+        self.current_file_id = len(self.file_list) - 1
+
         block = ''
-        position = file.tell()
+        position = 0
         title = None
         wanted = False
+        file = open(filename, 'r')
+
         while True:
             for tag, size, fn in self.control:
                 pos = -1
@@ -90,7 +111,7 @@ class FileScanner():
                 l = pos + size
                 position += l
                 block = block[l:]
-
+        file.close()
 
 
 class foo(FileScanner):
@@ -118,7 +139,7 @@ class foo(FileScanner):
             self.articles += 1
             self.article_index[title] = [self.articles, seek, len(text)]
             #print 'B:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
-        
+
 
 
 non_letters = re.compile('[\d\W]+')
@@ -127,13 +148,16 @@ max_score = 1
 def filter(text, title):
     global non_letters, bad_words, max_score
     score = 0
-    contains = ""
+    contains = {}
     for w in non_letters.split(text):
         word = w.lower()
         if word in FilterWords.filter_words:
             score += FilterWords.filter_words[word]
-            contains += word + ","
-    
+            if word in contains:
+                contains[word] += 1
+            else:
+                contains[word] = 1
+
     if score >= max_score:
         print 'TITLE: %s *** SCORE=%d *** WORDS {%s}' % (title, score, contains)
 
