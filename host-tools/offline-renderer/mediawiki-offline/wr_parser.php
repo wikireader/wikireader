@@ -164,6 +164,10 @@ function wfParseText($text, $action='parse', $format='xml') {
 ### Wikipedia Offline Client - Stuff ###########################################
 
 function &wfOutputWrapperWOC($articleTitle, $articleText) {
+  
+  # We store titles as unicode so do conversion here
+  $articleTitle = htmlentities($articleTitle);
+  
   $articleOutput = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n".
   "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n".
   "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n".
