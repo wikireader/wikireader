@@ -11,6 +11,7 @@ import struct
 import littleparser
 import getopt
 import os.path
+import time
 import gdbm
 import FilterWords
 import FileScanner
@@ -180,6 +181,8 @@ class FileProcessing(FileScanner.FileScanner):
         self.translate = littleparser.LittleParser().translate
         self.redirects = {}
 
+        self.time = time.time()
+
 
     def __del__(self):
         print 'Flushing databases'
@@ -242,7 +245,9 @@ class FileProcessing(FileScanner.FileScanner):
             self.restricted_count += 1
 
         if not verbose and self.article_count % 10000 == 0:
-            print self.article_count
+            t = time.time()
+            print '%7.2fs %10d' % (t - self.time, self.article_count)
+            self.time = t
 
         generate_bigram(title)
 
