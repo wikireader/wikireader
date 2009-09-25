@@ -30,8 +30,6 @@
 #define INTERNAL_SHIFT   (-23)
 #define INTERNAL_NUMBER  (-42)
 
-extern unsigned int get_time(void);
-
 static struct guilib_image *image_data;
 int keyboard_type = 0;
 
@@ -268,13 +266,13 @@ int keyboard_key_reset_invert(int bFlag)
 	{
 		if (bFlag == KEYBOARD_RESET_INVERT_DELAY)
 		{
-			start_time = get_time();
+			start_time = get_time_ticks();
 			keyboard_key_invert_dalay = 1;
 			rc = 1;
 		}
 		else if (bFlag == KEYBOARD_RESET_INVERT_CHECK && keyboard_key_invert_dalay)
 		{
-			if (get_time() - start_time > 1000000 * 8)
+			if (time_diff(get_time_ticks(), start_time) > seconds_to_ticks(0.3))
 				bFlag = KEYBOARD_RESET_INVERT_NOW; // reset invert immediately
 			else
 				rc = 1;

@@ -180,6 +180,8 @@ void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y);
 void buf_draw_char(ucs4_t u);
 int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes);
 int render_article_with_pcf();
+int render_history_with_pcf();
+int render_search_result_with_pcf();
 unsigned char * open_article_with_pcf_link(long idx_article);
 int display_link_article(long idx_article);
 void display_article_with_pcf(int start_y);
@@ -196,7 +198,6 @@ void show_key(char c);
 void set_article_link_number(int num);
 int  get_article_link_number();
 void open_article_link_with_link_number(int article_link_number);
-void display_article_with_pcf_smooth(int start_y);
 void scroll_article();
 #ifndef WIKIPCF
 #ifndef INCLUDED_FROM_KERNEL
@@ -205,6 +206,7 @@ int load_init_article(long);
 #endif
 void msg_on_lcd(int x, int y, char *msg);
 void msg_on_lcd_clear(int x, int y);
+void show_scroll_bar(int);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];

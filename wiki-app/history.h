@@ -24,6 +24,7 @@
 #define HISTORY_RESULT_START 33
 //#define HISTORY_RESULT_HEIGHT 10
 #define HISTORY_RESULT_HEIGHT 19
+#define MAX_HISTORY 256
 #define HISTORY_PIXEL_START (HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2)
 #define MESSAGE_HISTORY_TITLE "History"
 #define MESSAGE_NO_HISTORY "No history"
@@ -31,7 +32,6 @@
  * Interface for the History feature
  */
 
-void history_display(int index);
 void history_reset(void);
 void history_clear(void);
 void history_select_down(void);
@@ -53,7 +53,7 @@ void history_set_selection(int selection);
 unsigned int history_get_count();
 
 void history_list_init(void);
-void history_list_save(void);
+int history_list_save(void);
 //struct history_item *history_find_item_title(const char *title);
 //struct history_item *history_find_item_target(const char *target);
 //

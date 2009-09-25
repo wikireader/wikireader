@@ -1265,6 +1265,7 @@ return result_list->base;
 }
 
 extern unsigned char * file_buffer;
+extern int restricted_article;
 #define HEAP_ALLOC(var,size) \
     lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
 //static HEAP_ALLOC(wrkmem,LZO1X_1_MEM_COMPRESS);
@@ -1300,6 +1301,10 @@ int retrieve_article(long idx_article)
 			}
 			if (search_info->fd_dat[dat_file_id] >= 0)
 			{
+				if (article_ptr.offset_dat & 0x80000000)
+					restricted_article = 1;
+				else
+					restricted_article = 0;
 				wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
 				wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
 				propsSize = (unsigned int)compressed_buf[0];
@@ -1351,12 +1356,16 @@ void search_set_selection(int new_selection)
 void search_open_article(int new_selection)
 {
 	int list_idx;
+ 	char title[MAX_TITLE_SEARCH];
 	
 	list_idx = result_list->base + new_selection;
 	if (list_idx >= MAX_RESULTS)
 		list_idx -= MAX_RESULTS;
 	if (!display_link_article(result_list->idx_article[list_idx]))
-		history_add(result_list->idx_article[list_idx], result_list->list[list_idx]);
+	{
+		get_article_title_from_idx(result_list->idx_article[list_idx], title);
+		history_add(result_list->idx_article[list_idx], title);
+	}
 }
 
 long find_closest_idx(long idx, char *title)

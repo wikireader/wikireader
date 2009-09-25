@@ -36,11 +36,11 @@
 
 #define HISTORY_MAX_ITEM	19
 #define HISTORY_MAX_DISPLAY_ITEM	18U
-#define MAX_HISTORY 256
 
 HISTORY history_list[MAX_HISTORY];
-int history_count;
-int history_base;  // index of the top of the histories displayed
+int history_count = 0;
+int rendered_history_count = -1;
+int history_base;  // Not used, to be cleaned up
 int history_changed = 0;
 int history_current = 0;  // currently selected history relative to history_base
 
@@ -156,68 +156,10 @@ void history_select_up(void)
 //	guilib_fb_unlock();
 //}
 
-void history_display(int index)
-{
-	int i,linespace;
-
-	guilib_fb_lock();
-
-	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
-
-	if (history_count == 0) {
-		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
-	} else {
-		unsigned int y_pos = HISTORY_RESULT_START;
-		//for (i = index; i <= history_count && y_pos < guilib_framebuffer_height(); i++) {
-		//for (i = history_count-index-1; i >=0 && y_pos < guilib_framebuffer_height(); i--) {
-		for (i = index; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
-			char *p = history_list[i].title;
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
-                        linespace = GetFontLinespace(0);
-                        //y_pos += linespace;
-			y_pos += HISTORY_RESULT_HEIGHT;
-                        if((y_pos+linespace)>guilib_framebuffer_height())
-                           break;
-		}
-                history_set_selection(0);//set top
-		//invert_selection(history_current, -1, HISTORY_PIXEL_START, HISTORY_RESULT_HEIGHT);
-		invert_selection(history_current, -1, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
-		history_base = index;
-	}
-
-	guilib_fb_unlock();
-}
-
 void history_reload()
 {
-	int i,linespace;
-
-	guilib_fb_lock();
-
-	guilib_clear();
-	render_string(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, MESSAGE_HISTORY_TITLE, strlen(MESSAGE_HISTORY_TITLE));
-
-	if (history_count == 0) {
-		render_string(SEARCH_LIST_FONT_IDX, -1, 90, MESSAGE_NO_HISTORY, strlen(MESSAGE_NO_HISTORY));
-	} else {
-		unsigned int y_pos = HISTORY_RESULT_START;
-		for (i = 0; i < history_count && y_pos < guilib_framebuffer_height(); i++) {
-			char *p = history_list[i].title;
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, p, strlen(p));
-			y_pos += HISTORY_RESULT_HEIGHT;
-                        linespace = GetFontLinespace(0);
-                        //y_pos += linespace;
-                        if((y_pos+linespace)>guilib_framebuffer_height())
-                           break;
-
-		}
-		//invert_selection(history_current, -1, HISTORY_PIXEL_START, HISTORY_RESULT_HEIGHT);
-		//invert_selection(history_current, -1, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
-	}
-
-	guilib_fb_unlock();
-        
+	rendered_history_count = 0;
+	render_history_with_pcf();
 }
 
 void history_reset(void)
@@ -265,7 +207,6 @@ void history_add(const long idx_article, const char *title)
                     history_tmp = history_list[i];
                     memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
                     history_list[0]=history_tmp;
-		    history_list[0].last_y_pos = 0;
 		    bFound = 1;
                 }
 		else
@@ -416,9 +357,10 @@ void history_list_init(void)
 	history_base = 0;
 }
 
-void history_list_save(void)
+int history_list_save(void)
 {
 	int fd_hst;
+	int rc = 0;
 	
 	if (history_changed)
 	{
@@ -429,7 +371,9 @@ void history_list_save(void)
 			wl_close(fd_hst);
 		}
 		history_changed = 0;
+		rc = 1;
 	}
+	return rc;
 }
 
 int set_history_list_base(int offset,int offset_count)

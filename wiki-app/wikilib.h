@@ -47,4 +47,7 @@ int wikilib_init (void);
 int wikilib_run (void);
 void open_article(const char *target, int mode);
 void invert_selection(int old_pos, int new_pos, int start_pos, int height);
+unsigned long get_time_ticks(void);
+unsigned long time_diff(unsigned long t2, unsigned long t1);
+unsigned long seconds_to_ticks(float sec);
 #endif /* WIKILIB_H */

@@ -31,12 +31,12 @@
 #include <tick.h>
 #include "delay.h"
 #include "search_hash.h"
-
+#ifndef INCLUDED_FROM_KERNEL
+#include "time.h"
+#endif
 //#include <t_services.h>
 //#include <kernel.h>
 //#include <wl-time.h>
-
-unsigned int get_time(void);
 
 #define DBG_WL 0
 #define SEARCH_FETCH_DELAY 1000000*24
@@ -74,7 +74,7 @@ int curBufferPos  = 0;
 unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
-int start_search_time,end_search_time,start_search_selection_time, last_delete_time;
+unsigned long start_search_time,start_search_selection_time, last_delete_time;
 int last_article_link_number = -1;
 int last_article_move_time,touch_y_last_article;
 int touch_y_last_article_list[10],touch_time_last_article_list[10];
@@ -87,6 +87,7 @@ extern int stop_render_article;
 int time_random_last = 0;
 extern bool search_string_changed;
 extern unsigned int time_search_last;
+extern int b_show_scroll_bar;
 bool press_delete_button = false;
 extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
@@ -432,7 +433,6 @@ static void handle_key_release(int keycode)
 			} else if (last_display_mode == DISPLAY_MODE_HISTORY) {
 				display_mode = DISPLAY_MODE_HISTORY;
 				history_reset();
-				//history_display(0);
                                 history_reload();
 			}
 		}
@@ -455,7 +455,9 @@ static void handle_touch(struct wl_input_event *ev)
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
-	if (display_mode == DISPLAY_MODE_INDEX) {
+	mode = keyboard_get_mode();
+	if (display_mode == DISPLAY_MODE_INDEX)
+	{
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
@@ -472,8 +474,6 @@ static void handle_touch(struct wl_input_event *ev)
 					touch_down_on_list = 0;
 					goto out;
 				}
-                                int search_time_press_delete;
-                                search_time_press_delete = get_time();
 				handle_search_key(key->key);
 			}
 			else {
@@ -500,7 +500,7 @@ static void handle_touch(struct wl_input_event *ev)
                         if(enter_touch_y_pos<0)  //record first touch y pos
                            enter_touch_y_pos = ev->touch_event.y;
                         last_index_y_pos = ev->touch_event.y;
-                        start_search_time = get_time();
+                        start_search_time = get_time_ticks();
                         last_delete_time = start_search_time;
 			if (key) {
                                 if(key->key==8)//press "<" button
@@ -581,130 +581,74 @@ static void handle_touch(struct wl_input_event *ev)
                                  last_selection = new_selection ;
 				search_set_selection(new_selection);
                                 search_touch_pos_y_last = ev->touch_event.y;
-                                start_search_selection_time = get_time();
+                                start_search_selection_time = get_time_ticks();
                                 
 			}
 		}
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (keyboard_get_mode() == KEYBOARD_CLEAR_HISTORY) {
-			key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
-			if (ev->touch_event.value == 0) {
-		                #ifdef INCLUDED_FROM_KERNEL
-		                delay_us(100000 * 2);
-		                #endif
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
-	                        enter_touch_y_pos_record = enter_touch_y_pos;
-	                        enter_touch_y_pos = -1;
-	                        touch_search = 0;
-	                        press_delete_button = false;
-				pre_key = NULL;
-				if (key) {
-					if (!touch_down_on_keyboard) {
-						touch_down_on_keyboard = 0;
-						touch_down_on_list = 0;
-						goto out;
-					}
-					if (key->key == 'Y') {
-						history_clear();
-						keyboard_set_mode(KEYBOARD_NONE);
-						history_reload();
-					} else if (key->key == 'N') {
-						keyboard_set_mode(KEYBOARD_NONE);
-						history_reload();
-					}
-				}
-				else {
+	}
+	else if (display_mode == DISPLAY_MODE_HISTORY && mode == KEYBOARD_CLEAR_HISTORY)
+	{
+		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
+		if (ev->touch_event.value == 0) {
+		        #ifdef INCLUDED_FROM_KERNEL
+		        delay_us(100000 * 2);
+		        #endif
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
+	                enter_touch_y_pos_record = enter_touch_y_pos;
+	                enter_touch_y_pos = -1;
+	                touch_search = 0;
+	                press_delete_button = false;
+			pre_key = NULL;
+			if (key) {
+				if (!touch_down_on_keyboard) {
 					touch_down_on_keyboard = 0;
 					touch_down_on_list = 0;
 					goto out;
 				}
-			} else {
-	                        if(enter_touch_y_pos<0)  //record first touch y pos
-	                           enter_touch_y_pos = ev->touch_event.y;
-	                        last_index_y_pos = ev->touch_event.y;
-				if (key) {
-					if (!touch_down_on_keyboard)
-						touch_down_on_keyboard = 1;
-	
-					if (pre_key && pre_key->key == key->key) goto out;
-	
-					if (touch_down_on_keyboard) {
-						keyboard_key_invert(key);
-						pre_key = key;
-					}
-				} else {
-					touch_down_on_keyboard = 0;
-					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
-					pre_key = NULL;
-	
+				if (key->key == 'Y') {
+					history_clear();
+					keyboard_set_mode(KEYBOARD_NONE);
+					history_reload();
+				} else if (key->key == 'N') {
+					keyboard_set_mode(KEYBOARD_NONE);
+					history_reload();
 				}
 			}
+			else {
+				touch_down_on_keyboard = 0;
+				touch_down_on_list = 0;
+				goto out;
+			}
 		} else {
-			article_buf_pointer = NULL;
-	                int end_history_time,time_diff_history;
-	                //int offset,offset_count;
-	                if (ev->touch_event.value == 0) 
-	                {
-	                     touch_history = 0;
+	                if(enter_touch_y_pos<0)  //record first touch y pos
+	                   enter_touch_y_pos = ev->touch_event.y;
+	                last_index_y_pos = ev->touch_event.y;
+			if (key) {
+				if (!touch_down_on_keyboard)
+					touch_down_on_keyboard = 1;
 	
-	                     end_history_time = get_time();
+				if (pre_key && pre_key->key == key->key) goto out;
 	
-	                     if(start_history_selection_time<0)
-	                         time_diff_history = 0;
-	                     else
-	                         time_diff_history = (end_history_time - start_history_selection_time)/24/1000;
+				if (touch_down_on_keyboard) {
+					keyboard_key_invert(key);
+					pre_key = key;
+				}
+			} else {
+				touch_down_on_keyboard = 0;
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				pre_key = NULL;
 	
-	                    
-	                     if(history_get_selection()<0)
-	                         goto out;
-	                     display_mode = DISPLAY_MODE_ARTICLE;
-		             last_display_mode = DISPLAY_MODE_HISTORY;
-		             history_open_article(history_get_selection());
-	                     
-	                }
-	                else
-	                {
-	                    unsigned int new_selection;
-	                    if(touch_history == 0)
-	                    {
-	                       last_history_y_pos = ev->touch_event.y;
-	                       touch_history = 1;
-	                    }
-	                    else
-	                    { 
-	                       if(history_get_selection()>=0 && abs(ev->touch_event.y-history_touch_pos_y_last)>5)
-	                       {
-		                   invert_selection(history_get_selection(),-1, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
-	                           history_set_selection(-1);
-	                       }
-	                       goto out;
-	                    }
-	
-			    if((ev->touch_event.y - HISTORY_RESULT_START)<0)
-				new_selection = 0;
-			    else
-				new_selection = ((unsigned int)ev->touch_event.y - HISTORY_RESULT_START ) / HISTORY_RESULT_HEIGHT ;
-	
-			    if (new_selection >= history_get_count()) goto out;
-		
-		            invert_selection(-1, new_selection, HISTORY_RESULT_START, HISTORY_RESULT_HEIGHT);
-		
-			    history_set_selection(new_selection);
-			    start_history_selection_time = get_time();
-			    history_touch_pos_y_last = ev->touch_event.y;
-	
-	                }
+			}
 		}
 	} else {
 		if (ev->touch_event.value == 0) {
                         article_moved = false;
+                        if (b_show_scroll_bar)
+                        {
+                        	b_show_scroll_bar = 0;
+                        	show_scroll_bar(0); // clear scroll bar
+                        }
                         article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
-                        int end_move_time,time_diff;
-                        //int speed = 0,count_next=0,distance=0,i=0;
-
-
-                        end_move_time = get_time();
-                        time_diff = end_move_time-start_move_time;
 
                         touch_y_last_unreleased    = 0;
                         start_move_time = 0;
@@ -717,66 +661,17 @@ static void handle_touch(struct wl_input_event *ev)
                         }
                         if(get_article_link_number()>=0)
                         {
+                             display_mode = DISPLAY_MODE_ARTICLE;
                              open_article_link_with_link_number(get_article_link_number());
                              return;
                         }
-
-                        /*#ifdef INCLUDED_FROM_KERNEL
-
-                        if(article_touch_count>=9)
-                            count_next = 0;
-                        else
-                            count_next = article_touch_count+1;
-                        while(true)
-                        {
-                            if(touch_y_last_article_list[count_next]>0)
-                              break;
-                            count_next++;
-                            if(count_next>9)
-                             count_next = 0;
-                            if(count_next == article_touch_count)
-                              break;
-                        }
-                        distance = abs(touch_y_last_article_list[count_next]-ev->touch_event.y);
-                        if((end_move_time-touch_time_last_article_list[count_next])==0)
-                        {
-                             msg(MSG_INFO,"time diff is 0\n");
-                             return;
-                        }
-                        speed= distance*1000000*24/(end_move_time-touch_time_last_article_list[count_next]);
-                        msg(MSG_INFO,"scroll speed:%d\n",speed);
-                        for(i=0;i<10;i++)
-                        {
-                          touch_y_last_article_list[i]=0;
-                          touch_time_last_article_list[i]=0;
-                        }
-                        if(speed<40)
-                           return;
-
-                        #endif*/
-
-			/*if (article_touch_down_pos.y > ev->touch_event.y &&
-					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf_smooth(LCD_HEIGHT_LINES);
-			else if (article_touch_down_pos.y < ev->touch_event.y &&
-					abs(article_touch_down_pos.y - ev->touch_event.y) > 150)
-                                display_article_with_pcf_smooth(-LCD_HEIGHT_LINES);
-                        else if(abs(article_touch_down_pos.y - ev->touch_event.y) > 10)
-                        {
-                              if(article_touch_down_pos.y<ev->touch_event.y)
-                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y-speed*2);
-                              else
-                                 display_article_with_pcf_smooth(article_touch_down_pos.y-ev->touch_event.y);
-
-                        }*/
-                        
 				
 			article_touch_down_handled = 0;
 		} else {
                         article_offset = 0;
                         //if(abs(touch_y_last_article-ev->touch_event.y)>=5)
                         {
-			   last_article_move_time = get_time();
+			   last_article_move_time = get_time_ticks();
 		           touch_y_last_article = ev->touch_event.y;
 
                            if(article_touch_count>=10)
@@ -791,13 +686,14 @@ static void handle_touch(struct wl_input_event *ev)
                         if(touch_y_last_unreleased == 0)
                         {
                            touch_y_last_unreleased = ev->touch_event.y;
-                           start_move_time = get_time();
+                           start_move_time = get_time_ticks();
                         }
                         else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
                         {
                               display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
                               touch_y_last_unreleased = ev->touch_event.y;
                               article_moved = true;
+                              b_show_scroll_bar = 1;
                               article_scroll_pixel = 1;
                         }
                         if(article_moved)
@@ -846,7 +742,8 @@ extern long idx_init_article;
 
 int wikilib_run(void)
 {
-        int sleep,time_now;
+        int sleep;
+        long time_now;
         struct wl_input_event ev;
 
 
@@ -869,7 +766,11 @@ int wikilib_run(void)
 
 	for (;;) {
                 sleep = 1;
-                if(render_article_with_pcf())
+                if (display_mode == DISPLAY_MODE_ARTICLE && render_article_with_pcf())
+			sleep = 0;
+                else if (display_mode == DISPLAY_MODE_INDEX && render_search_result_with_pcf())
+			sleep = 0;
+                else if (display_mode == DISPLAY_MODE_HISTORY && render_history_with_pcf())
 			sleep = 0;
                 if (article_offset>0)
                 {
@@ -882,7 +783,7 @@ int wikilib_run(void)
                 {
                    sleep = 0;
                    delay_us(10000);
-                   time_now = get_time();
+                   time_now = get_time_ticks();
                    if((time_now-time_search_last)>SEARCH_FETCH_DELAY)
                    {
                        time_search_last = time_now;
@@ -902,8 +803,8 @@ int wikilib_run(void)
                     if (press_delete_button && get_search_string_len()>0)
                     {
 	                 sleep = 0;
-	                 time_now = get_time();
-	                 if((time_now-start_search_time)>1000000*12*7)
+	                 time_now = get_time_ticks();
+	                 if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
 	                 {
 	                     if (!clear_search_string())
 	                     {
@@ -912,7 +813,8 @@ int wikilib_run(void)
 	                     }
 	                     press_delete_button = false;
 	                 }
-	                 else if ((time_now-start_search_time)>1000000*12 && (time_now-last_delete_time)>1000000*7)
+	                 else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) && 
+	                 	time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
 	                 {
 	                     if (!search_remove_char(0))
 	                     {
@@ -932,9 +834,17 @@ int wikilib_run(void)
                 }	            	
 
 		if (sleep)
-			history_list_save();
+		{
+			if (history_list_save())
+			{
+				#ifdef INCLUDED_FROM_KERNEL
+				delay_us(200000);
+				#endif
+			}
+		}
+				
                 
-		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK)) // reset invert is timeout
+		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK)) // check if need to reset invert
                 	sleep = 0;
 
 		wl_input_wait(&ev, sleep);
@@ -956,7 +866,7 @@ int wikilib_run(void)
 	return 0;
 }
 
-unsigned int get_time(void)
+unsigned long get_time_ticks(void)
 {
         long clock_ticks;
 
@@ -966,5 +876,29 @@ unsigned int get_time(void)
 	clock_ticks = clock();
 #endif
 
-	return (unsigned int)clock_ticks;
+	return clock_ticks;
+}
+
+unsigned long time_diff(unsigned long t2, unsigned long t1)
+{
+	unsigned long diff;
+	
+	if (t2 < t1)
+		diff = (unsigned long) 0xFFFFFFFF - t1 + t2;
+	else
+		diff = t2 - t1;
+	return diff;
+}
+
+unsigned long seconds_to_ticks(float sec)
+{
+        long clock_ticks;
+
+#ifdef INCLUDED_FROM_KERNEL
+	clock_ticks = sec * 24000000;
+#else
+	clock_ticks = sec * CLOCKS_PER_SEC;
+#endif
+
+	return clock_ticks;
 }
