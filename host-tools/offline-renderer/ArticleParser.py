@@ -31,7 +31,8 @@ delete_tags = re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE)
 line_break = re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE)
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
-img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
+#img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
+img = re.compile(r'\[\[(file|image):.*?\]{2,3}', re.IGNORECASE)
 
 language = re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
 
