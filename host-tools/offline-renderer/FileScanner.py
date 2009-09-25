@@ -14,7 +14,8 @@ import FilterWords
 class FileScanner(object):
 
     def __init__(self, *args, **kw):
-        super(FileScanner, self).__init__(*args, **kw)
+        #super(FileScanner, self).__init__(*args, **kw)
+        super(FileScanner, self).__init__()
         self.file_list = []
         self.current_file_id = -1  # no file yet
 
@@ -84,7 +85,7 @@ class FileScanner(object):
                         break
                     block2 = file.read(65536)
                     if len(block2) == 0:
-                        return
+                        return limit
                     block += block2
 
                 if fn == 1:

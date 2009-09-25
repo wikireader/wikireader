@@ -110,6 +110,7 @@ def main():
 
 
     processor = FileProcessing(articles = art_name, offsets = off_name, files = afn_name)
+
     for f in args:
         limit = processor.process(f, limit)
         if limit != 'all' and limit <= 0:
