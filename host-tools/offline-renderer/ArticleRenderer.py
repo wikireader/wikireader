@@ -644,8 +644,10 @@ class WrProcess(HTMLParser):
 
 
     def handle_entityref(self, name):
-        self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
-
+        try:
+            self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
+        except KeyError:
+            print "ENTITYREF ERROR : ",  name, g_this_article_title
 
     def handle_data(self, data):
         global g_this_article_title
