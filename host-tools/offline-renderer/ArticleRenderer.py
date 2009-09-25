@@ -15,7 +15,7 @@ import htmlentitydefs
 import codecs
 import getopt
 import os.path
-import cPickle
+import gdbm
 import WordWrap
 
 
@@ -86,7 +86,7 @@ i_out = None
 f_out = None
 file_number = 0
 
-article_index = None
+article_db = None
 
 output = None
 compress = True
@@ -101,7 +101,7 @@ def usage(message):
     print '       --number=n              Number for the .dat/.idx-tmp files [0]'
     print '       --test=file             Output the uncompressed file for testing'
     print '       --font-path=dir         Path to font files (*.bmf) [fonts]'
-    print '       --article-index=file    Article index dictionary input [articles.pickle]'
+    print '       --article-index=file    Article index dictionary input [articles.gdbm]'
     print '       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]'
     exit(1)
 
@@ -112,7 +112,7 @@ def main():
     global font_id_values
     global file_number
     global article_count
-    global article_index
+    global article_db
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvn:p:i:t:f:', ['help', 'verbose', 'number=', 'prefix=',
@@ -124,10 +124,11 @@ def main():
     verbose = False
     data_file = 'pedia%d.dat'
     index_file = 'pedia%d.idx-tmp'
-    art_file = 'articles.pickle'
+    art_file = 'articles.gdbm'
     file_number = 0
     test_file = ''
     font_path = "../fonts"
+    article_db = None
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -165,9 +166,7 @@ def main():
         DEFAULT_ALL_FONT_IDX: f_fontall
     }
 
-    f = open(art_file, 'rb')
-    article_index = cPickle.load(f)
-    f.close()
+    article_db = gdbm.open(art_file, 'r')
 
     output = io.BytesIO('')
 
@@ -187,12 +186,19 @@ def main():
     for item in font_id_values:
         font_id_values[item].close()
 
-    output.close()
+    if output != None:
+        output.close()
 
     if f_out != None:
         f_out.close()
     if i_out != None:
         i_out.close()
+
+    if article_db != None:
+        article_db.close()
+
+    for i in font_id_values:
+        font_id_values[i].close()
 
     print 'Wrote %d articles' % article_count
 
@@ -244,9 +250,8 @@ def get_lineheight(face):
 
 def make_link(url, x0, x1, text):
     global g_starty, g_curr_face, g_link_cnt, g_links
-    global article_index
 
-    if url in article_index:
+    if article_index(url):
         esc_code10(x1 - x0)
         g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
@@ -377,7 +382,6 @@ class WrProcess(HTMLParser):
         self.level = 0
         self.lwidth = DEFAULT_LWIDTH
         self.indent = 0
-        #self.buffer = []
         self.li_cnt = {}
         self.li_type = {}
         self.link_x = 0
@@ -513,7 +517,7 @@ class WrProcess(HTMLParser):
 
 
     def handle_endtag(self, tag):
-        global g_this_article_title, article_index
+        global g_this_article_title
 
         if tag == 'html':
             self.in_html = False
@@ -531,7 +535,8 @@ class WrProcess(HTMLParser):
         if tag == 'h1':
 			# If restricted decrease width temp
 			#old_w = self.lwidth
-			# if article_index[g_this_article_title][2]:
+                        # (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
+			# if restricted:
 			#     self.lwidth -= ????
             self.flush_buffer()
  			#self.lwidth = old_w
@@ -723,8 +728,6 @@ class WrProcess(HTMLParser):
             if url != None:
                 make_link(url, url_x0, x0, line[-1][0])
 
-        #self.buffer = []
-
 
 def link_number(url):
     global article_index
@@ -736,7 +739,12 @@ def link_number(url):
     return n
 
 
-# write this article
+def article_index(title):
+    global article_db
+
+    return eval(self.article_db[title.encode('utf-8')])
+
+
 def write_article():
     global compress
     global verbose
@@ -778,11 +786,10 @@ def write_article():
     output.truncate(0)
     if compress:
         try:
-            index = article_index[g_this_article_title] # [number, fnd, restricted]
+            (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
             data_offset = (file_offset & 0x7fffffff)
-            if index[2]:
+            if restricted:
                 data_offset |= 0x80000000
-            fnd_offset =  index[1]
             data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
             i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
         except KeyError:

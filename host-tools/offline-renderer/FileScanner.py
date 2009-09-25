@@ -64,7 +64,7 @@ class FileScanner(object):
         (text_end, text_end_len, 2),
         ]
 
-    def process(self, filename):
+    def process(self, filename, limit):
         self.file_list += [filename]
         self.current_file_id = len(self.file_list) - 1
 
@@ -74,7 +74,8 @@ class FileScanner(object):
         wanted = False
         file = open(filename, 'r')
 
-        while True:
+        run = True
+        while run:
             for tag, size, fn in self.control:
                 pos = -1
                 while pos < 0:
@@ -107,11 +108,17 @@ class FileScanner(object):
                         self.body(title, body, position + p)
 
                     title = None
+                    if limit != 'all':
+                        limit -= 1
+                        if limit <= 0:
+                            run = False
+                            break
 
                 l = pos + size
                 position += l
                 block = block[l:]
         file.close()
+        return limit
 
 
 class foo(FileScanner):

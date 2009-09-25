@@ -11,7 +11,7 @@ import struct
 import littleparser
 import getopt
 import os.path
-import cPickle
+import gdbm
 import FilterWords
 import FileScanner
 
@@ -46,33 +46,38 @@ def usage(message):
     print 'usage: %s <options> {xlm-file...}' % os.path.basename(__file__)
     print '       --help                  This message'
     print '       --verbose               Enable verbose output'
-    print '       --article-index=file    Article index dictionary output [articles.pickle]'
-    print '       --article-offsets=file  Article file offsets dictionary output [offsets.pickle]'
+    print '       --article-index=file    Article index database output [articles.gdbm]'
+    print '       --article-offsets=file  Article file offsets database output [offsets.gdbm]'
+    print '       --article-files=file    Article file name database output [files.gdbm]'
     print '       --article-counts=file   File to store the counts [counts.text]'
+    print '       --limit=number          Limit the number of articles processed'
     print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
     exit(1)
 
 
 def main():
     global verbose
-    global redirects, article_index
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:p:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:f:c:l:p:',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
+                                    'article-files=',
                                     'article-counts=',
+                                    'limit=',
                                     'prefix='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
-    art_name = "articles.pickle"
-    off_name = "offsets.pickle"
+    art_name = "articles.gdbm"
+    off_name = "offsets.gdbm"
+    afn_name = "files.gdbm"
     cnt_name = "counts.text"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
+    limit = 'all'
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -83,8 +88,20 @@ def main():
             art_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
+        elif opt in ('-f', '--article-files'):
+            afn_name = arg
         elif opt in ('-c', '--article-counts'):
             cnt_name = arg
+        elif opt in ('-l', '--limit'):
+            if arg[-1] == 'k':
+                arg = arg[:-1] + '000'
+            if arg != 'all':
+                try:
+                    limit = int(arg)
+                except ValueError:
+                    usage('%s=%s" is not numeric' % (opt, arg))
+            if limit <= 0:
+                usage('%s=%s" must be > zero' % (opt, arg))
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
@@ -92,27 +109,27 @@ def main():
             usage('unhandled option: ' + opt)
 
 
-    processor = FileProcessing()
+    processor = FileProcessing(articles = art_name, offsets = off_name, files = afn_name)
     for f in args:
-        processor.process(f)
+        limit = processor.process(f, limit)
+        print limit
+        if limit != 'all' and limit <= 0:
+            break
 
     # record initial counts
     a = processor.article_count
     r = processor.redirect_count
-    a2 = len(processor.article_index)
 
     # fix up redirects
-    processor.resolve_redirects()
+    m = a + processor.resolve_redirects()
 
     # record combined count and display statistics
-    m = len(processor.article_index)
     s = a + r
 
     cf = open(cnt_name, 'w')
 
     for f in (sys.stdout, cf):
         f.write('Articles:   %10d\n' % a)
-        f.write('Articles2:  %10d\n' % a2)
         f.write('Redirects:  %10d\n' % r)
         f.write('Sum:        %10d\n' % s)
         f.write('Merged:     %10d\n' % m)
@@ -122,11 +139,9 @@ def main():
 
     cf.close()
 
-    output_fnd(fnd_name, processor.article_index)
+    output_fnd(fnd_name, processor)
     output_pfx(pfx_name)
-    output_index(art_name, processor.article_index)
-    output_offsets(off_name, processor.article_offsets, processor.all_file_names())
-
+    del processor
 
 
 
@@ -152,13 +167,37 @@ class FileProcessing(FileScanner.FileScanner):
     def __init__(self, *args, **kw):
         super(FileProcessing, self).__init__(*args, **kw)
 
+        self.article_db = gdbm.open(kw['articles'], 'nf') # [article_number, fnd_offset, restricted]
+        self.offset_db = gdbm.open(kw['offsets'], 'nf')   # [file_id, title, seek, length]
+        self.files_db = gdbm.open(kw['files'], 'nf')      # [filename]
+
         self.restricted_count = 0
         self.redirect_count = 0
         self.article_count = 0
-        self.article_index = {}   # array: [article_number, fnd_index]
-        self.article_offsets = [None] # tuple: (file_id, title, seek, length)
+
+        self.all_titles = []
+
         self.translate = littleparser.LittleParser().translate
         self.redirects = {}
+
+
+    def __del__(self):
+        print 'Flushing databases'
+
+        i = 0
+        for filename in self.file_list:
+            self.files_db[str(i)] = filename
+            i += 1
+
+        if None != self.article_db:
+            self.article_db.close()
+            self.article_db = None
+        if None != self.offset_db:
+            self.offset_db.close()
+            self.offset_db = None
+        if None != self.files_db:
+            self.files_db.close()
+            self.files_db = None
 
 
     def title(self, text, seek):
@@ -213,21 +252,45 @@ class FileProcessing(FileScanner.FileScanner):
             else:
                 print 'Title:', title.encode('utf-8')
 
-        self.article_offsets.append((self.file_id(), title, seek, len(text)))
+        self.offset_db[str(self.article_count)] = str([self.file_id(), title, seek, len(text)])
 
-        if title in self.article_index:
+        if self.set_index(title, [self.article_count, -1, restricted]): # -1 == pfx place holder
             print 'Duplicate Title:', title.encode('utf-8')
-
-        self.article_index[title] = [self.article_count, -1, restricted] # -1 == pfx place holder
 
 
     def resolve_redirects(self):
         """add redirect to article_index"""
+        count = 0
         for item in self.redirects:
             try:
-                self.article_index[item] = self.find(item)
+                self.set_index(item, self.find(item))
+                count += 1
             except KeyError:
                 print 'Unresolved redirect:', item, '->', self.redirects[item]
+        return count
+
+
+    def set_index(self, title, data):
+        """returns false if the key did not already exist"""
+        key = title.encode('utf-8')
+        result = True
+        try:
+            item = self.article_db[key]
+        except KeyError:
+            result = False
+        self.article_db[title.encode('utf-8')] = str(data)
+        return result
+
+
+    def get_index(self, title):
+        return eval(self.article_db[title.encode('utf-8')])
+
+
+    def all_indices(self):
+        k = self.article_db.firstkey()
+        while k != None:
+            yield unicode(k, 'utf-8')
+            k = self.article_db.nextkey(k)
 
 
     def find(self, title):
@@ -242,10 +305,10 @@ class FileProcessing(FileScanner.FileScanner):
             title = self.redirects[title[0].swapcase() + title[1:]]
 
         try:
-            result = self.article_index[title]
+            result = self.get_index(title)
         except KeyError:
             try:
-                result = self.article_index[title[0].swapcase() + title[1:]]
+                result = self.get_index(title[0].swapcase() + title[1:])
             except:
                 result = self.find(title)
         return result
@@ -331,11 +394,10 @@ def output_fnd(filename, article_index):
         i += 1
 
     # create pfx matrix and write encoded titles
-    article_list = article_index.keys()
+    article_list = [ i for i in article_index.all_indices() ]
     #article_list = [strip_accents(k) for k in article_index.keys()]
-
-    #article_list.sort(key = unicode.lower)
     article_list.sort(key = lambda x: strip_accents(x).lower())
+
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
     for title in article_list:
@@ -349,8 +411,11 @@ def output_fnd(filename, article_index):
             index_matrix[key2] = offset
         if key3 not in index_matrix:
             index_matrix[key3] = offset
-        article_index[title][1] = offset
-        out_f.write(struct.pack('Ib', article_index[title][0], 0) + bigram_encode(title) + '\0')
+        data = article_index.get_index(title)
+        data[1] = offset
+        article_index.set_index(title, data)
+        article_number = data[0]
+        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
 
@@ -373,25 +438,6 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-
-
-def output_index(filename, article_index):
-    """output the article data"""
-
-    print 'Writing:', filename
-    output = open(filename, 'wb')
-    cPickle.dump(article_index, output)
-    output.close()
-
-
-def output_offsets(filename, article_offsets, all_file_names):
-    """output file names and  offsets"""
-
-    print 'Writing:', filename
-    output = open(filename, 'wb')
-    cPickle.dump(article_offsets, output)
-    cPickle.dump(all_file_names, output)
-    output.close()
 
 
 # run the program

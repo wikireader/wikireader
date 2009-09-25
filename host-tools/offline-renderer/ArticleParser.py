@@ -9,7 +9,7 @@
 import os, sys, re, subprocess
 import getopt
 import os.path
-import cPickle
+import gdbm
 
 verbose = False
 
@@ -53,7 +53,8 @@ def usage(message):
     print '       --xhtml=file            XHTML output [all_articles.html]'
     print '       --start=n               First artcle to process [1] (1k => 1000)'
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
-    print '       --article-offsets=file  Article file offsets dictionary input [offsets.pickle]'
+    print '       --article-offsets=file  Article file offsets database input [offsets.gdbm]'
+    print '       --article-files=file    Article file name database input [files.gdbm]'
     print '       --just-cat              Replace php parset be "cat" for debugging'
     print '       --no-output             Do not run any parsing'
     exit(1)
@@ -64,10 +65,11 @@ def main():
     global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:jn',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:f:jn',
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
+                                    'article-files=',
                                     'just-cat',
                                     'no-output',
                                     ])
@@ -76,7 +78,8 @@ def main():
 
     verbose = False
     out_name = 'all_articles.html'
-    off_name = 'offsets.pickle'
+    off_name = 'offsets.gdbm'
+    afn_name = 'files.gdbm'
     start_article = 1
     article_count = 'all'
     do_output = True
@@ -90,6 +93,8 @@ def main():
             out_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
+        elif opt in ('-f', '--article-files'):
+            afn_name = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-n', '--no-output'):
@@ -118,10 +123,8 @@ def main():
 
 
 
-    f = open(off_name, 'rb')
-    article_offsets = cPickle.load(f)
-    all_file_names = cPickle.load(f)
-    f.close()
+    offset_db = gdbm.open(off_name, 'r')
+    files_db = gdbm.open(afn_name, 'r')
 
     if do_output:
         newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
@@ -133,16 +136,19 @@ def main():
     f = None
     total_articles = 0
     while article_count == 'all' or article_count != 0:
-        if start_article >= len(article_offsets):
+        try:
+            (file_id, title, seek, length) = eval(offset_db[str(start_article)])
+        except KeyError:  # reached end of file
             break
-        (file_id, title, seek, length) = article_offsets[start_article]
+
         if file_id != current_file_id:
             current_file_id = file_id
             if f:
                 f.close()
-            f = open(all_file_names[file_id], 'r')
+            filename = files_db[str(file_id)]
+            f = open(filename, 'r')
             if verbose:
-                print 'Open:', all_file_names[file_id]
+                print 'Open:', filename
         f.seek(seek)
         process_article_text(title.encode('utf-8'),  f.read(length), newf)
         if article_count != 'all':

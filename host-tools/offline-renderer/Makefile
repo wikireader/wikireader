@@ -11,9 +11,10 @@ FONT_PATH ?= $(shell readlink -m ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
 
 PREFIX := $(shell readlink -m ${DESTDIR}/pedia)
-ARTICLES := $(shell readlink -m ${WORKDIR}/articles.pickle)
+ARTICLES := $(shell readlink -m ${WORKDIR}/articles.gdbm)
 COUNTS_FILE := $(shell readlink -m ${WORKDIR}/counts.text)
-OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.pickle)
+OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.gdbm)
+ALLFILES := $(shell readlink -m ${WORKDIR}/files.gdbm)
 HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
 PYLZMA_DIR := pylzma-0.3.0
@@ -48,7 +49,9 @@ check-html:
 .PHONY: index
 index: check-dirs check-xml
 	time ./ArticleIndex.py ${VERBOSE} \
-		--article-index="${ARTICLES}" --article-offsets="${OFFSETS}" \
+		--article-index="${ARTICLES}" \
+		--article-offsets="${OFFSETS}" \
+		--article-files="${ALLFILES}" \
 		--article-counts="${COUNTS_FILE}" \
 		--prefix="${PREFIX}" ${XML_FILES}
 
@@ -56,7 +59,8 @@ index: check-dirs check-xml
 parse: check-dirs check-html
 	time ./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
-		--article-offsets="${OFFSETS}"
+		--article-offsets="${OFFSETS}" \
+		--article-files="${ALLFILES}" \
 
 .PHONY: render
 render: pylzma check-dirs check-fonts check-html
