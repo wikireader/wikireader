@@ -9,7 +9,7 @@
 import os, sys, re, subprocess
 import getopt
 import os.path
-import gdbm
+import sqlite3
 
 verbose = False
 
@@ -53,8 +53,7 @@ def usage(message):
     print '       --xhtml=file            XHTML output [all_articles.html]'
     print '       --start=n               First artcle to process [1] (1k => 1000)'
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
-    print '       --article-offsets=file  Article file offsets database input [offsets.gdbm]'
-    print '       --article-files=file    Article file name database input [files.gdbm]'
+    print '       --article-offsets=file  Article file offsets database input [offsets.db]'
     print '       --just-cat              Replace php parset be "cat" for debugging'
     print '       --no-output             Do not run any parsing'
     exit(1)
@@ -65,11 +64,10 @@ def main():
     global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:f:jn',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:jn',
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
-                                    'article-files=',
                                     'just-cat',
                                     'no-output',
                                     ])
@@ -78,8 +76,7 @@ def main():
 
     verbose = False
     out_name = 'all_articles.html'
-    off_name = 'offsets.gdbm'
-    afn_name = 'files.gdbm'
+    off_name = 'offsets.db'
     start_article = 1
     article_count = 'all'
     do_output = True
@@ -93,8 +90,6 @@ def main():
             out_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
-        elif opt in ('-f', '--article-files'):
-            afn_name = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-n', '--no-output'):
@@ -123,8 +118,8 @@ def main():
 
 
 
-    offset_db = gdbm.open(off_name, 'r')
-    files_db = gdbm.open(afn_name, 'r')
+    offset_db = sqlite3.connect(off_name)
+    offset_cursor = offset_db.cursor()
 
     if do_output:
         newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
@@ -136,16 +131,19 @@ def main():
     f = None
     total_articles = 0
     while article_count == 'all' or article_count != 0:
-        try:
-            (file_id, title, seek, length) = eval(offset_db[str(start_article)])
-        except KeyError:  # reached end of file
+        offset_cursor.execute('select file_id, title, seek, length from offsets where article_number = ? limit 1',
+                              (start_article,))
+        row = offset_cursor.fetchone()
+        if None == row:
             break
+        (file_id, title, seek, length) = row
 
         if file_id != current_file_id:
             current_file_id = file_id
             if f:
                 f.close()
-            filename = files_db[str(file_id)]
+            offset_cursor.execute('select filename from files where file_id = ? limit 1', (file_id,))
+            filename = offset_cursor.fetchone()[0]
             f = open(filename, 'r')
             if verbose:
                 print 'Open:', filename

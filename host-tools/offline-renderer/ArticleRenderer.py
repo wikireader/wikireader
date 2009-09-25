@@ -15,7 +15,7 @@ import htmlentitydefs
 import codecs
 import getopt
 import os.path
-import gdbm
+import sqlite3
 import WordWrap
 
 
@@ -101,7 +101,7 @@ def usage(message):
     print '       --number=n              Number for the .dat/.idx-tmp files [0]'
     print '       --test=file             Output the uncompressed file for testing'
     print '       --font-path=dir         Path to font files (*.bmf) [fonts]'
-    print '       --article-index=file    Article index dictionary input [articles.gdbm]'
+    print '       --article-index=file    Article index dictionary input [articles.db]'
     print '       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]'
     exit(1)
 
@@ -124,7 +124,7 @@ def main():
     verbose = False
     data_file = 'pedia%d.dat'
     index_file = 'pedia%d.idx-tmp'
-    art_file = 'articles.gdbm'
+    art_file = 'articles.db'
     file_number = 0
     test_file = ''
     font_path = "../fonts"
@@ -166,7 +166,7 @@ def main():
         DEFAULT_ALL_FONT_IDX: f_fontall
     }
 
-    article_db = gdbm.open(art_file, 'r')
+    article_db = sqlite3.connect(art_file)
 
     output = io.BytesIO('')
 
@@ -742,7 +742,11 @@ def link_number(url):
 def article_index(title):
     global article_db
 
-    return eval(self.article_db[title.encode('utf-8')])
+    c = article_db.cursor()
+    c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', [title])
+    result = c.fetchone()
+    c.close()
+    return result
 
 
 def write_article():

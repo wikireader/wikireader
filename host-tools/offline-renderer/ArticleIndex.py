@@ -12,7 +12,7 @@ import littleparser
 import getopt
 import os.path
 import time
-import gdbm
+import sqlite3
 import FilterWords
 import FileScanner
 
@@ -47,9 +47,8 @@ def usage(message):
     print 'usage: %s <options> {xlm-file...}' % os.path.basename(__file__)
     print '       --help                  This message'
     print '       --verbose               Enable verbose output'
-    print '       --article-index=file    Article index database output [articles.gdbm]'
-    print '       --article-offsets=file  Article file offsets database output [offsets.gdbm]'
-    print '       --article-files=file    Article file name database output [files.gdbm]'
+    print '       --article-index=file    Article index database output [articles.db]'
+    print '       --article-offsets=file  Article file offsets database output [offsets.db]'
     print '       --article-counts=file   File to store the counts [counts.text]'
     print '       --limit=number          Limit the number of articles processed'
     print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
@@ -60,11 +59,10 @@ def main():
     global verbose
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:f:c:l:p:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:l:p:',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
-                                    'article-files=',
                                     'article-counts=',
                                     'limit=',
                                     'prefix='])
@@ -72,9 +70,8 @@ def main():
         usage(err)
 
     verbose = False
-    art_name = "articles.gdbm"
-    off_name = "offsets.gdbm"
-    afn_name = "files.gdbm"
+    art_name = "articles.db"
+    off_name = "offsets.db"
     cnt_name = "counts.text"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
@@ -89,8 +86,6 @@ def main():
             art_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
-        elif opt in ('-f', '--article-files'):
-            afn_name = arg
         elif opt in ('-c', '--article-counts'):
             cnt_name = arg
         elif opt in ('-l', '--limit'):
@@ -110,7 +105,7 @@ def main():
             usage('unhandled option: ' + opt)
 
 
-    processor = FileProcessing(articles = art_name, offsets = off_name, files = afn_name)
+    processor = FileProcessing(articles = art_name, offsets = off_name)
 
     for f in args:
         limit = processor.process(f, limit)
@@ -168,9 +163,35 @@ class FileProcessing(FileScanner.FileScanner):
     def __init__(self, *args, **kw):
         super(FileProcessing, self).__init__(*args, **kw)
 
-        self.article_db = gdbm.open(kw['articles'], 'nf') # [article_number, fnd_offset, restricted]
-        self.offset_db = gdbm.open(kw['offsets'], 'nf')   # [file_id, title, seek, length]
-        self.files_db = gdbm.open(kw['files'], 'nf')      # [filename]
+        filename = kw['articles']
+        if os.path.exists(filename):
+            os.remove(filename)
+        self.article_db = sqlite3.connect(filename)
+        self.article_db.execute("""
+create table articles (
+    title varchar primary key,
+    article_number integer,
+    fnd_offset integer,
+    restricted varchar
+)""")
+
+        filename = kw['offsets']
+        if os.path.exists(filename):
+            os.remove(filename)
+        self.offset_db = sqlite3.connect(filename)
+        self.offset_db.execute("""
+create table offsets (
+    article_number integer primary key,
+    file_id integer,
+    title varchar unique,
+    seek integer,
+    length integer
+)""")
+        self.offset_db.execute("""
+create table files (
+    file_id integer primary key,
+    filename varchar
+)""")
 
         self.restricted_count = 0
         self.redirect_count = 0
@@ -189,18 +210,17 @@ class FileProcessing(FileScanner.FileScanner):
 
         i = 0
         for filename in self.file_list:
-            self.files_db[str(i)] = filename
+            self.offset_db.execute('insert into files (file_id, filename) values (?, ?)', (i, filename))
             i += 1
 
         if None != self.article_db:
+            self.article_db.commit()
             self.article_db.close()
             self.article_db = None
         if None != self.offset_db:
+            self.offset_db.commit()
             self.offset_db.close()
             self.offset_db = None
-        if None != self.files_db:
-            self.files_db.close()
-            self.files_db = None
 
 
     def title(self, text, seek):
@@ -238,7 +258,7 @@ class FileProcessing(FileScanner.FileScanner):
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        restricted = not filter(title) or not filter(text)
+        restricted = False #not filter(title) or not filter(text)
 
         self.article_count += 1
         if restricted:
@@ -257,9 +277,10 @@ class FileProcessing(FileScanner.FileScanner):
             else:
                 print 'Title:', title.encode('utf-8')
 
-        self.offset_db[str(self.article_count)] = str([self.file_id(), title, seek, len(text)])
+        self.offset_db.execute('insert into offsets (article_number, file_id, title, seek, length) values (?, ?, ?, ?, ?)',
+                               [self.article_count, self.file_id(), title, seek, len(text)])
 
-        if self.set_index(title, [self.article_count, -1, restricted]): # -1 == pfx place holder
+        if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
             print 'Duplicate Title:', title.encode('utf-8')
 
 
@@ -279,23 +300,33 @@ class FileProcessing(FileScanner.FileScanner):
         """returns false if the key did not already exist"""
         key = title.encode('utf-8')
         result = True
-        try:
-            item = self.article_db[key]
-        except KeyError:
-            result = False
-        self.article_db[title.encode('utf-8')] = str(data)
+        #try:
+        #    item = self.article_db[key]
+        #except KeyError:
+        #    result = False
+        #self.article_db[title.encode('utf-8')] = str(data)
+        #self.article_db[title.encode('utf-8')] = str(data)
+        self.article_db.execute('insert or replace into articles (title, article_number, fnd_offset, restricted) '
+                                'values (?, ?, ?, ?)', (title,) + data)
+        result = False # ***DEBUG*** how to set this?
+
         return result
 
 
     def get_index(self, title):
-        return eval(self.article_db[title.encode('utf-8')])
+        c = self.article_db.cursor()
+        c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', [title])
+        result = c.fetchone()
+        c.close()
+        return result
 
 
     def all_indices(self):
-        k = self.article_db.firstkey()
-        while k != None:
-            yield unicode(k, 'utf-8')
-            k = self.article_db.nextkey(k)
+        c = self.article_db.cursor()
+        c.execute("select title from articles")
+        for row in c:
+            yield row[0]
+        c.close()
 
 
     def find(self, title):
@@ -416,10 +447,8 @@ def output_fnd(filename, article_index):
             index_matrix[key2] = offset
         if key3 not in index_matrix:
             index_matrix[key3] = offset
-        data = article_index.get_index(title)
-        data[1] = offset
-        article_index.set_index(title, data)
-        article_number = data[0]
+        (article_number, dummy, restricted) = article_index.get_index(title)
+        article_index.set_index(title, (article_number, offset, restricted))
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
