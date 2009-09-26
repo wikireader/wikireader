@@ -119,6 +119,13 @@ def main():
 
 
     offset_db = sqlite3.connect(off_name)
+    offset_db.execute('pragma synchronous = 0')
+    offset_db.execute('pragma temp_store = 2')
+    offset_db.execute('pragma locking_mode = exclusive')
+    offset_db.execute('pragma cache_size = 20000000')
+    offset_db.execute('pragma default_cache_size = 20000000')
+    offset_db.execute('pragma journal_mode = memory')
+
     offset_cursor = offset_db.cursor()
 
     if do_output:
