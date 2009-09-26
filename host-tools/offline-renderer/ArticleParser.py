@@ -135,6 +135,7 @@ def main():
     offset_db.execute('pragma cache_size = 20000000')
     offset_db.execute('pragma default_cache_size = 20000000')
     offset_db.execute('pragma journal_mode = memory')
+    offset_db.execute('pragma read_uncommitted = 1')
 
     offset_cursor = offset_db.cursor()
 
