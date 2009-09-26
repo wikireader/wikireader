@@ -169,7 +169,7 @@ def main():
     article_db = sqlite3.connect(art_file)
     article_db.execute('pragma synchronous = 0')
     article_db.execute('pragma temp_store = 2')
-    article_db.execute('pragma locking_mode = exclusive')
+    #article_db.execute('pragma locking_mode = exclusive') # Sean: Ask Chris if this is ok?!
     article_db.execute('pragma cache_size = 20000000')
     article_db.execute('pragma default_cache_size = 20000000')
     article_db.execute('pragma journal_mode = memory')
