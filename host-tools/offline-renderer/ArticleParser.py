@@ -169,7 +169,7 @@ def main():
                 print 'Open:', filename
         f.seek(seek)
         
-        if type(title) is not StringType:  # Chris: Can we fix this in the database?
+        if type(title) is not UnicodeType:  # Chris: Can we fix this in the database?
             title = str(title)
         
         process_article_text(title.encode('utf-8'),  f.read(length), newf)
