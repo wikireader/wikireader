@@ -511,7 +511,7 @@ pragma journal_mode = memory;
 
 
 
-non_letters = re.compile('[\d\W]+')
+non_letters = re.compile('[-\d\W]+')
 
 def is_restricted(text):
     """check if text contains any restricted words"""
@@ -601,7 +601,7 @@ def output_fnd(filename, article_index):
         i += 1
 
     # create pfx matrix and write encoded titles
-    article_list = [ i for i in article_index.all_indices() ]
+    article_list = article_index.all_indices()
     #article_list = [strip_accents(k) for k in article_index.keys()]
     article_list.sort(key = lambda x: strip_accents(x).lower())
 
