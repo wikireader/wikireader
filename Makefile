@@ -267,7 +267,7 @@ endef
 # set this to make even distibution over 27 blocks
 # need a better way of setting this
 # ------------------------------------------------
-ARTICLE_COUNT_K ?= 113
+ARTICLE_COUNT_K ?= 114
 MACHINE_COUNT = 9
 PARALLEL_BUILD = 3
 
