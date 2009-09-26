@@ -739,7 +739,7 @@ def link_number(url):
     global article_index
 
     try:
-        n = article_index[url][0]
+        n = article_index(url)[0]
     except KeyError:
         n = -1
     return n

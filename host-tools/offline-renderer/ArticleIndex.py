@@ -623,7 +623,7 @@ def output_fnd(filename, article_index):
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
-    print 'Time: %ds' % time.time() - t
+    print 'Time: %ds' % (time.time() - t)
 
 
 def output_pfx(filename):
@@ -645,7 +645,7 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-    print 'Time: %ds' % time.time() - t
+    print 'Time: %ds' % (time.time() - t)
 
 
 # run the program

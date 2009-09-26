@@ -18,30 +18,40 @@ PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
 # Regular expressions for parsing the XML
 
-end_article = re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL)
 
-gallery = re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL)
 
-comment = re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL)
+subs = [
+    (re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL), ''),
 
-inline_ref = re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE)
+    (re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
-delete_tags = re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE)
+    (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
 
-line_break = re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE)
-entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
+    (re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE), ''),
+
+    (re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE), '\n'),
 
 #img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
-img = re.compile(r'\[\[(file|image):.*?\]{2,3}', re.IGNORECASE)
+    (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
 
-language = re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
+#img = re.compile(r'\[\[(file|image):([^\[]|\s|\[(\s|[^\[])*\]|\[\[(\s|[^\[])*\]\])*?\]{2,3}', re.IGNORECASE + re.DOTALL)
 
+    (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
-# redirect: <text.....#redirect.....[[title#relative link]].....
-redirected_to = re.compile(r'<text\s+xml:space="preserve">\s*#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
+# Wikipedia's installed Parser extension tags
+# <categorytree>, <charinsert>, <hiero>, <imagemap>, <inputbox>, <poem>,
+# <pre>, <ref>, <references>, <source>, <syntaxhighlight> and <timeline>
+# All referenced using special characters
+# Ex: <timeline> --> &lt;timeline&gt;
+# For now, we're only going to remove <timeline>
+    (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
-# Filter out Wikipedia's non article namespaces
-non_articles = re.compile(r'User:|Wikipedia:|File:|MediaWiki:|Template:|Help:|Category:|Portal:', re.IGNORECASE)
+    (re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE), ''),
+
+    (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;')
+
+]
 
 
 def usage(message):
@@ -143,8 +153,8 @@ def main():
         row = offset_cursor.fetchone()
         if None == row:
             break
-        (file_id, title, seek, length) = row
-
+        (title, file_id, seek, length) = row  # this order is different from select!
+        #print "row : ", row   # just to show select order is wrong, check creay=te table and insert/import
         if file_id != current_file_id:
             current_file_id = file_id
             if f:
@@ -173,24 +183,31 @@ def main():
 
 def process_article_text(title, text, newf):
     global verbose
-    global end_article, gallery, comment, inline_ref
-    global delete_tags, line_break, entities, img, language
+    global subs
+    #global end_article, gallery, comment, inline_ref
+    #global delete_tags, line_break, entities, img, language
 
     if verbose:
         print "[PA] " + title
 
-    text = end_article.sub('', text)
+    #text = end_article.sub('', text)
 
-    text = gallery.sub('', text)
-    text = comment.sub('', text)
-    text = inline_ref.sub('', text)
+    #text = gallery.sub('', text)
+    #text = comment.sub('', text)
+    #text = inline_ref.sub('', text)
 
-    text = delete_tags.sub('', text)
-    text = line_break.sub('\n', text)
-    text = entities.sub(r'&\1;', text)
-    text = language.sub('', text)
-    text = img.sub('', text)
+    #text = delete_tags.sub('', text)
+    
+    
+    #text = line_break.sub('\n', text)
+    #text = language.sub('', text)
+    #text = img.sub('', text)
+    
+    #text = entities.sub(r'&\1;', text)
 
+    for e,r in subs:
+        text = e.sub(r, text)
+    
     if newf:
         newf.write(title);
         newf.write('\n__NOTOC__\n')
