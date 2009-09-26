@@ -6,7 +6,7 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-filter_words = {
+FILTER_WEIGHTS = {
     "porn": 1,
     "porno": 1,
     "pornography": 1,
@@ -41,5 +41,7 @@ filter_words = {
     "shag": 1,
     "fuck": 1,
     "motherfucker": 1,
-    "cunt": 1,  
+    "cunt": 1,
 }
+
+BAD_WORDS = frozenset(FILTER_WEIGHTS.keys())
