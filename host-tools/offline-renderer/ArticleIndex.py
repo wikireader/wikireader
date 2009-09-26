@@ -241,19 +241,20 @@ class FileProcessing(FileScanner.FileScanner):
 #                                    [(article_number,) + self.offsets[article_number] for article_number in self.offsets])
 #        print 'Time: %ds' % (time.time() - t)
 
-
         print 'Writing: files'
         t = time.time()
         i = 0
-        with open('/tmp/file.sql', 'w') as f:
+        file_import = self.offset_db_name + '.files'
+        with open(file_import, 'w') as f:
             for filename in self.file_list:
                 f.write('%d\t%s\n' % (i, filename))
                 i += 1
         print 'Time: %ds' % (time.time() - t)
 
         print 'Writing: articles'
+        article_import = self.article_db_name + '.import'
         t = time.time()
-        with open('/tmp/article.sql', 'w') as f:
+        with open(article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write(title.encode('utf-8'))
@@ -261,8 +262,9 @@ class FileProcessing(FileScanner.FileScanner):
         print 'Time: %ds' % (time.time() - t)
 
         print 'Writing: offsets'
+        offset_import = self.offset_db_name + '.import'
         t = time.time()
-        with open('/tmp/offset.sql', 'w') as f:
+        with open(offset_import, 'w') as f:
             for article_number in self.offsets:
                 (file_id, title, seek, length) = self.offsets[article_number]
                 f.write('%d\t%d\t' % (article_number, file_id))
@@ -273,8 +275,8 @@ class FileProcessing(FileScanner.FileScanner):
 
         print 'Loading: articles'
         t = time.time()
-        with subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE).stdin as p:
-            p.write("""
+        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE).stdin
+        p.write("""
 create table articles (
     title varchar primary key,
     article_number integer,
@@ -290,15 +292,16 @@ pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
 .mode tab
-.import /tmp/article.sql articles
+.import %s articles
 .exit
-""")
+""" % article_import)
+        p.close()
         print 'Time: %ds' % (time.time() - t)
 
         print 'Loading: offsets and files'
         t = time.time()
-        with subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE).stdin as p:
-            p.write("""
+        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE).stdin
+        p.write("""
 create table offsets (
     article_number integer primary key,
     title varchar,
@@ -320,10 +323,11 @@ pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
 .mode tab
-.import /tmp/offset.sql offsets
-.import /tmp/file.sql files
+.import %s offsets
+.import %s files
 .exit
-""")
+""" % (offset_import, file_import))
+        p.close()
         print 'Time: %ds' % (time.time() - t)
 
 
