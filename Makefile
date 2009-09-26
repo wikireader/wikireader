@@ -264,10 +264,10 @@ stamp-r-clean${1}:
 endef
 
 # ------------------------------------------------
-# set this to make even distibution over 24 blocks
+# set this to make even distibution over 27 blocks
 # need a better way of setting this
 # ------------------------------------------------
-ARTICLE_COUNT_K ?= 128
+ARTICLE_COUNT_K ?= 113
 MACHINE_COUNT = 9
 PARALLEL_BUILD = 3
 
