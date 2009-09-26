@@ -224,6 +224,7 @@ combine: validate-destdir
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
+#.NOTPARALLEL: stamp-r-index
 stamp-r-index:
 	rm -f "$@"
 	cd host-tools/offline-renderer && $(MAKE) index \
@@ -267,12 +268,19 @@ endef
 # need a better way of setting this
 # ------------------------------------------------
 ARTICLE_COUNT_K ?= 128
+MACHINE_COUNT = 9
+PARALLEL_BUILD = 3
 
-# the first(0) and last(23) are special
+MAX_BLOCK := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD} - 1)
+
+# the first(0) and last(MAX_BLOCK) are special
+
 $(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
-ITEMS := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+
+ITEMS := $(shell i=1; while [ $${i} -lt ${MAX_BLOCK} ]; do echo $${i}; i=$$(($${i} + 1)); done)
 $(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${ARTICLE_COUNT_K})k,${ARTICLE_COUNT_K}k))
-$(call MAKE_BLOCK,23,$(shell expr 23 '*' ${ARTICLE_COUNT_K})k,all)
+
+$(call MAKE_BLOCK,${MAX_BLOCK},$(shell expr ${MAX_BLOCK} '*' ${ARTICLE_COUNT_K})k,all)
 
 
 MAKE_FARM = $(eval $(call MAKE_FARM1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
@@ -293,14 +301,19 @@ farm${1}: farm${1}-parse farm${1}-render
 
 endef
 
-$(call MAKE_FARM,1, 0  1  2)
-$(call MAKE_FARM,2, 3  4  5)
-$(call MAKE_FARM,3, 6  7  8)
-$(call MAKE_FARM,4, 9 10 11)
-$(call MAKE_FARM,5,12 13 14)
-$(call MAKE_FARM,6,15 16 17)
-$(call MAKE_FARM,7,18 19 20)
-$(call MAKE_FARM,8,21 22 23)
+
+MAKE_MACHINE = $(eval $(call MAKE_MACHINE1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
+
+define MAKE_MACHINE1
+
+$(call MAKE_FARM,${1}, $(shell expr ${1} - 1) $(shell expr ${1} - 1 + ${2}) $(shell expr ${1} - 1 + 2 '*' ${2}))
+
+endef
+
+MACHINE_LIST  := $(shell i=1; while [ $${i} -le ${MACHINE_COUNT} ]; do echo $${i}; i=$$(($${i} + 1)); done)
+
+
+$(foreach i,${MACHINE_LIST},$(call MAKE_MACHINE,${i},${MACHINE_COUNT}))
 
 
 # ----- wiki Dump  --------------------------------------
