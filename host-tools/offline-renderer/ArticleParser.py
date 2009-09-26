@@ -10,6 +10,7 @@ import os, sys, re, subprocess
 import getopt
 import os.path
 import sqlite3
+from types import *
 
 verbose = False
 
@@ -165,11 +166,11 @@ def main():
             if verbose:
                 print 'Open:', filename
         f.seek(seek)
-        try:
-            process_article_text(title.encode('utf-8'),  f.read(length), newf)
-        except AttributeError:
-            print title, file_id, seek, length
-            print 'r : ', row
+        
+        if type(title) is IntType:  # Chris: Can we fix this in the database?
+            title = str(title)
+        
+        process_article_text(title.encode('utf-8'),  f.read(length), newf)
         if article_count != 'all':
             article_count -= 1
         total_articles += 1
