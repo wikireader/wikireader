@@ -17,3 +17,7 @@ install
 KERNEL*
 *.map
 *.elf
+stamp-*
+image
+work
+*.xml
