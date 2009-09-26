@@ -13,14 +13,15 @@ USAGE()
 {
   [ -z "$1" ] || echo error: $*
   echo usage: $(basename "$0") '<options>' command
-  echo '       --help         this message'
-  echo '       --verbose      more messages'
-  echo '       --get-index=n  where to rsync the pickles from [1 => render1]'
-  echo '       --host=name    name of the host [render]'
-  echo '       --no-run       do not run fuinal make'
-  echo '       --clear        clear work and dest'
-  echo '       --work=name    workdir [work]'
-  echo '       --dest=name    destdir [image]'
+  echo '       --help         -h         this message'
+  echo '       --verbose      -v         more messages'
+  echo '       --get-index=n  -g <n>     where to rsync the pickles from [1 => render1]'
+  echo '       --host=name    -o <name>  name of the host [render]'
+  echo '       --no-run       -n         do not run final make'
+  echo '       --sequential   -s         run rensering in series'
+  echo '       --clear        -c         clear work and dest dirs'
+  echo '       --work=dir     -w <dir>   workdir [work]'
+  echo '       --dest=dir     -d <dir>   destdir [image]'
   exit 1
 }
 
@@ -32,9 +33,10 @@ clear=no
 work=work
 dest=image
 run=yes
+seq=no
 debug=
 
-args=$(getopt -o hvg:o:p:ncw:d: --long=help,verbose,get-index:,host:,no-run,clear,work:,dest:,debug -- "$@") ||exit 1
+args=$(getopt -o hvg:o:p:nscw:d: --long=help,verbose,get-index:,host:,no-run,sequential,clear,work:,dest:,debug -- "$@") ||exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -58,6 +60,11 @@ do
 
     -n|--no-run)
       run=no
+      shift
+      ;;
+
+    -s|--sequential)
+      seq=yes
       shift
       ;;
 
@@ -129,8 +136,15 @@ fi
 
 case "${run}" in
   [yY]|[yY][eE][sS])
-    ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-    ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-    ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-    ;;
+    case "${seq}" in
+      [yY]|[yY][eE][sS])
+        ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+        ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+        ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+        ;;
+      *)
+        ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+        ${debug} time make -j3 "${farm}" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+        ;;
+      esac
 esac
