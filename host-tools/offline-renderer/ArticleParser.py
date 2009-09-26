@@ -154,7 +154,7 @@ def main():
         if None == row:
             break
         (title, file_id, seek, length) = row  # this order is different from select!
-        #print "row : ", row   # just to show select order is wrong, check creay=te table and insert/import
+        #print "row : ", row   # just to show select order is wrong, check create table and insert/import
         if file_id != current_file_id:
             current_file_id = file_id
             if f:
@@ -165,7 +165,11 @@ def main():
             if verbose:
                 print 'Open:', filename
         f.seek(seek)
-        process_article_text(title.encode('utf-8'),  f.read(length), newf)
+        try:
+            process_article_text(title.encode('utf-8'),  f.read(length), newf)
+        except AttributeError:
+            print title, file_id, seek, length
+            print 'r : ', row
         if article_count != 'all':
             article_count -= 1
         total_articles += 1
