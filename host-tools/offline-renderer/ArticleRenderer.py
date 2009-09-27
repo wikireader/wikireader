@@ -802,7 +802,8 @@ def write_article():
         try:
             (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
         except TypeError:
-            print g_this_article_title, article_number
+            print "TITLE  : ", g_this_article_title
+            print "TUPPLE : ", article_index(g_this_article_title)
 		
         try:
             (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
