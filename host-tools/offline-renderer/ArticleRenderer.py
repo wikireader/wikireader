@@ -797,6 +797,13 @@ def write_article():
         f_out.write(body)
     output.truncate(0)
     if compress:
+
+		#for debugging
+        try:
+            (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
+        except TypeError:
+            print g_this_article_title, article_number
+		
         try:
             (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
             data_offset = (file_offset & 0x7fffffff)
