@@ -798,25 +798,18 @@ def write_article():
     output.truncate(0)
     if compress:
 
-		#for debugging
-        try:
-            (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
-        except TypeError:
-            print "TITLE  : ", g_this_article_title
-            print "TUPPLE : ", article_index(g_this_article_title)
-		
-        try:
-            (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
-            data_offset = (file_offset & 0x7fffffff)
-            if restricted:
-                data_offset |= 0x80000000
-            data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
-            i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
-        except KeyError:
-            print 'Error in: write_article, Title not found'
-            print 'Title:', g_this_article_title
-            print 'Offset:', file_offset
-            print 'Count:', article_count
+		try:
+		    (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
+		    data_offset = (file_offset & 0x7fffffff)
+		    if restricted:
+		        data_offset |= 0x80000000
+		    data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
+		    i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
+		except TypeError:
+			print 'Error in: write_article, Title not found'
+			print 'Title:', g_this_article_title
+			#print 'Offset:', file_offset
+			#print 'Count:', article_count
 
 # run the program
 if __name__ == "__main__":
