@@ -257,7 +257,7 @@ class FileProcessing(FileScanner.FileScanner):
         with open(article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
-                f.write(title.encode('utf-8'))
+                f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
         print 'Time: %ds' % (time.time() - t)
 
@@ -268,7 +268,7 @@ class FileProcessing(FileScanner.FileScanner):
             for article_number in self.offsets:
                 (file_id, title, seek, length) = self.offsets[article_number]
                 f.write('%d\t%d\t' % (article_number, file_id))
-                f.write(title.encode('utf-8'))
+                f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\n' % (seek, length))
         print 'Time: %ds' % (time.time() - t)
 

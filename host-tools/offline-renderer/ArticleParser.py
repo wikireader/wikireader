@@ -168,10 +168,7 @@ def main():
             if verbose:
                 print 'Open:', filename
         f.seek(seek)
-        
-        if type(title) is not UnicodeType:  # Chris: Can we fix this in the database?
-            title = str(title)
-        
+              
         process_article_text(title.encode('utf-8'),  f.read(length), newf)
         if article_count != 'all':
             article_count -= 1
@@ -216,7 +213,7 @@ def process_article_text(title, text, newf):
         text = e.sub(r, text)
     
     if newf:
-        newf.write(title);
+        newf.write(title[1:]);  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')
         newf.write(text + '\n')
         newf.write('***EOF***\n')

@@ -747,11 +747,12 @@ def link_number(url):
     return n
 
 
+# Add the '~' padding back here
 def article_index(title):
     global article_db
 
     c = article_db.cursor()
-    c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', [title])
+    c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', ["~" + title])
     result = c.fetchone()
     c.close()
     return result
@@ -805,11 +806,11 @@ def write_article():
 		        data_offset |= 0x80000000
 		    data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
 		    i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
-		except TypeError:
+		except KeyError:
 			print 'Error in: write_article, Title not found'
 			print 'Title:', g_this_article_title
-			#print 'Offset:', file_offset
-			#print 'Count:', article_count
+			print 'Offset:', file_offset
+			print 'Count:', article_count
 
 # run the program
 if __name__ == "__main__":
