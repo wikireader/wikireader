@@ -31,6 +31,14 @@
 #define ARTICLE_HISTORY		1
 #define ARTICLE_BROWSE		2
 
+enum display_mode_e {
+
+	DISPLAY_MODE_INDEX,
+	DISPLAY_MODE_ARTICLE,
+	DISPLAY_MODE_HISTORY,
+	DISPLAY_MODE_IMAGE,
+};
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned long u32;

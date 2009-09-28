@@ -115,11 +115,105 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
+static struct keyboard_key password_char[] = {
+	KEY(0, 33, 95, 59, 'Y'),
+	KEY(0, 60, 95, 86, 'N'),
+
+	KEY(0, 126, 23, 152, 'q'),
+	KEY(0, 153, 23, 180, 'a'),
+	KEY(0, 181, 23, 207, 'z'),
+
+	KEY(24, 126, 47, 152, 'w'),
+	KEY(24, 153, 47, 180, 's'),
+	KEY(24, 181, 47, 207, 'x'),
+
+	KEY(48, 126, 71, 152, 'e'),
+	KEY(48, 153, 71, 180, 'd'),
+	KEY(48, 181, 71, 207, 'c'),
+
+	KEY(72, 126, 95, 152, 'r'),
+	KEY(72, 153, 95, 180, 'f'),
+	KEY(72, 181, 95, 207, 'v'),
+
+	KEY(96, 126, 119, 152, 't'),
+	KEY(96, 153, 119, 180, 'g'),
+	KEY(96, 181, 143, 207, ' '),
+
+	KEY(120, 126, 143, 152, 'y'),
+	KEY(120, 153, 143, 180, 'h'),
+
+	KEY(144, 126, 167, 152, 'u'),
+	KEY(144, 153, 167, 180, 'j'),
+	KEY(144, 181, 167, 207, 'b'),
+
+	KEY(168, 126, 191, 152, 'i'),
+	KEY(168, 153, 191, 180, 'k'),
+	KEY(168, 181, 191, 207, 'n'),
+
+	KEY(192, 126, 215, 152, 'o'),
+	KEY(192, 153, 215, 180, 'l'),
+	KEY(192, 181, 215, 207, 'm'),
+
+	KEY(216, 126, 239, 152, 'p'),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
+	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
+};
+static struct keyboard_key password_num[] = {
+	KEY(0, 33, 95, 59, 'Y'),
+	KEY(0, 60, 95, 86, 'N'),
+
+	KEY(0, 126, 23, 152, '1'),
+	KEY(0, 153, 23, 180, '*'),
+	KEY(0, 181, 23, 207, '@'),
+                              
+	KEY(24, 126, 47, 152, '2'),
+	KEY(24, 153, 47, 180, '$'),
+	KEY(24, 181, 47, 207, '?'),
+                              
+	KEY(48, 126, 71, 152, '3'),
+	KEY(48, 153, 71, 180, '%'),
+	KEY(48, 181, 71, 207, '!'),
+                              
+	KEY(72, 126, 95, 152, '4'),
+	KEY(72, 153, 95, 180, '#'),
+	KEY(72, 181, 95, 207, '&'),
+                              
+	KEY(96, 126, 119, 152, '5'),
+	KEY(96, 153, 119, 180, '('),
+	KEY(96, 181, 143, 207, ' '),
+                              
+	KEY(120, 126, 143, 152, '6'),
+	KEY(120, 153, 143, 180, ')'),
+                              
+	KEY(144, 126, 167, 152, '7'),
+	KEY(144, 153, 167, 180, '-'),
+	KEY(144, 181, 167, 207, ','),
+                              
+	KEY(168, 126, 191, 152, '8'),
+	KEY(168, 153, 191, 180, '+'),
+	KEY(168, 181, 191, 207, '.'),
+                              
+	KEY(192, 126, 215, 152, '9'),
+	KEY(192, 153, 215, 180, '='),
+	KEY(192, 181, 215, 207, '\''),
+                              
+	KEY(216, 126, 239, 152, '0'),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
+	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
+};
 static struct keyboard_key clear_history[] = {
 	KEY(144, 181, 191, 207, 'Y'),
 	KEY(192, 181, 239, 207, 'N'),
 };
-
+static struct keyboard_key restriction[] = {
+	KEY(0, 153, 95, 180, 'Y'),
+	KEY(0, 181, 95, 207, 'N'),
+};
+static struct keyboard_key filter[] = {
+	KEY(0, 33, 95, 59, 'Y'),
+	KEY(0, 60, 95, 86, 'N'),
+	KEY(0, 87, 95, 113, 'P'),
+};
 /*
  * The secret of the position and size of the keyboard
  * is shared between search.c and this file.
@@ -205,6 +299,38 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 			if (clear_history[i].left_x + KEY_GAP1 <= x && clear_history[i].right_x - KEY_GAP2 >= x
 			&& clear_history[i].left_y + KEY_GAP3 <= y && clear_history[i].right_y - KEY_GAP4 >= y) {
 				return &clear_history[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_CHAR) {
+		for (i = 0; i < ARRAY_SIZE(password_char); ++i) {
+			if (password_char[i].left_x + KEY_GAP1 <= x && password_char[i].right_x - KEY_GAP2 >= x
+			&& password_char[i].left_y + KEY_GAP3 <= y && password_char[i].right_y - KEY_GAP4 >= y) {
+				return &password_char[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_NUM) {
+		for (i = 0; i < ARRAY_SIZE(password_num); ++i) {
+			if (password_num[i].left_x + KEY_GAP1 <= x && password_num[i].right_x - KEY_GAP2 >= x
+			&& password_num[i].left_y + KEY_GAP3 <= y && password_num[i].right_y - KEY_GAP4 >= y) {
+				return &password_num[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_RESTRICTION) {
+		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
+			if (restriction[i].left_x + KEY_GAP1 <= x && restriction[i].right_x - KEY_GAP2 >= x
+			&& restriction[i].left_y + KEY_GAP3 <= y && restriction[i].right_y - KEY_GAP4 >= y) {
+				return &restriction[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_FILTER) {
+		for (i = 0; i < ARRAY_SIZE(filter); ++i) {
+			if (filter[i].left_x + KEY_GAP1 <= x && filter[i].right_x - KEY_GAP2 >= x
+			&& filter[i].left_y + KEY_GAP3 <= y && filter[i].right_y - KEY_GAP4 >= y) {
+				return &filter[i];
 			}
 		}
 	}

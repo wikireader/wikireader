@@ -9,8 +9,8 @@ struct glyph {
 	char data[0];
 } __attribute__((packed));
 
-int render_string(const int font, int off_x, int off_y, char*, int len);
-int render_string_right(const int font, int off_x, int off_y, char*, int len);
+int render_string(const int font, int off_x, int off_y, char*, int len, int inverted);
+int render_string_right(const int font, int off_x, int off_y, char*, int len, int inverted);
 void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf);
 int draw_glyphs_to_buf(const int font, int start_x, int start_y, const char *string, char *buf);
 #endif /* GLYPH_H */

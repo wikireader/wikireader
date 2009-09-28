@@ -19,11 +19,8 @@
 #define WL_SEARCH_H
 
 #define TARGET_SIZE 6
-//#define RESULT_START 20
 #define RESULT_START 33
-//#define RESULT_HEIGHT 10
 #define RESULT_HEIGHT 19
-#define MAX_RESULTS 9
 #define MAX_TITLE_SEARCH 64
 #define NUMBER_OF_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
@@ -65,6 +62,8 @@ int retrieve_article(long idx_article);
 void memrcpy(char *dest, char *src, int len); // memory copy starting from the last byte
 void random_article(void);
 void get_article_title_from_idx(long idx, char *title);
+long result_list_offset_next(void);
+long result_list_next_result(long offset_next, long *idxArticle, char *sTitleSearch);
 
 /**
  * Initialize the search engine. Once.
@@ -111,7 +110,6 @@ void search_set_selection(int new_selection);
 void search_open_article(int new_selection);
 int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, int bInit);
 
-int  set_result_list_base(int offset,int offset_count);
 void search_fetch();
 void search_result_display();
 void search_reload_ex(int flag);

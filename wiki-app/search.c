@@ -36,17 +36,18 @@ unsigned int get_time_search(void);
 unsigned int time_search_last = 0;
 bool search_string_changed = false;
 bool search_string_changed_remove = false;
+int more_search_results = 0;
+extern ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
+extern int article_link_count;
 
 typedef struct _search_results {
-	char list[MAX_RESULTS][MAX_TITLE_SEARCH];
-	long idx_article[MAX_RESULTS];  // index (pedia.idx) for loading the article 
-	long offset_list[MAX_RESULTS];	// offset (pedia.fnd) of each search title in list
+	char title[NUMBER_OF_RESULTS][MAX_TITLE_SEARCH];
+	long idx_article[NUMBER_OF_RESULTS];  // index (pedia.idx) for loading the article 
+	long offset_list[NUMBER_OF_RESULTS];	// offset (pedia.fnd) of each search title in list
 	long offset_next;		// offset (pedia.fnd) of the next title after the list
 	unsigned int count;
-	int base;		// the starting list index for the circular list. it is also the first item displayed
 	int result_populated;
 	int cur_selected;		// -1 when no selection.
-//	unsigned int first_item;	// Index of the first item displayed on the list. 0 based.
 } SEARCH_RESULTS;
 static SEARCH_RESULTS *result_list;
 
@@ -57,7 +58,7 @@ typedef struct _search_info {
 	long max_article_idx;
 	long prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
 	int b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
-	char buf[MAX_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
+	char buf[NUMBER_OF_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
 	int buf_len;
 	long offset_current;		// offset (pedia.fnd) of the content of buffer
 } SEARCH_INFO;
@@ -105,6 +106,33 @@ static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 //#endif
 //}
 
+long result_list_offset_next(void)
+{
+	return result_list->offset_next;
+}
+
+long result_list_next_result(long offset_next, long *idxArticle, char *sTitleSearch)
+{
+	TITLE_SEARCH titleSearch;
+	
+	copy_fnd_to_buf(offset_next, (void *)&titleSearch, sizeof(TITLE_SEARCH));
+	bigram_decode(sTitleSearch, titleSearch.sTitleSearch, MAX_TITLE_SEARCH);
+#ifndef INCLUDED_FROM_KERNEL
+msg(MSG_INFO, "[%s], [", sTitleSearch);
+int i;
+for (i=0;i<search_str_len;i++)
+msg(MSG_INFO, "%c", search_string[i]);
+msg(MSG_INFO, "]\n");
+#endif
+	if (!search_string_cmp(sTitleSearch, search_string, search_str_len)) // match!
+	{
+		*idxArticle = titleSearch.idxArticle;
+		return offset_next + sizeof(titleSearch.idxArticle) + strlen(titleSearch.sTitleSearch) + 2;
+	}
+	else
+		return 0;
+}
+
 void get_article_title_from_idx(long idx, char *title)
 {
 	ARTICLE_PTR article_ptr;
@@ -116,7 +144,7 @@ void get_article_title_from_idx(long idx, char *title)
 	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
 	{
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
-		bigram_decode(title, title_search.sTitleSearch);
+		bigram_decode(title, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		title[MAX_TITLE_SEARCH - 1] = '\0';
 	}
 }
@@ -152,9 +180,6 @@ void search_init()
 		/* XXX, FIXME, handle the error */
 	}
 	result_list->count = 0;
-	result_list->base = 0;
-//	result_list->first_item = 0;
-	result_list->cur_selected = 0;
 	init_search_hash();
 }
 
@@ -180,9 +205,9 @@ static void print_article_error()
 {
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Opening the article failed.", 27);
-render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, strlen(article_error));
-render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, strlen(article_error2));
+	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Opening the article failed.", 27, 0);
+render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, strlen(article_error), 0);
+render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, strlen(article_error2), 0);
 	guilib_fb_unlock();
 }
 
@@ -291,8 +316,6 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		offset_fnd_start = input_offset_fnd_start;
 		offset_fnd_end = input_offset_fnd_end;
 		result_list->count = 0;
-		result_list->base = 0;
-		result_list->cur_selected = 0;
 		offsetNextTitleSearch = 0;
 	}
 	if (result_list->result_populated || offset_fnd_start < 0)
@@ -316,10 +339,10 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 			is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - offsetNextTitleSearch - 
 			sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
-			bigram_decode(result_list->list[result_list->count], pTitleSearch->sTitleSearch);
-			rc = search_string_cmp(result_list->list[result_list->count], search_string, search_str_len);
+			bigram_decode(result_list->title[result_list->count], pTitleSearch->sTitleSearch, MAX_TITLE_SEARCH);
+			rc = search_string_cmp(result_list->title[result_list->count], search_string, search_str_len);
 #ifndef INCLUDED_FROM_KERNEL
-msg(MSG_INFO, "rc %d, [%s], [", rc, result_list->list[result_list->count]);
+msg(MSG_INFO, "rc %d, [%s], [", rc, result_list->title[result_list->count]);
 int i;
 for (i=0;i<search_str_len;i++)
 msg(MSG_INFO, "%c", search_string[i]);
@@ -346,7 +369,7 @@ msg(MSG_INFO, "]\n");
 				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
 				result_list->count++;
-				if (result_list->count >= MAX_RESULTS)
+				if (result_list->count >= NUMBER_OF_RESULTS)
 				{
 					result_list->result_populated = 1;
 					goto out;
@@ -375,7 +398,7 @@ msg(MSG_INFO, "]\n");
 								char local_title_search[MAX_TITLE_SEARCH];
 								
 								offset_middle += (char *)pTitleSearch - buf_middle;
-								bigram_decode(local_title_search, pTitleSearch->sTitleSearch);
+								bigram_decode(local_title_search, pTitleSearch->sTitleSearch, MAX_TITLE_SEARCH);
 								rc = search_string_cmp(local_title_search, search_string, search_str_len);
 								if (rc >= 0)	// the first mactch will be in front or at offset_middle
 								{
@@ -429,12 +452,6 @@ out:
 	}
 	else
 	{
-//		if (bInit)
-//		{
-//			guilib_fb_lock();
-//			render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_SEARCHING, strlen(MESSAGE_SEARCHING));
-//			guilib_fb_unlock();
-//		}
 		return 1;
 	}
 }
@@ -682,7 +699,6 @@ int search_populate_result()
 	long offset_search_result_end = -1;
 
 	result_list->count = 0;
-	result_list->base = 0;
 	result_list->cur_selected = 0;
 	if (search_str_len > 0)
 	{
@@ -737,59 +753,35 @@ void search_reload()
 		guilib_clear();
 	else
 		guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
-//	render_len = render_string(SEARCH_HEADING_FONT_IDX, 5, 5, search_result_str, strlen(search_result_str));
 
 	if (!search_str_len)
 	{
 		result_list->count = 0;
 		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
 		goto out;
 	}
 
-	//render_string(4, 87, 10, search_string, strlen(search_string));
 	capitalize(search_string, temp_search_string, search_str_len);
 	if (search_str_len > 1 && search_string_pos[search_str_len - 1] >= LCD_BUF_WIDTH_PIXELS)
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
+	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
 	y_pos = RESULT_START;
 
-//	int found = 0;
-//	available_count = result_list->count - result_list->first_item;
-//	while (available_count < screen_display_count &&
-//		result_list->count < MAX_RESULTS &&
-//		(result = search_fetch_result())) {
-//		len = strlen(result);
-//		memcpy(&result_list->list[result_list->count], result, len);
-//		result_list->list[result_list->count][len] = 0;
-//		++result_list->count;
-//		++available_count;
-//		found = 1;
-//	}
 
 	if (!result_list->count) {
-//		result_list->cur_selected = -1;
-//		result_list->first_item = 0;
-		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
 		goto out;
 	}
 
-//	if (!found && result_list->first_item && result_list->first_item+result_list->cur_selected >= result_list->count) {
-//		--result_list->first_item;
-//		++available_count;
-//	}
 	if (result_list->count) {
-		unsigned int i, j;
+		unsigned int i;
 		unsigned int count = result_list->count < screen_display_count ?
 					result_list->count : screen_display_count;
 
 		for (i = 0; i < count; i++) {
-			j = i + result_list->base;
-			if (j >= MAX_RESULTS)
-				j -= MAX_RESULTS;
-			title = result_list->list[j];
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
-			DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
+			title = result_list->title[i];
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
 			y_pos += RESULT_HEIGHT;
                         if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
                            break;
@@ -803,6 +795,7 @@ out:
 //	DP(DBG_SEARCH, ("O search_reload() end: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list->cur_selected, result_list->first_item));
 	guilib_fb_unlock();
 }
+
 void search_reload_ex(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
@@ -813,10 +806,12 @@ void search_reload_ex(int flag)
 	char *title;
 	char temp_search_string[MAX_TITLE_SEARCH];
 	static int bNoResultLastTime = 0;
+	int keyboard_mode = keyboard_get_mode();
 
 
+	more_search_results = 0;
 	guilib_fb_lock();
-	if (keyboard_get_mode() == KEYBOARD_NONE)
+	if (keyboard_mode == KEYBOARD_NONE)
         {
 		if (result_list->result_populated)
 		{
@@ -856,18 +851,18 @@ void search_reload_ex(int flag)
 		guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
 		result_list->count = 0;
 		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
 		goto out;
 	}
 
 	capitalize(search_string, temp_search_string, search_str_len);
 	if (last_start_x_search >= LCD_BUF_WIDTH_PIXELS)
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
+	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
 	if (last_start_x_search < LCD_BUF_WIDTH_PIXELS && start_x_search >= LCD_BUF_WIDTH_PIXELS)
 	{	
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string));
+		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
 	}
 	last_start_x_search = start_x_search;
         search_string_pos[search_str_len]=start_x_search;
@@ -876,44 +871,48 @@ void search_reload_ex(int flag)
 
 	if (result_list->result_populated && flag != SEARCH_RELOAD_NO_POPULATE)
 	{
-		if (result_list->result_populated && !result_list->count) {
+		unsigned int i;
+		unsigned int count = result_list->count < screen_display_count ?
+					result_list->count : screen_display_count;
+		if (!result_list->count) {
 			if (!bNoResultLastTime)
 			{
 				guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
-				render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
+				render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
 				bNoResultLastTime = 1;
 			}
 			goto out;
 		}
 		bNoResultLastTime = 0;
 	
-		if (result_list->result_populated) {
-			unsigned int i, j;
-			unsigned int count = result_list->count < screen_display_count ?
-						result_list->count : screen_display_count;
-	
-			for (i = 0; i < screen_display_count; i++)
+		article_link_count = 0;
+		for (i = 0; i < screen_display_count; i++)
+		{
+			end_y_pos = y_pos + RESULT_HEIGHT - 1;
+			if (end_y_pos > LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1)
+				 end_y_pos = LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1;
+			guilib_clear_area(0, y_pos, 239, end_y_pos);
+			if (i < count)
 			{
-				end_y_pos = y_pos + RESULT_HEIGHT - 1;
-				if (end_y_pos > LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1)
-					 end_y_pos = LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1;
-				guilib_clear_area(0, y_pos, 239, end_y_pos);
-				if (i < count)
+				if (keyboard_mode == KEYBOARD_NONE)
 				{
-					j = i + result_list->base;
-					if (j >= MAX_RESULTS)
-						j -= MAX_RESULTS;
-					title = result_list->list[j];
-					render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
-					DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
-	                        }
-				y_pos += RESULT_HEIGHT;
-		                if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
-		                	break;
+					articleLink[article_link_count].start_xy = (unsigned  long)(y_pos << 8);
+					articleLink[article_link_count].end_xy = (unsigned  long)((LCD_BUF_WIDTH_PIXELS - 1) | (end_y_pos << 8));
+					articleLink[article_link_count++].article_id = result_list->idx_article[i];
+				}
+				title = result_list->title[i];
+				render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
+	                }
+			y_pos += RESULT_HEIGHT;
+		        if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
+		        	break;
+		}
+		if (keyboard_mode == KEYBOARD_NONE)
+		{
+			if (result_list->count == NUMBER_OF_RESULTS)
+			{
+				more_search_results = 1;
 			}
-			if (result_list->cur_selected >= screen_display_count)
-				result_list->cur_selected = screen_display_count - 1;
-			invert_selection(result_list->cur_selected, -1, RESULT_START, RESULT_HEIGHT);
 		}
 	}
 out:
@@ -933,7 +932,7 @@ void search_result_display()
 	{
 		result_list->count = 0;
 		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
+		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
 		goto out;
 	}
 
@@ -941,22 +940,18 @@ void search_result_display()
 	y_pos = RESULT_START;
 
 	if (!result_list->count) {
-		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS));
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
 		goto out;
 	}
 
 	if (result_list->count) {
-		unsigned int i, j;
+		unsigned int i;
 		unsigned int count = result_list->count < screen_display_count ?
 					result_list->count : screen_display_count;
 
 		for (i = 0; i < count; i++) {
-			j = i + result_list->base;
-			if (j >= MAX_RESULTS)
-				j -= MAX_RESULTS;
-			title = result_list->list[j];
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title));
-			DP(DBG_SEARCH, ("O result[%d] '%s'\n", j, title));
+			title = result_list->title[i];
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
 			y_pos += RESULT_HEIGHT;
                         if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
                            break;
@@ -1038,50 +1033,6 @@ int search_remove_char(int bPopulate)
         return 0;
 }
 
-int result_list_down(int nRows)
-{
-	int nRowsToMove = 0;
-	int bDone;
-	TITLE_SEARCH *pTitleSearch;
-	char sTempTitle[MAX_TITLE_SEARCH];
-	int idx;
-	
-	if (nRows >= result_list->count)
-		nRows = result_list->count - 1;
-	if (nRows > 0)
-	{
-		nRowsToMove = nRows;
-		bDone = 0;
-		while (nRowsToMove >= 0 && !bDone)
-		{
-			if (result_list->offset_next - search_info->offset_current + sizeof(TITLE_SEARCH) < search_info->buf_len)
-			{
-				pTitleSearch = (TITLE_SEARCH *)&search_info->buf[result_list->offset_next - search_info->offset_current];
-				bigram_decode(sTempTitle, pTitleSearch->sTitleSearch);
-				if (search_string_cmp(sTempTitle, search_string, search_str_len))
-				{
-					result_list->base++;
-					if (result_list->base >= MAX_RESULTS)
-						result_list->base = 0;
-					idx = result_list->base + result_list->count;
-					if (idx >= MAX_RESULTS)
-						result_list->base -= MAX_RESULTS;
-					
-					result_list->idx_article[idx] = pTitleSearch->idxArticle;
-					result_list->offset_list[idx] = result_list->offset_next;
-					result_list->offset_next += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch);
-					nRowsToMove--;
-				}
-				else
-					bDone = 1;
-			}
-			else
-				fetch_search_result(result_list->offset_list[result_list->base], -1, 1);
-		}
-	}
-	return (nRows - nRowsToMove);
-}
-
 TITLE_SEARCH *locate_previous_title(char *buf, int len)
 {
 	char *p;
@@ -1108,118 +1059,6 @@ TITLE_SEARCH *locate_previous_title(char *buf, int len)
 	}
 	return NULL;
 }
-int result_list_up(int nRows)
-{
-	int nRowsToMove = 0;
-	int bDone;
-	TITLE_SEARCH *pTitleSearch;
-	char sTempTitle[MAX_TITLE_SEARCH];
-	int idx;
-	
-	if (nRows >= result_list->count)
-		nRows = result_list->count - 1;
-	if (nRows > 0)
-	{
-		nRowsToMove = nRows;
-		bDone = 0;
-		while (nRowsToMove >= 0 && !bDone)
-		{
-			if ((pTitleSearch = locate_previous_title(search_info->buf, 
-				result_list->offset_list[result_list->base] - search_info->offset_current)) != NULL)
-			{
-				bigram_decode(sTempTitle, pTitleSearch->sTitleSearch);
-				if (search_string_cmp(sTempTitle, search_string, search_str_len))
-				{
-					if (result_list->count < MAX_RESULTS - 1)
-						result_list->count++;
-					else
-					{
-						idx = result_list->base + result_list->count;
-						if (idx >= MAX_RESULTS)
-							result_list->base -= MAX_RESULTS;
-						result_list->offset_next = result_list->offset_list[result_list->base];
-						result_list->base--;
-						if (result_list->base < 0)
-							result_list->base = MAX_RESULTS - 1;
-					}
-					result_list->idx_article[result_list->base] = pTitleSearch->idxArticle;
-					result_list->offset_list[result_list->base] = result_list->offset_next;
-					nRowsToMove--;
-				}
-				else
-					bDone = 1;
-			}
-			else
-				fetch_search_result(result_list->offset_next - sizeof(search_info->buf), -1, 1);
-		}
-	}
-	return nRows - nRowsToMove;
-}
-
-void search_select_down(void)
-{
-//	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-//					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-//	int available_count = result_list->count - result_list->first_item;
-//	int actual_display_count = available_count < screen_display_count ?
-//					available_count : screen_display_count;
-
-	/* no selection, do nothing */
-//	if (result_list->cur_selected < 0)
-//		return;
-
-	/* bottom reached, not wrapping around */
-//	if (result_list->cur_selected + 1 < actual_display_count ) {
-//		invert_selection(result_list->cur_selected, result_list->cur_selected + 1, PIXEL_START, RESULT_HEIGHT);
-//		++result_list->cur_selected;
-//	}
-//	if (actual_display_count < available_count) {
-//		++result_list->first_item;
-//		if (result_list->first_item >= MAX_RESULTS)
-//			result_list->first_item -= MAX_RESULTS;
-//		search_reload();
-//		keyboard_paint();
-//	}
-        return;
-	if (result_list_down(1))
-	{
-		result_list->cur_selected++;
-		if (result_list->cur_selected >= MAX_RESULTS)
-			result_list->cur_selected = 0;
-		search_reload();
-		keyboard_paint();
-	}
-//	DP(DBG_SEARCH, ("O search_select_down() cur_selected %d\n", result_list->cur_selected));
-}
-
-void search_select_up(void)
-{
-//	DP(DBG_SEARCH, ("O search_select_up() cur_selected %d\n", result_list->cur_selected));
-	/* no selection, do nothing */
-//	if (result_list->cur_selected < 0)
-//		return;
-//
-//	if (result_list->cur_selected > 0) {
-//		invert_selection(result_list->cur_selected, result_list->cur_selected - 1, PIXEL_START, RESULT_HEIGHT);
-//		--result_list->cur_selected;
-//	}
-//	if (result_list->first_item != result_list->base) {
-//		--result_list->first_item;
-//		if (result_list->first_item < 0)
-//			result_list->first_item = MAX_RESULTS - 1;
-//		search_reload();
-//		keyboard_paint();
-//	}
-        return;
-	if (result_list_up(1))
-	{
-		result_list->cur_selected--;
-		if (result_list->cur_selected < 0)
-			result_list->cur_selected = MAX_RESULTS - 1;
-		search_reload();
-		keyboard_paint();
-	}
-}
 
 int search_current_selection(void)
 {
@@ -1238,6 +1077,7 @@ unsigned int search_result_count()
 {
 	return result_list->count;
 }
+
 int clear_search_string()
 {
       if (search_str_len == 0)
@@ -1248,20 +1088,16 @@ int clear_search_string()
       search_str_len = 0;
       return 0;
 }
+
 int get_search_string_len()
 {
       return search_str_len;
 }
+
 int search_result_selected()
 {
 	return result_list->cur_selected;
 //return -1;
-}
-
-unsigned int search_result_first_item()
-{
-//	return result_list->first_item;
-return result_list->base;
 }
 
 extern unsigned char * file_buffer;
@@ -1344,23 +1180,17 @@ sprintf(article_error2, "len=%d, rc=%d", dat_article_len, rc);
 
 void search_set_selection(int new_selection)
 {
-	//int list_idx;
 	
 	result_list->cur_selected = new_selection;
-	/*list_idx = result_list->base + new_selection;
-	if (list_idx >= MAX_RESULTS)
-		list_idx -= MAX_RESULTS;
-	if (!display_link_article(result_list->idx_article[list_idx]))
-		history_add(result_list->idx_article[list_idx], result_list->list[list_idx]);*/
 }
 void search_open_article(int new_selection)
 {
 	int list_idx;
  	char title[MAX_TITLE_SEARCH];
 	
-	list_idx = result_list->base + new_selection;
-	if (list_idx >= MAX_RESULTS)
-		list_idx -= MAX_RESULTS;
+	list_idx = new_selection;
+	if (list_idx >= NUMBER_OF_RESULTS)
+		list_idx -= NUMBER_OF_RESULTS;
 	if (!display_link_article(result_list->idx_article[list_idx]))
 	{
 		get_article_title_from_idx(result_list->idx_article[list_idx], title);
@@ -1396,7 +1226,7 @@ long find_closest_idx(long idx, char *title)
 	{
 		count = 0;
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
-		bigram_decode(title, title_search.sTitleSearch);
+		bigram_decode(title, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		title[MAX_TITLE_SEARCH - 1] = '\0';
 		return idx;
 	}
@@ -1421,42 +1251,7 @@ void random_article(void)
 			history_add(idx_article, title);
 	}
 }
-int set_result_list_base(int offset,int offset_count)
-{
-   int first_item_count;
-   int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-   int base_last;
-    
-   base_last = result_list->base;
 
-   if(result_list->count <= screen_display_count)
-   {
-     return 0;
-   }
-
-   if(offset>=0)
-      first_item_count = offset_count+result_list->base;
-   else
-      first_item_count = result_list->base-offset_count;
-
-   if(first_item_count<0)
-       result_list->base = 0;
-   else if(first_item_count > (result_list->count - screen_display_count))
-   {
-       result_list->base = result_list->count-screen_display_count;
-       if(result_list->base < 0)
-           result_list->base = 0;
-
-   }
-   else
-       result_list->base = first_item_count;
-
-   if(base_last!=result_list->base)
-      return 1;
-   else
-      return 0;
-}
 unsigned int get_time_search(void)
 {
         long clock_ticks;

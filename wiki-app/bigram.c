@@ -100,23 +100,29 @@ void bigram_encode(char *outStr, char *inStr)
 	*outStr = '\0';
 }
 
-void bigram_decode(char *outStr, char *inStr)
+void bigram_decode(char *outStr, char *inStr, int lenMax)
 {
 	unsigned char c;
 
-	while ((c = *inStr++) != '\0')
+	while (lenMax > 1 && (c = *inStr++) != '\0')
 	{
 		if (c >= 128)
 		{
 			*outStr = aBigram[c-128][0];
 			outStr++;
-			*outStr = aBigram[c-128][1];
-			outStr++;
+			lenMax--;
+			if (lenMax > 1)
+			{
+				*outStr = aBigram[c-128][1];
+				outStr++;
+				lenMax--;
+			}
 		}
 		else
 		{
 			*outStr = c;
 			outStr++;
+			lenMax--;
 		}
 	}
 	*outStr = '\0';
@@ -135,6 +141,12 @@ int search_string_cmp(char *title, char *search, int len)  // assuming search co
 	int rc = 0;
 	char c = 0;
 	
+#ifdef WIKIPCF
+char temp[512];
+memcpy(temp, search, len);
+temp[len] = '\0';
+printf("[%s][%s]\n", title, temp);
+#endif
 	while (!rc && len > 0)
 	{
 		c = *title;

@@ -41,21 +41,13 @@
 #define DBG_WL 0
 #define SEARCH_FETCH_DELAY 1000000*24
 
-enum display_mode_e {
-
-	DISPLAY_MODE_INDEX,
-	DISPLAY_MODE_ARTICLE,
-	DISPLAY_MODE_HISTORY,
-	DISPLAY_MODE_IMAGE,
-};
-
 struct pos {
 	unsigned int x;
 	unsigned int y;
 };
 
 static int last_display_mode = 0;
-static int display_mode = DISPLAY_MODE_INDEX;
+int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
 static unsigned int article_touch_down_handled = 0;
 static unsigned int touch_down_on_keyboard = 0;
@@ -80,7 +72,6 @@ int last_article_move_time,touch_y_last_article;
 int touch_y_last_article_list[10],touch_time_last_article_list[10];
 int article_touch_count = 0;
 int touch_history = 0;
-int start_history_selection_time = 0;
 extern int article_offset;
 bool random_press = false;
 extern int stop_render_article;
@@ -112,6 +103,8 @@ static void toggle_soft_keyboard(void)
 	/* Set the keyboard mode to what we want to change to. */
 	if (keyboard_get_mode() == KEYBOARD_NONE || search_result_count()==0) {
 		keyboard_set_mode(KEYBOARD_CHAR);
+		if (keyboard_get_mode() == KEYBOARD_NONE)
+			restoure_search_list_page();
 //		search_reload_ex();
 		keyboard_paint();
 	} else {
@@ -321,47 +314,21 @@ static void handle_cursor(struct wl_input_event *ev)
 	DP(DBG_WL, ("O handle_cursor()\n"));
 	if (display_mode == DISPLAY_MODE_ARTICLE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			//article_display_pcf(50);
                         display_article_with_pcf(50);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			//article_display_pcf(-50);
                         display_article_with_pcf(-50);
-	} else if (display_mode == DISPLAY_MODE_INDEX) {
-//                is_rendering = 0;
-		article_buf_pointer = NULL;
+	} else if (display_mode == DISPLAY_MODE_INDEX && keyboard_get_mode() == KEYBOARD_NONE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			search_select_down();
+                        display_article_with_pcf(50);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			search_select_up();
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-//                is_rendering = 0;
-		article_buf_pointer = NULL;
+                        display_article_with_pcf(-50);
+	} else if (display_mode == DISPLAY_MODE_HISTORY && keyboard_get_mode() == KEYBOARD_NONE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			history_select_down();
+                        display_article_with_pcf(50);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			history_select_up();
+                        display_article_with_pcf(-50);
 	}
 }
-/*static void handle_cursor(struct wl_input_event *ev)
-{
-	DP(DBG_WL, ("O handle_cursor()\n"));
-	if (display_mode == DISPLAY_MODE_ARTICLE) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			article_display(ARTICLE_PAGE_NEXT);
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			article_display(ARTICLE_PAGE_PREV);
-	} else if (display_mode == DISPLAY_MODE_INDEX) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			search_select_down();
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			search_select_up();
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			history_select_down();
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			history_select_up();
-	}
-}*/
 
 static void handle_key_release(int keycode)
 {
@@ -456,12 +423,11 @@ static void handle_touch(struct wl_input_event *ev)
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	mode = keyboard_get_mode();
-	if (display_mode == DISPLAY_MODE_INDEX)
+	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_NUM))
 	{
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-			//show_key(0);
 			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
                         enter_touch_y_pos_record = enter_touch_y_pos;
                         enter_touch_y_pos = -1;
@@ -524,26 +490,15 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if (pre_key && pre_key->key == key->key) goto out;
 
-				//if (pre_key) {
-					//guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-					//show_key(0);
-					//keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY);
-				//}
 				if (touch_down_on_keyboard) {
-					//guilib_invert_area(key->left_x, key->left_y, key->right_x, key->right_y);
-					//show_key(key->key);
 					keyboard_key_invert(key);
 					pre_key = key;
 				}
 			} else {
 				if (!touch_down_on_keyboard && !touch_down_on_list)
 					touch_down_on_list = 1;
-				//if (pre_key) {
-					//guilib_invert_area(pre_key->left_x, pre_key->left_y, pre_key->right_x, pre_key->right_y);
-					//show_key(0);
-					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
-					pre_key = NULL;
-				//}
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				pre_key = NULL;
 
 				if (!search_result_count()) goto out;
 
@@ -571,7 +526,7 @@ static void handle_touch(struct wl_input_event *ev)
 				if (new_selection == search_result_selected()) goto out;
 
 				unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ? NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-				avail_count = search_result_count()-search_result_first_item() > avail_count ? avail_count : search_result_count()-search_result_first_item();
+				avail_count = search_result_count() > avail_count ? avail_count : search_result_count();
 				if (new_selection >= avail_count) goto out;
 				if (touch_down_on_keyboard) goto out;
                                 
@@ -762,7 +717,7 @@ int wikilib_run(void)
 		last_display_mode = DISPLAY_MODE_INDEX;
 	}
 #endif
-	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD));
+	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
 
 	for (;;) {
                 sleep = 1;

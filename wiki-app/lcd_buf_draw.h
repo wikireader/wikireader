@@ -141,6 +141,7 @@ typedef struct _LCD_DRAW_BUF
 	int vertical_adjustment;
 } LCD_DRAW_BUF;
 
+#define MAX_ARTICLE_LINKS 1000
 /* Structure of a single article in a file with mutiple articles */
 /* byte 0~3: (long) offset from the beginning of the article header to the start of article text */
 /* byte 4~5: (short) number of ARTICLE_LINK blocks */
@@ -181,25 +182,25 @@ void buf_draw_char(ucs4_t u);
 int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes);
 int render_article_with_pcf();
 int render_history_with_pcf();
+void restoure_search_list_page(void);
 int render_search_result_with_pcf();
-unsigned char * open_article_with_pcf_link(long idx_article);
-int display_link_article(long idx_article);
 void display_article_with_pcf(int start_y);
-void open_article_link(int x,int y);
 void init_render_article();
-void display_str(char *str);
 void init_file_buffer();
 int div_wiki(int a,int b);
-int isArticleLinkSelected(int x,int y);
-void invert_link(int article_link_number);
-int draw_bmf_char(ucs4_t u,int font,int x,int y);
 int GetFontLinespace(int font);
-void show_key(char c);
+#ifndef WIKIPCF
+int display_link_article(long idx_article);
+void display_str(char *str);
+void open_article_link(int x,int y);
+void invert_link(int article_link_number);
 void set_article_link_number(int num);
 int  get_article_link_number();
 void open_article_link_with_link_number(int article_link_number);
-void scroll_article();
-#ifndef WIKIPCF
+void scroll_article(void);
+int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted);
+unsigned char * open_article_with_pcf_link(long idx_article);
+int isArticleLinkSelected(int x,int y);
 #ifndef INCLUDED_FROM_KERNEL
 int load_init_article(long);
 #endif

@@ -114,7 +114,7 @@ xout:
 }
 
 int render_string(const int font, int start_x,
-				  int start_y, char *string, int text_length)
+				  int start_y, char *string, int text_length, int inverted)
 {
 	int i;
 	int x;
@@ -150,7 +150,7 @@ int render_string(const int font, int start_x,
 
 	x = start_x;	
 	for (i = 0; i < text_length; ++i) {
-	    x = draw_bmf_char(string[i],font-1,x,start_y);
+	    x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
             if(x<0)
                 return 0;
 	}
@@ -159,7 +159,7 @@ int render_string(const int font, int start_x,
 
 // if search string is longer than the LCD width, keep the right of it to fit
 int render_string_right(const int font, int start_x,
-				  int start_y, char *string, int text_length)
+				  int start_y, char *string, int text_length, int inverted)
 {
 	int i;
 	int x;
@@ -197,7 +197,7 @@ int render_string_right(const int font, int start_x,
 	
 	x = start_x;	
 	for (i = 0; i < text_length; ++i) {
-	    x = draw_bmf_char(string[i],font-1,x,start_y);
+	    x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
             if(x<0)
                 return 0;
 	}

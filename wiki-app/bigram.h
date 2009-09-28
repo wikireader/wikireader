@@ -7,7 +7,7 @@
 #define SIZE_BIGRAM_BUF (128 * 2)
 int bigram_char_idx(char c);
 void bigram_encode(char *outStr, char *inStr);
-void bigram_decode(char *outStr, char *inStr);
+void bigram_decode(char *outStr, char *inStr, int lenMax);
 #ifdef WIKIPCF
 void init_bigram(FILE *fd);
 #else

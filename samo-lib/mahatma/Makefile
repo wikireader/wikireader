@@ -44,7 +44,7 @@ BUILD_PREFIX := build/
 vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(BZLIB_SRC):$(MINILZO_SRC):$(LZMA_SRC)
 
 
-GUILIB_COBJS = guilib.o bmf.o lcd_buf_draw.o bigram.o glyph.o fontfile.o
+GUILIB_COBJS = guilib.o bmf.o lcd_buf_draw.o bigram.o glyph.o fontfile.o sha1.o
 
 WIKIAPP_COBJS = file-io-libfat.o
 WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o

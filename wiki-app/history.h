@@ -34,30 +34,13 @@
 
 void history_reset(void);
 void history_clear(void);
-void history_select_down(void);
-void history_select_up(void);
-//const char *history_current_target(void);
 
 void history_add(const long idx_article, const char *title);
-//void history_move_current_to_top(const char *target);
-
-//const char *history_get_item_title(unsigned int index);
-//const char *history_get_item_target(unsigned int index);
-//
-//unsigned int history_item_size(void);
-//unsigned int history_free_item_size(void);
-//
-//const char *history_get_top_target(void);
 int history_get_selection();
 void history_set_selection(int selection);
 unsigned int history_get_count();
-
 void history_list_init(void);
 int history_list_save(void);
-//struct history_item *history_find_item_title(const char *title);
-//struct history_item *history_find_item_target(const char *target);
-//
-//const char *history_release(int y);
 
 int set_history_list_base(int offset,int offset_count);
 int history_get_base();

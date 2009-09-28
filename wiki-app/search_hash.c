@@ -163,7 +163,7 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 {
 	long nHashKey;
 	TITLE_SEARCH title_search;
-	char sDecoded[MAX_TITLE_SEARCH * 2];
+	char sDecoded[MAX_TITLE_SEARCH];
 	int bFound = 0;
 	int lenHashed;
 	int idxBlock;
@@ -184,7 +184,7 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 		if (search_hash_table[nHashKey].offset_fnd > 0)
 		{
 			copy_fnd_to_buf(search_hash_table[nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
-			bigram_decode(sDecoded, title_search.sTitleSearch);
+			bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		}
 		else
 			sDecoded[0] = '\0';
