@@ -21,7 +21,7 @@
 
 #include "search.h"
 
-#define HISTORY_RESULT_START 33
+#define HISTORY_RESULT_START 31
 //#define HISTORY_RESULT_HEIGHT 10
 #define HISTORY_RESULT_HEIGHT 19
 #define MAX_HISTORY 256

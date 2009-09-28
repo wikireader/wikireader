@@ -62,7 +62,7 @@ void set_password()
 	render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 187, "Cancel", 6, 0);
 	guilib_fb_unlock();
 	display_mode = DISPLAY_MODE_RESTRICTED;
-	keyboard_set_mode(KEYBOARD_RESTRICTION);
+	keyboard_set_mode(KEYBOARD_RESTRICTED);
 }
 
 void get_password(void)

@@ -813,7 +813,7 @@ void search_reload_ex(int flag)
 	guilib_fb_lock();
 	if (keyboard_mode == KEYBOARD_NONE)
         {
-		if (result_list->result_populated)
+		if (result_list->result_populated || flag == SEARCH_RELOAD_KEEP_REFRESH)
 		{
 			if (flag == SEARCH_RELOAD_KEEP_RESULT)
 				guilib_clear_area(0, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT, 239, LCD_HEIGHT_LINES - 1);
@@ -825,6 +825,8 @@ void search_reload_ex(int flag)
         }
 	else
         {
+                if (flag == SEARCH_RELOAD_KEEP_REFRESH)
+			guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
                 if(search_string_changed_remove)
                 {
                     if(!search_str_len)
@@ -889,15 +891,15 @@ void search_reload_ex(int flag)
 		for (i = 0; i < screen_display_count; i++)
 		{
 			end_y_pos = y_pos + RESULT_HEIGHT - 1;
-			if (end_y_pos > LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1)
+			if (screen_display_count < NUMBER_OF_FIRST_PAGE_RESULTS && end_y_pos > LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1)
 				 end_y_pos = LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1;
 			guilib_clear_area(0, y_pos, 239, end_y_pos);
 			if (i < count)
 			{
 				if (keyboard_mode == KEYBOARD_NONE)
 				{
-					articleLink[article_link_count].start_xy = (unsigned  long)(y_pos << 8);
-					articleLink[article_link_count].end_xy = (unsigned  long)((LCD_BUF_WIDTH_PIXELS - 1) | (end_y_pos << 8));
+					articleLink[article_link_count].start_xy = (unsigned  long)((y_pos - 2) << 8); // consider the difference between render_string and draw_string
+					articleLink[article_link_count].end_xy = (unsigned  long)((LCD_BUF_WIDTH_PIXELS) | ((end_y_pos - 2) << 8));
 					articleLink[article_link_count++].article_id = result_list->idx_article[i];
 				}
 				title = result_list->title[i];

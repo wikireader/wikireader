@@ -321,7 +321,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 			}
 		}
 	}
-	else if (kb_mode == KEYBOARD_RESTRICTION) {
+	else if (kb_mode == KEYBOARD_RESTRICTED) {
 		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
 			if (restriction[i].left_x + KEY_GAP1 <= x && restriction[i].right_x - KEY_GAP2 >= x
 			&& restriction[i].left_y + KEY_GAP3 <= y && restriction[i].right_y - KEY_GAP4 >= y) {

@@ -47,7 +47,7 @@ struct pos {
 	unsigned int y;
 };
 
-static int last_display_mode = 0;
+int last_display_mode = 0;
 int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
 static unsigned int article_touch_down_handled = 0;
@@ -91,7 +91,7 @@ int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 static void repaint_search(void)
 {
 	guilib_fb_lock();
-	search_reload();
+	search_reload_ex(SEARCH_RELOAD_KEEP_REFRESH);
 	keyboard_paint();
 	guilib_fb_unlock();
 }
@@ -100,11 +100,12 @@ static void repaint_search(void)
 static void toggle_soft_keyboard(void)
 {
 	//guilib_fb_lock();
+	int mode = keyboard_get_mode();
 
 	/* Set the keyboard mode to what we want to change to. */
-	if (keyboard_get_mode() == KEYBOARD_NONE || search_result_count()==0) {
+	if (mode == KEYBOARD_NONE || search_result_count()==0) {
 		keyboard_set_mode(KEYBOARD_CHAR);
-		if (keyboard_get_mode() == KEYBOARD_NONE)
+		if (mode == KEYBOARD_NONE)
 			restore_search_list_page();
 //		search_reload_ex();
 		keyboard_paint();
@@ -136,9 +137,9 @@ void invert_selection(int old_pos, int new_pos, int start_pos, int height)
 	guilib_fb_lock();
 
 	if (old_pos != -1)
-		guilib_invert(start_pos + old_pos * height, height);
+		guilib_invert(start_pos - 2 + old_pos * height, height);
 	if (new_pos != -1)
-		guilib_invert(start_pos + new_pos * height, height);
+		guilib_invert(start_pos - 2 + new_pos * height, height);
 
 	guilib_fb_unlock();
 }
@@ -306,12 +307,27 @@ static void handle_search_key(char keycode)
 
 static void handle_password_key(char keycode)
 {
-	int rc = 0;
+	int mode = keyboard_get_mode();
 
-	if (keycode == WL_KEY_BACKSPACE) {
-		rc = password_remove_char();
-	} else if (is_supported_search_char(keycode)) {
-		password_add_char(tolower(keycode));
+	switch (mode)
+	{
+		case KEYBOARD_PASSWORD_CHAR:
+		case KEYBOARD_PASSWORD_NUM:
+			if (keycode == WL_KEY_BACKSPACE) {
+				password_remove_char();
+			} else if (is_supported_search_char(keycode)) {
+				password_add_char(tolower(keycode));
+			}
+			break;
+		case KEYBOARD_RESTRICTED:
+			if (keycode == 'Y')
+			{
+				keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
+				keyboard_paint();
+			}
+			else if (keycode == 'N')
+			{
+			}
 	}
 }
 
@@ -426,7 +442,7 @@ static void handle_touch(struct wl_input_event *ev)
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	mode = keyboard_get_mode();
-	if (display_mode == DISPLAY_MODE_INDEX)
+	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_NUM))
 	{
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
@@ -604,6 +620,9 @@ static void handle_touch(struct wl_input_event *ev)
 	{
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
+		        #ifdef INCLUDED_FROM_KERNEL
+		        delay_us(100000 * 2);
+		        #endif
 			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
                         enter_touch_y_pos_record = enter_touch_y_pos;
                         enter_touch_y_pos = -1;
@@ -679,6 +698,7 @@ static void handle_touch(struct wl_input_event *ev)
                         }
                         if(get_article_link_number()>=0)
                         {
+                             last_display_mode = DISPLAY_MODE_HISTORY;
                              display_mode = DISPLAY_MODE_ARTICLE;
                              open_article_link_with_link_number(get_article_link_number());
                              return;
