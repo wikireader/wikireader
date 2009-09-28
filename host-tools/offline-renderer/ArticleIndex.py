@@ -165,42 +165,19 @@ class FileProcessing(FileScanner.FileScanner):
         super(FileProcessing, self).__init__(*args, **kw)
 
         self.article_db_name = kw['articles']
-        if os.path.exists(self.article_db_name):
-            os.remove(self.article_db_name)
-#        self.article_db = sqlite3.connect(filename)
-#        self.article_db.execute("""
-#create table articles (
-#    title varchar primary key,
-#    article_number integer,
-#    fnd_offset integer,
-#    restricted varchar
-#)""")
+        self.article_import = self.article_db_name + '.import'
 
         self.offset_db_name = kw['offsets']
-        if os.path.exists(self.offset_db_name):
-            os.remove(self.offset_db_name)
-#        self.offset_db = sqlite3.connect(filename)
-#        self.offset_db.execute("""
-#create table offsets (
-#    article_number integer primary key,
-#    title varchar,
-#    file_id integer,
-#    seek integer,
-#    length integer
-#)""")
-#        self.offset_db.execute("""
-#create table files (
-#    file_id integer primary key,
-#    filename varchar
-#)""")
-#
-#        for db in [self.article_db, self.offset_db]:
-#            db.execute('pragma synchronous = 0')
-#            db.execute('pragma temp_store = 2')
-#            db.execute('pragma locking_mode = exclusive')
-#            db.execute('pragma cache_size = 20000000')
-#            db.execute('pragma default_cache_size = 20000000')
-#            db.execute('pragma journal_mode = memory')
+        self.offset_import = self.offset_db_name + '.import'
+        self.file_import = self.offset_db_name + '.files'
+
+        for filename in [self.article_db_name,
+                         self.article_import,
+                         self.offset_db_name,
+                         self.offset_import,
+                         self.file_import]:
+            if os.path.exists(filename):
+                os.remove(filename)
 
         self.restricted_count = 0
         self.redirect_count = 0
@@ -219,42 +196,18 @@ class FileProcessing(FileScanner.FileScanner):
     def __del__(self):
         print 'Flushing databases'
 
-#        print 'Writing: files'
-#        i = 0
-#        for filename in self.file_list:
-#            self.offset_db.execute('insert into files(file_id, filename) values (?, ?)', (i, filename))
-#            i += 1
-#
-#
-#        print 'Writing: articles'
-#        t = time.time()
-#        self.article_db.executemany('insert into articles(title, article_number, fnd_offset, restricted) '
-#                                    'values (?, ?, ?, ?)',
-#                                    [ ((title,) + self.articles[title]) for title in self.articles ])
-#
-#        print 'Time: %ds' % (time.time() - start_time)
-#
-#        print 'Writing: offsets'
-#        t = time.time()
-#        self.offset_db.executemany('insert into offsets(article_number, title, file_id, seek, length) '
-#                                    'values (?, ?, ?, ?, ?)',
-#                                    [(article_number,) + self.offsets[article_number] for article_number in self.offsets])
-#        print 'Time: %ds' % (time.time() - start_time)
-
         print 'Writing: files'
         start_time = time.time()
         i = 0
-        file_import = self.offset_db_name + '.files'
-        with open(file_import, 'w') as f:
+        with open(self.file_import, 'w') as f:
             for filename in self.file_list:
                 f.write('%d\t%s\n' % (i, filename))
                 i += 1
         print 'Time: %ds' % (time.time() - start_time)
 
         print 'Writing: articles'
-        article_import = self.article_db_name + '.import'
         start_time = time.time()
-        with open(article_import, 'w') as f:
+        with open(self.article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
@@ -262,9 +215,8 @@ class FileProcessing(FileScanner.FileScanner):
         print 'Time: %ds' % (time.time() - start_time)
 
         print 'Writing: offsets'
-        offset_import = self.offset_db_name + '.import'
         start_time = time.time()
-        with open(offset_import, 'w') as f:
+        with open(self.offset_import, 'w') as f:
             for article_number in self.offsets:
                 (file_id, title, seek, length) = self.offsets[article_number]
                 f.write('%d\t%d\t' % (article_number, file_id))
@@ -275,8 +227,8 @@ class FileProcessing(FileScanner.FileScanner):
 
         print 'Loading: articles'
         start_time = time.time()
-        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE).stdin
-        p.write("""
+        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE)
+        p.stdin.write("""
 create table articles (
     title varchar primary key,
     article_number integer,
@@ -294,14 +246,15 @@ pragma journal_mode = memory;
 .mode tab
 .import %s articles
 .exit
-""" % article_import)
-        p.close()
+""" % self.article_import)
+        p.stdin.close()
+        p.wait()
         print 'Time: %ds' % (time.time() - start_time)
 
         print 'Loading: offsets and files'
         start_time = time.time()
-        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE).stdin
-        p.write("""
+        p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE)
+        p.stdin.write("""
 create table offsets (
     article_number integer primary key,
     title varchar,
@@ -326,48 +279,10 @@ pragma journal_mode = memory;
 .import %s offsets
 .import %s files
 .exit
-""" % (offset_import, file_import))
-        p.close()
+""" % (self.offset_import, self.file_import))
+        p.stdin.close()
+        p.wait()
         print 'Time: %ds' % (time.time() - start_time)
-
-
-
-#        print 'Writing: files'
-#        start_time = time.time()
-#        i = 0
-#        with open('/tmp/file.sql', 'w') as f:
-#            for filename in self.file_list:
-#                f.write('%d\t%s\n' % (i, filename))
-#                i += 1
-#        print 'Time: %ds' % (time.time() - start_time)
-#
-#        print 'Writing: articles'
-#        start_time = time.time()
-#        with open('/tmp/article.sql', 'w') as f:
-#            for title in self.articles:
-#                (article_number, fnd_offset, restricted) = self.articles[title]
-#                f.write(title.encode('utf-8'))
-#                f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
-#        print 'Time: %ds' % (time.time() - start_time)
-#
-#        print 'Writing: offsets'
-#        start_time = time.time()
-#        with open('/tmp/offset.sql', 'w') as f:
-#            for article_number in self.offsets:
-#                (file_id, title, seek, length) = self.offsets[article_number]
-#                f.write('%d\t%d\t' % (article_number, file_id))
-#                f.write(title.encode('utf-8'))
-#                f.write('\t%d\t%d\n' % (seek, length))
-#        print 'Time: %ds' % (time.time() - start_time)
-
-#        if None != self.article_db:
-#            self.article_db.commit()
-#            self.article_db.close()
-#            self.article_db = None
-#        if None != self.offset_db:
-#            self.offset_db.commit()
-#            self.offset_db.close()
-#            self.offset_db = None
 
 
     def title(self, text, seek):
@@ -426,9 +341,6 @@ pragma journal_mode = memory;
 
         self.offsets[self.article_count] = (self.file_id(), title, seek, len(text))
 
-        #self.offset_db.execute('insert into offsets (article_number, file_id, title, seek, length) values (?, ?, ?, ?, ?)',
-         #                      [self.article_count, self.file_id(), title, seek, len(text)])
-
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
             print 'Duplicate Title:', title.encode('utf-8')
 
@@ -453,39 +365,14 @@ pragma journal_mode = memory;
         self.articles[title] = data
         return result
 
-    def Xset_index(self, title, data):
-        """returns false if the key did not already exist"""
-        key = title.encode('utf-8')
-        result = True
-        #try:
-        #    item = self.article_db[key]
-        #except KeyError:
-        #    result = False
-        #self.article_db[title.encode('utf-8')] = str(data)
-        #self.article_db[title.encode('utf-8')] = str(data)
-        self.article_db.execute('insert or replace into articles (title, article_number, fnd_offset, restricted) '
-                                'values (?, ?, ?, ?)', (title,) + data)
-        result = False # ***DEBUG*** how to set this?
-
-        return result
-
 
     def get_index(self, title):
-        #c = self.article_db.cursor()
-        #c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', [title])
-        #result = c.fetchone()
-        #c.close()
         if type(title) == str:
             title = unicode(title, 'utf-8')
         return self.articles[title]
 
 
     def all_indices(self):
-        #c = self.article_db.cursor()
-        #c.execute("select title from articles")
-        #for row in c:
-        #    yield row[0]
-        #c.close()
         return self.articles.keys()
 
 
@@ -533,24 +420,6 @@ def is_restricted(text):
     return False
 
 
-Xmax_score = 1
-def Xfilter(text):
-    """check if text contains any restricted words"""
-    global non_letters, max_score
-    score = 0
-    contains = {}
-    for w in non_letters.split(text):
-        word = w.lower()
-        if word in FilterWords.filter_words:
-            score += FilterWords.filter_words[word]
-            if word in contains:
-                contains[word] += 1
-            else:
-                contains[word] = 1
-
-    return score < max_score
-
-
 import unicodedata
 def strip_accents(s):
     if type(s) == str:
@@ -590,7 +459,7 @@ def output_fnd(filename, article_index):
     global bigram
     global index_matrix
 
-    print 'Writing:', filename
+    print 'Writing bigrams:', filename
     start_time = time.time()
     out_f = open(filename, 'w')
 
@@ -611,6 +480,8 @@ def output_fnd(filename, article_index):
         bigram['zz'] = chr(i + 128)
         i += 1
 
+    print 'Time: %ds' % (time.time() - start_time)
+
     # create pfx matrix and write encoded titles
 
     #article_list = [strip_accents(k) for k in article_index.keys()]
@@ -620,8 +491,16 @@ def output_fnd(filename, article_index):
         global KEYPAD_KEYS
         return ''.join(c for c in strip_accents(key).lower() if c in KEYPAD_KEYS)
 
+    print 'Sorting titles'
+    start_time = time.time()
+
     article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
     article_list.sort()
+
+    print 'Time: %ds' % (time.time() - start_time)
+
+    print 'Writing matrix:', filename
+    start_time = time.time()
 
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
