@@ -44,4 +44,5 @@ FILTER_WEIGHTS = {
     "cunt": 1,
 }
 
-BAD_WORDS = frozenset(FILTER_WEIGHTS.keys())
+BAD_WORDS = FILTER_WEIGHTS.keys()
+BAD_WORDS_SET  = frozenset(BAD_WORDS)

@@ -518,7 +518,7 @@ def is_restricted(text):
     global non_letters, max_score
     score = 0
     w = frozenset(non_letters.split(text))
-    contains = w & FilterWords.BAD_WORDS
+    contains = w & FilterWords.BAD_WORDS_SET
 
     return len(contains) > 0
 
