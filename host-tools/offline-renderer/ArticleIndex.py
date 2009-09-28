@@ -232,49 +232,49 @@ class FileProcessing(FileScanner.FileScanner):
 #                                    'values (?, ?, ?, ?)',
 #                                    [ ((title,) + self.articles[title]) for title in self.articles ])
 #
-#        print 'Time: %ds' % (time.time() - t)
+#        print 'Time: %ds' % (time.time() - start_time)
 #
 #        print 'Writing: offsets'
 #        t = time.time()
 #        self.offset_db.executemany('insert into offsets(article_number, title, file_id, seek, length) '
 #                                    'values (?, ?, ?, ?, ?)',
 #                                    [(article_number,) + self.offsets[article_number] for article_number in self.offsets])
-#        print 'Time: %ds' % (time.time() - t)
+#        print 'Time: %ds' % (time.time() - start_time)
 
         print 'Writing: files'
-        t = time.time()
+        start_time = time.time()
         i = 0
         file_import = self.offset_db_name + '.files'
         with open(file_import, 'w') as f:
             for filename in self.file_list:
                 f.write('%d\t%s\n' % (i, filename))
                 i += 1
-        print 'Time: %ds' % (time.time() - t)
+        print 'Time: %ds' % (time.time() - start_time)
 
         print 'Writing: articles'
         article_import = self.article_db_name + '.import'
-        t = time.time()
+        start_time = time.time()
         with open(article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
-        print 'Time: %ds' % (time.time() - t)
+        print 'Time: %ds' % (time.time() - start_time)
 
         print 'Writing: offsets'
         offset_import = self.offset_db_name + '.import'
-        t = time.time()
+        start_time = time.time()
         with open(offset_import, 'w') as f:
             for article_number in self.offsets:
                 (file_id, title, seek, length) = self.offsets[article_number]
                 f.write('%d\t%d\t' % (article_number, file_id))
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\n' % (seek, length))
-        print 'Time: %ds' % (time.time() - t)
+        print 'Time: %ds' % (time.time() - start_time)
 
 
         print 'Loading: articles'
-        t = time.time()
+        start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE).stdin
         p.write("""
 create table articles (
@@ -296,10 +296,10 @@ pragma journal_mode = memory;
 .exit
 """ % article_import)
         p.close()
-        print 'Time: %ds' % (time.time() - t)
+        print 'Time: %ds' % (time.time() - start_time)
 
         print 'Loading: offsets and files'
-        t = time.time()
+        start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE).stdin
         p.write("""
 create table offsets (
@@ -328,37 +328,37 @@ pragma journal_mode = memory;
 .exit
 """ % (offset_import, file_import))
         p.close()
-        print 'Time: %ds' % (time.time() - t)
+        print 'Time: %ds' % (time.time() - start_time)
 
 
 
 #        print 'Writing: files'
-#        t = time.time()
+#        start_time = time.time()
 #        i = 0
 #        with open('/tmp/file.sql', 'w') as f:
 #            for filename in self.file_list:
 #                f.write('%d\t%s\n' % (i, filename))
 #                i += 1
-#        print 'Time: %ds' % (time.time() - t)
+#        print 'Time: %ds' % (time.time() - start_time)
 #
 #        print 'Writing: articles'
-#        t = time.time()
+#        start_time = time.time()
 #        with open('/tmp/article.sql', 'w') as f:
 #            for title in self.articles:
 #                (article_number, fnd_offset, restricted) = self.articles[title]
 #                f.write(title.encode('utf-8'))
 #                f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
-#        print 'Time: %ds' % (time.time() - t)
+#        print 'Time: %ds' % (time.time() - start_time)
 #
 #        print 'Writing: offsets'
-#        t = time.time()
+#        start_time = time.time()
 #        with open('/tmp/offset.sql', 'w') as f:
 #            for article_number in self.offsets:
 #                (file_id, title, seek, length) = self.offsets[article_number]
 #                f.write('%d\t%d\t' % (article_number, file_id))
 #                f.write(title.encode('utf-8'))
 #                f.write('\t%d\t%d\n' % (seek, length))
-#        print 'Time: %ds' % (time.time() - t)
+#        print 'Time: %ds' % (time.time() - start_time)
 
 #        if None != self.article_db:
 #            self.article_db.commit()
@@ -412,9 +412,9 @@ pragma journal_mode = memory;
             self.restricted_count += 1
 
         if not verbose and self.article_count % 10000 == 0:
-            t = time.time()
-            print '%7.2fs %10d' % (t - self.time, self.article_count)
-            self.time = t
+            start_time = time.time()
+            print '%7.2fs %10d' % (start_time - self.time, self.article_count)
+            self.time = start_time
 
         generate_bigram(title)
 
@@ -580,7 +580,7 @@ def output_fnd(filename, article_index):
     global index_matrix
 
     print 'Writing:', filename
-    t = time.time()
+    start_time = time.time()
     out_f = open(filename, 'w')
 
     sortedgram = [ (value, key) for key, value in bigram.iteritems() ]
@@ -623,7 +623,7 @@ def output_fnd(filename, article_index):
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
-    print 'Time: %ds' % (time.time() - t)
+    print 'Time: %ds' % (time.time() - start_time)
 
 
 def output_pfx(filename):
@@ -631,7 +631,7 @@ def output_pfx(filename):
     global index_matrix
 
     print 'Writing:', filename
-    t = time.time()
+    start_time = time.time()
     out_f = open(filename, 'w')
     list = '\0' + KEYPAD_KEYS
     for k1 in list:
@@ -645,7 +645,7 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-    print 'Time: %ds' % (time.time() - t)
+    print 'Time: %ds' % (time.time() - start_time)
 
 
 # run the program
