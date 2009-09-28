@@ -31,6 +31,7 @@
 #include <tick.h>
 #include "delay.h"
 #include "search_hash.h"
+#include "restricted.h"
 #ifndef INCLUDED_FROM_KERNEL
 #include "time.h"
 #endif
@@ -104,7 +105,7 @@ static void toggle_soft_keyboard(void)
 	if (keyboard_get_mode() == KEYBOARD_NONE || search_result_count()==0) {
 		keyboard_set_mode(KEYBOARD_CHAR);
 		if (keyboard_get_mode() == KEYBOARD_NONE)
-			restoure_search_list_page();
+			restore_search_list_page();
 //		search_reload_ex();
 		keyboard_paint();
 	} else {
@@ -278,7 +279,6 @@ void open_article(const char* target, int mode)
 
 static void handle_search_key(char keycode)
 {
-//        int mode;
 	int rc = 0;
 
 	if (keycode == WL_KEY_BACKSPACE) {
@@ -286,13 +286,8 @@ static void handle_search_key(char keycode)
 	} else if (is_supported_search_char(keycode)) {
 		rc = search_add_char(tolower(keycode));
 	} else {
-                if(keycode == -42)
+                if(keycode == -42) // toggling keyboard will be handled at key down
                 {
-//                  mode = keyboard_get_mode();
-//                  if(mode == KEYBOARD_CHAR)
-//                      keyboard_set_mode(KEYBOARD_NUM);                  
-//                  else if(mode == KEYBOARD_NUM)
-//                      keyboard_set_mode(KEYBOARD_CHAR);   
 			rc = -1;               
                 }
 		else
@@ -307,6 +302,17 @@ static void handle_search_key(char keycode)
 		search_reload_ex(SEARCH_RELOAD_NORMAL);
 //	keyboard_paint();
 	guilib_fb_unlock();
+}
+
+static void handle_password_key(char keycode)
+{
+	int rc = 0;
+
+	if (keycode == WL_KEY_BACKSPACE) {
+		rc = password_remove_char();
+	} else if (is_supported_search_char(keycode)) {
+		password_add_char(tolower(keycode));
+	}
 }
 
 static void handle_cursor(struct wl_input_event *ev)
@@ -333,9 +339,11 @@ static void handle_cursor(struct wl_input_event *ev)
 static void handle_key_release(int keycode)
 {
 //	static long idx_article = 0;
+	int mode;
 
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
 	DP(DBG_WL, ("O handle_key_release()\n"));
+	mode = keyboard_get_mode();
 	if (keycode == WL_INPUT_KEY_SEARCH) {
                 article_offset = 0;
 		article_buf_pointer = NULL;
@@ -391,7 +399,6 @@ static void handle_key_release(int keycode)
 			handle_search_key(keycode);
 		}
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
-//                is_rendering = 0;
 		article_buf_pointer = NULL;
 		if (keycode == WL_KEY_BACKSPACE) {
 			if (last_display_mode == DISPLAY_MODE_INDEX) {
@@ -402,10 +409,6 @@ static void handle_key_release(int keycode)
 				history_reset();
                                 history_reload();
 			}
-		}
-	} else if (display_mode == DISPLAY_MODE_HISTORY) {
-		if (keycode == WL_KEY_RETURN) {
-//			open_article(history_current_target(), ARTICLE_HISTORY);
 		}
 	}
 }
@@ -423,7 +426,7 @@ static void handle_touch(struct wl_input_event *ev)
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	mode = keyboard_get_mode();
-	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_NUM))
+	if (display_mode == DISPLAY_MODE_INDEX)
 	{
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
@@ -525,7 +528,8 @@ static void handle_touch(struct wl_input_event *ev)
                                 
 				if (new_selection == search_result_selected()) goto out;
 
-				unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ? NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+				unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ? 
+					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 				avail_count = search_result_count() > avail_count ? avail_count : search_result_count();
 				if (new_selection >= avail_count) goto out;
 				if (touch_down_on_keyboard) goto out;
@@ -593,6 +597,65 @@ static void handle_touch(struct wl_input_event *ev)
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
 				pre_key = NULL;
 	
+			}
+		}
+	}
+	else if (display_mode == DISPLAY_MODE_RESTRICTED)
+	{
+		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
+		if (ev->touch_event.value == 0) {
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+                        enter_touch_y_pos_record = enter_touch_y_pos;
+                        enter_touch_y_pos = -1;
+                        touch_search = 0;
+                        press_delete_button = false;
+			pre_key = NULL;
+			if (key) {
+				if (!touch_down_on_keyboard) {
+					touch_down_on_keyboard = 0;
+					goto out;
+				}
+				handle_password_key(key->key);
+			}
+			touch_down_on_keyboard = 0;
+		} else {
+                        if(enter_touch_y_pos<0)  //record first touch y pos
+                           enter_touch_y_pos = ev->touch_event.y;
+                        last_index_y_pos = ev->touch_event.y;
+                        start_search_time = get_time_ticks();
+                        last_delete_time = start_search_time;
+			if (key) {
+                                if(key->key==8)//press "<" button
+                                {
+                                    press_delete_button = true;
+                               }
+				else if(key->key == -42)
+				{
+					mode = keyboard_get_mode();
+					if(mode == KEYBOARD_PASSWORD_CHAR)
+						keyboard_set_mode(KEYBOARD_PASSWORD_NUM);                  
+					else if(mode == KEYBOARD_PASSWORD_NUM)
+						keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);                  
+					guilib_fb_lock();
+					keyboard_paint();
+					guilib_fb_unlock();
+				}
+
+				if (!touch_down_on_keyboard)
+					touch_down_on_keyboard = 1;
+
+				if (pre_key && pre_key->key == key->key) goto out;
+
+				if (touch_down_on_keyboard) {
+					keyboard_key_invert(key);
+					pre_key = key;
+				}
+			} else {
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				pre_key = NULL;
+
+                                search_touch_pos_y_last = ev->touch_event.y;
+                                start_search_selection_time = get_time_ticks();
 			}
 		}
 	} else {
@@ -753,8 +816,8 @@ int wikilib_run(void)
                    }
                 }*/
 
-               if(display_mode == DISPLAY_MODE_INDEX)
-                {
+		if(display_mode == DISPLAY_MODE_INDEX)
+		{
                     if (press_delete_button && get_search_string_len()>0)
                     {
 	                 sleep = 0;
@@ -779,8 +842,27 @@ int wikilib_run(void)
 	                     last_delete_time = time_now;
 	                 }
 	            }
-	            
                 }
+		else if (display_mode == DISPLAY_MODE_RESTRICTED)
+		{
+                    if (press_delete_button && get_password_string_len()>0)
+                    {
+	                 sleep = 0;
+	                 time_now = get_time_ticks();
+	                 if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
+	                 {
+	                     clear_password_string();
+	                     press_delete_button = false;
+	                 }
+	                 else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) && 
+	                 	time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
+	                 {
+	                     password_remove_char();
+	                     last_delete_time = time_now;
+	                 }
+	            }
+                }
+              
                 #endif
 
                 if (display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0, 0))

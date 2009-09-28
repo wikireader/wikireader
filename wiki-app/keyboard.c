@@ -206,13 +206,13 @@ static struct keyboard_key clear_history[] = {
 	KEY(192, 181, 239, 207, 'N'),
 };
 static struct keyboard_key restriction[] = {
-	KEY(0, 153, 95, 180, 'Y'),
-	KEY(0, 181, 95, 207, 'N'),
+	KEY(0, 153, 119, 180, 'Y'),
+	KEY(0, 181, 119, 207, 'N'),
 };
 static struct keyboard_key filter[] = {
-	KEY(0, 33, 95, 59, 'Y'),
-	KEY(0, 60, 95, 86, 'N'),
-	KEY(0, 87, 95, 113, 'P'),
+	KEY(0, 33, 119, 59, 'Y'),
+	KEY(0, 60, 119, 86, 'N'),
+	KEY(0, 87, 119, 113, 'P'),
 };
 /*
  * The secret of the position and size of the keyboard
@@ -231,6 +231,8 @@ void keyboard_set_mode(int mode)
            image_data = &image_data_num;
         else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
            image_data = &image_data_clear_history;
+        else
+           image_data = NULL;
 
 }
 
@@ -244,16 +246,14 @@ int keyboard_get_mode()
  */
 void keyboard_paint()
 {
-        //msg(MSG_INFO,"enter keyboard_paint,ke_mode=%d\n",kb_mode);
-	if (kb_mode == KEYBOARD_NONE)
-		return;
-
-        if(kb_mode == KEYBOARD_CHAR) 
+        if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR) 
            image_data = &image_data_char;
-        else if(kb_mode == KEYBOARD_NUM)
+        else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM)
            image_data = &image_data_num;
         else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
            image_data = &image_data_clear_history;
+        else
+           return;
 
 	guilib_fb_lock();
 	guilib_blit_image(image_data, 0, guilib_framebuffer_height() - image_data->height);
@@ -262,7 +262,10 @@ void keyboard_paint()
 
 unsigned int keyboard_height()
 {
-	return image_data->height;
+	if (!image_data)
+		return 0;
+	else
+		return image_data->height;
 }
 
 /**

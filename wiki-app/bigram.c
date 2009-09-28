@@ -3,7 +3,9 @@
 #include "msg.h"
 #include "bigram.h"
 #include "lcd_buf_draw.h"
-#ifndef WIKIPCF
+#ifdef WIKIPCF
+extern void showMsg(int currentLevel, char *format, ...);
+#else
 #include "file-io.h"
 #endif
 
@@ -145,7 +147,7 @@ int search_string_cmp(char *title, char *search, int len)  // assuming search co
 char temp[512];
 memcpy(temp, search, len);
 temp[len] = '\0';
-printf("[%s][%s]\n", title, temp);
+showMsg(3, "[%s][%s]\n", title, temp);
 #endif
 	while (!rc && len > 0)
 	{

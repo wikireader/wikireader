@@ -36,7 +36,7 @@ enum display_mode_e {
 	DISPLAY_MODE_INDEX,
 	DISPLAY_MODE_ARTICLE,
 	DISPLAY_MODE_HISTORY,
-	DISPLAY_MODE_IMAGE,
+	DISPLAY_MODE_RESTRICTED,
 };
 
 typedef unsigned char u8;

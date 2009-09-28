@@ -22,7 +22,7 @@
 #define RESULT_START 33
 #define RESULT_HEIGHT 19
 #define MAX_TITLE_SEARCH 64
-#define NUMBER_OF_RESULTS 9
+#define NUMBER_OF_FIRST_PAGE_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
 /* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */

@@ -102,6 +102,7 @@ Assumptions:
 #define LINE_SPACE_ADDON 1
 #define LCD_BUF_WIDTH_PIXELS 240
 #define LCD_LEFT_MARGIN 6
+#define LCD_TOP_MARGIN 6
 #define LCD_BUF_HEIGHT_PIXELS 64 * 1024
 #ifdef WIKIPCF
 #define LCD_BUF_WIDTH_BYTES LCD_BUF_WIDTH_PIXELS/8
@@ -182,7 +183,7 @@ void buf_draw_char(ucs4_t u);
 int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes);
 int render_article_with_pcf();
 int render_history_with_pcf();
-void restoure_search_list_page(void);
+void restore_search_list_page(void);
 int render_search_result_with_pcf();
 void display_article_with_pcf(int start_y);
 void init_render_article();

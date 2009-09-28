@@ -41,9 +41,9 @@ extern ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 extern int article_link_count;
 
 typedef struct _search_results {
-	char title[NUMBER_OF_RESULTS][MAX_TITLE_SEARCH];
-	long idx_article[NUMBER_OF_RESULTS];  // index (pedia.idx) for loading the article 
-	long offset_list[NUMBER_OF_RESULTS];	// offset (pedia.fnd) of each search title in list
+	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
+	long idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (pedia.idx) for loading the article 
+	long offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];	// offset (pedia.fnd) of each search title in list
 	long offset_next;		// offset (pedia.fnd) of the next title after the list
 	unsigned int count;
 	int result_populated;
@@ -58,7 +58,7 @@ typedef struct _search_info {
 	long max_article_idx;
 	long prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
 	int b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
-	char buf[NUMBER_OF_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
+	char buf[NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
 	int buf_len;
 	long offset_current;		// offset (pedia.fnd) of the content of buffer
 } SEARCH_INFO;
@@ -369,7 +369,7 @@ msg(MSG_INFO, "]\n");
 				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
 				result_list->count++;
-				if (result_list->count >= NUMBER_OF_RESULTS)
+				if (result_list->count >= NUMBER_OF_FIRST_PAGE_RESULTS)
 				{
 					result_list->result_populated = 1;
 					goto out;
@@ -739,7 +739,7 @@ void search_reload()
 {
 //	static const char search_result_str[] = "Search:";
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 //	int available_count;
 	int y_pos;
 //	const char * result;
@@ -765,7 +765,7 @@ void search_reload()
 	capitalize(search_string, temp_search_string, search_str_len);
 	if (search_str_len > 1 && search_string_pos[search_str_len - 1] >= LCD_BUF_WIDTH_PIXELS)
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
+	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
 	y_pos = RESULT_START;
 
 
@@ -799,7 +799,7 @@ out:
 void search_reload_ex(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos,start_x_search=0;
 	int end_y_pos;
 	static int last_start_x_search=0;
@@ -858,11 +858,11 @@ void search_reload_ex(int flag)
 	capitalize(search_string, temp_search_string, search_str_len);
 	if (last_start_x_search >= LCD_BUF_WIDTH_PIXELS)
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
+	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
 	if (last_start_x_search < LCD_BUF_WIDTH_PIXELS && start_x_search >= LCD_BUF_WIDTH_PIXELS)
 	{	
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, 6, temp_search_string, strlen(temp_search_string), 0);
+		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
 	}
 	last_start_x_search = start_x_search;
         search_string_pos[search_str_len]=start_x_search;
@@ -909,7 +909,7 @@ void search_reload_ex(int flag)
 		}
 		if (keyboard_mode == KEYBOARD_NONE)
 		{
-			if (result_list->count == NUMBER_OF_RESULTS)
+			if (result_list->count == NUMBER_OF_FIRST_PAGE_RESULTS)
 			{
 				more_search_results = 1;
 			}
@@ -921,7 +921,7 @@ out:
 void search_result_display()
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos=0;
 	char *title;
 
@@ -1189,8 +1189,8 @@ void search_open_article(int new_selection)
  	char title[MAX_TITLE_SEARCH];
 	
 	list_idx = new_selection;
-	if (list_idx >= NUMBER_OF_RESULTS)
-		list_idx -= NUMBER_OF_RESULTS;
+	if (list_idx >= NUMBER_OF_FIRST_PAGE_RESULTS)
+		list_idx -= NUMBER_OF_FIRST_PAGE_RESULTS;
 	if (!display_link_article(result_list->idx_article[list_idx]))
 	{
 		get_article_title_from_idx(result_list->idx_article[list_idx], title);

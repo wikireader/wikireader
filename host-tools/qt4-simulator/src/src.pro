@@ -16,6 +16,7 @@ SOURCES += $$TOPLEVEL/wiki-app/search.c
 SOURCES += $$TOPLEVEL/wiki-app/search_hash.c
 SOURCES += $$TOPLEVEL/wiki-app/hexdump.c
 SOURCES += $$TOPLEVEL/wiki-app/keyboard.c
+SOURCES += $$TOPLEVEL/wiki-app/restricted.c
 SOURCES += $$TOPLEVEL/wiki-app/sha1.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/fast_search.c
 SOURCES += $$TOPLEVEL/host-tools/indexing/locate/lsearcher.c

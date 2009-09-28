@@ -20,8 +20,8 @@
 #include "history.h"
 #include "search.h"
 #include "glyph.h"
-#include "sha1.h"
 #include "wikilib.h"
+#include "restricted.h"
 #endif
 
 #include "bmf.h"
@@ -555,6 +555,7 @@ void lcd_set_pixel(unsigned char *membuffer,int x, int y)
 	
 	membuffer[byte] |= (1 << (7 - bit));
 }
+
 void lcd_set_framebuffer_pixel(int x, int y)
 {		
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
@@ -562,6 +563,15 @@ void lcd_set_framebuffer_pixel(int x, int y)
 	
 	
 	framebuffer[byte] |= (1 << (7 - bit));
+}
+
+void lcd_clear_framebuffer_pixel(int x, int y)
+{		
+	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
+	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
+	
+	
+	framebuffer[byte] ^= (1 << (7 - bit));
 }
 
 void lcd_set_framebuffer_byte(char c, int x, int y)
@@ -948,7 +958,7 @@ int render_history_with_pcf()
 		lcd_draw_buf.pPcfFont = &pcfFonts[SEARCH_HEADING_FONT_IDX - 1];
 		lcd_draw_buf.line_height = pcfFonts[SEARCH_HEADING_FONT_IDX - 1].Fmetrics.linespace;
 		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y = 6;
+		lcd_draw_buf.current_y = LCD_TOP_MARGIN;
 		lcd_draw_buf.vertical_adjustment = 0;
 		lcd_draw_buf.align_adjustment = 0;
 		draw_string(MESSAGE_HISTORY_TITLE);
@@ -1023,12 +1033,12 @@ int render_history_with_pcf()
 }
 
 extern int more_search_results;
-void restoure_search_list_page(void)
+void restore_search_list_page(void)
 {
-	if (article_link_count > NUMBER_OF_RESULTS)
+	if (article_link_count > NUMBER_OF_FIRST_PAGE_RESULTS)
 	{
 		more_search_results = 0;
-		article_link_count = NUMBER_OF_RESULTS;
+		article_link_count = NUMBER_OF_FIRST_PAGE_RESULTS;
 		memcpy(framebuffer, lcd_draw_buf.screen_buf, framebuffer_size()); // copy from the LCD frame buffer (for the first page)
 	}
 }
@@ -1045,7 +1055,7 @@ int render_search_result_with_pcf(void)
 		return rc;
 
 	guilib_fb_lock();
-	if (article_link_count == NUMBER_OF_RESULTS) // has not rendered any results beyond the first page
+	if (article_link_count == NUMBER_OF_FIRST_PAGE_RESULTS) // has not rendered any results beyond the first page
 	{
 		offset_next = result_list_offset_next();
 		init_render_article(0);
@@ -1054,7 +1064,7 @@ int render_search_result_with_pcf(void)
 		lcd_draw_buf.pPcfFont = &pcfFonts[SEARCH_LIST_FONT_IDX - 1];
 		lcd_draw_buf.line_height = RESULT_HEIGHT;
 		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y = RESULT_START + RESULT_HEIGHT * NUMBER_OF_RESULTS;
+		lcd_draw_buf.current_y = RESULT_START + RESULT_HEIGHT * NUMBER_OF_FIRST_PAGE_RESULTS;
 	}
 
 	if ((offset_next = result_list_next_result(offset_next, &idxArticle, sTitleSearch)))
@@ -1112,7 +1122,7 @@ void display_article_with_pcf(int start_y)
 	int pos;
 
         if(lcd_draw_buf.current_y<=LCD_HEIGHT_LINES || request_display_next_page || 
-		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_RESULTS))
+		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_FIRST_PAGE_RESULTS))
             return;
         
         if(article_buf_pointer && (lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES) > lcd_draw_buf.current_y)
@@ -1152,7 +1162,7 @@ void scroll_article(void)
           return;
 
 	if (!display_first_page || request_display_next_page || 
-		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_RESULTS))
+		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_FIRST_PAGE_RESULTS))
 		return;
         delay_time = 0;
         if(article_scroll_delay_time_total>=1000000*3)
@@ -1182,74 +1192,6 @@ void scroll_article(void)
         article_offset--;
 }
 
-#define MAX_PASSWORD 16
-int restriction_filter_off = -1;
-char restriction_pass1[20];
-void set_password(void)
-{
-	
-}
-
-void get_password(char *password)
-{
-	
-}
-
-int check_restriction(char *pArticle)
-{
-	int fd;
-	int len;
-	char restriction_pass2[20];
-	char password[MAX_PASSWORD];
-	SHA1Context sha;
-	
-	if (restriction_filter_off == -1)
-	{
-		fd = wl_open("pass1", WL_O_RDONLY);
-		if (fd >= 0)
-		{
-			len = wl_read(fd, restriction_pass1, 20);
-			wl_close(fd);
-			if (len < 20)
-				memset(restriction_pass1, 0, 20);
-			
-			fd = wl_open("pass2", WL_O_RDONLY);
-			if (fd >= 0)
-			{
-				len = wl_read(fd, restriction_pass2, 20);
-				wl_close(fd);
-			}
-			if (len < 20)
-				memset(restriction_pass1, 0, 20);
-	
-			SHA1Reset(&sha);
-			SHA1Input(&sha, (const unsigned char *) restriction_pass1, 20);
-			if (!memcmp(sha.Message_Digest, restriction_pass2, 20))
-				restriction_filter_off = 1;
-			else
-				restriction_filter_off = 0;
-		}
-		else
-		{
-			set_password();
-		}
-	}
-
-	if (restriction_filter_off)
-		return 0; // ok
-	
-	get_password(password);
-	if (!strlen(password))
-		return -1;
-	
-	SHA1Reset(&sha);
-	SHA1Input(&sha, (const unsigned char *) password, strlen(password));
-	if (!memcmp(sha.Message_Digest, restriction_pass1, 20))
-		return 0;
-	else
-		return -1;
-}
-
 unsigned char *open_article_with_pcf_link(long idx_article)
 {
         int i;
@@ -1263,7 +1205,7 @@ unsigned char *open_article_with_pcf_link(long idx_article)
 	    return NULL; // article not exist		
         }
 
-	if (restricted_article && check_restriction(file_buffer+article_header.offset_article))
+	if (restricted_article || check_restriction(idx_article))
 		return NULL;
 		
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
@@ -1603,7 +1545,10 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted)
 			{
 				if (bitmap[i] & (1 << j))
 				{
-					lcd_set_framebuffer_pixel(x_base + x_offset, y+y_offset);
+					if (inverted)
+						lcd_clear_framebuffer_pixel(x_base + x_offset, y+y_offset);
+					else
+						lcd_set_framebuffer_pixel(x_base + x_offset, y+y_offset);
 				}
 				
 			}
