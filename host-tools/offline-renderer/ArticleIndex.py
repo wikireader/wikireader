@@ -551,7 +551,7 @@ def bigram_encode(title):
     global bigram
 
     result = ''
-    title = strip_accents(title)
+    #title = strip_accents(title) # already done
 
     while len(title) >= 2:
         if title[0].lower() in KEYPAD_KEYS:
@@ -601,13 +601,20 @@ def output_fnd(filename, article_index):
         i += 1
 
     # create pfx matrix and write encoded titles
-    article_list = article_index.all_indices()
+
     #article_list = [strip_accents(k) for k in article_index.keys()]
-    article_list.sort(key = lambda x: strip_accents(x).lower())
+    #article_list.sort(key = lambda x: strip_accents(x).lower())
+
+    def sort_key(key):
+        global KEYPAD_KEYS
+        return ''.join(c for c in strip_accents(key).lower() if c in KEYPAD_KEYS)
+
+    article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
+    article_list.sort()
 
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
-    for title in article_list:
+    for stripped_title, title in article_list:
         offset = out_f.tell()
         key3 = (title[0:3] + '\0\0\0')[0:3].lower()
         key2 = key3[0:2] + '\0'
@@ -620,7 +627,7 @@ def output_fnd(filename, article_index):
             index_matrix[key3] = offset
         (article_number, dummy, restricted) = article_index.get_index(title)
         article_index.set_index(title, (article_number, offset, restricted))
-        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
+        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(stripped_title) + '\0')
 
     out_f.close()
     print 'Time: %ds' % (time.time() - start_time)
