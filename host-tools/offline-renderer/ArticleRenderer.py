@@ -764,11 +764,16 @@ def write_article():
     global output, f_out, i_out
     global article_count
     global article_index
+    global file_number
 
     article_count += 1
     if verbose:
         print "[MWR %d] %s" % (article_count, g_this_article_title)
         sys.stdout.flush()
+    elif article_count % 1000 == 0:
+        print "Render[%d]: %d" % (file_number, article_count)
+        sys.stdout.flush()
+
 
     output.flush()
 
