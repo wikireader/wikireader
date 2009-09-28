@@ -4196,7 +4196,7 @@ long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long l
 			{
 				sTitleSearch[lenTitleSearch] = c;
 				sTitleSearch[lenTitleSearch + 1] = '\0';
-				bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
+				bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch, MAX_TITLE_LEN);
 				while (offsetBufFnd < lenBufFnd && 
 					(rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
 				{
@@ -4204,7 +4204,7 @@ long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long l
 						lenHashSequentialSearch, sHashSequentialSearch, countHashSequentialSearchForNextChar);
 					offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 					pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
-					bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch);
+					bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch, MAX_TITLE_LEN);
 				}
 	
 				if (offsetBufFnd < lenBufFnd && !rc)
