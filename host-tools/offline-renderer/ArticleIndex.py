@@ -301,8 +301,7 @@ pragma journal_mode = memory;
         match = redirected_to.search(text)
         if match:
             redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
-            redirect_title = whitespaces.sub(' ', redirect_title).strip()
-            redirect_title.lstrip(':')
+            redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
             if non_articles.search(text):
                 if verbose:
                     print 'Non-article Redirect:', text
