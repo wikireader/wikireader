@@ -431,7 +431,7 @@ def bigram_encode(title):
     global bigram
 
     result = ''
-    #title = strip_accents(title) # already done
+    title = strip_accents(title)
 
     while len(title) >= 2:
         if title[0].lower() in KEYPAD_KEYS:
@@ -517,7 +517,7 @@ def output_fnd(filename, article_index):
             index_matrix[key3] = offset
         (article_number, dummy, restricted) = article_index.get_index(title)
         article_index.set_index(title, (article_number, offset, restricted))
-        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(stripped_title) + '\0')
+        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
     print 'Time: %ds' % (time.time() - start_time)
