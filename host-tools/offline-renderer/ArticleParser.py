@@ -26,9 +26,9 @@ subs = [
 
     (re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
-    (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
-
     (re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE), ''),
+
+    (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
 
     (re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE), '\n'),
 
