@@ -755,7 +755,7 @@ def article_index(title):
     c.execute('select article_number, fnd_offset, restricted from articles where title = ? limit 1', ["~" + title])
     result = c.fetchone()
     c.close()
-    return result
+    return result  # this returns a tuple of text strings, so beware!
 
 
 def write_article():
@@ -763,7 +763,7 @@ def write_article():
     global verbose
     global output, f_out, i_out
     global article_count
-    global article_index
+    global g_this_article_title
     global file_number
 
     article_count += 1
@@ -807,7 +807,8 @@ def write_article():
 		try:
 		    (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
 		    data_offset = (file_offset & 0x7fffffff)
-		    if restricted:
+
+		    if bool(int(restricted)):  # '0' is True so turn it into False
 		        data_offset |= 0x80000000
 		    data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
 		    i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
