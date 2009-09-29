@@ -52,17 +52,17 @@ class FileScanner(object):
     text_start = '<text'
     text_start_len = len(text_start)
 
-    text_prefix = 'xml:space="preserve">'
+    text_prefix = 'xml:space="preserve"' # note could eithe end in '>' or '/>'
     text_prefix_len = len(text_prefix)
 
     text_end = '</text>'
     text_end_len = len(text_end)
 
     control = [
-        (title_start, title_start_len, None),
-        (title_end, title_end_len, 1),
-        (text_start, text_start_len, None),
-        (text_end, text_end_len, 2),
+        (title_start, title_start_len),
+        (title_end, title_end_len),
+        (text_start, text_start_len),
+        (text_end, text_end_len),
         ]
 
     def process(self, filename, limit):
@@ -76,25 +76,55 @@ class FileScanner(object):
         file = open(filename, 'r')
 
         run = True
+        state = 0
         while run:
-            for tag, size, fn in self.control:
-                pos = -1
-                while pos < 0:
-                    pos = block.find(tag)
-                    if pos >= 0:
-                        break
-                    block2 = file.read(65536)
-                    if len(block2) == 0:
-                        return limit
-                    block += block2
+            if state > len(self.control):
+                state = 0
+            tag, size = self.control[state]
 
-                if fn == 1:
-                    p = 0
-                    while block[p].isspace():
-                        p += 1
-                    title =  block[p:pos].rstrip()
-                    wanted = self.title(title, position + p)
-                elif fn == 2 and wanted:
+            pos = -1
+            while pos < 0:
+                pos = block.find(tag)
+                if pos >= 0:
+                    break
+                block2 = file.read(65536)
+                if len(block2) == 0:
+                    return limit
+                block += block2
+
+            if pos >= len(block) - 1024:
+                block += file.read(65536)
+
+            if 0 == state:
+                state = 1
+
+            elif 1 == state:
+                state = 2
+                p = 0
+                while block[p].isspace():
+                    p += 1
+                title =  block[p:pos].rstrip()
+                wanted = self.title(title, position + p)
+
+            elif 2 == state:
+                state = 3
+                p = block.find(self.text_prefix, pos)
+                if p >= 0:
+                    p += self.text_prefix_len
+                else:
+                    print 'state 2 failure at %d : "%s"' % (pos, block[pos:])
+                    sys.exit(99)
+
+                while block[p].isspace():
+                    p += 1
+                if block[p] == '/':
+                    if wanted:
+                        self.body(title, '', position + p + 2) # 2 => skip '/>'
+                    state = 0
+
+            elif 3 == state:
+                state = 0
+                if wanted:
                     p = block.find(self.text_prefix)
                     if p >= 0:
                         p += self.text_prefix_len
@@ -102,7 +132,12 @@ class FileScanner(object):
                         p = 0
                     while block[p].isspace():
                         p += 1
+                    if block[p] == '>':
+                        p += 1
+                    while block[p].isspace():
+                        p += 1
                     body = block[p:pos].rstrip()
+
                     if '#' == body[0] and 'redirect' == body[1:9].lower():
                         self.redirect(title, body, position + p)
                     else:
@@ -115,9 +150,9 @@ class FileScanner(object):
                             run = False
                             break
 
-                l = pos + size
-                position += l
-                block = block[l:]
+            l = pos + size
+            position += l
+            block = block[l:]
         file.close()
         return limit
 
