@@ -13,12 +13,12 @@ endif
 TARGETS = title.bmf
 TARGETS += subtitle.bmf
 TARGETS += texti.bmf
-TARGETS += textbi.bmf
+#TARGETS += textbi.bmf
 TARGETS += text.bmf
-TARGETS += textb.bmf
+#TARGETS += textb.bmf
 #TARGETS += small.bmf
 TARGETS += textall.bmf
-TARGETS += textallb.bmf
+#TARGETS += textallb.bmf
 
 
 
