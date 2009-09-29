@@ -30,8 +30,11 @@ BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
-DL=./host-tools/toolchain-download
-export PATH:=$(shell readlink -m ./host-tools/toolchain-install/bin):$(PATH)
+HOST_TOOLS := $(shell readlink -m ./host-tools)
+
+DL=${HOST_TOOLS}/toolchain-download
+
+export PATH := ${HOST_TOOLS}/toolchain-install/bin:$(PATH)
 
 CONFIG_FILE := "samo-lib/include/config.h"
 CONFIG_FILE_DEFAULT := "samo-lib/include/config.h-default"
@@ -69,11 +72,11 @@ SHA_LEVEL := 256
 CHECKSUM_FILE := ${DESTDIR_PATH}/sha${SHA_LEVEL}.txt
 
 .PHONY: install
-install: validate-destdir forth-install mahatma-install version
+install: validate-destdir forth-install mahatma-install fonts-install version
 
 .PHONY: validate-destdir version
-version:
-	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}"
+version: validate-destdir
+	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
 	cd "${DESTDIR_PATH}" && sha${SHA_LEVEL}sum * >> "${CHECKSUM_FILE}"
 
@@ -81,6 +84,11 @@ version:
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
 	@if [ -z "${DESTDIR}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
+
+
+.PHONY: sd-image
+sd-image: validate-destdir
+
 
 
 # ----- main program ------------------------------------------
@@ -141,7 +149,7 @@ binutils: binutils-patch
 	cd binutils-$(BINUTILS_VERSION) && \
 	mkdir -p build && \
 	cd build  && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix ${HOST_TOOLS}/toolchain-install --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install
 	touch $@
@@ -158,11 +166,11 @@ gcc-patch: gcc-download
 
 gcc: binutils gcc-patch
 	cd host-tools && \
-	export PATH=$(shell readlink -m ./host-tools/toolchain-install/bin):$(PATH) && \
+	export PATH=${HOST_TOOLS}/toolchain-install/bin:$(PATH) && \
 	cd gcc-$(GCC_VERSION) && \
 	mkdir -p build && \
 	cd build && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix $(shell readlink -m ./host-tools/toolchain-install) --target=c33-epson-elf --enable-languages=c && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix ${HOST_TOOLS}/toolchain-install --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
 	$(MAKE) install
 	touch $@
@@ -225,7 +233,11 @@ combine: validate-destdir
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
-#.NOTPARALLEL: stamp-r-index
+.PHONY: hash
+hash: validate-destdir wiki-xml
+	cd "${DESTDIR}" && ${HOST_TOOLS}/wiki-xml/wiki-xml-parser -p 5
+
+
 stamp-r-index:
 	rm -f "$@"
 	cd host-tools/offline-renderer && $(MAKE) index \
