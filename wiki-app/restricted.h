@@ -11,5 +11,6 @@ int password_add_char(char c);
 int password_remove_char(void);
 int clear_password_string(void);
 int get_password_string_len(void);
+void handle_password_key(char keycode);
 
 #endif /* _LCD_RESTRICTED_H */

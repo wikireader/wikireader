@@ -55,7 +55,10 @@ static unsigned int touch_down_on_keyboard = 0;
 static unsigned int touch_down_on_list = 0;
 static struct pos article_touch_down_pos;
 static unsigned int touch_y_last_unreleased = 0;
-static unsigned int start_move_time = 0;
+static unsigned long start_move_time = 0;
+static unsigned long last_unreleased_time = 0;
+static int last_article_link_number = -1;
+static unsigned long last_article_link_time = 0;
 int    last_index_y_pos;
 int    enter_touch_y_pos = -1;
 int    last_history_y_pos;
@@ -68,9 +71,7 @@ unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
 unsigned long start_search_time,start_search_selection_time, last_delete_time;
-int last_article_link_number = -1;
 int last_article_move_time,touch_y_last_article;
-int touch_y_last_article_list[10],touch_time_last_article_list[10];
 int article_touch_count = 0;
 int touch_history = 0;
 extern int article_offset;
@@ -85,7 +86,7 @@ extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
-#define INITIAL_ARTICLE_SCROLL_PIXEL 5
+#define INITIAL_ARTICLE_SCROLL_PIXEL 2
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 
 static void repaint_search(void)
@@ -277,7 +278,6 @@ void open_article(const char* target, int mode)
 */
 }
 
-
 static void handle_search_key(char keycode)
 {
 	int rc = 0;
@@ -303,32 +303,6 @@ static void handle_search_key(char keycode)
 		search_reload_ex(SEARCH_RELOAD_NORMAL);
 //	keyboard_paint();
 	guilib_fb_unlock();
-}
-
-static void handle_password_key(char keycode)
-{
-	int mode = keyboard_get_mode();
-
-	switch (mode)
-	{
-		case KEYBOARD_PASSWORD_CHAR:
-		case KEYBOARD_PASSWORD_NUM:
-			if (keycode == WL_KEY_BACKSPACE) {
-				password_remove_char();
-			} else if (is_supported_search_char(keycode)) {
-				password_add_char(tolower(keycode));
-			}
-			break;
-		case KEYBOARD_RESTRICTED:
-			if (keycode == 'Y')
-			{
-				keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
-				keyboard_paint();
-			}
-			else if (keycode == 'N')
-			{
-			}
-	}
 }
 
 static void handle_cursor(struct wl_input_event *ev)
@@ -437,6 +411,7 @@ static void handle_touch(struct wl_input_event *ev)
         //int time_diff_search;
         int mode;
 	struct keyboard_key * key;
+	long start_move_y;
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
@@ -691,68 +666,91 @@ static void handle_touch(struct wl_input_event *ev)
                         start_move_time = 0;
 
 
-                        if(article_link_number>=0)
-                        {
-                          invert_link(article_link_number);
-                          article_link_number = -1;
-                        }
-                        if(get_article_link_number()>=0)
-                        {
-                             last_display_mode = DISPLAY_MODE_HISTORY;
-                             display_mode = DISPLAY_MODE_ARTICLE;
-                             open_article_link_with_link_number(get_article_link_number());
-                             return;
+			article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
+			if (article_link_number >= 0 && article_link_number == last_article_link_number &&
+				time_diff(get_time_ticks(), last_article_link_time) > seconds_to_ticks(0.2))
+			{
+				if (get_article_link_number() < 0)
+					invert_link(article_link_number);
+				last_article_link_number = -1;
+                                set_article_link_number(last_article_link_number);
+				last_display_mode = display_mode;
+				display_mode = DISPLAY_MODE_ARTICLE;
+				open_article_link_with_link_number(article_link_number);
+				return;
                         }
 				
 			article_touch_down_handled = 0;
 		} else {
                         article_offset = 0;
-                        //if(abs(touch_y_last_article-ev->touch_event.y)>=5)
-                        {
-			   last_article_move_time = get_time_ticks();
-		           touch_y_last_article = ev->touch_event.y;
-
-                           if(article_touch_count>=10)
-                               article_touch_count = 0;
-                           touch_y_last_article_list[article_touch_count] = ev->touch_event.y;
-                           touch_time_last_article_list[article_touch_count] = last_article_move_time;
-
-                           article_touch_count++;
-                           if(article_touch_count>=10)
-                              article_touch_count = 0;
-                        }
                         if(touch_y_last_unreleased == 0)
                         {
-                           touch_y_last_unreleased = ev->touch_event.y;
-                           start_move_time = get_time_ticks();
+				touch_y_last_unreleased = ev->touch_event.y;
+				last_unreleased_time = get_time_ticks();
+				last_article_link_number = -1;
+                                set_article_link_number(last_article_link_number);
                         }
                         else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
                         {
-                              display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
-                              touch_y_last_unreleased = ev->touch_event.y;
-                              article_moved = true;
-                              b_show_scroll_bar = 1;
-                              article_scroll_pixel = 1;
+				display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
+				if (!article_moved)
+				{
+					article_moved = true;
+					start_move_y = touch_y_last_unreleased;
+				}
+				touch_y_last_unreleased = ev->touch_event.y;
+				b_show_scroll_bar = 1;
+				article_scroll_pixel = 1;
                         }
-                        if(article_moved)
-                           goto out;
-
+                        else if (time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.2))
                         {
-			      article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
-                              last_article_link_number = get_article_link_number();
-			      if(article_link_number>=0 && article_link_number!=last_article_link_number)
-                              {
-				invert_link(article_link_number);
-				invert_link(last_article_link_number);
-                                set_article_link_number(article_link_number);
+				touch_y_last_unreleased = ev->touch_event.y;
+				last_unreleased_time = get_time_ticks();
+				article_moved = false;
+			}
 
-                              }
-                              else if(article_link_number<0 && last_article_link_number>=0)
-                              {
-                                invert_link(last_article_link_number);
-                                set_article_link_number(-1);
-                              }
-                        }
+			if (article_moved && (abs(touch_y_last_unreleased - ev->touch_event.y) > 5 ||
+				time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.2)))
+                        {
+				touch_y_last_unreleased = ev->touch_event.y;
+				if ((last_article_link_number = get_article_link_number()) >= 0)
+					invert_link(last_article_link_number);
+                                last_article_link_number = -1;
+                                set_article_link_number(last_article_link_number);
+				goto out;
+			}
+
+			article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
+			if (article_link_number>=0)
+			{
+				if (last_article_link_number < 0)
+				{
+					last_article_link_number = article_link_number;
+					last_article_link_time = get_time_ticks();
+				}
+				else if (article_link_number!=last_article_link_number)
+				{
+					if ((last_article_link_number = get_article_link_number()) >= 0)
+					{
+						invert_link(last_article_link_number);
+						set_article_link_number(-1);
+					}
+					last_article_link_number = article_link_number;
+					last_article_link_time = get_time_ticks();
+				}
+				else if (time_diff(get_time_ticks(), last_article_link_time) > seconds_to_ticks(0.2) &&
+					abs(touch_y_last_unreleased - ev->touch_event.y) < 5)
+				{
+					invert_link(article_link_number);
+					set_article_link_number(article_link_number);
+				}
+			}
+			else if (article_link_number<0 && last_article_link_number>=0)
+			{
+				invert_link(last_article_link_number);
+                                last_article_link_number = -1;
+                                set_article_link_number(last_article_link_number);
+			}
 
 			if (!article_touch_down_handled) {
 				article_touch_down_pos.x = ev->touch_event.x;

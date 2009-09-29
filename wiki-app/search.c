@@ -205,9 +205,11 @@ static void print_article_error()
 {
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Opening the article failed.", 27, 0);
-render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, strlen(article_error), 0);
-render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, strlen(article_error2), 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 84, "The article failed to load.", 27, 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Please restart your WikiReader and", 34, 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 124, "try again.", 10, 0);
+//render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, strlen(article_error), 0);
+//render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, strlen(article_error2), 0);
 	guilib_fb_unlock();
 }
 
@@ -1157,25 +1159,15 @@ int retrieve_article(long idx_article)
 				}
 			}
 		}
-//                else
-//                {
-//			wl_close(search_info->fd_idx);
-//			search_info->fd_idx = wl_open("pedia.idx", WL_O_RDONLY);
-//                        if(open_number<2)
-//                        {
-//                           open_number++;
-//                           goto start;
-//                        }
-//                }
 	}
-if (!compressed_buf)
-sprintf(article_error, "compressed_buf allocation error");
-else
-{
-sprintf(article_error, "idx=%ld, fid=%d, offset=%lx", idx_article, 
-dat_file_id, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
-sprintf(article_error2, "len=%d, rc=%d", dat_article_len, rc);
-}
+//if (!compressed_buf)
+//sprintf(article_error, "compressed_buf allocation error");
+//else
+//{
+//sprintf(article_error, "idx=%ld, fid=%d, offset=%lx", idx_article,
+//dat_file_id, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
+//sprintf(article_error2, "len=%d, rc=%d", dat_article_len, rc);
+//}
 	print_article_error();
 	return -1;
 }	

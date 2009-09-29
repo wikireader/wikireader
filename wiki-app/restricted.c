@@ -14,10 +14,20 @@
 #include "lcd_buf_draw.h"
 #include "wl-keyboard.h"
 #include "restricted.h"
+#include "bigram.h"
+
+enum restricted_screen_e {
+
+	RESTRICTED_SCREEN_SET_PASSWORD,
+	RESTRICTED_SCREEN_CONFIRM_PASSWORD,
+	RESTRICTED_SCREEN_CHECK_PASSWORD,
+	RESTRICTED_SCREEN_FILTER_OPTION,
+};
 
 extern int display_mode;
 static char password_string[MAX_PASSWORD_LEN];
 static int password_str_len = 0;
+static int restricted_screen;
 int restriction_filter_off = -1;
 char restriction_pass1[20];
 long saved_idx_article;
@@ -63,6 +73,33 @@ void set_password()
 	guilib_fb_unlock();
 	display_mode = DISPLAY_MODE_RESTRICTED;
 	keyboard_set_mode(KEYBOARD_RESTRICTED);
+	restricted_screen = RESTRICTED_SCREEN_SET_PASSWORD;
+}
+
+void handle_password_key(char keycode)
+{
+	int mode = keyboard_get_mode();
+
+	switch (mode)
+	{
+		case KEYBOARD_PASSWORD_CHAR:
+		case KEYBOARD_PASSWORD_NUM:
+			if (keycode == WL_KEY_BACKSPACE) {
+				password_remove_char();
+			} else if (is_supported_search_char(keycode)) {
+				password_add_char(tolower(keycode));
+			}
+			break;
+		case KEYBOARD_RESTRICTED:
+			if (keycode == 'Y')
+			{
+				keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
+				keyboard_paint();
+			}
+			else if (keycode == 'N')
+			{
+			}
+	}
 }
 
 void get_password(void)

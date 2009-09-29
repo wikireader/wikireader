@@ -68,7 +68,7 @@ int framebuffer_height();
 unsigned char *framebuffer_copy;
 char msg_out[1024];
 extern unsigned char *framebuffer;
-int link_article_number_cur;
+int link_article_number_cur = -1;
 int article_scroll_delay_time,article_offset,base_delay_time;
 int article_distance,article_offset,article_scroll_increment;
 int time_scroll_article_start;
@@ -1210,8 +1210,8 @@ unsigned char *open_article_with_pcf_link(long idx_article)
 //restricted_article = 1;
 //else
 //restricted_article = 0;
-	if (restricted_article && check_restriction(idx_article))
-		return NULL;
+//	if (restricted_article && check_restriction(idx_article))
+//		return NULL;
 		
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 	offset = sizeof(ARTICLE_HEADER);
@@ -1245,6 +1245,16 @@ int isArticleLinkSelected(int x,int y)
 	//char msg[1024];
 	
 	 
+	if (link_article_number_cur >= 0 && link_article_number_cur < article_link_count)
+	{
+		article_link_start_y_pos = articleLink[link_article_number_cur].start_xy >>8;
+		article_link_start_x_pos = (articleLink[link_article_number_cur].start_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
+		article_link_end_y_pos = articleLink[link_article_number_cur].end_xy >>8;
+		article_link_end_x_pos = (articleLink[link_article_number_cur].end_xy & 0x000000ff) + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
+		if ((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
+			return link_article_number_cur; // if more than on links are matched, the last matched one got the higher priority
+	}
+
 	if (!display_first_page || request_display_next_page)
 		return -1;
 	//sprintf(msg,"article link count:%d,x:%d,y:%d\n",article_link_count,x,y);
@@ -1592,7 +1602,7 @@ void msg_on_lcd(int x, int y, char *msg)
 {
 #ifdef INCLUDED_FROM_KERNEL
 //	guilib_fb_lock();
-	guilib_clear_area(x, y, 239, 18);
+	guilib_clear_area(x, y, 239, y+18);
 	render_string(DEFAULT_FONT_IDX, x, y, msg, strlen(msg), 0); 
 //	guilib_fb_unlock();
 #endif
