@@ -9,34 +9,35 @@
 import re
 
 
-# must be lower case
+# text must be lower case
+# the number is the maximum number of occurances
 FILTER_WEIGHTS = {
     "porn": 1,
-    "x rated": 1,
-    "x-rated": 1,
-    "dildo": 1,
+    "x rated": 0,
+    "x-rated": 0,
+    "dildo": 0,
     "erotic": 1,
-    "bdsm": 1,
-    "felching": 1,
-    "pegging": 1,
-    "cumshot": 1,
-    "cum shot": 1,
-    "cum-shot": 1,
-    "anilingus": 1,
-    "deep-throat": 1,
-    "fellatio": 1,
-    "adult-video": 1,
-    "adult-entertainment": 1,
-    "son-of-a-bitch": 1,
-    "slut": 1,
+    "bdsm": 0,
+    "felching": 0,
+    "pegging": 0,
+    "cumshot": 0,
+    "cum shot": 0,
+    "cum-shot": 0,
+    "anilingus": 0,
+    "deep-throat": 0,
+    "fellatio": 0,
+    "adult-video": 0,
+    "adult-entertainment": 0,
+    "son-of-a-bitch": 0,
+    "slut": 0,
     "dickhead": 1,
     "bitch": 1,
-    "shit": 1,
-    "whore": 1,
+    "shit": 3,
+    "whore": 0,
     "arsehole": 1,
     "bastard": 1,
-    "fuck": 1,
-    "cunt": 1,
+    "fuck": 0,
+    "cunt": 0,
 }
 
 BAD_WORDS = FILTER_WEIGHTS.keys()
@@ -57,7 +58,12 @@ def find_restricted(text):
                     contains[bad] = 1
                 else:
                     contains[bad] += 1
-    return contains
+    restrict = False
+    for word in contains:
+        if contains[word] > FILTER_WEIGHTS[word]:
+            restrict = True
+            break
+    return (restrict, contains)
 
 
 def is_restricted(text):
