@@ -298,6 +298,9 @@ pragma journal_mode = memory;
 
     def redirect(self, title, text, seek):
         global non_articles, redirected_to, whitespaces
+
+        title = self.translate(title).strip(u'\u200e\u200f')
+
         match = redirected_to.search(text)
         if match:
             redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
