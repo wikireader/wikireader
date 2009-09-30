@@ -327,7 +327,7 @@ pragma journal_mode = memory;
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        restricted = is_restricted(title) or is_restricted(text)
+        restricted = FilterWords.is_restricted(title) or  FilterWords.is_restricted(text)
 
         self.article_count += 1
         if restricted:
@@ -406,29 +406,6 @@ pragma journal_mode = memory;
             except:
                 result = self.find(title, level + 1)
         return result
-
-
-
-non_letters = re.compile('[-\d\W]+')
-
-def Xis_restricted(text):
-    """check if text contains any restricted words"""
-    global non_letters, max_score
-    score = 0
-    w = frozenset(non_letters.split(text))
-    contains = w & FilterWords.BAD_WORDS_SET
-
-    return len(contains) > 0
-
-
-
-def is_restricted(text):
-    """check if text contains any restricted words"""
-    text = text.lower()
-    for word in FilterWords.BAD_WORDS:
-        if text.find(word) >= 0:
-            return True
-    return False
 
 
 import unicodedata

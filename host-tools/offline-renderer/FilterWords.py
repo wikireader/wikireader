@@ -6,6 +6,9 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
+import re
+
+
 # must be lower case
 FILTER_WEIGHTS = {
     "porn": 1,
@@ -37,4 +40,44 @@ FILTER_WEIGHTS = {
 }
 
 BAD_WORDS = FILTER_WEIGHTS.keys()
-BAD_WORDS_SET  = frozenset(BAD_WORDS)
+
+NON_LETTERS = re.compile('[-\d\W]+')
+
+def find_restricted(text):
+    """check if text contains any restricted words"""
+
+    global NON_LETTERS, BAD_WORDS
+
+    score = 0
+    contains = {}
+    for word in NON_LETTERS.split(text.lower()):
+        for bad in BAD_WORDS:
+            if word.startswith(bad):
+                if bad not in contains:
+                    contains[bad] = 1
+                else:
+                    contains[bad] += 1
+    return contains
+
+
+def is_restricted(text):
+    """check if text contains any restricted words"""
+
+    global BAD_WORDS
+
+    text = text.lower()
+    size = len(text)
+    for word in BAD_WORDS:
+        i = 0
+        while i < size:
+            p = text.find(word, i)
+            if 0 == p:
+                return True
+            elif p > 0:
+                if not text[p - 1].isalpha():
+                    return True
+                i = p + size
+            else:
+                break
+    return False
+

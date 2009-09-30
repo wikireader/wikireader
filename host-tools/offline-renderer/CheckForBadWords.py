@@ -137,8 +137,8 @@ class FileProcessing(FileScanner.FileScanner):
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        restricted_title = is_restricted(title)
-        restricted_text = is_restricted(text)
+        restricted_title =  FilterWords.is_restricted(title)
+        restricted_text =  FilterWords.is_restricted(text)
         restricted = restricted_title or restricted_text
 
         self.article_count += 1
@@ -161,31 +161,14 @@ class FileProcessing(FileScanner.FileScanner):
 
             if restricted_text:
                 b_state = ' Text'
+                contains = FilterWords.find_restricted(text)
             else:
                 b_state = ''
+                contains = None
 
             print '%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title.encode('utf-8'))
-
-
-non_letters = re.compile('[-\d\W]+')
-
-def Xis_restricted(text):
-    """check if text contains any restricted words"""
-    global non_letters, max_score
-    score = 0
-    w = frozenset(non_letters.split(text))
-    contains = w & FilterWords.BAD_WORDS_SET
-
-    return len(contains) > 0
-
-
-def is_restricted(text):
-    """check if text contains any restricted words"""
-    text = text.lower()
-    for word in FilterWords.BAD_WORDS:
-        if text.find(word) >= 0:
-            return True
-    return False
+            if None != contains:
+                print '        ->', contains
 
 
 # run the program
