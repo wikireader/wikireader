@@ -120,6 +120,8 @@ case "${clear}" in
     ;;
 esac
 
+# update
+git pull --rebase
 
 # copy the index from another machine
 if [ -n "${index}" ]
@@ -134,6 +136,7 @@ then
   ${debug} touch stamp-r-index
 fi
 
+# run the build
 case "${run}" in
   [yY]|[yY][eE][sS])
     case "${seq}" in
