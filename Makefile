@@ -30,7 +30,10 @@ BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_URL= \
   ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
 
+SAMO_LIB := $(shell readlink -m ./samo-lib)
 HOST_TOOLS := $(shell readlink -m ./host-tools)
+LICENSES := $(shell readlink -m ./Licenses)
+MISC_FILES := ${SAMO_LIB}/misc-files
 
 DL=${HOST_TOOLS}/toolchain-download
 
@@ -66,24 +69,32 @@ all:    ${ALL_TARGETS}
 
 DESTDIR_PATH := $(shell readlink -m "${DESTDIR}")
 WORKDIR_PATH := $(shell readlink -m "${WORKDIR}")
-VERSION_TAG := $(shell basename "${DESTDIR}")
+VERSION_TAG ?= $(shell date '+%Y%m%d%H%M')
 VERSION_FILE := ${DESTDIR_PATH}/version.txt
 SHA_LEVEL := 256
 CHECKSUM_FILE := ${DESTDIR_PATH}/sha${SHA_LEVEL}.txt
 
 .PHONY: install
-install: validate-destdir forth-install mahatma-install fonts-install version
+install: validate-destdir forth-install mahatma-install fonts-install misc-files-install version
 
-.PHONY: validate-destdir version
+.PHONY: version
 version: validate-destdir
+	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
 	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
 	cd "${DESTDIR_PATH}" && sha${SHA_LEVEL}sum * >> "${CHECKSUM_FILE}"
 
+
+.PHONY: misc-files-install
+misc-files-install: validate-destdir
+	${RM} "${MISC_FILES}"/*~
+	${RM} "${LICENSES}"/*~
+	cp -p "${MISC_FILES}"/* "${DESTDIR_PATH}"/
+	cp -p "${LICENSES}"/* "${DESTDIR_PATH}"/
+
 .PHONY: validate-destdir
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
-	@if [ -z "${DESTDIR}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
 
 
 .PHONY: sd-image
