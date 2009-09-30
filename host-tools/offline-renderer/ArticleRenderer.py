@@ -228,7 +228,7 @@ def get_utf8_cwidth(c, face):
 
     f = font_id_values[face]
 
-    f.seek(ord(c) * cmr_size + fh_size);
+    f.seek(ord(c) * cmr_size + fh_size)
     buffer = f.read(cmr_size)
     if len(buffer) != 0:
         width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = struct.unpack(cmr, buffer)
@@ -503,7 +503,7 @@ class WrProcess(HTMLParser):
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
             else:
                 if self.level > LIMAX_INDENT_LEVELS:    # we only have 3 types of bullets
-                    bullet_num = 3;
+                    bullet_num = 3
                 else:
                     bullet_num = self.level
 
