@@ -327,9 +327,14 @@ pragma journal_mode = memory;
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        restricted = FilterWords.is_restricted(title) or  FilterWords.is_restricted(text)
+        restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)
 
         self.article_count += 1
+
+        # do closer inspection to see if realy restricted
+        if restricted:
+            (restricted, bad_words) = FilterWords.find_restricted(text)
+
         if restricted:
             self.restricted_count += 1
 
@@ -343,6 +348,7 @@ pragma journal_mode = memory;
         if verbose:
             if restricted:
                 print 'Restricted Title:', title.encode('utf-8')
+                print '  -->', bad_words
             else:
                 print 'Title:', title.encode('utf-8')
 
