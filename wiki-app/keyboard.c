@@ -116,8 +116,7 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key password_char[] = {
-	KEY(0, 33, 95, 59, 'Y'),
-	KEY(0, 60, 95, 86, 'N'),
+	KEY(176, 81, 205, 105, 'Y'),
 
 	KEY(0, 126, 23, 152, 'q'),
 	KEY(0, 153, 23, 180, 'a'),
@@ -159,8 +158,7 @@ static struct keyboard_key password_char[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key password_num[] = {
-	KEY(0, 33, 95, 59, 'Y'),
-	KEY(0, 60, 95, 86, 'N'),
+	KEY(176, 81, 205, 105, 'Y'),
 
 	KEY(0, 126, 23, 152, '1'),
 	KEY(0, 153, 23, 180, '*'),
@@ -206,13 +204,16 @@ static struct keyboard_key clear_history[] = {
 	KEY(192, 181, 239, 207, 'N'),
 };
 static struct keyboard_key restriction[] = {
-	KEY(0, 153, 119, 180, 'Y'),
-	KEY(0, 181, 119, 207, 'N'),
+	KEY(60, 138, 179, 160, 'Y'),
 };
-static struct keyboard_key filter[] = {
-	KEY(0, 33, 119, 59, 'Y'),
-	KEY(0, 60, 119, 86, 'N'),
-	KEY(0, 87, 119, 113, 'P'),
+static struct keyboard_key filter_on_off[] = {
+	KEY(42, 124, 195, 147, 'Y'),
+	KEY(42, 153, 195, 176, 'N'),
+};
+static struct keyboard_key filter_option[] = {
+	KEY(42, 95, 195, 118, 'Y'),
+	KEY(42, 124, 195, 147, 'N'),
+	KEY(42, 153, 195, 176, 'P'),
 };
 /*
  * The secret of the position and size of the keyboard
@@ -329,11 +330,19 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 			}
 		}
 	}
-	else if (kb_mode == KEYBOARD_FILTER) {
-		for (i = 0; i < ARRAY_SIZE(filter); ++i) {
-			if (filter[i].left_x + KEY_GAP1 <= x && filter[i].right_x - KEY_GAP2 >= x
-			&& filter[i].left_y + KEY_GAP3 <= y && filter[i].right_y - KEY_GAP4 >= y) {
-				return &filter[i];
+	else if (kb_mode == KEYBOARD_FILTER_ON_OFF) {
+		for (i = 0; i < ARRAY_SIZE(filter_on_off); ++i) {
+			if (filter_on_off[i].left_x + KEY_GAP1 <= x && filter_on_off[i].right_x - KEY_GAP2 >= x
+			&& filter_on_off[i].left_y + KEY_GAP3 <= y && filter_on_off[i].right_y - KEY_GAP4 >= y) {
+				return &filter_on_off[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_FILTER_OPTION) {
+		for (i = 0; i < ARRAY_SIZE(filter_option); ++i) {
+			if (filter_option[i].left_x + KEY_GAP1 <= x && filter_option[i].right_x - KEY_GAP2 >= x
+			&& filter_option[i].left_y + KEY_GAP3 <= y && filter_option[i].right_y - KEY_GAP4 >= y) {
+				return &filter_option[i];
 			}
 		}
 	}

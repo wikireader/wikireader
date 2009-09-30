@@ -64,7 +64,7 @@ void history_add(const long idx_article, const char *title)
 	int i = 0;
 	int bFound = 0;
 	
-	history_changed = 1;
+	history_changed = 2;
 	history_base = 0;
 	history_current = 0;
 	while (!bFound && i < history_count)
@@ -95,7 +95,7 @@ void history_add(const long idx_article, const char *title)
 
 void history_log_y_pos(const long y_pos)
 {
-	//history_changed = 1;
+	history_changed = 1;
 	history_list[0].last_y_pos = y_pos;
 }
 
@@ -225,12 +225,12 @@ void history_list_init(void)
 	history_base = 0;
 }
 
-int history_list_save(void)
+int history_list_save(int level)
 {
 	int fd_hst;
 	int rc = 0;
 	
-	if (history_changed)
+	if (history_changed >= level)
 	{
 		fd_hst = wl_open("pedia.hst", WL_O_CREATE);
 		if (fd_hst >= 0)
@@ -289,5 +289,4 @@ void history_open_article(int new_selection)
 	idx_article = history_list[history_current + history_base].idx_article;
 	strcpy(title, history_list[history_current + history_base].title);
 	display_link_article(idx_article);
-	history_add(idx_article, title);
 }

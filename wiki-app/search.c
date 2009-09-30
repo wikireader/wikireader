@@ -1164,7 +1164,7 @@ int retrieve_article(long idx_article)
 //sprintf(article_error, "compressed_buf allocation error");
 //else
 //{
-//sprintf(article_error, "idx=%ld, fid=%d, offset=%lx", idx_article,
+//sprintf(article_error, "idx=%ld, fid=%d, offset=%lx", idx_article, 
 //dat_file_id, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
 //sprintf(article_error2, "len=%d, rc=%d", dat_article_len, rc);
 //}
@@ -1180,16 +1180,11 @@ void search_set_selection(int new_selection)
 void search_open_article(int new_selection)
 {
 	int list_idx;
- 	char title[MAX_TITLE_SEARCH];
 	
 	list_idx = new_selection;
 	if (list_idx >= NUMBER_OF_FIRST_PAGE_RESULTS)
 		list_idx -= NUMBER_OF_FIRST_PAGE_RESULTS;
-	if (!display_link_article(result_list->idx_article[list_idx]))
-	{
-		get_article_title_from_idx(result_list->idx_article[list_idx], title);
-		history_add(result_list->idx_article[list_idx], title);
-	}
+	display_link_article(result_list->idx_article[list_idx]);
 }
 
 long find_closest_idx(long idx, char *title)
@@ -1241,8 +1236,7 @@ void random_article(void)
 	idx_article = find_closest_idx(idx_article, title);
 	if (idx_article)
 	{
-		if (!display_link_article(idx_article))
-			history_add(idx_article, title);
+		display_link_article(idx_article);
 	}
 }
 

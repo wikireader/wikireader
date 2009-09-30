@@ -40,7 +40,7 @@ int history_get_selection();
 void history_set_selection(int selection);
 unsigned int history_get_count();
 void history_list_init(void);
-int history_list_save(void);
+int history_list_save(int level);
 
 int set_history_list_base(int offset,int offset_count);
 int history_get_base();

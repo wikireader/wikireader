@@ -191,7 +191,8 @@ void init_file_buffer();
 int div_wiki(int a,int b);
 int GetFontLinespace(int font);
 #ifndef WIKIPCF
-int display_link_article(long idx_article);
+void display_link_article(long idx_article);
+void display_retrieved_article(long idx_article);
 void display_str(char *str);
 void open_article_link(int x,int y);
 void invert_link(int article_link_number);
@@ -200,7 +201,7 @@ int  get_article_link_number();
 void open_article_link_with_link_number(int article_link_number);
 void scroll_article(void);
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted);
-unsigned char * open_article_with_pcf_link(long idx_article);
+int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted);
 int isArticleLinkSelected(int x,int y);
 #ifndef INCLUDED_FROM_KERNEL
 int load_init_article(long);

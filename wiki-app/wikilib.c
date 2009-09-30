@@ -34,6 +34,8 @@
 #include "restricted.h"
 #ifndef INCLUDED_FROM_KERNEL
 #include "time.h"
+#else
+#include "samo.h"
 #endif
 //#include <t_services.h>
 //#include <kernel.h>
@@ -58,7 +60,6 @@ static unsigned int touch_y_last_unreleased = 0;
 static unsigned long start_move_time = 0;
 static unsigned long last_unreleased_time = 0;
 static int last_article_link_number = -1;
-static unsigned long last_article_link_time = 0;
 int    last_index_y_pos;
 int    enter_touch_y_pos = -1;
 int    last_history_y_pos;
@@ -89,7 +90,7 @@ bool article_moved = false;
 #define INITIAL_ARTICLE_SCROLL_PIXEL 2
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 
-static void repaint_search(void)
+void repaint_search(void)
 {
 	guilib_fb_lock();
 	search_reload_ex(SEARCH_RELOAD_KEEP_REFRESH);
@@ -257,27 +258,6 @@ void article_display_pcf(int yPixel)
 	curBufferPos = pos;
 }
 
-void open_article(const char* target, int mode)
-{
-/*	DP(DBG_WL, ("O open_article() target '%s' mode %i\n", target, mode));
-	if (!target)
-		return;
-
-	if (article_open(target) < 0)
-		print_article_error();
-	display_mode = DISPLAY_MODE_ARTICLE;
-	article_display(ARTICLE_PAGE_0);
-
-	if (mode == ARTICLE_NEW) {
-		last_display_mode = DISPLAY_MODE_INDEX;
-//		history_add(search_current_selection(), target);
-	} else if (mode == ARTICLE_HISTORY) {
-		last_display_mode = DISPLAY_MODE_HISTORY;
-//		history_move_current_to_top(target);
-	}
-*/
-}
-
 static void handle_search_key(char keycode)
 {
 	int rc = 0;
@@ -334,7 +314,14 @@ static void handle_key_release(int keycode)
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
 	DP(DBG_WL, ("O handle_key_release()\n"));
 	mode = keyboard_get_mode();
-	if (keycode == WL_INPUT_KEY_SEARCH) {
+	if (keycode == WL_INPUT_KEY_POWER) {
+#ifdef INCLUDED_FROM_KERNEL
+		if (history_list_save(1))
+		{
+			delay_us(200000);
+		}
+#endif
+	} else if (keycode == WL_INPUT_KEY_SEARCH) {
                 article_offset = 0;
 		article_buf_pointer = NULL;
 		/* back to search */
@@ -595,10 +582,15 @@ static void handle_touch(struct wl_input_event *ev)
 	{
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-		        #ifdef INCLUDED_FROM_KERNEL
-		        delay_us(100000 * 2);
-		        #endif
-			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+		        if (key->key == 'Y' || key->key == 'N' || key->key == 'P')
+		        {
+			        #ifdef INCLUDED_FROM_KERNEL
+			        delay_us(100000 * 2);
+			        #endif
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
+			}
+			else
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
                         enter_touch_y_pos_record = enter_touch_y_pos;
                         enter_touch_y_pos = -1;
                         touch_search = 0;
@@ -645,7 +637,7 @@ static void handle_touch(struct wl_input_event *ev)
 					pre_key = key;
 				}
 			} else {
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
 				pre_key = NULL;
 
                                 search_touch_pos_y_last = ev->touch_event.y;
@@ -666,18 +658,17 @@ static void handle_touch(struct wl_input_event *ev)
                         start_move_time = 0;
 
 
-			article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
-			if (article_link_number >= 0 && article_link_number == last_article_link_number &&
-				time_diff(get_time_ticks(), last_article_link_time) > seconds_to_ticks(0.2))
-			{
-				if (get_article_link_number() < 0)
-					invert_link(article_link_number);
-				last_article_link_number = -1;
-                                set_article_link_number(last_article_link_number);
-				last_display_mode = display_mode;
-				display_mode = DISPLAY_MODE_ARTICLE;
-				open_article_link_with_link_number(article_link_number);
-				return;
+                        if(article_link_number>=0)
+                        {
+                          invert_link(article_link_number);
+                          article_link_number = -1;
+                        }
+                        if(get_article_link_number()>=0)
+                        {
+                             last_display_mode = display_mode;
+                             display_mode = DISPLAY_MODE_ARTICLE;
+                             open_article_link_with_link_number(get_article_link_number());
+                             return;
                         }
 				
 			article_touch_down_handled = 0;
@@ -687,8 +678,7 @@ static void handle_touch(struct wl_input_event *ev)
                         {
 				touch_y_last_unreleased = ev->touch_event.y;
 				last_unreleased_time = get_time_ticks();
-				last_article_link_number = -1;
-                                set_article_link_number(last_article_link_number);
+                                set_article_link_number(-1);
                         }
                         else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
                         {
@@ -702,54 +692,34 @@ static void handle_touch(struct wl_input_event *ev)
 				b_show_scroll_bar = 1;
 				article_scroll_pixel = 1;
                         }
-                        else if (time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.2))
+                        else if (time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.3))
                         {
 				touch_y_last_unreleased = ev->touch_event.y;
 				last_unreleased_time = get_time_ticks();
 				article_moved = false;
 			}
-
-			if (article_moved && (abs(touch_y_last_unreleased - ev->touch_event.y) > 5 ||
-				time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.2)))
+                       	
+			if (article_moved && (abs(touch_y_last_unreleased - ev->touch_event.y) > 5 || 
+                        	time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.3)))
                         {
-				touch_y_last_unreleased = ev->touch_event.y;
 				if ((last_article_link_number = get_article_link_number()) >= 0)
 					invert_link(last_article_link_number);
-                                last_article_link_number = -1;
-                                set_article_link_number(last_article_link_number);
+                                set_article_link_number(-1);
 				goto out;
 			}
 
+			last_article_link_number = get_article_link_number();
 			article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
-			if (article_link_number>=0)
-			{
-				if (last_article_link_number < 0)
-				{
-					last_article_link_number = article_link_number;
-					last_article_link_time = get_time_ticks();
-				}
-				else if (article_link_number!=last_article_link_number)
-				{
-					if ((last_article_link_number = get_article_link_number()) >= 0)
-					{
-						invert_link(last_article_link_number);
-						set_article_link_number(-1);
-					}
-					last_article_link_number = article_link_number;
-					last_article_link_time = get_time_ticks();
-				}
-				else if (time_diff(get_time_ticks(), last_article_link_time) > seconds_to_ticks(0.2) &&
-					abs(touch_y_last_unreleased - ev->touch_event.y) < 5)
-				{
-					invert_link(article_link_number);
-					set_article_link_number(article_link_number);
-				}
-			}
-			else if (article_link_number<0 && last_article_link_number>=0)
+			if (article_link_number>=0 && article_link_number!=last_article_link_number)
 			{
 				invert_link(last_article_link_number);
-                                last_article_link_number = -1;
-                                set_article_link_number(last_article_link_number);
+				invert_link(article_link_number);
+				set_article_link_number(article_link_number);
+			}
+	                else if(article_link_number<0 && last_article_link_number>=0)
+	                {
+				invert_link(last_article_link_number);
+				set_article_link_number(-1);
 			}
 
 			if (!article_touch_down_handled) {
@@ -890,11 +860,11 @@ int wikilib_run(void)
 
 		if (sleep)
 		{
-			if (history_list_save())
+			if (history_list_save(2))
 			{
-				#ifdef INCLUDED_FROM_KERNEL
-				delay_us(200000);
-				#endif
+#ifdef INCLUDED_FROM_KERNEL
+				delay_us(200000); // for some reason, save may not work if no delay
+#endif
 			}
 		}
 				
