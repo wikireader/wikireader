@@ -487,8 +487,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 					draw_restricted_mark(lcd_draw_buf.screen_buf);
 					if (article_link_count < MAX_ARTICLE_LINKS)
 					{
-						articleLink[article_link_count].start_xy = (unsigned  long)(211 | (3 << 8));
-						articleLink[article_link_count].end_xy = (unsigned  long)(230 | (23 << 8));
+						articleLink[article_link_count].start_xy = (unsigned  long)(211 | (4 << 8));
+						articleLink[article_link_count].end_xy = (unsigned  long)(230 | (24 << 8));
 						articleLink[article_link_count++].article_id = RESTRICTED_MARK_LINK;
 					}
 				}
@@ -1063,7 +1063,10 @@ int render_search_result_with_pcf(void)
 	static long offset_next = 0;
 	
 	if (!more_search_results)
+	{
+		display_first_page = 1;
 		return rc;
+	}
 
 	guilib_fb_lock();
 	if (article_link_count == NUMBER_OF_FIRST_PAGE_RESULTS) // has not rendered any results beyond the first page
@@ -1465,11 +1468,17 @@ void open_article_link_with_link_number(int article_link_number)
 {
  	long idx;
  	
-	invert_link(article_link_number);
 	if (article_link_number < 0 || articleLink[article_link_number].article_id <= 0)
 		return;
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	idx = articleLink[article_link_number].article_id;
+	if (idx == RESTRICTED_MARK_LINK)
+	{
+#ifdef INCLUDED_FROM_KERNEL
+		delay_us(100000);
+#endif
+		invert_link(article_link_number);
+	}
 	display_link_article(idx);
 }
 #endif

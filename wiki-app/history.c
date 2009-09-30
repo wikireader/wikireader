@@ -23,6 +23,8 @@
 #include <search.h>
 #include <stdlib.h>
 #include <file-io.h>
+#include <guilib.h>
+#include <lcd.h>
 #include "history.h"
 #include "search.h"
 #include "msg.h"
@@ -75,6 +77,7 @@ void history_add(const long idx_article, const char *title)
                     history_tmp = history_list[i];
                     memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
                     history_list[0]=history_tmp;
+		    history_list[0].last_y_pos = 0;
 		    bFound = 1;
                 }
 		else
@@ -289,4 +292,43 @@ void history_open_article(int new_selection)
 	idx_article = history_list[history_current + history_base].idx_article;
 	strcpy(title, history_list[history_current + history_base].title);
 	display_link_article(idx_article);
+}
+
+void draw_clear_history(void)
+{
+	int i;
+	
+	memset(&framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 0xFF,  27 * LCD_VRAM_WIDTH_PIXELS / 8);
+
+	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
+	memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4); 
+	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
+
+	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
+	memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4); 
+	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
+
+	for (i = 185; i <= 203; i++)
+	{
+		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFC;
+		memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4); 
+		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x03;
+
+		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF0;
+		memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4); 
+		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x0F;
+	}
+
+	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;       
+	memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);  
+	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;       
+                                                                          
+	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;        
+	memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);  
+	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;        
+
+	render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, "Clear History", 13, 1);
+ 	render_string(SUBTITLE_FONT_IDX, 156, 185, "Yes", 3, 0);
+ 	render_string(SUBTITLE_FONT_IDX, 206, 185, "No", 2, 0);
+   
 }

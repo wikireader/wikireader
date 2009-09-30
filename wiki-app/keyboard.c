@@ -116,7 +116,7 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key password_char[] = {
-	KEY(176, 81, 205, 105, 'Y'),
+	KEY(175, 81, 204, 105, 'Y'),
 
 	KEY(0, 126, 23, 152, 'q'),
 	KEY(0, 153, 23, 180, 'a'),
@@ -158,7 +158,7 @@ static struct keyboard_key password_char[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key password_num[] = {
-	KEY(176, 81, 205, 105, 'Y'),
+	KEY(175, 81, 204, 105, 'Y'),
 
 	KEY(0, 126, 23, 152, '1'),
 	KEY(0, 153, 23, 180, '*'),
@@ -200,20 +200,20 @@ static struct keyboard_key password_num[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key clear_history[] = {
-	KEY(144, 181, 191, 207, 'Y'),
-	KEY(192, 181, 239, 207, 'N'),
+	KEY(147, 181, 192, 207, 'Y'),
+	KEY(193, 181, 238, 207, 'N'),
 };
 static struct keyboard_key restriction[] = {
-	KEY(60, 138, 179, 160, 'Y'),
+	KEY(60, 148, 179, 170, 'Y'),
 };
 static struct keyboard_key filter_on_off[] = {
-	KEY(42, 124, 195, 147, 'Y'),
-	KEY(42, 153, 195, 176, 'N'),
+	KEY(44, 134, 195, 157, 'Y'),
+	KEY(44, 163, 195, 186, 'N'),
 };
 static struct keyboard_key filter_option[] = {
-	KEY(42, 95, 195, 118, 'Y'),
-	KEY(42, 124, 195, 147, 'N'),
-	KEY(42, 153, 195, 176, 'P'),
+	KEY(44, 105, 195, 128, 'Y'),
+	KEY(44, 134, 195, 157, 'N'),
+	KEY(44, 163, 195, 187, 'P'),
 };
 /*
  * The secret of the position and size of the keyboard
@@ -230,8 +230,8 @@ void keyboard_set_mode(int mode)
            image_data = &image_data_char;
         else if(kb_mode == KEYBOARD_NUM)
            image_data = &image_data_num;
-        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
-           image_data = &image_data_clear_history;
+//        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
+//           image_data = &image_data_clear_history;
         else
            image_data = NULL;
 
@@ -251,8 +251,8 @@ void keyboard_paint()
            image_data = &image_data_char;
         else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM)
            image_data = &image_data_num;
-        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
-           image_data = &image_data_clear_history;
+//        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
+//           image_data = &image_data_clear_history;
         else
            return;
 

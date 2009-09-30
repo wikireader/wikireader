@@ -87,7 +87,7 @@ extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
-#define INITIAL_ARTICLE_SCROLL_PIXEL 2
+#define INITIAL_ARTICLE_SCROLL_PIXEL 1
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 
 void repaint_search(void)
@@ -306,9 +306,11 @@ static void handle_cursor(struct wl_input_event *ev)
 	}
 }
 
+extern int restricted_article;
 static void handle_key_release(int keycode)
 {
 //	static long idx_article = 0;
+	static int first_time_random = 0;
 	int mode;
 
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
@@ -348,18 +350,25 @@ static void handle_key_release(int keycode)
 	        	} else if (history_get_count() > 0) {
 	        		keyboard_set_mode(KEYBOARD_CLEAR_HISTORY);
 				guilib_fb_lock();
-				keyboard_paint();
+				//keyboard_paint();
+				draw_clear_history();
 				guilib_fb_unlock();
 			}
 	        }
 	} else if (keycode == WL_INPUT_KEY_RANDOM) {
-                
-                article_offset = 0;
-                article_buf_pointer = NULL;
-                display_mode = DISPLAY_MODE_ARTICLE;
-	        last_display_mode = DISPLAY_MODE_INDEX;
-	        random_article();
- 
+                if (first_time_random < 4)
+                	first_time_random++;
+                if (first_time_random == 3)
+                {
+                	first_time_random = 4;
+                	if (init_article_filter())
+                		return;
+                }
+	        article_offset = 0;
+	        article_buf_pointer = NULL;
+	        display_mode = DISPLAY_MODE_ARTICLE;
+		last_display_mode = DISPLAY_MODE_INDEX;
+		random_article();
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
 		if (keycode == WL_KEY_RETURN) {

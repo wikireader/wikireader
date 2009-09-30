@@ -48,6 +48,7 @@ void history_open_article(int new_selection);
 void history_reload();
 void history_log_y_pos(const long y_pos);
 long history_get_y_pos(const long idx_article);
+void draw_clear_history(void);
 
 typedef struct _HISTORY {
 	long idx_article;
