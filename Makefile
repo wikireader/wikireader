@@ -80,7 +80,7 @@ install: validate-destdir forth-install mahatma-install fonts-install misc-files
 .PHONY: version
 version: validate-destdir
 	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
-	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*-tmp
+	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
 	cd "${DESTDIR_PATH}" && sha${SHA_LEVEL}sum * >> "${CHECKSUM_FILE}"
 
