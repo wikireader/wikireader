@@ -17,6 +17,7 @@ USAGE()
   echo '       --verbose      -v         more messages'
   echo '       --get-index=n  -g <n>     where to rsync the pickles from [1 => render1]'
   echo '       --host=name    -o <name>  name of the host [render]'
+  echo '       --index-only   -i         only do the index'
   echo '       --no-run       -n         do not run final make'
   echo '       --sequential   -s         run rensering in series'
   echo '       --clear        -c         clear work and dest dirs'
@@ -34,9 +35,10 @@ work=work
 dest=image
 run=yes
 seq=no
+IndexOnly=no
 debug=
 
-args=$(getopt -o hvg:o:p:nscw:d: --long=help,verbose,get-index:,host:,no-run,sequential,clear,work:,dest:,debug -- "$@") ||exit 1
+args=$(getopt -o hvg:o:p:inscw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,work:,dest:,debug -- "$@") ||exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -56,6 +58,11 @@ do
     -o|--host)
       host=$2
       shift 2
+      ;;
+
+    -i|--index-only)
+      IndexOnly=yes
+      shift
       ;;
 
     -n|--no-run)
@@ -139,15 +146,21 @@ fi
 # run the build
 case "${run}" in
   [yY]|[yY][eE][sS])
-    case "${seq}" in
+
+    ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+
+    case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
-        ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-        ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-        ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
         ;;
       *)
-        ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-        ${debug} time make -j3 "${farm}" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-        ;;
-      esac
+        case "${seq}" in
+          [yY]|[yY][eE][sS])
+            ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+            ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+            ;;
+          *)
+            ${debug} time make -j3 "${farm}" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+            ;;
+        esac
+    esac
 esac

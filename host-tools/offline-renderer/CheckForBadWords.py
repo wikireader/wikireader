@@ -78,10 +78,12 @@ def main():
     s = a + r
 
     for f in (sys.stdout,):
-        f.write('Articles:   %10d\n' % a)
-        f.write('Redirects:  %10d\n' % r)
-        f.write('Sum:        %10d\n' % s)
-        f.write('Restricted: %10d\n' % processor.restricted_count)
+        f.write('Articles:         %10d\n' % a)
+        f.write('Redirects:        %10d\n' % r)
+        f.write('Sum:              %10d\n' % s)
+        f.write('Maybe Restricted: %10d\n' % processor.restricted_count)
+        f.write('UnRestricted:     %10d\n' % processor.unrestricted_count)
+        f.write('Restricted:       %10d\n' % (processor.restricted_count - processor.unrestricted_count))
 
     del processor
 
@@ -92,6 +94,7 @@ class FileProcessing(FileScanner.FileScanner):
         super(FileProcessing, self).__init__(*args, **kw)
 
         self.restricted_count = 0
+        self.unrestricted_count = 0
         self.redirect_count = 0
         self.article_count = 0
         self.translate = littleparser.LittleParser().translate
@@ -153,7 +156,7 @@ class FileProcessing(FileScanner.FileScanner):
         if verbose:
             print 'Title:', title.encode('utf-8')
 
-        if show_restricted and restricted:
+        if restricted:
             if restricted_title:
                 t_state = ' Title'
             else:
@@ -161,14 +164,16 @@ class FileProcessing(FileScanner.FileScanner):
 
             if restricted_text:
                 b_state = ' Text'
-                contains = FilterWords.find_restricted(text)
+                (flag, contains) = FilterWords.find_restricted(text)
+                if not flag:
+                    self.unrestricted_count += 1
             else:
                 b_state = ''
                 contains = None
-
-            print '%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title.encode('utf-8'))
-            if None != contains:
-                print '        ->', contains
+            if show_restricted:
+                print '%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title.encode('utf-8'))
+                if None != contains:
+                    print '        ->', flag, contains
 
 
 # run the program
