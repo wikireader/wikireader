@@ -18,8 +18,6 @@ import FilterWords
 import FileScanner
 
 
-tparser = littleparser.LittleParser() # for handling titles
-
 # this _must_ be in ascending ASCII sequence
 KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 
@@ -291,6 +289,7 @@ pragma journal_mode = memory;
 
     def title(self, text, seek):
         global non_articles
+        global verbose
 
         if non_articles.search(text):
             if verbose:
@@ -302,6 +301,7 @@ pragma journal_mode = memory;
 
     def redirect(self, title, text, seek):
         global non_articles, redirected_to, whitespaces
+        global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
@@ -323,6 +323,7 @@ pragma journal_mode = memory;
 
 
     def body(self, title, text, seek):
+        global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
 

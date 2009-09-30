@@ -9,6 +9,7 @@
 # must be lower case
 FILTER_WEIGHTS = {
     "porn": 1,
+    "x rated": 1,
     "x-rated": 1,
     "dildo": 1,
     "erotic": 1,
@@ -16,6 +17,8 @@ FILTER_WEIGHTS = {
     "felching": 1,
     "pegging": 1,
     "cumshot": 1,
+    "cum shot": 1,
+    "cum-shot": 1,
     "anilingus": 1,
     "deep-throat": 1,
     "fellatio": 1,
