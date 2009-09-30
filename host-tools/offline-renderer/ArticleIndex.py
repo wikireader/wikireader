@@ -37,6 +37,10 @@ non_articles = re.compile(r'(User|Wikipedia|File|Talk|MediaWiki|T(emplate)?|Help
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
+# to catch loop in redirections
+class CycleError(Exception):
+    pass
+
 
 verbose = False
 bigram = {}
@@ -356,6 +360,8 @@ pragma journal_mode = memory;
                 count += 1
             except KeyError:
                 print 'Unresolved redirect:', item, '->', self.redirects[item]
+            except CycleError:
+                print 'Cyclic redirect:', item, '->', self.redirects[item]
         return count
 
 
@@ -378,12 +384,14 @@ pragma journal_mode = memory;
         return self.articles.keys()
 
 
-    def find(self, title):
+    def find(self, title, level = 0):
         """get index from article title
 
         also handles redirects
         returns: [index, fnd]
         """
+        if level > 10:
+            raise CycleError('Redirect cycle: ' + title)
         try:
             title = self.redirects[title]
         except KeyError:
@@ -395,7 +403,7 @@ pragma journal_mode = memory;
             try:
                 result = self.get_index(title[0].swapcase() + title[1:])
             except:
-                result = self.find(title)
+                result = self.find(title, level + 1)
         return result
 
 
