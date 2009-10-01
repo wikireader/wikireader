@@ -1,8 +1,0 @@
-*.o
-cfg/cfg
-cfg/chk
-wikireader/kernel_cfg.c
-wikireader/kernel_chk.c
-wikireader/kernel_id.h
-wikireader/kernel_obj.dat
-

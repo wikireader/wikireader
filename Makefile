@@ -55,7 +55,6 @@ ALL_TARGETS += jackknife
 ALL_TARGETS += forth
 ALL_TARGETS += flash
 ALL_TARGETS += mahatma
-#ALL_TARGETS += toppers # not working
 ALL_TARGETS += qt4-simulator
 ALL_TARGETS += wiki-xml
 ALL_TARGETS += pcf2bmf
@@ -103,12 +102,6 @@ sd-image: validate-destdir
 
 
 # ----- main program ------------------------------------------
-.PHONY: toppers
-toppers: mini-libc fatfs
-	cd samo-lib/toppers-jsp && \
-	$(MAKE) -C cfg && \
-	$(MAKE) -C wikireader && \
-	cp wikireader/sample1.elf ../../KERNEL.toppers
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
@@ -443,7 +436,6 @@ clean: clean-qt4-simulator clean-console-simulator
 	$(MAKE) clean -C samo-lib/forth
 	$(MAKE) clean -C samo-lib/flash
 	$(MAKE) clean -C samo-lib/mahatma
-	cd samo-lib/toppers-jsp && $(MAKE) clean -C wikireader
 	${RM} stamp-r-*
 
 .PHONY: clean-toolchain

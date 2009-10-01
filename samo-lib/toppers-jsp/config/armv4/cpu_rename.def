@@ -1,7 +1,0 @@
-activate_r
-ret_int
-ret_exc
-interrupt_count
-arm_vector_add
-arm_handler_add
-int_stack

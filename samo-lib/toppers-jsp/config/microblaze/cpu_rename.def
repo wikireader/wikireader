@@ -1,9 +1,0 @@
-activate_r
-ret_int
-ret_exc
-interrupt_count
-int_handler_table
-int_bit_table
-exception_entry
-interrupt_entry
-
