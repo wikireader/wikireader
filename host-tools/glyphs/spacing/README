@@ -1,4 +1,0 @@
-Extract the spacing from a render_text.blib file
-
-the first parameter to this script is the file to be used
-as input. No error checking is done.
