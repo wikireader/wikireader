@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008 OpenMoko, Inc.
+ * (C) Copyright 2008 Op
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 #include <syslog.h>
 
 
-#define LOG_FILE_NAME ".det-wikird.log" 
+#define LOG_FILE_NAME ".det-wikird.log"
 static char* log_file;
 static int log_fp;
 
@@ -36,21 +36,21 @@ int init_log_message(void)
 	strcpy(log_file, home);
 	strcat(log_file, LOG_FILE_NAME);
 
-	log_fp = open(log_file,O_CREAT, 
+	log_fp = open(log_file,O_CREAT,
 		   S_IRUSR | S_IWUSR |
 		   S_IRGRP | S_IROTH);
 
 	if (log_fp < 0) {
-		syslog(LOG_INFO, "can not open log file."); 
+		syslog(LOG_INFO, "can not open log file.");
 		return -1;
 	}
 
 	return 0;
-} 
+}
 
 int log_message(char *message)
 {
-	if (log_fp < 0) 
+	if (log_fp < 0)
 		return -1;
 
 	fprintf(log_fp,"%s\n",message);

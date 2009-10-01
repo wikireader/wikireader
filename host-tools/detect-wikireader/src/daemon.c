@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008 OpenMoko, Inc.
+ * (C) Copyright 2008 Openmoko, Inc.
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ static char *pid_file = RUNNING_DIR PID_FILE_NAME;
 int open_pid_file() {
 	int fd = -1;
 
-	fd = open(pid_file, O_RDWR|O_CREAT, 
+	fd = open(pid_file, O_RDWR|O_CREAT,
 		  S_IRUSR | S_IWUSR |
 		  S_IRGRP | S_IROTH);
 
@@ -90,7 +90,7 @@ int atou(const char *s, unsigned int *ret_u) {
 
 	/*  if (!x || *x || errno) {
 	    if (!errno)
-            errno = EINVAL;
+	    errno = EINVAL;
 	    return -1;
 	    }
 	*/
@@ -139,12 +139,12 @@ int check_lock_file()
 	lfp = open_pid_file();
 
 	if (lfp < 0) {
-		syslog(LOG_INFO, "can not open lock file."); 
+		syslog(LOG_INFO, "can not open lock file.");
 		return -1;
 	}
 
 	if (lockf(lfp, F_TLOCK, 0) < 0) {
-		syslog(LOG_INFO, "can not lock."); 
+		syslog(LOG_INFO, "can not lock.");
 		return -1;
 	}
 
@@ -155,43 +155,43 @@ int check_lock_file()
 	return 0;
 }
 
-int daemon_init(void) 
+int daemon_init(void)
 {
-	if (getppid() == 1) 
+	if (getppid() == 1)
 		return -1; /* already a daemon */
 
-        /* Our process ID and Session ID */
-        pid_t pid, sid;
-        
-        /* Fork off the parent process */
-        pid = fork();
-        if (pid < 0) {
-                exit(EXIT_FAILURE);
-        }
-        /* If we got a good PID, then
-           we can exit the parent process. */
-        if (pid > 0) {
-                exit(EXIT_SUCCESS);
-        }
+	/* Our process ID and Session ID */
+	pid_t pid, sid;
 
-        /* Change the file mode mask */
-        umask(0);
-                
-        /* Open any logs here */        
-                
-        /* Create a new SID for the child process */
-        sid = setsid();
-        if (sid < 0) {
-                /* Log the failure */
-                exit(EXIT_FAILURE);
-        }
-        
-        /* Change the current working directory */
-        if ((chdir(RUNNING_DIR)) < 0) {
-                /* Log the failure */
-                exit(EXIT_FAILURE);
-        }
-        
+	/* Fork off the parent process */
+	pid = fork();
+	if (pid < 0) {
+		exit(EXIT_FAILURE);
+	}
+	/* If we got a good PID, then
+	   we can exit the parent process. */
+	if (pid > 0) {
+		exit(EXIT_SUCCESS);
+	}
+
+	/* Change the file mode mask */
+	umask(0);
+
+	/* Open any logs here */
+
+	/* Create a new SID for the child process */
+	sid = setsid();
+	if (sid < 0) {
+		/* Log the failure */
+		exit(EXIT_FAILURE);
+	}
+
+	/* Change the current working directory */
+	if ((chdir(RUNNING_DIR)) < 0) {
+		/* Log the failure */
+		exit(EXIT_FAILURE);
+	}
+
 	if ((check_lock_file()) < 0) {
 		/* lock file file failure */
 		exit(EXIT_FAILURE);
@@ -199,11 +199,11 @@ int daemon_init(void)
 
 	/* close all descriptors */
 	int desc;
-	for (desc = getdtablesize(); desc >= 0; --desc) 
+	for (desc = getdtablesize(); desc >= 0; --desc)
 		close(desc);
 
 	return 0;
-} 
+}
 
 /* Kill a current running daemon. Return non-zero on success, -1
  * otherwise. If successful *pid contains the PID of the daemon

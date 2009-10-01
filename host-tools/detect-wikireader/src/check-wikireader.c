@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008 OpenMoko, Inc.
+ * (C) Copyright 2008 Openmoko, Inc.
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -95,7 +95,7 @@ int check_wikireader(char *path)
 	int r;
 	int file;
 
-	if ( (file = open(path, O_RDWR, 
+	if ( (file = open(path, O_RDWR,
 			  S_IRUSR | S_IWUSR) ) < 0) {
 #ifdef WINDOWS
 #else

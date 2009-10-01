@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008 OpenMoko, Inc.
+ * (C) Copyright 2008 Openmoko, Inc.
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@
 #include "detect-wikireader-version.h"
 
 
-	
+
 static int intervals = 1; /* default intervals is 1 second */
 static char *monitor_dir = "/media"; /* check whick dirtory */
 
@@ -45,11 +45,11 @@ void signal_handler(int signo)
 		syslog(LOG_INFO,"hangup signal catched");
 		break;
 	case SIGTERM:
-		/* catched signal sent by kill(1) command */ 
+		/* catched signal sent by kill(1) command */
 		syslog(LOG_INFO, "terminate signal catched");
-		closelog(); 
+		closelog();
 		close_monitor();
-		exit(EXIT_SUCCESS); 
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		break;
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 {
 	int daemon = 0;
 
-	printf("det-wikird - (C) 2007-2008 by OpenMoko Inc.\n"
+	printf("det-wikird - (C) 2007-2008 by Openmoko Inc.\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
 
 	while (1) {
@@ -127,37 +127,37 @@ int main(int argc, char **argv)
 	}
 
 	if (daemon) {
-		if (daemon_init() != 0) { 
-			printf("can't fork self\n"); 
-			exit(EXIT_FAILURE); 
-		} 
+		if (daemon_init() != 0) {
+			printf("can't fork self\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 
-	openlog("openmoko-detect-wikireader", LOG_PID, LOG_USER); 
-	syslog(LOG_INFO, "program started."); 
+	openlog("openmoko-detect-wikireader", LOG_PID, LOG_USER);
+	syslog(LOG_INFO, "program started.");
 
-	/* arrange to catch the signal */ 
+	/* arrange to catch the signal */
 	signal(SIGCHLD,SIG_IGN); /* ignore child */
 	signal(SIGTSTP,SIG_IGN); /* ignore tty signals */
 	signal(SIGTTOU,SIG_IGN);
 	signal(SIGTTIN,SIG_IGN);
 	signal(SIGHUP,signal_handler); /* catch hangup signal */
 	signal(SIGTERM,signal_handler); /* catch kill signal */
-        
-        /* Daemon-specific initialization goes here */
+
+	/* Daemon-specific initialization goes here */
 
 	int rt;
 	if ((rt = init_monitor(monitor_dir)) != 0) {
-		syslog(LOG_INFO, "init_monitor error: %d", rt); 
+		syslog(LOG_INFO, "init_monitor error: %d", rt);
 		exit(EXIT_SUCCESS);
 	}
 
-        /* The Big Loop */
-        while (1) {
+	/* The Big Loop */
+	while (1) {
 		/* Do some task here ... */
-		run_monitor();           
+		run_monitor();
 		sleep(intervals);
-        }
+	}
 
 	exit(EXIT_SUCCESS);
 }

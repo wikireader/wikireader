@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008 OpenMoko, Inc.
+ * (C) Copyright 2008 Openmoko, Inc.
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,25 +67,25 @@ int run_monitor(void)
 	if ( return_value < 0 ) {
 		/* Error */
 		syslog(LOG_INFO, "select erro.");
-	} 
+	}
 	else if ( ! return_value ) {
 		/* Timeout */
-	} 
+	}
 	else if ( FD_ISSET ( fd, &descriptors ) ) {
 		/* Process the inotify events */
 		syslog(LOG_INFO, "data.");
-		int length = read( fd, buffer, BUF_LEN );  
+		int length = read( fd, buffer, BUF_LEN );
 
 		if ( length < 0 ) {
 			syslog(LOG_INFO, "read error.");
 			return -1;
-		}  
+		}
 
 		struct inotify_event *event = ( struct inotify_event * ) &buffer[ 0 ];
 		if ( event->len ) {
 			if ( event->mask & IN_CREATE ) {
 				if ( event->mask & IN_ISDIR ) {
-					syslog(LOG_INFO, "The directory %s was created.\n", event->name );       
+					syslog(LOG_INFO, "The directory %s was created.\n", event->name );
 					strcpy(path, monitor_dir);
 					strcat(path, "/");
 					strcat(path, event->name);
@@ -97,7 +97,7 @@ int run_monitor(void)
 			}
 			else if ( event->mask & IN_DELETE ) {
 				if ( event->mask & IN_ISDIR ) {
-					syslog(LOG_INFO, "The directory %s was deleted.\n", event->name );       
+					syslog(LOG_INFO, "The directory %s was deleted.\n", event->name );
 				} else {
 					syslog(LOG_INFO, "The file %s was deleted.\n", event->name );
 				}

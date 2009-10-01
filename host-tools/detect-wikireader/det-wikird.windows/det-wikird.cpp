@@ -1,5 +1,5 @@
-/*
- * (C) Copyright 2008 OpenMoko, Inc.
+sr/*
+ * (C) Copyright 2008 Openmoko, Inc.
  * Author: xiangfu liu <xiangfu@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
-#include <dbt.h> 
+#include <dbt.h>
 #include <check-wikireader.h>
 
 #define APPTITLE "det-wikird Openmoko"
@@ -53,25 +53,25 @@ int WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
     wc.lpszClassName=APPTITLE;
 
     if (!RegisterClass(&wc))
-        return 0;
+	return 0;
 
     hwnd = CreateWindow(APPTITLE, APPTITLE,
-                        WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT,CW_USEDEFAULT,300,100,
-                        NULL,NULL,hInst,NULL);
+			WS_OVERLAPPEDWINDOW,
+			CW_USEDEFAULT,CW_USEDEFAULT,300,100,
+			NULL,NULL,hInst,NULL);
 
     if (!hwnd)
-        return 0;
+	return 0;
     g_hwnd = hwnd;
 
     MinimizeToSysTray();
     UpdateWindow(hwnd);
 
     while (GetMessage(&msg,NULL,0,0) > 0)
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
+	{
+	    TranslateMessage(&msg);
+	    DispatchMessage(&msg);
+	}
 
     return 0;
 }
@@ -91,14 +91,14 @@ int PaintMessage(HWND hwnd)
 int Message(char *msg)
 {
     if (msg != NULL) {
-        if (strlen(g_Msg) + strlen(msg) < MSG_BUFFER_LENGTH) {
-            strcat(g_Msg, "\n");
-            strcat(g_Msg, msg);
-        }
-        else
-            strcpy(g_Msg, msg);
+	if (strlen(g_Msg) + strlen(msg) < MSG_BUFFER_LENGTH) {
+	    strcat(g_Msg, "\n");
+	    strcat(g_Msg, msg);
+	}
+	else
+	    strcpy(g_Msg, msg);
     }
-    PaintMessage(g_hwnd); 
+    PaintMessage(g_hwnd);
     InvalidateRect(g_hwnd, NULL, TRUE);
     UpdateWindow(g_hwnd);
     return 0;
@@ -116,34 +116,34 @@ void openWeb()
 
     // open register root key
     if(RegOpenKey(HKEY_CLASSES_ROOT,NULL,&hkRoot)==ERROR_SUCCESS)
-        {
-            // open subkey
-            if(RegOpenKeyEx(hkRoot,
-                            "htmlfile\\shell\\open\\command",
-                            0,
-                            KEY_ALL_ACCESS,
-                            &hSubKey)==ERROR_SUCCESS)
-                {
-                    // get the browers
-                    RegEnumValue(hSubKey,
-                                 0,
-                                 ValueName,
-                                 &cbValueName,
-                                 NULL,
-                                 &dwType,
-                                 DataValue,
-                                 &cbDataValue);
-                    // set main page value
-                    strcpy(ShellChar,(char *)DataValue);
-                    strcat(ShellChar, WEBSITE);
-                    // run the browers
-                    WinExec(ShellChar,SW_SHOW);
-                }
-            else
-                Message("WEB browers open error.");
-        }
+	{
+	    // open subkey
+	    if(RegOpenKeyEx(hkRoot,
+			    "htmlfile\\shell\\open\\command",
+			    0,
+			    KEY_ALL_ACCESS,
+			    &hSubKey)==ERROR_SUCCESS)
+		{
+		    // get the browers
+		    RegEnumValue(hSubKey,
+				 0,
+				 ValueName,
+				 &cbValueName,
+				 NULL,
+				 &dwType,
+				 DataValue,
+				 &cbDataValue);
+		    // set main page value
+		    strcpy(ShellChar,(char *)DataValue);
+		    strcat(ShellChar, WEBSITE);
+		    // run the browers
+		    WinExec(ShellChar,SW_SHOW);
+		}
+	    else
+		Message("WEB browers open error.");
+	}
     else
-        Message("WEB browers open error.");
+	Message("WEB browers open error.");
 
     RegCloseKey(hSubKey);
     RegCloseKey(hkRoot);
@@ -155,61 +155,61 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
     switch (msg) {
     case WM_PAINT:
-        PaintMessage(hwnd);
-        break;
+	PaintMessage(hwnd);
+	break;
 
     case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
+	PostQuitMessage(0);
+	break;
 
     case WM_DEVICECHANGE:
-        switch (wparam) { 
-        case DBT_DEVICEARRIVAL:
-            Message("Debug: A device has been inserted.");
-            if (lpdb->dbch_devicetype == DBT_DEVTYP_VOLUME) {
-                PDEV_BROADCAST_VOLUME lpdbv = (PDEV_BROADCAST_VOLUME)lpdb;
+	switch (wparam) {
+	case DBT_DEVICEARRIVAL:
+	    Message("Debug: A device has been inserted.");
+	    if (lpdb->dbch_devicetype == DBT_DEVTYP_VOLUME) {
+		PDEV_BROADCAST_VOLUME lpdbv = (PDEV_BROADCAST_VOLUME)lpdb;
 
-                UINT   IsRAMDISK;    
-                char Driver[4] = {'A', ':', '\\', '\0'};
-                Driver[0] = FirstDriveFromMask(lpdbv->dbcv_unitmask);
-                IsRAMDISK=GetDriveType(Driver);    
-                if (IsRAMDISK == DRIVE_RAMDISK || 
-                    IsRAMDISK == DRIVE_FIXED || /* DRIVE_FIXED means harddisk */
-                    IsRAMDISK == DRIVE_REMOVABLE) {
-                    wsprintf(g_Msg, "Drive %s Media has arrived.", Driver);
-                    Message(NULL);
-                    if (check_wikireader(Driver) == 0) {
-                        openWeb();
-                        Message("openning http://wiki.openmoko.org");
-                    }
-                    else
-                        Message("this is not Openmoko Wiki Reader.");
-                }
-            }
-            break;
- 
-        case DBT_DEVICEREMOVECOMPLETE:
-            Message("Debug:  A device has been removed");
-            break;
-        }
-        break;
+		UINT   IsRAMDISK;
+		char Driver[4] = {'A', ':', '\\', '\0'};
+		Driver[0] = FirstDriveFromMask(lpdbv->dbcv_unitmask);
+		IsRAMDISK=GetDriveType(Driver);
+		if (IsRAMDISK == DRIVE_RAMDISK ||
+		    IsRAMDISK == DRIVE_FIXED || /* DRIVE_FIXED means harddisk */
+		    IsRAMDISK == DRIVE_REMOVABLE) {
+		    wsprintf(g_Msg, "Drive %s Media has arrived.", Driver);
+		    Message(NULL);
+		    if (check_wikireader(Driver) == 0) {
+			openWeb();
+			Message("openning http://wiki.openmoko.org");
+		    }
+		    else
+			Message("this is not Openmoko Wiki Reader.");
+		}
+	    }
+	    break;
+
+	case DBT_DEVICEREMOVECOMPLETE:
+	    Message("Debug:  A device has been removed");
+	    break;
+	}
+	break;
 
     case WM_USER:
-        switch(lparam)
-            {
-            case WM_LBUTTONDBLCLK:
-                if (g_bInSysTray)
-                    ShowWindow(g_hwnd,SW_SHOW);
-                else
-                    MinimizeToSysTray();
-                g_bInSysTray = !g_bInSysTray;
-                break;
-            case WM_LBUTTONUP:
-                break;
-            }
-        break;
+	switch(lparam)
+	    {
+	    case WM_LBUTTONDBLCLK:
+		if (g_bInSysTray)
+		    ShowWindow(g_hwnd,SW_SHOW);
+		else
+		    MinimizeToSysTray();
+		g_bInSysTray = !g_bInSysTray;
+		break;
+	    case WM_LBUTTONUP:
+		break;
+	    }
+	break;
     default:
-        return DefWindowProc(hwnd, msg, wparam, lparam);
+	return DefWindowProc(hwnd, msg, wparam, lparam);
     }
 
     return DefWindowProc(hwnd, msg, wparam, lparam);
@@ -225,17 +225,17 @@ is set to 1.
 
 Returns the first drive letter that was found.
 --------------------------------------------------------------------*/
-char FirstDriveFromMask(ULONG unitmask) 
-{ 
-    char i; 
-    for (i = 0; i < 26; ++i) 
-        { 
-            if (unitmask & 0x1) 
-                break; 
-            unitmask = unitmask >> 1; 
-        } 
-    return (i + 'A'); 
-} 
+char FirstDriveFromMask(ULONG unitmask)
+{
+    char i;
+    for (i = 0; i < 26; ++i)
+	{
+	    if (unitmask & 0x1)
+		break;
+	    unitmask = unitmask >> 1;
+	}
+    return (i + 'A');
+}
 
 void MinimizeToSysTray() {
 	// Hide the window

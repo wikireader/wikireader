@@ -1,5 +1,5 @@
 #
-# (C) Copyright 2008 OpenMoko, Inc.
+# (C) Copyright 2008 Openmoko, Inc.
 # Author: xiangfu liu <xiangfu@openmoko.org>
 #
 # This program is free software: you can redistribute it and/or modify

@@ -1,6 +1,5 @@
 /*
- * (C) Copyright 2009 OpenMoko, Inc.
- * Author: Christopher Hall <hsw@openmoko.com>
+ * (C) Copyright 2009 Openmoko, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +95,7 @@ void showMsg(int currentLevel, char *format, ...)
 		return;
 
 //printf("[%ld]", clock());
-        va_start(ap, format);
+	va_start(ap, format);
 	vprintf(format, ap);
 	va_end(ap);
 }
@@ -106,7 +105,7 @@ void init_bigram_table(MYSQL *conn)
 	char sSQL[MAX_SQL_STR];
 	int rc;
 	char c1, c2;
-	
+
 	mysql_query(conn, "delete from bigram");
 	mysql_query(conn, "alter table bigram AUTO_INCREMENT=1");
 	mysql_commit(conn);
@@ -182,7 +181,7 @@ void add_idx_to_range(long idx, long *idx_range_count, long idx_range[MAX_IDX_RA
 {
 	int nMatch = -1;
 	int i;
-	
+
 	for (i = 0; i < *idx_range_count && nMatch < 0; i++)
 	{
 		if (idx < idx_range[i][0])
@@ -219,7 +218,7 @@ void add_idx_to_range(long idx, long *idx_range_count, long idx_range[MAX_IDX_RA
 			idx_range[*idx_range_count][1] = idx;
 			*idx_range_count = *idx_range_count + 1;
 		}
-	}	
+	}
 }
 
 #define MAX_FILE_PER_FOLDER 100
@@ -227,7 +226,7 @@ void add_file_name(long name, char type, long file_names[MAX_FILE_PER_FOLDER], c
 {
 	int i;
 	int nMatch = -1;
-	
+
 	for (i = 0; i < *file_count && nMatch < 0; i++)
 		if (name < file_names[i])
 			nMatch = i;
@@ -248,8 +247,8 @@ void add_file_name(long name, char type, long file_names[MAX_FILE_PER_FOLDER], c
 			file_types[*file_count] = type;
 			*file_count = *file_count + 1;
 		}
-	}	
-}		
+	}
+}
 
 void count_files(char *dir, long *idx_range_count, long idx_range[MAX_IDX_RANGE][2], long *max_file_size)
 {
@@ -261,11 +260,11 @@ void count_files(char *dir, long *idx_range_count, long idx_range[MAX_IDX_RANGE]
 	int file_count = 0;
 	int i;
 	struct stat file_stat;
-	
+
 	d = opendir(dir);
 	if(d == NULL)
 		return;
-		
+
 	// Loop while not NULL
 	while ((de = readdir(d)) != NULL)
 	{
@@ -274,7 +273,7 @@ void count_files(char *dir, long *idx_range_count, long idx_range[MAX_IDX_RANGE]
 			add_file_name(atol(de->d_name), de->d_type, file_names, file_types, &file_count);
 		}
 	}
-	
+
 	for (i = 0; i < file_count; i++)
 	{
 		if (file_types[i] == DT_DIR)
@@ -325,7 +324,7 @@ int main(int argc, char **argv)
 	time_t t;
 
 	nMsgLevel = 0;
-	printf("wiki-xml-parser - (C) 2009 by OpenMoko Inc.\n"
+	printf("wiki-xml-parser - (C) 2009 by Openmoko Inc.\n"
 	       "This program is Free Software and has ABSOLUTELY NO WARRANTY\n\n");
 
 	if (argc <2)
@@ -447,7 +446,7 @@ int main(int argc, char **argv)
 		showMsg(0, "Error connecting DB %s/%s using %s/%s\n", sServer, sDB, sId, sPassword);
 		exit(1);
 	}
-	
+
 	if (pass==0)
 	{
 		if (sTitle[0])
@@ -463,7 +462,7 @@ int main(int argc, char **argv)
 			showMsg(0, "query entries error - %d (%s)\n", rc, mysql_error(conn));
 			exit(1);
 		}
-		
+
 		res = mysql_use_result(conn);
 		if ((row = mysql_fetch_row(res)) != NULL)
 		{
@@ -472,7 +471,7 @@ int main(int argc, char **argv)
 			long nTextLen;
 			char buf[1025];
 			int len;
-			
+
 			if (!row[1])
 			{
 				if (row[4])
@@ -510,7 +509,7 @@ int main(int argc, char **argv)
 		long count = 0;
 		int i;
 		long max_file_size = 0;
-		
+
 		count_files("./dat", &idx_range_count, idx_range, &max_file_size);
 		for (i = 0; i < idx_range_count; i++)
 		{
@@ -520,7 +519,7 @@ int main(int argc, char **argv)
 		showMsg(0, "Total file count: %ld, Max file size: %ld\n", count, max_file_size);
 		exit(0);
 	}
-	
+
 	rc = mysql_query(conn, "select idx from entries order by idx desc limit 1");
 	res = mysql_use_result(conn);
 	if ((row = mysql_fetch_row(res)) != NULL && row[0])
@@ -587,8 +586,8 @@ int main(int argc, char **argv)
 				init_bigram_table(conn);
 			}
 		}
-		
-		time(&t);	
+
+		time(&t);
 		showMsg(0, "start pass %d - %s\n", pass, ctime(&t));
 		if (pass == 1)
 		{
@@ -629,7 +628,7 @@ int main(int argc, char **argv)
 	/* close connection */
 	mysql_close(conn);
 	mysql_close(g_conn);
-	
+
 	exit(0);
 }
 

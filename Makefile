@@ -1,6 +1,6 @@
 # Makefile - a Makefile for setting up Wiki Reader
 #
-# (C) Copyright 2008, 2009 OpenMoko, Inc.
+# (C) Copyright 2008, 2009 Openmoko, Inc.
 # Authors: xiangfu liu <xiangfu@openmoko.org>
 #          Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
