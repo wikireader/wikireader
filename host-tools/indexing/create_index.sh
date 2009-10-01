@@ -1,7 +1,0 @@
-#!/bin/sh
-
-echo "Input file is $1"
-cat $1 | LC_ALL=C sort -u | ./sort.py > indexfile.index.sorted
-./locate/lbigram < indexfile.index.sorted | sort -nr | perl -ne '/^\s*[0-9]+\s(..)$/ && print $1' > indexfile.index.bigrams
-./locate/lcode indexfile.index.bigrams < indexfile.index.sorted > pedia.idx
-./locate/lsearcher -f pedia.idx -c pedia.jmp -n
