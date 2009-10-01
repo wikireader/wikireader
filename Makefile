@@ -22,29 +22,30 @@
 # ----- Toolchain configuration data --------------------------------------
 
 GCC_VERSION=3.3.2
-GCC_PACKAGE=gcc-$(GCC_VERSION).tar.gz
-GCC_URL=ftp://ftp.gnu.org/gnu/gcc/$(GCC_PACKAGE)
+GCC_PACKAGE=gcc-${GCC_VERSION}.tar.gz
+GCC_URL=ftp://ftp.gnu.org/gnu/gcc/${GCC_PACKAGE}
 
 BINUTILS_VERSION=2.10.1
-BINUTILS_PACKAGE=binutils-$(BINUTILS_VERSION).tar.gz
+BINUTILS_PACKAGE=binutils-${BINUTILS_VERSION}.tar.gz
 BINUTILS_URL= \
-  ftp://ftp.gnu.org/gnu/binutils/$(BINUTILS_PACKAGE)
+  ftp://ftp.gnu.org/gnu/binutils/${BINUTILS_PACKAGE}
 
 SAMO_LIB := $(shell readlink -m ./samo-lib)
 HOST_TOOLS := $(shell readlink -m ./host-tools)
 LICENSES := $(shell readlink -m ./Licenses)
 MISC_FILES := ${SAMO_LIB}/misc-files
 
-DL=${HOST_TOOLS}/toolchain-download
+DOWNLOAD_DIR=${HOST_TOOLS}/toolchain-download
+SUM_DIR=${HOST_TOOLS}/toolchain-sums
 
-export PATH := ${HOST_TOOLS}/toolchain-install/bin:$(PATH)
+export PATH := ${HOST_TOOLS}/toolchain-install/bin:${PATH}
 
 CONFIG_FILE := "samo-lib/include/config.h"
 CONFIG_FILE_DEFAULT := "samo-lib/include/config.h-default"
-CONFIG_FILE_EXISTS := $(shell [ -f $(CONFIG_FILE) ] && echo 1)
+CONFIG_FILE_EXISTS := $(shell [ -f ${CONFIG_FILE} ] && echo 1)
 
-ifeq ($(CONFIG_FILE_EXISTS),)
-$(shell cp $(CONFIG_FILE_DEFAULT) $(CONFIG_FILE))
+ifeq (${CONFIG_FILE_EXISTS},)
+$(shell cp ${CONFIG_FILE_DEFAULT} ${CONFIG_FILE})
 endif
 
 # ----- configuration data --------------------------------------
@@ -105,83 +106,98 @@ sd-image: validate-destdir
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
-	$(MAKE) -C samo-lib/mahatma
-	cp -p samo-lib/mahatma/mahatma.elf kernel.elf
-
+	${MAKE} -C samo-lib/mahatma
 
 .PHONY: mahatma-install
 mahatma-install: mahatma validate-destdir
-	$(MAKE) -C samo-lib/mahatma install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C samo-lib/mahatma install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
 mini-libc: gcc
-	$(MAKE) -C samo-lib/mini-libc/
+	${MAKE} -C samo-lib/mini-libc/
 
 .PHONY: fatfs
 fatfs: mini-libc drivers
-	$(MAKE) -C samo-lib/fatfs/
+	${MAKE} -C samo-lib/fatfs/
 
 .PHONY: drivers
 drivers: mini-libc
-	$(MAKE) -C samo-lib/drivers/
+	${MAKE} -C samo-lib/drivers/
 
 # ----- toolchain stuff  --------------------------------------
-gcc-download:
-	mkdir -p $(DL)
-	wget -c -O $(DL)/$(GCC_PACKAGE) $(GCC_URL)
-	touch $@
 
-binutils-download:
-	mkdir -p $(DL)
-	wget -c -O $(DL)/$(BINUTILS_PACKAGE) $(BINUTILS_URL)
-	touch $@
+BINUTILS_FILE = ${DOWNLOAD_DIR}/${BINUTILS_PACKAGE}
+BINUTILS_SUM = ${SUM_DIR}/${BINUTILS_PACKAGE}.SHA256
+
+GCC_FILE = ${DOWNLOAD_DIR}/${GCC_PACKAGE}
+GCC_SUM = ${SUM_DIR}/${GCC_PACKAGE}.SHA256
+
+GET_FILE = $(eval $(call GET_FILE1,$(strip ${1}),$(strip ${2}),$(strip ${3}),$(strip ${4})))
+
+define GET_FILE1
+
+${1}:
+	@mkdir -p "$${DOWNLOAD_DIR}"
+	@if ! ([ -f "${2}" ] && cd "$${DOWNLOAD_DIR}" && sha256sum --check "${3}") ; \
+	then \
+	  ${RM} "${2}" ; \
+	  wget -c -O "${2}" "${4}"; \
+	else \
+	  echo Already downloaded: ${2} ; \
+	fi
+	@touch "$$@"
+
+endef
+
+$(call GET_FILE,binutils-download,${BINUTILS_FILE},${BINUTILS_SUM},${BINUTILS_URL})
+$(call GET_FILE,gcc-download,${GCC_FILE},${GCC_SUM},${GCC_URL})
 
 binutils-patch: binutils-download
 	mkdir -p host-tools/toolchain-install
-	rm -rf host-tools/binutils-$(BINUTILS_PACKAGE)
-	tar -xvzf $(DL)/$(BINUTILS_PACKAGE) -C host-tools/
+	rm -rf "host-tools/binutils-${BINUTILS_PACKAGE}"
+	tar -xvzf "${BINUTILS_FILE}" -C host-tools/
 	cd host-tools && \
-	cd binutils-$(BINUTILS_VERSION) && \
+	cd "binutils-${BINUTILS_VERSION}" && \
 	cat ../toolchain-patches/0001-binutils-EPSON-changes-to-binutils.patch | patch -p1 && \
 	cat ../toolchain-patches/0002-binutils-EPSON-make-it-compile-hack-for-recent-gcc.patch | patch -p1
-	touch $@
+	touch "$@"
 
 binutils: binutils-patch
 	cd host-tools && \
-	cd binutils-$(BINUTILS_VERSION) && \
+	cd "binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
 	cd build  && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix ${HOST_TOOLS}/toolchain-install --target=c33-epson-elf && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
-	$(MAKE) install
-	touch $@
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ${MAKE} && \
+	${MAKE} install
+	touch "$@"
 
 gcc-patch: gcc-download
 	mkdir -p host-tools/toolchain-install
-	tar -xvzf $(DL)/$(GCC_PACKAGE) -C host-tools/
+	tar -xvzf "${GCC_FILE}" -C host-tools/
 	cd host-tools && \
-	cd gcc-$(GCC_VERSION) && \
+	cd "gcc-${GCC_VERSION}" && \
 	cat ../toolchain-patches/0001-gcc-EPSON-modified-sources.patch | patch -p1 && \
 	cat ../toolchain-patches/0002-gcc-Force-that-the-assembly-of-libgcc-complies-wit.patch | patch -p1 && \
 	cat ../toolchain-patches/0003-gcc-Use-the-C-implementations-for-division-and-mod.patch | patch -p1
-	touch $@
+	touch "$@"
 
 gcc: binutils gcc-patch
 	cd host-tools && \
-	export PATH=${HOST_TOOLS}/toolchain-install/bin:$(PATH) && \
-	cd gcc-$(GCC_VERSION) && \
+	export PATH="${HOST_TOOLS}/toolchain-install/bin:${PATH}" && \
+	cd "gcc-${GCC_VERSION}" && \
 	mkdir -p build && \
 	cd build && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix ${HOST_TOOLS}/toolchain-install --target=c33-epson-elf --enable-languages=c && \
-	CPPFLAGS="-D_FORTIFY_SOURCE=0" $(MAKE) && \
-	$(MAKE) install
-	touch $@
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf --enable-languages=c && \
+	CPPFLAGS="-D_FORTIFY_SOURCE=0" ${MAKE} && \
+	${MAKE} install
+	touch "$@"
 
 .PHONY: qt4-simulator
 qt4-simulator: mahatma
-	cd host-tools/qt4-simulator && qmake-qt4 && $(MAKE)
+	cd host-tools/qt4-simulator && qmake-qt4 && ${MAKE}
 
 .PHONY: console-simulator
 console-simulator: mahatma
@@ -195,17 +211,17 @@ wiki-xml:
 # ----- pcf2bmf  --------------------------------------
 .PHONY: pcf2bmf
 pcf2bmf:
-	cd host-tools/pcf2bmf && $(MAKE)
+	cd host-tools/pcf2bmf && ${MAKE}
 
 
 # ----- fonts  --------------------------------------
 .PHONY: fonts
 fonts: pcf2bmf
-	cd host-tools/fonts && $(MAKE)
+	cd host-tools/fonts && ${MAKE}
 
 .PHONY: fonts-install
 fonts-install: fonts validate-destdir
-	cd host-tools/fonts && $(MAKE) DESTDIR="${DESTDIR_PATH}" install
+	cd host-tools/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
 
 
 # ----- build the database  --------------------------------------
@@ -215,36 +231,39 @@ RENDER_BLOCK ?= 0
 
 .PHONY: index
 index: validate-destdir
-	cd host-tools/offline-renderer && $(MAKE) index \
+	cd host-tools/offline-renderer && ${MAKE} index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
 parse: validate-destdir
-	cd host-tools/offline-renderer && $(MAKE) parse \
+	cd host-tools/offline-renderer && ${MAKE} parse \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: render
 render: fonts validate-destdir
-	cd host-tools/offline-renderer && $(MAKE) render \
+	cd host-tools/offline-renderer && ${MAKE} render \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
 combine: validate-destdir
-	cd host-tools/offline-renderer && $(MAKE) combine \
+	cd host-tools/offline-renderer && ${MAKE} combine \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: hash
-hash: validate-destdir wiki-xml
-	cd "${DESTDIR}" && ${HOST_TOOLS}/wiki-xml/wiki-xml-parser -p 5
+hash: validate-destdir hash-gen
+	cd "${DESTDIR}" && ${HOST_TOOLS}/hash-gen/hash-gen \
+		--pfx="${DESTDIR_PATH}/pedia.pfx" \
+		--fnd="${DESTDIR_PATH}/pedia.fnd" \
+		--hsh="${DESTDIR_PATH}/pedia.hsh"
 
 
 stamp-r-index:
 	rm -f "$@"
-	cd host-tools/offline-renderer && $(MAKE) index \
+	cd host-tools/offline-renderer && ${MAKE} index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 	touch "$@"
@@ -344,11 +363,11 @@ getwikidump:
 
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
-	$(MAKE) -C samo-lib/forth
+	${MAKE} -C samo-lib/forth
 
 .PHONY: forth-install
 forth-install: forth
-	$(MAKE) -C samo-lib/forth install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C samo-lib/forth install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- flash -----------------------------------------------
@@ -356,7 +375,7 @@ forth-install: forth
 
 .PHONY: flash
 flash:  gcc mini-libc fatfs drivers
-	$(MAKE) -C samo-lib/flash
+	${MAKE} -C samo-lib/flash
 
 
 # ----- mbr -------------------------------------------------
@@ -401,19 +420,19 @@ print-mbr-tty:
 
 .PHONY: mbr
 mbr: gcc fatfs
-	$(MAKE) -C samo-lib/mbr
+	${MAKE} -C samo-lib/mbr
 
 .PHONY: mbr-rs232
 mbr-rs232: gcc fatfs
-	$(MAKE) -C samo-lib/mbr mbr-rs232
+	${MAKE} -C samo-lib/mbr mbr-rs232
 
 .PHONY: jackknife
 jackknife:
-	$(MAKE) -C host-tools/jackknife
+	${MAKE} -C host-tools/jackknife
 
 .PHONY: flash-mbr
 flash-mbr: mbr jackknife
-	$(MAKE) -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
+	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
 
 # ----- clean and help --------------------------------------
@@ -423,36 +442,36 @@ complete-clean: clean clean-toolchain
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
-	$(MAKE) clean -C samo-lib/mini-libc
-	$(MAKE) clean -C host-tools/jackknife
-	$(MAKE) clean -C host-tools/wiki-xml
-	$(MAKE) clean -C host-tools/pcf2bmf
-	$(MAKE) clean -C host-tools/flash07
-	$(MAKE) clean -C host-tools/fonts
-	$(MAKE) clean -C host-tools/offline-renderer
-	$(MAKE) clean -C samo-lib/mbr
-	$(MAKE) clean -C samo-lib/drivers
-	$(MAKE) clean -C samo-lib/fatfs
-	$(MAKE) clean -C samo-lib/forth
-	$(MAKE) clean -C samo-lib/flash
-	$(MAKE) clean -C samo-lib/mahatma
+	${MAKE} clean -C samo-lib/mini-libc
+	${MAKE} clean -C host-tools/jackknife
+	${MAKE} clean -C host-tools/wiki-xml
+	${MAKE} clean -C host-tools/pcf2bmf
+	${MAKE} clean -C host-tools/flash07
+	${MAKE} clean -C host-tools/fonts
+	${MAKE} clean -C host-tools/offline-renderer
+	${MAKE} clean -C samo-lib/mbr
+	${MAKE} clean -C samo-lib/drivers
+	${MAKE} clean -C samo-lib/fatfs
+	${MAKE} clean -C samo-lib/forth
+	${MAKE} clean -C samo-lib/flash
+	${MAKE} clean -C samo-lib/mahatma
 	${RM} stamp-r-*
 
 .PHONY: clean-toolchain
 clean-toolchain:
 	rm -rf host-tools/toolchain-install
-	rm -rf host-tools/gcc-$(GCC_VERSION)
-	rm -rf host-tools/binutils-$(BINUTILS_VERSION)
+	rm -rf host-tools/gcc-${GCC_VERSION}host-tools/toolchain-patches/
+	rm -rf host-tools/binutils-${BINUTILS_VERSION}
 	rm -f binutils-patch binutils
 	rm -f gcc-patch gcc
 
 .PHONY: clean-qt4-simulator
 clean-qt4-simulator:
-	(cd host-tools/qt4-simulator; $(MAKE) distclean || true)
+	(cd host-tools/qt4-simulator; ${MAKE} distclean || true)
 
 .PHONY: clean-console-simulator
 clean-console-simulator:
-	$(MAKE) clean -C host-tools/console-simulator
+	${MAKE} clean -C host-tools/console-simulator
 
 .PHONY:help
 help:
@@ -489,7 +508,7 @@ help:
 
 .PHONY:testhelp
 testhelp:
-	$(MAKE) --print-data-base --question |	\
+	${MAKE} --print-data-base --question |	\
 	awk '/^[^.%][-A-Za-z0-9_]*:/		\
 		{ print substr($$1, 1, length($$1)-1) }' | 	\
 	sort |	\
