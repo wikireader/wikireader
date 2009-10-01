@@ -17,8 +17,6 @@
 #include <lcd.h>
 #include <file-io.h>
 #include <malloc-simple.h>
-#include "bzlib.h"
-#include "minilzo.h"
 #include "Alloc.h"
 #include "Bra.h"
 #include "LzmaDec.h"

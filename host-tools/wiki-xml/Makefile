@@ -3,19 +3,25 @@ CC = gcc
 LD = ld
 
 WIKIAPP_DIR = ../../wiki-app
-BZLIB_DIR = ../../samo-lib/bzlib
-LZO_SRC_DIR = ../../samo-lib/lzo/src
-LZO_INC_DIR = ../../samo-lib/lzo/include
 LZMA_DIR = ../../samo-lib/lzma
 
 CFLAGS = -g -O3 -Wall -MD -D_REENTRANT -DWIKIPCF -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DBZ_NO_STDIO -DWIKIPCF
-CFLAGS += -I. -I$(WIKIAPP_DIR) -I$(BZLIB_DIR) -I$(LZO_INC_DIR) -I$(LZMA_DIR)
+CFLAGS += -I. -I$(WIKIAPP_DIR) -I$(LZMA_DIR)
+
 LDFLAGS = -g -dynamic -L/usr/lib/mysql -lmysqlclient
-C_OBJS = wiki_render.o lcd_buf_draw.o bmf.o bigram.o \
-	LzmaEnc.o Alloc.o Bra.o LzFind.o search_hash.o
+
+C_OBJS = wiki_render.o
+C_OBJS += lcd_buf_draw.o
+C_OBJS += bmf.o
+C_OBJS += bigram.o
+C_OBJS += LzmaEnc.o
+C_OBJS += Alloc.o
+C_OBJS += Bra.o
+C_OBJS += LzFind.o
+C_OBJS += search_hash.o
 
 
-vpath %.c $(WIKIAPP_DIR) $(BZLIB_DIR) $(LZO_SRC_DIR) $(LZMA_DIR)
+vpath %.c $(WIKIAPP_DIR) $(LZMA_DIR)
 
 TARGETS = wiki-xml-parser
 OBJS = $(C_OBJS) main.o
@@ -28,8 +34,7 @@ wiki-xml-parser: $(OBJS)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean::
+clean:
 	$(RM) $(TARGETS) *.o *.d
 
 -include $(wildcard *.d) dummy
-

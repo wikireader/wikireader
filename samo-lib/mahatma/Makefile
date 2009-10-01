@@ -28,9 +28,6 @@ INCLUDES += -I$(MINI_LIBC_INCLUDE)
 INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
 INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I$(INDEXING_INCLUDE)
-INCLUDES += -I$(BZLIB_INCLUDE)
-INCLUDES += -I$(MINILZO_INCLUDE)
 INCLUDES += -I$(LZMA_INCLUDE)
 INCLUDES += -I$(WIKI_APP_INCLUDE)
 
@@ -41,36 +38,36 @@ LIBS += $(shell $(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
 
-vpath %.c $(WIKI_APP_SRC):$(INDEXING_SRC):$(BZLIB_SRC):$(MINILZO_SRC):$(LZMA_SRC)
+vpath %.c $(WIKI_APP_SRC):$(LZMA_SRC)
 
 
-GUILIB_COBJS = guilib.o bmf.o lcd_buf_draw.o bigram.o glyph.o fontfile.o restricted.o sha1.o
+GUILIB_COBJS = guilib.o
+GUILIB_COBJS += bmf.o
+GUILIB_COBJS += lcd_buf_draw.o
+GUILIB_COBJS += bigram.o
+GUILIB_COBJS += glyph.o
+GUILIB_COBJS += restricted.o
+GUILIB_COBJS += sha1.o
 
 WIKIAPP_COBJS = file-io-libfat.o
-WIKIAPP_COBJS += wikilib.o malloc-simple.o hexdump.o
-WIKIAPP_COBJS += decompress.o keyboard.o
+WIKIAPP_COBJS += wikilib.o
+WIKIAPP_COBJS += malloc-simple.o
+WIKIAPP_COBJS += keyboard.o
+
+# used for panic in traps.c
+WIKIAPP_COBJS += hexdump.o
+WIKIAPP_COBJS += misc.o
 
 # searching
-WIKIAPP_COBJS += search.o lsearcher.o fast_search.o search_hash.o
+WIKIAPP_COBJS += search.o
+WIKIAPP_COBJS += search_hash.o
 WIKIAPP_COBJS += history.o
 
-# BZLIB
-BZLIB_COBJS = blocksort.o  \
-	huffman.o    \
-	crctable.o   \
-	randtable.o  \
-	compress.o   \
-	bzdecompress.o \
-	bzlib.o
-
-# minilzo
-MINILZO_COBJS = minilzo.o
-
 # lzma
-LZMA_COBJS = 	LzmaDec.o Alloc.o Bra.o LzFind.o
-
-# performance
-# PERF_COBJ = perf.o
+LZMA_COBJS = LzmaDec.o
+LZMA_COBJS += Alloc.o
+LZMA_COBJS += Bra.o
+LZMA_COBJS += LzFind.o
 
 # convert the keyboard file
 PNM2PLAIN_NAME = pnmtoplainpnm
@@ -80,7 +77,7 @@ KBD_IMG_SRC_P1 = $(WIKI_APP)/keyboard_abc_mono2-plain.pbm
 KBD_IMG_INC = $(WIKI_APP)/keyboard_image.h
 KBD_CONVERT = ../../wiki-app/kbd_to_include.py
 
-CFLAGS+=-DINCLUDED_FROM_KERNEL  -DBZ_NO_STDIO $(PROFILER_ON)
+CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
 ##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(MINI_LIBC)
 
@@ -93,9 +90,10 @@ OBJECTS += gpio.o
 OBJECTS += serial.o
 OBJECTS += traps.o
 OBJECTS += input.o
-OBJECTS += misc.o
 OBJECTS += profile.o
-OBJECTS += $(GUILIB_COBJS) $(WIKIAPP_COBJS) $(BZLIB_COBJS) $(MINILZO_COBJS) $(LZMA_COBJS) $(PERF_COBJ)
+OBJECTS += $(GUILIB_COBJS)
+OBJECTS += $(WIKIAPP_COBJS)
+OBJECTS += $(LZMA_COBJS)
 
 ifeq ($(PNM2PLAIN_PATH),)
 $(error Could not find $(PNM2PLAIN_NAME) - please: sudo apt-get install netpbm)

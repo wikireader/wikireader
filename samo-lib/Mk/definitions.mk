@@ -48,14 +48,6 @@ WIKI_APP = ${SAMO_LIB}/../wiki-app/
 WIKI_APP_INCLUDE = ${WIKI_APP}
 WIKI_APP_SRC = ${WIKI_APP}
 
-BZLIB = ${SAMO_LIB}/bzlib
-BZLIB_INCLUDE = ${BZLIB}
-BZLIB_SRC = ${BZLIB}
-
-MINILZO = ${SAMO_LIB}/minilzo
-MINILZO_INCLUDE = ${MINILZO}
-MINILZO_SRC = ${MINILZO}
-
 LZMA = ${SAMO_LIB}/lzma
 LZMA_INCLUDE = ${LZMA}
 LZMA_SRC = ${LZMA}
@@ -76,11 +68,6 @@ MBBR_SRC = ${MBBR}
 # in host-tools
 
 HOST_TOOLS = ${SAMO_LIB}/../host-tools
-
-INDEXING = ${HOST_TOOLS}/indexing/locate
-INDEXING_INCLUDE = ${INDEXING}
-INDEXING_SRC = ${INDEXING}
-
 
 # cross compiler definitions
 

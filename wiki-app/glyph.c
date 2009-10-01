@@ -26,7 +26,6 @@
 /* gui-lib includes */
 #include "guilib.h"
 #include "glyph.h"
-#include "fontfile.h"
 #include <regs.h>
 #include <lcd.h>
 #include <samo.h>
@@ -68,50 +67,6 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 	}
 }
 
-/*
- * static copy a char map... true for some fonts e.g.
- * the DejaVu family
- */
-static int char_to_glyph(char c)
-{
-	if (c < 30)
-		return 0;
-	else
-		return c - 29;
-}
-
-/**
- * Simplistic string drawing
- *
- * @param font The font index to use
- * @param string The string to draw. No text wrapping will be done
- * @param start_x From where to start drawing (upper left)
- * @param start_y From where to start drawing (upper left)
- */
-int draw_glyphs_to_buf(const int font, int start_x,
-		    int start_y, const char *string, char *buf)
-{
-	int i;
-	int max_height = 0;
-	int x = start_x;
-
-	if ((unsigned int) font >= guilib_nr_fonts())
-		goto xout;
-
-	for (i = 0; i < strlen(string); ++i) {
-		const struct glyph *glyph = get_glyph(font,
-				    char_to_glyph(string[i] & 0x7f));
-
-		render_glyph(x, start_y - glyph->top_bearing, glyph, buf);
-		x += glyph->width + 1;
-
-		if (glyph->height > max_height)
-		    max_height = glyph->height;
-	}
-	return max_height;
-xout:
-	return 0;
-}
 
 int render_string(const int font, int start_x,
 				  int start_y, char *string, int text_length, int inverted)
@@ -124,7 +79,7 @@ int render_string(const int font, int start_x,
 	long widthLast = 0;
 	char *p = (char *)string;
 	int nCharBytes;
-	
+
 	if (start_x < 0)
 		width = 0;
 	else
@@ -140,7 +95,7 @@ int render_string(const int font, int start_x,
 		text_length -= lenLast;
 		width = widthLast;
 	}
-	
+
 	if (start_x < 0) // to be centered
 	{
 		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
@@ -148,11 +103,11 @@ int render_string(const int font, int start_x,
 			start_x = 0;
 	}
 
-	x = start_x;	
+	x = start_x;
 	for (i = 0; i < text_length; ++i) {
 	    x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
-            if(x<0)
-                return 0;
+	    if(x<0)
+		return 0;
 	}
 	return x;
 }
@@ -171,7 +126,7 @@ int render_string_right(const int font, int start_x,
 	char *p = (char *)string;
 	int nCharBytes;
 	int rc;
-	
+
 	while (len > 0 && utf8_chars < MAX_TITLE_SEARCH)
 	{
 		lens[utf8_chars] = len;
@@ -179,12 +134,12 @@ int render_string_right(const int font, int start_x,
 		width += widths[utf8_chars];
 		utf8_chars++;
 	}
-	
+
 	rc = width;
 	if (width > LCD_BUF_WIDTH_PIXELS)
 	{
 		int width_to_descrease = width - LCD_BUF_WIDTH_PIXELS;
-		
+
 		width = 0;
 		for (i = 0; i < utf8_chars && width < width_to_descrease; i++)
 			width += widths[i];
@@ -194,12 +149,12 @@ int render_string_right(const int font, int start_x,
 			text_length = lens[i];
 		}
 	}
-	
-	x = start_x;	
+
+	x = start_x;
 	for (i = 0; i < text_length; ++i) {
 	    x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
-            if(x<0)
-                return 0;
+	    if(x<0)
+		return 0;
 	}
 	return rc;
 }
