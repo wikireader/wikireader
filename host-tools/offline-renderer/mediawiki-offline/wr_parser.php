@@ -9,6 +9,8 @@
  * ----------
  *
  * Copyright (C) 2008 Michael Nowak
+ *               Sean Moss-Pultz <sean@openmoko.com>
+ *               Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,8 +111,8 @@ while (!feof($fp)) {
 	if ($line == "***EOF***\n") {
 		echo wfParseTextAndWrapWOC(&$body);
 		if ($i++ % 1000 == 0 ) {	# flush every 1000 articles
-			ob_flush();				# otherwise PHP runs out of
-			flush();				# memory
+			ob_flush();		# otherwise PHP runs out of
+			flush();		# memory
 		}
 		$body = '';
 	} else {
