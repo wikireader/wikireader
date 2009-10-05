@@ -406,6 +406,8 @@ DSTATUS mmc_disk_initialize (
 		MODE_MASTER |
 		ENA |
 		0;
+	REG_SPI_CTL2 = 0;                               // must be zero for master mode
+	REG_SPI_WAIT = 0;
 
 	turn_on_power();					/* Force socket power on */
 	SELECT();
