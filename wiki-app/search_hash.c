@@ -66,7 +66,7 @@ static unsigned long hash_key(char *s, int len)
 }
 
 #ifdef WIKIPCF
-void init_search_hash(void)
+void create_search_hash(const char *filename)
 {
 	search_hash_table = malloc(sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
 	search_hash_strings = malloc(sizeof(SEARCH_HASH_STRING) * MAX_SEARCH_HASH_TABLE_ENTRIES);
@@ -77,10 +77,10 @@ void init_search_hash(void)
 	}
 	nHashEntries = MAX_SEARCH_HASH_KEY;
 	memset(search_hash_table, 0, sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
-	fdHsh = fopen("pedia.hsh", "wb");
+	fdHsh = fopen(filename, "wb");
 	if (!fdHsh)
 	{
-		printf("cannot open file pedia.hsh, error: %s\n", strerror(errno));
+		printf("cannot open file '%s', error: %s\n", filename, strerror(errno));
 		exit(-1);
 	}
 }

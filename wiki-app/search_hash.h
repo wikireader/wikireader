@@ -18,7 +18,7 @@ typedef struct _search_hash_string {
 } SEARCH_HASH_STRING;
 
 #ifdef WIKIPCF
-void init_search_hash(void);
+void create_search_hash(const char *filename);
 long add_search_hash(char *sSearchString, int len, long offset_fnd);
 void save_search_hash(void);
 #else

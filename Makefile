@@ -57,7 +57,7 @@ ALL_TARGETS += forth
 ALL_TARGETS += flash
 ALL_TARGETS += mahatma
 ALL_TARGETS += qt4-simulator
-ALL_TARGETS += wiki-xml
+ALL_TARGETS += hash-gen
 ALL_TARGETS += pcf2bmf
 ALL_TARGETS += fonts
 
@@ -201,12 +201,13 @@ qt4-simulator: mahatma
 
 .PHONY: console-simulator
 console-simulator: mahatma
-	cd host-tools/console-simulator && $(MAKE)
+	cd host-tools/console-simulator && ${MAKE}
 
-# ----- new wiki rendering  --------------------------------------
-.PHONY: wiki-xml
-wiki-xml:
-	cd host-tools/wiki-xml && $(MAKE)
+# ----- hash-gen  --------------------------------------
+.PHONY: hash-gen
+hash-gen:
+	cd host-tools/hash-gen && ${MAKE}
+
 
 # ----- pcf2bmf  --------------------------------------
 .PHONY: pcf2bmf
@@ -444,7 +445,7 @@ complete-clean: clean clean-toolchain
 clean: clean-qt4-simulator clean-console-simulator
 	${MAKE} clean -C samo-lib/mini-libc
 	${MAKE} clean -C host-tools/jackknife
-	${MAKE} clean -C host-tools/wiki-xml
+	${MAKE} clean -C host-tools/hash-gen
 	${MAKE} clean -C host-tools/pcf2bmf
 	${MAKE} clean -C host-tools/flash07
 	${MAKE} clean -C host-tools/fonts
