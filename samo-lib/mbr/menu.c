@@ -344,7 +344,7 @@ bool battery_empty(void)
 {
 	Analog_scan();
 	int v = Analog_BatteryMilliVolts();
-	return v <= BATTERY_EMPTY;
+	return v <= BATTERY_LOW;
 }
 
 

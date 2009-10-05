@@ -110,6 +110,7 @@ static inline void power_off(void)
 #define ADC_SHUNT_RESISTOR_K   1000
 
 #define BATTERY_FULL  3000
+#define BATTERY_LOW   2250
 #define BATTERY_EMPTY 2100
 
 
