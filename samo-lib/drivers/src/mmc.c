@@ -671,7 +671,7 @@ DRESULT mmc_disk_ioctl (
 			}
 			break;
 
-		case MMC_GET_SDSTAT :	/* Receive SD statsu as a data block (64 bytes) */
+		case MMC_GET_SDSTAT :	/* Receive SD status as a data block (64 bytes) */
 			if (send_cmd(ACMD13, 0) == 0) {	/* SD_STATUS */
 				rcvr_spi();
 				if (rcvr_datablock(ptr, 64))
