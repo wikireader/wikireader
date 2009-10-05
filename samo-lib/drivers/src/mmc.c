@@ -384,7 +384,7 @@ DSTATUS disk_poll(BYTE drv) {
 /*-----------------------------------------------------------------------*/
 
 DSTATUS mmc_disk_initialize (
-	BYTE drv		/* Physical drive nmuber (0) */
+	BYTE drv		/* Physical drive number (0) */
 )
 {
 	BYTE n, cmd, ty, ocr[4];
@@ -461,7 +461,7 @@ out:
 /*-----------------------------------------------------------------------*/
 
 DSTATUS mmc_disk_status (
-	BYTE drv		/* Physical drive nmuber (0) */
+	BYTE drv		/* Physical drive number (0) */
 )
 {
 	if (drv) return STA_NOINIT;		/* Supports only single drive */
@@ -473,7 +473,7 @@ DSTATUS mmc_disk_status (
 /*-----------------------------------------------------------------------*/
 
 DRESULT mmc_disk_read (
-	BYTE drv,			/* Physical drive nmuber (0) */
+	BYTE drv,			/* Physical drive number (0) */
 	BYTE *buff,			/* Pointer to the data buffer to store read data */
 	DWORD sector,		/* Start sector number (LBA) */
 	BYTE count			/* Sector count (1..255) */
@@ -518,7 +518,7 @@ DRESULT mmc_disk_read (
 
 #if _READONLY == 0
 DRESULT mmc_disk_write (
-	BYTE drv,		/* Physical drive nmuber (0) */
+	BYTE drv,		/* Physical drive number (0) */
 	const BYTE *buff,	/* Pointer to the data to be written */
 	DWORD sector,		/* Start sector number (LBA) */
 	BYTE count		/* Sector count (1..255) */
@@ -563,7 +563,7 @@ DRESULT mmc_disk_write (
 
 #if _USE_IOCTL != 0
 DRESULT mmc_disk_ioctl (
-	BYTE drv,		/* Physical drive nmuber (0) */
+	BYTE drv,		/* Physical drive number (0) */
 	BYTE ctrl,		/* Control code */
 	void *buff		/* Buffer to send/receive control data */
 )
