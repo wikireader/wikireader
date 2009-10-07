@@ -84,7 +84,7 @@ static inline BYTE spi_receive(void)
 
 static BYTE wait_ready(void)
 {
-	int timeout = 500000;
+	int timeout = 2000000;
 	BYTE res = spi_receive();
 
 	while ((res != 0xff) && timeout--) {
@@ -297,16 +297,21 @@ DSTATUS disk_poll(BYTE drv)
 DSTATUS mmc_disk_initialize(BYTE drv)
 {
 	BYTE n, cmd, ty, ocr[4];
-	DWORD timeout = 10000;
-
-	cache_init();
+	DWORD timeout = 1000000;
 
 	if (drv) {
 		return STA_NOINIT;			// Supports only single drive
 	}
+
+	if (chk_power()) {
+		turn_off_power();			// Power off
+		delay_us(25000);
+	}
+
+	cache_init();
+
 //	if (Stat & STA_NODISK) return Stat;		// No card in the socket
 
-	//REG_SPI_CTL1 = 0x03 | (7 << 10) | (0 << 4);
 	REG_SPI_CTL1 =
 		BPT_8_BITS |
 		//CPHA |
