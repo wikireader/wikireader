@@ -65,7 +65,7 @@ BYTE CardType;			// b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing
 // Exchange a byte via SPI  (Platform dependent)
 //--------------------------------------------------------------------------
 
-static inline uint8_t spi_transmit(uint8_t out)
+static uint8_t spi_transmit(uint8_t out)
 {
 	REG_SPI_TXD = out;
 	do {} while (~REG_SPI_STAT & RDFF);
