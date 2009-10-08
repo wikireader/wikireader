@@ -108,11 +108,13 @@ int flash(int arg)
 	print(" FLASH\n");
 
 	int i = 0;
+	bool flag = false;
 	for (i = 0; i < ProgramRetries; ++i) {
 		display_image(&program_image, 0x00, 0xff);
 		if (process(filename)) {
 			print("Finished sucessfully\n");
 			display_image(&ok_image, 0x00, 0xff);
+			flag = true;
 			break;
 		} else {
 			print("Error occurred\n");
@@ -120,6 +122,8 @@ int flash(int arg)
 		}
 	}
 
+	print(flag ? "PASS" : "FAIL");
+	print(": FLASH MBR\n");
 	for (;;) {
 	}
 }
