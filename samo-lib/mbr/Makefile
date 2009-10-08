@@ -120,6 +120,14 @@ serial.header: always-build
 	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
 	) | dd bs=1 count=32 > "$@"
 
+
+.PHONY: install
+install: all
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	${COPY} flash.rom "${DESTDIR}"
+
+
+.PHONY: clean
 clean:
 	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h empty.h *.rom
 

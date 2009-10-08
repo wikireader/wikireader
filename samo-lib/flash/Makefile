@@ -70,6 +70,13 @@ build:
 lib:
 	${MKDIR} "$@"
 
+
+.PHONY: install
+install: all
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	${COPY} flash.elf "${DESTDIR}"
+
+.PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build lib
 	${RM} -r *.o *.elf *.d *.map *.asm33

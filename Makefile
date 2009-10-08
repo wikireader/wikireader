@@ -74,6 +74,9 @@ VERSION_FILE := ${DESTDIR_PATH}/version.txt
 SHA_LEVEL := 256
 CHECKSUM_FILE := ${DESTDIR_PATH}/sha${SHA_LEVEL}.txt
 
+.PHONY: jig-install
+jig-install: validate-destdir forth-install flash-install mbr-install
+
 .PHONY: install
 install: validate-destdir forth-install mahatma-install fonts-install misc-files-install version
 
@@ -95,11 +98,6 @@ misc-files-install: validate-destdir
 .PHONY: validate-destdir
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
-
-
-.PHONY: sd-image
-sd-image: validate-destdir
-
 
 
 # ----- main program ------------------------------------------
@@ -378,6 +376,10 @@ forth-install: forth
 flash:  gcc mini-libc fatfs drivers
 	${MAKE} -C samo-lib/flash
 
+.PHONY: flash-install
+flash-install: flash
+	${MAKE} -C samo-lib/flash install DESTDIR="${DESTDIR_PATH}"
+
 
 # ----- mbr -------------------------------------------------
 # master boot record
@@ -435,6 +437,10 @@ jackknife:
 flash-mbr: mbr jackknife
 	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
+.PHONY: mbr-install
+mbr-install: mbr
+	${MAKE} -C samo-lib/mbr install DESTDIR="${DESTDIR_PATH}"
+
 
 # ----- clean and help --------------------------------------
 .PHONY: complete-clean
@@ -489,20 +495,22 @@ help:
 	@echo '  farm<1..8>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
 	@echo '  farm<1..8>-clean      - remove stamp files to repeat process'
 	@echo '  mbr                   - compile bootloader'
+	@echo '  mbr-install           - install flash.rom in DESTDIR'
 	@echo '  mahatma               - compile kernel'
 	@echo '  mahatma-install       - install mahatma as kernel in DESTDIR'
 	@echo '  forth                 - compile forth'
 	@echo '  forth-install         - install forth files in DESTDIR'
+	@echo '  flash                 - compile flash (programs flash.rom from SD Card'
+	@echo '  flash-install         - install flash programmer in DESTDIR'
 	@echo '  fonts                 - compile fonts'
 	@echo '  fonts-install         - install font files in DESTDIR'
-	@echo '  mbr                   - compile bootloader'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
 	@echo '  qt4-simulator         - compile the Qt4 simulator'
 	@echo '  console-simulator     - compile the console simulator'
 	@echo '  clean                 - clean everything except the toochain'
 	@echo '  clean-toolchain       - clean just the toochain'
-	@echo '  sd                    - copy kernel, forth and programs to SD Card'
+	@echo '  jig-install           - copy flash program and image; forth and programs to SD Card'
 	@echo '  p33                   - terminal emulator (console debugging)'
 	@echo
 
@@ -515,10 +523,6 @@ testhelp:
 	sort |	\
 	pr --omit-pagination --width=80 --columns=1
 
-
-.PHONY: sd
-sd:
-	./samo-lib/scripts/MakeSD all
 
 .PHONY: p33
 p33:
