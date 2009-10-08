@@ -1,0 +1,98 @@
+A way to use a 32 bit system on 64 bit host
+===========================================
+
+1. install schroot and debootstrap
+----------------------------------
+
+Note: just cut and paste the commands from this file
+      after adjusting for your environment
+
+sudo apt-get install schroot debootstrap
+
+
+2. configure schroot for a 32 bit system
+----------------------------------------
+
+   e.g. Ubuntu jaunty i386
+   this is added to /etc/schroot/schroot.conf
+   or put into  /etc/schroot/schroot.d/jaunty_i386.conf
+   (depending on your system)
+   (substitute ${USER} when creating the file cat will do this)
+
+$ cat <<EOF >jaunty_i386.conf
+[jaunty_i386]
+    description=Ubuntu 9.04 Jaunty for i386
+    location=/data/chroot/jaunty_i386
+    personality=linux32
+    root-users=${USER}
+    run-setup-scripts=true
+    run-exec-scripts=true
+    type=directory
+    users=${USER}
+EOF
+
+e.g to append to /etc/schroot/schroot.conf
+
+cat jaunty_i386.conf | sudo tee -a /etc/schroot/schroot.conf
+
+
+3. download and create the initial chroot
+-----------------------------------------
+
+sudo debootstrap --variant=buildd --arch i386 jaunty /data/chroot/jaunty_i386 http://archive.ubuntu.com/ubuntu/
+
+
+4. configure the schroot by running as root
+-------------------------------------------
+
+schroot -c jaunty_i386 -u root
+
+# Now run these commands in the this chroot:
+
+mv /etc/apt/sources.list /etc/apt/sources.list.ORIG
+cat >/etc/apt/sources.list <<EOF
+deb http://tw.archive.ubuntu.com/ubuntu jaunty main
+deb http://tw.archive.ubuntu.com/ubuntu/ jaunty-updates main
+deb http://tw.archive.ubuntu.com/ubuntu/ jaunty universe
+deb http://tw.archive.ubuntu.com/ubuntu/ jaunty-updates universe
+EOF
+
+
+# choose your locale
+locale-gen en_GB.UTF-8
+
+apt-get install dialog
+
+dpkg-reconfigure locales
+
+# install editor, browser and programs necessary for building
+apt-get install --no-install-recommends jove
+apt-get install lynx-cur sudo
+apt-get install python-gd gawk gforth flex bison m4
+apt-get install netpbm qt4-qmake libqt4-dev libmysqlclient15-dev
+apt-get install python-serial sqlite3 php5-cli python-dev
+
+# enable bash in the dialog box
+# (or find and fix the shell scripts that fail when run under
+#  dash [some part of one of the Makefiles])
+dpkg-reconfigure dash
+
+
+5. create a little script to use schroot
+----------------------------------------
+
+cat <<EOF >m
+#!/bin/sh
+
+schroot -c jaunty_i386 -- make "$@"
+EOF
+chmod +x m
+
+
+6. build the system
+-------------------
+
+cp samo-lib/include/config.h-default samo-lib/include/config.h
+# uncomment the correct hardware version in config.h
+${EDITOR} samo-lib/include/config.h
+./m
