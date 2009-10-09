@@ -325,9 +325,12 @@ def test008_keys():
     del p
     p = None
 
-    time.sleep(SETTLING_TIME)
-    i = psu.current
-    info('Supply current = %7.3f mA' % (1000 * i))
+    for n in range(5):
+        time.sleep(SETTLING_TIME)
+        i = psu.current
+        info('Supply current = %7.3f mA' % (1000 * i))
+        if abs(i) < MAXIMUM_LEAKAGE_CURRENT:
+            break
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Failed auto power off, current %7.3f mA is too high" % (i * 1000))
 
 
