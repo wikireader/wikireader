@@ -68,6 +68,7 @@ VOLTAGE_LIST = (
 
 # amps
 MAXIMUM_LEAKAGE_CURRENT = 0.002
+MAXIMUM_SUSPEND_CURRENT = 0.02
 MINIMUM_ON_CURRENT = 0.005
 MAXIMUM_ON_CURRENT = 0.150
 
@@ -260,7 +261,7 @@ def test007_program_flash():
 
     m_flash = p.waitFor('(PASS|FAIL):\s+FLASH\s+MBR')
     fail_unless('PASS' == m_flash.group(1), 'FLASH MBR')
-
+    info('Flash programming sucessful')
 
 def test008_keys():
     """Test the three function keys"""
@@ -330,7 +331,13 @@ def test008_keys():
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Failed auto power off, current %7.3f mA is too high" % (i * 1000))
 
 
-def test009_boot_sd_card():
+def test009_on():
+    """Turn on power and wait for current to rise"""
+    global debug, psu, dvm, relay
+    test002_on()
+
+
+def test010_boot_sd_card():
     """Boot the test program from the SD Card"""
     global debug, psu, dvm, relay
     p = communication.SerialPort(port = CPU_SERIAL)
@@ -354,8 +361,10 @@ def test009_boot_sd_card():
     p.waitFor('[sS]election:')
     p.send(m_boot.group(1))
 
+    info('Starting the test program')
+
     while True:
-        m_boot = p.waitFor('(*SUSPEND*|(PASS|FAIL):\s+(.*)\n)')
+        m_boot = p.waitFor('(\*SUSPEND\*|(PASS|FAIL):\s+(.*)(\r|\n))')
         if  m_boot.group(1) == '*SUSPEND*':
             break
         fail_unless('PASS' == m_boot.group(2), m_boot.group(3))
@@ -381,10 +390,10 @@ def test009_boot_sd_card():
     fail_unless('PASS' == m_boot.group(1), m_boot.group(2))
     info(m_boot.group(2) + ': ' + m_boot.group(2))
 
-    p.waitFor('*END-TEST*')
+    p.waitFor('\*END-TEST\*')
 
 
-def test010_power_off():
+def test011_power_off():
     """Check power off function"""
     global debug, psu, dvm, relay
     test005_power_off()
