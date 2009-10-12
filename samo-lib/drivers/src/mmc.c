@@ -15,14 +15,6 @@
 #include <delay.h>
 #include "ff_config.h"
 
-#ifdef _USE_CACHE
-#include "cache.h"
-#else
-#define cache_init(...) do {} while(0)
-#define cache_read_sector(...) (!RES_OK)
-#define cache_update_sector(...) do {} while(0)
-#define cache_write_sector(...) do {} while(0)
-#endif
 
 // Definitions for MMC/SDC command
 #define CMD0	(0x40+0)	/* GO_IDLE_STATE */
@@ -308,8 +300,6 @@ DSTATUS mmc_disk_initialize(BYTE drv)
 		delay_us(25000);
 	}
 
-	cache_init();
-
 //	if (Stat & STA_NODISK) return Stat;		// No card in the socket
 
 	REG_SPI_CTL1 =
@@ -409,17 +399,9 @@ DRESULT mmc_disk_read(BYTE drv, BYTE *buff, DWORD sector, BYTE count)
 	if (!(CardType & 8)) sector *= 512;		// Convert to byte address if needed
 
 	if (count == 1) {				// Single block read
-		if (cache_read_sector (buff, sector) == RES_OK) {
-			return RES_OK;
-		}
-
 		if ((send_cmd(CMD17, sector) == 0)	// READ_SINGLE_BLOCK
 		    && rcvr_datablock(buff, 512)) {
 			count = 0;
-		}
-
-		if (count == 0) {
-			cache_write_sector(buff, sector);
 		}
 	}
 	else {						// Multiple block read
@@ -428,7 +410,6 @@ DRESULT mmc_disk_read(BYTE drv, BYTE *buff, DWORD sector, BYTE count)
 				if (!rcvr_datablock(buff, 512)) {
 					break;
 				}
-				cache_write_sector(buff, sector++);
 				buff += 512;
 			} while (--count);
 			send_cmd(CMD12, 0);		// STOP_TRANSMISSION
@@ -466,8 +447,6 @@ DRESULT mmc_disk_write(BYTE drv, const BYTE *buff, DWORD sector, BYTE count)
 		    && xmit_datablock(buff, 0xFE)) {
 			count = 0;
 		}
-
-		cache_update_sector(buff, sector);
 	}
 	else {						// Multiple block write
 		if (CardType & 6) {
@@ -479,7 +458,6 @@ DRESULT mmc_disk_write(BYTE drv, const BYTE *buff, DWORD sector, BYTE count)
 					break;
 				}
 				buff += 512;
-				cache_update_sector(buff, sector++);
 			} while (--count);
 			if (!xmit_datablock(0, 0xFD)) {	// STOP_TRAN token
 				count = 1;
