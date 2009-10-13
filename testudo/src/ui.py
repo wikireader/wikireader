@@ -10,6 +10,7 @@ from __future__ import with_statement # This isn't required in Python 2.6
 import pygtk
 pygtk.require('2.0')
 import gtk
+import pango
 
 import sys
 import datetime
@@ -260,7 +261,7 @@ class Sample:
             if gtk.RESPONSE_OK == response:
                 fileName = chooser.get_filename()
                 if os.path.exists(fileName):
-                    dialog = gtk.Dialog(title = 'Overwrite file:' + file, parent = None,
+                    dialog = gtk.Dialog(title = 'Overwrite file:' + fileName, parent = None,
                                         flags = gtk.DIALOG_MODAL,
                                         buttons = (gtk.STOCK_NO, gtk.RESPONSE_NO,
                                                    gtk.STOCK_YES, gtk.RESPONSE_YES))
@@ -348,6 +349,16 @@ class Sample:
         tag_pass = self.buffer.create_tag("pass-text",
                                           size_points = 24.0,
                                           foreground = "green")
+        self.buffer.create_tag('fixed-text',
+                               size_points = 10.0,
+                               family = 'Monospace',
+                               underline = pango.UNDERLINE_NONE,
+                               foreground = 'black')
+        self.buffer.create_tag('fixed-title',
+                               size_points = 10.0,
+                               family = 'Monospace',
+                               underline = pango.UNDERLINE_DOUBLE,
+                               foreground = 'blue')
 
         scrolled.add(self.view)
         scrolled.show()
