@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -49,19 +66,19 @@ static unsigned long hash_key(char *s, int len)
 	unsigned long hash = 5381;
 	char str[MAX_SEARCH_STRING_HASHED_LEN + 1];
 	int i;
-	
+
 	if (len > MAX_SEARCH_STRING_HASHED_LEN)
 		len = MAX_SEARCH_STRING_HASHED_LEN;
 	memcpy(str, s, len);
 	str[len] = '\0';
 	i = 0;
 	while(i < len) {
-	        int c = str[i];
-                if ('A' <= c && c <='Z')
-                	c += 32;
-                hash = ((hash << 5) + hash) + c;
-                i++;
-         }
+		int c = str[i];
+		if ('A' <= c && c <='Z')
+			c += 32;
+		hash = ((hash << 5) + hash) + c;
+		i++;
+	 }
 	return hash % MAX_SEARCH_HASH_KEY;
 }
 
@@ -145,7 +162,7 @@ void save_search_hash(void)
 void init_search_hash(void)
 {
 	int i;
-	
+
 	fdHsh = wl_open("pedia.hsh", WL_O_RDONLY);
 	wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
 	search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
@@ -167,18 +184,18 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	int bFound = 0;
 	int lenHashed;
 	int idxBlock;
-	
+
 	nHashJumps = 0;
 	nHashKey = hash_key(sSearchString, len);
 	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
 	if (!bHashBlockLoaded[idxBlock])
 	{
 		wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-		wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
+		wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
 			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 		bHashBlockLoaded[idxBlock]++;
 	}
-	
+
 	while (!bFound && nHashKey >= 0 && search_hash_table[nHashKey].offset_fnd)
 	{
 		if (search_hash_table[nHashKey].offset_fnd > 0)
@@ -202,7 +219,7 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 				if (!bHashBlockLoaded[idxBlock])
 				{
 					wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-					wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK], 
+					wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
 						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
 					bHashBlockLoaded[idxBlock]++;
 				}
@@ -229,10 +246,10 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	int iLeastUsed = 0;
 	int nCopyLen;
 	long blocked_offset;
-	
+
 	if (lenFnd > 0 && offset >= lenFnd)
 		return 0;
-		
+
 	while (!bFound && i < FND_BUF_COUNT)
 	{
 		if (fnd_bufs[i].offset)
@@ -270,7 +287,7 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		if (!bFound)
 			i++;
 	}
-	
+
 	if (!bFound)
 	{
 		i = iLeastUsed;
@@ -289,7 +306,7 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		fnd_bufs[i].offset = blocked_offset;
 	}
 	fnd_bufs[i].used_seq = nUsedSeq++;
-	
+
 	if (len > fnd_bufs[i].len - (offset - fnd_bufs[i].offset)) // the buf to be copied is separated into two blocks or end of file
 		nCopyLen = fnd_bufs[i].len - (offset - fnd_bufs[i].offset);
 	else

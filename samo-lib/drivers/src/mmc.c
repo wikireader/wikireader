@@ -1,12 +1,22 @@
 /*
- * Implementation taken from
- *	http://vector06cc.googlecode.com/svn/trunk/firmware/floppysrc/
- * GPL and so on.
+ * This was developed from the sample files attached to Tiny FAT file system
+ *
+ * see: http://elm-chan.org/fsw/ff/00index_e.html (Samples projects link)
+ *
+ * from the 00readme.txt in the http://elm-chan.org/fsw/ff/ffsample.zip
+ *
+ * FatFs Module Sample Projects  Copyright (C)ChaN, 2009
+ *
+ * AGREEMENTS
+ *
+ *   These sample projects for FatFs module are free software and there is no warranty.
+ *   You can use, modify and redistribute it for personal, non-profit or commercial
+ *   product without any restriction under your responsibility.
  */
 
-//-----------------------------------------------------------------------
-// MMC/SDSC/SDHC (in SPI mode) control module  (C)ChaN, 2007
-//-----------------------------------------------------------------------
+/*-----------------------------------------------------------------------*/
+/* MMCv3/SDv1/SDv2 (in SPI mode) control module  (C)ChaN, 2009           */
+/*-----------------------------------------------------------------------*/
 
 #include <regs.h>
 #include <samo.h>

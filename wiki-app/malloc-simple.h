@@ -1,3 +1,5 @@
+// Copyright (c) 2009 Openmoko Inc.
+//
 //
 // Authors:	Marek Lindner <marek@openmoko.com>
 //

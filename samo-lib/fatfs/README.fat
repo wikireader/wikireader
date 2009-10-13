@@ -1,2 +1,16 @@
-This is release 0.06 of FatFs/TinyFatFs. The original japanese website can
-be found at http://elm-chan.org/fsw/ff/00index_j.html.
+This was developed from the Tiny FAT file system
+
+available from: http://elm-chan.org/fsw/ff/00index_e.html
+
+Here is the original copyright and license:
+
+ FatFs module is an open source software to implement FAT file system to
+ small embedded systems. This is a free software and is opened for education,
+ research and commercial developments under license policy of following trems.
+
+  Copyright (C) 2009, ChaN, all right reserved.
+
+ * The FatFs module is a free software and there is NO WARRANTY.
+ * No restriction on use. You can use, modify and redistribute it for
+   personal, non-profit or commercial product UNDER YOUR RESPONSIBILITY.
+ * Redistributions of source code must retain the above copyright notice.

@@ -1,3 +1,4 @@
+// Copyright (c) 2009 Openmoko Inc.
 //
 // Authors:	Daniel Mack <daniel@caiaq.de>
 // 		Holger Hans Peter Freyther <zecke@openmoko.org>

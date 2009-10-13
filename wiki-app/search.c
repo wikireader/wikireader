@@ -1,3 +1,4 @@
+// Copyright (c) 2009 Openmoko Inc.
 //
 // Authors:	Holger Hans Peter Freyther <zecke@openmoko.org>
 //

@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -85,7 +102,7 @@ void show_scroll_bar(int bShow)
 	char c;
 	static char frame_bytes[LCD_HEIGHT_LINES];
 	static int b_frame_bytes;
-	
+
 	if (!bShow)
 	{
 		if (b_frame_bytes)
@@ -116,7 +133,7 @@ void show_scroll_bar(int bShow)
 			bar_pos = 0;
 		else if (bar_pos + bar_len > LCD_HEIGHT_LINES)
 			bar_pos = LCD_HEIGHT_LINES - bar_len;
-		
+
 		for (i = 0; i < LCD_HEIGHT_LINES; i++)
 		{
 			if (bar_pos <= i && i < bar_pos + bar_len)
@@ -137,8 +154,8 @@ void init_lcd_draw_buf()
 
 	if (!lcd_draw_buf_inited)
 	{
-                framebuffersize = framebuffer_size();
-                framebuffer_copy = (unsigned char*)Xalloc(framebuffersize);
+		framebuffersize = framebuffer_size();
+		framebuffer_copy = (unsigned char*)Xalloc(framebuffersize);
 
 		lcd_draw_buf.screen_buf = (unsigned char *)Xalloc(LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
 
@@ -151,22 +168,22 @@ void init_lcd_draw_buf()
 			}
 			else
 			{
-	                        fd = load_bmf(&pcfFonts[i]);
+				fd = load_bmf(&pcfFonts[i]);
 				if(fd >= 0)
-			        {
+				{
 					if (i == ITALIC_FONT_IDX - 1)
-				   	{
+					{
 						pcfFonts[i].bPartialFont = 1;
 						pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
-				   	}
-				   	else if (i == DEFAULT_FONT_IDX - 1)
-				   	{
+					}
+					else if (i == DEFAULT_FONT_IDX - 1)
+					{
 						pcfFonts[i].bPartialFont = 1;
 						pcfFonts[i].supplement_font = &pcfFonts[DEFAULT_ALL_FONT_IDX - 1];
 					}
 					else
 					{
-	                       			pcfFonts[i].bPartialFont = 0;
+						pcfFonts[i].bPartialFont = 0;
 					}
 					pcfFonts[i].fd = fd;
 				}
@@ -201,10 +218,10 @@ void draw_string(unsigned char *s)
 
 void init_file_buffer()
 {
-        file_buffer = (unsigned char*)Xalloc(FILE_BUFFER_SIZE);
+	file_buffer = (unsigned char*)Xalloc(FILE_BUFFER_SIZE);
 }
 
-// default font is indexed 0, font id 0 is indexed 1, etc. 
+// default font is indexed 0, font id 0 is indexed 1, etc.
 char* FontFile(int idx) {
 	switch(idx)
 	{
@@ -251,7 +268,7 @@ ucs4_t UTF8_to_UCS4(unsigned char **pUTF8)
 				}
 				else
 					c0 = 0; /* invalid UTF8 character */
-			} 
+			}
 			else if ((c0 & 0xF0) == 0xE0) /* 3-byte UTF8 */
 			{
 				c1 = **pUTF8;
@@ -263,7 +280,7 @@ ucs4_t UTF8_to_UCS4(unsigned char **pUTF8)
 				}
 				else
 					c0 = 0; /* invalid UTF8 character */
-			} 
+			}
 			else if ((c0 & 0xF1) == 0xF0) /* 4-byte UTF8 */
 			{
 				c1 = **pUTF8;
@@ -296,14 +313,14 @@ void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8)
 		sUTF8[0] = (unsigned char)(0xC0 | (u >> 6));
 		sUTF8[1] = (unsigned char)(0x80 | (u & 0x3F));
 		sUTF8[2] = '\0';
-	}	
+	}
 	else if (u < 0x10000)
 	{
 		sUTF8[0] = (unsigned char)(0xC0 | (u >> 12));
 		sUTF8[1] = (unsigned char)(0x80 | ((u & 0xFFF) >> 6));
 		sUTF8[2] = (unsigned char)(0x80 | (u & 0x3F));
 		sUTF8[3] = '\0';
-	}	
+	}
 	else if (u < 0x110000)
 	{
 		sUTF8[0] = (unsigned char)(0xC0 | (u >> 18));
@@ -321,17 +338,17 @@ void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8)
 void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,char **pUTF8,int start_x,int end_x,int start_y,int end_y,int offset_x)
 {
 	ucs4_t u;
-        LCD_DRAW_BUF lcd_draw_buf_external;
-        
+	LCD_DRAW_BUF lcd_draw_buf_external;
+
 	lcd_draw_buf_external.current_x = start_x+offset_x;
 	lcd_draw_buf_external.current_y = start_y+2;
 	lcd_draw_buf_external.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
-        lcd_draw_buf_external.screen_buf = (unsigned char*)framebuffer_copy;
+	lcd_draw_buf_external.screen_buf = (unsigned char*)framebuffer_copy;
 	lcd_draw_buf_external.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
-    
+
 	lcd_draw_buf_external.align_adjustment = 0;
-        
-	while (**pUTF8 > MAX_ESC_CHAR) 
+
+	while (**pUTF8 > MAX_ESC_CHAR)
 	{
 		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
 		{
@@ -349,7 +366,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	long v_line_bottom;
 	ucs4_t u;
 	int font_idx;
-	
+
 	c = **pUTF8;
 	if (c <= MAX_ESC_CHAR)
 	{
@@ -444,7 +461,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				(*pUTF8)++;
 				if ((long)c2 > lcd_draw_buf.current_x)
 					c2 = (unsigned char)lcd_draw_buf.current_x;
-				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment, 
+				buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment,
 					lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment);
 				break;
 			case ESC_11_VERTICAL_LINE: /* drawing vertical line */
@@ -474,14 +491,14 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				break;
 		}
 	}
-	
+
 	while (**pUTF8 > MAX_ESC_CHAR) /* stop at end of string or escape character */
 	{
 		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			buf_draw_char(u);
-                        if(display_first_page==0 && lcd_draw_buf.current_y>LCD_HEIGHT_LINES)
-                        {
+			if(display_first_page==0 && lcd_draw_buf.current_y>LCD_HEIGHT_LINES)
+			{
 				if (restricted_article)
 				{
 					draw_restricted_mark(lcd_draw_buf.screen_buf);
@@ -500,7 +517,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				{
 					display_article_with_pcf(lcd_draw_init_y_pos);
 				}
-                        }
+			}
 		}
 	}
 #endif
@@ -510,7 +527,7 @@ void repaint_framebuffer(unsigned char *buf,int pos)
 #ifndef WIKIPCF
 	int framebuffersize;
 	framebuffersize = framebuffer_size();
-	
+
 	guilib_fb_lock();
 	guilib_clear();
 
@@ -518,13 +535,13 @@ void repaint_framebuffer(unsigned char *buf,int pos)
 	if (b_show_scroll_bar && lcd_draw_buf.current_y >= LCD_HEIGHT_LINES)
 		show_scroll_bar(1);
 	guilib_fb_unlock();
-        link_article_number_cur = -1;
+	link_article_number_cur = -1;
 #endif
 
 }
 void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 {
-        int i;
+	int i;
 	long h_line_y;
 
 
@@ -532,10 +549,10 @@ void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 	h_line_y -= lcd_draw_buf.align_adjustment + 1;
 
 
-        for(i = start_x;i<end_x;i++)
-        {
-            lcd_set_pixel(lcd_draw_buf.screen_buf,i, h_line_y);
-        }
+	for(i = start_x;i<end_x;i++)
+	{
+	    lcd_set_pixel(lcd_draw_buf.screen_buf,i, h_line_y);
+	}
 
 }
 
@@ -558,94 +575,94 @@ void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y)
 }
 
 void lcd_set_pixel(unsigned char *membuffer,int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
-	
-	
+
+
 	membuffer[byte] |= (1 << (7 - bit));
 }
 
 void lcd_set_framebuffer_pixel(int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
-	
-	
+
+
 	framebuffer[byte] |= (1 << (7 - bit));
 }
 
 void lcd_clear_framebuffer_pixel(int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
-	
-	
+
+
 	framebuffer[byte] ^= (1 << (7 - bit));
 }
 
 void lcd_set_framebuffer_byte(char c, int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
-	
+
 	framebuffer[byte] = c;
 }
 
 char lcd_get_framebuffer_byte(int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
-	
+
 	return framebuffer[byte];
 }
 
 void lcd_clear_pixel(unsigned char *membuffer,int x, int y)
-{		
+{
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
-        unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
-		
+	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
+
 	membuffer[byte] &= ~(1 << (7 - bit));
 }
 void buf_draw_char(ucs4_t u)
 {
 	bmf_bm_t *bitmap;
-        charmetric_bmf Cmetrics;
+	charmetric_bmf Cmetrics;
 	int bytes_to_process;
 	int x_base;
 	int y_base;
 	int x_offset;
 	int y_offset;
 	int x_bit_idx;
-	int i; // bitmap byte index 
-	int j; // bitmap bit index 
-	unsigned char *p; // pointer to lcd draw buffer 
-        
+	int i; // bitmap byte index
+	int j; // bitmap bit index
+	unsigned char *p; // pointer to lcd draw buffer
+
 
 
 	if(pres_bmfbm(u, lcd_draw_buf.pPcfFont, &bitmap, &Cmetrics)<0)
-        {
-          return;
-        }
-        if(u==32)
-        {
+	{
+	  return;
+	}
+	if(u==32)
+	{
 	   lcd_draw_buf.current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
-           return;
-        }
-  
- 	if (bitmap == NULL)
+	   return;
+	}
+
+	if (bitmap == NULL)
 	    return;
 
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-	
+
 	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
 	if (x_base + Cmetrics.LSBearing + Cmetrics.width < LCD_BUF_WIDTH_PIXELS)
 	{ // only draw the chracter if not exceeding the LCD width
 		y_base = lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment;
 		x_offset = 0;
 		y_offset = lcd_draw_buf.line_height - (lcd_draw_buf.pPcfFont->Fmetrics.descent + Cmetrics.ascent);
-	        
+
 		x_bit_idx = x_base & 0x07;
 		//p = lcd_draw_buf.screen_buf + (y_base + y_offset) * LCD_BUF_WIDTH_BYTES + (x_base >> 3);
-	
+
 		for (i = 0; i < bytes_to_process; i++)
 		{
 			j = 7;
@@ -660,11 +677,11 @@ void buf_draw_char(ucs4_t u)
 				if (x_offset < Cmetrics.width)
 				{
 					if (bitmap[i] & (1 << j))
-	                                {
+					{
 					    //*p |= 1 << ((x_base + x_offset) & 0x07);
-	                                    lcd_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
-	                                }
-	                                     
+					    lcd_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
+					}
+
 				}
 				x_offset++;
 				x_bit_idx++;
@@ -683,10 +700,10 @@ int get_external_str_pixel_width(char **pUTF8)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
-        int width = 0;
-        ucs4_t u;
+	int width = 0;
+	ucs4_t u;
 
-	while (**pUTF8 > MAX_ESC_CHAR) 
+	while (**pUTF8 > MAX_ESC_CHAR)
 	{
 		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
 		{
@@ -695,8 +712,8 @@ int get_external_str_pixel_width(char **pUTF8)
 			   width += Cmetrics.width;
 		}
 
-	}	
-        return width;
+	}
+	return width;
 }
 void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int start_x,int end_x,int start_y,int end_y)
 {
@@ -708,29 +725,29 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 	int x_offset;
 	int y_offset;
 	int x_bit_idx;
-	int i; // bitmap byte index 
-	int j; // bitmap bit index 
-	unsigned char *p; // pointer to lcd draw buffer 
+	int i; // bitmap byte index
+	int j; // bitmap bit index
+	unsigned char *p; // pointer to lcd draw buffer
 
 	if(pres_bmfbm(u, lcd_draw_buf_external->pPcfFont, &bitmap, &Cmetrics)<0)
-          return;
-        if(u==32)
-        {
+	  return;
+	if(u==32)
+	{
 	   lcd_draw_buf_external->current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
-           return;
-        }
-   	if (bitmap == NULL)
+	   return;
+	}
+	if (bitmap == NULL)
 	  return;
 
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-	
+
 	x_base = lcd_draw_buf_external->current_x + Cmetrics.LSBearing;
-        if((x_base +Cmetrics.width) > end_x)
-        {
-            lcd_draw_buf_external->current_x = start_x+2;
-            x_base = 0;
-            lcd_draw_buf_external->current_y+=lcd_draw_buf_external->line_height;
-        }
+	if((x_base +Cmetrics.width) > end_x)
+	{
+	    lcd_draw_buf_external->current_x = start_x+2;
+	    x_base = 0;
+	    lcd_draw_buf_external->current_y+=lcd_draw_buf_external->line_height;
+	}
 	y_base = lcd_draw_buf_external->current_y + lcd_draw_buf_external->align_adjustment;
 	x_offset = 0;
 	y_offset = lcd_draw_buf_external->line_height - (lcd_draw_buf_external->pPcfFont->Fmetrics.descent + Cmetrics.ascent);
@@ -749,10 +766,10 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 			if (x_offset < Cmetrics.width)
 			{
 				if (bitmap[i] & (1 << j))
-                                {
-                                    lcd_set_pixel(lcd_draw_buf_external->screen_buf,x_base + x_offset, y_base+y_offset);
-                                }
-                                     
+				{
+				    lcd_set_pixel(lcd_draw_buf_external->screen_buf,x_base + x_offset, y_base+y_offset);
+				}
+
 			}
 			x_offset++;
 			x_bit_idx++;
@@ -773,14 +790,14 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 	char *pBase;
 	charmetric_bmf Cmetrics;
 	bmf_bm_t *bitmap;
-	
+
 	pBase = *pContent;
 	u = UTF8_to_UCS4((unsigned char **)pContent);
 	*nCharBytes = *pContent - pBase;
 	*lenContent -= *nCharBytes;
-	
+
 	pres_bmfbm(u, &pcfFonts[idxFont - 1], &bitmap, &Cmetrics);
-   	if (bitmap == NULL)
+	if (bitmap == NULL)
 		return 0;
 	else
 		return  Cmetrics.LSBearing + Cmetrics.width + 1;
@@ -823,7 +840,7 @@ void render_wikipedia_license_text()
 {
 #ifndef WIKIPCF
 	long start_x, start_y, end_x, end_y;
-	
+
 	// if not enough space at the end, then skip
 	if (lcd_draw_buf.current_y < LCD_BUF_HEIGHT_PIXELS - SPACE_BEFORE_LICENSE_TEXT - lcd_draw_buf.line_height * 7 - APACE_AFTER_LICENSE_TEXT)
 	{
@@ -833,7 +850,7 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.vertical_adjustment = 0;
 		lcd_draw_buf.align_adjustment = 0;
 		lcd_draw_buf.pPcfFont = &pcfFonts[LICENSE_TEXT_FONT - 1];
-		
+
 		draw_string(LICENSE_TEXT_1);
 		start_x = lcd_draw_buf.current_x - 51;
 		end_x = lcd_draw_buf.current_x;
@@ -907,14 +924,14 @@ int render_article_with_pcf()
 
 	if (!article_buf_pointer)
 		return 0;
-	
+
 	buf_draw_UTF8_str(&article_buf_pointer);
-        if(stop_render_article == 1 && display_first_page == 1)
-        {
-           article_buf_pointer = NULL;
-           stop_render_article = 0;
-           return 0;
-        }
+	if(stop_render_article == 1 && display_first_page == 1)
+	{
+	   article_buf_pointer = NULL;
+	   stop_render_article = 0;
+	   return 0;
+	}
 	if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
 	{
 		repaint_framebuffer(lcd_draw_buf.screen_buf,(request_y_pos-LCD_HEIGHT_LINES)*LCD_VRAM_WIDTH_PIXELS/8);
@@ -923,8 +940,8 @@ int render_article_with_pcf()
 			 lcd_draw_cur_y_pos = 0;
 		request_display_next_page = 0;
 	}
-        if(!*article_buf_pointer)
-        {
+	if(!*article_buf_pointer)
+	{
 		render_wikipedia_license_text();
 		if(display_first_page == 0 || request_display_next_page > 0)
 		{
@@ -944,8 +961,8 @@ int render_article_with_pcf()
 		article_buf_pointer = NULL;
 
 		return 0;
-        }
-        return 1;
+	}
+	return 1;
 
 }
 
@@ -957,7 +974,7 @@ int render_history_with_pcf()
 {
 	int rc = 0;
 	int start_x, end_x, start_y, end_y;
-	
+
 	restricted_article = 0;
 	if (rendered_history_count < 0)
 		return rc;
@@ -1001,13 +1018,13 @@ int render_history_with_pcf()
 			articleLink[article_link_count++].article_id = history_list[rendered_history_count].idx_article;
 		}
 		draw_string(history_list[rendered_history_count].title);
-	        rendered_history_count++;
+		rendered_history_count++;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
-	        if (rendered_history_count < history_count)
-	        	rc = 1;
+		if (rendered_history_count < history_count)
+			rc = 1;
 		else
-	        {
+		{
 			rendered_history_count = -1;
 			if(display_first_page == 0)
 			{
@@ -1023,13 +1040,13 @@ int render_history_with_pcf()
 				lcd_draw_cur_y_pos = y_pos;
 				request_display_next_page = 0;
 			}
-	        }
-	        	
-	        if(stop_render_article == 1 && display_first_page == 1)
-	        {
-	        	rendered_history_count = -1;
-	        	stop_render_article = 0;
-	        }
+		}
+
+		if(stop_render_article == 1 && display_first_page == 1)
+		{
+			rendered_history_count = -1;
+			stop_render_article = 0;
+		}
 
 		if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
 		{
@@ -1040,7 +1057,7 @@ int render_history_with_pcf()
 	}
 
 	guilib_fb_unlock();
-        return rc;
+	return rc;
 }
 
 extern int more_search_results;
@@ -1061,7 +1078,7 @@ int render_search_result_with_pcf(void)
 	long idxArticle;
 	char sTitleSearch[MAX_TITLE_SEARCH];
 	static long offset_next = 0;
-	
+
 	if (!more_search_results)
 	{
 		display_first_page = 1;
@@ -1100,11 +1117,11 @@ int render_search_result_with_pcf(void)
 		else
 			more_search_results = 0;
 
-	        if (stop_render_article == 1)
-	        {
-	        	more_search_results = 0;
-	        	stop_render_article = 0;
-	        }
+		if (stop_render_article == 1)
+		{
+			more_search_results = 0;
+			stop_render_article = 0;
+		}
 
 		if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
 		{
@@ -1128,30 +1145,30 @@ int render_search_result_with_pcf(void)
 	}
 
 	guilib_fb_unlock();
-        return rc;
+	return rc;
 }
 
 void display_article_with_pcf(int start_y)
 {
 	int pos;
 
-        if(lcd_draw_buf.current_y<=LCD_HEIGHT_LINES || request_display_next_page || 
+	if(lcd_draw_buf.current_y<=LCD_HEIGHT_LINES || request_display_next_page ||
 		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_FIRST_PAGE_RESULTS))
-            return;
-        
-        if(article_buf_pointer && (lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES) > lcd_draw_buf.current_y)
-        {
-            request_display_next_page = 1;
-            request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
+	    return;
 
-            display_str("Please wait...");
+	if(article_buf_pointer && (lcd_draw_cur_y_pos+start_y+LCD_HEIGHT_LINES) > lcd_draw_buf.current_y)
+	{
+	    request_display_next_page = 1;
+	    request_y_pos = lcd_draw_cur_y_pos + start_y + LCD_HEIGHT_LINES;
 
-            return;
-        }
-        if(lcd_draw_cur_y_pos == 0 && start_y<0)
-        {
-           return;
-        }
+	    display_str("Please wait...");
+
+	    return;
+	}
+	if(lcd_draw_cur_y_pos == 0 && start_y<0)
+	{
+	   return;
+	}
 
 	lcd_draw_cur_y_pos += start_y;
 
@@ -1160,27 +1177,27 @@ void display_article_with_pcf(int start_y)
 	if (lcd_draw_cur_y_pos < 0)
 		lcd_draw_cur_y_pos = 0;
 	history_log_y_pos(lcd_draw_cur_y_pos);
-	
+
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
-        repaint_framebuffer(lcd_draw_buf.screen_buf,pos);
-	
+	repaint_framebuffer(lcd_draw_buf.screen_buf,pos);
+
 	lcd_draw_buf_pos = pos;
 
 }
 
 void scroll_article(void)
 {
-        int delay_time,pos;
-        if(article_offset<=0)
-          return;
+	int delay_time,pos;
+	if(article_offset<=0)
+	  return;
 
-	if (!display_first_page || request_display_next_page || 
+	if (!display_first_page || request_display_next_page ||
 		(display_mode == DISPLAY_MODE_INDEX && article_link_count <= NUMBER_OF_FIRST_PAGE_RESULTS))
 		return;
-        delay_time = 0;
-        if(article_scroll_delay_time_total>=1000000*3)
-            article_offset = 0;
+	delay_time = 0;
+	if(article_scroll_delay_time_total>=1000000*3)
+	    article_offset = 0;
 
 	lcd_draw_cur_y_pos += article_scroll_increment;
 
@@ -1189,10 +1206,10 @@ void scroll_article(void)
 	else if (lcd_draw_cur_y_pos > lcd_draw_buf.current_y)
 	   lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 	history_log_y_pos(lcd_draw_cur_y_pos);
-	
+
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
-	
+
 	repaint_framebuffer(lcd_draw_buf.screen_buf,pos);
 
 #ifdef INCLUDED_FROM_KERNEL
@@ -1201,35 +1218,35 @@ void scroll_article(void)
 	delay_time = base_delay_time;
 	article_scroll_delay_time+=delay_time;
 #endif
-	
+
 	lcd_draw_buf_pos = pos;
-        article_offset--;
+	article_offset--;
 }
 
 void display_retrieved_article(long idx_article)
 {
-        int i;
+	int i;
 	int offset,start_x,start_y,end_x,end_y;
 	ARTICLE_HEADER article_header;
- 	char title[MAX_TITLE_SEARCH];
-		
+	char title[MAX_TITLE_SEARCH];
+
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 	offset = sizeof(ARTICLE_HEADER);
-		
+
 	if(article_header.article_link_count>MAX_ARTICLE_LINKS)
 	    article_header.article_link_count = MAX_ARTICLE_LINKS;
 
 	for(i = 0; i< article_header.article_link_count;i++)
 	{
 	    memcpy(&articleLink[i],file_buffer+offset,sizeof(ARTICLE_LINK));
-            offset+=sizeof(ARTICLE_LINK);
+	    offset+=sizeof(ARTICLE_LINK);
 
-            start_y = articleLink[i].start_xy >>8;
+	    start_y = articleLink[i].start_xy >>8;
 	    start_x = articleLink[i].start_xy & 0x000000ff;
 	    end_y   = articleLink[i].end_xy  >>8;
 	    end_x   = articleLink[i].end_xy & 0x000000ff;
 	}
-        article_link_count = article_header.article_link_count;
+	article_link_count = article_header.article_link_count;
 
 	article_buf_pointer = file_buffer+article_header.offset_article;
 	if (last_display_mode == DISPLAY_MODE_HISTORY)
@@ -1251,12 +1268,12 @@ int isArticleLinkSelected(int x,int y)
 	int article_link_end_x_pos;
 	//char msg[1024];
 	int left_margin;
-	
+
 	if (display_mode == DISPLAY_MODE_ARTICLE)
 		left_margin = LCD_LEFT_MARGIN;
 	else
 		left_margin = 0;
-	 
+
 	if (link_article_number_cur >= 0 && link_article_number_cur < article_link_count)
 	{
 		article_link_start_y_pos = articleLink[link_article_number_cur].start_xy >>8;
@@ -1266,7 +1283,7 @@ int isArticleLinkSelected(int x,int y)
 		if ((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
 			return link_article_number_cur; // if more than on links are matched, the last matched one got the higher priority
 	}
-	
+
 	if (!display_first_page || request_display_next_page)
 		return -1;
 	//sprintf(msg,"article link count:%d,x:%d,y:%d\n",article_link_count,x,y);
@@ -1277,14 +1294,14 @@ int isArticleLinkSelected(int x,int y)
 		article_link_start_x_pos = (articleLink[i].start_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
 		article_link_end_y_pos = articleLink[i].end_xy >>8;
 		article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
-	  
+
 	      //sprintf(msg,"article link:%d,start_x:%d,end_x:%d,start_y:%d,end_y:%d\n",i,article_link_start_x_pos,article_link_end_x_pos,article_link_start_y_pos,article_link_end_y_pos);
 	      //msg_info(msg);
-		
+
 		//if((lcd_draw_cur_y_pos+y)>=article_link_start_y_pos && (lcd_draw_cur_y_pos+y)<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
 		if((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
 			return i;
-			  	
+
 	}
 	return -1;
 }
@@ -1295,10 +1312,10 @@ int load_init_article(long idx_init_article)
 	int fd;
 	char file[128];
 	long len;
-        int i;
+	int i;
 	int offset,start_x,start_y,end_x,end_y;
 	ARTICLE_HEADER article_header;
-	
+
 	if (idx_init_article > 0)
 	{
 		sprintf(file, "./dat/%ld/%ld/%ld/%ld", (idx_init_article / 1000000), (idx_init_article / 10000) % 100, (idx_init_article / 100) % 100, idx_init_article);
@@ -1309,26 +1326,26 @@ int load_init_article(long idx_init_article)
 			file_buffer[len] = '\0';
 			wl_close(fd);
 		}
-		
+
 		memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 		offset = sizeof(ARTICLE_HEADER);
-			
+
 		if(article_header.article_link_count>MAX_ARTICLE_LINKS)
 		    article_header.article_link_count = MAX_ARTICLE_LINKS;
-	
+
 		for(i = 0; i< article_header.article_link_count;i++)
 		{
 		    memcpy(&articleLink[i],file_buffer+offset,sizeof(ARTICLE_LINK));
-	            offset+=sizeof(ARTICLE_LINK);
-	
-	            start_y = articleLink[i].start_xy >>8;
+		    offset+=sizeof(ARTICLE_LINK);
+
+		    start_y = articleLink[i].start_xy >>8;
 		    start_x = articleLink[i].start_xy & 0x000000ff;
 		    end_y   = articleLink[i].end_xy  >>8;
 		    end_x   = articleLink[i].end_xy & 0x000000ff;
-	
+
 		}
-	        article_link_count = article_header.article_link_count;
-	    
+		article_link_count = article_header.article_link_count;
+
 		article_buf_pointer = file_buffer+article_header.offset_article;
 		init_render_article(0);
 		return 0;
@@ -1347,17 +1364,17 @@ void display_link_article(long idx_article)
 		filter_option();
 		return;
 	}
-			
-        file_buffer[0] = '\0';
+
+	file_buffer[0] = '\0';
 
 	if (retrieve_article(idx_article))
-        {
-	    return; // article not exist		
-        }
+	{
+	    return; // article not exist
+	}
 
 	if (restricted_article && check_restriction(idx_article))
 		return;
-	
+
 	display_retrieved_article(idx_article);
 }
 
@@ -1388,7 +1405,7 @@ void display_str(char *str)
        buf_draw_UTF8_str_in_copy_buffer((char *)framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x);
 
        repaint_framebuffer(framebuffer_copy,0);
-       
+
  }
 #endif
 
@@ -1403,7 +1420,7 @@ int div_wiki(int a,int b)
     {
        c += b;
        if(c >= a)
-           return m;
+	   return m;
        m++;
     }
 }
@@ -1411,20 +1428,20 @@ void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,
 {
       int i,m;
       for(i = start_y;i<end_y;i++)
-         for(m = start_x;m<end_x;m++)
-           lcd_clear_pixel(buffer,m,i);
+	 for(m = start_x;m<end_x;m++)
+	   lcd_clear_pixel(buffer,m,i);
 
       for(i = start_x ; i < end_x ; i++)
-            lcd_set_pixel(buffer,i, start_y);
+	    lcd_set_pixel(buffer,i, start_y);
 
       for(i = start_y ; i < end_y ; i++)
-            lcd_set_pixel(buffer,start_x,i);
+	    lcd_set_pixel(buffer,start_x,i);
 
       for(i = start_x ; i < end_x ; i++)
-            lcd_set_pixel(buffer,i,end_y);
+	    lcd_set_pixel(buffer,i,end_y);
 
       for(i = start_y ; i < end_y ; i++)
-            lcd_set_pixel(buffer,end_x,i);
+	    lcd_set_pixel(buffer,end_x,i);
 }
 
 #ifndef WIKIPCF
@@ -1432,22 +1449,22 @@ void invert_link(int article_link_number)
 {
      int start_x,start_y,end_x,end_y;
 	int left_margin;
-	
+
 	if (display_mode == DISPLAY_MODE_ARTICLE)
 		left_margin = LCD_LEFT_MARGIN;
 	else
 		left_margin = 0;
 
      if(article_link_number<0)
-        return;
+	return;
 
      start_y = articleLink[article_link_number].start_xy >>8;
      start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment - 1;
      if (start_x < 0)
-     	start_x = 0;
+	start_x = 0;
      end_y   = articleLink[article_link_number].end_xy  >>8;
      end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
-     
+
      guilib_fb_lock();
      guilib_invert_area(start_x, start_y - lcd_draw_cur_y_pos, end_x, end_y - lcd_draw_cur_y_pos);
      guilib_fb_unlock();
@@ -1460,14 +1477,14 @@ void open_article_link(int x,int y)
       article_link_number = isArticleLinkSelected(x,y);
       if(article_link_number >= 0)
       {
-         display_link_article(articleLink[article_link_number].article_id);
+	 display_link_article(articleLink[article_link_number].article_id);
       }
 }
 
 void open_article_link_with_link_number(int article_link_number)
 {
- 	long idx;
- 	
+	long idx;
+
 	if (article_link_number < 0 || articleLink[article_link_number].article_id <= 0)
 		return;
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
@@ -1522,7 +1539,7 @@ int strchr_idx(char *s, char c)
 {
 	int rc = -1;
 	int i = 0;
-	
+
 	while (rc < 0 && s[i])
 	{
 		if (s[i] == c)
@@ -1543,36 +1560,36 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted)
 	int x_offset;
 	int y_offset;
 	int x_bit_idx;
-	int i; // bitmap byte index 
-	int j; // bitmap bit index 
+	int i; // bitmap byte index
+	int j; // bitmap bit index
 	pcffont_bmf_t *pPcfFont;
 
 	pPcfFont = &pcfFonts[font];
-	
+
 	pres_bmfbm(u, pPcfFont, &bitmap, &Cmetrics);
-   	if (bitmap == NULL)
-        {
-            return -1;
-        }
+	if (bitmap == NULL)
+	{
+	    return -1;
+	}
 
-        //sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
-        //msg_info(msg);
+	//sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
+	//msg_info(msg);
 
-        if(u==32)
-        {
+	if(u==32)
+	{
 	   x += Cmetrics.LSBearing + Cmetrics.width + 1;
-           return x;
-        }
-	
+	   return x;
+	}
+
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-	
+
 	x_base = x + Cmetrics.LSBearing;
 	x_offset = 0;
 	y_offset = pPcfFont->Fmetrics.linespace - (pPcfFont->Fmetrics.descent + Cmetrics.ascent);
 
-	
+
 	x_bit_idx = x_base & 0x07;
-	
+
 	if (x + Cmetrics.LSBearing + Cmetrics.width >= LCD_BUF_WIDTH_PIXELS)
 		return -1;
 
@@ -1595,14 +1612,14 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted)
 					else
 						lcd_set_framebuffer_pixel(x_base + x_offset, y+y_offset);
 				}
-				
+
 			}
 			x_offset++;
 			x_bit_idx++;
 			if (!(x_bit_idx & 0x07))
 			{
 				x_bit_idx = 0;
-				
+
 			}
 			j--;
 		}
@@ -1621,36 +1638,36 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 	int x_offset;
 	int y_offset;
 	int x_bit_idx;
-	int i; // bitmap byte index 
-	int j; // bitmap bit index 
+	int i; // bitmap byte index
+	int j; // bitmap bit index
 	pcffont_bmf_t *pPcfFont;
 
 	pPcfFont = &pcfFonts[font];
-	
+
 	pres_bmfbm(u, pPcfFont, &bitmap, &Cmetrics);
-   	if (bitmap == NULL)
-        {
-            return -1;
-        }
+	if (bitmap == NULL)
+	{
+	    return -1;
+	}
 
-        //sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
-        //msg_info(msg);
+	//sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
+	//msg_info(msg);
 
-        if(u==32)
-        {
+	if(u==32)
+	{
 	   x += Cmetrics.LSBearing + Cmetrics.width + 1;
-           return x;
-        }
-	
+	   return x;
+	}
+
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-	
+
 	x_base = x + Cmetrics.LSBearing;
 	x_offset = 0;
 	y_offset = pPcfFont->Fmetrics.linespace - (pPcfFont->Fmetrics.descent + Cmetrics.ascent);
 
-	
+
 	x_bit_idx = x_base & 0x07;
-	
+
 	if (x + Cmetrics.LSBearing + Cmetrics.width >= LCD_BUF_WIDTH_PIXELS)
 		return -1;
 
@@ -1681,14 +1698,14 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 						buf[byte] |= (1 << (7 - bit));
 					}
 				}
-				
+
 			}
 			x_offset++;
 			x_bit_idx++;
 			if (!(x_bit_idx & 0x07))
 			{
 				x_bit_idx = 0;
-				
+
 			}
 			j--;
 		}
@@ -1716,7 +1733,7 @@ void msg_on_lcd(int x, int y, char *msg)
 #ifdef INCLUDED_FROM_KERNEL
 //	guilib_fb_lock();
 	guilib_clear_area(x, y, 239, y+18);
-	render_string(DEFAULT_FONT_IDX, x, y, msg, strlen(msg), 0); 
+	render_string(DEFAULT_FONT_IDX, x, y, msg, strlen(msg), 0);
 //	guilib_fb_unlock();
 #endif
 }

@@ -1,6 +1,6 @@
 /*
  * continuously incrementing 32 bit timer
- * Copyright (c) 2009 Openmoko
+ * Copyright (c) 2009 Openmoko Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
