@@ -21,22 +21,21 @@
 
 # ----- Toolchain configuration data --------------------------------------
 
-GCC_VERSION=3.3.2
-GCC_PACKAGE=gcc-${GCC_VERSION}.tar.gz
-GCC_URL=ftp://ftp.gnu.org/gnu/gcc/${GCC_PACKAGE}
+GCC_VERSION = 3.3.2
+GCC_PACKAGE = gcc-${GCC_VERSION}.tar.gz
+GCC_URL = ftp://ftp.gnu.org/gnu/gcc/${GCC_PACKAGE}
 
-BINUTILS_VERSION=2.10.1
-BINUTILS_PACKAGE=binutils-${BINUTILS_VERSION}.tar.gz
-BINUTILS_URL= \
-  ftp://ftp.gnu.org/gnu/binutils/${BINUTILS_PACKAGE}
+BINUTILS_VERSION = 2.10.1
+BINUTILS_PACKAGE = binutils-${BINUTILS_VERSION}.tar.gz
+BINUTILS_URL= ftp://ftp.gnu.org/gnu/binutils/${BINUTILS_PACKAGE}
 
 SAMO_LIB := $(shell readlink -m ./samo-lib)
 HOST_TOOLS := $(shell readlink -m ./host-tools)
 LICENSES := $(shell readlink -m ./Licenses)
 MISC_FILES := ${SAMO_LIB}/misc-files
 
-DOWNLOAD_DIR=${HOST_TOOLS}/toolchain-download
-SUM_DIR=${HOST_TOOLS}/toolchain-sums
+DOWNLOAD_DIR = ${HOST_TOOLS}/toolchain-download
+SUM_DIR = ${HOST_TOOLS}/toolchain-sums
 
 export PATH := ${HOST_TOOLS}/toolchain-install/bin:${PATH}
 
@@ -46,6 +45,7 @@ CONFIG_FILE_EXISTS := $(shell [ -f ${CONFIG_FILE} ] && echo 1)
 
 ifeq (${CONFIG_FILE_EXISTS},)
 $(shell cp ${CONFIG_FILE_DEFAULT} ${CONFIG_FILE})
+$(error edit ${CONFIG_FILE} file and re-run make)
 endif
 
 # ----- configuration data --------------------------------------
@@ -523,6 +523,9 @@ testhelp:
 	sort |	\
 	pr --omit-pagination --width=80 --columns=1
 
+#use this like: make print-MAKE
+print-%:
+	@echo $* is $($*)
 
 .PHONY: p33
 p33:

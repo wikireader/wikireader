@@ -1,5 +1,6 @@
 # Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
 # Copyright (c) 2008 Holger Hans Peter Freyther <zecke@openmoko.org>
+# Copyright (c) 2009 Openmoko Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +26,15 @@ this-is-included-too-early:
 	@echo Otherwise the dependencies are not built in the correct order
 	@exit 1
 
+
+# some debugging rules
+
+# use this like: 'make print-PATH print-CFLAGS' to see the value of make variable PATH and CFLAGS
+print-%:
+	@echo $* is $($*)
+
+
+# compilation rules
 %.o: %.c
 	$(GCC) -M $(CFLAGS) $< > ${@:.o=.d}
 	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<

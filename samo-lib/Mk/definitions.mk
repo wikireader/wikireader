@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
 
 FATFS_MODE ?= read-only
 
@@ -99,3 +99,9 @@ RM = rm -f
 MKDIR = mkdir -p
 COPY = cp -p
 TOUCH = touch
+
+ifneq (,$(strip ${DEBUG}))
+# special function to display debugging information on every shell
+OLD_SHELL := ${SHELL}
+SHELL = $(warning [$@ ($^) ($?)])${OLD_SHELL}
+endif
