@@ -67,7 +67,7 @@ dpkg-reconfigure locales
 
 # install editor, browser and programs necessary for building
 apt-get install --no-install-recommends jove
-apt-get install lynx-cur sudo
+apt-get install lynx-cur sudo wget
 apt-get install python-gd gawk gforth flex bison m4
 apt-get install netpbm qt4-qmake libqt4-dev libmysqlclient15-dev
 apt-get install python-serial sqlite3 php5-cli python-dev
