@@ -1,0 +1,86 @@
+Contents of samo-lib directory
+==============================
+
+drivers
+
+  The low level device drivers for C33 peripherals
+  and external devices such as the CTP
+
+fatfs
+
+  The tiny FAT file system code from http://elm-chan.org/ used to
+  access the FAT32 files on th micro SD Card.  This version does not
+  use long file names, only the standard 8.3 is supported.
+
+flash
+
+  This creates flash.elf which is a program to run on the WikiReader
+  device to copy the contents of a 64kB file called flash.rom to the
+  internal SPI FLASH ROM chip.
+
+forth
+
+  An almost complete ANSI Forth implementation along with some scripts
+  in the programs sub-directory used for device testing.  The
+  forth.elf program can be booted by the mbr program and run forth
+  programs (*.4th) directly from the micro SD card.
+
+  There is a simple menu program that displays certain files (*.4mu)
+  that can be run via CTP/LCD without requiring access to the serial
+  console.
+
+include
+
+  Some header files containing C33 CPU register definitions and
+  in-line functions for hardware initialisation.
+
+lzma
+
+  Decompression library used by the wiki-app program.
+
+mahatma
+
+  Startup code for the wiki-app program, this produces the statically
+  linked WikiReader application that is installed on the SD card as
+  kernel.elf This only contains some interface code between the
+  drivers and the higher level application (in the wiki-app directory
+  one level up).
+
+mbr
+
+  This is the code that goes into the on-board FLASH ROM chip.  It
+  consists of a boot block (mbr) of 512 bytes that is loaded by the
+  CPU into internal RAM during the power-on reset sequence.
+
+  There are also a set of applications that are loaded into the FLASH
+  mostly for production testing or hardware diagnostics via the
+  console port.
+
+  After mbr has been loaded it loads the menu application which, if no
+  character is received on the console will load the kernel.elf after a
+  short delay.  Once control is transfered to the application the
+  FLASH is not used until the next power cycle.  Holding search key
+  down during boot will load the forth.elf program, which allows some
+  test programs to run.
+
+  The console (19200 8N1) can be used to run some tests of SDRAM and
+  keys.
+
+  The image file flash.rom is here.
+
+mini-libc
+
+  These are a minimum set of stdio/stdlib routines used by the wiki-app
+
+misc-files
+
+  Some additional files that are copied to the micro SD card
+
+Mk
+
+  Files include by various Makefiles for standard rules and definitions
+
+scripts
+
+  Some scripts used during early testing
+

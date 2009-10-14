@@ -1,0 +1,22 @@
+Contents of testudo directory
+=============================
+
+init-scripts
+
+  files for /etc/init.d and /etc/udev/rules.d
+
+linux-gpib-svn
+
+  Original sources for Linux GPIB interface driver
+
+scripts
+
+  Compille and install GPIB driver and the required init-scripts
+
+src
+
+  Sources to the test program
+
+tests
+
+  Some scripts for production testing

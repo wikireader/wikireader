@@ -1,0 +1,59 @@
+Contents of root directory
+==========================
+
+00run.sh
+
+  Script using in building the micro SD card image using multiple
+  servers.
+
+binutils*  [Created during build]
+
+  Stamp files for make
+
+COPYING
+
+  License information
+
+doc
+
+  Various documents
+
+gcc*  [Created during build]
+
+  Stamp files for make
+
+host-tools
+
+  Programs that are used during building the software including cross
+  compiler, simulator and utilities to create the data files.
+
+  See: host-tools/00ReadMe.text
+
+Licenses
+
+  Some of the licenses used in various parts of the system, normally
+  the individual files/sub-directories will have their own
+  copyright/license information.
+
+Makefile
+
+  The master make file that controls all stages of the building process.
+
+samo-lib
+
+  Programs and libraries that run on the WikiReader Hardware
+
+  See: samo-lib/00ReadMe.text
+
+testudo
+
+  Python programs and scripts for production testing
+
+wiki-app
+
+  This is the main application code and is compiled both for inclusion
+  on the device and for the simulator.
+
+xml-file-samples
+
+  Some XML files for testing the offline rendering process

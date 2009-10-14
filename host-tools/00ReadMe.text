@@ -1,0 +1,81 @@
+Overview of thost-tools directory
+=================================
+
+binutils-2.10.1  [Created during build]
+
+  The compiled version of binutils for C33 CPU created during the
+  tool-chain build in the master Makefile.
+
+cocoa-simulator
+
+  Not presently working
+
+console-simulator
+
+  Not presently working
+
+flash07
+
+  Python program to program the WikiReader on-board FLASH ROM chip
+  uses control file and image data from samo-lib/mbr.
+
+  This communicates with the C33 CPU via the serial port and
+  initially uploads the jackknife program to enable remote control of
+  the SPI port.
+
+fonts
+
+  The font compilation, compiles the *.bdf to *.bmf which are used both
+  by the offline-renderer and are included in the final micro SD card
+  image.
+
+gcc-3.3.2  [Created during build]
+
+  The compiled version of gcc for C33 CPU created during the
+  tool-chain build in the master Makefile
+
+hash-gen
+
+  This is a program for creating the hash file included in the final
+  micro SD card image.  The has file is part of the search index.
+
+imagetool
+
+  Python program to convert an image into a C header file.
+
+jackknife
+
+  A small (512 byte) program the the C33 CPU can boot via the serial
+  port.  I allows control of the SPI interface so the the on-board
+  FLASH ROM chip can be read and written via the serial console.  The
+  flash07 Python program uses this to install the mbr firmware during
+  production testing.
+
+offline-renderer
+
+  A set of Python and PHP programs to convert the wikimedia XML dump
+  into a set of index and compressed article files for inclusion in
+  the final micro SD card image.
+
+pcf2bmf
+
+  A program that is required by font compilation.
+
+qt4-simulator
+
+  A simulator for the wiki-app that allows the program to be tested on
+  the Linux platform.
+
+toolchain-download  [Created during build]
+
+  stores the downloaded gcc and binutils archives
+
+toolchain-install  [Created during build]
+
+  binary cross compiler installation: c33-epson-elf-*
+
+toolchain-patches
+
+  Compiler patches for binutils-2.10.1/gcc-3.3.2 originally from
+  Epson, but with some local changes.  The are for creating a
+  cross compiler for the S1C33E07 CPU chip.
