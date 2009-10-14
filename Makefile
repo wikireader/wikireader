@@ -467,7 +467,7 @@ clean: clean-qt4-simulator clean-console-simulator
 .PHONY: clean-toolchain
 clean-toolchain:
 	rm -rf host-tools/toolchain-install
-	rm -rf host-tools/gcc-${GCC_VERSION}host-tools/toolchain-patches/
+	rm -rf host-tools/gcc-${GCC_VERSION}
 	rm -rf host-tools/binutils-${BINUTILS_VERSION}
 	rm -f binutils-patch binutils
 	rm -f gcc-patch gcc
