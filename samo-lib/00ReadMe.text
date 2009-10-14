@@ -34,6 +34,10 @@ include
   Some header files containing C33 CPU register definitions and
   in-line functions for hardware initialisation.
 
+  There is an important configuration file here: config.h create this
+  from config.h-default and uncomment the "#define BOARD_SAMO_V1 1" to
+  enable compilation for production hardware.
+
 lzma
 
   Decompression library used by the wiki-app program.
