@@ -512,7 +512,10 @@ void Generate_new_font(pcffont_t *font)
     printf("count is:%d,before open file\n",count);
     fd = fopen(name, "wb");
     if(fd!=NULL)
-       fwrite(buf,1,count*sizeof(font_bmf),fd);
+    {
+       size_t bs = fwrite(buf,1,count*sizeof(font_bmf),fd);
+       assert(bs==count*sizeof(font_bmf));
+    }
     fclose(fd);
     free(buf);
 }
@@ -608,7 +611,10 @@ void Generate_new_font_with_header(pcffont_t *font)
     printf("count is:%d,before open file\n",count);
     fd = fopen(name, "wb");
     if(fd!=NULL)
-       fwrite(buf,1,count*sizeof(font_bmf)+header_len,fd);
+    {
+       size_t bs = fwrite(buf,1,count*sizeof(font_bmf)+header_len,fd);
+       assert(bs == count*sizeof(font_bmf)+header_len);
+    }
     fclose(fd);
     free(buf);
 }

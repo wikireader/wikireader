@@ -24,6 +24,8 @@
 
 #include "WikiDisplay.h"
 
+#include <stdio.h>
+
 extern "C" {
 #include "guilib.h"
 }
