@@ -1,6 +1,10 @@
 Compiling toolchain and source on an AMD64/IA64 system
 ======================================================
 
+NOTE: This method has be superseded by using schroot
+      as described in the file:  Using-schroot.text
+
+
 # get a root shell, (on ?ubuntu use this)
 sudo su -
 
