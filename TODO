@@ -1,28 +1,6 @@
 
 Assorted TODO thoughts...
 
-*) directory reorg
-   ./
-     samo-lib (move generic stuff from wiki-lib, gui-lib into this folder)
-       fatfs
-       minilzo
-       mini-libc
-       toppers
-       mahatma
-       mbr
-     host-tools
-       binutils-2.10.1
-       gcc-3.3.2
-       toolchain-patches
-       e07load
-       .. flash scripts ..
-       .. simulators ..
-     wiki-app (move all wiki-specific stuff from wiki-lib, gui-lib into this folder)
-       wom-creator
-       <current host-tools stuff in subfolders>
-     sample-apps
-     doc
-
 *) up-level gcc compiler
    EPSON does not want to do it, they say they prefer stability over new features.
    Sending patches upstream would require copyright transfer to FSF, would need to contact Seiko/EPSON.
