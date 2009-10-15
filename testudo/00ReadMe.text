@@ -11,7 +11,8 @@ linux-gpib-svn
 
 scripts
 
-  Compille and install GPIB driver and the required init-scripts
+  to compile and install GPIB driver and install the associated
+  init-scripts
 
 src
 
