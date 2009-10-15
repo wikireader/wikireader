@@ -17,21 +17,22 @@ sudo apt-get install schroot debootstrap
    this is added to /etc/schroot/schroot.conf
    or put into  /etc/schroot/schroot.d/jaunty_i386.conf
    (depending on your system)
-   (substitute ${USER} when creating the file cat will do this)
+   (substitute ${USER} when creating the file, cat will do this)
 
 $ cat <<EOF >jaunty_i386.conf
 [jaunty_i386]
-    description=Ubuntu 9.04 Jaunty for i386
-    location=/data/chroot/jaunty_i386
-    personality=linux32
-    root-users=${USER}
-    run-setup-scripts=true
-    run-exec-scripts=true
-    type=directory
-    users=${USER}
+description=Ubuntu 9.04 Jaunty for i386
+location=/data/chroot/jaunty_i386
+personality=linux32
+root-users=${USER}
+run-setup-scripts=true
+run-exec-scripts=true
+type=directory
+users=${USER}
 EOF
 
-e.g to append to /etc/schroot/schroot.conf
+
+e.g to append to /etc/schroot/schroot.conf (if not using schroot.d)
 
 cat jaunty_i386.conf | sudo tee -a /etc/schroot/schroot.conf
 
@@ -61,6 +62,9 @@ EOF
 # choose your locale
 locale-gen en_GB.UTF-8
 
+# make sure apt database it up-to-date
+apt-get update
+
 apt-get install dialog
 
 dpkg-reconfigure locales
@@ -69,13 +73,16 @@ dpkg-reconfigure locales
 apt-get install --no-install-recommends jove
 apt-get install lynx-cur sudo wget
 apt-get install python-gd gawk gforth flex bison m4
-apt-get install netpbm qt4-qmake libqt4-dev libmysqlclient15-dev
+apt-get install netpbm qt4-qmake libqt4-dev
 apt-get install python-serial sqlite3 php5-cli python-dev
 
 # enable bash in the dialog box
 # (or find and fix the shell scripts that fail when run under
 #  dash [some part of one of the Makefiles])
 dpkg-reconfigure dash
+
+# done with the chroot
+exit
 
 
 5. create a little script to use schroot
@@ -84,7 +91,7 @@ dpkg-reconfigure dash
 cat <<EOF >m
 #!/bin/sh
 
-schroot -c jaunty_i386 -- make "$@"
+schroot -c jaunty_i386 -- make "\$@"
 EOF
 chmod +x m
 
