@@ -42,9 +42,8 @@
 HISTORY history_list[MAX_HISTORY];
 int history_count = 0;
 int rendered_history_count = -1;
-int history_base;  // Not used, to be cleaned up
-int history_changed = 0;
-int history_current = 0;  // currently selected history relative to history_base
+int history_changed = HISTORY_SAVE_NONE;
+extern int display_mode;
 
 static inline unsigned int history_modulus(int modulus) {
 	return modulus % HISTORY_MAX_DISPLAY_ITEM;
@@ -56,142 +55,61 @@ void history_reload()
 	render_history_with_pcf();
 }
 
-void history_reset(void)
-{
-	history_base = 0;
-}
-
-void history_add(const long idx_article, const char *title)
+void history_add(const long idx_article, const char *title, int b_keep_pos)
 {
 	int i = 0;
 	int bFound = 0;
-	
-	history_changed = 2;
-	history_base = 0;
-	history_current = 0;
+
+	history_changed = HISTORY_SAVE_NORMAL;
 	while (!bFound && i < history_count)
 	{
 		if (idx_article == history_list[i].idx_article)
-                {
-                    HISTORY history_tmp;
-                    history_tmp = history_list[i];
-                    memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
-                    history_list[0]=history_tmp;
-		    history_list[0].last_y_pos = 0;
-		    bFound = 1;
-                }
+		{
+			HISTORY history_tmp;
+			history_tmp = history_list[i];
+			if (!b_keep_pos)
+				history_tmp.last_y_pos = 0;
+			memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
+			history_list[0]=history_tmp;
+			bFound = 1;
+		}
 		else
 			i++;
 	}
-	
+
 	if(bFound)
-           return;
-        
-        if (history_count == MAX_HISTORY)
-        	history_count--;
-        memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
-        history_list[0].idx_article = idx_article;
-        strcpy(history_list[0].title, title);
-        history_list[0].last_y_pos = 0;
-        history_count++;
+		return;
+
+	if (history_count >= MAX_HISTORY)
+		history_count = MAX_HISTORY - 1;
+	memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
+	history_list[0].idx_article = idx_article;
+	strcpy(history_list[0].title, title);
+	history_list[0].last_y_pos = 0;
+	history_count++;
 }
 
 void history_log_y_pos(const long y_pos)
 {
-	history_changed = 1;
+	if (history_changed != HISTORY_SAVE_NORMAL)
+		history_changed = HISTORY_SAVE_POWER_OFF;
 	history_list[0].last_y_pos = y_pos;
 }
 
 long history_get_y_pos(const long idx_article)
 {
 	int i = 0;
-	
+
 	while (i < history_count)
 	{
 		if (idx_article == history_list[i].idx_article)
-                {
-     			return history_list[i].last_y_pos;
-                }
+		{
+			return history_list[i].last_y_pos;
+		}
 		else
 			i++;
 	}
 	return 0;
-}
-
-//void history_move_current_to_top(const char *target)
-//{
-//	struct history_item *node = NULL;
-//
-//	if ((node = history_find_item_target(target)))
-//		wl_list_move2_first(&head.list, &node->list);
-//}
-//
-//const char *history_get_top_target(void)
-//{
-//	return history_get_item_target(0);
-//}
-//
-//static struct history_item * __history_get_item(unsigned int index)
-//{
-//	if (index > list_size)
-//		return NULL;
-//
-//	return (struct history_item *)(wl_list_find_nth_node(&head.list, index));
-//}
-//
-//const char *history_get_item_title(unsigned int index)
-//{
-//	struct history_item *p = __history_get_item(index);
-//
-//	if (p)
-//		return p->title;
-//	else
-//		return NULL;
-//}
-//
-//const char *history_get_item_target(unsigned int index)
-//{
-//	struct history_item *p = __history_get_item(index);
-//
-//	if (p)
-//		return p->target;
-//	else
-//		return NULL;
-//}
-//
-//unsigned int history_item_size(void)
-//{
-//	return wl_list_size(&head.list);
-//}
-//
-//unsigned int history_free_item_size(void)
-//{
-//	return wl_list_size(&free_list.list);
-//}
-//
-//const char *history_release(int y)
-//{
-//	unsigned int i;
-//	int start = HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2;
-//
-//	for (i = 0; i < HISTORY_MAX_DISPLAY_ITEM; ++i, start += HISTORY_RESULT_HEIGHT) {
-//		if (y >= start && y < start + HISTORY_RESULT_HEIGHT) {
-//				return history_get_item_target(history_current == -1 ? i :
-//						(history_current/HISTORY_MAX_DISPLAY_ITEM)*HISTORY_MAX_DISPLAY_ITEM + i);
-//		}
-//	}
-//
-//	return NULL;
-//}
-//
-int history_get_selection()
-{
-	return history_current;
-}
-
-void history_set_selection(int selection)
-{
-	history_current = selection;
 }
 
 unsigned int history_get_count()
@@ -202,17 +120,12 @@ unsigned int history_get_count()
 void history_clear()
 {
 	history_count = 0;
-	history_changed = 1;
-}
-
-int history_get_base()
-{
-	return history_base;
+	history_changed = HISTORY_SAVE_NORMAL;
 }
 
 void history_list_init(void)
 {
-	int len;
+	unsigned int len;
 	int fd_hst;
 
 	history_count = 0;
@@ -225,110 +138,70 @@ void history_list_init(void)
 		}
 		wl_close(fd_hst);
 	}
-	history_base = 0;
 }
 
 int history_list_save(int level)
 {
 	int fd_hst;
 	int rc = 0;
-	
-	if (history_changed >= level)
-	{
-		fd_hst = wl_open("pedia.hst", WL_O_CREATE);
-		if (fd_hst >= 0)
+
+		if (level == HISTORY_SAVE_POWER_OFF || history_changed == HISTORY_SAVE_NORMAL)
 		{
+			fd_hst = wl_open("pedia.hst", WL_O_CREATE);
+			if (fd_hst >= 0)
+			{
 			wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
 			wl_close(fd_hst);
 		}
-		history_changed = 0;
+		history_changed = HISTORY_SAVE_NONE;
 		rc = 1;
 	}
 	return rc;
 }
 
-int set_history_list_base(int offset,int offset_count)
-{
-   int first_item_count;
-   int screen_display_count = 9;
-   int base_last;
-    
-   base_last = history_base;
-
-   if(history_count <= screen_display_count)
-        return 0;
-
-   if(offset>=0)
-      first_item_count = offset_count + history_base;
-   else
-      first_item_count = history_base -offset_count;
-
-
-   if(first_item_count<0)
-       history_base = 0;
-
-   else if(first_item_count > (history_count - screen_display_count))
-   {
-       history_base = history_count - screen_display_count;
-       if(history_base < 0)
-           history_base = 0;
-
-   }
-   else
-       history_base = first_item_count;
-
-   if(base_last!=history_base)
-      return 1;
-   else
-      return 0;
-}
-
-void history_open_article(int new_selection)
-{
-        long idx_article;
-        char title[MAX_TITLE_SEARCH];
-        
-	history_current = new_selection;
-	idx_article = history_list[history_current + history_base].idx_article;
-	strcpy(title, history_list[history_current + history_base].title);
-	display_link_article(idx_article);
-}
-
-void draw_clear_history(void)
+void draw_clear_history(int bClear)
 {
 	int i;
-	
-	memset(&framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 0xFF,  27 * LCD_VRAM_WIDTH_PIXELS / 8);
+	static char localBuffer[27 * LCD_VRAM_WIDTH_PIXELS / 8];
 
-	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
-	memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4); 
-	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
-
-	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
-	memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4); 
-	framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
-
-	for (i = 185; i <= 203; i++)
+	if (bClear)
 	{
-		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFC;
-		memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4); 
-		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x03;
-
-		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF0;
-		memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4); 
-		framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x0F;
+		memcpy(&framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], localBuffer, 27 * LCD_VRAM_WIDTH_PIXELS / 8);
 	}
+	else
+	{
+		memcpy(localBuffer, &framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 27 * LCD_VRAM_WIDTH_PIXELS / 8);
+		memset(&framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 0xFF,  27 * LCD_VRAM_WIDTH_PIXELS / 8);
 
-	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;       
-	memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);  
-	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;       
-                                                                          
-	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;        
-	memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);  
-	framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;        
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
+		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
 
-	render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, "Clear History", 13, 1);
- 	render_string(SUBTITLE_FONT_IDX, 156, 185, "Yes", 3, 0);
- 	render_string(SUBTITLE_FONT_IDX, 206, 185, "No", 2, 0);
-   
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
+		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
+
+		for (i = 185; i <= 203; i++)
+		{
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFC;
+			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x03;
+
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF0;
+			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x0F;
+		}
+
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
+		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
+
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
+		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
+
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, "Clear History", 13, 1);
+		render_string(SUBTITLE_FONT_IDX, 156, 185, "Yes", 3, 0);
+		render_string(SUBTITLE_FONT_IDX, 206, 185, "No", 2, 0);
+	}
 }

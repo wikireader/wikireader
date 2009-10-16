@@ -32,27 +32,29 @@
  * Interface for the History feature
  */
 
-void history_reset(void);
 void history_clear(void);
 
-void history_add(const long idx_article, const char *title);
-int history_get_selection();
-void history_set_selection(int selection);
+void history_add(const long idx_article, const char *title, int b_keep_pos);
 unsigned int history_get_count();
 void history_list_init(void);
 int history_list_save(int level);
 
-int set_history_list_base(int offset,int offset_count);
-int history_get_base();
 void history_open_article(int new_selection);
 void history_reload();
 void history_log_y_pos(const long y_pos);
 long history_get_y_pos(const long idx_article);
-void draw_clear_history(void);
+void draw_clear_history(int bFlag);
 
 typedef struct _HISTORY {
 	long idx_article;
 	long last_y_pos;
 	char title[MAX_TITLE_SEARCH];
 } HISTORY;
+
+enum history_save_e {
+
+	HISTORY_SAVE_NONE,
+	HISTORY_SAVE_POWER_OFF,
+	HISTORY_SAVE_NORMAL,
+};
 #endif

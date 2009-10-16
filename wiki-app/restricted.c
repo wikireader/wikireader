@@ -66,7 +66,7 @@ static int restricted_screen_mode;
 static int filter_option_to_set = FILTER_OPTION_TO_SET_NONE;
 int restriction_filter_off = -1;
 char restriction_pass1[20];
-long saved_idx_article;
+extern long saved_idx_article;
 int init_filtering = 0;
 void first_time_password(int flag)
 {
@@ -93,15 +93,14 @@ void first_time_password(int flag)
 	{
 		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, "Some Wikipedia entries may", 26, 1);
 		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, "not be suitable for minors.", 27, 1);
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, "Please set a password to", 24, 1);
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, "protect them from children.", 27, 1);
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, "Please set a password for", 25, 1);
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, "protection.", 11, 1);
 	}
 	else
 	{
 		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, "This entry may not be suitable", 30, 1);
 		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, "for minors. Please set a", 24, 1);
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, "password to view or protect", 27, 1);
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, "it from children.", 17, 1);
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, "password for protection.", 24, 1);
 	}
 	render_string(SUBTITLE_FONT_IDX, -1, 151, "Set Password", 12, 0);
 	guilib_fb_unlock();
@@ -510,7 +509,6 @@ int check_restriction(long idx_article)
 	char title[MAX_TITLE_SEARCH];
 
 	init_filtering = 0;
-	saved_idx_article = idx_article;
 	if (restriction_filter_off == -1)
 	{
 		fd = wl_open("pedia.pas", WL_O_RDONLY);

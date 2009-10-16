@@ -177,6 +177,8 @@ Assumptions:
 #define LCD_LEFT_MARGIN 6
 #define LCD_TOP_MARGIN 6
 #define LCD_BUF_HEIGHT_PIXELS 64 * 1024
+#define LINK_X_DIFF_ALLOWANCE 10
+#define LINK_Y_DIFF_ALLOWANCE 5
 #ifdef WIKIPCF
 #define LCD_BUF_WIDTH_BYTES LCD_BUF_WIDTH_PIXELS/8
 #define LCD_HEIGHT_LINES 208
@@ -268,17 +270,18 @@ void display_link_article(long idx_article);
 void display_retrieved_article(long idx_article);
 void display_str(char *str);
 void open_article_link(int x,int y);
-void invert_link(int article_link_number);
-void set_article_link_number(int num);
-int  get_article_link_number();
 void open_article_link_with_link_number(int article_link_number);
 void scroll_article(void);
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted);
 int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted);
 int isArticleLinkSelected(int x,int y);
-#ifndef INCLUDED_FROM_KERNEL
+int check_invert_link(void);
+void set_article_link_number(int num);
+void reset_article_link_number(void);
+int get_activated_article_link_number(void);
+void init_invert_link(void);
+void invert_link(int article_link_number);
 int load_init_article(long);
-#endif
 #endif
 void msg_on_lcd(int x, int y, char *msg);
 void msg_on_lcd_clear(int x, int y);

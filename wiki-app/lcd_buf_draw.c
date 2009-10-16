@@ -65,6 +65,13 @@ int cur_render_y_pos = 0;
 
 ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 
+#ifndef WIKIPCF
+int link_to_be_activated = -1;
+unsigned long link_to_be_activated_start_time = 0;
+int link_currently_activated = -1;
+unsigned long link_activated_start_time = 0;
+#endif
+
 int article_link_count;
 int display_first_page = 0;
 
@@ -74,7 +81,8 @@ void display_link_article(long idx_article);
 void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,int end_x,int end_y);
 void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int start_x,int end_x,int start_y,int end_y);
 int get_external_str_pixel_width(char **pUTF8);
-void repaint_framebuffer(unsigned char *buf,int pos);
+void repaint_framebuffer(unsigned char *buf,int pos, int b_repaint_invert_link);
+void repaint_invert_link(void);
 char* FontFile(int idx);
 void msg_info(char *data);
 int framebuffer_size();
@@ -91,6 +99,7 @@ int time_scroll_article_start;
 int article_scroll_delay_time_total,time_scroll_article_last=0;
 int stop_render_article = 0;
 int b_show_scroll_bar = 0;
+long saved_idx_article;
 
 #define MIN_BAR_LEN 20
 void show_scroll_bar(int bShow)
@@ -103,13 +112,18 @@ void show_scroll_bar(int bShow)
 	static char frame_bytes[LCD_HEIGHT_LINES];
 	static int b_frame_bytes;
 
-	if (!bShow)
+	if (lcd_draw_buf.current_y < LCD_HEIGHT_LINES)
+		return;
+	if (bShow <= 0)
 	{
 		if (b_frame_bytes)
 		{
-			#ifdef INCLUDED_FROM_KERNEL
-			delay_us(200000);
-			#endif
+			if (!bShow && article_offset == 0)
+			{
+				#ifdef INCLUDED_FROM_KERNEL
+				delay_us(200000);
+				#endif
+			}
 			for (i = 0; i < LCD_HEIGHT_LINES; i++)
 			{
 				byte_idx = (236 + LCD_VRAM_WIDTH_PIXELS * i) / 8;
@@ -502,14 +516,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				if (restricted_article)
 				{
 					draw_restricted_mark(lcd_draw_buf.screen_buf);
-					if (article_link_count < MAX_ARTICLE_LINKS)
-					{
-						articleLink[article_link_count].start_xy = (unsigned  long)(211 | (4 << 8));
-						articleLink[article_link_count].end_xy = (unsigned  long)(230 | (24 << 8));
-						articleLink[article_link_count++].article_id = RESTRICTED_MARK_LINK;
-					}
 				}
-				repaint_framebuffer(lcd_draw_buf.screen_buf,0);
+				repaint_framebuffer(lcd_draw_buf.screen_buf,0, 0);
 				display_first_page = 1;
 				lcd_draw_cur_y_pos = 0;
 				article_offset = 0;
@@ -522,7 +530,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	}
 #endif
 }
-void repaint_framebuffer(unsigned char *buf,int pos)
+
+void repaint_framebuffer(unsigned char *buf,int pos, int b_repaint_invert_link)
 {
 #ifndef WIKIPCF
 	int framebuffersize;
@@ -532,13 +541,14 @@ void repaint_framebuffer(unsigned char *buf,int pos)
 	guilib_clear();
 
 	memcpy(framebuffer,buf+pos,framebuffersize);
-	if (b_show_scroll_bar && lcd_draw_buf.current_y >= LCD_HEIGHT_LINES)
+	if (b_repaint_invert_link)
+		repaint_invert_link();
+	if (b_show_scroll_bar)
 		show_scroll_bar(1);
 	guilib_fb_unlock();
-	link_article_number_cur = -1;
 #endif
-
 }
+
 void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 {
 	int i;
@@ -709,7 +719,7 @@ int get_external_str_pixel_width(char **pUTF8)
 		{
 			pres_bmfbm(u, &pcfFonts[DEFAULT_FONT_IDX - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
-			   width += Cmetrics.width;
+			   width += Cmetrics.width + 1;
 		}
 
 	}
@@ -810,7 +820,7 @@ void init_render_article(long init_y_pos)
 	if (lcd_draw_buf.screen_buf)
 		memset(lcd_draw_buf.screen_buf, 0, LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
 
-
+	article_buf_pointer = NULL;
 	lcd_draw_buf.current_x = 0;
 	lcd_draw_buf.current_y = 0;
 	lcd_draw_buf.drawing = 0;
@@ -830,12 +840,16 @@ void init_render_article(long init_y_pos)
 #define SPACE_BEFORE_LICENSE_TEXT 40
 #define APACE_AFTER_LICENSE_TEXT 5
 #define LICENSE_TEXT_1 "Text is available under the Creative"
-#define LICENSE_TEXT_2 "Commons Attribution-ShareAlike"
-#define LICENSE_TEXT_3 "License; additional terms may apply."
-#define LICENSE_TEXT_4 "See Terms of Use for details."
-#define LICENSE_TEXT_5 "Wikipedia® is a registered trademark"
-#define LICENSE_TEXT_6 "of the Wikimedia Foundation, Inc., a"
-#define LICENSE_TEXT_7 "non-profit organization.  2009.9.9"
+#define LICENSE_TEXT_2 "Commons Attribution/Share-Alike"
+#define LICENSE_TEXT_3 "License and can be freely reused under"
+#define LICENSE_TEXT_4 "the term of that license. See: Text of"
+#define LICENSE_TEXT_5 "the CC-BY-SA License and Terms of"
+#define LICENSE_TEXT_6 "Use for additional terms which may"
+#define LICENSE_TEXT_7 "apply. The original article is available"
+#define LICENSE_TEXT_8 "at: http://en.wikipedia.org/wiki/"
+#define LICENSE_TEXT_9 "Wikipedia:Text_of_Creative_Commons_"
+#define LICENSE_TEXT_10 "Attribution-ShareAlike_3.0_Unported"
+#define LICENSE_TEXT_11 "_License"
 void render_wikipedia_license_text()
 {
 #ifndef WIKIPCF
@@ -852,36 +866,20 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.pPcfFont = &pcfFonts[LICENSE_TEXT_FONT - 1];
 
 		draw_string(LICENSE_TEXT_1);
-		start_x = lcd_draw_buf.current_x - 51;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
-		if (article_link_count < MAX_ARTICLE_LINKS)
-		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
-			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
-			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
-			articleLink[article_link_count++].article_id = 1;
-		}
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_2);
-		start_x = 0;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
-		if (article_link_count < MAX_ARTICLE_LINKS)
-		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
-			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
-			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
-			articleLink[article_link_count++].article_id = 1;
-		}
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_3);
-		start_x = 0;
-		end_x = 43;
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_4);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_5);
+		start_x = 20;
+		end_x = 88;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < MAX_ARTICLE_LINKS)
 		{
@@ -891,11 +889,8 @@ void render_wikipedia_license_text()
 			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
 			articleLink[article_link_count++].article_id = 1;
 		}
-		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
-		draw_string(LICENSE_TEXT_4);
-		start_x = 23;
-		end_x = 104;
+		start_x = lcd_draw_buf.current_x - 55;
+		end_x = lcd_draw_buf.current_x;
 		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		if (article_link_count < MAX_ARTICLE_LINKS)
 		{
@@ -907,13 +902,45 @@ void render_wikipedia_license_text()
 		}
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
-		draw_string(LICENSE_TEXT_5);
-		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_6);
+		start_x = 0;
+		end_x = 23;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		if (article_link_count < MAX_ARTICLE_LINKS)
+		{
+			start_y = lcd_draw_buf.current_y + 1;
+			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
+			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
+			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
+			articleLink[article_link_count++].article_id = 2;
+		}
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_7);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_8);
+		start_x = 18;
+		end_x = lcd_draw_buf.current_x;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_9);
+		start_x = 0;
+		end_x = lcd_draw_buf.current_x;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_10);
+		start_x = 0;
+		end_x = lcd_draw_buf.current_x;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+		draw_string(LICENSE_TEXT_11);
+		start_x = 0;
+		end_x = lcd_draw_buf.current_x;
+		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height + APACE_AFTER_LICENSE_TEXT;
 	}
 #endif
@@ -934,10 +961,10 @@ int render_article_with_pcf()
 	}
 	if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
 	{
-		repaint_framebuffer(lcd_draw_buf.screen_buf,(request_y_pos-LCD_HEIGHT_LINES)*LCD_VRAM_WIDTH_PIXELS/8);
 		lcd_draw_cur_y_pos = request_y_pos - LCD_HEIGHT_LINES;
 		if (lcd_draw_cur_y_pos < 0)
 			 lcd_draw_cur_y_pos = 0;
+		repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8, 1);
 		request_display_next_page = 0;
 	}
 	if(!*article_buf_pointer)
@@ -953,7 +980,7 @@ int render_article_with_pcf()
 				if (lcd_draw_cur_y_pos < 0)
 					lcd_draw_cur_y_pos = 0;
 			}
-			repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8);
+			repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8, 1);
 			display_first_page = 1;
 			request_display_next_page = 0;
 		}
@@ -1004,7 +1031,7 @@ int render_history_with_pcf()
 		lcd_draw_buf.line_height = pcfFonts[SEARCH_LIST_FONT_IDX - 1].Fmetrics.linespace;
 		draw_string(MESSAGE_NO_HISTORY);
 		rendered_history_count = -1;
-		repaint_framebuffer(lcd_draw_buf.screen_buf,0);
+		repaint_framebuffer(lcd_draw_buf.screen_buf,0, 0);
 		display_first_page = 1;
 	} else if (rendered_history_count < history_count) {
 		start_x = 0;
@@ -1028,7 +1055,7 @@ int render_history_with_pcf()
 			rendered_history_count = -1;
 			if(display_first_page == 0)
 			{
-				repaint_framebuffer(lcd_draw_buf.screen_buf,0);
+				repaint_framebuffer(lcd_draw_buf.screen_buf,0, 0);
 				display_first_page = 1;
 			}
 			else if (request_display_next_page > 0)
@@ -1036,8 +1063,8 @@ int render_history_with_pcf()
 				long y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 				if (y_pos < 0)
 					y_pos = 0;
-				repaint_framebuffer(lcd_draw_buf.screen_buf, y_pos * LCD_VRAM_WIDTH_PIXELS / 8);
 				lcd_draw_cur_y_pos = y_pos;
+				repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos * LCD_VRAM_WIDTH_PIXELS / 8, 1);
 				request_display_next_page = 0;
 			}
 		}
@@ -1048,10 +1075,10 @@ int render_history_with_pcf()
 			stop_render_article = 0;
 		}
 
-		if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
+		if(request_display_next_page > 0 && lcd_draw_buf.current_y >= request_y_pos+LCD_HEIGHT_LINES)
 		{
-			repaint_framebuffer(lcd_draw_buf.screen_buf,(request_y_pos-LCD_HEIGHT_LINES)*LCD_VRAM_WIDTH_PIXELS/8);
 			lcd_draw_cur_y_pos = request_y_pos;
+			repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8, 1);
 			request_display_next_page = 0;
 		}
 	}
@@ -1096,6 +1123,7 @@ int render_search_result_with_pcf(void)
 		lcd_draw_buf.line_height = RESULT_HEIGHT;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y = (RESULT_START - 2) + RESULT_HEIGHT * NUMBER_OF_FIRST_PAGE_RESULTS;
+		lcd_draw_cur_y_pos = 0;
 	}
 
 	if ((offset_next = result_list_next_result(offset_next, &idxArticle, sTitleSearch)))
@@ -1123,10 +1151,10 @@ int render_search_result_with_pcf(void)
 			stop_render_article = 0;
 		}
 
-		if(request_display_next_page > 0 && lcd_draw_buf.current_y > request_y_pos)
+		if(request_display_next_page > 0 && lcd_draw_buf.current_y >= request_y_pos+LCD_HEIGHT_LINES)
 		{
-			repaint_framebuffer(lcd_draw_buf.screen_buf,(request_y_pos-LCD_HEIGHT_LINES)*LCD_VRAM_WIDTH_PIXELS/8);
 			lcd_draw_cur_y_pos = request_y_pos;
+			repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8, 1);
 			request_display_next_page = 0;
 		}
 	}
@@ -1138,8 +1166,8 @@ int render_search_result_with_pcf(void)
 			long y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 			if (y_pos < 0)
 				y_pos = 0;
-			repaint_framebuffer(lcd_draw_buf.screen_buf, y_pos * LCD_VRAM_WIDTH_PIXELS / 8);
 			lcd_draw_cur_y_pos = y_pos;
+			repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos * LCD_VRAM_WIDTH_PIXELS / 8, 1);
 			request_display_next_page = 0;
 		}
 	}
@@ -1165,7 +1193,8 @@ void display_article_with_pcf(int start_y)
 
 	    return;
 	}
-	if(lcd_draw_cur_y_pos == 0 && start_y<0)
+	if ((lcd_draw_cur_y_pos == 0 && start_y < 0) ||
+		((lcd_draw_cur_y_pos+LCD_HEIGHT_LINES)>lcd_draw_buf.current_y && start_y >= 0))
 	{
 	   return;
 	}
@@ -1176,13 +1205,12 @@ void display_article_with_pcf(int start_y)
 		lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 	if (lcd_draw_cur_y_pos < 0)
 		lcd_draw_cur_y_pos = 0;
-	history_log_y_pos(lcd_draw_cur_y_pos);
+	if (display_mode == DISPLAY_MODE_ARTICLE)
+		history_log_y_pos(lcd_draw_cur_y_pos);
 
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
-	repaint_framebuffer(lcd_draw_buf.screen_buf,pos);
-
-	lcd_draw_buf_pos = pos;
+	repaint_framebuffer(lcd_draw_buf.screen_buf,pos, 1);
 
 }
 
@@ -1210,7 +1238,7 @@ void scroll_article(void)
 	pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
 
-	repaint_framebuffer(lcd_draw_buf.screen_buf,pos);
+	repaint_framebuffer(lcd_draw_buf.screen_buf,pos, 0);
 
 #ifdef INCLUDED_FROM_KERNEL
 	delay_us(article_scroll_delay_time);
@@ -1229,44 +1257,66 @@ void display_retrieved_article(long idx_article)
 	int offset,start_x,start_y,end_x,end_y;
 	ARTICLE_HEADER article_header;
 	char title[MAX_TITLE_SEARCH];
+	int link_count_addon = 0;
+	int bKeepPos = 0;
 
+	if (last_display_mode == DISPLAY_MODE_HISTORY)
+	{
+		init_render_article(history_get_y_pos(idx_article));
+		bKeepPos = 1;
+	}
+	else
+	{
+		init_render_article(0);
+	}
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 	offset = sizeof(ARTICLE_HEADER);
 
 	if(article_header.article_link_count>MAX_ARTICLE_LINKS)
 	    article_header.article_link_count = MAX_ARTICLE_LINKS;
 
-	for(i = 0; i< article_header.article_link_count;i++)
+	if (restricted_article)
 	{
-	    memcpy(&articleLink[i],file_buffer+offset,sizeof(ARTICLE_LINK));
+		articleLink[0].start_xy = (unsigned  long)(211 | (4 << 8));
+		articleLink[0].end_xy = (unsigned  long)(230 | (24 << 8));
+		articleLink[0].article_id = RESTRICTED_MARK_LINK;
+		link_count_addon = 1;
+	}
+
+	if (article_header.article_link_count < MAX_ARTICLE_LINKS - link_count_addon)
+		article_link_count = article_header.article_link_count;
+	else
+		article_link_count = MAX_ARTICLE_LINKS - link_count_addon - 1;
+	for(i = 0; i < article_link_count; i++)
+	{
+	    memcpy(&articleLink[i + link_count_addon],file_buffer+offset,sizeof(ARTICLE_LINK));
 	    offset+=sizeof(ARTICLE_LINK);
 
-	    start_y = articleLink[i].start_xy >>8;
-	    start_x = articleLink[i].start_xy & 0x000000ff;
-	    end_y   = articleLink[i].end_xy  >>8;
-	    end_x   = articleLink[i].end_xy & 0x000000ff;
+	    start_y = articleLink[i + link_count_addon].start_xy >>8;
+	    start_x = articleLink[i + link_count_addon].start_xy & 0x000000ff;
+	    end_y   = articleLink[i + link_count_addon].end_xy  >>8;
+	    end_x   = articleLink[i + link_count_addon].end_xy & 0x000000ff;
 	}
-	article_link_count = article_header.article_link_count;
 
+	article_link_count += link_count_addon;
 	article_buf_pointer = file_buffer+article_header.offset_article;
-	if (last_display_mode == DISPLAY_MODE_HISTORY)
-		init_render_article(history_get_y_pos(idx_article));
-	else
-		init_render_article(0);
 
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	get_article_title_from_idx(idx_article, title);
-	history_add(idx_article, title);
+	history_add(idx_article, title, bKeepPos);
 }
 
-int isArticleLinkSelected(int x,int y)
+int isArticleLinkSelectedSequentialSearch(int x,int y, int start_i, int end_i)
 {
 	int i;
+	int x_diff, y_diff;
+	int last_x_diff = 999;
+	int last_y_diff = 999;
+	int rc = -1;
 	int article_link_start_y_pos;
 	int article_link_start_x_pos;
 	int article_link_end_y_pos;
 	int article_link_end_x_pos;
-	//char msg[1024];
 	int left_margin;
 
 	if (display_mode == DISPLAY_MODE_ARTICLE)
@@ -1274,34 +1324,94 @@ int isArticleLinkSelected(int x,int y)
 	else
 		left_margin = 0;
 
-	if (link_article_number_cur >= 0 && link_article_number_cur < article_link_count)
+	i = start_i;
+	while (i <= end_i)
 	{
-		article_link_start_y_pos = articleLink[link_article_number_cur].start_xy >>8;
-		article_link_start_x_pos = (articleLink[link_article_number_cur].start_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
-		article_link_end_y_pos = articleLink[link_article_number_cur].end_xy >>8;
-		article_link_end_x_pos = (articleLink[link_article_number_cur].end_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
-		if ((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
-			return link_article_number_cur; // if more than on links are matched, the last matched one got the higher priority
+		article_link_start_x_pos = (articleLink[i].start_xy & 0x000000ff) + left_margin;
+		article_link_start_y_pos = (articleLink[i].start_xy >> 8);
+		article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + left_margin;
+		article_link_end_y_pos = (articleLink[i].end_xy >> 8);
+
+		if (y < article_link_start_y_pos)
+			y_diff = article_link_start_y_pos - y;
+		else if (y > article_link_end_y_pos)
+			y_diff = y - article_link_end_y_pos;
+		else
+			y_diff = 0;
+
+		if (x < article_link_start_x_pos)
+			x_diff = article_link_start_x_pos - x;
+		else if (x > article_link_end_x_pos)
+			x_diff = x - article_link_end_x_pos;
+		else
+			x_diff = 0;
+
+		if (x_diff <= LINK_X_DIFF_ALLOWANCE && y_diff <= LINK_Y_DIFF_ALLOWANCE)
+		{
+			if (((last_x_diff && !x_diff) || (last_y_diff && !y_diff)) ||
+				(x_diff < last_x_diff && y_diff < last_y_diff))
+			{
+				rc = i;
+				last_x_diff = x_diff;
+				last_y_diff = y_diff;
+			}
+		}
+		i++;
 	}
+	return rc;
+}
+
+int isArticleLinkSelected(int x,int y)
+{
+	int i, start_i, end_i;
+	int bFound;
+	int article_link_start_y_pos;
+	int article_link_start_x_pos;
+	int article_link_end_y_pos;
+	int article_link_end_x_pos;
+	//char msg[1024];
+	int left_margin;
 
 	if (!display_first_page || request_display_next_page)
 		return -1;
-	//sprintf(msg,"article link count:%d,x:%d,y:%d\n",article_link_count,x,y);
-	//msg_info(msg);
-	for(i = 0 ; i < article_link_count; i++)
+
+	if (display_mode == DISPLAY_MODE_ARTICLE)
+		left_margin = LCD_LEFT_MARGIN;
+	else
+		left_margin = 0;
+
+	y += lcd_draw_cur_y_pos;
+
+	if (link_currently_activated >= 0 && link_currently_activated < article_link_count)
 	{
-		article_link_start_y_pos = articleLink[i].start_xy >>8;
-		article_link_start_x_pos = (articleLink[i].start_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
-		article_link_end_y_pos = articleLink[i].end_xy >>8;
-		article_link_end_x_pos = (articleLink[i].end_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
+		article_link_start_x_pos = (articleLink[link_currently_activated].start_xy & 0x000000ff) + left_margin - LINK_X_DIFF_ALLOWANCE;
+		article_link_start_y_pos = (articleLink[link_currently_activated].start_xy >> 8) - LINK_Y_DIFF_ALLOWANCE;
+		article_link_end_x_pos = (articleLink[link_currently_activated].end_xy & 0x000000ff) + left_margin + LINK_X_DIFF_ALLOWANCE;
+		article_link_end_y_pos = (articleLink[link_currently_activated].end_xy >> 8) + LINK_Y_DIFF_ALLOWANCE;
+		if (y>=article_link_start_y_pos && y<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
+			return link_currently_activated; // if more than on links are matched, the last matched one got the higher priority
+	}
 
-	      //sprintf(msg,"article link:%d,start_x:%d,end_x:%d,start_y:%d,end_y:%d\n",i,article_link_start_x_pos,article_link_end_x_pos,article_link_start_y_pos,article_link_end_y_pos);
-	      //msg_info(msg);
-
-		//if((lcd_draw_cur_y_pos+y)>=article_link_start_y_pos && (lcd_draw_cur_y_pos+y)<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
-		if((lcd_draw_cur_y_pos+y)>=(article_link_start_y_pos-5) && (lcd_draw_cur_y_pos+y)<=(article_link_end_y_pos+5) && x>=(article_link_start_x_pos-10) && x<=(article_link_end_x_pos+10))
-			return i;
-
+	start_i = 0;
+	end_i = article_link_count - 1;
+	i = article_link_count / 2;
+	bFound = 0;
+	while (!bFound && start_i <= end_i)
+	{
+		if (y < (int)(articleLink[i].start_xy >> 8) - LINK_Y_DIFF_ALLOWANCE)
+		{
+			end_i = i - 1;
+			i = (start_i + end_i) / 2;
+			continue;
+		}
+		if (y > (int)(articleLink[i].end_xy >> 8) + LINK_Y_DIFF_ALLOWANCE)
+		{
+			start_i = i + 1;
+			i = (start_i + end_i) / 2;
+			continue;
+		}
+		// y range identified
+		return isArticleLinkSelectedSequentialSearch(x, y, start_i, end_i);
 	}
 	return -1;
 }
@@ -1365,6 +1475,7 @@ void display_link_article(long idx_article)
 		return;
 	}
 
+	saved_idx_article = idx_article;
 	file_buffer[0] = '\0';
 
 	if (retrieve_article(idx_article))
@@ -1404,7 +1515,7 @@ void display_str(char *str)
        offset_y = 0;
        buf_draw_UTF8_str_in_copy_buffer((char *)framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x);
 
-       repaint_framebuffer(framebuffer_copy,0);
+       repaint_framebuffer(framebuffer_copy,0, 0);
 
  }
 #endif
@@ -1445,29 +1556,112 @@ void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,
 }
 
 #ifndef WIKIPCF
+
+// when set_article_link_number is called, the link will be "activated" in a pre-defined period
+// the activated link will be inverted
+void set_article_link_number(int num)
+{
+	if (link_currently_activated < 0)
+	{
+		link_to_be_activated = num;
+		link_to_be_activated_start_time = get_time_ticks();
+	}
+	else if (link_currently_activated != num)
+	{
+		if (link_currently_activated >= 0)
+		{
+			if (b_show_scroll_bar)
+				show_scroll_bar(-1);
+			invert_link(link_currently_activated);
+			if (b_show_scroll_bar)
+				show_scroll_bar(-1);
+		}
+		link_currently_activated = -1;
+		link_to_be_activated = -1;
+	}
+}
+
+void reset_article_link_number(void)
+{
+	link_to_be_activated = -1;
+	if (link_currently_activated >= 0)
+	{
+		if (b_show_scroll_bar)
+			show_scroll_bar(-1);
+		invert_link(link_currently_activated);
+		if (b_show_scroll_bar)
+			show_scroll_bar(-1);
+		link_currently_activated = -1;
+	}
+}
+
+void init_invert_link(void)
+{
+	link_to_be_activated = -1;
+	link_currently_activated = -1;
+}
+
+
+int get_activated_article_link_number()
+{
+	return link_currently_activated;
+}
+
+void repaint_invert_link()
+{
+	if (link_currently_activated >= 0)
+		invert_link(link_currently_activated);
+}
+
 void invert_link(int article_link_number)
 {
      int start_x,start_y,end_x,end_y;
 	int left_margin;
+
+	if(article_link_number<0)
+	return;
+
 
 	if (display_mode == DISPLAY_MODE_ARTICLE)
 		left_margin = LCD_LEFT_MARGIN;
 	else
 		left_margin = 0;
 
-     if(article_link_number<0)
-	return;
+	start_y = (articleLink[article_link_number].start_xy >>8) - lcd_draw_cur_y_pos;
+	start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + left_margin - 1;
+	if (start_x < 0)
+		start_x = 0;
+	end_y   = (articleLink[article_link_number].end_xy  >>8) - lcd_draw_cur_y_pos;
+	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + left_margin;
+	if (end_x >= LCD_BUF_WIDTH_PIXELS)
+		end_x = LCD_BUF_WIDTH_PIXELS - 1;
 
-     start_y = articleLink[article_link_number].start_xy >>8;
-     start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment - 1;
-     if (start_x < 0)
-	start_x = 0;
-     end_y   = articleLink[article_link_number].end_xy  >>8;
-     end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + left_margin + lcd_draw_buf.vertical_adjustment;
+	if (start_y >= 0 || end_y < LCD_HEIGHT_LINES)
+	{
+		guilib_fb_lock();
+		// guilib_invert_area will only invert (x, y) within LCD range
+		guilib_invert_area(start_x, start_y, end_x, end_y);
+		guilib_fb_unlock();
+	}
+}
 
-     guilib_fb_lock();
-     guilib_invert_area(start_x, start_y - lcd_draw_cur_y_pos, end_x, end_y - lcd_draw_cur_y_pos);
-     guilib_fb_unlock();
+// invert link when timeout
+int check_invert_link()
+{
+	if (link_to_be_activated >= 0 && time_diff(get_time_ticks(), link_to_be_activated_start_time) >= seconds_to_ticks(0.1))
+	{
+		if (link_currently_activated >= 0)
+			invert_link(link_currently_activated);
+		invert_link(link_to_be_activated);
+		link_currently_activated = link_to_be_activated;
+		link_activated_start_time = get_time_ticks();
+		link_to_be_activated = -1;
+	}
+
+	if (link_to_be_activated >= 0)
+		return 1;
+	else
+		return 0;
 }
 
 void open_article_link(int x,int y)
@@ -1718,14 +1912,6 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 int GetFontLinespace(int font)
 {
    return pcfFonts[font+1].Fmetrics.linespace;
-}
-void set_article_link_number(int num)
-{
-    link_article_number_cur = num;
-}
-int get_article_link_number()
-{
-    return link_article_number_cur;
 }
 
 void msg_on_lcd(int x, int y, char *msg)
