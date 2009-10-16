@@ -145,16 +145,21 @@ int history_list_save(int level)
 	int fd_hst;
 	int rc = 0;
 
+	if (history_changed != HISTORY_SAVE_NONE)
+	{
 		if (level == HISTORY_SAVE_POWER_OFF || history_changed == HISTORY_SAVE_NORMAL)
 		{
 			fd_hst = wl_open("pedia.hst", WL_O_CREATE);
 			if (fd_hst >= 0)
 			{
-			wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
-			wl_close(fd_hst);
+				wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
+				wl_close(fd_hst);
+			}
+			history_changed = HISTORY_SAVE_NONE;
+			rc = 1;
 		}
-		history_changed = HISTORY_SAVE_NONE;
-		rc = 1;
+		else
+			rc = -1;
 	}
 	return rc;
 }

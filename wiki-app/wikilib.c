@@ -781,17 +781,17 @@ int wikilib_run(void)
 			sleep = 0;
 		else
 		sleep = 1;
-		if (display_mode == DISPLAY_MODE_ARTICLE && render_article_with_pcf())
+		if (!more_events && display_mode == DISPLAY_MODE_ARTICLE && render_article_with_pcf())
 			sleep = 0;
-		else if (display_mode == DISPLAY_MODE_INDEX && render_search_result_with_pcf())
+		else if (!more_events && display_mode == DISPLAY_MODE_INDEX && render_search_result_with_pcf())
 			sleep = 0;
-		else if (display_mode == DISPLAY_MODE_HISTORY && render_history_with_pcf())
+		else if (!more_events && display_mode == DISPLAY_MODE_HISTORY && render_history_with_pcf())
 			sleep = 0;
-		if (article_offset != 0)
-		{
-			scroll_article();
-			sleep = 0;
-		}
+		//if (article_offset != 0)
+		//{
+		//	scroll_article();
+		//	sleep = 0;
+		//}
 
 #ifdef INCLUDED_FROM_KERNEL
 		time_now = get_time_ticks();
