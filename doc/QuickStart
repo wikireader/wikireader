@@ -1,182 +1,30 @@
-From an application perspective with an EPSON DMT33E07 evaluation
-board (EVB).
+Quick start instructions
+========================
 
-* Build
+This is only rough at the moment, need to expand it somewhat
 
-** Get toolchain
+make help gives a list of targets and some are explaind below
 
-wget http://wikipediardware.googlecode.com/svn/trunk/Makefile
-make gcc
+1) Set up a 32 bit Linux system
+   or use schroot as described in doc/Using-schroot.text
+   (this file also lists packages to install)
 
-export PATH=/PATH/TO/WIKIRDWARE/install/bin:$PATH
+2) make sure samo-lib/include/config.h is setup
+   copy from samo-lib/include/config.h-default
 
-** Packages needed for simulators
-apt-get install --no-install-recommends libqt4-dev
-apt-get install libncurses5-dev
+   The make files will do the copy, but the
+   BOARD_SAMO_V1 must be uncommented by manual editing
 
+3) if 32 bit then just make
+   if 64 bit the run make in the 32 bit chroot as set up in (1)
 
-** Modify config.h
+4) to build the database
+   (this should work in 32 or 64 bit as it mostly used Python2.6)
 
-Enable the corresponding board config in common/config.h.
+   make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine
+   make DESTDIR=image install
 
-
-** Build the bootloader
-
-gfxtool inside of the bootloader has a dependency to libgd2,
-an 'apt-get install libgd2-xpm-dev' will do.
-
-make bootloader
-
-
-To build the bootloader with the rs232 support (it expects 
-to receive the second stage bootloader via serial connection)
-run:
-
-make bootloader232
-
-
-** Install the bootloader
-
-Now you got binaries built.  To run them on the device, you have to
-get the hardware ready first.  With DMT33E07, you need to do the
-following:
-
-  1. Set pin #3 of SW1 to ON
-  2. Connect to serial port
-  3. Turn on the device
-
-Make sure not to have any terminal emulator running (e.g. minicom)
-before flashing the bootloader:
-
-make flash-bootloader
-
-Test it:
-
-  1. Power down the device
-  2. Set pin #3 of SW1 to OFF
-  3. Power up the device
-
-If you don't have your SD card inserted, you should see a picture of
-Homer stating that he couldn't access SD card kernel.  If you do see
-it, you're on the right track.
-
-If not, please refer to the Jumpers section in the User's Manual of
-DMT33E07 to get your jumpers right.  It should be set to "SD Card,
-RS232 Booting Supported".  After you're done, try again.
-
-
-** Build the mbr bootloader
-
-* Required packages
-  - python-gd
-
-Build this bootloader to get advanced bootloader options such as
-a bootmenu, forth support or loading the kernel via the serial line.
-
-make mbr
-
-
-** Flash mbr
-
-make flash-mbr
-
-
-** Boot via serial line
-
-First you need to activate the "boot via serial line".
-
-make mbr-rs232
-
-Flash mbr as described above. After flashing the board will wait for
-an incoming kernel file and boot it. You can use picocom to send the
-kernel. Run "scripts/p33" to connect to the device, reset the board
-and hit CTRL + A followed by CTRL + S in the picocom terminal to send
-the kernel file.
-
-
-** Build the kernel
-
-make kernel
-
-See "Boot from SD" to get more information about how to install
-the kernel.
-
-
-** Wikipedia Index, Articles, etc.
-
-The fast way: get everything from
-https://people.internal.openmoko.org/~zecke/
-
-or:
-
-*** Index
-
- 1. get the wikipedia dump by "make getwikidump".
-
- 2. use wiki-tools to generate "indexfile.index".
-     bzcat enwiki-latest-pages-articles.xml.bz2 | ./wiki-tools --index
-
- 3. read the "host-tools/indexing/README" to create the "pedia.idx"
-     and "pedia.jmp".
-     ./create_index.sh ../wiki-tools/indexfile.index
-
- 4. Put pedia.idx and pedia.jmp into sd card.
-
-
-*** Wikipedia Articles
-
-In order to generate the wiki fonts file and the wiki database it is
-necessary to download & run webkit. Webkit will parse the wikipedia database
-to retrieve names / sizes / styles of the glyphs that need to be extracted
-and also remove the HTML markup.
-
-The extracted glyphs are packed into one file called 'fontfile.gen'.
-This file must be compressed by "enlzo" later to improve the loading
-time.
-
- 1. You need to install libicu, gperf and sqlite:
-    apt-get install libicu-dev gperf libsqlite3-dev
-
- 2. Run "make webkit" to checkout webkit revision 41057, apply the patches under
-    host-tools/rendering/patches and build webkit.
-
- 3. Use GtkLauncher to load host-tools/rendering/base_text.html
-    and several wikipedia articles you like.  For each article,
-    use
-    host-tools/rendering/simple_code.py
-    to generate `smplpedi.cde'.  Rename it according to the result of
-    lsearch.
-
- 4. Generate font file
-    host-tools/glyphs/mk_fontfile/gen_font_file.py
-    you can get fontfile.gen
-
- 5. Read minilzo/README.  Build enlzo.
-    enlzo fontfile.gen > fontfile.lzo
-    mv fontfile.new fontfile.gen
-
- 5. Put fontfile.gen along with the renamed smplpedi.cde files into
-    sd card.
-
-
-** Boot from SD
-
-Prepare a SD card, make a FAT filesystem on it, then copy kernel:
-
- 1. Create a vfat on the whole device
-    mkfs.vfat -I /dev/YOUR_DEVICE
-
- 2. cp kernel/mahatma.elf <your sd card>/kernel
-
-For example:
-
-cp kernel/mahatma.elf /media/disk/kernel
-
-Now insert the SD card into the EVB then boot the device.
-
-
-* Development
-
-Refer to kernel/* and change code there to see what happens.  Use
-functions from wiki-lib and gui-lib to write your own application.
-When you're done, compile it and try it on the device.
+5) format a microSD card as FAT32 and copy the contents on image to it
+   e.g.   mkfs.vfat -F 32 -n wikird /dev/sd<id-and-partition>
+          mount /dev/sd<id-and-partition> /mnt
+          cp image/* /mnt/

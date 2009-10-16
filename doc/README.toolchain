@@ -3,6 +3,12 @@ Building our toolchain is easy:
     for our processor architecture. We currently investigate forward porting
     of these patches to more current versions.
 
+Note: 1) the root makefile handles all of this
+      2) GCC does not work correctly on 64 bit platform
+         It appears that it generates 64 bit values, but the C33 is onl 32 bit
+         so the result cannot work, it normally fails in the assemble stage
+         I thing that the host bits/word and target bits/word are mixed somewhere
+         (Presently just use 32 bit Linux in VM,  chroot or schroot)
 
 Bintuils:
     (It is assumed that $PWD/README is this file)
