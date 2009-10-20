@@ -47,6 +47,7 @@
 #include "bigram.h"
 
 #define LCD_UPDATE_MILLISEC 20000
+#define LINK_ACTIVATION_TIME_THRESHOLD 0.2
 
 extern int last_display_mode;
 extern int display_mode;
@@ -1559,12 +1560,12 @@ void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,
 
 // when set_article_link_number is called, the link will be "activated" in a pre-defined period
 // the activated link will be inverted
-void set_article_link_number(int num)
+void set_article_link_number(int num, unsigned long event_time)
 {
 	if (link_currently_activated < 0)
 	{
 		link_to_be_activated = num;
-		link_to_be_activated_start_time = get_time_ticks();
+		link_to_be_activated_start_time = event_time;
 	}
 	else if (link_currently_activated != num)
 	{
@@ -1648,7 +1649,8 @@ void invert_link(int article_link_number)
 // invert link when timeout
 int check_invert_link()
 {
-	if (link_to_be_activated >= 0 && time_diff(get_time_ticks(), link_to_be_activated_start_time) >= seconds_to_ticks(0.1))
+	if (link_to_be_activated >= 0 && time_diff(get_time_ticks(), link_to_be_activated_start_time) >=
+		seconds_to_ticks(LINK_ACTIVATION_TIME_THRESHOLD))
 	{
 		if (link_currently_activated >= 0)
 			invert_link(link_currently_activated);

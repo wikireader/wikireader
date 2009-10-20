@@ -88,7 +88,7 @@ int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
 #define INITIAL_ARTICLE_SCROLL_PIXEL 1
-#define ARTICLE_MOVED_THRESHOLD 6
+#define ARTICLE_MOVED_THRESHOLD 1
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 int article_moved_pixels = 0;
 
@@ -348,7 +348,10 @@ static void handle_key_release(int keycode)
 			if (keyboard_get_mode() == KEYBOARD_CLEAR_HISTORY)
 			{
 				keyboard_set_mode(KEYBOARD_NONE);
-				history_reload();
+				guilib_fb_lock();
+				//keyboard_paint();
+				draw_clear_history(1);
+				guilib_fb_unlock();
 			} else if (history_get_count() > 0) {
 				keyboard_set_mode(KEYBOARD_CLEAR_HISTORY);
 				guilib_fb_lock();
@@ -720,7 +723,7 @@ static void handle_touch(struct wl_input_event *ev)
 			{
 				article_link_number =isArticleLinkSelected(ev->touch_event.x,ev->touch_event.y);
 				if (article_link_number >= 0)
-					set_article_link_number(article_link_number);
+					set_article_link_number(article_link_number, ev->touch_event.ticks);
 				else
 					reset_article_link_number();
 			}

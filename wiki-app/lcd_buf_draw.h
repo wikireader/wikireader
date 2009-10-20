@@ -276,7 +276,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted);
 int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted);
 int isArticleLinkSelected(int x,int y);
 int check_invert_link(void);
-void set_article_link_number(int num);
+void set_article_link_number(int num, unsigned long);
 void reset_article_link_number(void);
 int get_activated_article_link_number(void);
 void init_invert_link(void);
