@@ -133,7 +133,19 @@ int Contrast_get(void)
 	return REG_T16_CR1A;
 }
 
+
 void Contrast_set(int value)
+{
+	if (value < Contrast_light) {
+		value = Contrast_light;
+	} else if (value > Contrast_dark) {
+		value = Contrast_dark;
+	}
+	Contrast_set_value(value);
+}
+
+
+void Contrast_set_value(int value)
 {
 	if (value > REG_T16_CR1B) {
 		value = REG_T16_CR1B;

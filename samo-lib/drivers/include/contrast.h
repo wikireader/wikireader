@@ -21,12 +21,21 @@
 
 typedef enum {
 	Contrast_minimum = 0,
+	Contrast_light   = 1500,
 	Contrast_default = 2048,
+	Contrast_dark    = 3000,
 	Contrast_maximum = 4095,
 } ContrastType;
 
 void Contrast_initialise(void);
+
+// clip between maximum and minimum
+void Contrast_set_value(int value);
+
+// clip between light and dark rather than full range
+// as this is more useful since the display should always be visible
 void Contrast_set(int value);
+
 int Contrast_get(void);
 
 #endif
