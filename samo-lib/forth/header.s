@@ -240,10 +240,10 @@ main:
         xcall   Serial_initialise
         xcall   Button_initialise
         xcall   CTP_initialise
-        xcall   Contrast_initialise
+        ;;xcall   Contrast_initialise                 ; ***done by the boot loader**
         xcall   Analog_initialise
         xcall   Tick_initialise
-        xcall   Temperature_initialise
+        ;;xcall   Temperature_initialise              ; not working yet
 
         xld.w   %r0, cold_start                       ; initial ip value
 ;;;       xcall   xdebug

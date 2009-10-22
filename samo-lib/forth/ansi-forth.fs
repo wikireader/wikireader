@@ -3142,10 +3142,11 @@ TIMEOUT_VALUE = (MCLK / 32 * SUSPEND_AUTO_POWER_OFF_SECONDS)
         NEXT
 end-code
 
-code (temperature-comp)   :: temperature-comp        ( -- )
-        xcall   Temperature_control
-        NEXT
-end-code
+\ temperature compensation is not yet working
+\ code (temperature-comp)   :: temperature-comp        ( -- )
+\         xcall   Temperature_control
+\         NEXT
+\ end-code
 
 
 \ power off

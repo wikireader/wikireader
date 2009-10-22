@@ -24,7 +24,7 @@
 #include <regs.h>
 #include <samo.h>
 #include <suspend.h>
-#include <temperature.h>
+//#include <temperature.h>
 #include <ctp.h>
 
 #include "serial.h"

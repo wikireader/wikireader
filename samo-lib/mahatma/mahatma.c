@@ -27,7 +27,7 @@
 #include <profile.h>
 #include <tick.h>
 #include <analog.h>
-#include <temperature.h>
+//#include <temperature.h>
 
 /* local includes */
 #include "msg-output.h"
@@ -59,7 +59,7 @@ int main(void)
 	traps_init();
 	Tick_initialise();
 	Analog_initialise();
-	Temperature_initialise();
+	//Temperature_initialise();
 	msg_init();
 
 	// start of normal initialisation
