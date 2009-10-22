@@ -55,7 +55,8 @@ ReturnType file_loader(int block, int status)
 		if (ARRAY_SIZE(LoadList) <= i) {
 			i = 0;
 		}
-		for (; i < ARRAY_SIZE(LoadList); ++i) {
+		//for (; i < ARRAY_SIZE(LoadList); ++i) {
+		{
 			print("load: ");
 			print(LoadList[i].filename);
 			print_char('\n');
