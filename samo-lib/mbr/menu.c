@@ -19,6 +19,7 @@
 #define APPLICATION_TITLE "boot menu"
 
 #include <stdbool.h>
+#include <string.h>
 #include <samo.h>
 #include <lcd.h>
 #include <contrast.h>
@@ -31,6 +32,12 @@
 #define BATTERY_METER 1
 #endif
 
+typedef enum {
+	Position_top,
+	Position_bottom,
+	Position_centre,
+} PositionType;
+
 struct guilib_image
 {
 	uint32_t width;
@@ -41,11 +48,17 @@ typedef struct guilib_image ImageType;
 
 #include "splash.h"
 #include "empty.h"
+#include "adjust.h"
 
-#define MAXIMUM_BLOCKS 8
+#define MAXIMUM_BLOCKS 7
 #define HEADER_MAGIC  0x4f4d4153
 #define MAXIMUM_APPS 8
 #define SERIAL_NUMBER_OFFSET 0x1fe0
+
+#define PARAMETER_START    (MAXIMUM_BLOCKS * 8192)
+#define PARAMETER_SIZE     (2 * SectorSize)
+#define PARAMETER_MAGIC_1  0x5041524c
+#define PARAMETER_MAGIC_2  0x424c434b
 
 // NameType length is defined in the awk script: GenerateApplicationHeader.awk
 typedef char NameType[32];
@@ -63,14 +76,60 @@ typedef struct {
 	int offset;
 } ProcessReturnType;
 
+
+// the size of this  must be an exact integer multiple of PageSize
+// or programming FLASH will not work correctly
+// (There is some code below to cause a linker error if this is not true)
+typedef struct {
+	uint32_t magic1;
+	uint32_t magic2;
+	uint32_t contrast;
+	uint32_t spare_1;
+} ParameterType;
+
 static const char spinner[4] = "-\\|/";
 
 
-
 ProcessReturnType process(int block, int status);
+bool parameters_load(ParameterType *param);
+void parameters_save(ParameterType *param);
 void print_cpu_type(void);
 bool battery_empty(void);
 void battery_status(void);
+
+
+
+enum {
+	PageSize = 256,
+	SectorSize = 4096,
+	ProgramRetries = 5,
+	SerialNumberAddress = 0x1fe0,
+	SerialNumberLength = 32,
+};
+
+typedef enum {
+	SPI_WriteStatus = 0x01,
+	SPI_PageProgram = 0x02,
+	SPI_ReadData = 0x03,
+	SPI_WriteDisable = 0x04,
+	SPI_ReadStatus = 0x05,
+	SPI_WriteEnable = 0x06,
+	SPI_FastRead = 0x0b,
+	SPI_SectorErase = 0x20,
+	SPI_ChipErase = 0xc7,
+} SPI_type;
+
+
+static void SendCommand(uint8_t command);
+static void WaitReady(void);
+static void WriteEnable(void);
+static void WriteDisable(void);
+static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
+static void SectorErase(uint32_t ROMAddress);
+
+static uint8_t SPI_put(uint8_t c);
+static uint8_t SPI_get(void);
+
 
 
 // this must be the first executable code as the loader executes from the first program address
@@ -81,8 +140,24 @@ ReturnType menu(int block, int status)
 	APPLICATION_INITIALISE();
 	init_lcd();
 	Analog_initialise();
-	Contrast_initialise();
+	{
+		ParameterType param;
+		Contrast_initialise();
+		memset(&param, 0, sizeof(param));
+		if (parameters_load(&param)) {
+			Contrast_set(param.contrast);
+		}
+	}
 	result = process(block, status);
+
+	// If the structure ParameterType is not an exact multiple of PageSize
+	// then cause an error at link time.
+	// this is the best that C can do since CPP cannot evaluate such an expression.
+	// If typedef is correct compiler will not generate any code for this.
+	if (((PageSize / sizeof(ParameterType)) * sizeof(ParameterType)) != PageSize) {
+		void ParameterType_has_invalid_size__Fix_the_typedef(void);
+		ParameterType_has_invalid_size__Fix_the_typedef();  // deliberate undefined reference
+	}
 
 	// next program
 	APPLICATION_FINALISE(result.block, result.offset);
@@ -103,7 +178,7 @@ static void fill(uint8_t value)
 }
 
 
-static void display_image(const ImageType *image, uint8_t background, uint8_t toggle)
+static void display_image(PositionType pos, bool fill_first, const ImageType *image, uint8_t background, uint8_t toggle)
 {
 	int xOffset = (LCD_WIDTH_PIXELS - image->width) / (2 * 8);
 	uint8_t *fb = (uint8_t*)LCD_VRAM;
@@ -112,8 +187,22 @@ static void display_image(const ImageType *image, uint8_t background, uint8_t to
 	unsigned int width = (image->width + 7) / 8;
 	const uint8_t *src = image->data;
 
-	fill(background);
-	fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
+	if (fill_first){
+		fill(background);
+	}
+
+	switch (pos) {
+	case Position_top:
+		break;
+	case Position_bottom:
+		fb += (LCD_HEIGHT_LINES - image->height) * LCD_VRAM_WIDTH_BYTES;
+		break;
+	default:
+	case Position_centre:
+		fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
+		break;
+	}
+
 	for (y = 0; y < image->height; ++y) {
 		for (x = 0; x < width; ++x) {
 			fb[x + xOffset] = toggle ^ *src++;
@@ -187,9 +276,9 @@ ProcessReturnType process(int block, int status)
 
 	Analog_scan(); // update analog values
 	if (battery_empty()) {
-		display_image(&empty_image, 0x00, 0xff);
+		display_image(Position_centre, true, &empty_image, 0x00, 0xff);
 	} else {
-		display_image(&splash_image, 0x00, 0xff);
+		display_image(Position_centre, true, &splash_image, 0x00, 0xff);
 	}
 
 	if (0 != status) {
@@ -255,18 +344,27 @@ ProcessReturnType process(int block, int status)
 			}
 		}
 		print("\nEnter selection: ");
+		display_image(Position_bottom, false, &adjust_image, 0x00, 0xff);
 		k = ' ';
 		while (k <= ' ') {
 			while (!serial_input_available()) {
 				switch (REG_P6_P6D & 0x07) {
 				case 1:
 					Contrast_set(Contrast_get() + 1);
+					delay_us(3000);
 					break;
 				case 2:
 					Contrast_set(Contrast_get() - 1);
+					delay_us(3000);
 					break;
 				case 4:
-					Contrast_set(Contrast_default);
+					// Contrast_set(Contrast_default);
+					{
+						ParameterType param;
+						parameters_load(&param);
+						param.contrast = Contrast_get();
+						parameters_save(&param);
+					}
 					break;
 				}
 				battery_status();
@@ -294,6 +392,131 @@ ProcessReturnType process(int block, int status)
 		}
 	}
 	return rc;
+}
+
+
+bool parameters_load(ParameterType *param)
+{
+	int i;
+
+	SDCARD_CS_HI();
+	disable_card_power();
+	EEPROM_CS_HI();
+	EEPROM_WP_HI();
+
+	for (i = 0; i <= PARAMETER_SIZE - sizeof(*param); i += sizeof(*param)) {
+		eeprom_load(PARAMETER_START + i, (void *)param, sizeof(*param));
+		if (PARAMETER_MAGIC_1 == param->magic1 && PARAMETER_MAGIC_2 == param->magic2) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+void parameters_save(ParameterType *param)
+{
+	int i;
+	ParameterType p;
+
+	SDCARD_CS_HI();
+	disable_card_power();
+	EEPROM_CS_HI();
+	EEPROM_WP_HI();
+
+	for (i = 0; i < PARAMETER_SIZE - sizeof(p); i += sizeof(p)) {
+		eeprom_load(PARAMETER_START + i, (void *)&p, sizeof(p));
+		if (PARAMETER_MAGIC_1 == p.magic1 && PARAMETER_MAGIC_2 == p.magic2) {
+			break;
+		}
+	}
+	if (0 == i) {
+		SectorErase(PARAMETER_START);
+		SectorErase(PARAMETER_START + SectorSize);
+	} else {
+		i -= sizeof(p);
+	}
+
+	param->magic1 = PARAMETER_MAGIC_1;
+	param->magic2 = PARAMETER_MAGIC_2;
+	if (0 != memcmp(param, &p, sizeof(p))) {
+		ProgramBlock((uint8_t *)param, sizeof(*param), PARAMETER_START + i);
+		eeprom_load(PARAMETER_START + i, (void *)&p, sizeof(p));
+	}
+}
+
+static uint8_t SPI_put(uint8_t out)
+{
+	REG_SPI_TXD = out;
+	do {} while (~REG_SPI_STAT & RDFF);
+	return REG_SPI_RXD;
+}
+
+static uint8_t SPI_get(void)
+{
+	return SPI_put(0x00);
+}
+
+static void SendCommand(uint8_t command)
+{
+	delay_us(10);
+	EEPROM_CS_LO();
+	SPI_put(command);
+	EEPROM_CS_HI();
+}
+
+
+static void WaitReady(void)
+{
+	delay_us(10);
+	EEPROM_CS_LO();
+	SPI_put(SPI_ReadStatus);
+	while (0 != (SPI_get() & 0x01)) {
+	}
+	EEPROM_CS_HI();
+}
+
+static void WriteEnable(void)
+{
+	SendCommand(SPI_WriteEnable);
+}
+
+static void WriteDisable(void)
+{
+	SendCommand(SPI_WriteDisable);
+}
+
+
+static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
+{
+	WaitReady();
+	WriteEnable();
+	EEPROM_CS_LO();
+	SPI_put(SPI_PageProgram);
+	SPI_put(ROMAddress >> 16); // A23..A16
+	SPI_put(ROMAddress >> 8);  // A15..A08
+	SPI_put(ROMAddress);       // A07..A00
+
+	size_t i = 0;
+	for (i = 0; i < length; ++i) {
+		SPI_put(*buffer++);
+	}
+	EEPROM_CS_HI();
+	WaitReady();
+	WriteDisable();
+}
+
+static void SectorErase(uint32_t ROMAddress)
+{
+	WaitReady();
+	WriteEnable();
+	EEPROM_CS_LO();
+	SPI_put(SPI_SectorErase);
+	SPI_put(ROMAddress >> 16); // A23..A16
+	SPI_put(ROMAddress >> 8);  // A15..A08
+	SPI_put(ROMAddress);       // A07..A00
+	EEPROM_CS_HI();
+	WaitReady();
 }
 
 

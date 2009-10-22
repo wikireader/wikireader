@@ -104,21 +104,13 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP,menu,misc.o,splash.h empty.h)
+$(call MAKE_APP,menu,misc.o,splash.h empty.h adjust.h)
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,hw-test,misc.o)
 $(call MAKE_APP,file-loader,misc.o elf32.o)
 $(call MAKE_APP,rs232-loader,misc.o)
 #$(call MAKE_APP,lcd-test,misc.o)
-
-# application pre-depends
-
-splash.h: splash.png
-	$(HOST_TOOLS)/imagetool/imagetool.py splash.png splash.h splash_image
-
-empty.h: empty.png
-	$(HOST_TOOLS)/imagetool/imagetool.py empty.png empty.h empty_image
 
 # rule to build all above applications
 
@@ -150,5 +142,10 @@ clean:
 # application headers
 %.header: %.c
 	awk -f GenerateApplicationHeader.awk "$<" >"$@"
+
+# application images
+
+%.h: %.png
+	$(HOST_TOOLS)/imagetool/imagetool.py "$<" "$@" "${@:.h=_image}"
 
 include ${SAMO_LIB}/Mk/rules.mk
