@@ -87,12 +87,11 @@ static inline BYTE spi_receive(void)
 static BYTE wait_ready(void)
 {
 	int timeout = 2000000;
-	BYTE res = spi_receive();
+	BYTE res = spi_receive();  // this first read is ignored
 
-	while ((res != 0xff) && timeout--) {
-		//delay_us(5);
+	do {
 		res = spi_receive();
-	}
+	} while ((res != 0xff) && timeout--);
 
 	return res;
 }
@@ -145,12 +144,9 @@ static BOOL rcvr_datablock(BYTE *buff, UINT byte_count)
 	BYTE token;
 	DWORD timeout = 2000000;
 
-	token = spi_receive();
-	while (token == 0xff && timeout > 0) {		// Wait for data packet in timeout of max 10ms
-		//delay_us(5);
+	do {		// Wait for data packet with timeout
 		token = spi_receive();
-		--timeout;
-	}
+	} while (token == 0xff && --timeout);
 
 	if (token != 0xFE) {
 		return FALSE;				// If not valid data token, return with error
@@ -160,8 +156,8 @@ static BOOL rcvr_datablock(BYTE *buff, UINT byte_count)
 		*buff++ = spi_receive();
 		*buff++ = spi_receive();
 	} while ((byte_count -= 2) != 0);
-	spi_receive();					// Discard CRC
-	spi_receive();
+	(void)spi_receive();				// Discard CRC
+	(void)spi_receive();
 
 	return TRUE;					// Return with success
 }
@@ -218,7 +214,7 @@ static BYTE send_cmd(BYTE cmd, DWORD arg)
 
 	// Select the card and wait for ready
 	release_spi();
-	delay_us(10);
+
 	SELECT();
 	if (cmd != CMD0 && wait_ready() != 0xff) {
 		return 0xff;
@@ -250,7 +246,6 @@ static BYTE send_cmd(BYTE cmd, DWORD arg)
 	n = (cmd == CMD0 ? 21 : 10);
 	res = spi_receive();
 	while ((n > 0) && ((cmd == CMD0) || (0 != (res & 0x80)))) {
-		delay_us(5);
 		res = spi_receive();
 		--n;
 	}
