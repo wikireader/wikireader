@@ -58,6 +58,7 @@ typedef enum {
 	SPI_ReadStatus = 0x05,
 	SPI_WriteEnable = 0x06,
 	SPI_FastRead = 0x0b,
+	SPI_SectorErase = 0x20,
 	SPI_ChipErase = 0xc7,
 } SPI_type;
 
@@ -70,9 +71,10 @@ static void WriteDisable(void);
 static void ReadBlock(uint8_t *buffer, size_t length, uint32_t ROMAddress);
 static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
 static bool VerifyBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
+//static void SectorErase(uint32_t ROMAddress);
 static void ChipErase(void);
 
-static void SPI_put(uint8_t c);
+static uint8_t SPI_put(uint8_t c);
 static uint8_t SPI_get(void);
 
 static void fill(uint8_t value);
@@ -341,6 +343,21 @@ static bool VerifyBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddres
 	return rc;
 }
 
+#if 0
+static void SectorErase(uint32_t ROMAddress)
+{
+	WaitReady();
+	WriteEnable();
+	EEPROM_CS_LO();
+	SPI_put(SPI_SectorErase);
+	SPI_put(ROMAddress >> 16); // A23..A16
+	SPI_put(ROMAddress >> 8);  // A15..A08
+	SPI_put(ROMAddress);       // A07..A00
+	EEPROM_CS_HI();
+	WaitReady();
+}
+#endif
+
 static void ChipErase(void)
 {
 	WaitReady();
@@ -349,22 +366,17 @@ static void ChipErase(void)
 	WaitReady();
 }
 
-static void SPI_put(uint8_t c)
+static uint8_t SPI_put(uint8_t out)
 {
-	while (0 == (REG_SPI_STAT & TDEF)) {
-	}
-	REG_SPI_TXD = c;
-}
-
-
-static uint8_t SPI_get(void)
-{
-	SPI_put(0x00);
-	while (0 == (REG_SPI_STAT & RDFF)) {
-	}
+	REG_SPI_TXD = out;
+	do {} while (~REG_SPI_STAT & RDFF);
 	return REG_SPI_RXD;
 }
 
+static uint8_t SPI_get(void)
+{
+	return SPI_put(0x00);
+}
 
 static void fill(uint8_t value)
 {
