@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 xml="xml-file-samples/license.xml xml-file-samples/terms.xml enwiki-20090909-pages-articles.xml"
 
@@ -116,14 +116,14 @@ this_id=${this_host##${host}}
 
 farm="farm${this_id}"
 
-${debug} mkdir -p "${work}"
-${debug} mkdir -p "${dest}"
+eval ${debug} "mkdir -p '${work}'"
+eval ${debug} "mkdir -p '${dest}'"
 
 case "${clear}" in
   [yY]|[yY][eE][sS])
-    ${debug} time make clean-index DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-    ${debug} time make "${farm}-clean" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-    ${debug} rm -f "${work}"/* "${dest}"/*
+    eval ${debug} "time make clean-index DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+    eval ${debug} "time make '${farm}-clean' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+    eval ${debug} "rm -f '${work}'/* '${dest}'/*"
     ;;
 esac
 
@@ -139,15 +139,15 @@ then
   do
     items="${items} ${host}${index}:samo/${work}/${i}"
   done
-  ${debug} rsync -avHx --progress ${items} ${work}/
-  ${debug} touch stamp-r-index
+  eval ${debug} "rsync -avHx --progress ${items} '${work}'/"
+  eval ${debug} "touch stamp-r-index"
 fi
 
 # run the build
 case "${run}" in
   [yY]|[yY][eE][sS])
 
-    ${debug} time make "stamp-r-index" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
 
     case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
@@ -155,11 +155,11 @@ case "${run}" in
       *)
         case "${seq}" in
           [yY]|[yY][eE][sS])
-            ${debug} time make -j3 "${farm}-parse" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
-            ${debug} time make "${farm}-render" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
             ;;
           *)
-            ${debug} time make -j3 "${farm}" DESTDIR="${dest}" WORKDIR="${work}" XML_FILES="${xml}"
+            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
             ;;
         esac
     esac

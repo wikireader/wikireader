@@ -63,7 +63,7 @@ check-html:
 
 .PHONY: index
 index: check-dirs check-xml
-	time ./ArticleIndex.py ${VERBOSE} \
+	./ArticleIndex.py ${VERBOSE} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
@@ -71,20 +71,20 @@ index: check-dirs check-xml
 
 .PHONY: parse
 parse: check-dirs check-html
-	time ./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
+	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render
 render: pylzma check-dirs check-fonts check-html
-	time ./ArticleRenderer.py ${VERBOSE} --number="${RENDER_BLOCK}" \
+	./ArticleRenderer.py ${VERBOSE} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
 		--prefix="${PREFIX}" "${HTML_ARTICLES}"
 
 .PHONY: combine
 combine: check-dirs
-	time ./combine_idx.py ${VERBOSE} --prefix="${PREFIX}"
+	./combine_idx.py ${VERBOSE} --prefix="${PREFIX}"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma
