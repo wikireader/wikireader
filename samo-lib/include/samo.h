@@ -65,7 +65,12 @@
 
 // include the board specific macros and functions
 
-#if BOARD_S1C33E07 || SIMULATOR
+// if only building simulator the configure as if for production hardware
+#if SIMULATOR
+#define BOARD_SAMO_V1 1
+#endif
+
+#if BOARD_S1C33E07
 #include <boards/s1c33e07.h>
 #elif BOARD_PROTO1
 #include <boards/proto1.h>
