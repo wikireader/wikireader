@@ -71,11 +71,12 @@ int curBufferPos  = 0;
 unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
-unsigned long start_search_time,start_search_selection_time, last_delete_time;
+unsigned long start_search_time, last_delete_time;
 int last_article_move_time,touch_y_last_article;
 int article_touch_count = 0;
 int touch_history = 0;
-extern int article_offset;
+extern unsigned long time_scroll_article_last;
+extern unsigned long time_scroll_article_start;
 bool random_press = false;
 extern int stop_render_article;
 int time_random_last = 0;
@@ -89,8 +90,16 @@ int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
 #define INITIAL_ARTICLE_SCROLL_PIXEL 1
 #define ARTICLE_MOVED_THRESHOLD 1
+#define SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD 10
+#define SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD 150
+#define SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD 60
+#define LIST_SMOOTH_SCROLL_SPEED_FACTOR 4
+#define ARTICLE_SMOOTH_SCROLL_SPEED_FACTOR 2.5
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 int article_moved_pixels = 0;
+extern int link_to_be_inverted;
+extern int link_currently_inverted;
+long finger_move_speed = 0;
 
 void repaint_search(void)
 {
@@ -315,6 +324,7 @@ static void handle_key_release(int keycode)
 	static int first_time_random = 0;
 	int mode;
 
+	finger_move_speed = 0;
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
 	DP(DBG_WL, ("O handle_key_release()\n"));
 	mode = keyboard_get_mode();
@@ -326,7 +336,6 @@ static void handle_key_release(int keycode)
 		}
 #endif
 	} else if (keycode == WL_INPUT_KEY_SEARCH) {
-		article_offset = 0;
 		article_buf_pointer = NULL;
 		/* back to search */
 		if (display_mode == DISPLAY_MODE_INDEX) {
@@ -339,10 +348,9 @@ static void handle_key_release(int keycode)
 		}
 	} else if (keycode == WL_INPUT_KEY_HISTORY) {
 		if (display_mode != DISPLAY_MODE_HISTORY) {
-			article_offset = 0;
 			article_buf_pointer = NULL;
-			display_mode = DISPLAY_MODE_HISTORY;
 			history_reload();
+			display_mode = DISPLAY_MODE_HISTORY;
 			keyboard_set_mode(KEYBOARD_NONE);
 		} else {
 			if (keyboard_get_mode() == KEYBOARD_CLEAR_HISTORY)
@@ -369,7 +377,6 @@ static void handle_key_release(int keycode)
 			if (init_article_filter())
 				return;
 		}
-		article_offset = 0;
 		article_buf_pointer = NULL;
 		display_mode = DISPLAY_MODE_ARTICLE;
 		last_display_mode = DISPLAY_MODE_INDEX;
@@ -411,6 +418,9 @@ static void handle_touch(struct wl_input_event *ev)
 	//int time_diff_search;
 	int mode;
 	struct keyboard_key * key;
+	static int last_5_y[5];
+	static unsigned long last_5_y_time_ticks[5];
+	int i;
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
@@ -459,7 +469,7 @@ static void handle_touch(struct wl_input_event *ev)
 			if(enter_touch_y_pos<0)  //record first touch y pos
 			   enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
-			start_search_time = get_time_ticks();
+			start_search_time = ev->touch_event.ticks;
 			last_delete_time = start_search_time;
 			if (key) {
 				if(key->key==8)//press "<" button
@@ -530,8 +540,6 @@ static void handle_touch(struct wl_input_event *ev)
 				 last_selection = new_selection ;
 				search_set_selection(new_selection);
 				search_touch_pos_y_last = ev->touch_event.y;
-				start_search_selection_time = get_time_ticks();
-
 			}
 		}
 	}
@@ -622,7 +630,7 @@ static void handle_touch(struct wl_input_event *ev)
 			if(enter_touch_y_pos<0)  //record first touch y pos
 			   enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
-			start_search_time = get_time_ticks();
+			start_search_time = ev->touch_event.ticks;
 			last_delete_time = start_search_time;
 			if (key) {
 				if(key->key==8)//press "<" button
@@ -655,31 +663,92 @@ static void handle_touch(struct wl_input_event *ev)
 				pre_key = NULL;
 
 				search_touch_pos_y_last = ev->touch_event.y;
-				start_search_selection_time = get_time_ticks();
 			}
 		}
 	} else {
 		if (ev->touch_event.value == 0) {
+			unsigned long diff_ticks = 0;
+			long diff_y = 0;
+
+			for (i = 4; i > 0; i--)
+			{
+				if (last_5_y[i])
+				{
+					diff_y = ev->touch_event.y - last_5_y[i];
+					diff_ticks = time_diff(ev->touch_event.ticks, last_5_y_time_ticks[i]);
+					break;
+				}
+			}
+
+			if (diff_ticks <= 0 || abs(article_moved_pixels) > SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD ||
+				abs(article_moved_pixels) < SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD)
+				finger_move_speed = 0;
+			else
+			{
+				// Event timesing is not good for short period due to the events are queued without timestamp
+				finger_move_speed = -(float)diff_y * ((float)seconds_to_ticks(1) / (float)diff_ticks);
+				if (abs(finger_move_speed) > SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD)
+				{
+					if (finger_move_speed > 0)
+					{
+						if (display_mode == DISPLAY_MODE_ARTICLE)
+							finger_move_speed = ARTICLE_SMOOTH_SCROLL_SPEED_FACTOR *
+								(finger_move_speed - SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD);
+						else
+							finger_move_speed = LIST_SMOOTH_SCROLL_SPEED_FACTOR *
+								(finger_move_speed - SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD);
+					}
+					else
+					{
+						if (display_mode == DISPLAY_MODE_ARTICLE)
+							finger_move_speed = ARTICLE_SMOOTH_SCROLL_SPEED_FACTOR *
+								(finger_move_speed + SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD);
+						else
+							finger_move_speed = LIST_SMOOTH_SCROLL_SPEED_FACTOR *
+								(finger_move_speed + SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD);
+					}
+				}
+				else
+					finger_move_speed = 0;
+			}
+
+			if (finger_move_speed != 0)
+			{
+				time_scroll_article_last = ev->touch_event.ticks;
+			}
+
 			article_moved = false;
-			if (b_show_scroll_bar)
+			if (finger_move_speed == 0 && b_show_scroll_bar)
 			{
 				b_show_scroll_bar = 0;
 				show_scroll_bar(0); // clear scroll bar
 			}
 			article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 			article_moved_pixels = 0;
-			touch_y_last_unreleased    = 0;
+			touch_y_last_unreleased = 0;
 			start_move_time = 0;
 
 			article_link_number = get_activated_article_link_number();
 			if(article_link_number>=0)
 			{
-				init_invert_link();
-				if (article_offset == 0)
+				if (link_to_be_inverted >= 0)
 				{
+					if (link_currently_inverted >= 0)
+						invert_link(link_currently_inverted);
+					invert_link(link_to_be_inverted);
+				}
+				if (finger_move_speed == 0)
+				{
+					init_invert_link();
 					last_display_mode = display_mode;
 					display_mode = DISPLAY_MODE_ARTICLE;
 					open_article_link_with_link_number(article_link_number);
+				}
+				else
+				{
+					if (link_currently_inverted >= 0)
+						invert_link(link_currently_inverted);
+					init_invert_link();
 				}
 				return;
 			}
@@ -687,30 +756,49 @@ static void handle_touch(struct wl_input_event *ev)
 			reset_article_link_number();
 			article_touch_down_handled = 0;
 		} else {
-			article_offset = 0;
+			finger_move_speed = 0;
+
 			if(touch_y_last_unreleased == 0)
 			{
 				touch_y_last_unreleased = ev->touch_event.y;
-				last_unreleased_time = get_time_ticks();
+				last_unreleased_time = ev->touch_event.ticks;
 				reset_article_link_number();
 				article_moved_pixels = 0;
+				last_5_y[0] = ev->touch_event.y;
+				last_5_y_time_ticks[0] = ev->touch_event.ticks;
+				for (i = 1; i < 5; i++)
+					last_5_y[i] = 0;
+
 			}
-			else if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
+			else
 			{
 				article_moved_pixels += touch_y_last_unreleased - ev->touch_event.y;
 				if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
 				{
-					display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
+					if (finger_move_speed == 0)
+						display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
 					touch_y_last_unreleased = ev->touch_event.y;
+					for (i = 4; i >= 1; i--)
+					{
+						last_5_y[i] = last_5_y[i-1];
+						last_5_y_time_ticks[i] = last_5_y_time_ticks[i-1];
+					}
+					last_5_y[0] = ev->touch_event.y;
+					last_5_y_time_ticks[0] = ev->touch_event.ticks;
 					b_show_scroll_bar = 1;
 					article_scroll_pixel = 1;
 				}
-				//else if (article_moved_pixels < article_scroll_pixel &&
-				//	time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.2))
-				//{
-				//	touch_y_last_unreleased = ev->touch_event.y;
-				//	last_unreleased_time = get_time_ticks();
-				//}
+				else if (article_moved_pixels < article_scroll_pixel &&
+					time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.075))
+				{
+					article_moved_pixels = 0;
+					touch_y_last_unreleased = ev->touch_event.y;
+					last_unreleased_time = ev->touch_event.ticks;
+					last_5_y[0] = ev->touch_event.y;
+					last_5_y_time_ticks[0] = ev->touch_event.ticks;
+					for (i = 1; i < 5; i++)
+						last_5_y[i] = 0;
+				}
 
 				if (abs(article_moved_pixels) > ARTICLE_MOVED_THRESHOLD)
 				{
@@ -790,11 +878,11 @@ int wikilib_run(void)
 			sleep = 0;
 		else if (!more_events && display_mode == DISPLAY_MODE_HISTORY && render_history_with_pcf())
 			sleep = 0;
-		//if (article_offset != 0)
-		//{
-		//	scroll_article();
-		//	sleep = 0;
-		//}
+		if (finger_move_speed != 0)
+		{
+			scroll_article();
+			sleep = 0;
+		}
 
 #ifdef INCLUDED_FROM_KERNEL
 		time_now = get_time_ticks();
@@ -890,7 +978,7 @@ int wikilib_run(void)
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
 			handle_touch(&ev);
-			last_event_time = get_time_ticks();
+			last_event_time = ev.touch_event.ticks;
 			break;
 		default:
 			more_events = 0;

@@ -283,7 +283,7 @@ void init_invert_link(void);
 void invert_link(int article_link_number);
 int load_init_article(long);
 #endif
-void msg_on_lcd(int x, int y, char *msg);
+void msg_on_lcd(int x, int y, char *fmt, ...);
 void msg_on_lcd_clear(int x, int y);
 void show_scroll_bar(int);
 
