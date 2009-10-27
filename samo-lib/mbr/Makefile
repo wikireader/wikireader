@@ -104,7 +104,9 @@ endef
 
 # Applications for the boot loader
 
-$(call MAKE_APP,menu,misc.o,splash.h empty.h adjust.h)
+IMAGE_HEADERS = splash.h empty.h adjust.h
+
+$(call MAKE_APP,menu,misc.o,${IMAGE_HEADERS})
 $(call MAKE_APP,hello,misc.o)
 $(call MAKE_APP,memory-test,misc.o)
 $(call MAKE_APP,hw-test,misc.o)
@@ -137,7 +139,7 @@ install: all
 
 .PHONY: clean
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map splash.h empty.h *.rom
+	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map *.rom ${IMAGE_HEADERS}
 
 # application headers
 %.header: %.c
