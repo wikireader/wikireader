@@ -92,9 +92,9 @@ bool article_moved = false;
 #define ARTICLE_MOVED_THRESHOLD 1
 #define SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD 10
 #define SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD 150
-#define SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD 60
-#define LIST_SMOOTH_SCROLL_SPEED_FACTOR 4
-#define ARTICLE_SMOOTH_SCROLL_SPEED_FACTOR 2.5
+#define SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD 50
+#define LIST_SMOOTH_SCROLL_SPEED_FACTOR 5
+#define ARTICLE_SMOOTH_SCROLL_SPEED_FACTOR 3
 int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_PIXEL;
 int article_moved_pixels = 0;
 extern int link_to_be_inverted;
@@ -674,7 +674,7 @@ static void handle_touch(struct wl_input_event *ev)
 			{
 				if (last_5_y[i])
 				{
-					diff_y = ev->touch_event.y - last_5_y[i];
+					diff_y =  last_5_y[i] - ev->touch_event.y;
 					diff_ticks = time_diff(ev->touch_event.ticks, last_5_y_time_ticks[i]);
 					break;
 				}
@@ -686,7 +686,7 @@ static void handle_touch(struct wl_input_event *ev)
 			else
 			{
 				// Event timesing is not good for short period due to the events are queued without timestamp
-				finger_move_speed = -(float)diff_y * ((float)seconds_to_ticks(1) / (float)diff_ticks);
+				finger_move_speed = (float)diff_y * ((float)seconds_to_ticks(1) / (float)diff_ticks);
 				if (abs(finger_move_speed) > SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD)
 				{
 					if (finger_move_speed > 0)
@@ -776,7 +776,9 @@ static void handle_touch(struct wl_input_event *ev)
 				if(abs(touch_y_last_unreleased - ev->touch_event.y) >=article_scroll_pixel)
 				{
 					if (finger_move_speed == 0)
+					{
 						display_article_with_pcf(touch_y_last_unreleased - ev->touch_event.y);
+					}
 					touch_y_last_unreleased = ev->touch_event.y;
 					for (i = 4; i >= 1; i--)
 					{

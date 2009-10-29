@@ -47,10 +47,11 @@
 #include "bigram.h"
 
 #define MAX_SCROLL_SECONDS 3
-#define SCROLL_SPEED_FRICTION 0.9
+#define LIST_SCROLL_SPEED_FRICTION 0.6
+#define ARTICLE_SCROLL_SPEED_FRICTION 0.6
 #define SCROLL_UNIT_SECOND 0.1
 #define LINK_ACTIVATION_TIME_THRESHOLD 0.1
-#define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.25
+#define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.35
 
 extern long finger_move_speed;
 extern int last_display_mode;
@@ -1222,7 +1223,10 @@ float scroll_speed()
 {
 	float speed;
 
-	speed = (float)finger_move_speed * SCROLL_SPEED_FRICTION;
+	if (display_mode == DISPLAY_MODE_ARTICLE)
+		speed = (float)finger_move_speed * ARTICLE_SCROLL_SPEED_FRICTION;
+	else
+		speed = (float)finger_move_speed * LIST_SCROLL_SPEED_FRICTION;
 	if (abs(speed) < 1 / SCROLL_UNIT_SECOND)
 		speed = 0;
 	return speed;
@@ -1498,6 +1502,7 @@ int load_init_article(long idx_init_article)
 void display_link_article(long idx_article)
 {
 
+	request_y_pos = 0;
 	if (idx_article == RESTRICTED_MARK_LINK)
 	{
 		filter_option();
@@ -1595,7 +1600,7 @@ void set_article_link_number(int num, unsigned long event_time)
 		link_to_be_activated = num;
 		link_to_be_activated_start_time = event_time;
 	}
-	else if (link_currently_activated != num) // if on another link, deactivate both links since figer moves
+	else if (link_currently_activated != num || link_to_be_activated != num) // if on another link, deactivate both links since figer moves
 	{
 		reset_article_link_number();
 	}
@@ -1633,10 +1638,9 @@ int get_activated_article_link_number()
 
 void repaint_invert_link()
 {
-	if (link_currently_activated >= 0)
+	if (link_currently_inverted >= 0)
 	{
-		invert_link(link_currently_activated);
-		link_to_be_inverted = -1;
+		invert_link(link_currently_inverted);
 	}
 }
 
@@ -1681,13 +1685,15 @@ int check_invert_link()
 		link_currently_activated = link_to_be_activated;
 		link_to_be_inverted = link_to_be_activated;
 		link_to_be_inverted_start_time = link_to_be_activated_start_time;
+		link_to_be_activated = -1;
 		if (link_currently_inverted >= 0)
 		{
 			invert_link(link_currently_inverted);
 			link_currently_inverted = -1;
 		}
 	}
-	else if (link_to_be_inverted >= 0 && time_diff(get_time_ticks(), link_to_be_inverted_start_time) >=
+
+	if (link_to_be_inverted >= 0 && time_diff(get_time_ticks(), link_to_be_inverted_start_time) >=
 		seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD))
 	{
 		if (link_currently_inverted >= 0)
