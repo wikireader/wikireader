@@ -925,27 +925,15 @@ void render_wikipedia_license_text()
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_8);
-		start_x = 18;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_9);
-		start_x = 0;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_10);
-		start_x = 0;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;
 		draw_string(LICENSE_TEXT_11);
-		start_x = 0;
-		end_x = lcd_draw_buf.current_x;
-		buf_draw_horizontal_line(start_x + LCD_LEFT_MARGIN, end_x + LCD_LEFT_MARGIN);
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height + APACE_AFTER_LICENSE_TEXT;
 	}
 #endif
