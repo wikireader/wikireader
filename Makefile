@@ -299,14 +299,34 @@ stamp-r-clean${1}:
 endef
 
 # ------------------------------------------------
-# set this to make even distibution over 27 blocks
-# need a better way of setting this
+# get the number of articles from the indexer
+# and compute how many articles per instance
 # ------------------------------------------------
-ARTICLE_COUNT_K ?= 114
-MACHINE_COUNT = 9
-PARALLEL_BUILD = 3
+TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' work/counts.text || echo 100)
+MACHINE_COUNT ?= 9
+PARALLEL_BUILD ?= 3
+TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
+ARTICLE_COUNT_K := $(shell expr '(' '(' ${TOTAL_ARTICLES} ')' /  ${TOTAL_INSTANCES} + 999 ')' / 1000)
 
-MAX_BLOCK := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD} - 1)
+MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
+
+# check that the counts are correct to render all articles
+.PHONY: print-render-info
+print-render-info:
+	@echo TOTAL_ARTICLES  = ${TOTAL_ARTICLES}
+	@echo MACHINE_COUNT   = ${MACHINE_COUNT}
+	@echo PARALLEL_BUILD  = ${PARALLEL_BUILD}
+	@echo TOTAL_INSTANCES = ${TOTAL_INSTANCES}
+	@echo ARTICLE_COUNT_K = ${ARTICLE_COUNT_K} k articles per instance
+	@echo files = 0 .. ${MAX_BLOCK}
+	@t=$$((${MACHINE_COUNT} * ${PARALLEL_BUILD} * ${ARTICLE_COUNT_K} * 1000)); \
+	if [ $${t} -ge ${TOTAL_ARTICLES} ]; \
+	 then \
+	   echo Counts calculation is OK ; \
+	 else \
+	   echo Counts calculation has a problem: to_build=$${t} '<' ${TOTAL_ARTICLES}; \
+	 fi
+
 
 # the first(0) and last(MAX_BLOCK) are special
 
