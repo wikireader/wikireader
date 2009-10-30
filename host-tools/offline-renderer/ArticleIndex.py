@@ -35,6 +35,7 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 redirected_to = re.compile(r'#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
+# Note: the value of the key is ignored (only 'key in' test is used)
 non_article_categories = {
     # en
     "t": 1,
@@ -349,7 +350,7 @@ pragma journal_mode = memory;
         global verbose
 
         match = non_articles.search(text)
-        if match and non_article_categories[match.group(1)).lower()]:
+        if match and match.group(1).lower() in non_article_categories:
             if verbose:
                 print 'Non-article Title:', text
             return False
@@ -369,7 +370,7 @@ pragma journal_mode = memory;
             redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
 
             match = non_articles.search(text)
-            if match and non_article_categories[match.group(1)).lower()]:
+            if match and match.group(1).lower() in non_article_categories:
                 if verbose:
                     print 'Non-article Redirect:', text
                 return
