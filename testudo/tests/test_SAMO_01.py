@@ -314,6 +314,31 @@ def test008_keys():
     key = p.read(4)
     info('key (none) = %s' % key)
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
+    p.send('\n') # exit key test
+
+    relay.on(RELAY_LCD_V0)
+    relay_increase = RELAY_RANDOM_KEY
+    relay_decrease = RELAY_SEARCH_KEY
+    relay_set = RELAY_HISTORY_KEY
+
+    for i in range(20):
+        time.sleep(VOLTAGE_SAMPLE_TIME)
+        actual = dvm.voltage
+        if actual > LCD_V0 + delta:
+            relay.set(relay_decrease)
+            relay.off(relay_increase)
+        elif actual < LCD_V0 - delta:
+            relay.set(relay_increase)
+            relay.off(relay_decrease)
+        else:
+            relay.clear(relay_set)
+            relay.clear(relay_increase)
+            relay.off(relay_decrease)
+            break
+
+    time.sleep(VOLTAGE_SAMPLE_TIME)
+    relay.off(relay_set)
+    relay.off(RELAY_LCD_V0)
 
     test004_measure_voltages()
 
