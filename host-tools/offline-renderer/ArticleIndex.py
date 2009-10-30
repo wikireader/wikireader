@@ -16,7 +16,12 @@ import subprocess
 import sqlite3
 import FilterWords
 import FileScanner
+import codecs
 
+# Python print often defaults to ASCII, just force it to utf-8
+# **this does not appear to work, used repr() below, but that
+# **produces ugly diagnostics --- need to find a proper fix
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 # this _must_ be in ascending ASCII sequence
 KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
@@ -30,7 +35,59 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 redirected_to = re.compile(r'#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # Filter out Wikipedia's non article namespaces
-non_articles = re.compile(r'(User|Wikipedia|File|Talk|MediaWiki|T(emplate)?|Help|Cat(egory)?|P(ortal)?)\s*:', re.IGNORECASE)
+non_article_categories = {
+    # en
+    "t": 1,
+    "cat": 1,
+    "p": 1,
+    "media": 1,
+    "special": 1,
+    "talk": 1,
+    "user": 1,
+    "user talk": 1,
+    "wikipedia": 1,
+    "wikipedia talk": 1,
+    "file": 1,
+    "file talk": 1,
+    "mediawiki": 1,
+    "mediawiki talk": 1,
+    "template": 1,
+    "template talk": 1,
+    "help": 1,
+    "help talk": 1,
+    "category": 1,
+    "category talk": 1,
+    "portal": 1,
+    "portal talk": 1,
+
+    # es
+    "media": 1,
+    "especial": 1,
+    "discusión": 1,
+    "usuario": 1,
+    "usuario discusión": 1,
+    "wikipedia": 1,
+    "wikipedia discusión": 1,
+    "archivo": 1,
+    "archivo discusión": 1,
+    "mediawiki": 1,
+    "mediawiki discusión": 1,
+    "plantilla": 1,
+    "plantilla discusión": 1,
+    "ayuda": 1,
+    "ayuda discusión": 1,
+    "categoría": 1,
+    "categoría discusión": 1,
+    "portal": 1,
+    "portal discusión": 1,
+    "wikiproyecto": 1,
+    "wikiproyecto discusión": 1,
+    "anexo": 1,
+    "anexo discusión": 1,
+
+}
+
+non_articles = re.compile(r'([^:]+)\s*:')
 
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
@@ -288,10 +345,11 @@ pragma journal_mode = memory;
 
 
     def title(self, text, seek):
-        global non_articles
+        global non_articles, non_article_categories
         global verbose
 
-        if non_articles.search(text):
+        match = non_articles.search(text)
+        if match and non_article_categories[match.group(1)).lower()]:
             if verbose:
                 print 'Non-article Title:', text
             return False
@@ -300,7 +358,7 @@ pragma journal_mode = memory;
 
 
     def redirect(self, title, text, seek):
-        global non_articles, redirected_to, whitespaces
+        global non_articles, non_article_categories, redirected_to, whitespaces
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
@@ -309,17 +367,23 @@ pragma journal_mode = memory;
         if match:
             redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
             redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
-            if non_articles.search(text):
+
+            match = non_articles.search(text)
+            if match and non_article_categories[match.group(1)).lower()]:
                 if verbose:
                     print 'Non-article Redirect:', text
                 return
 
-            self.redirects[title] = redirect_title
-            self.redirect_count += 1
-            if verbose:
-                print 'Redirect: %s -> %s' % (title.encode('utf-8'), redirect_title.encode('utf-8'))
+            if '' == redirect_title:
+                print 'Empty Redirect for: %s' % repr(title.encode('utf-8'))
+            else:
+                self.redirects[title] = redirect_title
+                self.redirect_count += 1
+                if verbose:
+                    print 'Redirect: %s -> %s' % (title.encode('utf-8'), redirect_title.encode('utf-8'))
         else:
-            print 'Invalid Redirect: %s -> %s' % (title.encode('utf-8'), text.encode('utf-8'))
+            text = self.translate(text).strip(u'\u200e\u200f')
+            print 'Invalid Redirect: %s -> %s\n' % (title.encode('utf-8'), repr(text.encode('utf-8')))
 
 
     def body(self, title, text, seek):
@@ -397,6 +461,8 @@ pragma journal_mode = memory;
         also handles redirects
         returns: [index, fnd]
         """
+        if '' == title:
+            raise CycleError('Empty title detected')
         if level > 10:
             raise CycleError('Redirect cycle: ' + title)
         try:
