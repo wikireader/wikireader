@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
-# DESCRIPTION: Simple FLASH programmer
+# DESCRIPTION: Article Parser
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
@@ -18,9 +18,6 @@ verbose = False
 PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
 
 # Regular expressions for parsing the XML
-
-
-
 subs = [
     (re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL), ''),
 
@@ -32,10 +29,7 @@ subs = [
 
     (re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE), '\n'),
 
-#img = re.compile(r'\[\[(file|image):(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE)
     (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
-
-#img = re.compile(r'\[\[(file|image):([^\[]|\s|\[(\s|[^\[])*\]|\[\[(\s|[^\[])*\]\])*?\]{2,3}', re.IGNORECASE + re.DOTALL)
 
     (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
@@ -65,7 +59,7 @@ def usage(message):
     print '       --start=n               First artcle to process [1] (1k => 1000)'
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
     print '       --article-offsets=file  Article file offsets database input [offsets.db]'
-    print '       --just-cat              Replace php parset be "cat" for debugging'
+    print '       --just-cat              Replace php parser be "cat" for debugging'
     print '       --no-output             Do not run any parsing'
     exit(1)
 
@@ -168,7 +162,7 @@ def main():
             if verbose:
                 print 'Open:', filename
         f.seek(seek)
-              
+
         process_article_text(title.encode('utf-8'),  f.read(length), newf)
         if article_count != 'all':
             article_count -= 1
@@ -188,30 +182,13 @@ def main():
 def process_article_text(title, text, newf):
     global verbose
     global subs
-    #global end_article, gallery, comment, inline_ref
-    #global delete_tags, line_break, entities, img, language
 
     if verbose:
         print "[PA] " + title
 
-    #text = end_article.sub('', text)
-
-    #text = gallery.sub('', text)
-    #text = comment.sub('', text)
-    #text = inline_ref.sub('', text)
-
-    #text = delete_tags.sub('', text)
-    
-    
-    #text = line_break.sub('\n', text)
-    #text = language.sub('', text)
-    #text = img.sub('', text)
-    
-    #text = entities.sub(r'&\1;', text)
-
     for e,r in subs:
         text = e.sub(r, text)
-    
+
     if newf:
         newf.write(title[1:]);  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')

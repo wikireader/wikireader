@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
-# DESCRIPTION: Simple FLASH programmer
+# DESCRIPTION: Filter bad words
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
