@@ -17,6 +17,7 @@
 #
 
 CFLAGS += -Wall -Werror -I. -gstabs -mlong-calls -fno-builtin -Os -mc33pe $(INCLUDES)
+ASFLAGS = -mc33pe --fatal-warnings
 
 # protection in case some Makefile includes this too early
 .PHONY: this-is-included-too-early
@@ -42,6 +43,13 @@ print-%:
 ${BUILD_PREFIX}%.o: %.c
 	$(GCC) -M $(CFLAGS) $< > ${@:.o=.d}
 	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
+
+%.o: %.s
+	${AS} -o $@ ${ASFLAGS} -ahlsm=${@:.o=.lst} $<
+
+${BUILD_PREFIX}%.o: %.s
+	${AS} -o $@ ${ASFLAGS} -ahlsm=${@:.o=.lst} $<
+
 
 -include $(wildcard *.d) dummy
 -include $(wildcard ${BUILD_PREFIX}*.d) dummy
