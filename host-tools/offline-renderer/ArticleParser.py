@@ -33,12 +33,12 @@ subs = [
 
     (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
-# Wikipedia's installed Parser extension tags
-# <categorytree>, <charinsert>, <hiero>, <imagemap>, <inputbox>, <poem>,
-# <pre>, <ref>, <references>, <source>, <syntaxhighlight> and <timeline>
-# All referenced using special characters
-# Ex: <timeline> --> &lt;timeline&gt;
-# For now, we're only going to remove <timeline>
+    # Wikipedia's installed Parser extension tags
+    # <categorytree>, <charinsert>, <hiero>, <imagemap>, <inputbox>, <poem>,
+    # <pre>, <ref>, <references>, <source>, <syntaxhighlight> and <timeline>
+    # All referenced using special characters
+    # Ex: <timeline> --> &lt;timeline&gt;
+    # For now, we're only going to remove <timeline>
     (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
@@ -46,6 +46,8 @@ subs = [
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;')
 
+    # change % so php: wr_parser does not convert them
+    (re.compile(r'%', re.IGNORECASE), r'%25')
 ]
 
 
