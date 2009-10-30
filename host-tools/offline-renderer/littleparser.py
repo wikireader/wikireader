@@ -2,15 +2,16 @@
 # -*- coding: utf-8 -*-
 # COPYRIGHT: Openmoko Inc. 2009
 # LICENSE: GPL Version 3 or later
-# DESCRIPTION: Simple FLASH programmer
+# DESCRIPTION: Converting entities to unicode
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
 from HTMLParser import HTMLParser
 import unicodedata
 import htmlentitydefs
-import urllib
 import re
+import codecs
+import sys
 
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
@@ -19,8 +20,7 @@ class LittleParser(HTMLParser):
 
     handles all of these:
       &eacute;
-      %20
-      &#12ac;
+      &#1234;
       &amp;mu;
     """
     def __init__ (self):
@@ -44,10 +44,33 @@ class LittleParser(HTMLParser):
 
         self.reset()
         self.buffer = u''
-        unq = entities.sub(r'&\1;', urllib.unquote(text))
+        unq = entities.sub(r'&\1;', text)
         try:
             self.feed(unq)
+            self.close()
         except KeyError:
             print 'failed on: "%s" using-> "%s"' % (text, unq)
             return unq
         return self.buffer
+
+
+# tests
+def main():
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+    p = LittleParser().translate
+    text = 'start test: [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]  [&mu;] [&amp;mu;]  [&egrave;] end:test'
+    correct = u'start test: [\xe8] [\u04d2] [\xe9] [%20] [%ff]  [\u03bc] [\u03bc]  [\xe8] end:test'
+    result = p(text)
+    print text
+    print result
+    print repr(result)
+    if correct == result:
+        print 'PASS:'
+    else:
+        print 'FAIL: mismatch'
+
+
+# run the program
+if __name__ == "__main__":
+    main()
+
