@@ -133,7 +133,7 @@ git pull --rebase
 # copy the index from another machine
 if [ -n "${index}" ]
 then
-  list='articles.pickle offsets.pickle counts.text'
+  list='articles.db offsets.db counts.text'
   items=
   for i in ${list}
   do
