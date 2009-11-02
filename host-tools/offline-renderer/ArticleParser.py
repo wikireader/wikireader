@@ -44,10 +44,10 @@ subs = [
 
     (re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE), ''),
 
-    (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;')
+    (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
     # change % so php: wr_parser does not convert them
-    (re.compile(r'%', re.IGNORECASE), r'%25')
+    (re.compile(r'%', re.IGNORECASE), r'%25'),
 ]
 
 
