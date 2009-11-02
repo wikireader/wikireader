@@ -47,6 +47,7 @@ RELAY_LCD_V4 = 16
 
 # volts
 LCD_V0 = 21.0
+LCD_V0_DELTA = 0.1
 
 # power supply (volts, amps)
 SUPPLY_STANDARD_VOLTAGE = 3.0
@@ -316,6 +317,7 @@ def test008_keys():
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
     p.send('\n') # exit key test
 
+    info('Calibrate LCD Voltages to %7.2f V +- %7.2f V' % (LCD_V0, LCD_V0_DELTA))
     relay.on(RELAY_LCD_V0)
     relay_increase = RELAY_RANDOM_KEY
     relay_decrease = RELAY_SEARCH_KEY
@@ -324,10 +326,10 @@ def test008_keys():
     for i in range(20):
         time.sleep(VOLTAGE_SAMPLE_TIME)
         actual = dvm.voltage
-        if actual > LCD_V0 + delta:
+        if actual > LCD_V0 + LCD_V0_DELTA:
             relay.set(relay_decrease)
             relay.off(relay_increase)
-        elif actual < LCD_V0 - delta:
+        elif actual < LCD_V0 - LCD_V0_DELTA:
             relay.set(relay_increase)
             relay.off(relay_decrease)
         else:
@@ -340,6 +342,7 @@ def test008_keys():
     relay.off(relay_set)
     relay.off(RELAY_LCD_V0)
 
+    info('Calibrate LCD Voltages Completed; New values are:')
     test004_measure_voltages()
 
     info('sending auto power off sequence')
