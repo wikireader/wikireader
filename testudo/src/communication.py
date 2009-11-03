@@ -38,13 +38,15 @@ class SerialPort():
     def waitFor(self, s, timeout = 30):
         regexp = re.compile(s)
         buffer = ''
+        start_time = time.time()
         while True:
             m = regexp.search(buffer)
             if m:
                 return m
             while 0 == self.s.inWaiting():
                 time.sleep(0.01)
-
+                if time.time() - start_time >= timeout:
+                    return False
             buffer = buffer + self.s.read(1)
 
     def send(self, s):

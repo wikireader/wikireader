@@ -172,8 +172,10 @@ class Sample:
 
     def write(self, message, style = None):
         gtk.gdk.threads_enter()
-        if 'FAIL:' == message[0:5]:
+        if message.startswith('FAIL:'):
             self.testFailed = True
+        if message.startswith('ACTION:') and None == style:
+            style = 'action-text'
         if style:
             self.buffer.insert_with_tags(self.buffer.get_end_iter(), message,
                                   self.buffer.get_tag_table().lookup(style))
@@ -349,6 +351,10 @@ class Sample:
         tag_pass = self.buffer.create_tag("pass-text",
                                           size_points = 24.0,
                                           foreground = "green")
+        self.buffer.create_tag('action-text',
+                               size_points = 18.0,
+                               underline = pango.UNDERLINE_NONE,
+                               foreground = 'orange')
         self.buffer.create_tag('fixed-text',
                                size_points = 10.0,
                                family = 'Monospace',

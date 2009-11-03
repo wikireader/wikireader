@@ -262,8 +262,14 @@ def test007_program_flash():
     relay.off(RELAY_PROGRAM_FLASH)
 
 
-def test008_keys():
-    """Test the three function keys"""
+def test008_internal():
+    """Run internal test program
+
+    Memory Check
+    Test three function keys
+    Calibrate LCD contrast voltage
+    Check software power off"""
+
     global debug, psu, dvm, relay
     p = communication.SerialPort(port = CPU_SERIAL)
 
@@ -278,32 +284,38 @@ def test008_keys():
     time.sleep(RESET_TIME)
     relay.off(RELAY_RESET)
 
-    p.waitFor('menu\?')
+    fail_unless(p.waitFor('menu\?'), 'boot loader failed to start')
     p.send(' ')
 
     m_mem = p.waitFor('(.)\.\s+[mM]emory\s+[cC]heck')
-    m_key = p.waitFor('(.)\.\s+[kK]ey\s+[tT]est')
+    fail_unless(m_mem, 'Boot Loader missing Memory Check option')
 
-    p.waitFor('[sS]election:')
+    m_key = p.waitFor('(.)\.\s+[kK]ey\s+[tT]est')
+    fail_unless(m_key, 'Boot Loader missing Key Test option')
+
+    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
     p.send(m_mem.group(1))
 
     m_mem = p.waitFor('[mM]emory:[^\]]+\]')
+    fail_unless(m_mem, 'Memory Check did not respond')
     info(m_mem.group(0))
 
-    m_mem = p.waitFor('(PASS|FAIL):\s+[mM]emory\s+[cC]heck')
-    fail_unless('PASS' == m_mem.group(1), 'Memory check')
+    m_mem = p.waitFor('(PASS|FAIL):\s+(.*)\n')
+    fail_unless(m_mem, 'Memory Check did not respond')
+    fail_unless('PASS' == m_mem.group(1), m_mem.group(2))
+    info(m_mem.group(1) + ': ' + m_mem.group(2))
 
-    p.waitFor('[sS]election:')
+    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
     p.send(m_key.group(1))
 
     for desc, r, k in KEY_LIST:
         relay.off(r)
-        p.waitFor('keys = ')
+        fail_unless(p.waitFor('keys = '), 'Key Test did not respond')
         key = p.read(4)
         info('key (none) = %s' % key)
         fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
         relay.on(r)
-        p.waitFor('keys = ')
+        fail_unless(p.waitFor('keys = '), 'Key Test did not respond')
         key = p.read(4)
         i = psu.current
         info('Supply current = %7.3f mA' % (1000 * i))
@@ -311,7 +323,7 @@ def test008_keys():
         fail_unless(k == key, 'Invalid keys: wanted %s, got %s' % (k, key))
         relay.off(r)
 
-    p.waitFor('keys = ')
+    fail_unless(p.waitFor('keys = '), 'Key Test did not respond')
     key = p.read(4)
     info('key (none) = %s' % key)
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
@@ -319,21 +331,24 @@ def test008_keys():
     # exit key test and wait for prompt
     # contrast control should then be active
     p.send('\n')
-    p.waitFor('selection:')
+    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
 
-    info('Calibrate LCD Voltages to %7.2f V +- %7.2f V' % (LCD_V0, LCD_V0_DELTA))
+    info('Calibrate LCD Voltages to %7.3f V +- %7.3f V' % (LCD_V0, LCD_V0_DELTA))
     relay.on(RELAY_LCD_V0)
     relay_increase = RELAY_RANDOM_KEY
     relay_decrease = RELAY_SEARCH_KEY
     relay_set = RELAY_HISTORY_KEY
 
-    for i in range(20):
+    v0_max = LCD_V0 + LCD_V0_DELTA
+    v0_min = LCD_V0 - LCD_V0_DELTA
+    actual = 0
+    for i in range(50):
         time.sleep(VOLTAGE_SAMPLE_TIME)
         actual = dvm.voltage
-        if actual > LCD_V0 + LCD_V0_DELTA:
+        if actual > v0_max:
             relay.set(relay_decrease)
             relay.off(relay_increase)
-        elif actual < LCD_V0 - LCD_V0_DELTA:
+        elif actual < v0_min:
             relay.set(relay_increase)
             relay.off(relay_decrease)
         else:
@@ -348,6 +363,9 @@ def test008_keys():
     time.sleep(VOLTAGE_SAMPLE_TIME)
     relay.off(relay_set)
 
+    fail_if(actual > v0_max or actual < v0_min,
+            'LCD contrast voltage: %f7.3 out of range: %7.3f .. %7.3f' % (actual, v0_min, v0_max))
+
     info('Calibrate LCD Voltages Completed; New values are:')
     test004_measure_voltages()
 
@@ -356,9 +374,12 @@ def test008_keys():
     del p
     p = None
 
-    time.sleep(SETTLING_TIME)
-    i = psu.current
-    info('Supply current = %7.3f mA' % (1000 * i))
+    for n in range(5):
+        time.sleep(SETTLING_TIME)
+        i = psu.current
+        info('Supply current = %7.3f mA' % (1000 * i))
+        if abs(i) < MAXIMUM_LEAKAGE_CURRENT:
+            break
     fail_if(abs(i) > MAXIMUM_LEAKAGE_CURRENT, "Failed auto power off, current %7.3f mA is too high" % (i * 1000))
 
 

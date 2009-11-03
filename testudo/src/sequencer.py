@@ -31,6 +31,11 @@ def info(fd, message):
     if verbose:
         fd.write('INFO:%s\n' % message)
 
+def request_action(fd, message):
+    global verbose
+    if verbose:
+        fd.write('ACTION:%s\n' % message)
+
 def fail_if(cond, message):
     if cond:
         raise AssertionError, message
@@ -54,6 +59,7 @@ def runTests(fd, name, debug, **kwargs):
         'module_name': module_name,
         'debug': debug,
         'info': lambda message : info(fd, message),
+        'request_action': lambda message : request_action(fd, message),
         'fail_unless': lambda cond, message : fail_if(not cond, message),
         'fail_if': lambda cond, message : fail_if(cond, message),
         'global_args': kwargs,
