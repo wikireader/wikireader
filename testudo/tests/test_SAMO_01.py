@@ -315,7 +315,11 @@ def test008_keys():
     key = p.read(4)
     info('key (none) = %s' % key)
     fail_unless('0x00' == key, 'Invalid keys: wanted %s, got %s' % ('0x00', key))
-    p.send('\n') # exit key test
+
+    # exit key test and wait for prompt
+    # contrast control should then be active
+    p.send('\n')
+    p.waitFor('selection:')
 
     info('Calibrate LCD Voltages to %7.2f V +- %7.2f V' % (LCD_V0, LCD_V0_DELTA))
     relay.on(RELAY_LCD_V0)
@@ -338,9 +342,11 @@ def test008_keys():
             relay.off(relay_decrease)
             break
 
+    relay.clear(relay_increase)
+    relay.clear(relay_decrease)
+    relay.off(RELAY_LCD_V0)
     time.sleep(VOLTAGE_SAMPLE_TIME)
     relay.off(relay_set)
-    relay.off(RELAY_LCD_V0)
 
     info('Calibrate LCD Voltages Completed; New values are:')
     test004_measure_voltages()
