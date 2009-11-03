@@ -40,7 +40,7 @@
 
 
 // a type that can hold the path to the file
-typedef char FilenameType[81];
+typedef char FilenameType[128 + 1];
 
 // this determines the maximum files that can be open simultaneously
 typedef struct {
@@ -359,6 +359,23 @@ Forth_CellType FileSystem_WriteOnly(void)
 Forth_CellType FileSystem_bin(Forth_CellType fam)
 {
 	return fam;
+}
+
+
+Forth_ReturnType FileSystem_CreateDirectory(const Forth_PointerType directoryname, Forth_CellType length)
+{
+	Forth_ReturnType r = {0, FR_OK};
+	FilenameType DirectoryNameBuffer;
+
+	if (!ForthBufferToCString(DirectoryNameBuffer, sizeof(DirectoryNameBuffer),
+				  directoryname, length)) {
+		r.rc = FR_INVALID_NAME;
+		return r;
+	}
+
+	r.rc = f_mkdir(DirectoryNameBuffer);
+
+	return r;
 }
 
 

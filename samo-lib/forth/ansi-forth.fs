@@ -2336,6 +2336,14 @@ end-code
 \ Directory access functions
 \ ==========================
 
+code create-directory     :: create-directory        ( b u -- ior )
+        ld.w    %r7, [%r1]+                          ; count
+        xld.w   %r6, [%r1]                           ; buffer
+        xcall   FileSystem_CreateDirectory
+        ld.w    [%r1], %r5                           ; ior
+        NEXT
+end-code
+
 code open-directory       :: open-directory          ( b u -- dirid ior )
         ld.w    %r7, [%r1]                           ; count
         xld.w   %r6, [%r1 + 4]                       ; buffer
@@ -2349,7 +2357,7 @@ code close-directory      :: close-directory         ( dirid -- ior )
         ld.w    %r6, [%r1]                           ; dirid
         xcall   FileSystem_CloseDirectory
         ld.w    [%r1], %r5                           ; ior
-        next
+        NEXT
 end-code
 
 code read-directory       :: read-directory          ( b u dirid -- u2 ior )

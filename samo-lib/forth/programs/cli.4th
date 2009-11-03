@@ -36,9 +36,22 @@ base @ decimal
   drop
   r>  close-directory drop ;
 
+
 \                                        -
 .( dir                                   - list the root directory )
 : dir ( -- ) ls ;
+
+
+\                                        -
+.( mkdir <dir>                           - create a new directory )
+
+: mkdir ( -- \ <string><space> )
+  bl parse          \ b u
+  create-directory  \ ior
+  ?dup if
+    cr ." mkdir error = " dec. drop exit
+  then
+;
 
 
 \                                        -
