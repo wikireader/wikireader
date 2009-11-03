@@ -3,10 +3,6 @@
 \ signal to testudo
 cr .( *START-TEST*) cr
 
-include key-test.4th
-test-keys-main
-include lcd-test.4th
-test-lcd-main
 include ctp-test.4th
 test-ctp-main
 include susptest.4th
