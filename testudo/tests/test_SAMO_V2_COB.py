@@ -357,7 +357,7 @@ def test008_internal():
             relay.set(relay_increase)
             relay.off(relay_decrease)
         else:
-            relay.clear(relay_set)
+            relay.clear(relay_set) # *** Do _NOT_ Save to FLASH
             relay.clear(relay_increase)
             relay.off(relay_decrease)
             break
