@@ -1,0 +1,231 @@
+Grifo a Small Kernel for WikiReader Hardware
+============================================
+
+This details the functions necessary to make a simplified kernel for
+the WikiReader.  The idea is to separate the kernel from the user
+applications through a simple system call interface.  This kernel will
+control all of the hardware access.
+
+The basic ideas for the design follow:
+
+
+Grifo functions
+===============
+
+ 1. Separate kernel from application
+ 2. The kernel loads the application from an application file
+ 3. Read buttons to determine which application file will be loaded at power on
+ 4. Console I/O for debugging
+ 5. Interrupt vector management
+ 6. Panic routine (register dump on LCD/Console)
+ 7. Event handler
+ 8. Suspend routine (must be in internal SRAM)
+ 9. Peripheral drivers
+10. File system handling (via FAT/MMC driver)
+11. System call interface (Use "int 0..3")
+12. Chain to another application file
+13. Miscellaneous services (e.g delay_us)
+14. Contrast control
+15. Read/Write access to FLASH ROM (or part of it)
+16. Auto detect SDRAM size to set stack pointer (if possible)
+17. Memory allocation system this should be configured
+    to use available space after program loaded and stack set up
+18. Watchdog system
+19. LCD control functions (get frame buffer address, picture-in-picture)
+
+
+Drivers
+=======
+
+ 1. Serial output (1024 byte buffer)
+ 2. Polled Serial output for panic
+ 3. Serial input (event buffer)
+ 4. Capacitive Touch Panel (CTP) (event buffer)
+ 5. Buttons (with de-bounce) (event buffer)
+ 6. Timer (32bit) (Polled)
+ 7. Analog (ADC) (Polled)
+ 8. LCD (With fixed width text display) (or direct frame buffer writes by application)
+ 9. SD Card (SPI) (Polled)
+10. FLASH memory (SPI) (Polled)
+11. SPI driver used by FLASH and SD Card above
+
+
+Watchdog Operation
+==================
+
+1. Generate NMI after 60 seconds
+2. Reconfigure to power off after 60 second
+3. Run user level call back (if set)
+4. Close any open files
+5. Turn off power
+
+
+Software Interrupts
+===================
+
+A. The GCC cross compiler uses the following mechanism
+
+  1. Inputs (if simple 32 bit values int/pointer) are passed in registers
+  2. 32/64 bit result is returned in registers
+  3. Keep all API calls simple i.e. no passing structures
+  4. pass 32 bit int or pointer
+
+  e.g.
+     a = func(w, x, y, z)
+
+     w -> r6
+     x -> r7
+     y -> r8
+     z -> r9
+     call func
+     r4 -> a
+     r5 -> a.high (if a was 64 bit value)
+
+  5. The CPU has 4 software interrupts: int 0, int 1, int 2, int 3
+  6. C requires r0..r3 and r15 to be preserved (r15 is the memory base pointer)
+  7. The compiler ought to take care of register saves and restores correctly
+  8. How to replace xcall with int X instruction?
+  9. How to pass system call number
+
+B. A method to implement call redirection (int 1)
+
+  1. r15 will be the user r15 value, not the kernel r15 value
+     so will need special care when using static/global variables.
+  2. No pointer/address validation has been done, each routine is
+     responsible for validating its own arguments.
+  3. Meets requirements of A.
+  4. SysCallTable1 could be generated at compile time
+
+;;; Application code
+;;; Each entry would be auto generated as a separate file
+;;; then made into a library
+
+        .global exit
+        exit:                   ; stack is all set up for normal C call
+                int     1
+                .short  SYSCALL_exit
+
+        .global power_off
+        power_off:              ; stack is all set up for normal C call
+                int     1
+                .short  SYSCALL_power_off
+
+;;; Kernel code
+;;; Needs a table                                                   ( stack state )
+        int1_handler:                      ; set in int_1 vector  ( pc psr )
+                pushn   %r0                ; save a reg           ( pc psr r0 )
+                ld.w    %r0, [%sp + 8]     ; address of SYSCALL_x
+                ld.uh   %r0, [%r0]         ; SYSCALL_x value
+                xadd    %r0, SysCallTable1 ; vector table start
+                ld.w    %r0, [%r0]         ; SYSCALL_x vector
+                ld.w    [%sp + 8], %r0     ; replace pc value     ( vect psr r0 )
+                popn    %r0                ; restore reg          ( vect psr )
+                reti                       ; jump to syscall routine with normal C stack
+
+Note: The above code will not quite work since xadd can only have a 26 bit value
+      for SysCallTable1, so the actual code will be more complex.  Most likely
+      more registers will be used and also code to save/restore R15 (__dp value)
+      will also be required.
+
+C. Suspend as a software interrupt (int 0)
+
+  1. Suspend must be in internal RAM
+  2. Only A0RAM is available
+  3. First 1K will be used for interrupt vectors
+  4. Use software interrupt to call suspend
+
+D. Spare (int 2)
+
+E. Spare (int 3)
+
+
+Available Memory Areas
+======================
+
+The grifo.lds file should contain this type of memory layout:
+(this is reserving 256 k for the kernel)
+
+MEMORY
+{
+        ksdram  (rwx): ORIGIN = 0x10000000,        LENGTH = 256k
+        sdram   (rwx): ORIGIN = 0x10000000 + 256k, LENGTH = 32M - 256k
+        a0ram   (rwx): ORIGIN = 0x00000000,        LENGTH = 8k
+        ivram   (rwx): ORIGIN = 0x00080000,        LENGTH = 12k
+        dstram  (rwx): ORIGIN = 0x00084000,        LENGTH = 2k
+}
+
+
+Memory Demands
+==============
+
+1. Interrupt vectors need 1 kByte Memory.
+
+   These can be initialised at kernel start so could be located at
+   0x00000000..0x000003ff which will overwrite the boot loader, but
+   kernel is already running by this tim so everything will be OK.
+
+   All vectors are initialised to call a panic routine at start up of
+   the kernel.  Each vector is configured by the driver that requires
+   it.
+
+2. Suspend must be located in A0RAM.
+
+   The suspend routine it cannot be in the SDRAM since it must control
+   the state of the SDRAM by switching it in and out of low power
+   self-refresh.  Therefore it needs to be in one of the internal SRAM
+   areas as there is 7kB of A0RAM still available after the interrupt
+   vector table it can be placed there.  This code cannot be loaded by
+   the elf loader as it might overwrite a critical part and crash the
+   boot process.  The suspend routine will have to be copied into
+   place after the kernel has finished setting up the interrupt vector
+   table.
+
+   If this can be created as position independent code then it can be
+   just placed in the A0RAM and a software interrupt vector allocated
+   to it.  Maybe it will have to be in assembler.  The handling of SD
+   Card an MMC driver can be in C, just the SDRAM, clock changes and
+   HALT need to be in assembler.
+
+3. Reserve first 128kB of SDRAM for kernel.
+
+   Kernel should not overwrite itself when loading application just
+   give an error screen.
+
+4. Reserve DSTRAM (Possibly for use by MMC driver)
+
+
+Application Memory
+==================
+
+The application.lds file should contain this memory layout:
+
+MEMORY
+{
+        sdram  (rwx): ORIGIN = 0x10000000 + 256k, LENGTH = 32M - 256k
+        ivram  (rwx): ORIGIN = 0x00080000, LENGTH = 12k
+}
+
+
+Boot Loader
+===========
+
+1. Runs in A0RAM.
+2. First 512 bytes is automatically loaded.
+3. Locations 0x0100 .. 0x1fff are available.
+4. Need just a simple kernel loader.
+5. Make sure suspend does not conflict.
+   (Better to transfer suspend to A0RAM at start up
+    not just load over boot loader and hope for the best:)
+6. Menu for memory test and I/O tests.
+7. What about existing forth programs.
+   Should this be handled by the new kernel?
+
+
+System Calls
+============
+
+1. Create a syscalls.list to specify the available calls
+2. Mark portions of internal headers (mostly enum/struct typedefs)
+   for export.
+3. Use a script to create the grifo.h file for application to #include
+4. Use a script to create the stubs for each corresponding syscall

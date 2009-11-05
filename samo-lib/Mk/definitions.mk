@@ -44,6 +44,11 @@ DRIVERS_INCLUDE = ${DRIVERS}/include
 DRIVERS_SRC = ${DRIVERS}/src
 DRIVERS_LIB = ${DRIVERS}/lib/libdrivers.a
 
+GRIFO = ${SAMO_LIB}/grifo
+GRIFO_INCLUDE = ${GRIFO}/include
+GRIFO_APPLICATION_LDS = ${GRIFO}/lds/application.lds
+GRIFO_LIB = ${GRIFO}/lib/libgrifo.a
+
 WIKI_APP = ${SAMO_LIB}/../wiki-app/
 WIKI_APP_INCLUDE = ${WIKI_APP}
 WIKI_APP_SRC = ${WIKI_APP}

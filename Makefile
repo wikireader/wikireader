@@ -401,6 +401,18 @@ flash-install: flash
 	${MAKE} -C samo-lib/flash install DESTDIR="${DESTDIR_PATH}"
 
 
+# ----- grifo -----------------------------------------------
+# grifo small kernel
+
+.PHONY: grifo
+grifo:  gcc mini-libc fatfs
+	${MAKE} -C samo-lib/grifo
+
+.PHONY: grifo-install
+grifo-install: grifo
+	${MAKE} -C samo-lib/grifo install DESTDIR="${DESTDIR_PATH}"
+
+
 # ----- mbr -------------------------------------------------
 # master boot record
 
@@ -481,6 +493,7 @@ clean: clean-qt4-simulator clean-console-simulator
 	${MAKE} clean -C samo-lib/fatfs
 	${MAKE} clean -C samo-lib/forth
 	${MAKE} clean -C samo-lib/flash
+	${MAKE} clean -C samo-lib/grifo
 	${MAKE} clean -C samo-lib/mahatma
 	${RM} stamp-r-*
 

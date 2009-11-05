@@ -1,0 +1,86 @@
+;;; syscall.list        -*- scheme -*-
+
+;;; grifo - a small kernel for WikiReader
+;;;
+;;; Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; File format:
+;;;
+;;; A. Command
+;;;    1 = command name
+;;;    rest = command arguments
+;;;
+;;; B. System Call
+;;;    1 = system call number 0..n in increments of 1
+;;;    2 = Grifo internal function name
+;;;    3 = list (type function arguments)
+;;;    4 = optional attributes
+
+(
+ ;; GPLV3+
+ (copy-all "src/license.i")
+
+ (ifnot _GRIFO_H_)
+
+ (include<> inttypes.h)
+ (include<> stdbool.h)
+
+
+ ;; functions
+ ;(0 "panic" ("void" "panic" "const char *message"))
+
+ (section "console debugging")
+ (1 Serial_print   ("void" "debug_print" "const char *message"))
+ (2 Serial_PutChar ("int" "debug_printchar" "int c"))
+ (3 Serial_printf  ("int" "debug_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+
+
+ (section "interrupt handlers")
+
+ (output "typedef enum {")
+ (copy-part "src/vector.h" "vectors")
+ (output "} vector_t;")
+ (newline)
+ (output "typedef void interrupt_handler(void);")
+ (newline)
+
+ (10 Vector_get ("interrupt_handler *" "vector_get" "vector_t vector_number"))
+ (11 Vector_set ("interrupt_handler *" "vector_set" "vector_t vector_number" "interrupt_handler *vector"))
+
+
+ (section "critcal sections")
+
+ (output "typedef uint32_t critical_t;")
+ (newline)
+
+ (prototype ("inline critical_t" "critcal_enter" "void"))
+ (copy-part "src/interrupt.h" "enter")
+ (newline)
+
+ (prototype ("inline void" "critical_exit" "critical_t state"))
+ (copy-part "src/interrupt.h" "exit")
+
+
+ (section "timer and delay")
+
+ (20 Delay_microseconds ("void" "delay_us" "unsigned long microseconds"))
+
+ (copy-part "src/timer.h" "enum")
+ (newline)
+ (24 Timer_get ("unsigned long" "timer_get" "void"))
+
+ (endif)
+)

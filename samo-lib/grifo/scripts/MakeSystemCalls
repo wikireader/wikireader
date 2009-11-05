@@ -1,0 +1,189 @@
+#!/bin/sh
+# aside from this initial boilerplate, this is actually -*- scheme -*- code
+main='(module-ref (resolve-module '\''(scripts script-entry-point)) '\'main')'
+exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
+!#
+
+;;; grifo - a small kernel for WikiReader
+;;;
+;;; Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+(define-module (scripts script-entry-point)
+  :use-module (ice-9 getopt-long)
+  :use-module (ice-9 rdelim)
+  :use-module (srfi srfi-1)
+  :export (script-entry-point))
+
+(define-macro (unless cond . body)
+  `(if (not ,cond) (begin ,@body)))
+
+(define *program* "program-name-here")
+(define *debug* #f)
+
+(define (usage message)
+  "Display a usage message"
+  (if (string? message)
+      (format #t "error: ~a~%" message))
+  (format #t "usage: ~a [--verbose] [--debug] --list=file --prefix=path --header=file~%" *program*)
+  (exit 1))
+
+(define (main . args)
+  "Main program"
+  (set! *program* (second args))
+  (let* ((parsed-opts (getopt-long (drop args 1)
+		       '((list (single-char #\l) (value #t))
+			 (header (single-char #\h) (value #t))
+			 (table (single-char #\t) (value #t))
+			 (prefix (single-char #\p) (value #t))
+			 (verbose (single-char #\v))
+			 (debug (single-char #\d)))))
+         (=l (option-ref parsed-opts 'list #f))
+         (=h (option-ref parsed-opts 'header #f))
+         (=t (option-ref parsed-opts 'table #f))
+         (=p (option-ref parsed-opts 'prefix #f))
+         (=v (option-ref parsed-opts 'verbose #f))
+         (*debug* (option-ref parsed-opts 'debug #f)))
+    (if *debug*
+        (begin
+          (display parsed-opts)
+          (newline)))
+
+    (unless =l (usage "Missing list"))
+    (unless =h (usage "Missing header"))
+    (unless =t (usage "Missing table"))
+    (unless =p (usage "Missing prefix"))
+
+    (if *debug*
+        (format #t "l = ~a~%h = ~a~%p = ~a~%" =l =h =p))
+
+    (let ((call-list (with-input-from-file =l (lambda () (read)))))
+      (for-each (lambda (x) (output-asm =p x =v)) call-list)
+      (if =v (format #t "Creating: ~a~%" =h))
+      (with-output-to-file =h (lambda ()
+                                (format #t "// Generated file, Do NOT Modify~%")
+                                (for-each output-prototype call-list)))
+
+      (if =v (format #t "Creating: ~a~%" =t))
+      (with-output-to-file =t (lambda ()
+                                (format #t "// Generated file, Do NOT Modify~%")
+                                (for-each output-table-entry call-list))))))
+
+
+(define (prototype-string function-list)
+  (let ((return-type (first function-list))
+        (function-name (second function-list))
+        (arguments (drop function-list 2)))
+    (format #f "~a ~a(~a)" return-type function-name (string-join arguments ", "))))
+
+
+(define (output-prototype item)
+  "Output a c-language prototype"
+  (cond
+   ((number? (first item))
+    (let* ((syscall-number (first item))
+           (kernel-name (second item))
+           (proto (prototype-string (third item)))
+           (attributes (drop item 3)))
+      (format #t "~a~a;~%" proto
+              (if attributes
+                  (string-concatenate (list " " (string-join attributes " ")))
+                  ""))))
+
+   ((eq? 'copy-all (first item)
+          (let ((file-name (second item)))
+            (with-input-from-file file-name
+              (lambda ()
+                (while (not (eof-object? (peek-char)))
+                       (write-char (read-char))))))))
+
+   ((eq? 'copy-part (first item)
+          (let ((file-name (second item))
+                (part-name (third item)))
+            (with-input-from-file file-name
+              (lambda ()
+                (let ((output-flag #f))
+                  (while (not (eof-object? (peek-char)))
+                         (let ((line (read-line)))
+                           (cond
+                            ((and
+                              (string-contains line "+MakeSystemCalls:")
+                              (string-contains line part-name))
+                             (set! output-flag #t))
+                            ((and
+                              (string-contains line "-MakeSystemCalls:")
+                              (string-contains line part-name))
+                             (set! output-flag #f))
+                            (output-flag
+                             (format #t "~a~%" line)))))))))))
+
+   ((eq? 'section (first item)
+         (let* ((title (second item))
+                (underline (make-string (string-length title) #\-)))
+           (format #t "~%~%// ~a~%// ~a~%~%" title underline))))
+
+   ((eq? 'newline (first item)
+          (newline)))
+
+   ((eq? 'ifnot (first item)
+         (let ((name (second item)))
+           (format #t "~%#if !defined(~a)~%#define ~a 1~%~%" name name))))
+
+   ((eq? 'include<> (first item)
+         (let ((filename (second item)))
+           (format #t "#include <~a>~%" filename))))
+
+   ((eq? 'prototype (first item)
+         (format #t "~a~%" (prototype-string (second item)))))
+
+   ((eq? 'endif (first item)
+          (format #t "~%#endif~%")))
+
+   ((eq? 'output (first item))
+          (apply format #t (drop item 1))
+          (newline))))
+
+
+(define (output-table-entry item)
+  "Output a c-language prototype"
+  (if (number? (first item))
+      (let* ((syscall-number (first item))
+             (kernel-name (second item))
+             (function-list (third item))
+             (attributes (drop item 3)))
+        (format #t "\t[~a] ~a,~%" syscall-number kernel-name))))
+
+
+(define (output-asm prefix item verbose)
+  "Output assembly language system call stubs"
+  (if (number? (first item))
+      (let* ((syscall-number (first item))
+             (kernel-name (second item))
+             (function-list (third item))
+             (attributes (drop item 3))
+             (return-type (first function-list))
+             (syscall-name (second function-list))
+             (arguments (drop function-list 2))
+             (file-name (string-concatenate (list prefix syscall-name ".s"))))
+        (if verbose (format #t "Creating: ~a~%" file-name))
+        (with-output-to-file file-name (lambda ()
+                                         (format #t "; Generated file, Do NOT Modify~%")
+                                         (format #t "\t.global\t~a~%" syscall-name)
+                                         (format #t "~a:~%" syscall-name)
+                                         (format #t "\tint\t1~%")
+                                         (format #t "\t.short\t~a~%" syscall-number))))))
+
+
