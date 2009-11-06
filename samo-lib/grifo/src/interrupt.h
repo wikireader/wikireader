@@ -32,7 +32,7 @@ typedef enum {
 } Interrupt_type;
 
 
-inline Interrupt_type Interrupt_disable(void)
+static inline Interrupt_type Interrupt_disable(void)
 //+MakeSystemCalls: enter
 {
 	register int state;
@@ -48,7 +48,7 @@ inline Interrupt_type Interrupt_disable(void)
 }
 //-MakeSystemCalls: enter
 
-inline void Interrupt_enable(Interrupt_type state)
+static inline void Interrupt_enable(Interrupt_type state)
 //+MakeSystemCalls: exit
 {
 	if (0 != state) {
@@ -57,5 +57,15 @@ inline void Interrupt_enable(Interrupt_type state)
 }
 //-MakeSystemCalls: exit
 
+
+#define Interrupt_SaveR15()                             \
+	uint32_t saved_r15_value;                       \
+	asm volatile ("ld.w\t%[sv], %%r15  \n\t"        \
+		      "xld.w\t%%r15, __dp      "        \
+		      : [sv] "=r" (saved_r15_value));
+
+#define Interrupt_RestoreR15()                          \
+	asm volatile ("ld.w\t%%r15, %[sv]"              \
+		      : : [sv] "r"  (saved_r15_value));
 
 #endif
