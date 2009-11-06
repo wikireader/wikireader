@@ -1,0 +1,7 @@
+build
+lib
+include
+stubs
+*.dump
+*.elf
+*.map
