@@ -164,16 +164,22 @@ static void panic_dump(uint32_t *base, uint32_t r15_value, const char *message)
 		      "psr = 0x%08lx [%11ld]\n"
 		      "ahr = 0x%08lx [%11ld]\n"
 		      "alr = 0x%08lx [%11ld]\n",
-		      (uint32_t)(base), (uint32_t)(base),
-		      base[18], base[18],
-		      base[17], base[17],
-		      base[1], base[1],
-		      base[0], base[0]);
+		      (uint32_t)(base), (uint32_t)(base), // sp
+		      base[18], base[18], // pc
+		      base[17], base[17], // psr
+		      base[1], base[1],   // ahr
+		      base[0], base[0]);  // ahl
 	register int i = 0;
 	for (i = 0; i < 15; ++i) {
 		Serial_printf("r%02d = 0x%08lx [%11ld]\n", i, base[i + 2], base[i + 2]);
 	}
 	Serial_printf("r%02d = 0x%08lx [%11ld]\n", 15, r15_value, r15_value);
+
+	Serial_printf("0x%08lx: ", base[18] - 4);
+	for (i = -2; i < 6; ++i) {
+		Serial_printf(" %04x",((uint16_t *)base[18])[i]);
+	}
+	Serial_printf("\n");
 }
 
 
