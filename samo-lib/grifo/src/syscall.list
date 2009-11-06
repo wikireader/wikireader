@@ -37,6 +37,7 @@
 
  (include<> inttypes.h)
  (include<> stdbool.h)
+ (include<> stdlib.h)
 
 
  ;; functions
@@ -81,6 +82,24 @@
  (copy-part "src/timer.h" "enum")
  (newline)
  (24 Timer_get ("unsigned long" "timer_get" "void"))
+
+
+ ;; WATCHDOG MISSING......
+
+
+ (section "event queue")
+ (copy-part "src/event.h" "types")
+ (newline)
+
+ (30 Event_flush ("void" "event_flush" "void"))
+ ;;(31 Event_clear ("void" "event_flush" "event_item_t item_type"))
+
+ ;;(35 Event_available ("bool" "event_avail" "event_item_t item_type"));
+
+ (comment "get the next event if available otherwise return EVENT_NONE")
+ (36 Event_get ("event_item_t" "event_get" "event_t *event"))
+
+
 
  (endif)
 )

@@ -19,18 +19,30 @@
 
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <ctype.h>
 
+#include "standard.h"
 #include "elf32.h"
 
+// modules to initialise
 #include "CMU.h"
-#include "vector.h"
+#include "CTP.h"
+#include "delay.h"
+#include "event.h"
 #include "interrupt.h"
 #include "serial.h"
-#include "delay.h"
-#include "timer.h"
 #include "syscall.h"
+#include "timer.h"
+#include "vector.h"
+
+void process(void);
 
 
+// Note: the cross compiler will generate bad code
+// if local variables are used here.
+// The initial assemble must affect it in some way.
+// Therefore most of the code goes in process()
 __attribute ((noreturn))
 int main(void)
 {
@@ -43,61 +55,15 @@ int main(void)
 		"\tld.w\t%r4, 0\n"
 		"\tld.w\t%psr, %r4\n"
 		);
+
 	// interrupts will be disabled at this point
 	Interrupt_initialise();
 
 	// ensure MCU clocks are set up
 	CMU_initialise();
 
-	// critical initialisations
-	Vector_initialise();
-	//*Suspend_initialise();
-	Serial_initialise();
-
-	// enable interrupts
-	Interrupt_enable(Interrupt_enabled);
-
-	Serial_print("Grifo starting\n");
-
-	// system initialisation
-	Delay_initialise();
-	Timer_initialise();
-
-#if 0
-	// secondary
-	SPI_initialise();
-	CTP_initialise();
-	Buttons_initialise();
-	Memory_initialise();
-	Analog_initialise();
-	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH
-	Files_Initialise();
-	Menu_initialise();
-#endif
-
-	// final initialisation before running the application
-	SystemCall_initialise();
-
-#if 0
-	Menu_run();
-#endif
-
-	// quick test to run sample.elf
-	const char *args[] = {
-		"sample.elf", "--option", "thing"
-	};
-
-	uint32_t exec;
-	ELF32_ErrorType r = ELF32_load(&exec, "sample.elf");
-
-	if (ELF32_OK == r) {
-		asm volatile ("xld.w\t%r15, __dp_user");
-		int result = ((int (*) (int, const char **)) exec) (3, args);
-		asm volatile ("xld.w\t%r15, __dp");
-		Serial_printf("application returned: %d\n", result);
-	} else {
-		Serial_printf("ELF32_load error=%d\n", r);
-	}
+	// main part of system
+	process();
 
 	// cannot exit this so power off or reboot
 	for (;;) {
@@ -113,4 +79,86 @@ int main(void)
 			"int\t3\n\t"
 			);
 	}
+}
+
+
+void process(void)
+{
+	// critical initialisations
+	Vector_initialise();
+	//*Suspend_initialise();
+	Serial_initialise();
+
+	// enable interrupts
+	Interrupt_enable(Interrupt_enabled);
+
+	Serial_print("Grifo starting\n");
+
+	// system initialisation
+	Timer_initialise();
+	Delay_initialise();
+	Event_initialise();
+	CTP_initialise();
+
+#if 0
+	// secondary
+	SPI_initialise();
+	Buttons_initialise();
+	Memory_initialise();
+	Analog_initialise();
+	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH
+	Files_Initialise();
+	Menu_initialise();
+#endif
+
+	// final initialisation before running the application
+	SystemCall_initialise();
+
+#if 0
+	Menu_run();
+#endif
+
+	// program to run
+	for (;;) {
+		char buffer[81]; // remember the '\0'
+
+		Serial_print("command: ");
+		Serial_GetLine(buffer, sizeof(buffer));
+		Serial_print("\n");
+
+		const char *args[11]; // program name + N-1 arguments
+
+		size_t args_index = 0;
+		char *p = buffer;
+		while ('\0' != *p && args_index < SizeOfArray(args)) {
+			while (isspace(*p)) {
+				++p;
+			}
+			if ('\0' == *p) {
+				break;
+			}
+			//asm volatile("nop");
+			args[args_index++] = p;
+			while ('\0' != *p && !isspace(*p)) {
+				++p;
+			}
+			if ('\0' == *p) {
+				break;
+			}
+			*p++ = '\0';
+		}
+
+		uint32_t exec;
+		ELF32_ErrorType r = ELF32_load(&exec, args[0]);
+
+		if (ELF32_OK == r) {
+			asm volatile ("xld.w\t%r15, __dp_user");
+			int result = ((int (*) (int, const char **)) exec) (args_index, args);
+			asm volatile ("xld.w\t%r15, __dp");
+			Serial_printf("application returned: %d\n", result);
+		} else {
+			Serial_printf("ELF32_load error=%d\n", r);
+		}
+	}
+
 }

@@ -27,6 +27,7 @@
 #include "serial.h"
 #include "delay.h"
 #include "timer.h"
+#include "event.h"
 
 
 const void *const SysCallTable1[] = {

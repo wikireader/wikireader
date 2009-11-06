@@ -55,8 +55,10 @@ TARGETS += lib/libgrifo.a
 
 # list of modules for creating libinternal.a
 OBJECTS += CMU.o
+OBJECTS += CTP.o
 OBJECTS += delay.o
 OBJECTS += elf32.o
+OBJECTS += event.o
 OBJECTS += main.o
 OBJECTS += serial.o
 OBJECTS += syscall.o
