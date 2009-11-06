@@ -20,10 +20,6 @@
 #if  !defined(_CTP_H_)
 #define _CTP_H_ 1
 
-#include <inttypes.h>
-#include <stdbool.h>
-
-
 void CTP_initialise(void);
 
 #endif
