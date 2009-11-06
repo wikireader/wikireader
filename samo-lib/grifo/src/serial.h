@@ -20,15 +20,17 @@
 #if !defined(_SERIAL_H_)
 #define _SERIAL_H_ 1
 
-#include <stdbool.h>
+#include <stdbool.h> // bool
+#include <stdlib.h>  // size_t
 
 void Serial_initialise(void);
 
 int Serial_PutChar(int c);
 bool Serial_PutReady(void);
 
-unsigned char Serial_GetChar(void);
+char Serial_GetChar(void);
 bool Serial_InputAvailable(void);
+void Serial_GetLine(char *buffer, size_t length);
 
 void Serial_print(const char *message);
 int Serial_printf(const char *format, ...) __attribute__((format (printf, 1, 2)));

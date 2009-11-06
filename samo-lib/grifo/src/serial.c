@@ -54,7 +54,7 @@ bool Serial_PutReady(void)
 }
 
 
-unsigned char Serial_GetChar(void)
+char Serial_GetChar(void)
 {
 	while (!Serial_InputAvailable()) {
 	}
@@ -65,6 +65,38 @@ unsigned char Serial_GetChar(void)
 bool Serial_InputAvailable(void)
 {
 	return 0 != (REG_EFSIF0_STATUS & RDBFx);
+}
+
+
+
+// simple line entry only handles backspace
+void Serial_GetLine(char *buffer, size_t length)
+{
+	size_t cursor = 0;
+
+	buffer[cursor] = '\0';
+	for (;;) {
+		char c = Serial_GetChar();
+		if ('\010' == c || 127 == c) {
+			if (cursor > 0) {
+				buffer[--cursor] = '\0';
+				Serial_print("\010 \010");
+			} else {
+				Serial_print("\007");
+			}
+
+		} else if (c >= ' ' && c < 127) {
+			if (cursor < length - 1) {  // remember space for the '\0'
+				buffer[cursor++] = c;
+				buffer[cursor] = '\0';
+				Serial_PutChar(c);
+			} else {
+				Serial_print("\007");
+			}
+		} else if ('\r' == c || '\n' == c) {
+			return;
+		}
+	}
 }
 
 
