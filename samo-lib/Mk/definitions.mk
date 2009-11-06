@@ -17,8 +17,20 @@
 FATFS_MODE ?= read-only
 
 # autodetect samo-lib
-# copy this line into the Makefile
-SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
+# +++ copy this line into the start of each Makefile
+define FIND_SAMO_LIB
+d='.' ; \
+while [ X"/" != X"$${d}" ] ; \
+do \
+  s="$${d}/samo-lib" ; \
+  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
+  d=$$(readlink -es "$${d}/..") ; \
+done ; \
+echo samo_lib_NOT_FOUND ; \
+exit 1
+endef
+SAMO_LIB := $(shell ${FIND_SAMO_LIB})
+# --- end of section to copy
 
 # standard definitions for _ALL_ Makefiles
 

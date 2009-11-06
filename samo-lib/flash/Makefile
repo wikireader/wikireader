@@ -14,7 +14,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
+define FIND_SAMO_LIB
+d='.' ; \
+while [ X"/" != X"$${d}" ] ; \
+do \
+  s="$${d}/samo-lib" ; \
+  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
+  d=$$(readlink -es "$${d}/..") ; \
+done ; \
+echo samo_lib_NOT_FOUND ; \
+exit 1
+endef
+SAMO_LIB := $(shell ${FIND_SAMO_LIB})
+
 FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk

@@ -26,7 +26,19 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SAMO_LIB := $(shell readlink -es ../samo-lib || readlink -es ../../samo-lib || readlink -es ../../../samo-lib)
+define FIND_SAMO_LIB
+d='.' ; \
+while [ X"/" != X"$${d}" ] ; \
+do \
+  s="$${d}/samo-lib" ; \
+  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
+  d=$$(readlink -es "$${d}/..") ; \
+done ; \
+echo samo_lib_NOT_FOUND ; \
+exit 1
+endef
+SAMO_LIB := $(shell ${FIND_SAMO_LIB})
+
 FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
