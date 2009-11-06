@@ -37,9 +37,9 @@ typedef enum {
 } event_item_t;
 
 typedef enum {
+	BUTTON_RANDOM,
 	BUTTON_SEARCH,
 	BUTTON_HISTORY,
-	BUTTON_RANDOM,
 	BUTTON_POWER,
 } button_t;
 

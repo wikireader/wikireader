@@ -26,6 +26,7 @@
 #include "elf32.h"
 
 // modules to initialise
+#include "button.h"
 #include "CMU.h"
 #include "CTP.h"
 #include "delay.h"
@@ -99,11 +100,11 @@ void process(void)
 	Delay_initialise();
 	Event_initialise();
 	CTP_initialise();
+	Button_initialise();
 
 #if 0
 	// secondary
 	SPI_initialise();
-	Buttons_initialise();
 	Memory_initialise();
 	Analog_initialise();
 	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH

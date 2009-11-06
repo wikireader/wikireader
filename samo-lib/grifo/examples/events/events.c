@@ -24,6 +24,12 @@
 int main(int argc, char **argv)
 {
 	debug_printf("events start\n");
+	const char *button[] = {
+		[BUTTON_RANDOM] "random",
+		[BUTTON_SEARCH] "search",
+		[BUTTON_HISTORY] "history",
+		[BUTTON_POWER] "power",
+	};
 
 	for (;;) {
 		event_t event;
@@ -43,42 +49,42 @@ int main(int argc, char **argv)
 		break;
 
 		case EVENT_KEY:
-			debug_printf("%10ld: KEY[%d] = %d\n", event.time_stamp, event.item_type,
+			debug_printf("%10lu: KEY[%d] = %d\n", event.time_stamp, event.item_type,
 				     event.key.code);
 			break;
 
 		case EVENT_TOUCH_DOWN:
-			debug_printf("%10ld: TOUCH DOWN[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
+			debug_printf("%10lu: TOUCH DOWN[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
 				     event.touch.x, event.touch.y);
 			break;
 
 		case EVENT_TOUCH_MOTION:
-			debug_printf("%10ld: TOUCH MOTION[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
+			debug_printf("%10lu: TOUCH MOTION[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
 				     event.touch.x, event.touch.y);
 			break;
 
 		case EVENT_TOUCH_UP:
-			debug_printf("%10ld: TOUCH UP[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
+			debug_printf("%10lu: TOUCH UP[%d] = (%d,%d)\n", event.time_stamp, event.item_type,
 				     event.touch.x, event.touch.y);
 			break;
 
 		case EVENT_BUTTON_DOWN:
-			debug_printf("%10ld: BUTTON DOWN[%d] = %d\n", event.time_stamp, event.item_type,
-				     event.button.code);
+			debug_printf("%10lu: BUTTON DOWN[%d] = %s[%d]\n", event.time_stamp, event.item_type,
+				     button[event.button.code], event.button.code);
 			break;
 
 		case EVENT_BUTTON_UP:
-			debug_printf("%10ld: BUTTON UP[%d] = %d\n", event.time_stamp, event.item_type,
-				     event.button.code);
+			debug_printf("%10lu: BUTTON UP[%d] = %s[%d]\n", event.time_stamp, event.item_type,
+				      button[event.button.code], event.button.code);
 			break;
 
 		case EVENT_BATTERY_LOW:
-			debug_printf("%10ld: BATTERY LOW[%d] = %lu\n", event.time_stamp, event.item_type,
+			debug_printf("%10lu: BATTERY LOW[%d] = %lu\n", event.time_stamp, event.item_type,
 				     event.battery.millivolts);
 			break;
 
 		default:
-			debug_printf("Unknown event = %d at %ld\n", event.item_type, event.time_stamp);
+			debug_printf("%10lu: Unknown event[%d]\n", event.time_stamp, event.item_type);
 			break;
 		}
 	}
