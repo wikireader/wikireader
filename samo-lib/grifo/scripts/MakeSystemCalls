@@ -45,12 +45,12 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
   "Main program"
   (set! *program* (second args))
   (let* ((parsed-opts (getopt-long (drop args 1)
-		       '((list (single-char #\l) (value #t))
-			 (header (single-char #\h) (value #t))
-			 (table (single-char #\t) (value #t))
-			 (prefix (single-char #\p) (value #t))
-			 (verbose (single-char #\v))
-			 (debug (single-char #\d)))))
+                                   '((list (single-char #\l) (value #t))
+                                     (header (single-char #\h) (value #t))
+                                     (table (single-char #\t) (value #t))
+                                     (prefix (single-char #\p) (value #t))
+                                     (verbose (single-char #\v))
+                                     (debug (single-char #\d)))))
          (=l (option-ref parsed-opts 'list #f))
          (=h (option-ref parsed-opts 'header #f))
          (=t (option-ref parsed-opts 'table #f))
@@ -103,58 +103,61 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                   (string-concatenate (list " " (string-join attributes " ")))
                   ""))))
 
-   ((eq? 'copy-all (first item)
-          (let ((file-name (second item)))
-            (with-input-from-file file-name
-              (lambda ()
-                (while (not (eof-object? (peek-char)))
-                       (write-char (read-char))))))))
+   ((eq? 'copy-all (first item))
+    (let ((file-name (second item)))
+      (with-input-from-file file-name
+        (lambda ()
+          (while (not (eof-object? (peek-char)))
+                 (write-char (read-char)))))))
 
-   ((eq? 'copy-part (first item)
-          (let ((file-name (second item))
-                (part-name (third item)))
-            (with-input-from-file file-name
-              (lambda ()
-                (let ((output-flag #f))
-                  (while (not (eof-object? (peek-char)))
-                         (let ((line (read-line)))
-                           (cond
-                            ((and
-                              (string-contains line "+MakeSystemCalls:")
-                              (string-contains line part-name))
-                             (set! output-flag #t))
-                            ((and
-                              (string-contains line "-MakeSystemCalls:")
-                              (string-contains line part-name))
-                             (set! output-flag #f))
-                            (output-flag
-                             (format #t "~a~%" line)))))))))))
+   ((eq? 'copy-part (first item))
+    (let ((file-name (second item))
+          (part-name (third item)))
+      (with-input-from-file file-name
+        (lambda ()
+          (let ((output-flag #f))
+            (while (not (eof-object? (peek-char)))
+                   (let ((line (read-line)))
+                     (cond
+                      ((and
+                        (string-contains line "+MakeSystemCalls:")
+                        (string-contains line part-name))
+                       (set! output-flag #t))
+                      ((and
+                        (string-contains line "-MakeSystemCalls:")
+                        (string-contains line part-name))
+                       (set! output-flag #f))
+                      (output-flag
+                       (format #t "~a~%" line))))))))))
 
-   ((eq? 'section (first item)
-         (let* ((title (second item))
-                (underline (make-string (string-length title) #\-)))
-           (format #t "~%~%// ~a~%// ~a~%~%" title underline))))
+   ((eq? 'section (first item))
+    (let* ((title (second item))
+           (underline (make-string (string-length title) #\-)))
+      (format #t "~%~%// ~a~%// ~a~%~%" title underline)))
 
-   ((eq? 'newline (first item)
-          (newline)))
+   ((eq? 'remark (first item))
+    (newline)
+    (map (lambda (message) (format #t "// ~a~%" message)) (drop item 1)))
 
-   ((eq? 'ifnot (first item)
-         (let ((name (second item)))
-           (format #t "~%#if !defined(~a)~%#define ~a 1~%~%" name name))))
+   ((eq? 'newline (first item))
+    (newline))
 
-   ((eq? 'include<> (first item)
-         (let ((filename (second item)))
-           (format #t "#include <~a>~%" filename))))
+   ((eq? 'ifnot (first item))
+    (let ((name (second item)))
+      (format #t "~%#if !defined(~a)~%#define ~a 1~%~%" name name)))
 
-   ((eq? 'prototype (first item)
-         (format #t "~a~%" (prototype-string (second item)))))
+   ((eq? 'include<> (first item))
+    (let ((filename (second item)))
+      (format #t "#include <~a>~%" filename)))
 
-   ((eq? 'endif (first item)
-          (format #t "~%#endif~%")))
+   ((eq? 'prototype (first item))
+    (format #t "~a~%" (prototype-string (second item))))
+
+   ((eq? 'endif (first item))
+    (format #t "~%#endif~%"))
 
    ((eq? 'output (first item))
-          (apply format #t (drop item 1))
-          (newline))))
+    (map (lambda (message) (format #t "~a~%" message)) (drop item 1)))))
 
 
 (define (output-table-entry item)
@@ -185,5 +188,3 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                                          (format #t "~a:~%" syscall-name)
                                          (format #t "\tint\t1~%")
                                          (format #t "\t.short\t~a~%" syscall-number))))))
-
-

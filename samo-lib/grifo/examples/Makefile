@@ -32,6 +32,7 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 DIRS += sample1
 DIRS += events
+DIRS += lcd
 
 
 ${MAKECMDGOALS} all:

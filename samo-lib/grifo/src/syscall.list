@@ -96,9 +96,32 @@
 
  ;;(35 Event_available ("bool" "event_avail" "event_item_t item_type"));
 
- (comment "get the next event if available otherwise return EVENT_NONE")
+ (remark "get the next event if available otherwise return EVENT_NONE" "xxxx")
  (36 Event_get ("event_item_t" "event_get" "event_t *event"))
 
+
+ (section "LCD access")
+
+ (copy-part "src/LCD.h" "types")
+
+ (40 LCD_GetFrameBuffer ("uint8_t *" "lcd_get_framebuffer" "void"))
+
+ (remark "frame buffer must be word aligned")
+ (41 LCD_SetFrameBuffer ("uint32_t *" "lcd_set_framebuffer" "uint32_t *address"))
+
+
+ (42 LCD_AllWhite ("void" "lcd_clear" "void"))
+ (43 LCD_AllBlack ("void" "lcd_clear_reverse" "void"))
+
+ (newline)
+ (output "typedef enum {")
+ (copy-part "src/LCD.h" "colours")
+ (output "} lcd_colour_t;")
+
+ (44 LCD_GetPixel ("lcd_colour_t" "lcd_get_pixel" "int x" "int y"))
+ (45 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
+
+ (46 LCD_line ("void" "lcd_line" "int x0" "int y0" "int x1" "int y1" "lcd_colour_t colour"))
 
 
  (endif)

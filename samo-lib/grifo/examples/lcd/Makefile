@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 define FIND_SAMO_LIB
 d='.' ; \
 while [ X"/" != X"$${d}" ] ; \
@@ -31,77 +30,37 @@ include ${SAMO_LIB}/Mk/definitions.mk
 
 
 INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I${FATFS_INCLUDE} -I${FATFS_CONFIG_INCLUDE}
-INCLUDES += -I${DRIVERS_INCLUDE}
+INCLUDES += -I${GRIFO_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
-INCLUDES += -Ibuild
 
-LIBS += build/libinternal.a
-LIBS += ${FATFS_LIB}
+LIBS += lib/libexamples.a
+LIBS += ${GRIFO_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += ${DRIVERS_LIB}
 LIBS += $(shell $(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
 
-MAKE_SYSCALL := scripts/MakeSystemCalls
-
 vpath %.c :src
 
-TARGETS = build/syscall.table
-TARGETS += build/libinternal.a
-TARGETS += grifo.elf
-TARGETS += lib/libgrifo.a
+TARGETS = lcd.elf
 
-# list of modules for creating libinternal.a
-OBJECTS += button.o
-OBJECTS += CMU.o
-OBJECTS += CTP.o
-OBJECTS += delay.o
-OBJECTS += elf32.o
-OBJECTS += event.o
-OBJECTS += LCD.o
-OBJECTS += main.o
-OBJECTS += serial.o
-OBJECTS += syscall.o
-OBJECTS += timer.o
-OBJECTS += vector.o
-#OBJECTS +=
+# list of modules
+OBJECTS += lcd.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
 .PHONY: all
 all:  ${TARGETS}
-	${MAKE} -C examples
 
-build/libinternal.a: build ${BUILD_OBJECTS}
+lib/libexamples.a: lib ${BUILD_OBJECTS}
 	${RM} "$@"
 	${AR} r "$@" ${BUILD_OBJECTS}
 
-include/grifo.h stubs/stamp-source build/syscall.table: include build stubs src/syscall.list ${MAKE_SYSCALL} src/*.h
-	${MAKE_SYSCALL} --prefix=stubs/ \
-	  --header=include/grifo.h \
-	  --list=src/syscall.list \
-	  --table=build/syscall.table \
-	  --verbose
-	${TOUCH} stubs/stamp-source
 
-stubs/stamp-objects: $(addsuffix .o, $(basename $(wildcard stubs/*.s)))
-	${TOUCH} "$@"
-
-stubs/stamp: stubs
-	${MAKE} stubs/stamp-objects
-	${TOUCH} "$@"
-
-# this should depend on lib, but make always rebuilds in that case; why?
-lib/libgrifo.a: lib stubs/stamp
-	${RM} "$@"
-	${AR} r "$@" stubs/*.o
-	${TOUCH} "$@"
-
-grifo.elf: build build/main.o lds/grifo.lds ${LIBS}
-	$(LD) -o $@ ${LDFLAGS} build/main.o ${LIBS} -T lds/${@:.elf=.lds} -Map ${@:.elf=.map}
+lcd.elf: build build/lcd.o ${GRIFO_APPLICATION_LDS} ${LIBS}
+	$(LD) -o $@ ${LDFLAGS} build/lcd.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.elf=.map}
 	c33-epson-elf-objdump -D "$@" > "${@:.elf=.dump}"
+
 
 build:
 	${MKDIR} "$@"
@@ -109,24 +68,15 @@ build:
 lib:
 	${MKDIR} "$@"
 
-stubs:
-	${MKDIR} "$@"
-
-include:
-	${MKDIR} "$@"
-
-
 .PHONY: install
 install: all
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	${COPY} grifo.elf "${DESTDIR}"/kernel.elf
-	${MAKE} -C examples install
+	${COPY} ${TARGETS} "${DESTDIR}"/
 
 .PHONY: clean
 clean:
-	${RM} -r ${TARGETS} build include lib stubs
+	${RM} -r ${TARGETS} build lib
 	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump
-	${MAKE} -C examples clean
 
 
 include ${SAMO_LIB}/Mk/rules.mk

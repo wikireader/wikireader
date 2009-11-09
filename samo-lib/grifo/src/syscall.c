@@ -28,6 +28,7 @@
 #include "delay.h"
 #include "timer.h"
 #include "event.h"
+#include "LCD.h"
 
 
 const void *const SysCallTable1[] = {
