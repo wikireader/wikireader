@@ -20,9 +20,7 @@
 #if !defined(_EVENT_H_)
 #define _EVENT_H_ 1
 
-#include <inttypes.h>
-#include <stdbool.h>
-
+#include "standard.h"
 
 //+MakeSystemCalls: types
 typedef enum {

@@ -20,8 +20,7 @@
 #if !defined(_SERIAL_H_)
 #define _SERIAL_H_ 1
 
-#include <stdbool.h> // bool
-#include <stdlib.h>  // size_t
+#include "standard.h"
 
 void Serial_initialise(void);
 

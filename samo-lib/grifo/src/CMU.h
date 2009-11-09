@@ -20,8 +20,7 @@
 #if !defined(_CMU_H_)
 #define _CMU_H_ 1
 
-#include <inttypes.h>
-
+#include "standard.h"
 
 void CMU_initialise();
 

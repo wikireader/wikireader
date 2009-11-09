@@ -17,9 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <inttypes.h>
-#include <stdbool.h>
-#include <stdlib.h>
+#include "standard.h"
+
 #include <ctype.h>
 
 #include "standard.h"

@@ -18,6 +18,8 @@
 #ifndef _ELF32_H_
 #define _ELF32_H_
 
+#include "standard.h"
+
 typedef enum {
 	ELF32_OK,
 	ELF32_NULL_ADDRESS,

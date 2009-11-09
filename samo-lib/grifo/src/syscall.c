@@ -17,8 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdbool.h>
-#include <inttypes.h>
+#include "standard.h"
 
 #include "vector.h"
 #include "syscall.h"
