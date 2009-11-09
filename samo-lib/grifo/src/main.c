@@ -101,7 +101,7 @@ void process(void)
 	Event_initialise();
 	CTP_initialise();
 	Button_initialise();
-	//File_initialise();
+	File_initialise();
 
 #if 0
 	// secondary
@@ -152,7 +152,6 @@ void process(void)
 		uint32_t exec;
 		ELF32_ErrorType r = ELF32_load(&exec, args[0]);
 
-File_initialise();
 
 		if (ELF32_OK == r) {
 			asm volatile ("xld.w\t%r15, __dp_user");
@@ -162,6 +161,7 @@ File_initialise();
 		} else {
 			Serial_printf("ELF32_load error=%d\n", r);
 		}
+		File_CloseAll();
 	}
 
 }

@@ -20,12 +20,9 @@
 
 #include <string.h>
 
-#include <tff.h>
-#include <regs.h>
-#include <samo.h>
-
-#include "elf32.h"
 #include "serial.h"
+#include "file.h"
+#include "elf32.h"
 
 // 0 = no-debugging
 // 1 = serious errors
@@ -112,45 +109,31 @@ typedef struct {
 #define SHF_EXCLUDE          (1 << 31)  // Section is excluded unless
 					// referenced or allocated (Solaris)
 
-int ELF32_load(uint32_t *execution_address, const char *filename)
+ELF32_ErrorType ELF32_load(uint32_t *execution_address, const char *filename)
 {
-	FRESULT r = 0;
-	FATFS fatfs;
-	FIL file;
 	int rc = ELF32_OK;
 
-	if (NULL == execution_address) {
-		DEBUG_ELF(3, "ELF: NULL execution_address pointer\n");
-		rc = ELF32_NULL_ADDRESS;
-		goto abort_umount;
+	if (NULL == execution_address || NULL == filename) {
+		DEBUG_ELF(1, "ELF: null address\n");
+		return ELF32_NULL_ADDRESS;
 	}
 
-	DEBUG_ELF(2, "ELF: load file = %s\n", filename);
-
-	r = f_mount(0, &fatfs);
-	if (r != FR_OK) {
-		DEBUG_ELF(3, "ELF: mount error = %u\n", r);
-		rc = ELF32_MOUNT_FAIL;
-		goto abort_umount;
-	}
-
-	r = f_open(&file, filename, FA_READ);
-	if (r != FR_OK) {
-		DEBUG_ELF(1, "ELF: open file '%s' error = %u\n", filename, r);
-		rc = ELF32_OPEN_FAIL;
-		goto abort_umount;
+	int handle = File_open(filename, FILE_OPEN_READ);
+	if (handle < 0) {
+		DEBUG_ELF(1, "ELF: open file '%s' error = %d\n", filename, handle);
+		return ELF32_OPEN_FAIL;
 	}
 
 	elf32_hdr hdr;
-	UINT n = 0;
-	r = f_read(&file, &hdr, sizeof(hdr), &n);
-	if (r != FR_OK) {
-		DEBUG_ELF(3,"ELF: read header error = %u\n", r);
+	ssize_t n;
+	n = File_read(handle, &hdr, sizeof(hdr));
+	if (n < 0) {
+		DEBUG_ELF(3,"ELF: read header error = %ld\n", n);
 		rc = ELF32_INVALID_HEADER;
 		goto abort_close;
 	}
-	if (n != sizeof(hdr)) {
-		DEBUG_ELF(3, "ELF: read header size mismatch: %u != %u\n", n, sizeof(hdr));
+	if (sizeof(hdr) != n) {
+		DEBUG_ELF(3, "ELF: read header size mismatch: %ld != %d\n", n, sizeof(hdr));
 		rc = ELF32_INVALID_HEADER;
 		goto abort_close;
 	}
@@ -179,10 +162,14 @@ int ELF32_load(uint32_t *execution_address, const char *filename)
 	int i;
 	for (i = 0; i < hdr.e_shnum; i++) {
 		elf32_sec sec;
-		f_lseek(&file, hdr.e_shoff + sizeof(sec) * i);
-		if ((r = f_read(&file, (uint8_t *) &sec, sizeof(sec), &n)) || n != sizeof(sec)) {
-			DEBUG_ELF(3, "ELF: section read: error=%u read=%u expected=%u\n",
-				  r, n, sizeof(sec));
+		File_lseek(handle, hdr.e_shoff + sizeof(sec) * i);
+		n = File_read(handle, &sec, sizeof(sec));
+		if (n < 0) {
+			DEBUG_ELF(3, "ELF: section read: error=%ld\n", n);
+			continue;
+		} else if (n != sizeof(sec)) {
+			DEBUG_ELF(3, "ELF: section read: read=%ld expected=%u\n",
+				  n, sizeof(sec));
 			continue;
 		}
 
@@ -190,10 +177,15 @@ int ELF32_load(uint32_t *execution_address, const char *filename)
 
 		case SHT_PROGBITS:
 			if (0 != (SHF_ALLOC & sec.sh_flags)) {
-				f_lseek(&file, sec.sh_offset);
-				if (f_read(&file, (uint8_t *) sec.sh_addr, sec.sh_size, &n) || n != sec.sh_size) {
-					DEBUG_ELF(1, "ELF: PROGBITS read: error=%u read=%u expected=%lu\n",
-						  r, n, sec.sh_size);
+				File_lseek(handle, sec.sh_offset);
+				n = File_read(handle, (void *)sec.sh_addr, sec.sh_size);
+				if (n < 0) {
+					DEBUG_ELF(1, "ELF: PROGBITS read: error=%ld\n", n);
+					rc = ELF32_DATA_READ_FAIL;
+					goto abort_close;
+				} else if (n != sec.sh_size) {
+					DEBUG_ELF(1, "ELF: PROGBITS read: read=%ld expected=%lu\n",
+						  n, sec.sh_size);
 					rc = ELF32_DATA_READ_FAIL;
 					goto abort_close;
 				}
@@ -215,22 +207,14 @@ int ELF32_load(uint32_t *execution_address, const char *filename)
 		}
 	}
 
-	f_close(&file);
-
-	SDCARD_CS_HI();
-	disable_card_power();
-
 	DEBUG_ELF(2, "EXEC: 0x%08lx\n", hdr.e_entry);
 
 	*execution_address = hdr.e_entry;
-	goto abort_umount;
 
 // make sure every thing is cleaned up if the load fails fail
 abort_close:
-	f_close(&file);
-abort_umount:
-	SDCARD_CS_HI();
-	disable_card_power();
+	File_close(handle);
+
 	return rc;
 }
 
