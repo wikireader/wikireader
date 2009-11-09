@@ -309,7 +309,7 @@ Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos)
 }
 
 
-Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
+Forth_ReturnType FileSystem_ltell(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
 	FileType *file = ValidateFileHandle(&r, handle);
@@ -323,7 +323,7 @@ Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos)
 }
 
 
-Forth_ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos)
+Forth_ReturnType FileSystem_lsize(Forth_CellType handle)
 {
 	Forth_ReturnType r = {0, FR_OK};
 	FileType *file = ValidateFileHandle(&r, handle);

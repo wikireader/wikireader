@@ -45,8 +45,8 @@ Forth_ReturnType FileSystem_read(Forth_CellType handle, void *buffer, Forth_Cell
 Forth_ReturnType FileSystem_write(Forth_CellType handle, void *buffer, Forth_CellType length);
 Forth_ReturnType FileSystem_sync(Forth_CellType handle);
 Forth_ReturnType FileSystem_lseek(Forth_CellType handle, Forth_CellType pos);
-Forth_ReturnType FileSystem_ltell(Forth_CellType handle, Forth_CellType pos);
-Forth_ReturnType FileSystem_lsize(Forth_CellType handle, Forth_CellType pos);
+Forth_ReturnType FileSystem_ltell(Forth_CellType handle);
+Forth_ReturnType FileSystem_lsize(Forth_CellType handle);
 
 Forth_CellType FileSystem_ReadOnly(void);
 Forth_CellType FileSystem_ReadWrite(void);
