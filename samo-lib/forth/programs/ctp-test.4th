@@ -2,8 +2,8 @@
 
 base @ decimal
 
-40 constant box-width
-40 constant box-height
+19 constant box-width
+19 constant box-height
 
 
 : within-box ( x y x0 y0 x1 y1 -- flag )
