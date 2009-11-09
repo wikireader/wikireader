@@ -24,11 +24,12 @@
 #include "syscall.h"
 
 // for individual syscalls
-#include "serial.h"
 #include "delay.h"
-#include "timer.h"
 #include "event.h"
+#include "file.h"
 #include "LCD.h"
+#include "serial.h"
+#include "timer.h"
 
 
 const void *const SysCallTable1[] = {

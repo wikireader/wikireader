@@ -1,0 +1,4 @@
+build
+*.dump
+*.elf
+*.map

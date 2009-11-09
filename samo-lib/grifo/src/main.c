@@ -31,6 +31,7 @@
 #include "CTP.h"
 #include "delay.h"
 #include "event.h"
+#include "file.h"
 #include "interrupt.h"
 #include "serial.h"
 #include "syscall.h"
@@ -101,6 +102,7 @@ void process(void)
 	Event_initialise();
 	CTP_initialise();
 	Button_initialise();
+	//File_initialise();
 
 #if 0
 	// secondary
@@ -108,7 +110,6 @@ void process(void)
 	Memory_initialise();
 	Analog_initialise();
 	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH
-	Files_Initialise();
 	Menu_initialise();
 #endif
 
@@ -151,6 +152,8 @@ void process(void)
 
 		uint32_t exec;
 		ELF32_ErrorType r = ELF32_load(&exec, args[0]);
+
+File_initialise();
 
 		if (ELF32_OK == r) {
 			asm volatile ("xld.w\t%r15, __dp_user");

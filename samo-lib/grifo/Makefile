@@ -27,6 +27,8 @@ exit 1
 endef
 SAMO_LIB := $(shell ${FIND_SAMO_LIB})
 
+FATFS_MODE = read-write
+
 include ${SAMO_LIB}/Mk/definitions.mk
 
 
@@ -60,6 +62,7 @@ OBJECTS += CTP.o
 OBJECTS += delay.o
 OBJECTS += elf32.o
 OBJECTS += event.o
+OBJECTS += file.o
 OBJECTS += LCD.o
 OBJECTS += main.o
 OBJECTS += serial.o

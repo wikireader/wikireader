@@ -39,6 +39,7 @@
  (include<> stdbool.h)
  (include<> stdlib.h)
 
+ (output "typedef int32_t ssize_t;")
 
  ;; functions
  ;(0 "panic" ("void" "panic" "const char *message"))
@@ -122,6 +123,46 @@
  (45 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
 
  (46 LCD_line ("void" "lcd_line" "int x0" "int y0" "int x1" "int y1" "lcd_colour_t colour"))
+
+ ;;(47 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
+ ;;(48 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+
+
+ (section "Files and Directory access")
+
+ (output "typedef enum {")
+ (copy-part "src/file.h" "access")
+ (output "} file_access_t;")
+
+ (output "typedef enum {")
+ (copy-part "src/file.h" "error")
+ (output "} file_error_t;")
+
+ (60 File_CloseAll ("void" "file_close_all" "void"))
+
+ (61 File_rename ("file_error_t" "file_rename" "const char *OldFilename" "const char *NewFilename"))
+ (62 File_delete ("file_error_t" "file_delete" "const char *filename"))
+ (63 File_size ("file_error_t" "file_size"" const char *filename" "unsigned long *length"))
+
+ (70 File_create ("file_error_t" "file_create" "const char *filename" "file_access_t fam"))
+
+ (71 File_open ("file_error_t" "file_open" "const char *filename" "file_access_t fam"))
+ (72 File_close ("file_error_t" "file_close" "int handle"))
+ (73 File_read ("ssize_t" "file_read" "int handle" "void *buffer" "size_t length"))
+ (74 File_write ("ssize_t" "file_write" "int handle" "void *buffer" "size_t length"))
+ (75 File_sync ("file_error_t" "file_sync" "int handle"))
+ (76 File_lseek ("file_error_t" "file_lseek" "int handle" "unsigned long pos"))
+ ;;(67 File_ltell ("file_error_t" "file_ltell" "int handle" "unsigned long *pos"))
+
+ ;;(80 File_ChangeDirectory ("file_error_t" "directory_chdir" "const char *directoryname"))
+ ;;(81 File_CurrentDirectory ("file_error_t" "directory_cwd" "char *directoryname" "size_t length"))
+ (81 File_CreateDirectory ("file_error_t" "directory_create" "const char *directoryname"))
+ (82 File_OpenDirectory ("file_error_t" "directory_open" "const char *directoryname"))
+ (83 File_CloseDirectory ("file_error_t" "directory_close" "int handle"))
+ (84 File_ReadDirectory ("ssize_t" "directory_read" "int handle" "void *buffer" "size_t length"))
+
+ (90 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
+ (91 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
 
 
  (endif)

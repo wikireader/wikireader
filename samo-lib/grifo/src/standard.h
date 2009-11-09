@@ -24,6 +24,7 @@
 #include <stdbool.h>   // bool, true, false
 #include <stdlib.h>    // size_t
 
+typedef int32_t ssize_t;
 
 #if !defined(SizeOfArray)
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
