@@ -52,9 +52,11 @@ uint32_t *LCD_SetFrameBuffer(uint32_t *address)
 
 void LCD_ResetFrameBuffer(void)
 {
-	extern uint8_t __START_FrameBuffer;  // from grifo.lds (rember '&')
+	register uint32_t value;
+	asm volatile ("xld.w\r%[v], __START_FrameBuffer"
+		      : [v] "=r" (value));
 
-	REG_LCDC_MADD = (uint32_t)&__START_FrameBuffer;
+	REG_LCDC_MADD = value;
 }
 
 
