@@ -50,6 +50,14 @@ uint32_t *LCD_SetFrameBuffer(uint32_t *address)
 }
 
 
+void LCD_ResetFrameBuffer(void)
+{
+	extern uint8_t __START_FrameBuffer;  // from grifo.lds (rember '&')
+
+	REG_LCDC_MADD = (uint32_t)&__START_FrameBuffer;
+}
+
+
 void LCD_AllWhite(void)
 {
 	size_t i;

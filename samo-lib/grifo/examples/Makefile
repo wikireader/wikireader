@@ -37,7 +37,7 @@ DIRS += files
 
 
 ${MAKECMDGOALS} all:
-	@for d in ${DIRS}; do ${MAKE} -C "$${d}" ${MAKECMDGOALS}; done
+	@for d in ${DIRS}; do ${MAKE} -C "$${d}" ${MAKECMDGOALS} || break; done
 
 
 include ${SAMO_LIB}/Mk/rules.mk

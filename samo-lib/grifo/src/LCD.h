@@ -52,6 +52,8 @@ uint8_t *LCD_GetFrameBuffer(void);
 // frame buffer must be word aligned
 uint32_t *LCD_SetFrameBuffer(uint32_t *address);
 
+void LCD_ResetFrameBuffer(void);
+
 
 void LCD_AllWhite(void);
 void LCD_AllBlack(void);

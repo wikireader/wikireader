@@ -43,8 +43,8 @@ int main(int argc, char **argv)
 			if (i >= sizeof(spinner)) {
 				i = 0;
 			}
-			debug_printchar(spinner[i++]);
-			debug_printchar('\010');
+			debug_print_char(spinner[i++]);
+			debug_print_char('\010');
 		}
 		break;
 

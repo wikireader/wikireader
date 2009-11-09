@@ -54,9 +54,9 @@ int main(int argc, char **argv)
 					}
 					int j;
 					for (j = 0; j < r; ++j) {
-						debug_printchar(buffer[j]);
+						debug_print_char(buffer[j]);
 					}
-					debug_printchar('\n');
+					debug_print_char('\n');
 				}
 				(void)directory_close(handle);
 			}
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 					}
 					int j;
 					for (j = 0; j < r; ++j) {
-						debug_printchar(buffer[j]);
+						debug_print_char(buffer[j]);
 					}
 				}
 				(void)file_close(handle);

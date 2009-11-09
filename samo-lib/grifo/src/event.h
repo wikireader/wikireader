@@ -69,6 +69,7 @@ typedef struct event_struct {
 
 void Event_initialise();
 
+// clear the whole queue
 void Event_flush(void);
 
 // copy to buffer
