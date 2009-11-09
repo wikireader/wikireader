@@ -136,7 +136,7 @@
  ;;(53 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
 
  ;;(60 ? ("uint8_t *" "lcd_window_buffer_get" "void"))
- ;;(61 ? ("void" "lcd_window_buffer_set,unit8_t *buffer"))
+ ;;(61 ? ("void" "lcd_window_buffer_set,uint32_t *buffer"))
  ;;(62 ? ("void" "lcd_window_buffer_set_default" "void"))
  ;;(63 ? ("void" "lcd_window_buffer_disable" "void"))
  ;;(64 ? ("void" "lcd_window_buffer_enable" "int x" "int y" "int w" "int h);"))
