@@ -106,7 +106,11 @@ lib/libgrifo.a: lib stubs/stamp
 
 grifo.elf: build build/main.o lds/grifo.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/main.o ${LIBS} -T lds/${@:.elf=.lds} -Map ${@:.elf=.map}
-	c33-epson-elf-objdump -D "$@" > "${@:.elf=.dump}"
+	${STRIP} --strip-unneeded --strip-debug \
+		--remove-section=.internal --remove-section=.lcd \
+		--remove-section=.user_area --remove-section=.descriptor "$@"
+	${OBJDUMP} --section-headers "$@"
+	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
 
 build:
 	${MKDIR} "$@"

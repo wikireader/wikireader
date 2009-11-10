@@ -59,7 +59,7 @@ lib/libexamples.a: lib ${BUILD_OBJECTS}
 
 lcd.elf: build build/lcd.o ${GRIFO_APPLICATION_LDS} ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/lcd.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.elf=.map}
-	c33-epson-elf-objdump -D "$@" > "${@:.elf=.dump}"
+	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
 
 
 build:

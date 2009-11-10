@@ -59,7 +59,7 @@ lib/libexamples.a: lib ${BUILD_OBJECTS}
 
 events.elf: build build/events.o ${GRIFO_APPLICATION_LDS} ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/events.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.elf=.map}
-	c33-epson-elf-objdump -D "$@" > "${@:.elf=.dump}"
+	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
 
 
 build:
