@@ -25,6 +25,8 @@ base @ decimal
 
 
 variable touch-down
+variable touch-timeout
+20000 constant touch-timeout-millisec
 
 : test-touch-sequence  ( -- flag )
     lcd-cls
@@ -34,6 +36,7 @@ variable touch-down
     key-flush
     ctp-flush
     false touch-down !
+    0 touch-timeout !
 
     begin
         ctp-pos? if
@@ -67,6 +70,13 @@ variable touch-down
         then
 
 \        wait-for-event
+
+        1 touch-timeout +!
+        touch-timeout @ touch-timeout-millisec > if
+            false exit
+        then
+
+        1000 delay-us
     again
 ;
 
