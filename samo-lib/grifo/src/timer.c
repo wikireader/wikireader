@@ -31,6 +31,8 @@ void Timer_initialise(void)
 	static bool initialised = false;
 	if (!initialised) {
 		initialised = true;
+		CMU_initialise();
+
 		Interrupt_type state = Interrupt_disable();
 
 		CMU_enable1(TM5_CKE | TM0_CKE);
