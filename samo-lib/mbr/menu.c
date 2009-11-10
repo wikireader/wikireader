@@ -308,6 +308,9 @@ ProcessReturnType process(int block, int status)
 			} else if (2 == k) {  // right button
 				status = 3;
 				break;
+			} else if (0 != k) {  // multiple buttons
+				MenuFlag = true;
+				break;
 			}
 		}
 
