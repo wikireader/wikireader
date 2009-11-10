@@ -34,6 +34,7 @@
 #include "interrupt.h"
 #include "serial.h"
 #include "syscall.h"
+#include "system.h"
 #include "timer.h"
 #include "vector.h"
 
@@ -96,6 +97,7 @@ void process(void)
 	Serial_print("Grifo starting\n");
 
 	// system initialisation
+	System_initialise();
 	Timer_initialise();
 	Delay_initialise();
 	Event_initialise();

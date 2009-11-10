@@ -67,6 +67,7 @@ OBJECTS += LCD.o
 OBJECTS += main.o
 OBJECTS += serial.o
 OBJECTS += syscall.o
+OBJECTS += system.o
 OBJECTS += timer.o
 OBJECTS += vector.o
 #OBJECTS +=
