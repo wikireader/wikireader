@@ -2914,6 +2914,7 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 
 \ from current x-y
 : lcd-box                 :: lcd-box                 ( w h -- )
+    1- swap 1- swap
     over lcd-x @ + lcd-y @ lcd-line-to
     lcd-x @ over lcd-y @ + lcd-line-to
     lcd-x @ rot - lcd-y @ lcd-line-to
