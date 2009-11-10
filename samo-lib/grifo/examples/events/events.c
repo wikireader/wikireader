@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "grifo.h"
 
 int main(int argc, char **argv)
@@ -37,6 +35,7 @@ int main(int argc, char **argv)
 		switch(event_get(&event)) {
 
 		case EVENT_NONE:
+#if 0
 		{
 			const char spinner[4] = "-\\|/";
 			static size_t i;
@@ -46,6 +45,7 @@ int main(int argc, char **argv)
 			debug_print_char(spinner[i++]);
 			debug_print_char('\010');
 		}
+#endif
 		break;
 
 		case EVENT_KEY:

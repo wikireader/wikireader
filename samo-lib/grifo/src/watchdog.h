@@ -1,5 +1,5 @@
 /*
- * simple busy wait delay
+ * watchdog - driver for the watchdog timer
  *
  * Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
  *
@@ -17,32 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "standard.h"
+#if  !defined(_WATCHDOG_H_)
+#define _WATCHDOG_H_ 1
 
-#include <regs.h>
+void Watchdog_initialise(void);
 
-#include "timer.h"
-#include "watchdog.h"
-#include "delay.h"
+typedef enum {
+//+MakeSystemCalls: key
+	WATCHDOG_KEY = 0xcafe1a7e,
+//-MakeSystemCalls: key
+} Watchdog_type;
 
+void Watchdog_KeepAlive(Watchdog_type key);
+void Watchdog_SetTimeout(Watchdog_type key, uint32_t WatchdogTimeout);
 
-void Delay_initialise(void)
-{
-	static bool initialised = false;
-	if (!initialised) {
-		initialised = true;
-		Timer_initialise();
-		Watchdog_initialise();
-	}
-}
-
-
-void Delay_microseconds(unsigned long microseconds)
-{
-	unsigned long start = Timer_get();
-	unsigned long delay = microseconds * TIMER_CountsPerMicroSecond;
-
-	while (Timer_get() - start < delay) {
-		Watchdog_KeepAlive(WATCHDOG_KEY);
-	}
-}
+#endif

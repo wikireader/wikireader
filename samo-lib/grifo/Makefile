@@ -70,6 +70,7 @@ OBJECTS += syscall.o
 OBJECTS += system.o
 OBJECTS += timer.o
 OBJECTS += vector.o
+OBJECTS += watchdog.o
 #OBJECTS +=
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})

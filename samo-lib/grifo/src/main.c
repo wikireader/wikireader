@@ -37,6 +37,7 @@
 #include "system.h"
 #include "timer.h"
 #include "vector.h"
+#include "watchdog.h"
 
 void process(void);
 
@@ -89,6 +90,7 @@ void process(void)
 	// critical initialisations
 	Vector_initialise();
 	//*Suspend_initialise();
+	Watchdog_initialise();
 	Serial_initialise();
 
 	// enable interrupts
@@ -98,12 +100,25 @@ void process(void)
 
 	// system initialisation
 	System_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	Timer_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	Delay_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	Event_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	CTP_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	Button_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 	File_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 #if 0
 	// secondary
@@ -116,6 +131,7 @@ void process(void)
 
 	// final initialisation before running the application
 	SystemCall_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 #if 0
 	Menu_run();
@@ -123,6 +139,8 @@ void process(void)
 
 	// program to run
 	for (;;) {
+		Watchdog_KeepAlive(WATCHDOG_KEY);
+
 		char buffer[81]; // remember the '\0'
 
 		Serial_print("command: ");

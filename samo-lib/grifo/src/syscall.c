@@ -29,6 +29,7 @@
 #include "LCD.h"
 #include "serial.h"
 #include "timer.h"
+#include "watchdog.h"
 
 
 const void *const SysCallTable1[] = {

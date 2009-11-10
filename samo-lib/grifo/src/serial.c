@@ -24,6 +24,7 @@
 
 #include <regs.h>
 
+#include "watchdog.h"
 #include "serial.h"
 
 
@@ -32,6 +33,7 @@ void Serial_initialise(void)
 	static bool initialised = false;
 	if (!initialised) {
 		initialised = true;
+		Watchdog_initialise();
 	}
 }
 
@@ -44,6 +46,7 @@ int Serial_PutChar(int c)
 	}
 	while (!Serial_PutReady()) {
 	}
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 	REG_EFSIF0_TXD = c;
 	return c;
 }
@@ -58,6 +61,7 @@ bool Serial_PutReady(void)
 char Serial_GetChar(void)
 {
 	while (!Serial_InputAvailable()) {
+		Watchdog_KeepAlive(WATCHDOG_KEY);
 	}
 	return REG_EFSIF0_RXD;
 }

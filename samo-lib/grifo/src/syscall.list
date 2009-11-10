@@ -84,8 +84,10 @@
  (newline)
  (24 Timer_get ("unsigned long" "timer_get" "void"))
 
- ;(output "typedef enum {" "\tWATCHDOG_KEY = 0xcafe1a7e," "} watchdog_t;")
- ;(29 Watchdog_reload ("void" "watchdog" "(watchdog_t key"))
+ (output "typedef enum {")
+ (copy-part "src/watchdog.h" "key")
+ (output "} watchdog_t;")
+ (29 Watchdog_KeepAlive ("void" "watchdog" "watchdog_t key"))
 
 
  (section "event queue")

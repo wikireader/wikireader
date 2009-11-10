@@ -66,6 +66,7 @@ int main(int argc, char **argv)
 		lcd_line(120, y + 25, 120 + y, 100, LCD_BLACK);
 		lcd_line(120 + y, 100, 120, x + 100, LCD_BLACK);
 		lcd_line(120, x + 100, 120 - y, 100, LCD_BLACK);
+		watchdog(WATCHDOG_KEY);
 	}
 	delay_us(2000000);
 
