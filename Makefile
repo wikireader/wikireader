@@ -302,7 +302,7 @@ endef
 # get the number of articles from the indexer
 # and compute how many articles per instance
 # ------------------------------------------------
-TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' work/counts.text || echo 100)
+TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' work/counts.text 2>/dev/null || echo 100)
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
