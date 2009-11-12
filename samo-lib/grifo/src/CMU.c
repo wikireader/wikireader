@@ -118,7 +118,7 @@ void CMU_initialise(void)
 			//TM4_CKE |
 			//TM3_CKE |
 			//TM2_CKE |
-			TM1_CKE |      // for contrast.c
+			TM1_CKE |        // for contrast.c
 			//TM0_CKE |      // for tick.c
 			EGPIO_MISC_CK |
 			//I2S_CKE |
@@ -126,14 +126,17 @@ void CMU_initialise(void)
 			//WDT_CKE |
 			GPIO_CKE |
 			//SRAMSAPB_CKE |
-			SPI_CKE |
+			SPI_CKE |        // turn off in suspend?
 			EFSIOSAPB_CKE |
 			//CARD_CKE |
-			ADC_CKE |
+			ADC_CKE |        // turn off initially? (in suspend?)
 			ITC_CKE |
 			//DMA_CKE |
 			//RTCSAPB_CKE |
 			0;
+
+		REG_CMU_OPT |= WAKEUPWT;
+
 		REG_CMU_PROTECT = CMU_PROTECT_ON;
 		Interrupt_enable(state);
 	}
