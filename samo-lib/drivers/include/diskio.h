@@ -25,7 +25,6 @@
 
 static inline uint8_t disk_initialize(uint8_t disk_idx) {
 	return mmc_disk_initialize(0);
-// 	return SdInitialize();
 }
 
 static inline uint8_t disk_status(uint8_t disk_idx)
@@ -35,19 +34,19 @@ static inline uint8_t disk_status(uint8_t disk_idx)
 
 static inline uint8_t disk_read(uint8_t disk_idx, uint8_t *buff, uint32_t sect_addr, uint16_t size) {
 	return mmc_disk_read(disk_idx, buff, sect_addr, size);
-// 	return SdRdSect((unsigned short)disk_idx, sect_addr, size, buff);
 }
 
-#if _READONLY == 0
+#if !_READONLY
 static inline uint8_t disk_write(uint8_t disk_idx, const uint8_t *buff, uint32_t sect_addr, uint16_t size) {
 	return mmc_disk_write(disk_idx, buff, sect_addr, size);
 }
 #endif
 
+#if _USE_IOCTL
 static inline uint8_t disk_ioctl(uint8_t disk_idx, uint8_t ioctl, void *buff) {
-	return 0;
+	return mmc_disk_ioctl(disk_idx, ioctl, buff);
 }
-
+#endif
 
 
 /* Disk Status Bits (DSTATUS) */
@@ -65,21 +64,21 @@ static inline uint8_t disk_ioctl(uint8_t disk_idx, uint8_t ioctl, void *buff) {
 
 /* Generic command */
 #define CTRL_SYNC			0	/* Mandatory for read/write configuration */
-#define GET_SECTOR_COUNT	1	/* Mandatory for only f_mkfs() */
-#define GET_SECTOR_SIZE		2
-#define GET_BLOCK_SIZE		3	/* Mandatory for only f_mkfs() */
+#define GET_SECTOR_COUNT		1	/* Mandatory for only f_mkfs() */
+#define GET_SECTOR_SIZE			2
+#define GET_BLOCK_SIZE			3	/* Mandatory for only f_mkfs() */
 #define CTRL_POWER			4
 #define CTRL_LOCK			5
 #define CTRL_EJECT			6
 /* MMC/SDC command */
-#define MMC_GET_TYPE		10
+#define MMC_GET_TYPE			10
 #define MMC_GET_CSD			11
 #define MMC_GET_CID			12
 #define MMC_GET_OCR			13
-#define MMC_GET_SDSTAT		14
+#define MMC_GET_SDSTAT			14
 /* ATA/CF command */
 #define ATA_GET_REV			20
-#define ATA_GET_MODEL		21
+#define ATA_GET_MODEL			21
 #define ATA_GET_SN			22
 
 #endif
