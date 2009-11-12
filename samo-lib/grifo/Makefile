@@ -106,7 +106,7 @@ stubs/stamp: stubs
 	${TOUCH} "$@"
 
 # this should depend on lib, but make always rebuilds in that case; why?
-lib/libgrifo.a: lib stubs/stamp
+lib/libgrifo.a: lib stubs/stamp stubs/stamp-source
 	${RM} "$@"
 	${AR} r "$@" stubs/*.o
 	${TOUCH} "$@"
