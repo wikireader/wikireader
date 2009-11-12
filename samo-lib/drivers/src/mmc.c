@@ -487,7 +487,6 @@ DRESULT mmc_disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
 	BYTE n, csd[16], *ptr = buff;
 	WORD csize;
 
-
 	if (drv) {
 		return RES_PARERR;
 	}

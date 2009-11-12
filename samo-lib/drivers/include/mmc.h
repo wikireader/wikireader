@@ -30,5 +30,6 @@ typedef enum {
 DSTATUS mmc_disk_initialize(BYTE drv);
 DRESULT mmc_disk_read(BYTE drv, BYTE *buff, DWORD sector, BYTE count);
 DRESULT mmc_disk_write(BYTE drv, const BYTE *buff, DWORD sector, BYTE count);
+DRESULT mmc_disk_ioctl(BYTE drv, BYTE ctrl, void *buff);
 
 #endif
