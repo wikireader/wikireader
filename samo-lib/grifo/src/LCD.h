@@ -37,6 +37,11 @@ enum {
 	LCD_BUFFER_SIZE_BYTES = LCD_BUFFER_WIDTH_BYTES * LCD_BUFFER_HEIGHT,
 	LCD_BUFFER_SIZE_WORDS = LCD_BUFFER_WIDTH_WORDS * LCD_BUFFER_HEIGHT,
 
+	LCD_FONT_WIDTH  = 8,
+	LCD_FONT_HEIGHT = 13,
+	LCD_MAX_COLUMNS = LCD_WIDTH / LCD_FONT_WIDTH,
+	LCD_MAX_ROWS    = LCD_HEIGHT / LCD_FONT_HEIGHT,
+
 };
 //-MakeSystemCalls: types
 
@@ -45,7 +50,7 @@ typedef enum {
 	LCD_WHITE = 0,
 	LCD_BLACK = 1,
 //-MakeSystemCalls: colours
-} LCD_colour_t;
+} LCD_ColourType;
 
 void LCD_initialise(void);
 
@@ -57,12 +62,30 @@ uint32_t *LCD_SetFrameBuffer(uint32_t *address);
 void LCD_ResetFrameBuffer(void);
 
 
-void LCD_AllWhite(void);
-void LCD_AllBlack(void);
+// clear the screen and home the graphic and text cursors
+// sets drawing colour to the opposite value
+void LCD_clear(LCD_ColourType colour);
 
-LCD_colour_t LCD_GetPixel(int x, int y);
-void LCD_SetPixel(int x, int y, LCD_colour_t value);
+// absolute pixel access (does not change any cursor)
+LCD_ColourType LCD_GetPixel(int x, int y);
+void LCD_SetPixel(int x, int y, LCD_ColourType colour);
 
-void LCD_line(int x0, int y0, int x1, int y1, LCD_colour_t value);
+// drawing colour
+LCD_ColourType LCD_SetColour(LCD_ColourType value);
+LCD_ColourType LCD_GetColour(void);
+
+// move graphic gursor and plot a pixel
+void LCD_point(int x, int y);
+
+// line drawing (only affects graphic cursor)
+void LCD_MoveTo(int x, int y);
+void LCD_LineTo(int x, int y);
+
+// text output (only affects text cursor)
+void LCD_AtXY(int column, int row);
+int LCD_PutChar(int c);
+void LCD_print(const char *message);
+int LCD_printf(const char *format, ...) __attribute__((format (printf, 1, 2)));
+
 
 #endif

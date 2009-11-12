@@ -28,49 +28,128 @@ int main(int argc, char **argv)
 	debug_printf("lcd start\n");
 
 	debug_printf("black screen\n");
-	lcd_clear_reverse();
+	lcd_clear(LCD_BLACK);
 	delay_us(1000000);
 
-	debug_printf("clear some pixels\n");
+	debug_printf("plot white pixels\n");
 	int x;
 	int y;
 	for (x = 10, y = 10; x < 100; x += 5, y += 10) {
-		lcd_set_pixel(x, y, LCD_WHITE);
+		lcd_point(x, y);
 	}
+	delay_us(1000000);
+
+	debug_printf("draw white lines\n");
+	lcd_move_to( 10,  10);
+	lcd_line_to(120,  10);
+	lcd_line_to(120, 100);
+	lcd_line_to( 10, 100);
+	lcd_line_to( 10,  10);
+
+	lcd_move_to( 10,  10);
+	lcd_line_to(120, 100);
+	lcd_move_to(120,  10);
+	lcd_line_to( 10, 100);
 	delay_us(1000000);
 
 	debug_printf("white screen\n");
-	lcd_clear();
+	lcd_clear(LCD_WHITE);
 	delay_us(1000000);
 
-	debug_printf("set some pixels\n");
+	debug_printf("plot black pixels\n");
 	for (x = 150, y = 140; x < 200; x += 10, y += 5) {
-		lcd_set_pixel(x, y, LCD_BLACK);
+		lcd_point(x, y);
 	}
 	delay_us(1000000);
 
-	debug_printf("draw some lines\n");
-	lcd_line( 10,  10, 120,  10, LCD_BLACK);
-	lcd_line(120,  10, 120, 100, LCD_BLACK);
-	lcd_line(120, 100,  10, 100, LCD_BLACK);
-	lcd_line( 10, 100,  10,  10, LCD_BLACK);
+	debug_printf("draw black lines\n");
+	lcd_move_to( 10,  10);
+	lcd_line_to(120,  10);
+	lcd_line_to(120, 100);
+	lcd_line_to( 10, 100);
+	lcd_line_to( 10,  10);
 
-	lcd_line( 10,  10, 120, 100, LCD_BLACK);
-	lcd_line(120,  10,  10, 100, LCD_BLACK);
+	lcd_move_to( 10,  10);
+	lcd_line_to(120, 100);
+	lcd_move_to(120,  10);
+	lcd_line_to( 10, 100);
 	delay_us(1000000);
 
 	debug_printf("eye pattern\n");
-	lcd_clear();
+	lcd_clear(LCD_WHITE);
 
 	for (x = 0; x < 76; x += 5) {
 		y = 75 - x;
-		lcd_line(120 - y, 100, 120, y + 25, LCD_BLACK);
-		lcd_line(120, y + 25, 120 + y, 100, LCD_BLACK);
-		lcd_line(120 + y, 100, 120, x + 100, LCD_BLACK);
-		lcd_line(120, x + 100, 120 - y, 100, LCD_BLACK);
+		lcd_move_to(120 - y, 100);
+		lcd_line_to(120, y + 25);
+		lcd_line_to(120 + y, 100);
+		lcd_line_to(120, x + 100);
+		lcd_line_to(120 - y, 100);
 		watchdog(WATCHDOG_KEY);
 	}
 	delay_us(2000000);
+
+	debug_printf("black text\n");
+	lcd_clear(LCD_WHITE);
+	lcd_print("This the first is a line of text\n");
+	lcd_print("This the second is a line of text\n");
+	lcd_print("This the third is a line of text\n");
+	lcd_print("This the fourth is a line of text\n");
+	lcd_print("This the fifth is a line of text\n");
+	lcd_printf("some numbers: %d 0x%08x\n", 12345, 349599327);
+	delay_us(2000000);
+
+	debug_printf("white text\n");
+	lcd_clear(LCD_BLACK);
+	lcd_print("This the first is a line of text\n");
+	lcd_print("This the second is a line of text\n");
+	lcd_print("This the third is a line of text\n");
+	lcd_print("This the fourth is a line of text\n");
+	lcd_print("This the fifth is a line of text\n");
+	lcd_printf("some numbers: %d 0x%08x\n", 12345, 349599327);
+	delay_us(2000000);
+
+	debug_printf("mixed text\n");
+	lcd_clear(LCD_WHITE);
+	lcd_print("This the first is a line of text\n");
+	(void)lcd_set_colour(LCD_WHITE);
+	lcd_print("This the second is a line of text\n");
+	(void)lcd_set_colour(LCD_BLACK);
+	lcd_print("This the third is a line of text\n");
+	(void)lcd_set_colour(LCD_WHITE);
+	lcd_print("This the fourth is a line of text\n");
+	(void)lcd_set_colour(LCD_BLACK);
+	lcd_print("This the fifth is a line of text\n");
+	lcd_printf("some numbers: %d 0x%08x\n", 12345, 349599327);
+	delay_us(2000000);
+
+
+	debug_printf("scrolling text\n");
+	lcd_clear(LCD_WHITE);
+	for (x = 1; x <= 30; ++x) {
+		lcd_printf("line number: %d\n", x);
+	}
+	delay_us(2000000);
+
+	debug_printf("positioned text\n");
+	lcd_clear(LCD_WHITE);
+	lcd_at_xy(20, 8);
+	lcd_print("one");
+	delay_us(500000);
+
+	lcd_at_xy(3, 1);
+	lcd_print("two");
+	delay_us(500000);
+
+	lcd_at_xy(0, 0);
+	lcd_print("A");
+	delay_us(500000);
+
+	lcd_at_xy(LCD_MAX_COLUMNS - 1, LCD_MAX_ROWS - 1);
+	lcd_print("Z");
+	delay_us(2000000);
+
+
 
 	return 0;
 }
