@@ -24,7 +24,6 @@
 #include <tff.h>
 #include <diskio.h>
 
-#include "serial.h" //debug
 #include "file.h"
 
 
@@ -71,6 +70,23 @@ void File_initialise(void)
 }
 
 
+void File_PowerDown(void)
+{
+	uint8_t b = 0;
+	disk_ioctl(0, CTRL_POWER, &b);
+}
+
+
+static void AutoPowerUp(void)
+{
+	uint8_t b[2] = {2, 0};
+	disk_ioctl(0, CTRL_POWER, &b);
+	if (0 == b[1]) {
+		disk_initialize(0);
+	}
+}
+
+
 // ensure: 0 <= handle < array size
 static FileType *ValidateFileHandle(int handle)
 {
@@ -101,6 +117,8 @@ void File_CloseAll(void)
 {
 	size_t i = 0;
 
+	AutoPowerUp();
+
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		File_close(i + 1);
 	}
@@ -116,6 +134,7 @@ File_ErrorType File_rename(const char *OldFilename, const char *NewFilename)
 	if (NULL == OldFilename || NULL == NewFilename) {
 		return FILE_ERROR_INVALID_NAME;
 	}
+	AutoPowerUp();
 	return -f_rename(OldFilename, NewFilename);
 }
 
@@ -124,6 +143,7 @@ File_ErrorType File_delete(const char *filename)
 	if (NULL == filename) {
 		return FILE_ERROR_INVALID_NAME;
 	}
+	AutoPowerUp();
 	return -f_unlink(filename);
 }
 
@@ -135,6 +155,7 @@ File_ErrorType File_size(const char *filename, unsigned long *length)
 	}
 	FILINFO stat;
 
+	AutoPowerUp();
 	File_ErrorType rc = -f_stat(filename, &stat);
 	*length = stat.fsize;
 	return rc;
@@ -153,14 +174,13 @@ File_ErrorType File_open(const char *filename, File_AccessType fam)
 		return FILE_ERROR_INVALID_NAME;
 	}
 
-	Serial_printf("File_open '%s'\n", filename);
 	size_t i = 0;
 	for (i = 0; i < SizeOfArray(FileControlBlock); i++) {
 		if (!FileControlBlock[i].IsOpen) {
+			AutoPowerUp();
 			File_ErrorType rc = -f_open(&FileControlBlock[i].file, filename, fam);
 			if (FILE_ERROR_OK == rc) {
 				FileControlBlock[i].IsOpen = true;
-	Serial_printf("File_open handle = %d\n", i);
 				return i;  // handle 0...
 			}
 			break;
@@ -177,6 +197,7 @@ File_ErrorType File_close(int handle)
 	if (NULL == file) {
 		return FILE_ERROR_INVALID_OBJECT;
 	}
+	AutoPowerUp();
 	return -f_close(&file->file);
 }
 
@@ -189,6 +210,7 @@ ssize_t File_read(int handle, void *buffer, size_t length)
 		return FILE_ERROR_INVALID_OBJECT;
 	}
 
+	AutoPowerUp();
 	unsigned int count;
 	File_ErrorType rc = -f_read(&file->file, buffer, length, &count);
 	if (FILE_ERROR_OK == rc) {
@@ -206,6 +228,7 @@ ssize_t File_write(int handle, void *buffer, size_t length)
 		return FILE_ERROR_INVALID_OBJECT;
 	}
 
+	AutoPowerUp();
 	unsigned int count;
 	File_ErrorType rc = -f_write(&file->file, buffer, length, &count);
 	if (FILE_ERROR_OK == rc) {
@@ -223,6 +246,7 @@ File_ErrorType File_sync(int handle)
 		return FILE_ERROR_INVALID_OBJECT;
 	}
 
+	AutoPowerUp();
 	return -f_sync(&file->file);
 }
 
@@ -234,6 +258,8 @@ File_ErrorType File_lseek(int handle, unsigned long pos)
 	if (NULL == file) {
 		return FILE_ERROR_INVALID_OBJECT;
 	}
+
+	AutoPowerUp();
 	return -f_lseek(&file->file, pos);
 }
 
@@ -247,6 +273,7 @@ File_ErrorType File_CreateDirectory(const char *directoryname)
 		return FILE_ERROR_INVALID_NAME;
 	}
 
+	AutoPowerUp();
 	return -f_mkdir(directoryname);
 }
 
@@ -260,6 +287,7 @@ File_ErrorType File_OpenDirectory(const char *directoryname)
 	size_t i;
 	for (i = 0; i < SizeOfArray(DirectoryControlBlock); i++) {
 		if (!DirectoryControlBlock[i].IsOpen) {
+			AutoPowerUp();
 			File_ErrorType rc = -f_opendir(&DirectoryControlBlock[i].directory, directoryname);
 			if (FILE_ERROR_OK == rc) {
 				DirectoryControlBlock[i].IsOpen = true;
@@ -297,6 +325,7 @@ ssize_t File_ReadDirectory(int handle, void *buffer, size_t length)
 
 	FILINFO info;
 
+	AutoPowerUp();
 	File_ErrorType rc = -f_readdir(&directory->directory, &info);
 	if (FILE_ERROR_OK == rc){
 		size_t count = strlen(info.fname);
@@ -315,11 +344,13 @@ ssize_t File_ReadDirectory(int handle, void *buffer, size_t length)
 
 File_ErrorType File_AbsoluteRead(unsigned long sector, void *buffer, int count)
 {
+	AutoPowerUp();
 	return -disk_read(0, buffer, sector, count);
 }
 
 
 File_ErrorType File_AbsoluteWrite(unsigned long sector, const void *buffer, int count)
 {
+	AutoPowerUp();
 	return -disk_write(0, buffer, sector, count);
 }

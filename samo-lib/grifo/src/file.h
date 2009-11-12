@@ -52,6 +52,7 @@ typedef enum {
 
 void File_initialise(void);
 
+void File_PowerDown(void);
 void File_CloseAll(void);
 
 File_ErrorType File_rename(const char *OldFilename, const char *NewFilename);
