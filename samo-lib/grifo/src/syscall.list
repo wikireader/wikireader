@@ -50,6 +50,7 @@
  (1 Serial_print   ("void" "debug_print" "const char *message"))
  (2 Serial_PutChar ("int" "debug_print_char" "int c"))
  (3 Serial_printf  ("int" "debug_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (4 Serial_HexDump ("void" "debug_hex_dump" "const void *buffer" "size_t length"))
 
 
  (section "interrupt handlers")
@@ -113,31 +114,40 @@
 
  (copy-part "src/LCD.h" "types")
 
- (40 LCD_GetFrameBuffer ("uint8_t *" "lcd_framebuffer_get" "void"))
+ (40 LCD_GetFrameBuffer ("uint8_t *" "lcd_get_framebuffer" "void"))
 
  (remark "frame buffer must be word aligned")
- (41 LCD_SetFrameBuffer ("uint32_t *" "lcd_framebuffer_set" "uint32_t *address"))
+ (41 LCD_SetFrameBuffer ("uint32_t *" "lcd_set_framebuffer" "uint32_t *address"))
 
  (remark "only the default frame buffer will show during suspend")
- (42 LCD_ResetFrameBuffer ("uint32_t *" "lcd_framebuffer_set_default" "void"))
-
- (43 LCD_AllWhite ("void" "lcd_clear" "void"))
- (44 LCD_AllBlack ("void" "lcd_clear_reverse" "void"))
+ (42 LCD_ResetFrameBuffer ("uint32_t *" "lcd_set_default_framebuffer" "void"))
 
  (newline)
  (output "typedef enum {")
  (copy-part "src/LCD.h" "colours")
  (output "} lcd_colour_t;")
 
- (45 LCD_GetPixel ("lcd_colour_t" "lcd_get_pixel" "int x" "int y"))
- (46 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
+ (remark "clear and home text andgraphic cursors")
+ (43 LCD_clear ("void" "lcd_clear" "lcd_colour_t colour"))
 
- (47 LCD_line ("void" "lcd_line" "int x0" "int y0" "int x1" "int y1" "lcd_colour_t colour"))
+ (remark "these do not affect either cursor")
+ (44 LCD_GetPixel ("lcd_colour_t" "lcd_get_pixel" "int x" "int y"))
+ (45 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
 
- ;;(50 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
- ;;(51 LCD_print  ("int" "lcd_printf" "const char *text"))
- ;;(52 LCD_PutChar  ("int" "lcd_print_char" "char c"))
- ;;(53 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (remark "move graphic cursor and plot a pixel")
+ (46 LCD_point ("void" "lcd_point" "int x" "int y"))
+
+ (remark "move graphic cursor / draw line")
+ (47 LCD_MoveTo ("void" "lcd_move_to" "int x" "int y"))
+ (48 LCD_LineTo ("void" "lcd_line_to" "int x" "int y"))
+
+ (remark "text output (only affects text cursor)")
+ (50 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
+ (51 LCD_print  ("int" "lcd_print" "const char *text"))
+ (52 LCD_PutChar  ("int" "lcd_print_char" "char c"))
+ (53 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (54 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
+ (55 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
 
  ;;(60 ? ("uint8_t *" "lcd_window_buffer_get" "void"))
  ;;(61 ? ("void" "lcd_window_buffer_set,uint32_t *buffer"))
@@ -181,6 +191,11 @@
 
  (100 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
  (101 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
+
+ (section "Power Off / Reboot")
+
+ (110 System_PowerOff ("void" "power_off" "void"))
+ (111 System_reboot ("void" "reboot" "void"))
 
 
  (endif)

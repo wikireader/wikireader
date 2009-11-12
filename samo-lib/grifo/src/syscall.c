@@ -30,6 +30,7 @@
 #include "file.h"
 #include "LCD.h"
 #include "serial.h"
+#include "system.h"
 #include "timer.h"
 #include "watchdog.h"
 
