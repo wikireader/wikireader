@@ -59,7 +59,8 @@ CROSS_LDFLAGS = -static --strip-all --no-gc-sections --omagic
 CROSS_ASFLAGS = -mc33pe --fatal-warnings
 CLEAN_FILES =
 
-TARGETS = forth.elf calc.elf
+TARGETS = forth.elf
+TARGETS += applications
 FORTH_PROGRAMS = programs/*.4?? programs/*.ini programs/*.tst
 
 .PHONY: all
@@ -96,28 +97,49 @@ forth-vector.fi: Makefile
 	echo "variable 'cold-run :: tick-cold-run" >> "$@"
 
 
-CLEAN_FILES += calc.s
-calc.s: header.s meta.fs calc-symbols.fi ansi-forth.fs calc.fi trailer.s
-	${RM} "$@"
-	cat header.s >> "$@"
-	gforth meta.fs calc-symbols.fi ansi-forth.fs calc.fi -e "bye" >> "$@"
-	cat trailer.s  >> "$@"
+# Common macro for compiling individual forth applications
+MAKE_FORTH_APP = $(eval $(call MAKE_FORTH_APP1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
-calc-symbols.fi : sym.awk ansi-forth.fs calc.fi
-	awk -f sym.awk ansi-forth.fs calc.fi > "$@"
+# the main application build rules
+define MAKE_FORTH_APP1
+CLEAN_FILES += ${1}.s
+CLEAN_FILES += ${1}.lds
+APPLICATIONS += ${1}.elf
+${1}.s: header.s meta.fs ${1}-symbols.fi ansi-forth.fs ${1}.fi trailer.s
+	$${RM} "$$@"
+	cat header.s >> "$$@"
+	gforth meta.fs ${1}-symbols.fi ansi-forth.fs ${1}.fi -e "bye" >> "$$@"
+	cat trailer.s  >> "$$@"
 
-calc.fi: programs/calc.4th
-	${RM} "$@"
-	echo "\\ generated file - do not modify" >> "$@"
-	echo >> "$@"
-	echo "only forth definitions" >> "$@"
-	echo "also meta-compiler" >> "$@"
-	echo "meta-compile" >> "$@"
-	echo >> "$@"
-	cat $^ >> "$@"
-	echo >> "$@"
-	echo "create  'cold-run :: tick-cold-run" >> "$@"
-	echo "<',> calculator" >> "$@"
+${1}-symbols.fi : sym.awk ansi-forth.fs ${1}.fi
+	awk -f sym.awk ansi-forth.fs ${1}.fi > "$$@"
+
+${1}.lds: forth.lds
+	sed 's/forth\.o/${1}.o/g' <forth.lds > "$$@"
+
+${1}.fi: programs/${1}.4th
+	$${RM} "$$@"
+	echo "\\ generated file - do not modify" >> "$$@"
+	echo >> "$$@"
+	echo "only forth definitions" >> "$$@"
+	echo "also meta-compiler" >> "$$@"
+	echo "meta-compile" >> "$$@"
+	echo >> "$$@"
+	cat $$^ >> "$$@"
+	echo >> "$$@"
+	echo "create  'cold-run :: tick-cold-run" >> "$$@"
+	echo "<',> ${2}" >> "$$@"
+endef
+
+# list of individual applications to cross compile
+
+$(call MAKE_FORTH_APP,calc,calculator)
+$(call MAKE_FORTH_APP,mtbf,mtbf-main)
+
+
+# target for compiling all appications
+.PHONY: applications
+applications: ${APPLICATIONS}
 
 
 .PHONY: install

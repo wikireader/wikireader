@@ -6,5 +6,6 @@
 *.elf
 *~
 forth.s
-calc.s
+calc.*
+mtbf.*
 *.fi
