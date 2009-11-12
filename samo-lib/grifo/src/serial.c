@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 #include <regs.h>
 
@@ -126,3 +127,45 @@ int Serial_printf(const char *format, ...)
 	return rc;
 }
 
+
+void Serial_HexDump(const void *buffer, size_t size)
+{
+	uint32_t start = (uint32_t)buffer & 0x0f;
+	uint32_t address = (uint32_t)buffer & ~0x0f;
+	const uint8_t *bytes = (const uint8_t *)address;
+
+	size_t offset;
+	for (offset = 0; offset < start + size; offset += 16) {
+
+		Serial_printf("%08lx: ", address + offset);
+
+		int i;
+		for (i = 0; i < 16; ++i) {
+			if (8 == i) {
+				Serial_PutChar(' ');
+			}
+			if (offset + i < start || offset + i >= start + size) {
+				Serial_print(" --");
+			} else {
+				Serial_printf(" %02x", bytes[offset + i]);
+			}
+		}
+
+		Serial_print("  |");
+
+		for (i = 0; i < 16; i++) {
+			if (8 == i) {
+				Serial_PutChar(' ');
+			}
+			if (offset + i < start || offset + i >= start + size) {
+				Serial_PutChar(' ');
+			} else if (isprint(bytes[offset + i])) {
+				Serial_PutChar(bytes[offset + i]);
+			} else {
+				Serial_PutChar('.');
+			}
+		}
+
+		Serial_print("|\n");
+	}
+}

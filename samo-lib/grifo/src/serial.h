@@ -33,5 +33,6 @@ void Serial_GetLine(char *buffer, size_t length);
 
 void Serial_print(const char *message);
 int Serial_printf(const char *format, ...) __attribute__((format (printf, 1, 2)));
+void Serial_HexDump(const void *buffer, size_t size);
 
 #endif
