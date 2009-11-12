@@ -943,7 +943,7 @@
 #define PRESETx    (1 << 1)
 #define PRUNx      (1 << 0)
 
-//Bits for: REG_T16_CLKCTL_x
+// Bits for: REG_T16_CLKCTL_x
 #define P16TONx               (1 << 3)
 #define P16TSx_MCLK_DIV_4096  (7 << 0)
 #define P16TSx_MCLK_DIV_1024  (6 << 0)
@@ -953,6 +953,42 @@
 #define P16TSx_MCLK_DIV_4     (2 << 0)
 #define P16TSx_MCLK_DIV_2     (1 << 0)
 #define P16TSx_MCLK_DIV_1     (0 << 0)
+
+// Bits for: REG_INT_E16T01
+#define E16TC1  (1 << 7)
+#define E16TU1  (1 << 6)
+#define E16TC0  (1 << 3)
+#define E16TU0  (1 << 2)
+
+// Bits for: REG_INT_E16T23
+#define E16TC3  (1 << 7)
+#define E16TU3  (1 << 6)
+#define E16TC2  (1 << 3)
+#define E16TU2  (1 << 2)
+
+// Bits for: REG_INT_E16T45
+#define E16TC5  (1 << 7)
+#define E16TU5  (1 << 6)
+#define E16TC4  (1 << 3)
+#define E16TU4  (1 << 2)
+
+// Bits for: REG_INT_F16T01
+#define F16TC1  (1 << 7)
+#define F16TU1  (1 << 6)
+#define F16TC0  (1 << 3)
+#define F16TU0  (1 << 2)
+
+// Bits for: REG_INT_F16T23
+#define F16TC3  (1 << 7)
+#define F16TU3  (1 << 6)
+#define F16TC2  (1 << 3)
+#define F16TU2  (1 << 2)
+
+// Bits for: REG_INT_F16T45
+#define F16TC5  (1 << 7)
+#define F16TU5  (1 << 6)
+#define F16TC4  (1 << 3)
+#define F16TU4  (1 << 2)
 
 
 /*
