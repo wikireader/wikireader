@@ -125,21 +125,28 @@ variable cross-dict-flag
   [char] " parse escaped-type 34 emit cr ;
 
 : _number ( s-addr -- u \ number )
-   >r 0 dup r> count
-   >r dup c@ [char] - = if
-     char+ r> 1-
-     1 >r
-   else
-     r>
-     0 >r
-   then
-   >number ( d c-addr u )
-   ?dup if
-      ." .error " 34 emit ." ***INVALID: " type 34 emit cr -1
-\      ." >>" type 2drop true abort" invalid number"
-   then
-   2drop
-   r> if negate then ;
+    base @ >r          \ R: base
+    >r 0 dup r> count  \ ud c-addr u
+    over c@            \ ud c-addr u
+    0 >r               \ R: 0  (positive)
+    case
+        [char] + of swap char+ swap 1-  endof
+        [char] - of swap char+ swap 1- r> drop 1 >r endof
+        [char] % of swap char+ swap 1-   2 base ! endof
+        [char] & of swap char+ swap 1-   8 base ! endof
+        [char] # of swap char+ swap 1-  10 base ! endof
+        [char] $ of swap char+ swap 1-  16 base ! endof
+    endcase
+    \ ud c-addr u  R: base sign
+    >number ( d c-addr u )
+    ?dup if
+        ." .error " 34 emit ." ***INVALID: " type 34 emit cr -1
+        \ ." >>" type 2drop true abort" invalid number"
+    then
+    2drop
+    r> if negate then
+    r> base !
+;
 
 : _interpret ( -- )
       false meta-state ! ;
