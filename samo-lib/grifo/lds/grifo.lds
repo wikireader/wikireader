@@ -59,6 +59,13 @@ SECTIONS
     } > ksdram
     __END_text = . ;
 
+    .suspend : {
+         __START_suspend = . ;
+         *(.suspend_text)
+    } > ksdram
+    __END_suspend = . ;
+    __SIZE_suspend = SIZEOF(.suspend);
+
     . = ALIGN(1024);
 
     .rodata : {
@@ -87,7 +94,6 @@ SECTIONS
     .user_area (NOLOAD) : {
         __dp_user = . /* ORIGIN(usdram) */ ;
     } > sdram
-
 
 
     /*__MAIN_STACK = ORIGIN(sdram) + LENGTH(sdram) - 4; */

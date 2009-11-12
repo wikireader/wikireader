@@ -36,6 +36,8 @@ FATFS_MODE = read-write
 include ${SAMO_LIB}/Mk/definitions.mk
 
 
+INCLUDES += -Isrc
+INCLUDES += -I-
 INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I${FATFS_INCLUDE} -I${FATFS_CONFIG_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
@@ -70,6 +72,7 @@ OBJECTS += file.o
 OBJECTS += LCD.o
 OBJECTS += main.o
 OBJECTS += serial.o
+OBJECTS += suspend.o
 OBJECTS += syscall.o
 OBJECTS += system.o
 OBJECTS += timer.o

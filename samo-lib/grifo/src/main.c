@@ -35,6 +35,7 @@
 #include "file.h"
 #include "interrupt.h"
 #include "serial.h"
+#include "suspend.h"
 #include "syscall.h"
 #include "system.h"
 #include "timer.h"
@@ -46,7 +47,7 @@ void process(void);
 
 // Note: the cross compiler will generate bad code
 // if local variables are used here.
-// The initial assemble must affect it in some way.
+// The initial assembler code must affect it in some way.
 // Therefore most of the code goes in process()
 __attribute ((noreturn))
 int main(void)
@@ -120,6 +121,9 @@ void process(void)
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 	File_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
+	Suspend_initialise();
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 #if 0
