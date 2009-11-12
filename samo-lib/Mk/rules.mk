@@ -37,11 +37,13 @@ print-%:
 
 # compilation rules
 %.o: %.c
-	$(GCC) -MM $(CFLAGS) -o -MT $@  $< > ${@:.o=.d}
+	$(GCC) -MM $(CFLAGS) -MT $@ $< > ${@:.o=.d}
+	$(GCC) -E $(CFLAGS) $< > ${@:.o=.p}
 	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
 
 ${BUILD_PREFIX}%.o: %.c
 	$(GCC) -MM $(CFLAGS) -MT $@ $< > ${@:.o=.d}
+	$(GCC) -E $(CFLAGS) $< > ${@:.o=.p}
 	$(GCC) $(CFLAGS) -c -o $@ -Wa,-ahl=${@:.o=.asm33} $<
 
 %.o: %.s
