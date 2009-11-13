@@ -27,6 +27,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
 (define-module (scripts script-entry-point)
   :use-module (ice-9 getopt-long)
   :use-module (ice-9 rdelim)
+  :use-module (ice-9 regex)
   :use-module (srfi srfi-1)
   :export (script-entry-point))
 
@@ -131,6 +132,21 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                        (set! output-flag #f))
                       (output-flag
                        (format #t "~a~%" line))))))))))
+
+   ((eq? 'comment (first item))
+    (let ((file-name (second item))
+          (comment-name (third item)))
+      (with-input-from-file file-name
+        (lambda ()
+          (let* ((tag (string-concatenate (list "*[" comment-name "]:")))
+                 (re (make-regexp
+                      (string-concatenate (list "^[[:space:]]*//[[:space:]]*" (regexp-quote tag) "[[:space:]]*(.*)[[:space:]]*$")))))
+            (newline)
+            (while (not (eof-object? (peek-char)))
+                   (let* ((line (read-line))
+                          (match (regexp-exec re line)))
+                     (if match
+                         (format #t "// ~a~%" (match:substring match 1))))))))))
 
    ((eq? 'section (first item))
     (let* ((title (second item))

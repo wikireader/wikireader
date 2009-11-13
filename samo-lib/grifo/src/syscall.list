@@ -46,14 +46,20 @@
  ;; functions
  ;(0 "panic" ("void" "panic" "const char *message"))
 
- (section "console debugging")
+ (section "Console Debugging")
  (1 Serial_print   ("void" "debug_print" "const char *message"))
  (2 Serial_PutChar ("int" "debug_print_char" "int c"))
  (3 Serial_printf  ("int" "debug_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
  (4 Serial_HexDump ("void" "debug_hex_dump" "const void *buffer" "size_t length"))
 
 
- (section "interrupt handlers")
+ (section "Power Off / Reboot")
+
+ (18 System_PowerOff ("void" "power_off" "void"))
+ (19 System_reboot ("void" "reboot" "void"))
+
+
+ (section "Interrupt Handlers")
 
  (output "typedef enum {")
  (copy-part "src/vector.h" "vectors")
@@ -62,11 +68,11 @@
  (output "typedef void interrupt_handler(void);")
  (newline)
 
- (10 Vector_get ("interrupt_handler *" "vector_get" "vector_t vector_number"))
- (11 Vector_set ("interrupt_handler *" "vector_set" "vector_t vector_number" "interrupt_handler *vector"))
+ (20 Vector_get ("interrupt_handler *" "vector_get" "vector_t vector_number"))
+ (21 Vector_set ("interrupt_handler *" "vector_set" "vector_t vector_number" "interrupt_handler *vector"))
 
 
- (section "critcal sections")
+ (section "Critcal Sections")
 
  (output "typedef uint32_t critical_t;")
  (newline)
@@ -79,83 +85,116 @@
  (copy-part "src/interrupt.h" "exit")
 
 
- (section "timer and delay")
+ (section "Timer and Delay")
 
- (20 Delay_microseconds ("void" "delay_us" "unsigned long microseconds"))
+ (30 Delay_microseconds ("void" "delay_us" "unsigned long microseconds"))
 
  (copy-part "src/timer.h" "enum")
  (newline)
- (24 Timer_get ("unsigned long" "timer_get" "void"))
+ (34 Timer_get ("unsigned long" "timer_get" "void"))
 
  (output "typedef enum {")
  (copy-part "src/watchdog.h" "key")
  (output "} watchdog_t;")
- (29 Watchdog_KeepAlive ("void" "watchdog" "watchdog_t key"))
+ (39 Watchdog_KeepAlive ("void" "watchdog" "watchdog_t key"))
 
 
- (section "event queue")
+ (section "Event Queue")
  (copy-part "src/event.h" "types")
  (newline)
 
- (30 Event_flush ("void" "event_flush" "void"))
- ;;(31 Event_clear ("void" "event_flush" "event_item_t item_type"))
+ (40 Event_flush ("void" "event_flush" "void"))
+ ;;(41 Event_clear ("void" "event_flush" "event_item_t item_type"))
 
- (remark "returns EVENT_NONE if queue is empty AND power_off_seconds = 0 (i.e. no time out)")
- ;;(32 Event_wait ("event_type" "event_wait" "event_t *event" "int power_off_seconds"))
-
- ;;(33 Event_available ("bool" "event_avail" "event_item_t item_type"));
+ ;;(43 Event_available ("bool" "event_avail" "event_item_t item_type"));
 
  (remark "get the next event if available otherwise return EVENT_NONE")
  ;; add an event_item_t item_type parameter when Event_available is working
- (34 Event_get ("event_item_t" "event_get" "event_t *event"))
+ (44 Event_get ("event_item_t" "event_get" "event_t *event"))
+
+ (newline)
+ (output "typedef bool event_callback_t(void *arg);");
+
+ (remark "never returns EVENT_NONE")
+ (remark "runs callback on time out prior to system shutdown")
+ (45 Event_wait ("event_item_t" "event_wait" "event_t *event" "event_callback_t *callback" "void *arg"))
 
 
- (section "LCD access")
+ (section "LCD Access")
 
  (copy-part "src/LCD.h" "types")
 
- (40 LCD_GetFrameBuffer ("uint8_t *" "lcd_get_framebuffer" "void"))
+ (comment "src/LCD.h" "gfb")
+ (50 LCD_GetFrameBuffer ("uint8_t *" "lcd_get_framebuffer" "void"))
 
- (remark "frame buffer must be word aligned")
- (41 LCD_SetFrameBuffer ("uint32_t *" "lcd_set_framebuffer" "uint32_t *address"))
+ (comment "src/LCD.h" "sfb")
+ (51 LCD_SetFrameBuffer ("uint32_t *" "lcd_set_framebuffer" "uint32_t *address"))
 
- (remark "only the default frame buffer will show during suspend")
- (42 LCD_ResetFrameBuffer ("uint32_t *" "lcd_set_default_framebuffer" "void"))
+ (comment "src/LCD.h" "rfb")
+ (52 LCD_ResetFrameBuffer ("uint32_t *" "lcd_set_default_framebuffer" "void"))
 
  (newline)
  (output "typedef enum {")
  (copy-part "src/LCD.h" "colours")
  (output "} lcd_colour_t;")
 
- (remark "clear and home text andgraphic cursors")
- (43 LCD_clear ("void" "lcd_clear" "lcd_colour_t colour"))
+ (comment "src/LCD.h" "clr")
+ (53 LCD_clear ("void" "lcd_clear" "lcd_colour_t colour"))
 
- (remark "these do not affect either cursor")
- (44 LCD_GetPixel ("lcd_colour_t" "lcd_get_pixel" "int x" "int y"))
- (45 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
+ (comment "src/LCD.h" "pix")
+ (54 LCD_GetPixel ("lcd_colour_t" "lcd_get_pixel" "int x" "int y"))
+ (55 LCD_SetPixel ("void" "lcd_set_pixel" "int x" "int y" "lcd_colour_t colour"))
 
- (remark "move graphic cursor and plot a pixel")
- (46 LCD_point ("void" "lcd_point" "int x" "int y"))
+ (comment "src/LCD.h" "pt")
+ (56 LCD_point ("void" "lcd_point" "int x" "int y"))
 
- (remark "move graphic cursor / draw line")
- (47 LCD_MoveTo ("void" "lcd_move_to" "int x" "int y"))
- (48 LCD_LineTo ("void" "lcd_line_to" "int x" "int y"))
+ (comment "src/LCD.h" "line")
+ (57 LCD_MoveTo ("void" "lcd_move_to" "int x" "int y"))
+ (58 LCD_LineTo ("void" "lcd_line_to" "int x" "int y"))
 
- (remark "text output (only affects text cursor)")
- (50 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
- (51 LCD_print  ("int" "lcd_print" "const char *text"))
- (52 LCD_PutChar  ("int" "lcd_print_char" "char c"))
- (53 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
- (54 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
- (55 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
+ (comment "src/LCD.h" "text")
+ (60 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
+ (61 LCD_print  ("int" "lcd_print" "const char *text"))
+ (62 LCD_PutChar  ("int" "lcd_print_char" "char c"))
+ (63 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (64 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
+ (65 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
 
- ;;(60 ? ("uint8_t *" "lcd_window_buffer_get" "void"))
- ;;(61 ? ("void" "lcd_window_buffer_set,uint32_t *buffer"))
- ;;(62 ? ("void" "lcd_window_buffer_set_default" "void"))
- ;;(63 ? ("void" "lcd_window_buffer_disable" "void"))
- ;;(64 ? ("void" "lcd_window_buffer_enable" "int x" "int y" "int w" "int h);"))
 
- (section "Files and Directory access")
+ (section "LCD Window (picture-in-picture)")
+
+ (comment "src/LCD.h" "win")
+ (70 LCD_Window ("size_t" "lcd_window" "int x" "int y" "int w" "int h"))
+
+ (comment "src/LCD.h" "wint")
+ (71 LCD_Window_GetBufferSize ("size_t" "lcd_window_get_buffer_size" "void"))
+
+ (comment "src/LCD.h" "winb")
+ (72 LCD_Window_GetByteWidth ("size_t" "lcd_window_get_byte_width" "void"))
+
+ (comment "src/LCD.h" "wina")
+ (73 LCD_Window_GetBuffer ("uint8_t *" "lcd_window_get_buffer" "void"))
+
+ (comment "src/LCD.h" "winsb")
+ (74 LCD_Window_SetBuffer ("uint32_t *" "lcd_window_set_buffer" "uint32_t *address"))
+
+ (comment "src/LCD.h" "windis")
+ (75 LCD_Window_disable ("void" "lcd_window_disable" "void"))
+
+ (comment "src/LCD.h" "winen")
+ (76 LCD_Window_enable ("void" "lcd_window_enable" "void"))
+
+ (comment "src/LCD.h" "wingr")
+ (80 LCD_Window_clear ("void" "lcd_window_clear" "lcd_colour_t colour"))
+ (81 LCD_Window_GetPixel ("lcd_colour_t" "lcd_window_get_pixel" "int x" "int y"))
+ (82 LCD_Window_SetPixel ("void" "lcd_window_set_pixel" "int x" "int y" "lcd_colour_t colour"))
+ (83 LCD_Window_SetColour ("lcd_colour_t" "lcd_window_set_colour" "lcd_colour_t colour"))
+ (84 LCD_Window_GetColour ("lcd_colour_t" "lcd_window_get_colour" "void"))
+ (85 LCD_Window_Point ("void" "lcd_window_point" "int x" "int y"))
+ (86 LCD_Window_MoveTo ("void" "lcd_window_move_to" "int x" "int y"))
+ (87 LCD_Window_LineTo ("void" "lcd_window_line_to" "int x" "int y"))
+
+ (section "Files and Directory Access")
 
  (output "typedef enum {")
  (copy-part "src/file.h" "access")
@@ -165,37 +204,32 @@
  (copy-part "src/file.h" "error")
  (output "} file_error_t;")
 
- (70 File_CloseAll ("void" "file_close_all" "void"))
+ (100 File_CloseAll ("void" "file_close_all" "void"))
 
- (71 File_rename ("file_error_t" "file_rename" "const char *OldFilename" "const char *NewFilename"))
- (72 File_delete ("file_error_t" "file_delete" "const char *filename"))
- (73 File_size ("file_error_t" "file_size"" const char *filename" "unsigned long *length"))
+ (101 File_rename ("file_error_t" "file_rename" "const char *OldFilename" "const char *NewFilename"))
+ (102 File_delete ("file_error_t" "file_delete" "const char *filename"))
+ (103 File_size ("file_error_t" "file_size"" const char *filename" "unsigned long *length"))
 
- (80 File_create ("file_error_t" "file_create" "const char *filename" "file_access_t fam"))
- (81 File_open ("file_error_t" "file_open" "const char *filename" "file_access_t fam"))
- (82 File_close ("file_error_t" "file_close" "int handle"))
- (83 File_read ("ssize_t" "file_read" "int handle" "void *buffer" "size_t length"))
- (84 File_write ("ssize_t" "file_write" "int handle" "void *buffer" "size_t length"))
- (85 File_sync ("file_error_t" "file_sync" "int handle"))
- (86 File_lseek ("file_error_t" "file_lseek" "int handle" "unsigned long pos"))
- ;;(87 File_ltell ("file_error_t" "file_ltell" "int handle" "unsigned long *pos"))
+ (110 File_create ("file_error_t" "file_create" "const char *filename" "file_access_t fam"))
+ (111 File_open ("file_error_t" "file_open" "const char *filename" "file_access_t fam"))
+ (112 File_close ("file_error_t" "file_close" "int handle"))
+ (113 File_read ("ssize_t" "file_read" "int handle" "void *buffer" "size_t length"))
+ (114 File_write ("ssize_t" "file_write" "int handle" "void *buffer" "size_t length"))
+ (115 File_sync ("file_error_t" "file_sync" "int handle"))
+ (116 File_lseek ("file_error_t" "file_lseek" "int handle" "unsigned long pos"))
+ ;;(117 File_ltell ("file_error_t" "file_ltell" "int handle" "unsigned long *pos"))
 
- ;;(90 File_ChangeDirectory ("file_error_t" "directory_chdir" "const char *directoryname"))
- ;;(91 File_CurrentDirectory ("file_error_t" "directory_cwd" "char *directoryname" "size_t length"))
- (92 File_CreateDirectory ("file_error_t" "directory_create" "const char *directoryname"))
- (93 File_OpenDirectory ("file_error_t" "directory_open" "const char *directoryname"))
- (94 File_CloseDirectory ("file_error_t" "directory_close" "int handle"))
- (95 File_ReadDirectory ("ssize_t" "directory_read" "int handle" "void *buffer" "size_t length"))
+ ;;(120 File_ChangeDirectory ("file_error_t" "directory_chdir" "const char *directoryname"))
+ ;;(121 File_CurrentDirectory ("file_error_t" "directory_cwd" "char *directoryname" "size_t length"))
+ (122 File_CreateDirectory ("file_error_t" "directory_create" "const char *directoryname"))
+ (123 File_OpenDirectory ("file_error_t" "directory_open" "const char *directoryname"))
+ (124 File_CloseDirectory ("file_error_t" "directory_close" "int handle"))
+ (125 File_ReadDirectory ("ssize_t" "directory_read" "int handle" "void *buffer" "size_t length"))
 
  (output "enum {" "\tSECTOR_SIZE = 512," "};")
 
- (100 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
- (101 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
-
- (section "Power Off / Reboot")
-
- (110 System_PowerOff ("void" "power_off" "void"))
- (111 System_reboot ("void" "reboot" "void"))
+ (130 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
+ (131 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
 
 
  (endif)

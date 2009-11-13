@@ -31,7 +31,6 @@
 #include "LCD.h"
 
 
-
 static const uint8_t font_8x13[256][LCD_FONT_HEIGHT] = {
 	[0x0000] { 0x00, 0x00, 0xAA, 0x00, 0x82, 0x00, 0x82, 0x00, 0x82, 0x00, 0xAA, 0x00, 0x00 },
 	[0x0001] { 0x00, 0x00, 0x00, 0x10, 0x38, 0x7C, 0xFE, 0x7C, 0x38, 0x10, 0x00, 0x00, 0x00 },
@@ -302,17 +301,39 @@ static const uint8_t font_8x13[256][LCD_FONT_HEIGHT] = {
 // text cursor
 static int TextRow;
 static int TextColumn;
+
 // graphic cursor
 static int GraphicX;
 static int GraphicY;
+
 // drawing colour
 static int ForegroundColour;
+
+// window information
+static bool WindowAvailable;
+static int WindowWidth;
+static int WindowHeight;
+static int WindowByteWidth;
+static int WindowBufferSize;
+
+// window text cursor
+static int WindowTextRow;
+static int WindowTextColumn;
+
+// window graphic cursor
+static int WindowGraphicX;
+static int WindowGraphicY;
+
+// window drawing colour
+static int WindowForegroundColour;
 
 
 void LCD_initialise(void)
 {
 	static bool initialised = false;
 	if (!initialised) {
+		LCD_ResetFrameBuffer();
+		LCD_Window_disable();
 		initialised = true;
 		GraphicX = 0;
 		GraphicY = 0;
@@ -347,6 +368,9 @@ void LCD_ResetFrameBuffer(void)
 }
 
 
+// basic operations
+// ----------------
+
 void LCD_clear(LCD_ColourType colour)
 {
 	size_t i;
@@ -362,6 +386,9 @@ void LCD_clear(LCD_ColourType colour)
 }
 
 
+// graphic operations
+// ------------------
+
 static inline int pos(int x, int y)
 {
 	return y * LCD_BUFFER_WIDTH_BYTES + (x >> 3);
@@ -370,8 +397,8 @@ static inline int pos(int x, int y)
 
 LCD_ColourType LCD_GetPixel(int x, int y)
 {
-	if (x < 0 || x > LCD_WIDTH ||
-	    y < 0 || y > LCD_HEIGHT) {
+	if (x < 0 || x >= LCD_WIDTH ||
+	    y < 0 || y >= LCD_HEIGHT) {
 		return 0;
 	}
 	return 0 != (((uint8_t *)REG_LCDC_MADD)[pos(x, y)] & (0x80 >> (x & 0x07)));
@@ -380,8 +407,8 @@ LCD_ColourType LCD_GetPixel(int x, int y)
 
 void LCD_SetPixel(int x, int y, LCD_ColourType colour)
 {
-	if (x < 0 || x > LCD_WIDTH ||
-	    y < 0 || y > LCD_HEIGHT) {
+	if (x < 0 || x >= LCD_WIDTH ||
+	    y < 0 || y >= LCD_HEIGHT) {
 		return;
 	}
 	if (LCD_BLACK == colour) {
@@ -415,7 +442,8 @@ void LCD_point(int x, int y)
 
 
 // Bresenham's line algorithm
-static void DrawLine(int x0, int y0, int x1, int y1, LCD_ColourType value)
+static void DrawLine(int x0, int y0, int x1, int y1, LCD_ColourType colour,
+		     void (*SetPixel)(int x, int y, LCD_ColourType colour))
 {
 	int stepx = 1;
 	int dx = (x1 - x0) << 1;
@@ -433,7 +461,7 @@ static void DrawLine(int x0, int y0, int x1, int y1, LCD_ColourType value)
 		stepy = -1;
 	}
 
-	LCD_SetPixel(x0, y0, value);
+	SetPixel(x0, y0, colour);
 
 	if (dx > dy) {
 		int fraction = dy - (dx >> 1);
@@ -445,7 +473,7 @@ static void DrawLine(int x0, int y0, int x1, int y1, LCD_ColourType value)
 			}
 			x0 += stepx;
 			fraction += dy;
-			LCD_SetPixel(x0, y0, value);
+			SetPixel(x0, y0, colour);
 		}
 	} else {
 		int fraction = dx - (dy >> 1);
@@ -457,10 +485,11 @@ static void DrawLine(int x0, int y0, int x1, int y1, LCD_ColourType value)
 			}
 			y0 += stepy;
 			fraction += dx;
-			LCD_SetPixel(x0, y0, value);
+			SetPixel(x0, y0, colour);
 		}
 	}
 }
+
 
 void LCD_MoveTo(int x, int y)
 {
@@ -478,14 +507,18 @@ void LCD_MoveTo(int x, int y)
 	GraphicY = y;
 }
 
+
 void LCD_LineTo(int x, int y)
 {
 	register int x0 = GraphicX;
 	register int y0 = GraphicY;
 	LCD_MoveTo(x, y);
-	DrawLine(x0, y0, x, y, ForegroundColour);
+	DrawLine(x0, y0, x, y, ForegroundColour, LCD_SetPixel);
 }
 
+
+// text output to frame buffer
+// ---------------------------
 
 void LCD_AtXY(int x, int y)
 {
@@ -573,4 +606,202 @@ int LCD_printf(const char *format, ...)
 	va_end(arguments);
 
 	return rc;
+}
+
+
+// window buffer
+// -------------
+
+#include "serial.h" // *******************************************************************************
+size_t LCD_Window(int x, int y, int width, int height)
+{
+	WindowAvailable = false;
+	if (x < 0 || y < 0 || width <= 0 || height <= 0) {
+		return 0;
+	}
+
+	// limitations of controller
+	x = (x + 31) & ~31;
+	width = (width + 31) & ~31;
+
+	if (x + width >= LCD_WIDTH ||
+	    y + height>= LCD_HEIGHT) {
+		return 0;
+	}
+
+	register uint32_t value;
+	asm volatile ("xld.w\r%[v], __START_WindowBuffer"
+		      : [v] "=r" (value));
+	REG_LCDC_SADD = value;
+
+	REG_LCDC_SSP =
+		((y << PIPYST_SHIFT) & PIPYST_MASK) |
+		((x / 32 << PIPXST_SHIFT) & PIPXST_MASK);
+
+	REG_LCDC_SEP =
+		(((y + height - 1) << PIPYEND_SHIFT) & PIPYEND_MASK) |
+		((((x + width) / 32 - 1) << PIPXEND_SHIFT) & PIPXEND_MASK);
+
+	REG_LCDC_MLADD = LCD_BUFFER_WIDTH_WORDS;
+
+	Serial_printf("LCDC_SADD  = 0x%08lx\n", REG_LCDC_SADD);
+	Serial_printf("LCDC_SSP   = 0x%08lx\n", REG_LCDC_SSP);
+	Serial_printf("LCDC_SEP   = 0x%08lx\n", REG_LCDC_SEP);
+	Serial_printf("LCDC_MLADD = 0x%08lx\n", REG_LCDC_MLADD);
+
+
+	WindowWidth = width;
+	WindowHeight = height;
+	WindowByteWidth = ((width + 31) >> 5) * sizeof(uint32_t);
+	WindowBufferSize = WindowByteWidth * height;
+	WindowGraphicX = 0;
+	WindowGraphicY = 0;
+	WindowTextRow = 0;
+	WindowTextColumn = 0;
+	WindowForegroundColour = LCD_BLACK;
+
+	WindowAvailable = WindowBufferSize != 0;
+
+	return WindowBufferSize;
+}
+
+
+size_t LCD_Window_GetBufferSize(void)
+{
+	return WindowBufferSize;
+}
+
+
+size_t LCD_Window_GetByteWidth(void)
+{
+	return WindowByteWidth;
+}
+
+
+uint8_t *LCD_Window_GetBuffer(void)
+{
+	return (uint8_t *)REG_LCDC_SADD;
+}
+
+
+uint32_t *LCD_Window_SetBuffer(uint32_t *address)
+{
+	register uint32_t *previous = (uint32_t *)REG_LCDC_SADD;
+	REG_LCDC_SADD = (uint32_t)address;
+	return previous;
+}
+
+
+void LCD_Window_disable(void)
+{
+	REG_LCDC_SSP &= ~PIPEN;
+}
+
+
+void LCD_Window_enable(void)
+{
+	if (!WindowAvailable) {
+		return;
+	}
+	REG_LCDC_SSP |= PIPEN;
+}
+
+
+void LCD_Window_clear(LCD_ColourType colour)
+{
+	if (!WindowAvailable) {
+		return;
+	}
+	size_t i;
+	uint32_t fill = colour == LCD_WHITE ? 0 : ~0;
+	for (i = 0; i < WindowBufferSize / sizeof(uint32_t); ++i) {
+		((uint32_t *)REG_LCDC_SADD)[i] = fill;
+	}
+	WindowGraphicX = 0;
+	WindowGraphicY = 0;
+	WindowTextRow = 0;
+	WindowTextColumn = 0;
+	WindowForegroundColour = colour == LCD_WHITE ? LCD_BLACK : LCD_WHITE;
+}
+
+
+// window graphic operations
+// -------------------------
+
+static inline int WindowPos(int x, int y)
+{
+	return y * WindowByteWidth + (x >> 3);
+}
+
+
+LCD_ColourType LCD_Window_GetPixel(int x, int y)
+{
+	if (!WindowAvailable ||
+	    x < 0 || x >= WindowWidth ||
+	    y < 0 || y >= WindowHeight) {
+		return 0;
+	}
+	return 0 != (((uint8_t *)REG_LCDC_SADD)[WindowPos(x, y)] & (0x80 >> (x & 0x07)));
+}
+
+
+void LCD_Window_SetPixel(int x, int y, LCD_ColourType colour)
+{
+	if (!WindowAvailable ||
+	    x < 0 || x >= WindowWidth ||
+	    y < 0 || y >= WindowHeight) {
+		return;
+	}
+	if (LCD_BLACK == colour) {
+		(((uint8_t *)REG_LCDC_SADD)[WindowPos(x, y)] |= (0x80 >> (x & 0x07)));
+	} else {
+		(((uint8_t *)REG_LCDC_SADD)[WindowPos(x, y)] &= ~(0x80 >> (x & 0x07)));
+	}
+}
+
+
+LCD_ColourType LCD_Window_SetColour(LCD_ColourType colour)
+{
+	register LCD_ColourType previous = WindowForegroundColour;
+	WindowForegroundColour = colour;
+	return previous;
+}
+
+
+LCD_ColourType LCD_Window_GetColour(void)
+{
+	return WindowForegroundColour;
+}
+
+
+void LCD_Window_Point(int x, int y)
+{
+	LCD_Window_MoveTo(x, y);
+	LCD_Window_SetPixel(x, y, ForegroundColour);
+}
+
+
+void LCD_Window_MoveTo(int x, int y)
+{
+	if (x < 0) {
+		x = 0;
+	} else if (x >= WindowWidth) {
+		x = WindowWidth - 1;
+	}
+	if (y < 0) {
+		y = 0;
+	} else if (y >= WindowHeight) {
+		y = WindowHeight - 1;
+	}
+	WindowGraphicX = x;
+	WindowGraphicY = y;
+}
+
+
+void LCD_Window_LineTo(int x, int y)
+{
+	register int x0 = WindowGraphicX;
+	register int y0 = WindowGraphicY;
+	LCD_Window_MoveTo(x, y);
+	DrawLine(x0, y0, x, y, WindowForegroundColour, LCD_Window_SetPixel);
 }

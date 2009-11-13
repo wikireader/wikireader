@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "grifo.h"
 
 int main(int argc, char **argv)
 {
+	int x;
+	int y;
+
 	debug_printf("lcd start\n");
 
 	debug_printf("black screen\n");
@@ -32,8 +33,6 @@ int main(int argc, char **argv)
 	delay_us(1000000);
 
 	debug_printf("plot white pixels\n");
-	int x;
-	int y;
 	for (x = 10, y = 10; x < 100; x += 5, y += 10) {
 		lcd_point(x, y);
 	}
@@ -89,6 +88,24 @@ int main(int argc, char **argv)
 	}
 	delay_us(2000000);
 
+	debug_printf("positioned text\n");
+	lcd_clear(LCD_WHITE);
+	lcd_at_xy(20, 8);
+	lcd_print("one");
+	delay_us(500000);
+
+	lcd_at_xy(3, 1);
+	lcd_print("two");
+	delay_us(500000);
+
+	lcd_at_xy(0, 0);
+	lcd_print("A");
+	delay_us(500000);
+
+	lcd_at_xy(LCD_MAX_COLUMNS - 1, LCD_MAX_ROWS - 1);
+	lcd_print("Z");
+	delay_us(2000000);
+
 	debug_printf("black text\n");
 	lcd_clear(LCD_WHITE);
 	lcd_print("This the first is a line of text\n");
@@ -131,25 +148,30 @@ int main(int argc, char **argv)
 	}
 	delay_us(2000000);
 
-	debug_printf("positioned text\n");
+
+	debug_printf("picture-in-picture\n");
 	lcd_clear(LCD_WHITE);
-	lcd_at_xy(20, 8);
-	lcd_print("one");
-	delay_us(500000);
+	for (y = 0; y < LCD_MAX_ROWS; ++y) {
+		lcd_at_xy(0, y);
+		lcd_printf("background line: %d", y);
+	}
 
-	lcd_at_xy(3, 1);
-	lcd_print("two");
-	delay_us(500000);
+	lcd_window(15, 19, 17, 21);
+	lcd_window_clear(LCD_WHITE);
+	lcd_window_move_to(0,0);
+	lcd_window_line_to(16,0);
+	lcd_window_line_to(16,20);
+	lcd_window_line_to(0,20);
+	lcd_window_line_to(0,0);
 
-	lcd_at_xy(0, 0);
-	lcd_print("A");
-	delay_us(500000);
-
-	lcd_at_xy(LCD_MAX_COLUMNS - 1, LCD_MAX_ROWS - 1);
-	lcd_print("Z");
-	delay_us(2000000);
-
-
+	for (x = 0; x < 10; ++x) {
+		debug_printf("picture-in-picture enable\n");
+		lcd_window_enable();
+		delay_us(1000000);
+		debug_printf("picture-in-picture disable\n");
+		lcd_window_disable();
+		delay_us(1000000);
+	}
 
 	return 0;
 }

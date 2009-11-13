@@ -26,22 +26,38 @@ MEMORY
 SECTIONS
 {
     .internal (NOLOAD) : {
+         __START_NullPointer = . ;
+         . = . + 1k ;       /* 1 kibi bytes in case of write to null pointer */
+         __END_NullPointer = . ;
          __START_VectorTable = . ;
          . = . + 1k ;       /* 256 entry vector table = 1 kibi bytes */
          __END_VectorTable = . ;
          __START_SuspendCode = . ;
-         . = . + 7k ;       /* suspend can use the remainder */
+         . = . + 6k ;       /* suspend can use the remainder */
          __END_SuspendCode = . ;
     } > a0ram
+
+    __SIZE_NullPointer = __END_NullPointer - __START_NullPointer ;
 
     __SIZE_VectorTable = __END_VectorTable - __START_VectorTable ;
     __ENTRIES_VectorTable =  __SIZE_VectorTable / 4 ; /* each entry is one word (4 bytes) */
 
+    __SIZE_SuspendCode = __END_SuspendCode - __START_SuspendCode ;
+
+    __BYTES_FrameBuffer = (256 / 8) * 208 ; /* 240 (round up to uint32_t) * 208 pixels */
+    __BYTES_WindowBuffer = 12k - __BYTES_FrameBuffer ;
+
     .lcd (NOLOAD) : {
         __START_FrameBuffer = . ;
-        . = . + 12k /* LENGTH(ivram) */ ;
+        . = . + __BYTES_FrameBuffer ;
         __END_FrameBuffer = . ;
+        __START_WindowBuffer = . ;
+        . = . + __BYTES_WindowBuffer ;
+        __END_WindowBuffer = . ;
     } > ivram
+
+    __SIZE_FrameBuffer = __END_FrameBuffer - __START_FrameBuffer ;
+    __SIZE_WindowBuffer = __END_WindowBuffer - __START_WindowBuffer ;
 
     .descriptor (NOLOAD) : {
         __START_descriptors = . ;
