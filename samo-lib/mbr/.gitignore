@@ -2,6 +2,7 @@
 *.elf
 *.o
 *.d
+*.p
 *.asm33
 *.header
 *-loader
