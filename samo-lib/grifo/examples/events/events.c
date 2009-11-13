@@ -21,9 +21,14 @@
 
 #include "grifo.h"
 
+
+bool callback(void *arg);
+
 int main(int argc, char **argv)
 {
-	debug_printf("events start\n");
+	bool polled = argc > 1 && 'p' == argv[1][0];
+
+	debug_printf("events start %s\n", polled ? "polling" : "waiting");
 	const char *button[] = {
 		[BUTTON_RANDOM] "random",
 		[BUTTON_SEARCH] "search",
@@ -34,10 +39,9 @@ int main(int argc, char **argv)
 	for (;;) {
 		event_t event;
 
-		switch(event_get(&event)) {
+		switch(polled ? event_get(&event) : event_wait(&event, callback, "main loop callback")) {
 
 		case EVENT_NONE:
-#if 0
 		{
 			const char spinner[4] = "-\\|/";
 			static size_t i;
@@ -46,8 +50,8 @@ int main(int argc, char **argv)
 			}
 			debug_print_char(spinner[i++]);
 			debug_print_char('\010');
+			delay_us(5000);
 		}
-#endif
 		break;
 
 		case EVENT_KEY:
@@ -91,4 +95,13 @@ int main(int argc, char **argv)
 		}
 	}
 	return 0;
+}
+
+
+bool callback(void *arg)
+{
+	const char *message = (const char *)arg;
+
+	debug_printf("Callback: %s\n", message);
+	return false;  // request shutdown
 }
