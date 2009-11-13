@@ -22,16 +22,14 @@
 #if  !defined(_SUSPEND_H_)
 #define _SUSPEND_H_ 1
 
-
 #include "standard.h"
 
 void Suspend_initialise(void);
 
-// returns:
+// callback returns:
 //   true  => continue
 //   false => close all files an power off
-typedef bool Suspend_CallBackType(void *arg);
 
-void Suspend(Suspend_CallBackType *callback, void *arg);
+void Suspend(Standard_BoolCallBackType *callback, void *arg);
 
 #endif

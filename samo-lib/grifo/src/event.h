@@ -80,4 +80,8 @@ bool Event_put(const event_t *event);
 // return EVENT_NONE if buffer was empty
 event_item_t Event_get(event_t *event);
 
+// wait for an event, if no event within timeout
+// then call the callback function and shutdown
+event_item_t Event_wait(event_t *event, Standard_BoolCallBackType *callback, void *arg);
+
 #endif

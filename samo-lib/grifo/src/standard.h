@@ -32,4 +32,9 @@ typedef int32_t ssize_t;
 #define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
 #endif
 
+// generic callback returning a flag
+typedef bool Standard_BoolCallBackType(void *arg);
+
+
+
 #endif

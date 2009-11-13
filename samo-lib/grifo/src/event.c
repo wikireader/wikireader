@@ -25,6 +25,7 @@
 
 #include "standard.h"
 #include "interrupt.h"
+#include "suspend.h"
 #include "timer.h"
 #include "event.h"
 
@@ -41,6 +42,7 @@ void Event_initialise(void)
 	if (!initialised) {
 		initialised = true;
 		Timer_initialise();
+		Suspend_initialise();
 		Event_flush();
 	}
 }
@@ -55,7 +57,7 @@ void Event_flush(void)
 	Interrupt_enable(state);
 }
 
-#include "serial.h"
+
 bool Event_put(const event_t *event)
 {
 	Interrupt_type state = Interrupt_disable();
@@ -91,3 +93,16 @@ event_item_t Event_get(event_t *event)
 	Interrupt_enable(state);
 	return event->item_type;
 }
+
+
+event_item_t Event_wait(event_t *event, Standard_BoolCallBackType *callback, void *arg)
+{
+	for (;;) {
+		event_item_t e = Event_get(event);
+		if (EVENT_NONE != e) {
+			return e;
+		}
+		Suspend(callback, arg);
+	}
+}
+
