@@ -266,5 +266,5 @@ class EN25F05(FLASHROM):
 
 
     def read_block(self, address, read_length):
-        return self.spi.transact([0x03, (address >> 16), (address >> 8), address], 1, read_length)
+        return self.spi.transact([0x03, (address >> 16), (address >> 8), address], 0, read_length)
 

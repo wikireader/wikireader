@@ -42,8 +42,7 @@ enum {
 static void serial_put(uint8_t c);
 static uint8_t serial_get(void);
 static uint32_t serial_get16(void);
-static void spi_put(uint8_t c);
-static uint8_t spi_get(void);
+static uint8_t spi_transfer(uint8_t c);
 
 
 int main(void)
@@ -81,6 +80,13 @@ int main(void)
 		ENA |
 		0;
 
+	// set P05 low to disable external boot FLASH ROM
+	REG_P5_P5D &= ~0x20;
+	REG_P5_IOC5 |= 0x20;
+
+	// flush spi buffer
+	(void)REG_SPI_RXD;
+
 	for (;;) {
 		uint8_t command = serial_get();
 
@@ -102,14 +108,14 @@ int main(void)
 
 			uint32_t len = serial_get16();
 			while (len--) {
-				spi_put(serial_get());
+				(void)spi_transfer(serial_get());
 			}
 
 		} else if (COMMAND_SPI_READ == command) {
 
 			uint32_t len = serial_get16();
 			while (len--) {
-				serial_put(spi_get());
+				serial_put(spi_transfer(0x00));
 			}
 
 		} else {
@@ -141,18 +147,9 @@ static uint32_t serial_get16(void)
 }
 
 
-static void spi_put(uint8_t c)
+static uint8_t spi_transfer(uint8_t out)
 {
-	while (0 == (REG_SPI_STAT & TDEF)) {
-	}
-	REG_SPI_TXD = c;
-}
-
-
-static uint8_t spi_get(void)
-{
-	spi_put(0x00);
-	while (0 == (REG_SPI_STAT & RDFF)) {
-	}
+	REG_SPI_TXD = out;
+	do {} while (~REG_SPI_STAT & RDFF);
 	return REG_SPI_RXD;
 }

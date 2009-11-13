@@ -3,4 +3,5 @@
 *.o
 *.asm33
 *.d
+*.p
 jackknife
