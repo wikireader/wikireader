@@ -916,6 +916,18 @@
 #define BPP_2          (1 << 0)
 #define BPP_1          (0 << 0)
 
+// Bits for: REG_LCDC_SSP
+#define PIPEN          (1 << 31)
+#define PIPYST_SHIFT   16
+#define PIPYST_MASK    (0x3ff << 16)
+#define PIPXST_SHIFT   0
+#define PIPXST_MASK    (0x3ff << 0)
+
+// Bits for: REG_LCDC_SEP
+#define PIPYEND_SHIFT  16
+#define PIPYEND_MASK   (0x3ff << 16)
+#define PIPXEND_SHIFT  0
+#define PIPXEND_MASK   (0x3ff << 0)
 
 /*
  * Timers
