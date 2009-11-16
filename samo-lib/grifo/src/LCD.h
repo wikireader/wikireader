@@ -88,6 +88,7 @@ void LCD_AtXY(int column, int row);
 int LCD_PutChar(int c);
 void LCD_print(const char *message);
 int LCD_printf(const char *format, ...) __attribute__((format (printf, 1, 2)));
+int LCD_vuprintf(const char *format, va_list arguments);
 
 
 // Picture in picture

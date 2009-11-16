@@ -130,6 +130,13 @@ int Serial_printf(const char *format, ...)
 }
 
 
+int Serial_vuprintf(const char *format, va_list arguments)
+{
+	return vuprintf(Serial_PutChar, format, arguments);
+}
+
+
+
 void Serial_HexDump(const void *buffer, size_t size)
 {
 	uint32_t start = (uint32_t)buffer & 0x0f;

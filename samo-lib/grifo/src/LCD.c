@@ -609,6 +609,12 @@ int LCD_printf(const char *format, ...)
 }
 
 
+int LCD_vuprintf(const char *format, va_list arguments)
+{
+	return vuprintf(LCD_PutChar, format, arguments);
+}
+
+
 // window buffer
 // -------------
 
