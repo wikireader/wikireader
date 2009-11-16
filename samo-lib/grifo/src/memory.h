@@ -1,5 +1,5 @@
 /*
- * some miscellaneous definitions
+ * memory - memory driver for heap based memory allocator
  *
  * Copyright (c) 2009 Openmoko Inc.
  *
@@ -19,23 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(_STANDARD_H_)
-#define _STANDARD_H_ 1
+#if  !defined(_MEMORY_H_)
+#define _MEMORY_H_ 1
 
-#include <inttypes.h>  // (u)intXX_t
-#include <stdbool.h>   // bool, true, false
-#include <stdlib.h>    // size_t
-#include <stdarg.h>    // va_list
+#include "standard.h"
 
-typedef int32_t ssize_t;
+void Memory_initialise(void);
 
-#if !defined(SizeOfArray)
-#define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
-#endif
+// reconfigure the memory region available to the allocator
+void Memory_SetHeap(uint32_t FirstFreeAddress, uint32_t LastFreeAddress);
 
-// generic callback returning a flag
-typedef bool Standard_BoolCallBackType(void *arg);
+//+[alloc]: tag is a short string to help debug memory allocation failures
+void *Memory_allocate(size_t size, const char *tag);
+void Memory_free(void *address, const char *tag);
 
-
+void Memory_debug(const char*message);
 
 #endif

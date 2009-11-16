@@ -71,6 +71,7 @@ OBJECTS += event.o
 OBJECTS += file.o
 OBJECTS += LCD.o
 OBJECTS += main.o
+OBJECTS += memory.o
 OBJECTS += serial.o
 OBJECTS += suspend.o
 OBJECTS += syscall.o

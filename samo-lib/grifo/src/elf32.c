@@ -111,9 +111,12 @@ typedef struct {
 #define SHF_EXCLUDE          (1 << 31)  // Section is excluded unless
 					// referenced or allocated (Solaris)
 
-ELF32_ErrorType ELF32_load(uint32_t *execution_address, const char *filename)
+ELF32_ErrorType ELF32_load(uint32_t *execution_address,
+			   uint32_t *highest_free_address,
+			   const char *filename)
 {
 	int rc = ELF32_OK;
+	*highest_free_address = 0; // lowest possible address
 
 	if (NULL == execution_address || NULL == filename) {
 		DEBUG_ELF(1, "ELF: null address\n");
@@ -192,16 +195,26 @@ ELF32_ErrorType ELF32_load(uint32_t *execution_address, const char *filename)
 					goto abort_close;
 				}
 				DEBUG_ELF(2, "LOAD: 0x%08lx %08lx %08lx\n", sec.sh_addr, sec.sh_size, sec.sh_flags);
+				uint32_t end = sec.sh_addr + sec.sh_size;
+				if (end > *highest_free_address) {
+					*highest_free_address = end;
+				}
 			} else {
 				DEBUG_ELF(2, "SKIP: 0x%08lx %08lx %08lx\n", sec.sh_addr, sec.sh_size, sec.sh_flags);
 			}
 			break;
 
 		case SHT_NOBITS:
+		{
 			DEBUG_ELF(2, "ZERO: 0x%08lx %08lx\n", sec.sh_addr, sec.sh_size);
+			uint32_t end = sec.sh_addr + sec.sh_size;
+			if (end > *highest_free_address) {
+				*highest_free_address = end;
+			}
 
 			memset((uint8_t *) sec.sh_addr, 0, sec.sh_size);
-			break;
+		}
+		break;
 
 		default:
 			DEBUG_ELF(3, "????: type = %lu\n", sec.sh_type);

@@ -38,6 +38,8 @@ typedef enum {
 //   ELF32_OK   => file is loaded and execution_address is set
 //   ELF32_xxx  => error code
 
-ELF32_ErrorType ELF32_load(uint32_t *execution_address, const char *filename);
+ELF32_ErrorType ELF32_load(uint32_t *execution_address,
+			   uint32_t *highest_free_address,
+			   const char *filename);
 
 #endif

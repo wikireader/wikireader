@@ -231,6 +231,14 @@
  (130 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
  (131 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
 
+ (section "Files and Directory Access")
+
+ (comment "src/memory.h" "alloc")
+ (140 Memory_allocate ("void *" "memory_allocate" "size_t size" "const char *tag"))
+ (141 Memory_free ("void" "memory_free" "void *address" "const char *tag"))
+
+ (142 Memory_debug ("void" "memory_debug" "const char *message"))
+
 
  (endif)
 )

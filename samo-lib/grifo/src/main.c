@@ -34,6 +34,7 @@
 #include "event.h"
 #include "file.h"
 #include "interrupt.h"
+#include "memory.h"
 #include "serial.h"
 #include "suspend.h"
 #include "syscall.h"
@@ -126,10 +127,12 @@ void process(void)
 	Suspend_initialise();
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
+	Memory_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
 #if 0
 	// secondary
 	SPI_initialise();
-	Memory_initialise();
 	Analog_initialise();
 	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH
 	Menu_initialise();
@@ -175,13 +178,16 @@ void process(void)
 			*p++ = '\0';
 		}
 
-		uint32_t exec;
-		ELF32_ErrorType r = ELF32_load(&exec, args[0]);
+		uint32_t ExecutionAddress;
+		uint32_t FinalAddress;
+		ELF32_ErrorType r = ELF32_load(&ExecutionAddress, &FinalAddress, args[0]);
 
 
 		if (ELF32_OK == r) {
+			extern char __MAIN_STACK_LIMIT;  // the address of this give lowest sp value
+			Memory_SetHeap(FinalAddress, (uint32_t)&__MAIN_STACK_LIMIT);
 			asm volatile ("xld.w\t%r15, __dp_user");
-			int result = ((int (*) (int, const char **)) exec) (args_index, args);
+			int result = ((int (*) (int, const char **)) ExecutionAddress) (args_index, args);
 			asm volatile ("xld.w\t%r15, __dp");
 			Serial_printf("application returned: %d\n", result);
 		} else {

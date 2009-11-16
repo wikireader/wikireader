@@ -29,6 +29,7 @@
 #include "event.h"
 #include "file.h"
 #include "LCD.h"
+#include "memory.h"
 #include "serial.h"
 #include "system.h"
 #include "timer.h"
