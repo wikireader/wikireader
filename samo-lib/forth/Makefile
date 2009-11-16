@@ -60,11 +60,11 @@ CROSS_ASFLAGS = -mc33pe --fatal-warnings
 CLEAN_FILES =
 
 TARGETS = forth.elf
-TARGETS += applications
+
 FORTH_PROGRAMS = programs/*.4?? programs/*.ini programs/*.tst
 
 .PHONY: all
-all: ${TARGETS}
+all: ${TARGETS} applications
 
 
 OBJECTS =
@@ -145,7 +145,7 @@ applications: ${APPLICATIONS}
 .PHONY: install
 install: all
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	${COPY} ${TARGETS} "${DESTDIR}"
+	${COPY} ${TARGETS} ${APPLICATIONS} "${DESTDIR}"
 	${COPY} ${FORTH_PROGRAMS} "${DESTDIR}"
 
 
