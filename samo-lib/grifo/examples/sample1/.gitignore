@@ -1,4 +1,5 @@
 build
 *.dump
 *.elf
+*.app
 *.map

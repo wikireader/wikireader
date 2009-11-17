@@ -46,7 +46,7 @@ BUILD_PREFIX := build/
 
 vpath %.c :src
 
-TARGETS = hello.elf
+TARGETS = hello.app
 
 # list of modules
 OBJECTS += hello.o
@@ -61,9 +61,9 @@ lib/libexamples.a: lib ${BUILD_OBJECTS}
 	${AR} r "$@" ${BUILD_OBJECTS}
 
 
-hello.elf: build build/hello.o ${GRIFO_APPLICATION_LDS} ${LIBS}
-	$(LD) -o $@ ${LDFLAGS} build/hello.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.elf=.map}
-	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
+hello.app: build build/hello.o ${GRIFO_APPLICATION_LDS} ${LIBS}
+	$(LD) -o $@ ${LDFLAGS} build/hello.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.app=.map}
+	${OBJDUMP} -D "$@" > "${@:.app=.dump}"
 
 
 build:
@@ -80,7 +80,7 @@ install: all
 .PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build lib
-	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump
+	${RM} -r *.o *.app *.d *.map *.asm33 *.dump
 
 
 include ${SAMO_LIB}/Mk/rules.mk
