@@ -41,23 +41,25 @@
  (include<> stdbool.h)
  (include<> stdlib.h)
 
+ (newline)
+
  (output "typedef int32_t ssize_t;")
 
  ;; functions
- ;(0 "panic" ("void" "panic" "const char *message") "__attribute__ ((noreturn))")
+ (0 System_panic ("void" "panic" "const char *format" "...") ("noreturn" "format (printf, 1, 2)"))
 
  (section "Console Debugging")
  (1 Serial_print   ("void" "debug_print" "const char *message"))
  (2 Serial_PutChar ("int" "debug_print_char" "int c"))
- (3 Serial_printf  ("int" "debug_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (3 Serial_printf  ("int" "debug_printf" "const char *format" "...") "format (printf, 1, 2)")
  (4 Serial_HexDump ("void" "debug_hex_dump" "const void *buffer" "size_t length"))
 
 
  (section "Power Off / Reboot")
 
- (17 System_chain ("void" "chain" "const char *command") "__attribute__ ((noreturn))")
- (18 System_PowerOff ("void" "power_off" "void") "__attribute__ ((noreturn))")
- (19 System_reboot ("void" "reboot" "void") "__attribute__ ((noreturn))")
+ (17 System_chain ("void" "chain" "const char *command") "noreturn")
+ (18 System_PowerOff ("void" "power_off" "void") "noreturn")
+ (19 System_reboot ("void" "reboot" "void") "noreturn")
 
 
  (section "Interrupt Handlers")
@@ -155,7 +157,7 @@
  (60 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
  (61 LCD_print  ("int" "lcd_print" "const char *text"))
  (62 LCD_PutChar  ("int" "lcd_print_char" "char c"))
- (63 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "__attribute__ ((format (printf, 1, 2)))")
+ (63 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "format (printf, 1, 2)")
  (64 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
  (65 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
 
