@@ -116,6 +116,9 @@ void Button_PowerInterrupt(void)
 	event.item_type = EVENT_BUTTON_DOWN;
 	event.button.code = BUTTON_POWER;
 	Event_put(&event);
+	event.item_type = EVENT_BUTTON_UP;
+	event.button.code = BUTTON_POWER;
+	Event_put(&event);
 
 	Interrupt_RestoreR15();  // must be last
 }
