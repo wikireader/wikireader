@@ -29,6 +29,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
   :use-module (ice-9 rdelim)
   :use-module (ice-9 regex)
   :use-module (srfi srfi-1)
+  :use-module (srfi srfi-19)
   :export (script-entry-point))
 
 (define-macro (unless cond . body)
@@ -43,6 +44,22 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
       (format #t "error: ~a~%" message))
   (format #t "usage: ~a [--verbose] [--debug] --list=file --prefix=path --header=file~%" *program*)
   (exit 1))
+
+
+(define (generated-do-not-modify file-name program-name)
+  (format #t (string-join '("/*"
+                            " * ***** DO NOT MODIFY *****"
+                            " *"
+                            " * File:           ~a"
+                            " * Generated on:   ~a"
+                            " * By the program: ~a"
+                            " *"
+                            " * ***** DO NOT MODIFY *****"
+                            " */" "~%") "~%")
+          file-name
+          (date->string (current-date 0) "~Y-~m-~d ~H:~M:~S ~z")
+          program-name))
+
 
 (define (main . args)
   "Main program"
@@ -77,12 +94,12 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
       (for-each (lambda (x) (output-asm =p x =v)) call-list)
       (if =v (format #t "Creating: ~a~%" =h))
       (with-output-to-file =h (lambda ()
-                                (format #t "// Generated file, Do NOT Modify~%")
+                                (generated-do-not-modify =h *program*)
                                 (for-each output-prototype call-list)))
 
       (if =v (format #t "Creating: ~a~%" =t))
       (with-output-to-file =t (lambda ()
-                                (format #t "// Generated file, Do NOT Modify~%")
+                                (generated-do-not-modify =h *program*)
                                 (for-each output-table-entry call-list))))))
 
 
@@ -100,10 +117,14 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
     (let* ((syscall-number (first item))
            (kernel-name (second item))
            (proto (prototype-string (third item)))
-           (attributes (drop item 3)))
+           (attributes (if (> (length item) 3) (fourth item) '())))
       (format #t "~a~a;~%" proto
-              (if attributes
-                  (string-concatenate (list " " (string-join attributes " ")))
+              (if (not (null? attributes))
+                  (string-concatenate (list " __attribute__ (("
+                                            (if (list? attributes)
+                                                (string-join attributes ", ")
+                                                attributes)
+                                            "))"))
                   ""))))
 
    ((eq? 'copy-all (first item))
