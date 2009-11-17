@@ -21,12 +21,26 @@
 
 #include "standard.h"
 
+#include <string.h>
+#include <ctype.h>
+
 #include <regs.h>
 #include <samo.h>
 
 #include "CMU.h"
+#include "elf32.h"
+#include "file.h"
 #include "interrupt.h"
+#include "memory.h"
+#include "serial.h"
+#include "watchdog.h"
 #include "system.h"
+
+
+typedef int UserCode(int argc, const char *const argv[]);
+
+static void PrintResult(int result);
+static void ExecuteUserCode(UserCode *code, int argc, const char *const argv[]);
 
 
 void System_initialise(void)
@@ -35,7 +49,6 @@ void System_initialise(void)
 	if (!initialised) {
 		initialised = true;
 		CMU_initialise();
-		CMU_enable1(WDT_CKE);
 	}
 }
 
@@ -73,4 +86,114 @@ void System_reboot(void)
 	for (;;) {                         // wait for reset
 		asm volatile ("halt");
 	}
+}
+
+
+void System_chain(const char *command)
+{
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
+	// these must not be on the stack
+	static char buffer[256];     // sets maximum command length
+	static const char *ArgumentStrings[11]; // program name + N-1 arguments
+
+	size_t ArgumentCount = 0;
+	const char *source = command;
+	char *destination = buffer;
+
+	// parse something like: --option="isn't this easy"', '"it's ok"' and "quotes" can be used'
+	while ('\0' != *source && ArgumentCount < SizeOfArray(ArgumentStrings)) {
+		while (isspace(*source)) {
+			++source;
+		}
+		if ('\0' == *source) {
+			break;
+		}
+
+		char quote = '\0';
+		*destination = '\0';
+
+		ArgumentStrings[ArgumentCount++] = destination;
+
+		while ('\0' != *source && destination < &buffer[sizeof(buffer) - 1]) {
+			if ('\0' != quote) {
+				while ('\0' != *source && quote != *source) {
+					*destination++ = *source++;
+					if (destination >= &buffer[sizeof(buffer) - 1]) {
+						break;
+					}
+				}
+				if ('\0' != *source) {
+					quote = '\0';
+					++source;
+				}
+			} else if (isspace(*source)) {
+				break;
+			} else if ('"' == *source || '\'' == *source) {
+				quote = *source++;
+			} else {
+				*destination++ = *source++;
+			}
+		}
+		*destination++ = '\0';
+		if (destination >= &buffer[sizeof(buffer)]) {
+			break;
+		}
+	}
+
+	// ensure final terminator
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	uint32_t ExecutionAddress;
+	uint32_t FinalAddress;
+	ELF32_ErrorType r = ELF32_load(&ExecutionAddress, &FinalAddress, ArgumentStrings[0]);
+
+
+	if (ELF32_OK == r) {
+		// need to reset everything here
+		File_CloseAll();
+		extern char __MAIN_STACK_LIMIT;  // the address of this give lowest sp value
+		Memory_SetHeap(FinalAddress, (uint32_t)&__MAIN_STACK_LIMIT);
+
+		Watchdog_KeepAlive(WATCHDOG_KEY);
+
+		ExecuteUserCode((UserCode *)ExecutionAddress, ArgumentCount, ArgumentStrings);
+		// above code will not return
+	} else {
+		Serial_printf("ELF32_load error=%d\n", r);
+	}
+	File_CloseAll();
+	System_PowerOff();
+}
+
+ __attribute__ ((noinline))
+static void PrintResult(int result)
+{
+	Serial_printf("application returned: %d\n", result);
+}
+
+
+// this will change SP, so only use register variables
+static void ExecuteUserCode(UserCode *code, int argc, const char *const argv[])
+{
+	asm volatile (
+		"psrclr\t4                  \n\t"  // disable interrupts
+		"xld.w\t%r15, __MAIN_STACK  \n\t"
+		"ld.w\t%sp, %r15            \n\t"
+		"ld.w\t%r15, 0              \n\t"
+		"ld.w\t%psr, %r15           \n\t"
+		"xld.w\t%r15, __dp_user     \n\t"
+		"psrset\t4                  "      // enable interrupts
+		);
+	register int result = code(argc, argv);
+
+	asm volatile ("xld.w\t%r15, __dp");  // restore R15
+
+	// cannot directly call with varargs as this uses stack
+	// and the compilers view of the stack is different to the runtime
+	// situation
+	PrintResult(result);
+
+	File_CloseAll();
+	System_PowerOff();
 }

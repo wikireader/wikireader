@@ -25,5 +25,6 @@
 void System_initialise(void);
 void System_PowerOff(void);
 void System_reboot(void);
+void System_chain(const char *command);
 
 #endif

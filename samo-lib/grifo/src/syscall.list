@@ -44,7 +44,7 @@
  (output "typedef int32_t ssize_t;")
 
  ;; functions
- ;(0 "panic" ("void" "panic" "const char *message"))
+ ;(0 "panic" ("void" "panic" "const char *message") "__attribute__ ((noreturn))")
 
  (section "Console Debugging")
  (1 Serial_print   ("void" "debug_print" "const char *message"))
@@ -55,8 +55,9 @@
 
  (section "Power Off / Reboot")
 
- (18 System_PowerOff ("void" "power_off" "void"))
- (19 System_reboot ("void" "reboot" "void"))
+ (17 System_chain ("void" "chain" "const char *command") "__attribute__ ((noreturn))")
+ (18 System_PowerOff ("void" "power_off" "void") "__attribute__ ((noreturn))")
+ (19 System_reboot ("void" "reboot" "void") "__attribute__ ((noreturn))")
 
 
  (section "Interrupt Handlers")
