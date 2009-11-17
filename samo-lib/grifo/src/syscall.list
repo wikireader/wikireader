@@ -239,5 +239,14 @@
  (142 Memory_debug ("void" "memory_debug" "const char *message"))
 
 
+ (section "Analog Inputs")
+
+ (output "typedef enum {")
+ (copy-part "src/analog.h" "channels")
+ (output "} analog_channel_t;")
+
+ (150 Analog_read ("long" "analog_input" "analog_channel_t channel"))
+
+
  (endif)
 )

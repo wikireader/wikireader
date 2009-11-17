@@ -27,6 +27,7 @@
 #include "elf32.h"
 
 // modules to initialise
+#include "analog.h"
 #include "button.h"
 #include "CMU.h"
 #include "CTP.h"
@@ -128,6 +129,9 @@ void process(void)
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 	Memory_initialise();
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
+	Analog_initialise();
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 #if 0

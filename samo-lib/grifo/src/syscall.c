@@ -25,6 +25,7 @@
 #include "syscall.h"
 
 // for individual syscalls
+#include "analog.h"
 #include "delay.h"
 #include "event.h"
 #include "file.h"

@@ -55,6 +55,9 @@ int main(int argc, char **argv)
 	debug_printf("This is debug_printf number %d / %d\n", 1, 2);
 	debug_printf("This is debug_printf number %d / %d\n", 2, 2);
 
+	debug_printf("battery      = %ld mV\n", analog_input(ANALOG_BATTERY_MILLIVOLTS));
+	debug_printf("LCD contrast = %ld mV\n", analog_input(ANALOG_LCD_MILLIVOLTS));
+	debug_printf("Temperature  = %ld C\n", analog_input(ANALOG_TEMPERATURE_CELCIUS));
 
 	// test delay
 

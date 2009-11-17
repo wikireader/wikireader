@@ -62,6 +62,7 @@ TARGETS += grifo.elf
 TARGETS += lib/libgrifo.a
 
 # list of modules for creating libinternal.a
+OBJECTS += analog.o
 OBJECTS += button.o
 OBJECTS += CMU.o
 OBJECTS += CTP.o
