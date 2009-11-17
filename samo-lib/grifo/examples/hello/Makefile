@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 define FIND_SAMO_LIB
 d='.' ; \
 while [ X"/" != X"$${d}" ] ; \
@@ -34,16 +33,54 @@ SAMO_LIB := $(shell ${FIND_SAMO_LIB})
 include ${SAMO_LIB}/Mk/definitions.mk
 
 
-DIRS += events
-DIRS += files
-DIRS += hello
-DIRS += lcd
-DIRS += memory
-DIRS += sample1
+INCLUDES += -I${SAMO_LIB_INCLUDE}
+INCLUDES += -I${GRIFO_INCLUDE}
+INCLUDES += -I${MINI_LIBC_INCLUDE}
+
+LIBS += lib/libexamples.a
+LIBS += ${GRIFO_LIB}
+LIBS += ${MINI_LIBC_LIB}
+LIBS += $(shell $(CC) -print-libgcc-file-name)
+
+BUILD_PREFIX := build/
+
+vpath %.c :src
+
+TARGETS = hello.elf
+
+# list of modules
+OBJECTS += hello.o
+
+BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
+
+.PHONY: all
+all:  ${TARGETS}
+
+lib/libexamples.a: lib ${BUILD_OBJECTS}
+	${RM} "$@"
+	${AR} r "$@" ${BUILD_OBJECTS}
 
 
-${MAKECMDGOALS} all:
-	@for d in ${DIRS}; do ${MAKE} -C "$${d}" ${MAKECMDGOALS} || exit 1; done
+hello.elf: build build/hello.o ${GRIFO_APPLICATION_LDS} ${LIBS}
+	$(LD) -o $@ ${LDFLAGS} build/hello.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.elf=.map}
+	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
+
+
+build:
+	${MKDIR} "$@"
+
+lib:
+	${MKDIR} "$@"
+
+.PHONY: install
+install: all
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+	${COPY} ${TARGETS} "${DESTDIR}"/
+
+.PHONY: clean
+clean:
+	${RM} -r ${TARGETS} build lib
+	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump
 
 
 include ${SAMO_LIB}/Mk/rules.mk

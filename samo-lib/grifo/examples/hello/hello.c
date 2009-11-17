@@ -22,13 +22,14 @@
 #include <grifo.h>
 
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
-	lcd_clear_screen();
+	lcd_clear(LCD_WHITE);
 	lcd_printf("Hello LCD world\n");
 	debug_printf("Hello serial world\n");
-	int i;
-	for (i = 0; i < argc, ++i) {
+	size_t i;
+	for (i = 0; i < argc; ++i) {
+		lcd_printf("argv[%d] = '%s'\n", i, argv[i]);
 		debug_printf("argv[%d] = '%s'\n", i, argv[i]);
 	}
 
