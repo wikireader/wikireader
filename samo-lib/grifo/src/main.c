@@ -135,69 +135,27 @@ void process(void)
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 #if 0
-	// secondary
+	// ***** These require more work *****
+
+	// have to move mmc.c from drivers to fatfs first
+	// then sort out all the breakage this will cause
+	// note that this change will affect mbr
+	// - must also change mbr to use the grifo/src/elf32.c
 	SPI_initialise();
-	Analog_initialise();
-	//Contrast_initialise();  // needs to be shared with boot loader and read FLASH
-	Menu_initialise();
+
+	// All above must be sorted before FLASH driver can be implemented
+	FLASH_initialise();
+
+	// must change mbr to use above flash driver and create common
+	// structure for saving the contrast data before contrast driver
+	// can be implemented
+	Contrast_initialise();
 #endif
 
 	// final initialisation before running the application
 	SystemCall_initialise();
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
-#if 0
-	Menu_run();
-#endif
-
-	// program to run
-	for (;;) {
-		Watchdog_KeepAlive(WATCHDOG_KEY);
-
-		char buffer[81]; // remember the '\0'
-
-		Serial_print("command: ");
-		Serial_GetLine(buffer, sizeof(buffer));
-		Serial_print("\n");
-
-		const char *args[11]; // program name + N-1 arguments
-
-		size_t args_index = 0;
-		char *p = buffer;
-		while ('\0' != *p && args_index < SizeOfArray(args)) {
-			while (isspace(*p)) {
-				++p;
-			}
-			if ('\0' == *p) {
-				break;
-			}
-			//asm volatile("nop");
-			args[args_index++] = p;
-			while ('\0' != *p && !isspace(*p)) {
-				++p;
-			}
-			if ('\0' == *p) {
-				break;
-			}
-			*p++ = '\0';
-		}
-
-		uint32_t ExecutionAddress;
-		uint32_t FinalAddress;
-		ELF32_ErrorType r = ELF32_load(&ExecutionAddress, &FinalAddress, args[0]);
-
-
-		if (ELF32_OK == r) {
-			extern char __MAIN_STACK_LIMIT;  // the address of this give lowest sp value
-			Memory_SetHeap(FinalAddress, (uint32_t)&__MAIN_STACK_LIMIT);
-			asm volatile ("xld.w\t%r15, __dp_user");
-			int result = ((int (*) (int, const char **)) ExecutionAddress) (args_index, args);
-			asm volatile ("xld.w\t%r15, __dp");
-			Serial_printf("application returned: %d\n", result);
-		} else {
-			Serial_printf("ELF32_load error=%d\n", r);
-		}
-		File_CloseAll();
-	}
-
+	// this does not return
+	System_chain("init.app auto-start grifo-kernel");
 }
