@@ -31,7 +31,8 @@
 // 2 = section data
 // 3 = messages for things that should not fail
 
-#define DEBUG_LEVEL 3
+//#define DEBUG_LEVEL 3
+#define DEBUG_LEVEL 1
 
 #define DEBUG_ELF(level, format...)             \
 	do {                                    \
