@@ -84,6 +84,7 @@ event_item_t Event_get(event_t *event);
 //*[wait]: instead runs callback ater a 2 minute timeout
 //*[wait]: callback returns true to wait another timeout period
 //*[wait]: or false to shutdown and power off the system
+// This is a user code callback (via Suspend) - do not use in the kernel
 event_item_t Event_wait(event_t *event, Standard_BoolCallBackType *callback, void *arg);
 
 #endif

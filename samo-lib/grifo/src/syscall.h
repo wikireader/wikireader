@@ -24,5 +24,7 @@
 
 void SystemCall_initialise(void);
 
+// to allow calls back to user code
+bool SystemCall_BoolUserCallback(Standard_BoolCallBackType callback, void *arg);
 
 #endif

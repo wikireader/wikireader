@@ -59,6 +59,18 @@ void SystemCall_initialise(void)
 }
 
 
+// call a user callback with the correct R15 value
+// reset kernel R15 value on return
+bool SystemCall_BoolUserCallback(Standard_BoolCallBackType callback, void *arg)
+{
+	asm volatile ("xld.w\t%r15,saved_r15  \n\t"
+		      "xld.w\t%r15,[%r15]         ");
+	register bool result = callback(arg);
+	asm volatile ("xld.w\t%r15, __dp");
+	return result;
+}
+
+
 // this is all assembler code
 static void handler(void)
 {

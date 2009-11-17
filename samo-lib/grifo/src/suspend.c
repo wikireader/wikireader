@@ -29,9 +29,10 @@
 
 #include "file.h"
 #include "interrupt.h"
+#include "syscall.h"
 #include "system.h"
-#include "watchdog.h"
 #include "vector.h"
+#include "watchdog.h"
 #include "suspend.h"
 
 
@@ -74,6 +75,7 @@ void Suspend_initialise(void)
 }
 
 
+// this callback is for user code doo not use in kernel
 void Suspend(Standard_BoolCallBackType *callback, void *arg)
 {
 	Watchdog_KeepAlive(WATCHDOG_KEY);
@@ -106,12 +108,11 @@ void Suspend(Standard_BoolCallBackType *callback, void *arg)
 
 	if (timeout_flag) {
 		register bool continue_flag = false;
-#if 0
+
 		if (NULL != callback) {
-#error "What about R15"
-			continue_flag = callback(arg);
+			continue_flag = SystemCall_BoolUserCallback(callback, arg);
 		}
-#endif
+
 		if (!continue_flag) {
 			Watchdog_KeepAlive(WATCHDOG_KEY);
 			File_CloseAll();

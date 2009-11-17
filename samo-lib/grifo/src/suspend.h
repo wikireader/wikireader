@@ -29,7 +29,7 @@ void Suspend_initialise(void);
 // callback returns:
 //   true  => continue
 //   false => close all files an power off
-
+// This is a user code callback - do not use in the kernel
 void Suspend(Standard_BoolCallBackType *callback, void *arg);
 
 #endif
