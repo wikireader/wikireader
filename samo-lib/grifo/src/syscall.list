@@ -108,15 +108,13 @@
 
  ;;(43 Event_available ("bool" "event_avail" "event_item_t item_type"));
 
- (remark "get the next event if available otherwise return EVENT_NONE")
- ;; add an event_item_t item_type parameter when Event_available is working
+ (comment "src/event.h" "get")
  (44 Event_get ("event_item_t" "event_get" "event_t *event"))
 
  (newline)
  (output "typedef bool event_callback_t(void *arg);");
 
- (remark "never returns EVENT_NONE")
- (remark "runs callback on time out prior to system shutdown")
+ (comment "src/event.h" "wait")
  (45 Event_wait ("event_item_t" "event_wait" "event_t *event" "event_callback_t *callback" "void *arg"))
 
 
@@ -237,6 +235,7 @@
  (140 Memory_allocate ("void *" "memory_allocate" "size_t size" "const char *tag"))
  (141 Memory_free ("void" "memory_free" "void *address" "const char *tag"))
 
+ (comment "src/memory.h" "debug")
  (142 Memory_debug ("void" "memory_debug" "const char *message"))
 
 

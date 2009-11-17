@@ -77,11 +77,13 @@ void Event_flush(void);
 bool Event_put(const event_t *event);
 
 // copy from buffer
-// return EVENT_NONE if buffer was empty
+//*[get]: get the next event if available otherwise return EVENT_NONE
 event_item_t Event_get(event_t *event);
 
-// wait for an event, if no event within timeout
-// then call the callback function and shutdown
+//*[wait]: never returns EVENT_NONE
+//*[wait]: instead runs callback ater a 2 minute timeout
+//*[wait]: callback returns true to wait another timeout period
+//*[wait]: or false to shutdown and power off the system
 event_item_t Event_wait(event_t *event, Standard_BoolCallBackType *callback, void *arg);
 
 #endif

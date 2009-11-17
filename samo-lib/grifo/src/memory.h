@@ -29,10 +29,15 @@ void Memory_initialise(void);
 // reconfigure the memory region available to the allocator
 void Memory_SetHeap(uint32_t FirstFreeAddress, uint32_t LastFreeAddress);
 
-//+[alloc]: tag is a short string to help debug memory allocation failures
+//*[alloc]: tag is a short string to help debug memory allocation failures
+//*[alloc]: choose unique tag strings for each allocate/free
 void *Memory_allocate(size_t size, const char *tag);
 void Memory_free(void *address, const char *tag);
 
-void Memory_debug(const char*message);
+//*[debug]: display message on the seriala console
+//*[debug]: then dump the heap headers followed by a short summary
+//*[debug]: each header contains the allcate/free tags to show
+//*[debug]: where the memory was allocated or freed
+void Memory_debug(const char *message);
 
 #endif
