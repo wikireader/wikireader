@@ -29,10 +29,13 @@
 
 #include "CMU.h"
 #include "elf32.h"
+#include "event.h"
 #include "file.h"
 #include "interrupt.h"
+#include "LCD.h"
 #include "memory.h"
 #include "serial.h"
+#include "suspend.h"
 #include "watchdog.h"
 #include "system.h"
 
@@ -50,6 +53,33 @@ void System_initialise(void)
 		initialised = true;
 		CMU_initialise();
 	}
+}
+
+
+void System_panic(const char *format, ...)
+{
+	va_list arguments;
+
+	Event_flush();
+
+	va_start(arguments, format);
+
+	Serial_print("System Panic:\n");
+	(void)Serial_vuprintf(format, arguments);
+	Serial_print("\nWaiting to power off\n");
+
+	LCD_clear(LCD_WHITE);
+	LCD_print("System Panic:\n");
+	(void)LCD_vuprintf(format, arguments);
+
+	LCD_AtXY(0, LCD_MAX_ROWS - 1);
+	LCD_print("Press any key to power off");
+
+	va_end(arguments);
+
+	Event_flush();
+	Suspend(NULL, NULL);
+	System_PowerOff();
 }
 
 

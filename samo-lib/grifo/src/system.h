@@ -23,8 +23,10 @@
 #define _SYSTEM_H_ 1
 
 void System_initialise(void);
-void System_PowerOff(void);
-void System_reboot(void);
-void System_chain(const char *command);
+
+void System_panic(const char *format, ...)  __attribute__((format (printf, 1, 2), noreturn));
+void System_PowerOff(void) __attribute__((noreturn));
+void System_reboot(void) __attribute__((noreturn));
+void System_chain(const char *command) __attribute__((noreturn));
 
 #endif
