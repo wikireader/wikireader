@@ -134,8 +134,9 @@ void CTP_interrupt(void)
 			case STATE_TOUCH:
 			{
 				event_t e;
-				e.touch.x = x;
-				e.touch.y = y;
+				// CTP is double the LCD resolution, so correct the x and y values
+				e.touch.x = x >> 1;
+				e.touch.y = y >> 1;
 				if (0x01 == c) {
 					e.item_type = touch ? EVENT_TOUCH_MOTION : EVENT_TOUCH_DOWN;
 					touch = true;
