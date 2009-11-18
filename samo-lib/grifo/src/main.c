@@ -157,5 +157,5 @@ void process(void)
 	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 	// this does not return
-	System_chain("init.app auto-start grifo-kernel");
+	System_chain("init.app auto-boot grifo-kernel");
 }
