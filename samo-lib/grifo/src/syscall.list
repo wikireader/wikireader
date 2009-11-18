@@ -43,6 +43,10 @@
 
  (newline)
 
+ (output "#define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))")
+
+ (newline)
+
  (output "typedef int32_t ssize_t;")
 
  ;; functions
