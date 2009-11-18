@@ -57,6 +57,12 @@
 
  (section "Power Off / Reboot")
 
+ (remark "These values can be used as the retunr from main()")
+ (output "enum {")
+ (copy-part "src/system.h" "exit")
+ (output "};")
+
+ (16 System_exit ("void" "exit" "int result") "noreturn")
  (17 System_chain ("void" "chain" "const char *command") "noreturn")
  (18 System_PowerOff ("void" "power_off" "void") "noreturn")
  (19 System_reboot ("void" "reboot" "void") "noreturn")

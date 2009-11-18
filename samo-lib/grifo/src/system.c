@@ -42,7 +42,6 @@
 
 typedef int UserCode(int argc, const char *const argv[]);
 
-static void PrintResult(int result);
 static void ExecuteUserCode(UserCode *code, int argc, const char *const argv[]);
 
 
@@ -87,7 +86,9 @@ void System_PowerOff(void)
 {
 	(void)Interrupt_disable();         // interrupts off
 
-	power_off();
+	for (;;) {
+		power_off();
+	}
 }
 
 
@@ -117,6 +118,31 @@ void System_reboot(void)
 		asm volatile ("halt");
 	}
 }
+
+
+void System_exit(System_ExitType result)
+{
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+
+	Serial_printf("application returned: %d\n", result);
+	File_CloseAll();
+
+	switch (result) {
+	case EXIT_POWER_OFF:
+		System_PowerOff();
+		break;
+
+	case EXIT_REBOOT:
+		System_reboot();
+		break;
+
+	case EXIT_RESTART_INIT:
+		System_chain("init.app restart grifo-kernel");
+		break;
+	}
+	System_PowerOff();
+}
+
 
 
 void System_chain(const char *command)
@@ -196,13 +222,6 @@ void System_chain(const char *command)
 	System_PowerOff();
 }
 
- __attribute__ ((noinline))
-static void PrintResult(int result)
-{
-	Serial_printf("application returned: %d\n", result);
-}
-
-
 // this will change SP, so only use register variables
 static void ExecuteUserCode(UserCode *code, int argc, const char *const argv[])
 {
@@ -219,11 +238,5 @@ static void ExecuteUserCode(UserCode *code, int argc, const char *const argv[])
 
 	asm volatile ("xld.w\t%r15, __dp");  // restore R15
 
-	// cannot directly call with varargs as this uses stack
-	// and the compilers view of the stack is different to the runtime
-	// situation
-	PrintResult(result);
-
-	File_CloseAll();
-	System_PowerOff();
+	System_exit(result);
 }

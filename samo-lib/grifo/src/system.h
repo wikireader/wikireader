@@ -27,6 +27,16 @@ void System_initialise(void);
 void System_panic(const char *format, ...)  __attribute__((format (printf, 1, 2), noreturn));
 void System_PowerOff(void) __attribute__((noreturn));
 void System_reboot(void) __attribute__((noreturn));
+
+typedef enum {
+//+MakeSystemCalls: exit
+	EXIT_POWER_OFF,
+	EXIT_REBOOT,
+	EXIT_RESTART_INIT,
+//-MakeSystemCalls: exit
+} System_ExitType;
+
+void System_exit(System_ExitType result) __attribute__((noreturn));
 void System_chain(const char *command) __attribute__((noreturn));
 
 #endif
