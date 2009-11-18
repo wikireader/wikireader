@@ -85,7 +85,7 @@ $wgEnableUploads       = false;
 ## If you use ImageMagick (or any other shell command) on a
 ## Linux server, this will need to be set to the name of an
 ## available UTF-8 locale
-# $wgShellLocale = "en_US.UTF-8";
+$wgShellLocale = "en_US.UTF-8";
 
 ## If you want to use image uploads under safe mode,
 ## create the directories images/archive, images/thumb and
@@ -120,18 +120,30 @@ $wgRightsIcon = "";
 $wgDiff3 = "/usr/bin/diff3";
 
 
-############## OFFLINE ##############
-## $$$ MOSKO: These are for offline usage:
+############## OFFLINE RENDERING ##############
+
+# For article parsing
 $wgShowExceptionDetails = true;
 $wgMessageCacheType = CACHE_NONE;
 $wgParserCacheType = CACHE_NONE;
 $wgMiserMode = true;
 $wgDisableQueryPages = true;
-# Settings for offline templates
+
+# For offline templates
 $wgTemplateExtension = '.mwt';
 $wgTemplatePath = $IP .'/offline/templates';
 
-############## OFFLINE ##############
+# For Math equations, (to activate, make sure $wgUseTeX is true )
+$WorkDirectory   = 'images';
+$wgMathPath      = "/path/to/math";
+$wgMathDirectory = "{$WorkDirectory}/math";
+$wgTmpDirectory  = "{$WorkDirectory}/tmp";
+
+# Uncomment for debugging
+#$wgDebugLogFile = "/tmp/wiki.log";
+
+
+############## OFFLINE RENDERING ##############
 
 
 # When you make changes to this configuration file, this will make

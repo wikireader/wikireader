@@ -69,7 +69,7 @@ class MathRenderer {
 			}
 
 			wfDebug( "TeX: $cmd\n" );
-			$contents = `$cmd`;
+			$contents = `$cmd 2>&1`;
 			wfDebug( "TeX output:\n $contents\n---\n" );
 
 			if (strlen($contents) == 0) {

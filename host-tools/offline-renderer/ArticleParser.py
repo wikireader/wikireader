@@ -42,7 +42,8 @@ subs = [
     (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
-    (re.compile(r'(<|&lt;).*?(>|&gt;)', re.IGNORECASE), ''),
+    (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
+    (re.compile(r'(<|&lt;)(/?)(math)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
@@ -138,9 +139,9 @@ def main():
     offset_cursor = offset_db.cursor()
 
     if do_output:
-        newf = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE).stdin
+        p = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE)
     else:
-        newf = None
+        p = None
 
     # process all required articles
     current_file_id = None
@@ -165,7 +166,7 @@ def main():
                 print 'Open:', filename
         f.seek(seek)
 
-        process_article_text(title.encode('utf-8'),  f.read(length), newf)
+        process_article_text(title.encode('utf-8'),  f.read(length), p.stdin)
         if article_count != 'all':
             article_count -= 1
         total_articles += 1
@@ -176,8 +177,9 @@ def main():
     # close files
     if f:
          f.close()
-    if newf:
-        newf.close()
+    if p:
+        p.stdin.close()
+        p.wait()
     print 'Total: %d' % total_articles
 
 
