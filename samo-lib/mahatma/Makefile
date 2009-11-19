@@ -109,7 +109,7 @@ OBJECTS += $(WIKIAPP_COBJS)
 OBJECTS += $(LZMA_COBJS)
 
 ifeq ($(PNM2PLAIN_PATH),)
-$(error Could not find $(PNM2PLAIN_NAME) - please: sudo apt-get install netpbm)
+$(error Could not find $(PNM2PLAIN_NAME) - please: sudo apt-get install netpbm )
 endif
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
