@@ -71,7 +71,7 @@ H6_MARGIN_TOP           = H2_MARGIN_TOP
 LIMAX_INDENT_LEVELS     = 3
 
 # bullet[0] charater is not used (the '!')
-bullet_c                = u"!\u25aa\u2022\u2022"
+bullet_c                = u"!\u25aa\u2022\u25ab"
 
 font_id_values = {}
 
@@ -510,13 +510,13 @@ class WrProcess(HTMLParser):
                 self.wordwrap.append(bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
 
             self.flush_buffer()
-            if self.level < LIMAX_INDENT_LEVELS:
+            if self.level <= LIMAX_INDENT_LEVELS:
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
         if tag == 'dd':
             self.li_cnt[self.level] += 1
-            if self.level < LIMAX_INDENT_LEVELS:
+            if self.level <= LIMAX_INDENT_LEVELS:
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
@@ -633,22 +633,23 @@ class WrProcess(HTMLParser):
 
 
     def enter_list(self, list_type):
-        self.flush_buffer()
+        self.flush_buffer(False)
         esc_code0(LIST_MARGIN_TOP)
         self.level += 1
         self.li_cnt[self.level] = 0
         self.li_type[self.level] = list_type
-        if self.level < LIMAX_INDENT_LEVELS:
+        if self.level > 1 and self.level <= LIMAX_INDENT_LEVELS:
             self.lwidth -= LIST_INDENT
             self.indent += LIST_INDENT
 
 
     def leave_list(self):
         self.flush_buffer()
-        if self.level > 0:
-            if self.level < LIMAX_INDENT_LEVELS:
+        esc_code0(LIST_MARGIN_TOP)
+        if self.level > 1 and self.level <= LIMAX_INDENT_LEVELS:
                 self.lwidth += LIST_INDENT
                 self.indent -= LIST_INDENT
+        if self.level > 0:
             self.level -= 1
 
 
