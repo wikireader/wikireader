@@ -45,6 +45,11 @@ HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
 PYLZMA_DIR := pylzma-0.3.0
 
+ifeq ($(shell which sqlite3),)
+$(error Could not find sqlite3 - please: sudo apt-get install sqlite3 )
+endif
+
+
 ifneq ($(strip ${VERBOSE}),)
 VERBOSE = --verbose
 endif

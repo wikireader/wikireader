@@ -35,6 +35,9 @@ FATFS_MODE = read-write
 
 include ${SAMO_LIB}/Mk/definitions.mk
 
+ifeq ($(shell which guile),)
+$(error Could not find guile - please: sudo apt-get install guile )
+endif
 
 INCLUDES += -Isrc
 INCLUDES += -I-
