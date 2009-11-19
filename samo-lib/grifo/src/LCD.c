@@ -811,3 +811,30 @@ void LCD_Window_LineTo(int x, int y)
 	LCD_Window_MoveTo(x, y);
 	DrawLine(x0, y0, x, y, WindowForegroundColour, LCD_Window_SetPixel);
 }
+
+
+// Generic Functions
+// -----------------
+
+void LCD_PutBitMap(void *framebuffer, size_t BufferWidth,
+		   int x, int y, size_t width, size_t height,
+		   bool reverse,
+		   const uint8_t *bits)
+{
+	uint8_t *p = (uint8_t *)framebuffer + (x >> 3) + (BufferWidth * y);
+	size_t h;
+
+	uint8_t m = reverse ? 0xff : 0;
+	width >>= 3;
+	if (0 == width || 0 == height) {
+		return;
+	}
+	for (h = 0; h < height; ++h) {
+		size_t w;
+
+		for (w = 0; w < width; ++w) {
+			p[w] = m ^ *bits++;
+		}
+		p += BufferWidth;
+	}
+}

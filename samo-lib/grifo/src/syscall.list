@@ -205,6 +205,12 @@
  (86 LCD_Window_MoveTo ("void" "lcd_window_move_to" "int x" "int y"))
  (87 LCD_Window_LineTo ("void" "lcd_window_line_to" "int x" "int y"))
 
+
+ (90 LCD_PutBitMap ("void" "lcd_bitmap" "void *framebuffer" "size_t BufferWidth"
+                    "int x" "int y" "size_t width" "size_t height"
+                    "bool reverse" "const uint8_t *bits"))
+
+
  (section "Files and Directory Access")
 
  (output "typedef enum {")

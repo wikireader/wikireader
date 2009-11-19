@@ -129,4 +129,10 @@ void LCD_Window_Point(int x, int y);
 void LCD_Window_MoveTo(int x, int y);
 void LCD_Window_LineTo(int x, int y);
 
+
+void LCD_PutBitMap(void *framebuffer, size_t BufferWidth,
+		   int x, int y, size_t width, size_t height,
+		   bool reverse,
+		   const uint8_t *bits);
+
 #endif
