@@ -30,9 +30,9 @@ void System_reboot(void) __attribute__((noreturn));
 
 typedef enum {
 //+MakeSystemCalls: exit
-	EXIT_POWER_OFF,
-	EXIT_REBOOT,
-	EXIT_RESTART_INIT,
+	EXIT_RESTART_INIT = 0,
+	EXIT_POWER_OFF    = 1,
+	EXIT_REBOOT       = 2,
 //-MakeSystemCalls: exit
 } System_ExitType;
 
