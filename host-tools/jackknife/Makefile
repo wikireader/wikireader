@@ -48,6 +48,6 @@ jackknife: jackknife.elf
 	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
 
 clean:
-	rm -fr $(TARGETS) *.o *.elf *.bin *.d *.asm33
+	rm -fr $(TARGETS) *.o *.elf *.bin *.d *.p *.asm33
 
 include ${SAMO_LIB}/Mk/rules.mk

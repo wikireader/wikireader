@@ -152,7 +152,7 @@ install: all
 
 .PHONY: clean
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.asm33 *.header *.map *.rom ${IMAGE_HEADERS}
+	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.p *.asm33 *.header *.map *.rom ${IMAGE_HEADERS}
 
 # application headers
 %.header: %.c
