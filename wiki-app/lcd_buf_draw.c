@@ -847,7 +847,7 @@ void init_render_article(long init_y_pos)
 #define LICENSE_TEXT_1 "Text is available under the Creative"
 #define LICENSE_TEXT_2 "Commons Attribution/Share-Alike"
 #define LICENSE_TEXT_3 "License and can be freely reused under"
-#define LICENSE_TEXT_4 "the term of that license. See: Text of"
+#define LICENSE_TEXT_4 "the terms of that license. See: Text of"
 #define LICENSE_TEXT_5 "the CC-BY-SA License and Terms of"
 #define LICENSE_TEXT_6 "Use for additional terms which may"
 #define LICENSE_TEXT_7 "apply. The original article is available"
