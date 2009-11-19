@@ -22,6 +22,10 @@ AR=$(CROSS)ar
 HOSTCC=gcc
 CC=$(GCC)
 OBJCOPY=$(CROSS)objcopy
+RM = rm -f
+MKDIR = mkdir -p
+TOUCH = touch
+
 
 LDFLAGS=-static -s --no-gc-sections -N -L$(LIBDIR)
 CFLAGS=-Wall -I. -Iinclude -gstabs -mlong-calls -fno-builtin -Os -mc33pe
@@ -110,25 +114,27 @@ C_STD_LIB_OPERATIONS = \
 
 
 
-TARGETS=lib lib/libc.a
+TARGETS=lib/libc.a
 all: $(TARGETS)
 
 .c.o:
 	$(GCC) -M $(CFLAGS) $< > $(<:.c=.d)
 	$(GCC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-lib/libc.a: $(C_STRING_OPERATIONS) $(C_BSD_OPERATIONS) $(C_STD_LIB_OPERATIONS)
+lib/libc.a: stamp-lib $(C_STRING_OPERATIONS) $(C_BSD_OPERATIONS) $(C_STD_LIB_OPERATIONS)
 	$(AR) q lib/libc.a $^
 
-.PHONY: lib
-lib:
-	-mkdir -p "$@"
+stamp-lib:
+	${MKDIR} "${@:stamp-%=%}"
+	${TOUCH} "${@}"
 
 clean::
-	rm -rf $(TARGETS) *.o *.elf *.d
-	rm -rf src/string/*.d src/string/*.o
-	rm -rf src/stdlib/*.d src/stdlib/*.o
-	rm -rf src/bsd/*.d src/bsd/*.o
+	${RM} $(TARGETS) *.o *.elf *.d
+	${RM} src/string/*.d src/string/*.o
+	${RM} src/stdlib/*.d src/stdlib/*.o
+	${RM} src/bsd/*.d src/bsd/*.o
+	${RM} stamp-*
+	${RM} -r lib
 
 -include $(wildcard *.d) dummy
 

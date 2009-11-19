@@ -91,11 +91,11 @@ BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 all:  ${TARGETS}
 	${MAKE} -C examples
 
-build/libinternal.a: build ${BUILD_OBJECTS}
+build/libinternal.a: stamp-build ${BUILD_OBJECTS}
 	${RM} "$@"
 	${AR} r "$@" ${BUILD_OBJECTS}
 
-include/grifo.h stubs/stamp-source build/syscall.table: include build stubs src/syscall.list ${MAKE_SYSCALL} src/*.h
+include/grifo.h stubs/stamp-source build/syscall.table: stamp-include stamp-build stamp-stubs src/syscall.list ${MAKE_SYSCALL} src/*.h
 	${MAKE_SYSCALL} --prefix=stubs/ \
 	  --header=include/grifo.h \
 	  --list=src/syscall.list \
@@ -106,17 +106,17 @@ include/grifo.h stubs/stamp-source build/syscall.table: include build stubs src/
 stubs/stamp-objects: $(addsuffix .o, $(basename $(wildcard stubs/*.s)))
 	${TOUCH} "$@"
 
-stubs/stamp: stubs
+stubs/stamp: stamp-stubs
 	${MAKE} stubs/stamp-objects
 	${TOUCH} "$@"
 
 # this should depend on lib, but make always rebuilds in that case; why?
-lib/libgrifo.a: lib stubs/stamp stubs/stamp-source
+lib/libgrifo.a: stamp-lib stubs/stamp stubs/stamp-source
 	${RM} "$@"
 	${AR} r "$@" stubs/*.o
 	${TOUCH} "$@"
 
-grifo.elf: build build/main.o lds/grifo.lds ${LIBS}
+grifo.elf: build/main.o lds/grifo.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/main.o ${LIBS} -T lds/${@:.elf=.lds} -Map ${@:.elf=.map}
 	${STRIP} --strip-unneeded --strip-debug \
 		--remove-section=.internal --remove-section=.lcd \
@@ -124,17 +124,21 @@ grifo.elf: build build/main.o lds/grifo.lds ${LIBS}
 	${OBJDUMP} --section-headers "$@"
 	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
 
-build:
-	${MKDIR} "$@"
+stamp-build:
+	${MKDIR} "${@:stamp-%=%}"
+	${TOUCH} "$@"
 
-lib:
-	${MKDIR} "$@"
+stamp-lib:
+	${MKDIR} "${@:stamp-%=%}"
+	${TOUCH} "$@"
 
-stubs:
-	${MKDIR} "$@"
+stamp-stubs:
+	${MKDIR} "${@:stamp-%=%}"
+	${TOUCH} "$@"
 
-include:
-	${MKDIR} "$@"
+stamp-include:
+	${MKDIR} "${@:stamp-%=%}"
+	${TOUCH} "$@"
 
 
 .PHONY: install
@@ -147,7 +151,7 @@ install: all
 .PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build include lib stubs
-	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump *.ico
+	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump *.ico stamp-*
 	${MAKE} -C examples clean
 
 

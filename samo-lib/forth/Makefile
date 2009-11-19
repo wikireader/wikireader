@@ -96,6 +96,8 @@ forth-vector.fi: Makefile
 	echo >> "$@"
 	echo "variable 'cold-run :: tick-cold-run" >> "$@"
 
+forth.elf: forth.o ${OBJECTS} ${LIBS}
+
 
 # Common macro for compiling individual forth applications
 MAKE_FORTH_APP = $(eval $(call MAKE_FORTH_APP1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
@@ -129,6 +131,9 @@ ${1}.fi: programs/${1}.4th
 	echo >> "$$@"
 	echo "create  'cold-run :: tick-cold-run" >> "$$@"
 	echo "<',> ${2}" >> "$$@"
+
+${1}.elf: ${1}.o ${OBJECTS} ${LIBS}
+
 endef
 
 # list of individual applications to cross compile
