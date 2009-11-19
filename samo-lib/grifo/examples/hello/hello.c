@@ -33,5 +33,6 @@ int main(int argc, char *argv[])
 		debug_printf("argv[%d] = '%s'\n", i, argv[i]);
 	}
 
-	return 0;
+	delay_us(1000000);
+	return EXIT_RESTART_INIT;
 }

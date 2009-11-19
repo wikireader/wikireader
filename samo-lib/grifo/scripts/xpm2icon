@@ -1,0 +1,103 @@
+#!/bin/sh
+# aside from this initial boilerplate, this is actually -*- scheme -*- code
+main='(module-ref (resolve-module '\''(scripts script-entry-point)) '\'main')'
+exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
+!#
+
+;;; convert a 64x64 2 colour xpm to binary icon file
+;;;
+;;; Copyright (c) 2009 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+(define-module (scripts script-entry-point)
+  :use-module (ice-9 getopt-long)
+  :use-module (ice-9 rdelim)
+  :use-module (ice-9 regex)
+  :use-module (srfi srfi-1)
+  :export (script-entry-point))
+
+(define-macro (unless cond . body)
+  `(if (not ,cond) (begin ,@body)))
+
+(define *program* "program-name-here")
+(define *debug* #f)
+
+(define (usage message)
+  "Display a usage message"
+  (if (string? message)
+      (format #t "error: ~a~%" message))
+  (format #t "usage: ~a [--verbose] [--debug] --icon=file xpm-file~%" *program*)
+  (exit 1))
+
+
+(define (main . args)
+  "Main program"
+  (set! *program* (second args))
+  (let* ((parsed-opts (getopt-long (drop args 1)
+                                   '((icon (single-char #\i) (value #t))
+                                     (verbose (single-char #\v))
+                                     (debug (single-char #\d)))))
+         (=i (option-ref parsed-opts 'icon #f))
+         (=v (option-ref parsed-opts 'verbose #f))
+         (*debug* (option-ref parsed-opts 'debug #f)))
+    (if *debug*
+        (begin
+          (display parsed-opts)
+          (newline)))
+
+    (unless =i (usage "Missing icon-file"))
+    (let ((inputs (drop (first parsed-opts) 1)))
+      (unless (= (length inputs) 1) (usage "need exactly one source file"))
+      (let ((source (first inputs)))
+
+        (if *debug*
+            (format #t "icon = ~a~%xpm = ~a~%" =i source))
+
+        (with-input-from-file source
+          (lambda ()
+            (if (and
+                 (string=? "/* XPM */" (read-line))
+                 (string? (read-line))
+                 (string=? "\"64 64 2 1\"," (read-line))
+                 (string=? "\" \tc #FFFFFF\"," (read-line))
+                 (string=? "\".\tc #000000\"," (read-line)))
+                (with-output-to-file =i
+                  (lambda ()
+                    (while (not (eof-object? (peek-char)))
+                           (for-each
+                            (lambda (x)
+                              (write-char (integer->char x)))
+                            (binarise (string->list (string-take (string-drop (read-line) 1) 64)))))))
+                    (usage "source file is not a 64x64 2 colour XPM file"))
+                  ))))))
+
+(define (binarise items)
+  "Convert each block of 8 elements to a byte"
+  (if (null? items)
+      '()
+      (cons (make-byte 0 (take items 8)) (binarise (drop items 8)))))
+
+(define (make-byte sum items)
+  "Convert list into a byte"
+  (cond
+   ((null? items)
+    sum)
+   ((eq? #\space (first items))
+    (make-byte (* 2 sum) (cdr items)))
+   (#t
+    (make-byte (+ 1 (* 2 sum)) (cdr items)))))

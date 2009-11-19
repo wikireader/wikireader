@@ -138,12 +138,13 @@ include:
 install: all
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
 	${COPY} grifo.elf "${DESTDIR}"/kernel.elf
+	${COPY} init.ini "${DESTDIR}"/
 	${MAKE} -C examples install
 
 .PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build include lib stubs
-	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump
+	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump *.ico
 	${MAKE} -C examples clean
 
 

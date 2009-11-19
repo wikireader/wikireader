@@ -57,6 +57,7 @@ DRIVERS_SRC = ${DRIVERS}/src
 DRIVERS_LIB = ${DRIVERS}/lib/libdrivers.a
 
 GRIFO = ${SAMO_LIB}/grifo
+GRIFO_SCRIPTS = ${GRIFO}/scripts
 GRIFO_INCLUDE = ${GRIFO}/include
 GRIFO_APPLICATION_LDS = ${GRIFO}/lds/application.lds
 GRIFO_LIB = ${GRIFO}/lib/libgrifo.a

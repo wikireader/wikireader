@@ -53,5 +53,10 @@ ${BUILD_PREFIX}%.o: %.s
 	${AS} -o $@ ${ASFLAGS} -ahlsm=${@:.o=.lst} $<
 
 
+# convert XPM to binary ICO format
+%.ico: %.xpm
+	${GRIFO_SCRIPTS}/xpm2icon --icon="$@" "$<"
+
+
 -include $(wildcard *.d) dummy
 -include $(wildcard ${BUILD_PREFIX}*.d) dummy

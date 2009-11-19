@@ -46,7 +46,7 @@ BUILD_PREFIX := build/
 
 vpath %.c :src
 
-TARGETS = files.app
+TARGETS = files.app files.ico
 
 # list of modules
 OBJECTS += files.o
@@ -80,7 +80,7 @@ install: all
 .PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build lib
-	${RM} -r *.o *.app *.d *.map *.asm33 *.dump
+	${RM} -r *.o *.app *.d *.map *.asm33 *.dump *.ico
 
 
 include ${SAMO_LIB}/Mk/rules.mk
