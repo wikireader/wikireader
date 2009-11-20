@@ -25,7 +25,7 @@ class ParserOffline {
 
   # Override the template-fetching-function of the Parser
   static function fetchTemplate( $title ) {
-    echo "\n--- Trying to find offline template: ". $title ."\n";
+    #echo "\n--- Trying to find offline template: ". $title ."\n";
     global $IP, $wgTemplatePath, $wgTemplateExtension;
     $finalTitle = $title;
     $deps = array();
@@ -37,9 +37,6 @@ class ParserOffline {
     $template_path = $wgTemplatePath .'/'. $title_md5 . $wgTemplateExtension;
     $template_short_path = $wgTemplatePath .'/'. $title_short_md5 . $wgTemplateExtension;
     $template_text = null;
-    
-    echo "*** Template PATH       : " . $template_path . "\n";
-    echo "*** Template SHORT PATH : " . $template_short_path . "\n";
 
     if ( file_exists( $template_path ) ) {
       $template_text = file_get_contents( $template_path );
