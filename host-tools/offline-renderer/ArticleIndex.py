@@ -17,6 +17,7 @@ import sqlite3
 import FilterWords
 import FileScanner
 import codecs
+import hashlib
 
 # Python print often defaults to ASCII, just force it to utf-8
 # **this does not appear to work, used repr() below, but that
@@ -52,7 +53,7 @@ non_article_categories = {
     "file talk": 1,
     "mediawiki": 1,
     "mediawiki talk": 1,
-    "template": 1,
+    #"template": 1,
     "template talk": 1,
     "help": 1,
     "help talk": 1,
@@ -73,7 +74,7 @@ non_article_categories = {
     "archivo discusión": 1,
     "mediawiki": 1,
     "mediawiki discusión": 1,
-    "plantilla": 1,
+    #"plantilla": 1,
     "plantilla discusión": 1,
     "ayuda": 1,
     "ayuda discusión": 1,
@@ -90,6 +91,12 @@ non_article_categories = {
 
 non_articles = re.compile(r'([^:]+)\s*:')
 
+template_categories = {
+    "template": 1,
+    "plantilla": 1,
+}
+
+
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
@@ -99,6 +106,8 @@ class CycleError(Exception):
 
 
 verbose = False
+enable_templates = False
+
 bigram = {}
 
 
@@ -113,6 +122,7 @@ def usage(message):
     print '       --article-counts=file   File to store the counts [counts.text]'
     print '       --limit=number          Limit the number of articles processed'
     print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
+    print '       --template-prefix=name  Path/file prefix for templates'
     exit(1)
 
 
@@ -120,11 +130,12 @@ def main():
     global verbose
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:l:p:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
                                     'article-counts=',
+                                    'template-prefix=',
                                     'limit=',
                                     'prefix='])
     except getopt.GetoptError, err:
@@ -136,6 +147,7 @@ def main():
     cnt_name = "counts.text"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
+    template_prefix = 'template_'
     limit = 'all'
 
     for opt, arg in opts:
@@ -162,11 +174,13 @@ def main():
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
+        elif opt in ('-t', '--template-prefix'):
+            template_prefix = arg
         else:
             usage('unhandled option: ' + opt)
 
 
-    processor = FileProcessing(articles = art_name, offsets = off_name)
+    processor = FileProcessing(articles = art_name, offsets = off_name, templates = template_prefix)
 
     for f in args:
         limit = processor.process(f, limit)
@@ -231,6 +245,8 @@ class FileProcessing(FileScanner.FileScanner):
         self.offset_import = self.offset_db_name + '.import'
         self.file_import = self.offset_db_name + '.files'
 
+        self.template_prefix = kw['templates']
+
         for filename in [self.article_db_name,
                          self.article_import,
                          self.offset_db_name,
@@ -250,6 +266,7 @@ class FileProcessing(FileScanner.FileScanner):
 
         self.articles = {}
         self.offsets = {}
+        self.is_template = False
 
         self.time = time.time()
 
@@ -347,12 +364,21 @@ pragma journal_mode = memory;
 
     def title(self, text, seek):
         global non_articles, non_article_categories
+        global template_categories
         global verbose
+        global enable_templates
 
         match = non_articles.search(text)
+        if enable_templates:
+            self.is_template = match and match.group(1).lower() in template_categories
+            if self.is_template:
+                if verbose:
+                    print 'Template Title:', repr(text)
+                return True
+
         if match and match.group(1).lower() in non_article_categories:
             if verbose:
-                print 'Non-article Title:', text
+                print 'Non-article Title:', repr(text)
             return False
 
         return True
@@ -369,28 +395,55 @@ pragma journal_mode = memory;
             redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
             redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
 
+            if self.is_template:
+                if ':' not in redirect_title:
+                    print 'Invalid template redirect: ' + repr(title) + ' -> ' + repr(redirect_title)
+                    return
+                t1 = title.split(':', 1)[1].lower()
+                hash_t1 = hashlib.md5()
+                hash_t1.update(t1.encode('utf-8'))
+                tr = redirect_title.split(':', 1)[1].lower()
+                hash_tr = hashlib.md5()
+                hash_tr.update(tr.encode('utf-8'))
+                if t1 != tr:
+                    src = self.template_prefix + hash_tr.hexdigest()
+                    dest = self.template_prefix + hash_t1.hexdigest()
+                    if os.path.lexists(dest):
+                        os.remove(dest)
+                    os.symlink(os.path.basename(src), dest)
+                return
+
             match = non_articles.search(text)
             if match and match.group(1).lower() in non_article_categories:
                 if verbose:
-                    print 'Non-article Redirect:', text
+                    print 'Non-article Redirect: %s' % repr(text)
                 return
 
             if '' == redirect_title:
-                print 'Empty Redirect for: %s' % repr(title.encode('utf-8'))
+                print 'Empty Redirect for: %s' % repr(title)
             else:
                 self.redirects[title] = redirect_title
                 self.redirect_count += 1
                 if verbose:
-                    print 'Redirect: %s -> %s' % (title.encode('utf-8'), redirect_title.encode('utf-8'))
+                    print 'Redirect: %s -> %s' % (repr(title), repr(redirect_title))
         else:
             text = self.translate(text).strip(u'\u200e\u200f')
-            print 'Invalid Redirect: %s -> %s\n' % (title.encode('utf-8'), repr(text.encode('utf-8')))
+            print 'Invalid Redirect: %s -> %s\n' % (repr(title), repr(text))
 
 
     def body(self, title, text, seek):
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
+
+        if self.is_template:
+            t1 = title.split(':', 1)[1].lower()
+            hash_md5 = hashlib.md5()
+            hash_md5.update(t1.encode('utf-8'))
+            #with codecs.open(self.template_prefix + hash_md5.hexdigest(), "wb", 'utf-8') as f:
+            with open(self.template_prefix + hash_md5.hexdigest(), "wb") as f:
+                f.write(self.translate(text).strip(u'\u200e\u200f').encode('utf-8'))
+            return
 
         restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)
 
@@ -412,15 +465,15 @@ pragma journal_mode = memory;
 
         if verbose:
             if restricted:
-                print 'Restricted Title:', title.encode('utf-8')
+                print 'Restricted Title: %s' % repr(title)
                 print '  -->', bad_words
             else:
-                print 'Title:', title.encode('utf-8')
+                print 'Title: %s' % repr(title)
 
         self.offsets[self.article_count] = (self.file_id(), title, seek, len(text))
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
-            print 'Duplicate Title:', title.encode('utf-8')
+            print 'Duplicate Title: %s ' % repr(title)
 
 
     def resolve_redirects(self):
@@ -431,9 +484,9 @@ pragma journal_mode = memory;
                 self.set_index(item, self.find(item))
                 count += 1
             except KeyError:
-                print 'Unresolved redirect:', item, '->', self.redirects[item]
+                print 'Unresolved redirect:', repr(item), '->', repr(self.redirects[item])
             except CycleError:
-                print 'Cyclic redirect:', item, '->', self.redirects[item]
+                print 'Cyclic redirect:', repr(item), '->', repr(self.redirects[item])
         return count
 
 

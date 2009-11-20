@@ -2,6 +2,8 @@
 
 /**
  * Copyright (C) 2008 Michael Nowak
+ *               Sean Moss-Pultz <sean@openmoko.com>
+ *               Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,33 +25,33 @@ class ParserOffline {
 
   # Override the template-fetching-function of the Parser
   static function fetchTemplate( $title ) {
-    #echo "\n--- Trying to find offline template: ". $title ."\n";
+    echo "\n--- Trying to find offline template: ". $title ."\n";
     global $IP, $wgTemplatePath, $wgTemplateExtension;
     $finalTitle = $title;
     $deps = array();
-    if ( !isset( $wgTemplatePath ) ) {
-      $wgTemplatePath = $IP .'/offline/templates';
-    }
-    if ( !isset( $wgTemplateExtension ) ) {
-      $wgTemplateExtension = '.mwt';
-    }
+
     $title_md5 = md5($title, false);
-    $title_short_md5 = md5(strtolower(substr($title, 10, 1024)), false);
+
+    # $$$ need to fix later for all languages
+    $title_short_md5 = md5(strtolower(substr($title, 9, 1024)), false);
     $template_path = $wgTemplatePath .'/'. $title_md5 . $wgTemplateExtension;
     $template_short_path = $wgTemplatePath .'/'. $title_short_md5 . $wgTemplateExtension;
     $template_text = null;
     
+    echo "*** Template PATH       : " . $template_path . "\n";
+    echo "*** Template SHORT PATH : " . $template_short_path . "\n";
+
     if ( file_exists( $template_path ) ) {
       $template_text = file_get_contents( $template_path );
     }
     elseif ( file_exists( $template_short_path ) ) {
-      $template_text = file_get_contents( $template_path );
+      $template_text = file_get_contents( $template_short_path );
     }
     else {
       $template_text = null;
     }
     
-		return array( 'text' => $template_text, 'finalTitle' => $finalTitle, 'deps' => $deps );
+    return array( 'text' => $template_text, 'finalTitle' => $finalTitle, 'deps' => $deps );
   }
 }
 

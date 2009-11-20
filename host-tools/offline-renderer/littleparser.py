@@ -42,6 +42,8 @@ class LittleParser(HTMLParser):
     def translate(self, text):
         global entities
 
+        if type(text) != unicode:
+            text = unicode(text, 'utf-8')
         self.reset()
         self.buffer = u''
         unq = entities.sub(r'&\1;', text)
@@ -49,9 +51,12 @@ class LittleParser(HTMLParser):
             self.feed(unq)
             self.close()
         except KeyError:
-            print 'failed on: "%s" using-> "%s"' % (text, unq)
+            print 'failed on: "%s" using-> "%s"' % (repr(text), repr(unq))
             return unq
-        return self.buffer
+
+        if type(self.buffer) == unicode:
+            return self.buffer
+        return unicode(self.buffer, 'utf-8')
 
 
 # tests

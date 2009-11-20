@@ -130,10 +130,10 @@ $wgMiserMode = true;
 $wgDisableQueryPages = true;
 
 # For offline templates
-$wgTemplateExtension = '.mwt';
-$wgTemplatePath = $IP .'/offline/templates';
+$wgTemplateExtension = '';#'.mwt';
+$wgTemplatePath = '/home/mosko/samo/work/templates';
 
-# For Math equations, (to activate, make sure $wgUseTeX is true )
+# For Math equations, (to activate, set $wgUseTeX is true )
 $WorkDirectory   = 'images';
 $wgMathPath      = "/path/to/math";
 $wgMathDirectory = "{$WorkDirectory}/math";

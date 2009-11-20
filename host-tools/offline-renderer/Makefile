@@ -40,6 +40,7 @@ WORKDIR ?= /tmp
 PREFIX := $(shell readlink -m ${DESTDIR}/pedia)
 ARTICLES := $(shell readlink -m ${WORKDIR}/articles.db)
 COUNTS_FILE := $(shell readlink -m ${WORKDIR}/counts.text)
+TEMPLATE_PREFIX := $(shell readlink -m ${WORKDIR}/templates)/
 OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.db)
 HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
@@ -67,6 +68,7 @@ check-xml:
 check-dirs:
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
 	@if [ ! -d "${WORKDIR}" ] ; then echo WORKDIR: "'"${WORKDIR}"'" is not a directory ; exit 1; fi
+	${MKDIR} "${TEMPLATE_PREFIX}"
 
 .PHONY: check-fonts
 check-fonts:
@@ -83,6 +85,7 @@ index: check-dirs check-xml
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
+		--template-prefix="${TEMPLATE_PREFIX}" \
 		--prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse
