@@ -335,16 +335,17 @@ def test008_internal():
 
     info('Calibrate LCD Voltages to %7.3f V +- %7.3f V' % (LCD_V0, LCD_V0_DELTA))
     relay.on(RELAY_LCD_V0)
-    relay_increase = RELAY_RANDOM_KEY
-    relay_decrease = RELAY_SEARCH_KEY
+    relay_decrease = RELAY_RANDOM_KEY
+    relay_increase = RELAY_SEARCH_KEY
     relay_set = RELAY_HISTORY_KEY
 
     v0_max = LCD_V0 + LCD_V0_DELTA
     v0_min = LCD_V0 - LCD_V0_DELTA
     actual = 0
-    for i in range(50):
+    for i in range(20):
         time.sleep(VOLTAGE_SAMPLE_TIME)
         actual = dvm.voltage
+        #info('Contrast voltage = %7.3f V' % actual)
         if actual > v0_max:
             relay.set(relay_decrease)
             relay.off(relay_increase)
