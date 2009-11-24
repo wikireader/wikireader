@@ -241,9 +241,9 @@ class Sample:
                     psn = line.split(' ')[-1]
                     if serialNumber == psn:
                         self.write('PASS: Programmed S/N matches\n', 'pass-text')
-                        raise StopTestException('Serial Number mismatch')
                     else:
-                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (psn, serialNumber), 'fail-text')
+                        self.write('FAIL: FASH S/N(%s) != %s\n' % (psn, serialNumber), 'fail-text')
+                        raise StopTestException('Serial Number mismatch')
 
                 if '. Boot Test Program' == line[1:]:
                     s.write(line[0:1])
