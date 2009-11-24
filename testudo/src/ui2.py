@@ -240,9 +240,10 @@ class Sample:
                 if line.startswith('S/N:'):
                     psn = line.split(' ')[-1]
                     if serialNumber == psn:
-                        self.write('PASS: Programmed S/N matches\n')
+                        self.write('PASS: Programmed S/N matches\n', 'pass-text')
+                        raise StopTestException('Serial Number mismatch')
                     else:
-                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (psn, serialNumber))
+                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (psn, serialNumber), 'fail-text')
 
                 if '. Boot Test Program' == line[1:]:
                     s.write(line[0:1])
@@ -326,7 +327,10 @@ class Sample:
     def write(self, message, style = None):
         gtk.gdk.threads_enter()
         if 'FAIL:' == message[0:5]:
+            style = 'fail-text'
             self.testFailed = True
+        elif 'PASS:' == message[0:5]:
+            style = 'pass-text'
         if style:
             self.buffer.insert_with_tags(self.buffer.get_end_iter(), message,
                                   self.buffer.get_tag_table().lookup(style))
