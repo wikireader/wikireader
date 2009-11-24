@@ -130,6 +130,8 @@ lib/libmahatma.a: lib build ${BUILD_OBJECTS}
 
 mahatma.elf: build build/mahatma.o lib/libmahatma.a mahatma.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/mahatma.o lib/libmahatma.a ${LIBS} -T ${@:.elf=.lds} -Map ${@:.elf=.map}
+	${OBJDUMP} --section-headers "$@"
+	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
 
 build:
 	${MKDIR} "$@"
