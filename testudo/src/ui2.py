@@ -238,11 +238,11 @@ class Sample:
 
                 # verify the serial number
                 if line.startswith('S/N:'):
-                    s = line.split(' ')[-1]
-                    if self.serialNumber == s:
+                    psn = line.split(' ')[-1]
+                    if serialNumber == psn:
                         self.write('PASS: Programmed S/N matches\n')
                     else:
-                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (s, self.serialNumber))
+                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (psn, serialNumber))
 
                 if '. Boot Test Program' == line[1:]:
                     s.write(line[0:1])
