@@ -236,6 +236,14 @@ class Sample:
                 self.write(line)
                 self.write('\n')
 
+                # verify the serial number
+                if line.startswith('S/N:'):
+                    s = line.split(' ')[-1]
+                    if self.serialNumber == s:
+                        self.write('PASS: Programmed S/N matches\n')
+                    else:
+                        self.write('FAIL: Programmed S/N(%s) != Serial Number(%s)\n' % (s, self.serialNumber))
+
                 if '. Boot Test Program' == line[1:]:
                     s.write(line[0:1])
 
