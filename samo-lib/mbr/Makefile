@@ -39,7 +39,12 @@ BATTERY_METER ?= 0
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
 IMAGE07 ?= ${HOST_TOOLS}/flash07/image07
+
+ifeq (YES,$(strip ${FLASH_TEST_JIG}))
+BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jakebrake
+else
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
+endif
 
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}

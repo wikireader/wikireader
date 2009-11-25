@@ -469,6 +469,10 @@ jackknife:
 flash-mbr: mbr jackknife
 	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
 
+.PHONY: flash-test-jig
+flash-test-jig: mbr jackknife
+	${MAKE} -C samo-lib/mbr FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
+
 .PHONY: mbr-install
 mbr-install: mbr
 	${MAKE} -C samo-lib/mbr install DESTDIR="${DESTDIR_PATH}"

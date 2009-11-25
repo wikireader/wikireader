@@ -34,14 +34,23 @@ OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
 CFLAGS += -I${SAMO_LIB_INCLUDE} -I${MINI_LIBC_INCLUDE}
 
-TARGETS = jackknife
+TARGETS = jackknife jakebrake
 
 all: $(TARGETS)
 
 jackknife.elf: jackknife.o
 	$(GCC) -o $@ $(LDFLAGS) $< -Wl,'-Ttext=0'
 
+jakebrake.elf: jakebrake.o
+	$(GCC) -o $@ $(LDFLAGS) -DPROGRAM_TEST_JIG=1 $< -Wl,'-Ttext=0'
+
 jackknife: jackknife.elf
+	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
+	@c=$$(wc --bytes < "$@") ; \
+	echo mbr size = $${c} bytes, max = 512 bytes ; \
+	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
+
+jakebrake: jakebrake.elf
 	$(OBJCOPY) $(OBJCOPY_FLAGS) --only-section=.text --set-start=0 $< $@
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \

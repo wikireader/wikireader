@@ -21,6 +21,11 @@
 // override the default console bps for faster programming
 #define CONSOLE_BPS 115200
 
+// default is to program the on-board flash
+#if !defined(PROGRAM_TEST_JIG)
+#define PROGRAM_TEST_JIG 0
+#endif
+
 #define SAMO_RESTRICTIONS 1
 #include "samo.h"
 
@@ -80,10 +85,15 @@ int main(void)
 		ENA |
 		0;
 
+#if PROGRAM_TEST_JIG
+	// set P05 high to enable external boot FLASH ROM
+	REG_P5_P5D |= 0x20;
+	REG_P5_IOC5 |= 0x20;
+#else
 	// set P05 low to disable external boot FLASH ROM
 	REG_P5_P5D &= ~0x20;
 	REG_P5_IOC5 |= 0x20;
-
+#endif
 	// flush spi buffer
 	(void)REG_SPI_RXD;
 
