@@ -21,7 +21,7 @@ make help gives a list of targets and some are explaind below
 4) to build the database
    (this should work in 32 or 64 bit as it mostly used Python2.6)
 
-   make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine
+   make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine hash
    make DESTDIR=image install
 
 5) format a microSD card as FAT32 and copy the contents on image to it
