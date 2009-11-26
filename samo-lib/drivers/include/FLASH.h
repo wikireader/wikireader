@@ -30,10 +30,15 @@ enum {
 };
 
 void FLASH_initialise(void);
-void FLASH_read(void *buffer, size_t length, uint32_t ROMAddress);
+
+// must call before any write/erase
+// it is only active for one command
+bool FLASH_WriteEnable(void);
+
+bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress);
 bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress);
 bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
-void FLASH_SectorErase(uint32_t ROMAddress);
-void FLASH_ChipErase(void);
+bool FLASH_SectorErase(uint32_t ROMAddress);
+bool FLASH_ChipErase(void);
 
 #endif

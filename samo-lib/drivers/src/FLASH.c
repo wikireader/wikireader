@@ -28,6 +28,8 @@
 #include "SPI.h"
 #include "FLASH.h"
 
+static bool WriteEnable;
+
 
 typedef enum {
 	FLASH_COMMAND_NoOperation = 0x00,
@@ -49,6 +51,14 @@ void FLASH_initialise(void)
 	if (!initialised) {
 		SPI_initialise();
 	}
+	WriteEnable = false;
+}
+
+
+bool FLASH_WriteEnable(void)
+{
+	WriteEnable = true;
+	return WriteEnable;
 }
 
 
@@ -72,24 +82,14 @@ static void WaitReady(void)
 }
 
 
-static void WriteEnable(void)
+bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
 {
-	SendCommand(FLASH_COMMAND_WriteEnable);
-}
+	WriteEnable = false;
 
-
-static void WriteDisable(void)
-{
-	SendCommand(FLASH_COMMAND_WriteDisable);
-}
-
-
-void FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
-{
 	SPI_StateType state = SPI_select(SPI_SELECT_FLASH);
 
 	WaitReady();
-	WriteDisable();
+	SendCommand(FLASH_COMMAND_WriteDisable);
 	EEPROM_CS_LO();
 	SPI_exchange(FLASH_COMMAND_FastRead);
 	SPI_exchange(ROMAddress >> 16); // A23..A16
@@ -106,14 +106,18 @@ void FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
 	EEPROM_CS_HI();
 
 	SPI_deselect(state);
+
+	return true;
 }
 
 
 bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 {
-	if (length > FLASH_PageSize) {
+	if (!WriteEnable || length > FLASH_PageSize) {
+		WriteEnable = false;
 		return false;
 	}
+	WriteEnable = false;
 
 	// do not program empty buffer (i.e. all bytes == 0xff)
 	bool rc = false;
@@ -133,7 +137,7 @@ bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 	SPI_StateType state = SPI_select(SPI_SELECT_FLASH);
 
 	WaitReady();
-	WriteEnable();
+	SendCommand(FLASH_COMMAND_WriteEnable);
 	EEPROM_CS_LO();
 	SPI_exchange(FLASH_COMMAND_PageProgram);
 	SPI_exchange(ROMAddress >> 16); // A23..A16
@@ -155,11 +159,12 @@ bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
 {
 	bool rc = true;
+	WriteEnable = false;
 
 	SPI_StateType state = SPI_select(SPI_SELECT_FLASH);
 
 	WaitReady();
-	WriteDisable();
+	SendCommand(FLASH_COMMAND_WriteDisable);
 	EEPROM_CS_LO();
 	SPI_exchange(FLASH_COMMAND_FastRead);
 	SPI_exchange(ROMAddress >> 16); // A23..A16
@@ -183,12 +188,17 @@ bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
 }
 
 
-void FLASH_SectorErase(uint32_t ROMAddress)
+bool FLASH_SectorErase(uint32_t ROMAddress)
 {
+	if (!WriteEnable) {
+		return false;
+	}
+	WriteEnable = false;
+
 	SPI_StateType state = SPI_select(SPI_SELECT_FLASH);
 
 	WaitReady();
-	WriteEnable();
+	SendCommand(FLASH_COMMAND_WriteEnable);
 	EEPROM_CS_LO();
 	SPI_exchange(FLASH_COMMAND_SectorErase);
 	SPI_exchange(ROMAddress >> 16); // A23..A16
@@ -198,17 +208,26 @@ void FLASH_SectorErase(uint32_t ROMAddress)
 	WaitReady();
 
 	SPI_deselect(state);
+
+	return true;
 }
 
 
-void FLASH_ChipErase(void)
+bool FLASH_ChipErase(void)
 {
+	if (!WriteEnable) {
+		return false;
+	}
+	WriteEnable = false;
+
 	SPI_StateType state = SPI_select(SPI_SELECT_FLASH);
 
 	WaitReady();
-	WriteEnable();
+	SendCommand(FLASH_COMMAND_WriteEnable);
 	SendCommand(FLASH_COMMAND_ChipErase);
 	WaitReady();
 
 	SPI_deselect(state);
+
+	return true;
 }
