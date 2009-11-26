@@ -25,8 +25,6 @@
 #include <diskio.h>
 #include <delay.h>
 #include <misc.h>
-#include <regs.h>
-#include <samo.h>
 #include <lcd.h>
 #include <FLASH.h>
 
@@ -73,17 +71,15 @@ int flash(int arg)
 	print("Flash Program: ");
 	const char *filename = "flash.rom";
 
+	FLASH_initialise();
+
 	if (0 == arg) {
 		print("Internal");
-		// set P05 low to disable external boot FLASH ROM
-		REG_P5_P5D &= ~0x20;
-		REG_P5_IOC5 |= 0x20;
+		FLASH_SelectInternal();
 	} else {
 		print("Test Jig");
 		filename = "test-jig.rom";
-		// set P05 high to enable external boot FLASH ROM
-		REG_P5_P5D |= 0x20;
-		REG_P5_IOC5 |= 0x20;
+		FLASH_SelectExternal();
 	}
 
 	print(" FLASH\n");
@@ -159,8 +155,6 @@ static bool process(const char *filename)
 	f_close(&file);
 
 	print("OK\n");
-
-	FLASH_initialise();
 
 	print("Preserve Serial number: ");
 
