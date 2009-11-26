@@ -1,30 +1,27 @@
 \ flash.4th
 
 base @ decimal
-also c33
 
-65536 constant rom-size
-256 constant page-size
-4096 constant sector-size
-
-: get-image-file  ( addr b u -- flag )
-    cr r/o open-file ?dup
+: get-image-file  ( b u addr -- flag )
+    >r
+    r/o bin open-file ?dup
     if
-        cr ." open error = " dec.
-        2drop
+        ." open error = " dec. cr
+        r> 2drop
         false exit
     then
 
-    >r \ save fileid
+    r> \ file-id buffer
+    swap >r \ buffer
 
-    rom-size
+    flash-rom-size
 
     begin
         \ b u1
         2dup
         r@ read-file ?dup  \ b u1 u2 ior ior?
         if
-            cr ." read error = " dec.
+            ." read error = " dec. cr
             2drop drop
             r> close-file drop
             false exit
@@ -40,216 +37,122 @@ also c33
 ;
 
 
-: EEPROM-CS-LOW ( -- )
-    P5_P5D p@
-    $fb and
-    P5_P5D p!
-;
+: program-rom  ( b u -- )
 
-: EEPROM-CS-HIGH ( -- )
-    P5_P5D p@
-    $04 or
-    P5_P5D p!
-;
+    cr ." Loading: " 2dup type cr
 
-
-: Disable-SD-CARD ( -- )
-    EEPROM-CS-HIGH
-    P3_P3D p@
-    $f7 and
-    P3_P3D p!
-;
-
-: Enable-SD-CARD ( -- )
-    EEPROM-CS-HIGH
-    P3_P3D p@
-    $08 and
-    P3_P3D p!
-    100 delay-us
-    filesystem-init
-    250 delay-us
-;
-
-
-$01 constant spi-write-status
-$02 constant spi-page-program
-$03 constant spi-read-data
-$04 constant spi-write-disable
-$05 constant spi-read-status
-$06 constant spi-write-enable
-$0b constant spi-fast-read
-$c7 constant spi-chip-erase
-
-: spi-put ( c -- )
-    begin
-        SPI_STAT p@ TDEF and
-    until
-    SPI_TXD p!
-;
-
-
-: spi-get ( -- c )
-    0 SPI_TXD p!
-    begin
-        SPI_STAT p@ RDFF and
-    until
-    SPI_RXD p@
-;
-
-: send-command ( c -- )
-    EEPROM-CS-LOW
-    spi-put
-    EEPROM-CS-HIGH
-;
-
-: wait-ready ( -- )
-    EEPROM-CS-LOW
-    spi-read-status spi-put
-    begin
-        spi-get
-        $01 and
-        0=
-    until
-    EEPROM-CS-HIGH
-;
-
-: write-enable ( -- )
-    spi-write-enable send-command
-;
-
-: write-disable ( -- )
-    spi-write-disable send-command
-;
-
-
-: program-block ( b u addr -- )
-    wait-ready
-    write-enable
-    EEPROM-CS-LOW
-    spi-page-program spi-put
-    dup 16 rshift spi-put  \ A23..A16
-    dup 8 rshift spi-put   \ A15..A08
-    spi-put                \ A07..A00
-    0 ?do
-        dup c@ spi-put
-        char+
-    loop
-    EEPROM-CS-HIGH
-    wait-ready
-;
-
-: verify-block ( b u addr -- flag )
-    EEPROM-CS-LOW
-    spi-fast-read spi-put
-    dup 16 rshift spi-put  \ A23..A16
-    dup 8 rshift spi-put   \ A15..A08
-    spi-put                \ A07..A00
-    spi-get drop           \ dummy
-    0 ?do
-        dup c@ spi-get <> if
-            drop
-            EEPROM-CS-HIGH
-            false
-            exit
-        then
-        char+
-    loop
-    EEPROM-CS-HIGH
-    drop
-    true
-;
-
-: read-block ( b u addr -- )
-    EEPROM-CS-LOW
-    spi-fast-read spi-put
-    dup 16 rshift spi-put  \ A23..A16
-    dup 8 rshift spi-put   \ A15..A08
-    spi-put                \ A07..A00
-    spi-get drop           \ dummy
-    0 ?do
-        spi-get over c!
-        char+
-    loop
-    EEPROM-CS-HIGH
-    drop
-;
-
-: chip-erase ( -- )
-    wait-ready
-    write-enable
-    spi-chip-erase send-command
-    wait-ready
-;
-
-
-: burn (  "<spaces>name" -- )
-    here   \ buffer address
-    cr ." Loading: "
-    bl parse 2dup type
-    get-image-file 0=
+    here get-image-file 0=
     if
-        cr ." Read file failed" cr
+        ." Read file failed" cr
         exit
     then
 
-    Disable-SD-CARD
+    cr ." Serial Number: "
 
-    cr ." Erase"
+    \ save serial number
+    here flash-serial-number-offset +
+    flash-serial-number-length
+    flash-serial-number-offset flash-read
+    if
+        flash-serial-number-length 0
+        ?do
+            here flash-serial-number-offset + i + c@
+            dup bl 127 within
+            if
+                emit
+            else
+                drop
+            then
+        loop
+    else
+        ." FAIL" cr
+        exit
+    then
 
-    chip-erase
+    cr ." Erase: "
+
+    flash-write-enable
+    if
+        flash-chip-erase
+        if
+            ." Done"
+        else
+            ." FAIL"
+            cr exit
+        then
+    else
+        ." FAIL"
+        cr exit
+    then
 
     cr ." Program: "
-    rom-size 0 ?do
+    flash-rom-size 0 ?do
 
-        here i + page-size i program-block
-
-        i $fff and 0=
+        flash-write-enable 0=
+        if
+            ." FAIL" cr
+            unloop
+            exit
+        then
+        here i + flash-page-size i flash-write 0=
+        if
+            ." FAIL" cr
+            unloop
+            exit
+        then
+        i flash-sector-size 1- and 0=
         if
             ." ."
         then
-    page-size +loop
-    cr
-
-    write-disable
+    flash-page-size +loop
 
     cr ." Verify: "
-    rom-size 0 ?do
-        here i + sector-size i verify-block
+    flash-rom-size 0 ?do
+        here i + flash-sector-size i flash-verify
         if
             ." ."
         else
             ." E"
         then
-    sector-size +loop
-    Enable-SD-CARD
+    flash-sector-size +loop
     cr
 ;
 
-: read-all-rom ( b -- )
-    Disable-SD-CARD
-    rom-size 0 read-block
-    Enable-SD-CARD
-;
 
+: save-rom ( b u -- )
+    cr ." Read ROM: "
+    here flash-rom-size 0 flash-read
+    if
+        ." PASS"
+    else
+        ." FAIL" cr
+        2drop
+        exit
+    then
 
-: save-rom ( "<spaces><filename>" --  )
-    cr ." Read ROM"
-    here read-all-rom
-    cr ." Write to: "
-    bl parse 2dup type
+    cr ." Write to: "  2dup type cr
     w/o create-file ?dup
     if
-        cr ." create file error = " dec.
+        ." create file error = " dec. cr
         drop
         exit
     then
     >r \ save fileid
 
-    here rom-size r@ write-file ?dup
+    here flash-rom-size r@ write-file ?dup
     if
-        cr ." write file error = " dec.
+        ." write file error = " dec. cr
     then
     r> close-file drop
+;
+
+
+: burn (  "<spaces><filename>" -- )
+    bl parse program-rom
+;
+
+: save ( "<spaces><filename>" --  )
+    bl parse save-rom
 ;
 
 base !

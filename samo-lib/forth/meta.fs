@@ -293,6 +293,11 @@ meta-compiler
   cr .long . cr
 ;
 
+: forth ;
+: c33 ;
+: only ;
+: also ;
+
 : variable ( -- \ word )
   cr
   tab ." VARIABLE" tab cross-dict-name
@@ -508,6 +513,12 @@ meta-compiler
   .long ." paren_s_quote_paren" cr
   .lstring
   .long ." type" cr
+;
+
+: lcd-." ( -- \ "<string>" )
+  .long ." paren_s_quote_paren" cr
+  .lstring
+  .long ." lcd_type" cr
 ;
 
 : s" ( "string" -- )

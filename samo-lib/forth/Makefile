@@ -119,7 +119,7 @@ ${1}-symbols.fi : sym.awk ansi-forth.fs ${1}.fi
 ${1}.lds: forth.lds
 	sed 's/forth\.o/${1}.o/g' <forth.lds > "$$@"
 
-${1}.fi: programs/${1}.4th
+${1}.fi: $(wildcard programs/${1}.4th) $(wildcard programs/${1}.forth)
 	$${RM} "$$@"
 	echo "\\ generated file - do not modify" >> "$$@"
 	echo >> "$$@"
@@ -140,6 +140,7 @@ endef
 
 $(call MAKE_FORTH_APP,calc,calculator)
 $(call MAKE_FORTH_APP,mtbf,mtbf-main)
+$(call MAKE_FORTH_APP,cob,cob-main)
 
 
 # target for compiling all appications

@@ -245,6 +245,8 @@ main:
         xcall   Tick_initialise
         ;;xcall   Temperature_initialise              ; not working yet
 
+        xcall   FLASH_initialise                      ; setup FLASH/SPI access
+
         xld.w   %r0, cold_start                       ; initial ip value
 ;;;       xcall   xdebug
         NEXT

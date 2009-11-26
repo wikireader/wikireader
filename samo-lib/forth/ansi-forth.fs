@@ -35,7 +35,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-20
+21
 constant build-number     :: build-number            ( -- n )
 
 code !                    :: store                   ( x a-addr -- )
@@ -839,7 +839,7 @@ end-code
 
   only forth definitions
 
-  cr  ." moko forth interpreter for S33C (build:"
+  cr  ." moko forth interpreter for S1C33 (build:"
   build-number 0 u.r
   ." )" cr
   quit-reset
@@ -2404,6 +2404,7 @@ end-code
 : hex.                    :: hex-dot                 ( n -- )
   base @ hex swap u. base ! ;
 
+
 code delay-us             :: delay-u-s               ( microseconds -- )
         ld.w    %r6, [%r1]+                          ; microseconds
         xcall   delay_us
@@ -3009,6 +3010,9 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
     dup c@ lcd-emit char+
   loop drop ;
 
+: lcd-."                  :: lcd-dot-quote           ( "ccc<quote>" -- )
+  postpone s" postpone lcd-type ; immediate compile-only
+
 
 \ LCD numeic output
 \ =================
@@ -3038,6 +3042,12 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 
 : lcd-.                   :: lcd-dot                 ( n -- )
   s>d lcd-d. ;
+
+: lcd-dec.                :: lcd-dec-dot             ( n -- )
+  base @ decimal swap lcd-. base ! ;
+
+: lcd-hex.                :: lcd-hex-dot             ( n -- )
+  base @ hex swap lcd-u. base ! ;
 
 
 \ CTP
@@ -3252,6 +3262,81 @@ code timer-read           :: timer-read               ( -- u )
         xcall   Tick_get
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
+        NEXT
+end-code
+
+
+\ FLASH
+\ =====
+
+65536
+constant flash-rom-size   :: flash-rom-size          ( -- u )
+256
+constant flash-page-size  :: flash-page-size         ( -- u )
+4096
+constant flash-sector-size :: flash-sector-size      ( -- u )
+$1fe0
+constant flash-serial-number-offset :: flash-serial-number-offset ( -- u )
+32
+constant flash-serial-number-length :: flash-serial-number-length ( -- u )
+
+code flash-select-internal :: flash-select-internal  ( -- )
+        xcall   FLASH_SelectInternal
+        NEXT
+end-code
+
+code flash-select-external :: flash-select-external  ( -- )
+        xcall   FLASH_SelectExternal
+        NEXT
+end-code
+
+code flash-read           :: flash-read              ( b count flash-address -- f )
+        ld.w    %r8, [%r1]+                          ; flash-address
+        ld.w    %r7, [%r1]+                          ; count
+        ld.w    %r6, [%r1]                           ; buffer
+        xcall   FLASH_read
+        NEXT
+        ld.w    [%r1], %r4                           ; flag
+end-code
+
+code flash-verify         :: flash-verify            ( b count flash-address -- f )
+        ld.w    %r8, [%r1]+                          ; flash-address
+        ld.w    %r7, [%r1]+                          ; count
+        ld.w    %r6, [%r1]                           ; buffer
+        xcall   FLASH_verify
+        ld.w    [%r1], %r4                           ; flag
+        NEXT
+end-code
+
+\ call this before all operations below
+\ it only acts for the next call and is cancelled by after any flash operation
+code flash-write-enable   :: flash-write-enable      ( -- f )
+        xcall   FLASH_WriteEnable
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4                           ; flag
+        NEXT
+end-code
+
+code flash-write          :: flash-write             ( b count flash-address -- f )
+        ld.w    %r8, [%r1]+                          ; flash-address
+        ld.w    %r7, [%r1]+                          ; count
+        ld.w    %r6, [%r1]                           ; buffer
+        xcall   FLASH_write
+        ld.w    [%r1], %r4                           ; flag
+        NEXT
+end-code
+
+code flash-sector-erase   :: flash-sector-erase      ( flash-address -- )
+        ld.w    %r6, [%r1]                           ; flash-address
+        xcall   FLASH_SectorErase
+        ld.w    [%r1], %r4                           ; flag
+        NEXT
+end-code
+
+code flash-chip-erase     :: flash-chip-erase        ( -- flag)
+        xcall   FLASH_ChipErase
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4                           ; flag
         NEXT
 end-code
 
