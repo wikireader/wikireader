@@ -1,19 +1,23 @@
 /*
-    Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * flash - stand-alone FLASH ROM upgrade program
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Christopher Hall <hsw@openmoko.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -24,6 +28,8 @@
 #include <regs.h>
 #include <samo.h>
 #include <lcd.h>
+#include <FLASH.h>
+
 
 struct guilib_image
 {
@@ -43,40 +49,13 @@ typedef struct guilib_image ImageType;
 uint8_t ROMBuffer[65536];
 
 enum {
-	PageSize = 256,
-	SectorSize = 4096,
 	ProgramRetries = 5,
 	SerialNumberAddress = 0x1fe0,
 	SerialNumberLength = 32,
 };
 
-typedef enum {
-	SPI_WriteStatus = 0x01,
-	SPI_PageProgram = 0x02,
-	SPI_ReadData = 0x03,
-	SPI_WriteDisable = 0x04,
-	SPI_ReadStatus = 0x05,
-	SPI_WriteEnable = 0x06,
-	SPI_FastRead = 0x0b,
-	SPI_SectorErase = 0x20,
-	SPI_ChipErase = 0xc7,
-} SPI_type;
-
 
 static bool process(const char *filename);
-static void SendCommand(uint8_t command);
-static void WaitReady(void);
-static void WriteEnable(void);
-static void WriteDisable(void);
-static void ReadBlock(uint8_t *buffer, size_t length, uint32_t ROMAddress);
-static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
-static bool VerifyBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
-//static void SectorErase(uint32_t ROMAddress);
-static void ChipErase(void);
-
-static uint8_t SPI_put(uint8_t c);
-static uint8_t SPI_get(void);
-
 static void fill(uint8_t value);
 static void display_image(const ImageType *image, uint8_t background, uint8_t toggle);
 
@@ -112,6 +91,9 @@ int flash(int arg)
 	int i = 0;
 	bool flag = false;
 	for (i = 0; i < ProgramRetries; ++i) {
+		print("Begin Pass: ");
+		print_dec32(i);
+		print_char('\n');
 		display_image(&program_image, 0x00, 0xff);
 		if (process(filename)) {
 			print("Finished sucessfully\n");
@@ -134,6 +116,8 @@ static bool process(const char *filename)
 {
 	bool result = true;
 	uint8_t b = 0;
+
+	// power cycle the SD Card
 	disk_ioctl(0, CTRL_POWER, &b);
 	disk_initialize(0);
 
@@ -153,6 +137,7 @@ static bool process(const char *filename)
 		print_char('\n');
 		return false;
 	}
+
 	unsigned int length;
 	rc = f_read(&file, ROMBuffer, sizeof(ROMBuffer), &length);
 	if (FR_OK != rc) {
@@ -175,65 +160,33 @@ static bool process(const char *filename)
 
 	print("OK\n");
 
-	// deselect SD Card and enable FLASH
-	disable_card_power();
-	SDCARD_CS_HI();
-	EEPROM_CS_HI();
-	EEPROM_WP_HI();
-
-	REG_SPI_CTL1 =
-		//BPT_32_BITS |
-		//BPT_16_BITS |
-		BPT_8_BITS |
-		//BPT_1_BITS |
-
-		//CPHA |
-		//CPOL |
-
-		//MCBR_MCLK_DIV_512 |
-		//MCBR_MCLK_DIV_256 |
-		//MCBR_MCLK_DIV_128 |
-		//MCBR_MCLK_DIV_64 |
-		//MCBR_MCLK_DIV_32 |
-		//MCBR_MCLK_DIV_16 |
-		//MCBR_MCLK_DIV_8 |
-		MCBR_MCLK_DIV_4 |
-
-		//TXDE |
-		//RXDE |
-
-		MODE_MASTER |
-		//MODE_SLAVE |
-
-		ENA |
-		0;
+	FLASH_initialise();
 
 	print("\nPreserve Serial number");
 
-	ReadBlock(&ROMBuffer[SerialNumberAddress], SerialNumberLength, SerialNumberAddress);
+	FLASH_read(&ROMBuffer[SerialNumberAddress], SerialNumberLength, SerialNumberAddress);
 
 	print("\nErase");
 
-	ChipErase();
+	FLASH_ChipErase();
 
 	print("\nProgram: ");
 
 	size_t i = 0;
-	for (i = 0; i < sizeof(ROMBuffer); i += PageSize) {
-		ProgramBlock(&ROMBuffer[i], PageSize, i);
-		if (0 == (i & (SectorSize - 1))) {
+	for (i = 0; i < sizeof(ROMBuffer); i += FLASH_PageSize) {
+		if (!FLASH_write(&ROMBuffer[i], FLASH_PageSize, i)) {
+			print_char('E');
+		}
+		if (0 == (i & (FLASH_SectorSize - 1))) {
 			print_char('.');
 		}
 	}
 	print_char('\n');
 
-	WriteDisable();
-
-
 	print("Verify: ");
-	for (i = 0; i < sizeof(ROMBuffer); i += SectorSize) {
+	for (i = 0; i < sizeof(ROMBuffer); i += FLASH_SectorSize) {
 
-		if(VerifyBlock(&ROMBuffer[i], PageSize, i)) {
+		if(FLASH_verify(&ROMBuffer[i], FLASH_SectorSize, i)) {
 			print_char('.');
 		} else {
 			print_char('E');
@@ -244,139 +197,6 @@ static bool process(const char *filename)
 	return result;
 }
 
-
-
-static void SendCommand(uint8_t command)
-{
-	delay_us(10);
-	EEPROM_CS_LO();
-	SPI_put(command);
-	EEPROM_CS_HI();
-}
-
-
-static void WaitReady(void)
-{
-	delay_us(10);
-	EEPROM_CS_LO();
-	SPI_put(SPI_ReadStatus);
-	while (0 != (SPI_get() & 0x01)) {
-	}
-	EEPROM_CS_HI();
-}
-
-static void WriteEnable(void)
-{
-	SendCommand(SPI_WriteEnable);
-}
-
-static void WriteDisable(void)
-{
-	SendCommand(SPI_WriteDisable);
-}
-
-static void ReadBlock(uint8_t *buffer, size_t length, uint32_t ROMAddress)
-{
-	WaitReady();
-	WriteEnable();
-	EEPROM_CS_LO();
-	SPI_put(SPI_FastRead);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
-	(void)SPI_get();           // dummy
-
-	size_t i = 0;
-	for (i = 0; i < length; ++i) {
-			*buffer++ = SPI_get();
-	}
-	EEPROM_CS_HI();
-}
-
-static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
-{
-	WaitReady();
-	WriteEnable();
-	EEPROM_CS_LO();
-	SPI_put(SPI_PageProgram);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
-
-	size_t i = 0;
-	for (i = 0; i < length; ++i) {
-		SPI_put(*buffer++);
-	}
-	EEPROM_CS_HI();
-	WaitReady();
-}
-
-static bool VerifyBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
-{
-	bool rc = false;
-	size_t i = 0;
-	for (i = 0; i < length; ++i) {
-		if (0xff != buffer[i]) {
-			rc = true;
-			break;
-		}
-	}
-	if (!rc) {
-		return true;
-	}
-
-	WaitReady();
-	WriteEnable();
-	EEPROM_CS_LO();
-	SPI_put(SPI_FastRead);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
-	(void)SPI_get();           // dummy
-	for (i = 0; i < length; ++i) {
-		if (SPI_get() != *buffer++) {
-			rc = false;
-			break;
-		}
-	}
-	EEPROM_CS_HI();
-	return rc;
-}
-
-#if 0
-static void SectorErase(uint32_t ROMAddress)
-{
-	WaitReady();
-	WriteEnable();
-	EEPROM_CS_LO();
-	SPI_put(SPI_SectorErase);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
-	EEPROM_CS_HI();
-	WaitReady();
-}
-#endif
-
-static void ChipErase(void)
-{
-	WaitReady();
-	WriteEnable();
-	SendCommand(SPI_ChipErase);
-	WaitReady();
-}
-
-static uint8_t SPI_put(uint8_t out)
-{
-	REG_SPI_TXD = out;
-	do {} while (~REG_SPI_STAT & RDFF);
-	return REG_SPI_RXD;
-}
-
-static uint8_t SPI_get(void)
-{
-	return SPI_put(0x00);
-}
 
 static void fill(uint8_t value)
 {
