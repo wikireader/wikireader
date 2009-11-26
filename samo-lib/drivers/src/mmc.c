@@ -496,9 +496,7 @@ DRESULT mmc_disk_ioctl(BYTE drv, BYTE ctrl, void *buff)
 	if (ctrl == CTRL_POWER) {
 		switch (*ptr) {
 		case 0:					// Sub control code == 0 (POWER_OFF)
-			if (chk_power()) {
-				turn_off_power();	// Power off
-			}
+			turn_off_power();	        // Power off
 			res = RES_OK;
 			break;
 		case 1:					// Sub control code == 1 (POWER_ON)
