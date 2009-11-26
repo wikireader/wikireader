@@ -44,8 +44,8 @@ TARGETS = lib/libdrivers.a
 
 # list of library modules
 #OBJECTS += serial.o
-OBJECTS += sd_spi.o
-OBJECTS += sd_api.o
+#OBJECTS += sd_spi.o
+#OBJECTS += sd_api.o
 OBJECTS += mmc.o
 OBJECTS += tick.o
 OBJECTS += contrast.o
@@ -58,6 +58,8 @@ OBJECTS += ctp.o
 OBJECTS += analog.o
 OBJECTS += suspend.o
 OBJECTS += temperature.o
+OBJECTS += SPI.o
+OBJECTS += FLASH.o
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
