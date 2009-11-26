@@ -50,8 +50,25 @@ void FLASH_initialise(void)
 	static bool initialised = false;
 	if (!initialised) {
 		SPI_initialise();
+		FLASH_SelectInternal();
 	}
 	WriteEnable = false;
+}
+
+
+void FLASH_SelectInternal(void)
+{
+	// set P05 low to disable external boot FLASH ROM
+	REG_P5_P5D &= ~0x20;
+	REG_P5_IOC5 |= 0x20;
+}
+
+
+void FLASH_SelectExternal(void)
+{
+	// set P05 high to enable external boot FLASH ROM
+	REG_P5_P5D |= 0x20;
+	REG_P5_IOC5 |= 0x20;
 }
 
 

@@ -31,6 +31,13 @@ enum {
 
 void FLASH_initialise(void);
 
+// this is the default case
+void FLASH_SelectInternal(void);
+
+// allow access to test jig flash
+// only for production testing
+void FLASH_SelectExternal(void);
+
 // must call before any write/erase
 // it is only active for one command
 bool FLASH_WriteEnable(void);
