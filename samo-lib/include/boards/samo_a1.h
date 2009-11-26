@@ -33,6 +33,27 @@ static inline int board_revision(void)
 // P32 = 0, P33 = 1
 #define P3_23_MASK (P32_BIT | P33_BIT)
 
+static inline int check_card_power(void)
+{
+	return (REG_P3_P3D & P3_23_MASK) == P33_BIT;
+}
+
+static inline void disable_card_power(void)
+{
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P32_BIT;
+}
+
+static inline void disable_card_buffer(void)
+{
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK);
+}
+
+static inline void enable_card_buffer(void)
+{
+	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P33_BIT;
+}
+
+
 #if !SAMO_RESTRICTIONS
 // this need delay - but jackknife cannot include it or it will be too big
 // so jacknife excludes this
@@ -40,24 +61,15 @@ static inline int board_revision(void)
 
 static inline void enable_card_power(void)
 {
-	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P32_BIT;
+	disable_card_power();  // Vcc = off, Buffer = off
 	delay_us(10);
-	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK);
+	disable_card_buffer(); // Vcc = on,  Buffer = off
 	delay_us(1000);
-	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P33_BIT;
+	enable_card_buffer();  // Vcc = on,  Buffer = on
 }
 
 #endif
 
-static inline void disable_card_power(void)
-{
-	REG_P3_P3D = (REG_P3_P3D & ~P3_23_MASK) | P32_BIT;
-}
-
-static inline int check_card_power(void)
-{
-	return (REG_P3_P3D & P3_23_MASK) == P33_BIT;
-}
 
 #define SDCARD_CS_LO()	do { REG_P5_P5D &= ~(1 << 0); } while (0)
 #define SDCARD_CS_HI()	do { REG_P5_P5D |=  (1 << 0); } while (0)
