@@ -162,19 +162,32 @@ static bool process(const char *filename)
 
 	FLASH_initialise();
 
-	print("\nPreserve Serial number");
+	print("Preserve Serial number: ");
 
 	FLASH_read(&ROMBuffer[SerialNumberAddress], SerialNumberLength, SerialNumberAddress);
 
-	print("\nErase");
+	size_t i;
+	for (i = 0; i < SerialNumberLength; ++i) {
+		char c = ROMBuffer[SerialNumberAddress + i];
+		if (' ' > c || '\xff' == c) {
+			break;
+		}
+		print_char(c);
+	}
 
-	FLASH_ChipErase();
+	print("\nErase: ");
+
+	if (FLASH_WriteEnable() && FLASH_ChipErase()) {
+		print("OK");
+	} else {
+		print("FAIL\n");
+		return false;
+	}
 
 	print("\nProgram: ");
 
-	size_t i = 0;
 	for (i = 0; i < sizeof(ROMBuffer); i += FLASH_PageSize) {
-		if (!FLASH_write(&ROMBuffer[i], FLASH_PageSize, i)) {
+		if (!FLASH_WriteEnable() || !FLASH_write(&ROMBuffer[i], FLASH_PageSize, i)) {
 			print_char('E');
 		}
 		if (0 == (i & (FLASH_SectorSize - 1))) {
