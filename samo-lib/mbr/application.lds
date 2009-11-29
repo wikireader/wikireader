@@ -12,8 +12,11 @@ MEMORY
 
 SECTIONS
 {
-        /* the eeprom_load is built into the master boot record */
-        eeprom_load = 0x2;
+        /* the SPI_exchange and FLASH_read are built into the master boot record
+         * to save a little space
+         */
+        mbr_FLASH_read = 0x2;
+        mbr_SPI_exchange = 0x4;
 
         __dp = 0;
 

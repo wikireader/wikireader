@@ -19,11 +19,15 @@
 #if !defined(_APPLICATION_H_)
 #define _APPLICATION_H_
 
-#include "regs.h"
-#include "types.h"
-#include "samo.h"
-#include "delay.h"
-#include "misc.h"
+#include <inttypes.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#include <regs.h>
+#include <samo.h>
+#include <delay.h>
+#include <print.h>
+#include <console.h>
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))

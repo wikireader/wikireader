@@ -1,20 +1,23 @@
 /*
-    e07 bootloader suite - boot menu
-    Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * menu - mbr menuing system
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Christopher Hall <hsw@openmoko.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #define APPLICATION_TITLE "boot menu"
 
@@ -26,25 +29,20 @@
 #include <analog.h>
 #include <eeprom.h>
 
+// redirect functions to mbr versions - see application.lds / mbr.c
+#define FLASH_read   mbr_FLASH_read
+#define SPI_exchange mbr_SPI_exchange
+
+// this is to get constants, do not access any of its functions
+#include <FLASH.h>
+#include <SPI.h>
+
 #include "application.h"
 
+// enable this to have a small battery voltage indicator during boot
 #if !defined(BATTERY_METER)
 #define BATTERY_METER 1
 #endif
-
-typedef enum {
-	Position_top,
-	Position_bottom,
-	Position_centre,
-} PositionType;
-
-struct guilib_image
-{
-	uint32_t width;
-	uint32_t height;
-	uint8_t data[];
-};
-typedef struct guilib_image ImageType;
 
 #include "splash.h"
 #include "empty.h"
@@ -53,12 +51,18 @@ typedef struct guilib_image ImageType;
 #define MAXIMUM_BLOCKS 7
 #define HEADER_MAGIC  0x4f4d4153
 #define MAXIMUM_APPS 8
-#define SERIAL_NUMBER_OFFSET 0x1fe0
 
 #define PARAMETER_START    (MAXIMUM_BLOCKS * 8192)
-#define PARAMETER_SIZE     (2 * SectorSize)
+#define PARAMETER_SIZE     (2 * FLASH_SectorSize)
 #define PARAMETER_MAGIC_1  0x5041524c
 #define PARAMETER_MAGIC_2  0x424c434b
+
+// the byte approximately just above the history key
+// to flag contrast has been changed
+#define	ContrastChanged         (((uint8_t *)LCD_VRAM)[LCD_VRAM_SIZE - 14])
+#define	SetContrastChanged()    do { ContrastChanged = 0xff; } while (0)
+#define	ClearContrastChanged()  do { ContrastChanged = 0x00; } while (0)
+
 
 // NameType length is defined in the awk script: GenerateApplicationHeader.awk
 typedef char NameType[32];
@@ -69,15 +73,13 @@ struct {
 	NameType name[8];
 } header;
 
-char SerialNumber[32];
-
 typedef struct {
 	int block;
 	int offset;
 } ProcessReturnType;
 
 
-// the size of this  must be an exact integer multiple of PageSize
+// the size of this  must be an exact integer multiple of FLASH_PageSize
 // or programming FLASH will not work correctly
 // (There is some code below to cause a linker error if this is not true)
 typedef struct {
@@ -87,8 +89,29 @@ typedef struct {
 	uint32_t spare_1;
 } ParameterType;
 
-static const char spinner[4] = "-\\|/";
 
+// copied from drivers/src/FLASH.c
+typedef enum {
+	FLASH_COMMAND_NoOperation = 0x00,
+	FLASH_COMMAND_WriteStatus = 0x01,
+	FLASH_COMMAND_PageProgram = 0x02,
+	FLASH_COMMAND_ReadData = 0x03,
+	FLASH_COMMAND_WriteDisable = 0x04,
+	FLASH_COMMAND_ReadStatus = 0x05,
+	FLASH_COMMAND_WriteEnable = 0x06,
+	FLASH_COMMAND_FastRead = 0x0b,
+	FLASH_COMMAND_SectorErase = 0x20,
+	FLASH_COMMAND_ChipErase = 0xc7,
+} FLASH_CommandType;
+
+
+static void PrintName(const char *name, size_t size);
+static void DisplayInfo(void);
+static void SendCommand(uint8_t command);
+static void WaitReady(void);
+static void SendCommandWithAddress(uint8_t command, uint32_t ROMAddress);
+static void ProgramBlock(const void *buffer, size_t length, uint32_t ROMAddress);
+static void SectorErase(uint32_t ROMAddress);
 
 ProcessReturnType process(int block, int status);
 bool parameters_load(ParameterType *param);
@@ -98,47 +121,13 @@ bool battery_empty(void);
 void battery_status(void);
 
 
-
-enum {
-	PageSize = 256,
-	SectorSize = 4096,
-	ProgramRetries = 5,
-	SerialNumberAddress = 0x1fe0,
-	SerialNumberLength = 32,
-};
-
-typedef enum {
-	SPI_WriteStatus = 0x01,
-	SPI_PageProgram = 0x02,
-	SPI_ReadData = 0x03,
-	SPI_WriteDisable = 0x04,
-	SPI_ReadStatus = 0x05,
-	SPI_WriteEnable = 0x06,
-	SPI_FastRead = 0x0b,
-	SPI_SectorErase = 0x20,
-	SPI_ChipErase = 0xc7,
-} SPI_type;
-
-
-static void SendCommand(uint8_t command);
-static void WaitReady(void);
-static void WriteEnable(void);
-static void WriteDisable(void);
-static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
-static void SectorErase(uint32_t ROMAddress);
-
-static uint8_t SPI_put(uint8_t c);
-static uint8_t SPI_get(void);
-
-
-
 // this must be the first executable code as the loader executes from the first program address
 ReturnType menu(int block, int status)
 {
 	ProcessReturnType result;
 
 	APPLICATION_INITIALISE();
-	init_lcd();
+	LCD_initialise();
 	Analog_initialise();
 	{
 		ParameterType param;
@@ -150,11 +139,11 @@ ReturnType menu(int block, int status)
 	}
 	result = process(block, status);
 
-	// If the structure ParameterType is not an exact multiple of PageSize
+	// If the structure ParameterType is not an exact multiple of FLASH_PageSize
 	// then cause an error at link time.
 	// this is the best that C can do since CPP cannot evaluate such an expression.
 	// If typedef is correct compiler will not generate any code for this.
-	if (((PageSize / sizeof(ParameterType)) * sizeof(ParameterType)) != PageSize) {
+	if (((FLASH_PageSize / sizeof(ParameterType)) * sizeof(ParameterType)) != FLASH_PageSize) {
 		void ParameterType_has_invalid_size__Fix_the_typedef(void);
 		ParameterType_has_invalid_size__Fix_the_typedef();  // deliberate undefined reference
 	}
@@ -164,62 +153,15 @@ ReturnType menu(int block, int status)
 }
 
 
-static void fill(uint8_t value)
+static void PrintName(const char *name, size_t size)
 {
-	int x = 0;
-	int y = 0;
-	uint8_t *fb = (uint8_t*)LCD_VRAM;
-
-	for (y = 0; y < LCD_HEIGHT_LINES; ++y) {
-		for (x = 0; x < LCD_VRAM_WIDTH_BYTES; ++x) {
-			*fb++ = value;
-		}
-	}
-}
-
-
-static void display_image(PositionType pos, bool fill_first, const ImageType *image, uint8_t background, uint8_t toggle)
-{
-	int xOffset = (LCD_WIDTH_PIXELS - image->width) / (2 * 8);
-	uint8_t *fb = (uint8_t*)LCD_VRAM;
-	unsigned int y = 0;
-	unsigned int x = 0;
-	unsigned int width = (image->width + 7) / 8;
-	const uint8_t *src = image->data;
-
-	if (fill_first){
-		fill(background);
-	}
-
-	switch (pos) {
-	case Position_top:
-		break;
-	case Position_bottom:
-		fb += (LCD_HEIGHT_LINES - image->height) * LCD_VRAM_WIDTH_BYTES;
-		break;
-	default:
-	case Position_centre:
-		fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
-		break;
-	}
-
-	for (y = 0; y < image->height; ++y) {
-		for (x = 0; x < width; ++x) {
-			fb[x + xOffset] = toggle ^ *src++;
-		}
-		fb += LCD_VRAM_WIDTH_BYTES;
-	}
-}
-
-
-static void PrintName(const NameType name)
-{
-	int k;
-	for (k = 0; k < sizeof(NameType); ++k) {
-		if ('\0' == name[k] || '\xff' == name[k]) {
+	register int k;
+	for (k = 0; k < size; ++k) {
+		register char c =  *name++;
+		if ('\0' == c || '\xff' == c) {
 			break;
 		}
-		print_char(name[k]);
+		print_char(c);
 	}
 }
 
@@ -230,33 +172,29 @@ static void DisplayInfo(void)
 	print("\nCPU: ");
 	print_cpu_type();
 	print("\nBAT: ");
-	print_dec32(Analog_BatteryMilliVolts());
+	print_uint(Analog_BatteryMilliVolts());
 	print(" mV\nTMP: ");
-	print_int32(Analog_TemperatureCelcius());
+	print_int(Analog_TemperatureCelcius());
 	print(" DegC\nLCD: ");
-	print_dec32(Analog_ContrastMilliVolts());
+	print_uint(Analog_ContrastMilliVolts());
 	print(" mV\nREV: ");
-	{
-		int rev = board_revision();
-		if (rev >= 6) {
-			rev -= 5;
-			print_char('V');
-		} else {
-			print_char('A');
-		}
-		print_dec32(rev);
+	uint32_t rev = board_revision();
+	if (rev >= 6) {
+		rev -= 5;
+		print_char('V');
+	} else {
+		print_char('A');
 	}
-	eeprom_load(SERIAL_NUMBER_OFFSET, SerialNumber, sizeof(SerialNumber));
-	print("\nS/N: ");
+	print_uint(rev);
 
-	int i;
-	for (i = 0; i <	32; ++i) {
-		const char c = SerialNumber[i];
-		if ('\0' == c) {
-			break;
-		}
-		print_char(c);
-	}
+	print("\nMBR: ");
+	FLASH_read(&rev, sizeof(rev), FLASH_RevisionNumberAddress);
+	print_uint(rev);
+
+	char SerialNumber[FLASH_SerialNumberSize];
+	FLASH_read(SerialNumber, sizeof(SerialNumber), FLASH_SerialNumberAddress);
+	print("\nS/N: ");
+	PrintName(SerialNumber, sizeof(SerialNumber));
 	print("\n");
 }
 
@@ -271,14 +209,12 @@ static void DisplayInfo(void)
 ProcessReturnType process(int block, int status)
 {
 	ProcessReturnType rc = {0, 0};
-	int i = 0;
-	int k = 0;
 
 	Analog_scan(); // update analog values
 	if (battery_empty()) {
-		display_image(Position_centre, true, &empty_image, 0x00, 0xff);
+		LCD_DisplayImage(LCD_PositionCentre, true, &empty_image);
 	} else {
-		display_image(Position_centre, true, &splash_image, 0x00, 0xff);
+		LCD_DisplayImage(LCD_PositionCentre, true, &splash_image);
 	}
 
 	if (0 != status) {
@@ -287,14 +223,18 @@ ProcessReturnType process(int block, int status)
 
 		print("\n\nmenu? ");
 		status = 0;
+
+		static const char spinner[4] = "-\\|/";
+		unsigned int i;
 		for (i = 0; i <	4 * sizeof(spinner); ++i) {
+			unsigned int k;
 			for (k = 0; k < sizeof(spinner); ++k) {
 				delay_us(5000);
 				print_char(spinner[k]);
 				print_char('\x08');
 				battery_status();
 			}
-			if (serial_input_available()) {
+			if (console_input_available()) {
 				MenuFlag = true;
 				break;
 			}
@@ -323,22 +263,26 @@ ProcessReturnType process(int block, int status)
 		}
 	}
 
+	LCD_DisplayImage(LCD_PositionBottom, false, &adjust_image);
+
 	for (;;) {
 		ProcessReturnType app[MAXIMUM_APPS * MAXIMUM_BLOCKS] = {{0, 0}};
 
 		print("\nBoot Menu\n\n");
 		print("0. Power Off\n");
-		print("1. Display Board Information\n");
+		print("1. Board Information\n");
 		int MenuItem = 0;
 		// not zero since this program should be in block zero
+		unsigned int i;
 		for (i = 1; i < MAXIMUM_BLOCKS; ++i) {
-			eeprom_load((i << 13), (void *)&header, sizeof(header));
+			FLASH_read(&header, sizeof(header), (i << 13));
 
 			if (HEADER_MAGIC == header.magic && 0 < header.count && MAXIMUM_APPS >= header.count) {
+				unsigned int k;
 				for (k = 0; k < header.count; ++k) {
 					print_char(MenuItem + 'A');
 					print(". ");
-					PrintName(header.name[k]);
+					PrintName(header.name[k], sizeof(header.name));
 					print_char('\n');
 					app[MenuItem].block = i;
 					app[MenuItem].offset = k;
@@ -347,17 +291,18 @@ ProcessReturnType process(int block, int status)
 			}
 		}
 		print("\nEnter selection: ");
-		display_image(Position_bottom, false, &adjust_image, 0x00, 0xff);
-		k = ' ';
+		char k = ' ';
 		while (k <= ' ') {
-			while (!serial_input_available()) {
+			while (!console_input_available()) {
 				switch (REG_P6_P6D & 0x07) {
 				case 1:
 					Contrast_set(Contrast_get() + 1);
+					SetContrastChanged();
 					delay_us(3000);
 					break;
 				case 2:
 					Contrast_set(Contrast_get() - 1);
+					SetContrastChanged();
 					delay_us(3000);
 					break;
 				case 4:
@@ -367,13 +312,14 @@ ProcessReturnType process(int block, int status)
 						parameters_load(&param);
 						param.contrast = Contrast_get();
 						parameters_save(&param);
+						ClearContrastChanged();
 					}
 					break;
 				}
 				battery_status();
 				delay_us(1000);
 			}
-			k = serial_input_char();
+			k = console_input_char();
 		}
 		if ('0' == k) {
 			power_off();
@@ -400,15 +346,14 @@ ProcessReturnType process(int block, int status)
 
 bool parameters_load(ParameterType *param)
 {
-	int i;
-
 	SDCARD_CS_HI();
 	disable_card_power();
 	EEPROM_CS_HI();
 	EEPROM_WP_HI();
 
+	unsigned int i;
 	for (i = 0; i <= PARAMETER_SIZE - sizeof(*param); i += sizeof(*param)) {
-		eeprom_load(PARAMETER_START + i, (void *)param, sizeof(*param));
+		FLASH_read(param, sizeof(*param), PARAMETER_START + i);
 		if (PARAMETER_MAGIC_1 == param->magic1 && PARAMETER_MAGIC_2 == param->magic2) {
 			return true;
 		}
@@ -419,23 +364,22 @@ bool parameters_load(ParameterType *param)
 
 void parameters_save(ParameterType *param)
 {
-	int i;
-	ParameterType p;
-
 	SDCARD_CS_HI();
 	disable_card_power();
 	EEPROM_CS_HI();
 	EEPROM_WP_HI();
 
+	unsigned int i;
+	ParameterType p;
 	for (i = 0; i < PARAMETER_SIZE - sizeof(p); i += sizeof(p)) {
-		eeprom_load(PARAMETER_START + i, (void *)&p, sizeof(p));
+		FLASH_read(&p, sizeof(p), PARAMETER_START + i);
 		if (PARAMETER_MAGIC_1 == p.magic1 && PARAMETER_MAGIC_2 == p.magic2) {
 			break;
 		}
 	}
-	if (0 == i) {
+	if (0 == i || !(0xffffffff == p.magic1 && 0xffffffff == p.magic2)) {
 		SectorErase(PARAMETER_START);
-		SectorErase(PARAMETER_START + SectorSize);
+		SectorErase(PARAMETER_START + FLASH_SectorSize);
 	} else {
 		i -= sizeof(p);
 	}
@@ -443,28 +387,15 @@ void parameters_save(ParameterType *param)
 	param->magic1 = PARAMETER_MAGIC_1;
 	param->magic2 = PARAMETER_MAGIC_2;
 	if (0 != memcmp(param, &p, sizeof(p))) {
-		ProgramBlock((uint8_t *)param, sizeof(*param), PARAMETER_START + i);
-		eeprom_load(PARAMETER_START + i, (void *)&p, sizeof(p));
+		ProgramBlock(param, sizeof(*param), PARAMETER_START + i);
 	}
-}
-
-static uint8_t SPI_put(uint8_t out)
-{
-	REG_SPI_TXD = out;
-	do {} while (~REG_SPI_STAT & RDFF);
-	return REG_SPI_RXD;
-}
-
-static uint8_t SPI_get(void)
-{
-	return SPI_put(0x00);
 }
 
 static void SendCommand(uint8_t command)
 {
 	delay_us(10);
 	EEPROM_CS_LO();
-	SPI_put(command);
+	SPI_exchange(command);
 	EEPROM_CS_HI();
 }
 
@@ -473,51 +404,40 @@ static void WaitReady(void)
 {
 	delay_us(10);
 	EEPROM_CS_LO();
-	SPI_put(SPI_ReadStatus);
-	while (0 != (SPI_get() & 0x01)) {
+	SPI_exchange(FLASH_COMMAND_ReadStatus);
+	while (0 != (SPI_exchange(FLASH_COMMAND_NoOperation) & 0x01)) {
 	}
 	EEPROM_CS_HI();
 }
 
-static void WriteEnable(void)
-{
-	SendCommand(SPI_WriteEnable);
-}
-
-static void WriteDisable(void)
-{
-	SendCommand(SPI_WriteDisable);
-}
-
-
-static void ProgramBlock(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
+static void SendCommandWithAddress(uint8_t command, uint32_t ROMAddress)
 {
 	WaitReady();
-	WriteEnable();
+	SendCommand(FLASH_COMMAND_WriteEnable);
 	EEPROM_CS_LO();
-	SPI_put(SPI_PageProgram);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
+	SPI_exchange(command);
+	SPI_exchange(ROMAddress >> 16); // A23..A16
+	SPI_exchange(ROMAddress >> 8);  // A15..A08
+	SPI_exchange(ROMAddress);       // A07..A00
+}
 
-	size_t i = 0;
+static void ProgramBlock(const void *buffer, size_t length, uint32_t ROMAddress)
+{
+	SendCommandWithAddress(FLASH_COMMAND_PageProgram, ROMAddress);
+
+	size_t i;
+	register uint8_t *bytes = (uint8_t *)buffer;
 	for (i = 0; i < length; ++i) {
-		SPI_put(*buffer++);
+		SPI_exchange(*bytes++);
 	}
 	EEPROM_CS_HI();
 	WaitReady();
-	WriteDisable();
+	SendCommand(FLASH_COMMAND_WriteDisable);
 }
 
 static void SectorErase(uint32_t ROMAddress)
 {
-	WaitReady();
-	WriteEnable();
-	EEPROM_CS_LO();
-	SPI_put(SPI_SectorErase);
-	SPI_put(ROMAddress >> 16); // A23..A16
-	SPI_put(ROMAddress >> 8);  // A15..A08
-	SPI_put(ROMAddress);       // A07..A00
+	SendCommandWithAddress(FLASH_COMMAND_SectorErase, ROMAddress);
 	EEPROM_CS_HI();
 	WaitReady();
 }
@@ -542,7 +462,7 @@ void print_cpu_type(void)
 		print(CORE_ID_PE_LE_DESC);
 		break;
 	default:
-		print("CORE unknown");
+		print_char('?');
 		break;
 	}
 	print("  ");
@@ -558,6 +478,9 @@ void print_cpu_type(void)
 		break;
 	case  PRODUCT_ID_3L:
 		print(PRODUCT_ID_3L_DESC);
+		break;
+	default:
+		print_char('?');
 		break;
 	}
 	print_byte(MODEL_ID);

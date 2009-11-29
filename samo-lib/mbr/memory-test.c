@@ -34,8 +34,8 @@
 
 // redirect Qi routines to the correct EEPROM routines
 #define puts print
-#define print32 print_u32
-#define printdec print_dec32
+#define print32 print_hex
+#define printdec print_uint
 
 
 void memory_test(void *start, unsigned int length);
@@ -139,8 +139,8 @@ int memory_test_walking1(void * start, unsigned int length)
 
 #define INTERRUPT_HERE()			\
 	do {					\
-		if (serial_input_available()) { \
-			serial_input_char();	\
+		if (console_input_available()) { \
+			console_input_char();	\
 			return;			\
 		}				\
 	} while (0)

@@ -46,19 +46,19 @@ else
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
 endif
 
+LIBS += ${DRIVERS_LIB}
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += $(shell $(CC) -print-libgcc-file-name)
+LIBS += $(shell ${CC} -print-libgcc-file-name)
 
-LDFLAGS = -static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
+LDFLAGS = -static --strip-all -s --no-gc-sections -N -L${MINI_LIBC}
 
 INCLUDES = -I${FATFS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
-INCLUDES += -I$(SAMO_LIB_INCLUDE)
-INCLUDES += -I$(WIKI_APP_INCLUDE)
+INCLUDES += -I${SAMO_LIB_INCLUDE}
 
 OBJCOPY_FLAGS = -I elf32-c33 -O binary
 
@@ -66,38 +66,38 @@ OBJCOPY_SECTIONS = --only-section=.text
 OBJCOPY_SECTIONS += --only-section=.rodata
 OBJCOPY_SECTIONS += --only-section=.data
 
-TARGETS = $(FLASH_ROM_MAP_FILE) mbr serial.header
+TARGETS = ${FLASH_ROM_MAP_FILE} mbr serial.header
 APPLICATIONS =
 APPLICATION_CLEAN =
 
 CFLAGS += -DBATTERY_METER="${BATTERY_METER}"
 
-vpath %.c $(WIKI_APP_SRC)
+vpath %.c
 
 .PHONY: all
-all: $(TARGETS) all-applications flash.rom
+all: ${TARGETS} all-applications flash.rom
 
 # Master boot record - a multiple program boot loader
 
-$(FLASH_ROM_MAP_FILE):
-	cp SAMO_A1.mapfile-default $(FLASH_ROM_MAP_FILE)
+${FLASH_ROM_MAP_FILE}:
+	cp SAMO_A1.mapfile-default ${FLASH_ROM_MAP_FILE}
 
 flash.rom: ${FLASH_ROM_MAP_FILE} ${TARGETS} all-applications
 	${IMAGE07} --image-file="$@" --map-file="${FLASH_ROM_MAP_FILE}"
 
 mbr.elf: mbr.o
-	$(GCC) -o $@ $(LDFLAGS) $^ -Wl,'-Ttext=0',-Map,$(@:.elf=.map) ${LIBS}
+	${CC} -o $@ ${LDFLAGS} $^ -Wl,'-Ttext=0',-Map,${@:.elf=.map}
+	${OBJDUMP} --disassemble-all $@ > ${@:.elf=.dump}
 
 mbr: mbr.elf
 	${RM} "$@"
-	$(OBJCOPY) $(OBJCOPY_FLAGS) ${OBJCOPY_SECTIONS}	 --set-start=0 $< $@
-	#$(OBJDUMP) --target=binary --architecture=c33 --disassemble-all $@ > $@.asm33
+	${OBJCOPY} ${OBJCOPY_FLAGS} ${OBJCOPY_SECTIONS}	 --set-start=0 $< $@
 	@c=$$(wc --bytes < "$@") ; \
 	echo mbr size = $${c} bytes, max = 512 bytes ; \
-	if [ "$${c}" -gt 512 ]; then $(RM) "$@"; exit 99; fi
+	if [ "$${c}" -gt 512 ]; then ${RM} "$@"; exit 99; fi
 
 mbr-rs232: SAMO_A1.mapfile-rs232 mbr
-	cp SAMO_A1.mapfile-rs232 $(FLASH_ROM_MAP_FILE)
+	cp SAMO_A1.mapfile-rs232 ${FLASH_ROM_MAP_FILE}
 
 
 # macro to create application rules
@@ -113,24 +113,26 @@ define MAKE_APP1
 APPLICATIONS += ${1}
 APPLICATIONS_CLEAN += ${1} ${1}.elf ${1}.header
 
-${1}.elf: ${3} application.lds ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS)
-	$$(LD) -T application.lds -o $$@ $$(LDFLAGS) ${1}.o $(filter-out eeprom.o,${2}) $$(LIBS) -Map $$(@:.elf=.map)
+${1}.elf: ${2} application.lds ${1}.o $${LIBS}
+	$${LD} -T application.lds -o $$@ $${LDFLAGS} ${1}.o $${LIBS} -Map $${@:.elf=.map}
+	$${OBJDUMP} --disassemble-all $$@ > $${@:.elf=.dump}
 
 ${1}: ${1}.elf ${1}.header
-	$$(OBJCOPY) $$(OBJCOPY_FLAGS) $${OBJCOPY_SECTIONS} $$< $$@
+	$${OBJCOPY} $${OBJCOPY_FLAGS} $${OBJCOPY_SECTIONS} $$< $$@
+
 endef
 
 # Applications for the boot loader
 
 IMAGE_HEADERS = splash.h empty.h adjust.h
 
-$(call MAKE_APP,menu,misc.o,${IMAGE_HEADERS})
-$(call MAKE_APP,hello,misc.o)
-$(call MAKE_APP,memory-test,misc.o)
-$(call MAKE_APP,hw-test,misc.o)
-$(call MAKE_APP,file-loader,misc.o elf32.o)
-$(call MAKE_APP,rs232-loader,misc.o)
-#$(call MAKE_APP,lcd-test,misc.o)
+$(call MAKE_APP,version)
+$(call MAKE_APP,menu,${IMAGE_HEADERS})
+$(call MAKE_APP,hello)
+$(call MAKE_APP,memory-test)
+$(call MAKE_APP,hw-test)
+$(call MAKE_APP,file-loader)
+$(call MAKE_APP,rs232-loader)
 
 # rule to build all above applications
 
@@ -157,15 +159,11 @@ install: all
 
 .PHONY: clean
 clean:
-	rm -rf ${TARGETS} ${APPLICATIONS_CLEAN} *.o *.elf *.d *.p *.asm33 *.header *.map *.rom ${IMAGE_HEADERS}
+	${RM} ${TARGETS} ${APPLICATIONS_CLEAN} ${IMAGE_HEADERS}
+	${RM} *.o *.elf *.d *.p *.asm33 *.header *.map *.rom *.dump
 
 # application headers
 %.header: %.c
 	awk -f GenerateApplicationHeader.awk "$<" >"$@"
-
-# application images
-
-%.h: %.png
-	$(HOST_TOOLS)/imagetool/imagetool.py "$<" "$@" "${@:.h=_image}"
 
 include ${SAMO_LIB}/Mk/rules.mk
