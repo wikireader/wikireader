@@ -1,5 +1,10 @@
 /*
- * Copyright (c) 2008 Daniel Mack <daniel@caiaq.de>
+ * elf32 - elf file loader
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +21,16 @@
  */
 
 #include <stdbool.h>
+#include <inttypes.h>
 #include <string.h>
+
 #include <tff.h>
 
-#include "regs.h"
-#include "types.h"
-#include "samo.h"
-#include "misc.h"
+#include <regs.h>
+#include <samo.h>
+
+#include "print.h"
+#include "elf32.h"
 
 #define DEBUG_ELF_LOAD  false
 
@@ -35,49 +43,49 @@
 #define ELFMAG3		0x46
 
 typedef struct {
-	u8  e_ident[16];	// ELF "magic number"
-	u16 e_type;		// Identifies object file type
-	u16 e_machine;		// Specifies required architecture
-	u32 e_version;		// Identifies object file version
-	u32 e_entry;		// Entry point virtual address
-	u32 e_phoff;		// Program header table file offset
-	u32 e_shoff;		// Section header table file offset
-	u32 e_flags;		// Processor-specific flags
-	u16 e_ehsize;		// ELF header size in bytes
-	u16 e_phentsize;	// Program header table entry size
-	u16 e_phnum;		// Program header table entry count
-	u16 e_shentsize;	// Section header table entry size
-	u16 e_shnum;		// Section header table entry count
-	u16 e_shstrndx;		// Section header string table index
+	uint8_t  e_ident[16];		// ELF "magic number"
+	uint16_t e_type;		// Identifies object file type
+	uint16_t e_machine;		// Specifies required architecture
+	uint32_t e_version;		// Identifies object file version
+	uint32_t e_entry;		// Entry point virtual address
+	uint32_t e_phoff;		// Program header table file offset
+	uint32_t e_shoff;		// Section header table file offset
+	uint32_t e_flags;		// Processor-specific flags
+	uint16_t e_ehsize;		// ELF header size in bytes
+	uint16_t e_phentsize;		// Program header table entry size
+	uint16_t e_phnum;		// Program header table entry count
+	uint16_t e_shentsize;		// Section header table entry size
+	uint16_t e_shnum;		// Section header table entry count
+	uint16_t e_shstrndx;		// Section header string table index
 } __attribute__((packed)) elf32_hdr;
 
 typedef struct {
-	u32 sh_name;		// Section name, index in string tbl
-	u32 sh_type;		// Type of section
-	u32 sh_flags;		// Miscellaneous section attributes
-	u32 sh_addr;		// Section virtual addr at execution
-	u32 sh_offset;		// Section file offset
-	u32 sh_size;		// Size of section in bytes
-	u32 sh_link;		// Index of another section
-	u32 sh_info;		// Additional section information
-	u32 sh_addralign;	// Section alignment
-	u32 sh_entsize;		// Entry size if section holds table
+	uint32_t sh_name;		// Section name, index in string tbl
+	uint32_t sh_type;		// Type of section
+	uint32_t sh_flags;		// Miscellaneous section attributes
+	uint32_t sh_addr;		// Section virtual addr at execution
+	uint32_t sh_offset;		// Section file offset
+	uint32_t sh_size;		// Size of section in bytes
+	uint32_t sh_link;		// Index of another section
+	uint32_t sh_info;		// Additional section information
+	uint32_t sh_addralign;		// Section alignment
+	uint32_t sh_entsize;		// Entry size if section holds table
 } __attribute__((packed)) elf32_sec;
 
 // sh_type
 
-#define SHT_NULL	0	// Section header table entry unused
-#define SHT_PROGBITS	1	// Program specific (private) data
-#define SHT_SYMTAB	2	// Link editing symbol table
-#define SHT_STRTAB	3	// A string table
-#define SHT_RELA	4	// Relocation entries with addends
-#define SHT_HASH	5	// A symbol hash table
-#define SHT_DYNAMIC	6	// Information for dynamic linking
-#define SHT_NOTE	7	// Information that marks file
-#define SHT_NOBITS	8	// Section occupies no space in file
-#define SHT_REL		9	// Relocation entries, no addends
-#define SHT_SHLIB	10	// Reserved, unspecified semantics
-#define SHT_DYNSYM	11	// Dynamic linking symbol table
+#define SHT_NULL	0		// Section header table entry unused
+#define SHT_PROGBITS	1		// Program specific (private) data
+#define SHT_SYMTAB	2		// Link editing symbol table
+#define SHT_STRTAB	3		// A string table
+#define SHT_RELA	4		// Relocation entries with addends
+#define SHT_HASH	5		// A symbol hash table
+#define SHT_DYNAMIC	6		// Information for dynamic linking
+#define SHT_NOTE	7		// Information that marks file
+#define SHT_NOBITS	8		// Section occupies no space in file
+#define SHT_REL		9		// Relocation entries, no addends
+#define SHT_SHLIB	10		// Reserved, unspecified semantics
+#define SHT_DYNSYM	11		// Dynamic linking symbol table
 
 // sh_flags
 
@@ -97,11 +105,11 @@ typedef struct {
 #define SHF_EXCLUDE          (1 << 31)  // Section is excluded unless
 					// referenced or allocated (Solaris)
 
-int elf_exec(const u8 *filename, int arg)
+int elf32_exec(const char *filename, int arg)
 {
 	elf32_hdr hdr;
 	elf32_sec sec;
-	u32 i, r;
+	unsigned int i, r;
 	void *exec;
 	FATFS fatfs;
 	FIL file;
@@ -161,14 +169,14 @@ int elf_exec(const u8 *filename, int arg)
 	for (i = 0; i < hdr.e_shnum; i++) {
 		int rc = 0;
 		f_lseek(&file, hdr.e_shoff + sizeof(sec) * i);
-		if ((rc = f_read(&file, (u8 *) &sec, sizeof(sec), &r)) || r != sizeof(sec)) {
+		if ((rc = f_read(&file, (uint8_t *) &sec, sizeof(sec), &r)) || r != sizeof(sec)) {
 			if (DEBUG_ELF_LOAD) {
 				print("ELF: section read failed: rc=");
-				print_int32(rc);
+				print_int(rc);
 				print(" read=");
-				print_int32(r);
+				print_int(r);
 				print(" expected=");
-				print_u32(sizeof(sec));
+				print_uint(sizeof(sec));
 				print("\n");
 			}
 			continue;
@@ -179,7 +187,7 @@ int elf_exec(const u8 *filename, int arg)
 		case SHT_PROGBITS:
 			if (0 != (SHF_ALLOC & sec.sh_flags)) {
 				f_lseek(&file, sec.sh_offset);
-				if (f_read(&file, (u8 *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size) {
+				if (f_read(&file, (uint8_t *) sec.sh_addr, sec.sh_size, &r) || r != sec.sh_size) {
 					if (DEBUG_ELF_LOAD) {
 						print("ELF: data read failed\n");
 					}
@@ -190,28 +198,28 @@ int elf_exec(const u8 *filename, int arg)
 			} else {
 				print("SKIP: ");
 			}
-			print_u32(sec.sh_addr);
+			print_uint(sec.sh_addr);
 			print(" ");
-			print_u32(sec.sh_size);
+			print_uint(sec.sh_size);
 			print(" ");
-			print_u32(sec.sh_flags);
+			print_uint(sec.sh_flags);
 			print("\n");
 			break;
 
 		case SHT_NOBITS:
 			print("ZERO: ");
-			print_u32(sec.sh_addr);
+			print_uint(sec.sh_addr);
 			print(" ");
-			print_u32(sec.sh_size);
+			print_uint(sec.sh_size);
 			print("\n");
 
-			memset((u8 *) sec.sh_addr, 0, sec.sh_size);
+			memset((uint8_t *)sec.sh_addr, 0, sec.sh_size);
 			break;
 
 		default:
 			if (DEBUG_ELF_LOAD) {
 				print("????: type=");
-				print_int32(sec.sh_type);
+				print_uint(sec.sh_type);
 				print("\n");
 			}
 			break;
@@ -220,12 +228,12 @@ int elf_exec(const u8 *filename, int arg)
 
 	f_close(&file);
 	print("EXEC: ");
-	print_u32(hdr.e_entry);
+	print_uint(hdr.e_entry);
 	print("\n");
 	disable_card_power();
 
-	exec = (void *) hdr.e_entry;
-	((void (*) (int)) exec) (arg);
+	exec = (void *)hdr.e_entry;
+	((void (*) (int))exec) (arg);
 	goto abort_umount;
 
 // make sure every thing is cleaned up if the load fails fail
@@ -236,4 +244,3 @@ abort_umount:
 	disable_card_power();
 	return rc;
 }
-

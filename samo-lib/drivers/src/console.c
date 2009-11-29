@@ -1,5 +1,9 @@
 /*
+ * console - console input functions
+ *
  * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ELF32_H
-#define ELF32_H
+#include <stdbool.h>
+#include <inttypes.h>
+#include <string.h>
 
-int elf_exec(const u8 *filename, int arg);
+#include <regs.h>
+#include <samo.h>
 
-#endif /* ELF32_H */
+#include "console.h"
+
+
+int console_input_available(void) {
+	return (0 != (REG_EFSIF0_STATUS	& RDBFx));
+}
+
+
+int console_input_char(void)
+{
+	while (!console_input_available()) {
+	}
+
+	return(REG_EFSIF0_RXD);
+}

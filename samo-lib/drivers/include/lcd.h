@@ -1,6 +1,9 @@
 /*
  * Copyright (c) 2009 Openmoko Inc.
  *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +22,6 @@
 #define LCD_H
 
 #include <config.h>
-
-void init_lcd(void);
 
 #if BOARD_SAMO_Ax || BOARD_SAMO_Vx
 
@@ -67,5 +68,21 @@ void init_lcd(void);
 #define LCD_VRAM	0x10100000
 #define LCD_VRAM_SIZE	((LCD_VRAM_WIDTH_PIXELS) * (LCD_VRAM_HEIGHT_LINES) / 2)
 #endif
+
+typedef enum {
+	LCD_PositionTop,
+	LCD_PositionBottom,
+	LCD_PositionCentre,
+} LCD_PositionType;
+
+typedef struct {
+	uint32_t width;
+	uint32_t height;
+	uint8_t bytes[];
+} LCD_ImageType;
+
+void LCD_initialise(void);
+void LCD_DisplayImage(LCD_PositionType position, bool clear_screen, const LCD_ImageType *image);
+
 
 #endif /* LCD_H */

@@ -1,5 +1,9 @@
 /*
+ * print - some debugging print functions
+ *
  * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EEPROM_H
-#define EEPROM_H
+#if !defined(_PRINT_H_)
+#define _PRINT_H_ 1
 
-#include <stdlib.h>
+int print_char(int c);
+void print(const char *text);
+void print_int(int value);
+void print_uint(unsigned int value);
 
-void eeprom_load(uint32_t eeprom_address, void *buffer, size_t size);
+void print_hex_digit(unsigned int value);
+void print_byte(unsigned int value);
 
-#endif /* EEPROM_H */
+// word with 0x prefix
+void print_hex(unsigned int value);
+
+#endif

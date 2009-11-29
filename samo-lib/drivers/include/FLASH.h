@@ -24,9 +24,20 @@
 
 #include <stdbool.h>
 #include <inttypes.h>
+
 enum {
-	FLASH_PageSize = 256,
+	// basic FLASH parameters
+	FLASH_PageSize = 256,                 // maximum bytes to program in one write
 	FLASH_SectorSize = 4096,
+	FLASH_TotalBytes = 65536,
+	FLASH_TotalSectore = FLASH_TotalBytes / FLASH_SectorSize,
+
+	// addresses of known items
+	FLASH_SerialNumberAddress   = 0x1fe0, // just ASCII characters (0x00 or 0xff padded)
+	FLASH_SerialNumberSize      = 32,
+
+	FLASH_RevisionNumberAddress = 0x02f0, // 1st 4 bytes (uint32_t) used as simple number
+	FLASH_RevisionNumberSize    = 16,
 };
 
 void FLASH_initialise(void);
@@ -42,9 +53,9 @@ void FLASH_SelectExternal(void);
 // it is only active for one command
 bool FLASH_WriteEnable(void);
 
-bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress);
-bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress);
-bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress);
+bool FLASH_read(void *buffer, size_t size, uint32_t ROMAddress);
+bool FLASH_write(const void *buffer, size_t size, uint32_t ROMAddress);
+bool FLASH_verify(const uint8_t *buffer, size_t size, uint32_t ROMAddress);
 bool FLASH_SectorErase(uint32_t ROMAddress);
 bool FLASH_ChipErase(void);
 

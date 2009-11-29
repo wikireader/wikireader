@@ -1,5 +1,10 @@
 /*
+ * elf32 - elf file loader
+ *
  * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EEPROM_H
-#define EEPROM_H
+#if !defined(_ELF32_H_)
+#define _ELF32_H_ 1
 
-#include <stdlib.h>
+int elf32_exec(const char *filename, int arg);
 
-void eeprom_load(uint32_t eeprom_address, void *buffer, size_t size);
-
-#endif /* EEPROM_H */
+#endif

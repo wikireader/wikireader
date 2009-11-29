@@ -42,7 +42,7 @@ typedef enum {
 	FLASH_COMMAND_FastRead = 0x0b,
 	FLASH_COMMAND_SectorErase = 0x20,
 	FLASH_COMMAND_ChipErase = 0xc7,
-} FLASH_COMMAND_type;
+} FLASH_CommandType;
 
 
 void FLASH_initialise(void)
@@ -99,7 +99,7 @@ static void WaitReady(void)
 }
 
 
-bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
+bool FLASH_read(void *buffer, size_t size, uint32_t ROMAddress)
 {
 	WriteEnable = false;
 
@@ -117,7 +117,7 @@ bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
 	size_t i = 0;
 	uint8_t *bytes = (uint8_t *)buffer;
 
-	for (i = 0; i < length; ++i) {
+	for (i = 0; i < size; ++i) {
 			*bytes++ = SPI_exchange(FLASH_COMMAND_NoOperation);
 	}
 	EEPROM_CS_HI();
@@ -128,9 +128,9 @@ bool FLASH_read(void *buffer, size_t length, uint32_t ROMAddress)
 }
 
 
-bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
+bool FLASH_write(const void *buffer, size_t size, uint32_t ROMAddress)
 {
-	if (!WriteEnable || length > FLASH_PageSize) {
+	if (!WriteEnable || size > FLASH_PageSize) {
 		WriteEnable = false;
 		return false;
 	}
@@ -141,7 +141,7 @@ bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 	const uint8_t *bytes = (uint8_t *)buffer;
 
 	size_t i = 0;
-	for (i = 0; i < length; ++i) {
+	for (i = 0; i < size; ++i) {
 		if (0xff != bytes[i]) {
 			rc = true;
 			break;
@@ -161,7 +161,7 @@ bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 	SPI_exchange(ROMAddress >> 8);  // A15..A08
 	SPI_exchange(ROMAddress);       // A07..A00
 
-	for (i = 0; i < length; ++i) {
+	for (i = 0; i < size; ++i) {
 		SPI_exchange(*bytes++);
 	}
 	EEPROM_CS_HI();
@@ -173,7 +173,7 @@ bool FLASH_write(const void *buffer, size_t length, uint32_t ROMAddress)
 }
 
 
-bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
+bool FLASH_verify(const uint8_t *buffer, size_t size, uint32_t ROMAddress)
 {
 	bool rc = true;
 	WriteEnable = false;
@@ -191,7 +191,7 @@ bool FLASH_verify(const uint8_t *buffer, size_t length, uint32_t ROMAddress)
 
 	size_t i = 0;
 	const uint8_t *bytes = (uint8_t *)buffer;
-	for (i = 0; i < length; ++i) {
+	for (i = 0; i < size; ++i) {
 		if (SPI_exchange(FLASH_COMMAND_NoOperation) != *bytes++) {
 			rc = false;
 			break;

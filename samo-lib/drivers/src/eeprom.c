@@ -1,5 +1,4 @@
 /*
-    e07 bootloader suite
     Copyright (c) 2008 Daniel Mack <daniel@caiaq.de>
 
     This program is free software: you can redistribute it and/or modify
@@ -23,43 +22,45 @@
 
 #include "eeprom.h"
 
-static uint8_t spi_transmit(uint8_t out)
+// this is global but must not be in the header file
+// mbr creates a jump to this using assembler code
+uint8_t eeprom_spi_exchange(uint8_t out)
 {
 	REG_SPI_TXD = out;
 	do {} while (~REG_SPI_STAT & RDFF);
 	return REG_SPI_RXD;
 }
 
-void eeprom_load(uint32_t addr, uint8_t *dest, uint32_t size)
+void eeprom_load(uint32_t eeprom_address, void *buffer, size_t size)
 {
 	EEPROM_CS_HI();
-	spi_transmit(0x00);
+	eeprom_spi_exchange(0x00);
 	EEPROM_CS_LO();
 
 #if EEPROM_SST25VF040 || EEPROM_PM25LV512
 	/* read high-speed */
-	spi_transmit(0x0b);
+	eeprom_spi_exchange(0x0b);
 #define REQUIRES_DUMMY_CYCLE 1
 #elif EEPROM_MP45PE80
 	/* read normal-speed */
-	spi_transmit(0x03);
+	eeprom_spi_exchange(0x03);
 #define REQUIRES_DUMMY_CYCLE 0
 #else
 #error "Unsupported EEPROM"
 #endif
 
-	spi_transmit(addr >> 16);
-	spi_transmit(addr >> 8);
-	spi_transmit(addr);
+	eeprom_spi_exchange(eeprom_address >> 16);
+	eeprom_spi_exchange(eeprom_address >> 8);
+	eeprom_spi_exchange(eeprom_address);
 
 #if REQUIRES_DUMMY_CYCLE
 	/* dummy cycle */
-	spi_transmit(0x00);
+	eeprom_spi_exchange(0x00);
 #endif
 
+	uint8_t *bytes = (uint8_t *)buffer;
 	while (size--) {
-		spi_transmit(0x00);
-		*dest++ = REG_SPI_RXD;
+		*bytes++ = eeprom_spi_exchange(0x00);
 	}
 
 	EEPROM_CS_HI();
