@@ -25,7 +25,7 @@ unsigned char *framebuffer;
 
 void fb_init(void)
 {
-	init_lcd();
+	LCD_initialise();
 	framebuffer = (unsigned char *) LCD_VRAM;
 }
 

@@ -21,6 +21,9 @@
 #if !defined(_LCD_H_)
 #define _LCD_H_ 1
 
+#include <inttypes.h>
+#include <stdbool.h>
+
 #include <config.h>
 
 #if BOARD_SAMO_Ax || BOARD_SAMO_Vx
