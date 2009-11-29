@@ -57,6 +57,10 @@ ${BUILD_PREFIX}%.o: %.s
 %.ico: %.xpm
 	${GRIFO_SCRIPTS}/xpm2icon --icon="$@" "$<"
 
+# convert PNG to C header file
+%.h: %.png ${IMAGE2HEADER}
+	${IMAGE2HEADER} --inverted --header-file="$@" --variable-name="${@:.h=_image}" "$<"
+
 
 -include $(wildcard *.d) dummy
 -include $(wildcard ${BUILD_PREFIX}*.d) dummy

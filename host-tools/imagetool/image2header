@@ -1,0 +1,163 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# image2header - Convert an image to a C header
+#                All non-black pixels are white
+#
+# Copyright (c) 2009 Openmoko Inc.
+#
+# Authors   Christopher Hall <hsw@openmoko.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import with_statement
+import os, sys
+import getopt
+import os.path
+import datetime
+import gd
+
+verbose = False
+
+def usage(message):
+    if None != message:
+        print 'error:', message
+    print 'usage: %s <options> image' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --verbose               Enable verbose output'
+    print '       --header-file=file      Output header file'
+    print '       --type-name=name        Name of type [LCD_ImageType]'
+    print '       --variable-name=name    Name of the variable [image]'
+    print '       --inverted              Black=1 White=0 pixels [White=1 Black=0]'
+    print '       --extra-fields          Enable BytesPerRow field'
+    exit(1)
+
+
+def main():
+    global verbose
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hvf:t:n:i',
+                                   ['help', 'verbose',
+                                    'header-file=',
+                                    'type-name=',
+                                    'variable-name=',
+                                    'extra-fields',
+                                    'inverted'])
+    except getopt.GetoptError, e:
+        usage(str(e))
+
+    verbose = False
+    header_file = None
+    type_name = 'LCD_ImageType'
+    variable_name = 'image'
+    black = 0
+    white = 1
+    extra_fields = False
+
+    for opt, arg in opts:
+        if opt in ('-v', '--verbose'):
+            verbose = True
+        elif opt in ('-h', '--help'):
+            usage(None)
+        elif opt in ('-f', '--header-file'):
+            header_file = arg
+        elif opt in ('-t', '--type-name'):
+            type_name = arg
+        elif opt in ('-n', '--variable-name'):
+            variable_name = arg
+        elif opt in ('-e', '--extra-fields'):
+            extra_fields = True
+        elif opt in ('-i', '--inverted'):
+            black = 1
+            white = 0
+        else:
+            usage('unhandled option: ' + opt)
+
+    if None == header_file:
+        usage('missing header-file')
+
+    if len(args) != 1:
+        usage('must give just one image file')
+
+    image_file = args[0]
+    if not os.path.exists(image_file):
+        usage('file: %s, does not exist' % image_file)
+
+    with open(header_file, 'w') as f:
+        f.write(
+            "/*\n"
+            " * ***** DO NOT MODIFY *****\n"
+            " *\n"
+            " * File:           %s\n"
+            " * Generated on:   %s\n"
+            " * By the program: %s\n"
+            " *\n"
+            " * ***** DO NOT MODIFY *****\n"
+            " */\n\n"
+            % (header_file, datetime.date.today().isoformat(), os.path.basename(__file__)))
+
+        try:
+            image = gd.image(image_file)
+        except IOError, e:
+            usage(str(e))
+
+        width, height = image.size()
+
+        # output some constants as an enum
+        bytes_per_row = (width + 7) >> 3
+        total_bytes = bytes_per_row * height
+        f.write('enum {\n\t%s_BytesPerRow = %d,\n\t%s_TotalBytes  = %d,\n};\n'
+                % (variable_name, bytes_per_row, variable_name, total_bytes))
+
+        # output the basic width and height fields
+        f.write('\n%s %s = {\n\t.width = %d,\n\t.height = %d,\n'
+                % (type_name, variable_name, width, height))
+
+        # some extra optional fields that might be useful
+        if extra_fields:
+            f.write('\t.BytesPerRow = %d,\n' % bytes_per_row)
+
+        # output the data bytes
+        f.write('\t.bytes = {\n')
+
+        for y in range(0, height):
+            f.write('\t\t// y = %d\n\t\t' % y);
+            byte_count = 0;
+            byte = 0
+            bit_count = 8
+            for x in range(0, width):
+		if (0, 0, 0) == image.colorComponents(image.getPixel((x, y))):
+                    pixel = black
+                else:
+                    pixel = white
+                bit_count -= 1
+                byte |= pixel << bit_count
+                if 0 == bit_count:
+                    f.write('0x%02x, ' % byte)
+                    byte = 0
+                    bit_count = 8
+                    byte_count += 1
+                    if byte_count >= 10:
+                        f.write('\n\t\t');
+                        byte_count = 0
+            if 8 != bit_count:
+                f.write('0x%02x, ' % byte)
+            f.write('\n');
+
+        f.write('\t}\n};\n')
+
+# run the program
+if __name__ == "__main__":
+    main()

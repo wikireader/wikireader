@@ -87,6 +87,8 @@ MBBR_SRC = ${MBBR}
 
 HOST_TOOLS = ${SAMO_LIB}/../host-tools
 
+IMAGE2HEADER= ${HOST_TOOLS}/imagetool/image2header
+
 # cross compiler definitions
 
 export PATH:=${SAMO_LIB}/../host-tools/toolchain-install/bin:${PATH}
