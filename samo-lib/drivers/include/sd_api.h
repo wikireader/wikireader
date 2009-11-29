@@ -9,8 +9,8 @@
 //
 
 
-#ifndef _SD_API_
-#define _SD_API_
+#if !defined_SD_API_H_
+#define _SD_API_H_ 1
 
 #ifdef __cplusplus
    extern "C" {

@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LCD_H
-#define LCD_H
+#if !defined(_LCD_H_)
+#define _LCD_H_ 1
 
 #include <config.h>
 

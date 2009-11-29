@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EEPROM_H
-#define EEPROM_H
+#if !defined(_EEPROM_H_)
+#define _EEPROM_H_ 1
 
 #include <stdlib.h>
 

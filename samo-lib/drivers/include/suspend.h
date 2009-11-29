@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SUSPEND_H
-#define SUSPEND_H
+#if  !defined(_SUSPEND_H_)
+#define _SUSPEND_H_ 1
 
 void suspend(int WatchdogTimeout);
 
