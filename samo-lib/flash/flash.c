@@ -28,34 +28,20 @@
 #include <lcd.h>
 #include <FLASH.h>
 
-
-struct guilib_image
-{
-	uint32_t width;
-	uint32_t height;
-	uint8_t data[];
-};
-typedef struct guilib_image ImageType;
-
 #include "program.h"
 #include "ok.h"
 #include "fail.h"
 
 
-
 // size of the flash memory
-uint8_t ROMBuffer[65536];
+uint8_t ROMBuffer[FLASH_TotalBytes];
 
 enum {
 	ProgramRetries = 5,
-	SerialNumberAddress = 0x1fe0,
-	SerialNumberLength = 32,
 };
 
 
 static bool process(const char *filename);
-static void fill(uint8_t value);
-static void display_image(const ImageType *image, uint8_t background, uint8_t toggle);
 
 int flash(int arg)
 {
@@ -90,15 +76,15 @@ int flash(int arg)
 		print("Begin Pass: ");
 		print_dec32(i);
 		print_char('\n');
-		display_image(&program_image, 0x00, 0xff);
+		LCD_DisplayImage(LCD_PositionTop, true, &program_image);
 		if (process(filename)) {
 			print("Finished sucessfully\n");
-			display_image(&ok_image, 0x00, 0xff);
+			LCD_DisplayImage(LCD_PositionTop, true, &ok_image);
 			flag = true;
 			break;
 		} else {
 			print("Error occurred\n");
-			display_image(&fail_image, 0x00, 0xff);
+			LCD_DisplayImage(LCD_PositionTop, true, &fail_image);
 		}
 	}
 
@@ -158,11 +144,11 @@ static bool process(const char *filename)
 
 	print("Preserve Serial number: ");
 
-	FLASH_read(&ROMBuffer[SerialNumberAddress], SerialNumberLength, SerialNumberAddress);
+	FLASH_read(&ROMBuffer[FLASH_SerialNumberAddress], FLASH_SerialNumberSize, FLASH_SerialNumberAddress);
 
 	size_t i;
-	for (i = 0; i < SerialNumberLength; ++i) {
-		char c = ROMBuffer[SerialNumberAddress + i];
+	for (i = 0; i < FLASH_SerialNumberSize; ++i) {
+		char c = ROMBuffer[FLASH_SerialNumberAddress + i];
 		if (' ' > c || '\xff' == c) {
 			break;
 		}
@@ -202,38 +188,4 @@ static bool process(const char *filename)
 	}
 	print_char('\n');
 	return result;
-}
-
-
-static void fill(uint8_t value)
-{
-	int x = 0;
-	int y = 0;
-	uint8_t *fb = (uint8_t*)LCD_VRAM;
-
-	for (y = 0; y < LCD_HEIGHT_LINES; ++y) {
-		for (x = 0; x < LCD_VRAM_WIDTH_BYTES; ++x) {
-			*fb++ = value;
-		}
-	}
-}
-
-
-static void display_image(const ImageType *image, uint8_t background, uint8_t toggle)
-{
-	int xOffset = (LCD_WIDTH_PIXELS - image->width) / (2 * 8);
-	uint8_t *fb = (uint8_t*)LCD_VRAM;
-	unsigned int y = 0;
-	unsigned int x = 0;
-	unsigned int width = (image->width + 7) / 8;
-	const uint8_t *src = image->data;
-
-	fill(background);
-	fb += (LCD_HEIGHT_LINES - image->height) / 2 * LCD_VRAM_WIDTH_BYTES;
-	for (y = 0; y < image->height; ++y) {
-		for (x = 0; x < width; ++x) {
-			fb[x + xOffset] = toggle ^ *src++;
-		}
-		fb += LCD_VRAM_WIDTH_BYTES;
-	}
 }

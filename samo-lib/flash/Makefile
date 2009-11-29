@@ -72,10 +72,6 @@ ok.h: ok.png
 fail.h: fail.png
 program.h: program.png
 
-%.h: %.png
-	$(HOST_TOOLS)/imagetool/imagetool.py "$<" "$@" "${@:.h=_image}"
-
-
 build:
 	${MKDIR} "$@"
 
