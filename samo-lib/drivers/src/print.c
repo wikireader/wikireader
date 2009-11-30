@@ -59,19 +59,22 @@ void print_int(int value)
 }
 
 
+static void print_uint_1(unsigned int value)
+{
+	if (0 != value) {
+		print_uint_1(value / 10);
+		print_char(value % 10 + '0');
+	}
+}
+
+
 void print_uint(unsigned int value)
 {
-	char c[33];
-	int i;
-
-	c[sizeof(c) - 1] = '\0';
-	for (i = sizeof(c) - 2; i >= 0; --i) {
-		c[i] = value % 10 + '0';
-		value /= 10;
+	if (0 == value) {
+		print_char('0');
+	} else {
+		print_uint_1(value);
 	}
-	for (i = 0; '0' == c[i] && i < sizeof(c) - 2; ++i) {
-	}
-	print(&c[i]);
 }
 
 
