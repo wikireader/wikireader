@@ -52,8 +52,9 @@
 #define HEADER_MAGIC  0x4f4d4153
 #define MAXIMUM_APPS 8
 
-#define PARAMETER_START    (MAXIMUM_BLOCKS * 8192)
-#define PARAMETER_SIZE     (2 * FLASH_SectorSize)
+// allocate the very last sector for saving parameters
+#define PARAMETER_START    (FLASH_TotalBytes - FLASH_SectorSize)
+#define PARAMETER_SIZE     (FLASH_SectorSize)
 #define PARAMETER_MAGIC_1  0x5041524c
 #define PARAMETER_MAGIC_2  0x424c434b
 
@@ -82,11 +83,12 @@ typedef struct {
 // the size of this  must be an exact integer multiple of FLASH_PageSize
 // or programming FLASH will not work correctly
 // (There is some code below to cause a linker error if this is not true)
+
 typedef struct {
 	uint32_t magic1;
 	uint32_t magic2;
 	uint32_t contrast;
-	uint32_t spare_1;
+	uint32_t spare_items[5];
 } ParameterType;
 
 
@@ -369,26 +371,40 @@ void parameters_save(ParameterType *param)
 	EEPROM_CS_HI();
 	EEPROM_WP_HI();
 
+	param->magic1 = PARAMETER_MAGIC_1;
+	param->magic2 = PARAMETER_MAGIC_2;
+
 	unsigned int i;
 	ParameterType p;
 	for (i = 0; i < PARAMETER_SIZE - sizeof(p); i += sizeof(p)) {
 		FLASH_read(&p, sizeof(p), PARAMETER_START + i);
 		if (PARAMETER_MAGIC_1 == p.magic1 && PARAMETER_MAGIC_2 == p.magic2) {
-			break;
+			if (0 == memcmp(param, &p, sizeof(p))) {
+				return; // do not save the same value again
+			} else {
+				break;
+			}
 		}
 	}
-	if (0 == i || !(0xffffffff == p.magic1 && 0xffffffff == p.magic2)) {
-		SectorErase(PARAMETER_START);
-		SectorErase(PARAMETER_START + FLASH_SectorSize);
+
+	bool erase = false;
+	if (0 == i) {
+		erase = true;
 	} else {
+
 		i -= sizeof(p);
+		FLASH_read(&p, sizeof(p), PARAMETER_START + i);
+		if (!(0xffffffff == p.magic1 && 0xffffffff == p.magic2)) {
+			erase = true;
+		}
 	}
 
-	param->magic1 = PARAMETER_MAGIC_1;
-	param->magic2 = PARAMETER_MAGIC_2;
-	if (0 != memcmp(param, &p, sizeof(p))) {
-		ProgramBlock(param, sizeof(*param), PARAMETER_START + i);
+	if (erase) {
+		SectorErase(PARAMETER_START);
+		i = PARAMETER_SIZE - sizeof(p);  // last available slot
 	}
+
+	ProgramBlock(param, sizeof(*param), PARAMETER_START + i);
 }
 
 static void SendCommand(uint8_t command)
