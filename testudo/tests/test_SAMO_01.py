@@ -254,7 +254,10 @@ def test007_program_flash():
             time.sleep(RESET_TIME)
             relay.off(RELAY_RESET)
 
-    p = process.Process(['make', 'flash-mbr', 'BOOTLOADER_TTY=' + CPU_SERIAL,
+    p = process.Process(['make',
+                         'flash-mbr',
+                         'FLASH_UPDATE=YES',
+                         'BOOTLOADER_TTY=' + CPU_SERIAL,
                          "SERIAL_NUMBER='" + serial_number + "'"], callback)
 
     rc = p.run()
