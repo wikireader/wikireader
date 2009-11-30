@@ -42,6 +42,14 @@ ROM_LIST = {
 'V2': FLASHROM.EN25F05,
 }
 
+# important locations in the FLASH (from FLASH.h)
+FLASH_SerialNumberAddress   = 0x1fe0  # just ASCII characters (0x00 or 0xff padded)
+FLASH_SerialNumberSize      = 32
+
+FLASH_RevisionNumberAddress = 0x02f0  # 1st 4 bytes (uint32_t) used as simple number
+FLASH_RevisionNumberSize    = 16
+
+
 
 class SerialPort():
 
@@ -122,18 +130,51 @@ class AuxSerialPort():
 
 
 def usage(message):
+    """PRint message and exit"""
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] --boot=<boot> --map-file=<map>' % os.path.basename(__file__)
+    print 'usage: %s [--verbose] [--update] --boot=<boot> --map-file=<map>' % os.path.basename(__file__)
     exit(1)
 
+
+
+def get_mbr_revision_number(flash):
+    """read the revision number from a fixed address in FLASH"""
+    bytes = flash.read_block(FLASH_RevisionNumberAddress, 4)
+    if 4 != len(bytes):
+        v = 0
+    else:
+        v = struct.unpack('<L', bytes)[0]
+        # check if just empty (erased) FLASH
+        if 0xffffffff == v:
+            v = 0
+    return v
+
+
+def get_mbr_serial_number(flash):
+    """read the serial number from a fixed address in FLASH"""
+    bytes = flash.read_block(FLASH_SerialNumberAddress, FLASH_SerialNumberSize)
+    if FLASH_SerialNumberSize != len(bytes):
+        return None
+    return bytes
+
+
 def main():
+    """FLASH programming main program"""
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvb:m:p:a:', ['help', 'verbose', 'boot=', 'map-file=', 'port=', 'aux-port='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvub:m:p:a:',
+                                   ['help',
+                                    'verbose',
+                                    'update',
+                                    'boot=',
+                                    'map-file=',
+                                    'port=',
+                                    'aux-port='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
+    update_mode = False
     bootfile = 'jackknife'
     mapfile = ''
     aux_port = ''
@@ -142,6 +183,8 @@ def main():
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
             verbose = True
+        if opt in ('-u', '--update'):
+            update_mode = True
         elif opt in ('-h', '--help'):
             usage(None)
         elif opt in ('-b', '--boot'):
@@ -204,11 +247,46 @@ def main():
         usage('unknown board: %s' % board);
 
     rom = ROM_LIST[board](s.spi())
-    for r in map.items():
-        offset, name, length, data = r[0], r[1], r[2], r[3]
-        print '0x%04x %s (%d bytes)' % (offset, name, length)
-        rom.program(data, offset)
-        rom.verify(data, offset)
+
+    # check to see if update is possible
+    # i.e. just update serial number
+    if update_mode:
+        bytes = map.get_data('version')
+        if 4 != len(bytes):
+            file_revision = 0
+        else:
+            file_revision = struct.unpack('<L', bytes)[0]
+            # check if just empty (erased) FLASH
+            if 0xffffffff == file_revision:
+                file_revision = 0
+
+        mbr_revision = get_mbr_revision_number(rom)
+        serial_number = get_mbr_serial_number(rom)
+
+        if None == mbr_revision:
+            usage('mapfile did not contain a version entry')
+
+        if file_revision > mbr_revision:
+            print 'file revision(%d) > mbr revision(%d): full write forced' % (file_revision, mbr_revision)
+            update_mode = False
+        elif '\xff' * FLASH_SerialNumberSize != serial_number:
+            print 'serial number area is not erased: full write forced'
+            update_mode = False
+        else:
+            data = map.get_data('serial.header')
+            if None == data:
+                usage('mapfile did not contain a serial.header entry')
+            if len(data) != FLASH_SerialNumberSize:
+                usage('serial.data file length = %d != %d' % (len(data), FLASH_SerialNumberSize))
+            rom.program(data, FLASH_SerialNumberAddress, False)
+            rom.verify(data, FLASH_SerialNumberAddress)
+
+    if not update_mode:
+        for r in map.items():
+            offset, name, length, data = r[0], r[1], r[2], r[3]
+            print '0x%04x %s (%d bytes)' % (offset, name, length)
+            rom.program(data, offset)
+            rom.verify(data, offset)
 
     if None != aux:
         aux.normal()

@@ -42,3 +42,10 @@ class MapFile:
 
     def ok(self):
       return self.status
+
+    def get_data(self, filename):
+        for r in self.rom:
+            offset, name, length, data = r[0], r[1], r[2], r[3]
+            if name == filename:
+                return data
+        return None

@@ -35,6 +35,9 @@ include ${SAMO_LIB}/Mk/definitions.mk
 # set this to 0 or 1 to control the battery indicator in menu.c
 BATTERY_METER ?= 0
 
+# use update YES or NO
+# YES => only change serial number if mbr version is ok
+# NO  => full update even if this will downgrade the mbr
 
 FLASH_ROM_MAP_FILE ?= SAMO_A1.mapfile
 FLASH07 ?= ${HOST_TOOLS}/flash07/flash07
@@ -139,15 +142,26 @@ $(call MAKE_APP,rs232-loader)
 .PHONY: all-applications
 all-applications: ${APPLICATIONS}
 
+ifeq (YES,$(strip ${FLASH_UPDATE}))
+UPDATE_ARGS = --update
+else
+UPDATE_ARGS =
+endif
+
 flash-mbr: all
 	time ${FLASH07} --port="${BOOTLOADER_TTY}" --aux-port="${BOOTLOADER_AUX}" --boot="${BOOT_FILE}" \
-	--map-file="${FLASH_ROM_MAP_FILE}"
+	--map-file="${FLASH_ROM_MAP_FILE}" ${UPDATE_ARGS}
 
+# serial number must be padded with 0xFF as that is
+# the value of erased FLASH memory bytes
+# Note: the dd commands below are required to pad and truncate
+#       the serial number correctly
+#       the swapped bs and count are intentional as the () code
+#	produces two writes and the final dd takes just 32 bytes
 .PHONY: always-build
 serial.header: always-build
 	( echo -n ${SERIAL_NUMBER} ; \
-	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
-	  printf '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'; \
+	  dd bs=32 count=1 if=/dev/zero | tr '\0' '\377' ; \
 	) | dd bs=1 count=32 > "$@"
 
 

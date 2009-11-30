@@ -10,7 +10,6 @@ import time
 
 import Dump
 
-
 def msg(s):
     sys.stdout.write(s)
     sys.stdout.flush()
@@ -52,7 +51,7 @@ class FLASHROM:
         self.erased = set()
 
 
-    def program(self, buffer, offset):
+    def program(self, buffer, offset, erase = True):
         length = len(buffer)
         pre_bytes = (self.program_block_size - offset) % self.program_block_size
         block_bytes = length - pre_bytes
@@ -66,9 +65,10 @@ class FLASHROM:
         first_block = offset >> 12
         last_block = (offset + length) >> 12
 
-        for block in range(first_block, last_block + 1):
-            self.write_enable(True)
-            self.erase_block(block)
+        if erase:
+            for block in range(first_block, last_block + 1):
+                self.write_enable(True)
+                self.erase_block(block)
 
         msg('%s: write %d bytes @0x%x ' % (self.name, length, offset))
         spin_reset()
@@ -141,22 +141,23 @@ class FLASHROM:
 
         return True
 
-    # Child clas must override some of these
+
+    # Child class must override some of these
     # at least read/write/erase block functions must be given
 
-    def write_enable(enable):
+    def write_enable(self, enable):
         pass
 
-    def wait_ready(s):
+    def wait_ready(self):
         pass
 
-    def erase_block(s, block):
+    def erase_block(self, block):
         assert True, 'Virtual %s called' % __name__
 
-    def set_block_protection():
+    def set_block_protection(self):
         pass
 
-    def write_block(self, buffer, offset):
+    def write_block(self, buffer, address):
         assert True, 'Virtual %s called' % __name__
 
     def read_block(self, address, read_length):

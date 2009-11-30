@@ -447,6 +447,8 @@ endef
 BOOTLOADER_TTY ?= $(shell ${FindTTY})
 BOOTLOADER_AUX ?= $(shell ${FindAUX})
 SERIAL_NUMBER ?= No Serial Number
+FLASH_UPDATE ?= NO
+
 
 .PHONY: print-mbr-tty
 print-mbr-tty:
@@ -467,7 +469,7 @@ jackknife:
 
 .PHONY: flash-mbr
 flash-mbr: mbr jackknife
-	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" $@
+	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
 
 .PHONY: flash-test-jig
 flash-test-jig: mbr jackknife
