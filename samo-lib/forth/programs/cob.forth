@@ -36,6 +36,8 @@ base @ decimal
     true
 ;
 
+create serial-number-buffer
+flash-serial-number-length allot
 
 : program-rom  ( b u -- )
 
@@ -51,14 +53,14 @@ base @ decimal
 
     lcd-." S/N: "
 
-    \ save serial number
-    here flash-serial-number-offset +
+    \ display the serial number
+    serial-number-buffer flash-serial-number-offset +
     flash-serial-number-length
     flash-serial-number-offset flash-read
     if
         flash-serial-number-length 0
         ?do
-            here flash-serial-number-offset + i + c@
+            serial-number-buffer flash-serial-number-offset + i + c@
             dup bl 127 within
             if
                 lcd-emit
