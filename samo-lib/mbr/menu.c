@@ -189,7 +189,7 @@ static void DisplayInfo(void)
 
 	print("\nMBR: ");
 	FLASH_read(&rev, sizeof(rev), FLASH_RevisionNumberAddress);
-	print_uint(rev);
+	print_uint(0xffffffff == rev ? 0 : rev);
 
 	char SerialNumber[FLASH_SerialNumberSize];
 	FLASH_read(SerialNumber, sizeof(SerialNumber), FLASH_SerialNumberAddress);
