@@ -27,7 +27,7 @@
 #include <lcd.h>
 #include <contrast.h>
 #include <analog.h>
-#include <eeprom.h>
+
 
 // redirect functions to mbr versions - see application.lds / mbr.c
 #define FLASH_read   mbr_FLASH_read

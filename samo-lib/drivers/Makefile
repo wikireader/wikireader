@@ -49,7 +49,6 @@ OBJECTS += ctp.o
 OBJECTS += contrast.o
 OBJECTS += delay_us.o
 OBJECTS += delay_nop.o
-#OBJECTS += eeprom.o
 OBJECTS += elf32.o
 OBJECTS += FLASH.o
 OBJECTS += lcd.o
