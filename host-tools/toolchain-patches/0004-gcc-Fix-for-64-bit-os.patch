@@ -1,0 +1,37 @@
+diff  a/gcc/config/c33/c33.c b/gcc/config/c33/c33.c
+--- a/gcc/config/c33/c33.c	2009-10-28 10:54:46.000000000 +0800
++++ b/gcc/config/c33/c33.c	2009-11-20 17:06:09.000000000 +0800
+@@ -547,7 +547,7 @@
+      enum rtx_code c;
+
+ {
+-  HOST_WIDE_INT high, low;
++  //HOST_WIDE_INT high, low;
+   switch (c)
+     {
+     case CONST_INT:
+@@ -984,7 +984,8 @@
+
+ 	{
+ 	  const_double_split (x, &high, &low);
+-	  fprintf (file, "0x%lx", (long) high);
++	  //fprintf (file, "0x%lx", (long) high);
++	  fprintf (file, "0x%x", high);
+ 	}
+
+       else
+@@ -1271,6 +1272,12 @@
+       HOST_WIDE_INT high_low[2];
+       int i;
+       rtx xop[10];
++#if 1
++      high_low[0] = INTVAL (src) & ((1ULL << BITS_PER_WORD) - 1); // fix for 64 bit
++      //high_low[1] = INTVAL (src) >> BITS_PER_WORD; // might this be more correct than the line below
++      high_low[1] = ((INTVAL (src) & (1ULL << (BITS_PER_WORD - 1))) == 0) ? 0 : -1;
++#else
+       high_low[0] = INTVAL (src);
+       high_low[1] = (INTVAL (src) >= 0) ? 0 : -1;
++#endif
+       for (i = 0; i < 2; i++)
+
+ 	{
