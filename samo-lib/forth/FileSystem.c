@@ -189,7 +189,7 @@ Forth_ReturnType FileSystem_open(const Forth_PointerType filename, Forth_CellTyp
 
 
 Forth_ReturnType FileSystem_rename(const Forth_PointerType OldFilename, Forth_CellType OldLength,
-			     const Forth_PointerType NewFilename, Forth_CellType NewLength)
+				   const Forth_PointerType NewFilename, Forth_CellType NewLength)
 {
 	Forth_ReturnType r = {0, FR_OK};
 	FilenameType TempOldFilename;
