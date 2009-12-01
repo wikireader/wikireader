@@ -102,16 +102,16 @@ void panic(const char *s, const uint32_t *stack)
 	}
 }
 
-#define PANIC(str)                                              \
-	do {                                                    \
-		asm volatile(                                   \
-			"\tpushn\t%%r15\n"                      \
-			"\txld.w\t%%r6, %0\n"                   \
-			"\tld.w\t%%r7, %%sp\n"                  \
-			"\txcall\tpanic\n"                      \
-			:                                       \
-			: "i"((str))                            \
-			);                                      \
+#define PANIC(str)				\
+	do {					\
+		asm volatile(			\
+			"\tpushn\t%%r15\n"	\
+			"\txld.w\t%%r6, %0\n"	\
+			"\tld.w\t%%r7, %%sp\n"	\
+			"\txcall\tpanic\n"	\
+			:			\
+			: "i"((str))		\
+			);			\
 	} while (0)
 
 static void undef_irq_handler(void)

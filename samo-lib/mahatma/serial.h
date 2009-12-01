@@ -27,10 +27,10 @@ typedef void serial_callback_type(serial_buffer_type *buffer);
 
 struct serial_buffer_struct
 {
-  char *text;
-  size_t size;
-  serial_buffer_type *link;
-  serial_callback_type *callback;
+	char *text;
+	size_t size;
+	serial_buffer_type *link;
+	serial_callback_type *callback;
 };
 
 void serial_put(serial_buffer_type *buffer);
