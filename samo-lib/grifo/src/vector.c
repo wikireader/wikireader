@@ -37,23 +37,23 @@ static void panic_dump(uint32_t *base, uint32_t r15_value, const char *message);
 // also save and restore kernel r15 so access to data works
 
 
-#define MAKE_PANIC(name, string)                                      \
-__attribute__((interrupt_handler))                                    \
-void name(void)                                                       \
-{                                                                     \
-	register uint32_t *base;                                      \
-	register uint32_t r15_value;                                  \
-								      \
-	asm volatile ("ld.w\t%0, %%sp    \n\t"                        \
-		      "ld.w\t%1, %%r15   \n\t"                        \
-		      "xld.w\t%%r15, __dp    "                        \
-		      : "=r" (base), "=r" (r15_value));               \
-								      \
-	panic_dump(base, r15_value, string);                          \
-								      \
-	for (;;) {                                                    \
-	}                                                             \
-}
+#define MAKE_PANIC(name, string)				\
+	__attribute__((interrupt_handler))			\
+	void name(void)						\
+	{							\
+		register uint32_t *base;			\
+		register uint32_t r15_value;			\
+								\
+		asm volatile ("ld.w\t%0, %%sp    \n\t"		\
+			      "ld.w\t%1, %%r15   \n\t"		\
+			      "xld.w\t%%r15, __dp    "		\
+			      : "=r" (base), "=r" (r15_value));	\
+								\
+		panic_dump(base, r15_value, string);		\
+								\
+		for (;;) {					\
+		}						\
+	}
 
 
 // the default interrupt handlers

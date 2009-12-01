@@ -24,7 +24,7 @@
 
 inline void Interrupt_initialise(void)
 {
-		asm volatile ("psrclr\t4");
+	asm volatile ("psrclr\t4");
 }
 
 
