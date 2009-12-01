@@ -30,93 +30,93 @@ void SPI_SDXmitByte(unsigned char ucData)
 
 void SPI_SDSendByte(unsigned char ucData)
 {
-  unsigned char ucTemp;
+	unsigned char ucTemp;
 
-  while((SPI_STATUS&0x40)!=0)
-    asm("nop"); // busy
+	while((SPI_STATUS&0x40)!=0)
+		asm("nop"); // busy
 
-  *SPI_TXD_ADDR = (ucData&0x000000FF);
+	*SPI_TXD_ADDR = (ucData&0x000000FF);
 
-  while((SPI_STATUS&0x40)!=0)
-    asm("nop"); // busy
+	while((SPI_STATUS&0x40)!=0)
+		asm("nop"); // busy
 
-  while((SPI_STATUS&0x04)==0)
-    asm("nop"); // Empty
+	while((SPI_STATUS&0x04)==0)
+		asm("nop"); // Empty
 
-  // Clear RDFF
-  ucTemp = (unsigned char)((*SPI_RXD_ADDR)&0x000000FF);
+	// Clear RDFF
+	ucTemp = (unsigned char)((*SPI_RXD_ADDR)&0x000000FF);
 }
 
 void SPI_SDSendBlock(const unsigned char *pBuf)
 {
-  unsigned short usTemp;
+	unsigned short usTemp;
 
-  // ADV mode
-  (*(volatile unsigned short*)0x30119C) = 0x0001;
+	// ADV mode
+	(*(volatile unsigned short*)0x30119C) = 0x0001;
 
-  ////////////////////////////////////////////////////
-  // Ch. 2 SPI transfer setting
-  // ADV Control
-  (*(volatile unsigned short*)0x301182) = 0x0000;
+	////////////////////////////////////////////////////
+	// Ch. 2 SPI transfer setting
+	// ADV Control
+	(*(volatile unsigned short*)0x301182) = 0x0000;
 
-  // Set counter 511 bytes, Dual Address mode
-  (*(volatile unsigned short*)0x301140) = 511;
-  (*(volatile unsigned short*)0x301142) = 0x8000;
+	// Set counter 511 bytes, Dual Address mode
+	(*(volatile unsigned short*)0x301140) = 511;
+	(*(volatile unsigned short*)0x301142) = 0x8000;
 
-  // Source: Byte, inc with init
-  (*(volatile unsigned short*)0x301144) = 0x0000;
-  (*(volatile unsigned short*)0x301146) = 0x2000;
+	// Source: Byte, inc with init
+	(*(volatile unsigned short*)0x301144) = 0x0000;
+	(*(volatile unsigned short*)0x301146) = 0x2000;
 
-  // Src Addr
-  (*(volatile unsigned long*)0x301184) = (unsigned long)(pBuf+1);
+	// Src Addr
+	(*(volatile unsigned long*)0x301184) = (unsigned long)(pBuf+1);
 
-  // Destination: Single, fixed
-  (*(volatile unsigned short*)0x301148) = 0x0000;
-  (*(volatile unsigned short*)0x30114A) = 0x0000;
+	// Destination: Single, fixed
+	(*(volatile unsigned short*)0x301148) = 0x0000;
+	(*(volatile unsigned short*)0x30114A) = 0x0000;
 
-  // Dest Addr
-  (*(volatile unsigned long*)0x301188) = 0x301704;
+	// Dest Addr
+	(*(volatile unsigned long*)0x301188) = 0x301704;
 
-  // Trigger Source SPI
-  (*(volatile unsigned char*)0x300299) &= 0xF0;
-  (*(volatile unsigned char*)0x300299) |= 0x09;
+	// Trigger Source SPI
+	(*(volatile unsigned char*)0x300299) &= 0xF0;
+	(*(volatile unsigned char*)0x300299) |= 0x09;
 
-  // Reset flag
-  (*(volatile unsigned char*)0x300289) = 0x20;
-  (*(volatile unsigned short*)0x30114E) = 0x0001;
+	// Reset flag
+	(*(volatile unsigned char*)0x300289) = 0x20;
+	(*(volatile unsigned short*)0x30114E) = 0x0001;
 
-  // Enable
-  (*(volatile unsigned short*)0x30114C) = 0x0001;
+	// Enable
+	(*(volatile unsigned short*)0x30114C) = 0x0001;
 
-  // Invoke transfer
-  (*(volatile unsigned long*)0x301704) = (0x000000FF&(pBuf[0]));
+	// Invoke transfer
+	(*(volatile unsigned long*)0x301704) = (0x000000FF&(pBuf[0]));
 
-  do
-    {
-      usTemp = ((*(volatile unsigned short*)0x30114C)&0x01);
-    }
-  while(usTemp!=0);
+	do
+	{
+		usTemp = ((*(volatile unsigned short*)0x30114C)&0x01);
+	}
+	while(usTemp!=0);
 
 
 }
 
 void SPI_SDReadByte(unsigned char *pData)
 {
-  unsigned char ucTemp;
+	unsigned char ucTemp;
 
-  while((SPI_STATUS&0x40)!=0)
-    asm("nop"); // busy
+	while((SPI_STATUS&0x40)!=0)
+		asm("nop"); // busy
 
-  *SPI_TXD_ADDR = (0x000000FF);
+	*SPI_TXD_ADDR = (0x000000FF);
 
-  while((SPI_STATUS&0x40)!=0)
-    asm("nop"); // busy
+	while((SPI_STATUS&0x40)!=0)
+		asm("nop"); // busy
 
-  while((SPI_STATUS&0x04)==0)
-    asm("nop"); // Empty
+	while((SPI_STATUS&0x04)==0)
+		asm("nop"); // Empty
 
-  ucTemp = (unsigned char)((*SPI_RXD_ADDR)&0x000000FF);
-  *pData = ucTemp;
+	ucTemp = (unsigned char)((*SPI_RXD_ADDR)&0x000000FF);
+	*pData = ucTemp;
 
 }
 

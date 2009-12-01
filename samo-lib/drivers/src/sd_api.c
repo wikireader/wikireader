@@ -581,10 +581,10 @@ get_size:
 	/* retrieving the block length does not work for all cards */
 	/* ulBlockLen = SdGetBlockLen(ucCSD);
 
-	if (ulBlockLen != 512) {
-		res = STA_BAD_BLCK;
-		goto error;
-	} */
+	   if (ulBlockLen != 512) {
+	   res = STA_BAD_BLCK;
+	   goto error;
+	   } */
 
 	// enable SPI to DMA
 	REG_SPI_CTL1 =
@@ -620,7 +620,7 @@ int SdCardDetect()
 	//if((ucTemp&0x40)!=0)
 //		return SD_FAILURE;
 //	else
-		return STA_SUCCESS;
+	return STA_SUCCESS;
 #else
 // 	ucTemp = (*(volatile unsigned char *)0x30038E);
 // 	if ((ucTemp & 0x01) != 0)
@@ -633,9 +633,9 @@ int SdCardDetect()
 int SdCardWriteProtected()
 {
 #if 1
-  //    ucTemp = (*(volatile unsigned char *)0x300392);
+	//    ucTemp = (*(volatile unsigned char *)0x300392);
 //	if((ucTemp&0x20)==0)
-		return 0;
+	return 0;
 //	else
 //		return 1;
 #else
@@ -683,7 +683,7 @@ int SdRdSect(unsigned short uwDeviceNo, unsigned long ulSectAddr, unsigned long 
 	 * and assumes a sector size of 512 bytes - lets hope it is true ..
 	 */
 	/* data_len = ulDataLen;
-	SectNum = ulDataLen / BLOCK_LENGTH; */
+	   SectNum = ulDataLen / BLOCK_LENGTH; */
 	data_len = ulDataLen * BLOCK_LENGTH;
 	SectNum = ulDataLen;
 
@@ -692,7 +692,7 @@ int SdRdSect(unsigned short uwDeviceNo, unsigned long ulSectAddr, unsigned long 
 
 	/* some cards return a bogus capacity */
 	/* if ((ulSectAddr + SectNum - 1) > (ulCapacity - 1))
-		return SD_FAILURE; */
+	   return SD_FAILURE; */
 
 	/* nothing to read */
 	if (SectNum == 0)

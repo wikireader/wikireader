@@ -118,7 +118,7 @@ bool FLASH_read(void *buffer, size_t size, uint32_t ROMAddress)
 	uint8_t *bytes = (uint8_t *)buffer;
 
 	for (i = 0; i < size; ++i) {
-			*bytes++ = SPI_exchange(FLASH_COMMAND_NoOperation);
+		*bytes++ = SPI_exchange(FLASH_COMMAND_NoOperation);
 	}
 	EEPROM_CS_HI();
 
