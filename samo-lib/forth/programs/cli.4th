@@ -111,30 +111,17 @@ base @ decimal
 \                                        -
 .( mkfile <file>                         - create a text file with dummy data )
 
-: (wrl) ( b u fileid -- f )
-  >r r@ write-file ?dup \ ior ior?
-  if  cr ." write error = " dec.
-      r> drop false exit
-  then
-  pad [ctrl] j over c!
-  1 r> write-file ?dup \ ior ior?
-  if  cr ." write error = " dec.
-      false exit
-  then
-  true ;
-
-
 : mkfile ( -- \ filename )
   bl parse w/o create-file ?dup
   if  cr ." create error = " dec. drop exit
   then
   >r \ save fileid
 
-  s" this is the first line of text" r@ (wrl) drop
-  s" this is the second line of text" r@ (wrl) drop
-  s" this is the third line of text" r@ (wrl) drop
-  s" 0123456789" r@ (wrl) drop
-  s" abcdefghijklmnopqrstuvwxyz" r@ (wrl) drop
+  s" this is the first line of text" r@ write-line drop
+  s" this is the second line of text" r@ write-line drop
+  s" this is the third line of text" r@ write-line drop
+  s" 0123456789" r@ write-line drop
+  s" abcdefghijklmnopqrstuvwxyz" r@ write-line drop
 
   r> close-file drop ;
 
@@ -207,7 +194,7 @@ variable spin-pos
   >r \ save fileid
   cr
   stress-level begin
-    s" 0123456789!@#$%^&*()-_=+[]{};;:,./?><`~|\ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" r@ (wrl)
+    s" 0123456789!@#$%^&*()-_=+[]{};;:,./?><`~|\ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" r@ write-line
     0= if r> close-file drop
        cr ." counts =" dec. dec. exit
     then

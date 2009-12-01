@@ -2293,7 +2293,20 @@ code write-file           :: write-file              ( c-addr u fileid -- ior )
         NEXT
 end-code
 
-\ write-line              :: write-line              ( c-addr u fileid -- ior )
+create write-line-eol     :: write-line-eol          ( - c-addr )
+13 c, 10 c,                                          \ EOL sequence: cr lf
+2
+constant write-line-eol-size :: write-line-eol-size  ( -- u )
+
+: write-line              :: write-line              ( c-addr u fileid -- ior )
+  >r r@        \ save fileid
+  write-file   \ output the data
+  ?dup if
+    r> drop
+  else
+    write-line-eol write-line-eol-size r> write-file
+  then
+;
 
 code xor                  :: x-or                    ( x1 x2 -- x3 )
         ld.w    %r4, [%r1]+
