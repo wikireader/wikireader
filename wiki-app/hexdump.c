@@ -40,7 +40,7 @@ void hexdump(const char *p, unsigned int len)
 		for (i = 0; i < sizeof(line); i++) {
 			if (i == wordlen * 2 + 52 ||
 			    i == wordlen * 2 + 69) {
-			    	line[i] = '|';
+				line[i] = '|';
 				continue;
 			}
 
@@ -64,7 +64,7 @@ void hexdump(const char *p, unsigned int len)
 
 			if (addr + i >= len)
 				break;
-		
+
 			v = p[addr + i];
 			line[pos + (i * 3) + 0] = nibble[v >> 4];
 			line[pos + (i * 3) + 1] = nibble[v & 0xf];

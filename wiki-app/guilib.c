@@ -33,7 +33,7 @@
 #define FRAMEBUFFER_SIZE     LCD_VRAM_SIZE
 
 
-#define EXTRACT_PIXEL(x, y) \
+#define EXTRACT_PIXEL(x, y)					\
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8; \
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8; \
 								\
@@ -66,23 +66,23 @@ static void guilib_set_pixel_plain(int x, int y, int v)
 {
 	EXTRACT_PIXEL(x, y)
 
-	if (v)
-		framebuffer[byte] |= 0x80 >> bit;
-	else
-		framebuffer[byte] &= ~(0x80 >> bit);
+		if (v)
+			framebuffer[byte] |= 0x80 >> bit;
+		else
+			framebuffer[byte] &= ~(0x80 >> bit);
 }
 
 void guilib_set_pixel(int x, int y, int v)
 {
 	EXTRACT_PIXEL(x, y)
 
-	if (v)
+		if (v)
 #ifdef DISPLAY_INVERTED
-		framebuffer[byte] &= ~(1 << (7 - bit));
-	else
-		framebuffer[byte] |= (1 << (7 - bit));
+			framebuffer[byte] &= ~(1 << (7 - bit));
+		else
+			framebuffer[byte] |= (1 << (7 - bit));
 #else
-		framebuffer[byte] |= (1 << (7 - bit));
+	framebuffer[byte] |= (1 << (7 - bit));
 	else
 		framebuffer[byte] &= ~(1 << (7 - bit));
 #endif
@@ -154,7 +154,7 @@ void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int 
 #ifdef DISPLAY_INVERTE
 			guilib_set_pixel_plain(x, y, 1);
 #else
-			guilib_set_pixel_plain(x, y, 0);
+		guilib_set_pixel_plain(x, y, 0);
 #endif
 	}
 }
@@ -179,7 +179,7 @@ void guilib_fb_unlock(void)
 		fb_refresh();
 }
 
-#define IMG_GET_PIXEL(img,x,y) \
+#define IMG_GET_PIXEL(img,x,y)						\
 	(img->data[(x + img->width * y) / 8] >> (7 - (x + img->width * y) % 8) & 1)
 
 void guilib_blit_image(const struct guilib_image *img, int x, int y)
@@ -192,7 +192,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 
 	if (y == 0 && img->width == FRAMEBUFFER_SCANLINE) {
 		memcpy(framebuffer + (x + FRAMEBUFFER_SCANLINE * y) / 8,
-			img->data, (img->width * img->height) / 8);
+		       img->data, (img->width * img->height) / 8);
 		return;
 	}
 
@@ -214,7 +214,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	for (xx = 0; xx < img->width; xx++)
 		for (yy = 0; yy < img->height; yy++)
 			guilib_set_pixel_plain(x + xx, y + yy,
-				IMG_GET_PIXEL(img, xx, yy));
+					       IMG_GET_PIXEL(img, xx, yy));
 }
 
 void guilib_init(void)

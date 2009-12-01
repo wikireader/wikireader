@@ -16,139 +16,139 @@
  */
 
 /*
-Assumptions:
+  Assumptions:
 
-1. Support up to 9 fonts - the default font and font 0 to font 7.  For
-   example, the normal 12-pixel font is used as the default font.
+  1. Support up to 9 fonts - the default font and font 0 to font 7.  For
+  example, the normal 12-pixel font is used as the default font.
 
-2. There is a default line space (e.g. 16 pixels).
+  2. There is a default line space (e.g. 16 pixels).
 
-3. The characters in the line are horizontally aligned to the bottom
-   of the line by default.  Most characters got 2 blank pixel space at
-   the bottom with some exceptions.  For example, "_" only got one
-   blank pixel line and "gjpqy" got no blank pixel space.  A 12-pixel
-   character actually takes 14 pixels from top to the bottom on
-   Windows and I think it's a good practice.  To save the storage, we
-   can still bitmap them in 12 pixels, but the font API should be
-   smart enough to return 14 pixels by padding with blank pixels at
-   the top or the bottom.
+  3. The characters in the line are horizontally aligned to the bottom
+  of the line by default.  Most characters got 2 blank pixel space at
+  the bottom with some exceptions.  For example, "_" only got one
+  blank pixel line and "gjpqy" got no blank pixel space.  A 12-pixel
+  character actually takes 14 pixels from top to the bottom on
+  Windows and I think it's a good practice.  To save the storage, we
+  can still bitmap them in 12 pixels, but the font API should be
+  smart enough to return 14 pixels by padding with blank pixels at
+  the top or the bottom.
 
-4. Each character in the line is adjacent to the previous character
-   without space.  The font API should pad one blank pixel space at
-   the right of the character.  (In some Chinese fonts, the blank
-   pixel space is at the left of the character and some characters
-   leave no blank space at all.  Since we are dealing with English
-   wiki, it is less important.)
+  4. Each character in the line is adjacent to the previous character
+  without space.  The font API should pad one blank pixel space at
+  the right of the character.  (In some Chinese fonts, the blank
+  pixel space is at the left of the character and some characters
+  leave no blank space at all.  Since we are dealing with English
+  wiki, it is less important.)
 
-5. If characters overlap, the glyphs of all characters retain.  (For
-   example, space does not overwrite the overlapped character since it
-   got no glyphs.)
+  5. If characters overlap, the glyphs of all characters retain.  (For
+  example, space does not overwrite the overlapped character since it
+  got no glyphs.)
 
-6. New line is adjacent to the previous line.
+  6. New line is adjacent to the previous line.
 
-7. The article content is coded in UTF-8.  Some UTF-8 control
-   characters are used as escape characters.
+  7. The article content is coded in UTF-8.  Some UTF-8 control
+  characters are used as escape characters.
 
-0 - escape character 0 (space line), the byte after it contains the
-    pixels of the space line
+  0 - escape character 0 (space line), the byte after it contains the
+  pixels of the space line
 
-1 - escape character 1 (new line with the default font and the default
-    line space)
+  1 - escape character 1 (new line with the default font and the default
+  line space)
 
-2 - escape character 2 (new line with the same font and line space as
-    the previous line, not considering the font changes and
-    adjustments)
+  2 - escape character 2 (new line with the same font and line space as
+  the previous line, not considering the font changes and
+  adjustments)
 
-3 - escape character 3 (new line with non-default font and line space)
-	Definition of the byte after it:
-		bit0~2 - font id (1 ~ 7)
-		bit3~7 - pixels of the line space
+  3 - escape character 3 (new line with non-default font and line space)
+  Definition of the byte after it:
+  bit0~2 - font id (1 ~ 7)
+  bit3~7 - pixels of the line space
 
-4 - escape character 4 (change font)
+  4 - escape character 4 (change font)
 
-    The font change (including alignment adjustment) is reset after
-    the escape character 1, 3, 4 or 5.
+  The font change (including alignment adjustment) is reset after
+  the escape character 1, 3, 4 or 5.
 
-    Definition of the byte after it:
+  Definition of the byte after it:
 
-      bit0~2 - font id (1 ~ 7)
+  bit0~2 - font id (1 ~ 7)
 
-      bit3~7 - adjustment to the default horizontal alignment
-	       (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
+  bit3~7 - adjustment to the default horizontal alignment
+  (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
 
-5 - escape character 5 (reset to the default font)
+  5 - escape character 5 (reset to the default font)
 
-6 - escape character 6 (reset to the default vertical alignment)
+  6 - escape character 6 (reset to the default vertical alignment)
 
-7 - escape character 7 (forward), the byte after it stands for the
-    pixels of move right (as the starting point of the next character).
+  7 - escape character 7 (forward), the byte after it stands for the
+  pixels of move right (as the starting point of the next character).
 
-    The next character or drawing line starts at the position after the movement.
-    The rightmost position after the movement is the rightmost pixel of the screen.
+  The next character or drawing line starts at the position after the movement.
+  The rightmost position after the movement is the rightmost pixel of the screen.
 
-8 - escape character 8 (backward), the byte after it stands for the
-    pixels to move left (from the original starting point of the next
-    character).
+  8 - escape character 8 (backward), the byte after it stands for the
+  pixels to move left (from the original starting point of the next
+  character).
 
-    The next character or line starts at the position after the movement.
+  The next character or line starts at the position after the movement.
 
-    The leftmost position after the movement is the leftmost pixel of the screen.
+  The leftmost position after the movement is the leftmost pixel of the screen.
 
-9 - escape character 9 (alignment vertical adjustment), the byte after
-    it stand for the pixels to adjust to the default vertical
-    alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
+  9 - escape character 9 (alignment vertical adjustment), the byte after
+  it stand for the pixels to adjust to the default vertical
+  alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
 
-    It takes effect for all lines after that until another excape
-    character 9 or escape character 6 is encountered.
+  It takes effect for all lines after that until another excape
+  character 9 or escape character 6 is encountered.
 
-10 - escape character 10 (drawing horizontal line from right to left,
-     1 pixel thick), the next byte after it stands for the length of
-     the line in pixels.
+  10 - escape character 10 (drawing horizontal line from right to left,
+  1 pixel thick), the next byte after it stands for the length of
+  the line in pixels.
 
-     The line starts at 1 pixel left to the starting position of the
-     next character.
+  The line starts at 1 pixel left to the starting position of the
+  next character.
 
-     Move forward/backward or set the alignment adjustment before
-     drawing lines as necessary.
+  Move forward/backward or set the alignment adjustment before
+  drawing lines as necessary.
 
-     The horizontal line does not change the horizontal position of
-     the next character.
+  The horizontal line does not change the horizontal position of
+  the next character.
 
-11 - escape character 11 (drawing vertical line from bottom to top, 1
-     pixel thick), the next byte after it stands for the length of the
-     line in pixels.
+  11 - escape character 11 (drawing vertical line from bottom to top, 1
+  pixel thick), the next byte after it stands for the length of the
+  line in pixels.
 
-     The vertical line starts at the current vertical position (the
-     starting position of the next character) and the bottom of the
-     current horizontal alignment.
+  The vertical line starts at the current vertical position (the
+  starting position of the next character) and the bottom of the
+  current horizontal alignment.
 
-     Move forward/backward or set the alignment adjustment before
-     drawing lines as necessary.
+  Move forward/backward or set the alignment adjustment before
+  drawing lines as necessary.
 
-     The horizontal line does not change the horizontal position of the next character.
+  The horizontal line does not change the horizontal position of the next character.
 
-12 - escape character 12 (single pixel horizontal line), the
-     horizontal line pccupies from the left-most pixel to the
-     right-most pixel.
-     The line is 1 pixel high.
+  12 - escape character 12 (single pixel horizontal line), the
+  horizontal line pccupies from the left-most pixel to the
+  right-most pixel.
+  The line is 1 pixel high.
 
-13 - escape character 13 (double pixel horizontal line), the
-     horizontal line pccupies from the left-most pixel to the
-     right-most pixel.
+  13 - escape character 13 (double pixel horizontal line), the
+  horizontal line pccupies from the left-most pixel to the
+  right-most pixel.
 
-     The line is 2 pixel high.
+  The line is 2 pixel high.
 
-14 - escape character 14 (single pixel vertical line), the vertical
-     line pccupies from the top to the bottom of the current line
-     space.
+  14 - escape character 14 (single pixel vertical line), the vertical
+  line pccupies from the top to the bottom of the current line
+  space.
 
-     The vertical line pccupies 1 pixel width.
+  The vertical line pccupies 1 pixel width.
 
-15 - escape character 15 (double pixel vertical line), the vertical
-     line pccupies from the top to the bottom of the current line
-     space.
+  15 - escape character 15 (double pixel vertical line), the vertical
+  line pccupies from the top to the bottom of the current line
+  space.
 
-     The vertical line pccupies 2 pixel width.
+  The vertical line pccupies 2 pixel width.
 */
 
 #ifndef _LCD_BUF_DRAW_H

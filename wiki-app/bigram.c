@@ -162,10 +162,10 @@ int search_string_cmp(char *title, char *search, int len)  // assuming search co
 
 #if 0  // some debug message
 #ifdef WIKIPCF
-char temp[512];
-memcpy(temp, search, len);
-temp[len] = '\0';
-showMsg(3, "[%s][%s]\n", title, temp);
+	char temp[512];
+	memcpy(temp, search, len);
+	temp[len] = '\0';
+	showMsg(3, "[%s][%s]\n", title, temp);
 #endif
 #endif
 

@@ -2,7 +2,7 @@
  * CDDL HEADER START
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").  
+ * Common Development and Distribution License (the "License").
  * You may not use this file except in compliance with the License.
  *
  * You can obtain a copy of the license at src/OPENSOLARIS.LICENSE
@@ -41,7 +41,7 @@
 #define MAXLEN 4096	/* Maximum input line length */
 
 #define PTSZ_SCALE      10
-#define DEF_PTSZ        10 
+#define DEF_PTSZ        10
 #define TP1_STYLE	1
 #define TTF_STYLE	2
 #define PCF_STYLE	3
@@ -78,8 +78,8 @@
 #define is_backspace(c) ((c)=='\010')
 #define is_formfeed(c)  ((c)=='\014')
 #define non_graphic_char(u)     ((u<=0x1f)||(u>=0x7f&&u<=0x9f))
-#define is_motion_char(u)       (is_tab(u)||is_newline(u)||\
-				is_formfeed(u)||is_backspace(u))
+#define is_motion_char(u)       (is_tab(u)||is_newline(u)||		\
+				 is_formfeed(u)||is_backspace(u))
 #define eq(s1,s2)       (strcmp((s1),(s2)) == 0)
 #define eqn(s1,s2,n)    (strncmp((s1),(s2),n) == 0)
 
@@ -93,7 +93,7 @@ typedef int Bool;
 //extern int set_pt_sz;
 //extern int mp_newdict_flg; */
 /*
-extern int     printstyle;
+  extern int     printstyle;
 */
 /*extern int pcf_ret, ttf_ret, tp1_ret;
 //extern double SPACINGwidth;

@@ -79,38 +79,38 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(0, 126, 23, 152, '1'),
 	KEY(0, 153, 23, 180, '*'),
 	KEY(0, 181, 23, 207, '@'),
-                              
+
 	KEY(24, 126, 47, 152, '2'),
 	KEY(24, 153, 47, 180, '$'),
 	KEY(24, 181, 47, 207, '?'),
-                              
+
 	KEY(48, 126, 71, 152, '3'),
 	KEY(48, 153, 71, 180, '%'),
 	KEY(48, 181, 71, 207, '!'),
-                              
+
 	KEY(72, 126, 95, 152, '4'),
 	KEY(72, 153, 95, 180, '#'),
 	KEY(72, 181, 95, 207, '&'),
-                              
+
 	KEY(96, 126, 119, 152, '5'),
 	KEY(96, 153, 119, 180, '('),
 	KEY(96, 181, 143, 207, ' '),
-                              
+
 	KEY(120, 126, 143, 152, '6'),
 	KEY(120, 153, 143, 180, ')'),
-                              
+
 	KEY(144, 126, 167, 152, '7'),
 	KEY(144, 153, 167, 180, '-'),
 	KEY(144, 181, 167, 207, ','),
-                              
+
 	KEY(168, 126, 191, 152, '8'),
 	KEY(168, 153, 191, 180, '+'),
 	KEY(168, 181, 191, 207, '.'),
-                              
+
 	KEY(192, 126, 215, 152, '9'),
 	KEY(192, 153, 215, 180, '='),
 	KEY(192, 181, 215, 207, '\''),
-                              
+
 	KEY(216, 126, 239, 152, '0'),
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
@@ -163,38 +163,38 @@ static struct keyboard_key password_num[] = {
 	KEY(0, 126, 23, 152, '1'),
 	KEY(0, 153, 23, 180, '*'),
 	KEY(0, 181, 23, 207, '@'),
-                              
+
 	KEY(24, 126, 47, 152, '2'),
 	KEY(24, 153, 47, 180, '$'),
 	KEY(24, 181, 47, 207, '?'),
-                              
+
 	KEY(48, 126, 71, 152, '3'),
 	KEY(48, 153, 71, 180, '%'),
 	KEY(48, 181, 71, 207, '!'),
-                              
+
 	KEY(72, 126, 95, 152, '4'),
 	KEY(72, 153, 95, 180, '#'),
 	KEY(72, 181, 95, 207, '&'),
-                              
+
 	KEY(96, 126, 119, 152, '5'),
 	KEY(96, 153, 119, 180, '('),
 	KEY(96, 181, 143, 207, ' '),
-                              
+
 	KEY(120, 126, 143, 152, '6'),
 	KEY(120, 153, 143, 180, ')'),
-                              
+
 	KEY(144, 126, 167, 152, '7'),
 	KEY(144, 153, 167, 180, '-'),
 	KEY(144, 181, 167, 207, ','),
-                              
+
 	KEY(168, 126, 191, 152, '8'),
 	KEY(168, 153, 191, 180, '+'),
 	KEY(168, 181, 191, 207, '.'),
-                              
+
 	KEY(192, 126, 215, 152, '9'),
 	KEY(192, 153, 215, 180, '='),
 	KEY(192, 181, 215, 207, '\''),
-                              
+
 	KEY(216, 126, 239, 152, '0'),
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
@@ -226,14 +226,14 @@ void keyboard_set_mode(int mode)
 {
 	kb_mode = mode;
 
-        if(kb_mode == KEYBOARD_CHAR) 
-           image_data = &image_data_char;
-        else if(kb_mode == KEYBOARD_NUM)
-           image_data = &image_data_num;
+	if(kb_mode == KEYBOARD_CHAR)
+		image_data = &image_data_char;
+	else if(kb_mode == KEYBOARD_NUM)
+		image_data = &image_data_num;
 //        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
 //           image_data = &image_data_clear_history;
-        else
-           image_data = NULL;
+	else
+		image_data = NULL;
 
 }
 
@@ -247,14 +247,14 @@ int keyboard_get_mode()
  */
 void keyboard_paint()
 {
-        if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR) 
-           image_data = &image_data_char;
-        else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM)
-           image_data = &image_data_num;
+	if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR)
+		image_data = &image_data_char;
+	else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM)
+		image_data = &image_data_num;
 //        else if(kb_mode == KEYBOARD_CLEAR_HISTORY)
 //           image_data = &image_data_clear_history;
-        else
-           return;
+	else
+		return;
 
 	guilib_fb_lock();
 	guilib_blit_image(image_data, 0, guilib_framebuffer_height() - image_data->height);
@@ -283,7 +283,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	if (kb_mode == KEYBOARD_CHAR) {
 		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
 			if (qwerty_char[i].left_x + KEY_GAP1 <= x && qwerty_char[i].right_x - KEY_GAP2 >= x
-			&& qwerty_char[i].left_y + KEY_GAP3 <= y && qwerty_char[i].right_y - KEY_GAP4 >= y) {
+			    && qwerty_char[i].left_y + KEY_GAP3 <= y && qwerty_char[i].right_y - KEY_GAP4 >= y) {
 				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_char[i].key));
 				return &qwerty_char[i];
 			}
@@ -292,7 +292,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_NUM) {
 		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
 			if (qwerty_num[i].left_x + KEY_GAP1 <= x && qwerty_num[i].right_x - KEY_GAP2 >= x
-			&& qwerty_num[i].left_y + KEY_GAP3 <= y && qwerty_num[i].right_y - KEY_GAP4 >= y) {
+			    && qwerty_num[i].left_y + KEY_GAP3 <= y && qwerty_num[i].right_y - KEY_GAP4 >= y) {
 				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_num[i].key));
 				return &qwerty_num[i];
 			}
@@ -301,7 +301,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_CLEAR_HISTORY) {
 		for (i = 0; i < ARRAY_SIZE(clear_history); ++i) {
 			if (clear_history[i].left_x + KEY_GAP1 <= x && clear_history[i].right_x - KEY_GAP2 >= x
-			&& clear_history[i].left_y + KEY_GAP3 <= y && clear_history[i].right_y - KEY_GAP4 >= y) {
+			    && clear_history[i].left_y + KEY_GAP3 <= y && clear_history[i].right_y - KEY_GAP4 >= y) {
 				return &clear_history[i];
 			}
 		}
@@ -309,7 +309,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_PASSWORD_CHAR) {
 		for (i = 0; i < ARRAY_SIZE(password_char); ++i) {
 			if (password_char[i].left_x + KEY_GAP1 <= x && password_char[i].right_x - KEY_GAP2 >= x
-			&& password_char[i].left_y + KEY_GAP3 <= y && password_char[i].right_y - KEY_GAP4 >= y) {
+			    && password_char[i].left_y + KEY_GAP3 <= y && password_char[i].right_y - KEY_GAP4 >= y) {
 				return &password_char[i];
 			}
 		}
@@ -317,7 +317,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_PASSWORD_NUM) {
 		for (i = 0; i < ARRAY_SIZE(password_num); ++i) {
 			if (password_num[i].left_x + KEY_GAP1 <= x && password_num[i].right_x - KEY_GAP2 >= x
-			&& password_num[i].left_y + KEY_GAP3 <= y && password_num[i].right_y - KEY_GAP4 >= y) {
+			    && password_num[i].left_y + KEY_GAP3 <= y && password_num[i].right_y - KEY_GAP4 >= y) {
 				return &password_num[i];
 			}
 		}
@@ -325,7 +325,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_RESTRICTED) {
 		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
 			if (restriction[i].left_x + KEY_GAP1 <= x && restriction[i].right_x - KEY_GAP2 >= x
-			&& restriction[i].left_y + KEY_GAP3 <= y && restriction[i].right_y - KEY_GAP4 >= y) {
+			    && restriction[i].left_y + KEY_GAP3 <= y && restriction[i].right_y - KEY_GAP4 >= y) {
 				return &restriction[i];
 			}
 		}
@@ -333,7 +333,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_FILTER_ON_OFF) {
 		for (i = 0; i < ARRAY_SIZE(filter_on_off); ++i) {
 			if (filter_on_off[i].left_x + KEY_GAP1 <= x && filter_on_off[i].right_x - KEY_GAP2 >= x
-			&& filter_on_off[i].left_y + KEY_GAP3 <= y && filter_on_off[i].right_y - KEY_GAP4 >= y) {
+			    && filter_on_off[i].left_y + KEY_GAP3 <= y && filter_on_off[i].right_y - KEY_GAP4 >= y) {
 				return &filter_on_off[i];
 			}
 		}
@@ -341,7 +341,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	else if (kb_mode == KEYBOARD_FILTER_OPTION) {
 		for (i = 0; i < ARRAY_SIZE(filter_option); ++i) {
 			if (filter_option[i].left_x + KEY_GAP1 <= x && filter_option[i].right_x - KEY_GAP2 >= x
-			&& filter_option[i].left_y + KEY_GAP3 <= y && filter_option[i].right_y - KEY_GAP4 >= y) {
+			    && filter_option[i].left_y + KEY_GAP3 <= y && filter_option[i].right_y - KEY_GAP4 >= y) {
 				return &filter_option[i];
 			}
 		}
@@ -415,7 +415,7 @@ int keyboard_key_reset_invert(int bFlag)
 			else
 				rc = 1;
 		}
-			
+
 		if (bFlag == KEYBOARD_RESET_INVERT_NOW)
 		{
 			guilib_fb_lock();

@@ -111,12 +111,12 @@ void perf_test(void)
 	}
 
 	msg(MSG_INFO, "memcpy speed: 1MB/%dms, SD card: 1MB/%dms, fatfs: 1MB/%dms\n",
-		(prof_container[PROF_memcpy].calls == 0 ? 0 :
-		((prof_container[PROF_memcpy].total_time / MCLK_MHz) / prof_container[PROF_memcpy].calls / 1000)),
-		(prof_container[PROF_sd_read].calls == 0 ? 0 :
-		((prof_container[PROF_sd_read].total_time / MCLK_MHz) / prof_container[PROF_sd_read].calls / 1000)),
-		(prof_container[PROF_fread].calls == 0 ? 0 :
-		((prof_container[PROF_fread].total_time / MCLK_MHz) / prof_container[PROF_fread].calls / (file_size / 100 / KB) / 100)));
+	    (prof_container[PROF_memcpy].calls == 0 ? 0 :
+	     ((prof_container[PROF_memcpy].total_time / MCLK_MHz) / prof_container[PROF_memcpy].calls / 1000)),
+	    (prof_container[PROF_sd_read].calls == 0 ? 0 :
+	     ((prof_container[PROF_sd_read].total_time / MCLK_MHz) / prof_container[PROF_sd_read].calls / 1000)),
+	    (prof_container[PROF_fread].calls == 0 ? 0 :
+	     ((prof_container[PROF_fread].total_time / MCLK_MHz) / prof_container[PROF_fread].calls / (file_size / 100 / KB) / 100)));
 
 out:
 	if (fd)

@@ -119,7 +119,7 @@ void enter_password_screen(char *msg)
 	keyboard_paint();
 	memset(&framebuffer[(BLACK_SPACE_START - 6)* LCD_VRAM_WIDTH_PIXELS / 8], 0, 6 * LCD_VRAM_WIDTH_PIXELS / 8);
 	memset(&framebuffer[BLACK_SPACE_START * LCD_VRAM_WIDTH_PIXELS / 8], 0xFF,
-		(LCD_HEIGHT_LINES - BLACK_SPACE_START - keyboard_height())* LCD_VRAM_WIDTH_PIXELS / 8);
+	       (LCD_HEIGHT_LINES - BLACK_SPACE_START - keyboard_height())* LCD_VRAM_WIDTH_PIXELS / 8);
 	render_string(SUBTITLE_FONT_IDX, -1, 50, msg, strlen(msg), 1);
 
 	framebuffer[82 * LCD_VRAM_WIDTH_PIXELS / 8 + 4] = 0xFC;
@@ -290,109 +290,109 @@ void handle_password_key(char keycode)
 {
 	switch (restricted_screen_mode)
 	{
-		case RESTRICTED_SCREEN_FIRST_TIME_PASSWORD:
-		case RESTRICTED_SCREEN_SET_PASSWORD:
-		case RESTRICTED_SCREEN_CONFIRM_PASSWORD:
-		case RESTRICTED_SCREEN_CHECK_PASSWORD:
-		case RESTRICTED_SCREEN_CHANGE_PASSWORD:
-			if (keycode == 'Y') {
-				if (restricted_screen_mode == RESTRICTED_SCREEN_FIRST_TIME_PASSWORD)
-				{
-					password_str_len = 0;
-					keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
-					enter_password_screen("Set Password");
-					restricted_screen_mode = RESTRICTED_SCREEN_SET_PASSWORD;
-				}
-				else if (restricted_screen_mode == RESTRICTED_SCREEN_SET_PASSWORD && password_str_len > 0)
-				{
-					restricted_screen_mode = RESTRICTED_SCREEN_CONFIRM_PASSWORD;
-					strcpy(password1, password_string);
-					password_str_len = 0;
-					if (restriction_filter_off == -1)
-						enter_password_screen("Re-enter Password");
-					else
-						enter_password_screen("Re-enter new password");
-				}
-				else if (restricted_screen_mode == RESTRICTED_SCREEN_CONFIRM_PASSWORD && password_str_len > 0)
-				{
-					if (strcmp(password1, password_string))
-					{
-						password_str_len = 0;
-						restricted_screen_mode = RESTRICTED_SCREEN_SET_PASSWORD;
-						enter_password_screen("Passwords do not match.");
-					}
-					else
-					{
-						restriction_filter_off = 0;
-						save_password(1);
-						restricted_screen_mode = RESTRICTED_SCREEN_FILTER_ON_OFF;
-						filter_on_off();
-					}
-				}
-				else if (password_str_len > 0)
-				{
-					check_password();
-				}
-			} else if (keycode == WL_KEY_BACKSPACE) {
-				password_remove_char();
-			} else if (is_supported_search_char(keycode)) {
-				password_add_char(tolower(keycode));
-			}
-			break;
-		case RESTRICTED_SCREEN_FILTER_ON_OFF:
-			if (keycode == 'Y') {
-				restriction_filter_off = 0;
-				if (init_filtering)
-				{
-					init_filtering = 0;
-					search_set_selection(-1);
-					display_mode = DISPLAY_MODE_INDEX;
-					keyboard_set_mode(KEYBOARD_CHAR);
-					repaint_search();
-				}
-				else
-				{
-					display_mode = DISPLAY_MODE_ARTICLE;
-					display_retrieved_article(saved_idx_article);
-				}
-			} else if (keycode == 'N') {
-				restriction_filter_off = 1;
-				save_password(2);
-				if (init_filtering)
-				{
-					init_filtering = 0;
-					search_set_selection(-1);
-					display_mode = DISPLAY_MODE_INDEX;
-					keyboard_set_mode(KEYBOARD_CHAR);
-					repaint_search();
-				}
-				else
-				{
-					display_mode = DISPLAY_MODE_ARTICLE;
-					display_retrieved_article(saved_idx_article);
-				}
-			}
-			break;
-		case RESTRICTED_SCREEN_FILTER_OPTION:
-			if (keycode == 'Y') {
-				filter_option_to_set = FILTER_OPTION_TO_SET_ON;
-				password_str_len = 0;
-				check_password();
-			}
-			else if (keycode == 'N') {
-				filter_option_to_set = FILTER_OPTION_TO_SET_OFF;
-				password_str_len = 0;
-				check_password();
-			}
-			if (keycode == 'P') {
+	case RESTRICTED_SCREEN_FIRST_TIME_PASSWORD:
+	case RESTRICTED_SCREEN_SET_PASSWORD:
+	case RESTRICTED_SCREEN_CONFIRM_PASSWORD:
+	case RESTRICTED_SCREEN_CHECK_PASSWORD:
+	case RESTRICTED_SCREEN_CHANGE_PASSWORD:
+		if (keycode == 'Y') {
+			if (restricted_screen_mode == RESTRICTED_SCREEN_FIRST_TIME_PASSWORD)
+			{
 				password_str_len = 0;
 				keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
-				enter_password_screen("Enter old password");
-				restricted_screen_mode = RESTRICTED_SCREEN_CHANGE_PASSWORD;
+				enter_password_screen("Set Password");
+				restricted_screen_mode = RESTRICTED_SCREEN_SET_PASSWORD;
 			}
-			break;
-		default:
-			break;
+			else if (restricted_screen_mode == RESTRICTED_SCREEN_SET_PASSWORD && password_str_len > 0)
+			{
+				restricted_screen_mode = RESTRICTED_SCREEN_CONFIRM_PASSWORD;
+				strcpy(password1, password_string);
+				password_str_len = 0;
+				if (restriction_filter_off == -1)
+					enter_password_screen("Re-enter Password");
+				else
+					enter_password_screen("Re-enter new password");
+			}
+			else if (restricted_screen_mode == RESTRICTED_SCREEN_CONFIRM_PASSWORD && password_str_len > 0)
+			{
+				if (strcmp(password1, password_string))
+				{
+					password_str_len = 0;
+					restricted_screen_mode = RESTRICTED_SCREEN_SET_PASSWORD;
+					enter_password_screen("Passwords do not match.");
+				}
+				else
+				{
+					restriction_filter_off = 0;
+					save_password(1);
+					restricted_screen_mode = RESTRICTED_SCREEN_FILTER_ON_OFF;
+					filter_on_off();
+				}
+			}
+			else if (password_str_len > 0)
+			{
+				check_password();
+			}
+		} else if (keycode == WL_KEY_BACKSPACE) {
+			password_remove_char();
+		} else if (is_supported_search_char(keycode)) {
+			password_add_char(tolower(keycode));
+		}
+		break;
+	case RESTRICTED_SCREEN_FILTER_ON_OFF:
+		if (keycode == 'Y') {
+			restriction_filter_off = 0;
+			if (init_filtering)
+			{
+				init_filtering = 0;
+				search_set_selection(-1);
+				display_mode = DISPLAY_MODE_INDEX;
+				keyboard_set_mode(KEYBOARD_CHAR);
+				repaint_search();
+			}
+			else
+			{
+				display_mode = DISPLAY_MODE_ARTICLE;
+				display_retrieved_article(saved_idx_article);
+			}
+		} else if (keycode == 'N') {
+			restriction_filter_off = 1;
+			save_password(2);
+			if (init_filtering)
+			{
+				init_filtering = 0;
+				search_set_selection(-1);
+				display_mode = DISPLAY_MODE_INDEX;
+				keyboard_set_mode(KEYBOARD_CHAR);
+				repaint_search();
+			}
+			else
+			{
+				display_mode = DISPLAY_MODE_ARTICLE;
+				display_retrieved_article(saved_idx_article);
+			}
+		}
+		break;
+	case RESTRICTED_SCREEN_FILTER_OPTION:
+		if (keycode == 'Y') {
+			filter_option_to_set = FILTER_OPTION_TO_SET_ON;
+			password_str_len = 0;
+			check_password();
+		}
+		else if (keycode == 'N') {
+			filter_option_to_set = FILTER_OPTION_TO_SET_OFF;
+			password_str_len = 0;
+			check_password();
+		}
+		if (keycode == 'P') {
+			password_str_len = 0;
+			keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
+			enter_password_screen("Enter old password");
+			restricted_screen_mode = RESTRICTED_SCREEN_CHANGE_PASSWORD;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -600,7 +600,7 @@ int clear_password_string(void)
 
 int get_password_string_len(void)
 {
-      return password_str_len;
+	return password_str_len;
 }
 
 void draw_restricted_mark(char *screen_buf)

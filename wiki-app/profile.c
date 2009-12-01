@@ -68,9 +68,9 @@ void prof_print(void)
 		count++;
 
 		msg(MSG_INFO, "   %s: total cpu time = %u, calls: %u, avg time per call = %u\n",
-			prof_to_string[index],
-			prof_container[index].total_time / MCLK_MHz, prof_container[index].calls,
-			((prof_container[index].total_time / MCLK_MHz) / prof_container[index].calls));
+		    prof_to_string[index],
+		    prof_container[index].total_time / MCLK_MHz, prof_container[index].calls,
+		    ((prof_container[index].total_time / MCLK_MHz) / prof_container[index].calls));
 
 	}
 

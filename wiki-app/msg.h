@@ -44,15 +44,15 @@ static inline void debug_printf(const char* fmt, ...)
 // a simplistic ASSERT based on MSG_ERROR
 #define ASSERT(cond) ASSERT_((cond), __FILE__, __LINE__)
 #define ASSERT_(cond, file, line) ASSERT__(cond, file, line)
-#define ASSERT__(cond, file, line)                                      \
-	do {                                                            \
-		if (!(cond)) {                                          \
-			msg(MSG_ERROR, "assert failure in: "            \
-			    #file " line:" #line                        \
-			    " for: " #cond "\n");                       \
-			for (;;) {                                      \
-			}                                               \
-		}                                                       \
+#define ASSERT__(cond, file, line)				\
+	do {							\
+		if (!(cond)) {					\
+			msg(MSG_ERROR, "assert failure in: "	\
+			    #file " line:" #line		\
+			    " for: " #cond "\n");		\
+			for (;;) {				\
+			}					\
+		}						\
 	} while (0)
 
 // DP = Debug Print

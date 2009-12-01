@@ -331,17 +331,17 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 	{
 		pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
 		if (offsetNextTitleSearch < search_info->buf_len &&
-			is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - offsetNextTitleSearch -
-			sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
+		    is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - offsetNextTitleSearch -
+				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
 			bigram_decode(result_list->title[result_list->count], pTitleSearch->sTitleSearch, MAX_TITLE_SEARCH);
 			rc = search_string_cmp(result_list->title[result_list->count], search_string, search_str_len);
 #ifndef INCLUDED_FROM_KERNEL
-msg(MSG_INFO, "rc %d, [%s], [", rc, result_list->title[result_list->count]);
-int i;
-for (i=0;i<search_str_len;i++)
-msg(MSG_INFO, "%c", search_string[i]);
-msg(MSG_INFO, "]\n");
+			msg(MSG_INFO, "rc %d, [%s], [", rc, result_list->title[result_list->count]);
+			int i;
+			for (i=0;i<search_str_len;i++)
+				msg(MSG_INFO, "%c", search_string[i]);
+			msg(MSG_INFO, "]\n");
 #endif
 			if (!rc) // match!
 			{
@@ -359,7 +359,7 @@ msg(MSG_INFO, "]\n");
 					pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
 				}
 				memcpy((void *)&result_list->idx_article[result_list->count],
-					(void *)&pTitleSearch->idxArticle, sizeof(long)); // use memcpy to avoid "Unaligned data access"
+				       (void *)&pTitleSearch->idxArticle, sizeof(long)); // use memcpy to avoid "Unaligned data access"
 				result_list->offset_list[result_list->count] = offset_fnd_start + offsetNextTitleSearch;
 				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
@@ -509,7 +509,7 @@ long get_search_result_start()
 					if (i >= lenHashedSearchString)
 						offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
 					if (offsetHasedSearchString[i] &&
-						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 					{
 						found = 1;
 						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -523,7 +523,7 @@ long get_search_result_start()
 				for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
 				{
 					if (offsetHasedSearchString[i] &&
-						(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 					{
 						found = 1;
 						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -544,7 +544,7 @@ long get_search_result_start()
 			{
 				offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
 				if (offsetHasedSearchString[i] &&
-					(i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+				    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 				{
 					found = 1;
 					offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
@@ -557,21 +557,21 @@ long get_search_result_start()
 	{
 		switch(search_str_len)
 		{
-			case 1:
-				c1 = search_string[0];
-				c2 = '\0';
-				c3 = '\0';
-				break;
-			case 2:
-				c1 = search_string[0];
-				c2 = search_string[1];
-				c3 = '\0';
-				break;
-			default:
-				c1 = search_string[0];
-				c2 = search_string[1];
-				c3 = search_string[2];
-				break;
+		case 1:
+			c1 = search_string[0];
+			c2 = '\0';
+			c3 = '\0';
+			break;
+		case 2:
+			c1 = search_string[0];
+			c2 = search_string[1];
+			c3 = '\0';
+			break;
+		default:
+			c1 = search_string[0];
+			c2 = search_string[1];
+			c3 = search_string[2];
+			break;
 		}
 		idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
 			bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
@@ -656,21 +656,21 @@ long get_search_result_end()
 			{
 				switch(len_local_search_string)
 				{
-					case 1:
-						c1 = local_search_string[0];
-						c2 = '\0';
-						c3 = '\0';
-						break;
-					case 2:
-						c1 = local_search_string[0];
-						c2 = local_search_string[1];
-						c3 = '\0';
-						break;
-					default:
-						c1 = local_search_string[0];
-						c2 = local_search_string[1];
-						c3 = local_search_string[2];
-						break;
+				case 1:
+					c1 = local_search_string[0];
+					c2 = '\0';
+					c3 = '\0';
+					break;
+				case 2:
+					c1 = local_search_string[0];
+					c2 = local_search_string[1];
+					c3 = '\0';
+					break;
+				default:
+					c1 = local_search_string[0];
+					c2 = local_search_string[1];
+					c3 = local_search_string[2];
+					break;
 				}
 				idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
 					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
@@ -734,7 +734,7 @@ void search_reload()
 {
 //	static const char search_result_str[] = "Search:";
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 //	int available_count;
 	int y_pos;
 //	const char * result;
@@ -772,14 +772,14 @@ void search_reload()
 	if (result_list->count) {
 		unsigned int i;
 		unsigned int count = result_list->count < screen_display_count ?
-					result_list->count : screen_display_count;
+			result_list->count : screen_display_count;
 
 		for (i = 0; i < count; i++) {
 			title = result_list->title[i];
 			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
 			y_pos += RESULT_HEIGHT;
 			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
-			   break;
+				break;
 		}
 		if (result_list->cur_selected >= screen_display_count)
 			result_list->cur_selected = screen_display_count - 1;
@@ -794,7 +794,7 @@ out:
 void search_reload_ex(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos,start_x_search=0;
 	int end_y_pos;
 	static int last_start_x_search=0;
@@ -824,17 +824,17 @@ void search_reload_ex(int flag)
 			guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
 		if(search_string_changed_remove)
 		{
-		    if(!search_str_len)
-		       start_x_search = 0;
-		    else
-		       start_x_search = search_string_pos[search_str_len];
-		    search_string_changed_remove = false;
-		    if (start_x_search < LCD_BUF_WIDTH_PIXELS)
-			guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
-		    //else
-		    //{
-		    //	guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-		    //}
+			if(!search_str_len)
+				start_x_search = 0;
+			else
+				start_x_search = search_string_pos[search_str_len];
+			search_string_changed_remove = false;
+			if (start_x_search < LCD_BUF_WIDTH_PIXELS)
+				guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
+			//else
+			//{
+			//	guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+			//}
 		}
 
 
@@ -870,7 +870,7 @@ void search_reload_ex(int flag)
 	{
 		unsigned int i;
 		unsigned int count = result_list->count < screen_display_count ?
-					result_list->count : screen_display_count;
+			result_list->count : screen_display_count;
 		if (!result_list->count) {
 			if (!bNoResultLastTime)
 			{
@@ -887,7 +887,7 @@ void search_reload_ex(int flag)
 		{
 			end_y_pos = y_pos + RESULT_HEIGHT - 1;
 			if (screen_display_count < NUMBER_OF_FIRST_PAGE_RESULTS && end_y_pos > LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1)
-				 end_y_pos = LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1;
+				end_y_pos = LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1;
 			guilib_clear_area(0, y_pos, 239, end_y_pos);
 			if (i < count)
 			{
@@ -918,7 +918,7 @@ out:
 void search_result_display()
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-					NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
+		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos=0;
 	char *title;
 
@@ -944,14 +944,14 @@ void search_result_display()
 	if (result_list->count) {
 		unsigned int i;
 		unsigned int count = result_list->count < screen_display_count ?
-					result_list->count : screen_display_count;
+			result_list->count : screen_display_count;
 
 		for (i = 0; i < count; i++) {
 			title = result_list->title[i];
 			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
 			y_pos += RESULT_HEIGHT;
 			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
-			   break;
+				break;
 		}
 		if (result_list->cur_selected >= screen_display_count)
 			result_list->cur_selected = screen_display_count - 1;
@@ -985,10 +985,10 @@ int search_add_char(char c)
 //	result_list->cur_selected = -1;
 //	result_list->first_item = 0;
 //	result_list->count = 0;
-	 #ifdef INCLUDED_FROM_KERNEL
+#ifdef INCLUDED_FROM_KERNEL
 	time_search_last=get_time_search();
 	//return;
-	#endif
+#endif
 	search_string_changed = true;
 	search_populate_result();
 	result_list->cur_selected = -1;
@@ -1018,10 +1018,10 @@ int search_remove_char(int bPopulate)
 //	result_list->first_item = 0;
 //	result_list->count = 0;
 
-	 #ifdef INCLUDED_FROM_KERNEL
+#ifdef INCLUDED_FROM_KERNEL
 	time_search_last=get_time_search();
 	//return;
-	#endif
+#endif
 	search_string_changed = true;
 	search_string_changed_remove = true;
 	if (bPopulate || !search_str_len)
@@ -1077,18 +1077,18 @@ unsigned int search_result_count()
 
 int clear_search_string()
 {
-      if (search_str_len == 0)
-	  return -1;
+	if (search_str_len == 0)
+		return -1;
 
-      result_list->count = 0;
-      strcpy(search_string,"");
-      search_str_len = 0;
-      return 0;
+	result_list->count = 0;
+	strcpy(search_string,"");
+	search_str_len = 0;
+	return 0;
 }
 
 int get_search_string_len()
 {
-      return search_str_len;
+	return search_str_len;
 }
 
 int search_result_selected()
@@ -1099,8 +1099,8 @@ int search_result_selected()
 
 extern unsigned char * file_buffer;
 extern int restricted_article;
-#define HEAP_ALLOC(var,size) \
-    lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
+#define HEAP_ALLOC(var,size)						\
+	lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
 //static HEAP_ALLOC(wrkmem,LZO1X_1_MEM_COMPRESS);
 char *compressed_buf = NULL;
 int retrieve_article(long idx_article)
@@ -1144,7 +1144,7 @@ int retrieve_article(long idx_article)
 				memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
 				dat_article_len -= LZMA_PROPS_SIZE + 1;
 				rc = (int)LzmaDecode(file_buffer, &file_buffer_len, compressed_buf + LZMA_PROPS_SIZE + 1, &dat_article_len,
-					propsEncoded, propsSize, LZMA_FINISH_ANY, &status, &g_Alloc);
+						     propsEncoded, propsSize, LZMA_FINISH_ANY, &status, &g_Alloc);
 				if (rc == SZ_OK || rc == SZ_ERROR_INPUT_EOF) /* not sure why it generate SZ_ERROR_INPUT_EOF yet but result ok */
 				{
 					file_buffer[file_buffer_len] = '\0';

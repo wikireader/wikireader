@@ -2,7 +2,7 @@
  * CDDL HEADER START
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").  
+ * Common Development and Distribution License (the "License").
  * You may not use this file except in compliance with the License.
  *
  * You can obtain a copy of the license at src/OPENSOLARIS.LICENSE
@@ -170,34 +170,34 @@ struct scaled_charmetric {
 };
 
 typedef struct charmetric_bmf{
-       INT8   width;
-       INT8   height;
-       INT8   widthBytes;
-       INT8   widthBits;
-       INT8   ascent;
-       INT8   descent;
-       INT8   LSBearing;
-       INT8   RSBearing;
-       char   bitmap[48];
+	INT8   width;
+	INT8   height;
+	INT8   widthBytes;
+	INT8   widthBits;
+	INT8   ascent;
+	INT8   descent;
+	INT8   LSBearing;
+	INT8   RSBearing;
+	char   bitmap[48];
 }charmetric_bmf;
 
 typedef struct charmetric_bmf_header{
-       INT8   width;
-       INT8   height;
-       INT8   widthBytes;
-       INT8   widthBits;
-       INT8   ascent;
-       INT8   descent;
-       INT8   LSBearing;
-       INT8   RSBearing;
-       INT32  pos;
+	INT8   width;
+	INT8   height;
+	INT8   widthBytes;
+	INT8   widthBits;
+	INT8   ascent;
+	INT8   descent;
+	INT8   LSBearing;
+	INT8   RSBearing;
+	INT32  pos;
 }charmetric_bmf_header;
 
 typedef struct font_bmf_header{
-       INT8   linespace;
-       INT8   ascent;
-       INT8   descent;
-       INT8   bmp_buffer_len;
+	INT8   linespace;
+	INT8   ascent;
+	INT8   descent;
+	INT8   bmp_buffer_len;
 }font_bmf_header;
 
 
@@ -205,14 +205,14 @@ typedef struct fontmetric pcf_fontmet_t;
 
 
 struct pcffont_bmf {
-    	char *file;
-        int fd;
-        pcf_fontmet_t Fmetrics;
-        int bPartialFont;
-        struct pcffont_bmf *supplement_font;
-        char *charmetric;
-        int file_size;
-        int bmp_buffer_len;
+	char *file;
+	int fd;
+	pcf_fontmet_t Fmetrics;
+	int bPartialFont;
+	struct pcffont_bmf *supplement_font;
+	char *charmetric;
+	int file_size;
+	int bmp_buffer_len;
 };
 
 typedef struct pcffont_bmf pcffont_bmf_t;

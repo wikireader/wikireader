@@ -237,8 +237,8 @@ int article_open_pcf(const char *filename)
 void article_display_pcf(int yPixel)
 {
 	int pos;
-    int copysize;
-    int framebuffersize;
+	int copysize;
+	int framebuffersize;
 
 	framebuffersize  = 	guilib_framebuffer_size();
 
@@ -284,7 +284,7 @@ static void handle_search_key(char keycode)
 		}
 		else
 		{
-		   return;
+			return;
 		}
 	}
 
@@ -423,7 +423,7 @@ static void handle_touch(struct wl_input_event *ev)
 	int i;
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
-		ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
+		    ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	mode = keyboard_get_mode();
 	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_NUM))
@@ -452,30 +452,30 @@ static void handle_touch(struct wl_input_event *ev)
 					goto out;
 				}
 				if(search_result_count()==0)
-				   goto out;
+					goto out;
 
-				 //search_set_selection(last_selection);
-				 //search_open_article(last_selection);
-				 if(search_result_selected()>=0)
-				 {
-				    display_mode = DISPLAY_MODE_ARTICLE;
-				    last_display_mode = DISPLAY_MODE_INDEX;
-				    search_open_article(search_result_selected());
-				 }
+				//search_set_selection(last_selection);
+				//search_open_article(last_selection);
+				if(search_result_selected()>=0)
+				{
+					display_mode = DISPLAY_MODE_ARTICLE;
+					last_display_mode = DISPLAY_MODE_INDEX;
+					search_open_article(search_result_selected());
+				}
 			}
 			touch_down_on_keyboard = 0;
 			touch_down_on_list = 0;
 		} else {
 			if(enter_touch_y_pos<0)  //record first touch y pos
-			   enter_touch_y_pos = ev->touch_event.y;
+				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
 			start_search_time = ev->touch_event.ticks;
 			last_delete_time = start_search_time;
 			if (key) {
 				if(key->key==8)//press "<" button
 				{
-				    press_delete_button = true;
-			       }
+					press_delete_button = true;
+				}
 				else if(key->key == -42)
 				{
 					mode = keyboard_get_mode();
@@ -507,24 +507,24 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if(touch_search == 0)
 				{
-				    //last_search_y_pos = ev->touch_event.y;
-				    touch_search = 1;
+					//last_search_y_pos = ev->touch_event.y;
+					touch_search = 1;
 				}
 				else
 				{
-				    if(search_result_selected()>=0 && abs(ev->touch_event.y-search_touch_pos_y_last)>5)
-				    {
-					invert_selection(search_result_selected(),-1, RESULT_START, RESULT_HEIGHT);
-					search_set_selection(-1);
-				    }
-				    goto out;
+					if(search_result_selected()>=0 && abs(ev->touch_event.y-search_touch_pos_y_last)>5)
+					{
+						invert_selection(search_result_selected(),-1, RESULT_START, RESULT_HEIGHT);
+						search_set_selection(-1);
+					}
+					goto out;
 				}
 
 				int new_selection;
 				if((ev->touch_event.y - RESULT_START)<0)
-				    new_selection = -1;
+					new_selection = -1;
 				else
-				    new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
+					new_selection = ((unsigned int)ev->touch_event.y - RESULT_START) / RESULT_HEIGHT;
 
 				if (new_selection == search_result_selected()) goto out;
 
@@ -537,7 +537,7 @@ static void handle_touch(struct wl_input_event *ev)
 				//invert_selection(search_result_selected(), new_selection, RESULT_START, RESULT_HEIGHT);
 				invert_selection(-1, new_selection, RESULT_START, RESULT_HEIGHT);
 
-				 last_selection = new_selection ;
+				last_selection = new_selection ;
 				search_set_selection(new_selection);
 				search_touch_pos_y_last = ev->touch_event.y;
 			}
@@ -547,9 +547,9 @@ static void handle_touch(struct wl_input_event *ev)
 	{
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-			#ifdef INCLUDED_FROM_KERNEL
+#ifdef INCLUDED_FROM_KERNEL
 			delay_us(100000 * 2);
-			#endif
+#endif
 			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
@@ -580,7 +580,7 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 		} else {
 			if(enter_touch_y_pos<0)  //record first touch y pos
-			   enter_touch_y_pos = ev->touch_event.y;
+				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
 			if (key) {
 				if (!touch_down_on_keyboard)
@@ -606,9 +606,9 @@ static void handle_touch(struct wl_input_event *ev)
 		if (ev->touch_event.value == 0) {
 			if (key->key == 'Y' || key->key == 'N' || key->key == 'P')
 			{
-				#ifdef INCLUDED_FROM_KERNEL
+#ifdef INCLUDED_FROM_KERNEL
 				delay_us(100000 * 2);
-				#endif
+#endif
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
 			}
 			else
@@ -628,15 +628,15 @@ static void handle_touch(struct wl_input_event *ev)
 			touch_down_on_keyboard = 0;
 		} else {
 			if(enter_touch_y_pos<0)  //record first touch y pos
-			   enter_touch_y_pos = ev->touch_event.y;
+				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
 			start_search_time = ev->touch_event.ticks;
 			last_delete_time = start_search_time;
 			if (key) {
 				if(key->key==8)//press "<" button
 				{
-				    press_delete_button = true;
-			       }
+					press_delete_button = true;
+				}
 				else if(key->key == -42)
 				{
 					mode = keyboard_get_mode();
@@ -681,7 +681,7 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 
 			if (diff_ticks <= 0 || abs(article_moved_pixels) > SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD ||
-				abs(article_moved_pixels) < SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD)
+			    abs(article_moved_pixels) < SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD)
 				finger_move_speed = 0;
 			else
 			{
@@ -791,7 +791,7 @@ static void handle_touch(struct wl_input_event *ev)
 					article_scroll_pixel = 1;
 				}
 				else if (article_moved_pixels < article_scroll_pixel &&
-					time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.075))
+					 time_diff(get_time_ticks(), last_unreleased_time) > seconds_to_ticks(0.075))
 				{
 					article_moved_pixels = 0;
 					touch_y_last_unreleased = ev->touch_event.y;
@@ -873,7 +873,7 @@ int wikilib_run(void)
 		if (more_events)
 			sleep = 0;
 		else
-		sleep = 1;
+			sleep = 1;
 		if (!more_events && display_mode == DISPLAY_MODE_ARTICLE && render_article_with_pcf())
 			sleep = 0;
 		else if (!more_events && display_mode == DISPLAY_MODE_INDEX && render_search_result_with_pcf())
@@ -890,55 +890,55 @@ int wikilib_run(void)
 		time_now = get_time_ticks();
 		if(display_mode == DISPLAY_MODE_INDEX)
 		{
-		    if (press_delete_button && get_search_string_len()>0)
-		    {
-			 sleep = 0;
-			 if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
-			 {
-			     if (!clear_search_string())
-			     {
-				search_string_changed_remove = true;
-				search_reload_ex(SEARCH_RELOAD_NORMAL);
-			     }
-			     press_delete_button = false;
-			 }
-			 else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-				time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
-			 {
-			     if (!search_remove_char(0))
-			     {
-				     search_string_changed_remove = true;
-				     search_reload_ex(SEARCH_RELOAD_NO_POPULATE);
-			     }
-			     last_delete_time = time_now;
-			 }
-		    }
+			if (press_delete_button && get_search_string_len()>0)
+			{
+				sleep = 0;
+				if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
+				{
+					if (!clear_search_string())
+					{
+						search_string_changed_remove = true;
+						search_reload_ex(SEARCH_RELOAD_NORMAL);
+					}
+					press_delete_button = false;
+				}
+				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
+				{
+					if (!search_remove_char(0))
+					{
+						search_string_changed_remove = true;
+						search_reload_ex(SEARCH_RELOAD_NO_POPULATE);
+					}
+					last_delete_time = time_now;
+				}
+			}
 		}
 		else if (display_mode == DISPLAY_MODE_RESTRICTED)
 		{
-		    if (press_delete_button && get_password_string_len()>0)
-		    {
-			 sleep = 0;
-			 time_now = get_time_ticks();
-			 if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
-			 {
-			     clear_password_string();
-			     press_delete_button = false;
-			 }
-			 else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-				time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
-			 {
-			     password_remove_char();
-			     last_delete_time = time_now;
-			 }
-		    }
+			if (press_delete_button && get_password_string_len()>0)
+			{
+				sleep = 0;
+				time_now = get_time_ticks();
+				if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
+				{
+					clear_password_string();
+					press_delete_button = false;
+				}
+				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
+				{
+					password_remove_char();
+					last_delete_time = time_now;
+				}
+			}
 		}
 
 #endif
 
 		if (!more_events && display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0, 0))
 		{
-		    sleep = 0;
+			sleep = 0;
 		}
 
 		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK)) // check if need to reset invert

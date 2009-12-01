@@ -78,7 +78,7 @@ static unsigned long hash_key(char *s, int len)
 			c += 32;
 		hash = ((hash << 5) + hash) + c;
 		i++;
-	 }
+	}
 	return hash % MAX_SEARCH_HASH_KEY;
 }
 

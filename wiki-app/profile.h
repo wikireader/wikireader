@@ -47,23 +47,23 @@ enum {
 };
 
 #if PROFILER_ON
-#define PROF_TO_STRING \
-	[PROF_add]	= "addition", \
-	[PROF_subt]	= "subtract", \
-	[PROF_mult]	= "multipl ", \
-	[PROF_div]      = "division", \
-	[PROF_mod]	= "modulo  ", \
-	[PROF_delay]	= "delay   ", \
-	[PROF_memset]	= "memset  ", \
-	[PROF_memcpy]	= "memcpy  ", \
-	[PROF_memcmp]	= "memcmp  ", \
-	[PROF_fread]	= "fread   ", \
-	[PROF_sd_read]	= "sd read ", \
-	[PROF_sd_cmd]	= "sd cmd  ", \
-	[PROF_sd_block]	= "sd block", \
-	[PROF_sd_data]	= "sd data ", \
-	[PROF_sd_spi]	= "sd spi  ", \
-	[PROF_sd_rcvr]	= "sd rcvr ",
+#define PROF_TO_STRING				\
+	[PROF_add]	= "addition",		\
+		[PROF_subt]	= "subtract",	\
+		[PROF_mult]	= "multipl ",	\
+		[PROF_div]      = "division",	\
+		[PROF_mod]	= "modulo  ",	\
+		[PROF_delay]	= "delay   ",	\
+		[PROF_memset]	= "memset  ",	\
+		[PROF_memcpy]	= "memcpy  ",	\
+		[PROF_memcmp]	= "memcmp  ",	\
+		[PROF_fread]	= "fread   ",	\
+		[PROF_sd_read]	= "sd read ",	\
+		[PROF_sd_cmd]	= "sd cmd  ",	\
+		[PROF_sd_block]	= "sd block",	\
+		[PROF_sd_data]	= "sd data ",	\
+		[PROF_sd_spi]	= "sd spi  ",	\
+		[PROF_sd_rcvr]	= "sd rcvr ",
 
 extern struct prof_container prof_container[PROF_COUNT];
 #endif
