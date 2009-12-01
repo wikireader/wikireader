@@ -62,7 +62,7 @@ typedef struct _TITLE_SEARCH { // used to mask the porinter to the remainder of 
 
 
 static int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBufFnd,
-	int lenHashSequentialSearch, char *sHashSequentialSearch, long *countHashSequentialSearchForNextChar)
+					  int lenHashSequentialSearch, char *sHashSequentialSearch, long *countHashSequentialSearchForNextChar)
 {
 	int lenTitleSearch = strlen(sLocalTitleSearch);
 	int lenSame;
@@ -79,7 +79,7 @@ static int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBu
 	for (i = lenSame; i < lenHashSequentialSearch; i++)
 	{
 		if (!bHashAdded && i >= MAX_SEARCH_STRING_ALL_HASHED_LEN && i < lenTitleSearch &&
-			countHashSequentialSearchForNextChar[i] >= SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
+		    countHashSequentialSearchForNextChar[i] >= SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
 		{
 			add_search_hash(sLocalTitleSearch, i + 1, offsetBufFnd);
 			bHashAdded = 1;
@@ -132,10 +132,10 @@ static long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd,
 				sTitleSearch[lenTitleSearch + 1] = '\0';
 				bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch, MAX_TITLE_LEN);
 				while (offsetBufFnd < lenBufFnd &&
-					(rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
+				       (rc = search_string_cmp(sLocalTitleSearch, sTitleSearch, strlen(sTitleSearch))) < 0)
 				{
 					lenHashSequentialSearch = process_hash_sequential_search(sLocalTitleSearch, offsetBufFnd,
-						lenHashSequentialSearch, sHashSequentialSearch, countHashSequentialSearchForNextChar);
+												 lenHashSequentialSearch, sHashSequentialSearch, countHashSequentialSearchForNextChar);
 					offsetBufFnd += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) + 2;
 					pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
 					bigram_decode(sLocalTitleSearch, pTitleSearch->sTitleSearch, MAX_TITLE_LEN);
