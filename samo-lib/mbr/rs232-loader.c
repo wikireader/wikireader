@@ -1,20 +1,29 @@
 /*
-    e07 bootloader suite
-    Copyright (c) 2008 Daniel Mack <daniel@caiaq.de>
+ * rs232-loader - load elf file over RS232 console port
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Marek Lindner <marek@openmoko.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+// Note: This will need changes to MBR baud rate or the load time will
+//       be very long
+//       Try 115200 or 57600 and keep the interface connection very short
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 
 #define APPLICATION_TITLE "rs232 loader"
 
@@ -105,9 +114,9 @@ void rs232_elf_load(void)
 	hdr = (elf32_hdr *)BUFFER;
 
 	if (hdr->e_ident[0] != ELFMAG0 ||
-	      hdr->e_ident[1] != ELFMAG1 ||
-	      hdr->e_ident[2] != ELFMAG2 ||
-	      hdr->e_ident[3] != ELFMAG3) {
+	    hdr->e_ident[1] != ELFMAG1 ||
+	    hdr->e_ident[2] != ELFMAG2 ||
+	    hdr->e_ident[3] != ELFMAG3) {
 		print("invalid ELF magic\n");
 		return;
 	}

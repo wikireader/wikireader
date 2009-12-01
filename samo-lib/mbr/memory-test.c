@@ -137,12 +137,12 @@ int memory_test_walking1(void * start, unsigned int length)
 
 /* negative runs == run forever */
 
-#define INTERRUPT_HERE()			\
-	do {					\
-		if (console_input_available()) { \
-			console_input_char();	\
-			return;			\
-		}				\
+#define INTERRUPT_HERE()				\
+	do {						\
+		if (console_input_available()) {	\
+			console_input_char();		\
+			return;				\
+		}					\
 	} while (0)
 
 void memory_test(void *start, unsigned int length)

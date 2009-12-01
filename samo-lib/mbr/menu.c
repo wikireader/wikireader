@@ -309,14 +309,14 @@ ProcessReturnType process(int block, int status)
 					break;
 				case 4:
 					// Contrast_set(Contrast_default);
-					{
-						ParameterType param;
-						parameters_load(&param);
-						param.contrast = Contrast_get();
-						parameters_save(&param);
-						ClearContrastChanged();
-					}
-					break;
+				{
+					ParameterType param;
+					parameters_load(&param);
+					param.contrast = Contrast_get();
+					parameters_save(&param);
+					ClearContrastChanged();
+				}
+				break;
 				}
 				battery_status();
 				delay_us(1000);

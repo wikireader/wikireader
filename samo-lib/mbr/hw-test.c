@@ -165,7 +165,7 @@ static void fill(uint8_t value)
 }
 
 static void stripe(uint8_t value, uint8_t fill)
-   {
+{
 	int x = 0;
 	int y = 0;
 	uint8_t *fb = (uint8_t*)LCD_VRAM;
