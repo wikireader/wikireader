@@ -59,7 +59,10 @@ ${BUILD_PREFIX}%.o: %.s
 
 # convert PNG to C header file
 %.h: %.png ${IMAGE2HEADER}
-	${IMAGE2HEADER} --inverted --header-file="$@" --variable-name="${@:.h=_image}" "$<"
+	${IMAGE2HEADER} --inverted --header-file="$@" --variable-name="$(notdir ${@:.h=_image})" "$<"
+
+${BUILD_PREFIX}%.h: %.png ${IMAGE2HEADER}
+	${IMAGE2HEADER} --inverted --header-file="$@" --variable-name="$(notdir ${@:.h=_image})" "$<"
 
 
 -include $(wildcard *.d) dummy
