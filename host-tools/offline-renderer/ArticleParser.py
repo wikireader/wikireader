@@ -87,6 +87,7 @@ def main():
     off_name = 'offsets.db'
     start_article = 1
     article_count = 'all'
+    failed_articles = 0
     do_output = True
 
     for opt, arg in opts:
@@ -139,13 +140,14 @@ def main():
     offset_cursor = offset_db.cursor()
 
     if do_output:
-        p = subprocess.Popen(PARSER_COMMAND + ' > ' + out_name, shell=True, stdin=subprocess.PIPE)
+        background_process = PARSER_COMMAND + ' > ' + out_name
     else:
-        p = None
+        background_process = None
 
     # process all required articles
     current_file_id = None
-    f = None
+    input_file = None
+    process_id = None
     total_articles = 0
     while article_count == 'all' or article_count != 0:
         offset_cursor.execute('select file_id, title, seek, length from offsets where article_number = ? limit 1',
@@ -157,30 +159,65 @@ def main():
         #print "row : ", row   # just to show select order is wrong, check create table and insert/import
         if file_id != current_file_id:
             current_file_id = file_id
-            if f:
-                f.close()
+            if input_file:
+                input_file.close()
             offset_cursor.execute('select filename from files where file_id = ? limit 1', (file_id,))
             filename = offset_cursor.fetchone()[0]
-            f = open(filename, 'r')
+            input_file = open(filename, 'r')
+            if not input_file:
+                print 'Failed to open: %s' % filename
+                current_file_id = None
+                continue
             if verbose:
-                print 'Open:', filename
-        f.seek(seek)
+                print 'Opened: %s' % filename
 
-        process_article_text(title.encode('utf-8'),  f.read(length), p.stdin)
+        try:
+            input_file.seek(seek)
+        except Exception, e:
+            print 'e=%s  seek=%s  f=%s name=%s' % (str(e), str(seek), repr(f), filename)
+            sys.exit(1)
+
+        # restart the background process if it fails to try to record all failing articles
+        if None != background_process and None == process_id:
+            process_id = subprocess.Popen(background_process, shell=True, stdin=subprocess.PIPE)
+        try:
+            process_article_text(title.encode('utf-8'),  input_file.read(length), process_id.stdin)
+        except Exception, e:
+            failed_articles += 1
+            # extract from log by: grep '^!' log-file
+            print '!Process failed, file: %s article(%d): %s because: %s' \
+                % (filename, total_articles, repr(title), str(e))
+            process_id.stdin.close()
+            process_id.wait()
+            process_id = None
+
         if article_count != 'all':
             article_count -= 1
         total_articles += 1
         start_article += 1
         if not verbose and total_articles % 1000 == 0:
-            print 'Count: %d' % total_articles
+            if 0 != failed_articles:
+                failed_message = 'Failed: %d' % failed_articles
+            else:
+                failed_message = ''
+            print 'Count: %d  %s' % (total_articles, failed_message)
 
     # close files
-    if f:
-         f.close()
-    if p:
-        p.stdin.close()
-        p.wait()
-    print 'Total: %d' % total_articles
+    if input_file:
+        input_file.close()
+
+    # wait for background process to finish
+    if process_id:
+        process_id.stdin.close()
+        process_id.wait()
+
+    # output some statistics
+    print 'Total:  %d' % total_articles
+
+    # indicate failures
+    if 0 != failed_articles:
+        print 'Failed: %d' % failed_articles
+        sys.exit(1)
 
 
 def process_article_text(title, text, newf):
