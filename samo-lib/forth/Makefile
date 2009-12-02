@@ -157,7 +157,7 @@ install: all
 
 .PHONY: clean
 clean:
-	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi
+	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi *.p
 	${RM} ${CLEAN_FILES}
 
 %.o: %.s
