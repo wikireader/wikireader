@@ -50,8 +50,10 @@ LIBS += ${MINI_LIBC_LIB}
 LIBS += $(shell $(CC) -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
+INCLUDES += -I$(BUILD_PREFIX)
 
 vpath %.c $(WIKI_APP_SRC):$(LZMA_SRC)
+vpath %.png $(WIKI_APP_SRC)
 
 
 GUILIB_COBJS = guilib.o
@@ -82,17 +84,11 @@ LZMA_COBJS += Alloc.o
 LZMA_COBJS += Bra.o
 LZMA_COBJS += LzFind.o
 
-# convert the keyboard file
-PNM2PLAIN_NAME = pnmtoplainpnm
-PNM2PLAIN_PATH := $(shell which $(PNM2PLAIN_NAME))
-KBD_IMG_SRC_P4 = $(WIKI_APP)/keyboard_abc_mono2.pbm
-KBD_IMG_SRC_P1 = $(WIKI_APP)/keyboard_abc_mono2-plain.pbm
-KBD_IMG_INC = $(WIKI_APP)/keyboard_image.h
-KBD_CONVERT = ../../wiki-app/kbd_to_include.py
+# convert the image files
+IMAGES = keyboard_abc keyboard_123
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
-##################################LDFLAGS=-static --strip-all --no-gc-sections --omagic -L$(MINI_LIBC)
 
 
 OBJECTS = mahatma.o
@@ -108,22 +104,16 @@ OBJECTS += $(GUILIB_COBJS)
 OBJECTS += $(WIKIAPP_COBJS)
 OBJECTS += $(LZMA_COBJS)
 
-ifeq ($(PNM2PLAIN_PATH),)
-$(error Could not find $(PNM2PLAIN_NAME) - please: sudo apt-get install netpbm )
-endif
-
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
-TARGETS=$(KBD_IMG_INC) mahatma.elf
+ALL_IMAGES = $(addprefix ${BUILD_PREFIX},all_images.h)
+
+TARGETS = ${ALL_IMAGES}
+TARGETS += mahatma.elf
 
 .PHONY:	all
-all: $(TARGETS)
+all: ${TARGETS}
 
-$(KBD_IMG_SRC_P1): $(KBD_IMG_SRC_P4)
-	$(PNM2PLAIN_PATH) $(KBD_IMG_SRC_P4) > $@
-
-$(KBD_IMG_INC): $(KBD_CONVERT) $(KBD_IMG_SRC_P1)
-	$(KBD_CONVERT) $(KBD_IMG_SRC_P1) > $@
 
 lib/libmahatma.a: lib build ${BUILD_OBJECTS}
 	${AR} r "$@" ${BUILD_OBJECTS}
@@ -132,6 +122,17 @@ mahatma.elf: build build/mahatma.o lib/libmahatma.a mahatma.lds ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/mahatma.o lib/libmahatma.a ${LIBS} -T ${@:.elf=.lds} -Map ${@:.elf=.map}
 	${OBJDUMP} --section-headers "$@"
 	${OBJDUMP} -D "$@" > "${@:.elf=.dump}"
+
+IMAGE_HEADERS = $(addsuffix .h,$(addprefix ${BUILD_PREFIX},$(strip ${IMAGES})))
+CLEAN_FILES += ${IMAGE_HEADERS}
+${ALL_IMAGES}: build ${IMAGE_HEADERS}
+	@${RM} "$@"
+	@for f in ${IMAGE_HEADERS}; \
+	 do \
+	   echo Keyboard: $$(basename "$${f}") ; \
+	   echo '#include "'$$(basename "$${f}")'"' >> "$@"; \
+	 done
+
 
 build:
 	${MKDIR} "$@"
@@ -146,7 +147,9 @@ install: all
 
 .PHONY: clean
 clean:
-	${RM} -r ${TARGETS} build lib
-	${RM} -r *.o *.elf *.d *.map *.asm33 ${KBD_IMG_INC} ${KBD_IMG_SRC_P1}
+	${RM} ${TARGETS}
+	${RM} -r  build lib
+	${RM} *.o *.elf *.d *.map *.asm33 *.dump
+	${RM} ${CLEAN_FILES}
 
 include ${SAMO_LIB}/Mk/rules.mk
