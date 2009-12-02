@@ -1,1 +1,3 @@
 Makefile
+keyboard_*.h
+all_images.h
