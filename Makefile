@@ -533,6 +533,7 @@ help:
 	@echo '  parse                 - parse XML_FILES into one HTML file in WORKDIR'
 	@echo '  render                - render HTML in WORKDIR into one big data file in DESTDIR'
 	@echo '  combine               - combine temporary indices to one file in DESTDIR'
+	@echo '  hash                  - generate hash file in DESTDIR'
 	@echo '  farm<1..8>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
 	@echo '  farm<1..8>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
 	@echo '  farm<1..8>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
