@@ -197,8 +197,16 @@ gcc: binutils gcc-patch
 	touch "$@"
 
 .PHONY: qt4-simulator
-qt4-simulator: mahatma
-	cd host-tools/qt4-simulator && qmake-qt4 && ${MAKE}
+qt4-simulator:
+	cd ${HOST_TOOLS}/qt4-simulator && qmake-qt4 && ${MAKE}
+
+.PHONY: sim4
+sim4: qt4-simulator validate-destdir
+	cd "${DESTDIR}" && ${HOST_TOOLS}/qt4-simulator/bin/wikisim
+
+.PHONY: sim4d
+sim4d: qt4-simulator validate-destdir
+	cd "${DESTDIR}" && gdb ${HOST_TOOLS}/qt4-simulator/bin/wikisim
 
 .PHONY: console-simulator
 console-simulator:
@@ -551,6 +559,7 @@ help:
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
 	@echo '  qt4-simulator         - compile the Qt4 simulator'
+	@echo '  sim4  sim4d           - use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
 	@echo '  console-simulator     - compile the console simulator'
 	@echo '  clean                 - clean everything except the toochain'
 	@echo '  clean-toolchain       - clean just the toochain'

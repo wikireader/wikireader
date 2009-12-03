@@ -228,24 +228,24 @@ typedef struct _LCD_DRAW_BUF
 /* section for the article string */
 typedef struct _ARTICLE_HEADER
 {
-	unsigned long offset_article;
-	unsigned short article_link_count;
-	unsigned short external_link_count;
+	uint32_t offset_article;
+	uint16_t article_link_count;
+	uint16_t external_link_count;
 } ARTICLE_HEADER;
 
 typedef struct _ARTICLE_LINK
 {
-	unsigned long start_xy; /* byte 0: x; byte 1~3: y */
-	unsigned long end_xy;
-	unsigned long article_id;
+	uint32_t start_xy; /* byte 0: x; byte 1~3: y */
+	uint32_t end_xy;
+	uint32_t article_id;
 } ARTICLE_LINK;
 
 typedef struct _EXTERNAL_LINK
 {
-	unsigned long start_xy;
-	unsigned long end_xy;
-	unsigned short offset_link_str;
-	unsigned short link_str_len;
+	uint32_t start_xy;
+	uint32_t end_xy;
+	uint16_t offset_link_str;
+	uint16_t link_str_len;
 } EXTERNAL_LINK;
 
 void init_lcd_draw_buf();

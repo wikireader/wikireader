@@ -50,16 +50,17 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 
 	do {
 		mutex.lock();
-		if (display->keyEventQueue->isEmpty() && display->mouseEventQueue->isEmpty() && sleep)
+		if (sleep && display->keyEventQueue->isEmpty() && display->mouseEventQueue->isEmpty()) {
 			w->wait(&mutex);
+		}
 
 		if (!display->keyEventQueue->isEmpty()) {
 			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 			ev->key_event.keycode = keyEvent.key();
-			if (!keyEvent.text().isEmpty())
+			if (!keyEvent.text().isEmpty()) {
 				ev->key_event.keycode = keyEvent.text().at(0).unicode();
-
+			}
 			/* determine key type */
 			if (keyEvent.key() == Qt::Key_Down) {
 				ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;

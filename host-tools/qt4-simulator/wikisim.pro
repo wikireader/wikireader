@@ -1,5 +1,10 @@
+# wikisim.pro
+
+TEMPLATE = subdirs
+
 SUBDIRS += src
-TEMPLATE = subdirs 
-CONFIG += warn_on \
-          qt \
-          thread 
+
+CONFIG += warn_on
+CONFIG += qt
+CONFIG += thread
+CONFIG += debug

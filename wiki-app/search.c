@@ -17,7 +17,9 @@
 #include <glyph.h>
 #include <lcd.h>
 #include <file-io.h>
+#include <input.h>
 #include <malloc-simple.h>
+
 #include "Alloc.h"
 #include "Bra.h"
 #include "LzmaDec.h"
@@ -27,8 +29,12 @@
 #include "history.h"
 #include "wikilib.h"
 #include "search_hash.h"
+
+#if !defined(INCLUDED_FROM_KERNEL)
+#include "time.h"
+#else
 #include <tick.h>
-#include <input.h>
+#endif
 
 #define DBG_SEARCH 0
 
@@ -42,25 +48,25 @@ extern int article_link_count;
 
 typedef struct _search_results {
 	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
-	long idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (pedia.idx) for loading the article
-	long offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];	// offset (pedia.fnd) of each search title in list
-	long offset_next;		// offset (pedia.fnd) of the next title after the list
-	unsigned int count;
-	int result_populated;
-	int cur_selected;		// -1 when no selection.
+	uint32_t idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (pedia.idx) for loading the article
+	uint32_t offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];	// offset (pedia.fnd) of each search title in list
+	uint32_t offset_next;		// offset (pedia.fnd) of the next title after the list
+	uint32_t count;
+	uint32_t result_populated;
+	int32_t cur_selected;		// -1 when no selection.
 } SEARCH_RESULTS;
 static SEARCH_RESULTS *result_list;
 
 typedef struct _search_info {
-	int fd_pfx;
-	int fd_idx;
-	int fd_dat[MAX_DAT_FILES];
-	long max_article_idx;
-	long prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
-	int b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
+	int32_t fd_pfx;
+	int32_t fd_idx;
+	int32_t fd_dat[MAX_DAT_FILES];
+	uint32_t max_article_idx;
+	uint32_t prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
+	uint32_t b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
 	char buf[NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
-	int buf_len;
-	long offset_current;		// offset (pedia.fnd) of the content of buffer
+	uint32_t buf_len;
+	uint32_t offset_current;		// offset (pedia.fnd) of the content of buffer
 } SEARCH_INFO;
 static SEARCH_INFO *search_info;
 
@@ -457,7 +463,7 @@ long get_prefix_index_table(int idx_prefix_index_table)
 
 	if (!search_info->b_prefix_index_block_loaded[idxBlock])
 	{
-		wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
+		wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(uint32_t));
 		wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]),
 			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
 		search_info->b_prefix_index_block_loaded[idxBlock]++;
@@ -1121,10 +1127,11 @@ int retrieve_article(long idx_article)
 		compressed_buf = (char *)malloc_simple(MAX_COMPRESSED_ARTICLE, MEM_TAG_INDEX_M1);
 //start:
 	if (compressed_buf && 0 < idx_article && idx_article <= search_info->max_article_idx) {
-		wl_seek(search_info->fd_idx, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
+		wl_seek(search_info->fd_idx, sizeof(int32_t) + (idx_article - 1) * sizeof(article_ptr));
 		wl_read(search_info->fd_idx, &article_ptr, sizeof(article_ptr));
 		dat_file_id = ((article_ptr.file_id_compressed_len  & 0x3FFFFFFF)>> 24);
 		dat_article_len = article_ptr.file_id_compressed_len & 0x00FFFFFF;
+
 		if (dat_article_len > 0)
 		{
 			if (search_info->fd_dat[dat_file_id] < 0)
@@ -1189,7 +1196,7 @@ long find_closest_idx(long idx, char *title)
 	title[0] = '\0';
 	if (idx > search_info->max_article_idx)
 		idx -= search_info->max_article_idx;
-	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
+	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + sizeof(uint32_t));
 	wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (!article_ptr.file_id_compressed_len || !article_ptr.offset_fnd)
 	{
@@ -1228,6 +1235,7 @@ void random_article(void)
 #endif
 	idx_article = clock_ticks % search_info->max_article_idx + 1;
 	idx_article = find_closest_idx(idx_article, title);
+
 	if (idx_article)
 	{
 		last_display_mode = DISPLAY_MODE_INDEX; // for history_save not to log the last article index

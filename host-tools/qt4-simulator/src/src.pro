@@ -1,4 +1,9 @@
+# src.pro
+
+TEMPLATE = app
+
 TOPLEVEL = ../../..
+
 SOURCES += $${TOPLEVEL}/wiki-app/guilib.c
 SOURCES += $${TOPLEVEL}/wiki-app/bmf.c
 SOURCES += $${TOPLEVEL}/wiki-app/bigram.c
@@ -27,19 +32,18 @@ INCLUDEPATH += $${TOPLEVEL}/samo-lib/minilzo/
 INCLUDEPATH += $${TOPLEVEL}/samo-lib/lzma/
 INCLUDEPATH += $${TOPLEVEL}/samo-lib/fatfs/src
 INCLUDEPATH += $${TOPLEVEL}/samo-lib/fatfs/config/c33/read-write
+
 DEPENDPATH = $$INCLUDEPATH
 
 SOURCES += main.cpp
 SOURCES += WikiDisplay.cpp
 SOURCES += MainWindow.cpp
 SOURCES += WikilibThread.cpp
-SOURCES += fatfs_stdio.c
-
-TEMPLATE = app
 
 CONFIG += warn_on
 CONFIG += thread
 CONFIG += qt
+CONFIG += debug
 
 TARGET = ../bin/wikisim
 

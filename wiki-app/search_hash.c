@@ -38,7 +38,7 @@
 
 SEARCH_HASH_TABLE *search_hash_table;
 SEARCH_HASH_STRING *search_hash_strings;
-long nHashEntries = 0;
+uint32_t nHashEntries = 0;
 #ifdef WIKIPCF
 FILE *fdHsh;
 long nNeedMoreEntries = 0;
@@ -51,9 +51,9 @@ int *bHashBlockLoaded;
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
 struct _fnd_buf {
-	long offset;
-	long len;
-	long used_seq;
+	uint32_t offset;
+	uint32_t len;
+	uint32_t used_seq;
 	char buf[FND_BUF_BLOCK_SIZE];
 } *fnd_bufs;
 

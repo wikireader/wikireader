@@ -19,6 +19,8 @@
 #ifndef WL_SEARCH_H
 #define WL_SEARCH_H
 
+#include <inttypes.h>
+
 #define TARGET_SIZE 6
 #define RESULT_START 34
 #define RESULT_HEIGHT 19
@@ -41,14 +43,14 @@ enum {
 };
 
 typedef struct _ARTICLE_PTR {
-	long offset_dat;	/* offset to pedia?.dat for the article content */
-	long offset_fnd;	/* offset to pedia.fnd for the title (for search) */
-	long file_id_compressed_len; 	/* byte 0: bit0~1 - compress method (00 - lzo, 01 - bzlib, 10 - 7z), bit 2~7 pedia file id */
+	uint32_t offset_dat;	/* offset to pedia?.dat for the article content */
+	uint32_t offset_fnd;	/* offset to pedia.fnd for the title (for search) */
+	uint32_t file_id_compressed_len; 	/* byte 0: bit0~1 - compress method (00 - lzo, 01 - bzlib, 10 - 7z), bit 2~7 pedia file id */
 					/* byte 1~3: compressed article length */
 } ARTICLE_PTR;
 
 typedef struct _TITLE_SEARCH { /* used to mask the porinter to the remainder of the title for search */
-	long idxArticle;
+	uint32_t idxArticle;
 	char cZero; /* null character for backward search */
 	char sTitleSearch[MAX_TITLE_SEARCH]; /* null terminated title for search (with bigram encoded) */
 } TITLE_SEARCH;

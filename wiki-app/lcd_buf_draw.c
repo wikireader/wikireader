@@ -386,6 +386,10 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	ucs4_t u;
 	int font_idx;
 
+	if (NULL == pUTF8 || NULL == *pUTF8) {
+		return;
+	}
+
 	c = **pUTF8;
 	if (c <= MAX_ESC_CHAR)
 	{
