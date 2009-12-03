@@ -47,6 +47,14 @@ main()
   /etc/init.d/gpib stop
   sleep 1
   /etc/init.d/gpib start
+
+  echo Add the following to your /etc/sudoers
+  echo '----------8<----------8<----------8<---------'
+  cat init-scripts/sudoers.add
+  echo '----------8<----------8<----------8<---------'
+  echo 'Now run: sudo visudo'
+  echo '     or: sudo EDITOR=jove visudo'
+  echo and paste the above text into file
 }
 
 

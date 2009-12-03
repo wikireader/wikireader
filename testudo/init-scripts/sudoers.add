@@ -1,0 +1,2 @@
+# allow reload of gpib interface
+%admin ALL=NOPASSWD: /etc/init.d/gpib reload

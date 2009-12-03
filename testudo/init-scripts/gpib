@@ -1,17 +1,40 @@
 #! /bin/sh -e
+# configure the GPIB driver
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
+gpib_start()
+{
+  chmod 666 /dev/gpib*
+  gpib_config
+}
+
+gpib_stop()
+{
+  chmod 660 /dev/gpib*
+}
+
+gpib_status()
+{
+  ls -l /dev/gpib*
+}
+
 case "$1" in
-    start)
-	gpib_config
-	chmod 666 /dev/gpib*
+  start)
+    gpib_start
     ;;
-    stop)
-	chmod 660 /dev/gpib*
+  restart|force-reload|reload)
+    gpib_stop
+    gpib_start
+    ;;
+  stop)
+    gpib_stop
+    ;;
+  status)
+    gpib_status
     ;;
   *)
-    echo "Usage: $0 {start|stop}"
+    echo "Usage: $0 {start|stop|restart|reload|force-reload}"
     exit 1
     ;;
 esac

@@ -155,6 +155,9 @@ class Sample:
     def startCallback(self, widget, data = None):
         """Initiate the test"""
         if not self.testRunning:
+            # ensure the GPIB driver is started
+            os.system('sudo /etc/init.d/gpib reload')
+
             self.testFailed = False
             self.testStop = False
             self.status.set_text('Running')

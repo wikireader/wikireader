@@ -31,7 +31,6 @@ if not os.path.isdir(SaveFilesFolder):
     print '       sudo mkdir -p %s' % SaveFilesFolder
     exit(1)
 
-
 def threaded(f):
     """Create a simple wrapper that allows a task to run in the background"""
     def wrapper(*args):
@@ -82,6 +81,9 @@ class Sample:
             self.status.set_text('load a file first')
             return
         if not self.testRunning:
+            # ensure the GPIB driver is started
+            os.system('sudo /etc/init.d/gpib reload')
+
             self.testFailed = False
             self.testStop = False
             self.status.set_text('Running')
