@@ -39,8 +39,8 @@ SUM_DIR = ${HOST_TOOLS}/toolchain-sums
 
 export PATH := ${HOST_TOOLS}/toolchain-install/bin:${PATH}
 
-CONFIG_FILE := "samo-lib/include/config.h"
-CONFIG_FILE_DEFAULT := "samo-lib/include/config.h-default"
+CONFIG_FILE := "${SAMO_LIB}/include/config.h"
+CONFIG_FILE_DEFAULT := "${SAMO_LIB}/include/config.h-default"
 CONFIG_FILE_EXISTS := $(shell [ -f ${CONFIG_FILE} ] && echo 1)
 
 ifeq (${CONFIG_FILE_EXISTS},)
@@ -104,25 +104,25 @@ validate-destdir:
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
-	${MAKE} -C samo-lib/mahatma
+	${MAKE} -C ${SAMO_LIB}/mahatma
 
 .PHONY: mahatma-install
 mahatma-install: mahatma validate-destdir
-	${MAKE} -C samo-lib/mahatma install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C ${SAMO_LIB}/mahatma install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- lib stuff   -------------------------------------------
 .PHONY:mini-libc
 mini-libc: gcc
-	${MAKE} -C samo-lib/mini-libc/
+	${MAKE} -C ${SAMO_LIB}/mini-libc/
 
 .PHONY: fatfs
 fatfs: mini-libc drivers
-	${MAKE} -C samo-lib/fatfs/
+	${MAKE} -C ${SAMO_LIB}/fatfs/
 
 .PHONY: drivers
 drivers: mini-libc
-	${MAKE} -C samo-lib/drivers/
+	${MAKE} -C ${SAMO_LIB}/drivers/
 
 # ----- toolchain stuff  --------------------------------------
 
@@ -153,10 +153,10 @@ $(call GET_FILE,binutils-download,${BINUTILS_FILE},${BINUTILS_SUM},${BINUTILS_UR
 $(call GET_FILE,gcc-download,${GCC_FILE},${GCC_SUM},${GCC_URL})
 
 binutils-patch: binutils-download
-	mkdir -p host-tools/toolchain-install
-	rm -rf "host-tools/binutils-${BINUTILS_PACKAGE}"
-	tar -xvzf "${BINUTILS_FILE}" -C host-tools/
-	cd host-tools && \
+	mkdir -p ${HOST_TOOLS}/toolchain-install
+	rm -rf "${HOST_TOOLS}/binutils-${BINUTILS_PACKAGE}"
+	tar -xvzf "${BINUTILS_FILE}" -C ${HOST_TOOLS}
+	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
 	for p in ../toolchain-patches/*-binutils-*.patch ; \
 	do \
@@ -165,7 +165,7 @@ binutils-patch: binutils-download
 	touch "$@"
 
 binutils: binutils-patch
-	cd host-tools && \
+	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
 	cd build  && \
@@ -175,9 +175,9 @@ binutils: binutils-patch
 	touch "$@"
 
 gcc-patch: gcc-download
-	mkdir -p host-tools/toolchain-install
-	tar -xvzf "${GCC_FILE}" -C host-tools/
-	cd host-tools && \
+	mkdir -p ${HOST_TOOLS}/toolchain-install
+	tar -xvzf "${GCC_FILE}" -C ${HOST_TOOLS}
+	cd ${HOST_TOOLS} && \
 	cd "gcc-${GCC_VERSION}" && \
 	for p in ../toolchain-patches/*-gcc-*.patch ; \
 	do \
@@ -186,7 +186,7 @@ gcc-patch: gcc-download
 	touch "$@"
 
 gcc: binutils gcc-patch
-	cd host-tools && \
+	cd ${HOST_TOOLS} && \
 	export PATH="${HOST_TOOLS}/toolchain-install/bin:${PATH}" && \
 	cd "gcc-${GCC_VERSION}" && \
 	mkdir -p build && \
@@ -201,29 +201,29 @@ qt4-simulator: mahatma
 	cd host-tools/qt4-simulator && qmake-qt4 && ${MAKE}
 
 .PHONY: console-simulator
-console-simulator: mahatma
-	cd host-tools/console-simulator && ${MAKE}
+console-simulator:
+	cd ${HOST_TOOLS}/console-simulator && ${MAKE}
 
 # ----- hash-gen  --------------------------------------
 .PHONY: hash-gen
 hash-gen:
-	cd host-tools/hash-gen && ${MAKE}
+	cd ${HOST_TOOLS}/hash-gen && ${MAKE}
 
 
 # ----- pcf2bmf  --------------------------------------
 .PHONY: pcf2bmf
 pcf2bmf:
-	cd host-tools/pcf2bmf && ${MAKE}
+	cd ${HOST_TOOLS}/pcf2bmf && ${MAKE}
 
 
 # ----- fonts  --------------------------------------
 .PHONY: fonts
 fonts: pcf2bmf
-	cd host-tools/fonts && ${MAKE}
+	cd ${HOST_TOOLS}/fonts && ${MAKE}
 
 .PHONY: fonts-install
 fonts-install: fonts validate-destdir
-	cd host-tools/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
+	cd ${HOST_TOOLS}/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
 
 
 # ----- build the database  --------------------------------------
@@ -233,25 +233,25 @@ RENDER_BLOCK ?= 0
 
 .PHONY: index
 index: validate-destdir
-	cd host-tools/offline-renderer && ${MAKE} index \
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
 parse: validate-destdir
-	cd host-tools/offline-renderer && ${MAKE} parse \
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} parse \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: render
 render: fonts validate-destdir
-	cd host-tools/offline-renderer && ${MAKE} render \
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} render \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
 combine: validate-destdir
-	cd host-tools/offline-renderer && ${MAKE} combine \
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} combine \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
@@ -265,7 +265,7 @@ hash: validate-destdir hash-gen
 
 stamp-r-index:
 	rm -f "$@"
-	cd host-tools/offline-renderer && ${MAKE} index \
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 	touch "$@"
@@ -385,11 +385,11 @@ getwikidump:
 
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
-	${MAKE} -C samo-lib/forth
+	${MAKE} -C ${SAMO_LIB}/forth
 
 .PHONY: forth-install
 forth-install: forth
-	${MAKE} -C samo-lib/forth install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C ${SAMO_LIB}/forth install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- flash -----------------------------------------------
@@ -397,11 +397,11 @@ forth-install: forth
 
 .PHONY: flash
 flash:  gcc mini-libc fatfs drivers
-	${MAKE} -C samo-lib/flash
+	${MAKE} -C ${SAMO_LIB}/flash
 
 .PHONY: flash-install
 flash-install: flash
-	${MAKE} -C samo-lib/flash install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C ${SAMO_LIB}/flash install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- grifo -----------------------------------------------
@@ -409,11 +409,11 @@ flash-install: flash
 
 .PHONY: grifo
 grifo:  gcc mini-libc fatfs
-	${MAKE} -C samo-lib/grifo
+	${MAKE} -C ${SAMO_LIB}/grifo
 
 .PHONY: grifo-install
 grifo-install: grifo
-	${MAKE} -C samo-lib/grifo install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C ${SAMO_LIB}/grifo install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- mbr -------------------------------------------------
@@ -460,27 +460,27 @@ print-mbr-tty:
 
 .PHONY: mbr
 mbr: gcc fatfs
-	${MAKE} -C samo-lib/mbr
+	${MAKE} -C ${SAMO_LIB}/mbr
 
 .PHONY: mbr-rs232
 mbr-rs232: gcc fatfs
-	${MAKE} -C samo-lib/mbr mbr-rs232
+	${MAKE} -C ${SAMO_LIB}/mbr mbr-rs232
 
 .PHONY: jackknife
 jackknife:
-	${MAKE} -C host-tools/jackknife
+	${MAKE} -C ${HOST_TOOLS}/jackknife
 
 .PHONY: flash-mbr
 flash-mbr: mbr jackknife
-	${MAKE} -C samo-lib/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
+	${MAKE} -C ${SAMO_LIB}/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
 
 .PHONY: flash-test-jig
 flash-test-jig: mbr jackknife
-	${MAKE} -C samo-lib/mbr FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
+	${MAKE} -C ${SAMO_LIB}/mbr FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
 
 .PHONY: mbr-install
 mbr-install: mbr
-	${MAKE} -C samo-lib/mbr install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C ${SAMO_LIB}/mbr install DESTDIR="${DESTDIR_PATH}"
 
 
 # ----- clean and help --------------------------------------
@@ -490,37 +490,37 @@ complete-clean: clean clean-toolchain
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
-	${MAKE} clean -C samo-lib/mini-libc
-	${MAKE} clean -C host-tools/jackknife
-	${MAKE} clean -C host-tools/hash-gen
-	${MAKE} clean -C host-tools/pcf2bmf
-	${MAKE} clean -C host-tools/flash07
-	${MAKE} clean -C host-tools/fonts
-	${MAKE} clean -C host-tools/offline-renderer
-	${MAKE} clean -C samo-lib/mbr
-	${MAKE} clean -C samo-lib/drivers
-	${MAKE} clean -C samo-lib/fatfs
-	${MAKE} clean -C samo-lib/forth
-	${MAKE} clean -C samo-lib/flash
-	${MAKE} clean -C samo-lib/grifo
-	${MAKE} clean -C samo-lib/mahatma
+	${MAKE} clean -C ${SAMO_LIB}/mini-libc
+	${MAKE} clean -C ${HOST_TOOLS}/jackknife
+	${MAKE} clean -C ${HOST_TOOLS}/hash-gen
+	${MAKE} clean -C ${HOST_TOOLS}/pcf2bmf
+	${MAKE} clean -C ${HOST_TOOLS}/flash07
+	${MAKE} clean -C ${HOST_TOOLS}/fonts
+	${MAKE} clean -C ${HOST_TOOLS}/offline-renderer
+	${MAKE} clean -C ${SAMO_LIB}/mbr
+	${MAKE} clean -C ${SAMO_LIB}/drivers
+	${MAKE} clean -C ${SAMO_LIB}/fatfs
+	${MAKE} clean -C ${SAMO_LIB}/forth
+	${MAKE} clean -C ${SAMO_LIB}/flash
+	${MAKE} clean -C ${SAMO_LIB}/grifo
+	${MAKE} clean -C ${SAMO_LIB}/mahatma
 	${RM} stamp-r-*
 
 .PHONY: clean-toolchain
 clean-toolchain:
-	rm -rf host-tools/toolchain-install
-	rm -rf host-tools/gcc-${GCC_VERSION}
-	rm -rf host-tools/binutils-${BINUTILS_VERSION}
+	rm -rf ${HOST_TOOLS}/toolchain-install
+	rm -rf ${HOST_TOOLS}/gcc-${GCC_VERSION}
+	rm -rf ${HOST_TOOLS}/binutils-${BINUTILS_VERSION}
 	rm -f binutils-patch binutils
 	rm -f gcc-patch gcc
 
 .PHONY: clean-qt4-simulator
 clean-qt4-simulator:
-	(cd host-tools/qt4-simulator; ${MAKE} distclean || true)
+	(cd ${HOST_TOOLS}/qt4-simulator; ${MAKE} distclean || true)
 
 .PHONY: clean-console-simulator
 clean-console-simulator:
-	${MAKE} clean -C host-tools/console-simulator
+	${MAKE} clean -C ${HOST_TOOLS}/console-simulator
 
 .PHONY:help
 help:
@@ -572,4 +572,4 @@ print-%:
 
 .PHONY: p33
 p33:
-	./samo-lib/scripts/p33
+	./${SAMO_LIB}/scripts/p33
