@@ -27,7 +27,7 @@ subs = [
 
     (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
 
-    (re.compile(r'(<|&lt;)br\s*/?(>|&gt;)', re.IGNORECASE), '\n'),
+    (re.compile(r'(<|&lt;)br[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), '\n'),
 
     (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
 
@@ -41,6 +41,7 @@ subs = [
     # For now, we're only going to remove <timeline>
     (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'(<|&lt;)references[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), ''),
 
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
     (re.compile(r'(<|&lt;)(/?)(math)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
