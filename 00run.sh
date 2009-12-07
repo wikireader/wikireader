@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xml="xml-file-samples/license.xml xml-file-samples/terms.xml enwiki-20090909-pages-articles.xml"
+xml="xml-file-samples/license.xml xml-file-samples/terms.xml enwiki-pages-articles.xml"
 
 
 ERROR()
