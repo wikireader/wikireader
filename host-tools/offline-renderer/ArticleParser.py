@@ -15,7 +15,7 @@ from types import *
 verbose = False
 
 
-PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser.php -)'
+PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser_sa.php -)'
 
 # Regular expressions for parsing the XML
 subs = [
@@ -27,7 +27,7 @@ subs = [
 
     (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
 
-    (re.compile(r'(<|&lt;)br\s+/(>|&gt;)', re.IGNORECASE), '\n'),
+    (re.compile(r'(<|&lt;)br\s*/?(>|&gt;)', re.IGNORECASE), '\n'),
 
     (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
 
@@ -47,7 +47,7 @@ subs = [
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
-    # change % so php: wr_parser does not convert them
+    # change % so php: wr_parser_sa does not convert them
     (re.compile(r'%', re.IGNORECASE), r'%25'),
 ]
 
@@ -130,11 +130,9 @@ def main():
     offset_db = sqlite3.connect(off_name)
     offset_db.execute('pragma synchronous = 0')
     offset_db.execute('pragma temp_store = 2')
-    #offset_db.execute('pragma locking_mode = exclusive')   # Sean: Ask Chris if this is ok?!
     offset_db.execute('pragma read_uncommitted = true')
     offset_db.execute('pragma cache_size = 20000000')
     offset_db.execute('pragma default_cache_size = 20000000')
-    #offset_db.execute('pragma journal_mode = memory')
     offset_db.execute('pragma journal_mode = off')
 
     offset_cursor = offset_db.cursor()

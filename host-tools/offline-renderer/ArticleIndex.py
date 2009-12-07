@@ -53,7 +53,7 @@ non_article_categories = {
     "file talk": 1,
     "mediawiki": 1,
     "mediawiki talk": 1,
-    #"template": 1,
+#    "template": 1,
     "template talk": 1,
     "help": 1,
     "help talk": 1,
@@ -74,7 +74,7 @@ non_article_categories = {
     "archivo discusión": 1,
     "mediawiki": 1,
     "mediawiki discusión": 1,
-    #"plantilla": 1,
+#    "plantilla": 1,
     "plantilla discusión": 1,
     "ayuda": 1,
     "ayuda discusión": 1,
@@ -106,7 +106,7 @@ class CycleError(Exception):
 
 
 verbose = False
-enable_templates = False
+enable_templates = True     # $$$ When this is false, templates are included as articles :/
 
 bigram = {}
 
@@ -440,7 +440,6 @@ pragma journal_mode = memory;
             t1 = title.split(':', 1)[1].lower()
             hash_md5 = hashlib.md5()
             hash_md5.update(t1.encode('utf-8'))
-            #with codecs.open(self.template_prefix + hash_md5.hexdigest(), "wb", 'utf-8') as f:
             with open(self.template_prefix + hash_md5.hexdigest(), "wb") as f:
                 f.write(self.translate(text).strip(u'\u200e\u200f').encode('utf-8'))
             return

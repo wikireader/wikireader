@@ -2788,13 +2788,8 @@ function wfSplitWikiID( $wiki ) {
  * will always return the same object, unless the underlying connection or load
  * balancer is manually destroyed.
  */
-
-//$$$ MOSKO: Modified to not connect to database 
-require_once('DatabaseDummy.php'); 
 function &wfGetDB( $db, $groups = array(), $wiki = false ) {
-	//return wfGetLB( $wiki )->getConnection( $db, $groups, $wiki );
-	$ret = new DatabaseDummy(); # Disable database
-	return $ret;
+    return wfGetLB( $wiki )->getConnection( $db, $groups, $wiki );
 }
 
 /**
