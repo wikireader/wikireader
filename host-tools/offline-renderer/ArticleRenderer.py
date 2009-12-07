@@ -354,6 +354,8 @@ class WrProcess(HTMLParser):
         HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
+        self.printing = True
+        self.tag_stack = []
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
             self.feed(block)
@@ -408,7 +410,16 @@ class WrProcess(HTMLParser):
         global g_this_article_title, g_links, g_link_cnt
 
         attrs = dict(attrs)
-
+        
+        self.tag_stack.append((tag, self.printing))
+        # we want to skip content that isn't for printing
+        if 'class' in attrs:
+            if 'noprint' in attrs['class']:
+                self.printing = False
+        
+        if not self.printing:
+            return;
+        
         if tag == 'html':
             self.local_init()
             self.in_html = True
@@ -526,6 +537,12 @@ class WrProcess(HTMLParser):
 
     def handle_endtag(self, tag):
         global g_this_article_title
+
+        (start_tag, self.printing) = self.tag_stack.pop()
+        assert start_tag == tag, 'tag missmatch %s != %s' % (start_tag, tag)
+
+        if not self.printing:
+            return;
 
         if tag == 'html':
             self.in_html = False
@@ -671,7 +688,7 @@ class WrProcess(HTMLParser):
 
         # only parse valid tags in <body>
         # skip tables for now
-        if not self.in_body or self.in_table > 0:
+        if not self.in_body or self.in_table > 0 or not self.printing:
             return
 
         # defaults
