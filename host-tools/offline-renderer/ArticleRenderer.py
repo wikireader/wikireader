@@ -410,16 +410,16 @@ class WrProcess(HTMLParser):
         global g_this_article_title, g_links, g_link_cnt
 
         attrs = dict(attrs)
-        
+
         self.tag_stack.append((tag, self.printing))
         # we want to skip content that isn't for printing
         if 'class' in attrs:
             if 'noprint' in attrs['class']:
                 self.printing = False
-        
+
         if not self.printing:
             return;
-        
+
         if tag == 'html':
             self.local_init()
             self.in_html = True
@@ -537,9 +537,24 @@ class WrProcess(HTMLParser):
 
     def handle_endtag(self, tag):
         global g_this_article_title
+        global article_count
 
+        # ignore end tag without start tag
+        if (tag, True) not in self.tag_stack and (tag, False) not in self.tag_stack:
+            (line, column) = self.getpos()
+            print 'Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %  \
+                (tag, line, column, article_count + 1, g_this_article_title)
+            return
+
+        # backtrack up the stack closing each open tag until there is a match
         (start_tag, self.printing) = self.tag_stack.pop()
-        assert start_tag == tag, 'tag missmatch %s != %s' % (start_tag, tag)
+        while start_tag != tag:
+            self.tag_stack.append((start_tag, self.printing))
+            (line, column) = self.getpos()
+            print 'Warning: force </%s> @[L%d/C%d] in article[%d]: %s' % \
+                (start_tag, line, column, article_count + 1, g_this_article_title)
+            self.handle_endtag(start_tag)
+            (start_tag, self.printing) = self.tag_stack.pop()
 
         if not self.printing:
             return;
