@@ -1,7 +1,7 @@
 #!/bin/bash
 
 xml="xml-file-samples/license.xml xml-file-samples/terms.xml enwiki-pages-articles.xml"
-
+LogFile=log
 
 ERROR()
 {
@@ -119,6 +119,8 @@ farm="farm${this_id}"
 eval ${debug} "mkdir -p '${work}'"
 eval ${debug} "mkdir -p '${dest}'"
 
+rm -f "${LogFile}"
+
 case "${clear}" in
   [yY]|[yY][eE][sS])
     eval ${debug} "time make clean-index DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
@@ -147,7 +149,7 @@ fi
 case "${run}" in
   [yY]|[yY][eE][sS])
 
-    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
 
     case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
@@ -155,11 +157,11 @@ case "${run}" in
       *)
         case "${seq}" in
           [yY]|[yY][eE][sS])
-            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
-            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
+            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
             ;;
           *)
-            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
+            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
             ;;
         esac
     esac
