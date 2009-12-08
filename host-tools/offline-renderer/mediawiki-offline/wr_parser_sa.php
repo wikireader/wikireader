@@ -149,6 +149,9 @@ function &wfParseTextWOC($text) {
   $articleTitle = trim(substr($text, 0, $nlidx));
   $articleMarkup = substr($text, $nlidx + 1);
   $title = Title::newFromText($articleTitle);
+  if (!$title) {
+    $title = Title::newFromText('NULL Title');
+  }
   $output = $wgParser->parse($articleMarkup, $title, $wgParserOptions, true, true, null);
   $articleText = $output->getText();
 
