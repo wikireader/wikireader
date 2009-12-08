@@ -21,6 +21,7 @@ USAGE()
   echo '       --no-run       -n         do not run final make'
   echo '       --sequential   -s         run rensering in series'
   echo '       --clear        -c         clear work and dest dirs'
+  echo '       --re-parse     -r         clear parse and render stamps'
   echo '       --work=dir     -w <dir>   workdir [work]'
   echo '       --dest=dir     -d <dir>   destdir [image]'
   exit 1
@@ -38,7 +39,7 @@ seq=no
 IndexOnly=no
 debug=
 
-args=$(getopt -o hvg:o:p:inscw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,work:,dest:,debug -- "$@") ||exit 1
+args=$(getopt -o hvg:o:p:inscrw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,re-parse,work:,dest:,debug -- "$@") ||exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -77,6 +78,13 @@ do
 
     -c|--clear)
       clear=yes
+      shift
+      ;;
+
+    -r|--re-parse)
+      rm -f stamp-r-parse*
+      rm -f stamp-r-render*
+      clear=no
       shift
       ;;
 
@@ -149,7 +157,7 @@ fi
 case "${run}" in
   [yY]|[yY][eE][sS])
 
-    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
+    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
 
     case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
@@ -157,11 +165,11 @@ case "${run}" in
       *)
         case "${seq}" in
           [yY]|[yY][eE][sS])
-            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
-            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
+            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
           *)
-            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" | tee -a "${LogFile}"
+            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
         esac
     esac
