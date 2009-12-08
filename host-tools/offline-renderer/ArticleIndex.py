@@ -18,11 +18,8 @@ import FilterWords
 import FileScanner
 import codecs
 import hashlib
+import PrintLog
 
-# Python print often defaults to ASCII, just force it to utf-8
-# **this does not appear to work, used repr() below, but that
-# **produces ugly diagnostics --- need to find a proper fix
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 # this _must_ be in ascending ASCII sequence
 KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
@@ -271,27 +268,27 @@ class FileProcessing(FileScanner.FileScanner):
         self.time = time.time()
 
     def __del__(self):
-        print 'Flushing databases'
+        PrintLog.message('Flushing databases')
 
-        print 'Writing: files'
+        PrintLog.message('Writing: files')
         start_time = time.time()
         i = 0
         with open(self.file_import, 'w') as f:
             for filename in self.file_list:
                 f.write('%d\t%s\n' % (i, filename))
                 i += 1
-        print 'Time: %ds' % (time.time() - start_time)
+        PrintLog.message('Time: %ds' % (time.time() - start_time))
 
-        print 'Writing: articles'
+        PrintLog.message('Writing: articles')
         start_time = time.time()
         with open(self.article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
-        print 'Time: %ds' % (time.time() - start_time)
+        PrintLog.message('Time: %ds' % (time.time() - start_time))
 
-        print 'Writing: offsets'
+        PrintLog.message('Writing: offsets')
         start_time = time.time()
         with open(self.offset_import, 'w') as f:
             for article_number in self.offsets:
@@ -299,10 +296,10 @@ class FileProcessing(FileScanner.FileScanner):
                 f.write('%d\t%d\t' % (article_number, file_id))
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t%d\t%d\n' % (seek, length))
-        print 'Time: %ds' % (time.time() - start_time)
+        PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
-        print 'Loading: articles'
+        PrintLog.message('Loading: articles')
         start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE)
         p.stdin.write("""
@@ -326,9 +323,9 @@ pragma journal_mode = memory;
 """ % self.article_import)
         p.stdin.close()
         p.wait()
-        print 'Time: %ds' % (time.time() - start_time)
+        PrintLog.message('Time: %ds' % (time.time() - start_time))
 
-        print 'Loading: offsets and files'
+        PrintLog.message('Loading: offsets and files')
         start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE)
         p.stdin.write("""
@@ -359,7 +356,7 @@ pragma journal_mode = memory;
 """ % (self.offset_import, self.file_import))
         p.stdin.close()
         p.wait()
-        print 'Time: %ds' % (time.time() - start_time)
+        PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
     def title(self, text, seek):
@@ -373,12 +370,12 @@ pragma journal_mode = memory;
             self.is_template = match and match.group(1).lower() in template_categories
             if self.is_template:
                 if verbose:
-                    print 'Template Title:', repr(text)
+                    PrintLog.message('Template Title: %s' % text)
                 return True
 
         if match and match.group(1).lower() in non_article_categories:
             if verbose:
-                print 'Non-article Title:', repr(text)
+                PrintLog.message('Non-article Title: %s' %text)
             return False
 
         return True
@@ -397,7 +394,8 @@ pragma journal_mode = memory;
 
             if self.is_template:
                 if ':' not in redirect_title:
-                    print 'Invalid template redirect: ' + repr(title) + ' -> ' + repr(redirect_title)
+                    PrintLog.message('Invalid template redirect: %s -> %s'
+                                     % (title, redirect_title))
                     return
                 t1 = title.split(':', 1)[1].lower()
                 hash_t1 = hashlib.md5()
@@ -416,19 +414,19 @@ pragma journal_mode = memory;
             match = non_articles.search(text)
             if match and match.group(1).lower() in non_article_categories:
                 if verbose:
-                    print 'Non-article Redirect: %s' % repr(text)
+                    PrintLog.message('Non-article Redirect: %s' % text)
                 return
 
             if '' == redirect_title:
-                print 'Empty Redirect for: %s' % repr(title)
+                PrintLog.message('Empty Redirect for: %s' % title)
             else:
                 self.redirects[title] = redirect_title
                 self.redirect_count += 1
                 if verbose:
-                    print 'Redirect: %s -> %s' % (repr(title), repr(redirect_title))
+                    PrintLog.message('Redirect: %s -> %s' % (title, redirect_title))
         else:
             text = self.translate(text).strip(u'\u200e\u200f')
-            print 'Invalid Redirect: %s -> %s\n' % (repr(title), repr(text))
+            PrintLog.message('Invalid Redirect: %s -> %s\n' % (title, text))
 
 
     def body(self, title, text, seek):
@@ -457,22 +455,22 @@ pragma journal_mode = memory;
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            print '%7.2fs %10d' % (start_time - self.time, self.article_count)
+            PrintLog.message('%7.2fs %10d' % (start_time - self.time, self.article_count))
             self.time = start_time
 
         generate_bigram(title)
 
         if verbose:
             if restricted:
-                print 'Restricted Title: %s' % repr(title)
-                print '  -->', bad_words
+                PrintLog.message('Restricted Title: %s' % title)
+                PrintLog.message('  --> %s' % bad_words)
             else:
-                print 'Title: %s' % repr(title)
+                PrintLog.message('Title: %s' % title)
 
         self.offsets[self.article_count] = (self.file_id(), title, seek, len(text))
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
-            print 'Duplicate Title: %s ' % repr(title)
+            PrintLog.message('Duplicate Title: %s ' % title)
 
 
     def resolve_redirects(self):
@@ -483,9 +481,9 @@ pragma journal_mode = memory;
                 self.set_index(item, self.find(item))
                 count += 1
             except KeyError:
-                print 'Unresolved redirect:', repr(item), '->', repr(self.redirects[item])
+                PrintLog.message('Unresolved redirect: %s -> %s' % (item, self.redirects[item]))
             except CycleError:
-                print 'Cyclic redirect:', repr(item), '->', repr(self.redirects[item])
+                PrintLog.message('Cyclic redirect: %s -> %s' % (item, self.redirects[item]))
         return count
 
 
@@ -572,7 +570,7 @@ def output_fnd(filename, article_index):
     global bigram
     global index_matrix
 
-    print 'Writing bigrams:', filename
+    PrintLog.message('Writing bigrams: %s' % filename)
     start_time = time.time()
     out_f = open(filename, 'w')
 
@@ -593,7 +591,7 @@ def output_fnd(filename, article_index):
         bigram['zz'] = chr(i + 128)
         i += 1
 
-    print 'Time: %ds' % (time.time() - start_time)
+    PrintLog.message('Time: %ds' % (time.time() - start_time))
 
     # create pfx matrix and write encoded titles
 
@@ -604,15 +602,15 @@ def output_fnd(filename, article_index):
         global KEYPAD_KEYS
         return ''.join(c for c in strip_accents(key).lower() if c in KEYPAD_KEYS)
 
-    print 'Sorting titles'
+    PrintLog.message('Sorting titles')
     start_time = time.time()
 
     article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
     article_list.sort()
 
-    print 'Time: %ds' % (time.time() - start_time)
+    PrintLog.message('Time: %ds' % (time.time() - start_time))
 
-    print 'Writing matrix:', filename
+    PrintLog.message('Writing matrix: %s ' % filename)
     start_time = time.time()
 
     index_matrix = {}
@@ -633,14 +631,14 @@ def output_fnd(filename, article_index):
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
-    print 'Time: %ds' % (time.time() - start_time)
+    PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
 def output_pfx(filename):
     """output the pfx matrix"""
     global index_matrix
 
-    print 'Writing:', filename
+    PrintLog.message('Writing: %s' % filename)
     start_time = time.time()
     out_f = open(filename, 'w')
     list = '\0' + KEYPAD_KEYS
@@ -655,7 +653,7 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-    print 'Time: %ds' % (time.time() - start_time)
+    PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
 # run the program

@@ -17,6 +17,7 @@ import getopt
 import os.path
 import sqlite3
 import WordWrap
+import PrintLog
 
 
 verbose = False
@@ -208,7 +209,7 @@ def main():
     for i in font_id_values:
         font_id_values[i].close()
 
-    print 'Wrote %d articles' % article_count
+    PrintLog.message('Wrote %d articles' % article_count)
 
 
 #
@@ -542,8 +543,8 @@ class WrProcess(HTMLParser):
         # ignore end tag without start tag
         if (tag, True) not in self.tag_stack and (tag, False) not in self.tag_stack:
             (line, column) = self.getpos()
-            print 'Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %  \
-                (tag, line, column, article_count + 1, g_this_article_title)
+            PrintLog.message('Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %
+                             (tag, line, column, article_count + 1, g_this_article_title))
             return
 
         # backtrack up the stack closing each open tag until there is a match
@@ -551,8 +552,8 @@ class WrProcess(HTMLParser):
         while start_tag != tag:
             self.tag_stack.append((start_tag, self.printing))
             (line, column) = self.getpos()
-            print 'Warning: force </%s> @[L%d/C%d] in article[%d]: %s' % \
-                (start_tag, line, column, article_count + 1, g_this_article_title)
+            PrintLog.message('Warning: force </%s> @[L%d/C%d] in article[%d]: %s' %
+                             (start_tag, line, column, article_count + 1, g_this_article_title))
             self.handle_endtag(start_tag)
             (start_tag, self.printing) = self.tag_stack.pop()
 
@@ -693,7 +694,7 @@ class WrProcess(HTMLParser):
         try:
             self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
         except KeyError:
-            print "ENTITYREF ERROR : ",  name, g_this_article_title
+            PrintLog.message("ENTITYREF ERROR: %s article: %s" % (name, g_this_article_title))
 
     def handle_data(self, data):
         global g_this_article_title
@@ -801,10 +802,10 @@ def write_article():
 
     article_count += 1
     if verbose:
-        print "[MWR %d] %s" % (article_count, g_this_article_title)
+        PrintLog.message("[MWR %d] %s" % (article_count, g_this_article_title))
         sys.stdout.flush()
     elif article_count % 1000 == 0:
-        print "Render[%d]: %d" % (file_number, article_count)
+        PrintLog.message("Render[%d]: %d" % (file_number, article_count))
         sys.stdout.flush()
 
 
@@ -846,10 +847,10 @@ def write_article():
 		    data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
 		    i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
 		except KeyError:
-			print 'Error in: write_article, Title not found'
-			print 'Title:', g_this_article_title
-			print 'Offset:', file_offset
-			print 'Count:', article_count
+			PrintLog.message('Error in: write_article, Title not found')
+			PrintLog.message('Title: %s' % g_this_article_title)
+			PrintLog.message('Offset: %s' % file_offset)
+			PrintLog.message('Count: %s' % article_count)
 
 # run the program
 if __name__ == "__main__":

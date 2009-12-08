@@ -6,10 +6,13 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import os, sys, re, subprocess
+import os, sys
+import re
+import subprocess
 import getopt
 import os.path
 import sqlite3
+import PrintLog
 from types import *
 
 verbose = False
@@ -42,7 +45,7 @@ subs = [
     (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'(<|&lt;)references[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), ''),
-    
+
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
@@ -157,7 +160,7 @@ def main():
         if None == row:
             break
         (title, file_id, seek, length) = row  # this order is different from select!
-        #print "row : ", row   # just to show select order is wrong, check create table and insert/import
+        #PrintLogMessage("row: %s" % str(row))   # just to show select order is wrong, check create table and insert/import
         if file_id != current_file_id:
             current_file_id = file_id
             if input_file:
@@ -166,16 +169,16 @@ def main():
             filename = offset_cursor.fetchone()[0]
             input_file = open(filename, 'r')
             if not input_file:
-                print 'Failed to open: %s' % filename
+                PrintlogLog.message('Failed to open: %s' % filename)
                 current_file_id = None
                 continue
             if verbose:
-                print 'Opened: %s' % filename
+                PrintLog.message('Opened: %s' % filename)
 
         try:
             input_file.seek(seek)
         except Exception, e:
-            print 'e=%s  seek=%s  f=%s name=%s' % (str(e), str(seek), repr(f), filename)
+            PrintLog.message('seek failed: e=%s  seek=%d  f=%s name=%s' % (str(e), seek, filename))
             sys.exit(1)
 
         # restart the background process if it fails to try to record all failing articles
@@ -186,8 +189,8 @@ def main():
         except Exception, e:
             failed_articles += 1
             # extract from log by: grep '^!' log-file
-            print '!Process failed, file: %s article(%d): %s because: %s' \
-                % (filename, total_articles, repr(title), str(e))
+            PrintLog.message('!Process failed, file: %s article(%d): %s because: %s'
+                             % (filename, total_articles, title, str(e)))
             process_id.stdin.close()
             process_id.wait()
             process_id = None
@@ -201,7 +204,7 @@ def main():
                 failed_message = 'Failed: %d' % failed_articles
             else:
                 failed_message = ''
-            print 'Count: %d  %s' % (total_articles, failed_message)
+            PrintLog.message('Count: %d  %s' % (total_articles, failed_message))
 
     # close files
     if input_file:
@@ -213,11 +216,11 @@ def main():
         process_id.wait()
 
     # output some statistics
-    print 'Total:  %d' % total_articles
+    PrintLog.message('Total:  %d' % total_articles)
 
     # indicate failures
     if 0 != failed_articles:
-        print 'Failed: %d' % failed_articles
+        PrintLog.message('Failed: %d' % failed_articles)
         sys.exit(1)
 
 
@@ -226,7 +229,7 @@ def process_article_text(title, text, newf):
     global subs
 
     if verbose:
-        print "[PA] " + title
+        PrintLog.message('[PA] %s' % title)
 
     for e,r in subs:
         text = e.sub(r, text)
