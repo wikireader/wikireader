@@ -648,14 +648,14 @@ class Parser
 		$this->mStripState->general->setPair( $rnd, $text );
 		return $rnd;
 	}
-	
+
 	/**
 	 * Interface with html tidy
 	 * @deprecated Use MWTidy::tidy()
 	 */
 	public static function tidy( $text ) {
 		wfDeprecated( __METHOD__ );
-		return MWTidy::tidy( $text );	
+		return MWTidy::tidy( $text );
 	}
 
 	/**
@@ -908,7 +908,7 @@ class Parser
 	/**
 	 * Replace special strings like "ISBN xxx" and "RFC xxx" with
 	 * magic external links.
-	 * 
+	 *
 	 * DML
 	 * @private
 	 */
@@ -918,7 +918,7 @@ class Parser
 		$urlChar = self::EXT_LINK_URL_CLASS;
 		$text = preg_replace_callback(
 			'!(?:                           # Start cases
-				(<a.*?</a>) |               # m[1]: Skip link text 
+				(<a.*?</a>) |               # m[1]: Skip link text
 				(<.*?>) |                   # m[2]: Skip stuff inside HTML elements' . "
 				(\\b(?:$prots)$urlChar+) |  # m[3]: Free external links" . '
 				(?:RFC|PMID)\s+([0-9]+) |   # m[4]: RFC or PMID, capture number
@@ -1017,7 +1017,7 @@ class Parser
 		$text = $this->maybeMakeExternalImage( $url );
 		if ( $text === false ) {
 			# Not an image, make a link
-			$text = $sk->makeExternalLink( $url, $wgContLang->markNoConversion($url), true, 'free', 
+			$text = $sk->makeExternalLink( $url, $wgContLang->markNoConversion($url), true, 'free',
 				$this->getExternalLinkAttribs( $url ) );
 			# Register it in the output object...
 			# Replace unnecessary URL escape codes with their equivalent characters
@@ -1457,7 +1457,7 @@ class Parser
 		wfProfileIn( __METHOD__.'-setup' );
 		static $tc = FALSE, $e1, $e1_img;
 		# the % is needed to support urlencoded titles as well
-		if ( !$tc ) { 
+		if ( !$tc ) {
 			$tc = Title::legalChars() . '#%';
 			# Match a link having the form [[namespace:link|alternate]]trail
 			$e1 = "/^([{$tc}]+)(?:\\|(.+?))?]](.*)\$/sD";
@@ -2011,7 +2011,10 @@ class Parser
 				# Multiple prefixes may abut each other for nested lists.
 				$prefixLength = strspn( $oLine, '*#:;' );
 				$prefix = substr( $oLine, 0, $prefixLength );
-
+				if ( substr( $prefix, -1 ) === ':' && substr( $prefix, 0, 1 ) === ';' ) {
+					--$prefixLength;
+					$prefix = substr( $oLine, 0, $prefixLength );
+				}
 				# eh?
 				$prefix2 = str_replace( ';', ':', $prefix );
 				$t = substr( $oLine, $prefixLength );
@@ -2607,7 +2610,7 @@ class Parser
 	 *  self::OT_HTML: all templates and extension tags
 	 *
 	 * @param string $tex The text to transform
-	 * @param PPFrame $frame Object describing the arguments passed to the template. 
+	 * @param PPFrame $frame Object describing the arguments passed to the template.
 	 *        Arguments may also be provided as an associative array, as was the usual case before MW1.12.
 	 *        Providing arguments this way may be useful for extensions wishing to perform variable replacement explicitly.
 	 * @param bool $argsOnly Only do argument (triple-brace) expansion, not double-brace expansion
@@ -2672,7 +2675,7 @@ class Parser
 	function limitationWarn( $limitationType, $current=null, $max=null) {
 		$msgName = $limitationType . '-warning';
 		//does no harm if $current and $max are present but are unnecessary for the message
-		$warning = wfMsgExt( $msgName, array( 'parsemag', 'escape' ), $current, $max ); 
+		$warning = wfMsgExt( $msgName, array( 'parsemag', 'escape' ), $current, $max );
 		$this->mOutput->addWarning( $warning );
 		$cat = Title::makeTitleSafe( NS_CATEGORY, wfMsgForContent( $limitationType . '-category' ) );
 		if ( $cat ) {
@@ -2814,7 +2817,7 @@ class Parser
 					$found = true;
 					$noparse = true;
 					$preprocessFlags = 0;
-					
+
 					if ( is_array( $result ) ) {
 						if ( isset( $result[0] ) ) {
 							$text = $result[0];
@@ -4005,23 +4008,23 @@ class Parser
 	 * @param integer $flags a combination of the following flags:
 	 *     SFH_NO_HASH   No leading hash, i.e. {{plural:...}} instead of {{#if:...}}
 	 *
-	 *     SFH_OBJECT_ARGS   Pass the template arguments as PPNode objects instead of text. This 
+	 *     SFH_OBJECT_ARGS   Pass the template arguments as PPNode objects instead of text. This
 	 *     allows for conditional expansion of the parse tree, allowing you to eliminate dead
-	 *     branches and thus speed up parsing. It is also possible to analyse the parse tree of 
+	 *     branches and thus speed up parsing. It is also possible to analyse the parse tree of
 	 *     the arguments, and to control the way they are expanded.
 	 *
 	 *     The $frame parameter is a PPFrame. This can be used to produce expanded text from the
 	 *     arguments, for instance:
 	 *         $text = isset( $args[0] ) ? $frame->expand( $args[0] ) : '';
 	 *
-	 *     For technical reasons, $args[0] is pre-expanded and will be a string. This may change in 
+	 *     For technical reasons, $args[0] is pre-expanded and will be a string. This may change in
 	 *     future versions. Please call $frame->expand() on it anyway so that your code keeps
 	 *     working if/when this is changed.
 	 *
 	 *     If you want whitespace to be trimmed from $args, you need to do it yourself, post-
 	 *     expansion.
 	 *
-	 *     Please read the documentation in includes/parser/Preprocessor.php for more information 
+	 *     Please read the documentation in includes/parser/Preprocessor.php for more information
 	 *     about the methods available in PPFrame and PPNode.
 	 *
 	 * @return The old callback function for this name, if any
@@ -4145,7 +4148,7 @@ class Parser
 			if ( count( $matches ) == 0 ) {
 				continue;
 			}
-			
+
 			if ( strpos( $matches[0], '%' ) !== false )
 				$matches[1] = urldecode( $matches[1] );
 			$tp = Title::newFromText( $matches[1]/*, NS_FILE*/ );
@@ -4404,7 +4407,7 @@ class Parser
 
 		return $ret;
 	}
-	
+
 	protected function stripAltText( $caption, $holders ) {
 		# Strip bad stuff out of the title (tooltip).  We can't just use
 		# replaceLinkHoldersText() here, because if this function is called
@@ -4420,7 +4423,7 @@ class Parser
 		# remove the tags
 		$tooltip = $this->mStripState->unstripBoth( $tooltip );
 		$tooltip = Sanitizer::stripAllTags( $tooltip );
-		
+
 		return $tooltip;
 	}
 
@@ -4856,7 +4859,7 @@ class Parser
 			$links['interwiki'][] = $this->mLinkHolders->interwiki[$key];
 			$pos = $start_pos + strlen( "<!--IWLINK $key-->" );
 		}
-		
+
 		$data['linkholder'] = $links;
 
 		return $data;
@@ -4865,7 +4868,7 @@ class Parser
 	function unserialiseHalfParsedText( $data, $intPrefix = null /* Unique identifying prefix */ ) {
 		if (!$intPrefix)
 			$intPrefix = $this->getRandomString();
-		
+
 		// First, extract the strip state.
 		$stripState = $data['stripstate'];
 		$this->mStripState->general->merge( $stripState->general );
