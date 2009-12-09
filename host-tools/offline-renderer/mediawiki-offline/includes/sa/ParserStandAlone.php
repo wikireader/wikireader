@@ -61,12 +61,15 @@ class ParserStandAlone extends Parser
       #echo " - Found Short\n";
     }
     else {
-      $template_text = null;
+      $template_text = " ";
       #echo " - Not Found\n";
     }
     #foreach ($deps as $dep ) {
     #    $this->mOutput->addTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
     #}
+    if ( null == $template_text) {
+      $template_text = " ";
+    }
     return array( $template_text, $finalTitle );
   }
 
