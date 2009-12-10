@@ -18,7 +18,7 @@ import os.path
 import sqlite3
 import WordWrap
 import PrintLog
-
+import gd
 
 verbose = False
 article_count = 0
@@ -39,6 +39,7 @@ DEFAULT_ALL_FONT_IDX    = 5
 # Screen dimensions
 LCD_WIDTH               = 240
 LCD_LEFT_MARGIN         = 6     # def. in lcd_buf_draw.h
+LCD_IMG_MARGIN          = 8
 
 # Line Spaces (read directly from the font using gdbfed)
 LINE_SPACE_ADDON        = 1 # added in lcd_buf_draw.h
@@ -222,7 +223,7 @@ def get_utf8_cwidth(c, face):
     global cmr, fh, cmr_size, fh_size
 
     if type(c) != unicode:
-	c = unicode(c, 'utf-8')
+        c = unicode(c, 'utf-8')
 
     if (c, face) in width_cache:
         return width_cache[(c, face)]
@@ -265,6 +266,48 @@ def make_link(url, x0, x1, text):
         g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
 
+
+def get_imgdata(imgfile):
+    try:
+        img = gd.image(imgfile)
+    except IOError, e:
+        PrintLog.message('unable to open image file: %s' % (imgfile))
+        return (0, 0, r'')
+
+    (width, height) = img.size()
+    if width <= (LCD_WIDTH - LCD_IMG_MARGIN):
+        is_black = lambda x, y: (0, 0, 0) == img.colorComponents(img.getPixel((x, y)))
+        h_range = range(0, width)
+        v_range = range(0, height)
+    elif height <= (LCD_WIDTH - LCD_IMG_MARGIN):
+        is_black = lambda x, y: (0, 0, 0) == img.colorComponents(img.getPixel((y, x)))
+        v_range = range(0, width)
+        h_range = range(height - 1, -1, -1)
+        (width, height) = (height, width)
+    else:
+        PrintLog.message('image file: %s is too big' % (imgfile))
+        return (0, 0, r'')
+
+    data = ''
+    for v in v_range:
+        byte = 0
+        bit_count = 8
+
+        for h in h_range:
+            if is_black(h, v):
+                pixel = 1
+            else:
+                pixel = 0
+            bit_count -= 1
+            byte |= pixel << bit_count
+            if 0 == bit_count:
+                data += struct.pack('B', byte)
+                byte = 0
+                bit_count = 8
+        if 8 != bit_count:
+            data += struct.pack('B', byte)
+
+    return (width, height, data)
 
 def esc_code0(num_pixels):
     """blank line height in pixels"""
@@ -344,6 +387,20 @@ def esc_code10(num_pixels):
     output.write(struct.pack('BB', 11, num_pixels))
 
 
+def esc_code14(width, height, data):
+    """output bitmap"""
+    global g_starty
+
+    if 0 == width or 0 == height:
+        return
+    output.write(struct.pack('<BBH', 15, width, height))
+    output.write(data)
+
+    g_starty += height
+
+
+
+
 #
 # Parse the HTML into the WikiReader's format
 #
@@ -388,6 +445,7 @@ class WrProcess(HTMLParser):
         self.in_i  = False
         self.in_a  = False
         self.in_br = False
+        self.in_img = False
 
         self.quote = 0
         self.level = 0
@@ -535,6 +593,13 @@ class WrProcess(HTMLParser):
         if tag == 'br':
             self.in_br = True
 
+        if tag == 'img' and 'src' in attrs:
+            self.flush_buffer()
+            #esc_code0(P_MARGIN_TOP)  ??? Do we need space before this img?
+            (width, height, data) = get_imgdata(attrs['src'])
+            esc_code14(width, height, data)
+            self.in_img = True
+
 
     def handle_endtag(self, tag):
         global g_this_article_title
@@ -574,13 +639,7 @@ class WrProcess(HTMLParser):
             self.flush_buffer()
 
         if tag == 'h1':
-			# If restricted decrease width temp
-			#old_w = self.lwidth
-                        # (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
-			# if restricted:
-			#     self.lwidth -= ????
             self.flush_buffer()
- 			#self.lwidth = old_w
             self.in_h1 = False
             esc_code0(H1_MARGIN_BOTTOM)
 
@@ -663,6 +722,9 @@ class WrProcess(HTMLParser):
         if tag == 'br':
             self.flush_buffer()
             self.in_br = False
+
+        if tag == 'img':
+            self.in_img = False
 
 
     def enter_list(self, list_type):

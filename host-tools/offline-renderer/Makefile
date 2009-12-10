@@ -92,6 +92,7 @@ index: check-dirs check-xml
 parse: check-dirs check-html
 	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
+		--parser-workdir="${WORKDIR}" \
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render

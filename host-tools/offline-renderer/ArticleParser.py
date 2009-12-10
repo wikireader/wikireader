@@ -49,7 +49,7 @@ subs = [
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
-    (re.compile(r'(<|&lt;)(/?)(math)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
+    (re.compile(r'(<|&lt;)(/?)(math|sub|sup)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
@@ -68,6 +68,7 @@ def usage(message):
     print '       --start=n               First artcle to process [1] (1k => 1000)'
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
     print '       --article-offsets=file  Article file offsets database input [offsets.db]'
+    print '       --parse-workdir=dir     Work director for the PHP parser [/tmp]'
     print '       --just-cat              Replace php parser be "cat" for debugging'
     print '       --no-output             Do not run any parsing'
     exit(1)
@@ -78,12 +79,13 @@ def main():
     global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:jn',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:jnw:',
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
                                     'just-cat',
                                     'no-output',
+                                    'parser-workdir=',
                                     ])
     except getopt.GetoptError, err:
         usage(err)
@@ -91,6 +93,7 @@ def main():
     verbose = False
     out_name = 'all_articles.html'
     off_name = 'offsets.db'
+    parser_workdir='/tmp'
     start_article = 1
     article_count = 'all'
     failed_articles = 0
@@ -105,6 +108,8 @@ def main():
             out_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
+        elif opt in ('-w', '--parser-workdir'):
+            parser_workdir = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-n', '--no-output'):
@@ -131,7 +136,10 @@ def main():
         else:
             usage('unhandled option: ' + opt)
 
+    if not os.path.isdir(parser_workdir):
+        usage('workdir: %s does not exist' % parser_workdir)
 
+    os.environ['WORKDIR'] = parser_workdir
 
     offset_db = sqlite3.connect(off_name)
     offset_db.execute('pragma synchronous = 0')
