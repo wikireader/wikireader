@@ -20,6 +20,7 @@
 **/
 
 require_once( dirname(__FILE__) .'/LBFactory_No.php' );
+require_once( "$IP/LocalSettings.php" );
 
 class ParserStandAlone extends Parser
 {
@@ -31,12 +32,10 @@ class ParserStandAlone extends Parser
     #$deps = array();
 
     if ( !isset( $wgTemplatePath ) ) {
-      #$wgTemplatePath = "$IP/sa/templates";
-      $wgTemplatePath = "/home/mosko/samo/work/templates";
+      $wgTemplatePath = "$IP/sa/templates";
     }
     if ( !isset( $wgTemplateExtension ) ) {
-      #$wgTemplateExtension = '.mwt';
-      $wgTemplateExtension = '';
+      $wgTemplateExtension = '.mwt';
     }
     if ( !isset( $wgTemplatePrefix ) ) {
       $wgTemplatePrefix = 'Template:';
