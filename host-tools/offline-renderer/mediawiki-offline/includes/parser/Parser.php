@@ -1963,7 +1963,7 @@ class Parser
 	/* private */ function closeList( $char ) {
 		if ( '*' === $char ) { $text = '</li></ul>'; }
 		else if ( '#' === $char ) { $text = '</li></ol>'; }
-		else if ( ':' === $char ) {
+		elseif ( ':' === $char || ';' === $char ) {
 			if ( $this->mDTopen ) {
 				$this->mDTopen = false;
 				$text = '</dt></dl>';
@@ -1991,7 +1991,7 @@ class Parser
 		#
 		$textLines = StringUtils::explode( "\n", $text );
 
-		$lastPrefix = $output = '';
+		$lastPrefix = $output = $lastPrefix2 = '';
 		$this->mDTopen = $inBlockElem = false;
 		$prefixLength = 0;
 		$paragraphStack = false;
@@ -2005,6 +2005,7 @@ class Parser
 			}
 
 			$lastPrefixLength = strlen( $lastPrefix );
+			$lastPrefix2Length = strlen( $lastPrefix2 );
 			$preCloseMatch = preg_match('/<\\/pre/i', $oLine );
 			$preOpenMatch = preg_match('/<pre/i', $oLine );
 			if ( !$this->mInPre ) {
@@ -2027,7 +2028,7 @@ class Parser
 			}
 
 			# List generation
-			if( $prefixLength && $lastPrefix === $prefix2 ) {
+			if( $prefixLength > 0 && $lastPrefix2 === $prefix2 ) {
 				# Same as the last item, so no need to deal with nesting or opening stuff
 				$output .= $this->nextItem( substr( $prefix, -1 ) );
 				$paragraphStack = false;
@@ -2043,7 +2044,7 @@ class Parser
 						$output .= $term . $this->nextItem( ':' );
 					}
 				}
-			} elseif( $prefixLength || $lastPrefixLength ) {
+			} elseif( $prefixLength > 0 || $lastPrefixLength > 0 ) {
 				# Either open or close a level...
 				$commonPrefixLength = $this->getCommon( $prefix, $lastPrefix );
 				$paragraphStack = false;
@@ -2068,9 +2069,10 @@ class Parser
 					}
 					++$commonPrefixLength;
 				}
-				$lastPrefix = $prefix2;
+				$lastPrefix = $prefix;
+				$lastPrefix2 = $prefix2;
 			}
-			if( 0 == $prefixLength ) {
+			if( 0 === $prefixLength ) {
 				wfProfileIn( __METHOD__."-paragraph" );
 				# No prefix (not in list)--go to paragraph mode
 				// XXX: use a stack for nestable elements like span, table and div
