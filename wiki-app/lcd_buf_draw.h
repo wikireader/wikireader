@@ -49,22 +49,22 @@
   7. The article content is coded in UTF-8.  Some UTF-8 control
   characters are used as escape characters.
 
-  0 - escape character 0 (space line), the byte after it contains the
+  1 - escape character 0 (space line), the byte after it contains the
   pixels of the space line
 
-  1 - escape character 1 (new line with the default font and the default
+  2 - escape character 1 (new line with the default font and the default
   line space)
 
-  2 - escape character 2 (new line with the same font and line space as
+  3 - escape character 2 (new line with the same font and line space as
   the previous line, not considering the font changes and
   adjustments)
 
-  3 - escape character 3 (new line with non-default font and line space)
+  4 - escape character 3 (new line with non-default font and line space)
   Definition of the byte after it:
   bit0~2 - font id (1 ~ 7)
   bit3~7 - pixels of the line space
 
-  4 - escape character 4 (change font)
+  5 - escape character 4 (change font)
 
   The font change (including alignment adjustment) is reset after
   the escape character 1, 3, 4 or 5.
@@ -76,17 +76,17 @@
   bit3~7 - adjustment to the default horizontal alignment
   (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
 
-  5 - escape character 5 (reset to the default font)
+  6 - escape character 5 (reset to the default font)
 
-  6 - escape character 6 (reset to the default vertical alignment)
+  7 - escape character 6 (reset to the default vertical alignment)
 
-  7 - escape character 7 (forward), the byte after it stands for the
+  8 - escape character 7 (forward), the byte after it stands for the
   pixels of move right (as the starting point of the next character).
 
   The next character or drawing line starts at the position after the movement.
   The rightmost position after the movement is the rightmost pixel of the screen.
 
-  8 - escape character 8 (backward), the byte after it stands for the
+  9 - escape character 8 (backward), the byte after it stands for the
   pixels to move left (from the original starting point of the next
   character).
 
@@ -94,14 +94,14 @@
 
   The leftmost position after the movement is the leftmost pixel of the screen.
 
-  9 - escape character 9 (alignment vertical adjustment), the byte after
+  10 - escape character 9 (alignment vertical adjustment), the byte after
   it stand for the pixels to adjust to the default vertical
   alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
 
   It takes effect for all lines after that until another excape
   character 9 or escape character 6 is encountered.
 
-  10 - escape character 10 (drawing horizontal line from right to left,
+  11 - escape character 10 (drawing horizontal line from right to left,
   1 pixel thick), the next byte after it stands for the length of
   the line in pixels.
 
@@ -114,7 +114,7 @@
   The horizontal line does not change the horizontal position of
   the next character.
 
-  11 - escape character 11 (drawing vertical line from bottom to top, 1
+  12 - escape character 11 (drawing vertical line from bottom to top, 1
   pixel thick), the next byte after it stands for the length of the
   line in pixels.
 
@@ -127,28 +127,21 @@
 
   The horizontal line does not change the horizontal position of the next character.
 
-  12 - escape character 12 (single pixel horizontal line), the
+  13 - escape character 12 (single pixel horizontal line), the
   horizontal line pccupies from the left-most pixel to the
   right-most pixel.
   The line is 1 pixel high.
 
-  13 - escape character 13 (double pixel horizontal line), the
-  horizontal line pccupies from the left-most pixel to the
-  right-most pixel.
 
-  The line is 2 pixel high.
-
-  14 - escape character 14 (single pixel vertical line), the vertical
+  14 - escape character 13 (single pixel vertical line), the vertical
   line pccupies from the top to the bottom of the current line
   space.
 
   The vertical line pccupies 1 pixel width.
 
-  15 - escape character 15 (double pixel vertical line), the vertical
-  line pccupies from the top to the bottom of the current line
-  space.
+  15 - escape character 14 (bitmap), the next byte after it stands for
+  the width of the bitmap in pixels and the 3rd and 4th bytes sand for the height.
 
-  The vertical line pccupies 2 pixel width.
 */
 
 #ifndef _LCD_BUF_DRAW_H
@@ -170,11 +163,13 @@
 #define ESC_11_VERTICAL_LINE		12
 #define ESC_12_FULL_HORIZONTAL_LINE	13
 #define ESC_13_FULL_VERTICAL_LINE	14
-#define MAX_ESC_CHAR ESC_13_FULL_VERTICAL_LINE
+#define ESC_14_BITMAP			15
+#define MAX_ESC_CHAR ESC_14_BITMAP
 
 #define LINE_SPACE_ADDON 1
 #define LCD_BUF_WIDTH_PIXELS 240
 #define LCD_LEFT_MARGIN 6
+#define LCD_EXTRA_LEFT_MARGIN_FOR_IMAGE 2
 #define LCD_TOP_MARGIN 6
 #define LCD_BUF_HEIGHT_PIXELS 64 * 1024
 #define LINK_X_DIFF_ALLOWANCE 10
@@ -213,6 +208,7 @@ typedef struct _LCD_DRAW_BUF
 	pcffont_bmf_t *pPcfFont;
 	int drawing;
 	int line_height;
+	int actual_height;
 	int align_adjustment;
 	int vertical_adjustment;
 } LCD_DRAW_BUF;

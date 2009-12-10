@@ -385,6 +385,12 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 	long v_line_bottom;
 	ucs4_t u;
 	int font_idx;
+	int nWidth;
+	int nHeight;
+	int nBytes;
+	int nImageY;
+	int i, j;
+	int nByteIdx, nBitIdx;
 
 	if (NULL == pUTF8 || NULL == *pUTF8) {
 		return;
@@ -400,24 +406,27 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			c2 = **pUTF8;
 			(*pUTF8)++;
 			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.line_height = c2;
+			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
 			lcd_draw_buf.align_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			break;
 		case ESC_1_NEW_LINE_DEFAULT_FONT: /* new line with default font and line space */
 			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
 			lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
+			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
 			lcd_draw_buf.align_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			break;
 		case ESC_2_NEW_LINE_SAME_FONT: /* new line with previous font and line space */
 			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
+			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
 			lcd_draw_buf.align_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
@@ -426,12 +435,13 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			c2 = **pUTF8;
 			(*pUTF8)++;
 			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			font_idx = c2 & 0x07;
 			if (font_idx > FONT_COUNT)
 				font_idx = DEFAULT_FONT_IDX;
 			lcd_draw_buf.pPcfFont = &pcfFonts[font_idx - 1];
 			lcd_draw_buf.line_height = c2 >> 3;
+			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
 			lcd_draw_buf.align_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
@@ -500,8 +510,9 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			break;
 		case ESC_12_FULL_HORIZONTAL_LINE: /* drawing horizontal line from left-most pixel to right-most pixel */
 			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.line_height = 1;
+			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
 			lcd_draw_buf.align_adjustment = 0;
 			buf_draw_horizontal_line(LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment, LCD_BUF_WIDTH_PIXELS);
 			break;
@@ -509,6 +520,55 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			lcd_draw_buf.current_x += 1;
 			buf_draw_vertical_line(lcd_draw_buf.current_y, lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1);
 			lcd_draw_buf.current_x += 2;
+			break;
+		case ESC_14_BITMAP: /* bitmap */
+			c2 = **pUTF8;
+			(*pUTF8)++;
+			nWidth = c2;
+			c2 = **pUTF8;
+			(*pUTF8)++;
+			nHeight = c2;
+			c2 = **pUTF8;
+			(*pUTF8)++;
+			nHeight |= c2 << 8;
+			if (lcd_draw_buf.current_x == 0)
+				lcd_draw_buf.current_x = LCD_EXTRA_LEFT_MARGIN_FOR_IMAGE;
+			else
+				lcd_draw_buf.current_x++;
+			if (lcd_draw_buf.line_height < nHeight + 1)
+				lcd_draw_buf.actual_height = nHeight + 1;
+			nImageY = lcd_draw_buf.current_y;
+			if ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN) % 8 == 0)
+			{
+				nBytes = (nWidth + 7) / 8;
+				if (nBytes > LCD_BUF_WIDTH_BYTES - 1)
+					nBytes = LCD_BUF_WIDTH_BYTES - 1;
+				nByteIdx = (lcd_draw_buf.current_x  + LCD_LEFT_MARGIN) / 8;
+				for (i = 0; i < nHeight; i++)
+				{
+					memcpy(&lcd_draw_buf.screen_buf[nImageY * LCD_BUF_WIDTH_BYTES + nByteIdx], *pUTF8, nBytes);
+					*pUTF8 += (nWidth + 7) / 8;
+					nImageY++;
+				}
+			}
+			else
+			{
+				for (i = 0; i < nHeight; i++)
+				{
+					for(j = 0; j < nWidth; j++)
+					{
+						nByteIdx = j / 8;
+						nBitIdx = 7 - (j % 8);
+						if ((*pUTF8)[nByteIdx] & (1 << nBitIdx))
+						{
+							lcd_set_pixel(lcd_draw_buf.screen_buf, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + j, nImageY);
+						}
+					}
+					*pUTF8 += (nWidth + 7) / 8;
+					nImageY++;
+				}
+			}
+			lcd_draw_buf.current_x += nWidth + 1;
 			break;
 		default:
 			break;
@@ -835,6 +895,7 @@ void init_render_article(long init_y_pos)
 	lcd_draw_buf.drawing = 0;
 	lcd_draw_buf.pPcfFont = NULL;
 	lcd_draw_buf.line_height = 0;
+	lcd_draw_buf.actual_height = 0;
 	lcd_draw_buf.align_adjustment = 0;
 	lcd_draw_buf.vertical_adjustment = 0;
 
@@ -1636,14 +1697,10 @@ void repaint_invert_link()
 	}
 }
 
-void invert_link(int article_link_number)
+void invert_link_area(int article_link_number)
 {
 	int start_x,start_y,end_x,end_y;
 	int left_margin;
-
-	if(article_link_number<0)
-		return;
-
 
 	if (display_mode == DISPLAY_MODE_ARTICLE)
 		left_margin = LCD_LEFT_MARGIN;
@@ -1665,6 +1722,30 @@ void invert_link(int article_link_number)
 		// guilib_invert_area will only invert (x, y) within LCD range
 		guilib_invert_area(start_x, start_y, end_x, end_y);
 		guilib_fb_unlock();
+	}
+}
+
+void invert_link(int article_link_number)
+{
+	long article_id;
+	int local_link_number;
+
+	if(article_link_number<0)
+		return;
+
+	article_id = articleLink[article_link_number].article_id;
+	invert_link_area(article_link_number);
+
+	local_link_number = article_link_number - 1;
+	while (local_link_number >= 0 && article_id == articleLink[local_link_number].article_id)
+	{
+		invert_link_area(local_link_number--);
+	}
+
+	local_link_number = article_link_number + 1;
+	while (local_link_number < article_link_count && article_id == articleLink[local_link_number].article_id)
+	{
+		invert_link_area(local_link_number++);
 	}
 }
 
