@@ -42,6 +42,10 @@ class WordWrap():
             del self.buffer[-1]
 
 
+    def AppendImage(self, width, height, data, url):
+        self.buffer.append(('@', (width, height, data), url, width, [width]))
+
+
     def dump(self):
         print 'B:', self.buffer
 
@@ -119,7 +123,7 @@ def main():
             return 1
         return 2
 
-    b = Buffer(cwidth)
+    b = WordWrap(cwidth)
     default = '\033[0m'
     grey = '\033[1;30m'
     pink = '\033[1;31m'
@@ -136,6 +140,7 @@ def main():
         'b': green,
         'i': blue,
         'bi': purple,
+        None: red,
         }
     b.append('     hello world I am some text', 'n', None)
     b.append('   this is another bit ', 'n', None)
@@ -160,7 +165,9 @@ def main():
     b.append('for assignments, and then the suite is executed. When the items are ', 'n', None)
     b.append('exhausted (which is immediately when the sequence is empty), the ', 'n', None)
     b.append('suite in the else clause, if present, is executed, and the loop ', 'n', None)
-    b.append('terminates.', 'n', None)
+    b.append('and yes it is. this ', 'n', None)
+    b.AppendImage(1, 7, '@@@@', None)
+    b.append(' is an image', 'n', None)
 
 
     b.dump()
@@ -183,8 +190,12 @@ def main():
                     url_x0 = x
                     t += red
             if url == None:
-                t += colours[i[1]]
-            t += i[0]
+                if tuple == type(i[1]):
+                    (width, height, data) = i[1]
+                    t += "{%d.%d:%s}" % (width, height, data)
+                else:
+                    t += colours[i[1]]
+                    t += i[0]
             x += i[3]
         if url != None:
             make_link(url, url_x0, x)
