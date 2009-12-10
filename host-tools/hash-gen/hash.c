@@ -47,7 +47,7 @@
 //      Each entry consists of (see TITLE_SEARCH_REMAINDER):
 //		idx of article (pointing to pedia.idx)
 //		variable length and null terminated remainder (starting from the 3rd character)
-#define SIZE_FIRST_THREE_CHAR_INDEXING (SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long))
+#define SIZE_FIRST_THREE_CHAR_INDEXING (SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(uint32_t))
 
 
 #define MAX_TITLE_SEARCH 64
