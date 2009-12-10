@@ -1,0 +1,6 @@
+*.cmi
+*.cmx
+*.mli
+texvc
+texvc_test
+texvc_tex

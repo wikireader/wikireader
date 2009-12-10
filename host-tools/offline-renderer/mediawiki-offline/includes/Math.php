@@ -318,6 +318,11 @@ class MathRenderer {
 
 	public static function renderMath( $tex, $params=array() ) {
 		global $wgUser;
+		
+		# SEAN: We need this since XML code like &amp; &lt; cannot
+		# be processed as is.
+		$tex = html_entity_decode($tex);
+		
 		$math = new MathRenderer( $tex, $params );
 		$math->setOutputMode( $wgUser->getOption('math'));
 		return $math->render();
