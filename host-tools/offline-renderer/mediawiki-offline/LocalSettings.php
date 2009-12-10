@@ -8,7 +8,9 @@
  *
  * ----------
  *
- * Copyright (C) 2008, 2009 Michael Nowak
+ * Copyright (C) 2009 Michael Nowak
+ *               Sean Moss-Pultz <sean@openmoko.com>
+ *               Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,10 +73,8 @@ require_once( "$IP/extensions/wikihiero/wikihiero.php" );
 putenv("GDFONTPATH=/usr/share/fonts/truetype/freefont"); # for EasyTimeline
 
 # Settings for offline templates
-#$wgTemplateExtension = '.mwt';
-#$wgTemplatePath = "$IP/sa/templates";
 $wgTemplateExtension = '';
-$wgTemplatePath = "/home/mosko/samo/work/templates";
+$wgTemplatePath = getenv('WORKDIR') . "/templates";
 
 
 # MediaWiki settings
@@ -84,7 +84,7 @@ $wgCheckDBSchema = false;
 $wgEnableEmail = false;
 $wgEnableUserEmail = false;
 $wgLanguageCode = 'en';
-$wgUseTeX = true;
+$wgUseTeX = false;
 $wgUseImageMagick = true;
 $wgUseTidy = true;
 $wgAlwaysUseTidy = true;
@@ -92,7 +92,16 @@ $wgAllowUserSkin = false;
 $wgShowExceptionDetails = true;
 $wgBrowserBlackList = array();
 
-## Disable all kinds of MediaWiki caching
+# For Math equations, (to activate, set $wgUseTeX is true )
+$WorkDirectory   = getenv('WORKDIR');
+$wgMathDirectory = "{$WorkDirectory}/math";
+$wgMathPath      = "$wgMathDirectory";
+$wgTmpDirectory  = "{$WorkDirectory}/tmp";
+ 
+# Uncomment for debugging
+#$wgDebugLogFile = "/tmp/wiki.log";
+
+# Disable all kinds of MediaWiki caching
 $wgMainCacheType = CACHE_ACCEL;
 $wgMessageCacheType = CACHE_ACCEL;
 $wgParserCacheType = CACHE_ACCEL;
