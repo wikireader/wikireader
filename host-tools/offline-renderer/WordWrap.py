@@ -89,13 +89,13 @@ class WordWrap():
             (r, self.buffer[0]) = self.split(self.buffer[0], width)
             return [r]
 
-        result = []
-        w = 0
-        i = 0
-        for word in self.buffer:
-            w += word[3]
+        result = [self.buffer[0]]
+        w = result[0][3]
+        i = 1
+        for word in self.buffer[1:]:
             if w > width:
                 break
+            w += word[3]
             result.append(word)
             i += 1
 
