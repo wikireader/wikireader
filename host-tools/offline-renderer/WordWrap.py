@@ -63,6 +63,11 @@ class WordWrap():
 
 
     def split(self, item, width):
+        # do not attempt to split a single wide character
+        # this should not occur, but handle it anyway
+        if len(item[0]) == 1:
+            return (item, None)
+
         text = item[0]
         lengths = item[4]
         i = 0
@@ -85,7 +90,7 @@ class WordWrap():
             if self.buffer == []:
                 return []
 
-        if self.buffer[0][3] > width:
+        if self.buffer[0][3] > width and len(self.buffer[0][0]) > 1:
             (r, self.buffer[0]) = self.split(self.buffer[0], width)
             return [r]
 
@@ -93,9 +98,9 @@ class WordWrap():
         w = result[0][3]
         i = 1
         for word in self.buffer[1:]:
+            w += word[3]
             if w > width:
                 break
-            w += word[3]
             result.append(word)
             i += 1
 
@@ -112,6 +117,7 @@ class WordWrap():
         return self.buffer != []
 
 
+xx=0
 # some testing
 def main():
 
@@ -167,6 +173,8 @@ def main():
     b.append('suite in the else clause, if present, is executed, and the loop ', 'n', None)
     b.append('and yes it is. this ', 'n', None)
     b.AppendImage(1, 7, '@@@@', None)
+    b.AppendImage(101, 7, '@@@@', None)
+    b.AppendImage(102, 7, '@@@@', None)
     b.append(' is an image', 'n', None)
 
 
