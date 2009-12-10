@@ -21,6 +21,8 @@
 #define MAX_PASSWORD_LEN 9
 #define RESTRICTED_MARK_LINK 9999999
 
+#include <inttypes.h>
+
 void set_password(void);
 void get_password(void);
 void check_password(void);
@@ -30,7 +32,7 @@ int password_remove_char(void);
 int clear_password_string(void);
 int get_password_string_len(void);
 void handle_password_key(char keycode);
-void draw_restricted_mark(char *screen_buf);
+void draw_restricted_mark(uint8_t *screen_buf);
 void filter_option(void);
 int init_article_filter(void);
 

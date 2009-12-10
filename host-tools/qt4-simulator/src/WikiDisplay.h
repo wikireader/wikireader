@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QQueue>
+#include <QMutex>
 #include <QWaitCondition>
 
 class WikiDisplay : public QWidget
@@ -37,8 +38,12 @@ public:
     QWaitCondition *waitCondition;
     QQueue<QKeyEvent> *keyEventQueue;
     QQueue<QMouseEvent> *mouseEventQueue;
+    QMutex *keyQueueMutex;
+    QMutex *mouseQueueMutex;
+
 private:
     QByteArray *framebuffer;
+
 protected:
     void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);

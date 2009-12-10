@@ -603,7 +603,7 @@ int get_password_string_len(void)
 	return password_str_len;
 }
 
-void draw_restricted_mark(char *screen_buf)
+void draw_restricted_mark(uint8_t *screen_buf)
 {
 	int x, y;
 

@@ -55,7 +55,9 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 		}
 
 		if (!display->keyEventQueue->isEmpty()) {
+			display->keyQueueMutex->lock();
 			QKeyEvent keyEvent = display->keyEventQueue->dequeue();
+			display->keyQueueMutex->unlock();
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 			ev->key_event.keycode = keyEvent.key();
 			if (!keyEvent.text().isEmpty()) {
@@ -83,7 +85,9 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 		}
 
 		if (!display->mouseEventQueue->isEmpty()) {
+			display->mouseQueueMutex->lock();
 			QMouseEvent mouseEvent = display->mouseEventQueue->dequeue();
+			display->mouseQueueMutex->unlock();
 			ev->type = WL_INPUT_EV_TYPE_TOUCH;
 			ev->touch_event.x = mouseEvent.x();
 			ev->touch_event.y = mouseEvent.y();

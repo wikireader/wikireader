@@ -40,6 +40,8 @@ WikiDisplay::WikiDisplay(QWidget *parent)
 	keyEventQueue = new QQueue<QKeyEvent>;
 	mouseEventQueue = new QQueue<QMouseEvent>;
 	waitCondition = new QWaitCondition();
+	keyQueueMutex = new QMutex();
+	mouseQueueMutex = new QMutex();
 }
 
 WikiDisplay::~WikiDisplay()
@@ -47,6 +49,8 @@ WikiDisplay::~WikiDisplay()
 	delete framebuffer;
 	delete keyEventQueue;
 	delete waitCondition;
+	delete keyQueueMutex;
+	delete mouseQueueMutex;
 }
 
 void
@@ -57,21 +61,27 @@ WikiDisplay::keyPressEvent(QKeyEvent *event)
 	    && event->key() != Qt::Key_Down && event->key() != Qt::Key_Up)
 	    return;
 
+	keyQueueMutex->lock();
 	keyEventQueue->enqueue(*event);
+	keyQueueMutex->unlock();
 	waitCondition->wakeAll();
 }
 
 void
 WikiDisplay::mousePressEvent(QMouseEvent *event)
 {
+	mouseQueueMutex->lock();
 	mouseEventQueue->enqueue(*event);
+	mouseQueueMutex->unlock();
 	waitCondition->wakeAll();
 }
 
 void
 WikiDisplay::mouseReleaseEvent(QMouseEvent *event)
 {
+	mouseQueueMutex->lock();
 	mouseEventQueue->enqueue(*event);
+	mouseQueueMutex->unlock();
 	waitCondition->wakeAll();
 }
 

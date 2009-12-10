@@ -206,6 +206,13 @@ void init_lcd_draw_buf()
 					}
 					pcfFonts[i].fd = fd;
 				}
+#if !defined(INCLUDED_FROM_KERNEL)
+				else
+				{
+					printf("Missing font: '%s'\n", pcfFonts[i].file);
+					exit(1);
+				}
+#endif
 			}
 
 		}
@@ -620,7 +627,7 @@ void repaint_framebuffer(unsigned char *buf,int pos, int b_repaint_invert_link)
 
 void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 {
-	int i;
+	unsigned long i;
 	long h_line_y;
 
 
