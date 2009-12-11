@@ -390,17 +390,18 @@ def esc_code10(num_pixels):
 
 def esc_code14(width, height, data):
     """output bitmap"""
-    global g_starty
+    global g_starty, g_curr_face
 
     if 0 == width or 0 == height:
         return
+    
     output.write(struct.pack('<BBH', 15, width, height))
     output.write(data)
 
-    g_starty += height
-
-
-
+    lineh = get_lineheight(g_curr_face)
+    
+    if height > lineh:
+        g_starty += height-lineh + 1
 
 #
 # Parse the HTML into the WikiReader's format
