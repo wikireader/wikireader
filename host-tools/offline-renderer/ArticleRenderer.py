@@ -758,10 +758,37 @@ class WrProcess(HTMLParser):
 
 
     def handle_charref(self, name):
-        self.handle_data(unichr(int(name)))
+        """handle &#DDDD; &#xXXXX;"""
+        print '*********************handle_charref: %s' % name
+        if 0 == len(name):
+            return
+
+        if 'x' == name[0] or 'X' == name[0]:
+            try:
+                value = int(name[1:], 16)
+            except ValueError:
+                PrintLog.message('charref: "%s" is not hexadecimal' % name)
+                return
+
+        elif name.isdigit():
+            try:
+                value = int(name)
+            except ValueError:
+                PrintLog.message('charref: "%s" is not decimal' % name)
+                return
+
+        print '*********************cvt charref: %d 0x%x' % (value, value)
+
+        try:
+            c = unichr(value)
+        except ValueError:
+            PrintLog.message('charref: "%d" is not convertible to unicode' % value)
+            c = '?'
+        self.handle_data(c)
 
 
     def handle_entityref(self, name):
+        """handle &amp; &gt; ..."""
         try:
             self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
         except KeyError:
