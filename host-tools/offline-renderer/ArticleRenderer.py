@@ -497,6 +497,13 @@ class WrProcess(HTMLParser):
         elif tag == 'body':
             self.in_body = True
 
+        elif tag == 'table':
+            self.in_table += 1
+            
+        # if in a table suppress weverythin after this point
+        elif self.in_table > 0:
+            return
+
         elif tag == 'h1':
             self.flush_buffer()
             self.in_h1 = True
@@ -530,9 +537,6 @@ class WrProcess(HTMLParser):
         elif tag == 'div':
             self.flush_buffer()
             esc_code0(DIV_MARGIN_TOP)
-
-        elif tag == 'table':
-            self.in_table += 1
 
         elif tag == 'p':
             self.flush_buffer()
@@ -646,6 +650,14 @@ class WrProcess(HTMLParser):
         elif tag == 'body':
             self.in_body = False
             self.flush_buffer()
+            
+        elif tag == 'table':
+            if self.in_table > 0:
+                self.in_table -= 1
+
+        # if in a table suppress weverythin after this point
+        elif self.in_table > 0:
+            return
 
         elif tag == 'h1':
             self.flush_buffer()
@@ -674,10 +686,6 @@ class WrProcess(HTMLParser):
 
         elif tag == 'div':
             self.flush_buffer()
-
-        elif tag == 'table':
-            if self.in_table > 0:
-                self.in_table -= 1
 
         elif tag == 'p':
             self.flush_buffer()
