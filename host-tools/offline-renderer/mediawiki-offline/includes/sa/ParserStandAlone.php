@@ -31,16 +31,6 @@ class ParserStandAlone extends Parser
     $finalTitle = $title;
     #$deps = array();
 
-    if ( !isset( $wgTemplatePath ) ) {
-      $wgTemplatePath = "$IP/sa/templates";
-    }
-    if ( !isset( $wgTemplateExtension ) ) {
-      $wgTemplateExtension = '.mwt';
-    }
-    if ( !isset( $wgTemplatePrefix ) ) {
-      $wgTemplatePrefix = 'Template:';
-    }
-
     # $$$ need to fix later for all languages
     $title_short = substr($title, strlen($wgTemplatePrefix));
     #echo " (Short: $title_short)";
