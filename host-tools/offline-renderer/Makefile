@@ -45,9 +45,22 @@ OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.db)
 HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
 PYLZMA_DIR := pylzma-0.3.0
+MATH_DIR := mediawiki-offline/math
 
 ifeq ($(shell which sqlite3),)
 $(error Could not find sqlite3 - please: sudo apt-get install sqlite3 )
+endif
+
+ifeq ($(shell which ocamlopt),)
+$(error Could not find ocaml - please: sudo apt-get install ocaml )
+endif
+
+ifeq ($(shell which tex),)
+$(error Could not find tex - please: sudo apt-get install tetex-extra cjk-latex )
+endif
+
+ifeq ($(shell which dvipng),)
+$(error Could not find dvipng - please: sudo apt-get install dvipng )
 endif
 
 
@@ -89,7 +102,7 @@ index: check-dirs check-xml
 		--prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse
-parse: check-dirs check-html
+parse: check-dirs check-html math
 	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
 		--parser-workdir="${WORKDIR}" \
@@ -118,6 +131,18 @@ pylzma:
 	python setup.py build && \
 	sudo python setup.py install
 
+
+
+# sudo apt-get install tetex-extra dvipng cjk-latex ocaml
+.PHONY: math
+math: stamp-math
+
+.PHONY: stamp-math
+stamp-math:
+	${RM} "$@"
+	${MAKE} -C "${MATH_DIR}"
+	${TOUCH} "$@"
+
 .PHONY: install
 install: all
 	#@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
@@ -128,7 +153,9 @@ build:
 
 .PHONY: clean
 clean: pylzma-clean
-	${RM} -r build ${TARGETS} article_idx.py *.pyc *.pyo all_articles.html *.dat *.idx *.idx-tmp *.pfx *.fnd
+	${RM} -r build ${TARGETS} *.pyc *.pyo *.dat *.idx *.idx-tmp *.pfx *.fnd
+	${RM} stamp-*
+	${MAKE} -C "${MATH_DIR}" clean
 
 .PHONY: pylzma-clean
 pylzma-clean:
