@@ -187,7 +187,7 @@ def main():
         f_out = open(data_file % file_number, 'w')
     else:
         compress = False
-        fout = open(test_file, 'w')
+        f_out = open(test_file, 'w')
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8')
@@ -413,7 +413,6 @@ class WrProcess(HTMLParser):
         HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
-        self.printing = True
         self.tag_stack = []
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
@@ -457,6 +456,9 @@ class WrProcess(HTMLParser):
         self.link_x = 0
         self.link_y = 0
         self.url = None
+
+        self.printing = True
+
         g_starty = 0
         g_curr_face = DEFAULT_FONT_IDX
         g_halign = 0
@@ -464,12 +466,20 @@ class WrProcess(HTMLParser):
         g_links = {}
         g_link_cnt = 0
 
+
     def handle_starttag(self, tag, attrs):
 
         global g_starty, g_curr_face, g_halign
         global g_this_article_title, g_links, g_link_cnt
 
         attrs = dict(attrs)
+
+        # must always do the <html> tag
+        if tag == 'html':
+            self.local_init()
+            self.in_html = True
+            self.tag_stack = [(tag, True)]
+            return
 
         self.tag_stack.append((tag, self.printing))
         # we want to skip content that isn't for printing
@@ -480,60 +490,56 @@ class WrProcess(HTMLParser):
         if not self.printing:
             return;
 
-        if tag == 'html':
-            self.local_init()
-            self.in_html = True
-
-        if tag == 'title':
+        elif tag == 'title':
             self.in_title = True
             g_this_article_title = ''
 
-        if tag == 'body':
+        elif tag == 'body':
             self.in_body = True
 
-        if tag == 'h1':
+        elif tag == 'h1':
             self.flush_buffer()
             self.in_h1 = True
             esc_code0(H1_MARGIN_TOP)
 
-        if tag == 'h2':
+        elif tag == 'h2':
             self.flush_buffer()
             self.in_h2 = True
             esc_code0(H2_MARGIN_TOP)
 
-        if tag == 'h3':
+        elif tag == 'h3':
             self.flush_buffer()
             self.in_h3 = True
             esc_code0(H3_MARGIN_TOP)
 
-        if tag == 'h4':
+        elif tag == 'h4':
             self.flush_buffer()
             self.in_h4 = True
             esc_code0(H4_MARGIN_TOP)
 
-        if tag == 'h5':
+        elif tag == 'h5':
             self.flush_buffer()
             self.in_h5 = True
             esc_code0(H5_MARGIN_TOP)
 
-        if tag == 'h6':
+        elif tag == 'h6':
             self.flush_buffer()
             self.in_h6 = True
             esc_code0(H6_MARGIN_TOP)
 
-        if tag == 'div':
+        elif tag == 'div':
             self.flush_buffer()
             esc_code0(DIV_MARGIN_TOP)
 
-        if tag == 'table':
+        elif tag == 'table':
             self.in_table += 1
 
-        if tag == 'p':
+        elif tag == 'p':
             self.flush_buffer()
             self.in_p = True
             esc_code0(P_MARGIN_TOP)
 
-        if tag == 'blockquote':
+        elif tag == 'blockquote':
             self.flush_buffer()
             self.quote += 1
             if self.quote < MAX_QUOTE_LEVEL:
@@ -542,32 +548,32 @@ class WrProcess(HTMLParser):
                 self.lwidth -= BLOCKQUOTE_MARGIN_LEFT + BLOCKQUOTE_MARGIN_RIGHT
                 esc_code9(BLOCKQUOTE_MARGIN_LEFT)
 
-        if tag == 'b':
+        elif tag == 'b':
             self.in_b = True
 
-        if tag == 'i':
+        elif tag == 'i':
             self.in_i = True
 
-        if tag == 'big':            # Not sure what to do with this one
+        elif tag == 'big':            # Not sure what to do with this one
             self.in_b = True
 
-        if tag == 'strong':
+        elif tag == 'strong':
             self.in_b = True
 
-        if tag == 'del':
+        elif tag == 'del':
             self.in_del = True
 
-        if tag == 'ins':
+        elif tag == 'ins':
             self.in_ins = True
 
-        if tag == 'a' and 'href' in attrs:
+        elif tag == 'a' and 'href' in attrs:
             self.in_a = True
             self.url  = attrs['href']
 
-        if tag in ['ul', 'ol', 'dl']:
+        elif tag in ['ul', 'ol', 'dl']:
             self.enter_list(tag)
 
-        if tag == 'li':
+        elif tag == 'li':
             self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
@@ -585,16 +591,16 @@ class WrProcess(HTMLParser):
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
-        if tag == 'dd':
+        elif tag == 'dd':
             self.li_cnt[self.level] += 1
             if self.level <= LIMAX_INDENT_LEVELS:
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
-        if tag == 'br':
+        elif tag == 'br':
             self.in_br = True
 
-        if tag == 'img' and 'src' in attrs:
+        elif tag == 'img' and 'src' in attrs:
             (width, height, data) = get_imgdata(attrs['src'], self.indent)
             self.wordwrap.AppendImage(width, height, data, None)
             self.in_img = True
@@ -621,59 +627,63 @@ class WrProcess(HTMLParser):
             self.handle_endtag(start_tag)
             (start_tag, self.printing) = self.tag_stack.pop()
 
-        if not self.printing:
-            return;
-
+        # must always do </html> tag
         if tag == 'html':
+            self.printing = True
+            self.tag_stack = []
             self.in_html = False
             esc_code1()
             write_article()
+            return
 
-        if tag == 'title':
+        if not self.printing:
+            return;
+
+        elif tag == 'title':
             self.in_title = False
             g_this_article_title = g_this_article_title.strip()
 
-        if tag == 'body':
+        elif tag == 'body':
             self.in_body = False
             self.flush_buffer()
 
-        if tag == 'h1':
+        elif tag == 'h1':
             self.flush_buffer()
             self.in_h1 = False
             esc_code0(H1_MARGIN_BOTTOM)
 
-        if tag == 'h2':
+        elif tag == 'h2':
             self.flush_buffer()
             self.in_h2 = False
 
-        if tag == 'h3':
+        elif tag == 'h3':
             self.flush_buffer()
             self.in_h3 = False
 
-        if tag == 'h4':
+        elif tag == 'h4':
             self.flush_buffer()
             self.in_h4 = False
 
-        if tag == 'h5':
+        elif tag == 'h5':
             self.flush_buffer()
             self.in_h5 = False
 
-        if tag == 'h6':
+        elif tag == 'h6':
             self.flush_buffer()
             self.in_h6 = False
 
-        if tag == 'div':
+        elif tag == 'div':
             self.flush_buffer()
 
-        if tag == 'table':
+        elif tag == 'table':
             if self.in_table > 0:
                 self.in_table -= 1
 
-        if tag == 'p':
+        elif tag == 'p':
             self.flush_buffer()
             self.in_p = False
 
-        if tag == 'blockquote':
+        elif tag == 'blockquote':
             self.flush_buffer()
             if self.quote > 0:
                 if self.quote < MAX_QUOTE_LEVEL:
@@ -682,47 +692,47 @@ class WrProcess(HTMLParser):
                     esc_code9(-BLOCKQUOTE_MARGIN_LEFT)
                 self.quote -= 1
 
-        if tag == 'b':
+        elif tag == 'b':
             self.in_b = False
 
-        if tag == 'big':
+        elif tag == 'big':
             self.in_b = False
 
-        if tag == 'strong':
+        elif tag == 'strong':
             self.in_b = False
 
-        if tag == 'i':
+        elif tag == 'i':
             self.in_i = False
 
-        if tag == 'del':
+        elif tag == 'del':
             self.in_del = False
 
-        if tag == 'ins':
+        elif tag == 'ins':
             self.in_ins = False
 
-        if tag == 'a':
+        elif tag == 'a':
             self.in_a = False
             self.url  = ""
 
-        if tag in ['ul', 'ol', 'dl']:
+        elif tag in ['ul', 'ol', 'dl']:
             self.leave_list()
 
-        if tag == 'li':
+        elif tag == 'li':
             self.flush_buffer(False)
             esc_code9(- LIST_INDENT)
 
-        if tag == 'dd':
+        elif tag == 'dd':
             self.flush_buffer()
             esc_code9(- LIST_INDENT)
 
-        if tag == 'dt':
+        elif tag == 'dt':
             self.flush_buffer()
 
-        if tag == 'br':
+        elif tag == 'br':
             self.flush_buffer()
             self.in_br = False
 
-        if tag == 'img':
+        elif tag == 'img':
             self.in_img = False
 
 
@@ -826,11 +836,11 @@ class WrProcess(HTMLParser):
                 if tuple == type(i[1]):
                     (width, height, data) = i[1]
                     esc_code14(width, height, data)
-                else: 
+                else:
                     if font != i[1]:
                         font = i[1]
                         esc_code4(font)
-    
+
                     if url != i[2]:
                         if url != None:
                             make_link(url, url_x0, x0, i[0])
