@@ -543,8 +543,8 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 			else
 				lcd_draw_buf.current_x++;
 			if (lcd_draw_buf.line_height < nHeight + 1)
-				lcd_draw_buf.actual_height = nHeight + 1;
-			nImageY = lcd_draw_buf.current_y;
+				lcd_draw_buf.actual_height = nHeight + 3;
+			nImageY = lcd_draw_buf.current_y + 3;
 			if ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN) % 8 == 0)
 			{
 				nBytes = (nWidth + 7) / 8;
@@ -684,7 +684,8 @@ void lcd_clear_framebuffer_pixel(int x, int y)
 	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
 
 
-	framebuffer[byte] ^= (1 << (7 - bit));
+	if (framebuffer[byte] & (1 << (7 - bit)))
+		framebuffer[byte] ^= (1 << (7 - bit));
 }
 
 void lcd_set_framebuffer_byte(char c, int x, int y)
