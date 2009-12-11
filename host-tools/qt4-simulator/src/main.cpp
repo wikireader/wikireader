@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Daniel Mack   *
- *   daniel@caiaq.de   *
+ *   Copyright (C) 2009 Openmoko Inc.                                      *
+ *                                                                         *
+ *   Authors   Daniel Mack <daniel@caiaq.de>                               *
+ *             Christopher Hall <hsw@openmoko.com>                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,8 +32,17 @@ long idx_init_article = 0;
 
 int main(int argc, char *argv[])
 {
-	if (argc > 1)
+	if (argc > 1) {
 		idx_init_article = atol(argv[1]);
+		if (0 > idx_init_article) {
+			idx_init_article = 0;
+		}
+	}
+
+	if ( 0 != idx_init_article) {
+		printf("initial article to load: %ld\n", idx_init_article);
+	}
+
 	WikilibThread *thread = new WikilibThread();
 	QApplication app(argc, argv);
 

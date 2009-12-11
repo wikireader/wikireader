@@ -838,10 +838,6 @@ int wikilib_init (void)
 	return 0;
 }
 
-#ifndef INCLUDED_FROM_KERNEL
-extern long idx_init_article;
-#endif
-
 int wikilib_run(void)
 {
 	int sleep;
@@ -860,11 +856,17 @@ int wikilib_run(void)
 	history_list_init();
 	malloc_status_simple();
 	print_intro();
-#ifndef INCLUDED_FROM_KERNEL
-	if (!load_init_article(idx_init_article))
-	{
-		display_mode = DISPLAY_MODE_ARTICLE;
-		last_display_mode = DISPLAY_MODE_INDEX;
+
+#if !defined(INCLUDED_FROM_KERNEL)
+	extern long idx_init_article;
+
+	if (0 != idx_init_article) {
+		printf("load article: %ld\n", idx_init_article);
+		if (!load_init_article(idx_init_article))
+		{
+			display_mode = DISPLAY_MODE_ARTICLE;
+			last_display_mode = DISPLAY_MODE_INDEX;
+		}
 	}
 #endif
 	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);

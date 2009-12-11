@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Daniel Mack   *
- *   daniel@caiaq.de   *
+ *   Copyright (C) 2009 Openmoko Inc.                                      *
+ *                                                                         *
+ *   Authors   Daniel Mack <daniel@caiaq.de>                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -58,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     display = new WikiDisplay();
     search = new QPushButton("find");
     history = new QPushButton("hist");
-    random = new QPushButton("rand"); 
+    random = new QPushButton("rand");
 
     search->setFocusPolicy(Qt::NoFocus);
     history->setFocusPolicy(Qt::NoFocus);
@@ -74,8 +75,8 @@ MainWindow::MainWindow(QWidget *parent)
      */
     QHBoxLayout *buttonBox = new QHBoxLayout;
     buttonBox->addItem(new QSpacerItem(1,1,
-                          QSizePolicy::MinimumExpanding,
-                          QSizePolicy::MinimumExpanding));
+			  QSizePolicy::MinimumExpanding,
+			  QSizePolicy::MinimumExpanding));
     buttonBox->addWidget(search);
     buttonBox->addWidget(history);
     buttonBox->addWidget(random);
@@ -84,14 +85,14 @@ MainWindow::MainWindow(QWidget *parent)
     displayBox->addWidget(display);
     displayBox->addItem(buttonBox);
     displayBox->addItem(new QSpacerItem(1,1,
-                          QSizePolicy::MinimumExpanding,
-                          QSizePolicy::MinimumExpanding));
+			  QSizePolicy::MinimumExpanding,
+			  QSizePolicy::MinimumExpanding));
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addItem(displayBox);
     mainLayout->addItem(new QSpacerItem(4,4,
-                          QSizePolicy::MinimumExpanding,
-                          QSizePolicy::MinimumExpanding));
+			  QSizePolicy::MinimumExpanding,
+			  QSizePolicy::MinimumExpanding));
     setLayout(mainLayout);
 
     display->setFocus();

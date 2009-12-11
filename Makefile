@@ -202,11 +202,11 @@ qt4-simulator:
 
 .PHONY: sim4
 sim4: qt4-simulator validate-destdir
-	cd "${DESTDIR}" && ${HOST_TOOLS}/qt4-simulator/bin/wikisim
+	cd "${DESTDIR}" && ${HOST_TOOLS}/qt4-simulator/bin/wikisim ${ARTICLE}
 
 .PHONY: sim4d
 sim4d: qt4-simulator validate-destdir
-	cd "${DESTDIR}" && gdb ${HOST_TOOLS}/qt4-simulator/bin/wikisim
+	cd "${DESTDIR}" && gdb --args ${HOST_TOOLS}/qt4-simulator/bin/wikisim ${ARTICLE}
 
 .PHONY: console-simulator
 console-simulator:

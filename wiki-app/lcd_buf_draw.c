@@ -1509,51 +1509,20 @@ int isArticleLinkSelected(int x,int y)
 	return -1;
 }
 
-#ifndef INCLUDED_FROM_KERNEL
-int load_init_article(long idx_init_article)
+#if !defined(INCLUDED_FROM_KERNEL)
+int load_init_article(long idx_article)
 {
-	int fd;
-	char file[128];
-	long len;
-	int i;
-	int offset,start_x,start_y,end_x,end_y;
-	ARTICLE_HEADER article_header;
-
-	if (idx_init_article > 0)
+	if (idx_article > 0)
 	{
-		sprintf(file, "./dat/%ld/%ld/%ld/%ld", (idx_init_article / 1000000), (idx_init_article / 10000) % 100, (idx_init_article / 100) % 100, idx_init_article);
-		fd = wl_open(file, WL_O_RDONLY);
-		if (fd >= 0)
+
+		if (retrieve_article(idx_article))
 		{
-			len = wl_read(fd, (void *)file_buffer, FILE_BUFFER_SIZE - 1);
-			file_buffer[len] = '\0';
-			wl_close(fd);
+			printf("load article: %d failed\n", idx_article);
+			return; // article not exist
 		}
 
-		memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
-		offset = sizeof(ARTICLE_HEADER);
-
-		if(article_header.article_link_count>MAX_ARTICLE_LINKS)
-			article_header.article_link_count = MAX_ARTICLE_LINKS;
-
-		for(i = 0; i< article_header.article_link_count;i++)
-		{
-			memcpy(&articleLink[i],file_buffer+offset,sizeof(ARTICLE_LINK));
-			offset+=sizeof(ARTICLE_LINK);
-
-			start_y = articleLink[i].start_xy >>8;
-			start_x = articleLink[i].start_xy & 0x000000ff;
-			end_y   = articleLink[i].end_xy  >>8;
-			end_x   = articleLink[i].end_xy & 0x000000ff;
-
-		}
-		article_link_count = article_header.article_link_count;
-
-		article_buf_pointer = file_buffer+article_header.offset_article;
-		init_render_article(0);
-		return 0;
+		display_retrieved_article(idx_article);
 	}
-	return -1;
 }
 #endif
 #endif
