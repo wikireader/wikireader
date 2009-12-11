@@ -759,7 +759,7 @@ class WrProcess(HTMLParser):
 
     def handle_charref(self, name):
         """handle &#DDDD; &#xXXXX;"""
-        print '*********************handle_charref: %s' % name
+
         if 0 == len(name):
             return
 
@@ -776,8 +776,6 @@ class WrProcess(HTMLParser):
             except ValueError:
                 PrintLog.message('charref: "%s" is not decimal' % name)
                 return
-
-        print '*********************cvt charref: %d 0x%x' % (value, value)
 
         try:
             c = unichr(value)
