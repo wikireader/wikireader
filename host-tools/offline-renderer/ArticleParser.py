@@ -49,7 +49,7 @@ subs = [
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
-    (re.compile(r'(<|&lt;)(/?)(math|sub|sup)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
+    (re.compile(r'(<|&lt;)(/?)(math|sub|sup|small)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 

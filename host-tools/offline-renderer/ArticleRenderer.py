@@ -71,6 +71,7 @@ H6_MARGIN_TOP           = H2_MARGIN_TOP
 
 
 LIMAX_INDENT_LEVELS     = 3
+MAX_QUOTE_LEVEL         = 1
 
 # bullet[0] charater is not used (the '!')
 bullet_c                = u"!\u25aa\u2022\u25ab"
@@ -267,7 +268,7 @@ def make_link(url, x0, x1, text):
         g_link_cnt =  g_link_cnt + 1
 
 
-def get_imgdata(imgfile):
+def get_imgdata(imgfile, indent):
     try:
         img = gd.image(imgfile)
     except IOError, e:
@@ -275,11 +276,11 @@ def get_imgdata(imgfile):
         return (0, 0, r'')
 
     (width, height) = img.size()
-    if width <= (LCD_WIDTH - LCD_IMG_MARGIN):
+    if width <= (LCD_WIDTH - LCD_IMG_MARGIN - indent):
         is_black = lambda x, y: (0, 0, 0) == img.colorComponents(img.getPixel((x, y)))
         h_range = range(0, width)
         v_range = range(0, height)
-    elif height <= (LCD_WIDTH - LCD_IMG_MARGIN):
+    elif height <= (LCD_WIDTH - LCD_IMG_MARGIN - indent):
         is_black = lambda x, y: (0, 0, 0) == img.colorComponents(img.getPixel((y, x)))
         v_range = range(0, width)
         h_range = range(height - 1, -1, -1)
@@ -594,10 +595,8 @@ class WrProcess(HTMLParser):
             self.in_br = True
 
         if tag == 'img' and 'src' in attrs:
-            self.flush_buffer()
-            #esc_code0(P_MARGIN_TOP)  ??? Do we need space before this img?
-            (width, height, data) = get_imgdata(attrs['src'])
-            esc_code14(width, height, data)
+            (width, height, data) = get_imgdata(attrs['src'], self.indent)
+            self.wordwrap.AppendImage(width, height, data, None)
             self.in_img = True
 
 
@@ -802,32 +801,44 @@ class WrProcess(HTMLParser):
             if line == []:
                 break
 
+            if tuple == type(line[0][1]):
+                if font < 0:
+                    new_font = DEFAULT_FONT_IDX
+                else:
+                    new_font = font
+            else:
+                new_font = line[0][1]
+
             if new_line:
-                if font != line[0][1]:
-                    font = line[0][1]
+                if font != new_font:
+                    font = new_font
                     esc_code3(font)
                 else:
                     esc_code2()
             else:
-                if font != line[0][1]:
-                    font = line[0][1]
+                if font != new_font:
+                    font = new_font
                     esc_code4(font)
                 new_line = True
 
 
             for i in line:
-                if font != i[1]:
-                    font = i[1]
-                    esc_code4(font)
-
-                if url != i[2]:
-                    if url != None:
-                        make_link(url, url_x0, x0, i[0])
-                    url = i[2]
-                    if url != None:
-                        url_x0 = x0
+                if tuple == type(i[1]):
+                    (width, height, data) = i[1]
+                    esc_code14(width, height, data)
+                else: 
+                    if font != i[1]:
+                        font = i[1]
+                        esc_code4(font)
+    
+                    if url != i[2]:
+                        if url != None:
+                            make_link(url, url_x0, x0, i[0])
+                        url = i[2]
+                        if url != None:
+                            url_x0 = x0
+                    output.write(i[0].encode('utf-8'))
                 x0 += i[3]
-                output.write(i[0].encode('utf-8'))
 
             if url != None:
                 make_link(url, url_x0, x0, line[-1][0])
