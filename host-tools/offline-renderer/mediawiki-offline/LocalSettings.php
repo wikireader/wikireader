@@ -64,9 +64,9 @@ define('WH_IMG_DIR', $wgUploadDirectory .'/wikihiero/' ); # for WikiHiero
 require_once( "$IP/extensions/Cite/Cite.php" );
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 require_once( "$IP/extensions/Poem/Poem.php" );
-require_once( "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php" );
-require_once( "$IP/extensions/ImageMap/ImageMap.php" );
-require_once( "$IP/extensions/timeline/Timeline.php" );
+#require_once( "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php" );
+#require_once( "$IP/extensions/ImageMap/ImageMap.php" );
+#require_once( "$IP/extensions/timeline/Timeline.php" );
 require_once( "$IP/extensions/wikihiero/wikihiero.php" );
 
 # Extension-Fixes after require

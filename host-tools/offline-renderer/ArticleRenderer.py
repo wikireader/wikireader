@@ -579,14 +579,13 @@ class WrProcess(HTMLParser):
             self.enter_list(tag)
 
         elif tag == 'li':
-            print "BEFORE LI [%s]=, %s" % (self.level, self.li_cnt)
             try:
                 self.li_cnt[self.level] += 1
             except KeyError:
-                PrintLog.message("Li ERROR: self.li_cnt=%s, self.level=%s in %s" % (self.li_cnt, self.level, g_this_article_title))
-                sys.exit(99)
-
-            print "AFTER LI [%s]=, %s" % (self.level, self.li_cnt)
+                PrintLog.message("ERROR Li w/ self.level=%s in self.li_cnt=%s, for %s" % (self.li_cnt, self.level, g_this_article_title))
+                self.level = 1
+                self.li_cnt[self.level] += 1
+                PrintLog.message("---- >> forced self.level to be 1.")
 
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
