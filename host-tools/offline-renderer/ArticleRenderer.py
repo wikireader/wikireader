@@ -582,7 +582,7 @@ class WrProcess(HTMLParser):
             try:
                 self.li_cnt[self.level] += 1
             except KeyError:
-                PrintLog.message("Li ERROR: self.level=%s in %s" % (self.level, g_this_article_title))
+                PrintLog.message("Li ERROR: self.li_cnt=%s, self.level=%s in %s" % (self.li_cnt, self.level, g_this_article_title))
                 sys.exit(99)
 
             if self.li_type[self.level] == 'ol':
