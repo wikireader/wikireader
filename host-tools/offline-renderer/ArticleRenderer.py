@@ -400,8 +400,8 @@ def esc_code14(width, height, data):
 
     lineh = get_lineheight(g_curr_face)
     
-    if height > lineh:
-        g_starty += height-lineh + 1
+    if (height + 3) > lineh:
+        g_starty += (height+3)-lineh + 1
 
 #
 # Parse the HTML into the WikiReader's format
@@ -578,8 +578,12 @@ class WrProcess(HTMLParser):
         elif tag in ['ul', 'ol', 'dl']:
             self.enter_list(tag)
 
-        elif tag == 'li':
-            self.li_cnt[self.level] += 1
+        elif tag == 'li':    
+            try:
+                self.li_cnt[self.level] += 1
+            except KeyError:
+                PrintLog.message("Li ERROR: self.level=%s in %s" % (self.level, g_this_article_title))
+                sys.exit(99)
 
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
@@ -596,7 +600,7 @@ class WrProcess(HTMLParser):
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
-        elif tag == 'dd':
+        elif tag == 'dd':            
             self.li_cnt[self.level] += 1
             if self.level <= LIMAX_INDENT_LEVELS:
                 esc_code9(LIST_INDENT)
