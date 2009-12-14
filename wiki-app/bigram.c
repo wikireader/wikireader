@@ -27,7 +27,7 @@ extern void showMsg(int currentLevel, char *format, ...);
 #endif
 
 char aBigram[128][2];
-int aCharIdx[128];
+int32_t aCharIdx[128];
 #ifdef WIKIPCF
 void init_bigram(FILE *fd)
 {

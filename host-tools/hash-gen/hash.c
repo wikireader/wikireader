@@ -38,7 +38,7 @@
 // 	The first ARTICLE_PTR entry is for article idx 1.
 //
 // pedia.pfx format:
-// 	first three character indexing table - 54 * 54 * 54 entries * 4 bytes (long int - file offset of pedia.fnd)
+// 	first three character indexing table - 54 * 54 * 54 entries * 4 bytes (int32_t int - file offset of pedia.fnd)
 //		54 characters - null + 0~9 + a~z + ...
 //
 // pedia.fnd format:
@@ -55,14 +55,14 @@
 
 
 typedef struct _TITLE_SEARCH { // used to mask the porinter to the remainder of the title for search
-	long idxArticle;
+	int32_t idxArticle;
 	char cZero; // null character for backward search
 	char sTitleSearch[MAX_TITLE_SEARCH]; // null terminated title for search (with bigram encoded)
 } TITLE_SEARCH;
 
 
-static int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBufFnd,
-					  int lenHashSequentialSearch, char *sHashSequentialSearch, long *countHashSequentialSearchForNextChar)
+static int process_hash_sequential_search(char *sLocalTitleSearch, int32_t offsetBufFnd,
+					  int lenHashSequentialSearch, char *sHashSequentialSearch, int32_t *countHashSequentialSearchForNextChar)
 {
 	int lenTitleSearch = strlen(sLocalTitleSearch);
 	int lenSame;
@@ -105,7 +105,7 @@ static int process_hash_sequential_search(char *sLocalTitleSearch, long offsetBu
 }
 
 
-static long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd, long lenBufFnd)
+static int32_t build_hash_tree(char *sTitleSearch, int32_t offsetBufFnd, char *bufFnd, int32_t lenBufFnd)
 {
 	int i;
 	int lenTitleSearch;
@@ -116,7 +116,7 @@ static long build_hash_tree(char *sTitleSearch, long offsetBufFnd, char *bufFnd,
 	char sLocalTitleSearch[MAX_TITLE_LEN];
 	int lenHashSequentialSearch = 0;
 	char sHashSequentialSearch[MAX_SEARCH_STRING_HASHED_LEN];
-	long countHashSequentialSearchForNextChar[MAX_SEARCH_STRING_HASHED_LEN];
+	int32_t countHashSequentialSearchForNextChar[MAX_SEARCH_STRING_HASHED_LEN];
 
 	//showMsg(3, "build_hash_tree [%s] %x\n", sTitleSearch, offsetBufFnd);
 	memset(countHashSequentialSearchForNextChar, 0, sizeof(countHashSequentialSearchForNextChar));
@@ -164,14 +164,14 @@ void generate_pedia_hsh(const char *fnd_name, const char *pfx_name, const char *
 {
 	FILE *fdPfx, *fdFnd;
 	char sTitleSearch[MAX_TITLE_LEN];
-	long *firstThreeCharIndexing;
+	int32_t *firstThreeCharIndexing;
 	int idxFirstThreeCharIndexing;
 	char *bufFnd;
-	long lenBufFnd;
+	int32_t lenBufFnd;
 	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
 	char c1, c2, c3;
 	int i, j, k;
-	long offsetBufFnd = 0;
+	int32_t offsetBufFnd = 0;
 
 	fdPfx = fopen(pfx_name, "rb");
 	if (!fdPfx)
@@ -189,7 +189,7 @@ void generate_pedia_hsh(const char *fnd_name, const char *pfx_name, const char *
 	init_bigram(fdFnd);
 	create_search_hash(hsh_name);
 
-	firstThreeCharIndexing = (long *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
+	firstThreeCharIndexing = (int32_t *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
 	if (!firstThreeCharIndexing)
 	{
 		fprintf(stderr, "malloc firstThreeCharIndexing error\n");
@@ -224,7 +224,8 @@ void generate_pedia_hsh(const char *fnd_name, const char *pfx_name, const char *
 				for (k = 0; k < strlen(pSupportedChars); k++)
 				{
 					c3 = pSupportedChars[k];
-					idxFirstThreeCharIndexing = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
+					idxFirstThreeCharIndexing =
+						bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
 						bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
 					if (firstThreeCharIndexing[idxFirstThreeCharIndexing])
 					{
