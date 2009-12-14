@@ -1,4 +1,5 @@
 Makefile
 keyboard_*.h
-all_images.h
 nls.h
+all_images.h
+*.o
