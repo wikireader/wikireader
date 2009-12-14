@@ -19,7 +19,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
-# ----- Toolchain configuration data --------------------------------------
+# Utility programs
+# ================
+
+RM = rm -f
+TOUCH = touch
+
+
+# Toolchain configuration data
+# ============================
 
 GCC_VERSION = 3.3.2
 GCC_PACKAGE = gcc-${GCC_VERSION}.tar.gz
@@ -48,7 +56,9 @@ $(shell cp ${CONFIG_FILE_DEFAULT} ${CONFIG_FILE})
 $(error edit ${CONFIG_FILE} file and re-run make)
 endif
 
-# ----- configuration data --------------------------------------
+
+# Configuration data
+# ==================
 
 ALL_TARGETS =
 ALL_TARGETS += mbr
@@ -65,7 +75,8 @@ ALL_TARGETS += fonts
 all:    ${ALL_TARGETS}
 
 
-# ----- installation ------------------------------------------
+# Installation
+# ============
 
 DESTDIR_PATH := $(shell readlink -m "${DESTDIR}")
 WORKDIR_PATH := $(shell readlink -m "${WORKDIR}")
@@ -100,7 +111,8 @@ validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
 
 
-# ----- main program ------------------------------------------
+# Main program
+# ============
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
@@ -111,7 +123,9 @@ mahatma-install: mahatma validate-destdir
 	${MAKE} -C ${SAMO_LIB}/mahatma install DESTDIR="${DESTDIR_PATH}"
 
 
-# ----- lib stuff   -------------------------------------------
+# Libraries
+# =========
+
 .PHONY:mini-libc
 mini-libc: gcc
 	${MAKE} -C ${SAMO_LIB}/mini-libc/
@@ -124,7 +138,9 @@ fatfs: mini-libc drivers
 drivers: mini-libc
 	${MAKE} -C ${SAMO_LIB}/drivers/
 
-# ----- toolchain stuff  --------------------------------------
+
+# GCC and Binutils toolchain
+# ==========================
 
 BINUTILS_FILE = ${DOWNLOAD_DIR}/${BINUTILS_PACKAGE}
 BINUTILS_SUM = ${SUM_DIR}/${BINUTILS_PACKAGE}.SHA256
@@ -145,7 +161,7 @@ ${1}:
 	else \
 	  echo Already downloaded: ${2} ; \
 	fi
-	@touch "$$@"
+	@${TOUCH} "$$@"
 
 endef
 
@@ -154,7 +170,7 @@ $(call GET_FILE,gcc-download,${GCC_FILE},${GCC_SUM},${GCC_URL})
 
 binutils-patch: binutils-download
 	mkdir -p ${HOST_TOOLS}/toolchain-install
-	rm -rf "${HOST_TOOLS}/binutils-${BINUTILS_PACKAGE}"
+	${RM} -r "${HOST_TOOLS}/binutils-${BINUTILS_PACKAGE}"
 	tar -xvzf "${BINUTILS_FILE}" -C ${HOST_TOOLS}
 	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
@@ -162,7 +178,7 @@ binutils-patch: binutils-download
 	do \
 	   patch -p1 < "$${p}" ; \
 	done
-	touch "$@"
+	${TOUCH} "$@"
 
 binutils: binutils-patch
 	cd ${HOST_TOOLS} && \
@@ -172,7 +188,7 @@ binutils: binutils-patch
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ${MAKE} && \
 	${MAKE} install
-	touch "$@"
+	${TOUCH} "$@"
 
 gcc-patch: gcc-download
 	mkdir -p ${HOST_TOOLS}/toolchain-install
@@ -183,7 +199,7 @@ gcc-patch: gcc-download
 	do \
 	   patch -p1 < "$${p}" ; \
 	done
-	touch "$@"
+	${TOUCH} "$@"
 
 gcc: binutils gcc-patch
 	cd ${HOST_TOOLS} && \
@@ -194,7 +210,11 @@ gcc: binutils gcc-patch
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf --enable-languages=c && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ${MAKE} && \
 	${MAKE} install
-	touch "$@"
+	${TOUCH} "$@"
+
+
+# QT simulator
+# ============
 
 .PHONY: qt4-simulator
 qt4-simulator:
@@ -212,19 +232,22 @@ sim4d: qt4-simulator validate-destdir
 console-simulator:
 	cd ${HOST_TOOLS}/console-simulator && ${MAKE}
 
-# ----- hash-gen  --------------------------------------
+
+# Hash generator for search index
+# ===============================
+
 .PHONY: hash-gen
 hash-gen:
 	cd ${HOST_TOOLS}/hash-gen && ${MAKE}
 
 
-# ----- pcf2bmf  --------------------------------------
+# Font processing
+# ===============
+
 .PHONY: pcf2bmf
 pcf2bmf:
 	cd ${HOST_TOOLS}/pcf2bmf && ${MAKE}
 
-
-# ----- fonts  --------------------------------------
 .PHONY: fonts
 fonts: pcf2bmf
 	cd ${HOST_TOOLS}/fonts && ${MAKE}
@@ -234,7 +257,8 @@ fonts-install: fonts validate-destdir
 	cd ${HOST_TOOLS}/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
 
 
-# ----- build the database  --------------------------------------
+# Build the database from wiki XML files
+# ======================================
 
 XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
 RENDER_BLOCK ?= 0
@@ -272,15 +296,15 @@ hash: validate-destdir hash-gen
 
 
 stamp-r-index:
-	rm -f "$@"
+	${RM} "$@"
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
-	touch "$@"
+	${TOUCH} "$@"
 
 .PHONY: clean-index
 clean-index:
-	rm -f stamp-r-index
+	${RM} stamp-r-index
 
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
@@ -293,19 +317,19 @@ parse${1}: stamp-r-index stamp-r-parse${1}
 render${1}: stamp-r-render${1}
 
 stamp-r-parse${1}:
-	rm -f "$$@"
+	${RM} "$$@"
 	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
-	touch "$$@"
+	${TOUCH} "$$@"
 
 #.NOTPARALLEL: stamp-r-render${1}
 stamp-r-render${1}:
-	rm -f "$$@"
+	${RM} "$$@"
 	$${MAKE} RENDER_BLOCK=${1} render
-	touch "$$@"
+	${TOUCH} "$$@"
 
 .PHONY: stamp-r-clean${1}
 stamp-r-clean${1}:
-	rm -f stamp-r-parse${1} stamp-r-render${1}
+	${RM} stamp-r-parse${1} stamp-r-render${1}
 
 endef
 
@@ -313,7 +337,7 @@ endef
 # get the number of articles from the indexer
 # and compute how many articles per instance
 # ------------------------------------------------
-TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' work/counts.text 2>/dev/null || echo 100)
+TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
@@ -382,14 +406,16 @@ MACHINE_LIST  := $(shell i=1; while [ $${i} -le ${MACHINE_COUNT} ]; do echo $${i
 $(foreach i,${MACHINE_LIST},$(call MAKE_MACHINE,${i},${MACHINE_COUNT}))
 
 
-# ----- wiki Dump  --------------------------------------
+# Download the latest Mediawiki dump
+# ==================================
+
 .PHONY: getwikidump
 getwikidump:
 	wget http://download.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
 
 
-# ----- forth -----------------------------------------------
-# forth interpreter
+# Forth interpreter
+# =================
 
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
@@ -400,8 +426,8 @@ forth-install: forth
 	${MAKE} -C ${SAMO_LIB}/forth install DESTDIR="${DESTDIR_PATH}"
 
 
-# ----- flash -----------------------------------------------
-# flash programmer that runs on the device
+# FLASH programmer that runs on the device
+# ========================================
 
 .PHONY: flash
 flash:  gcc mini-libc fatfs drivers
@@ -412,8 +438,8 @@ flash-install: flash
 	${MAKE} -C ${SAMO_LIB}/flash install DESTDIR="${DESTDIR_PATH}"
 
 
-# ----- grifo -----------------------------------------------
-# grifo small kernel
+# Grifo small kernel
+# ==================
 
 .PHONY: grifo
 grifo:  gcc mini-libc fatfs
@@ -424,8 +450,8 @@ grifo-install: grifo
 	${MAKE} -C ${SAMO_LIB}/grifo install DESTDIR="${DESTDIR_PATH}"
 
 
-# ----- mbr -------------------------------------------------
-# master boot record
+# Master boot record
+# ==================
 
 define FindTTY
 for i in USBconsole ttyUSB2 ttyUSB1 ttyUSB0;
@@ -491,10 +517,12 @@ mbr-install: mbr
 	${MAKE} -C ${SAMO_LIB}/mbr install DESTDIR="${DESTDIR_PATH}"
 
 
-# ----- clean and help --------------------------------------
+# Clean up generated files
+# ========================
+
 .PHONY: complete-clean
 complete-clean: clean clean-toolchain
-	rm -f binutils-download gcc-download
+	${RM} binutils-download gcc-download
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
@@ -516,11 +544,11 @@ clean: clean-qt4-simulator clean-console-simulator
 
 .PHONY: clean-toolchain
 clean-toolchain:
-	rm -rf ${HOST_TOOLS}/toolchain-install
-	rm -rf ${HOST_TOOLS}/gcc-${GCC_VERSION}
-	rm -rf ${HOST_TOOLS}/binutils-${BINUTILS_VERSION}
-	rm -f binutils-patch binutils
-	rm -f gcc-patch gcc
+	${RM} -r ${HOST_TOOLS}/toolchain-install
+	${RM} -r ${HOST_TOOLS}/gcc-${GCC_VERSION}
+	${RM} -r ${HOST_TOOLS}/binutils-${BINUTILS_VERSION}
+	${RM} binutils-patch binutils
+	${RM} gcc-patch gcc
 
 .PHONY: clean-qt4-simulator
 clean-qt4-simulator:
@@ -529,6 +557,10 @@ clean-qt4-simulator:
 .PHONY: clean-console-simulator
 clean-console-simulator:
 	${MAKE} clean -C ${HOST_TOOLS}/console-simulator
+
+
+# Print information about some targets
+# ====================================
 
 .PHONY:help
 help:
@@ -576,9 +608,18 @@ testhelp:
 	sort |	\
 	pr --omit-pagination --width=80 --columns=1
 
-#use this like: make print-MAKE
+# Display a make variable
+# =======================
+
+# use this like: make print-MAKE
+# which shows the value of ${MAKE}
+
 print-%:
 	@echo $* is $($*)
+
+
+# Run teminal emulator script
+# ==========================
 
 .PHONY: p33
 p33:
