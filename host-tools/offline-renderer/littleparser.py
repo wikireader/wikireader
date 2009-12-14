@@ -14,10 +14,7 @@ import codecs
 import sys
 
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
-
-# remove anything inside of end tags
-fix_end1 = re.compile(r'</([a-zA-Z]+)\s*/>', re.IGNORECASE)
-fix_end2 = re.compile(r'</([a-zA-Z]+)\s+[^>]+>', re.IGNORECASE)
+lessthan = re.compile(r'<')
 
 class LittleParser(HTMLParser):
     """Translate text
@@ -51,10 +48,8 @@ class LittleParser(HTMLParser):
         self.reset()
         self.buffer = u''
         unq = entities.sub(r'&\1;', text)
-        
-        unq = fix_end1.sub(r'</\1>', text)
-        unq = fix_end2.sub(r'</\1>', text)
-        
+        unq = lessthan.sub(r'&lt;', unq)
+
         try:
             self.feed(unq)
             self.close()
@@ -71,8 +66,8 @@ class LittleParser(HTMLParser):
 def main():
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
     p = LittleParser().translate
-    text = 'start test: [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]  [&mu;] [&amp;mu;]  [&egrave;] end:test'
-    correct = u'start test: [\xe8] [\u04d2] [\xe9] [%20] [%ff]  [\u03bc] [\u03bc]  [\xe8] end:test'
+    text = 'start test: [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]  [&mu;] [&amp;mu;] [&lt;/br/&gt;] [&egrave;] [</br/>] end:test'
+    correct = u'start test: [\xe8] [\u04d2] [\xe9] [%20] [%ff]  [\u03bc] [\u03bc] [</br/>] [\xe8] [</br/>] end:test'
     result = p(text)
     print text
     print result

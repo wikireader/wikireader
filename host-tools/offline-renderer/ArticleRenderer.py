@@ -582,10 +582,14 @@ class WrProcess(HTMLParser):
             try:
                 self.li_cnt[self.level] += 1
             except KeyError:
-                PrintLog.message("ERROR Li w/ self.level=%s in self.li_cnt=%s, for %s" % (self.li_cnt, self.level, g_this_article_title))
-                self.level = 1
+                (line, column) = self.getpos()
+                PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
+                                 ('<li>', line, column, article_count + 1, g_this_article_title))
+                # force ul since this is a li without a parent
+                (t, p) = self.tag_stack.pop()
+                self.tag_stack.append([('ul', p), (t,p)])
+                self.enter_list('ul')
                 self.li_cnt[self.level] += 1
-                PrintLog.message("---- >> forced self.level to be 1.")
 
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)

@@ -53,11 +53,6 @@ subs = [
 
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
-    # remove anything inside of end tags
-    (re.compile(r'</([a-zA-Z]+)\s*/>', re.IGNORECASE), r'</\1>'),
-    (re.compile(r'</([a-zA-Z]+)\s+[^>]+>', re.IGNORECASE), r'</\1>'),
-     
-
     # change % so php: wr_parser_sa does not convert them
     (re.compile(r'%', re.IGNORECASE), r'%25'),
 ]
