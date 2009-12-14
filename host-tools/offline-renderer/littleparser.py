@@ -15,6 +15,10 @@ import sys
 
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 
+# remove anything inside of end tags
+fix_end1 = re.compile(r'</([a-zA-Z]+)\s*/>', re.IGNORECASE)
+fix_end2 = re.compile(r'</([a-zA-Z]+)\s+[^>]+>', re.IGNORECASE)
+
 class LittleParser(HTMLParser):
     """Translate text
 
@@ -47,6 +51,10 @@ class LittleParser(HTMLParser):
         self.reset()
         self.buffer = u''
         unq = entities.sub(r'&\1;', text)
+        
+        unq = fix_end1.sub(r'</\1>', text)
+        unq = fix_end2.sub(r'</\1>', text)
+        
         try:
             self.feed(unq)
             self.close()
