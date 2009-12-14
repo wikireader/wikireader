@@ -16,5 +16,6 @@ def message(data):
     else:
         sys.stdout.write(data)
     sys.stdout.write('\n')
-    sys.stdout.flush
+    sys.stdout.flush()
+
 
