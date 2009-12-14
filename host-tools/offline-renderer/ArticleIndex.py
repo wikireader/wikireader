@@ -17,7 +17,6 @@ import sqlite3
 import FilterWords
 import FileScanner
 import codecs
-import hashlib
 import PrintLog
 
 
@@ -119,7 +118,7 @@ def usage(message):
     print '       --article-counts=file   File to store the counts [counts.text]'
     print '       --limit=number          Limit the number of articles processed'
     print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
-    print '       --template-prefix=name  Path/file prefix for templates'
+    print '       --templates=file        Database for templates [templates.db]'
     exit(1)
 
 
@@ -132,7 +131,7 @@ def main():
                                     'article-index=',
                                     'article-offsets=',
                                     'article-counts=',
-                                    'template-prefix=',
+                                    'templates=',
                                     'limit=',
                                     'prefix='])
     except getopt.GetoptError, err:
@@ -144,7 +143,7 @@ def main():
     cnt_name = "counts.text"
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
-    template_prefix = 'template_'
+    template_name = 'templates.db'
     limit = 'all'
 
     for opt, arg in opts:
@@ -158,6 +157,8 @@ def main():
             off_name = arg
         elif opt in ('-c', '--article-counts'):
             cnt_name = arg
+        elif opt in ('-t', '--templates'):
+            template_name = arg
         elif opt in ('-l', '--limit'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -171,13 +172,11 @@ def main():
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
-        elif opt in ('-t', '--template-prefix'):
-            template_prefix = arg
         else:
             usage('unhandled option: ' + opt)
 
 
-    processor = FileProcessing(articles = art_name, offsets = off_name, templates = template_prefix)
+    processor = FileProcessing(articles = art_name, offsets = off_name, templates = template_name)
 
     for f in args:
         limit = processor.process(f, limit)
@@ -242,12 +241,13 @@ class FileProcessing(FileScanner.FileScanner):
         self.offset_import = self.offset_db_name + '.import'
         self.file_import = self.offset_db_name + '.files'
 
-        self.template_prefix = kw['templates']
+        self.template_db_name = kw['templates']
 
         for filename in [self.article_db_name,
                          self.article_import,
                          self.offset_db_name,
                          self.offset_import,
+                         self.template_db_name,
                          self.file_import]:
             if os.path.exists(filename):
                 os.remove(filename)
@@ -267,8 +267,34 @@ class FileProcessing(FileScanner.FileScanner):
 
         self.time = time.time()
 
+        self.template_db = sqlite3.connect(self.template_db_name)
+        self.template_db.execute('pragma synchronous = 0')
+        self.template_db.execute('pragma temp_store = 2')
+        self.template_db.execute('pragma read_uncommitted = true')
+        self.template_db.execute('pragma cache_size = 20000000')
+        self.template_db.execute('pragma default_cache_size = 20000000')
+        self.template_db.execute('pragma journal_mode = off')
+        self.template_db.execute('''
+create table templates (
+    title varchar primary key,
+    body varchar
+)
+''')
+        self.template_db.execute('''
+create table redirects (
+    title varchar primary key,
+    redirect varchar
+)
+''')
+
+        self.template_cursor = self.template_db.cursor()
+
+
     def __del__(self):
         PrintLog.message('Flushing databases')
+        self.template_db.commit()
+        self.template_cursor.close()
+        self.template_db.close()
 
         PrintLog.message('Writing: files')
         start_time = time.time()
@@ -398,17 +424,12 @@ pragma journal_mode = memory;
                                      % (title, redirect_title))
                     return
                 t1 = title.split(':', 1)[1].lower()
-                hash_t1 = hashlib.md5()
-                hash_t1.update(t1.encode('utf-8'))
                 tr = redirect_title.split(':', 1)[1].lower()
-                hash_tr = hashlib.md5()
-                hash_tr.update(tr.encode('utf-8'))
+
                 if t1 != tr:
-                    src = self.template_prefix + hash_tr.hexdigest()
-                    dest = self.template_prefix + hash_t1.hexdigest()
-                    if os.path.lexists(dest):
-                        os.remove(dest)
-                    os.symlink(os.path.basename(src), dest)
+                    self.template_cursor.execute('insert into redirects (title, redirect) values(?, ?)',
+                                                 ['~' + t1, '~' + tr])
+
                 return
 
             match = non_articles.search(text)
@@ -436,10 +457,10 @@ pragma journal_mode = memory;
 
         if self.is_template:
             t1 = title.split(':', 1)[1].lower()
-            hash_md5 = hashlib.md5()
-            hash_md5.update(t1.encode('utf-8'))
-            with open(self.template_prefix + hash_md5.hexdigest(), "wb") as f:
-                f.write(self.translate(text).strip(u'\u200e\u200f').encode('utf-8'))
+            t_body = self.translate(text).strip(u'\u200e\u200f')
+            print 'temp: %s' % repr(t1)
+            self.template_cursor.execute('insert into templates (title, body) values(?, ?)',
+                                         ['~' + t1, '~' + t_body])
             return
 
         restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)

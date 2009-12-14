@@ -40,7 +40,7 @@ WORKDIR ?= /tmp
 PREFIX := $(shell readlink -m ${DESTDIR}/pedia)
 ARTICLES := $(shell readlink -m ${WORKDIR}/articles.db)
 COUNTS_FILE := $(shell readlink -m ${WORKDIR}/counts.text)
-TEMPLATE_PREFIX := $(shell readlink -m ${WORKDIR}/templates)/
+TEMPLATE_FILE := $(shell readlink -m ${WORKDIR}/templates.db)
 OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.db)
 HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
@@ -81,7 +81,6 @@ check-xml:
 check-dirs:
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
 	@if [ ! -d "${WORKDIR}" ] ; then echo WORKDIR: "'"${WORKDIR}"'" is not a directory ; exit 1; fi
-	${MKDIR} "${TEMPLATE_PREFIX}"
 
 .PHONY: check-fonts
 check-fonts:
@@ -98,13 +97,14 @@ index: check-dirs check-xml
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
-		--template-prefix="${TEMPLATE_PREFIX}" \
+		--templates="${TEMPLATE_FILE}" \
 		--prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse
 parse: check-dirs check-html math
 	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
 		--start="${START}" --count="${COUNT}" \
+		--templates="${TEMPLATE_FILE}" \
 		--parser-workdir="${WORKDIR}" \
 		--article-offsets="${OFFSETS}"
 
@@ -137,16 +137,22 @@ pylzma:
 .PHONY: math
 math: stamp-math
 
+# use a lock directory and file to avoid multiple parallel builds
+# of this program
 .PHONY: stamp-math
 stamp-math:
-	${RM} "$@"
-	${MAKE} -C "${MATH_DIR}"
-	${TOUCH} "$@"
+	@if ${MKDIR} "$@" 2> /dev/null ; \
+	  then \
+	  ${MAKE} -C "${MATH_DIR}" ; \
+	else ;
+	  while [ ! -f "${@}/done" ] ; \
+	  do \
+	    sleep 1 ; \
+	  done ; \
+	fi
 
 .PHONY: install
 install: all
-	#@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	#${COPY} *.bmf "${DESTDIR}"/
 
 build:
 	${MKDIR} "$@"
@@ -154,7 +160,7 @@ build:
 .PHONY: clean
 clean: pylzma-clean
 	${RM} -r build ${TARGETS} *.pyc *.pyo *.dat *.idx *.idx-tmp *.pfx *.fnd
-	${RM} stamp-*
+	${RM} -r stamp-*
 	${MAKE} -C "${MATH_DIR}" clean
 
 .PHONY: pylzma-clean

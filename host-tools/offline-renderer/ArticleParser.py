@@ -68,7 +68,8 @@ def usage(message):
     print '       --start=n               First artcle to process [1] (1k => 1000)'
     print '       --count=n               Number of artcles to process [all] (1k => 1000)'
     print '       --article-offsets=file  Article file offsets database input [offsets.db]'
-    print '       --parse-workdir=dir     Work director for the PHP parser [/tmp]'
+    print '       --templates=file        Database for templates [templates.db]'
+    print '       --parse-workdir=dir     Work directory for the PHP parser [/tmp]'
     print '       --just-cat              Replace php parser be "cat" for debugging'
     print '       --no-output             Do not run any parsing'
     exit(1)
@@ -83,6 +84,7 @@ def main():
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
+                                    'templates=',
                                     'just-cat',
                                     'no-output',
                                     'parser-workdir=',
@@ -98,6 +100,7 @@ def main():
     article_count = 'all'
     failed_articles = 0
     do_output = True
+    template_name = 'templates.db'
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -108,6 +111,8 @@ def main():
             out_name = arg
         elif opt in ('-o', '--article-offsets'):
             off_name = arg
+        elif opt in ('-t', '--templates'):
+            template_name = arg
         elif opt in ('-w', '--parser-workdir'):
             parser_workdir = arg
         elif opt in ('-j', '--just-cat'):
@@ -139,7 +144,9 @@ def main():
     if not os.path.isdir(parser_workdir):
         usage('workdir: %s does not exist' % parser_workdir)
 
+    # pass parameters to the PHP parser
     os.environ['WORKDIR'] = parser_workdir
+    os.environ['TEMPLATE_DB'] = template_name
 
     offset_db = sqlite3.connect(off_name)
     offset_db.execute('pragma synchronous = 0')
