@@ -141,7 +141,7 @@ math: stamp-math
 # of this program
 .PHONY: stamp-math
 stamp-math:
-	  flock "${@}" -c ${MAKE} -C "${MATH_DIR}"
+	  flock "${@}" -c '${MAKE} -C "${MATH_DIR}"'
 
 .PHONY: install
 install: all
