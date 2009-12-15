@@ -53,6 +53,8 @@ $wgLBFactoryConf['class'] = 'LBFactory_No';
 $wgCommandLineMode = true;
 $wgStandAloneMode  = true;
 $cliParserMode     = true;
+$wgTemplateDB      = getenv('TEMPLATE_DB');
+$wgTemplateFileID  = 0;
 
 # Register parser hooks
 $wgHooks['SpecialPage_initList'][] = 'ParserStandAlone::disableSpecialPages';
@@ -84,7 +86,7 @@ $wgCheckDBSchema = false;
 $wgEnableEmail = false;
 $wgEnableUserEmail = false;
 $wgLanguageCode = 'en';
-$wgUseTeX = false;
+$wgUseTeX = true;
 $wgUseImageMagick = true;
 $wgUseTidy = true;
 $wgAlwaysUseTidy = true;

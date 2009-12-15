@@ -54,7 +54,7 @@ class LittleParser(HTMLParser):
             self.feed(unq)
             self.close()
         except KeyError:
-            print 'failed on: "%s" using-> "%s"' % (repr(text), repr(unq))
+            #print 'failed on: "%s" using-> "%s"' % (repr(text), repr(unq))
             return unq
 
         if type(self.buffer) == unicode:

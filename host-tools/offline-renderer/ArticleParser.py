@@ -200,7 +200,8 @@ def main():
         if None != background_process and None == process_id:
             process_id = subprocess.Popen(background_process, shell=True, stdin=subprocess.PIPE)
         try:
-            process_article_text(title.encode('utf-8'),  input_file.read(length), process_id.stdin)
+            process_article_text(current_file_id, title.encode('utf-8'),
+                                 input_file.read(length), process_id.stdin)
         except Exception, e:
             failed_articles += 1
             # extract from log by: grep '^!' log-file
@@ -239,7 +240,7 @@ def main():
         sys.exit(1)
 
 
-def process_article_text(title, text, newf):
+def process_article_text(id, title, text, newf):
     global verbose
     global subs
 
@@ -250,7 +251,8 @@ def process_article_text(title, text, newf):
         text = e.sub(r, text)
 
     if newf:
-        newf.write(title[1:]);  # We pad the title to force the database to import strings
+        newf.write(id + ':')
+        newf.write(title[1:])  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')
         newf.write(text + '\n')
         newf.write('***EOF***\n')

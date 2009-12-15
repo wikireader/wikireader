@@ -27,38 +27,37 @@ class ParserStandAlone extends Parser
   # Override the template-fetching-function of the Parser
   function fetchTemplateAndTitle( $title ) {
     #echo "\n--- Trying to find offline template: $title";
+
     global $IP, $wgTemplatePath, $wgTemplateExtension, $wgTemplatePrefix;
-    $finalTitle = $title;
-    #$deps = array();
-
-    # $$$ need to fix later for all languages
-    $title_short = substr($title, strlen($wgTemplatePrefix));
-    #echo " (Short: $title_short)";
-    $title_md5 = md5($title, false);
-    $title_short_md5 = md5(strtolower($title_short), false);
-
-    $template_path = $wgTemplatePath .'/'. $title_md5 . $wgTemplateExtension;
-    $template_short_path = $wgTemplatePath .'/'. $title_short_md5 . $wgTemplateExtension;
+    global $wgTemplateDB, $wgTemplateFileID;
+    $finalTitle    = $title;
     $template_text = null;
 
-    if ( file_exists( $template_path ) ) {
-      $template_text = file_get_contents( $template_path );
-      #echo " - Found\n";
+    # $$$ need to fix later for all languages
+    # We pad the title with '~' to force the database to import strings
+    $title_short = '~' . $wgTemplateFileID . '~' . strtolower(substr($title, strlen($wgTemplatePrefix)));
+    $title_orig  = '~' . $wgTemplateFileID . '~' . $title;
+    $db = new SQLite3($wgTemplateDB, SQLITE3_OPEN_READONLY);
+    $ts = $db->escapeString($title_short);
+    $tl = $db->escapeString($title_orig);
+    
+    #echo "\n--- ($title_short, $title_orig) --- \n"; 
+   
+    @$result = $db->querySingle("SELECT body FROM templates WHERE title in('$ts', '$tl')");
+    while (!$result) {
+      @$result = $db->querySingle("SELECT redirect FROM redirects WHERE title in('$ts', '$tl')");
+      if (!$result) {
+        break;
+      }
+      @$result = $db->querySingle("SELECT body FROM templates WHERE title in('$result')");
     }
-    elseif ( file_exists( $template_short_path ) ) {
-      $template_text = file_get_contents( $template_short_path );
-      #echo " - Found Short\n";
-    }
-    else {
+    
+    if ($result) {
+      $template_text = substr($result, 1);
+    } else {
       $template_text = '';
-      #echo " - Not Found\n";
     }
-    #foreach ($deps as $dep ) {
-    #    $this->mOutput->addTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
-    #}
-    if ( null == $template_text) {
-      $template_text = '';
-    }
+    
     return array( $template_text, $finalTitle );
   }
 

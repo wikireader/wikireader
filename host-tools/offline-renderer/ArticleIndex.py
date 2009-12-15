@@ -428,7 +428,8 @@ pragma journal_mode = memory;
 
                 if t1 != tr:
                     self.template_cursor.execute('insert into redirects (title, redirect) values(?, ?)',
-                                                 ['~' + t1, '~' + tr])
+                                                 ['~%d~%s' % (self.file_id(), t1),
+                                                  '~%d~%s' % (self.file_id(), tr)])
 
                 return
 
@@ -458,9 +459,8 @@ pragma journal_mode = memory;
         if self.is_template:
             t1 = title.split(':', 1)[1].lower()
             t_body = self.translate(text).strip(u'\u200e\u200f')
-            print 'temp: %s' % repr(t1)
             self.template_cursor.execute('insert into templates (title, body) values(?, ?)',
-                                         ['~' + t1, '~' + t_body])
+                                         ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
             return
 
         restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)

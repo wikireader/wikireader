@@ -144,9 +144,13 @@ function &wfOutputWrapperWOC($articleTitle, $articleText) {
 
 # Global function for 'Wikipedia Offline Client'-specific parsing
 function &wfParseTextWOC($text) {
-  global $wgParser, $wgParserOptions;
+  global $wgParser, $wgParserOptions, $wgTemplateFileID;
   $nlidx = strpos($text, "\n");
-  $articleTitle = trim(substr($text, 0, $nlidx));
+  $temp_h = trim(substr($text, 0, $nlidx));
+  $id = strpos($temp_h, ":");
+  $wgTemplateFileID = trim(substr($temp_h, 0, $id));
+  $articleTitle = trim(substr($temp_h, $id+1));
+    
   $articleMarkup = substr($text, $nlidx + 1);
   $title = Title::newFromText($articleTitle);
   if (!$title) {
