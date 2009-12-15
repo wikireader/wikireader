@@ -8,7 +8,7 @@
 
 import sys, os, struct, os.path, re
 import io
-from HTMLParser import HTMLParser
+import HTMLParser
 import pylzma
 import unicodedata
 import htmlentitydefs
@@ -21,7 +21,12 @@ import PrintLog
 import gd
 
 verbose = False
+warnings = False
 article_count = 0
+
+# NASTY HACK: allow this </div class="something">
+HTMLParser.endtagfind = re.compile('</\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\s*[^>]*>')
+
 
 fh       = '4b' # struct font_bmf_header (header)
 cmr      = '8b48s'  # struct charmetric_bmf (font)
@@ -101,6 +106,7 @@ def usage(message):
     print 'usage: %s <options> {html-files...}' % os.path.basename(__file__)
     print '       --help                  This message'
     print '       --verbose               Enable verbose output'
+    print '       --warnings              Enable warnings output'
     print '       --number=n              Number for the .dat/.idx-tmp files [0]'
     print '       --test=file             Output the uncompressed file for testing'
     print '       --font-path=dir         Path to font files (*.bmf) [fonts]'
@@ -110,7 +116,7 @@ def usage(message):
 
 
 def main():
-    global verbose, compress
+    global verbose, warnings, compress
     global f_out, output, i_out
     global font_id_values
     global file_number
@@ -118,13 +124,21 @@ def main():
     global article_db
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvn:p:i:t:f:', ['help', 'verbose', 'number=', 'prefix=',
-                                                                'article-index=',
-                                                                'test=', 'font-path='])
+        opts, args = getopt.getopt(sys.argv[1:],
+                                   'hvwn:p:i:t:f:',
+                                   ['help',
+                                    'verbose',
+                                    'warnings',
+                                    'number=',
+                                    'prefix=',
+                                    'article-index=',
+                                    'test=',
+                                    'font-path='])
     except getopt.GetoptError, err:
         usage(err)
 
     verbose = False
+    warnings = False
     data_file = 'pedia%d.dat'
     index_file = 'pedia%d.idx-tmp'
     art_file = 'articles.db'
@@ -136,6 +150,8 @@ def main():
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
             verbose = True
+        if opt in ('-w', '--warnings'):
+            warnings = True
         elif opt in ('-h', '--help'):
             usage(None)
         elif opt in ('-t', '--test'):
@@ -394,7 +410,7 @@ def esc_code14(width, height, data):
 
     if 0 == width or 0 == height:
         return
-    
+
     output.write(struct.pack('<BBH', 15, width, height))
     output.write(data)
 
@@ -403,15 +419,16 @@ def esc_code14(width, height, data):
     if (height) > lineh:
         g_starty += (height)-lineh + 3   # since Eric draws images 3px lower for alignment
 
+
 #
 # Parse the HTML into the WikiReader's format
 #
-class WrProcess(HTMLParser):
+class WrProcess(HTMLParser.HTMLParser):
 
     READ_BLOCK_SIZE = 64 * (1024 * 1024)
 
     def __init__ (self, f):
-        HTMLParser.__init__(self)
+        HTMLParser.HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
         self.tag_stack = []
@@ -472,6 +489,7 @@ class WrProcess(HTMLParser):
 
         global g_starty, g_curr_face, g_halign
         global g_this_article_title, g_links, g_link_cnt
+        global warnings
 
         attrs = dict(attrs)
 
@@ -500,7 +518,7 @@ class WrProcess(HTMLParser):
 
         elif tag == 'table':
             self.in_table += 1
-            
+
         # if in a table suppress weverythin after this point
         elif self.in_table > 0:
             return
@@ -583,11 +601,13 @@ class WrProcess(HTMLParser):
                 self.li_cnt[self.level] += 1
             except KeyError:
                 (line, column) = self.getpos()
-                PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
-                                 ('<li>', line, column, article_count + 1, g_this_article_title))
+                if warnings:
+                    PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
+                                     ('<li>', line, column, article_count + 1, g_this_article_title))
                 # force ul since this is a li without a parent
                 (t, p) = self.tag_stack.pop()
-                self.tag_stack.append([('ul', p), (t,p)])
+                self.tag_stack.append(('ul', p))
+                self.tag_stack.append((t,p))
                 self.enter_list('ul')
                 self.li_cnt[self.level] += 1
 
@@ -606,7 +626,7 @@ class WrProcess(HTMLParser):
                 esc_code9(LIST_INDENT)
                 esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
 
-        elif tag == 'dd':            
+        elif tag == 'dd':
             self.li_cnt[self.level] += 1
             if self.level <= LIMAX_INDENT_LEVELS:
                 esc_code9(LIST_INDENT)
@@ -624,21 +644,24 @@ class WrProcess(HTMLParser):
     def handle_endtag(self, tag):
         global g_this_article_title
         global article_count
+        global warnings
 
         # ignore end tag without start tag
         if (tag, True) not in self.tag_stack and (tag, False) not in self.tag_stack:
-            (line, column) = self.getpos()
-            PrintLog.message('Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %
-                             (tag, line, column, article_count + 1, g_this_article_title))
+            if warnings:
+                (line, column) = self.getpos()
+                PrintLog.message('Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %
+                                 (tag, line, column, article_count + 1, g_this_article_title))
             return
 
         # backtrack up the stack closing each open tag until there is a match
         (start_tag, self.printing) = self.tag_stack.pop()
         while start_tag != tag:
             self.tag_stack.append((start_tag, self.printing))
-            (line, column) = self.getpos()
-            PrintLog.message('Warning: force </%s> @[L%d/C%d] in article[%d]: %s' %
-                             (start_tag, line, column, article_count + 1, g_this_article_title))
+            if warnings:
+                (line, column) = self.getpos()
+                PrintLog.message('Warning: force </%s> @[L%d/C%d] in article[%d]: %s' %
+                                 (start_tag, line, column, article_count + 1, g_this_article_title))
             self.handle_endtag(start_tag)
             (start_tag, self.printing) = self.tag_stack.pop()
 
@@ -661,7 +684,7 @@ class WrProcess(HTMLParser):
         elif tag == 'body':
             self.in_body = False
             self.flush_buffer()
-            
+
         elif tag == 'table':
             if self.in_table > 0:
                 self.in_table -= 1
