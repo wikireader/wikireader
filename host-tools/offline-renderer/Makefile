@@ -144,7 +144,7 @@ stamp-math:
 	@if ${MKDIR} "$@" 2> /dev/null ; \
 	  then \
 	  ${MAKE} -C "${MATH_DIR}" ; \
-	else ;
+	else \
 	  while [ ! -f "${@}/done" ] ; \
 	  do \
 	    sleep 1 ; \
