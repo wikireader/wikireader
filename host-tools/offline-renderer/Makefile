@@ -141,15 +141,7 @@ math: stamp-math
 # of this program
 .PHONY: stamp-math
 stamp-math:
-	@if ${MKDIR} "$@" 2> /dev/null ; \
-	  then \
-	  ${MAKE} -C "${MATH_DIR}" ; \
-	else \
-	  while [ ! -f "${@}/done" ] ; \
-	  do \
-	    sleep 1 ; \
-	  done ; \
-	fi
+	  flock "${@}" -c ${MAKE} -C "${MATH_DIR}"
 
 .PHONY: install
 install: all
