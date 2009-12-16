@@ -2,8 +2,11 @@
 
 base @ decimal
 
-19 constant box-width
-19 constant box-height
+20 constant box-width-small
+20 constant box-height-small
+
+40 constant box-width-large
+40 constant box-height-large
 
 
 : within-box ( x y x0 y0 x1 y1 -- flag )
@@ -14,53 +17,77 @@ base @ decimal
 ;
 
 
-: box-origin ( u -- x y )
+: box-origin-large ( u -- x y w h )
     case
         0 of  \ top left
             0 0
         endof
         1 of  \ top right
-            lcd-width-pixels box-width - 0
+            lcd-width-pixels box-width-large - 0
         endof
         2 of  \ bottom right
-            lcd-width-pixels box-width - lcd-height-pixels box-height - 1-
+            lcd-width-pixels box-width-large - lcd-height-pixels box-height-large - 1-
         endof
         3 of  \ bottom left
-            0 lcd-height-pixels box-height - 1-
+            0 lcd-height-pixels box-height-large - 1-
         endof
         4 of  \ centre
-            lcd-width-pixels 2/ box-width 2/ -
-            lcd-height-pixels 2/ box-height 2/ -
+            lcd-width-pixels 2/ box-width-large 2/ -
+            lcd-height-pixels 2/ box-height-large 2/ -
         endof
     endcase
+    box-width-large box-height-large  \ x y w h
 ;
 
 
-: left-origin ( u -- x y )
+: box-origin-small ( u -- x y w h )
     case
         0 of  \ top left
-            0 box-origin
+            0 0
         endof
-        1 of  \ centre
-            4 box-origin
+        1 of  \ top right
+            lcd-width-pixels box-width-small - 0
         endof
         2 of  \ bottom right
-            2 box-origin
+            lcd-width-pixels box-width-small - lcd-height-pixels box-height-small - 1-
+        endof
+        3 of  \ bottom left
+            0 lcd-height-pixels box-height-small - 1-
+        endof
+        4 of  \ centre
+            lcd-width-pixels 2/ box-width-small 2/ -
+            lcd-height-pixels 2/ box-height-small 2/ -
+        endof
+    endcase
+    box-width-small box-height-small  \ x y w h
+;
+
+
+: left-origin-small ( u -- x y w h )
+    case
+        0 of  \ top left
+            0 box-origin-small
+        endof
+        1 of  \ centre
+            4 box-origin-small
+        endof
+        2 of  \ bottom right
+            2 box-origin-small
         endof
     endcase
 ;
 
 
-: right-origin ( u -- x y )
+: right-origin-small ( u -- x y w h )
     case
         0 of  \ top right
-            1 box-origin
+            1 box-origin-small
         endof
         1 of  \ centre
-            4 box-origin
+            4 box-origin-small
         endof
         2 of  \ bottom left
-            3 box-origin
+            3 box-origin-small
         endof
     endcase
 ;
@@ -69,9 +96,11 @@ base @ decimal
 variable 'origin
 
 : inside-box ( x y u -- flag )
-    'origin @ execute   \ x y x0 y0
-    over box-width +    \ x y x0 y0 x1
-    over box-height +   \ x y x0 y0 x1 yi
+    'origin @ execute   \ x y x0 y0 w0 h0
+    swap >r             \ x y x0 y0 h0    R: w0
+    over +              \ x y x0 y0 y1    R: w0
+    r> swap >r          \ x y x0 y0 w0    R: y1
+    over + r>           \ x y x0 y0 x1 y1
     within-box
 ;
 
@@ -84,24 +113,25 @@ variable required-lines
         1 of
             3 check-boxes !
             2 required-lines !
-            ['] left-origin 'origin !
+            ['] left-origin-small 'origin !
         endof
         2 of
             3 check-boxes !
             2 required-lines !
-            ['] right-origin 'origin !
+            ['] right-origin-small 'origin !
         endof
         4 check-boxes !
         4 required-lines !
-        ['] box-origin 'origin !
+        ['] box-origin-large 'origin !
     endcase
 
     lcd-cls
     check-boxes @ 0
     ?do
-        i 'origin @ execute
+        i 'origin @ execute  \ x y w h
+        2>r
         lcd-move-to lcd-black
-        box-width box-height lcd-box
+        2r> lcd-box
         8 4 lcd-move-rel
         i [char] 1 + lcd-emit
     loop
