@@ -23,4 +23,3 @@ flags:
 	echo LINUX_LD="$(LD) $(LDFLAGS) $(LDFLAGS_MODULE)" >>$(obj)/flags
 	echo LINUX_AS="$(AS)" >>$(obj)/flags
 	echo LINUX_MODLIB="$(MODLIB)" >>$(obj)/flags
-	
