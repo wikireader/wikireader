@@ -311,18 +311,17 @@ MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})
 define MAKE_BLOCK1
 
 .PHONY: parse${1}
-parse${1}: stamp-r-index stamp-r-parse${1}
+parse${1}: stamp-r-parse${1}
 
-.PHONY: render${1} fonts parse${1}
+.PHONY: render${1}
 render${1}: stamp-r-render${1}
 
-stamp-r-parse${1}:
+stamp-r-parse${1}: stamp-r-index
 	${RM} "$$@"
 	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
 	${TOUCH} "$$@"
 
-#.NOTPARALLEL: stamp-r-render${1}
-stamp-r-render${1}:
+stamp-r-render${1}: stamp-r-parse${1}
 	${RM} "$$@"
 	$${MAKE} RENDER_BLOCK=${1} render
 	${TOUCH} "$$@"
