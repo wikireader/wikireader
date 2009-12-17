@@ -333,6 +333,7 @@ def get_imgdata(imgfile, indent):
 def esc_code0(num_pixels):
     """blank line height in pixels"""
     global g_starty
+    global output
 
     output.write(struct.pack('BB', 1, num_pixels))
     g_starty += num_pixels
@@ -341,6 +342,7 @@ def esc_code0(num_pixels):
 def esc_code1():
     """new line with default font and default line space"""
     global g_starty, g_curr_face
+    global output
 
     output.write(struct.pack('B', 2))
     g_starty += get_lineheight(DEFAULT_FONT_IDX)
@@ -350,6 +352,7 @@ def esc_code1():
 def esc_code2():
     """new line with current font and current line space"""
     global g_starty, g_curr_face
+    global output
 
     output.write(struct.pack('B', 3))
     g_starty += get_lineheight(g_curr_face)
@@ -358,6 +361,7 @@ def esc_code2():
 def esc_code3(face):
     """new line using new font face."""
     global g_starty, g_curr_face
+    global output
 
     num_pixels = get_lineheight(face)
     output.write(struct.pack('BB', 4, face|(num_pixels<<3)))
@@ -367,6 +371,7 @@ def esc_code3(face):
 def esc_code4(face, halign=0):
     """change font with current horizontal alignment (in pixels)"""
     global g_curr_face
+    global output
 
     output.write(struct.pack('BB', 5, face|(halign<<3)))
     g_curr_face = face
@@ -375,6 +380,7 @@ def esc_code4(face, halign=0):
 def esc_code5():
     """set font as default"""
     global g_curr_face
+    global output
 
     output.write(struct.pack('B', 6))
     g_curr_face = DEFAULT_FONT_IDX
@@ -382,22 +388,29 @@ def esc_code5():
 
 def esc_code6():
     """set default alignment"""
+    global output
+
     output.write(struct.pack('B', 7))
 
 
 def esc_code7(num_pixels):
     """move right num_pixels"""
+    global output
+
     output.write(struct.pack('BB', 8, num_pixels))
 
 
 def esc_code8(num_pixels):
     """move left num_pixels"""
+    global output
+
     output.write(struct.pack('BB', 9, num_pixels))
 
 
 def esc_code9(num_pixels):
     """alignment adjustment"""
     global g_halign
+    global output
 
     output.write(struct.pack('Bb', 10, num_pixels))
     g_halign = num_pixels
@@ -405,12 +418,15 @@ def esc_code9(num_pixels):
 
 def esc_code10(num_pixels):
     """draw line from right to left"""
+    global output
+
     output.write(struct.pack('BB', 11, num_pixels))
 
 
 def esc_code14(width, height, data):
     """output bitmap"""
     global g_starty, g_curr_face
+    global output
 
     if 0 == width or 0 == height:
         return
