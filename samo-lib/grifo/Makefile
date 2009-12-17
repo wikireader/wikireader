@@ -41,7 +41,7 @@ include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
 
-$(call REQUIRED_BINARY, guile, guile18)
+$(call REQUIRED_BINARY, guile, guile-1.8)
 
 INCLUDES += -Isrc
 INCLUDES += -I-
