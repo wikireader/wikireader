@@ -124,18 +124,20 @@ this_id=${this_host##${host}}
 
 farm="farm${this_id}"
 
-eval ${debug} "mkdir -p '${work}'"
-eval ${debug} "mkdir -p '${dest}'"
-
 rm -f "${LogFile}"
 
+# clean up
 case "${clear}" in
   [yY]|[yY][eE][sS])
     eval ${debug} "time make clean-index DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
     eval ${debug} "time make '${farm}-clean' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
-    eval ${debug} "rm -f '${work}'/* '${dest}'/*"
+    eval ${debug} "rm -rf '${work}' '${dest}'"
     ;;
 esac
+
+# create directories
+eval ${debug} "mkdir -p '${work}'"
+eval ${debug} "mkdir -p '${dest}'"
 
 # update
 git pull --rebase
