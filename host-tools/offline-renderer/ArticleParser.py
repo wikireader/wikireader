@@ -9,6 +9,7 @@
 import os, sys, traceback
 import re
 import subprocess
+import time
 import getopt
 import os.path
 import sqlite3
@@ -169,6 +170,7 @@ def main():
     input_file = None
     process_id = None
     total_articles = 0
+    start_time = time.time()
     while article_count == 'all' or article_count != 0:
         offset_cursor.execute('select file_id, title, seek, length from offsets where article_number = ? limit 1',
                               (start_article,))
@@ -225,7 +227,11 @@ def main():
                 failed_message = 'Failed: %d' % failed_articles
             else:
                 failed_message = ''
-            PrintLog.message('Parse[%s]: %d  %s' % (out_base_name, total_articles, failed_message))
+            now_time = time.time()
+            PrintLog.message('Parse[%s]: %7.2fs %10d  %s' %
+                             (out_base_name, now_time - start_time,
+                              total_articles, failed_message))
+            start_time = now_time
 
     # close files
     if input_file:

@@ -8,6 +8,7 @@
 
 import sys, os, struct, os.path, re
 import io
+import time
 import HTMLParser
 import pylzma
 import unicodedata
@@ -122,6 +123,7 @@ def main():
     global file_number
     global article_count
     global article_db
+    global start_time
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
@@ -170,6 +172,8 @@ def main():
             font_path = arg
         else:
             usage('unhandled option: ' + opt)
+
+    start_time = time.time()
 
     f_fontr  = open(os.path.join(font_path, "text.bmf"), "r")
     f_fonti  = open(os.path.join(font_path, "texti.bmf"), "r")
@@ -415,7 +419,7 @@ def esc_code14(width, height, data):
     output.write(data)
 
     lineh = get_lineheight(g_curr_face)
-    
+
     if (height) > lineh:
         g_starty += (height)-lineh + 3   # since Eric draws images 3px lower for alignment
 
@@ -949,14 +953,16 @@ def write_article():
     global article_count
     global g_this_article_title
     global file_number
+    global start_time
 
     article_count += 1
     if verbose:
         PrintLog.message("[MWR %d] %s" % (article_count, g_this_article_title))
         sys.stdout.flush()
     elif article_count % 1000 == 0:
-        PrintLog.message("Render[%d]: %d" % (file_number, article_count))
-        sys.stdout.flush()
+        now_time = time.time()
+        PrintLog.message("Render[%d]: %7.2fs %10d" % (file_number, now_time - start_time, article_count))
+        start_time = now_time
 
 
     output.flush()
