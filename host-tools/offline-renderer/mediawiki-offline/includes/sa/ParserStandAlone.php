@@ -37,27 +37,31 @@ class ParserStandAlone extends Parser
     # We pad the title with '~' to force the database to import strings
     $title_short = '~' . $wgTemplateFileID . '~' . strtolower(substr($title, strlen($wgTemplatePrefix)));
     $title_orig  = '~' . $wgTemplateFileID . '~' . $title;
-    $db = new SQLite3($wgTemplateDB, SQLITE3_OPEN_READONLY);
-    $ts = $db->escapeString($title_short);
-    $tl = $db->escapeString($title_orig);
-    
-    #echo "\n--- ($title_short, $title_orig) --- \n"; 
-   
-    @$result = $db->querySingle("SELECT body FROM templates WHERE title in('$ts', '$tl')");
-    while (!$result) {
-      @$result = $db->querySingle("SELECT redirect FROM redirects WHERE title in('$ts', '$tl')");
-      if (!$result) {
+    $db = new PDO('sqlite:' . $wgTemplateDB);
+    $ts = $db->quote($title_short);
+    $tl = $db->quote($title_orig);
+
+    echo "\n--- ($title_short, $title_orig) --- \n";
+
+    $result = $db->query("SELECT body FROM templates WHERE title IN ({$ts}, {$tl}) LIMIT 1");
+    $data = $result->fetchAll();
+    while (sizeof($data) == 0) {
+      $result = $db->query("SELECT redirect FROM redirects WHERE title IN ({$ts}, {$tl}) LIMIT 1");
+      $data = $result->fetchAll();
+      if (sizeof($data) == 0) {
         break;
       }
-      @$result = $db->querySingle("SELECT body FROM templates WHERE title in('$result')");
+      $redirect = $db->quote($data[0]['redirect']);
+      $result = $db->query("SELECT body FROM templates WHERE title IN ({$redirect}) LIMIT 1");
+      $data = $result->fetchAll();
     }
-    
-    if ($result) {
-      $template_text = substr($result, 1);
+
+    if (sizeof($data) > 0) {
+      $template_text = substr($data[0]['body'], 1);
     } else {
       $template_text = '';
     }
-    
+
     return array( $template_text, $finalTitle );
   }
 

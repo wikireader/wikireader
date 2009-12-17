@@ -6,7 +6,7 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import os, sys
+import os, sys, traceback
 import re
 import subprocess
 import getopt
@@ -164,6 +164,7 @@ def main():
         background_process = None
 
     # process all required articles
+    out_base_name = os.path.basename(out_name) # for logging messages
     current_file_id = None
     input_file = None
     process_id = None
@@ -174,8 +175,8 @@ def main():
         row = offset_cursor.fetchone()
         if None == row:
             break
-        (title, file_id, seek, length) = row  # this order is different from select!
-        #PrintLogMessage("row: %s" % str(row))   # just to show select order is wrong, check create table and insert/import
+        (file_id, title, seek, length) = row
+
         if file_id != current_file_id:
             current_file_id = file_id
             if input_file:
@@ -199,6 +200,7 @@ def main():
         # restart the background process if it fails to try to record all failing articles
         if None != background_process and None == process_id:
             process_id = subprocess.Popen(background_process, shell=True, stdin=subprocess.PIPE)
+
         try:
             process_article_text(current_file_id, title.encode('utf-8'),
                                  input_file.read(length), process_id.stdin)
@@ -207,6 +209,9 @@ def main():
             # extract from log by: grep '^!' log-file
             PrintLog.message('!Process failed, file: %s article(%d): %s because: %s'
                              % (filename, total_articles, title, str(e)))
+            trace = sys.exc_info()
+            if None != trace:
+                traceback.print_tb(trace[2])
             process_id.stdin.close()
             process_id.wait()
             process_id = None
@@ -220,7 +225,7 @@ def main():
                 failed_message = 'Failed: %d' % failed_articles
             else:
                 failed_message = ''
-            PrintLog.message('Count: %d  %s' % (total_articles, failed_message))
+            PrintLog.message('Parse[%s]: %d  %s' % (out_base_name, total_articles, failed_message))
 
     # close files
     if input_file:
@@ -251,7 +256,7 @@ def process_article_text(id, title, text, newf):
         text = e.sub(r, text)
 
     if newf:
-        newf.write(id + ':')
+        newf.write('%d:' % id)
         newf.write(title[1:])  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')
         newf.write(text + '\n')

@@ -6,6 +6,7 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
+from __future__ import with_statement
 import os, sys, re
 import struct
 import littleparser
@@ -204,6 +205,9 @@ def main():
 
         f.write('Restricted: %10d\n' % processor.restricted_count)
 
+        f.write('Templates:  %10d\n' % processor.template_count)
+        f.write('rTemplates: %10d\n' % processor.template_redirect_count)
+
     cf.close()
 
     output_fnd(fnd_name, processor)
@@ -255,6 +259,8 @@ class FileProcessing(FileScanner.FileScanner):
         self.restricted_count = 0
         self.redirect_count = 0
         self.article_count = 0
+        self.template_count = 0
+        self.template_redirect_count = 0
 
         self.all_titles = []
 
@@ -286,7 +292,7 @@ create table redirects (
     redirect varchar
 )
 ''')
-
+        self.template_db.commit()
         self.template_cursor = self.template_db.cursor()
 
 
@@ -357,8 +363,8 @@ pragma journal_mode = memory;
         p.stdin.write("""
 create table offsets (
     article_number integer primary key,
-    title varchar,
     file_id integer,
+    title varchar,
     seek integer,
     length integer
 );
@@ -431,6 +437,7 @@ pragma journal_mode = memory;
                                                  ['~%d~%s' % (self.file_id(), t1),
                                                   '~%d~%s' % (self.file_id(), tr)])
 
+                self.template_redirect_count += 1
                 return
 
             match = non_articles.search(text)
@@ -461,6 +468,7 @@ pragma journal_mode = memory;
             t_body = self.translate(text).strip(u'\u200e\u200f')
             self.template_cursor.execute('insert into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
+            self.template_count += 1
             return
 
         restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)
