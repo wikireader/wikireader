@@ -22,6 +22,7 @@
 #include "lcd_buf_draw.h"
 #ifdef WIKIPCF
 extern void showMsg(int currentLevel, char *format, ...);
+#include <assert.h>
 #else
 #include "file-io.h"
 #endif
@@ -32,7 +33,8 @@ int32_t aCharIdx[128];
 void init_bigram(FILE *fd)
 {
 	init_char_idx();
-	fread(aBigram, 1, sizeof(aBigram), fd);
+	ssize_t n = fread(aBigram, 1, sizeof(aBigram), fd);
+	assert(sizeof(aBigram) == n);
 }
 #else
 
