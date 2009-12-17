@@ -433,7 +433,7 @@ pragma journal_mode = memory;
                 tr = redirect_title.split(':', 1)[1].lower()
 
                 if t1 != tr:
-                    self.template_cursor.execute('insert into redirects (title, redirect) values(?, ?)',
+                    self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
                                                  ['~%d~%s' % (self.file_id(), t1),
                                                   '~%d~%s' % (self.file_id(), tr)])
 
@@ -466,7 +466,7 @@ pragma journal_mode = memory;
         if self.is_template:
             t1 = title.split(':', 1)[1].lower()
             t_body = self.translate(text).strip(u'\u200e\u200f')
-            self.template_cursor.execute('insert into templates (title, body) values(?, ?)',
+            self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
             self.template_count += 1
             return
