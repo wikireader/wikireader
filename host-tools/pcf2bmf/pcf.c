@@ -57,7 +57,7 @@
 /* #include <X11/Xmd.h> */
 #include <assert.h>
 #include <errno.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <wchar.h>
 #include "general_header.h"
 /* #include "print_preprocess.h" */
@@ -153,7 +153,7 @@ unsigned long * Xalloc(int);
 int BufFileRead (BufFilePtr, char *, int);
 void pcf_postscript(ucs4_t c, pcf_bm_t *, pcf_charmet_t *, pcf_SCcharmet_t *);
 int pres_pcfbm(ucs4_t *, pcffont_t *, pcf_bm_t **, pcf_charmet_t *, pcf_SCcharmet_t *, int);
-int wcwidth(wchar_t ucs);
+int wide_char_width(wchar_t ucs);
 int load_pcf_font(pcffont_t *font);
 void scaling_factors(pcffont_t *font, double ptsz, int Xres, int Yres);
 void scale_Fmetrics(pcffont_t *font);
@@ -1148,8 +1148,8 @@ xpcf_getcbm(ucs4_t code, pcffont_t *font, pcf_charmet_t *Cmetrics)
 	* (font->Fmetrics.firstCol + (255 - font->Fmetrics.lastCol))))
 	- font->Fmetrics.firstchar;
 #ifdef SDEBUG
-	fprintf(stderr, "%d is -- codewidth of C%x\n", wcwidth(code), code);
-	fprintf(stderr, "%d is -- j value      C%x\n", wcwidth(code), code);
+	fprintf(stderr, "%d is -- codewidth of C%x\n", wide_char_width(code), code);
+	fprintf(stderr, "%d is -- j value      C%x\n", wide_char_width(code), code);
 #endif
     assert(j >= 0);
     if (font->bitmaps[j] == NULL)
@@ -1159,7 +1159,7 @@ xpcf_getcbm(ucs4_t code, pcffont_t *font, pcf_charmet_t *Cmetrics)
 			 * no-glyph code
 			 */
 
-			if (wcwidth(code) == -1)
+			if (wide_char_width(code) == -1)
 				{
 				code = 0;
 				goto onemoretime;
@@ -2520,7 +2520,7 @@ static int bisearch(wchar_t ucs, const struct interval *table, int max) {
   return 0;
 }
 
-int wcwidth(wchar_t ucs)
+int wide_char_width(wchar_t ucs)
 {
   /* sorted list of non-overlapping intervals of non-spacing characters */
   static const struct interval combining[] = {
