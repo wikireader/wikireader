@@ -21,9 +21,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <errno.h>
-#ifdef WIKIPCF
-#include <malloc.h>
-#else
+
+#if !defined(WIKIPCF)
 #include <malloc-simple.h>
 #include <file-io.h>
 #include "msg.h"
@@ -51,7 +50,7 @@ int *bHashBlockLoaded;
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
 struct _fnd_buf {
-	uint32_t offset;
+	int32_t offset;
 	uint32_t len;
 	uint32_t used_seq;
 	char buf[FND_BUF_BLOCK_SIZE];

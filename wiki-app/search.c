@@ -1165,7 +1165,7 @@ void search_open_article(int new_selection)
 	display_link_article(result_list->idx_article[list_idx]);
 }
 
-long find_closest_idx(long idx, char *title)
+long find_closest_idx(unsigned long idx, char *title)
 {
 	ARTICLE_PTR article_ptr;
 	TITLE_SEARCH title_search;
