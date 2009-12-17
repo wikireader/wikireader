@@ -225,28 +225,6 @@ int is_proper_string(char *s, int len)
 	return 0;
 }
 
-char *strnstr(char *s1, char *s2, int len)
-{
-	int bFound = 0;
-	int s2_len = strlen(s2);
-
-	while (!bFound && len >= s2_len)
-	{
-		if (!memcmp(s1, s2, s2_len))
-			bFound = 1;
-		else
-		{
-			s1++;
-			len--;
-		}
-	}
-
-	if (bFound)
-		return s1;
-	else
-		return NULL;
-}
-
 char *locate_double_null(char *pBuf, int len)
 {
 	int i = 0;
