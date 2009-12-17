@@ -1,0 +1,130 @@
+#!/bin/sh
+# aside from this initial boilerplate, this is actually -*- scheme -*- code
+main='(module-ref (resolve-module '\''(scripts script-entry-point)) '\'main')'
+exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
+!#
+
+;;; UpdateMakefiles - to extract part of definitions.mk and copy to individual Makefiles
+;;;
+;;; Copyright (c) 2009 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+(define-module (scripts script-entry-point)
+  :use-module (ice-9 getopt-long)
+  :use-module (ice-9 rdelim)
+  :use-module (ice-9 regex)
+  :use-module (srfi srfi-1)
+  :export (script-entry-point))
+
+(define-macro (unless cond . body)
+  `(if (not ,cond) (begin ,@body)))
+
+(define *program* "program-name-here")
+(define *debug* #f)
+(define *verbose* #f)
+
+(define (usage message)
+  "Display a usage message"
+  (if (string? message)
+      (format #t "error: ~a~%" message))
+  (format #t "usage: ~a [--verbose] [--debug] --source=file files...~%" *program*)
+  (exit 1))
+
+
+(define (main . args)
+  "Main program"
+  (set! *program* (second args))
+  (let* ((parsed-opts (getopt-long (drop args 1)
+                                   '((list (single-char #\l) (value #t))
+                                     (source (single-char #\s) (value #t))
+                                     (verbose (single-char #\v))
+                                     (debug (single-char #\d)))))
+         (source (option-ref parsed-opts 'source #f))
+         (verbose (option-ref parsed-opts 'verbose #f))
+         (debug (option-ref parsed-opts 'debug #f))
+         (files (option-ref parsed-opts '() #f)))
+    (if debug
+        (begin
+          (display parsed-opts)
+          (newline)))
+
+    (set! *debug* debug)
+    (set! *verbose* verbose)
+
+    (unless source (usage "Missing source"))
+    (if (null? files) (usage "Missing files"))
+
+    (if debug
+        (format #t "source = ~a~%" source))
+
+    (for-each (lambda (file)
+                (if (file-exists? file)
+                    (process-file source file)
+                    (format #t "Ignore non-existant file:~a~%" file))
+                )
+              files)))
+
+(define (process-file source file)
+  (if *verbose*
+      (format #t "Processing: ~a~%" file))
+  (let*
+      ((backup-name (string-append file "~"))
+       (output-port (mkstemp! (string-append file "-XXXXXX")))
+       (new-name (port-filename output-port)))
+    (chmod output-port (logand #o666 (lognot (umask))))
+    (with-input-from-file file
+      (lambda ()
+        (copy-to output-port "+++START_UPDATE_MAKEFILE:" #f #f)
+        (skip-to output-port "---END_UPDATE_MAKEFILE:")
+        (unless (eof-object? (peek-char))
+                (begin
+                  (format output-port  "# +++START_UPDATE_MAKEFILE: Start of auto included code~%")
+                  (with-input-from-file source
+                    (lambda ()
+                      (skip-to output-port "+++START_COPY:")
+                      (copy-to output-port "---END_COPY:" "#INC: " "#REMARK")))
+                  (format output-port  "# ---END_UPDATE_MAKEFILE: End of auto included code~%")))
+        (copy-remainder output-port)))
+    (if (file-exists? backup-name)
+        (delete-file backup-name))
+    (rename-file file backup-name)
+    (rename-file new-name file)))
+
+
+(define (skip-to port match-line)
+  (while (and (not (eof-object? (peek-char)))
+              (not (string-contains (read-line) match-line)))))
+
+
+(define (copy-to port match-line remove-prefix skip-prefix)
+  (while (and (not (eof-object? (peek-char)))
+              (let ((line (read-line)))
+                (if (string-contains line match-line)
+                    #f
+                    (cond
+                     ((and remove-prefix (string-prefix? remove-prefix line))
+                      (format port "~a~%" (string-drop line (string-length remove-prefix))))
+                     ((and skip-prefix (string-prefix? skip-prefix line))
+                      #t)
+                     (#t
+                      (format port "~a~%" line))))))))
+
+
+(define (copy-remainder port)
+  (while (not (eof-object? (peek-char)))
+         (format port "~a~%" (read-line))))

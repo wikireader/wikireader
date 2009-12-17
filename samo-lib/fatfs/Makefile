@@ -14,20 +14,25 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-define FIND_SAMO_LIB
-d='.' ; \
-while [ X"/" != X"$${d}" ] ; \
-do \
-  s="$${d}/samo-lib" ; \
-  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
-  d=$$(readlink -es "$${d}/..") ; \
-done ; \
-echo samo_lib_NOT_FOUND ; \
-exit 1
+# +++START_UPDATE_MAKEFILE: Start of auto included code
+# The text between the +++ and --- tags is copied by the
+# UpdateMakefiles script. Do not remove or change these tags.
+# ---
+# Autodetect root directory
+define FIND_ROOT_DIR
+while : ; do \
+  d=$$(pwd) ; \
+  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
+  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
+  cd .. ; \
+done
 endef
-SAMO_LIB := $(shell ${FIND_SAMO_LIB})
-
-include ${SAMO_LIB}/Mk/definitions.mk
+ROOT_DIR := $(shell ${FIND_ROOT_DIR})
+# Directory of Makefile includes
+MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
+# Include the initial Makefile setup
+include ${MK_DIR}/definitions.mk
+# ---END_UPDATE_MAKEFILE: End of auto included code
 
 
 INCLUDES = -I${MINI_LIBC_INCLUDE}
@@ -56,7 +61,7 @@ build-$(strip ${1}): Makefile
 	$${RM} -r $$@
 	mkdir -p $$@
 	@echo SAMO_LIB = $${SAMO_LIB} >> $$@/Makefile
-	@echo include $${SAMO_LIB}/Mk/definitions.mk >> $$@/Makefile
+	@echo include $${MK_DIR}/definitions.mk >> $$@/Makefile
 	@echo INCLUDES = $${INCLUDES} | sed 's@\.\./\.\./@../../../@g' >> $$@/Makefile
 	@echo vpath %.c ../src >> $$@/Makefile
 	@echo INCLUDES += -I../config/c33/$(strip ${1})/ >> $$@/Makefile
@@ -96,4 +101,4 @@ clean:
 	$(RM) $(foreach type, ${TYPE_LIST}, lib/${type}/libtinyfat.a)
 	${RM} -r lib
 
-include ${SAMO_LIB}/Mk/rules.mk
+include ${MK_DIR}/rules.mk

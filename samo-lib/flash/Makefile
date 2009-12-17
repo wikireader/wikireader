@@ -13,23 +13,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-define FIND_SAMO_LIB
-d='.' ; \
-while [ X"/" != X"$${d}" ] ; \
-do \
-  s="$${d}/samo-lib" ; \
-  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
-  d=$$(readlink -es "$${d}/..") ; \
-done ; \
-echo samo_lib_NOT_FOUND ; \
-exit 1
-endef
-SAMO_LIB := $(shell ${FIND_SAMO_LIB})
-
 FATFS_MODE = read-write
 
-include ${SAMO_LIB}/Mk/definitions.mk
+# +++START_UPDATE_MAKEFILE: Start of auto included code
+# The text between the +++ and --- tags is copied by the
+# UpdateMakefiles script. Do not remove or change these tags.
+# ---
+# Autodetect root directory
+define FIND_ROOT_DIR
+while : ; do \
+  d=$$(pwd) ; \
+  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
+  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
+  cd .. ; \
+done
+endef
+ROOT_DIR := $(shell ${FIND_ROOT_DIR})
+# Directory of Makefile includes
+MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
+# Include the initial Makefile setup
+include ${MK_DIR}/definitions.mk
+# ---END_UPDATE_MAKEFILE: End of auto included code
+
 
 INCLUDES += -I$(MINI_LIBC_INCLUDE)
 INCLUDES += -I${DRIVERS_INCLUDE}
@@ -89,4 +94,4 @@ clean:
 	${RM} -r ${TARGETS} build lib
 	${RM} -r *.o *.elf *.d *.map *.asm33
 
-include ${SAMO_LIB}/Mk/rules.mk
+include ${MK_DIR}/rules.mk

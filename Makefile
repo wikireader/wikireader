@@ -19,11 +19,30 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
-# Utility programs
-# ================
+# Include standard definitions
+# ============================
 
-RM = rm -f
-TOUCH = touch
+CROSS_COMPILER := NO
+
+# +++START_UPDATE_MAKEFILE: Start of auto included code
+# The text between the +++ and --- tags is copied by the
+# UpdateMakefiles script. Do not remove or change these tags.
+# ---
+# Autodetect root directory
+define FIND_ROOT_DIR
+while : ; do \
+  d=$$(pwd) ; \
+  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
+  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
+  cd .. ; \
+done
+endef
+ROOT_DIR := $(shell ${FIND_ROOT_DIR})
+# Directory of Makefile includes
+MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
+# Include the initial Makefile setup
+include ${MK_DIR}/definitions.mk
+# ---END_UPDATE_MAKEFILE: End of auto included code
 
 
 # Toolchain configuration data
@@ -37,15 +56,8 @@ BINUTILS_VERSION = 2.10.1
 BINUTILS_PACKAGE = binutils-${BINUTILS_VERSION}.tar.gz
 BINUTILS_URL= ftp://ftp.gnu.org/gnu/binutils/${BINUTILS_PACKAGE}
 
-SAMO_LIB := $(shell readlink -m ./samo-lib)
-HOST_TOOLS := $(shell readlink -m ./host-tools)
-LICENSES := $(shell readlink -m ./Licenses)
-MISC_FILES := ${SAMO_LIB}/misc-files
-
 DOWNLOAD_DIR = ${HOST_TOOLS}/toolchain-download
 SUM_DIR = ${HOST_TOOLS}/toolchain-sums
-
-export PATH := ${HOST_TOOLS}/toolchain-install/bin:${PATH}
 
 CONFIG_FILE := "${SAMO_LIB}/include/config.h"
 CONFIG_FILE_DEFAULT := "${SAMO_LIB}/include/config.h-default"
@@ -78,8 +90,8 @@ all:    ${ALL_TARGETS}
 # Installation
 # ============
 
-DESTDIR_PATH := $(shell readlink -m "${DESTDIR}")
-WORKDIR_PATH := $(shell readlink -m "${WORKDIR}")
+DESTDIR_PATH := $(shell ${RESOLVEPATH} "${DESTDIR}")
+WORKDIR_PATH := $(shell ${RESOLVEPATH} "${WORKDIR}")
 VERSION_TAG ?= $(shell date '+%Y%m%d%H%M')
 VERSION_FILE := ${DESTDIR_PATH}/version.txt
 SHA_LEVEL := 256
@@ -260,7 +272,7 @@ fonts-install: fonts validate-destdir
 # Build the database from wiki XML files
 # ======================================
 
-XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell readlink -m "${f}"))
+XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell ${REALPATH} "${f}"))
 RENDER_BLOCK ?= 0
 
 .PHONY: index
@@ -558,6 +570,20 @@ clean-console-simulator:
 	${MAKE} clean -C ${HOST_TOOLS}/console-simulator
 
 
+# Update the Makefiles
+# ====================
+
+# Change the methos of includeing definitions by
+# copying part of Mk/definitions.mk into each Makefile
+# if it requires it.
+
+.PHONY: update-makefiles
+update-makefiles:
+	@${SCRIPTS}/UpdateMakefiles --verbose \
+	  --source="${MK_DIR}/definitions.mk" \
+	  $(shell find "${ROOT_DIR}" -name Makefile)
+
+
 # Print information about some targets
 # ====================================
 
@@ -622,4 +648,4 @@ print-%:
 
 .PHONY: p33
 p33:
-	./${SAMO_LIB}/scripts/p33
+	${SCRIPTS}/p33

@@ -14,54 +14,42 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-define FIND_SAMO_LIB
-d='.' ; \
-while [ X"/" != X"$${d}" ] ; \
-do \
-  s="$${d}/samo-lib" ; \
+define FIND_MK_DIR
+while : ; do \
+  d=$$(pwd) ; s="$${d}/samo-lib/Mk" ; \
   [ -d "$${s}" ] && echo $${s} && exit 0 ; \
-  d=$$(readlink -es "$${d}/..") ; \
-done ; \
-echo samo_lib_NOT_FOUND ; \
-exit 1
+  [ X"/" = X"$${d}" ] && echo Mk_DIRECTORY_NOT_FOUND && exit 1 ; \
+  cd .. ; \
+done
 endef
-SAMO_LIB := $(shell ${FIND_SAMO_LIB})
-
-include ${SAMO_LIB}/Mk/definitions.mk
+MK_DIR := $(shell ${FIND_MK_DIR})
+include ${MK_DIR}/definitions.mk
 
 # whilch block to render
 RENDER_BLOCK ?= 0
 START ?= 1
 COUNT ?= all
 DESTDIR ?= .
-FONT_PATH ?= $(shell readlink -m ${HOST_TOOLS}/fonts)
+FONT_PATH ?= $(shell ${REALPATH} ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
 
-PREFIX := $(shell readlink -m ${DESTDIR}/pedia)
-ARTICLES := $(shell readlink -m ${WORKDIR}/articles.db)
-COUNTS_FILE := $(shell readlink -m ${WORKDIR}/counts.text)
-TEMPLATE_FILE := $(shell readlink -m ${WORKDIR}/templates.db)
-OFFSETS := $(shell readlink -m ${WORKDIR}/offsets.db)
-HTML_ARTICLES := $(shell readlink -m ${WORKDIR}/articles-${RENDER_BLOCK}.html)
+PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/pedia)
+ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles.db)
+COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/counts.text)
+TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/templates.db)
+OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR}/offsets.db)
+HTML_ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles-${RENDER_BLOCK}.html)
 
 PYLZMA_DIR := pylzma-0.3.0
 MATH_DIR := mediawiki-offline/math
 
-ifeq ($(shell which sqlite3),)
-$(error Could not find sqlite3 - please: sudo apt-get install sqlite3 )
-endif
+$(call REQUIRED_BINARY, sqlite3, sqlite3)
+$(call REQUIRED_BINARY, ocamlopt, ocaml)
+$(call REQUIRED_BINARY, tex, tetex-extra cjk-latex)
+$(call REQUIRED_BINARY, php, php5-cli)
+$(call REQUIRED_BINARY, dvipng, dvipng)
 
-ifeq ($(shell which ocamlopt),)
-$(error Could not find ocaml - please: sudo apt-get install ocaml )
-endif
-
-ifeq ($(shell which tex),)
-$(error Could not find tex - please: sudo apt-get install tetex-extra cjk-latex )
-endif
-
-ifeq ($(shell which dvipng),)
-$(error Could not find dvipng - please: sudo apt-get install dvipng )
-endif
+$(call REQUIRED_PHP, PDO, php5-sqlite)
 
 
 ifneq ($(strip ${VERBOSE}),)
@@ -137,11 +125,11 @@ pylzma:
 .PHONY: math
 math: stamp-math
 
-# use a lock directory and file to avoid multiple parallel builds
-# of this program
-.PHONY: stamp-math
+# use a lock to avoid multiple parallel builds of this program
 stamp-math:
-	  flock "${@}" -c '${MAKE} -C "${MATH_DIR}"'
+	${RM} "$@"
+	${LOCKF} "${@}" ${MAKE} -C "${MATH_DIR}"
+	${TOUCH} "$@"
 
 .PHONY: install
 install: all
@@ -152,7 +140,7 @@ build:
 .PHONY: clean
 clean: pylzma-clean
 	${RM} -r build ${TARGETS} *.pyc *.pyo *.dat *.idx *.idx-tmp *.pfx *.fnd
-	${RM} -r stamp-*
+	${RM} stamp-*
 	${MAKE} -C "${MATH_DIR}" clean
 
 .PHONY: pylzma-clean
@@ -162,4 +150,4 @@ pylzma-clean:
 	${RM} -r build
 
 
-include ${SAMO_LIB}/Mk/rules.mk
+include ${MK_DIR}/rules.mk
