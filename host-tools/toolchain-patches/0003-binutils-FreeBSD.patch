@@ -1,0 +1,23 @@
+--- a/libiberty/strerror.c	1999-05-03 15:28:54.000000000 +0800
++++ b/libiberty/strerror.c	2009-12-14 14:26:02.000000000 +0800
+@@ -462,7 +462,7 @@
+ 
+ #else
+ 
+-extern int sys_nerr;
++//extern int sys_nerr;
+ extern char *sys_errlist[];
+ 
+ #endif
+--- a/libiberty/strsignal.c	1999-05-03 15:28:54.000000000 +0800
++++ b/libiberty/strsignal.c	2009-12-14 14:27:41.000000000 +0800
+@@ -244,7 +244,9 @@
+ #else
+ 
+ #ifdef NSIG
++#if !defined(__FreeBSD__)
+ static int sys_nsig = NSIG;
++#endif
+ #else
+ #ifdef _NSIG
+ static int sys_nsig = _NSIG;

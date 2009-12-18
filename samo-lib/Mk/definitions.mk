@@ -49,6 +49,7 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 
 OS := $(strip $(shell uname -s))
 
+export SHELL = /bin/sh
 RM = rm -f
 MKDIR = mkdir -p
 COPY = cp -p
