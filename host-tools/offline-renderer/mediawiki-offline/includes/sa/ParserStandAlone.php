@@ -45,7 +45,8 @@ class ParserStandAlone extends Parser
 
     $result = $db->query("SELECT body FROM templates WHERE title IN ({$ts}, {$tl}) LIMIT 1");
     $data = $result->fetchAll();
-    while (sizeof($data) == 0) {
+    $max_loop_count = 25;
+    while ($max_loop_count && sizeof($data) == 0) {
       $result = $db->query("SELECT redirect FROM redirects WHERE title IN ({$ts}, {$tl}) LIMIT 1");
       $data = $result->fetchAll();
       if (sizeof($data) == 0) {
@@ -54,6 +55,7 @@ class ParserStandAlone extends Parser
       $redirect = $db->quote($data[0]['redirect']);
       $result = $db->query("SELECT body FROM templates WHERE title IN ({$redirect}) LIMIT 1");
       $data = $result->fetchAll();
+      --$max_loop_count;
     }
 
     if (sizeof($data) > 0) {
