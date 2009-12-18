@@ -100,7 +100,7 @@ void print_hex(unsigned int value)
 {
 	print("0x");
 	int i;
-	for (i = sizeof(value); i >= 0; --i) {
+	for (i = sizeof(value) - 1; i >= 0; --i) {
 		print_byte(value >> (i * 8));
 	}
 }
