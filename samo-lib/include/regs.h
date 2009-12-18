@@ -832,6 +832,7 @@
 #define	ADDRC__8M_x_16_bits_x_1 0x2
 #define	ADDRC__4M_x_16_bits_x_1 0x1
 #define	ADDRC__1M_x_16_bits_x_1 0x0
+#define	ADDRC_MASK 0x07
 
 
 // Bits for: REG_SDRAMC_REF
