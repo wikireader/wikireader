@@ -81,6 +81,7 @@ MAX_QUOTE_LEVEL         = 1
 
 # bullet[0] charater is not used (the '!')
 bullet_c                = u"!\u25aa\u2022\u25ab"
+LIMAX_BULLETS           = len(bullet_c) - 1
 
 font_id_values = {}
 
@@ -152,7 +153,7 @@ def main():
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
             verbose = True
-        if opt in ('-w', '--warnings'):
+        elif opt in ('-w', '--warnings'):
             warnings = True
         elif opt in ('-h', '--help'):
             usage(None)
@@ -634,23 +635,19 @@ class WrProcess(HTMLParser.HTMLParser):
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
             else:
-                if self.level > LIMAX_INDENT_LEVELS:    # we only have 3 types of bullets
-                    bullet_num = 3
+                if self.level > LIMAX_BULLETS:
+                    bullet_num = LIMAX_BULLETS
                 else:
                     bullet_num = self.level
 
                 self.wordwrap.append(bullet_c[bullet_num], DEFAULT_FONT_IDX, None)
 
             self.flush_buffer()
-            if self.level <= LIMAX_INDENT_LEVELS:
-                esc_code9(LIST_INDENT)
-                esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
+            self.list_increase_indent()
 
         elif tag == 'dd':
             self.li_cnt[self.level] += 1
-            if self.level <= LIMAX_INDENT_LEVELS:
-                esc_code9(LIST_INDENT)
-                esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
+            self.list_increase_indent()
 
         elif tag == 'br':
             self.in_br = True
@@ -781,11 +778,11 @@ class WrProcess(HTMLParser.HTMLParser):
 
         elif tag == 'li':
             self.flush_buffer(False)
-            esc_code9(- LIST_INDENT)
+            self.list_decrease_indent()
 
         elif tag == 'dd':
             self.flush_buffer()
-            esc_code9(- LIST_INDENT)
+            self.list_decrease_indent()
 
         elif tag == 'dt':
             self.flush_buffer()
@@ -804,7 +801,12 @@ class WrProcess(HTMLParser.HTMLParser):
         self.level += 1
         self.li_cnt[self.level] = 0
         self.li_type[self.level] = list_type
-        if self.level > 1 and self.level <= LIMAX_INDENT_LEVELS:
+
+
+    def list_increase_indent(self):
+        if self.level <= LIMAX_INDENT_LEVELS:
+            esc_code9(LIST_INDENT)
+            esc_code8(LIST_INDENT)  ### Bug in lcd_buf_draw ASK ERIC
             self.lwidth -= LIST_INDENT
             self.indent += LIST_INDENT
 
@@ -812,11 +814,14 @@ class WrProcess(HTMLParser.HTMLParser):
     def leave_list(self):
         self.flush_buffer()
         esc_code0(LIST_MARGIN_TOP)
-        if self.level > 1 and self.level <= LIMAX_INDENT_LEVELS:
-                self.lwidth += LIST_INDENT
-                self.indent -= LIST_INDENT
         if self.level > 0:
             self.level -= 1
+
+    def list_decrease_indent(self):
+        if self.level <= LIMAX_INDENT_LEVELS:
+            esc_code9(- LIST_INDENT)
+            self.lwidth += LIST_INDENT
+            self.indent -= LIST_INDENT
 
 
     def handle_charref(self, name):
