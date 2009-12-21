@@ -509,7 +509,7 @@ void Generate_new_font(pcffont_t *font)
        if(i>nFontCount)
 	  break;
     }
-    printf("count is:%d, before opening file\n",count,name);
+    printf("count is:%d, before opening file: %s\n",count,name);
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
