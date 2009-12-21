@@ -1,0 +1,36 @@
+Building on FreeBSD
+===================
+
+1. Install some ports
+
+archivers/py-lzma
+devel/autoconf262
+databases/php5-pdo_sqlite
+databases/py-sqlite3
+databases/sqlite3
+devel/automake19
+devel/bison
+devel/gmake
+devel/m4
+devel/qt4
+ftp/wget
+graphics/py-gd
+lang/gawk
+lang/gforth
+lang/guile
+lang/ocaml
+lang/php5
+print/teTeX-base
+sysutils/readlink
+textproc/flex
+textproc/php5-ctype
+www/php5-session
+x11-fonts/bdftopcf
+
+
+2. There is a BSDmakefile that simply calls gmake so the sample
+   files can be tested with:
+
+make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine hash
+make DESTDIR=image fonts-install
+make DESTDIR=image sim4
