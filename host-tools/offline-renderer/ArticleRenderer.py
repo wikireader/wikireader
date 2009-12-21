@@ -254,16 +254,19 @@ def get_utf8_cwidth(c, face):
 
     f.seek(ord(c) * cmr_size + fh_size)
     buffer = f.read(cmr_size)
+
     if len(buffer) != 0:
         width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = struct.unpack(cmr, buffer)
-        width += LSBearing + LINE_SPACE_ADDON
     else:
-        width = 0
-    if width == 0:
-        if face != DEFAULT_ALL_FONT_IDX:
-            return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
+        width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = (0,0,0,0,0,0,0,0,
+                                                                                               r'\x55' * 48)
 
+    if 0 == width and face != DEFAULT_ALL_FONT_IDX:
+        return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
+
+    width += LSBearing + LINE_SPACE_ADDON
     width_cache[(c, face)] = width
+
     return width
 
 
@@ -530,6 +533,9 @@ class WrProcess(HTMLParser.HTMLParser):
         if not self.printing:
             return;
 
+        elif tag == 'script':
+            self.printing = False
+
         elif tag == 'title':
             self.in_title = True
             g_this_article_title = ''
@@ -692,7 +698,10 @@ class WrProcess(HTMLParser.HTMLParser):
             return
 
         if not self.printing:
-            return;
+            return
+
+        elif tag == 'script':
+            pass
 
         elif tag == 'title':
             self.in_title = False
