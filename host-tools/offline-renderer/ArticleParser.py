@@ -49,9 +49,13 @@ subs = [
 
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
+    # remove unwanted tags
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
-    (re.compile(r'(<|&lt;)(/?)(math|sub|sup|small)(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
+    # convert &lt;tag&gt; to <tag>
+    (re.compile(r'&lt;(/?)(math|nowiki|table|sub|sup|small)&gt;', re.IGNORECASE), r'<\1\2>'),
+
+    # fix entities
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
     # change % so php: wr_parser_sa does not convert them
