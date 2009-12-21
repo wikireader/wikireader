@@ -489,7 +489,7 @@ void Generate_new_font(pcffont_t *font)
 	   font_create.LSBearing = (INT8)LSBearing;
 	   font_create.RSBearing = (INT8)RSBearing;
 	   //printf("before memcpy bitmap\n");
-	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
+	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%p\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
 	   if((widthBytes*height)>48)
 	   {
 	      //free(buf);
@@ -509,7 +509,7 @@ void Generate_new_font(pcffont_t *font)
        if(i>nFontCount)
 	  break;
     }
-    printf("count is:%d,before open file\n",count);
+    printf("count is:%d, before opening file\n",count,name);
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
@@ -587,7 +587,8 @@ void Generate_new_font_with_header(pcffont_t *font)
 	   font_create.LSBearing = (INT8)LSBearing;
 	   font_create.RSBearing = (INT8)RSBearing;
 
-	   //printf("char:%d,height:%d,widthBytes:%d\n",i,font_create.height,font_create.widthBytes);
+	   //printf("char:%d,height:%d,width:%d,widthBytes:%d\n",
+	   //i,font_create.width,font_create.height,font_create.widthBytes);
 
 	   if(font_create.height<0)
 	      font_create.height = 0;
@@ -608,7 +609,7 @@ void Generate_new_font_with_header(pcffont_t *font)
 
        offset+=sizeof(font_bmf);
     }
-    printf("count is:%d,before open file\n",count);
+    printf("count is:%d, before opening file: %s\n",count,name);
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
