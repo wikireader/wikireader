@@ -66,8 +66,20 @@ class LittleParser(HTMLParser):
 def main():
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
     p = LittleParser().translate
-    text = 'start test: [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]  [&mu;] [&amp;mu;] [&lt;/br/&gt;] [&egrave;] [</br/>] end:test'
-    correct = u'start test: [\xe8] [\u04d2] [\xe9] [%20] [%ff]  [\u03bc] [\u03bc] [</br/>] [\xe8] [</br/>] end:test'
+    text = '''
+start test:
+  [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]
+  [&mu;] [&amp;mu;] [&lt;/br/&gt;] [&egrave;] [</br/>]
+  [&lt;noinclude&gt;]
+end:test
+'''
+    correct = u'''
+start test:
+  [\xe8] [\u04d2] [\xe9] [%20] [%ff]
+  [\u03bc] [\u03bc] [</br/>] [\xe8] [</br/>]
+  [<noinclude>]
+end:test
+'''
     result = p(text)
     print text
     print result
