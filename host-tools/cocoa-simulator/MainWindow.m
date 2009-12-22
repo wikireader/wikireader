@@ -1,10 +1,19 @@
+// Copyright (c) 2009 Openmoko Inc.
 //
-//  MainWindow.m
-//  CocoaSimulator
+// Authors   Daniel Mack
 //
-//  Created by Daniel on 11.12.08.
-//  Copyright 2008 caiaq. All rights reserved.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "MainWindow.h"
 #include <wikilib.h>
@@ -28,20 +37,20 @@ int wl_input_wait(struct wl_input_event *ev)
 	NSSize view_size;
 
 	ev->type = -1;
-	
+
 	do {
 		[condition lock];
 		[condition wait];
 		[condition unlock];
 
 		NSEvent *currentEvent = [NSApp currentEvent];
-		
+
 		switch ([currentEvent type]) {
 		case NSKeyUp:
 		case NSKeyDown:
 			ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 			ev->key_event.keycode = [[currentEvent characters] characterAtIndex: 0];
-			
+
 			if (ev->key_event.keycode == '?')
 				ev->key_event.keycode = [currentEvent keyCode];
 
@@ -99,7 +108,7 @@ int wl_input_wait(struct wl_input_event *ev)
 			NSUInteger rgba[4] = { val, val, val, 0 };
 			[imageRep setPixel: rgba atX: x y: y];
 		}
-		
+
 	[imageView setNeedsDisplay];
 }
 
@@ -112,7 +121,7 @@ int wl_input_wait(struct wl_input_event *ev)
 	[pool release];
 }
 
-- (void) awakeFromNib 
+- (void) awakeFromNib
 {
 	framebuffer = (char *) malloc(FRAMEBUFFER_SIZE);
 
@@ -122,7 +131,7 @@ int wl_input_wait(struct wl_input_event *ev)
 			return;
 	}
 
-	imageRep = [[NSBitmapImageRep alloc] 
+	imageRep = [[NSBitmapImageRep alloc]
 					initWithBitmapDataPlanes: NULL
 					pixelsWide: (NSInteger) [imageView frame].size.width
 					pixelsHigh: (NSInteger) [imageView frame].size.height
@@ -159,7 +168,7 @@ int wl_input_wait(struct wl_input_event *ev)
 - (IBAction) buttonPressed: (id) sender
 {
 	unsigned int code;
-	
+
 	switch ([sender tag]) {
 	case 0:
 		code = WL_INPUT_KEY_SEARCH;
@@ -173,7 +182,7 @@ int wl_input_wait(struct wl_input_event *ev)
 	default:
 		return;
 	}
-	
+
 	NSEvent *curr = [NSApp currentEvent];
 	NSEvent *ev = [NSEvent keyEventWithType: NSKeyDown
 								   location: [curr locationInWindow]
@@ -185,7 +194,7 @@ int wl_input_wait(struct wl_input_event *ev)
 				charactersIgnoringModifiers: nil
 								  isARepeat: NO
 								    keyCode: code ];
-	
+
 	[NSApp postEvent: ev atStart: YES];
 }
 

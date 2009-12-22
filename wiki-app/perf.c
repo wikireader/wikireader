@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009
+ * Copyright (c) 2009 Openmoko Inc.
  *
- * Marek Lindner
+ * Authors   Marek Lindner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of version 2 of the GNU General Public

@@ -1,7 +1,10 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
- * Copyright (c) 2009 Christopher Hall <hsw@openmoko.com>
+ * enter low power suspend state
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

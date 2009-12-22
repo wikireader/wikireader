@@ -1,6 +1,8 @@
 ;;; Serial - interrupt driven serial I/O
-
-;;;      Copyright 2009 Christopher Hall <hsw@openmoko.com>
+;;;
+;;; Copyright (c) 2009 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
 ;;;
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions are

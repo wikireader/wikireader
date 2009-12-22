@@ -1,6 +1,10 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * log message interface
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +20,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MSG_OUTPUT_H
-#define MSG_OUTPUT_H
+#if !defined(MSG_OUTPUT_H)
+#define MSG_OUTPUT_H 1
 
 void msg_init(void);
 void msg(int level, const char *fmt, ...);
 
-#endif /* MSG_OUTPUT_H */
+#endif

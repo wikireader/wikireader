@@ -1,6 +1,10 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * Frame buffer interface
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_H
-#define GUI_H
+#if !defined(GUI_H)
+#define GUI_H 1
 
 void fb_init(void);
 void fb_refresh(void);

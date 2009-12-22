@@ -1,7 +1,11 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
- * Copyright (c) 2008, 2009 Matt Hsu <matt_hsu@openmoko.org>
+ * touchscreen handler
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Matt Hsu <matt_hsu@openmoko.org>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

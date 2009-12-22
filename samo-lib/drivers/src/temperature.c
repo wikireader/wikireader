@@ -1,6 +1,9 @@
 /*
  * temperature controller driver
+ *
  * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

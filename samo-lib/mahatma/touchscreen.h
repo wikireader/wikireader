@@ -1,6 +1,10 @@
 /*
- * mahatma - a simple kernel framework
- * Copyright (c) 2008, 2009 Daniel Mack <daniel@caiaq.de>
+ * touchscreen handler
+ *
+ * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +20,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOUCHSCREEN_H
-#define TOUCHSCREEN_H
+#if !defined(TOUCHSCREEN_H)
+#define TOUCHSCREEN_H 1
 
 void touchscreen_handler(void);
 int touchscreen_get_event(struct wl_input_event *ev);
 
 void touchscreen_init(void);
-#endif /* TOUCHSCREEN_H */
+
+#endif
 

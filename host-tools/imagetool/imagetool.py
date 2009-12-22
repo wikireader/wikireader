@@ -2,7 +2,9 @@
 """
  Generate an image from a png which can be used by guilib.
 
- Copyright (C) 2009 Daniel Mack <daniel@caiaq.de>
+ Copyright (c) 2009 Openmoko Inc.
+
+ Authors   Daniel Mack <daniel@caiaq.de>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -62,7 +64,7 @@ try:
 
 		if (color > 127):
 			outbyte |= 1 << (7 - bit);
-				
+
 		if bit == 7:
 			out += "0x%02x, " % outbyte
 			outbyte = 0

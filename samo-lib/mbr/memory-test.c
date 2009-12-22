@@ -1,7 +1,8 @@
 // taken from Qi boot loader
 
 /*
- * (C) Copyright 2007 Openmoko, Inc.
+ * Copyright (c) 2009 Openmoko Inc.
+ *
  * Author: Andy Green <andy@openmoko.com>
  *
  * Memory test routines
