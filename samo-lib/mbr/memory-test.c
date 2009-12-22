@@ -28,9 +28,12 @@
 #define APPLICATION_TITLE2 "Memory Check";
 #include "application.h"
 
-
+// the compiler cannot handle this:
+//extern uint8_t __START_SDRAM;
+//#define RAM_START (&__START_SDRAM)
+// so:
 #define RAM_START ((uint8_t *)0x10000000)
-#define RAM_SIZE  (32 * 1024 * 1024)
+
 
 // redirect Qi routines to the correct EEPROM routines
 #define puts print
@@ -45,11 +48,13 @@ void memory_check(void *start, unsigned int length);
 ReturnType mem(int block, int status)
 {
 	APPLICATION_INITIALISE();
-
-	if (0 == status) {
-		memory_test(RAM_START, RAM_SIZE);
-	} else {
-		memory_check(RAM_START, RAM_SIZE);
+	{
+		unsigned int size = ram_size();
+		if (0 == status) {
+			memory_test(RAM_START, size);
+		} else {
+			memory_check(RAM_START, size);
+		}
 	}
 	APPLICATION_FINALISE(0, 0);
 }
@@ -72,7 +77,7 @@ int memory_test_const32(void * start, unsigned int length, uint32_t value)
 
 	while (count--)
 		if (*p++ != value) {
-			puts("*A*");
+			puts(" A:");
 			print32((long)p - 4);
 			puts("=");
 			print32((uint32_t)p[-4]);
@@ -103,7 +108,7 @@ int memory_test_ads(void * start, unsigned int length, uint32_t mask)
 	while (p < pend) {
 		if ((uint32_t)p & mask) {
 			if (*p++ != 0xffffffff) {
-				puts("*B:");
+				puts(" B:");
 				print32((long)p - 4);
 				puts("/");
 				print32((uint32_t)mask);
@@ -111,7 +116,7 @@ int memory_test_ads(void * start, unsigned int length, uint32_t mask)
 			}
 		} else {
 			if (*p++) {
-				puts("*C:");
+				puts(" C:");
 				print32((long)p - 4);
 				puts("/");
 				print32((uint32_t)mask);
@@ -195,8 +200,12 @@ void memory_test(void *start, unsigned int length)
 			mask = mask << 1;
 		}
 
-		puts("Errors: ");
-		printdec(errors);
+		if (0 == errors) {
+		puts("OK");
+		} else {
+			puts(" Errors: ");
+			printdec(errors);
+		}
 		puts("\n");
 
 		series++;
@@ -220,8 +229,8 @@ void memory_check(void *start, unsigned int length)
 	for (i = 0; i < mega; ++i) {
 		int j;
 		int flag = 1;
-		for (j = 0; j < (1 << 20) ; j += 256) {
-			volatile uint32_t *p = (volatile uint32_t *)&memory[(i << 20) + j];
+		for (j = 0; j < (1 << 20) ; j += 1024) {
+			volatile uint32_t *p = (volatile uint32_t *)&memory[((i << 20) + j) >> 2];
 			uint32_t s = *p;
 			*p = ~s;
 			if (*p != ~s) {
@@ -247,8 +256,21 @@ void memory_check(void *start, unsigned int length)
 				pass = 0;
 				break;
 			}
+			if (0 == j && 0 != i) {
+				*memory = 0;
+				*p = 0xcafedeca;
+				if (0 != *memory) {
+					flag = 2;
+					pass = 0;
+					break;
+				}
+			}
 		}
-		print_char(flag ? '.' : 'F');
+		if (2 == flag) {
+			print_char('M');
+		} else {
+			print_char(flag ? '.' : 'F');
+		}
 	}
 	print("]\n");
 	print(pass ? "PASS" : "FAIL");

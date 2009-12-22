@@ -58,4 +58,7 @@ SECTIONS
 
         __START_idma = LOADADDR(.bss);
         __SIZE_idma = SIZEOF(.bss);
+
+        /* __START_SDRAM = ORIGIN(sdram); */
+        __START_SDRAM = 0x10000000;
 }
