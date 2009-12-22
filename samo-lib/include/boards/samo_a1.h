@@ -223,7 +223,8 @@ static inline void init_pins(void)
 
 // 48MHz => 20ns clock cycle
 
-// SDRAM = 4M * $ Banks * 16 bits
+// e.g.
+// SDRAM = 4M * 4 Banks * 16 bits
 // refresh = 8k
 // Trp = Trcd = 15ns	     1 clock   (1..4)
 // Tras = 42ns		     3 clocks  (1..8)
@@ -233,6 +234,8 @@ static inline void init_pins(void)
 #define CLKS_TRC  15
 
 #define ADDRESS_CONFIG ADDRC_16M_x_16_bits_x_1
+//#define ADDRESS_CONFIG ADDRC__8M_x_16_bits_x_1
+//#define ADDRESS_CONFIG ADDRC__4M_x_16_bits_x_1
 
 #define SDRAM_CONFIGURATION (0                                  \
 			     | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
@@ -242,6 +245,9 @@ static inline void init_pins(void)
 
 static inline void init_ram(void)
 {
+	// SDRAM off
+	REG_SDRAMC_INI = 0;
+
 	// P20..P27 all to SDRAM control functions
 	REG_P2_03_CFP = 0x55;
 	REG_P2_47_CFP = 0x55;
@@ -265,21 +271,7 @@ static inline void init_ram(void)
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	// SDRAM configuration register
-	REG_SDRAMC_CTL = SDRAM_CONFIGURATION;
-
-	// enable RAM self-refresh
-	REG_SDRAMC_REF =
-		//SELDO |
-		SCKON |
-		SELEN |
-		(0x7f << SELCO_SHIFT) |
-		(0x8c << AURCO_SHIFT) |
-		0;
-
-	// enable SDRAM
-	REG_SDRAMC_INI = SDRAM_CMD_FIRST;
-
+	// enable arbiter
 	REG_SDRAMC_APP =
 		ARBON |
 		//DBF |
@@ -290,6 +282,21 @@ static inline void init_ram(void)
 		IQB |
 		0;
 
+	// SDRAM configuration register
+	REG_SDRAMC_CTL = SDRAM_CONFIGURATION;
+
+	// enable RAM self-refresh
+	REG_SDRAMC_REF =
+		SCKON |
+		SELEN |
+		(0x7f << SELCO_SHIFT) |
+		(0x8c << AURCO_SHIFT) |
+		0;
+
+	// begin SDRAM initialisation
+	REG_SDRAMC_INI = SDRAM_CMD_FIRST;
+
+	// delay more than 200 us
 	{
 		unsigned int i = 0;
 		for (i = 0; i < 150000; ++i) {
@@ -327,6 +334,42 @@ static inline void init_ram(void)
 
 	// wait for SDRAM to come on-line
 	BUSY_WAIT_FOR(REG_SDRAMC_INI & SDEN);
+}
+
+
+#if !defined(MEGA)
+#define MEGA(x) (1024 * 1024 * (x))
+#endif
+
+static inline unsigned long ram_size(void)
+{
+	switch (REG_SDRAMC_CTL & ADDRC_MASK) {
+	case ADDRC_32M_x_16_bits_x_1:
+		return MEGA(32 * 2);
+		break;
+	case ADDRC_16M_x__8_bits_x_2:
+		return MEGA(16 * 2);
+		break;
+	case ADDRC__8M_x__8_bits_x_2:
+		return MEGA(8 * 2);
+		break;
+	case ADDRC__2M_x__8_bits_x_2:
+		return MEGA(2 * 2);
+		break;
+	case ADDRC_16M_x_16_bits_x_1:
+		return MEGA(16 * 2);
+		break;
+	case ADDRC__8M_x_16_bits_x_1:
+		return MEGA(8 * 2);
+		break;
+	case ADDRC__4M_x_16_bits_x_1:
+		return MEGA(4 * 2);
+		break;
+	case ADDRC__1M_x_16_bits_x_1:
+		return MEGA(1 * 2);
+		break;
+	}
+	return 0;
 }
 
 #endif
