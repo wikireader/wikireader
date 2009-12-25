@@ -39,7 +39,9 @@ seq=no
 IndexOnly=no
 debug=
 
-args=$(getopt -o hvg:o:p:inscrw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,re-parse,work:,dest:,debug -- "$@") ||exit 1
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvg:o:p:inscrw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,re-parse,work:,dest:,debug -- "$@") ||exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
