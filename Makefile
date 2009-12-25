@@ -307,6 +307,9 @@ hash: validate-destdir hash-gen
 		--hsh="${DESTDIR_PATH}/pedia.hsh"
 
 
+.PHONY: iprch
+iprch: index parse render combine hash
+
 stamp-r-index:
 	${RM} "$@"
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
