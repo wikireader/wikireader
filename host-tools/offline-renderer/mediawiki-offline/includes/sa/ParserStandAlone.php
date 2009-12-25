@@ -26,7 +26,7 @@ class ParserStandAlone extends Parser
 {
   # Override the template-fetching-function of the Parser
   function fetchTemplateAndTitle( $title ) {
-    #echo "\n--- Trying to find offline template: $title";
+    #echo "\n--- Trying to find offline template: $title ---\n";
 
     global $IP, $wgTemplatePath, $wgTemplateExtension, $wgTemplatePrefix;
     global $wgTemplateDB, $wgTemplateFileID;
@@ -41,7 +41,7 @@ class ParserStandAlone extends Parser
     $ts = $db->quote($title_short);
     $tl = $db->quote($title_orig);
 
-    echo "\n--- ($title_short, $title_orig) --- \n";
+    #echo "\n--- ($title_short, $title_orig) --- \n";
 
     $result = $db->query("SELECT body FROM templates WHERE title IN ({$ts}, {$tl}) LIMIT 1");
     $data = $result->fetchAll();
