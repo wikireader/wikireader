@@ -624,19 +624,20 @@ class WrProcess(HTMLParser.HTMLParser):
             self.enter_list(tag)
 
         elif tag == 'li':
-            try:
-                self.li_cnt[self.level] += 1
-            except KeyError:
-                (line, column) = self.getpos()
+            if 0 == self.level:
                 if warnings:
+                    (line, column) = self.getpos()
                     PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
                                      ('<li>', line, column, article_count + 1, g_this_article_title))
-                # force ul since this is a li without a parent
                 (t, p) = self.tag_stack.pop()
-                self.tag_stack.append(('ul', p))
-                self.tag_stack.append((t,p))
-                self.enter_list('ul')
-                self.li_cnt[self.level] += 1
+                return  # just ignore it
+                # force ul since this is a li without a parent
+                #(t, p) = self.tag_stack.pop()
+                #self.tag_stack.append(('ul', p))
+                #self.tag_stack.append((t,p))
+                #self.enter_list('ul')
+
+            self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
@@ -823,6 +824,7 @@ class WrProcess(HTMLParser.HTMLParser):
     def leave_list(self):
         self.flush_buffer()
         esc_code0(LIST_MARGIN_TOP)
+        del self.li_cnt[self.level]
         if self.level > 0:
             self.level -= 1
 
@@ -988,12 +990,11 @@ def write_article():
     article_count += 1
     if verbose:
         PrintLog.message("[MWR %d] %s" % (article_count, g_this_article_title))
-        sys.stdout.flush()
+
     elif article_count % 1000 == 0:
         now_time = time.time()
         PrintLog.message("Render[%d]: %7.2fs %10d" % (file_number, now_time - start_time, article_count))
         start_time = now_time
-
 
     output.flush()
 
@@ -1017,26 +1018,37 @@ def write_article():
                                 literalContextBits = 3,
                                 literalPosBits = 0, posBits = 2, algorithm = 1, eos = 1)
         f_out.write(body)
+        write_article_index(file_offset, len(body))
     else:
         f_out.write(header)
         f_out.write(links)
         f_out.write(body)
+
+    f_out.flush()
     output.truncate(0)
-    if compress:
 
-		try:
-		    (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
-		    data_offset = (file_offset & 0x7fffffff)
 
-		    if bool(int(restricted)):  # '0' is True so turn it into False
-		        data_offset |= 0x80000000
-		    data_length =  (0x80 << 24) | (file_number << 24) | len(body)  # 0x80 => lzma encoding
-		    i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
-		except KeyError:
-			PrintLog.message('Error in: write_article, Title not found')
-			PrintLog.message('Title: %s' % g_this_article_title)
-			PrintLog.message('Offset: %s' % file_offset)
-			PrintLog.message('Count: %s' % article_count)
+def write_article_index(file_offset, length):
+    global verbose
+    global output, f_out, i_out
+    global g_this_article_title
+    global file_number
+
+    try:
+        (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
+        data_offset = (file_offset & 0x7fffffff)
+
+        if bool(int(restricted)):  # '0' is True so turn it into False
+            data_offset |= 0x80000000
+        data_length =  (0x80 << 24) | (file_number << 24) | length  # 0x80 => lzma encoding
+        i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
+        i_out.flush()
+    except KeyError:
+        PrintLog.message('Error in: write_article, Title not found')
+        PrintLog.message('Title: %s' % g_this_article_title)
+        PrintLog.message('Offset: %s' % file_offset)
+        PrintLog.message('Count: %s' % article_count)
+
 
 # run the program
 if __name__ == "__main__":
