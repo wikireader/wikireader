@@ -110,7 +110,7 @@ static int32_t build_hash_tree(char *sTitleSearch, int32_t offsetBufFnd, char *b
 	int i;
 	int lenTitleSearch;
 	TITLE_SEARCH *pTitleSearch = (TITLE_SEARCH *)&bufFnd[offsetBufFnd];
-	int rc;
+	int rc = 0;
 	char *pSupportedChars = SUPPORTED_SEARCH_CHARS;
 	char c;
 	char sLocalTitleSearch[MAX_TITLE_LEN];
