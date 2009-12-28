@@ -46,7 +46,7 @@ bigram = {}
 def usage(message):
     if None != message:
         print 'error:', message
-    print 'usage: %s <options> {xlm-file...}' % os.path.basename(__file__)
+    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
     print '       --help                  This message'
     print '       --verbose               Enable verbose output'
     print '       --article-index=file    Article index database output [articles.db]'
