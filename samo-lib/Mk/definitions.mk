@@ -121,7 +121,7 @@ REQUIRED_PHP = $(eval $(call REQUIRED_PHP_1,$(strip ${1}),$(strip ${2})))
 # in the root directory
 # =====================
 
-LICENSES := ${ROOT_DIR}/Licenses)
+LICENSES := ${ROOT_DIR}/Licenses
 
 WIKI_APP = ${ROOT_DIR}/wiki-app/
 WIKI_APP_INCLUDE = ${WIKI_APP}
