@@ -6,8 +6,9 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import sys
+import sys, os
 import re
+import getopt
 import FilterWords
 
 
@@ -17,8 +18,11 @@ class FileScanner(object):
         #super(FileScanner, self).__init__(*args, **kw)
         super(FileScanner, self).__init__()
         self.file_list = []
+        self.category_list = {}
         self.current_file_id = -1  # no file yet
 
+    KEY_ARTICLE  = 0
+    KEY_TEMPLATE = 10
 
     def file_id(self):
         return self.current_file_id
@@ -32,187 +36,291 @@ class FileScanner(object):
         return self.file_list
 
 
-    def title(self, text, seek):
+    def namespace(self, key, text):
+        pass
+
+
+    def title(self, category, key, title, seek):
         return True
 
 
-    def redirect(self, title, text, seek):
+    def redirect(self, category, key, title, text, rcategory, rkey, rtitle, seek):
         pass
 
 
-    def body(self, title, text, seek):
+    def body(self, category, key, title, text, seek):
         pass
+
+
+    namespaces_start = '<namespaces>'
+    namespaces_end = '</namespaces>'
+
+    namespace_start = '<namespace key="'
+    namespace_stop = '/>'
+    namespace_cont = '">'
+
+    namespace_end = '</namespace>'
 
     title_start = '<title>'
-    title_start_len = len(title_start)
-
     title_end = '</title>'
     title_end_len = len(title_end)
 
-    text_start = '<text'
-    text_start_len = len(text_start)
-
-    text_prefix = 'xml:space="preserve"' # note could eithe end in '>' or '/>'
-    text_prefix_len = len(text_prefix)
+    text_start = '<text '
+    text_cont = 'xml:space="preserve">'
+    text_stop = '/>'
 
     text_end = '</text>'
-    text_end_len = len(text_end)
 
-    control = [
-        (title_start, title_start_len),
-        (title_end, title_end_len),
-        (text_start, text_start_len),
-        (text_end, text_end_len),
-        ]
+    # redirect: <text.....#redirect.....[[title#relative link]].....
+    redirected_to = re.compile(r'#\s*redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
+
+    StateMachine = {
+        'start': [
+            (namespaces_start, len(namespaces_start),  'category_start', 'spaces'),
+            (title_start, len(title_start), 'drop', 'title'),
+            ],
+
+        'spaces': [
+            (namespaces_end, len(namespaces_end),  'drop', 'start'),
+            (namespace_start, len(namespace_start),  'drop', 'key'),
+            ],
+
+        'key': [
+            (namespace_stop, len(namespace_stop), 'drop', 'spaces'),
+            (namespace_cont, len(namespace_cont), 'key', 'ns'),
+            ],
+
+        'ns': [
+            (namespace_end, len(namespace_end), 'namespace', 'spaces'),
+            ],
+
+        'title': [
+            (title_end, len(title_end), 'title', 'text'),
+            ],
+
+        'text': [
+            (text_start, len(text_start), 'drop', 'prebody'),
+            ],
+
+        'prebody': [
+            (text_cont, len(text_cont), 'drop', 'body'),
+            (text_stop, len(text_stop), 'zero', 'start'),
+            ],
+
+        'body': [
+            (text_end, len(text_end), 'body', 'start'),
+            ]
+        }
 
     def process(self, filename, limit):
         self.file_list += [filename]
         self.current_file_id = len(self.file_list) - 1
 
         block = ''
-        position = 0
+        seek = 0
+        key = None
+        category = None
         title = None
-        wanted = False
         file = open(filename, 'r')
+        end = False
+        more = True
+        wanted = True
+        CurrentState = self.StateMachine['start']
 
         run = True
-        state = 0
         while run:
-            if state > len(self.control):
-                state = 0
-            tag, size = self.control[state]
-
-            pos = -1
-            while pos < 0:
-                pos = block.find(tag)
-                if pos >= 0:
-                    break
+            if more or (not end and len(block) < 1024):
+                more = False
                 block2 = file.read(65536)
                 if len(block2) == 0:
-                    return limit
-                block += block2
-
-            if pos >= len(block) - 1024:
-                block += file.read(65536)
-
-            if 0 == state:
-                state = 1
-
-            elif 1 == state:
-                state = 2
-                p = 0
-                while block[p].isspace():
-                    p += 1
-                title =  block[p:pos].rstrip()
-                wanted = self.title(title, position + p)
-
-            elif 2 == state:
-                state = 3
-                p = block.find(self.text_prefix, pos)
-                if p >= 0:
-                    p += self.text_prefix_len
+                    end = True
                 else:
-                    print 'state 2 failure at %d : "%s"' % (pos, block[pos:])
-                    sys.exit(99)
+                    block += block2
 
-                while block[p].isspace():
-                    p += 1
-                if block[p] == '/':
-                    if wanted:
-                        self.body(title, '', position + p + 2) # 2 => skip '/>'
-                    state = 0
+            pos = -1
+            state = None
+            for s in CurrentState:
+                p = block.find(s[0])
+                #print 'P:"%s" %d' % (s[0], p)
+                if p >= 0:
+                    #print 'y:%d:"%s"' % (p, block[p:p + 10])
+                    if pos < 0 or p < pos:
+                        pos = p
+                        state = s
+            #print 'ZZZ: %d %s' % (pos, repr(state))
+            #print 'block:', block
 
-            elif 3 == state:
-                state = 0
-                if wanted:
-                    p = block.find(self.text_prefix)
-                    if p >= 0:
-                        p += self.text_prefix_len
-                    else:
-                        p = 0
-                    while block[p].isspace():
-                        p += 1
-                    if block[p] == '>':
-                        p += 1
-                    while block[p].isspace():
-                        p += 1
-                    body = block[p:pos].rstrip()
+            if None == state:
+                if end:
+                    return limit
+                else:
+                    more = True
+            else:
+                (tag, length, proc, next) = state
+                #print 'CS "%s"=%d "%s" ->"%s"' % (tag, length, proc, next)
 
-                    if '#' == body[0] and 'redirect' == body[1:9].lower():
-                        self.redirect(title, body, position + p)
-                    else:
-                        self.body(title, body, position + p)
+                CurrentState = self.StateMachine[next]
+                flag = False
+                if 'key' == proc:
+                    key = block[:pos].strip()
+                elif 'namespace' == proc:
+                    category =  block[:pos].strip()
+                    self.category_list[category.lower()] = int(key)
+                    self.namespace(key, category)
+                    key = None
+                elif 'title' == proc:
+                    (category, key, title) = self.get_category(block[:pos].strip())
+                    wanted = self.title(category, key, title, seek)
+                elif 'body' == proc:
+                    body =  block[:pos].strip()
+                    flag = True
+                    if '#' in body[0:10]:
+                        match = self.redirected_to.match(body)
+                        if wanted and match:
+                            (rcategory, rkey, rtitle) = self.get_category(match.group(1).strip())
+                            self.redirect(category, key, title, rcategory, rkey, rtitle, seek)
+                            flag = False
+                elif 'zero' == proc:
+                    #print 'ZERO'
+                    flag = True
+                    body = ''
+                elif 'category_start' == proc:
+                    self.category_list = {}
 
-                    title = None
+                if wanted and flag:
+                    self.body(category, key, title, body, seek)
                     if limit != 'all':
                         limit -= 1
                         if limit <= 0:
                             run = False
                             break
+                    title = None
 
-            l = pos + size
-            position += l
-            block = block[l:]
-        file.close()
+                block = block[pos + length:]
+                seek += pos + length
+
         return limit
 
 
-class foo(FileScanner):
+    def get_category(self, title):
+        """split title into category, key, title"""
 
-    def __init__(self):
+        if ':' in title:
+            (category, t) = title.split(':', 1)
+            category = category.strip().lower()
+            t = t.strip()
+            if category in self.category_list:
+                key = self.category_list[category]
+                return (category, key, t)
+        return ('', 0, title)
+
+
+
+class MyTestScanner(FileScanner):
+
+    def __init__(self, *args, **kw):
+        super(MyTestScanner, self).__init__(*args, **kw)
         self.count = 0
         self.articles = 0
         self.article_index = {}
 
-    def title(self, text, seek):
+
+    def namespace(self, key, text):
+        print 'namespace "%s"->"%s"' % (key, text)
+
+
+    def title(self, category, key, title, seek):
         self.count += 1
-        if ':' in text:
+        print 'T:%d %d : %s[%d]:%s' % (self.count, seek, category, key, title)
+        if self.KEY_ARTICLE != key:
             return False
-        #print 'T:%d %d : %s' % (self.count, seek, text)
         return True
 
 
-    def redirect(self, title, text, seek):
-        pass
-        #print 'S:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
+    def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
+        #pass
+        print 'R:%d %d : %s[%d]:%s -> %s[%d]:%s' % (self.count, seek, category, key, title,
+                                                    rcategory, rkey, rtitle)
 
 
-    def body(self, title, text, seek):
-        if not filter(text, title):
+    def body(self, category, key, title, text, seek):
+        if not filter(title, text):
             self.articles += 1
             self.article_index[title] = [self.articles, seek, len(text)]
-            #print 'B:%d %d [%s] : %s' % (self.count, seek, title, text[:100])
+            print 'B:%d %d [%s[%d]%s] : %s' % (self.count, seek, category, key, title, text[:100])
 
 
+def filter(title, text):
 
-non_letters = re.compile('[\d\W]+')
-max_score = 1
+    (restricted, contains) = FilterWords.find_restricted(title + text)
 
-def filter(text, title):
-    global non_letters, bad_words, max_score
-    score = 0
-    contains = {}
-    for w in non_letters.split(text):
-        word = w.lower()
-        if word in FilterWords.filter_words:
-            score += FilterWords.filter_words[word]
-            if word in contains:
-                contains[word] += 1
-            else:
-                contains[word] = 1
+    if restricted:
+        print 'TITLE: "%s" restricted: {%s}' % (title, contains)
 
-    if score >= max_score:
-        print 'TITLE: %s *** SCORE=%d *** WORDS {%s}' % (title, score, contains)
+    return restricted
 
-    return score < max_score
+
+def usage(message):
+    if None != message:
+        print 'error:', message
+    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
+    print '       --help                  This message'
+    print '       --count=n               Number of article to process [all]'
+    print '       --limit=number          Limit the number of articles processed'
+    print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
+    print '       --templates=file        Database for templates [templates.db]'
+    exit(1)
+
 
 def main():
-    p = foo()
+    global verbose
+    global debug
 
-    #f = open('../../xml-file-samples/filter_test.xml', 'r')
-    f = open('/home/mosko/Documents/xml_files/enwiki-20090909-pages-articles.xml', 'r')
-    p.process(f)
-    f.close()
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'hvc:d:',
+                                   ['help', 'verbose',
+                                    'count=',
+                                    'debug='])
+    except getopt.GetoptError, err:
+        usage(err)
+
+    verbose = False
+    debug = 0
+    count = 'all'
+
+    for opt, arg in opts:
+        if opt in ('-v', '--verbose'):
+            verbose = True
+        elif opt in ('-h', '--help'):
+            usage(None)
+        elif opt in ('-d', '--debug'):
+            try:
+                debug = int(arg)
+            except ValueError:
+                usage('%s=%s" is not numeric' % (opt, arg))
+        elif opt in ('-c', '--count'):
+            if arg[-1] == 'k':
+                arg = arg[:-1] + '000'
+            if arg != 'all':
+                try:
+                    count = int(arg)
+                except ValueError:
+                    usage('%s=%s" is not numeric' % (opt, arg))
+            if count <= 0:
+                usage('%s=%s" must be > zero' % (opt, arg))
+        else:
+            usage('unhandled option: ' + opt)
+
+    if len(args) == 0:
+        usage('no files to process')
+
+    scanner = MyTestScanner()
+
+    for f in args:
+        print 'Processing file: %s' % f
+        count = scanner.process(f, count)
+        if 0 == count:
+            break
 
 
 # run the program

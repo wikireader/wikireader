@@ -29,71 +29,6 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 #    print ord(c)
 
 
-# redirect: <text.....#redirect.....[[title#relative link]].....
-redirected_to = re.compile(r'#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
-
-# Filter out Wikipedia's non article namespaces
-# Note: the value of the key is ignored (only 'key in' test is used)
-non_article_categories = {
-    # en
-    "t": 1,
-    "cat": 1,
-    "p": 1,
-    "media": 1,
-    "special": 1,
-    "talk": 1,
-    "user": 1,
-    "user talk": 1,
-    "wikipedia": 1,
-    "wikipedia talk": 1,
-    "file": 1,
-    "file talk": 1,
-    "mediawiki": 1,
-    "mediawiki talk": 1,
-#    "template": 1,
-    "template talk": 1,
-    "help": 1,
-    "help talk": 1,
-    "category": 1,
-    "category talk": 1,
-    "portal": 1,
-    "portal talk": 1,
-
-    # es
-    "media": 1,
-    "especial": 1,
-    "discusión": 1,
-    "usuario": 1,
-    "usuario discusión": 1,
-    "wikipedia": 1,
-    "wikipedia discusión": 1,
-    "archivo": 1,
-    "archivo discusión": 1,
-    "mediawiki": 1,
-    "mediawiki discusión": 1,
-#    "plantilla": 1,
-    "plantilla discusión": 1,
-    "ayuda": 1,
-    "ayuda discusión": 1,
-    "categoría": 1,
-    "categoría discusión": 1,
-    "portal": 1,
-    "portal discusión": 1,
-    "wikiproyecto": 1,
-    "wikiproyecto discusión": 1,
-    "anexo": 1,
-    "anexo discusión": 1,
-
-}
-
-non_articles = re.compile(r'([^:]+)\s*:')
-
-template_categories = {
-    "template": 1,
-    "plantilla": 1,
-}
-
-
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
@@ -269,7 +204,6 @@ class FileProcessing(FileScanner.FileScanner):
 
         self.articles = {}
         self.offsets = {}
-        self.is_template = False
 
         self.time = time.time()
 
@@ -391,80 +325,62 @@ pragma journal_mode = memory;
         PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
-    def title(self, text, seek):
-        global non_articles, non_article_categories
-        global template_categories
+    def title(self, category, key, title, seek):
         global verbose
         global enable_templates
 
-        match = non_articles.search(text)
-        if enable_templates:
-            self.is_template = match and match.group(1).lower() in template_categories
-            if self.is_template:
-                if verbose:
-                    PrintLog.message('Template Title: %s' % text)
-                return True
+        if self.KEY_ARTICLE == key:
+            return True
 
-        if match and match.group(1).lower() in non_article_categories:
+        if enable_templates and self.KEY_TEMPLATE == key:
             if verbose:
-                PrintLog.message('Non-article Title: %s' %text)
-            return False
+                PrintLog.message('Template Title: %s' % title)
+            return True
 
-        return True
+        return False
 
 
-    def redirect(self, title, text, seek):
-        global non_articles, non_article_categories, redirected_to, whitespaces
+    def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
+        global whitespaces
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        match = redirected_to.search(text)
-        if match:
-            redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
-            redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
+        redirect_title = self.translate(rtitle).strip().strip(u'\u200e\u200f')
+        redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
 
-            if self.is_template:
-                if ':' not in redirect_title:
-                    PrintLog.message('Invalid template redirect: %s -> %s'
-                                     % (title, redirect_title))
-                    return
-                t1 = title.split(':', 1)[1].lower()
-                tr = redirect_title.split(':', 1)[1].lower()
+        if self.KEY_TEMPLATE == key:
+            if title != redirect_title:
+                self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
+                                             ['~%d~%s' % (self.file_id(), title),
+                                              '~%d~%s' % (self.file_id(), redirect_title)])
 
-                if t1 != tr:
-                    self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
-                                                 ['~%d~%s' % (self.file_id(), t1),
-                                                  '~%d~%s' % (self.file_id(), tr)])
+            self.template_redirect_count += 1
+            return
 
-                self.template_redirect_count += 1
-                return
+        if self.KEY_ARTICLE != key or self.KEY_ARTICLE != rkey:
+            if verbose:
+                PrintLog.message('Non-article Redirect: %s[%d]:%s ->  %s[%d]:%s' %
+                                 (category, key, title, rcategory, rkey, rtitle))
+            return
 
-            match = non_articles.search(text)
-            if match and match.group(1).lower() in non_article_categories:
-                if verbose:
-                    PrintLog.message('Non-article Redirect: %s' % text)
-                return
-
-            if '' == redirect_title:
-                PrintLog.message('Empty Redirect for: %s' % title)
-            else:
-                self.redirects[title] = redirect_title
-                self.redirect_count += 1
-                if verbose:
-                    PrintLog.message('Redirect: %s -> %s' % (title, redirect_title))
+        if '' == redirect_title:
+            PrintLog.message('Empty Redirect for: %s[%d]:%s' % (category, key, title))
         else:
-            text = self.translate(text).strip(u'\u200e\u200f')
-            PrintLog.message('Invalid Redirect: %s -> %s\n' % (title, text))
+            self.redirects[title] = redirect_title
+            self.redirect_count += 1
+            if verbose:
+                PrintLog.message('Redirect: %s[%d]:%s ->  %s[%d]:%s' %
+                                 (category, key, title, rcategory, rkey, rtitle))
 
 
-    def body(self, title, text, seek):
+    def body(self,category, key, title, text, seek):
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        if self.is_template:
-            t1 = title.split(':', 1)[1].lower()
+        if self.KEY_TEMPLATE == key:
+            t1 = title.lower()
             t_body = self.translate(text).strip(u'\u200e\u200f')
             self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
