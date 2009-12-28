@@ -23,18 +23,26 @@ PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser_sa.php -)'
 
 # Regular expressions for parsing the XML
 subs = [
+    # remove external links
     (re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL), ''),
 
+    # remove pictures
     (re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
 
+    # remove references
     (re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE), ''),
 
-    (re.compile(r'((<|&lt;)!--.*?--(>|&gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))', re.IGNORECASE + re.DOTALL), ''),
+    # remove comments and multi-line references
+    (re.compile(r'((<|&lt;|&amp;lt;)!--.*?--(>|&gt;|&amp;gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))',
+                re.IGNORECASE + re.DOTALL), ''),
 
+    # change br to newline
     (re.compile(r'(<|&lt;)br[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), '\n'),
 
+    # remove files and images
     (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
 
+    # remove links to ther languages
     (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
     # Wikipedia's installed Parser extension tags
@@ -47,13 +55,14 @@ subs = [
     (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'(<|&lt;)references[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), ''),
 
+    # remove div
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
     # remove unwanted tags
     (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
 
     # convert &lt;tag&gt; to <tag>
-    (re.compile(r'&lt;(/?)(math|nowiki|table|sub|sup|small)&gt;', re.IGNORECASE), r'<\1\2>'),
+    (re.compile(r'&lt;(/?)(math|nowiki|table|sub|sup|small|noinclude)&gt;', re.IGNORECASE), r'<\1\2>'),
 
     # fix entities
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
