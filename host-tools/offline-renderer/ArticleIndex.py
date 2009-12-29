@@ -400,7 +400,7 @@ pragma journal_mode = memory;
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            PrintLog.message('%7.2fs %10d' % (start_time - self.time, self.article_count))
+            PrintLog.message('Index: %7.2fs %10d' % (start_time - self.time, self.article_count))
             self.time = start_time
 
         generate_bigram(title)
