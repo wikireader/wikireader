@@ -1,6 +1,6 @@
 #!/bin/bash
+# script to set up individual rendering server
 
-xml="xml-file-samples/license.xml xml-file-samples/terms.xml enwiki-pages-articles.xml"
 LogFile=log
 
 ERROR()
@@ -16,12 +16,12 @@ USAGE()
   echo '       --help         -h         this message'
   echo '       --verbose      -v         more messages'
   echo '       --get-index=n  -g <n>     where to rsync the pickles from [1 => render1]'
-  echo '       --host=name    -o <name>  name of the host [render]'
   echo '       --index-only   -i         only do the index'
   echo '       --no-run       -n         do not run final make'
-  echo '       --sequential   -s         run rensering in series'
+  echo '       --sequential   -s         run rendering in series'
   echo '       --clear        -c         clear work and dest dirs'
   echo '       --re-parse     -r         clear parse and render stamps'
+  echo '       --language=xx  -l         set language [en]'
   echo '       --work=dir     -w <dir>   workdir [work]'
   echo '       --dest=dir     -d <dir>   destdir [image]'
   exit 1
@@ -29,7 +29,6 @@ USAGE()
 
 
 verbose=no
-host=render
 index=
 clear=no
 work=work
@@ -38,10 +37,12 @@ run=yes
 seq=no
 IndexOnly=no
 debug=
+language=en
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:o:p:inscrw:d: --long=help,verbose,get-index:,host:,index-only,no-run,sequential,clear,re-parse,work:,dest:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:inscrl:w:d: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,debug -- "$@") ||exit 1
+
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -55,11 +56,6 @@ do
 
     -g|--get-index)
       index=$2
-      shift 2
-      ;;
-
-    -o|--host)
-      host=$2
       shift 2
       ;;
 
@@ -88,6 +84,11 @@ do
       rm -f stamp-r-render*
       clear=no
       shift
+      ;;
+
+    -l|--language)
+      language=$2
+      shift 2
       ;;
 
     -w|--work)
@@ -120,9 +121,28 @@ do
   esac
 done
 
+
+[ -z "${language}" ] && USAGE language is not set
+
+work="${work}/${language}"
+dest="${dest}/${language}"
+license="${licenses}/${language}/license.xml"
+terms="${licenses}/${language}/license.xml"
+articles_link="${language}wiki-pages-articles.xml"
+articles=$(readlink -m "${articles_link}")
+
+[ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
+
+[ -f "${license}" ] || license="${licenses}/en/license.xml"
+[ -f "${terms}" ] || terms="${licenses}/en/terms.xml"
+
+xml="${license} ${terms} ${articles}"
+
+# extract numeric suffix from host name
+# expect that the rendering hosts are numbered from zero
 this_host=$(hostname --short)
-this_id=${this_host##${host}}
-[ X"${this_id}" = X"${this_host}" ] && this_id=0
+this_id=${this_host##*[^0-9]}
+[ -z "${this_id}" ] && this_id=0
 
 farm="farm${this_id}"
 
