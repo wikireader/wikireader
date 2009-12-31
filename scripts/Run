@@ -145,8 +145,6 @@ this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
 [ -z "${this_id}" ] && this_id=0
 
-[ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
-
 farm="farm${this_id}"
 
 rm -f "${LogFile}"
@@ -170,6 +168,8 @@ git pull --rebase
 # copy the index from another machine
 if [ -n "${IndexHost}" ]
 then
+  [ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
+
   list='articles.db offsets.db counts.text'
   items=
   for i in ${list}
