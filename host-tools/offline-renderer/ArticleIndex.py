@@ -18,6 +18,7 @@ import sqlite3
 import FilterWords
 import FileScanner
 import codecs
+import TidyUp
 import PrintLog
 
 
@@ -381,7 +382,7 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             t1 = title.lower()
-            t_body = self.translate(text).strip(u'\u200e\u200f')
+            t_body = TidyUp.template(self.translate(text).strip(u'\u200e\u200f'))
             self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
             self.template_count += 1
