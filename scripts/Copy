@@ -1,0 +1,108 @@
+#!/bin/sh
+# script to aid copying all data and index-tmp files to one host\
+# for final combine and hash stages
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help         -h         this message'
+  echo '       --verbose      -v         more messages'
+  echo '       --to=host      -t <host>  where to rsync the files to {1 => <this_host_prefix>1}'
+  echo '       --language=xx  -l         set language [en]'
+  echo '       --work=dir     -w <dir>   workdir [work]'
+  echo '       --dest=dir     -d <dir>   destdir [image]'
+  exit 1
+}
+
+
+verbose=no
+work=work
+dest=image
+debug=
+language=en
+to=
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvt:l:w:d: --long=help,verbose,to:,language:,work:,dest:,debug -- "$@") ||exit 1
+
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -t|--to)
+      to=$2
+      shift 2
+      ;;
+
+    -l|--language)
+      language=$2
+      shift 2
+      ;;
+
+    -w|--work)
+      work=$2
+      shift 2
+      ;;
+
+    -d|--dest)
+      dest=$2
+      shift 2
+      ;;
+
+    --debug)
+      debug=echo
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+
+[ -z "${language}" ] && USAGE language is not set
+[ -z "${to}" ] && USAGE to host is not set
+
+work="${work}/${language}"
+dest="${dest}/${language}"
+
+# extract numeric suffix from host name
+# expect that the rendering hosts are numbered from zero
+this_host=$(hostname --short)
+this_host_prefix=${this_host%%[0-9]}
+this_id=${this_host##*[^0-9]}
+[ -z "${this_id}" ] && this_id=0
+
+[ -z "${to%%[0-9]}" ] && to="${this_host_prefix}${to}"
+
+if [ X"${this_host}" != X"${to}" ]
+then
+  ${debug} Xrsync -avHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${to}:samo/${dest}/"
+else
+  echo warning: transfer to self ignored
+fi

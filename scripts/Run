@@ -12,10 +12,10 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: $*
-  echo usage: $(basename "$0") '<options>' command
+  echo usage: $(basename "$0") '<options>'
   echo '       --help         -h         this message'
   echo '       --verbose      -v         more messages'
-  echo '       --get-index=n  -g <n>     where to rsync the pickles from [1 => render1]'
+  echo '       --get-index=n  -g <n>     where to rsync the indices from [1 => render1]'
   echo '       --index-only   -i         only do the index'
   echo '       --no-run       -n         do not run final make'
   echo '       --sequential   -s         run rendering in series'
@@ -29,7 +29,7 @@ USAGE()
 
 
 verbose=no
-index=
+IndexHost=
 clear=no
 work=work
 dest=image
@@ -55,7 +55,7 @@ do
       ;;
 
     -g|--get-index)
-      index=$2
+      IndexHost=$2
       shift 2
       ;;
 
@@ -141,8 +141,11 @@ xml="${license} ${terms} ${articles}"
 # extract numeric suffix from host name
 # expect that the rendering hosts are numbered from zero
 this_host=$(hostname --short)
+this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
 [ -z "${this_id}" ] && this_id=0
+
+[ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
 
 farm="farm${this_id}"
 
@@ -165,13 +168,13 @@ eval ${debug} "mkdir -p '${dest}'"
 git pull --rebase
 
 # copy the index from another machine
-if [ -n "${index}" ]
+if [ -n "${IndexHost}" ]
 then
   list='articles.db offsets.db counts.text'
   items=
   for i in ${list}
   do
-    items="${items} ${host}${index}:samo/${work}/${i}"
+    items="${items} ${IndexHost}:samo/${work}/${i}"
   done
   eval ${debug} "rsync -avHx --progress ${items} '${work}'/"
   eval ${debug} "touch stamp-r-index"
