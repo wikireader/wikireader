@@ -25,7 +25,7 @@ USAGE()
 verbose=no
 work=work
 dest=image
-debug=
+debug=no
 language=en
 to=
 
@@ -65,7 +65,7 @@ do
       ;;
 
     --debug)
-      debug=echo
+      debug=yes
       shift
       ;;
 
@@ -102,7 +102,15 @@ this_id=${this_host##*[^0-9]}
 
 if [ X"${this_host}" != X"${to}" ]
 then
-  ${debug} Xrsync -avHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${to}:samo/${dest}/"
+  d="${to}:samo/${dest}"
+  case "${verbose}" in
+    [yY][eE][sS])
+      echo copying files to: ${d}
+      ;;
+    *)
+      ;;
+  esac
+  rsync -avHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${d}/"
 else
   echo warning: transfer to self ignored
 fi
