@@ -170,7 +170,7 @@ if [ -n "${IndexHost}" ]
 then
   [ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
 
-  list='articles.db offsets.db counts.text'
+  list='templates.db articles.db offsets.db counts.text'
   items=
   for i in ${list}
   do
