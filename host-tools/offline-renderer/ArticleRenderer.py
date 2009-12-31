@@ -627,8 +627,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
-                                     ('<li>', line, column, article_count + 1, g_this_article_title))
+                    PrintLog.message('Warning: stray <%s> @[L%d/C%d] in article[%d]: %s' %
+                                     (tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
                 # force ul since this is a li without a parent
@@ -653,6 +653,13 @@ class WrProcess(HTMLParser.HTMLParser):
             self.list_increase_indent()
 
         elif tag == 'dd':
+            if 0 == self.level:
+                if warnings:
+                    (line, column) = self.getpos()
+                    PrintLog.message('Warning: stray <%s> @[L%d/C%d] in article[%d]: %s' %
+                                     (tag, line, column, article_count + 1, g_this_article_title))
+                (t, p) = self.tag_stack.pop()
+                return  # just ignore it
             self.li_cnt[self.level] += 1
             self.list_increase_indent()
 
