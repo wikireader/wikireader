@@ -211,7 +211,7 @@ class MathRenderer {
 			$fname
 		);
 
-		if( $rpage !== false ) {
+		if( $rpage !== false && is_object( $rpage ) ) {
 			# Tailing 0x20s can get dropped by the database, add it back on if necessary:
 			$xhash = unpack( 'H32md5', $dbr->decodeBlob($rpage->math_outputhash) . "                " );
 			$this->hash = $xhash ['md5'];

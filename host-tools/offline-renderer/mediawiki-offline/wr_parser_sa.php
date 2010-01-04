@@ -171,7 +171,8 @@ function &wfParseTextWOC($text) {
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
   $articleText = preg_replace('/<a\s+name="([rR]eferences|[nN]otes)"\s+id="([rR]eferences|[nN]otes)"><\/a><h2>\s+<span\s+class="mw-headline">\s*([rR]eferences|[nN]otes)\s*<\/span><\/h2>\s*$/', '', $articleText);
   $articleText = str_replace('%25', '%', $articleText);
-  return array( &$articleTitle, &$articleText );
+  $ret = array( &$articleTitle, &$articleText );
+  return $ret;
 }
 
 # Global function for 'WOC'-specific parsing

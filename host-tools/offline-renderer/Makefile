@@ -112,7 +112,7 @@ combine: check-dirs
 # sudo apt-get install python-dev
 .PHONY: pylzma
 pylzma:
-	for dir in /usr/lib/python* /usr/local/lib/python* /opt/lib/python* ; \
+	for dir in /usr/lib/python* /usr/local/lib/python* /opt/lib/python* /usr/lib64/python* ; \
 	do \
 	   [ -e "$${dir}/site-packages/pylzma.so" ] && exit 0 ; \
 	   [ -e "$${dir}/dist-packages/pylzma.so" ] && exit 0 ; \

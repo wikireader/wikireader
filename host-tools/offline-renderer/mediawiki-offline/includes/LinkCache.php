@@ -166,7 +166,7 @@ class LinkCache {
 			array( 'page_namespace' => $nt->getNamespace(), 'page_title' => $nt->getDBkey() ),
 			__METHOD__, $options );
 		# Set fields...
-		if ( $s !== false ) {
+		if ( $s !== false && is_object( $s ) ) {
 			$id = $s->page_id;
 			$len = $s->page_len;
 			$redirect = $s->page_is_redirect;

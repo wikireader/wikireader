@@ -157,6 +157,8 @@ class SiteStats {
 
 	/** Is the provided row of site stats sane, or should it be regenerated? */
 	private static function isSane( $row ) {
+		// wikireader doesn't care about site stats, so just return true
+		return true;
 		if(
 			$row === false
 			or $row->ss_total_pages < $row->ss_good_articles
