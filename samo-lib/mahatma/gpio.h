@@ -24,7 +24,11 @@
 #define GPIO_H 1
 
 void gpio_init(void);
+
 void gpio_irq(void);
-int gpio_get_event(struct wl_input_event *ev);
+
+bool gpio_event_pending(void);
+
+bool gpio_get_event(struct wl_input_event *ev);
 
 #endif

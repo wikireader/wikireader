@@ -43,6 +43,7 @@ bool serial_output_pending(void);
 
 void serial_out(int port, char c);
 
+bool serial_event_pending(void);
 int serial_get_event(struct wl_input_event *ev);
 
 void serial_filled_0(void);

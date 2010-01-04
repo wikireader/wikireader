@@ -46,22 +46,41 @@ static const int keymap[] = {
 };
 #endif
 
-int gpio_get_event(struct wl_input_event *ev)
+
+static ButtonType button;
+static bool pressed;
+static bool event_cached;
+
+
+bool gpio_event_pending(void)
+{
+	if (event_cached || Button_get(&button, &pressed))
+	{
+		event_cached = true;
+	}
+	return event_cached;
+}
+
+
+bool gpio_get_event(struct wl_input_event *ev)
 {
 	ButtonType button;
 	bool pressed;
 
-	if (!Button_get(&button, &pressed)) {
-		return 0;
+	if (!event_cached && !Button_get(&button, &pressed)) {
+		return false;
 	}
 
+	event_cached = false;
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
 	ev->key_event.keycode = keymap[button];
 	ev->key_event.value = pressed;
-	return 1;
+	return true;
 }
+
 
 void gpio_init(void)
 {
+	event_cached = false;
 	Button_initialise();
 }

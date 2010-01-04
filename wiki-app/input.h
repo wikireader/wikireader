@@ -18,6 +18,9 @@
 #ifndef WL_EVENT_H
 #define WL_EVENT_H
 
+#include <stdbool.h>
+
+
 #define WL_KEY_BACKSPACE	8
 #define WL_KEY_RETURN		13
 #define WL_KEY_ESC		27
@@ -69,6 +72,8 @@ struct wl_input_event {
 		} touch_event;
 	}; /* union */
 };
+
+bool wl_input_event_pending(void);
 
 void wl_input_wait(struct wl_input_event *ev, int sleep);
 

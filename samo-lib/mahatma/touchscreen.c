@@ -30,16 +30,31 @@
 #include "samo.h"
 #include "touchscreen.h"
 
-int touchscreen_get_event(struct wl_input_event *ev)
-{
-	int x, y;
-	bool pressed;
-	unsigned long ticks;
 
-	if (!CTP_get(&x, &y, &pressed, &ticks)) {
-		return 0;
+static int x, y;
+static bool pressed;
+static unsigned long ticks;
+static bool event_cached;
+
+
+bool touchscreen_event_pending(void)
+{
+       if (event_cached || CTP_get(&x, &y, &pressed, &ticks))
+       {
+	       event_cached = true;
+       }
+       return event_cached;
+}
+
+
+bool touchscreen_get_event(struct wl_input_event *ev)
+{
+
+	if (!event_cached && !CTP_get(&x, &y, &pressed, &ticks)) {
+		return false;
 	}
 
+	event_cached = false;
 	ev->type = WL_INPUT_EV_TYPE_TOUCH;
 	ev->touch_event.x = x >> 1;
 	ev->touch_event.y = y >> 1;
@@ -47,10 +62,11 @@ int touchscreen_get_event(struct wl_input_event *ev)
 	ev->touch_event.value = pressed
 		? WL_INPUT_TOUCH_DOWN
 		: WL_INPUT_TOUCH_UP;
-	return 1;
+	return true;
 }
 
 void touchscreen_init(void)
 {
+	event_cached = false;
 	CTP_initialise();
 }

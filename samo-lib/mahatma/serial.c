@@ -161,6 +161,13 @@ void serial_out(int port, char c)
 	Interrupt_enable(s);
 }
 
+
+bool serial_event_pending(void)
+{
+	return !BUFFER_EMPTY(console_write, console_read, console_buffer);
+}
+
+
 int serial_get_event(struct wl_input_event *ev)
 {
 	if (BUFFER_EMPTY(console_write, console_read, console_buffer))

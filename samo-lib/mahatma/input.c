@@ -42,6 +42,12 @@
 #endif
 
 
+bool wl_input_event_pending(void)
+{
+	return serial_event_pending() || touchscreen_event_pending() || gpio_event_pending();
+}
+
+
 void wl_input_wait(struct wl_input_event *ev, int sleep)
 {
 	/* wl_input_wait() is called from the wikilib mainloop and we will

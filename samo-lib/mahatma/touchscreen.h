@@ -24,7 +24,10 @@
 #define TOUCHSCREEN_H 1
 
 void touchscreen_handler(void);
-int touchscreen_get_event(struct wl_input_event *ev);
+
+bool touchscreen_event_pending(void);
+
+bool touchscreen_get_event(struct wl_input_event *ev);
 
 void touchscreen_init(void);
 
