@@ -452,6 +452,8 @@ class WrProcess(HTMLParser.HTMLParser):
     READ_BLOCK_SIZE = 64 * (1024 * 1024)
 
     def __init__ (self, f):
+        global g_this_article_title
+
         HTMLParser.HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
@@ -459,7 +461,15 @@ class WrProcess(HTMLParser.HTMLParser):
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
             self.feed(block)
-            block = f.read(self.READ_BLOCK_SIZE)
+            try:
+                block = f.read(self.READ_BLOCK_SIZE)
+            except UnicodeDecodeError, e:
+                # display something so the approximate breakage point can be found
+                PrintLog.message('Unicode decoding failed:')
+                PrintLog.message('  Most recent title: %s' % g_this_article_title)
+                PrintLog.message('  100 bytes at end of buffer: %s' % block[-100:0])
+                raise e
+
 
     def local_init(self):
 
