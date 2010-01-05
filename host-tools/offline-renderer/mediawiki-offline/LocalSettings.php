@@ -85,7 +85,10 @@ $wgAllDBsAreLocalhost = true;
 $wgCheckDBSchema = false;
 $wgEnableEmail = false;
 $wgEnableUserEmail = false;
-$wgLanguageCode = 'en';
+$wgLanguageCode = getenv('LANGUAGE');
+if ('' === $wgLanguageCode) {
+   $wgLanguageCode = 'en';
+}
 $wgUseTeX = true;
 $wgUseImageMagick = true;
 $wgUseTidy = true;
@@ -99,7 +102,7 @@ $WorkDirectory   = getenv('WORKDIR');
 $wgMathDirectory = "{$WorkDirectory}/math";
 $wgMathPath      = "$wgMathDirectory";
 $wgTmpDirectory  = "{$WorkDirectory}/tmp";
- 
+
 # Uncomment for debugging
 #$wgDebugLogFile = "/tmp/wiki.log";
 

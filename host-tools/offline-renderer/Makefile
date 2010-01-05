@@ -32,8 +32,10 @@ COUNT ?= all
 DESTDIR ?= .
 FONT_PATH ?= $(shell ${REALPATH} ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
+WIKI_FILE_PREFIX ?= pedia
+WIKI_LANGUAGE ?= en
 
-PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/pedia)
+PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_FILE_PREFIX})
 ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles.db)
 COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/counts.text)
 TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/templates.db)
@@ -93,6 +95,7 @@ index: check-dirs check-xml
 .PHONY: parse
 parse: check-dirs check-html math
 	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
+		--language="${WIKI_LANGUAGE}" \
 		--start="${START}" --count="${COUNT}" \
 		--templates="${TEMPLATE_FILE}" \
 		--parser-workdir="${WORKDIR}" \

@@ -272,30 +272,36 @@ fonts-install: fonts validate-destdir
 # Build the database from wiki XML files
 # ======================================
 
+WIKI_LANGUAGE ?= en
+WIKI_FILE_PREFIX ?= pedia
 XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell ${REALPATH} "${f}"))
 RENDER_BLOCK ?= 0
 
 .PHONY: index
 index: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: parse
 parse: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} parse \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: render
 render: fonts validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} render \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
 .PHONY: combine
 combine: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} combine \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 

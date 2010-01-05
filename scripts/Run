@@ -2,6 +2,7 @@
 # script to set up individual rendering server
 
 LogFile=log
+LicensesDirectory=XML-Licenses
 
 ERROR()
 {
@@ -15,13 +16,14 @@ USAGE()
   echo usage: $(basename "$0") '<options>'
   echo '       --help         -h         this message'
   echo '       --verbose      -v         more messages'
-  echo '       --get-index=n  -g <n>     where to rsync the indices from [1 => render1]'
+  echo '       --get-index=n  -g <n>     where to rsync the indices from {1 => render1}'
   echo '       --index-only   -i         only do the index'
   echo '       --no-run       -n         do not run final make'
   echo '       --sequential   -s         run rendering in series'
   echo '       --clear        -c         clear work and dest dirs'
   echo '       --re-parse     -r         clear parse and render stamps'
-  echo '       --language=xx  -l         set language [en]'
+  echo '       --language=xx  -l <xx>    set language [en]'
+  echo '       --prifix=name  -p <name>  set data file prefix [wiki]'
   echo '       --work=dir     -w <dir>   workdir [work]'
   echo '       --dest=dir     -d <dir>   destdir [image]'
   exit 1
@@ -38,10 +40,11 @@ seq=no
 IndexOnly=no
 debug=
 language=en
+FilePrefix=wiki
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:inscrl:w:d: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:inscrl:w:d:p: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,prefix:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -101,6 +104,11 @@ do
       shift 2
       ;;
 
+    -p|--prefix)
+      FilePrefix=$2
+      shift 2
+      ;;
+
     --debug)
       debug=echo
       shift
@@ -124,6 +132,7 @@ done
 
 [ -z "${language}" ] && USAGE language is not set
 
+licenses=$(readlink -m "${LicensesDirectory}")
 work="${work}/${language}"
 dest="${dest}/${language}"
 license="${licenses}/${language}/license.xml"
@@ -163,7 +172,7 @@ eval ${debug} "mkdir -p '${work}'"
 eval ${debug} "mkdir -p '${dest}'"
 
 # update
-git pull --rebase
+eval ${debug} "git pull --rebase"
 
 # copy the index from another machine
 if [ -n "${IndexHost}" ]
@@ -184,7 +193,10 @@ fi
 case "${run}" in
   [yY]|[yY][eE][sS])
 
-    eval ${debug} "time make 'stamp-r-index' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+    eval ${debug} "time make 'stamp-r-index' \
+         WIKI_FILE_PREFIX="${FilePrefix}" \
+         WIKI_LANGUAGE="${language}" \
+         DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
 
     case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
@@ -192,11 +204,23 @@ case "${run}" in
       *)
         case "${seq}" in
           [yY]|[yY][eE][sS])
-            eval ${debug} "time make -j3 '${farm}-parse' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
-            eval ${debug} "time make '${farm}-render' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+            eval ${debug} "time make -j3 '${farm}-parse' \
+                 WIKI_FILE_PREFIX='${FilePrefix}' \
+                 WIKI_LANGUAGE='${language}' \
+                 DESTDIR='${dest}' WORKDIR='${work}' \
+                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+            eval ${debug} "time make '${farm}-render' \
+                 WIKI_FILE_PREFIX='${FilePrefix}' \
+                 WIKI_LANGUAGE='${language}' \
+                 DESTDIR='${dest}' WORKDIR='${work}' \
+                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
           *)
-            eval ${debug} "time make -j3 '${farm}' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+            eval ${debug} "time make -j3 '${farm}' \
+                 WIKI_FILE_PREFIX='${FilePrefix}' \
+                 WIKI_LANGUAGE='${language}' \
+                 DESTDIR='${dest}' WORKDIR='${work}' \
+                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
         esac
     esac
