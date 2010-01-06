@@ -9,14 +9,6 @@ base @ decimal
 40 constant box-height-large
 
 
-: within-box ( x y x0 y0 x1 y1 -- flag )
-    swap >r rot >r   \ x y y0 y1
-    within           \ x flag
-    swap r> r>       \ flag x x0 x1
-    within and
-;
-
-
 : box-origin-large ( u -- x y w h )
     case
         0 of  \ top left
@@ -97,11 +89,13 @@ variable 'origin
 
 : inside-box ( x y u -- flag )
     'origin @ execute   \ x y x0 y0 w0 h0
-    swap >r             \ x y x0 y0 h0    R: w0
-    over +              \ x y x0 y0 y1    R: w0
-    r> swap >r          \ x y x0 y0 w0    R: y1
-    over + r>           \ x y x0 y0 x1 y1
-    within-box
+
+    >r >r >r            \ x y x0         R: h0 w0 y0
+    swap r> r>          \ x x0 y y0 w0   R: h0
+    -rot r>             \ x x0 w0 y y0 h0
+
+    over + within >r    \ x x0 w0        R: f
+    over + within r> and
 ;
 
 
