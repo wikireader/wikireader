@@ -57,11 +57,13 @@ class ParserStandAlone extends Parser
 
     if (sizeof($data) > 0) {
       $template_text = substr($data[0]['body'], 1);
+      #echo "\n--- TT:($template_text):TT --- \n";
     } else {
       $template_text = '';
     }
 
-    return array( $template_text, $finalTitle );
+    $ret = array( $template_text, $finalTitle );
+    return $ret;
   }
 
   static public function disableSpecialPages( &$mList ) {
