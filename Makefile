@@ -308,9 +308,9 @@ combine: validate-destdir
 .PHONY: hash
 hash: validate-destdir hash-gen
 	cd "${DESTDIR}" && ${HOST_TOOLS}/hash-gen/hash-gen \
-		--pfx="${DESTDIR_PATH}/pedia.pfx" \
-		--fnd="${DESTDIR_PATH}/pedia.fnd" \
-		--hsh="${DESTDIR_PATH}/pedia.hsh"
+		--pfx="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.pfx" \
+		--fnd="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.fnd" \
+		--hsh="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.hsh"
 
 
 .PHONY: iprch
