@@ -64,9 +64,18 @@ subs = [
 def tidy(text):
     """Private: generic tidy up routine"""
     global subs
+
+    # convert to unicode errors substituting bad sequences to '�'
     if unicode != type(text):
-        text = unicode(text, 'utf-8')
-    text = text.strip(u' \u200e\u200f')
+        while True:
+            try:
+                text = unicode(text, 'utf-8')
+                break
+            except UnicodeDecodeError, error:
+                (_, _, start, stop, _) = error
+                text = text[:start] + '\xef\xbf\xbd' + text[stop:]
+
+    text = text.strip().strip(u'\u200e\u200f')
     for e,r in subs:
         text = e.sub(r, text)
 
