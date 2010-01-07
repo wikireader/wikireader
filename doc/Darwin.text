@@ -1,0 +1,46 @@
+Building on Darwin (Mac OS/X)
+============================
+
+Note that this was done on this system:
+
+  Darwin Kernel Version 8.11.0
+  Wed Oct 10 18:26:00 PDT 2007
+  root:xnu-792.24.17~1/RELEASE_PPC
+  Power Macintosh powerpc
+
+
+1. Install xcode and macports
+
+2. "sudo port install" some ports:
+  (this is not a complete list, as lots of dependencies
+   will be installed, these are just the main ports)
+
+  autoconf @2.65_0 (active)
+  automake @1.11_0 (active)
+  bzip2 @1.0.5_3+darwin (active)
+  coreutils @7.6_0 (active)
+  curl @7.19.7_0 (active)
+  gawk @3.1.7_0 (active)
+  gforth @0.7.0_0 (active)
+  git-core @1.6.5.3_0+doc (active)
+  gmake @3.81_0 (active)             # the built-in make was 3.8 & does not work
+  m4 @1.4.13_0 (active)
+  openssl @0.9.8l_0+darwin (active)
+  py26-gd @0.56_0 (active)
+  python26 @2.6.4_0+darwin (active)  # the built-in python was too old (2.3)
+  python_select @0.3_0+darwin_8 (active)  # use to enable python 2.6
+  sqlite3 @3.6.20_0 (active)
+  wget @1.12_0 (active)
+  zlib @1.2.3_3 (active)
+
+3. Use gmake (to get the ports version)
+   if make --version is 3.81 or newer then you should be able to use make
+   and not have to have the macports version installed
+
+4. Missing: lockf or flock so building data will not work
+   In samo-lib/Mk/definitions.mk
+   need to set LOCKF to a proper value
+   such that the make command: ${LOCKF} file command args
+   will wait for exclusive lock on "file" before running command
+   on FreeBSD have lockf and Linux has flock, need the same for Darwin
+   maybe there is a program in one of the ports
