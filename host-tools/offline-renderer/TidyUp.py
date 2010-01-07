@@ -12,21 +12,27 @@ import re
 
 # Regular expressions for parsing the XML
 subs = [
+    # surely the code has one level of escapes so can just globally substitute
+    (re.compile(r'&lt;', re.IGNORECASE), r'<'),
+    (re.compile(r'&gt;', re.IGNORECASE), r'>'),
+    (re.compile(r'&quot;', re.IGNORECASE), r'"'),
+    # &amp; must be last
+    (re.compile(r'&amp;', re.IGNORECASE), r'&'),
+
     # remove external links
     (re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL), ''),
 
     # remove pictures
-    (re.compile(r'\s*(<|&lt;)gallery(>|&gt;).*?(<|&lt;)/gallery(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'\s*<gallery>.*?</gallery>', re.IGNORECASE + re.DOTALL), ''),
 
     # remove references
-    (re.compile(r'((<|&lt;)ref\s+name.*?/(>|&gt;))', re.IGNORECASE), ''),
+    (re.compile(r'<ref\s+name.*?/>', re.IGNORECASE), ''),
 
     # remove comments and multi-line references
-    (re.compile(r'((<|&lt;|&amp;lt;)!--.*?--(>|&gt;|&amp;gt;)|(<|&lt;)ref.*?(<|&lt;)/ref(>|&gt;))',
-                re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'(<!--.*?-->)|(<ref.*?</ref>)', re.IGNORECASE + re.DOTALL), ''),
 
     # change br to newline
-    (re.compile(r'(<|&lt;)br[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), '\n'),
+    (re.compile(r'<br[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), '\n'),
 
     # remove files and images
     (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
@@ -38,23 +44,22 @@ subs = [
     # <categorytree>, <charinsert>, <hiero>, <imagemap>, <inputbox>, <poem>,
     # <pre>, <ref>, <references>, <source>, <syntaxhighlight> and <timeline>
     # All referenced using special characters
-    # Ex: <timeline> --> &lt;timeline&gt;
-    # For now, we're only going to remove <timeline>
-    (re.compile(r'\s*(<|&lt;)timeline(>|&gt;).*?(<|&lt;)/timeline(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
-    (re.compile(r'\s*(<|&lt;)imagemap(>|&gt;).*?(<|&lt;)/imagemap(>|&gt;)', re.IGNORECASE + re.DOTALL), ''),
-    (re.compile(r'(<|&lt;)references[\s"a-zA-Z0-9=]*/?(>|&gt;)', re.IGNORECASE), ''),
+    # Remove some of these
+    (re.compile(r'\s*<timeline>.*?</timeline>', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'\s*<imagemap>.*?</imagemap>', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'<references[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), ''),
 
     # remove div
-    (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
+    (re.compile(r'<div\s+style="clear:\s+both;">\s*</div>', re.IGNORECASE), ''),
 
     # remove unwanted tags
-    (re.compile(r'(<|&lt;)/?\s*(poem|source|pre)\s*(>|&gt;)', re.IGNORECASE), ''),
+    (re.compile(r'</?\s*(poem|source|pre)\s*>', re.IGNORECASE), ''),
 
     # convert &lt;tag&gt; to <tag>
-    (re.compile(r'(<|&lt;)(/?)\s*(math|nowiki|table|sub|sup|small|noinclude)\s*(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
+    #(re.compile(r'(<|&lt;)(/?)\s*(math|nowiki|table|sub|sup|small|noinclude)\s*(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
     # fix entities
-    (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
+    #(re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
     # change % so php: wr_parser_sa does not convert them
     (re.compile(r'%', re.IGNORECASE), r'%25'),
