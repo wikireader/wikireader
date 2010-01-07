@@ -17,7 +17,6 @@ import subprocess
 import sqlite3
 import FilterWords
 import FileScanner
-import codecs
 import TidyUp
 import PrintLog
 
