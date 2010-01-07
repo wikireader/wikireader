@@ -68,22 +68,22 @@ def main():
     p = LittleParser().translate
     text = '''
 start test:
-  [&egrave;] [&#1234;] [&eacute;] [%20] [%ff]
+  [&egrave;] [&#1234;] [&eacute;] [%20] [%ff] [&nbsp;]
   [&mu;] [&amp;mu;] [&lt;/br/&gt;] [&egrave;] [</br/>]
   [&lt;noinclude&gt;]
 end:test
 '''
     correct = u'''
 start test:
-  [\xe8] [\u04d2] [\xe9] [%20] [%ff]
+  [\xe8] [\u04d2] [\xe9] [%20] [%ff] [\xa0]
   [\u03bc] [\u03bc] [</br/>] [\xe8] [</br/>]
   [<noinclude>]
 end:test
 '''
     result = p(text)
-    print text
-    print result
-    print repr(result)
+    print 'Text: %s' % text
+    print 'Result: %s' % result
+    print 'Repr: %s' % repr(result)
     if correct == result:
         print 'PASS:'
     else:

@@ -28,32 +28,29 @@ class ParserStandAlone extends Parser
   function fetchTemplateAndTitle( $title ) {
     #echo "\n--- Trying to find offline template: $title ---\n";
 
-    global $IP, $wgTemplatePath, $wgTemplateExtension, $wgTemplatePrefix;
     global $wgTemplateDB, $wgTemplateFileID;
     $finalTitle    = $title;
     $template_text = null;
 
     # $$$ need to fix later for all languages
     # We pad the title with '~' to force the database to import strings
-    $title_short = '~' . $wgTemplateFileID . '~' . strtolower(substr($title, strlen($wgTemplatePrefix)));
-    $title_orig  = '~' . $wgTemplateFileID . '~' . $title;
+    $title_orig  = '~' . $wgTemplateFileID . '~' . strtolower($title);
     $db = new PDO('sqlite:' . $wgTemplateDB);
-    $ts = $db->quote($title_short);
     $tl = $db->quote($title_orig);
 
-    #echo "\n--- ($title_short, $title_orig) --- \n";
+    #echo "\n--- ($title_orig) --- \n";
 
-    $result = $db->query("SELECT body FROM templates WHERE title IN ({$ts}, {$tl}) LIMIT 1");
+    $result = $db->query("SELECT body FROM templates WHERE title = {$tl} LIMIT 1");
     $data = $result->fetchAll();
     $max_loop_count = 25;
     while ($max_loop_count && sizeof($data) == 0) {
-      $result = $db->query("SELECT redirect FROM redirects WHERE title IN ({$ts}, {$tl}) LIMIT 1");
+      $result = $db->query("SELECT redirect FROM redirects WHERE title = {$tl} LIMIT 1");
       $data = $result->fetchAll();
       if (sizeof($data) == 0) {
         break;
       }
       $redirect = $db->quote($data[0]['redirect']);
-      $result = $db->query("SELECT body FROM templates WHERE title IN ({$redirect}) LIMIT 1");
+      $result = $db->query("SELECT body FROM templates WHERE title = {$redirect} LIMIT 1");
       $data = $result->fetchAll();
       --$max_loop_count;
     }

@@ -48,10 +48,10 @@ subs = [
     (re.compile(r'&lt;div\s+style=&quot;clear:\s+both;&quot;&gt;\s*&lt;/div&gt;', re.IGNORECASE), ''),
 
     # remove unwanted tags
-    (re.compile(r'(<|&lt;)/?(poem|source|pre)(>|&gt;)', re.IGNORECASE), ''),
+    (re.compile(r'(<|&lt;)/?\s*(poem|source|pre)\s*(>|&gt;)', re.IGNORECASE), ''),
 
     # convert &lt;tag&gt; to <tag>
-    (re.compile(r'&lt;(/?)(math|nowiki|table|sub|sup|small|noinclude)&gt;', re.IGNORECASE), r'<\1\2>'),
+    (re.compile(r'(<|&lt;)(/?)\s*(math|nowiki|table|sub|sup|small|noinclude)\s*(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
 
     # fix entities
     (re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
@@ -64,7 +64,9 @@ subs = [
 def tidy(text):
     """Private: generic tidy up routine"""
     global subs
-
+    if unicode != type(text):
+        text = unicode(text, 'utf-8')
+    text = text.strip(u' \u200e\u200f')
     for e,r in subs:
         text = e.sub(r, text)
 

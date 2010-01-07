@@ -18,7 +18,8 @@ class FileScanner(object):
         #super(FileScanner, self).__init__(*args, **kw)
         super(FileScanner, self).__init__()
         self.file_list = []
-        self.category_list = {}
+        self.category_to_key = {}
+        self.key_to_category = {}
         self.current_file_id = -1  # no file yet
 
     KEY_ARTICLE  = 0
@@ -164,8 +165,10 @@ class FileScanner(object):
                 if 'key' == proc:
                     key = block[:pos].strip()
                 elif 'namespace' == proc:
-                    category =  block[:pos].strip()
-                    self.category_list[category.lower()] = int(key)
+                    category =  block[:pos].strip().lower()
+                    key = int(key)
+                    self.category_to_key[category] = key
+                    self.key_to_category[key] = category
                     self.namespace(key, category)
                     key = None
                 elif 'title' == proc:
@@ -185,7 +188,8 @@ class FileScanner(object):
                     flag = True
                     body = ''
                 elif 'category_start' == proc:
-                    self.category_list = {}
+                    self.category_to_key = {}
+                    self.key_to_category = {}
 
                 if wanted and flag:
                     self.body(category, key, title, body, seek)
@@ -209,8 +213,8 @@ class FileScanner(object):
             (category, t) = title.split(':', 1)
             category = category.strip().lower()
             t = t.strip()
-            if category in self.category_list:
-                key = self.category_list[category]
+            if category in self.category_to_key:
+                key = self.category_to_key[category]
                 return (category, key, t)
         return ('', 0, title)
 

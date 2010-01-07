@@ -352,6 +352,8 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             if title != redirect_title:
+                title = category + ':' + title.lower()
+                redirect_title = rcategory + ':' + redirect_title.lower()
                 self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
                                              ['~%d~%s' % (self.file_id(), title),
                                               '~%d~%s' % (self.file_id(), redirect_title)])
@@ -375,14 +377,14 @@ pragma journal_mode = memory;
                                  (category, key, title, rcategory, rkey, rtitle))
 
 
-    def body(self,category, key, title, text, seek):
+    def body(self, category, key, title, text, seek):
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
         if self.KEY_TEMPLATE == key:
-            t1 = title.lower()
-            t_body = TidyUp.template(self.translate(text).strip(u'\u200e\u200f'))
+            t1 = category + ':' + title.lower()
+            t_body = TidyUp.template(text)
             self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
             self.template_count += 1

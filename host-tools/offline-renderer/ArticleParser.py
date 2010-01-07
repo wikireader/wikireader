@@ -19,7 +19,6 @@ from types import *
 
 verbose = False
 
-
 PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser_sa.php -)'
 
 
@@ -155,7 +154,7 @@ def main():
                 input_file.close()
             offset_cursor.execute('select filename from files where file_id = ? limit 1', (file_id,))
             filename = offset_cursor.fetchone()[0]
-            input_file = open(filename, 'r')
+            input_file = open(filename, 'rb')
             if not input_file:
                 PrintlogLog.message('Failed to open: %s' % filename)
                 current_file_id = None
@@ -174,7 +173,7 @@ def main():
             process_id = subprocess.Popen(background_process, shell=True, stdin=subprocess.PIPE)
 
         try:
-            process_article_text(current_file_id, title.encode('utf-8'),
+            process_article_text(current_file_id, title,
                                  input_file.read(length), process_id.stdin)
         except Exception, e:
             failed_articles += 1
@@ -231,9 +230,9 @@ def process_article_text(id, title, text, newf):
 
     if newf:
         newf.write('%d:' % id)
-        newf.write(title[1:])  # We pad the title to force the database to import strings
+        newf.write(title[1:].encode('utf-8'))  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')
-        newf.write(text + '\n')
+        newf.write(text.encode('utf-8') + '\n')
         newf.write('***EOF***\n')
 
 
