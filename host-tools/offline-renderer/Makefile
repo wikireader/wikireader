@@ -66,7 +66,10 @@ $(call REQUIRED_PHP, session, php5-session)
 $(call REQUIRED_PHP, ctype, php5-ctype)
 
 
-ifneq ($(strip ${VERBOSE}),)
+ifeq (yes,$(strip ${VERBOSE}))
+VERBOSE_ARG = --verbose
+endif
+ifeq (YES,$(strip ${VERBOSE}))
 VERBOSE_ARG = --verbose
 endif
 
