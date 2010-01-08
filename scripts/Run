@@ -207,11 +207,13 @@ case "${run}" in
             eval ${debug} "time make -j3 '${farm}-parse' \
                  WIKI_FILE_PREFIX='${FilePrefix}' \
                  WIKI_LANGUAGE='${language}' \
+                 VERBOSE='${verbose}' \
                  DESTDIR='${dest}' WORKDIR='${work}' \
                  XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             eval ${debug} "time make '${farm}-render' \
                  WIKI_FILE_PREFIX='${FilePrefix}' \
                  WIKI_LANGUAGE='${language}' \
+                 VERBOSE='${verbose}' \
                  DESTDIR='${dest}' WORKDIR='${work}' \
                  XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
@@ -220,6 +222,7 @@ case "${run}" in
                  WIKI_FILE_PREFIX='${FilePrefix}' \
                  WIKI_LANGUAGE='${language}' \
                  DESTDIR='${dest}' WORKDIR='${work}' \
+                 VERBOSE='${verbose}' \
                  XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
         esac

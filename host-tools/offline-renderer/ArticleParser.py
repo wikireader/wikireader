@@ -173,7 +173,7 @@ def main():
             process_id = subprocess.Popen(background_process, shell=True, stdin=subprocess.PIPE)
 
         try:
-            process_article_text(current_file_id, title,
+            process_article_text(current_file_id, total_articles + 1, title,
                                  input_file.read(length), process_id.stdin)
         except Exception, e:
             failed_articles += 1
@@ -220,11 +220,11 @@ def main():
         sys.exit(1)
 
 
-def process_article_text(id, title, text, newf):
+def process_article_text(id, count, title, text, newf):
     global verbose
 
     if verbose:
-        PrintLog.message('[PA] %s' % title)
+        PrintLog.message('[PA %d] %s' % (count, title))
 
     text = TidyUp.article(text)
 

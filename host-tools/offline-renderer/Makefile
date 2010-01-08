@@ -14,18 +14,28 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-define FIND_MK_DIR
+# +++START_UPDATE_MAKEFILE: Start of auto included code
+# The text between the +++ and --- tags is copied by the
+# UpdateMakefiles script. Do not remove or change these tags.
+# ---
+# Autodetect root directory
+define FIND_ROOT_DIR
 while : ; do \
-  d=$$(pwd) ; s="$${d}/samo-lib/Mk" ; \
-  [ -d "$${s}" ] && echo $${s} && exit 0 ; \
-  [ X"/" = X"$${d}" ] && echo Mk_DIRECTORY_NOT_FOUND && exit 1 ; \
+  d=$$(pwd) ; \
+  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
+  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
   cd .. ; \
 done
 endef
-MK_DIR := $(shell ${FIND_MK_DIR})
+ROOT_DIR := $(shell ${FIND_ROOT_DIR})
+# Directory of Makefile includes
+MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
+# Include the initial Makefile setup
 include ${MK_DIR}/definitions.mk
+# ---END_UPDATE_MAKEFILE: End of auto included code
 
-# whilch block to render
+
+# which block to render
 RENDER_BLOCK ?= 0
 START ?= 1
 COUNT ?= all
@@ -57,7 +67,7 @@ $(call REQUIRED_PHP, ctype, php5-ctype)
 
 
 ifneq ($(strip ${VERBOSE}),)
-VERBOSE = --verbose
+VERBOSE_ARG = --verbose
 endif
 
 TARGETS = index parse render combine
@@ -85,7 +95,7 @@ check-html:
 
 .PHONY: index
 index: check-dirs check-xml
-	./ArticleIndex.py ${VERBOSE} \
+	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
@@ -94,7 +104,7 @@ index: check-dirs check-xml
 
 .PHONY: parse
 parse: check-dirs check-html math
-	./ArticleParser.py ${VERBOSE} --xhtml="${HTML_ARTICLES}" \
+	./ArticleParser.py ${VERBOSE_ARG} --xhtml="${HTML_ARTICLES}" \
 		--language="${WIKI_LANGUAGE}" \
 		--start="${START}" --count="${COUNT}" \
 		--templates="${TEMPLATE_FILE}" \
@@ -103,14 +113,14 @@ parse: check-dirs check-html math
 
 .PHONY: render
 render: pylzma check-dirs check-fonts check-html
-	./ArticleRenderer.py ${VERBOSE} --number="${RENDER_BLOCK}" \
+	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
 		--prefix="${PREFIX}" "${HTML_ARTICLES}"
 
 .PHONY: combine
 combine: check-dirs
-	./combine_idx.py ${VERBOSE} --prefix="${PREFIX}"
+	./combine_idx.py ${VERBOSE_ARG} --prefix="${PREFIX}"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma
