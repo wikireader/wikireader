@@ -351,8 +351,8 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             if title != redirect_title:
-                title = category + ':' + title.lower()
-                redirect_title = rcategory + ':' + redirect_title.lower()
+                title = unicode(category, 'utf-8') + ':' + title.lower()
+                redirect_title = unicode(rcategory, 'utf-8') + ':' + redirect_title.lower()
                 self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
                                              ['~%d~%s' % (self.file_id(), title),
                                               '~%d~%s' % (self.file_id(), redirect_title)])
@@ -382,7 +382,7 @@ pragma journal_mode = memory;
         title = self.translate(title).strip(u'\u200e\u200f')
 
         if self.KEY_TEMPLATE == key:
-            t1 = category + ':' + title.lower()
+            t1 = unicode(category, 'utf-8') + ':' + title.lower()
             t_body = TidyUp.template(text)
             self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
                                          ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
