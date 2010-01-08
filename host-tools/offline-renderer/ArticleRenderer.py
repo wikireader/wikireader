@@ -505,6 +505,7 @@ class WrProcess(HTMLParser.HTMLParser):
         self.lwidth = DEFAULT_LWIDTH
         self.indent = 0
         self.li_cnt = {}
+        self.li_inside = {}
         self.li_type = {}
         self.link_x = 0
         self.link_y = 0
@@ -632,7 +633,10 @@ class WrProcess(HTMLParser.HTMLParser):
             self.url  = attrs['href']
 
         elif tag in ['ul', 'ol', 'dl']:
-            self.enter_list(tag)
+            if 'start' in attrs:
+                self.enter_list(tag, int(attrs['start']))
+            else:
+                self.enter_list(tag)
 
         elif tag == 'li':
             if 0 == self.level:
@@ -647,6 +651,13 @@ class WrProcess(HTMLParser.HTMLParser):
                 #self.tag_stack.append(('ul', p))
                 #self.tag_stack.append((t,p))
                 #self.enter_list('ul')
+
+            # handle missing </li> at the same level
+            if self.li_inside[self.level]:
+                self.flush_buffer(False)
+                self.list_decrease_indent()
+            else:
+                self.li_inside[self.level] = True
 
             self.li_cnt[self.level] += 1
 
@@ -807,6 +818,7 @@ class WrProcess(HTMLParser.HTMLParser):
         elif tag == 'li':
             self.flush_buffer(False)
             self.list_decrease_indent()
+            self.li_inside[self.level] = False
 
         elif tag == 'dd':
             self.flush_buffer()
@@ -823,11 +835,12 @@ class WrProcess(HTMLParser.HTMLParser):
             self.in_img = False
 
 
-    def enter_list(self, list_type):
+    def enter_list(self, list_type, start = 1):
         self.flush_buffer(False)
         esc_code0(LIST_MARGIN_TOP)
         self.level += 1
-        self.li_cnt[self.level] = 0
+        self.li_cnt[self.level] = start - 1
+        self.li_inside[self.level] = False
         self.li_type[self.level] = list_type
 
 
@@ -843,6 +856,7 @@ class WrProcess(HTMLParser.HTMLParser):
         self.flush_buffer()
         esc_code0(LIST_MARGIN_TOP)
         del self.li_cnt[self.level]
+        del self.li_inside[self.level]
         if self.level > 0:
             self.level -= 1
 
