@@ -61,6 +61,9 @@ subs = [
     # fix entities
     #(re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
+    # fix broken lists <li/> -> </li>
+    (re.compile(r'<li\s*/>', re.IGNORECASE), r'</li>'),
+
     # change % so php: wr_parser_sa does not convert them
     (re.compile(r'%', re.IGNORECASE), r'%25'),
 ]
