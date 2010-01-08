@@ -79,13 +79,11 @@ RESOLVEPATH = /usr/local/bin/readlink -f
 
 else ifeq (Darwin,${OS})
 
-# missing lockf/flock in Darwin, need further research to find replacement
-# cause error for the moment
-LOCKF = echo missing lockf;exit 55;
+LOCKF = postlock
 AWK = gawk
 
 # path must exist
-REALPATH = opt/local/bin/greadlink -es
+REALPATH = /opt/local/bin/greadlink -es
 
 # path may not exist
 RESOLVEPATH = /opt/local/bin/greadlink -m
