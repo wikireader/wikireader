@@ -816,9 +816,15 @@ class WrProcess(HTMLParser.HTMLParser):
             self.leave_list()
 
         elif tag == 'li':
-            self.flush_buffer(False)
-            self.list_decrease_indent()
-            self.li_inside[self.level] = False
+            if 0 == self.level:
+                if warnings:
+                    (line, column) = self.getpos()
+                    PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
+                                     (tag, line, column, article_count + 1, g_this_article_title))
+            else:
+                self.flush_buffer(False)
+                self.list_decrease_indent()
+                self.li_inside[self.level] = False
 
         elif tag == 'dd':
             self.flush_buffer()
@@ -854,10 +860,10 @@ class WrProcess(HTMLParser.HTMLParser):
 
     def leave_list(self):
         self.flush_buffer()
-        esc_code0(LIST_MARGIN_TOP)
-        del self.li_cnt[self.level]
-        del self.li_inside[self.level]
         if self.level > 0:
+            esc_code0(LIST_MARGIN_TOP)
+            del self.li_cnt[self.level]
+            del self.li_inside[self.level]
             self.level -= 1
 
     def list_decrease_indent(self):
