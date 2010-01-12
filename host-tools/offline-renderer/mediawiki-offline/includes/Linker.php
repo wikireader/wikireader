@@ -284,11 +284,12 @@ class Linker {
 		}
 
 		# Get a default title attribute.
-		if( in_array( 'known', $options ) ) {
+	        # never want red-links
+		#if( in_array( 'known', $options ) ) {
 			$defaults['title'] = $target->getPrefixedText();
-		} else {
-			$defaults['title'] = wfMsg( 'red-link-title', $target->getPrefixedText() );
-		}
+		#} else {
+		#	$defaults['title'] = wfMsg( 'red-link-title', $target->getPrefixedText() );
+		#}
 
 		# Finally, merge the custom attribs with the default ones, and iterate
 		# over that, deleting all "false" attributes.
