@@ -47,6 +47,7 @@ subs = [
     # Remove some of these
     (re.compile(r'\s*<timeline>.*?</timeline>', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'\s*<imagemap>.*?</imagemap>', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'\s*<noinclude>.*?</noinclude>', re.IGNORECASE + re.DOTALL), ''),
     (re.compile(r'<references[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), ''),
 
     # remove div
