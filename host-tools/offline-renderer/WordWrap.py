@@ -117,7 +117,6 @@ class WordWrap():
         return self.buffer != []
 
 
-xx=0
 # some testing
 def main():
 
