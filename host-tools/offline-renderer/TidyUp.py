@@ -35,9 +35,9 @@ subs = [
     (re.compile(r'<br[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), '\n'),
 
     # remove files and images
-    (re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
+    #(re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
 
-    # remove links to ther languages
+    # remove links to other languages
     (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
     # Wikipedia's installed Parser extension tags

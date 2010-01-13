@@ -558,8 +558,8 @@ class WrProcess(HTMLParser.HTMLParser):
         elif tag == 'table':
             self.in_table += 1
 
-        # if in a table suppress weverythin after this point
-        elif self.in_table > 0:
+        # if in a table suppress everything after this point
+        if self.in_table > 0:
             return
 
         elif tag == 'h1':
@@ -594,6 +594,11 @@ class WrProcess(HTMLParser.HTMLParser):
 
         elif tag == 'div':
             self.flush_buffer()
+            # suppress thumb info boxes
+            if 'class' in attrs:
+                if 'thumb' in attrs['class']:
+                    self.printing = False
+                    return
             esc_code0(DIV_MARGIN_TOP)
 
         elif tag == 'p':
@@ -754,8 +759,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if self.in_table > 0:
                 self.in_table -= 1
 
-        # if in a table suppress weverythin after this point
-        elif self.in_table > 0:
+        # if in a table suppress everything after this point
+        if self.in_table > 0:
             return
 
         elif tag == 'h1':
@@ -916,6 +921,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
         except KeyError:
             PrintLog.message("ENTITYREF ERROR: %s article: %s" % (name, g_this_article_title))
+
 
     def handle_data(self, data):
         global g_this_article_title
