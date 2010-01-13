@@ -653,13 +653,22 @@ class WrProcess(HTMLParser.HTMLParser):
                 #self.enter_list('ul')
 
             # handle missing </li> at the same level
+            # simulate </li> and continue
             if self.li_inside[self.level]:
+                if warnings:
+                    (line, column) = self.getpos()
+                    PrintLog.message('Warning: missing </%s> @[L%d/C%d] in article[%d]: %s' %
+                                     (tag, line, column, article_count + 1, g_this_article_title))
+                (t, p) = self.tag_stack.pop()
                 self.flush_buffer(False)
                 self.list_decrease_indent()
-            else:
-                self.li_inside[self.level] = True
 
-            self.li_cnt[self.level] += 1
+            self.li_inside[self.level] = True
+
+            if 'value' in attrs:
+                self.li_cnt[self.level] = int(attrs['value'])
+            else:
+                self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
                 self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
