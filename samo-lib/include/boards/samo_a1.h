@@ -14,9 +14,25 @@
 #define CTP_BPS     9600
 #endif
 
+//     PA3210  Rev      RAM
+// A1 -> 1000  0000     32M Prototype
+// A2 -> 1001  0001     32M Prototype
+// A3 -> 1010  0010     32M Prototype
+// A4 -> 1011  0011     32M Prototype
+// A5 -> 1100  0100     32M Prototype
+// V1 -> 1101  0101     32M Production
+// V2 -> 1110  0110     32M Production
+// V3 -> 1111  0111     32M Production
+// V4 -> 0000  1000     16M Production
+// V5 -> 0001  1001
+// V6 -> 0010  1010
+// V7 -> 0011  1011
+// V8 -> 0100  1100
+// V9 -> 0101  1101
+
 static inline int board_revision(void)
 {
-	return (REG_PA_DATA & 0x07) + 1;
+	return 0x08 ^ (REG_PA_DATA & 0x0F);
 }
 
 
@@ -233,15 +249,23 @@ static inline void init_pins(void)
 #define CLKS_TRAS 8
 #define CLKS_TRC  15
 
-#define ADDRESS_CONFIG ADDRC_16M_x_16_bits_x_1
-//#define ADDRESS_CONFIG ADDRC__8M_x_16_bits_x_1
-//#define ADDRESS_CONFIG ADDRC__4M_x_16_bits_x_1
+#define SDRAM_CONFIGURATION_32M (0                                      \
+				 | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
+				 | ((CLKS_TRAS - 1) << T60NS_SHIFT)	\
+				 | ((CLKS_TRC - 1) << T80NS_SHIFT)	\
+				 | ADDRC_16M_x_16_bits_x_1)
 
-#define SDRAM_CONFIGURATION (0                                  \
-			     | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
-			     | ((CLKS_TRAS - 1) << T60NS_SHIFT)	\
-			     | ((CLKS_TRC - 1) << T80NS_SHIFT)	\
-			     | ADDRESS_CONFIG)
+#define SDRAM_CONFIGURATION_16M (0                                      \
+				 | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
+				 | ((CLKS_TRAS - 1) << T60NS_SHIFT)	\
+				 | ((CLKS_TRC - 1) << T80NS_SHIFT)	\
+				 | ADDRC__8M_x_16_bits_x_1)
+
+#define SDRAM_CONFIGURATION_8M  (0                                      \
+				 | ((CLKS_TRP - 1) << T24NS_SHIFT)	\
+				 | ((CLKS_TRAS - 1) << T60NS_SHIFT)	\
+				 | ((CLKS_TRC - 1) << T80NS_SHIFT)	\
+				 | ADDRC__4M_x_16_bits_x_1)
 
 static inline void init_ram(void)
 {
@@ -283,8 +307,11 @@ static inline void init_ram(void)
 		0;
 
 	// SDRAM configuration register
-	REG_SDRAMC_CTL = SDRAM_CONFIGURATION;
-
+	if (board_revision() >= 8) {
+		REG_SDRAMC_CTL = SDRAM_CONFIGURATION_16M;
+	} else {
+		REG_SDRAMC_CTL = SDRAM_CONFIGURATION_32M;
+	}
 	// enable RAM self-refresh
 	REG_SDRAMC_REF =
 		SCKON |

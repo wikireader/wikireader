@@ -173,7 +173,9 @@ static void DisplayInfo(void)
 	Analog_scan();
 	print("\nCPU: ");
 	print_cpu_type();
-	print("\nBAT: ");
+	print("\nRAM: ");
+	print_uint(ram_size() >> 10);
+	print("kB\nBAT: ");
 	print_uint(Analog_BatteryMilliVolts());
 	print(" mV\nTMP: ");
 	print_int(Analog_TemperatureCelcius());
@@ -181,8 +183,8 @@ static void DisplayInfo(void)
 	print_uint(Analog_ContrastMilliVolts());
 	print(" mV\nREV: ");
 	uint32_t rev = board_revision();
-	if (rev >= 6) {
-		rev -= 5;
+	if (rev >= 5) {
+		rev -= 4;
 		print_char('V');
 	} else {
 		print_char('A');

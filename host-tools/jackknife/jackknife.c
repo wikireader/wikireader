@@ -106,7 +106,8 @@ int main(void)
 		if (COMMAND_BOARD_REVISION == command) {
 
 			serial_put('A');
-			serial_put(board_revision() + '0');
+			serial_put(board_revision());
+
 
 		} else if (COMMAND_SPI_DESELECT == command) {
 

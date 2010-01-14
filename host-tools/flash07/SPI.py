@@ -37,7 +37,10 @@ class SPI:
         self.internal_send(COMMAND_BOARD_REVISION)
         time.sleep(0.1)
         buffer = self.s.read(2)
-        return buffer
+        rev = ord(buffer[1])
+        if rev < 5:
+            return 'A%d' % rev
+        return 'V%d' % (rev - 4)
 
     def command(self, buffer):
         self.select()

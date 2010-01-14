@@ -24,4 +24,4 @@
 
 #include <inttypes.h>
 
-const uint32_t RevisionNumber = 2;
+const uint32_t RevisionNumber = 3;
