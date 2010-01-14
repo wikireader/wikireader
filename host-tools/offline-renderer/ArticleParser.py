@@ -212,11 +212,11 @@ def main():
         process_id.wait()
 
     # output some statistics
-    PrintLog.message('Total:  %d' % total_articles)
+    PrintLog.message('Parse[%s]: Total:  %d' % (out_base_name, total_articles))
 
     # indicate failures
     if 0 != failed_articles:
-        PrintLog.message('Failed: %d' % failed_articles)
+        PrintLog.message('Parse[%s]: Failed: %d' % (out_base_name, failed_articles))
         sys.exit(1)
 
 

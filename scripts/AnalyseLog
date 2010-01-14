@@ -25,7 +25,11 @@ END {
     if (0 != length(parse_delta)) {
         for (i in parse_delta) {
             if (0 == parse_max[i]) {
-                complete = 0
+                if (i in render_max) {
+                    complete = 100
+                } else {
+                    complete = 0
+                }
             } else {
                 complete = 100 * parse_count[i] / parse_max[i]
             }
@@ -74,10 +78,15 @@ END {
     p2 = index($0, ".")
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
-        parse_time[i] += $2
-        n = $3
-        parse_delta[i] = n - parse_count[i]
-        parse_count[i] = n
+        if ("Total:" == $2) {
+           parse_count[i] = $2
+           parse_max[i] = $2
+        } else {
+            parse_time[i] += $2
+            n = $3
+            parse_delta[i] = n - parse_count[i]
+            parse_count[i] = n
+        }
     }
 }
 
@@ -86,10 +95,15 @@ END {
     p2 = index($0, "]")
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
-        render_time[i] += $2
-        n = $3
-        render_delta[i] = n - render_count[i]
-        render_count[i] = n
+        if ("Total:" == $2) {
+           render_count[i] = $2
+           render_max[i] = $2
+        } else {
+            render_time[i] += $2
+            n = $3
+            render_delta[i] = n - render_count[i]
+            render_count[i] = n
+        }
     }
 }
 

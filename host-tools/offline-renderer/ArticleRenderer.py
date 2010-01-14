@@ -232,7 +232,8 @@ def main():
     for i in font_id_values:
         font_id_values[i].close()
 
-    PrintLog.message('Wrote %d articles' % article_count)
+    # final message
+    PrintLog.message("Render[%d]: Total: %d" % (file_number, article_count))
 
 
 #
