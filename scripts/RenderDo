@@ -1,0 +1,178 @@
+#!/bin/sh
+
+HostName=render
+HostList='1 2 3 4 5 6 7 8 9'
+user=wr
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>' command
+  echo '       --help         this message'
+  echo '       --verbose      print more information'
+  echo '       --pre=cmd      a local command for the front of the pipe'
+  echo '       --post=cmd     a local command for the rear of the pipe'
+  echo '       --yes          assume yes'
+  echo '       --list=i,n-m   which machines to run command on'
+  exit 1
+}
+
+ExpandList()
+{
+  local l h i s f
+  l=$(echo $* | sed 's/[[:space:],;]\{1,\}/ /g')
+  h=''
+  for i in ${l}
+  do
+    s=${i%%-*}
+    f=${i##*-}
+    while [ ${s} -le ${f} ]
+    do
+      h="${h} ${s}"
+      s=$((${s} + 1))
+    done
+  done
+  echo ${h}
+}
+
+
+RunCommands()
+{
+  local user host pre post cmd tag
+  user="$1"; shift
+  host="$1"; shift
+  pre="$1"; shift
+  post="$1"; shift
+
+  case "${verbose}" in
+    [yY][eE][sS])
+      [ -n "${pre}" ] && echo local: ${pre} \|
+      echo ${user}@${host}: $*
+      [ -n "${post}" ] && echo local: \| ${post}
+      ;;
+    *)
+      case "${brief}" in
+        [yY][eE][sS])
+          tag="${user}@${host}: "
+          ;;
+        *)
+          tag=''
+          ;;
+      esac
+      ;;
+  esac
+  if [ -z "${pre}" ]
+  then
+    if [ -z "${post}" ]
+    then
+      ssh -l "${user}" "${host}" "$@" | sed "s/^/${tag}/"
+    else
+      ssh -l "${user}" "${host}" "$@" | sed "s/^/${tag}/" | ${post}
+    fi
+  else
+    if [ -z "${post}" ]
+    then
+      ${pre} | ssh -l "${user}" "${host}" "$@" | sed "s/^/${tag}/"
+    else
+      ${pre} | ssh -l "${user}" "${host}" "$@" | sed "s/^/${tag}/" | ${post}
+    fi
+  fi
+}
+
+
+# main program
+# ------------
+
+PreCommand=''
+PostCommand=''
+verbose=no
+brief=no
+yorn=''
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvbp:o:l:y --long=help,verbose,brief,pre:,post:,list:,yes -- "$@") || exit 1
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -b|--brief)
+      brief=yes
+      shift
+      ;;
+
+    -p|--pre)
+      PreCommand=$2
+      shift 2
+      ;;
+
+    -o|--post)
+      PostCommand=$2
+      shift 2
+      ;;
+
+    -l|--list)
+      HostList=$(ExpandList $2)
+      shift 2
+      ;;
+
+    -y|--yes)
+      yorn='all'
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+#echo verbose = ${verbose}
+#echo ARGS = "$@"
+
+[ -z "$1" ] && USAGE missing command
+
+
+for i in ${HostList}
+do
+  host="${HostName}${i}"
+
+  [ -z "${yorn}" ] && read -p "Execute ${host}: $* (y/n/a/q)? " yorn junk
+  case "${yorn}" in
+    [yY]|[yY][eE][sS])
+      yorn=''
+      RunCommands "${user}" "${host}" "${PreCommand}" "${PostCommand}" "$@"
+      ;;
+    [aA]|[aA][lL][lL])
+      RunCommands "${user}" "${host}" "${PreCommand}" "${PostCommand}" "$@"
+      ;;
+    [qQ]|[qQ][uU][iI][tT])
+      break
+      ;;
+    *)
+      yorn=''
+      ;;
+  esac
+done

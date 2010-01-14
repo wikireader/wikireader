@@ -1,0 +1,156 @@
+#!/bin/sh
+# show the status of stamp files and run programs on the rendering servers
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help          -h      this message'
+  echo '       --work          -w      show work directory files'
+  echo '       --image         -i      show image directory files'
+  echo '       --stamps        -s      show status of stamps'
+  echo '       --analyse       -a      analyse the log file'
+  echo '       --git           -g      run git pull --rebase'
+  echo '       --process=n     -pn     show python/php processes cut line 1..n [unlimited]'
+  echo '       --tail=n        -tn     show last line of samo/log [1]'
+  echo '       --memory        -m      show memory status'
+  echo '       --list=n-m      -l      restrict to certain machines [1-9]'
+  echo '       --language=xx   -L xx   process for language [en]'
+  echo '       --run           -r      start the Run script in a screen i.e. {Run -c -l <lang>}'
+  echo '       --copy          -c      run the copy process i.e. {Copy --to=8 -l <lang>}'
+  echo '       --combine       -k      run the combine process'
+  echo '       --get           -G      get the data files'
+  echo '       --sim4          -4      rename files, install fonts and run simulator'
+  exit 1
+}
+
+# main program
+# ------------
+
+verbose=no
+language=en
+list=''
+combine_host=8
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvswigp::t::aml:L:rckG4 --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4 -- "$@") || exit 1
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -s|--stamps)
+      RenderDo --yes ${list} --brief --post='sed s/stamp-r-//g' 'cd samo && printf "\33[34;1m%s\33[0;m " stamp* && echo'
+      shift
+      ;;
+
+    -w|--work)
+      RenderDo --yes ${list} --brief "cd samo && ls -l 'work/${language}'"
+      shift
+      ;;
+
+    -r|--run)
+      #RenderDo --yes ${list} --brief "cd samo && byobu -d -m scripts/Run $2"
+      RenderDo --yes ${list} --brief "cd samo && byobu -X exec scripts/Run --clear --language='${language}'"
+      shift
+      ;;
+
+    -c|--copy)
+      #RenderDo --yes ${list} --brief "cd samo && byobu -d -m scripts/Copy $2"
+      RenderDo --yes ${list} --brief "cd samo && byobu -X exec scripts/Copy --to='${combine_host}' --language='${language}'"
+      shift
+      ;;
+
+    -i|--image)
+      RenderDo --yes ${list} --brief "cd samo && ls -l 'image/${language}'"
+      shift
+      ;;
+
+    -g|--git)
+      RenderDo --yes ${list} --verbose 'cd samo && git pull --rebase'
+      shift
+      ;;
+
+    -p|--process)
+      if [ -n "$2" ]
+      then
+        RenderDo --yes ${list} --brief --post="cut -b 1-$2" 'echo;ps -o pid,cmd -u wr --forest'
+      else
+        RenderDo --yes ${list} --brief 'echo;ps -o pid,cmd -u wr --forest'
+      fi
+      shift 2
+      ;;
+
+    -t|--tail)
+      t=1
+      [ -n "$2" ] && t="$2"
+      RenderDo --yes ${list} --brief "tail -n '${t}' samo/log"
+      shift 2
+      ;;
+
+    -a|--analyse)
+      RenderDo --yes ${list} --brief "cd samo && ./scripts/AnalyseLog log"
+      shift
+      ;;
+
+    -m|--memory)
+      RenderDo --yes ${list} --brief 'echo Memory Status \(Megabytes\); free -m'
+      shift
+      ;;
+
+    -k|--combine)
+      RenderDo --yes --list="${combine_host}" --brief "cd samo && make WORKDIR='work/${language}' DESTDIR='image/${language}' WIKI_FILE_PREFIX=wiki WIKI_LANGUAGE='${language}' combine hash"
+      shift
+      ;;
+
+    -l|--list)
+      list="--list=$2"
+      shift 2
+      ;;
+
+    -L|--language)
+      language="$2"
+      shift 2
+      ;;
+
+    -G|--get)
+      rsync -avHx --progress --exclude=\*-tmp "wr@render${combine_host}:samo/image/${language}" image/
+      shift
+      ;;
+
+    -4|--sim4)
+      ./scripts/NameChange --dest="image/${language}" --pedia
+      make WORKDIR="work/${language}" DESTDIR="image/${language}" fonts-install sim4
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+echo
+echo completed
