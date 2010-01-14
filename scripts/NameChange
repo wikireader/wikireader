@@ -1,0 +1,101 @@
+#!/bin/sh
+# rename files
+
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help      -h       this message'
+  echo '       --verbose   -v       more messages'
+  echo '       --dest=dir  -d <dir> directory of files [image]'
+  echo '       --wiki      -w       rename pedia to wiki [default]'
+  echo '       --pedia     -p       rename wiki to pedia'
+  exit 1
+}
+
+# main program
+# ------------
+
+verbose=no
+to=wiki
+from=pedia
+dest=image
+
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvd:wp --long=help,verbose,dest:,wiki,pedia -- "$@") || exit 1
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -w|--wiki)
+      to=wiki
+      from=pedia
+      shift
+      ;;
+
+    -p|--pedia)
+      to=pedia
+      from=wiki
+      shift
+      ;;
+
+    -d|--dest)
+      dest="$2"
+      shift 2
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+[ -d "${dest}" ] || USAGE not a directory: ${dest}
+
+case "${verbose}" in
+  [yY]|[yY][eE][sS])
+    echo rename "${from}" to "${to}"
+    echo in directory: "${dest}"
+    ;;
+  *)
+    ;;
+esac
+
+find "${dest}" -name "${from}"\* | while read file junk
+do
+  d=$(basename "${file}")
+  d=$(dirname "${file}")/${to}${d#${from}}
+  case "${verbose}" in
+    [yY]|[yY][eE][sS])
+      echo rename "${file}" to "${d}"
+      ;;
+    *)
+      ;;
+  esac
+  mv "${file}" "${d}"
+done
