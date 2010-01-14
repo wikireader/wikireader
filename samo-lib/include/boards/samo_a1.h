@@ -21,7 +21,7 @@
 // A4 -> 1011  0011     32M Prototype
 // A5 -> 1100  0100     32M Prototype
 // V1 -> 1101  0101     32M Production
-// V2 -> 1110  0110     32M Production
+// V2 -> 1110  0110     16M Production
 // V3 -> 1111  0111     32M Production
 // V4 -> 0000  1000     16M Production
 // V5 -> 0001  1001
@@ -307,7 +307,7 @@ static inline void init_ram(void)
 		0;
 
 	// SDRAM configuration register
-	if (board_revision() >= 8) {
+	if (board_revision() >= 8 || board_revision() == 6) {
 		REG_SDRAMC_CTL = SDRAM_CONFIGURATION_16M;
 	} else {
 		REG_SDRAMC_CTL = SDRAM_CONFIGURATION_32M;
