@@ -5,25 +5,28 @@ gawk -- '
 BEGIN {
   index_count = 0
   index_delta = 0
-  index_total = 0
+  index_time = 0
   delete parse_count
   delete parse_delta
-  delete parse_total
+  delete parse_time
+  delete parse_max
   delete render_count
   delete render_delta
-  delete render_total
+  delete render_max
 }
 
 END {
     if (0 != index_delta) {
-        printf("Index: %14d %8.2fs per %d\n", index_count, (index_total / (index_count / index_delta)), index_delta)
+        printf("Index: %14d         %8.2fs per %5d\n", index_count, (index_time / (index_count / index_delta)), index_delta)
     } else {
         print "Index: Not Started"
     }
 
     if (0 != length(parse_delta)) {
         for (i in parse_delta) {
-            printf("Parse[%2d]: %10d %8.2fs per %d\n", i, parse_count[i], (parse_total[i] / (parse_count[i] / parse_delta[i])), parse_delta[i])
+            complete = 100 * parse_count[i] / parse_max[i]
+            average = parse_time[i] / (parse_count[i] / parse_delta[i])
+            printf("Parse[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
         }
     } else {
         print "Parse: Not Started"
@@ -31,7 +34,9 @@ END {
 
     if (0 != length(render_delta)) {
         for (i in render_delta) {
-            printf("Render[%2d]: %10d %8.2fs per %d\n", i, render_count[i], (render_total[i] / (render_count[i] / render_delta[i])), render_delta[i])
+            complete = 100 * render_count[i] / render_max[i]
+            average = render_time[i] / (render_count[i] / render_delta[i])
+            printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
         }
     } else {
         print "Render: Not Started"
@@ -39,34 +44,42 @@ END {
 }
 
 /^Index:/ {
-  index_total += $2
-  n = $3
-  index_delta = n - index_count
-  index_count = n
+    index_time += $2
+    n = $3
+    index_delta = n - index_count
+    index_count = n
+}
+
+/^make RENDER_BLOCK=/ {
+    n = substr($2, index($2, "=") + 1)
+    c = substr($4, index($4, "=") + 1)
+    sub("k", "000", c)
+    parse_max[n] = c
+    render_max[n] = c
 }
 
 /^Parse\[/ {
-  p1 = index($0, "-")
-  p2 = index($0, ".")
-  if (p1 > 0 && p2 > 0) {
-      i = substr($0, p1 + 1, p2 - p1 - 1)
-      parse_total[i] += $2
-      n = $3
-      parse_delta[i] = n - parse_count[i]
-      parse_count[i] = n
-  }
+    p1 = index($0, "-")
+    p2 = index($0, ".")
+    if (p1 > 0 && p2 > 0) {
+        i = substr($0, p1 + 1, p2 - p1 - 1)
+        parse_time[i] += $2
+        n = $3
+        parse_delta[i] = n - parse_count[i]
+        parse_count[i] = n
+    }
 }
 
 /^Render\[/ {
-  p1 = index($0, "[")
-  p2 = index($0, "]")
-  if (p1 > 0 && p2 > 0) {
-      i = substr($0, p1 + 1, p2 - p1 - 1)
-      render_total[i] += $2
-      n = $3
-      render_delta[i] = n - render_count[i]
-      render_count[i] = n
-  }
+    p1 = index($0, "[")
+    p2 = index($0, "]")
+    if (p1 > 0 && p2 > 0) {
+        i = substr($0, p1 + 1, p2 - p1 - 1)
+        render_time[i] += $2
+        n = $3
+        render_delta[i] = n - render_count[i]
+        render_count[i] = n
+    }
 }
 
 
