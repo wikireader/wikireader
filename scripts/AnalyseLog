@@ -24,7 +24,11 @@ END {
 
     if (0 != length(parse_delta)) {
         for (i in parse_delta) {
-            complete = 100 * parse_count[i] / parse_max[i]
+            if (0 == parse_max[i]) {
+                complete = 0
+            } else {
+                complete = 100 * parse_count[i] / parse_max[i]
+            }
             average = parse_time[i] / (parse_count[i] / parse_delta[i])
             printf("Parse[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
         }
@@ -34,7 +38,11 @@ END {
 
     if (0 != length(render_delta)) {
         for (i in render_delta) {
-            complete = 100 * render_count[i] / render_max[i]
+            if (0 == render_max[i]) {
+                complete = 0
+            } else {
+                complete = 100 * render_count[i] / render_max[i]
+            }
             average = render_time[i] / (render_count[i] / render_delta[i])
             printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
         }
@@ -54,6 +62,9 @@ END {
     n = substr($2, index($2, "=") + 1)
     c = substr($4, index($4, "=") + 1)
     sub("k", "000", c)
+    if ("all" == c) {
+        c = 0
+    }
     parse_max[n] = c
     render_max[n] = c
 }
