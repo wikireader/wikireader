@@ -79,8 +79,8 @@ END {
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
         if ("Total:" == $2) {
-           parse_count[i] = $2
-           parse_max[i] = $2
+           parse_count[i] = $3
+           parse_max[i] = $3
         } else {
             parse_time[i] += $2
             n = $3
@@ -96,8 +96,8 @@ END {
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
         if ("Total:" == $2) {
-           render_count[i] = $2
-           render_max[i] = $2
+           render_count[i] = $3
+           render_max[i] = $3
         } else {
             render_time[i] += $2
             n = $3
