@@ -58,7 +58,7 @@ END {
     index_count = n
 }
 
-/^make RENDER_BLOCK=/ {
+/^make[[:space:]]+RENDER_BLOCK=.*parse/ {
     n = substr($2, index($2, "=") + 1)
     c = substr($4, index($4, "=") + 1)
     sub("k", "000", c)
