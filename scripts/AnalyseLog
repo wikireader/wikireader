@@ -17,7 +17,7 @@ BEGIN {
 
 END {
     if (0 != index_delta) {
-        printf("Index: %14d         %8.2fs per %5d\n", index_count, (index_time / (index_count / index_delta)), index_delta)
+        printf("Index: %15d         %8.2fs per %5d\n", index_count, (index_time / (index_count / index_delta)), index_delta)
     } else {
         print "Index: Not Started"
     }
@@ -30,7 +30,7 @@ END {
                 complete = 100 * parse_count[i] / parse_max[i]
             }
             average = parse_time[i] / (parse_count[i] / parse_delta[i])
-            printf("Parse[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
+            printf("Parse[%2d]: %11d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
         }
     } else {
         print "Parse: Not Started"
