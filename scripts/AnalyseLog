@@ -39,7 +39,7 @@ END {
     if (0 != length(render_delta)) {
         for (i in render_delta) {
             if (0 == render_max[i]) {
-                complete = 0
+                complete = 100 * render_count[i] / parse_count[i]
             } else {
                 complete = 100 * render_count[i] / render_max[i]
             }
