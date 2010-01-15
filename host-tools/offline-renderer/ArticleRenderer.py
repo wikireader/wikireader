@@ -640,7 +640,13 @@ class WrProcess(HTMLParser.HTMLParser):
 
         elif tag in ['ul', 'ol', 'dl']:
             if 'start' in attrs:
-                self.enter_list(tag, int(attrs['start']))
+                list_start = re.sub(r'^\D*(\d+)\D?.*$', r'\1', attrs['start'])
+                try:
+                    list_start = int(list_start)
+                except ValueError:
+                    list_start = 1
+
+                self.enter_list(tag, list_start)
             else:
                 self.enter_list(tag)
 
@@ -676,7 +682,7 @@ class WrProcess(HTMLParser.HTMLParser):
                 try:
                     self.li_cnt[self.level] = int(list_index)
                 except ValueError:
-                    psass
+                    pass
             else:
                 self.li_cnt[self.level] += 1
 
