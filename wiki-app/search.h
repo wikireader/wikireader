@@ -32,15 +32,18 @@
 /* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */
 #define MAX_DAT_FILES 36
 #define MAX_COMPRESSED_ARTICLE 256*1024
-#define MESSAGE_TYPE_A_WORD "Type a Word or Phrase"
-#define MESSAGE_NO_RESULTS "No entries found"
-#define MESSAGE_SEARCHING "searching..."
 
 enum {
 	SEARCH_RELOAD_NORMAL,
 	SEARCH_RELOAD_KEEP_RESULT,
 	SEARCH_RELOAD_NO_POPULATE,
 	SEARCH_RELOAD_KEEP_REFRESH,
+};
+
+enum {
+	SEARCH_TO_BE_RELOADED_CLEAR,
+	SEARCH_TO_BE_RELOADED_SET,
+	SEARCH_TO_BE_RELOADED_CHECK,
 };
 
 typedef struct _ARTICLE_PTR {
@@ -83,17 +86,18 @@ int search_load_trigram(void);
 /**
  * Repaint, reselect the current screen..
  */
-void search_reload(void);
+void search_reload(int flag);
+void search_to_be_reloaded(int to_be_reloaded_flag, int reload_flag);
 
 /**
  * Search for another char. It needs to be lower case
  */
-int search_add_char(char c);
+int search_add_char(char c, unsigned long ev_time);
 
 /**
  * Remove the last char from the search
  */
-int search_remove_char(int bPopulate);
+int search_remove_char(int bPopulate, unsigned long ev_time);
 
 /**
  * Return search result count
@@ -117,7 +121,7 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 
 void search_fetch();
 void search_result_display();
-void search_reload_ex(int flag);
 int clear_search_string();
 int  get_search_string_len();
+int check_search_string_change(void);
 #endif

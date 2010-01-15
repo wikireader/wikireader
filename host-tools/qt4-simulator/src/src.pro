@@ -20,6 +20,7 @@ SOURCES += $${TOPLEVEL}/wiki-app/search_hash.c
 SOURCES += $${TOPLEVEL}/wiki-app/sha1.c
 SOURCES += $${TOPLEVEL}/wiki-app/time-posix.c
 SOURCES += $${TOPLEVEL}/wiki-app/wikilib.c
+SOURCES += $${TOPLEVEL}/wiki-app/wiki_info.c
 
 SOURCES += $${TOPLEVEL}/samo-lib/lzma/Alloc.c
 SOURCES += $${TOPLEVEL}/samo-lib/lzma/Bra.c
@@ -53,7 +54,7 @@ HEADERS += WikiDisplay.h
 HEADERS += MainWindow.h
 HEADERS += WikilibThread.h
 
-images = keyboard_123 keyboard_abc
+images = keyboard_123 keyboard_abc nls
 
 all_images.target = all_images.h
 

@@ -38,6 +38,7 @@
 #include "history.h"
 #include "wikilib.h"
 #include "search_hash.h"
+#include "wiki_info.h"
 
 #if !defined(INCLUDED_FROM_KERNEL)
 #include "time.h"
@@ -47,26 +48,28 @@
 
 #define DBG_SEARCH 0
 
-unsigned int get_time_search(void);
-unsigned int time_search_last = 0;
+#define DELAYED_SEARCH_TIME 0.3
+unsigned long time_search_string_changed = 0;
 bool search_string_changed = false;
 bool search_string_changed_remove = false;
 int more_search_results = 0;
 extern ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 extern int article_link_count;
+int search_interrupted = 0;
 
 typedef struct _search_results {
 	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
-	uint32_t idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (pedia.idx) for loading the article
-	uint32_t offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];	// offset (pedia.fnd) of each search title in list
-	uint32_t offset_next;		// offset (pedia.fnd) of the next title after the list
+	uint32_t idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (wiki.idx) for loading the article
+	uint32_t offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];  // offset (wiki.fnd) of each search title in list
+	uint32_t offset_next;		// offset (wiki.fnd) of the next title after the list
 	uint32_t count;
 	uint32_t result_populated;
 	int32_t cur_selected;		// -1 when no selection.
 } SEARCH_RESULTS;
-static SEARCH_RESULTS *result_list;
+static SEARCH_RESULTS *result_list = NULL;
 
 typedef struct _search_info {
+	int32_t inited;
 	int32_t fd_pfx;
 	int32_t fd_idx;
 	int32_t fd_dat[MAX_DAT_FILES];
@@ -75,9 +78,9 @@ typedef struct _search_info {
 	uint32_t b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
 	char buf[NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH)];	// buf correspond to result_list
 	uint32_t buf_len;
-	uint32_t offset_current;		// offset (pedia.fnd) of the content of buffer
+	uint32_t offset_current;	// offset (wiki.fnd) of the content of buffer
 } SEARCH_INFO;
-static SEARCH_INFO *search_info;
+static SEARCH_INFO *search_info = NULL;
 
 #define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
 //static struct search_state state;
@@ -88,7 +91,6 @@ static int  search_string_pos[MAX_TITLE_SEARCH];
 static int search_str_len = 0;
 
 //static char s_find_first = 1;
-static char prefix_index_loaded = 0;
 
 static void *SzAlloc(void *p, size_t size) { p = p; return malloc_simple(size, MEM_TAG_INDEX_M1); }
 static void SzFree(void *p, void *address) { p = p; free_simple(address, MEM_TAG_INDEX_M1); }
@@ -145,48 +147,80 @@ void get_article_title_from_idx(long idx, char *title)
 {
 	ARTICLE_PTR article_ptr;
 	TITLE_SEARCH title_search;
+	int wiki_id;
+	int wiki_idx;
+	int nTmpeCurrentWiki = nCurrentWiki;
 
 	title[0] = '\0';
-	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
-	wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
+	wiki_id = idx >> 24;
+	idx &= 0x00FFFFFF;
+	if (wiki_id > 0)
+	{
+		wiki_idx = get_wiki_idx_from_id(wiki_id);
+		if (wiki_idx < 0) // wiki not loaded
+			return;
+		nCurrentWiki = wiki_idx;
+	}
+		
+	wl_seek(search_info[nCurrentWiki].fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
+	wl_read(search_info[nCurrentWiki].fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
 	{
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
 		bigram_decode(title, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		title[MAX_TITLE_SEARCH - 1] = '\0';
 	}
+	nCurrentWiki = nTmpeCurrentWiki;
 }
 
-int load_prefix_index(void)
+void load_prefix_index(int nWikiIdx)
 {
 	int i;
 
-	if (!prefix_index_loaded)
+	if (!search_info[nWikiIdx].inited)
 	{
-		search_info->fd_pfx = wl_open("pedia.pfx", WL_O_RDONLY);
-		search_info->fd_idx = wl_open("pedia.idx", WL_O_RDONLY);
+		search_info[nWikiIdx].fd_pfx = wl_open(get_wiki_file_path(nWikiIdx, "wiki.pfx"), WL_O_RDONLY);
+		search_info[nWikiIdx].fd_idx = wl_open(get_wiki_file_path(nWikiIdx, "wiki.idx"), WL_O_RDONLY);
 		for (i=0; i < MAX_DAT_FILES; i++)
-			search_info->fd_dat[i] = -1;
-		search_info->offset_current = -1;
-		if (search_info->fd_pfx >= 0 && search_info->fd_idx >= 0)
+			search_info[nWikiIdx].fd_dat[i] = -1;
+		search_info[nWikiIdx].offset_current = -1;
+		if (search_info[nWikiIdx].fd_pfx >= 0 && search_info[nWikiIdx].fd_idx >= 0)
 		{
-			wl_read(search_info->fd_idx, (void *)&search_info->max_article_idx, sizeof(search_info->max_article_idx));
-			memset((char *)search_info->b_prefix_index_block_loaded, 0, sizeof(search_info->b_prefix_index_block_loaded));
-			prefix_index_loaded = 1;
+			wl_read(search_info[nWikiIdx].fd_idx, (void *)&search_info[nWikiIdx].max_article_idx, sizeof(search_info[nWikiIdx].max_article_idx));
+			memset((char *)search_info[nWikiIdx].b_prefix_index_block_loaded, 0, sizeof(search_info[nWikiIdx].b_prefix_index_block_loaded));
+			search_info[nWikiIdx].inited = 1;
 		}
+		else
+			fatal_error("index file open error");
 	}
-	return prefix_index_loaded;
 }
 
 void search_init()
 {
-	result_list = (SEARCH_RESULTS *)malloc_simple(sizeof(SEARCH_RESULTS), MEM_TAG_INDEX_M1);
-	search_info = (SEARCH_INFO *)malloc_simple(sizeof(SEARCH_INFO), MEM_TAG_INDEX_M1);
-	int result = load_prefix_index();
-	if (!result) {
-		msg(MSG_ERROR, "Failed to initialize search.\n");
-		/* XXX, FIXME, handle the error */
+	int i;
+	int nWikiCount = get_wiki_count();
+
+	if (!result_list)
+	{
+		result_list = (SEARCH_RESULTS *)malloc_simple(sizeof(SEARCH_RESULTS), MEM_TAG_INDEX_M1);
+		if (!result_list)
+			fatal_error("search_init malloc error");
 	}
+	if (!search_info)
+	{
+		search_info = (SEARCH_INFO *)malloc_simple(sizeof(SEARCH_INFO) * nWikiCount, MEM_TAG_INDEX_M1);
+		if (!search_info)
+			fatal_error("search_init malloc error");
+		else
+		{
+			for (i = 0; i < nWikiCount; i++)
+			{
+				search_info[i].inited = 0;
+			}
+		}
+	}
+
+	load_prefix_index(nCurrentWiki);
 	result_list->count = 0;
 	init_search_hash();
 }
@@ -232,6 +266,28 @@ int is_proper_string(char *s, int len)
 		len--;
 	}
 	return 0;
+}
+
+char *strnstr(char *s1, char *s2, int len)
+{
+	int bFound = 0;
+	int s2_len = strlen(s2);
+
+	while (!bFound && len >= s2_len)
+	{
+		if (!memcmp(s1, s2, s2_len))
+			bFound = 1;
+		else
+		{
+			s1++;
+			len--;
+		}
+	}
+
+	if (bFound)
+		return s1;
+	else
+		return NULL;
 }
 
 char *locate_double_null(char *pBuf, int len)
@@ -309,11 +365,16 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 	if (result_list->result_populated || offset_fnd_start < 0)
 		return 0;
 
-	if (search_info->offset_current != offset_fnd_start)
+	if (search_info[nCurrentWiki].offset_current != offset_fnd_start)
 	{
-		search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
-		search_info->offset_current = offset_fnd_start;
-		if (search_info->buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
+		search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, sizeof(search_info[nCurrentWiki].buf));
+		search_info[nCurrentWiki].offset_current = offset_fnd_start;
+		if (search_interrupted)
+		{
+			search_interrupted = 7;
+			goto interrupted;
+		}
+		if (search_info[nCurrentWiki].buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
 		{
 			result_list->result_populated = 1;
 			goto out;
@@ -322,9 +383,9 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 
 	if (!result_list->result_populated)
 	{
-		pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
-		if (offsetNextTitleSearch < search_info->buf_len &&
-		    is_proper_string(pTitleSearch->sTitleSearch, search_info->buf_len - offsetNextTitleSearch -
+		pTitleSearch = (TITLE_SEARCH *)&search_info[nCurrentWiki].buf[offsetNextTitleSearch];
+		if (offsetNextTitleSearch < search_info[nCurrentWiki].buf_len &&
+		    is_proper_string(pTitleSearch->sTitleSearch, search_info[nCurrentWiki].buf_len - offsetNextTitleSearch -
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
 			bigram_decode(result_list->title[result_list->count], pTitleSearch->sTitleSearch, MAX_TITLE_SEARCH);
@@ -341,15 +402,20 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 				if (!result_list->count)
 				{
 					offset_fnd_start =  offset_fnd_start + offsetNextTitleSearch;
-					search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
-					search_info->offset_current = offset_fnd_start;
-					if (search_info->buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
+					search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, sizeof(search_info[nCurrentWiki].buf));
+					search_info[nCurrentWiki].offset_current = offset_fnd_start;
+					if (search_interrupted)
+					{
+						search_interrupted = 8;
+						goto interrupted;
+					}
+					if (search_info[nCurrentWiki].buf_len < sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
 					{
 						result_list->result_populated = 1;
 						goto out;
 					}
 					offsetNextTitleSearch = 0;
-					pTitleSearch = (TITLE_SEARCH *)&search_info->buf[offsetNextTitleSearch];
+					pTitleSearch = (TITLE_SEARCH *)&search_info[nCurrentWiki].buf[offsetNextTitleSearch];
 				}
 				memcpy((void *)&result_list->idx_article[result_list->count],
 				       (void *)&pTitleSearch->idxArticle, sizeof(long)); // use memcpy to avoid "Unaligned data access"
@@ -378,6 +444,11 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 					else
 					{
 						len = copy_fnd_to_buf(offset_middle, buf_middle, sizeof(buf_middle));
+						if (search_interrupted)
+						{
+							search_interrupted = 9;
+							goto interrupted;
+						}
 						if (len >= sizeof(pTitleSearch->idxArticle) + sizeof(pTitleSearch->cZero) + 2) // at lease 2 chars for pTitleSearch->sTitleSearch
 						{
 							pTitleSearch = locate_proper_title_search(buf_middle, len);
@@ -395,9 +466,14 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 								else		// the first mactch will be after offset_middle
 								{
 									offset_fnd_start = offset_middle;
-									search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
-									search_info->offset_current = offset_fnd_start;
-									if (search_info->buf_len <= 0)
+									search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, sizeof(search_info[nCurrentWiki].buf));
+									search_info[nCurrentWiki].offset_current = offset_fnd_start;
+									if (search_interrupted)
+									{
+										search_interrupted = 10;
+										goto interrupted;
+									}
+									if (search_info[nCurrentWiki].buf_len <= 0)
 									{
 										result_list->result_populated = 1;
 										goto out;
@@ -421,9 +497,14 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		else
 		{
 			offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
-			search_info->buf_len = copy_fnd_to_buf(offset_fnd_start, search_info->buf, sizeof(search_info->buf));
-			search_info->offset_current = offset_fnd_start;
-			if (search_info->buf_len <= 0)
+			search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, sizeof(search_info[nCurrentWiki].buf));
+			search_info[nCurrentWiki].offset_current = offset_fnd_start;
+			if (search_interrupted)
+			{
+				search_interrupted = 11;
+				goto interrupted;
+			}
+			if (search_info[nCurrentWiki].buf_len <= 0)
 			{
 				result_list->result_populated = 1;
 				goto out;
@@ -435,27 +516,36 @@ out:
 	if (result_list->result_populated)
 	{
 		if (!bInit) // just completed search result
-			search_reload_ex(SEARCH_RELOAD_NORMAL);
+			search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NORMAL);
 		return 0;
 	}
 	else
 	{
 		return 1;
 	}
+
+interrupted:
+	return 1;
 }
 
 long get_prefix_index_table(int idx_prefix_index_table)
 {
 	int idxBlock = idx_prefix_index_table / (SEARCH_CHR_COUNT * SEARCH_CHR_COUNT);
 
-	if (!search_info->b_prefix_index_block_loaded[idxBlock])
+	if (!search_info[nCurrentWiki].b_prefix_index_block_loaded[idxBlock])
 	{
-		wl_seek(search_info->fd_pfx, idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(uint32_t));
-		wl_read(search_info->fd_pfx, (void *)&(search_info->prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]),
-			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long));
-		search_info->b_prefix_index_block_loaded[idxBlock]++;
+#ifdef INCLUDED_FROM_KERNEL
+		if (wl_input_event_pending())
+			search_interrupted = 1;
+#endif
+		wl_seek(search_info[nCurrentWiki].fd_pfx,
+			idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(uint32_t));
+		wl_read(search_info[nCurrentWiki].fd_pfx,
+			&(search_info[nCurrentWiki].prefix_index_table[idxBlock * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT]),
+			SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(uint32_t));
+		search_info[nCurrentWiki].b_prefix_index_block_loaded[idxBlock]++;
 	}
-	return search_info->prefix_index_table[idx_prefix_index_table];
+	return search_info[nCurrentWiki].prefix_index_table[idx_prefix_index_table];
 }
 
 long get_search_result_start()
@@ -501,6 +591,11 @@ long get_search_result_start()
 				{
 					if (i >= lenHashedSearchString)
 						offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+					if (search_interrupted)
+					{
+						search_interrupted = 12;
+						goto interrupted;
+					}
 					if (offsetHasedSearchString[i] &&
 					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 					{
@@ -536,6 +631,11 @@ long get_search_result_start()
 			for (i = 3; i < lenHashedSearchString; i++)
 			{
 				offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+				if (search_interrupted)
+				{
+					search_interrupted = 13;
+					goto interrupted;
+				}
 				if (offsetHasedSearchString[i] &&
 				    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
 				{
@@ -573,8 +673,14 @@ long get_search_result_start()
 			found = 1;
 			offset_search_result_start = offset;
 		}
+		if (search_interrupted)
+		{
+			search_interrupted = 14;
+			goto interrupted;
+		}
 	}
 
+interrupted:
 	return offset_search_result_start;
 }
 
@@ -626,6 +732,11 @@ long get_search_result_end()
 		else
 		{
 			offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
+			if (search_interrupted)
+			{
+				search_interrupted = 15;
+				goto interrupted;
+			}
 			if (offset_search_result_end > 0)
 			{
 				found = 1;
@@ -667,16 +778,17 @@ long get_search_result_end()
 				}
 				idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
 					bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-				if (search_info->prefix_index_table[idx_prefix_index_table])
+				if (search_info[nCurrentWiki].prefix_index_table[idx_prefix_index_table])
 				{
 					found = 1;
-					offset_search_result_end = search_info->prefix_index_table[idx_prefix_index_table];
+					offset_search_result_end = search_info[nCurrentWiki].prefix_index_table[idx_prefix_index_table];
 				}
 			}
 			len_local_search_string = last_len_local_search_string - 1;
 		}
 	}
 
+interrupted:
 	return offset_search_result_end;
 }
 
@@ -686,22 +798,43 @@ int search_populate_result()
 	long offset_search_result_start = -1;
 	long offset_search_result_end = -1;
 
+	search_string_changed = false;
 	result_list->count = 0;
-	result_list->cur_selected = 0;
+	result_list->result_populated = 0;
+	result_list->cur_selected = -1;
 	if (search_str_len > 0)
 	{
 		offset_search_result_start = get_search_result_start();
+		if (search_interrupted)
+		{
+			search_interrupted = 16;
+			goto interrupted;
+		}
 		if (offset_search_result_start > 0)
 		{
 			found = 1;
 			offset_search_result_end = get_search_result_end();
+			if (search_interrupted)
+			{
+				search_interrupted = 17;
+				goto interrupted;
+			}
 			fetch_search_result(offset_search_result_start, offset_search_result_end, 1);
+			if (search_interrupted)
+			{
+				search_interrupted = 18;
+				goto interrupted;
+			}
 		}
 		else
 		{
 			result_list->result_populated = 1;
 		}
 	}
+	return found;
+
+interrupted:
+	search_string_changed = true;
 	return found;
 }
 
@@ -723,68 +856,7 @@ void capitalize(char *in_str, char *out_str, int len)
 	out_str[i] = '\0';
 }
 
-void search_reload()
-{
-//	static const char search_result_str[] = "Search:";
-	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
-		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-//	int available_count;
-	int y_pos;
-//	const char * result;
-	char *title;
-//        int render_len;
-	char temp_search_string[MAX_TITLE_SEARCH];
-
-//	DP(DBG_SEARCH, ("O search_reload() start: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list->cur_selected, result_list->first_item));
-	guilib_fb_lock();
-	if (keyboard_get_mode() == KEYBOARD_NONE)
-		guilib_clear();
-	else
-		guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
-
-	if (!search_str_len)
-	{
-		result_list->count = 0;
-		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
-		goto out;
-	}
-
-	capitalize(search_string, temp_search_string, search_str_len);
-	if (search_str_len > 1 && search_string_pos[search_str_len - 1] >= LCD_BUF_WIDTH_PIXELS)
-		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
-	y_pos = RESULT_START;
-
-
-	if (!result_list->count) {
-		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
-		goto out;
-	}
-
-	if (result_list->count) {
-		unsigned int i;
-		unsigned int count = result_list->count < screen_display_count ?
-			result_list->count : screen_display_count;
-
-		for (i = 0; i < count; i++) {
-			title = result_list->title[i];
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
-			y_pos += RESULT_HEIGHT;
-			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
-				break;
-		}
-		if (result_list->cur_selected >= screen_display_count)
-			result_list->cur_selected = screen_display_count - 1;
-		//invert_selection(result_list->cur_selected, -1, PIXEL_START, RESULT_HEIGHT);
-		invert_selection(result_list->cur_selected, -1, RESULT_START, RESULT_HEIGHT);
-	}
-out:
-//	DP(DBG_SEARCH, ("O search_reload() end: screen_display_count %u cur_selected %d first_item %u\n", screen_display_count, result_list->cur_selected, result_list->first_item));
-	guilib_fb_unlock();
-}
-
-void search_reload_ex(int flag)
+void search_reload(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
@@ -795,7 +867,7 @@ void search_reload_ex(int flag)
 	char temp_search_string[MAX_TITLE_SEARCH];
 	static int bNoResultLastTime = 0;
 	int keyboard_mode = keyboard_get_mode();
-
+	char *pMsg;
 
 	more_search_results = 0;
 	guilib_fb_lock();
@@ -813,6 +885,8 @@ void search_reload_ex(int flag)
 	}
 	else
 	{
+		if (flag != SEARCH_RELOAD_NO_POPULATE)
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 		if (flag == SEARCH_RELOAD_KEEP_REFRESH)
 			guilib_clear_area(0, 0, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
 		if(search_string_changed_remove)
@@ -837,11 +911,15 @@ void search_reload_ex(int flag)
 
 	if (!search_str_len)
 	{
+		search_string_changed = 0;
 		bNoResultLastTime = 0;
-		guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
 		result_list->count = 0;
+		result_list->result_populated = 1;
 		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
+		pMsg = get_nls_text("type_a_word");
+		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
+			0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+		keyboard_paint();
 		goto out;
 	}
 
@@ -868,7 +946,8 @@ void search_reload_ex(int flag)
 			if (!bNoResultLastTime)
 			{
 				guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
-				render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
+				pMsg = get_nls_text("no_results");
+				render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
 				bNoResultLastTime = 1;
 			}
 			goto out;
@@ -908,12 +987,48 @@ void search_reload_ex(int flag)
 out:
 	guilib_fb_unlock();
 }
+
+void search_to_be_reloaded(int to_be_reloaded_flag, int reload_flag)
+{
+	static bool to_be_reloaded = false;
+	static int saved_reload_flag;
+
+	switch (to_be_reloaded_flag)
+	{
+		case SEARCH_TO_BE_RELOADED_CLEAR:
+			to_be_reloaded = false;
+			break;
+		case SEARCH_TO_BE_RELOADED_SET:
+			if (reload_flag == SEARCH_RELOAD_NORMAL && keyboard_key_inverted())
+			{
+				to_be_reloaded = true;
+				saved_reload_flag = reload_flag;
+			}
+			else
+			{
+				search_reload(reload_flag);
+				to_be_reloaded = false;
+			}
+			break;
+		case SEARCH_TO_BE_RELOADED_CHECK:
+			if (to_be_reloaded && !keyboard_key_inverted())
+			{
+				search_reload(saved_reload_flag);
+				to_be_reloaded = false;
+			}
+			break;
+		default:
+			break;
+	}
+}
+
 void search_result_display()
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos=0;
 	char *title;
+	char *pMsg;
 
 	guilib_fb_lock();
 	guilib_clear_area(0, RESULT_START, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
@@ -922,15 +1037,19 @@ void search_result_display()
 	{
 		result_list->count = 0;
 		result_list->cur_selected = -1;
-		render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
+		pMsg = get_nls_text("type_a_word");
+		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
+			0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+		keyboard_paint();
 		goto out;
 	}
 
 
 	y_pos = RESULT_START;
 
-	if (!result_list->count) {
-		render_string(SEARCH_LIST_FONT_IDX, -1, 55, MESSAGE_NO_RESULTS, strlen(MESSAGE_NO_RESULTS), 0);
+	if (result_list->result_populated && !result_list->count) {
+		pMsg = get_nls_text("no_results");
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
 		goto out;
 	}
 
@@ -954,39 +1073,49 @@ out:
 	guilib_fb_unlock();
 }
 
-int search_add_char(char c)
+int search_add_char(char c, unsigned long ev_time)
 {
-	if(c == 0x20 && search_str_len>0 && search_string[search_str_len-1] == 0x20)
-		return -1;
-	if (search_str_len >= MAX_TITLE_SEARCH - 2)
-		return -1;
-
-	if (!search_str_len && c == 0x20)
+	if((c == 0x20 && search_str_len>0 && search_string[search_str_len-1] == 0x20) ||
+		(search_str_len >= MAX_TITLE_SEARCH - 2) ||
+		(!search_str_len && c == 0x20))
 		return -1;
 
+	if (!search_str_len) // clear type_a_word message
+	{
+		guilib_fb_lock();
+		guilib_clear_area(0, 55, 239, 80);
+		guilib_fb_unlock();
+	}
 	if ('A' <= c && c <= 'Z')
 		c += 32;
 	search_string[search_str_len++] = c;
 	search_string[search_str_len] = '\0';
-//	if (search_str_len >= 4) {
-//		state.pattern_len = search_str_len;
-//		if (!s_find_first) // already found something before?
-//			reset_state(&global_search, &state, &last_first_hit);
-//	} else
-//		prepare_search(&global_search, search_string, &state);
-//	s_find_first = 1;
-//	result_list->cur_selected = -1;
-//	result_list->first_item = 0;
-//	result_list->count = 0;
-#ifdef INCLUDED_FROM_KERNEL
-	time_search_last=get_time_search();
-	//return;
-#endif
+	time_search_string_changed = get_time_ticks();
 	search_string_changed = true;
-	search_populate_result();
-	result_list->cur_selected = -1;
 	return 0;
 }
+
+int check_search_string_change(void)
+{
+	if (!search_string_changed)
+		return 0;
+
+	if (time_diff(get_time_ticks(), time_search_string_changed) > seconds_to_ticks(DELAYED_SEARCH_TIME))
+	{
+		search_interrupted = 0;
+		search_populate_result();
+		if (search_interrupted)
+			goto interrupted;
+		result_list->cur_selected = -1;
+		if (result_list->result_populated)
+			search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NORMAL);
+	}
+	return 1;
+
+interrupted:
+	return 1;
+}
+
 void search_fetch()
 {
 	search_populate_result();
@@ -997,29 +1126,25 @@ void search_fetch()
 /*
  * return value - 0: remove ok, -1: no key to remove
  */
-int search_remove_char(int bPopulate)
+int search_remove_char(int bPopulate, unsigned long ev_time)
 {
-	DP(DBG_SEARCH, ("O search_remove_char() search_str_len %d\n", search_str_len));
 	if (search_str_len == 0)
 		return -1;
 
 	search_string[--search_str_len] = '\0';
-//	memset(&state, 0, sizeof(state));
-//	s_find_first = 1;
-//	prepare_search(&global_search, search_string, &state);
-//	result_list->cur_selected = -1;
-//	result_list->first_item = 0;
-//	result_list->count = 0;
 
-#ifdef INCLUDED_FROM_KERNEL
-	time_search_last=get_time_search();
-	//return;
-#endif
-	search_string_changed = true;
-	search_string_changed_remove = true;
 	if (bPopulate || !search_str_len)
+	{
 		search_populate_result();
-	result_list->cur_selected = -1;
+		search_string_changed_remove = true;
+		result_list->cur_selected = -1;
+	}
+	else
+	{
+		search_string_changed = true;
+		search_string_changed_remove = true;
+		time_search_string_changed = get_time_ticks();
+	}
 	return 0;
 }
 
@@ -1087,16 +1212,16 @@ int get_search_string_len()
 int search_result_selected()
 {
 	return result_list->cur_selected;
-//return -1;
 }
 
 extern unsigned char * file_buffer;
 extern int restricted_article;
+extern int current_article_wiki_id;
 #define HEAP_ALLOC(var,size)						\
 	lzo_align_t __LZO_MMODEL var [ ((size) + (sizeof(lzo_align_t) - 1)) / sizeof(lzo_align_t) ]
 //static HEAP_ALLOC(wrkmem,LZO1X_1_MEM_COMPRESS);
 char *compressed_buf = NULL;
-int retrieve_article(long idx_article)
+int retrieve_article(long idx_article_with_wiki_id)
 {
 	ARTICLE_PTR article_ptr;
 	int dat_file_id = 0;
@@ -1108,32 +1233,50 @@ int retrieve_article(long idx_article)
 	ELzmaStatus status;
 	Byte propsEncoded[LZMA_PROPS_SIZE];
 	unsigned int propsSize;
+	long idx_article;
+	int nWikiIdx;
 //        int open_number = 0;
 
 	if (!compressed_buf)
 		compressed_buf = (char *)malloc_simple(MAX_COMPRESSED_ARTICLE, MEM_TAG_INDEX_M1);
 //start:
-	if (compressed_buf && 0 < idx_article && idx_article <= search_info->max_article_idx) {
-		wl_seek(search_info->fd_idx, sizeof(int32_t) + (idx_article - 1) * sizeof(article_ptr));
-		wl_read(search_info->fd_idx, &article_ptr, sizeof(article_ptr));
+	current_article_wiki_id = (unsigned long)idx_article_with_wiki_id >> 24;
+	if (current_article_wiki_id == 0)
+		nWikiIdx = nCurrentWiki;
+	else
+	{
+		nWikiIdx = get_wiki_idx_from_id(current_article_wiki_id );
+		if (nWikiIdx >= 0)
+			load_prefix_index(nWikiIdx);
+		else
+		{
+			print_article_error();
+			return -1;
+		}
+	}
+	idx_article = idx_article_with_wiki_id & 0x00FFFFFF;
+	if (nWikiIdx >= 0 && compressed_buf && 0 < idx_article && idx_article <= search_info[nWikiIdx].max_article_idx) {
+		wl_seek(search_info[nWikiIdx].fd_idx, sizeof(uint32_t) + (idx_article - 1) * sizeof(article_ptr));
+		wl_read(search_info[nWikiIdx].fd_idx, &article_ptr, sizeof(article_ptr));
+
 		dat_file_id = ((article_ptr.file_id_compressed_len  & 0x3FFFFFFF)>> 24);
 		dat_article_len = article_ptr.file_id_compressed_len & 0x00FFFFFF;
 
 		if (dat_article_len > 0)
 		{
-			if (search_info->fd_dat[dat_file_id] < 0)
+			if (search_info[nWikiIdx].fd_dat[dat_file_id] < 0)
 			{
-				sprintf(file_name, "pedia%d.dat", dat_file_id);
-				search_info->fd_dat[dat_file_id] = wl_open(file_name, WL_O_RDONLY);
+				sprintf(file_name, "wiki%d.dat", dat_file_id);
+				search_info[nWikiIdx].fd_dat[dat_file_id] = wl_open(get_wiki_file_path(nWikiIdx, file_name), WL_O_RDONLY);
 			}
-			if (search_info->fd_dat[dat_file_id] >= 0)
+			if (search_info[nWikiIdx].fd_dat[dat_file_id] >= 0)
 			{
 				if (article_ptr.offset_dat & 0x80000000)
 					restricted_article = 1;
 				else
 					restricted_article = 0;
-				wl_seek(search_info->fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
-				wl_read(search_info->fd_dat[dat_file_id], compressed_buf, dat_article_len);
+				wl_seek(search_info[nWikiIdx].fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
+				wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], compressed_buf, dat_article_len);
 				propsSize = (unsigned int)compressed_buf[0];
 				memcpy(propsEncoded, compressed_buf + 1, LZMA_PROPS_SIZE);
 				dat_article_len -= LZMA_PROPS_SIZE + 1;
@@ -1147,14 +1290,7 @@ int retrieve_article(long idx_article)
 			}
 		}
 	}
-//if (!compressed_buf)
-//sprintf(article_error, "compressed_buf allocation error");
-//else
-//{
-//sprintf(article_error, "idx=%ld, fid=%d, offset=%lx", idx_article,
-//dat_file_id, sizeof(long) + (idx_article - 1) * sizeof(article_ptr));
-//sprintf(article_error2, "len=%d, rc=%d", dat_article_len, rc);
-//}
+
 	print_article_error();
 	return -1;
 }
@@ -1174,17 +1310,19 @@ void search_open_article(int new_selection)
 	display_link_article(result_list->idx_article[list_idx]);
 }
 
-long find_closest_idx(unsigned long idx, char *title)
+long find_closest_idx(long idx, char *title)
 {
 	ARTICLE_PTR article_ptr;
 	TITLE_SEARCH title_search;
 	static int count = 0;
 
 	title[0] = '\0';
-	if (idx > search_info->max_article_idx)
-		idx -= search_info->max_article_idx;
-	wl_seek(search_info->fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + sizeof(uint32_t));
-	wl_read(search_info->fd_idx, (void *)&article_ptr, sizeof(article_ptr));
+
+	if (idx > search_info[nCurrentWiki].max_article_idx)
+		idx -= search_info[nCurrentWiki].max_article_idx;
+	wl_seek(search_info[nCurrentWiki].fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + sizeof(uint32_t));
+	wl_read(search_info[nCurrentWiki].fd_idx, &article_ptr, sizeof(article_ptr));
+
 	if (!article_ptr.file_id_compressed_len || !article_ptr.offset_fnd)
 	{
 		if (count < 10)
@@ -1220,7 +1358,7 @@ void random_article(void)
 #else
 	clock_ticks = clock();
 #endif
-	idx_article = clock_ticks % search_info->max_article_idx + 1;
+	idx_article = clock_ticks % search_info[nCurrentWiki].max_article_idx + 1;
 	idx_article = find_closest_idx(idx_article, title);
 
 	if (idx_article)
@@ -1228,17 +1366,4 @@ void random_article(void)
 		last_display_mode = DISPLAY_MODE_INDEX; // for history_save not to log the last article index
 		display_link_article(idx_article);
 	}
-}
-
-unsigned int get_time_search(void)
-{
-	long clock_ticks;
-
-#ifdef INCLUDED_FROM_KERNEL
-	clock_ticks = Tick_get();
-#else
-	clock_ticks = clock();
-#endif
-
-	return (unsigned int)clock_ticks;
 }

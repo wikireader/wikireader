@@ -69,6 +69,7 @@ GUILIB_COBJS += bigram.o
 GUILIB_COBJS += glyph.o
 GUILIB_COBJS += restricted.o
 GUILIB_COBJS += sha1.o
+GUILIB_COBJS += wiki_info.o
 
 WIKIAPP_COBJS = file-io-libfat.o
 WIKIAPP_COBJS += wikilib.o
@@ -91,7 +92,7 @@ LZMA_COBJS += Bra.o
 LZMA_COBJS += LzFind.o
 
 # convert the image files
-IMAGES = keyboard_abc keyboard_123
+IMAGES = keyboard_abc keyboard_123 nls
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)

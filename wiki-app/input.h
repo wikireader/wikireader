@@ -21,6 +21,7 @@
 #include <stdbool.h>
 
 
+#define WL_KEY_NLS		7
 #define WL_KEY_BACKSPACE	8
 #define WL_KEY_RETURN		13
 #define WL_KEY_ESC		27

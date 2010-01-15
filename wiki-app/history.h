@@ -28,15 +28,13 @@
 #define HISTORY_RESULT_HEIGHT 19
 #define MAX_HISTORY 256
 #define HISTORY_PIXEL_START (HISTORY_RESULT_START - HISTORY_RESULT_HEIGHT + 2)
-#define MESSAGE_HISTORY_TITLE "History"
-#define MESSAGE_NO_HISTORY "No history"
 /*
  * Interface for the History feature
  */
 
 void history_clear(void);
 
-void history_add(const long idx_article, const char *title, int b_keep_pos);
+void history_add(long idx_article, const char *title, int b_keep_pos);
 unsigned int history_get_count();
 void history_list_init(void);
 int history_list_save(int level);

@@ -21,12 +21,15 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <errno.h>
-
-#if !defined(WIKIPCF)
+#ifdef WIKIPCF
+#include <malloc.h>
+#else
 #include <malloc-simple.h>
 #include <file-io.h>
+#include <input.h>
 #include "msg.h"
 #include "search.h"
+#include "wiki_info.h"
 #endif
 #include "search_hash.h"
 #include "lcd_buf_draw.h"
@@ -35,29 +38,36 @@
 //	The first 4 bytes contain the hash entry count
 //	Each hash entry is defined as struct SEARCH_HASH_TABLE
 
+#ifdef WIKIPCF
 SEARCH_HASH_TABLE *search_hash_table;
 SEARCH_HASH_STRING *search_hash_strings;
+
 uint32_t nHashEntries = 0;
-#ifdef WIKIPCF
+
 FILE *fdHsh;
 long nNeedMoreEntries = 0;
 #else
-int fdHsh = 999;
-int fdFnd = 999;
-int *bHashBlockLoaded;
+extern int search_interrupted;
+int bHashInited[MAX_WIKIS];
+SEARCH_HASH_TABLE *search_hash_table[MAX_WIKIS];
+SEARCH_HASH_STRING *search_hash_strings[MAX_WIKIS];
+uint32_t nHashEntries[MAX_WIKIS];
+int fdHsh[MAX_WIKIS];
+int fdFnd[MAX_WIKIS];
+int *bHashBlockLoaded[MAX_WIKIS];
 #define FND_BUF_COUNT 2048
 #define ENTRIES_PER_HASH_BLOCK 256
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
 struct _fnd_buf {
-	int32_t offset;
+	uint32_t offset;
 	uint32_t len;
 	uint32_t used_seq;
 	char buf[FND_BUF_BLOCK_SIZE];
-} *fnd_bufs;
+} *fnd_bufs[MAX_WIKIS];
 
 long nUsedSeq = 1;
-long lenFnd = 0;
+long lenFnd[MAX_WIKIS];
 #endif
 
 static unsigned long hash_key(char *s, int len)
@@ -160,18 +170,33 @@ void save_search_hash(void)
 #else
 void init_search_hash(void)
 {
+	static int bFirstCall = 1;
 	int i;
 
-	fdHsh = wl_open("pedia.hsh", WL_O_RDONLY);
-	wl_read(fdHsh, &nHashEntries, sizeof(nHashEntries));
-	search_hash_table = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries, MEM_TAG_INDEX_M1);
-	bHashBlockLoaded = (int *)malloc_simple(sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
-	memset((char *)bHashBlockLoaded, 0, sizeof(int) * (nHashEntries / ENTRIES_PER_HASH_BLOCK));
-	fdFnd = wl_open("pedia.fnd", WL_O_RDONLY);
-	init_bigram(fdFnd);
-	fnd_bufs = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
-	for (i = 0; i < FND_BUF_COUNT; i++)
-		fnd_bufs[i].offset = 0;
+	if (bFirstCall)
+	{
+		for (i = 0; i < MAX_WIKIS; i++)
+		{
+			bHashInited[i] = 0;
+			lenFnd[i] = 0;
+		}
+		bFirstCall = 0;
+	}
+
+	if (!bHashInited[nCurrentWiki])
+	{
+		fdHsh[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.hsh"), WL_O_RDONLY);
+		wl_read(fdHsh[nCurrentWiki], &nHashEntries[nCurrentWiki], sizeof(nHashEntries[nCurrentWiki]));
+		search_hash_table[nCurrentWiki] = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries[nCurrentWiki], MEM_TAG_INDEX_M1);
+		bHashBlockLoaded[nCurrentWiki] = (int *)malloc_simple(sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
+		memset((char *)bHashBlockLoaded[nCurrentWiki], 0, sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK));
+		fdFnd[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.fnd"), WL_O_RDONLY);
+		init_bigram(fdFnd[nCurrentWiki]);
+		fnd_bufs[nCurrentWiki] = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
+		for (i = 0; i < FND_BUF_COUNT; i++)
+			fnd_bufs[nCurrentWiki][i].offset = 0;
+		bHashInited[nCurrentWiki] = 1;
+	}
 }
 
 int nHashJumps;
@@ -187,40 +212,59 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	nHashJumps = 0;
 	nHashKey = hash_key(sSearchString, len);
 	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
-	if (!bHashBlockLoaded[idxBlock])
+	if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
 	{
-		wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-		wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+		wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
+		wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
 			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
-		bHashBlockLoaded[idxBlock]++;
+		bHashBlockLoaded[nCurrentWiki][idxBlock]++;
+#ifdef INCLUDED_FROM_KERNEL
+		if (wl_input_event_pending())
+		{
+			search_interrupted = 2;
+			goto interrupted;
+		}
+#endif
 	}
 
-	while (!bFound && nHashKey >= 0 && search_hash_table[nHashKey].offset_fnd)
+	while (!bFound && nHashKey >= 0 && search_hash_table[nCurrentWiki][nHashKey].offset_fnd)
 	{
-		if (search_hash_table[nHashKey].offset_fnd > 0)
+		if (search_hash_table[nCurrentWiki][nHashKey].offset_fnd > 0)
 		{
-			copy_fnd_to_buf(search_hash_table[nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
+			copy_fnd_to_buf(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
+			if (search_interrupted)
+			{
+				search_interrupted = 6;
+				goto interrupted;
+			}
 			bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		}
 		else
 			sDecoded[0] = '\0';
-		lenHashed = (search_hash_table[nHashKey].next_entry_idx >> 28) & 0x000000FF;
+		lenHashed = (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx >> 28) & 0x000000FF;
 		sDecoded[lenHashed] = '\0';
 		if (!search_string_cmp(sDecoded, sSearchString, len))
 			bFound = 1;
 		if (!bFound)
 		{
-			if (search_hash_table[nHashKey].next_entry_idx  & 0x0FFFFFFF)
+			if (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx  & 0x0FFFFFFF)
 			{
 				nHashJumps++;
-				nHashKey = search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF;
+				nHashKey = search_hash_table[nCurrentWiki][nHashKey].next_entry_idx & 0x0FFFFFFF;
 				idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
-				if (!bHashBlockLoaded[idxBlock])
+				if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
 				{
-					wl_seek(fdHsh, idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries));
-					wl_read(fdHsh, &search_hash_table[idxBlock * ENTRIES_PER_HASH_BLOCK],
+					wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
+					wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
 						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
-					bHashBlockLoaded[idxBlock]++;
+					bHashBlockLoaded[nCurrentWiki][idxBlock]++;
+#ifdef INCLUDED_FROM_KERNEL
+					if (wl_input_event_pending())
+					{
+						search_interrupted = 3;
+						goto interrupted;
+					}
+#endif
 				}
 			}
 			else
@@ -229,12 +273,14 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	}
 	if (bFound)
 	{
-		return search_hash_table[nHashKey].offset_fnd;
+		return search_hash_table[nCurrentWiki][nHashKey].offset_fnd;
 	}
 	else
 	{
 		return 0;
 	}
+interrupted:
+	return 0;
 }
 
 int copy_fnd_to_buf(long offset, char *buf, int len)
@@ -246,22 +292,22 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	int nCopyLen;
 	long blocked_offset;
 
-	if (lenFnd > 0 && offset >= lenFnd)
+	if (lenFnd[nCurrentWiki] > 0 && offset >= lenFnd[nCurrentWiki])
 		return 0;
 
 	while (!bFound && i < FND_BUF_COUNT)
 	{
-		if (fnd_bufs[i].offset)
+		if (fnd_bufs[nCurrentWiki][i].offset)
 		{
-			if (fnd_bufs[i].offset <= offset && offset - fnd_bufs[i].offset < FND_BUF_BLOCK_SIZE)
+			if (fnd_bufs[nCurrentWiki][i].offset <= offset && offset - fnd_bufs[nCurrentWiki][i].offset < FND_BUF_BLOCK_SIZE)
 			{
 				bFound = 1;
 			}
 			else
 			{
-				if (nLeastUsedSeq == 0 || fnd_bufs[i].used_seq < nLeastUsedSeq)
+				if (nLeastUsedSeq == 0 || fnd_bufs[nCurrentWiki][i].used_seq < nLeastUsedSeq)
 				{
-					nLeastUsedSeq = fnd_bufs[i].used_seq;
+					nLeastUsedSeq = fnd_bufs[nCurrentWiki][i].used_seq;
 					iLeastUsed = i;
 				}
 			}
@@ -269,19 +315,27 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		else // the block of the offset to be read into the null entry
 		{
 			blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
-			wl_seek(fdFnd, blocked_offset);
-			fnd_bufs[i].len = wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
-			if (fnd_bufs[i].len < FND_BUF_BLOCK_SIZE)
+			wl_seek(fdFnd[nCurrentWiki], blocked_offset);
+			fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], fnd_bufs[nCurrentWiki][i].buf, FND_BUF_BLOCK_SIZE);
+#ifdef INCLUDED_FROM_KERNEL
+			if (wl_input_event_pending())
 			{
-				lenFnd = wl_tell(fdFnd);
-				if (fnd_bufs[i].len <= 0)
+				search_interrupted = 4;
+			}
+#endif
+			if (fnd_bufs[nCurrentWiki][i].len < FND_BUF_BLOCK_SIZE)
+			{
+				lenFnd[nCurrentWiki] = wl_tell(fdFnd[nCurrentWiki]);
+				if (fnd_bufs[nCurrentWiki][i].len <= 0)
 				{
-					fnd_bufs[i].offset = 0;
+					fnd_bufs[nCurrentWiki][i].offset = 0;
 					return 0;
 				}
 			}
-			fnd_bufs[i].offset = blocked_offset;
+			fnd_bufs[nCurrentWiki][i].offset = blocked_offset;
 			bFound = 1;
+			if (search_interrupted)
+				goto interrupted;
 		}
 		if (!bFound)
 			i++;
@@ -291,34 +345,44 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	{
 		i = iLeastUsed;
 		blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
-		wl_seek(fdFnd, blocked_offset);
-		fnd_bufs[i].len = wl_read(fdFnd, fnd_bufs[i].buf, FND_BUF_BLOCK_SIZE);
-		if (fnd_bufs[i].len < FND_BUF_BLOCK_SIZE)
+		wl_seek(fdFnd[nCurrentWiki], blocked_offset);
+		fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], fnd_bufs[nCurrentWiki][i].buf, FND_BUF_BLOCK_SIZE);
+#ifdef INCLUDED_FROM_KERNEL
+		if (wl_input_event_pending())
 		{
-			lenFnd = wl_tell(fdFnd);
-			if (fnd_bufs[i].len <= 0)
+			search_interrupted = 5;
+		}
+#endif
+		if (fnd_bufs[nCurrentWiki][i].len < FND_BUF_BLOCK_SIZE)
+		{
+			lenFnd[nCurrentWiki] = wl_tell(fdFnd[nCurrentWiki]);
+			if (fnd_bufs[nCurrentWiki][i].len <= 0)
 			{
-				fnd_bufs[i].offset = 0;
+				fnd_bufs[nCurrentWiki][i].offset = 0;
 				return 0;
 			}
 		}
-		fnd_bufs[i].offset = blocked_offset;
+		fnd_bufs[nCurrentWiki][i].offset = blocked_offset;
+		if (search_interrupted)
+			goto interrupted;
 	}
-	fnd_bufs[i].used_seq = nUsedSeq++;
+	fnd_bufs[nCurrentWiki][i].used_seq = nUsedSeq++;
 
-	if (len > fnd_bufs[i].len - (offset - fnd_bufs[i].offset)) // the buf to be copied is separated into two blocks or end of file
-		nCopyLen = fnd_bufs[i].len - (offset - fnd_bufs[i].offset);
+	if (len > fnd_bufs[nCurrentWiki][i].len - (offset - fnd_bufs[nCurrentWiki][i].offset)) // the buf to be copied is separated into two blocks or end of file
+		nCopyLen = fnd_bufs[nCurrentWiki][i].len - (offset - fnd_bufs[nCurrentWiki][i].offset);
 	else
 		nCopyLen = len;
 
 	if (nCopyLen < 0)
 		nCopyLen = 0;
 	else
-		memcpy(buf, &fnd_bufs[i].buf[offset - fnd_bufs[i].offset], nCopyLen);
+		memcpy(buf, &fnd_bufs[nCurrentWiki][i].buf[offset - fnd_bufs[nCurrentWiki][i].offset], nCopyLen);
 
 	if (nCopyLen < len)
-		nCopyLen += copy_fnd_to_buf(fnd_bufs[i].offset + fnd_bufs[i].len, &buf[nCopyLen], len - nCopyLen);
+		nCopyLen += copy_fnd_to_buf(fnd_bufs[nCurrentWiki][i].offset + fnd_bufs[nCurrentWiki][i].len, &buf[nCopyLen], len - nCopyLen);
 	return nCopyLen;
+interrupted:
+	return 0;
 }
 
 #endif

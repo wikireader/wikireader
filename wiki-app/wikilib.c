@@ -42,6 +42,7 @@
 #include "delay.h"
 #include "search_hash.h"
 #include "restricted.h"
+#include "wiki_info.h"
 #ifndef INCLUDED_FROM_KERNEL
 #include "time.h"
 #else
@@ -52,7 +53,6 @@
 //#include <wl-time.h>
 
 #define DBG_WL 0
-#define SEARCH_FETCH_DELAY 1000000*24
 
 struct pos {
 	unsigned int x;
@@ -92,6 +92,7 @@ int time_random_last = 0;
 extern bool search_string_changed;
 extern unsigned int time_search_last;
 extern int b_show_scroll_bar;
+extern int display_first_page;
 bool press_delete_button = false;
 extern bool search_string_changed_remove;
 int history_touch_pos_y_last;
@@ -109,11 +110,15 @@ int article_moved_pixels = 0;
 extern int link_to_be_inverted;
 extern int link_currently_inverted;
 long finger_move_speed = 0;
+#ifdef OVER_SCROLL_ENABLED
+extern int over_scroll_lines;
+#endif
+int finger_touched = 0;
 
 void repaint_search(void)
 {
 	guilib_fb_lock();
-	search_reload_ex(SEARCH_RELOAD_KEEP_REFRESH);
+	search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_KEEP_REFRESH);
 	keyboard_paint();
 	guilib_fb_unlock();
 }
@@ -129,11 +134,10 @@ static void toggle_soft_keyboard(void)
 		keyboard_set_mode(KEYBOARD_CHAR);
 		if (mode == KEYBOARD_NONE)
 			restore_search_list_page();
-//		search_reload_ex();
 		keyboard_paint();
 	} else {
 		keyboard_set_mode(KEYBOARD_NONE);
-		search_reload_ex(SEARCH_RELOAD_KEEP_RESULT);
+		search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_KEEP_RESULT);
 	}
 
 	//guilib_fb_unlock();
@@ -278,14 +282,23 @@ void article_display_pcf(int yPixel)
 	curBufferPos = pos;
 }
 
-static void handle_search_key(char keycode)
+static void handle_search_key(char keycode, unsigned long ev_time)
 {
 	int rc = 0;
 
-	if (keycode == WL_KEY_BACKSPACE) {
-		rc = search_remove_char(1);
+	if (keycode == WL_KEY_NLS) {
+#ifdef INCLUDED_FROM_KERNEL
+		delay_us(100000);
+#endif
+		keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+		display_mode = DISPLAY_MODE_WIKI_SELECTION;
+		keyboard_set_mode(KEYBOARD_NONE);
+		wiki_selection();
+		return;
+	} else if (keycode == WL_KEY_BACKSPACE) {
+		rc = search_remove_char(0, ev_time);
 	} else if (is_supported_search_char(keycode)) {
-		rc = search_add_char(tolower(keycode));
+		rc = search_add_char(tolower(keycode), ev_time);
 	} else {
 		if(keycode == -42) // toggling keyboard will be handled at key down
 		{
@@ -298,9 +311,9 @@ static void handle_search_key(char keycode)
 	}
 
 	guilib_fb_lock();
-	//search_reload();
 	if (!rc)
-		search_reload_ex(SEARCH_RELOAD_NORMAL);
+		search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NO_POPULATE);
+//
 //	keyboard_paint();
 	guilib_fb_unlock();
 }
@@ -334,7 +347,7 @@ static void handle_key_release(int keycode)
 	int mode;
 
 	finger_move_speed = 0;
-	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW); // reset invert immediately
+	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0); // reset invert immediately
 	DP(DBG_WL, ("O handle_key_release()\n"));
 	mode = keyboard_get_mode();
 	if (keycode == WL_INPUT_KEY_POWER) {
@@ -369,7 +382,7 @@ static void handle_key_release(int keycode)
 				//keyboard_paint();
 				draw_clear_history(1);
 				guilib_fb_unlock();
-			} else if (history_get_count() > 0) {
+			} else if (history_get_count() > 0 && display_first_page) {
 				keyboard_set_mode(KEYBOARD_CLEAR_HISTORY);
 				guilib_fb_lock();
 				//keyboard_paint();
@@ -403,7 +416,7 @@ static void handle_key_release(int keycode)
 			prof_print();
 #endif
 		} else {
-			handle_search_key(keycode);
+			handle_search_key(keycode, get_time_ticks());
 		}
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
 		article_buf_pointer = NULL;
@@ -440,7 +453,7 @@ static void handle_touch(struct wl_input_event *ev)
 		article_buf_pointer = NULL;
 		key = keyboard_get_data(ev->touch_event.x, ev->touch_event.y);
 		if (ev->touch_event.value == 0) {
-			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
@@ -452,7 +465,7 @@ static void handle_touch(struct wl_input_event *ev)
 					touch_down_on_list = 0;
 					goto out;
 				}
-				handle_search_key(key->key);
+				handle_search_key(key->key, ev->touch_event.ticks);
 			}
 			else {
 				if (!touch_down_on_list || ev->touch_event.y < RESULT_START - RESULT_HEIGHT) {
@@ -509,7 +522,7 @@ static void handle_touch(struct wl_input_event *ev)
 			} else {
 				if (!touch_down_on_keyboard && !touch_down_on_list)
 					touch_down_on_list = 1;
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 				pre_key = NULL;
 
 				if (!search_result_count()) goto out;
@@ -559,7 +572,7 @@ static void handle_touch(struct wl_input_event *ev)
 #ifdef INCLUDED_FROM_KERNEL
 			delay_us(100000 * 2);
 #endif
-			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
@@ -603,7 +616,7 @@ static void handle_touch(struct wl_input_event *ev)
 				}
 			} else {
 				touch_down_on_keyboard = 0;
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 				pre_key = NULL;
 
 			}
@@ -618,10 +631,10 @@ static void handle_touch(struct wl_input_event *ev)
 #ifdef INCLUDED_FROM_KERNEL
 				delay_us(100000 * 2);
 #endif
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 			}
 			else
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY); // reset invert with delay
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
@@ -668,7 +681,7 @@ static void handle_touch(struct wl_input_event *ev)
 					pre_key = key;
 				}
 			} else {
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW);
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 				pre_key = NULL;
 
 				search_touch_pos_y_last = ev->touch_event.y;
@@ -679,6 +692,8 @@ static void handle_touch(struct wl_input_event *ev)
 			unsigned long diff_ticks = 0;
 			long diff_y = 0;
 
+			finger_touched = 0;
+			time_scroll_article_last = ev->touch_event.ticks;
 			for (i = 4; i > 0; i--)
 			{
 				if (last_5_y[i])
@@ -721,11 +736,6 @@ static void handle_touch(struct wl_input_event *ev)
 					finger_move_speed = 0;
 			}
 
-			if (finger_move_speed != 0)
-			{
-				time_scroll_article_last = ev->touch_event.ticks;
-			}
-
 			article_moved = false;
 			if (finger_move_speed == 0 && b_show_scroll_bar)
 			{
@@ -750,8 +760,20 @@ static void handle_touch(struct wl_input_event *ev)
 				{
 					init_invert_link();
 					last_display_mode = display_mode;
-					display_mode = DISPLAY_MODE_ARTICLE;
-					open_article_link_with_link_number(article_link_number);
+					if (display_mode == DISPLAY_MODE_WIKI_SELECTION)
+					{
+						set_wiki(article_link_number);
+						search_init();
+						search_set_selection(-1);
+						display_mode = DISPLAY_MODE_INDEX;
+						keyboard_set_mode(KEYBOARD_CHAR);
+						repaint_search();
+					}
+					else
+					{
+						display_mode = DISPLAY_MODE_ARTICLE;
+						open_article_link_with_link_number(article_link_number);
+					}
 				}
 				else
 				{
@@ -765,6 +787,7 @@ static void handle_touch(struct wl_input_event *ev)
 			reset_article_link_number();
 			article_touch_down_handled = 0;
 		} else {
+			finger_touched = 1;
 			finger_move_speed = 0;
 
 			if(touch_y_last_unreleased == 0)
@@ -840,12 +863,15 @@ out:
 
 int wikilib_init (void)
 {
-	// tbd: name more than 8.3 could not be found on the device (fatfs)
-	//g_womh = wom_open("wiki.dat");
 	init_lcd_draw_buf();
 	init_file_buffer();
+	init_wiki_info();
 	return 0;
 }
+
+#ifndef INCLUDED_FROM_KERNEL
+extern long idx_init_article;
+#endif
 
 int wikilib_run(void)
 {
@@ -855,6 +881,7 @@ int wikilib_run(void)
 	int more_events = 0;
 	unsigned long last_event_time = 0;
 	int rc;
+	char *pMsg;
 
 
 	/*
@@ -865,20 +892,15 @@ int wikilib_run(void)
 	history_list_init();
 	malloc_status_simple();
 	print_intro();
-
-#if !defined(INCLUDED_FROM_KERNEL)
-	extern long idx_init_article;
-
-	if (0 != idx_init_article) {
-		printf("load article: %ld\n", idx_init_article);
-		if (!load_init_article(idx_init_article))
-		{
-			display_mode = DISPLAY_MODE_ARTICLE;
-			last_display_mode = DISPLAY_MODE_INDEX;
-		}
+#ifndef INCLUDED_FROM_KERNEL
+	if (!load_init_article(idx_init_article))
+	{
+		display_mode = DISPLAY_MODE_ARTICLE;
+		last_display_mode = DISPLAY_MODE_INDEX;
 	}
 #endif
-	render_string(SUBTITLE_FONT_IDX, -1, 55, MESSAGE_TYPE_A_WORD, strlen(MESSAGE_TYPE_A_WORD), 0);
+	pMsg = get_nls_text("type_a_word");
+	render_string(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
 
 	for (;;) {
 		if (more_events)
@@ -891,7 +913,13 @@ int wikilib_run(void)
 			sleep = 0;
 		else if (!more_events && display_mode == DISPLAY_MODE_HISTORY && render_history_with_pcf())
 			sleep = 0;
-		if (finger_move_speed != 0)
+		else if (!more_events && display_mode == DISPLAY_MODE_WIKI_SELECTION && render_wiki_selection_with_pcf())
+			sleep = 0;
+#ifdef OVER_SCROLL_ENABLED
+		if ((finger_move_speed || over_scroll_lines) && !finger_touched)
+#else
+		if (finger_move_speed && !finger_touched)
+#endif
 		{
 			scroll_article();
 			sleep = 0;
@@ -909,17 +937,17 @@ int wikilib_run(void)
 					if (!clear_search_string())
 					{
 						search_string_changed_remove = true;
-						search_reload_ex(SEARCH_RELOAD_NORMAL);
+						search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NO_POPULATE);
 					}
 					press_delete_button = false;
 				}
 				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
 					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
 				{
-					if (!search_remove_char(0))
+					if (!search_remove_char(0, time_now))
 					{
 						search_string_changed_remove = true;
-						search_reload_ex(SEARCH_RELOAD_NO_POPULATE);
+						search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NO_POPULATE);
 					}
 					last_delete_time = time_now;
 				}
@@ -952,7 +980,12 @@ int wikilib_run(void)
 			sleep = 0;
 		}
 
-		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK)) // check if need to reset invert
+		if (!more_events && display_mode == DISPLAY_MODE_INDEX && check_search_string_change())
+		{
+			sleep = 0;
+		}
+
+		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK, 0)) // check if need to reset invert
 			sleep = 0;
 
 		if (check_invert_link()) // check if need to invert link
@@ -1012,7 +1045,8 @@ unsigned long get_time_ticks(void)
 #else
 	clock_ticks = clock();
 #endif
-
+	if (clock_ticks == 0)
+		clock_ticks = 1; // 0 is used for special purpose
 	return clock_ticks;
 }
 
@@ -1038,4 +1072,21 @@ unsigned long seconds_to_ticks(float sec)
 #endif
 
 	return clock_ticks;
+}
+
+void fatal_error(char *sError)
+{
+	struct wl_input_event ev;
+
+	guilib_fb_lock();
+	guilib_clear();
+#ifndef INCLUDED_FROM_KERNEL
+	printf("Fatal error - %s\n", sError);
+	exit(-1);
+#else
+	render_string(SUBTITLE_FONT_IDX, -1, 94, sError, strlen(sError), 0);
+	guilib_fb_unlock();
+	for (;;)
+		wl_input_wait(&ev, 1);
+#endif
 }

@@ -31,6 +31,7 @@
 #include "search.h"
 #include "msg.h"
 #include "lcd_buf_draw.h"
+#include "wiki_info.h"
 #ifndef INCLUDED_FROM_KERNEL
 #include <stdio.h>
 #include <errno.h>
@@ -57,10 +58,15 @@ void history_reload()
 	render_history_with_pcf();
 }
 
-void history_add(const long idx_article, const char *title, int b_keep_pos)
+void history_add(long idx_article, const char *title, int b_keep_pos)
 {
 	int i = 0;
 	int bFound = 0;
+
+	if (!(idx_article & 0xFF000000)) // idx_article for current wiki
+	{
+		idx_article |= get_wiki_id_from_idx(nCurrentWiki) << 24;
+	}
 
 	history_changed = HISTORY_SAVE_NORMAL;
 	while (!bFound && i < history_count)
@@ -131,7 +137,7 @@ void history_list_init(void)
 	int fd_hst;
 
 	history_count = 0;
-	fd_hst = wl_open("pedia.hst", WL_O_RDONLY);
+	fd_hst = wl_open("wiki.hst", WL_O_RDONLY);
 	if (fd_hst >= 0)
 	{
 		while ((len = wl_read(fd_hst, (void *)&history_list[history_count], sizeof(HISTORY))) >= sizeof(HISTORY))
@@ -151,7 +157,7 @@ int history_list_save(int level)
 	{
 		if (level == HISTORY_SAVE_POWER_OFF || history_changed == HISTORY_SAVE_NORMAL)
 		{
-			fd_hst = wl_open("pedia.hst", WL_O_CREATE);
+			fd_hst = wl_open("wiki.hst", WL_O_CREATE);
 			if (fd_hst >= 0)
 			{
 				wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
@@ -170,6 +176,7 @@ void draw_clear_history(int bClear)
 {
 	int i;
 	static char localBuffer[27 * LCD_VRAM_WIDTH_PIXELS / 8];
+	unsigned char *pText;
 
 	if (bClear)
 	{
@@ -207,8 +214,13 @@ void draw_clear_history(int bClear)
 		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
 		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
 
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, "Clear History", 13, 1);
-		render_string(SUBTITLE_FONT_IDX, 156, 185, "Yes", 3, 0);
-		render_string(SUBTITLE_FONT_IDX, 206, 185, "No", 2, 0);
+		pText=get_nls_text("clear_history");
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, strlen(pText), 1);
+		pText=get_nls_text("yes");
+		render_string(SUBTITLE_FONT_IDX, 147 + (192 - 147 - get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) / 2,
+			      185, pText, strlen(pText), 0);
+		pText=get_nls_text("no");
+		render_string(SUBTITLE_FONT_IDX, 193 + (238 - 193 - get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) / 2,
+			      185, pText, strlen(pText), 0);
 	}
 }

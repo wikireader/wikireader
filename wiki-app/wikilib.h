@@ -54,6 +54,7 @@ enum display_mode_e {
 	DISPLAY_MODE_ARTICLE,
 	DISPLAY_MODE_HISTORY,
 	DISPLAY_MODE_RESTRICTED,
+	DISPLAY_MODE_WIKI_SELECTION,
 };
 
 typedef unsigned char u8;
@@ -75,4 +76,5 @@ unsigned long get_time_ticks(void);
 unsigned long time_diff(unsigned long t2, unsigned long t1);
 unsigned long seconds_to_ticks(float sec);
 void repaint_search(void);
+void fatal_error(char*);
 #endif /* WIKILIB_H */

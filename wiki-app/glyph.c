@@ -70,18 +70,18 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 	}
 }
 
-
 int render_string(const int font, int start_x,
 		  int start_y, char *string, int text_length, int inverted)
 {
-	int i;
 	int x;
 	int width;
 	long len = text_length;
 	long lenLast = 0;
 	long widthLast = 0;
 	char *p = (char *)string;
+	unsigned char *q;
 	int nCharBytes;
+	ucs4_t c;
 
 	if (start_x < 0)
 		width = 0;
@@ -107,8 +107,91 @@ int render_string(const int font, int start_x,
 	}
 
 	x = start_x;
-	for (i = 0; i < text_length; ++i) {
-		x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
+	q = (unsigned char *)string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = draw_bmf_char(c,font-1,x,start_y, inverted, 0);
+		if(x<0)
+			return 0;
+	}
+	return x;
+}
+
+int render_string_and_clear(const int font, int start_x,
+		  int start_y, char *string, int text_length, int inverted,
+		  int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+{
+	int x;
+	int width;
+	int height;
+	long len = text_length;
+	long lenLast = 0;
+	long widthLast = 0;
+	char *p = (char *)string;
+	unsigned char *q;
+	int nCharBytes;
+	ucs4_t c;
+
+	if (clear_start_x >= 0 && clear_start_y < start_y)
+	{
+		if (clear_end_y < start_y)
+		{
+			guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
+			clear_start_x = -1; // no more area to clear
+		}
+		else
+		{
+			guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, start_y - 1);
+			clear_start_y = start_y;
+		}
+	}
+
+	if (start_x < 0)
+		width = 0;
+	else
+		width = start_x;
+	height = GetFontLinespace(font);
+	while (len > 0 && width < LCD_BUF_WIDTH_PIXELS)
+	{
+		lenLast = len;
+		widthLast = width;
+		width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
+	}
+	if (width > LCD_BUF_WIDTH_PIXELS)
+	{
+		text_length -= lenLast;
+		width = widthLast;
+	}
+
+	if (start_x < 0) // to be centered
+	{
+		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
+		if (start_x < 0)
+			start_x = 0;
+	}
+
+	if (clear_start_y < start_y + height)
+	{
+		if (clear_start_x < start_x)
+			guilib_clear_area(clear_start_x, clear_start_y, start_x - 1,
+				clear_end_y < start_x + height ? clear_end_y : start_x + height - 1);
+		if (clear_end_x >= width)
+			guilib_clear_area(width, clear_start_y, clear_end_x,
+				clear_end_y < start_x + height ? clear_end_y : start_x + height - 1);
+		if (clear_end_y >= start_y + height)
+			clear_start_y = start_x + height;
+		else
+			clear_start_x = -1;
+	}
+
+	if (clear_start_x >= 0)
+		guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
+
+	x = start_x;
+	q = (unsigned char *)string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = draw_bmf_char(c,font-1,x,start_y, inverted, 1);
 		if(x<0)
 			return 0;
 	}
@@ -127,8 +210,10 @@ int render_string_right(const int font, int start_x,
 	int width = start_x;
 	long len = text_length;
 	char *p = (char *)string;
+	unsigned char *q;
 	int nCharBytes;
 	int rc;
+	ucs4_t c;
 
 	while (len > 0 && utf8_chars < MAX_TITLE_SEARCH)
 	{
@@ -154,8 +239,10 @@ int render_string_right(const int font, int start_x,
 	}
 
 	x = start_x;
-	for (i = 0; i < text_length; ++i) {
-		x = draw_bmf_char(string[i],font-1,x,start_y, inverted);
+	q = (unsigned char *)string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = draw_bmf_char(c,font-1,x,start_y, inverted, 0);
 		if(x<0)
 			return 0;
 	}
