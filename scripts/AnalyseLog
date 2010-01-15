@@ -42,10 +42,14 @@ END {
 
     if (0 != length(render_delta)) {
         for (i in render_delta) {
-            if (0 == render_max[i]) {
-                complete = 100 * render_count[i] / parse_count[i]
+            n = render_max[i]
+            if (0 == n) {
+                n =  parse_count[i]
+            }
+            if (0 != n) {
+                complete = 100 * render_count[i] / n
             } else {
-                complete = 100 * render_count[i] / render_max[i]
+                complete = 0
             }
             average = render_time[i] / (render_count[i] / render_delta[i])
             printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
