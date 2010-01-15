@@ -672,7 +672,11 @@ class WrProcess(HTMLParser.HTMLParser):
             self.li_inside[self.level] = True
 
             if 'value' in attrs:
-                self.li_cnt[self.level] = int(attrs['value'])
+                list_index = re.sub(r'^\D*(\d+)\D?.*$', r'\1', attrs['value'])
+                try:
+                    self.li_cnt[self.level] = int(list_index)
+                except ValueError:
+                    psass
             else:
                 self.li_cnt[self.level] += 1
 
