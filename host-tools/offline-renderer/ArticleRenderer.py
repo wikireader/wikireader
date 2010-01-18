@@ -211,7 +211,7 @@ def main():
         f_out = open(test_file, 'w')
 
     for name in args:
-        f = codecs.open(name, 'r', 'utf-8')
+        f = codecs.open(name, 'r', 'utf-8', 'replace')
         WrProcess(f)
         f.close()
 
@@ -462,15 +462,7 @@ class WrProcess(HTMLParser.HTMLParser):
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
             self.feed(block)
-            try:
-                block = f.read(self.READ_BLOCK_SIZE)
-            except UnicodeDecodeError, e:
-                # display something so the approximate breakage point can be found
-                (line, column) = self.getpos()
-                PrintLog.message('Unicode decoding failed @[L%d/C%d] in/after article[%d]: %s' %
-                                 (line, column, article_count + 1, g_this_article_title))
-                PrintLog.message('  100 bytes at end of buffer: %s' % block[-100:0])
-                raise e
+            block = f.read(self.READ_BLOCK_SIZE)
 
 
     def local_init(self):
