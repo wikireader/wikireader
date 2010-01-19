@@ -35,6 +35,7 @@ WIKI_LIST wiki_list[MAX_WIKIS] =
 	{4, "depedia"},
 	{5, "nlpedia"},
 	{6, "ptpedia"},
+	{7, "fipedia"},
 };
 
 int nWikiCount = 0;
