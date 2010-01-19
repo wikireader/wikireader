@@ -239,6 +239,7 @@ class DatabaseNo extends Database
 		return null;
 	}
 
+/*
 	function select( $table, $vars, $conds='', $fname = 'Database::select', $options = array() ) {
 		if ( $this->isWriteQuery( $sql ) ) {
 			return null;
@@ -246,6 +247,7 @@ class DatabaseNo extends Database
 			return new ResultWrapper ( $this , null );
 		}
 	}
+*/
 
 	function selectRow( $table, $vars, $conds, $fname = 'Database::selectRow', $options = array() ) {
 		return null;
