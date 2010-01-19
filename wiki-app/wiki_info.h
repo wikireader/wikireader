@@ -22,8 +22,8 @@
 
 #include "lcd_buf_draw.h"
 
-#define MAX_WIKIS 3
-#define MAX_WIKIS_PER_DEVICE 3
+#define MAX_WIKIS 6
+#define MAX_WIKIS_PER_DEVICE 6
 #define MAX_LINKS_IN_LICENSE_TEXT 4
 #define LICENSE_LINK_START '['
 #define LICENSE_LINK_END ']'

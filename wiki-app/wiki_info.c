@@ -31,7 +31,10 @@ WIKI_LIST wiki_list[MAX_WIKIS] =
 {
 	{1, "enpedia"},
 	{2, "espedia"},
-	{3, "nlpedia"},
+	{3, "frpedia"},
+	{4, "depedia"},
+	{5, "nlpedia"},
+	{6, "ptpedia"},
 };
 
 int nWikiCount = 0;
