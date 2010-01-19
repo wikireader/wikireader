@@ -108,7 +108,7 @@ version: validate-destdir
 	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
 	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
-	cd "${DESTDIR_PATH}" && find . -type f -exec sha${SHA_LEVEL}sum '{}' ';' >> "${CHECKSUM_FILE}"
+	cd "${DESTDIR_PATH}" && sha${SHA_LEVEL}sum * >> "${CHECKSUM_FILE}"
 
 
 .PHONY: misc-files-install
@@ -361,7 +361,7 @@ TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.tex
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
-ARTICLE_COUNT_K := $(shell expr '(' '(' ${TOTAL_ARTICLES} ')' /  ${TOTAL_INSTANCES} + 999 ')' / 1000)
+ARTICLE_COUNT_K := $(shell expr '(' '(' ${TOTAL_ARTICLES} ')' /  ${TOTAL_INSTANCES} ')' / 1000)
 
 MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
 
@@ -374,13 +374,15 @@ print-render-info:
 	@echo TOTAL_INSTANCES = ${TOTAL_INSTANCES}
 	@echo ARTICLE_COUNT_K = ${ARTICLE_COUNT_K} k articles per instance
 	@echo files = 0 .. ${MAX_BLOCK}
-	@t=$$((${MACHINE_COUNT} * ${PARALLEL_BUILD} * ${ARTICLE_COUNT_K} * 1000)); \
-	if [ $${t} -ge ${TOTAL_ARTICLES} ]; \
-	 then \
-	   echo Counts calculation is OK ; \
-	 else \
-	   echo Counts calculation has a problem: to_build=$${t} '<' ${TOTAL_ARTICLES}; \
-	 fi
+	@most=$$((${ARTICLE_COUNT_K} * 1000)); \
+	first=$$(($${most} - 1)); \
+	count=$$((${MACHINE_COUNT} * ${PARALLEL_BUILD} - 2)); \
+	AllButLast=$$(($${first} + $${most} * $${count})); \
+	last=$$((${TOTAL_ARTICLES} - $${AllButLast})); \
+	echo First = $${first} ; \
+	echo Others = $${most} ; \
+	echo Last = $${last} ; \
+	echo Total = $$(($${first} + $${most} * $${count} + $${last})) '['${TOTAL_ARTICLES}']'
 
 
 # the first(0) and last(MAX_BLOCK) are special
