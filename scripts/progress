@@ -27,6 +27,7 @@ USAGE()
   echo '       --combine       -k      run the combine process'
   echo '       --get           -G      get the data files'
   echo '       --sim4          -4      rename files, install fonts and run simulator'
+  echo '       --new-session   -N      start a new screen session for run and copy to use'
   exit 1
 }
 
@@ -40,7 +41,7 @@ combine_host=8
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvswigp::t::aml:L:rckG4 --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4 -- "$@") || exit 1
+args=$(${getopt} -o hvswigp::t::aml:L:rckG4N --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4,new-session -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -62,14 +63,17 @@ do
       shift
       ;;
 
+    -N|--new-session)
+      RenderDo --yes ${list} --brief "cd samo && byobu -d -m"
+      shift
+      ;;
+
     -r|--run)
-      #RenderDo --yes ${list} --brief "cd samo && byobu -d -m scripts/Run $2"
       RenderDo --yes ${list} --brief "cd samo && byobu -X exec scripts/Run --clear --language='${language}'"
       shift
       ;;
 
     -c|--copy)
-      #RenderDo --yes ${list} --brief "cd samo && byobu -d -m scripts/Copy $2"
       RenderDo --yes ${list} --brief "cd samo && byobu -X exec scripts/Copy --to='${combine_host}' --language='${language}'"
       shift
       ;;
