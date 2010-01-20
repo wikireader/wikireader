@@ -59,16 +59,16 @@ void FLASH_initialise(void)
 void FLASH_SelectInternal(void)
 {
 	// set P05 low to disable external boot FLASH ROM
-	REG_P5_P5D &= ~0x20;
-	REG_P5_IOC5 |= 0x20;
+	REG_P0_IOC0 |= 0x20;
+	REG_P0_P0D &= ~0x20;
 }
 
 
 void FLASH_SelectExternal(void)
 {
 	// set P05 high to enable external boot FLASH ROM
-	REG_P5_P5D |= 0x20;
-	REG_P5_IOC5 |= 0x20;
+	REG_P0_IOC0 |= 0x20;
+	REG_P0_P0D |= 0x20;
 }
 
 

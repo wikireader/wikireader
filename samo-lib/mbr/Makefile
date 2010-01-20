@@ -52,8 +52,10 @@ IMAGE07 ?= ${HOST_TOOLS}/flash07/image07
 
 ifeq (YES,$(strip ${FLASH_TEST_JIG}))
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jakebrake
+PROTECT = --protect
 else
 BOOT_FILE ?= ${HOST_TOOLS}/jackknife/jackknife
+PROTECT =
 endif
 
 LIBS += ${DRIVERS_LIB}
@@ -156,7 +158,7 @@ UPDATE_ARGS =
 endif
 
 flash-mbr: all
-	time ${FLASH07} --port="${BOOTLOADER_TTY}" --aux-port="${BOOTLOADER_AUX}" --boot="${BOOT_FILE}" \
+	time ${FLASH07} ${PROTECT} --port="${BOOTLOADER_TTY}" --aux-port="${BOOTLOADER_AUX}" --boot="${BOOT_FILE}" \
 	--map-file="${FLASH_ROM_MAP_FILE}" ${UPDATE_ARGS}
 
 # serial number must be padded with 0xFF as that is

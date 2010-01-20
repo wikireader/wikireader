@@ -141,7 +141,7 @@ def usage(message):
     """PRint message and exit"""
     if None != message:
         print 'error:', message
-    print 'usage: %s [--verbose] [--update] --boot=<boot> --map-file=<map>' % os.path.basename(__file__)
+    print 'usage: %s [--verbose] [--update] [--protect] --boot=<boot> --map-file=<map>' % os.path.basename(__file__)
     exit(1)
 
 
@@ -170,10 +170,11 @@ def get_mbr_serial_number(flash):
 def main():
     """FLASH programming main program"""
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvub:m:p:a:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvuPb:m:p:a:',
                                    ['help',
                                     'verbose',
                                     'update',
+                                    'protect',
                                     'boot=',
                                     'map-file=',
                                     'port=',
@@ -183,6 +184,7 @@ def main():
 
     verbose = False
     update_mode = False
+    protect = False
     bootfile = 'jackknife'
     mapfile = ''
     aux_port = ''
@@ -193,6 +195,8 @@ def main():
             verbose = True
         if opt in ('-u', '--update'):
             update_mode = True
+        if opt in ('-P', '--protect'):
+            protect = True
         elif opt in ('-h', '--help'):
             usage(None)
         elif opt in ('-b', '--boot'):
@@ -295,6 +299,9 @@ def main():
             print '0x%04x %s (%d bytes)' % (offset, name, length)
             rom.program(data, offset)
             rom.verify(data, offset)
+
+    if protect:
+        rom.set_block_protection
 
     if None != aux:
         aux.normal()

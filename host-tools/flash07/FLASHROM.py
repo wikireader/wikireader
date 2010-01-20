@@ -164,7 +164,6 @@ class FLASHROM:
         assert True, 'Virtual %s called' % __name__
 
 
-
 class PM25LV512(FLASHROM):
 
     def __init__(self, spi, name = 'PM25LV512', program_block_size = 256, verify_block_size = 256):
@@ -251,9 +250,7 @@ class EN25F05(FLASHROM):
         self.erased.add(block)
 
     def set_block_protection(self):
-        pass
-        #self.spi.command([0xf1, 0x00])
-        #self.spi.command([0x01, 0x02])
+        self.spi.command([0x01, 0x8c])
 
 
     def write_block(self, buffer, address):
