@@ -64,7 +64,11 @@ do
       ;;
 
     -N|--new-session)
-      RenderDo --yes ${list} --brief "cd samo && byobu -d -m"
+      #RenderDo --yes ${list} --brief "cd samo && byobu -d -m"
+      for host in $(RenderDo --print-list)
+      do
+        StartScreen "${host}"
+      done
       shift
       ;;
 

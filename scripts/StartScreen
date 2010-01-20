@@ -1,0 +1,169 @@
+#!/bin/sh
+# -*- tcl -*- \
+exec expect -f "$0" "$@"
+
+
+set DefaultUser wr
+set DefaultPort 22
+set timeout 120
+
+
+proc usage {arg} {
+  global argv0 DefaultUser DefaultPort
+  if {$arg != ""} {
+    puts "error: ${arg}"
+  }
+  puts "usage: ${argv0} {--verbose} {--login=user} host{:port}"
+  puts "       default user = ${DefaultUser}"
+  puts "       default port = ${DefaultPort}"
+  exit 1
+}
+
+if {[llength $argv] <= 0} {
+  usage "missing arguments"
+}
+
+
+# assumes the command will execute non-interactively
+proc probe {user host port} {
+
+  spawn ssh -l $user -p $port $host
+
+  set rc 0
+  set ErrorList {}
+
+  expect {
+    -re {Offending[[:space:]]+.*in[[:space:]]+([^:]+):([[:digit:]]+)} {
+      lappend ErrorList [list $expect_out(1,string) $expect_out(2,string)]
+      exp_continue
+    }
+    "Are you sure you want to continue connecting (yes/no)?" {
+      exp_send "yes\r"
+      exp_continue
+    }
+    "Please type 'yes' or 'no':" {
+      exp_send "yes\r"
+      exp_continue
+    }
+    -re {[pP]assword:} {
+      puts "Set up ssh authorized_keys on remote for: ${user}@${host}"
+      set rc 1
+    }
+    "Permission denied (publickey,keyboard-interactive)." {
+      set rc 1
+      puts "Terminating"
+    }
+    -re "(No route to host|hostname nor servname provided, or not known|Host key verification failed)" {
+      send_user "\nTerminating\r\n"
+      puts "Failed to connect to: ${host}:${port}"
+      set rc 1
+    }
+    "$" {
+      exp_send "byobu-launcher\r"
+      expect "$"
+    }
+    timeout {
+      set rc 1
+    }
+  }
+
+  if {0 == $rc} {
+    expect {
+      "$" {
+        exp_send "screen -X detach\r"
+      }
+      timeout {
+        set rc 1
+      }
+    }
+  }
+
+  if {0 == $rc} {
+    expect {
+      "detached\]" {
+        exp_send "exit\r"
+      }
+      timeout {
+        set rc 1
+      }
+    }
+  }
+
+  if {0 == $rc} {
+    expect {
+      "closed" {
+        puts "screen started"
+      }
+      timeout {
+        set rc 1
+      }
+    }
+  }
+
+  catch {
+    close
+  } ErrorMessage
+
+  return $rc
+}
+
+
+# Main Program
+# ============
+
+set verbose 0
+set host ""
+set user $DefaultUser
+set port $DefaultPort
+
+set i 0
+set arg [lindex $argv $i]
+while {$arg != ""} {
+  switch -regexp -- $arg {
+    "^--verbose" {
+      set verbose 1
+    }
+    "^-v$" {
+      set verbose 1
+    }
+    "^--login=.+" {
+      set pos [string first "=" $arg]
+      set user [string range $arg [expr $pos + 1] end]
+    }
+    "^--user=.+" {
+      set pos [string first "=" $arg]
+      set user [string range $arg [expr $pos + 1] end]
+    }
+    "^[^:]+$" {
+      set host $arg
+      set port $DefaultPort
+    }
+    "^[^:]+:[^:]+$" {
+      set pos [string first ":" $arg]
+      set host [string range $arg 0 [expr $pos - 1]]
+      set port [string range $arg [expr $pos + 1] end]
+    }
+    default {
+      usage "Invalid argument $arg"
+    }
+  }
+  incr i
+  set arg [lindex $argv $i]
+}
+
+if {$user == ""} {
+  usage "--login is not set"
+}
+
+if {$port == ""} {
+  usage "port is not specified"
+}
+
+if {$host == ""} {
+  usage "no host given"
+}
+
+
+if {[probe $user $host $port] != 0} {
+  usage "failed to start screen"
+}

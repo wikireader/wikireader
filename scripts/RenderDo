@@ -94,10 +94,11 @@ PostCommand=''
 verbose=no
 brief=no
 yorn=''
+print=no
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvbp:o:l:y --long=help,verbose,brief,pre:,post:,list:,yes -- "$@") || exit 1
+args=$(${getopt} -o hvbp:o:l:yP --long=help,verbose,brief,pre:,post:,list:,yes,print-list -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -106,6 +107,11 @@ do
   case "$1" in
     -v|--verbose)
       verbose=yes
+      shift
+      ;;
+
+    -P|--print-list)
+      print=yes
       shift
       ;;
 
@@ -151,6 +157,18 @@ done
 
 #echo verbose = ${verbose}
 #echo ARGS = "$@"
+
+case "${print}" in
+  [yY]|[yY][eE][sS])
+    for i in ${HostList}
+    do
+      echo ${HostName}${i}
+    done
+    exit 0
+    ;;
+  *)
+    ;;
+esac
 
 [ -z "$1" ] && USAGE missing command
 
