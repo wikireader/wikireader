@@ -30,7 +30,7 @@
 #define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
 /* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */
-#define MAX_DAT_FILES 36
+#define MAX_DAT_FILES 64
 #define MAX_COMPRESSED_ARTICLE 256*1024
 
 enum {
