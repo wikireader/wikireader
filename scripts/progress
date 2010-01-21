@@ -28,6 +28,7 @@ USAGE()
   echo '       --get           -G      get the data files'
   echo '       --sim4          -4      rename files, install fonts and run simulator'
   echo '       --new-session   -N      start a new screen session for run and copy to use'
+  echo '       ---fetch-log    -f      fetch log files'
   exit 1
 }
 
@@ -41,7 +42,7 @@ combine_host=8
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvswigp::t::aml:L:rckG4N --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4,new-session -- "$@") || exit 1
+args=$(${getopt} -o hvswigp::t::aml:L:rckG4Nf --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -84,6 +85,16 @@ do
 
     -i|--image)
       RenderDo --yes ${list} --brief "cd samo && ls -l 'image/${language}'"
+      shift
+      ;;
+
+    -f|--fetch-log)
+      for host in $(RenderDo --print-list)
+      do
+        lf="${host}-${language}.log"
+        echo fetch log from: ${host} to: ${lf}
+        RenderDo --yes --list="${host##*[^0-9]}" 'cat samo/log' > "${lf}"
+      done
       shift
       ;;
 
@@ -140,8 +151,7 @@ do
       ;;
 
     -4|--sim4)
-      ./scripts/NameChange --dest="image/${language}" --pedia
-      make WORKDIR="work/${language}" DESTDIR="image/${language}" fonts-install sim4
+      make DESTDIR="image" fonts-install sim4
       shift
       ;;
 
