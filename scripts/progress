@@ -42,7 +42,7 @@ combine_host=8
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvswigp::t::aml:L:rckG4Nf --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:language:,run,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
+args=$(${getopt} -o hvswigp::t::aml:L:rckG4Nf --long=help,verbose,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,run,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
