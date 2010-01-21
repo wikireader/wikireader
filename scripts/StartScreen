@@ -13,7 +13,7 @@ proc usage {arg} {
   if {$arg != ""} {
     puts "error: ${arg}"
   }
-  puts "usage: ${argv0} {--verbose} {--login=user} host{:port}"
+  puts "usage: ${argv0} {--verbose} {--cd=dir} {--login=user} host{:port}"
   puts "       default user = ${DefaultUser}"
   puts "       default port = ${DefaultPort}"
   exit 1
@@ -25,7 +25,7 @@ if {[llength $argv] <= 0} {
 
 
 # assumes the command will execute non-interactively
-proc probe {user host port} {
+proc probe {user host port dir} {
 
   spawn ssh -l $user -p $port $host
 
@@ -50,17 +50,16 @@ proc probe {user host port} {
       set rc 1
     }
     "Permission denied (publickey,keyboard-interactive)." {
+      puts "Set up ssh authorized_keys on remote for: ${user}@${host}"
       set rc 1
-      puts "Terminating"
     }
     -re "(No route to host|hostname nor servname provided, or not known|Host key verification failed)" {
       send_user "\nTerminating\r\n"
       puts "Failed to connect to: ${host}:${port}"
       set rc 1
     }
-    "$" {
-      exp_send "byobu-launcher\r"
-      expect "$"
+    -ex {$} {
+      set rc 0
     }
     timeout {
       set rc 1
@@ -68,20 +67,11 @@ proc probe {user host port} {
   }
 
   if {0 == $rc} {
+    exp_send "cd '${dir}' && byobu-launcher\r"
     expect {
-      "$" {
-        exp_send "screen -X detach\r"
-      }
-      timeout {
-        set rc 1
-      }
-    }
-  }
-
-  if {0 == $rc} {
-    expect {
-      "detached\]" {
-        exp_send "exit\r"
+      -ex "Menu:" {
+        # send the power detach sequence
+        exp_send "\1DD"
       }
       timeout {
         set rc 1
@@ -115,6 +105,7 @@ set verbose 0
 set host ""
 set user $DefaultUser
 set port $DefaultPort
+set dir "."
 
 set i 0
 set arg [lindex $argv $i]
@@ -125,6 +116,10 @@ while {$arg != ""} {
     }
     "^-v$" {
       set verbose 1
+    }
+    "^--cd=.+" {
+      set pos [string first "=" $arg]
+      set dir [string range $arg [expr $pos + 1] end]
     }
     "^--login=.+" {
       set pos [string first "=" $arg]
@@ -164,6 +159,6 @@ if {$host == ""} {
 }
 
 
-if {[probe $user $host $port] != 0} {
+if {[probe $user $host $port $dir] != 0} {
   usage "failed to start screen"
 }
