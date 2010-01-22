@@ -143,6 +143,8 @@ def main():
         f.write('Templates:  %10d\n' % processor.template_count)
         f.write('rTemplates: %10d\n' % processor.template_redirect_count)
 
+        f.write('Characters: %10d\n' % processor.total_character_count)
+
     cf.close()
 
     output_fnd(fnd_name, processor)
@@ -205,6 +207,8 @@ class FileProcessing(FileScanner.FileScanner):
         self.articles = {}
         self.offsets = {}
 
+        self.total_character_count = 0
+
         self.time = time.time()
 
         self.template_db = sqlite3.connect(self.template_db_name)
@@ -258,10 +262,10 @@ create table redirects (
         start_time = time.time()
         with open(self.offset_import, 'w') as f:
             for article_number in self.offsets:
-                (file_id, title, seek, length) = self.offsets[article_number]
+                (file_id, title, seek, length, accumulated) = self.offsets[article_number]
                 f.write('%d\t%d\t' % (article_number, file_id))
                 f.write('~' + title.encode('utf-8'))    # force string
-                f.write('\t%d\t%d\n' % (seek, length))
+                f.write('\t%d\t%d\t%d\n' % (seek, length, accumulated))
         PrintLog.message('Time: %ds' % (time.time() - start_time))
 
 
@@ -300,7 +304,8 @@ create table offsets (
     file_id integer,
     title varchar,
     seek integer,
-    length integer
+    length integer,
+    accumulated integer
 );
 
 create table files (
@@ -414,7 +419,9 @@ pragma journal_mode = memory;
             else:
                 PrintLog.message('Title: %s' % title)
 
-        self.offsets[self.article_count] = (self.file_id(), title, seek, len(text))
+        character_count = len(text)
+        self.total_character_count += character_count
+        self.offsets[self.article_count] = (self.file_id(), title, seek, character_count, self.total_character_count)
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
             PrintLog.message('Duplicate Title: %s ' % title)

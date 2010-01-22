@@ -313,8 +313,16 @@ hash: validate-destdir hash-gen
 		--hsh="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.hsh"
 
 
+# o run all stages (for testing small XML sample files)
 .PHONY: iprch
 iprch: index parse render combine hash
+
+
+# Build database using multiple machines
+# ======================================
+
+ifneq (,$(strip ${WORKDIR_PATH}))
+ifneq (,$(strip ${DESTDIR_PATH}))
 
 stamp-r-index:
 	${RM} "$@"
@@ -327,6 +335,7 @@ stamp-r-index:
 clean-index:
 	${RM} stamp-r-index
 
+# makeblock 0..n, start, count
 MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
 define MAKE_BLOCK1
@@ -353,46 +362,69 @@ stamp-r-clean${1}:
 
 endef
 
-# ------------------------------------------------
-# get the number of articles from the indexer
-# and compute how many articles per instance
-# ------------------------------------------------
-TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
+
+# ---------------------------------------------------------------------------------------
+# Get the number of articles from the indexer and compute how many articles per instance
+#
+# NOTE:
+#  The use of ':=' means that 'index' must have already been run in a previous session.
+#  So always run parse as a separate step.
+#  If just '=' was used then then all targets could be in the same make, but make runs
+#  extremely slowly, as it must re-evaluate all the scripts including the SQL select
+#  multiple times when computing the rules.
+# ---------------------------------------------------------------------------------------
+
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
-TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
-ARTICLE_COUNT_K := $(shell expr '(' '(' ${TOTAL_ARTICLES} ')' /  ${TOTAL_INSTANCES} ')' / 1000)
 
+TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
+TOTAL_CHARACTERS := $(shell awk '/^Characters:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
+TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
 MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
+
+CHARACTERS_PER_INSTANCE := $(shell expr ${TOTAL_CHARACTERS} / ${TOTAL_INSTANCES})
+
+ITEMS := $(shell i=0; while [ $${i} -lt ${TOTAL_INSTANCES} ]; do echo $${i}; i=$$(($${i} + 1)); done)
+ITEMS_1 := $(shell i=1; while [ $${i} -le ${TOTAL_INSTANCES} ]; do echo $${i}; i=$$(($${i} + 1)); done)
+
+define GET_ARTICLE_NUMBER
+  "select article_number from offsets where accumulated >= ($(strip ${1}) * $(strip ${2})) limit 1;"
+endef
+
+ARTICLE_STARTS := $(shell echo $(foreach i,${ITEMS},$(call GET_ARTICLE_NUMBER, ${i},${CHARACTERS_PER_INSTANCE})) | sqlite3 "${WORKDIR_PATH}/offsets.db")
+
+
+define ARTICLE_COUNTS_sh
+  eval set -- "${ARTICLE_STARTS}";
+  while [ -n "$${2}" ];
+  do
+    echo $$(($${2} - $${1}));
+    shift;
+  done;
+  echo $$((${TOTAL_ARTICLES} - $${1} + 1));
+endef
+
+ARTICLE_COUNTS := $(shell ${ARTICLE_COUNTS_sh})
+
 
 # check that the counts are correct to render all articles
 .PHONY: print-render-info
 print-render-info:
-	@echo TOTAL_ARTICLES  = ${TOTAL_ARTICLES}
-	@echo MACHINE_COUNT   = ${MACHINE_COUNT}
-	@echo PARALLEL_BUILD  = ${PARALLEL_BUILD}
+	@echo TOTAL_ARTICLES = ${TOTAL_ARTICLES}
+	@echo MACHINE_COUNT = ${MACHINE_COUNT}
+	@echo PARALLEL_BUILD = ${PARALLEL_BUILD}
 	@echo TOTAL_INSTANCES = ${TOTAL_INSTANCES}
-	@echo ARTICLE_COUNT_K = ${ARTICLE_COUNT_K} k articles per instance
+	@echo TOTAL_CHARACTERS = ${TOTAL_CHARACTERS}
+	@echo CHARACTERS_PER_INSTANCE = ${CHARACTERS_PER_INSTANCE}
+	@echo ITEMS = ${ITEMS}
+	@echo ITEMS_1 = ${ITEMS_1}
+	@echo ARTICLE_STARTS = ${ARTICLE_STARTS}
+	@echo ARTICLE_COUNTS = ${ARTICLE_COUNTS}
 	@echo files = 0 .. ${MAX_BLOCK}
-	@most=$$((${ARTICLE_COUNT_K} * 1000)); \
-	first=$$(($${most} - 1)); \
-	count=$$((${MACHINE_COUNT} * ${PARALLEL_BUILD} - 2)); \
-	AllButLast=$$(($${first} + $${most} * $${count})); \
-	last=$$((${TOTAL_ARTICLES} - $${AllButLast})); \
-	echo First = $${first} ; \
-	echo Others = $${most} ; \
-	echo Last = $${last} ; \
-	echo Total = $$(($${first} + $${most} * $${count} + $${last})) '['${TOTAL_ARTICLES}']'
 
+# create the blocks
 
-# the first(0) and last(MAX_BLOCK) are special
-
-$(call MAKE_BLOCK,0,1,$(shell expr ${ARTICLE_COUNT_K} '*' 1000 - 1))
-
-ITEMS := $(shell i=1; while [ $${i} -lt ${MAX_BLOCK} ]; do echo $${i}; i=$$(($${i} + 1)); done)
-$(foreach i,${ITEMS},$(call MAKE_BLOCK,${i},$(shell expr ${i} '*' ${ARTICLE_COUNT_K})k,${ARTICLE_COUNT_K}k))
-
-$(call MAKE_BLOCK,${MAX_BLOCK},$(shell expr ${MAX_BLOCK} '*' ${ARTICLE_COUNT_K})k,all)
+$(foreach i,${ITEMS_1},$(call MAKE_BLOCK,$(shell expr ${i} - 1),$(word ${i},${ARTICLE_STARTS}),$(word ${i},${ARTICLE_COUNTS})))
 
 
 MAKE_FARM = $(eval $(call MAKE_FARM1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
@@ -426,6 +458,11 @@ MACHINE_LIST  := $(shell i=1; while [ $${i} -le ${MACHINE_COUNT} ]; do echo $${i
 
 
 $(foreach i,${MACHINE_LIST},$(call MAKE_MACHINE,${i},${MACHINE_COUNT}))
+
+
+# end of WORKDIR/DESTDIR check above
+endif
+endif
 
 
 # Download the latest Mediawiki dump
