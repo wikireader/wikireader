@@ -287,28 +287,32 @@ def test008_internal():
     time.sleep(RESET_TIME)
     relay.off(RELAY_RESET)
 
-    fail_unless(p.waitFor('menu\?'), 'boot loader failed to start')
+    m_rev = p.waitFor(r'[rR][eE][vV]:\s*(\S+)\s')
+    if m_rev:
+        info('Hardware ' + m_rev.group(0))
+
+    fail_unless(p.waitFor(r'menu\?'), 'boot loader failed to start')
     p.send(' ')
 
-    m_mem = p.waitFor('(.)\.\s+[mM]emory\s+[cC]heck')
+    m_mem = p.waitFor(r'(.)\.\s+[mM]emory\s+[cC]heck')
     fail_unless(m_mem, 'Boot Loader missing Memory Check option')
 
-    m_key = p.waitFor('(.)\.\s+[kK]ey\s+[tT]est')
+    m_key = p.waitFor(r'(.)\.\s+[kK]ey\s+[tT]est')
     fail_unless(m_key, 'Boot Loader missing Key Test option')
 
-    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
+    fail_unless(p.waitFor(r'[sS]election:'), 'Boot Loader menu prompt failed')
     p.send(m_mem.group(1))
 
-    m_mem = p.waitFor('[mM]emory:[^\]]+\]')
+    m_mem = p.waitFor(r'[mM]emory:[^\]]+\]')
     fail_unless(m_mem, 'Memory Check did not respond')
     info(m_mem.group(0))
 
-    m_mem = p.waitFor('(PASS|FAIL):\s+(.*)\n')
+    m_mem = p.waitFor(r'(PASS|FAIL):\s+(.*)\n')
     fail_unless(m_mem, 'Memory Check did not respond')
     fail_unless('PASS' == m_mem.group(1), m_mem.group(2))
     info(m_mem.group(1) + ': ' + m_mem.group(2))
 
-    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
+    fail_unless(p.waitFor(r'[sS]election:'), 'Boot Loader menu prompt failed')
     p.send(m_key.group(1))
 
     for desc, r, k in KEY_LIST:
@@ -334,7 +338,7 @@ def test008_internal():
     # exit key test and wait for prompt
     # contrast control should then be active
     p.send('\n')
-    fail_unless(p.waitFor('[sS]election:'), 'Boot Loader menu prompt failed')
+    fail_unless(p.waitFor(r'[sS]election:'), 'Boot Loader menu prompt failed')
 
     info('Calibrate LCD Voltages to %7.3f V +- %7.3f V' % (LCD_V0, LCD_V0_DELTA))
     relay.on(RELAY_LCD_V0)
