@@ -28,7 +28,7 @@ USAGE()
   echo '       --get           -G      get the data files'
   echo '       --sim4          -4      rename files, install fonts and run simulator'
   echo '       --new-session   -N      start a new screen session for run and copy to use'
-  echo '       ---fetch-log    -f      fetch log files'
+  echo '       --fetch-log     -f      fetch log files'
   exit 1
 }
 
