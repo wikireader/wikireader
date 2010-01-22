@@ -44,9 +44,18 @@ lib/ibConfLex.h
 lib/ibConfYacc.c
 lib/ibConfYacc.h
 
+util/linux_flags/Module.markers
 util/linux_flags/fake.c
 util/linux_flags/fake.ko
 util/linux_flags/fake.mod.c
 util/linux_flags/flags
 
 test/libgpib_test
+
+modules.order
+
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4

@@ -104,6 +104,11 @@ int parse_gpib_conf( const char *filename, ibConf_t *configs, unsigned int confi
 	return retval;
 }
 
+static void gpib_conf_warn_missing_equals()
+{
+	fprintf(stderr, "WARNING: omitting \"=\" before a boolean value in gpib config file is deprecated.\n");
+}
+
 %}
 
 %pure_parser
@@ -144,7 +149,7 @@ char cval;
 				current_config( parse_arg )->is_interface = 1;
 				if( ++( priv(parse_arg)->config_index ) >= priv(parse_arg)->configs_length )
 				{
-					fprintf(stderr, " too many devices in config file\n");
+					fprintf(stderr, "too many devices in config file\n");
 					YYERROR;
 				}
 			}
@@ -165,15 +170,15 @@ char cval;
 		| error
 			{
 				fprintf(stderr, "parameter error on line %i of %s\n", @1.first_line, DEFAULT_CONFIG_FILE);
-				YYERROR;
+				YYABORT;
 			}
 		;
 
 	statement: T_PAD '=' T_NUMBER      { current_config( parse_arg )->defaults.pad = $3;}
 		| T_SAD '=' T_NUMBER      { current_config( parse_arg )->defaults.sad = $3 - sad_offset;}
 		| T_EOSBYTE '=' T_NUMBER  { current_config( parse_arg )->defaults.eos = $3;}
-		| T_REOS T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $2 * REOS;}
-		| T_BIN  T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $2 * BIN;}
+		| T_REOS T_BOOL           { gpib_conf_warn_missing_equals(); current_config( parse_arg )->defaults.eos_flags |= $2 * REOS;}
+		| T_BIN  T_BOOL           { gpib_conf_warn_missing_equals(); current_config( parse_arg )->defaults.eos_flags |= $2 * BIN;}
 		| T_REOS '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * REOS;}
 		| T_XEOS '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * XEOS;}
 		| T_BIN '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * BIN;}
@@ -185,7 +190,7 @@ char cval;
 		| T_DMA  '=' T_NUMBER     { current_board( parse_arg )->dma = $3; }
 		| T_PCI_BUS  '=' T_NUMBER     { current_board( parse_arg )->pci_bus = $3; }
 		| T_PCI_SLOT  '=' T_NUMBER     { current_board( parse_arg )->pci_slot = $3; }
-		| T_MASTER T_BOOL	{ current_board( parse_arg )->is_system_controller = $2; }
+		| T_MASTER T_BOOL	{ gpib_conf_warn_missing_equals(); current_board( parse_arg )->is_system_controller = $2; }
 		| T_MASTER '=' T_BOOL	{ current_board( parse_arg )->is_system_controller = $3; }
 		| T_BOARD_TYPE '=' T_STRING
 			{
@@ -215,7 +220,7 @@ char cval;
 		| error
  			{
  				fprintf(stderr, "option error on line %i of config file\n", @1.first_line );
-				YYERROR;
+				YYABORT;
 			}
 		;
 
@@ -224,10 +229,10 @@ char cval;
 		| T_SAD '=' T_NUMBER { current_config( parse_arg )->defaults.sad = $3 - sad_offset; }
 		| T_INIT_S '=' T_STRING { strncpy(current_config( parse_arg )->init_string,$3,60); }
 		| T_EOSBYTE '=' T_NUMBER  { current_config( parse_arg )->defaults.eos = $3; }
-		| T_REOS T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $2 * REOS;}
+		| T_REOS T_BOOL           { gpib_conf_warn_missing_equals(); current_config( parse_arg )->defaults.eos_flags |= $2 * REOS;}
 		| T_REOS '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * REOS;}
 		| T_XEOS '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * XEOS;}
-		| T_BIN T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $2 * BIN; }
+		| T_BIN T_BOOL           { gpib_conf_warn_missing_equals(); current_config( parse_arg )->defaults.eos_flags |= $2 * BIN; }
 		| T_BIN '=' T_BOOL           { current_config( parse_arg )->defaults.eos_flags |= $3 * BIN; }
 		| T_EOT '=' T_BOOL           { current_config( parse_arg )->defaults.send_eoi = $3;}
 		| T_AUTOPOLL              { current_config( parse_arg )->flags |= CN_AUTOPOLL; }

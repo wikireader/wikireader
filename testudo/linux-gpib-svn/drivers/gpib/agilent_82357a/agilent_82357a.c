@@ -19,6 +19,7 @@
 
 #define _GNU_SOURCE
 
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include "agilent_82357a.h"
 #include "gpibP.h"
@@ -1540,7 +1541,7 @@ static int __init agilent_82357a_init_module(void)
 {
 	int i;
 
-	info("agilent_82357a_gpib driver loading");
+	pr_info("agilent_82357a_gpib driver loading");
 	for(i = 0; i < MAX_NUM_82357A_INTERFACES; ++i)
 		agilent_82357a_driver_interfaces[i] = NULL;
 	usb_register(&agilent_82357a_bus_driver);
@@ -1551,7 +1552,7 @@ static int __init agilent_82357a_init_module(void)
 
 static void __exit agilent_82357a_exit_module(void)
 {
-	info("agilent_82357a_gpib driver unloading");
+	pr_info("agilent_82357a_gpib driver unloading");
 //	printk("%s: enter\n", __FUNCTION__);
 	gpib_unregister_driver(&agilent_82357a_gpib_interface);
 	usb_deregister(&agilent_82357a_bus_driver);

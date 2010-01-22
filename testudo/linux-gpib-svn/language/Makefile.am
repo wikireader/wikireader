@@ -17,9 +17,11 @@ PERL_DIST = perl/Changes perl/LinuxGpib.pm perl/LinuxGpib.xs \
 if BIND_PERL
 ALL_PERL = all-perl
 CLEAN_PERL = clean-perl
+DISTCLEAN_PERL = distclean-perl
 else
 ALL_PERL =
 CLEAN_PERL =
+DISTCLEAN_PERL =
 endif
 
 if BIND_PYTHON
@@ -50,6 +52,8 @@ all-local: $(ALL_PERL)
 
 clean-local: $(CLEAN_PERL)
 
+distclean-local: $(DISTCLEAN_PERL)
+
 .PHONY: all-perl
 all-perl: perl/Makefile
 	-$(MAKE) -C perl all
@@ -57,6 +61,10 @@ all-perl: perl/Makefile
 .PHONY: clean-perl
 clean-perl: perl/Makefile
 	-$(MAKE) -C perl clean
+
+.PHONY: distclean-perl
+distclean-perl: 
+	$(RM) perl/Makefile
 
 perl/Makefile:
 	-(cd perl && $(PERL) Makefile.PL)

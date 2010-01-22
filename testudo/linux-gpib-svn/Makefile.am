@@ -23,5 +23,8 @@ dist-hook:
 	-find $(distdir) \( -name '*~' -o -name '.#*' \) -exec $(RM) \{\} \;
 	$(RM) $(distdir)/util/linux_flags/fake.*
 	$(RM) $(distdir)/util/linux_flags/.*.cmd
+	$(RM) $(distdir)/util/linux_flags/flags 
+	$(RM) $(distdir)/util/linux_flags/Module.*
+	$(RM) $(distdir)/util/linux_flags/modules.order
 	$(RM) -r $(distdir)/util/linux_flags/.tmp_versions
 

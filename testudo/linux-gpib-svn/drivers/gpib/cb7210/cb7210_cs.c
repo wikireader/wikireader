@@ -60,23 +60,23 @@ static int pc_debug = PCMCIA_DEBUG;
 
 /*====================================================================*/
 
-static int first_tuple(client_handle_t handle, tuple_t *tuple, cisparse_t *parse)
+static int first_tuple(struct pcmcia_device * handle, tuple_t *tuple, cisparse_t *parse)
 {
     int i;
     i = pcmcia_get_first_tuple(handle, tuple);
-    if (i != CS_SUCCESS) return i;
+    if (i != 0) return i;
     i = pcmcia_get_tuple_data(handle, tuple);
-    if (i != CS_SUCCESS) return i;
-    return pcmcia_parse_tuple(handle, tuple, parse);
+    if (i != 0) return i;
+    return PCMCIA_PARSE_TUPLE(tuple, parse);
 }
-static int next_tuple(client_handle_t handle, tuple_t *tuple, cisparse_t *parse)
+static int next_tuple(struct pcmcia_device * handle, tuple_t *tuple, cisparse_t *parse)
 {
     int i;
     i = pcmcia_get_next_tuple(handle, tuple);
-    if (i != CS_SUCCESS) return i;
+    if (i != 0) return i;
     i = pcmcia_get_tuple_data(handle, tuple);
-    if (i != CS_SUCCESS) return i;
-    return pcmcia_parse_tuple(handle, tuple, parse);
+    if (i != 0) return i;
+    return PCMCIA_PARSE_TUPLE(tuple, parse);
 }
 
 /*====================================================================*/
@@ -123,7 +123,7 @@ static  struct pcmcia_device  *curr_dev = NULL;
    structure.  We allocate them in the card's private data structure,
    because they generally can't be allocated dynamically.
 */
-   
+
 typedef struct local_info_t {
 	struct pcmcia_device	*p_dev;
 	gpib_board_t		*dev;
@@ -168,7 +168,7 @@ static int cb_gpib_probe( struct pcmcia_device *link )
 	link->io.IOAddrLines = 10;
 
 	/* Interrupt setup */
-	link->irq.Attributes = IRQ_TYPE_EXCLUSIVE;
+	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
 	link->irq.IRQInfo1 = IRQ_INFO2_VALID|IRQ_LEVEL_ID;
 	link->irq.Handler = NULL;
 	link->irq.Instance = NULL;
@@ -205,7 +205,8 @@ static void cb_gpib_remove( struct pcmcia_device *link )
 		printk("dev_node still registered ???");
 		//unregister_netdev(dev);
 	}
-	cb_pcmcia_detach(info->dev);
+	if(info->dev)
+		cb_pcmcia_detach(info->dev);
 	cb_gpib_release(link);
 
 	//free_netdev(dev);
@@ -222,7 +223,7 @@ static void cb_gpib_remove( struct pcmcia_device *link )
 /*@*/
 static void cb_gpib_config( struct pcmcia_device  *link )
 {
-	client_handle_t handle;
+	struct pcmcia_device * handle;
 	tuple_t tuple;
 	cisparse_t parse;
 	local_info_t *dev;
@@ -240,17 +241,17 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 	do {
 		tuple.DesiredTuple = CISTPL_CONFIG;
 		i = pcmcia_get_first_tuple(handle, &tuple);
-		if (i != CS_SUCCESS) break;
+		if (i != 0) break;
 		tuple.TupleData = buf;
 		tuple.TupleDataMax = 64;
 		tuple.TupleOffset = 0;
 		i = pcmcia_get_tuple_data(handle, &tuple);
-		if (i != CS_SUCCESS) break;
-		i = pcmcia_parse_tuple(handle, &tuple, &parse);
-		if (i != CS_SUCCESS) break;
+		if (i != 0) break;
+		i = PCMCIA_PARSE_TUPLE(&tuple, &parse);
+		if (i != 0) break;
 		link->conf.ConfigBase = parse.config.base;
 	} while (0);
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 		cs_error(link, ParseTuple, i);
 		return;
 	}
@@ -262,7 +263,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 
 		tuple.DesiredTuple = CISTPL_MANFID;
 		tuple.Attributes   = TUPLE_RETURN_COMMON;
-		if( first_tuple(handle,&tuple,&parse) == CS_SUCCESS ) {
+		if( first_tuple(handle,&tuple,&parse) == 0 ) {
 			dev->manfid = parse.manfid.manf;
 			dev->cardid = parse.manfid.card;
 			DEBUG(0,"gpib_cs: manufacturer: 0x%x card: 0x%x\n", dev->manfid,dev->cardid);
@@ -271,7 +272,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 
 		tuple.DesiredTuple = CISTPL_CFTABLE_ENTRY;
 		tuple.Attributes = 0;
-		if( first_tuple(handle,&tuple,&parse) == CS_SUCCESS ) {
+		if( first_tuple(handle,&tuple,&parse) == 0 ) {
 		while(1) {
 			if( parse.cftable_entry.io.nwin > 0) {
 				link->io.BasePort1 = parse.cftable_entry.io.win[0].base;
@@ -280,7 +281,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 				link->io.NumPorts2 = 0;
 				link->conf.ConfigIndex = parse.cftable_entry.index;
 				i = pcmcia_request_io(link, &link->io);
-				if (i == CS_SUCCESS) {
+				if (i == 0) {
 					DEBUG(0, "gpib_cs: base=0x%x len=%d registered\n",
 						parse.cftable_entry.io.win[0].base,
 						parse.cftable_entry.io.win[0].len
@@ -288,11 +289,11 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 					break;
 				}
 			}
-			if ( next_tuple(handle,&tuple,&parse) != CS_SUCCESS ) break;
+			if ( next_tuple(handle,&tuple,&parse) != 0 ) break;
 
 		}
 
-		if (i != CS_SUCCESS) {
+		if (i != 0) {
 			cs_error(link, RequestIO, i);
 		}
 		} else {
@@ -304,7 +305,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 	   actually assign a handler to the interrupt.
 	*/
 	i = pcmcia_request_irq(link, &link->irq);
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 	    cs_error(link, RequestIRQ, i);
 	    break;
 	}
@@ -316,7 +317,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
 	   the I/O windows and the interrupt mapping.
 	*/
 	i = pcmcia_request_configuration(link, &link->conf);
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 	    cs_error(link, RequestConfiguration, i);
 	    break;
 	}
@@ -336,7 +337,7 @@ static void cb_gpib_config( struct pcmcia_device  *link )
     After a card is removed, gpib_release() will unregister the net
     device, and release the PCMCIA configuration.  If the device is
     still open, this will be postponed until it is closed.
-    
+
 ======================================================================*/
 
 static void cb_gpib_release( struct pcmcia_device *link )

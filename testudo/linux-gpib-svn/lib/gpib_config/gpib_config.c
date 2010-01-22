@@ -35,7 +35,7 @@ typedef struct
 	unsigned int minor;
 	char *board_type;
 	int irq;
-	uint64_t iobase;
+	unsigned long iobase;
 	int dma;
 	int pci_bus;
 	int pci_slot;
@@ -171,7 +171,7 @@ static int parse_options( int argc, char *argv[], parsed_options_t *settings )
 
 	memset(settings, 0, sizeof(parsed_options_t));
 	settings->irq = -1;
-	settings->iobase = -1;
+	settings->iobase = (unsigned long)-1;
 	settings->dma = -1;
 	settings->pci_bus = -1;
 	settings->pci_slot = -1;
@@ -434,7 +434,7 @@ int main( int argc, char *argv[] )
 	}
 	if( options.irq < 0 )
 		options.irq = board->irq;
-	if( options.iobase < 0 )
+	if( options.iobase == (unsigned long)-1 )
 		options.iobase = board->base;
 	if( options.dma < 0 )
 		options.dma = board->dma;

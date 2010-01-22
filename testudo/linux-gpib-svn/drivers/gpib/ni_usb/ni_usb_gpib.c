@@ -17,6 +17,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <linux/kernel.h>
 #include <linux/module.h>
 #include "ni_usb_gpib.h"
 #include "gpibP.h"
@@ -2236,7 +2237,7 @@ static int __init ni_usb_init_module(void)
 {
 	int i;
 
-	info("ni_usb_gpib driver loading");
+	pr_info("ni_usb_gpib driver loading");
 	for(i = 0; i < MAX_NUM_NI_USB_INTERFACES; i++)
 		ni_usb_driver_interfaces[i] = NULL;
 	usb_register(&ni_usb_bus_driver);
@@ -2247,7 +2248,7 @@ static int __init ni_usb_init_module(void)
 
 static void __exit ni_usb_exit_module(void)
 {
-	info("ni_usb_gpib driver unloading");
+	pr_info("ni_usb_gpib driver unloading");
 //	printk("%s: enter\n", __FUNCTION__);
 	gpib_unregister_driver(&ni_usb_gpib_interface);
 	usb_deregister(&ni_usb_bus_driver);

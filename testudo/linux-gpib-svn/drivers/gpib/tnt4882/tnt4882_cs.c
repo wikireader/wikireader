@@ -114,7 +114,7 @@ static int ni_gpib_probe(struct pcmcia_device *link)
 
 	/* Initialize the dev_link_t structure */
 	/* Interrupt setup */
-	link->irq.Attributes = IRQ_TYPE_EXCLUSIVE;
+	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
 	link->irq.IRQInfo1 = IRQ_INFO2_VALID|IRQ_LEVEL_ID;
 	link->irq.Handler = NULL;
 
@@ -154,7 +154,8 @@ static void ni_gpib_remove(struct pcmcia_device *link)
 		printk("dev_node still registered ???");
 		//unregister_netdev(dev);
 	}
-	ni_pcmcia_detach(info->dev);
+	if(info->dev)
+		ni_pcmcia_detach(info->dev);
 	ni_gpib_release(link);
 
 	//free_netdev(dev);
@@ -180,7 +181,6 @@ static void ni_gpib_config(struct pcmcia_device *link)
 	cisparse_t parse;
 	int last_fn, last_ret;
 	u_char buf[64];
-	config_info_t conf;
 	win_req_t req;
 	memreq_t map;
 	cistpl_cftable_entry_t dflt = { 0 };
@@ -197,14 +197,13 @@ static void ni_gpib_config(struct pcmcia_device *link)
 	tuple.TupleOffset = 0;
 	CS_CHECK(GetFirstTuple, pcmcia_get_first_tuple(link, &tuple));
 	CS_CHECK(GetTupleData, pcmcia_get_tuple_data(link, &tuple));
-	CS_CHECK(ParseTuple, pcmcia_parse_tuple(link, &tuple, &parse));
+	CS_CHECK(ParseTuple, PCMCIA_PARSE_TUPLE(&tuple, &parse));
 	link->conf.ConfigBase = parse.config.base;
 	link->conf.Present = parse.config.rmask[0];
 
 	/* Configure card */
-	CS_CHECK( GetConfigurationInfo, pcmcia_get_configuration_info(link, &conf) );
 
-	/*
+  /*
 	In this loop, we scan the CIS for configuration table entries,
 	each of which describes a valid card configuration, including
 	voltage, IO window, memory window, and interrupt settings.
@@ -218,17 +217,17 @@ static void ni_gpib_config(struct pcmcia_device *link)
 	*/
 	tuple.DesiredTuple = CISTPL_CFTABLE_ENTRY;
 	CS_CHECK(GetFirstTuple, pcmcia_get_first_tuple(link, &tuple));
-	while (1) 
+	while (1)
 	{
 		cistpl_cftable_entry_t *cfg = &(parse.cftable_entry);
 		CS_CHECK(GetTupleData, pcmcia_get_tuple_data(link, &tuple));
-		CS_CHECK(ParseTuple, pcmcia_parse_tuple(link, &tuple, &parse));
+		CS_CHECK(ParseTuple, PCMCIA_PARSE_TUPLE(&tuple, &parse));
 		if (cfg->flags & CISTPL_CFTABLE_DEFAULT) dflt = *cfg;
 		if (cfg->index == 0) goto next_entry;
 		link->conf.ConfigIndex = cfg->index;
 
 		/* Does this card need audio output? */
-		if (cfg->flags & CISTPL_CFTABLE_AUDIO) 
+		if (cfg->flags & CISTPL_CFTABLE_AUDIO)
 		{
 			link->conf.Attributes |= CONF_ENABLE_SPKR;
 			link->conf.Status = CCSR_AUDIO_ENA;
@@ -237,10 +236,10 @@ static void ni_gpib_config(struct pcmcia_device *link)
 		/* Do we need to allocate an interrupt? */
 		if (cfg->irq.IRQInfo1 || dflt.irq.IRQInfo1)
 			link->conf.Attributes |= CONF_ENABLE_IRQ;
-	
+
 		/* IO window settings */
 		link->io.NumPorts1 = link->io.NumPorts2 = 0;
-		if ((cfg->io.nwin > 0) || (dflt.io.nwin > 0)) 
+		if ((cfg->io.nwin > 0) || (dflt.io.nwin > 0))
 		{
 			cistpl_io_t *io = (cfg->io.nwin) ? &cfg->io : &dflt.io;
 			link->io.Attributes1 = IO_DATA_PATH_WIDTH_AUTO;
@@ -251,7 +250,7 @@ static void ni_gpib_config(struct pcmcia_device *link)
 			link->io.IOAddrLines = io->flags & CISTPL_IO_LINES_MASK;
 			link->io.BasePort1 = io->win[0].base;
 			link->io.NumPorts1 = io->win[0].len;
-			if (io->nwin > 1) 
+			if (io->nwin > 1)
 			{
 				link->io.Attributes2 = link->io.Attributes1;
 				link->io.BasePort2 = io->win[1].base;
@@ -259,19 +258,19 @@ static void ni_gpib_config(struct pcmcia_device *link)
 			}
 			/* This reserves IO space but doesn't actually enable it */
 			last_ret = pcmcia_request_io(link, &link->io);
-			if(last_ret != CS_SUCCESS) 
+			if(last_ret != 0)
 			{
 				goto next_entry;
 			}
 		}
-	
+
 		/*
 		Now set up a common memory window, if needed.  There is room
 		in the dev_link_t structure for one memory window handle,
 		but if the base addresses need to be saved, or if multiple
 		windows are needed, the info should go in the private data
 		structure for this device.
-	
+
 		Note that the memory window base is a physical address, and
 		needs to be mapped to virtual space with ioremap() before it
 		is used.
@@ -287,15 +286,15 @@ static void ni_gpib_config(struct pcmcia_device *link)
 			req.Size = 0x1000;
 			req.AccessSpeed = 0;
 			link->win = (window_handle_t)link;
-			if(pcmcia_request_window(&link, &req, &link->win) != CS_SUCCESS)
+			if(pcmcia_request_window(&link, &req, &link->win) != 0)
 				goto next_entry;
 			map.Page = 0; map.CardOffset = mem->win[0].card_addr;
-			if(pcmcia_map_mem_page(link->win, &map) != CS_SUCCESS)
+			if(pcmcia_map_mem_page(link->win, &map) != 0)
 				goto next_entry;
 		}
 		/* If we got this far, we're cool! */
 		break;
-	
+
 		next_entry:
 		CS_CHECK( GetNextTuple, pcmcia_get_next_tuple(link, &tuple));
 	}
@@ -462,7 +461,7 @@ int ni_pcmcia_attach(gpib_board_t *board, gpib_board_config_t config)
 	tnt4882_private_t *tnt_priv;
 	nec7210_private_t *nec_priv;
 	int isr_flags = IRQF_SHARED;
-	
+
 	DEBUG(0, "ni_pcmcia_attach(0x%p)\n", board);
 
 	if( curr_dev == NULL )

@@ -1,3 +1,247 @@
+2009-10-06 17:56  fmhess
+
+	* [r1549] ChangeLog: Updated ChangeLog for 3.2.14 with "svn2cl -i"
+
+2009-10-06 17:52  fmhess
+
+	* [r1548] configure.ac: bumped library age too.
+
+2009-10-06 17:49  fmhess
+
+	* [r1547] configure.ac: Bumped version.
+
+2009-10-06 15:53  fmhess
+
+	* [r1546] drivers/gpib/tnt4882/mite.c: Fix problem with ioremapping
+	  wrong size of io memory.
+
+2009-09-23 13:31  fmhess
+
+	* [r1545] drivers/gpib/sys/ibinit.c: We don't need daemonize any
+	  more.
+
+2009-09-22 20:14  fmhess
+
+	* [r1544] drivers/gpib/cb7210/cb7210_cs.c,
+	  drivers/gpib/ines/ines_cs.c, drivers/gpib/tnt4882/tnt4882_cs.c:
+	  Change pcmcia drivers from IRQ_TYPE_EXCLUSIVE to
+	  IRQ_TYPE_DYNAMIC_SHARING
+
+2009-09-22 16:07  fmhess
+
+	* [r1543] lib/ibConfYacc.y: Fix some infinite loops that could
+	  occur on parsing a gpib.conf with syntax errors.
+	  Emit warnings for old gpib.conf files that don't put an "="
+	  before boolean
+	  values.
+
+2009-09-21 20:43  fmhess
+
+	* [r1542] drivers/gpib/cb7210/cb7210_cs.c,
+	  drivers/gpib/ines/ines_cs.c, drivers/gpib/tnt4882/tnt4882_cs.c:
+	  Fix null dereference on removal of pcmcia board that was
+	  never configured with gpib_config.
+
+2009-09-20 02:36  fmhess
+
+	* [r1540] ChangeLog: Updated ChangeLog with "svn2cl -i"
+
+2009-09-20 01:40  fmhess
+
+	* [r1539] configure.ac: Bumped version.
+
+2009-09-20 01:39  fmhess
+
+	* [r1538] m4/tcl.m4: Added fixed version of tcl.m4 from Debian
+	  Lenny, which doesn't
+	  exit when tcl is not found.
+
+2009-09-16 19:15  fmhess
+
+	* [r1536] ChangeLog: Updated ChangeLog with "svn2cl -i"
+
+2009-09-16 19:07  fmhess
+
+	* [r1535] Makefile.am: Clean up a few files from distribution
+	  tarball.
+
+2009-09-16 18:45  fmhess
+
+	* [r1534] doc/linux-gpib.sgml: Using docbook version 4.5 now
+
+2009-09-16 18:03  fmhess
+
+	* [r1533] configure.ac: Bumped version for 3.2.12 release.
+
+2009-09-16 17:30  fmhess
+
+	* [r1532] language/Makefile.am: Clean up language/perl/Makefile
+	  when distclean target it used.
+
+2009-09-16 17:21  fmhess
+
+	* [r1531] drivers/gpib/cb7210/cb7210_cs.c,
+	  drivers/gpib/include/pcmcia,
+	  drivers/gpib/include/pcmcia/cistpl.h,
+	  drivers/gpib/ines/ines_cs.c, drivers/gpib/tnt4882/tnt4882_cs.c:
+	  Fixed some PCMCIA compilation problems against 2.6.31 kernel.
+
+2009-09-16 17:20  fmhess
+
+	* [r1530] drivers/gpib/include/amcc5920.h: Fixed some compile
+	  warnings.
+
+2009-09-16 17:08  fmhess
+
+	* [r1529] drivers/gpib/sys/osfuncs.c: Added missing include.
+
+2009-09-16 15:23  fmhess
+
+	* [r1528] drivers/gpib/agilent_82357a/agilent_82357a.c,
+	  drivers/gpib/ni_usb/ni_usb_gpib.c: Replaced some info() calls
+	  with pr_info().
+
+2009-06-08 18:12  fmhess
+
+	* [r1527] configure.ac, language/tcl/Makefile.am, m4/tcl.m4: Fix
+	  for TCL detection with Debian Lenny.
+
+2009-06-08 17:36  fmhess
+
+	* [r1526] lib/gpib_config/gpib_config.c: Fixed reading of base
+	  address from config file.
+
+2009-03-12 15:25  fmhess
+
+	* [r1525] drivers/gpib/tnt4882/mite.c: Fix reference counting for
+	  mite pci devices.
+
+2009-03-12 14:37  fmhess
+
+	* [r1524] lib/gpib_config/gpib_config.c: Removed spurious newline.
+
+2009-03-12 14:24  fmhess
+
+	* [r1523] lib/gpib_config/gpib_config.c: Added --device-file
+	  command line option to gpib_config, to make
+	  it able to use the tempnode variable when called from a udev
+	  rule.
+
+2009-03-07 14:22  fmhess
+
+	* [r1522] drivers/gpib/sys/osinit.c: Patch from Ken McIvor
+	  <mcivor@iit.edu>:
+	  
+	  We've heard via a Debian bug report that the module-init-tools
+	  authors
+	  are pushing to eliminate as many files as possible from `/etc/
+	  modprobe.d':
+	  
+	  http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=518241
+	  
+	  The attached patch uses the MODULE_ALIAS_CHARDEV_MAJOR() macro to
+	  establish a built-in alias to the gpib_common module, as per
+	  their
+	  recommendation. I've tested it against Debian "sid" without the
+	  `/etc/
+	  modprobe.d/gpib' file and everything appears to work fine.
+
+2009-01-24 14:49  fmhess
+
+	* [r1521] drivers/gpib/sys/ibinit.c: Don't give a NULL name string
+	  to kthread_run.
+
+2009-01-24 14:30  fmhess
+
+	* [r1520] drivers/gpib/sys/ibinit.c: Make sure autospoll_task is
+	  not an error code before using
+	  it in iboffline.
+
+2008-12-23 04:54  fmhess
+
+	* [r1519] drivers/gpib/include/gpib_types.h,
+	  drivers/gpib/sys/ibinit.c, drivers/gpib/sys/osinit.c: Fixed
+	  compilation on 2.6.27 kernel by switching autospoll thread over
+	  to
+	  use linux/kthread.h. Compiles, otherwise untested.
+
+2008-11-22 02:05  fmhess
+
+	* [r1518] drivers/gpib/ni_usb/ni_usb_gpib.c: Fix for bogus warning
+	  from David Farrell <davidjf2001@yahoo.com>
+
+2008-11-03 16:29  fmhess
+
+	* [r1517] doc/linux-gpib.sgml, drivers/gpib/ni_usb/ni_usb_gpib.c,
+	  drivers/gpib/ni_usb/ni_usb_gpib.h: Added support for measurement
+	  computing usb-488
+
+2008-09-19 02:26  fmhess
+
+	* [r1516] language/python/Gpib.py, language/python/gpibinter.c:
+	  Patch from Dan Lenski <dlenski@gmail.com>:
+	  
+	  * fixed error handling to get errno from the right place
+	  * __doc__ strings for every function (modeled on the ones Keith
+	  had written)
+	  * a few function names made less terse:
+	  cmd->command
+	  tmo->timeout
+	  trg->trigger
+	  * integer constants for IbaXXXX and IbcXXXX added to the module
+	  * all functions--that don't have something else useful to
+	  return--return
+	  ibsta, just like the C versions
+	  * the read() function now puts its result directly into the
+	  Python output
+	  string, with /no copying/ from a C string to a Python string.
+	  This should
+	  improve efficiency of large and/or frequent reads.
+
+2008-09-18 00:56  fmhess
+
+	* [r1515] language/python/Makefile.am: Patch from "Benjamin M.
+	  Schwartz" <bmschwar@fas.harvard.edu> which makes
+	  install of python bindings respect prefix and DESTDIR.
+
+2008-09-16 04:30  fmhess
+
+	* [r1514] language/python/gpibinter.c: Patch from Dan Lenski
+	  <dlenski@gmail.com> which undoes accidental
+	  rename of module from gpib to _gpib.
+
+2008-09-14 12:58  fmhess
+
+	* [r1513] drivers/gpib/tnt4882/tnt4882_cs.c: Added device id for
+	  pcmcia-gpib+
+
+2008-09-14 03:35  fmhess
+
+	* [r1512] language/python/Gpib.py, language/python/gpibinter.c:
+	  Decided not to split eos_mode into flags/character in python
+	  binding.
+
+2008-09-13 23:58  fmhess
+
+	* [r1511] drivers/gpib/tnt4882/tnt4882_cs.c: Fixed null pointer
+	  dereference when an attempt is made to configure
+	  an ni pcmcia board that doesn't exist.
+
+2008-09-13 23:21  fmhess
+
+	* [r1510] AUTHORS, language/python/Gpib.py,
+	  language/python/gpibinter.c: Update to python binding based on
+	  patches from Keith Dart <dart@google.com>
+	  and Dan Lenski <dlenski@gmail.com>, and my own changes.
+
+2008-08-31 20:17  fmhess
+
+	* [r1509] doc/linux-gpib.sgml: Updated copyright dates.
+
+2008-08-31 19:34  fmhess
+
+	* [r1507] ChangeLog: Regenerated changed log with "svn2cl -i"
+
 2008-08-31 19:10  fmhess
 
 	* [r1506] configure.ac: Bumped version for 3.2.11 release.

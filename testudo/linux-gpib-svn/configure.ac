@@ -1,7 +1,7 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([linux-gpib], [3.2.11])
+AC_INIT([linux-gpib], [3.2.14])
 # libtool version: current:revision:age
 #
 # If the library source code has changed at all since the last update, then
@@ -15,7 +15,7 @@ AC_INIT([linux-gpib], [3.2.11])
 #
 # If any interfaces have been removed since the last public release, then set
 # age to 0.
-GPIB_SO_VERSION=1:5:1
+GPIB_SO_VERSION=1:7:1
 AC_CONFIG_SRCDIR([drivers/gpib/sys/osfuncs.c])
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
@@ -138,7 +138,10 @@ AM_CHECK_PYTHON_HEADERS([],[BIND_PYTHON=no;AC_MSG_NOTICE([python headers not fou
 AC_CHECK_HEADER([libguile.h],[],[BIND_GUILE="no";AC_MSG_NOTICE([libguile headers not found, disabling guile binding])])
 
 if test "$BIND_TCL" != "no"; then
-AC_CHECK_HEADER([$TCL_INC_DIR/tcl.h],[],[BIND_TCL="no";AC_MSG_NOTICE([TCL headers not found, disabling TCL binding])])
+SAVE_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $TCL_INCLUDE_SPEC"
+AC_CHECK_HEADER([tcl.h],[],[BIND_TCL="no";AC_MSG_NOTICE([TCL headers not found, disabling TCL binding])])
+CPPFLAGS=$SAVE_CPPFLAGS
 fi
 
 if test "$PHP_CONFIG" != "no"; then

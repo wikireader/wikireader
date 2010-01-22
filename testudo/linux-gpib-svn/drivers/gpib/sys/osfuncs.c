@@ -20,6 +20,7 @@
 
 #include <linux/fcntl.h>
 #include <linux/kmod.h>
+#include <linux/smp_lock.h>
 #include <linux/vmalloc.h>
 
 static int board_type_ioctl(gpib_file_private_t *file_priv, gpib_board_t *board, unsigned long arg);

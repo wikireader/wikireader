@@ -92,7 +92,6 @@ void mite_init(void)
 
 int mite_setup(struct mite_struct *mite)
 {
-	unsigned long length;
 	u32 addr;
 
 	if(pci_enable_device(mite->pcidev))
@@ -108,7 +107,7 @@ int mite_setup(struct mite_struct *mite)
 	};
 	addr = pci_resource_start(mite->pcidev, 0);
 	mite->mite_phys_addr = addr;
-	mite->mite_io_addr = ioremap(addr, PCI_MITE_SIZE);
+	mite->mite_io_addr = ioremap(addr, pci_resource_len(mite->pcidev, 0));
 	if(!mite->mite_io_addr)
 	{
 		printk("mite: failed to remap mite io memory address.\n");
@@ -117,8 +116,7 @@ int mite_setup(struct mite_struct *mite)
 	printk("mite: 0x%08lx mapped to %p\n", mite->mite_phys_addr, mite->mite_io_addr);
 	addr = pci_resource_start(mite->pcidev, 1);
 	mite->daq_phys_addr=addr;
-	length = PCI_DAQ_SIZE;
-	mite->daq_io_addr = ioremap(mite->daq_phys_addr, length);
+	mite->daq_io_addr = ioremap(mite->daq_phys_addr, pci_resource_len(mite->pcidev, 1));
 	if(!mite->daq_io_addr)
 	{
 		printk("mite: failed to remap daq io memory address.\n");

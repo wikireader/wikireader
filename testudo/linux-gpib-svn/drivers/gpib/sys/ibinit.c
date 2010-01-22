@@ -30,8 +30,6 @@ static int autospoll_thread(void *board_void)
 	/* This thread doesn't need any user-level access,
 	 * so get rid of all our resources..
 	 */
-	/* set our name for identification purposes */
-	daemonize("gpib%d_autospoll", board->minor);
 	allow_signal(SIGKILL);
 
 	GPIB_DPRINTK("entering autospoll thread\n" );

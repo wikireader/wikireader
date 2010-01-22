@@ -46,25 +46,25 @@ static int pc_debug = PCMCIA_DEBUG;
 #define DEBUG(n, args...)
 #endif
 
-static int first_tuple(client_handle_t handle, tuple_t *tuple,
+static int first_tuple(struct pcmcia_device * handle, tuple_t *tuple,
 	cisparse_t *parse)
 {
 	int i;
 	i = pcmcia_get_first_tuple(handle, tuple);
-	if (i != CS_SUCCESS) return i;
+	if (i != 0) return i;
 	i = pcmcia_get_tuple_data(handle, tuple);
-	if (i != CS_SUCCESS) return i;
-	return pcmcia_parse_tuple(handle, tuple, parse);
+	if (i != 0) return i;
+	return PCMCIA_PARSE_TUPLE(tuple, parse);
 }
-static int next_tuple(client_handle_t handle, tuple_t *tuple,
+static int next_tuple(struct pcmcia_device * handle, tuple_t *tuple,
 	cisparse_t *parse)
 {
 	int i;
 	i = pcmcia_get_next_tuple(handle, tuple);
-	if (i != CS_SUCCESS) return i;
+	if (i != 0) return i;
 	i = pcmcia_get_tuple_data(handle, tuple);
-	if (i != CS_SUCCESS) return i;
-	return pcmcia_parse_tuple(handle, tuple, parse);
+	if (i != 0) return i;
+	return PCMCIA_PARSE_TUPLE(tuple, parse);
 }
 
 /*
@@ -155,7 +155,7 @@ static int ines_gpib_probe( struct pcmcia_device *link )
 	link->io.IOAddrLines = 5;
 
 	/* Interrupt setup */
-	link->irq.Attributes = IRQ_TYPE_EXCLUSIVE;
+	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
 	link->irq.IRQInfo1 = IRQ_INFO2_VALID | IRQ_PULSE_ID;
 	link->irq.Handler = NULL;
 
@@ -189,7 +189,8 @@ static void ines_gpib_remove( struct pcmcia_device *link )
 		printk("dev_node still registered ???");
 		//unregister_netdev(dev);
 	}
-	ines_pcmcia_detach(info->dev);
+	if(info->dev)
+		ines_pcmcia_detach(info->dev);
 	ines_gpib_release(link);
 
 	//free_netdev(dev);
@@ -223,18 +224,18 @@ static void ines_gpib_config( struct pcmcia_device *link )
 	do {
 		tuple.DesiredTuple = CISTPL_CONFIG;
 		i = pcmcia_get_first_tuple(link, &tuple);
-		if (i != CS_SUCCESS) break;
+		if (i != 0) break;
 		tuple.TupleData = buf;
 		tuple.TupleDataMax = 64;
 		tuple.TupleOffset = 0;
 		i = pcmcia_get_tuple_data(link, &tuple);
-		if (i != CS_SUCCESS) break;
-		i = pcmcia_parse_tuple(link, &tuple, &parse);
-		if (i != CS_SUCCESS) break;
+		if (i != 0) break;
+		i = PCMCIA_PARSE_TUPLE(&tuple, &parse);
+		if (i != 0) break;
 		link->conf.ConfigBase = parse.config.base;
 		link->conf.Present = parse.config.rmask[0];
 	} while (0);
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 		cs_error(link, ParseTuple, i);
 		return;
 	}
@@ -246,7 +247,7 @@ static void ines_gpib_config( struct pcmcia_device *link )
 		 */
 		tuple.DesiredTuple = CISTPL_MANFID;
 		tuple.Attributes = TUPLE_RETURN_COMMON;
-		if( first_tuple(link,&tuple,&parse) == CS_SUCCESS ) {
+		if( first_tuple(link,&tuple,&parse) == 0 ) {
 			dev->manfid = parse.manfid.manf;
 			dev->cardid = parse.manfid.card;
 			printk(KERN_DEBUG "ines_cs: manufacturer: 0x%x card: 0x%x\n",
@@ -256,7 +257,7 @@ static void ines_gpib_config( struct pcmcia_device *link )
 
 		tuple.DesiredTuple = CISTPL_CFTABLE_ENTRY;
 		tuple.Attributes = 0;
-		if( first_tuple(link,&tuple,&parse) == CS_SUCCESS ) {
+		if( first_tuple(link,&tuple,&parse) == 0 ) {
 			while(1) {
 				if( parse.cftable_entry.io.nwin > 0) {
 					link->io.BasePort1 = parse.cftable_entry.io.win[0].base;
@@ -264,17 +265,17 @@ static void ines_gpib_config( struct pcmcia_device *link )
 					link->io.BasePort2 = 0;
 					link->io.NumPorts2 = 0;
 					i = pcmcia_request_io(link, &link->io);
-					if (i == CS_SUCCESS) {
+					if (i == 0) {
 					printk( KERN_DEBUG "ines_cs: base=0x%x len=%d registered\n",
 						link->io.BasePort1, link->io.NumPorts1 );
 					link->conf.ConfigIndex = parse.cftable_entry.index;
 					break;
 					}
 				}
-				if ( next_tuple(link,&tuple,&parse) != CS_SUCCESS ) break;
+				if ( next_tuple(link,&tuple,&parse) != 0 ) break;
 			}
 
-			if (i != CS_SUCCESS) {
+			if (i != 0) {
 				cs_error(link, RequestIO, i);
 			}
 		} else {
@@ -291,14 +292,14 @@ static void ines_gpib_config( struct pcmcia_device *link )
 		req.Size=0x1000;
 		req.AccessSpeed=250;
 		i= pcmcia_request_window(&link, &req, &link->win);
-		if (i != CS_SUCCESS) {
+		if (i != 0) {
 			cs_error(link, RequestWindow, i);
 			break;
 		}
 		mem.CardOffset=0;
 		mem.Page=0;
 		i= pcmcia_map_mem_page(link->win, &mem);
-		if (i != CS_SUCCESS) {
+		if (i != 0) {
 			cs_error(link, MapMemPage, i);
 			break;
 		}
@@ -314,7 +315,7 @@ static void ines_gpib_config( struct pcmcia_device *link )
 	if (link->conf.Attributes & CONF_ENABLE_IRQ)
 	{
 		i = pcmcia_request_irq(link, &link->irq);
-		if (i != CS_SUCCESS) {
+		if (i != 0) {
 			cs_error(link, RequestIRQ, i);
 		}
 		printk(KERN_DEBUG "ines_cs: IRQ_Line=%d\n",link->irq.AssignedIRQ);
@@ -325,12 +326,12 @@ static void ines_gpib_config( struct pcmcia_device *link )
 	the I/O windows and the interrupt mapping.
 	*/
 	i = pcmcia_request_configuration(link, &link->conf);
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 		cs_error(link, RequestConfiguration, i);
 	}
 
 	/* If any step failed, release any partially configured state */
-	if (i != CS_SUCCESS) {
+	if (i != 0) {
 		ines_gpib_release(link);
 		return;
 	}
