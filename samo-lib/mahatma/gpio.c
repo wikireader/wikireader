@@ -64,9 +64,6 @@ bool gpio_event_pending(void)
 
 bool gpio_get_event(struct wl_input_event *ev)
 {
-	ButtonType button;
-	bool pressed;
-
 	if (!event_cached && !Button_get(&button, &pressed)) {
 		return false;
 	}
