@@ -195,7 +195,7 @@ def main():
             verbose = True
         if opt in ('-u', '--update'):
             update_mode = True
-        if opt in ('-P', '--protect'):
+        elif opt in ('-P', '--protect'):
             protect = True
         elif opt in ('-h', '--help'):
             usage(None)
