@@ -3,28 +3,74 @@ Quick start instructions
 
 This is only rough at the moment, need to expand it somewhat
 
-make help gives a list of targets and some are explaind below
+To obtain a list of targets use the command:
+  make help
 
-1) Set up a 32 bit Linux system
-   or use schroot as described in doc/Using-schroot.text
-   (this file also lists packages to install)
 
-2) make sure samo-lib/include/config.h is setup
+A. Compiling WikiReader program and QT4 simulator
+=================================================
+
+1) make sure samo-lib/include/config.h is setup
    copy from samo-lib/include/config.h-default
 
    The make files will do the copy, but the
    BOARD_SAMO_V1 must be uncommented by manual editing
 
-3) if 32 bit then just make
-   if 64 bit the run make in the 32 bit chroot as set up in (1)
+2) make clean
 
-4) to build the database
-   (this should work in 32 or 64 bit as it mostly used Python2.6)
+   There maybe errors because of missing programs, these will be
+   indicated by an apt-get install message to show the Ubuntu 9.10
+   package(s) to install.
 
-   make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine hash
+3) make
+
+
+B. Compiling a test database (single language version for an old kernel.elf)
+============================
+
+   Requires Python2.6 ocaml PHP5 LaTeX and dvipng
+
+1) mkdir -p image work
+
+   make DESTDIR=image WORKDIR=work \
+     XML_FILES="XML-Licenses/en/license.xml XML-Licenses/en/terms.xml xml-file-samples/japanese_architects.xml" iprch
+
+   #Note: iprch => index parse render combine hash
+
+2) Optionally: simulate using qt4-simulator:
+   make DESTDIR=image fonts-install sim4
+
+3) make DESTDIR=image install
+
+4) Format a microSD card as FAT32 and copy the contents on image to it
+   e.g.   mkfs.vfat -F 32 -n wikird /dev/sd<id-and-partition>
+          mount /dev/sd<id-and-partition> /mnt
+          cp image/* /mnt/
+
+
+C. Compiling a test database (multiple language version - latest kernel.elf)
+============================
+
+   Change 'en' and 'enpedia' to correspond to language being built in commands below
+
+   Note: DESTDIR is not always the same in each command
+
+1) mkdir -p image/enpedia work/en
+
+   make DESTDIR=image/enpedia WORKDIR=work/en WIKI_FILE_PREFIX=wiki WIKI_LANGUAGE=en \
+      XML_FILES="XML-Licenses/en/license.xml XML-Licenses/en/terms.xml xml-file-samples/japanese_architects.xml" iprch
+
+   #Note: iprch => index parse render combine hash
+
+2) cp -p XML-Licenses/en/wiki.nls image/enpedia/wiki.nls
+
+3) Optionally: simulate using qt4-simulator:
+   make DESTDIR=image fonts-install sim4
+
+4) Install fonts and programs
    make DESTDIR=image install
 
 5) format a microSD card as FAT32 and copy the contents on image to it
    e.g.   mkfs.vfat -F 32 -n wikird /dev/sd<id-and-partition>
           mount /dev/sd<id-and-partition> /mnt
-          cp image/* /mnt/
+          cp -r image/* /mnt/
