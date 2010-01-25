@@ -51,11 +51,16 @@
 #define LIST_SCROLL_SPEED_FRICTION 0.6
 #define ARTICLE_SCROLL_SPEED_FRICTION 0.6
 #define SCROLL_UNIT_SECOND 0.1
-#define LINK_ACTIVATION_TIME_THRESHOLD 0.1
-#define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.35
+#define LINK_ACTIVATION_TIME_THRESHOLD 0.05
+#define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.1
+#define LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.25
+
+#ifdef OVER_SCROLL_ENABLED
 #define OVER_SCROLL_SPEED_FACTOR 4
 #define OVER_SCROLL_MOVE_FRICTION 0.6
 #define MAX_OVER_SCROLL_LINES (LCD_HEIGHT_LINES * 0.1)
+int over_scroll_lines = 0;
+#endif
 
 #ifndef WIKIPCF
 extern long finger_move_speed;
@@ -74,7 +79,6 @@ int lcd_draw_init_y_pos = 0;
 int request_display_next_page = 0;
 int request_y_pos = 0;
 int cur_render_y_pos = 0;
-int over_scroll_lines = 0;
 
 ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 
@@ -603,7 +607,9 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 				display_first_page = 1;
 				lcd_draw_cur_y_pos = 0;
 				finger_move_speed = 0;
+#ifdef OVER_SCROLL_ENABLED
 				over_scroll_lines = 0;
+#endif
 				repaint_framebuffer(lcd_draw_buf.screen_buf, 0, 0);
 				if (lcd_draw_init_y_pos > 0)
 				{
@@ -624,8 +630,11 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 	guilib_fb_lock();
 	//guilib_clear();
 
+#ifdef OVER_SCROLL_ENABLED
 	if (!over_scroll_lines)
+#endif
 		memcpy(framebuffer,buf+pos,framebuffersize);
+#ifdef OVER_SCROLL_ENABLED
 	else if (over_scroll_lines < 0)
 	{
 		memset(framebuffer, 0, -over_scroll_lines * LCD_BUF_WIDTH_BYTES);
@@ -637,6 +646,9 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 		memset(&framebuffer[(LCD_HEIGHT_LINES - over_scroll_lines) * LCD_BUF_WIDTH_BYTES], 0, over_scroll_lines * LCD_BUF_WIDTH_BYTES);
 	}
 	if (b_repaint_invert_link && !over_scroll_lines)
+#else
+	if (b_repaint_invert_link)
+#endif
 		repaint_invert_link();
 	if (b_show_scroll_bar)
 		show_scroll_bar(1);
@@ -993,7 +1005,9 @@ void init_render_article(long init_y_pos)
 	lcd_draw_cur_y_pos = 0;
 	lcd_draw_init_y_pos = init_y_pos;
 	finger_move_speed = 0;
+#ifdef OVER_SCROLL_ENABLED
 	over_scroll_lines = 0;
+#endif
 	lcd_draw_buf_pos = 0;
 }
 #endif
@@ -1049,9 +1063,11 @@ int render_article_with_pcf()
 		lcd_draw_cur_y_pos = request_y_pos - LCD_HEIGHT_LINES;
 		if (lcd_draw_cur_y_pos < 0)
 		{
+#ifdef OVER_SCROLL_ENABLED
 			over_scroll_lines = lcd_draw_cur_y_pos * OVER_SCROLL_MOVE_FRICTION;
 			if (over_scroll_lines < -MAX_OVER_SCROLL_LINES)
 				over_scroll_lines = -MAX_OVER_SCROLL_LINES;
+#endif
 			lcd_draw_cur_y_pos = 0;
 		}
 		repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS/8, 1);
@@ -1067,16 +1083,20 @@ int render_article_with_pcf()
 				lcd_draw_cur_y_pos = request_y_pos - LCD_HEIGHT_LINES;
 				if (lcd_draw_cur_y_pos + LCD_HEIGHT_LINES > lcd_draw_buf.current_y)
 				{
+#ifdef OVER_SCROLL_ENABLED
 					over_scroll_lines = (lcd_draw_cur_y_pos - (lcd_draw_buf.current_y - LCD_HEIGHT_LINES)) * OVER_SCROLL_MOVE_FRICTION;
 					if (over_scroll_lines > MAX_OVER_SCROLL_LINES)
 						over_scroll_lines = MAX_OVER_SCROLL_LINES;
+#endif
 					lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 				}
 				if (lcd_draw_cur_y_pos < 0)
 				{
+#ifdef OVER_SCROLL_ENABLED
 					over_scroll_lines = lcd_draw_cur_y_pos * OVER_SCROLL_MOVE_FRICTION;
 					if (over_scroll_lines < -MAX_OVER_SCROLL_LINES)
 						over_scroll_lines = -MAX_OVER_SCROLL_LINES;
+#endif
 					lcd_draw_cur_y_pos = 0;
 				}
 			}
@@ -1383,6 +1403,7 @@ void display_article_with_pcf(int y_move)
 //		return;
 //	}
 
+#ifdef OVER_SCROLL_ENABLED
 	if (over_scroll_lines < 0)
 	{
 		if (y_move < 0)
@@ -1425,22 +1446,27 @@ void display_article_with_pcf(int y_move)
 		else
 			y_move = 0;
 	}
+#endif
 	lcd_draw_cur_y_pos += y_move;
 
 	if ((lcd_draw_cur_y_pos+LCD_HEIGHT_LINES)>lcd_draw_buf.current_y)
 	{
+#ifdef OVER_SCROLL_ENABLED
 		y_move = lcd_draw_cur_y_pos - (lcd_draw_buf.current_y - LCD_HEIGHT_LINES);
 		over_scroll_lines = y_move * OVER_SCROLL_MOVE_FRICTION;
 		if (over_scroll_lines > MAX_OVER_SCROLL_LINES)
 			over_scroll_lines = MAX_OVER_SCROLL_LINES;
+#endif
 		lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 	}
 	if (lcd_draw_cur_y_pos < 0)
 	{
+#ifdef OVER_SCROLL_ENABLED
 		y_move = lcd_draw_cur_y_pos;
 		over_scroll_lines = y_move * OVER_SCROLL_MOVE_FRICTION;
 		if (over_scroll_lines < -MAX_OVER_SCROLL_LINES)
 			over_scroll_lines = -MAX_OVER_SCROLL_LINES;
+#endif
 		lcd_draw_cur_y_pos = 0;
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE)
@@ -1462,11 +1488,14 @@ float scroll_speed()
 			speed = (float)finger_move_speed * ARTICLE_SCROLL_SPEED_FRICTION;
 		else
 			speed = (float)finger_move_speed * LIST_SCROLL_SPEED_FRICTION;
+#ifdef OVER_SCROLL_ENABLED
 		if (over_scroll_lines)
 			speed *= 1 - abs(over_scroll_lines) / MAX_OVER_SCROLL_LINES;
+#endif
 		if (abs(speed) < 1 / SCROLL_UNIT_SECOND)
 			speed = 0;
 	}
+#ifdef OVER_SCROLL_ENABLED
 	else if (over_scroll_lines)
 	{
 		speed = -over_scroll_lines * OVER_SCROLL_SPEED_FACTOR;
@@ -1478,6 +1507,7 @@ float scroll_speed()
 				speed = -1 / SCROLL_UNIT_SECOND;
 		}
 	}
+#endif
 	return speed;
 }
 
@@ -1487,7 +1517,11 @@ void scroll_article(void)
 	long pos;
 
 
+#ifdef OVER_SCROLL_ENABLED
 	if(finger_move_speed == 0 && over_scroll_lines == 0)
+#else
+	if(finger_move_speed == 0)
+#endif
 		return;
 
 	if (!display_first_page || request_display_next_page ||
@@ -1495,7 +1529,9 @@ void scroll_article(void)
 	     article_link_count <= NUMBER_OF_FIRST_PAGE_RESULTS))
 	{
 		finger_move_speed = 0;
+#ifdef OVER_SCROLL_ENABLED
 		over_scroll_lines = 0;
+#endif
 		return;
 	}
 
@@ -1510,6 +1546,7 @@ void scroll_article(void)
 		{
 			article_scroll_increment = (float)finger_move_speed * ((float)delay_time / (float)seconds_to_ticks(1));
 			finger_move_speed = scroll_speed();
+#ifdef OVER_SCROLL_ENABLED
 			if (over_scroll_lines < 0)
 			{
 				if (article_scroll_increment < 0)
@@ -1556,30 +1593,36 @@ void scroll_article(void)
 				else
 					article_scroll_increment= 0;
 			}
+#endif
 			lcd_draw_cur_y_pos += article_scroll_increment;
 			if(lcd_draw_cur_y_pos < 0)
 			{
+#ifdef OVER_SCROLL_ENABLED
 				over_scroll_lines += lcd_draw_cur_y_pos * OVER_SCROLL_SPEED_FACTOR;
 				if (over_scroll_lines < -MAX_OVER_SCROLL_LINES)
 				{
 					over_scroll_lines = -MAX_OVER_SCROLL_LINES;
 					finger_move_speed = 0;
 				}
+#endif
 				lcd_draw_cur_y_pos = 0;
 			}
 			else if (lcd_draw_cur_y_pos > lcd_draw_buf.current_y - LCD_HEIGHT_LINES)
 			{
+#ifdef OVER_SCROLL_ENABLED
 				over_scroll_lines += (lcd_draw_cur_y_pos - (lcd_draw_buf.current_y - LCD_HEIGHT_LINES))  * OVER_SCROLL_SPEED_FACTOR;
 				if (over_scroll_lines > MAX_OVER_SCROLL_LINES)
 				{
 					over_scroll_lines = MAX_OVER_SCROLL_LINES;
 					finger_move_speed = 0;
 				}
+#endif
 				lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
 			}
 			if (display_mode == DISPLAY_MODE_ARTICLE)
 				history_log_y_pos(lcd_draw_cur_y_pos);
 		}
+#ifdef OVER_SCROLL_ENABLED
 		else // over scroll moving back
 		{
 			article_scroll_increment = scroll_speed() * ((float)delay_time / (float)seconds_to_ticks(1));
@@ -1588,12 +1631,17 @@ void scroll_article(void)
 			else
 				over_scroll_lines += article_scroll_increment;
 		}
+#endif
 
 		pos = (lcd_draw_cur_y_pos*LCD_VRAM_WIDTH_PIXELS)/8;
 
 		repaint_framebuffer(lcd_draw_buf.screen_buf,pos, 1);
 
+#ifdef OVER_SCROLL_ENABLED
 		if (finger_move_speed == 0 && over_scroll_lines == 0 && b_show_scroll_bar)
+#else
+		if (finger_move_speed == 0 && b_show_scroll_bar)
+#endif
 		{
 			b_show_scroll_bar = 0;
 			show_scroll_bar(0); // clear scroll bar
@@ -1726,7 +1774,11 @@ int isArticleLinkSelected(int x,int y)
 	//char msg[1024];
 	int left_margin;
 
+#ifdef OVER_SCROLL_ENABLED
 	if (!display_first_page || request_display_next_page || over_scroll_lines)
+#else
+	if (!display_first_page || request_display_next_page)
+#endif
 		return -1;
 
 	if (display_mode == DISPLAY_MODE_ARTICLE)
@@ -2037,8 +2089,10 @@ int check_invert_link()
 		}
 	}
 
-	if (link_to_be_inverted >= 0 && time_diff(get_time_ticks(), link_to_be_inverted_start_time) >=
-	    seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD))
+	if (link_to_be_inverted >= 0 && 
+		((display_mode == DISPLAY_MODE_ARTICLE &&
+		time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
+		time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
 	{
 		if (link_currently_inverted >= 0)
 			invert_link(link_currently_inverted);

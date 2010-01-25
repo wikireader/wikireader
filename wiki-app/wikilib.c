@@ -100,6 +100,7 @@ int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
 #define INITIAL_ARTICLE_SCROLL_PIXEL 1
 #define ARTICLE_MOVED_THRESHOLD 1
+#define LINK_DEACTIVATION_MOVE_THRESHOLD 10
 #define SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD 10
 #define SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD 150
 #define SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD 50
@@ -419,7 +420,7 @@ static void handle_key_release(int keycode)
 			handle_search_key(keycode, get_time_ticks());
 		}
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
-		article_buf_pointer = NULL;
+//		article_buf_pointer = NULL;
 		if (keycode == WL_KEY_BACKSPACE) {
 			if (last_display_mode == DISPLAY_MODE_INDEX) {
 				display_mode = DISPLAY_MODE_INDEX;
@@ -834,10 +835,11 @@ static void handle_touch(struct wl_input_event *ev)
 						last_5_y[i] = 0;
 				}
 
-				if (abs(article_moved_pixels) > ARTICLE_MOVED_THRESHOLD)
+				if (abs(article_moved_pixels) >= ARTICLE_MOVED_THRESHOLD)
 				{
 					article_moved = true;
-					reset_article_link_number();
+					if (abs(article_moved_pixels) >= LINK_DEACTIVATION_MOVE_THRESHOLD)
+						reset_article_link_number();
 				}
 			}
 
