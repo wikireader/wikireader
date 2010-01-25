@@ -12,13 +12,16 @@ main()
   fi
   [ -e Makefile ] && make clean
   autoreconf --verbose --install --symlink
-  ./configure --disable-tcl-binding --disable-php-binding --disable-perl-binding --disable-guile-binding --prefix=/usr
+  ./configure --disable-tcl-binding --disable-php-binding --disable-perl-binding --disable-guile-binding
   make clean
   make
   make -C language/python
   modprobe -v -r tnt4882
   make install
   make -C language/python install
+
+  # update library cache
+  ldconfig -v
 
   echo loading the updated driver
   modprobe -v tnt4882
@@ -55,6 +58,15 @@ main()
   echo 'Now run: sudo visudo'
   echo '     or: sudo EDITOR=jove visudo'
   echo and paste the above text into file
+
+  # check that the gpib module is usable
+  if ! python -m Gpib
+  then
+    echo '** ERROR:'
+    echo '**   The python GPIB.py module is not accessible'
+    echo '**   Maybe there are multiple versions of python'
+    echo '**   and the wrong one was selected by this install script'
+  fi
 }
 
 
