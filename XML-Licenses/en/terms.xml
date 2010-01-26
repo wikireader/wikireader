@@ -1,4 +1,4 @@
-<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.4/ http://www.mediawiki.org/xml/export-0.4.xsd" version="0.4" xml:lang="en">
   <siteinfo>
     <sitename>Wikimedia Foundation</sitename>
     <base>http://wikimediafoundation.org/wiki/Home</base>
@@ -26,7 +26,7 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Wikipedia Terms of Use</title>
+    <title>Terms of Use</title>
     <id>9171</id>
     <revision>
       <id>39565</id>
@@ -112,18 +112,19 @@ These site terms are not to be modified. If there is any inconsistency between t
     <title>Template:ToULang</title>
     <id>9177</id>
     <revision>
-      <id>40194</id>
-      <timestamp>2009-09-07T00:05:23Z</timestamp>
+      <id>44126</id>
+      <timestamp>2009-12-16T07:53:46Z</timestamp>
       <contributor>
-        <username>Cbrown1023</username>
-        <id>194</id>
+        <username>Kwj2772</username>
+        <id>314</id>
       </contributor>
-      <comment>&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;</comment>
+      <comment>+ko</comment>
       <text xml:space="preserve">&lt;div class=&quot;divlang&quot;&gt;
 &lt;ul&gt;
 &lt;li class=&quot;firstlang&quot;&gt;[[Условия за ползване|{{#language:bg}}]]&lt;/li&gt;
 &lt;li&gt;[[Condicions d'ús          |{{#language:ca}}]]&lt;/li&gt;
 &lt;li&gt;[[Podmínky užití           |{{#language:cs}}]]&lt;/li&gt;
+&lt;li&gt;[[Nutzungsbedingungen             |{{#language:de}}]]&lt;/li&gt;
 &lt;li&gt;[[Όροι Χρήσης              |{{#language:el}}]]&lt;/li&gt;
 &lt;li&gt;[[Terms of Use             |{{#language:en}}]]&lt;/li&gt;
 &lt;li&gt;[[Términos de Uso          |{{#language:es}}]]&lt;/li&gt;
@@ -132,6 +133,7 @@ These site terms are not to be modified. If there is any inconsistency between t
 &lt;li&gt;[[תנאי שימוש               |{{#language:he}}]]&lt;/li&gt;
 &lt;li&gt;[[Condizioni d'uso         |{{#language:it}}]]&lt;/li&gt;
 &lt;li&gt;[[利用規約                  |{{#language:ja}}]]&lt;/li&gt;
+&lt;li&gt;[[이용 규약                   |{{#language:ko}}]]&lt;/li&gt;
 &lt;li&gt;[[Услови на употреба       |{{#language:mk}}]]&lt;/li&gt;
 &lt;li&gt;[[Vilkårene                |{{#language:nb}}]]&lt;/li&gt;
 &lt;li&gt;[[Gebruiksvoorwaarden      |{{#language:nl}}]]&lt;/li&gt;
@@ -141,7 +143,7 @@ These site terms are not to be modified. If there is any inconsistency between t
 &lt;li&gt;[[Điều khoản Sử dụng       |{{#language:vi}}]]&lt;/li&gt;
 &lt;li&gt;[[使用条款|‪中文(简体)‬]]&lt;/li&gt;
 &lt;li&gt;[[使用條款|‪中文(繁體)‬]]&lt;/li&gt;
-&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/i&gt;
+&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;&lt;noinclude&gt;
 [[Category:Other languages templates|{{PAGENAME}}]]&lt;/noinclude&gt;</text>

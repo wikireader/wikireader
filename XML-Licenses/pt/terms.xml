@@ -1,0 +1,151 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.4/ http://www.mediawiki.org/xml/export-0.4.xsd" version="0.4" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikimedia Foundation</sitename>
+    <base>http://wikimediafoundation.org/wiki/Home</base>
+    <generator>MediaWiki 1.16alpha-wmf</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikimedia</namespace>
+      <namespace key="5">Wikimedia talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Condições de Uso</title>
+    <id>9343</id>
+    <revision>
+      <id>40196</id>
+      <timestamp>2009-09-07T00:08:49Z</timestamp>
+      <contributor>
+        <username>Cbrown1023</username>
+        <id>194</id>
+      </contributor>
+      <comment>tweak</comment>
+      <text xml:space="preserve">{{ToULang}}
+{{Info|Estas Condições de Uso se aplicam a qualquer projeto da Wikimedia Foundation que a eles se refira no rodapé do site e na tela de edição.}} __NOTOC__
+
+: '''''Imagine um mundo no qual cada ser humano pudesse compartilhar livremente da soma de todo o conhecimento. Este é o nosso objetivo.'' &lt;br/&gt;&amp;mdash; [[Vision|Visão da Wikimedia Foundation]]'''
+
+==== Informações para contribuintes de texto aos projetos da Wikimedia ====
+
+Para aumentar o acervo do conhecimento e cultura livres, é preciso que todos os usuários que contribuem aos projetos da Wikimedia dêem permissões abertas ao público em geral para a redistribuição e reutilização de suas contribuições de forma livre, desde que o uso seja creditado (atribuído, reconhecendo o autor) e que a mesma liberdade de reutilizar e redistribuir se aplique a todos os trabalhos derivativos. Daí então, quanto a todos os textos aos quais você detém o copyright, ao submetê-los, você concorda em licenciá-los sob a licença [http://creativecommons.org/licenses/by-sa/3.0/ Creative Commons Attribution/Share-Alike (Não Adaptada)]. Por razões de compatibilidade, também é preciso que você os licencie sob a licença [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License] (versão original, sem seções invariantes, textos de capa ou contracapa). Os usuários que reutilizarem os textos poderão escolher qual(ais) licença(s) que desejam que seus textos reutilizados sejam protegidos. Por favor, observe que essas licenças permitem usos comerciais de suas contribuições, desde que tais usos obedeçam às condições.
+
+Na condição de autor, você concorda em ser atribuído em qualquer um dos seguintes padrões: a) através de um hyperlink (onde for possível) ou URL anexado ao artigo ou aos artigos aos quais você contribuiu, b) através de um hyperlink (onde for possível) ou URL para uma cópia estável e alternativa, online, que possa ser acessada livremente, que esteja em conformidade com a licença, e que providencie o devido reconhecimento aos autores de forma equivalente ao reconhecimento dado neste site, ou c) através de uma lista de todos os autores. (Qualquer lista de autores pode ser filtrada para excluir contribuições muito pequenas ou irrelevantes.)
+
+''Importação de texto:''
+
+Se você deseja importar textos que você encontrou em qualquer outro lugar ou que você tenha sido o co-autor dos mesmos, só poderá fazê-lo se os textos estiverem disponíveis sob termos compatíveis com a licença CC-BY-SA. Você não precisa assegurar ou garantir que o texto está disponível sob a GNU Free Documentation License. Daí então, observe, por favor, que você não poderá importar informações que estejam disponíveis apenas sob a licença GFDL. Em outras palavras, você apenas poderá importar textos que estejam (a) sob uma única licença que apresentem condições compatíveis com a licença CC-BY-SA ou (b) sob duas licenças com a GFDL e outra licença com termos compatíveis com a licença CC-BY-SA.
+
+Se você importar textos sob uma licença compatível que requeira atribuição, você deverá, em um formato razoável, dar crédito ao(s) autor(es). Embora tal crédito normalmente seja dado através dos históricos das páginas (como nas cópias internas da Wikimedia), dar atribuição ao sumário de edição, registrado no histórico da página, ao importar textos é suficiente. Qualquer que seja a licença, o texto que você importar pode ser rejeitado se a atribuição requerida for julgada como excessivamente intrusiva.
+
+==== Informação para contribuintes de mídia que não seja texto ====
+
+Mídias que não sejam textos nos projetos da Wikimedia Foundation estão disponíveis sob uma variedade de licenças diferentes que apóiam o objetivo geral de permitir reutilização e redistribuição irrestritas. Os requerimentos para tais licenças são dados na Política de Licenciamento da Wikimedia Foundation. Comunidades individuais podem elaborar e refinar esses requerimentos.
+
+==== Informações para usuários que reutilizarem conteúdo ====
+
+Você poderá reutilizar conteúdo nos projetos da Wikimedia livremente, com exceção de conteúdo que esteja sendo usado sob isenções de &quot;fair use&quot; ou isenções similares em leis de copyright. Por favor, siga as condições abaixo:
+
+''Reutilização de texto:''
+
+* Attribution (Atribuição): Para redistribuir uma página de texto de qualquer forma, providencie crédito aos autores através da inclusão de (a) um hyperlink (onde for possível) ou URL à página ou às páginas que você estiver reutilizando, (b) um hyperlink (onde for possível) ou URL a uma cópia alternativa e estável, que possa ser acessada livremente, obedeça à licença, e providencie crédito aos autores de modo equivalente ao crédito dado neste site, ou (c) uma lista de todos os autores. (Qualquer lista de autores pode ser filtrada para excluir contribuições muito pequenas ou irrelevantes.) Isto se aplica aos textos desenvolvidos pela comunidade da Wikimedia. Textos de fontes externas podem ter requisitos adicionais anexados à obra, cujos quais nos esforçamos em deixar esclarecidos para você. Por exemplo, uma página pode conter um banner ou qualquer outra anotação indicando que parte ou todo o seu conteúdo foi originalmente publicado em outro lugar. Embora tais anotações sejam visíveis na página em si, elas geralmente devem ser preservadas por usuários que reutilizarão do conteúdo.
+
+* Copyleft/Share Alike: Se você fizer modificações ou adições à página que você reutilizar, você deverá licenciá-las sob a licença Creative Commons Attribution-Share-Alike 3.0 ou posterior.
+
+* Indicação de modificações: Se você fizer modificações ou adições, você deverá indicar, em um formato razoável, que a obra original foi modificada. Se você estiver reutilizando a página em um wiki, por exemplo, indicar esta mudança no histórico da página é suficiente.
+
+* Notificação de licenciamento: Cada cópia ou versão modificada que você distribuir deverá incluir uma notificação de licenciamento que afirme que a obra foi disponibilizada sob uma licença CC-BY-AS ou notificar através de (a) um hyperlink ou URL ao texto da licença ou (b) uma cópia da licença. Para este propósito, segue o URL correto: http://creativecommons.org/licenses/by-sa/3.0/.
+
+* Para mais informações, por favor consulte o [http://creativecommons.org/licenses/by-sa/3.0/legalcode código legal da licença CC-BY-AS].
+
+''Disponibilidade adicional de textos sob a GNU Free Documentation License:''
+
+* Por razões de compatibilidade, qualquer página que não incorporar texto que esteja exclusivamente disponível sob uma licença CC-BY-SA ou uma compatível com CC-BY-SA também estará disponível sob os termos da [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License]. Para determinar se uma página está disponível sob uma licença GFDL, verifique o rodapé da página, histórico da página, e a página de discussão em busca de conteúdo protegido sob uma licença única que não seja compatível com a licença GFDL. Todo o texto publicado antes do dia 15 de junho de 2009 foi disponibilizado sob a licença GFDL, e você também pode usar o histórico da página para recuperar conteúdo publicado antes da data mencionada e assim assegurar compatibilidade com a licença GFDL.
+
+''Reutilização de mídia que não seja texto:''
+
+* Onde não for observado, arquivos de mídia que não sejam texto estão disponíveis sob várias licenças de cultura livre, consistentes com a Política de Licenciamento da Wikimedia Foundation. Por favor, verifique a página de descrição do arquivo de mídia para obter detalhes sobre a licença de qualquer mídia específica.
+
+==== Precedência das condições em inglês ====
+
+Estas condições não deverão ser modificadas. Se houver qualquer inconsistência entre estas condições e qualquer tradução em outros idiomas, a versão em inglês é de precedência.
+
+[[Category:Português]]
+[[Category:Policy]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:Info</title>
+    <id>9170</id>
+    <revision>
+      <id>39411</id>
+      <timestamp>2009-06-15T23:44:49Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>17</id>
+      </contributor>
+      <comment>from meta</comment>
+      <text xml:space="preserve">{| class=&quot;InformationBox&quot;
+|style=&quot;width:42px;text-align:center&quot;| [[Image:Information icon.svg|32px|Information]]
+|style=&quot;vertical-align:middle&quot;|
+{{{1}}}
+|}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:ToULang</title>
+    <id>9177</id>
+    <revision>
+      <id>44126</id>
+      <timestamp>2009-12-16T07:53:46Z</timestamp>
+      <contributor>
+        <username>Kwj2772</username>
+        <id>314</id>
+      </contributor>
+      <comment>+ko</comment>
+      <text xml:space="preserve">&lt;div class=&quot;divlang&quot;&gt;
+&lt;ul&gt;
+&lt;li class=&quot;firstlang&quot;&gt;[[Условия за ползване|{{#language:bg}}]]&lt;/li&gt;
+&lt;li&gt;[[Condicions d'ús          |{{#language:ca}}]]&lt;/li&gt;
+&lt;li&gt;[[Podmínky užití           |{{#language:cs}}]]&lt;/li&gt;
+&lt;li&gt;[[Nutzungsbedingungen             |{{#language:de}}]]&lt;/li&gt;
+&lt;li&gt;[[Όροι Χρήσης              |{{#language:el}}]]&lt;/li&gt;
+&lt;li&gt;[[Terms of Use             |{{#language:en}}]]&lt;/li&gt;
+&lt;li&gt;[[Términos de Uso          |{{#language:es}}]]&lt;/li&gt;
+&lt;li&gt;[[Käyttöehdot              |{{#language:fi}}]]&lt;/li&gt;
+&lt;li&gt;[[Conditions d'utilisation |{{#language:fr}}]]&lt;/li&gt;
+&lt;li&gt;[[תנאי שימוש               |{{#language:he}}]]&lt;/li&gt;
+&lt;li&gt;[[Condizioni d'uso         |{{#language:it}}]]&lt;/li&gt;
+&lt;li&gt;[[利用規約                  |{{#language:ja}}]]&lt;/li&gt;
+&lt;li&gt;[[이용 규약                   |{{#language:ko}}]]&lt;/li&gt;
+&lt;li&gt;[[Услови на употреба       |{{#language:mk}}]]&lt;/li&gt;
+&lt;li&gt;[[Vilkårene                |{{#language:nb}}]]&lt;/li&gt;
+&lt;li&gt;[[Gebruiksvoorwaarden      |{{#language:nl}}]]&lt;/li&gt;
+&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;
+&lt;li&gt;[[Условия использования    |{{#language:ru}}]]&lt;/li&gt;
+&lt;li&gt;[[Умови використання       |{{#language:uk}}]]&lt;/li&gt;
+&lt;li&gt;[[Điều khoản Sử dụng       |{{#language:vi}}]]&lt;/li&gt;
+&lt;li&gt;[[使用条款|‪中文(简体)‬]]&lt;/li&gt;
+&lt;li&gt;[[使用條款|‪中文(繁體)‬]]&lt;/li&gt;
+&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;noinclude&gt;
+[[Category:Other languages templates|{{PAGENAME}}]]&lt;/noinclude&gt;</text>
+    </revision>
+  </page>
+</mediawiki>

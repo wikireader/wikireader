@@ -1,0 +1,151 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.4/ http://www.mediawiki.org/xml/export-0.4.xsd" version="0.4" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikimedia Foundation</sitename>
+    <base>http://wikimediafoundation.org/wiki/Home</base>
+    <generator>MediaWiki 1.16alpha-wmf</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikimedia</namespace>
+      <namespace key="5">Wikimedia talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Käyttöehdot</title>
+    <id>9215</id>
+    <revision>
+      <id>39818</id>
+      <timestamp>2009-07-31T20:49:39Z</timestamp>
+      <contributor>
+        <username>Cbrown1023</username>
+        <id>194</id>
+      </contributor>
+      <comment>update link</comment>
+      <text xml:space="preserve">{{ToULang}}
+{{Info|Nämä käyttöehdot koskevat kaikkia Wikimedia Foundationin hankkeita, jotka viittaavat niihin sivujen alareunassa ja muokkausruudulla.}} __NOTOC__
+
+: '''''Kuvittele maailma, jossa jokaisella on vapaa pääsy kaikkeen tietoon. Sellaisen maailman luomiseen me olemme sitoutuneet.''&lt;br /&gt;&amp;mdash; [[Visiolausuma|Wikimedia Foundationin visiojulkilausuma]]'''
+
+==== Tietoa Wikimedian hankkeiden kirjoittajille ====
+
+Kasvattaaksemme vapaan tiedon ja vapaan kulttuurin yleisyyttä, kaikkien Wikimedian hankkeisiin osallistuvien käyttäjien oletetaan myöntävän suurelle yleisölle laajat oikeudet jakaa ja uudelleenkäyttää heidän tuotoksiaan vapaasti, kunhan käyttö on nimettyä ja samat oikeudet uudelleenkäyttää ja jakaa koskevat myös johdannaisteoksia. Tästä syystä lisäämällä minkä tahansa tekstin, jonka tekijänoikeudet omistat, hyväksyt sen lisensoinnin [http://creativecommons.org/licenses/by-sa/3.0/deed.fi Creative Commons Nimeä-Tarttuva 3.0 (Muokkaamaton)] -lisenssillä. Yhteensopivuussyistä sinua vaaditaan lisensoimaan se myös [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation Licensellä] (versioimaton, ei poikkeavia osioita, etukannen tekstejä tai takakannen tekstejä). Jatkokäyttäjät voivat valita lisenssin tai lisenssit joita haluavat noudattaa. Huomioi, että nämä lisenssit ''sallivat'' lisäystesi kaupallisen käytön silloin, kun lisenssiehtoja noudatetaan.
+
+Tekijänä hyväksyt tulevasi nimetyksi jollakin seuraavista tavoista: a) hyperlinkki (kun mahdollista) tai URL artikkeliin tai artikkeleihin joiden kirjoittamiseen olet osallistunut, b) hyperlinkki (kun mahdollista) tai URL vaihtoehtoiseen, pysyvään verkkokopioon joka on vapaasti saatavissa, joka noudattaa lisenssiä, ja joka antaa kunnian tekijöille tätä sivustoa vastaavalla tavalla, tai c) tekijälistan kautta. (Tekijälistat voivat jättää pois hyvin pienet tai epäolennaiset lisäykset.)
+
+''Tekstin tuonti:''
+
+Jos haluat tuoda tekstiä jonka löysit jostakin muualta tai jossa olet yhtenä tekijänä muiden joukossa, voit tehdä niin vain jos teksti on saatavilla CC-BY-SA-lisenssin kanssa yhteensopivilla ehdoilla. Sinun ei tarvitse varmistaa, että tuotava teksti on saatavilla GNU Free Documentation -lisenssillä. Huomioi myös, ettet voi tuoda tekstiä, joka on saatavilla ''ainoastaan'' GFD-lisenssillä. Toisin sanoen, voit tuoda tekstiä vain jos se on (a) lisensoitu ainoastaan CC-BY-SA-lisenssin kanssa yhteensopivilla ehdoilla, tai (b) kaksoislisensoitu GFD-lisenssillä ja toisella lisenssillä, jonka ehdot ovat yhteensopivat CC-BY-SA-lisenssin kanssa.
+
+Jos tuot tekstiä yhteensopivalla lisenssillä, joka vaatii nimeämistä, sinun täytyy hyvällä tavalla nimetä tekijä(t). Tapauksissa, joissa tämä on yleensä tehty sivuhistorioissa (kuten Wikimedian sisäisessä kopioinnissa), on riittävää tehdä nimeäminen tekstin tuonnin yhteydessä muokkausyhteenvedossa, joka tallentuu sivuhistoriaan. Tuomasi teksti saatetaan hylätä lisenssistä huolimatta jos vaadittu nimeäminen katsotaan liialliseksi.
+
+==== Tietoa muun kuin tekstin lisääjille ====
+
+Muut kuin tekstit Wikimedia Foundationin hankkeissa ovat saatavilla erilaisilla lisensseillä, jotka tukevat yleistä rajoittamattoman jatkokäytön ja jatkolevityksen tavoitetta. Tällaisten lisenssien vaatimukset ovat nähtävillä [[wmf:Resolution:Licensing_policy|Wikimedia Foundationin lisenssikäytännössä]]. Yksittäiset yhteisöt voivat tarkastella ja hioa näitä vaatimuksia.
+
+==== Tietoa jatkokäyttäjille ====
+
+Voit vapaasti käyttää Wikimedian hankkeiden sisältöä, lukuunottamatta sisältöä jota on käytetty ”reilun käytön” (fair use) poikkeustapauksina tai muina vastaavina tekijänoikeuslainsäädännön poikkeustapauksina. Alla yleisohjeita jatkokäyttöön:
+
+''Tekstin jatkokäyttö:''
+
+* Nimeäminen: Levittäessäsi edelleen tekstisivua missä muodossa hyvänsä anna kunnia tekijöille sisällyttämällä joko a) hyperlinkki (kun mahdollista) tai URL sivulle tai sivuille joiden sisältöä käytät, b) hyperlinkki (kun mahdollista) tai URL vaihtoehtoiseen, pysyvään verkkokopioon joka on vapaasti saatavilla, joka noudattaa lisenssiä ja joka antaa kunnian tekijöille tätä sivustoa vastaavalla tavalla, tai c) listan tekijöistä. (Tekijälistoilta saa poistaa hyvin pienet tai epäolennaiset lisäykset.) Tämä koskee Wikimedia-yhteisön luomaa tekstiä. Ulkopuolisista lähteistä tuotu teksti saattaa sisältää ylimääräisiä nimeämisvaatimuksia; näissä tapauksissa pyrimme tuomaan tämän selkeästi esille. Sivulla saattaa esimerkiksi olla huomiopalkki tai muu merkintä mainiten osan tai koko sivun sisällön olevan alunperin muualla julkaistua. Kun sivulla on näkyvissä tällaisia merkintöjä, ne tulisi yleensä sisällyttää myös jatkokäytössä.
+
+* Copyleft/Share Alike: Jos teet muutoksia tai lisäyksiä käyttämääsi sisältöön, tulee nämä muutokset lisensoida Creative Commons Attribution-Share-Alike License 3.0:lla tai uudemmalla.
+
+* Merkitse muutokset: Jos teet muutoksia tai lisäyksiä, merkitse järkevällä tavalla alkuperäisen sisällön muuttuneen. Jos esimerkiksi käytät sisältöä toisessa wikissä, muutoksen huomioiminen sivuhistoriassa riittää.
+
+* Lisenssimerkintä: Jokaisen levittämäsi kopion tai muokatun version tulee sisältää lisenssimerkintä, joka kertoo sisällön olevan julkaistu CC-BY-SA-lisenssillä sekä joko a) hyperlinkki tai URL lisenssitekstiin tai b) kopio lisenssistä. Tähän tarkoitukseen sopiva URL on: http://creativecommons.org/licenses/by-sa/3.0/
+
+* Lisätietoja saat [http://creativecommons.org/licenses/by-sa/3.0/legalcode CC-BY-SA-lisenssin lakitekstistä].
+
+''Tekstin täydentävä saatavuus GNU Free Documentation -lisenssillä:''
+
+* Kaikki sivut jotka eivät sisällä yksinomaan CC-BY-SA- tai CC-BY-SA-yhteensopivalla lisenssillä käytettävissä olevaa tekstiä ovat yhteensopivuussyistä saatavilla myös [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation -lisenssin] ehdoilla. Selvittääksesi onko sivu saatavilla GFDL:llä, tarkista sivun alareuna, sivuhistoria ja keskustelusivu löytääksesi viittauksia yksittäislisensoituun sisältöön, joka ei ole GFDL-yhteensopivaa. Kaikki ennen 15. kesäkuuta 2009 julkaistu teksti on saatavilla GFD-lisenssillä, ja voit käyttää sivuhistoriaa hakeaksesi ennen tuota päivämäärää julkaistua sisältöä varmistaaksesi GFDL-yhteensopivuuden.
+
+''Muiden kuin tekstien jatkokäyttö:''
+
+* Ellei muuten mainita, muuta kuin tekstiä sisältävät tiedostot ovat saatavilla erilaisilla vapaan kulttuurin lisensseillä, yhteensopivasti [[wmf:Resolution:Licensing_policy|Wikimedia Foundationin lisenssikäytännön]] kanssa. Tarkista yksittäisen tiedoston lisenssitiedot sen kuvaussivulta.
+
+==== Englanninkielisten ehtojen määräävyys ====
+
+Näitä käyttöehtoja ei tule muokata. Jos näiden ehtojen eri käännösten välillä esiintyy ristiriitoja, englanninkielinen versio on määräävä.
+
+[[Category:Suomi]]
+[[Category:Policy]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:Info</title>
+    <id>9170</id>
+    <revision>
+      <id>39411</id>
+      <timestamp>2009-06-15T23:44:49Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>17</id>
+      </contributor>
+      <comment>from meta</comment>
+      <text xml:space="preserve">{| class=&quot;InformationBox&quot;
+|style=&quot;width:42px;text-align:center&quot;| [[Image:Information icon.svg|32px|Information]]
+|style=&quot;vertical-align:middle&quot;|
+{{{1}}}
+|}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:ToULang</title>
+    <id>9177</id>
+    <revision>
+      <id>44126</id>
+      <timestamp>2009-12-16T07:53:46Z</timestamp>
+      <contributor>
+        <username>Kwj2772</username>
+        <id>314</id>
+      </contributor>
+      <comment>+ko</comment>
+      <text xml:space="preserve">&lt;div class=&quot;divlang&quot;&gt;
+&lt;ul&gt;
+&lt;li class=&quot;firstlang&quot;&gt;[[Условия за ползване|{{#language:bg}}]]&lt;/li&gt;
+&lt;li&gt;[[Condicions d'ús          |{{#language:ca}}]]&lt;/li&gt;
+&lt;li&gt;[[Podmínky užití           |{{#language:cs}}]]&lt;/li&gt;
+&lt;li&gt;[[Nutzungsbedingungen             |{{#language:de}}]]&lt;/li&gt;
+&lt;li&gt;[[Όροι Χρήσης              |{{#language:el}}]]&lt;/li&gt;
+&lt;li&gt;[[Terms of Use             |{{#language:en}}]]&lt;/li&gt;
+&lt;li&gt;[[Términos de Uso          |{{#language:es}}]]&lt;/li&gt;
+&lt;li&gt;[[Käyttöehdot              |{{#language:fi}}]]&lt;/li&gt;
+&lt;li&gt;[[Conditions d'utilisation |{{#language:fr}}]]&lt;/li&gt;
+&lt;li&gt;[[תנאי שימוש               |{{#language:he}}]]&lt;/li&gt;
+&lt;li&gt;[[Condizioni d'uso         |{{#language:it}}]]&lt;/li&gt;
+&lt;li&gt;[[利用規約                  |{{#language:ja}}]]&lt;/li&gt;
+&lt;li&gt;[[이용 규약                   |{{#language:ko}}]]&lt;/li&gt;
+&lt;li&gt;[[Услови на употреба       |{{#language:mk}}]]&lt;/li&gt;
+&lt;li&gt;[[Vilkårene                |{{#language:nb}}]]&lt;/li&gt;
+&lt;li&gt;[[Gebruiksvoorwaarden      |{{#language:nl}}]]&lt;/li&gt;
+&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;
+&lt;li&gt;[[Условия использования    |{{#language:ru}}]]&lt;/li&gt;
+&lt;li&gt;[[Умови використання       |{{#language:uk}}]]&lt;/li&gt;
+&lt;li&gt;[[Điều khoản Sử dụng       |{{#language:vi}}]]&lt;/li&gt;
+&lt;li&gt;[[使用条款|‪中文(简体)‬]]&lt;/li&gt;
+&lt;li&gt;[[使用條款|‪中文(繁體)‬]]&lt;/li&gt;
+&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;noinclude&gt;
+[[Category:Other languages templates|{{PAGENAME}}]]&lt;/noinclude&gt;</text>
+    </revision>
+  </page>
+</mediawiki>

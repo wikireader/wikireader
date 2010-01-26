@@ -1,0 +1,151 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.4/ http://www.mediawiki.org/xml/export-0.4.xsd" version="0.4" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikimedia Foundation</sitename>
+    <base>http://wikimediafoundation.org/wiki/Home</base>
+    <generator>MediaWiki 1.16alpha-wmf</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikimedia</namespace>
+      <namespace key="5">Wikimedia talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Gebruiksvoorwaarden</title>
+    <id>9305</id>
+    <revision>
+      <id>42199</id>
+      <timestamp>2009-11-12T15:39:19Z</timestamp>
+      <contributor>
+        <username>Kaganer</username>
+        <id>151</id>
+      </contributor>
+      <comment>[[Category:Beleid]]</comment>
+      <text xml:space="preserve">{{ToULang}}
+{{Info|Deze gebruiksvoorwaarden zijn van toepassing op alle Wikimedia Foundation-projecten die hier expliciet onderaan elke pagina en in het bewerkingsscherm naar verwijzen}} __NOTOC__
+
+: '''''Stel je een wereld voor waarin elke persoon vrije toegang heeft tot alle kennis. Dat is waar wij aan werken.'' &lt;br/&gt;&amp;mdash; [[Visie|Visieverklaring Wikimedia Foundation]]'''
+
+==== Informatie voor bijdragers van tekst aan Wikimediaprojecten ====
+
+Om het geheel aan vrije kennis en cultuur te laten groeien, wordt van alle gebruikers die bijdragen aan Wikimediaprojecten verlangd dat ze ruime toestemmingen geven aan het algemene publiek voor herverspreiding en hergebruik, zolang als naamsvermelding plaatsvindt en elk afgeleid werk met dezelfde vrijheid voor herverspreiding en hergebruik wordt vrijgegeven. Daarom ga je, bij het indienen van elke tekst waarop jij het auteursrecht bezit, akkoord met het licentiëren hiervan onder de [http://creativecommons.org/licenses/by-sa/3.0/deed.nl Creative Commons Naamsvermelding/Gelijkdelen-licentie 3.0 (Unported)]. Om compatibiliteitsredenen wordt ook van je verlangd dat je deze onder de [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License (unversioned, with no invariant sections, front-cover texts, or back-cover texts)] vrijgeeft. Hergebruikers kunnen kiezen aan de voorwaarden van welke van beide licenties ze willen voldoen.
+
+Als auteur ga je ermee akkoord dat naamsvermelding plaatsvindt op een van de volgende manieren: a) door een hyperlink (waar mogelijk) of URL naar de pagina of pagina's waaraan je hebt bijgedragen, b) door een hyperlink (waar mogelijk) of URL naar naar een alternatieve, stabiele, online kopie die vrij toegankelijk is, voldoet aan de licentievoorwaarden en naamsvermelding op een gelijkaardige manier vormgeeft als op deze website gebeurd, of c) door een lijst van alle auteurs. (Elke lijst van auteurs mag gefilterd worden om zeer kleine of irrelevante bijdragen uit te sluiten)
+
+''Importeren van tekst''
+
+Als je tekst wilt toevoegen die je elders gevonden hebt, of waarvan je co-auteur bent, kan je dit alleen doen als deze beschikbaar is onder voorwaarden die compatibel zijn met de CC-BY-SA-licentie. Je hoeft je er niet van te vergewissen of garanderen dat de te importeren tekst beschikbaar is onder de GNU Free Documentation-licentie. Let er overigens op dat je informatie die ''alleen'' onder de GFDL beschikbaar is niet kunt toevoegen. Met andere woorden, je mag alleen tekst importeren die a) alleen beschikbaar is onder de CC-BY-SA-licentie of b) onder zowel (een licentie compatibel met de) CC-BY-SA-licentie én de GFDL beschikbaar is.
+
+Als je tekst toevoegt onder een compatibele licentie die naamsvermelding vereist, moet je, op een billijke wijze, de auteurs ervan vermelden. Waar zo'n vermelding gewoonlijk in de geschiedenis van een pagina plaatsvindt (zoals bij kopiëren van andere Wikimediaprojecten), is het voldoende om bij het toevoegen van de tekst bronvermelding te geven in de bewerkingssamenvatting, die in de geschiedenis wordt opgeslagen.  De tekst die je importeert kan, ongeacht de licentie, worden geweigerd als de vereiste bronvermelding als te opdringerig wordt gezien.
+
+==== Informatie voor bijdragers van niet-tekstuele mediabestanden ====
+
+Niet-tekstuele mediabestanden op Wikimedia Foundation-projecten zijn beschikbaar onder verschillende licenties die het algemene doel van onbeperkt herverspreiden en hergebruiken ondersteunen. De voorwaarden waar zulke licenties aan moeten voldoen zijn gesteld in het [[wmf:Resolution:Licensing_policy|licentiebeleid van de Wikimedia Foundation]]. De afzonderlijke projecten kunnen deze voorwaarden nader preciseren en verfijnen.
+
+==== Informatie voor hergebruikers ====
+
+Je kunt de inhoud van Wikimediaprojecten vrijelijk hergebruiken, met de uitzondering van inhoud die onder &quot;fair use&quot; of gelijkaardige uitzonderingen op de auteursrechten valt. Volg alsjeblieft de onderstaande richtlijnen:
+
+''Hergebruik van tekst:''
+
+* Naamsvermelding: om een tekstpagina in welke vorm dan ook opnieuw te verspreiden, moet je de auteurs vermelden, door of  a)  een hyperlink (waar mogelijk) of URL naar de pagina of pagina's die je gebruikt, of b) door een hyperlink (waar mogelijk) of URL naar naar een alternatieve, stabiele, online kopie die vrij toegankelijk is, voldoet aan de licentievoorwaarden en naamsvermelding op een gelijkaardige manier vormgeeft als op deze website gebeurd, of c) door een lijst van alle auteurs. (Elke lijst van auteurs mag gefilterd worden om zeer kleine of irrelevante bijdragen uit te sluiten) Dit is van toepassing op tekst die ontwikkeld is door de Wikimediagemeenschap. Tekst die afkomstig is van externe bronnen kan verdere naamsvermeldingsvoorwaarden aan het werk toevoegen. We streven ernaar dit duidelijk aan te geven. Op een pagina kan bijvoorbeeld een banner of andere opmerking te zien zijn die weergeeft dat een gedeelte of alle inhoud van die pagina oorspronkelijk elders gepubliceerd is. Als zulke opmerkingen op pagina's te zien zijn, moeten ze over het algemeen behouden worden door hergebruikers.
+
+* Copyleft/GelijkDelen: Als je aan de pagina's die je gebruikt wijzigingen of toevoegingen doet, moet je deze vrijgeven onder de Creative Commons Naamsvermelding/GelijkDelen-licentie, versie 3.0 of later.
+
+* Geef wijzigingen aan: als je wijzigingen of toevoegingen doet, moet je op een redelijke wijze aangeven dat het oorspronkelijke werk gewijzigd is. Als je de pagina opnieuw gebruikt in een wiki, bijvoorbeeld, is het aangeven hiervan in de geschiedenis van een pagina voldoende.
+
+* Licentie weergeven: elke kopie of gewijzigde versie die je verspreid moet weergeven dat het werk is vrijgegeven onder de CC-BY-SA-licentie en  a) een hyperlink of URL naar de tekst van de licentie, of b) een kopie van de licentie bevatten. Een passende URL voor dit doel is http://creativecommons.org/licenses/by-sa/3.0/
+
+* Voor meer informatie zie alsjeblieft de [http://creativecommons.org/licenses/by-sa/3.0/legalcode juridische tekst van de CC-BY-SA 3.0 (Engelstalig)]
+
+''Verdere beschikbaarheid onder de GNU Free Documentation License:''
+
+* Om compatibiliteitsredenen is elke pagina die geen tekst bevat die alleen maar onder (een licentie compatibel met) de CC-BY-SA valt, ook beschikbaar onder de licentievoorwaarden van de [http://www.gnu.org/copyleft/fdl.html GNU Free Documentation License]. Om te bepalen of een pagina beschikbaar is onder de licentievoorwaarden van de GFDL, bekijk alsjeblieft de balk onderaan de pagina, de paginageschiedenis en de overlegpagina en zoek naar bronvermeldingen van materiaal dat onder een enkele licentie is vrijgegeven en niet verenigbaar is met de GFDL. Alle tekst die voor 15 juni 2009 is gepubliceerd is onder de GFDL vrijgegeven. Je kunt eventueel de geschiedenis van een pagina gebruiken om inhoud die voor deze datum gepubliceerd is te vinden, zodat je er zeker van bent dat die inhoud compatibel is met de GFDL.
+
+''Hergebruik van niet-tekstuele mediabestanden''
+
+* Tenzij anders aangegeven zijn niet-tekstuele mediabestanden beschikbaar onder verschillende ''free culture''-licenties, in overeenstemming met het [[wmf:Resolution:Licensing_policy|licentiebeleid van de Wikimedia Foundation]]. Bekijk alsjeblieft de bestandsbeschrijvingspagina voor meer informatie over de licentie van een specifiek mediabestand.
+
+==== Voorrang van Engelstalige voorwaarden ====
+
+Deze tekst is een vertaling van de oorspronkelijke, Engelstalige voorwaarden. Wanneer deze vertaling in strijd is met de Engelstalige voorwaarden, geldt de Engelstalige versie. Zij is [http://wikimediafoundation.org/wiki/Terms_of_Use hier te vinden].
+
+[[Category:Beleid]]
+[[Category:Nederlands]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:Info</title>
+    <id>9170</id>
+    <revision>
+      <id>39411</id>
+      <timestamp>2009-06-15T23:44:49Z</timestamp>
+      <contributor>
+        <username>Eloquence</username>
+        <id>17</id>
+      </contributor>
+      <comment>from meta</comment>
+      <text xml:space="preserve">{| class=&quot;InformationBox&quot;
+|style=&quot;width:42px;text-align:center&quot;| [[Image:Information icon.svg|32px|Information]]
+|style=&quot;vertical-align:middle&quot;|
+{{{1}}}
+|}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:ToULang</title>
+    <id>9177</id>
+    <revision>
+      <id>44126</id>
+      <timestamp>2009-12-16T07:53:46Z</timestamp>
+      <contributor>
+        <username>Kwj2772</username>
+        <id>314</id>
+      </contributor>
+      <comment>+ko</comment>
+      <text xml:space="preserve">&lt;div class=&quot;divlang&quot;&gt;
+&lt;ul&gt;
+&lt;li class=&quot;firstlang&quot;&gt;[[Условия за ползване|{{#language:bg}}]]&lt;/li&gt;
+&lt;li&gt;[[Condicions d'ús          |{{#language:ca}}]]&lt;/li&gt;
+&lt;li&gt;[[Podmínky užití           |{{#language:cs}}]]&lt;/li&gt;
+&lt;li&gt;[[Nutzungsbedingungen             |{{#language:de}}]]&lt;/li&gt;
+&lt;li&gt;[[Όροι Χρήσης              |{{#language:el}}]]&lt;/li&gt;
+&lt;li&gt;[[Terms of Use             |{{#language:en}}]]&lt;/li&gt;
+&lt;li&gt;[[Términos de Uso          |{{#language:es}}]]&lt;/li&gt;
+&lt;li&gt;[[Käyttöehdot              |{{#language:fi}}]]&lt;/li&gt;
+&lt;li&gt;[[Conditions d'utilisation |{{#language:fr}}]]&lt;/li&gt;
+&lt;li&gt;[[תנאי שימוש               |{{#language:he}}]]&lt;/li&gt;
+&lt;li&gt;[[Condizioni d'uso         |{{#language:it}}]]&lt;/li&gt;
+&lt;li&gt;[[利用規約                  |{{#language:ja}}]]&lt;/li&gt;
+&lt;li&gt;[[이용 규약                   |{{#language:ko}}]]&lt;/li&gt;
+&lt;li&gt;[[Услови на употреба       |{{#language:mk}}]]&lt;/li&gt;
+&lt;li&gt;[[Vilkårene                |{{#language:nb}}]]&lt;/li&gt;
+&lt;li&gt;[[Gebruiksvoorwaarden      |{{#language:nl}}]]&lt;/li&gt;
+&lt;li&gt;[[Condições de Uso         |{{#language:pt}}]]&lt;/li&gt;
+&lt;li&gt;[[Условия использования    |{{#language:ru}}]]&lt;/li&gt;
+&lt;li&gt;[[Умови використання       |{{#language:uk}}]]&lt;/li&gt;
+&lt;li&gt;[[Điều khoản Sử dụng       |{{#language:vi}}]]&lt;/li&gt;
+&lt;li&gt;[[使用条款|‪中文(简体)‬]]&lt;/li&gt;
+&lt;li&gt;[[使用條款|‪中文(繁體)‬]]&lt;/li&gt;
+&lt;li&gt;[[m:Translation requests/WMF/Terms of Use|+/-]]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;noinclude&gt;
+[[Category:Other languages templates|{{PAGENAME}}]]&lt;/noinclude&gt;</text>
+    </revision>
+  </page>
+</mediawiki>
