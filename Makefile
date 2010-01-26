@@ -465,6 +465,73 @@ endif
 endif
 
 
+# Download the latest translations
+# ================================
+
+ALL_LANGUAGES := de en es fi nl pt
+LICENSE_DIR = XML-Licenses
+
+
+# These items reference wiki articles since the process needs XML
+# data files, the macro below will export the xml and download it
+# directly from the sites.
+#
+# Any items left blank will revert to English version
+#
+# Note: the ones that link to deed.XX are html so cannot be used
+#       with the present program (these will just use English).
+
+TERMS_de   := Nutzungsbedingungen
+LICENSE_de := Wikipedia:Lizenzbestimmungen_Commons_Attribution-ShareAlike_3.0_Unported
+
+TERMS_en   := Terms_of_Use
+LICENSE_en := Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License
+
+TERMS_es   := Términos_de_Uso
+#LICENSE_es := http://creativecommons.org/licenses/by-sa/3.0/deed.es
+
+TERMS_fi   := Käyttöehdot
+LICENSE_fi := Wikipedia:Creative_Commons_Attribution-Share_Alike_3.0_Unported_-lisenssiehdot
+
+TERMS_fr   := Conditions_d\'utilisation
+#LICENSE_fr := http://creativecommons.org/licenses/by-sa/3.0/deed.fr
+
+TERMS_nl   := Gebruiksvoorwaarden
+#LICENSE_nl := http://creativecommons.org/licenses/by-sa/3.0/deed.nl
+
+TERMS_pt   := Condições_de_Uso
+#LICENSE_pt := http://creativecommons.org/licenses/by-sa/3.0/deed.pt
+
+
+WIKIREADER_CREATE_NLS := http://www.thewikireader.com/create_nls.php
+
+WIKIMEDIA_EXPORT := http://wikimediafoundation.org/wiki/Special:Export
+URL_EXTRA_SUFFIX := ?curonly=1&templates=1&wpDownload=1
+
+# macro to retrieve files from various web sites
+define GET_FILES
+  mkdir -p "${LICENSE_DIR}/${1}" ; \
+  wget --output-document="-" "${WIKIREADER_CREATE_NLS}?lang=${1}" \
+    | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/wiki.nls" ; \
+  [ -n "${2}" ] && \
+    wget --output-document="-" "${WIKIMEDIA_EXPORT}/${2}${URL_EXTRA_SUFFIX}" \
+    | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/terms.xml" ; \
+  [ -n "${3}" ] && \
+    wget --output-document="-" "http://${1}.wikipedia.org/wiki/Special:Export/${3}${URL_EXTRA_SUFFIX}" \
+    | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/license.xml" ; \
+  true ;
+endef
+
+
+.PHONY: fetch-nls
+fetch-nls: $(foreach lang,${ALL_LANGUAGES},fetch-nls-${lang})
+
+# fetch one language e.g.  fetch-nls-en
+fetch-nls-%:
+	echo fetching nls files for: $*
+	$(call GET_FILES,$*,${TERMS_$*},${LICENSE_$*})
+
+
 # Download the latest Mediawiki dump
 # ==================================
 
@@ -670,6 +737,7 @@ help:
 	@echo '  clean-toolchain       - clean just the toochain'
 	@echo '  jig-install           - copy flash program and image; forth and programs to SD Card'
 	@echo '  p33                   - terminal emulator (console debugging)'
+	@echo '  fetch-nls             - Fetch nls, texts and license files from web'
 	@echo
 
 
