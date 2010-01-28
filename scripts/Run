@@ -154,6 +154,9 @@ this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
 [ -z "${this_id}" ] && this_id=0
 
+#export MACHINE_COUNT=9
+#export PARALLEL_BUILD=3
+
 farm="farm${this_id}"
 
 rm -f "${LogFile}"
@@ -204,7 +207,7 @@ case "${run}" in
       *)
         case "${seq}" in
           [yY]|[yY][eE][sS])
-            eval ${debug} "time make -j3 '${farm}-parse' \
+            eval ${debug} "time make -j${PARALLEL_BUILD} '${farm}-parse' \
                  WIKI_FILE_PREFIX='${FilePrefix}' \
                  WIKI_LANGUAGE='${language}' \
                  VERBOSE='${verbose}' \
@@ -218,7 +221,7 @@ case "${run}" in
                  XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
             ;;
           *)
-            eval ${debug} "time make -j3 '${farm}' \
+            eval ${debug} "time make -j${PARALLEL_BUILD} '${farm}' \
                  WIKI_FILE_PREFIX='${FilePrefix}' \
                  WIKI_LANGUAGE='${language}' \
                  DESTDIR='${dest}' WORKDIR='${work}' \

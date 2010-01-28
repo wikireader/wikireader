@@ -380,6 +380,11 @@ PARALLEL_BUILD ?= 3
 TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
 TOTAL_CHARACTERS := $(shell awk '/^Characters:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
+# 64 dat files is the maximum allowed
+CHECK := $(shell if [ ${TOTAL_INSTANCES} -gt 64 ]; then echo 0; else echo 1; fi )
+ifeq (${CHECK},0)
+  $(error Too many machines or processes being used. Maximum is 64 total instances)
+endif
 MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
 
 CHARACTERS_PER_INSTANCE := $(shell expr ${TOTAL_CHARACTERS} / ${TOTAL_INSTANCES})
@@ -450,7 +455,7 @@ MAKE_MACHINE = $(eval $(call MAKE_MACHINE1,$(strip ${1}),$(strip ${2}),$(strip $
 
 define MAKE_MACHINE1
 
-$(call MAKE_FARM,${1}, $(shell expr ${1} - 1) $(shell expr ${1} - 1 + ${2}) $(shell expr ${1} - 1 + 2 '*' ${2}))
+$(call MAKE_FARM,${1}, $(shell let j=${1}-1; while [ $${j} -lt ${TOTAL_INSTANCES} ]; do echo $${j}; j=$$(($${j} + ${2})); done))
 
 endef
 
