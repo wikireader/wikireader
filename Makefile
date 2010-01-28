@@ -382,7 +382,7 @@ TOTAL_CHARACTERS := $(shell awk '/^Characters:/{ print $$2 }' "${WORKDIR}/counts
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
 # 64 dat files is the maximum allowed
 CHECK := $(shell if [ ${TOTAL_INSTANCES} -gt 64 ]; then echo 0; else echo 1; fi )
-ifeq (${CHECK},0)
+ifeq ($(strip ${CHECK}),0)
   $(error Too many machines or processes being used. Maximum is 64 total instances)
 endif
 MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
