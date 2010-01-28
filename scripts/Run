@@ -12,7 +12,7 @@ ERROR()
 
 USAGE()
 {
-  [ -z "$1" ] || echo error: $*
+  [ -z "$1" ] || echo error: "$*"
   echo usage: $(basename "$0") '<options>'
   echo '       --help         -h         this message'
   echo '       --verbose      -v         more messages'
@@ -22,6 +22,8 @@ USAGE()
   echo '       --sequential   -s         run rendering in series'
   echo '       --clear        -c         clear work and dest dirs'
   echo '       --re-parse     -r         clear parse and render stamps'
+  echo '       --machines=m   -m <m>     set machine count [${MACHINE_COUNT} or 9]'
+  echo '       --parallel=n   -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
   echo '       --language=xx  -l <xx>    set language [en]'
   echo '       --prifix=name  -p <name>  set data file prefix [wiki]'
   echo '       --work=dir     -w <dir>   workdir [work]'
@@ -41,10 +43,13 @@ IndexOnly=no
 debug=
 language=en
 FilePrefix=wiki
+MaximumThreads=64
+export MACHINE_COUNT=${MACHINE_COUNT:-9}
+export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:inscrl:w:d:p: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,prefix:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:inscrl:w:d:p:j:m: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -109,6 +114,16 @@ do
       shift 2
       ;;
 
+    -j|--parallel)
+      PARALLEL_BUILD=$2
+      shift 2
+      ;;
+
+    -m|--machines)
+      MACHINE_COUNT=$2
+      shift 2
+      ;;
+
     --debug)
       debug=echo
       shift
@@ -129,6 +144,13 @@ do
   esac
 done
 
+
+if [[ $((${MACHINE_COUNT} * ${PARALLEL_BUILD})) > ${MaximumThreads} ]]
+then
+  echo MACHINE_COUNT=${MACHINE_COUNT}
+  echo PARALLEL_BUILD=${PARALLEL_BUILD}
+  USAGE too many threads: "${MACHINE_COUNT} * ${PARALLEL_BUILD} > ${MaximumThreads}"
+fi
 
 [ -z "${language}" ] && USAGE language is not set
 
@@ -153,9 +175,6 @@ this_host=$(hostname --short)
 this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
 [ -z "${this_id}" ] && this_id=0
-
-#export MACHINE_COUNT=9
-#export PARALLEL_BUILD=3
 
 farm="farm${this_id}"
 
