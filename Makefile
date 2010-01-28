@@ -95,7 +95,7 @@ WORKDIR_PATH := $(shell ${RESOLVEPATH} "${WORKDIR}")
 VERSION_TAG ?= $(shell date '+%Y%m%d%H%M')
 VERSION_FILE := ${DESTDIR_PATH}/version.txt
 SHA_LEVEL := 256
-CHECKSUM_FILE := ${DESTDIR_PATH}/sha${SHA_LEVEL}.txt
+CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 
 .PHONY: jig-install
 jig-install: validate-destdir forth-install flash-install mbr-install
@@ -106,9 +106,10 @@ install: validate-destdir forth-install mahatma-install fonts-install misc-files
 .PHONY: version
 version: validate-destdir
 	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
-	${RM} "${VERSION_FILE}" "${CHECKSUM_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
+	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
-	cd "${DESTDIR_PATH}" && find . -type f -exec sha${SHA_LEVEL}sum '{}' ';' >> "${CHECKSUM_FILE}"
+	find "${DESTDIR_PATH}" -type d -exec \
+	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 
 
 .PHONY: misc-files-install
