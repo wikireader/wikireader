@@ -13,13 +13,8 @@ import os.path
 import time
 import FilterWords
 import FileScanner
+import PrintLog
 
-
-# Filter out Wikipedia's non article namespaces
-non_articles = re.compile(r'(User|Wikipedia|File|Talk|MediaWiki|T(emplate)?|Help|Cat(egory)?|P(ortal)?)\s*:', re.IGNORECASE)
-
-# redirect: <text.....#redirect.....[[title#relative link]].....
-redirected_to = re.compile(r'#redirect[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
@@ -102,43 +97,23 @@ class FileProcessing(FileScanner.FileScanner):
         self.time = time.time()
 
 
-    def title(self, text, seek):
-        global non_articles
-
-        if non_articles.search(text):
+    def title(self, category, key, title, seek):
+        if self.KEY_ARTICLE != key:
             if verbose:
-                print 'Non-article Title:', text
+                PrintLog.message('Non-article: %s:%s' % (category,title))
             return False
 
         return True
 
 
-    def redirect(self, title, text, seek):
-        global non_articles, redirected_to, whitespaces
-        global verbose
-
-        title = self.translate(title).strip(u'\u200e\u200f')
-
-        match = redirected_to.search(text)
-        if match:
-            redirect_title = self.translate(match.group(1)).strip().strip(u'\u200e\u200f')
-            redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
-            if non_articles.search(text):
-                if verbose:
-                    print 'Non-article Redirect:', text
-                return
-
-            self.redirect_count += 1
-            if verbose:
-                print 'Redirect: %s -> %s' % (title.encode('utf-8'), redirect_title.encode('utf-8'))
-        else:
-            print 'Invalid Redirect: %s -> %s' % (title.encode('utf-8'), text.encode('utf-8'))
+    def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
+        self.redirect_count += 1
+        if verbose:
+            PrintLog.message('Redirect: %s:%s -> %s:%s' % (category, title, rcategory, rtitle))
 
 
-    def body(self, title, text, seek):
+    def body(self, category, key, title, text, seek):
         global verbose, show_restricted
-
-        title = self.translate(title).strip(u'\u200e\u200f')
 
         restricted_title =  FilterWords.is_restricted(title)
         restricted_text =  FilterWords.is_restricted(text)
@@ -150,11 +125,11 @@ class FileProcessing(FileScanner.FileScanner):
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            print '%7.2fs %10d' % (start_time - self.time, self.article_count)
+            PrintLog.message('%7.2fs %10d' % (start_time - self.time, self.article_count))
             self.time = start_time
 
         if verbose:
-            print 'Title:', title.encode('utf-8')
+            PrintLog.message('Title: %s' % title)
 
         if restricted:
             if restricted_title:
@@ -171,9 +146,9 @@ class FileProcessing(FileScanner.FileScanner):
                 b_state = ''
                 contains = None
             if show_restricted:
-                print '%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title.encode('utf-8'))
+                PrintLog.message('%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title))
                 if None != contains:
-                    print '        ->', flag, contains
+                    PrintLog.message('        -> %s %' % (flag, contains))
 
 
 # run the program
