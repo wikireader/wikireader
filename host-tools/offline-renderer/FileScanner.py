@@ -45,7 +45,7 @@ class FileScanner(object):
         return True
 
 
-    def redirect(self, category, key, title, text, rcategory, rkey, rtitle, seek):
+    def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
         pass
 
 
