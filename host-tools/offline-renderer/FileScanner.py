@@ -10,6 +10,7 @@ import sys, os
 import re
 import getopt
 import FilterWords
+import RedirectedTo
 
 
 class FileScanner(object):
@@ -74,7 +75,7 @@ class FileScanner(object):
 
     # en: redirect: <text.....#redirect.....[[title#relative link]].....
     # es: redirección ""
-    redirected_to = re.compile(r'#\s*(redirect|redirecci..n)[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
+    #redirected_to = re.compile(r'#\s*(redirect|redirecci..n)[^\[]*\[\[(.*?)([#|].*?)?\]\]', re.IGNORECASE)
 
     StateMachine = {
         'start': [
@@ -178,8 +179,9 @@ class FileScanner(object):
                 elif 'body' == proc:
                     body =  block[:pos].strip()
                     flag = True
-                    if '#' in body[0:10]:
-                        match = self.redirected_to.match(body)
+                    if '#' in body[0:10] or '＃' in body[0:10]:
+                        #print 'M[%s]' % body
+                        match = RedirectedTo.regex.match(body)
                         if wanted and match:
                             (rcategory, rkey, rtitle) = self.get_category(match.group(2).strip())
                             self.redirect(category, key, title, rcategory, rkey, rtitle, seek)

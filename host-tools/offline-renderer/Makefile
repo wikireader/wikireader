@@ -54,6 +54,7 @@ HTML_ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles-${RENDER_BLOCK}.html
 
 PYLZMA_DIR := pylzma-0.3.0
 MATH_DIR := mediawiki-offline/math
+MEDIAWIKI_MESSAGES_DIR := mediawiki-offline/languages/messages
 
 $(call REQUIRED_BINARY, sqlite3, sqlite3)
 $(call REQUIRED_BINARY, ocamlopt, ocaml)
@@ -97,7 +98,7 @@ check-html:
 
 
 .PHONY: index
-index: check-dirs check-xml
+index: check-dirs check-xml RedirectedTo.py
 	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
@@ -106,7 +107,7 @@ index: check-dirs check-xml
 		--prefix="${PREFIX}" ${XML_FILES}
 
 .PHONY: parse
-parse: check-dirs check-html math
+parse: check-dirs check-html math RedirectedTo.py
 	./ArticleParser.py ${VERBOSE_ARG} --xhtml="${HTML_ARTICLES}" \
 		--language="${WIKI_LANGUAGE}" \
 		--start="${START}" --count="${COUNT}" \
@@ -137,6 +138,10 @@ pylzma:
 	python setup.py build && \
 	sudo python setup.py install
 
+
+# create the #redirect regular expression
+RedirectedTo.py: FindAllRedirects.php ${MEDIAWIKI_MESSAGES_DIR}/*.php
+	php5 FindAllRedirects.php ${MEDIAWIKI_MESSAGES_DIR}/*.php > "$@"
 
 
 # sudo apt-get install tetex-extra dvipng cjk-latex ocaml

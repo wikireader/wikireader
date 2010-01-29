@@ -1,4 +1,5 @@
 counts.text
+RedirectedTo.py
 *.pyc
 *.pyo
 all_articles.html
