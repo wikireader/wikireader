@@ -397,7 +397,13 @@ define GET_ARTICLE_NUMBER
   "select article_number from offsets where accumulated >= ($(strip ${1}) * $(strip ${2})) limit 1;"
 endef
 
-ARTICLE_STARTS := $(shell echo $(foreach i,${ITEMS},$(call GET_ARTICLE_NUMBER, ${i},${CHARACTERS_PER_INSTANCE})) | sqlite3 "${WORKDIR_PATH}/offsets.db")
+
+OFFSETS_DB := ${WORKDIR_PATH}/offsets.db
+
+# only enable this if offsets.db exists
+ifneq (,$(wildcard ${OFFSETS_DB}))
+
+ARTICLE_STARTS := $(shell echo $(foreach i,${ITEMS},$(call GET_ARTICLE_NUMBER, ${i},${CHARACTERS_PER_INSTANCE})) | sqlite3 "${OFFSETS_DB}")
 
 
 define ARTICLE_COUNTS_sh
@@ -411,6 +417,8 @@ define ARTICLE_COUNTS_sh
 endef
 
 ARTICLE_COUNTS := $(shell ${ARTICLE_COUNTS_sh})
+
+endif
 
 
 # check that the counts are correct to render all articles
@@ -456,7 +464,7 @@ MAKE_MACHINE = $(eval $(call MAKE_MACHINE1,$(strip ${1}),$(strip ${2}),$(strip $
 
 define MAKE_MACHINE1
 
-$(call MAKE_FARM,${1}, $(shell let j=${1}-1; while [ $${j} -lt ${TOTAL_INSTANCES} ]; do echo $${j}; j=$$(($${j} + ${2})); done))
+$(call MAKE_FARM,${1}, $(shell j=$$((${1} - 1)); while [ $${j} -lt ${TOTAL_INSTANCES} ]; do echo $${j}; j=$$(($${j} + ${2})); done))
 
 endef
 
