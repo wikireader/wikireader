@@ -351,16 +351,16 @@ pragma journal_mode = memory;
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
-        redirect_title = self.translate(rtitle).strip().strip(u'\u200e\u200f')
-        redirect_title = whitespaces.sub(' ', redirect_title).strip().lstrip(':')
+        rtitle = self.translate(rtitle).strip().strip(u'\u200e\u200f')
+        rtitle = whitespaces.sub(' ', rtitle).strip().lstrip(':')
 
         if self.KEY_TEMPLATE == key:
-            if title != redirect_title:
+            if title != rtitle:
                 title = unicode(category, 'utf-8') + ':' + title.lower()
-                redirect_title = unicode(rcategory, 'utf-8') + ':' + redirect_title.lower()
+                rtitle = unicode(rcategory, 'utf-8') + ':' + rtitle.lower()
                 self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
                                              ['~%d~%s' % (self.file_id(), title),
-                                              '~%d~%s' % (self.file_id(), redirect_title)])
+                                              '~%d~%s' % (self.file_id(), rtitle)])
 
             self.template_redirect_count += 1
             return
@@ -371,10 +371,10 @@ pragma journal_mode = memory;
                                  (category, key, title, rcategory, rkey, rtitle))
             return
 
-        if '' == redirect_title:
+        if '' == rtitle:
             PrintLog.message('Empty Redirect for: %s[%d]:%s' % (category, key, title))
         else:
-            self.redirects[title] = redirect_title
+            self.redirects[title] = rtitle
             self.redirect_count += 1
             if verbose:
                 PrintLog.message('Redirect: %s[%d]:%s ->  %s[%d]:%s' %
