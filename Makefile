@@ -526,7 +526,7 @@ URL_EXTRA_SUFFIX := ?curonly=1&templates=1&wpDownload=1
 define GET_FILES
   mkdir -p "${LICENSE_DIR}/${1}" ; \
   wget --output-document="-" "${WIKIREADER_CREATE_NLS}?lang=${1}" \
-    | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/wiki.nls" ; \
+    | sed 's/[[:space:]]*$$//;/^$$/d' > "${LICENSE_DIR}/${1}/wiki.nls" ; \
   [ -n "${2}" ] && \
     wget --output-document="-" "${WIKIMEDIA_EXPORT}/${2}${URL_EXTRA_SUFFIX}" \
     | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/terms.xml" ; \
