@@ -158,7 +158,7 @@ licenses=$(readlink -m "${LicensesDirectory}")
 work="${work}/${language}"
 dest="${dest}/${language}"
 license="${licenses}/${language}/license.xml"
-terms="${licenses}/${language}/license.xml"
+terms="${licenses}/${language}/terms.xml"
 articles_link="${language}wiki-pages-articles.xml"
 articles=$(readlink -m "${articles_link}")
 
