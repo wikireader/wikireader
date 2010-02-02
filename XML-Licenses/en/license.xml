@@ -30,7 +30,7 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Wikipedia:Text of Creative Commons Attribution-ShareAlike 3.0 Unported License</title>
+    <title>Wikipedia - Text of Creative Commons Attribution-ShareAlike 3.0 Unported License</title>
     <id>23238140</id>
     <revision>
       <id>332092427</id>
@@ -281,13 +281,14 @@ Creative Commons may be contacted at http://creativecommons.org/.
     <title>Template:Pagetype</title>
     <id>23143954</id>
     <revision>
-      <id>336195900</id>
-      <timestamp>2010-01-06T13:37:30Z</timestamp>
+      <id>340152558</id>
+      <timestamp>2010-01-26T16:12:29Z</timestamp>
       <contributor>
         <username>MSGJ</username>
         <id>42630</id>
       </contributor>
-      <comment>+book</comment>
+      <minor/>
+      <comment>+disambiguation</comment>
       <text xml:space="preserve">{{#switch:{{NAMESPACE:{{#if:{{{page|}}}
   |{{{page}}}
   |{{#ifeq:{{{subjectspace|}}}|yes
@@ -297,7 +298,7 @@ Creative Commons may be contacted at http://creativecommons.org/.
  }}
 }}
  |{{ns:Talk}}          = {{#switch:{{lc:{{{1|}}}}}
-  |disambig|disamb|dab
+  |disambiguation|disambig|disamb|dab
   |redirect|redir
   |na                  = page
   |#default            = article
