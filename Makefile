@@ -520,7 +520,8 @@ TERMS_pt   := Condições_de_Uso
 WIKIREADER_CREATE_NLS := http://www.thewikireader.com/create_nls.php
 
 WIKIMEDIA_EXPORT := http://wikimediafoundation.org/wiki/Special:Export
-URL_EXTRA_SUFFIX := ?curonly=1&templates=1&wpDownload=1
+LICENSE_EXTRA_SUFFIX := ?curonly=1&templates=1&wpDownload=1
+TERMS_EXTRA_SUFFIX := ?curonly=1&wpDownload=1
 
 # macro to retrieve files from various web sites
 define GET_FILES
@@ -528,11 +529,11 @@ define GET_FILES
   wget --output-document="-" "${WIKIREADER_CREATE_NLS}?lang=${1}" \
     | sed 's/[[:space:]]*$$//;/^$$/d' > "${LICENSE_DIR}/${1}/wiki.nls" ; \
   [ -n "${2}" ] && \
-    wget --output-document="-" "${WIKIMEDIA_EXPORT}/${2}${URL_EXTRA_SUFFIX}" \
+    wget --output-document="-" "${WIKIMEDIA_EXPORT}/${2}${TERMS_EXTRA_SUFFIX}" \
     | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/terms.xml" ; \
   [ -n "${3}" ] && \
-    wget --output-document="-" "http://${1}.wikipedia.org/wiki/Special:Export/${3}${URL_EXTRA_SUFFIX}" \
-    | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/license.xml" ; \
+    wget --output-document="-" "http://${1}.wikipedia.org/wiki/Special:Export/${3}${LICENSE_EXTRA_SUFFIX}" \
+    | sed 's/[[:space:]]*$$//;s/<title>Wikipedia:/<title>Wikipedia - /' > "${LICENSE_DIR}/${1}/license.xml" ; \
   true ;
 endef
 
