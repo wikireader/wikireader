@@ -51,9 +51,10 @@
 #define LIST_SCROLL_SPEED_FRICTION 0.6
 #define ARTICLE_SCROLL_SPEED_FRICTION 0.6
 #define SCROLL_UNIT_SECOND 0.1
-#define LINK_ACTIVATION_TIME_THRESHOLD 0.05
 #define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.1
-#define LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.25
+#define LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.35
+#define PREVIOUS_ARTICLE_LINK 0xFFFFFE
+#define PREVIOUS_ARTICLE_LINKABLE_SIZE 20
 
 #ifdef OVER_SCROLL_ENABLED
 #define OVER_SCROLL_SPEED_FACTOR 4
@@ -112,7 +113,8 @@ long article_scroll_increment;
 unsigned long time_scroll_article_last=0;
 int stop_render_article = 0;
 int b_show_scroll_bar = 0;
-long saved_idx_article;
+long saved_idx_article = 0;
+long saved_prev_idx_article = 0;
 
 #define MIN_BAR_LEN 20
 #ifndef WIKIPCF
@@ -645,11 +647,11 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 		memcpy(framebuffer, buf + pos + over_scroll_lines * LCD_BUF_WIDTH_BYTES, framebuffersize - over_scroll_lines * LCD_BUF_WIDTH_BYTES);
 		memset(&framebuffer[(LCD_HEIGHT_LINES - over_scroll_lines) * LCD_BUF_WIDTH_BYTES], 0, over_scroll_lines * LCD_BUF_WIDTH_BYTES);
 	}
-	if (b_repaint_invert_link && !over_scroll_lines)
+//	if (b_repaint_invert_link && !over_scroll_lines)
 #else
-	if (b_repaint_invert_link)
+//	if (b_repaint_invert_link)
 #endif
-		repaint_invert_link();
+//		repaint_invert_link();
 	if (b_show_scroll_bar)
 		show_scroll_bar(1);
 	guilib_fb_unlock();
@@ -1674,16 +1676,20 @@ void display_retrieved_article(long idx_article)
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
 	offset = sizeof(ARTICLE_HEADER);
 
-	if(article_header.article_link_count>MAX_ARTICLE_LINKS)
-		article_header.article_link_count = MAX_ARTICLE_LINKS;
-
+	articleLink[0].start_xy = 0;
+	articleLink[0].end_xy = 0;
+	articleLink[0].article_id = PREVIOUS_ARTICLE_LINK;
+	link_count_addon = 1;
 	if (restricted_article)
 	{
-		articleLink[0].start_xy = (unsigned  long)(211 | (4 << 8));
-		articleLink[0].end_xy = (unsigned  long)(230 | (24 << 8));
-		articleLink[0].article_id = RESTRICTED_MARK_LINK;
-		link_count_addon = 1;
+		articleLink[1].start_xy = (unsigned  long)(211 | (4 << 8));
+		articleLink[1].end_xy = (unsigned  long)(230 | (24 << 8));
+		articleLink[1].article_id = RESTRICTED_MARK_LINK;
+		link_count_addon = 2;
 	}
+
+	if(article_header.article_link_count > MAX_ARTICLE_LINKS - link_count_addon)
+		article_header.article_link_count = MAX_ARTICLE_LINKS - link_count_addon;
 
 	article_link_count = link_count_addon;
 	for(i = 0; i < article_header.article_link_count && article_link_count < MAX_ARTICLE_LINKS; i++)
@@ -1705,7 +1711,8 @@ void display_retrieved_article(long idx_article)
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	//get_article_title_from_idx(idx_article, title);
 	extract_title_from_article(file_buffer, title);
-	history_add(idx_article, title, bKeepPos);
+	history_add(idx_article, saved_prev_idx_article, title, bKeepPos);
+	saved_prev_idx_article = 0;
 }
 
 int isArticleLinkSelectedSequentialSearch(int x,int y, int start_i, int end_i)
@@ -1773,6 +1780,7 @@ int isArticleLinkSelected(int x,int y)
 	int article_link_end_x_pos;
 	//char msg[1024];
 	int left_margin;
+	int origin_y;
 
 #ifdef OVER_SCROLL_ENABLED
 	if (!display_first_page || request_display_next_page || over_scroll_lines)
@@ -1786,18 +1794,26 @@ int isArticleLinkSelected(int x,int y)
 	else
 		left_margin = 0;
 
+	origin_y = y;
 	y += lcd_draw_cur_y_pos;
 
 	if (link_currently_activated >= 0 && link_currently_activated < article_link_count)
 	{
 		article_link_start_x_pos = (articleLink[link_currently_activated].start_xy & 0x000000ff) + left_margin - LINK_X_DIFF_ALLOWANCE;
-		article_link_start_y_pos = (articleLink[link_currently_activated].start_xy >> 8) - LINK_Y_DIFF_ALLOWANCE;
+		article_link_start_y_pos = (articleLink[link_currently_activated].start_xy >> 8) - INITIAL_ARTICLE_SCROLL_THRESHOLD;
 		article_link_end_x_pos = (articleLink[link_currently_activated].end_xy & 0x000000ff) + left_margin + LINK_X_DIFF_ALLOWANCE;
-		article_link_end_y_pos = (articleLink[link_currently_activated].end_xy >> 8) + LINK_Y_DIFF_ALLOWANCE;
+		article_link_end_y_pos = (articleLink[link_currently_activated].end_xy >> 8) + INITIAL_ARTICLE_SCROLL_THRESHOLD;
 		if (y>=article_link_start_y_pos && y<=article_link_end_y_pos && x>=article_link_start_x_pos && x<=article_link_end_x_pos)
 			return link_currently_activated; // if more than on links are matched, the last matched one got the higher priority
 	}
 
+	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE && 
+		LCD_HEIGHT_LINES - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT_LINES &&
+		history_get_previous_idx(saved_idx_article))
+	{
+		return 0; // PREVIOUS_ARTICLE_LINK
+	}
+	
 	start_i = 0;
 	end_i = article_link_count - 1;
 	i = article_link_count / 2;
@@ -1874,12 +1890,19 @@ int load_init_article(long idx_init_article)
 #ifndef WIKIPCF
 void display_link_article(long idx_article)
 {
-
 	request_y_pos = 0;
 	if (idx_article == RESTRICTED_MARK_LINK)
 	{
 		filter_option();
 		return;
+	}
+	else if (idx_article == PREVIOUS_ARTICLE_LINK)
+	{
+		idx_article = history_get_previous_idx(saved_idx_article);
+		if (!idx_article)
+			return;
+		last_display_mode = DISPLAY_MODE_HISTORY;
+		saved_prev_idx_article = 0;
 	}
 
 	saved_idx_article = idx_article;

@@ -52,13 +52,41 @@ static inline unsigned int history_modulus(int modulus) {
 	return modulus % HISTORY_MAX_DISPLAY_ITEM;
 }
 
+long history_get_previous_idx(long idx_article)
+{
+	int i = 0;
+	int bFound = 0;
+
+	if (!(idx_article & 0xFF000000)) // idx_article for current wiki
+	{
+		idx_article |= get_wiki_id_from_idx(nCurrentWiki) << 24;
+	}
+
+	while (!bFound && i < history_count)
+	{
+		if (idx_article == history_list[i].idx_article)
+		{
+			bFound = 1;
+		}
+		else
+			i++;
+	}
+
+	if(bFound)
+	{
+		return history_list[i].idx_prev_article;
+	}
+	else
+		return 0;
+}
+
 void history_reload()
 {
 	rendered_history_count = 0;
 	render_history_with_pcf();
 }
 
-void history_add(long idx_article, const char *title, int b_keep_pos)
+void history_add(long idx_article, long idx_prev_article, const char *title, int b_keep_pos)
 {
 	int i = 0;
 	int bFound = 0;
@@ -79,6 +107,8 @@ void history_add(long idx_article, const char *title, int b_keep_pos)
 				history_tmp.last_y_pos = 0;
 			memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
 			history_list[0]=history_tmp;
+			if (idx_prev_article)
+				history_list[0].idx_prev_article = idx_prev_article;
 			bFound = 1;
 		}
 		else
@@ -92,6 +122,7 @@ void history_add(long idx_article, const char *title, int b_keep_pos)
 		history_count = MAX_HISTORY - 1;
 	memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
 	history_list[0].idx_article = idx_article;
+	history_list[0].idx_prev_article = idx_prev_article;
 	strcpy(history_list[0].title, title);
 	history_list[0].last_y_pos = 0;
 	history_count++;

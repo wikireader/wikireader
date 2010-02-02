@@ -34,7 +34,7 @@
 
 void history_clear(void);
 
-void history_add(long idx_article, const char *title, int b_keep_pos);
+void history_add(long idx_article, long idx_prev_article, const char *title, int b_keep_pos);
 unsigned int history_get_count();
 void history_list_init(void);
 int history_list_save(int level);
@@ -44,9 +44,11 @@ void history_reload();
 void history_log_y_pos(const long y_pos);
 long history_get_y_pos(const long idx_article);
 void draw_clear_history(int bFlag);
+long history_get_previous_idx(long idx_article);
 
 typedef struct _HISTORY {
 	long idx_article;
+	long idx_prev_article;
 	long last_y_pos;
 	char title[MAX_TITLE_SEARCH];
 } HISTORY;
