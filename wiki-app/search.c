@@ -161,7 +161,7 @@ void get_article_title_from_idx(long idx, char *title)
 			return;
 		nCurrentWiki = wiki_idx;
 	}
-		
+
 	wl_seek(search_info[nCurrentWiki].fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + 4);
 	wl_read(search_info[nCurrentWiki].fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (article_ptr.file_id_compressed_len && article_ptr.offset_fnd)
@@ -1356,7 +1356,10 @@ void random_article(void)
 #ifdef INCLUDED_FROM_KERNEL
 	clock_ticks = Tick_get();
 #else
-	clock_ticks = clock();
+	//clock_ticks = clock();  // this gets CPU time used, it not suitable for random
+	struct timeval t;         // get elapsed time in us but do not care about overflow
+	gettimeofday(&t, NULL);   // this more-or-less simulates what happens on WR hardware
+	clock_ticks = t.tv_sec * 1000000 + t.tv_usec;
 #endif
 	idx_article = clock_ticks % search_info[nCurrentWiki].max_article_idx + 1;
 	idx_article = find_closest_idx(idx_article, title);
