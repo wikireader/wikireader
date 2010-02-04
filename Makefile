@@ -274,7 +274,7 @@ fonts-install: fonts validate-destdir
 # ======================================
 
 WIKI_LANGUAGE ?= en
-WIKI_FILE_PREFIX ?= pedia
+WIKI_FILE_PREFIX ?= wiki
 XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell ${REALPATH} "${f}"))
 RENDER_BLOCK ?= 0
 
