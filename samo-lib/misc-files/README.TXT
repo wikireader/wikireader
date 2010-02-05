@@ -1,5 +1,5 @@
 
-WikiReader v1.0 Software (C) 2009 Openmoko, Inc.
+WikiReader v1.1 Software (C) 2010 Openmoko, Inc.
 -------------------------------------------------------------------------------
 DO NOT EDIT THE CONTENTS OF THIS SD CARD. 
 This entire file system is automatically generated.
