@@ -246,13 +246,32 @@ void set_wiki(int idx)
 	}
 }
 
+void nls_replace_text(char *replace_str, char *out_str)
+{
+	if (!strcmp(replace_str, "title"))
+	{
+		extract_title_from_article(out_str);
+		while (*out_str)
+		{
+			if (*out_str == ' ')
+				*out_str = '_';
+			out_str++;
+		}
+		
+	}
+	else
+	{
+		strcpy(out_str, replace_str);
+	}
+}
+
 WIKI_LICENSE_DRAW *wiki_license_draw()
 {
 	int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
 
 	if (wiki_idx < 0)
 		wiki_idx = nCurrentWiki;
-	if (!aWikiLicenseDraw[wiki_idx].lines)
+//	if (!aWikiLicenseDraw[wiki_idx].lines)
 	{
 		int y = 0;
 		int x = 0;
@@ -262,7 +281,7 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 		unsigned char *pLicenseTextSegment;
 		int line_height = pcfFonts[LICENSE_TEXT_FONT - 1].Fmetrics.linespace;
 		char str[256];
-		unsigned char *p;
+		unsigned char *p, *q;
 		int bInLink = 0;
 		int nLinkArticleId = 0;
 		int width;
@@ -294,10 +313,31 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 						pLicenseText += strlen(pLicenseText);
 					}
 				}
+				else if (pLicenseText[0] == NLS_TEXT_REPLACEMENT_START)
+				{
+					bInLink = 0;
+					pLicenseText++;
+					if ((p = strchr(pLicenseText, NLS_TEXT_REPLACEMENT_END)))
+					{
+						memcpy(str, pLicenseText, p - pLicenseText);
+						str[p - pLicenseText] = '\0';
+						pLicenseText = p + 1;
+					}
+					else
+					{
+						strcpy(str, pLicenseText);
+						pLicenseText += strlen(pLicenseText);
+					}
+					nls_replace_text(str, sLicenseTextSegment);
+				}
 				else
 				{
 					bInLink = 0;
-					if ((p = strchr(pLicenseText, LICENSE_LINK_START)))
+					p = strchr(pLicenseText, LICENSE_LINK_START);
+					q = strchr(pLicenseText, NLS_TEXT_REPLACEMENT_START);
+					if ((p && q && p > q) || (!p))
+						p = q;
+					if (p)
 					{
 						memcpy(sLicenseTextSegment, pLicenseText, p - pLicenseText);
 						sLicenseTextSegment[p - pLicenseText] = '\0';

@@ -1710,7 +1710,7 @@ void display_retrieved_article(long idx_article)
 
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	//get_article_title_from_idx(idx_article, title);
-	extract_title_from_article(file_buffer, title);
+	extract_title_from_article(title);
 	history_add(idx_article, title, bKeepPos);
 	saved_prev_idx_article = 0;
 }
@@ -2411,8 +2411,9 @@ void msg_on_lcd_clear(int x, int y)
 #endif
 }
 
-void extract_title_from_article(unsigned char *article_buf, unsigned char *title)
+void extract_title_from_article(unsigned char *title)
 {
+	unsigned char *article_buf = file_buffer;
 	unsigned char c, c2;
 	int bDone = 0;
 	ARTICLE_HEADER article_header;
