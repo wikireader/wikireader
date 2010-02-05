@@ -1666,7 +1666,7 @@ void display_retrieved_article(long idx_article)
 	nArticleWikiId = idx_article >> 24;
 	if (last_display_mode == DISPLAY_MODE_HISTORY)
 	{
-		init_render_article(history_get_y_pos(idx_article));
+		init_render_article(history_get_y_pos());
 		bKeepPos = 1;
 	}
 	else
@@ -1711,7 +1711,7 @@ void display_retrieved_article(long idx_article)
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	//get_article_title_from_idx(idx_article, title);
 	extract_title_from_article(file_buffer, title);
-	history_add(idx_article, saved_prev_idx_article, title, bKeepPos);
+	history_add(idx_article, title, bKeepPos);
 	saved_prev_idx_article = 0;
 }
 
@@ -1809,7 +1809,7 @@ int isArticleLinkSelected(int x,int y)
 
 	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE && 
 		LCD_HEIGHT_LINES - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT_LINES &&
-		history_get_previous_idx(saved_idx_article))
+		history_get_previous_idx(saved_idx_article, 0))
 	{
 		return 0; // PREVIOUS_ARTICLE_LINK
 	}
@@ -1898,12 +1898,14 @@ void display_link_article(long idx_article)
 	}
 	else if (idx_article == PREVIOUS_ARTICLE_LINK)
 	{
-		idx_article = history_get_previous_idx(saved_idx_article);
+		idx_article = history_get_previous_idx(saved_idx_article, 1);
 		if (!idx_article)
 			return;
 		last_display_mode = DISPLAY_MODE_HISTORY;
 		saved_prev_idx_article = 0;
 	}
+	else if (last_display_mode == DISPLAY_MODE_HISTORY)
+		history_set_y_pos(idx_article);
 
 	saved_idx_article = idx_article;
 	file_buffer[0] = '\0';

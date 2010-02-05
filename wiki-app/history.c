@@ -41,8 +41,15 @@
 
 #define HISTORY_MAX_ITEM	19
 #define HISTORY_MAX_DISPLAY_ITEM	18U
+#define MAX_VIEWING_LIST 30
 
 HISTORY history_list[MAX_HISTORY];
+struct _viewing_list {
+	long idx_article;
+	long last_y_pos;
+} viewing_list[MAX_VIEWING_LIST];
+long history_y_pos = 0;
+int viewing_count = 0;
 int history_count = 0;
 int rendered_history_count = -1;
 int history_changed = HISTORY_SAVE_NONE;
@@ -52,32 +59,31 @@ static inline unsigned int history_modulus(int modulus) {
 	return modulus % HISTORY_MAX_DISPLAY_ITEM;
 }
 
-long history_get_previous_idx(long idx_article)
+long history_get_previous_idx(long current_idx_article, int b_drop_from_list)
 {
-	int i = 0;
-	int bFound = 0;
+	long previous_idx_article;
 
-	if (!(idx_article & 0xFF000000)) // idx_article for current wiki
+	if (viewing_count > 0)
 	{
-		idx_article |= get_wiki_id_from_idx(nCurrentWiki) << 24;
-	}
-
-	while (!bFound && i < history_count)
-	{
-		if (idx_article == history_list[i].idx_article)
+		if (viewing_count > 1)
 		{
-			bFound = 1;
+			previous_idx_article = viewing_list[viewing_count - 2].idx_article;
+			history_y_pos = viewing_list[viewing_count - 2].last_y_pos;
+		}
+		else if (viewing_list[0].idx_article != current_idx_article)
+		{
+			previous_idx_article = viewing_list[0].idx_article;
+			history_y_pos = viewing_list[0].last_y_pos;
 		}
 		else
-			i++;
-	}
-
-	if(bFound)
-	{
-		return history_list[i].idx_prev_article;
+			previous_idx_article = 0;
+		if (b_drop_from_list)
+			viewing_count--;
 	}
 	else
-		return 0;
+		previous_idx_article = 0;
+
+	return previous_idx_article;
 }
 
 void history_reload()
@@ -86,7 +92,7 @@ void history_reload()
 	render_history_with_pcf();
 }
 
-void history_add(long idx_article, long idx_prev_article, const char *title, int b_keep_pos)
+void history_add(long idx_article, const char *title, int b_keep_pos)
 {
 	int i = 0;
 	int bFound = 0;
@@ -94,6 +100,18 @@ void history_add(long idx_article, long idx_prev_article, const char *title, int
 	if (!(idx_article & 0xFF000000)) // idx_article for current wiki
 	{
 		idx_article |= get_wiki_id_from_idx(nCurrentWiki) << 24;
+	}
+
+	if (!viewing_count || viewing_list[viewing_count - 1].idx_article != idx_article)
+	{
+		if (viewing_count >= MAX_VIEWING_LIST)
+		{
+			for (i=0; i < MAX_VIEWING_LIST - 1; i++)
+				viewing_list[i] = viewing_list[i + 1];
+			viewing_count--;
+		}
+		viewing_list[viewing_count].idx_article = idx_article;
+		viewing_list[viewing_count++].last_y_pos = 0;
 	}
 
 	history_changed = HISTORY_SAVE_NORMAL;
@@ -107,8 +125,6 @@ void history_add(long idx_article, long idx_prev_article, const char *title, int
 				history_tmp.last_y_pos = 0;
 			memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*i);
 			history_list[0]=history_tmp;
-			if (idx_prev_article)
-				history_list[0].idx_prev_article = idx_prev_article;
 			bFound = 1;
 		}
 		else
@@ -122,7 +138,6 @@ void history_add(long idx_article, long idx_prev_article, const char *title, int
 		history_count = MAX_HISTORY - 1;
 	memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
 	history_list[0].idx_article = idx_article;
-	history_list[0].idx_prev_article = idx_prev_article;
 	strcpy(history_list[0].title, title);
 	history_list[0].last_y_pos = 0;
 	history_count++;
@@ -133,22 +148,31 @@ void history_log_y_pos(const long y_pos)
 	if (history_changed != HISTORY_SAVE_NORMAL)
 		history_changed = HISTORY_SAVE_POWER_OFF;
 	history_list[0].last_y_pos = y_pos;
+	if (viewing_count > 0)
+		viewing_list[viewing_count - 1].last_y_pos = y_pos;
 }
 
-long history_get_y_pos(const long idx_article)
+void history_set_y_pos(const long idx_article)
 {
 	int i = 0;
+	int bFound = 0;
 
-	while (i < history_count)
+	history_y_pos = 0;
+	while (!bFound && i < history_count)
 	{
 		if (idx_article == history_list[i].idx_article)
 		{
-			return history_list[i].last_y_pos;
+			history_y_pos = history_list[i].last_y_pos;
+			bFound = 1;
 		}
 		else
 			i++;
 	}
-	return 0;
+}
+
+long history_get_y_pos()
+{
+	return history_y_pos;
 }
 
 unsigned int history_get_count()

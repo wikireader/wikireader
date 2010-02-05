@@ -63,5 +63,6 @@ struct keyboard_key * keyboard_get_data(int x, int y);
 void keyboard_key_invert(struct keyboard_key *key);
 int keyboard_key_reset_invert(int bFlag, unsigned long ev_time);
 int keyboard_key_inverted(void);
+int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2);
 
 #endif

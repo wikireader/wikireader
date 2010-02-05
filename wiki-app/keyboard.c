@@ -660,3 +660,18 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 	}
 	return rc;
 }
+
+int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2)
+{
+	if (((key1->left_x == key2->left_x || key1->right_x == key2->right_x) && // same column
+		(key1->left_y - key2->right_y == 1 || key2->left_y - key1->right_y == 1)) || // adjacent row
+		((key1->left_y == key2->left_y || key1->right_y == key2->right_y) && // same row
+		(key1->left_x - key2->right_x == 1 || key2->left_x - key1->right_x == 1))) // adjancent column
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}

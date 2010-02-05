@@ -291,8 +291,8 @@ static void handle_search_key(char keycode, unsigned long ev_time)
 		keyboard_set_mode(KEYBOARD_NONE);
 		wiki_selection();
 		return;
-	} else if (keycode == WL_KEY_BACKSPACE) {
-		rc = search_remove_char(0, ev_time);
+//	} else if (keycode == WL_KEY_BACKSPACE) {
+//		rc = search_remove_char(0, ev_time);
 	} else if (is_supported_search_char(keycode)) {
 		rc = search_add_char(tolower(keycode), ev_time);
 	} else {
@@ -461,6 +461,7 @@ static void handle_touch(struct wl_input_event *ev)
 	static unsigned long last_5_y_time_ticks[5];
 	int i;
 	int average_x, average_y;
+	long time_now;
 
 	DP(DBG_WL, ("%s() touch event @%d,%d val %d\n", __func__,
 		    ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
@@ -499,8 +500,22 @@ static void handle_touch(struct wl_input_event *ev)
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
-			press_delete_button = false;
+			if (pre_key && pre_key != key && keyboard_adjacent_keys(pre_key, key))
+			{
+				touch_down_on_keyboard = 0;
+				touch_down_on_list = 0;
+				pre_key = NULL;
+				goto out;
+			}
+
 			pre_key = NULL;
+			if (press_delete_button)
+			{
+				touch_down_on_keyboard = 0;
+				touch_down_on_list = 0;
+				press_delete_button = false;
+				goto out;
+			}
 			if (key) {
 				if (!touch_down_on_keyboard) {
 					touch_down_on_keyboard = 0;
@@ -530,6 +545,12 @@ static void handle_touch(struct wl_input_event *ev)
 			touch_down_on_keyboard = 0;
 			touch_down_on_list = 0;
 		} else {
+			if (pre_key && pre_key->key != key->key && keyboard_adjacent_keys(pre_key, key))
+			{
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+				goto out;
+			}
+
 			if(enter_touch_y_pos<0)  //record first touch y pos
 				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
@@ -538,7 +559,20 @@ static void handle_touch(struct wl_input_event *ev)
 			if (key) {
 				if(key->key==8)//press "<" button
 				{
-					press_delete_button = true;
+					if (!press_delete_button)
+					{
+						press_delete_button = true;
+						if(get_search_string_len()>0)
+						{
+							time_now = get_time_ticks();
+							if (!search_remove_char(0, time_now))
+							{
+								search_string_changed_remove = true;
+								search_to_be_reloaded(SEARCH_TO_BE_RELOADED_SET, SEARCH_RELOAD_NO_POPULATE);
+							}
+							last_delete_time = time_now;
+						}
+					}
 				}
 				else if(key->key == -42)
 				{
@@ -563,7 +597,13 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if (touch_down_on_keyboard) {
 					keyboard_key_invert(key);
-					pre_key = key;
+					if (pre_key && !keyboard_adjacent_keys(pre_key, key))
+					{
+						handle_search_key(pre_key->key, ev->touch_event.ticks);
+						pre_key = NULL;
+					}
+					else
+						pre_key = key;
 				}
 			} else {
 				if (!touch_down_on_keyboard && !touch_down_on_list)
@@ -622,8 +662,12 @@ static void handle_touch(struct wl_input_event *ev)
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
-			press_delete_button = false;
 			pre_key = NULL;
+			if (press_delete_button)
+			{
+				press_delete_button = false;
+				goto out;
+			}
 			if (key) {
 				if (!touch_down_on_keyboard) {
 					touch_down_on_keyboard = 0;
@@ -658,7 +702,13 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if (touch_down_on_keyboard) {
 					keyboard_key_invert(key);
-					pre_key = key;
+					if (pre_key && !keyboard_adjacent_keys(pre_key, key))
+					{
+						handle_search_key(pre_key->key, ev->touch_event.ticks);
+						pre_key = NULL;
+					}
+					else
+						pre_key = key;
 				}
 			} else {
 				touch_down_on_keyboard = 0;
@@ -684,8 +734,22 @@ static void handle_touch(struct wl_input_event *ev)
 			enter_touch_y_pos_record = enter_touch_y_pos;
 			enter_touch_y_pos = -1;
 			touch_search = 0;
-			press_delete_button = false;
+			if (pre_key && pre_key != key && keyboard_adjacent_keys(pre_key, key))
+			{
+				touch_down_on_keyboard = 0;
+				touch_down_on_list = 0;
+				pre_key = NULL;
+				goto out;
+			}
+
 			pre_key = NULL;
+			if (press_delete_button)
+			{
+				touch_down_on_keyboard = 0;
+				touch_down_on_list = 0;
+				press_delete_button = false;
+				goto out;
+			}
 			if (key) {
 				if (!touch_down_on_keyboard) {
 					touch_down_on_keyboard = 0;
@@ -695,6 +759,16 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 			touch_down_on_keyboard = 0;
 		} else {
+			if (pre_key && pre_key->key != key->key && keyboard_adjacent_keys(pre_key, key))
+			{
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+				goto out;
+			}
+			{
+				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+				goto out;
+			}
+
 			if(enter_touch_y_pos<0)  //record first touch y pos
 				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
@@ -703,7 +777,16 @@ static void handle_touch(struct wl_input_event *ev)
 			if (key) {
 				if(key->key==8)//press "<" button
 				{
-					press_delete_button = true;
+					if (!press_delete_button)
+					{
+						press_delete_button = true;
+						if (get_password_string_len()>0)
+						{
+							time_now = get_time_ticks();
+							password_remove_char();
+							last_delete_time = time_now;
+						}
+					}
 				}
 				else if(key->key == -42)
 				{
@@ -997,7 +1080,7 @@ int wikilib_run(void)
 					press_delete_button = false;
 				}
 				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.3))
 				{
 					if (!search_remove_char(0, time_now))
 					{
@@ -1020,7 +1103,7 @@ int wikilib_run(void)
 					press_delete_button = false;
 				}
 				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.25))
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.3))
 				{
 					password_remove_char();
 					last_delete_time = time_now;
