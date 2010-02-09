@@ -101,7 +101,7 @@ CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 jig-install: validate-destdir forth-install flash-install mbr-install
 
 .PHONY: install
-install: validate-destdir forth-install mahatma-install fonts-install misc-files-install version
+install: validate-destdir forth-install mahatma-install fonts-install nls-install misc-files-install version
 
 .PHONY: version
 version: validate-destdir
@@ -558,6 +558,26 @@ fetch-nls: $(foreach lang,${ALL_LANGUAGES},fetch-nls-${lang})
 fetch-nls-%:
 	echo fetching nls files for: $*
 	$(call GET_FILES,$*,${TERMS_$*},${LICENSE_$*})
+
+# install nls file
+.PHONY: nls-install
+nls-install: validate-destdir
+	@find "${DESTDIR}" -type d | \
+	  ( while read dir ; \
+	    do \
+	      d=$$(basename "$${dir}") ; \
+	      for s in $${d} $${d%%pedia} ; \
+	      do \
+	        src="${LICENSE_DIR}/$${s}/wiki.nls" ; \
+	        dest="${DESTDIR_PATH}/$${d}" ; \
+	        if [ -f "$${src}" ] ; \
+	        then \
+                  echo copy: $${src} to: $${dest} ; \
+                  cp -p "$${src}" "$${dest}" ; \
+	        fi ; \
+	      done \
+	    done \
+	  )
 
 
 # Download the latest Mediawiki dump
