@@ -336,7 +336,7 @@ variable in-ok
     lcd-cls
     lcd-." COB Testing" lcd-cr
 
-    s" flash.rom" program-rom
+    \ s" flash.rom" program-rom
 
     10 lcd-text-rows 1- lcd-at-xy lcd-." Key1"
     17 lcd-text-rows 1- lcd-at-xy lcd-." Key2"
