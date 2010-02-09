@@ -507,7 +507,7 @@ static void handle_touch(struct wl_input_event *ev)
 				pre_key = NULL;
 				goto out;
 			}
-
+			
 			pre_key = NULL;
 			if (press_delete_button)
 			{
@@ -550,7 +550,7 @@ static void handle_touch(struct wl_input_event *ev)
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 				goto out;
 			}
-
+			
 			if(enter_touch_y_pos<0)  //record first touch y pos
 				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
@@ -741,7 +741,7 @@ static void handle_touch(struct wl_input_event *ev)
 				pre_key = NULL;
 				goto out;
 			}
-
+			
 			pre_key = NULL;
 			if (press_delete_button)
 			{
@@ -760,10 +760,6 @@ static void handle_touch(struct wl_input_event *ev)
 			touch_down_on_keyboard = 0;
 		} else {
 			if (pre_key && pre_key->key != key->key && keyboard_adjacent_keys(pre_key, key))
-			{
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
-				goto out;
-			}
 			{
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 				goto out;
