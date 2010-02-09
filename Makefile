@@ -279,6 +279,17 @@ XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell ${REALPATH} "${f}"))
 RENDER_BLOCK ?= 0
 TOTAL_HTML_FILES ?= 27
 
+# delete a single pair of directories or the whole tree.
+# BE CAREFUL about the DESTDIR/WORKDIR settings
+.PHONY: cleandirs
+cleandirs:
+	@if [ -z "${DESTDIR_PATH}" ] ; then echo missing DESTDIR ; exit 1 ; fi
+	@if [ -z "${WORKDIR_PATH}" ] ; then echo missing WORKDIR ; exit 1 ; fi
+	${RM} -r "${DESTDIR_PATH}" "${WORKDIR_PATH}"
+	${MKDIR} "${DESTDIR_PATH}"
+	${MKDIR} "${WORKDIR_PATH}"
+
+
 .PHONY: index
 index: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
