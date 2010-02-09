@@ -426,6 +426,7 @@ OFFSETS_DB := ${WORKDIR_PATH}/offsets.db
 
 # only enable this if offsets.db exists
 ifneq (,$(wildcard ${OFFSETS_DB}))
+ifeq (,$(strip ${SUPPRESS_ARTICLE_STARTS}))
 
 ARTICLE_STARTS := $(shell echo $(foreach i,${ITEMS},$(call GET_ARTICLE_NUMBER, ${i},${CHARACTERS_PER_INSTANCE})) | sqlite3 "${OFFSETS_DB}")
 
@@ -442,6 +443,7 @@ endef
 
 ARTICLE_COUNTS := $(shell ${ARTICLE_COUNTS_sh})
 
+endif
 endif
 
 
