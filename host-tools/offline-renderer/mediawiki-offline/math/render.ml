@@ -33,7 +33,7 @@ let render tmppath finalpath outtex md5 =
             then (unlink_all (); raise (ExternalCommandFailure "latex"))
             else if (Sys.command (cmd_dvipng tmpprefix (finalpath^"/"^md5^".png")) != 0)
             then (unlink_all (); raise (ExternalCommandFailure "dvipng"))
-
+            else unlink_all ()
 (*	then (if (Sys.command (cmd_dvips tmpprefix) != 0)
 	then (unlink_all (); raise (ExternalCommandFailure "dvips"))
 	else if (Sys.command (cmd_convert tmpprefix (finalpath^"/"^md5^".png")) != 0)
