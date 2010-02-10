@@ -124,7 +124,7 @@ class FileScanner(object):
         key = None
         category = None
         title = None
-        file = open(filename, 'r')
+        file = open(filename, 'rb')
         end = False
         more = True
         wanted = True
@@ -178,13 +178,14 @@ class FileScanner(object):
                     wanted = self.title(category, key, title, seek)
                 elif 'body' == proc:
                     body =  block[:pos].strip()
+                    body_leading_blanks = pos - len(block[:pos].lstrip())
                     flag = True
                     if '#' in body[0:10] or '＃' in body[0:10]:
                         #print 'M[%s]' % body
                         match = RedirectedTo.regex.match(body)
                         if wanted and match:
                             (rcategory, rkey, rtitle) = self.get_category(match.group(2).strip())
-                            self.redirect(category, key, title, rcategory, rkey, rtitle, seek)
+                            self.redirect(category, key, title, rcategory, rkey, rtitle, seek + body_leading_blanks)
                             flag = False
                 elif 'zero' == proc:
                     #print 'ZERO'
@@ -195,7 +196,7 @@ class FileScanner(object):
                     self.key_to_category = {}
 
                 if wanted and flag:
-                    self.body(category, key, title, body, seek)
+                    self.body(category, key, title, body, seek + body_leading_blanks)
                     if limit != 'all':
                         limit -= 1
                         if limit <= 0:
