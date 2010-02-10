@@ -122,7 +122,7 @@ function wfParseText($text, $action='parse', $format='xml') {
 
 ### Wikipedia Offline Client - Stuff ###########################################
 
-function &wfOutputWrapperWOC($articleTitle, $articleText) {
+function &wfOutputWrapperWOC($articleTitle, $articleText, $articleLanguageLinks) {
 
   # We store titles as unicode so do conversion here
   $articleTitle = htmlspecialchars($articleTitle);
@@ -136,6 +136,7 @@ function &wfOutputWrapperWOC($articleTitle, $articleText) {
   "  <body>\n".
 	"  <h1>".$articleTitle."</h1>\n".
   $articleText."\n".
+  "<div class='noprint lang-links'>" . $articleLanguageLinks . "</div> \n".
   "  </body>\n".
   "</html>\n";
   return $articleOutput;
@@ -144,7 +145,10 @@ function &wfOutputWrapperWOC($articleTitle, $articleText) {
 
 # Global function for 'Wikipedia Offline Client'-specific parsing
 function &wfParseTextWOC($text) {
+	
   global $wgParser, $wgParserOptions, $wgTemplateFileID;
+  
+  
   $nlidx = strpos($text, "\n");
   $temp_h = trim(substr($text, 0, $nlidx));
   $id = strpos($temp_h, ":");
@@ -156,9 +160,19 @@ function &wfParseTextWOC($text) {
   if (!$title) {
     $title = Title::newFromText('NULL Title');
   }
+    
   $output = $wgParser->parse($articleMarkup, $title, $wgParserOptions, true, true, null);
   $articleText = $output->getText();
-
+  
+  # Make the language links
+  $langLinks = "\n  <ul>\n";
+  
+  foreach ($output->getLanguageLinks() as $link){
+	$langLinks .= '    <li><a href="' . $link . '">' . $link . "</a></li>\n";
+  }
+  
+  $langLinks .= "  </ul>\n";
+  
   # change the links
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
@@ -171,7 +185,8 @@ function &wfParseTextWOC($text) {
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
   $articleText = preg_replace('/<a\s+name="([rR]eferences|[nN]otes)"\s+id="([rR]eferences|[nN]otes)"><\/a><h2>\s+<span\s+class="mw-headline">\s*([rR]eferences|[nN]otes)\s*<\/span><\/h2>\s*$/', '', $articleText);
   $articleText = str_replace('%25', '%', $articleText);
-  $ret = array( &$articleTitle, &$articleText );
+  
+  $ret = array( &$articleTitle, &$articleText, &$langLinks );
   return $ret;
 }
 
@@ -180,8 +195,14 @@ function &wfParseTextAndWrapWOC($text) {
   $result = wfParseTextWOC($text);
   $articleTitle = $result[0];
   $articleText = $result[1];
-  $articleOutput = wfOutputWrapperWOC($articleTitle, $articleText);
+  $articleLangLinks = $result[2];
+  $articleOutput = wfOutputWrapperWOC($articleTitle, $articleText, $articleLangLinks);
   return $articleOutput;
+}
+
+function &wfParseTextAndSkin($text) {
+  global $wgParser;
+  return $wgParser;
 }
 
 # Global helper function for 'WOC'-specific parsing

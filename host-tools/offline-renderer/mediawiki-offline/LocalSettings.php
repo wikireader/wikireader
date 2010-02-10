@@ -8,7 +8,7 @@
  *
  * ----------
  *
- * Copyright (C) 2009 Michael Nowak
+ * Copyright (C) 2010 Michael Nowak
  *               Sean Moss-Pultz <sean@openmoko.com>
  *               Christopher Hall <hsw@openmoko.com>
  *
@@ -48,6 +48,9 @@ $wgServer = $wgProto .'://'. $wgServerName;
 #$wgScriptPath = '/wiki';
 #$wgArticlePath = "/article/$1";
 #$wgUploadPath = $IP .'/sa';
+$wgFileLinks = false;
+$wgCategoryLinks = false;
+$wgLanguageLinks = false;
 $wgParserConf['class'] = 'ParserStandAlone';
 $wgLBFactoryConf['class'] = 'LBFactory_No';
 $wgCommandLineMode = true;
@@ -58,6 +61,10 @@ $wgTemplateFileID  = 0;
 
 # Register parser hooks
 $wgHooks['SpecialPage_initList'][] = 'ParserStandAlone::disableSpecialPages';
+$wgHooks['LinkBegin'][] = 'ParserStandAlone::hookLinkBegin';
+#$wgHooks['LinkEnd'][] = 'ParserStandAlone::hookLinkEnd';
+$wgHooks['ParserBeforeStrip'][] = 'ParserStandAlone::hookParserBeforeStrip';
+$wgHooks['ParserBeforeTidy'][] = 'ParserStandAlone::hookParserBeforeTidy';
 
 # Extension-Fixes before require
 define('WH_IMG_DIR', $wgUploadDirectory .'/wikihiero/' ); # for WikiHiero

@@ -20,7 +20,7 @@ subs = [
     (re.compile(r'&amp;', re.IGNORECASE), r'&'),
 
     # remove external links
-    (re.compile(r'\s*(==\s*External\s+links\s*==.*)$', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile(r'\s*(==\s*External\s+links\s*==.*)' + '\n\n', re.IGNORECASE + re.DOTALL), ''),
 
     # remove pictures
     (re.compile(r'\s*<gallery>.*?</gallery>', re.IGNORECASE + re.DOTALL), ''),
@@ -33,12 +33,6 @@ subs = [
 
     # change br to newline
     (re.compile(r'<br[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), '\n'),
-
-    # remove files and images
-    #(re.compile(r'\[\[(file|image):.*$', re.IGNORECASE + re.MULTILINE), ''),
-
-    # remove links to other languages
-    (re.compile(r'\[\[\w\w:(\[\[[^\]\[]*\]\]|[^\]\[])*\]\]', re.IGNORECASE), ''),
 
     # Wikipedia's installed Parser extension tags
     # <categorytree>, <charinsert>, <hiero>, <imagemap>, <inputbox>, <poem>,
@@ -55,12 +49,6 @@ subs = [
 
     # remove unwanted tags
     (re.compile(r'</?\s*(poem|source|pre)\s*>', re.IGNORECASE), ''),
-
-    # convert &lt;tag&gt; to <tag>
-    #(re.compile(r'(<|&lt;)(/?)\s*(math|nowiki|table|sub|sup|small|noinclude)\s*(>|&gt;)', re.IGNORECASE), r'<\2\3>'),
-
-    # fix entities
-    #(re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE), r'&\1;'),
 
     # fix broken lists <li/> -> </li>
     (re.compile(r'<li\s*/>', re.IGNORECASE), r'</li>'),

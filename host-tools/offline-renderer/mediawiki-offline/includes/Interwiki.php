@@ -150,11 +150,22 @@ class Interwiki {
 			}
 		}
 		
+		# $$$ Sean: This is a hack to get the interwiki links working
+		$iw = new Interwiki();
+		$iw->mURL = $prefix . '.wiki';
+		$iw->mLocal = 0;
+		$iw->mTrans = 0;
+		
+		/*
 		$db = wfGetDB( DB_SLAVE );
 			
 		$row = $db->fetchRow( $db->select( 'interwiki', '*', array( 'iw_prefix' => $prefix ),
 			__METHOD__ ) );
 		$iw = Interwiki::loadFromArray( $row );
+		*/
+		
+		# $$$ end of hack
+		
 		if ( $iw ) {
 			$mc = array( 'iw_url' => $iw->mURL, 'iw_local' => $iw->mLocal, 'iw_trans' => $iw->mTrans );
 			$wgMemc->add( $key, $mc, $wgInterwikiExpiry );

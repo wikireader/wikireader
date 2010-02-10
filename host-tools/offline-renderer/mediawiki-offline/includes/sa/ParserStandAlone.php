@@ -24,7 +24,39 @@ require_once( "$IP/LocalSettings.php" );
 
 class ParserStandAlone extends Parser
 {
-  # Override the template-fetching-function of the Parser
+  const LINK_OPTION_BROKEN = 'broken';
+  const LINK_OPTION_KNOWN = 'known';
+
+  /**
+   * @var array
+   */
+  static protected $languageNames = null;
+
+  /**
+   * @var array
+   */
+  static protected $templatesExistingCache = null;
+
+  /**
+   * @var array
+   */
+  static protected $templatesMissingCache = null;
+
+  /**
+   * @var array
+   */
+  static protected $detectedLanguageLinks = null;
+
+  /**
+   * Override the template-fetching-function of the Parser
+   *
+   * @global string $IP
+   * @global string $wgTemplatePath
+   * @global string $wgTemplateExtension
+   * @global string $wgTemplatePrefix
+   * @param Title $title
+   * @return array
+   */
   function fetchTemplateAndTitle( $title ) {
     #echo "\n--- Trying to find offline template: $title ---\n";
 
@@ -66,8 +98,110 @@ class ParserStandAlone extends Parser
     return $ret;
   }
 
+  /**
+   * @param array $mList
+   * @return bool
+   */
   static public function disableSpecialPages( &$mList ) {
     $mList = array();
+    return true;
+  }
+
+  /**
+   * @param bool $refresh default: false
+   * @return array
+   */
+  static public function getLanguageNames($refresh = false) {
+    if ($refresh || self::$languageNames === null) {
+      self::$languageNames = Language::getLanguageNames();
+      #var_dump(self::$languageNames);
+    }
+    return self::$languageNames;
+  }
+
+  /**
+   * @global bool $wgLanguageLinks;
+   * @param Skin $skin
+   * @param Title $target
+   * @param string $text
+   * @param array $customAttribs
+   * @param array $query
+   * @param array $options
+   * @param mixed $ret default: null
+   * @return bool
+   */
+  static public function hookLinkBegin( $skin, $target, &$text, &$customAttribs, &$query, &$options, &$ret ) {
+    # first make link known. 
+    $brokenKey = array_search(self::LINK_OPTION_BROKEN, $options);
+    if ( $brokenKey !== false ) {
+      $options[$brokenKey] = self::LINK_OPTION_KNOWN;
+    } else if ( array_search(self::LINK_OPTION_KNOWN, $options) === false ) {
+      $options []= self::LINK_OPTION_KNOWN;
+    }
+    
+    $targetNamespace = $target->getNamespace();
+    if ($targetNamespace == NS_FILE || $$targetNamespace == NS_FILE_TALK) {
+      global $wgFileLinks;
+      return $wgFileLinks;
+    } else if ($targetNamespace == NS_CATEGORY || $targetNamespace == NS_CATEGORY_TALK) {
+      global $wgCategoryLinks;
+      return $wgCategoryLinks;
+    }
+
+    # try detect language link
+    $titleText = $target->getUserCaseDBKey();
+    #echo PHP_EOL . "TitleText: {$titleText} -- NameSpace: {$target->getNamespaceKey()}";
+    $titleExploded = explode(':', $titleText, 2);
+    if ( array_key_exists(1, $titleExploded) ) {
+      $languageKey = $titleExploded[0];
+      #echo PHP_EOL . "Title maybe a LanguageLink: {$languageKey}";
+      if ( array_key_exists($languageKey, self::getLanguageNames()) ) {
+        global $wgLanguageLinks;
+        self::$detectedLanguageLinks []= $target->getFullText();
+        #echo PHP_EOL . "LanguageLink detected: {$languageKey} $titleExploded[1]";
+        return $wgLanguageLinks;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * @param Skin $skin
+   * @param Title $target
+   * @param array $options
+   * @param string $text
+   * @param array $attribs
+   * @param mixed $ret default: null
+   * @return bool
+   */
+  static public function hookLinkEnd( $skin, $target, $options, &$text, &$attribs, &$ret ) {
+    return true;
+  }
+
+  /**
+   *
+   * @param Parser $parser
+   * @param string $text
+   * @return void
+   */
+  static public function hookParserBeforeTidy( &$parser, &$text ) {
+    $parser->mOutput->setLanguageLinks(self::$detectedLanguageLinks);
+    self::$detectedLanguageLinks = null; # clear
+    return true;
+  }
+
+  /**
+   *
+   * @param Parser $parser
+   * @param string $text
+   * @param string $strip_state
+   * @return bool
+   */
+  static public function hookParserBeforeStrip( &$parser, &$text, &$strip_state ) {
+    self::$detectedLanguageLinks = null; # ensure clear
     return true;
   }
 }
