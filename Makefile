@@ -508,7 +508,7 @@ endif
 # Download the latest translations
 # ================================
 
-ALL_LANGUAGES := de en es fi nl pt
+ALL_LANGUAGES := da de en es fi nl pt
 LICENSE_DIR = XML-Licenses
 
 
@@ -520,6 +520,9 @@ LICENSE_DIR = XML-Licenses
 #
 # Note: the ones that link to deed.XX are html so cannot be used
 #       with the present program (these will just use English).
+
+TERMS_da   := Wikipedia:Ophavsret
+#LICENSE_da := http://creativecommons.org/licenses/by-sa/3.0/deed.da
 
 TERMS_de   := Nutzungsbedingungen
 LICENSE_de := Wikipedia:Lizenzbestimmungen_Commons_Attribution-ShareAlike_3.0_Unported
