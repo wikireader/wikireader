@@ -145,10 +145,8 @@ function &wfOutputWrapperWOC($articleTitle, $articleText, $articleLanguageLinks)
 
 # Global function for 'Wikipedia Offline Client'-specific parsing
 function &wfParseTextWOC($text) {
-	
   global $wgParser, $wgParserOptions, $wgTemplateFileID;
-  
-  
+
   $nlidx = strpos($text, "\n");
   $temp_h = trim(substr($text, 0, $nlidx));
   $id = strpos($temp_h, ":");
@@ -160,19 +158,19 @@ function &wfParseTextWOC($text) {
   if (!$title) {
     $title = Title::newFromText('NULL Title');
   }
-    
+
   $output = $wgParser->parse($articleMarkup, $title, $wgParserOptions, true, true, null);
   $articleText = $output->getText();
-  
+
   # Make the language links
   $langLinks = "\n  <ul>\n";
-  
+
   foreach ($output->getLanguageLinks() as $link){
-	$langLinks .= '    <li><a href="' . $link . '">' . $link . "</a></li>\n";
+	$langLinks .= '    <li><a class="lang-link" href="' . $link . '">' . $link . "</a></li>\n";
   }
-  
+
   $langLinks .= "  </ul>\n";
-  
+
   # change the links
   $articleText = str_replace(' (page does not exist)">', '">', $articleText);
   $articleText = preg_replace('/<a\s[^>]*title="([^"]*)">/', '<a href="$1">', $articleText);
@@ -185,7 +183,7 @@ function &wfParseTextWOC($text) {
   $articleText = preg_replace('/<p>\s*<br\s*\/>/', '<p>', $articleText);
   $articleText = preg_replace('/<a\s+name="([rR]eferences|[nN]otes)"\s+id="([rR]eferences|[nN]otes)"><\/a><h2>\s+<span\s+class="mw-headline">\s*([rR]eferences|[nN]otes)\s*<\/span><\/h2>\s*$/', '', $articleText);
   $articleText = str_replace('%25', '%', $articleText);
-  
+
   $ret = array( &$articleTitle, &$articleText, &$langLinks );
   return $ret;
 }

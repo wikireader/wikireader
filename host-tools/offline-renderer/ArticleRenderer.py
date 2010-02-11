@@ -504,6 +504,8 @@ class WrProcess(HTMLParser.HTMLParser):
         self.link_y = 0
         self.url = None
 
+        self.language_links = []
+
         self.printing = True
 
         g_starty = 0
@@ -530,11 +532,17 @@ class WrProcess(HTMLParser.HTMLParser):
             return
 
         self.tag_stack.append((tag, self.printing))
+
         # we want to skip content that isn't for printing
         if 'class' in attrs:
             if 'noprint' in attrs['class']:
                 self.printing = False
 
+            # create a list of language links
+            if tag == 'a' and 'lang-link' in attrs['class']:
+                self.language_links.append(attrs['href'])
+
+        # handle the tags
         if not self.printing:
             return;
 
@@ -743,7 +751,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.tag_stack = []
             self.in_html = False
             esc_code1()
-            write_article()
+            write_article(self.language_links)
             return
 
         if not self.printing:
@@ -1036,7 +1044,7 @@ def article_index(title):
     return result  # this returns a tuple of text strings, so beware!
 
 
-def write_article():
+def write_article(language_links):
     global compress
     global verbose
     global output, f_out, i_out
@@ -1056,7 +1064,7 @@ def write_article():
 
     output.flush()
 
-    # create link
+    # create links
     links_stream = io.BytesIO('')
 
     for i in g_links:
@@ -1067,20 +1075,33 @@ def write_article():
     links = links_stream.getvalue()
     links_stream.close()
 
-    header = struct.pack('I2H', 8 + len(links), g_link_cnt, 0)
+    # create language links
+    links_stream = io.BytesIO('')
+
+    for l in language_links:
+        links_stream.write(l.encode('utf-8') + '\0')
+
+    links_stream.flush()
+    langs = links_stream.getvalue()
+    links_stream.close()
+
+    # create the header (header size = 8)
+    header = struct.pack('I2H', 8 + len(links) + len(langs), g_link_cnt, 0)
     body = output.getvalue()
 
+    # output the article data
     file_offset = f_out.tell()
+    whole_article = header + links + langs + body
     if compress:
-        body = chr(5) + pylzma.compress(header+links+body, dictionary = 24, fastBytes = 32,
-                                literalContextBits = 3,
-                                literalPosBits = 0, posBits = 2, algorithm = 1, eos = 1)
+        body = chr(5) + pylzma.compress(whole_article,
+                                        dictionary = 24, fastBytes = 32,
+                                        literalContextBits = 3,
+                                        literalPosBits = 0, posBits = 2,
+                                        algorithm = 1, eos = 1)
         f_out.write(body)
         write_article_index(file_offset, len(body))
     else:
-        f_out.write(header)
-        f_out.write(links)
-        f_out.write(body)
+        f_out.write(whole_article)
 
     f_out.flush()
     output.truncate(0)
