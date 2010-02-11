@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Scan a file for bad words
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -26,11 +26,11 @@ show_restricted = False
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options> {xlm-file...}' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --restricted            Enable restricted output'
-    print '       --verbose               Enable verbose output'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options> xml-file...'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --restricted            Enable restricted output')
+    print('       --verbose               Enable verbose output')
     exit(1)
 
 
@@ -58,6 +58,8 @@ def main():
         else:
             usage('unhandled option: ' + opt)
 
+    if [] == args:
+        usage('missing argument(s)')
 
     processor = FileProcessing()
 
@@ -73,12 +75,12 @@ def main():
     s = a + r
 
     for f in (sys.stdout,):
-        f.write('Articles:         %10d\n' % a)
-        f.write('Redirects:        %10d\n' % r)
-        f.write('Sum:              %10d\n' % s)
-        f.write('Maybe Restricted: %10d\n' % processor.restricted_count)
-        f.write('UnRestricted:     %10d\n' % processor.unrestricted_count)
-        f.write('Restricted:       %10d\n' % (processor.restricted_count - processor.unrestricted_count))
+        f.write('Articles:         {0:10d}\n'.format(a))
+        f.write('Redirects:        {0:10d}\n'.format(r))
+        f.write('Sum:              {0:10d}\n'.format(s))
+        f.write('Maybe Restricted: {0:10d}\n'.format(processor.restricted_count))
+        f.write('UnRestricted:     {0:10d}\n'.format(processor.unrestricted_count))
+        f.write('Restricted:       {0:10d}\n'.format(processor.restricted_count - processor.unrestricted_count))
 
     del processor
 
@@ -100,7 +102,7 @@ class FileProcessing(FileScanner.FileScanner):
     def title(self, category, key, title, seek):
         if self.KEY_ARTICLE != key:
             if verbose:
-                PrintLog.message('Non-article: %s:%s' % (category,title))
+                PrintLog.message('Non-article: {0:s}:{1:s}'.format(category,title))
             return False
 
         return True
@@ -109,7 +111,7 @@ class FileProcessing(FileScanner.FileScanner):
     def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
         self.redirect_count += 1
         if verbose:
-            PrintLog.message('Redirect: %s:%s -> %s:%s' % (category, title, rcategory, rtitle))
+            PrintLog.message('Redirect: {0:s}:{1:s} -> {2:s}:{3:s}'.format(category, title, rcategory, rtitle))
 
 
     def body(self, category, key, title, text, seek):
@@ -125,11 +127,11 @@ class FileProcessing(FileScanner.FileScanner):
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            PrintLog.message('%7.2fs %10d' % (start_time - self.time, self.article_count))
+            PrintLog.message('{0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
 
         if verbose:
-            PrintLog.message('Title: %s' % title)
+            PrintLog.message('Title: {0:s}'.format(title))
 
         if restricted:
             if restricted_title:
@@ -146,9 +148,10 @@ class FileProcessing(FileScanner.FileScanner):
                 b_state = ''
                 contains = None
             if show_restricted:
-                PrintLog.message('%10d Restricted%s%s: %s' % (self.restricted_count, t_state, b_state, title))
+                PrintLog.message('{0:10d} Restricted{1:s}{2:s}: {3:s}'
+                                 .format(self.restricted_count, t_state, b_state, title))
                 if None != contains:
-                    PrintLog.message('        -> %s %' % (flag, contains))
+                    PrintLog.message('        -> {0!s:s} {1:s}'.format(flag, contains))
 
 
 # run the program

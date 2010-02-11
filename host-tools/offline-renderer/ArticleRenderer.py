@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Article Rendering
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -104,16 +104,16 @@ compress = True
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options> {html-files...}' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --verbose               Enable verbose output'
-    print '       --warnings              Enable warnings output'
-    print '       --number=n              Number for the .dat/.idx-tmp files [0]'
-    print '       --test=file             Output the uncompressed file for testing'
-    print '       --font-path=dir         Path to font files (*.bmf) [fonts]'
-    print '       --article-index=file    Article index dictionary input [articles.db]'
-    print '       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options> html-files...'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --verbose               Enable verbose output')
+    print('       --warnings              Enable warnings output')
+    print('       --number=n              Number for the .dat/.idx-tmp files [0]')
+    print('       --test=file             Output the uncompressed file for testing')
+    print('       --font-path=dir         Path to font files (*.bmf) [fonts]')
+    print('       --article-index=file    Article index dictionary input [articles.db]')
+    print('       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]')
     exit(1)
 
 
@@ -142,8 +142,8 @@ def main():
 
     verbose = False
     warnings = False
-    data_file = 'pedia%d.dat'
-    index_file = 'pedia%d.idx-tmp'
+    data_file = 'pedia{0:d}.dat'
+    index_file = 'pedia{0:d}.idx-tmp'
     art_file = 'articles.db'
     file_number = 0
     test_file = ''
@@ -165,10 +165,10 @@ def main():
             try:
                 file_number = int(arg)
             except ValueError:
-                usage('%s=%s" is not numeric' % (opt, arg))
+                usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
         elif opt in ('-p', '--prefix'):
-            data_file = arg + '%d.dat'
-            index_file = arg + '%d.idx-tmp'
+            data_file = arg + '{0:d}.dat'
+            index_file = arg + '{0:d}.idx-tmp'
         elif opt in ('-f', '--font-path'):
             font_path = arg
         else:
@@ -204,8 +204,8 @@ def main():
 
     if test_file == '':
         compress = True
-        i_out = open(index_file % file_number, 'w')
-        f_out = open(data_file % file_number, 'w')
+        i_out = open(index_file.format(file_number), 'w')
+        f_out = open(data_file.format(file_number), 'w')
     else:
         compress = False
         f_out = open(test_file, 'w')
@@ -233,7 +233,7 @@ def main():
         font_id_values[i].close()
 
     # final message
-    PrintLog.message("Render[%d]: Total: %d" % (file_number, article_count))
+    PrintLog.message("Render[{0:d}]: Total: {1:d}".format(file_number, article_count))
 
 
 #
@@ -297,7 +297,7 @@ def get_imgdata(imgfile, indent):
     try:
         img = gd.image(imgfile)
     except IOError, e:
-        PrintLog.message('unable to open image file: %s' % (imgfile))
+        PrintLog.message('unable to open image file: {0:s}'.format(imgfile))
         return (0, 0, r'')
 
     (width, height) = img.size()
@@ -311,7 +311,7 @@ def get_imgdata(imgfile, indent):
         h_range = range(height - 1, -1, -1)
         (width, height) = (height, width)
     else:
-        PrintLog.message('image file: %s is too big' % (imgfile))
+        PrintLog.message('image file: {0:s} is too big'.format(imgfile))
         return (0, 0, r'')
 
     data = ''
@@ -648,8 +648,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray <%s> @[L%d/C%d] in article[%d]: %s' %
-                                     (tag, line, column, article_count + 1, g_this_article_title))
+                    PrintLog.message('Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
                 # force ul since this is a li without a parent
@@ -663,8 +663,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if self.li_inside[self.level]:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: missing </%s> @[L%d/C%d] in article[%d]: %s' %
-                                     (tag, line, column, article_count + 1, g_this_article_title))
+                    PrintLog.message('Warning: missing </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 self.flush_buffer(False)
                 self.list_decrease_indent()
@@ -681,7 +681,7 @@ class WrProcess(HTMLParser.HTMLParser):
                 self.li_cnt[self.level] += 1
 
             if self.li_type[self.level] == 'ol':
-                self.wordwrap.append(("%d" % self.li_cnt[self.level]) + u".", DEFAULT_FONT_IDX, None)
+                self.wordwrap.append(("{0:d}".format(self.li_cnt[self.level])) + u".", DEFAULT_FONT_IDX, None)
             else:
                 if self.level > LIMAX_BULLETS:
                     bullet_num = LIMAX_BULLETS
@@ -697,8 +697,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray <%s> @[L%d/C%d] in article[%d]: %s' %
-                                     (tag, line, column, article_count + 1, g_this_article_title))
+                    PrintLog.message('Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
             self.li_cnt[self.level] += 1
@@ -722,8 +722,8 @@ class WrProcess(HTMLParser.HTMLParser):
         if (tag, True) not in self.tag_stack and (tag, False) not in self.tag_stack:
             if warnings:
                 (line, column) = self.getpos()
-                PrintLog.message('Warning: superfluous </%s> @[L%d/C%d] in article[%d]: %s' %
-                                 (tag, line, column, article_count + 1, g_this_article_title))
+                PrintLog.message('Warning: superfluous </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                 .format(tag, line, column, article_count + 1, g_this_article_title))
             return
 
         # backtrack up the stack closing each open tag until there is a match
@@ -732,8 +732,8 @@ class WrProcess(HTMLParser.HTMLParser):
             self.tag_stack.append((start_tag, self.printing))
             if warnings:
                 (line, column) = self.getpos()
-                PrintLog.message('Warning: force </%s> @[L%d/C%d] in article[%d]: %s' %
-                                 (start_tag, line, column, article_count + 1, g_this_article_title))
+                PrintLog.message('Warning: force </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                 .format(start_tag, line, column, article_count + 1, g_this_article_title))
             self.handle_endtag(start_tag)
             (start_tag, self.printing) = self.tag_stack.pop()
 
@@ -838,8 +838,8 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray </%s> @[L%d/C%d] in article[%d]: %s' %
-                                     (tag, line, column, article_count + 1, g_this_article_title))
+                    PrintLog.message('Warning: stray </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
             else:
                 self.flush_buffer(False)
                 self.list_decrease_indent()
@@ -902,20 +902,20 @@ class WrProcess(HTMLParser.HTMLParser):
             try:
                 value = int(name[1:], 16)
             except ValueError:
-                PrintLog.message('charref: "%s" is not hexadecimal' % name)
+                PrintLog.message('charref: "{0:s}" is not hexadecimal'.format(name))
                 return
 
         elif name.isdigit():
             try:
                 value = int(name)
             except ValueError:
-                PrintLog.message('charref: "%s" is not decimal' % name)
+                PrintLog.message('charref: "{0:s}" is not decimal'.format(name))
                 return
 
         try:
             c = unichr(value)
         except ValueError:
-            PrintLog.message('charref: "%d" is not convertible to unicode' % value)
+            PrintLog.message('charref: "{0:d}" is not convertible to unicode'.format(value))
             c = '?'
         self.handle_data(c)
 
@@ -925,7 +925,7 @@ class WrProcess(HTMLParser.HTMLParser):
         try:
             self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
         except KeyError:
-            PrintLog.message("ENTITYREF ERROR: %s article: %s" % (name, g_this_article_title))
+            PrintLog.message("ENTITYREF ERROR: {0:s} article: {1:s}".format(name, g_this_article_title))
 
 
     def handle_data(self, data):
@@ -1047,11 +1047,11 @@ def write_article():
 
     article_count += 1
     if verbose:
-        PrintLog.message("[MWR %d] %s" % (article_count, g_this_article_title))
+        PrintLog.message("[MWR {0:d}] {1:s}".format(article_count, g_this_article_title))
 
     elif article_count % 1000 == 0:
         now_time = time.time()
-        PrintLog.message("Render[%d]: %7.2fs %10d" % (file_number, now_time - start_time, article_count))
+        PrintLog.message("Render[{0:d}]: {1:7.2f}s {2:10d}".format(file_number, now_time - start_time, article_count))
         start_time = now_time
 
     output.flush()
@@ -1103,9 +1103,9 @@ def write_article_index(file_offset, length):
         i_out.flush()
     except KeyError:
         PrintLog.message('Error in: write_article, Title not found')
-        PrintLog.message('Title: %s' % g_this_article_title)
-        PrintLog.message('Offset: %s' % file_offset)
-        PrintLog.message('Count: %s' % article_count)
+        PrintLog.message('Title:  {0:s}'.format(g_this_article_title))
+        PrintLog.message('Offset: {0:s}'.format(file_offset))
+        PrintLog.message('Count:  {0:s}'.format(article_count))
 
 
 # run the program

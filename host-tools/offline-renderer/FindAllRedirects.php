@@ -92,9 +92,9 @@ def main():
     for s in tests:
         m = regex.match(s)
         if m:
-            print 'matched: %s : %s => %s' % (s, m.group(1), m.group(2))
+            print('matched: {0:s} : {1:s} => {3:s}'.format(s, m.group(1), m.group(2)))
         else:
-            print 'no match: %s' % (s)
+            print('no match: {0:s}'.format(s))
 
 
 # run the program

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Word wrap a tex strings
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -47,7 +47,7 @@ class WordWrap():
 
 
     def dump(self):
-        print 'B:', self.buffer
+        print('B: {0:s}'.format(self.buffer))
 
 
     def out(self):
@@ -121,7 +121,7 @@ class WordWrap():
 def main():
 
     def make_link(url, x0, x1):
-        print '\033[1;33mLink: "%s" %d -> %d => %d\033[0m' % (url, x0, x1, (x1 - x0))
+        print('\033[1;33mLink: "{0:s}" {1:d} -> {2:d} => {3:d}\033[0m'.format(url, x0, x1, (x1 - x0)))
 
     def cwidth(c, face):
         if c == ' ':
@@ -179,8 +179,8 @@ def main():
 
     b.dump()
     b.out()
-    print '      "         1         2         3"'
-    print '      "123456789012345678901234567890"'
+    print('      "         1         2         3"')
+    print('      "123456789012345678901234567890"')
     while b.have():
         url = None
         x = 0
@@ -199,7 +199,7 @@ def main():
             if url == None:
                 if tuple == type(i[1]):
                     (width, height, data) = i[1]
-                    t += "{%d.%d:%s}" % (width, height, data)
+                    t += "[{0:d}.{1:d}:{2:s}]".format(width, height, data)
                 else:
                     t += colours[i[1]]
                     t += i[0]
@@ -208,7 +208,7 @@ def main():
             make_link(url, url_x0, x)
             t += default
 
-        print ('Wrap: "%s"' + default) % t
+        print(('Wrap: "{0:s}"' + default).format(t))
 
 
 # run the program

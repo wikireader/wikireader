@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Read an process the XML file
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -144,14 +144,10 @@ class FileScanner(object):
             state = None
             for s in CurrentState:
                 p = block.find(s[0])
-                #print 'P:"%s" %d' % (s[0], p)
                 if p >= 0:
-                    #print 'y:%d:"%s"' % (p, block[p:p + 10])
                     if pos < 0 or p < pos:
                         pos = p
                         state = s
-            #print 'ZZZ: %d %s' % (pos, repr(state))
-            #print 'block:', block
 
             if None == state:
                 if end:
@@ -160,7 +156,6 @@ class FileScanner(object):
                     more = True
             else:
                 (tag, length, proc, next) = state
-                #print 'CS "%s"=%d "%s" ->"%s"' % (tag, length, proc, next)
 
                 CurrentState = self.StateMachine[next]
                 flag = False
@@ -181,14 +176,12 @@ class FileScanner(object):
                     body_leading_blanks = pos - len(block[:pos].lstrip())
                     flag = True
                     if '#' in body[0:10] or '＃' in body[0:10]:
-                        #print 'M[%s]' % body
                         match = RedirectedTo.regex.match(body)
                         if wanted and match:
                             (rcategory, rkey, rtitle) = self.get_category(match.group(2).strip())
                             self.redirect(category, key, title, rcategory, rkey, rtitle, seek + body_leading_blanks)
                             flag = False
                 elif 'zero' == proc:
-                    #print 'ZERO'
                     flag = True
                     body = ''
                 elif 'category_start' == proc:
@@ -234,12 +227,12 @@ class MyTestScanner(FileScanner):
 
 
     def namespace(self, key, text):
-        print 'namespace "%s"->"%s"' % (key, text)
+        print('namespace "{0:d}"->"{1:s}"'.format(key, text))
 
 
     def title(self, category, key, title, seek):
         self.count += 1
-        print 'T:%d %d : %s[%d]:%s' % (self.count, seek, category, key, title)
+        print('T:{0:d} {1:d} : {2:s}[{3:d}]:{4:s}'.format(self.count, seek, category, key, title))
         if self.KEY_ARTICLE != key:
             return False
         return True
@@ -247,15 +240,16 @@ class MyTestScanner(FileScanner):
 
     def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
         #pass
-        print 'R:%d %d : %s[%d]:%s -> %s[%d]:%s' % (self.count, seek, category, key, title,
-                                                    rcategory, rkey, rtitle)
+        print('R:{0:d} {1:d} : {2:s}[{3:d}]:{4:s} -> {5:s}[{6:d}]:{7:s}'
+              .format(self.count, seek, category, key, title, rcategory, rkey, rtitle))
 
 
     def body(self, category, key, title, text, seek):
         if not filter(title, text):
             self.articles += 1
             self.article_index[title] = [self.articles, seek, len(text)]
-            print 'B:%d %d [%s[%d]%s] : %s' % (self.count, seek, category, key, title, text[:100])
+            print('B:{0:d} {1:d} [{2:s}[{3:d}]{4:s}] : {5:s}'
+                  .format(self.count, seek, category, key, title, text[:100]))
 
 
 def filter(title, text):
@@ -263,20 +257,20 @@ def filter(title, text):
     (restricted, contains) = FilterWords.find_restricted(title + text)
 
     if restricted:
-        print 'TITLE: "%s" restricted: {%s}' % (title, contains)
+        print('TITLE: "{0:s}" restricted: [{1:s}]'.format(title, contains))
 
     return restricted
 
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --count=n               Number of article to process [all]'
-    print '       --limit=number          Limit the number of articles processed'
-    print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
-    print '       --templates=file        Database for templates [templates.db]'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options> xml-file...'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --count=n               Number of article to process [all]')
+    print('       --limit=number          Limit the number of articles processed')
+    print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
+    print('       --templates=file        Database for templates [templates.db]')
     exit(1)
 
 
@@ -305,7 +299,7 @@ def main():
             try:
                 debug = int(arg)
             except ValueError:
-                usage('%s=%s" is not numeric' % (opt, arg))
+                usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
         elif opt in ('-c', '--count'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -313,9 +307,9 @@ def main():
                 try:
                     count = int(arg)
                 except ValueError:
-                    usage('%s=%s" is not numeric' % (opt, arg))
+                    usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
             if count <= 0:
-                usage('%s=%s" must be > zero' % (opt, arg))
+                usage('"{0:s}={1:s}" must be > zero'.format(opt, arg))
         else:
             usage('unhandled option: ' + opt)
 
@@ -325,7 +319,7 @@ def main():
     scanner = MyTestScanner()
 
     for f in args:
-        print 'Processing file: %s' % f
+        print('Processing file: {0:s}'.format(f))
         count = scanner.process(f, count)
         if 0 == count:
             break

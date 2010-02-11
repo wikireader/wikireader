@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Index file combine to build overall index
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -13,11 +13,11 @@ import getopt
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options>' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --verbose               Enable verbose output'
-    print '       --prefix=name           Device file name portion for .idx [pedia]'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options>'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --verbose               Enable verbose output')
+    print('       --prefix=name           Device file name portion for .idx [pedia]')
     exit(1)
 
 def main():
@@ -28,7 +28,7 @@ def main():
         usage(err)
 
     verbose = False
-    in_format = 'pedia%d.idx-tmp'
+    in_format = 'pedia{0:d}.idx-tmp'
     out_name = 'pedia.idx'
 
     for opt, arg in opts:
@@ -38,7 +38,7 @@ def main():
             usage(None)
             off_name = arg
         elif opt in ('-p', '--prefix'):
-            in_format = arg + '%d.idx-tmp'
+            in_format = arg + '{0:d}.idx-tmp'
             out_name = arg + '.idx'
         else:
             usage('unhandled option: ' + opt)
@@ -49,11 +49,11 @@ def main():
     i = 0
     data = {}
     while True:
-        in_name = in_format % i
+        in_name = in_format.format(i)
         if not os.path.isfile(in_name):
             break
         if verbose:
-            print 'combining: %s' % in_name
+            print('combining: {0:s}'.format(in_name))
         data[i] = open(in_name, 'rb').read()
         article_count += len(data[i]) / 12 # sizeof(struct)
         i += 1

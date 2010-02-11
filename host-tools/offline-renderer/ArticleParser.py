@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Article Parser
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -24,19 +24,19 @@ PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser_sa.php -)'
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --verbose               Enable verbose output'
-    print '       --xhtml=file            XHTML output [all_articles.html]'
-    print '       --language=lang         Set language for PHP parser [en]'
-    print '       --start=n               First artcle to process [1] (1k => 1000)'
-    print '       --count=n               Number of artcles to process [all] (1k => 1000)'
-    print '       --article-offsets=file  Article file offsets database input [offsets.db]'
-    print '       --templates=file        Database for templates [templates.db]'
-    print '       --parse-workdir=dir     Work directory for the PHP parser [/tmp]'
-    print '       --just-cat              Replace php parser be "cat" for debugging'
-    print '       --no-output             Do not run any parsing'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options> {xml-file...}'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --verbose               Enable verbose output')
+    print('       --xhtml=file            XHTML output [all_articles.html]')
+    print('       --language=lang         Set language for PHP parser [en]')
+    print('       --start=n               First artcle to process [1] (1k => 1000)')
+    print('       --count=n               Number of artcles to process [all] (1k => 1000)')
+    print('       --article-offsets=file  Article file offsets database input [offsets.db]')
+    print('       --templates=file        Database for templates [templates.db]')
+    print('       --parse-workdir=dir     Work directory for the PHP parser [/tmp]')
+    print('       --just-cat              Replace php parser be "cat" for debugging')
+    print('       --no-output             Do not run any parsing')
     exit(1)
 
 def main():
@@ -94,9 +94,9 @@ def main():
             try:
                 start_article = int(arg)
             except ValueError:
-                usage('%s=%s" is not numeric' % (opt, arg))
+                usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
             if start_article < 1:
-                usage('%s=%s" must be >= 1' % (opt, arg))
+                usage('"{0:s}={1:s}" must be >= 1'.format(opt, arg))
         elif opt in ('-c', '--count'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -104,14 +104,14 @@ def main():
                 try:
                     article_count = int(arg)
                 except ValueError:
-                    usage('%s=%s" is not numeric' % (opt, arg))
+                    usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
             if article_count <= 0:
-                usage('%s=%s" must be > zero' % (opt, arg))
+                usage('"{0:s}={1:s}" must be > zero'.format(opt, arg))
         else:
             usage('unhandled option: ' + opt)
 
     if not os.path.isdir(parser_workdir):
-        usage('workdir: %s does not exist' % parser_workdir)
+        usage('workdir: {0:s} does not exist'.format(parser_workdir))
 
     # pass parameters to the PHP parser
     os.environ['WORKDIR'] = parser_workdir
@@ -156,16 +156,16 @@ def main():
             filename = offset_cursor.fetchone()[0]
             input_file = open(filename, 'rb')
             if not input_file:
-                PrintlogLog.message('Failed to open: %s' % filename)
+                PrintlogLog.message('Failed to open: {0:s}'.format(filename))
                 current_file_id = None
                 continue
             if verbose:
-                PrintLog.message('Opened: %s' % filename)
+                PrintLog.message('Opened: {0:s}'.format(filename))
 
         try:
             input_file.seek(seek)
         except Exception, e:
-            PrintLog.message('seek failed: e=%s  seek=%d  f=%s name=%s' % (str(e), seek, filename))
+            PrintLog.message('seek failed: e={0:!s:s}  seek={1:d}  f={2:s}'.format(e, seek, filename))
             sys.exit(1)
 
         # restart the background process if it fails to try to record all failing articles
@@ -178,8 +178,8 @@ def main():
         except Exception, e:
             failed_articles += 1
             # extract from log by: grep '^!' log-file
-            PrintLog.message('!Process failed, file: %s article(%d): %s because: %s'
-                             % (filename, total_articles, title, str(e)))
+            PrintLog.message('!Process failed, file: {0:s} article({1:d}): {2:s} because: {3!s:s}'
+                             .format(filename, total_articles, title, e))
             trace = sys.exc_info()
             if None != trace:
                 traceback.print_tb(trace[2])
@@ -193,12 +193,12 @@ def main():
         start_article += 1
         if not verbose and total_articles % 1000 == 0:
             if 0 != failed_articles:
-                failed_message = 'Failed: %d' % failed_articles
+                failed_message = 'Failed: {0:d}'.formatfailed_articles
             else:
                 failed_message = ''
             now_time = time.time()
-            PrintLog.message('Parse[%s]: %7.2fs %10d  %s' %
-                             (out_base_name, now_time - start_time,
+            PrintLog.message('Parse[{0:s}]: {1:7.2f}s {2:10d}  {3:s}'
+                             .format(out_base_name, now_time - start_time,
                               total_articles, failed_message))
             start_time = now_time
 
@@ -212,11 +212,11 @@ def main():
         process_id.wait()
 
     # output some statistics
-    PrintLog.message('Parse[%s]: Total:  %d' % (out_base_name, total_articles))
+    PrintLog.message('Parse[{0:s}]: Total:  {1:d}'.format(out_base_name, total_articles))
 
     # indicate failures
     if 0 != failed_articles:
-        PrintLog.message('Parse[%s]: Failed: %d' % (out_base_name, failed_articles))
+        PrintLog.message('Parse[{0:s}]: Failed: {1:d}'.format(out_base_name, failed_articles))
         sys.exit(1)
 
 
@@ -224,12 +224,12 @@ def process_article_text(id, count, title, text, newf):
     global verbose
 
     if verbose:
-        PrintLog.message('[PA %d] %s' % (count, title))
+        PrintLog.message('[PA {0:d}] {1:s}'.format(count, title))
 
     text = TidyUp.article(text)
 
     if newf:
-        newf.write('%d:' % id)
+        newf.write('{0:d}:'.format(id))
         newf.write(title[1:].encode('utf-8'))  # We pad the title to force the database to import strings
         newf.write('\n__NOTOC__\n')
         newf.write(text.encode('utf-8') + '\n')

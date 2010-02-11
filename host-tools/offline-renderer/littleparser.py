@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Converting entities to unicode
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -54,7 +54,7 @@ class LittleParser(HTMLParser):
             self.feed(unq)
             self.close()
         except KeyError:
-            #print 'failed on: "%s" using-> "%s"' % (repr(text), repr(unq))
+            #print('failed on: "{0!r:s}" using-> "{1:!r:s}"'.format(text, unq))
             return unq
 
         if type(self.buffer) == unicode:
@@ -64,7 +64,6 @@ class LittleParser(HTMLParser):
 
 # tests
 def main():
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
     p = LittleParser().translate
     text = '''
 start test:
@@ -81,13 +80,13 @@ start test:
 end:test
 '''
     result = p(text)
-    print 'Text: %s' % text
-    print 'Result: %s' % result
-    print 'Repr: %s' % repr(result)
+    print('Text: {0:s}'.format(text))
+    print('Result: {0:s}'.format(result.encode('utf-8')))
+    print('Repr: {0!r:s}'.format(result))
     if correct == result:
-        print 'PASS:'
+        print('PASS:')
     else:
-        print 'FAIL: mismatch'
+        print('FAIL: mismatch')
 
 
 # run the program

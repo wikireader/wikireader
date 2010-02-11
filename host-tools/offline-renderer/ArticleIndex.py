@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Create Article Indices
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -26,7 +26,8 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 
 # to check if in order: uncomment and look at result
 #for c in KEYPAD_KEYS:
-#    print ord(c)
+#    print('{0:d}'.format(ord(c)))
+#sys.exit(0)
 
 
 # underscore and space
@@ -45,16 +46,16 @@ bigram = {}
 
 def usage(message):
     if None != message:
-        print 'error:', message
-    print 'usage: %s <options> {xml-file...}' % os.path.basename(__file__)
-    print '       --help                  This message'
-    print '       --verbose               Enable verbose output'
-    print '       --article-index=file    Article index database output [articles.db]'
-    print '       --article-offsets=file  Article file offsets database output [offsets.db]'
-    print '       --article-counts=file   File to store the counts [counts.text]'
-    print '       --limit=number          Limit the number of articles processed'
-    print '       --prefix=name           Device file name portion for .fnd/.pfx [pedia]'
-    print '       --templates=file        Database for templates [templates.db]'
+        print('error: {0:s}'.format(message))
+    print('usage: {0:s} <options> xml-file...'.format(os.path.basename(__file__)))
+    print('       --help                  This message')
+    print('       --verbose               Enable verbose output')
+    print('       --article-index=file    Article index database output [articles.db]')
+    print('       --article-offsets=file  Article file offsets database output [offsets.db]')
+    print('       --article-counts=file   File to store the counts [counts.text]')
+    print('       --limit=number          Limit the number of articles processed')
+    print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
+    print('       --templates=file        Database for templates [templates.db]')
     exit(1)
 
 
@@ -102,15 +103,17 @@ def main():
                 try:
                     limit = int(arg)
                 except ValueError:
-                    usage('%s=%s" is not numeric' % (opt, arg))
+                    usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
             if limit <= 0:
-                usage('%s=%s" must be > zero' % (opt, arg))
+                usage('"{0:s}={1:s}" must be > zero'.format(opt, arg))
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
         else:
             usage('unhandled option: ' + opt)
 
+    if [] == args:
+        usage('Missing argument(s)')
 
     processor = FileProcessing(articles = art_name, offsets = off_name, templates = template_name)
 
@@ -132,18 +135,18 @@ def main():
     cf = open(cnt_name, 'w')
 
     for f in (sys.stdout, cf):
-        f.write('Articles:   %10d\n' % a)
-        f.write('Redirects:  %10d\n' % r)
-        f.write('Sum:        %10d\n' % s)
-        f.write('Merged:     %10d\n' % m)
-        f.write('Difference: %10d\n' % (m - s))
+        f.write('Articles:   {0:10d}\n'.format(a))
+        f.write('Redirects:  {0:10d}\n'.format(r))
+        f.write('Sum:        {0:10d}\n'.format(s))
+        f.write('Merged:     {0:10d}\n'.format(m))
+        f.write('Difference: {0:10d}\n'.format(m - s))
 
-        f.write('Restricted: %10d\n' % processor.restricted_count)
+        f.write('Restricted: {0:10d}\n'.format(processor.restricted_count))
 
-        f.write('Templates:  %10d\n' % processor.template_count)
-        f.write('rTemplates: %10d\n' % processor.template_redirect_count)
+        f.write('Templates:  {0:10d}\n'.format(processor.template_count))
+        f.write('rTemplates: {0:10d}\n'.format(processor.template_redirect_count))
 
-        f.write('Characters: %10d\n' % processor.total_character_count)
+        f.write('Characters: {0:10d}\n'.format(processor.total_character_count))
 
     cf.close()
 
@@ -245,9 +248,9 @@ create table redirects (
         i = 0
         with open(self.file_import, 'w') as f:
             for filename in self.file_list:
-                f.write('%d\t%s\n' % (i, filename))
+                f.write('{0:d}\t{1:s}\n'.format(i, filename))
                 i += 1
-        PrintLog.message('Time: %ds' % (time.time() - start_time))
+        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
         PrintLog.message('Writing: articles')
         start_time = time.time()
@@ -255,18 +258,18 @@ create table redirects (
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
-                f.write('\t%d\t%d\t%d\n' % (article_number, fnd_offset, restricted))
-        PrintLog.message('Time: %ds' % (time.time() - start_time))
+                f.write('\t{0:d}\t{1:d}\t{2:d}\n'.format(article_number, fnd_offset, restricted))
+        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
         PrintLog.message('Writing: offsets')
         start_time = time.time()
         with open(self.offset_import, 'w') as f:
             for article_number in self.offsets:
                 (file_id, title, seek, length, accumulated) = self.offsets[article_number]
-                f.write('%d\t%d\t' % (article_number, file_id))
+                f.write('{0:d}\t{1:d}\t'.format(article_number, file_id))
                 f.write('~' + title.encode('utf-8'))    # force string
-                f.write('\t%d\t%d\t%d\n' % (seek, length, accumulated))
-        PrintLog.message('Time: %ds' % (time.time() - start_time))
+                f.write('\t{0:d}\t{1:d}\t{2:d}\n'.format(seek, length, accumulated))
+        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
         PrintLog.message('Loading: articles')
@@ -288,12 +291,12 @@ pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
 .mode tab
-.import %s articles
+.import {0:s} articles
 .exit
-""" % self.article_import)
+""".format(self.article_import))
         p.stdin.close()
         p.wait()
-        PrintLog.message('Time: %ds' % (time.time() - start_time))
+        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
         PrintLog.message('Loading: offsets and files')
         start_time = time.time()
@@ -321,13 +324,13 @@ pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
 .mode tab
-.import %s offsets
-.import %s files
+.import {0:s} offsets
+.import {1:s} files
 .exit
-""" % (self.offset_import, self.file_import))
+""".format(self.offset_import, self.file_import))
         p.stdin.close()
         p.wait()
-        PrintLog.message('Time: %ds' % (time.time() - start_time))
+        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
     def title(self, category, key, title, seek):
@@ -339,7 +342,7 @@ pragma journal_mode = memory;
 
         if enable_templates and self.KEY_TEMPLATE == key:
             if verbose:
-                PrintLog.message('Template Title: %s' % title)
+                PrintLog.message('Template Title: {0:s}'.format(title))
             return True
 
         return False
@@ -359,26 +362,26 @@ pragma journal_mode = memory;
                 title = unicode(category, 'utf-8') + ':' + title.lower()
                 rtitle = unicode(rcategory, 'utf-8') + ':' + rtitle.lower()
                 self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
-                                             ['~%d~%s' % (self.file_id(), title),
-                                              '~%d~%s' % (self.file_id(), rtitle)])
+                                             ['~{0:d}~{1:s}'.format(self.file_id(), title),
+                                              '~{0:d}~{1:s}'.format(self.file_id(), rtitle)])
 
             self.template_redirect_count += 1
             return
 
         if self.KEY_ARTICLE != key or self.KEY_ARTICLE != rkey:
             if verbose:
-                PrintLog.message('Non-article Redirect: %s[%d]:%s ->  %s[%d]:%s' %
-                                 (category, key, title, rcategory, rkey, rtitle))
+                PrintLog.message('Non-article Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
+                                 .format(category, key, title, rcategory, rkey, rtitle))
             return
 
         if '' == rtitle:
-            PrintLog.message('Empty Redirect for: %s[%d]:%s' % (category, key, title))
+            PrintLog.message('Empty Redirect for: {0:s}[{1:d}]:{2:s}'.format(category, key, title))
         else:
             self.redirects[title] = rtitle
             self.redirect_count += 1
             if verbose:
-                PrintLog.message('Redirect: %s[%d]:%s ->  %s[%d]:%s' %
-                                 (category, key, title, rcategory, rkey, rtitle))
+                PrintLog.message('Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
+                                 .format(category, key, title, rcategory, rkey, rtitle))
 
 
     def body(self, category, key, title, text, seek):
@@ -390,7 +393,7 @@ pragma journal_mode = memory;
             t1 = unicode(category, 'utf-8') + ':' + title.lower()
             t_body = TidyUp.template(text)
             self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
-                                         ['~%d~%s' % (self.file_id(), t1), '~' + t_body])
+                                         ['~{0:d}~{1:s}'.format(self.file_id(), t1), '~' + t_body])
             self.template_count += 1
             return
 
@@ -407,24 +410,24 @@ pragma journal_mode = memory;
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            PrintLog.message('Index: %7.2fs %10d' % (start_time - self.time, self.article_count))
+            PrintLog.message('Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
 
         generate_bigram(title)
 
         if verbose:
             if restricted:
-                PrintLog.message('Restricted Title: %s' % title)
-                PrintLog.message('  --> %s' % bad_words)
+                PrintLog.message('Restricted Title: {0:s}'.format(title))
+                PrintLog.message('  --> {0:s}'.format(bad_words))
             else:
-                PrintLog.message('Title: %s' % title)
+                PrintLog.message('Title: {0:s}'.format(title))
 
         character_count = len(text)
         self.total_character_count += character_count
         self.offsets[self.article_count] = (self.file_id(), title, seek, character_count, self.total_character_count)
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
-            PrintLog.message('Duplicate Title: %s ' % title)
+            PrintLog.message('Duplicate Title: {0:s} '.format(title))
 
 
     def resolve_redirects(self):
@@ -435,9 +438,9 @@ pragma journal_mode = memory;
                 self.set_index(item, self.find(item))
                 count += 1
             except KeyError:
-                PrintLog.message('Unresolved redirect: %s -> %s' % (item, self.redirects[item]))
+                PrintLog.message('Unresolved redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
             except CycleError:
-                PrintLog.message('Cyclic redirect: %s -> %s' % (item, self.redirects[item]))
+                PrintLog.message('Cyclic redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
         return count
 
 
@@ -524,7 +527,7 @@ def output_fnd(filename, article_index):
     global bigram
     global index_matrix
 
-    PrintLog.message('Writing bigrams: %s' % filename)
+    PrintLog.message('Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
     out_f = open(filename, 'w')
 
@@ -545,7 +548,7 @@ def output_fnd(filename, article_index):
         bigram['zz'] = chr(i + 128)
         i += 1
 
-    PrintLog.message('Time: %ds' % (time.time() - start_time))
+    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
     # create pfx matrix and write encoded titles
 
@@ -562,9 +565,9 @@ def output_fnd(filename, article_index):
     article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
     article_list.sort()
 
-    PrintLog.message('Time: %ds' % (time.time() - start_time))
+    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
-    PrintLog.message('Writing matrix: %s ' % filename)
+    PrintLog.message('Writing matrix: {0:s}'.format(filename))
     start_time = time.time()
 
     index_matrix = {}
@@ -585,14 +588,14 @@ def output_fnd(filename, article_index):
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
-    PrintLog.message('Time: %ds' % (time.time() - start_time))
+    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
 def output_pfx(filename):
     """output the pfx matrix"""
     global index_matrix
 
-    PrintLog.message('Writing: %s' % filename)
+    PrintLog.message('Writing: {0:s}'.format(filename))
     start_time = time.time()
     out_f = open(filename, 'w')
     list = '\0' + KEYPAD_KEYS
@@ -607,7 +610,7 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-    PrintLog.message('Time: %ds' % (time.time() - start_time))
+    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
 # run the program

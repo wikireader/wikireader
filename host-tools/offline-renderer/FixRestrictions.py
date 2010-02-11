@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 3 or later
 # DESCRIPTION: Fix the resrictions flag bit
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
@@ -49,11 +49,11 @@ for article_number, fnd_offset, title, restricted in c.fetchall():
     if flag != restricted:
         if restricted:
             r_count += 1
-            print 'Restrict[%d]: %s' % (r_count, title[1:].encode('utf-8'))
+            print('Restrict[{0:d}]: {1:s}'.format(r_count, title[1:].encode('utf-8')))
             byte |= 0x80000000
         else:
             f_count += 1
-            print 'Free[%d]: %s' % (f_count, title[1:].encode('utf-8'))
+            print('Free[{0:d}]: {1:s}'.format(f_count, title[1:].encode('utf-8')))
             byte &= 0x7fffffff
 
         index.seek(offset)
@@ -63,5 +63,5 @@ c.close()
 
 index.close()
 
-print 'Became Restricted: %10d' % r_count
-print 'Became Free:       %10d' % f_count
+print('Became Restricted: {0:10d}'.format(r_count))
+print('Became Free:       {0:10d}'.format(f_count))
