@@ -238,30 +238,30 @@ create table redirects (
 
 
     def __del__(self):
-        PrintLog.message('Flushing databases')
+        PrintLog.message(u'Flushing databases')
         self.template_db.commit()
         self.template_cursor.close()
         self.template_db.close()
 
-        PrintLog.message('Writing: files')
+        PrintLog.message(u'Writing: files')
         start_time = time.time()
         i = 0
         with open(self.file_import, 'w') as f:
             for filename in self.file_list:
                 f.write('{0:d}\t{1:s}\n'.format(i, filename))
                 i += 1
-        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+        PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
-        PrintLog.message('Writing: articles')
+        PrintLog.message(u'Writing: articles')
         start_time = time.time()
         with open(self.article_import, 'w') as f:
             for title in self.articles:
                 (article_number, fnd_offset, restricted) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t{0:d}\t{1:d}\t{2:d}\n'.format(article_number, fnd_offset, restricted))
-        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+        PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
-        PrintLog.message('Writing: offsets')
+        PrintLog.message(u'Writing: offsets')
         start_time = time.time()
         with open(self.offset_import, 'w') as f:
             for article_number in self.offsets:
@@ -269,10 +269,10 @@ create table redirects (
                 f.write('{0:d}\t{1:d}\t'.format(article_number, file_id))
                 f.write('~' + title.encode('utf-8'))    # force string
                 f.write('\t{0:d}\t{1:d}\t{2:d}\n'.format(seek, length, accumulated))
-        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+        PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
-        PrintLog.message('Loading: articles')
+        PrintLog.message(u'Loading: articles')
         start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.article_db_name, shell=True, stdin=subprocess.PIPE)
         p.stdin.write("""
@@ -296,9 +296,9 @@ pragma journal_mode = memory;
 """.format(self.article_import))
         p.stdin.close()
         p.wait()
-        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+        PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
-        PrintLog.message('Loading: offsets and files')
+        PrintLog.message(u'Loading: offsets and files')
         start_time = time.time()
         p = subprocess.Popen('sqlite3 > /dev/null 2>&1 ' + self.offset_db_name, shell=True, stdin=subprocess.PIPE)
         p.stdin.write("""
@@ -330,7 +330,7 @@ pragma journal_mode = memory;
 """.format(self.offset_import, self.file_import))
         p.stdin.close()
         p.wait()
-        PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+        PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
     def title(self, category, key, title, seek):
@@ -342,7 +342,7 @@ pragma journal_mode = memory;
 
         if enable_templates and self.KEY_TEMPLATE == key:
             if verbose:
-                PrintLog.message('Template Title: {0:s}'.format(title))
+                PrintLog.message(u'Template Title: {0:s}'.format(title))
             return True
 
         return False
@@ -361,26 +361,26 @@ pragma journal_mode = memory;
             if title != rtitle:
                 title = unicode(category, 'utf-8') + ':' + title.lower()
                 rtitle = unicode(rcategory, 'utf-8') + ':' + rtitle.lower()
-                self.template_cursor.execute('insert or replace into redirects (title, redirect) values(?, ?)',
-                                             ['~{0:d}~{1:s}'.format(self.file_id(), title),
-                                              '~{0:d}~{1:s}'.format(self.file_id(), rtitle)])
+                self.template_cursor.execute(u'insert or replace into redirects (title, redirect) values(?, ?)',
+                                             [u'~{0:d}~{1:s}'.format(self.file_id(), title),
+                                              u'~{0:d}~{1:s}'.format(self.file_id(), rtitle)])
 
             self.template_redirect_count += 1
             return
 
         if self.KEY_ARTICLE != key or self.KEY_ARTICLE != rkey:
             if verbose:
-                PrintLog.message('Non-article Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
+                PrintLog.message(u'Non-article Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
                                  .format(category, key, title, rcategory, rkey, rtitle))
             return
 
         if '' == rtitle:
-            PrintLog.message('Empty Redirect for: {0:s}[{1:d}]:{2:s}'.format(category, key, title))
+            PrintLog.message(u'Empty Redirect for: {0:s}[{1:d}]:{2:s}'.format(category, key, title))
         else:
             self.redirects[title] = rtitle
             self.redirect_count += 1
             if verbose:
-                PrintLog.message('Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
+                PrintLog.message(u'Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
                                  .format(category, key, title, rcategory, rkey, rtitle))
 
 
@@ -392,8 +392,8 @@ pragma journal_mode = memory;
         if self.KEY_TEMPLATE == key:
             t1 = unicode(category, 'utf-8') + ':' + title.lower()
             t_body = TidyUp.template(text)
-            self.template_cursor.execute('insert or replace into templates (title, body) values(?, ?)',
-                                         ['~{0:d}~{1:s}'.format(self.file_id(), t1), '~' + t_body])
+            self.template_cursor.execute(u'insert or replace into templates (title, body) values(?, ?)',
+                                         [u'~{0:d}~{1:s}'.format(self.file_id(), t1), u'~' + t_body])
             self.template_count += 1
             return
 
@@ -410,24 +410,24 @@ pragma journal_mode = memory;
 
         if not verbose and self.article_count % 10000 == 0:
             start_time = time.time()
-            PrintLog.message('Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
+            PrintLog.message(u'Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
 
         generate_bigram(title)
 
         if verbose:
             if restricted:
-                PrintLog.message('Restricted Title: {0:s}'.format(title))
-                PrintLog.message('  --> {0:s}'.format(bad_words))
+                PrintLog.message(u'Restricted Title: {0:s}'.format(title))
+                PrintLog.message(u'  --> {0:s}'.format(bad_words))
             else:
-                PrintLog.message('Title: {0:s}'.format(title))
+                PrintLog.message(u'Title: {0:s}'.format(title))
 
         character_count = len(text)
         self.total_character_count += character_count
         self.offsets[self.article_count] = (self.file_id(), title, seek, character_count, self.total_character_count)
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
-            PrintLog.message('Duplicate Title: {0:s} '.format(title))
+            PrintLog.message(u'Duplicate Title: {0:s} '.format(title))
 
 
     def resolve_redirects(self):
@@ -438,9 +438,9 @@ pragma journal_mode = memory;
                 self.set_index(item, self.find(item))
                 count += 1
             except KeyError:
-                PrintLog.message('Unresolved redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
+                PrintLog.message(u'Unresolved redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
             except CycleError:
-                PrintLog.message('Cyclic redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
+                PrintLog.message(u'Cyclic redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
         return count
 
 
@@ -527,7 +527,7 @@ def output_fnd(filename, article_index):
     global bigram
     global index_matrix
 
-    PrintLog.message('Writing bigrams: {0:s}'.format(filename))
+    PrintLog.message(u'Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
     out_f = open(filename, 'w')
 
@@ -548,7 +548,7 @@ def output_fnd(filename, article_index):
         bigram['zz'] = chr(i + 128)
         i += 1
 
-    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+    PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
     # create pfx matrix and write encoded titles
 
@@ -559,15 +559,15 @@ def output_fnd(filename, article_index):
         global KEYPAD_KEYS
         return ''.join(c for c in strip_accents(key).lower() if c in KEYPAD_KEYS)
 
-    PrintLog.message('Sorting titles')
+    PrintLog.message(u'Sorting titles')
     start_time = time.time()
 
     article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
     article_list.sort()
 
-    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+    PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
-    PrintLog.message('Writing matrix: {0:s}'.format(filename))
+    PrintLog.message(u'Writing matrix: {0:s}'.format(filename))
     start_time = time.time()
 
     index_matrix = {}
@@ -588,14 +588,14 @@ def output_fnd(filename, article_index):
         out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
 
     out_f.close()
-    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+    PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
 def output_pfx(filename):
     """output the pfx matrix"""
     global index_matrix
 
-    PrintLog.message('Writing: {0:s}'.format(filename))
+    PrintLog.message(u'Writing: {0:s}'.format(filename))
     start_time = time.time()
     out_f = open(filename, 'w')
     list = '\0' + KEYPAD_KEYS
@@ -610,7 +610,7 @@ def output_pfx(filename):
                 out_f.write(struct.pack('I', offset))
 
     out_f.close()
-    PrintLog.message('Time: {0:7.1f}s'.format(time.time() - start_time))
+    PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
 
 # run the program

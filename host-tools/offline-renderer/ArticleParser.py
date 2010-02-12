@@ -160,12 +160,12 @@ def main():
                 current_file_id = None
                 continue
             if verbose:
-                PrintLog.message('Opened: {0:s}'.format(filename))
+                PrintLog.message(u'Opened: {0:s}'.format(filename))
 
         try:
             input_file.seek(seek)
         except Exception, e:
-            PrintLog.message('seek failed: e={0:!s:s}  seek={1:d}  f={2:s}'.format(e, seek, filename))
+            PrintLog.message(u'seek failed: e={0:!s:s}  seek={1:d}  f={2:s}'.format(e, seek, filename))
             sys.exit(1)
 
         # restart the background process if it fails to try to record all failing articles
@@ -178,7 +178,7 @@ def main():
         except Exception, e:
             failed_articles += 1
             # extract from log by: grep '^!' log-file
-            PrintLog.message('!Process failed, file: {0:s} article({1:d}): {2:s} because: {3!s:s}'
+            PrintLog.message(u'!Process failed, file: {0:s} article({1:d}): {2:s} because: {3!s:s}'
                              .format(filename, total_articles, title, e))
             trace = sys.exc_info()
             if None != trace:
@@ -197,7 +197,7 @@ def main():
             else:
                 failed_message = ''
             now_time = time.time()
-            PrintLog.message('Parse[{0:s}]: {1:7.2f}s {2:10d}  {3:s}'
+            PrintLog.message(u'Parse[{0:s}]: {1:7.2f}s {2:10d}  {3:s}'
                              .format(out_base_name, now_time - start_time,
                               total_articles, failed_message))
             start_time = now_time
@@ -212,11 +212,11 @@ def main():
         process_id.wait()
 
     # output some statistics
-    PrintLog.message('Parse[{0:s}]: Total:  {1:d}'.format(out_base_name, total_articles))
+    PrintLog.message(u'Parse[{0:s}]: Total:  {1:d}'.format(out_base_name, total_articles))
 
     # indicate failures
     if 0 != failed_articles:
-        PrintLog.message('Parse[{0:s}]: Failed: {1:d}'.format(out_base_name, failed_articles))
+        PrintLog.message(u'Parse[{0:s}]: Failed: {1:d}'.format(out_base_name, failed_articles))
         sys.exit(1)
 
 
@@ -224,7 +224,7 @@ def process_article_text(id, count, title, text, newf):
     global verbose
 
     if verbose:
-        PrintLog.message('[PA {0:d}] {1:s}'.format(count, title))
+        PrintLog.message(u'[PA {0:d}] {1:s}'.format(count, title))
 
     text = TidyUp.article(text)
 

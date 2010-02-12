@@ -297,7 +297,7 @@ def get_imgdata(imgfile, indent):
     try:
         img = gd.image(imgfile)
     except IOError, e:
-        PrintLog.message('unable to open image file: {0:s}'.format(imgfile))
+        PrintLog.message(u'unable to open image file: {0:s}'.format(imgfile))
         return (0, 0, r'')
 
     (width, height) = img.size()
@@ -311,7 +311,7 @@ def get_imgdata(imgfile, indent):
         h_range = range(height - 1, -1, -1)
         (width, height) = (height, width)
     else:
-        PrintLog.message('image file: {0:s} is too big'.format(imgfile))
+        PrintLog.message(u'image file: {0:s} is too big'.format(imgfile))
         return (0, 0, r'')
 
     data = ''
@@ -656,7 +656,7 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                    PrintLog.message(u'Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
@@ -671,7 +671,7 @@ class WrProcess(HTMLParser.HTMLParser):
             if self.li_inside[self.level]:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: missing </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                    PrintLog.message(u'Warning: missing </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 self.flush_buffer(False)
@@ -705,7 +705,7 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                    PrintLog.message(u'Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
@@ -730,7 +730,7 @@ class WrProcess(HTMLParser.HTMLParser):
         if (tag, True) not in self.tag_stack and (tag, False) not in self.tag_stack:
             if warnings:
                 (line, column) = self.getpos()
-                PrintLog.message('Warning: superfluous </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                PrintLog.message(u'Warning: superfluous </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                  .format(tag, line, column, article_count + 1, g_this_article_title))
             return
 
@@ -740,7 +740,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.tag_stack.append((start_tag, self.printing))
             if warnings:
                 (line, column) = self.getpos()
-                PrintLog.message('Warning: force </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                PrintLog.message(u'Warning: force </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                  .format(start_tag, line, column, article_count + 1, g_this_article_title))
             self.handle_endtag(start_tag)
             (start_tag, self.printing) = self.tag_stack.pop()
@@ -846,7 +846,7 @@ class WrProcess(HTMLParser.HTMLParser):
             if 0 == self.level:
                 if warnings:
                     (line, column) = self.getpos()
-                    PrintLog.message('Warning: stray </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                    PrintLog.message(u'Warning: stray </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
             else:
                 self.flush_buffer(False)
@@ -910,20 +910,20 @@ class WrProcess(HTMLParser.HTMLParser):
             try:
                 value = int(name[1:], 16)
             except ValueError:
-                PrintLog.message('charref: "{0:s}" is not hexadecimal'.format(name))
+                PrintLog.message(u'charref: "{0:s}" is not hexadecimal'.format(name))
                 return
 
         elif name.isdigit():
             try:
                 value = int(name)
             except ValueError:
-                PrintLog.message('charref: "{0:s}" is not decimal'.format(name))
+                PrintLog.message(u'charref: "{0:s}" is not decimal'.format(name))
                 return
 
         try:
             c = unichr(value)
         except ValueError:
-            PrintLog.message('charref: "{0:d}" is not convertible to unicode'.format(value))
+            PrintLog.message(u'charref: "{0:d}" is not convertible to unicode'.format(value))
             c = '?'
         self.handle_data(c)
 
@@ -1123,10 +1123,10 @@ def write_article_index(file_offset, length):
         i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
         i_out.flush()
     except KeyError:
-        PrintLog.message('Error in: write_article, Title not found')
-        PrintLog.message('Title:  {0:s}'.format(g_this_article_title))
-        PrintLog.message('Offset: {0:s}'.format(file_offset))
-        PrintLog.message('Count:  {0:s}'.format(article_count))
+        PrintLog.message(u'Error in: write_article, Title not found')
+        PrintLog.message(u'Title:  {0:s}'.format(g_this_article_title))
+        PrintLog.message(u'Offset: {0:s}'.format(file_offset))
+        PrintLog.message(u'Count:  {0:s}'.format(article_count))
 
 
 # run the program
