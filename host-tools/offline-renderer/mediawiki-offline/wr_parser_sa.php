@@ -166,7 +166,8 @@ function &wfParseTextWOC($text) {
   $langLinks = "\n  <ul>\n";
 
   foreach ($output->getLanguageLinks() as $link){
-	$langLinks .= '    <li><a class="lang-link" href="' . $link . '">' . $link . "</a></li>\n";
+        $encoded = htmlspecialchars($link);
+	$langLinks .= '    <li><a class="lang-link" href="' . $encoded . '">' . $encoded . "</a></li>\n";
   }
 
   $langLinks .= "  </ul>\n";

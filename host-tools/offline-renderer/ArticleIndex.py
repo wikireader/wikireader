@@ -342,7 +342,7 @@ pragma journal_mode = memory;
 
         if enable_templates and self.KEY_TEMPLATE == key:
             if verbose:
-                PrintLog.message(u'Template Title: {0:s}'.format(title))
+                PrintLog.message(u'Template Title: {0:s}'.format(unicode(title, 'utf-8')))
             return True
 
         return False

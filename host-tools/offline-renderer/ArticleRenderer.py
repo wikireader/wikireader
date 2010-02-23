@@ -191,13 +191,14 @@ def main():
     }
 
     article_db = sqlite3.connect(art_file)
-    article_db.execute('pragma synchronous = 0')
-    article_db.execute('pragma temp_store = 2')
-    #article_db.execute('pragma locking_mode = exclusive') # Sean: Ask Chris if this is ok?!
+
+    article_db.execute('pragma auto_vacuum = none')
+    article_db.execute('pragma synchronous = off')
+    article_db.execute('pragma temp_store = memory')
+    article_db.execute('pragma locking_mode = normal')
     article_db.execute('pragma read_uncommitted = true')
     article_db.execute('pragma cache_size = 20000000')
     article_db.execute('pragma default_cache_size = 20000000')
-    #article_db.execute('pragma journal_mode = memory')
     article_db.execute('pragma journal_mode = off')
 
     output = io.BytesIO('')
@@ -933,7 +934,7 @@ class WrProcess(HTMLParser.HTMLParser):
         try:
             self.handle_data(unichr(htmlentitydefs.name2codepoint[name]))
         except KeyError:
-            PrintLog.message("ENTITYREF ERROR: {0:s} article: {1:s}".format(name, g_this_article_title))
+            PrintLog.message(u'ENTITYREF ERROR: {0:s} article: {1:s}'.format(name, g_this_article_title))
 
 
     def handle_data(self, data):

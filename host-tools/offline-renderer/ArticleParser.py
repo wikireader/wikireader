@@ -193,7 +193,7 @@ def main():
         start_article += 1
         if not verbose and total_articles % 1000 == 0:
             if 0 != failed_articles:
-                failed_message = 'Failed: {0:d}'.formatfailed_articles
+                failed_message = 'Failed: {0:d}'.format(failed_articles)
             else:
                 failed_message = ''
             now_time = time.time()
