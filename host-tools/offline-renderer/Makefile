@@ -43,6 +43,7 @@ TOTAL_HTML_FILES ?= 64
 DESTDIR ?= .
 FONT_PATH ?= $(shell ${REALPATH} ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
+TEMPDIR ?= ${WORKDIR}/tmp
 WIKI_FILE_PREFIX ?= pedia
 WIKI_LANGUAGE ?= en
 
@@ -89,6 +90,8 @@ check-xml:
 check-dirs:
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
 	@if [ ! -d "${WORKDIR}" ] ; then echo WORKDIR: "'"${WORKDIR}"'" is not a directory ; exit 1; fi
+	@[ -d "${TEMPDIR}" ] || ${MKDIR} "${TEMPDIR}"
+	@if [ ! -d "${TEMPDIR}" ] ; then echo TEMPDIR: "'"${TEMPDIR}"'" is not a directory ; exit 1; fi
 
 .PHONY: check-fonts
 check-fonts:
@@ -153,6 +156,7 @@ parse: check-dirs check-html math RedirectedTo.py
 		--start="${START}" --count="${COUNT}" \
 		--templates="${TEMPLATE_FILE}" \
 		--parser-workdir="${WORKDIR}" \
+		--parser-tempdir="${TEMPDIR}" \
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render

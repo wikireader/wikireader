@@ -45,7 +45,7 @@ def main():
     global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:t:l:jnw:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:t:l:jnw:T:',
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
@@ -54,6 +54,7 @@ def main():
                                     'just-cat',
                                     'no-output',
                                     'parser-workdir=',
+                                    'parser-tempdir=',
                                     ])
     except getopt.GetoptError, err:
         usage(err)
@@ -61,7 +62,8 @@ def main():
     verbose = False
     out_name = 'all_articles.html'
     off_name = 'offsets.db'
-    parser_workdir='/tmp'
+    parser_workdir = '/tmp'
+    parser_tempdir = os.path.join(parser_workdir, 'tmp')
     start_article = 1
     article_count = 'all'
     failed_articles = 0
@@ -80,10 +82,12 @@ def main():
             off_name = arg
         elif opt in ('-t', '--templates'):
             template_name = arg
-        elif opt in ('-t', '--language'):
+        elif opt in ('-l', '--language'):
             language = arg
         elif opt in ('-w', '--parser-workdir'):
             parser_workdir = arg
+        elif opt in ('-T', '--parser-tempdir'):
+            parser_tempdir = arg
         elif opt in ('-j', '--just-cat'):
             PARSER_COMMAND = 'cat'
         elif opt in ('-n', '--no-output'):
@@ -113,8 +117,12 @@ def main():
     if not os.path.isdir(parser_workdir):
         usage('workdir: {0:s} does not exist'.format(parser_workdir))
 
+    if not os.path.isdir(parser_tempdir):
+        usage('tempdir: {0:s} does not exist'.format(parser_tempdir))
+
     # pass parameters to the PHP parser
     os.environ['WORKDIR'] = parser_workdir
+    os.environ['TEMPDIR'] = parser_tempdir
     os.environ['LANGUAGE'] = language
     os.environ['TEMPLATE_DB'] = template_name
 

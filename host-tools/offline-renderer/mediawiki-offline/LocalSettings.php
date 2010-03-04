@@ -108,10 +108,13 @@ $wgBrowserBlackList = array();
 $WorkDirectory   = getenv('WORKDIR');
 $wgMathDirectory = "{$WorkDirectory}/math";
 $wgMathPath      = "$wgMathDirectory";
-$wgTmpDirectory  = "{$WorkDirectory}/tmp";
+$wgTmpDirectory  = getenv('TEMPDIR');
+if ('' === $wgTmpDirectory) {
+   $wgTmpDirectory  = "{$WorkDirectory}/tmp";
+}
 
 # Uncomment for debugging
-#$wgDebugLogFile = "/tmp/wiki.log";
+#$wgDebugLogFile = "{$wgTmpDirectory}/wiki.log";
 
 # Disable all kinds of MediaWiki caching
 $wgMainCacheType = CACHE_ACCEL;
