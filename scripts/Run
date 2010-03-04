@@ -14,20 +14,21 @@ USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
   echo usage: $(basename "$0") '<options>'
-  echo '       --help         -h         this message'
-  echo '       --verbose      -v         more messages'
-  echo '       --get-index=n  -g <n>     where to rsync the indices from {1 => render1}'
-  echo '       --index-only   -i         only do the index'
-  echo '       --no-run       -n         do not run final make'
-  echo '       --sequential   -s         run rendering in series'
-  echo '       --clear        -c         clear work and dest dirs'
-  echo '       --re-parse     -r         clear parse and render stamps'
-  echo '       --machines=m   -m <m>     set machine count [${MACHINE_COUNT} or 9]'
-  echo '       --parallel=n   -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
-  echo '       --language=xx  -l <xx>    set language [en]'
-  echo '       --prifix=name  -p <name>  set data file prefix [wiki]'
-  echo '       --work=dir     -w <dir>   workdir [work]'
-  echo '       --dest=dir     -d <dir>   destdir [image]'
+  echo '       --help          -h         this message'
+  echo '       --verbose       -v         more messages'
+  echo '       --get-index=n   -g <n>     where to rsync the indices from {1 => render1}'
+  echo '       --index-only    -i         only do the index'
+  echo '       --no-run        -n         do not run final make'
+  echo '       --sequential    -s         run rendering in series'
+  echo '       --clear         -c         clear work and dest dirs'
+  echo '       --re-parse      -r         clear parse and render stamps'
+  echo '       --machines=m    -m <m>     set machine count [${MACHINE_COUNT} or 9]'
+  echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
+  echo '       --language=xx   -l <xx>    set language [en]'
+  echo '       --suffix=<s>    -S <s>     set the language suffix [pedia]'
+  echo '       --prefix=name   -p <name>  set data file prefix [wiki]'
+  echo '       --work=dir      -w <dir>   workdir [work]'
+  echo '       --dest=dir      -d <dir>   destdir [image]'
   exit 1
 }
 
@@ -42,6 +43,7 @@ seq=no
 IndexOnly=no
 debug=
 language=en
+suffix=pedia
 FilePrefix=wiki
 MaximumThreads=64
 export MACHINE_COUNT=${MACHINE_COUNT:-9}
@@ -49,7 +51,7 @@ export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:inscrl:w:d:p:j:m: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,work:,dest:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:inscrl:S:w:d:p:j:m: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,suffix:,suffix:,work:,dest:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -96,6 +98,11 @@ do
 
     -l|--language)
       language=$2
+      shift 2
+      ;;
+
+    -S|--suffix)
+      suffix=$2
       shift 2
       ;;
 
@@ -155,8 +162,8 @@ fi
 [ -z "${language}" ] && USAGE language is not set
 
 licenses=$(readlink -m "${LicensesDirectory}")
-work="${work}/${language}"
-dest="${dest}/${language}"
+work="${work}/${language}${suffix}"
+dest="${dest}/${language}${suffix}"
 license="${licenses}/${language}/license.xml"
 terms="${licenses}/${language}/terms.xml"
 articles_link="${language}wiki-pages-articles.xml"
