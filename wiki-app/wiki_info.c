@@ -36,6 +36,7 @@ WIKI_LIST wiki_list[MAX_WIKIS] =
 	{5, "nlpedia"},
 	{6, "ptpedia"},
 	{7, "fipedia"},
+	{8, "japedia"},
 };
 
 int nWikiCount = 0;
@@ -257,7 +258,7 @@ void nls_replace_text(char *replace_str, char *out_str)
 				*out_str = '_';
 			out_str++;
 		}
-		
+
 	}
 	else
 	{

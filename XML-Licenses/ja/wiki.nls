@@ -1,0 +1,35 @@
+# Messages for Japanese
+# Author:  cigarcook <cigarcook@koress.jp>
+
+wiki_name=Wikipedia 日本語
+license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://ja.wikipedia.org/wiki/<title> 2010-02-17
+type_a_word=記事名をローマ字(ヘボン式)で入力
+no_results=記事が見つかりません
+searching=検索しています...
+select_wiki=Choose encyclopedia
+history_title=履歴
+no_history=履歴はありません
+please_wait=処理中です...
+clear_history=履歴の削除
+yes=はい
+no=いいえ
+protection=Wikipediaには一部の方へ好ましくない記事が含まれます。閲覧するにはパスワードを設定してください。
+restricted=この記事は一部の方へ相応しくない内容を含みます。閲覧するにはパスワードを設定してください。
+set_password=パスワード設定
+ok=ok
+set_filter=フィルターをONにすると、制限された内容を見るためにパスワードが必要になります。
+keep_filter_on=フィルターON
+keep_filter_off=フィルターOFF
+filter_options=Filter Options
+turn_filter_on=フィルターON
+turn_filter_off=フィルターOFF
+change_password=パスワード変更
+re_enter_password=パスワード再入力
+re_enter_new_password=新パスワード再入力
+passwords_not_match=Passwords do not match
+enter_old_password=古いパスワード
+enter_password=パスワードを入力
+try_again=失敗。再入力してください。
+enter_new_password=新しいパスワード
+parental_controls=保護者制限
+r=R
