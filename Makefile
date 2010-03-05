@@ -520,7 +520,7 @@ endif
 # Download the latest translations
 # ================================
 
-ALL_LANGUAGES := da de en es fi fr ja nl pt
+ALL_LANGUAGES := af ar br da de en es fi fr gl gsw hu ia ja mk ml nl pms pt pt-br ru te
 LICENSE_DIR = XML-Licenses
 
 

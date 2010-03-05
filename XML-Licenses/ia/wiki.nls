@@ -1,0 +1,35 @@
+# Messages for Interlingua (Interlingua)
+# Exported from translatewiki.net
+# Author: McDutchie
+
+wiki_name=Wikipedia in interlingua
+license_text=Le texto es disponibile sub le licentia Creative Commons Attribution/Share-Alike e pote esser reusate liberemente sub le conditiones de iste licentia. Vide: Texto del licentia [CC-BY-SA] e [Conditiones de uso] pro additional conditiones que pote esser in vigor. Le articulo original es disponibile a: http://ia.wikipedia.org/wiki/<title>
+type_a_word=Entra un parola o phrase
+no_results=Nihil trovate
+searching=cerca in curso…
+select_wiki=Selige un encyclopedia
+history_title=Historia
+no_history=Nulle historia
+please_wait=Un momento…
+clear_history=Rader historia
+yes=Si
+no=No
+protection=Certe articulos de Wikipedia pote esser inappropriate pro minores. Per favor mitte un contrasigno pro protection.
+restricted=Iste articulo pote esser inappropriate pro minores. Per favor mitte un contrasigno pro protection.
+set_password=Mitter contrasigno
+ok=ok
+set_filter=Si le filtro es active, un contrasigno es necessari pro acceder a articulos restringite.
+keep_filter_on=Lassar filtro active
+keep_filter_off=Lassar filtro inactive
+filter_options=Optiones de filtro
+turn_filter_on=Activar filtro
+turn_filter_off=Disactivar filtro
+change_password=Cambiar contrasigno
+re_enter_password=Re-entra contrasigno
+re_enter_new_password=Re-entra nove contrasigno
+passwords_not_match=Le contrasignos non es identic
+enter_old_password=Entra ancian contrasigno
+enter_password=Entra contrasigno
+try_again=Incorrecte. Per favor reproba.
+enter_new_password=Entra nove contrasigno
+parental_controls=Controlo parental

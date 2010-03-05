@@ -1,0 +1,36 @@
+# Messages for Swiss German (Alemannisch)
+# Exported from translatewiki.net
+# Author: Als-Holder
+
+wiki_name=Alemannischi Wikipedia
+license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://als.wikipedia.org/wiki/<title> 16.01.2010
+type_a_word=Gib e Wort oder e Phrase yy
+no_results=Kei Yytreg gfunde
+searching=Am Sueche ...
+select_wiki=Enzyklopedii uuswehle
+history_title=Verlauf
+no_history=Kei Verlauf
+please_wait=Bitte warte ...
+clear_history=Verlauf lesche
+yes=Jo
+no=Nei
+protection=E baar Yytreg sin villicht nit geignet fir Jugendligi. Bitte richt e Jugendschutz-Passwort yy.
+restricted=Dää Yytrag isch villicht nit fir Jugendligi geignet. Bitte richt e Jugendschutz-Passwort yy.
+set_password=Passwort setze
+ok=In Ornig
+set_filter=Wänn dr Filter AA isch, brucht s e Passwort go gschitzti Artikel aaluege.
+keep_filter_on=Filter AA loo
+keep_filter_off=Filter UUS loo
+filter_options=Filteryystellige
+turn_filter_on=Filter aastelle
+turn_filter_off=Filter uusstelle
+change_password=Passwort ändere
+re_enter_password=Passwort nomol yygee
+re_enter_new_password=Nej Passwort nomol yygee
+passwords_not_match=D Passwerter stimme nit zämme
+enter_old_password=S alt Passwort yygee
+enter_password=Passwort yygee
+try_again=Falsch. Bitte versuech s nomol.
+enter_new_password=Nej Passwort yygee
+parental_controls=Jugendschutz
+r=R

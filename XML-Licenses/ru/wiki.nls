@@ -1,0 +1,36 @@
+# Messages for Russian (Русский)
+# Exported from translatewiki.net
+# Author: Александр Сигачёв
+
+wiki_name=Википедия - Английский
+license_text=Текст доступен по лицензии Creative Commons Attribution/Share Alike и может быть свободно использован в соответствии с условиями этой лицензии. См. текст лицензии [CC-BY-SA] и [Условия использования], в которых могут быть описаны дополнительные условия. Оригинал статьи доступен по адресу: http://en.wikipedia.org/wiki/<title> 2010-01-16
+type_a_word=Введите слово или фразу
+no_results=Не найдено записей
+searching=поиск…
+select_wiki=Выбор энциклопедии
+history_title=История
+no_history=Нет истории
+please_wait=Пожалуйста, подождите…
+clear_history=Очистить историю
+yes=Да
+no=Нет
+protection=Некоторые статьи Википедии могут быть непригодны для несовершеннолетних. Пожалуйста, установите пароль для защиты.
+restricted=Эта статья может быть непригодна для несовершеннолетних. Пожалуйста, установите пароль для защиты.
+set_password=Установка пароля
+ok=OK
+set_filter=При включённой фильтрации для просмотра статей с ограниченным доступом требуется пароль.
+keep_filter_on=Оставить фильтр включённым
+keep_filter_off=Оставить фильтр выключенным
+filter_options=Настройки фильтра
+turn_filter_on=Включить фильтр
+turn_filter_off=Выключить фильтр
+change_password=Изменить пароль
+re_enter_password=Повторный ввод пароля
+re_enter_new_password=Повторный ввод нового пароля
+passwords_not_match=Пароли не совпадают
+enter_old_password=Введите старый пароль
+enter_password=Введите пароль
+try_again=Неверное значение. Пожалуйста, попробуйте ещё раз.
+enter_new_password=Введите новый пароль
+parental_controls=Родительский контроль
+r=R

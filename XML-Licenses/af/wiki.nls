@@ -1,0 +1,36 @@
+# Messages for Afrikaans (Afrikaans)
+# Exported from translatewiki.net
+# Author: Naudefj
+
+wiki_name=Afrikaanse Wikipedia
+license_text=Teks is beskikbaar onder die Creative Commons Erkenning-Insgelyks Deel Lisensie en kan vrylik hergebruik word onder die voorwaardes van die lisensie. Sien: teks van die [CC-BY-SA] lisensie en [Terms of Use] vir verdere voorwaardes wat moontlik van toepassing is. Die oorspronklike artikel is beskikbaar by: http://en.wikipedia.org/wiki/<title> 2010-01-16
+type_a_word=Tik 'n word of frase in
+no_results=Geen resultate gevind nie
+searching=besig om te soek...
+select_wiki=Kies 'n ensiklopedie
+history_title=Geskiedenis
+no_history=Geen geskiedenis
+please_wait=Wag asseblief...
+clear_history=Vee geskiedenis uit
+yes=Ja
+no=Nee
+protection=Sommige Wikipedia-bladsye is moontlik nie vir minderjariges geskik nie. Stel 'n wagwoord vir beskerming.
+restricted=Hierdie inskrywing is moontlik nie geskik vir minderjariges nie. Stel 'n wagwoord vir beskerming.
+set_password=Stel wagwoord
+ok=OK
+set_filter=Met die filter aan word 'n wagwoord vereis alvorens beperkte artikels besoek kan word.
+keep_filter_on=Hou filter AAN
+keep_filter_off=Hou filter AF
+filter_options=Filteropsies
+turn_filter_on=Skakel filter AAN
+turn_filter_off=Skakel filter AF
+change_password=Verander wagwoord
+re_enter_password=Weer die wagwoord
+re_enter_new_password=Weer nuwe wagwoord
+passwords_not_match=Die wagwoorde kom nie ooreen nie
+enter_old_password=Ou wagwoord
+enter_password=Verskaf wagwoord
+try_again=Verkeerd. Probeer asseblief weer.
+enter_new_password=Verskaf nuwe wagwoord
+parental_controls=Ouerbeheer
+r=R

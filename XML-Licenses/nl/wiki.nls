@@ -1,0 +1,35 @@
+# Messages for Dutch (Nederlands)
+# Exported from translatewiki.net
+# Author: Siebrand
+
+wiki_name=Nederlandstalige Wikipedia
+type_a_word=Voer een woord of zin in
+no_results=Geen resultaten
+searching=bezig met zoeken...
+select_wiki=Kies een encyclopedie
+history_title=Geschiedenis
+no_history=Geen geschiedenis
+please_wait=Even geduld alstublieft...
+clear_history=Geschiedenis wissen
+yes=Ja
+no=Nee
+protection=Een aantal pagina's van Wikimedia is wellicht minder geschikt voor minderjarigen. U kunt een wachtwoord instellen om die pagina's minder eenvoudig bereikbaar te maken.
+restricted=Deze pagina is wellicht minder geschikt voor minderjarigen. U kunt een wachtwoord instellen om de pagina's minder eenvoudig bereikbaar te maken.
+set_password=Wachtwoord instellen
+ok=OK
+set_filter=Als filteren AAN staat, is een wachtwoord nodig om beperkte pagina's te kunnen lezen.
+keep_filter_on=Filter AAN houden
+keep_filter_off=Filter UIT houden
+filter_options=Filterinstellingen
+turn_filter_on=Filter inschakelen
+turn_filter_off=Filter uitschakelen
+change_password=Wachtwoord wijzigen
+re_enter_password=Wachtwoord nogmaals
+re_enter_new_password=Wachtwoord nogmaals invoeren
+passwords_not_match=De wachtwoorden komen niet overeen
+enter_old_password=Oude wachtwoord
+enter_password=Wachtwoord invoeren
+try_again=Onjuist. Probeer het opnieuw
+enter_new_password=Nieuw wachtwoord invoeren
+parental_controls=Ouderlijk toezicht
+r=R

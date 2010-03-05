@@ -1,0 +1,36 @@
+# Messages for Brazilian Portuguese (Português do Brasil)
+# Exported from translatewiki.net
+# Author: Rodrigo Avila
+
+wiki_name=Wikipedia Português
+license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wikipedia.org/wiki/<title>
+type_a_word=Escreva uma palavra ou frase
+no_results=Nenhum registro encontrado
+searching=pesquisando...
+select_wiki=Escolha a enciclopédia
+history_title=Histórico
+no_history=Sem histórico
+please_wait=Aguarde por favor...
+clear_history=Limpar histórico
+yes=Sim
+no=Não
+protection=Alguns artigos da Wikipédia podem não ser adequados para menores. Por favor, crie uma senha de proteção.
+restricted=Este artigo pode não ser adequado para menores. Por favor, crie uma senha de proteção.
+set_password=Digite a senha
+ok=ok
+set_filter=Com o filtro LIGADO, a senha é solicitada quando artigos restritos são acessados.
+keep_filter_on=Mantenha o filtro LIGADO
+keep_filter_off=Mantenha o filtro DESLIGADO
+filter_options=Opções do filtro
+turn_filter_on=LIGUE o filtro
+turn_filter_off=DESLIGUE o filtro
+change_password=Altere a senha
+re_enter_password=Redigite a senha
+re_enter_new_password=Redigite a nova senha
+passwords_not_match=As senhas não coincidem
+enter_old_password=Digite a senha antiga
+enter_password=Digite a senha
+try_again=Errado. Por favor tente de novo.
+enter_new_password=Digite a nova senha
+parental_controls=Controles parentais
+r=R
