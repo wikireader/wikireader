@@ -520,7 +520,7 @@ endif
 # Download the latest translations
 # ================================
 
-ALL_LANGUAGES := da de en es fi nl pt
+ALL_LANGUAGES := da de en es fi fr ja nl pt
 LICENSE_DIR = XML-Licenses
 
 
@@ -550,6 +550,9 @@ LICENSE_fi := Wikipedia:Creative_Commons_Attribution-Share_Alike_3.0_Unported_-l
 
 TERMS_fr   := Conditions_d\'utilisation
 #LICENSE_fr := http://creativecommons.org/licenses/by-sa/3.0/deed.fr
+
+TERMS_ja   := 利用規約
+LICENSE_ja := Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License
 
 TERMS_nl   := Gebruiksvoorwaarden
 #LICENSE_nl := http://creativecommons.org/licenses/by-sa/3.0/deed.nl
