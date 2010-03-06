@@ -3,6 +3,7 @@
 # Author: Y-M D
 
 wiki_name=Wikipedia Brezhonek
+no_results=N'eo bet kavet kasadenn ebet
 searching=o klask...
 select_wiki=Dibab un holloueziadur
 history_title=Istor
@@ -11,12 +12,22 @@ please_wait=Gortozit mar plij...
 clear_history=Diverkañ an Istor
 yes=Ya
 no=Nann
+protection=Pennadoù 'zo eus Wikipedia n'int ket dereat evit ar re yaouank. Mar plij termenit ur ger-tremen evit ar gwarez.
+restricted=N'eo ket dereat ar pennad-mañ evit ar re yaouank. Mar plij termenit ur ger-tremen evit ar gwarez.
 set_password=Termeniñ ar ger-tremen
 ok=mat eo
+keep_filter_on=Derc'hel gweredekaet ar sil (ON)
+keep_filter_off=Derc'hel diweredekaet ar sil (OFF)
+filter_options=Dibarzhioù ar silañ
+turn_filter_on=Gweredekaat ar silañ (ON)
+turn_filter_off=Diweredekaat ar silañ (OFF)
 change_password=Cheñch ar ger-tremen
-re_enter_password=Adlakaat ar ger-tremen
-enter_old_password=Lakaat ar ger-tremen kozh
-enter_password=Lakaat ar ger-tremen
+re_enter_password=Adskrivit ar ger-tremen
+re_enter_new_password=Adskrivit ar ger-tremen nevez
+passwords_not_match=Ne glot ket ar gerioù-temen
+enter_old_password=Skrivit ar ger-tremen kozh
+enter_password=Skrivit ar ger-tremen
 try_again=Fazi. Mar plij adklaskit.
-enter_new_password=Lakait ar ger-tremen nevez
+enter_new_password=Skrivit ar ger-tremen nevez
+parental_controls=Kontroll ar Gerent
 r=R
