@@ -290,7 +290,7 @@ pragma cache_size = 20000000;
 pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
-.mode tab
+.mode tabs
 .import {0:s} articles
 .exit
 """.format(self.article_import))
@@ -323,7 +323,7 @@ pragma cache_size = 20000000;
 pragma default_cache_size = 20000000;
 pragma journal_mode = memory;
 
-.mode tab
+.mode tabs
 .import {0:s} offsets
 .import {1:s} files
 .exit
