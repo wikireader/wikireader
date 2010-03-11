@@ -127,6 +127,7 @@ misc-files-install: validate-destdir
 .PHONY: validate-destdir
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
+	@if [ ! -d "${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia"'" is not a directory ; exit 1; fi
 
 
 # Main program
@@ -293,6 +294,7 @@ cleandirs:
 	@if [ -z "${TEMPDIR_PATH}" ] ; then echo missing TEMPDIR ; exit 1 ; fi
 	${RM} -r "${DESTDIR_PATH}" "${TEMPDIR_PATH}" "${WORKDIR_PATH}"
 	${MKDIR} "${DESTDIR_PATH}"
+	${MKDIR} "${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia"
 	${MKDIR} "${WORKDIR_PATH}"
 	${MKDIR} "${TEMPDIR_PATH}"
 
@@ -344,10 +346,10 @@ combine: validate-destdir
 
 .PHONY: hash
 hash: validate-destdir hash-gen
-	cd "${DESTDIR}" && ${HOST_TOOLS}/hash-gen/hash-gen \
-		--pfx="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.pfx" \
-		--fnd="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.fnd" \
-		--hsh="${DESTDIR_PATH}/${WIKI_FILE_PREFIX}.hsh"
+	cd "${DESTDIR}/${WIKI_LANGUAGE}pedia" && ${HOST_TOOLS}/hash-gen/hash-gen \
+		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.pfx" \
+		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.fnd" \
+		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.hsh"
 
 
 # o run all stages (for testing small XML sample files)

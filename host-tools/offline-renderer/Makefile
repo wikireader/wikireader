@@ -47,7 +47,7 @@ TEMPDIR ?= ${WORKDIR}/tmp
 WIKI_FILE_PREFIX ?= pedia
 WIKI_LANGUAGE ?= en
 
-PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_FILE_PREFIX})
+PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX})
 ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles.db)
 COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/counts.text)
 TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/templates.db)
