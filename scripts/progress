@@ -24,7 +24,8 @@ USAGE()
   echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
   echo '       --language=<xx> -L <xx>    process for language [en]'
   echo '       --suffix=<s>    -S <s>     set the language suffix [pedia]'
-  echo '       --run           -r         start the Run script in a screen i.e. {Run -c -l <lang>}'
+  echo '       --run           -r         start the Run script in a screen {index, parse, render}'
+  echo '       --re-render     -R         start the Run script in a screen {re-render}'
   echo '       --copy          -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
   echo '       --combine       -k         run the combine process'
   echo '       --get           -G         get the data files'
@@ -46,7 +47,7 @@ base_dir=samo
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rckG4Nf --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRckG4Nf --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -64,7 +65,7 @@ do
       ;;
 
     -s|--stamps)
-      RenderDo --yes ${list} --brief --post='sed s/stamp-r-//g' "cd '${base_dir}'"' && printf "\33[34;1m%s\33[0;m " stamp* && echo'
+      RenderDo --yes ${list} --brief --post='sed s/stamp-//g' "cd '${base_dir}/work/${language}${suffix}'"' && printf "\33[34;1m%s\33[0;m " stamp* && echo'
       shift
       ;;
 
@@ -74,7 +75,6 @@ do
       ;;
 
     -N|--new-session)
-      #RenderDo --yes ${list} --brief "cd '${base_dir}' && byobu -d -m"
       for host in $(RenderDo --print-list)
       do
         StartScreen --cd="${base_dir}" "${host}"
@@ -84,6 +84,12 @@ do
 
     -r|--run)
       c="scripts/Run --clear --language='${language}' --suffix='${suffix}'"
+      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      shift
+      ;;
+
+    -R|--re-render)
+      c="scripts/Run --re-render --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
@@ -104,7 +110,7 @@ do
       do
         lf="${host}-${language}.log"
         echo fetch log from: ${host} to: ${lf}
-        RenderDo --yes --list="${host##*[^0-9]}" "cat '${base_dir}/log'" > "${lf}"
+        RenderDo --yes --list="${host##*[^0-9]}" "cat '${base_dir}/${language}.log'" > "${lf}"
       done
       shift
       ;;
@@ -127,12 +133,12 @@ do
     -t|--tail)
       t=1
       [ -n "$2" ] && t="$2"
-      RenderDo --yes ${list} --brief "tail -n '${t}' '${base_dir}'/log"
+      RenderDo --yes ${list} --brief "tail -n '${t}' '${base_dir}'/${language}.log"
       shift 2
       ;;
 
     -a|--analyse)
-      RenderDo --yes ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog log"
+      RenderDo --yes ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog '${language}.log'"
       shift
       ;;
 
@@ -162,7 +168,7 @@ do
       ;;
 
     -G|--get)
-      rsync -avHx --progress --exclude=\*-tmp "wr@render${combine_host}:'${base_dir}'/image/${language}${suffix}" image/
+      rsync -avHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" image/
       shift
       ;;
 

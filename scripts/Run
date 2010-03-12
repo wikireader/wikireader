@@ -1,7 +1,6 @@
 #!/bin/bash
 # script to set up individual rendering server
 
-LogFile=log
 LicensesDirectory=XML-Licenses
 
 ERROR()
@@ -19,17 +18,55 @@ USAGE()
   echo '       --get-index=n   -g <n>     where to rsync the indices from {1 => render1}'
   echo '       --index-only    -i         only do the index'
   echo '       --no-run        -n         do not run final make'
-  echo '       --sequential    -s         run rendering in series'
   echo '       --clear         -c         clear work and dest dirs'
-  echo '       --re-parse      -r         clear parse and render stamps'
+  echo '       --re-parse      -R         clear parse and render stamps'
+  echo '       --re-render     -r         clear render stamps'
   echo '       --machines=m    -m <m>     set machine count [${MACHINE_COUNT} or 9]'
   echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
   echo '       --language=xx   -l <xx>    set language [en]'
-  echo '       --suffix=<s>    -S <s>     set the language suffix [pedia]'
+  echo '       --suffix=<s>    -s <s>     set the language suffix [pedia]'
   echo '       --prefix=name   -p <name>  set data file prefix [wiki]'
   echo '       --work=dir      -w <dir>   workdir [work]'
   echo '       --dest=dir      -d <dir>   destdir [image]'
+  echo '       --temp=dir      -t <dir>   tempdir [/tmp]'
+  echo '       --farm=n        -f <n>     manual farm number [from hostname numeric suffix]'
+  echo '       --debug         -D         print but do not execute make commands'
   exit 1
+}
+
+# run a command or just print it
+RUN()
+{
+  local command log
+
+  log=yes
+  case "$1" in
+    -n|--no-log)
+      log=no
+      shift
+      ;;
+    *)
+      ;;
+  esac
+  command="$*"
+
+  case "${debug}" in
+    [yY]|[yY][eE][sS])
+      echo DEBUG: ${command}
+      return
+      ;;
+    *)
+      ;;
+  esac
+  case "${log}" in
+    [yY]|[yY][eE][sS])
+      echo | tee -a "${LogFile}"
+      echo '===>' $(date '+%Y-%m-%d %H:%M:%S'):  ${command} | tee -a "${LogFile}"
+      eval "time ${command}" 2>&1 | tee -a "${LogFile}"
+      ;;
+    *)
+      eval "${command}"
+  esac
 }
 
 
@@ -38,10 +75,11 @@ IndexHost=
 clear=no
 work=work
 dest=image
+temp=/tmp
 run=yes
-seq=no
 IndexOnly=no
-debug=
+farm=
+debug=no
 language=en
 suffix=pedia
 FilePrefix=wiki
@@ -51,7 +89,7 @@ export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:inscrl:S:w:d:p:j:m: --long=help,verbose,get-index:,index-only,no-run,sequential,clear,re-parse,language:,suffix:,suffix:,work:,dest:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:D --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -79,20 +117,18 @@ do
       shift
       ;;
 
-    -s|--sequential)
-      seq=yes
-      shift
-      ;;
-
     -c|--clear)
       clear=yes
       shift
       ;;
 
-    -r|--re-parse)
-      rm -f stamp-r-parse*
-      rm -f stamp-r-render*
-      clear=no
+    -r|--re-render)
+      clear=render
+      shift
+      ;;
+
+    -R|--re-parse)
+      clear=parse
       shift
       ;;
 
@@ -101,7 +137,7 @@ do
       shift 2
       ;;
 
-    -S|--suffix)
+    -s|--suffix)
       suffix=$2
       shift 2
       ;;
@@ -113,6 +149,16 @@ do
 
     -d|--dest)
       dest=$2
+      shift 2
+      ;;
+
+    -t|--temp)
+      temp=$2
+      shift 2
+      ;;
+
+    -f|--farm)
+      farm=$2
       shift 2
       ;;
 
@@ -131,8 +177,8 @@ do
       shift 2
       ;;
 
-    --debug)
-      debug=echo
+    -D|--debug)
+      debug=yes
       shift
       ;;
 
@@ -162,12 +208,12 @@ fi
 [ -z "${language}" ] && USAGE language is not set
 
 licenses=$(readlink -m "${LicensesDirectory}")
-work="${work}/${language}${suffix}"
-dest="${dest}/${language}${suffix}"
 license="${licenses}/${language}/license.xml"
 terms="${licenses}/${language}/terms.xml"
 articles_link="${language}wiki-pages-articles.xml"
 articles=$(readlink -m "${articles_link}")
+
+LogFile="${language}.log"
 
 [ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
 
@@ -183,29 +229,56 @@ this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
 [ -z "${this_id}" ] && this_id=0
 
-farm="farm${this_id}"
+[ -z "${farm}" ] && farm="farm${this_id}" || farm="farm${farm##*[a-z]}"
 
-rm -f "${LogFile}"
+# truncate the log file
+RUN -n rm -f "${LogFile}"
+RUN -n touch "${LogFile}"
+
+# set up the make options
+common_opts="DESTDIR='${dest}' WORKDIR='${work}' TEMPDIR='${temp}'"
+common_opts="${common_opts} WIKI_FILE_PREFIX='${FilePrefix}'"
+common_opts="${common_opts} WIKI_LANGUAGE='${language}'"
+common_opts="${common_opts} WIKI_DIR_SUFFIX='${suffix}'"
+common_opts="${common_opts} XML_FILES='${xml}'"
+common_opts="${common_opts} VERBOSE='${verbose}'"
+
 
 # clean up
 case "${clear}" in
   [yY]|[yY][eE][sS])
-    eval ${debug} "time make clean-index DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
-    eval ${debug} "time make '${farm}-clean' DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'"
-    eval ${debug} "rm -rf '${work}' '${dest}'"
+    RUN make index-clean "${farm}-clean" cleandirs ${common_opts}
+    ;;
+  [rR][eE][nN][dD][eE][rR])
+    RUN make "${farm}-render-clean" ${common_opts}
+    ;;
+  [pP][aA][rR][sS][eE])
+    RUN make "${farm}-clean" ${common_opts}
+    ;;
+  [nN]|[nN][oO])
+    ;;
+  *)
+    ERROR unknown clear action: ${clear}
     ;;
 esac
 
-# create directories
-eval ${debug} "mkdir -p '${work}'"
-eval ${debug} "mkdir -p '${dest}'"
+
+# create root directories
+RUN make createdirs ${common_opts}
 
 # update
-eval ${debug} "git pull --rebase"
+RUN git pull --rebase
+
 
 # copy the index from another machine
+#=====================================
+#!!! THIS HAS HARD CODED SAMO PATH !!!
+#!!! NEED TO FIX THIS              !!!
+#=====================================
 if [ -n "${IndexHost}" ]
 then
+  echo THIS IS BROKEN
+  exit 99
   [ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
 
   list='templates.db articles.db offsets.db counts.text'
@@ -214,46 +287,21 @@ then
   do
     items="${items} ${IndexHost}:samo/${work}/${i}"
   done
-  eval ${debug} "rsync -avHx --progress ${items} '${work}'/"
-  eval ${debug} "touch stamp-r-index"
+  RUN rsync -avHx --progress ${items} "${work}"/
+  RUN touch stamp-r-index  # ***THIS IS WRONG need to have a make target for this
 fi
 
 # run the build
 case "${run}" in
   [yY]|[yY][eE][sS])
 
-    eval ${debug} "time make 'stamp-r-index' \
-         WIKI_FILE_PREFIX="${FilePrefix}" \
-         WIKI_LANGUAGE="${language}" \
-         DESTDIR='${dest}' WORKDIR='${work}' XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
+    RUN make farm-index ${common_opts}
 
     case "${IndexOnly}" in
       [yY]|[yY][eE][sS])
         ;;
       *)
-        case "${seq}" in
-          [yY]|[yY][eE][sS])
-            eval ${debug} "time make -j${PARALLEL_BUILD} '${farm}-parse' \
-                 WIKI_FILE_PREFIX='${FilePrefix}' \
-                 WIKI_LANGUAGE='${language}' \
-                 VERBOSE='${verbose}' \
-                 DESTDIR='${dest}' WORKDIR='${work}' \
-                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
-            eval ${debug} "time make '${farm}-render' \
-                 WIKI_FILE_PREFIX='${FilePrefix}' \
-                 WIKI_LANGUAGE='${language}' \
-                 VERBOSE='${verbose}' \
-                 DESTDIR='${dest}' WORKDIR='${work}' \
-                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
-            ;;
-          *)
-            eval ${debug} "time make -j${PARALLEL_BUILD} '${farm}' \
-                 WIKI_FILE_PREFIX='${FilePrefix}' \
-                 WIKI_LANGUAGE='${language}' \
-                 DESTDIR='${dest}' WORKDIR='${work}' \
-                 VERBOSE='${verbose}' \
-                 XML_FILES='${xml}'" 2>&1 | tee -a "${LogFile}"
-            ;;
-        esac
+        RUN make -j${PARALLEL_BUILD} "${farm}" ${common_opts}
+        ;;
     esac
 esac

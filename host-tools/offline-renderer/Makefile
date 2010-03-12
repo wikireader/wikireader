@@ -44,15 +44,19 @@ DESTDIR ?= .
 FONT_PATH ?= $(shell ${REALPATH} ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
 TEMPDIR ?= ${WORKDIR}/tmp
-WIKI_FILE_PREFIX ?= pedia
+WIKI_FILE_PREFIX ?= wiki
 WIKI_LANGUAGE ?= en
+WIKI_DIR_SUFFIX ?= pedia
 
-PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX})
-ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR}/articles.db)
-COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/counts.text)
-TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR}/templates.db)
-OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR}/offsets.db)
-HTML_ARTICLES_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR}/articles-)
+WORKDIR_PATH := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
+TEMPDIR_PATH := $(shell ${RESOLVEPATH} ${TEMPDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
+
+PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
+ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles.db)
+COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/counts.text)
+TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/templates.db)
+OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/offsets.db)
+HTML_ARTICLES_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles-)
 HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.html)
 
 PYLZMA_DIR := pylzma-0.3.0
@@ -89,7 +93,7 @@ check-xml:
 .PHONY: check-dirs
 check-dirs:
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	@if [ ! -d "${WORKDIR}" ] ; then echo WORKDIR: "'"${WORKDIR}"'" is not a directory ; exit 1; fi
+	@if [ ! -d "${WORKDIR_PATH}" ] ; then echo WORKDIR_PATH: "'"${WORKDIR_PATH}"'" is not a directory ; exit 1; fi
 	@[ -d "${TEMPDIR}" ] || ${MKDIR} "${TEMPDIR}"
 	@if [ ! -d "${TEMPDIR}" ] ; then echo TEMPDIR: "'"${TEMPDIR}"'" is not a directory ; exit 1; fi
 
@@ -111,7 +115,7 @@ index: check-dirs check-xml RedirectedTo.py
 		--templates="${TEMPLATE_FILE}" \
 		--prefix="${PREFIX}" ${XML_FILES}
 
-HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR}/*.html))
+HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR_PATH}/*.html))
 .PHONY: merge
 merge:
 ifeq (0,$(strip $(shell [ "${HTML_FILES_COUNT}" -gt "${TOTAL_HTML_FILES}" ] ; echo $$?)))
@@ -155,8 +159,8 @@ parse: check-dirs check-html math RedirectedTo.py
 		--language="${WIKI_LANGUAGE}" \
 		--start="${START}" --count="${COUNT}" \
 		--templates="${TEMPLATE_FILE}" \
-		--parser-workdir="${WORKDIR}" \
-		--parser-tempdir="${TEMPDIR}" \
+		--parser-workdir="${WORKDIR_PATH}" \
+		--parser-tempdir="${TEMPDIR_PATH}" \
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render

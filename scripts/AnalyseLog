@@ -13,6 +13,7 @@ BEGIN {
   delete render_count
   delete render_delta
   delete render_max
+  quotes = "['"'"'\"]"
 }
 
 END {
@@ -67,8 +68,8 @@ END {
 }
 
 /^make[[:space:]]+RENDER_BLOCK=.*parse/ {
-    n = substr($2, index($2, "=") + 1)
-    c = substr($4, index($4, "=") + 1)
+    n = gensub("^[^=]*=" quotes "*([[:digit:]]+)" quotes "*.*$", "\\1", "", $2) + 0
+    c = gensub("^[^=]*=" quotes "*([[:digit:]]+)" quotes "*.*$", "\\1", "", $4) + 0
     sub("k", "000", c)
     if ("all" == c) {
         c = 0

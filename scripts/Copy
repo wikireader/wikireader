@@ -124,7 +124,7 @@ then
     *)
       ;;
   esac
-  rsync -avHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${d}/"
+  rsync -cavHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${d}/"
 else
   echo warning: transfer to self ignored
 fi

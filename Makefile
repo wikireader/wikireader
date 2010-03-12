@@ -61,7 +61,7 @@ SUM_DIR = ${HOST_TOOLS}/toolchain-sums
 
 CONFIG_FILE := "${SAMO_LIB}/include/config.h"
 CONFIG_FILE_DEFAULT := "${SAMO_LIB}/include/config.h-default"
-CONFIG_FILE_EXISTS := $(shell [ -f ${CONFIG_FILE} ] && echo 1)
+CONFIG_FILE_EXISTS := $(shell [ -f "${CONFIG_FILE}" ] && echo 1)
 
 ifeq (${CONFIG_FILE_EXISTS},)
 $(shell cp ${CONFIG_FILE_DEFAULT} ${CONFIG_FILE})
@@ -87,12 +87,20 @@ ALL_TARGETS += fonts
 all:    ${ALL_TARGETS}
 
 
+# wiki naming
+# ===========
+
+WIKI_LANGUAGE ?= en
+WIKI_FILE_PREFIX ?= wiki
+WIKI_DIR_SUFFIX ?= pedia
+
+
 # Installation
 # ============
 
-DESTDIR_PATH := $(shell ${RESOLVEPATH} "${DESTDIR}")
-WORKDIR_PATH := $(shell ${RESOLVEPATH} "${WORKDIR}")
-TEMPDIR_PATH := $(shell ${RESOLVEPATH} "${TEMPDIR}")
+DESTDIR_PATH := $(abspath ${DESTDIR})
+WORKDIR_PATH := $(abspath ${WORKDIR})
+TEMPDIR_PATH := $(abspath ${TEMPDIR})
 ifeq (,$(strip ${TEMPDIR_PATH}))
 TEMPDIR_PATH := ${WORKDIR_PATH}/tmp
 endif
@@ -127,7 +135,7 @@ misc-files-install: validate-destdir
 .PHONY: validate-destdir
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
-	@if [ ! -d "${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia"'" is not a directory ; exit 1; fi
+	@if [ ! -d "${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"'" is not a directory ; exit 1; fi
 
 
 # Main program
@@ -279,30 +287,39 @@ fonts-install: fonts validate-destdir
 # Build the database from wiki XML files
 # ======================================
 
-WIKI_LANGUAGE ?= en
-WIKI_FILE_PREFIX ?= wiki
-XML_FILES_PATH := $(foreach f,${XML_FILES},$(shell ${REALPATH} "${f}"))
+XML_FILES_PATH = $(realpath ${XML_FILES})
 RENDER_BLOCK ?= 0
 TOTAL_HTML_FILES ?= 27
 
-# delete a single pair of directories or the whole tree.
-# BE CAREFUL about the DESTDIR/WORKDIR/TEMPDIR settings
+# erase the working directories for the current language
 .PHONY: cleandirs
 cleandirs:
 	@if [ -z "${DESTDIR_PATH}" ] ; then echo missing DESTDIR ; exit 1 ; fi
 	@if [ -z "${WORKDIR_PATH}" ] ; then echo missing WORKDIR ; exit 1 ; fi
 	@if [ -z "${TEMPDIR_PATH}" ] ; then echo missing TEMPDIR ; exit 1 ; fi
-	${RM} -r "${DESTDIR_PATH}" "${TEMPDIR_PATH}" "${WORKDIR_PATH}"
+	${RM} -r "${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
+	${RM} -r "${TEMPDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
+	${RM} -r "${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
+
+# only create dirs (does not erase them)
+.PHONY: createdirs
+createdirs:
+	@if [ -z "${DESTDIR_PATH}" ] ; then echo missing DESTDIR ; exit 1 ; fi
+	@if [ -z "${WORKDIR_PATH}" ] ; then echo missing WORKDIR ; exit 1 ; fi
+	@if [ -z "${TEMPDIR_PATH}" ] ; then echo missing TEMPDIR ; exit 1 ; fi
 	${MKDIR} "${DESTDIR_PATH}"
-	${MKDIR} "${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia"
+	${MKDIR} "${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
 	${MKDIR} "${WORKDIR_PATH}"
+	${MKDIR} "${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
 	${MKDIR} "${TEMPDIR_PATH}"
+	${MKDIR} "${TEMPDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
 
 
 .PHONY: index
 index: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
@@ -312,6 +329,7 @@ index: validate-destdir
 parse: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} parse \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
@@ -321,6 +339,7 @@ parse: validate-destdir
 merge: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} merge \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
@@ -330,6 +349,7 @@ merge: validate-destdir
 render: fonts validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} render \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
@@ -339,6 +359,7 @@ render: fonts validate-destdir
 combine: validate-destdir
 	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} combine \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
@@ -346,10 +367,10 @@ combine: validate-destdir
 
 .PHONY: hash
 hash: validate-destdir hash-gen
-	cd "${DESTDIR}/${WIKI_LANGUAGE}pedia" && ${HOST_TOOLS}/hash-gen/hash-gen \
-		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.pfx" \
-		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.fnd" \
-		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}pedia/${WIKI_FILE_PREFIX}.hsh"
+	cd "${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" && ${HOST_TOOLS}/hash-gen/hash-gen \
+		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.pfx" \
+		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.fnd" \
+		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.hsh"
 
 
 # o run all stages (for testing small XML sample files)
@@ -363,61 +384,21 @@ iprch: index parse render combine hash
 ifneq (,$(strip ${WORKDIR_PATH}))
 ifneq (,$(strip ${DESTDIR_PATH}))
 
-stamp-r-index:
-	${RM} "$@"
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
-		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
-	${TOUCH} "$@"
-
-.PHONY: clean-index
-clean-index:
-	${RM} stamp-r-index
-
-# makeblock 0..n, start, count
-MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
-
-define MAKE_BLOCK1
-
-.PHONY: parse${1}
-parse${1}: stamp-r-parse${1}
-
-.PHONY: render${1}
-render${1}: stamp-r-render${1}
-
-stamp-r-parse${1}: stamp-r-index
-	${RM} "$$@"
-	$${MAKE} RENDER_BLOCK=${1} START=${2} COUNT=${3} parse
-	${TOUCH} "$$@"
-
-stamp-r-render${1}: stamp-r-parse${1}
-	${RM} "$$@"
-	$${MAKE} RENDER_BLOCK=${1} render
-	${TOUCH} "$$@"
-
-.PHONY: stamp-r-clean${1}
-stamp-r-clean${1}:
-	${RM} stamp-r-parse${1} stamp-r-render${1}
-
-endef
+INDEX_STAMP := ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/stamp-index
+PARSE_STAMP := ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/stamp-parse
+RENDER_STAMP := ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/stamp-render
 
 
 # ---------------------------------------------------------------------------------------
 # Get the number of articles from the indexer and compute how many articles per instance
-#
-# NOTE:
-#  The use of ':=' means that 'index' must have already been run in a previous session.
-#  So always run parse as a separate step.
-#  If just '=' was used then then all targets could be in the same make, but make runs
-#  extremely slowly, as it must re-evaluate all the scripts including the SQL select
-#  multiple times when computing the rules.
 # ---------------------------------------------------------------------------------------
 
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
 
-TOTAL_ARTICLES := $(shell awk '/^Articles:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
-TOTAL_CHARACTERS := $(shell awk '/^Characters:/{ print $$2 }' "${WORKDIR}/counts.text" 2>/dev/null || echo 100)
+COUNTS_FILE = ${WORKDIR_PATH}/counts.text
+
+TOTAL_ARTICLES = $(shell awk '/^Articles:/{ print $$2 }' "${COUNTS_FILE}" 2>/dev/null || echo 0)
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
 # 64 dat files is the maximum allowed
 CHECK := $(shell if [ ${TOTAL_INSTANCES} -gt 64 ]; then echo 0; else echo 1; fi )
@@ -426,60 +407,88 @@ ifeq ($(strip ${CHECK}),0)
 endif
 MAX_BLOCK := $(shell expr ${TOTAL_INSTANCES} - 1)
 
-CHARACTERS_PER_INSTANCE := $(shell expr ${TOTAL_CHARACTERS} / ${TOTAL_INSTANCES})
+ARTICLES_PER_INSTANCE = $(shell expr ${TOTAL_ARTICLES} / ${TOTAL_INSTANCES})
 
-ITEMS := $(shell i=0; while [ $${i} -lt ${TOTAL_INSTANCES} ]; do echo $${i}; i=$$(($${i} + 1)); done)
-ITEMS_1 := $(shell i=1; while [ $${i} -le ${TOTAL_INSTANCES} ]; do echo $${i}; i=$$(($${i} + 1)); done)
-
-define GET_ARTICLE_NUMBER
-  "select article_number from offsets where accumulated >= ($(strip ${1}) * $(strip ${2})) limit 1;"
-endef
-
-
-OFFSETS_DB := ${WORKDIR_PATH}/offsets.db
-
-# only enable this if offsets.db exists
-ifneq (,$(wildcard ${OFFSETS_DB}))
-ifeq (,$(strip ${SUPPRESS_ARTICLE_STARTS}))
-
-ARTICLE_STARTS := $(shell echo $(foreach i,${ITEMS},$(call GET_ARTICLE_NUMBER, ${i},${CHARACTERS_PER_INSTANCE})) | sqlite3 "${OFFSETS_DB}")
-
-
-define ARTICLE_COUNTS_sh
-  eval set -- "${ARTICLE_STARTS}";
-  while [ -n "$${2}" ];
-  do
-    echo $$(($${2} - $${1}));
-    shift;
-  done;
-  echo $$((${TOTAL_ARTICLES} - $${1} + 1));
-endef
-
-ARTICLE_COUNTS := $(shell ${ARTICLE_COUNTS_sh})
-
-endif
-endif
+ITEMS = $(shell i=0; while [ $${i} -lt ${TOTAL_INSTANCES} ]; do echo $${i}; i=$$(($${i} + 1)); done)
 
 
 # check that the counts are correct to render all articles
 .PHONY: print-render-info
 print-render-info:
+	@echo WORKDIR_PATH = ${WORKDIR_PATH}
+	@echo DESTDIR_PATH = ${DESTDIR_PATH}
+	@echo TEMPDIR_PATH = ${TEMPDIR_PATH}
+	@echo XML_FILES_PATH = ${XML_FILES_PATH}
 	@echo TOTAL_ARTICLES = ${TOTAL_ARTICLES}
 	@echo MACHINE_COUNT = ${MACHINE_COUNT}
 	@echo PARALLEL_BUILD = ${PARALLEL_BUILD}
 	@echo TOTAL_INSTANCES = ${TOTAL_INSTANCES}
-	@echo TOTAL_CHARACTERS = ${TOTAL_CHARACTERS}
-	@echo CHARACTERS_PER_INSTANCE = ${CHARACTERS_PER_INSTANCE}
+	@echo ARTICLES_PER_INSTANCE = ${ARTICLES_PER_INSTANCE}
 	@echo ITEMS = ${ITEMS}
-	@echo ITEMS_1 = ${ITEMS_1}
-	@echo ARTICLE_STARTS = ${ARTICLE_STARTS}
-	@echo ARTICLE_COUNTS = ${ARTICLE_COUNTS}
 	@echo files = 0 .. ${MAX_BLOCK}
 
-# create the blocks
 
-$(foreach i,${ITEMS_1},$(call MAKE_BLOCK,$(shell expr ${i} - 1),$(word ${i},${ARTICLE_STARTS}),$(word ${i},${ARTICLE_COUNTS})))
+# index
 
+${INDEX_STAMP}:
+	${RM} "$@"
+	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
+		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
+		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
+	${TOUCH} "$@"
+
+.PHONY: index-clean
+index-clean:
+	${RM} "${INDEX_STAMP}" "${COUNTS_FILE}"
+	${RM} "${WORKDIR_PATH}"/*.db
+	${RM} "${WORKDIR_PATH}"/*.db.*
+
+
+# create the individual threads
+
+# makeblock 0..n
+MAKE_BLOCK = $(eval $(call MAKE_BLOCK1,$(strip ${1})))
+
+define MAKE_BLOCK1
+
+.PHONY: parse${1}
+parse${1}: ${PARSE_STAMP}${1}
+
+.PHONY: render${1}
+render${1}: ${RENDER_STAMP}${1}
+
+
+START_${1} = $$(shell expr ${1} '*' $${ARTICLES_PER_INSTANCE} + 1)
+COUNT_${1} = $$(shell if [ "${1}" -ge $$$$(($${TOTAL_INSTANCES} - 1)) ] ; then echo all; else echo $${ARTICLES_PER_INSTANCE}; fi)
+
+${PARSE_STAMP}${1}: ${INDEX_STAMP}
+	${RM} "$$@"
+	$${MAKE} RENDER_BLOCK='${1}' START='$${START_${1}}' COUNT='$${COUNT_${1}}' parse
+	${TOUCH} "$$@"
+
+${RENDER_STAMP}${1}: ${PARSE_STAMP}${1}
+	${RM} "$$@"
+	$${MAKE} RENDER_BLOCK='${1}' render
+	${TOUCH} "$$@"
+
+.PHONY: stamp-clean${1}
+stamp-clean${1}: stamp-parse-clean${1} stamp-render-clean${1}
+
+.PHONY: stamp-parse-clean${1}
+stamp-parse-clean${1}:
+	${RM} "${PARSE_STAMP}${1}"
+
+.PHONY: stamp-render-clean${1}
+stamp-render-clean${1}:
+	${RM} "${RENDER_STAMP}${1}"
+
+endef
+
+
+$(foreach i,${ITEMS},$(call MAKE_BLOCK,${i}))
+
+
+# Per machine rules
 
 MAKE_FARM = $(eval $(call MAKE_FARM1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
 
@@ -492,12 +501,21 @@ farm${1}-parse: $$(foreach i,${2},parse$$(strip $${i}))
 farm${1}-render: $$(foreach i,${2},render$$(strip $${i}))
 
 .PHONY: farm${1}-clean
-farm${1}-clean: $$(foreach i,${2},stamp-r-clean$$(strip $${i}))
+farm${1}-clean: farm${1}-parse-clean farm${1}-render-clean
+
+.PHONY: farm${1}-parse-clean
+farm${1}-parse-clean: $$(foreach i,${2},stamp-parse-clean$$(strip $${i}))
+
+.PHONY: farm${1}-render-clean
+farm${1}-render-clean: $$(foreach i,${2},stamp-render-clean$$(strip $${i}))
 
 .PHONY: farm${1}
 farm${1}: farm${1}-parse farm${1}-render
 
 endef
+
+.PHONY: farm-index
+farm-index: ${INDEX_STAMP}
 
 
 MAKE_MACHINE = $(eval $(call MAKE_MACHINE1,$(strip ${1}),$(strip ${2}),$(strip ${3})))
@@ -795,10 +813,10 @@ help:
 	@echo '  render                - render HTML in WORKDIR into one big data file in DESTDIR'
 	@echo '  combine               - combine temporary indices to one file in DESTDIR'
 	@echo '  hash                  - generate hash file in DESTDIR'
-	@echo '  farm<1..8>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
-	@echo '  farm<1..8>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
-	@echo '  farm<1..8>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
-	@echo '  farm<1..8>-clean      - remove stamp files to repeat process'
+	@echo '  farm<1..N>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
+	@echo '  farm<1..N>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
+	@echo '  farm<1..N>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
+	@echo '  farm<1..N>-clean      - remove stamp files to repeat process'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  mbr-install           - install flash.rom in DESTDIR'
 	@echo '  mahatma               - compile kernel'
@@ -814,8 +832,10 @@ help:
 	@echo '  qt4-simulator         - compile the Qt4 simulator'
 	@echo '  sim4  sim4d           - use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
 	@echo '  console-simulator     - compile the console simulator'
-	@echo '  clean                 - clean everything except the toochain'
+	@echo '  clean                 - clean all programs and object files except the toochain'
 	@echo '  clean-toolchain       - clean just the toochain'
+	@echo '  cleandirs             - clean work/temp/image for current language'
+	@echo '  createdirs            - create work/temp/image for current language'
 	@echo '  jig-install           - copy flash program and image; forth and programs to SD Card'
 	@echo '  p33                   - terminal emulator (console debugging)'
 	@echo '  fetch-nls             - Fetch nls, texts and license files from web'

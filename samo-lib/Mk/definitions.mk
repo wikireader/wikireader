@@ -237,5 +237,5 @@ CROSS_OBJCOPY = ${CROSS}objcopy
 ifneq (,$(strip ${DEBUG}))
 # special function to display debugging information on every shell
 OLD_SHELL := ${SHELL}
-SHELL = $(warning [$@ ($^) ($?)])${OLD_SHELL}
+SHELL = $(warning [$@ ($^) ($?)])${OLD_SHELL} -x
 endif
