@@ -1,0 +1,36 @@
+# Messages for Czech (Česky)
+# Exported from translatewiki.net
+# Author: Mr. Richard Bolla
+
+wiki_name=Česká Wikipedie
+license_text=Tento text je dostupný pod licencí Creative Commons Attribution/Share-Alike a může být volně užíván za dodržení podmínek této licence. Podívejte se také na: text licence [CC-BY-SA] a další podmínky užití, které mohou být rovněž uplatněny. Původní text je dostupný na: http://cs.wikipedia.org/wiki/<title>
+type_a_word=Zadejte slovo či frázi
+no_results=Nenalezeny žádné záznamy
+searching=vyhledávám...
+select_wiki=Vybrat encyklopedii
+history_title=Historie
+no_history=Žádná historie
+please_wait=Prosím čekejte...
+clear_history=Vyprázdnit historii
+yes=Ano
+no=Ne
+protection=Některé položky ve Wikipedii nemusí být vhodné pro děti a mladistvé. Prosím, nastavte si heslo pro ochranu.
+restricted=Tato položka nemusí být vhodná pro děti a mladistvé. Prosím, nastavte si heslo pro ochranu.
+set_password=Nastavit heslo
+ok=OK
+set_filter=Se zapnutým filtrováním je při přístupu k chráněným článkům vyžadováno heslo.
+keep_filter_on=Filtr nechat zapnutý
+keep_filter_off=Filtr nechat vypnutý
+filter_options=Nastavení filtru
+turn_filter_on=Zapnout filtr
+turn_filter_off=Vypnout filtr
+change_password=Změnit heslo
+re_enter_password=Zadat heslo znovu
+re_enter_new_password=Zadat nové heslo znovu
+passwords_not_match=Hesla se neshodují
+enter_old_password=Zadat staré heslo
+enter_password=Zadat heslo
+try_again=Chyba. Prosím, zkuste to znovu.
+enter_new_password=Zadat nové heslo
+parental_controls=Rodičovská kontrola
+r=R

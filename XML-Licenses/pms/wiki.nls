@@ -1,36 +1,37 @@
 # Messages for Piedmontese (Piemontèis)
 # Exported from translatewiki.net
+# Author: Borichèt
 # Author: Dragonòt
 
 wiki_name=Anglèis ëd Wikipedia
-license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Share-Alike e a peul esse liberament dovrà sota ij termo ëd cola licensa lì. Varda: Test ëd la Licensa [CC-BY-SA] e [Terms of Use] për termo adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title> 2010-01-16
+license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Share-Alike e a peul esse liberament dovrà sota ij termo ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Terms of Use] për termo adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title> 2010-01-16
 type_a_word=Scriv na Paròla o na Fras
 no_results=Pa gnun-e vos trovà
 searching=sërché...
-select_wiki=Sern ensiclopedìa
+select_wiki=Serne l'enciclopedìa
 history_title=Stòria
-no_history=Pa gnun-e stòrie
+no_history=Stòria veuida
 please_wait=Për piasì speta...
-clear_history=Scansela stòria
+clear_history=Scancelé la stòria
 yes=É!
 no=Nò
-protection=Cheiche vos ëd Wikipedia a peulo esse pa adate për ij minor. Për piasì ampòsta na ciav për protession.
-restricted=Sta vos-sì a peul esse pa adata për minor. Për piasì ampòsta na ciav për protession.
+protection=Chèiche vos ëd Wikipedia a peulo esse pa adate për ij minor. Për piasì ch'a ampòsta na ciav për la protession.
+restricted=Sta vos-sì a peul esse pa adata për ij minor. Për piasì, ch'a ampòsta na ciav për la protession.
 set_password=Ampòsta Ciav
 ok=va bin
-set_filter=Con ël filtr visch, a ven ciamà na ciav quand a son ciamà artìcoj protet.
-keep_filter_on=Manten filtr visch
+set_filter=Con ël filtr anvisch, a l'é ciamà na ciav quand a son ciamà dj'artìcoj protet.
+keep_filter_on=Manten filtr anvisch
 keep_filter_off=Manten filtr dëstiss
 filter_options=Opsion ëd filtr
-turn_filter_on=Vira filtr a Visch
-turn_filter_off=Vira filtr a dëstiss
-change_password=Cangia ciav
-re_enter_password=Buta torna Ciav
-re_enter_new_password=Buta torna ciav neuva
+turn_filter_on=Anvisché ël filtr
+turn_filter_off=Dëstissé ël filtr
+change_password=Cangé la ciav
+re_enter_password=Scrive torna la Ciav
+re_enter_new_password=Scrive torna la ciav neuva
 passwords_not_match=Le doe ciav a son pa mideme
-enter_old_password=Buta ciav veja
-enter_password=Buta ciav
+enter_old_password=Buté la ciav veja
+enter_password=Buté la ciav
 try_again=Pa bon. Për piasì preuva torna.
-enter_new_password=Buta ciav neuva
+enter_new_password=Buté la ciav neuva
 parental_controls=Contròj ëd pare e mare
 r=R

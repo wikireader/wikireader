@@ -540,7 +540,7 @@ endif
 # Download the latest translations
 # ================================
 
-ALL_LANGUAGES := af ar br da de en es fi fr gl gsw hu ia ja mk ml nl pms pt pt-br ru te
+ALL_LANGUAGES := af ar br cs da de en es fi fr gl gsw hu ia ja mk ml nl no pms pt pt-br ru te tr
 LICENSE_DIR = XML-Licenses
 
 

@@ -1,0 +1,30 @@
+# Messages for Turkish (Türkçe)
+# Exported from translatewiki.net
+# Author: Joseph
+
+wiki_name=Türkçe Vikipedi
+type_a_word=Bir Kelime ya da Cümle girin
+no_results=Hiçbir girdi bulunamadı
+searching=aranıyor...
+select_wiki=Ansiklopedi seç
+history_title=Geçmiş
+no_history=Geçmiş yok
+please_wait=Lütfen bekleyin...
+clear_history=Geçmişi sil
+yes=Evet
+no=Hayır
+set_password=Şifreyi ayarla
+ok=tamam
+keep_filter_on=Filtreyi AÇIK tut
+keep_filter_off=Filtreyi KAPALI tut
+filter_options=Filtre Seçenekleri
+turn_filter_on=Filtreyi AÇ
+turn_filter_off=Filtreyi KAPAT
+change_password=Şifreyi Değiştir
+re_enter_password=Şifreyi tekrar girin
+re_enter_new_password=Yeni şifreyi tekrar girin
+passwords_not_match=Parolalar eşleşmiyor
+enter_old_password=Eski parolayı girin
+enter_password=Parolayı girin
+try_again=Yanlış. Lütfen tekrar deneyin.
+enter_new_password=Yeni şifreyi girin

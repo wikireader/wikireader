@@ -1,0 +1,36 @@
+# Messages for Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+# Exported from translatewiki.net
+# Author: Nghtwlkr
+
+wiki_name=Wikipedia Norsk (bokmål)
+license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikipedia.org/wiki/<title> 2010-01-16
+type_a_word=Skriv inn et ord eller uttrykk
+no_results=Ingen oppføringer funnet
+searching=søker...
+select_wiki=Velg encyklopedi
+history_title=Historikk
+no_history=Ingen historikk
+please_wait=Vent...
+clear_history=Slett historikk
+yes=Ja
+no=Nei
+protection=Enkelte Wikipediaoppføringer kan være uegnet for mindreåringe. Angi et passord for beskyttelse.
+restricted=Denne oppføringen kan være uegnet for mindreårige. Angi et passord for beskyttelse.
+set_password=Angi passord
+ok=ok
+set_filter=Med filteret på kreves et passord for å få tilgang til begrensede artikler.
+keep_filter_on=Behold filter på
+keep_filter_off=Behold filter av
+filter_options=Filtervalg
+turn_filter_on=Slå på filter
+turn_filter_off=Slå av filter
+change_password=Endre passord
+re_enter_password=Gjenta passord
+re_enter_new_password=Gjenta nytt passord
+passwords_not_match=Passordene er ulike
+enter_old_password=Skriv inn gammelt passord
+enter_password=Skriv inn passord
+try_again=Feil. Prøv igjen.
+enter_new_password=Skriv inn nytt passord
+parental_controls=Foreldrekontroll
+r=R
