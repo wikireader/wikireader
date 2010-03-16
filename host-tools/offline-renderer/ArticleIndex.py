@@ -40,6 +40,8 @@ class CycleError(Exception):
 
 verbose = False
 enable_templates = True     # $$$ When this is false, templates are included as articles :/
+error_flag = False          # indicates error in indexing, but processing will still continue
+                            # to find more errors
 
 bigram = {}
 
@@ -61,6 +63,7 @@ def usage(message):
 
 def main():
     global verbose
+    global error_flag
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:',
@@ -154,6 +157,13 @@ def main():
     output_pfx(pfx_name)
     del processor
 
+    # return non-zero status if there have been any errors
+    if error_flag:
+        PrintLog.message('*** ERROR in Index build')
+        PrintLog.message('***   Currently "Duplicate Title" is the only condition that causes this error')
+        PrintLog.message('***   Likely "license.xml" or "terms.xml" file duplicates a title in main wiki file')
+        PrintLog.message('***   Manually edit "license.xml" or "terms.xml" file to change the title')
+        sys.exit(1)
 
 
 def generate_bigram(text):
@@ -386,6 +396,7 @@ pragma journal_mode = memory;
 
     def body(self, category, key, title, text, seek):
         global verbose
+        global error_flag
 
         title = self.translate(title).strip(u'\u200e\u200f')
 
@@ -427,7 +438,8 @@ pragma journal_mode = memory;
         self.offsets[self.article_count] = (self.file_id(), title, seek, character_count, self.total_character_count)
 
         if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
-            PrintLog.message(u'Duplicate Title: {0:s} '.format(title))
+            PrintLog.message(u'ERROR: Duplicate Title: {0:s}'.format(title))
+            error_flag = True
 
 
     def resolve_redirects(self):
