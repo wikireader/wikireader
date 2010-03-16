@@ -18,4 +18,11 @@ def message(data):
     sys.stdout.write('\n')
     sys.stdout.flush()
 
+def message_no_newline(data):
+    if type(data) == unicode:
+        sys.stdout.write(data.encode('utf-8'))
+    else:
+        sys.stdout.write(data)
+    sys.stdout.flush()
+
 
