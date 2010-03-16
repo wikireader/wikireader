@@ -10,6 +10,7 @@ import os, sys, re
 import os.path
 import struct
 import getopt
+import PrintLog
 
 def usage(message):
     if None != message:
@@ -53,7 +54,7 @@ def main():
         if not os.path.isfile(in_name):
             break
         if verbose:
-            print('combining: {0:s}'.format(in_name))
+            PrintLog.message('combining: {0:s}'.format(in_name))
         data[i] = open(in_name, 'rb').read()
         article_count += len(data[i]) / 12 # sizeof(struct)
         i += 1
@@ -64,6 +65,8 @@ def main():
         out.write(data[j])
 
     out.close()
+
+    PrintLog.message('Combined {0:d} files'.format(i))
 
 
 # run the program
