@@ -117,7 +117,9 @@ def usage(message):
     print('       --font-path=dir         Path to font files (*.bmf) [fonts]')
     print('       --article-index=file    Article index dictionary input [articles.db]')
     print('       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]')
-    print('       --no-inter-links        Turn off inter-wiki links')
+    print('       --languages-links=<YN>  Turn on/off inter-wiki links [YES]')
+    print('       --articles=<N>          Articles per block [32]')
+    print('       --block-size=<bytes>    Max size for artical block [262144]')
     exit(1)
 
 
@@ -133,7 +135,7 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   'hvwn:p:i:t:f:N',
+                                   'hvwn:p:i:t:f:l:a:b:',
                                    ['help',
                                     'verbose',
                                     'warnings',
@@ -142,7 +144,9 @@ def main():
                                     'article-index=',
                                     'test=',
                                     'font-path=',
-                                    'no-inter-links',
+                                    'language-links=',
+                                    'articles=',
+                                    'block-size=',
                                     ])
     except getopt.GetoptError, err:
         usage(err)
@@ -157,6 +161,9 @@ def main():
     font_path = "../fonts"
     article_db = None
     inter_links = True
+    articles_per_block = 32
+    block_size = 262144
+
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -179,8 +186,23 @@ def main():
             index_file = arg + '{0:d}.idx-tmp'
         elif opt in ('-f', '--font-path'):
             font_path = arg
-        elif opt in ('-N', '--no-inter-links'):
-            inter_links = False
+        elif opt in ('-l', '--language-links'):
+            arg = arg.lower()
+            inter_links = ('yes' == arg)
+        elif opt in ('-a', '--articles'):
+            try:
+                articles_per_block = int(arg)
+            except ValueError:
+                usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
+            if articles_per_block < 1 or articles_per_block > 64:
+                usage('"{0:s}={1:s}" is out of range [1..64]'.format(opt, arg))
+        elif opt in ('-b', '--block-size'):
+            try:
+                block_size = int(arg)
+            except ValueError:
+                usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
+            if block_size < 65536 or block_size > 524288:
+                usage('"{0:s}={1:s}" is out of range [65536..524288]'.format(opt, arg))
         else:
             usage('unhandled option: ' + opt)
 
@@ -217,7 +239,10 @@ def main():
         compress = True
         i_out = open(index_file.format(file_number), 'w')
         f_out = open(data_file.format(file_number), 'w')
-        article_writer = ArticleWriter(file_number, f_out, i_out)
+        article_writer = ArticleWriter(file_number, f_out, i_out,
+                                       max_buckets = 50,
+                                       bucket_size = block_size,
+                                       max_items_per_bucket = articles_per_block)
     else:
         compress = False
         f_out = open(test_file, 'w')

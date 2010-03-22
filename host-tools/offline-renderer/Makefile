@@ -47,6 +47,9 @@ TEMPDIR ?= ${WORKDIR}/tmp
 WIKI_FILE_PREFIX ?= wiki
 WIKI_LANGUAGE ?= en
 WIKI_DIR_SUFFIX ?= pedia
+ENABLE_LANGUAGES_LINKS ?= YES
+ARTICLES_PER_BLOCK ?= 32
+ARTICLE_BLOCK_SIZE ?= 262144
 
 WORKDIR_PATH := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
 TEMPDIR_PATH := $(shell ${RESOLVEPATH} ${TEMPDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
@@ -168,7 +171,11 @@ render: pylzma check-dirs check-fonts check-html
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
-		--prefix="${PREFIX}" "${HTML_ARTICLES}"
+		--prefix="${PREFIX}" \
+		--language-links="${ENABLE_LANGUAGES_LINKS}" \
+		--articles="${ARTICLES_PER_BLOCK}" \
+		--block-size="${ARTICLE_BLOCK_SIZE}" \
+		"${HTML_ARTICLES}"
 
 .PHONY: combine
 combine: check-dirs
