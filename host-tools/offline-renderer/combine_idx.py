@@ -12,6 +12,10 @@ import struct
 import getopt
 import PrintLog
 
+
+UINT32_SIZE = 4
+INDEX_ITEM_SIZE = 2 * UINT32_SIZE + 1
+
 def usage(message):
     if None != message:
         print('error: {0:s}'.format(message))
@@ -23,6 +27,9 @@ def usage(message):
 
 def main():
     global verbose
+    global INDEX_ITEM_SIZE
+    global UINT32_SIZE
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:p:', ['help', 'verbose', 'out=', 'offsets=', 'prefix='])
     except getopt.GetoptError, err:
@@ -56,10 +63,10 @@ def main():
         if verbose:
             PrintLog.message('combining: {0:s}'.format(in_name))
         data[i] = open(in_name, 'rb').read()
-        article_count += len(data[i]) / 12 # sizeof(struct)
+        article_count += len(data[i]) / INDEX_ITEM_SIZE
         i += 1
 
-    out.write(struct.pack('I', article_count))
+    out.write(struct.pack('<I', article_count))
 
     for j in range(i):
         out.write(data[j])

@@ -18,6 +18,7 @@ import getopt
 import os.path
 import sqlite3
 import WordWrap
+import bucket
 import PrintLog
 import gd
 
@@ -101,6 +102,8 @@ article_db = None
 output = None
 compress = True
 
+article_writer = None
+
 
 def usage(message):
     if None != message:
@@ -114,6 +117,7 @@ def usage(message):
     print('       --font-path=dir         Path to font files (*.bmf) [fonts]')
     print('       --article-index=file    Article index dictionary input [articles.db]')
     print('       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]')
+    print('       --no-inter-links        Turn off inter-wiki links')
     exit(1)
 
 
@@ -125,10 +129,11 @@ def main():
     global article_count
     global article_db
     global start_time
+    global article_writer
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   'hvwn:p:i:t:f:',
+                                   'hvwn:p:i:t:f:N',
                                    ['help',
                                     'verbose',
                                     'warnings',
@@ -136,7 +141,9 @@ def main():
                                     'prefix=',
                                     'article-index=',
                                     'test=',
-                                    'font-path='])
+                                    'font-path=',
+                                    'no-inter-links',
+                                    ])
     except getopt.GetoptError, err:
         usage(err)
 
@@ -149,6 +156,7 @@ def main():
     test_file = ''
     font_path = "../fonts"
     article_db = None
+    inter_links = True
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -171,6 +179,8 @@ def main():
             index_file = arg + '{0:d}.idx-tmp'
         elif opt in ('-f', '--font-path'):
             font_path = arg
+        elif opt in ('-N', '--no-inter-links'):
+            inter_links = False
         else:
             usage('unhandled option: ' + opt)
 
@@ -207,13 +217,14 @@ def main():
         compress = True
         i_out = open(index_file.format(file_number), 'w')
         f_out = open(data_file.format(file_number), 'w')
+        article_writer = ArticleWriter(file_number, f_out, i_out)
     else:
         compress = False
         f_out = open(test_file, 'w')
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8', 'replace')
-        WrProcess(f)
+        WrProcess(f, inter_links)
         f.close()
 
     for item in font_id_values:
@@ -221,6 +232,9 @@ def main():
 
     if output != None:
         output.close()
+
+    if article_writer != None:
+        del article_writer
 
     if f_out != None:
         f_out.close()
@@ -328,11 +342,11 @@ def get_imgdata(imgfile, indent):
             bit_count -= 1
             byte |= pixel << bit_count
             if 0 == bit_count:
-                data += struct.pack('B', byte)
+                data += struct.pack('<B', byte)
                 byte = 0
                 bit_count = 8
         if 8 != bit_count:
-            data += struct.pack('B', byte)
+            data += struct.pack('<B', byte)
 
     return (width, height, data)
 
@@ -341,7 +355,7 @@ def esc_code0(num_pixels):
     global g_starty
     global output
 
-    output.write(struct.pack('BB', 1, num_pixels))
+    output.write(struct.pack('<BB', 1, num_pixels))
     g_starty += num_pixels
 
 
@@ -350,7 +364,7 @@ def esc_code1():
     global g_starty, g_curr_face
     global output
 
-    output.write(struct.pack('B', 2))
+    output.write(struct.pack('<B', 2))
     g_starty += get_lineheight(DEFAULT_FONT_IDX)
     g_curr_face = DEFAULT_FONT_IDX
 
@@ -360,7 +374,7 @@ def esc_code2():
     global g_starty, g_curr_face
     global output
 
-    output.write(struct.pack('B', 3))
+    output.write(struct.pack('<B', 3))
     g_starty += get_lineheight(g_curr_face)
 
 
@@ -370,7 +384,7 @@ def esc_code3(face):
     global output
 
     num_pixels = get_lineheight(face)
-    output.write(struct.pack('BB', 4, face|(num_pixels<<3)))
+    output.write(struct.pack('<BB', 4, face|(num_pixels<<3)))
     g_starty += num_pixels
     g_curr_face = face
 
@@ -379,7 +393,7 @@ def esc_code4(face, halign=0):
     global g_curr_face
     global output
 
-    output.write(struct.pack('BB', 5, face|(halign<<3)))
+    output.write(struct.pack('<BB', 5, face|(halign<<3)))
     g_curr_face = face
 
 
@@ -388,7 +402,7 @@ def esc_code5():
     global g_curr_face
     global output
 
-    output.write(struct.pack('B', 6))
+    output.write(struct.pack('<B', 6))
     g_curr_face = DEFAULT_FONT_IDX
 
 
@@ -396,21 +410,21 @@ def esc_code6():
     """set default alignment"""
     global output
 
-    output.write(struct.pack('B', 7))
+    output.write(struct.pack('<B', 7))
 
 
 def esc_code7(num_pixels):
     """move right num_pixels"""
     global output
 
-    output.write(struct.pack('BB', 8, num_pixels))
+    output.write(struct.pack('<BB', 8, num_pixels))
 
 
 def esc_code8(num_pixels):
     """move left num_pixels"""
     global output
 
-    output.write(struct.pack('BB', 9, num_pixels))
+    output.write(struct.pack('<BB', 9, num_pixels))
 
 
 def esc_code9(num_pixels):
@@ -418,7 +432,7 @@ def esc_code9(num_pixels):
     global g_halign
     global output
 
-    output.write(struct.pack('Bb', 10, num_pixels))
+    output.write(struct.pack('<Bb', 10, num_pixels))
     g_halign = num_pixels
 
 
@@ -426,7 +440,7 @@ def esc_code10(num_pixels):
     """draw line from right to left"""
     global output
 
-    output.write(struct.pack('BB', 11, num_pixels))
+    output.write(struct.pack('<BB', 11, num_pixels))
 
 
 def esc_code14(width, height, data):
@@ -453,13 +467,15 @@ class WrProcess(HTMLParser.HTMLParser):
 
     READ_BLOCK_SIZE = 64 * (1024 * 1024)
 
-    def __init__ (self, f):
+    def __init__ (self, f, inter_links = True):
         global g_this_article_title, article_count
 
         HTMLParser.HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
         self.tag_stack = []
+        self.inter_links = inter_links
+        self.bucket = bucket.Bucket()
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
             self.feed(block)
@@ -540,7 +556,7 @@ class WrProcess(HTMLParser.HTMLParser):
                 self.printing = False
 
             # create a list of language links
-            if tag == 'a' and 'lang-link' in attrs['class']:
+            if self.inter_links and tag == 'a' and 'lang-link' in attrs['class']:
                 self.language_links.append(attrs['href'])
 
         # handle the tags
@@ -1053,14 +1069,15 @@ def write_article(language_links):
     global g_this_article_title
     global file_number
     global start_time
+    global article_writer
 
     article_count += 1
     if verbose:
-        PrintLog.message("[MWR {0:d}] {1:s}".format(article_count, g_this_article_title))
+        PrintLog.message(u'[MWR {0:d}] {1:s}'.format(article_count, g_this_article_title))
 
     elif article_count % 1000 == 0:
         now_time = time.time()
-        PrintLog.message("Render[{0:d}]: {1:7.2f}s {2:10d}".format(file_number, now_time - start_time, article_count))
+        PrintLog.message(u'Render[{0:d}]: {1:7.2f}s {2:10d}'.format(file_number, now_time - start_time, article_count))
         start_time = now_time
 
     output.flush()
@@ -1070,7 +1087,7 @@ def write_article(language_links):
 
     for i in g_links:
         (x0, y0, x1, y1, url) = g_links[i]
-        links_stream.write(struct.pack('III', (y0 << 8) | x0, (y1 << 8) | x1, link_number(url)))
+        links_stream.write(struct.pack('<3I', (y0 << 8) | x0, (y1 << 8) | x1, link_number(url)))
 
     links_stream.flush()
     links = links_stream.getvalue()
@@ -1087,47 +1104,86 @@ def write_article(language_links):
     links_stream.close()
 
     # create the header (header size = 8)
-    header = struct.pack('I2H', 8 + len(links) + len(langs), g_link_cnt, 0)
+    header = struct.pack('<I2H', 8 + len(links) + len(langs), g_link_cnt, 0)
     body = output.getvalue()
 
-    # output the article data
-    file_offset = f_out.tell()
+    # combine the data
     whole_article = header + links + langs + body
+
     if compress:
-        body = chr(5) + pylzma.compress(whole_article,
-                                        dictionary = 24, fastBytes = 32,
-                                        literalContextBits = 3,
-                                        literalPosBits = 0, posBits = 2,
-                                        algorithm = 1, eos = 1)
-        f_out.write(body)
-        write_article_index(file_offset, len(body))
+        try:
+            (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
+            restricted =  bool(int(restricted))  # '0' is True so turn it into False
+            article_writer.add_article(article_number, whole_article, fnd_offset, restricted)
+        except KeyError:
+            PrintLog.message(u'Error in: write_article, Title not found')
+            PrintLog.message(u'Title:  {0:s}'.format(g_this_article_title))
+            PrintLog.message(u'Offset: {0:s}'.format(file_offset))
+            PrintLog.message(u'Count:  {0:s}'.format(article_count))
     else:
         f_out.write(whole_article)
+        f_out.flush()
 
-    f_out.flush()
     output.truncate(0)
 
 
-def write_article_index(file_offset, length):
-    global verbose
-    global output, f_out, i_out
-    global g_this_article_title
-    global file_number
 
-    try:
-        (article_number, fnd_offset, restricted) = article_index(g_this_article_title)
-        data_offset = (file_offset & 0x7fffffff)
+class ArticleWriter(bucket.Bucket):
+    """to combine sets of articles and compress them together"""
 
-        if bool(int(restricted)):  # '0' is True so turn it into False
-            data_offset |= 0x80000000
-        data_length =  (0x80 << 24) | (file_number << 24) | length  # 0x80 => lzma encoding
-        i_out.write(struct.pack('III', data_offset, fnd_offset, data_length))
-        i_out.flush()
-    except KeyError:
-        PrintLog.message(u'Error in: write_article, Title not found')
-        PrintLog.message(u'Title:  {0:s}'.format(g_this_article_title))
-        PrintLog.message(u'Offset: {0:s}'.format(file_offset))
-        PrintLog.message(u'Count:  {0:s}'.format(article_count))
+    def __init__(self, file_number, data_file, index_file,
+                 max_buckets = 50, bucket_size = 524288, max_items_per_bucket = 64):
+
+        super(ArticleWriter, self).__init__(max_buckets = max_buckets,
+                                       bucket_size = bucket_size,
+                                       max_items_per_bucket = max_items_per_bucket)
+        self.file_number = file_number
+        self.index_file = index_file
+        self.data_file = data_file
+        self.index = {}
+
+
+    def add_article(self, article_index, article_data, fnd_offset, restricted):
+        self.add((article_index, article_data, fnd_offset, restricted), len(article_data))
+
+
+    def write(self, data):
+        """output the article data"""
+        all_data = ''
+        blocks = ''
+        offset = 0
+        for size, item in data:
+            article_index, article_data, fnd_offset, restricted = item
+            blocks += struct.pack('<3I', article_index,
+                                  offset + (0x80000000 if restricted else 0),
+                                  size)
+            offset += size
+            all_data += article_data
+
+        sizeof_one_block = 12 # number of bytes generated by struct above
+
+        ah = chr(len(blocks) / sizeof_one_block) + blocks
+        ac = pylzma.compress(all_data,
+                             dictionary = 24, fastBytes = 32,
+                             literalContextBits = 3,
+                             literalPosBits = 0, posBits = 2,
+                             algorithm = 1, eos = 1)
+        file_offset = self.data_file.tell()
+
+        data_length = struct.pack('<I', len(ac))
+        self.data_file.write(ah + data_length + ac)
+
+        for size, item in data:
+            article_index, article_data, fnd_offset, restricted = item
+            self.index[article_index] = struct.pack('<2IB', file_offset, fnd_offset, self.file_number)
+
+
+    def __del__(self):
+        self.flush()
+        keys = self.index.keys()
+        keys.sort()
+        for k in keys:
+            self.index_file.write(self.index[k])
 
 
 # run the program

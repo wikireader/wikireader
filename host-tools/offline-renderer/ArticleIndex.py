@@ -266,9 +266,9 @@ create table redirects (
         start_time = time.time()
         with open(self.article_import, 'w') as f:
             for title in self.articles:
-                (article_number, fnd_offset, restricted) = self.articles[title]
+                (article_number, fnd_offset, restricted, is_redirect) = self.articles[title]
                 f.write('~' + title.encode('utf-8'))    # force string
-                f.write('\t{0:d}\t{1:d}\t{2:d}\n'.format(article_number, fnd_offset, restricted))
+                f.write('\t{0:d}\t{1:d}\t{2:d}\t{3:d}\n'.format(article_number, fnd_offset, restricted, is_redirect))
         PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
         PrintLog.message(u'Writing: offsets')
@@ -290,7 +290,8 @@ create table articles (
     title varchar primary key,
     article_number integer,
     fnd_offset integer,
-    restricted varchar
+    restricted integer,
+    is_redirect integer
 );
 
 pragma synchronous = 0;
@@ -437,7 +438,7 @@ pragma journal_mode = memory;
         self.total_character_count += character_count
         self.offsets[self.article_count] = (self.file_id(), title, seek, character_count, self.total_character_count)
 
-        if self.set_index(title, (self.article_count, -1, restricted)): # -1 == pfx place holder
+        if self.set_index(title, (self.article_count, -1, restricted, False)): # -1 == place holder
             PrintLog.message(u'ERROR: Duplicate Title: {0:s}'.format(title))
             error_flag = True
 
@@ -447,7 +448,7 @@ pragma journal_mode = memory;
         count = 0
         for item in self.redirects:
             try:
-                self.set_index(item, self.find(item))
+                self.set_index(item, self.find(item)[:3] + (True,))
                 count += 1
             except KeyError:
                 PrintLog.message(u'Unresolved redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
@@ -531,7 +532,7 @@ def bigram_encode(title):
             result += chr(ord(title[0]))
         #else:
         #    result += '?'
-    return result
+    return result.strip()
 
 
 def output_fnd(filename, article_index):
@@ -584,8 +585,24 @@ def output_fnd(filename, article_index):
 
     index_matrix = {}
     index_matrix['\0\0\0'] = out_f.tell()
+
+    previous_bigram_title = ''
+    previous_utf8_title = ''
+    mod_counter = 0
+
     for stripped_title, title in article_list:
+
+        bigram_title = bigram_encode(title)
+        (article_number, dummy, restricted, is_redirect) = article_index.get_index(title)
+
+        if '' == bigram_title and is_redirect:
+            continue
+
+        utf8_title = title.encode('utf-8')
+
         offset = out_f.tell()
+        article_index.set_index(title, (article_number, offset, restricted, is_redirect))
+
         key3 = (title[0:3] + '\0\0\0')[0:3].lower()
         key2 = key3[0:2] + '\0'
         key1 = key3[0:1] + '\0\0'
@@ -595,12 +612,39 @@ def output_fnd(filename, article_index):
             index_matrix[key2] = offset
         if key3 not in index_matrix:
             index_matrix[key3] = offset
-        (article_number, dummy, restricted) = article_index.get_index(title)
-        article_index.set_index(title, (article_number, offset, restricted))
-        out_f.write(struct.pack('Ib', article_number, 0) + bigram_encode(title) + '\0')
+
+        if 0 == mod_counter & 0x0f:
+            bigram_common_length = 0
+            utf8_common_length = 0
+        else:
+            bigram_common_length = common_prefix_length(previous_bigram_title, bigram_title)
+            utf8_common_length = common_prefix_length(previous_utf8_title, utf8_title)
+        mod_counter += 1
+
+        previous_bigram_title = bigram_title
+        previous_utf8_title = utf8_title
+
+        if bigram_common_length > 1:
+            bigram_title = chr(bigram_common_length - 1) + bigram_title[bigram_common_length:]
+        if utf8_common_length > 1:
+            utf8_title = chr(utf8_common_length - 1) + utf8_title[utf8_common_length:]
+
+        out_f.write(struct.pack('I', article_number) + '\0' + bigram_title + '\0' + utf8_title + '\0')
 
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
+
+
+def common_prefix_length(s1, s2, max = 32):
+    l1 = len(s1)
+    l2 = len(s2)
+    if 0 == l1 or 0 == l2 or s1[0] != s2[0]:
+        return 0
+    size = min(l1, l2, max)
+    for i in range(1, size):
+        if s1[i] != s2[i]:
+            return i
+    return size
 
 
 def output_pfx(filename):
