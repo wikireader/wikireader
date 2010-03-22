@@ -8,7 +8,7 @@
 #define MAX_TEXT_BUF 5*1024*1024
 #define MAX_RENDERED 10*1024*1024
 #define MAX_TITLE_SEARCH 64
-#define MAX_DAT_FILES 20
+#define MAX_DAT_FILES 64
 #define MAX_ARTICLES_PER_DAT 250000
 #define RESULT_SET_LIMIT 200
 #define TABLE_CELL_WIDTH (LCD_BUF_WIDTH_PIXELS / 4)
@@ -23,7 +23,9 @@ typedef struct _ARTICLE_PTR {
 typedef struct _TITLE_SEARCH { /* used to mask the porinter to the remainder of the title for search */
 	long idxArticle;
 	char cZero; /* null character for backward search */
-	char sTitleSearch[MAX_TITLE_SEARCH]; /* null terminated title for search (with bigram encoded) */
+	char sTitleSearch[MAX_TITLE_SEARCH]; /* null terminated title for search */
+	char sTitleActual[MAX_TITLE_SEARCH]; /* null terminated actual title. */
+						/* in the fnd file, it will be concatnated immediately after the null terminator of sTitleSearch */
 } TITLE_SEARCH;
 
 void render_article_node(int idxNode);
@@ -36,6 +38,7 @@ void memrcpy(void *dest, void *src, int len); // memory copy starting from the l
 void replace_ampersand_char(char *);
 void pad_backslash(char *s, int size);
 void generate_pedia_hsh(void);
+void reorg_pedia(void);
 extern void showMsg(int currentLevel, char *format, ...);
 extern int msgLevel(void);
 

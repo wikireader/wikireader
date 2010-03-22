@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <inttypes.h>
 #include <ctype.h>
 #include <errno.h>
 #include <stddef.h>
@@ -18,6 +19,7 @@
 #include "Alloc.h"
 #include "Bra.h"
 #include "LzmaEnc.h"
+#include "LzmaDec.h"
 #include "bigram.h"
 #include "search_hash.h"
 
@@ -267,7 +269,7 @@ void processing_speed(long nCount)
 	static time_t base_t;
 	time_t current_t;
 	double elapsed_seconds;
-	long nCountPerSecond;
+	uint32_t nCountPerSecond;
 
 	if (nCount == 0)
 	{
@@ -3933,7 +3935,7 @@ void generate_pedia_files(MYSQL *conn, int bSplitted)
 		showMsg(0, "cannot open file pedia.fnd, error: %s\n", strerror(errno));
 		exit(-1);
 	}
-	init_search_hash();
+	create_search_hash("pedial.hsh");
 
 	rc = mysql_query(conn, "select idx "
 		"from entries where idx is not null order by idx desc limit 1");
@@ -4252,7 +4254,7 @@ void generate_pedia_hsh(void)
 	}
 	
 	init_bigram(fdFnd);
-	init_search_hash();
+	create_search_hash("pedia.hsh");
 
 	firstThreeCharIndexing = (long *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
 	if (!firstThreeCharIndexing)
@@ -4304,6 +4306,532 @@ void generate_pedia_hsh(void)
 	free(bufFnd);
 	fclose(fdPfx);
 	fclose(fdFnd);
+}
+
+unsigned char article_buffer[FILE_BUFFER_SIZE];
+unsigned char compressed_buffer[FILE_BUFFER_SIZE];
+long compress_article(unsigned char *sRendered, long nRenderedArticleLen)
+{
+	CLzmaEncProps props;
+	SizeT propsSize;
+	unsigned int nCompressedArticleLen;
+	int rc;
+
+	sRendered[nRenderedArticleLen] = '\0';
+	LzmaEncProps_Init(&props);
+	propsSize = LZMA_PROPS_SIZE;
+	nCompressedArticleLen = FILE_BUFFER_SIZE;
+	rc = (int)LzmaEncode((Byte *)compressed_buffer + LZMA_PROPS_SIZE + 1, (SizeT *)&nCompressedArticleLen,
+		(const Byte *)sRendered, (SizeT)nRenderedArticleLen, &props, (Byte *)compressed_buffer + 1, &propsSize, 0, NULL,
+		&g_Alloc, &g_Alloc);
+	if (rc != SZ_OK)
+	{
+		showMsg(0, "LzmaEncode failed - %d\n", rc);
+		exit(-1);
+	}
+	compressed_buffer[0] = (char)propsSize;
+	nCompressedArticleLen += LZMA_PROPS_SIZE + 1;
+	return nCompressedArticleLen;
+}
+
+long decompress_article(unsigned char *in, long dat_article_len)
+{
+	unsigned int article_buffer_len = FILE_BUFFER_SIZE;
+	int rc = 0;
+	ELzmaStatus status;
+	Byte propsEncoded[LZMA_PROPS_SIZE];
+	unsigned int propsSize;
+
+	memcpy(compressed_buffer, in, dat_article_len);
+	compressed_buffer[dat_article_len] = '\0';
+	propsSize = (unsigned int)compressed_buffer[0];
+	memcpy(propsEncoded, compressed_buffer + 1, LZMA_PROPS_SIZE);
+	dat_article_len -= LZMA_PROPS_SIZE + 1;
+	rc = (int)LzmaDecode(article_buffer, &article_buffer_len, compressed_buffer + LZMA_PROPS_SIZE + 1, &dat_article_len,
+		propsEncoded, propsSize, LZMA_FINISH_ANY, &status, &g_Alloc);
+	if (rc == SZ_OK || rc == SZ_ERROR_INPUT_EOF) /* not sure why it generate SZ_ERROR_INPUT_EOF yet but result ok */
+	{
+		article_buffer[article_buffer_len] = '\0';
+		return article_buffer_len;
+	}
+	else
+	{
+		showMsg(0, "decompress error: %d\n", rc);
+		exit(-1);
+	}
+}	
+
+
+#define ARTICLE_SIZE_THRESHOLD_FOR_COMPRESSION 102400
+#define CONCATNATED_ARTICLE_SIZE_THRESHOLD_FOR_COMPRESSION 153600
+long nTitleSearches = 0;
+void convert_fnd(char *bufFnd, long lenBufFnd, TITLE_SEARCH *titleSearches)
+{
+	long offsetBufFnd = 256; // skipping the bigram table
+	
+	while (offsetBufFnd < lenBufFnd)
+	{
+		memcpy((void *)&titleSearches[nTitleSearches].idxArticle, (void *)&bufFnd[offsetBufFnd], 4);
+		titleSearches[nTitleSearches].cZero = '\0';
+		// use TITLE_SEARCH.idxArticle in bufFnd to point to the corresponding titleSearches entry
+		memcpy((void *)&bufFnd[offsetBufFnd], (void *)&nTitleSearches, sizeof(nTitleSearches));
+		offsetBufFnd += 5; // position to TITLE_SEARCH.sTitleSearch
+		memcpy(titleSearches[nTitleSearches].sTitleSearch, &bufFnd[offsetBufFnd], MAX_TITLE_SEARCH - 1);
+		titleSearches[nTitleSearches].sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
+		strcpy(titleSearches[nTitleSearches].sTitleActual, titleSearches[nTitleSearches].sTitleSearch);
+		offsetBufFnd += strlen(&bufFnd[offsetBufFnd]) + 1;
+		nTitleSearches++;
+	}
+}
+
+
+void reorg_dat(ARTICLE_PTR *articlePtrs, long nIdxCount, char *bufFnd, TITLE_SEARCH *titleSearches)
+{
+	int i, j;
+	FILE *fdDat[MAX_DAT_FILES];
+	FILE *fdOutDat[MAX_DAT_FILES];
+	unsigned char *articleBuf;
+	long idxTitleSearches;
+	long lenBufDat;
+	char sFileName[20];
+	unsigned char outBuf[FILE_BUFFER_SIZE];
+	long lenOutBuf = 0;
+	char nArticlesConcatnated = 0;
+	CONCAT_ARTICLE_INFO aConcatArticleBuf[MAX_ARTICLE_PER_COMPRESSION];
+	int dat_file_id, nLastDatFileId = -1;
+	long dat_article_len;
+	long offsetDat;
+	int len;
+	char sLastTitle[MAX_TITLE_SEARCH];
+long double nCompressedCount = 0;
+long double nTotalCompressed = 0;
+long double nTotalUncompressed = 0;
+long double nCompressedCountdOver = 0;
+long double nTotalCompressedOver = 0;
+long double nTotalUncompressedOver = 0;
+long double nCompressedCountUnder = 0;
+long double nTotalCompressedUnder = 0;
+long double nTotalUncompressedUnder = 0;
+	
+	articleBuf = (unsigned char *)malloc(MAX_RENDERED);
+	if (!articleBuf)
+	{
+		showMsg(0, "malloc articleBuf\n");
+		exit(1);
+	}
+	
+	for (i = 0; i < MAX_DAT_FILES; i++)
+	{
+		fdDat[i] = NULL;
+		fdOutDat[i] = NULL;
+	}
+	
+	sLastTitle[0] = '\0';
+	
+	processing_speed(0);
+	for (i=0; i < nIdxCount; i++)
+	{
+		if (!(articlePtrs[i].file_id_compressed_len & 0x3FFFFFFF))
+		{
+			printf("articlePtrs[%d].file_id_compressed_len %x\n", i, articlePtrs[i].file_id_compressed_len);
+			continue;
+		}
+		dat_file_id = ((articlePtrs[i].file_id_compressed_len  & 0x3FFFFFFF)>> 24);
+		if (dat_file_id >= MAX_DAT_FILES)
+			continue; 
+		if (!fdDat[dat_file_id])
+		{
+			sprintf(sFileName, "pedia/wiki%d.dat", dat_file_id);
+			fdDat[dat_file_id] = fopen(sFileName, "rb");
+			if (!fdDat[dat_file_id])
+				continue;
+			sprintf(sFileName, "wiki%d.dat", dat_file_id);
+			fdOutDat[dat_file_id] = fopen(sFileName, "wb");
+			fseek(fdDat[dat_file_id], 0, SEEK_END);
+			lenBufDat = ftell(fdDat[dat_file_id]);
+			fseek(fdDat[dat_file_id], 0, SEEK_SET);
+		}	
+		dat_article_len = articlePtrs[i].file_id_compressed_len & 0x00FFFFFF;
+		fseek(fdDat[dat_file_id], articlePtrs[i].offset_dat & 0x7FFFFFFF, SEEK_SET);
+		fread(articleBuf, dat_article_len, 1, fdDat[dat_file_id]);
+		dat_article_len = decompress_article(articleBuf, dat_article_len);
+		memcpy((void *)&idxTitleSearches, (void *)&bufFnd[articlePtrs[i].offset_fnd], sizeof(idxTitleSearches));
+		extract_title_from_article(article_buffer, titleSearches[idxTitleSearches].sTitleActual);
+		
+		if (dat_file_id != nLastDatFileId)
+		{
+			printf("last title of dat %d [%s]\n", nLastDatFileId, sLastTitle);
+			printf("first title of dat %d [%s]\n", dat_file_id, titleSearches[idxTitleSearches].sTitleActual);
+		}
+		strcpy(sLastTitle, titleSearches[idxTitleSearches].sTitleActual);
+		
+		if (nArticlesConcatnated > 0 && (nArticlesConcatnated >= MAX_ARTICLE_PER_COMPRESSION || 
+			dat_file_id != nLastDatFileId || 
+			(dat_article_len < ARTICLE_SIZE_THRESHOLD_FOR_COMPRESSION && 
+			lenOutBuf + dat_article_len > CONCATNATED_ARTICLE_SIZE_THRESHOLD_FOR_COMPRESSION)))
+		{
+			nTotalUncompressed += lenOutBuf;
+			nTotalUncompressedUnder += lenOutBuf;
+			offsetDat = ftell(fdOutDat[nLastDatFileId]);
+			lenOutBuf = compress_article(outBuf, lenOutBuf);
+			nTotalCompressed += lenOutBuf;
+			nTotalCompressedUnder += lenOutBuf;
+			nCompressedCountUnder += nArticlesConcatnated;
+			nCompressedCount++;
+			for (j = 0; j < nArticlesConcatnated; j++)
+			{
+				articlePtrs[aConcatArticleBuf[j].article_id - 1].offset_dat = offsetDat;
+				articlePtrs[aConcatArticleBuf[j].article_id - 1].file_id_compressed_len &= 0xFF000000;
+				articlePtrs[aConcatArticleBuf[j].article_id - 1].file_id_compressed_len |= lenOutBuf;
+			}
+			fwrite(&nArticlesConcatnated, sizeof(nArticlesConcatnated), 1, fdOutDat[dat_file_id]);
+			if (nArticlesConcatnated > 0)
+				fwrite(aConcatArticleBuf, sizeof(CONCAT_ARTICLE_INFO), nArticlesConcatnated, fdOutDat[dat_file_id]);
+			fwrite(&compressed_buffer, lenOutBuf, 1, fdOutDat[dat_file_id]);
+			lenOutBuf = 0;
+			nArticlesConcatnated = 0;
+		}
+
+		if (dat_article_len >= ARTICLE_SIZE_THRESHOLD_FOR_COMPRESSION)
+		{
+			char nLocalArticlesConcatnated = 1;
+			CONCAT_ARTICLE_INFO localConcatArticleBuf;
+
+			nTotalUncompressed += dat_article_len;
+			nTotalUncompressedOver += dat_article_len;
+			offsetDat = ftell(fdOutDat[nLastDatFileId]);
+			dat_article_len = compress_article(article_buffer, dat_article_len);
+			nTotalCompressed += dat_article_len;
+			nTotalCompressedOver += dat_article_len;
+			nCompressedCountdOver++;
+			nCompressedCount++;
+			localConcatArticleBuf.article_id = i + 1;
+			localConcatArticleBuf.offset_article = articlePtrs[aConcatArticleBuf[nArticlesConcatnated].article_id].offset_dat & 0x80000000;
+			localConcatArticleBuf.article_len = dat_article_len;
+			articlePtrs[i].offset_dat = offsetDat;
+			articlePtrs[i].file_id_compressed_len &= 0xFF000000;
+			articlePtrs[i].file_id_compressed_len |= dat_article_len;
+			fwrite(&nLocalArticlesConcatnated, sizeof(nLocalArticlesConcatnated), 1, fdOutDat[dat_file_id]);
+			fwrite(&localConcatArticleBuf, sizeof(CONCAT_ARTICLE_INFO), 1, fdOutDat[dat_file_id]);
+			fwrite(&compressed_buffer, dat_article_len, 1, fdOutDat[dat_file_id]);
+		}
+		else
+		{
+			aConcatArticleBuf[nArticlesConcatnated].article_id = i + 1;
+			aConcatArticleBuf[nArticlesConcatnated].offset_article = lenOutBuf | 
+				articlePtrs[aConcatArticleBuf[nArticlesConcatnated].article_id].offset_dat & 0x80000000;
+			aConcatArticleBuf[nArticlesConcatnated].article_len = dat_article_len;
+			memcpy(&outBuf[lenOutBuf], article_buffer, dat_article_len);
+			lenOutBuf += dat_article_len;
+			nArticlesConcatnated++;
+		}
+		nLastDatFileId = dat_file_id;
+		
+		if (i && !(i % 10000))
+			processing_speed(i);
+	}
+	processing_speed(i);
+	
+	printf("last title of dat %d [%s]\n", nLastDatFileId, sLastTitle);
+	if (nArticlesConcatnated > 0)
+	{
+		nTotalUncompressed += lenOutBuf;
+		nTotalUncompressedUnder += lenOutBuf;
+		offsetDat = ftell(fdOutDat[nLastDatFileId]);
+		lenOutBuf = compress_article(outBuf, lenOutBuf);
+		nTotalCompressed += lenOutBuf;
+		nTotalCompressedUnder += lenOutBuf;
+		nCompressedCountUnder += nArticlesConcatnated;
+		nCompressedCount++;
+		for (j = 0; j < nArticlesConcatnated; j++)
+		{
+			articlePtrs[aConcatArticleBuf[j].article_id - 1].offset_dat = offsetDat;
+			articlePtrs[aConcatArticleBuf[j].article_id - 1].file_id_compressed_len &= 0xFF000000;
+			articlePtrs[aConcatArticleBuf[j].article_id - 1].file_id_compressed_len |= lenOutBuf;
+		}
+		fwrite(&nArticlesConcatnated, sizeof(nArticlesConcatnated), 1, fdOutDat[dat_file_id]);
+		if (nArticlesConcatnated > 0)
+			fwrite(aConcatArticleBuf, sizeof(CONCAT_ARTICLE_INFO), nArticlesConcatnated, fdOutDat[dat_file_id]);
+		fwrite(&compressed_buffer, lenOutBuf, 1, fdOutDat[dat_file_id]);
+	}
+	
+	for (i = 0; i < MAX_DAT_FILES; i++)
+	{
+		if (fdDat[i])
+			fclose(fdDat[i]);
+		if (fdOutDat[i])
+			fclose(fdOutDat[i]);
+	}
+
+	printf("nCompressedCount           = %Lf\n",nCompressedCount       );     
+	printf("nTotalCompressed           = %Lf\n",nTotalCompressed       );
+	printf("nTotalUncompressed         = %Lf\n",nTotalUncompressed     );
+	printf("nCompressedCountdOver      = %Lf\n",nCompressedCountdOver  );
+	printf("nTotalCompressedOver       = %Lf\n",nTotalCompressedOver   );
+	printf("nTotalUncompressedOver     = %Lf\n",nTotalUncompressedOver );
+	printf("nCompressedCountUnder      = %Lf\n",nCompressedCountUnder  );
+	printf("nTotalCompressedUnder      = %Lf\n",nTotalCompressedUnder  );
+	printf("nTotalUncompressedUnder    = %Lf\n",nTotalUncompressedUnder);
+	printf("nTotalCompressed/nTotalUncompressed = %Lf\n",nTotalCompressed/nTotalUncompressed);
+	printf("nTotalCompressedUnder/nTotalUncompressedUnder = %Lf\n",nTotalCompressedUnder/nTotalUncompressedUnder);
+	printf("nTotalCompressedOver/nTotalUncompressedOver = %Lf\n",nTotalCompressedOver/nTotalUncompressedOver);
+}
+
+void compress_fnd(TITLE_SEARCH *titleSearches, long nIdxCount, unsigned char *bufFnd, SEARCH_HASH_TABLE *search_hash_table, long nHashEntries, long *firstThreeCharIndexing)
+{
+	char *aKeepingFullTitle;
+	long idxTitleSearches;
+	long i, j;
+	char sLastTitleSearch[MAX_TITLE_SEARCH];
+	char sLastTitleActual[MAX_TITLE_SEARCH];
+	
+	aKeepingFullTitle = (char *)malloc(nTitleSearches);
+	if (!aKeepingFullTitle)
+	{
+		showMsg(0, "malloc aKeepingFullTitle error\n");
+		exit(-1);
+	}
+	memset(aKeepingFullTitle, 0, nIdxCount);
+	
+	for (i = 0; i < SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT; i++)
+	{
+		if (firstThreeCharIndexing[i])
+		{
+			memcpy((void *)&idxTitleSearches, (void *)&bufFnd[firstThreeCharIndexing[i]], sizeof(idxTitleSearches));
+			aKeepingFullTitle[idxTitleSearches ] = 1;
+		}
+	}
+	for (i = 0; i < nHashEntries; i++)
+	{
+		if (search_hash_table[i].offset_fnd)
+		{
+			memcpy((void *)&idxTitleSearches, (void *)&bufFnd[search_hash_table[i].offset_fnd], sizeof(idxTitleSearches));
+			aKeepingFullTitle[idxTitleSearches ] = 1;
+		}
+	}
+	
+	sLastTitleSearch[0] = '\0';
+	sLastTitleActual[0] = '\0';
+	for (i=0; i < nTitleSearches; i++)
+	{
+		if (!aKeepingFullTitle[i])
+		{
+			j = 0;
+			while (j < 31 && sLastTitleSearch[j] && sLastTitleSearch[j] == titleSearches[i].sTitleSearch[j])
+				j++;
+			if (j > 1)
+			{
+				memcpy(&titleSearches[i].sTitleSearch[1], &titleSearches[i].sTitleSearch[j], strlen(titleSearches[i].sTitleSearch) - j);
+				titleSearches[i].sTitleSearch[strlen(titleSearches[i].sTitleSearch) - j] = '\0';
+				titleSearches[i].sTitleSearch[0] = j;
+			}
+			strcpy(sLastTitleSearch, titleSearches[i].sTitleSearch);
+			
+			j = 0;
+			while (j < 31 && sLastTitleActual[j] && sLastTitleActual[j] == titleSearches[i].sTitleActual[j])
+				j++;
+			if (j > 1)
+			{
+				memcpy(&titleSearches[i].sTitleActual[1], &titleSearches[i].sTitleActual[j], strlen(titleSearches[i].sTitleActual) - j);
+				titleSearches[i].sTitleActual[strlen(titleSearches[i].sTitleActual) - j] = '\0';
+				titleSearches[i].sTitleActual[0] = j;
+			}
+			strcpy(sLastTitleActual, titleSearches[i].sTitleActual);
+		}
+	}
+}
+
+void save_fnd(TITLE_SEARCH *titleSearches, long nIdxCount)
+{
+	int i;
+	FILE *fdOutFnd;
+	long offset;
+	int len;
+	char sTitle[MAX_TITLE_SEARCH];
+	
+	fdOutFnd = fopen("wiki.fnd", "wb");
+
+	fwrite(&aBigram[0][0], 1, SIZE_BIGRAM_BUF, fdOutFnd);
+	fwrite(&nTitleSearches, sizeof(nTitleSearches), 1, fdOutFnd); // just to make sure the first titleSearches entry does not start at 0
+	offset = sizeof(nIdxCount) + SIZE_BIGRAM_BUF;
+	for (i=0; i < nTitleSearches; i++)
+	{
+		fwrite(&titleSearches[i], 1, 5, fdOutFnd);
+		titleSearches[i].idxArticle = offset; // use it to store the offset of fnd for idx and pfx
+		offset += 5;
+		bigram_encode(sTitle, titleSearches[i].sTitleSearch);
+		len = strlen(sTitle) + 1;
+		fwrite(sTitle, 1, len, fdOutFnd);
+		offset += len;
+		// Actual title cannot be bigram encoded since it can contain any UTF8 characters
+		len = strlen(titleSearches[i].sTitleActual) + 1;
+		fwrite(titleSearches[i].sTitleActual, 1, len, fdOutFnd);
+		offset += len;
+	}
+	fclose(fdOutFnd);
+}
+
+void reorg_pfx(long *firstThreeCharIndexing, unsigned char *bufFnd, TITLE_SEARCH *titleSearches)
+{
+	int i;
+	long idxTitleSearches;
+	FILE *fdOutPfx;
+
+	fdOutPfx = fopen("wiki.pfx", "wb");
+	for (i=1; i < SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT; i++)
+	{
+		if (firstThreeCharIndexing[i])
+		{
+			memcpy((void *)&idxTitleSearches, (void *)&bufFnd[firstThreeCharIndexing[i]], sizeof(idxTitleSearches));
+			firstThreeCharIndexing[i] = titleSearches[idxTitleSearches].idxArticle;
+		}
+	}
+	fwrite((void*)firstThreeCharIndexing, 1, SIZE_FIRST_THREE_CHAR_INDEXING, fdOutPfx);
+	fclose(fdOutPfx);
+}
+
+void reorg_idx(ARTICLE_PTR *articlePtrs, long nIdxCount, unsigned char *bufFnd, TITLE_SEARCH *titleSearches)
+{
+	int i;
+	long idxTitleSearches;
+	FILE *fdOutIdx;
+
+	fdOutIdx = fopen("wiki.idx", "wb");
+	for (i=0; i < nIdxCount; i++)
+	{
+		memcpy((void *)&idxTitleSearches, (void *)&bufFnd[articlePtrs[i].offset_fnd], sizeof(idxTitleSearches));
+		articlePtrs[i].offset_fnd = titleSearches[idxTitleSearches].idxArticle;
+	}
+	fwrite((void*)&nIdxCount, 1, sizeof(nIdxCount), fdOutIdx);
+	fwrite((void*)articlePtrs, sizeof(ARTICLE_PTR),  nIdxCount, fdOutIdx);
+	fclose(fdOutIdx);
+}
+
+void reorg_hsh(SEARCH_HASH_TABLE *search_hash_table, long nHashEntries, unsigned char *bufFnd, TITLE_SEARCH *titleSearches)
+{
+	int i;
+	long idxTitleSearches;
+	FILE *fdOutHsh;
+
+	fdOutHsh = fopen("wiki.hsh", "wb");
+	for (i=0; i < nHashEntries; i++)
+	{
+		if (search_hash_table[i].offset_fnd)
+		{
+			memcpy((void *)&idxTitleSearches, (void *)&bufFnd[search_hash_table[i].offset_fnd], sizeof(idxTitleSearches));
+			search_hash_table[i].offset_fnd = titleSearches[idxTitleSearches ].idxArticle;
+		}
+	}
+	fwrite((void*)&nHashEntries, 1, sizeof(nHashEntries), fdOutHsh);
+	fwrite((void*)search_hash_table, sizeof(SEARCH_HASH_TABLE),  nHashEntries, fdOutHsh);
+	fclose(fdOutHsh);
+}
+
+void reorg_pedia(void)
+{
+	FILE *fdPfx, *fdFnd, *fdIdx, *fdHsh;
+	long *firstThreeCharIndexing;
+	unsigned char *bufFnd;
+	long lenBufFnd;
+	ARTICLE_PTR *articlePtrs;
+	TITLE_SEARCH *titleSearches;
+	long nIdxCount;
+	SEARCH_HASH_TABLE *search_hash_table;
+	long nHashEntries;
+	long nReadCount;
+	
+	fdPfx = fopen("pedia/wiki.pfx", "rb");
+	if (!fdPfx)
+	{
+		showMsg(0, "cannot open file pedia.pfx, error: %s\n", strerror(errno));
+		exit(-1);
+	}
+	fdFnd = fopen("pedia/wiki.fnd", "rb");
+	if (!fdFnd)
+	{
+		showMsg(0, "cannot open file pedia.fnd, error: %s\n", strerror(errno));
+		exit(-1);
+	}
+	fdIdx = fopen("pedia/wiki.idx", "rb");
+	if (!fdIdx)
+	{
+		printf("open pedia.idx error\n");
+		exit(-1);
+	}
+	fdHsh = fopen("pedia/wiki.hsh", "rb");
+	if (!fdHsh)
+	{
+		printf("open pedia/wiki.hsh error\n");
+		exit(-1);
+	}
+	
+	init_bigram(fdFnd);
+	firstThreeCharIndexing = (long *)malloc(SIZE_FIRST_THREE_CHAR_INDEXING);
+	if (!firstThreeCharIndexing)
+	{
+		showMsg(0, "malloc firstThreeCharIndexing error\n");
+		exit(-1);
+	}
+	fread((void*)firstThreeCharIndexing, 1, SIZE_FIRST_THREE_CHAR_INDEXING, fdPfx);
+	fseek(fdFnd, 0, SEEK_END);
+	lenBufFnd = ftell(fdFnd);
+	fseek(fdFnd, 0, SEEK_SET);
+	bufFnd = malloc(lenBufFnd);
+	if (!bufFnd)
+	{
+		showMsg(0, "malloc bufFnd error\n");
+		exit(-1);
+	}
+	lenBufFnd = fread(bufFnd, 1, lenBufFnd, fdFnd);
+	fread((void*)&nIdxCount, 1, sizeof(nIdxCount), fdIdx);
+	articlePtrs = (ARTICLE_PTR *)malloc(sizeof(ARTICLE_PTR) * nIdxCount);
+	if (!articlePtrs)
+	{
+		showMsg(0, "malloc articlePtrs error\n");
+		exit(-1);
+	}
+	nReadCount = fread((void*)articlePtrs, sizeof(ARTICLE_PTR),  nIdxCount, fdIdx);
+printf("nIdxCount %ld, %ld, %ld\n", nIdxCount, sizeof(TITLE_SEARCH) * nIdxCount * 3, nReadCount);
+	titleSearches = (TITLE_SEARCH *)malloc(sizeof(TITLE_SEARCH) * nIdxCount * 3);
+	if (!titleSearches)
+	{
+		showMsg(0, "malloc titleSearches error\n");
+		exit(-1);
+	}
+	fread(&nHashEntries, sizeof(nHashEntries), 1, fdHsh);
+	search_hash_table = (SEARCH_HASH_TABLE *)malloc(sizeof(SEARCH_HASH_TABLE) * nHashEntries);
+	if (!search_hash_table)
+	{
+		showMsg(0, "malloc search_hash_table error\n");
+		exit(-1);
+	}
+	fread((void *)search_hash_table, sizeof(SEARCH_HASH_TABLE), nHashEntries, fdHsh);
+	
+	fclose(fdPfx);
+	fclose(fdFnd);
+	fclose(fdIdx);
+	fclose(fdHsh);
+
+printf("convert_fnd\n");
+	convert_fnd(bufFnd, lenBufFnd, titleSearches);
+printf("reorg_dat\n");
+	reorg_dat(articlePtrs, nIdxCount, bufFnd, titleSearches);
+printf("compress_fnd\n");
+	compress_fnd(titleSearches, nIdxCount, bufFnd, search_hash_table, nHashEntries, firstThreeCharIndexing);
+printf("save_fnd\n");
+	save_fnd(titleSearches, nIdxCount);
+printf("reorg_pfx\n");
+	reorg_pfx(firstThreeCharIndexing, bufFnd, titleSearches);
+printf("reorg_idx\n");
+	reorg_idx(articlePtrs, nIdxCount, bufFnd, titleSearches);
+printf("reorg_hsh\n");
+	reorg_hsh(search_hash_table, nHashEntries, bufFnd, titleSearches);
+
+	free(firstThreeCharIndexing);
+	free(articlePtrs);
+	free(bufFnd);
+	free(titleSearches);
+	free(search_hash_table);
 }
 
 void process_pass_3(MYSQL *conn, MYSQL *conn2, int bSplitted)

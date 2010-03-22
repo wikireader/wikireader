@@ -413,6 +413,11 @@ int main(int argc, char **argv)
 		generate_pedia_hsh();
 		exit(0);
 	}
+	if (pass == 6)
+	{
+		reorg_pedia();
+		exit(0);
+	}
 	if (!titlesToProcess)
 		titlesToProcess = 1024;
 	if (!sFileName[0])
