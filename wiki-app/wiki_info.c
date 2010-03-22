@@ -26,17 +26,20 @@
 #include "wikilib.h"
 #include "lcd_buf_draw.h"
 #include "wiki_info.h"
+#include "search.h"
+#include "search_hash.h"
+#include "msg.h"
 
 WIKI_LIST wiki_list[MAX_WIKIS] =
 {
-	{1, "enpedia"},
-	{2, "espedia"},
-	{3, "frpedia"},
-	{4, "depedia"},
-	{5, "nlpedia"},
-	{6, "ptpedia"},
-	{7, "fipedia"},
-	{8, "japedia"},
+	{1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia"},
+	{2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia"},
+	{3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia"},
+	{4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia"},
+	{5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia"},
+	{6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia"},
+	{7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia"},
+	{8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia"},
 };
 
 int nWikiCount = 0;
@@ -97,6 +100,60 @@ void init_wiki_info(void)
 		fatal_error("No wiki found");
 }
 
+bool wiki_lang_exist(char *lang_link_str)
+{
+	int len;
+	char *p;
+	bool rc = false;
+	int i;
+	int current_wiki_cat = -1;
+
+	p = strchr(lang_link_str, ':');
+	if (p)
+	{
+		int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
+		current_wiki_cat = wiki_list[aWikiInfoIdx[wiki_idx]].wiki_cat;
+		len = p - lang_link_str;
+		for (i = 0; i < nWikiCount; i++)
+		{
+			if (current_wiki_cat == wiki_list[aWikiInfoIdx[i]].wiki_cat && !strncmp(lang_link_str, wiki_list[aWikiInfoIdx[i]].wiki_lang, len))
+				rc = true;
+		}
+	}
+	return rc;
+}
+
+uint32_t wiki_lang_link_search(char *lang_link_str)
+{
+	uint32_t article_idx = 0;
+	int len;
+	char *p;
+	int i;
+	int current_wiki_cat = -1;
+	int nTmpeCurrentWiki = nCurrentWiki;
+
+	p = strchr(lang_link_str, ':');
+	if (p)
+	{
+		int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
+		current_wiki_cat = wiki_list[aWikiInfoIdx[wiki_idx]].wiki_cat;
+		len = p - lang_link_str;
+		for (i = 0; i < nWikiCount; i++)
+		{
+			if (current_wiki_cat == wiki_list[aWikiInfoIdx[i]].wiki_cat && !strncmp(lang_link_str, wiki_list[aWikiInfoIdx[i]].wiki_lang, len))
+			{
+				nCurrentWiki = i;
+				init_search_hash();
+				article_idx = get_article_idx_by_title(p + 1);
+				if (article_idx)
+					article_idx |= wiki_list[aWikiInfoIdx[i]].wiki_id << 24;
+				nCurrentWiki = nTmpeCurrentWiki;
+				break;
+			}
+		}
+	}
+	return article_idx;
+}	
 char *get_wiki_file_path(int nWikiIdx, char *file_name)
 {
 	static char sFilePath[32];
@@ -135,7 +192,7 @@ int get_wiki_id_from_idx(int wiki_idx)
 	return 0;
 }
 
-unsigned char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len)
+char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len)
 {
 	int i, j;
 	int key_len = strlen(key);
@@ -168,7 +225,7 @@ unsigned char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len)
 		return "";
 }
 
-unsigned char *get_nls_text(char *key)
+char *get_nls_text(char *key)
 {
 	int fd;
 	unsigned int nSize;
@@ -251,7 +308,7 @@ void nls_replace_text(char *replace_str, char *out_str)
 {
 	if (!strcmp(replace_str, "title"))
 	{
-		extract_title_from_article(out_str);
+		extract_title_from_article(NULL, out_str);
 		while (*out_str)
 		{
 			if (*out_str == ' ')

@@ -29,9 +29,12 @@
 #define NUMBER_OF_FIRST_PAGE_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
-/* MAX_DAT_FILES cannot be less than the number of batches in the rendering process */
+
 #define MAX_DAT_FILES 64
-#define MAX_COMPRESSED_ARTICLE 256*1024
+
+// How does this compare to: lcd_draw_buf.h: FILE_BUFFER_SIZE
+// Presently set the same. Is it possible to assume 2:1 compression ratio?
+#define MAX_COMPRESSED_ARTICLE (512 * 1024)
 
 enum {
 	SEARCH_RELOAD_NORMAL,
@@ -46,17 +49,23 @@ enum {
 	SEARCH_TO_BE_RELOADED_CHECK,
 };
 
-typedef struct _ARTICLE_PTR {
-	uint32_t offset_dat;	/* offset to pedia?.dat for the article content */
-	uint32_t offset_fnd;	/* offset to pedia.fnd for the title (for search) */
-	uint32_t file_id_compressed_len; 	/* byte 0: bit0~1 - compress method (00 - lzo, 01 - bzlib, 10 - 7z), bit 2~7 pedia file id */
-					/* byte 1~3: compressed article length */
+// IDX file structure: uint32_t #entries, #entries * [ARTICLE_PTR]
+typedef struct __attribute__((packed)) _ARTICLE_PTR {
+	uint32_t offset_dat;	// offset to pedia?.dat for the article content
+	uint32_t offset_fnd;	// offset to pedia.fnd for the title (for search)
+	uint8_t file_id; 	// pedia file id 0..255
 } ARTICLE_PTR;
 
-typedef struct _TITLE_SEARCH { /* used to mask the porinter to the remainder of the title for search */
-	uint32_t idxArticle;
-	char cZero; /* null character for backward search */
-	char sTitleSearch[MAX_TITLE_SEARCH]; /* null terminated title for search (with bigram encoded) */
+// FND file is just a concatenation of the following records
+// Note: 1. sTitleActual is placed right after the '\0' of sTitleSearch in the file
+//          some re-arrangement will be required
+//       2. if the first byte of either title is in the range 1..31
+//          then it represents 2..32 chars of prefix to be copied from the previous title
+typedef struct __attribute__((packed)) _TITLE_SEARCH {
+	uint32_t idxArticle;    // article number [1..N]
+	char cZero;             // null character for backward search
+	char sTitleSearch[MAX_TITLE_SEARCH]; // null terminated bigram encoded title for search
+	char sTitleActual[MAX_TITLE_SEARCH]; // null terminated utf-8 encoded actual title
 } TITLE_SEARCH;
 
 /*
@@ -124,4 +133,5 @@ void search_result_display();
 int clear_search_string();
 int  get_search_string_len();
 int check_search_string_change(void);
+uint32_t get_article_idx_by_title(char *title);
 #endif

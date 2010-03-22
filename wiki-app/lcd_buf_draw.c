@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 #ifdef WIKIPCF
 #include <wchar.h>
@@ -53,7 +54,9 @@
 #define SCROLL_UNIT_SECOND 0.1
 #define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.1
 #define LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.35
+#define RESTRICTED_MARK_LINK 0xFFFFFF
 #define PREVIOUS_ARTICLE_LINK 0xFFFFFE
+#define EXTERNAL_ARTICLE_LINK 0xFFFFFD
 #define PREVIOUS_ARTICLE_LINKABLE_SIZE 20
 
 #ifdef OVER_SCROLL_ENABLED
@@ -80,8 +83,10 @@ int lcd_draw_init_y_pos = 0;
 int request_display_next_page = 0;
 int request_y_pos = 0;
 int cur_render_y_pos = 0;
+int article_start_y_pos = 0;
 
 ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
+EXTERNAL_LINK externalLink[MAX_EXTERNAL_LINKS];
 
 #ifndef WIKIPCF
 int link_to_be_activated = -1;
@@ -666,7 +671,8 @@ void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 
 	h_line_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
 	h_line_y -= lcd_draw_buf.align_adjustment + 1;
-
+	if (end_x > LCD_BUF_WIDTH_PIXELS)
+		end_x = LCD_BUF_WIDTH_PIXELS;
 
 	for(i = start_x;i<end_x;i++)
 	{
@@ -1005,6 +1011,7 @@ void init_render_article(long init_y_pos)
 
 	display_first_page = 0;
 	lcd_draw_cur_y_pos = 0;
+	article_start_y_pos = 0;
 	lcd_draw_init_y_pos = init_y_pos;
 	finger_move_speed = 0;
 #ifdef OVER_SCROLL_ENABLED
@@ -1651,17 +1658,63 @@ void scroll_article(void)
 	}
 }
 
+void draw_external_link(char *link_str)
+{
+	char lang[3];
+	int i, j;
+	int str_width;
+	
+	memcpy(lang, link_str, 2);
+	lang[2] = '\0';
+	str_width = get_external_str_pixel_width(lang, SUBTITLE_FONT_IDX);
+	for (i = 0; i < LANGUAGE_LINK_HEIGHT; i++)
+	{
+		if (i == 1 || i == LANGUAGE_LINK_HEIGHT - 2)
+		{
+			for (j = lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 2; j < lcd_draw_buf.current_x + LCD_LEFT_MARGIN + LANGUAGE_LINK_WIDTH - 3; j++)
+			{
+				lcd_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
+			}
+		}
+		else if (2 <= i && i <= LANGUAGE_LINK_HEIGHT - 3)
+		{
+			for (j = lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 1; j < lcd_draw_buf.current_x + LCD_LEFT_MARGIN + LANGUAGE_LINK_WIDTH - 2; j++)
+			{
+				lcd_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
+			}
+		}
+	}
+	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + (LANGUAGE_LINK_WIDTH - str_width) / 2 - 1, 
+		lcd_draw_buf.current_y + 2, lang, 2, 1);
+	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
+}
+
+int duplicate_wiki_lang(char *link_str1, char *link_str2)
+{
+	char *p;
+	int len;
+	
+	p = strchr(link_str1, ':');
+	if (p)
+	{
+		len = p - link_str1;
+		if (!memcmp(link_str1, link_str2, len))
+			return 1;
+	}
+	return 0;
+}
+
 void display_retrieved_article(long idx_article)
 {
 	int i;
 	int offset;
 	ARTICLE_HEADER article_header;
 	char title[MAX_TITLE_SEARCH];
-	int link_count_addon = 0;
 	int bKeepPos = 0;
 	int nCurrentWikiId = get_wiki_id_from_idx(nCurrentWiki);
 	int nArticleWikiId;
 	int nLinkWikiId;
+	unsigned int start_x, end_x, start_y, end_y;
 
 	nArticleWikiId = idx_article >> 24;
 	if (last_display_mode == DISPLAY_MODE_HISTORY)
@@ -1674,24 +1727,79 @@ void display_retrieved_article(long idx_article)
 		init_render_article(0);
 	}
 	memcpy(&article_header,file_buffer,sizeof(ARTICLE_HEADER));
-	offset = sizeof(ARTICLE_HEADER);
-
 	articleLink[0].start_xy = 0;
 	articleLink[0].end_xy = 0;
 	articleLink[0].article_id = PREVIOUS_ARTICLE_LINK;
-	link_count_addon = 1;
+	article_link_count = 1;
+	
+	offset = sizeof(ARTICLE_HEADER) + sizeof(ARTICLE_LINK) * article_header.article_link_count;
+	// externalLink[] is for storing the pointer to the language link string.
+	// A corresponding artileLink (with the same index) will be used to store the start_xy and end_xy information.
+	// The corresponding articleLink.article_id will be set to EXTERNAL_ARTICLE_LINK for distinguishing with normal article links.
+	while (offset < article_header.offset_article && article_link_count < MAX_EXTERNAL_LINKS)
+	{
+		externalLink[article_link_count].link_str = file_buffer + offset;
+		if (wiki_lang_exist(externalLink[article_link_count].link_str))
+		{
+			int bDuplicated = 0; 
+			for (i = 1; i < article_link_count; i++)
+			{
+				if (duplicate_wiki_lang(externalLink[article_link_count].link_str, externalLink[i].link_str))
+				{
+					externalLink[i].link_str = externalLink[article_link_count].link_str;
+					bDuplicated = 1;
+				}
+			}
+			if (!bDuplicated)
+			{
+				if (article_link_count == 1) // first external link
+				{
+					lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
+					lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace;
+					lcd_draw_buf.current_x = 0;
+					lcd_draw_buf.current_y = LCD_TOP_MARGIN;
+					lcd_draw_buf.vertical_adjustment = 0;
+					lcd_draw_buf.align_adjustment = 0;
+				}
+				if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP >= LCD_BUF_WIDTH_PIXELS)
+				{
+					lcd_draw_buf.current_x = 0;
+					lcd_draw_buf.current_y += LANGUAGE_LINK_HEIGHT + LANGUAGE_LINK_WIDTH_GAP;
+				}
+				start_x = lcd_draw_buf.current_x;
+				start_y = lcd_draw_buf.current_y;
+				end_x = lcd_draw_buf.current_x + LANGUAGE_LINK_WIDTH - 1;
+				end_y = lcd_draw_buf.current_y + LANGUAGE_LINK_HEIGHT - 1;
+				draw_external_link(externalLink[article_link_count].link_str);
+				articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
+				articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
+				articleLink[article_link_count].article_id = EXTERNAL_ARTICLE_LINK;
+				article_link_count++;
+			}
+		}
+		offset += strlen(file_buffer + offset) + 1;
+	}
+	if (article_link_count > 1)
+	{
+		lcd_draw_buf.current_x = 0;
+		lcd_draw_buf.current_y += LANGUAGE_LINK_HEIGHT + LANGUAGE_LINK_WIDTH_GAP;
+	}
+	article_start_y_pos = lcd_draw_buf.current_y;
+	if (article_start_y_pos && !lcd_draw_init_y_pos)
+		lcd_draw_init_y_pos = article_start_y_pos;
+
+	offset = sizeof(ARTICLE_HEADER);
 	if (restricted_article)
 	{
-		articleLink[1].start_xy = (unsigned  long)(211 | (4 << 8));
-		articleLink[1].end_xy = (unsigned  long)(230 | (24 << 8));
-		articleLink[1].article_id = RESTRICTED_MARK_LINK;
-		link_count_addon = 2;
+		articleLink[article_link_count].start_xy = (unsigned  long)(211 | ((4 + article_start_y_pos) << 8));
+		articleLink[article_link_count].end_xy = (unsigned  long)(230 | ((24 + article_start_y_pos) << 8));
+		articleLink[article_link_count].article_id = RESTRICTED_MARK_LINK;
+		article_link_count++;
 	}
 
-	if(article_header.article_link_count > MAX_ARTICLE_LINKS - link_count_addon)
-		article_header.article_link_count = MAX_ARTICLE_LINKS - link_count_addon;
+	if(article_header.article_link_count > MAX_ARTICLE_LINKS - article_link_count)
+		article_header.article_link_count = MAX_ARTICLE_LINKS - article_link_count;
 
-	article_link_count = link_count_addon;
 	for(i = 0; i < article_header.article_link_count && article_link_count < MAX_ARTICLE_LINKS; i++)
 	{
 		memcpy(&articleLink[article_link_count],file_buffer+offset,sizeof(ARTICLE_LINK));
@@ -1701,6 +1809,15 @@ void display_retrieved_article(long idx_article)
 		{
 			if (nArticleWikiId && !nLinkWikiId)
 				articleLink[article_link_count].article_id |= nArticleWikiId << 24;
+			if (article_start_y_pos)
+			{
+				start_x = articleLink[article_link_count].start_xy & 0xFF;
+				start_y = (articleLink[article_link_count].start_xy >> 8) & 0xFFFFFF;
+				end_x = articleLink[article_link_count].end_xy & 0xFF;
+				end_y = (articleLink[article_link_count].end_xy >> 8) & 0xFFFFFF;
+				articleLink[article_link_count].start_xy = (unsigned  long)(start_x | ((start_y + article_start_y_pos) << 8));
+				articleLink[article_link_count].end_xy = (unsigned  long)(end_x | ((end_y + article_start_y_pos) << 8));
+			}
 			article_link_count++;
 		}
 		offset+=sizeof(ARTICLE_LINK);
@@ -1710,7 +1827,7 @@ void display_retrieved_article(long idx_article)
 
 	display_first_page = 0; // use this to disable scrolling until the first page of the linked article is loaded
 	//get_article_title_from_idx(idx_article, title);
-	extract_title_from_article(title);
+	extract_title_from_article(NULL, title);
 	history_add(idx_article, title, bKeepPos);
 	saved_prev_idx_article = 0;
 }
@@ -2081,7 +2198,7 @@ void invert_link(int article_link_number)
 	article_id = articleLink[article_link_number].article_id;
 	invert_link_area(article_link_number);
 
-	if (display_mode == DISPLAY_MODE_ARTICLE)
+	if (display_mode == DISPLAY_MODE_ARTICLE && article_id != EXTERNAL_ARTICLE_LINK)
 	{
 		local_link_number = article_link_number - 1;
 		while (local_link_number >= 0 && article_id == articleLink[local_link_number].article_id)
@@ -2135,11 +2252,19 @@ int check_invert_link()
 void open_article_link(int x,int y)
 {
 	int article_link_number;
+	long idx_article;
 
 	article_link_number = isArticleLinkSelected(x,y);
 	if(article_link_number >= 0)
 	{
-		display_link_article(articleLink[article_link_number].article_id);
+		idx_article = articleLink[article_link_number].article_id;
+		if (idx_article == EXTERNAL_ARTICLE_LINK)
+		{
+			idx_article = wiki_lang_link_search(externalLink[article_link_number].link_str);
+			if (!idx_article)
+				return;
+		}
+		display_link_article(idx_article);
 	}
 }
 
@@ -2157,6 +2282,12 @@ void open_article_link_with_link_number(int article_link_number)
 		delay_us(100000);
 #endif
 		invert_link(article_link_number);
+	}
+	else if (idx == EXTERNAL_ARTICLE_LINK)
+	{
+		idx = wiki_lang_link_search(externalLink[article_link_number].link_str);
+		if (!idx)
+			return;
 	}
 	display_link_article(idx);
 }
@@ -2411,14 +2542,15 @@ void msg_on_lcd_clear(int x, int y)
 #endif
 }
 
-void extract_title_from_article(unsigned char *title)
+void extract_title_from_article(unsigned char *article_buf, unsigned char *title)
 {
-	unsigned char *article_buf = file_buffer;
 	unsigned char c, c2;
 	int bDone = 0;
 	ARTICLE_HEADER article_header;
 	int lenTitle = 0;
 		
+	if (!article_buf)
+		article_buf = file_buffer;
 	memcpy(&article_header, article_buf, sizeof(ARTICLE_HEADER));
 	article_buf += article_header.offset_article;
 
@@ -2448,8 +2580,7 @@ void extract_title_from_article(unsigned char *title)
 		}
 		else
 		{
-			title[lenTitle++] = c;
-			article_buf++;
+			title[lenTitle++] = *article_buf++;
 			if (lenTitle >= MAX_TITLE_SEARCH - 1)
 				bDone = 1;
 		}

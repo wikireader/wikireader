@@ -50,98 +50,98 @@
   characters are used as escape characters.
 
   1 - escape character 0 (space line), the byte after it contains the
-      pixels of the space line
-  
+  pixels of the space line
+
   2 - escape character 1 (new line with the default font and the default
-      line space)
-  
+  line space)
+
   3 - escape character 2 (new line with the same font and line space as
-      the previous line, not considering the font changes and
-      adjustments)
-  
+  the previous line, not considering the font changes and
+  adjustments)
+
   4 - escape character 3 (new line with non-default font and line space)
-	Definition of the byte after it:
-		bit0~2 - font id (1 ~ 7)
-		bit3~7 - pixels of the line space
-  
+  Definition of the byte after it:
+  bit0~2 - font id (1 ~ 7)
+  bit3~7 - pixels of the line space
+
   5 - escape character 4 (change font)
-  
-      The font change (including alignment adjustment) is reset after
-      the escape character 1, 3, 4 or 5.
-  
-      Definition of the byte after it:
-  
-	bit0~2 - font id (1 ~ 7)
-  
-	bit3~7 - adjustment to the default horizontal alignment
-	       (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
-  
+
+  The font change (including alignment adjustment) is reset after
+  the escape character 1, 3, 4 or 5.
+
+  Definition of the byte after it:
+
+  bit0~2 - font id (1 ~ 7)
+
+  bit3~7 - adjustment to the default horizontal alignment
+  (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
+
   6 - escape character 5 (reset to the default font)
-  
+
   7 - escape character 6 (reset to the default vertical alignment)
-  
+
   8 - escape character 7 (forward), the byte after it stands for the
-      pixels of move right (as the starting point of the next character).
-  
-      The next character or drawing line starts at the position after the movement.
-      The rightmost position after the movement is the rightmost pixel of the screen.
-  
+  pixels of move right (as the starting point of the next character).
+
+  The next character or drawing line starts at the position after the movement.
+  The rightmost position after the movement is the rightmost pixel of the screen.
+
   9 - escape character 8 (backward), the byte after it stands for the
-      pixels to move left (from the original starting point of the next
-      character).
-  
-      The next character or line starts at the position after the movement.
-  
-      The leftmost position after the movement is the leftmost pixel of the screen.
-  
+  pixels to move left (from the original starting point of the next
+  character).
+
+  The next character or line starts at the position after the movement.
+
+  The leftmost position after the movement is the leftmost pixel of the screen.
+
   10 - escape character 9 (alignment vertical adjustment), the byte after
-      it stand for the pixels to adjust to the default vertical
-      alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
-  
-      It takes effect for all lines after that until another excape
-      character 9 or escape character 6 is encountered.
-  
+  it stand for the pixels to adjust to the default vertical
+  alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
+
+  It takes effect for all lines after that until another excape
+  character 9 or escape character 6 is encountered.
+
   11 - escape character 10 (drawing horizontal line from right to left,
-       1 pixel thick), the next byte after it stands for the length of
-       the line in pixels.
-  
-       The line starts at 1 pixel left to the starting position of the
-       next character.
-  
-       Move forward/backward or set the alignment adjustment before
-       drawing lines as necessary.
-  
-       The horizontal line does not change the horizontal position of
-       the next character.
-  
+  1 pixel thick), the next byte after it stands for the length of
+  the line in pixels.
+
+  The line starts at 1 pixel left to the starting position of the
+  next character.
+
+  Move forward/backward or set the alignment adjustment before
+  drawing lines as necessary.
+
+  The horizontal line does not change the horizontal position of
+  the next character.
+
   12 - escape character 11 (drawing vertical line from bottom to top, 1
-       pixel thick), the next byte after it stands for the length of the
-       line in pixels.
-  
-       The vertical line starts at the current vertical position (the
-       starting position of the next character) and the bottom of the
-       current horizontal alignment.
-  
-       Move forward/backward or set the alignment adjustment before
-       drawing lines as necessary.
-  
-       The horizontal line does not change the horizontal position of the next character.
-  
+  pixel thick), the next byte after it stands for the length of the
+  line in pixels.
+
+  The vertical line starts at the current vertical position (the
+  starting position of the next character) and the bottom of the
+  current horizontal alignment.
+
+  Move forward/backward or set the alignment adjustment before
+  drawing lines as necessary.
+
+  The horizontal line does not change the horizontal position of the next character.
+
   13 - escape character 12 (single pixel horizontal line), the
-       horizontal line pccupies from the left-most pixel to the
-       right-most pixel.
-       The line is 1 pixel high.
-  
-  
+  horizontal line pccupies from the left-most pixel to the
+  right-most pixel.
+  The line is 1 pixel high.
+
+
   14 - escape character 13 (single pixel vertical line), the vertical
-       line pccupies from the top to the bottom of the current line
-       space.
-  
-       The vertical line pccupies 1 pixel width.
-  
-  15 - escape character 14 (bitmap), the next byte after it stands for 
-       the width of the bitmap in pixels and the 3rd and 4th bytes sand for the height.
- 
+  line pccupies from the top to the bottom of the current line
+  space.
+
+  The vertical line pccupies 1 pixel width.
+
+  15 - escape character 14 (bitmap), the next byte after it stands for
+  the width of the bitmap in pixels and the 3rd and 4th bytes sand for the height.
+
 */
 
 #ifndef _LCD_BUF_DRAW_H
@@ -193,6 +193,10 @@
 #else
 #define LCD_BUF_WIDTH_BYTES LCD_VRAM_WIDTH_PIXELS/8
 #endif
+#define LANGUAGE_LINK_WIDTH 26
+#define LANGUAGE_LINK_HEIGHT 26
+#define LANGUAGE_LINK_WIDTH_GAP 6
+#define LANGUAGE_LINK_HEIGHT_GAP 6
 
 // The italic fonts may not define the bitmaps for all characters.
 // The characters that are minssing in the italic fonts will try to return the bitmaps in the next font file.
@@ -211,7 +215,7 @@
 #define H4_FONT_IDX			SUBTITLE_FONT_IDX
 #define H5_FONT_IDX			SUBTITLE_FONT_IDX
 #define LICENSE_TEXT_FONT		ITALIC_FONT_IDX
-#define FILE_BUFFER_SIZE                386*1024
+#define FILE_BUFFER_SIZE                (512 * 1024)
 
 typedef struct _LCD_DRAW_BUF
 {
@@ -228,8 +232,10 @@ typedef struct _LCD_DRAW_BUF
 
 #define MAX_RESULT_LIST 512
 #define MAX_ARTICLE_LINKS 2048
+#define MAX_EXTERNAL_LINKS 128
 #define SPACE_BEFORE_LICENSE_TEXT 40
 #define SPACE_AFTER_LICENSE_TEXT 5
+#define MAX_ARTICLES_PER_COMPRESSION 64
 /* Structure of a single article in a file with mutiple articles */
 /* byte 0~3: (long) offset from the beginning of the article header to the start of article text */
 /* byte 4~5: (short) number of ARTICLE_LINK blocks */
@@ -254,16 +260,14 @@ typedef struct _ARTICLE_LINK
 
 typedef struct _EXTERNAL_LINK
 {
-	uint32_t start_xy;
-	uint32_t end_xy;
-	uint16_t offset_link_str;
-	uint16_t link_str_len;
+	char *link_str;
 } EXTERNAL_LINK;
 
 typedef struct _CONCAT_ARTICLE_INFO
 {
-	unsigned long article_id;
-	unsigned long offset_article;
+	uint32_t article_id;
+	uint32_t offset_article;
+	uint32_t article_len;
 } CONCAT_ARTICLE_INFO;
 
 void init_lcd_draw_buf();
@@ -311,7 +315,7 @@ int extract_str_fitting_width(unsigned char **pIn, char *pOut, int width, int fo
 void lcd_set_pixel(unsigned char *membuffer,int x, int y);
 void lcd_set_framebuffer_pixel(int x, int y);
 void lcd_clear_framebuffer_pixel(int x, int y);
-void extract_title_from_article(unsigned char *title);
+void extract_title_from_article(unsigned char *article_buf, unsigned char *title);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];

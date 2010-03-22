@@ -203,8 +203,9 @@ int nHashJumps;
 long get_search_hash_offset_fnd(char *sSearchString, int len)
 {
 	long nHashKey;
-	TITLE_SEARCH title_search;
-	char sDecoded[MAX_TITLE_SEARCH];
+	//TITLE_SEARCH title_search;
+	char sTitleSearch[MAX_TITLE_SEARCH];
+	char sTitleActual[MAX_TITLE_SEARCH];
 	int bFound = 0;
 	int lenHashed;
 	int idxBlock;
@@ -231,19 +232,20 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	{
 		if (search_hash_table[nCurrentWiki][nHashKey].offset_fnd > 0)
 		{
-			copy_fnd_to_buf(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
+			retrieve_titles_from_fnd(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, sTitleSearch, sTitleActual);
+			//copy_fnd_to_buf(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
 			if (search_interrupted)
 			{
 				search_interrupted = 6;
 				goto interrupted;
 			}
-			bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
+			//bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
 		}
 		else
-			sDecoded[0] = '\0';
+			sTitleSearch[0] = '\0';
 		lenHashed = (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx >> 28) & 0x000000FF;
-		sDecoded[lenHashed] = '\0';
-		if (!search_string_cmp(sDecoded, sSearchString, len))
+		sTitleSearch[lenHashed] = '\0';
+		if (!search_string_cmp(sTitleSearch, sSearchString, len))
 			bFound = 1;
 		if (!bFound)
 		{
@@ -385,4 +387,137 @@ interrupted:
 	return 0;
 }
 
+long locate_previous_title_search(long offset_fnd)
+{
+	long len_buf;
+	int nZeros;
+	int i;
+	char buf[sizeof(TITLE_SEARCH)];
+
+	if (offset_fnd > sizeof(TITLE_SEARCH))
+		len_buf = sizeof(TITLE_SEARCH);
+	else
+		len_buf = offset_fnd;
+	offset_fnd -= len_buf;
+	copy_fnd_to_buf(offset_fnd, buf, len_buf);
+	i = len_buf - 1;
+	nZeros = 0;
+	while (i >= sizeof(long) && nZeros < 3)
+	{
+		if (!buf[i])
+			nZeros++;
+		i--;
+	}
+	i -= sizeof(long) - 1;
+	return offset_fnd + i;
+}
+
+void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsigned char *sTitleActual)
+{
+	TITLE_SEARCH aTitleSearch[SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD];
+	int nTitleSearch = 0;
+	int bFound1 = 0;
+	int bFound2 = 0;
+	int i;
+	int lenDuplicated;
+
+	// Find the title that is fully spelled out.
+	// The repeated characters with the previous title at the beginning of the current title will be replace by
+	// a character whose binary value is the number of the repeated characters.
+	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + sizeof(long) && nTitleSearch < SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
+	{
+		char *p;
+
+		copy_fnd_to_buf(offset_fnd, (char *)&aTitleSearch[nTitleSearch], sizeof(TITLE_SEARCH));
+		p = aTitleSearch[nTitleSearch].sTitleSearch;
+		bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
+		p += strlen(aTitleSearch[nTitleSearch].sTitleSearch) + 1; // pointing to actual title
+		//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
+		strncpy(sTitleActual, p, MAX_TITLE_SEARCH);
+		sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+		strcpy(aTitleSearch[nTitleSearch].sTitleSearch, sTitleSearch);
+		strcpy(aTitleSearch[nTitleSearch].sTitleActual, sTitleActual);
+		if ((unsigned char)aTitleSearch[nTitleSearch].sTitleSearch[0] >= ' ')
+			bFound1 = 1;
+		if ((unsigned char)aTitleSearch[nTitleSearch].sTitleActual[0] >= ' ')
+			bFound2 = 1;
+		if (!bFound1 || !bFound2)
+			offset_fnd = locate_previous_title_search(offset_fnd);
+		nTitleSearch++;
+	}
+
+	sTitleSearch[0] = '\0';
+	if (bFound1)
+	{
+		for (i = nTitleSearch - 1; i >= 0; i--)
+		{
+			if ((unsigned char)aTitleSearch[i].sTitleSearch[0] >= ' ')
+			{
+				strcpy(sTitleSearch, aTitleSearch[i].sTitleSearch);
+			}
+			else if ((unsigned char)sTitleSearch[0] && sTitleSearch[0] < ' ')
+			{
+				lenDuplicated = aTitleSearch[i].sTitleSearch[0] + 1;
+				if (strlen(aTitleSearch[i].sTitleSearch) > lenDuplicated)
+					memcpy(&sTitleSearch[lenDuplicated], &aTitleSearch[i].sTitleSearch[1], strlen(aTitleSearch[i].sTitleSearch) - lenDuplicated + 1);
+				else
+					sTitleSearch[lenDuplicated] = '\0';
+			}
+		}
+	}
+
+	sTitleActual[0] = '\0';
+	if (bFound2)
+	{
+		for (i = nTitleSearch - 1; i >= 0; i--)
+		{
+			if ((unsigned char)aTitleSearch[i].sTitleActual[0] >= ' ')
+				strcpy(sTitleActual, aTitleSearch[i].sTitleActual);
+			else if ((unsigned char)sTitleActual[0] && sTitleActual[0] < ' ')
+			{
+				lenDuplicated = aTitleSearch[i].sTitleActual[0] + 1;
+				if (strlen(aTitleSearch[i].sTitleActual) > lenDuplicated)
+					memcpy(&sTitleActual[lenDuplicated], &aTitleSearch[i].sTitleActual[1], strlen(aTitleSearch[i].sTitleActual) - lenDuplicated + 1);
+				else
+					sTitleActual[lenDuplicated] = '\0';
+			}
+		}
+	}
+}
+
+void retrieve_titles_from_fnd_ref_prev(long offset_fnd, unsigned char *sPrevTitleSearch, unsigned char *sPrevTitleActual, unsigned char *sTitleSearch, unsigned char *sTitleActual)
+{
+	TITLE_SEARCH TitleSearch;
+	int lenCopy;
+	int lenDuplicated;
+	char *p;
+
+	copy_fnd_to_buf(offset_fnd, (char *)&TitleSearch, sizeof(TITLE_SEARCH));
+	p = TitleSearch.sTitleSearch;
+	bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
+	p += strlen(TitleSearch.sTitleSearch) + 1; // pointing to actual title
+	//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
+	strncpy(sTitleActual, p, MAX_TITLE_SEARCH);
+	sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+	if (sTitleSearch[0] < ' ')
+	{
+		lenDuplicated = sTitleSearch[0] + 1;
+		if (strlen(sTitleSearch) > MAX_TITLE_SEARCH - lenDuplicated)
+			lenCopy = MAX_TITLE_SEARCH - lenDuplicated;
+		else
+			lenCopy = strlen(sTitleSearch);
+		memmove(&sTitleSearch[lenDuplicated], &sTitleSearch[1], lenCopy);
+		memcpy(sTitleSearch, sPrevTitleSearch, lenDuplicated);
+	}
+	if (sTitleActual[0] < ' ')
+	{
+		lenDuplicated = sTitleActual[0] + 1;
+		if (strlen(sTitleActual) > MAX_TITLE_SEARCH - lenDuplicated)
+			lenCopy = MAX_TITLE_SEARCH - lenDuplicated;
+		else
+			lenCopy = strlen(sTitleActual);
+		memmove(&sTitleActual[lenDuplicated], &sTitleActual[1], lenCopy);
+		memcpy(sTitleActual, sPrevTitleActual, lenDuplicated);
+	}
+}
 #endif

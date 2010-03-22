@@ -31,9 +31,18 @@
 #define NLS_TEXT_REPLACEMENT_END '>'
 #define MAX_LICENSE_TEXT_LEN 1024
 #define MAX_LICENSE_TEXT_PIXEL_LINES 512
+enum wiki_cat_e {
+	WIKI_CAT_ENCYCLOPAEDIA,
+	WIKI_CAT_TRAVEL,
+	WIKI_CAT_DICTIONARY,
+	WIKI_CAT_QUOTE,
+	WIKI_CAT_SOURCE,
+};
 
 typedef struct _WIKI_LIST {
 	int wiki_id;
+	int wiki_cat;
+	char wiki_lang[10];
 	char wiki_folder[10];
 } WIKI_LIST;
 
@@ -45,9 +54,11 @@ typedef struct _WIKI_LICENSE_DRAW {
 } WIKI_LICENSE_DRAW;
 
 extern int nCurrentWiki;
+bool wiki_lang_exist(char *lang_link_str);
+uint32_t wiki_lang_link_search(char *lang_link_str);
 void init_wiki_info(void);
 int get_wiki_count(void);
-unsigned char *get_nls_text(char *key);
+char *get_nls_text(char *key);
 char *get_wiki_file_path(int nWikiIdx, char *file_name);
 char *get_wiki_name(int idx);
 void wiki_selection(void);

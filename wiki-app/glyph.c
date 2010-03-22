@@ -70,6 +70,53 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 	}
 }
 
+int buf_render_string(char *buf, const int font, int start_x,
+		  int start_y, char *string, int text_length, int inverted)
+{
+	int x;
+	int width;
+	long len = text_length;
+	long lenLast = 0;
+	long widthLast = 0;
+	char *p = (char *)string;
+	unsigned char *q;
+	int nCharBytes;
+	ucs4_t c;
+
+	if (start_x < 0)
+		width = 0;
+	else
+		width = start_x;
+	while (len > 0 && width < LCD_BUF_WIDTH_PIXELS)
+	{
+		lenLast = len;
+		widthLast = width;
+		width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
+	}
+	if (width > LCD_BUF_WIDTH_PIXELS)
+	{
+		text_length -= lenLast;
+		width = widthLast;
+	}
+
+	if (start_x < 0) // to be centered
+	{
+		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
+		if (start_x < 0)
+			start_x = 0;
+	}
+
+	x = start_x;
+	q = (unsigned char *)string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = buf_draw_bmf_char(buf, c,font-1,x,start_y, inverted);
+		if(x<0)
+			return 0;
+	}
+	return x;
+}
+
 int render_string(const int font, int start_x,
 		  int start_y, char *string, int text_length, int inverted)
 {

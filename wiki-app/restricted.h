@@ -19,7 +19,6 @@
 #define _LCD_RESTRICTED_H
 
 #define MAX_PASSWORD_LEN 9
-#define RESTRICTED_MARK_LINK 0xFFFFFF
 
 void set_password(void);
 void get_password(void);

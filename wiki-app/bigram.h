@@ -23,13 +23,13 @@
 #define SEARCH_CHR_COUNT 54
 #define SIZE_BIGRAM_BUF (128 * 2)
 int bigram_char_idx(char c);
-void bigram_encode(char *outStr, char *inStr);
-void bigram_decode(char *outStr, char *inStr, int lenMax);
 #ifdef WIKIPCF
 void init_bigram(FILE *fd);
+void bigram_encode(char *outStr, char *inStr);
 #else
 void init_bigram(int fd);
 #endif
+void bigram_decode(char *outStr, char *inStr, int lenMax);
 void init_char_idx();
 int is_supported_search_char(char c);
 int search_string_cmp(char *title, char *search, int len);
