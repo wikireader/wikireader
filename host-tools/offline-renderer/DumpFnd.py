@@ -59,7 +59,9 @@ def main():
 
     total_entries = 0
 
-    bigram_table = fnd_file.read(256)
+    bigram_table = {}
+    for i in range(128,256):
+        bigram_table[i] = fnd_file.read(2)
 
     previous_title1 = ''
     previous_title2 = ''
@@ -90,9 +92,17 @@ def main():
         full_length1 = len(title1)
         full_length2 = len(title2)
 
-        PrintLog.message(u'{0:13n}: [{1:d}/{2:d}]:{3!r:s} [{4:d}/{5:d}]:"{6:s}"'
+        decoded_title1 = ''
+        for c in title1:
+            i = ord(c)
+            if i in bigram_table:
+                decoded_title1 += bigram_table[i]
+            else:
+                decoded_title1 += c
+
+        PrintLog.message(u'{0:13n}: [{1:d}/{2:d}]:{3!r:s}={4!r:s}   [{5:d}/{6:d}]:"{7:s}"'
                          .format(article_number,
-                                 length1, full_length1, title1,
+                                 length1, full_length1, title1, decoded_title1,
                                  length2, full_length2, unicode(title2, 'utf-8')))
 
         previous_title1 = title1
