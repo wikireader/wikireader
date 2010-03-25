@@ -25,7 +25,7 @@ PARSER_COMMAND = '(cd mediawiki-offline && php wr_parser_sa.php -)'
 def usage(message):
     if None != message:
         print('error: {0:s}'.format(message))
-    print('usage: {0:s} <options> {xml-file...}'.format(os.path.basename(__file__)))
+    print('usage: {0:s} <options> xml-files...'.format(os.path.basename(__file__)))
     print('       --help                  This message')
     print('       --verbose               Enable verbose output')
     print('       --xhtml=file            XHTML output [all_articles.html]')
