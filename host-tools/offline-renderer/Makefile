@@ -48,6 +48,7 @@ WIKI_FILE_PREFIX ?= wiki
 WIKI_LANGUAGE ?= en
 WIKI_DIR_SUFFIX ?= pedia
 ENABLE_LANGUAGES_LINKS ?= YES
+ENABLE_IMAGES ?= YES
 ARTICLES_PER_BLOCK ?= 32
 ARTICLE_BLOCK_SIZE ?= 262144
 
@@ -174,6 +175,7 @@ render: pylzma check-dirs check-fonts check-html
 		--article-index="${ARTICLES}" \
 		--prefix="${PREFIX}" \
 		--language-links="${ENABLE_LANGUAGES_LINKS}" \
+		--images="${ENABLE_IMAGES}" \
 		--articles="${ARTICLES_PER_BLOCK}" \
 		--block-size="${ARTICLE_BLOCK_SIZE}" \
 		"${HTML_ARTICLES}"

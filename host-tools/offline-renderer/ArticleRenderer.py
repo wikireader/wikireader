@@ -118,6 +118,7 @@ def usage(message):
     print('       --article-index=file    Article index dictionary input [articles.db]')
     print('       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]')
     print('       --languages-links=<YN>  Turn on/off inter-wiki links [YES]')
+    print('       --images=<YN>           Turn on/off in-line math images [YES]')
     print('       --articles=<N>          Articles per block [32]')
     print('       --block-size=<bytes>    Max size for artical block [262144]')
     exit(1)
@@ -145,6 +146,7 @@ def main():
                                     'test=',
                                     'font-path=',
                                     'language-links=',
+                                    'images=',
                                     'articles=',
                                     'block-size=',
                                     ])
@@ -161,6 +163,7 @@ def main():
     font_path = "../fonts"
     article_db = None
     inter_links = True
+    enable_images = True
     articles_per_block = 32
     block_size = 262144
 
@@ -189,6 +192,9 @@ def main():
         elif opt in ('-l', '--language-links'):
             arg = arg.lower()
             inter_links = ('yes' == arg)
+        elif opt in ('-l', '--images'):
+            arg = arg.lower()
+            enable_images = ('yes' == arg)
         elif opt in ('-a', '--articles'):
             try:
                 articles_per_block = int(arg)
@@ -249,7 +255,7 @@ def main():
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8', 'replace')
-        WrProcess(f, inter_links)
+        WrProcess(f, inter_links, enable_images)
         f.close()
 
     for item in font_id_values:
@@ -492,7 +498,7 @@ class WrProcess(HTMLParser.HTMLParser):
 
     READ_BLOCK_SIZE = 64 * (1024 * 1024)
 
-    def __init__ (self, f, inter_links = True):
+    def __init__ (self, f, inter_links = True, enable_images = True):
         global g_this_article_title, article_count
 
         HTMLParser.HTMLParser.__init__(self)
@@ -500,6 +506,7 @@ class WrProcess(HTMLParser.HTMLParser):
         self.local_init()
         self.tag_stack = []
         self.inter_links = inter_links
+        self.enable_images = enable_images
         self.bucket = bucket.Bucket()
         block = f.read(self.READ_BLOCK_SIZE)
         while block:
@@ -758,8 +765,13 @@ class WrProcess(HTMLParser.HTMLParser):
             self.in_br = True
 
         elif tag == 'img' and 'src' in attrs:
-            (width, height, data) = get_imgdata(attrs['src'], self.indent)
-            self.wordwrap.AppendImage(width, height, data, None)
+            # include either image or the 'alt' text
+            if self.enable_images:
+                (width, height, data) = get_imgdata(attrs['src'], self.indent)
+                self.wordwrap.AppendImage(width, height, data, None)
+            elif 'alt' in attrs:
+                self.handle_data(attrs['alt'])
+
             self.in_img = True
 
 
