@@ -29,9 +29,10 @@ USAGE()
   echo '       --copy          -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
   echo '       --combine       -k         run the combine process'
   echo '       --get           -G         get the data files'
-  echo '       --sim4          -4         rename files, install fonts and run simulator'
+  echo '       --sim4          -4         install fonts, nls and run simulator'
   echo '       --new-session   -N         start a new screen session for run and copy to use'
   echo '       --fetch-log     -f         fetch log files'
+  echo '       --xml-link      -x         link wiki .xml file to latest version'
   exit 1
 }
 
@@ -47,7 +48,7 @@ base_dir=samo
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRckG4Nf --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,copy,combine,get,sim4,new-session,fetch-log -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRckG4Nfx --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,copy,combine,get,sim4,new-session,fetch-log,xml-link -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -173,7 +174,12 @@ do
       ;;
 
     -4|--sim4)
-      make DESTDIR="image" fonts-install sim4
+      make DESTDIR="image" nls-install fonts-install sim4
+      shift
+      ;;
+
+    -x|--xml-link)
+      RenderDo --yes ${list} --brief "cd '${base_dir}' && ln -fs \$(ls -1 ../'${language}'wiki-*-pages-articles.xml |tail -n 1) ${language}wiki-pages-articles.xml && ls -l '${language}'*.xml"
       shift
       ;;
 
