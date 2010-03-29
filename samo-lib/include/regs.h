@@ -577,6 +577,7 @@
 #define CMU_PROTECT_ON  0x00
 
 // bits for: REG_CMU_CLKCNTL
+#define CMU_CLK_SEL_MASK            (0x3f << 24)
 #define CMU_CLK_SEL_OSC3_DIV_32     (10 << 24)
 #define CMU_CLK_SEL_OSC3_DIV_16     (9 << 24)
 #define CMU_CLK_SEL_OSC3_DIV_8      (8 << 24)
@@ -588,6 +589,7 @@
 #define CMU_CLK_SEL_PLL             (2 << 24)
 #define CMU_CLK_SEL_OSC1            (1 << 24)
 #define CMU_CLK_SEL_OSC3            (0 << 24)
+
 
 #define PLLINDIV_MASK (15 << 20)
 #define PLLINDIV_10   (9 << 20)
@@ -683,6 +685,48 @@
 #define OSC3OFF     (1 << 3)
 #define TMHSP       (1 << 2)
 #define WAKEUPWT    (1 << 0)
+
+
+// Bits for: REG_CMU_PLL
+
+#define PLLCS                (0 << 22)
+#define PLLBYP               (0 << 21)
+#define PLLCP                (0x10 << 16)
+
+#define PLLVC_360MHz_400MHz  (8 << 12)
+#define PLLVC_320MHz_360MHz  (7 << 12)
+#define PLLVC_280MHz_320MHz  (6 << 12)
+#define PLLVC_240MHz_280MHz  (5 << 12)
+#define PLLVC_200MHz_240MHz  (4 << 12)
+#define PLLVC_160MHz_200MHz  (3 << 12)
+#define PLLVC_120MHz_160MHz  (2 << 12)
+#define PLLVC_100MHz_120MHz  (1 << 12)
+
+#define PLLRS_5MHz_20MHz     (10 << 8)
+#define PLLRS_20MHz_150MHz   ( 8 << 8)
+
+#define PLLN_X16             (15 << 4)
+#define PLLN_X15             (14 << 4)
+#define PLLN_X14             (13 << 4)
+#define PLLN_X13             (12 << 4)
+#define PLLN_X12             (11 << 4)
+#define PLLN_X11             (10 << 4)
+#define PLLN_X10             ( 9 << 4)
+#define PLLN_X9              ( 8 << 4)
+#define PLLN_X8              ( 7 << 4)
+#define PLLN_X7              ( 6 << 4)
+#define PLLN_X6              ( 5 << 4)
+#define PLLN_X5              ( 4 << 4)
+#define PLLN_X4              ( 3 << 4)
+#define PLLN_X3              ( 2 << 4)
+#define PLLN_X2              ( 1 << 4)
+#define PLLN_X1              ( 0 << 4)
+
+#define PLLV_DIV_8           (3 << 2)
+#define PLLV_DIV_4           (2 << 2)
+#define PLLV_DIV_2           (1 << 2)
+
+#define PLLPOWR              (1 << 0)
 
 
 /*
