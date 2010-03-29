@@ -58,6 +58,7 @@ def usage(message):
     print('       --article-index=file    Article index database output [articles.db]')
     print('       --article-offsets=file  Article file offsets database output [offsets.db]')
     print('       --article-counts=file   File to store the counts [counts.text]')
+    print('       --language=<xx>         Set language for index conversions [en]')
     print('       --limit=number          Limit the number of articles processed')
     print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
     print('       --templates=file        Database for templates [templates.db]')
@@ -68,15 +69,18 @@ def main():
     global verbose
     global error_flag
 
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:L:',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
                                     'article-counts=',
                                     'templates=',
                                     'limit=',
-                                    'prefix='])
+                                    'prefix=',
+                                    'language=',
+                                    ])
     except getopt.GetoptError, err:
         usage(err)
 
@@ -88,6 +92,7 @@ def main():
     pfx_name = 'pedia.pfx'
     template_name = 'templates.db'
     limit = 'all'
+    language = 'en'             # some languages may require special processing
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -115,13 +120,21 @@ def main():
         elif opt in ('-p', '--prefix'):
             fnd_name = arg + '.fnd'
             pfx_name = arg + '.pfx'
+        elif opt in ('-L', '--language'):
+            language = arg
         else:
             usage('unhandled option: ' + opt)
 
     if [] == args:
         usage('Missing argument(s)')
 
-    processor = FileProcessing(articles = art_name, offsets = off_name, templates = template_name)
+    language_convert = LanguageNull()
+    if 'ja' == language:
+        language_convert = Furigana()
+
+    processor = FileProcessing(articles = art_name, offsets = off_name,
+                               templates = template_name,
+                               language = language_convert)
 
     for f in args:
         limit = processor.process(f, limit)
@@ -156,7 +169,7 @@ def main():
 
     cf.close()
 
-    output_fnd(fnd_name, processor)
+    output_fnd(fnd_name, processor, language_convert)
     output_pfx(pfx_name)
     del processor
 
@@ -192,6 +205,8 @@ class FileProcessing(FileScanner.FileScanner):
 
     def __init__(self, *args, **kw):
         super(FileProcessing, self).__init__(*args, **kw)
+
+        self.language_processor = kw['language']
 
         self.article_db_name = kw['articles']
         self.article_import = self.article_db_name + '.import'
@@ -395,6 +410,7 @@ pragma journal_mode = memory;
         else:
             self.redirects[title] = rtitle
             self.redirect_count += 1
+            generate_bigram(self.language_processor.translate(title))
             if verbose:
                 PrintLog.message(u'Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
                                  .format(category, key, title, rcategory, rkey, rtitle))
@@ -430,7 +446,7 @@ pragma journal_mode = memory;
             PrintLog.message(u'Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
 
-        generate_bigram(title)
+        generate_bigram(self.language_processor.translate(title))
 
         if verbose:
             if restricted:
@@ -540,7 +556,7 @@ def bigram_encode(title):
     return result.strip()
 
 
-def output_fnd(filename, article_index):
+def output_fnd(filename, article_index, language_processor):
     """create bigram table"""
     global bigram
     global index_matrix
@@ -577,7 +593,7 @@ def output_fnd(filename, article_index):
 
     def sort_key(key):
         global KEYPAD_KEYS
-        return ''.join(c for c in strip_accents(key).lower() if c in KEYPAD_KEYS)
+        return ''.join(c for c in strip_accents(language_processor.translate(key).lower().strip()) if c in KEYPAD_KEYS)
 
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
@@ -674,6 +690,209 @@ def output_pfx(filename):
 
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
+
+
+class LanguageProcessor(object):
+
+    def translate(self, text):
+        PrintLog.message('Virual function called')
+        sys.exit(1)
+
+
+
+class LanguageNull(LanguageProcessor):
+    """no-op class"""
+    def translate(self, text):
+        return text
+
+
+class Furigana(LanguageProcessor):
+    """Convert Japanese to Romaji"""
+    KANA_TO_ROMAN = {
+        u'ア': 'a',
+        u'イ': 'i',
+        u'ウ': 'u',
+        u'エ': 'e',
+        u'オ': 'o',
+        u'カ': 'ka',
+        u'キ': 'ki',
+        u'ク': 'ku',
+        u'ケ': 'ke',
+        u'コ': 'ko',
+        u'ガ': 'ga',
+        u'ギ': 'gi',
+        u'グ': 'gu',
+        u'ゲ': 'ge',
+        u'ゴ': 'go',
+        u'サ': 'sa',
+        u'シ': 'shi',
+        u'ス': 'su',
+        u'セ': 'se',
+        u'ソ': 'so',
+        u'ザ': 'za',
+        u'ジ': 'ji',
+        u'ズ': 'zu',
+        u'ゼ': 'ze',
+        u'ゾ': 'zo',
+        u'タ': 'ta',
+        u'チ': 'chi',
+        u'ツ': 'tsu',
+        #u'ッ': '_',      # small version of above character
+        u'テ': 'te',
+        u'ト': 'to',
+        u'ダ': 'da',
+        u'ヂ': 'di',
+        u'ヅ': 'du',
+        u'デ': 'de',
+        u'ド': 'do',
+        u'ナ': 'na',
+        u'ニ': 'ni',
+        u'ヌ': 'nu',
+        u'ネ': 'ne',
+        u'ノ': 'no',
+        u'ハ': 'ha',
+        u'ヒ': 'hi',
+        u'フ': 'fu',
+        u'ヘ': 'he',
+        u'ホ': 'ho',
+        u'バ': 'ba',
+        u'ビ': 'bi',
+        u'ブ': 'bu',
+        u'ベ': 'be',
+        u'ボ': 'bo',
+        u'パ': 'pa',
+        u'ピ': 'pi',
+        u'プ': 'pu',
+        u'ペ': 'pe',
+        u'ポ': 'po',
+        u'マ': 'ma',
+        u'ミ': 'mi',
+        u'ム': 'mu',
+        u'メ': 'me',
+        u'モ': 'mo',
+        u'ヤ': 'ya',
+        u'ユ': 'yu',
+        u'ヨ': 'yo',
+        u'ラ': 'ra',
+        u'リ': 'ri',
+        u'ル': 'ru',
+        u'レ': 're',
+        u'ロ': 'ro',
+        u'ワ': 'wa',
+        u'ン': 'n',
+        u'ウィ': 'wi',
+        u'ヴァ': 'va',
+        u'ヴィ': 'vi',
+        u'ヴェ': 've',
+        u'ヴォ': 'vo',
+        u'チャ': 'chya',
+        u'チュ': 'chyu',
+        u'チョ': 'chyo',
+        u'ニャ': 'nya',
+        u'ニュ': 'nyu',
+        u'ニョ': 'nyo',
+        u'シャ': 'shya',
+        u'シュ': 'shyu',
+        u'ショ': 'shyo',
+        u'キャ': 'kya',
+        u'キュ': 'kyu',
+        u'キョ': 'kyo',
+        u'テュ': 'tyu',
+        u'ヒャ': 'hya',
+        u'ヒュ': 'hyu',
+        u'ヒョ': 'hyo',
+        u'ミャ': 'mya',
+        u'ミュ': 'myu',
+        u'ミョ': 'myo',
+        u'リャ': 'rya',
+        u'リュ': 'ryu',
+        u'リョ': 'ryo',
+        u'ジャ': 'jya',
+        u'ジュ': 'jyu',
+        u'ジョ': 'jyo',
+        u'ギャ': 'gya',
+        u'ギュ': 'gyu',
+        u'ギョ': 'gyo',
+        u'ビャ': 'bya',
+        u'ビュ': 'byu',
+        u'ビョ': 'byo',
+        u'ピャ': 'pya',
+        u'ピュ': 'pyu',
+        u'ピョ': 'pyo',
+        u'ファ': 'fa',
+        u'フィ': 'fi',
+        u'フェ': 'fe',
+        u'フォ': 'fo',
+        u'ディ': 'di',
+        u'ドゥ': 'du',
+        }
+
+
+    def __init__(self, *args, **kw):
+        super(Furigana, self).__init__(*args, **kw)
+
+        import MeCab         # load Japanese dictionary interface
+
+        self.mecab = MeCab.Tagger('-Ochasen')
+
+
+    def romanise(self, text):
+        """private method for converting Japanese phonetics to Romaji"""
+
+        if type(text) != unicode:
+            text = unicode(text, "utf-8")
+
+        result = ''
+        i = 0
+        duplicate = False
+        last = len(text) - 1
+        while i <= last:
+            key = text[i:i + 1]
+            if not (i < last and key in self.KANA_TO_ROMAN):
+                key = text[i]
+
+            if key in self.KANA_TO_ROMAN:
+                s = self.KANA_TO_ROMAN[key]
+                i += len(key) - 1
+                if duplicate:
+                    s = s[0] + s
+                    duplicate = False
+                result += s
+            elif u'ッ' == key:
+                duplicate = True
+            else:
+                result += key
+                duplicate = False
+            i += 1
+
+        return result
+
+
+    def translate(self, text):
+        """take Japanese string and convert to Roman letters"""
+
+        if type(text) == unicode:
+            text = text.encode('utf-8')
+        n = self.mecab.parseToNode(text)
+
+        result = ''
+        while n:
+
+            if n.surface == '':
+                n = n.next
+                continue
+
+            feature = unicode(n.feature,'utf-8').split(',')
+
+            if len(feature) < 8 or feature[7] == '*':
+                r = self.romanise(n.surface)
+            else:
+                r = self.romanise(feature[7])
+
+            result += r + " "
+            n = n.next
+
+        return result
 
 
 # run the program
