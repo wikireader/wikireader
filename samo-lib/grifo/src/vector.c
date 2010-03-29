@@ -95,10 +95,6 @@ void Vector_initialise(void)
 			table[i] = panic;
 		}
 
-		REG_CMU_PROTECT = CMU_PROTECT_OFF;
-		REG_CMU_OPT |= WAKEUPWT;
-		REG_CMU_PROTECT = CMU_PROTECT_ON;
-
 		asm volatile ("ld.w %%ttbr, %0"
 			      :
 			      : "r" (table));

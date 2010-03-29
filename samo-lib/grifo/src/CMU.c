@@ -36,6 +36,14 @@ void CMU_initialise(void)
 
 		REG_CMU_PROTECT = CMU_PROTECT_OFF;
 
+		// set up so "slp" instruction can be used to switch clocks
+		REG_CMU_OPT =
+			(0 << OSCTM_SHIFT) |
+			//OSC3OFF |
+			TMHSP |
+			//WAKEUPWT |
+			0;
+
 		REG_CMU_CLKCNTL =
 			//CMU_CLK_SEL_OSC3_DIV_32 |
 			//CMU_CLK_SEL_OSC3_DIV_16 |
@@ -136,8 +144,6 @@ void CMU_initialise(void)
 			//DMA_CKE |
 			//RTCSAPB_CKE |
 			0;
-
-		REG_CMU_OPT |= WAKEUPWT;
 
 		REG_CMU_PROTECT = CMU_PROTECT_ON;
 		Interrupt_enable(state);
