@@ -30,6 +30,9 @@ KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 #sys.exit(0)
 
 
+# maximum string lengths for FND file
+MAXIMUM_TITLE_LENGTH = 63 # c-code is 64 including '\0'
+
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
@@ -167,7 +170,9 @@ def main():
 
 
 def generate_bigram(text):
+    """create bigram from pairs of characters"""
     global bigram
+
     if len(text) > 2:
         try:
             if text[0].lower() in KEYPAD_KEYS and text[1].lower() in KEYPAD_KEYS:
@@ -539,6 +544,8 @@ def output_fnd(filename, article_index):
     """create bigram table"""
     global bigram
     global index_matrix
+    global MAXIMUM_TITLE_LENGTH
+
 
     PrintLog.message(u'Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
@@ -592,18 +599,18 @@ def output_fnd(filename, article_index):
 
     for stripped_title, title in article_list:
 
-        bigram_title = bigram_encode(title)
+        bigram_title = bigram_encode(stripped_title)[:MAXIMUM_TITLE_LENGTH]
         (article_number, dummy, restricted, is_redirect) = article_index.get_index(title)
 
         if '' == bigram_title and is_redirect:
             continue
 
-        utf8_title = title.encode('utf-8')
+        utf8_title = title.encode('utf-8')[:MAXIMUM_TITLE_LENGTH]
 
         offset = out_f.tell()
         article_index.set_index(title, (article_number, offset, restricted, is_redirect))
 
-        key3 = (title[0:3] + '\0\0\0')[0:3].lower()
+        key3 = (stripped_title[0:3] + '\0\0\0')[0:3].lower()
         key2 = key3[0:2] + '\0'
         key1 = key3[0:1] + '\0\0'
         if key1 not in index_matrix:
