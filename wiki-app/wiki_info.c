@@ -100,11 +100,10 @@ void init_wiki_info(void)
 		fatal_error("No wiki found");
 }
 
-bool wiki_lang_exist(char *lang_link_str)
+int get_wiki_idx_by_lang_link(char *lang_link_str)
 {
 	int len;
 	char *p;
-	bool rc = false;
 	int i;
 	int current_wiki_cat = -1;
 
@@ -117,41 +116,35 @@ bool wiki_lang_exist(char *lang_link_str)
 		for (i = 0; i < nWikiCount; i++)
 		{
 			if (current_wiki_cat == wiki_list[aWikiInfoIdx[i]].wiki_cat && !strncmp(lang_link_str, wiki_list[aWikiInfoIdx[i]].wiki_lang, len))
-				rc = true;
+				return i;
 		}
 	}
-	return rc;
+	return -1;
+}
+
+bool wiki_lang_exist(char *lang_link_str)
+{
+	if (get_wiki_idx_by_lang_link(lang_link_str) >= 0)
+		return true;
+	else
+		return false;
 }
 
 uint32_t wiki_lang_link_search(char *lang_link_str)
 {
 	uint32_t article_idx = 0;
-	int len;
-	char *p;
-	int i;
-	int current_wiki_cat = -1;
 	int nTmpeCurrentWiki = nCurrentWiki;
+	char *p;
 
-	p = strchr(lang_link_str, ':');
-	if (p)
+	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
-		int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
-		current_wiki_cat = wiki_list[aWikiInfoIdx[wiki_idx]].wiki_cat;
-		len = p - lang_link_str;
-		for (i = 0; i < nWikiCount; i++)
-		{
-			if (current_wiki_cat == wiki_list[aWikiInfoIdx[i]].wiki_cat && !strncmp(lang_link_str, wiki_list[aWikiInfoIdx[i]].wiki_lang, len))
-			{
-				nCurrentWiki = i;
-				init_search_hash();
-				article_idx = get_article_idx_by_title(p + 1);
-				if (article_idx)
-					article_idx |= wiki_list[aWikiInfoIdx[i]].wiki_id << 24;
-				nCurrentWiki = nTmpeCurrentWiki;
-				break;
-			}
-		}
+		init_search_hash();
+		p = strchr(lang_link_str, ':');
+		article_idx = get_article_idx_by_title(p + 1);
+		if (article_idx)
+			article_idx |= wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_id << 24;
 	}
+	nCurrentWiki = nTmpeCurrentWiki;
 	return article_idx;
 }	
 char *get_wiki_file_path(int nWikiIdx, char *file_name)
@@ -270,6 +263,30 @@ char *get_nls_text(char *key)
 
 		return get_nls_key_value(key, aWikiNls[nCurrentWiki], aWikiNlsLen[nCurrentWiki]);
 	}
+}
+
+char *get_lang_link_display_text(char *lang_link_str)
+{
+	int nTmpeCurrentWiki = nCurrentWiki;
+	static char lang_str[3];
+	char *p = NULL;
+
+	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
+	{
+		p = get_nls_text("lang_str");
+		if (p[0] == '\0')
+			p = NULL;
+	}
+
+	if (!p)
+	{
+		memcpy(lang_str, lang_link_str, 2);
+		lang_str[2] = '\0';
+		p = lang_str;
+	}
+
+	nCurrentWiki = nTmpeCurrentWiki;
+	return p;
 }
 
 void wiki_selection(void)

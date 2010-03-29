@@ -84,6 +84,127 @@ typedef struct _search_info {
 } SEARCH_INFO;
 static SEARCH_INFO *search_info = NULL;
 
+struct _hiragana_mapping {
+	char *english;
+	char *hirgana;
+} hiragana_mapping[] = {
+	{"a"    , "ア,"},
+	{"ba"   , "バ,"},
+	{"be"   , "ベ,"},
+	{"bi"   , "ビ,"},
+	{"bo"   , "ボ,"},
+	{"bu"   , "ブ,"},
+	{"bya"  , "ビャ"},
+	{"byo"  , "ビョ"},
+	{"byu"  , "ビュ"},
+	{"chi"  , "チ,"},
+	{"chya" , "チャ"},
+	{"chyo" , "チョ"},
+	{"chyu" , "チュ"},
+	{"da"   , "ダ,"},
+	{"de"   , "デ,"},
+	{"di"   , "ヂ,"},
+	{"di"   , "ディ"},
+	{"do"   , "ド,"},
+	{"du"   , "ヅ,"},
+	{"du"   , "ドゥ"},
+	{"e"    , "エ,"},
+	{"fa"   , "ファ"},
+	{"fe"   , "フェ"},
+	{"fi"   , "フィ"},
+	{"fo"   , "フォ"},
+	{"fu"   , "フ,"},
+	{"ga"   , "ガ,"},
+	{"ge"   , "ゲ,"},
+	{"gi"   , "ギ,"},
+	{"go"   , "ゴ,"},
+	{"gu"   , "グ,"},
+	{"gya"  , "ギャ"},
+	{"gyo"  , "ギョ"},
+	{"gyu"  , "ギュ"},
+	{"ha"   , "ハ,"},
+	{"he"   , "ヘ,"},
+	{"hi"   , "ヒ,"},
+	{"ho"   , "ホ,"},
+	{"hya"  , "ヒャ"},
+	{"hyo"  , "ヒョ"},
+	{"hyu"  , "ヒュ"},
+	{"i"    , "イ,"},
+	{"ji"   , "ジ,"},
+	{"jya"  , "ジャ"},
+	{"jyo"  , "ジョ"},
+	{"jyu"  , "ジュ"},
+	{"ka"   , "カ,"},
+	{"ke"   , "ケ,"},
+	{"ki"   , "キ,"},
+	{"ko"   , "コ,"},
+	{"ku"   , "ク,"},
+	{"kya"  , "キャ"},
+	{"kyo"  , "キョ"},
+	{"kyu"  , "キュ"},
+	{"ma"   , "マ,"},
+	{"me"   , "メ,"},
+	{"mi"   , "ミ,"},
+	{"mo"   , "モ,"},
+	{"mu"   , "ム,"},
+	{"mya"  , "ミャ"},
+	{"myo"  , "ミョ"},
+	{"myu"  , "ミュ"},
+	{"n"    , "ン,"},
+	{"na"   , "ナ,"},
+	{"ne"   , "ネ,"},
+	{"ni"   , "ニ,"},
+	{"no"   , "ノ,"},
+	{"nu"   , "ヌ,"},
+	{"nya"  , "ニャ"},
+	{"nyo"  , "ニョ"},
+	{"nyu"  , "ニュ"},
+	{"o"    , "オ,"},
+	{"pa"   , "パ,"},
+	{"pe"   , "ペ,"},
+	{"pi"   , "ピ,"},
+	{"po"   , "ポ,"},
+	{"pu"   , "プ,"},
+	{"pya"  , "ピャ"},
+	{"pyo"  , "ピョ"},
+	{"pyu"  , "ピュ"},
+	{"ra"   , "ラ,"},
+	{"re"   , "レ,"},
+	{"ri"   , "リ,"},
+	{"ro"   , "ロ,"},
+	{"ru"   , "ル,"},
+	{"rya"  , "リャ"},
+	{"ryo"  , "リョ"},
+	{"ryu"  , "リュ"},
+	{"sa"   , "サ,"},
+	{"se"   , "セ,"},
+	{"shi"  , "シ,"},
+	{"shya" , "シャ"},
+	{"shyo" , "ショ"},
+	{"shyu" , "シュ"},
+	{"so"   , "ソ,"},
+	{"su"   , "ス,"},
+	{"ta"   , "タ,"},
+	{"te"   , "テ,"},
+	{"to"   , "ト,"},
+	{"tsu"  , "ツ,"},
+	{"tyu"  , "テュ"},
+	{"u"    , "ウ,"},
+	{"va"   , "ヴァ"},
+	{"ve"   , "ヴェ"},
+	{"vi"   , "ヴィ"},
+	{"vo"   , "ヴォ"},
+	{"wa"   , "ワ,"},
+	{"wi"   , "ウィ"},
+	{"ya"   , "ヤ,"},
+	{"yo"   , "ヨ,"},
+	{"yu"   , "ユ,"},
+	{"za"   , "ザ,"},
+	{"ze"   , "ゼ,"},
+	{"zo"   , "ゾ,"},
+	{"zu"   , "ズ,"},
+};
+
 #define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
 //static struct search_state state;
 //static struct search_state last_first_hit;
@@ -527,13 +648,8 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		    is_proper_string(pTitleSearch->sTitleSearch, search_info[nCurrentWiki].buf_len - offsetNextTitleSearch -
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
-			if (!result_list->count)
-				retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
-							 result_list->title_search[result_list->count], result_list->title[result_list->count]);
-			else
-				retrieve_titles_from_fnd_ref_prev(offset_fnd_start + offsetNextTitleSearch,
-								  result_list->title_search[result_list->count - 1], result_list->title[result_list->count - 1],
-								  result_list->title_search[result_list->count], result_list->title[result_list->count]);
+		retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
+					 result_list->title_search[result_list->count], result_list->title[result_list->count]);
 			rc = search_string_cmp(result_list->title_search[result_list->count], search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
 //msg(MSG_INFO, "bInit %d, input (%x, %x) ", bInit, input_offset_fnd_start, input_offset_fnd_end);
@@ -718,14 +834,19 @@ long get_search_result_start()
 	int idx_prefix_index_table;
 	char c1, c2, c3;
 	int found = 0;
+/* Disable hashing
 	int i;
 	int lenCompared;
 	int lenCopied;
+*/
 	long offset;
+/* Disable hashing
 	static int lenHashedSearchString = 0;
 	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+*/
 
+/* Disable hashing
 	if (search_str_len > 3)
 	{
 		// check the length of the hashed search string can be reused
@@ -809,6 +930,7 @@ long get_search_result_start()
 			}
 		}
 	}
+*/
 
 //	if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
 	if (!found)
@@ -889,6 +1011,7 @@ long get_search_result_end()
 		len_local_search_string = search_str_len;
 	memcpy(local_search_string, search_string, len_local_search_string);
 
+/* disable hashing
 	while (!found && len_local_search_string > 3)
 	{
 		last_len_local_search_string = len_local_search_string;
@@ -910,6 +1033,7 @@ long get_search_result_end()
 		}
 		len_local_search_string = last_len_local_search_string - 1;
 	}
+*/
 
 	if (!found)
 	{
@@ -1476,6 +1600,10 @@ int retrieve_article(long idx_article_with_wiki_id)
 			CONCAT_ARTICLE_INFO concat_article_infos[MAX_ARTICLES_PER_COMPRESSION];
 			uint8_t nArticlesConcatnated;
 			uint32_t dat_article_len;
+			SizeT required_len = 0;
+			uint32_t offset = 0;
+			int i;
+			int idx_concat_article = -1;
 
 			wl_seek(search_info[nWikiIdx].fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
 
@@ -1484,6 +1612,16 @@ int retrieve_article(long idx_article_with_wiki_id)
 
 			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], &concat_article_infos,
 				nArticlesConcatnated * sizeof(CONCAT_ARTICLE_INFO));
+			for (i = 0; i < nArticlesConcatnated; i++)
+			{
+				if (concat_article_infos[i].article_id == idx_article)
+				{
+					idx_concat_article = i;
+					offset = concat_article_infos[i].offset_article & ~0x80000000;
+					required_len = offset + concat_article_infos[i].article_len;
+					break;
+				}
+			}
 
 			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], &dat_article_len, sizeof(dat_article_len));
 
@@ -1492,10 +1630,10 @@ int retrieve_article(long idx_article_with_wiki_id)
 			dat_article_len -= LZMA_PROPS_SIZE;
 
 			ELzmaStatus status;
-			SizeT file_buffer_len = FILE_BUFFER_SIZE;
+			//SizeT file_buffer_len = FILE_BUFFER_SIZE;
 			SizeT compressed_buffer_len = dat_article_len;
 			int rc = (int)LzmaDecode(file_buffer,
-						 &file_buffer_len,
+						 &required_len,
 						 (const Byte *)compressed_buf + LZMA_PROPS_SIZE,
 						 &compressed_buffer_len,
 						 (const Byte *)compressed_buf, LZMA_PROPS_SIZE,
@@ -1504,21 +1642,16 @@ int retrieve_article(long idx_article_with_wiki_id)
 
 			if (rc == SZ_OK || rc == SZ_ERROR_INPUT_EOF) // can generate SZ_ERROR_INPUT_EOF but result is OK
 			{
-				int i;
-				for (i = 0; i < nArticlesConcatnated; i++)
+				if (idx_concat_article >= 0)
 				{
-					if (concat_article_infos[i].article_id == idx_article)
-					{
-						if (concat_article_infos[i].offset_article & 0x80000000) {
-							restricted_article = 1;
-						} else {
-							restricted_article = 0;
-						}
-						uint32_t offset = concat_article_infos[i].offset_article & ~0x80000000;
-						memcpy(file_buffer, &file_buffer[offset], concat_article_infos[i].article_len);
-						file_buffer[concat_article_infos[i].article_len] = '\0';
-						return 0;
+					if (concat_article_infos[idx_concat_article].offset_article & 0x80000000) {
+						restricted_article = 1;
+					} else {
+						restricted_article = 0;
 					}
+					memcpy(file_buffer, &file_buffer[offset], concat_article_infos[idx_concat_article].article_len);
+					file_buffer[concat_article_infos[idx_concat_article].article_len] = '\0';
+					return 0;
 				}
 			}
 		}

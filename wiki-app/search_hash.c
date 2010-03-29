@@ -185,11 +185,13 @@ void init_search_hash(void)
 
 	if (!bHashInited[nCurrentWiki])
 	{
+/* Disable hashing
 		fdHsh[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.hsh"), WL_O_RDONLY);
 		wl_read(fdHsh[nCurrentWiki], &nHashEntries[nCurrentWiki], sizeof(nHashEntries[nCurrentWiki]));
 		search_hash_table[nCurrentWiki] = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries[nCurrentWiki], MEM_TAG_INDEX_M1);
 		bHashBlockLoaded[nCurrentWiki] = (int *)malloc_simple(sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
 		memset((char *)bHashBlockLoaded[nCurrentWiki], 0, sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK));
+*/
 		fdFnd[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.fnd"), WL_O_RDONLY);
 		init_bigram(fdFnd[nCurrentWiki]);
 		fnd_bufs[nCurrentWiki] = (struct _fnd_buf *)malloc_simple(sizeof(struct _fnd_buf) * FND_BUF_COUNT, MEM_TAG_INDEX_M1);
@@ -412,9 +414,10 @@ long locate_previous_title_search(long offset_fnd)
 	return offset_fnd + i;
 }
 
-void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsigned char *sTitleActual)
+void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, unsigned char *sTitleActual)
 {
 	TITLE_SEARCH aTitleSearch[SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD];
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH];
 	int nTitleSearch = 0;
 	int bFound1 = 0;
 	int bFound2 = 0;
@@ -430,7 +433,9 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsi
 
 		copy_fnd_to_buf(offset_fnd, (char *)&aTitleSearch[nTitleSearch], sizeof(TITLE_SEARCH));
 		p = aTitleSearch[nTitleSearch].sTitleSearch;
-		bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
+		strncpy(sTitleSearch, p, MAX_TITLE_SEARCH);
+		sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
+		//bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
 		p += strlen(aTitleSearch[nTitleSearch].sTitleSearch) + 1; // pointing to actual title
 		//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
 		strncpy(sTitleActual, p, MAX_TITLE_SEARCH);
@@ -453,18 +458,18 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsi
 		{
 			if ((unsigned char)aTitleSearch[i].sTitleSearch[0] >= ' ')
 			{
-				strcpy(sTitleSearch, aTitleSearch[i].sTitleSearch);
+				strncpy(sTitleSearch, aTitleSearch[i].sTitleSearch, MAX_TITLE_SEARCH);
+				sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
 			}
-			else if ((unsigned char)sTitleSearch[0] && sTitleSearch[0] < ' ')
+			else if (sTitleSearch[0])
 			{
 				lenDuplicated = aTitleSearch[i].sTitleSearch[0] + 1;
-				if (strlen(aTitleSearch[i].sTitleSearch) > lenDuplicated)
-					memcpy(&sTitleSearch[lenDuplicated], &aTitleSearch[i].sTitleSearch[1], strlen(aTitleSearch[i].sTitleSearch) - lenDuplicated + 1);
-				else
-					sTitleSearch[lenDuplicated] = '\0';
+				memcpy(&sTitleSearch[lenDuplicated], &aTitleSearch[i].sTitleSearch[1], MAX_TITLE_SEARCH - lenDuplicated - 1);
+				sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
 			}
 		}
 	}
+	bigram_decode(sTitleSearchOut, sTitleSearch, MAX_TITLE_SEARCH);
 
 	sTitleActual[0] = '\0';
 	if (bFound2)
@@ -472,52 +477,17 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsi
 		for (i = nTitleSearch - 1; i >= 0; i--)
 		{
 			if ((unsigned char)aTitleSearch[i].sTitleActual[0] >= ' ')
-				strcpy(sTitleActual, aTitleSearch[i].sTitleActual);
-			else if ((unsigned char)sTitleActual[0] && sTitleActual[0] < ' ')
+			{
+				strncpy(sTitleActual, aTitleSearch[i].sTitleActual, MAX_TITLE_SEARCH);
+				sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+			}
+			else if (sTitleActual[0])
 			{
 				lenDuplicated = aTitleSearch[i].sTitleActual[0] + 1;
-				if (strlen(aTitleSearch[i].sTitleActual) > lenDuplicated)
-					memcpy(&sTitleActual[lenDuplicated], &aTitleSearch[i].sTitleActual[1], strlen(aTitleSearch[i].sTitleActual) - lenDuplicated + 1);
-				else
-					sTitleActual[lenDuplicated] = '\0';
+				memcpy(&sTitleActual[lenDuplicated], &aTitleSearch[i].sTitleActual[1], MAX_TITLE_SEARCH - lenDuplicated - 1);
+				sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
 			}
 		}
-	}
-}
-
-void retrieve_titles_from_fnd_ref_prev(long offset_fnd, unsigned char *sPrevTitleSearch, unsigned char *sPrevTitleActual, unsigned char *sTitleSearch, unsigned char *sTitleActual)
-{
-	TITLE_SEARCH TitleSearch;
-	int lenCopy;
-	int lenDuplicated;
-	char *p;
-
-	copy_fnd_to_buf(offset_fnd, (char *)&TitleSearch, sizeof(TITLE_SEARCH));
-	p = TitleSearch.sTitleSearch;
-	bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
-	p += strlen(TitleSearch.sTitleSearch) + 1; // pointing to actual title
-	//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
-	strncpy(sTitleActual, p, MAX_TITLE_SEARCH);
-	sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
-	if (sTitleSearch[0] < ' ')
-	{
-		lenDuplicated = sTitleSearch[0] + 1;
-		if (strlen(sTitleSearch) > MAX_TITLE_SEARCH - lenDuplicated)
-			lenCopy = MAX_TITLE_SEARCH - lenDuplicated;
-		else
-			lenCopy = strlen(sTitleSearch);
-		memmove(&sTitleSearch[lenDuplicated], &sTitleSearch[1], lenCopy);
-		memcpy(sTitleSearch, sPrevTitleSearch, lenDuplicated);
-	}
-	if (sTitleActual[0] < ' ')
-	{
-		lenDuplicated = sTitleActual[0] + 1;
-		if (strlen(sTitleActual) > MAX_TITLE_SEARCH - lenDuplicated)
-			lenCopy = MAX_TITLE_SEARCH - lenDuplicated;
-		else
-			lenCopy = strlen(sTitleActual);
-		memmove(&sTitleActual[lenDuplicated], &sTitleActual[1], lenCopy);
-		memcpy(sTitleActual, sPrevTitleActual, lenDuplicated);
 	}
 }
 #endif

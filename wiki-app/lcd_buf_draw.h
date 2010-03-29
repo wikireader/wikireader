@@ -193,27 +193,30 @@
 #else
 #define LCD_BUF_WIDTH_BYTES LCD_VRAM_WIDTH_PIXELS/8
 #endif
-#define LANGUAGE_LINK_WIDTH 26
-#define LANGUAGE_LINK_HEIGHT 26
+#define LANGUAGE_LINK_WIDTH 21
+#define LANGUAGE_LINK_HEIGHT 21
 #define LANGUAGE_LINK_WIDTH_GAP 6
 #define LANGUAGE_LINK_HEIGHT_GAP 6
 
 // The italic fonts may not define the bitmaps for all characters.
-// The characters that are minssing in the italic fonts will try to return the bitmaps in the next font file.
-// For example, return bitmaps in DEFAULT_FONT_IDX if not found in ITALIC_FONT_IDX.
+// The characters that are minssing in the italic fonts will try to return the bitmaps of it's supplement_font file.
+// The supplement_font file is assigned in init_lcd_draw_buf().
 #define ITALIC_FONT_IDX			1
 #define DEFAULT_FONT_IDX		2
 #define TITLE_FONT_IDX			3
 #define SUBTITLE_FONT_IDX		4
 // The above are the primary fonts for the article body.  The index of any one of them needs to be under 7.
-#define DEFAULT_ALL_FONT_IDX		5
-#define SEARCH_HEADING_FONT_IDX		TITLE_FONT_IDX
-#define SEARCH_LIST_FONT_IDX		DEFAULT_FONT_IDX
+#define DEFAULT_ALL_FONT_IDX	5
+#define TITLE_ALL_FONT_IDX		6
+#define SUBTITLE_ALL_FONT_IDX	7
+
+#define SEARCH_HEADING_FONT_IDX	TITLE_FONT_IDX
+#define SEARCH_LIST_FONT_IDX	DEFAULT_FONT_IDX
 #define MESSAGE_FONT_IDX		BOLD_FONT_IDX
-#define H2_FONT_IDX			SUBTITLE_FONT_IDX
+#define H2_FONT_IDX				SUBTITLE_FONT_IDX
 #define H3_FONT_IDX 			SUBTITLE_FONT_IDX
-#define H4_FONT_IDX			SUBTITLE_FONT_IDX
-#define H5_FONT_IDX			SUBTITLE_FONT_IDX
+#define H4_FONT_IDX				SUBTITLE_FONT_IDX
+#define H5_FONT_IDX				SUBTITLE_FONT_IDX
 #define LICENSE_TEXT_FONT		ITALIC_FONT_IDX
 #define FILE_BUFFER_SIZE                (512 * 1024)
 

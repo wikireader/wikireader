@@ -59,6 +59,7 @@ uint32_t wiki_lang_link_search(char *lang_link_str);
 void init_wiki_info(void);
 int get_wiki_count(void);
 char *get_nls_text(char *key);
+char *get_lang_link_display_text(char *lang_link_str);
 char *get_wiki_file_path(int nWikiIdx, char *file_name);
 char *get_wiki_name(int idx);
 void wiki_selection(void);
