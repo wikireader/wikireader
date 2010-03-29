@@ -76,6 +76,7 @@ void CTP_initialise(void)
 		CTPread = 0;
 
 		init_rs232_ch1();
+		SET_BRTRD(1, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CTP_BPS));
 
 		InterruptType s = Interrupt_disable();
 

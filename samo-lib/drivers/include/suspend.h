@@ -23,6 +23,7 @@
 #if  !defined(_SUSPEND_H_)
 #define _SUSPEND_H_ 1
 
+void Suspend_initialise(void);
 void suspend(int WatchdogTimeout);
 
 #endif

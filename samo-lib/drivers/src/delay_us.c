@@ -24,9 +24,9 @@
 void delay_us(unsigned int microsec)
 {
 	while (microsec--) {
-		// at 48 MHz this should take 1 micro second
+		// at 60 MHz this should take 1 micro second
 		asm volatile (
-			"\tld.w\t%r4, 6\n"
+			"\tld.w\t%r4, 7\n"
 			"delay_loop:\n"
 			"\tnop\n"
 			"\tnop\n"

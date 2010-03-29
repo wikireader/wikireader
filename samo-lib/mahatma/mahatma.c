@@ -30,6 +30,7 @@
 #include <regs.h>
 #include <profile.h>
 #include <tick.h>
+#include <suspend.h>
 #include <analog.h>
 //#include <temperature.h>
 
@@ -43,7 +44,7 @@
 #include "gpio.h"
 #include "gui.h"
 
-#define VERSION "0.1"
+#define VERSION "0.2"
 
 static FATFS fatfs;
 
@@ -60,7 +61,10 @@ int main(void)
 		);
 
 	// critical first initialisation
-	traps_init();
+	Suspend_initialise();  // sets up clocks so must be first
+	traps_init();          // set up vectors so must be second
+
+	// other high priority initialisation
 	Tick_initialise();
 	Analog_initialise();
 	//Temperature_initialise();

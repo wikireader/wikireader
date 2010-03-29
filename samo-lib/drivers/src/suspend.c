@@ -20,6 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdbool.h>
+
 #include <regs.h>
 #include <samo.h>
 #include <interrupt.h>
@@ -30,6 +32,300 @@
 
 void suspend(int WatchdogTimeout) __attribute__ ((section (".suspend_text")));
 void suspend2(int WatchdogTimeout) __attribute__ ((section (".suspend_text")));
+
+
+// if this fails to be in-line, the program will crash
+// select PLL and adjust clock enables
+static inline void restore_clocks(void)
+{
+
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+	REG_CMU_CLKCNTL =
+		CMU_CLK_SEL_OSC3_DIV_32 |
+		//CMU_CLK_SEL_OSC3_DIV_16 |
+		//CMU_CLK_SEL_OSC3_DIV_8 |
+		//CMU_CLK_SEL_OSC3_DIV_4 |
+		//CMU_CLK_SEL_OSC3_DIV_2 |
+		//CMU_CLK_SEL_OSC3_DIV_1 |
+		//CMU_CLK_SEL_LCDC_CLK |
+		//CMU_CLK_SEL_MCLK |
+		//CMU_CLK_SEL_PLL |
+		//CMU_CLK_SEL_OSC1 |
+		//CMU_CLK_SEL_OSC3 |
+
+		//PLLINDIV_10 |
+		//PLLINDIV_9 |
+		PLLINDIV_8 |
+		//PLLINDIV_7 |
+		//PLLINDIV_6 |
+		//PLLINDIV_5 |
+		//PLLINDIV_4 |
+		//PLLINDIV_3 |
+		//PLLINDIV_2 |
+		//PLLINDIV_1 |
+
+		//LCDCDIV_16 |
+		//LCDCDIV_15 |
+		//LCDCDIV_14 |
+		//LCDCDIV_13 |
+		LCDCDIV_12 |
+		//LCDCDIV_11 |
+		//LCDCDIV_10 |
+		//LCDCDIV_9 |
+		//LCDCDIV_8 |
+		//LCDCDIV_7 |
+		//LCDCDIV_6 |
+		//LCDCDIV_5 |
+		//LCDCDIV_4 |
+		//LCDCDIV_3 |
+		//LCDCDIV_2 |
+		//LCDCDIV_1 |
+
+		//MCLKDIV |
+
+		//OSC3DIV_32 |
+		//OSC3DIV_16 |
+		//OSC3DIV_8 |
+		//OSC3DIV_4 |
+		//OSC3DIV_2 |
+		OSC3DIV_1 |
+
+
+		OSCSEL_PLL |
+		//OSCSEL_OSC3 |
+		//OSCSEL_OSC1 |
+		//OSCSEL_OSC3 |
+
+		SOSC3 |
+		//SOSC1 |
+		0;
+
+	// enable various clocks
+	REG_CMU_GATEDCLK0 =
+		//USBSAPB_CKE |
+		//USB_CKE |
+		//SDAPCPU_HCKE |
+		SDAPCPU_CKE |
+		SDAPLCDC_CKE |
+		SDSAPB_CKE |
+		DSTRAM_CKE |
+		LCDCAHBIF_CKE |
+		LCDCSAPB_CKE |
+		LCDC_CKE |
+		0;
+	REG_CMU_GATEDCLK1 =
+		CPUAHB_HCKE |
+		LCDCAHB_HCKE |
+		GPIONSTP_HCKE |
+		//SRAMC_HCKE |
+		EFSIOBR_HCKE |
+		MISC_HCKE |
+		IVRAMARB_CKE |
+#if !BOARD_SAMO_A3
+		TM5_CKE |      // for tick.c
+#endif
+		//TM4_CKE |
+		//TM3_CKE |
+#if BOARD_SAMO_A3
+		TM2_CKE |      // for tick.c
+#endif
+		TM1_CKE |      // for contrast.c
+		TM0_CKE |      // for tick.c
+		EGPIO_MISC_CK |
+		//I2S_CKE |
+		//DCSIO_CKE |
+		//WDT_CKE |
+		GPIO_CKE |
+		//SRAMSAPB_CKE |
+		SPI_CKE |
+		EFSIOSAPB_CKE |
+		//CARD_CKE |
+		ADC_CKE |
+		ITC_CKE |
+		//DMA_CKE |
+		//RTCSAPB_CKE |
+		0;
+
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
+	asm volatile ("slp");  // ensure clock switch over
+
+#if 1
+	// restore baud rate (using PLL)
+	SET_BRTRD(0, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CTP_BPS));
+#else
+	// restore baud rate (Crystal Oscillator)
+	SET_BRTRD(0, CALC_BAUD(MCLK, 1, SERIAL_DIVMD, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK, 1, SERIAL_DIVMD, CTP_BPS));
+#endif
+
+}
+
+
+
+// if this fails to be in-line, the program will crash
+static inline void initialise_clocks(void)
+{
+	// disable watchdog
+	REG_WD_WP = WD_WP_OFF;
+	REG_WD_EN = 0;
+	REG_WD_WP = WD_WP_ON;
+
+	// restore clocks
+	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+
+	// set up so "slp" instruction can be used to switch clocks
+	REG_CMU_OPT =
+		(0 << OSCTM_SHIFT) |
+		//OSC3OFF |
+		TMHSP |
+		//WAKEUPWT |
+		0;
+
+	REG_CMU_CLKCNTL =
+		CMU_CLK_SEL_OSC3_DIV_32 |
+		//CMU_CLK_SEL_OSC3_DIV_16 |
+		//CMU_CLK_SEL_OSC3_DIV_8 |
+		//CMU_CLK_SEL_OSC3_DIV_4 |
+		//CMU_CLK_SEL_OSC3_DIV_2 |
+		//CMU_CLK_SEL_OSC3_DIV_1 |
+		//CMU_CLK_SEL_LCDC_CLK |
+		//CMU_CLK_SEL_MCLK |
+		//CMU_CLK_SEL_PLL |
+		//CMU_CLK_SEL_OSC1 |
+		//CMU_CLK_SEL_OSC3 |
+
+		//PLLINDIV_10 |
+		//PLLINDIV_9 |
+		PLLINDIV_8 |
+		//PLLINDIV_7 |
+		//PLLINDIV_6 |
+		//PLLINDIV_5 |
+		//PLLINDIV_4 |
+		//PLLINDIV_3 |
+		//PLLINDIV_2 |
+		//PLLINDIV_1 |
+
+		//LCDCDIV_16 |
+		//LCDCDIV_15 |
+		//LCDCDIV_14 |
+		//LCDCDIV_13 |
+		LCDCDIV_12 |
+		//LCDCDIV_11 |
+		//LCDCDIV_10 |
+		//LCDCDIV_9 |
+		//LCDCDIV_8 |
+		//LCDCDIV_7 |
+		//LCDCDIV_6 |
+		//LCDCDIV_5 |
+		//LCDCDIV_4 |
+		//LCDCDIV_3 |
+		//LCDCDIV_2 |
+		//LCDCDIV_1 |
+
+		//MCLKDIV |
+
+		//OSC3DIV_32 |
+		//OSC3DIV_16 |
+		//OSC3DIV_8 |
+		//OSC3DIV_4 |
+		//OSC3DIV_2 |
+		OSC3DIV_1 |
+
+
+		//OSCSEL_PLL |
+		//OSCSEL_OSC3 |
+		//OSCSEL_OSC1 |
+		OSCSEL_OSC3 |
+
+		SOSC3 |
+		//SOSC1 |
+		0;
+
+	// set up PLL for 48 MHz / 8 input -> 60 MHz output
+	REG_CMU_PLL =
+
+		PLLCS |
+		PLLBYP |
+		PLLCP |
+
+		//PLLVC_360MHz_400MHz |
+		//PLLVC_320MHz_360MHz |
+		//PLLVC_280MHz_320MHz |
+		//PLLVC_240MHz_280MHz |
+		//PLLVC_200MHz_240MHz |
+		//PLLVC_160MHz_200MHz |
+		//PLLVC_120MHz_160MHz |
+		PLLVC_100MHz_120MHz |
+
+		//PLLRS_5MHz_20MHz |
+		PLLRS_20MHz_150MHz |
+
+		//PLLN_X16 |
+		//PLLN_X15 |
+		//PLLN_X14 |
+		//PLLN_X13 |
+		//PLLN_X12 |
+		//PLLN_X11 |
+		PLLN_X10 |
+		//PLLN_X9 |
+		//PLLN_X8 |
+		//PLLN_X7 |
+		//PLLN_X6 |
+		//PLLN_X5 |
+		//PLLN_X4 |
+		//PLLN_X3 |
+		//PLLN_X2 |
+		//PLLN_X1 |
+
+		//PLLV_DIV_8 |
+		//PLLV_DIV_4 |
+		PLLV_DIV_2 |
+
+		PLLPOWR |
+		0;
+
+	// 200us delay required (running at 48 MHz so 24 MHz CPU clock)
+	// (Note: the 6 was calculated to give approx 1 us at 48MHz)
+	asm volatile (
+		"\txld.w\t%r4, 6*200\n"
+		"1:\n"
+		"\tnop\n"
+		"\tnop\n"
+		"\tsub\t%r4, 1\n"
+		"\tjrne\t1b"
+		);
+
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	asm volatile ("slp");  // ensure clock switch over
+
+	// set clock configuration
+	restore_clocks();
+
+#if 0
+	// for debugging
+	// enable CMU_CLK on P52
+	REG_P5_03_CFP &= 0xcf;
+	REG_P5_03_CFP |= 0x30; // enable clock output function
+	// dynamic stop
+	asm volatile (
+		"9:\tjp\t9b"
+		);
+#endif
+}
+
+
+void Suspend_initialise(void)
+{
+	static bool initialised = false;
+	if (!initialised) {
+		initialised = true;
+		initialise_clocks();
+		restore_clocks();
+	}
+}
+
 
 void suspend(int WatchdogTimeout)
 {
@@ -67,10 +363,6 @@ void suspend2(int WatchdogTimeout)
 {
 	// no more function calls after this point
 	// all code must be in-line
-
-	REG_CMU_PROTECT = CMU_PROTECT_OFF;
-	REG_CMU_OPT |= WAKEUPWT;
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
 	// SDRAM to self-refresh mode (disables clock)
 	REG_SDRAMC_REF =
@@ -115,11 +407,12 @@ void suspend2(int WatchdogTimeout)
 	REG_P2_47_CFP = 0x00;
 
 	// adjust baud rate for lower clock frequency
-	SET_BRTRD(1, CALC_BAUD(MCLK, 32, DIV, CTP_BPS));
-	SET_BRTRD(0, CALC_BAUD(MCLK, 32, DIV, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK, 32, SERIAL_DIVMD, CTP_BPS));
+	SET_BRTRD(0, CALC_BAUD(MCLK, 32, SERIAL_DIVMD, CONSOLE_BPS));
 
 	// turn off un necessary clocks
 	REG_CMU_PROTECT = CMU_PROTECT_OFF;
+
 	REG_CMU_GATEDCLK0 &= ~(
 		USBSAPB_CKE |
 		USB_CKE |
@@ -175,9 +468,9 @@ void suspend2(int WatchdogTimeout)
 		//CMU_CLK_SEL_OSC1 |
 		//CMU_CLK_SEL_OSC3 |
 
-		PLLINDIV_10 |
+		//PLLINDIV_10 |
 		//PLLINDIV_9 |
-		//PLLINDIV_8 |
+		PLLINDIV_8 |
 		//PLLINDIV_7 |
 		//PLLINDIV_6 |
 		//PLLINDIV_5 |
@@ -221,6 +514,15 @@ void suspend2(int WatchdogTimeout)
 		SOSC3 |
 		//SOSC1 |
 		0;
+
+	// turn off PLL
+	asm volatile ("slp");  // ensure clock switch over
+
+	// turn off PLL to save power
+	// unfortunately switch back on is too long and disrupts CTP serial port
+	// so cannot do this
+	//REG_CMU_PLL &= ~PLLPOWR;
+
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
 	if (0 < WatchdogTimeout) {
@@ -244,126 +546,21 @@ void suspend2(int WatchdogTimeout)
 	asm volatile ("halt");
 	// interrupt is on hold until end of resume
 
+	// disable watchdog
+	REG_WD_WP = WD_WP_OFF;
+	REG_WD_CNTL = WDRESEN;
+	REG_WD_EN = 0;
+	REG_WD_WP = WD_WP_ON;
 	REG_P6_03_CFP &= ~0xc0; // select P63 as GPIO
 
-	// restore clocks
-	REG_CMU_PROTECT = CMU_PROTECT_OFF;
-
-	REG_CMU_CLKCNTL =
-		//CMU_CLK_SEL_OSC3_DIV_32 |
-		//CMU_CLK_SEL_OSC3_DIV_16 |
-		//CMU_CLK_SEL_OSC3_DIV_8 |
-		//CMU_CLK_SEL_OSC3_DIV_4 |
-		//CMU_CLK_SEL_OSC3_DIV_2 |
-		//CMU_CLK_SEL_OSC3_DIV_1 |
-		//CMU_CLK_SEL_LCDC_CLK |
-		//CMU_CLK_SEL_MCLK |
-		//CMU_CLK_SEL_PLL |
-		//CMU_CLK_SEL_OSC1 |
-		CMU_CLK_SEL_OSC3 |
-
-		PLLINDIV_10 |
-		//PLLINDIV_9 |
-		//PLLINDIV_8 |
-		//PLLINDIV_7 |
-		//PLLINDIV_6 |
-		//PLLINDIV_5 |
-		//PLLINDIV_4 |
-		//PLLINDIV_3 |
-		//PLLINDIV_2 |
-		//PLLINDIV_1 |
-
-		//LCDCDIV_16 |
-		//LCDCDIV_15 |
-		//LCDCDIV_14 |
-		//LCDCDIV_13 |
-		LCDCDIV_12 |
-		//LCDCDIV_11 |
-		//LCDCDIV_10 |
-		//LCDCDIV_9 |
-		//LCDCDIV_8 |
-		//LCDCDIV_7 |
-		//LCDCDIV_6 |
-		//LCDCDIV_5 |
-		//LCDCDIV_4 |
-		//LCDCDIV_3 |
-		//LCDCDIV_2 |
-		//LCDCDIV_1 |
-
-		//MCLKDIV |
-
-		//OSC3DIV_32 |
-		//OSC3DIV_16 |
-		//OSC3DIV_8 |
-		//OSC3DIV_4 |
-		//OSC3DIV_2 |
-		OSC3DIV_1 |
-
-
-		//OSCSEL_PLL |
-		//OSCSEL_OSC3 |
-		//OSCSEL_OSC1 |
-		OSCSEL_OSC3 |
-
-		SOSC3 |
-		//SOSC1 |
-		0;
-
-	REG_CMU_GATEDCLK0 =
-		//USBSAPB_CKE |
-		//USB_CKE |
-		//SDAPCPU_HCKE |
-		SDAPCPU_CKE |
-		SDAPLCDC_CKE |
-		SDSAPB_CKE |
-		DSTRAM_CKE |
-		LCDCAHBIF_CKE |
-		LCDCSAPB_CKE |
-		LCDC_CKE |
-		0;
-	REG_CMU_GATEDCLK1 =
-		CPUAHB_HCKE |
-		LCDCAHB_HCKE |
-		GPIONSTP_HCKE |
-		//SRAMC_HCKE |
-		EFSIOBR_HCKE |
-		MISC_HCKE |
-		IVRAMARB_CKE |
-#if !BOARD_SAMO_A3
-		TM5_CKE |      // for tick.c
-#endif
-		//TM4_CKE |
-		//TM3_CKE |
-#if BOARD_SAMO_A3
-		TM2_CKE |      // for tick.c
-#endif
-		TM1_CKE |      // for contrast.c
-		TM0_CKE |      // for tick.c
-		EGPIO_MISC_CK |
-		//I2S_CKE |
-		//DCSIO_CKE |
-		//WDT_CKE |
-		GPIO_CKE |
-		//SRAMSAPB_CKE |
-		SPI_CKE |
-		EFSIOSAPB_CKE |
-		//CARD_CKE |
-		ADC_CKE |
-		ITC_CKE |
-		//DMA_CKE |
-		//RTCSAPB_CKE |
-		0;
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
-
-	// restore baud rate
-	SET_BRTRD(0, CALC_BAUD(MCLK, 1, DIV, CONSOLE_BPS));
-	SET_BRTRD(1, CALC_BAUD(MCLK, 1, DIV, CTP_BPS));
+	// clocks back to normal
+	restore_clocks();
 
 	// re-enable the SDRAMC pin functions
 	REG_P2_03_CFP = 0x55;
 	REG_P2_47_CFP = 0x55;
 
-	// enable RAM and self-refresh
+	// enable SDRAM
 	REG_SDRAMC_APP |=
 		ARBON |
 		//DBF |
