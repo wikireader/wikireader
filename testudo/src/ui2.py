@@ -193,6 +193,7 @@ class Sample:
             if '' == self.serialNumber.get_text():
                 raise StopTestException('Serial number invalid')
             serialNumber = self.serialNumber.get_text()
+            versionNumber = self.versionNumber.get_text()
 
             program = ProgramPin()
 
@@ -209,6 +210,7 @@ class Sample:
 
             starting = True
             run = True
+            current_version = 'NONE'
             while run:
 
                 line = ''
@@ -247,6 +249,8 @@ class Sample:
                     else:
                         self.write('FAIL: FLASH S/N(%s) != %s\n' % (psn, serialNumber), 'fail-text')
                         raise StopTestException('Serial Number mismatch')
+                elif line.startswith('VERION:'):
+                    current_version = line.split(' ')[-1]
 
                 if '. Boot Test Program' == line[1:]:
                     s.write(line[0:1])
@@ -266,6 +270,12 @@ class Sample:
                         s.write('N')
                     else:
                         s.write('Y')
+
+                elif '*VERSION*' == line:
+                    if current_version == versionNumber:
+                        s.write('Y')
+                    else:
+                        s.write('N')
 
                 else:
                     i = psu.current
@@ -507,22 +517,51 @@ class Sample:
 
         vbox1.pack_end(button_box, expand = False, fill = False, padding = 0)
 
-        hbox = gtk.HBox(homogeneous = False, spacing = 5)
+        table1 = gtk.Table(rows = 2, columns = 3, homogeneous = False)
+        table1.set_col_spacings(3)
+        table1.set_row_spacings(2)
 
         self.autoSave = gtk.CheckButton("Auto-save")
         self.autoSave.set_active(True)
-        hbox.pack_start(self.autoSave, expand = False, fill = True, padding = 0)
+        self.autoSave.show()
+        table1.attach(self.autoSave, 0, 1, 0, 1,
+                      xoptions = gtk.EXPAND | gtk.FILL, yoptions = 0,
+                      xpadding = 0, ypadding = 1)
 
-        label = gtk.Label('Serial Number')
-        hbox.pack_start(label, expand = True, fill = True, padding = 0)
+        label = gtk.Label('Serial Number:')
+        label.set_alignment(xalign = 1.0, yalign = 0.5)
+        label.show()
+        table1.attach(label, 1, 2, 0, 1,
+                      xoptions = gtk.FILL, yoptions = 0,
+                      xpadding = 0, ypadding = 1)
 
         self.serialNumber = gtk.Entry()
         self.serialNumber.set_max_length(32)
-        hbox.pack_start(self.serialNumber, expand = True, fill = True, padding = 0)
+        self.serialNumber.set_width_chars(32)
+        self.serialNumber.show()
+        table1.attach(self.serialNumber, 2, 3, 0, 1,
+                      xoptions = gtk.EXPAND | gtk.FILL, yoptions = 0,
+                      xpadding = 0, ypadding = 1)
 
-        hbox.show_all()
+        label = gtk.Label('SD Card Version:')
+        label.set_alignment(xalign = 1.0, yalign = 0.5)
+        label.set_justify(gtk.JUSTIFY_RIGHT)
+        label.show()
+        table1.attach(label, 1, 2, 1, 2,
+                      xoptions = gtk.FILL, yoptions = 0,
+                      xpadding = 0, ypadding = 1)
 
-        vbox1.pack_start(hbox, expand = False, fill = False, padding = 0)
+        self.versionNumber = gtk.Entry()
+        self.versionNumber.set_max_length(32)
+        self.versionNumber.set_width_chars(32)
+        self.versionNumber.show()
+        table1.attach(self.versionNumber, 2, 3, 1, 2,
+                      xoptions = gtk.EXPAND | gtk.FILL, yoptions = 0,
+                      xpadding = 0, ypadding = 1)
+
+        table1.show()
+        vbox1.pack_start(table1, expand = False, fill = False, padding = 0)
+
 
         self.status = gtk.Label('')
         self.status.set_alignment(0, 0)

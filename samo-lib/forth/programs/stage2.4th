@@ -3,6 +3,8 @@
 \ signal to testudo
 cr .( *START-TEST*) cr
 
+include version.4th
+test-version-main
 include key-test.4th
 test-keys-main
 include lcd-test.4th
