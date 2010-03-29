@@ -116,6 +116,7 @@ index: check-dirs check-xml RedirectedTo.py
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
 		--templates="${TEMPLATE_FILE}" \
+		--language="${WIKI_LANGUAGE}" \
 		--prefix="${PREFIX}" ${XML_FILES}
 
 HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR_PATH}/*.html))
