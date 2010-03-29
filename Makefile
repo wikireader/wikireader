@@ -405,7 +405,7 @@ RENDER_STAMP := ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/stamp-render
 MACHINE_COUNT ?= 9
 PARALLEL_BUILD ?= 3
 
-COUNTS_FILE = ${WORKDIR_PATH}/counts.text
+COUNTS_FILE = ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/counts.text
 
 TOTAL_ARTICLES = $(shell awk '/^Articles:/{ print $$2 }' "${COUNTS_FILE}" 2>/dev/null || echo 0)
 TOTAL_INSTANCES := $(shell expr ${MACHINE_COUNT} '*' ${PARALLEL_BUILD})
