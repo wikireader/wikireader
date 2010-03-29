@@ -283,11 +283,6 @@ void traps_init(void)
 {
 	(void)Interrupt_disable();
 
-	/* WAKEUP=1 */
-	REG_CMU_PROTECT = CMU_PROTECT_OFF;
-	REG_CMU_OPT |= 0x1;
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
-
 	/* relocate the trap table */
 	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
 	Interrupt_enable(true);
