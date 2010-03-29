@@ -117,7 +117,7 @@ do
       ;;
 
     -g|--git)
-      RenderDo --yes ${list} --verbose "cd '${base_dir}' && git pull --rebase"
+      RenderDo --yes ${list} --verbose "cd '${base_dir}' && git checkout . && git pull --rebase"
       shift
       ;;
 
