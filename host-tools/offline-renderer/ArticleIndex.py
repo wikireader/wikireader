@@ -847,7 +847,7 @@ class Furigana(LanguageProcessor):
         duplicate = False
         last = len(text) - 1
         while i <= last:
-            key = text[i:i + 1]
+            key = text[i:i + 2] # extract a pair of phonetics
             if not (i < last and key in self.KANA_TO_ROMAN):
                 key = text[i]
 
