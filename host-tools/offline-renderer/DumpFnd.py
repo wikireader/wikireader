@@ -100,10 +100,11 @@ def main():
             else:
                 decoded_title1 += c
 
-        PrintLog.message(u'{0:13n}: [{1:d}/{2:d}]:{3!r:s}={4!r:s}   [{5:d}/{6:d}]:"{7:s}"'
+        PrintLog.message(u'{0:13n}: [{1:d}/{2:d}]:{3!r:s}={4!r:s}\n{5:s}[{6:d}/{7:d}]:"{8:s}"'
                          .format(article_number,
                                  length1, full_length1, title1, decoded_title1,
-                                 length2, full_length2, unicode(title2, 'utf-8')))
+                                 ' ' * 15,
+                                 length2, full_length2, truncated_utf8(title2)))
 
         previous_title1 = title1
         previous_title2 = title2
@@ -111,6 +112,17 @@ def main():
     fnd_file.close()
 
     PrintLog.message(u'Total entries  = {0:13n}'.format(total_entries))
+
+
+def truncated_utf8(text):
+    """converted text to unicode even if the string is truncated"""
+    while len(text) > 0:
+        try:
+            return unicode(text, 'utf-8')
+        except UnicodeDecodeError:
+            pass
+        text = text[:-1]
+    return u''
 
 
 def get_title(f):
