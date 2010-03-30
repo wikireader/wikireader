@@ -10,6 +10,7 @@ from __future__ import with_statement
 import os, sys, re
 import struct
 import littleparser
+import urllib
 import getopt
 import os.path
 import time
@@ -386,6 +387,15 @@ pragma journal_mode = memory;
         title = self.translate(title).strip(u'\u200e\u200f')
 
         rtitle = self.translate(rtitle).strip().strip(u'\u200e\u200f')
+
+        # redirected title may contain '%xx' items - treat as unicode sequence
+        # if it fails just keep the %xx sequences intact since it must represent
+        # either real %xx or some unknowable coding scheme
+        try:
+            rtitle = unicode(urllib.unquote(rtitle.encode('utf-8')), 'utf-8').strip().strip(u'\u200e\u200f')
+        except UnicodeDecodeError:
+            pass
+
         rtitle = whitespaces.sub(' ', rtitle).strip().lstrip(':')
 
         if self.KEY_TEMPLATE == key:
