@@ -58,8 +58,8 @@ class LittleParser(HTMLParser):
             return unq
 
         if type(self.buffer) == unicode:
-            return self.buffer
-        return unicode(self.buffer, 'utf-8')
+            return self.buffer.strip()
+        return unicode(self.buffer, 'utf-8').strip()
 
 
 # tests

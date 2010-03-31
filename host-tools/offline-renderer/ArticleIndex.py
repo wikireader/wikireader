@@ -541,6 +541,7 @@ def strip_accents(s):
 
 def bigram_encode(title):
     global bigram
+    global whitespaces
 
     result = ''
     title = strip_accents(title)
@@ -563,7 +564,11 @@ def bigram_encode(title):
             result += chr(ord(title[0]))
         #else:
         #    result += '?'
-    return result.strip()
+
+    # compact all spaces
+    result = whitespaces.sub(' ', result).strip()
+
+    return result
 
 
 def output_fnd(filename, article_index, language_processor):
@@ -603,7 +608,12 @@ def output_fnd(filename, article_index, language_processor):
 
     def sort_key(key):
         global KEYPAD_KEYS
-        return ''.join(c for c in strip_accents(language_processor.translate(key).lower().strip()) if c in KEYPAD_KEYS)
+        global whitepaces
+
+        result = ''.join(c for c in strip_accents(language_processor.translate(key).lower()) if c in KEYPAD_KEYS)
+        # compact all spaces
+        result = whitespaces.sub(' ', result).strip()
+        return result
 
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
@@ -713,7 +723,8 @@ class LanguageProcessor(object):
 class LanguageNull(LanguageProcessor):
     """no-op class"""
     def translate(self, text):
-        return text
+        """null translation => only strip spaces"""
+        return text.strip()
 
 
 class Furigana(LanguageProcessor):
@@ -902,7 +913,7 @@ class Furigana(LanguageProcessor):
             result += r + " "
             n = n.next
 
-        return result
+        return result.strip()
 
 
 # run the program
