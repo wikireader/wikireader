@@ -36,12 +36,14 @@ cmr      = '8b48s'  # struct charmetric_bmf (font)
 fh_size  = struct.calcsize(fh)
 cmr_size = struct.calcsize(cmr)
 
-# font face defines
+# font face defines - match the #defines of the same name in: wiki-app/lcd_buf_draw.h
 ITALIC_FONT_IDX         = 1
 DEFAULT_FONT_IDX        = 2
 TITLE_FONT_IDX          = 3
 SUBTITLE_FONT_IDX       = 4
 DEFAULT_ALL_FONT_IDX    = 5
+TITLE_ALL_FONT_IDX      = 6
+SUBTITLE_ALL_FONT_IDX   = 7
 
 # Screen dimensions
 LCD_WIDTH               = 240
@@ -218,14 +220,18 @@ def main():
     f_fonti  = open(os.path.join(font_path, "texti.bmf"), "r")
     f_fontt  = open(os.path.join(font_path, "title.bmf"), "r")
     f_fontst = open(os.path.join(font_path, "subtitle.bmf"), "r")
-    f_fontall = open(os.path.join(font_path, "textall.bmf"), "r")
+    f_font_all = open(os.path.join(font_path, "textall.bmf"), "r")
+    f_fontt_all = open(os.path.join(font_path, "titleall.bmf"), "r")
+    f_fontst_all = open(os.path.join(font_path, "subtlall.bmf"), "r")
 
     font_id_values = {
         ITALIC_FONT_IDX: f_fonti,
         DEFAULT_FONT_IDX: f_fontr,
         TITLE_FONT_IDX: f_fontt,
+        TITLE_ALL_FONT_IDX: f_fontt_all,
         SUBTITLE_FONT_IDX: f_fontst,
-        DEFAULT_ALL_FONT_IDX: f_fontall
+        SUBTITLE_ALL_FONT_IDX: f_fontst_all,
+        DEFAULT_ALL_FONT_IDX: f_font_all
     }
 
     article_db = sqlite3.connect(art_file)
@@ -308,8 +314,13 @@ def get_utf8_cwidth(c, face):
         width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = (0,0,0,0,0,0,0,0,
                                                                                                r'\x55' * 48)
 
-    if 0 == width and face != DEFAULT_ALL_FONT_IDX:
-        return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
+    if 0 == width:
+        if TITLE_FONT_IDX == face:
+            return  get_utf8_cwidth(c, TITLE_ALL_FONT_IDX)
+        elif SUBTITLE_FONT_IDX == face:
+            return  get_utf8_cwidth(c, SUBTITLE_ALL_FONT_IDX)
+        elif face != DEFAULT_ALL_FONT_IDX:
+            return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
 
     width += LSBearing + LINE_SPACE_ADDON
     width_cache[(c, face)] = width
@@ -320,11 +331,13 @@ def get_utf8_cwidth(c, face):
 def get_lineheight(face):
 
     values = {
-            ITALIC_FONT_IDX:      P_LSPACE,
-            DEFAULT_FONT_IDX:     P_LSPACE,
-            TITLE_FONT_IDX:       H1_LSPACE,
-            SUBTITLE_FONT_IDX:    H2_LSPACE,
-            DEFAULT_ALL_FONT_IDX: P_LSPACE
+            ITALIC_FONT_IDX:       P_LSPACE,
+            DEFAULT_FONT_IDX:      P_LSPACE,
+            TITLE_FONT_IDX:        H1_LSPACE,
+            TITLE_ALL_FONT_IDX:    H1_LSPACE,
+            SUBTITLE_FONT_IDX:     H2_LSPACE,
+            SUBTITLE_ALL_FONT_IDX: H2_LSPACE,
+            DEFAULT_ALL_FONT_IDX:  P_LSPACE
         }
 
     return values[face]
