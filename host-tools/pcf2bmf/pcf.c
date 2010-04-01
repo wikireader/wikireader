@@ -389,7 +389,6 @@ load_pcf_font(pcffont_t *font)
     if ((ff = FontFileOpen(font->file)) == NULL)
 	return -1;
 
-
     if (pcfReadFont(&fr, ff, MSBFirst, MSBFirst, 1, 1) != Successful)
 	return -1;
     fi = &(fr.info);
@@ -509,11 +508,11 @@ void Generate_new_font(pcffont_t *font)
        if(i>nFontCount)
 	  break;
     }
-    printf("count is:%d, before opening file: %s\n",count,name);
+    printf("nFontCount %d, count is:%d, before opening file: %s\n",nFontCount,count,name);
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
-       size_t bs = fwrite(buf,1,count*sizeof(font_bmf),fd);
+       size_t bs = fwrite(buf,1,nFontCount*sizeof(font_bmf),fd);
        assert(bs==count*sizeof(font_bmf));
     }
     fclose(fd);
@@ -608,13 +607,15 @@ void Generate_new_font_with_header(pcffont_t *font)
        memcpy(buf+offset,&font_create,sizeof(font_bmf));
 
        offset+=sizeof(font_bmf);
+		if(i>nFontCount)
+			break;
     }
-    printf("count is:%d, before opening file: %s\n",count,name);
+    printf("count is:%d, before opening file: %s\n",nFontCount,name);
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
-       size_t bs = fwrite(buf,1,count*sizeof(font_bmf)+header_len,fd);
-       assert(bs == count*sizeof(font_bmf)+header_len);
+       size_t bs = fwrite(buf,1,nFontCount*sizeof(font_bmf)+header_len,fd);
+       assert(bs == nFontCount*sizeof(font_bmf)+header_len);
     }
     fclose(fd);
     free(buf);
@@ -1722,7 +1723,11 @@ FontFileOpen (char *name) {
 //        fd = gzcatfile (name);
 //    else
 //        fd = open (name, 0);
-    fd = fopen(name, "rb");
+    if (0 == strcmp("-", name)) {
+	    fd = stdin;
+    } else {
+	    fd = fopen(name, "rb");
+    }
 
 //    if (fd < 0)
     if (!fd)

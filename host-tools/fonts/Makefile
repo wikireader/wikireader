@@ -39,6 +39,7 @@ $(call REQUIRED_BINARY, bdftopcf, xfonts-utils)
 BDFTOPCF = $(shell which bdftopcf)
 PCFTOBMF = ${HOST_TOOLS}/pcf2bmf/pcf2bmf
 
+DECOMPRESS = xz --decompress --stdout
 
 TARGETS = title.bmf
 TARGETS += subtitle.bmf
@@ -49,6 +50,8 @@ TARGETS += text.bmf
 #TARGETS += small.bmf
 TARGETS += textall.bmf
 #TARGETS += textallb.bmf
+TARGETS += titleall.bmf
+TARGETS += subtlall.bmf
 
 
 
@@ -79,6 +82,9 @@ clean:
 	${BDFTOPCF} "$<" -o "$@"
 
 %.bmf: %.pcf
-	${PCFTOBMF} -f "$<" -o "$@"
+	${PCFTOBMF} -f "$<" -o "$@" -c 1152
+
+%.bmf: %.pcf.xz
+	${DECOMPRESS} "$<" | ${PCFTOBMF} -f - -o "$@"
 
 include ${MK_DIR}/rules.mk
