@@ -79,7 +79,7 @@ ALL_TARGETS += forth
 ALL_TARGETS += flash
 ALL_TARGETS += mahatma
 ALL_TARGETS += qt4-simulator
-ALL_TARGETS += hash-gen
+#ALL_TARGETS += hash-gen
 ALL_TARGETS += pcf2bmf
 ALL_TARGETS += fonts
 
@@ -263,9 +263,9 @@ console-simulator:
 # Hash generator for search index
 # ===============================
 
-.PHONY: hash-gen
-hash-gen:
-	cd ${HOST_TOOLS}/hash-gen && ${MAKE}
+#.PHONY: hash-gen
+#hash-gen:
+#	cd ${HOST_TOOLS}/hash-gen && ${MAKE}
 
 
 # Font processing
@@ -377,17 +377,21 @@ combine: validate-destdir
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
-.PHONY: hash
-hash: validate-destdir hash-gen
-	cd "${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" && ${HOST_TOOLS}/hash-gen/hash-gen \
-		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.pfx" \
-		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.fnd" \
-		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.hsh"
+#.PHONY: hash
+#hash: validate-destdir hash-gen
+#	cd "${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" && ${HOST_TOOLS}/hash-gen/hash-gen \
+#		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.pfx" \
+#		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.fnd" \
+#		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.hsh"
 
 
-# o run all stages (for testing small XML sample files)
-.PHONY: iprch
-iprch: index parse render combine hash
+# run all stages (for testing small XML sample files)
+#.PHONY: iprch
+#iprch: index parse render combine hash
+
+# run all stages (for testing small XML sample files)
+.PHONY: iprc
+iprc: index parse render combine
 
 
 # Build database using multiple machines
@@ -824,7 +828,8 @@ help:
 	@echo '  parse                 - parse XML_FILES into one HTML file in WORKDIR'
 	@echo '  render                - render HTML in WORKDIR into one big data file in DESTDIR'
 	@echo '  combine               - combine temporary indices to one file in DESTDIR'
-	@echo '  hash                  - generate hash file in DESTDIR'
+#	@echo '  hash                  - generate hash file in DESTDIR'
+	@echo '  iprc                  - same as: index parse render combine'
 	@echo '  farm<1..N>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
 	@echo '  farm<1..N>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
 	@echo '  farm<1..N>-render     - render WORKDIR HTML files into 3 data files in DESTDIR (use -j3)'
