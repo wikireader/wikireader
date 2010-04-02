@@ -83,12 +83,12 @@ static inline void restore_clocks(void)
 
 		//MCLKDIV |
 
-		//OSC3DIV_32 |
+		OSC3DIV_32 |
 		//OSC3DIV_16 |
 		//OSC3DIV_8 |
 		//OSC3DIV_4 |
 		//OSC3DIV_2 |
-		OSC3DIV_1 |
+		//OSC3DIV_1 |
 
 
 		OSCSEL_PLL |
@@ -147,7 +147,9 @@ static inline void restore_clocks(void)
 		0;
 
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
-	asm volatile ("slp");  // ensure clock switch over
+
+	// switch clocks
+	asm volatile ("slp\n\tnop\n\tslp");
 
 #if 1
 	// restore baud rate (using PLL)
@@ -225,12 +227,12 @@ static inline void initialise_clocks(void)
 
 		//MCLKDIV |
 
-		//OSC3DIV_32 |
+		OSC3DIV_32 |
 		//OSC3DIV_16 |
 		//OSC3DIV_8 |
 		//OSC3DIV_4 |
 		//OSC3DIV_2 |
-		OSC3DIV_1 |
+		//OSC3DIV_1 |
 
 
 		//OSCSEL_PLL |
@@ -285,6 +287,9 @@ static inline void initialise_clocks(void)
 		PLLPOWR |
 		0;
 
+	// disable spread spectrum
+	REG_CMU_SSCG = 0;
+
 	// 200us delay required (running at 48 MHz so 24 MHz CPU clock)
 	// (Note: the 6 was calculated to give approx 1 us at 48MHz)
 	asm volatile (
@@ -298,7 +303,8 @@ static inline void initialise_clocks(void)
 
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
-	asm volatile ("slp");  // ensure clock switch over
+	// switch clocks
+	asm volatile ("slp\n\tnop\n\tslp");
 
 	// set clock configuration
 	restore_clocks();
@@ -515,8 +521,8 @@ void suspend2(int WatchdogTimeout)
 		//SOSC1 |
 		0;
 
-	// turn off PLL
-	asm volatile ("slp");  // ensure clock switch over
+	// switch clocks
+	asm volatile ("slp\n\tnop\n\tslp");
 
 	// turn off PLL to save power
 	// unfortunately switch back on is too long and disrupts CTP serial port
