@@ -249,7 +249,8 @@ class Sample:
                     else:
                         self.write('FAIL: FLASH S/N(%s) != %s\n' % (psn, serialNumber), 'fail-text')
                         raise StopTestException('Serial Number mismatch')
-                elif line.startswith('VERION:'):
+
+                elif line.startswith('VERSION:'):
                     current_version = line.split(' ')[-1]
 
                 if '. Boot Test Program' == line[1:]:
@@ -272,10 +273,12 @@ class Sample:
                         s.write('Y')
 
                 elif '*VERSION*' == line:
+                    self.write('INFO: check "%s" against "%s"\n' % (current_version, versionNumber))
                     if current_version == versionNumber:
                         s.write('Y')
                     else:
                         s.write('N')
+                        raise StopTestException('Version Number mismatch')
 
                 else:
                     i = psu.current
