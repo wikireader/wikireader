@@ -103,9 +103,10 @@ class Sample:
 
         auto = self.autoSave.get_active() and 1 == count
         self.autoSave.set_active(auto)
+        serial_number = self.serialNumber.get_text().strip()
 
         try:
-            if '' == self.serialNumber.get_text():
+            if '' == serial_number:
                 raise StopTestException('Serial number invalid')
 
             if auto:
@@ -119,10 +120,10 @@ class Sample:
 
             for cycle in range(1, count + 1):
                 self.write('\n*** Start of Test %d of %d for PCBA SN: %s ***\n\n' %
-                           (cycle, count, self.serialNumber.get_text()))
+                           (cycle, count, serial_number))
 
                 t = time.time()
-                sequencer.runOneTest(self, self.fileName, 0, serial_number = self.serialNumber.get_text())
+                sequencer.runOneTest(self, self.fileName, 0, serial_number = serial_number)
                 t = time.time() - t
 
                 self.write('\n*** End of Test %d of %d [%7.3f seconds] ***\n' % (cycle, count, t))
@@ -237,7 +238,7 @@ class Sample:
             tag = '.FAIL'
         else:
             tag = '.OK'
-        sn = self.serialNumber.get_text()
+        sn = self.serialNumber.get_text().strip()
         if '' == sn:
             sn = 'NO-SERIAL-NUMBER'
 

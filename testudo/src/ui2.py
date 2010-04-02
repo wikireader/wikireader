@@ -190,10 +190,11 @@ class Sample:
             psu = None
 
             s = SerialPort()
-            if '' == self.serialNumber.get_text():
+            serialNumber = self.serialNumber.get_text().strip()
+            versionNumber = self.versionNumber.get_text().strip()
+
+            if '' == serialNumber:
                 raise StopTestException('Serial number invalid')
-            serialNumber = self.serialNumber.get_text()
-            versionNumber = self.versionNumber.get_text()
 
             program = ProgramPin()
 
@@ -370,7 +371,7 @@ class Sample:
             tag = '.FAIL'
         else:
             tag = '.OK'
-        sn = self.serialNumber.get_text()
+        sn = self.serialNumber.get_text().strip()
         if '' == sn:
             sn = 'NO-SERIAL-NUMBER'
 
