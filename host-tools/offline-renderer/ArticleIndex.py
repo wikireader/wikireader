@@ -754,6 +754,8 @@ class Furigana(LanguageProcessor):
 
         u'ン': 'nn',
 
+        u'ー': '-',
+
         u'ウァ': 'wha',      u'ウィ': 'whi',                               u'ウェ': 'whe',        u'ウォ': 'who',
         u'ヴァ': 'va',       u'ヴィ': 'vi',         u'ヴ':   'vu',         u'ヴェ': 've',         u'ヴォ': 'vo',
         u'チャ': 'cya',      u'チィ': 'cyi',        u'チュ': 'cyu',        u'チェ': 'cye',        u'チョ': 'cyo',
