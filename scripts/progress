@@ -169,7 +169,7 @@ do
       ;;
 
     -G|--get)
-      rsync -avHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" image/
+      rsync -cavHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" image/
       shift
       ;;
 
