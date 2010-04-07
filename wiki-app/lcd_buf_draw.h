@@ -316,6 +316,7 @@ void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,unsigned char **pUT
 int get_external_str_pixel_width(unsigned char *pUTF8, int font_idx);
 int extract_str_fitting_width(unsigned char **pIn, char *pOut, int width, int font_idx);
 void lcd_set_pixel(unsigned char *membuffer,int x, int y);
+void lcd_clear_pixel(unsigned char *membuffer,int x, int y);
 void lcd_set_framebuffer_pixel(int x, int y);
 void lcd_clear_framebuffer_pixel(int x, int y);
 void extract_title_from_article(unsigned char *article_buf, unsigned char *title);

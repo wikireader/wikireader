@@ -467,7 +467,7 @@ static void handle_touch(struct wl_input_event *ev)
 		    ev->touch_event.x, ev->touch_event.y, ev->touch_event.value));
 
 	mode = keyboard_get_mode();
-	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_NUM))
+	if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_CHAR || mode == KEYBOARD_CHAR2 || mode == KEYBOARD_NUM))
 	{
 		article_buf_pointer = NULL;
 		if (!touch_down_on_keyboard && !touch_down_on_list)
@@ -583,6 +583,12 @@ static void handle_touch(struct wl_input_event *ev)
 						if(mode == KEYBOARD_CHAR)
 							keyboard_set_mode(KEYBOARD_NUM);
 						else if(mode == KEYBOARD_NUM)
+						{
+							if (wiki_is_japanese())
+								keyboard_set_mode(KEYBOARD_CHAR2);
+							else
+								keyboard_set_mode(KEYBOARD_CHAR);
+						} else if (mode == KEYBOARD_CHAR2)
 							keyboard_set_mode(KEYBOARD_CHAR);
 						guilib_fb_lock();
 						keyboard_paint();
@@ -1049,11 +1055,8 @@ int wikilib_run(void)
 			sleep = 0;
 		else if (!more_events && display_mode == DISPLAY_MODE_WIKI_SELECTION && render_wiki_selection_with_pcf())
 			sleep = 0;
-#ifdef OVER_SCROLL_ENABLED
-		if ((finger_move_speed || over_scroll_lines) && !finger_touched)
-#else
+
 		if (finger_move_speed && !finger_touched)
-#endif
 		{
 			scroll_article();
 			sleep = 0;

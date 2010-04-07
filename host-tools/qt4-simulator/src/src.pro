@@ -54,7 +54,7 @@ HEADERS += WikiDisplay.h
 HEADERS += MainWindow.h
 HEADERS += WikilibThread.h
 
-images = keyboard_123 keyboard_abc nls
+images = keyboard_123 keyboard_abc keyboard_abc2 nls
 
 all_images.target = all_images.h
 

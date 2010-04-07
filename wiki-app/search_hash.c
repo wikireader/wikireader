@@ -470,7 +470,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		}
 	}
 	bigram_decode(sTitleSearchOut, sTitleSearch, MAX_TITLE_SEARCH);
-
+	
 	sTitleActual[0] = '\0';
 	if (bFound2)
 	{

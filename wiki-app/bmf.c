@@ -35,7 +35,7 @@
 
 int load_bmf(pcffont_bmf_t *font)
 {
-	int fd,file_size,read_size;
+	int fd, read_size;
 	font_bmf_header header;
 
 	fd = openfile(font->file,0);
@@ -43,22 +43,23 @@ int load_bmf(pcffont_bmf_t *font)
 	if(fd<0)
 		return -1;
 
-	file_size = 256 * sizeof(charmetric_bmf)+sizeof(font_bmf_header);
-	font->charmetric = (char*)Xalloc(file_size);
+#ifdef WIKIPCF
+	font->file_size = lseek(fd, 0, SEEK_END);
+	lseek(fd, 0, SEEK_SET);
+#else
+	wl_fsize(fd, &(font->file_size));
+#endif
 
-	read_size = readfile(fd, font->charmetric, file_size);
+	font->charmetric = (char*)Xalloc(font->file_size);
+	memset(font->charmetric, 0, font->file_size);
+
+	read_size = readfile(fd, font->charmetric, 256 * sizeof(charmetric_bmf)+sizeof(font_bmf_header));
 
 	memcpy(&header,font->charmetric,sizeof(font_bmf_header));
 
 	font->Fmetrics.linespace = header.linespace;
 	font->Fmetrics.ascent    = header.ascent;
 	font->Fmetrics.descent   = header.descent;
-
-#ifdef WIKIPCF
-	font->file_size = lseek(fd, 0, SEEK_END);
-#else
-	wl_fsize(fd, &(font->file_size));
-#endif
 
 	return fd;
 }
@@ -70,6 +71,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 	int read_size = 0, offset = 0;
 	char buffer[1024];
 	int font_header;
+	int bFound = 0;
 
 	memset(buffer,0,1024);
 
@@ -88,14 +90,18 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 		offset = val*sizeof(charmetric_bmf)+font_header;
 		if (offset <= font->file_size - sizeof(charmetric_bmf))
 		{
+			memcpy(Cmetrics,font->charmetric+val*sizeof(charmetric_bmf)+font_header,sizeof(charmetric_bmf));
+			if (Cmetrics->width)
+			{
+				bFound = 1;
+			}
+			else
+			{
 #ifdef WIKIPCF
-			lseek(font->fd,offset,SEEK_SET);
+				lseek(font->fd,offset,SEEK_SET);
 #else
-			//closefile(font->fd);
-			//font->fd = openfile(font->file,0);
-			//wl_seek(font->fd,0);
-			wl_seek(font->fd,offset);
-
+				wl_seek(font->fd,offset);
+			}
 #endif
 		}
 		else
@@ -104,29 +110,40 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 			{ // character not defined in the current font file (and it is intended to include partial characters)
 				font = font->supplement_font;
 				return pres_bmfbm(val, font, bitmap, Cmetrics);
-				//return -1;
 			}
 			else
 				return -1;
 		}
 
-		size = 1024; // Due to the nature of wl_read, the read size needs to be 1024.
-
-		read_size = readfile(font->fd,buffer,size);
-		memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
-		if((Cmetrics->height*Cmetrics->widthBytes)==0)
+		if (!bFound)
 		{
-
-			font = font->supplement_font;
-			return pres_bmfbm(val, font, bitmap, Cmetrics);
-			//return -1;
+			size = 1024; // Due to the nature of wl_read, the read size needs to be 1024.
+	
+			read_size = readfile(font->fd,buffer,size);
+			memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
+			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
+			if((Cmetrics->height*Cmetrics->widthBytes)==0)
+			{
+	
+				font = font->supplement_font;
+				return pres_bmfbm(val, font, bitmap, Cmetrics);
+				//return -1;
+			}
 		}
 	}
 
 	if(Cmetrics->width>0)
 		*bitmap = (bmf_bm_t*)Cmetrics+8;
 	else
+	{
+		if (val > 256 && offset <= font->file_size - sizeof(charmetric_bmf))
+		{
+			Cmetrics->width = 1;
+			Cmetrics->height = 0;
+			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
+		}
 		return -1;
+	}
 
 	return 1;
 }

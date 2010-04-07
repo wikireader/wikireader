@@ -42,11 +42,13 @@ WIKI_LIST wiki_list[MAX_WIKIS] =
 	{8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia"},
 };
 
+extern int search_interrupted;
 int nWikiCount = 0;
 int aWikiInfoIdx[MAX_WIKIS_PER_DEVICE]; // index to wiki_info[]
 char *aWikiNls[MAX_WIKIS_PER_DEVICE];
 long aWikiNlsLen[MAX_WIKIS_PER_DEVICE];
 int nCurrentWiki = -1; // index to aWikiInfoIdx[]
+bool bWikiIsJapanese = false;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
 WIKI_LICENSE_DRAW aWikiLicenseDraw[MAX_WIKIS_PER_DEVICE];
@@ -95,6 +97,10 @@ void init_wiki_info(void)
 			aWikiNlsLen[i] = -1;
 			aWikiLicenseDraw[i].lines = 0;
 		}
+		if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "ja"))
+			bWikiIsJapanese = true;
+		else
+			bWikiIsJapanese = false;
 	}
 	else
 		fatal_error("No wiki found");
@@ -130,12 +136,18 @@ bool wiki_lang_exist(char *lang_link_str)
 		return false;
 }
 
+bool wiki_is_japanese()
+{
+	return bWikiIsJapanese;
+}
+
 uint32_t wiki_lang_link_search(char *lang_link_str)
 {
 	uint32_t article_idx = 0;
-	int nTmpeCurrentWiki = nCurrentWiki;
+	int nTempCurrentWiki = nCurrentWiki;
 	char *p;
 
+	search_interrupted = 0;
 	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
 		init_search_hash();
@@ -144,7 +156,7 @@ uint32_t wiki_lang_link_search(char *lang_link_str)
 		if (article_idx)
 			article_idx |= wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_id << 24;
 	}
-	nCurrentWiki = nTmpeCurrentWiki;
+	nCurrentWiki = nTempCurrentWiki;
 	return article_idx;
 }	
 char *get_wiki_file_path(int nWikiIdx, char *file_name)
@@ -267,7 +279,7 @@ char *get_nls_text(char *key)
 
 char *get_lang_link_display_text(char *lang_link_str)
 {
-	int nTmpeCurrentWiki = nCurrentWiki;
+	int nTempCurrentWiki = nCurrentWiki;
 	static char lang_str[3];
 	char *p = NULL;
 
@@ -285,7 +297,7 @@ char *get_lang_link_display_text(char *lang_link_str)
 		p = lang_str;
 	}
 
-	nCurrentWiki = nTmpeCurrentWiki;
+	nCurrentWiki = nTempCurrentWiki;
 	return p;
 }
 
@@ -297,12 +309,12 @@ void wiki_selection(void)
 
 char *get_wiki_name(int idx)
 {
-	int nTmpeCurrentWiki = nCurrentWiki;
+	int nTempCurrentWiki = nCurrentWiki;
 	char *pName;
 
 	nCurrentWiki = idx;
 	pName = get_nls_text("wiki_name");
-	nCurrentWiki = nTmpeCurrentWiki;
+	nCurrentWiki = nTempCurrentWiki;
 	return pName;
 }
 
@@ -312,6 +324,10 @@ void set_wiki(int idx)
 	char sWikiId[10];
 
 	nCurrentWiki = idx;
+	if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "ja"))
+		bWikiIsJapanese = true;
+	else
+		bWikiIsJapanese = false;
 	fd = wl_open("wiki.ini", WL_O_CREATE);
 	if (fd >= 0)
 	{

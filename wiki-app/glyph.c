@@ -289,9 +289,10 @@ int render_string_right(const int font, int start_x,
 	q = (unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
-		x = draw_bmf_char(c,font-1,x,start_y, inverted, 0);
+		x = draw_bmf_char(c,font-1,x,start_y, inverted, 1);
 		if(x<0)
 			return 0;
 	}
+	guilib_clear_area(x, start_y, LCD_BUF_WIDTH_PIXELS - 1, start_y + GetFontLinespace(font));
 	return rc;
 }

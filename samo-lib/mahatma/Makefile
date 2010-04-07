@@ -92,7 +92,7 @@ LZMA_COBJS += Bra.o
 LZMA_COBJS += LzFind.o
 
 # convert the image files
-IMAGES = keyboard_abc keyboard_123 nls
+IMAGES = keyboard_abc keyboard_abc2 keyboard_123 nls
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)

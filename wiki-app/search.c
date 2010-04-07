@@ -84,125 +84,628 @@ typedef struct _search_info {
 } SEARCH_INFO;
 static SEARCH_INFO *search_info = NULL;
 
-struct _hiragana_mapping {
+#define LONGEST_HIRAGANA_ENGLISH_CHARS 4
+struct _english_hiragana_mapping {
 	char *english;
-	char *hirgana;
-} hiragana_mapping[] = {
-	{"a"    , "ア,"},
-	{"ba"   , "バ,"},
-	{"be"   , "ベ,"},
-	{"bi"   , "ビ,"},
-	{"bo"   , "ボ,"},
-	{"bu"   , "ブ,"},
-	{"bya"  , "ビャ"},
-	{"byo"  , "ビョ"},
-	{"byu"  , "ビュ"},
-	{"chi"  , "チ,"},
-	{"chya" , "チャ"},
-	{"chyo" , "チョ"},
-	{"chyu" , "チュ"},
-	{"da"   , "ダ,"},
-	{"de"   , "デ,"},
-	{"di"   , "ヂ,"},
-	{"di"   , "ディ"},
-	{"do"   , "ド,"},
-	{"du"   , "ヅ,"},
-	{"du"   , "ドゥ"},
-	{"e"    , "エ,"},
-	{"fa"   , "ファ"},
-	{"fe"   , "フェ"},
-	{"fi"   , "フィ"},
-	{"fo"   , "フォ"},
-	{"fu"   , "フ,"},
-	{"ga"   , "ガ,"},
-	{"ge"   , "ゲ,"},
-	{"gi"   , "ギ,"},
-	{"go"   , "ゴ,"},
-	{"gu"   , "グ,"},
-	{"gya"  , "ギャ"},
-	{"gyo"  , "ギョ"},
-	{"gyu"  , "ギュ"},
-	{"ha"   , "ハ,"},
-	{"he"   , "ヘ,"},
-	{"hi"   , "ヒ,"},
-	{"ho"   , "ホ,"},
-	{"hya"  , "ヒャ"},
-	{"hyo"  , "ヒョ"},
-	{"hyu"  , "ヒュ"},
-	{"i"    , "イ,"},
-	{"ji"   , "ジ,"},
-	{"jya"  , "ジャ"},
-	{"jyo"  , "ジョ"},
-	{"jyu"  , "ジュ"},
-	{"ka"   , "カ,"},
-	{"ke"   , "ケ,"},
-	{"ki"   , "キ,"},
-	{"ko"   , "コ,"},
-	{"ku"   , "ク,"},
-	{"kya"  , "キャ"},
-	{"kyo"  , "キョ"},
-	{"kyu"  , "キュ"},
-	{"ma"   , "マ,"},
-	{"me"   , "メ,"},
-	{"mi"   , "ミ,"},
-	{"mo"   , "モ,"},
-	{"mu"   , "ム,"},
-	{"mya"  , "ミャ"},
-	{"myo"  , "ミョ"},
-	{"myu"  , "ミュ"},
-	{"n"    , "ン,"},
-	{"na"   , "ナ,"},
-	{"ne"   , "ネ,"},
-	{"ni"   , "ニ,"},
-	{"no"   , "ノ,"},
-	{"nu"   , "ヌ,"},
-	{"nya"  , "ニャ"},
-	{"nyo"  , "ニョ"},
-	{"nyu"  , "ニュ"},
-	{"o"    , "オ,"},
-	{"pa"   , "パ,"},
-	{"pe"   , "ペ,"},
-	{"pi"   , "ピ,"},
-	{"po"   , "ポ,"},
-	{"pu"   , "プ,"},
-	{"pya"  , "ピャ"},
-	{"pyo"  , "ピョ"},
-	{"pyu"  , "ピュ"},
-	{"ra"   , "ラ,"},
-	{"re"   , "レ,"},
-	{"ri"   , "リ,"},
-	{"ro"   , "ロ,"},
-	{"ru"   , "ル,"},
-	{"rya"  , "リャ"},
-	{"ryo"  , "リョ"},
-	{"ryu"  , "リュ"},
-	{"sa"   , "サ,"},
-	{"se"   , "セ,"},
-	{"shi"  , "シ,"},
-	{"shya" , "シャ"},
-	{"shyo" , "ショ"},
-	{"shyu" , "シュ"},
-	{"so"   , "ソ,"},
-	{"su"   , "ス,"},
-	{"ta"   , "タ,"},
-	{"te"   , "テ,"},
-	{"to"   , "ト,"},
-	{"tsu"  , "ツ,"},
-	{"tyu"  , "テュ"},
-	{"u"    , "ウ,"},
-	{"va"   , "ヴァ"},
-	{"ve"   , "ヴェ"},
-	{"vi"   , "ヴィ"},
-	{"vo"   , "ヴォ"},
-	{"wa"   , "ワ,"},
-	{"wi"   , "ウィ"},
-	{"ya"   , "ヤ,"},
-	{"yo"   , "ヨ,"},
-	{"yu"   , "ユ,"},
-	{"za"   , "ザ,"},
-	{"ze"   , "ゼ,"},
-	{"zo"   , "ゾ,"},
-	{"zu"   , "ズ,"},
+	char *hiragana;
+	char *unified_english;
+} english_hiragana_mapping[] = {
+	{"-",   "ー",	NULL	},
+	{"a",	"あ",	 NULL    },
+	{"ba",	"ば",	 NULL   },
+	{"bba",    "っば"    , NULL },
+	{"bbe",    "っべ"    , NULL },
+	{"bbi",    "っび"    , NULL },
+	{"bbo",    "っぼ"    , NULL },
+	{"bbu",	"っぶ",	NULL	},
+	{"bbya","っびゃ"     , NULL },
+	{"bbye","っびぇ"     , NULL },
+	{"bbyi","っびぃ"     , NULL },
+	{"bbyo","っびょ"     , NULL },
+	{"bbyu","っびゅ",	NULL	},
+	{"be",	"べ",	 NULL   },
+	{"bi",	"び",	 NULL   },
+	{"bo",	"ぼ",	 NULL   },
+	{"bu",	"ぶ",	 NULL   },
+	{"bya",	"びゃ",	NULL  },
+	{"bye",	"びぇ",	NULL  },
+	{"byi",	"びぃ",	NULL  },
+	{"byo",	"びょ",	NULL  },
+	{"byu",	"びゅ",	NULL  },
+	{"ccha","っちゃ"     , NULL },
+	{"cche","っちぇ"     , NULL },
+	{"cchi",   "っち"    , NULL },
+	{"ccho","っちょ"     , NULL },
+	{"cchu","っちゅ",	NULL	},
+	{"ccyi","っちぃ"     , NULL },
+	{"cha",	"ちゃ",	"cya"  },
+	{"che",	"ちぇ",	"cye"  },
+	{"chi",	"ち",	NULL  },
+	{"cho",	"ちょ", "cyo"  },
+	{"chu",	"ちゅ", "cyu"  },
+	{"cya",	"ちゃ", "cya"  },
+	{"cye",	"ちぇ", "cye"  },
+	{"cyi",	"ちぃ", "cyi"  },
+	{"cyo",	"ちょ", "cyo"  },
+	{"cyu",	"ちゅ", "cyu"  },
+	{"da",	"だ",	 NULL   },
+	{"dda",    "っだ"    , NULL },
+	{"dde",    "っで"    , NULL },
+	{"ddha","っでぁ"     , NULL },
+	{"ddhe","っでぇ"     , NULL },
+	{"ddhi","っでぃ"     , NULL },
+	{"ddho","っでょ"     , NULL },
+	{"ddhu","っでゅ",	NULL	},
+	{"ddi",    "っヂ"    , NULL },
+	{"ddo",    "っど"    , NULL },
+	{"ddu",	"っづ",	NULL	},
+	{"de",	"で",	 NULL   },
+	{"di",	"ぢ",	 NULL  },
+	{"do",	"ど",	 NULL  },
+	{"du",	"づ",	 NULL  },
+	{"e",	"え",	 NULL  },
+	{"fa",	"ふぁ",	NULL   },
+	{"fe",	"ふぇ",	NULL   },
+	{"ffa", "っふぁ"     , NULL },
+	{"ffe", "っふぇ"     , NULL },
+	{"ffi", "っふぃ"     , NULL },
+	{"ffo", "っふぉ"     , NULL },
+	{"ffu",	"っふ",	NULL	},
+	{"ffyu","っふゅ",	NULL	},
+	{"fi",	"ふぃ",	NULL   },
+	{"fo",	"ふぉ",	NULL   },
+	{"fu",	"ふ",	 NULL  },
+	{"fya",	"ふゃ",	NULL  },
+	{"fye",	"ふぇ", "fe"  },
+	{"fyi",	"ふぃ", "fi"  },
+	{"fyo",	"ふょ", NULL  },
+	{"fyu",	"ふゅ", NULL  },
+	{"ga",	"が",	 NULL  },
+	{"ge",	"げ",	 NULL  },
+	{"gga",    "っが"    , NULL },
+	{"gge",    "っげ"    , NULL },
+	{"ggha","っぐぁ"     , NULL },
+	{"gghe","っぐぇ"     , NULL },
+	{"gghi","っぐぃ"     , NULL },
+	{"ggho","っぐぉ"     , NULL },
+	{"gghu","っぐぅ",	NULL	},
+	{"ggi",    "っぎ"    , NULL },
+	{"ggo",    "っご"    , NULL },
+	{"ggu",	"っぐ",	NULL	},
+	{"ggya","っぎゃ"     , NULL },
+	{"ggye","っぎぇ"     , NULL },
+	{"ggyi","っぎぃ"     , NULL },
+	{"ggyo","っぎょ"     , NULL },
+	{"ggyu","っぎゅ",	NULL	},
+	{"gi",	"ぎ",	 NULL  },
+	{"go",	"ご",	 NULL  },
+	{"gu",	"ぐ",	 NULL  },
+	{"gya",	"ぎゃ",	NULL  },
+	{"gye",	"ぎぇ",	NULL  },
+	{"gyi",	"ぎぃ",	NULL  },
+	{"gyo",	"ぎょ",	NULL  },
+	{"gyu",	"ぎゅ",	NULL  },
+	{"ha",	"は",	 NULL  },
+	{"he",	"へ",	 NULL  },
+	{"hha",    "っは"    , NULL },
+	{"hhe",    "っへ"    , NULL },
+	{"hhi",    "っひ"    , NULL },
+	{"hho",    "っほ"    , NULL },
+	{"hhya","っひゃ"     , NULL },
+	{"hhye","っひぇ"     , NULL },
+	{"hhyi","っひぃ"     , NULL },
+	{"hhyo","っひょ"     , NULL },
+	{"hhyu","っひゅ",	NULL	},
+	{"hi",	"ひ",	 NULL  },
+	{"ho",	"ほ",	 NULL  },
+	{"hu",	"ふ",	 NULL  },
+	{"hya",	"ひゃ",	NULL  },
+	{"hye",	"ひぇ",	NULL  },
+	{"hyi",	"ひぃ",	NULL  },
+	{"hyo",	"ひょ",	NULL  },
+	{"hyu",	"ひゅ",	NULL  },
+	{"i",	"い",	 NULL  },
+	{"ja",	"じゃ",	NULL   },
+	{"je",	"じぇ",	NULL   },
+	{"ji",	"じ",	 NULL  },
+	{"jja", "っじゃ"     , NULL },
+	{"jji",    "っじ"    , NULL },
+	{"jjo", "っじょ"     , NULL },
+	{"jju",	"っじゅ",	NULL	},
+	{"jjye","っじぇ"     , NULL },
+	{"jjyi","っじぃ"     , NULL },
+	{"jo",	"じょ",	NULL   },
+	{"ju",	"じゅ",	NULL   },
+	{"jya",	"じゃ", "ja"  },
+	{"jye",	"じぇ", "je"  },
+	{"jyi",	"じぃ", NULL  },
+	{"jyo",	"じょ", "jo"  },
+	{"jyu",	"じゅ", "ju"  },
+	{"ka",	"か",	 NULL },
+	{"ke",	"け",	 NULL },
+	{"ki",	"き",	 NULL },
+	{"kka",    "っか"    , NULL },
+	{"kke",    "っけ"    , NULL },
+	{"kkha","っくぁ"     , NULL },
+	{"kkhe","っくぇ"     , NULL },
+	{"kkhi","っくぃ"     , NULL },
+	{"kkho","っくぉ"     , NULL },
+	{"kkhu","っくぅ",	NULL	},
+	{"kki",    "っき"    , NULL },
+	{"kko",    "っこ"    , NULL },
+	{"kku",	"っく",	NULL	},
+	{"kkya","っきぁ"     , NULL },
+	{"kkye","っきぇ"     , NULL },
+	{"kkyi","っきぃ"     , NULL },
+	{"kkyo","っきょ"     , NULL },
+	{"kkyu","っきゅ",	NULL	},
+	{"ko",	"こ",	 NULL },
+	{"ku",	"く",	 NULL },
+	{"kya",	"きゃ",	NULL  },
+	{"kye",	"きぇ",	NULL  },
+	{"kyi",	"きぃ",	NULL  },
+	{"kyo",	"きょ",	NULL  },
+	{"kyu",	"きゅ",	NULL  },
+	{"la",	"ら",	 "ra"   },
+	{"le",	"れ",	 "re"   },
+	{"li",	"り",	 "ri"   },
+	{"lo",	"ろ",	 "ro"   },
+	{"lu",	"る",	 "ru"   },
+	{"lya",	"りゃ", "rya"  },
+	{"lye",	"りぇ", "rye"  },
+	{"lyi",	"りぃ", "ryi"  },
+	{"lyo",	"りょ", "ryo"  },
+	{"lyu",	"りゅ", "ryu"  },
+	{"ma",	"ま",	 NULL },
+	{"me",	"め",	 NULL },
+	{"mi",	"み",	 NULL },
+	{"mma",    "っま"    , NULL },
+	{"mme",    "っめ"    , NULL },
+	{"mmi",    "っみ"    , NULL },
+	{"mmo",    "っも"    , NULL },
+	{"mmu",	"っむ",	NULL	},
+	{"mmya","っみゃ"     , NULL },
+	{"mmye","っみぇ"     , NULL },
+	{"mmyi","っみぃ"     , NULL },
+	{"mmyo","っみょ"     , NULL },
+	{"mmyu","っみゅ",	NULL	},
+	{"mo",	"も",	 NULL },
+	{"mu",	"む",	 NULL },
+	{"mya",	"みゃ",	NULL  },
+	{"mye",	"みぇ",	NULL  },
+	{"myi",	"みぃ",	NULL  },
+	{"myo",	"みょ",	NULL  },
+	{"myu",	"みゅ",	NULL  },
+	{"na",	"な",	 NULL },
+	{"ne",	"ね",	 NULL },
+	{"ni",	"に",	 NULL },
+	{"nn",	"ん",	 NULL },
+	{"no",	"の",	 NULL },
+	{"nu",	"ぬ",	 NULL },
+	{"nya",	"にゃ",	NULL  },
+	{"nye",	"にぇ",	NULL  },
+	{"nyi",	"にぃ",	NULL  },
+	{"nyo",	"にょ",	NULL  },
+	{"nyu",	"にゅ",	NULL  },
+	{"o",	"お",	 NULL },
+	{"pa",	"ぱ",	 NULL },
+	{"pe",	"ぺ",	 NULL },
+	{"pi",	"ぴ",	 NULL },
+	{"po",	"ぽ",	 NULL },
+	{"ppa",    "っぱ"    , NULL },
+	{"ppe",    "っぺ"    , NULL },
+	{"ppi",    "っぴ"    , NULL },
+	{"ppo",    "っぽ"    , NULL },
+	{"ppu",	"っぷ",	NULL	},
+	{"ppya","っぴゃ"     , NULL },
+	{"ppye","っぴぇ"     , NULL },
+	{"ppyi","っぴぃ"     , NULL },
+	{"ppyo","っぴょ"     , NULL },
+	{"ppyu","っぴゅ",	NULL	},
+	{"pu",	"ぷ",	 NULL },
+	{"pya",	"ぴゃ",	NULL  },
+	{"pye",	"ぴぇ",	NULL  },
+	{"pyi",	"ぴぃ",	NULL  },
+	{"pyo",	"ぴょ",	NULL  },
+	{"pyu",	"ぴゅ",	NULL  },
+	{"ra",	"ら",	 NULL },
+	{"re",	"れ",	 NULL },
+	{"ri",	"り",	 NULL },
+	{"ro",	"ろ",	 NULL },
+	{"rra",    "っら"    , NULL },
+	{"rre",    "っれ"    , NULL },
+	{"rri",    "っり"    , NULL },
+	{"rro",    "っろ"    , NULL },
+	{"rru",	"っる",	NULL	},
+	{"rrya","っりゃ"     , NULL },
+	{"rrye","っりぇ"     , NULL },
+	{"rryi","っりぃ"     , NULL },
+	{"rryo","っりょ"     , NULL },
+	{"rryu","っりゅ",	NULL	},
+	{"ru",	"る",	 NULL },
+	{"rya",	"りゃ",	NULL  },
+	{"rye",	"りぇ",	NULL  },
+	{"ryi",	"りぃ",	NULL  },
+	{"ryo",	"りょ",	NULL  },
+	{"ryu",	"りゅ",	NULL  },
+	{"sa",	"さ",	 NULL },
+	{"se",	"せ",	 NULL },
+	{"sha",	"しゃ", "sya"  },
+	{"she",	"しぇ", "sye"  },
+	{"shi",	"し",	 NULL  },
+	{"sho",	"しょ", "syo"  },
+	{"shu",	"しゅ", "syu"  },
+	{"si",	"し",	 "shi"   },
+	{"so",	"そ",	 NULL   },
+	{"ssa",    "っさ"    , NULL },
+	{"sse",    "っせ"    , NULL },
+	{"ssha","っしゃ"     , NULL },
+	{"sshe","っしぇ"     , NULL },
+	{"sshi",   "っし"    , NULL },
+	{"ssho","っしょ"     , NULL },
+	{"sshu","っしゅ",	NULL	},
+	{"sso",    "っそ"    , NULL },
+	{"ssu",	"っす",	NULL	},
+	{"ssyi","っしぃ"     , NULL },
+	{"su",	"す",	NULL   },
+	{"sya",	"しゃ",	NULL	},
+	{"sye",	"しぇ",	NULL	},
+	{"syi",	"しぃ",	NULL	},
+	{"syo",	"しょ",	NULL	},
+	{"syu",	"しゅ",	NULL	},
+	{"ta",	"た",	NULL  },
+	{"te",	"て",	NULL  },
+	{"ti",	"ち",	NULL  },
+	{"to",	"と",	NULL  },
+	{"tsu",	"つ",	NULL  },
+	{"tta",    "った"    , NULL },
+	{"tte",    "って"    , NULL },
+	{"ttha","ってゃ"     , NULL },
+	{"tthe","ってぇ"     , NULL },
+	{"tthi","ってぃ"     , NULL },
+	{"ttho","ってょ"     , NULL },
+	{"tthu","ってゅ",	NULL	},
+	{"tto",    "っと"    , NULL },
+	{"tts",   "っつ"     , NULL },
+	{"ttsu","っつ",	NULL	},
+	{"tu",	"つ",	"tsu"   },
+	{"tya",	"ちゃ",	"cya"	},
+	{"tye",	"ちぇ",	"cye"	},
+	{"tyi",	"ちぃ",	"cyi"	},
+	{"tyo",	"ちょ",	"cyo"	},
+	{"tyu",	"ちゅ",	"cyu"	},
+	{"u",	"う",	NULL   },
+	{"vva", "っヴぁ"     , NULL },
+	{"vve", "っヴぇ"     , NULL },
+	{"vvi", "っヴぃ"     , NULL },
+	{"vvo", "っヴぉ"     , NULL },
+	{"vvu",	"っヴ",	NULL	},
+	{"wa",	"わ",	NULL   },
+	{"we",	"うぇ",	"whe"	},
+	{"wha",	"うぁ",	NULL	},
+	{"whe",	"うぇ",	NULL	},
+	{"whi",	"うぃ",	NULL	},
+	{"who",	"うぉ",	NULL	},
+	{"whu",	"う",	"u"  },
+	{"wi",	"うぃ",	"whi"	},
+	{"wo",	"を",	NULL   },
+	{"wu",	"う",	NULL   },
+	{"wwa",    "っわ"    , NULL },
+	{"wwha","っうぁ"     , NULL },
+	{"wwhe","っうぇ"     , NULL },
+	{"wwho","っうぉ"     , NULL },
+	{"wwi", "っうぃ"     , NULL },
+	{"ya",	"や",	NULL   },
+	{"ye",	"いぇ",	NULL	},
+	{"yi",	"い",	NULL   },
+	{"yo",	"よ",	NULL   },
+	{"yu",	"ゆ",	NULL   },
+	{"yya",    "っや"    , NULL },
+	{"yyo",    "っよ"    , NULL },
+	{"yyu",	"っゆ",	NULL	},
+	{"za",	"ざ",	NULL   },
+	{"ze",	"ぜ",	NULL   },
+	{"zi",	"じ",	NULL   },
+	{"zo",	"ぞ",	NULL   },
+	{"zu",	"ず",	NULL   },
+	{"zza",    "っざ"    , NULL },
+	{"zze",    "っぜ"    , NULL },
+	{"zzo",    "っぞ"    , NULL },
+	{"zzu",	"っず",	NULL	},
+};
+
+struct _hiragana_english_mapping {
+	char *english;
+	char *hiragana;
+	char *unified_english;
+} hiragana_english_mapping[] = {
+	{"a",	"あ"    },
+	{"i",	"い"    },
+	{"yi",	"い"   },
+	{"ye",	"いぇ"	},
+	{"u",	"う"    },
+	{"wha",	"うぁ"	},
+	{"whi",	"うぃ"	},
+	{"whe",	"うぇ"	},
+	{"who",	"うぉ"	},
+	{"e",	"え"    },
+	{"o",	"お"    },
+	{"ka",	"か"   },
+	{"ga",	"が"   },
+	{"ki",	"き"   },
+	{"kyi",	"きぃ"  },
+	{"kye",	"きぇ"  },
+	{"kya",	"きゃ"  },
+	{"kyu",	"きゅ"  },
+	{"kyo",	"きょ"  },
+	{"gi",	"ぎ"   },
+	{"gyi",	"ぎぃ"  },
+	{"gye",	"ぎぇ"  },
+	{"gya",	"ぎゃ"  },
+	{"gyu",	"ぎゅ"  },
+	{"gyo",	"ぎょ"  },
+	{"ku",	"く"   },
+	{"gu",	"ぐ"   },
+	{"ke",	"け"   },
+	{"ge",	"げ"   },
+	{"ko",	"こ"   },
+	{"go",	"ご"   },
+	{"sa",	"さ"   },
+	{"za",	"ざ"   },
+	{"shi",	"し"  },
+	{"syi",	"しぃ"	},
+	{"sye",	"しぇ"	},
+	{"sya",	"しゃ"	},
+	{"syu",	"しゅ"	},
+	{"syo",	"しょ"	},
+	{"ji",	"じ"   },
+	{"jyi",	"じぃ"  },
+	{"je",	"じぇ"   },
+	{"ja",	"じゃ"   },
+	{"ju",	"じゅ"   },
+	{"jo",	"じょ"   },
+	{"su",	"す"   },
+	{"zu",	"ず"   },
+	{"se",	"せ"   },
+	{"ze",	"ぜ"   },
+	{"so",	"そ"   },
+	{"zo",	"ぞ"   },
+	{"ta",	"た"   },
+	{"da",	"だ"   },
+	{"chi",	"ち"  },
+	{"cyi",	"ちぃ"  },
+	{"cye",	"ちぇ"  },
+	{"che",	"ちぇ"  },
+	{"cya",	"ちゃ"  },
+	{"cyu",	"ちゅ"  },
+	{"cyo",	"ちょ"  },
+	{"di",	"ぢ"   },
+	{"tsu",	"っ" },
+	{"wwha","っうぁ"  },
+	{"wwi",	"っうぃ"  },
+	{"wwhe","っうぇ"  },
+	{"wwho","っうぉ"  },
+	{"kka",	"っか" },
+	{"gga",	"っが" },
+	{"kki",	"っき" },
+	{"kkya","っきぁ"  },
+	{"kkyi","っきぃ"  },
+	{"kkye","っきぇ"  },
+	{"kkyu","っきゅ"	},
+	{"kkyo","っきょ"  },
+	{"ggi",	"っぎ" },
+	{"ggyi","っぎぃ"  },
+	{"ggye","っぎぇ"  },
+	{"ggya","っぎゃ"  },
+	{"ggyu","っぎゅ"	},
+	{"ggyo","っぎょ"  },
+	{"kku",	"っく"	},
+	{"kkha","っくぁ"  },
+	{"kkhi","っくぃ"  },
+	{"kkhu","っくぅ"	},
+	{"kkhe","っくぇ"  },
+	{"kkho","っくぉ"  },
+	{"ggu",	"っぐ"	},
+	{"ggha","っぐぁ"  },
+	{"gghi","っぐぃ"  },
+	{"gghu","っぐぅ"	},
+	{"gghe","っぐぇ"  },
+	{"ggho","っぐぉ"  },
+	{"kke",	"っけ" },
+	{"gge",	"っげ" },
+	{"kko",	"っこ" },
+	{"ggo",	"っご" },
+	{"ssa",	"っさ" },
+	{"zza",	"っざ" },
+	{"sshi","っし" },
+	{"ssyi","っしぃ"  },
+	{"sshe","っしぇ"  },
+	{"ssha","っしゃ"  },
+	{"sshu","っしゅ"	},
+	{"ssho","っしょ"  },
+	{"jji",	"っじ" },
+	{"jjyi","っじぃ"  },
+	{"jjye","っじぇ"  },
+	{"jja",	"っじゃ"  },
+	{"jju",	"っじゅ"	},
+	{"jjo",	"っじょ"  },
+	{"ssu",	"っす"	},
+	{"zzu",	"っず"	},
+	{"sse",	"っせ" },
+	{"zze",	"っぜ" },
+	{"sso",	"っそ" },
+	{"zzo",	"っぞ" },
+	{"tta",	"った" },
+	{"dda",	"っだ" },
+	{"cchi","っち" },
+	{"ccyi","っちぃ"  },
+	{"cche","っちぇ"  },
+	{"ccha","っちゃ"  },
+	{"cchu","っちゅ"	},
+	{"ccho","っちょ"  },
+	{"ttsu","っつ"	},
+	{"tts",	"っつ"  },
+	{"ddu",	"っづ"	},
+	{"tte",	"って" },
+	{"tthi","ってぃ"  },
+	{"tthe","ってぇ"  },
+	{"ttha","ってゃ"  },
+	{"tthu","ってゅ"	},
+	{"ttho","ってょ"  },
+	{"dde",	"っで" },
+	{"ddha","っでぁ"  },
+	{"ddhi","っでぃ"  },
+	{"ddhe","っでぇ"  },
+	{"ddhu","っでゅ"	},
+	{"ddho","っでょ"  },
+	{"tto",	"っと" },
+	{"ddo",	"っど" },
+	{"hha",	"っは" },
+	{"bba",	"っば" },
+	{"ppa",	"っぱ" },
+	{"hhi",	"っひ" },
+	{"hhyi","っひぃ"  },
+	{"hhye","っひぇ"  },
+	{"hhya","っひゃ"  },
+	{"hhyu","っひゅ"	},
+	{"hhyo","っひょ"  },
+	{"bbi",	"っび" },
+	{"bbyi","っびぃ"  },
+	{"bbye","っびぇ"  },
+	{"bbya","っびゃ"  },
+	{"bbyu","っびゅ"	},
+	{"bbyo","っびょ"  },
+	{"ppi",	"っぴ" },
+	{"ppyi","っぴぃ"  },
+	{"ppye","っぴぇ"  },
+	{"ppya","っぴゃ"  },
+	{"ppyu","っぴゅ"	},
+	{"ppyo","っぴょ"  },
+	{"ffu",	"っふ"	},
+	{"ffu",	"っふ"  },
+	{"ffa",	"っふぁ"  },
+	{"ffi",	"っふぃ"  },
+	{"ffe",	"っふぇ"  },
+	{"ffo",	"っふぉ"  },
+	{"ffyu","っふゅ"	},
+	{"bbu",	"っぶ"	},
+	{"ppu",	"っぷ"	},
+	{"hhe",	"っへ" },
+	{"bbe",	"っべ" },
+	{"ppe",	"っぺ" },
+	{"hho",	"っほ" },
+	{"bbo",	"っぼ" },
+	{"ppo",	"っぽ" },
+	{"mma",	"っま" },
+	{"mmi",	"っみ" },
+	{"mmyi","っみぃ"  },
+	{"mmye","っみぇ"  },
+	{"mmya","っみゃ"  },
+	{"mmyu","っみゅ"	},
+	{"mmyo","っみょ"  },
+	{"mmu",	"っむ"	},
+	{"mme",	"っめ" },
+	{"mmo",	"っも" },
+	{"yya",	"っや" },
+	{"yyu",	"っゆ"	},
+	{"yyo",	"っよ" },
+	{"rra",	"っら" },
+	{"rri",	"っり" },
+	{"rryi","っりぃ"  },
+	{"rrye","っりぇ"  },
+	{"rrya","っりゃ"  },
+	{"rryu","っりゅ"	},
+	{"rryo","っりょ"  },
+	{"rru",	"っる"	},
+	{"rru",	"っる"  },
+	{"rre",	"っれ" },
+	{"rro",	"っろ" },
+	{"wwa",	"っわ" },
+	{"ddi",	"っヂ" },
+	{"vvu",	"っヴ"	},
+	{"vva",	"っヴぁ"  },
+	{"vvi",	"っヴぃ"  },
+	{"vve",	"っヴぇ"  },
+	{"vvo",	"っヴぉ"  },
+	{"tsu",	"つ"  },
+	{"du",	"づ"   },
+	{"te",	"て"   },
+	{"de",	"で"   },
+	{"to",	"と"   },
+	{"do",	"ど"   },
+	{"na",	"な"   },
+	{"ni",	"に"   },
+	{"nyi",	"にぃ"  },
+	{"nye",	"にぇ"  },
+	{"nya",	"にゃ"  },
+	{"nyu",	"にゅ"  },
+	{"nyo",	"にょ"  },
+	{"nu",	"ぬ"   },
+	{"ne",	"ね"   },
+	{"no",	"の"   },
+	{"ha",	"は"   },
+	{"ba",	"ば"   },
+	{"pa",	"ぱ"   },
+	{"hi",	"ひ"   },
+	{"hyi",	"ひぃ"  },
+	{"hye",	"ひぇ"  },
+	{"hya",	"ひゃ"  },
+	{"hyu",	"ひゅ"  },
+	{"hyo",	"ひょ"  },
+	{"bi",	"び"   },
+	{"byi",	"びぃ"  },
+	{"bye",	"びぇ"  },
+	{"bya",	"びゃ"  },
+	{"byu",	"びゅ"  },
+	{"byo",	"びょ"  },
+	{"pi",	"ぴ"   },
+	{"pyi",	"ぴぃ"  },
+	{"pye",	"ぴぇ"  },
+	{"pya",	"ぴゃ"  },
+	{"pyu",	"ぴゅ"  },
+	{"pyo",	"ぴょ"  },
+	{"fu",	"ふ"   },
+	{"fa",	"ふぁ"   },
+	{"fi",	"ふぃ"   },
+	{"fe",	"ふぇ"   },
+	{"fo",	"ふぉ"   },
+	{"fyu",	"ふゅ"  },
+	{"fyo",	"ふょ"  },
+	{"bu",	"ぶ"   },
+	{"pu",	"ぷ"   },
+	{"he",	"へ"   },
+	{"be",	"べ"   },
+	{"pe",	"ぺ"   },
+	{"ho",	"ほ"   },
+	{"bo",	"ぼ"   },
+	{"po",	"ぽ"   },
+	{"ma",	"ま"   },
+	{"mi",	"み"   },
+	{"myi",	"みぃ"  },
+	{"mye",	"みぇ"  },
+	{"mya",	"みゃ"  },
+	{"myu",	"みゅ"  },
+	{"myo",	"みょ"  },
+	{"mu",	"む"   },
+	{"me",	"め"   },
+	{"mo",	"も"   },
+	{"ya",	"や"   },
+	{"yu",	"ゆ"   },
+	{"yo",	"よ"   },
+	{"ra",	"ら"   },
+	{"ri",	"り"   },
+	{"ryi",	"りぃ"  },
+	{"rye",	"りぇ"  },
+	{"rya",	"りゃ"  },
+	{"ryu",	"りゅ"  },
+	{"ryo",	"りょ"  },
+	{"ru",	"る"   },
+	{"re",	"れ"   },
+	{"ro",	"ろ"   },
+	{"wa",	"わ"   },
+	{"wo",	"を"   },
+	{"nn",	"ん"   },
+	{"-",   "ー"	},
 };
 
 #define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
@@ -210,8 +713,11 @@ struct _hiragana_mapping {
 //static struct search_state last_first_hit;
 
 static char search_string[MAX_TITLE_SEARCH];
-static int  search_string_pos[MAX_TITLE_SEARCH];
+static int search_string_pos[MAX_TITLE_SEARCH];
+static char search_string_hiragana[MAX_TITLE_SEARCH * 3];
 static int search_str_len = 0;
+static int search_str_converted_len = 0;
+static int search_str_hiragana_len = 0;
 
 //static char s_find_first = 1;
 
@@ -251,12 +757,13 @@ long result_list_offset_next(void)
 	return result_list->offset_next;
 }
 
-long result_list_next_result(long offset_next, long *idxArticle, char *sTitleSearch)
+long result_list_next_result(long offset_next, long *idxArticle, char *sTitleActual)
 {
 	TITLE_SEARCH titleSearch;
+	char sTitleSearch[MAX_TITLE_SEARCH];
 
 	copy_fnd_to_buf(offset_next, (void *)&titleSearch, sizeof(TITLE_SEARCH));
-	retrieve_titles_from_fnd(offset_next, sTitleSearch, result_list->title[result_list->count]);
+	retrieve_titles_from_fnd(offset_next, sTitleSearch, sTitleActual);
 	if (!search_string_cmp(sTitleSearch, search_string, search_str_len)) // match!
 	{
 		*idxArticle = titleSearch.idxArticle;
@@ -1100,6 +1607,7 @@ uint32_t get_article_idx_by_title(char *title)
 	int i = 0;
 
 	search_str_len = 0;
+	search_str_hiragana_len = 0;
 	while (title[i] && search_str_len < MAX_TITLE_SEARCH)
 	{
 		if (is_supported_search_char(title[i]))
@@ -1122,6 +1630,7 @@ uint32_t get_article_idx_by_title(char *title)
 				article_idx = get_article_idx_from_offset_range(title, offset_search_result_start, offset_search_result_end);
 		}
 		search_str_len = 0;
+		search_str_hiragana_len = 0;
 	}
 
 	return article_idx;
@@ -1191,6 +1700,120 @@ void capitalize(char *in_str, char *out_str, int len)
 	out_str[i] = '\0';
 }
 
+char *get_hiragana(char *in_str, int len, int *used_len, char **pEnglish)
+{
+	int i;
+	int bFound = 0;
+	int iStart = 0;
+	int iEnd = sizeof(english_hiragana_mapping) / sizeof(struct _english_hiragana_mapping);
+	int iMiddle;
+	char *pReturn = NULL;
+
+	while (!bFound && iStart < iEnd)
+	{
+		if (*in_str == english_hiragana_mapping[iStart].english[0])
+			bFound = 1;
+		else if (*in_str > english_hiragana_mapping[iStart].english[0])
+		{
+			iMiddle = (iStart + iEnd) / 2;
+			if (iMiddle != iStart)
+			{
+				if (*in_str == english_hiragana_mapping[iMiddle].english[0])
+				{
+					iStart = iMiddle;
+					bFound = 1;
+				}
+				else if (*in_str > english_hiragana_mapping[iMiddle].english[0])
+					iStart = iMiddle;
+				else
+					iEnd = iMiddle;
+			}
+			else if (iStart != iEnd)
+			{
+				iStart = iEnd;
+				if (*in_str == english_hiragana_mapping[iEnd].english[0])
+					bFound = 1;
+			}
+		}
+	}
+
+	if (bFound) // find the first hiragana_mapping entry with the same starting character as in_str
+	{
+		while (iStart > 0 && *in_str == english_hiragana_mapping[iStart - 1].english[0])
+			iStart--;
+
+		for (i = iStart; i < sizeof(english_hiragana_mapping) / sizeof(struct _english_hiragana_mapping) && *in_str == english_hiragana_mapping[i].english[0]; i++)
+		{
+			if (len >= strlen(english_hiragana_mapping[i].english) && !strncmp(in_str, english_hiragana_mapping[i].english, strlen(english_hiragana_mapping[i].english)))
+			{
+				*used_len = strlen(english_hiragana_mapping[i].english);
+				if (english_hiragana_mapping[i].unified_english)
+					*pEnglish = english_hiragana_mapping[i].unified_english;
+				else
+					*pEnglish = english_hiragana_mapping[i].english;
+				pReturn = english_hiragana_mapping[i].hiragana;
+			}
+		}
+	}
+
+	return pReturn;
+}
+
+char *get_english(char *in_str, int len, int *used_len)
+{
+	int i;
+	int bFound = 0;
+	int iStart = 0;
+	int iEnd = sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping);
+	int iMiddle;
+	char *pReturn = NULL;
+
+	while (!bFound && iStart < iEnd)
+	{
+		if (*in_str == hiragana_english_mapping[iStart].hiragana[0])
+			bFound = 1;
+		else if (*in_str > hiragana_english_mapping[iStart].hiragana[0])
+		{
+			iMiddle = (iStart + iEnd) / 2;
+			if (iMiddle != iStart)
+			{
+				if (*in_str == hiragana_english_mapping[iMiddle].hiragana[0])
+				{
+					iStart = iMiddle;
+					bFound = 1;
+				}
+				else if (*in_str > hiragana_english_mapping[iMiddle].hiragana[0])
+					iStart = iMiddle;
+				else
+					iEnd = iMiddle;
+			}
+			else if (iStart != iEnd)
+			{
+				iStart = iEnd;
+				if (*in_str == hiragana_english_mapping[iEnd].hiragana[0])
+					bFound = 1;
+			}
+		}
+	}
+
+	if (bFound) // find the first hiragana_mapping entry with the same starting character as in_str
+	{
+		while (iStart > 0 && *in_str == hiragana_english_mapping[iStart - 1].hiragana[0])
+			iStart--;
+
+		for (i = iStart; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) && *in_str == hiragana_english_mapping[i].hiragana[0]; i++)
+		{
+			if (len >= strlen(hiragana_english_mapping[i].hiragana) && !strncmp(in_str, hiragana_english_mapping[i].hiragana, strlen(hiragana_english_mapping[i].hiragana)))
+			{
+				*used_len = strlen(hiragana_english_mapping[i].hiragana);
+				pReturn = hiragana_english_mapping[i].english;
+			}
+		}
+	}
+
+	return pReturn;
+}
+
 void search_reload(int flag)
 {
 	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
@@ -1199,7 +1822,7 @@ void search_reload(int flag)
 	int end_y_pos;
 	static int last_start_x_search=0;
 	char *title;
-	char temp_search_string[MAX_TITLE_SEARCH];
+	char temp_search_string[MAX_TITLE_SEARCH * 3];
 	static int bNoResultLastTime = 0;
 	int keyboard_mode = keyboard_get_mode();
 	char *pMsg;
@@ -1258,7 +1881,10 @@ void search_reload(int flag)
 		goto out;
 	}
 
-	capitalize(search_string, temp_search_string, search_str_len);
+	if (wiki_is_japanese())
+		capitalize(search_string_hiragana, temp_search_string, search_str_hiragana_len);
+	else
+		capitalize(search_string, temp_search_string, search_str_len);
 	if (last_start_x_search >= LCD_BUF_WIDTH_PIXELS)
 		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
 	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
@@ -1408,6 +2034,46 @@ out:
 	guilib_fb_unlock();
 }
 
+void search_hiragana_add_char()
+{
+	int i;
+	char *pHiragana = NULL;
+	int used_len;
+	char *pEnglish = NULL;
+
+	if (search_str_len == 1)
+		search_str_converted_len = 0;
+
+	if (keyboard_get_mode() == KEYBOARD_CHAR ||
+		(search_str_len > 0 && search_string[search_str_len - 1] == '-' && (search_string_hiragana[search_str_hiragana_len - 1] & 0x80)))
+	{
+		i = search_str_converted_len;
+		if (search_str_len - i > LONGEST_HIRAGANA_ENGLISH_CHARS)
+			i = search_str_len - LONGEST_HIRAGANA_ENGLISH_CHARS;
+		while (i < search_str_len && (search_string[i] == ' ' || 
+			!(pHiragana = get_hiragana(&search_string[i], search_str_len - i, &used_len, &pEnglish))))
+			i++;
+		if (pHiragana)
+		{
+			memcpy(&search_string_hiragana[search_str_hiragana_len - (search_str_len - i - 1)], pHiragana, strlen(pHiragana) + 1);
+			search_str_hiragana_len += - (search_str_len - i - 1) + strlen(pHiragana);
+			memcpy(&search_string[i], pEnglish, strlen(pEnglish) + 1);
+			search_str_len = i + strlen(pEnglish);
+			search_str_converted_len = search_str_len;
+		}
+		else
+		{
+			search_string_hiragana[search_str_hiragana_len++] = search_string[search_str_len - 1];
+		}
+	}
+	else
+	{
+		search_string_hiragana[search_str_hiragana_len++] = search_string[search_str_len - 1];
+		search_str_converted_len = search_str_len;
+	}
+
+}
+
 int search_add_char(char c, unsigned long ev_time)
 {
 	(void)ev_time;
@@ -1424,8 +2090,13 @@ int search_add_char(char c, unsigned long ev_time)
 	}
 	if ('A' <= c && c <= 'Z')
 		c += 32;
+
 	search_string[search_str_len++] = c;
 	search_string[search_str_len] = '\0';
+	if (wiki_is_japanese())
+	{
+		search_hiragana_add_char();
+	}
 	time_search_string_changed = get_time_ticks();
 	search_string_changed = true;
 	return 0;
@@ -1459,6 +2130,30 @@ void search_fetch()
 	search_string_changed = false;
 }
 
+int hiragana_to_english(char *sEnglish, char *sHiragana, int lenHiragana)
+{
+	int lenEnglish = 0;
+	int i = 0;
+	char *pEnglish;
+	int used_len;
+	
+	while (i < lenHiragana)
+	{
+		pEnglish = get_english(&sHiragana[i], lenHiragana - i, &used_len);
+		if (pEnglish)
+		{
+			memcpy(&sEnglish[lenEnglish], pEnglish, strlen(pEnglish));
+			lenEnglish += strlen(pEnglish);
+			i += used_len;
+		}
+		else
+		{
+			sEnglish[lenEnglish++] = sHiragana[i++];
+		}
+	}
+	sEnglish[lenEnglish] = '\0';
+	return lenEnglish;
+}
 /*
  * return value - 0: remove ok, -1: no key to remove
  */
@@ -1468,7 +2163,28 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 	if (search_str_len == 0)
 		return -1;
 
-	search_string[--search_str_len] = '\0';
+	if (wiki_is_japanese())
+	{
+		if (!(search_string_hiragana[search_str_hiragana_len - 1] & 0x80))
+		{
+			search_string[--search_str_len] = '\0';
+			search_string_hiragana[--search_str_hiragana_len] = '\0';
+			if (search_str_converted_len > search_str_len)
+				search_str_converted_len = search_str_len;
+		}
+		else
+		{
+			while (search_str_hiragana_len > 0 && 
+					((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
+					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
+				search_str_hiragana_len--;
+			search_str_hiragana_len--;
+			search_str_len = hiragana_to_english(search_string, search_string_hiragana, search_str_hiragana_len);
+			search_str_converted_len = search_str_len;
+		}
+	}
+	else
+		search_string[--search_str_len] = '\0';
 
 	if (bPopulate || !search_str_len)
 	{
@@ -1538,6 +2254,7 @@ int clear_search_string()
 	result_list->count = 0;
 	strcpy(search_string,"");
 	search_str_len = 0;
+	search_str_hiragana_len = 0;
 	return 0;
 }
 

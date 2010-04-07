@@ -304,6 +304,8 @@ void keyboard_set_mode(int mode)
 
 	if(kb_mode == KEYBOARD_CHAR) {
 		image_data = &keyboard_abc_image;
+	} else if(kb_mode == KEYBOARD_CHAR2) {
+		image_data = &keyboard_abc2_image;
 	} else if(kb_mode == KEYBOARD_NUM) {
 		image_data = &keyboard_123_image;
 //      } else if(kb_mode == KEYBOARD_CLEAR_HISTORY) {
@@ -329,6 +331,8 @@ void keyboard_paint()
 	pre_key = NULL;
 	if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR) {
 		image_data = &keyboard_abc_image;
+	} else if(kb_mode == KEYBOARD_CHAR2) {
+		image_data = &keyboard_abc2_image;
 	} else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM) {
 		image_data = &keyboard_123_image;
 //      } else if(kb_mode == KEYBOARD_CLEAR_HISTORY) {
@@ -363,7 +367,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 {
 	unsigned int i;
 
-	if (kb_mode == KEYBOARD_CHAR) {
+	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR2) {
 		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
 			if (qwerty_char[i].left_x + KEY_GAP1 <= x && qwerty_char[i].right_x - KEY_GAP2 >= x
 			    && qwerty_char[i].left_y + KEY_GAP3 <= y && qwerty_char[i].right_y - KEY_GAP4 >= y
@@ -653,7 +657,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 			else
 				restore_key_bubble();
 			pre_key = NULL;
-			if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_NUM)
+			if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR2 || kb_mode == KEYBOARD_NUM)
 				search_to_be_reloaded(SEARCH_TO_BE_RELOADED_CHECK, 0);
 			guilib_fb_unlock();
 		}
