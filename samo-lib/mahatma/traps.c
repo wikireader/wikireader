@@ -279,32 +279,11 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	// 107 *reserved*
 };
 
+
+// relocate the trap table
 void traps_init(void)
 {
 	(void)Interrupt_disable();
-
-	/* relocate the trap table */
-	asm("ld.w %%ttbr, %0" :: "r"(0x84000));
+	asm volatile ("ld.w %%ttbr, %0" :: "r"(0x84000));
 	Interrupt_enable(true);
-	void traps_check(void);
-	print("traps_init\n");
-	traps_check();
-}
-
-void traps_check(void)
-{
-	register uint32_t *tt, nh;
-	asm volatile (
-		"xld.w %0, trap_table\n"
-		"xld.w %1, nmi_handler\n"
-		: "=r"(tt), "=r"(nh)
-		:
-		);
-	if (tt[7] != nh) {
-		print("trap_table is corrupt\n");
-		print_u32(tt[7]);
-		print(" should be ");
-		print_u32(nh);
-		print("\n");
-	}
 }

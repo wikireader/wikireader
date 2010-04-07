@@ -61,7 +61,7 @@ int main(void)
 		);
 
 	// critical first initialisation
-	Suspend_initialise();  // sets up clocks so must be first
+	Suspend_initialise();  // set up clocks so must be first
 	traps_init();          // set up vectors so must be second
 
 	// other high priority initialisation
@@ -71,7 +71,7 @@ int main(void)
 	msg_init();
 
 	// start of normal initialisation
-	// eanything below here can use debug outputs
+	// anything below here can use debug outputs
 	msg(MSG_INFO, "Starting\n");
 
 	// initialise remainder of I/O
