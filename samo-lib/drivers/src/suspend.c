@@ -180,7 +180,7 @@ static inline void initialise_clocks(void)
 	REG_CMU_OPT =
 		(0 << OSCTM_SHIFT) |
 		//OSC3OFF |
-		TMHSP |
+		//TMHSP |
 		//WAKEUPWT |
 		0;
 
@@ -227,12 +227,12 @@ static inline void initialise_clocks(void)
 
 		//MCLKDIV |
 
-		OSC3DIV_32 |
+		//OSC3DIV_32 |
 		//OSC3DIV_16 |
 		//OSC3DIV_8 |
 		//OSC3DIV_4 |
 		//OSC3DIV_2 |
-		//OSC3DIV_1 |
+		OSC3DIV_1 |
 
 
 		//OSCSEL_PLL |
@@ -260,8 +260,8 @@ static inline void initialise_clocks(void)
 		//PLLVC_120MHz_160MHz |
 		PLLVC_100MHz_120MHz |
 
-		//PLLRS_5MHz_20MHz |
-		PLLRS_20MHz_150MHz |
+		PLLRS_5MHz_20MHz |
+		//PLLRS_20MHz_150MHz |
 
 		//PLLN_X16 |
 		//PLLN_X15 |
@@ -290,21 +290,18 @@ static inline void initialise_clocks(void)
 	// disable spread spectrum
 	REG_CMU_SSCG = 0;
 
-	// 200us delay required (running at 48 MHz so 24 MHz CPU clock)
-	// (Note: the 6 was calculated to give approx 1 us at 48MHz)
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	// a minimum 200us delay required
+	// for the PLL to stabilise
 	asm volatile (
-		"\txld.w\t%r4, 6*200\n"
+		"\txld.w\t%%r4, 6*250\n"
 		"1:\n"
 		"\tnop\n"
 		"\tnop\n"
-		"\tsub\t%r4, 1\n"
+		"\tsub\t%%r4, 1\n"
 		"\tjrne\t1b"
-		);
-
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
-
-	// switch clocks
-	asm volatile ("slp\n\tnop\n\tslp");
+		: : : "r4");
 
 	// set clock configuration
 	restore_clocks();
@@ -521,6 +518,8 @@ void suspend2(int WatchdogTimeout)
 		//SOSC1 |
 		0;
 
+	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
 	// switch clocks
 	asm volatile ("slp\n\tnop\n\tslp");
 
@@ -529,7 +528,6 @@ void suspend2(int WatchdogTimeout)
 	// so cannot do this
 	//REG_CMU_PLL &= ~PLLPOWR;
 
-	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
 	if (0 < WatchdogTimeout) {
 		// enable watchdog
