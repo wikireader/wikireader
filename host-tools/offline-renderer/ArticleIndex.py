@@ -20,22 +20,13 @@ import FilterWords
 import FileScanner
 import TidyUp
 import PrintLog
-
-
-# this _must_ be in ascending ASCII sequence
-KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
-
-# to check if in order: uncomment and look at result
-#for c in KEYPAD_KEYS:
-#    print('{0:d}'.format(ord(c)))
-#sys.exit(0)
+import LanguageTranslation
+import SearchKey
 
 
 # maximum string lengths for FND file
 MAXIMUM_TITLE_LENGTH = 63 # c-code is 64 including '\0'
 
-# underscore and space
-whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
 
 # to catch loop in redirections
 class CycleError(Exception):
@@ -63,6 +54,7 @@ def usage(message):
     print('       --limit=number          Limit the number of articles processed')
     print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
     print('       --templates=file        Database for templates [templates.db]')
+    print('       --truncate-title        Set to when not using language links to save space')
     exit(1)
 
 
@@ -72,7 +64,7 @@ def main():
 
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:L:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:L:T',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
@@ -81,6 +73,7 @@ def main():
                                     'limit=',
                                     'prefix=',
                                     'language=',
+                                    'truncate-title',
                                     ])
     except getopt.GetoptError, err:
         usage(err)
@@ -94,6 +87,7 @@ def main():
     template_name = 'templates.db'
     limit = 'all'
     language = 'en'             # some languages may require special processing
+    truncate_title = False      # set tru when not using language links
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -108,6 +102,8 @@ def main():
             cnt_name = arg
         elif opt in ('-t', '--templates'):
             template_name = arg
+        elif opt in ('-T', '--truncate-title'):
+            truncate_title = True
         elif opt in ('-l', '--limit'):
             if arg[-1] == 'k':
                 arg = arg[:-1] + '000'
@@ -129,9 +125,9 @@ def main():
     if [] == args:
         usage('Missing argument(s)')
 
-    language_convert = LanguageNull()
+    language_convert = LanguageTranslation.LanguageNull()
     if 'ja' == language:
-        language_convert = Furigana()
+        language_convert = LanguageTranslation.Furigana()
 
     processor = FileProcessing(articles = art_name, offsets = off_name,
                                templates = template_name,
@@ -170,7 +166,7 @@ def main():
 
     cf.close()
 
-    output_fnd(fnd_name, processor, language_convert)
+    output_fnd(fnd_name, processor, language_convert, truncate_title)
     output_pfx(pfx_name)
     del processor
 
@@ -189,14 +185,14 @@ def generate_bigram(text):
 
     if len(text) > 2:
         try:
-            if text[0].lower() in KEYPAD_KEYS and text[1].lower() in KEYPAD_KEYS:
+            if SearchKey.is_valid_character(text[0]) and SearchKey.is_valid_character(text[1]):
                 bigram[text[0:2]] += 1
         except KeyError:
             bigram[text[0:2]] = 1
 
     if len(text) > 4:
         try:
-            if text[2].lower() in KEYPAD_KEYS and text[3].lower() in KEYPAD_KEYS:
+            if SearchKey.is_valid_character(text[2]) and SearchKey.is_valid_character(text[3]):
                 bigram[text[2:4]] += 1
         except KeyError:
             bigram[text[2:4]] = 1
@@ -381,7 +377,6 @@ pragma journal_mode = memory;
 
 
     def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
-        global whitespaces
         global verbose
 
         title = self.translate(title).strip(u'\u200e\u200f')
@@ -396,7 +391,7 @@ pragma journal_mode = memory;
         except UnicodeDecodeError:
             pass
 
-        rtitle = whitespaces.sub(' ', rtitle).strip().lstrip(':')
+        rtitle = SearchKey.compact_spaces(rtitle).lstrip(':').strip()
 
         if self.KEY_TEMPLATE == key:
             if title != rtitle:
@@ -532,22 +527,15 @@ pragma journal_mode = memory;
         return result
 
 
-import unicodedata
-def strip_accents(s):
-    if type(s) == str:
-        s = unicode(s, 'utf-8')
-    return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
-
-
 def bigram_encode(title):
+    """encode a title in bigram form"""
     global bigram
-    global whitespaces
 
     result = ''
-    title = strip_accents(title)
+    title = SearchKey.strip_accents(title)
 
     while len(title) >= 2:
-        if title[0].lower() in KEYPAD_KEYS:
+        if SearchKey.is_valid_character(title[0]):
 
             b = title[0:2]
             if b in bigram:
@@ -560,18 +548,15 @@ def bigram_encode(title):
             #result += '?'
             title = title[1:]
     if len(title) == 1:
-        if title[0].lower() in KEYPAD_KEYS:
+        if SearchKey.is_valid_character(title[0]):
             result += chr(ord(title[0]))
         #else:
         #    result += '?'
 
-    # compact all spaces
-    result = whitespaces.sub(' ', result).strip()
-
-    return result
+    return SearchKey.compact_spaces(result)
 
 
-def output_fnd(filename, article_index, language_processor):
+def output_fnd(filename, article_index, language_processor, truncate_title):
     """create bigram table"""
     global bigram
     global index_matrix
@@ -606,19 +591,11 @@ def output_fnd(filename, article_index, language_processor):
     #article_list = [strip_accents(k) for k in article_index.keys()]
     #article_list.sort(key = lambda x: strip_accents(x).lower())
 
-    def sort_key(key):
-        global KEYPAD_KEYS
-        global whitepaces
-
-        result = ''.join(c for c in strip_accents(language_processor.translate(key).lower()) if c in KEYPAD_KEYS)
-        # compact all spaces
-        result = whitespaces.sub(' ', result).strip()
-        return result
-
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
 
-    article_list = [ (sort_key(title), title) for title in article_index.all_indices() ]
+    article_list = [ (SearchKey.make_key(language_processor.translate(title)), title)
+                      for title in article_index.all_indices() ]
     article_list.sort()
 
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
@@ -641,7 +618,9 @@ def output_fnd(filename, article_index, language_processor):
         if '' == bigram_title and is_redirect:
             continue
 
-        utf8_title = title.encode('utf-8')[:MAXIMUM_TITLE_LENGTH]
+        utf8_title = title.encode('utf-8')
+        if truncate_title:
+            utf8_title = utf8_title[:MAXIMUM_TITLE_LENGTH]
 
         offset = out_f.tell()
         article_index.set_index(title, (article_number, offset, restricted, is_redirect))
@@ -697,7 +676,7 @@ def output_pfx(filename):
     PrintLog.message(u'Writing: {0:s}'.format(filename))
     start_time = time.time()
     out_f = open(filename, 'w')
-    list = '\0' + KEYPAD_KEYS
+    list = '\0' + SearchKey.all_characters()
     for k1 in list:
         for k2 in list:
             for k3 in list:
@@ -710,146 +689,6 @@ def output_pfx(filename):
 
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
-
-
-class LanguageProcessor(object):
-
-    def translate(self, text):
-        PrintLog.message('Virual function called')
-        sys.exit(1)
-
-
-
-class LanguageNull(LanguageProcessor):
-    """no-op class"""
-    def translate(self, text):
-        """null translation => only strip spaces"""
-        return text.strip()
-
-
-class Furigana(LanguageProcessor):
-    """Convert Japanese to Romaji"""
-
-    KANA_TO_ROMAN = {
-
-        u'ア': 'a',         u'イ': 'i',         u'ウ': 'u',         u'エ': 'e',         u'オ': 'o',
-        u'カ': 'ka',        u'キ': 'ki',        u'ク': 'ku',        u'ケ': 'ke',        u'コ': 'ko',
-        u'ガ': 'ga',        u'ギ': 'gi',        u'グ': 'gu',        u'ゲ': 'ge',        u'ゴ': 'go',
-
-        u'サ': 'sa',        u'シ': 'shi',       u'ス': 'su',        u'セ': 'se',        u'ソ': 'so',
-        u'ザ': 'za',        u'ジ': 'ji',        u'ズ': 'zu',        u'ゼ': 'ze',        u'ゾ': 'zo',
-        u'タ': 'ta',        u'チ': 'chi',       u'ツ': 'tsu',       u'テ': 'te',        u'ト': 'to',
-
-        u'ダ': 'da',        u'ヂ': 'di',        u'ヅ': 'du',        u'デ': 'de',        u'ド': 'do',
-        u'ナ': 'na',        u'ニ': 'ni',        u'ヌ': 'nu',        u'ネ': 'ne',        u'ノ': 'no',
-        u'ハ': 'ha',        u'ヒ': 'hi',        u'フ': 'fu',        u'ヘ': 'he',        u'ホ': 'ho',
-
-        u'バ': 'ba',        u'ビ': 'bi',        u'ブ': 'bu',        u'ベ': 'be',        u'ボ': 'bo',
-        u'パ': 'pa',        u'ピ': 'pi',        u'プ': 'pu',        u'ペ': 'pe',        u'ポ': 'po',
-        u'マ': 'ma',        u'ミ': 'mi',        u'ム': 'mu',        u'メ': 'me',        u'モ': 'mo',
-
-        u'ヤ': 'ya',                            u'ユ': 'yu',                           u'ヨ': 'yo',
-        u'ラ': 'ra',        u'リ': 'ri',        u'ル': 'ru',        u'レ': 're',        u'ロ': 'ro',
-        u'ワ': 'wa',                                                                    u'ヲ': 'wo',
-
-        u'ン': 'nn',
-
-        u'ー': '-',
-
-        u'ウァ': 'wha',      u'ウィ': 'whi',                               u'ウェ': 'whe',        u'ウォ': 'who',
-        u'ヴァ': 'va',       u'ヴィ': 'vi',         u'ヴ':   'vu',         u'ヴェ': 've',         u'ヴォ': 'vo',
-        u'チャ': 'cya',      u'チィ': 'cyi',        u'チュ': 'cyu',        u'チェ': 'cye',        u'チョ': 'cyo',
-
-        u'ニャ': 'nya',      u'ニィ': 'nyi',        u'ニュ': 'nyu',        u'ニェ': 'nye',        u'ニョ': 'nyo',
-        u'シャ': 'sya',      u'シィ': 'syi',        u'シュ': 'syu',        u'シェ': 'sye',        u'ショ': 'syo',
-        u'キァ': 'kya',      u'キィ': 'kyi',        u'キュ': 'kyu',        u'キェ': 'kye',        u'キョ': 'kyo',
-
-        u'テャ': 'tha',      u'ティ': 'thi',        u'テュ': 'thu',        u'テェ': 'the',        u'テョ': 'tho',
-        u'ヒャ': 'hya',      u'ヒィ': 'hyi',        u'ヒュ': 'hyu',        u'ヒェ': 'hye',        u'ヒョ': 'hyo',
-        u'ミャ': 'mya',      u'ミィ': 'myi',        u'ミュ': 'myu',        u'ミェ': 'mye',        u'ミョ': 'myo',
-
-        u'リャ': 'rya',      u'リィ': 'ryi',        u'リュ': 'ryu',        u'リェ': 'rye',        u'リョ': 'ryo',
-        u'ジャ': 'ja',       u'ジィ': 'jyi',        u'ジュ': 'ju',         u'ジェ': 'je' ,        u'ジョ': 'jo',
-        u'ギャ': 'gya',      u'ギィ': 'gyi',        u'ギュ': 'gyu',        u'ギェ': 'gye',        u'ギョ': 'gyo',
-
-        u'ビャ': 'bya',      u'ビィ': 'byi',        u'ビュ': 'byu',        u'ビェ': 'bye',        u'ビョ': 'byo',
-        u'ピャ': 'pya',      u'ピィ': 'pyi',        u'ピュ': 'pyu',        u'ピェ': 'pye',        u'ピョ': 'pyo',
-        u'クァ': 'kha',      u'クィ': 'khi',        u'クゥ': 'khu',        u'クェ': 'khe',        u'クォ': 'kho',
-
-        u'グァ': 'gha',      u'グィ': 'ghi',        u'グゥ': 'ghu',        u'グェ': 'ghe',        u'グォ': 'gho',
-        u'ファ': 'fa',       u'フィ': 'fi',                               u'フェ': 'fe',         u'フォ': 'fo',
-        u'フャ': 'fya',                            u'フュ': 'fyu',                              u'フョ': 'fyo',
-
-        u'デァ': 'dha',      u'ディ': 'dhi',        u'デュ': 'dhu',        u'デェ': 'dhe',        u'デョ': 'dho',
-        u'ツァ': 'tsa',      u'ツィ': 'tsi',                              u'ツェ': 'tse',        u'ツォ': 'tso',
-        }
-
-
-    def __init__(self, *args, **kw):
-        super(Furigana, self).__init__(*args, **kw)
-
-        import MeCab         # load Japanese dictionary interface
-
-        self.mecab = MeCab.Tagger('-Ochasen')
-
-
-    def romanise(self, text):
-        """private method for converting Japanese phonetics to Romaji"""
-
-        if type(text) != unicode:
-            text = unicode(text, "utf-8")
-
-        result = ''
-        i = 0
-        duplicate = False
-        last = len(text) - 1
-        while i <= last:
-            key = text[i:i + 2] # extract a pair of phonetics
-            if not (i < last and key in self.KANA_TO_ROMAN):
-                key = text[i]
-
-            if key in self.KANA_TO_ROMAN:
-                s = self.KANA_TO_ROMAN[key]
-                i += len(key) - 1
-                if duplicate:
-                    s = s[0] + s
-                    duplicate = False
-                result += s
-            elif u'ッ' == key:
-                duplicate = True
-            else:
-                result += key
-                duplicate = False
-            i += 1
-
-        return result
-
-
-    def translate(self, text):
-        """take Japanese string and convert to Roman letters"""
-
-        if type(text) == unicode:
-            text = text.encode('utf-8')
-        n = self.mecab.parseToNode(text)
-
-        result = ''
-        while n:
-
-            if n.surface == '':
-                n = n.next
-                continue
-
-            feature = unicode(n.feature,'utf-8').split(',')
-
-            if len(feature) < 8 or feature[7] == '*':
-                r = self.romanise(n.surface)
-            else:
-                r = self.romanise(feature[7])
-
-            result += r + " "
-            n = n.next
-
-        return result.strip()
 
 
 # run the program

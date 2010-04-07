@@ -85,6 +85,14 @@ ifeq (YES,$(strip ${VERBOSE}))
 VERBOSE_ARG = --verbose
 endif
 
+TRUNCATE_ARG =
+ifneq (yes,$(strip ${ENABLE_LANGUAGE_LINKS}))
+ifneq (YES,$(strip ${ENABLE_LANGUAGE_LINKS}))
+TRUNCATE_ARG += --truncate-title
+endif
+endif
+
+
 TARGETS = index parse render combine
 
 .PHONY: all
@@ -118,7 +126,7 @@ index: check-dirs check-xml RedirectedTo.py
 		--article-counts="${COUNTS_FILE}" \
 		--templates="${TEMPLATE_FILE}" \
 		--language="${WIKI_LANGUAGE}" \
-		--prefix="${PREFIX}" ${XML_FILES}
+		--prefix="${PREFIX}" ${TRUNCATE_ARG} ${XML_FILES}
 
 HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR_PATH}/*.html))
 .PHONY: merge
