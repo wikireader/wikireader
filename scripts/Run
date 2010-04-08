@@ -30,6 +30,7 @@ USAGE()
   echo '       --dest=dir      -d <dir>   destdir [image]'
   echo '       --temp=dir      -t <dir>   tempdir [/tmp]'
   echo '       --farm=n        -f <n>     manual farm number [from hostname numeric suffix]'
+  echo '       --compress=<c>  -C <c>     set compression {low/high} [low]'
   echo '       --debug         -D         print but do not execute make commands'
   exit 1
 }
@@ -86,10 +87,11 @@ FilePrefix=wiki
 MaximumThreads=64
 export MACHINE_COUNT=${MACHINE_COUNT:-9}
 export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
+compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:D --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:CD: --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,compress:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -178,6 +180,11 @@ do
       shift 2
       ;;
 
+    -C|--compress)
+      compression=$2
+      shift 2
+      ;;
+
     -D|--debug)
       debug=yes
       shift
@@ -245,22 +252,27 @@ common_opts="${common_opts} XML_FILES='${xml}'"
 common_opts="${common_opts} VERBOSE='${verbose}'"
 case "${language}" in
   en)
-    # low compression for 8GB card
-    #common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-    #common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
-    #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
+    case "${compression}" in
+      [hH][iI][gG][hH])
+        # Best version for 4GB card
+        common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
 
-    # Best version for 4GB card
-    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
+        ## ok
+        #common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+        #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
 
-    ## ok
-    #common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-    #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
+        ## ok
+        common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+        common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
+        ;;
 
-    ## ok
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
-
+      *)
+        # low compression for 8GB card
+        common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
+        common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
+        common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
+        ;;
+    esac
     ;;
 
   *)

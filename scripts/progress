@@ -19,7 +19,7 @@ USAGE()
   echo '       --git           -g         run git pull --rebase'
   echo '       --process=<n>   -p<n>      show python/php processes cut line 1..n [unlimited]'
   echo '       --base=<dir>    -b <dir>   set the base directory [samo]'
-  echo '       --tail=<n>      -t<n>      show last line of <base_dir>/log [1]'
+  echo '       --tail=<n>      -t<n>      show last line of <base_dir>/log [3]'
   echo '       --memory        -m         show memory status'
   echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
   echo '       --language=<xx> -L <xx>    process for language [en]'
@@ -34,6 +34,7 @@ USAGE()
   echo '       --new-session   -N         start a new screen session for run and copy to use'
   echo '       --fetch-log     -f         fetch log files'
   echo '       --xml-link      -x         link wiki .xml file to latest version'
+  echo '       --high-compress -H         enable compression for 4GB SD card (only for --language=en)'
   exit 1
 }
 
@@ -46,10 +47,11 @@ suffix=pedia
 list=''
 combine_host=8
 base_dir=samo
+compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4Nfx --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4NfxH --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link,high-compress -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -85,19 +87,19 @@ do
       ;;
 
     -r|--run)
-      c="scripts/Run --clear --language='${language}' --suffix='${suffix}'"
+      c="scripts/Run --compress='${compression}' --clear --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
     -R|--re-render)
-      c="scripts/Run --re-render --language='${language}' --suffix='${suffix}'"
+      c="scripts/Run --compress='${compression}' --re-render --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
     -I|--re-index)
-      c="scripts/Run --index-only --language='${language}' --suffix='${suffix}'"
+      c="scripts/Run --compress='${compression}' --index-only --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
@@ -139,7 +141,7 @@ do
       ;;
 
     -t|--tail)
-      t=1
+      t=3
       [ -n "$2" ] && t="$2"
       RenderDo --yes ${list} --brief "tail -n '${t}' '${base_dir}'/${language}.log"
       shift 2
@@ -188,6 +190,12 @@ do
     -x|--xml-link)
       RenderDo --yes ${list} --brief "cd '${base_dir}' && ln -fs \$(ls -1 ../'${language}'wiki-*-pages-articles.xml |tail -n 1) ${language}wiki-pages-articles.xml && ls -l '${language}'*.xml"
       shift
+      ;;
+
+    -H|--high-compress)
+      compression=high
+      shift
+      break
       ;;
 
     --)
