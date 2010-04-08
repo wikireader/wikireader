@@ -566,7 +566,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
 
     PrintLog.message(u'Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
-    out_f = open(filename, 'w')
+    out_f = open(filename, 'wb')
 
     sortedgram = [ (value, key) for key, value in bigram.iteritems() ]
     sortedgram.sort()
@@ -654,7 +654,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
         if utf8_common_length > 1:
             utf8_title = chr(utf8_common_length - 1) + utf8_title[utf8_common_length:]
 
-        out_f.write(struct.pack('I', article_number) + '\0' + bigram_title + '\0' + utf8_title + '\0')
+        out_f.write(struct.pack('<I', article_number) + '\0' + bigram_title + '\0' + utf8_title + '\0')
 
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
@@ -678,7 +678,7 @@ def output_pfx(filename):
 
     PrintLog.message(u'Writing: {0:s}'.format(filename))
     start_time = time.time()
-    out_f = open(filename, 'w')
+    out_f = open(filename, 'wb')
     list = '\0' + SearchKey.all_characters()
     for k1 in list:
         for k2 in list:
@@ -688,7 +688,7 @@ def output_pfx(filename):
                     offset = index_matrix[key]
                 else:
                     offset = 0
-                out_f.write(struct.pack('I', offset))
+                out_f.write(struct.pack('<I', offset))
 
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
