@@ -100,11 +100,11 @@ def main():
             else:
                 decoded_title1 += c
 
-        PrintLog.message(u'{0:13n}: [{1:d}/{2:d}]:{3!r:s}={4!r:s}\n{5:s}[{6:d}/{7:d}]:"{8:s}"'
-                         .format(article_number,
-                                 length1, full_length1, title1, decoded_title1,
-                                 ' ' * 15,
-                                 length2, full_length2, truncated_utf8(title2)))
+        PrintLog.message(u'{an:13n}: [{l1:3d}/{fl1:3d}]:{t1!r:s}\n{pad1:s}{pad2}{dt1!r:s}\n{pad1:s}[{fl1:3d}/{fl2:3d}]:"{t2:s}"\n'
+                         .format(an = article_number,
+                                 l1 = length1, fl1 = full_length1, t1 = title1, dt1 = decoded_title1,
+                                 pad1 = ' ' * 15, pad2 = ' ' * (2 * 3 + 4),
+                                 l2 = length2, fl2 = full_length2, t2 = truncated_utf8(title2)))
 
         previous_title1 = title1
         previous_title2 = title2

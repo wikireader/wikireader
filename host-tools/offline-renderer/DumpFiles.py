@@ -120,7 +120,7 @@ def process(index_number, idx_file, fnd_file, dat_format, extract):
     ignored = fnd_file.read(1)  # skip nul byte
     titles = fnd_file.read(1024).split('\0') # >= 2 * MAX_TITLE_SEARCH
 
-    PrintLog.message('FND title    = "{0:s}"'.format(titles[1])) # actual title
+    PrintLog.message('FND title    = "{0!r:s}"'.format(titles[1])) # actual title
 
     dat_file = open(data_file_name, 'rb')
     dat_file.seek(offset_dat)
