@@ -33,8 +33,8 @@ article_count = 0
 HTMLParser.endtagfind = re.compile('</\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\s*[^>]*>')
 
 
-fh       = '4b' # struct font_bmf_header (header)
-cmr      = '8b48s'  # struct charmetric_bmf (font)
+fh       = '<4B'     # struct font_bmf_header (header)
+cmr      = '<8B48S'  # struct charmetric_bmf (font)
 
 fh_size  = struct.calcsize(fh)
 cmr_size = struct.calcsize(cmr)
@@ -219,13 +219,13 @@ def main():
 
     start_time = time.time()
 
-    f_fontr  = open(os.path.join(font_path, "text.bmf"), "r")
-    f_fonti  = open(os.path.join(font_path, "texti.bmf"), "r")
-    f_fontt  = open(os.path.join(font_path, "title.bmf"), "r")
-    f_fontst = open(os.path.join(font_path, "subtitle.bmf"), "r")
-    f_font_all = open(os.path.join(font_path, "textall.bmf"), "r")
-    f_fontt_all = open(os.path.join(font_path, "titleall.bmf"), "r")
-    f_fontst_all = open(os.path.join(font_path, "subtlall.bmf"), "r")
+    f_fontr  = open(os.path.join(font_path, "text.bmf"), "rb")
+    f_fonti  = open(os.path.join(font_path, "texti.bmf"), "rb")
+    f_fontt  = open(os.path.join(font_path, "title.bmf"), "rb")
+    f_fontst = open(os.path.join(font_path, "subtitle.bmf"), "rb")
+    f_font_all = open(os.path.join(font_path, "textall.bmf"), "rb")
+    f_fontt_all = open(os.path.join(font_path, "titleall.bmf"), "rb")
+    f_fontst_all = open(os.path.join(font_path, "subtlall.bmf"), "rb")
 
     font_id_values = {
         ITALIC_FONT_IDX: f_fonti,
@@ -252,15 +252,15 @@ def main():
 
     if test_file == '':
         compress = True
-        i_out = open(index_file.format(file_number), 'w')
-        f_out = open(data_file.format(file_number), 'w')
+        i_out = open(index_file.format(file_number), 'wb')
+        f_out = open(data_file.format(file_number), 'wb')
         article_writer = ArticleWriter(file_number, f_out, i_out,
                                        max_buckets = 50,
                                        bucket_size = block_size,
                                        max_items_per_bucket = articles_per_block)
     else:
         compress = False
-        f_out = open(test_file, 'w')
+        f_out = open(test_file, 'wb')
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8', 'replace')
