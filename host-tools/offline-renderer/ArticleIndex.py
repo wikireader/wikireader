@@ -25,6 +25,7 @@ import SearchKey
 
 
 # maximum string lengths for FND file
+# when not truncating the actual title can be twice this length (+1 for the '\0')
 MAXIMUM_TITLE_LENGTH = 63 # c-code is 64 including '\0'
 
 
@@ -54,7 +55,7 @@ def usage(message):
     print('       --limit=number          Limit the number of articles processed')
     print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
     print('       --templates=file        Database for templates [templates.db]')
-    print('       --truncate-title        Set to when not using language links to save space')
+    print('       --truncate-title        Set when not using language links to save space')
     exit(1)
 
 
@@ -621,6 +622,8 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
         utf8_title = title.encode('utf-8')
         if truncate_title:
             utf8_title = utf8_title[:MAXIMUM_TITLE_LENGTH]
+        else:
+            utf8_title = utf8_title[:2 * MAXIMUM_TITLE_LENGTH]
 
         offset = out_f.tell()
         article_index.set_index(title, (article_number, offset, restricted, is_redirect))
