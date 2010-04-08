@@ -25,6 +25,7 @@ USAGE()
   echo '       --language=<xx> -L <xx>    process for language [en]'
   echo '       --suffix=<s>    -S <s>     set the language suffix [pedia]'
   echo '       --run           -r         start the Run script in a screen {index, parse, render}'
+  echo '       --re-index      -I         start the Run script in a screen {index-only}'
   echo '       --re-render     -R         start the Run script in a screen {re-render}'
   echo '       --copy          -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
   echo '       --combine       -k         run the combine process'
@@ -48,7 +49,7 @@ base_dir=samo
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRckG4Nfx --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,copy,combine,get,sim4,new-session,fetch-log,xml-link -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4Nfx --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -91,6 +92,12 @@ do
 
     -R|--re-render)
       c="scripts/Run --re-render --language='${language}' --suffix='${suffix}'"
+      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      shift
+      ;;
+
+    -I|--re-index)
+      c="scripts/Run --index-only --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;

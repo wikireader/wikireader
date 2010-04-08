@@ -85,11 +85,12 @@ ifeq (YES,$(strip ${VERBOSE}))
 VERBOSE_ARG = --verbose
 endif
 
-TRUNCATE_ARG =
+TRUNCATE_ARG = --truncate-title
 ifneq (yes,$(strip ${ENABLE_LANGUAGE_LINKS}))
-ifneq (YES,$(strip ${ENABLE_LANGUAGE_LINKS}))
-TRUNCATE_ARG += --truncate-title
+TRUNCATE_ARG =
 endif
+ifneq (YES,$(strip ${ENABLE_LANGUAGE_LINKS}))
+TRUNCATE_ARG =
 endif
 
 

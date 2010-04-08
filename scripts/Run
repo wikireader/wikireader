@@ -24,7 +24,7 @@ USAGE()
   echo '       --machines=m    -m <m>     set machine count [${MACHINE_COUNT} or 9]'
   echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
   echo '       --language=xx   -l <xx>    set language [en]'
-  echo '       --suffix=<s>    -s <s>     set the language suffix [pedia]'
+  echo '       --suffix=<s>    -s <s>     set the directory suffix [pedia]'
   echo '       --prefix=name   -p <name>  set data file prefix [wiki]'
   echo '       --work=dir      -w <dir>   workdir [work]'
   echo '       --dest=dir      -d <dir>   destdir [image]'
@@ -109,6 +109,7 @@ do
 
     -i|--index-only)
       IndexOnly=yes
+      clear=index
       shift
       ;;
 
@@ -242,15 +243,44 @@ common_opts="${common_opts} WIKI_LANGUAGE='${language}'"
 common_opts="${common_opts} WIKI_DIR_SUFFIX='${suffix}'"
 common_opts="${common_opts} XML_FILES='${xml}'"
 common_opts="${common_opts} VERBOSE='${verbose}'"
+case "${language}" in
+  en)
+    # low compression for 8GB card
+    #common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
+    #common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
+    #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
 
+    # Best version for 4GB card
+    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
+
+    ## ok
+    #common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+    #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
+
+    ## ok
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
+
+    ;;
+
+  *)
+    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=16"
+    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
+    ;;
+esac
 
 # clean up
 case "${clear}" in
   [yY]|[yY][eE][sS])
     RUN make index-clean "${farm}-clean" cleandirs ${common_opts}
     ;;
+  [iI][nN][dD][eE][xX])
+    RUN make index-clean ${common_opts}
+    ;;
   [rR][eE][nN][dD][eE][rR])
     RUN make "${farm}-render-clean" ${common_opts}
+    RUN make "${farm}-parse-touch" ${common_opts}
     ;;
   [pP][aA][rR][sS][eE])
     RUN make "${farm}-clean" ${common_opts}

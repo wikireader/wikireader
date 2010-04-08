@@ -495,6 +495,12 @@ stamp-clean${1}: stamp-parse-clean${1} stamp-render-clean${1}
 stamp-parse-clean${1}:
 	${RM} "${PARSE_STAMP}${1}"
 
+# this is to reuse the existing parsed html after a re-index
+# (but only if the stamps already exist)
+.PHONY: stamp-parse-touch${1}
+stamp-parse-touch${1}:
+	[ -e "${PARSE_STAMP}${1}" ] && ${TOUCH} "${PARSE_STAMP}${1}"
+
 .PHONY: stamp-render-clean${1}
 stamp-render-clean${1}:
 	${RM} "${RENDER_STAMP}${1}"
@@ -522,6 +528,9 @@ farm${1}-clean: farm${1}-parse-clean farm${1}-render-clean
 
 .PHONY: farm${1}-parse-clean
 farm${1}-parse-clean: $$(foreach i,${2},stamp-parse-clean$$(strip $${i}))
+
+.PHONY: farm${1}-parse-touch
+farm${1}-parse-touch: $$(foreach i,${2},stamp-parse-touch$$(strip $${i}))
 
 .PHONY: farm${1}-render-clean
 farm${1}-render-clean: $$(foreach i,${2},stamp-render-clean$$(strip $${i}))
