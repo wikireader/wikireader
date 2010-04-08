@@ -67,6 +67,7 @@ def main():
     previous_title2 = ''
 
     while True:
+        fnd_offset = fnd_file.tell()
         header = fnd_file.read(uint32_size + 1)
 
         if 0 == len(header):
@@ -100,10 +101,13 @@ def main():
             else:
                 decoded_title1 += c
 
-        PrintLog.message(u'{an:13n}: [{l1:3d}/{fl1:3d}]:{t1!r:s}\n{pad1:s}{pad2}{dt1!r:s}\n{pad1:s}[{fl1:3d}/{fl2:3d}]:"{t2:s}"\n'
-                         .format(an = article_number,
+        PrintLog.message(u'Index: {an:13n} @ Offset: {of:13n} [0x{of:08x}]\n'
+                         u'{pad1:s}[{l1:3d}/{fl1:3d}]:{t1!r:s}\n'
+                         u'{pad1:s}{pad2}{dt1!r:s}\n'
+                         u'{pad1:s}[{fl1:3d}/{fl2:3d}]:"{t2:s}"\n'
+                         .format(of = fnd_offset, an = article_number,
                                  l1 = length1, fl1 = full_length1, t1 = title1, dt1 = decoded_title1,
-                                 pad1 = ' ' * 15, pad2 = ' ' * (2 * 3 + 4),
+                                 pad1 = ' ' * 2, pad2 = ' ' * (2 * 3 + 4),
                                  l2 = length2, fl2 = full_length2, t2 = truncated_utf8(title2)))
 
         previous_title1 = title1
