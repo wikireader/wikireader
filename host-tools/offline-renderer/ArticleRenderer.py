@@ -33,8 +33,8 @@ article_count = 0
 HTMLParser.endtagfind = re.compile('</\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\s*[^>]*>')
 
 
-fh       = '<4B'     # struct font_bmf_header (header)
-cmr      = '<8B48S'  # struct charmetric_bmf (font)
+fh       = '<4b'     # struct font_bmf_header (header)
+cmr      = '<8b48s'  # struct charmetric_bmf (font)
 
 fh_size  = struct.calcsize(fh)
 cmr_size = struct.calcsize(cmr)
