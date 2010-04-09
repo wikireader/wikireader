@@ -21,6 +21,7 @@
 #ifndef WL_HISTORY_H
 #define WL_HISTORY_H
 
+#include <inttypes.h>
 #include "search.h"
 
 #define HISTORY_RESULT_START 31
@@ -47,9 +48,9 @@ long history_get_y_pos();
 void draw_clear_history(int bFlag);
 long history_get_previous_idx(long current_idx_article, int b_drop_from_list);
 
-typedef struct _HISTORY {
-	long idx_article;
-	long last_y_pos;
+typedef struct __attribute__ ((packed)) _HISTORY {
+	int32_t idx_article;
+	int32_t last_y_pos;
 	char title[MAX_TITLE_SEARCH];
 } HISTORY;
 

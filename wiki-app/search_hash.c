@@ -59,7 +59,7 @@ int *bHashBlockLoaded[MAX_WIKIS];
 #define ENTRIES_PER_HASH_BLOCK 256
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
-struct _fnd_buf {
+struct __attribute__ ((packed)) _fnd_buf {
 	uint32_t offset;
 	uint32_t len;
 	uint32_t used_seq;
@@ -320,7 +320,8 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		{
 			blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
 			wl_seek(fdFnd[nCurrentWiki], blocked_offset);
-			fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], fnd_bufs[nCurrentWiki][i].buf, FND_BUF_BLOCK_SIZE);
+			fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], &fnd_bufs[nCurrentWiki][i].buf,
+								sizeof(fnd_bufs[nCurrentWiki][i].buf));
 #ifdef INCLUDED_FROM_KERNEL
 			if (wl_input_event_pending())
 			{
@@ -350,7 +351,8 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 		i = iLeastUsed;
 		blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
 		wl_seek(fdFnd[nCurrentWiki], blocked_offset);
-		fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], fnd_bufs[nCurrentWiki][i].buf, FND_BUF_BLOCK_SIZE);
+		fnd_bufs[nCurrentWiki][i].len = wl_read(fdFnd[nCurrentWiki], fnd_bufs[nCurrentWiki][i].buf,
+							sizeof(fnd_bufs[nCurrentWiki][i].buf));
 #ifdef INCLUDED_FROM_KERNEL
 		if (wl_input_event_pending())
 		{
@@ -404,13 +406,13 @@ long locate_previous_title_search(long offset_fnd)
 	copy_fnd_to_buf(offset_fnd, buf, len_buf);
 	i = len_buf - 1;
 	nZeros = 0;
-	while (i >= sizeof(long) && nZeros < 3)
+	while (i >= sizeof(uint32_t) && nZeros < 3)
 	{
 		if (!buf[i])
 			nZeros++;
 		i--;
 	}
-	i -= sizeof(long) - 1;
+	i -= sizeof(uint32_t) - 1;
 	return offset_fnd + i;
 }
 
@@ -427,7 +429,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 	// Find the title that is fully spelled out.
 	// The repeated characters with the previous title at the beginning of the current title will be replace by
 	// a character whose binary value is the number of the repeated characters.
-	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + sizeof(long) && nTitleSearch < SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
+	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + sizeof(uint32_t) && nTitleSearch < SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
 	{
 		char *p;
 
@@ -470,7 +472,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		}
 	}
 	bigram_decode(sTitleSearchOut, sTitleSearch, MAX_TITLE_SEARCH);
-	
+
 	sTitleActual[0] = '\0';
 	if (bFound2)
 	{

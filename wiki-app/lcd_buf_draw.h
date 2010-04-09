@@ -247,26 +247,26 @@ typedef struct _LCD_DRAW_BUF
 /* section for a number of EXTERNAL_LINK blocks */
 /* section for a number of external link strings */
 /* section for the article string */
-typedef struct _ARTICLE_HEADER
+typedef struct __attribute__ ((packed)) _ARTICLE_HEADER
 {
 	uint32_t offset_article;
 	uint16_t article_link_count;
 	uint16_t external_link_count;
 } ARTICLE_HEADER;
 
-typedef struct _ARTICLE_LINK
+typedef struct __attribute__ ((packed)) _ARTICLE_LINK
 {
 	uint32_t start_xy; /* byte 0: x; byte 1~3: y */
 	uint32_t end_xy;
 	uint32_t article_id;
 } ARTICLE_LINK;
 
-typedef struct _EXTERNAL_LINK
+typedef struct __attribute__ ((packed)) _EXTERNAL_LINK
 {
 	char *link_str;
 } EXTERNAL_LINK;
 
-typedef struct _CONCAT_ARTICLE_INFO
+typedef struct __attribute__ ((packed)) _CONCAT_ARTICLE_INFO
 {
 	uint32_t article_id;
 	uint32_t offset_article;

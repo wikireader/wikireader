@@ -708,7 +708,7 @@ struct _hiragana_english_mapping {
 	{"-",   "ー"	},
 };
 
-#define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
+//#define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
 //static struct search_state state;
 //static struct search_state last_first_hit;
 
@@ -1187,8 +1187,10 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 					offsetNextTitleSearch = 0;
 					pTitleSearch = (TITLE_SEARCH *)&search_info[nCurrentWiki].buf[offsetNextTitleSearch];
 				}
+				// use memcpy to avoid "Unaligned data access"
 				memcpy((void *)&result_list->idx_article[result_list->count],
-				       (void *)&pTitleSearch->idxArticle, sizeof(long)); // use memcpy to avoid "Unaligned data access"
+				       (void *)&pTitleSearch->idxArticle,
+				       sizeof(result_list->idx_article[result_list->count]));
 				result_list->offset_list[result_list->count] = offset_fnd_start + offsetNextTitleSearch;
 				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) +
 					strlen(&pTitleSearch->sTitleSearch[strlen(pTitleSearch->sTitleSearch) + 1]) + 3;
@@ -2050,7 +2052,7 @@ void search_hiragana_add_char()
 		i = search_str_converted_len;
 		if (search_str_len - i > LONGEST_HIRAGANA_ENGLISH_CHARS)
 			i = search_str_len - LONGEST_HIRAGANA_ENGLISH_CHARS;
-		while (i < search_str_len && (search_string[i] == ' ' || 
+		while (i < search_str_len && (search_string[i] == ' ' ||
 			!(pHiragana = get_hiragana(&search_string[i], search_str_len - i, &used_len, &pEnglish))))
 			i++;
 		if (pHiragana)
@@ -2136,7 +2138,7 @@ int hiragana_to_english(char *sEnglish, char *sHiragana, int lenHiragana)
 	int i = 0;
 	char *pEnglish;
 	int used_len;
-	
+
 	while (i < lenHiragana)
 	{
 		pEnglish = get_english(&sHiragana[i], lenHiragana - i, &used_len);
@@ -2174,7 +2176,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 		}
 		else
 		{
-			while (search_str_hiragana_len > 0 && 
+			while (search_str_hiragana_len > 0 &&
 					((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
 					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
 				search_str_hiragana_len--;
@@ -2210,11 +2212,11 @@ TITLE_SEARCH *locate_previous_title(char *buf, int len)
 	{
 		p = buf + len - 2;
 		len--;
-		while (!bFound && len > sizeof(long))
+		while (!bFound && len > sizeof(uint32_t))
 		{
 			if (!*p) {
 				bFound = 1;
-				p -= sizeof(long);
+				p -= sizeof(uint32_t);
 			}
 			else
 			{

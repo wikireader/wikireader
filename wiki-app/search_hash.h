@@ -28,12 +28,12 @@
 #define MAX_SEARCH_STRING_ALL_HASHED_LEN 5
 #define SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD 64
 
-typedef struct _search_hash_table {
+typedef struct __attribute__ ((packed)) _search_hash_table {
 	uint32_t offset_fnd; // offset to pedia.fnd for the search title hashed
 	uint32_t next_entry_idx; // byte 1: length of hash string byte 2~4: index (of struct hash_table array) of the next entry with the same hash key
 } SEARCH_HASH_TABLE;
 
-typedef struct _search_hash_string {
+typedef struct __attribute__ ((packed)) _search_hash_string {
 	char str[MAX_SEARCH_STRING_HASHED_LEN + 1];
 } SEARCH_HASH_STRING;
 
