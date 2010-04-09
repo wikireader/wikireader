@@ -63,18 +63,6 @@ Vector_initialise:
 
         DISABLE_INTERRUPTS
 
-        xld.w   %r4, R32_CMU_PROTECT
-        xld.w   %r5, CMU_PROTECT_OFF
-        ld.w    [%r4], %r5
-
-        xld.w   %r6, R32_CMU_OPT
-        ld.w    %r7, [%r6]
-        or      %r7, 1
-        ld.w    [%r6], %r7
-
-        ld.w    %r5, CMU_PROTECT_ON
-        ld.w    [%r4], %r5
-
         xld.w   %r4, R8_RST_RESET
         xld.w   %r5, DENONLY | IDMAONLY | RSTONLY
         ld.b    [%r4], %r5

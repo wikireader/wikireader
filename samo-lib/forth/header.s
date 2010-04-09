@@ -238,7 +238,8 @@ main:
         ld.w    %r0, 0                                ; clear status register
         ld.w    %psr, %r0
 
-        xcall   Vector_initialise                     ; must be first
+        xcall   Suspend_initialise                    ; must be first
+        xcall   Vector_initialise                     ; must be second
         xcall   Serial_initialise
         xcall   Button_initialise
         xcall   CTP_initialise
