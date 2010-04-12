@@ -40,6 +40,7 @@ BDFTOPCF = $(shell which bdftopcf)
 PCFTOBMF = ${HOST_TOOLS}/pcf2bmf/pcf2bmf
 
 DECOMPRESS = xz --decompress --stdout
+COMPRESS = xz --compress --stdout
 
 TARGETS = title.bmf
 TARGETS += subtitle.bmf
@@ -53,6 +54,9 @@ TARGETS += textall.bmf
 TARGETS += titleall.bmf
 TARGETS += subtlall.bmf
 
+COMPRESSED_FONTS = textall.pcf.xz
+COMPRESSED_FONTS += titleall.pcf.xz
+COMPRESSED_FONTS += subtlall.pcf.xz
 
 
 .PHONY: all
@@ -61,7 +65,7 @@ all: stamp-fonts
 # use a lock to avoid multiple parallel builds of this program
 stamp-fonts:
 	${RM} "$@"
-	${LOCKF} "${@}" ${MAKE} ${TARGETS}
+	${LOCKF} "$@" ${MAKE} ${TARGETS}
 	${TOUCH} "$@"
 
 
@@ -73,9 +77,13 @@ install: all
 build:
 	${MKDIR} "$@"
 
+.PHONY: compress
+compress: ${COMPRESSED_FONTS}
+
 .PHONY: clean
 clean:
 	${RM} -r build ${TARGETS} *.bmf *.pcf stamp-*
+
 
 # fonts
 %.pcf: %.bdf
@@ -86,5 +94,11 @@ clean:
 
 %.bmf: %.pcf.xz
 	${DECOMPRESS} "$<" | ${PCFTOBMF} -f - -o "$@"
+
+%.pcf.xz : %.bdf
+	${RM} "$@.temp"
+	${BDFTOPCF} "$<" -o "$@.temp"
+	${COMPRESS} < "$@.temp" > "$@"
+	${RM} "$@.temp"
 
 include ${MK_DIR}/rules.mk
