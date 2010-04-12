@@ -285,17 +285,17 @@ esac
 # clean up
 case "${clear}" in
   [yY]|[yY][eE][sS])
-    RUN make index-clean "${farm}-clean" cleandirs ${common_opts}
+    RUN make clean index-clean "${farm}-clean" cleandirs ${common_opts}
     ;;
   [iI][nN][dD][eE][xX])
-    RUN make index-clean ${common_opts}
+    RUN make clean index-clean ${common_opts}
     ;;
   [rR][eE][nN][dD][eE][rR])
-    RUN make "${farm}-render-clean" ${common_opts}
+    RUN make clean "${farm}-render-clean" ${common_opts}
     RUN make "${farm}-parse-touch" ${common_opts}
     ;;
   [pP][aA][rR][sS][eE])
-    RUN make "${farm}-clean" ${common_opts}
+    RUN make clean "${farm}-clean" ${common_opts}
     ;;
   [nN]|[nN][oO])
     ;;
