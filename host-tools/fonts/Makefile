@@ -35,6 +35,7 @@ include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
 $(call REQUIRED_BINARY, bdftopcf, xfonts-utils)
+$(call REQUIRED_BINARY, xz, xz-utils)
 
 BDFTOPCF = $(shell which bdftopcf)
 PCFTOBMF = ${HOST_TOOLS}/pcf2bmf/pcf2bmf
