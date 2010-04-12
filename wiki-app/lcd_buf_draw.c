@@ -60,9 +60,9 @@
 #define SHOW_LANGUAGE_LINK 0xFFFFFC
 #define HIDE_LANGUAGE_LINK 0xFFFFFB
 #define PREVIOUS_ARTICLE_LINKABLE_SIZE 20
-#define ARTICLE_LINK_SOMETHING_BEFORE 0xF0
+#define ARTICLE_LINK_SOMETHING_BEFORE 0x20
 #define ARTICLE_LINK_NOTHING_BEFORE 0x10
-#define ARTICLE_LINK_SOMETHING_AFTER 0x0F
+#define ARTICLE_LINK_SOMETHING_AFTER 0x02
 #define ARTICLE_LINK_NOTHING_AFTER 0x01
 
 #ifndef WIKIPCF
@@ -611,7 +611,7 @@ void buf_draw_UTF8_str(unsigned char **pUTF8)
 					nImageY++;
 				}
 			}
-			lcd_draw_buf.current_x += nWidth + 1;
+			lcd_draw_buf.current_x += nWidth;
 			break;
 		default:
 			break;
@@ -785,19 +785,19 @@ void lcd_clear_framebuffer_pixel(int x, int y)
 		framebuffer[byte] ^= (1 << (7 - bit));
 }
 
-char lcd_get_framebuffer_byte(int x, int y)
+char lcd_draw_buf_get_byte(int x, int y)
 {
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 
 	return framebuffer[byte];
 }
 
-int lcd_get_framebuffer_pixel(int x, int y)
+int lcd_draw_buf_get_pixel(int x, int y)
 {
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 	unsigned int bit  = (x + LCD_VRAM_WIDTH_PIXELS * y) % 8;
 
-	if (framebuffer[byte] & (1 << (7 - bit)))
+	if (lcd_draw_buf.screen_buf[byte] & (1 << (7 - bit)))
 		return 1;
 	else
 		return 0;
@@ -832,7 +832,7 @@ void buf_draw_char(ucs4_t u)
 	}
 	if(u==32)
 	{
-		lcd_draw_buf.current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
+		lcd_draw_buf.current_x += Cmetrics.widthDevice;
 		return;
 	}
 
@@ -842,7 +842,7 @@ void buf_draw_char(ucs4_t u)
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
 
 	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
-	if (x_base + Cmetrics.LSBearing + Cmetrics.width < LCD_BUF_WIDTH_PIXELS)
+	if (x_base + Cmetrics.widthDevice < LCD_BUF_WIDTH_PIXELS)
 	{ // only draw the chracter if not exceeding the LCD width
 		y_base = lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment;
 		x_offset = 0;
@@ -882,7 +882,7 @@ void buf_draw_char(ucs4_t u)
 			}
 		}
 	}
-	lcd_draw_buf.current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
+	lcd_draw_buf.current_x += Cmetrics.widthDevice;
 }
 int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
 {
@@ -898,7 +898,7 @@ int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
 		{
 			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
-				width += Cmetrics.width + 1;
+				width += Cmetrics.widthDevice;
 		}
 
 	}
@@ -922,7 +922,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 		return;
 	if(u==32)
 	{
-		lcd_draw_buf_external->current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
+		lcd_draw_buf_external->current_x += Cmetrics.widthDevice;
 		return;
 	}
 	if (bitmap == NULL)
@@ -931,7 +931,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
 
 	x_base = lcd_draw_buf_external->current_x + Cmetrics.LSBearing;
-	if((x_base +Cmetrics.width) > end_x)
+	if((x_base + Cmetrics.widthDevice) > end_x)
 	{
 		lcd_draw_buf_external->current_x = start_x+2;
 		x_base = 0;
@@ -970,7 +970,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 			j--;
 		}
 	}
-	lcd_draw_buf_external->current_x += Cmetrics.LSBearing + Cmetrics.width + 1;
+	lcd_draw_buf_external->current_x += Cmetrics.widthDevice;
 }
 
 int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes)
@@ -989,7 +989,7 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 	if (bitmap == NULL)
 		return 0;
 	else
-		return  Cmetrics.LSBearing + Cmetrics.width + 1;
+		return  Cmetrics.widthDevice;
 }
 
 int is_word_break(char c)
@@ -1021,7 +1021,7 @@ int extract_str_fitting_width(unsigned char **pIn, char *pOut, int max_width, in
 		{
 			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
-				width += Cmetrics.LSBearing + Cmetrics.width + 1;
+				width += Cmetrics.widthDevice;
 			if (is_word_break(u))
 			{
 				if (width > max_width)
@@ -2177,6 +2177,8 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 {
 	int x, y;
 	
+	if (end_x < 0 || start_x >= LCD_BUF_WIDTH_PIXELS - 1)
+		return 1;
 	x = start_x;
 	while (x <= end_x)
 	{
@@ -2184,7 +2186,7 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 		{
 			for (y = start_y; y <= end_y; y++)
 			{
-				if (lcd_get_framebuffer_pixel(x, y))
+				if (lcd_draw_buf_get_pixel(x, y))
 					return 0;
 			}
 			x++;
@@ -2193,7 +2195,7 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 		{
 			for (y = start_y; y <= end_y; y++)
 			{
-				if (lcd_get_framebuffer_byte(x, y))
+				if (lcd_draw_buf_get_byte(x, y))
 					return 0;
 			}
 			x += 8;
@@ -2212,7 +2214,7 @@ int nothing_before_link(int article_link_number)
 		start_x = 0;
 	end_y   = (articleLink[article_link_number].end_xy  >>8) + article_start_y_pos;
 	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
-	if (is_lcd_buf_area_blank(0, start_y, start_x, end_y))
+	if (is_lcd_buf_area_blank(0, start_y, start_x - 2, end_y))
 		return ARTICLE_LINK_NOTHING_BEFORE;
 	else
 		return ARTICLE_LINK_SOMETHING_BEFORE;
@@ -2228,7 +2230,7 @@ int nothing_after_link(int article_link_number)
 		start_x = 0;
 	end_y   = (articleLink[article_link_number].end_xy  >>8) + article_start_y_pos;
 	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
-	if (is_lcd_buf_area_blank(end_x, start_y, LCD_BUF_WIDTH_PIXELS - 1, end_y))
+	if (is_lcd_buf_area_blank(end_x + 2, start_y, LCD_BUF_WIDTH_PIXELS - 1, end_y))
 		return ARTICLE_LINK_NOTHING_AFTER;
 	else
 		return ARTICLE_LINK_SOMETHING_AFTER;
@@ -2268,7 +2270,7 @@ void invert_link(int article_link_number)
 				bNothingBeforeLink = 0;
 		}
 	
-		bNothingAfterLink = articleLinkBeforeAfter[article_link_number] & ARTICLE_LINK_NOTHING_BEFORE;
+		bNothingAfterLink = articleLinkBeforeAfter[article_link_number] & ARTICLE_LINK_NOTHING_AFTER;
 		local_link_number = article_link_number + 1;
 		while (bNothingAfterLink && local_link_number < article_link_count && article_id == articleLink[local_link_number].article_id)
 		{
@@ -2438,14 +2440,11 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 		return -1;
 	}
 
-	//sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
-	//msg_info(msg);
-
 	if (b_clear)
 	{
 		for (i = 0; i < pPcfFont->Fmetrics.linespace; i++)
 		{
-			for (j = 0; j < Cmetrics.LSBearing + Cmetrics.width + 1; j++)
+			for (j = 0; j < Cmetrics.widthDevice; j++)
 			{
 				if (inverted)
 					lcd_set_framebuffer_pixel(x + j, y + i);
@@ -2456,7 +2455,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 	}
 	if(u==32)
 	{
-		x += Cmetrics.LSBearing + Cmetrics.width + 1;
+		x += Cmetrics.widthDevice;
 		return x;
 	}
 
@@ -2469,7 +2468,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 
 	x_bit_idx = x_base & 0x07;
 
-	if (x + Cmetrics.LSBearing + Cmetrics.width >= LCD_BUF_WIDTH_PIXELS)
+	if (x + Cmetrics.widthDevice >= LCD_BUF_WIDTH_PIXELS)
 		return -1;
 
 	for (i = 0; i < bytes_to_process; i++)
@@ -2510,7 +2509,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 			j--;
 		}
 	}
-	x += Cmetrics.LSBearing + Cmetrics.width + 1;
+	x += Cmetrics.widthDevice;
 	return x;
 }
 
@@ -2536,12 +2535,9 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 		return -1;
 	}
 
-	//sprintf(msg,"char:%d,width:%d,LSBearing:%d,RSBearding:%d,widthBytes:%d,height:%d\n",u,Cmetrics.width,Cmetrics.LSBearing,Cmetrics.RSBearing,Cmetrics.widthBytes,Cmetrics.height);
-	//msg_info(msg);
-
 	if(u==32)
 	{
-		x += Cmetrics.LSBearing + Cmetrics.width + 1;
+		x += Cmetrics.widthDevice;
 		return x;
 	}
 
@@ -2554,7 +2550,7 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 
 	x_bit_idx = x_base & 0x07;
 
-	if (x + Cmetrics.LSBearing + Cmetrics.width >= LCD_BUF_WIDTH_PIXELS)
+	if (x + Cmetrics.widthDevice >= LCD_BUF_WIDTH_PIXELS)
 		return -1;
 
 	for (i = 0; i < bytes_to_process; i++)
@@ -2596,7 +2592,7 @@ int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
 			j--;
 		}
 	}
-	x += Cmetrics.LSBearing + Cmetrics.width + 1;
+	x += Cmetrics.widthDevice;
 	return x;
 }
 #endif

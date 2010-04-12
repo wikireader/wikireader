@@ -76,63 +76,10 @@
 #define closefile wl_close
 #endif
 
+#include <inttypes.h>
+
 typedef unsigned char bmf_bm_t;
 typedef unsigned int  ucs4_t;
-
-#ifdef WORD64
-typedef long INT64;
-typedef unsigned long CARD64;
-#define B32 :32
-#define B16 :16
-#ifdef UNSIGNEDBITFIELDS
-typedef unsigned int INT32;
-typedef unsigned int INT16;
-#else
-#ifdef __STDC__
-typedef signed int INT32;
-typedef signed int INT16;
-#else
-typedef int INT32;
-typedef int INT16;
-#endif
-#endif
-#else
-#define B32
-#define B16
-#ifdef LONG64
-typedef long INT64;
-typedef int INT32;
-#else
-typedef long INT32;
-#endif
-typedef short INT16;
-#endif
-
-#if defined(__STDC__) || defined(sgi) || defined(AIXV3)
-typedef signed char    INT8;
-#else
-typedef char           INT8;
-#endif
-
-#ifdef LONG64
-typedef unsigned long CARD64;
-typedef unsigned int CARD32;
-#else
-typedef unsigned long CARD32;
-#endif
-typedef unsigned short CARD16;
-typedef unsigned char  CARD8;
-
-typedef CARD32          BITS32;
-typedef CARD16          BITS16;
-
-#ifndef I_NEED_OS2_H
-typedef CARD8           BYTE;
-typedef CARD8           BOOL;
-#else
-#define BYTE    CARD8
-#define BOOL    CARD8
-#endif
 
 #define bzero(b,n)	(memset((b),0,(n)))
 
@@ -149,6 +96,7 @@ struct fontmetric {
 	int firstCol;
 	int lastCol;
 	int lastchar;
+	int default_char;
 };
 struct charmetric {
 	int width;
@@ -172,34 +120,35 @@ struct scaled_charmetric {
 };
 
 typedef struct charmetric_bmf{
-	INT8   width;
-	INT8   height;
-	INT8   widthBytes;
-	INT8   widthBits;
-	INT8   ascent;
-	INT8   descent;
-	INT8   LSBearing;
-	INT8   RSBearing;
+	int8_t   width;
+	int8_t   height;
+	int8_t   widthBytes;
+	int8_t   widthBits;
+	int8_t   ascent;
+	int8_t   descent;
+	int8_t   LSBearing;
+	int8_t   widthDevice;
 	char   bitmap[48];
 }charmetric_bmf;
 
 typedef struct charmetric_bmf_header{
-	INT8   width;
-	INT8   height;
-	INT8   widthBytes;
-	INT8   widthBits;
-	INT8   ascent;
-	INT8   descent;
-	INT8   LSBearing;
-	INT8   RSBearing;
-	INT32  pos;
+	int8_t   width;
+	int8_t   height;
+	int8_t   widthBytes;
+	int8_t   widthBits;
+	int8_t   ascent;
+	int8_t   descent;
+	int8_t   LSBearing;
+	int8_t   RSBearing;
+	int32_t  pos;
 }charmetric_bmf_header;
 
 typedef struct font_bmf_header{
-	INT8   linespace;
-	INT8   ascent;
-	INT8   descent;
-	INT8   bmp_buffer_len;
+	int8_t   linespace;
+	int8_t   ascent;
+	int8_t   descent;
+	int8_t   bmp_buffer_len;
+	int32_t  default_char;
 }font_bmf_header;
 
 

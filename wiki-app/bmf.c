@@ -60,6 +60,7 @@ int load_bmf(pcffont_bmf_t *font)
 	font->Fmetrics.linespace = header.linespace;
 	font->Fmetrics.ascent    = header.ascent;
 	font->Fmetrics.descent   = header.descent;
+	font->Fmetrics.default_char = header.default_char;
 
 	return fd;
 }
@@ -122,13 +123,6 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 			read_size = readfile(font->fd,buffer,size);
 			memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
 			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
-			if((Cmetrics->height*Cmetrics->widthBytes)==0)
-			{
-	
-				font = font->supplement_font;
-				return pres_bmfbm(val, font, bitmap, Cmetrics);
-				//return -1;
-			}
 		}
 	}
 
@@ -138,11 +132,17 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 	{
 		if (val > 256 && offset <= font->file_size - sizeof(charmetric_bmf))
 		{
-			Cmetrics->width = 1;
-			Cmetrics->height = 0;
+			if (font->Fmetrics.default_char && val != font->Fmetrics.default_char)
+			{
+				pres_bmfbm(font->Fmetrics.default_char, font, bitmap, Cmetrics);
+			}
+			if (!Cmetrics->width)
+			{
+				Cmetrics->width = 1;
+				Cmetrics->height = 0;
+			}
 			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
 		}
-		return -1;
 	}
 
 	return 1;
