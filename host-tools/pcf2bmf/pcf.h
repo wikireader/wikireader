@@ -2,7 +2,7 @@
  * CDDL HEADER START
  *
  * The contents of this file are subject to the terms of the
- * Common Development and Distribution License (the "License").  
+ * Common Development and Distribution License (the "License").
  * You may not use this file except in compliance with the License.
  *
  * You can obtain a copy of the license at src/OPENSOLARIS.LICENSE
@@ -68,6 +68,8 @@
 
 typedef unsigned char pcf_bm_t;
 
+#include <inttypes.h>
+
 #ifdef WORD64
 typedef long INT64;
 typedef unsigned long CARD64;
@@ -89,12 +91,12 @@ typedef int INT16;
 #define B32
 #define B16
 #ifdef LONG64
-typedef long INT64;
-typedef int INT32;
+typedef int64_t INT64;
+typedef int32_t INT32;
 #else
-typedef long INT32;
+typedef int32_t INT32;
 #endif
-typedef short INT16;
+typedef int16_t INT16;
 #endif
 
 #if defined(__STDC__) || defined(sgi) || defined(AIXV3)
@@ -104,13 +106,13 @@ typedef char           INT8;
 #endif
 
 #ifdef LONG64
-typedef unsigned long CARD64;
-typedef unsigned int CARD32;
+typedef uint64_t CARD64;
+typedef uint32_t CARD32;
 #else
-typedef unsigned long CARD32;
+typedef uint32_t CARD32;
 #endif
-typedef unsigned short CARD16;
-typedef unsigned char  CARD8;
+typedef uint16_t CARD16;
+typedef uint8_t  CARD8;
 
 typedef CARD32          BITS32;
 typedef CARD16          BITS16;
@@ -127,10 +129,10 @@ typedef CARD8           BOOL;
 
 typedef struct {
     INT16 leftSideBearing B16,
-          rightSideBearing B16,
-          characterWidth B16,
-          ascent B16,
-          descent B16;
+	  rightSideBearing B16,
+	  characterWidth B16,
+	  ascent B16,
+	  descent B16;
     CARD16 attributes B16;
 } xCharInfo;
 
@@ -198,8 +200,8 @@ typedef struct scaled_charmetric pcf_SCcharmet_t;
 typedef struct _CharInfo *CharInfoPtr;
 typedef struct font_header pcf_font_header;
 struct pcffont{
-    	char *name;
-    	char *file;
+	char *name;
+	char *file;
 	char *cufsym;
 	char *cufobj;
 	int (*cuf)(ucs4_t);
@@ -212,7 +214,7 @@ struct pcffont{
 };
 typedef struct pcffont pcffont_t;
 
-       
+
 /*extern void scaling_factors(pcffont_t *, double , int , int );*/
 
 typedef enum {

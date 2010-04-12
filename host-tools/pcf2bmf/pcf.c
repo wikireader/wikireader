@@ -73,6 +73,7 @@ typedef struct font_bmf_header{
        INT8   ascent;
        INT8   descent;
        INT8   bmp_buffer_len;
+       INT32  default_char;
 }font_bmf_header;
 typedef struct font_bmf{
        INT8   width;
@@ -82,7 +83,7 @@ typedef struct font_bmf{
        INT8   ascent;
        INT8   descent;
        INT8   LSBearing;
-       INT8   RSBearing;
+       INT8   widthDevice;
        char   bitmap[48];
 }font_bmf;
 typedef struct font_bmf_ex{
@@ -432,7 +433,7 @@ load_pcf_font(pcffont_t *font)
 
 void Generate_new_font(pcffont_t *font)
 {
-    int i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ascent,descent;
+    int i,width,height,widthBytes,widthBits,LSBearing,widthDevice,ascent,descent;
     CharInfoPtr ci;
     char *buf;
     FILE *fd;
@@ -459,25 +460,9 @@ void Generate_new_font(pcffont_t *font)
 	   widthBytes = GLYPHWIDTHBYTES(ci);
 	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
 	   LSBearing  = ci->metrics.leftSideBearing;
-	   RSBearing  = ci->metrics.rightSideBearing;
+	   widthDevice  = ci->metrics.characterWidth;
 	   ascent     = ci->metrics.ascent;
 	   descent     = ci->metrics.descent;
-
-	   /*if(i==0)
-	   {
-	      width = font->Fmetrics.linespace;
-	      height = font->Fmetrics.ascent;
-	      widthBytes = font->Fmetrics.descent;
-	   }*/
-
-	   if(i==32 && width==0)
-	   {
-	      width = 2;
-	      height = 1;
-	      widthBytes = 1;
-	      widthBits = 8;
-	      RSBearing = 2;
-	   }
 
 	   font_create.width = (INT8)width;
 	   font_create.height = (INT8)height;
@@ -486,9 +471,7 @@ void Generate_new_font(pcffont_t *font)
 	   font_create.ascent =(INT8)ascent;
 	   font_create.descent =(INT8)descent;
 	   font_create.LSBearing = (INT8)LSBearing;
-	   font_create.RSBearing = (INT8)RSBearing;
-	   //printf("before memcpy bitmap\n");
-	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%p\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
+	   font_create.widthDevice = (INT8)widthDevice;
 	   if((widthBytes*height)>48)
 	   {
 	      //free(buf);
@@ -520,7 +503,7 @@ void Generate_new_font(pcffont_t *font)
 }
 void Generate_new_font_with_header(pcffont_t *font)
 {
-    int i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ascent,descent;
+    int i,width,height,widthBytes,widthBits,LSBearing,widthDevice,ascent,descent;
     CharInfoPtr ci;
     char *buf;
     FILE *fd;
@@ -541,6 +524,7 @@ void Generate_new_font_with_header(pcffont_t *font)
     font_header_t.ascent = font->Fmetrics.ascent;
     font_header_t.descent = font->Fmetrics.descent;
     font_header_t.linespace = font->Fmetrics.linespace;
+    font_header_t.default_char = 0x25AF;
     //font_header_t.last_char = font->Fmetrics.lastchar;
 
     count = font->Fmetrics.lastchar;
@@ -564,18 +548,9 @@ void Generate_new_font_with_header(pcffont_t *font)
 	   widthBytes = GLYPHWIDTHBYTES(ci);
 	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
 	   LSBearing  = ci->metrics.leftSideBearing;
-	   RSBearing  = ci->metrics.rightSideBearing;
+	   widthDevice  = ci->metrics.characterWidth;
 	   ascent     = ci->metrics.ascent;
 	   descent     = ci->metrics.descent;
-
-	   if(i==32 && width==0)
-	   {
-	      width = 2;
-	      height = 1;
-	      widthBytes = 1;
-	      widthBits = 8;
-	      RSBearing = 2;
-	   }
 
 	   font_create.width = (INT8)width;
 	   font_create.height = (INT8)height;
@@ -584,7 +559,7 @@ void Generate_new_font_with_header(pcffont_t *font)
 	   font_create.ascent =(INT8)ascent;
 	   font_create.descent =(INT8)descent;
 	   font_create.LSBearing = (INT8)LSBearing;
-	   font_create.RSBearing = (INT8)RSBearing;
+	   font_create.widthDevice = (INT8)widthDevice;
 
 	   //printf("char:%d,height:%d,width:%d,widthBytes:%d\n",
 	   //i,font_create.width,font_create.height,font_create.widthBytes);
@@ -620,316 +595,6 @@ void Generate_new_font_with_header(pcffont_t *font)
     fclose(fd);
     free(buf);
 }
-/*void Generate_new_font_with_header(pcffont_t *font)
-{
-    int i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ascent,descent;
-    CharInfoPtr ci;
-    char *buf;
-    FILE *fd;
-    font_bmf_ex font_create;
-    char name[256];
-    int offset = 0;
-    int count = 0;
-    int last_char = 0;
-    int bitmap_offset = 0;
-    int header_len = 0;
-    int last_val = 0;
-    int bmf_buffer_len = 0;
-    font_bmf_header  font_header_t;
-
-    strcpy(name,sOutFilename);
-    //font_count = font->Fmetrics.lastchar;
-
-    font_header_t.ascent = font->Fmetrics.ascent;
-    font_header_t.descent = font->Fmetrics.descent;
-    font_header_t.linespace = font->Fmetrics.linespace;
-    font_header_t.last_char = font->Fmetrics.lastchar;
-
-    count = font->Fmetrics.lastchar;
-
-    for(i=0; i<count;i++)
-    {
-       ci = font->bitmaps[i];
-       if(ci != NULL)
-       {
-	   width      = GLYPHWIDTHPIXELS(ci);
-	   height     = GLYPHHEIGHTPIXELS(ci);
-	   widthBytes = GLYPHWIDTHBYTES(ci);
-	   if((widthBytes*height)>last_val)
-	       last_val = widthBytes*height;
-       }
-    }
-    printf("last val:%d\n",last_val);
-    last_val = 64;
-    font_header_t.bmp_buffer_len = last_val;
-    bmf_buffer_len = last_val;
-
-
-    buf = (char*)malloc(count*(sizeof(font_bmf_ex)+bmf_buffer_len)+sizeof(font_bmf_header));
-    memset(buf,0,count*(sizeof(font_bmf_ex)+bmf_buffer_len)+sizeof(font_bmf_header));
-
-    //printf("pcf_font_header size is:%d,total size is:%d\n",sizeof(pcf_font_header),count*sizeof(font_bmf_ex)+sizeof(font_bmf_header));
-
-    memcpy(buf+offset,&font_header_t,sizeof(font_header_t));
-    offset+=sizeof(font_header_t);
-
-    header_len = sizeof(font_bmf_ex)*count+sizeof(font_header_t);
-
-    for(i=0; i<count;i++)
-    {
-       ci = font->bitmaps[i];
-       //printf("before memset font_create\n");
-       memset(&font_create,0,sizeof(font_bmf_ex));
-       if(ci != NULL)
-       {
-	   width      = GLYPHWIDTHPIXELS(ci);
-	   height     = GLYPHHEIGHTPIXELS(ci);
-	   widthBytes = GLYPHWIDTHBYTES(ci);
-	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-	   LSBearing  = ci->metrics.leftSideBearing;
-	   RSBearing  = ci->metrics.rightSideBearing;
-	   ascent     = ci->metrics.ascent;
-	   descent     = ci->metrics.descent;
-
-	   if(i==32 && width==0)
-	   {
-	      width = 2;
-	      height = 1;
-	      widthBytes = 1;
-	      widthBits = 8;
-	      RSBearing = 2;
-	   }
-
-	   font_create.width = (INT8)width;
-	   font_create.height = (INT8)height;
-	   font_create.widthBytes =(INT8)widthBytes;
-	   font_create.widthBits =(INT8)widthBits;
-	   font_create.ascent =(INT8)ascent;
-	   font_create.descent =(INT8)descent;
-	   font_create.LSBearing = (INT8)LSBearing;
-	   font_create.RSBearing = (INT8)RSBearing;
-
-	   if(width==0 || height==0 || widthBytes==0)
-		font_create.pos = 0;
-	   else
-	   {
-		if((widthBytes*height)>bmf_buffer_len)
-		   memcpy(buf+header_len+bitmap_offset,ci->bits,bmf_buffer_len);
-		else
-		   memcpy(buf+header_len+bitmap_offset,ci->bits,widthBytes*height);
-
-		font_create.pos = header_len+bitmap_offset;//record char pos
-		bitmap_offset+=bmf_buffer_len;
-	   }
-
-       }
-       memcpy(buf+offset,&font_create,sizeof(font_bmf_ex));
-
-       offset+=sizeof(font_bmf_ex);
-    }
-    printf("count is:%d,before open file\n",count);
-    fd = fopen(name, "wb");
-    if(fd!=NULL)
-       fwrite(buf,1,header_len+bitmap_offset,fd);
-    fclose(fd);
-    free(buf);
-}*/
-/*void Generate_new_font_with_header(pcffont_t *font)
-{
-    int i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ascent,descent;
-    CharInfoPtr ci;
-    char *buf;
-    FILE *fd;
-    font_bmf_ex font_create;
-    char name[256];
-    int offset = 0;
-    int count = 0;
-    int last_char = 0;
-    int bitmap_offset = 0;
-    int header_len = 0;
-    int last_val = 0;
-    font_bmf_header  font_header_t;
-
-    strcpy(name,sOutFilename);
-    //font_count = font->Fmetrics.lastchar;
-
-    font_header_t.ascent = font->Fmetrics.ascent;
-    font_header_t.descent = font->Fmetrics.descent;
-    font_header_t.linespace = font->Fmetrics.linespace;
-    font_header_t.last_char = font->Fmetrics.lastchar;
-
-    count = font->Fmetrics.lastchar;
-
-    for(i=0; i<count;i++)
-    {
-       ci = font->bitmaps[i];
-       if(ci != NULL)
-       {
-	   width      = GLYPHWIDTHPIXELS(ci);
-	   height     = GLYPHHEIGHTPIXELS(ci);
-	   widthBytes = GLYPHWIDTHBYTES(ci);
-	   if(widthBytes*height>last_val)
-	   {
-	       last_val = widthBytes*height;
-	       //printf("char:%d,width:%d,height:%d,widthBytes:%d\n",i,width,height,widthBytes);
-	   }
-       }
-    }
-    printf("last char:%d\n",last_char);
-    font_header_t.bmp_buffern_len = last_val;
-
-
-
-    buf = (char*)malloc(count*(sizeof(font_bmf_ex)+64)+sizeof(font_bmf_header));
-    memset(buf,0,count*(sizeof(font_bmf_ex)+64)+sizeof(font_bmf_header));
-
-    //printf("pcf_font_header size is:%d,total size is:%d\n",sizeof(pcf_font_header),count*sizeof(font_bmf_ex)+sizeof(font_bmf_header));
-
-    memcpy(buf+offset,&font_header_t,sizeof(font_header_t));
-    offset+=sizeof(font_header_t);
-
-    header_len = sizeof(font_bmf_ex)*count+sizeof(font_header_t);
-
-    for(i=0; i<count;i++)
-    {
-       ci = font->bitmaps[i];
-       //printf("before memset font_create\n");
-       memset(&font_create,0,sizeof(font_bmf_ex));
-       if(ci != NULL)
-       {
-	   width      = GLYPHWIDTHPIXELS(ci);
-	   height     = GLYPHHEIGHTPIXELS(ci);
-	   widthBytes = GLYPHWIDTHBYTES(ci);
-	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-	   LSBearing  = ci->metrics.leftSideBearing;
-	   RSBearing  = ci->metrics.rightSideBearing;
-	   ascent     = ci->metrics.ascent;
-	   descent     = ci->metrics.descent;
-
-	   if(i==32 && width==0)
-	   {
-	      width = 2;
-	      height = 1;
-	      widthBytes = 1;
-	      widthBits = 8;
-	      RSBearing = 2;
-	   }
-
-	   font_create.width = (INT8)width;
-	   font_create.height = (INT8)height;
-	   font_create.widthBytes =(INT8)widthBytes;
-	   font_create.widthBits =(INT8)widthBits;
-	   font_create.ascent =(INT8)ascent;
-	   font_create.descent =(INT8)descent;
-	   font_create.LSBearing = (INT8)LSBearing;
-	   font_create.RSBearing = (INT8)RSBearing;
-
-	   if(width==0 || height==0 || widthBytes==0)
-		font_create.pos = 0;
-	   else
-	   {
-		if((widthBytes*height)>64)
-		   memcpy(buf+header_len+bitmap_offset,ci->bits,64);
-		else
-		   memcpy(buf+header_len+bitmap_offset,ci->bits,widthBytes*height);
-
-		font_create.pos = header_len+bitmap_offset;//record char pos
-		bitmap_offset+=64;
-	   }
-
-       }
-       memcpy(buf+offset,&font_create,sizeof(font_bmf_ex));
-
-       offset+=sizeof(font_bmf_ex);
-    }
-    printf("count is:%d,before open file\n",count);
-    fd = fopen(name, "wb");
-    if(fd!=NULL)
-       fwrite(buf,1,header_len+bitmap_offset,fd);
-    fclose(fd);
-    free(buf);
-}*/
-/*void Generate_new_font_with_header(pcffont_t *font)
-{
-    int i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ascent,descent;
-    CharInfoPtr ci;
-    char *buf;
-    FILE *fd;
-    font_bmf font_create;
-    char name[256];
-    int offset = 0;
-    int count = 0;
-    font_bmf_header  font_header_t;
-
-    strcpy(name,sOutFilename);
-    //font_count = font->Fmetrics.lastchar;
-
-    font_header_t.ascent = font->Fmetrics.ascent;
-    font_header_t.descent = font->Fmetrics.descent;
-    font_header_t.linespace = font->Fmetrics.linespace;
-    //font_header_t.ptsz = font->Fmetrics.ptsz;
-    //font_header_t.ptsz = font->Fmetrics.ptsz;
-    //font_header_t.Yres = font->Fmetrics.Yres;
-
-
-    buf = (char*)malloc(65535*sizeof(font_bmf)+sizeof(font_bmf_header));
-    memset(buf,0,65535*sizeof(font_bmf)+sizeof(font_bmf_header));
-
-    printf("pcf_font_header size is:%d,total size is:%d\n",sizeof(pcf_font_header),65535*sizeof(font_bmf)+sizeof(font_bmf_header));
-
-    memcpy(buf+offset,&font_header_t,sizeof(font_header_t));
-    offset+=sizeof(font_header_t);
-
-    for(i=0; i<65535;i++)
-    {
-       ci = font->bitmaps[i];
-       //printf("before memset font_create\n");
-       memset(&font_create,0,sizeof(font_bmf));
-       if(ci != NULL)
-       {
-	   width      = GLYPHWIDTHPIXELS(ci);
-	   height     = GLYPHHEIGHTPIXELS(ci);
-	   widthBytes = GLYPHWIDTHBYTES(ci);
-	   widthBits  = GLYPHWIDTHBYTES(ci) * NBPB;
-	   LSBearing  = ci->metrics.leftSideBearing;
-	   RSBearing  = ci->metrics.rightSideBearing;
-	   ascent     = ci->metrics.ascent;
-	   descent     = ci->metrics.descent;
-
-
-	   font_create.width = (INT8)width;
-	   font_create.height = (INT8)height;
-	   font_create.widthBytes =(INT8)widthBytes;
-	   font_create.widthBits =(INT8)widthBits;
-	   font_create.ascent =(INT8)ascent;
-	   font_create.descent =(INT8)descent;
-	   font_create.LSBearing = (INT8)LSBearing;
-	   font_create.RSBearing = (INT8)RSBearing;
-	   //printf("before memcpy bitmap\n");
-	   //printf("char i:%d,width:%d,height:%d,widthBytes:%d,widthBits:%d,LSBearing:%d,RSBearing:%d,bitmap:%x\n",i,width,height,widthBytes,widthBits,LSBearing,RSBearing,ci->bits);
-	   if((widthBytes*height)>64)
-	   {
-	      //free(buf);
-	      printf("char:%d,widthBytes:%d*height:%d>=64:%d\n",i,widthBytes,height,widthBytes*height);
-	      memcpy(font_create.bitmap,ci->bits,64);
-	      //return;
-	   }
-	   else
-	      memcpy(font_create.bitmap,ci->bits,widthBytes*height);
-	   count++;
-
-
-       }
-       memcpy(buf+offset,&font_create,sizeof(font_bmf));
-       offset+=sizeof(font_bmf);
-    }
-    printf("count is:%d,before open file\n",count);
-    fd = fopen(name, "wb");
-    if(fd!=NULL)
-       fwrite(buf,1,65535*sizeof(font_bmf)+sizeof(font_header_t),fd);
-    fclose(fd);
-    free(buf);
-}*/
 
 void
 scaling_factors(pcffont_t *font, double ptsz, int Xres, int Yres)
