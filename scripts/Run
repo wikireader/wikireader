@@ -243,6 +243,9 @@ this_id=${this_host##*[^0-9]}
 RUN -n rm -f "${LogFile}"
 RUN -n touch "${LogFile}"
 
+# update
+RUN git pull --rebase
+
 # set up the make options
 common_opts="DESTDIR='${dest}' WORKDIR='${work}' TEMPDIR='${temp}'"
 common_opts="${common_opts} WIKI_FILE_PREFIX='${FilePrefix}'"
@@ -305,12 +308,9 @@ case "${clear}" in
 esac
 
 
-# create root directories
+# create root directories and fonts
 RUN make createdirs ${common_opts}
-
-# update
-RUN git pull --rebase
-
+RUN make fonts ${common_opts}
 
 # copy the index from another machine
 #=====================================

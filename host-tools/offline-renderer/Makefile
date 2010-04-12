@@ -217,7 +217,6 @@ math: stamp-math
 
 # use a lock to avoid multiple parallel builds of this program
 stamp-math:
-	${RM} "$@"
 	${LOCKF} "${@}" ${MAKE} -C "${MATH_DIR}"
 	${TOUCH} "$@"
 

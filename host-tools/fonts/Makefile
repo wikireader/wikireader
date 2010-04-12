@@ -65,7 +65,6 @@ all: stamp-fonts
 
 # use a lock to avoid multiple parallel builds of this program
 stamp-fonts:
-	${RM} "$@"
 	${LOCKF} "$@" ${MAKE} ${TARGETS}
 	${TOUCH} "$@"
 
