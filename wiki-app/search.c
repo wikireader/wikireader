@@ -2459,5 +2459,8 @@ void random_article(void)
 	{
 		last_display_mode = DISPLAY_MODE_INDEX; // for history_save not to log the last article index
 		display_link_article(idx_article);
+#ifdef INCLUDED_FROM_KERNEL
+		wl_input_reset_random_key(); // only respond to the first random key
+#endif
 	}
 }

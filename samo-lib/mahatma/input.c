@@ -47,6 +47,18 @@ bool wl_input_event_pending(void)
 	return serial_event_pending() || touchscreen_event_pending() || gpio_event_pending();
 }
 
+void wl_input_reset_random_key(void)
+{
+	struct wl_input_event ev;
+	
+	while (gpio_peek_event(&ev) && ev.key_event.keycode == WL_INPUT_KEY_RANDOM)
+	{
+		gpio_get_event(&ev);
+		if (ev.key_event.value) {
+			CTP_flush();  // flush and reset the CTP
+		}
+	}
+}
 
 void wl_input_wait(struct wl_input_event *ev, int sleep)
 {

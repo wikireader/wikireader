@@ -29,6 +29,8 @@ void gpio_irq(void);
 
 bool gpio_event_pending(void);
 
+bool gpio_peek_event(struct wl_input_event *ev);
+
 bool gpio_get_event(struct wl_input_event *ev);
 
 #endif

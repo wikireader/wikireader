@@ -61,6 +61,18 @@ bool gpio_event_pending(void)
 	return event_cached;
 }
 
+bool gpio_peek_event(struct wl_input_event *ev)
+{
+	if (event_cached || Button_get(&button, &pressed)) {
+		event_cached = true;
+		ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
+		ev->key_event.keycode = keymap[button];
+		ev->key_event.value = pressed;
+	}
+
+	return event_cached;
+}
+
 
 bool gpio_get_event(struct wl_input_event *ev)
 {

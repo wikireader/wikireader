@@ -75,8 +75,10 @@ struct wl_input_event {
 };
 
 bool wl_input_event_pending(void);
-
 void wl_input_wait(struct wl_input_event *ev, int sleep);
+#ifdef INCLUDED_FROM_KERNEL
+void wl_input_reset_random_key(void);
+#endif
 
 #endif /* WL_INPUT_H */
 
