@@ -33,11 +33,12 @@ article_count = 0
 HTMLParser.endtagfind = re.compile('</\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\s*[^>]*>')
 
 
-fh       = '<4b'     # struct font_bmf_header (header)
-cmr      = '<8b48s'  # struct charmetric_bmf (font)
+# from: wiki-app/bmf.h
+FONT_BMF_HEADER = '<4bI'    # struct font_bmf_header (header)
+CHARMETRIC_BMF  = '<8b48s'  # struct charmetric_bmf (font)
 
-fh_size  = struct.calcsize(fh)
-cmr_size = struct.calcsize(cmr)
+FONT_BMF_HEADER_SIZE = struct.calcsize(FONT_BMF_HEADER)
+CHARMETRIC_BMF_SIZE  = struct.calcsize(CHARMETRIC_BMF)
 
 # font face defines - match the #defines of the same name in: wiki-app/lcd_buf_draw.h
 ITALIC_FONT_IDX         = 1
@@ -48,20 +49,29 @@ DEFAULT_ALL_FONT_IDX    = 5
 TITLE_ALL_FONT_IDX      = 6
 SUBTITLE_ALL_FONT_IDX   = 7
 
+FONT_FACE_NAME = {
+    ITALIC_FONT_IDX: 'Italic',
+    DEFAULT_FONT_IDX: 'Default',
+    TITLE_FONT_IDX: 'Title',
+    SUBTITLE_FONT_IDX: 'Subtitle',
+    DEFAULT_ALL_FONT_IDX: 'Default All',
+    TITLE_ALL_FONT_IDX: 'Title All',
+    SUBTITLE_ALL_FONT_IDX: 'Subtitle All',
+}
+
 # Screen dimensions
 LCD_WIDTH               = 240
 LCD_LEFT_MARGIN         = 6     # def. in lcd_buf_draw.h
 LCD_IMG_MARGIN          = 8
 
 # Line Spaces (read directly from the font using gdbfed)
-LINE_SPACE_ADDON        = 1 # added in lcd_buf_draw.h
 H1_LSPACE               = 19
 H2_LSPACE               = 17
 H3_LSPACE               = H2_LSPACE
 H4_LSPACE               = H2_LSPACE
 H5_LSPACE               = H2_LSPACE
 H6_LSPACE               = H2_LSPACE
-P_LSPACE                = 15 + LINE_SPACE_ADDON
+P_LSPACE                = 15
 
 # Margins & Spacing
 LIST_INDENT             = 16
@@ -292,43 +302,67 @@ def main():
 
 
 #
-# Get the width of a character in a given font face
+# cached font information
 #
-width_cache = {}
+font_width_cache = {}
+font_default_cache = {}
 
 def get_utf8_cwidth(c, face):
-    global width_cache, font_id_values
-    global cmr, fh, cmr_size, fh_size
+    global font_width_cache
+    global font_default_cache
+    global font_id_values
+    global FONT_BMF_HEADER
+    global CHARMETRIC_BMF
+    global FONT_BMF_HEADER_SIZE
+    global CHARMETRIC_BMF_SIZE
+    global FONT_FACE_NAME
 
     if type(c) != unicode:
         c = unicode(c, 'utf-8')
 
-    if (c, face) in width_cache:
-        return width_cache[(c, face)]
+    if (c, face) in font_width_cache:
+        return font_width_cache[(c, face)]
 
-    f = font_id_values[face]
+    font_file = font_id_values[face]
 
-    f.seek(ord(c) * cmr_size + fh_size)
-    buffer = f.read(cmr_size)
+    if face not in font_default_cache:
+        font_file.seek(0)
+        buffer = font_file.read(FONT_BMF_HEADER_SIZE)
+
+        if len(buffer) != 0:
+            linespace, ascent, descent, bmp_buffer_len, default_char = struct.unpack(FONT_BMF_HEADER, buffer)
+        else:
+            linespace, ascent, descent, bmp_buffer_len, default_char = (0, 0, 0, 0, ord(u' '))
+
+        font_default_cache[face] = unichr(default_char)
+
+    font_file.seek(ord(c) * CHARMETRIC_BMF_SIZE + FONT_BMF_HEADER_SIZE)
+    buffer = font_file.read(CHARMETRIC_BMF_SIZE)
 
     if len(buffer) != 0:
-        width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = struct.unpack(cmr, buffer)
+        width, height, widthBytes, widthBits, ascent, descent, LSBearing, widthDevice, bitmap = struct.unpack(CHARMETRIC_BMF, buffer)
     else:
-        width, height, widthBytes, widthBits, ascent, descent, LSBearing, RSBearing, bitmap = (0,0,0,0,0,0,0,0,
+        width, height, widthBytes, widthBits, ascent, descent, LSBearing, widthDevice, bitmap = (0,0,0,0,0,0,0,0,
                                                                                                r'\x55' * 48)
+    character_width = widthDevice
 
-    if 0 == width:
+    if 0 == character_width:
+
         if TITLE_FONT_IDX == face:
-            return  get_utf8_cwidth(c, TITLE_ALL_FONT_IDX)
+            character_width = get_utf8_cwidth(c, TITLE_ALL_FONT_IDX)
+
         elif SUBTITLE_FONT_IDX == face:
-            return  get_utf8_cwidth(c, SUBTITLE_ALL_FONT_IDX)
-        elif face != DEFAULT_ALL_FONT_IDX:
-            return get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
+            character_width = get_utf8_cwidth(c, SUBTITLE_ALL_FONT_IDX)
 
-    width += LSBearing + LINE_SPACE_ADDON
-    width_cache[(c, face)] = width
+        elif face in [TITLE_ALL_FONT_IDX, SUBTITLE_ALL_FONT_IDX, DEFAULT_ALL_FONT_IDX]:
+            character_width = get_utf8_cwidth(font_default_cache[face], face)
 
-    return width
+        else:
+            character_width = get_utf8_cwidth(c, DEFAULT_ALL_FONT_IDX)
+
+    font_width_cache[(c, face)] = character_width
+
+    return character_width
 
 
 def get_lineheight(face):
