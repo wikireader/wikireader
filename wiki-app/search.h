@@ -29,6 +29,7 @@
 #define NUMBER_OF_FIRST_PAGE_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
+#define CHAR_LANGUAGE_LINK_TITLE_DELIMITER 1
 
 #define MAX_DAT_FILES 64
 
@@ -133,5 +134,5 @@ void search_result_display();
 int clear_search_string();
 int  get_search_string_len();
 int check_search_string_change(void);
-uint32_t get_article_idx_by_title(char *title);
+uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual);
 #endif

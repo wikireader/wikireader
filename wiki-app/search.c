@@ -961,7 +961,7 @@ TITLE_SEARCH *locate_proper_title_search(char *buf_middle, int len)
 		return NULL;
 }
 
-uint32_t get_article_idx_from_offset_range(char *title, long offset_fnd_start, long offset_fnd_end)
+uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_fnd_start, long offset_fnd_end)
 {
 	int len;
 	int rc;
@@ -1008,7 +1008,7 @@ uint32_t get_article_idx_from_offset_range(char *title, long offset_fnd_start, l
 //#endif
 			if (!rc) // match!
 			{
-				if (!strcmp(sTitleActual, title))
+				if (!strcmp(sTitleActual, sInputTitleActual))
 				{
 					article_idx = pTitleSearch->idxArticle;
 					bFound = true;
@@ -1601,7 +1601,7 @@ interrupted:
 	return offset_search_result_end;
 }
 
-uint32_t get_article_idx_by_title(char *title)
+uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual)
 {
 	uint32_t article_idx = 0;
 	long offset_search_result_start = -1;
@@ -1610,26 +1610,27 @@ uint32_t get_article_idx_by_title(char *title)
 
 	search_str_len = 0;
 	search_str_hiragana_len = 0;
-	while (title[i] && search_str_len < MAX_TITLE_SEARCH)
+	while (titleSearch[i] && titleSearch[i] != CHAR_LANGUAGE_LINK_TITLE_DELIMITER && search_str_len < MAX_TITLE_SEARCH)
 	{
-		if (is_supported_search_char(title[i]))
+		if (is_supported_search_char(titleSearch[i]))
 		{
-			if ('A' <= title[i] && title[i] <= 'Z')
-				search_string[search_str_len++] = 'a' + (title[i] - 'A');
+			if ('A' <= titleSearch[i] && titleSearch[i] <= 'Z')
+				search_string[search_str_len++] = 'a' + (titleSearch[i] - 'A');
 			else
-				search_string[search_str_len++] = title[i];
+				search_string[search_str_len++] = titleSearch[i];
 		}
 		i++;
 	}
 
 	if (search_str_len > 0)
 	{
+		search_string[search_str_len] = '\0';
 		offset_search_result_start = get_search_result_start();
 		if (!search_interrupted && offset_search_result_start > 0)
 		{
 			offset_search_result_end = get_search_result_end();
 			if (!search_interrupted)
-				article_idx = get_article_idx_from_offset_range(title, offset_search_result_start, offset_search_result_end);
+				article_idx = get_article_idx_from_offset_range(titleActual, offset_search_result_start, offset_search_result_end);
 		}
 		search_str_len = 0;
 		search_str_hiragana_len = 0;

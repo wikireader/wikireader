@@ -109,11 +109,15 @@ void init_wiki_info(void)
 int get_wiki_idx_by_lang_link(char *lang_link_str)
 {
 	int len;
-	char *p;
+	char *p, *q;
 	int i;
 	int current_wiki_cat = -1;
 
 	p = strchr(lang_link_str, ':');
+	q = strchr(lang_link_str, '#');
+	if (!p || (q && q < p))
+		p = q;
+
 	if (p)
 	{
 		int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
@@ -145,16 +149,31 @@ uint32_t wiki_lang_link_search(char *lang_link_str)
 {
 	uint32_t article_idx = 0;
 	int nTempCurrentWiki = nCurrentWiki;
-	char *p;
+	char *p, *q;
 
 	search_interrupted = 0;
 	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
 		init_search_hash();
 		p = strchr(lang_link_str, ':');
-		article_idx = get_article_idx_by_title(p + 1);
-		if (article_idx)
-			article_idx |= wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_id << 24;
+		q = strchr(lang_link_str, '#');
+		if (!p || (q && q < p))
+			p = q;
+		if (p)
+		{
+			if (*p == '#') // actual title is different than title for search
+			{
+				q = strchr(p + 1, CHAR_LANGUAGE_LINK_TITLE_DELIMITER); // locate the actual title
+				if (!q)
+					q = p;
+			}
+			else
+				q = p;
+			
+			article_idx = get_article_idx_by_title(p + 1, q + 1);
+			if (article_idx)
+				article_idx |= wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_id << 24;
+		}
 	}
 	nCurrentWiki = nTempCurrentWiki;
 	return article_idx;
