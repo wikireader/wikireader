@@ -8,10 +8,15 @@
 
 import sys
 import os
+import unicodedata
 
 
 class WordWrap():
     """word wrapping class"""
+
+    CJK = ['CJK', 'HIRAGANA', 'KATAKANA']
+
+    PUNCTUATION = ['IDEOGRAPHIC', 'FULLWIDTH']
 
     def __init__(self, char_width_funtion):
         self.buffer = []
@@ -32,14 +37,50 @@ class WordWrap():
                     leading_space = False
             except IndexError:
                 pass
+
         if leading_space:
             self.buffer.append(space)
-        for w in words:
-            word_len = [self.char_width_funtion(c, face) for c in w]
-            self.buffer.append((w, face, url, sum(word_len), word_len))
+
+        for one_word in words:
+            for w in self.partition(one_word):
+                word_len = [self.char_width_funtion(c, face) for c in w]
+                self.buffer.append((w, face, url, sum(word_len), word_len))
             self.buffer.append(space)
+
         if self.buffer != [] and not trailing_space and self.buffer[-1][0] == ' ':
             del self.buffer[-1]
+
+
+    def partition(self, text):
+        """private method - simulate zero width spaces for Japanese"""
+        l = []
+        r = ''
+        last_n = ''
+        for c in text:
+            n = unicodedata.name(c).split()[0]
+
+            if n in self.CJK:
+                if '' != r:
+                    l.append(r)
+                r = c
+                last_n = n
+
+            elif last_n in self.CJK:
+                if n in self.PUNCTUATION:
+                    l.append(r + c)
+                    r = ''
+                    last_n = ''
+                else:
+                    l.append(r)
+                    r = c
+                    last_n = n
+            else:
+                r += c
+                last_n = n
+
+        if '' != r:
+            l.append(r)
+        return l
 
 
     def AppendImage(self, width, height, data, url):
@@ -58,12 +99,12 @@ class WordWrap():
             pass
         sys.stdout.write('"')
         for b in self.buffer:
-            sys.stdout.write(b[0])
+            sys.stdout.write(b[0].encode('utf-8'))
         sys.stdout.write('"\n')
 
 
     def split(self, item, width):
-        # do not attempt to split a single wide character
+        # do not attempt to split a single character
         # this should not occur, but handle it anyway
         if len(item[0]) == 1:
             return (item, None)
@@ -90,8 +131,8 @@ class WordWrap():
             if self.buffer == []:
                 return []
 
-        if self.buffer[0][3] > width and len(self.buffer[0][0]) > 1:
-            (r, self.buffer[0]) = self.split(self.buffer[0], width)
+        if self.buffer[0][3] >= width and len(self.buffer[0][0]) > 1:
+            (r, self.buffer[0]) = self.split(self.buffer[0], width - 1)
             return [r]
 
         result = [self.buffer[0]]
@@ -99,7 +140,7 @@ class WordWrap():
         i = 1
         for word in self.buffer[1:]:
             w += word[3]
-            if w > width:
+            if w >= width:
                 break
             result.append(word)
             i += 1
@@ -124,9 +165,11 @@ def main():
         print('\033[1;33mLink: "{0:s}" {1:d} -> {2:d} => {3:d}\033[0m'.format(url, x0, x1, (x1 - x0)))
 
     def cwidth(c, face):
-        if c == ' ':
-            return 1
-        return 2
+        if unicode != type(c):
+            c = unicode(c, 'utf-8')
+        if unicodedata.name(c).split()[0] in ['CJK', 'HIRAGANA', 'KATAKANA', 'IDEOGRAPHIC', 'FULLWIDTH']:
+            return 2
+        return 1
 
     b = WordWrap(cwidth)
     default = '\033[0m'
@@ -176,11 +219,22 @@ def main():
     b.AppendImage(102, 7, '@@@@', None)
     b.append(' is an image', 'n', None)
 
+    b.append('------------------------------', 'n', None)
+    b.append('振り子（ふりこ）は一点で支えられた棒、ひもなどの先に重りを付けたもの。', 'n', None)
+    b.append('地上など', 'n', None)
+    b.append('重力', 'n', None)
+    b.append('のあるところで一回力を加えると揺れを繰り返す。 支点での摩擦や空気抵抗の無い理想の環境では永久に揺れ続ける。', 'n', None)
+
+    b.append('------------------------------', 'n', None)
+    b.append('振り子についての最初の研究記録は10世紀頃のアラビア人の天文学者イブン・ユーヌスによる。さらに 17世紀、ガリレオにはじまる物理学者らよる観測の結果、等時性が発見され時計に使用されるようになった。', 'n', None)
+
+    b.append('------------------------------', 'n', None)
+    b.append('振り子についてのab cd最初の研究記録は10世紀頃のアラビア人の、天文学者イブン・ユーヌスによる。さらに 17世紀、ガリレオにはじまる物理学者らよる観測の結果、等時性が発見され時計に使用されるようになった。', 'n', None)
 
     b.dump()
     b.out()
-    print('      "         1         2         3"')
-    print('      "123456789012345678901234567890"')
+
+    ruler = 0
     while b.have():
         url = None
         x = 0
@@ -208,7 +262,19 @@ def main():
             make_link(url, url_x0, x)
             t += default
 
-        print(('Wrap: "{0:s}"' + default).format(t))
+        if 0 == ruler:
+            print('      "         1         2         3"')
+            print('      "123456789012345678901234567890"')
+        print((u'Wrap: "{0:s}"' + default).format(t))
+        ruler += 1
+        if ruler > 10:
+            ruler = 0
+
+
+#    for c in u'imageや空気抵振り子（ふりこ）は一点でアラた。testing(x,y)の、・':
+#        print u'{0:s} : {1:s} '.format(c, unicodedata.name(c).split())
+
+
 
 
 # run the program
