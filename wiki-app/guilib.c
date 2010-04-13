@@ -93,6 +93,9 @@ void guilib_set_pixel(int x, int y, int v)
 
 int guilib_get_pixel(int x, int y)
 {
+	if (x < 0 || y < 0) {
+		return 0;
+	}
 	unsigned int byte = (x + FRAMEBUFFER_SCANLINE * y) / 8;
 	unsigned int bit  = (x + FRAMEBUFFER_SCANLINE * y) % 8;
 	int bit_set = (framebuffer[byte] & 0x80>>bit) != 0;
