@@ -9,12 +9,13 @@
 import sys
 import os
 import unicodedata
+import PrintLog
 
 
 class WordWrap():
     """word wrapping class"""
 
-    CJK = ['CJK', 'HIRAGANA', 'KATAKANA']
+    CJK = ['CJK', 'HIRAGANA', 'KATAKANA', 'HANGUL', 'BOPOMOFO']
 
     PUNCTUATION = ['IDEOGRAPHIC', 'FULLWIDTH']
 
@@ -57,7 +58,11 @@ class WordWrap():
         r = ''
         last_n = ''
         for c in text:
-            n = unicodedata.name(c).split()[0]
+            try:
+                n = unicodedata.name(c).split()[0]
+            except ValueError:
+                n = 'NoName'
+                PrintLog.message(u'No unicode name for: "{0:s}"'.format(c))
 
             if n in self.CJK:
                 if '' != r:
