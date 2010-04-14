@@ -26,8 +26,8 @@ import SearchKey
 
 # maximum string lengths for FND file
 # when not truncating the actual title can be twice this length (+1 for the '\0')
-MAXIMUM_TITLE_LENGTH = 63 # c-code is 64 including '\0'
-
+MAXIMUM_TITLE_LENGTH =  63 # c-code is 64 including '\0'
+MAXIMUM_TITLE_ACTUAL = 255 # c-code is 256 including '\0'
 
 # to catch loop in redirections
 class CycleError(Exception):
@@ -562,7 +562,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
     global bigram
     global index_matrix
     global MAXIMUM_TITLE_LENGTH
-
+    global MAXIMUM_TITLE_ACTUAL
 
     PrintLog.message(u'Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
@@ -623,7 +623,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
         if truncate_title:
             utf8_title = utf8_title[:MAXIMUM_TITLE_LENGTH]
         else:
-            utf8_title = utf8_title[:2 * MAXIMUM_TITLE_LENGTH]
+            utf8_title = utf8_title[:MAXIMUM_TITLE_ACTUAL]
 
         offset = out_f.tell()
         article_index.set_index(title, (article_number, offset, restricted, is_redirect))
