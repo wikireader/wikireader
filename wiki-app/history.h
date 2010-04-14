@@ -51,7 +51,7 @@ long history_get_previous_idx(long current_idx_article, int b_drop_from_list);
 typedef struct __attribute__ ((packed)) _HISTORY {
 	int32_t idx_article;
 	int32_t last_y_pos;
-	char title[MAX_TITLE_SEARCH];
+	char title[MAX_TITLE_ACTUAL];
 } HISTORY;
 
 enum history_save_e {

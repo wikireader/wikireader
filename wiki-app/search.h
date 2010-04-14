@@ -26,6 +26,7 @@
 #define RESULT_START 34
 #define RESULT_HEIGHT 19
 #define MAX_TITLE_SEARCH 64
+#define MAX_TITLE_ACTUAL 256
 #define NUMBER_OF_FIRST_PAGE_RESULTS 9
 #define NUMBER_OF_RESULTS_KEYBOARD 5
 #define PIXEL_START (RESULT_START - RESULT_HEIGHT + 2)
@@ -66,7 +67,7 @@ typedef struct __attribute__((packed)) _TITLE_SEARCH {
 	uint32_t idxArticle;    // article number [1..N]
 	char cZero;             // null character for backward search
 	char sTitleSearch[MAX_TITLE_SEARCH]; // null terminated bigram encoded title for search
-	char sTitleActual[MAX_TITLE_SEARCH]; // null terminated utf-8 encoded actual title
+	char sTitleActual[MAX_TITLE_ACTUAL]; // null terminated utf-8 encoded actual title
 } TITLE_SEARCH;
 
 /*

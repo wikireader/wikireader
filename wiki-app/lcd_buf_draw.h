@@ -193,7 +193,7 @@
 #else
 #define LCD_BUF_WIDTH_BYTES LCD_VRAM_WIDTH_PIXELS/8
 #endif
-#define LANGUAGE_LINK_WIDTH 21
+#define LANGUAGE_LINK_WIDTH 23
 #define LANGUAGE_LINK_HEIGHT 21
 #define LANGUAGE_LINK_WIDTH_GAP 6
 #define LANGUAGE_LINK_HEIGHT_GAP 6
@@ -320,6 +320,7 @@ void lcd_clear_pixel(unsigned char *membuffer,int x, int y);
 void lcd_set_framebuffer_pixel(int x, int y);
 void lcd_clear_framebuffer_pixel(int x, int y);
 void extract_title_from_article(unsigned char *article_buf, unsigned char *title);
+void pause_seconds(float seconds);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];

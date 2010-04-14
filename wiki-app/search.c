@@ -59,7 +59,7 @@ extern long saved_idx_article;
 int search_interrupted = 0;
 
 typedef struct _search_results {
-	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
+	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_ACTUAL];
 	char title_search[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
 	uint32_t idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (wiki.idx) for loading the article
 	uint32_t offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];  // offset (wiki.fnd) of each search title in list
@@ -801,7 +801,7 @@ void get_article_title_from_idx(long idx, char *title)
 	{
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
 		retrieve_titles_from_fnd(article_ptr.offset_fnd, sTitleSearch, title);
-		title[MAX_TITLE_SEARCH - 1] = '\0';
+		title[MAX_TITLE_ACTUAL - 1] = '\0';
 	}
 	nCurrentWiki = nTmpeCurrentWiki;
 }
@@ -932,7 +932,7 @@ char *strnstr(char *s1, char *s2, int len)
 // 0xXXXXXX00 (TITLE_SEARCH.idxArticle where XXXXXX is not 000000) +
 // 0x00 (TITLE_SEARCH.cZero) +
 // 0xXX (Non-zero of TITLE_SEARCH.sTitleSearch)
-bool is_TITLE_SEARCH_pattern(char *pBuf)
+bool is_title_search_pattern(char *pBuf)
 {
 	if (pBuf[0] && !pBuf[1] && (pBuf[2] || pBuf[3] || pBuf[4]) && !pBuf[5] && !pBuf[6] && pBuf[7])
 		return true;
@@ -949,7 +949,7 @@ TITLE_SEARCH *locate_proper_title_search(char *buf_middle, int len)
 
 	while (!bFound && i < len + 2 - 8) // the pattern consists of 8 bytes
 	{
-		if (is_TITLE_SEARCH_pattern(&pBuf[i]))
+		if (is_title_search_pattern(&pBuf[i]))
 			bFound = true;
 		else
 			i++;
@@ -967,7 +967,7 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 	int rc;
 	uint32_t article_idx = 0;
 	char sTitleSearch[MAX_TITLE_SEARCH];
-	char sTitleActual[MAX_TITLE_SEARCH];
+	char sTitleActual[MAX_TITLE_ACTUAL];
 	char buf_middle[sizeof(TITLE_SEARCH) * 2];
 	long offset_middle;
 	static TITLE_SEARCH *pTitleSearch;
@@ -1048,7 +1048,7 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 							if (pTitleSearch)
 							{
 								char local_title_search[MAX_TITLE_SEARCH];
-								char sTitleActual[MAX_TITLE_SEARCH];
+								char sTitleActual[MAX_TITLE_ACTUAL];
 
 								offset_middle += (char *)pTitleSearch - buf_middle;
 								retrieve_titles_from_fnd(offset_middle, local_title_search, sTitleActual);
@@ -1213,9 +1213,6 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 				else // binary search
 				{
 					offset_middle = offset_fnd_start + (offset_fnd_end - offset_fnd_start) / 2; // position to the middle of the range
-//#ifndef INCLUDED_FROM_KERNEL
-//msg(MSG_INFO, "offset_middle %x\n", offset_middle);
-//#endif
 					if (offset_middle <= offset_fnd_start)
 						offset_fnd_end = -1;
 					else
@@ -1232,9 +1229,12 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 							if (pTitleSearch)
 							{
 								char local_title_search[MAX_TITLE_SEARCH];
-								char sTitleActual[MAX_TITLE_SEARCH];
+								char sTitleActual[MAX_TITLE_ACTUAL];
 
 								offset_middle += (char *)pTitleSearch - buf_middle;
+//#ifndef INCLUDED_FROM_KERNEL
+//msg(MSG_INFO, "offset_middle %x\n", offset_middle);
+//#endif
 								retrieve_titles_from_fnd(offset_middle, local_title_search, sTitleActual);
 								rc = search_string_cmp(local_title_search, search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
@@ -1610,7 +1610,7 @@ uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual)
 
 	search_str_len = 0;
 	search_str_hiragana_len = 0;
-	while (titleSearch[i] && titleSearch[i] != CHAR_LANGUAGE_LINK_TITLE_DELIMITER && search_str_len < MAX_TITLE_SEARCH)
+	while (titleSearch[i] && titleSearch[i] != CHAR_LANGUAGE_LINK_TITLE_DELIMITER && search_str_len < MAX_TITLE_SEARCH - 1)
 	{
 		if (is_supported_search_char(titleSearch[i]))
 		{
@@ -2428,7 +2428,7 @@ long find_closest_idx(long idx, char *title)
 		count = 0;
 		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
 		retrieve_titles_from_fnd(article_ptr.offset_fnd, sTitleSearch, title);
-		title[MAX_TITLE_SEARCH - 1] = '\0';
+		title[MAX_TITLE_ACTUAL - 1] = '\0';
 		return idx;
 	}
 }
@@ -2442,7 +2442,7 @@ extern int last_display_mode;
 void random_article(void)
 {
 	long idx_article;
-	char title[MAX_TITLE_SEARCH];
+	char title[MAX_TITLE_ACTUAL];
 	unsigned long clock_ticks;
 
 #if defined(INCLUDED_FROM_KERNEL)

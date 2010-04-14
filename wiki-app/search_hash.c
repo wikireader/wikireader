@@ -55,7 +55,7 @@ uint32_t nHashEntries[MAX_WIKIS];
 int fdHsh[MAX_WIKIS];
 int fdFnd[MAX_WIKIS];
 int *bHashBlockLoaded[MAX_WIKIS];
-#define FND_BUF_COUNT 2048
+#define FND_BUF_COUNT 1024
 #define ENTRIES_PER_HASH_BLOCK 256
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 2048
@@ -207,7 +207,7 @@ long get_search_hash_offset_fnd(char *sSearchString, int len)
 	long nHashKey;
 	//TITLE_SEARCH title_search;
 	char sTitleSearch[MAX_TITLE_SEARCH];
-	char sTitleActual[MAX_TITLE_SEARCH];
+	char sTitleActual[MAX_TITLE_ACTUAL];
 	int bFound = 0;
 	int lenHashed;
 	int idxBlock;
@@ -440,8 +440,8 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		//bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
 		p += strlen(aTitleSearch[nTitleSearch].sTitleSearch) + 1; // pointing to actual title
 		//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
-		strncpy(sTitleActual, p, MAX_TITLE_SEARCH);
-		sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+		strncpy(sTitleActual, p, MAX_TITLE_ACTUAL);
+		sTitleActual[MAX_TITLE_ACTUAL - 1] = '\0';
 		strcpy(aTitleSearch[nTitleSearch].sTitleSearch, sTitleSearch);
 		strcpy(aTitleSearch[nTitleSearch].sTitleActual, sTitleActual);
 		if ((unsigned char)aTitleSearch[nTitleSearch].sTitleSearch[0] >= ' ')
@@ -480,14 +480,14 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		{
 			if ((unsigned char)aTitleSearch[i].sTitleActual[0] >= ' ')
 			{
-				strncpy(sTitleActual, aTitleSearch[i].sTitleActual, MAX_TITLE_SEARCH);
-				sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+				strncpy(sTitleActual, aTitleSearch[i].sTitleActual, MAX_TITLE_ACTUAL);
+				sTitleActual[MAX_TITLE_ACTUAL - 1] = '\0';
 			}
 			else if (sTitleActual[0])
 			{
 				lenDuplicated = aTitleSearch[i].sTitleActual[0] + 1;
-				memcpy(&sTitleActual[lenDuplicated], &aTitleSearch[i].sTitleActual[1], MAX_TITLE_SEARCH - lenDuplicated - 1);
-				sTitleActual[MAX_TITLE_SEARCH - 1] = '\0';
+				memcpy(&sTitleActual[lenDuplicated], &aTitleSearch[i].sTitleActual[1], MAX_TITLE_ACTUAL - lenDuplicated - 1);
+				sTitleActual[MAX_TITLE_ACTUAL - 1] = '\0';
 			}
 		}
 	}

@@ -554,7 +554,7 @@ int check_restriction(long idx_article)
 	int len;
 	char restriction_pass2[20];
 	SHA1Context sha;
-	char title[MAX_TITLE_SEARCH];
+	char title[MAX_TITLE_ACTUAL];
 
 	init_filtering = 0;
 	if (restriction_filter_off == -1)
