@@ -39,20 +39,20 @@
 //	Each hash entry is defined as struct SEARCH_HASH_TABLE
 
 #ifdef WIKIPCF
-SEARCH_HASH_TABLE *search_hash_table;
-SEARCH_HASH_STRING *search_hash_strings;
+//SEARCH_HASH_TABLE *search_hash_table;
+//SEARCH_HASH_STRING *search_hash_strings;
 
-uint32_t nHashEntries = 0;
+//uint32_t nHashEntries = 0;
 
-FILE *fdHsh;
+//FILE *fdHsh;
 long nNeedMoreEntries = 0;
 #else
 extern int search_interrupted;
 int bHashInited[MAX_WIKIS];
-SEARCH_HASH_TABLE *search_hash_table[MAX_WIKIS];
-SEARCH_HASH_STRING *search_hash_strings[MAX_WIKIS];
-uint32_t nHashEntries[MAX_WIKIS];
-int fdHsh[MAX_WIKIS];
+//SEARCH_HASH_TABLE *search_hash_table[MAX_WIKIS];
+//SEARCH_HASH_STRING *search_hash_strings[MAX_WIKIS];
+//uint32_t nHashEntries[MAX_WIKIS];
+//int fdHsh[MAX_WIKIS];
 int fdFnd[MAX_WIKIS];
 int *bHashBlockLoaded[MAX_WIKIS];
 #define FND_BUF_COUNT 1024
@@ -70,103 +70,103 @@ long nUsedSeq = 1;
 long lenFnd[MAX_WIKIS];
 #endif
 
-static unsigned long hash_key(char *s, int len)
-{
-	unsigned long hash = 5381;
-	char str[MAX_SEARCH_STRING_HASHED_LEN + 1];
-	int i;
-
-	if (len > MAX_SEARCH_STRING_HASHED_LEN)
-		len = MAX_SEARCH_STRING_HASHED_LEN;
-	memcpy(str, s, len);
-	str[len] = '\0';
-	i = 0;
-	while(i < len) {
-		int c = str[i];
-		if ('A' <= c && c <='Z')
-			c += 32;
-		hash = ((hash << 5) + hash) + c;
-		i++;
-	}
-	return hash % MAX_SEARCH_HASH_KEY;
-}
-
+//static unsigned long hash_key(char *s, int len)
+//{
+//	unsigned long hash = 5381;
+//	char str[MAX_SEARCH_STRING_HASHED_LEN + 1];
+//	int i;
+//
+//	if (len > MAX_SEARCH_STRING_HASHED_LEN)
+//		len = MAX_SEARCH_STRING_HASHED_LEN;
+//	memcpy(str, s, len);
+//	str[len] = '\0';
+//	i = 0;
+//	while(i < len) {
+//		int c = str[i];
+//		if ('A' <= c && c <='Z')
+//			c += 32;
+//		hash = ((hash << 5) + hash) + c;
+//		i++;
+//	}
+//	return hash % MAX_SEARCH_HASH_KEY;
+//}
+//
 #ifdef WIKIPCF
-void create_search_hash(const char *filename)
-{
-	search_hash_table = malloc(sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
-	search_hash_strings = malloc(sizeof(SEARCH_HASH_STRING) * MAX_SEARCH_HASH_TABLE_ENTRIES);
-	if (!search_hash_table || !search_hash_strings)
-	{
-		printf("malloc search_hash_table/search_hash_strings error\n");
-		exit(-1);
-	}
-	nHashEntries = MAX_SEARCH_HASH_KEY;
-	memset(search_hash_table, 0, sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
-	fdHsh = fopen(filename, "wb");
-	if (!fdHsh)
-	{
-		printf("cannot open file '%s', error: %s\n", filename, strerror(errno));
-		exit(-1);
-	}
-}
-
-long add_search_hash(char *sInput, int len, long offset_fnd)
-{
-	long nHashKey;
-	char sSearchString[MAX_SEARCH_STRING_HASHED_LEN + 1];
-
-	memcpy(sSearchString, sInput, len);
-	sSearchString[len] = '\0';
-	nHashKey = hash_key(sSearchString, len);
-	if (search_hash_table[nHashKey].offset_fnd)
-	{
-		if (strcmp(search_hash_strings[nHashKey].str, sSearchString))
-		{
-			int bFound = 0;
-			while (!bFound && (search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF))
-			{
-				nHashKey = search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF;
-				if (!strcmp(search_hash_strings[nHashKey].str, sSearchString))
-					bFound = 1;
-			}
-			if (!bFound)
-			{
-				if (nHashEntries >= MAX_SEARCH_HASH_TABLE_ENTRIES)
-				{
-					nNeedMoreEntries++;
-				}
-				else
-				{
-					search_hash_table[nHashKey].next_entry_idx |= nHashEntries;
-					search_hash_table[nHashEntries].next_entry_idx = len << 28;
-					search_hash_table[nHashEntries].offset_fnd = offset_fnd;
-					strncpy(search_hash_strings[nHashEntries].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
-					search_hash_strings[nHashEntries].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
-					nHashEntries++;
-				}
-			}
-		}
-	}
-	else
-	{
-		search_hash_table[nHashKey].next_entry_idx = (len << 28);
-		search_hash_table[nHashKey].offset_fnd = offset_fnd;
-		strncpy(search_hash_strings[nHashKey].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
-		search_hash_strings[nHashKey].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
-	}
-	return nHashKey;
-}
-
-void save_search_hash(void)
-{
-	fwrite(&nHashEntries, sizeof(nHashEntries), 1, fdHsh);
-	fwrite(search_hash_table, sizeof(SEARCH_HASH_TABLE), nHashEntries, fdHsh);
-	free(search_hash_table);
-	fclose(fdHsh);
-	if (nNeedMoreEntries)
-		printf("Search hash table need %ld more entries!\n", nNeedMoreEntries);
-}
+//void create_search_hash(const char *filename)
+//{
+//	search_hash_table = malloc(sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
+//	search_hash_strings = malloc(sizeof(SEARCH_HASH_STRING) * MAX_SEARCH_HASH_TABLE_ENTRIES);
+//	if (!search_hash_table || !search_hash_strings)
+//	{
+//		printf("malloc search_hash_table/search_hash_strings error\n");
+//		exit(-1);
+//	}
+//	nHashEntries = MAX_SEARCH_HASH_KEY;
+//	memset(search_hash_table, 0, sizeof(SEARCH_HASH_TABLE) * MAX_SEARCH_HASH_TABLE_ENTRIES);
+//	fdHsh = fopen(filename, "wb");
+//	if (!fdHsh)
+//	{
+//		printf("cannot open file '%s', error: %s\n", filename, strerror(errno));
+//		exit(-1);
+//	}
+//}
+//
+//long add_search_hash(char *sInput, int len, long offset_fnd)
+//{
+//	long nHashKey;
+//	char sSearchString[MAX_SEARCH_STRING_HASHED_LEN + 1];
+//
+//	memcpy(sSearchString, sInput, len);
+//	sSearchString[len] = '\0';
+//	nHashKey = hash_key(sSearchString, len);
+//	if (search_hash_table[nHashKey].offset_fnd)
+//	{
+//		if (strcmp(search_hash_strings[nHashKey].str, sSearchString))
+//		{
+//			int bFound = 0;
+//			while (!bFound && (search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF))
+//			{
+//				nHashKey = search_hash_table[nHashKey].next_entry_idx & 0x0FFFFFFF;
+//				if (!strcmp(search_hash_strings[nHashKey].str, sSearchString))
+//					bFound = 1;
+//			}
+//			if (!bFound)
+//			{
+//				if (nHashEntries >= MAX_SEARCH_HASH_TABLE_ENTRIES)
+//				{
+//					nNeedMoreEntries++;
+//				}
+//				else
+//				{
+//					search_hash_table[nHashKey].next_entry_idx |= nHashEntries;
+//					search_hash_table[nHashEntries].next_entry_idx = len << 28;
+//					search_hash_table[nHashEntries].offset_fnd = offset_fnd;
+//					strncpy(search_hash_strings[nHashEntries].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
+//					search_hash_strings[nHashEntries].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
+//					nHashEntries++;
+//				}
+//			}
+//		}
+//	}
+//	else
+//	{
+//		search_hash_table[nHashKey].next_entry_idx = (len << 28);
+//		search_hash_table[nHashKey].offset_fnd = offset_fnd;
+//		strncpy(search_hash_strings[nHashKey].str, sSearchString, MAX_SEARCH_STRING_HASHED_LEN);
+//		search_hash_strings[nHashKey].str[MAX_SEARCH_STRING_HASHED_LEN] = '\0';
+//	}
+//	return nHashKey;
+//}
+//
+//void save_search_hash(void)
+//{
+//	fwrite(&nHashEntries, sizeof(nHashEntries), 1, fdHsh);
+//	fwrite(search_hash_table, sizeof(SEARCH_HASH_TABLE), nHashEntries, fdHsh);
+//	free(search_hash_table);
+//	fclose(fdHsh);
+//	if (nNeedMoreEntries)
+//		printf("Search hash table need %ld more entries!\n", nNeedMoreEntries);
+//}
 #else
 void init_search_hash(void)
 {
@@ -201,91 +201,91 @@ void init_search_hash(void)
 	}
 }
 
-int nHashJumps;
-long get_search_hash_offset_fnd(char *sSearchString, int len)
-{
-	long nHashKey;
-	//TITLE_SEARCH title_search;
-	char sTitleSearch[MAX_TITLE_SEARCH];
-	char sTitleActual[MAX_TITLE_ACTUAL];
-	int bFound = 0;
-	int lenHashed;
-	int idxBlock;
-
-	nHashJumps = 0;
-	nHashKey = hash_key(sSearchString, len);
-	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
-	if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
-	{
-		wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
-		wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
-			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
-		bHashBlockLoaded[nCurrentWiki][idxBlock]++;
-#ifdef INCLUDED_FROM_KERNEL
-		if (wl_input_event_pending())
-		{
-			search_interrupted = 2;
-			goto interrupted;
-		}
-#endif
-	}
-
-	while (!bFound && nHashKey >= 0 && search_hash_table[nCurrentWiki][nHashKey].offset_fnd)
-	{
-		if (search_hash_table[nCurrentWiki][nHashKey].offset_fnd > 0)
-		{
-			retrieve_titles_from_fnd(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, sTitleSearch, sTitleActual);
-			//copy_fnd_to_buf(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
-			if (search_interrupted)
-			{
-				search_interrupted = 6;
-				goto interrupted;
-			}
-			//bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
-		}
-		else
-			sTitleSearch[0] = '\0';
-		lenHashed = (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx >> 28) & 0x000000FF;
-		sTitleSearch[lenHashed] = '\0';
-		if (!search_string_cmp(sTitleSearch, sSearchString, len))
-			bFound = 1;
-		if (!bFound)
-		{
-			if (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx  & 0x0FFFFFFF)
-			{
-				nHashJumps++;
-				nHashKey = search_hash_table[nCurrentWiki][nHashKey].next_entry_idx & 0x0FFFFFFF;
-				idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
-				if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
-				{
-					wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
-					wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
-						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
-					bHashBlockLoaded[nCurrentWiki][idxBlock]++;
-#ifdef INCLUDED_FROM_KERNEL
-					if (wl_input_event_pending())
-					{
-						search_interrupted = 3;
-						goto interrupted;
-					}
-#endif
-				}
-			}
-			else
-				nHashKey = -1;
-		}
-	}
-	if (bFound)
-	{
-		return search_hash_table[nCurrentWiki][nHashKey].offset_fnd;
-	}
-	else
-	{
-		return 0;
-	}
-interrupted:
-	return 0;
-}
+//int nHashJumps;
+//long get_search_hash_offset_fnd(char *sSearchString, int len)
+//{
+//	long nHashKey;
+//	//TITLE_SEARCH title_search;
+//	char sTitleSearch[MAX_TITLE_SEARCH];
+//	char sTitleActual[MAX_TITLE_ACTUAL];
+//	int bFound = 0;
+//	int lenHashed;
+//	int idxBlock;
+//
+//	nHashJumps = 0;
+//	nHashKey = hash_key(sSearchString, len);
+//	idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
+//	if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
+//	{
+//		wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
+//		wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
+//			ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
+//		bHashBlockLoaded[nCurrentWiki][idxBlock]++;
+//#ifdef INCLUDED_FROM_KERNEL
+//		if (wl_input_event_pending())
+//		{
+//			search_interrupted = 2;
+//			goto interrupted;
+//		}
+//#endif
+//	}
+//
+//	while (!bFound && nHashKey >= 0 && search_hash_table[nCurrentWiki][nHashKey].offset_fnd)
+//	{
+//		if (search_hash_table[nCurrentWiki][nHashKey].offset_fnd > 0)
+//		{
+//			retrieve_titles_from_fnd(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, sTitleSearch, sTitleActual);
+//			//copy_fnd_to_buf(search_hash_table[nCurrentWiki][nHashKey].offset_fnd, (char *)&title_search, sizeof(title_search));
+//			if (search_interrupted)
+//			{
+//				search_interrupted = 6;
+//				goto interrupted;
+//			}
+//			//bigram_decode(sDecoded, title_search.sTitleSearch, MAX_TITLE_SEARCH);
+//		}
+//		else
+//			sTitleSearch[0] = '\0';
+//		lenHashed = (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx >> 28) & 0x000000FF;
+//		sTitleSearch[lenHashed] = '\0';
+//		if (!search_string_cmp(sTitleSearch, sSearchString, len))
+//			bFound = 1;
+//		if (!bFound)
+//		{
+//			if (search_hash_table[nCurrentWiki][nHashKey].next_entry_idx  & 0x0FFFFFFF)
+//			{
+//				nHashJumps++;
+//				nHashKey = search_hash_table[nCurrentWiki][nHashKey].next_entry_idx & 0x0FFFFFFF;
+//				idxBlock = nHashKey / ENTRIES_PER_HASH_BLOCK;
+//				if (!bHashBlockLoaded[nCurrentWiki][idxBlock])
+//				{
+//					wl_seek(fdHsh[nCurrentWiki], idxBlock * ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE) + sizeof(nHashEntries[nCurrentWiki]));
+//					wl_read(fdHsh[nCurrentWiki], &search_hash_table[nCurrentWiki][idxBlock * ENTRIES_PER_HASH_BLOCK],
+//						ENTRIES_PER_HASH_BLOCK * sizeof(SEARCH_HASH_TABLE));
+//					bHashBlockLoaded[nCurrentWiki][idxBlock]++;
+//#ifdef INCLUDED_FROM_KERNEL
+//					if (wl_input_event_pending())
+//					{
+//						search_interrupted = 3;
+//						goto interrupted;
+//					}
+//#endif
+//				}
+//			}
+//			else
+//				nHashKey = -1;
+//		}
+//	}
+//	if (bFound)
+//	{
+//		return search_hash_table[nCurrentWiki][nHashKey].offset_fnd;
+//	}
+//	else
+//	{
+//		return 0;
+//	}
+//interrupted:
+//	return 0;
+//}
 
 int copy_fnd_to_buf(long offset, char *buf, int len)
 {

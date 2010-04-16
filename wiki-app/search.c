@@ -421,7 +421,6 @@ struct _hiragana_english_mapping {
 } hiragana_english_mapping[] = {
 	{"a",	"あ"    },
 	{"i",	"い"    },
-	{"yi",	"い"   },
 	{"ye",	"いぇ"	},
 	{"u",	"う"    },
 	{"wha",	"うぁ"	},
@@ -718,6 +717,12 @@ static char search_string_hiragana[MAX_TITLE_SEARCH * 3];
 static int search_str_len = 0;
 static int search_str_converted_len = 0;
 static int search_str_hiragana_len = 0;
+static char temp_search_string[MAX_TITLE_SEARCH];
+static int temp_search_string_pos[MAX_TITLE_SEARCH];
+static char temp_search_string_hiragana[MAX_TITLE_SEARCH * 3];
+static int temp_search_str_len = 0;
+static int temp_search_str_converted_len = 0;
+static int temp_search_str_hiragana_len = 0;
 
 //static char s_find_first = 1;
 
@@ -751,6 +756,26 @@ static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 //	return result;
 //#endif
 //}
+
+void backup_search_criteria()
+{
+	memcpy(temp_search_string, search_string, sizeof(search_string));
+	memcpy(temp_search_string_pos, search_string_pos, sizeof(search_string_pos));
+	memcpy(temp_search_string_hiragana, search_string_hiragana, sizeof(search_string_hiragana));
+	temp_search_str_len = search_str_len;
+	temp_search_str_converted_len = search_str_converted_len;
+	temp_search_str_hiragana_len = search_str_hiragana_len;
+}
+
+void restore_search_criteria()
+{
+	memcpy(search_string, temp_search_string, sizeof(search_string));
+	memcpy(search_string_pos, temp_search_string_pos, sizeof(search_string_pos));
+	memcpy(search_string_hiragana, temp_search_string_hiragana, sizeof(search_string_hiragana));
+	search_str_len = temp_search_str_len;
+	search_str_converted_len = temp_search_str_converted_len;
+	search_str_hiragana_len = temp_search_str_hiragana_len;
+}
 
 long result_list_offset_next(void)
 {
@@ -1608,6 +1633,7 @@ uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual)
 	long offset_search_result_end = -1;
 	int i = 0;
 
+	backup_search_criteria();
 	search_str_len = 0;
 	search_str_hiragana_len = 0;
 	while (titleSearch[i] && titleSearch[i] != CHAR_LANGUAGE_LINK_TITLE_DELIMITER && search_str_len < MAX_TITLE_SEARCH - 1)
@@ -1632,10 +1658,9 @@ uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual)
 			if (!search_interrupted)
 				article_idx = get_article_idx_from_offset_range(titleActual, offset_search_result_start, offset_search_result_end);
 		}
-		search_str_len = 0;
-		search_str_hiragana_len = 0;
 	}
 
+	restore_search_criteria();
 	return article_idx;
 }
 
@@ -2181,8 +2206,9 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 					((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
 					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
 				search_str_hiragana_len--;
-			search_str_hiragana_len--;
+			search_string_hiragana[--search_str_hiragana_len] = '\0';
 			search_str_len = hiragana_to_english(search_string, search_string_hiragana, search_str_hiragana_len);
+			search_string[search_str_len] = '\0';
 			search_str_converted_len = search_str_len;
 		}
 	}

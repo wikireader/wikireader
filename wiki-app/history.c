@@ -242,40 +242,40 @@ void draw_clear_history(int bClear)
 		memcpy(localBuffer, &framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 27 * LCD_VRAM_WIDTH_PIXELS / 8);
 		memset(&framebuffer[181 * LCD_VRAM_WIDTH_PIXELS / 8], 0xFF,  27 * LCD_VRAM_WIDTH_PIXELS / 8);
 
-		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
-		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
-		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 16] = 0xFE;
+		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 17], 0, 5);
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 22] = 0x07;
 
-		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
-		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0xF8;
+		memset(&framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 24], 0, 5);
 		framebuffer[184 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
 
 		for (i = 185; i <= 203; i++)
 		{
-			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFC;
-			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
-			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x03;
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 16] = 0xFC;
+			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 17], 0, 5);
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 22] = 0x03;
 
-			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF0;
-			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0xF0;
+			memset(&framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 24], 0, 5);
 			framebuffer[i * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x0F;
 		}
 
-		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 18] = 0xFE;
-		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 19], 0, 4);
-		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0x07;
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 16] = 0xFE;
+		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 17], 0, 5);
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 22] = 0x07;
 
-		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 24] = 0xF8;
-		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 25], 0, 4);
+		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 23] = 0xF8;
+		memset(&framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 24], 0, 5);
 		framebuffer[204 * LCD_VRAM_WIDTH_PIXELS / 8 + 29] = 0x1F;
 
 		pText=get_nls_text("clear_history");
 		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, strlen(pText), 1);
 		pText=get_nls_text("yes");
-		render_string(SUBTITLE_FONT_IDX, 147 + (192 - 147 - get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) / 2,
+		render_string(SUBTITLE_FONT_IDX, 131 + (184 - 131 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
 			      185, pText, strlen(pText), 0);
 		pText=get_nls_text("no");
-		render_string(SUBTITLE_FONT_IDX, 193 + (238 - 193 - get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) / 2,
+		render_string(SUBTITLE_FONT_IDX, 185 + (238 - 185 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
 			      185, pText, strlen(pText), 0);
 	}
 }

@@ -32,14 +32,17 @@
 
 WIKI_LIST wiki_list[MAX_WIKIS] =
 {
-	{1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia"},
-	{2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia"},
-	{3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia"},
-	{4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia"},
-	{5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia"},
-	{6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia"},
-	{7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia"},
-	{8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia"},
+	{ 1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia"},
+	{ 2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia"},
+	{ 3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia"},
+	{ 4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia"},
+	{ 5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia"},
+	{ 6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia"},
+	{ 7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia"},
+	{ 8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia"},
+	{ 9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia"},
+	{10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia"},
+	{11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia"},
 };
 
 extern int search_interrupted;
@@ -52,13 +55,18 @@ bool bWikiIsJapanese = false;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
 WIKI_LICENSE_DRAW aWikiLicenseDraw[MAX_WIKIS_PER_DEVICE];
+char *pWikiIni = NULL;
+unsigned int lenWikiIni = 0;
+unsigned int sizeWikiIni = 0;
+extern int bShowPositioner;
+
+char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len);
 
 void init_wiki_info(void)
 {
 	int i;
 	int fd;
 	char sFilePath[20];
-	unsigned int nSize;
 	char *p;
 	int nWikiId;
 
@@ -78,19 +86,41 @@ void init_wiki_info(void)
 	{
 		nCurrentWiki = 0;
 		fd = wl_open("wiki.ini", WL_O_RDONLY);
-		wl_fsize(fd, &nSize);
-		p = malloc_simple(nSize + 1, MEM_TAG_INDEX_M1);
-		if (p)
+		if (fd >= 0)
 		{
-			wl_read(fd, p, nSize);
-			wl_close(fd);
-			p[nSize] = '\0';
-			nWikiId = atoi(p);
-			if (nWikiId > 0)
-				nCurrentWiki = get_wiki_idx_from_id(nWikiId);
-			if (nCurrentWiki < 0)
-				nCurrentWiki = 0;
-			free_simple(p, MEM_TAG_INDEX_M1);
+			wl_fsize(fd, &lenWikiIni);
+			sizeWikiIni = lenWikiIni + 16;  // reserve space for wiki_id key pair
+			pWikiIni = malloc_simple(sizeWikiIni, MEM_TAG_INDEX_M1);
+			if (pWikiIni)
+			{
+				wl_read(fd, pWikiIni, lenWikiIni);
+				wl_close(fd);
+				pWikiIni[lenWikiIni] = '\0';
+				p = pWikiIni;
+				while (*p)
+				{
+					if (*p == '\r' || *p == '\n')
+						*p = '\0';
+					p++;
+				}
+				p = get_nls_key_value("positioner", pWikiIni, lenWikiIni);
+				if (*p)
+					bShowPositioner = atoi(p);
+				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni);
+				if (*p)
+				{
+					nWikiId = atoi(p);
+					if (nWikiId > 0)
+						nCurrentWiki = get_wiki_idx_from_id(nWikiId);
+					if (nCurrentWiki < 0)
+						nCurrentWiki = 0;
+				}
+				else
+				{
+					lenWikiIni = 0; // if no wiki_id entry in wiki.ini, reset the content of wiki.ini
+					nCurrentWiki = 0;
+				}
+			}
 		}
 		for (i = 0; i < nWikiCount; i++)
 		{
@@ -169,7 +199,7 @@ uint32_t wiki_lang_link_search(char *lang_link_str)
 			}
 			else
 				q = p;
-			
+
 			article_idx = get_article_idx_by_title(p + 1, q + 1);
 			if (article_idx)
 				article_idx |= wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_id << 24;
@@ -177,7 +207,7 @@ uint32_t wiki_lang_link_search(char *lang_link_str)
 	}
 	nCurrentWiki = nTempCurrentWiki;
 	return article_idx;
-}	
+}
 char *get_wiki_file_path(int nWikiIdx, char *file_name)
 {
 	static char sFilePath[32];
@@ -337,10 +367,49 @@ char *get_wiki_name(int idx)
 	return pName;
 }
 
+void wiki_ini_insert_keypair(char *key, char *keyval)
+{
+	char *p = get_nls_key_value(key, pWikiIni, lenWikiIni);
+
+	if (*p)
+	{
+		if (strlen(p) < strlen(keyval))
+		{
+			int diff = strlen(keyval) - strlen(p);
+			int move_size;
+
+			if (lenWikiIni + diff < sizeWikiIni)
+			{
+				move_size = lenWikiIni - (p - pWikiIni);
+				if (move_size > 0)
+					memmove(p, p + diff, move_size);
+			}
+		}
+		if (p + strlen(keyval) < pWikiIni + sizeWikiIni - 1)
+		{
+			memset(p, 0, strlen(keyval) + 1);
+			memcpy(p, keyval, strlen(keyval));
+		}
+	}
+	else if (lenWikiIni + strlen(key) + strlen(keyval) + 2 < sizeWikiIni)
+	{
+		if (lenWikiIni)
+			pWikiIni[lenWikiIni++] = '\0'; // make sure the new key pair start with a new line
+		memcpy(&pWikiIni[lenWikiIni], key, strlen(key));
+		lenWikiIni += strlen(key);
+		pWikiIni[lenWikiIni++] = '=';
+		memcpy(&pWikiIni[lenWikiIni], keyval, strlen(keyval));
+		lenWikiIni += strlen(keyval);
+		pWikiIni[lenWikiIni] = '\0';
+	}
+}
+
 void set_wiki(int idx)
 {
 	int fd;
 	char sWikiId[10];
+	int i;
+	char prev_c = 0;
 
 	nCurrentWiki = idx;
 	if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "ja"))
@@ -351,7 +420,18 @@ void set_wiki(int idx)
 	if (fd >= 0)
 	{
 		sprintf(sWikiId, "%d", get_wiki_id_from_idx(nCurrentWiki));
-		wl_write(fd, (void *)sWikiId, strlen(sWikiId));
+		wiki_ini_insert_keypair("wiki_id", sWikiId);
+		for (i = 0; i < lenWikiIni; i++)
+		{
+			if (pWikiIni[i] == '\0')
+			{
+				if (prev_c != '\0')
+					wl_write(fd, "\n", 1);
+			}
+			else
+				wl_write(fd, &pWikiIni[i], 1);
+			prev_c = pWikiIni[i];
+		}
 		wl_close(fd);
 	}
 }
@@ -378,9 +458,10 @@ void nls_replace_text(char *replace_str, char *out_str)
 WIKI_LICENSE_DRAW *wiki_license_draw()
 {
 	int wiki_idx = get_wiki_idx_from_id(current_article_wiki_id);
+	int nTempCurrentWiki = nCurrentWiki;
 
-	if (wiki_idx < 0)
-		wiki_idx = nCurrentWiki;
+	if (wiki_idx >= 0)
+		nCurrentWiki = wiki_idx;
 //	if (!aWikiLicenseDraw[wiki_idx].lines)
 	{
 		int y = 0;
@@ -504,5 +585,6 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 		aWikiLicenseDraw[wiki_idx].buf = malloc_simple(y * LCD_BUF_WIDTH_BYTES, MEM_TAG_INDEX_M1);
 		memcpy(aWikiLicenseDraw[wiki_idx].buf, draw_buf, y * LCD_BUF_WIDTH_BYTES);
 	}
+	nCurrentWiki = nTempCurrentWiki;
 	return &aWikiLicenseDraw[wiki_idx];
 }

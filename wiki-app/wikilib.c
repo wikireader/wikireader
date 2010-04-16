@@ -286,8 +286,8 @@ static void handle_search_key(char keycode, unsigned long ev_time)
 #ifdef INCLUDED_FROM_KERNEL
 		delay_us(100000);
 #endif
-		keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 		display_mode = DISPLAY_MODE_WIKI_SELECTION;
+		keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 		keyboard_set_mode(KEYBOARD_NONE);
 		wiki_selection();
 		return;
@@ -1132,8 +1132,10 @@ int wikilib_run(void)
 		{
 			if (time_diff(get_time_ticks(), last_event_time) > seconds_to_ticks(15))
 				rc = history_list_save(HISTORY_SAVE_POWER_OFF);
-			else
+			else if (time_diff(get_time_ticks(), last_event_time) > seconds_to_ticks(2))
 				rc = history_list_save(HISTORY_SAVE_NORMAL);
+			else
+				rc = -1;
 			if (rc > 0)
 			{
 #ifdef INCLUDED_FROM_KERNEL

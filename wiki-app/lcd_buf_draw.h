@@ -320,7 +320,6 @@ void lcd_clear_pixel(unsigned char *membuffer,int x, int y);
 void lcd_set_framebuffer_pixel(int x, int y);
 void lcd_clear_framebuffer_pixel(int x, int y);
 void extract_title_from_article(unsigned char *article_buf, unsigned char *title);
-void pause_seconds(float seconds);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];

@@ -46,6 +46,8 @@
 
 static struct guilib_image *image_data;
 int keyboard_type = 0;
+int b_first_123_keyin = 0;
+extern int display_mode;
 
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, keycode) { .left_x = l_x, .right_x = r_x, .left_y = l_y, .right_y = r_y, .key = keycode, }
@@ -132,7 +134,7 @@ static struct keyboard_key qwerty_char[] = {
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 
-	KEY(199, 84, 233, 118, WL_KEY_NLS),
+	KEY(198, 84, 233, 119, WL_KEY_NLS),
 };
 static struct keyboard_key qwerty_num[] = {
 	KEY(0, 126, 23, 152, '1'),
@@ -174,7 +176,7 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 
-	KEY(199, 84, 233, 118, WL_KEY_NLS),
+	KEY(198, 84, 233, 119, WL_KEY_NLS),
 };
 static struct keyboard_key password_char[] = {
 	KEY(175, 81, 204, 105, 'Y'),
@@ -261,8 +263,8 @@ static struct keyboard_key password_num[] = {
 	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
 };
 static struct keyboard_key clear_history[] = {
-	KEY(147, 181, 192, 207, 'Y'),
-	KEY(193, 181, 238, 207, 'N'),
+	KEY(131, 181, 184, 207, 'Y'),
+	KEY(185, 181, 238, 207, 'N'),
 };
 static struct keyboard_key restriction[] = {
 	KEY(12, 148, 227, 170, 'Y'),
@@ -308,8 +310,7 @@ void keyboard_set_mode(int mode)
 		image_data = &keyboard_abc2_image;
 	} else if(kb_mode == KEYBOARD_NUM) {
 		image_data = &keyboard_123_image;
-//      } else if(kb_mode == KEYBOARD_CLEAR_HISTORY) {
-//              image_data = &image_data_clear_history;
+		b_first_123_keyin = 1;
 	} else {
 		image_data = NULL;
 	}
@@ -584,7 +585,33 @@ void keyboard_process_key_invert(struct keyboard_key *key)
 		end_x--;
 	if (strchr("asdfghjklzxcvbnm*$%#()-+=<@?!& ,.'", key->key) || key->key == WL_KEY_BACKSPACE)
 		start_y++;
-	if (key->key == ' ' || key->key == WL_KEY_BACKSPACE || key->key == WL_KEY_NLS || isupper(key->key))
+	if (key->key == WL_KEY_NLS)
+	{
+		int y_diff, x_diff;
+		
+		for (y_diff = -2; y_diff <= (end_y - start_y) / 2; y_diff++)
+		{
+			if (y_diff == -2)
+				x_diff = 13;
+			else if (y_diff == -1)
+				x_diff = 10;
+			else if (y_diff == 0)
+				x_diff = 7;
+			else if (1 <= y_diff && y_diff <= 5)
+				x_diff = 6 - y_diff;
+			else if (y_diff == 6)
+				x_diff = 1;
+			else if (7 <= y_diff && y_diff <= 8)
+				x_diff = 0;
+			else if (9 <= y_diff && y_diff <= 11)
+				x_diff = -1;
+			else
+				x_diff = -2;
+			guilib_invert_area(start_x + x_diff, start_y + y_diff, end_x - x_diff, start_y + y_diff);
+			guilib_invert_area(start_x + x_diff, end_y - y_diff, end_x - x_diff, end_y - y_diff);
+		}
+	}
+	else if (key->key == ' ' || key->key == WL_KEY_BACKSPACE || isupper(key->key))
 	{
 		guilib_invert_area(start_x,start_y,end_x,end_y);
 		guilib_invert_area(start_x,start_y,start_x,start_y);
@@ -652,10 +679,21 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		if (bFlag == KEYBOARD_RESET_INVERT_NOW)
 		{
 			guilib_fb_lock();
-			if (pre_key->key == ' ' || pre_key->key == WL_KEY_BACKSPACE || pre_key->key == WL_KEY_NLS || isupper(pre_key->key))
+			if (pre_key->key == ' ' || pre_key->key == WL_KEY_BACKSPACE || isupper(pre_key->key) || 
+				(pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
 				keyboard_process_key_invert(pre_key);
-			else
+			else if (pre_key->key != WL_KEY_NLS)
 				restore_key_bubble();
+
+			if (kb_mode == KEYBOARD_NUM && ((!b_first_123_keyin && pre_key->key == ' ') || pre_key->key == '\''))
+			{
+				keyboard_set_mode(KEYBOARD_CHAR);
+				guilib_fb_lock();
+				keyboard_paint();
+				guilib_fb_unlock();
+			} else if (b_first_123_keyin)
+				b_first_123_keyin = 0;
+				
 			pre_key = NULL;
 			if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR2 || kb_mode == KEYBOARD_NUM)
 				search_to_be_reloaded(SEARCH_TO_BE_RELOADED_CHECK, 0);
