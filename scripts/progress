@@ -188,7 +188,7 @@ do
       ;;
 
     -x|--xml-link)
-      RenderDo --yes ${list} --brief "cd '${base_dir}' && ln -fs \$(ls -1 ../'${language}'wiki-*-pages-articles.xml |tail -n 1) ${language}wiki-pages-articles.xml && ls -l '${language}'*.xml"
+      RenderDo --yes ${list} --brief "cd '${base_dir}' && rm -f '${language}wiki-pages-articles.xml' && ln -fs \$(ls -1 ../'${language}'wiki-*-pages-articles.xml |tail -n 1) '${language}wiki-pages-articles.xml' && ls -l '${language}'*.xml"
       shift
       ;;
 
