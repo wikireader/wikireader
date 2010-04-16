@@ -272,7 +272,7 @@ case "${language}" in
       *)
         # low compression for 8GB card
         common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-        common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
+        common_opts="${common_opts} ARTICLES_PER_BLOCK=1"
         common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
         ;;
     esac
@@ -280,7 +280,7 @@ case "${language}" in
 
   *)
     common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=16"
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=1"
     common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
     ;;
 esac
