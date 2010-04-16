@@ -80,6 +80,12 @@ build:
 .PHONY: compress
 compress: ${COMPRESSED_FONTS}
 
+# rebuild the all fonts from source and create compressed fonts
+.PHONY: rebuild
+rebuild:
+	${RM} *.xz
+	${MAKE} clean compress all
+
 .PHONY: clean
 clean:
 	${RM} -r build ${TARGETS} *.bmf *.pcf stamp-*
