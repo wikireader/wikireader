@@ -244,6 +244,9 @@ gcc: binutils gcc-patch
 # QT simulator
 # ============
 
+$(call REQUIRED_BINARY, g++, g++)
+$(call REQUIRED_BINARY, qmake-qt4, qmake-qt4 libqt4-dev)
+
 .PHONY: qt4-simulator
 qt4-simulator:
 	cd ${HOST_TOOLS}/qt4-simulator && qmake-qt4 && ${MAKE}

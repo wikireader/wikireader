@@ -20,9 +20,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import gd
 import sys
 import struct
+
+try:
+        import gd
+except:
+        print 'error: Missing python module: python-gd'
+        print '       sudo apt-get install python-gd'
+        exit(1)
 
 def usage():
 	print "guilib image file generator"
