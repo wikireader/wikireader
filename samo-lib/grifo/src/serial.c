@@ -25,6 +25,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 
+#include <samo.h>
 #include <regs.h>
 
 #include "watchdog.h"
@@ -37,6 +38,7 @@ void Serial_initialise(void)
 	if (!initialised) {
 		initialised = true;
 		Watchdog_initialise();
+		SET_BRTRD(0, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CONSOLE_BPS));
 	}
 }
 

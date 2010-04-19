@@ -164,8 +164,8 @@ int SuspendCode(void)
 	REG_P2_47_CFP = 0x00;
 
 	// adjust baud rate for lower clock frequency
-	SET_BRTRD(1, CALC_BAUD(MCLK, 32, DIV, CTP_BPS));
-	SET_BRTRD(0, CALC_BAUD(MCLK, 32, DIV, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(MCLK, 32, SERIAL_DIVMD, CTP_BPS));
+	SET_BRTRD(0, CALC_BAUD(MCLK, 32, SERIAL_DIVMD, CONSOLE_BPS));
 
 	// preserve current clock enable state
 	register uint32_t save_g0 = REG_CMU_GATEDCLK0;
@@ -229,9 +229,9 @@ int SuspendCode(void)
 		//CMU_CLK_SEL_OSC1 |
 		//CMU_CLK_SEL_OSC3 |
 
-		PLLINDIV_10 |
+		//PLLINDIV_10 |
 		//PLLINDIV_9 |
-		//PLLINDIV_8 |
+		PLLINDIV_8 |
 		//PLLINDIV_7 |
 		//PLLINDIV_6 |
 		//PLLINDIV_5 |
@@ -276,6 +276,9 @@ int SuspendCode(void)
 		//SOSC1 |
 		0;
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
+
+	// switch clocks
+	asm volatile ("slp\n\tnop\n\tslp");
 
 	// configure 16 bit timer2 to resume after a given timeout
 	// Stop timer
@@ -331,9 +334,12 @@ int SuspendCode(void)
 
 	REG_CMU_PROTECT = CMU_PROTECT_ON;
 
+	// switch clocks
+	asm volatile ("slp\n\tnop\n\tslp");
+
 	// restore baud rate
-	SET_BRTRD(0, CALC_BAUD(MCLK, 1, DIV, CONSOLE_BPS));
-	SET_BRTRD(1, CALC_BAUD(MCLK, 1, DIV, CTP_BPS));
+	SET_BRTRD(0, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CONSOLE_BPS));
+	SET_BRTRD(1, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CTP_BPS));
 
 	// re-enable the SDRAMC pin functions
 	REG_P2_03_CFP = 0x55;

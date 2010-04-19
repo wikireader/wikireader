@@ -65,6 +65,8 @@ void CTP_initialise(void)
 
 		Interrupt_type state = Interrupt_disable();
 
+		SET_BRTRD(1, CALC_BAUD(PLL_CLK, 1, SERIAL_DIVMD, CTP_BPS));
+
 		// CTP_INIT_Reset_function
 		REG_P0_IOC0 |= 0x80;
 		REG_P0_P0D  |= 0x80;

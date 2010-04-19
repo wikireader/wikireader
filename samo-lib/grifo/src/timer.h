@@ -26,7 +26,7 @@ void Timer_initialise();
 
 //+MakeSystemCalls: enum
 enum {
-	TIMER_CountsPerMicroSecond = 48,
+	TIMER_CountsPerMicroSecond = 60,
 };
 //-MakeSystemCalls: enum
 
