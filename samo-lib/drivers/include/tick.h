@@ -25,8 +25,9 @@
 void Tick_initialise();
 
 enum {
-	//Tick_TicksPerMicroSecond = 24,
-	Tick_TicksPerMicroSecond = 30,
+	Tick_TicksPerMicroSecond = 60,
+	Tick_TicksPerMilliSecond = Tick_TicksPerMicroSecond * 1000,
+	Tick_TicksPerSecond = Tick_TicksPerMilliSecond * 1000,
 };
 
 unsigned long Tick_get(void);
