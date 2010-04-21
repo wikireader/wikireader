@@ -77,7 +77,7 @@ def main():
 
     for item in args:
         try:
-            index_number = int(item)
+            index_number = int(item, 0)
         except ValueError:
             usage('"{0:s}" is not numeric'.format(item))
 
