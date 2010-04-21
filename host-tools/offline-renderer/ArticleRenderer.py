@@ -21,9 +21,7 @@ import WordWrap
 import bucket
 import PrintLog
 import gd
-import littleparser
 import LanguageTranslation
-import SearchKey
 
 verbose = False
 warnings = False
@@ -1182,16 +1180,16 @@ def write_article(language_links):
 
     # create language links
     links_stream = io.BytesIO('')
-    japanese_convert = LanguageTranslation.Furigana().translate
-    translate = littleparser.LittleParser().translate
+    japanese_convert = LanguageTranslation.LanguageJapanese().translate
+    normal_convert = LanguageTranslation.LanguageNormal().translate
 
     for l in language_links:
         language, link = l.split(':', 1)
 
         if 'ja' == language:
-            stripped = SearchKey.strip_accents(japanese_convert(link))
+            stripped = japanese_convert(link)
         else:
-            stripped = SearchKey.strip_accents(link)
+            stripped = normal_convert(link)
 
         if link == stripped:
             links_stream.write(l.encode('utf-8') + '\0')

@@ -120,7 +120,7 @@ check-html:
 
 
 .PHONY: index
-index: check-dirs check-xml RedirectedTo.py
+index: check-dirs check-xml RedirectedTo.py PinyinTable.py
 	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
@@ -207,8 +207,15 @@ pylzma:
 
 
 # create the #redirect regular expression
+CLEAN_TARGETS += RedirectedTo.py
 RedirectedTo.py: FindAllRedirects.php ${MEDIAWIKI_MESSAGES_DIR}/*.php
 	php5 FindAllRedirects.php ${MEDIAWIKI_MESSAGES_DIR}/*.php > "$@"
+
+# create Pinyin table for index program
+PINYIN_TABLE = pinyin-data/pinyin_table.txt
+CLEAN_TARGETS += PinyinTable.py
+PinyinTable.py: CreatePinyinTable.py
+	./CreatePinyinTable.py --input="${PINYIN_TABLE}" --output="$@"
 
 
 # sudo apt-get install tetex-extra dvipng cjk-latex ocaml
@@ -228,7 +235,7 @@ build:
 
 .PHONY: clean
 clean: pylzma-clean
-	${RM} -r build ${TARGETS} *.pyc *.pyo *.dat *.idx *.idx-tmp *.pfx *.fnd
+	${RM} -r build ${TARGETS} ${CLEAN_TARGETS} *.pyc *.pyo *.dat *.idx *.idx-tmp *.pfx *.fnd
 	${RM} stamp-*
 	${MAKE} -C "${MATH_DIR}" clean
 

@@ -9,23 +9,109 @@
 import os
 import sys
 import string
+import unicodedata
+import pinyin
 
 class LanguageProcessor(object):
 
+    EQUIVALENTS = {
+        u'æ': u'ae',
+        u'ƀ': u'b',
+        u'ƃ': u'b',
+        u'ɓ': u'b',
+        u'ƈ': u'c',
+        u'đ': u'd',
+        u'ȡ': u'd',
+        u'ð': u'eth',
+        u'ħ': u'h',
+        u'ĳ': u'ij',
+        u'ŀ': u'l',
+        u'ł': u'l',
+        u'ŉ': u'n',
+        u'ƞ': u'n',
+        u'ŋ': u'ng',
+        u'ɔ': u'o',
+        u'ø': u'o',
+        u'œ': u'oe',
+        u'ȣ': u'ou',
+        u'ß': u's',
+        u'ſ': u's',
+        u'ŧ': u't',
+        u'þ': u'th',
+        u'ȝ': u'y',
+        u'ȥ': u'z',
+        u'ƶ': u'z',
+        u'×': u'*',
+        u'÷': u'/',
+        }
+
+    def __init__(self, *args, **kw):
+        """create new instance"""
+
+        try:
+            self.cjk_convert = kw['cjk_convert']
+        except KeyError:
+            self.cjk_convert = True
+
+        for k, d in self.EQUIVALENTS.items():
+            u = k.upper()
+            if u not in self.EQUIVALENTS:
+                self.EQUIVALENTS[u] = d.upper()
+
+
     def translate(self, text):
-        PrintLog.message('Virual function called')
-        sys.exit(1)
+        """base translation using unicode tables"""
+        if unicode != type(text):
+            text = unicode(text, 'utf-8')
+        text = text.strip()
+        result = ''
+        for c in text:
+            try:
+                n = unicodedata.name(c).split()
+            except ValueError:
+                n = ('Nothing', 'None')
+            if 'HANGUL' == n[0]:
+                result += n[2]
+            elif self.cjk_convert and n[0] in ['HIRAGANA', 'KATAKANA'] and 'LETTER' == n[1]:
+                # attempt to convert Japanese phonetic whin doing Chinese->Pinyin
+                if 'SMALL' != n[2]:
+                    result += n[2]
+                else:
+                    result += n[3]
+
+            elif self.cjk_convert and 'CJK' == n[0]:
+                # use only the first of the list of phonetics available
+                result += unicodedata.normalize('NFD', pinyin.pinyin[c][0])
+            elif n[0] in ['GREEK', 'COPTIC']:
+                try:
+                    g = n[3][0]
+                    if 'SMALL' == n[1]:
+                        g = g.lower()
+                    result += g
+                except IndexError:
+                    result += c
+            else:
+                for c in unicodedata.normalize('NFD', c):
+                    if c in self.EQUIVALENTS:
+                        result += self.EQUIVALENTS[c]
+                    else:
+                        result += c
+        return result
 
 
-class LanguageNull(LanguageProcessor):
+class LanguageNormal(LanguageProcessor):
     """no-op class"""
 
+    def __init__(self, *args, **kw):
+        """create new instance"""
+        super(LanguageNormal, self).__init__(*args, **kw)
+
     def translate(self, text):
-        """null translation => only strip spaces"""
-        return text.strip()
+        """normal translation to alphabetic"""
+        return super(LanguageNormal, self).translate(text)
 
 
-class Furigana(LanguageProcessor):
+class LanguageJapanese(LanguageProcessor):
     """Convert Japanese to Romaji"""
 
     KANA_TO_ROMAN = {
@@ -84,7 +170,8 @@ class Furigana(LanguageProcessor):
 
 
     def __init__(self, *args, **kw):
-        super(Furigana, self).__init__(*args, **kw)
+        """intitialise MeCab library"""
+        super(LanguageJapanese, self).__init__(*args, cjk_convert=False, **kw)
 
         import MeCab         # load Japanese dictionary interface
 
@@ -128,7 +215,7 @@ class Furigana(LanguageProcessor):
 
         result = ''
 
-        for text in text.split():
+        for text in super(LanguageJapanese, self).translate(text).split():
 
             if type(text) == unicode:
                 text = text.encode('utf-8')
@@ -153,3 +240,42 @@ class Furigana(LanguageProcessor):
             result += ' '
 
         return result.strip()
+
+
+def test_items(strings, translate):
+    for lang, text in strings:
+        print(u'{lang:s}  in: {src:s}\n{lang:s} out: {dst:s}\n'.format(lang=lang, src=text, dst=translate(text)))
+
+
+def main():
+    """perform tests"""
+    texts = [
+        ('da', u'farvandsovervågning, søredning, isbrydning, forureningsbekæmpelse på havet'),
+        ('is', u'um rannsóknaraðferðir vísindamanna og ádeilu á Danmörku og var þá um tíma ÞÁAÐ'),
+        ('de', u'Άρκτος, arktós, Arktus (‚[Großer] Bär‘, für '),
+        ('cs', u'je rovnoběžka, která vede východo-západně ve směru zemské rotace [skrýt] Čtyři světové strany'),
+        ('ko', u'질량이 태양과 비슷한 별들은'),
+        ('ja', u'GFDLのみでライセンスされたコンテンツ（あらゆる文章、ファイルを含む）の受け入れが禁止となりました。'),
+        ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
+        ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
+        ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),
+        ('q3', u'ǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏ'),
+        ('q4', u'ɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯ'),
+        ('el', u'Ά·ΈΉΊ΋Ό΍ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡ΢ΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώϏϐϑϒϓϔϕϖϗϘϙϚϛϜϝϞϟϠϡ'),
+        ('coptic', u'ϢϣϤϥϦϧϨϩϪϫϬϭϮϯϰϱϲϳϴϵ϶ϷϸϹϺϻϼϽϾϿ'),
+        ('el1', u'ἀἁἂἃἄἅἆἇἈἉἊἋἌἍἎἏἐἑἒἓἔἕ἖἗ἘἙἚἛἜἝ἞἟ἠἡἢἣἤἥἦἧἨἩἪἫἬἭἮἯἰἱἲἳἴἵἶἷἸἹἺἻἼἽἾἿὀὁὂὃὄὅ὆὇ὈὉὊὋὌὍ὎὏ὐὑὒὓὔὕὖὗ὘Ὑ὚Ὓ὜Ὕ὞Ὗ'),
+        ('el2', u'ὠὡὢὣὤὥὦὧὨὩὪὫὬὭὮὯὰάὲέὴήὶίὸόὺύὼώ὾὿ᾀᾁᾂᾃᾄᾅᾆᾇᾈᾉᾊᾋᾌᾍᾎᾏᾐᾑᾒᾓᾔᾕᾖᾗᾘᾙᾚᾛᾜᾝᾞᾟᾠᾡᾢᾣᾤᾥᾦᾧᾨᾩᾪᾫᾬᾭᾮᾯᾰᾱᾲᾳᾴ᾵ᾶᾷᾸᾹᾺΆᾼ᾽ι᾿῀῁'),
+        ('el3', u'ῂῃῄ῅ῆῇῈΈῊΉῌ῍῎῏ῐῑῒΐ῔῕ῖῗῘῙῚΊ῜῝῞῟ῠῡῢΰῤῥῦῧῨῩῪΎῬ῭΅`῰῱ῲῳῴ῵ῶῷῸΌῺΏῼ´῾'),
+        ('zh', u'欧洲，软件＋互联网[用统一码]  歐洲，軟體及網際網路[讓統一碼] ABC 西安 先'),
+        ]
+
+    print(u'Normal translation\n==================\n')
+    test_items(texts, LanguageNormal().translate)
+
+    print(u'Japnese translation\n====================\n')
+    test_items(texts, LanguageJapanese().translate)
+
+
+# run the program
+if __name__ == "__main__":
+    main()

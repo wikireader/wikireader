@@ -126,9 +126,9 @@ def main():
     if [] == args:
         usage('Missing argument(s)')
 
-    language_convert = LanguageTranslation.LanguageNull()
+    language_convert = LanguageTranslation.LanguageNormal()
     if 'ja' == language:
-        language_convert = LanguageTranslation.Furigana()
+        language_convert = LanguageTranslation.LanguageJapanese()
 
     processor = FileProcessing(articles = art_name, offsets = off_name,
                                templates = template_name,

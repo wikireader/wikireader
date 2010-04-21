@@ -1,5 +1,6 @@
 counts.text
 RedirectedTo.py
+PinyinTable.py
 *.pyc
 *.pyo
 all_articles.html
@@ -10,3 +11,4 @@ all_articles.html
 *.idx
 *.db
 stamp-*
+host-tools/offline-renderer/pinyin.py
