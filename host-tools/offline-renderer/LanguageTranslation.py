@@ -10,7 +10,7 @@ import os
 import sys
 import string
 import unicodedata
-import pinyin
+import PinyinTable
 
 class LanguageProcessor(object):
 
@@ -81,7 +81,7 @@ class LanguageProcessor(object):
 
             elif self.cjk_convert and 'CJK' == n[0]:
                 # use only the first of the list of phonetics available
-                result += unicodedata.normalize('NFD', pinyin.pinyin[c][0])
+                result += unicodedata.normalize('NFD', PinyinTable.pinyin[c][0])
             elif n[0] in ['GREEK', 'COPTIC']:
                 try:
                     g = n[3][0]
