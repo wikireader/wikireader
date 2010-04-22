@@ -67,33 +67,60 @@ class LanguageProcessor(object):
         result = ''
         for c in text:
             try:
-                n = unicodedata.name(c).split()
+                n = unicodedata.name(c).split() + ['None', 'None', 'None', 'None']
             except ValueError:
-                n = ('Nothing', 'None')
-            if 'HANGUL' == n[0]:
+                n = ('Nothing', 'None', 'None', 'None')
+
+            character_class = n[0]
+            is_letter = 'LETTER' == n[1] or 'LETTER' == n[2]
+            is_small = 'SMALL' == n[1] or 'SMALL' == n[2]
+            is_capital = 'CAPITAL' == n[1] or 'CAPITAL' == n[2]
+
+            if 'HANGUL' == character_class:
                 result += n[2]
-            elif n[0] in ['HIRAGANA', 'KATAKANA']:
-                if self.cjk_convert and 'LETTER' == n[1]:
-                    # attempt to convert Japanese phonetic whin doing Chinese->Pinyin
-                    if 'SMALL' != n[2]:
-                        result += n[2]
-                    else:
+            elif character_class in ['HIRAGANA', 'KATAKANA']:
+                if self.cjk_convert and is_letter:
+                    # attempt to convert Japanese phonetic when doing Chinese->Pinyin
+                    if is_small:
                         result += n[3]
+                    else:
+                        result += n[2]
                 else:
                     result += c
-            elif self.cjk_convert and 'CJK' == n[0]:
+            elif self.cjk_convert and 'CJK' == character_class:
                 # use only the first of the list of phonetics available
                 try:
                     p = PinyinTable.pinyin[c][0]
                 except KeyError:
                     p = c
                 result += unicodedata.normalize('NFD', p)
-            elif n[0] in ['GREEK', 'COPTIC']:
+            elif character_class in ['GREEK', 'COPTIC']:
                 try:
                     g = n[3][0]
-                    if 'SMALL' == n[1]:
+                    if is_small:
                         g = g.lower()
                     result += g
+                except IndexError:
+                    result += c
+            elif 'CYRILLIC' == character_class:
+                try:
+                    if 'SHORT' == n[3]:
+                        g = n[4]
+                    else:
+                        g = n[3]
+                    if g in ['HARD', 'SOFT']:
+                        pass
+                    else:
+                        if len(g) >= 2:
+                            if 'E' == g[0]:
+                                g = g[1:]
+                            elif g[0] not in u'AEIOUY':
+                                g = g[:-1]
+                            if g[0] in u'G':
+                                g = g[:-1]
+                        if is_small:
+                            g = g.lower()
+                        result += g
                 except IndexError:
                     result += c
             else:
@@ -274,6 +301,9 @@ def main():
         ('el2', u'ὠὡὢὣὤὥὦὧὨὩὪὫὬὭὮὯὰάὲέὴήὶίὸόὺύὼώ὾὿ᾀᾁᾂᾃᾄᾅᾆᾇᾈᾉᾊᾋᾌᾍᾎᾏᾐᾑᾒᾓᾔᾕᾖᾗᾘᾙᾚᾛᾜᾝᾞᾟᾠᾡᾢᾣᾤᾥᾦᾧᾨᾩᾪᾫᾬᾭᾮᾯᾰᾱᾲᾳᾴ᾵ᾶᾷᾸᾹᾺΆᾼ᾽ι᾿῀῁'),
         ('el3', u'ῂῃῄ῅ῆῇῈΈῊΉῌ῍῎῏ῐῑῒΐ῔῕ῖῗῘῙῚΊ῜῝῞῟ῠῡῢΰῤῥῦῧῨῩῪΎῬ῭΅`῰῱ῲῳῴ῵ῶῷῸΌῺΏῼ´῾'),
         ('zh', u'欧洲，软件＋互联网[用统一码]  歐洲，軟體及網際網路[讓統一碼] ABC 西安 先'),
+        ('ru', u'Является административным центром Лозовской городской совет, в который, кроме того, входят'),
+        ('ru1', u'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я'),
+        ('ru2', u'А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я'),
         ]
 
     print(u'Normal translation\n==================\n')
