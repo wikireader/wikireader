@@ -72,16 +72,22 @@ class LanguageProcessor(object):
                 n = ('Nothing', 'None')
             if 'HANGUL' == n[0]:
                 result += n[2]
-            elif self.cjk_convert and n[0] in ['HIRAGANA', 'KATAKANA'] and 'LETTER' == n[1]:
-                # attempt to convert Japanese phonetic whin doing Chinese->Pinyin
-                if 'SMALL' != n[2]:
-                    result += n[2]
+            elif n[0] in ['HIRAGANA', 'KATAKANA']:
+                if self.cjk_convert and 'LETTER' == n[1]:
+                    # attempt to convert Japanese phonetic whin doing Chinese->Pinyin
+                    if 'SMALL' != n[2]:
+                        result += n[2]
+                    else:
+                        result += n[3]
                 else:
-                    result += n[3]
-
+                    result += c
             elif self.cjk_convert and 'CJK' == n[0]:
                 # use only the first of the list of phonetics available
-                result += unicodedata.normalize('NFD', PinyinTable.pinyin[c][0])
+                try:
+                    p = PinyinTable.pinyin[c][0]
+                except KeyError:
+                    p = c
+                result += unicodedata.normalize('NFD', p)
             elif n[0] in ['GREEK', 'COPTIC']:
                 try:
                     g = n[3][0]
@@ -175,7 +181,7 @@ class LanguageJapanese(LanguageProcessor):
 
         import MeCab         # load Japanese dictionary interface
 
-        self.mecab = MeCab.Tagger('-Ochasen')
+        self.mecab = MeCab.Tagger('-O chasen')
 
 
     def romanise(self, text):
@@ -244,7 +250,7 @@ class LanguageJapanese(LanguageProcessor):
 
 def test_items(strings, translate):
     for lang, text in strings:
-        print(u'{lang:s}  in: {src:s}\n{lang:s} out: {dst:s}\n'.format(lang=lang, src=text, dst=translate(text)))
+        print(u'{lang:s}  in: {src:s}\n{lang:s} out: {dst:s}\n'.format(lang=lang, src=text, dst=translate(text)).encode('utf-8'))
 
 
 def main():
@@ -256,6 +262,7 @@ def main():
         ('cs', u'je rovnoběžka, která vede východo-západně ve směru zemské rotace [skrýt] Čtyři světové strany'),
         ('ko', u'질량이 태양과 비슷한 별들은'),
         ('ja', u'GFDLのみでライセンスされたコンテンツ（あらゆる文章、ファイルを含む）の受け入れが禁止となりました。'),
+        ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ'),
         ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
         ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
         ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),
