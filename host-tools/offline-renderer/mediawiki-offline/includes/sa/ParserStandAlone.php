@@ -70,7 +70,7 @@ class ParserStandAlone extends Parser
     $db = new PDO('sqlite:' . $wgTemplateDB);
     $tl = $db->quote($title_orig);
 
-    #echo "\n--- ($title_orig) --- \n";
+    #echo "\n<!-- Orig: {$title_orig}\n     SQL: {$tl} -->\n";
 
     $result = $db->query("SELECT body FROM templates WHERE title = {$tl} LIMIT 1");
     $data = $result->fetchAll();
@@ -131,14 +131,14 @@ class ParserStandAlone extends Parser
    * @return bool
    */
   static public function hookLinkBegin( $skin, $target, &$text, &$customAttribs, &$query, &$options, &$ret ) {
-    # first make link known. 
+    # first make link known.
     $brokenKey = array_search(self::LINK_OPTION_BROKEN, $options);
     if ( $brokenKey !== false ) {
       $options[$brokenKey] = self::LINK_OPTION_KNOWN;
     } else if ( array_search(self::LINK_OPTION_KNOWN, $options) === false ) {
       $options []= self::LINK_OPTION_KNOWN;
     }
-    
+
     $targetNamespace = $target->getNamespace();
     if ($targetNamespace == NS_FILE || $$targetNamespace == NS_FILE_TALK) {
       global $wgFileLinks;
