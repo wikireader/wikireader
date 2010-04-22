@@ -160,7 +160,7 @@ class FileScanner(object):
                 CurrentState = self.StateMachine[next]
                 flag = False
                 if 'key' == proc:
-                    key = block[:pos].strip()
+                    key = block[:pos].split('"')[0].strip()
                 elif 'namespace' == proc:
                     category =  block[:pos].strip().lower()
                     key = int(key)
