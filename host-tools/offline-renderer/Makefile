@@ -120,7 +120,7 @@ check-html:
 
 
 .PHONY: index
-index: check-dirs check-xml RedirectedTo.py PinyinTable.py
+index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py
 	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
@@ -168,7 +168,7 @@ else
 endif
 
 .PHONY: parse
-parse: check-dirs check-html math RedirectedTo.py
+parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
 	./ArticleParser.py ${VERBOSE_ARG} --xhtml="${HTML_ARTICLES}" \
 		--language="${WIKI_LANGUAGE}" \
 		--start="${START}" --count="${COUNT}" \
@@ -178,7 +178,7 @@ parse: check-dirs check-html math RedirectedTo.py
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render
-render: pylzma check-dirs check-fonts check-html PinyinTable.py
+render: pylzma check-dirs check-fonts check-html stamp-PinyinTable.py
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
@@ -220,12 +220,16 @@ PinyinTable.py: CreatePinyinTable.py
 
 # sudo apt-get install tetex-extra dvipng cjk-latex ocaml
 .PHONY: math
-math: stamp-math
+math:
+	${MAKE} -C "${MATH_DIR}"
 
-# use a lock to avoid multiple parallel builds of this program
-stamp-math:
-	${LOCKF} "${@}" ${MAKE} -C "${MATH_DIR}"
+# use a lock to avoid multiple parallel builds of specific programs
+# i.e depend on "stamp-program" instead of "program"
+# so that the actual build will be serialised in a recursive call to make
+stamp-%: %
+	${LOCKF} "$@" ${MAKE} "$<"
 	${TOUCH} "$@"
+
 
 .PHONY: install
 install: all
