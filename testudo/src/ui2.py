@@ -335,10 +335,10 @@ class Sample:
             else:
                 message = ''
             if self.testFailed:
-                self.write('\nFAIL: one or more tests FAILED\n', 'fail-text')
+                self.write('\nFAIL: one or more tests FAILED\n', 'fail-text-big')
                 self.status.set_text('Stopped [FAILURE]' + message)
             else:
-                self.write('\nPASS: all tests completed\n', 'pass-text')
+                self.write('\nPASS: all tests completed\n', 'pass-text-big')
                 self.status.set_text('Stopped [SUCCESS]' + message)
 
     def write(self, message, style = None):
@@ -478,12 +478,18 @@ class Sample:
         self.view = gtk.TextView()
         self.view.set_editable(False)
         self.buffer = self.view.get_buffer()
-        tag_fail = self.buffer.create_tag("fail-text",
-                                         size_points = 24.0,
-                                         foreground = "red")
-        tag_pass = self.buffer.create_tag("pass-text",
-                                          size_points = 24.0,
-                                          foreground = "green")
+        self.buffer.create_tag("fail-text",
+                               size_points = 18.0,
+                               foreground = "red")
+        self.buffer.create_tag("fail-text-big",
+                               size_points = 24.0,
+                               foreground = "red")
+        self.buffer.create_tag("pass-text",
+                               size_points = 18.0,
+                               foreground = "green")
+        self.buffer.create_tag("pass-text-big",
+                               size_points = 24.0,
+                               foreground = "green")
         self.buffer.create_tag('fixed-text',
                                size_points = 10.0,
                                family = 'Monospace',
