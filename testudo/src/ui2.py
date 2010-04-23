@@ -343,10 +343,11 @@ class Sample:
 
     def write(self, message, style = None):
         gtk.gdk.threads_enter()
-        if 'FAIL:' == message[0:5]:
-            style = 'fail-text'
+        if message.startswith('FAIL:'):
+            if None == style:
+                style = 'fail-text'
             self.testFailed = True
-        elif 'PASS:' == message[0:5]:
+        elif message.startswith('PASS:') and None == style:
             style = 'pass-text'
         if style:
             self.buffer.insert_with_tags(self.buffer.get_end_iter(), message,

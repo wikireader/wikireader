@@ -176,8 +176,12 @@ class Sample:
     def write(self, message, style = None):
         gtk.gdk.threads_enter()
         if message.startswith('FAIL:'):
+            if None == style:
+                style = 'fail-text'
             self.testFailed = True
-        if message.startswith('ACTION:') and None == style:
+        elif message.startswith('PASS:') and None == style:
+            style = 'pass-text'
+        elif message.startswith('ACTION:') and None == style:
             style = 'action-text'
         if style:
             self.buffer.insert_with_tags(self.buffer.get_end_iter(), message,

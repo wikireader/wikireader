@@ -237,7 +237,7 @@ def test006_on():
 
 def test007_program_flash():
     """Program the boot loader into FLASH memory"""
-    global debug, psu, dvm, relay
+    global debug, psu, dvm, relay, flash_tries
     relay.set(RELAY_RESET)
     relay.set(RELAY_PROGRAM_FLASH)
     relay.set(RELAY_RXD)
@@ -245,15 +245,19 @@ def test007_program_flash():
     relay.update()
 
     def callback(s):
-        global debug, psu, dvm, relay
+        global debug, psu, dvm, relay, flash_tries
         i = psu.current
         info('Supply current = %7.3f mA' % (1000 * i))
+        fail_if(0 == flash_tries, 'Too many reset attempts (No CPU response)')
         info(s.replace('\10', ''))  # remove backspaces
         if 'Press Reset' == s.strip():
+            info('Resets remaining: %d' % flash_tries)
             relay.on(RELAY_RESET)
             time.sleep(RESET_TIME)
             relay.off(RELAY_RESET)
+            flash_tries -= 1
 
+    flash_tries = 10
     p = process.Process(['make',
                          'flash-mbr',
                          'FLASH_UPDATE=YES',
