@@ -147,7 +147,9 @@ class LanguageNormal(LanguageProcessor):
 class LanguageJapanese(LanguageProcessor):
     """Convert Japanese to Romaji"""
 
-    KANA_TO_ROMAN = {
+    PHONETIC = {
+
+        # Katakana
 
         u'ア': 'a',         u'イ': 'i',         u'ウ': 'u',         u'エ': 'e',         u'オ': 'o',
         u'カ': 'ka',        u'キ': 'ki',        u'ク': 'ku',        u'ケ': 'ke',        u'コ': 'ko',
@@ -167,7 +169,7 @@ class LanguageJapanese(LanguageProcessor):
 
         u'ヤ': 'ya',                            u'ユ': 'yu',                           u'ヨ': 'yo',
         u'ラ': 'ra',        u'リ': 'ri',        u'ル': 'ru',        u'レ': 're',        u'ロ': 'ro',
-        u'ワ': 'wa',                                                                    u'ヲ': 'wo',
+        u'ワ': 'wa',                                                u'ヱ': 'we',        u'ヲ': 'wo',
 
         u'ン': 'nn',
 
@@ -199,6 +201,60 @@ class LanguageJapanese(LanguageProcessor):
 
         u'デァ': 'dha',      u'ディ': 'dhi',        u'デュ': 'dhu',        u'デェ': 'dhe',        u'デョ': 'dho',
         u'ツァ': 'tsa',      u'ツィ': 'tsi',                              u'ツェ': 'tse',        u'ツォ': 'tso',
+
+        # Hiragana
+
+        u'あ': 'a',         u'い': 'i',         u'う': 'u',         u'え': 'e',         u'お': 'o',
+        u'か': 'ka',        u'き': 'ki',        u'く': 'ku',        u'け': 'ke',        u'こ': 'ko',
+        u'が': 'ga',        u'ぎ': 'gi',        u'ぐ': 'gu',        u'げ': 'ge',        u'ご': 'go',
+
+        u'さ': 'sa',        u'し': 'shi',       u'す': 'su',        u'せ': 'se',        u'そ': 'so',
+        u'ざ': 'za',        u'じ': 'ji',        u'ず': 'zu',        u'ぜ': 'ze',        u'ぞ': 'zo',
+        u'た': 'ta',        u'ち': 'chi',       u'つ': 'tsu',       u'て': 'te',        u'と': 'to',
+
+        u'だ': 'da',        u'ぢ': 'di',        u'づ': 'du',        u'で': 'de',        u'ど': 'do',
+        u'な': 'na',        u'に': 'ni',        u'ぬ': 'nu',        u'ね': 'ne',        u'の': 'no',
+        u'は': 'ha',        u'ひ': 'hi',        u'ふ': 'fu',        u'へ': 'he',        u'ほ': 'ho',
+
+        u'ば': 'ba',        u'び': 'bi',        u'ぶ': 'bu',        u'べ': 'be',        u'ぼ': 'bo',
+        u'ぱ': 'pa',        u'ぴ': 'pi',        u'ぷ': 'pu',        u'ぺ': 'pe',        u'ぽ': 'po',
+        u'ま': 'ma',        u'み': 'mi',        u'む': 'mu',        u'め': 'me',        u'も': 'mo',
+
+        u'や': 'ya',                            u'ゆ': 'yu',                            u'よ': 'yo',
+        u'ら': 'ra',        u'り': 'ri',        u'る': 'ru',        u'れ': 're',        u'ろ': 'ro',
+        u'わ': 'wa',        u'ゐ': 'wi',                            u'ゑ': 'we',        u'を': 'wo',
+
+        u'ん': 'nn',
+
+        u'ー': '-',
+
+        u'うぁ': 'wha',      u'うぃ': 'whi',                               u'うぇ': 'whe',        u'うぉ': 'who',
+        u'ゔぁ': 'va',       u'ゔぃ': 'vi',         u'ゔ':   'vu',         u'ゔぇ': 've',         u'ゔぉ': 'vo',
+        u'チゃ': 'cya',      u'チぃ': 'cyi',        u'チゅ': 'cyu',        u'チぇ': 'cye',        u'チょ': 'cyo',
+
+        u'にゃ': 'nya',      u'にぃ': 'nyi',        u'にゅ': 'nyu',        u'にぇ': 'nye',        u'にょ': 'nyo',
+        u'しゃ': 'sya',      u'しぃ': 'syi',        u'しゅ': 'syu',        u'しぇ': 'sye',        u'しょ': 'syo',
+        u'きぁ': 'kya',      u'きぃ': 'kyi',        u'きゅ': 'kyu',        u'きぇ': 'kye',        u'きょ': 'kyo',
+
+        u'てゃ': 'tha',      u'てぃ': 'thi',        u'てゅ': 'thu',        u'てぇ': 'the',        u'てょ': 'tho',
+        u'ひゃ': 'hya',      u'ひぃ': 'hyi',        u'ひゅ': 'hyu',        u'ひぇ': 'hye',        u'ひょ': 'hyo',
+        u'みゃ': 'mya',      u'みぃ': 'myi',        u'みゅ': 'myu',        u'みぇ': 'mye',        u'みょ': 'myo',
+
+        u'りゃ': 'rya',      u'りぃ': 'ryi',        u'りゅ': 'ryu',        u'りぇ': 'rye',        u'りょ': 'ryo',
+        u'じゃ': 'ja',       u'じぃ': 'jyi',        u'じゅ': 'ju',         u'じぇ': 'je' ,        u'じょ': 'jo',
+        u'ぎゃ': 'gya',      u'ぎぃ': 'gyi',        u'ぎゅ': 'gyu',        u'ぎぇ': 'gye',        u'ぎょ': 'gyo',
+
+        u'びゃ': 'bya',      u'びぃ': 'byi',        u'びゅ': 'byu',        u'びぇ': 'bye',        u'びょ': 'byo',
+        u'ぴゃ': 'pya',      u'ぴぃ': 'pyi',        u'ぴゅ': 'pyu',        u'ぴぇ': 'pye',        u'ぴょ': 'pyo',
+        u'くぁ': 'kha',      u'くぃ': 'khi',        u'くぅ': 'khu',        u'くぇ': 'khe',        u'くぉ': 'kho',
+
+        u'ぐぁ': 'gha',      u'ぐぃ': 'ghi',        u'ぐぅ': 'ghu',        u'ぐぇ': 'ghe',        u'ぐぉ': 'gho',
+        u'ふぁ': 'fa',       u'ふぃ': 'fi',                               u'ふぇ': 'fe',         u'ふぉ': 'fo',
+        u'ふゃ': 'fya',                            u'ふゅ': 'fyu',                              u'ふょ': 'fyo',
+
+        u'でぁ': 'dha',      u'でぃ': 'dhi',        u'でゅ': 'dhu',        u'でぇ': 'dhe',        u'でょ': 'dho',
+        u'つぁ': 'tsa',      u'つぃ': 'tsi',                              u'つぇ': 'tse',        u'つぉ': 'tso',
+
         }
 
 
@@ -223,17 +279,17 @@ class LanguageJapanese(LanguageProcessor):
         last = len(text) - 1
         while i <= last:
             key = text[i:i + 2] # extract a pair of phonetics
-            if not (i < last and key in self.KANA_TO_ROMAN):
+            if not (i < last and key in self.PHONETIC):
                 key = text[i]
 
-            if key in self.KANA_TO_ROMAN:
-                s = self.KANA_TO_ROMAN[key]
+            if key in self.PHONETIC:
+                s = self.PHONETIC[key]
                 i += len(key) - 1
                 if duplicate:
                     s = s[0] + s
                     duplicate = False
                 result += s
-            elif u'ッ' == key:
+            elif key in u'ッっ':
                 duplicate = True
             else:
                 result += key
@@ -289,7 +345,7 @@ def main():
         ('cs', u'je rovnoběžka, která vede východo-západně ve směru zemské rotace [skrýt] Čtyři světové strany'),
         ('ko', u'질량이 태양과 비슷한 별들은'),
         ('ja', u'GFDLのみでライセンスされたコンテンツ（あらゆる文章、ファイルを含む）の受け入れが禁止となりました。'),
-        ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ'),
+        ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ   スタぴか'),
         ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
         ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
         ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),
