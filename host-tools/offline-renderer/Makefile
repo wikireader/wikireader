@@ -178,7 +178,7 @@ parse: check-dirs check-html math RedirectedTo.py
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render
-render: pylzma check-dirs check-fonts check-html
+render: pylzma check-dirs check-fonts check-html PinyinTable.py
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
