@@ -4,8 +4,8 @@
 # Author: cigarcook <cigarcook@koress.jp>
 
 wiki_name=Wikipedia 日本語
-license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://ja.wikipedia.org/wiki/<title> 2010-02-17
-type_a_word=記事名をローマ字(ヘボン式)で入力
+license_text=テキストは[クリエイティブ・コモンズ 表示-継承ライセンス]の下で利用可能です。追加の条件が適用される場合があります。詳細は[利用規約]を参照してください。The original article is available at: http://ja.wikipedia.org/wiki/<title> 2010-02-17
+type_a_word=記事名をローマ字で入力
 no_results=記事が見つかりません
 searching=検索中...
 select_wiki=Choose encyclopedia
@@ -35,3 +35,4 @@ try_again=失敗。再入力してください。
 enter_new_password=新しいパスワード
 parental_controls=保護者制限
 r=R
+lang_str=日

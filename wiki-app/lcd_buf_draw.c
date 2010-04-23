@@ -49,8 +49,8 @@
 #include "bigram.h"
 
 #define MAX_SCROLL_SECONDS 3
-#define LIST_SCROLL_SPEED_FRICTION 0.6
-#define ARTICLE_SCROLL_SPEED_FRICTION 0.6
+#define LIST_SCROLL_SPEED_FRICTION 0.3
+#define ARTICLE_SCROLL_SPEED_FRICTION 0.3
 #define SCROLL_UNIT_SECOND 0.1
 #define LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.1
 #define LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD 0.35
@@ -733,7 +733,7 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 	//guilib_clear();
 
 	memcpy(framebuffer,buf+pos*LCD_VRAM_WIDTH_PIXELS/8,framebuffersize);
-	if (display_mode == DISPLAY_MODE_ARTICLE && language_link_count && (pos == article_start_y_pos || pos == 0))
+	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && (pos == article_start_y_pos || pos == 0))
 	{
 		draw_language_link_arrow();
 	}
@@ -1642,7 +1642,7 @@ void draw_icon(char *pStr)
 			}
 		}
 	}
-	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + (LANGUAGE_LINK_WIDTH - str_width) / 2, 
+	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + (LANGUAGE_LINK_WIDTH - str_width - 1) / 2, 
 		lcd_draw_buf.current_y, pStr, strlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
 }
@@ -1930,13 +1930,13 @@ int isArticleLinkSelected(int x,int y)
 	{
 		return 0; // PREVIOUS_ARTICLE_LINK
 	}
-	if (display_mode == DISPLAY_MODE_ARTICLE && language_link_count && lcd_draw_cur_y_pos == article_start_y_pos &&
+	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == article_start_y_pos &&
 		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN &&
 		article_start_y_pos + LCD_TOP_MARGIN <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT)
 	{
 		return 1; // SHOW_LANGUAGE_LINK
 	}
-	if (display_mode == DISPLAY_MODE_ARTICLE && language_link_count && lcd_draw_cur_y_pos == 0 &&
+	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == 0 &&
 		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN &&
 		LCD_TOP_MARGIN <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT)
 	{

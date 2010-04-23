@@ -43,6 +43,10 @@ WIKI_LIST wiki_list[MAX_WIKIS] =
 	{ 9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia"},
 	{10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia"},
 	{11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia"},
+	{12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia"},
+	{13, WIKI_CAT_ENCYCLOPAEDIA, "el", "elpedia"},
+	{14, WIKI_CAT_ENCYCLOPAEDIA, "ru", "rupedia"},
+	{15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia"},
 };
 
 extern int search_interrupted;

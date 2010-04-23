@@ -289,7 +289,7 @@ static struct keyboard_key filter_option[] = {
 #define KEY_BUBBLE_TOTAL_WIDTH_BYTES ((KEY_BUBBLE_TOTAL_WIDTH + 7) / 8 + 1)
 #define KEY_BUBBLE_STEM_WIDTH 22
 #define KEY_BUBBLE_STEM_HEIGHT 18
-#define KEY_BUBBLE_STAY_TIME 0.6
+#define KEY_BUBBLE_STAY_TIME 0.4
 static struct keyboard_key *pre_key = NULL;
 static int keyboard_key_invert_dalay = 0;
 static char key_bubble_save[KEY_BUBBLE_TOTAL_HEIGHT * KEY_BUBBLE_TOTAL_WIDTH_BYTES];

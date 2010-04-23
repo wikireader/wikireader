@@ -1069,7 +1069,7 @@ int wikilib_run(void)
 			if (press_delete_button && get_search_string_len()>0)
 			{
 				sleep = 0;
-				if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
+				if(time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
 				{
 					if (!clear_search_string())
 					{
@@ -1078,8 +1078,8 @@ int wikilib_run(void)
 					}
 					press_delete_button = false;
 				}
-				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.3))
+				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.3) &&
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.2))
 				{
 					if (!search_remove_char(0, time_now))
 					{
@@ -1096,13 +1096,13 @@ int wikilib_run(void)
 			{
 				sleep = 0;
 				time_now = get_time_ticks();
-				if(time_diff(time_now, start_search_time) > seconds_to_ticks(3.5))
+				if(time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
 				{
 					clear_password_string();
 					press_delete_button = false;
 				}
-				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.5) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.3))
+				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.3) &&
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.2))
 				{
 					password_remove_char();
 					last_delete_time = time_now;
@@ -1130,7 +1130,7 @@ int wikilib_run(void)
 
 		if (sleep)
 		{
-			if (time_diff(get_time_ticks(), last_event_time) > seconds_to_ticks(15))
+			if (time_diff(get_time_ticks(), last_event_time) > seconds_to_ticks(5))
 				rc = history_list_save(HISTORY_SAVE_POWER_OFF);
 			else if (time_diff(get_time_ticks(), last_event_time) > seconds_to_ticks(2))
 				rc = history_list_save(HISTORY_SAVE_NORMAL);
@@ -1205,7 +1205,7 @@ unsigned long seconds_to_ticks(float sec)
 	long clock_ticks;
 
 #ifdef INCLUDED_FROM_KERNEL
-	clock_ticks = sec * 24000000;
+	clock_ticks = sec * Tick_TicksPerSecond;
 #else
 	clock_ticks = sec * CLOCKS_PER_SEC;
 #endif
