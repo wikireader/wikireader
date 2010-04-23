@@ -35,6 +35,7 @@ USAGE()
   echo '       --fetch-log     -f         fetch log files'
   echo '       --xml-link      -x         link wiki .xml file to latest version'
   echo '       --high-compress -H         enable compression for 4GB SD card (only for --language=en)'
+  echo '       --abort         -A         abort remote PHP/Python/make'
   exit 1
 }
 
@@ -51,7 +52,7 @@ compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4NfxH --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link,high-compress -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4NfxHA --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link,high-compress,abort -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -196,6 +197,11 @@ do
       compression=high
       shift
       break
+      ;;
+
+    -A|--abort)
+      RenderDo --yes ${list} --brief 'killall php python make'
+      shift
       ;;
 
     --)
