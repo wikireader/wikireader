@@ -226,8 +226,8 @@ math:
 # use a lock to avoid multiple parallel builds of specific programs
 # i.e depend on "stamp-program" instead of "program"
 # so that the actual build will be serialised in a recursive call to make
-stamp-%: %
-	${LOCKF} "$@" ${MAKE} "$<"
+stamp-%:
+	${LOCKF} "$@" ${MAKE} "${@:stamp-%=%}"
 	${TOUCH} "$@"
 
 
