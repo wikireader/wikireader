@@ -291,8 +291,8 @@ static void handle_search_key(char keycode, unsigned long ev_time)
 		keyboard_set_mode(KEYBOARD_NONE);
 		wiki_selection();
 		return;
-//	} else if (keycode == WL_KEY_BACKSPACE) {
-//		rc = search_remove_char(0, ev_time);
+	} else if (keycode == WL_KEY_BACKSPACE) {
+		rc = search_remove_char(0, ev_time);
 	} else if (is_supported_search_char(keycode)) {
 		rc = search_add_char(tolower(keycode), ev_time);
 	} else {
@@ -432,7 +432,7 @@ static void average_xy(int *average_x, int *average_y, int last_5_x[], int last_
 {
 	int i;
 	int xy_count = 1;
-	
+
 	*average_x = last_5_x[0];
 	*average_y = last_5_y[0];
 	for (i = 1; i < 5; i++)
@@ -507,7 +507,7 @@ static void handle_touch(struct wl_input_event *ev)
 				pre_key = NULL;
 				goto out;
 			}
-			
+
 			pre_key = NULL;
 			if (press_delete_button)
 			{
@@ -550,7 +550,7 @@ static void handle_touch(struct wl_input_event *ev)
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 				goto out;
 			}
-			
+
 			if(enter_touch_y_pos<0)  //record first touch y pos
 				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
@@ -747,7 +747,7 @@ static void handle_touch(struct wl_input_event *ev)
 				pre_key = NULL;
 				goto out;
 			}
-			
+
 			pre_key = NULL;
 			if (press_delete_button)
 			{
