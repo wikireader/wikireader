@@ -20,8 +20,14 @@ import sqlite3
 import WordWrap
 import bucket
 import PrintLog
-import gd
 import LanguageTranslation
+try:
+    import gd
+except:
+    print 'error: Missing python module: python-gd'
+    print '       sudo apt-get install python-gd'
+    exit(1)
+
 
 verbose = False
 warnings = False

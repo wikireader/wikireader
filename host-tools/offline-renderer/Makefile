@@ -69,7 +69,7 @@ MEDIAWIKI_MESSAGES_DIR := mediawiki-offline/languages/messages
 
 $(call REQUIRED_BINARY, sqlite3, sqlite3)
 $(call REQUIRED_BINARY, ocamlopt, ocaml)
-$(call REQUIRED_BINARY, tex, tetex-extra cjk-latex)
+$(call REQUIRED_BINARY, tex, cjk-latex)
 $(call REQUIRED_BINARY, php, php5-cli)
 $(call REQUIRED_BINARY, dvipng, dvipng)
 

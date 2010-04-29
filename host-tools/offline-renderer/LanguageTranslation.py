@@ -11,6 +11,12 @@ import sys
 import string
 import unicodedata
 import PinyinTable
+try:
+    import MeCab
+except:
+    print 'error: Missing python module: python-mecab'
+    print '       sudo apt-get install python-mecab mecab-ipadic-utf8'
+    exit(1)
 
 class LanguageProcessor(object):
 
@@ -261,8 +267,6 @@ class LanguageJapanese(LanguageProcessor):
     def __init__(self, *args, **kw):
         """intitialise MeCab library"""
         super(LanguageJapanese, self).__init__(*args, cjk_convert=False, **kw)
-
-        import MeCab         # load Japanese dictionary interface
 
         self.mecab = MeCab.Tagger('-O chasen')
 
