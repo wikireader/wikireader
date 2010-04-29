@@ -26,7 +26,13 @@ import os, sys
 import getopt
 import os.path
 import datetime
-import gd
+
+try:
+    import gd
+except:
+    print 'error: Missing python module: python-gd'
+    print '       sudo apt-get install python-gd'
+    exit(1)
 
 verbose = False
 
