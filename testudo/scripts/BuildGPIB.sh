@@ -66,6 +66,10 @@ main()
     echo '**   The python GPIB.py module is not accessible'
     echo '**   Maybe there are multiple versions of python'
     echo '**   and the wrong one was selected by this install script'
+    echo '** OR:'
+    echo '**   python development tools were not installed, try:'
+    echo '**     sudo apt-get python-dev'
+    echo '**   and re-run this script'
   fi
 }
 
