@@ -248,8 +248,8 @@ gcc: binutils gcc-patch
 .PHONY: qt4-simulator
 qt4-simulator:
 	true $(call REQUIRED_BINARY, g++, g++)
-	true $(call REQUIRED_BINARY, qmake-qt4, qmake-qt4 libqt4-dev)
-	cd ${HOST_TOOLS}/qt4-simulator && qmake-qt4 && ${MAKE}
+	true $(call REQUIRED_BINARY, qmake, qt4-qmake libqt4-dev)
+	cd ${HOST_TOOLS}/qt4-simulator && qmake && ${MAKE}
 
 .PHONY: sim4
 sim4: qt4-simulator validate-destdir
