@@ -1212,13 +1212,6 @@ def write_article(language_links):
 
     # combine the data
     whole_article = header + links + langs + body
-    PrintLog.message(u'[DDD {c:d}] {t:s} {h:d} {k:d} {l:d} {b:d}'.format(c=article_count,
-                                                                         t=g_this_article_title,
-                                                                         h=len(header),
-                                                                         k=len(links),
-                                                                         l=len(langs),
-                                                                         b=len(body)
-                                                                         ))
 
     if compress:
         try:
