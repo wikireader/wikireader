@@ -1212,6 +1212,13 @@ def write_article(language_links):
 
     # combine the data
     whole_article = header + links + langs + body
+    PrintLog.message(u'[DDD {c:d}] {t:s} {h:d} {k:d} {l:d} {b:d}'.format(c=article_count,
+                                                                         t=g_this_article_title,
+                                                                         h=len(header),
+                                                                         k=len(links),
+                                                                         l=len(langs),
+                                                                         b=len(body)
+                                                                         ))
 
     if compress:
         try:
@@ -1227,6 +1234,9 @@ def write_article(language_links):
         f_out.write(whole_article)
         f_out.flush()
 
+    # Note: some versions of Python do not move file position on truncate
+    #       so an explicit seek is needed to avoid nul padding bytes.
+    output.seek(0)
     output.truncate(0)
 
 
