@@ -38,12 +38,20 @@ main()
   for d in 1
   do
     rm -f "/etc/rc${d}.d/K01gpib"
-    ln -s ../init.d.gpib "/etc/rc${d}.d/K01gpib"
+    ln -s ../init.d/gpib "/etc/rc${d}.d/K01gpib"
   done
   for d in 2 3 4 5
   do
     rm -f "/etc/rc${d}.d/S99gpib"
-    ln -s ../init.d.gpib "/etc/rc${d}.d/S99gpib"
+    ln -s ../init.d/gpib "/etc/rc${d}.d/S99gpib"
+  done
+
+  echo setting up udev rules
+  udev='/etc/udev/rules.d'
+  for rule in init-scripts/*.rules
+  do
+    echo installing: ${rule} to: ${udev}
+    install -o root -g root -m 644 "${rule}" "${udev}"/
   done
 
   echo running the startup script
