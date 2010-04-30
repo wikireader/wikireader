@@ -2,6 +2,32 @@
 
 base @ decimal
 
+
+\ specify which board is valid (V1..V4)
+BOARD-V3 constant REQUIRED-BOARD
+
+: display-board-revision ( -- )
+    get-board-revision
+    case
+        BOARD-V1 of
+            s" V1"
+        endof
+        BOARD-V2 of
+            s" V2"
+        endof
+        BOARD-V3 of
+            s" V3"
+        endof
+        BOARD-V4 of
+            s" V4"
+        endof
+        s" UNKNOWN" swap \ since endcase will do a drop (for selector value)
+    endcase
+    lcd-." Board revision: "
+    lcd-type
+    lcd-cr
+;
+
 : get-image-file  ( b u addr -- flag )
     >r
     r/o bin open-file ?dup
@@ -335,6 +361,14 @@ variable in-ok
     ctp-flush
     lcd-cls
     lcd-." COB Testing" lcd-cr
+    get-board-revision REQUIRED-BOARD xor if
+        display-board-revision
+        lcd-cr
+        lcd-." FAIL: Incorrect board revision"
+        begin
+        again
+    then
+
 
     \ s" flash.rom" program-rom
 

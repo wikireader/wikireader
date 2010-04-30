@@ -3356,6 +3356,22 @@ code flash-chip-erase     :: flash-chip-erase        ( -- flag)
 end-code
 
 
+\ board data
+\ ==========
+
+5 constant BOARD-V1
+6 constant BOARD-V2
+7 constant BOARD-V3
+8 constant BOARD-V4
+
+code get-board-revision   :: get-board-revision      ( -- u )
+        xcall   BoardRevision_get
+        sub     %r1, BYTES_PER_CELL
+        ld.w    [%r1], %r4                           ; revision code
+        NEXT
+end-code
+
+
 \ debugging
 \ =========
 

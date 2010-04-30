@@ -82,6 +82,7 @@ OBJECTS += button.o
 OBJECTS += ctp.o
 OBJECTS += debug.o
 OBJECTS += FileSystem.o
+OBJECTS += BoardRevision.o
 OBJECTS += iserial.o
 OBJECTS += PolledSerial.o
 OBJECTS += vector.o
