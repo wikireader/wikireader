@@ -209,6 +209,9 @@ binutils-patch: binutils-download
 	${TOUCH} "$@"
 
 binutils: binutils-patch
+	true $(call REQUIRED_BINARY, gcc, gcc)
+	true $(call REQUIRED_BINARY, lex, flex)
+	true $(call REQUIRED_BINARY, bison, bison)
 	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
