@@ -37,8 +37,9 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-21
+22
 constant build-number     :: build-number            ( -- n )
+\ ** revision number of the forth core
 
 code !                    :: store                   ( x a-addr -- )
         ld.w    %r4, [%r1]+
@@ -47,8 +48,9 @@ code !                    :: store                   ( x a-addr -- )
         NEXT
 end-code
 
-\ **not really correct, it will not work with 'ud' i.e.64 bit numbers
 : #                       :: number-sign             ( ud1 -- ud2 )
+\ ** this is restricted to a 32 bit subset of 64 bit numbers
+\ ** i.e. the high order 32 bits can only be 0 or -1
   base @ um/mod ( ur uq )
   swap 9 over < if
     [ char A char 9 - 1- ] literal +
@@ -2105,20 +2107,25 @@ end-code
     drop
   then ;
 
-\ usage example:
-\ 25 ( stack-size-in-cells )
-\ dup create my-stack , 0 , cells allot
-\ stack = {size(N), ptr, value1, value2, ..., valueN}
-
 : stack-clear             :: stack-clear             ( stack-addr -- )
+\ ** clear a fixed size stack
+\ ** the stack must have the following structure:
+\ **   stack = {size(N), ptr, value1, value2, ..., valueN}
+\ ** example of stack creation:
+\ **   25 ( stack-size-in-cells )
+\ **   dup create my-stack , 0 , cells allot
   cell+ 0 swap ! ;
 
 : stack-pop               :: stack-pop               ( stack-addr -- w )
+\ ** pop a value off a fixed size stack
+\ ** see stack-clear for stack structure and creation
   cell+ >r r@ @ 1- dup 0< abort" stack underflow"
   dup r@ ! 1+ cells r> + @
 ;
 
 : stack-push              :: stack-push              ( w stack-addr -- )
+\ ** push a value onto a fixed size stack
+\ ** see stack-clear for stack structure and creation
   dup        \ w a a
   @          \ w a size
   swap cell+ \ w size ptr
@@ -2430,8 +2437,8 @@ end-code
 \ peripheral port access
 \ ======================
 
-\ fetch a peripheral register value
 : p@                      :: p-fetch                 ( reg-addr -- value )
+\ ** fetch a peripheral register value
   2@ \ address size
   case
     32 of  @ endof
@@ -2440,12 +2447,12 @@ end-code
   endcase
 ;
 
-\ display peripheral register
 : p?                      :: p-question              ( reg-addr -- )
+\ ** display peripheral register
   p@ . ;
 
-\ store a value to a peripheral register
 : p!                      :: p-store                 ( value reg-addr -- )
+\ ** store a value to a peripheral register
   2@ \ address size
   case
     32 of  ! endof
@@ -2460,6 +2467,7 @@ end-code
 
 hex
 create font-8x13          :: font-8x13               ( -- c-addr )
+\ ** a fixed with 8x13 font
 ( 0000 ) 00 c, 00 c, AA c, 00 c, 82 c, 00 c, 82 c, 00 c, 82 c, 00 c, AA c, 00 c, 00 c,
 ( 0001 ) 00 c, 00 c, 00 c, 10 c, 38 c, 7C c, FE c, 7C c, 38 c, 10 c, 00 c, 00 c, 00 c,
 ( 0002 ) AA c, 55 c, AA c, 55 c, AA c, 55 c, AA c, 55 c, AA c, 55 c, AA c, 55 c, AA c,
@@ -2723,8 +2731,10 @@ decimal
 
 8
 constant font-width       :: font-width              ( -- u )
+\ ** width of the font in pixels
 13
 constant font-height      :: font-height             ( -- u )
+\ ** height of the font in pixels
 
 
 \ LCD driver
@@ -2732,39 +2742,61 @@ constant font-height      :: font-height             ( -- u )
 
 240
 constant lcd-width-pixels :: lcd-width-pixels        ( -- u )
+\ ** width of the LCD display in pixels
 
 208
 constant lcd-height-pixels :: lcd-height-pixels        ( -- u )
+\ ** height of the LCD display in pixels
 
 hex 80000 decimal
 constant lcd-vram         :: lcd-vram                ( -- u )
+\ ** base address of the LCD frame buffer
 
 lcd-width-pixels 31 + 32 / 32 *
 constant lcd-vram-width-pixels :: lcd-vram-width-pixels  ( -- u )
+\ ** width of the LCD frame buffer in pixels
+\ ** this value is >= the actual LCD width
+\ ** the value is use to find the start of the next LCD line
 
 lcd-height-pixels
 constant lcd-vram-height-pixels :: lcd-vram-height-pixels  ( -- u )
+\ ** the total number of visible lines on the LCD
 
 lcd-vram-width-pixels 8 /
 constant lcd-vram-width-bytes  :: lcd-vram-width-bytes   ( -- u )
+\ ** width of the LCD frame buffer in bytes
+\ ** this value is >= the actual LCD width
+\ ** the value is use to find the start of the next LCD line
+
 
 lcd-width-pixels 8 /
 constant lcd-width-bytes  :: lcd-width-bytes         ( -- u )
+\ ** width of the LCD display buffer in bytes
+\ ** this value is <= the actual frame buffer width
+\ ** use lcd-vram-width-bytes for locating the start of the next line
 
 lcd-vram-width-bytes lcd-vram-height-pixels *
 constant lcd-vram-size    :: lcd-vram-size           ( -- u )
+\ ** total size of the frame buffer in bytes
 
 : lcd-clear-all           :: lcd-clear-all           ( -- )
+\ ** zero the entire frame buffer
+\ ** results in a white display
   lcd-vram lcd-vram-size 0 fill
 ;
 
 : lcd-set-all             :: lcd-set-all             ( -- )
+\ ** set all bits in the entire frame buffer
+\ ** results in a black display
   lcd-vram lcd-vram-size 255 fill
 ;
 
 \ pixel code in assembler for speed
 
 code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
+\ ** set a single pixel (black)
+\ ** 0 <= x < lcd-width-pixels
+\ ** 0 <= y < lcd-height-pixels
         ld.w    %r6, [%r1]+                           ; y
         ld.w    %r7, [%r1]+                           ; x
 
@@ -2789,6 +2821,9 @@ code lcd-set-pixel         :: lcd-set-pixel           ( x y -- )
 end-code
 
 code lcd-clear-pixel       :: lcd-clear-pixel         ( x y -- )
+\ ** clear a single pixel (white)
+\ ** 0 <= x < lcd-width-pixels
+\ ** 0 <= y < lcd-height-pixels
         ld.w    %r6, [%r1]+                           ; y
         ld.w    %r7, [%r1]+                           ; x
 
@@ -2813,8 +2848,8 @@ code lcd-clear-pixel       :: lcd-clear-pixel         ( x y -- )
         NEXT
 end-code
 
-\ draw a small '+' centred at (x, y)
 : lcd-set-point           :: lcd-set-point           ( x y -- )
+\ ** draw a small black '+' centred at (x, y)
   2dup lcd-set-pixel
   2dup 1+ lcd-set-pixel
   2dup 1- lcd-set-pixel
@@ -2827,27 +2862,38 @@ end-code
   2drop ;
 
 variable lcd-x1           :: lcd-x1                  ( -- a-addr )
+\ ** internal variable for line drawing
 variable lcd-y1           :: lcd-y1                  ( -- a-addr )
+\ ** internal variable for line drawing
 
 variable lcd-dx           :: lcd-dx                  ( -- a-addr )
+\ ** internal variable for line drawing
 variable lcd-dy           :: lcd-dy                  ( -- a-addr )
+\ ** internal variable for line drawing
 
 variable lcd-stepx        :: lcd-stepx               ( -- a-addr )
+\ ** internal variable for line drawing
 variable lcd-stepy        :: lcd-stepy               ( -- a-addr )
+\ ** internal variable for line drawing
 
 variable lcd-line-colour  :: lcd-line-colour         ( -- a-addr )
+\ ** if this variable is true the drawing colour is black
+\ ** false means drawing colour is white
 
 : lcd-black               :: lcd-black               ( -- )
+\ ** set the drawing colour for text / lines to black
   true lcd-line-colour !
 ;
 
 : lcd-white               :: lcd-white               ( -- )
+\ ** set the drawing colour for text / lines to white
   false lcd-line-colour !
 ;
 
-\ draw a line in lcd-line-colour
 : lcd-line                :: lcd-line                ( x0 y0 x1 y1 -- )
-  \ Bresenham Algorithm
+\ ** draw a line in the current lcd-line-colour
+\ ** from (x0, y0) to (x1, y1)
+\ ** using the Bresenham Algorithm
 
   dup lcd-y1 !    ( x0 y0 x1 y1 )
   2 pick -                                   ( x0 y0 x1 y1-y0 )
@@ -2913,23 +2959,32 @@ variable lcd-line-colour  :: lcd-line-colour         ( -- a-addr )
   2drop r> drop ;                            ( -- )
 
 variable lcd-x            :: lcd-x                   ( -- a-addr )
+\ ** holds the x coordinate of the current position
 variable lcd-y            :: lcd-y                   ( -- a-addr )
+\ ** holds the y coordinate of the current position
 
 : lcd-line-to             :: lcd-line-to             ( x y -- )
+\ ** draw a line from the current position to (x, y)
   2dup lcd-x @ lcd-y @ lcd-line lcd-move-to ;
 
 : lcd-move-to             :: lcd-move-to             ( x y -- )
+\ ** set the current position to (x, y)
+\ ** note that (0, 0) is the top left of the display
   lcd-y ! lcd-x ! ;
 
 : lcd-line-rel            :: lcd-line-rel            ( dx dy -- )
+\ ** draw a line from the current position to (x + dx, y + dy)
   lcd-y @ + swap lcd-x @ + swap
   2dup lcd-x @ lcd-y @ lcd-line lcd-move-to ;
 
 : lcd-move-rel            :: lcd-move-rel            ( dx dy -- )
+\ ** set the current position to (x + dx, y + dy)
   lcd-y +! lcd-x +! ;
 
-\ from current x-y
-: lcd-box                 :: lcd-box                 ( w h -- )
+: lcd-box                 :: lcd-box                 ( width height -- )
+\ ** draw a square or rectangle starting from current postion
+\ ** the top right is at (x, y)
+\ ** the bottom left is at (w + width, y + height)
     1- swap 1- swap
     over lcd-x @ + lcd-y @ lcd-line-to
     lcd-x @ over lcd-y @ + lcd-line-to
@@ -2941,26 +2996,34 @@ variable lcd-y            :: lcd-y                   ( -- a-addr )
 \ LCD TEXT functions
 \ ==================
 
-\ move cursor to first line, first character
 : lcd-home                :: lcd-home                ( -- )
+\ ** move the cursor to first line, first character
   0 0 lcd-move-to ;
 
 \ character based positioning
 lcd-width-pixels font-width /
 constant lcd-text-columns :: lcd-text-columns        ( -- u)
+\ ** the number of characters in the fixed width font that fit on one line
+
 lcd-height-pixels font-height /
 constant lcd-text-rows    :: lcd-text-rows           ( -- u)
+\ ** the number of lines of character in the fixed width font that fit on the LCD
 
-\ in character coordinated (0, 0) .. (lcd-last-columns - 1, lcd-text-rows - 1)
 : lcd-at-xy               :: lcd-at-xy               ( x y -- )
+\ ** set the curent position to a character position
+\ ** 0 <= x <= lcd-last-columns - 1
+\ ** 0 <= y <= lcd-text-rows - 1
   font-height * swap
   font-width * swap
   lcd-move-to ;
 
 : lcd-cls                 :: lcd-cls                 ( -- )
+\ ** clear the screen, home the cursor and set the colour to black
   lcd-clear-all lcd-black lcd-home ;
 
 : lcd-scroll              :: lcd-scroll              ( -- )
+\ ** scroll the LCD display so the enough space for a new line
+\ ** of characters apear at the bottom of the display
   font-height lcd-vram-width-bytes * dup dup   \ u u u
   lcd-vram + swap                              \ u c-addr u
 
@@ -2973,6 +3036,8 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 ;
 
 : lcd-scroll>             :: lcd-scroll-up           ( -- )
+\ ** reverse scroll the LCD display so the enough space for a new line
+\ ** of characters apear at the top of the display
   font-height lcd-vram-width-bytes * dup dup   \ u u u
   lcd-vram + swap                              \ u c-addr u
 
@@ -2984,6 +3049,9 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 ;
 
 : lcd-cr                  :: lcd-cr                  ( -- )
+\ ** adjust the current position so that is a the start of a character line
+\ ** if this would be off the bottom of the display then scroll and
+\ ** set the position to the start of the last line
   0 lcd-x !
   lcd-y @ font-height + dup lcd-height-pixels 1- > if
     drop
@@ -2994,6 +3062,8 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 ;
 
 : lcd-emit                :: lcd-emit                ( c -- )
+\ ** output one character to the display, advancing to the next line
+\ ** or scrolling if necessary
   lcd-x @ lcd-width-pixels 1- > if
     lcd-cr
   then
@@ -3011,9 +3081,11 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 ;
 
 : lcd-space               :: lcd-space               ( -- )
+\ ** output a sincle space to the LCD
   bl lcd-emit ;
 
 : lcd-spaces              :: lcd-spaces              ( u -- )
+\ ** output 'u' spaces to the LCD display
   dup 0> if
     0 ?do lcd-space loop
   else
@@ -3021,11 +3093,13 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
   then ;
 
 : lcd-type                :: lcd-type                ( caddr u -- )
+\ ** output a string to the LCD display
   0 ?do
     dup c@ lcd-emit char+
   loop drop ;
 
 : lcd-."                  :: lcd-dot-quote           ( "ccc<quote>" -- )
+\ ** output a constant string to the LCD display
   postpone s" postpone lcd-type ; immediate compile-only
 
 
@@ -3038,30 +3112,41 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 \ will be slower.
 
 : lcd-number              :: lcd-number              ( n -- )
+\ ** display a number on the LCD in fixed 8 digit format
   s>d <# # # # # # # # # #> lcd-type ;
 
 : lcd-d.                  :: lcd-d-dot               ( d -- )
+\ ** display signed double number followed by a space on the LCD
   swap over dabs <# #s rot sign #> lcd-type lcd-space ;
 
 : lcd-d.r                 :: lcd-d-dot-r             ( d n -- )
+\ ** display right-justified signed double number on the LCD
   >r swap over dabs <# #s rot sign #> r> over - lcd-spaces lcd-type ;
 
 : lcd-.r                  :: lcd-dot-r               ( n1 n2 -- )
+\ ** display right-justified signed number on the LCD
   >r s>d r> lcd-d.r ;
 
 : lcd-u.                  :: lcd-u-dot               ( u -- )
+\ ** display unsigned number followed by a space on the LCD
   0 <# #s #> lcd-type lcd-space ;
 
 : lcd-u.r                 :: lcd-u-dot-r             ( u n -- )
+\ ** display right-justified unsigned number on the LCD
   >r 0 <# #s #> r> over - lcd-spaces lcd-type ;
 
 : lcd-.                   :: lcd-dot                 ( n -- )
+\ ** display unsigned number followed by a space on the LCD
   s>d lcd-d. ;
 
 : lcd-dec.                :: lcd-dec-dot             ( n -- )
+\ ** as lcd-. but setting the bas to decimal
+\ ** (base is preseved for calling program)
   base @ decimal swap lcd-. base ! ;
 
 : lcd-hex.                :: lcd-hex-dot             ( n -- )
+\ ** as lcd-. but setting the bas to decimal
+\ ** (base is preseved for calling program)
   base @ hex swap lcd-u. base ! ;
 
 
@@ -3069,12 +3154,15 @@ constant lcd-text-rows    :: lcd-text-rows           ( -- u)
 \ ===
 
 code ctp-flush            :: c-t-p-flush             ( -- )
+\ ** empty the CTP buffer of all outstanding events
         xcall   CTP_flush
         NEXT
 end-code
 
-\ (-1, -1) => release
 code ctp-pos              :: c-t-p-pos               ( -- x y )
+\ ** read the next position event from the CTP buffer
+\ ** if x >=0 and y >= 0 then this is a touch or motion event
+\ ** (-1, -1) is a release event
         xcall   CTP_GetPosition
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
@@ -3083,15 +3171,17 @@ code ctp-pos              :: c-t-p-pos               ( -- x y )
         NEXT
 end-code
 
-\ as character co-ordinate: (0, 0)   => top left
-\                           (-1, -1) => release
 : ctp-char                :: c-t-p-char              ( -- x y )
+\ ** read the net position evenr and align it to a character position
+\ ** (0, 0)  is the top left character
+\ ** (-1, -1) => release
   ctp-pos dup 0< if exit then
   swap font-width /
   swap font-height /
 ;
 
 code ctp-pos?             :: c-t-p-pos-question      ( -- flag )
+\ ** return true if there are pending CTP events in the buffer
         xcall   CTP_PositionAvailable
         or      %r4, %r4
         jreq    ctp_pos_question_no_character
@@ -3108,25 +3198,37 @@ end-code
 
 0
 constant button-none      :: button-none             ( -- u )
+\ ** button-poll return if no buttons are pressed
 
 2
 constant button-left      :: button-left             ( -- u )
+\ ** the left (search) button
 
 4
 constant button-centre    :: button-centre           ( -- u )
+\ ** the centre (history) button
 
 1
 constant button-right     :: button-right            ( -- u )
+\ ** the right (random) button
 
 16
 constant button-power     :: button-power            ( -- u )
+\ ** a short press on the power button (< 1 second)
+\ ** Notes:
+\ **   no power off is preformed by this
+\ **   button-poll cannot detect this condition
+\ **   a long press is a hardware shutdown so cannot be detected by software
 
 code button-flush         :: button-flush            ( -- )
+\ ** empty the button buffer of all outstanding events
         xcall   Button_flush
         NEXT
 end-code
 
 code button               :: button                  ( -- u )
+\ ** return the next button event from the button buffer
+\ ** if none available wait for the next button event
         xcall   Button_get
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
@@ -3134,6 +3236,7 @@ code button               :: button                  ( -- u )
 end-code
 
 code button?              :: button-question         ( -- flag )
+\ ** return true if there are pending button events in the buffer
         xcall   Button_available
         or      %r4, %r4
         jreq    button_question_no_data
@@ -3145,6 +3248,8 @@ button_question_no_data:
 end-code
 
 code button-poll          :: button-poll             ( -- u )
+\ ** poll the I/O port directly to read the state
+\ ** this ins the only button call that can return button-none
         xcall   Button_poll
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4
@@ -3156,6 +3261,9 @@ end-code
 \ ==========================
 
 : wait-for-event          :: wait-for-event          ( -- )
+\ ** if there are any pending events the return immediately
+\ ** if not switch to low power mode and wait for an event
+\ ** automatically power of if no events received in the next few minutes
  \ (temperature-comp)
   button?
   key? or
@@ -3164,6 +3272,8 @@ end-code
 ;
 
 code (halt)               :: paren-halt              ( -- )
+\ ** switch to low power mode until an event is received
+\ ** normally called by wait-for-event rather that directly in application code
 MCLK = 48000000                                      ; master clock
 SUSPEND_AUTO_POWER_OFF_SECONDS = 180
 TIMEOUT_VALUE = (MCLK / 32 * SUSPEND_AUTO_POWER_OFF_SECONDS)
@@ -3187,6 +3297,8 @@ end-code
 \ =========
 
 code power-off            :: power-off               ( -- )
+\ ** immediate power off
+\ ** remember to save any datae before calling this
         xld.w   %r4, R8_P3_IOC3
         ld.b    %r5, [%r4]
         xoor    %r5, 0x08                            ; P03 as output
@@ -3286,26 +3398,38 @@ end-code
 
 65536
 constant flash-rom-size   :: flash-rom-size          ( -- u )
+\ ** total number of bytes in the FLASH chip
 256
 constant flash-page-size  :: flash-page-size         ( -- u )
+\ ** maximum number of bytes that can be written in one operation
+\ ** address in FLASH chip must be aligned to this for the write operation
 4096
 constant flash-sector-size :: flash-sector-size      ( -- u )
+\ ** alignment and number of bytes for sector erase
 $1fe0
 constant flash-serial-number-offset :: flash-serial-number-offset ( -- u )
+\ ** location in FLASH chip containing the serial number
 32
 constant flash-serial-number-length :: flash-serial-number-length ( -- u )
+\ ** maximum number of bytes for serial number
+\ ** serial number is padded by 0x00 or 0xff if shorter than this value
 
 code flash-select-internal :: flash-select-internal  ( -- )
+\ ** select internal FLASH if the board is attached to COB test jig
+\ ** no effect if unit is operating stand alone
         xcall   FLASH_SelectInternal
         NEXT
 end-code
 
 code flash-select-external :: flash-select-external  ( -- )
+\ ** select external FLASH if the board is attached to COB test jig
+\ ** no effect if unit is operating stand alone
         xcall   FLASH_SelectExternal
         NEXT
 end-code
 
 code flash-read           :: flash-read              ( b count flash-address -- f )
+\ ** read a block of FLASH data to a buffer
         ld.w    %r8, [%r1]+                          ; flash-address
         ld.w    %r7, [%r1]+                          ; count
         ld.w    %r6, [%r1]                           ; buffer
@@ -3315,6 +3439,8 @@ code flash-read           :: flash-read              ( b count flash-address -- 
 end-code
 
 code flash-verify         :: flash-verify            ( b count flash-address -- f )
+\ ** compare a block of FLASH data to a buffer
+\ ** return true if there is a match
         ld.w    %r8, [%r1]+                          ; flash-address
         ld.w    %r7, [%r1]+                          ; count
         ld.w    %r6, [%r1]                           ; buffer
@@ -3323,9 +3449,9 @@ code flash-verify         :: flash-verify            ( b count flash-address -- 
         NEXT
 end-code
 
-\ call this before all operations below
-\ it only acts for the next call and is cancelled by after any flash operation
 code flash-write-enable   :: flash-write-enable      ( -- f )
+\ ** call this before any FLASH operation that will write to the chip
+\ ** this effect only acts for the next call and is cancelled by after any FLASH operation
         xcall   FLASH_WriteEnable
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4                           ; flag
@@ -3333,6 +3459,7 @@ code flash-write-enable   :: flash-write-enable      ( -- f )
 end-code
 
 code flash-write          :: flash-write             ( b count flash-address -- f )
+\ ** write a block of data to the FLASH chip
         ld.w    %r8, [%r1]+                          ; flash-address
         ld.w    %r7, [%r1]+                          ; count
         ld.w    %r6, [%r1]                           ; buffer
@@ -3342,6 +3469,7 @@ code flash-write          :: flash-write             ( b count flash-address -- 
 end-code
 
 code flash-sector-erase   :: flash-sector-erase      ( flash-address -- )
+\ ** erase the FLASH memory sector that contains this address
         ld.w    %r6, [%r1]                           ; flash-address
         xcall   FLASH_SectorErase
         ld.w    [%r1], %r4                           ; flag
@@ -3349,6 +3477,8 @@ code flash-sector-erase   :: flash-sector-erase      ( flash-address -- )
 end-code
 
 code flash-chip-erase     :: flash-chip-erase        ( -- flag)
+\ ** erase the entire FLASH chip
+\ ** Notes: the system will no longer boot unless a boot loader is written
         xcall   FLASH_ChipErase
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4                           ; flag
@@ -3359,12 +3489,23 @@ end-code
 \ board data
 \ ==========
 
-5 constant BOARD-V1
-6 constant BOARD-V2
-7 constant BOARD-V3
-8 constant BOARD-V4
+5
+constant BOARD-V1         :: BOARD-V1                ( -- u )
+\ ** possible return value from get-board-revision
+6
+constant BOARD-V2         :: BOARD-V2                ( -- u )
+\ ** possible return value from get-board-revision
+7
+constant BOARD-V3         :: BOARD-V3                ( -- u )
+\ ** possible return value from get-board-revision
+8
+constant BOARD-V4         :: BOARD-V4                ( -- u )
+\ ** possible return value from get-board-revision
 
 code get-board-revision   :: get-board-revision      ( -- u )
+\ ** read the hardware revision code from the PCB
+\ ** compare the with one of the constants BOARD-Vx
+\ ** (whare x is a number)
         xcall   BoardRevision_get
         sub     %r1, BYTES_PER_CELL
         ld.w    [%r1], %r4                           ; revision code
@@ -3372,10 +3513,12 @@ code get-board-revision   :: get-board-revision      ( -- u )
 end-code
 
 
-\ debugging
-\ =========
+\ debugging the interpreter
+\ =========================
 
 code   (brk)              :: breakpoint              ( -- )
+\ ** for debugging the interpreter
+\ ** dump some registers and stop the program
         xcall   xdebug                               ;debug
         xld.w   %r6, bpt
         xcall   Debug_PutString
@@ -3386,6 +3529,8 @@ bpt:    .asciz  "STOPPED\r\n"
 end-code
 
 code   (debug)            :: debug                   ( -- )
+\ ** for debugging the interpreter
+\ ** dump some registers
         xcall   xdebug                               ;debug
         NEXT                                         ;debug
 end-code

@@ -258,6 +258,8 @@ meta-compiler
   begin
     getline
     tib #tib @ s" end-code" str= 0= while
+    tib c@ [char] \ =
+    if ." ;;; " then
     tib #tib @ type cr
   repeat
   getline

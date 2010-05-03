@@ -74,7 +74,7 @@ TARGETS = forth.elf
 FORTH_PROGRAMS = programs/*.4?? programs/*.ini programs/*.tst
 
 .PHONY: all
-all: ${TARGETS} applications
+all: ${TARGETS} applications forth.text
 
 
 OBJECTS =
@@ -108,6 +108,10 @@ forth-vector.fi: Makefile
 	echo "variable 'cold-run :: tick-cold-run" >> "$@"
 
 forth.elf: forth.o ${OBJECTS} ${LIBS}
+
+
+forth.text: ansi-forth.fs document.awk
+	${AWK} -f document.awk ansi-forth.fs > "$@"
 
 
 # Common macro for compiling individual forth applications
@@ -168,7 +172,7 @@ install: all
 
 .PHONY: clean
 clean:
-	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi *.p
+	${RM} *~ *.o *.d *.lst *.elf *.map *.asm33 *.fi *.p forth.text
 	${RM} ${CLEAN_FILES}
 
 %.o: %.s
