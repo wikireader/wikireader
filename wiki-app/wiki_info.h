@@ -22,7 +22,7 @@
 
 #include "lcd_buf_draw.h"
 
-#define MAX_WIKIS 15
+#define MAX_WIKIS 16
 
 #if !defined(INCLUDED_FROM_KERNEL)
 #define MAX_WIKIS_PER_DEVICE MAX_WIKIS
