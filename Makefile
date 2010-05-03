@@ -120,9 +120,10 @@ install: validate-destdir forth-install mahatma-install fonts-install nls-instal
 version: validate-destdir
 	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
 	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
+	${RM} "${DESTDIR_PATH}"/*/*.idx-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
 	${RM} "${DESTDIR_PATH}"/*.[pP][aA][sS] "${DESTDIR_PATH}"/*.[hH][sS][tT]  "${DESTDIR_PATH}"/*.[iI][nN][iI]
-	find "${DESTDIR_PATH}" -type d -exec \
+	find "${DESTDIR_PATH}" -type d -print -exec \
 	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 
 
