@@ -28,6 +28,8 @@ A. Compiling WikiReader program and QT4 simulator
 B. Compiling a test database (single language version for an old kernel.elf)
 ============================
 
+** This section is now deprecated **
+
    Requires Python2.6 ocaml PHP5 LaTeX and dvipng
 
 1) mkdir -p image work
@@ -51,21 +53,16 @@ B. Compiling a test database (single language version for an old kernel.elf)
 C. Compiling a test database (multiple language version - latest kernel.elf)
 ============================
 
-   Change 'en' and 'enpedia' to correspond to language being built in commands below
+1) mkdir -p image work
 
-   Note: DESTDIR is not always the same in each command
+   make DESTDIR=image WORKDIR=work WIKI_LANGUAGE=en \
+      XML_FILES="XML-Licenses/en/license.xml XML-Licenses/en/terms.xml xml-file-samples/japanese_architects.xml" \
+      cleandirs createdirs iprc
 
-1) mkdir -p image/enpedia work/en
+   #Note: iprch => index parse render combine
 
-   make DESTDIR=image/enpedia WORKDIR=work/en WIKI_FILE_PREFIX=wiki WIKI_LANGUAGE=en \
-      XML_FILES="XML-Licenses/en/license.xml XML-Licenses/en/terms.xml xml-file-samples/japanese_architects.xml" iprch
-
-   #Note: iprch => index parse render combine hash
-
-2) cp -p XML-Licenses/en/wiki.nls image/enpedia/wiki.nls
-
-3) Optionally: simulate using qt4-simulator:
-   make DESTDIR=image fonts-install sim4
+2) Optionally: simulate using qt4-simulator:
+   make DESTDIR=image fonts-install nls-install sim4
 
 4) Install fonts and programs
    make DESTDIR=image install
