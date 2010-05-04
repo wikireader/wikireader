@@ -140,7 +140,7 @@ class ParserStandAlone extends Parser
     }
 
     $targetNamespace = $target->getNamespace();
-    if ($targetNamespace == NS_FILE || $$targetNamespace == NS_FILE_TALK) {
+    if ($targetNamespace == NS_FILE || $targetNamespace == NS_FILE_TALK) {
       global $wgFileLinks;
       return $wgFileLinks;
     } else if ($targetNamespace == NS_CATEGORY || $targetNamespace == NS_CATEGORY_TALK) {

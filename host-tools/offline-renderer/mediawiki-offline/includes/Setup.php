@@ -157,7 +157,11 @@ $wgRequest = new WebRequest;
 
 # Useful debug output
 if ( $wgCommandLineMode ) {
-	wfDebug( "\n\nStart command line script $self\n" );
+	if ( isset($self) ) {
+		wfDebug( "\n\nStart command line script $self\n" );
+	} else {
+		wfDebug( "\n\nStart command line script *unknown*\n" );
+	}
 } elseif ( function_exists( 'getallheaders' ) ) {
 	wfDebug( "\n\nStart request\n" );
 	wfDebug( $_SERVER['REQUEST_METHOD'] . ' ' . $_SERVER['REQUEST_URI'] . "\n" );

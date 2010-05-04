@@ -154,7 +154,7 @@ class Interwiki {
 
 		# $$$ Sean: This is a hack to get the interwiki links working
 	        # but only accept a prefix that is a valid language
-		if ('' != $wgLanguageNames[$prefix]) {
+		if ( isset($prefix, $wgLanguageNames[$prefix]) && '' != $wgLanguageNames[$prefix] ) {
 			$iw = new Interwiki();
 			$iw->mURL = $prefix . '.wiki';
 			$iw->mLocal = 0;
