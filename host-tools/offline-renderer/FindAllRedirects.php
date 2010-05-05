@@ -10,6 +10,16 @@ if (sizeof($argv) < 2) {
   echo "usage: $argv[0] list_of_files\n";
   exit(1);
 }
+?>
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# *** WARNING: Generated file do not modify
+#
+# Generated on: <?php echo date('Y-m-d H:i:s'), ' by ', $argv[0]; ?>
+
+<?php
+include "mediawiki-offline/includes/Defines.php";
 
 // remove the program name from the list of files
 $list = array_slice($argv, 1);
@@ -24,7 +34,7 @@ foreach ($list as $file) {
         $magicWords = array();
         $magicWords['redirect'] = array();
         include $file;
-        if (is_array($magicWords)) {
+        if (is_array($magicWords) && isset($magicWords['redirect'])) {
             $m = $magicWords['redirect'];
             if (is_array($m)) {
                 foreach ($m as $value) {
@@ -35,11 +45,11 @@ foreach ($list as $file) {
                     }
                 }
             } elseif (NULL !== $m) {
-                echo '$magicWords[\'redirect\'] is not an array for: ', $file, "\n";
-                echo '$magicWords[\'redirect\'] is: ', gettype($m), "\n";
+                echo '# $magicWords[\'redirect\'] is not an array for: ', $file, "\n";
+                echo '# $magicWords[\'redirect\'] is: ', gettype($m), "\n";
             }
         } else {
-            echo '$magicWords is not an array for: ', $file, "\n";
+            echo '# $magicWords is not an array for: ', $file, "\n";
         }
     }
 }
@@ -47,13 +57,6 @@ foreach ($list as $file) {
 // output the values
 sort($redirects);
 ?>
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# *** WARNING: Generated file do not modify
-#
-# Generated on: <?php echo date('Y-m-d H:i:s'), ' by ', $argv[0]; ?>
-
 
 import os, sys
 import re
