@@ -156,7 +156,7 @@ mahatma-install: mahatma validate-destdir
 # =========
 
 .PHONY:mini-libc
-mini-libc: gcc
+mini-libc: toolchain
 	${MAKE} -C ${SAMO_LIB}/mini-libc/
 
 .PHONY: fatfs
@@ -209,14 +209,7 @@ binutils-patch: binutils-download
 	done
 	${TOUCH} "$@"
 
-.PHONY: toolchain-requires
-toolchain-requires:
-	true $(call REQUIRED_BINARY, patch, patch)
-	true $(call REQUIRED_BINARY, gcc, gcc)
-	true $(call REQUIRED_BINARY, lex, flex)
-	true $(call REQUIRED_BINARY, bison, bison)
-
-binutils: toolchain-requires binutils-patch
+binutils: binutils-patch
 	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
@@ -247,6 +240,17 @@ gcc: binutils gcc-patch
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ${MAKE} && \
 	${MAKE} install
 	${TOUCH} "$@"
+
+
+.PHONY: toolchain
+toolchain: toolchain-requires gcc
+
+.PHONY: toolchain-requires
+toolchain-requires:
+	true $(call REQUIRED_BINARY, patch, patch)
+	true $(call REQUIRED_BINARY, gcc, gcc)
+	true $(call REQUIRED_BINARY, lex, flex)
+	true $(call REQUIRED_BINARY, bison, bison)
 
 
 # QT simulator
