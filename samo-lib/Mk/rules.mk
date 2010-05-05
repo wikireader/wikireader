@@ -29,6 +29,9 @@ this-is-included-too-early:
 	@echo Otherwise the dependencies are not built in the correct order
 	@exit 1
 
+# just so that all the REQUIRED_xxx can be evaluated
+.PHONY: requires
+	true
 
 # some debugging rules
 

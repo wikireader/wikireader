@@ -58,7 +58,7 @@ TOUCH = touch
 ifeq (Linux,${OS})
 
 LOCKF = flock
-AWK = awk
+AWK = gawk
 
 # path must exist
 REALPATH = readlink -es

@@ -209,10 +209,14 @@ binutils-patch: binutils-download
 	done
 	${TOUCH} "$@"
 
-binutils: binutils-patch
+.PHONY: toolchain-requires
+toolchain-requires:
+	true $(call REQUIRED_BINARY, patch, patch)
 	true $(call REQUIRED_BINARY, gcc, gcc)
 	true $(call REQUIRED_BINARY, lex, flex)
 	true $(call REQUIRED_BINARY, bison, bison)
+
+binutils: toolchain-requires binutils-patch
 	cd ${HOST_TOOLS} && \
 	cd "binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
@@ -775,6 +779,27 @@ mbr-install: mbr
 	${MAKE} -C ${SAMO_LIB}/mbr install DESTDIR="${DESTDIR_PATH}"
 
 
+# list required packages
+# ======================
+
+.PHONY: requirements
+requirements: toolchain-requires
+	${MAKE} requires -C ${SAMO_LIB}/mini-libc
+	${MAKE} requires -C ${HOST_TOOLS}/jackknife
+	#${MAKE} requires -C ${HOST_TOOLS}/hash-gen
+	${MAKE} requires -C ${HOST_TOOLS}/pcf2bmf
+	${MAKE} requires -C ${HOST_TOOLS}/flash07
+	${MAKE} requires -C ${HOST_TOOLS}/fonts
+	${MAKE} requires -C ${HOST_TOOLS}/offline-renderer
+	${MAKE} requires -C ${SAMO_LIB}/mbr
+	${MAKE} requires -C ${SAMO_LIB}/drivers
+	${MAKE} requires -C ${SAMO_LIB}/fatfs
+	${MAKE} requires -C ${SAMO_LIB}/forth
+	${MAKE} requires -C ${SAMO_LIB}/flash
+	${MAKE} requires -C ${SAMO_LIB}/grifo
+	${MAKE} requires -C ${SAMO_LIB}/mahatma
+
+
 # Clean up generated files
 # ========================
 
@@ -786,7 +811,7 @@ complete-clean: clean clean-toolchain
 clean: clean-qt4-simulator clean-console-simulator
 	${MAKE} clean -C ${SAMO_LIB}/mini-libc
 	${MAKE} clean -C ${HOST_TOOLS}/jackknife
-	${MAKE} clean -C ${HOST_TOOLS}/hash-gen
+	#${MAKE} clean -C ${HOST_TOOLS}/hash-gen
 	${MAKE} clean -C ${HOST_TOOLS}/pcf2bmf
 	${MAKE} clean -C ${HOST_TOOLS}/flash07
 	${MAKE} clean -C ${HOST_TOOLS}/fonts
@@ -866,6 +891,7 @@ help:
 	@echo '  qt4-simulator         - compile the Qt4 simulator'
 	@echo '  sim4  sim4d           - use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
 	@echo '  console-simulator     - compile the console simulator'
+	@echo '  requirements          - detect missing packages'
 	@echo '  clean                 - clean all programs and object files except the toochain'
 	@echo '  clean-toolchain       - clean just the toochain'
 	@echo '  cleandirs             - clean work/temp/image for current language'

@@ -37,7 +37,7 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
-$(call REQUIRED_BINARY, ${AWK}, awk)
+$(call REQUIRED_BINARY, ${AWK}, gawk)
 
 # set this to 0 or 1 to control the battery indicator in menu.c
 BATTERY_METER ?= 0

@@ -23,3 +23,8 @@ all:
 .PHONY: clean
 clean:
 	${RM} *.pyc
+
+
+# just so that all the REQUIRED_xxx can be evaluated
+.PHONY: requires
+	true

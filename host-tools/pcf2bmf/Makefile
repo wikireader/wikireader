@@ -27,6 +27,7 @@ vpath %.c
 TARGETS = pcf2bmf
 OBJS = $(C_OBJS) pcf2bmf.o
 
+.PHONY: all
 all: $(TARGETS)
 
 pcf2bmf: $(OBJS)
@@ -35,7 +36,12 @@ pcf2bmf: $(OBJS)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean::
+# just so that all the REQUIRED_xxx can be evaluated
+.PHONY: requires
+	true
+
+.PHONY: clean
+clean:
 	$(RM) $(TARGETS) *.o *.d
 
 -include $(wildcard *.d) dummy

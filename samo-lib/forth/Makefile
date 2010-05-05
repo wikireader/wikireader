@@ -50,7 +50,7 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
-$(call REQUIRED_BINARY, ${AWK}, awk)
+$(call REQUIRED_BINARY, ${AWK}, gawk)
 $(call REQUIRED_BINARY, gforth, gforth)
 
 

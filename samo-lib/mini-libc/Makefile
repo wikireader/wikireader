@@ -113,8 +113,9 @@ C_STD_LIB_OPERATIONS = \
     src/stdlib/vuprintf.o
 
 
-
 TARGETS=lib/libc.a
+
+.PHONY: all
 all: $(TARGETS)
 
 .c.o:
@@ -128,7 +129,12 @@ stamp-lib:
 	${MKDIR} "${@:stamp-%=%}"
 	${TOUCH} "${@}"
 
-clean::
+# just so that all the REQUIRED_xxx can be evaluated
+.PHONY: requires
+	true
+
+.PHONY: clean
+clean:
 	${RM} $(TARGETS) *.o *.elf *.d
 	${RM} src/string/*.d src/string/*.o
 	${RM} src/stdlib/*.d src/stdlib/*.o
