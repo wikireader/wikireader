@@ -178,7 +178,7 @@ parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render
-render: pylzma check-dirs check-fonts check-html stamp-PinyinTable.py
+render: check-dirs check-fonts check-html stamp-PinyinTable.py
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
@@ -196,11 +196,6 @@ combine: check-dirs
 # sudo apt-get install python-dev
 .PHONY: pylzma
 pylzma:
-	for dir in /usr/lib/python* /usr/local/lib/python* /opt/lib/python* /usr/lib64/python* ; \
-	do \
-	   [ -e "$${dir}/site-packages/pylzma.so" ] && exit 0 ; \
-	   [ -e "$${dir}/dist-packages/pylzma.so" ] && exit 0 ; \
-	done ; \
 	cd ${PYLZMA_DIR} && \
 	python setup.py build && \
 	sudo python setup.py install

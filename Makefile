@@ -296,6 +296,18 @@ fonts-install: fonts validate-destdir
 	cd ${HOST_TOOLS}/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
 
 
+# Compression interface
+# =====================
+
+# in case the platform lacks the python-lzma package
+# (only present in  ?Ubuntu >= lucid 10.04)
+# then there is a local verion of the older PyLZMA module
+# that can be installed instead
+
+.PHONY: local-pylzma-install
+local-pylzma-install:
+	${MAKE} -C ${HOST_TOOLS}/offline-renderer pylzma
+
 # Build the database from wiki XML files
 # ======================================
 
