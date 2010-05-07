@@ -34,7 +34,7 @@ import sequencer
 # power supply (volts, amps)
 SUPPLY_STANDARD_VOLTAGE = 3.0
 SUPPLY_CURRENT_LIMIT = 0.35
-MAXIMUM_SUSPEND_CURRENT = 0.02
+MAXIMUM_SUSPEND_CURRENT = 0.021
 MINIMUM_ON_CURRENT = 0.012
 MAXIMUM_ON_CURRENT = 0.150
 
@@ -258,7 +258,7 @@ class Sample:
                     s.write(line[0:1])
 
                 elif '*SUSPEND*' == line:
-                    samples = 20
+                    samples = 30
                     total = 0
                     for j in range(samples):
                         i = psu.current
@@ -266,9 +266,10 @@ class Sample:
                         self.write('INFO: suspend current = %7.3f mA @ %5.1f V\n' %
                                    (1000 * i, psu.voltage))
                         time.sleep(0.1)
+                    average_suspend_current = total / samples
                     self.write('INFO: average suspend current = %7.3f mA @ %5.1f V\n' %
-                               (1000 * total / samples, psu.voltage))
-                    if abs(i) > MAXIMUM_SUSPEND_CURRENT:
+                               (1000 * average_suspend_current, psu.voltage))
+                    if abs(average_suspend_current) > MAXIMUM_SUSPEND_CURRENT:
                         s.write('N')
                     else:
                         s.write('Y')
