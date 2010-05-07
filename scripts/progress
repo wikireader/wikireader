@@ -80,7 +80,7 @@ do
       ;;
 
     -N|--new-session)
-      for host in $(RenderDo --print-list)
+      for host in $(RenderDo ${list} --print-list)
       do
         StartScreen --cd="${base_dir}" "${host}"
       done
@@ -117,7 +117,7 @@ do
       ;;
 
     -f|--fetch-log)
-      for host in $(RenderDo --print-list)
+      for host in $(RenderDo ${list} --print-list)
       do
         lf="${host}-${language}.log"
         echo fetch log from: ${host} to: ${lf}
