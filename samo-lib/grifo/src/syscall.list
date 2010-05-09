@@ -266,6 +266,10 @@
 
  (150 Analog_read ("long" "analog_input" "analog_channel_t channel"))
 
+ (section "Serial Port")
+ (160 Serial_PutChar ("int" "serial_putchar" "int ch"))
+ (161 Serial_GetChar ("char" "serial_getchar" "void"))
+ (162 Serial_InputAvailable ("bool" "serial_inputavailable" "void"))
 
  (endif)
 )
