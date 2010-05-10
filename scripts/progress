@@ -89,25 +89,25 @@ do
 
     -r|--run)
       c="scripts/Run --compress='${compression}' --clear --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
     -R|--re-render)
       c="scripts/Run --compress='${compression}' --re-render --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
     -I|--re-index)
       c="scripts/Run --compress='${compression}' --index-only --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
     -c|--copy)
       c="scripts/Copy --base='${base_dir}' --to='${combine_host}' --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "byobu -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
+      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' 'exec ${c}'"
       shift
       ;;
 
