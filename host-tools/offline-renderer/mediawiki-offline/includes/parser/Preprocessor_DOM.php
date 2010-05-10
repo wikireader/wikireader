@@ -104,9 +104,9 @@ class Preprocessor_DOM implements Preprocessor {
 		if ( !$result ) {
 			// Try running the XML through UtfNormal to get rid of invalid characters
 			$xml = UtfNormal::cleanUp( $xml );
-			$result = $dom->loadXML( $xml );
+			$result = $dom->loadXML( $xml, LIBXML_PARSEHUGE );
 			if ( !$result ) {
-				throw new MWException( __METHOD__.' generated invalid XML' );
+				throw new MWException( __METHOD__." generated invalid XML\n---\n{$xml}\n---" );
 			}
 		}
 		$obj = new PPNode_DOM( $dom->documentElement );
