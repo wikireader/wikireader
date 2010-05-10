@@ -1,0 +1,26 @@
+# Messages for Swedish (Svenska)
+# Exported from translatewiki.net
+# Author: Ainali
+
+type_a_word=Skriv ett ord eller en fras
+searching=söker...
+select_wiki=Välj encyklopedi
+history_title=Historik
+no_history=Ingen historik
+please_wait=Vänligen vänta...
+clear_history=Rensa historik
+yes=Ja
+no=Nej
+protection=Vissa Wikipediaartiklar kanske inte är lämpliga för mindreåriga. Ställ in ett lösenord för skydd.
+set_password=Ange lösenord
+ok=ok
+filter_options=Filteralternativ
+turn_filter_on=Slå på filter
+turn_filter_off=Stäng av filter
+change_password=Byt lösenord
+re_enter_password=Upprepa lösenord
+re_enter_new_password=Upprepa nytt lösenord
+passwords_not_match=Lösenorden matchar inte
+enter_password=Ange lösenord
+try_again=Fel. Försök igen.
+enter_new_password=Ange nytt lösenord

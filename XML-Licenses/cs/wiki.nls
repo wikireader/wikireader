@@ -1,9 +1,10 @@
 # Messages for Czech (Česky)
 # Exported from translatewiki.net
+# Author: Mormegil
 # Author: Mr. Richard Bolla
 
 wiki_name=Česká Wikipedie
-license_text=Tento text je dostupný pod licencí Creative Commons Attribution/Share-Alike a může být volně užíván za dodržení podmínek této licence. Podívejte se také na: text licence [CC-BY-SA] a další podmínky užití, které mohou být rovněž uplatněny. Původní text je dostupný na: http://cs.wikipedia.org/wiki/<title>
+license_text=Tento text je dostupný pod licencí Creative Commons Uveďte autora/Zachovejte licenci a může být volně užíván za dodržení podmínek této licence. Podívejte se také na: text licence [CC-BY-SA] a [podmínky užití], které obsahují upřesňující podmínky. Původní článek je dostupný na: http://cs.wikipedia.org/wiki/<title>
 type_a_word=Zadejte slovo či frázi
 no_results=Nenalezeny žádné záznamy
 searching=vyhledávám...

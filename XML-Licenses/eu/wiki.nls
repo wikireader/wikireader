@@ -1,0 +1,32 @@
+# Messages for Basque (Euskara)
+# Exported from translatewiki.net
+# Author: An13sa
+
+wiki_name=Ingelesezko Wikipedia
+type_a_word=Hitz edo esaldi bat idatzi
+no_results=Ez da sarrerarik aurkitu
+searching=bilatzen...
+select_wiki=Entziklopedia aukeratu
+history_title=Historia
+no_history=Historiarik ez
+please_wait=Mesedez itxaron...
+clear_history=Historia garbitu
+yes=Bai
+no=Ez
+protection=Wikipediako sarrera btzuk ez dira egokiak adingabeentzat. Mesedez ezarr pasahitz bat babeserako.
+restricted=Sarrera hau ez da egokia adingabeentzat. Mesedez ezarri pasahitz bat babesa bermatzeko.
+set_password=Pasahitza ezarri
+ok=ados
+filter_options=Iragazkiaren Aukerak
+turn_filter_on=Iragazkia GAITU
+turn_filter_off=Iragazkia EZGAITU
+change_password=Pasahitza aldatu
+re_enter_password=Pasahitza berrezarri
+re_enter_new_password=Pasahitz berria berrezarri
+passwords_not_match=Pasahitzak ez datoz bat
+enter_old_password=Pasahitz zaharra sartu
+enter_password=Pasahitza sartu
+try_again=Okerra. Mesedez saiatu berriro.
+enter_new_password=Pasahitz berria sartu
+parental_controls=Gurasoen Kontrola
+r=M

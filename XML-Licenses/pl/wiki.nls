@@ -1,0 +1,36 @@
+# Messages for Polish (Polski)
+# Exported from translatewiki.net
+# Author: Dos
+
+wiki_name=Polska Wikipedia
+license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie wykorzystywany ponownie zgodnie z warunkami tej licencji. Zobacz: Tekst licencji [CC-BY-SA] i dodatkowe warunki, które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikipedia.org/wiki/<title> 2010-01-16
+type_a_word=Wpisz słowo lub wyrażenie
+no_results=Nie znaleziono wpisów
+searching=wyszukiwanie...
+select_wiki=Wybierz encyklopedie
+history_title=Historia
+no_history=Brak historii
+please_wait=Proszę czekać...
+clear_history=Wyczyść historię
+yes=Tak
+no=Nie
+protection=Niektóre wpisy na Wikipedii mogą być nieodpowiednie dla nieletnich. Proszę ustawić hasło ochrony rodzicielskiej.
+restricted=Ten wpis może być nieodpowiedni dla nieletnich. Proszę ustawić hasło ochrony rodzicielskiej.
+set_password=Ustaw hasło
+ok=ok
+set_filter=Przy włączonym filtrowaniu do uzyskania dostępu do zablokowanych artykułów potrzebne jest hasło.
+keep_filter_on=Zostaw filtr włączony
+keep_filter_off=Zostaw filtr wyłączony
+filter_options=Opcje filtra
+turn_filter_on=Włącz filtr
+turn_filter_off=Wyłącz filtr
+change_password=Zmień hasło
+re_enter_password=Ponownie wprowadź hasło
+re_enter_new_password=Ponownie wprowadź nowe hasło
+passwords_not_match=Hasła nie są identyczne
+enter_old_password=Podaj stare hasło
+enter_password=Podaj hasło
+try_again=Źle. Proszę spróbować ponownie.
+enter_new_password=Wprowadź nowe hasło
+parental_controls=Kontrola rodzicielska
+r=R

@@ -1,0 +1,27 @@
+# Messages for Pashto (پښتو)
+# Exported from translatewiki.net
+# Author: Ahmed-Najib-Biabani-Ibrahimkhel
+
+wiki_name=انګرېزي وېکيپېډيا
+type_a_word=يوه وييکه يا عبارت وټاپۍ
+no_results=څه و نه موندل شو
+searching=د پلټنې په حال کې...
+select_wiki=پوهنغونډ مو وټاکۍ
+history_title=پېښليک
+no_history=بې پېښليکه
+please_wait=لطفاً تم شۍ ...
+clear_history=پېښليک پاکول
+yes=هو
+no=نه
+set_password=پټنوم ټاکل
+ok=ښه
+filter_options=د چاڼګر خوښنې
+change_password=پټنوم بدلول
+re_enter_password=پټنوم بيا وليکۍ
+re_enter_new_password=نوی پټنوم مو بيا وليکۍ
+passwords_not_match=پټنوم مو کټ مټ د يو بل سره سمون نه خوري
+enter_old_password=زوړ پټنوم مو وټاپۍ
+enter_password=پټنوم مو وټاپۍ
+try_again=سم نه وو. يو ځل بيا يې ترسره کړۍ.
+enter_new_password=نوی پټنوم مو وټاپۍ
+parental_controls=پلرنۍ مهارنې

@@ -1,0 +1,36 @@
+# Messages for Welsh (Cymraeg)
+# Exported from translatewiki.net
+# Author: Lloffiwr
+
+wiki_name=Wicipedia Cymraeg
+license_text=Rhoddir testun y dudalen ar gael ar delerau'r drwydded Creative Commons Attribution/Share-Alike, a gellir ei ailddefnyddio'n ddilyffethair yn ôl telerau'r drwydded honno. Gweler: Testun y drwydded [CC-BY-SA] a'r [Telerau Defnyddio] am unrhyw delerau ychwanegol sy'n perthyn i'r testun. Mae'r erthygl wreiddiol i'w gweld ar: http://en.wikipedia.org/wiki/<title>  2010-Gwanwyn
+type_a_word=Teipiwch Air neu Gymal
+no_results=Ni chafwyd hyd i unrhyw gofnod
+searching=wrthi'n chwilio...
+select_wiki=Dewiswch wyddoniadur
+history_title=Hanes
+no_history=Dim hanes
+please_wait=Arhoswch...
+clear_history=Gwaceier yr Hanes
+yes=Ie
+no=Na
+protection=Efallai nad yw rhai o erthyglau Wicipedia yn addas i blant. Gallwch gyfyngu mynediad atynt trwy osod cyfrinair.
+restricted=Efallai nad yw'r erthygl hon yn addas i blant. Gallwch gyfyngu mynediad ati trwy osod cyfrinair.
+set_password=Gosod cyfrinair
+ok=iawn
+set_filter=Pan fyddwch YN hidlo, mae angen cyfrinair i ddarllen erthyglau cyfyngedig.
+keep_filter_on=YN hidlo
+keep_filter_off=DIM hidlo
+filter_options=Dewisiadau Hidlo
+turn_filter_on=DECHRAU hidlo
+turn_filter_off=GORFFEN hidlo
+change_password=Newid y Cyfrinair
+re_enter_password=Ail-deipiwch y Cyfrinair
+re_enter_new_password=Ail-deipiwch y cyfrinair newydd
+passwords_not_match=Nid yw'r cyfrineiriau yn cyd-fynd
+enter_old_password=Teipiwch yr hen gyfrinair
+enter_password=Teipiwch y cyfrinair
+try_again=Anghywir. Ceisiwch eto.
+enter_new_password=Teipiwch y cyfrinair newydd
+parental_controls=Rheolaeth gan Rieni
+r=C

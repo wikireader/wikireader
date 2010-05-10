@@ -1,35 +1,36 @@
 # Messages for French (Français)
 # Exported from translatewiki.net
+# Author: Zeiram
 
-wiki_name=Wikipedia Français
-license_text=Les textes sont disponibles sous Creative Commons Attribution / Share-Alike License et peuvent reutiliser librement sous les termes de cette liscense. Voir: Texte de [CC-BY-SA] License et [Conditions d'Utilisation] pour les termes supplémentaires qui s'appliquent. L'article original est disponible à: http://fr.wikipedia.org/wiki/<title>
-type_a_word=Rechercher sur Wikipedia en français
+wiki_name=Wikipédia Français
+license_text=Les textes sont disponibles sous une licence Creative Commons Attribution / Share-Alike et peuvent être réutilisés librement selon les termes de cette licence. Voir : Texte de la licence [CC-BY-SA] et [Conditions d'Utilisation] pour les termes supplémentaires qui s'appliquent. L'article original est disponible à l'adresse : http://fr.wikipedia.org/wiki/<title>
+type_a_word=Entrez un mot ou expression
 no_results=Aucune correspondance
-searching=À la recherche...
+searching=Recherche en cours...
 select_wiki=Choisir l'encyclopédie
 history_title=Historique
 no_history=Aucun historique
-please_wait=Veuillez attendre...
-clear_history=Effacer l'historique
+please_wait=Veuillez patienter...
+clear_history=Vider historique
 yes=Oui
 no=Non
-protection=Certains articles sur Wikipedia peuvent être inappropriés pour les jeunes. Veuillez définir un mot de passe pour la protection.
-restricted=Cette article n'est pas apprpriée pour les jeunes. Veuillez définir un mot de passe pour la protection.
+protection=Certains articles sur Wikipédia peuvent être inappropriés pour les jeunes. Veuillez définir un mot de passe l'accès à ces articles.
+restricted=Cet article n'est pas approprié pour les jeunes. Veuillez définir un mot de passe pour y accéder.
 set_password=Définir un mot de passe
-ok=D'accord
-set_filter=Avec le filtrage activé, un mot de passe est requis à l'accès d'une article restreinte
-keep_filter_on=Garder le filtrage activé
-keep_filter_off=Garder le filtrage désactivé
+ok=ok
+set_filter=Avec le filtrage activé, un mot de passe est requis pour l'accès à un article protégé.
+keep_filter_on=Activer le filtrage
+keep_filter_off=Désactiver le filtrage
 filter_options=Options de filtrage
 turn_filter_on=Activer le filtrage
 turn_filter_off=Désactiver le filtrage
 change_password=Changer le mot de passe
-re_enter_password=Re-entrer le mot de passe
-re_enter_new_password=Re-entrer le nouveau mot de passe
-passwords_not_match=Le mot de passe ne corresponde pas
-enter_old_password=Entrer l'ancien mot de passe
-enter_password=Entrer le mot de passe
-try_again=Erreur. Vuillez reessayez.
-enter_new_password=Entrer le nouveau mot de passe
-parental_controls=Contrôle Parental
+re_enter_password=Confirmez le mot de passe
+re_enter_new_password=Confirmez le mot de passe
+passwords_not_match=Les mots de passe diffèrent
+enter_old_password=Entrez l'ancien mot de passe
+enter_password=Entrez le mot de passe
+try_again=Erreur. Veuillez réessayer.
+enter_new_password=Entrez le nouveau mot de passe
+parental_controls=Contrôle parental
 r=R

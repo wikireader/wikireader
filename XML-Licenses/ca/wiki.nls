@@ -1,0 +1,36 @@
+# Messages for Catalan (Català)
+# Exported from translatewiki.net
+# Author: Aleator
+
+wiki_name=Wikipedia Català
+license_text=El text està disponible sota la Llicència de Creative Commons Reconeixement/Compartir-Igual i pot ser reutilitzat lliurement sota els termes de la mateixa. Vegeu: Text de la Llicència [CC-BY-SA] i [Termes d'ús] per especificacions addicionals que hi poden aplicar. L'article original es troba disponible a: http://ca.wikipedia.org/wiki/<title> 2010-01-16
+type_a_word=Escriviu una paraula o frase
+no_results=No s'han trobat resultats
+searching=cercant...
+select_wiki=Seleccioneu enciclopèdia
+history_title=Historial
+no_history=Sense historial
+please_wait=Si us plau, espereu...
+clear_history=Esborrar historial
+yes=Sí
+no=No
+protection=Algunes entrades de la Viquipèdia poden no ser adequades per a menors d'edat. Si us plau, establiu una contrasenya per a la seva protecció.
+restricted=Aquesta entrada pot no ser adequada per a menors d'edat. Si us plau, establiu una contrasenya per a la seva protecció.
+set_password=Establir contrasenya
+ok=d'acord
+set_filter=Amb el filtratge activat, en accedir als articles restringits es demana contrasenya.
+keep_filter_on=Mantenir el filtratge activat
+keep_filter_off=Mantenir filtratge desactivat
+filter_options=Opcions de filtratge
+turn_filter_on=Activar el filtre
+turn_filter_off=Desactivar el filtre
+change_password=Canviar la contrasenya
+re_enter_password=Torneu a introduir la contrasenya
+re_enter_new_password=Torneu a introduir la contrasenya
+passwords_not_match=Les contrasenyes no coincideixen
+enter_old_password=Introduïu la contrasenya antiga
+enter_password=Introduïu la contrasenya
+try_again=Erroni. Torneu-ho a provar.
+enter_new_password=Introduïu una nova contrasenya
+parental_controls=Controls parentals
+r=R
