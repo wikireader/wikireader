@@ -1,0 +1,73 @@
+BUGS and Problems
+=================
+
+1. Missing Fonts
+
+  A few fonts are missing in Cyrillic so Russian Wikipedia shows a few
+  missing characters (the "box" character)
+
+  Korean and Arabic sets are absent from all fonts
+
+
+2. Restricted search index character set
+
+  The index is restricted to the set [A-Z0-9] and some punctuation
+  characters in order to speed up the searching process and reduce the
+  size of the index files.  This leads to problems with non-Latin
+  letters.
+
+  These are described below:
+
+  a. All accents are stripped i.e. everything that looks like 'A'
+     (e.g. "aāáăàȧĀÁĂÀȦ" etc.) is converted an 'A'.
+
+     This uses Python function: unicodedata.normalize('NFD', text)
+
+  b. Japanese is handled as a special case using a two stage
+     translation.  stage one uses a dictionary (Currently MeCab)
+     translate to Katakana.  stage two is to translate Katakana and
+     Hiragana to Romaji.  This is only Activated if language is set to
+     "ja".
+
+  c. Chinese is translated character by character to Pinyin. Accent
+     stripping causes both 西安 and 先 to convert to "xian" so index
+     sort order is not as would be expected.
+
+  d. Korean, Cyrillic, Greek, Coptic... are looked up in the Unicode
+     tables provided by Python unicodedata.name() (in Python 2.6 these
+     tables are missing some characters)
+
+     e.g.      unicodedata.name(u'서')
+     returns: 'HANGUL SYLLABLE SEO'
+     therefore 'SEO' will be used to represent the '서' character.
+
+     Notes: for Cyrillic some extra 'H' and 'E' are dropped from the
+            name to make typing easier.
+
+            Katakana and Hiragana will get processed by this method
+            except when using the Japanese Dictionary - the result
+            will not be the same as Romaji.
+
+  e. Ligatures like: "æœĳ" are replaced by "ae", "oe" and "ij"
+     respectively
+
+  f. Some special letters are also converted.
+
+     e.g. "ÐðÞþ" (eth and thorn are represented by "eth" and "th")
+     (Used in Icelandic)
+
+  g. Anything left over is unchanged and eventually end up being
+  dropped.
+
+  When the index is prepared from the string as translated by the
+  rules above any character that is not in the limited [A-Z0-9] plus
+  punctuation is just dropped.  The sort order is then based on these
+  modified strings.  The original string is kept for display so the
+  order of the search results can appear out of order.
+
+
+3. Keyboard
+
+   There is only a basic QWERTY keyboard plus a second numbers +
+   punctuation (the index process matches this character subset).
+   This make creating other language difficult in this version.
