@@ -752,11 +752,14 @@ class WrProcess(HTMLParser.HTMLParser):
             self.flush_buffer()
             # suppress thumb info boxes
             if 'class' in attrs:
-                c = attrs['class']
-                if 'thumb' in c or 'left' in c or 'right' in c \
-                    or 'dablink' in c or 'magnify' in c:
-                    self.printing = False
-                    return
+                c = attrs['class'].lower()
+                for ignore in ['thumb', 'left', 'right',
+                               'dablink', 'magnify',
+                               'navframe', 'navtoggle', 'navcontent',
+                               ]:
+                    if ignore in c:
+                        self.printing = False
+                        return
             esc_code0(DIV_MARGIN_TOP)
 
         elif tag == 'p':
