@@ -58,7 +58,10 @@ define("WH_VER_MED",       2);
 define("WH_VER_MIN",       14);
 
 global $wgScriptPath;
-define("WH_IMG_DIR",       $wgScriptPath . '/extensions/wikihiero/img/' ); //"img/"); //
+if ( !defined("WH_IMG_DIR") ) {
+   // only set this if not already initialised by LocalSettings.php
+   define("WH_IMG_DIR",       $wgScriptPath . '/extensions/wikihiero/img/' );
+}
 define("WH_IMG_PRE",       "hiero_");
 define("WH_IMG_EXT",       "png");
 
