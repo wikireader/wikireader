@@ -91,7 +91,7 @@ compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:CD: --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,compress:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:CD: --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,compress:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -218,7 +218,22 @@ fi
 licenses=$(readlink -m "${LicensesDirectory}")
 license="${licenses}/${language}/license.xml"
 terms="${licenses}/${language}/terms.xml"
-articles_link="${language}wiki-pages-articles.xml"
+
+case "${suffix}" in
+  pedia)
+    articles_link="${language}wiki-pages-articles.xml"
+    ;;
+  dict)
+    articles_link="${language}wiktionary-pages-articles.xml"
+    ;;
+  quote)
+    articles_link="${language}wikiquote-pages-articles.xml"
+    ;;
+  *)
+    USAGE invalid suffix: ${suffix}, [pedia, dict, quote]
+    ;;
+esac
+
 articles=$(readlink -m "${articles_link}")
 
 LogFile="${language}.log"
