@@ -229,8 +229,11 @@ case "${suffix}" in
   quote)
     articles_link="${language}wikiquote-pages-articles.xml"
     ;;
+  books)
+    articles_link="${language}wikibooks-pages-articles.xml"
+    ;;
   *)
-    USAGE invalid suffix: ${suffix}, [pedia, dict, quote]
+    USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
     ;;
 esac
 

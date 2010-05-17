@@ -189,7 +189,7 @@ do
       ;;
 
     -x|--xml-link)
-      for s in wiki wiktionary wikiquote
+      for s in wiki wiktionary wikiquote wikibooks
       do
         RenderDo --yes ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&
