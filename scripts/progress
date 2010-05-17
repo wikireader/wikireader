@@ -159,7 +159,7 @@ do
       ;;
 
     -k|--combine)
-      RenderDo --yes --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki WIKI_LANGUAGE='${language}' combine"
+      RenderDo --yes --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' combine"
       shift
       ;;
 
