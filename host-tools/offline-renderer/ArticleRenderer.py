@@ -877,6 +877,13 @@ class WrProcess(HTMLParser.HTMLParser):
                                  .format(tag, line, column, article_count + 1, g_this_article_title))
 
         elif tag == 'dt':
+            if 0 == self.level:
+                if warnings:
+                    (line, column) = self.getpos()
+                    PrintLog.message(u'Warning: stray <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
+                (t, p) = self.tag_stack.pop()
+                return  # just ignore it
             # close unterminated 'dd'
             # i.e. have this  <dt>tag</dt><dd>xxxxx<dt>tag2</dt>.......
             if self.li_inside[self.level]:
