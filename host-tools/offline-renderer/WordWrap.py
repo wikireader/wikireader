@@ -119,10 +119,10 @@ class WordWrap():
         i = 0
         sum = 0
         for w in lengths:
-           if sum + w > width:
-               break
            sum += w
            i += 1
+           if sum >= width:
+               break
         return ((text[:i], item[1], item[2], sum, lengths[:i]),
                 (text[i:], item[1], item[2], item[3] - sum, lengths[i:]))
 
