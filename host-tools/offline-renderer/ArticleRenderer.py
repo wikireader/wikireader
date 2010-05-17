@@ -867,8 +867,26 @@ class WrProcess(HTMLParser.HTMLParser):
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
-            self.li_cnt[self.level] += 1
-            self.list_increase_indent()
+            if not self.li_inside[self.level]:
+                self.li_cnt[self.level] += 1
+                self.li_inside[self.level] = True
+                self.list_increase_indent()
+            elif warnings:
+                (line, column) = self.getpos()
+                PrintLog.message(u'Warning: nested <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                 .format(tag, line, column, article_count + 1, g_this_article_title))
+
+        elif tag == 'dt':
+            # close unterminated 'dd'
+            # i.e. have this  <dt>tag</dt><dd>xxxxx<dt>tag2</dt>.......
+            if self.li_inside[self.level]:
+                if warnings:
+                    (line, column) = self.getpos()
+                    PrintLog.message(u'Warning: unterminated <{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format('dd', line, column, article_count + 1, g_this_article_title))
+                (t, p) = self.tag_stack.pop()
+                self.handle_endtag('dd')
+                self.tag_stack.append((t, p))
 
         elif tag == 'br':
             self.in_br = True
@@ -1018,7 +1036,9 @@ class WrProcess(HTMLParser.HTMLParser):
 
         elif tag == 'dd':
             self.flush_buffer()
-            self.list_decrease_indent()
+            if self.li_inside[self.level]:
+                self.li_inside[self.level] = False
+                self.list_decrease_indent()
 
         elif tag == 'dt':
             self.flush_buffer()
