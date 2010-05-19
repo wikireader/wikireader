@@ -76,6 +76,7 @@ $(call REQUIRED_BINARY, dvipng, dvipng)
 $(call REQUIRED_PHP, pdo_sqlite, php5-sqlite)
 $(call REQUIRED_PHP, session, php5-session)
 $(call REQUIRED_PHP, ctype, php5-ctype)
+$(call REQUIRED_PHP, tidy, php5-tidy)
 
 
 ifeq (yes,$(strip ${VERBOSE}))

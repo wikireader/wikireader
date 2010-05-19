@@ -765,7 +765,7 @@ class WrProcess(HTMLParser.HTMLParser):
         elif tag == 'p':
             self.flush_buffer()
             self.in_p = True
-            esc_code0(P_MARGIN_TOP)
+            #esc_code0(P_MARGIN_TOP)
 
         elif tag == 'blockquote':
             self.flush_buffer()
@@ -1128,6 +1128,10 @@ class WrProcess(HTMLParser.HTMLParser):
 
     def handle_data(self, data):
         global g_this_article_title
+
+        if self.in_p:
+            self.in_p = False
+            esc_code0(P_MARGIN_TOP)
 
         if self.in_title:
             g_this_article_title += data
