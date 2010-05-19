@@ -670,14 +670,19 @@ nls-install: validate-destdir
 	  ( while read dir ; \
 	    do \
 	      d=$$(basename "$${dir}") ; \
-	      for s in $${d} $${d%%pedia} ; \
+	      for suffix in books dict pedia quote ; \
 	      do \
-	        src="${LICENSE_DIR}/$${s}/wiki.nls" ; \
-	        dest="${DESTDIR_PATH}/$${d}" ; \
+	        src="${LICENSE_DIR}/$${d%$${suffix}}/wiki.nls" ; \
 	        if [ -f "$${src}" ] ; \
 	        then \
-                  echo copy: $${src} to: $${dest} ; \
-                  cp -p "$${src}" "$${dest}" ; \
+	          language="$${d%$${suffix}}" ; \
+	          ${SCRIPTS}/nls-installer --prefix="${DESTDIR_PATH}" \
+                                           --language="$${language}" \
+                                           --suffix="$${suffix}" \
+                                           --output="wiki.nls" \
+                                           --nls="$${src}" \
+                                           --verbose ; \
+	          break ; \
 	        fi ; \
 	      done \
 	    done \

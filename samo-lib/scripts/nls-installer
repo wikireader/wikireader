@@ -1,0 +1,155 @@
+#!/bin/sh
+# aside from this initial boilerplate, this is actually -*- scheme -*- code
+main='(module-ref (resolve-module '\''(scripts script-entry-point)) '\'main')'
+exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
+!#
+
+;;; nls-install - modify nls files based on destination
+;;;
+;;; Copyright (c) 2010 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+(define-module (scripts script-entry-point)
+  :use-module (ice-9 getopt-long)
+  :use-module (ice-9 rdelim)
+  :use-module (ice-9 regex)
+  :use-module (srfi srfi-1)
+  :export (script-entry-point))
+
+(define-macro (unless cond . body)
+  `(if (not ,cond) (begin ,@body)))
+
+(define *program* "program-name-here")
+(define *debug* #f)
+(define *verbose* #f)
+
+(define (usage message)
+  "Display a usage message"
+  (if (string? message)
+      (format #t "error: ~a~%" message))
+  (format #t "usage: ~a [--verbose] [--debug] --prefix=path --language=lang --suffix=suffix --output=file --nls=file~%" *program*)
+  (exit 1))
+
+
+(define (main . args)
+  "Main program"
+  (set! *program* (second args))
+  (let* ((parsed-opts (getopt-long (drop args 1)
+                                   '(
+                                     (prefix (single-char #\p) (value #t))
+                                     (language (single-char #\l) (value #t))
+                                     (suffix (single-char #\s) (value #t))
+                                     (output (single-char #\o) (value #t))
+                                     (nls (single-char #\n) (value #t))
+                                     (verbose (single-char #\v))
+                                     (debug (single-char #\d)))))
+         (=p (option-ref parsed-opts 'prefix #f))
+         (=l (option-ref parsed-opts 'language #f))
+         (=s (option-ref parsed-opts 'suffix #f))
+         (=o (option-ref parsed-opts 'output #f))
+         (=n (option-ref parsed-opts 'nls #f))
+         (*verbose* (option-ref parsed-opts 'verbose #f))
+         (*debug* (option-ref parsed-opts 'debug #f)))
+    (if *debug*
+        (begin
+          (display parsed-opts)
+          (newline)))
+
+    (unless =p (usage "Missing prefix"))
+    (unless =l (usage "Missing language"))
+    (unless =s (usage "Missing suffix"))
+    (unless =o (usage "Missing output"))
+    (unless =n (usage "Missing nls"))
+
+    (if *debug*
+        (format #t "p = ~a  l = ~a  s = ~a  o = ~a~%n = ~a~%" =p =l =s =o =n))
+
+    (let ((out (string-join (list =p (string-join (list =l =s) "" 'infix) =o) "/" 'infix))
+          (table (make-hash-table 100))
+          (defaults (make-hash-table 100)))
+      (if *verbose*
+          (format #t "creating: ~a~%" out))
+      (with-input-from-file =n
+        (lambda ()
+          (with-output-to-file out
+            (lambda ()
+              (let* ((ignored (make-regexp "^[[:space:]]*(#\\*.*)?$"))
+                    (comment (make-regexp "^[[:space:]]*#.*$"))
+                    (special (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*:[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
+                    (normal (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
+                    (control-list
+                     (list (list no-op ignored)
+                           (list write-all comment)
+                           (list (lambda (match) (write-match table match 1 =s 2 3)) special)
+                           (list (lambda (match) (write-var defaults match 1 2)) normal)
+                           )))
+                (while (not (eof-object? (peek-char)))
+                       (process control-list
+                                (string-trim-both (read-line)))))
+
+              ;; copy in any miisng values from defaults
+              (hash-for-each (lambda (key data)
+                               (unless (hash-ref table key)
+                                       (hash-set! table key data))) defaults)
+              ;; output all values in sorted order
+              (for-each display
+                        (sort-list
+                         (hash-map->list (lambda (key data)
+                                           (format #f "~a=~a~%" key data)) table) string<?)))))))))
+
+
+(define (process actions line)
+  "process the first matching action"
+  (unless (eq? '() actions)
+      (let* ((act (car actions))
+             (op (car act))
+             (re (cadr act))
+             (match (regexp-exec re line)))
+        (if match
+            (op match)
+            (process (cdr actions) line)))))
+
+
+(define (no-op . args)
+  "just discard the arguments"
+  #f)
+
+
+(define (write-all match)
+  "output the whole string"
+  (write-line (array-ref match 0)))
+
+
+(define (write-match table match suffix-index suffix var-index value-index)
+  "output if suffix matches"
+  (let ((text (array-ref match 0))
+        (type (array-ref match (+ suffix-index 1))))
+    (if (string=? (string-copy text (car type) (cdr type)) suffix)
+        (write-var table match var-index value-index))))
+
+
+(define (write-var table match var-index value-index)
+  "output var=value"
+  (let ((text (array-ref match 0))
+        (var (array-ref match (+ var-index 1)))
+        (value (array-ref match (+ value-index 1))))
+    (let ((var-text (string-copy text (car var) (cdr var)))
+          (value-text (string-copy text (car value) (cdr value))))
+      (unless (hash-ref table var-text)
+              (begin
+                (hash-set! table var-text value-text))))))

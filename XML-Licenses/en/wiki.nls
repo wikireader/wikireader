@@ -2,7 +2,21 @@
 # Localise WikiReader at translatewiki.net
 # See http://translatewiki.net/wiki/Translating:WikiReader for more information.
 
-wiki_name=Wikipedia English
+#* Notes:
+#*
+#* 1) all lines starting "#*" and blank lines are not placed in the final file.
+#*
+#* 2) all lines starting "#" are copied to the top of the output file.
+#*
+#* 3) a line with a "TYPE:" prefix will override the non-prefix version of
+#*    the same assignment.
+
+wiki_name=English...
+pedia:wiki_name=Wikipedia English
+books:wiki_name=Books
+quote:wiki_name=Quotes
+dict:wiki_name=Dictionary
+
 license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title> 2010-Spring
 type_a_word=Type a Word or Phrase
 no_results=No entries found
