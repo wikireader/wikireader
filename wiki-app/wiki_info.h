@@ -21,11 +21,10 @@
 #define WIKI_INFO_H
 
 #include "lcd_buf_draw.h"
-
-#define MAX_WIKIS 16
+#include "wl-keyboard.h"
 
 #if !defined(INCLUDED_FROM_KERNEL)
-#define MAX_WIKIS_PER_DEVICE MAX_WIKIS
+#define MAX_WIKIS_PER_DEVICE 99
 #else
 #define MAX_WIKIS_PER_DEVICE 6
 #endif
@@ -43,13 +42,17 @@ enum wiki_cat_e {
 	WIKI_CAT_DICTIONARY,
 	WIKI_CAT_QUOTE,
 	WIKI_CAT_SOURCE,
+	WIKI_CAT_BOOKS,
 };
 
 typedef struct _WIKI_LIST {
+	int wiki_serial_id;
 	int wiki_id;
 	int wiki_cat;
 	char wiki_lang[10];
 	char wiki_folder[10];
+	KEYBOARD_MODE wiki_default_keyboard;
+	int wiki_name_idx; // 0 for using wiki_name entry in wiki.nls, 2 for using wiki_name2, etc.
 } WIKI_LIST;
 
 typedef struct _WIKI_LICENSE_DRAW {
@@ -74,5 +77,6 @@ int get_wiki_idx_from_id(int wiki_id);
 int get_wiki_id_from_idx(int wiki_idx);
 WIKI_LICENSE_DRAW *wiki_license_draw(void);
 bool wiki_is_japanese();
+KEYBOARD_MODE wiki_default_keyboard();
 
 #endif

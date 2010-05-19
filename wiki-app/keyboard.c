@@ -40,10 +40,6 @@
 
 #define DBG_KEYBOARD 0
 
-/* some control commands */
-#define INTERNAL_SHIFT   (-23)
-#define INTERNAL_NUMBER  (-42)
-
 static struct guilib_image *image_data;
 int keyboard_type = 0;
 int b_first_123_keyin = 0;
@@ -51,232 +47,267 @@ extern int display_mode;
 
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, keycode) { .left_x = l_x, .right_x = r_x, .left_y = l_y, .right_y = r_y, .key = keycode, }
-/*
 static struct keyboard_key qwerty_char[] = {
-	KEY(0, 126, 23, 152, 'q'),
-	KEY(0+12, 153, 23+12, 180, 'a'),
-	KEY(0, 181, 30, 207, ' '),
+	KEY(0, 126, 23, 152, "q"),
+	KEY(0, 153, 23, 180, "a"),
+	KEY(0, 181, 23, 207, "z"),
 
-	KEY(24, 126, 47, 152, 'w'),
-	KEY(24+12, 153, 47+12, 180, 's'),
-	KEY(24+12, 181, 47+12, 207, 'z'),
+	KEY(24, 126, 47, 152, "w"),
+	KEY(24, 153, 47, 180, "s"),
+	KEY(24, 181, 47, 207, "x"),
 
-	KEY(48, 126, 71, 152, 'e'),
-	KEY(48+12, 153, 71+12, 180, 'd'),
-	KEY(48+12, 181, 71+12, 207, 'x'),
+	KEY(48, 126, 71, 152, "e"),
+	KEY(48, 153, 71, 180, "d"),
+	KEY(48, 181, 71, 207, "c"),
 
-	KEY(72, 126, 95, 152, 'r'),
-	KEY(72+12, 153, 95+12, 180, 'f'),
-	KEY(72+12, 181, 95+12, 207, 'c'),
+	KEY(72, 126, 95, 152, "r"),
+	KEY(72, 153, 95, 180, "f"),
+	KEY(72, 181, 95, 207, "v"),
 
-	KEY(96, 126, 119, 152, 't'),
-	KEY(96+12, 153, 119+12, 180, 'g'),
-	KEY(96+12, 181, 119+12, 207, 'v'),
+	KEY(96, 126, 119, 152, "t"),
+	KEY(96, 153, 119, 180, "g"),
+	KEY(96, 181, 143, 207, " "),
 
-	KEY(120, 126, 143, 152, 'y'),
-	KEY(120+12, 153, 143+12, 180, 'h'),
-	KEY(120+12, 181, 143+12, 207, 'b'),
+	KEY(120, 126, 143, 152, "y"),
+	KEY(120, 153, 143, 180, "h"),
 
-	KEY(144, 126, 167, 152, 'u'),
-	KEY(144+12, 153, 167+12, 180, 'j'),
-	KEY(144+12, 181, 167+12, 207, 'n'),
+	KEY(144, 126, 167, 152, "u"),
+	KEY(144, 153, 167, 180, "j"),
+	KEY(144, 181, 167, 207, "b"),
 
-	KEY(168, 126, 191, 152, 'i'),
-	KEY(168+12, 153, 191+12, 180, 'k'),
-	KEY(168+12, 181, 191+12, 207, 'm'),
+	KEY(168, 126, 191, 152, "i"),
+	KEY(168, 153, 191, 180, "k"),
+	KEY(168, 181, 191, 207, "n"),
 
-	KEY(192, 126, 215, 152, 'o'),
-	KEY(192+12, 153, 215+12, 180, 'l'),
+	KEY(192, 126, 215, 152, "o"),
+	KEY(192, 153, 215, 180, "l"),
+	KEY(192, 181, 215, 207, "m"),
 
-	KEY(216, 126, 239, 152, 'p'),
-	KEY(209, 181, 239, 207, WL_KEY_BACKSPACE),
+	KEY(216, 126, 239, 152, "p"),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE_STR),
+	KEY(216, 181, 239, 207, WL_KEY_SWITCH_KEYBOARD_STR),
 
-	KEY(199, 84, 233, 118, WL_KEY_NLS),
-};
-*/
-static struct keyboard_key qwerty_char[] = {
-	KEY(0, 126, 23, 152, 'q'),
-	KEY(0, 153, 23, 180, 'a'),
-	KEY(0, 181, 23, 207, 'z'),
-
-	KEY(24, 126, 47, 152, 'w'),
-	KEY(24, 153, 47, 180, 's'),
-	KEY(24, 181, 47, 207, 'x'),
-
-	KEY(48, 126, 71, 152, 'e'),
-	KEY(48, 153, 71, 180, 'd'),
-	KEY(48, 181, 71, 207, 'c'),
-
-	KEY(72, 126, 95, 152, 'r'),
-	KEY(72, 153, 95, 180, 'f'),
-	KEY(72, 181, 95, 207, 'v'),
-
-	KEY(96, 126, 119, 152, 't'),
-	KEY(96, 153, 119, 180, 'g'),
-	KEY(96, 181, 143, 207, ' '),
-
-	KEY(120, 126, 143, 152, 'y'),
-	KEY(120, 153, 143, 180, 'h'),
-
-	KEY(144, 126, 167, 152, 'u'),
-	KEY(144, 153, 167, 180, 'j'),
-	KEY(144, 181, 167, 207, 'b'),
-
-	KEY(168, 126, 191, 152, 'i'),
-	KEY(168, 153, 191, 180, 'k'),
-	KEY(168, 181, 191, 207, 'n'),
-
-	KEY(192, 126, 215, 152, 'o'),
-	KEY(192, 153, 215, 180, 'l'),
-	KEY(192, 181, 215, 207, 'm'),
-
-	KEY(216, 126, 239, 152, 'p'),
-	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
-	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
-
-	KEY(198, 84, 233, 119, WL_KEY_NLS),
+	KEY(198, 84, 233, 119, WL_KEY_NLS_STR),
 };
 static struct keyboard_key qwerty_num[] = {
-	KEY(0, 126, 23, 152, '1'),
-	KEY(0, 153, 23, 180, '*'),
-	KEY(0, 181, 23, 207, '@'),
+	KEY(0, 126, 23, 152, "1"),
+	KEY(0, 153, 23, 180, "*"),
+	KEY(0, 181, 23, 207, "@"),
 
-	KEY(24, 126, 47, 152, '2'),
-	KEY(24, 153, 47, 180, '$'),
-	KEY(24, 181, 47, 207, '?'),
+	KEY(24, 126, 47, 152, "2"),
+	KEY(24, 153, 47, 180, "$"),
+	KEY(24, 181, 47, 207, "?"),
 
-	KEY(48, 126, 71, 152, '3'),
-	KEY(48, 153, 71, 180, '%'),
-	KEY(48, 181, 71, 207, '!'),
+	KEY(48, 126, 71, 152, "3"),
+	KEY(48, 153, 71, 180, "%"),
+	KEY(48, 181, 71, 207, "!"),
 
-	KEY(72, 126, 95, 152, '4'),
-	KEY(72, 153, 95, 180, '#'),
-	KEY(72, 181, 95, 207, '&'),
+	KEY(72, 126, 95, 152, "4"),
+	KEY(72, 153, 95, 180, "#"),
+	KEY(72, 181, 95, 207, "&"),
 
-	KEY(96, 126, 119, 152, '5'),
-	KEY(96, 153, 119, 180, '('),
-	KEY(96, 181, 143, 207, ' '),
+	KEY(96, 126, 119, 152, "5"),
+	KEY(96, 153, 119, 180, "("),
+	KEY(96, 181, 143, 207, " "),
 
-	KEY(120, 126, 143, 152, '6'),
-	KEY(120, 153, 143, 180, ')'),
+	KEY(120, 126, 143, 152, "6"),
+	KEY(120, 153, 143, 180, ")"),
 
-	KEY(144, 126, 167, 152, '7'),
-	KEY(144, 153, 167, 180, '-'),
-	KEY(144, 181, 167, 207, ','),
+	KEY(144, 126, 167, 152, "7"),
+	KEY(144, 153, 167, 180, "-"),
+	KEY(144, 181, 167, 207, ","),
 
-	KEY(168, 126, 191, 152, '8'),
-	KEY(168, 153, 191, 180, '+'),
-	KEY(168, 181, 191, 207, '.'),
+	KEY(168, 126, 191, 152, "8"),
+	KEY(168, 153, 191, 180, "+"),
+	KEY(168, 181, 191, 207, "."),
 
-	KEY(192, 126, 215, 152, '9'),
-	KEY(192, 153, 215, 180, '='),
-	KEY(192, 181, 215, 207, '\''),
+	KEY(192, 126, 215, 152, "9"),
+	KEY(192, 153, 215, 180, "="),
+	KEY(192, 181, 215, 207, "\""),
 
-	KEY(216, 126, 239, 152, '0'),
-	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
-	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
+	KEY(216, 126, 239, 152, "0"),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE_STR),
+	KEY(216, 181, 239, 207, WL_KEY_SWITCH_KEYBOARD_STR),
 
-	KEY(198, 84, 233, 119, WL_KEY_NLS),
+	KEY(198, 84, 233, 119, WL_KEY_NLS_STR),
+};
+static struct keyboard_key phone_jp[] = {
+	KEY(1, 128, 46, 146, WL_KEY_NO_WAIT_STR),
+	KEY(47, 128, 95, 146, "あいうえお"),
+	KEY(96, 128, 144, 146, "かきくけこ"),
+	KEY(145, 128, 193, 146, "さしすせそ"),
+	KEY(194, 128, 239, 146, WL_KEY_BACKSPACE_STR),
+
+	KEY(1, 148, 46, 166, WL_KEY_BACKWARD_STR),
+	KEY(47, 148, 95, 166, "たちつてと"),
+	KEY(96, 148, 144, 166, "なにぬねの"),
+	KEY(145, 148, 193, 166, "はひふへほ"),
+	KEY(194, 148, 239, 166, " "),
+
+	KEY(1, 168, 46, 186, WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
+	KEY(47, 168, 95, 186, "まみむめも"),
+	KEY(96, 168, 144, 186, "やゆよ"),
+	KEY(145, 168, 193, 186, "らりるれろ"),
+	//KEY(194, 168, 239, 206, ""),
+
+	KEY(1, 188, 46, 206, WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
+	KEY(47, 188, 95, 206, WL_KEY_SONANT_STR),
+	KEY(96, 188, 144, 206, "わをんー"),
+	KEY(145, 188, 193, 206, ",.?!"),
+
+	KEY(198, 84, 233, 119, WL_KEY_NLS_STR),
+};
+static struct keyboard_key phone_abc[] = {
+	KEY(1, 128, 46, 146, WL_KEY_NO_WAIT_STR),
+	KEY(47, 128, 95, 146, " "),
+	KEY(96, 128, 144, 146, "abc"),
+	KEY(145, 128, 193, 146, "def"),
+	KEY(194, 128, 239, 146, WL_KEY_BACKSPACE_STR),
+
+	KEY(1, 148, 46, 166, WL_KEY_BACKWARD_STR),
+	KEY(47, 148, 95, 166, "ghi"),
+	KEY(96, 148, 144, 166, "jkl"),
+	KEY(145, 148, 193, 166, "mno"),
+	KEY(194, 148, 239, 166, " "),
+
+	KEY(1, 168, 46, 186, WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
+	KEY(47, 168, 95, 186, "pqrs"),
+	KEY(96, 168, 144, 186, "tuv"),
+	KEY(145, 168, 193, 186, "wxyz"),
+	//KEY(194, 168, 239, 206, ""),
+
+	KEY(1, 188, 46, 206, WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
+	KEY(47, 188, 95, 206, "+-*="),
+	KEY(96, 188, 144, 206, " "),
+	KEY(145, 188, 193, 206, ",.?!"),
+
+	KEY(198, 84, 233, 119, WL_KEY_NLS_STR),
+};
+static struct keyboard_key phone_123[] = {
+	KEY(1, 128, 46, 146, WL_KEY_NO_WAIT_STR),
+	KEY(47, 128, 95, 146, "1"),
+	KEY(96, 128, 144, 146, "2"),
+	KEY(145, 128, 193, 146, "3"),
+	KEY(194, 128, 239, 146, WL_KEY_BACKSPACE_STR),
+
+	KEY(1, 148, 46, 166, WL_KEY_BACKWARD_STR),
+	KEY(47, 148, 95, 166, "4"),
+	KEY(96, 148, 144, 166, "5"),
+	KEY(145, 148, 193, 166, "6"),
+	KEY(194, 148, 239, 166, " "),
+
+	KEY(1, 168, 46, 186, WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
+	KEY(47, 168, 95, 186, "7"),
+	KEY(96, 168, 144, 186, "8"),
+	KEY(145, 168, 193, 186, "9"),
+	//KEY(194, 168, 239, 206, ""),
+
+	KEY(1, 188, 46, 206, WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
+	KEY(47, 188, 95, 206, "+-*="),
+	KEY(96, 188, 144, 206, "0"),
+	KEY(145, 188, 193, 206, ",.?!"),
+
+	KEY(198, 84, 233, 119, WL_KEY_NLS_STR),
 };
 static struct keyboard_key password_char[] = {
-	KEY(175, 81, 204, 105, 'Y'),
+	KEY(175, 81, 204, 105, "Y"),
 
-	KEY(0, 126, 23, 152, 'q'),
-	KEY(0, 153, 23, 180, 'a'),
-	KEY(0, 181, 23, 207, 'z'),
+	KEY(0, 126, 23, 152, "q"),
+	KEY(0, 153, 23, 180, "a"),
+	KEY(0, 181, 23, 207, "z"),
 
-	KEY(24, 126, 47, 152, 'w'),
-	KEY(24, 153, 47, 180, 's'),
-	KEY(24, 181, 47, 207, 'x'),
+	KEY(24, 126, 47, 152, "w"),
+	KEY(24, 153, 47, 180, "s"),
+	KEY(24, 181, 47, 207, "x"),
 
-	KEY(48, 126, 71, 152, 'e'),
-	KEY(48, 153, 71, 180, 'd'),
-	KEY(48, 181, 71, 207, 'c'),
+	KEY(48, 126, 71, 152, "e"),
+	KEY(48, 153, 71, 180, "d"),
+	KEY(48, 181, 71, 207, "c"),
 
-	KEY(72, 126, 95, 152, 'r'),
-	KEY(72, 153, 95, 180, 'f'),
-	KEY(72, 181, 95, 207, 'v'),
+	KEY(72, 126, 95, 152, "r"),
+	KEY(72, 153, 95, 180, "f"),
+	KEY(72, 181, 95, 207, "v"),
 
-	KEY(96, 126, 119, 152, 't'),
-	KEY(96, 153, 119, 180, 'g'),
-	KEY(96, 181, 143, 207, ' '),
+	KEY(96, 126, 119, 152, "t"),
+	KEY(96, 153, 119, 180, "g"),
+	KEY(96, 181, 143, 207, " "),
 
-	KEY(120, 126, 143, 152, 'y'),
-	KEY(120, 153, 143, 180, 'h'),
+	KEY(120, 126, 143, 152, "y"),
+	KEY(120, 153, 143, 180, "h"),
 
-	KEY(144, 126, 167, 152, 'u'),
-	KEY(144, 153, 167, 180, 'j'),
-	KEY(144, 181, 167, 207, 'b'),
+	KEY(144, 126, 167, 152, "u"),
+	KEY(144, 153, 167, 180, "j"),
+	KEY(144, 181, 167, 207, "b"),
 
-	KEY(168, 126, 191, 152, 'i'),
-	KEY(168, 153, 191, 180, 'k'),
-	KEY(168, 181, 191, 207, 'n'),
+	KEY(168, 126, 191, 152, "i"),
+	KEY(168, 153, 191, 180, "k"),
+	KEY(168, 181, 191, 207, "n"),
 
-	KEY(192, 126, 215, 152, 'o'),
-	KEY(192, 153, 215, 180, 'l'),
-	KEY(192, 181, 215, 207, 'm'),
+	KEY(192, 126, 215, 152, "o"),
+	KEY(192, 153, 215, 180, "l"),
+	KEY(192, 181, 215, 207, "m"),
 
-	KEY(216, 126, 239, 152, 'p'),
-	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
-	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
+	KEY(216, 126, 239, 152, "p"),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE_STR),
+	KEY(216, 181, 239, 207, WL_KEY_SWITCH_KEYBOARD_STR),
 };
 static struct keyboard_key password_num[] = {
-	KEY(175, 81, 204, 105, 'Y'),
+	KEY(175, 81, 204, 105, "Y"),
 
-	KEY(0, 126, 23, 152, '1'),
-	KEY(0, 153, 23, 180, '*'),
-	KEY(0, 181, 23, 207, '@'),
+	KEY(0, 126, 23, 152, "1"),
+	KEY(0, 153, 23, 180, "*"),
+	KEY(0, 181, 23, 207, "@"),
 
-	KEY(24, 126, 47, 152, '2'),
-	KEY(24, 153, 47, 180, '$'),
-	KEY(24, 181, 47, 207, '?'),
+	KEY(24, 126, 47, 152, "2"),
+	KEY(24, 153, 47, 180, "$"),
+	KEY(24, 181, 47, 207, "?"),
 
-	KEY(48, 126, 71, 152, '3'),
-	KEY(48, 153, 71, 180, '%'),
-	KEY(48, 181, 71, 207, '!'),
+	KEY(48, 126, 71, 152, "3"),
+	KEY(48, 153, 71, 180, "%"),
+	KEY(48, 181, 71, 207, "!"),
 
-	KEY(72, 126, 95, 152, '4'),
-	KEY(72, 153, 95, 180, '#'),
-	KEY(72, 181, 95, 207, '&'),
+	KEY(72, 126, 95, 152, "4"),
+	KEY(72, 153, 95, 180, "#"),
+	KEY(72, 181, 95, 207, "&"),
 
-	KEY(96, 126, 119, 152, '5'),
-	KEY(96, 153, 119, 180, '('),
-	KEY(96, 181, 143, 207, ' '),
+	KEY(96, 126, 119, 152, "5"),
+	KEY(96, 153, 119, 180, "("),
+	KEY(96, 181, 143, 207, " "),
 
-	KEY(120, 126, 143, 152, '6'),
-	KEY(120, 153, 143, 180, ')'),
+	KEY(120, 126, 143, 152, "6"),
+	KEY(120, 153, 143, 180, ")"),
 
-	KEY(144, 126, 167, 152, '7'),
-	KEY(144, 153, 167, 180, '-'),
-	KEY(144, 181, 167, 207, ','),
+	KEY(144, 126, 167, 152, "7"),
+	KEY(144, 153, 167, 180, "-"),
+	KEY(144, 181, 167, 207, ","),
 
-	KEY(168, 126, 191, 152, '8'),
-	KEY(168, 153, 191, 180, '+'),
-	KEY(168, 181, 191, 207, '.'),
+	KEY(168, 126, 191, 152, "8"),
+	KEY(168, 153, 191, 180, "+"),
+	KEY(168, 181, 191, 207, "."),
 
-	KEY(192, 126, 215, 152, '9'),
-	KEY(192, 153, 215, 180, '='),
-	KEY(192, 181, 215, 207, '\''),
+	KEY(192, 126, 215, 152, "9"),
+	KEY(192, 153, 215, 180, "="),
+	KEY(192, 181, 215, 207, "\""),
 
-	KEY(216, 126, 239, 152, '0'),
-	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE),
-	KEY(216, 181, 239, 207, INTERNAL_NUMBER),
+	KEY(216, 126, 239, 152, "0"),
+	KEY(216, 153, 239, 180, WL_KEY_BACKSPACE_STR),
+	KEY(216, 181, 239, 207, WL_KEY_SWITCH_KEYBOARD_STR),
 };
 static struct keyboard_key clear_history[] = {
-	KEY(131, 181, 184, 207, 'Y'),
-	KEY(185, 181, 238, 207, 'N'),
+	KEY(131, 181, 184, 207, "Y"),
+	KEY(185, 181, 238, 207, "N"),
 };
 static struct keyboard_key restriction[] = {
-	KEY(12, 148, 227, 170, 'Y'),
+	KEY(12, 148, 227, 170, "Y"),
 };
 static struct keyboard_key filter_on_off[] = {
-	KEY(12, 134, 227, 157, 'Y'),
-	KEY(12, 163, 227, 186, 'N'),
+	KEY(12, 134, 227, 157, "Y"),
+	KEY(12, 163, 227, 186, "N"),
 };
 static struct keyboard_key filter_option[] = {
-	KEY(12, 105, 227, 128, 'Y'),
-	KEY(12, 134, 227, 157, 'N'),
-	KEY(12, 163, 227, 187, 'P'),
+	KEY(12, 105, 227, 128, "Y"),
+	KEY(12, 134, 227, 157, "N"),
+	KEY(12, 163, 227, 187, "P"),
 };
 /*
  * The secret of the position and size of the keyboard
@@ -297,7 +328,7 @@ static int key_bubble_save_x_start_byte;
 static int key_bubble_save_y_start;
 static int key_bubble_save_width_bytes;
 
-static int kb_mode = KEYBOARD_CHAR;
+static KEYBOARD_MODE kb_mode = KEYBOARD_CHAR;
 extern unsigned char *framebuffer;
 
 void keyboard_set_mode(int mode)
@@ -306,11 +337,17 @@ void keyboard_set_mode(int mode)
 
 	if(kb_mode == KEYBOARD_CHAR) {
 		image_data = &keyboard_abc_image;
-	} else if(kb_mode == KEYBOARD_CHAR2) {
+	} else if(kb_mode == KEYBOARD_CHAR_JP) {
 		image_data = &keyboard_abc2_image;
 	} else if(kb_mode == KEYBOARD_NUM) {
 		image_data = &keyboard_123_image;
 		b_first_123_keyin = 1;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
+		image_data = &keyboard_phone_jp_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
+		image_data = &keyboard_phone_abc_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
+		image_data = &keyboard_phone_123_image;
 	} else {
 		image_data = NULL;
 	}
@@ -332,12 +369,18 @@ void keyboard_paint()
 	pre_key = NULL;
 	if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR) {
 		image_data = &keyboard_abc_image;
-	} else if(kb_mode == KEYBOARD_CHAR2) {
+	} else if(kb_mode == KEYBOARD_CHAR_JP) {
 		image_data = &keyboard_abc2_image;
 	} else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM) {
 		image_data = &keyboard_123_image;
 //      } else if(kb_mode == KEYBOARD_CLEAR_HISTORY) {
 //           image_data = &clear_history_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
+		image_data = &keyboard_phone_jp_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
+		image_data = &keyboard_phone_abc_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
+		image_data = &keyboard_phone_123_image;
 	} else {
 		return;
 	}
@@ -368,12 +411,12 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 {
 	unsigned int i;
 
-	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR2) {
+	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR_JP) {
 		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
 			if (qwerty_char[i].left_x + KEY_GAP1 <= x && qwerty_char[i].right_x - KEY_GAP2 >= x
 			    && qwerty_char[i].left_y + KEY_GAP3 <= y && qwerty_char[i].right_y - KEY_GAP4 >= y
-			    && (nls_button_enabled() || qwerty_char[i].key != WL_KEY_NLS)) {
-				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_char[i].key));
+			    && (nls_button_enabled() || *qwerty_char[i].key != WL_KEY_NLS)) {
+				DP(DBG_KEYBOARD, ("O Entered '%c'\n", *qwerty_char[i].key));
 				return &qwerty_char[i];
 			}
 		}
@@ -382,9 +425,36 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
 			if (qwerty_num[i].left_x + KEY_GAP1 <= x && qwerty_num[i].right_x - KEY_GAP2 >= x
 			    && qwerty_num[i].left_y + KEY_GAP3 <= y && qwerty_num[i].right_y - KEY_GAP4 >= y
-			    && (nls_button_enabled() || qwerty_char[i].key != WL_KEY_NLS)) {
-				DP(DBG_KEYBOARD, ("O Entered '%c'\n", qwerty_num[i].key));
+			    && (nls_button_enabled() || *qwerty_char[i].key != WL_KEY_NLS)) {
+				DP(DBG_KEYBOARD, ("O Entered '%c'\n", *qwerty_num[i].key));
 				return &qwerty_num[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP) {
+		for (i = 0; i < ARRAY_SIZE(phone_jp); ++i) {
+			if (phone_jp[i].left_x <= x && phone_jp[i].right_x >= x
+			    && phone_jp[i].left_y <= y && phone_jp[i].right_y >= y
+			    && (nls_button_enabled() || *phone_jp[i].key != WL_KEY_NLS)) {
+				return &phone_jp[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
+		for (i = 0; i < ARRAY_SIZE(phone_abc); ++i) {
+			if (phone_abc[i].left_x <= x && phone_abc[i].right_x >= x
+			    && phone_abc[i].left_y <= y && phone_abc[i].right_y >= y
+			    && (nls_button_enabled() || *phone_abc[i].key != WL_KEY_NLS)) {
+				return &phone_abc[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_123) {
+		for (i = 0; i < ARRAY_SIZE(phone_123); ++i) {
+			if (phone_123[i].left_x <= x && phone_123[i].right_x >= x
+			    && phone_123[i].left_y <= y && phone_123[i].right_y >= y
+			    && (nls_button_enabled() || *phone_123[i].key != WL_KEY_NLS)) {
+				return &phone_123[i];
 			}
 		}
 	}
@@ -571,21 +641,38 @@ void restore_key_bubble(void)
 	guilib_fb_unlock();
 }
 
-void keyboard_process_key_invert(struct keyboard_key *key)
+void keyboard_process_key_invert(struct keyboard_key *key, bool bResetDelay)
 {
 	int start_x, start_y, end_x, end_y;
 
-	start_x = key->left_x + 2;
-	start_y = key->left_y + 2;
-	end_x = key->right_x - 2;
-	end_y = key->right_y - 2;
-	if (strchr("qaz1*@", key->key))
-		start_x++;
-	if (strchr("p0", key->key) || key->key == WL_KEY_BACKSPACE)
-		end_x--;
-	if (strchr("asdfghjklzxcvbnm*$%#()-+=<@?!& ,.'", key->key) || key->key == WL_KEY_BACKSPACE)
-		start_y++;
-	if (key->key == WL_KEY_NLS)
+	if (kb_mode == KEYBOARD_PHONE_STYLE_JP && kb_mode == KEYBOARD_PHONE_STYLE_ABC && kb_mode == KEYBOARD_PHONE_STYLE_123)
+	{
+		start_x = key->left_x + 2;
+		start_y = key->left_y + 1;
+		end_x = key->right_x - 2;
+		end_y = key->right_y - 1;
+	}
+	else if (*key->key == WL_KEY_NLS)
+	{
+		start_x = key->left_x;
+		start_y = key->left_y;
+		end_x = key->right_x;
+		end_y = key->right_y;
+	}
+	else
+	{
+		start_x = key->left_x + 2;
+		start_y = key->left_y + 2;
+		end_x = key->right_x - 2;
+		end_y = key->right_y - 2;
+		if (strchr("qaz1*@", *key->key))
+			start_x++;
+		if (strchr("p0", *key->key) || *key->key == WL_KEY_BACKSPACE)
+			end_x--;
+		if (strchr("asdfghjklzxcvbnm*$%#()-+=<@?!& ,.'", *key->key) || *key->key == WL_KEY_BACKSPACE)
+			start_y++;
+	}
+	if (*key->key == WL_KEY_NLS)
 	{
 		int y_diff, x_diff;
 		
@@ -611,7 +698,8 @@ void keyboard_process_key_invert(struct keyboard_key *key)
 			guilib_invert_area(start_x + x_diff, end_y - y_diff, end_x - x_diff, end_y - y_diff);
 		}
 	}
-	else if (key->key == ' ' || key->key == WL_KEY_BACKSPACE || isupper(key->key))
+	else if (*key->key == ' ' || *key->key == WL_KEY_BACKSPACE || isupper(*key->key) ||
+		kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123)
 	{
 		guilib_invert_area(start_x,start_y,end_x,end_y);
 		guilib_invert_area(start_x,start_y,start_x,start_y);
@@ -621,23 +709,42 @@ void keyboard_process_key_invert(struct keyboard_key *key)
 	}
 	else
 	{
-		draw_key_bubble(start_x, start_y, end_x, end_y, key->key);
+		draw_key_bubble(start_x, start_y, end_x, end_y, *key->key);
 	}
-	keyboard_key_invert_dalay = 0;
+	if (bResetDelay)
+		keyboard_key_invert_dalay = 0;
 }
 
+// return values:
+// 0 - no key inverted
+// 1 - key without multiple selections inverted
+// -1 - key with multiple selections inverted
 int keyboard_key_inverted(void)
 {
 	if (pre_key)
-		return 1;
+	{
+		if (MULTI_SELECTION_KEY(pre_key))
+			return -1;
+		else
+			return 1;
+	}
 	else
 		return 0;
+}
+
+void flash_keyboard_key_invert(void)
+{
+	if (pre_key)
+		keyboard_process_key_invert(pre_key, false);
 }
 
 void keyboard_key_invert(struct keyboard_key *key)
 {
 	guilib_fb_lock();
-	if (key && key->key == INTERNAL_NUMBER)
+	if (key && (*key->key == WL_KEY_SWITCH_KEYBOARD ||
+			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
+			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
+			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123))
 		pre_key = NULL;
 	else
 	{
@@ -647,7 +754,7 @@ void keyboard_key_invert(struct keyboard_key *key)
 		}
 		if (key)
 		{
-			keyboard_process_key_invert(key);
+			keyboard_process_key_invert(key, true);
 			pre_key = key;
 		}
 	}
@@ -670,8 +777,17 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		}
 		else if (bFlag == KEYBOARD_RESET_INVERT_CHECK && keyboard_key_invert_dalay)
 		{
-			if (time_diff(get_time_ticks(), start_time) > seconds_to_ticks(KEY_BUBBLE_STAY_TIME))
+			unsigned long stay_time_ticks;
+
+			if ((kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123) &&
+				MULTI_SELECTION_KEY(pre_key))
+				stay_time_ticks = seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME);
+			else
+				stay_time_ticks = seconds_to_ticks(KEY_BUBBLE_STAY_TIME);
+			if (time_diff(get_time_ticks(), start_time) > stay_time_ticks)
+			{
 				bFlag = KEYBOARD_RESET_INVERT_NOW; // reset invert immediately
+			}
 			else
 				rc = 1;
 		}
@@ -679,13 +795,14 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		if (bFlag == KEYBOARD_RESET_INVERT_NOW)
 		{
 			guilib_fb_lock();
-			if (pre_key->key == ' ' || pre_key->key == WL_KEY_BACKSPACE || isupper(pre_key->key) || 
-				(pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
-				keyboard_process_key_invert(pre_key);
-			else if (pre_key->key != WL_KEY_NLS)
+			if (*pre_key->key == ' ' || *pre_key->key == WL_KEY_BACKSPACE || isupper(*pre_key->key) ||
+				kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123 ||
+				(*pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
+				keyboard_process_key_invert(pre_key, true);
+			else if (*pre_key->key != WL_KEY_NLS)
 				restore_key_bubble();
 
-			if (kb_mode == KEYBOARD_NUM && ((!b_first_123_keyin && pre_key->key == ' ') || pre_key->key == '\''))
+			if (kb_mode == KEYBOARD_NUM && ((!b_first_123_keyin && *pre_key->key == ' ') || *pre_key->key == '\''))
 			{
 				keyboard_set_mode(KEYBOARD_CHAR);
 				guilib_fb_lock();
@@ -695,7 +812,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 				b_first_123_keyin = 0;
 				
 			pre_key = NULL;
-			if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR2 || kb_mode == KEYBOARD_NUM)
+			if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR_JP || kb_mode == KEYBOARD_NUM)
 				search_to_be_reloaded(SEARCH_TO_BE_RELOADED_CHECK, 0);
 			guilib_fb_unlock();
 		}
@@ -716,4 +833,72 @@ int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2)
 	{
 		return 0;
 	}
+}
+
+struct keyboard_key *keyboard_locate_key(char keycode)
+{
+	int i;
+
+	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR_JP) {
+		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
+			if (*qwerty_char[i].key == keycode)
+				return &qwerty_char[i];
+		}
+	}
+	else if (kb_mode == KEYBOARD_NUM) {
+		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
+			if (*qwerty_num[i].key == keycode)
+				return &qwerty_num[i];
+		}
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP) {
+		for (i = 0; i < ARRAY_SIZE(phone_jp); ++i) {
+			if (*phone_jp[i].key == keycode)
+				return &phone_jp[i];
+		}
+	}
+	else if (kb_mode == KEYBOARD_CLEAR_HISTORY) {
+		for (i = 0; i < ARRAY_SIZE(clear_history); ++i) {
+			if (*clear_history[i].key == keycode) {
+				return &clear_history[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_CHAR) {
+		for (i = 0; i < ARRAY_SIZE(password_char); ++i) {
+			if (*password_char[i].key == keycode) {
+				return &password_char[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_NUM) {
+		for (i = 0; i < ARRAY_SIZE(password_num); ++i) {
+			if (*password_num[i].key == keycode) {
+				return &password_num[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_RESTRICTED) {
+		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
+			if (*restriction[i].key == keycode) {
+				return &restriction[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_FILTER_ON_OFF) {
+		for (i = 0; i < ARRAY_SIZE(filter_on_off); ++i) {
+			if (*filter_on_off[i].key == keycode) {
+				return &filter_on_off[i];
+			}
+		}
+	}
+	else if (kb_mode == KEYBOARD_FILTER_OPTION) {
+		for (i = 0; i < ARRAY_SIZE(filter_option); ++i) {
+			if (*filter_option[i].key == keycode) {
+				return &filter_option[i];
+			}
+		}
+	}
+
+	return NULL;
 }

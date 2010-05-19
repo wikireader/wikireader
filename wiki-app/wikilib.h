@@ -47,6 +47,7 @@
 #define ARTICLE_NEW		0
 #define ARTICLE_HISTORY		1
 #define ARTICLE_BROWSE		2
+#define PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME 1.5
 
 enum display_mode_e {
 
@@ -64,9 +65,6 @@ typedef unsigned long u32;
 typedef signed char s8;
 typedef signed short s16;
 typedef signed int s32;
-
-#define ARTICLE_NEW		0
-#define ARTICLE_HISTORY		1
 
 /* function prototypes */
 int wikilib_init (void);

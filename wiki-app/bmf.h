@@ -79,7 +79,9 @@
 #include <inttypes.h>
 
 typedef unsigned char bmf_bm_t;
-typedef unsigned int  ucs4_t;
+#ifndef ucs4_t
+#define ucs4_t unsigned int
+#endif
 
 #define bzero(b,n)	(memset((b),0,(n)))
 

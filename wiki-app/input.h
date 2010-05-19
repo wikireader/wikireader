@@ -21,16 +21,33 @@
 #include <stdbool.h>
 
 
-#define WL_KEY_NLS		7
-#define WL_KEY_BACKSPACE	8
-#define WL_KEY_RETURN		13
-#define WL_KEY_ESC		27
-#define WL_KEY_SPACE		32
-#define WL_KEY_HASH		35
 #define WL_KEY_PLUS		43
-#define WL_KEY_MINUS		45
+#define WL_KEY_MINUS	45
 #define WL_KEY_UP		65
 #define WL_KEY_DOWN		66
+
+#define WL_KEY_RETURN							0x0D
+#define WL_KEY_SPACE							0x20
+#define WL_KEY_HASH								0x23
+#define WL_KEY_BACKWARD							0X09
+#define WL_KEY_BACKSPACE						0x08
+#define WL_KEY_NLS								0x07
+#define WL_KEY_SWITCH_KEYBOARD 					0x06
+#define WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT 	0x05
+#define WL_KEY_POHONE_STYLE_KEYBOARD_ABC 		0X04
+#define WL_KEY_POHONE_STYLE_KEYBOARD_123 		0X03
+#define WL_KEY_SONANT 							0X02
+#define WL_KEY_NO_WAIT 							0X01
+
+#define WL_KEY_BACKWARD_STR							"\x09\x00"
+#define WL_KEY_BACKSPACE_STR						"\x08\x00"
+#define WL_KEY_NLS_STR								"\x07\x00"
+#define WL_KEY_SWITCH_KEYBOARD_STR 					"\x06\x00"
+#define WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR 	"\x05\x00"
+#define WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR 		"\x04\x00"
+#define WL_KEY_POHONE_STYLE_KEYBOARD_123_STR 		"\x03\x00"
+#define WL_KEY_SONANT_STR							"\x02\x00"
+#define WL_KEY_NO_WAIT_STR							"\x01\x00"
 
 enum {
 	WL_INPUT_KEY_SEARCH	= 0x1000,

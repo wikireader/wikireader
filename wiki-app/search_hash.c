@@ -48,13 +48,13 @@
 long nNeedMoreEntries = 0;
 #else
 extern int search_interrupted;
-int bHashInited[MAX_WIKIS];
-//SEARCH_HASH_TABLE *search_hash_table[MAX_WIKIS];
-//SEARCH_HASH_STRING *search_hash_strings[MAX_WIKIS];
-//uint32_t nHashEntries[MAX_WIKIS];
-//int fdHsh[MAX_WIKIS];
-int fdFnd[MAX_WIKIS];
-int *bHashBlockLoaded[MAX_WIKIS];
+int bHashInited[MAX_WIKIS_PER_DEVICE];
+//SEARCH_HASH_TABLE *search_hash_table[MAX_WIKIS_PER_DEVICE];
+//SEARCH_HASH_STRING *search_hash_strings[MAX_WIKIS_PER_DEVICE];
+//uint32_t nHashEntries[MAX_WIKIS_PER_DEVICE];
+//int fdHsh[MAX_WIKIS_PER_DEVICE];
+int fdFnd[MAX_WIKIS_PER_DEVICE];
+int *bHashBlockLoaded[MAX_WIKIS_PER_DEVICE];
 #define FND_BUF_COUNT 1024
 #define ENTRIES_PER_HASH_BLOCK 256
 // FND_BUF_BLOCK_SIZE needs to be larger than MAX_RESULTS * sizeof(TITLE_SEARCH)
@@ -64,10 +64,10 @@ struct __attribute__ ((packed)) _fnd_buf {
 	uint32_t len;
 	uint32_t used_seq;
 	char buf[FND_BUF_BLOCK_SIZE];
-} *fnd_bufs[MAX_WIKIS];
+} *fnd_bufs[MAX_WIKIS_PER_DEVICE];
 
 long nUsedSeq = 1;
-long lenFnd[MAX_WIKIS];
+long lenFnd[MAX_WIKIS_PER_DEVICE];
 #endif
 
 //static unsigned long hash_key(char *s, int len)
@@ -175,7 +175,7 @@ void init_search_hash(void)
 
 	if (bFirstCall)
 	{
-		for (i = 0; i < MAX_WIKIS; i++)
+		for (i = 0; i < MAX_WIKIS_PER_DEVICE; i++)
 		{
 			bHashInited[i] = 0;
 			lenFnd[i] = 0;

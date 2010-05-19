@@ -47,6 +47,7 @@
 #include "lcd_buf_draw.h"
 #include "search.h"
 #include "bigram.h"
+#include "utf8.h"
 
 #define MAX_SCROLL_SECONDS 3
 #define LIST_SCROLL_SPEED_FRICTION 0.3
@@ -331,95 +332,6 @@ char* FontFile(int idx) {
 	default:
 		return "";
 		break;
-	}
-}
-
-ucs4_t UTF8_to_UCS4(unsigned char **pUTF8)
-{
-	ucs4_t c0, c1, c2, c3;
-
-	/* if 0 returned, it is not a invalid UTF8 character.  The pointer moves to the second byte. */
-	c0 = 0;
-	if (**pUTF8)
-	{
-		c0 = (ucs4_t)**pUTF8;
-		(*pUTF8)++;
-		if (c0 & 0x80) /* multi-byte UTF8 char */
-		{
-			if ((c0 & 0xE0) == 0xC0) /* 2-byte UTF8 */
-			{
-				c1 = **pUTF8;
-				if ((c1 & 0xC0) == 0x80)
-				{
-					(*pUTF8)++;
-					c0 = ((c0 & 0x1F) << 6) + (c1 & 0x3F);
-				}
-				else
-					c0 = 0; /* invalid UTF8 character */
-			}
-			else if ((c0 & 0xF0) == 0xE0) /* 3-byte UTF8 */
-			{
-				c1 = **pUTF8;
-				c2 = *(*pUTF8 + 1);
-				if ((c1 & 0xC0) == 0x80 && (c2 & 0xC0) == 0x80)
-				{
-					(*pUTF8) += 2;
-					c0 = ((c0 & 0x0F) << 12) + ((c1 & 0x3F) << 6) + (c2 & 0x3F);
-				}
-				else
-					c0 = 0; /* invalid UTF8 character */
-			}
-			else if ((c0 & 0xF1) == 0xF0) /* 4-byte UTF8 */
-			{
-				c1 = **pUTF8;
-				c2 = *(*pUTF8 + 1);
-				c3 = *(*pUTF8 + 2);
-				if ((c1 & 0xC0) == 0x80 && (c2 & 0xC0) == 0x80 && (c3 & 0xC0) == 0x80)
-				{
-					(*pUTF8) += 3;
-					c0 = ((c0 & 0x07) << 18) + ((c1 & 0x3F) << 12) + ((c2 & 0x3F) << 6) + (c3 & 0x3F) ;
-				}
-				else
-					c0 = 0; /* invalid UTF8 character */
-			}
-			else
-				c0 = 0; /* invalid UTF8 character */
-		}
-	}
-	return c0;
-}
-
-void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8)
-{
-	if (u < 0x80)
-	{
-		sUTF8[0] = (unsigned char)u;
-		sUTF8[1] = '\0';
-	}
-	else if (u < 0x800)
-	{
-		sUTF8[0] = (unsigned char)(0xC0 | (u >> 6));
-		sUTF8[1] = (unsigned char)(0x80 | (u & 0x3F));
-		sUTF8[2] = '\0';
-	}
-	else if (u < 0x10000)
-	{
-		sUTF8[0] = (unsigned char)(0xC0 | (u >> 12));
-		sUTF8[1] = (unsigned char)(0x80 | ((u & 0xFFF) >> 6));
-		sUTF8[2] = (unsigned char)(0x80 | (u & 0x3F));
-		sUTF8[3] = '\0';
-	}
-	else if (u < 0x110000)
-	{
-		sUTF8[0] = (unsigned char)(0xC0 | (u >> 18));
-		sUTF8[1] = (unsigned char)(0x80 | ((u & 0x3FFFF) >> 12));
-		sUTF8[2] = (unsigned char)(0x80 | ((u & 0xFFF) >> 6));
-		sUTF8[3] = (unsigned char)(0x80 | (u & 0x3F));
-		sUTF8[4] = '\0';
-	}
-	else
-	{
-		sUTF8[0] = '\0';
 	}
 }
 
@@ -961,10 +873,10 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
 
 	x_base = lcd_draw_buf_external->current_x + Cmetrics.LSBearing;
-	if((x_base + Cmetrics.widthDevice) > end_x)
+	if((lcd_draw_buf_external->current_x + Cmetrics.widthDevice) > end_x)
 	{
-		lcd_draw_buf_external->current_x = start_x+2;
-		x_base = 0;
+		lcd_draw_buf_external->current_x = start_x;
+		x_base =  Cmetrics.LSBearing;
 		lcd_draw_buf_external->current_y+=lcd_draw_buf_external->line_height;
 	}
 	y_base = lcd_draw_buf_external->current_y + lcd_draw_buf_external->align_adjustment;

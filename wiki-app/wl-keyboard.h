@@ -27,18 +27,22 @@
 #define KEYBOARD_WIDTH	240
 #define KEYBOARD_HEIGHT	82
 
-enum {
+typedef enum {
 	KEYBOARD_NONE,
 	KEYBOARD_CHAR,
-	KEYBOARD_CHAR2,
+	KEYBOARD_CHAR_JP,
 	KEYBOARD_NUM,
+	KEYBOARD_PHONE_STYLE_JP,
+	KEYBOARD_PHONE_STYLE_TW,
+	KEYBOARD_PHONE_STYLE_ABC,
+	KEYBOARD_PHONE_STYLE_123,
 	KEYBOARD_CLEAR_HISTORY,
 	KEYBOARD_RESTRICTED,
 	KEYBOARD_PASSWORD_CHAR,
 	KEYBOARD_PASSWORD_NUM,
 	KEYBOARD_FILTER_ON_OFF,
 	KEYBOARD_FILTER_OPTION
-};
+} KEYBOARD_MODE;
 
 enum {
 	KEYBOARD_RESET_INVERT_DELAY,
@@ -53,9 +57,10 @@ struct keyboard_key {
 	 */
 	int left_x, right_x;
 	int left_y, right_y;
-	char key;
+	char *key; // assuming non-multi-selection key should have length = 1
 };
 
+#define MULTI_SELECTION_KEY(a) (a->key[1])
 void keyboard_set_mode(int mode);
 int keyboard_get_mode();
 unsigned int keyboard_height();
@@ -65,5 +70,6 @@ void keyboard_key_invert(struct keyboard_key *key);
 int keyboard_key_reset_invert(int bFlag, unsigned long ev_time);
 int keyboard_key_inverted(void);
 int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2);
-
+struct keyboard_key *keyboard_locate_key(char keycode);
+void flash_keyboard_key_invert();
 #endif

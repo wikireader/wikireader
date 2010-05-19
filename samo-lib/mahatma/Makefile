@@ -75,6 +75,7 @@ WIKIAPP_COBJS = file-io-libfat.o
 WIKIAPP_COBJS += wikilib.o
 WIKIAPP_COBJS += malloc-simple.o
 WIKIAPP_COBJS += keyboard.o
+WIKIAPP_COBJS += utf8.o
 
 # used for panic in traps.c
 WIKIAPP_COBJS += hexdump.o
@@ -92,7 +93,7 @@ LZMA_COBJS += Bra.o
 LZMA_COBJS += LzFind.o
 
 # convert the image files
-IMAGES = keyboard_abc keyboard_abc2 keyboard_123 nls
+IMAGES = keyboard_abc keyboard_abc2 keyboard_123 keyboard_phone_jp keyboard_phone_abc keyboard_phone_123 nls
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
 LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)

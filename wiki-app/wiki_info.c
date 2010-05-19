@@ -30,25 +30,34 @@
 #include "search_hash.h"
 #include "msg.h"
 
-WIKI_LIST wiki_list[MAX_WIKIS] =
+WIKI_LIST wiki_list[] =
 {
-	{ 1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia"},
-	{ 2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia"},
-	{ 3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia"},
-	{ 4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia"},
-	{ 5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia"},
-	{ 6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia"},
-	{ 7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia"},
-	{ 8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia"},
-	{ 9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia"},
-	{10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia"},
-	{11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia"},
-	{12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia"},
-	{13, WIKI_CAT_ENCYCLOPAEDIA, "el", "elpedia"},
-	{14, WIKI_CAT_ENCYCLOPAEDIA, "ru", "rupedia"},
-	{15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia"},
-	{16, WIKI_CAT_ENCYCLOPAEDIA, "cy", "cypedia"},
+	{ 1,  1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia", KEYBOARD_CHAR, 0},
+	{ 2,  2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia", KEYBOARD_CHAR, 0},
+	{ 3,  3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia", KEYBOARD_CHAR, 0},
+	{ 4,  4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia", KEYBOARD_CHAR, 0},
+	{ 5,  5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia", KEYBOARD_CHAR, 0},
+	{ 6,  6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia", KEYBOARD_CHAR, 0},
+	{ 7,  7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia", KEYBOARD_CHAR, 0},
+	{ 8,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_PHONE_STYLE_JP, 0},
+	{ 9,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_CHAR, 2},
+	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR, 0},
+	{11, 10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia", KEYBOARD_CHAR, 0},
+	{12, 11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia", KEYBOARD_CHAR, 0},
+	{13, 12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia", KEYBOARD_CHAR, 0},
+	{14, 13, WIKI_CAT_ENCYCLOPAEDIA, "el", "elpedia", KEYBOARD_CHAR, 0},
+	{15, 14, WIKI_CAT_ENCYCLOPAEDIA, "ru", "rupedia", KEYBOARD_CHAR, 0},
+	{16, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia", KEYBOARD_CHAR, 0},
+//	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia", KEYBOARD_PHONE_STYLE_TW, 2},
+	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "no-op", KEYBOARD_CHAR, 0}, // ^ this is not operational yet
+	{18, 16, WIKI_CAT_ENCYCLOPAEDIA, "cy", "cypedia", KEYBOARD_CHAR, 0},
+	{19, 17, WIKI_CAT_ENCYCLOPAEDIA, "pl", "plpedia", KEYBOARD_CHAR, 0},
+	{20, 18, WIKI_CAT_ENCYCLOPAEDIA, "simple", "e0pedia", KEYBOARD_CHAR, 0},
+	{21, 19, WIKI_CAT_QUOTE,         "en", "enquote", KEYBOARD_CHAR, 0},
+	{22, 20, WIKI_CAT_BOOKS,         "en", "enbooks", KEYBOARD_CHAR, 0},
+	{23, 21, WIKI_CAT_DICTIONARY,    "en", "endict", KEYBOARD_CHAR, 0},
 };
+#define MAX_WIKIS (sizeof(wiki_list) / sizeof(WIKI_LIST))
 
 extern int search_interrupted;
 int nWikiCount = 0;
@@ -57,6 +66,7 @@ char *aWikiNls[MAX_WIKIS_PER_DEVICE];
 long aWikiNlsLen[MAX_WIKIS_PER_DEVICE];
 int nCurrentWiki = -1; // index to aWikiInfoIdx[]
 bool bWikiIsJapanese = false;
+KEYBOARD_MODE default_keyboard = KEYBOARD_CHAR;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
 WIKI_LICENSE_DRAW aWikiLicenseDraw[MAX_WIKIS_PER_DEVICE];
@@ -66,6 +76,7 @@ unsigned int sizeWikiIni = 0;
 extern int bShowPositioner;
 
 char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len);
+int get_wiki_idx_from_serial_id(int wiki_serial_id);
 
 void init_wiki_info(void)
 {
@@ -73,7 +84,7 @@ void init_wiki_info(void)
 	int fd;
 	char sFilePath[20];
 	char *p;
-	int nWikiId;
+	int nWikiSerialId;
 
 	for (i = 0; i < MAX_WIKIS && nWikiCount < MAX_WIKIS_PER_DEVICE; i++)
 	{
@@ -114,9 +125,9 @@ void init_wiki_info(void)
 				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni);
 				if (*p)
 				{
-					nWikiId = atoi(p);
-					if (nWikiId > 0)
-						nCurrentWiki = get_wiki_idx_from_id(nWikiId);
+					nWikiSerialId = atoi(p);
+					if (nWikiSerialId > 0)
+						nCurrentWiki = get_wiki_idx_from_serial_id(nWikiSerialId);
 					if (nCurrentWiki < 0)
 						nCurrentWiki = 0;
 				}
@@ -136,6 +147,8 @@ void init_wiki_info(void)
 			bWikiIsJapanese = true;
 		else
 			bWikiIsJapanese = false;
+		default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
+		keyboard_set_mode(default_keyboard);
 	}
 	else
 		fatal_error("No wiki found");
@@ -180,6 +193,10 @@ bool wiki_is_japanese()
 	return bWikiIsJapanese;
 }
 
+KEYBOARD_MODE wiki_default_keyboard()
+{
+	return default_keyboard;
+}
 uint32_t wiki_lang_link_search(char *lang_link_str)
 {
 	uint32_t article_idx = 0;
@@ -242,11 +259,32 @@ int get_wiki_idx_from_id(int wiki_id)
 	return -1;
 }
 
+int get_wiki_idx_from_serial_id(int wiki_serial_id)
+{
+	int i;
+
+	for (i = 0; i < nWikiCount; i++)
+	{
+		if (wiki_list[aWikiInfoIdx[i]].wiki_serial_id == wiki_serial_id)
+			return i;
+	}
+	return -1;
+}
+
 int get_wiki_id_from_idx(int wiki_idx)
 {
 	if (wiki_idx < nWikiCount)
 	{
 		return wiki_list[aWikiInfoIdx[wiki_idx]].wiki_id;
+	}
+	return 0;
+}
+
+int get_wiki_serial_id_from_idx(int wiki_idx)
+{
+	if (wiki_idx < nWikiCount)
+	{
+		return wiki_list[aWikiInfoIdx[wiki_idx]].wiki_serial_id;
 	}
 	return 0;
 }
@@ -365,9 +403,16 @@ char *get_wiki_name(int idx)
 {
 	int nTempCurrentWiki = nCurrentWiki;
 	char *pName;
+	char sWikiNameKey[32];
 
 	nCurrentWiki = idx;
-	pName = get_nls_text("wiki_name");
+	if (wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_name_idx)
+	{
+		sprintf(sWikiNameKey, "wiki_name%d", wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_name_idx);
+		pName = get_nls_text(sWikiNameKey);
+	}
+	else
+		pName = get_nls_text("wiki_name");
 	nCurrentWiki = nTempCurrentWiki;
 	return pName;
 }
@@ -421,10 +466,11 @@ void set_wiki(int idx)
 		bWikiIsJapanese = true;
 	else
 		bWikiIsJapanese = false;
+	default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
 	fd = wl_open("wiki.ini", WL_O_CREATE);
 	if (fd >= 0)
 	{
-		sprintf(sWikiId, "%d", get_wiki_id_from_idx(nCurrentWiki));
+		sprintf(sWikiId, "%d", get_wiki_serial_id_from_idx(nCurrentWiki));
 		wiki_ini_insert_keypair("wiki_id", sWikiId);
 		for (i = 0; i < lenWikiIni; i++)
 		{
