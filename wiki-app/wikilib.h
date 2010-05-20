@@ -23,6 +23,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #endif
+#include "wl-keyboard.h"
 
 #ifndef NULL
 #define NULL 0
@@ -75,4 +76,5 @@ unsigned long time_diff(unsigned long t2, unsigned long t1);
 unsigned long seconds_to_ticks(float sec);
 void repaint_search(void);
 void fatal_error(char*);
+void handle_search_key(struct keyboard_key *key, unsigned long ev_time);
 #endif /* WIKILIB_H */

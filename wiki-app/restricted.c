@@ -392,7 +392,7 @@ void handle_password_key(char keycode)
 				init_filtering = 0;
 				search_set_selection(-1);
 				display_mode = DISPLAY_MODE_INDEX;
-				keyboard_set_mode(KEYBOARD_CHAR);
+				keyboard_set_mode(wiki_default_keyboard());
 				repaint_search();
 			}
 			else
@@ -408,7 +408,7 @@ void handle_password_key(char keycode)
 				init_filtering = 0;
 				search_set_selection(-1);
 				display_mode = DISPLAY_MODE_INDEX;
-				keyboard_set_mode(KEYBOARD_CHAR);
+				keyboard_set_mode(wiki_default_keyboard());
 				repaint_search();
 			}
 			else

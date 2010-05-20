@@ -57,6 +57,8 @@ struct keyboard_key {
 	 */
 	int left_x, right_x;
 	int left_y, right_y;
+	int left_x_inverted, right_x_inverted;
+	int left_y_inverted, right_y_inverted;
 	char *key; // assuming non-multi-selection key should have length = 1
 };
 

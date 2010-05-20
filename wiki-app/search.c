@@ -793,6 +793,48 @@ struct _backward_key_sequence {
 	char *origin;
 	char *after_conversion;
 } backward_key_sequence[] = {
+	{"!", "?" },
+	{"#", "@" },
+	{"$", "#" },
+	{"%", "$" },
+	{"&", "%" },
+	{"'", ")" },
+	{"(", "'" },
+	{")", "(" },
+	{"*", "-" },
+	{"+", "=" },
+	{",", "!" },
+	{"-", "+" },
+	{".", "," },
+	{"=", "*" },
+	{"?", "." },
+	{"@", "&" },
+	{"a", "c" },
+	{"b", "a" },
+	{"c", "b" },
+	{"d", "f" },
+	{"e", "d" },
+	{"f", "e" },
+	{"g", "i" },
+	{"h", "g" },
+	{"i", "h" },
+	{"j", "l" },
+	{"k", "j" },
+	{"l", "k" },
+	{"m", "o" },
+	{"n", "m" },
+	{"o", "n" },
+	{"p", "s" },
+	{"q", "p" },
+	{"r", "q" },
+	{"s", "r" },
+	{"t", "v" },
+	{"u", "t" },
+	{"v", "u" },
+	{"w", "z" },
+	{"x", "w" },
+	{"y", "x" },
+	{"z", "y" },
 	{"あ" , "お" },
 	{"い" , "あ"  },
 	{"う" , "い"  },
@@ -861,7 +903,7 @@ static int temp_search_str_hiragana_len = 0;
 
 //static char s_find_first = 1;
 
-int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int lenHiragana);
+int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int *lenHiragana);
 
 static void *SzAlloc(void *p, size_t size) { p = p; return malloc_simple(size, MEM_TAG_INDEX_M1); }
 static void SzFree(void *p, void *address) { p = p; free_simple(address, MEM_TAG_INDEX_M1); }
@@ -1936,12 +1978,14 @@ char *get_english(char *in_str, int len, int *used_len)
 	char *pReturn = NULL;
 	char first_utf8_char[5];
 	int cmp;
+	int len_first_char;
 
 	get_first_utf8_char(first_utf8_char, in_str, strlen(in_str));
-	len = strlen(first_utf8_char);
+	len_first_char = strlen(first_utf8_char);
+	*used_len = len_first_char;
 	while (!bFound && iStart < iEnd)
 	{
-		cmp = strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len);
+		cmp = strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len_first_char);
 		if (!cmp)
 			bFound = 1;
 		else if (cmp > 0)
@@ -1949,7 +1993,7 @@ char *get_english(char *in_str, int len, int *used_len)
 			iMiddle = (iStart + iEnd) / 2;
 			if (iMiddle != iStart)
 			{
-				cmp = strncmp(first_utf8_char, hiragana_english_mapping[iMiddle].hiragana, len);
+				cmp = strncmp(first_utf8_char, hiragana_english_mapping[iMiddle].hiragana, len_first_char);
 				if (!cmp)
 				{
 					iStart = iMiddle;
@@ -1963,7 +2007,7 @@ char *get_english(char *in_str, int len, int *used_len)
 			else // iStart == iMiddle == iEnd
 			{
 				iStart = iEnd;
-				cmp = strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len);
+				cmp = strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len_first_char);
 				if (!cmp)
 					bFound = 1;
 			}
@@ -1974,10 +2018,11 @@ char *get_english(char *in_str, int len, int *used_len)
 
 	if (bFound) // find the first hiragana_mapping entry with the same starting character as in_str
 	{
-		while (iStart > 0 && !strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len))
+		while (iStart > 0 && !strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len_first_char))
 			iStart--;
 
-		for (i = iStart; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) && *in_str == hiragana_english_mapping[i].hiragana[0]; i++)
+		for (i = iStart + 1; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) &&
+			!strncmp(first_utf8_char, hiragana_english_mapping[i].hiragana, len_first_char); i++)
 		{
 			if (len >= strlen(hiragana_english_mapping[i].hiragana) && !strncmp(in_str, hiragana_english_mapping[i].hiragana, strlen(hiragana_english_mapping[i].hiragana)))
 			{
@@ -2149,12 +2194,15 @@ void search_to_be_reloaded(int to_be_reloaded_flag, int reload_flag)
 		}
 		break;
 	case SEARCH_TO_BE_RELOADED_CHECK:
-		if (to_be_reloaded && keyboard_key_inverted() > 0)
-			search_string_changed = 1; // keep checking
-		else
+		if (to_be_reloaded)
 		{
-			search_reload(saved_reload_flag);
-			to_be_reloaded = false;
+			if (keyboard_key_inverted() > 0)
+				search_string_changed = 1; // keep checking
+			else
+			{
+				search_reload(saved_reload_flag);
+				to_be_reloaded = false;
+			}
 		}
 
 		break;
@@ -2306,7 +2354,7 @@ int search_replace_japanese_sonant()
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], sonant_conversion[iStart].after_conversion, strlen(sonant_conversion[iStart].after_conversion));
 			search_str_hiragana_len += strlen(last_utf8_char) - strlen(sonant_conversion[iStart].after_conversion);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
-			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, search_str_hiragana_len);
+			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
@@ -2336,7 +2384,7 @@ int search_replace_japanese_char(char *utf8_char)
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], new_utf8_char, strlen(new_utf8_char));
 			search_str_hiragana_len += strlen(last_utf8_char) - strlen(new_utf8_char);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
-			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, search_str_hiragana_len);
+			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
@@ -2399,9 +2447,9 @@ int search_replace_hiragana_backward()
 		if (bFound)
 		{
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], backward_key_sequence[iStart].after_conversion, strlen(backward_key_sequence[iStart].after_conversion));
-			search_str_hiragana_len += strlen(last_utf8_char) - strlen(sonant_conversion[iStart].after_conversion);
+			search_str_hiragana_len += strlen(backward_key_sequence[iStart].after_conversion) - strlen(last_utf8_char);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
-			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, search_str_hiragana_len);
+			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
@@ -2429,7 +2477,7 @@ int search_add_japanese_char(char *utf8_char)
 		memcpy(&search_string_hiragana[search_str_hiragana_len], new_utf8_char, strlen(new_utf8_char));
 		search_str_hiragana_len += strlen(new_utf8_char);
 		search_string_hiragana[search_str_hiragana_len] = '\0';
-		search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, search_str_hiragana_len);
+		search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 		search_str_converted_len = search_str_len;
 		if (!strcmp(sOriginSearchString, search_string))
 		{ // cannot add to search_string so that restore search_string_hiragana
@@ -2448,7 +2496,6 @@ int search_add_japanese_char(char *utf8_char)
 
 int search_add_char(char c, unsigned long ev_time)
 {
-	(void)ev_time;
 	if((c == 0x20 && search_str_len>0 && search_string[search_str_len-1] == 0x20) ||
 	   (search_str_len >= MAX_TITLE_SEARCH - 1) ||
 	   (!search_str_len && c == 0x20))
@@ -2502,16 +2549,16 @@ void search_fetch()
 	search_string_changed = false;
 }
 
-int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int lenHiragana)
+int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int *lenHiragana)
 {
 	int lenEnglish = 0;
 	int i = 0;
 	char *pEnglish;
 	int used_len;
 
-	while (i < lenHiragana)
+	while (i < *lenHiragana && lenEnglish < maxLenEnglish - 1)
 	{
-		pEnglish = get_english(&sHiragana[i], lenHiragana - i, &used_len);
+		pEnglish = get_english(&sHiragana[i], *lenHiragana - i, &used_len);
 		if (pEnglish)
 		{
 			if (lenEnglish < maxLenEnglish - strlen(pEnglish))
@@ -2523,17 +2570,26 @@ int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int 
 			else
 			{
 				sEnglish[lenEnglish] = '\0';
+				*lenHiragana = i;
+				sHiragana[*lenHiragana] = '\0';
+				handle_search_key(NULL, 0); // reset the key change
 				return lenEnglish;
 			}
 		}
-		else if (is_supported_search_char(sHiragana[i]))
+		else if (used_len == 1 && is_supported_search_char(sHiragana[i])) // used_len contains the length of the first UTF8 char
 		{
 			sEnglish[lenEnglish++] = sHiragana[i++];
 		}
 		else
-			i++;
+			i += used_len;
 	}
 	sEnglish[lenEnglish] = '\0';
+	if (i < *lenHiragana)
+	{
+		*lenHiragana = i;
+		sHiragana[*lenHiragana] = '\0';
+		handle_search_key(NULL, 0); // reset the key change
+	}
 	return lenEnglish;
 }
 /*
@@ -2541,7 +2597,6 @@ int hiragana_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int 
  */
 int search_remove_char(int bPopulate, unsigned long ev_time)
 {
-	(void)ev_time;
 	if (search_str_len == 0)
 		return -1;
 
@@ -2561,7 +2616,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
 				search_str_hiragana_len--;
 			search_string_hiragana[--search_str_hiragana_len] = '\0';
-			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, search_str_hiragana_len);
+			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 			search_string[search_str_len] = '\0';
 			search_str_converted_len = search_str_len;
 		}

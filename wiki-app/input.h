@@ -29,6 +29,8 @@
 #define WL_KEY_RETURN							0x0D
 #define WL_KEY_SPACE							0x20
 #define WL_KEY_HASH								0x23
+
+#define WL_KEY_CLEAR							0X0A
 #define WL_KEY_BACKWARD							0X09
 #define WL_KEY_BACKSPACE						0x08
 #define WL_KEY_NLS								0x07
@@ -39,6 +41,7 @@
 #define WL_KEY_SONANT 							0X02
 #define WL_KEY_NO_WAIT 							0X01
 
+#define WL_KEY_CLEAR_STR							"\x0A\x00"
 #define WL_KEY_BACKWARD_STR							"\x09\x00"
 #define WL_KEY_BACKSPACE_STR						"\x08\x00"
 #define WL_KEY_NLS_STR								"\x07\x00"

@@ -54,6 +54,7 @@
 //#include <wl-time.h>
 
 #define DBG_WL 0
+#define LCD_Y_CALIBRATION_ADJUSTMENT (-1)
 
 struct pos {
 	unsigned int x;
@@ -291,7 +292,7 @@ void article_display_pcf(int yPixel)
 	curBufferPos = pos;
 }
 
-static void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
+void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 {
 	int rc = 0;
 	static unsigned long last_ev_time = 0;
@@ -336,6 +337,12 @@ static void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 			else if (keycode == WL_KEY_BACKWARD)
 			{
 				rc = search_replace_hiragana_backward();
+			}
+			else if (keycode == WL_KEY_CLEAR)
+			{
+				rc = clear_search_string();
+				search_string_changed_remove = true;
+				press_delete_button = false;
 			}
 			else
 			{
@@ -500,25 +507,27 @@ static void average_xy(int *average_x, int *average_y, int last_5_x[], int last_
 {
 	int i;
 
+	*average_y = 999; // take the toppest y
 	*average_x = -1;
 	for (i = 4; i >= 0; i--)
 	{
-		if (last_5_x[i] >= 0 && time_diff(last_5_y_time_ticks[i], last_5_y_time_ticks[0]) < seconds_to_ticks(LINK_ACTIVATION_TIME_THRESHOLD))
+		if (last_5_x[i] >= 0 && time_diff(last_5_y_time_ticks[i], last_5_y_time_ticks[0]) < seconds_to_ticks(SAME_CLICK_TIME_THRESHOLD))
 		{
 			if (*average_x < 0)
 			{
 				*average_x = last_5_x[i];
-				*average_y = last_5_y[i];
 			}
 			else
 			{
 				*average_x += last_5_x[i];
-				*average_y += last_5_y[i];
 				*average_x /= 2; // the latter point got the higher weighting
-				*average_y /= 2;
 			}
+			if (*average_y > last_5_y[i])
+				*average_y = last_5_y[i];
 		}
 	}
+	if (0 < *average_y + LCD_Y_CALIBRATION_ADJUSTMENT && *average_y + LCD_Y_CALIBRATION_ADJUSTMENT < LCD_HEIGHT_LINES)
+		*average_y = *average_y + LCD_Y_CALIBRATION_ADJUSTMENT;
 }
 
 static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int last_5_y[], unsigned long last_5_y_time_ticks[])
@@ -1344,8 +1353,13 @@ int wikilib_run(void)
 		{
 			if (press_delete_button && get_search_string_len()>0)
 			{
+				int kb_mode = keyboard_get_mode();
 				sleep = 0;
-				if(time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
+				if(kb_mode != KEYBOARD_PHONE_STYLE_JP &&
+					kb_mode != KEYBOARD_PHONE_STYLE_TW &&
+					kb_mode != KEYBOARD_PHONE_STYLE_ABC &&
+					kb_mode != KEYBOARD_PHONE_STYLE_123 &&
+					time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
 				{
 					if (!clear_search_string())
 					{
@@ -1393,7 +1407,7 @@ int wikilib_run(void)
 			sleep = 0;
 		}
 
-		if (!more_events && display_mode == DISPLAY_MODE_INDEX && check_search_string_change())
+		if (!more_events && display_mode == DISPLAY_MODE_INDEX && !press_delete_button && check_search_string_change())
 		{
 			sleep = 0;
 		}

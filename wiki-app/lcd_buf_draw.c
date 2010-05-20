@@ -1637,15 +1637,61 @@ void display_retrieved_article(long idx_article)
 	article_link_count = 1;
 	language_link_count = 0;
 	
+	offset = sizeof(ARTICLE_HEADER) + sizeof(ARTICLE_LINK) * article_header.article_link_count;
+	// externalLink[] is for storing the pointer to the language link string.
+	// A corresponding artileLink (with the same index) will be used to store the start_xy and end_xy information.
+	// The corresponding articleLink.article_id will be set to EXTERNAL_ARTICLE_LINK for distinguishing with normal article links.
+	if ((idx_article & 0x00FFFFFF) > MAX_STATIC_ARTICLE_ID)
+	{
+		while (offset < article_header.offset_article && article_link_count < MAX_EXTERNAL_LINKS)
+		{
+			char *link_str;
+			link_str = file_buffer + offset;
+			if (wiki_lang_exist(link_str))
+			{
+				int bDuplicated = 0;
+				for (i = 1; i < article_link_count; i++)
+				{
+					if (externalLink[i].link_str && duplicate_wiki_lang(link_str, externalLink[i].link_str))
+					{
+						externalLink[i].link_str = link_str;
+						bDuplicated = 1;
+					}
+				}
+				if (!bDuplicated)
+				{
+					if (article_link_count == 1) // add_show_hide_language_link() has not been called yet
+					{
+						add_show_hide_language_link();
+					}
+					if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 2 * LANGUAGE_LINK_WIDTH + 2 * LANGUAGE_LINK_WIDTH_GAP >= LCD_BUF_WIDTH_PIXELS)
+					{
+						lcd_draw_buf.current_x = 0;
+						lcd_draw_buf.current_y += LANGUAGE_LINK_HEIGHT + LANGUAGE_LINK_WIDTH_GAP;
+					}
+					start_x = lcd_draw_buf.current_x;
+					start_y = lcd_draw_buf.current_y;
+					end_x = lcd_draw_buf.current_x + LANGUAGE_LINK_WIDTH - 1;
+					end_y = lcd_draw_buf.current_y + LANGUAGE_LINK_HEIGHT - 1;
+					externalLink[article_link_count].link_str = link_str;
+					draw_external_link(externalLink[article_link_count].link_str);
+					articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
+					articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
+					articleLink[article_link_count].article_id = EXTERNAL_ARTICLE_LINK;
+					article_link_count++;
+					language_link_count++;
+				}
+			}
+			offset += strlen(file_buffer + offset) + 1;
+		}
+	}
+
 	if (restricted_article)
 	{
-		add_show_hide_language_link();
-		lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
-		lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace;
-		lcd_draw_buf.current_x = 0;
-		lcd_draw_buf.current_y = LCD_TOP_MARGIN;
-		lcd_draw_buf.vertical_adjustment = 0;
-		lcd_draw_buf.align_adjustment = 0;
+		if (article_link_count == 1) // add_show_hide_language_link() has not been called yet
+		{
+			add_show_hide_language_link();
+		}
 		start_x = lcd_draw_buf.current_x;
 		start_y = lcd_draw_buf.current_y;
 		end_x = lcd_draw_buf.current_x + LANGUAGE_LINK_WIDTH - 1;
@@ -1657,51 +1703,6 @@ void display_retrieved_article(long idx_article)
 		article_link_count++;
 	}
 
-	offset = sizeof(ARTICLE_HEADER) + sizeof(ARTICLE_LINK) * article_header.article_link_count;
-	// externalLink[] is for storing the pointer to the language link string.
-	// A corresponding artileLink (with the same index) will be used to store the start_xy and end_xy information.
-	// The corresponding articleLink.article_id will be set to EXTERNAL_ARTICLE_LINK for distinguishing with normal article links.
-	while (offset < article_header.offset_article && article_link_count < MAX_EXTERNAL_LINKS)
-	{
-		char *link_str;
-		link_str = file_buffer + offset;
-		if (wiki_lang_exist(link_str))
-		{
-			int bDuplicated = 0; 
-			for (i = 1; i < article_link_count; i++)
-			{
-				if (externalLink[i].link_str && duplicate_wiki_lang(link_str, externalLink[i].link_str))
-				{
-					externalLink[i].link_str = link_str;
-					bDuplicated = 1;
-				}
-			}
-			if (!bDuplicated)
-			{
-				if (article_link_count == 1) // add_show_hide_language_link() has not been called yet
-				{
-					add_show_hide_language_link();
-				}
-				if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 2 * LANGUAGE_LINK_WIDTH + 2 * LANGUAGE_LINK_WIDTH_GAP >= LCD_BUF_WIDTH_PIXELS)
-				{
-					lcd_draw_buf.current_x = 0;
-					lcd_draw_buf.current_y += LANGUAGE_LINK_HEIGHT + LANGUAGE_LINK_WIDTH_GAP;
-				}
-				start_x = lcd_draw_buf.current_x;
-				start_y = lcd_draw_buf.current_y;
-				end_x = lcd_draw_buf.current_x + LANGUAGE_LINK_WIDTH - 1;
-				end_y = lcd_draw_buf.current_y + LANGUAGE_LINK_HEIGHT - 1;
-				externalLink[article_link_count].link_str = link_str;
-				draw_external_link(externalLink[article_link_count].link_str);
-				articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
-				articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
-				articleLink[article_link_count].article_id = EXTERNAL_ARTICLE_LINK;
-				article_link_count++;
-				language_link_count++;
-			}
-		}
-		offset += strlen(file_buffer + offset) + 1;
-	}
 	if (article_link_count > 1)
 	{
 		lcd_draw_buf.current_x = 0;
