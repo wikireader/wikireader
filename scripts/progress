@@ -17,9 +17,9 @@ USAGE()
   echo '       --stamps        -s         show status of stamps'
   echo '       --analyse       -a         analyse the log file'
   echo '       --git           -g         run git pull --rebase'
-  echo '       --process=<n>   -p<n>      show python/php processes cut line 1..n [unlimited]'
+  echo '       --process[=<n>] -p[<n>]    show python/php processes cut line 1..n [unlimited]'
   echo '       --base=<dir>    -b <dir>   set the base directory [samo]'
-  echo '       --tail=<n>      -t<n>      show last line of <base_dir>/log [3]'
+  echo '       --tail[=<n>]    -t[<n>]    show last line of <base_dir>/log [3]'
   echo '       --memory        -m         show memory status'
   echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
   echo '       --language=<xx> -L <xx>    process for language [en]'
@@ -29,8 +29,8 @@ USAGE()
   echo '       --re-render     -R         start the Run script in a screen {re-render}'
   echo '       --copy          -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
   echo '       --combine       -k         run the combine process'
-  echo '       --get           -G         get the data files'
-  echo '       --sim4          -4         install fonts, nls and run simulator'
+  echo '       --get[=<dir>]   -G[<dir>]  get the data files [image]'
+  echo '       --sim4[=<dir>]  -4[<dir>]  install fonts, nls and run simulator [image]'
   echo '       --new-session   -N         start a new screen session for run and copy to use'
   echo '       --fetch-log     -f         fetch log files'
   echo '       --xml-link      -x         link wiki .xml file to latest version'
@@ -52,7 +52,7 @@ compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG4NfxHA --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get,sim4,new-session,fetch-log,xml-link,high-compress,abort -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxHA --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress,abort -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -179,13 +179,44 @@ do
       ;;
 
     -G|--get)
-      rsync -cavHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" image/
-      shift
+      dest=image
+      if [ -n "$2" ]
+      then
+        dest="$2"
+        [ -e "${dest}" ] || mkdir -p "${dest}"
+        [ -d "${dest}" ] || USAGE ${dest} is not a directory
+      fi
+      rsync -cavHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" "${dest}/"
+      shift 2
       ;;
 
     -4|--sim4)
-      make DESTDIR="image" nls-install fonts-install sim4
-      shift
+      dest=image
+      if [ -n "$2" ]
+      then
+        dest="$2"
+        [ -e "${dest}" ] || mkdir -p "${dest}"
+        [ -d "${dest}" ] || USAGE ${dest} is not a directory
+      fi
+      # attempt to find a directory to set the language/suffix
+      # in case that enpedia does not exist
+      first_dir=$(find "${dest}" -maxdepth 1 -mindepth 1 -type d -print -quit)
+      [ -d "${first_dir}" ] || USAGE ${first_dir} is not a directory
+      l1=en
+      s1=pedia
+      first_dir=$(basename "${first_dir}")
+      for s in books dict pedia quote
+      do
+        l0="${first_dir%${s}}"
+        if [ X"${first_dir}" != X"${l0}" ]
+        then
+          l1="${l0}"
+          s1="${s}"
+          break
+        fi
+      done
+      make DESTDIR="${dest}" WIKI_LANGUAGE="${l1}" WIKI_DIR_SUFFIX="${s1}" nls-install fonts-install sim4
+      shift 2
       ;;
 
     -x|--xml-link)
