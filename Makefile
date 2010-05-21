@@ -114,7 +114,7 @@ CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 jig-install: validate-destdir forth-install flash-install mbr-install
 
 .PHONY: install
-install: validate-destdir forth-install mahatma-install fonts-install nls-install misc-files-install version
+install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version
 
 .PHONY: version
 version: validate-destdir
@@ -122,7 +122,9 @@ version: validate-destdir
 	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	${RM} "${DESTDIR_PATH}"/*/*.idx-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
-	${RM} "${DESTDIR_PATH}"/*.[pP][aA][sS] "${DESTDIR_PATH}"/*.[hH][sS][tT]  "${DESTDIR_PATH}"/*.[iI][nN][iI]
+	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[pP][aA][sS]
+	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[hH][sS][tT]
+	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][iI]
 	find "${DESTDIR_PATH}" -type d -print -exec \
 	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 
