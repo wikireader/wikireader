@@ -519,10 +519,31 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 		int x = 0;
 		char draw_buf[MAX_LICENSE_TEXT_PIXEL_LINES * LCD_BUF_WIDTH_BYTES];
 		unsigned char *pLicenseText = get_nls_text("license_text");
+
+		unsigned char footer_buffer[40];
+		memset(footer_buffer, '\0', sizeof(footer_buffer));
+		memset(footer_buffer, ' ', 5);
+
+		int fd = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.ftr"), WL_O_RDONLY);
+		if (fd >= 0)
+		{
+			unsigned char c = ' ';
+			unsigned char *p = &footer_buffer[5];
+			while (' ' == c) {
+				wl_read(fd, &c, sizeof(c));
+			}
+			while (c >= ' ' && p < &footer_buffer[sizeof(footer_buffer) - 1]) {
+				*p++ = c;
+				wl_read(fd, &c, sizeof(c));
+			}
+			wl_close(fd);
+		}
+		unsigned char *footer = footer_buffer;
+
 		char sLicenseTextSegment[MAX_LICENSE_TEXT_LEN];
 		unsigned char *pLicenseTextSegment;
 		int line_height = pcfFonts[LICENSE_TEXT_FONT - 1].Fmetrics.linespace;
-		char str[256];
+		char str[256];  // possible buffer overflow
 		unsigned char *p, *q;
 		int bInLink = 0;
 		int nLinkArticleId = 0;
@@ -627,6 +648,10 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				}
 				else
 					x += width;
+			}
+			if ('\0' == *pLicenseText && NULL != footer) {
+				pLicenseText = footer;
+				footer = NULL;
 			}
 		}
 		if (x)
