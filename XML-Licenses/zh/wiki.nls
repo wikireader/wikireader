@@ -1,0 +1,40 @@
+# Messages for Chinese (中文)
+# Localise WikiReader at translatewiki.net
+# See http://translatewiki.net/wiki/Translating:WikiReader for more information.
+# Author: Liane
+
+wiki_name=维基百科 [拼音]
+wiki_name2=维基百科 [注音符號]
+license_text=內文已合法註冊於Creative Commons貢獻及分享字號下並可在條款下免費轉載使用.  參閱:  Text of the [CC-BY-SA]及[Terms of Use]以瞭解更多適用之條款.  原文可參考 http://en.wikipedia.org/wiki/<title>
+type_a_word=輸入文字
+no_results=搜尋查無結果
+searching=搜尋中...
+select_wiki=選擇維基百科語言
+history_title=搜尋記錄
+no_history=無搜尋記錄
+please_wait=請稍後...
+clear_history=清除搜尋記錄
+yes=是
+no=否
+protection=保護 (部份維基搜尋內文可能不適於未成年閱覽, 請設定密碼.)
+restricted=限制 (此內文有限制層級閱覽, 請設定密碼.)
+set_password=密碼設定
+ok=確認
+set_filter=過濾功能設定 (此過濾功能若開啟, 限制層級的內文將被要求輸入密碼.)
+keep_filter_on=保持過濾功能開啟
+keep_filter_off=保持過濾功能關閉
+filter_options=過濾功能選項
+turn_filter_on=開啟過濾功能
+turn_filter_off=關閉過濾功能
+change_password=密碼更改
+re_enter_password=重新輸入密碼
+re_enter_new_password=重新輸入新密碼
+passwords_not_match=密碼錯誤
+enter_old_password=輸入舊密碼
+enter_password=輸入密碼
+try_again=重新輸入
+enter_new_password=輸入新密碼
+parental_controls=家長控制
+#* r=限制級
+r=限
+lang_str=中

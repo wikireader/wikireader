@@ -5,7 +5,7 @@
 # Author: Siebrand
 
 wiki_name=The language version of Wikipedia that is being used.\n\nChange "English" to the name of the language you're translating into.
-license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title> 2010-Spring[[File:License_text.png|right|150px]]
+license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title>[[File:License_text.png|right|150px]]
 type_a_word=Type a Word or Phrase[[File:Type_a_word.png|right|150px]]
 no_results=No Entries found[[File:No_results.png]]
 select_wiki=Choose encyclopedia[[File:Select_wiki.png]]
