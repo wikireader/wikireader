@@ -55,7 +55,8 @@ ARTICLE_BLOCK_SIZE ?= 262144
 WORKDIR_PATH := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
 TEMPDIR_PATH := $(shell ${RESOLVEPATH} ${TEMPDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
 
-PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
+DATA_PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
+INDEX_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
 ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles.db)
 COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/counts.text)
 TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/templates.db)
@@ -128,7 +129,7 @@ index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py
 		--article-counts="${COUNTS_FILE}" \
 		--templates="${TEMPLATE_FILE}" \
 		--language="${WIKI_LANGUAGE}" \
-		--prefix="${PREFIX}" ${TRUNCATE_ARG} ${XML_FILES}
+		--prefix="${DATA_PREFIX}" ${TRUNCATE_ARG} ${XML_FILES}
 
 HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR_PATH}/*.html))
 .PHONY: merge
@@ -183,7 +184,8 @@ render: check-dirs check-fonts check-html stamp-PinyinTable.py
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
-		--prefix="${PREFIX}" \
+		--data-prefix="${DATA_PREFIX}" \
+		--index-prefix="${INDEX_PREFIX}" \
 		--language-links="${ENABLE_LANGUAGES_LINKS}" \
 		--images="${ENABLE_IMAGES}" \
 		--articles="${ARTICLES_PER_BLOCK}" \
@@ -192,7 +194,7 @@ render: check-dirs check-fonts check-html stamp-PinyinTable.py
 
 .PHONY: combine
 combine: check-dirs
-	./combine_idx.py ${VERBOSE_ARG} --prefix="${PREFIX}"
+	./combine_idx.py ${VERBOSE_ARG} --prefix="${INDEX_PREFIX}" --output="${DATA_PREFIX}.idx"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma

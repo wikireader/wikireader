@@ -106,7 +106,7 @@ work="${work}/${language}${suffix}"
 dest="${dest}/${language}${suffix}"
 
 # extract numeric suffix from host name
-# expect that the rendering hosts are numbered from zero
+# expect that the rendering hosts are numbered from one
 this_host=$(hostname --short)
 this_host_prefix=${this_host%%[0-9]}
 this_id=${this_host##*[^0-9]}
@@ -117,6 +117,7 @@ this_id=${this_host##*[^0-9]}
 if [ X"${this_host}" != X"${to}" ]
 then
   d="${to}:${base_dir}/${dest}"
+  w="${to}:${base_dir}/${work}"
   case "${verbose}" in
     [yY][eE][sS])
       echo copying files to: ${d}
@@ -124,7 +125,8 @@ then
     *)
       ;;
   esac
-  rsync -cavHx --progress "${dest}"/*.dat "${dest}"/*.idx-tmp "${d}/"
+  rsync -cavHx --progress "${dest}"/*.dat "${d}/"
+  rsync -cavHx --progress "${work}"/*.idx-tmp "${w}/"
 else
   echo warning: transfer to self ignored
 fi

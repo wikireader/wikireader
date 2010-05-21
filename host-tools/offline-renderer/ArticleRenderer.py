@@ -187,7 +187,8 @@ def usage(message):
     print('       --test=file             Output the uncompressed file for testing')
     print('       --font-path=dir         Path to font files (*.bmf) [fonts]')
     print('       --article-index=file    Article index dictionary input [articles.db]')
-    print('       --prefix=name           Device file name portion for .dat/.idx-tmp [pedia]')
+    print('       --data-prefix=name      Directory and file name portion for .dat files [pedia]')
+    print('       --index-prefix=name     Directory and file name portion for .idx-tmp files [pedia]')
     print('       --languages-links=<YN>  Turn on/off inter-wiki links [YES]')
     print('       --images=<YN>           Turn on/off in-line math images [YES]')
     print('       --articles=<N>          Articles per block [32]')
@@ -207,12 +208,13 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   'hvwn:p:i:t:f:l:a:b:',
+                                   'hvwn:d:p:i:t:f:l:a:b:',
                                    ['help',
                                     'verbose',
                                     'warnings',
                                     'number=',
-                                    'prefix=',
+                                    'data-prefix=',
+                                    'index-prefix=',
                                     'article-index=',
                                     'test=',
                                     'font-path=',
@@ -255,8 +257,9 @@ def main():
                 file_number = int(arg)
             except ValueError:
                 usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
-        elif opt in ('-p', '--prefix'):
+        elif opt in ('-d', '--data-prefix'):
             data_file = arg + '{0:d}.dat'
+        elif opt in ('-p', '--index-prefix'):
             index_file = arg + '{0:d}.idx-tmp'
         elif opt in ('-f', '--font-path'):
             font_path = arg

@@ -22,7 +22,8 @@ def usage(message):
     print('usage: {0:s} <options>'.format(os.path.basename(__file__)))
     print('       --help                  This message')
     print('       --verbose               Enable verbose output')
-    print('       --prefix=name           Device file name portion for .idx [pedia]')
+    print('       --prefix=name           Directory and file name portion for .idx-tmp files [pedia]')
+    print('       --output=name              Directory and file name portion for .idx file [pedia.idx]')
     exit(1)
 
 def main():
@@ -31,7 +32,7 @@ def main():
     global UINT32_SIZE
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:p:', ['help', 'verbose', 'out=', 'offsets=', 'prefix='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hvo:f:p:', ['help', 'verbose', 'output=', 'prefix='])
     except getopt.GetoptError, err:
         usage(err)
 
@@ -47,7 +48,8 @@ def main():
             off_name = arg
         elif opt in ('-p', '--prefix'):
             in_format = arg + '{0:d}.idx-tmp'
-            out_name = arg + '.idx'
+        elif opt in ('-o', '--output'):
+            out_name = arg
         else:
             usage('unhandled option: ' + opt)
 
