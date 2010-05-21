@@ -25,7 +25,7 @@ USAGE()
   echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
   echo '       --language=xx   -l <xx>    set language [en]'
   echo '       --suffix=<s>    -s <s>     set the directory suffix [pedia]'
-  echo '       --prefix=name   -p <name>  set data file prefix [wiki]'
+  echo '       --prefix=<name> -p <name>  set data file prefix [wiki]'
   echo '       --work=dir      -w <dir>   workdir [work]'
   echo '       --dest=dir      -d <dir>   destdir [image]'
   echo '       --temp=dir      -t <dir>   tempdir [/tmp]'
