@@ -47,6 +47,8 @@ TEMPDIR ?= ${WORKDIR}/tmp
 WIKI_FILE_PREFIX ?= wiki
 WIKI_LANGUAGE ?= en
 WIKI_DIR_SUFFIX ?= pedia
+WIKI_VERSION ?= $(shell date '+%Y%m%d')
+
 ENABLE_LANGUAGES_LINKS ?= YES
 ENABLE_IMAGES ?= YES
 ARTICLES_PER_BLOCK ?= 32
@@ -63,6 +65,8 @@ TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/templates.db)
 OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/offsets.db)
 HTML_ARTICLES_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles-)
 HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.html)
+
+VERSION_FILE := ${DATA_PREFIX}.ftr
 
 PYLZMA_DIR := pylzma-0.3.0
 MATH_DIR := mediawiki-offline/math
@@ -195,6 +199,8 @@ render: check-dirs check-fonts check-html stamp-PinyinTable.py
 .PHONY: combine
 combine: check-dirs
 	./combine_idx.py ${VERBOSE_ARG} --prefix="${INDEX_PREFIX}" --output="${DATA_PREFIX}.idx"
+	${RM} "${VERSION_FILE}"
+	echo ${WIKI_VERSION} > "${VERSION_FILE}"
 
 # sudo apt-get install python-dev
 .PHONY: pylzma

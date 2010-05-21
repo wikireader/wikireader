@@ -19,6 +19,30 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA
 
+# Control variables
+# =================
+
+# These  can be overridden on the command line:
+#
+#   WIKI_LANGUAGE    = language code
+#
+#   WIKI_FILE_PREFIX = prefix for all files in a data directory
+#
+#   WIKI_VERSION     = version code for the current rendering operation
+#
+#   WIKI_DIR_SUFFIX  = combined with language code to make a unique
+#                      directory name
+#
+#   DESTDIR          = directory where rendered data will be stored
+#
+#   WORKDIR          = directory where all the working databases are stored
+#
+#   TEMPDIR          = optional directory to store LaTeX work files, point
+#                      to a RAM disk
+#
+#   VERSION_TAG      = optional version string for the root programs/fonts
+
+
 # Include standard definitions
 # ============================
 
@@ -93,6 +117,7 @@ all:    ${ALL_TARGETS}
 WIKI_LANGUAGE ?= en
 WIKI_FILE_PREFIX ?= wiki
 WIKI_DIR_SUFFIX ?= pedia
+WIKI_VERSION ?= $(shell date '+%Y%m%d')
 
 
 # Installation
@@ -360,6 +385,7 @@ index: validate-destdir
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
+		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
@@ -370,6 +396,7 @@ parse: validate-destdir
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
+		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
@@ -380,6 +407,7 @@ merge: validate-destdir
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
+		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
@@ -394,6 +422,7 @@ render: fonts validate-destdir
 		ENABLE_IMAGES="${ENABLE_IMAGES}" \
 		ARTICLES_PER_BLOCK="${ARTICLES_PER_BLOCK}" \
 		ARTICLE_BLOCK_SIZE="${ARTICLE_BLOCK_SIZE}" \
+		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
@@ -404,6 +433,7 @@ combine: validate-destdir
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		TOTAL_HTML_FILES="${TOTAL_HTML_FILES}" \
+		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
