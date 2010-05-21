@@ -221,7 +221,7 @@ typedef enum {
     Linear8Bit, TwoD8Bit, Linear16Bit, TwoD16Bit
 }           FontEncoding;
 
-int load_pcf(pcffont_t *font, pcffont_t *font_merged);
+int load_pcf(pcffont_t *font, char *bmf_filename);
 pcf_SCcharmet_t *get_SCmetrics(pcffont_t *font, ucs4_t val);
 int pres_pcfbm(ucs4_t *, pcffont_t *, pcf_bm_t **, pcf_charmet_t *, pcf_SCcharmet_t *, int);
 void put_PSbitmap(ucs4_t code, pcf_bm_t *bitmap, pcf_charmet_t *Cmetrics, pcf_SCcharmet_t *Smetrics);
