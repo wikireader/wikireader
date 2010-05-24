@@ -39,9 +39,11 @@ foreach ($list as $file) {
             if (is_array($m)) {
                 foreach ($m as $value) {
                     if ("0" !== $value && 0 !== $value) {
+                        $redirects[$value] = $value;
                         $value = mb_strtolower($value, 'UTF-8');
                         $redirects[$value] = $value;
-                        //echo $value, "\n";
+                        $value = mb_strtoupper($value, 'UTF-8');
+                        $redirects[$value] = $value;
                     }
                 }
             } elseif (NULL !== $m) {
@@ -61,9 +63,10 @@ sort($redirects);
 import os, sys
 import re
 
+redirect_count = <?php echo sizeof($redirects); ?>
+
 redirect_string = r'('
 <?php
-
 $flag = false;
 foreach ($redirects as $value) {
     echo 'redirect_string += \'';
@@ -90,12 +93,14 @@ def main():
         r'＃リダイレクト[[Just Testing]]',
         r'＃転送[[Just Testing]]',
         r'#転送[[Just Testing]]',
+        r'#átirányítás[[Just Testing]]',
+        r'#ÁTIRÁNYÍTÁS [[Sablon:TV-csatorna infobox]]',
     ]
 
     for s in tests:
         m = regex.match(s)
         if m:
-            print('matched: {0:s} : {1:s} => {3:s}'.format(s, m.group(1), m.group(2)))
+            print('matched: {0:s} : {1:s} => {2:s}'.format(s, m.group(1), m.group(2)))
         else:
             print('no match: {0:s}'.format(s))
 
