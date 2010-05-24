@@ -525,21 +525,26 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 
     if (bmf_filename[0])
     {
-    	int rc;
-    	
-    	fd_bmf = fopen(bmf_filename, "rb");
-    	fseek(fd_bmf, 0, SEEK_END);
-    	base_font_size = ftell(fd_bmf);
-    	fseek(fd_bmf, 0, SEEK_SET);
-    	base_font_buf = malloc(base_font_size);
-    	base_font_count = (base_font_size - sizeof(font_bmf_header)) / sizeof(font_bmf);
-    	if (!base_font_buf)
-    	{
-    		printf("Fail to allocate buffer for base bmf font, size %d\n", base_font_size);
-    		exit(-1);
-    	}
-    	rc = fread(base_font_buf, base_font_size, 1, fd_bmf);
-    	fclose (fd_bmf);
+	int rc;
+
+	fd_bmf = fopen(bmf_filename, "rb");
+	if (NULL == fd_bmf)
+	{
+		printf("Failed to open bmf font: %s\n", bmf_filename);
+		exit(-1);
+	}
+	fseek(fd_bmf, 0, SEEK_END);
+	base_font_size = ftell(fd_bmf);
+	fseek(fd_bmf, 0, SEEK_SET);
+	base_font_buf = malloc(base_font_size);
+	base_font_count = (base_font_size - sizeof(font_bmf_header)) / sizeof(font_bmf);
+	if (!base_font_buf)
+	{
+		printf("Fail to allocate buffer for base bmf font, size %d\n", base_font_size);
+		exit(-1);
+	}
+	rc = fread(base_font_buf, base_font_size, 1, fd_bmf);
+	fclose (fd_bmf);
     }
     strcpy(name,sOutFilename);
     //font_count = font->Fmetrics.lastchar;
@@ -552,8 +557,9 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 
     count = font->Fmetrics.lastchar;
     if (count < base_font_count)
-    	count = base_font_count;
+	count = base_font_count;
 
+    //printf("allocate buf %d, %d = %ld bytes\n", count, base_font_count, count*sizeof(font_bmf)+sizeof(font_bmf_header));
     buf = (char*)malloc(count*sizeof(font_bmf)+sizeof(font_bmf_header));
     memset(buf,0,count*sizeof(font_bmf)+sizeof(font_bmf_header));
 
@@ -577,7 +583,7 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 			widthDevice  = ci->metrics.characterWidth;
 			ascent     = ci->metrics.ascent;
 			descent     = ci->metrics.descent;
-			
+
 			font_create.width = (INT8)width;
 			font_create.height = (INT8)height;
 			font_create.widthBytes =(INT8)widthBytes;
@@ -586,15 +592,15 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 			font_create.descent =(INT8)descent;
 			font_create.LSBearing = (INT8)LSBearing;
 			font_create.widthDevice = (INT8)widthDevice;
-			
+
 			//printf("char:%d,height:%d,width:%d,widthBytes:%d\n",
 			//i,font_create.width,font_create.height,font_create.widthBytes);
-			
+
 			if(font_create.height<0)
 			   font_create.height = 0;
 			if(font_create.widthBytes<0)
 			   font_create.widthBytes = 0;
-			
+
 			if((widthBytes*height)>48)
 			{
 			   memcpy(font_create.bitmap,ci->bits,48);
@@ -616,8 +622,13 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
     fd = fopen(name, "wb");
     if(fd!=NULL)
     {
-       size_t bs = fwrite(buf,1,nFontCount*sizeof(font_bmf)+header_len,fd);
-       assert(bs == nFontCount*sizeof(font_bmf)+header_len);
+       size_t length = nFontCount*sizeof(font_bmf)+header_len;
+       size_t bs = fwrite(buf,1,length,fd);
+       if (bs != length) {
+	       printf("bs = %ld, nFontCount = %d, sizeof(font_bmf) = %ld, header_len = %d, sum = %ld, diff = %ld\n",
+		      bs, nFontCount, sizeof(font_bmf), header_len, length, length - bs);
+       }
+       assert(bs == length);
     }
     fclose(fd);
     free(buf);

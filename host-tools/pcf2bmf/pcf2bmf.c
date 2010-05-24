@@ -7,7 +7,7 @@
 #include "pcf.h"
 
 char sOutFilename[256];
-int  nFontCount;
+int  nFontCount = 65535;
 int nAddGap = 0;
 
 static void help(void)
@@ -34,7 +34,6 @@ static struct option opts[] = {
 
 int main(int argc, char *argv[])
 {
-	ucs4_t c;
 	char sPcfFilename[256];
 	char sBmfFilename[256];
 	pcffont_t pcfFont;
@@ -47,8 +46,10 @@ int main(int argc, char *argv[])
 	}
 	int oc;
 	nFontCount = 65535;
-	sPcfFilename[0] = '\0';
-	sBmfFilename[0] = '\0';
+	memset(sPcfFilename, 0, sizeof(sPcfFilename));
+	memset(sBmfFilename, 0, sizeof(sBmfFilename));
+	memset(sOutFilename, 0, sizeof(sOutFilename));
+
 	while((oc=getopt_long(argc,argv,"hf:m:n:o:c:gpq", opts, NULL))!=-1)
 	{
 		switch (oc) {
@@ -87,20 +88,18 @@ int main(int argc, char *argv[])
 		{
 			fprintf(stdout, "%d %d %d\n", pcfFont.Fmetrics.ascent, pcfFont.Fmetrics.descent,
 					pcfFont.Fmetrics.linespace);
-	
+
 			return 0;
 		}
 		else
 		{
-			fprintf(stdout,"Fail to load font file.  Press ENTER to exit.\n");
-			c = getwchar();
+			fprintf(stdout,"Fail to load font file: %s\n", sPcfFilename);
 			return -1;
 		}
 	}
 	else
 	{
-		fprintf(stdout,"No PCF file specified.  Press ENTER to exit.\n");
-		c = getwchar();
+		fprintf(stdout,"No PCF file specified.\n");
 		return -1;
 	}
 }

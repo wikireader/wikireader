@@ -18,7 +18,7 @@ RM = rm -f
 CC = gcc
 LD = ld
 
-CFLAGS = -g -O3 -Wall -Werror -MD -D_REENTRANT
+CFLAGS = -g -Wall -Werror -MD -D_REENTRANT
 LDFLAGS = -g -dynamic
 C_OBJS = pcf.o
 
