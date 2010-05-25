@@ -20,6 +20,7 @@ import WordWrap
 import bucket
 import PrintLog
 import LanguageTranslation
+import EscapeBuffer
 
 try:
     import gd
@@ -317,7 +318,11 @@ def main():
     article_db.execute('pragma default_cache_size = 20000000')
     article_db.execute('pragma journal_mode = off')
 
-    output = io.BytesIO('')
+    def y_adjust(inc):
+        global g_starty
+        g_starty += inc
+
+    output = EscapeBuffer.EscapeBuffer(callback=y_adjust)
 
     if test_file == '':
         compress = True
@@ -340,7 +345,7 @@ def main():
         font_id_values[item].close()
 
     if output != None:
-        output.close()
+        del output
 
     if article_writer != None:
         del article_writer
@@ -870,6 +875,7 @@ class WrProcess(HTMLParser.HTMLParser):
                                      .format(tag, line, column, article_count + 1, g_this_article_title))
                 (t, p) = self.tag_stack.pop()
                 return  # just ignore it
+            esc_code0(LIST_MARGIN_TOP)
             if not self.li_inside[self.level]:
                 self.li_cnt[self.level] += 1
                 self.li_inside[self.level] = True
@@ -897,6 +903,7 @@ class WrProcess(HTMLParser.HTMLParser):
                 (t, p) = self.tag_stack.pop()
                 self.handle_endtag('dd')
                 self.tag_stack.append((t, p))
+            esc_code0(LIST_MARGIN_TOP)
 
         elif tag == 'br':
             self.in_br = True
@@ -1046,12 +1053,14 @@ class WrProcess(HTMLParser.HTMLParser):
 
         elif tag == 'dd':
             self.flush_buffer()
+            esc_code0(LIST_MARGIN_TOP)
             if self.li_inside[self.level]:
                 self.li_inside[self.level] = False
                 self.list_decrease_indent()
 
         elif tag == 'dt':
             self.flush_buffer()
+            esc_code0(LIST_MARGIN_TOP)
 
         elif tag == 'br':
             self.flush_buffer()
@@ -1062,7 +1071,7 @@ class WrProcess(HTMLParser.HTMLParser):
 
 
     def enter_list(self, list_type, start = 1):
-        self.flush_buffer(False)
+        self.flush_buffer(list_type == 'dl')
         esc_code0(LIST_MARGIN_TOP)
         self.level += 1
         self.li_cnt[self.level] = start - 1
@@ -1080,8 +1089,8 @@ class WrProcess(HTMLParser.HTMLParser):
 
     def leave_list(self):
         self.flush_buffer()
+        esc_code0(LIST_MARGIN_TOP)
         if self.level > 0:
-            esc_code0(LIST_MARGIN_TOP)
             del self.li_cnt[self.level]
             del self.li_inside[self.level]
             self.level -= 1
@@ -1168,7 +1177,6 @@ class WrProcess(HTMLParser.HTMLParser):
     def flush_buffer(self, new_line = True):
         global output
         font = -1
-
         while self.wordwrap.have():
             url = None
             x0 = self.indent
@@ -1260,8 +1268,6 @@ def write_article(language_links):
         PrintLog.message(u'Render[{0:d}]: {1:7.2f}s {2:10d}'.format(file_number, now_time - start_time, article_count))
         start_time = now_time
 
-    output.flush()
-
     # create links
     links_stream = io.BytesIO('')
 
@@ -1297,7 +1303,7 @@ def write_article(language_links):
 
     # create the header (header size = 8)
     header = struct.pack('<I2H', 8 + len(links) + len(langs), g_link_cnt, 0)
-    body = output.getvalue()
+    body = output.fetch()
 
     # combine the data
     whole_article = header + links + langs + body
@@ -1315,12 +1321,6 @@ def write_article(language_links):
     else:
         f_out.write(whole_article)
         f_out.flush()
-
-    # Note: some versions of Python do not move file position on truncate
-    #       so an explicit seek is needed to avoid nul padding bytes.
-    output.seek(0)
-    output.truncate(0)
-
 
 
 class ArticleWriter(bucket.Bucket):
