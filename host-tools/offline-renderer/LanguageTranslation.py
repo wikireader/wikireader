@@ -9,6 +9,7 @@
 import os
 import sys
 import string
+import os.path
 import unicodedata
 import PinyinTable
 try:
@@ -17,6 +18,12 @@ except:
     print 'error: Missing python module: python-mecab'
     print '       sudo apt-get install python-mecab mecab-ipadic-utf8'
     exit(1)
+
+if '' != sys.argv[0]:
+    user_dictionary_path = os.path.dirname(sys.argv[0])
+else:
+    user_dictionary_path = '.'
+
 
 class LanguageProcessor(object):
 
@@ -266,9 +273,14 @@ class LanguageJapanese(LanguageProcessor):
 
     def __init__(self, *args, **kw):
         """intitialise MeCab library"""
+        global user_dictionary_path
+
         super(LanguageJapanese, self).__init__(*args, cjk_convert=False, **kw)
 
-        self.mecab = MeCab.Tagger('-O chasen')
+        user_dictionary = os.path.join(user_dictionary_path, 'user.dic')
+
+        assert os.path.exists(user_dictionary)
+        self.mecab = MeCab.Tagger('-O chasen -u ' + user_dictionary)
 
 
     def romanise(self, text):

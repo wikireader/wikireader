@@ -68,6 +68,9 @@ HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.h
 
 VERSION_FILE := ${DATA_PREFIX}.ftr
 
+MECAB_INDEX := /usr/lib/mecab/mecab-dict-index
+MECAB_INDEX_OPTS := --dicdir=/var/lib/mecab/dic/ipadic-utf8 --charset=utf-8 --dictionary-charset=utf-8
+
 PYLZMA_DIR := pylzma-0.3.0
 MATH_DIR := mediawiki-offline/math
 MEDIAWIKI_MESSAGES_DIR := mediawiki-offline/languages/messages
@@ -126,7 +129,7 @@ check-html:
 
 
 .PHONY: index
-index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py
+index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-user.dic
 	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
@@ -184,7 +187,7 @@ parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
 		--article-offsets="${OFFSETS}"
 
 .PHONY: render
-render: check-dirs check-fonts check-html stamp-PinyinTable.py
+render: check-dirs check-fonts check-html stamp-PinyinTable.py stamp-user.dic
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
@@ -209,6 +212,11 @@ pylzma:
 	python setup.py build && \
 	sudo python setup.py install
 
+
+# create local MeCab user.dic (used by LanguageTranslation.py)
+CLEAN_TARGETS += user.dic
+user.dic: japanese_dictionary.csv ${MECAB_INDEX}
+	${MECAB_INDEX} ${MECAB_INDEX_OPTS} --userdic="$@" japanese_dictionary.csv
 
 # create the #redirect regular expression
 CLEAN_TARGETS += RedirectedTo.py

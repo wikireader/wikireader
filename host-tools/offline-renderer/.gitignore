@@ -10,5 +10,6 @@ all_articles.html
 *.idx-tmp
 *.idx
 *.db
+*.dic
 stamp-*
 host-tools/offline-renderer/pinyin.py
