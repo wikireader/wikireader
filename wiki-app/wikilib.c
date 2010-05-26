@@ -65,7 +65,7 @@ int last_display_mode = 0;
 int display_mode = DISPLAY_MODE_INDEX;
 static struct keyboard_key * pre_key= NULL;
 static unsigned int article_touch_down_handled = 0;
-static unsigned int touch_down_on_keyboard = 0;
+unsigned int touch_down_on_keyboard = 0;
 static unsigned int touch_down_on_list = 0;
 static struct pos article_touch_down_pos;
 static unsigned int touch_y_last_unreleased = 0;
@@ -322,8 +322,8 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 	} else if (keycode == WL_KEY_BACKSPACE) {
 		rc = search_remove_char(0, ev_time);
 	} else if (keycode == WL_KEY_SWITCH_KEYBOARD ||
-		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
-		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
+		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT || 
+		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_ABC || 
 		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
 		rc = -1;
 	} else {
@@ -568,7 +568,6 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 		keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 		enter_touch_y_pos = -1;
 		touch_search = 0;
-		// This is for cancelling the key press at slow keying.  It is not good for fast keyin.
 		//if (pre_key && pre_key != key && keyboard_adjacent_keys(pre_key, key))
 		//{
 		//	touch_down_on_keyboard = 0;
@@ -615,12 +614,12 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 		touch_down_on_keyboard = 0;
 		touch_down_on_list = 0;
 	} else {
-		// This is for cancelling the key press at slow keying.  It is not good for fast keyin.
 		//if (pre_key && *pre_key->key != *key->key && keyboard_adjacent_keys(pre_key, key))
-		//{
-		//	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
-		//	goto out;
-		//}
+		if (pre_key && *pre_key->key != *key->key)
+		{
+			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+			//goto out;
+		}
 
 		if(enter_touch_y_pos<0)  //record first touch y pos
 			enter_touch_y_pos = ev->touch_event.y;
@@ -645,28 +644,32 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 					}
 				}
 			}
-			else if(*key->key == WL_KEY_SWITCH_KEYBOARD)
+			else
 			{
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
-				if (!touch_down_on_keyboard)
+				press_delete_button = false;
+				if(*key->key == WL_KEY_SWITCH_KEYBOARD)
 				{
-					mode = keyboard_get_mode();
-					if(mode == wiki_default_keyboard())
-						keyboard_set_mode(KEYBOARD_NUM);
-					else if(mode == KEYBOARD_NUM)
+					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+					if (!touch_down_on_keyboard)
 					{
-						if (wiki_default_keyboard() == KEYBOARD_CHAR_JP)
+						mode = keyboard_get_mode();
+						if(mode == wiki_default_keyboard())
+							keyboard_set_mode(KEYBOARD_NUM);
+						else if(mode == KEYBOARD_NUM)
+						{
+							if (wiki_default_keyboard() == KEYBOARD_CHAR_JP)
+								keyboard_set_mode(KEYBOARD_CHAR);
+							else
+								keyboard_set_mode(wiki_default_keyboard());
+						} else if (mode == KEYBOARD_CHAR_JP) {
 							keyboard_set_mode(KEYBOARD_CHAR);
-						else
+						} else if (mode == KEYBOARD_CHAR) { // mode != wiki_default_keyboard() && mode == KEYBOARD_CHAR
 							keyboard_set_mode(wiki_default_keyboard());
-					} else if (mode == KEYBOARD_CHAR_JP) {
-						keyboard_set_mode(KEYBOARD_CHAR);
-					} else if (mode == KEYBOARD_CHAR) { // mode != wiki_default_keyboard() && mode == KEYBOARD_CHAR
-						keyboard_set_mode(wiki_default_keyboard());
+						}
+						guilib_fb_lock();
+						keyboard_paint();
+						guilib_fb_unlock();
 					}
-					guilib_fb_lock();
-					keyboard_paint();
-					guilib_fb_unlock();
 				}
 			}
 
@@ -678,12 +681,11 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 			if (touch_down_on_keyboard) {
 				keyboard_key_invert(key);
 				//if (pre_key && !keyboard_adjacent_keys(pre_key, key))
-				if (pre_key)
-				{
-					handle_search_key(pre_key, ev->touch_event.ticks);
-					pre_key = NULL;
-				}
-				else
+				//{
+				//	handle_search_key(pre_key, ev->touch_event.ticks);
+				//	pre_key = NULL;
+				//}
+				//else
 					pre_key = key;
 			}
 		} else {
@@ -835,22 +837,26 @@ static void handle_keyboard_jp(struct wl_input_event *ev, int last_5_x[], int la
 					}
 				}
 			}
-			else if(*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
-				*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
-				*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
+			else
 			{
-				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
-				if (!touch_down_on_keyboard)
+				press_delete_button = false;
+				if(*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT || 
+					*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC || 
+					*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
 				{
-					if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT)
-						keyboard_set_mode(wiki_default_keyboard());
-					else if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC)
-						keyboard_set_mode(KEYBOARD_PHONE_STYLE_ABC);
-					else if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
-						keyboard_set_mode(KEYBOARD_PHONE_STYLE_123);
-					guilib_fb_lock();
-					keyboard_paint();
-					guilib_fb_unlock();
+					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
+					if (!touch_down_on_keyboard)
+					{
+						if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT)
+							keyboard_set_mode(wiki_default_keyboard());
+						else if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC)
+							keyboard_set_mode(KEYBOARD_PHONE_STYLE_ABC);
+						else if (*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
+							keyboard_set_mode(KEYBOARD_PHONE_STYLE_123);
+						guilib_fb_lock();
+						keyboard_paint();
+						guilib_fb_unlock();
+					}
 				}
 			}
 
@@ -861,12 +867,12 @@ static void handle_keyboard_jp(struct wl_input_event *ev, int last_5_x[], int la
 
 			if (touch_down_on_keyboard) {
 				keyboard_key_invert(key);
-				if (pre_key && !keyboard_adjacent_keys(pre_key, key))
-				{
-					handle_search_key(pre_key, ev->touch_event.ticks);
-					pre_key = NULL;
-				}
-				else
+				//if (pre_key && !keyboard_adjacent_keys(pre_key, key))
+				//{
+				//	handle_search_key(pre_key, ev->touch_event.ticks);
+				//	pre_key = NULL;
+				//}
+				//else
 					pre_key = key;
 			}
 		} else {
@@ -994,12 +1000,12 @@ static void handle_touch(struct wl_input_event *ev)
 
 				if (touch_down_on_keyboard) {
 					keyboard_key_invert(key);
-					if (pre_key && !keyboard_adjacent_keys(pre_key, key))
-					{
-						handle_search_key(pre_key, ev->touch_event.ticks);
-						pre_key = NULL;
-					}
-					else
+					//if (pre_key && !keyboard_adjacent_keys(pre_key, key))
+					//{
+					//	handle_search_key(pre_key, ev->touch_event.ticks);
+					//	pre_key = NULL;
+					//}
+					//else
 						pre_key = key;
 				}
 			} else {
@@ -1025,13 +1031,13 @@ static void handle_touch(struct wl_input_event *ev)
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_DELAY, ev->touch_event.ticks); // reset invert with delay
 			enter_touch_y_pos = -1;
 			touch_search = 0;
-			if (pre_key && pre_key != key && keyboard_adjacent_keys(pre_key, key))
-			{
-				touch_down_on_keyboard = 0;
-				touch_down_on_list = 0;
-				pre_key = NULL;
-				goto out;
-			}
+			//if (pre_key && pre_key != key && keyboard_adjacent_keys(pre_key, key))
+			//{
+			//	touch_down_on_keyboard = 0;
+			//	touch_down_on_list = 0;
+			//	pre_key = NULL;
+			//	goto out;
+			//}
 
 			pre_key = NULL;
 			if (press_delete_button)
@@ -1050,10 +1056,11 @@ static void handle_touch(struct wl_input_event *ev)
 			}
 			touch_down_on_keyboard = 0;
 		} else {
-			if (pre_key && *pre_key->key != *key->key && keyboard_adjacent_keys(pre_key, key))
+			//if (pre_key && *pre_key->key != *key->key && keyboard_adjacent_keys(pre_key, key))
+			if (pre_key && *pre_key->key != *key->key)
 			{
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
-				goto out;
+				//goto out;
 			}
 
 			if(enter_touch_y_pos<0)  //record first touch y pos
@@ -1075,16 +1082,20 @@ static void handle_touch(struct wl_input_event *ev)
 						}
 					}
 				}
-				else if(*key->key == WL_KEY_SWITCH_KEYBOARD)
+				else
 				{
-					mode = keyboard_get_mode();
-					if(mode == KEYBOARD_PASSWORD_CHAR)
-						keyboard_set_mode(KEYBOARD_PASSWORD_NUM);
-					else if(mode == KEYBOARD_PASSWORD_NUM)
-						keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
-					guilib_fb_lock();
-					keyboard_paint();
-					guilib_fb_unlock();
+					press_delete_button = false;
+					if(*key->key == WL_KEY_SWITCH_KEYBOARD)
+					{
+						mode = keyboard_get_mode();
+						if(mode == KEYBOARD_PASSWORD_CHAR)
+							keyboard_set_mode(KEYBOARD_PASSWORD_NUM);
+						else if(mode == KEYBOARD_PASSWORD_NUM)
+							keyboard_set_mode(KEYBOARD_PASSWORD_CHAR);
+						guilib_fb_lock();
+						keyboard_paint();
+						guilib_fb_unlock();
+					}
 				}
 
 				if (!touch_down_on_keyboard)
@@ -1407,7 +1418,7 @@ int wikilib_run(void)
 			sleep = 0;
 		}
 
-		if (!more_events && display_mode == DISPLAY_MODE_INDEX && !press_delete_button && check_search_string_change())
+		if (!more_events && display_mode == DISPLAY_MODE_INDEX && !press_delete_button && !touch_down_on_keyboard && check_search_string_change())
 		{
 			sleep = 0;
 		}

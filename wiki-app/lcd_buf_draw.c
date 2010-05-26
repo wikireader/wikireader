@@ -732,7 +732,7 @@ char lcd_draw_buf_get_byte(int x, int y)
 {
 	unsigned int byte = (x + LCD_VRAM_WIDTH_PIXELS * y) / 8;
 
-	return framebuffer[byte];
+	return lcd_draw_buf.screen_buf[byte];
 }
 
 int lcd_draw_buf_get_pixel(int x, int y)
@@ -1649,7 +1649,7 @@ void display_retrieved_article(long idx_article)
 			link_str = file_buffer + offset;
 			if (wiki_lang_exist(link_str))
 			{
-				int bDuplicated = 0;
+				int bDuplicated = 0; 
 				for (i = 1; i < article_link_count; i++)
 				{
 					if (externalLink[i].link_str && duplicate_wiki_lang(link_str, externalLink[i].link_str))
@@ -2008,7 +2008,7 @@ void display_str(unsigned char *str)
 	offset_y = 0;
 	buf_draw_UTF8_str_in_copy_buffer((char *)framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x,DEFAULT_FONT_IDX);
 
-	repaint_framebuffer(framebuffer_copy,0, 0);
+	repaint_framebuffer(framebuffer_copy,-1, 0);
 
 }
 #endif
@@ -2138,7 +2138,7 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 {
 	int x, y;
 	
-	if (end_x < 0 || start_x >= LCD_BUF_WIDTH_PIXELS - 1)
+	if (end_x < 0 || start_x > LCD_BUF_WIDTH_PIXELS - 1)
 		return 1;
 	x = start_x;
 	while (x <= end_x)
@@ -2169,11 +2169,11 @@ int nothing_before_link(int article_link_number)
 {
 	int start_x,start_y,end_x,end_y;
 
-	start_y = (articleLink[article_link_number].start_xy >> 8) + article_start_y_pos;
+	start_y = (articleLink[article_link_number].start_xy >> 8);
 	start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN - 1;
 	if (start_x < 0)
 		start_x = 0;
-	end_y   = (articleLink[article_link_number].end_xy  >>8) + article_start_y_pos;
+	end_y   = (articleLink[article_link_number].end_xy  >>8);
 	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
 	if (is_lcd_buf_area_blank(0, start_y, start_x - 2, end_y))
 		return ARTICLE_LINK_NOTHING_BEFORE;
@@ -2185,11 +2185,11 @@ int nothing_after_link(int article_link_number)
 {
 	int start_x,start_y,end_x,end_y;
 
-	start_y = (articleLink[article_link_number].start_xy >> 8) + article_start_y_pos;
+	start_y = (articleLink[article_link_number].start_xy >> 8);
 	start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN - 1;
 	if (start_x < 0)
 		start_x = 0;
-	end_y   = (articleLink[article_link_number].end_xy  >>8) + article_start_y_pos;
+	end_y   = (articleLink[article_link_number].end_xy  >>8);
 	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
 	if (is_lcd_buf_area_blank(end_x + 2, start_y, LCD_BUF_WIDTH_PIXELS - 1, end_y))
 		return ARTICLE_LINK_NOTHING_AFTER;
