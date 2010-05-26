@@ -396,8 +396,8 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             if title != rtitle:
-                title = unicode(category, 'utf-8') + ':' + title.lower()
-                rtitle = unicode(rcategory, 'utf-8') + ':' + rtitle.lower()
+                title = unicode(category, 'utf-8').capitalize() + ':' + title
+                rtitle = unicode(rcategory, 'utf-8').capitalize() + ':' + rtitle
                 self.template_cursor.execute(u'insert or replace into redirects (title, redirect) values(?, ?)',
                                              [u'~{0:d}~{1:s}'.format(self.file_id(), title),
                                               u'~{0:d}~{1:s}'.format(self.file_id(), rtitle)])
@@ -429,7 +429,7 @@ pragma journal_mode = memory;
         title = self.translate(title).strip(u'\u200e\u200f')
 
         if self.KEY_TEMPLATE == key:
-            t1 = unicode(category, 'utf-8') + ':' + title.lower()
+            t1 = unicode(category, 'utf-8').capitalize() + ':' + title
             t_body = TidyUp.template(text)
             self.template_cursor.execute(u'insert or replace into templates (title, body) values(?, ?)',
                                          [u'~{0:d}~{1:s}'.format(self.file_id(), t1), u'~' + t_body])
@@ -440,7 +440,7 @@ pragma journal_mode = memory;
 
         self.article_count += 1
 
-        # do closer inspection to see if realy restricted
+        # do closer inspection to see if really restricted
         if restricted:
             (restricted, bad_words) = FilterWords.find_restricted(text)
 

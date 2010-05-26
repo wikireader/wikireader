@@ -58,7 +58,7 @@ class ParserStandAlone extends Parser
    * @return array
    */
   function fetchTemplateAndTitle( $title ) {
-    #echo "\n--- Trying to find offline template: $title ---\n";
+    #echo "\n<!-- Trying to find offline template: $title -->\n";
 
     global $wgTemplateDB, $wgTemplateFileID;
     $finalTitle    = $title;
@@ -66,7 +66,7 @@ class ParserStandAlone extends Parser
 
     # $$$ need to fix later for all languages
     # We pad the title with '~' to force the database to import strings
-    $title_orig  = '~' . $wgTemplateFileID . '~' . strtolower($title);
+    $title_orig  = '~' . $wgTemplateFileID . '~' . $title;
     $db = new PDO('sqlite:' . $wgTemplateDB);
     $tl = $db->quote($title_orig);
 
@@ -89,7 +89,7 @@ class ParserStandAlone extends Parser
 
     if (sizeof($data) > 0) {
       $template_text = substr($data[0]['body'], 1);
-      #echo "\n--- TT:($template_text):TT --- \n";
+      #echo "\n<!-- TT:($template_text):TT -->\n";
     } else {
       $template_text = '';
     }
