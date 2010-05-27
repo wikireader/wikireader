@@ -54,6 +54,7 @@ def usage(message):
     print('       --language=<xx>         Set language for index conversions [en]')
     print('       --limit=number          Limit the number of articles processed')
     print('       --prefix=name           Device file name portion for .fnd/.pfx [pedia]')
+    print('       --ignore-templates=file File of templates to ignore(no default)')
     print('       --templates=file        Database for templates [templates.db]')
     print('       --truncate-title        Set when not using language links to save space')
     exit(1)
@@ -65,12 +66,13 @@ def main():
 
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:l:p:L:T',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvi:o:c:t:I:l:p:L:T',
                                    ['help', 'verbose',
                                     'article-index=',
                                     'article-offsets=',
                                     'article-counts=',
                                     'templates=',
+                                    'ignore-templates=',
                                     'limit=',
                                     'prefix=',
                                     'language=',
@@ -86,6 +88,7 @@ def main():
     fnd_name = 'pedia.fnd'
     pfx_name = 'pedia.pfx'
     template_name = 'templates.db'
+    ignore_templates_name = None
     limit = 'all'
     language = 'en'             # some languages may require special processing
     truncate_title = False      # set tru when not using language links
@@ -103,6 +106,10 @@ def main():
             cnt_name = arg
         elif opt in ('-t', '--templates'):
             template_name = arg
+        elif opt in ('-I', '--ignore-templates'):
+            ignore_templates_name = arg
+            if not os.path.exists(ignore_templates_name):
+                usage(u'ignore-templates file: {0:s} does not exist'.format(ignore_templates_name))
         elif opt in ('-T', '--truncate-title'):
             truncate_title = True
         elif opt in ('-l', '--limit'):
@@ -126,12 +133,23 @@ def main():
     if [] == args:
         usage('Missing argument(s)')
 
+    ignored_templates = {}
+    if None != ignore_templates_name:
+        with open(ignore_templates_name) as f:
+            for l in f.readlines():
+                line = l.strip()
+                if line.startswith('#'):
+                    continue
+                if '' != line:
+                    ignored_templates[line] = True
+
     language_convert = LanguageTranslation.LanguageNormal()
     if 'ja' == language:
         language_convert = LanguageTranslation.LanguageJapanese()
 
     processor = FileProcessing(articles = art_name, offsets = off_name,
                                templates = template_name,
+                               ignored_templates = ignored_templates,
                                language = language_convert)
 
     for f in args:
@@ -214,6 +232,7 @@ class FileProcessing(FileScanner.FileScanner):
         self.file_import = self.offset_db_name + '.files'
 
         self.template_db_name = kw['templates']
+        self.ignored_templates = kw['ignored_templates']
 
         for filename in [self.article_db_name,
                          self.article_import,
@@ -429,11 +448,12 @@ pragma journal_mode = memory;
         title = self.translate(title).strip(u'\u200e\u200f')
 
         if self.KEY_TEMPLATE == key:
-            t1 = unicode(category, 'utf-8').capitalize() + ':' + title
-            t_body = TidyUp.template(text)
-            self.template_cursor.execute(u'insert or replace into templates (title, body) values(?, ?)',
-                                         [u'~{0:d}~{1:s}'.format(self.file_id(), t1), u'~' + t_body])
-            self.template_count += 1
+            if title not in self.ignored_templates:
+                t1 = unicode(category, 'utf-8').capitalize() + ':' + title
+                t_body = TidyUp.template(text)
+                self.template_cursor.execute(u'insert or replace into templates (title, body) values(?, ?)',
+                                             [u'~{0:d}~{1:s}'.format(self.file_id(), t1), u'~' + t_body])
+                self.template_count += 1
             return
 
         restricted = FilterWords.is_restricted(title) or FilterWords.is_restricted(text)

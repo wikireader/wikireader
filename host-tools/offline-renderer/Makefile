@@ -54,6 +54,8 @@ ENABLE_IMAGES ?= YES
 ARTICLES_PER_BLOCK ?= 32
 ARTICLE_BLOCK_SIZE ?= 262144
 
+IGNORED_TEMPLATES ?= templates-to-ignore
+
 WORKDIR_PATH := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
 TEMPDIR_PATH := $(shell ${RESOLVEPATH} ${TEMPDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX})
 
@@ -129,12 +131,13 @@ check-html:
 
 
 .PHONY: index
-index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-user.dic
+index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-user.dic ${IGNORED_TEMPLATES}
 	./ArticleIndex.py ${VERBOSE_ARG} \
 		--article-index="${ARTICLES}" \
 		--article-offsets="${OFFSETS}" \
 		--article-counts="${COUNTS_FILE}" \
 		--templates="${TEMPLATE_FILE}" \
+		--ignore-templates="${IGNORED_TEMPLATES}" \
 		--language="${WIKI_LANGUAGE}" \
 		--prefix="${DATA_PREFIX}" ${TRUNCATE_ARG} ${XML_FILES}
 
