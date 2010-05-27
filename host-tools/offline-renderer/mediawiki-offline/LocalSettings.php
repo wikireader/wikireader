@@ -42,8 +42,8 @@ require_once( "$IP/includes/DefaultSettings.php" );
 
 # Set some globals
 $wgSitename = 'MediaWikiStandAlone';
-$wgProto = 'woc';
-$wgServerName = 'woc';
+$wgProto = 'http';
+$wgServerName = 'wikireader';
 $wgServer = $wgProto .'://'. $wgServerName;
 #$wgScriptPath = '/wiki';
 #$wgArticlePath = "/article/$1";
