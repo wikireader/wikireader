@@ -7,38 +7,44 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 import re
+import string
 
 
 # text must be lower case
 # the number is the maximum number of occurances
+# i.e. zero => word is not allowed in text
 FILTER_WEIGHTS = {
-    "pornograph": 3,
-    "x-rated": 2,
-    "dildo": 2,
-    "erotic": 3,
-    "bdsm": 1,
-    "felching": 1,
-    "pegging": 2,
-    "cum shot": 1,
-    "anilingus": 1,
-    "deep-throat": 2,
-    "fellatio": 1,
-    "adult-video": 2,
-    "adult-entertainment": 2,
-    "son-of-a-bitch": 2,
-    "dickhead": 3,
-    "fuck": 3,
-    "cunt": 3,
+    u'{{性的}}': 0,    # this template occurs in Japanese articles that are restricted
+    u'pornograph': 3,
+    u'x-rated': 2,
+    u'dildo': 2,
+    u'erotic': 3,
+    u'bdsm': 1,
+    u'felching': 1,
+    u'pegging': 2,
+    u'cum shot': 1,
+    u'anilingus': 1,
+    u'deep-throat': 2,
+    u'fellatio': 1,
+    u'adult-video': 2,
+    u'adult-entertainment': 2,
+    u'son-of-a-bitch': 2,
+    u'dickhead': 3,
+    u'fuck': 3,
+    u'cunt': 3,
 }
 
 BAD_WORDS = FILTER_WEIGHTS.keys()
 
-NON_LETTERS = re.compile('[-\d\W]+')
+NON_LETTERS = re.compile('[' + string.whitespace + ']+')
 
 def find_restricted(text):
     """check if text contains any restricted words"""
 
     global NON_LETTERS, BAD_WORDS
+
+    if unicode != type(text):
+        text = unicode(text, 'utf-8')
 
     score = 0
     contains = {}
@@ -62,6 +68,9 @@ def is_restricted(text):
 
     global BAD_WORDS
 
+    if unicode != type(text):
+        text = unicode(text, 'utf-8')
+
     text = text.lower()
     size = len(text)
     for word in BAD_WORDS:
@@ -77,4 +86,3 @@ def is_restricted(text):
             else:
                 break
     return False
-
