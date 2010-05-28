@@ -16,6 +16,7 @@ USAGE()
   echo usage: $(basename "$0") '<options>' command
   echo '       --help         this message'
   echo '       --verbose      print more information'
+  echo '       --host=<hostN> set the maximum host name [render]'
   echo '       --pre=cmd      a local command for the front of the pipe'
   echo '       --post=cmd     a local command for the rear of the pipe'
   echo '       --yes          assume yes'
@@ -98,7 +99,7 @@ print=no
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvbp:o:l:yP --long=help,verbose,brief,pre:,post:,list:,yes,print-list -- "$@") || exit 1
+args=$(${getopt} -o hvH:bp:o:l:yP --long=help,verbose,host:,brief,pre:,post:,list:,yes,print-list -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -108,6 +109,19 @@ do
     -v|--verbose)
       verbose=yes
       shift
+      ;;
+
+    -H|--host)
+      HostName="${2%%[0-9]*}"
+      n="${2#${HostName}}"
+      HostList=''
+      i=1
+      while [ ${i} -le ${n} ]
+      do
+        HostList="${HostList} ${i}"
+        i=$((${i} + 1))
+      done
+      shift 2
       ;;
 
     -P|--print-list)

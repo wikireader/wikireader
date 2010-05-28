@@ -13,6 +13,7 @@ USAGE()
   echo usage: $(basename "$0") '<options>'
   echo '       --help          -h         this message'
   echo '       --work          -w         show work directory files'
+  echo '       --simul         -2         switch to the other farm'
   echo '       --image         -i         show image directory files'
   echo '       --stamps        -s         show status of stamps'
   echo '       --analyse       -a         analyse the log file'
@@ -48,11 +49,13 @@ suffix=pedia
 list=''
 combine_host=8
 base_dir=samo
+render_host=
+run_parallel=
 compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxHA --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress,abort -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxHA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -64,23 +67,30 @@ do
       shift
       ;;
 
+    -2|--simul)
+      combine_host="3"
+      render_host='--host=simul3'
+      run_parallel="--machines=3 --parallel=12"
+      shift
+      ;;
+
     -b|--base)
       base_dir="$2"
       shift 2
       ;;
 
     -s|--stamps)
-      RenderDo --yes ${list} --brief --post='sed s/stamp-//g' "cd '${base_dir}/work/${language}${suffix}'"' && printf "\33[34;1m%s\33[0;m " stamp* && echo'
+      RenderDo --yes ${render_host} ${list} --brief --post='sed s/stamp-//g' "cd '${base_dir}/work/${language}${suffix}'"' && printf "\33[34;1m%s\33[0;m " stamp* && echo'
       shift
       ;;
 
     -w|--work)
-      RenderDo --yes ${list} --brief "cd '${base_dir}' && ls -l 'work/${language}${suffix}'"
+      RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' && ls -l 'work/${language}${suffix}'"
       shift
       ;;
 
     -N|--new-session)
-      for host in $(RenderDo ${list} --print-list)
+      for host in $(RenderDo ${render_host} ${list} --print-list)
       do
         StartScreen --cd="${base_dir}" "${host}"
       done
@@ -88,36 +98,36 @@ do
       ;;
 
     -r|--run)
-      c="scripts/Run --compress='${compression}' --clear --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
+      c="scripts/Run ${run_parallel} --compress='${compression}' --clear --language='${language}' --suffix='${suffix}'"
+      RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift
       ;;
 
     -R|--re-render)
-      c="scripts/Run --compress='${compression}' --re-render --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
+      c="scripts/Run ${run_parallel} --compress='${compression}' --re-render --language='${language}' --suffix='${suffix}'"
+      RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift
       ;;
 
     -I|--re-index)
-      c="scripts/Run --compress='${compression}' --index-only --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
+      c="scripts/Run ${run_parallel} --compress='${compression}' --index-only --language='${language}' --suffix='${suffix}'"
+      RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift
       ;;
 
     -c|--copy)
       c="scripts/Copy --base='${base_dir}' --to='${combine_host}' --language='${language}' --suffix='${suffix}'"
-      RenderDo --yes ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
+      RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift
       ;;
 
     -i|--image)
-      RenderDo --yes ${list} --brief "cd '${base_dir}' && ls -l 'image/${language}${suffix}'"
+      RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' && ls -l 'image/${language}${suffix}'"
       shift
       ;;
 
     -f|--fetch-log)
-      for host in $(RenderDo ${list} --print-list)
+      for host in $(RenderDo ${render_host} ${list} --print-list)
       do
         lf="${host}-${language}.log"
         echo fetch log from: ${host} to: ${lf}
@@ -127,16 +137,16 @@ do
       ;;
 
     -g|--git)
-      RenderDo --yes ${list} --verbose "cd '${base_dir}' && git checkout . && git pull --rebase"
+      RenderDo --yes ${render_host} ${list} --verbose "cd '${base_dir}' && git checkout . && git pull --rebase"
       shift
       ;;
 
     -p|--process)
       if [ -n "$2" ]
       then
-        RenderDo --yes ${list} --brief --post="cut -b 1-$2" 'echo;ps -o pid,cmd -u wr --forest'
+        RenderDo --yes ${render_host} ${list} --brief --post="cut -b 1-$2" 'echo;ps -o pid,cmd -u wr --forest'
       else
-        RenderDo --yes ${list} --brief 'echo;ps -o pid,cmd -u wr --forest'
+        RenderDo --yes ${render_host} ${list} --brief 'echo;ps -o pid,cmd -u wr --forest'
       fi
       shift 2
       ;;
@@ -144,22 +154,22 @@ do
     -t|--tail)
       t=3
       [ -n "$2" ] && t="$2"
-      RenderDo --yes ${list} --brief "tail -n '${t}' '${base_dir}'/${language}.log"
+      RenderDo --yes ${render_host} ${list} --brief "tail -n '${t}' '${base_dir}'/${language}.log"
       shift 2
       ;;
 
     -a|--analyse)
-      RenderDo --yes ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog '${language}.log'"
+      RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog '${language}.log'"
       shift
       ;;
 
     -m|--memory)
-      RenderDo --yes ${list} --brief 'echo Memory Status \(Megabytes\); free -m'
+      RenderDo --yes ${render_host} ${list} --brief 'echo Memory Status \(Megabytes\); free -m'
       shift
       ;;
 
     -k|--combine)
-      RenderDo --yes --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' combine"
+      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' combine"
       shift
       ;;
 
@@ -186,7 +196,8 @@ do
         [ -e "${dest}" ] || mkdir -p "${dest}"
         [ -d "${dest}" ] || USAGE ${dest} is not a directory
       fi
-      rsync -cavHx --progress --exclude='*-tmp' "wr@render${combine_host}:${base_dir}/image/${language}${suffix}" "${dest}/"
+      h=$(RenderDo ${render_host} --list="${combine_host}" --print-list | head -n 1)
+      rsync -cavHx --progress --exclude='*-tmp' "wr@${h}:${base_dir}/image/${language}${suffix}" "${dest}/"
       shift 2
       ;;
 
@@ -222,7 +233,7 @@ do
     -x|--xml-link)
       for s in wiki wiktionary wikiquote wikibooks
       do
-        RenderDo --yes ${list} --brief "cd '${base_dir}' &&
+        RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&
  f=\$(ls -1 ../'${language}${s}'-*-pages-articles.xml 2>/dev/null | tail -n 1) &&
  [ -n \"\${f}\" ] &&
@@ -238,7 +249,7 @@ do
       ;;
 
     -A|--abort)
-      RenderDo --yes ${list} --brief 'killall php python make'
+      RenderDo --yes ${render_host} ${list} --brief 'killall php python make'
       shift
       ;;
 
