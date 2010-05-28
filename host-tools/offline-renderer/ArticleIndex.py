@@ -137,7 +137,7 @@ def main():
     if None != ignore_templates_name:
         with open(ignore_templates_name) as f:
             for l in f.readlines():
-                line = l.strip()
+                line = unicode(l, 'utf-8').strip()
                 if line.startswith('#'):
                     continue
                 if '' != line:
