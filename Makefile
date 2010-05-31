@@ -704,10 +704,11 @@ nls-install: validate-destdir
 	      d=$$(basename "$${dir}") ; \
 	      for suffix in books dict pedia quote ; \
 	      do \
-	        src="${LICENSE_DIR}/$${d%$${suffix}}/wiki.nls" ; \
-	        if [ -f "$${src}" ] ; \
+	        language="$${d%$${suffix}}" ; \
+	        if [ X"$${language}" != X"$${d}" ] ; \
 	        then \
-	          language="$${d%$${suffix}}" ; \
+	          src="${LICENSE_DIR}/$${d%$${suffix}}/wiki.nls" ; \
+	          [ -f "$${src}" ] || src="${LICENSE_DIR}/en/wiki.nls" ; \
 	          ${SCRIPTS}/nls-installer --prefix="${DESTDIR_PATH}" \
                                            --language="$${language}" \
                                            --suffix="$${suffix}" \
