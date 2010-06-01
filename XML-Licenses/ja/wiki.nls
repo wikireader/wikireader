@@ -3,10 +3,11 @@
 # Author: Hosiryuhosi
 # Author: cigarcook <cigarcook@koress.jp>
 
-wiki_name=Wikipedia 日本語 (平仮名)
-wiki_name2=Wikipedia 日本語 (ローマ字)
+wiki_name=Wikipedia 日本語 (ひらがな入力)
+wiki_name2=Wikipedia 日本語 (ローマ字入力)
 license_text=テキストは[クリエイティブ・コモンズ 表示-継承ライセンス]の下で利用可能です。追加の条件が適用される場合があります。詳細は[利用規約]を参照してください。The original article is available at: http://ja.wikipedia.org/wiki/<title>
-type_a_word=記事名をローマ字で入力
+type_a_word=記事名をひらがなで入力
+type_a_word2=記事名をローマ字で入力
 no_results=記事が見つかりません
 searching=検索中...
 select_wiki=Choose encyclopedia

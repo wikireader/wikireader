@@ -327,8 +327,9 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
 		rc = -1;
 	} else {
-		int mode = keyboard_get_mode();
-		if (mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123)
+//		int mode = keyboard_get_mode();
+//		if (mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123)
+		if (wiki_is_japanese())
 		{
 			if (keycode == WL_KEY_SONANT)
 			{
@@ -624,8 +625,11 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 		if(enter_touch_y_pos<0)  //record first touch y pos
 			enter_touch_y_pos = ev->touch_event.y;
 		last_index_y_pos = ev->touch_event.y;
-		start_search_time = ev->touch_event.ticks;
-		last_delete_time = start_search_time;
+		if (!key || *key->key!=WL_KEY_BACKSPACE || !press_delete_button)
+		{
+			start_search_time = ev->touch_event.ticks;
+			last_delete_time = start_search_time;
+		}
 		if (key) {
 			if(*key->key==WL_KEY_BACKSPACE)//press "<" button
 			{
@@ -817,8 +821,11 @@ static void handle_keyboard_jp(struct wl_input_event *ev, int last_5_x[], int la
 		if(enter_touch_y_pos<0)  //record first touch y pos
 			enter_touch_y_pos = ev->touch_event.y;
 		last_index_y_pos = ev->touch_event.y;
-		start_search_time = ev->touch_event.ticks;
-		last_delete_time = start_search_time;
+		if (!key || *key->key!=WL_KEY_BACKSPACE || !press_delete_button)
+		{
+			start_search_time = ev->touch_event.ticks;
+			last_delete_time = start_search_time;
+		}
 		if (key) {
 			if(*key->key==WL_KEY_BACKSPACE)//press "<" button
 			{
@@ -1066,8 +1073,11 @@ static void handle_touch(struct wl_input_event *ev)
 			if(enter_touch_y_pos<0)  //record first touch y pos
 				enter_touch_y_pos = ev->touch_event.y;
 			last_index_y_pos = ev->touch_event.y;
-			start_search_time = ev->touch_event.ticks;
-			last_delete_time = start_search_time;
+			if (!key || *key->key!=WL_KEY_BACKSPACE || !press_delete_button)
+			{
+				start_search_time = ev->touch_event.ticks;
+				last_delete_time = start_search_time;
+			}
 			if (key) {
 				if(*key->key==WL_KEY_BACKSPACE)//press "<" button
 				{
@@ -1370,7 +1380,7 @@ int wikilib_run(void)
 					kb_mode != KEYBOARD_PHONE_STYLE_TW &&
 					kb_mode != KEYBOARD_PHONE_STYLE_ABC &&
 					kb_mode != KEYBOARD_PHONE_STYLE_123 &&
-					time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
+					time_diff(time_now, start_search_time) > seconds_to_ticks(2.1))
 				{
 					if (!clear_search_string())
 					{
@@ -1397,7 +1407,7 @@ int wikilib_run(void)
 			{
 				sleep = 0;
 				time_now = get_time_ticks();
-				if(time_diff(time_now, start_search_time) > seconds_to_ticks(1.5))
+				if(time_diff(time_now, start_search_time) > seconds_to_ticks(2.1))
 				{
 					clear_password_string();
 					press_delete_button = false;

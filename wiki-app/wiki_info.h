@@ -52,7 +52,7 @@ typedef struct _WIKI_LIST {
 	char wiki_lang[10];
 	char wiki_folder[10];
 	KEYBOARD_MODE wiki_default_keyboard;
-	int wiki_name_idx; // 0 for using wiki_name entry in wiki.nls, 2 for using wiki_name2, etc.
+	int wiki_nls_idx; // 0 for using wiki_name entry in wiki.nls, 2 for using wiki_name2, etc.
 } WIKI_LIST;
 
 typedef struct _WIKI_LICENSE_DRAW {

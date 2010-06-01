@@ -91,338 +91,581 @@ static SEARCH_INFO *search_info = NULL;
 struct _english_hiragana_mapping {
 	char *english;
 	char *hiragana;
-	char *unified_english;
 } english_hiragana_mapping[] = {
-	{"-",   "ー",	NULL	},
-	{"a",	"あ",	 NULL    },
-	{"ba",	"ば",	 NULL   },
-	{"bba",    "っば"    , NULL },
-	{"bbe",    "っべ"    , NULL },
-	{"bbi",    "っび"    , NULL },
-	{"bbo",    "っぼ"    , NULL },
-	{"bbu",	"っぶ",	NULL	},
-	{"bbya","っびゃ"     , NULL },
-	{"bbye","っびぇ"     , NULL },
-	{"bbyi","っびぃ"     , NULL },
-	{"bbyo","っびょ"     , NULL },
-	{"bbyu","っびゅ",	NULL	},
-	{"be",	"べ",	 NULL   },
-	{"bi",	"び",	 NULL   },
-	{"bo",	"ぼ",	 NULL   },
-	{"bu",	"ぶ",	 NULL   },
-	{"bya",	"びゃ",	NULL  },
-	{"bye",	"びぇ",	NULL  },
-	{"byi",	"びぃ",	NULL  },
-	{"byo",	"びょ",	NULL  },
-	{"byu",	"びゅ",	NULL  },
-	{"ccha","っちゃ"     , NULL },
-	{"cche","っちぇ"     , NULL },
-	{"cchi",   "っち"    , NULL },
-	{"ccho","っちょ"     , NULL },
-	{"cchu","っちゅ",	NULL	},
-	{"ccyi","っちぃ"     , NULL },
-	{"cha",	"ちゃ",	"cya"  },
-	{"che",	"ちぇ",	"cye"  },
-	{"chi",	"ち",	NULL  },
-	{"cho",	"ちょ", "cyo"  },
-	{"chu",	"ちゅ", "cyu"  },
-	{"cya",	"ちゃ", "cya"  },
-	{"cye",	"ちぇ", "cye"  },
-	{"cyi",	"ちぃ", "cyi"  },
-	{"cyo",	"ちょ", "cyo"  },
-	{"cyu",	"ちゅ", "cyu"  },
-	{"da",	"だ",	 NULL   },
-	{"dda",    "っだ"    , NULL },
-	{"dde",    "っで"    , NULL },
-	{"ddha","っでぁ"     , NULL },
-	{"ddhe","っでぇ"     , NULL },
-	{"ddhi","っでぃ"     , NULL },
-	{"ddho","っでょ"     , NULL },
-	{"ddhu","っでゅ",	NULL	},
-	{"ddi",    "っヂ"    , NULL },
-	{"ddo",    "っど"    , NULL },
-	{"ddu",	"っづ",	NULL	},
-	{"de",	"で",	 NULL   },
-	{"di",	"ぢ",	 NULL  },
-	{"do",	"ど",	 NULL  },
-	{"du",	"づ",	 NULL  },
-	{"e",	"え",	 NULL  },
-	{"fa",	"ふぁ",	NULL   },
-	{"fe",	"ふぇ",	NULL   },
-	{"ffa", "っふぁ"     , NULL },
-	{"ffe", "っふぇ"     , NULL },
-	{"ffi", "っふぃ"     , NULL },
-	{"ffo", "っふぉ"     , NULL },
-	{"ffu",	"っふ",	NULL	},
-	{"ffyu","っふゅ",	NULL	},
-	{"fi",	"ふぃ",	NULL   },
-	{"fo",	"ふぉ",	NULL   },
-	{"fu",	"ふ",	 NULL  },
-	{"fya",	"ふゃ",	NULL  },
-	{"fye",	"ふぇ", "fe"  },
-	{"fyi",	"ふぃ", "fi"  },
-	{"fyo",	"ふょ", NULL  },
-	{"fyu",	"ふゅ", NULL  },
-	{"ga",	"が",	 NULL  },
-	{"ge",	"げ",	 NULL  },
-	{"gga",    "っが"    , NULL },
-	{"gge",    "っげ"    , NULL },
-	{"ggha","っぐぁ"     , NULL },
-	{"gghe","っぐぇ"     , NULL },
-	{"gghi","っぐぃ"     , NULL },
-	{"ggho","っぐぉ"     , NULL },
-	{"gghu","っぐぅ",	NULL	},
-	{"ggi",    "っぎ"    , NULL },
-	{"ggo",    "っご"    , NULL },
-	{"ggu",	"っぐ",	NULL	},
-	{"ggya","っぎゃ"     , NULL },
-	{"ggye","っぎぇ"     , NULL },
-	{"ggyi","っぎぃ"     , NULL },
-	{"ggyo","っぎょ"     , NULL },
-	{"ggyu","っぎゅ",	NULL	},
-	{"gi",	"ぎ",	 NULL  },
-	{"go",	"ご",	 NULL  },
-	{"gu",	"ぐ",	 NULL  },
-	{"gya",	"ぎゃ",	NULL  },
-	{"gye",	"ぎぇ",	NULL  },
-	{"gyi",	"ぎぃ",	NULL  },
-	{"gyo",	"ぎょ",	NULL  },
-	{"gyu",	"ぎゅ",	NULL  },
-	{"ha",	"は",	 NULL  },
-	{"he",	"へ",	 NULL  },
-	{"hha",    "っは"    , NULL },
-	{"hhe",    "っへ"    , NULL },
-	{"hhi",    "っひ"    , NULL },
-	{"hho",    "っほ"    , NULL },
-	{"hhya","っひゃ"     , NULL },
-	{"hhye","っひぇ"     , NULL },
-	{"hhyi","っひぃ"     , NULL },
-	{"hhyo","っひょ"     , NULL },
-	{"hhyu","っひゅ",	NULL	},
-	{"hi",	"ひ",	 NULL  },
-	{"ho",	"ほ",	 NULL  },
-	{"hu",	"ふ",	 NULL  },
-	{"hya",	"ひゃ",	NULL  },
-	{"hye",	"ひぇ",	NULL  },
-	{"hyi",	"ひぃ",	NULL  },
-	{"hyo",	"ひょ",	NULL  },
-	{"hyu",	"ひゅ",	NULL  },
-	{"i",	"い",	 NULL  },
-	{"ja",	"じゃ",	NULL   },
-	{"je",	"じぇ",	NULL   },
-	{"ji",	"じ",	 NULL  },
-	{"jja", "っじゃ"     , NULL },
-	{"jji",    "っじ"    , NULL },
-	{"jjo", "っじょ"     , NULL },
-	{"jju",	"っじゅ",	NULL	},
-	{"jjye","っじぇ"     , NULL },
-	{"jjyi","っじぃ"     , NULL },
-	{"jo",	"じょ",	NULL   },
-	{"ju",	"じゅ",	NULL   },
-	{"jya",	"じゃ", "ja"  },
-	{"jye",	"じぇ", "je"  },
-	{"jyi",	"じぃ", NULL  },
-	{"jyo",	"じょ", "jo"  },
-	{"jyu",	"じゅ", "ju"  },
-	{"ka",	"か",	 NULL },
-	{"ke",	"け",	 NULL },
-	{"ki",	"き",	 NULL },
-	{"kka",    "っか"    , NULL },
-	{"kke",    "っけ"    , NULL },
-	{"kkha","っくぁ"     , NULL },
-	{"kkhe","っくぇ"     , NULL },
-	{"kkhi","っくぃ"     , NULL },
-	{"kkho","っくぉ"     , NULL },
-	{"kkhu","っくぅ",	NULL	},
-	{"kki",    "っき"    , NULL },
-	{"kko",    "っこ"    , NULL },
-	{"kku",	"っく",	NULL	},
-	{"kkya","っきぁ"     , NULL },
-	{"kkye","っきぇ"     , NULL },
-	{"kkyi","っきぃ"     , NULL },
-	{"kkyo","っきょ"     , NULL },
-	{"kkyu","っきゅ",	NULL	},
-	{"ko",	"こ",	 NULL },
-	{"ku",	"く",	 NULL },
-	{"kya",	"きゃ",	NULL  },
-	{"kye",	"きぇ",	NULL  },
-	{"kyi",	"きぃ",	NULL  },
-	{"kyo",	"きょ",	NULL  },
-	{"kyu",	"きゅ",	NULL  },
-	{"la",	"ぁ",	 "a"   },
-	{"le",	"ぇ",	 "e"   },
-	{"li",	"ぃ",	 "i"   },
-	{"lo",	"ぉ",	 "o"   },
-	{"ltsu","っ",	 "tsu"   },
-	{"lu",	"ぅ",	 "u"   },
-	{"lya",	"りゃ", "rya"  },
-	{"lye",	"りぇ", "rye"  },
-	{"lyi",	"りぃ", "ryi"  },
-	{"lyo",	"りょ", "ryo"  },
-	{"lyu",	"りゅ", "ryu"  },
-	{"ma",	"ま",	 NULL },
-	{"me",	"め",	 NULL },
-	{"mi",	"み",	 NULL },
-	{"mma",    "っま"    , NULL },
-	{"mme",    "っめ"    , NULL },
-	{"mmi",    "っみ"    , NULL },
-	{"mmo",    "っも"    , NULL },
-	{"mmu",	"っむ",	NULL	},
-	{"mmya","っみゃ"     , NULL },
-	{"mmye","っみぇ"     , NULL },
-	{"mmyi","っみぃ"     , NULL },
-	{"mmyo","っみょ"     , NULL },
-	{"mmyu","っみゅ",	NULL	},
-	{"mo",	"も",	 NULL },
-	{"mu",	"む",	 NULL },
-	{"mya",	"みゃ",	NULL  },
-	{"mye",	"みぇ",	NULL  },
-	{"myi",	"みぃ",	NULL  },
-	{"myo",	"みょ",	NULL  },
-	{"myu",	"みゅ",	NULL  },
-	{"na",	"な",	 NULL },
-	{"ne",	"ね",	 NULL },
-	{"ni",	"に",	 NULL },
-	{"nn",	"ん",	 NULL },
-	{"no",	"の",	 NULL },
-	{"nu",	"ぬ",	 NULL },
-	{"nya",	"にゃ",	NULL  },
-	{"nye",	"にぇ",	NULL  },
-	{"nyi",	"にぃ",	NULL  },
-	{"nyo",	"にょ",	NULL  },
-	{"nyu",	"にゅ",	NULL  },
-	{"o",	"お",	 NULL },
-	{"pa",	"ぱ",	 NULL },
-	{"pe",	"ぺ",	 NULL },
-	{"pi",	"ぴ",	 NULL },
-	{"po",	"ぽ",	 NULL },
-	{"ppa",    "っぱ"    , NULL },
-	{"ppe",    "っぺ"    , NULL },
-	{"ppi",    "っぴ"    , NULL },
-	{"ppo",    "っぽ"    , NULL },
-	{"ppu",	"っぷ",	NULL	},
-	{"ppya","っぴゃ"     , NULL },
-	{"ppye","っぴぇ"     , NULL },
-	{"ppyi","っぴぃ"     , NULL },
-	{"ppyo","っぴょ"     , NULL },
-	{"ppyu","っぴゅ",	NULL	},
-	{"pu",	"ぷ",	 NULL },
-	{"pya",	"ぴゃ",	NULL  },
-	{"pye",	"ぴぇ",	NULL  },
-	{"pyi",	"ぴぃ",	NULL  },
-	{"pyo",	"ぴょ",	NULL  },
-	{"pyu",	"ぴゅ",	NULL  },
-	{"ra",	"ら",	 NULL },
-	{"re",	"れ",	 NULL },
-	{"ri",	"り",	 NULL },
-	{"ro",	"ろ",	 NULL },
-	{"rra",    "っら"    , NULL },
-	{"rre",    "っれ"    , NULL },
-	{"rri",    "っり"    , NULL },
-	{"rro",    "っろ"    , NULL },
-	{"rru",	"っる",	NULL	},
-	{"rrya","っりゃ"     , NULL },
-	{"rrye","っりぇ"     , NULL },
-	{"rryi","っりぃ"     , NULL },
-	{"rryo","っりょ"     , NULL },
-	{"rryu","っりゅ",	NULL	},
-	{"ru",	"る",	 NULL },
-	{"rya",	"りゃ",	NULL  },
-	{"rye",	"りぇ",	NULL  },
-	{"ryi",	"りぃ",	NULL  },
-	{"ryo",	"りょ",	NULL  },
-	{"ryu",	"りゅ",	NULL  },
-	{"sa",	"さ",	 NULL },
-	{"se",	"せ",	 NULL },
-	{"sha",	"しゃ", "sya"  },
-	{"she",	"しぇ", "sye"  },
-	{"shi",	"し",	 NULL  },
-	{"sho",	"しょ", "syo"  },
-	{"shu",	"しゅ", "syu"  },
-	{"si",	"し",	 "shi"   },
-	{"so",	"そ",	 NULL   },
-	{"ssa",    "っさ"    , NULL },
-	{"sse",    "っせ"    , NULL },
-	{"ssha","っしゃ"     , NULL },
-	{"sshe","っしぇ"     , NULL },
-	{"sshi",   "っし"    , NULL },
-	{"ssho","っしょ"     , NULL },
-	{"sshu","っしゅ",	NULL	},
-	{"sso",    "っそ"    , NULL },
-	{"ssu",	"っす",	NULL	},
-	{"ssyi","っしぃ"     , NULL },
-	{"su",	"す",	NULL   },
-	{"sya",	"しゃ",	NULL	},
-	{"sye",	"しぇ",	NULL	},
-	{"syi",	"しぃ",	NULL	},
-	{"syo",	"しょ",	NULL	},
-	{"syu",	"しゅ",	NULL	},
-	{"ta",	"た",	NULL  },
-	{"te",	"て",	NULL  },
-	{"ti",	"ち",	NULL  },
-	{"to",	"と",	NULL  },
-	{"tsu",	"つ",	NULL  },
-	{"tta",    "った"    , NULL },
-	{"tte",    "って"    , NULL },
-	{"ttha","ってゃ"     , NULL },
-	{"tthe","ってぇ"     , NULL },
-	{"tthi","ってぃ"     , NULL },
-	{"ttho","ってょ"     , NULL },
-	{"tthu","ってゅ",	NULL	},
-	{"tto",    "っと"    , NULL },
-	{"tts",   "っつ"     , NULL },
-	{"ttsu","っつ",	NULL	},
-	{"tu",	"つ",	"tsu"   },
-	{"tya",	"ちゃ",	"cya"	},
-	{"tye",	"ちぇ",	"cye"	},
-	{"tyi",	"ちぃ",	"cyi"	},
-	{"tyo",	"ちょ",	"cyo"	},
-	{"tyu",	"ちゅ",	"cyu"	},
-	{"u",	"う",	NULL   },
-	{"vu",	"ヴ"     , NULL },
-	{"vva", "っヴぁ"     , NULL },
-	{"vve", "っヴぇ"     , NULL },
-	{"vvi", "っヴぃ"     , NULL },
-	{"vvo", "っヴぉ"     , NULL },
-	{"vvu",	"っヴ",	NULL	},
-	{"wa",	"わ",	NULL   },
-	{"we",	"うぇ",	"whe"	},
-	{"wha",	"うぁ",	NULL	},
-	{"whe",	"うぇ",	NULL	},
-	{"whi",	"うぃ",	NULL	},
-	{"who",	"うぉ",	NULL	},
-	{"whu",	"う",	"u"  },
-	{"wi",	"うぃ",	"whi"	},
-	{"wo",	"を",	NULL   },
-	{"wu",	"う",	NULL   },
-	{"wwa",    "っわ"    , NULL },
-	{"wwha","っうぁ"     , NULL },
-	{"wwhe","っうぇ"     , NULL },
-	{"wwho","っうぉ"     , NULL },
-	{"wwi", "っうぃ"     , NULL },
-	{"ya",	"や",	NULL   },
-	{"ye",	"いぇ",	NULL	},
-	{"yi",	"い",	NULL   },
-	{"yo",	"よ",	NULL   },
-	{"yu",	"ゆ",	NULL   },
-	{"yya",    "っや"    , NULL },
-	{"yyo",    "っよ"    , NULL },
-	{"yyu",	"っゆ",	NULL	},
-	{"za",	"ざ",	NULL   },
-	{"ze",	"ぜ",	NULL   },
-	{"zi",	"じ",	NULL   },
-	{"zo",	"ぞ",	NULL   },
-	{"zu",	"ず",	NULL   },
-	{"zza",    "っざ"    , NULL },
-	{"zze",    "っぜ"    , NULL },
-	{"zzo",    "っぞ"    , NULL },
-	{"zzu",	"っず",	NULL	},
+	{"-",   "ー"	},
+	{"a",	"あ"    },
+	{"ba",	"ば"   },
+	{"bba", "っば" },
+	{"bbe", "っべ" },
+	{"bbi", "っび" },
+	{"bbo", "っぼ" },
+	{"bbu",	"っぶ"	},
+	{"bbya","っびゃ"  },
+	{"bbye","っびぇ"  },
+	{"bbyi","っびぃ"  },
+	{"bbyo","っびょ"  },
+	{"bbyu","っびゅ"	},
+	{"be",	"べ"   },
+	{"bi",	"び"   },
+	{"bo",	"ぼ"   },
+	{"bu",	"ぶ"   },
+	{"bya",	"びゃ"  },
+	{"bye",	"びぇ"  },
+	{"byi",	"びぃ"  },
+	{"byo",	"びょ"  },
+	{"byu",	"びゅ"  },
+	{"ca",	"か"	},
+	{"cca",	"っか"	},
+	{"cce",	"っせ"	},
+	{"ccha","っちゃ"  },
+	{"cche","っちぇ"  },
+	{"cchi","っち" },
+	{"ccho","っちょ"  },
+	{"cchu","っちゅ"	},
+	{"cci",	"っし"	},
+	{"cco",	"っこ"	},
+	{"ccu",	"っく"	},
+	{"ccyi","っちぃ"  },
+	{"ce",	"せ"	},
+	{"cha",	"ちゃ"  },
+	{"che",	"ちぇ"  },
+	{"chi",	"ち"  },
+	{"cho",	"ちょ" },
+	{"chu",	"ちゅ"  },
+	{"ci",	"し"	},
+	{"co",	"こ"	},
+	{"cu",	"く"	},
+	{"cya",	"ちゃ" },
+	{"cye",	"ちぇ"  },
+	{"cyi",	"ちぃ"  },
+	{"cyo",	"ちょ"  },
+	{"cyu",	"ちゅ"  },
+	{"da",	"だ"   },
+	{"dda", "っだ" },
+	{"dde", "っで" },
+	{"ddha","っでぁ"  },
+	{"ddhe","っでぇ"  },
+	{"ddhi","っでぃ"  },
+	{"ddho","っでょ"  },
+	{"ddhu","っでゅ"	},
+	{"ddi", "っぢ" },
+	{"ddo", "っど" },
+	{"ddu",	"っづ"	},
+	{"de",	"で"   },
+	{"dha", "でゃ" },
+	{"dhe", "でぇ" },
+	{"dhi", "でぃ" },
+	{"dho", "でょ" },
+	{"dhu", "でゅ" },
+	{"di",	"ぢ"  },
+	{"do",	"ど"  },
+	{"du",	"づ"  },
+	{"dwa",	"どぁ"	},
+	{"dwe",	"どぇ"	},
+	{"dwi",	"どぃ"	},
+	{"dwo",	"どぉ"	},
+	{"dwu",	"どぅ"	},
+	{"dya",	"ぢゃ"	},
+	{"dye",	"ぢぇ"	},
+	{"dyi",	"ぢぃ"	},
+	{"dyo",	"ぢょ"	},
+	{"dyu",	"ぢゅ"	},
+	{"e",	"え"  },
+	{"fa",	"ふぁ"   },
+	{"fe",	"ふぇ"   },
+	{"ffa", "っふぁ"  },
+	{"ffe", "っふぇ"  },
+	{"ffi", "っふぃ"  },
+	{"ffo", "っふぉ"  },
+	{"ffu",	"っふ"	},
+	{"ffyu","っふゅ"	},
+	{"fi",	"ふぃ"   },
+	{"fo",	"ふぉ"   },
+	{"fu",	"ふ"  },
+	{"fwa",	"ふぁ"	},
+	{"fwe",	"ふぇ"	},
+	{"fwi",	"ふぃ"	},
+	{"fwo",	"ふぉ"	},
+	{"fwu",	"ふぅ"	},
+	{"fya",	"ふゃ"  },
+	{"fye",	"ふぇ"  },
+	{"fyi",	"ふぃ"  },
+	{"fyo",	"ふょ" },
+	{"fyu",	"ふゅ"  },
+	{"ga",	"が"  },
+	{"ge",	"げ"  },
+	{"gga", "っが" },
+	{"gge", "っげ" },
+	{"ggha","っぐぁ"  },
+	{"gghe","っぐぇ"  },
+	{"gghi","っぐぃ"  },
+	{"ggho","っぐぉ"  },
+	{"gghu","っぐぅ"	},
+	{"ggi", "っぎ" },
+	{"ggo", "っご" },
+	{"ggu",	"っぐ"	},
+	{"ggya","っぎゃ"  },
+	{"ggye","っぎぇ"  },
+	{"ggyi","っぎぃ"  },
+	{"ggyo","っぎょ"  },
+	{"ggyu","っぎゅ"	},
+	{"gi",	"ぎ"  },
+	{"go",	"ご"  },
+	{"gu",	"ぐ"  },
+	{"gwa",	"ぐぁ"	},
+	{"gwe",	"ぐぇ"	},
+	{"gwi",	"ぐぃ"	},
+	{"gwo",	"ぐぉ"	},
+	{"gwu",	"ぐぅ"	},
+	{"gya",	"ぎゃ"  },
+	{"gye",	"ぎぇ"  },
+	{"gyi",	"ぎぃ"  },
+	{"gyo",	"ぎょ"  },
+	{"gyu",	"ぎゅ"  },
+	{"ha",	"は"  },
+	{"he",	"へ"  },
+	{"hha", "っは" },
+	{"hhe", "っへ" },
+	{"hhi", "っひ" },
+	{"hho", "っほ" },
+	{"hhu", "っふ" },
+	{"hhya","っひゃ"  },
+	{"hhye","っひぇ"  },
+	{"hhyi","っひぃ"  },
+	{"hhyo","っひょ"  },
+	{"hhyu","っひゅ"	},
+	{"hi",	"ひ"  },
+	{"ho",	"ほ"  },
+	{"hu",	"ふ"  },
+	{"hya",	"ひゃ"  },
+	{"hye",	"ひぇ"  },
+	{"hyi",	"ひぃ"  },
+	{"hyo",	"ひょ"  },
+	{"hyu",	"ひゅ"  },
+	{"i",	"い"  },
+	{"ja",	"じゃ"   },
+	{"je",	"じぇ"   },
+	{"ji",	"じ"  },
+	{"jja", "っじゃ"  },
+	{"jje", "っじぇ" },
+	{"jji", "っじ" },
+	{"jjo", "っじょ"  },
+	{"jju",	"っじゅ"	},
+	{"jjye","っじぇ"  },
+	{"jjyi","っじぃ"  },
+	{"jo",	"じょ"   },
+	{"ju",	"じゅ"   },
+	{"jya",	"じゃ"	},
+	{"jye",	"じぇ"	},
+	{"jyi",	"じぃ"	},
+	{"jyo",	"じょ"	},
+	{"jyu",	"じゅ"	},
+	{"ka",	"か" },
+	{"ke",	"け" },
+	{"ki",	"き" },
+	{"kka", "っか" },
+	{"kke", "っけ" },
+	{"kkha","っくぁ"  },
+	{"kkhe","っくぇ"  },
+	{"kkhi","っくぃ"  },
+	{"kkho","っくぉ"  },
+	{"kkhu","っくぅ"	},
+	{"kki", "っき" },
+	{"kko", "っこ" },
+	{"kku",	"っく"	},
+	{"kkya","っきぁ"  },
+	{"kkye","っきぇ"  },
+	{"kkyi","っきぃ"  },
+	{"kkyo","っきょ"  },
+	{"kkyu","っきゅ"	},
+	{"ko",	"こ" },
+	{"ku",	"く" },
+	{"kwa",	"くぁ"	},
+	{"kya",	"きゃ"  },
+	{"kye",	"きぇ"  },
+	{"kyi",	"きぃ"  },
+	{"kyo",	"きょ"  },
+	{"kyu",	"きゅ"  },
+	{"la",	"ぁ"	},
+	{"le",	"ぇ"	},
+	{"li",	"ぃ"	},
+	{"lka",	"か"	},
+	{"lke",	"け"	},
+	{"lla",	"っぁ"	},
+	{"lla",	"っぁ"	},
+	{"lle",	"っぇ"	},
+	{"lle",	"っぇ"	},
+	{"lli",	"っぃ"	},
+	{"lli",	"っぃ"	},
+	{"llo",	"っぉ"	},
+	{"llo",	"っぉ"	},
+	{"llu",	"っぅ"	},
+	{"llu",	"っぅ"	},
+	{"lo",	"ぉ"	},
+	{"ltsu","っ"	},
+	{"ltu",	"っ"	},
+	{"lu",	"ぅ"	},
+	{"lwa",	"ゎ"	},
+	{"lya",	"ゃ"	},
+	{"lye",	"ぇ"	},
+	{"lyi",	"ぃ"	},
+	{"lyo",	"ょ"	},
+	{"lyu",	"ゅ"	},
+	{"ma",	"ま" },
+	{"me",	"め" },
+	{"mi",	"み" },
+	{"mma", "っま" },
+	{"mme", "っめ" },
+	{"mmi", "っみ" },
+	{"mmo", "っも" },
+	{"mmu",	"っむ"	},
+	{"mmya","っみゃ"  },
+	{"mmye","っみぇ"  },
+	{"mmyi","っみぃ"  },
+	{"mmyo","っみょ"  },
+	{"mmyu","っみゅ"	},
+	{"mo",	"も" },
+	{"mu",	"む" },
+	{"mya",	"みゃ"  },
+	{"mye",	"みぇ"  },
+	{"myi",	"みぃ"  },
+	{"myo",	"みょ"  },
+	{"myu",	"みゅ"  },
+	{"na",	"な" },
+	{"nba",	"んば"	},
+	{"nbe",	"んべ"	},
+	{"nbi",	"んび"	},
+	{"nbo",	"んぼ"	},
+	{"nbu",	"んぶ"	},
+	{"nca",	"んか"	},
+	{"nce",	"んせ"	},
+	{"nci",	"んし"	},
+	{"nco",	"んこ"	},
+	{"ncu",	"んく"	},
+	{"nda",	"んだ"	},
+	{"nde",	"んで"	},
+	{"ndi",	"んぢ"	},
+	{"ndo",	"んど"	},
+	{"ndu",	"んづ"	},
+	{"ne",	"ね" },
+	{"nfa",	"んふぁ"	},
+	{"nfe",	"んふぇ"	},
+	{"nfi",	"んふぃ"	},
+	{"nfo",	"んふぉ"	},
+	{"nfu",	"んふ"	},
+	{"nga",	"んが"	},
+	{"nge",	"んげ"	},
+	{"ngi",	"んぎ"	},
+	{"ngo",	"んご"	},
+	{"ngu",	"んぐ"	},
+	{"nha",	"んは"	},
+	{"nhe",	"んへ"	},
+	{"nhi",	"んひ"	},
+	{"nho",	"んほ"	},
+	{"nhu",	"んふ"	},
+	{"ni",	"に" },
+	{"nja",	"んじゃ"	},
+	{"nje",	"んじぇ"	},
+	{"nji",	"なじ"	},
+	{"njo",	"んじょ"	},
+	{"nju",	"んじゅ"	},
+	{"nka",	"んか"	},
+	{"nke",	"んけ"	},
+	{"nki",	"んき"	},
+	{"nko",	"んこ"	},
+	{"nku",	"んく"	},
+	{"nla",	"んぁ"	},
+	{"nle",	"んぇ"	},
+	{"nli",	"んぃ"	},
+	{"nlo",	"んぉ"	},
+	{"nlu",	"んぅ"	},
+	{"nma",	"んま"	},
+	{"nme",	"んめ"	},
+	{"nmi",	"んみ"	},
+	{"nmo",	"んも"	},
+	{"nmu",	"んむ"	},
+	{"nn",	"ん" },
+	{"nna",	"んあ"	},
+	{"nne",	"んえ"	},
+	{"nni",	"んい"	},
+	{"nno",	"んお"	},
+	{"nnu",	"んう"	},
+	{"no",	"の" },
+	{"npa",	"んぱ"	},
+	{"npe",	"んぺ"	},
+	{"npi",	"んぴ"	},
+	{"npo",	"んぽ"	},
+	{"npu",	"んぷ"	},
+	{"nqa",	"んくぁ"	},
+	{"nqe",	"んくぇ"	},
+	{"nqi",	"んくぃ"	},
+	{"nqo",	"んくぉ"	},
+	{"nqu",	"んく"	},
+	{"nra",	"んら"	},
+	{"nre",	"んれ"	},
+	{"nri",	"んり"	},
+	{"nro",	"んろ"	},
+	{"nru",	"んる"	},
+	{"nsa",	"んさ"	},
+	{"nse",	"んせ"	},
+	{"nsi",	"んし"	},
+	{"nso",	"んそ"	},
+	{"nsu",	"んす"	},
+	{"nta",	"んた"	},
+	{"nte",	"んて"	},
+	{"nti",	"んち"	},
+	{"nto",	"んと"	},
+	{"ntu",	"んつ"	},
+	{"nu",	"ぬ" },
+	{"nva",	"んヴぁ"	},
+	{"nve",	"んヴぇ"	},
+	{"nvi",	"んヴぃ"	},
+	{"nvo",	"んヴぉ"	},
+	{"nvu",	"んヴ"	},
+	{"nwa",	"んわ"	},
+	{"nwe",	"んうぇ"	},
+	{"nwi",	"んうぃ"	},
+	{"nwo",	"んを"	},
+	{"nwu",	"んう"	},
+	{"nxa",	"んぁ"	},
+	{"nxe",	"んぇ"	},
+	{"nxi",	"んぃ"	},
+	{"nxo",	"んぉ"	},
+	{"nxu",	"んぅ"	},
+	{"nya",	"にゃ"  },
+	{"nye",	"にぇ"  },
+	{"nyi",	"にぃ"  },
+	{"nyo",	"にょ"  },
+	{"nyu",	"にゅ"  },
+	{"nza",	"んざ"	},
+	{"nze",	"んぜ"	},
+	{"nzi",	"んじ"	},
+	{"nzo",	"んぞ"	},
+	{"nzu",	"んず"	},
+	{"o",	"お" },
+	{"pa",	"ぱ" },
+	{"pe",	"ぺ" },
+	{"pi",	"ぴ" },
+	{"po",	"ぽ" },
+	{"ppa", "っぱ" },
+	{"ppe", "っぺ" },
+	{"ppi", "っぴ" },
+	{"ppo", "っぽ" },
+	{"ppu",	"っぷ"	},
+	{"ppya","っぴゃ"  },
+	{"ppye","っぴぇ"  },
+	{"ppyi","っぴぃ"  },
+	{"ppyo","っぴょ"  },
+	{"ppyu","っぴゅ"	},
+	{"pu",	"ぷ" },
+	{"pya",	"ぴゃ"  },
+	{"pye",	"ぴぇ"  },
+	{"pyi",	"ぴぃ"  },
+	{"pyo",	"ぴょ"  },
+	{"pyu",	"ぴゅ"  },
+	{"qa",	"くぁ"	},
+	{"qe",	"くぇ"	},
+	{"qi",	"くぃ"	},
+	{"qo",	"くぉ"	},
+	{"qqa",	"っくぁ"	},
+	{"qqe",	"っくぇ"	},
+	{"qqi",	"っくぃ"	},
+	{"qqo",	"っくぉ"	},
+	{"qqu",	"っく"	},
+	{"qu",	"く"	},
+	{"qwa",	"くぁ"	},
+	{"qwe",	"くぇ"	},
+	{"qwi",	"くぃ"	},
+	{"qwo",	"くぉ"	},
+	{"qwu",	"くぅ"	},
+	{"qya",	"くゃ"	},
+	{"qye",	"くぇ"	},
+	{"qyi",	"くぃ"	},
+	{"qyo",	"くょ"	},
+	{"qyu",	"くゅ"	},
+	{"ra",	"ら" },
+	{"re",	"れ" },
+	{"ri",	"り" },
+	{"ro",	"ろ" },
+	{"rra", "っら" },
+	{"rre", "っれ" },
+	{"rri", "っり" },
+	{"rro", "っろ" },
+	{"rru",	"っる"	},
+	{"rrya","っりゃ"  },
+	{"rrye","っりぇ"  },
+	{"rryi","っりぃ"  },
+	{"rryo","っりょ"  },
+	{"rryu","っりゅ"	},
+	{"ru",	"る" },
+	{"rya",	"りゃ"  },
+	{"rye",	"りぇ"  },
+	{"ryi",	"りぃ"  },
+	{"ryo",	"りょ"  },
+	{"ryu",	"りゅ"  },
+	{"sa",	"さ" },
+	{"se",	"せ" },
+	{"sha",	"しゃ"	},
+	{"she",	"しぇ"	},
+	{"shi",	"し"  },
+	{"sho",	"しょ"	},
+	{"shu",	"しゅ"	},
+	{"si",	"し"	},
+	{"so",	"そ"   },
+	{"ssa", "っさ" },
+	{"sse", "っせ" },
+	{"ssha","っしゃ"  },
+	{"sshe","っしぇ"  },
+	{"sshi","っし" },
+	{"ssho","っしょ"  },
+	{"sshu","っしゅ"	},
+	{"ssi", "っし" },
+	{"sso", "っそ" },
+	{"ssu",	"っす"	},
+	{"ssyi","っしぃ"  },
+	{"su",	"す"   },
+	{"swa",	"すぁ"	},
+	{"swe",	"すぇ"	},
+	{"swi",	"すぃ"	},
+	{"swo",	"すぉ"	},
+	{"swu",	"すぅ"	},
+	{"sya",	"しゃ"	},
+	{"sye",	"しぇ"	},
+	{"syi",	"しぃ"	},
+	{"syo",	"しょ"	},
+	{"syu",	"しゅ"	},
+	{"ta",	"た"  },
+	{"te",	"て"  },
+	{"tha","てゃ"  },
+	{"the","てぇ"  },
+	{"thi","てぃ"  },
+	{"tho","てょ"  },
+	{"thu","てゅ"	},
+	{"ti",	"ち"  },
+	{"to",	"と"  },
+	{"tsa",	"つぁ"  },
+	{"tse",	"つぇ"  },
+	{"tsi",	"つぃ"  },
+	{"tso",	"つぉ"  },
+	{"tsu",	"つ"  },
+	{"tta", "った" },
+	{"tte", "って" },
+	{"ttha","ってゃ"  },
+	{"tthe","ってぇ"  },
+	{"tthi","ってぃ"  },
+	{"ttho","ってょ"  },
+	{"tthu","ってゅ"	},
+	{"tti", "っち" },
+	{"tto", "っと" },
+	{"tts", "っつ"  },
+	{"ttsu","っつ"	},
+	{"ttu", "っつ" },
+	{"tu",	"つ"	},
+	{"twa",	"とぁ"	},
+	{"twe",	"とぇ"	},
+	{"twi",	"とぃ"	},
+	{"two",	"とぉ"	},
+	{"twu",	"とぅ"	},
+	{"tya",	"ちゃ"	},
+	{"tye",	"ちぇ"	},
+	{"tyi",	"ちぃ"	},
+	{"tyo",	"ちょ"	},
+	{"tyu",	"ちゅ"	},
+	{"u",	"う"   },
+	{"va",	"ヴぁ"	},
+	{"ve",	"ヴぇ"	},
+	{"vi",	"ヴい"	},
+	{"vo",	"ヴぉ"	},
+	{"vu",	"ヴ"  },
+	{"vva", "っヴぁ"  },
+	{"vve", "っヴぇ"  },
+	{"vvi", "っヴぃ"  },
+	{"vvo", "っヴぉ"  },
+	{"vvu",	"っヴ"	},
+	{"vya",	"ヴゃ"	},
+	{"vye",	"ヴぇ"	},
+	{"vyi",	"ヴぃ"	},
+	{"vyo",	"ヴょ"	},
+	{"vyu",	"ヴゅ"	},
+	{"wa",	"わ"   },
+	{"we",	"うぇ"	},
+	{"wha",	"うぁ"	},
+	{"whe",	"うぇ"	},
+	{"whi",	"うぃ"	},
+	{"who",	"うぉ"	},
+	{"whu",	"う"	},
+	{"wi",	"うぃ"	},
+	{"wo",	"を"   },
+	{"wu",	"う"   },
+	{"wwa", "っわ" },
+	{"wwe",	"っうぇ"	},
+	{"wwe",	"っうぇ"	},
+	{"wwha","っうぁ"  },
+	{"wwhe","っうぇ"  },
+	{"wwho","っうぉ"  },
+	{"wwi",	"っうぃ"	},
+	{"wwi", "っうぃ"  },
+	{"wwo",	"っを"	},
+	{"wwo",	"っを"	},
+	{"wwu",	"っう"	},
+	{"wwu",	"っう"	},
+	{"xa",	"ぁ"	},
+	{"xe",	"ぇ"	},
+	{"xi",	"ぃ"	},
+	{"xka",	"か"	},
+	{"xke",	"け"	},
+	{"xna",	"んあ"	},
+	{"xne",	"んえ"	},
+	{"xni",	"んい"	},
+	{"xno",	"んお"	},
+	{"xnu",	"んう"	},
+	{"xo",	"ぉ"	},
+	{"xtu",	"っ"	},
+	{"xu",	"ぅ"	},
+	{"xwa",	"ゎ"	},
+	{"xxa",	"っぁ"	},
+	{"xxe",	"っぇ"	},
+	{"xxi",	"っぃ"	},
+	{"xxo",	"っぉ"	},
+	{"xxu",	"っぅ"	},
+	{"xya",	"ゃ"	},
+	{"xye",	"ぇ"	},
+	{"xyi",	"ぃ"	},
+	{"xyo",	"ょ"	},
+	{"xyu",	"ゅ"	},
+	{"ya",	"や"   },
+	{"ye",	"いぇ"	},
+	{"yi",	"い"   },
+	{"yo",	"よ"   },
+	{"yu",	"ゆ"   },
+	{"yya", "っや" },
+	{"yye",	"っいぇ"	},
+	{"yye",	"っいぇ"	},
+	{"yyi",	"っい"	},
+	{"yyi",	"っい"	},
+	{"yyo", "っよ" },
+	{"yyu",	"っゆ"	},
+	{"za",	"ざ"   },
+	{"ze",	"ぜ"   },
+	{"zi",	"じ"   },
+	{"zo",	"ぞ"   },
+	{"zu",	"ず"   },
+	{"zya",	"じゃ"	},
+	{"zye",	"じぇ"	},
+	{"zyi",	"じぃ"	},
+	{"zyo",	"じょ"	},
+	{"zyu",	"じゅ"	},
+	{"zza",	"っざ"	},
+	{"zza", "っざ" },
+	{"zze", "っぜ" },
+	{"zzi", "っじ" },
+	{"zzo", "っぞ" },
+	{"zzu",	"っず"	},
 };
 
 struct _hiragana_english_mapping {
 	char *english;
 	char *hiragana;
-	char *unified_english;
 } hiragana_english_mapping[] = {
 	{"a",	"ぁ" },
 	{"a",	"あ"    },
@@ -454,7 +697,18 @@ struct _hiragana_english_mapping {
 	{"gyu",	"ぎゅ"  },
 	{"gyo",	"ぎょ"  },
 	{"ku",	"く"   },
+	{"kwa",	"くぁ"	},
+	{"qwa",	"くぁ"	},
+	{"qwi",	"くぃ"	},
+	{"qwu",	"くぅ"	},
+	{"qwe",	"くぇ"	},
+	{"qwo",	"くぉ"	},
 	{"gu",	"ぐ"   },
+	{"gwa",	"ぐぁ"	},
+	{"gwi",	"ぐぃ"	},
+	{"gwu",	"ぐぅ"	},
+	{"gwe",	"ぐぇ"	},
+	{"gwo",	"ぐぉ"	},
 	{"ke",	"け"   },
 	{"ge",	"げ"   },
 	{"ko",	"こ"   },
@@ -489,6 +743,11 @@ struct _hiragana_english_mapping {
 	{"cyu",	"ちゅ"  },
 	{"cyo",	"ちょ"  },
 	{"di",	"ぢ"   },
+	{"dyi",	"ぢぃ"	},
+	{"dye",	"ぢぇ"	},
+	{"dya",	"ぢゃ"	},
+	{"dyu",	"ぢゅ"	},
+	{"dyo",	"ぢょ"	},
 	{"tsu",	"っ" },
 	{"tsu",	"っ" },
 	{"wwha","っうぁ"  },
@@ -638,10 +897,24 @@ struct _hiragana_english_mapping {
 	{"vve", "っヴぇ" },
 	{"vvo", "っヴぉ" },
 	{"tsu",	"つ"  },
+	{"tsa",	"つぁ"  },
+	{"tsi",	"つぃ"  },
+	{"tse",	"つぇ"  },
+	{"tso",	"つぉ"  },
 	{"du",	"づ"   },
 	{"te",	"て"   },
 	{"de",	"で"   },
+	{"dhi", "でぃ" },
+	{"dhe", "でぇ" },
+	{"dha", "でゃ" },
+	{"dhu", "でゅ" },
+	{"dho", "でょ" },
 	{"to",	"と"   },
+	{"twa",	"とぁ"	},
+	{"twi",	"とぃ"	},
+	{"twu",	"とぅ"	},
+	{"twe",	"とぇ"	},
+	{"two",	"とぉ"	},
 	{"do",	"ど"   },
 	{"na",	"な"   },
 	{"ni",	"に"   },
@@ -715,11 +988,39 @@ struct _hiragana_english_mapping {
 	{"ru",	"る"   },
 	{"re",	"れ"   },
 	{"ro",	"ろ"   },
+	{"wa",	"ゎ"   },
 	{"wa",	"わ"   },
 	{"wo",	"を"   },
 	{"nn",	"ん"   },
 	{"vu",	"ヴ" },
 	{"-",   "ー"	},
+	{"-",   "－"	},
+	{"a",	"ａ" },
+	{"b",	"ｂ" },
+	{"c",	"ｃ" },
+	{"d",	"ｄ" },
+	{"e",	"ｅ" },
+	{"f",	"ｆ" },
+	{"g",	"ｇ" },
+	{"h",	"ｈ" },
+	{"i",	"ｉ" },
+	{"j",	"ｊ" },
+	{"k",	"ｋ" },
+	{"l",	"ｌ" },
+	{"m",	"ｍ" },
+	{"n",	"ｎ" },
+	{"o",	"ｏ" },
+	{"p",	"ｐ" },
+	{"q",	"ｑ" },
+	{"r",	"ｒ" },
+	{"s",	"ｓ" },
+	{"t",	"ｔ" },
+	{"u",	"ｕ" },
+	{"v",	"ｖ" },
+	{"w",	"ｗ" },
+	{"x",	"ｘ" },
+	{"y",	"ｙ" },
+	{"z",	"ｚ" },
 };
 
 struct _sonant_conversion {
@@ -763,6 +1064,8 @@ struct _sonant_conversion {
 	{"っ" , "づ" },
 	{"つ" , "っ" },
 	{"づ" , "つ" },
+	{"て" , "で" },
+	{"で" , "て" },
 	{"と" , "ど" },
 	{"ど" , "と" },
 	{"は" , "ば" },
@@ -801,40 +1104,13 @@ struct _backward_key_sequence {
 	{"'", ")" },
 	{"(", "'" },
 	{")", "(" },
-	{"*", "-" },
+	{"*", "－" },
 	{"+", "=" },
 	{",", "!" },
-	{"-", "+" },
 	{".", "," },
 	{"=", "*" },
 	{"?", "." },
 	{"@", "&" },
-	{"a", "c" },
-	{"b", "a" },
-	{"c", "b" },
-	{"d", "f" },
-	{"e", "d" },
-	{"f", "e" },
-	{"g", "i" },
-	{"h", "g" },
-	{"i", "h" },
-	{"j", "l" },
-	{"k", "j" },
-	{"l", "k" },
-	{"m", "o" },
-	{"n", "m" },
-	{"o", "n" },
-	{"p", "s" },
-	{"q", "p" },
-	{"r", "q" },
-	{"s", "r" },
-	{"t", "v" },
-	{"u", "t" },
-	{"v", "u" },
-	{"w", "z" },
-	{"x", "w" },
-	{"y", "x" },
-	{"z", "y" },
 	{"あ" , "お" },
 	{"い" , "あ"  },
 	{"う" , "い"  },
@@ -882,6 +1158,33 @@ struct _backward_key_sequence {
 	{"を" , "わ"  },
 	{"ん" , "を"  },
 	{"ー" , "ん"  },
+	{"－", "+" },
+	{"ａ", "ｃ" },
+	{"ｂ", "ａ" },
+	{"ｃ", "ｂ" },
+	{"ｄ", "ｆ" },
+	{"ｅ", "ｄ" },
+	{"ｆ", "ｅ" },
+	{"ｇ", "ｉ" },
+	{"ｈ", "ｇ" },
+	{"ｉ", "ｈ" },
+	{"ｊ", "ｌ" },
+	{"ｋ", "ｊ" },
+	{"ｌ", "ｋ" },
+	{"ｍ", "ｏ" },
+	{"ｎ", "ｍ" },
+	{"ｏ", "ｎ" },
+	{"ｐ", "ｓ" },
+	{"ｑ", "ｐ" },
+	{"ｒ", "ｑ" },
+	{"ｓ", "ｒ" },
+	{"ｔ", "ｖ" },
+	{"ｕ", "ｔ" },
+	{"ｖ", "ｕ" },
+	{"ｗ", "ｚ" },
+	{"ｘ", "ｗ" },
+	{"ｙ", "ｘ" },
+	{"ｚ", "ｙ" },
 };
 
 //#define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
@@ -892,13 +1195,11 @@ static char search_string[MAX_TITLE_SEARCH];
 static int search_string_pos[MAX_TITLE_SEARCH];
 static char search_string_hiragana[MAX_TITLE_SEARCH * 3];
 static int search_str_len = 0;
-static int search_str_converted_len = 0;
 static int search_str_hiragana_len = 0;
 static char temp_search_string[MAX_TITLE_SEARCH];
 static int temp_search_string_pos[MAX_TITLE_SEARCH];
 static char temp_search_string_hiragana[MAX_TITLE_SEARCH * 3];
 static int temp_search_str_len = 0;
-static int temp_search_str_converted_len = 0;
 static int temp_search_str_hiragana_len = 0;
 
 //static char s_find_first = 1;
@@ -942,7 +1243,6 @@ void backup_search_criteria()
 	memcpy(temp_search_string_pos, search_string_pos, sizeof(search_string_pos));
 	memcpy(temp_search_string_hiragana, search_string_hiragana, sizeof(search_string_hiragana));
 	temp_search_str_len = search_str_len;
-	temp_search_str_converted_len = search_str_converted_len;
 	temp_search_str_hiragana_len = search_str_hiragana_len;
 }
 
@@ -952,7 +1252,6 @@ void restore_search_criteria()
 	memcpy(search_string_pos, temp_search_string_pos, sizeof(search_string_pos));
 	memcpy(search_string_hiragana, temp_search_string_hiragana, sizeof(search_string_hiragana));
 	search_str_len = temp_search_str_len;
-	search_str_converted_len = temp_search_str_converted_len;
 	search_str_hiragana_len = temp_search_str_hiragana_len;
 }
 
@@ -1200,7 +1499,7 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
 			retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
-				sTitleSearch, sTitleActual);
+						 sTitleSearch, sTitleActual);
 			rc = search_string_cmp(sTitleSearch, search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
 //msg(MSG_INFO, "offset (%x + %x, %x) ", offset_fnd_start, offsetNextTitleSearch, offset_fnd_end);
@@ -1359,8 +1658,8 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		    is_proper_string(pTitleSearch->sTitleSearch, search_info[nCurrentWiki].buf_len - offsetNextTitleSearch -
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
-		retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
-					 result_list->title_search[result_list->count], result_list->title[result_list->count]);
+			retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
+						 result_list->title_search[result_list->count], result_list->title[result_list->count]);
 			rc = search_string_cmp(result_list->title_search[result_list->count], search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
 //msg(MSG_INFO, "bInit %d, input (%x, %x) ", bInit, input_offset_fnd_start, input_offset_fnd_end);
@@ -1548,101 +1847,101 @@ long get_search_result_start()
 	char c1, c2, c3;
 	int found = 0;
 /* Disable hashing
-	int i;
-	int lenCompared;
-	int lenCopied;
+   int i;
+   int lenCompared;
+   int lenCopied;
 */
 	long offset;
 /* Disable hashing
-	static int lenHashedSearchString = 0;
-	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
-	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+   static int lenHashedSearchString = 0;
+   static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+   static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 */
 
 /* Disable hashing
-	if (search_str_len > 3)
-	{
-		// check the length of the hashed search string can be reused
-		if (search_str_len > lenHashedSearchString)
-			lenCompared = lenHashedSearchString;
-		else
-			lenCompared = search_str_len;
-		lenHashedSearchString = 0;
-		for (i = 0; i < lenCompared; i++)
-		{
-			if (sHashedSearchString[i] != search_string[i])
-				lenHashedSearchString = i;
-		}
+   if (search_str_len > 3)
+   {
+   // check the length of the hashed search string can be reused
+   if (search_str_len > lenHashedSearchString)
+   lenCompared = lenHashedSearchString;
+   else
+   lenCompared = search_str_len;
+   lenHashedSearchString = 0;
+   for (i = 0; i < lenCompared; i++)
+   {
+   if (sHashedSearchString[i] != search_string[i])
+   lenHashedSearchString = i;
+   }
 
-		// Check if hashed
-		if (lenHashedSearchString > 3)
-		{
-			if (search_str_len > lenHashedSearchString)
-			{
-				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-					lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
-				else
-					lenCopied = search_str_len - lenHashedSearchString;
-				memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
-				// check the extended part first
-				for (i = 3; i < lenHashedSearchString + lenCopied; i++)
-				{
-					if (i >= lenHashedSearchString)
-						offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-					if (search_interrupted)
-					{
-						search_interrupted = 12;
-						goto interrupted;
-					}
-					if (offsetHasedSearchString[i] &&
-					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-					{
-						found = 1;
-						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-					}
-				}
-				lenHashedSearchString += lenCopied;
-			}
+   // Check if hashed
+   if (lenHashedSearchString > 3)
+   {
+   if (search_str_len > lenHashedSearchString)
+   {
+   if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+   lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
+   else
+   lenCopied = search_str_len - lenHashedSearchString;
+   memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
+   // check the extended part first
+   for (i = 3; i < lenHashedSearchString + lenCopied; i++)
+   {
+   if (i >= lenHashedSearchString)
+   offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+   if (search_interrupted)
+   {
+   search_interrupted = 12;
+   goto interrupted;
+   }
+   if (offsetHasedSearchString[i] &&
+   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+   {
+   found = 1;
+   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+   }
+   }
+   lenHashedSearchString += lenCopied;
+   }
 
-			if (!found) // not hashed at the extended part
-			{
-				for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
-				{
-					if (offsetHasedSearchString[i] &&
-					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-					{
-						found = 1;
-						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-					}
-					else
-						break;
-				}
-			}
-		}
-		else
-		{
-			if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-				lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
-			else
-				lenHashedSearchString = search_str_len;
-			memcpy(sHashedSearchString, search_string, lenHashedSearchString);
-			for (i = 3; i < lenHashedSearchString; i++)
-			{
-				offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-				if (search_interrupted)
-				{
-					search_interrupted = 13;
-					goto interrupted;
-				}
-				if (offsetHasedSearchString[i] &&
-				    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-				{
-					found = 1;
-					offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-				}
-			}
-		}
-	}
+   if (!found) // not hashed at the extended part
+   {
+   for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
+   {
+   if (offsetHasedSearchString[i] &&
+   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+   {
+   found = 1;
+   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+   }
+   else
+   break;
+   }
+   }
+   }
+   else
+   {
+   if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+   lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
+   else
+   lenHashedSearchString = search_str_len;
+   memcpy(sHashedSearchString, search_string, lenHashedSearchString);
+   for (i = 3; i < lenHashedSearchString; i++)
+   {
+   offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+   if (search_interrupted)
+   {
+   search_interrupted = 13;
+   goto interrupted;
+   }
+   if (offsetHasedSearchString[i] &&
+   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+   {
+   found = 1;
+   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+   }
+   }
+   }
+   }
 */
 
 //	if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
@@ -1725,27 +2024,27 @@ long get_search_result_end()
 	memcpy(local_search_string, search_string, len_local_search_string);
 
 /* disable hashing
-	while (!found && len_local_search_string > 3)
-	{
-		last_len_local_search_string = len_local_search_string;
-		len_local_search_string = next_search_string(local_search_string, len_local_search_string);
-		if (!memcmp(search_string, local_search_string, len_local_search_string))
-			found = 1; // returns -1 directly
-		else
-		{
-			offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
-			if (search_interrupted)
-			{
-				search_interrupted = 15;
-				goto interrupted;
-			}
-			if (offset_search_result_end > 0)
-			{
-				found = 1;
-			}
-		}
-		len_local_search_string = last_len_local_search_string - 1;
-	}
+   while (!found && len_local_search_string > 3)
+   {
+   last_len_local_search_string = len_local_search_string;
+   len_local_search_string = next_search_string(local_search_string, len_local_search_string);
+   if (!memcmp(search_string, local_search_string, len_local_search_string))
+   found = 1; // returns -1 directly
+   else
+   {
+   offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
+   if (search_interrupted)
+   {
+   search_interrupted = 15;
+   goto interrupted;
+   }
+   if (offset_search_result_end > 0)
+   {
+   found = 1;
+   }
+   }
+   len_local_search_string = last_len_local_search_string - 1;
+   }
 */
 
 	if (!found)
@@ -1891,23 +2190,28 @@ interrupted:
 
 void capitalize(char *in_str, char *out_str, int len)
 {
-	//char cPrev = ' ';
-	int i = 0;
-
-	while (i < len)
+	if (wiki_is_japanese())
 	{
-		//if (cPrev == ' ' && 'a' <= in_str[i] && in_str[i] <= 'z')
-		if (i == 0 && 'a' <= in_str[i] && in_str[i] <= 'z')
-			out_str[i] = in_str[i] - 32;
-		else
-			out_str[i] = in_str[i];
-		//cPrev = in_str[i];
-		i++;
+		int i = 0;
+		int j = 0;
+		int used_len;
+
+		while (i < len)
+		{
+			out_str[j++] = full_alphabet_to_half(&in_str[i], &used_len);
+			i += used_len;
+		}
+		out_str[j] = '\0';
 	}
-	out_str[i] = '\0';
+	else
+	{
+		memcpy(out_str, in_str, len + 1);
+	}
+	if ('a' <= out_str[0] && out_str[0] <= 'z')
+		out_str[0] -= 32;
 }
 
-char *get_hiragana(char *in_str, int len, int *used_len, char **pEnglish)
+char *get_hiragana(char *in_str, int len, int *used_len)
 {
 	int i;
 	int bFound = 0;
@@ -1956,10 +2260,6 @@ char *get_hiragana(char *in_str, int len, int *used_len, char **pEnglish)
 			if (len >= strlen(english_hiragana_mapping[i].english) && !strncmp(in_str, english_hiragana_mapping[i].english, strlen(english_hiragana_mapping[i].english)))
 			{
 				*used_len = strlen(english_hiragana_mapping[i].english);
-				if (english_hiragana_mapping[i].unified_english)
-					*pEnglish = english_hiragana_mapping[i].unified_english;
-				else
-					*pEnglish = english_hiragana_mapping[i].english;
 				pReturn = english_hiragana_mapping[i].hiragana;
 			}
 		}
@@ -2018,11 +2318,11 @@ char *get_english(char *in_str, int len, int *used_len)
 
 	if (bFound) // find the first hiragana_mapping entry with the same starting character as in_str
 	{
-		while (iStart > 0 && !strncmp(first_utf8_char, hiragana_english_mapping[iStart].hiragana, len_first_char))
+		while (iStart > 0 && !strncmp(first_utf8_char, hiragana_english_mapping[iStart - 1].hiragana, len_first_char))
 			iStart--;
 
-		for (i = iStart + 1; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) &&
-			!strncmp(first_utf8_char, hiragana_english_mapping[i].hiragana, len_first_char); i++)
+		for (i = iStart; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) &&
+			     !strncmp(first_utf8_char, hiragana_english_mapping[i].hiragana, len_first_char); i++)
 		{
 			if (len >= strlen(hiragana_english_mapping[i].hiragana) && !strncmp(in_str, hiragana_english_mapping[i].hiragana, strlen(hiragana_english_mapping[i].hiragana)))
 			{
@@ -2262,44 +2562,97 @@ out:
 	guilib_fb_unlock();
 }
 
-void search_hiragana_add_char()
+void search_hiragana_romaji_conversion()
 {
+	int conversion_start_pos;
+	char temp_hiragana[MAX_TITLE_SEARCH * 3];
+	int temp_hiragana_len = 0;
 	int i;
 	char *pHiragana = NULL;
 	int used_len;
-	char *pEnglish = NULL;
+	int iFirstRomaji = -1;
+	int iBeforeLastHiragana = -1;
 
-	if (search_str_len == 1)
-		search_str_converted_len = 0;
-
-	if (keyboard_get_mode() == KEYBOARD_CHAR ||
-		(search_str_len > 0 && search_string[search_str_len - 1] == '-' && (search_string_hiragana[search_str_hiragana_len - 1] & 0x80)))
+	if (search_str_hiragana_len > 0)
 	{
-		i = search_str_converted_len;
-		if (search_str_len - i > LONGEST_HIRAGANA_ENGLISH_CHARS)
-			i = search_str_len - LONGEST_HIRAGANA_ENGLISH_CHARS;
-		while (i < search_str_len && (search_string[i] == ' ' ||
-			!(pHiragana = get_hiragana(&search_string[i], search_str_len - i, &used_len, &pEnglish))))
-			i++;
-		if (pHiragana)
+		conversion_start_pos = search_str_hiragana_len;
+		while (conversion_start_pos > 0)
 		{
-			memcpy(&search_string_hiragana[search_str_hiragana_len - (search_str_len - i - 1)], pHiragana, strlen(pHiragana) + 1);
-			search_str_hiragana_len += - (search_str_len - i - 1) + strlen(pHiragana);
-			memcpy(&search_string[i], pEnglish, strlen(pEnglish) + 1);
-			search_str_len = i + strlen(pEnglish);
-			search_str_converted_len = search_str_len;
+			if (search_string_hiragana[conversion_start_pos - 1] & 0x80) // no more conversion beyond utf8 character
+				break;
+			conversion_start_pos--;
 		}
-		else
+
+		i = 0;
+		while (i < search_str_hiragana_len)
 		{
-			search_string_hiragana[search_str_hiragana_len++] = search_string[search_str_len - 1];
+			if (i < conversion_start_pos)
+			{
+				char *pFull;
+
+				if (!(search_string_hiragana[i] & 0x80) && (pFull = half_alphabet_to_full(search_string_hiragana[i])))
+				{
+					strcpy(&temp_hiragana[temp_hiragana_len], pFull);
+					temp_hiragana_len += strlen(pFull);
+					i++;
+				}
+				else
+					temp_hiragana[temp_hiragana_len++] = search_string_hiragana[i++];
+			}
+			else
+			{
+				pHiragana = get_hiragana(&search_string_hiragana[i], search_str_hiragana_len - i, &used_len);
+				if (pHiragana)
+				{
+					iBeforeLastHiragana = temp_hiragana_len;
+					memcpy(&temp_hiragana[temp_hiragana_len], pHiragana, strlen(pHiragana));
+					temp_hiragana_len += strlen(pHiragana);
+					i += used_len;
+				}
+				else
+				{
+					if (iFirstRomaji < 0 && 'a' <= search_string_hiragana[i] && search_string_hiragana[i] <= 'z')
+						iFirstRomaji = temp_hiragana_len;
+					temp_hiragana[temp_hiragana_len++] = search_string_hiragana[i++];
+				}
+			}
+		}
+
+		memcpy(search_string_hiragana, temp_hiragana, temp_hiragana_len);
+		search_str_hiragana_len = temp_hiragana_len;
+		search_string_hiragana[search_str_hiragana_len] = '\0';
+
+		if (iFirstRomaji >= 0 && iFirstRomaji < iBeforeLastHiragana)
+		{
+			if (iFirstRomaji > 0)
+			{
+				memcpy(temp_hiragana, search_string_hiragana, iFirstRomaji);
+				temp_hiragana_len = iFirstRomaji;
+			}
+			else
+				temp_hiragana_len = 0;
+			i = iFirstRomaji;
+			while (i < iBeforeLastHiragana)
+			{
+				char *pFull;
+
+				if (!(search_string_hiragana[i] & 0x80) && (pFull = half_alphabet_to_full(search_string_hiragana[i])))
+				{
+					strcpy(&temp_hiragana[temp_hiragana_len], pFull);
+					temp_hiragana_len += strlen(pFull);
+					i++;
+				}
+				else
+					temp_hiragana[temp_hiragana_len++] = search_string_hiragana[i++];
+			}
+			memcpy(&temp_hiragana[temp_hiragana_len], &search_string_hiragana[iBeforeLastHiragana], search_str_hiragana_len - iBeforeLastHiragana);
+			temp_hiragana_len += search_str_hiragana_len - iBeforeLastHiragana;
+
+			memcpy(search_string_hiragana, temp_hiragana, temp_hiragana_len);
+			search_str_hiragana_len = temp_hiragana_len;
+			search_string_hiragana[search_str_hiragana_len] = '\0';
 		}
 	}
-	else
-	{
-		search_string_hiragana[search_str_hiragana_len++] = search_string[search_str_len - 1];
-		search_str_converted_len = search_str_len;
-	}
-
 }
 
 int search_replace_japanese_sonant()
@@ -2355,7 +2708,6 @@ int search_replace_japanese_sonant()
 			search_str_hiragana_len += strlen(last_utf8_char) - strlen(sonant_conversion[iStart].after_conversion);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
 			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
-			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
 			rc = 0;
@@ -2382,10 +2734,10 @@ int search_replace_japanese_char(char *utf8_char)
 		if (new_utf8_char[0])
 		{
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], new_utf8_char, strlen(new_utf8_char));
-			search_str_hiragana_len += strlen(last_utf8_char) - strlen(new_utf8_char);
+			search_str_hiragana_len += strlen(new_utf8_char) - strlen(last_utf8_char);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
+			search_hiragana_romaji_conversion();
 			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
-			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
 			rc = 0;
@@ -2449,8 +2801,8 @@ int search_replace_hiragana_backward()
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], backward_key_sequence[iStart].after_conversion, strlen(backward_key_sequence[iStart].after_conversion));
 			search_str_hiragana_len += strlen(backward_key_sequence[iStart].after_conversion) - strlen(last_utf8_char);
 			search_string_hiragana[search_str_hiragana_len] = '\0';
+			search_hiragana_romaji_conversion();
 			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
-			search_str_converted_len = search_str_len;
 			time_search_string_changed = get_time_ticks();
 			search_string_changed = true;
 			rc = 0;
@@ -2462,34 +2814,26 @@ int search_replace_hiragana_backward()
 int search_add_japanese_char(char *utf8_char)
 {
 	char new_utf8_char[5];
-	char sOriginSearchString[MAX_TITLE_SEARCH];
-	int lenOriginHiragana = search_str_hiragana_len;
 	int rc = -1;
 
 	if ((*utf8_char == 0x20 && search_str_len > 0 && search_string[search_str_len -1 ] == 0x20) ||
-			(!search_str_len && *utf8_char == 0x20))
+	    (!search_str_len && *utf8_char == 0x20))
 		return -1;
 
 	get_first_utf8_char(new_utf8_char, utf8_char, strlen(utf8_char));
+	if (strlen(new_utf8_char) == 0 || (strlen(new_utf8_char) == 1 && !is_supported_search_char(new_utf8_char[0])))
+		return -1; // not supported input
+
 	if (new_utf8_char[0] && search_str_hiragana_len + strlen(new_utf8_char) < MAX_TITLE_SEARCH * 3 - 1)
 	{
-		strcpy(sOriginSearchString, search_string);
 		memcpy(&search_string_hiragana[search_str_hiragana_len], new_utf8_char, strlen(new_utf8_char));
 		search_str_hiragana_len += strlen(new_utf8_char);
 		search_string_hiragana[search_str_hiragana_len] = '\0';
+		search_hiragana_romaji_conversion();
 		search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
-		search_str_converted_len = search_str_len;
-		if (!strcmp(sOriginSearchString, search_string))
-		{ // cannot add to search_string so that restore search_string_hiragana
-			search_str_hiragana_len = lenOriginHiragana;
-			search_string_hiragana[search_str_hiragana_len] = '\0';
-		}
-		else
-		{
-			time_search_string_changed = get_time_ticks();
-			search_string_changed = true;
-			rc = 0;
-		}
+		time_search_string_changed = get_time_ticks();
+		search_string_changed = true;
+		rc = 0;
 	}
 	return rc;
 }
@@ -2512,10 +2856,6 @@ int search_add_char(char c, unsigned long ev_time)
 
 	search_string[search_str_len++] = c;
 	search_string[search_str_len] = '\0';
-	if (wiki_is_japanese())
-	{
-		search_hiragana_add_char();
-	}
 	time_search_string_changed = get_time_ticks();
 	search_string_changed = true;
 	return 0;
@@ -2606,19 +2946,16 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 		{
 			search_string[--search_str_len] = '\0';
 			search_string_hiragana[--search_str_hiragana_len] = '\0';
-			if (search_str_converted_len > search_str_len)
-				search_str_converted_len = search_str_len;
 		}
 		else
 		{
 			while (search_str_hiragana_len > 0 &&
-					((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
-					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
+			       ((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
+				!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
 				search_str_hiragana_len--;
 			search_string_hiragana[--search_str_hiragana_len] = '\0';
 			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);
 			search_string[search_str_len] = '\0';
-			search_str_converted_len = search_str_len;
 		}
 	}
 	else

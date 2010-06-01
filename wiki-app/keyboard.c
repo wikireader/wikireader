@@ -92,6 +92,48 @@ static struct keyboard_key qwerty_char[] = {
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
 };
+static struct keyboard_key qwerty_full_char[] = {
+	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"ｑ"),
+	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"ａ"),
+	KEY(  0, 181,  23, 207,	  3, 183,  21, 205,	"ｚ"),
+
+	KEY( 24, 126,  47, 152,	 26, 128,  45, 150,	"ｗ"),
+	KEY( 24, 153,  47, 180,	 26, 156,  45, 178,	"ｓ"),
+	KEY( 24, 181,  47, 207,	 26, 183,  45, 205,	"ｘ"),
+
+	KEY( 48, 126,  71, 152,	 50, 128,  69, 150,	"ｅ"),
+	KEY( 48, 153,  71, 180,	 50, 156,  69, 178,	"ｄ"),
+	KEY( 48, 181,  71, 207,	 50, 183,  69, 205,	"ｃ"),
+
+	KEY( 72, 126, 95, 152,	 74, 128,  93, 150,	"ｒ"),
+	KEY( 72, 153, 95, 180,	 74, 156,  93, 178,	"ｆ"),
+	KEY( 72, 181, 95, 207,	 74, 183,  93, 205,	"ｖ"),
+
+	KEY( 96, 126, 119, 152,	 98, 128, 117, 150,	"ｔ"),
+	KEY( 96, 153, 119, 180,	 98, 156, 117, 178,	"ｇ"),
+	KEY( 96, 181, 143, 207,	 98, 184, 141, 205,	" "),
+
+	KEY(120, 126, 143, 152,	122, 128, 141, 150,	"ｙ"),
+	KEY(120, 153, 143, 180,	122, 156, 141, 178,	"ｈ"),
+
+	KEY(144, 126, 167, 152,	146, 128, 165, 150,	"ｕ"),
+	KEY(144, 153, 167, 180,	146, 156, 165, 178,	"ｊ"),
+	KEY(144, 181, 167, 207,	146, 183, 165, 205,	"ｂ"),
+
+	KEY(168, 126, 191, 152,	170, 128, 189, 150,	"ｉ"),
+	KEY(168, 153, 191, 180,	170, 156, 189, 178,	"ｋ"),
+	KEY(168, 181, 191, 207,	170, 183, 189, 205,	"ｎ"),
+
+	KEY(192, 126, 215, 152,	194, 128, 213, 150,	"ｏ"),
+	KEY(192, 153, 215, 180,	194, 156, 213, 178,	"ｌ"),
+	KEY(192, 181, 215, 207,	194, 183, 213, 205,	"ｍ"),
+
+	KEY(216, 126, 239, 152,	218, 128, 236, 150,	"ｐ"),
+	KEY(216, 153, 239, 180,	218, 156, 236, 178,	WL_KEY_BACKSPACE_STR),
+	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
+
+	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+};
 static struct keyboard_key qwerty_num[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"1"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"*"),
@@ -163,24 +205,24 @@ static struct keyboard_key phone_jp[] = {
 static struct keyboard_key phone_abc[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
 	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"@#$%&"),
-	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"abc"),
-	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"def"),
+	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"ａｂｃ"),
+	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"ｄｅｆ"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
                                                 
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
-	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ghi"),
-	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"jkl"),
-	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"mno"),
+	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ｇｈｉ"),
+	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"ｊｋｌ"),
+	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"ｍｎｏ"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
                                                 
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
-	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"pqrs"),
-	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"tuv"),
-	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"wxyz"),
+	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"ｐｑｒｓ"),
+	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"ｔｕｖ"),
+	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"ｗｘｙｚ"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
                                                 
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
-	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+-*="),
+	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"'()"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	",.?!"),
 
@@ -206,7 +248,7 @@ static struct keyboard_key phone_123[] = {
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
                                                  
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
-	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+-*="),
+	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"0"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	",.?!"),
                                                 
@@ -339,10 +381,15 @@ void keyboard_set_mode(int mode)
 	kb_mode = mode;
 
 	if(kb_mode == KEYBOARD_CHAR) {
+		if (wiki_is_japanese())
+			image_data = &keyboard_abc2_image;
+		else
+			image_data = &keyboard_abc_image;
+	} else if(kb_mode == KEYBOARD_PASSWORD_CHAR) {
 		image_data = &keyboard_abc_image;
 	} else if(kb_mode == KEYBOARD_CHAR_JP) {
-		image_data = &keyboard_abc2_image;
-	} else if(kb_mode == KEYBOARD_NUM) {
+		image_data = &keyboard_abc_image;
+	} else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM) {
 		image_data = &keyboard_123_image;
 		b_first_123_keyin = 1;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
@@ -370,14 +417,18 @@ int nls_button_enabled()
 void keyboard_paint()
 {
 	pre_key = NULL;
-	if(kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_PASSWORD_CHAR) {
+	if(kb_mode == KEYBOARD_CHAR)
+	{
+		if (wiki_is_japanese())
+			image_data = &keyboard_abc2_image;
+		else
+			image_data = &keyboard_abc_image;
+	} else if(kb_mode == KEYBOARD_PASSWORD_CHAR) {
 		image_data = &keyboard_abc_image;
 	} else if(kb_mode == KEYBOARD_CHAR_JP) {
-		image_data = &keyboard_abc2_image;
+		image_data = &keyboard_abc_image;
 	} else if(kb_mode == KEYBOARD_NUM || kb_mode == KEYBOARD_PASSWORD_NUM) {
 		image_data = &keyboard_123_image;
-//      } else if(kb_mode == KEYBOARD_CLEAR_HISTORY) {
-//           image_data = &clear_history_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
 		image_data = &keyboard_phone_jp_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
@@ -403,118 +454,96 @@ unsigned int keyboard_height()
 		return image_data->height;
 }
 
-/**
- * Coordinates are screen absolute ones
- */
-#define KEY_GAP1 0
-#define KEY_GAP2 0
-#define KEY_GAP3 0
-#define KEY_GAP4 0
 struct keyboard_key * keyboard_get_data(int x, int y)
 {
 	unsigned int i;
+	struct keyboard_key *keyboard_key = NULL;
+	int keyboard_entries = 0;
 	
 	if (touch_down_on_keyboard && pre_key &&
 		pre_key->left_x - (pre_key->right_x - pre_key->left_x) / 2 <= x && x <= pre_key->right_x + (pre_key->right_x - pre_key->left_x) / 2 &&
 		pre_key->left_y - (pre_key->right_y - pre_key->left_y) / 2 <= y && y <= pre_key->right_y + (pre_key->right_y - pre_key->left_y) / 2 )
 		return pre_key;
 
-	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR_JP) {
-		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
-			if (qwerty_char[i].left_x + KEY_GAP1 <= x && qwerty_char[i].right_x - KEY_GAP2 >= x
-			    && qwerty_char[i].left_y + KEY_GAP3 <= y && qwerty_char[i].right_y - KEY_GAP4 >= y
-			    && (nls_button_enabled() || *qwerty_char[i].key != WL_KEY_NLS)) {
-				DP(DBG_KEYBOARD, ("O Entered '%c'\n", *qwerty_char[i].key));
-				return &qwerty_char[i];
-			}
+	if (kb_mode == KEYBOARD_CHAR)
+	{
+		if (wiki_is_japanese())
+		{
+			keyboard_key = qwerty_full_char;
+			keyboard_entries = ARRAY_SIZE(qwerty_full_char);
+		}
+		else
+		{
+			keyboard_key = qwerty_char;
+			keyboard_entries = ARRAY_SIZE(qwerty_char);
 		}
 	}
-	else if (kb_mode == KEYBOARD_NUM) {
-		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
-			if (qwerty_num[i].left_x + KEY_GAP1 <= x && qwerty_num[i].right_x - KEY_GAP2 >= x
-			    && qwerty_num[i].left_y + KEY_GAP3 <= y && qwerty_num[i].right_y - KEY_GAP4 >= y
-			    && (nls_button_enabled() || *qwerty_char[i].key != WL_KEY_NLS)) {
-				DP(DBG_KEYBOARD, ("O Entered '%c'\n", *qwerty_num[i].key));
-				return &qwerty_num[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_CHAR_JP)
+	{
+		keyboard_key = qwerty_char;
+		keyboard_entries = ARRAY_SIZE(qwerty_char);
 	}
-	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP) {
-		for (i = 0; i < ARRAY_SIZE(phone_jp); ++i) {
-			if (phone_jp[i].left_x <= x && phone_jp[i].right_x >= x
-			    && phone_jp[i].left_y <= y && phone_jp[i].right_y >= y
-			    && (nls_button_enabled() || *phone_jp[i].key != WL_KEY_NLS)) {
-				return &phone_jp[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_NUM)
+	{
+		keyboard_key = qwerty_num;
+		keyboard_entries = ARRAY_SIZE(qwerty_num);
 	}
-	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
-		for (i = 0; i < ARRAY_SIZE(phone_abc); ++i) {
-			if (phone_abc[i].left_x <= x && phone_abc[i].right_x >= x
-			    && phone_abc[i].left_y <= y && phone_abc[i].right_y >= y
-			    && (nls_button_enabled() || *phone_abc[i].key != WL_KEY_NLS)) {
-				return &phone_abc[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP)
+	{
+		keyboard_key = phone_jp;
+		keyboard_entries = ARRAY_SIZE(phone_jp);
 	}
-	else if (kb_mode == KEYBOARD_PHONE_STYLE_123) {
-		for (i = 0; i < ARRAY_SIZE(phone_123); ++i) {
-			if (phone_123[i].left_x <= x && phone_123[i].right_x >= x
-			    && phone_123[i].left_y <= y && phone_123[i].right_y >= y
-			    && (nls_button_enabled() || *phone_123[i].key != WL_KEY_NLS)) {
-				return &phone_123[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
+	{
+		keyboard_key = phone_abc;
+		keyboard_entries = ARRAY_SIZE(phone_abc);
 	}
-	else if (kb_mode == KEYBOARD_CLEAR_HISTORY) {
-		for (i = 0; i < ARRAY_SIZE(clear_history); ++i) {
-			if (clear_history[i].left_x + KEY_GAP1 <= x && clear_history[i].right_x - KEY_GAP2 >= x
-			    && clear_history[i].left_y + KEY_GAP3 <= y && clear_history[i].right_y - KEY_GAP4 >= y) {
-				return &clear_history[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_123)
+	{
+		keyboard_key = phone_123;
+		keyboard_entries = ARRAY_SIZE(phone_123);
 	}
-	else if (kb_mode == KEYBOARD_PASSWORD_CHAR) {
-		for (i = 0; i < ARRAY_SIZE(password_char); ++i) {
-			if (password_char[i].left_x + KEY_GAP1 <= x && password_char[i].right_x - KEY_GAP2 >= x
-			    && password_char[i].left_y + KEY_GAP3 <= y && password_char[i].right_y - KEY_GAP4 >= y) {
-				return &password_char[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_CLEAR_HISTORY)
+	{
+		keyboard_key = clear_history;
+		keyboard_entries = ARRAY_SIZE(clear_history);
 	}
-	else if (kb_mode == KEYBOARD_PASSWORD_NUM) {
-		for (i = 0; i < ARRAY_SIZE(password_num); ++i) {
-			if (password_num[i].left_x + KEY_GAP1 <= x && password_num[i].right_x - KEY_GAP2 >= x
-			    && password_num[i].left_y + KEY_GAP3 <= y && password_num[i].right_y - KEY_GAP4 >= y) {
-				return &password_num[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_PASSWORD_CHAR)
+	{
+		keyboard_key = password_char;
+		keyboard_entries = ARRAY_SIZE(password_char);
 	}
-	else if (kb_mode == KEYBOARD_RESTRICTED) {
-		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
-			if (restriction[i].left_x + KEY_GAP1 <= x && restriction[i].right_x - KEY_GAP2 >= x
-			    && restriction[i].left_y + KEY_GAP3 <= y && restriction[i].right_y - KEY_GAP4 >= y) {
-				return &restriction[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_PASSWORD_NUM)
+	{
+		keyboard_key = password_num;
+		keyboard_entries = ARRAY_SIZE(password_num);
 	}
-	else if (kb_mode == KEYBOARD_FILTER_ON_OFF) {
-		for (i = 0; i < ARRAY_SIZE(filter_on_off); ++i) {
-			if (filter_on_off[i].left_x + KEY_GAP1 <= x && filter_on_off[i].right_x - KEY_GAP2 >= x
-			    && filter_on_off[i].left_y + KEY_GAP3 <= y && filter_on_off[i].right_y - KEY_GAP4 >= y) {
-				return &filter_on_off[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_RESTRICTED)
+	{
+		keyboard_key = restriction;
+		keyboard_entries = ARRAY_SIZE(restriction);
 	}
-	else if (kb_mode == KEYBOARD_FILTER_OPTION) {
-		for (i = 0; i < ARRAY_SIZE(filter_option); ++i) {
-			if (filter_option[i].left_x + KEY_GAP1 <= x && filter_option[i].right_x - KEY_GAP2 >= x
-			    && filter_option[i].left_y + KEY_GAP3 <= y && filter_option[i].right_y - KEY_GAP4 >= y) {
-				return &filter_option[i];
-			}
-		}
+	else if (kb_mode == KEYBOARD_FILTER_ON_OFF)
+	{
+		keyboard_key = filter_on_off;
+		keyboard_entries = ARRAY_SIZE(filter_on_off);
+	}
+	else if (kb_mode == KEYBOARD_FILTER_OPTION)
+	{
+		keyboard_key = filter_option;
+		keyboard_entries = ARRAY_SIZE(filter_option);
 	}
 
+	if (keyboard_key)
+	{
+		for (i = 0; i < keyboard_entries; ++i) {
+			if (keyboard_key[i].left_x <= x && keyboard_key[i].right_x >= x
+			    && keyboard_key[i].left_y <= y && keyboard_key[i].right_y >= y
+			    && (nls_button_enabled() || *keyboard_key[i].key != WL_KEY_NLS)) {
+				return &keyboard_key[i];
+			}
+		}
+	}
 	return NULL;
 }
 
@@ -702,7 +731,7 @@ void keyboard_process_key_invert(struct keyboard_key *key, bool bResetDelay)
 	}
 	else
 	{
-		draw_key_bubble(start_x, start_y, end_x, end_y, *key->key);
+		draw_key_bubble(start_x, start_y, end_x, end_y, full_alphabet_to_half(key->key, NULL));
 	}
 	if (bResetDelay)
 		keyboard_key_invert_dalay = 0;
@@ -716,7 +745,7 @@ int keyboard_key_inverted(void)
 {
 	if (pre_key)
 	{
-		if (MULTI_SELECTION_KEY(pre_key))
+		if (multi_selection_key(pre_key))
 			return -1;
 		else
 			return 1;
@@ -773,7 +802,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 			unsigned long stay_time_ticks;
 
 			if ((kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123) &&
-				MULTI_SELECTION_KEY(pre_key))
+				multi_selection_key(pre_key))
 				stay_time_ticks = seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME);
 			else
 				stay_time_ticks = seconds_to_ticks(KEY_BUBBLE_STAY_TIME);
@@ -831,67 +860,138 @@ int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2)
 struct keyboard_key *keyboard_locate_key(char keycode)
 {
 	int i;
+	struct keyboard_key *keyboard_key = NULL;
+	int keyboard_entries = 0;
+	
+	if (kb_mode == KEYBOARD_CHAR)
+	{
+		if (wiki_is_japanese())
+		{
+			keyboard_key = qwerty_full_char;
+			keyboard_entries = ARRAY_SIZE(qwerty_full_char);
+		}
+		else
+		{
+			keyboard_key = qwerty_char;
+			keyboard_entries = ARRAY_SIZE(qwerty_char);
+		}
+	}
+	else if (kb_mode == KEYBOARD_CHAR_JP)
+	{
+		keyboard_key = qwerty_char;
+		keyboard_entries = ARRAY_SIZE(qwerty_char);
+	}
+	else if (kb_mode == KEYBOARD_NUM)
+	{
+		keyboard_key = qwerty_num;
+		keyboard_entries = ARRAY_SIZE(qwerty_num);
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP)
+	{
+		keyboard_key = phone_jp;
+		keyboard_entries = ARRAY_SIZE(phone_jp);
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
+	{
+		keyboard_key = phone_abc;
+		keyboard_entries = ARRAY_SIZE(phone_abc);
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_123)
+	{
+		keyboard_key = phone_123;
+		keyboard_entries = ARRAY_SIZE(phone_123);
+	}
+	else if (kb_mode == KEYBOARD_CLEAR_HISTORY)
+	{
+		keyboard_key = clear_history;
+		keyboard_entries = ARRAY_SIZE(clear_history);
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_CHAR)
+	{
+		keyboard_key = password_char;
+		keyboard_entries = ARRAY_SIZE(password_char);
+	}
+	else if (kb_mode == KEYBOARD_PASSWORD_NUM)
+	{
+		keyboard_key = password_num;
+		keyboard_entries = ARRAY_SIZE(password_num);
+	}
+	else if (kb_mode == KEYBOARD_RESTRICTED)
+	{
+		keyboard_key = restriction;
+		keyboard_entries = ARRAY_SIZE(restriction);
+	}
+	else if (kb_mode == KEYBOARD_FILTER_ON_OFF)
+	{
+		keyboard_key = filter_on_off;
+		keyboard_entries = ARRAY_SIZE(filter_on_off);
+	}
+	else if (kb_mode == KEYBOARD_FILTER_OPTION)
+	{
+		keyboard_key = filter_option;
+		keyboard_entries = ARRAY_SIZE(filter_option);
+	}
 
-	if (kb_mode == KEYBOARD_CHAR || kb_mode == KEYBOARD_CHAR_JP) {
-		for (i = 0; i < ARRAY_SIZE(qwerty_char); ++i) {
-			if (*qwerty_char[i].key == keycode)
-				return &qwerty_char[i];
-		}
-	}
-	else if (kb_mode == KEYBOARD_NUM) {
-		for (i = 0; i < ARRAY_SIZE(qwerty_num); ++i) {
-			if (*qwerty_num[i].key == keycode)
-				return &qwerty_num[i];
-		}
-	}
-	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP) {
-		for (i = 0; i < ARRAY_SIZE(phone_jp); ++i) {
-			if (*phone_jp[i].key == keycode)
-				return &phone_jp[i];
-		}
-	}
-	else if (kb_mode == KEYBOARD_CLEAR_HISTORY) {
-		for (i = 0; i < ARRAY_SIZE(clear_history); ++i) {
-			if (*clear_history[i].key == keycode) {
-				return &clear_history[i];
-			}
-		}
-	}
-	else if (kb_mode == KEYBOARD_PASSWORD_CHAR) {
-		for (i = 0; i < ARRAY_SIZE(password_char); ++i) {
-			if (*password_char[i].key == keycode) {
-				return &password_char[i];
-			}
-		}
-	}
-	else if (kb_mode == KEYBOARD_PASSWORD_NUM) {
-		for (i = 0; i < ARRAY_SIZE(password_num); ++i) {
-			if (*password_num[i].key == keycode) {
-				return &password_num[i];
-			}
-		}
-	}
-	else if (kb_mode == KEYBOARD_RESTRICTED) {
-		for (i = 0; i < ARRAY_SIZE(restriction); ++i) {
-			if (*restriction[i].key == keycode) {
-				return &restriction[i];
-			}
-		}
-	}
-	else if (kb_mode == KEYBOARD_FILTER_ON_OFF) {
-		for (i = 0; i < ARRAY_SIZE(filter_on_off); ++i) {
-			if (*filter_on_off[i].key == keycode) {
-				return &filter_on_off[i];
-			}
-		}
-	}
-	else if (kb_mode == KEYBOARD_FILTER_OPTION) {
-		for (i = 0; i < ARRAY_SIZE(filter_option); ++i) {
-			if (*filter_option[i].key == keycode) {
-				return &filter_option[i];
-			}
+	if (keyboard_key)
+	{
+		for (i = 0; i < keyboard_entries; ++i) {
+			if (*keyboard_key[i].key == keycode)
+				return &keyboard_key[i];
 		}
 	}
 
 	return NULL;
+}
+
+unsigned char full_alphabet_to_half(unsigned char *full, int *used_len)
+{
+	if (full[0] == 0xEF && full[1] == 0xBD && 0x81 <= full[2] && full[2] <= 0x9A)
+	{
+		if (used_len)
+			*used_len = 3;
+		return('a' + (full[2] - 0x81));
+	}
+	else if (full[0] == 0xEF && full[1] == 0xBC && full[2] == 0x8D) // full width -
+	{
+		if (used_len)
+			*used_len = 3;
+		return('-');
+	}
+	else
+	{
+		if (used_len)
+			*used_len = 1;
+		return *full;
+	}
+}
+
+unsigned char *half_alphabet_to_full(unsigned char c)
+{
+	static unsigned char full[4];
+	if ('a' <= c && c <= 'z')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBD;
+		full[2] = 0x81 + (c - 'a');
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == '-')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBC;
+		full[2] = 0x8D;
+		full[3] = '\0';
+		return full;
+	}
+	else
+		return NULL;
+}
+
+int multi_selection_key(struct keyboard_key *key)
+{
+	if (!key->key[1] || (strlen(key->key) == 3 && key->key[0] == 0xEF)) // single-byte ascii or 3-byte utf8 full-width alphbet (partial check)
+		return 0;
+	else
+		return 1;
 }

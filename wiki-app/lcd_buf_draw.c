@@ -644,7 +644,7 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 	guilib_fb_lock();
 	//guilib_clear();
 
-	memcpy(framebuffer,buf+pos*LCD_VRAM_WIDTH_PIXELS/8,framebuffersize);
+	memcpy(framebuffer,buf+(pos < 0 ? 0 : pos)*LCD_VRAM_WIDTH_PIXELS/8,framebuffersize);
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && (pos == article_start_y_pos || pos == 0))
 	{
 		draw_language_link_arrow();

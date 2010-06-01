@@ -59,10 +59,9 @@ struct keyboard_key {
 	int left_y, right_y;
 	int left_x_inverted, right_x_inverted;
 	int left_y_inverted, right_y_inverted;
-	char *key; // assuming non-multi-selection key should have length = 1
+	unsigned char *key; // assuming non-multi-selection key should have length = 1
 };
 
-#define MULTI_SELECTION_KEY(a) (a->key[1])
 void keyboard_set_mode(int mode);
 int keyboard_get_mode();
 unsigned int keyboard_height();
@@ -74,4 +73,7 @@ int keyboard_key_inverted(void);
 int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2);
 struct keyboard_key *keyboard_locate_key(char keycode);
 void flash_keyboard_key_invert();
+unsigned char full_alphabet_to_half(unsigned char *full, int *used_len);
+unsigned char *half_alphabet_to_full(unsigned char c);
+int multi_selection_key(struct keyboard_key *key);
 #endif

@@ -40,7 +40,7 @@ WIKI_LIST wiki_list[] =
 	{ 6,  6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia", KEYBOARD_CHAR, 0},
 	{ 7,  7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia", KEYBOARD_CHAR, 0},
 	{ 8,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_PHONE_STYLE_JP, 0},
-	{ 9,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_CHAR, 2},
+	{ 9,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_CHAR_JP, 2},
 	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR, 0},
 	{11, 10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia", KEYBOARD_CHAR, 0},
 	{12, 11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia", KEYBOARD_CHAR, 0},
@@ -75,7 +75,7 @@ unsigned int lenWikiIni = 0;
 unsigned int sizeWikiIni = 0;
 extern int bShowPositioner;
 
-char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len);
+char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki_nls_idx);
 int get_wiki_idx_from_serial_id(int wiki_serial_id);
 
 void init_wiki_info(void)
@@ -119,10 +119,10 @@ void init_wiki_info(void)
 						*p = '\0';
 					p++;
 				}
-				p = get_nls_key_value("positioner", pWikiIni, lenWikiIni);
+				p = get_nls_key_value("positioner", pWikiIni, lenWikiIni, 0);
 				if (*p)
 					bShowPositioner = atoi(p);
-				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni);
+				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni, 0);
 				if (*p)
 				{
 					nWikiSerialId = atoi(p);
@@ -289,18 +289,25 @@ int get_wiki_serial_id_from_idx(int wiki_idx)
 	return 0;
 }
 
-char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len)
+char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki_nls_idx)
 {
 	int i, j;
-	int key_len = strlen(key);
+	int key_len;
 	int bFound = 0;
+	char local_key[64];
 
+	if (wiki_nls_idx)
+		sprintf(local_key, "%s%d", key, wiki_nls_idx); // try the key name with wiki_name_idx first
+	else
+		strcpy(local_key, key);
+
+	key_len = strlen(local_key);
 	i = 0;
 	while (i < key_pairs_len - key_len - 1 && !bFound)
 	{
 		for (j = 0; j < key_len; j++)
 		{
-			if (key[j] != key_pairs[i + j])
+			if (local_key[j] != key_pairs[i + j])
 				break;
 		}
 		i += j;
@@ -318,6 +325,8 @@ char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len)
 	}
 	if (bFound)
 		return &key_pairs[i + 1];
+	else if (wiki_nls_idx)
+		return get_nls_key_value(key, key_pairs, key_pairs_len, 0); // try the key name without wiki_name_idx
 	else
 		return "";
 }
@@ -365,7 +374,7 @@ char *get_nls_text(char *key)
 		if (aWikiNlsLen[nCurrentWiki] == 0)
 			return "";
 
-		return get_nls_key_value(key, aWikiNls[nCurrentWiki], aWikiNlsLen[nCurrentWiki]);
+		return get_nls_key_value(key, aWikiNls[nCurrentWiki], aWikiNlsLen[nCurrentWiki], wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_nls_idx);
 	}
 }
 
@@ -403,23 +412,16 @@ char *get_wiki_name(int idx)
 {
 	int nTempCurrentWiki = nCurrentWiki;
 	char *pName;
-	char sWikiNameKey[32];
 
 	nCurrentWiki = idx;
-	if (wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_name_idx)
-	{
-		sprintf(sWikiNameKey, "wiki_name%d", wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_name_idx);
-		pName = get_nls_text(sWikiNameKey);
-	}
-	else
-		pName = get_nls_text("wiki_name");
+	pName = get_nls_text("wiki_name");
 	nCurrentWiki = nTempCurrentWiki;
 	return pName;
 }
 
 void wiki_ini_insert_keypair(char *key, char *keyval)
 {
-	char *p = get_nls_key_value(key, pWikiIni, lenWikiIni);
+	char *p = get_nls_key_value(key, pWikiIni, lenWikiIni, 0);
 
 	if (*p)
 	{
