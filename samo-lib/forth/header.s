@@ -243,10 +243,10 @@ main:
         xcall   Serial_initialise
         xcall   Button_initialise
         xcall   CTP_initialise
-        ;;xcall   Contrast_initialise                 ; ***done by the boot loader**
+        ;;xcall   Contrast_initialise                 ; **already done by the boot loader**
         xcall   Analog_initialise
         xcall   Tick_initialise
-        ;;xcall   Temperature_initialise              ; not working yet
+        xcall   Temperature_initialise              ; not working yet
 
         xcall   FLASH_initialise                      ; setup FLASH/SPI access
 

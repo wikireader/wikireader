@@ -32,7 +32,7 @@
 #include <tick.h>
 #include <suspend.h>
 #include <analog.h>
-//#include <temperature.h>
+#include <temperature.h>
 
 /* local includes */
 #include "msg-output.h"
@@ -67,7 +67,7 @@ int main(void)
 	// other high priority initialisation
 	Tick_initialise();
 	Analog_initialise();
-	//Temperature_initialise();
+	Temperature_initialise();
 	msg_init();
 
 	// start of normal initialisation

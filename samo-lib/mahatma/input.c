@@ -28,7 +28,7 @@
 #include <regs.h>
 #include <samo.h>
 #include <suspend.h>
-//#include <temperature.h>
+#include <temperature.h>
 #include <ctp.h>
 
 #include "serial.h"
@@ -50,7 +50,7 @@ bool wl_input_event_pending(void)
 void wl_input_reset_random_key(void)
 {
 	struct wl_input_event ev;
-	
+
 	while (gpio_peek_event(&ev) && ev.key_event.keycode == WL_INPUT_KEY_RANDOM)
 	{
 		gpio_get_event(&ev);
@@ -92,9 +92,10 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 
 /* the timers needed for profiling don't work with suspend enabled */
 #if !PROFILER_ON
+		Temperature_control();
 		suspend(TIMEOUT_VALUE);
 #endif
-//		Temperature_control();
+		Temperature_control();
 
 	}
 }

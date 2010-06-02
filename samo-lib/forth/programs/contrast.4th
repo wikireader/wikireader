@@ -15,7 +15,7 @@ base @ decimal
 : thermistor-display ( -- )
     0 4 lcd-at-xy
     s" thermistor = " lcd-type
-    temperature-c dup 5 lcd-u.r
+    temperature-c dup 5 lcd-.r
     s"  C" lcd-type
     lcd-cr
     s" c.dmd      = " lcd-type
@@ -47,11 +47,42 @@ base @ decimal
     s"  mV" lcd-type
 ;
 
+variable compensation-active
+
 : pwm-display ( -- )
     0 10 lcd-at-xy
     s" pwm        = " lcd-type
     get-contrast-pwm 5 lcd-u.r
+    5 lcd-spaces
+    compensation-active @
+    if   s" T-comp"
+    else s" Off   "
+    then
+    lcd-type
 ;
+
+
+\ compensation on/off control
+
+: compensation-off ( -- )
+    false compensation-active !
+    10 lcd-text-rows 1- lcd-at-xy
+    s" C-On " lcd-type
+;
+
+: compensation-on ( -- )
+    true compensation-active !
+    10 lcd-text-rows 1- lcd-at-xy
+    s" C-Off" lcd-type
+;
+
+: compensation-toggle ( -- )
+    compensation-active @
+    if   compensation-off
+    else compensation-on
+    then
+;
+
 
 \ main
 
@@ -59,12 +90,15 @@ base @ decimal
     key-flush
     ctp-flush
     button-flush
+    false compensation-active !
 
     lcd-cls
     s" Contrast Check" lcd-type
 
     10 lcd-text-rows 1- lcd-at-xy
     s"       Norm    Exit" lcd-type
+
+    compensation-off
 
     begin
 
@@ -83,6 +117,7 @@ base @ decimal
             button
             case
                 button-left of
+                    compensation-toggle
                 endof
                 button-centre of
                     nominal-contrast-pwm set-contrast-pwm
@@ -97,7 +132,9 @@ base @ decimal
             key-flush
         then
 
-        wait-for-event
+        \ wait-for-event
+
+        compensation-active @ if (temperature-comp) then
     again
 ;
 

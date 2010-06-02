@@ -3264,7 +3264,7 @@ end-code
 \ ** if there are any pending events the return immediately
 \ ** if not switch to low power mode and wait for an event
 \ ** automatically power of if no events received in the next few minutes
- \ (temperature-comp)
+  (temperature-comp)
   button?
   key? or
   ctp-pos? or
@@ -3286,11 +3286,11 @@ TIMEOUT_VALUE = (MCLK / 32 * SUSPEND_AUTO_POWER_OFF_SECONDS)
         NEXT
 end-code
 
-\ temperature compensation is not yet working
-\ code (temperature-comp)   :: temperature-comp        ( -- )
-\         xcall   Temperature_control
-\         NEXT
-\ end-code
+\ temperature compensation of contrast
+code (temperature-comp)   :: temperature-comp        ( -- )
+        xcall   Temperature_control
+        NEXT
+end-code
 
 
 \ power off
@@ -3298,7 +3298,7 @@ end-code
 
 code power-off            :: power-off               ( -- )
 \ ** immediate power off
-\ ** remember to save any datae before calling this
+\ ** remember to save any data before calling this
         xld.w   %r4, R8_P3_IOC3
         ld.b    %r5, [%r4]
         xoor    %r5, 0x08                            ; P03 as output
