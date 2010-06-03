@@ -15,6 +15,7 @@ import string
 # i.e. zero => word is not allowed in text
 FILTER_WEIGHTS = {
     u'{{性的}}': 0,    # this template occurs in Japanese articles that are restricted
+    u'{{暴力的}}': 0,  # this template occurs in Japanese articles that are restricted
     u'pornograph': 3,
     u'x-rated': 2,
     u'dildo': 2,
