@@ -99,6 +99,11 @@ define BLANK_LINE
 
 endef
 
+# some special characters
+EMPTY :=
+COMMA := ,
+SPACE := ${EMPTY} ${EMPTY}
+
 # this allows detection of installed program
 # and gives apt-get command to install the missing program
 # $1 binary
