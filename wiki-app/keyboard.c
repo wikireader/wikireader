@@ -45,6 +45,7 @@ int keyboard_type = 0;
 int b_first_123_keyin = 0;
 extern int display_mode;
 extern unsigned int touch_down_on_keyboard;
+extern int b_type_a_word_cleared;
 
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode) \
@@ -178,26 +179,26 @@ static struct keyboard_key qwerty_num[] = {
 };
 static struct keyboard_key phone_jp[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
-	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"あいうえお"),
+	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"あいうえおぁぃぅぇぉ"),
 	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"かきくけこ"),
 	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"さしすせそ"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
 
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
-	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"たちつてと"),
+	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"たちつてとっ"),
 	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"なにぬねの"),
 	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"はひふへほ"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
 
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
 	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"まみむめも"),
-	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"やゆよ"),
+	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"やゆよゃゅょ"),
 	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"らりるれろ"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
 
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	WL_KEY_SONANT_STR),
-	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"わをんー"),
+	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"わをんゎー"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	",.?!"),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
@@ -365,7 +366,8 @@ static struct keyboard_key filter_option[] = {
 #define KEY_BUBBLE_TOTAL_WIDTH_BYTES ((KEY_BUBBLE_TOTAL_WIDTH + 7) / 8 + 1)
 #define KEY_BUBBLE_STEM_WIDTH 22
 #define KEY_BUBBLE_STEM_HEIGHT 18
-#define KEY_BUBBLE_STAY_TIME 0.4
+#define KEY_BUBBLE_CONDITIONAL_RESTORE_HEIGHT 30
+#define KEY_BUBBLE_STAY_TIME 0.2
 static struct keyboard_key *pre_key = NULL;
 static int keyboard_key_invert_dalay = 0;
 static char key_bubble_save[KEY_BUBBLE_TOTAL_HEIGHT * KEY_BUBBLE_TOTAL_WIDTH_BYTES];
@@ -670,9 +672,14 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, int key)
 void restore_key_bubble(void)
 {
 	int i;
+	int y_start = 0;
 
 	guilib_fb_lock();
-	for (i = 0; i < KEY_BUBBLE_TOTAL_HEIGHT; i++)
+	if (b_type_a_word_cleared && key_bubble_save_y_start <= LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - KEY_BUBBLE_CONDITIONAL_RESTORE_HEIGHT + 5)
+	{
+		y_start = KEY_BUBBLE_CONDITIONAL_RESTORE_HEIGHT;
+	}
+	for (i = y_start; i < KEY_BUBBLE_TOTAL_HEIGHT; i++)
 		memcpy(&framebuffer[(key_bubble_save_y_start + i) * LCD_BUF_WIDTH_BYTES + key_bubble_save_x_start_byte],
 			&key_bubble_save[i * KEY_BUBBLE_TOTAL_WIDTH_BYTES], key_bubble_save_width_bytes);
 	guilib_fb_unlock();

@@ -316,6 +316,7 @@ void msg_on_lcd(int x, int y, char *fmt, ...);
 void msg_on_lcd_clear(int x, int y);
 void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,unsigned char **pUTF8,int start_x,int end_x,int start_y,int end_y,int offset_x,int font_idx);
 int get_external_str_pixel_width(unsigned char *pUTF8, int font_idx);
+void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *start_x, int *start_y, int *end_x, int *end_y);
 int extract_str_fitting_width(unsigned char **pIn, char *pOut, int width, int font_idx);
 void lcd_set_pixel(unsigned char *membuffer,int x, int y);
 void lcd_clear_pixel(unsigned char *membuffer,int x, int y);
@@ -326,4 +327,5 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];
 extern unsigned char *article_buf_pointer;
+void clear_article_pos_info();
 #endif /* _LCD_BUF_DRAW_H */

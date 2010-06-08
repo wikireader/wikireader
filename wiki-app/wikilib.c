@@ -433,6 +433,7 @@ static void handle_key_release(int keycode)
 		if (display_mode == DISPLAY_MODE_INDEX) {
 			toggle_soft_keyboard();
 		} else {
+			clear_article_pos_info(); // to clear the previous article positioning information for list links to work properly
 			search_set_selection(-1);
 			display_mode = DISPLAY_MODE_INDEX;
 			keyboard_set_mode(wiki_default_keyboard());
@@ -440,6 +441,7 @@ static void handle_key_release(int keycode)
 		}
 	} else if (keycode == WL_INPUT_KEY_HISTORY) {
 		if (display_mode != DISPLAY_MODE_HISTORY) {
+			clear_article_pos_info(); // to clear the previous article positioning information for list links to work properly
 			article_buf_pointer = NULL;
 			history_reload();
 			display_mode = DISPLAY_MODE_HISTORY;
@@ -1390,7 +1392,7 @@ int wikilib_run(void)
 					press_delete_button = false;
 				}
 				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.3) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.2))
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.1))
 				{
 					if (!search_remove_char(0, time_now))
 					{
@@ -1413,7 +1415,7 @@ int wikilib_run(void)
 					press_delete_button = false;
 				}
 				else if (time_diff(time_now, start_search_time) > seconds_to_ticks(0.3) &&
-					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.2))
+					 time_diff(time_now, last_delete_time) > seconds_to_ticks(0.1))
 				{
 					password_remove_char();
 					last_delete_time = time_now;

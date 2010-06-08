@@ -60,7 +60,8 @@ extern ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 extern int article_link_count;
 extern long saved_idx_article;
 int search_interrupted = 0;
-
+int b_type_a_word_cleared = 0;
+ 
 typedef struct _search_results {
 	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_ACTUAL];
 	char title_search[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
@@ -1111,10 +1112,15 @@ struct _backward_key_sequence {
 	{"=", "*" },
 	{"?", "." },
 	{"@", "&" },
-	{"あ" , "お" },
+	{"ぁ" , "お" },
+	{"あ" , "ぉ" },
+	{"ぃ" , "ぁ"  },
 	{"い" , "あ"  },
+	{"ぅ" , "ぃ"  },
 	{"う" , "い"  },
+	{"ぇ" , "ぅ"  },
 	{"え" , "う"  },
+	{"ぉ" , "ぇ"  },
 	{"お" , "え"  },
 	{"か" , "こ"  },
 	{"き" , "か"  },
@@ -1126,8 +1132,9 @@ struct _backward_key_sequence {
 	{"す" , "し"  },
 	{"せ" , "す"  },
 	{"そ" , "せ"  },
-	{"た" , "と"  },
+	{"た" , "っ"  },
 	{"ち" , "た"  },
+	{"っ" , "と"  },
 	{"つ" , "ち"  },
 	{"て" , "つ"  },
 	{"と" , "て"  },
@@ -1146,18 +1153,22 @@ struct _backward_key_sequence {
 	{"む" , "み"  },
 	{"め" , "む"  },
 	{"も" , "め"  },
-	{"や" , "よ"  },
+	{"ゃ" , "よ"  },
+	{"や" , "ょ"  },
+	{"ゅ" , "ゃ"  },
 	{"ゆ" , "や"  },
+	{"ょ" , "ゅ"  },
 	{"よ" , "ゆ"  },
 	{"ら" , "ろ"  },
 	{"り" , "ら"  },
 	{"る" , "り"  },
 	{"れ" , "る"  },
 	{"ろ" , "れ"  },
+	{"ゎ" , "ん"  },
 	{"わ" , "ー"  },
 	{"を" , "わ"  },
 	{"ん" , "を"  },
-	{"ー" , "ん"  },
+	{"ー" , "ゎ"  },
 	{"－", "+" },
 	{"ａ", "ｃ" },
 	{"ｂ", "ａ" },
@@ -1499,7 +1510,7 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
 			retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
-						 sTitleSearch, sTitleActual);
+				sTitleSearch, sTitleActual);
 			rc = search_string_cmp(sTitleSearch, search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
 //msg(MSG_INFO, "offset (%x + %x, %x) ", offset_fnd_start, offsetNextTitleSearch, offset_fnd_end);
@@ -1658,8 +1669,8 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		    is_proper_string(pTitleSearch->sTitleSearch, search_info[nCurrentWiki].buf_len - offsetNextTitleSearch -
 				     sizeof(pTitleSearch->idxArticle) - sizeof(pTitleSearch->cZero)))
 		{
-			retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
-						 result_list->title_search[result_list->count], result_list->title[result_list->count]);
+		retrieve_titles_from_fnd(offset_fnd_start + offsetNextTitleSearch,
+					 result_list->title_search[result_list->count], result_list->title[result_list->count]);
 			rc = search_string_cmp(result_list->title_search[result_list->count], search_string, search_str_len);
 //#ifndef INCLUDED_FROM_KERNEL
 //msg(MSG_INFO, "bInit %d, input (%x, %x) ", bInit, input_offset_fnd_start, input_offset_fnd_end);
@@ -1847,101 +1858,101 @@ long get_search_result_start()
 	char c1, c2, c3;
 	int found = 0;
 /* Disable hashing
-   int i;
-   int lenCompared;
-   int lenCopied;
+	int i;
+	int lenCompared;
+	int lenCopied;
 */
 	long offset;
 /* Disable hashing
-   static int lenHashedSearchString = 0;
-   static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
-   static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+	static int lenHashedSearchString = 0;
+	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
+	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
 */
 
 /* Disable hashing
-   if (search_str_len > 3)
-   {
-   // check the length of the hashed search string can be reused
-   if (search_str_len > lenHashedSearchString)
-   lenCompared = lenHashedSearchString;
-   else
-   lenCompared = search_str_len;
-   lenHashedSearchString = 0;
-   for (i = 0; i < lenCompared; i++)
-   {
-   if (sHashedSearchString[i] != search_string[i])
-   lenHashedSearchString = i;
-   }
+	if (search_str_len > 3)
+	{
+		// check the length of the hashed search string can be reused
+		if (search_str_len > lenHashedSearchString)
+			lenCompared = lenHashedSearchString;
+		else
+			lenCompared = search_str_len;
+		lenHashedSearchString = 0;
+		for (i = 0; i < lenCompared; i++)
+		{
+			if (sHashedSearchString[i] != search_string[i])
+				lenHashedSearchString = i;
+		}
 
-   // Check if hashed
-   if (lenHashedSearchString > 3)
-   {
-   if (search_str_len > lenHashedSearchString)
-   {
-   if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-   lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
-   else
-   lenCopied = search_str_len - lenHashedSearchString;
-   memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
-   // check the extended part first
-   for (i = 3; i < lenHashedSearchString + lenCopied; i++)
-   {
-   if (i >= lenHashedSearchString)
-   offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-   if (search_interrupted)
-   {
-   search_interrupted = 12;
-   goto interrupted;
-   }
-   if (offsetHasedSearchString[i] &&
-   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-   {
-   found = 1;
-   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-   }
-   }
-   lenHashedSearchString += lenCopied;
-   }
+		// Check if hashed
+		if (lenHashedSearchString > 3)
+		{
+			if (search_str_len > lenHashedSearchString)
+			{
+				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+					lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
+				else
+					lenCopied = search_str_len - lenHashedSearchString;
+				memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
+				// check the extended part first
+				for (i = 3; i < lenHashedSearchString + lenCopied; i++)
+				{
+					if (i >= lenHashedSearchString)
+						offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+					if (search_interrupted)
+					{
+						search_interrupted = 12;
+						goto interrupted;
+					}
+					if (offsetHasedSearchString[i] &&
+					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					{
+						found = 1;
+						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+					}
+				}
+				lenHashedSearchString += lenCopied;
+			}
 
-   if (!found) // not hashed at the extended part
-   {
-   for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
-   {
-   if (offsetHasedSearchString[i] &&
-   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-   {
-   found = 1;
-   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-   }
-   else
-   break;
-   }
-   }
-   }
-   else
-   {
-   if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-   lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
-   else
-   lenHashedSearchString = search_str_len;
-   memcpy(sHashedSearchString, search_string, lenHashedSearchString);
-   for (i = 3; i < lenHashedSearchString; i++)
-   {
-   offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
-   if (search_interrupted)
-   {
-   search_interrupted = 13;
-   goto interrupted;
-   }
-   if (offsetHasedSearchString[i] &&
-   (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-   {
-   found = 1;
-   offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-   }
-   }
-   }
-   }
+			if (!found) // not hashed at the extended part
+			{
+				for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
+				{
+					if (offsetHasedSearchString[i] &&
+					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+					{
+						found = 1;
+						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+					}
+					else
+						break;
+				}
+			}
+		}
+		else
+		{
+			if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
+				lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
+			else
+				lenHashedSearchString = search_str_len;
+			memcpy(sHashedSearchString, search_string, lenHashedSearchString);
+			for (i = 3; i < lenHashedSearchString; i++)
+			{
+				offsetHasedSearchString[i] = get_search_hash_offset_fnd(sHashedSearchString, i + 1);
+				if (search_interrupted)
+				{
+					search_interrupted = 13;
+					goto interrupted;
+				}
+				if (offsetHasedSearchString[i] &&
+				    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
+				{
+					found = 1;
+					offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
+				}
+			}
+		}
+	}
 */
 
 //	if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
@@ -2024,27 +2035,27 @@ long get_search_result_end()
 	memcpy(local_search_string, search_string, len_local_search_string);
 
 /* disable hashing
-   while (!found && len_local_search_string > 3)
-   {
-   last_len_local_search_string = len_local_search_string;
-   len_local_search_string = next_search_string(local_search_string, len_local_search_string);
-   if (!memcmp(search_string, local_search_string, len_local_search_string))
-   found = 1; // returns -1 directly
-   else
-   {
-   offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
-   if (search_interrupted)
-   {
-   search_interrupted = 15;
-   goto interrupted;
-   }
-   if (offset_search_result_end > 0)
-   {
-   found = 1;
-   }
-   }
-   len_local_search_string = last_len_local_search_string - 1;
-   }
+	while (!found && len_local_search_string > 3)
+	{
+		last_len_local_search_string = len_local_search_string;
+		len_local_search_string = next_search_string(local_search_string, len_local_search_string);
+		if (!memcmp(search_string, local_search_string, len_local_search_string))
+			found = 1; // returns -1 directly
+		else
+		{
+			offset_search_result_end = get_search_hash_offset_fnd(local_search_string, len_local_search_string);
+			if (search_interrupted)
+			{
+				search_interrupted = 15;
+				goto interrupted;
+			}
+			if (offset_search_result_end > 0)
+			{
+				found = 1;
+			}
+		}
+		len_local_search_string = last_len_local_search_string - 1;
+	}
 */
 
 	if (!found)
@@ -2195,7 +2206,7 @@ void capitalize(char *in_str, char *out_str, int len)
 		int i = 0;
 		int j = 0;
 		int used_len;
-
+		
 		while (i < len)
 		{
 			out_str[j++] = full_alphabet_to_half(&in_str[i], &used_len);
@@ -2279,7 +2290,7 @@ char *get_english(char *in_str, int len, int *used_len)
 	char first_utf8_char[5];
 	int cmp;
 	int len_first_char;
-
+	
 	get_first_utf8_char(first_utf8_char, in_str, strlen(in_str));
 	len_first_char = strlen(first_utf8_char);
 	*used_len = len_first_char;
@@ -2321,8 +2332,8 @@ char *get_english(char *in_str, int len, int *used_len)
 		while (iStart > 0 && !strncmp(first_utf8_char, hiragana_english_mapping[iStart - 1].hiragana, len_first_char))
 			iStart--;
 
-		for (i = iStart; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) &&
-			     !strncmp(first_utf8_char, hiragana_english_mapping[i].hiragana, len_first_char); i++)
+		for (i = iStart; i < sizeof(hiragana_english_mapping) / sizeof(struct _hiragana_english_mapping) && 
+			!strncmp(first_utf8_char, hiragana_english_mapping[i].hiragana, len_first_char); i++)
 		{
 			if (len >= strlen(hiragana_english_mapping[i].hiragana) && !strncmp(in_str, hiragana_english_mapping[i].hiragana, strlen(hiragana_english_mapping[i].hiragana)))
 			{
@@ -2582,14 +2593,14 @@ void search_hiragana_romaji_conversion()
 				break;
 			conversion_start_pos--;
 		}
-
+	
 		i = 0;
 		while (i < search_str_hiragana_len)
 		{
 			if (i < conversion_start_pos)
 			{
 				char *pFull;
-
+				
 				if (!(search_string_hiragana[i] & 0x80) && (pFull = half_alphabet_to_full(search_string_hiragana[i])))
 				{
 					strcpy(&temp_hiragana[temp_hiragana_len], pFull);
@@ -2617,11 +2628,11 @@ void search_hiragana_romaji_conversion()
 				}
 			}
 		}
-
+	
 		memcpy(search_string_hiragana, temp_hiragana, temp_hiragana_len);
 		search_str_hiragana_len = temp_hiragana_len;
 		search_string_hiragana[search_str_hiragana_len] = '\0';
-
+		
 		if (iFirstRomaji >= 0 && iFirstRomaji < iBeforeLastHiragana)
 		{
 			if (iFirstRomaji > 0)
@@ -2635,7 +2646,7 @@ void search_hiragana_romaji_conversion()
 			while (i < iBeforeLastHiragana)
 			{
 				char *pFull;
-
+				
 				if (!(search_string_hiragana[i] & 0x80) && (pFull = half_alphabet_to_full(search_string_hiragana[i])))
 				{
 					strcpy(&temp_hiragana[temp_hiragana_len], pFull);
@@ -2647,7 +2658,7 @@ void search_hiragana_romaji_conversion()
 			}
 			memcpy(&temp_hiragana[temp_hiragana_len], &search_string_hiragana[iBeforeLastHiragana], search_str_hiragana_len - iBeforeLastHiragana);
 			temp_hiragana_len += search_str_hiragana_len - iBeforeLastHiragana;
-
+			
 			memcpy(search_string_hiragana, temp_hiragana, temp_hiragana_len);
 			search_str_hiragana_len = temp_hiragana_len;
 			search_string_hiragana[search_str_hiragana_len] = '\0';
@@ -2701,7 +2712,7 @@ int search_replace_japanese_sonant()
 			else
 				iStart = iEnd;
 		}
-
+	
 		if (bFound)
 		{
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], sonant_conversion[iStart].after_conversion, strlen(sonant_conversion[iStart].after_conversion));
@@ -2717,7 +2728,7 @@ int search_replace_japanese_sonant()
 	delay_us(20000); // 0.2 second
 #endif
 	flash_keyboard_key_invert();
-	return rc;
+ 	return rc;
 }
 
 int search_replace_japanese_char(char *utf8_char)
@@ -2725,7 +2736,7 @@ int search_replace_japanese_char(char *utf8_char)
 	char last_utf8_char[5];
 	char new_utf8_char[5];
 	int rc = -1;
-
+	
 	flash_keyboard_key_invert();
 	if (search_str_hiragana_len > 0)
 	{
@@ -2746,7 +2757,7 @@ int search_replace_japanese_char(char *utf8_char)
 #ifdef INCLUDED_FROM_KERNEL
 	delay_us(20000); // 0.2 second
 #endif
-	flash_keyboard_key_invert();
+ 	flash_keyboard_key_invert();
 	return rc;
 }
 
@@ -2795,7 +2806,7 @@ int search_replace_hiragana_backward()
 			else
 				iStart = iEnd;
 		}
-
+	
 		if (bFound)
 		{
 			memcpy(&search_string_hiragana[search_str_hiragana_len - strlen(last_utf8_char)], backward_key_sequence[iStart].after_conversion, strlen(backward_key_sequence[iStart].after_conversion));
@@ -2815,14 +2826,24 @@ int search_add_japanese_char(char *utf8_char)
 {
 	char new_utf8_char[5];
 	int rc = -1;
-
-	if ((*utf8_char == 0x20 && search_str_len > 0 && search_string[search_str_len -1 ] == 0x20) ||
-	    (!search_str_len && *utf8_char == 0x20))
+	
+	if ((*utf8_char == 0x20 && search_str_len > 0 && search_string[search_str_len -1 ] == 0x20) || 
+			(!search_str_len && *utf8_char == 0x20))
 		return -1;
 
 	get_first_utf8_char(new_utf8_char, utf8_char, strlen(utf8_char));
 	if (strlen(new_utf8_char) == 0 || (strlen(new_utf8_char) == 1 && !is_supported_search_char(new_utf8_char[0])))
 		return -1; // not supported input
+		
+	if (!search_str_hiragana_len) // clear type_a_word message
+	{
+		guilib_fb_lock();
+		guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+		guilib_fb_unlock();
+		b_type_a_word_cleared = 1;
+	}
+	else
+		b_type_a_word_cleared = 0;
 
 	if (new_utf8_char[0] && search_str_hiragana_len + strlen(new_utf8_char) < MAX_TITLE_SEARCH * 3 - 1)
 	{
@@ -2835,7 +2856,7 @@ int search_add_japanese_char(char *utf8_char)
 		search_string_changed = true;
 		rc = 0;
 	}
-	return rc;
+ 	return rc;
 }
 
 int search_add_char(char c, unsigned long ev_time)
@@ -2848,9 +2869,12 @@ int search_add_char(char c, unsigned long ev_time)
 	if (!search_str_len) // clear type_a_word message
 	{
 		guilib_fb_lock();
-		guilib_clear_area(0, 55, 239, 80);
+		guilib_clear_area(0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
 		guilib_fb_unlock();
+		b_type_a_word_cleared = 1;
 	}
+	else
+		b_type_a_word_cleared = 0;
 	if ('A' <= c && c <= 'Z')
 		c += 32;
 
@@ -2950,8 +2974,8 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 		else
 		{
 			while (search_str_hiragana_len > 0 &&
-			       ((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
-				!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
+					((search_string_hiragana[search_str_hiragana_len - 1] & 0x80) &&
+					!(search_string_hiragana[search_str_hiragana_len - 1] & 0x40)))
 				search_str_hiragana_len--;
 			search_string_hiragana[--search_str_hiragana_len] = '\0';
 			search_str_len = hiragana_to_english(search_string, MAX_TITLE_SEARCH, search_string_hiragana, &search_str_hiragana_len);

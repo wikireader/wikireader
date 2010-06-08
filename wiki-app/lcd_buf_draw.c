@@ -826,6 +826,7 @@ void buf_draw_char(ucs4_t u)
 	}
 	lcd_draw_buf.current_x += Cmetrics.widthDevice;
 }
+
 int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
 {
 	bmf_bm_t *bitmap;
@@ -846,6 +847,81 @@ int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
 	}
 	return width;
 }
+
+void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *start_x, int *start_y, int *end_x, int *end_y)
+{
+	bmf_bm_t *bitmap;
+	charmetric_bmf Cmetrics;
+	ucs4_t u;
+	unsigned char **pUTF8 = &pIn;
+	int width = 0;
+	int bytes_to_process;
+	int x_base;
+	int x_offset;
+	int y_offset;
+	int x_bit_idx;
+	int i; // bitmap byte index
+	int j; // bitmap bit index
+
+	*start_x = -999;
+	*end_x = -999;
+	*start_y = -999;
+	*end_y = -999;
+	while (**pUTF8 > MAX_ESC_CHAR)
+	{
+		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
+		{
+			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
+			if (bitmap != NULL)
+			{
+				bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
+			
+				x_base = width + Cmetrics.LSBearing;
+				x_offset = 0;
+				y_offset = pcfFonts[font_idx - 1].Fmetrics.linespace - (pcfFonts[font_idx - 1].Fmetrics.descent + Cmetrics.ascent);
+			
+				x_bit_idx = x_base & 0x07;
+				for (i = 0; i < bytes_to_process; i++)
+				{
+					j = 7;
+					while (j >= 0)
+					{
+						if (x_offset >= Cmetrics.widthBits)
+						{
+							x_offset = 0;
+							y_offset++;
+						}
+						if (x_offset < Cmetrics.width)
+						{
+							if (bitmap[i] & (1 << j))
+							{
+								if (*start_x == -999 || *start_x > x_base + x_offset)
+									*start_x = x_base + x_offset;
+								if (*start_y == -999 || *start_y > y_offset)
+									*start_y = y_offset;
+								if (*end_x < x_base + x_offset)
+									*end_x = x_base + x_offset;
+								if (*end_y < y_offset)
+									*end_y = y_offset;
+							}
+						}
+						x_offset++;
+						x_bit_idx++;
+						if (!(x_bit_idx & 0x07))
+						{
+							x_bit_idx = 0;
+			
+						}
+						j--;
+					}
+				}
+				width += Cmetrics.widthDevice;
+			}
+		}
+
+	}
+}
+
 void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int start_x,int end_x,int start_y,int end_y)
 {
 	bmf_bm_t *bitmap;
@@ -1533,10 +1609,10 @@ void scroll_article(void)
 
 void draw_icon(char *pStr)
 {
-	int str_width;
+	int start_x, start_y, end_x, end_y;
 	int i, j;
 	
-	str_width = get_external_str_pixel_width(pStr, SUBTITLE_FONT_IDX);
+	get_external_str_pixel_rectangle(pStr, SUBTITLE_FONT_IDX, &start_x, &start_y, &end_x, &end_y);
 	for (i = 0; i < LANGUAGE_LINK_HEIGHT; i++)
 	{
 		if (i == 1 || i == LANGUAGE_LINK_HEIGHT - 2)
@@ -1554,8 +1630,9 @@ void draw_icon(char *pStr)
 			}
 		}
 	}
-	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + (LANGUAGE_LINK_WIDTH - str_width - 1) / 2, 
-		lcd_draw_buf.current_y, pStr, strlen(pStr), 1);
+	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 
+		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x, 
+		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, strlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
 }
 
@@ -1844,14 +1921,14 @@ int isArticleLinkSelected(int x,int y)
 		return 0; // PREVIOUS_ARTICLE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == article_start_y_pos &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN &&
-		article_start_y_pos + LCD_TOP_MARGIN <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT)
+		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN + LINK_X_DIFF_ALLOWANCE &&
+		article_start_y_pos + LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 1; // SHOW_LANGUAGE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == 0 &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN &&
-		LCD_TOP_MARGIN <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT)
+		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN  + LINK_X_DIFF_ALLOWANCE &&
+		LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 2; // HIDE_LANGUAGE_LINK
 	}
@@ -2093,6 +2170,12 @@ void init_invert_link(void)
 int get_activated_article_link_number()
 {
 	return link_currently_activated;
+}
+
+void clear_article_pos_info()
+{
+	lcd_draw_cur_y_pos = 0;
+	article_start_y_pos = 0;
 }
 
 void repaint_invert_link()
