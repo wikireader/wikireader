@@ -134,7 +134,7 @@ Out:
     = kMatchSpecLenStart + 2 : State Init Marker
 */
 
-#define ENABLE_PROGRESS 1
+#define ENABLE_PROGRESS 0
 #define MAX_LZMA_PROGRESS_COUNT 240
 extern void draw_progress_bar(int progressCount);
 
