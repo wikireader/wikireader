@@ -131,7 +131,7 @@ do
       do
         lf="${host}-${language}.log"
         echo fetch log from: ${host} to: ${lf}
-        RenderDo --yes --list="${host##*[^0-9]}" "cat '${base_dir}/${language}.log'" > "${lf}"
+        RenderDo --yes ${render_host} --list="${host##*[^0-9]}" "cat '${base_dir}/${language}.log'" > "${lf}"
       done
       shift
       ;;
