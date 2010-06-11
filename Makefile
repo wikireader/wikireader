@@ -23,24 +23,27 @@
 # =================
 
 # These  can be overridden on the command line:
+# (defaults indicated in [])
 #
-#   WIKI_LANGUAGE    = language code
+#   WIKI_LANGUAGE    = language code [en]
 #
-#   WIKI_FILE_PREFIX = prefix for all files in a data directory
+#   WIKI_FILE_PREFIX = prefix for all files in a data directory [wiki]
 #
-#   WIKI_VERSION     = version code for the current rendering operation
+#   WIKI_VERSION     = version code for the current rendering operation [${todays-date}]
 #
 #   WIKI_DIR_SUFFIX  = combined with language code to make a unique
-#                      directory name
+#                      directory name [pedia]
 #
 #   DESTDIR          = directory where rendered data will be stored
 #
 #   WORKDIR          = directory where all the working databases are stored
 #
 #   TEMPDIR          = optional directory to store LaTeX work files, point
-#                      to a RAM disk
+#                      to a RAM disk [derived from ${WORKDIR}]
 #
-#   VERSION_TAG      = optional version string for the root programs/fonts
+#   VERSION_TAG      = optional version string for the root programs/fonts [${todays-date}]
+#
+#   PROGRESS_BAR     = enable progress bar in compiles mahatma.elf [NO]
 
 
 # Include standard definitions
@@ -172,11 +175,11 @@ validate-destdir:
 
 .PHONY: mahatma
 mahatma: mini-libc fatfs
-	${MAKE} -C ${SAMO_LIB}/mahatma
+	${MAKE} -C "${SAMO_LIB}/mahatma" PROGRESS_BAR="${PROGRESS_BAR}"
 
 .PHONY: mahatma-install
 mahatma-install: mahatma validate-destdir
-	${MAKE} -C ${SAMO_LIB}/mahatma install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C "${SAMO_LIB}/mahatma" install DESTDIR="${DESTDIR_PATH}"
 
 
 # Libraries
@@ -184,15 +187,15 @@ mahatma-install: mahatma validate-destdir
 
 .PHONY:mini-libc
 mini-libc: toolchain
-	${MAKE} -C ${SAMO_LIB}/mini-libc/
+	${MAKE} -C "${SAMO_LIB}/mini-libc/"
 
 .PHONY: fatfs
 fatfs: mini-libc drivers
-	${MAKE} -C ${SAMO_LIB}/fatfs/
+	${MAKE} -C "${SAMO_LIB}/fatfs/"
 
 .PHONY: drivers
 drivers: mini-libc
-	${MAKE} -C ${SAMO_LIB}/drivers/
+	${MAKE} -C "${SAMO_LIB}/drivers/"
 
 
 # GCC and Binutils toolchain
@@ -337,7 +340,7 @@ fonts-install: fonts validate-destdir
 
 .PHONY: local-pylzma-install
 local-pylzma-install:
-	${MAKE} -C ${HOST_TOOLS}/offline-renderer pylzma
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" pylzma
 
 # Build the database from wiki XML files
 # ======================================
@@ -735,11 +738,11 @@ getwikidump:
 
 .PHONY: forth
 forth:  gcc mini-libc fatfs drivers
-	${MAKE} -C ${SAMO_LIB}/forth
+	${MAKE} -C "${SAMO_LIB}/forth"
 
 .PHONY: forth-install
 forth-install: forth
-	${MAKE} -C ${SAMO_LIB}/forth install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C "${SAMO_LIB}/forth" install DESTDIR="${DESTDIR_PATH}"
 
 
 # FLASH programmer that runs on the device
@@ -747,11 +750,11 @@ forth-install: forth
 
 .PHONY: flash
 flash:  gcc mini-libc fatfs drivers
-	${MAKE} -C ${SAMO_LIB}/flash
+	${MAKE} -C "${SAMO_LIB}/flash"
 
 .PHONY: flash-install
 flash-install: flash
-	${MAKE} -C ${SAMO_LIB}/flash install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C "${SAMO_LIB}/flash" install DESTDIR="${DESTDIR_PATH}"
 
 
 # Grifo small kernel
@@ -759,11 +762,11 @@ flash-install: flash
 
 .PHONY: grifo
 grifo:  gcc mini-libc fatfs
-	${MAKE} -C ${SAMO_LIB}/grifo
+	${MAKE} -C "${SAMO_LIB}/grifo"
 
 .PHONY: grifo-install
 grifo-install: grifo
-	${MAKE} -C ${SAMO_LIB}/grifo install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C "${SAMO_LIB}/grifo" install DESTDIR="${DESTDIR_PATH}"
 
 
 # Master boot record
@@ -810,27 +813,27 @@ print-mbr-tty:
 
 .PHONY: mbr
 mbr: gcc fatfs
-	${MAKE} -C ${SAMO_LIB}/mbr
+	${MAKE} -C "${SAMO_LIB}/mbr"
 
 .PHONY: mbr-rs232
 mbr-rs232: gcc fatfs
-	${MAKE} -C ${SAMO_LIB}/mbr mbr-rs232
+	${MAKE} -C "${SAMO_LIB}/mbr" mbr-rs232
 
 .PHONY: jackknife
 jackknife:
-	${MAKE} -C ${HOST_TOOLS}/jackknife
+	${MAKE} -C "${HOST_TOOLS}/jackknife"
 
 .PHONY: flash-mbr
 flash-mbr: mbr jackknife
-	${MAKE} -C ${SAMO_LIB}/mbr BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
+	${MAKE} -C "${SAMO_LIB}/mbr" BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
 
 .PHONY: flash-test-jig
 flash-test-jig: mbr jackknife
-	${MAKE} -C ${SAMO_LIB}/mbr FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
+	${MAKE} -C "${SAMO_LIB}/mbr" FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
 
 .PHONY: mbr-install
 mbr-install: mbr
-	${MAKE} -C ${SAMO_LIB}/mbr install DESTDIR="${DESTDIR_PATH}"
+	${MAKE} -C "${SAMO_LIB}/mbr" install DESTDIR="${DESTDIR_PATH}"
 
 
 # list required packages
@@ -838,20 +841,20 @@ mbr-install: mbr
 
 .PHONY: requirements
 requirements: toolchain-requires
-	${MAKE} requires -C ${SAMO_LIB}/mini-libc
-	${MAKE} requires -C ${HOST_TOOLS}/jackknife
-	#${MAKE} requires -C ${HOST_TOOLS}/hash-gen
-	${MAKE} requires -C ${HOST_TOOLS}/pcf2bmf
-	${MAKE} requires -C ${HOST_TOOLS}/flash07
-	${MAKE} requires -C ${HOST_TOOLS}/fonts
-	${MAKE} requires -C ${HOST_TOOLS}/offline-renderer
-	${MAKE} requires -C ${SAMO_LIB}/mbr
-	${MAKE} requires -C ${SAMO_LIB}/drivers
-	${MAKE} requires -C ${SAMO_LIB}/fatfs
-	${MAKE} requires -C ${SAMO_LIB}/forth
-	${MAKE} requires -C ${SAMO_LIB}/flash
-	${MAKE} requires -C ${SAMO_LIB}/grifo
-	${MAKE} requires -C ${SAMO_LIB}/mahatma
+	${MAKE} requires -C "${SAMO_LIB}/mini-libc"
+	${MAKE} requires -C "${HOST_TOOLS}/jackknife"
+	#${MAKE} requires -C "${HOST_TOOLS}/hash-gen"
+	${MAKE} requires -C "${HOST_TOOLS}/pcf2bmf"
+	${MAKE} requires -C "${HOST_TOOLS}/flash07"
+	${MAKE} requires -C "${HOST_TOOLS}/fonts"
+	${MAKE} requires -C "${HOST_TOOLS}/offline-renderer"
+	${MAKE} requires -C "${SAMO_LIB}/mbr"
+	${MAKE} requires -C "${SAMO_LIB}/drivers"
+	${MAKE} requires -C "${SAMO_LIB}/fatfs"
+	${MAKE} requires -C "${SAMO_LIB}/forth"
+	${MAKE} requires -C "${SAMO_LIB}/flash"
+	${MAKE} requires -C "${SAMO_LIB}/grifo"
+	${MAKE} requires -C "${SAMO_LIB}/mahatma"
 
 
 # Clean up generated files
@@ -863,37 +866,37 @@ complete-clean: clean clean-toolchain
 
 .PHONY: clean
 clean: clean-qt4-simulator clean-console-simulator
-	${MAKE} clean -C ${SAMO_LIB}/mini-libc
-	${MAKE} clean -C ${HOST_TOOLS}/jackknife
-	#${MAKE} clean -C ${HOST_TOOLS}/hash-gen
-	${MAKE} clean -C ${HOST_TOOLS}/pcf2bmf
-	${MAKE} clean -C ${HOST_TOOLS}/flash07
-	${MAKE} clean -C ${HOST_TOOLS}/fonts
-	${MAKE} clean -C ${HOST_TOOLS}/offline-renderer
-	${MAKE} clean -C ${SAMO_LIB}/mbr
-	${MAKE} clean -C ${SAMO_LIB}/drivers
-	${MAKE} clean -C ${SAMO_LIB}/fatfs
-	${MAKE} clean -C ${SAMO_LIB}/forth
-	${MAKE} clean -C ${SAMO_LIB}/flash
-	${MAKE} clean -C ${SAMO_LIB}/grifo
-	${MAKE} clean -C ${SAMO_LIB}/mahatma
+	${MAKE} clean -C "${SAMO_LIB}/mini-libc"
+	${MAKE} clean -C "${HOST_TOOLS}/jackknife"
+	#${MAKE} clean -C "${HOST_TOOLS}/hash-gen"
+	${MAKE} clean -C "${HOST_TOOLS}/pcf2bmf"
+	${MAKE} clean -C "${HOST_TOOLS}/flash07"
+	${MAKE} clean -C "${HOST_TOOLS}/fonts"
+	${MAKE} clean -C "${HOST_TOOLS}/offline-renderer"
+	${MAKE} clean -C "${SAMO_LIB}/mbr"
+	${MAKE} clean -C "${SAMO_LIB}/drivers"
+	${MAKE} clean -C "${SAMO_LIB}/fatfs"
+	${MAKE} clean -C "${SAMO_LIB}/forth"
+	${MAKE} clean -C "${SAMO_LIB}/flash"
+	${MAKE} clean -C "${SAMO_LIB}/grifo"
+	${MAKE} clean -C "${SAMO_LIB}/mahatma"
 	${RM} stamp-r-*
 
 .PHONY: clean-toolchain
 clean-toolchain:
-	${RM} -r ${HOST_TOOLS}/toolchain-install
-	${RM} -r ${HOST_TOOLS}/gcc-${GCC_VERSION}
-	${RM} -r ${HOST_TOOLS}/binutils-${BINUTILS_VERSION}
+	${RM} -r "${HOST_TOOLS}/toolchain-install"
+	${RM} -r "${HOST_TOOLS}/gcc-${GCC_VERSION}"
+	${RM} -r "${HOST_TOOLS}/binutils-${BINUTILS_VERSION}"
 	${RM} binutils-patch binutils
 	${RM} gcc-patch gcc
 
 .PHONY: clean-qt4-simulator
 clean-qt4-simulator:
-	(cd ${HOST_TOOLS}/qt4-simulator; ${MAKE} distclean || true)
+	(cd "${HOST_TOOLS}/qt4-simulator"; ${MAKE} distclean || true)
 
 .PHONY: clean-console-simulator
 clean-console-simulator:
-	${MAKE} clean -C ${HOST_TOOLS}/console-simulator
+	${MAKE} clean -C "${HOST_TOOLS}/console-simulator"
 
 
 # Update the Makefiles

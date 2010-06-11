@@ -43,23 +43,34 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
-INCLUDES += -I$(MINI_LIBC_INCLUDE)
+# enable the progress bar by adding:
+# PROGRESS_BAR=yes to make command line
+ifeq (YES,$(strip ${PROGRESS_BAR}))
+ENABLE_PROGRESS := 1
+endif
+ifeq (yes,$(strip ${PROGRESS_BAR}))
+ENABLE_PROGRESS := 1
+endif
+# default value is disabled
+ENABLE_PROGRESS ?= 0
+
+INCLUDES += -I${MINI_LIBC_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${FATFS_CONFIG_INCLUDE} -I${FATFS_INCLUDE}
 INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I$(LZMA_INCLUDE)
+INCLUDES += -I${LZMA_INCLUDE}
 INCLUDES += -I$(WIKI_APP_INCLUDE)
 
 LIBS += ${FATFS_LIB}
 LIBS += ${DRIVERS_LIB}
 LIBS += ${MINI_LIBC_LIB}
-LIBS += $(shell $(CC) -print-libgcc-file-name)
+LIBS += $(shell ${CC} -print-libgcc-file-name)
 
 BUILD_PREFIX := build/
-INCLUDES += -I$(BUILD_PREFIX)
+INCLUDES += -I${BUILD_PREFIX}
 
-vpath %.c $(WIKI_APP_SRC):$(LZMA_SRC)
-vpath %.png $(WIKI_APP_SRC)
+vpath %.c ${WIKI_APP_SRC}:${LZMA_SRC}
+vpath %.png ${WIKI_APP_SRC}
 
 
 GUILIB_COBJS = guilib.o
@@ -95,8 +106,8 @@ LZMA_COBJS += LzFind.o
 # convert the image files
 IMAGES = keyboard_abc keyboard_abc2 keyboard_123 keyboard_phone_jp keyboard_phone_abc keyboard_phone_123 nls
 
-CFLAGS+=-DINCLUDED_FROM_KERNEL $(PROFILER_ON)
-LDFLAGS=-static --strip-all -s --no-gc-sections -N -L$(MINI_LIBC)
+CFLAGS+=-DINCLUDED_FROM_KERNEL ${PROFILER_ON} -DENABLE_PROGRESS=${ENABLE_PROGRESS}
+LDFLAGS=-static --strip-all -s --no-gc-sections -N -L${MINI_LIBC}
 
 
 OBJECTS = mahatma.o
@@ -108,9 +119,9 @@ OBJECTS += serial.o
 OBJECTS += traps.o
 OBJECTS += input.o
 OBJECTS += profile.o
-OBJECTS += $(GUILIB_COBJS)
-OBJECTS += $(WIKIAPP_COBJS)
-OBJECTS += $(LZMA_COBJS)
+OBJECTS += ${GUILIB_COBJS}
+OBJECTS += ${WIKIAPP_COBJS}
+OBJECTS += ${LZMA_COBJS}
 
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
