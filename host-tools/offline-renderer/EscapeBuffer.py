@@ -49,11 +49,15 @@ class EscapeBuffer(object):
     def write(self, data):
         """write data to buffer"""
 
-        if None == data or '' == data:
+        if None == data:
             return
 
         if None == self.head:
             self.head = data
+
+        if '' == data and None != self.head:
+            self.output.write(self.head)
+            self.head = None
 
         elif chr(9) == data[0] and chr(1) == self.head[0]:
             self.output.write(data)

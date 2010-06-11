@@ -495,6 +495,11 @@ def get_imgdata(imgfile, indent):
 
     return (width, height, data)
 
+def esc_code_separate():
+    """used to prevent merging to consecutive escape code zeros"""
+    global output
+    output.write('')
+
 def esc_code0(num_pixels):
     """blank line height in pixels"""
     global g_starty
@@ -978,6 +983,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.flush_buffer()
             self.in_h1 = False
             esc_code0(H1_MARGIN_BOTTOM)
+            esc_code_separate() # force the above escape code be output
 
         elif tag == 'h2':
             self.flush_buffer()
