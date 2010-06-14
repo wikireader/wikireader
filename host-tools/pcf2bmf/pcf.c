@@ -570,7 +570,10 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 
     for(i=0; i<count;i++)
     {
-		ci = font->bitmaps[i];
+		if (font->Fmetrics.firstchar <= i && i <= font->Fmetrics.lastchar)
+            ci = font->bitmaps[i];
+        else
+            ci = NULL;
 		memset(&font_create,0,sizeof(font_bmf));
 		if ((ci && ci->metrics.characterWidth))
 		{
