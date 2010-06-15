@@ -122,13 +122,13 @@ LCD_LEFT_MARGIN         = 6     # def. in lcd_buf_draw.h
 LCD_IMG_MARGIN          = 8
 
 # Line Spaces (read directly from the font using gdbfed)
-H1_LSPACE               = 19
-H2_LSPACE               = 17
+H1_LSPACE               = 21     # 17 4
+H2_LSPACE               = 18     # 14 4
 H3_LSPACE               = H2_LSPACE
 H4_LSPACE               = H2_LSPACE
 H5_LSPACE               = H2_LSPACE
 H6_LSPACE               = H2_LSPACE
-P_LSPACE                = 15
+P_LSPACE                = 16     # 13 3
 
 # Margins & Spacing
 LIST_INDENT             = 12
@@ -429,19 +429,20 @@ def get_utf8_cwidth(c, face):
     return character_width
 
 
+
+get_lineheight_values = {
+    ITALIC_FONT_IDX:       P_LSPACE,
+    DEFAULT_FONT_IDX:      P_LSPACE,
+    TITLE_FONT_IDX:        H1_LSPACE,
+    TITLE_ALL_FONT_IDX:    H1_LSPACE,
+    SUBTITLE_FONT_IDX:     H2_LSPACE,
+    SUBTITLE_ALL_FONT_IDX: H2_LSPACE,
+    DEFAULT_ALL_FONT_IDX:  P_LSPACE
+    }
+
 def get_lineheight(face):
-
-    values = {
-            ITALIC_FONT_IDX:       P_LSPACE,
-            DEFAULT_FONT_IDX:      P_LSPACE,
-            TITLE_FONT_IDX:        H1_LSPACE,
-            TITLE_ALL_FONT_IDX:    H1_LSPACE,
-            SUBTITLE_FONT_IDX:     H2_LSPACE,
-            SUBTITLE_ALL_FONT_IDX: H2_LSPACE,
-            DEFAULT_ALL_FONT_IDX:  P_LSPACE
-        }
-
-    return values[face]
+    global get_lineheight_values
+    return get_lineheight_values[face]
 
 
 def make_link(url, x0, x1, text):
@@ -449,7 +450,7 @@ def make_link(url, x0, x1, text):
 
     if article_index(url):
         esc_code10(x1 - x0)
-        g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
+        g_links[g_link_cnt] = (x0, g_starty + 2, x1, g_starty + get_lineheight(g_curr_face) + 2, url)
         g_link_cnt =  g_link_cnt + 1
 
 
@@ -537,6 +538,7 @@ def esc_code3(face):
     output.write(struct.pack('<BB', 4, face|(num_pixels<<3)))
     g_starty += num_pixels
     g_curr_face = face
+
 
 def esc_code4(face, halign=0):
     """change font with current horizontal alignment (in pixels)"""
