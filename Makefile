@@ -44,7 +44,9 @@
 #   VERSION_TAG      = optional version string for the root programs/fonts [${todays-date}]
 #
 #   PROGRESS_BAR     = enable progress bar in compiles mahatma.elf [NO]
-
+#
+#   EXTRACT_VERSION_FROM = a link to XML file name that has an embedded date
+#                          which will be used to set WIKI_VERSION
 
 # Include standard definitions
 # ============================
@@ -116,6 +118,12 @@ all:    ${ALL_TARGETS}
 
 # wiki naming
 # ===========
+
+
+EXTRACT_VERSION_PATH := $(realpath ${EXTRACT_VERSION_FROM})
+ifneq (,$(strip ${EXTRACT_VERSION_PATH}))
+WIKI_VERSION := $(subst .,,$(suffix $(subst -,.,$(patsubst %-pages-articles,%,$(notdir $(basename ${EXTRACT_VERSION_PATH}))))))
+endif
 
 WIKI_LANGUAGE ?= en
 WIKI_FILE_PREFIX ?= wiki

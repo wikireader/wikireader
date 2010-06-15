@@ -40,6 +40,28 @@ USAGE()
   exit 1
 }
 
+set_articles_link()
+{
+  case "${suffix}" in
+    pedia)
+      articles_link="${language}wiki-pages-articles.xml"
+      ;;
+    dict)
+      articles_link="${language}wiktionary-pages-articles.xml"
+      ;;
+    quote)
+      articles_link="${language}wikiquote-pages-articles.xml"
+      ;;
+    books)
+      articles_link="${language}wikibooks-pages-articles.xml"
+      ;;
+    *)
+      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
+      ;;
+  esac
+}
+
+
 # main program
 # ------------
 
@@ -52,6 +74,7 @@ base_dir=samo
 render_host=
 run_parallel=
 compression=low
+set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
@@ -169,7 +192,7 @@ do
       ;;
 
     -k|--combine)
-      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' combine"
+      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' EXTRACT_VERSION_FROM='${articles_link}' print-WIKI_VERSION combine"
       shift
       ;;
 
@@ -181,11 +204,13 @@ do
     -L|--language)
       language="$2"
       shift 2
+      set_articles_link
       ;;
 
     -S|--suffix)
       suffix="$2"
       shift 2
+      set_articles_link
       ;;
 
     -G|--get)
