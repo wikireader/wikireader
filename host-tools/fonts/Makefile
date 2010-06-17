@@ -88,7 +88,7 @@ $(call STANDARD_FONT, subtitle.bmf, subtitle.pcf, -c 1152, MERGE)
 
 $(call STANDARD_FONT, subtlall.bmf, subtitleipa.pcf, -c 65279)
 $(call STANDARD_FONT, subtlall.bmf, subtlall.pcf, , MERGE)
-$(call EXTRA_FONT,    subtlall.bmf, titleall_jp.pcf, -g, MERGE)
+$(call EXTRA_FONT,    subtlall.bmf, subtlall_jp.pcf, -g, MERGE)
 
 $(call STANDARD_FONT, title.bmf, titleipa.pcf, -c 1152)
 $(call STANDARD_FONT, title.bmf, title.pcf, -c 1152, MERGE)
