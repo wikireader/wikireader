@@ -109,6 +109,7 @@ void init_wiki_info(void)
 			pWikiIni = malloc_simple(sizeWikiIni, MEM_TAG_INDEX_M1);
 			if (pWikiIni)
 			{
+				memset(pWikiIni, 0, sizeWikiIni);
 				wl_read(fd, pWikiIni, lenWikiIni);
 				wl_close(fd);
 				pWikiIni[lenWikiIni] = '\0';
@@ -434,8 +435,9 @@ void wiki_ini_insert_keypair(char *key, char *keyval)
 			{
 				move_size = lenWikiIni - (p - pWikiIni);
 				if (move_size > 0)
-					memmove(p, p + diff, move_size);
+					memmove(p + diff, p, move_size);
 			}
+			lenWikiIni += diff;
 		}
 		if (p + strlen(keyval) < pWikiIni + sizeWikiIni - 1)
 		{
@@ -626,21 +628,24 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				}
 
 				width = extract_str_fitting_width(&pLicenseTextSegment, str, LCD_BUF_WIDTH_PIXELS - x - LCD_LEFT_MARGIN, LICENSE_TEXT_FONT);
-				p = str;
-				buf_draw_UTF8_str_in_copy_buffer(draw_buf, &p, x, LCD_BUF_WIDTH_PIXELS,
-								 y, y + line_height - 1, LCD_LEFT_MARGIN, LICENSE_TEXT_FONT);
-				if (bInLink && aWikiLicenseDraw[wiki_idx].link_count < MAX_LINKS_IN_LICENSE_TEXT)
+				if (*str) // if null string, the next segment will start from a new line
 				{
-					start_x = x;
-					start_y = y + 1;
-					end_x = x + width;
-					end_y = y + line_height;
-					aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
-					aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
-					aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count++].article_id = nLinkArticleId;
-					for(i = start_x + LCD_LEFT_MARGIN; i < end_x + LCD_LEFT_MARGIN; i++)
+					p = str;
+					buf_draw_UTF8_str_in_copy_buffer(draw_buf, &p, x, LCD_BUF_WIDTH_PIXELS,
+									 y, y + line_height - 1, LCD_LEFT_MARGIN, LICENSE_TEXT_FONT);
+					if (bInLink && aWikiLicenseDraw[wiki_idx].link_count < MAX_LINKS_IN_LICENSE_TEXT)
 					{
-						lcd_set_pixel(draw_buf, i, end_y + 1);
+						start_x = x;
+						start_y = y + 4; // for sync with the links in article text
+						end_x = x + width;
+						end_y = y + line_height + 3;
+						aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
+						aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
+						aWikiLicenseDraw[wiki_idx].links[aWikiLicenseDraw[wiki_idx].link_count++].article_id = nLinkArticleId;
+						for(i = start_x + LCD_LEFT_MARGIN; i < end_x + LCD_LEFT_MARGIN; i++)
+						{
+							lcd_set_pixel(draw_buf, i, end_y - 1);
+						}
 					}
 				}
 				if (*pLicenseTextSegment)
