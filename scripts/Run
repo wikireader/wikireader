@@ -239,7 +239,7 @@ esac
 
 articles=$(readlink -m "${articles_link}")
 
-LogFile="${language}.log"
+LogFile="${language}-${suffix}.log"
 
 [ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
 

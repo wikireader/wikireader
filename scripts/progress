@@ -152,9 +152,9 @@ do
     -f|--fetch-log)
       for host in $(RenderDo ${render_host} ${list} --print-list)
       do
-        lf="${host}-${language}.log"
+        lf="${host}-${language}-${suffix}.log"
         echo fetch log from: ${host} to: ${lf}
-        RenderDo --yes ${render_host} --list="${host##*[^0-9]}" "cat '${base_dir}/${language}.log'" > "${lf}"
+        RenderDo --yes ${render_host} --list="${host##*[^0-9]}" "cat '${base_dir}/${language}-${suffix}.log'" > "${lf}"
       done
       shift
       ;;
@@ -177,12 +177,12 @@ do
     -t|--tail)
       t=3
       [ -n "$2" ] && t="$2"
-      RenderDo --yes ${render_host} ${list} --brief "tail -n '${t}' '${base_dir}'/${language}.log"
+      RenderDo --yes ${render_host} ${list} --brief "tail -n '${t}' '${base_dir}'/${language}-${suffix}.log"
       shift 2
       ;;
 
     -a|--analyse)
-      RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog '${language}.log'"
+      RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' && ./scripts/AnalyseLog '${language}-${suffix}.log'"
       shift
       ;;
 
