@@ -1,0 +1,118 @@
+#!/bin/sh
+# create an SD card image
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options> <languages>'
+  echo '       --help           -h         this message'
+  echo '       --verbose        -v         more messages'
+  echo '       --image=<dir>    -i <dir>   image source directory [image]'
+  echo '       --card=<dir>     -c <dir>   image destination directory (no-default)'
+  exit 1
+}
+
+
+verbose=no
+image=image
+card=
+suffix=pedia
+
+debug=no
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvi:c: --long=help,verbose,image:,card:,debug -- "$@") ||exit 1
+
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -i|--image)
+      image="$2"
+      shift 2
+      ;;
+
+    -c|--card)
+      card="$2"
+      shift 2
+      ;;
+
+    --debug)
+      debug=yes
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+# verify arguments
+[ -z "${card}" ] && USAGE card is not set
+[ -z "${image}" ] && USAGE image is not set
+[ $# -eq 0 ] && USAGE at least one language must be specified
+
+[ -d "${card}" ] || USAGE card: ${card} is not a directory
+[ -f "${card}/kernel.elf" ] && USAGE already copied
+
+for d in $@
+do
+  flag=NO
+  for i in ${image}
+  do
+    dir="${i}/${d}${suffix}"
+    if [ -d "${dir}" -o -d "${i}/${d}" ]
+    then
+      flag=YES
+      break
+    fi
+  done
+  [ X"YES" = X"${flag}" ] || USAGE language ${d} not found
+done
+
+for d in $@
+do
+  for i in ${image}
+  do
+    dir="${i}/${d}${suffix}"
+    if [ -d "${dir}" ]
+    then
+      echo copying language: ${d}
+      cp -pr "${dir}" "${card}"
+      break
+    fi
+    dir="${i}/${d}"
+    if [ -d "${dir}" ]
+    then
+      echo copying directory: ${d}
+      cp -pr "${dir}" "${card}"
+      break
+    fi
+  done
+done
+
+echo copying base files
+for f in "${image}/"*
+do
+  [ ! -d "${f}" ] && cp -p "${f}" "${card}"
+done
+
+echo completed

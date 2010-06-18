@@ -1,0 +1,388 @@
+#!/bin/sh
+# use 7zip to package the contents of image/*pedia
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help           -h         this message'
+  echo '       --verbose        -v         more messages'
+  echo '       --packages=<dir> -p <dir>   directory for 7zipped files and torrents [packages]'
+  echo '       --image=<dir>    -i <dir>   image source directory [image]'
+  echo '       --tracker=<url>  -t <url>   tracker URL (default: torrents not created)'
+  echo '       --url=<url>      -u <url>   base url for HTML file (default: none)'
+  echo '       --size=<n>       -s <n>     7zip splitting factor (number[kmg]) [1g]'
+  exit 1
+}
+
+
+verbose=no
+packages=packages
+image=image
+tracker=
+url=
+size=1g
+
+debug=no
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvp:i:t:s:u: --long=help,verbose,packages:,image:,tracker:,url:,size:,debug -- "$@") ||exit 1
+
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -p|--packages)
+      packages="$2"
+      shift 2
+      ;;
+
+    -i|--image)
+      image="$2"
+      shift 2
+      ;;
+
+    -t|--tracker)
+      tracker="$2"
+      shift 2
+      ;;
+
+    -u|--url)
+      url="$2"
+      shift 2
+      ;;
+
+    -s|--size)
+      size="$2"
+      shift 2
+      ;;
+
+    --debug)
+      debug=yes
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+# verify arguments
+[ -z "${packages}" ] && USAGE packages is not set
+[ -z "${image}" ] && USAGE image is not set
+[ -z "${url}" ] && USAGE url is not set
+[ -z "${size}" ] && USAGE size is not set
+[ $# -ne 0 ] && USAGE extraneous extra arguments
+
+# absolute path to directories
+packages=$(readlink -m "${packages}")
+image=$(readlink -m "${image}")
+
+# all possible type of content
+all_types='books dict pedia quote'
+TypeToName()
+{
+  local type="$1"; shift
+  case "${type}" in
+    books)
+      echo wikibooks
+      ;;
+    dict)
+      echo wiktionary
+      ;;
+    pedia)
+      echo wikipedia
+      ;;
+    quote)
+      echo wikiquote
+      ;;
+    *)
+      echo unknown
+      ;;
+  esac
+}
+
+# create and check directories directory
+mkdir -p "${packages}"
+[ -d "${packages}" ] || ERROR ${packages} is not a directory
+
+cd "${image}" || ERROR image directory: ${image} not found
+
+# setup for HTML output
+HTMLFileName="${packages}/packages.html"
+rm -f "${HTMLFileName}"
+
+# output HTML
+HTMLoutput()
+{
+  local indent
+  indent="$1"; shift
+  printf "%${indent}s" '' >> "${HTMLFileName}"
+  echo  "$@" >> "${HTMLFileName}"
+}
+
+
+
+# set up for XML output
+IndexFileName="${packages}/packages.xml"
+IndentLevel=0
+TagStack=
+
+rm -f "${IndexFileName}"
+rm -f "${packages}/"*.torrent
+
+# output to index
+XMLoutput()
+{
+  printf "%${IndentLevel}s" '' >> "${IndexFileName}"
+  echo  "$@" >> "${IndexFileName}"
+}
+
+# create the xml attributes string
+XMLattributes()
+{
+  local options=
+  local key data
+
+  while [ $# -gt 0 ]
+  do
+    data="$1"; shift
+    key="${data%%=*}"
+    data="${data#${key}=}"
+    [ X"${key}" = X"${data}" ] && data=
+    [ -n "${data}" ] && data="=\"${data}\""
+    [ -n "${key}" ] && options="${options} ${key}${data}"
+  done
+  printf '%s' "${options}"
+}
+
+# begin a new tag
+XMLenter()
+{
+  local tag="$1"; shift
+
+  XMLoutput "<${tag}$(XMLattributes "$@")>"
+  IndentLevel=$((${IndentLevel} + 2))
+  TagStack="${tag} ${TagStack}"
+}
+
+# close a tag
+XMLleave()
+{
+  local all="$1"
+  local tag
+
+  while :
+  do
+    tag="${TagStack%% *}"
+    TagStack="${TagStack#* }"
+    IndentLevel=$((${IndentLevel} - 2))
+    [ ${IndentLevel} -lt 0 ] && IndentLevel=0
+    XMLoutput "</${tag}>"
+    [ -z "${all}" ] && break
+    [ -z "${TagStack}" ] && break
+  done
+}
+
+# output a single tagged item
+XMLitem()
+{
+  local tag="$1"; shift
+  local data="$1"; shift
+
+  XMLoutput "<${tag}$(XMLattributes "$@")>${data}</${tag}>"
+}
+
+# output files
+# depends on global torrent variable
+XMLfiles()
+{
+  local id=1 size
+
+  size=$(7z l "$1" | tail -n 1 | awk '{print $1}')
+  XMLenter archives count="$#" size="${size}"
+  for p in "$@"
+  do
+    file=$(basename "${p}")
+    echo build XML for: ${file}
+    size=$(du -b "${p}" | tail -n 1 | awk '{print $1}')
+    if [ -n "${tracker}" ]
+    then
+      buildtorrent -a "${tracker}" "${p}" "${p}.torrent"
+      XMLitem file "${file}.torrent" id="${id}" format=torrent size="${size}"
+    else
+      XMLitem file "${file}?torrent" id="${id}" format=torrent size="${size}"
+    fi
+    id=$((${id} + 1))
+  done
+  XMLleave
+}
+
+# create archive only if not already done
+MakeArchive()
+{
+  local archive="${1}.7z"; shift
+  local dir="$1"; shift
+  if [ -e "${archive}" -o -e "${archive}.001" ]
+  then
+    echo Skipping: ${archive}
+  else
+    echo Creating: ${archive} from: ${dir}
+    7z a $@ "${archive}" "${dir}"
+  fi
+}
+
+# remove history, passwords etc.
+rm -f wiki.* WIKI.* *~ */*~
+
+# get all directories
+all_dirs=$(find . -mindepth 1 -maxdepth 1 -type d)
+
+# verify critical files are present
+echo checking: base
+for f in kernel.elf textall.bmf forth.elf forth.ini sha256.txt version.txt
+do
+  [ -e "${f}" ] || ERROR file: ${f} not found
+done
+DirectoryCount=0
+excludes=
+for p in ${all_dirs}
+do
+  d=$(basename "${p}")
+  excludes="${excludes} -x!'${d}'"
+  echo checking: ${d}
+  for f in wiki.nls wiki.ftr sha256.txt
+  do
+    [ -e "${d}/${f}" ] || ERROR file: ${f} not found
+  done
+  DirectoryCount=$((${DirectoryCount} + 1))
+done
+
+# prepare the base archive
+version=$(awk '/^[[:space:]]*VERSION:/{print $2}' version.txt | head -n 1)
+archive="${packages}/base-${version}"
+eval MakeArchive "'${archive}'" '.' ${excludes}
+XMLenter package
+XMLenter base
+XMLitem version "${version}"
+XMLitem folder '.'
+XMLitem name "base-${version}"
+XMLfiles "${archive}"*
+XMLleave
+
+HTMLoutput 0 '<ul>'
+
+HTMLoutput 2 '<li>'
+HTMLoutput 4 "<strong>Base Files</strong>&#8211;"
+HTMLoutput 4 'direct: ('
+part=0
+for p in "${archive}"*
+do
+  part=$((${part} + 1))
+  file=$(basename "${p}")
+  HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>,'
+done
+HTMLoutput 4 '), torrent: ('
+part=0
+for p in "${archive}"*
+do
+  part=$((${part} + 1))
+  file=$(basename "${p}")
+  HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>,'
+done
+HTMLoutput 4 ')'
+HTMLoutput 2 '</li>'
+
+
+XMLenter collection count="${DirectoryCount}"
+count=0
+# process all pedia... directories
+for p in ${all_dirs}
+do
+  count=$((${count} + 1))
+  d=$(basename "${p}")
+  version=$(head -n 1 "${d}/wiki.ftr")
+  [ -z "${version}" ] && ERROR ${d}/wiki.ftr is invalid
+  archive="${packages}/${d}-${version}"
+  MakeArchive "${archive}" "${d}" "-v${size}"
+
+  language=unknown
+  type=unknown
+  for s in ${all_types}
+  do
+    l1="${d%${s}}"
+    if [ X"${d}" != X"${l1}" ]
+    then
+      language="${l1}"
+      type="${s}"
+      break
+    fi
+  done
+
+  native_language=$(nls-print "${language}")
+  full_name=$(TypeToName "${type}")
+  XMLenter volume id="${count}"
+  XMLitem language "${native_language}" id="${language}"
+  XMLitem type "${type}"
+  XMLitem version "${version}"
+  XMLitem folder "${d}"
+  XMLitem name "${full_name}"
+  XMLfiles "${archive}"*
+  XMLleave
+
+  HTMLoutput 2 '<li>'
+  HTMLoutput 4 "<strong>${native_language} ${full_name}</strong>&#8211;"
+  HTMLoutput 4 'direct: ('
+  part=0
+  for p in "${archive}"*
+  do
+    part=$((${part} + 1))
+    file=$(basename "${p}")
+    HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>,'
+  done
+  HTMLoutput 4 '), torrent: ('
+  part=0
+  for p in "${archive}"*
+  do
+    part=$((${part} + 1))
+    file=$(basename "${p}")
+    HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>,'
+  done
+  HTMLoutput 4 ')'
+  HTMLoutput 2 '</li>'
+
+done
+
+# end of XML
+XMLleave all
+HTMLoutput 0 '</ul>'
+
+# create checksums
+#cd "${packages}" || ERROR missing directory: ${packages}
+#checksums="${packages}/sha256.txt"
+#rm -f "${checksums}"
+#sha256sum --binary * | dd bs=1 | tee "${checksums}"

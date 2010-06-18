@@ -1,0 +1,89 @@
+#!/bin/sh
+# push files to remotes
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help          -h         this message'
+  echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
+  echo '       --dir=<dir>     -d <dir>   set destination directory'
+  echo '       --simul         -2         switch to the other farm'
+  exit 1
+}
+
+# main program
+# ------------
+
+verbose=no
+dir=.
+list=''
+render_host=''
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvl:d:2 --long=help,verbose,list:,dir:,simul -- "$@") || exit 1
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -l|--list)
+      list="--list=$2"
+      shift 2
+      ;;
+
+    -d|--dir)
+      dir="$2"
+      shift 2
+      ;;
+
+    -2|--simul)
+      render_host='--host=simul3'
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+for host in $(RenderDo ${render_host} ${list} --print-list)
+do
+  for sf in "$@"
+  do
+    df="wr@${host}:${dir}/${sf}"
+    case "${verbose}" in
+      [yY]|[yY][eE][sS])
+        echo Copy: ${sf} To: ${df}
+        ;;
+      *)
+        ;;
+    esac
+    scp -p "${sf}" "${df}"
+  done
+done
+
+echo completed
