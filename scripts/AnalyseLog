@@ -6,6 +6,7 @@ BEGIN {
   index_count = 0
   index_delta = 0
   index_time = 0
+  elapsed_time = 0
   delete parse_count
   delete parse_delta
   delete parse_time
@@ -60,6 +61,12 @@ END {
     } else {
         print "Render: Not Started"
     }
+
+    minutes = int(elapsed_time / 60)
+    seconds = int(100 * (elapsed_time - minutes * 60)) / 100
+    hours= int(minutes / 60)
+    minutes -= hours * 60
+    printf("Elapsed Time: %d:%02d:%05.2f\n", hours, minutes, seconds)
 }
 
 /^Index:/ {
@@ -114,5 +121,13 @@ END {
     }
 }
 
+/^real/ {
+    p1 = index($2, "m")
+    p2 = index($2, "s")
+    minutes = substr($2, 0, p1 - 1)
+    seconds = substr($2, p1 + 1, p2 - p1 - 1)
+    elapsed_time += minutes * 60 + seconds
+    print "t = " $2 "   " minutes " : " seconds
+}
 
 ' "$@"
