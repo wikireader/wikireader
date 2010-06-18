@@ -2208,6 +2208,7 @@ void invert_link_area(int article_link_number)
 	if (start_y >= 0 || end_y < LCD_HEIGHT_LINES)
 	{
 		// guilib_invert_area will only invert (x, y) within LCD range
+		guilib_fb_lock();
 		guilib_invert_area(start_x, start_y, end_x, end_y);
 		guilib_invert_area(start_x, start_y, start_x, start_y);
 		guilib_invert_area(start_x, end_y, start_x, end_y);

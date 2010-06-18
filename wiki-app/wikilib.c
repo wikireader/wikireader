@@ -1370,7 +1370,6 @@ int wikilib_run(void)
 			sleep = 0;
 		}
 
-#ifdef INCLUDED_FROM_KERNEL
 		time_now = get_time_ticks();
 		if(display_mode == DISPLAY_MODE_INDEX)
 		{
@@ -1423,8 +1422,6 @@ int wikilib_run(void)
 			}
 		}
 
-#endif
-
 		if (!more_events && display_mode == DISPLAY_MODE_INDEX && fetch_search_result(0, 0, 0))
 		{
 			sleep = 0;
@@ -1475,6 +1472,9 @@ int wikilib_run(void)
 			last_event_time = get_time_ticks();
 			break;
 		case WL_INPUT_EV_TYPE_TOUCH:
+#ifndef INCLUDED_FROM_KERNEL
+			ev.touch_event.ticks = get_time_ticks();
+#endif
 			handle_touch(&ev);
 			last_event_time = ev.touch_event.ticks;
 			break;
