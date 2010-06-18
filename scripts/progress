@@ -11,32 +11,32 @@ USAGE()
 {
   [ -z "$1" ] || echo error: $*
   echo usage: $(basename "$0") '<options>'
-  echo '       --help          -h         this message'
-  echo '       --work          -w         show work directory files'
-  echo '       --simul         -2         switch to the other farm'
-  echo '       --image         -i         show image directory files'
-  echo '       --stamps        -s         show status of stamps'
-  echo '       --analyse       -a         analyse the log file'
-  echo '       --git           -g         run git pull --rebase'
-  echo '       --process[=<n>] -p[<n>]    show python/php processes cut line 1..n [unlimited]'
-  echo '       --base=<dir>    -b <dir>   set the base directory [samo]'
-  echo '       --tail[=<n>]    -t[<n>]    show last line of <base_dir>/log [3]'
-  echo '       --memory        -m         show memory status'
-  echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
-  echo '       --language=<xx> -L <xx>    process for language [en]'
-  echo '       --suffix=<s>    -S <s>     set the language suffix [pedia]'
-  echo '       --run           -r         start the Run script in a screen {index, parse, render}'
-  echo '       --re-index      -I         start the Run script in a screen {index-only}'
-  echo '       --re-render     -R         start the Run script in a screen {re-render}'
-  echo '       --copy          -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
-  echo '       --combine       -k         run the combine process'
-  echo '       --get[=<dir>]   -G[<dir>]  get the data files [image]'
-  echo '       --sim4[=<dir>]  -4[<dir>]  install fonts, nls and run simulator [image]'
-  echo '       --new-session   -N         start a new screen session for run and copy to use'
-  echo '       --fetch-log     -f         fetch log files'
-  echo '       --xml-link      -x         link wiki .xml file to latest version'
-  echo '       --high-compress -H         enable compression for 4GB SD card (only for --language=en)'
-  echo '       --abort         -A         abort remote PHP/Python/make'
+  echo '       --help            -h         this message'
+  echo '       --work            -w         show work directory files'
+  echo '       --simul           -2         switch to the other farm'
+  echo '       --image           -i         show image directory files'
+  echo '       --stamps          -s         show status of stamps'
+  echo '       --analyse         -a         analyse the log file'
+  echo '       --git             -g         run git pull --rebase'
+  echo '       --process[=<n>]   -p[<n>]    show python/php processes cut line 1..n [unlimited]'
+  echo '       --base=<dir>      -b <dir>   set the base directory [samo]'
+  echo '       --tail[=<n>]      -t[<n>]    show last line of <base_dir>/log [3]'
+  echo '       --memory          -m         show memory status'
+  echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
+  echo '       --language=<xx>   -L <xx>    process for language [en]'
+  echo '       --suffix=<s>      -S <s>     set the language suffix [pedia]'
+  echo '       --run             -r         start the Run script in a screen {index, parse, render}'
+  echo '       --re-index        -I         start the Run script in a screen {index-only}'
+  echo '       --re-render       -R         start the Run script in a screen {re-render}'
+  echo '       --copy            -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
+  echo '       --combine         -k         run the combine process'
+  echo '       --get[=<dir>]     -G[<dir>]  get the data files [image]'
+  echo '       --sim4[=<dir>]    -4[<dir>]  install fonts, nls and run simulator [image]'
+  echo '       --new-session     -N         start a new screen session for run and copy to use'
+  echo '       --fetch-log       -f         fetch log files'
+  echo '       --xml-link        -x         link wiki .xml file to latest version'
+  echo '       --compress=[<n>]  -C[<n>]    enable higher compression [low] '
+  echo '       --abort           -A         abort remote PHP/Python/make'
   exit 1
 }
 
@@ -78,7 +78,7 @@ set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxHA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxC::A2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress::,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -268,9 +268,10 @@ do
       shift
       ;;
 
-    -H|--high-compress)
-      compression=high
-      shift
+    -C|compress)
+      compression="$2"
+      [ -z "${compression}" ] && compression=0
+      shift 2
       ;;
 
     -A|--abort)

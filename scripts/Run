@@ -271,32 +271,28 @@ common_opts="${common_opts} WIKI_LANGUAGE='${language}'"
 common_opts="${common_opts} WIKI_DIR_SUFFIX='${suffix}'"
 common_opts="${common_opts} XML_FILES='${xml}'"
 common_opts="${common_opts} VERBOSE='${verbose}'"
-case "${language}" in
-  en)
-    case "${compression}" in
-      [hH][iI][gG][hH])
-        # Best version for 4GB card
-        common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
 
-        ## ok
-        #common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-        #common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
+case "${compression}" in
+  2)
+    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
+    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
+    ;;
 
-        ## ok
-        common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-        common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
-        ;;
+  4)
+    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
+    ;;
 
-      *)
-        # low compression for 8GB card
-        common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-        common_opts="${common_opts} ARTICLES_PER_BLOCK=1"
-        common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
-        ;;
-    esac
+  6)
+    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
+    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
+    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
     ;;
 
   *)
+    # low compression for 8GB card
     common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
     common_opts="${common_opts} ARTICLES_PER_BLOCK=1"
     common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
