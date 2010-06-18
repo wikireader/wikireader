@@ -327,8 +327,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
 		rc = -1;
 	} else {
-//		int mode = keyboard_get_mode();
-//		if (mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123)
+		int mode = keyboard_get_mode();
 		if (wiki_is_japanese())
 		{
 			if (keycode == WL_KEY_SONANT)
@@ -349,7 +348,8 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 			{
 				last_key = temp_last_key;
 				last_key_utf8_char = temp_last_key_utf8_char;
-				if (key == last_key && time_diff(ev_time, last_ev_time) <= seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME))
+				if ((mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123) &&
+					key == last_key && time_diff(ev_time, last_ev_time) <= seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME))
 				{
 					last_ev_time = ev_time;
 					last_key_utf8_char = next_utf8_char(last_key_utf8_char);

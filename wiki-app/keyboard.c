@@ -833,7 +833,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 
 			if (kb_mode == KEYBOARD_NUM && ((!b_first_123_keyin && *pre_key->key == ' ') || *pre_key->key == '\''))
 			{
-				keyboard_set_mode(KEYBOARD_CHAR);
+				keyboard_set_mode(wiki_default_keyboard());
 				guilib_fb_lock();
 				keyboard_paint();
 				guilib_fb_unlock();
