@@ -450,7 +450,7 @@ def make_link(url, x0, x1, text):
 
     if article_index(url):
         esc_code10(x1 - x0)
-        g_links[g_link_cnt] = (x0, g_starty + 2, x1, g_starty + get_lineheight(g_curr_face) + 2, url)
+        g_links[g_link_cnt] = (x0, g_starty - get_lineheight(g_curr_face), x1, g_starty, url)
         g_link_cnt =  g_link_cnt + 1
 
 
