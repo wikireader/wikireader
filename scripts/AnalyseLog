@@ -127,7 +127,6 @@ END {
     minutes = substr($2, 0, p1 - 1)
     seconds = substr($2, p1 + 1, p2 - p1 - 1)
     elapsed_time += minutes * 60 + seconds
-    print "t = " $2 "   " minutes " : " seconds
 }
 
 ' "$@"
