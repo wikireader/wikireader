@@ -24,8 +24,8 @@ END {
         print "Index: Not Started"
     }
 
-    if (0 != length(parse_delta)) {
-        for (i in parse_delta) {
+    if (0 != length(parse_count)) {
+        for (i in parse_count) {
             if (0 == parse_max[i]) {
                 complete = 0
                 for (j in parse_max) {
@@ -37,15 +37,19 @@ END {
             } else {
                 complete = 100 * parse_count[i] / parse_max[i]
             }
-            average = parse_time[i] / (parse_count[i] / parse_delta[i])
+            if (0 != parse_delta[i]) {
+                average = parse_time[i] / (parse_count[i] / parse_delta[i])
+            } else {
+                average = 0
+            }
             printf("Parse[%2d]: %11d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
         }
     } else {
         print "Parse: Not Started"
     }
 
-    if (0 != length(render_delta)) {
-        for (i in render_delta) {
+    if (0 != length(render_count)) {
+        for (i in render_count) {
             n = render_max[i]
             if (0 == n) {
                 n = parse_count[i]
@@ -55,7 +59,11 @@ END {
             } else {
                 complete = 0
             }
-            average = render_time[i] / (render_count[i] / render_delta[i])
+            if (0 != render_delta[i]) {
+                average = render_time[i] / (render_count[i] / render_delta[i])
+            } else {
+                average = 0
+            }
             printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
         }
     } else {
