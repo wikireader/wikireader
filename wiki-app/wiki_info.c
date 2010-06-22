@@ -44,12 +44,11 @@ WIKI_LIST wiki_list[] =
 	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR, 0},
 	{11, 10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia", KEYBOARD_CHAR, 0},
 	{12, 11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia", KEYBOARD_CHAR, 0},
-	{13, 12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia", KEYBOARD_CHAR, 0},
+	{13, 12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia", KEYBOARD_CHAR_KO, 0},
 	{14, 13, WIKI_CAT_ENCYCLOPAEDIA, "el", "elpedia", KEYBOARD_CHAR, 0},
 	{15, 14, WIKI_CAT_ENCYCLOPAEDIA, "ru", "rupedia", KEYBOARD_CHAR, 0},
-	{16, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia", KEYBOARD_CHAR, 0},
-//	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "zhpedia", KEYBOARD_PHONE_STYLE_TW, 2},
-	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zh", "no-op", KEYBOARD_CHAR, 0}, // ^ this is not operational yet
+	{16, 15, WIKI_CAT_ENCYCLOPAEDIA, "zhs", "zhpedia", KEYBOARD_CHAR, 0},
+	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zht", "zhpedia", KEYBOARD_PHONE_STYLE_TW, 2},
 	{18, 16, WIKI_CAT_ENCYCLOPAEDIA, "cy", "cypedia", KEYBOARD_CHAR, 0},
 	{19, 17, WIKI_CAT_ENCYCLOPAEDIA, "pl", "plpedia", KEYBOARD_CHAR, 0},
 	{20, 18, WIKI_CAT_ENCYCLOPAEDIA, "simple", "e0pedia", KEYBOARD_CHAR, 0},
@@ -66,6 +65,8 @@ char *aWikiNls[MAX_WIKIS_PER_DEVICE];
 long aWikiNlsLen[MAX_WIKIS_PER_DEVICE];
 int nCurrentWiki = -1; // index to aWikiInfoIdx[]
 bool bWikiIsJapanese = false;
+bool bWikiIsKorean = false;
+bool bWikiIsTC = false;
 KEYBOARD_MODE default_keyboard = KEYBOARD_CHAR;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
@@ -148,6 +149,14 @@ void init_wiki_info(void)
 			bWikiIsJapanese = true;
 		else
 			bWikiIsJapanese = false;
+		if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "zht")) // Simplified Chinese Pinyin IME does not need special conversion
+			bWikiIsTC = true;
+		else
+			bWikiIsTC = false;
+		if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "ko"))
+			bWikiIsKorean = true;
+		else
+			bWikiIsKorean = false;
 		default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
 		keyboard_set_mode(default_keyboard);
 	}
@@ -189,9 +198,24 @@ bool wiki_lang_exist(char *lang_link_str)
 		return false;
 }
 
+bool wiki_is_cjk()
+{
+	return bWikiIsJapanese || bWikiIsTC || bWikiIsKorean;
+}
+
 bool wiki_is_japanese()
 {
 	return bWikiIsJapanese;
+}
+
+bool wiki_is_TC()
+{
+	return bWikiIsTC;
+}
+
+bool wiki_is_korean()
+{
+	return bWikiIsKorean;
 }
 
 KEYBOARD_MODE wiki_default_keyboard()
@@ -470,6 +494,14 @@ void set_wiki(int idx)
 		bWikiIsJapanese = true;
 	else
 		bWikiIsJapanese = false;
+	if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "zht"))
+		bWikiIsTC = true;
+	else
+		bWikiIsTC = false;
+	if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "ko"))
+		bWikiIsKorean = true;
+	else
+		bWikiIsKorean = false;
 	default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
 	fd = wl_open("wiki.ini", WL_O_CREATE);
 	if (fd >= 0)

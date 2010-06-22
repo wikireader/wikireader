@@ -328,7 +328,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		rc = -1;
 	} else {
 		int mode = keyboard_get_mode();
-		if (wiki_is_japanese())
+		if (wiki_is_cjk())
 		{
 			if (keycode == WL_KEY_SONANT)
 			{
@@ -348,7 +348,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 			{
 				last_key = temp_last_key;
 				last_key_utf8_char = temp_last_key_utf8_char;
-				if ((mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123) &&
+				if ((mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC || mode == KEYBOARD_PHONE_STYLE_123 || mode == KEYBOARD_PHONE_STYLE_TW) &&
 					key == last_key && time_diff(ev_time, last_ev_time) <= seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME))
 				{
 					last_ev_time = ev_time;
@@ -743,7 +743,7 @@ out:
 	return;
 }
 
-static void handle_keyboard_jp(struct wl_input_event *ev, int last_5_x[], int last_5_y[], unsigned long last_5_y_time_ticks[])
+static void handle_keyboard_phone_style(struct wl_input_event *ev, int last_5_x[], int last_5_y[], unsigned long last_5_y_time_ticks[])
 {
 	struct keyboard_key * key;
 	int i;
@@ -955,9 +955,11 @@ static void handle_touch(struct wl_input_event *ev)
 	{
 		handle_keyboard_en(ev, last_5_x, last_5_y, last_5_y_time_ticks);
 	}
-	else if (display_mode == DISPLAY_MODE_INDEX && (mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC ||mode == KEYBOARD_PHONE_STYLE_123))
+	else if (display_mode == DISPLAY_MODE_INDEX && 
+		(mode == KEYBOARD_PHONE_STYLE_JP || mode == KEYBOARD_PHONE_STYLE_ABC ||mode == KEYBOARD_PHONE_STYLE_123 ||
+		mode == KEYBOARD_PHONE_STYLE_TW))
 	{
-		handle_keyboard_jp(ev, last_5_x, last_5_y, last_5_y_time_ticks);
+		handle_keyboard_phone_style(ev, last_5_x, last_5_y, last_5_y_time_ticks);
 	}
 	else if (display_mode == DISPLAY_MODE_HISTORY && mode == KEYBOARD_CLEAR_HISTORY)
 	{

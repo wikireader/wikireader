@@ -43,7 +43,7 @@ lang_str=中
 # Traditional Chinese
 wiki_name2=Wikipedia 中文 [注音符號]
 license_text=內文已合法註冊於 Creative Commons 貢獻及分享字號下並可在條款下免費轉載使用，請參閱 [CC-BY-SA] 及 [Terms of Use] 以瞭解更多適用之條款。原文可參考 http://zh.wikipedia.org/wiki/<title>
-type_a_word2=輸入文字
+type_a_word2=輸入注音符號
 no_results2=搜尋查無結果
 searching2=搜尋中...
 select_wiki2=選擇維基百科語言

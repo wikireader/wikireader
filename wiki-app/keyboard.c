@@ -203,6 +203,34 @@ static struct keyboard_key phone_jp[] = {
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
 };
+
+static struct keyboard_key phone_tw[] = {
+	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
+	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"ㄅㄆㄇㄈ"),
+	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"ㄉㄊㄋㄌ"),
+	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"ㄍㄎㄏ"),
+	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
+
+	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
+	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ㄐㄑㄒ"),
+	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"ㄓㄔㄕㄖ"),
+	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"ㄗㄘㄙ"),
+	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
+
+	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
+	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"ㄚㄛㄜㄝ"),
+	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"ㄞㄟㄠㄡ"),
+	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"ㄢㄣㄤㄥㄦ"),
+	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
+
+	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
+	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
+	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"ㄧㄨㄩ"),
+	KEY(144, 187, 193, 207,	146, 189, 191, 205,	",.?!"),
+
+	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+};
+
 static struct keyboard_key phone_abc[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
 	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"@#$%&"),
@@ -400,6 +428,8 @@ void keyboard_set_mode(int mode)
 		image_data = &keyboard_phone_abc_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
 		image_data = &keyboard_phone_123_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_TW) {
+		image_data = &keyboard_phone_tw_image;
 	} else {
 		image_data = NULL;
 	}
@@ -421,7 +451,7 @@ void keyboard_paint()
 	pre_key = NULL;
 	if(kb_mode == KEYBOARD_CHAR)
 	{
-		if (wiki_is_japanese())
+		if (wiki_is_cjk())
 			image_data = &keyboard_abc2_image;
 		else
 			image_data = &keyboard_abc_image;
@@ -433,6 +463,8 @@ void keyboard_paint()
 		image_data = &keyboard_123_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
 		image_data = &keyboard_phone_jp_image;
+	} else if(kb_mode == KEYBOARD_PHONE_STYLE_TW) {
+		image_data = &keyboard_phone_tw_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
 		image_data = &keyboard_phone_abc_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
@@ -469,7 +501,7 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 
 	if (kb_mode == KEYBOARD_CHAR)
 	{
-		if (wiki_is_japanese())
+		if (wiki_is_cjk())
 		{
 			keyboard_key = qwerty_full_char;
 			keyboard_entries = ARRAY_SIZE(qwerty_full_char);
@@ -494,6 +526,11 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	{
 		keyboard_key = phone_jp;
 		keyboard_entries = ARRAY_SIZE(phone_jp);
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_TW)
+	{
+		keyboard_key = phone_tw;
+		keyboard_entries = ARRAY_SIZE(phone_tw);
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
 	{
@@ -720,7 +757,7 @@ void keyboard_process_key_invert(struct keyboard_key *key, bool bResetDelay)
 			guilib_invert_area(start_x + x_diff, end_y - y_diff, end_x - x_diff, end_y - y_diff);
 		}
 	}
-	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123)
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_TW || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123)
 	{
 		guilib_invert_area(start_x,start_y,end_x,end_y);
 		guilib_invert_area(start_x,start_y,start_x,start_y);
@@ -808,7 +845,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		{
 			unsigned long stay_time_ticks;
 
-			if ((kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123) &&
+			if ((kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_TW || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123) &&
 				multi_selection_key(pre_key))
 				stay_time_ticks = seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME);
 			else
@@ -825,7 +862,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		{
 			guilib_fb_lock();
 			if (*pre_key->key == ' ' || *pre_key->key == WL_KEY_BACKSPACE || isupper(*pre_key->key) ||
-				kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123 ||
+				kb_mode == KEYBOARD_PHONE_STYLE_JP || kb_mode == KEYBOARD_PHONE_STYLE_TW || kb_mode == KEYBOARD_PHONE_STYLE_ABC || kb_mode == KEYBOARD_PHONE_STYLE_123 ||
 				(*pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
 				keyboard_process_key_invert(pre_key, true);
 			else if (*pre_key->key != WL_KEY_NLS)
@@ -872,7 +909,7 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	
 	if (kb_mode == KEYBOARD_CHAR)
 	{
-		if (wiki_is_japanese())
+		if (wiki_is_cjk())
 		{
 			keyboard_key = qwerty_full_char;
 			keyboard_entries = ARRAY_SIZE(qwerty_full_char);
@@ -897,6 +934,11 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	{
 		keyboard_key = phone_jp;
 		keyboard_entries = ARRAY_SIZE(phone_jp);
+	}
+	else if (kb_mode == KEYBOARD_PHONE_STYLE_TW)
+	{
+		keyboard_key = phone_tw;
+		keyboard_entries = ARRAY_SIZE(phone_tw);
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
 	{
