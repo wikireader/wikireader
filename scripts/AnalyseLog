@@ -140,12 +140,38 @@ END {
     }
 }
 
+# extract elapsed time from the BASH internal time command, e.g.
+# real    0m1.008s
+# user    0m0.000s
+# sys     0m0.010s
 /^real/ {
-    p1 = index($2, "m")
-    p2 = index($2, "s")
-    minutes = substr($2, 0, p1 - 1)
-    seconds = substr($2, p1 + 1, p2 - p1 - 1)
+    t = $2
+    p1 = index(t, "m")
+    p2 = index(t, "s")
+    minutes = substr(t, 0, p1 - 1)
+    seconds = substr(t, p1 + 1, p2 - p1 - 1)
     elapsed_time += minutes * 60 + seconds
 }
+
+# extract elapsed time from /usr/bin/time e.g:
+# 0.02user 0.00system 0:00.18elapsed 10%CPU (0avgtext+0avgdata 9664maxresident)k
+# 31009.77user 989.92system 8:22:47elapsed 106%CPU (0avgtext+0avgdata 9733072maxresident)k
+/^[[:digit:].]+user/ {
+    t = $3
+    p1 = index(t, ":")
+    p2 = index(t, "e")
+    first = substr(t, 0, p1 - 1)
+    t = substr(t, p1 + 1, p2 - p1 - 1)
+    p1 = index(t, ":")
+    if (p1 > 0) {
+       minutes = substr(t, 0, p1 - 1)
+       seconds = substr(t, p1 + 1)
+       elapsed_time += first * 60 * 60 + minutes * 60 + seconds
+    } else {
+       elapsed_time += first * 60 + t
+    }
+}
+
+
 
 ' "$@"
