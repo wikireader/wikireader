@@ -24,6 +24,7 @@ END {
         print "Index: Not Started"
     }
 
+    parse_complete = 0
     if (0 != length(parse_count)) {
         for (i in parse_count) {
             if (0 == parse_max[i]) {
@@ -42,12 +43,16 @@ END {
             } else {
                 average = 0
             }
+            if (100 == complete) {
+                parse_complete += 1
+            }
             printf("Parse[%2d]: %11d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
         }
     } else {
         print "Parse: Not Started"
     }
 
+    render_complete = 0
     if (0 != length(render_count)) {
         for (i in render_count) {
             n = render_max[i]
@@ -64,6 +69,9 @@ END {
             } else {
                 average = 0
             }
+            if (100 == complete) {
+                render_complete += 1
+            }
             printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
         }
     } else {
@@ -74,7 +82,10 @@ END {
     seconds = int(100 * (elapsed_time - minutes * 60)) / 100
     hours= int(minutes / 60)
     minutes -= hours * 60
-    printf("Elapsed Time: %d:%02d:%05.2f\n", hours, minutes, seconds)
+    printf("Elapsed Time: %d:%02d:%05.2f  Parse: %d/%d  Render: %d/%d\n",
+           hours, minutes, seconds,
+           parse_complete, length(parse_count),
+           render_complete, length(render_count))
 }
 
 /^Index:/ {

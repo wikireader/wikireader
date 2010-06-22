@@ -25,9 +25,10 @@ USAGE()
   echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
   echo '       --language=<xx>   -L <xx>    process for language [en]'
   echo '       --suffix=<s>      -S <s>     set the language suffix [pedia]'
-  echo '       --run             -r         start the Run script in a screen {index, parse, render}'
-  echo '       --re-index        -I         start the Run script in a screen {index-only}'
-  echo '       --re-render       -R         start the Run script in a screen {re-render}'
+  echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072 de:::YES:32:200000"'
+  echo '                                    start the Run script in a screen {index, parse, render}'
+  echo '       --re-render=<rl>  -R <rl>    as --run but only does {render}'
+  echo '       --re-index=<rl>   -I <rl>    as --run but only does {index}'
   echo '       --copy            -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
   echo '       --combine         -k         run the combine process'
   echo '       --get[=<dir>]     -G[<dir>]  get the data files [image]'
@@ -35,7 +36,6 @@ USAGE()
   echo '       --new-session     -N         start a new screen session for run and copy to use'
   echo '       --fetch-log       -f         fetch log files'
   echo '       --xml-link        -x         link wiki .xml file to latest version'
-  echo '       --compress=[<n>]  -C[<n>]    enable higher compression [low] '
   echo '       --abort           -A         abort remote PHP/Python/make'
   exit 1
 }
@@ -73,12 +73,11 @@ combine_host=8
 base_dir=samo
 render_host=
 run_parallel=
-compression=low
 set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:rRIckG::4::NfxC::A2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run,re-render,re-index,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,high-compress::,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:ckG::4::Nfx:A2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -121,21 +120,24 @@ do
       ;;
 
     -r|--run)
-      c="scripts/Run ${run_parallel} --compress='${compression}' --clear --language='${language}' --suffix='${suffix}'"
+      run_list=$(echo $2 | sed 's/,/ /g')
+      c="scripts/Run ${run_parallel} --clear ${run_list}"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
-      shift
+      shift 2
       ;;
 
     -R|--re-render)
-      c="scripts/Run ${run_parallel} --compress='${compression}' --re-render --language='${language}' --suffix='${suffix}'"
+      run_list=$(echo $2 | sed 's/,/ /g')
+      c="scripts/Run ${run_parallel} --re-render ${run_list}"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
-      shift
+      shift 2
       ;;
 
     -I|--re-index)
-      c="scripts/Run ${run_parallel} --compress='${compression}' --index-only --language='${language}' --suffix='${suffix}'"
+      run_list=$(echo $2 | sed 's/,/ /g')
+      c="scripts/Run ${run_parallel} --index-only ${run_list}"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
-      shift
+      shift 2
       ;;
 
     -c|--copy)
@@ -266,12 +268,6 @@ do
  ls -l '${language}${s}'-pages-articles.xml"
       done
       shift
-      ;;
-
-    -C|compress)
-      compression="$2"
-      [ -z "${compression}" ] && compression=0
-      shift 2
       ;;
 
     -A|--abort)

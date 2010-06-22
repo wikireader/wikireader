@@ -1,6 +1,6 @@
-#!/bin/bash
-# script to set up individual rendering server
-
+#!/bin/sh
+# Script to process multiple items on one rendering server
+set -x
 LicensesDirectory=XML-Licenses
 
 ERROR()
@@ -12,26 +12,25 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
-  echo usage: $(basename "$0") '<options>'
+  echo usage: $(basename "$0") '<options> [<language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>]...'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
   echo '       --get-index=n   -g <n>     where to rsync the indices from {1 => render1}'
-  echo '       --index-only    -i         only do the index'
+  echo '       --index-only    -i         only build the index'
   echo '       --no-run        -n         do not run final make'
-  echo '       --clear         -c         clear work and dest dirs'
-  echo '       --re-parse      -R         clear parse and render stamps'
-  echo '       --re-render     -r         clear render stamps'
+  echo '       --clear         -c         clear work and dest dirs - so everything will be built'
+  echo '       --re-parse      -R         clear parse and render stamps - to reuse existion index'
+  echo '       --re-render     -r         clear render stamps - for re-rendering with diffferent compression'
   echo '       --machines=m    -m <m>     set machine count [${MACHINE_COUNT} or 9]'
   echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
-  echo '       --language=xx   -l <xx>    set language [en]'
-  echo '       --suffix=<s>    -s <s>     set the directory suffix [pedia]'
-  echo '       --prefix=<name> -p <name>  set data file prefix [wiki]'
   echo '       --work=dir      -w <dir>   workdir [work]'
   echo '       --dest=dir      -d <dir>   destdir [image]'
   echo '       --temp=dir      -t <dir>   tempdir [/tmp]'
   echo '       --farm=n        -f <n>     manual farm number [from hostname numeric suffix]'
-  echo '       --compress=<c>  -C <c>     set compression {low/high} [low]'
-  echo '       --debug         -D         print but do not execute make commands'
+  echo '       --debug         -D         only display make operations, do not execute them'
+  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072'
+  echo '                                  links = [YES|NO] to enable inclusion of language link info'
+  echo '                                  count:size = max articles/max bytes to compress into one block'
   exit 1
 }
 
@@ -72,7 +71,6 @@ RUN()
 
 
 verbose=no
-IndexHost=
 clear=no
 work=work
 dest=image
@@ -81,9 +79,6 @@ run=yes
 IndexOnly=no
 farm=
 debug=no
-language=en
-suffix=pedia
-FilePrefix=wiki
 MaximumThreads=64
 export MACHINE_COUNT=${MACHINE_COUNT:-9}
 export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
@@ -91,7 +86,7 @@ compression=low
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvg:p:incrRl:s:w:d:t:f:p:j:m:CD: --long=help,verbose,get-index:,index-only,no-run,clear,re-render,re-parse,language:,suffix:,work:,dest:,temp:,farm:,prefix:,parallel:,machines:,compress:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvp:incrRw:d:t:f:p:j:m:D --long=help,verbose,index-only,no-run,clear,re-render,re-parse,work:,dest:,temp:,farm:,parallel:,machines:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -102,11 +97,6 @@ do
     -v|--verbose)
       verbose=yes
       shift
-      ;;
-
-    -g|--get-index)
-      IndexHost=$2
-      shift 2
       ;;
 
     -i|--index-only)
@@ -135,16 +125,6 @@ do
       shift
       ;;
 
-    -l|--language)
-      language=$2
-      shift 2
-      ;;
-
-    -s|--suffix)
-      suffix=$2
-      shift 2
-      ;;
-
     -w|--work)
       work=$2
       shift 2
@@ -165,11 +145,6 @@ do
       shift 2
       ;;
 
-    -p|--prefix)
-      FilePrefix=$2
-      shift 2
-      ;;
-
     -j|--parallel)
       PARALLEL_BUILD=$2
       shift 2
@@ -177,11 +152,6 @@ do
 
     -m|--machines)
       MACHINE_COUNT=$2
-      shift 2
-      ;;
-
-    -C|--compress)
-      compression=$2
       shift 2
       ;;
 
@@ -213,151 +183,141 @@ then
   USAGE too many threads: "${MACHINE_COUNT} * ${PARALLEL_BUILD} > ${MaximumThreads}"
 fi
 
-[ -z "${language}" ] && USAGE language is not set
 
-licenses=$(readlink -m "${LicensesDirectory}")
-license="${licenses}/${language}/license.xml"
-terms="${licenses}/${language}/terms.xml"
+for arg in $*
+do
+  arg="${arg}:::::::::::"
+  language="${arg%%:*}"
+  [ -z "${language}" ] && language=en
 
-case "${suffix}" in
-  pedia)
-    articles_link="${language}wiki-pages-articles.xml"
-    ;;
-  dict)
-    articles_link="${language}wiktionary-pages-articles.xml"
-    ;;
-  quote)
-    articles_link="${language}wikiquote-pages-articles.xml"
-    ;;
-  books)
-    articles_link="${language}wikibooks-pages-articles.xml"
-    ;;
-  *)
-    USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
-    ;;
-esac
+  arg="${arg#*:}"
+  suffix="${arg%%:*}"
+  [ -z "${suffix}" ] && suffix=pedia
 
-articles=$(readlink -m "${articles_link}")
+  arg="${arg#*:}"
+  FilePrefix="${arg%%:*}"
+  [ -z "${FilePrefix}" ] && FilePrefix=wiki
 
-LogFile="${language}-${suffix}.log"
+  arg="${arg#*:}"
+  enable_language_links="${arg%%:*}"
+  case "${enable_language_links}" in
+    ""|[yY]|[yY][eE][sS])
+      enable_language_links=YES
+      ;;
+    *)
+      enable_language_links=NO
+      ;;
+  esac
 
-[ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
+  arg="${arg#*:}"
+  articles_per_block="${arg%%:*}"
+  [ -z "${articles_per_block}" ] && articles_per_block=1
 
-[ -f "${license}" ] || license="${licenses}/en/license.xml"
-[ -f "${terms}" ] || terms="${licenses}/en/terms.xml"
+  arg="${arg#*:}"
+  article_block_size="${arg%%:*}"
+  [ -z "${article_block_size}" ] && article_block_size=131072
 
-xml="${license} ${terms} ${articles}"
+  licenses=$(readlink -m "${LicensesDirectory}")
+  license="${licenses}/${language}/license.xml"
+  terms="${licenses}/${language}/terms.xml"
 
-# extract numeric suffix from host name
-# expect that the rendering hosts are numbered from zero
-this_host=$(hostname --short)
-this_host_prefix=${this_host%%[0-9]}
-this_id=${this_host##*[^0-9]}
-[ -z "${this_id}" ] && this_id=0
+  case "${suffix}" in
+    pedia)
+      articles_link="${language}wiki-pages-articles.xml"
+      ;;
+    dict)
+      articles_link="${language}wiktionary-pages-articles.xml"
+      ;;
+    quote)
+      articles_link="${language}wikiquote-pages-articles.xml"
+      ;;
+    books)
+      articles_link="${language}wikibooks-pages-articles.xml"
+      ;;
+    *)
+      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
+      ;;
+  esac
 
-[ -z "${farm}" ] && farm="farm${this_id}" || farm="farm${farm##*[a-z]}"
+  articles=$(readlink -m "${articles_link}")
 
-# truncate the log file
-RUN -n rm -f "${LogFile}"
-RUN -n touch "${LogFile}"
+  LogFile="${language}-${suffix}.log"
 
-# update
-RUN git pull --rebase
+  [ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
 
-# set up the make options
-common_opts="DESTDIR='${dest}' WORKDIR='${work}' TEMPDIR='${temp}'"
-common_opts="${common_opts} WIKI_FILE_PREFIX='${FilePrefix}'"
-common_opts="${common_opts} WIKI_LANGUAGE='${language}'"
-common_opts="${common_opts} WIKI_DIR_SUFFIX='${suffix}'"
-common_opts="${common_opts} XML_FILES='${xml}'"
-common_opts="${common_opts} VERBOSE='${verbose}'"
+  [ -f "${license}" ] || license="${licenses}/en/license.xml"
+  [ -f "${terms}" ] || terms="${licenses}/en/terms.xml"
 
-case "${compression}" in
-  2)
-    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=32"
-    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
-    ;;
+  xml="${license} ${terms} ${articles}"
 
-  4)
-    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=200000"
-    ;;
+  # extract numeric suffix from host name
+  # expect that the rendering hosts are numbered from zero
+  this_host=$(hostname --short)
+  this_host_prefix=${this_host%%[0-9]}
+  this_id=${this_host##*[!0-9]}
 
-  6)
-    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=NO"
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=64"
-    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=250000"
-    ;;
+  [ -z "${this_id}" ] && this_id=0
 
-  *)
-    # low compression for 8GB card
-    common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=YES"
-    common_opts="${common_opts} ARTICLES_PER_BLOCK=1"
-    common_opts="${common_opts} ARTICLE_BLOCK_SIZE=131072"
-    ;;
-esac
+  [ -z "${farm}" ] && farm="farm${this_id}" || farm="farm${farm##*[a-z]}"
 
-# clean up
-case "${clear}" in
-  [yY]|[yY][eE][sS])
-    RUN make clean index-clean "${farm}-clean" cleandirs ${common_opts}
-    ;;
-  [iI][nN][dD][eE][xX])
-    RUN make clean index-clean ${common_opts}
-    ;;
-  [rR][eE][nN][dD][eE][rR])
-    RUN make clean "${farm}-render-clean" ${common_opts}
-    RUN make "${farm}-parse-touch" ${common_opts}
-    ;;
-  [pP][aA][rR][sS][eE])
-    RUN make clean "${farm}-clean" ${common_opts}
-    ;;
-  [nN]|[nN][oO])
-    ;;
-  *)
-    ERROR unknown clear action: ${clear}
-    ;;
-esac
+  # truncate the log file
+  RUN -n rm -f "${LogFile}"
+  RUN -n touch "${LogFile}"
+
+  # update
+  RUN git pull
+
+  # set up the make options
+  common_opts="DESTDIR='${dest}' WORKDIR='${work}' TEMPDIR='${temp}'"
+  common_opts="${common_opts} WIKI_FILE_PREFIX='${FilePrefix}'"
+  common_opts="${common_opts} WIKI_LANGUAGE='${language}'"
+  common_opts="${common_opts} WIKI_DIR_SUFFIX='${suffix}'"
+  common_opts="${common_opts} XML_FILES='${xml}'"
+  common_opts="${common_opts} VERBOSE='${verbose}'"
+
+  common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=${enable_language_links}"
+  common_opts="${common_opts} ARTICLES_PER_BLOCK=${articles_per_block}"
+  common_opts="${common_opts} ARTICLE_BLOCK_SIZE=${article_block_size}"
+
+  # clean up
+  case "${clear}" in
+    [yY]|[yY][eE][sS])
+      RUN make clean index-clean "${farm}-clean" cleandirs ${common_opts}
+      ;;
+    [iI][nN][dD][eE][xX])
+      RUN make clean index-clean ${common_opts}
+      ;;
+    [rR][eE][nN][dD][eE][rR])
+      RUN make clean "${farm}-render-clean" ${common_opts}
+      RUN make "${farm}-parse-touch" ${common_opts}
+      ;;
+    [pP][aA][rR][sS][eE])
+      RUN make clean "${farm}-clean" ${common_opts}
+      ;;
+    [nN]|[nN][oO])
+      ;;
+    *)
+      ERROR unknown clear action: ${clear}
+      ;;
+  esac
 
 
-# create root directories and fonts
-RUN make createdirs ${common_opts}
-RUN make fonts ${common_opts}
+  # create root directories and fonts
+  RUN make createdirs ${common_opts}
+  RUN make fonts ${common_opts}
 
-# copy the index from another machine
-#=====================================
-#!!! THIS HAS HARD CODED SAMO PATH !!!
-#!!! NEED TO FIX THIS              !!!
-#=====================================
-if [ -n "${IndexHost}" ]
-then
-  echo THIS IS BROKEN
-  exit 99
-  [ -z "${IndexHost%%[0-9]}" ] && IndexHost="${this_host_prefix}${IndexHost}"
+  # run the build
+  case "${run}" in
+    [yY]|[yY][eE][sS])
 
-  list='templates.db articles.db offsets.db counts.text'
-  items=
-  for i in ${list}
-  do
-    items="${items} ${IndexHost}:samo/${work}/${i}"
-  done
-  RUN rsync -avHx --progress ${items} "${work}"/
-  RUN touch stamp-r-index  # ***THIS IS WRONG need to have a make target for this
-fi
+      RUN make farm-index ${common_opts}
 
-# run the build
-case "${run}" in
-  [yY]|[yY][eE][sS])
-
-    RUN make farm-index ${common_opts}
-
-    case "${IndexOnly}" in
-      [yY]|[yY][eE][sS])
-        ;;
-      *)
-        RUN make -j${PARALLEL_BUILD} "${farm}" ${common_opts}
-        ;;
-    esac
-esac
+      case "${IndexOnly}" in
+        [yY]|[yY][eE][sS])
+          ;;
+        *)
+          RUN make -j${PARALLEL_BUILD} "${farm}" ${common_opts}
+          ;;
+      esac
+  esac
+done
