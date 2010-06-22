@@ -183,6 +183,7 @@ unsigned int history_get_count()
 void history_clear()
 {
 	history_count = 0;
+	memset((void *)history_list, 0, sizeof(history_list));
 	history_changed = HISTORY_SAVE_NORMAL;
 }
 
@@ -191,13 +192,16 @@ void history_list_init(void)
 	unsigned int len;
 	int fd_hst;
 
+	memset((void *)history_list, 0, sizeof(history_list));
 	history_count = 0;
 	fd_hst = wl_open("wiki.hst", WL_O_RDONLY);
 	if (fd_hst >= 0)
 	{
-		while ((len = wl_read(fd_hst, (void *)&history_list[history_count], sizeof(HISTORY))) >= sizeof(HISTORY))
+		while ((len = wl_read(fd_hst, (void *)&history_list[history_count], sizeof(HISTORY))) >= sizeof(HISTORY) &&
+			history_count < MAX_HISTORY)
 		{
-			history_count++;
+			if (history_list[history_count].idx_article)
+				history_count++;
 		}
 		wl_close(fd_hst);
 	}
@@ -215,7 +219,7 @@ int history_list_save(int level)
 			fd_hst = wl_open("wiki.hst", WL_O_CREATE);
 			if (fd_hst >= 0)
 			{
-				wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * history_count);
+				wl_write(fd_hst, (void *)history_list, sizeof(HISTORY) * MAX_HISTORY);
 				wl_close(fd_hst);
 			}
 			history_changed = HISTORY_SAVE_NONE;
