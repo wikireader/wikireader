@@ -163,6 +163,7 @@ version: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][iI]
 	find "${DESTDIR_PATH}" -type d -print -exec \
 	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
+	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
 
 
 .PHONY: misc-files-install
