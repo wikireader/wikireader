@@ -1,6 +1,6 @@
 #!/bin/sh
 # Script to process multiple items on one rendering server
-set -x
+
 LicensesDirectory=XML-Licenses
 
 ERROR()
@@ -321,3 +321,5 @@ do
       esac
   esac
 done
+
+RUN echo Processing Completed

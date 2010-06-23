@@ -7,6 +7,8 @@ BEGIN {
   index_delta = 0
   index_time = 0
   elapsed_time = 0
+  start_time = 0
+  end_time = 0
   delete parse_count
   delete parse_delta
   delete parse_time
@@ -78,14 +80,24 @@ END {
         print "Render: Not Started"
     }
 
+    printf("Timed Makes:  %s  Parse: %d/%d  Render: %d/%d\n",
+           seconds_to_string(elapsed_time),
+           parse_complete, length(parse_count),
+           render_complete, length(render_count))
+    if (end_time > 0) {
+        t = end_time - start_time
+    } else {
+        t = systime() - start_time
+    }
+    printf("Elapsed Time: %s\n", seconds_to_string(t))
+}
+
+function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     minutes = int(elapsed_time / 60)
     seconds = int(100 * (elapsed_time - minutes * 60)) / 100
     hours= int(minutes / 60)
     minutes -= hours * 60
-    printf("Elapsed Time: %d:%02d:%05.2f  Parse: %d/%d  Render: %d/%d\n",
-           hours, minutes, seconds,
-           parse_complete, length(parse_count),
-           render_complete, length(render_count))
+    return sprintf("%3d:%02d:%05.2f", hours, minutes, seconds)
 }
 
 /^Index:/ {
@@ -153,7 +165,7 @@ END {
     elapsed_time += minutes * 60 + seconds
 }
 
-# extract elapsed time from /usr/bin/time e.g:
+# extract elapsed time from /usr/bin/time,  e.g.
 # 0.02user 0.00system 0:00.18elapsed 10%CPU (0avgtext+0avgdata 9664maxresident)k
 # 31009.77user 989.92system 8:22:47elapsed 106%CPU (0avgtext+0avgdata 9733072maxresident)k
 /^[[:digit:].]+user/ {
@@ -172,6 +184,16 @@ END {
     }
 }
 
-
+# extract the start time, e.g.
+# ===> 2010-06-21 18:16:04: git pull
+# ===> 2010-06-21 18:16:04: echo Processing Complete
+/^===>/ {
+    if (0 == start_time) {
+        start_time = mktime(gensub("[-:/]", " ", "g", $2 " " $3))
+    }
+    if ("Processing" == $5 && "Complete" == $6) {
+        end_time = mktime(gensub("[-:/]", " ", "g", $2 " " $3))
+    }
+}
 
 ' "$@"
