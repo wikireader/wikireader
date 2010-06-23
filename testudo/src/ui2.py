@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# COPYRIGHT: Openmoko Inc. 2009
+# COPYRIGHT: Openmoko Inc. 2010
 # LICENSE: GPL Version 2 or later
 # DESCRIPTION: Simple UI for running test
 # AUTHOR: Christopher Hall <hsw@openmoko.com>
 
 from __future__ import with_statement # This isn't required in Python 2.6
+
+ReleaseDate = '2010-06-23'
 
 try:
     from serial.serialposix import *
@@ -251,7 +253,7 @@ class Sample:
                         self.write('FAIL: FLASH S/N(%s) != %s\n' % (psn, serialNumber), 'fail-text')
                         raise StopTestException('Serial Number mismatch')
 
-                elif line.startswith('VERSION:'):
+                elif line.upper().startswith('VERSION') or line[0].isdigit():
                     current_version = line.split(' ')[-1]
 
                 if '. Boot Test Program' == line[1:]:
@@ -276,7 +278,7 @@ class Sample:
 
                 elif '*VERSION*' == line:
                     self.write('INFO: check "%s" against "%s"\n' % (current_version, versionNumber))
-                    if current_version == versionNumber:
+                    if current_version.lower() == versionNumber.lower():
                         s.write('Y')
                     else:
                         s.write('N')
@@ -420,6 +422,7 @@ class Sample:
                 f.write('\r\n'.join(text.split('\n')))
 
     def __init__(self):
+        global ReleaseDate
         self.fileName = ''
         self.testRunning = False
         self.testStop = False
@@ -427,7 +430,7 @@ class Sample:
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 
-        self.window.set_title('Production Test Stage 2 - Full Set')
+        self.window.set_title('Production Test Stage 2 - Full Set  (Release: {0:s})'.format(ReleaseDate))
 
         self.window.connect('delete_event', self.delete_event)
         self.window.connect('destroy', self.destroy)
