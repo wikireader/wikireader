@@ -93,7 +93,9 @@ struct _english_hiragana_mapping {
 	char *english;
 	char *hiragana;
 } english_hiragana_mapping[] = {
+	{",",   "、"	},
 	{"-",   "ー"	},
+	{".",   "。"	},
 	{"a",	"あ"    },
 	{"ba",	"ば"   },
 	{"bba", "っば" },
@@ -668,6 +670,8 @@ struct _cjk_english_mapping {
 	char *english;
 	char *hiragana;
 } cjk_english_mapping[] = {
+	{",",   	"、"	},
+	{".",   	"。"	},
 	{"a",		"ぁ" },
 	{"a",		"あ"    },
 	{"i",		"ぃ" },
@@ -698,8 +702,8 @@ struct _cjk_english_mapping {
 	{"gyu",		"ぎゅ"  },
 	{"gyo",		"ぎょ"  },
 	{"ku",		"く"   },
-	{"qwa",		"くぁ"	},
 	{"kwa",		"くぁ"	},
+	{"qwa",		"くぁ"	},
 	{"qwi",		"くぃ"	},
 	{"qwu",		"くぅ"	},
 	{"qwe",		"くぇ"	},
@@ -1420,11 +1424,11 @@ struct _backward_key_sequence {
 	{")", "(" },
 	{"*", "－" },
 	{"+", "=" },
-	{",", "!" },
-	{".", "," },
 	{"=", "*" },
-	{"?", "." },
+	{"?", "。" },
 	{"@", "&" },
+	{"、", "!" },
+	{"。", "、" },
 	{"ぁ" , "お" },
 	{"あ" , "ぉ" },
 	{"ぃ" , "ぁ"  },

@@ -202,6 +202,8 @@ void history_list_init(void)
 		{
 			if (history_list[history_count].idx_article)
 				history_count++;
+			else
+				break;
 		}
 		wl_close(fd_hst);
 	}
