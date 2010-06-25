@@ -253,7 +253,7 @@ class Sample:
                         self.write('FAIL: FLASH S/N(%s) != %s\n' % (psn, serialNumber), 'fail-text')
                         raise StopTestException('Serial Number mismatch')
 
-                elif line.upper().startswith('VERSION') or line[0].isdigit():
+                elif line.upper().startswith('VERSION') or (line + 'X')[0].isdigit():
                     current_version = line.split(' ')[-1]
 
                 if '. Boot Test Program' == line[1:]:
