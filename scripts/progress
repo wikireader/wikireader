@@ -25,8 +25,9 @@ USAGE()
   echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
   echo '       --language=<xx>   -L <xx>    process for language [en]'
   echo '       --suffix=<s>      -S <s>     set the language suffix [pedia]'
-  echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072 de:::YES:32:200000"'
+  echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072:10 de:::YES:32:200000"'
   echo '                                    start the Run script in a screen {index, parse, render}'
+  echo '                                    (see the Run script for exact specifications)'
   echo '       --re-render=<rl>  -R <rl>    as --run but only does {render}'
   echo '       --re-index=<rl>   -I <rl>    as --run but only does {index}'
   echo '       --copy            -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
@@ -77,7 +78,7 @@ set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:ckG::4::Nfx:A2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:ckG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 

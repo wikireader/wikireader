@@ -12,25 +12,26 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
-  echo usage: $(basename "$0") '<options> [<language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>]...'
+  echo usage: $(basename "$0") '<options> [<language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>]...'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
-  echo '       --get-index=n   -g <n>     where to rsync the indices from {1 => render1}'
+  echo '       --get-index=<n> -g <n>     where to rsync the indices from {1 => render1}'
   echo '       --index-only    -i         only build the index'
   echo '       --no-run        -n         do not run final make'
   echo '       --clear         -c         clear work and dest dirs - so everything will be built'
   echo '       --re-parse      -R         clear parse and render stamps - to reuse existion index'
   echo '       --re-render     -r         clear render stamps - for re-rendering with diffferent compression'
-  echo '       --machines=m    -m <m>     set machine count [${MACHINE_COUNT} or 9]'
-  echo '       --parallel=n    -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
-  echo '       --work=dir      -w <dir>   workdir [work]'
-  echo '       --dest=dir      -d <dir>   destdir [image]'
-  echo '       --temp=dir      -t <dir>   tempdir [/tmp]'
-  echo '       --farm=n        -f <n>     manual farm number [from hostname numeric suffix]'
+  echo '       --machines=<m>  -m <m>     set machine count [${MACHINE_COUNT} or 9]'
+  echo '       --parallel=<n>  -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
+  echo '       --work=<dir>    -w <dir>   workdir [work]'
+  echo '       --dest=<dir>    -d <dir>   destdir [image]'
+  echo '       --temp=<dir>    -t <dir>   tempdir [/tmp]'
+  echo '       --farm=<n>      -f <n>     manual farm number [from hostname numeric suffix]'
   echo '       --debug         -D         only display make operations, do not execute them'
-  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072'
+  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>'
   echo '                                  links = [YES|NO] to enable inclusion of language link info'
   echo '                                  count:size = max articles/max bytes to compress into one block'
+  echo '                                  parallel   = overrides the global --parallel=<n> for this item'
   exit 1
 }
 
@@ -70,6 +71,30 @@ RUN()
 }
 
 
+# test in value is a number (i.e. non-empty and only contains [0..9])
+IsNumber()
+{
+  local value="$1"
+  case "${value}" in
+    ""|*[!0-9]*)
+      return 1
+      ;;
+  esac
+  return 0
+}
+
+
+# test in value is an integer
+IsInteger()
+{
+  local value="${1#-}"
+  IsNumber "${value}"
+  return $?
+}
+
+
+# main program
+
 verbose=no
 clear=no
 work=work
@@ -80,9 +105,8 @@ IndexOnly=no
 farm=
 debug=no
 MaximumThreads=64
-export MACHINE_COUNT=${MACHINE_COUNT:-9}
-export PARALLEL_BUILD=${PARALLEL_BUILD:-3}
-compression=low
+machine_count=${MACHINE_COUNT:-9}
+parallel_build=${PARALLEL_BUILD:-3}
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
@@ -141,17 +165,20 @@ do
       ;;
 
     -f|--farm)
+      IsNumber "$2" || USAGE numeric argument required in: $1=$2
       farm=$2
       shift 2
       ;;
 
     -j|--parallel)
-      PARALLEL_BUILD=$2
+      IsNumber "$2" || USAGE numeric argument required in: $1=$2
+      parallel_build=$2
       shift 2
       ;;
 
     -m|--machines)
-      MACHINE_COUNT=$2
+      IsNumber "$2" || USAGE numeric argument required in: $1=$2
+      machine_count=$2
       shift 2
       ;;
 
@@ -176,17 +203,17 @@ do
 done
 
 
-if [[ $((${MACHINE_COUNT} * ${PARALLEL_BUILD})) > ${MaximumThreads} ]]
+if [[ $((${machine_count} * ${parallel_build})) > ${MaximumThreads} ]]
 then
-  echo MACHINE_COUNT=${MACHINE_COUNT}
-  echo PARALLEL_BUILD=${PARALLEL_BUILD}
-  USAGE too many threads: "${MACHINE_COUNT} * ${PARALLEL_BUILD} > ${MaximumThreads}"
+  echo machine_count=${machine_count}
+  echo parallel_build=${parallel_build}
+  USAGE too many threads: "machine_count * parallel_build > ${MaximumThreads}"
 fi
 
 
 for arg in $*
 do
-  arg="${arg}:::::::::::"
+  arg="${arg}:::::::::::::" # lots of : to ensure empty arguments
   language="${arg%%:*}"
   [ -z "${language}" ] && language=en
 
@@ -211,11 +238,17 @@ do
 
   arg="${arg#*:}"
   articles_per_block="${arg%%:*}"
-  [ -z "${articles_per_block}" ] && articles_per_block=1
+  IsNumber "${articles_per_block}" || articles_per_block=1
 
   arg="${arg#*:}"
   article_block_size="${arg%%:*}"
-  [ -z "${article_block_size}" ] && article_block_size=131072
+  IsNumber "${article_block_size}" || article_block_size=131072
+
+  arg="${arg#*:}"
+  threads="${arg%%:*}"
+  IsInteger "${threads}" || threads="${parallel_build}"
+  [ "${threads}" -lt 0 ] && threads=$((${parallel_build} + ${threads}))
+  [ "${threads}" -gt "${parallel_build}" -o "${threads}" -le 0 ] && threads="${parallel_build}"
 
   licenses=$(readlink -m "${LicensesDirectory}")
   license="${licenses}/${language}/license.xml"
@@ -275,9 +308,12 @@ do
   common_opts="${common_opts} XML_FILES='${xml}'"
   common_opts="${common_opts} VERBOSE='${verbose}'"
 
-  common_opts="${common_opts} ENABLE_LANGUAGES_LINKS=${enable_language_links}"
-  common_opts="${common_opts} ARTICLES_PER_BLOCK=${articles_per_block}"
-  common_opts="${common_opts} ARTICLE_BLOCK_SIZE=${article_block_size}"
+  common_opts="${common_opts} MACHINE_COUNT='${machine_count}'"
+  common_opts="${common_opts} PARALLEL_BUILD='${threads}'"
+
+  common_opts="${common_opts} ENABLE_LANGUAGES_LINKS='${enable_language_links}'"
+  common_opts="${common_opts} ARTICLES_PER_BLOCK='${articles_per_block}'"
+  common_opts="${common_opts} ARTICLE_BLOCK_SIZE='${article_block_size}'"
 
   # clean up
   case "${clear}" in
@@ -316,7 +352,7 @@ do
         [yY]|[yY][eE][sS])
           ;;
         *)
-          RUN make -j${PARALLEL_BUILD} "${farm}" ${common_opts}
+          RUN make --jobs="${threads}" "${farm}" ${common_opts}
           ;;
       esac
   esac
