@@ -81,6 +81,8 @@ if no_compression:
     exit(1)
 
 
+# the wiki-app must have the same value
+MAXIMUM_ARTICLES_PER_BLOCK = 64
 
 verbose = False
 warnings = False
@@ -206,6 +208,7 @@ def main():
     global article_db
     global start_time
     global article_writer
+    global MAXIMUM_ARTICLES_PER_BLOCK
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
@@ -275,8 +278,8 @@ def main():
                 articles_per_block = int(arg)
             except ValueError:
                 usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
-            if articles_per_block < 1 or articles_per_block > 64:
-                usage('"{0:s}={1:s}" is out of range [1..64]'.format(opt, arg))
+            if articles_per_block < 1 or articles_per_block > MAXIMUM_ARTICLES_PER_BLOCK:
+                usage('"{o:s}={a:s}" is out of range [1..{m:d}]'.format(o=opt, a=arg, m=MAXIMUM_ARTICLES_PER_BLOCK))
         elif opt in ('-b', '--block-size'):
             try:
                 block_size = int(arg)
@@ -782,7 +785,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.in_p = True
             #esc_code0(P_MARGIN_TOP)
 
-        elif tag == 'blockquote':
+        elif tag == 'blockquote' or tag =='pre':
             self.flush_buffer()
             self.quote += 1
             if self.quote < MAX_QUOTE_LEVEL:
@@ -913,6 +916,8 @@ class WrProcess(HTMLParser.HTMLParser):
             esc_code0(LIST_MARGIN_TOP)
 
         elif tag == 'br':
+            self.flush_buffer()
+            esc_code0(BR_MARGIN_TOP)
             self.in_br = True
 
         elif tag == 'img' and 'src' in attrs:
@@ -1014,7 +1019,7 @@ class WrProcess(HTMLParser.HTMLParser):
             self.flush_buffer()
             self.in_p = False
 
-        elif tag == 'blockquote':
+        elif tag == 'blockquote' or tag =='pre':
             self.flush_buffer()
             if self.quote > 0:
                 if self.quote < MAX_QUOTE_LEVEL:
@@ -1071,7 +1076,6 @@ class WrProcess(HTMLParser.HTMLParser):
             esc_code0(LIST_MARGIN_TOP)
 
         elif tag == 'br':
-            self.flush_buffer()
             self.in_br = False
 
         elif tag == 'img':
