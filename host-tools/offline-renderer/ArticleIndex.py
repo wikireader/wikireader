@@ -198,6 +198,13 @@ def main():
         sys.exit(1)
 
 
+def upper_case_first_char(text):
+    """upper case the first character of a siring and leave the rest unchanged
+
+    this is used for the form of templates used in wiktionary"""
+    return text[0].upper() + text[1:]
+
+
 def generate_bigram(text):
     """create bigram from pairs of characters"""
     global bigram
@@ -415,8 +422,8 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             if title != rtitle:
-                title = unicode(category, 'utf-8').capitalize() + ':' + title
-                rtitle = unicode(rcategory, 'utf-8').capitalize() + ':' + rtitle
+                title = unicode(category, 'utf-8').capitalize() + ':' + upper_case_first_char(title)
+                rtitle = unicode(rcategory, 'utf-8').capitalize() + ':' + upper_case_first_char(rtitle)
                 self.template_cursor.execute(u'insert or replace into redirects (title, redirect) values(?, ?)',
                                              [u'~{0:d}~{1:s}'.format(self.file_id(), title),
                                               u'~{0:d}~{1:s}'.format(self.file_id(), rtitle)])
@@ -449,10 +456,10 @@ pragma journal_mode = memory;
 
         if self.KEY_TEMPLATE == key:
             if title not in self.ignored_templates:
-                t1 = unicode(category, 'utf-8').capitalize() + ':' + title
+                title = unicode(category, 'utf-8').capitalize() + ':' + upper_case_first_char(title)
                 t_body = TidyUp.template(text)
                 self.template_cursor.execute(u'insert or replace into templates (title, body) values(?, ?)',
-                                             [u'~{0:d}~{1:s}'.format(self.file_id(), t1), u'~' + t_body])
+                                             [u'~{0:d}~{1:s}'.format(self.file_id(), title), u'~' + t_body])
                 self.template_count += 1
             return
 
