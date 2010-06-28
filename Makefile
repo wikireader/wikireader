@@ -47,6 +47,11 @@
 #
 #   EXTRACT_VERSION_FROM = a link to XML file name that has an embedded date
 #                          which will be used to set WIKI_VERSION
+#
+#   MACHINE_COUNT    = Number of machines in the build cluster [9]
+#
+#   PARALLEL_BUILD   = Number of threads/cores usable on each machine [3]
+
 
 # Include standard definitions
 # ============================
