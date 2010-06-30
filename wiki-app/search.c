@@ -2706,7 +2706,6 @@ void search_reload(int flag)
 		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 	int y_pos,start_x_search=0;
 	int end_y_pos;
-	static int last_start_x_search=0;
 	char *title;
 	char temp_search_string[MAX_TITLE_SEARCH * 3];
 	static int bNoResultLastTime = 0;
@@ -2736,12 +2735,15 @@ void search_reload(int flag)
 		if(search_string_changed_remove)
 		{
 			if(!search_str_len)
+			{
 				start_x_search = 0;
+				guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
+			}
 			else
 				start_x_search = search_string_pos[search_str_len];
 			search_string_changed_remove = false;
-			if (start_x_search < LCD_BUF_WIDTH_PIXELS)
-				guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
+			//if (start_x_search < LCD_BUF_WIDTH_PIXELS)
+			//	guilib_clear_area(start_x_search, 0, LCD_BUF_WIDTH_PIXELS, 30);
 			//else
 			//{
 			//	guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
@@ -2771,15 +2773,7 @@ void search_reload(int flag)
 		capitalize(search_string_hiragana, temp_search_string, search_str_hiragana_len);
 	else
 		capitalize(search_string, temp_search_string, search_str_len);
-	if (last_start_x_search >= LCD_BUF_WIDTH_PIXELS)
-		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
-	if (last_start_x_search < LCD_BUF_WIDTH_PIXELS && start_x_search >= LCD_BUF_WIDTH_PIXELS)
-	{
-		guilib_clear_area(0, 0, LCD_BUF_WIDTH_PIXELS, 30);
-		start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, temp_search_string, strlen(temp_search_string), 0);
-	}
-	last_start_x_search = start_x_search;
+	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN + 2, temp_search_string, strlen(temp_search_string), 0);
 	search_string_pos[search_str_len]=start_x_search;
 	y_pos = RESULT_START;
 

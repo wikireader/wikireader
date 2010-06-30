@@ -264,8 +264,11 @@ int render_string_right(const int font, int start_x,
 
 	while (len > 0 && utf8_chars < MAX_TITLE_SEARCH)
 	{
-		lens[utf8_chars] = len;
 		widths[utf8_chars] = get_UTF8_char_width(font, &p, &len, &nCharBytes);
+		if (utf8_chars == 0)
+			lens[utf8_chars] = nCharBytes;
+		else
+			lens[utf8_chars] = lens[utf8_chars - 1] + nCharBytes;
 		width += widths[utf8_chars];
 		utf8_chars++;
 	}
@@ -280,8 +283,7 @@ int render_string_right(const int font, int start_x,
 			width += widths[i];
 		if (i < utf8_chars)
 		{
-			string = &string[text_length - lens[i]];
-			text_length = lens[i];
+			string = &string[lens[i]];
 		}
 	}
 

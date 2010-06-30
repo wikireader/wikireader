@@ -2480,7 +2480,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 	pPcfFont = &pcfFonts[font];
 
 	pres_bmfbm(u, pPcfFont, &bitmap, &Cmetrics);
-	if (bitmap == NULL)
+	if (bitmap == NULL && u != 32)
 	{
 		return -1;
 	}
@@ -2513,7 +2513,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 
 	x_bit_idx = x_base & 0x07;
 
-	if (x + Cmetrics.widthDevice >= LCD_BUF_WIDTH_PIXELS)
+	if (x + Cmetrics.widthDevice > LCD_BUF_WIDTH_PIXELS)
 		return -1;
 
 	for (i = 0; i < bytes_to_process; i++)
