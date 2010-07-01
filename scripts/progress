@@ -31,8 +31,7 @@ USAGE()
   echo '       --re-render=<rl>  -R <rl>    as --run but only does {render}'
   echo '       --re-index=<rl>   -I <rl>    as --run but only does {index}'
   echo '       --copy            -c         run the copy process i.e. {Copy --to=8 -l <lang>}'
-  echo '       --combine         -k         run the combine process'
-  echo '       --get[=<dir>]     -G[<dir>]  get the data files [image]'
+  echo '       --get[=<dir>]     -G[<dir>]  combine and get the data files [image]'
   echo '       --sim4[=<dir>]    -4[<dir>]  install fonts, nls and run simulator [image]'
   echo '       --new-session     -N         start a new screen session for run and copy to use'
   echo '       --fetch-log       -f         fetch log files'
@@ -78,7 +77,7 @@ set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:ckG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,combine,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:cG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -194,11 +193,6 @@ do
       shift
       ;;
 
-    -k|--combine)
-      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' EXTRACT_VERSION_FROM='${articles_link}' print-WIKI_VERSION combine"
-      shift
-      ;;
-
     -l|--list)
       list="--list=$2"
       shift 2
@@ -224,6 +218,9 @@ do
         [ -e "${dest}" ] || mkdir -p "${dest}"
         [ -d "${dest}" ] || USAGE ${dest} is not a directory
       fi
+      echo Creating Index files for: ${language}${suffix}
+      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' EXTRACT_VERSION_FROM='${articles_link}' print-WIKI_VERSION combine"
+      echo Retrieving data for: ${language}${suffix}
       h=$(RenderDo ${render_host} --list="${combine_host}" --print-list | head -n 1)
       rsync -cavHx --progress --exclude='*-tmp' "wr@${h}:${base_dir}/image/${language}${suffix}" "${dest}/"
       shift 2
@@ -231,12 +228,8 @@ do
 
     -4|--sim4)
       dest=image
-      if [ -n "$2" ]
-      then
-        dest="$2"
-        [ -e "${dest}" ] || mkdir -p "${dest}"
-        [ -d "${dest}" ] || USAGE ${dest} is not a directory
-      fi
+      [ -n "$2" ] && dest="$2"
+      [ -d "${dest}" ] || USAGE ${dest} is not a directory
       # attempt to find a directory to set the language/suffix
       # in case that enpedia does not exist
       first_dir=$(find "${dest}" -maxdepth 1 -mindepth 1 -type d -print -quit)
