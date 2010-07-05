@@ -4,8 +4,7 @@
 # Author: Liane
 
 # Simplified Chinese
-#* wiki_name=Wikipedia 中文 [拼音]
-wiki_name=Wikipedia 中文
+wiki_name=Wikipedia 中文 [拼音]
 license_text=内文已合法注册於 Creative Commons 贡献及分享字号下并可在条款下免费转载使用，请参阅: [CC-BY-SA] 及 [Terms of Use] 以了解更多适用之条款。原文可参考 http://zh.wikipedia.org/wiki/<title>
 type_a_word=输入拼音字母
 no_results=搜寻查无结果
@@ -39,8 +38,7 @@ enter_new_password=输入新密码
 parental_controls=家长控制
 #* r=限制级
 r=限
-#* lang_str=中
-lang_str=zh
+lang_str=中
 
 # Traditional Chinese
 wiki_name2=Wikipedia 中文 [注音符號]
