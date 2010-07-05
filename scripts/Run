@@ -356,6 +356,7 @@ do
           ;;
       esac
   esac
+
+  RUN echo Processing Completed
 done
 
-RUN echo Processing Completed
