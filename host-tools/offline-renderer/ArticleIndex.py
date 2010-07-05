@@ -202,6 +202,8 @@ def upper_case_first_char(text):
     """upper case the first character of a siring and leave the rest unchanged
 
     this is used for the form of templates used in wiktionary"""
+    if "" == text:
+        return ""
     return text[0].upper() + text[1:]
 
 
