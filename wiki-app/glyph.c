@@ -262,6 +262,7 @@ int render_string_right(const int font, int start_x,
 	int rc;
 	ucs4_t c;
 
+	width = start_x;
 	while (len > 0 && utf8_chars < MAX_TITLE_SEARCH)
 	{
 		widths[utf8_chars] = get_UTF8_char_width(font, &p, &len, &nCharBytes);
@@ -281,9 +282,9 @@ int render_string_right(const int font, int start_x,
 		width = 0;
 		for (i = 0; i < utf8_chars && width < width_to_descrease; i++)
 			width += widths[i];
-		if (i < utf8_chars)
+		if (0 < i && i <= utf8_chars)
 		{
-			string = &string[lens[i]];
+			string = &string[lens[i - 1]];
 		}
 	}
 

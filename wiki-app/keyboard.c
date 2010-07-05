@@ -226,7 +226,7 @@ static struct keyboard_key phone_tw[] = {
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"ㄧㄨㄩ"),
-	KEY(144, 187, 193, 207,	146, 189, 191, 205,	",.?!"),
+	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
 };
@@ -280,6 +280,58 @@ static struct keyboard_key phone_123[] = {
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"0"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"、。?!"),
+                                                
+	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+};                                              
+static struct keyboard_key phone_tw_abc[] = {
+	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
+	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"@#$%&"),
+	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"ａｂｃ"),
+	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"ｄｅｆ"),
+	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
+                                                
+	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
+	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ｇｈｉ"),
+	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"ｊｋｌ"),
+	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"ｍｎｏ"),
+	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
+                                                
+	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
+	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"ｐｑｒｓ"),
+	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"ｔｕｖ"),
+	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"ｗｘｙｚ"),
+	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
+                                                
+	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
+	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
+	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"'()"),
+	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
+
+	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+};
+static struct keyboard_key phone_tw_123[] = {
+	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
+	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"1"),
+	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"2"),
+	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"3"),
+	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
+                                                 
+	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
+	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"4"),
+	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"5"),
+	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"6"),
+	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
+                                                 
+	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
+	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"7"),
+	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"8"),
+	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"9"),
+	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
+                                                 
+	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
+	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
+	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"0"),
+	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
                                                 
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
 };                                              
@@ -425,9 +477,15 @@ void keyboard_set_mode(int mode)
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_JP) {
 		image_data = &keyboard_phone_jp_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
-		image_data = &keyboard_phone_abc_image;
+		if (wiki_is_TC())
+			image_data = &keyboard_phone_tw_abc_image;
+		else
+			image_data = &keyboard_phone_abc_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
-		image_data = &keyboard_phone_123_image;
+		if (wiki_is_TC())
+			image_data = &keyboard_phone_tw_123_image;
+		else
+			image_data = &keyboard_phone_123_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_TW) {
 		image_data = &keyboard_phone_tw_image;
 	} else {
@@ -466,9 +524,15 @@ void keyboard_paint()
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_TW) {
 		image_data = &keyboard_phone_tw_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_ABC) {
-		image_data = &keyboard_phone_abc_image;
+		if (wiki_is_TC())
+			image_data = &keyboard_phone_tw_abc_image;
+		else
+			image_data = &keyboard_phone_abc_image;
 	} else if(kb_mode == KEYBOARD_PHONE_STYLE_123) {
-		image_data = &keyboard_phone_123_image;
+		if (wiki_is_TC())
+			image_data = &keyboard_phone_tw_123_image;
+		else
+			image_data = &keyboard_phone_123_image;
 	} else {
 		return;
 	}
@@ -534,13 +598,29 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
 	{
-		keyboard_key = phone_abc;
-		keyboard_entries = ARRAY_SIZE(phone_abc);
+		if (wiki_is_TC())
+		{
+			keyboard_key = phone_tw_abc;
+			keyboard_entries = ARRAY_SIZE(phone_tw_abc);
+		}
+		else
+		{
+			keyboard_key = phone_abc;
+			keyboard_entries = ARRAY_SIZE(phone_abc);
+		}
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_123)
 	{
-		keyboard_key = phone_123;
-		keyboard_entries = ARRAY_SIZE(phone_123);
+		if (wiki_is_TC())
+		{
+			keyboard_key = phone_tw_123;
+			keyboard_entries = ARRAY_SIZE(phone_tw_123);
+		}
+		else
+		{
+			keyboard_key = phone_123;
+			keyboard_entries = ARRAY_SIZE(phone_123);
+		}
 	}
 	else if (kb_mode == KEYBOARD_CLEAR_HISTORY)
 	{
@@ -942,13 +1022,29 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_ABC)
 	{
-		keyboard_key = phone_abc;
-		keyboard_entries = ARRAY_SIZE(phone_abc);
+		if (wiki_is_TC())
+		{
+			keyboard_key = phone_tw_abc;
+			keyboard_entries = ARRAY_SIZE(phone_tw_abc);
+		}
+		else
+		{
+			keyboard_key = phone_abc;
+			keyboard_entries = ARRAY_SIZE(phone_abc);
+		}
 	}
 	else if (kb_mode == KEYBOARD_PHONE_STYLE_123)
 	{
-		keyboard_key = phone_123;
-		keyboard_entries = ARRAY_SIZE(phone_123);
+		if (wiki_is_TC())
+		{
+			keyboard_key = phone_tw_123;
+			keyboard_entries = ARRAY_SIZE(phone_tw_123);
+		}
+		else
+		{
+			keyboard_key = phone_123;
+			keyboard_entries = ARRAY_SIZE(phone_123);
+		}
 	}
 	else if (kb_mode == KEYBOARD_CLEAR_HISTORY)
 	{
@@ -1006,6 +1102,18 @@ unsigned char full_alphabet_to_half(unsigned char *full, int *used_len)
 			*used_len = 3;
 		return('-');
 	}
+	else if (full[0] == 0xEF && full[1] == 0xBC && full[2] == 0x8C) // full width ,
+	{
+		if (used_len)
+			*used_len = 3;
+		return(',');
+	}
+	else if (full[0] == 0xE2 && full[1] == 0x80 && full[2] == 0xA7) // full width .
+	{
+		if (used_len)
+			*used_len = 3;
+		return('.');
+	}
 	else
 	{
 		if (used_len)
@@ -1030,6 +1138,22 @@ unsigned char *half_alphabet_to_full(unsigned char c)
 		full[0] = 0xEF;
 		full[1] = 0xBC;
 		full[2] = 0x8D;
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == ',')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBC;
+		full[2] = 0x8C;
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == '.')
+	{
+		full[0] = 0xE2;
+		full[1] = 0x80;
+		full[2] = 0xA7;
 		full[3] = '\0';
 		return full;
 	}

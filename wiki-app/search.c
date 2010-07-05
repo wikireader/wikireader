@@ -670,6 +670,7 @@ struct _cjk_english_mapping {
 	char *english;
 	char *hiragana;
 } cjk_english_mapping[] = {
+	{".",   	"‧"	},
 	{",",   	"、"	},
 	{".",   	"。"	},
 	{"a",		"ぁ" },
@@ -702,8 +703,8 @@ struct _cjk_english_mapping {
 	{"gyu",		"ぎゅ"  },
 	{"gyo",		"ぎょ"  },
 	{"ku",		"く"   },
-	{"kwa",		"くぁ"	},
 	{"qwa",		"くぁ"	},
+	{"kwa",		"くぁ"	},
 	{"qwi",		"くぃ"	},
 	{"qwu",		"くぅ"	},
 	{"qwe",		"くぇ"	},
@@ -742,8 +743,8 @@ struct _cjk_english_mapping {
 	{"da",		"だ"   },
 	{"chi",		"ち"  },
 	{"cyi",		"ちぃ"  },
-	{"che",		"ちぇ"  },
 	{"cye",		"ちぇ"  },
+	{"che",		"ちぇ"  },
 	{"cya",		"ちゃ"  },
 	{"cyu",		"ちゅ"  },
 	{"cyo",		"ちょ"  },
@@ -1312,6 +1313,7 @@ struct _cjk_english_mapping {
 	{"yuan",	"ㄩㄢ" },
 	{"yun",		"ㄩㄣ" },
 	{"yong",	"ㄩㄥ" },
+	{",",   	"，"	},
 	{"-",   	"－"	},
 	{"a",		"ａ" },
 	{"b",		"ｂ" },
