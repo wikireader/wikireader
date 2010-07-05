@@ -82,7 +82,7 @@ if no_compression:
 
 
 # the wiki-app must have the same value
-MAXIMUM_ARTICLES_PER_BLOCK = 64
+MAXIMUM_ARTICLES_PER_BLOCK = 256
 
 verbose = False
 warnings = False
