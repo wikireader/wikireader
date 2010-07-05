@@ -143,6 +143,36 @@ do
     -c|--copy)
       c="scripts/Copy --base='${base_dir}' --to='${combine_host}' --language='${language}' --suffix='${suffix}'"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
+
+      echo -n Waiting for rsync to finish: -
+      i=0
+      while :
+      do
+        rc="0 $(RenderDo --yes ${render_host} ${list} --brief 'pgrep -c rsync' | awk '{print "+ " $2}')"
+        rc=$((${rc}))
+        [ "${rc}" -eq 0 ] && break
+        case "${i}" in
+          0)
+            i=1
+            printf '\010\\'
+            ;;
+          1)
+            i=2
+            printf '\010|'
+            ;;
+          2)
+            i=3
+            printf '\010/'
+            ;;
+          3)
+            i=0
+            printf '\010-'
+            ;;
+        esac
+      done
+      echo
+      echo Creating Index files for: ${language}${suffix}
+      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' EXTRACT_VERSION_FROM='${articles_link}' print-WIKI_VERSION combine"
       shift
       ;;
 
@@ -218,8 +248,6 @@ do
         [ -e "${dest}" ] || mkdir -p "${dest}"
         [ -d "${dest}" ] || USAGE ${dest} is not a directory
       fi
-      echo Creating Index files for: ${language}${suffix}
-      RenderDo --yes ${render_host} --list="${combine_host}" --brief "cd '${base_dir}' && make VERBOSE='${verbose}' WORKDIR='work' DESTDIR='image' WIKI_FILE_PREFIX=wiki  WIKI_DIR_SUFFIX='${suffix}' WIKI_LANGUAGE='${language}' EXTRACT_VERSION_FROM='${articles_link}' print-WIKI_VERSION combine"
       echo Retrieving data for: ${language}${suffix}
       h=$(RenderDo ${render_host} --list="${combine_host}" --print-list | head -n 1)
       rsync -cavHx --progress --exclude='*-tmp' "wr@${h}:${base_dir}/image/${language}${suffix}" "${dest}/"
