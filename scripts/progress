@@ -23,8 +23,7 @@ USAGE()
   echo '       --tail[=<n>]      -t[<n>]    show last line of <base_dir>/log [3]'
   echo '       --memory          -m         show memory status'
   echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
-  echo '       --language=<xx>   -L <xx>    process for language [en]'
-  echo '       --suffix=<s>      -S <s>     set the language suffix [pedia]'
+  echo '       --language=<xx>   -L <xx>    process for language:suffix [en:pedia]'
   echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072:10 de:::YES:32:200000"'
   echo '                                    start the Run script in a screen {index, parse, render}'
   echo '                                    (see the Run script for exact specifications)'
@@ -77,7 +76,7 @@ set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:S:r:R:I:cG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,suffix:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:r:R:I:cG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -229,13 +228,13 @@ do
       ;;
 
     -L|--language)
-      language="$2"
-      shift 2
-      set_articles_link
-      ;;
-
-    -S|--suffix)
-      suffix="$2"
+      t="${2}::::::::::"
+      language="${t%%:*}"
+      [ -z "${language}" ] && language=en
+      t="${t#*:}"
+      suffix="${t%%:*}"
+      [ -z "${suffix}" ] && suffix=pedia
+      t="${t#*:}"
       shift 2
       set_articles_link
       ;;
