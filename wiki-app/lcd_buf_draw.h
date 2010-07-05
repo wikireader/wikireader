@@ -240,7 +240,7 @@ typedef struct _LCD_DRAW_BUF
 #define MAX_EXTERNAL_LINKS 128
 #define SPACE_BEFORE_LICENSE_TEXT 40
 #define SPACE_AFTER_LICENSE_TEXT 5
-#define MAX_ARTICLES_PER_COMPRESSION 64
+#define MAX_ARTICLES_PER_COMPRESSION 256
 /* Structure of a single article in a file with mutiple articles */
 /* byte 0~3: (long) offset from the beginning of the article header to the start of article text */
 /* byte 4~5: (short) number of ARTICLE_LINK blocks */
