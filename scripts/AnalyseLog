@@ -1,33 +1,49 @@
 #!/bin/sh
+# this is -*- awk -*- code
 # simple script to check the progress
 
-gawk -- '
+# code executed by the shell, but ignored by gawk
+# (awk concatenated string is true, but "&& 0" always evaluates to false
+#  to suppress the implied {print $0} on each match)
+"test" "0" "=" "$#" && "exec" "gawk" "-f" "$0" && 0
+"exec" "gawk" "-f" "$0" "--" "$@" && 0
+# gawk code below this line
+
+
 BEGIN {
-  index_count = 0
-  index_delta = 0
-  index_time = 0
-  elapsed_time = 0
-  start_time = 0
-  end_time = 0
-  delete parse_count
-  delete parse_delta
-  delete parse_time
-  delete parse_max
-  delete render_count
-  delete render_delta
-  delete render_max
-  quotes = "['"'"'\"]"
+    index_count = 0
+    index_delta = 0
+    index_time = 0
+    elapsed_time = 0
+    start_time = 0
+    end_time = 0
+    delete parse_count
+    delete parse_delta
+    delete parse_time
+    delete parse_max
+    delete render_countq
+    delete render_delta
+    delete render_max
+    quotes = "['\"]"
+    normal_nl = "\033[0m\n"
+    completion = "\033[1;33m"
+    timed = "\033[1;35m"
+    elapsed = "\033[1;32m"
 }
 
 END {
     if (0 != index_delta) {
-        printf("Index: %15d         %8.2fs per %5d\n", index_count, (index_time / (index_count / index_delta)), index_delta)
+        printf("Index: %15d         %s per %5d\n",
+               index_count,
+               seconds_to_string(index_time / (index_count / index_delta)),
+               index_delta)
     } else {
         print "Index: Not Started"
     }
 
     parse_complete = 0
     if (0 != length(parse_count)) {
+        total_complete = 0
         for (i in parse_count) {
             if (0 == parse_max[i]) {
                 complete = 0
@@ -48,14 +64,20 @@ END {
             if (100 == complete) {
                 parse_complete += 1
             }
-            printf("Parse[%2d]: %11d %6.1f%% %8.2fs per %5d\n", i, parse_count[i], complete, average, parse_delta[i])
+            total_complete += complete
+            printf("Parse[%2d]: %11d %6.1f%% %s per %5d\n",
+                   i, parse_count[i], complete,
+                   seconds_to_string(average), parse_delta[i])
         }
+        printf(completion "Parsing Completion:    %6.1f%%" normal_nl,
+               total_complete / length(parse_count))
     } else {
         print "Parse: Not Started"
     }
 
     render_complete = 0
     if (0 != length(render_count)) {
+        total_complete = 0
         for (i in render_count) {
             n = render_max[i]
             if (0 == n) {
@@ -74,13 +96,22 @@ END {
             if (100 == complete) {
                 render_complete += 1
             }
-            printf("Render[%2d]: %10d %6.1f%% %8.2fs per %5d\n", i, render_count[i], complete, average, render_delta[i])
+            total_complete += complete
+            printf("Render[%2d]: %10d %6.1f%% %s per %5d\n",
+                   i, render_count[i], complete,
+                   seconds_to_string(average), render_delta[i])
         }
+        c = length(parse_count)
+        if (c == 0 || c < length(render_count)) {
+            c = length(render_count)
+        }
+        printf(completion "Rendering Completion:  %6.1f%%" normal_nl,
+               total_complete / c)
     } else {
         print "Render: Not Started"
     }
 
-    printf("Timed Makes:  %s  Parse: %d/%d  Render: %d/%d\n",
+    printf(timed "Timed Makes:  %s  Parse: %d/%d  Render: %d/%d" normal_nl,
            seconds_to_string(elapsed_time),
            parse_complete, length(parse_count),
            render_complete, length(render_count))
@@ -89,7 +120,7 @@ END {
     } else {
         t = systime() - start_time
     }
-    printf("Elapsed Time: %s\n", seconds_to_string(t))
+    printf(elapsed "Elapsed Time: %s" normal_nl, seconds_to_string(t))
 }
 
 function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
@@ -124,8 +155,8 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
         if ("Total:" == $2) {
-           parse_count[i] = $3
-           parse_max[i] = $3
+            parse_count[i] = $3
+            parse_max[i] = $3
         } else {
             parse_time[i] += $2
             n = $3
@@ -141,8 +172,8 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
         if ("Total:" == $2) {
-           render_count[i] = $3
-           render_max[i] = $3
+            render_count[i] = $3
+            render_max[i] = $3
         } else {
             render_time[i] += $2
             n = $3
@@ -176,11 +207,11 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     t = substr(t, p1 + 1, p2 - p1 - 1)
     p1 = index(t, ":")
     if (p1 > 0) {
-       minutes = substr(t, 0, p1 - 1)
-       seconds = substr(t, p1 + 1)
-       elapsed_time += first * 60 * 60 + minutes * 60 + seconds
+        minutes = substr(t, 0, p1 - 1)
+        seconds = substr(t, p1 + 1)
+        elapsed_time += first * 60 * 60 + minutes * 60 + seconds
     } else {
-       elapsed_time += first * 60 + t
+        elapsed_time += first * 60 + t
     }
 }
 
@@ -195,5 +226,3 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
         end_time = mktime(gensub("[-:/]", " ", "g", $2 " " $3))
     }
 }
-
-' "$@"
