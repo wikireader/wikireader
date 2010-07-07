@@ -254,8 +254,8 @@ do
 
   arg="${arg#*:}"
   files="${arg%%:*}"
-  IsInteger "${files}" || files="${parallel_build}"
-  [ "${files}" -lt 0 ] && files="${parallel_build}"
+  IsInteger "${files}" || files="${threads}"
+  [ "${files}" -lt 0 ] && files="${threads}"
   [ "${files}" -gt "${parallel_build}" -o "${files}" -le 0 ] && files="${parallel_build}"
 
   licenses=$(readlink -m "${LicensesDirectory}")
