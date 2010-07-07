@@ -12,7 +12,8 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
-  echo usage: $(basename "$0") '<options> [<language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>]...'
+  echo usage: $(basename "$0") '<options> [<args>...]'
+  echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<files>'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
   echo '       --get-index=<n> -g <n>     where to rsync the indices from {1 => render1}'
@@ -213,7 +214,8 @@ fi
 
 for arg in $*
 do
-  arg="${arg}:::::::::::::" # lots of : to ensure empty arguments
+  arg="${arg}::::::::::::::" # lots of : to ensure empty arguments
+
   language="${arg%%:*}"
   [ -z "${language}" ] && language=en
 
@@ -249,6 +251,12 @@ do
   IsInteger "${threads}" || threads="${parallel_build}"
   [ "${threads}" -lt 0 ] && threads=$((${parallel_build} + ${threads}))
   [ "${threads}" -gt "${parallel_build}" -o "${threads}" -le 0 ] && threads="${parallel_build}"
+
+  arg="${arg#*:}"
+  files="${arg%%:*}"
+  IsInteger "${files}" || files="${parallel_build}"
+  [ "${files}" -lt 0 ] && files="${parallel_build}"
+  [ "${files}" -gt "${parallel_build}" -o "${files}" -le 0 ] && files="${parallel_build}"
 
   licenses=$(readlink -m "${LicensesDirectory}")
   license="${licenses}/${language}/license.xml"
@@ -309,7 +317,7 @@ do
   common_opts="${common_opts} VERBOSE='${verbose}'"
 
   common_opts="${common_opts} MACHINE_COUNT='${machine_count}'"
-  common_opts="${common_opts} PARALLEL_BUILD='${threads}'"
+  common_opts="${common_opts} PARALLEL_BUILD='${files}'"
 
   common_opts="${common_opts} ENABLE_LANGUAGES_LINKS='${enable_language_links}'"
   common_opts="${common_opts} ARTICLES_PER_BLOCK='${articles_per_block}'"
