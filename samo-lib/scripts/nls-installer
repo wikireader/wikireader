@@ -42,7 +42,15 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
   "Display a usage message"
   (if (string? message)
       (format #t "error: ~a~%" message))
-  (format #t "usage: ~a [--verbose] [--debug] --prefix=path --language=lang --suffix=suffix --output=file --nls=file~%" *program*)
+  (format #t "usage: ~a <options>~%" *program*)
+  (format #t "       --verbose           -v             more descriptive output~%")
+  (format #t "       --debug             -d~%           enable debugging outputs")
+  (format #t "       --prefix=<path>     -p <path>      path prefix to image directory~%")
+  (format #t "       --language=<lang>   -l <lang>      language code~%")
+  (format #t "       --suffix=<suffix>   -s <suffix>    suffix (pedia,quote,dict,...)~%")
+  (format #t "       --output=<file>     -o <file>      output file name e.g. wiki.nls~%")
+  (format #t "       --nls=<file>        -n <file>      nls source file~%")
+  (format #t "       --change=<name>     -c <name>      optional s/English/<name>/g~%")
   (exit 1))
 
 
@@ -56,6 +64,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                                      (suffix (single-char #\s) (value #t))
                                      (output (single-char #\o) (value #t))
                                      (nls (single-char #\n) (value #t))
+                                     (change (single-char #\c) (value #t))
                                      (verbose (single-char #\v))
                                      (debug (single-char #\d)))))
          (=p (option-ref parsed-opts 'prefix #f))
@@ -63,6 +72,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
          (=s (option-ref parsed-opts 'suffix #f))
          (=o (option-ref parsed-opts 'output #f))
          (=n (option-ref parsed-opts 'nls #f))
+         (=c (option-ref parsed-opts 'change ""))
          (*verbose* (option-ref parsed-opts 'verbose #f))
          (*debug* (option-ref parsed-opts 'debug #f)))
     (if *debug*
@@ -102,7 +112,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                        (process control-list
                                 (string-trim-both (read-line)))))
 
-              ;; copy in any miisng values from defaults
+              ;; copy in any missing values from defaults
               (hash-for-each (lambda (key data)
                                (unless (hash-ref table key)
                                        (hash-set! table key data))) defaults)
@@ -110,7 +120,15 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
               (for-each display
                         (sort-list
                          (hash-map->list (lambda (key data)
-                                           (format #f "~a=~a~%" key data)) table) string<?)))))))))
+                                           (format #f "~a=~a~%" key (change =c data))) table) string<?)))))))))
+
+
+
+(define (change substitute text)
+  "change the word 'English' to the substitute value"
+  (if (or (null? substitute) (string-null? substitute))
+      string
+      (regexp-substitute/global #f "English" text 'pre substitute 'post)))
 
 
 (define (process actions line)

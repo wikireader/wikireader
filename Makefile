@@ -727,12 +727,14 @@ nls-install: validate-destdir
 	        if [ X"$${language}" != X"$${d}" ] ; \
 	        then \
 	          src="${LICENSE_DIR}/$${d%$${suffix}}/wiki.nls" ; \
+	          native_name=$$(${SCRIPTS}/nls-print "$${language}") ; \
 	          [ -f "$${src}" ] || src="${LICENSE_DIR}/en/wiki.nls" ; \
 	          ${SCRIPTS}/nls-installer --prefix="${DESTDIR_PATH}" \
                                            --language="$${language}" \
                                            --suffix="$${suffix}" \
                                            --output="wiki.nls" \
                                            --nls="$${src}" \
+                                           --change="$${native_name}" \
                                            --verbose ; \
 	          break ; \
 	        fi ; \
