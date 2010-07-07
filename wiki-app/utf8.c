@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string.h>
 #include "utf8.h"
+#include "msg.h"
 
 ucs4_t UTF8_to_UCS4(unsigned char **pUTF8)
 {
@@ -110,17 +112,17 @@ void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 {
 	int i;
 	int j = 0;
-
+	
 	if (utf8_str_len > 0)
 	{
 		i = utf8_str_len - 1;
 		while (i >= 0 && (utf8_str[i] & 0xC0) == 0x80)
 			i--;
-
+		
 		while (i < utf8_str_len && j < 4)
 			out_utf8_char[j++] = utf8_str[i++];
 	}
-
+	
 	out_utf8_char[j] = '\0';
 }
 
@@ -128,7 +130,7 @@ void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 {
 	int len;
 	int i = 0;
-
+	
 	if (utf8_str_len > 0)
 	{
 		if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
@@ -145,18 +147,18 @@ void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 		}
 		else
 			len = 1;
-
+		
 		for (i = 0; i < len && i < utf8_str_len; i++)
 			out_utf8_char[i] = utf8_str[i];
 	}
-
+	
 	out_utf8_char[i] = '\0';
 }
 
 char *next_utf8_char(char *utf8_str)
 {
 	int len;
-
+	
 	if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
 	{
 		len = 2;
@@ -171,11 +173,34 @@ char *next_utf8_char(char *utf8_str)
 	}
 	else
 		len = 1;
-
+	
 	while (len && *utf8_str)
 	{
 		len--;
 		utf8_str++;
 	}
 	return utf8_str;
+}
+
+void utf8_char_toupper(unsigned char *out, unsigned char *in)
+{
+    if ('a' <= *in && *in <= 'z')
+    {
+        out[0] = in[0] + ('A' - 'a');
+        out[1] = '\0';
+    }
+    else if (!strncmp(in, (unsigned char *)"æ", 2))
+    {
+        strcpy(out, "Æ");
+    }
+    else if (!strncmp(in, "å", 2))
+    {
+        strcpy(out, "Å");
+    }
+    else if (!strncmp(in, "ø", 2))
+    {
+        strcpy(out, "Ø");
+    }
+    else
+        strcpy(out, in);
 }

@@ -76,7 +76,7 @@ void set_wiki(int idx);
 int get_wiki_idx_from_id(int wiki_id);
 int get_wiki_id_from_idx(int wiki_idx);
 WIKI_LICENSE_DRAW *wiki_license_draw(void);
-bool wiki_is_cjk();
+bool wiki_keyboard_conversion_needed();
 bool wiki_is_TC();
 bool wiki_is_japanese();
 bool wiki_is_korean();

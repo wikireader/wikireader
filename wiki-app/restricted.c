@@ -35,6 +35,7 @@
 #include "history.h"
 #include "delay.h"
 #include "wiki_info.h"
+#include "msg.h"
 
 #define BLACK_SPACE_START RESULT_START
 
@@ -315,14 +316,22 @@ void save_password(int flag)
 			SHA1Result(&sha);
 			memcpy(restriction_pass1, sha.Message_Digest, 20);
 		}
+		else
+            memset(restriction_pass1, 0, 20);
 		wl_write(fd, restriction_pass1, 20);
-		if (flag > 1)
+		if (password_str_len > 0 && flag > 1)
 		{
 			SHA1Reset(&sha);
 			SHA1Input(&sha, (const unsigned char *) restriction_pass1, 20);
 			SHA1Result(&sha);
 			wl_write(fd, sha.Message_Digest, 20);
 		}
+        else
+        {
+            char buf[20];
+            memset(buf, 0, 20);
+            wl_write(fd, buf, 20);
+        }
 
 		wl_close(fd);
 #ifdef INCLUDED_FROM_KERNEL
@@ -517,7 +526,8 @@ int init_article_filter(void)
 			len = wl_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-			else
+            memset(restriction_pass2, 0, 20);
+            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = wl_read(fd, restriction_pass2, 20);
 				if (len < 20)
@@ -565,7 +575,8 @@ int check_restriction(long idx_article)
 			len = wl_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-			else
+            memset(restriction_pass2, 0, 20);
+            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = wl_read(fd, restriction_pass2, 20);
 				if (len < 20)

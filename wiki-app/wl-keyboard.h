@@ -31,12 +31,16 @@ typedef enum {
 	KEYBOARD_NONE,
 	KEYBOARD_CHAR,
 	KEYBOARD_CHAR_JP,
+	KEYBOARD_CHAR_KO,
+	KEYBOARD_CHAR_DA,
 	KEYBOARD_NUM,
-	KEYBOARD_PHONE_STYLE_JP,
+	// all non-phone style keyboards for search should be before this
+    KEYBOARD_PHONE_STYLE,
+	// all phone style keyboards should be after this
+    KEYBOARD_PHONE_STYLE_JP,
 	KEYBOARD_PHONE_STYLE_TW,
 	KEYBOARD_PHONE_STYLE_ABC,
 	KEYBOARD_PHONE_STYLE_123,
-	KEYBOARD_CHAR_KO,
 	KEYBOARD_CLEAR_HISTORY,
 	KEYBOARD_RESTRICTED,
 	KEYBOARD_PASSWORD_CHAR,
@@ -74,7 +78,7 @@ int keyboard_key_inverted(void);
 int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2);
 struct keyboard_key *keyboard_locate_key(char keycode);
 void flash_keyboard_key_invert();
-unsigned char full_alphabet_to_half(unsigned char *full, int *used_len);
+unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len);
 unsigned char *half_alphabet_to_full(unsigned char c);
 int multi_selection_key(struct keyboard_key *key);
 #endif

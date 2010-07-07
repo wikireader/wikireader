@@ -41,7 +41,7 @@ WIKI_LIST wiki_list[] =
 	{ 7,  7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia", KEYBOARD_CHAR, 0},
 	{ 8,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_PHONE_STYLE_JP, 0},
 	{ 9,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_CHAR_JP, 2},
-	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR, 0},
+	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR_DA, 0},
 	{11, 10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia", KEYBOARD_CHAR, 0},
 	{12, 11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia", KEYBOARD_CHAR, 0},
 	{13, 12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia", KEYBOARD_CHAR_KO, 0},
@@ -64,6 +64,7 @@ int aWikiInfoIdx[MAX_WIKIS_PER_DEVICE]; // index to wiki_info[]
 char *aWikiNls[MAX_WIKIS_PER_DEVICE];
 long aWikiNlsLen[MAX_WIKIS_PER_DEVICE];
 int nCurrentWiki = -1; // index to aWikiInfoIdx[]
+bool bWikiIsDanish = false;
 bool bWikiIsJapanese = false;
 bool bWikiIsKorean = false;
 bool bWikiIsTC = false;
@@ -157,6 +158,10 @@ void init_wiki_info(void)
 			bWikiIsKorean = true;
 		else
 			bWikiIsKorean = false;
+		if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "da"))
+			bWikiIsDanish = true;
+		else
+			bWikiIsDanish = false;
 		default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
 		keyboard_set_mode(default_keyboard);
 	}
@@ -198,9 +203,9 @@ bool wiki_lang_exist(char *lang_link_str)
 		return false;
 }
 
-bool wiki_is_cjk()
+bool wiki_keyboard_conversion_needed()
 {
-	return bWikiIsJapanese || bWikiIsTC || bWikiIsKorean;
+	return bWikiIsJapanese || bWikiIsTC || bWikiIsKorean || bWikiIsDanish;
 }
 
 bool wiki_is_japanese()
@@ -216,6 +221,11 @@ bool wiki_is_TC()
 bool wiki_is_korean()
 {
 	return bWikiIsKorean;
+}
+
+bool wiki_is_danish()
+{
+	return bWikiIsDanish;
 }
 
 KEYBOARD_MODE wiki_default_keyboard()
@@ -502,6 +512,10 @@ void set_wiki(int idx)
 		bWikiIsKorean = true;
 	else
 		bWikiIsKorean = false;
+	if (!strcmp(wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_lang, "da"))
+		bWikiIsDanish = true;
+	else
+		bWikiIsDanish = false;
 	default_keyboard = wiki_list[aWikiInfoIdx[nCurrentWiki]].wiki_default_keyboard;
 	fd = wl_open("wiki.ini", WL_O_CREATE);
 	if (fd >= 0)
