@@ -26,6 +26,7 @@ USAGE()
   echo '       --language=<xx>   -L <xx>    process for language:suffix [en:pedia]'
   echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072:10 de:::YES:32:200000"'
   echo '                                    start the Run script in a screen {index, parse, render}'
+  echo '                                    quote arguments OR use "," e.g.  es,de,en:dict'
   echo '                                    (see the Run script for exact specifications)'
   echo '       --re-render=<rl>  -R <rl>    as --run but only does {render}'
   echo '       --re-index=<rl>   -I <rl>    as --run but only does {index}'
@@ -311,5 +312,6 @@ do
   esac
 done
 
+[ $# -gt 0 ] && USAGE extraneous arguments: $*
 echo
 echo completed
