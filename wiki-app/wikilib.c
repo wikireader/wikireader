@@ -391,7 +391,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 static void handle_cursor(struct wl_input_event *ev)
 {
 	DP(DBG_WL, ("O handle_cursor()\n"));
-	if (display_mode == DISPLAY_MODE_ARTICLE) {
+	if (display_mode == DISPLAY_MODE_ARTICLE || display_mode == DISPLAY_MODE_WIKI_SELECTION) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 			display_article_with_pcf(50);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
