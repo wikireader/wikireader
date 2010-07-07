@@ -14,7 +14,7 @@ BEGIN {
     index_count = 0
     index_delta = 0
     index_time = 0
-    elapsed_time = 0
+    timed_time = 0
     start_time = 0
     end_time = 0
     delete parse_count
@@ -32,6 +32,11 @@ BEGIN {
 }
 
 END {
+    if (end_time > 0) {
+        elapsed_time = end_time - start_time
+    } else {
+        elapsed_time = systime() - start_time
+    }
     if (0 != index_delta) {
         printf("Index: %15d         %s per %5d\n",
                index_count,
@@ -69,8 +74,17 @@ END {
                    i, parse_count[i], complete,
                    seconds_to_string(average), parse_delta[i])
         }
-        printf(completion "Parsing Completion:    %6.1f%%" normal_nl,
-               total_complete / length(parse_count))
+        percent_complete = total_complete / length(parse_count)
+        if (0 == percent_complete) {
+            estimated_finish = "Unknown"
+        } else if (100 <= percent_complete) {
+            estimated_finish = "Complete"
+        } else {
+            estimated_finish = seconds_to_string(elapsed_time * (100 - percent_complete) / percent_complete)
+        }
+        printf(completion "Parsing Completion:    %6.1f%%  Estimated finish in: %s" normal_nl,
+               percent_complete, estimated_finish)
+
     } else {
         print "Parse: Not Started"
     }
@@ -105,22 +119,25 @@ END {
         if (c == 0 || c < length(render_count)) {
             c = length(render_count)
         }
-        printf(completion "Rendering Completion:  %6.1f%%" normal_nl,
-               total_complete / c)
+        percent_complete = total_complete / c
+        if (0 == percent_complete) {
+            estimated_finish = "Unknown"
+        } else if (100 <= percent_complete) {
+            estimated_finish = "Complete"
+        } else {
+            estimated_finish = seconds_to_string(elapsed_time * (100 - percent_complete) / percent_complete)
+        }
+        printf(completion "Rendering Completion:  %6.1f%%  Estimated finish in: %s" normal_nl,
+               percent_complete, estimated_finish)
     } else {
         print "Render: Not Started"
     }
 
     printf(timed "Timed Makes:  %s  Parse: %d/%d  Render: %d/%d" normal_nl,
-           seconds_to_string(elapsed_time),
+           seconds_to_string(timed_time),
            parse_complete, length(parse_count),
            render_complete, length(render_count))
-    if (end_time > 0) {
-        t = end_time - start_time
-    } else {
-        t = systime() - start_time
-    }
-    printf(elapsed "Elapsed Time: %s" normal_nl, seconds_to_string(t))
+    printf(elapsed "Elapsed Time: %s" normal_nl, seconds_to_string(elapsed_time))
 }
 
 function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
@@ -193,7 +210,7 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     p2 = index(t, "s")
     minutes = substr(t, 0, p1 - 1)
     seconds = substr(t, p1 + 1, p2 - p1 - 1)
-    elapsed_time += minutes * 60 + seconds
+    timed_time += minutes * 60 + seconds
 }
 
 # extract elapsed time from /usr/bin/time,  e.g.
@@ -209,20 +226,20 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     if (p1 > 0) {
         minutes = substr(t, 0, p1 - 1)
         seconds = substr(t, p1 + 1)
-        elapsed_time += first * 60 * 60 + minutes * 60 + seconds
+        timed_time += first * 60 * 60 + minutes * 60 + seconds
     } else {
-        elapsed_time += first * 60 + t
+        timed_time += first * 60 + t
     }
 }
 
 # extract the start time, e.g.
 # ===> 2010-06-21 18:16:04: git pull
-# ===> 2010-06-21 18:16:04: echo Processing Complete
+# ===> 2010-06-21 18:16:04: echo Processing Completed
 /^===>/ {
     if (0 == start_time) {
         start_time = mktime(gensub("[-:/]", " ", "g", $2 " " $3))
     }
-    if ("Processing" == $5 && "Complete" == $6) {
+    if ("Processing" == $5 && "Completed" == $6) {
         end_time = mktime(gensub("[-:/]", " ", "g", $2 " " $3))
     }
 }
