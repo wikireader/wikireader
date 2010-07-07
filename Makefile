@@ -169,6 +169,8 @@ version: validate-destdir
 	find "${DESTDIR_PATH}" -type d -print -exec \
 	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
+	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.pas" bs=40 count=1
+	echo "wiki_id=1" > "${DESTDIR_PATH}/wiki.ini"
 
 
 .PHONY: misc-files-install
