@@ -77,7 +77,7 @@ def main():
 
     for item in args:
         try:
-            index_number = int(item, 0)
+            index_number = int(item.translate(None, ',_'), 0)
         except ValueError:
             usage('"{0:s}" is not numeric'.format(item))
 
@@ -131,6 +131,7 @@ def process(index_number, idx_file, fnd_file, dat_format, extract):
 
     total_article_bytes = 0
     PrintLog.message('{0:>29s}{1:>25s}{2:>25s}'.format('Article Number', 'Article Offset', 'Uncompressed Length'))
+
     for i in range(0, number_of_pages):
         page_id, page_offset, page_length = struct.unpack('<3I', dat_file.read(3 * uint32_size))
         restricted = 'Restricted' if (0 != page_offset & 0x80000000) else ''
@@ -141,7 +142,6 @@ def process(index_number, idx_file, fnd_file, dat_format, extract):
 
     PrintLog.message('{0:<{1}s}{2:10n} [0x{2:08x}]'.format('Total bytes: ', 3+3+10+4+8+3+10+4+8+3, total_article_bytes))
     PrintLog.message('')
-
 
     data_length = struct.unpack('<I', dat_file.read(4))[0]
     PrintLog.message('DataLength  = {0:13n} [0x{0:08x}]'.format(data_length))
