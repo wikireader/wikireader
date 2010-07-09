@@ -1,0 +1,319 @@
+#!/bin/sh
+#| This is actually -*- lisp -*- code
+# sbcl needs a little help to pass the script name to sb-ext:*posix-argv* code:
+exec sbcl --script "$0" "$0" "$@"
+|#
+
+;;; Generate an XML index file for all packages
+;;;
+;;; Copyright (c) 2010 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(require 'getopt)
+
+(defvar *program* (second sb-ext:*posix-argv*) "name of this script file")
+(defvar *debug* nil  "set true for debuf output")
+(defvar *verbose* nil "set true for verbose output")
+
+
+(defun usage (&rest message)
+ "Display a usage message"
+  (if message
+      (format t "error: ~a~%" message))
+  (format t "usage: ~a <options> <directories>~%" *program*)
+  (format t "       --verbose                    more verbose output~%")
+  (format t "       --debug                      debugging output~%")
+  (format t "       --languages=<data-file>      language data file (lisp)~%")
+  (format t "       --index=<output-file>        the output index file~%")
+  (sb-ext:quit :unix-status 1))
+
+
+(defvar *type-codes* (make-hash-table :test #'equal))
+(loop for item in
+     '(("books" "Wikibooks")
+       ("dict" "Wiktionary")
+       ("pedia" "Wikipedia")
+       ("quote" "Wikiquote"))
+   do
+     (setf (gethash (first item) *type-codes*) (second item)))
+
+
+(defun get-type (code)
+  "return type name from type code"
+  (multiple-value-bind (value exists)
+      (gethash code *type-codes*)
+    (and exists value)))
+
+
+(defvar *languages* (make-hash-table :test #'equal))
+
+(defun load-languages (filename)
+  "load the *language* hash table from list of languages"
+  (loop for item in
+       (with-open-file (stream filename :direction :input)
+         (read stream))
+     do
+       (setf (gethash (first item) *languages*) (rest item))))
+
+
+(defun get-language (code)
+  "return (english native) from language code"
+  (multiple-value-bind (value exists)
+      (gethash code *languages*)
+    (and exists value)))
+
+
+(defun match-prefix-suffix (prefix suffix possible)
+  "extract the language and type identifier from a string"
+  (let ((lang (get-language prefix))
+        (type (get-type suffix)))
+    (cond
+     ((and lang type)
+      (list (cons prefix lang) (list suffix type)))
+     ((string= "" prefix)
+      possible)
+     (t
+      (let* ((end-pos (1- (length prefix)))
+             (new-prefix (subseq prefix 0 end-pos))
+             (new-suffix (concatenate 'string (string (elt prefix end-pos)) suffix))
+             (new-possible (cond
+                             (lang
+                              (list (append (list prefix) lang) (make-list 2 :initial-element suffix)))
+                             (type
+                              (list (make-list 3 :initial-element prefix) (list suffix type)))
+                             (t possible))))
+             (match-prefix-suffix new-prefix new-suffix new-possible))))))
+
+
+(defun split-prefix (item)
+  "extract the language and type identifier from a string, e.g.
+   (dedict 12345678 (de German Deutsch) (dict Wiktionary))"
+  (match-prefix-suffix item "" (list '("!" "None" "None") '("Invalid" "Invalid"))))
+
+
+(defun identify (file-name)
+  "separate out language, type and date from file name: <lang><type>-<date>"
+  (let* ((p (search "-" file-name))
+         (prefix (subseq file-name 0 p))
+         (date (subseq file-name (1+ p))))
+    (if (string= "base" prefix)
+        (list "." date '("#" "all" "all") '("base" "base"))
+        (append (list prefix date) (split-prefix prefix)))))
+
+
+(defun uncompressed-size (file-name)
+  "call 7z l file and extract the uncompressed size from the output"
+  (let* ((blanks '(#\Space #\NO-BREAK_SPACE #\Tab #\Vt #\Return #\Newline))
+         (rc 0)
+         (out (string-trim blanks
+                           (with-output-to-string (st)
+                             (setq rc (sb-ext:process-exit-code
+                                       (sb-ext:run-program "/usr/bin/7z"
+                                                           (list "l" file-name)
+                                                           :output st :error st))))))
+         (p (search (string #\Newline) out :from-end t))
+         (last-line (string-trim blanks (subseq out (1+ p)))))
+    (if (zerop rc)
+        (parse-integer last-line :start 0 :end (search " " last-line))
+        0)))
+
+
+(defun list-of-files (dir-name)
+  "return a sorted list of all .7z and .7z.* files ((basename size)...)"
+  (let ((7z (concatenate 'string dir-name "/*.7z"))
+        (arc (concatenate 'string dir-name "/*.7z.*")))
+    (loop for file-path in (sort
+                            (append (directory 7z) (directory arc))
+                            #'string< :key #'namestring)
+       collect
+         (let ((basename (file-namestring file-path)))
+           (when *verbose*
+             (format t "  File: ~a~%" basename))
+           (list
+            basename
+            (with-open-file (file-stream file-path :direction :input)
+              (file-length file-stream)))))))
+
+
+(defun partition-files (dir file-list)
+  "put adjacent similar names into a nested list
+   (folder date language type ( uncompressed-size (file1 length1) (file2 length2) ... ) )"
+  (let ((table (make-hash-table :test #'equal)))
+    (loop for item in file-list
+       do
+         (let* ((file-name (first item))
+                (key (subseq file-name 0 (search ".7z" file-name))))
+           (setf (gethash key table)
+                 (if (gethash key table nil)
+                     (append (gethash key table) (list item))
+                     (list
+                      (uncompressed-size (concatenate 'string dir "/" file-name))
+                      item)))))
+    (loop for k being the hash-keys in table using (hash-value v)
+       collect (append (identify k) (list v)))))
+
+
+(defvar *xml-indent* 0  "for indenting the XML output")
+(defvar *xml-stack* nil "for xml-close to match the tags")
+(defvar *xml-stream* t  "current xml output stream")
+
+(defun xml-set-stream (out-stream)
+  "set the xml output stream"
+  (if out-stream
+      (setq *xml-stream* out-stream)
+      (setq *xml-stream* t))) ;; sets output to stdout
+
+(defun xml-current-indent ()
+  "a number of spaces corresponding to *xml-indent*"
+  (make-string *xml-indent* :initial-element #\Space))
+
+
+(defun xml-string-of (item)
+  "return string of item, but downcase symbols"
+  (if (symbolp item)
+      (string-downcase item)
+      (format nil "~a" item)))
+
+
+(defun xml-attribute-string (attributes)
+  "convert: ((key value)...) to string form: key=''value''..."
+  (loop for attr in attributes
+     append (list (format nil " ~a=\"~a\""
+                          (xml-string-of (first attr))
+                          (xml-string-of (second attr))))
+       into attr-list
+     finally
+       (return (apply #'concatenate 'string attr-list))))
+
+
+(defun xml-entry (tag data &rest attributes)
+  "display a single line XML entry"
+  (format *xml-stream* "~a<~a~a>~a</~a>~%" (xml-current-indent)
+          (xml-string-of tag)
+          (xml-attribute-string attributes)
+          data
+          (xml-string-of tag)))
+
+
+(defun xml-open (tag &rest attributes)
+  "start the XML tag"
+  (format *xml-stream* "~a<~a~a>~%" (xml-current-indent) (xml-string-of tag) (xml-attribute-string attributes))
+  (setq *xml-indent* (+ *xml-indent* 2))
+  (push (xml-string-of tag) *xml-stack*))
+
+
+(defun xml-close ()
+  "close the most recently opened tag"
+  (when *xml-stack*
+    (setq *xml-indent* (- *xml-indent* 2))
+    (format *xml-stream* "~a</~a>~%" (xml-current-indent) (pop *xml-stack*))))
+
+
+(defun output-archive (file-list uncompressed-size)
+  "output xml for a single archive ((file size)...)"
+  (xml-open 'archives (list 'count (length file-list)) (list 'size uncompressed-size))
+  (loop
+     for count = 1 then (1+ count)
+     for item in file-list
+       do
+       (xml-entry 'file (concatenate 'string (first item)"?torrent")
+                  (list 'id count) (list 'size (second item))))
+  (xml-close))
+
+
+(defun output-volumes (structure &key base)
+  "output the volume list"
+  (loop
+     for item in structure
+     with count = 0
+     when (eq base (string= (first item) "."))
+     do
+       (incf count)
+       (xml-open 'volume (list 'id count))
+       (let* ((lang (third item))
+              (id (first lang))
+              (english (second lang))
+              (native (third lang)))
+         (xml-entry 'language native (list 'id id) (list 'name english)))
+       (xml-entry 'name (second (fourth item)))
+       (xml-entry 'date (second item))
+       (xml-entry 'folder (first item))
+       (let* ((a (fifth item))
+              (uncompressed-size (first a))
+              (archives (rest a)))
+         (output-archive archives uncompressed-size))
+       (xml-close)))
+
+
+(defun output-structure (dir-name structure)
+  "output the XML structure"
+  (xml-open 'release)
+  (xml-entry 'version (file-namestring dir-name))
+  (xml-open 'compatibility '(select single))
+  (output-volumes structure :base t)
+  (xml-close)
+  (xml-open 'documents '(select multiple))
+  (output-volumes structure)
+  (xml-close)
+  (xml-close))
+
+
+(defun main (args)
+  "Main program"
+
+  (setq *program* (first args))
+  (multiple-value-bind (args opts errors) (getopt:getopt (rest args)
+                                                         '(("index" :required)
+                                                           ("languages" :required)
+                                                           ("help" :none t)
+                                                           ("verbose" :none t)
+                                                           ("debug" :none t)))
+    (when errors
+      (usage "invalid option: " (first errors)))
+    (setq *verbose* (rest (assoc "verbose" opts :test 'string=)))
+    (setq *debug* (rest (assoc "debug" opts :test 'string=)))
+    (when (rest (assoc "help" opts :test 'string=))
+      (usage))
+    (let ((index (rest (assoc "index" opts :test 'string=)))
+          (languages (rest (assoc "languages" opts :test 'string=)))
+          (directories args))
+      (when *debug*
+        (format t "parsed opts = ~a~%" opts)
+        (format t "non-option args = ~a~%" args)
+        (format t "output file = ~a~%" index))
+
+      (unless index (usage "Missing index"))
+      (unless languages (usage "Missing languages file"))
+      (unless (probe-file languages) (usage "Languages file does not exist"))
+      (when (= 0 (length directories)) (usage "missing arguments"))
+
+      (load-languages languages)
+      (with-open-file (out-stream index :direction :output :if-exists :supersede
+                                  :if-does-not-exist :create)
+        (xml-set-stream out-stream)
+        ;;(xml-set-stream t)
+        (loop for dir in (sort directories #'string<)
+           do
+             (when *verbose*
+               (format t "Directory: ~a~%" dir))
+             (output-structure dir (partition-files dir (list-of-files dir))))
+        (xml-set-stream nil)))))
+
+
+;;; run the main program
+;;; from exec at top of file sb-ext:*posix-argv* = ("sbcl" "script-file" "arg1"...)
+(main (rest sb-ext:*posix-argv*))

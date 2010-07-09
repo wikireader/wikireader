@@ -13,20 +13,19 @@ USAGE()
   echo usage: $(basename "$0") '<options>'
   echo '       --help           -h         this message'
   echo '       --verbose        -v         more messages'
-  echo '       --packages=<dir> -p <dir>   directory for 7zipped files and torrents [packages]'
-  echo '       --image=<dir>    -i <dir>   image source directory [image]'
-  echo '       --tracker=<url>  -t <url>   tracker URL (default: torrents not created)'
-  echo '       --url=<url>      -u <url>   base url for HTML file (default: none)'
-  echo '       --size=<n>       -s <n>     7zip splitting factor (number[kmg]) [1g]'
+  echo '       --packages=<dir> -p <dir>   directory for 7zipped files ['${packages}']'
+  echo '       --image=<dir>    -i <dir>   image source directory ['${image}']'
+  echo '       --url=<url>      -u <url>   base url for HTML file ['${url}']'
+  echo '       --size=<n>       -s <n>     7zip splitting factor (number[kmg]) ['${size}']'
   exit 1
 }
 
 
+nlsprint=$(readlink -m "$(dirname "$0")/../samo-lib/scripts/nls-print")
 verbose=no
-packages=packages
+packages="packages/$(date '+%Y%m%d')"
 image=image
-tracker=
-url=
+url=http://wrmlbeta.s3.amazonaws.com
 size=1g
 
 debug=no
@@ -53,11 +52,6 @@ do
 
     -i|--image)
       image="$2"
-      shift 2
-      ;;
-
-    -t|--tracker)
-      tracker="$2"
       shift 2
       ;;
 
@@ -146,102 +140,6 @@ HTMLoutput()
 }
 
 
-
-# set up for XML output
-IndexFileName="${packages}/packages.xml"
-IndentLevel=0
-TagStack=
-
-rm -f "${IndexFileName}"
-rm -f "${packages}/"*.torrent
-
-# output to index
-XMLoutput()
-{
-  printf "%${IndentLevel}s" '' >> "${IndexFileName}"
-  echo  "$@" >> "${IndexFileName}"
-}
-
-# create the xml attributes string
-XMLattributes()
-{
-  local options=
-  local key data
-
-  while [ $# -gt 0 ]
-  do
-    data="$1"; shift
-    key="${data%%=*}"
-    data="${data#${key}=}"
-    [ X"${key}" = X"${data}" ] && data=
-    [ -n "${data}" ] && data="=\"${data}\""
-    [ -n "${key}" ] && options="${options} ${key}${data}"
-  done
-  printf '%s' "${options}"
-}
-
-# begin a new tag
-XMLenter()
-{
-  local tag="$1"; shift
-
-  XMLoutput "<${tag}$(XMLattributes "$@")>"
-  IndentLevel=$((${IndentLevel} + 2))
-  TagStack="${tag} ${TagStack}"
-}
-
-# close a tag
-XMLleave()
-{
-  local all="$1"
-  local tag
-
-  while :
-  do
-    tag="${TagStack%% *}"
-    TagStack="${TagStack#* }"
-    IndentLevel=$((${IndentLevel} - 2))
-    [ ${IndentLevel} -lt 0 ] && IndentLevel=0
-    XMLoutput "</${tag}>"
-    [ -z "${all}" ] && break
-    [ -z "${TagStack}" ] && break
-  done
-}
-
-# output a single tagged item
-XMLitem()
-{
-  local tag="$1"; shift
-  local data="$1"; shift
-
-  XMLoutput "<${tag}$(XMLattributes "$@")>${data}</${tag}>"
-}
-
-# output files
-# depends on global torrent variable
-XMLfiles()
-{
-  local id=1 size
-
-  size=$(7z l "$1" | tail -n 1 | awk '{print $1}')
-  XMLenter archives count="$#" size="${size}"
-  for p in "$@"
-  do
-    file=$(basename "${p}")
-    echo build XML for: ${file}
-    size=$(du -b "${p}" | tail -n 1 | awk '{print $1}')
-    if [ -n "${tracker}" ]
-    then
-      buildtorrent -a "${tracker}" "${p}" "${p}.torrent"
-      XMLitem file "${file}.torrent" id="${id}" format=torrent size="${size}"
-    else
-      XMLitem file "${file}?torrent" id="${id}" format=torrent size="${size}"
-    fi
-    id=$((${id} + 1))
-  done
-  XMLleave
-}
-
 # create archive only if not already done
 MakeArchive()
 {
@@ -255,9 +153,6 @@ MakeArchive()
     7z a $@ "${archive}" "${dir}"
   fi
 }
-
-# remove history, passwords etc.
-rm -f wiki.* WIKI.* *~ */*~
 
 # get all directories
 all_dirs=$(find . -mindepth 1 -maxdepth 1 -type d)
@@ -286,13 +181,6 @@ done
 version=$(awk '/^[[:space:]]*VERSION:/{print $2}' version.txt | head -n 1)
 archive="${packages}/base-${version}"
 eval MakeArchive "'${archive}'" '.' ${excludes}
-XMLenter package
-XMLenter base
-XMLitem version "${version}"
-XMLitem folder '.'
-XMLitem name "base-${version}"
-XMLfiles "${archive}"*
-XMLleave
 
 HTMLoutput 0 '<ul>'
 
@@ -318,7 +206,6 @@ HTMLoutput 4 ')'
 HTMLoutput 2 '</li>'
 
 
-XMLenter collection count="${DirectoryCount}"
 count=0
 # process all pedia... directories
 for p in ${all_dirs}
@@ -343,16 +230,8 @@ do
     fi
   done
 
-  native_language=$(nls-print "${language}")
+  native_language=$(${nlsprint} "${language}")
   full_name=$(TypeToName "${type}")
-  XMLenter volume id="${count}"
-  XMLitem language "${native_language}" id="${language}"
-  XMLitem type "${type}"
-  XMLitem version "${version}"
-  XMLitem folder "${d}"
-  XMLitem name "${full_name}"
-  XMLfiles "${archive}"*
-  XMLleave
 
   HTMLoutput 2 '<li>'
   HTMLoutput 4 "<strong>${native_language} ${full_name}</strong>&#8211;"
@@ -377,12 +256,5 @@ do
 
 done
 
-# end of XML
-XMLleave all
+# end of HTML
 HTMLoutput 0 '</ul>'
-
-# create checksums
-#cd "${packages}" || ERROR missing directory: ${packages}
-#checksums="${packages}/sha256.txt"
-#rm -f "${checksums}"
-#sha256sum --binary * | dd bs=1 | tee "${checksums}"
