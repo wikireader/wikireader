@@ -39,7 +39,6 @@ include ${MK_DIR}/definitions.mk
 RENDER_BLOCK ?= 0
 START ?= 1
 COUNT ?= all
-TOTAL_HTML_FILES ?= 64
 DESTDIR ?= .
 FONT_PATH ?= $(shell ${REALPATH} ${HOST_TOOLS}/fonts)
 WORKDIR ?= /tmp
@@ -140,44 +139,6 @@ index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-use
 		--ignore-templates="${IGNORED_TEMPLATES}" \
 		--language="${WIKI_LANGUAGE}" \
 		--prefix="${DATA_PREFIX}" ${TRUNCATE_ARG} ${XML_FILES}
-
-HTML_FILES_COUNT := $(words $(wildcard ${WORKDIR_PATH}/*.html))
-.PHONY: merge
-merge:
-ifeq (0,$(strip $(shell [ "${HTML_FILES_COUNT}" -gt "${TOTAL_HTML_FILES}" ] ; echo $$?)))
-	@echo merging: ${HTML_FILES_COUNT} to: ${TOTAL_HTML_FILES}
-	@${RM} ${HTML_ARTICLES_PREFIX}*.html-UNMERGED
-	@i=0 ; \
-	while [ $${i} -lt ${HTML_FILES_COUNT} ] ; \
-	do \
-	  f=${HTML_ARTICLES_PREFIX}$${i}.html ; \
-	  mv "$${f}" "$${f}-UNMERGED" ; \
-	  i=$$(($${i} + 1)) ; \
-	done
-	@i=0 ; in=0 ; out=0 ; \
-	total=${TOTAL_HTML_FILES} ; count=${HTML_FILES_COUNT} ; \
-	while [ $${out} -lt ${TOTAL_HTML_FILES} ] ; \
-	do \
-	  step=$$(expr '(' 2 '*' $${count} / $${total} + 1 ')' / 2) ; \
-	  count=$$(($${count} - $${step})) ; \
-	  f_out=${HTML_ARTICLES_PREFIX}$${out}.html ; \
-	  ${RM} $${f_out} ; \
-	  echo -n generating: $${f_out} ; \
-	  while [ $${step} -gt 0 ] ; \
-	  do \
-	    f=${HTML_ARTICLES_PREFIX}$${in}.html-UNMERGED ; \
-	    echo -n " $${in}" ; \
-	    cat "$${f}" >> "$${f_out}" ; \
-	    in=$$(($${in} + 1)) ; \
-	    step=$$(($${step} - 1)) ; \
-	  done ; \
-	  echo ; \
-	  out=$$(($${out} + 1)) ; \
-	  total=$$(($${total} - 1)) ; \
-	done
-else
-	@echo Merge Ignored: insufficient files: ${HTML_FILES_COUNT} '<=' ${TOTAL_HTML_FILES}
-endif
 
 .PHONY: parse
 parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
