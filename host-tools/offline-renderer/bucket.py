@@ -73,6 +73,7 @@ class Bucket(object):
                     if [] != size and size <= self.bucket_remaining[bucket]:
                         self.buckets[bucket] += [(size, item[1])]
                         self.bucket_remaining[bucket] -= size
+                        self.bucket_counts[bucket] += 1
                         del self.buckets[i][j]
                         self.bucket_counts[i] -= 1
                         self.bucket_remaining[i] += size
