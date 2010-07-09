@@ -43,7 +43,7 @@
 #
 #   VERSION_TAG      = optional version string for the root programs/fonts [${todays-date}]
 #
-#   PROGRESS_BAR     = enable progress bar in compiles mahatma.elf [NO]
+#   PROGRESS_BAR     = enable progress bar when compiling mahatma.elf [NO]
 #
 #   EXTRACT_VERSION_FROM = a link to XML file name that has an embedded date
 #                          which will be used to set WIKI_VERSION
