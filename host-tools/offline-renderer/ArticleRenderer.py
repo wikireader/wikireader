@@ -183,19 +183,20 @@ def usage(message):
     if None != message:
         print('error: {0:s}'.format(message))
     print('usage: {0:s} <options> html-files...'.format(os.path.basename(__file__)))
-    print('       --help                  This message')
-    print('       --verbose               Enable verbose output')
-    print('       --warnings              Enable warnings output')
-    print('       --number=n              Number for the .dat/.idx-tmp files [0]')
-    print('       --test=file             Output the uncompressed file for testing')
-    print('       --font-path=dir         Path to font files (*.bmf) [fonts]')
-    print('       --article-index=file    Article index dictionary input [articles.db]')
-    print('       --data-prefix=name      Directory and file name portion for .dat files [pedia]')
-    print('       --index-prefix=name     Directory and file name portion for .idx-tmp files [pedia]')
-    print('       --languages-links=<YN>  Turn on/off inter-wiki links [YES]')
-    print('       --images=<YN>           Turn on/off in-line math images [YES]')
-    print('       --articles=<N>          Articles per block [32]')
-    print('       --block-size=<bytes>    Max size for artical block [262144]')
+    print('       --help                           This message')
+    print('       --verbose                        Enable verbose output')
+    print('       --warnings                       Enable warnings output')
+    print('       --number=n                       Number for the .dat/.idx-tmp files [0]')
+    print('       --test=file                      Output the uncompressed file for testing')
+    print('       --font-path=dir                  Path to font files (*.bmf) [fonts]')
+    print('       --article-index=file             Article index dictionary input [articles.db]')
+    print('       --data-prefix=name               Directory and file name portion for .dat files [pedia]')
+    print('       --index-prefix=name              Directory and file name portion for .idx-tmp files [pedia]')
+    print('       --languages-links=<YN>           Turn on/off inter-wiki links [YES]')
+    print('       --images=<YN>                    Turn on/off in-line math images [YES]')
+    print('       --articles=<N>                   Articles per block [32]')
+    print('       --block-size=<bytes>             Max size for article block [262144]')
+    print('       --max-article-length=<bytes>     Max length for individual articles [unlimited]')
     exit(1)
 
 
@@ -212,7 +213,7 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   'hvwn:d:p:i:t:f:l:a:b:',
+                                   'hvwn:d:p:i:t:f:l:a:b:m:',
                                    ['help',
                                     'verbose',
                                     'warnings',
@@ -226,6 +227,7 @@ def main():
                                     'images=',
                                     'articles=',
                                     'block-size=',
+                                    'max-article-length=',
                                     ])
     except getopt.GetoptError, err:
         usage(err)
@@ -243,7 +245,7 @@ def main():
     enable_images = True
     articles_per_block = 32
     block_size = 262144
-
+    max_article_length = 'unlimited'
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -287,6 +289,16 @@ def main():
                 usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
             if block_size < 65536 or block_size > 524288:
                 usage('"{0:s}={1:s}" is out of range [65536..524288]'.format(opt, arg))
+        elif opt in ('-m', '--max-article-length'):
+            if 'unlimited' == arg.lower():
+                max_article_length = 'unlimited'
+            else:
+                try:
+                    max_article_length = int(arg)
+                except ValueError:
+                    usage('"{0:s}={1:s}" is not numeric'.format(opt, arg))
+                if max_article_length < 0:
+                    usage('"{0:s}={1:s}" is out of range [0..unlimited]'.format(opt, arg))
         else:
             usage('unhandled option: ' + opt)
 
@@ -334,7 +346,8 @@ def main():
         article_writer = ArticleWriter(file_number, f_out, i_out,
                                        max_buckets = 50,
                                        bucket_size = block_size,
-                                       max_items_per_bucket = articles_per_block)
+                                       max_items_per_bucket = articles_per_block,
+                                       max_article_length = max_article_length)
     else:
         compress = False
         f_out = open(test_file, 'wb')
@@ -1339,7 +1352,8 @@ class ArticleWriter(bucket.Bucket):
     """to combine sets of articles and compress them together"""
 
     def __init__(self, file_number, data_file, index_file,
-                 max_buckets = 50, bucket_size = 524288, max_items_per_bucket = 64):
+                 max_buckets = 50, bucket_size = 524288, max_items_per_bucket = 64,
+                 max_article_length = 'unlimited'):
 
         super(ArticleWriter, self).__init__(max_buckets = max_buckets,
                                        bucket_size = bucket_size,
@@ -1348,9 +1362,28 @@ class ArticleWriter(bucket.Bucket):
         self.index_file = index_file
         self.data_file = data_file
         self.index = {}
+        if type(max_article_length) == str:
+            if 'unlimited' == max_article_length.lower():
+                self.max_article_length = 0
+            else:
+                raise ValueError('ArticleWriter: max_article_length="' + max_article_length + '" is not "unlimited"')
+        else:
+            self.max_article_length = max_article_length
 
 
     def add_article(self, article_index, article_data, fnd_offset, restricted):
+        """add article to the buffer"""
+
+        # truncate to fit in low capacity cards
+        # this will have problems with images
+        if self.max_article_length > 0 and len(article_data) > self.max_article_length:
+            article_data = article_data[:self.max_article_length]
+            if ord(article_data[-1]) < 32:
+                article_data = article_data[:-1]
+
+            article_data += '\x01\n\x07\x01\n\x04\x82\x08\x64* * *' + \
+                '\x01\n\x07\x04\x82Article shortened to fit\x03into the compact database.\x02'
+
         self.add((article_index, article_data, fnd_offset, restricted), len(article_data))
 
 

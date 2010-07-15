@@ -50,8 +50,9 @@ WIKI_VERSION ?= $(shell date '+%Y%m%d')
 
 ENABLE_LANGUAGES_LINKS ?= YES
 ENABLE_IMAGES ?= YES
-ARTICLES_PER_BLOCK ?= 32
+ARTICLES_PER_BLOCK ?= 1
 ARTICLE_BLOCK_SIZE ?= 262144
+MAX_ARTICLE_LENGTH ?= UNLIMITED
 
 IGNORED_TEMPLATES ?= templates-to-ignore
 
@@ -161,6 +162,7 @@ render: check-dirs check-fonts check-html stamp-PinyinTable.py stamp-user.dic
 		--images="${ENABLE_IMAGES}" \
 		--articles="${ARTICLES_PER_BLOCK}" \
 		--block-size="${ARTICLE_BLOCK_SIZE}" \
+		--max-article-length="${MAX_ARTICLE_LENGTH}" \
 		"${HTML_ARTICLES}"
 
 .PHONY: combine
