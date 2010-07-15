@@ -25,32 +25,46 @@
 # These  can be overridden on the command line:
 # (defaults indicated in [])
 #
-#   WIKI_LANGUAGE    = language code [en]
+#   WIKI_LANGUAGE              Language code [en]
 #
-#   WIKI_FILE_PREFIX = prefix for all files in a data directory [wiki]
+#   WIKI_FILE_PREFIX           Prefix for all files in a data directory [wiki]
 #
-#   WIKI_VERSION     = version code for the current rendering operation [${todays-date}]
+#   WIKI_VERSION               Version code for the current rendering operation [${todays-date}]
 #
-#   WIKI_DIR_SUFFIX  = combined with language code to make a unique
-#                      directory name [pedia]
+#   WIKI_DIR_SUFFIX            Combined with language code to make a unique
+#                              directory name [pedia]
 #
-#   DESTDIR          = directory where rendered data will be stored
+#   DESTDIR                    Directory where rendered data will be stored
 #
-#   WORKDIR          = directory where all the working databases are stored
+#   WORKDIR                    Directory where all the working databases are stored
 #
-#   TEMPDIR          = optional directory to store LaTeX work files, point
-#                      to a RAM disk [derived from ${WORKDIR}]
+#   TEMPDIR                    Optional directory to store LaTeX work files, point
+#                              to a RAM disk [derived from ${WORKDIR}]
 #
-#   VERSION_TAG      = optional version string for the root programs/fonts [${todays-date}]
+#   VERSION_TAG                Optional version string for the root programs/fonts [${todays-date}]
 #
-#   PROGRESS_BAR     = enable progress bar when compiling mahatma.elf [NO]
+#   PROGRESS_BAR               Enable progress bar when compiling mahatma.elf [NO]
 #
-#   EXTRACT_VERSION_FROM = a link to XML file name that has an embedded date
-#                          which will be used to set WIKI_VERSION
+#   EXTRACT_VERSION_FROM       a link to XML file name that has an embedded date
+#                              which will be used to set WIKI_VERSION
 #
-#   MACHINE_COUNT    = Number of machines in the build cluster [9]
+#   MACHINE_COUNT              Number of machines in the build cluster [9]
 #
-#   PARALLEL_BUILD   = Number of threads/cores usable on each machine [3]
+#   PARALLEL_BUILD             Number of threads/cores usable on each machine [3]
+#
+# Items controlling the compression - for reducing data size to fit smaller SD Card
+#
+#   ENABLE_LANGUAGES_LINKS     Enable links to other languages [YES]
+#
+#   ENABLE_IMAGES              Enable embedded images (Formulae) [YES]
+#
+#   ARTICLES_PER_BLOCK         Maximum number of articles to group in one block [1] (max 255)
+#                              Larger number will give greater compression, but much slower load times
+#
+#   ARTICLE_BLOCK_SIZE         Size limit of compression block [262144] (max 524288)
+#                              Only applies when ARTICLES_PER_BLOCK > 1
+#
+#   MAX_ARTICLE_LENGTH         Shorten articles over this length (length of rendered byte code) [UNLIMITED]
 
 
 # Include standard definitions
@@ -368,8 +382,9 @@ RENDER_BLOCK ?= 0
 # images are the output of the math turning it to NO will show TeX from 'alt'
 ENABLE_LANGUAGES_LINKS ?= YES
 ENABLE_IMAGES ?= YES
-ARTICLES_PER_BLOCK ?= 32
+ARTICLES_PER_BLOCK ?= 1
 ARTICLE_BLOCK_SIZE ?= 262144
+MAX_ARTICLE_LENGTH ?= UNLIMITED
 
 
 # erase the working directories for the current language
@@ -436,6 +451,7 @@ render: fonts validate-destdir
 		ENABLE_IMAGES="${ENABLE_IMAGES}" \
 		ARTICLES_PER_BLOCK="${ARTICLES_PER_BLOCK}" \
 		ARTICLE_BLOCK_SIZE="${ARTICLE_BLOCK_SIZE}" \
+		MAX_ARTICLE_LENGTH="${MAX_ARTICLE_LENGTH}" \
 		WIKI_VERSION="${WIKI_VERSION}" \
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
