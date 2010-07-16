@@ -16,8 +16,12 @@ pedia:wiki_name=Wikipedia English
 books:wiki_name=Books
 quote:wiki_name=Quotes
 dict:wiki_name=Dictionary
+guten:wiki_name=Project Gutenberg
 
 license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title>
+
+guten:license_text=See also: [Alphabetical list of authors], [List of bookshelves].  Copyright for most of these books has expired in the United States. (They may still be copyrighted in other countries). So anybody may make verbatim or non-verbatim copies of those works. For details, see: http://www.gutenberg.org/wiki/Main_Page
+
 type_a_word=Type a Word or Phrase
 no_results=No entries found
 searching=searching...
