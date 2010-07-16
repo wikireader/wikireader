@@ -55,6 +55,7 @@ WIKI_LIST wiki_list[] =
 	{21, 19, WIKI_CAT_QUOTE,         "en", "enquote", KEYBOARD_CHAR, 0},
 	{22, 20, WIKI_CAT_BOOKS,         "en", "enbooks", KEYBOARD_CHAR, 0},
 	{23, 21, WIKI_CAT_DICTIONARY,    "en", "endict", KEYBOARD_CHAR, 0},
+	{24, 22, WIKI_CAT_BOOKS,         "en", "enguten", KEYBOARD_CHAR, 0},
 };
 #define MAX_WIKIS (sizeof(wiki_list) / sizeof(WIKI_LIST))
 
