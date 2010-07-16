@@ -186,11 +186,11 @@ void init_search_hash(void)
 	if (!bHashInited[nCurrentWiki])
 	{
 /* Disable hashing
-		fdHsh[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.hsh"), WL_O_RDONLY);
-		wl_read(fdHsh[nCurrentWiki], &nHashEntries[nCurrentWiki], sizeof(nHashEntries[nCurrentWiki]));
-		search_hash_table[nCurrentWiki] = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries[nCurrentWiki], MEM_TAG_INDEX_M1);
-		bHashBlockLoaded[nCurrentWiki] = (int *)malloc_simple(sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
-		memset((char *)bHashBlockLoaded[nCurrentWiki], 0, sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK));
+   fdHsh[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.hsh"), WL_O_RDONLY);
+   wl_read(fdHsh[nCurrentWiki], &nHashEntries[nCurrentWiki], sizeof(nHashEntries[nCurrentWiki]));
+   search_hash_table[nCurrentWiki] = (SEARCH_HASH_TABLE *)malloc_simple(sizeof(SEARCH_HASH_TABLE) * nHashEntries[nCurrentWiki], MEM_TAG_INDEX_M1);
+   bHashBlockLoaded[nCurrentWiki] = (int *)malloc_simple(sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK), MEM_TAG_INDEX_M1);
+   memset((char *)bHashBlockLoaded[nCurrentWiki], 0, sizeof(int) * (nHashEntries[nCurrentWiki] / ENTRIES_PER_HASH_BLOCK));
 */
 		fdFnd[nCurrentWiki] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.fnd"), WL_O_RDONLY);
 		init_bigram(fdFnd[nCurrentWiki]);
@@ -429,7 +429,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 	// Find the title that is fully spelled out.
 	// The repeated characters with the previous title at the beginning of the current title will be replace by
 	// a character whose binary value is the number of the repeated characters.
-	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + sizeof(uint32_t) && nTitleSearch < SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
+	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF && nTitleSearch < SEARCH_HASH_SEQUENTIAL_SEARCH_THRESHOLD)
 	{
 		char *p;
 
