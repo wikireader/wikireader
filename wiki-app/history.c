@@ -198,7 +198,7 @@ void history_list_init(void)
 	if (fd_hst >= 0)
 	{
 		while ((len = wl_read(fd_hst, (void *)&history_list[history_count], sizeof(HISTORY))) >= sizeof(HISTORY) &&
-			history_count < MAX_HISTORY)
+		       history_count < MAX_HISTORY)
 		{
 			if (history_list[history_count].idx_article)
 				history_count++;

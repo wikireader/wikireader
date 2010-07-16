@@ -276,7 +276,7 @@ void draw_string(unsigned char *s)
 void draw_article_positioner(int y_pos)
 {
 	static int last_positioner_y = 0;
-	
+
 	if (!bShowPositioner)
 		return;
 	if (y_pos == 0)
@@ -610,7 +610,7 @@ void draw_language_link_arrow()
 				lcd_set_pixel(framebuffer, j, i);
 			}
 		}
-		
+
 		if (8 + LCD_TOP_MARGIN <= i && i <= 8 + LCD_TOP_MARGIN + MAX_PIXELS_EACH_SIDE)
 		{
 			if (bShowLanguageLinks)
@@ -875,11 +875,11 @@ void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *sta
 			if (bitmap != NULL)
 			{
 				bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-			
+
 				x_base = width + Cmetrics.LSBearing;
 				x_offset = 0;
 				y_offset = pcfFonts[font_idx - 1].Fmetrics.linespace - (pcfFonts[font_idx - 1].Fmetrics.descent + Cmetrics.ascent);
-			
+
 				x_bit_idx = x_base & 0x07;
 				for (i = 0; i < bytes_to_process; i++)
 				{
@@ -910,7 +910,7 @@ void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *sta
 						if (!(x_bit_idx & 0x07))
 						{
 							x_bit_idx = 0;
-			
+
 						}
 						j--;
 					}
@@ -1013,7 +1013,7 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 bool is_word_break(ucs4_t u)
 {
 	unsigned char c = u & 0x000000FF;
-	
+
 	return ((u > 0x47F) || (u < 0x100 && strchr(" ~!@#$%^&*()-_+=[]\{}|;;':\",./", c)));
 }
 
@@ -1505,7 +1505,7 @@ void display_article_with_pcf(int y_move)
 	if (!bShowLanguageLinks && lcd_draw_cur_y_pos < article_start_y_pos)
 		lcd_draw_cur_y_pos = article_start_y_pos;
 	else if (bShowLanguageLinks && lcd_draw_cur_y_pos >= article_start_y_pos)
-				bShowLanguageLinks = 0;
+		bShowLanguageLinks = 0;
 	if ((lcd_draw_cur_y_pos+LCD_HEIGHT_LINES)>lcd_draw_buf.current_y)
 	{
 		lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT_LINES;
@@ -1611,7 +1611,7 @@ void draw_icon(char *pStr)
 {
 	int start_x, start_y, end_x, end_y;
 	int i, j;
-	
+
 	get_external_str_pixel_rectangle(pStr, SUBTITLE_FONT_IDX, &start_x, &start_y, &end_x, &end_y);
 	for (i = 0; i < LANGUAGE_LINK_HEIGHT; i++)
 	{
@@ -1630,9 +1630,9 @@ void draw_icon(char *pStr)
 			}
 		}
 	}
-	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 
-		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x, 
-		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, strlen(pStr), 1);
+	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
+			  (LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x,
+			  lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, strlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
 }
 
@@ -1653,7 +1653,7 @@ int duplicate_wiki_lang(char *link_str1, char *link_str2)
 {
 	char *p;
 	int len;
-	
+
 	p = strchr(link_str1, ':');
 	if (p)
 	{
@@ -1713,7 +1713,7 @@ void display_retrieved_article(long idx_article)
 	externalLink[0].link_str = NULL;
 	article_link_count = 1;
 	language_link_count = 0;
-	
+
 	offset = sizeof(ARTICLE_HEADER) + sizeof(ARTICLE_LINK) * article_header.article_link_count;
 	// externalLink[] is for storing the pointer to the language link string.
 	// A corresponding artileLink (with the same index) will be used to store the start_xy and end_xy information.
@@ -1726,7 +1726,7 @@ void display_retrieved_article(long idx_article)
 			link_str = file_buffer + offset;
 			if (wiki_lang_exist(link_str))
 			{
-				int bDuplicated = 0; 
+				int bDuplicated = 0;
 				for (i = 1; i < article_link_count; i++)
 				{
 					if (externalLink[i].link_str && duplicate_wiki_lang(link_str, externalLink[i].link_str))
@@ -1798,8 +1798,8 @@ void display_retrieved_article(long idx_article)
 	{
 		memcpy(&articleLink[article_link_count],file_buffer+offset,sizeof(ARTICLE_LINK));
 		nLinkWikiId = articleLink[article_link_count].article_id >> 24;
-		if (((!nArticleWikiId || nArticleWikiId == nCurrentWikiId || get_wiki_idx_from_id(nArticleWikiId) >= 0) && !nLinkWikiId) || 
-			(nLinkWikiId && get_wiki_idx_from_id(nLinkWikiId) >= 0))
+		if (((!nArticleWikiId || nArticleWikiId == nCurrentWikiId || get_wiki_idx_from_id(nArticleWikiId) >= 0) && !nLinkWikiId) ||
+		    (nLinkWikiId && get_wiki_idx_from_id(nLinkWikiId) >= 0))
 		{
 			if (nArticleWikiId && !nLinkWikiId)
 				articleLink[article_link_count].article_id |= nArticleWikiId << 24;
@@ -1914,31 +1914,31 @@ int isArticleLinkSelected(int x,int y)
 			return link_currently_activated; // if more than on links are matched, the last matched one got the higher priority
 	}
 
-	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE && 
-		LCD_HEIGHT_LINES - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT_LINES &&
-		history_get_previous_idx(saved_idx_article, 0))
+	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE &&
+	    LCD_HEIGHT_LINES - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT_LINES &&
+	    history_get_previous_idx(saved_idx_article, 0))
 	{
 		return 0; // PREVIOUS_ARTICLE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == article_start_y_pos &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN + LINK_X_DIFF_ALLOWANCE &&
-		article_start_y_pos + LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
+	    LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN + LINK_X_DIFF_ALLOWANCE &&
+	    article_start_y_pos + LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 1; // SHOW_LANGUAGE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == 0 &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN  + LINK_X_DIFF_ALLOWANCE &&
-		LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
+	    LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN  + LINK_X_DIFF_ALLOWANCE &&
+	    LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 2; // HIDE_LANGUAGE_LINK
 	}
-	
+
 	start_i = 0;
 	end_i = article_link_count - 1;
 	i = article_link_count / 2;
 	bFound = 0;
 	while (start_i <= end_i && !articleLink[start_i].start_xy && !articleLink[start_i].end_xy)
-			start_i++; // skip the special links - PREVIOUS_ARTICLE_LINK, SHOW_LANGUAGE_LINK, HIDE_LANGUAGE_LINK
+		start_i++; // skip the special links - PREVIOUS_ARTICLE_LINK, SHOW_LANGUAGE_LINK, HIDE_LANGUAGE_LINK
 	while (!bFound && start_i <= end_i)
 	{
 		if (y < (int)(articleLink[i].start_xy >> 8) - LINK_Y_DIFF_ALLOWANCE)
@@ -2221,7 +2221,7 @@ void invert_link_area(int article_link_number)
 int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 {
 	int x, y;
-	
+
 	if (end_x < 0 || start_x > LCD_BUF_WIDTH_PIXELS - 1)
 		return 1;
 	x = start_x;
@@ -2246,7 +2246,7 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 			x += 8;
 		}
 	}
-	return 1;	
+	return 1;
 }
 
 int nothing_before_link(int article_link_number)
@@ -2314,7 +2314,7 @@ void invert_link(int article_link_number)
 			else
 				bNothingBeforeLink = 0;
 		}
-	
+
 		bNothingAfterLink = articleLinkBeforeAfter[article_link_number] & ARTICLE_LINK_NOTHING_AFTER;
 		local_link_number = article_link_number + 1;
 		while (bNothingAfterLink && local_link_number < article_link_count && article_id == articleLink[local_link_number].article_id)
@@ -2351,10 +2351,10 @@ int check_invert_link()
 		}
 	}
 
-	if (link_to_be_inverted >= 0 && 
-		((display_mode == DISPLAY_MODE_ARTICLE &&
-		time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
-		time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
+	if (link_to_be_inverted >= 0 &&
+	    ((display_mode == DISPLAY_MODE_ARTICLE &&
+	      time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
+	     time_diff(get_time_ticks(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
 	{
 		if (link_currently_inverted >= 0)
 			invert_link(link_currently_inverted);
@@ -2675,7 +2675,7 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 	int bDone = 0;
 	ARTICLE_HEADER article_header;
 	int lenTitle = 0;
-		
+
 	if (!article_buf)
 		article_buf = file_buffer;
 	memcpy(&article_header, article_buf, sizeof(ARTICLE_HEADER));
@@ -2689,20 +2689,20 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 			article_buf++;
 			switch(c)
 			{
-				case ESC_0_SPACE_LINE:
-					article_buf++;
-					break;
-				case ESC_2_NEW_LINE_SAME_FONT:
-					title[lenTitle++] = ' '; // append a blank for wrapped title
-					break;
-				case ESC_3_NEW_LINE_WITH_FONT:
-					c2 = *article_buf++;
-					if ((c2 & 0x07) != TITLE_FONT_IDX)
-						bDone = 1;
-					break;
-				default:
+			case ESC_0_SPACE_LINE:
+				article_buf++;
+				break;
+			case ESC_2_NEW_LINE_SAME_FONT:
+				title[lenTitle++] = ' '; // append a blank for wrapped title
+				break;
+			case ESC_3_NEW_LINE_WITH_FONT:
+				c2 = *article_buf++;
+				if ((c2 & 0x07) != TITLE_FONT_IDX)
 					bDone = 1;
-					break;
+				break;
+			default:
+				bDone = 1;
+				break;
 			}
 		}
 		else
@@ -2727,7 +2727,7 @@ void draw_progress_bar(int progressCount)
 	{
 		if (progressCount > LCD_BUF_WIDTH_PIXELS)
 			progressCount = LCD_BUF_WIDTH_PIXELS;
-			
+
 		x = 0;
 		while (x < progressCount)
 		{
@@ -2744,7 +2744,7 @@ void draw_progress_bar(int progressCount)
 				x += 8;
 			}
 		}
-	
+
 		while (x < LCD_BUF_WIDTH_PIXELS)
 		{
 			if (x % 8 || LCD_BUF_WIDTH_PIXELS - x < 8)
@@ -2760,5 +2760,5 @@ void draw_progress_bar(int progressCount)
 				x += 8;
 			}
 		}
-	}	
+	}
 }

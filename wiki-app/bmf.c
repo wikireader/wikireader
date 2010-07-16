@@ -119,7 +119,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 		if (!bFound)
 		{
 			size = 1024; // Due to the nature of wl_read, the read size needs to be 1024.
-	
+
 			read_size = readfile(font->fd,buffer,size);
 			memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
 			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));

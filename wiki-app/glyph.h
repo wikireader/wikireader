@@ -32,7 +32,7 @@ int render_string_right(const int font, int off_x, int off_y, char*, int len, in
 void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf);
 int draw_glyphs_to_buf(const int font, int start_x, int start_y, const char *string, char *buf);
 int render_string_and_clear(const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted, 
-		  int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
+			    int start_y, char *string, int text_length, int inverted,
+			    int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
 #endif /* GLYPH_H */
 

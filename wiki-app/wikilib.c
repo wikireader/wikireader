@@ -322,9 +322,9 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 	} else if (keycode == WL_KEY_BACKSPACE) {
 		rc = search_remove_char(0, ev_time);
 	} else if (keycode == WL_KEY_SWITCH_KEYBOARD ||
-		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT || 
-		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_ABC || 
-		keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
+		   keycode == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
+		   keycode == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
+		   keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
 		rc = -1;
 	} else {
 		int mode = keyboard_get_mode();
@@ -349,7 +349,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 				last_key = temp_last_key;
 				last_key_utf8_char = temp_last_key_utf8_char;
 				if (KEYBOARD_PHONE_STYLE < mode &&
-					key == last_key && time_diff(ev_time, last_ev_time) <= seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME))
+				    key == last_key && time_diff(ev_time, last_ev_time) <= seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME))
 				{
 					last_ev_time = ev_time;
 					last_key_utf8_char = next_utf8_char(last_key_utf8_char);
@@ -691,7 +691,7 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 				//	pre_key = NULL;
 				//}
 				//else
-					pre_key = key;
+				pre_key = key;
 			}
 		} else {
 			if (!touch_down_on_keyboard && !touch_down_on_list)
@@ -848,9 +848,9 @@ static void handle_keyboard_phone_style(struct wl_input_event *ev, int last_5_x[
 			else
 			{
 				press_delete_button = false;
-				if(*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT || 
-					*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC || 
-					*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
+				if(*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
+				   *key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
+				   *key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123)
 				{
 					keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 					if (!touch_down_on_keyboard)
@@ -881,7 +881,7 @@ static void handle_keyboard_phone_style(struct wl_input_event *ev, int last_5_x[
 				//	pre_key = NULL;
 				//}
 				//else
-					pre_key = key;
+				pre_key = key;
 			}
 		} else {
 			if (!touch_down_on_keyboard && !touch_down_on_list)
@@ -1014,7 +1014,7 @@ static void handle_touch(struct wl_input_event *ev)
 					//	pre_key = NULL;
 					//}
 					//else
-						pre_key = key;
+					pre_key = key;
 				}
 			} else {
 				touch_down_on_keyboard = 0;
@@ -1376,7 +1376,7 @@ int wikilib_run(void)
 				int kb_mode = keyboard_get_mode();
 				sleep = 0;
 				if(kb_mode < KEYBOARD_PHONE_STYLE &&
-					time_diff(time_now, start_search_time) > seconds_to_ticks(2.1))
+				   time_diff(time_now, start_search_time) > seconds_to_ticks(2.1))
 				{
 					if (!clear_search_string())
 					{

@@ -71,7 +71,7 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 }
 
 int buf_render_string(char *buf, const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted)
+		      int start_y, char *string, int text_length, int inverted)
 {
 	int x;
 	int width;
@@ -165,8 +165,8 @@ int render_string(const int font, int start_x,
 }
 
 int render_string_and_clear(const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted,
-		  int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+			    int start_y, char *string, int text_length, int inverted,
+			    int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
 {
 	int x;
 	int width;
@@ -221,10 +221,10 @@ int render_string_and_clear(const int font, int start_x,
 	{
 		if (clear_start_x < start_x)
 			guilib_clear_area(clear_start_x, clear_start_y, start_x - 1,
-				clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
+					  clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
 		if (clear_end_x >= width)
 			guilib_clear_area(width, clear_start_y, clear_end_x,
-				clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
+					  clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
 		if (clear_end_y >= start_y + height)
 			clear_start_y = start_y + height;
 		else

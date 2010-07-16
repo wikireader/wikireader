@@ -54,7 +54,7 @@ void init_char_idx()
 	int i;
 	int idx = 1;
 	static int inited = 0;
-	
+
 	if (inited)
 		return;
 
