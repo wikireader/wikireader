@@ -5,11 +5,7 @@
 # DESCRIPTION: Classes for Keithley GPIB instruments
 # AUTHOR: Christopher Hall <hsw@openmoko.com>
 
-try:
-    from Gpib import *
-except:
-    print 'error: Missing python module: linux-gpib'
-    exit(1)
+from Gpib import *
 
 from time import sleep
 

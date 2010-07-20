@@ -21,6 +21,11 @@ import traceback
 
 import sequencer
 
+
+InitialContrastVoltage = 21.0
+MinimumContrastVoltage = InitialContrastVoltage - 4
+MaximumContrastVoltage = InitialContrastVoltage + 4
+
 OpenFilesFolder = 'testudo/tests'
 
 SaveFilesFolder = '/log/files/stage1'
@@ -97,6 +102,12 @@ class Sample:
             self.testStop = True
             self.status.set_text('.....Stopping at end of this test cycle.....')
 
+    def resetContrastCallback(self, widget, data = None):
+        """reset contrast to default value"""
+        global InitialContrastVoltage
+        if not self.testRunning:
+            self.contrast.set_value(InitialContrastVoltage)
+
     @threaded
     def runTest(self, count):
         """main test routine"""
@@ -123,7 +134,9 @@ class Sample:
                            (cycle, count, serial_number))
 
                 t = time.time()
-                sequencer.runOneTest(self, self.fileName, 0, serial_number = serial_number)
+                sequencer.runOneTest(self, self.fileName, 0,
+                                     serial_number = serial_number,
+                                     contrast_voltage = self.contrast.get_value())
                 t = time.time() - t
 
                 self.write('\n*** End of Test %d of %d [%7.3f seconds] ***\n' % (cycle, count, t))
@@ -406,6 +419,7 @@ class Sample:
 
         vbox1.pack_end(button_box, expand = False, fill = False, padding = 0)
 
+        # Auto repeat
         hbox = gtk.HBox(homogeneous = False, spacing = 5)
 
         label = gtk.Label('Auto-Repeat')
@@ -419,6 +433,7 @@ class Sample:
 
         hbox.pack_start(self.repeat, expand = False, fill = True, padding = 0)
 
+        # auto save
         self.autoSave = gtk.CheckButton("Auto-save")
         self.autoSave.set_active(True)
         hbox.pack_start(self.autoSave, expand = False, fill = True, padding = 0)
@@ -430,17 +445,49 @@ class Sample:
         self.serialNumber.set_max_length(32)
         hbox.pack_start(self.serialNumber, expand = True, fill = True, padding = 0)
 
+        # end of row
         hbox.show_all()
-
         vbox1.pack_start(hbox, expand = False, fill = False, padding = 0)
 
+        # contrast
+        global InitialContrastVoltage
+        global MinimumContrastVoltage
+        global MaximumContrastVoltage
+
+        hbox = gtk.HBox(homogeneous = False, spacing = 5)
+
+        label = gtk.Label('Contrast Calibration')
+        hbox.pack_start(label, expand = False, fill = True, padding = 0)
+        adj = gtk.Adjustment(value = InitialContrastVoltage,
+                             lower = MinimumContrastVoltage,
+                             upper = MaximumContrastVoltage,
+                             step_incr = 0.1, page_incr = 1.0, page_size = 0)
+        self.contrast = gtk.SpinButton(adjustment = adj, climb_rate = 0.0, digits = 1)
+        self.contrast.set_wrap(False)
+        self.contrast.set_numeric(True)
+
+        hbox.pack_start(self.contrast, expand = False, fill = True, padding = 0)
+
+        label = gtk.Label('Volts')
+        hbox.pack_start(label, expand = False, fill = True, padding = 0)
+
+        buttonD = gtk.Button('Reset to {0:.1f}V'.format(InitialContrastVoltage))
+        buttonD.connect('clicked', self.resetContrastCallback, None)
+        buttonD.show()
+        hbox.pack_start(buttonD, expand = False, fill = True, padding = 0)
+
+        # end of row
+        hbox.show_all()
+        vbox1.pack_start(hbox, expand = False, fill = False, padding = 0)
+
+        # status line
         self.status = gtk.Label('No test Loaded')
         self.status.set_alignment(0, 0)
         vbox1.pack_start(self.status, expand = False, fill = False, padding = 0)
         self.status.show()
 
+        # add all rows and display them
         self.window.add(vbox1)
-
         self.window.show()
 
         self.serialNumber.grab_focus()

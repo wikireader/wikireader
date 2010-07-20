@@ -49,6 +49,13 @@ RELAY_LCD_V4 = 16
 LCD_V0 = 21.0
 LCD_V0_DELTA = 0.1
 
+# contrast calibration voltage (if not set use LCD_V0)
+if 'contrast_voltage' in global_args:
+    contrast_voltage = float(global_args['contrast_voltage'])
+else:
+    contrast_voltage = LCD_V0
+
+
 # power supply (volts, amps)
 SUPPLY_STANDARD_VOLTAGE = 3.0
 SUPPLY_CURRENT_LIMIT = 0.35
@@ -278,6 +285,8 @@ def test008_internal():
     Check software power off"""
 
     global debug, psu, dvm, relay
+    global contrast_voltage
+
     p = communication.SerialPort(port = CPU_SERIAL)
 
     relay.on(RELAY_RESET)
@@ -350,8 +359,8 @@ def test008_internal():
     relay_increase = RELAY_SEARCH_KEY
     relay_set = RELAY_HISTORY_KEY
 
-    v0_max = LCD_V0 + LCD_V0_DELTA
-    v0_min = LCD_V0 - LCD_V0_DELTA
+    v0_max = contrast_voltage + LCD_V0_DELTA
+    v0_min = contrast_voltage - LCD_V0_DELTA
     actual = 0
     for i in range(20):
         time.sleep(VOLTAGE_SAMPLE_TIME)

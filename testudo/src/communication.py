@@ -11,7 +11,7 @@ try:
 except:
     print 'error: Missing python module: python-serial'
     print '       sudo apt-get install python-serial'
-    exit(1)
+    raise ImportError('Missing python module: python-serial')
 
 import sys
 import time
