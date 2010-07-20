@@ -17,6 +17,7 @@ USAGE()
   echo '       --image=<dir>    -i <dir>   image source directory ['${image}']'
   echo '       --url=<url>      -u <url>   base url for HTML file ['${url}']'
   echo '       --size=<n>       -s <n>     7zip splitting factor (number[kmg]) ['${size}']'
+  echo '       --pretty         -P         pretty print the HTML'
   exit 1
 }
 
@@ -27,6 +28,7 @@ packages="packages/$(date '+%Y%m%d')"
 image=image
 url=http://wrmlbeta.s3.amazonaws.com
 size=1g
+pretty=no
 
 debug=no
 
@@ -63,6 +65,11 @@ do
     -s|--size)
       size="$2"
       shift 2
+      ;;
+
+    -P|--pretty)
+      pretty=yes
+      shift
       ;;
 
     --debug)
@@ -135,10 +142,27 @@ HTMLoutput()
 {
   local indent
   indent="$1"; shift
-  printf "%${indent}s" '' >> "${HTMLFileName}"
-  echo  "$@" >> "${HTMLFileName}"
+  case "${pretty}" in
+    [yY]|[yY][eE][sS])
+      printf "%${indent}s" '' >> "${HTMLFileName}"
+      echo "$@" >> "${HTMLFileName}"
+      ;;
+    *)
+      echo -n "$@" >> "${HTMLFileName}"
+      ;;
+    esac
 }
 
+# flush the HTML (add nl for non-pretty printed)
+HTMLend()
+{
+  case "${pretty}" in
+    [yY]|[yY][eE][sS])
+    *)
+      echo >> "${HTMLFileName}"
+      ;;
+    esac
+}
 
 # create archive only if not already done
 MakeArchive()
@@ -258,3 +282,4 @@ done
 
 # end of HTML
 HTMLoutput 0 '</ul>'
+HTMLend

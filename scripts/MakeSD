@@ -73,6 +73,35 @@ done
 [ -d "${card}" ] || USAGE card: ${card} is not a directory
 [ -f "${card}/kernel.elf" ] && USAGE already copied
 
+COPY()
+{
+  local file dest name
+  file="$1"; shift
+  dest="$1"; shift
+  name="$(basename "${file}" | tr a-z A-Z)"
+  dest="${dest}/${name}"
+  printf "copying: ${name}\033[0K\r"
+  cp -p "${file}" "${dest}"
+}
+
+COPY_DIR()
+{
+  local dir dest name file
+  dir="$1"; shift
+  dest="$1"; shift
+  name="$(basename "${dir}" | tr a-z A-Z)"
+  dest="${dest}/${name}"
+  mkdir -p "${dest}"
+  for file in "${dir}/"*
+  do
+    if [ ! -d "${file}" ]
+    then
+      COPY "${file}" "${dest}"
+    fi
+  done
+  echo
+}
+
 for d in $@
 do
   flag=NO
@@ -96,14 +125,16 @@ do
     if [ -d "${dir}" ]
     then
       echo copying language: ${d}
-      cp -pr "${dir}" "${card}"
+      echo cp -pr "${dir}" "${card}"
+      COPY_DIR "${dir}" "${card}"
       break
     fi
     dir="${i}/${d}"
     if [ -d "${dir}" ]
     then
       echo copying directory: ${d}
-      cp -pr "${dir}" "${card}"
+      echo cp -pr "${dir}" "${card}"
+      COPY_DIR "${dir}" "${card}"
       break
     fi
   done
@@ -112,7 +143,11 @@ done
 echo copying base files
 for f in "${image}/"*
 do
-  [ ! -d "${f}" ] && cp -p "${f}" "${card}"
+  if [ ! -d "${f}" ]
+  then
+    COPY "${f}" "${card}"
+  fi
 done
+echo
 
 echo completed
