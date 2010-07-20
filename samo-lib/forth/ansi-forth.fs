@@ -37,7 +37,7 @@ meta-compile
 \   <colon>   word <double-colon> alt-name ( -- )
 \   <c-o-d-e> word <double-colon> alt-name ( -- )
 
-22
+23
 constant build-number     :: build-number            ( -- n )
 \ ** revision number of the forth core
 
@@ -547,7 +547,7 @@ end-code
     begin
       dup while
       over c@ digit? if  ( ud c-addr u digit36 )
-        dup base @ > if drop exit then
+        dup base @ 1- > if drop exit then
         rot rot          ( ud digit c-addr u )
         2>r >r
         drop base @ um* r> s>d d+
@@ -3468,7 +3468,7 @@ code flash-write          :: flash-write             ( b count flash-address -- 
         NEXT
 end-code
 
-code flash-sector-erase   :: flash-sector-erase      ( flash-address -- )
+code flash-sector-erase   :: flash-sector-erase      ( flash-address -- f )
 \ ** erase the FLASH memory sector that contains this address
         ld.w    %r6, [%r1]                           ; flash-address
         xcall   FLASH_SectorErase
@@ -3476,7 +3476,7 @@ code flash-sector-erase   :: flash-sector-erase      ( flash-address -- )
         NEXT
 end-code
 
-code flash-chip-erase     :: flash-chip-erase        ( -- flag)
+code flash-chip-erase     :: flash-chip-erase        ( -- f )
 \ ** erase the entire FLASH chip
 \ ** Notes: the system will no longer boot unless a boot loader is written
         xcall   FLASH_ChipErase
