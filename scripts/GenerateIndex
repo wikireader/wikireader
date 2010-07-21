@@ -24,6 +24,7 @@ exec sbcl --script "$0" "$0" "$@"
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'getopt)
+(require 'md5)
 
 (defvar *program* (second sb-ext:*posix-argv*) "name of this script file")
 (defvar *debug* nil  "set true for debuf output")
@@ -132,8 +133,14 @@ exec sbcl --script "$0" "$0" "$@"
         0)))
 
 
+(defun vector-to-hex (byte-vector)
+  "convert vector of integers to hexadecimal string, values clipped to 00..ff"
+  (format nil "~(~{~2,'0X~}~)"
+          (map 'list #'(lambda (x) (logand #xff x)) byte-vector)))
+
+
 (defun list-of-files (dir-name)
-  "return a sorted list of all .7z and .7z.* files ((basename size)...)"
+  "return a sorted list of all .7z and .7z.* files ((basename size MD5)...)"
   (let ((7z (concatenate 'string dir-name "/*.7z"))
         (arc (concatenate 'string dir-name "/*.7z.*")))
     (loop for file-path in (sort
@@ -143,15 +150,16 @@ exec sbcl --script "$0" "$0" "$@"
          (let ((basename (file-namestring file-path)))
            (when *verbose*
              (format t "  File: ~a~%" basename))
-           (list
-            basename
-            (with-open-file (file-stream file-path :direction :input)
-              (file-length file-stream)))))))
+           (append (list basename)
+            (with-open-file (file-stream file-path :direction :input :element-type 'unsigned-byte)
+              (list
+               (file-length file-stream)
+               (vector-to-hex (md5:md5sum-stream file-stream)))))))))
 
 
 (defun partition-files (dir file-list)
   "put adjacent similar names into a nested list
-   (folder date language type ( uncompressed-size (file1 length1) (file2 length2) ... ) )"
+   (folder date language type ( uncompressed-size (file1 length1 MD5-1) (file2 length2 MD5-2) ... ) )"
   (let ((table (make-hash-table :test #'equal)))
     (loop for item in file-list
        do
@@ -224,14 +232,14 @@ exec sbcl --script "$0" "$0" "$@"
 
 
 (defun output-archive (file-list uncompressed-size)
-  "output xml for a single archive ((file size)...)"
+  "output xml for a single archive ((file size MD5)...)"
   (xml-open 'archives (list 'count (length file-list)) (list 'size uncompressed-size))
   (loop
      for count = 1 then (1+ count)
      for item in file-list
        do
        (xml-entry 'file (concatenate 'string (first item)"?torrent")
-                  (list 'id count) (list 'size (second item))))
+                  (list 'id count) (list 'size (second item)) (list 'md5 (third item))))
   (xml-close))
 
 
