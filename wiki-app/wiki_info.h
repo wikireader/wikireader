@@ -62,6 +62,13 @@ typedef struct _WIKI_LICENSE_DRAW {
 	ARTICLE_LINK links[MAX_LINKS_IN_LICENSE_TEXT];
 } WIKI_LICENSE_DRAW;
 
+typedef struct _ACTIVE_WIKI {
+	int WikiInfoIdx; // index to wiki_info[]
+	char *WikiNls;
+	long WikiNlsLen;
+	WIKI_LICENSE_DRAW WikiLicenseDraw;
+} ACTIVE_WIKI, *PACTIVE_WIKI;
+
 extern int nCurrentWiki;
 bool wiki_lang_exist(char *lang_link_str);
 uint32_t wiki_lang_link_search(char *lang_link_str);

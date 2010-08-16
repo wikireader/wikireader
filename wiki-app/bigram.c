@@ -20,33 +20,26 @@
 #include "msg.h"
 #include "bigram.h"
 #include "lcd_buf_draw.h"
-#ifdef WIKIPCF
-extern void showMsg(int currentLevel, char *format, ...);
-#include <assert.h>
-char aBigram[128][2];
-#else
 #include "file-io.h"
 #include "wiki_info.h"
-extern int nCurrentWiki;
-char aBigram[MAX_WIKIS_PER_DEVICE][128][2];
-#endif
+#include <malloc-simple.h>
+
+typedef struct _bitram {
+	char char_pairs[128][2];
+} BIGRAM, *PBIGRAM;
+PBIGRAM aBigram = NULL;
 
 int32_t aCharIdx[128];
-#ifdef WIKIPCF
-void init_bigram(FILE *fd)
-{
-	init_char_idx();
-	ssize_t n = fread(aBigram, 1, sizeof(aBigram), fd);
-	assert(sizeof(aBigram) == n);
-}
-#else
 
 void init_bigram(int fd)
 {
+	if (!aBigram)
+	{
+		aBigram = (PBIGRAM)malloc_simple(sizeof(BIGRAM) * get_wiki_count(), MEM_TAG_INDEX_M1);
+	}
 	init_char_idx();
-	wl_read(fd, aBigram[nCurrentWiki], sizeof(aBigram) / MAX_WIKIS_PER_DEVICE);
+	wl_read(fd, &aBigram[nCurrentWiki], sizeof(BIGRAM));
 }
-#endif
 
 void init_char_idx()
 {
@@ -78,72 +71,20 @@ int bigram_char_idx(char c)
 	return aCharIdx[(int)c];
 }
 
-#ifdef WIKIPCF
-void bigram_encode(char *outStr, char *inStr)
-{
-	int i;
-	int len;
-	int rc;
-	char c;
-	int idxMatchedBigram;
-
-	*outStr = '\0';
-	len = strlen(inStr);
-	while (len >= 2)
-	{
-		idxMatchedBigram = -1;
-		for (i=0; i < 128; i++)
-		{
-			if ((rc = memcmp(inStr, &aBigram[i][0], 2)) == 0)
-			{
-				idxMatchedBigram = i;
-				break;
-			}
-			else if (rc < 0)
-				break;
-		}
-		if (idxMatchedBigram >= 0)
-		{
-			c = (char)i;
-			c |= 0x80;
-			*outStr = c;
-			outStr++;
-			inStr += 2;
-			len -= 2;
-		}
-		else
-		{
-			*outStr = *inStr;
-			outStr++;
-			inStr++;
-			len--;
-		}
-	}
-
-	while (len > 0)
-	{
-		*outStr = *inStr;
-		outStr++;
-		inStr++;
-		len--;
-	}
-	*outStr = '\0';
-}
-
 void bigram_decode(char *outStr, char *inStr, int lenMax)
 {
 	unsigned char c;
 
 	while (lenMax > 1 && (c = *inStr++) != '\0')
 	{
-		if (c >= 128 && aBigram[c-128][0])
+		if (c >= 128 && aBigram[nCurrentWiki].char_pairs[c-128][0])
 		{
-			*outStr = aBigram[c-128][0];
+			*outStr = aBigram[nCurrentWiki].char_pairs[c-128][0];
 			outStr++;
 			lenMax--;
 			if (lenMax > 1)
 			{
-				*outStr = aBigram[c-128][1];
+				*outStr = aBigram[nCurrentWiki].char_pairs[c-128][1];
 				outStr++;
 				lenMax--;
 			}
@@ -157,35 +98,6 @@ void bigram_decode(char *outStr, char *inStr, int lenMax)
 	}
 	*outStr = '\0';
 }
-#else
-void bigram_decode(char *outStr, char *inStr, int lenMax)
-{
-	unsigned char c;
-
-	while (lenMax > 1 && (c = *inStr++) != '\0')
-	{
-		if (c >= 128 && aBigram[nCurrentWiki][c-128][0])
-		{
-			*outStr = aBigram[nCurrentWiki][c-128][0];
-			outStr++;
-			lenMax--;
-			if (lenMax > 1)
-			{
-				*outStr = aBigram[nCurrentWiki][c-128][1];
-				outStr++;
-				lenMax--;
-			}
-		}
-		else
-		{
-			*outStr = c;
-			outStr++;
-			lenMax--;
-		}
-	}
-	*outStr = '\0';
-}
-#endif
 
 int is_supported_search_char(char c)
 {
@@ -199,15 +111,6 @@ int search_string_cmp(char *title, char *search, int len)  // assuming search co
 {
 	int rc = 0;
 	char c = 0;
-
-#if 0  // some debug message
-#ifdef WIKIPCF
-	char temp[512];
-	memcpy(temp, search, len);
-	temp[len] = '\0';
-	showMsg(3, "[%s][%s]\n", title, temp);
-#endif
-#endif
 
 	while (!rc && len > 0)
 	{

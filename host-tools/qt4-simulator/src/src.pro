@@ -16,12 +16,13 @@ SOURCES += $${TOPLEVEL}/wiki-app/malloc-simple.c
 SOURCES += $${TOPLEVEL}/wiki-app/msg-printf.c
 SOURCES += $${TOPLEVEL}/wiki-app/restricted.c
 SOURCES += $${TOPLEVEL}/wiki-app/search.c
-SOURCES += $${TOPLEVEL}/wiki-app/search_hash.c
+SOURCES += $${TOPLEVEL}/wiki-app/search_fnd.c
 SOURCES += $${TOPLEVEL}/wiki-app/sha1.c
 SOURCES += $${TOPLEVEL}/wiki-app/time-posix.c
 SOURCES += $${TOPLEVEL}/wiki-app/wikilib.c
 SOURCES += $${TOPLEVEL}/wiki-app/wiki_info.c
 SOURCES += $${TOPLEVEL}/wiki-app/utf8.c
+SOURCES += $${TOPLEVEL}/wiki-app/btree.c
 
 SOURCES += $${TOPLEVEL}/samo-lib/lzma/Alloc.c
 SOURCES += $${TOPLEVEL}/samo-lib/lzma/Bra.c

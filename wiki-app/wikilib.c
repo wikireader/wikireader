@@ -40,7 +40,7 @@
 #include <lcd.h>
 #include <tick.h>
 #include "delay.h"
-#include "search_hash.h"
+#include "search_fnd.h"
 #include "restricted.h"
 #include "wiki_info.h"
 #include "utf8.h"

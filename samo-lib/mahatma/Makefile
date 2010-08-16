@@ -87,6 +87,7 @@ WIKIAPP_COBJS += wikilib.o
 WIKIAPP_COBJS += malloc-simple.o
 WIKIAPP_COBJS += keyboard.o
 WIKIAPP_COBJS += utf8.o
+WIKIAPP_COBJS += btree.o
 
 # used for panic in traps.c
 WIKIAPP_COBJS += hexdump.o
@@ -94,7 +95,7 @@ WIKIAPP_COBJS += misc.o
 
 # searching
 WIKIAPP_COBJS += search.o
-WIKIAPP_COBJS += search_hash.o
+WIKIAPP_COBJS += search_fnd.o
 WIKIAPP_COBJS += history.o
 
 # lzma
