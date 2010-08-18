@@ -33,6 +33,7 @@
 #include <suspend.h>
 #include <analog.h>
 #include <temperature.h>
+#include <file-io.h>
 
 /* local includes */
 #include "msg-output.h"
@@ -44,7 +45,7 @@
 #include "gpio.h"
 #include "gui.h"
 
-#define VERSION "0.2"
+#define VERSION "0.3"
 
 static FATFS fatfs;
 
@@ -91,6 +92,21 @@ int main(void)
 
 	// initialisation complete
 	msg(MSG_INFO, "Mahatma super slim kernel v%s\n", VERSION);
+	int fd = wl_open("version.txt", WL_O_RDONLY);
+	if (fd >= 0) {
+		msg(MSG_INFO, "Display version.txt\n");
+		for (;;) {
+			char c;
+			size_t len = wl_read(fd, &c, 1);
+			if (len <= 0) {
+				break;
+			}
+			msg(MSG_INFO, "%c", c);
+		}
+		wl_close(fd);
+	} else {
+		msg(MSG_INFO, "Missing version.txt\n");
+	}
 
 	// the next function will loop forever and call wl_input_wait()
 	for (;;) {
