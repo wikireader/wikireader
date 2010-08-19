@@ -37,6 +37,7 @@
 
 extern int search_interrupted;
 #define FND_BUF_COUNT 1024
+#define MAX_FND_FILES 16
 
 // FND_BUF_BLOCK_SIZE needs to be larger than NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH)
 #define FND_BUF_BLOCK_SIZE 4096
@@ -52,10 +53,12 @@ PFND_BUF pFndBuf;
 int nIdxFndBufFirstUsed;
 int nIdxFndBufLastUsed;
 
-typedef struct _PER_WIKI_INFO {
+typedef struct __attribute__ ((packed)) _PER_WIKI_INFO {
 	int bSearchFndInited;
-	int fdFnd;
-	long lenFnd;
+	unsigned int nFndCount;
+	int fdFnd[MAX_FND_FILES];
+	unsigned long offsetFndStart[MAX_FND_FILES];
+	unsigned int lenFnd[MAX_FND_FILES];
 } PER_WIKI_INFO, *PPER_WIKI_INFO;
 PPER_WIKI_INFO pPerWikiInfo;
 
@@ -92,10 +95,23 @@ void init_search_fnd(void)
 
 	if (!pPerWikiInfo[nCurrentWiki].bSearchFndInited)
 	{
-		pPerWikiInfo[nCurrentWiki].fdFnd = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.fnd"), WL_O_RDONLY);
-		init_bigram(pPerWikiInfo[nCurrentWiki].fdFnd);
+		pPerWikiInfo[nCurrentWiki].fdFnd[0] = wl_open(get_wiki_file_path(nCurrentWiki, "wiki.fnd"), WL_O_RDONLY);
+		init_bigram(pPerWikiInfo[nCurrentWiki].fdFnd[0]);
 		pPerWikiInfo[nCurrentWiki].bSearchFndInited = 1;
-		pPerWikiInfo[nCurrentWiki].lenFnd = 0;
+		pPerWikiInfo[nCurrentWiki].offsetFndStart[0] = 0;
+		wl_fsize(pPerWikiInfo[nCurrentWiki].fdFnd[0], &pPerWikiInfo[nCurrentWiki].lenFnd[0]);
+		for (i = 1; i < MAX_FND_FILES; i++)
+		{
+			char file_name[13];
+			sprintf(file_name, "wiki%d.fnd", i);
+			pPerWikiInfo[nCurrentWiki].fdFnd[i] = wl_open(get_wiki_file_path(nCurrentWiki, file_name), WL_O_RDONLY);
+			if (pPerWikiInfo[nCurrentWiki].fdFnd[i] < 0)
+				break;
+			pPerWikiInfo[nCurrentWiki].offsetFndStart[i] = pPerWikiInfo[nCurrentWiki].offsetFndStart[i - 1] +
+				pPerWikiInfo[nCurrentWiki].lenFnd[i - 1];
+			wl_fsize(pPerWikiInfo[nCurrentWiki].fdFnd[i], &pPerWikiInfo[nCurrentWiki].lenFnd[i]);
+		}
+		pPerWikiInfo[nCurrentWiki].nFndCount = i;
 	}
 }
 
@@ -107,9 +123,6 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	PBTREE_ELEMENT pElement;
 	long nKey;
 
-	if (pPerWikiInfo[nCurrentWiki].lenFnd > 0 && offset >= pPerWikiInfo[nCurrentWiki].lenFnd)
-		return 0;
-
 	blocked_offset = ((offset - SIZE_BIGRAM_BUF) / FND_BUF_BLOCK_SIZE) * FND_BUF_BLOCK_SIZE + SIZE_BIGRAM_BUF;
 	nKey = (nCurrentWiki << 24) | blocked_offset;
 	pElement = btree_search(&btree, nKey);
@@ -120,35 +133,52 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	else
 	{
 		BTREE_ELEMENT element;
+		int nFndIdx;
 		idxFndBuf = nIdxFndBufFirstUsed;
 		if (pFndBuf[idxFndBuf].offset)
 		{
 			long nKeyOld = (pFndBuf[idxFndBuf].wiki_id << 24) | pFndBuf[idxFndBuf].offset;
 			btree_delete(&btree, nKeyOld);
 		}
-		wl_seek(pPerWikiInfo[nCurrentWiki].fdFnd, blocked_offset);
-		pFndBuf[idxFndBuf].len = wl_read(pPerWikiInfo[nCurrentWiki].fdFnd,
-						 &pFndBuf[idxFndBuf].buf, FND_BUF_BLOCK_SIZE);
-		if (pFndBuf[idxFndBuf].len < FND_BUF_BLOCK_SIZE)
+		for (nFndIdx = 0; nFndIdx < pPerWikiInfo[nCurrentWiki].nFndCount; nFndIdx++)
 		{
-			pPerWikiInfo[nCurrentWiki].lenFnd = wl_tell(pPerWikiInfo[nCurrentWiki].fdFnd);
-			if (pFndBuf[idxFndBuf].len <= 0)
+			if (pPerWikiInfo[nCurrentWiki].offsetFndStart[nFndIdx] <= blocked_offset &&
+			    blocked_offset < pPerWikiInfo[nCurrentWiki].offsetFndStart[nFndIdx] +
+			    pPerWikiInfo[nCurrentWiki].lenFnd[nFndIdx])
 			{
-				pFndBuf[idxFndBuf].offset = 0;
-				if (idxFndBuf != nIdxFndBufFirstUsed)
-				{
-					pFndBuf[pFndBuf[idxFndBuf].prev_used_seq].next_used_seq = pFndBuf[idxFndBuf].next_used_seq;
-					if (idxFndBuf != nIdxFndBufLastUsed)
-						pFndBuf[pFndBuf[idxFndBuf].next_used_seq].prev_used_seq = pFndBuf[idxFndBuf].prev_used_seq;
-					else
-						nIdxFndBufFirstUsed = pFndBuf[idxFndBuf].prev_used_seq;
-					pFndBuf[nIdxFndBufFirstUsed].prev_used_seq = idxFndBuf;
-					pFndBuf[idxFndBuf].next_used_seq = nIdxFndBufFirstUsed;
-					nIdxFndBufFirstUsed = idxFndBuf;
-					pFndBuf[idxFndBuf].prev_used_seq = -1;
-				}
-				return 0;
+				break;
 			}
+		}
+		pFndBuf[idxFndBuf].len = 0;
+		if (nFndIdx < pPerWikiInfo[nCurrentWiki].nFndCount)
+		{
+			wl_seek(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx],
+				blocked_offset - pPerWikiInfo[nCurrentWiki].offsetFndStart[nFndIdx]);
+			pFndBuf[idxFndBuf].len = wl_read(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx],
+							 &pFndBuf[idxFndBuf].buf[0], FND_BUF_BLOCK_SIZE);
+		}
+		if (nFndIdx >= pPerWikiInfo[nCurrentWiki].nFndCount || pFndBuf[idxFndBuf].len <= 0)
+		{
+			pFndBuf[idxFndBuf].offset = 0;
+			if (idxFndBuf != nIdxFndBufFirstUsed)
+			{
+				pFndBuf[pFndBuf[idxFndBuf].prev_used_seq].next_used_seq = pFndBuf[idxFndBuf].next_used_seq;
+				if (idxFndBuf != nIdxFndBufLastUsed)
+					pFndBuf[pFndBuf[idxFndBuf].next_used_seq].prev_used_seq = pFndBuf[idxFndBuf].prev_used_seq;
+				else
+					nIdxFndBufFirstUsed = pFndBuf[idxFndBuf].prev_used_seq;
+				pFndBuf[nIdxFndBufFirstUsed].prev_used_seq = idxFndBuf;
+				pFndBuf[idxFndBuf].next_used_seq = nIdxFndBufFirstUsed;
+				nIdxFndBufFirstUsed = idxFndBuf;
+				pFndBuf[idxFndBuf].prev_used_seq = -1;
+			}
+			return 0;
+		}
+		if (pFndBuf[idxFndBuf].len < FND_BUF_BLOCK_SIZE && nFndIdx < pPerWikiInfo[nCurrentWiki].nFndCount - 1)
+		{
+			wl_seek(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx + 1], 0);
+			pFndBuf[idxFndBuf].len += wl_read(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx + 1],
+							  &pFndBuf[idxFndBuf].buf[pFndBuf[idxFndBuf].len], FND_BUF_BLOCK_SIZE - pFndBuf[idxFndBuf].len);
 		}
 		pFndBuf[idxFndBuf].offset = blocked_offset;
 		element.key = nKey;

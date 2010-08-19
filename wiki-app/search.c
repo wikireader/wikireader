@@ -79,7 +79,6 @@ typedef struct _search_info {
 	int32_t inited;
 	int32_t fd_pfx;
 	int32_t fd_idx;
-	int32_t fd_dat[MAX_DAT_FILES];
 	uint32_t max_article_idx;
 	uint32_t prefix_index_table[SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT];
 	uint32_t b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
@@ -213,14 +212,10 @@ void get_article_title_from_idx(long idx, char *title)
 
 void load_prefix_index(int nWikiIdx)
 {
-	int i;
-
 	if (!search_info[nWikiIdx].inited)
 	{
 		search_info[nWikiIdx].fd_pfx = wl_open(get_wiki_file_path(nWikiIdx, "wiki.pfx"), WL_O_RDONLY);
 		search_info[nWikiIdx].fd_idx = wl_open(get_wiki_file_path(nWikiIdx, "wiki.idx"), WL_O_RDONLY);
-		for (i=0; i < MAX_DAT_FILES; i++)
-			search_info[nWikiIdx].fd_dat[i] = -1;
 		search_info[nWikiIdx].offset_current = -1;
 		if (search_info[nWikiIdx].fd_pfx >= 0 && search_info[nWikiIdx].fd_idx >= 0)
 		{
@@ -1980,15 +1975,13 @@ int retrieve_article(long idx_article_with_wiki_id)
 		wl_read(search_info[nWikiIdx].fd_idx, &article_ptr, sizeof(article_ptr));
 
 		int dat_file_id = article_ptr.file_id;
+		int fd_dat;
+		char file_name[13];
 
-		if (search_info[nWikiIdx].fd_dat[dat_file_id] < 0)
-		{
-			char file_name[13];
-			sprintf(file_name, "wiki%d.dat", dat_file_id);
-			search_info[nWikiIdx].fd_dat[dat_file_id] = wl_open(get_wiki_file_path(nWikiIdx, file_name),
-									    WL_O_RDONLY);
-		}
-		if (search_info[nWikiIdx].fd_dat[dat_file_id] >= 0)
+		sprintf(file_name, "wiki%d.dat", dat_file_id);
+		fd_dat = wl_open(get_wiki_file_path(nWikiIdx, file_name), WL_O_RDONLY);
+
+		if (fd_dat >= 0)
 		{
 			CONCAT_ARTICLE_INFO concat_article_infos[MAX_ARTICLES_PER_COMPRESSION];
 			uint8_t nArticlesConcatnated;
@@ -1998,12 +1991,12 @@ int retrieve_article(long idx_article_with_wiki_id)
 			int i;
 			int idx_concat_article = -1;
 
-			wl_seek(search_info[nWikiIdx].fd_dat[dat_file_id], article_ptr.offset_dat & 0x7FFFFFFF);
+			wl_seek(fd_dat, article_ptr.offset_dat & 0x7FFFFFFF);
 
-			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], &nArticlesConcatnated,
+			wl_read(fd_dat, &nArticlesConcatnated,
 				sizeof(nArticlesConcatnated));
 
-			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], &concat_article_infos,
+			wl_read(fd_dat, &concat_article_infos,
 				nArticlesConcatnated * sizeof(CONCAT_ARTICLE_INFO));
 			for (i = 0; i < nArticlesConcatnated; i++)
 			{
@@ -2016,9 +2009,9 @@ int retrieve_article(long idx_article_with_wiki_id)
 				}
 			}
 
-			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], &dat_article_len, sizeof(dat_article_len));
+			wl_read(fd_dat, &dat_article_len, sizeof(dat_article_len));
 
-			wl_read(search_info[nWikiIdx].fd_dat[dat_file_id], compressed_buf, dat_article_len);
+			wl_read(fd_dat, compressed_buf, dat_article_len);
 
 			dat_article_len -= LZMA_PROPS_SIZE;
 
@@ -2047,6 +2040,7 @@ int retrieve_article(long idx_article_with_wiki_id)
 					return 0;
 				}
 			}
+			wl_close(fd_dat);
 		}
 
 	}
