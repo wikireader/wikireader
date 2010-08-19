@@ -20,6 +20,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ctype.h>
+
 #include <guilib.h>
 #include <wikilib.h>
 #include <input.h>
@@ -168,31 +170,96 @@ bool serial_event_pending(void)
 }
 
 
+static int serial_get_key(void)
+{
+	if (BUFFER_EMPTY(console_write, console_read, console_buffer)) {
+		return 0;
+	}
+
+	int k = console_buffer[console_read];
+	BUFFER_NEXT(console_read, console_buffer);
+	return k;
+}
+
+
+static int state;
+
 int serial_get_event(struct wl_input_event *ev)
 {
-	if (BUFFER_EMPTY(console_write, console_read, console_buffer))
+	static int numeric_prefix;
+	int keycode = serial_get_key();
+
+	if (0 == keycode) {
+		return 0;
+	}
+
+	msg(MSG_INFO, "RAW KEY: %3d 0x%02h\n", keycode, keycode);
+
+	// escape sequence:  <esc> ('[' | 'O') <digits> <letter-or-tilde>
+	if (27 == keycode) {
+		state = 1;
+		numeric_prefix = 0;
+		return 0;
+	}
+
+	// switch must perform one of the following actions:
+	//   1. return 0
+	//   2. setup ev->* and return 1
+	//   3. set the value in keycode and break
+	switch (state) {
+	case 1: // initial '[' or 'O'
+		++state;
 		return 0;
 
-//	msg(MSG_INFO, " OUT. %d %d    %p %p\n", console_read, console_write,
-//		ev, &ev->type);
+	case 2: // sequence of digits ending with letter or '~'
+		if (isdigit(keycode)) {
+			numeric_prefix *= 10;
+			numeric_prefix += keycode - '0';
+			return 0;
+		}
+		if ('~' == keycode || isalpha(keycode)) {
+			state = 0;
+		}
+		// cursor up <esc>[A
+		if ('A' == keycode) {
+			ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
+			return 1;
+		}
+		// cursor down <esc>[B
+		else if ('B' == keycode) {
+			ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
+			return 1;
+		}
+		// home <esc>[H
+		else if ('H' == keycode) {
+			keycode = WL_INPUT_KEY_SEARCH;
+			break;
+		}
+		// end <esc>[F
+		else if ('F' == keycode) {
+			keycode = WL_INPUT_KEY_HISTORY;
+			break;
+		}
+		// page up <esc>[5~
+		else if ('~' == keycode && 5 == numeric_prefix) {
+			keycode = WL_INPUT_KEY_RANDOM;
+			break;
+		}
+		return 0;
+
+	default:
+		break;
+	}
 
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
-	if (0x7f == console_buffer[console_read]) {
-		console_buffer[console_read] = 0x08;
+	if (0x7f == keycode) {
+		keycode = 0x08;
 	}
-	ev->key_event.keycode = console_buffer[console_read];
+	ev->key_event.keycode = keycode;
 	ev->key_event.value = 1;
-	BUFFER_NEXT(console_read, console_buffer);
-
-	/* Override for scrolling... */
-	if ((ev->key_event.keycode == WL_KEY_PLUS) || (ev->key_event.keycode == WL_KEY_DOWN)) {
-		ev->type = WL_INPUT_EV_TYPE_CURSOR;
-		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
-	}
-	else if ((ev->key_event.keycode == WL_KEY_MINUS) || (ev->key_event.keycode == WL_KEY_UP)) {
-		ev->type = WL_INPUT_EV_TYPE_CURSOR;
-		ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
-	}
+	msg(MSG_INFO, "KEY: %d\n", ev->key_event.keycode);
 
 	return 1;
 }
