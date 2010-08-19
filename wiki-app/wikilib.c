@@ -477,9 +477,17 @@ static void handle_key_release(int keycode)
 		random_article();
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
+
 		if (keycode == WL_KEY_RETURN) {
-			int cur_selection = search_current_selection();
-			retrieve_article(cur_selection);
+			int selection = search_result_selected();
+			if (selection < 0) {
+				selection = 0;
+				search_set_selection(0);
+			}
+			msg(MSG_INFO, "selection = %d\n", selection);
+			display_mode = DISPLAY_MODE_ARTICLE;
+			last_display_mode = DISPLAY_MODE_INDEX;
+			search_open_article(selection);
 #ifdef PROFILER_ON
 		} else if (keycode == WL_KEY_HASH) {
 			/* activate if you want to run performance tests */

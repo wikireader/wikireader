@@ -1917,19 +1917,6 @@ TITLE_SEARCH *locate_previous_title(char *buf, int len)
 	return NULL;
 }
 
-int search_current_selection(void)
-{
-//	const char* title;
-
-//	if (result_list->cur_selected >= result_list->count - result_list->first_item) {
-//		DP(DBG_SEARCH, ("O search_current_title() NO TITLE\n"));
-//		return NULL;
-//	}
-//	title = result_list_title(result_list->cur_selected+result_list->first_item);
-//	DP(DBG_SEARCH, ("O search_current_title() '%s'\n", title));
-	return result_list->cur_selected;
-}
-
 unsigned int search_result_count()
 {
 	return result_list->count;

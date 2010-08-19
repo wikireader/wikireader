@@ -75,7 +75,6 @@ typedef struct __attribute__((packed)) _TITLE_SEARCH {
  */
 void search_select_down(void);
 void search_select_up(void);
-int search_current_selection(void);
 // const char *search_fetch_result();
 int retrieve_article(long idx_article);
 void memrcpy(char *dest, char *src, int len); // memory copy starting from the last byte
@@ -117,6 +116,7 @@ unsigned int search_result_count();
 
 /**
  * Return the index of search result currently selected item
+ * -1 => none selected
  */
 int search_result_selected();
 
