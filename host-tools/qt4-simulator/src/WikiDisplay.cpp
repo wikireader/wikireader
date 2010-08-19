@@ -89,6 +89,15 @@ WikiDisplay::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void
+WikiDisplay::mouseMoveEvent(QMouseEvent *event)
+{
+	mouseQueueMutex->lock();
+	mouseEventQueue->enqueue(*event);
+	mouseQueueMutex->unlock();
+	waitCondition->wakeAll();
+}
+
+void
 WikiDisplay::paintEvent(QPaintEvent *)
 {
 	unsigned int x, y;
