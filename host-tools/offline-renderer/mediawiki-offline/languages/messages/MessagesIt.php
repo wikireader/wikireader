@@ -58,6 +58,150 @@ $namespaceAliases = array(
 	'Discussioni_immagine' => NS_FILE_TALK,
 );
 
+$magicWords = array(
+#   ID                                 CASE  SYNONYMS
+	'redirect'               => array( 0,    '#RINVIA', '#REDIRECT'   ),
+	'notoc'                  => array( 0,    '__NOTOC__'              ),
+	'nogallery'              => array( 0,    '__NOGALLERY__'          ),
+	'forcetoc'               => array( 0,    '__FORCETOC__'           ),
+	'toc'                    => array( 0,    '__TOC__'                ),
+	'noeditsection'          => array( 0,    '__NOEDITSECTION__'      ),
+	'noheader'               => array( 0,    '__NOHEADER__'           ),
+	'currentmonth'           => array( 1,    'CURRENTMONTH'           ),
+	'currentmonthname'       => array( 1,    'CURRENTMONTHNAME'       ),
+	'currentmonthnamegen'    => array( 1,    'CURRENTMONTHNAMEGEN'    ),
+	'currentmonthabbrev'     => array( 1,    'CURRENTMONTHABBREV'     ),
+	'currentday'             => array( 1,    'CURRENTDAY'             ),
+	'currentday2'            => array( 1,    'CURRENTDAY2'            ),
+	'currentdayname'         => array( 1,    'CURRENTDAYNAME'         ),
+	'currentyear'            => array( 1,    'CURRENTYEAR'            ),
+	'currenttime'            => array( 1,    'CURRENTTIME'            ),
+	'currenthour'            => array( 1,    'CURRENTHOUR'            ),
+	'localmonth'             => array( 1,    'LOCALMONTH'             ),
+	'localmonthname'         => array( 1,    'LOCALMONTHNAME'         ),
+	'localmonthnamegen'      => array( 1,    'LOCALMONTHNAMEGEN'      ),
+	'localmonthabbrev'       => array( 1,    'LOCALMONTHABBREV'       ),
+	'localday'               => array( 1,    'LOCALDAY'               ),
+	'localday2'              => array( 1,    'LOCALDAY2'              ),
+	'localdayname'           => array( 1,    'LOCALDAYNAME'           ),
+	'localyear'              => array( 1,    'LOCALYEAR'              ),
+	'localtime'              => array( 1,    'LOCALTIME'              ),
+	'localhour'              => array( 1,    'LOCALHOUR'              ),
+	'numberofpages'          => array( 1,    'NUMBEROFPAGES'          ),
+	'numberofarticles'       => array( 1,    'NUMBEROFARTICLES'       ),
+	'numberoffiles'          => array( 1,    'NUMBEROFFILES'          ),
+	'numberofusers'          => array( 1,    'NUMBEROFUSERS'          ),
+	'numberofactiveusers'    => array( 1,    'NUMBEROFACTIVEUSERS'    ),
+	'numberofedits'          => array( 1,    'NUMBEROFEDITS'          ),
+	'numberofviews'          => array( 1,    'NUMBEROFVIEWS'          ),
+	'pagename'               => array( 1,    'PAGENAME'               ),
+	'pagenamee'              => array( 1,    'PAGENAMEE'              ),
+	'namespace'              => array( 1,    'NAMESPACE'              ),
+	'namespacee'             => array( 1,    'NAMESPACEE'             ),
+	'talkspace'              => array( 1,    'TALKSPACE'              ),
+	'talkspacee'             => array( 1,    'TALKSPACEE'              ),
+	'subjectspace'           => array( 1,    'SUBJECTSPACE', 'ARTICLESPACE' ),
+	'subjectspacee'          => array( 1,    'SUBJECTSPACEE', 'ARTICLESPACEE' ),
+	'fullpagename'           => array( 1,    'FULLPAGENAME'           ),
+	'fullpagenamee'          => array( 1,    'FULLPAGENAMEE'          ),
+	'subpagename'            => array( 1,    'SUBPAGENAME'            ),
+	'subpagenamee'           => array( 1,    'SUBPAGENAMEE'           ),
+	'basepagename'           => array( 1,    'BASEPAGENAME'           ),
+	'basepagenamee'          => array( 1,    'BASEPAGENAMEE'          ),
+	'talkpagename'           => array( 1,    'TALKPAGENAME'           ),
+	'talkpagenamee'          => array( 1,    'TALKPAGENAMEE'          ),
+	'subjectpagename'        => array( 1,    'SUBJECTPAGENAME', 'ARTICLEPAGENAME' ),
+	'subjectpagenamee'       => array( 1,    'SUBJECTPAGENAMEE', 'ARTICLEPAGENAMEE' ),
+	'msg'                    => array( 0,    'MSG:'                   ),
+	'subst'                  => array( 0,    'SUBST:'                 ),
+	'msgnw'                  => array( 0,    'MSGNW:'                 ),
+	'img_thumbnail'          => array( 1,    'thumbnail', 'thumb'     ),
+	'img_manualthumb'        => array( 1,    'thumbnail=$1', 'thumb=$1'),
+	'img_right'              => array( 1,    'right'                  ),
+	'img_left'               => array( 1,    'left'                   ),
+	'img_none'               => array( 1,    'none'                   ),
+	'img_width'              => array( 1,    '$1px'                   ),
+	'img_center'             => array( 1,    'center', 'centre'       ),
+	'img_framed'             => array( 1,    'framed', 'enframed', 'frame' ),
+	'img_frameless'          => array( 1,    'frameless'              ),
+	'img_page'               => array( 1,    'page=$1', 'page $1'     ),
+	'img_upright'            => array( 1,    'upright', 'upright=$1', 'upright $1'  ),
+	'img_border'             => array( 1,    'border'                 ),
+	'img_baseline'           => array( 1,    'baseline'               ),
+	'img_sub'                => array( 1,    'sub'                    ),
+	'img_super'              => array( 1,    'super', 'sup'           ),
+	'img_top'                => array( 1,    'top'                    ),
+	'img_text_top'           => array( 1,    'text-top'               ),
+	'img_middle'             => array( 1,    'middle'                 ),
+	'img_bottom'             => array( 1,    'bottom'                 ),
+	'img_text_bottom'        => array( 1,    'text-bottom'            ),
+	'img_link'               => array( 1,    'link=$1'                ),
+	'img_alt'                => array( 1,    'alt=$1'                 ),
+	'int'                    => array( 0,    'INT:'                   ),
+	'sitename'               => array( 1,    'SITENAME'               ),
+	'ns'                     => array( 0,    'NS:'                    ),
+	'localurl'               => array( 0,    'LOCALURL:'              ),
+	'localurle'              => array( 0,    'LOCALURLE:'             ),
+	'server'                 => array( 0,    'SERVER'                 ),
+	'servername'             => array( 0,    'SERVERNAME'             ),
+	'scriptpath'             => array( 0,    'SCRIPTPATH'             ),
+	'grammar'                => array( 0,    'GRAMMAR:'               ),
+	'gender'                 => array( 0,    'GENDER:'                ),
+	'notitleconvert'         => array( 0,    '__NOTITLECONVERT__', '__NOTC__'),
+	'nocontentconvert'       => array( 0,    '__NOCONTENTCONVERT__', '__NOCC__'),
+	'currentweek'            => array( 1,    'CURRENTWEEK'            ),
+	'currentdow'             => array( 1,    'CURRENTDOW'             ),
+	'localweek'              => array( 1,    'LOCALWEEK'              ),
+	'localdow'               => array( 1,    'LOCALDOW'               ),
+	'revisionid'             => array( 1,    'REVISIONID'             ),
+	'revisionday'            => array( 1,    'REVISIONDAY'            ),
+	'revisionday2'           => array( 1,    'REVISIONDAY2'           ),
+	'revisionmonth'          => array( 1,    'REVISIONMONTH'          ),
+	'revisionyear'           => array( 1,    'REVISIONYEAR'           ),
+	'revisiontimestamp'      => array( 1,    'REVISIONTIMESTAMP'      ),
+	'revisionuser'           => array( 1,    'REVISIONUSER'           ),
+	'plural'                 => array( 0,    'PLURAL:'                ),
+	'fullurl'                => array( 0,    'FULLURL:'               ),
+	'fullurle'               => array( 0,    'FULLURLE:'              ),
+	'lcfirst'                => array( 0,    'LCFIRST:'               ),
+	'ucfirst'                => array( 0,    'UCFIRST:'               ),
+	'lc'                     => array( 0,    'LC:'                    ),
+	'uc'                     => array( 0,    'UC:'                    ),
+	'raw'                    => array( 0,    'RAW:'                   ),
+	'displaytitle'           => array( 1,    'DISPLAYTITLE'           ),
+	'rawsuffix'              => array( 1,    'R'                      ),
+	'newsectionlink'         => array( 1,    '__NEWSECTIONLINK__'     ),
+	'nonewsectionlink'       => array( 1,    '__NONEWSECTIONLINK__'   ),
+	'currentversion'         => array( 1,    'CURRENTVERSION'         ),
+	'urlencode'              => array( 0,    'URLENCODE:'             ),
+	'anchorencode'           => array( 0,    'ANCHORENCODE'           ),
+	'currenttimestamp'       => array( 1,    'CURRENTTIMESTAMP'       ),
+	'localtimestamp'         => array( 1,    'LOCALTIMESTAMP'         ),
+	'directionmark'          => array( 1,    'DIRECTIONMARK', 'DIRMARK' ),
+	'language'               => array( 0,    '#LANGUAGE:'             ),
+	'contentlanguage'        => array( 1,    'CONTENTLANGUAGE', 'CONTENTLANG' ),
+	'pagesinnamespace'       => array( 1,    'PAGESINNAMESPACE:', 'PAGESINNS:' ),
+	'numberofadmins'         => array( 1,    'NUMBEROFADMINS'         ),
+	'formatnum'              => array( 0,    'FORMATNUM'              ),
+	'padleft'                => array( 0,    'PADLEFT'                ),
+	'padright'               => array( 0,    'PADRIGHT'               ),
+	'special'                => array( 0,    'special',               ),
+	'defaultsort'            => array( 1,    'DEFAULTSORT:', 'DEFAULTSORTKEY:', 'DEFAULTCATEGORYSORT:' ),
+	'filepath'               => array( 0,    'FILEPATH:'              ),
+	'tag'                    => array( 0,    'tag'                    ),
+	'hiddencat'              => array( 1,    '__HIDDENCAT__'          ),
+	'pagesincategory'        => array( 1,    'PAGESINCATEGORY', 'PAGESINCAT' ),
+	'pagesize'               => array( 1,    'PAGESIZE'               ),
+	'index'                  => array( 1,    '__INDEX__'              ),
+	'noindex'                => array( 1,    '__NOINDEX__'            ),
+	'numberingroup'          => array( 1,    'NUMBERINGROUP', 'NUMINGROUP' ),
+	'staticredirect'         => array( 1,    '__STATICREDIRECT__'     ),
+	'protectionlevel'        => array( 1,    'PROTECTIONLEVEL'        ),
+	'formatdate'             => array( 0,    'formatdate', 'dateformat' ),
+);
+
+
+
 $separatorTransformTable = array(',' => '.', '.' => ',' );
 
 $dateFormats = array(
@@ -443,8 +587,8 @@ I seguenti collegamenti sono in lingua inglese:
 
 # Main script and global functions
 'nosuchaction'      => 'Operazione non riconosciuta',
-'nosuchactiontext'  => "L'azione specificata nella URL non è valida. 
-È possibile che la URL sia stata digitata in modo errato o che sia stato seguito un collegamento non valido. 
+'nosuchactiontext'  => "L'azione specificata nella URL non è valida.
+È possibile che la URL sia stata digitata in modo errato o che sia stato seguito un collegamento non valido.
 Ciò potrebbe anche indicare un bug in {{SITENAME}}.",
 'nosuchspecialpage' => 'Pagina speciale non disponibile',
 'nospecialpagetext' => "<big>'''La pagina speciale richiesta non è stata riconosciuta.'''</big>
@@ -556,7 +700,7 @@ L'account è stato creato correttamente. Non dimenticare di personalizzare le pr
 'gotaccountlink'             => 'Entra',
 'createaccountmail'          => 'via e-mail',
 'badretype'                  => 'Le password inserite non coincidono tra loro.',
-'userexists'                 => 'Il nome utente inserito è già utilizzato. 
+'userexists'                 => 'Il nome utente inserito è già utilizzato.
 Scegliere un nome utente diverso.',
 'youremail'                  => 'Indirizzo e-mail:',
 'username'                   => 'Nome utente:',
@@ -588,7 +732,7 @@ Scegliere un nome utente diverso.',
 'nouserspecified'            => 'È necessario specificare un nome utente.',
 'wrongpassword'              => 'La password inserita non è corretta. Riprovare.',
 'wrongpasswordempty'         => 'Non è stata inserita alcuna password. Riprovare.',
-'passwordtooshort'           => 'La password inserita non è valida o è troppo breve. 
+'passwordtooshort'           => 'La password inserita non è valida o è troppo breve.
 Deve contenere almeno {{PLURAL:$1|1 carattere|$1 caratteri}} ed essere diversa dal nome utente.',
 'mailmypassword'             => 'Invia una nuova password al mio indirizzo e-mail',
 'passwordremindertitle'      => 'Servizio Password Reminder di {{SITENAME}}',
@@ -619,7 +763,7 @@ Per prevenire abusi, la funzione "Invia nuova password" può essere usata solo u
 È opportuno eseguire un accesso quanto prima e cambiare la password immediatamente.
 
 Se l\'accesso è stato creato per errore, si può ignorare questo messaggio.',
-'login-throttled'            => 'Sono stati effettuati troppi tentativi di accesso a questo account in breve tempo. 
+'login-throttled'            => 'Sono stati effettuati troppi tentativi di accesso a questo account in breve tempo.
 Riprovare più tardi.',
 'loginlanguagelabel'         => 'Lingua: $1',
 
@@ -746,8 +890,8 @@ Se il collegamento è stato seguito per errore, è sufficiente fare clic sul pul
 'note'                             => "'''NOTA:'''",
 'previewnote'                      => "'''Questa è solo un'anteprima; le modifiche alla pagina NON sono ancora state salvate!'''",
 'previewconflict'                  => 'L\'anteprima corrisponde al testo presente nella casella di modifica superiore e rappresenta la pagina come apparirà se si sceglie di premere "Salva la pagina" in questo momento.',
-'session_fail_preview'             => "'''Non è stato possibile elaborare la modifica perché sono andati persi i dati relativi alla sessione. 
-Riprovare. 
+'session_fail_preview'             => "'''Non è stato possibile elaborare la modifica perché sono andati persi i dati relativi alla sessione.
+Riprovare.
 Se il problema persiste, si può provare a [[Special:UserLogout|scollegarsi]] ed effettuare un nuovo accesso.'''",
 'session_fail_preview_html'        => "'''Non è stato possibile elaborare la modifica perché sono andati persi i dati relativi alla sessione.'''
 
@@ -1681,7 +1825,7 @@ Ciascuna riga contiene i collegamenti al primo ed al secondo redirect, oltre all
 'speciallogtitlelabel' => 'Titolo:',
 'log'                  => 'Log',
 'all-logs-page'        => 'Tutti i registri',
-'alllogstext'          => "Presentazione unificata di tutti i registri di {{SITENAME}}. 
+'alllogstext'          => "Presentazione unificata di tutti i registri di {{SITENAME}}.
 È possibile restringere i criteri di ricerca selezionando il tipo di registro, l'utente che ha eseguito l'azione, e/o la pagina interessata (entrambi i campi sono sensibili al maiuscolo/minuscolo).",
 'logempty'             => 'Il registro non contiene elementi corrispondenti alla ricerca.',
 'log-title-wildcard'   => 'Ricerca dei titoli che iniziano con',
@@ -1785,7 +1929,7 @@ Potrebbero esserci [[{{MediaWiki:Listgrouprights-helppage}}|ulteriori informazio
 'watchnologin'         => 'Accesso non effettuato',
 'watchnologintext'     => "Per modificare la lista degli osservati speciali è necessario prima eseguire l'[[Special:UserLogin|accesso al sito]].",
 'addedwatch'           => 'Pagina aggiunta alla lista degli osservati speciali',
-'addedwatchtext'       => "La pagina \"[[:\$1]]\" è stata aggiunta alla propria [[Special:Watchlist|lista degli osservati speciali]]. 
+'addedwatchtext'       => "La pagina \"[[:\$1]]\" è stata aggiunta alla propria [[Special:Watchlist|lista degli osservati speciali]].
 D'ora in poi, le modifiche apportate alla pagina e alla sua discussione verranno elencate in quella sede;
 il titolo della pagina apparirà in '''grassetto''' nella pagina delle [[Special:RecentChanges|ultime modifiche]] per renderlo più visibile.",
 'removedwatch'         => 'Pagina eliminata dalla lista degli osservati speciali',
@@ -1857,7 +2001,7 @@ Per dare il tuo feedback e ricevere ulteriore assistenza:
 'historywarning'         => 'Attenzione! La pagina che si sta per cancellare ha una cronologia:',
 'confirmdeletetext'      => 'Stai per cancellare una pagina con tutta la sua cronologia. Per cortesia, conferma che è tua intenzione procedere a tale cancellazione, che hai piena consapevolezza delle conseguenze della tua azione e che essa è conforme alle linee guida stabilite in [[{{MediaWiki:Policy-url}}]].',
 'actioncomplete'         => 'Azione completata',
-'deletedtext'            => 'La pagina "<nowiki>$1</nowiki>" è stata cancellata. 
+'deletedtext'            => 'La pagina "<nowiki>$1</nowiki>" è stata cancellata.
 Consultare il log delle $2 per un elenco delle pagine cancellate di recente.',
 'deletedarticle'         => 'ha cancellato "[[$1]]"',
 'suppressedarticle'      => 'ha soppresso "[[$1]]"',
@@ -1962,8 +2106,8 @@ Le impostazioni correnti per la pagina sono '''$1''':",
 'undeleterevisions'            => '{{PLURAL:$1|Una revisione|$1 revisioni}} in archivio',
 'undeletehistory'              => 'Recuperando questa pagina, tutte le sue revisioni verranno ripristinate nella relativa cronologia. Se dopo la cancellazione è stata creata una nuova pagina con lo stesso titolo, le revisioni recuperate saranno inserite nella cronologia precedente.',
 'undeleterevdel'               => "Il ripristino non verrà effettuato se determina la cancellazione parziale della versione corrente della pagina o del file interessato. In tal caso, è necessario rimuovere il segno di spunta o l'oscuramento dalle revisioni cancellate più recenti.",
-'undeletehistorynoadmin'       => "Questa pagina è stata cancellata. 
-Il motivo della cancellazione è mostrato qui sotto, assieme ai dettagli dell'utente che ha modificato questa pagina prima della cancellazione. 
+'undeletehistorynoadmin'       => "Questa pagina è stata cancellata.
+Il motivo della cancellazione è mostrato qui sotto, assieme ai dettagli dell'utente che ha modificato questa pagina prima della cancellazione.
 Il testo contenuto nelle revisioni cancellate è disponibile solo agli amministratori.",
 'undelete-revision'            => 'Revisione cancellata della pagina $1, inserita il $4 alle $5 da $3:',
 'undeleterevision-missing'     => "Revisione errata o mancante. Il collegamento è errato oppure la revisione è stata già ripristinata o eliminata dall'archivio.",
@@ -2043,7 +2187,7 @@ $1',
 # Block/unblock
 'blockip'                         => 'Blocco utente',
 'blockip-legend'                  => "Blocca l'utente",
-'blockiptext'                     => "Usare il modulo sottostante per bloccare l'accesso in scrittura a uno specifico indirizzo IP o un utente registrato. 
+'blockiptext'                     => "Usare il modulo sottostante per bloccare l'accesso in scrittura a uno specifico indirizzo IP o un utente registrato.
 Il blocco dev'essere operato per prevenire atti di vandalismo e in stretta osservanza della [[{{MediaWiki:Policy-url}}|policy di {{SITENAME}}]].
 Indicare il motivo specifico per il quale si procede al blocco (per esempio, citando i titoli di eventuali pagine oggetto di vandalismo).",
 'ipaddress'                       => 'Indirizzo IP:',
