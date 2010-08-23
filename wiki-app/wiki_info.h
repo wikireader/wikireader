@@ -23,12 +23,6 @@
 #include "lcd_buf_draw.h"
 #include "wl-keyboard.h"
 
-#if !defined(INCLUDED_FROM_KERNEL)
-#define MAX_WIKIS_PER_DEVICE 99
-#else
-#define MAX_WIKIS_PER_DEVICE 6
-#endif
-
 #define MAX_LINKS_IN_LICENSE_TEXT 4
 #define LICENSE_LINK_START '['
 #define LICENSE_LINK_END ']'
