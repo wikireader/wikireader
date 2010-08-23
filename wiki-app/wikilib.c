@@ -396,11 +396,28 @@ static void handle_cursor(struct wl_input_event *ev)
 			display_article_with_pcf(50);
 		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
 			display_article_with_pcf(-50);
-	} else if (display_mode == DISPLAY_MODE_INDEX && keyboard_get_mode() == KEYBOARD_NONE) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			display_article_with_pcf(50);
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-			display_article_with_pcf(-50);
+	} else if (display_mode == DISPLAY_MODE_INDEX) {
+		if (keyboard_get_mode() == KEYBOARD_NONE) {
+			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+				display_article_with_pcf(50);
+			else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+				display_article_with_pcf(-50);
+		} else {
+			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN) {
+				int selection = search_result_selected() + 1;
+				search_set_selection(selection);
+				repaint_search();
+				search_result_display();
+			} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP) {
+				int selection = search_result_selected() - 1;
+				if (selection < 0) {
+					selection = -1;
+				}
+				search_set_selection(selection);
+				repaint_search();
+				search_result_display();
+			}
+		}
 	} else if (display_mode == DISPLAY_MODE_HISTORY && keyboard_get_mode() == KEYBOARD_NONE) {
 		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 			display_article_with_pcf(50);
@@ -478,13 +495,12 @@ static void handle_key_release(int keycode)
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
 
-		if (keycode == WL_KEY_RETURN) {
+		if (WL_KEY_RETURN == keycode) {
 			int selection = search_result_selected();
 			if (selection < 0) {
 				selection = 0;
-				search_set_selection(0);
+				search_set_selection(selection);
 			}
-			msg(MSG_INFO, "selection = %d\n", selection);
 			display_mode = DISPLAY_MODE_ARTICLE;
 			last_display_mode = DISPLAY_MODE_INDEX;
 			search_open_article(selection);
@@ -500,6 +516,15 @@ static void handle_key_release(int keycode)
 			if (key)
 				handle_search_key(key, get_time_ticks());
 		}
+	} else if (display_mode == DISPLAY_MODE_HISTORY) {
+		if (keycode == 'Y' || keycode == 'y') {
+			history_clear();
+			msg(MSG_INFO, "History Cleared\n"); // inform test program history was cleared
+		}
+		clear_article_pos_info(); // to clear the previous article positioning information for list links to work properly
+		article_buf_pointer = NULL;
+		history_reload();
+		keyboard_set_mode(KEYBOARD_NONE);
 	} else if (display_mode == DISPLAY_MODE_ARTICLE) {
 //		article_buf_pointer = NULL;
 		if (keycode == WL_KEY_BACKSPACE) {
