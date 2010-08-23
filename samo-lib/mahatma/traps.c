@@ -41,9 +41,6 @@
 static void undef_irq_handler(void) __attribute__((interrupt_handler));
 static void illegal_instruction(void) __attribute__((interrupt_handler));
 static void illegal_irq_handler(void) __attribute__((interrupt_handler));
-static void serial0_err_irq(void) __attribute__((interrupt_handler));
-static void serial0_in_irq(void) __attribute__((interrupt_handler));
-static void serial0_out_irq(void) __attribute__((interrupt_handler));
 static void serial1_out_irq(void) __attribute__((interrupt_handler));
 static void unaligned_data_access(void) __attribute__((interrupt_handler));
 
@@ -143,21 +140,6 @@ static void unaligned_data_access(void)
 	PANIC("Unaligned data access");
 }
 
-static void serial0_err_irq(void)
-{
-	CLEAR_IRQ(REG_INT_FSIF01, 1 << 0);
-}
-
-static void serial0_in_irq(void)
-{
-	serial_filled_0();
-	CLEAR_IRQ(REG_INT_FSIF01, 1 << 1);
-}
-
-static void serial0_out_irq(void)
-{
-	serial_drained_0();
-}
 
 static void serial1_out_irq(void)
 {
@@ -225,9 +207,9 @@ irq_callback trap_table[N_TRAPS] = {
 	undef_irq_handler,	//  53 *reserved*
 	undef_irq_handler,	//  54 *reserved*
 	undef_irq_handler,	//  55 *reserved*
-	serial0_err_irq,	//  56 Serial interface Ch.0 - Receive error
-	serial0_in_irq,		//  57 Serial interface Ch.0 - Receive buffer full
-	serial0_out_irq,	//  58 Serial interface Ch.0 - Transmit buffer empty
+	serial_input_interrupt,	//  56 Serial interface Ch.0 - Receive error
+	serial_input_interrupt,	//  57 Serial interface Ch.0 - Receive buffer full
+	serial_output_interrupt,//  58 Serial interface Ch.0 - Transmit buffer empty
 	undef_irq_handler,	//  59 *reserved*
 	CTP_interrupt,		//  60 Serial interface Ch.1 - Receive error
 	CTP_interrupt,		//  61 Serial interface Ch.1 - Receive buffer full
