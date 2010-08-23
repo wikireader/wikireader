@@ -2050,9 +2050,9 @@ int retrieve_article(long idx_article_with_wiki_id)
 
 void search_set_selection(int new_selection)
 {
-
 	result_list->cur_selected = new_selection;
 }
+
 void search_open_article(int new_selection)
 {
 	int list_idx;
