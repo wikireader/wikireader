@@ -629,7 +629,9 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
        size_t bs = fwrite(buf,1,length,fd);
        if (bs != length) {
 	       printf("bs = %ld, nFontCount = %d, sizeof(font_bmf) = %ld, header_len = %d, sum = %ld, diff = %ld\n",
-		      bs, nFontCount, sizeof(font_bmf), header_len, length, length - bs);
+	              (long)bs, nFontCount,
+		      (long)sizeof(font_bmf), header_len,
+		      (long)length, (long)(length - bs));
        }
        assert(bs == length);
     }
