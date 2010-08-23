@@ -59,7 +59,7 @@ C. Compiling a test database (multiple language version - latest kernel.elf)
       XML_FILES="XML-Licenses/en/license.xml XML-Licenses/en/terms.xml xml-file-samples/japanese_architects.xml" \
       cleandirs createdirs iprc
 
-   #Note: iprch => index parse render combine
+   #Note: iprc => index parse render combine
 
 2) Optionally: simulate using qt4-simulator:
    make DESTDIR=image fonts-install nls-install sim4

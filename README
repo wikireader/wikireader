@@ -1,11 +1,6 @@
 Contents of root directory
 ==========================
 
-00run.sh
-
-  Script using in building the micro SD card image using multiple
-  servers.
-
 binutils*  [Created during build]
 
   Stamp files for make
@@ -48,6 +43,12 @@ samo-lib
 
   See: samo-lib/00ReadMe.text
 
+scripts
+
+  Some scripts to handle building on multiple machines and/ore multiple
+  cores.  The "Run" script is the actual build script and the "progress"
+  script is used to control and monitor the remote servers.
+
 testudo
 
   Python programs and scripts for production testing
@@ -64,3 +65,10 @@ wiki-app
 xml-file-samples
 
   Some XML files for testing the offline rendering process
+
+XML-Licenses
+
+  Language specific source files. Includes wiki.nls source
+  and the XML sources for terms and license that are built
+  into the individual wiki data files.
+
