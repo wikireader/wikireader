@@ -28,6 +28,7 @@ import SearchKey
 # when not truncating the actual title can be twice this length (+1 for the '\0')
 MAXIMUM_TITLE_LENGTH =  63 # c-code is 64 including '\0'
 MAXIMUM_TITLE_ACTUAL = 255 # c-code is 256 including '\0'
+FND_FILE_SEGMENT_SIZE = 20 * 1024 * 1024
 
 # to catch loop in redirections
 class CycleError(Exception):
@@ -85,7 +86,7 @@ def main():
     art_name = "articles.db"
     off_name = "offsets.db"
     cnt_name = "counts.text"
-    fnd_name = 'pedia.fnd'
+    fnd_name = 'pedia{0:s}.fnd'
     pfx_name = 'pedia.pfx'
     template_name = 'templates.db'
     ignore_templates_name = None
@@ -123,7 +124,7 @@ def main():
             if limit <= 0:
                 usage('"{0:s}={1:s}" must be > zero'.format(opt, arg))
         elif opt in ('-p', '--prefix'):
-            fnd_name = arg + '.fnd'
+            fnd_name = arg + '{0:s}.fnd'
             pfx_name = arg + '.pfx'
         elif opt in ('-L', '--language'):
             language = arg
@@ -586,16 +587,76 @@ def bigram_encode(title):
     return SearchKey.compact_spaces(result)
 
 
-def output_fnd(filename, article_index, language_processor, truncate_title):
+class SegmentedFileWriter(object):
+
+    def __init__(self, filename_format, segment_size, *args, **kw):
+        """create a file that gets split into segments
+        filename_format should be similar to: file{0:s}.ext"""
+
+        #super(SegmentedFileWriter, self).__init__(*args, **kw)
+        self.filename_format = filename_format
+        self.file_number = -1
+        self.segment_size = segment_size
+        self.total_bytes = 0
+        self.file = None
+        self.open_next()
+
+    def __del__(self):
+        """close any open file"""
+        self.close()
+
+
+    def close(self):
+        """close down the stream"""
+        if self.file is not None:
+            self.file.close()
+        self.file = None
+
+
+    def open_next(self):
+        """close current file and start a new one"""
+        if self.file is not None:
+            self.file.close()
+        self.file_number += 1
+        self.space_available = self.segment_size
+        if self.file_number < 1:
+            n = ''        # first file has no number
+        else:
+            n = '{0:d}'.format(self.file_number)
+        self.current_filename = self.filename_format.format(n)
+        self.file = open(self.current_filename, 'wb')
+
+
+    def tell(self):
+        return self.total_bytes
+
+
+    def write(self, databuffer):
+        """writes data respecting segment_size"""
+        l = len(databuffer)
+        self.total_bytes += l
+        if l > self.space_available:
+            avail = self.space_available
+            self.file.write(databuffer[:avail])
+            self.open_next()
+            self.file.write(databuffer[avail:])
+            self.space_available -= l - avail
+        else:
+            self.file.write(databuffer)
+            self.space_available -= l
+
+
+def output_fnd(filename_format, article_index, language_processor, truncate_title):
     """create bigram table"""
     global bigram
     global index_matrix
     global MAXIMUM_TITLE_LENGTH
     global MAXIMUM_TITLE_ACTUAL
+    global FND_FILE_SEGMENT_SIZE
 
-    PrintLog.message(u'Writing bigrams: {0:s}'.format(filename))
     start_time = time.time()
-    out_f = open(filename, 'wb')
+    out_f = SegmentedFileWriter(filename_format, FND_FILE_SEGMENT_SIZE)
+    PrintLog.message(u'Writing bigrams: {0:s}'.format(out_f.current_filename))
 
     sortedgram = [ (value, key) for key, value in bigram.iteritems() ]
     sortedgram.sort()
@@ -630,7 +691,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
 
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
-    PrintLog.message(u'Writing matrix: {0:s}'.format(filename))
+    PrintLog.message(u'Writing matrix: {0:s}'.format(out_f.current_filename))
     start_time = time.time()
 
     index_matrix = {}
@@ -685,6 +746,7 @@ def output_fnd(filename, article_index, language_processor, truncate_title):
 
         out_f.write(struct.pack('<I', article_number) + '\0' + bigram_title + '\0' + utf8_title + '\0')
 
+    PrintLog.message(u'Final segment: {0:s}'.format(out_f.current_filename))
     out_f.close()
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
