@@ -82,6 +82,7 @@ $(call REQUIRED_BINARY, ocamlopt, ocaml)
 $(call REQUIRED_BINARY, tex, cjk-latex)
 $(call REQUIRED_BINARY, php, php5-cli)
 $(call REQUIRED_BINARY, dvipng, dvipng)
+$(call REQUIRED_BINARY, mecab-config, mecab-ipadic-utf8)
 
 $(call REQUIRED_PHP, pdo_sqlite, php5-sqlite)
 $(call REQUIRED_PHP, session, php5-session)
