@@ -388,33 +388,65 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 	guilib_fb_unlock();
 }
 
+static int cursor_link = -1;
+
 static void handle_cursor(struct wl_input_event *ev)
 {
 	DP(DBG_WL, ("O handle_cursor()\n"));
-	if (display_mode == DISPLAY_MODE_ARTICLE || display_mode == DISPLAY_MODE_WIKI_SELECTION) {
-		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-			display_article_with_pcf(50);
-		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+	if (display_mode == DISPLAY_MODE_ARTICLE){
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP) {
 			display_article_with_pcf(-50);
+		} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN) {
+			display_article_with_pcf(50);
+		} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_RIGHT) {
+			if (cursor_link >= 0) {
+				invert_link(cursor_link);
+			}
+			if (cursor_link > 0) {
+				++cursor_link;
+			} else {
+				cursor_link = 1;
+			}
+			msg(MSG_INFO, "inv -> %d\n", cursor_link);
+			invert_link(cursor_link);
+		} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_LEFT) {
+			if (cursor_link >= 0) {
+				invert_link(cursor_link);
+			}
+			if (cursor_link > 1) {
+				--cursor_link;
+				msg(MSG_INFO, "inv <- %d\n", cursor_link);
+				invert_link(cursor_link);
+			} else {
+				cursor_link = -1;
+			}
+		}
+	} else if (display_mode == DISPLAY_MODE_WIKI_SELECTION) {
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN) {
+			display_article_with_pcf(50);
+		} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP) {
+			display_article_with_pcf(-50);
+		}
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keyboard_get_mode() == KEYBOARD_NONE) {
 			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
 				display_article_with_pcf(50);
 			else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
 				display_article_with_pcf(-50);
-		} else {
-			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN) {
+		}
+		{
+			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_RIGHT) {
 				int selection = search_result_selected() + 1;
 				search_set_selection(selection);
-				repaint_search();
+				//repaint_search();
 				search_result_display();
-			} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP) {
+			} else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_LEFT) {
 				int selection = search_result_selected() - 1;
 				if (selection < 0) {
 					selection = -1;
 				}
 				search_set_selection(selection);
-				repaint_search();
+				//repaint_search();
 				search_result_display();
 			}
 		}
@@ -504,6 +536,7 @@ static void handle_key_release(int keycode)
 			display_mode = DISPLAY_MODE_ARTICLE;
 			last_display_mode = DISPLAY_MODE_INDEX;
 			search_open_article(selection);
+			cursor_link = -1;
 #ifdef PROFILER_ON
 		} else if (keycode == WL_KEY_HASH) {
 			/* activate if you want to run performance tests */
@@ -534,6 +567,12 @@ static void handle_key_release(int keycode)
 			} else if (last_display_mode == DISPLAY_MODE_HISTORY) {
 				display_mode = DISPLAY_MODE_HISTORY;
 				history_reload();
+			}
+		} else if (keycode == WL_KEY_RETURN) {
+			if (cursor_link > 0) {
+				display_mode = DISPLAY_MODE_ARTICLE;
+				open_article_link_with_link_number(cursor_link);
+				cursor_link = -1;
 			}
 		}
 	}

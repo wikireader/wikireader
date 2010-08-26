@@ -251,6 +251,18 @@ int serial_get_event(struct wl_input_event *ev)
 			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
 			return 1;
 		}
+		// cursor right <esc>[C
+		else if ('C' == keycode) {
+			ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_RIGHT;
+			return 1;
+		}
+		// cursor left <esc>[D
+		else if ('D' == keycode) {
+			ev->type = WL_INPUT_EV_TYPE_CURSOR;
+			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_LEFT;
+			return 1;
+		}
 		// home <esc>[H
 		else if ('H' == keycode) {
 			keycode = WL_INPUT_KEY_SEARCH;
