@@ -8,11 +8,52 @@
 import sys, os
 import struct
 import os.path
-import pylzma
 import getopt
 import PrintLog
-import pylzma
 import locale
+from SegmentedFile import SegmentedFileReader
+
+# try to find a lzma library interface
+no_compression = True
+
+# python-lzma
+if no_compression:
+    try:
+        import lzma
+
+        def DecompressData(data):
+            return lzma.decompress(data[:5] + '\xff'*8 + data[5:])
+
+        no_compression = False
+
+    except:
+        pass
+
+
+# PyLZMA
+if no_compression:
+    try:
+        import pylzma
+
+        def DecompressData(data):
+            return pylzma.decompress(data)
+
+        no_compression = False
+
+    except:
+        pass
+
+
+# none detected
+if no_compression:
+    print 'error: Missing python LZMA compression module'
+    print 'alternative 1: (preferred)'
+    print '       sudo apt-get install python-lzma'
+    print 'alternative 2:'
+    print '       sudo apt-get install python-pylzma'
+    print 'alternative 3: compile/install local PyLZMA'
+    print '       make local-pylzma-install'
+    exit(1)
 
 
 locale.setlocale(locale.LC_ALL, '')
@@ -65,7 +106,7 @@ def main():
         usage('{0:s} is not a directory'.format(dir))
 
     idx_file = open(os.path.join(dir, "wiki.idx"), "rb")
-    fnd_file = open(os.path.join(dir, "wiki.fnd"), "rb")
+    fnd_file = SegmentedFileReader(os.path.join(dir, "wiki{0:s}.fnd"))
 
     dat_format = os.path.join(dir, "wiki{0:d}.dat")
 
@@ -152,7 +193,7 @@ def process(index_number, idx_file, fnd_file, dat_format, extract):
         output_file_name = extract + '-I' + str(index_number) + '-b' + str(data_length) + '.articles'
         PrintLog.message('Extracting uncompressed articles to: {0:s}'.format(output_file_name))
         out = open(output_file_name, 'wb')
-        out.write(pylzma.decompress(article_data))
+        out.write(DecompressData(article_data))
         out.close()
 
     PrintLog.message('')

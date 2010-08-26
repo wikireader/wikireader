@@ -11,7 +11,7 @@ import os.path
 import getopt
 import PrintLog
 import locale
-
+from SegmentedFile import SegmentedFileReader
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -25,67 +25,6 @@ def usage(message):
     print('       --help                  This message')
     print('       --verbose               Enable verbose output')
     exit(1)
-
-
-class SegmentedFileReader(object):
-
-    def __init__(self, filename_list, *args, **kw):
-        """read a file that was split into segments"""
-
-        #super(SegmentedFileWriter, self).__init__(*args, **kw)
-        self.filename_list = filename_list
-        self.file_number = -1
-        self.total_bytes = 0
-        self.file = None
-        self.open_next()
-
-    def __del__(self):
-        """close any open file"""
-        self.close()
-
-
-    def close(self):
-        """close down the stream"""
-        if self.file is not None:
-            self.file.close()
-        self.file = None
-
-
-    def tell(self):
-        return self.total_bytes
-
-
-    def open_next(self):
-        """close current file and start a new one"""
-        if self.file is not None:
-            self.file.close()
-        self.file_number += 1
-        if self.file_number >= len(self.filename_list):
-            self.file = None
-        else:
-            self.current_filename = self.filename_list[self.file_number]
-            self.file = open(self.current_filename, 'rb')
-
-
-    def internal_read(self, byte_count):
-        """read data crossing over to next segment"""
-        if self.file is None:
-            return ''
-        databuffer = self.file.read(byte_count)
-        l = len(databuffer)
-        if l < byte_count:
-            self.open_next()
-            databuffer += self.internal_read(byte_count - l)
-        return databuffer
-
-
-    def read(self, byte_count):
-        """read data crossing over to next segment"""
-        if self.file is None:
-            return ''
-        databuffer = self.internal_read(byte_count)
-        self.total_bytes += len(databuffer)
-        return databuffer
 
 
 def main():
