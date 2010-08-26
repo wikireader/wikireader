@@ -226,7 +226,7 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	else
 		memcpy(buf, &pFndBuf[idxFndBuf].buf[offset - pFndBuf[idxFndBuf].offset], nCopyLen);
 
-	if (nCopyLen < len)
+	if (nCopyLen > 0 && nCopyLen < len)
 		nCopyLen += copy_fnd_to_buf(pFndBuf[idxFndBuf].offset + pFndBuf[idxFndBuf].len, &buf[nCopyLen], len - nCopyLen);
 	return nCopyLen;
 //interrupted:
