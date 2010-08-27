@@ -45,7 +45,7 @@
 #include "gpio.h"
 #include "gui.h"
 
-#define VERSION "0.3"
+#define VERSION "0.4"
 
 static FATFS fatfs;
 
