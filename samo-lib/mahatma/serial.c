@@ -185,33 +185,26 @@ static int serial_get_key(void)
 }
 
 
-static enum {
-	state_normal = 0,
-	state_escape,
-	state_escape_parameter,
-	state_touch,
-	state_x_high,
-	state_x_low,
-	state_y_high,
-	state_y_low,
-} state;
-
-int serial_get_event(struct wl_input_event *ev)
+static bool handle_state(int keycode, struct wl_input_event *ev)
 {
 	static int numeric_prefix;
 	static int touch, x, y;
-
-	int keycode = serial_get_key();
-
-	if (0 == keycode) {
-		return 0;
-	}
+	static enum {
+		state_normal = 0,
+		state_escape,
+		state_escape_parameter,
+		state_touch,
+		state_x_high,
+		state_x_low,
+		state_y_high,
+		state_y_low,
+	} state;
 
 	//msg(MSG_INFO, "Raw: %3d 0x%02x\n", keycode, keycode);
 
 	// switch must perform one of the following actions:
-	//   1. return 0
-	//   2. setup ev->* and return 1
+	//   1. return false
+	//   2. setup ev->* and return true
 	//   3. set the value in keycode and break
 	switch (state) {
 	case state_normal:
@@ -219,22 +212,22 @@ int serial_get_event(struct wl_input_event *ev)
 		if (27 == keycode) {
 			state = state_escape;
 			numeric_prefix = 0;
-			return 0;
+			return false;
 		} else if (1 == keycode) {
 			state = state_touch;
-			return 0;
+			return false;
 		}
 		break;
 
 	case state_escape: // skip initial '[' or 'O'
 		state = state_escape_parameter;
-		return 0;
+		return false;
 
 	case state_escape_parameter: // sequence of digits ending with letter or '~'
 		if (isdigit(keycode)) {
 			numeric_prefix *= 10;
 			numeric_prefix += keycode - '0';
-			return 0;
+			return false;
 		}
 		if ('~' == keycode || isalpha(keycode)) {
 			state = state_normal;
@@ -243,25 +236,25 @@ int serial_get_event(struct wl_input_event *ev)
 		if ('A' == keycode) {
 			ev->type = WL_INPUT_EV_TYPE_CURSOR;
 			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_UP;
-			return 1;
+			return true;
 		}
 		// cursor down <esc>[B
 		else if ('B' == keycode) {
 			ev->type = WL_INPUT_EV_TYPE_CURSOR;
 			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_DOWN;
-			return 1;
+			return true;
 		}
 		// cursor right <esc>[C
 		else if ('C' == keycode) {
 			ev->type = WL_INPUT_EV_TYPE_CURSOR;
 			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_RIGHT;
-			return 1;
+			return true;
 		}
 		// cursor left <esc>[D
 		else if ('D' == keycode) {
 			ev->type = WL_INPUT_EV_TYPE_CURSOR;
 			ev->key_event.keycode = WL_INPUT_KEY_CURSOR_LEFT;
-			return 1;
+			return true;
 		}
 		// home <esc>[H
 		else if ('H' == keycode) {
@@ -278,27 +271,27 @@ int serial_get_event(struct wl_input_event *ev)
 			keycode = WL_INPUT_KEY_RANDOM;
 			break;
 		}
-		return 0;
+		return false;
 
 	case state_touch:
 		touch = keycode & 0x01;  // touch flag
 		state = state_x_high;
-		return 0;
+		return false;
 
 	case state_x_high:
 		x = (keycode & 0x7f) << 7;
 		state = state_x_low;
-		return 0;
+		return false;
 
 	case state_x_low:
 		x |= keycode & 0x7f;
 		state = state_y_high;
-		return 0;
+		return false;
 
 	case state_y_high:
 		y = (keycode & 0x7f) << 8;
 		state = state_y_low;
-		return 0;
+		return false;
 
 	case state_y_low:
 		y |= keycode & 0x7f;
@@ -311,15 +304,15 @@ int serial_get_event(struct wl_input_event *ev)
 		ev->touch_event.value = touch
 			? WL_INPUT_TOUCH_DOWN
 			: WL_INPUT_TOUCH_UP;
-		return 1;
+		return true;
 
 	default:
 		state = state_normal;
-		return 0;
+		return false;
 	}
 
 	if ((0x80 & keycode) != 0) {
-		return 0;
+		return false;
 	}
 
 	ev->type = WL_INPUT_EV_TYPE_KEYBOARD;
@@ -329,6 +322,22 @@ int serial_get_event(struct wl_input_event *ev)
 	ev->key_event.keycode = keycode;
 	ev->key_event.value = 1;
 	//msg(MSG_INFO, "KEY: 0x%02x\n", ev->key_event.keycode);
+
+	return true;
+}
+
+
+int serial_get_event(struct wl_input_event *ev)
+{
+	int keycode;
+	do {
+		keycode = serial_get_key();
+
+		if (0 == keycode) {
+			return 0;
+		}
+
+	} while (!handle_state(keycode, ev));
 
 	return 1;
 }
