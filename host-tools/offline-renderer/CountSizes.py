@@ -43,7 +43,7 @@ def main():
                                    ['help',
                                     'verbose',
                                     'dir='])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False

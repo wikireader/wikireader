@@ -15,8 +15,8 @@ import PinyinTable
 try:
     import MeCab
 except:
-    print 'error: Missing python module: python-mecab'
-    print '       sudo apt-get install python-mecab mecab-ipadic-utf8'
+    print('error: Missing python module: python-mecab')
+    print('       sudo apt-get install python-mecab mecab-ipadic-utf8')
     exit(1)
 
 if '' != sys.argv[0]:

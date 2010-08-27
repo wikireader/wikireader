@@ -42,7 +42,7 @@ def main():
                                    ['help', 'verbose',
                                     'restricted'
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False

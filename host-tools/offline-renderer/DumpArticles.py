@@ -46,13 +46,13 @@ if no_compression:
 
 # none detected
 if no_compression:
-    print 'error: Missing python LZMA compression module'
-    print 'alternative 1: (preferred)'
-    print '       sudo apt-get install python-lzma'
-    print 'alternative 2:'
-    print '       sudo apt-get install python-pylzma'
-    print 'alternative 3: compile/install local PyLZMA'
-    print '       make local-pylzma-install'
+    print('error: Missing python LZMA compression module')
+    print('alternative 1: (preferred)')
+    print('       sudo apt-get install python-lzma')
+    print('alternative 2:')
+    print('       sudo apt-get install python-pylzma')
+    print('alternative 3: compile/install local PyLZMA')
+    print('       make local-pylzma-install')
     exit(1)
 
 
@@ -83,7 +83,7 @@ def main():
                                     'dir=',
                                     'extract=',
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False

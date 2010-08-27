@@ -56,7 +56,7 @@ def main():
                                     'parser-workdir=',
                                     'parser-tempdir=',
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False
@@ -172,7 +172,7 @@ def main():
 
         try:
             input_file.seek(seek)
-        except Exception, e:
+        except Exception as e:
             PrintLog.message(u'seek failed: e={0:!s:s}  seek={1:d}  f={2:s}'.format(e, seek, filename))
             sys.exit(1)
 
@@ -183,7 +183,7 @@ def main():
         try:
             process_article_text(current_file_id, total_articles + 1, title,
                                  input_file.read(length), process_id.stdin)
-        except Exception, e:
+        except Exception as e:
             failed_articles += 1
             # extract from log by: grep '^!' log-file
             PrintLog.message(u'!Process failed, file: {0:s} article({1:d}): {2:s} because: {3!s:s}'

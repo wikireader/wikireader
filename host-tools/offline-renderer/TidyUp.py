@@ -68,7 +68,7 @@ def tidy(text):
             try:
                 text = unicode(text, 'utf-8')
                 break
-            except UnicodeDecodeError, error:
+            except UnicodeDecodeError as error:
                 (_, _, start, stop, _) = error
                 text = text[:start] + '\xef\xbf\xbd' + text[stop:]
 

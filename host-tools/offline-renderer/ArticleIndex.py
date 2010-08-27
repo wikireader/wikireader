@@ -80,7 +80,7 @@ def main():
                                     'language=',
                                     'truncate-title',
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False

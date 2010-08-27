@@ -277,7 +277,7 @@ def main():
 
 
 #    for c in u'imageや空気抵振り子（ふりこ）は一点でアラた。testing(x,y)の、・':
-#        print u'{0:s} : {1:s} '.format(c, unicodedata.name(c).split())
+#        print(u'{0:s} : {1:s} '.format(c, unicodedata.name(c).split()))
 
 
 

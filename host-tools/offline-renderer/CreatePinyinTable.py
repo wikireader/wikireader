@@ -116,7 +116,7 @@ def main():
                                     'input=',
                                     'output=',
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False

@@ -25,8 +25,8 @@ import EscapeBuffer
 try:
     import gd
 except:
-    print 'error: Missing python module: python-gd'
-    print '       sudo apt-get install python-gd'
+    print('error: Missing python module: python-gd')
+    print('       sudo apt-get install python-gd')
     exit(1)
 
 # try to find a lzma library interface
@@ -71,13 +71,13 @@ if no_compression:
 
 # none detected
 if no_compression:
-    print 'error: Missing python LZMA compression module'
-    print 'alternative 1: (preferred)'
-    print '       sudo apt-get install python-lzma'
-    print 'alternative 2:'
-    print '       sudo apt-get install python-pylzma'
-    print 'alternative 3: compile/install local PyLZMA'
-    print '       make local-pylzma-install'
+    print('error: Missing python LZMA compression module')
+    print('alternative 1: (preferred)')
+    print('       sudo apt-get install python-lzma')
+    print('alternative 2:')
+    print('       sudo apt-get install python-pylzma')
+    print('alternative 3: compile/install local PyLZMA')
+    print('       make local-pylzma-install')
     exit(1)
 
 
@@ -229,7 +229,7 @@ def main():
                                     'block-size=',
                                     'max-article-length=',
                                     ])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         usage(err)
 
     verbose = False
@@ -473,7 +473,7 @@ def make_link(url, x0, x1, text):
 def get_imgdata(imgfile, indent):
     try:
         img = gd.image(imgfile)
-    except IOError, e:
+    except IOError as e:
         PrintLog.message(u'unable to open image file: {0:s}'.format(imgfile))
         return (0, 0, r'')
 
