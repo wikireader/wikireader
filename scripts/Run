@@ -13,7 +13,7 @@ USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
   echo usage: $(basename "$0") '<options> [<args>...]'
-  echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<files>'
+  echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<files>:<truncate>'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
   echo '       --get-index=<n> -g <n>     where to rsync the indices from {1 => render1}'
@@ -27,12 +27,14 @@ USAGE()
   echo '       --work=<dir>    -w <dir>   workdir [work]'
   echo '       --dest=<dir>    -d <dir>   destdir [image]'
   echo '       --temp=<dir>    -t <dir>   tempdir [/tmp]'
-  echo '       --farm=<n>      -f <n>     manual farm number [from hostname numeric suffix]'
+  echo '       --farm=<f>      -f <f>     manual farm number [from hostname numeric suffix]'
   echo '       --debug         -D         only display make operations, do not execute them'
-  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>'
+  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>:<files>:unlimited'
   echo '                                  links = [YES|NO] to enable inclusion of language link info'
   echo '                                  count:size = max articles/max bytes to compress into one block'
   echo '                                  parallel   = overrides the global --parallel=<n> for this item'
+  echo '                                  files      = overrides the global --parallel * --machines'
+  echo '                                  truncate   = truncated article byte-code that exceeds this'
   exit 1
 }
 
@@ -106,6 +108,7 @@ IndexOnly=no
 farm=
 debug=no
 MaximumThreads=64
+truncate='unlimited'
 machine_count=${MACHINE_COUNT:-9}
 parallel_build=${PARALLEL_BUILD:-3}
 
@@ -258,6 +261,11 @@ do
   [ "${files}" -lt 0 ] && files="${threads}"
   [ "${files}" -gt "${parallel_build}" -o "${files}" -le 0 ] && files="${parallel_build}"
 
+  arg="${arg#*:}"
+  truncate="${arg%%:*}"
+  IsInteger "${truncate}" || truncate='unlimited'
+  [ "${truncate}" -le 0 ] && truncate='unlimited'
+
   licenses=$(readlink -m "${LicensesDirectory}")
   license="${licenses}/${language}/license.xml"
   terms="${licenses}/${language}/terms.xml"
@@ -322,6 +330,7 @@ do
   common_opts="${common_opts} ENABLE_LANGUAGES_LINKS='${enable_language_links}'"
   common_opts="${common_opts} ARTICLES_PER_BLOCK='${articles_per_block}'"
   common_opts="${common_opts} ARTICLE_BLOCK_SIZE='${article_block_size}'"
+  common_opts="${common_opts} MAX_ARTICLE_LENGTH='${truncate}'"
 
   # clean up
   case "${clear}" in
