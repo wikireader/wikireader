@@ -82,6 +82,7 @@ $(call STANDARD_FONT, texti.bmf, texti.pcf, -c 1152)
 $(call STANDARD_FONT, textall.bmf, textipa.pcf, -c 65279)
 $(call STANDARD_FONT, textall.bmf, textall.pcf, , MERGE)
 $(call EXTRA_FONT,    textall.bmf, textall_jp.pcf, -g, MERGE)
+$(call EXTRA_FONT,    textall.bmf, textall_kr.pcf, -g, MERGE)
 
 $(call STANDARD_FONT, subtitle.bmf, subtitleipa.pcf, -c 1152)
 $(call STANDARD_FONT, subtitle.bmf, subtitle.pcf, -c 1152, MERGE)
@@ -89,6 +90,7 @@ $(call STANDARD_FONT, subtitle.bmf, subtitle.pcf, -c 1152, MERGE)
 $(call STANDARD_FONT, subtlall.bmf, subtitleipa.pcf, -c 65279)
 $(call STANDARD_FONT, subtlall.bmf, subtlall.pcf, , MERGE)
 $(call EXTRA_FONT,    subtlall.bmf, subtlall_jp.pcf, -g, MERGE)
+$(call EXTRA_FONT,    subtlall.bmf, subtlall_kr.pcf, -g, MERGE)
 
 $(call STANDARD_FONT, title.bmf, titleipa.pcf, -c 1152)
 $(call STANDARD_FONT, title.bmf, title.pcf, -c 1152, MERGE)
@@ -96,6 +98,7 @@ $(call STANDARD_FONT, title.bmf, title.pcf, -c 1152, MERGE)
 $(call STANDARD_FONT, titleall.bmf, titleipa.pcf, -c 65279)
 $(call STANDARD_FONT, titleall.bmf, titleall.pcf, , MERGE)
 $(call EXTRA_FONT,    titleall.bmf, titleall_jp.pcf, -g, MERGE)
+$(call EXTRA_FONT,    titleall.bmf, titleall_kr.pcf, -g, MERGE)
 
 COMPRESSED_FONTS = textall.pcf.xz
 COMPRESSED_FONTS += titleall.pcf.xz
@@ -103,6 +106,9 @@ COMPRESSED_FONTS += subtlall.pcf.xz
 COMPRESSED_FONTS += subtlall_jp.pcf.xz
 COMPRESSED_FONTS += textall_jp.pcf.xz
 COMPRESSED_FONTS += titleall_jp.pcf.xz
+COMPRESSED_FONTS += subtlall_kr.pcf.xz
+COMPRESSED_FONTS += textall_kr.pcf.xz
+COMPRESSED_FONTS += titleall_kr.pcf.xz
 
 
 .PHONY: all
