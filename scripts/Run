@@ -13,10 +13,9 @@ USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
   echo usage: $(basename "$0") '<options> [<args>...]'
-  echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<files>:<truncate>'
+  echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<truncate>'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
-  echo '       --get-index=<n> -g <n>     where to rsync the indices from {1 => render1}'
   echo '       --index-only    -i         only build the index'
   echo '       --no-run        -n         do not run final make'
   echo '       --clear         -c         clear work and dest dirs - so everything will be built'
@@ -29,12 +28,19 @@ USAGE()
   echo '       --temp=<dir>    -t <dir>   tempdir [/tmp]'
   echo '       --farm=<f>      -f <f>     manual farm number [from hostname numeric suffix]'
   echo '       --debug         -D         only display make operations, do not execute them'
-  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>:<files>:unlimited'
-  echo '                                  links = [YES|NO] to enable inclusion of language link info'
+  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>:unlimited'
+  echo '                                  links      = [YES|NO] to enable inclusion of language links'
   echo '                                  count:size = max articles/max bytes to compress into one block'
   echo '                                  parallel   = overrides the global --parallel=<n> for this item'
-  echo '                                  files      = overrides the global --parallel * --machines'
+  echo '                                               negative value reduces from global value'
   echo '                                  truncate   = truncated article byte-code that exceeds this'
+  echo 'examples:'
+  echo '1. index, parse, render jppedia run with 36 threads followed by enpedia with 3 * (12 - 2) == 30 threads'
+  echo '   enpedia would have no language links, high compression and log articles truncated to 30,000 bytes'
+  echo '     Run --parallel=12 --machines=3 --clear --re-parse jp en:::NO:255:350000:-2:30000'
+  echo '2. re-render enpedia using the existing index/parse data with low compression, language links and full articles'
+  echo '   (30 threads must be used since the there will already be 30 parse data files)'
+  echo '     Run --parallel=12 --machines=3 --re-render  en::::::-2'
   exit 1
 }
 
@@ -256,12 +262,6 @@ do
   [ "${threads}" -gt "${parallel_build}" -o "${threads}" -le 0 ] && threads="${parallel_build}"
 
   arg="${arg#*:}"
-  files="${arg%%:*}"
-  IsInteger "${files}" || files="${threads}"
-  [ "${files}" -lt 0 ] && files="${threads}"
-  [ "${files}" -gt "${parallel_build}" -o "${files}" -le 0 ] && files="${parallel_build}"
-
-  arg="${arg#*:}"
   truncate="${arg%%:*}"
   IsInteger "${truncate}" || truncate='unlimited'
   [ "${truncate}" -le 0 ] && truncate='unlimited'
@@ -325,7 +325,7 @@ do
   common_opts="${common_opts} VERBOSE='${verbose}'"
 
   common_opts="${common_opts} MACHINE_COUNT='${machine_count}'"
-  common_opts="${common_opts} PARALLEL_BUILD='${files}'"
+  common_opts="${common_opts} PARALLEL_BUILD='${threads}'"
 
   common_opts="${common_opts} ENABLE_LANGUAGES_LINKS='${enable_language_links}'"
   common_opts="${common_opts} ARTICLES_PER_BLOCK='${articles_per_block}'"
