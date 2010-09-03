@@ -117,27 +117,57 @@ $(error edit ${CONFIG_FILE} file and re-run make)
 endif
 
 
-# Configuration data
-# ==================
+# macro to simplify primary targets
+# =================================
+
+STD_BASE = $(eval $(call STD_BASE1,$(strip ${1}),$(strip ${2}),$(strip ${3}),$(strip ${4})))
+STD_RULE = ${STD_BASE}$(eval $(call STD_RULE1,$(strip ${1}),$(strip ${2}),$(strip ${3}),$(strip ${4}),$(strip ${5})))
+
+define STD_RULE1
+
+.PHONY: ${1}
+${1}: ${3}
+	$${MAKE} -C "${2}" all ${5}
+
+ALL_TARGETS += ${1}
+
+ifeq (INSTALL,${4})
+.PHONY: ${1}-install
+${1}-install: ${1} validate-destdir
+	${MAKE} -C "${2}" DESTDIR="$${DESTDIR_PATH}" install
+
+INSTALL_TARGETS += ${1}-install
+endif
+
+endef
+
+define STD_BASE1
+.PHONY: ${1}-clean
+${1}-clean:
+	$${MAKE} -C "${2}" clean
+
+CLEAN_TARGETS += ${1}-clean
+
+.PHONY: ${1}-requires
+${1}-requires:
+	$${MAKE} -C "${2}" requires
+
+REQUIRES_TARGETS += ${1}-requires
+
+endef
+
+
+# Makefile entry point
+# ====================
 
 ALL_TARGETS =
-ALL_TARGETS += mbr
-ALL_TARGETS += jackknife
-ALL_TARGETS += forth
-ALL_TARGETS += flash
-ALL_TARGETS += mahatma
-ALL_TARGETS += qt4-simulator
-#ALL_TARGETS += hash-gen
-ALL_TARGETS += pcf2bmf
-ALL_TARGETS += fonts
 
 .PHONY: all
-all:    ${ALL_TARGETS}
+all:    all-targets
 
 
 # wiki naming
 # ===========
-
 
 EXTRACT_VERSION_PATH := $(realpath ${EXTRACT_VERSION_FROM})
 ifneq (,$(strip ${EXTRACT_VERSION_PATH}))
@@ -203,29 +233,17 @@ validate-destdir:
 # Main program
 # ============
 
-.PHONY: mahatma
-mahatma: mini-libc fatfs
-	${MAKE} -C "${SAMO_LIB}/mahatma" PROGRESS_BAR="${PROGRESS_BAR}"
-
-.PHONY: mahatma-install
-mahatma-install: mahatma validate-destdir
-	${MAKE} -C "${SAMO_LIB}/mahatma" install DESTDIR="${DESTDIR_PATH}"
+# default: progress bar = off
+PROGRESS_BAR ?= NO
+$(call STD_RULE, mahatma, ${SAMO_LIB}/mahatma, mini-libc fatfs drivers, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}")
 
 
 # Libraries
 # =========
 
-.PHONY:mini-libc
-mini-libc: toolchain
-	${MAKE} -C "${SAMO_LIB}/mini-libc/"
-
-.PHONY: fatfs
-fatfs: mini-libc drivers
-	${MAKE} -C "${SAMO_LIB}/fatfs/"
-
-.PHONY: drivers
-drivers: mini-libc
-	${MAKE} -C "${SAMO_LIB}/drivers/"
+$(call STD_RULE, mini-libc, ${SAMO_LIB}/mini-libc, toolchain)
+$(call STD_RULE, fatfs, ${SAMO_LIB}/fatfs, mini-libc drivers)
+$(call STD_RULE, drivers, ${SAMO_LIB}/drivers, mini-libc)
 
 
 # GCC and Binutils toolchain
@@ -261,8 +279,7 @@ binutils-patch: binutils-download
 	mkdir -p ${HOST_TOOLS}/toolchain-install
 	${RM} -r "${HOST_TOOLS}/binutils-${BINUTILS_PACKAGE}"
 	tar -xvzf "${BINUTILS_FILE}" -C ${HOST_TOOLS}
-	cd ${HOST_TOOLS} && \
-	cd "binutils-${BINUTILS_VERSION}" && \
+	cd "${HOST_TOOLS}/binutils-${BINUTILS_VERSION}" && \
 	for p in ../toolchain-patches/*-binutils-*.patch ; \
 	do \
 	   patch -p1 < "$${p}" ; \
@@ -270,8 +287,7 @@ binutils-patch: binutils-download
 	${TOUCH} "$@"
 
 binutils: binutils-patch
-	cd ${HOST_TOOLS} && \
-	cd "binutils-${BINUTILS_VERSION}" && \
+	cd "${HOST_TOOLS}/binutils-${BINUTILS_VERSION}" && \
 	mkdir -p build && \
 	cd build  && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf && \
@@ -282,8 +298,7 @@ binutils: binutils-patch
 gcc-patch: gcc-download
 	mkdir -p ${HOST_TOOLS}/toolchain-install
 	tar -xvzf "${GCC_FILE}" -C ${HOST_TOOLS}
-	cd ${HOST_TOOLS} && \
-	cd "gcc-${GCC_VERSION}" && \
+	cd "${HOST_TOOLS}/gcc-${GCC_VERSION}" && \
 	for p in ../toolchain-patches/*-gcc-*.patch ; \
 	do \
 	   patch -p1 < "$${p}" ; \
@@ -291,9 +306,8 @@ gcc-patch: gcc-download
 	${TOUCH} "$@"
 
 gcc: binutils gcc-patch
-	cd ${HOST_TOOLS} && \
 	export PATH="${HOST_TOOLS}/toolchain-install/bin:${PATH}" && \
-	cd "gcc-${GCC_VERSION}" && \
+	cd "${HOST_TOOLS}/gcc-${GCC_VERSION}" && \
 	mkdir -p build && \
 	cd build && \
 	CPPFLAGS="-D_FORTIFY_SOURCE=0" ../configure --prefix "${HOST_TOOLS}/toolchain-install" --target=c33-epson-elf --enable-languages=c && \
@@ -312,16 +326,30 @@ toolchain-requires:
 	true $(call REQUIRED_BINARY, lex, flex)
 	true $(call REQUIRED_BINARY, bison, bison)
 
+REQUIRES_TARGETS += toolchain-requires
+
 
 # QT simulator
 # ============
 
 
 .PHONY: qt4-simulator
-qt4-simulator:
+qt4-simulator: qt4-simulator-requires
+	cd ${HOST_TOOLS}/qt4-simulator && qmake && ${MAKE}
+
+.PHONY: qt4-simulator-requires
+qt4-simulator-requires:
 	true $(call REQUIRED_BINARY, g++, g++)
 	true $(call REQUIRED_BINARY, qmake, qt4-qmake libqt4-dev)
-	cd ${HOST_TOOLS}/qt4-simulator && qmake && ${MAKE}
+
+REQUIRES_TARGETS += qt4-simulator-requires
+
+.PHONY: qt4-simulator-clean
+qt4-simulator-clean:
+	${MAKE} -C "${HOST_TOOLS}/qt4-simulator" distclean || true
+
+CLEAN_TARGETS += qt4-simulator-clean
+
 
 .PHONY: sim4
 sim4: qt4-simulator validate-destdir
@@ -331,33 +359,15 @@ sim4: qt4-simulator validate-destdir
 sim4d: qt4-simulator validate-destdir
 	cd "${DESTDIR}" && gdb --args ${HOST_TOOLS}/qt4-simulator/bin/wikisim ${ARTICLE}
 
-.PHONY: console-simulator
-console-simulator:
-	cd ${HOST_TOOLS}/console-simulator && ${MAKE}
-
-
-# Hash generator for search index
-# ===============================
-
-#.PHONY: hash-gen
-#hash-gen:
-#	cd ${HOST_TOOLS}/hash-gen && ${MAKE}
+# the console simulator is presently broken
+#$(call STD_RULE, console-simulator, ${HOST_TOOLS}/console-simulator)
 
 
 # Font processing
 # ===============
 
-.PHONY: pcf2bmf
-pcf2bmf:
-	cd ${HOST_TOOLS}/pcf2bmf && ${MAKE}
-
-.PHONY: fonts
-fonts: pcf2bmf
-	cd ${HOST_TOOLS}/fonts && ${MAKE}
-
-.PHONY: fonts-install
-fonts-install: fonts validate-destdir
-	cd ${HOST_TOOLS}/fonts && ${MAKE} DESTDIR="${DESTDIR_PATH}" install
+$(call STD_RULE, pcf2bmf, ${HOST_TOOLS}/pcf2bmf)
+$(call STD_RULE, fonts, ${HOST_TOOLS}/fonts, pcf2bmf, INSTALL)
 
 
 # Compression interface
@@ -372,8 +382,11 @@ fonts-install: fonts validate-destdir
 local-pylzma-install:
 	${MAKE} -C "${HOST_TOOLS}/offline-renderer" pylzma
 
+
 # Build the database from wiki XML files
 # ======================================
+
+$(call STD_BASE, offline-renderer, ${HOST_TOOLS}/offline-renderer)
 
 XML_FILES_PATH = $(realpath ${XML_FILES})
 RENDER_BLOCK ?= 0
@@ -413,7 +426,7 @@ createdirs:
 
 .PHONY: index
 index: validate-destdir
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" index \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
@@ -423,17 +436,7 @@ index: validate-destdir
 
 .PHONY: parse
 parse: validate-destdir
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} parse \
-		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
-		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
-		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
-		WIKI_VERSION="${WIKI_VERSION}" \
-		TEMPDIR="${TEMPDIR_PATH}" \
-		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
-
-.PHONY: merge
-merge: validate-destdir
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} merge \
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" parse \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
@@ -443,7 +446,7 @@ merge: validate-destdir
 
 .PHONY: render
 render: fonts validate-destdir
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} render \
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" render \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
@@ -458,7 +461,7 @@ render: fonts validate-destdir
 
 .PHONY: combine
 combine: validate-destdir
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} combine \
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" combine \
 		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
@@ -466,17 +469,6 @@ combine: validate-destdir
 		TEMPDIR="${TEMPDIR_PATH}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 
-#.PHONY: hash
-#hash: validate-destdir hash-gen
-#	cd "${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" && ${HOST_TOOLS}/hash-gen/hash-gen \
-#		--pfx="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.pfx" \
-#		--fnd="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.fnd" \
-#		--hsh="${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX}.hsh"
-
-
-# run all stages (for testing small XML sample files)
-#.PHONY: iprch
-#iprch: index parse render combine hash
 
 # run all stages (for testing small XML sample files)
 .PHONY: iprc
@@ -537,7 +529,7 @@ print-render-info:
 
 ${INDEX_STAMP}:
 	${RM} "$@"
-	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} index \
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" index \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
 	${TOUCH} "$@"
@@ -695,8 +687,6 @@ TERMS_pt   := Condições_de_Uso
 #LICENSE_pt := http://creativecommons.org/licenses/by-sa/3.0/deed.pt
 
 
-WIKIREADER_CREATE_NLS := http://www.thewikireader.com/create_nls.php
-
 WIKIMEDIA_EXPORT := http://wikimediafoundation.org/wiki/Special:Export
 LICENSE_EXTRA_SUFFIX := ?curonly=1&templates=1&wpDownload=1
 TERMS_EXTRA_SUFFIX := ?curonly=1&wpDownload=1
@@ -704,8 +694,6 @@ TERMS_EXTRA_SUFFIX := ?curonly=1&wpDownload=1
 # macro to retrieve files from various web sites
 define GET_FILES
   mkdir -p "${LICENSE_DIR}/${1}" ; \
-  wget --output-document="-" "${WIKIREADER_CREATE_NLS}?lang=${1}" \
-    | sed 's/[[:space:]]*$$//;/^$$/d' > "${LICENSE_DIR}/${1}/wiki.nls" ; \
   [ -n "${2}" ] && \
     wget --output-document="-" "${WIKIMEDIA_EXPORT}/${2}${TERMS_EXTRA_SUFFIX}" \
     | sed 's/[[:space:]]*$$//' > "${LICENSE_DIR}/${1}/terms.xml" ; \
@@ -764,37 +752,19 @@ getwikidump:
 # Forth interpreter
 # =================
 
-.PHONY: forth
-forth:  gcc mini-libc fatfs drivers
-	${MAKE} -C "${SAMO_LIB}/forth"
-
-.PHONY: forth-install
-forth-install: forth
-	${MAKE} -C "${SAMO_LIB}/forth" install DESTDIR="${DESTDIR_PATH}"
+$(call STD_RULE, forth, ${SAMO_LIB}/forth, gcc mini-libc fatfs drivers, INSTALL)
 
 
 # FLASH programmer that runs on the device
 # ========================================
 
-.PHONY: flash
-flash:  gcc mini-libc fatfs drivers
-	${MAKE} -C "${SAMO_LIB}/flash"
-
-.PHONY: flash-install
-flash-install: flash
-	${MAKE} -C "${SAMO_LIB}/flash" install DESTDIR="${DESTDIR_PATH}"
+$(call STD_RULE, flash, ${SAMO_LIB}/flash, gcc mini-libc fatfs drivers, INSTALL)
 
 
 # Grifo small kernel
 # ==================
 
-.PHONY: grifo
-grifo:  gcc mini-libc fatfs
-	${MAKE} -C "${SAMO_LIB}/grifo"
-
-.PHONY: grifo-install
-grifo-install: grifo
-	${MAKE} -C "${SAMO_LIB}/grifo" install DESTDIR="${DESTDIR_PATH}"
+$(call STD_RULE, grifo, ${SAMO_LIB}/grifo, gcc mini-libc fatfs, INSTALL)
 
 
 # Master boot record
@@ -839,50 +809,35 @@ print-mbr-tty:
 	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
 	@echo BOOTLOADER_AUX = "${BOOTLOADER_AUX}"
 
-.PHONY: mbr
-mbr: gcc fatfs
-	${MAKE} -C "${SAMO_LIB}/mbr"
+$(call STD_RULE, mbr, ${SAMO_LIB}/mbr, gcc fatfs, INSTALL)
+$(call STD_RULE, jackknife, ${HOST_TOOLS}/jackknife)
+$(call STD_RULE, flash07, ${HOST_TOOLS}/flash07)
 
 .PHONY: mbr-rs232
 mbr-rs232: gcc fatfs
 	${MAKE} -C "${SAMO_LIB}/mbr" mbr-rs232
 
-.PHONY: jackknife
-jackknife:
-	${MAKE} -C "${HOST_TOOLS}/jackknife"
-
 .PHONY: flash-mbr
-flash-mbr: mbr jackknife
+flash-mbr: mbr jackknife flash07
 	${MAKE} -C "${SAMO_LIB}/mbr" BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" FLASH_UPDATE="${FLASH_UPDATE}" $@
 
 .PHONY: flash-test-jig
-flash-test-jig: mbr jackknife
+flash-test-jig: mbr jackknife flash07
 	${MAKE} -C "${SAMO_LIB}/mbr" FLASH_TEST_JIG=YES BOOTLOADER_TTY="${BOOTLOADER_TTY}" BOOTLOADER_AUX="${BOOTLOADER_AUX}" SERIAL_NUMBER="${SERIAL_NUMBER}" flash-mbr
 
-.PHONY: mbr-install
-mbr-install: mbr
-	${MAKE} -C "${SAMO_LIB}/mbr" install DESTDIR="${DESTDIR_PATH}"
+
+# final list of all items to build
+# ================================
+
+.PHONY: all-targets
+all-targets: ${ALL_TARGETS}
 
 
 # list required packages
 # ======================
 
 .PHONY: requirements
-requirements: toolchain-requires
-	${MAKE} requires -C "${SAMO_LIB}/mini-libc"
-	${MAKE} requires -C "${HOST_TOOLS}/jackknife"
-	#${MAKE} requires -C "${HOST_TOOLS}/hash-gen"
-	${MAKE} requires -C "${HOST_TOOLS}/pcf2bmf"
-	${MAKE} requires -C "${HOST_TOOLS}/flash07"
-	${MAKE} requires -C "${HOST_TOOLS}/fonts"
-	${MAKE} requires -C "${HOST_TOOLS}/offline-renderer"
-	${MAKE} requires -C "${SAMO_LIB}/mbr"
-	${MAKE} requires -C "${SAMO_LIB}/drivers"
-	${MAKE} requires -C "${SAMO_LIB}/fatfs"
-	${MAKE} requires -C "${SAMO_LIB}/forth"
-	${MAKE} requires -C "${SAMO_LIB}/flash"
-	${MAKE} requires -C "${SAMO_LIB}/grifo"
-	${MAKE} requires -C "${SAMO_LIB}/mahatma"
+requirements: ${REQUIRES_TARGETS}
 
 
 # Clean up generated files
@@ -893,21 +848,7 @@ complete-clean: clean clean-toolchain
 	${RM} binutils-download gcc-download
 
 .PHONY: clean
-clean: clean-qt4-simulator clean-console-simulator
-	${MAKE} clean -C "${SAMO_LIB}/mini-libc"
-	${MAKE} clean -C "${HOST_TOOLS}/jackknife"
-	#${MAKE} clean -C "${HOST_TOOLS}/hash-gen"
-	${MAKE} clean -C "${HOST_TOOLS}/pcf2bmf"
-	${MAKE} clean -C "${HOST_TOOLS}/flash07"
-	${MAKE} clean -C "${HOST_TOOLS}/fonts"
-	${MAKE} clean -C "${HOST_TOOLS}/offline-renderer"
-	${MAKE} clean -C "${SAMO_LIB}/mbr"
-	${MAKE} clean -C "${SAMO_LIB}/drivers"
-	${MAKE} clean -C "${SAMO_LIB}/fatfs"
-	${MAKE} clean -C "${SAMO_LIB}/forth"
-	${MAKE} clean -C "${SAMO_LIB}/flash"
-	${MAKE} clean -C "${SAMO_LIB}/grifo"
-	${MAKE} clean -C "${SAMO_LIB}/mahatma"
+clean: ${CLEAN_TARGETS}
 	${RM} stamp-r-*
 
 .PHONY: clean-toolchain
@@ -918,19 +859,11 @@ clean-toolchain:
 	${RM} binutils-patch binutils
 	${RM} gcc-patch gcc
 
-.PHONY: clean-qt4-simulator
-clean-qt4-simulator:
-	(cd "${HOST_TOOLS}/qt4-simulator"; ${MAKE} distclean || true)
-
-.PHONY: clean-console-simulator
-clean-console-simulator:
-	${MAKE} clean -C "${HOST_TOOLS}/console-simulator"
-
 
 # Update the Makefiles
 # ====================
 
-# Change the methos of includeing definitions by
+# Change the method of including definitions by
 # copying part of Mk/definitions.mk into each Makefile
 # if it requires it.
 
@@ -944,7 +877,7 @@ update-makefiles:
 # Print information about some targets
 # ====================================
 
-.PHONY:help
+.PHONY: help
 help:
 	@echo
 	@echo 'Some of the more useful targets:'
@@ -955,7 +888,6 @@ help:
 	@echo '  parse                 - parse XML_FILES into one HTML file in WORKDIR'
 	@echo '  render                - render HTML in WORKDIR into one big data file in DESTDIR'
 	@echo '  combine               - combine temporary indices to one file in DESTDIR'
-#	@echo '  hash                  - generate hash file in DESTDIR'
 	@echo '  iprc                  - same as: index parse render combine'
 	@echo '  farm<1..N>            - parse/render XML_FILES into 3 data files in DESTDIR (use -j3)'
 	@echo '  farm<1..N>-parse      - parse XML_FILES into 3 HTML files in WORKDIR (use -j3)'
@@ -987,7 +919,7 @@ help:
 	@echo
 
 
-.PHONY:testhelp
+.PHONY: testhelp
 testhelp:
 	${MAKE} --print-data-base --question |	\
 	awk '/^[^.%][-A-Za-z0-9_]*:/		\
