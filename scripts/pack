@@ -158,6 +158,7 @@ HTMLend()
 {
   case "${pretty}" in
     [yY]|[yY][eE][sS])
+      ;;
     *)
       echo >> "${HTMLFileName}"
       ;;
