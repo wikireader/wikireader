@@ -30,6 +30,7 @@ def usage(message):
     print('       --verbose               Enable verbose output')
     print('       --xhtml=file            XHTML output [all_articles.html]')
     print('       --language=lang         Set language for PHP parser [en]')
+    print('       --language-variant=lang Set language variantfor PHP parser')
     print('       --start=n               First artcle to process [1] (1k => 1000)')
     print('       --count=n               Number of artcles to process [all] (1k => 1000)')
     print('       --article-offsets=file  Article file offsets database input [offsets.db]')
@@ -45,12 +46,13 @@ def main():
     global total_articles
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:t:l:jnw:T:',
+        opts, args = getopt.getopt(sys.argv[1:], 'hvx:s:c:o:t:l:V:jnw:T:',
                                    ['help', 'verbose', 'xhtml=',
                                     'start=', 'count=',
                                     'article-offsets=',
                                     'templates=',
                                     'language=',
+                                    'language-variant=',
                                     'just-cat',
                                     'no-output',
                                     'parser-workdir=',
@@ -70,6 +72,7 @@ def main():
     do_output = True
     template_name = 'templates.db'
     language = 'en'
+    language_variant = ''
 
     for opt, arg in opts:
         if opt in ('-v', '--verbose'):
@@ -84,6 +87,8 @@ def main():
             template_name = arg
         elif opt in ('-l', '--language'):
             language = arg
+        elif opt in ('-V', '--language-variant'):
+            language_variant = arg
         elif opt in ('-w', '--parser-workdir'):
             parser_workdir = arg
         elif opt in ('-T', '--parser-tempdir'):
@@ -123,7 +128,8 @@ def main():
     # pass parameters to the PHP parser
     os.environ['WORKDIR'] = parser_workdir
     os.environ['TEMPDIR'] = parser_tempdir
-    os.environ['LANGUAGE'] = language
+    os.environ['LANGUAGE'] = language.lower()
+    os.environ['LANGUAGE_VARIANT'] = language_variant.lower().replace('_', '-') # e.g. zh_TW -> zh-tw
     os.environ['TEMPLATE_DB'] = template_name
 
     offset_db = sqlite3.connect(off_name)

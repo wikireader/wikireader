@@ -27,6 +27,11 @@
 #
 #   WIKI_LANGUAGE              Language code [en]
 #
+#   WIKI_LANGUAGE_VARIANT      Variant Language code []
+#                              examples for WIKI_LANGUAGE=zh
+#                                WIKI_LANGUAGE_VARIANT=zh_CN
+#                                WIKI_LANGUAGE_VARIANT=zh_TW
+#
 #   WIKI_FILE_PREFIX           Prefix for all files in a data directory [wiki]
 #
 #   WIKI_VERSION               Version code for the current rendering operation [${todays-date}]
@@ -427,7 +432,9 @@ createdirs:
 .PHONY: index
 index: validate-destdir
 	${MAKE} -C "${HOST_TOOLS}/offline-renderer" index \
-		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
+		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
+		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WIKI_VERSION="${WIKI_VERSION}" \
@@ -437,7 +444,9 @@ index: validate-destdir
 .PHONY: parse
 parse: validate-destdir
 	${MAKE} -C "${HOST_TOOLS}/offline-renderer" parse \
-		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
+		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
+		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WIKI_VERSION="${WIKI_VERSION}" \
@@ -447,7 +456,9 @@ parse: validate-destdir
 .PHONY: render
 render: fonts validate-destdir
 	${MAKE} -C "${HOST_TOOLS}/offline-renderer" render \
-		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
+		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
+		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		ENABLE_LANGUAGES_LINKS="${ENABLE_LANGUAGES_LINKS}" \
@@ -462,7 +473,9 @@ render: fonts validate-destdir
 .PHONY: combine
 combine: validate-destdir
 	${MAKE} -C "${HOST_TOOLS}/offline-renderer" combine \
-		WIKI_LANGUAGE="${WIKI_LANGUAGE}" WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
+		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
+		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
+		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
 		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
 		XML_FILES="${XML_FILES_PATH}" RENDER_BLOCK="${RENDER_BLOCK}" \
 		WIKI_VERSION="${WIKI_VERSION}" \

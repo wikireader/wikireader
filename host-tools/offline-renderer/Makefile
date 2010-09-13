@@ -146,6 +146,7 @@ index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-use
 parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
 	./ArticleParser.py ${VERBOSE_ARG} --xhtml="${HTML_ARTICLES}" \
 		--language="${WIKI_LANGUAGE}" \
+		--language-variant="${WIKI_LANGUAGE_VARIANT}" \
 		--start="${START}" --count="${COUNT}" \
 		--templates="${TEMPLATE_FILE}" \
 		--parser-workdir="${WORKDIR_PATH}" \

@@ -96,6 +96,11 @@ $wgLanguageCode = getenv('LANGUAGE');
 if ('' === $wgLanguageCode) {
    $wgLanguageCode = 'en';
 }
+$wgDefaultLanguageVariant = getenv('LANGUAGE_VARIANT');
+if ('' === $wgDefaultLanguageVariant) {
+   $wgDefaultLanguageVariant = false;
+}
+
 $wgUseTeX = true;
 $wgUseImageMagick = true;
 $wgUseTidy = true;
