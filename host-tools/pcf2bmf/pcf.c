@@ -571,7 +571,7 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
     for(i=0; i<count;i++)
     {
 		if (font->Fmetrics.firstchar <= i && i <= font->Fmetrics.lastchar)
-            ci = font->bitmaps[i];
+            ci = font->bitmaps[i-font->Fmetrics.firstchar];
         else
             ci = NULL;
 		memset(&font_create,0,sizeof(font_bmf));
@@ -633,7 +633,7 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 		      (long)sizeof(font_bmf), header_len,
 		      (long)length, (long)(length - bs));
        }
-       assert(bs == length);
+       //assert(bs == length);
     }
     fclose(fd);
     free(buf);
@@ -2033,6 +2033,7 @@ pcfReadFont(FontPtr pFont, FontFilePtr file, int bit, int byte, int glyph, int s
 	goto Bail;
 
     nbitmaps = pcfGetINT32(file, format);
+printf("nbitmaps %d\n", nbitmaps);
     if (nbitmaps != nmetrics)
 	goto Bail;
 

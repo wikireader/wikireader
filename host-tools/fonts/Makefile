@@ -45,8 +45,18 @@ COMPRESS = xz --compress --stdout
 
 ENABLE_EXTRA_FONTS ?= YES
 
-STANDARD_FONT = $(eval SOURCE_$(strip ${1}) += $(strip ${2}):$(subst ${SPACE},${COMMA},$(strip ${3}$(if ${4}, -m "$$@"))))
 
+# macros for font building
+
+STANDARD_FONT = $(eval $(call STANDARD_FONT1,$(strip ${1}),$(strip ${2}),$(strip ${3}),$(strip ${4})))
+
+define STANDARD_FONT1
+SOURCE_$(addsuffix .bmf,${1}) += $(addsuffix .pcf,${2}):$(subst ${SPACE},${COMMA},$(strip ${3} $(if ${4}, -m "$$@")))
+FONT_TARGETS += $(addsuffix .bmf,${1})
+COMPRESSED_FONTS += $(addsuffix .pcf.xz,${2})
+endef
+
+TARGETS =$(sort ${FONT_TARGETS})
 
 ifneq (,$(findstring y,${ENABLE_EXTRA_FONTS})$(findstring Y,${ENABLE_EXTRA_FONTS}))
 EXTRA_FONT = ${STANDARD_FONT}
@@ -54,63 +64,41 @@ else
 EXTRA_FONT =
 endif
 
-TARGETS =
-TARGETS += title.bmf
-TARGETS += titleall.bmf
-
-TARGETS += subtitle.bmf
-TARGETS += subtlall.bmf
-
-TARGETS += text.bmf
-TARGETS += textall.bmf
-TARGETS += texti.bmf
-
-#TARGETS += textbi.bmf
-#TARGETS += textb.bmf
-#TARGETS += small.bmf
-#TARGETS += textallb.bmf
-
 
 # define the source files for creating the fonts
-# parameters: file.bmf, source.pcf, [<options: -g -c N>], [MERGE]
+# parameters: target, source, [<options: -g -c N>], [MERGE]
+#   target .bmf suffix is assumed
+#   source .pcf suffix is assumed
 
-$(call STANDARD_FONT, text.bmf, textipa.pcf, -c 1152)
-$(call STANDARD_FONT, text.bmf, text.pcf, -c 1152, MERGE)
+$(call STANDARD_FONT, text, textipa, -c 1152)
+$(call STANDARD_FONT, text, text, -c 1152, MERGE)
 
-$(call STANDARD_FONT, texti.bmf, texti.pcf, -c 1152)
+$(call STANDARD_FONT, texti, texti, -c 1152)
 
-$(call STANDARD_FONT, textall.bmf, textipa.pcf, -c 65279)
-$(call STANDARD_FONT, textall.bmf, textall.pcf, , MERGE)
-$(call EXTRA_FONT,    textall.bmf, textall_jp.pcf, -g, MERGE)
-$(call EXTRA_FONT,    textall.bmf, textall_kr.pcf, -g, MERGE)
+$(call STANDARD_FONT, textall, textipa)
+$(call EXTRA_FONT,    textall, textall_kr, , MERGE)
+$(call STANDARD_FONT, textall, textall, , MERGE)
+$(call EXTRA_FONT,    textall, textall_jp, -g, MERGE)
 
-$(call STANDARD_FONT, subtitle.bmf, subtitleipa.pcf, -c 1152)
-$(call STANDARD_FONT, subtitle.bmf, subtitle.pcf, -c 1152, MERGE)
+$(call STANDARD_FONT, subtitle, subtitleipa, -c 1152)
+$(call STANDARD_FONT, subtitle, subtitle, -c 1152, MERGE)
 
-$(call STANDARD_FONT, subtlall.bmf, subtitleipa.pcf, -c 65279)
-$(call STANDARD_FONT, subtlall.bmf, subtlall.pcf, , MERGE)
-$(call EXTRA_FONT,    subtlall.bmf, subtlall_jp.pcf, -g, MERGE)
-$(call EXTRA_FONT,    subtlall.bmf, subtlall_kr.pcf, -g, MERGE)
+$(call STANDARD_FONT, subtlall, subtitleipa)
+$(call EXTRA_FONT,    subtlall, subtlall_kr, , MERGE)
+$(call STANDARD_FONT, subtlall, subtlall, , MERGE)
+$(call EXTRA_FONT,    subtlall, subtlall_jp, -g, MERGE)
 
-$(call STANDARD_FONT, title.bmf, titleipa.pcf, -c 1152)
-$(call STANDARD_FONT, title.bmf, title.pcf, -c 1152, MERGE)
+$(call STANDARD_FONT, title, titleipa, -c 1152)
+$(call STANDARD_FONT, title, title, -c 1152, MERGE)
 
-$(call STANDARD_FONT, titleall.bmf, titleipa.pcf, -c 65279)
-$(call STANDARD_FONT, titleall.bmf, titleall.pcf, , MERGE)
-$(call EXTRA_FONT,    titleall.bmf, titleall_jp.pcf, -g, MERGE)
-$(call EXTRA_FONT,    titleall.bmf, titleall_kr.pcf, -g, MERGE)
-
-COMPRESSED_FONTS = textall.pcf.xz
-COMPRESSED_FONTS += titleall.pcf.xz
-COMPRESSED_FONTS += subtlall.pcf.xz
-COMPRESSED_FONTS += subtlall_jp.pcf.xz
-COMPRESSED_FONTS += textall_jp.pcf.xz
-COMPRESSED_FONTS += titleall_jp.pcf.xz
-COMPRESSED_FONTS += subtlall_kr.pcf.xz
-COMPRESSED_FONTS += textall_kr.pcf.xz
-COMPRESSED_FONTS += titleall_kr.pcf.xz
+$(call STANDARD_FONT, titleall, titleipa)
+$(call EXTRA_FONT,    titleall, titleall_kr_unicode, , MERGE)
+$(call EXTRA_FONT,    titleall, titleall_kr, , MERGE)
+$(call STANDARD_FONT, titleall, titleall, , MERGE)
+$(call EXTRA_FONT,    titleall, titleall_jp, -g, MERGE)
 
 
+# main target
 .PHONY: all
 all: stamp-fonts
 
@@ -139,7 +127,8 @@ MAKEFONT = $(eval $(call MAKEFONT_1,$(strip ${1})))
 define MAKEFONT_1
 ${1}: $$(call AllFileNames,$${SOURCE_${1}})
 	$${RM} "$$@"
-	$$(foreach f,$${SOURCE_$(strip $1)},$${PCFTOBMF} -f $$(call FileNamePart,$${f}) $$(call OptionsPart,$${f}) -o "$$@" &&) true
+	$$(foreach f,$${SOURCE_$(strip $1)},$${PCFTOBMF} -f $$(call FileNamePart,$${f}) $$(call OptionsPart,$${f}) -o "$$@" &&) true || $${RM} "$$@"
+	@[ -e "$$@" ]
 endef
 
 # list of fonts to be created
