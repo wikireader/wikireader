@@ -621,16 +621,16 @@ def output_fnd(filename_format, article_index, language_processor, truncate_titl
 
     # create pfx matrix and write encoded titles
 
-    #article_list = [strip_accents(k) for k in article_index.keys()]
-    #article_list.sort(key = lambda x: strip_accents(x).lower())
-
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
 
-    article_list = [ (SearchKey.make_key(translated_title), title)
+    unique_articles = {}
+    for article in [ (SearchKey.make_key(translated_title), title)
                      for title in article_index.all_indices()
-                     for translated_title in language_processor.translate(title) ]
-    article_list.sort()
+                     for translated_title in language_processor.translate(title) ]:
+        unique_articles[article] = 1
+
+    article_list = sorted(unique_articles.keys())
 
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
 
