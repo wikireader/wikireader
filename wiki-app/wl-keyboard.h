@@ -26,6 +26,9 @@
 
 #define KEYBOARD_WIDTH	240
 #define KEYBOARD_HEIGHT	82
+#define INITIAL_JAMO_COUNT 19
+#define MIDDLE_JAMO_COUNT 21
+#define FINAL_JAMO_COUNT 28
 
 typedef enum {
 	KEYBOARD_NONE,
@@ -35,9 +38,9 @@ typedef enum {
 	KEYBOARD_CHAR_DA,
 	KEYBOARD_NUM,
 	// all non-phone style keyboards for search should be before this
-	KEYBOARD_PHONE_STYLE,
+    KEYBOARD_PHONE_STYLE,
 	// all phone style keyboards should be after this
-	KEYBOARD_PHONE_STYLE_JP,
+    KEYBOARD_PHONE_STYLE_JP,
 	KEYBOARD_PHONE_STYLE_TW,
 	KEYBOARD_PHONE_STYLE_ABC,
 	KEYBOARD_PHONE_STYLE_123,
@@ -78,7 +81,7 @@ int keyboard_key_inverted(void);
 int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2);
 struct keyboard_key *keyboard_locate_key(char keycode);
 void flash_keyboard_key_invert();
-unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len);
-unsigned char *half_alphabet_to_full(unsigned char c);
 int multi_selection_key(struct keyboard_key *key);
+int keyboard_korean_special_key(void);
+int is_korean_special_key_enabled(void);
 #endif

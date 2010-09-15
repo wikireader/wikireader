@@ -137,8 +137,7 @@ int  get_search_string_len();
 int check_search_string_change(void);
 uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual);
 int search_replace_japanese_sonant();
-int search_replace_japanese_char(char *utf8_char);
-int search_add_japanese_char(char *utf8_char);
-int search_replace_hiragana_string_backward();
+int search_replace_per_language_char(char *utf8_char);
+int search_add_per_language_char(char *utf8_char);
 int search_replace_hiragana_backward();
 #endif

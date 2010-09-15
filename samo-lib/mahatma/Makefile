@@ -88,6 +88,7 @@ WIKIAPP_COBJS += malloc-simple.o
 WIKIAPP_COBJS += keyboard.o
 WIKIAPP_COBJS += utf8.o
 WIKIAPP_COBJS += btree.o
+WIKIAPP_COBJS += languages.o
 
 # used for panic in traps.c
 WIKIAPP_COBJS += hexdump.o
@@ -105,8 +106,8 @@ LZMA_COBJS += Bra.o
 LZMA_COBJS += LzFind.o
 
 # convert the image files
-IMAGES = keyboard_abc keyboard_abc2 keyboard_abc_da keyboard_123 nls
-IMAGES += keyboard_phone_jp keyboard_phone_abc keyboard_phone_123
+IMAGES = keyboard_abc keyboard_abc2 keyboard_abc_ko keyboard_abc_da keyboard_123 nls
+IMAGES += keyboard_phone_jp keyboard_phone_abc keyboard_phone_123  
 IMAGES += keyboard_phone_tw keyboard_phone_tw_abc keyboard_phone_tw_123
 
 CFLAGS+=-DINCLUDED_FROM_KERNEL ${PROFILER_ON} -DENABLE_PROGRESS=${ENABLE_PROGRESS}

@@ -355,7 +355,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 					last_key_utf8_char = next_utf8_char(last_key_utf8_char);
 					if (*last_key_utf8_char == '\0')
 						last_key_utf8_char = key->key;
-					rc = search_replace_japanese_char(last_key_utf8_char);
+					rc = search_replace_per_language_char(last_key_utf8_char);
 				}
 				else
 				{
@@ -370,7 +370,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 						last_key = NULL;
 						last_key_utf8_char = NULL;
 					}
-					rc = search_add_japanese_char(key->key);
+					rc = search_add_per_language_char(key->key);
 				}
 			}
 		}
@@ -429,10 +429,10 @@ static void handle_cursor(struct wl_input_event *ev)
 		}
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		if (keyboard_get_mode() == KEYBOARD_NONE) {
-			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
-				display_article_with_pcf(50);
-			else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
-				display_article_with_pcf(-50);
+		if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_DOWN)
+			display_article_with_pcf(50);
+		else if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_UP)
+			display_article_with_pcf(-50);
 		}
 		{
 			if (ev->key_event.keycode == WL_INPUT_KEY_CURSOR_RIGHT) {
@@ -734,12 +734,10 @@ static void handle_keyboard_en(struct wl_input_event *ev, int last_5_x[], int la
 							keyboard_set_mode(KEYBOARD_NUM);
 						else if(mode == KEYBOARD_NUM)
 						{
-							if (wiki_default_keyboard() == KEYBOARD_CHAR_JP)
+							if (wiki_is_japanese() || wiki_is_korean())
 								keyboard_set_mode(KEYBOARD_CHAR);
 							else
 								keyboard_set_mode(wiki_default_keyboard());
-						} else if (mode == KEYBOARD_CHAR_JP) {
-							keyboard_set_mode(KEYBOARD_CHAR);
 						} else if (mode == KEYBOARD_CHAR) { // mode != wiki_default_keyboard() && mode == KEYBOARD_CHAR
 							keyboard_set_mode(wiki_default_keyboard());
 						}
@@ -1500,6 +1498,9 @@ int wikilib_run(void)
 		}
 
 		if (keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_CHECK, 0)) // check if need to reset invert
+			sleep = 0;
+
+		if (keyboard_korean_special_key()) // check if need to enable the special key
 			sleep = 0;
 
 		if (check_invert_link()) // check if need to invert link

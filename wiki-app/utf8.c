@@ -89,14 +89,14 @@ void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8)
 	}
 	else if (u < 0x10000)
 	{
-		sUTF8[0] = (unsigned char)(0xC0 | (u >> 12));
+		sUTF8[0] = (unsigned char)(0xE0 | (u >> 12));
 		sUTF8[1] = (unsigned char)(0x80 | ((u & 0xFFF) >> 6));
 		sUTF8[2] = (unsigned char)(0x80 | (u & 0x3F));
 		sUTF8[3] = '\0';
 	}
 	else if (u < 0x110000)
 	{
-		sUTF8[0] = (unsigned char)(0xC0 | (u >> 18));
+		sUTF8[0] = (unsigned char)(0xF0 | (u >> 18));
 		sUTF8[1] = (unsigned char)(0x80 | ((u & 0x3FFFF) >> 12));
 		sUTF8[2] = (unsigned char)(0x80 | ((u & 0xFFF) >> 6));
 		sUTF8[3] = (unsigned char)(0x80 | (u & 0x3F));
@@ -112,17 +112,17 @@ void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 {
 	int i;
 	int j = 0;
-
+	
 	if (utf8_str_len > 0)
 	{
 		i = utf8_str_len - 1;
 		while (i >= 0 && (utf8_str[i] & 0xC0) == 0x80)
 			i--;
-
+		
 		while (i < utf8_str_len && j < 4)
 			out_utf8_char[j++] = utf8_str[i++];
 	}
-
+	
 	out_utf8_char[j] = '\0';
 }
 
@@ -130,7 +130,7 @@ void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 {
 	int len;
 	int i = 0;
-
+	
 	if (utf8_str_len > 0)
 	{
 		if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
@@ -147,18 +147,18 @@ void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 		}
 		else
 			len = 1;
-
+		
 		for (i = 0; i < len && i < utf8_str_len; i++)
 			out_utf8_char[i] = utf8_str[i];
 	}
-
+	
 	out_utf8_char[i] = '\0';
 }
 
 char *next_utf8_char(char *utf8_str)
 {
 	int len;
-
+	
 	if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
 	{
 		len = 2;
@@ -173,7 +173,7 @@ char *next_utf8_char(char *utf8_str)
 	}
 	else
 		len = 1;
-
+	
 	while (len && *utf8_str)
 	{
 		len--;
@@ -184,23 +184,105 @@ char *next_utf8_char(char *utf8_str)
 
 void utf8_char_toupper(unsigned char *out, unsigned char *in)
 {
-	if ('a' <= *in && *in <= 'z')
+    if ('a' <= *in && *in <= 'z')
+    {
+        out[0] = in[0] + ('A' - 'a');
+        out[1] = '\0';
+    }
+    else if (!strncmp(in, (unsigned char *)"æ", 2))
+    {
+        strcpy(out, "Æ");
+    }
+    else if (!strncmp(in, "å", 2))
+    {
+        strcpy(out, "Å");
+    }
+    else if (!strncmp(in, "ø", 2))
+    {
+        strcpy(out, "Ø");
+    }
+    else
+        strcpy(out, in);
+}
+
+unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len)
+{
+	static unsigned char half[5];
+
+    memset(half, 0, sizeof(half));
+    if (full[0] == 0xEF && full[1] == 0xBD && 0x81 <= full[2] && full[2] <= 0x9A)
 	{
-		out[0] = in[0] + ('A' - 'a');
-		out[1] = '\0';
+		if (used_len)
+			*used_len = 3;
+		half[0] = 'a' + (full[2] - 0x81);
 	}
-	else if (!strncmp(in, (unsigned char *)"æ", 2))
+	else if (full[0] == 0xEF && full[1] == 0xBC && full[2] == 0x8D) // full width -
 	{
-		strcpy(out, "Æ");
+		if (used_len)
+			*used_len = 3;
+		half[0] = '-';
 	}
-	else if (!strncmp(in, "å", 2))
+	else if (full[0] == 0xEF && full[1] == 0xBC && full[2] == 0x8C) // full width ,
 	{
-		strcpy(out, "Å");
+		if (used_len)
+			*used_len = 3;
+		half[0] = ',';
 	}
-	else if (!strncmp(in, "ø", 2))
+	else if (full[0] == 0xE2 && full[1] == 0x80 && full[2] == 0xA7) // full width .
 	{
-		strcpy(out, "Ø");
+		if (used_len)
+			*used_len = 3;
+		half[0] = '.';
 	}
 	else
-		strcpy(out, in);
+	{
+    	char first_utf8_char[5];
+    	int len_first_char;
+
+    	get_first_utf8_char(first_utf8_char, full, strlen(full));
+    	len_first_char = strlen(first_utf8_char);
+		if (used_len)
+        	*used_len = len_first_char;
+		memcpy(half, first_utf8_char, len_first_char);
+	}
+	return half;
+}
+
+unsigned char *half_alphabet_to_full(unsigned char c)
+{
+	static unsigned char full[5];
+	if ('a' <= c && c <= 'z')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBD;
+		full[2] = 0x81 + (c - 'a');
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == '-')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBC;
+		full[2] = 0x8D;
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == ',')
+	{
+		full[0] = 0xEF;
+		full[1] = 0xBC;
+		full[2] = 0x8C;
+		full[3] = '\0';
+		return full;
+	}
+	else if (c == '.')
+	{
+		full[0] = 0xE2;
+		full[1] = 0x80;
+		full[2] = 0xA7;
+		full[3] = '\0';
+		return full;
+	}
+	else
+		return NULL;
 }

@@ -27,4 +27,6 @@ void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
 void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
 char *next_utf8_char(char *utf8_str);
 void utf8_char_toupper(unsigned char *out, unsigned char *in);
+unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len);
+unsigned char *half_alphabet_to_full(unsigned char c);
 #endif

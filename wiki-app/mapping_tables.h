@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MAPPING_TABLES_H
+#define MAPPING_TABLES_H
+
 struct _english_hiragana_mapping {
 	char *english;
 	char *hiragana;
@@ -592,10 +595,10 @@ struct _english_hiragana_mapping {
 	{"zzu",	"っず"	},
 };
 
-struct _cjk_english_mapping {
+struct _zh_jp_english_mapping {
 	char *hiragana;
 	char *english;
-} cjk_english_mapping[] = {
+} zh_jp_english_mapping[] = {
 	{"å",	 "a"},
 	{"æ",	 "ae"},
 	{"ø",	 "o"},
@@ -1485,3 +1488,127 @@ struct _backward_key_sequence {
 	{"ｚ", "ｙ" },
 };
 
+struct _korean_jamo {
+	char *english;
+	char *jamo;
+} korean_jamo[] = {
+	{"E", "ㄸ" },
+	{"O", "ㅒ" },
+	{"P", "ㅖ" },
+	{"Q", "ㅃ" },
+	{"R", "ㄲ" },
+	{"T", "ㅆ" },
+	{"W", "ㅉ" },
+	{"a", "ㅁ" },
+	{"b", "ㅠ" },
+	{"c", "ㅊ" },
+	{"d", "ㅇ" },
+	{"e", "ㄷ" },
+	{"f", "ㄹ" },
+	{"g", "ㅎ" },
+	{"h", "ㅗ" },
+	{"i", "ㅑ" },
+	{"j", "ㅓ" },
+	{"k", "ㅏ" },
+	{"l", "ㅣ" },
+	{"m", "ㅡ" },
+	{"n", "ㅜ" },
+	{"o", "ㅐ" },
+	{"p", "ㅔ" },
+	{"q", "ㅂ" },
+	{"r", "ㄱ" },
+	{"s", "ㄴ" },
+	{"t", "ㅅ" },
+	{"u", "ㅕ" },
+	{"v", "ㅍ" },
+	{"w", "ㅈ" },
+	{"x", "ㅌ" },
+	{"y", "ㅛ" },
+	{"z", "ㅋ" },
+};
+
+struct _korean_jamo_ex {
+	char *english;
+	int jamo_idx;
+	char *jamo;
+	char *phonetic;
+	char *phonetic_name;
+} korean_jamo_ex[] = {
+	{"E",  INITIAL_JAMO_BASE+4,   	"ㄸ", "tt" , "ssangtikeut"  },
+	{"O",  MEDIAL_JAMO_BASE+3 ,		"ㅒ", "yae", "yae"          },
+	{"P",  MEDIAL_JAMO_BASE+7 ,		"ㅖ", "ye" , "ye"           },
+	{"Q",  INITIAL_JAMO_BASE+8,   	"ㅃ", "pp" , "ssangpieup"   },
+	{"R",  FINAL_JAMO_BASE+2 ,    	"ㄲ", "kk" , "ssangkiyeok"  },
+	{"R",  INITIAL_JAMO_BASE+1,   	"ㄲ", "kk" , "ssangkiyeok"  },
+	{"T",  FINAL_JAMO_BASE+20,    	"ㅆ", "ss" , "ssangsios"    },
+	{"T",  INITIAL_JAMO_BASE+10,   	"ㅆ", "ss" , "ssangsios"    },
+	{"W",  INITIAL_JAMO_BASE+13,   	"ㅉ", "jj" , "ssangcieuc"   },
+	{"a",  FINAL_JAMO_BASE+16,    	"ㅁ", "m"  , "mieum"        },
+	{"a",  INITIAL_JAMO_BASE+6,     "ㅁ", "m"  , "mieum"        },
+	{"b",  MEDIAL_JAMO_BASE+17,		"ㅠ", "yu" , "yu"           },
+	{"c",  FINAL_JAMO_BASE+23,    	"ㅊ", "ch" , "chieuch"      },
+	{"c",  INITIAL_JAMO_BASE+14,    "ㅊ", "ch" , "chieuch"      },
+	{"d",  FINAL_JAMO_BASE+21,    	"ㅇ", "ng" , "ieung"        },
+	{"d",  INITIAL_JAMO_BASE+11,    "ㅇ", ""   , "ieung"        },
+	{"e",  FINAL_JAMO_BASE+7 ,    	"ㄷ", "d"  , "tikeut"       },
+	{"e",  INITIAL_JAMO_BASE+3,     "ㄷ", "d"  , "tikeut"       },
+	{"ee", INITIAL_JAMO_BASE+4,		"ㄸ", "tt" , "ssangtikeut"  },
+	{"f",  FINAL_JAMO_BASE+8 ,    	"ㄹ", "l"  , "rieul"        },
+	{"f",  INITIAL_JAMO_BASE+5,     "ㄹ", "r"  , "rieul"        },
+	{"fa", FINAL_JAMO_BASE+10,    	"ㄻ", "lm" , "rieul-mieum"  },
+	{"fg", FINAL_JAMO_BASE+15,    	"ㅀ", "lh" , "rieul-hieuh"  },
+	{"fq", FINAL_JAMO_BASE+11,    	"ㄼ", "lb" , "rieul-pieup"  },
+	{"fr", FINAL_JAMO_BASE+9 ,    	"ㄺ", "lg" , "rieul-kiyeok" },
+	{"ft", FINAL_JAMO_BASE+12,    	"ㄽ", "ls" , "rieul-sios"   },
+	{"fv", FINAL_JAMO_BASE+14,    	"ㄿ", "lp" , "rieul-phieuph"},
+	{"fx", FINAL_JAMO_BASE+13,    	"ㄾ", "lt" , "rieul-thieuth"},
+	{"g",  FINAL_JAMO_BASE+27,      "ㅎ", "h"  , "hieuh"        },
+	{"g",  INITIAL_JAMO_BASE+18,    "ㅎ", "h"  , "hieuh"        },
+	{"h",  MEDIAL_JAMO_BASE+8 ,		"ㅗ", "o"  , "o"            },
+	{"hk", MEDIAL_JAMO_BASE+9 ,		"ㅘ", "wa" , "wa"           },
+	{"hl", MEDIAL_JAMO_BASE+11,		"ㅚ", "oe" , "oe"           },
+	{"ho", MEDIAL_JAMO_BASE+10,		"ㅙ", "wae", "wae"          },
+	{"i",  MEDIAL_JAMO_BASE+2 ,		"ㅑ", "ya" , "ya"           },
+	{"j",  MEDIAL_JAMO_BASE+4 ,		"ㅓ", "eo" , "eo"           },
+	{"k",  MEDIAL_JAMO_BASE,		"ㅏ", "a"  , "a"            },
+	{"l",  MEDIAL_JAMO_BASE+20,		"ㅣ", "i"  , "i"            },
+	{"m",  MEDIAL_JAMO_BASE+18,		"ㅡ", "i"  , "eu"           },
+	{"ml", MEDIAL_JAMO_BASE+19,		"ㅢ", "ui" , "yi"           },
+	{"n",  MEDIAL_JAMO_BASE+13,		"ㅜ", "u"  , "u"            },
+	{"nj", MEDIAL_JAMO_BASE+14,		"ㅝ", "weo", "weo"          },
+	{"nl", MEDIAL_JAMO_BASE+16,		"ㅟ", "wi" , "wi"           },
+	{"np", MEDIAL_JAMO_BASE+15,		"ㅞ", "we" , "we"           },
+	{"o",  MEDIAL_JAMO_BASE+1 ,		"ㅐ", "ae" , "ae"           },
+	{"oo", MEDIAL_JAMO_BASE+3,		"ㅒ", "yae", "yae"          },
+	{"p",  MEDIAL_JAMO_BASE+5 ,		"ㅔ", "e"  , "e"            },
+	{"pp", MEDIAL_JAMO_BASE+7,		"ㅖ", "ye" , "ye"           },
+	{"q",  FINAL_JAMO_BASE+17,    	"ㅂ", "b"  , "pieup"        },
+	{"q",  INITIAL_JAMO_BASE+7,     "ㅂ", "b"  , "pieup"        },
+	{"qq", INITIAL_JAMO_BASE+8,		"ㅃ", "pp" , "ssangpieup"   },
+	{"qt", FINAL_JAMO_BASE+18,    	"ㅄ", "bs" , "pieup-sios"   },
+	{"r",  FINAL_JAMO_BASE+1 ,    	"ㄱ", "g"  , "kiyeok"       },
+	{"r",  INITIAL_JAMO_BASE,     	"ㄱ", "g"  , "kiyeok"       },
+	{"rr", FINAL_JAMO_BASE+2,		"ㄲ", "kk" , "ssangkiyeok"  },
+	{"rr", INITIAL_JAMO_BASE+1,		"ㄲ", "kk" , "ssangkiyeok"  },
+	{"rt", FINAL_JAMO_BASE+3 ,    	"ㄳ", "gs" , "kiyeok-sios"  },
+	{"s",  FINAL_JAMO_BASE+4 ,    	"ㄴ", "n"  , "nieun"        },
+	{"s",  INITIAL_JAMO_BASE+2,     "ㄴ", "n"  , "nieun"        },
+	{"sg", FINAL_JAMO_BASE+6 ,    	"ㄶ", "nh" , "nieun-hieuh"  },
+	{"sw", FINAL_JAMO_BASE+5 ,    	"ㄵ", "nch", "nieun-cieuc"  },
+	{"t",  FINAL_JAMO_BASE+19,    	"ㅅ", "s"  , "sios"         },
+	{"t",  INITIAL_JAMO_BASE+9,     "ㅅ", "s"  , "sios"         },
+	{"tt", FINAL_JAMO_BASE+20,		"ㅆ", "ss" , "ssangsios"    },
+	{"u",  MEDIAL_JAMO_BASE+6 ,		"ㅕ", "yeo", "yeo"          },
+	{"v",  FINAL_JAMO_BASE+26,      "ㅍ", "p"  , "phieuph"      },
+	{"v",  INITIAL_JAMO_BASE+17,    "ㅍ", "p"  , "phieuph"      },
+	{"w",  FINAL_JAMO_BASE+22,    	"ㅈ", "j"  , "cieuc"        },
+	{"w",  INITIAL_JAMO_BASE+12,    "ㅈ", "j"  , "cieuc"        },
+	{"ww", INITIAL_JAMO_BASE+13,	"ㅉ", "jj" , "ssangcieuc"   },
+	{"x",  FINAL_JAMO_BASE+25,      "ㅌ", "t"  , "thieuth"      },
+	{"x",  INITIAL_JAMO_BASE+16,    "ㅌ", "t"  , "thieuth"      },
+	{"y",  MEDIAL_JAMO_BASE+12,		"ㅛ", "yo" , "yo"           },
+	{"z",  FINAL_JAMO_BASE+24,      "ㅋ", "k"  , "khieukh"      },
+	{"z",  INITIAL_JAMO_BASE+15,    "ㅋ", "k"  , "khieukh"      },
+};
+
+#endif
