@@ -446,7 +446,10 @@ pragma journal_mode = memory;
         else:
             self.redirects[title] = rtitle
             self.redirect_count += 1
-            generate_bigram(self.language_processor.translate(title)[0])
+
+            for t in self.language_processor.translate(title):
+                generate_bigram(t)
+
             if verbose:
                 PrintLog.message(u'Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
                                  .format(category, key, title, rcategory, rkey, rtitle))
@@ -483,7 +486,8 @@ pragma journal_mode = memory;
             PrintLog.message(u'Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
 
-        generate_bigram(self.language_processor.translate(title)[0])
+        for t in self.language_processor.translate(title):
+            generate_bigram(t)
 
         if verbose:
             if restricted:
