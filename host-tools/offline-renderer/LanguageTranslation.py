@@ -72,12 +72,32 @@ class LanguageProcessor(object):
                 self.EQUIVALENTS[u] = d.upper()
 
 
+    def append_translations(self, result1, result2, delimiter):
+        """take Japanese string and convert to Roman letters"""
+
+        result = []
+        if len(result1) == 0:
+            if isinstance(result2, list):
+                result = result2
+            else:
+                result.append(result2)
+        else:
+            for r1 in result1:
+                if isinstance(result2, list):
+                    for r2 in result2:
+                        result.append(r1 + delimiter + r2)
+                else:
+                    result.append(r1 + delimiter + result2)
+
+        return result
+
+
     def translate(self, text):
         """base translation using unicode tables"""
         if unicode != type(text):
             text = unicode(text, 'utf-8')
         text = text.strip()
-        result = ''
+        result = []
         for c in text:
             try:
                 n = unicodedata.name(c).split() + ['None', 'None', 'None', 'None']
@@ -90,31 +110,35 @@ class LanguageProcessor(object):
             is_capital = 'CAPITAL' == n[1] or 'CAPITAL' == n[2]
 
             if 'HANGUL' == character_class:
-                result += n[2]
+                result = self.append_translations(result, n[2], '')
             elif character_class in ['HIRAGANA', 'KATAKANA']:
                 if self.cjk_convert and is_letter:
                     # attempt to convert Japanese phonetic when doing Chinese->Pinyin
                     if is_small:
-                        result += n[3]
+                        result = self.append_translations(result, n[3], '')
                     else:
-                        result += n[2]
+                        result = self.append_translations(result, n[2], '')
                 else:
-                    result += c
+                    result = self.append_translations(result, c, '')
             elif self.cjk_convert and 'CJK' == character_class:
-                # use only the first of the list of phonetics available
+                # use all of the list of phonetics available
+                p = []
                 try:
-                    p = PinyinTable.pinyin[c][0]
+                    if len(PinyinTable.pinyin[c]) > 0:
+                        for pp in PinyinTable.pinyin[c]:
+                            if pp not in p:
+                                p.append(pp)
                 except KeyError:
-                    p = c
-                result += unicodedata.normalize('NFD', p)
+                    p.append(unicodedata.normalize('NFD', c))
+                result = self.append_translations(result, p, '') 
             elif character_class in ['GREEK', 'COPTIC']:
                 try:
                     g = n[3][0]
                     if is_small:
                         g = g.lower()
-                    result += g
+                    result = self.append_translations(result, g, '')
                 except IndexError:
-                    result += c
+                    result = self.append_translations(result, c, '')
             elif 'CYRILLIC' == character_class:
                 try:
                     if 'SHORT' == n[3]:
@@ -133,15 +157,15 @@ class LanguageProcessor(object):
                                 g = g[:-1]
                         if is_small:
                             g = g.lower()
-                        result += g
+                        result = self.append_translations(result, g, '')
                 except IndexError:
-                    result += c
+                    result = self.append_translations(result, c, '')
             else:
                 for c in unicodedata.normalize('NFD', c):
                     if c in self.EQUIVALENTS:
-                        result += self.EQUIVALENTS[c]
+                        result = self.append_translations(result, self.EQUIVALENTS[c], '')
                     else:
-                        result += c
+                        result = self.append_translations(result, c, '')
         return result
 
 
@@ -314,42 +338,99 @@ class LanguageJapanese(LanguageProcessor):
 
         return result
 
+    def trans(self, text):
+        """translate Kanji to phonetic array"""
+
+        result = {}
+        if type(text) == unicode:
+            text = text.encode('utf-8')
+
+        n = self.mecab.parseToNode(text)
+        slen = n.sentence_length;
+        processed_len = 0
+        for i in range(slen + 1):
+            b = n.begin_node_list(i)
+            e = n.end_node_list(i)
+            if i >= processed_len:
+                max_len = 0
+                while b:
+                    if '' != b.surface and b.length >= max_len:
+                        if i not in result:
+                            result[i] = {}
+                        f =  b.feature.split(',')
+                        if max_len <= b.length:
+                            if len(f) < 8 or f[7] == '*':
+                                r = self.romanise(b.surface)
+                            else:
+                                r = self.romanise(f[7])
+                            if max_len < b.length:
+                                if max_len > 0:
+                                    result[i] = {}
+                                max_len = b.length
+                            result[i][(b.length, b.surface, r)] = True
+                    b = b.bnext
+                    processed_len = i + max_len
+        return result
+
+
+    def process(self, table, offset, kanji, katakana):
+        """resolve phonetic array to list of all combinations"""
+
+        if offset not in table:
+            return [(-1, kanji, katakana)]
+
+        result = []
+
+        for item in table[offset]:
+            for suffix in self.process(table, offset + item[0], kanji + item[1], katakana + item[2]):
+                result.append((offset + item[0], suffix[1], suffix[2]))
+
+        return result
+
+
+    def get_phonetics(self, text):
+        """count unique phoneics"""
+        global verbose
+        s = self.trans(text)
+        r = self.process(s, 0, '', '')
+        t = {}
+
+        # remove duplicates
+        for item in r:
+            t[item[2]] = item[1]
+
+        # display translations
+        result = []
+        for key, data in t.items():
+            romaji = ''
+            for c in key:
+                romaji = romaji + c
+            result.append(romaji)
+        return result
+
 
     def translate(self, text):
         """take Japanese string and convert to Roman letters"""
 
-        result = ''
+        result = []
 
-        for text in super(LanguageJapanese, self).translate(text).split():
+        for text in super(LanguageJapanese, self).translate(text):
+            for tt in text.split():
+                if type(tt) == unicode:
+                    tt = tt.encode('utf-8')
+                phonetics = self.get_phonetics(tt)
+                result = super(LanguageJapanese, self).append_translations(result, phonetics, ' ')
 
-            if type(text) == unicode:
-                text = text.encode('utf-8')
-            n = self.mecab.parseToNode(text)
-
-            while n:
-
-                if n.surface == '':
-                    n = n.next
-                    continue
-
-                feature = unicode(n.feature,'utf-8').split(',')
-
-                if len(feature) < 8 or feature[7] == '*':
-                    r = self.romanise(n.surface)
-                else:
-                    r = self.romanise(feature[7])
-
-                result += r
-                n = n.next
-
-            result += ' '
-
-        return result.strip()
+        return result
 
 
 def test_items(strings, translate):
     for lang, text in strings:
-        print(u'{lang:s}  in: {src:s}\n{lang:s} out: {dst:s}\n'.format(lang=lang, src=text, dst=translate(text)).encode('utf-8'))
+        print(u'\n{lang:s}  in: {src:s}'.format(lang=lang, src=text).encode('utf-8'))
+        count = 0
+        for t in translate(text):
+            count += 1
+            print(u'out {cnt:d}: {dst:s}'.format(cnt=count, dst=t).encode('utf-8'))
 
 
 def main():
@@ -378,10 +459,10 @@ def main():
         ('ru2', u'А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я'),
         ]
 
-    print(u'Normal translation\n==================\n')
+    print(u'\nNormal translation\n==================')
     test_items(texts, LanguageNormal().translate)
 
-    print(u'Japnese translation\n====================\n')
+    print(u'\nJapnese translation\n====================')
     test_items(texts, LanguageJapanese().translate)
 
 

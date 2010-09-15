@@ -627,8 +627,9 @@ def output_fnd(filename_format, article_index, language_processor, truncate_titl
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
 
-    article_list = [ (SearchKey.make_key(language_processor.translate(title)), title)
-                      for title in article_index.all_indices() ]
+    article_list = [ (SearchKey.make_key(translated_title), title)
+                     for title in article_index.all_indices()
+                     for translated_title in language_processor.translate(title) ]
     article_list.sort()
 
     PrintLog.message(u'Time: {0:7.1f}s'.format(time.time() - start_time))
