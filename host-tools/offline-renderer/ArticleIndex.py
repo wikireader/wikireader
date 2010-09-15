@@ -9,7 +9,7 @@
 from __future__ import with_statement
 import os, sys, re
 import struct
-import littleparser
+from LittleParser import LittleParser
 import urllib
 import getopt
 import os.path
@@ -262,7 +262,7 @@ class FileProcessing(FileScanner.FileScanner):
 
         self.all_titles = []
 
-        self.translate = littleparser.LittleParser().translate
+        self.convert = LittleParser().convert
         self.redirects = {}
 
         self.articles = {}
@@ -410,9 +410,9 @@ pragma journal_mode = memory;
     def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
         global verbose
 
-        title = self.translate(title).strip(u'\u200e\u200f')
+        title = self.convert(title).strip(u'\u200e\u200f')
 
-        rtitle = self.translate(rtitle).strip().strip(u'\u200e\u200f')
+        rtitle = self.convert(rtitle).strip().strip(u'\u200e\u200f')
 
         # redirected title may contain '%xx' items - treat as unicode sequence
         # if it fails just keep the %xx sequences intact since it must represent
@@ -456,7 +456,7 @@ pragma journal_mode = memory;
         global verbose
         global error_flag
 
-        title = self.translate(title).strip(u'\u200e\u200f')
+        title = self.convert(title).strip(u'\u200e\u200f')
 
         if self.KEY_TEMPLATE == key:
             if title not in self.ignored_templates:

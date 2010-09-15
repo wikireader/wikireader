@@ -17,7 +17,7 @@ entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 lessthan = re.compile(r'<')
 
 class LittleParser(HTMLParser):
-    """Translate text
+    """Convert text
 
     handles all of these:
       &eacute;
@@ -40,7 +40,7 @@ class LittleParser(HTMLParser):
         else:
             self.buffer += unicode(data, 'utf-8')
 
-    def translate(self, text):
+    def convert(self, text):
         global entities
 
         if type(text) != unicode:
@@ -64,7 +64,7 @@ class LittleParser(HTMLParser):
 
 # tests
 def main():
-    p = LittleParser().translate
+    p = LittleParser().convert
     text = '''
 start test:
   [&egrave;] [&#1234;] [&eacute;] [%20] [%ff] [&nbsp;]

@@ -7,7 +7,6 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 import os, sys, re
-import littleparser
 import getopt
 import os.path
 import time
@@ -94,7 +93,6 @@ class FileProcessing(FileScanner.FileScanner):
         self.unrestricted_count = 0
         self.redirect_count = 0
         self.article_count = 0
-        self.translate = littleparser.LittleParser().translate
 
         self.time = time.time()
 
