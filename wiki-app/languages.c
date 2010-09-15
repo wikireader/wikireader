@@ -487,7 +487,7 @@ int parse_english_for_jamo(int *iaJamo, int *iaUsedLen, char *in_str, int in_len
 				switch (state)
 				{
 				case STATE_INITIAL:
-					if (korean_jamo_ex[jamo_ex_idx].jamo_idx & MEDIAL_JAMO_BASE &&
+					if ((korean_jamo_ex[jamo_ex_idx].jamo_idx & MEDIAL_JAMO_BASE) &&
 					    nJamoCount > 0 && (iaJamo[nJamoCount - 1] & JAMO_INDEX_BASE) &&
 					    (korean_jamo_ex[iaJamo[nJamoCount - 1] & JAMO_INDEX_EXCLUDE_BASE].jamo_idx & FINAL_JAMO_BASE))
 					{
@@ -508,7 +508,7 @@ int parse_english_for_jamo(int *iaJamo, int *iaUsedLen, char *in_str, int in_len
 								iaJamo[nJamoCount - 1] = JAMO_INDEX_BASE | nTempIdx1;
 								iaUsedLen[nJamoCount] = iaUsedLen[nJamoCount - 1] + 1;
 								iaJamo[nJamoCount++] = JAMO_INDEX_BASE | nTempIdx2;
-								state = STATE_AFTER_INITIAL_JAMO;
+								state = STATE_AFTER_MEDIAL_JAMO;
 							}
 							else
 							{
@@ -519,7 +519,7 @@ int parse_english_for_jamo(int *iaJamo, int *iaUsedLen, char *in_str, int in_len
 								if (nTempIdx1 >= 0 && (korean_jamo_ex[nTempIdx1].jamo_idx & INITIAL_JAMO_BASE))
 								{
 									iaJamo[nJamoCount - 1] = JAMO_INDEX_BASE | nTempIdx1;
-									state = STATE_AFTER_INITIAL_JAMO;
+									state = STATE_AFTER_MEDIAL_JAMO;
 								}
 								else
 									state = STATE_INITIAL;
@@ -535,11 +535,11 @@ int parse_english_for_jamo(int *iaJamo, int *iaUsedLen, char *in_str, int in_len
 							int nTempIdx1;
 							sTemp[0] = korean_jamo_ex[iaJamo[nJamoCount - 1] & JAMO_INDEX_EXCLUDE_BASE].english[0];
 							sTemp[1] = '\0';
-							nTempIdx1 = jamo_index(STATE_AFTER_MEDIAL_JAMO, sTemp, 1, &nTempUsed);
+							nTempIdx1 = jamo_index(STATE_INITIAL, sTemp, 1, &nTempUsed);
 							if (nTempIdx1 >= 0 && (korean_jamo_ex[nTempIdx1].jamo_idx & INITIAL_JAMO_BASE))
 							{
 								iaJamo[nJamoCount - 1] = JAMO_INDEX_BASE | nTempIdx1;
-								state = STATE_AFTER_INITIAL_JAMO;
+								state = STATE_AFTER_MEDIAL_JAMO;
 							}
 							else
 								state = STATE_INITIAL;
@@ -611,6 +611,8 @@ int english_to_korean(char *out_str, int max_out_len, char *in_str, int *in_len)
 	}
 
 	nJamoCount = parse_english_for_jamo(iaJamo, iaUsedLen, in_str, *in_len);
+	// note: parse_english_for_jamo will be determin the proper initial, medial and final jamo according to the context
+
 	i = 0;
 	out_len = 0;
 	while (i < nJamoCount && out_len < max_out_len)
