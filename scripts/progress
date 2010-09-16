@@ -13,7 +13,7 @@ USAGE()
   echo usage: $(basename "$0") '<options>'
   echo '       --help            -h         this message'
   echo '       --work            -w         show work directory files'
-  echo '       --simul           -2         switch to the other farm'
+  echo '       --farm=<n>        -F <n>     switch to the farm n ['${farm_number}']'
   echo '       --image           -i         show image directory files'
   echo '       --stamps          -s         show status of stamps'
   echo '       --analyse         -a         analyse the log file'
@@ -61,6 +61,24 @@ set_articles_link()
   esac
 }
 
+set_farm()
+{
+  case "${1}" in
+    1)
+      combine_host="3"
+      render_host='--host=simul3'
+      run_parallel="--machines=3 --parallel=12"
+      ;;
+    2)
+      combine_host=8
+      render_host='--host=render9'
+      run_parallel="--machines=9 --parallel=3"
+      ;;
+    *)
+      USAGE invalid --farm=${1}
+      ;;
+  esac
+}
 
 # main program
 # ------------
@@ -69,15 +87,17 @@ verbose=no
 language=en
 suffix=pedia
 list=''
-combine_host=8
 base_dir=samo
+combine_host=
 render_host=
 run_parallel=
+
+set_farm 1
 set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:r:R:I:cG::4::NfxA2 --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,simul -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:r:R:I:cG::4::NfxAF: --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,farm: -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -89,11 +109,9 @@ do
       shift
       ;;
 
-    -2|--simul)
-      combine_host="3"
-      render_host='--host=simul3'
-      run_parallel="--machines=3 --parallel=12"
-      shift
+    -F|--farm)
+      set_farm "$2"
+      shift 2
       ;;
 
     -b|--base)
