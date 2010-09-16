@@ -1312,17 +1312,21 @@ def write_article(language_links):
     for l in language_links:
         language, link = l.split(':', 1)
 
+        language = language.strip()
+        link = link.strip()
+
         # only need the first pronunciation for the link
         # as this must always be present
-        if 'ja' == language:
-            stripped = japanese_convert(link)[0]
-        else:
-            stripped = normal_convert(link)[0]
+        if link is not None and '' != link:
+            if 'ja' == language:
+                stripped = japanese_convert(link)[0]
+            else:
+                stripped = normal_convert(link)[0]
 
-        if link == stripped:
-            links_stream.write(l.encode('utf-8') + '\0')
-        else:
-            links_stream.write((language + '#' + stripped).encode('utf-8') + '\1' + link.encode('utf-8') + '\0')
+            if link == stripped:
+                links_stream.write(l.encode('utf-8') + '\0')
+            else:
+                links_stream.write((language + '#' + stripped).encode('utf-8') + '\1' + link.encode('utf-8') + '\0')
 
     links_stream.flush()
     langs = links_stream.getvalue()
