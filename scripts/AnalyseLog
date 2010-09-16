@@ -26,6 +26,7 @@ BEGIN {
     delete render_max
     quotes = "['\"]"
     normal_nl = "\033[0m\n"
+    completed = "\033[1;41;33m"
     completion = "\033[1;33m"
     timed = "\033[1;35m"
     elapsed = "\033[1;32m"
@@ -82,7 +83,8 @@ END {
         } else {
             estimated_finish = seconds_to_string(elapsed_time * (100 - percent_complete) / percent_complete)
         }
-        printf(completion "Parsing Completion:    %6.1f%%  Estimated finish in: %s" normal_nl,
+        printf((estimated_finish == "Complete" ? completed : completion) \
+               "Parsing Completion:    %6.1f%%  Estimated finish in: %s" normal_nl,
                percent_complete, estimated_finish)
 
     } else {
@@ -127,7 +129,8 @@ END {
         } else {
             estimated_finish = seconds_to_string(elapsed_time * (100 - percent_complete) / percent_complete)
         }
-        printf(completion "Rendering Completion:  %6.1f%%  Estimated finish in: %s" normal_nl,
+        printf((estimated_finish == "Complete" ? completed : completion) \
+               "Rendering Completion:  %6.1f%%  Estimated finish in: %s" normal_nl,
                percent_complete, estimated_finish)
     } else {
         print "Render: Not Started"
