@@ -1,0 +1,132 @@
+#!/bin/sh
+# locate the latest dump file and download
+# continuing if a partial download was present
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: "$*"
+  echo usage: $(basename "$0") '<options> [<language-code>...]'
+  echo '       --help            -h         this message'
+  echo '       --verbose         -v         more messages'
+  echo '       --url=<url>       -u <url>   base URL for downloads ['${RootURL}']'
+  echo '       --download=<dir>  -d <dir>   download directory [No Download]'
+  echo '       --suffix=<text>   -d <text>  file name suffix ['${suffix}']'
+  echo '       --ext=<text>      -x <text>  file name extension ['${ext}']'
+  echo '       --rate=<rate>     -r <rate>  download rate limit ['${rate}']'
+  exit 1
+}
+
+
+# main program
+
+verbose=no
+debug=no
+RootURL=http://download.wikipedia.org
+suffix=wiki
+ext=pages-articles.xml.bz2
+download=
+rate=50k
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvu:d:s:x:r:D --long=help,verbose,url,download:,suffix:,ext:,rate:,debug -- "$@") ||exit 1
+
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -u|--url)
+      RootURL=$2
+      shift 2
+      ;;
+
+    -d|--download)
+      download=$2
+      [ -d "${download}" ] || USAGE ${download} is not a directory
+      shift 2
+      ;;
+
+    -s|--suffix)
+      suffix=$2
+      shift 2
+      ;;
+
+    -x|--ext)
+      ext=$2
+      shift 2
+      ;;
+
+    -r|--rate)
+      rate=$2
+      shift 2
+      ;;
+
+    -D|--debug)
+      debug=yes
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+
+if [ $# -lt 1 ]
+then
+  USAGE missing arguments
+fi
+
+
+for arg in $*
+do
+  url=${RootURL}/${arg}${suffix}
+
+  stamp=$(lynx -dump "${url}" | awk '
+BEGIN {
+ dir = ""
+}
+END{
+  if ("" != dir) {
+    print(dir)
+  }
+}
+/\[[[:digit:]]+\][[:digit:]]/ {
+  if (match($1, "^.*]([[:digit:]]+)[^[:digit:]]*.*$", m)) {
+    dir = m[1]
+  }
+}')
+
+  file="${arg}${suffix}-${stamp}-${ext}"
+  remote="${RootURL}/${arg}${suffix}/${stamp}/${file}"
+  echo Download: ${remote}
+  if [ -n "${download}" ]
+  then
+    local="${download}/${file}"
+    echo '      To:' ${local}
+    wget --no-directories --continue --limit-rate="${rate}" --output-document="${local}" "${remote}"
+  fi
+done
