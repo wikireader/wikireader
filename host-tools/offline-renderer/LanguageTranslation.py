@@ -130,7 +130,7 @@ class LanguageProcessor(object):
                                 p.append(pp)
                 except KeyError:
                     p.append(unicodedata.normalize('NFD', c))
-                result = self.append_translations(result, p, '') 
+                result = self.append_translations(result, p, '')
             elif character_class in ['GREEK', 'COPTIC']:
                 try:
                     g = n[3][0]
@@ -166,6 +166,9 @@ class LanguageProcessor(object):
                         result = self.append_translations(result, self.EQUIVALENTS[c], '')
                     else:
                         result = self.append_translations(result, c, '')
+        if result is None or [] == result or '' == result:
+            return ['']
+
         return result
 
 
