@@ -166,6 +166,7 @@ class LanguageProcessor(object):
                         result = self.append_translations(result, self.EQUIVALENTS[c], '')
                     else:
                         result = self.append_translations(result, c, '')
+
         if result is None or [] == result or '' == result:
             return ['']
 
@@ -424,6 +425,9 @@ class LanguageJapanese(LanguageProcessor):
                 phonetics = self.get_phonetics(tt)
                 result = super(LanguageJapanese, self).append_translations(result, phonetics, ' ')
 
+        if result is None or [] == result or '' == result:
+            return ['']
+
         return result
 
 
@@ -431,7 +435,14 @@ def test_items(strings, translate):
     for lang, text in strings:
         print(u'\n{lang:s}  in: {src:s}'.format(lang=lang, src=text).encode('utf-8'))
         count = 0
-        for t in translate(text):
+        translated_list =  translate(text)
+        if translated_list is None:
+            raise 'translate returned None'
+
+        if [] == translated_list:
+            raise 'translate returned []'
+
+        for t in translated_list:
             count += 1
             print(u'out {cnt:d}: {dst:s}'.format(cnt=count, dst=t).encode('utf-8'))
 
@@ -446,6 +457,7 @@ def main():
         ('ko', u'질량이 태양과 비슷한 별들은'),
         ('ja', u'GFDLのみでライセンスされたコンテンツ（あらゆる文章、ファイルを含む）の受け入れが禁止となりました。'),
         ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ   スタぴか'),
+        ('ja3', u'Ъ'),
         ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
         ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
         ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),
