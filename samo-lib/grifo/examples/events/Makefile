@@ -47,6 +47,8 @@ LIBS += ${GRIFO_LIB}
 LIBS += ${MINI_LIBC_LIB}
 LIBS += $(shell $(CC) -print-libgcc-file-name)
 
+LDFLAGS += -static --strip-all -s --no-gc-sections -N
+
 BUILD_PREFIX := build/
 
 vpath %.c :src
