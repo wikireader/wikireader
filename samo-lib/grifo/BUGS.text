@@ -1,0 +1,16 @@
+BUGS
+====
+
+1. the APP loader does not correctly determine the start address
+   so put the "int main(int argc, char **argv)" routine
+   at the start of the program.
+
+   Do this by putting the object at the beginning of the list of
+   "OBJECTS +=" in the makefile.
+
+   Alternatively create a separate stub file to be the first
+   object module that calls main.  The code could simply be:
+
+   int system_startup_routine(int argc, char **argv) {
+       return main(int argc, char **argv);
+   }
