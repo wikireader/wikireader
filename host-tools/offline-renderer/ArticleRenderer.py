@@ -10,8 +10,8 @@ import sys, os, struct, os.path, re
 import io
 import time
 import HTMLParser
-import unicodedata
 import htmlentitydefs
+import SearchKey
 import codecs
 import getopt
 import os.path
@@ -1322,6 +1322,8 @@ def write_article(language_links):
                 stripped = japanese_convert(link)[0]
             else:
                 stripped = normal_convert(link)[0]
+
+            stripped = SearchKey.strip_accents(stripped)
 
             if link == stripped:
                 links_stream.write(l.encode('utf-8') + '\0')
