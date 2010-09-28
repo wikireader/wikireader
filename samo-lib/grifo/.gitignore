@@ -5,3 +5,4 @@ stubs
 *.dump
 *.elf
 *.map
+stamp*
