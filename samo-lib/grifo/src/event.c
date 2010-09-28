@@ -25,6 +25,7 @@
 
 #include "standard.h"
 #include "interrupt.h"
+#include "watchdog.h"
 #include "suspend.h"
 #include "timer.h"
 #include "event.h"
@@ -58,8 +59,50 @@ void Event_flush(void)
 }
 
 
+bool Event_PutButton(const event_t *event)
+{
+	event_item_t opposite = EVENT_NONE;
+	if (EVENT_NONE == event->item_type) {
+		return true;
+	} else if (EVENT_BUTTON_UP == event->item_type) {
+		opposite = EVENT_BUTTON_DOWN;
+	} else if (EVENT_BUTTON_DOWN == event->item_type) {
+		opposite = EVENT_BUTTON_UP;
+	} else {  // in case called by non-button event, just redirect
+		return Event_put(event);
+	}
+
+	Interrupt_type state = Interrupt_disable();
+	if (head != tail) {
+		event_t *prev = &tail[-1];
+		if (prev < EventQueue) {
+			prev = &EventQueue[SizeOfArray(EventQueue) - 1];
+		}
+		if (head != prev) {
+			event_t *prev2 = prev - 1;
+			if (prev2 < EventQueue) {
+				prev2 = &EventQueue[SizeOfArray(EventQueue) - 1];
+			}
+			if (head != prev) {  // have two previous entries in the queue
+				if (opposite == prev->item_type &&
+				    prev->button.code == event->button.code &&
+				    prev2->item_type == event->item_type &&
+				    prev2->button.code == event->button.code) {
+					tail = prev2;
+				}
+			}
+		}
+	}
+	Interrupt_enable(state);
+	return Event_put(event);
+}
+
+
 bool Event_put(const event_t *event)
 {
+	if (EVENT_NONE == event->item_type) {
+		return true;
+	}
 	Interrupt_type state = Interrupt_disable();
 	event_t *next = &tail[1];
 
@@ -77,8 +120,24 @@ bool Event_put(const event_t *event)
 }
 
 
+event_item_t Event_peek(event_t *event)
+{
+	Watchdog_KeepAlive(WATCHDOG_KEY);
+	Interrupt_type state = Interrupt_disable();
+	if (head == tail) {
+		memset(event, 0, sizeof(*event));
+		event->item_type = EVENT_NONE;
+	} else {
+		memcpy(event, head, sizeof(*event));
+	}
+	Interrupt_enable(state);
+	return event->item_type;
+}
+
+
 event_item_t Event_get(event_t *event)
 {
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 	Interrupt_type state = Interrupt_disable();
 	if (head == tail) {
 		memset(event, 0, sizeof(*event));

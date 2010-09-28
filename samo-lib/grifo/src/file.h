@@ -74,6 +74,7 @@ File_ErrorType File_lseek(int handle, unsigned long pos);
 //File_ErrorType File_ChangeDirectory(const char *directoryname);
 //File_ErrorType File_CurrentDirectory(char *directoryname, size_t length);
 File_ErrorType File_CreateDirectory(const char *directoryname);
+bool File_DirectoryExists(const char *directoryname);
 File_ErrorType File_OpenDirectory(const char *directoryname);
 File_ErrorType File_CloseDirectory(int handle);
 ssize_t File_ReadDirectory(int handle, void *buffer, size_t length);

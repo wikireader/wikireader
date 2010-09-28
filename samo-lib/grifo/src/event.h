@@ -80,6 +80,11 @@ bool Event_put(const event_t *event);
 //*[get]: get the next event if available otherwise return EVENT_NONE
 event_item_t Event_get(event_t *event);
 
+// copy from buffer
+//*[peek]: peek the next event if available otherwise return EVENT_NONE
+//*[peek]: the event queue pointer does not change after the call
+event_item_t Event_peek(event_t *event);
+
 //*[wait]: never returns EVENT_NONE
 //*[wait]: instead runs callback ater a 2 minute timeout
 //*[wait]: callback returns true to wait another timeout period

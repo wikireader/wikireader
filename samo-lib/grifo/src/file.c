@@ -280,6 +280,24 @@ File_ErrorType File_CreateDirectory(const char *directoryname)
 }
 
 
+bool File_DirectoryExists(const char *directoryname)
+{
+	DIR dir;
+	if (NULL == directoryname) {
+		return false;
+	}
+
+	AutoPowerUp();
+	File_ErrorType rc = -f_opendir(&dir, directoryname);
+	if (FILE_ERROR_OK == rc) {
+		//f_dirclose(&dir);
+		return true;
+	}
+
+	return false;
+}
+
+
 File_ErrorType File_OpenDirectory(const char *directoryname)
 {
 	if (NULL == directoryname) {

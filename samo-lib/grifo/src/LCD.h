@@ -128,6 +128,8 @@ LCD_ColourType LCD_Window_GetColour(void);
 void LCD_Window_Point(int x, int y);
 void LCD_Window_MoveTo(int x, int y);
 void LCD_Window_LineTo(int x, int y);
+void LCD_framebuffer_set_byte(int byte_idx, uint8_t value);
+uint8_t LCD_framebuffer_get_byte(int byte_idx);
 
 
 void LCD_PutBitMap(void *framebuffer, size_t BufferWidth,

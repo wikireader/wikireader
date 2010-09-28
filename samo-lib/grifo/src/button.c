@@ -79,6 +79,7 @@ void Button_initialise(void)
 	}
 }
 
+bool Event_PutButton(const event_t *event);
 
 void Button_KeyInterrupt(void)
 {
@@ -99,7 +100,7 @@ void Button_KeyInterrupt(void)
 			event.item_type = pressed ? EVENT_BUTTON_DOWN : EVENT_BUTTON_UP;
 			event.button.code = i;  // 0=random, 1=search, 2=history
 			state[i] = pressed;
-			Event_put(&event);
+			Event_PutButton(&event);
 		}
 	}
 	Interrupt_RestoreR15();  // must be last
@@ -115,10 +116,10 @@ void Button_PowerInterrupt(void)
 	event_t event;
 	event.item_type = EVENT_BUTTON_DOWN;
 	event.button.code = BUTTON_POWER;
-	Event_put(&event);
+	Event_PutButton(&event);
 	event.item_type = EVENT_BUTTON_UP;
 	event.button.code = BUTTON_POWER;
-	Event_put(&event);
+	Event_PutButton(&event);
 
 	Interrupt_RestoreR15();  // must be last
 }

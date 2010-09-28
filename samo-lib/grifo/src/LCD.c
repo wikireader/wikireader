@@ -838,3 +838,13 @@ void LCD_PutBitMap(void *framebuffer, size_t BufferWidth,
 		p += BufferWidth;
 	}
 }
+
+void LCD_framebuffer_set_byte(int byte_idx, uint8_t value)
+{
+	((uint8_t *)REG_LCDC_MADD)[byte_idx] = value;
+}
+
+uint8_t LCD_framebuffer_get_byte(int byte_idx)
+{
+	return ((uint8_t *)REG_LCDC_MADD)[byte_idx];
+}

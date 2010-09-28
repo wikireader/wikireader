@@ -130,6 +130,9 @@
  (comment "src/event.h" "wait")
  (45 Event_wait ("event_item_t" "event_wait" "event_t *event" "event_callback_t *callback" "void *arg"))
 
+ (comment "src/event.h" "peek")
+ (46 Event_peek ("event_item_t" "event_peek" "event_t *event"))
+
 
  (section "LCD Access")
 
@@ -170,6 +173,8 @@
  (63 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "format (printf, 1, 2)")
  (64 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
  (65 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
+ (66 LCD_framebuffer_set_byte ("void" "lcd_framebuffer_set_byte" "int byte_idx" "uint8_t value"))
+ (67 LCD_framebuffer_get_byte ("uint8_t" "lcd_framebuffer_get_byte" "int byte_idx"))
 
 
  (section "LCD Window (picture-in-picture)")
@@ -242,6 +247,7 @@
  (123 File_OpenDirectory ("file_error_t" "directory_open" "const char *directoryname"))
  (124 File_CloseDirectory ("file_error_t" "directory_close" "int handle"))
  (125 File_ReadDirectory ("ssize_t" "directory_read" "int handle" "void *buffer" "size_t length"))
+ (126 File_DirectoryExists ("bool" "directory_exists" "const char *directoryname"))
 
  (output "enum {" "\tSECTOR_SIZE = 512," "};")
 
