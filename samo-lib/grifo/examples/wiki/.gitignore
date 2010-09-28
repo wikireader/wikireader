@@ -1,0 +1,7 @@
+build
+lib
+*.dump
+*.elf
+*.app
+*.map
+*.ico

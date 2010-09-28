@@ -46,6 +46,7 @@ DIRS += init
 DIRS += lcd
 DIRS += memory
 DIRS += sample1
+DIRS += wiki
 
 
 ${MAKECMDGOALS} all:
