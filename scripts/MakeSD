@@ -4,7 +4,7 @@
 USAGE()
 {
   [ -z "$1" ] || echo error: $*
-  echo usage: $(basename "$0") '<options> <languages>'
+  echo usage: $(basename "$0") '<options> <languages|ROOT>'
   echo '       --help           -h         this message'
   echo '       --verbose        -v         more messages'
   echo '       --image=<dir>    -i <dir>   image source directory [image]'
@@ -101,6 +101,8 @@ COPY_DIR()
   done
   echo
 }
+
+[ X"ROOT" = X"$1" ] && shift
 
 for d in $@
 do
