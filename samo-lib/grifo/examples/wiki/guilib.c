@@ -76,13 +76,28 @@ void guilib_invert(int start_line, int height)
 /**
  * Invert the area specified on the screen.
  */
-void guilib_invert_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y)
+void guilib_invert_area(int start_x, int start_y, int end_x, int end_y)
 {
 	unsigned int x, y;
+	unsigned int pixel;
+
+	if (start_x > end_x || start_y > end_y || 
+		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
+		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
+		return;
+		
+	if (start_x < 0)
+		start_x = 0;
+	if (end_x >= LCD_WIDTH)
+		end_x = LCD_WIDTH - 1;
+	if (start_y < 0)
+		start_y = 0;
+	if (end_y >= LCD_HEIGHT)
+		end_y = LCD_HEIGHT - 1;
 
 	for (y = start_y; y <= end_y; ++y) {
 		for (x = start_x; x <= end_x; x++) {
-			unsigned int pixel = lcd_get_pixel(x, y);
+			pixel = lcd_get_pixel(x, y);
 			lcd_set_pixel(x, y, !pixel);
 		}
 	}
@@ -103,7 +118,7 @@ void guilib_clear(void)
 /**
  * Clear the area specified on the screen.
  */
-void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y)
+void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 {
 	unsigned int y, r1, r2;
 	uint8_t byte_mask1 = 0;
@@ -114,8 +129,19 @@ void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int 
 	int nBytes = 0;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
-	if (start_x > end_x || start_y > end_y)
+	if (start_x > end_x || start_y > end_y || 
+		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
+		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
 		return;
+		
+	if (start_x < 0)
+		start_x = 0;
+	if (end_x >= LCD_WIDTH)
+		end_x = LCD_WIDTH - 1;
+	if (start_y < 0)
+		start_y = 0;
+	if (end_y >= LCD_HEIGHT)
+		end_y = LCD_HEIGHT - 1;
 		
 	if (start_x == 0 && end_x >= LCD_WIDTH - 1)
 	{

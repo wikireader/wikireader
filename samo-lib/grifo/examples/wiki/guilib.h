@@ -32,9 +32,9 @@ void guilib_init(void);
 /* generic pixel value accessors
  * the get method is only needed by the simulators */
 void guilib_invert(int start, int lines);
-void guilib_invert_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y);
+void guilib_invert_area(int start_x, int start_y, int end_x, int end_y);
 void guilib_clear(void);
-void guilib_clear_area(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y);
+void guilib_clear_area(int start_x, int start_y, int end_x, int end_y);
 
 /* functions for graphics context management */
 void guilib_fb_lock(void);

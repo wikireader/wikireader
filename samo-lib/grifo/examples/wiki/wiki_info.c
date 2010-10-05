@@ -259,6 +259,7 @@ uint32_t wiki_lang_link_search(char *lang_link_str)
 	search_interrupted = 0;
 	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
+		reset_search_info(nCurrentWiki);
 		init_search_fnd();
 		p = strchr(lang_link_str, ':');
 		q = strchr(lang_link_str, '#');
