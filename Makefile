@@ -204,7 +204,7 @@ CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 jig-install: validate-destdir forth-install flash-install mbr-install
 
 .PHONY: install
-install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version
+install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
 
 .PHONY: version
 version: validate-destdir
@@ -212,11 +212,15 @@ version: validate-destdir
 	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	${RM} "${DESTDIR_PATH}"/*/*.idx-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
+	find "${DESTDIR_PATH}" -type d -print -exec \
+	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
+
+
+.PHONY: clear-history
+clear-history: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[pP][aA][sS]
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[hH][sS][tT]
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][iI]
-	find "${DESTDIR_PATH}" -type d -print -exec \
-	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.pas" bs=40 count=1
 	echo "wiki_id=1" > "${DESTDIR_PATH}/wiki.ini"
@@ -228,6 +232,7 @@ misc-files-install: validate-destdir
 	${RM} "${LICENSES}"/*~
 	cp -p "${MISC_FILES}"/* "${DESTDIR_PATH}"/
 	cp -p "${LICENSES}"/* "${DESTDIR_PATH}"/
+
 
 .PHONY: validate-destdir
 validate-destdir:
@@ -916,6 +921,8 @@ help:
 	@echo '  flash-install         - install flash programmer in DESTDIR'
 	@echo '  fonts                 - compile fonts'
 	@echo '  fonts-install         - install font files in DESTDIR'
+	@echo '  grifo                 - build the Grifo kernel and examples'
+	@echo '  grifo-install         - install the Grifo kernel and examples'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
 	@echo '  qt4-simulator         - compile the Qt4 simulator'
