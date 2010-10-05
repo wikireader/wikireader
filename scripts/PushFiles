@@ -14,7 +14,7 @@ USAGE()
   echo '       --help          -h         this message'
   echo '       --list=<n-m>    -l <n-m>   restrict to certain machines [1-9]'
   echo '       --dir=<dir>     -d <dir>   set destination directory'
-  echo '       --simul         -2         switch to the other farm'
+  echo '       --host=<host>   -H <host>  set highest host'
   exit 1
 }
 
@@ -24,11 +24,11 @@ USAGE()
 verbose=no
 dir=.
 list=''
-render_host=''
+render_host='--host=simul3'
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvl:d:2 --long=help,verbose,list:,dir:,simul -- "$@") || exit 1
+args=$(${getopt} -o hvl:d:H: --long=help,verbose,list:,dir:,host: -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -50,9 +50,9 @@ do
       shift 2
       ;;
 
-    -2|--simul)
-      render_host='--host=simul3'
-      shift
+    -H|--host)
+      render_host="--host=$2"
+      shift 2
       ;;
 
     --)
