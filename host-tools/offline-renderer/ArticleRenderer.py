@@ -619,8 +619,10 @@ def esc_code14(width, height, data):
     if 0 == width or 0 == height:
         return
 
-    output.write(struct.pack('<BBH', 15, width, height))
-    output.write(data)
+    if len(data) != (width + 7) // 8 * height:
+        PrintLog.message(u'Error: Corrupt Image')
+
+    output.write(struct.pack('<BBH', 15, width, height) + data)
 
     lineh = get_lineheight(g_curr_face)
 
