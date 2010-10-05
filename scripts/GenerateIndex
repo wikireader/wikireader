@@ -27,7 +27,7 @@ exec sbcl --script "$0" "$0" "$@"
 (require 'md5)
 
 (defvar *program* (second sb-ext:*posix-argv*) "name of this script file")
-(defvar *debug* nil  "set true for debuf output")
+(defvar *debug* nil  "set true for debug output")
 (defvar *verbose* nil "set true for verbose output")
 
 
@@ -139,10 +139,29 @@ exec sbcl --script "$0" "$0" "$@"
           (map 'list #'(lambda (x) (logand #xff x)) byte-vector)))
 
 
+(defun md5sum-and-length (file-path)
+  "return a list (length md5-sum) for the file, save the sum in <file-path>.MD5SUM"
+  (let ((sum-path (concatenate 'string (namestring file-path) ".MD5SUM")))
+    (when *debug*
+      (format t "  File: ~a  SUM: ~d~%" file-path sum-path))
+    (with-open-file (file-stream file-path :direction :input :element-type 'unsigned-byte)
+      (let ((size (file-length file-stream)))
+
+        (if (probe-file sum-path)
+            (progn
+              (with-open-file (sum-stream sum-path :direction :input :element-type 'base-char)
+                (list size (read-line sum-stream))))
+            (let ((sum (vector-to-hex (md5:md5sum-stream file-stream))))
+              (with-open-file (out-stream sum-path :direction :output :if-exists :supersede
+                                          :if-does-not-exist :create)
+                (princ sum out-stream))
+              (list size sum)))))))
+
+
 (defun list-of-files (dir-name)
   "return a sorted list of all .7z and .7z.* files ((basename size MD5)...)"
   (let ((7z (concatenate 'string dir-name "/*.7z"))
-        (arc (concatenate 'string dir-name "/*.7z.*")))
+        (arc (concatenate 'string dir-name "/*.7z.???")))
     (loop for file-path in (sort
                             (append (directory 7z) (directory arc))
                             #'string< :key #'namestring)
@@ -150,11 +169,7 @@ exec sbcl --script "$0" "$0" "$@"
          (let ((basename (file-namestring file-path)))
            (when *verbose*
              (format t "  File: ~a~%" basename))
-           (append (list basename)
-            (with-open-file (file-stream file-path :direction :input :element-type 'unsigned-byte)
-              (list
-               (file-length file-stream)
-               (vector-to-hex (md5:md5sum-stream file-stream)))))))))
+           (append (list basename) (md5sum-and-length file-path))))))
 
 
 (defun partition-files (dir file-list)
