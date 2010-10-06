@@ -626,8 +626,8 @@ def esc_code14(width, height, data):
 
     lineh = get_lineheight(g_curr_face)
 
-    if (height) > lineh:
-        g_starty += (height)-lineh + 3   # since Eric draws images 3px lower for alignment
+    if height >= lineh:
+        g_starty += height - lineh + 3   # since Eric draws images 3px lower for alignment
 
 
 #
