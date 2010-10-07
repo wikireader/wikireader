@@ -140,7 +140,13 @@ END {
            seconds_to_string(timed_time),
            parse_complete, length(parse_count),
            render_complete, length(render_count))
-    printf(elapsed "Elapsed Time: %s" normal_nl, seconds_to_string(elapsed_time))
+    printf(elapsed "Elapsed Time: %s", seconds_to_string(elapsed_time))
+    if (0 != start_time && 0 != end_time) {
+        printf(elapsed "  From: %s To: %s",
+               strftime("%Y-%m-%d %H:%M:%S", start_time),
+               strftime("%Y-%m-%d %H:%M:%S", end_time))
+    }
+    printf(normal_nl)
 }
 
 function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
