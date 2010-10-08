@@ -1,6 +1,6 @@
 # Makefile
 #
-# Copyright (c) 2009 Openmoko Inc.
+# Copyright (c) 2010 Openmoko Inc.
 #
 # Authors   Christopher Hall <hsw@openmoko.com>
 #

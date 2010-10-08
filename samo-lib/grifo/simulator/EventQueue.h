@@ -1,5 +1,5 @@
-/*
- * grifo - a small kernel for WikiReader
+/* -*- mode: c++ -*-
+ * thread safe event queue
  *
  * Copyright (c) 2010 Openmoko Inc.
  *
@@ -18,3 +18,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(_QUEUE_H_)
+#define _QUEUE_H_ 1
+
+#include <inttypes.h>
+
+#include <QQueue>
+#include <QMutex>
+#include <QSemaphore>
+
+#include "grifo.h"
+
+class EventQueue {
+
+private:
+	QMutex *mutex;
+	QSemaphore *semaphore;
+	QQueue<event_t> *queue;
+
+	// no copying
+	EventQueue(const EventQueue &);
+	EventQueue &operator=(const EventQueue &);
+
+public:
+	EventQueue();
+	virtual ~EventQueue();
+
+	bool enqueue(event_t *event);
+	event_item_t dequeue(event_t *event, int milliseconds = -1);  // default = wait forever
+	bool isEmpty() const;
+
+};
+
+#endif

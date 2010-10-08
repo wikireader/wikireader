@@ -1,7 +1,7 @@
 /*
  * memory - test memory allocate / free
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -24,8 +24,10 @@
 #include "grifo.h"
 
 
-int main(int argc, char **argv)
+int grifo_main(int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
 	debug_printf("memory allocation test\n");
 
 	memory_debug("start");
@@ -49,9 +51,10 @@ int main(int argc, char **argv)
 	memory_free(m2, "f5");
 	memory_debug("free m2");
 
+#if !defined(GRIFO_SIMULATOR)
 	memory_free(m2, "f5*2");
 	memory_debug("free f2 again");
-
+#endif
 
 	m1 = memory_allocate(75242, "new m1");
 	memory_debug("allocated new m1");

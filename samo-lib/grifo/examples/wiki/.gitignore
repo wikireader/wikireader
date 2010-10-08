@@ -1,5 +1,6 @@
 build
 lib
+simulate
 *.dump
 *.elf
 *.app

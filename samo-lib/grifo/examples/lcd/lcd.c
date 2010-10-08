@@ -1,7 +1,7 @@
 /*
  * lcd - an simple example program
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -21,8 +21,11 @@
 
 #include "grifo.h"
 
-int main(int argc, char **argv)
+int grifo_main(int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
+
 	int x;
 	int y;
 

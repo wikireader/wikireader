@@ -1,7 +1,7 @@
 /*
  * init - the first user process to run
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -56,10 +56,10 @@ char buffer[65536];
 bool ReadCommands(const char *filename);
 int MenuHandler(void);
 int CursorPosition(int x, int y);
-bool ReadIcon(void *icon, size_t size, const char *filename);
+bool ReadIcon(void *icon, ssize_t size, const char *filename);
 
 
-int main(int argc, char **argv)
+int grifo_main(int argc, char *argv[])
 {
 	debug_print("init starting\n");
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 
 bool ReadCommands(const char *filename)
 {
-	int handle = file_open("init.ini", FILE_OPEN_READ);
+	int handle = file_open(filename, FILE_OPEN_READ);
 	if (handle < 0) {
 		debug_printf("init: open error = %d\n", handle);
 		return false;
@@ -110,7 +110,7 @@ bool ReadCommands(const char *filename)
 		STATE_EndCommand,
 	} state = STATE_SkipSpaces;
 	size_t item = 0;
-	size_t i;
+	ssize_t i;
 	for (i = 0; i < r; ++i) {
 		char c = buffer[i];
 
@@ -236,7 +236,8 @@ int MenuHandler(void)
 						   MenuRecord[cursor].x, MenuRecord[cursor].y,
 						   X_SIZE, Y_SIZE, false, MenuRecord[cursor].icon);
 				}
-				if (position >= 0 && position < SizeOfArray(MenuRecord) && MenuRecord[position].ok) {
+				if (position >= 0 && position < (int)SizeOfArray(MenuRecord)
+				    && MenuRecord[position].ok) {
 					cursor = position;
 					lcd_bitmap(lcd_get_framebuffer(), LCD_BUFFER_WIDTH_BYTES,
 						   MenuRecord[cursor].x, MenuRecord[cursor].y,
@@ -249,7 +250,7 @@ int MenuHandler(void)
 		break;
 
 		case EVENT_TOUCH_UP:
-			if (cursor >= 0 && cursor < SizeOfArray(MenuRecord)) {
+			if (cursor >= 0 && cursor < (int)SizeOfArray(MenuRecord)) {
 				chain(MenuRecord[cursor].command);
 			}
 			break;
@@ -305,7 +306,7 @@ int CursorPosition(int x, int y)
 }
 
 
-bool ReadIcon(void *icon, size_t size, const char *filename)
+bool ReadIcon(void *icon, ssize_t size, const char *filename)
 {
 	int handle = file_open(filename, FILE_OPEN_READ);
 	if (handle < 0) {

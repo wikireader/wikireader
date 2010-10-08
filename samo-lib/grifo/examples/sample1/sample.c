@@ -1,7 +1,7 @@
 /*
  * sample - an simple example program
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -22,7 +22,7 @@
 #include "grifo.h"
 #include <regs.h>
 
-int main(int argc, char **argv)
+int grifo_main(int argc, char *argv[])
 {
 	// verify r15 is ok
 

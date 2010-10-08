@@ -1,7 +1,7 @@
 /*
  * events - an simple example program
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -25,7 +25,7 @@
 void PrintEvent(const event_t *event);
 bool callback(void *arg);
 
-int main(int argc, char **argv) {
+int grifo_main(int argc, char *argv[]) {
 
 	int DelayTime = 1000000; // microseconds
 	enum {polling, waiting, delayed} EventMethod = waiting;
@@ -122,7 +122,7 @@ void PrintEvent(const event_t *event) {
 
 	case EVENT_BATTERY_LOW:
 		debug_printf("%10lu: BATTERY LOW[%d] = %lu\n", event->time_stamp, event->item_type,
-			     event->battery.millivolts);
+			     (unsigned long)event->battery.millivolts);
 		break;
 
 	default:

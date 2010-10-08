@@ -2,7 +2,7 @@
 
 ;;; grifo - a small kernel for WikiReader
 ;;;
-;;; Copyright (c) 2009 Openmoko Inc.
+;;; Copyright (c) 2010 Openmoko Inc.
 ;;;
 ;;; Authors   Christopher Hall <hsw@openmoko.com>;;;
 ;;;
@@ -47,7 +47,9 @@
 
  (newline)
 
+ (output "#ifndef __ssize_t_defined")
  (output "typedef int32_t ssize_t;")
+ (output "#endif")
 
  ;; functions
  (0 System_panic ("void" "panic" "const char *format" "...") ("noreturn" "format (printf, 1, 2)"))
@@ -90,6 +92,11 @@
  (output "typedef uint32_t critical_t;")
  (newline)
 
+ (output "#if defined(GRIFO_SIMULATOR)")
+ (output "#define critcal_enter() 0")
+ (output "#define critcal_exit(state)")
+ (output "#else")
+
  (prototype ("inline critical_t" "critcal_enter" "void"))
  (copy-part "src/interrupt.h" "enter")
  (newline)
@@ -97,6 +104,7 @@
  (prototype ("inline void" "critical_exit" "critical_t state"))
  (copy-part "src/interrupt.h" "exit")
 
+ (output "#endif")
 
  (section "Timer and Delay")
 
@@ -254,7 +262,7 @@
  (130 File_AbsoluteRead ("file_error_t" "sector_read" "unsigned long sector" "void *buffer" "int count"))
  (131 File_AbsoluteWrite ("file_error_t" "sector_write" "unsigned long sector" "const void *buffer" "int count"))
 
- (section "Files and Directory Access")
+ (section "Memory Allocation")
 
  (comment "src/memory.h" "alloc")
  (140 Memory_allocate ("void *" "memory_allocate" "size_t size" "const char *tag"))

@@ -1,7 +1,7 @@
 /*
  * files - an simple example program
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -24,7 +24,7 @@
 #include "grifo.h"
 
 
-int main(int argc, char **argv)
+int grifo_main(int argc, char *argv[])
 {
 	if (1 >= argc) {
 		debug_printf("usage: %s command parameters\n", argv[0]);
@@ -33,12 +33,12 @@ int main(int argc, char **argv)
 	}
 
 	if (strcmp(argv[1], "mkdir") == 0) {
-		size_t i;
+		int i;
 		for (i = 2; i < argc; ++i) {
 			debug_printf("mkdir '%s' => %d\n", argv[i], directory_create(argv[i]));
 		}
 	} else if (strcmp(argv[1], "ls") == 0) {
-		size_t i;
+		int i;
 		for (i = 2; i < argc; ++i) {
 			debug_printf("ls '%s'\n", argv[i]);
 			int handle = directory_open(argv[i]);

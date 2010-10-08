@@ -1,7 +1,7 @@
 /*
  * hello - a sample application for the grifo kernel
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -22,14 +22,14 @@
 #include <grifo.h>
 
 
-int main(int argc, char *argv[])
+int grifo_main(int argc, char *argv[])
 {
 	lcd_clear(LCD_WHITE);
-	lcd_printf("Hello LCD world\n");
+//	lcd_printf("Hello LCD world\n");
 	debug_printf("Hello serial world\n");
-	size_t i;
+	int i;
 	for (i = 0; i < argc; ++i) {
-		lcd_printf("argv[%d] = '%s'\n", i, argv[i]);
+//		lcd_printf("argv[%d] = '%s'\n", i, argv[i]);
 		debug_printf("argv[%d] = '%s'\n", i, argv[i]);
 	}
 
