@@ -53,7 +53,7 @@ FrameBuffer::~FrameBuffer() {
 
 #define PIXEL(painter, byte, offset, x, y)                              \
 	do {                                                            \
-		painter.setPen(((byte) & (1 << offset)) != 0 ? Qt::black : Qt::white); \
+		painter.setPen(((byte) & (0x80 >> offset)) != 0 ? Qt::black : Qt::white); \
 		painter.drawPoint((x + offset), (y));                   \
 	} while (0)
 
@@ -87,12 +87,22 @@ void FrameBuffer::timerEvent(QTimerEvent *) {
 }
 
 
+static inline int RestrictValue(int value, int min, int max) {
+	if (value < min) {
+		return min;
+	} else if (value > max - 1) {
+		return max - 1;
+	}
+	return value;
+}
+
+
 void FrameBuffer::mousePressEvent(QMouseEvent *event) {
 	//qDebug("Mouse Press: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_DOWN;
-	e.touch.x = event->pos().x();
-	e.touch.y = event->pos().y();
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
 	this->queue->enqueue(&e);
 	//QWidget::mousePressEvent(event);
 }
@@ -101,8 +111,8 @@ void FrameBuffer::mouseMoveEvent(QMouseEvent *event) {
 	//qDebug("Mouse Move: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_MOTION;
-	e.touch.x = event->pos().x();
-	e.touch.y = event->pos().y();
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
 	this->queue->enqueue(&e);
 	//QWidget::mouseMoveEvent(event);
 }
@@ -111,8 +121,8 @@ void FrameBuffer::mouseReleaseEvent(QMouseEvent *event) {
 	//qDebug("Mouse Release: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_UP;
-	e.touch.x = event->pos().x();
-	e.touch.y = event->pos().y();
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
 	this->queue->enqueue(&e);
 	//QWidget::mouseReleaseEvent(event);
 }

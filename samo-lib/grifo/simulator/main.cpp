@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <inttypes.h>
+#include <time.h>
 
 #include <QApplication>
 #include <QThread>
@@ -39,6 +40,7 @@ QApplication *application;
 
 uint8_t *fb = 0;
 int fb_max = 0;
+int fb_row = 0;
 
 
 class MyThread : public QThread {
@@ -79,14 +81,24 @@ void TerminateApplication(const char *format = 0, ...) {
 }
 
 
+unsigned long TimeStamp() {
+	struct timespec tp;
+
+	clock_gettime(4 /*CLOCK_MONOTONIC_RAW*/, &tp);
+
+	return tp.tv_nsec * TIMER_CountsPerMicroSecond / 1000 + tp.tv_sec * 1000000;
+}
+
+
 int main(int argc, char **argv) {
 	application = new QApplication(argc, argv);
-	queue = new EventQueue;
+	queue = new EventQueue(TimeStamp);
 	Wikireader w(application, queue);
 	MyThread t(argc, argv);
 
 	fb = w.FrameBufferAddress();
 	fb_max = w.FrameBufferSize();
+	fb_row = w.FrameBufferRowSize();
 
 	w.show();
 	t.start();

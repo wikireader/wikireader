@@ -26,6 +26,7 @@
 #include <inttypes.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <sys/stat.h>
 
 #include "EventQueue.h"
 #include "grifo.h"
@@ -164,10 +165,12 @@ void delay_us(unsigned long microseconds) {
 	usleep(microseconds);
 }
 
-//	TIMER_CountsPerMicroSecond = 60,
+
+// Note: TIMER_CountsPerMicroSecond is the
+extern unsigned long TimeStamp();
 
 unsigned long timer_get(void) {
-	return TIMER_CountsPerMicroSecond; // * current microseconds from system clock
+	return TimeStamp();
 }
 
 void watchdog(watchdog_t) {}  // just ignore this
@@ -186,6 +189,9 @@ void event_flush(void) {
 }
 
 event_item_t event_get(event_t *event) {
+	if (EVENT_NONE == queue->head(event)) {
+		return EVENT_NONE;
+	}
 	return queue->dequeue(event);
 }
 
@@ -202,7 +208,7 @@ event_item_t event_wait(event_t *event, event_callback_t *callback, void *arg) {
 }
 
 event_item_t event_peek(event_t *event) {
-	return queue->dequeue(event, 0); // milliseconds
+	return queue->head(event);
 }
 
 
@@ -211,6 +217,14 @@ event_item_t event_peek(event_t *event) {
 
 extern uint8_t *fb;
 extern int fb_max;
+extern int fb_row;
+
+static lcd_colour_t ForegroundColour = LCD_BLACK;
+
+static inline int pos(int x, int y)
+{
+	return y * fb_row + (x >> 3);
+}
 
 uint8_t *lcd_get_framebuffer(void) {
 	return fb;
@@ -233,16 +247,32 @@ void lcd_clear(lcd_colour_t colour) {
 	for (int i = 0; i < fb_max; ++i) {
 		fb[i] = c;
 	}
+	//GraphicX = 0;
+	//GraphicY = 0;
+	//TextRow = 0;
+	//TextColumn = 0;
+	ForegroundColour = colour == LCD_WHITE ? LCD_BLACK : LCD_WHITE;
 }
 
 
 lcd_colour_t lcd_get_pixel(int x, int y) {
-	TerminateApplication("lcd_get_pixel @ (%d, %d)", x, y);
-	return LCD_BLACK;
+	if (x < 0 || x >= LCD_WIDTH ||
+	    y < 0 || y >= LCD_HEIGHT) {
+		return LCD_BLACK;
+	}
+	return 0 != (fb[pos(x, y)] & (0x80 >> (x & 0x07))) ? LCD_BLACK : LCD_WHITE;
 }
 
 void lcd_set_pixel(int x, int y, lcd_colour_t colour) {
-	TerminateApplication("lcd_set_pixel @ (%d, %d) = %d", x, y, (int)colour);
+	if (x < 0 || x >= LCD_WIDTH ||
+	    y < 0 || y >= LCD_HEIGHT) {
+		return;
+	}
+	if (LCD_BLACK == colour) {
+		fb[pos(x, y)] |= (0x80 >> (x & 0x07));
+	} else {
+		fb[pos(x, y)] &= ~(0x80 >> (x & 0x07));
+	}
 }
 
 
@@ -290,8 +320,8 @@ lcd_colour_t lcd_get_colour(void) {
 }
 
 void lcd_framebuffer_set_byte(int byte_idx, uint8_t value) {
-	if (byte_idx < 0 || byte_idx > fb_max) {
-		TerminateApplication("lcd_framebuffer_set_byte[%d]=%d outside 0..%d", byte_idx, value, fb_max);
+	if (byte_idx < 0 || byte_idx >= fb_max) {
+		TerminateApplication("lcd_framebuffer_set_byte[%d]=%d outside 0..%d-1", byte_idx, value, fb_max);
 	}
 	fb[byte_idx] = value;
 }
@@ -430,9 +460,14 @@ file_error_t file_delete(const char *filename) {
 	return unlink(filename) == -1 ? FILE_ERROR_DENIED : FILE_ERROR_OK;
 }
 
-file_error_t file_size( const char *filename, unsigned long *length) {
-	TerminateApplication("file_size: %s -> %p", filename, length);
-	return FILE_ERROR_DENIED;
+file_error_t file_size(const char *filename, unsigned long *length) {
+	struct stat sb;
+	*length = 0;
+	if (0 != stat(filename, &sb)) {
+		return FILE_ERROR_DENIED;
+	}
+	*length = sb.st_size;
+	return FILE_ERROR_OK;
 }
 
 file_error_t file_create(const char *filename, file_access_t fam) {
@@ -503,8 +538,8 @@ ssize_t directory_read(int handle, void *buffer, size_t length) {
 }
 
 bool directory_exists(const char *directoryname) {
-	TerminateApplication("directory_exists: %s", directoryname);
-	return 0;
+	struct stat sb;
+	return 0 == stat(directoryname, &sb) && S_ISDIR(sb.st_mode);
 }
 
 file_error_t sector_read(unsigned long sector, void *buffer, int count) {
@@ -522,7 +557,10 @@ file_error_t sector_write(unsigned long sector, const void *buffer, int count) {
 // -----------------
 
 
-void *memory_allocate(size_t size, const char *) {
+void *memory_allocate(size_t size, const char *tag) {
+	if (0 == size) {
+		TerminateApplication("memory_allocate zero bytes: %s", tag);
+	}
 	return malloc(size);
 }
 

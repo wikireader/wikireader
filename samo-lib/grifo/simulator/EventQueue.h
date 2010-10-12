@@ -36,18 +36,19 @@ private:
 	QMutex *mutex;
 	QSemaphore *semaphore;
 	QQueue<event_t> *queue;
+	unsigned long (*TimeStamp)();
 
 	// no copying
 	EventQueue(const EventQueue &);
 	EventQueue &operator=(const EventQueue &);
 
 public:
-	EventQueue();
+	EventQueue(unsigned long (*TimeStamp)());
 	virtual ~EventQueue();
 
 	bool enqueue(event_t *event);
 	event_item_t dequeue(event_t *event, int milliseconds = -1);  // default = wait forever
-	bool isEmpty() const;
+	event_item_t head(event_t *event);
 
 };
 

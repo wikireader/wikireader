@@ -61,6 +61,7 @@ public:
 
 	uint8_t *FrameBufferAddress() {return pixels;}
 	int FrameBufferSize() {return sizeof(pixels);}
+	int FrameBufferRowSize() {return bytes_per_row;}
 
 };
 

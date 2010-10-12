@@ -27,10 +27,11 @@
 
 #include "EventQueue.h"
 
-EventQueue::EventQueue() {
+EventQueue::EventQueue(unsigned long (*TimeStamp)()) {
 	this->mutex = new QMutex;
 	this->queue = new QQueue<event_t>;
 	this->semaphore = new QSemaphore;
+	this->TimeStamp = TimeStamp;
 }
 
 
@@ -41,20 +42,34 @@ EventQueue::~EventQueue() {
 }
 
 
+event_item_t EventQueue::head(event_t *event) {
+
+	QMutexLocker lock(this->mutex);
+	if (this->queue->isEmpty()) {
+		event->item_type = EVENT_NONE;
+	} else {
+		*event = this->queue->head();
+	}
+	return event->item_type;
+
+}
+
 
 event_item_t EventQueue::dequeue(event_t *event, int milliseconds) {
 
 	if (this->semaphore->tryAcquire(1, milliseconds)) {
 		QMutexLocker lock(this->mutex);
 		*event = this->queue->dequeue();
-		return event->item_type;
+	} else {
+		event->item_type = EVENT_NONE;
 	}
-	return EVENT_NONE;
+	return event->item_type;
 }
 
 bool EventQueue::enqueue(event_t *event) {
 
 	QMutexLocker lock(this->mutex);
+	event->time_stamp = this->TimeStamp();
 	this->queue->enqueue(*event);  // queue a copy of the event
 
 	this->semaphore->release(1);
