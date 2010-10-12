@@ -19,8 +19,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
+#include "ustring.h"
 #include "guilib.h"
 #include "glyph.h"
 #include "sha1.h"
@@ -57,8 +59,8 @@ extern int restricted_article;
 extern int display_mode;
 extern int last_display_mode;
 extern int article_offset;
-static char password_string[MAX_PASSWORD_LEN];
-static char password1[MAX_PASSWORD_LEN];
+static unsigned  char password_string[MAX_PASSWORD_LEN];
+static unsigned char password1[MAX_PASSWORD_LEN];
 static int password_str_len = 0;
 static int restricted_screen_mode;
 static int filter_option_to_set = FILTER_OPTION_TO_SET_NONE;
@@ -69,8 +71,8 @@ int init_filtering = 0;
 void first_time_password(int flag)
 {
 	int i;
-	unsigned char *pText;
-	char str[256];
+	const unsigned char *pText;
+	unsigned char str[256];
 	int width;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
@@ -95,46 +97,46 @@ void first_time_password(int flag)
 	{
 		pText = get_nls_text("protection");
 		width = extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, ustrlen(str), 1);
 		width = extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, ustrlen(str), 1);
 	}
 	else
 	{
 		pText = get_nls_text("restricted");
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-		if (strlen(str))
-			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, strlen(str), 1);
+		if (ustrlen(str))
+			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, ustrlen(str), 1);
 	}
 	pText = get_nls_text("set_password");
-	render_string(SUBTITLE_FONT_IDX, -1, 151, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 151, pText, ustrlen(pText), 0);
 	guilib_fb_unlock();
 	display_mode = DISPLAY_MODE_RESTRICTED;
 	keyboard_set_mode(KEYBOARD_RESTRICTED);
 	restricted_screen_mode = RESTRICTED_SCREEN_FIRST_TIME_PASSWORD;
 }
 
-void enter_password_screen(char *msg)
+void enter_password_screen(const unsigned char *msg)
 {
 	int i;
-	unsigned char *pText;
+	const unsigned char *pText;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	display_mode = DISPLAY_MODE_RESTRICTED;
@@ -144,7 +146,7 @@ void enter_password_screen(char *msg)
 	memset(&framebuffer[(BLACK_SPACE_START - 6)* LCD_BUFFER_WIDTH / 8], 0, 6 * LCD_BUFFER_WIDTH / 8);
 	memset(&framebuffer[BLACK_SPACE_START * LCD_BUFFER_WIDTH / 8], 0xFF,
 	       (LCD_HEIGHT - BLACK_SPACE_START - keyboard_height())* LCD_BUFFER_WIDTH / 8);
-	render_string(SUBTITLE_FONT_IDX, -1, 50, msg, strlen(msg), 1);
+	render_string(SUBTITLE_FONT_IDX, -1, 50, msg, ustrlen(msg), 1);
 
 	framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 4] = 0xFC;
 	memset(&framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 5], 0, 16);
@@ -174,15 +176,15 @@ void enter_password_screen(char *msg)
 	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 25] = 0x1F;
 
 	pText = get_nls_text("ok");
-	render_string(SUBTITLE_FONT_IDX, 180, 85, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, 180, 85, pText, ustrlen(pText), 0);
 	guilib_fb_unlock();
 }
 
 void filter_on_off(void)
 {
 	int i;
-	unsigned char *pText;
-	char str[256];
+	const unsigned char *pText;
+	unsigned char str[256];
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	guilib_fb_lock();
@@ -217,21 +219,21 @@ void filter_on_off(void)
 
 	pText = get_nls_text("set_filter");
 	extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-	if (strlen(str))
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, strlen(str), 1);
+	if (ustrlen(str))
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, ustrlen(str), 1);
 	extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-	if (strlen(str))
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, strlen(str), 1);
+	if (ustrlen(str))
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, ustrlen(str), 1);
 	extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-	if (strlen(str))
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, strlen(str), 1);
+	if (ustrlen(str))
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 50, str, ustrlen(str), 1);
 	extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
-	if (strlen(str))
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, strlen(str), 1);
+	if (ustrlen(str))
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 70, str, ustrlen(str), 1);
 	pText = get_nls_text("keep_filter_on");
-	render_string(SUBTITLE_FONT_IDX, -1, 137, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 137, pText, ustrlen(pText), 0);
 	pText = get_nls_text("keep_filter_off");
-	render_string(SUBTITLE_FONT_IDX, -1, 166, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 166, pText, ustrlen(pText), 0);
 	guilib_fb_unlock();
 	keyboard_set_mode(KEYBOARD_FILTER_ON_OFF);
 }
@@ -239,7 +241,7 @@ void filter_on_off(void)
 void filter_option(void)
 {
 	int i;
-	unsigned char *pText;
+	const unsigned char *pText;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	display_mode = DISPLAY_MODE_RESTRICTED;
@@ -250,7 +252,7 @@ void filter_option(void)
 	memset(&framebuffer[BLACK_SPACE_START * LCD_BUFFER_WIDTH / 8], 0xFF, (LCD_HEIGHT - BLACK_SPACE_START)* LCD_BUFFER_WIDTH / 8);
 
 	pText = get_nls_text("filter_options");
-	render_string(TITLE_FONT_IDX, -1, 60, pText, strlen(pText), 1);
+	render_string(TITLE_FONT_IDX, -1, 60, pText, ustrlen(pText), 1);
 
 	framebuffer[106 * LCD_BUFFER_WIDTH / 8 + 1] = 0xFC;
 	memset(&framebuffer[106 * LCD_BUFFER_WIDTH / 8 + 2], 0, 26);
@@ -292,11 +294,11 @@ void filter_option(void)
 	framebuffer[186 * LCD_BUFFER_WIDTH / 8 + 28] = 0x3F;
 
 	pText = get_nls_text("turn_filter_on");
-	render_string(SUBTITLE_FONT_IDX, -1, 108, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 108, pText, ustrlen(pText), 0);
 	pText = get_nls_text("turn_filter_off");
-	render_string(SUBTITLE_FONT_IDX, -1, 137, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 137, pText, ustrlen(pText), 0);
 	pText = get_nls_text("change_password");
-	render_string(SUBTITLE_FONT_IDX, -1, 166, pText, strlen(pText), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 166, pText, ustrlen(pText), 0);
 	guilib_fb_unlock();
 	keyboard_set_mode(KEYBOARD_FILTER_OPTION);
 }
@@ -319,7 +321,7 @@ void save_password(int flag)
 			memcpy(restriction_pass1, sha.Message_Digest, 20);
 		}
 		else
-            memset(restriction_pass1, 0, 20);
+	    memset(restriction_pass1, 0, 20);
 		file_write(fd, restriction_pass1, 20);
 		if (password_str_len > 0 && flag > 1)
 		{
@@ -328,12 +330,12 @@ void save_password(int flag)
 			SHA1Result(&sha);
 			file_write(fd, sha.Message_Digest, 20);
 		}
-        else
-        {
-            char buf[20];
-            memset(buf, 0, 20);
-            file_write(fd, buf, 20);
-        }
+	else
+	{
+	    char buf[20];
+	    memset(buf, 0, 20);
+	    file_write(fd, buf, 20);
+	}
 
 		file_close(fd);
 		delay_us(200000); // for some reason, save may not work if no delay
@@ -360,7 +362,7 @@ void handle_password_key(char keycode)
 			else if (restricted_screen_mode == RESTRICTED_SCREEN_SET_PASSWORD && password_str_len > 0)
 			{
 				restricted_screen_mode = RESTRICTED_SCREEN_CONFIRM_PASSWORD;
-				strcpy(password1, password_string);
+				ustrcpy(password1, password_string);
 				password_str_len = 0;
 				if (restriction_filter_off == -1)
 					enter_password_screen(get_nls_text("re_enter_password"));
@@ -369,7 +371,7 @@ void handle_password_key(char keycode)
 			}
 			else if (restricted_screen_mode == RESTRICTED_SCREEN_CONFIRM_PASSWORD && password_str_len > 0)
 			{
-				if (strcmp(password1, password_string))
+				if (ustrcmp(password1, password_string))
 				{
 					password_str_len = 0;
 					restricted_screen_mode = RESTRICTED_SCREEN_SET_PASSWORD;
@@ -516,7 +518,7 @@ int init_article_filter(void)
 	int len;
 	char restriction_pass2[20];
 	SHA1Context sha;
-	unsigned char *pText;
+	const unsigned char *pText;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	if (restriction_filter_off == -1)
@@ -527,8 +529,8 @@ int init_article_filter(void)
 			len = file_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-            memset(restriction_pass2, 0, 20);
-            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
+	    memset(restriction_pass2, 0, 20);
+	    if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = file_read(fd, restriction_pass2, 20);
 				if (len < 20)
@@ -551,7 +553,7 @@ int init_article_filter(void)
 		init_filtering = 1;
 		memset(&framebuffer[0], 0, (BLACK_SPACE_START - 1)* LCD_BUFFER_WIDTH / 8);
 		pText = get_nls_text("parental_controls");
-		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, pText, strlen(pText), 0);
+		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, pText, ustrlen(pText), 0);
 		first_time_password(1);
 		return -1;
 	}
@@ -559,13 +561,13 @@ int init_article_filter(void)
 		return 0;
 }
 
-int check_restriction(long idx_article)
+int check_restriction(void)
 {
 	int fd;
 	int len;
 	char restriction_pass2[20];
 	SHA1Context sha;
-	char title[MAX_TITLE_ACTUAL];
+	unsigned char title[MAX_TITLE_ACTUAL];
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	init_filtering = 0;
@@ -577,8 +579,8 @@ int check_restriction(long idx_article)
 			len = file_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-            memset(restriction_pass2, 0, 20);
-            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
+	    memset(restriction_pass2, 0, 20);
+	    if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = file_read(fd, restriction_pass2, 20);
 				if (len < 20)
@@ -600,7 +602,7 @@ int check_restriction(long idx_article)
 	{
 		get_article_title_from_idx(saved_idx_article, title);
 		memset(&framebuffer[0], 0, (BLACK_SPACE_START - 1)* LCD_BUFFER_WIDTH / 8);
-		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, title, strlen(title), 0);
+		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, title, ustrlen(title), 0);
 		first_time_password(0);
 		return -1;
 	} else if (restriction_filter_off)
@@ -609,7 +611,7 @@ int check_restriction(long idx_article)
 	{
 		get_article_title_from_idx(saved_idx_article, title);
 		memset(&framebuffer[0], 0, (BLACK_SPACE_START - 1)* LCD_BUFFER_WIDTH / 8);
-		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, title, strlen(title), 0);
+		render_string(TITLE_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN, title, ustrlen(title), 0);
 		password_str_len = 0;
 		check_password();
 		return -1;
@@ -631,7 +633,7 @@ int password_add_char(char c)
 		c += 32;
 	password_string[password_str_len++] = c;
 	password_string[password_str_len] = '\0';
-	render_string(SUBTITLE_FONT_IDX, 38, 85, password_string, strlen(password_string), 0);
+	render_string(SUBTITLE_FONT_IDX, 38, 85, password_string, ustrlen(password_string), 0);
 	return 0;
 }
 
@@ -646,7 +648,7 @@ int password_remove_char(void)
 		return -1;
 
 	password_string[--password_str_len] = '\0';
-	x = render_string(SUBTITLE_FONT_IDX, 38, 85, password_string, strlen(password_string), 0);
+	x = render_string(SUBTITLE_FONT_IDX, 38, 85, password_string, ustrlen(password_string), 0);
 	guilib_clear_area(x, 85, 172, 103);
 	return 0;
 }

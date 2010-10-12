@@ -65,9 +65,9 @@ typedef struct __attribute__((packed)) _ARTICLE_PTR {
 //          then it represents 2..32 chars of prefix to be copied from the previous title
 typedef struct __attribute__((packed)) _TITLE_SEARCH {
 	uint32_t idxArticle;    // article number [1..N]
-	char cZero;             // null character for backward search
-	char sTitleSearch[MAX_TITLE_SEARCH]; // null terminated bigram encoded title for search
-	char sTitleActual[MAX_TITLE_ACTUAL]; // null terminated utf-8 encoded actual title
+	unsigned char cZero;             // null character for backward search
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH]; // null terminated bigram encoded title for search
+	unsigned char sTitleActual[MAX_TITLE_ACTUAL]; // null terminated utf-8 encoded actual title
 } TITLE_SEARCH;
 
 /*
@@ -79,9 +79,9 @@ void search_select_up(void);
 int retrieve_article(long idx_article);
 void memrcpy(char *dest, char *src, int len); // memory copy starting from the last byte
 void random_article(void);
-void get_article_title_from_idx(long idx, char *title);
+void get_article_title_from_idx(long idx, unsigned char *title);
 long result_list_offset_next(void);
-long result_list_next_result(long offset_next, long *idxArticle, char *sTitleSearch);
+long result_list_next_result(long offset_next, long *idxArticle, unsigned char *sTitleSearch);
 
 /**
  * Initialize the search engine. Once.
@@ -135,10 +135,10 @@ void search_result_display();
 int clear_search_string();
 int  get_search_string_len();
 int check_search_string_change(void);
-uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual);
+uint32_t get_article_idx_by_title(unsigned char *titleSearch, unsigned char *titleActual);
 int search_replace_japanese_sonant();
-int search_replace_per_language_char(char *utf8_char);
-int search_add_per_language_char(char *utf8_char);
+int search_replace_per_language_char(const unsigned char *utf8_char);
+int search_add_per_language_char(const unsigned char *utf8_char);
 int search_replace_hiragana_backward();
 void reset_search_info(int nWikiIdx);
 #endif

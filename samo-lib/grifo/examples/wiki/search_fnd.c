@@ -16,12 +16,14 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
+#include "ustring.h"
 #include "search.h"
 #include "wiki_info.h"
 #include "search_fnd.h"
@@ -108,11 +110,11 @@ void init_search_fnd(void)
 	}
 }
 
-int copy_fnd_to_buf(long offset, char *buf, int len)
+int copy_fnd_to_buf(long offset, unsigned char *buf, int len)
 {
 	int idxFndBuf;
 	int nCopyLen;
-	long blocked_offset;
+	unsigned long blocked_offset;
 	PBTREE_ELEMENT pElement;
 	long nKey;
 
@@ -126,7 +128,7 @@ int copy_fnd_to_buf(long offset, char *buf, int len)
 	else
 	{
 		BTREE_ELEMENT element;
-		int nFndIdx;
+		unsigned int nFndIdx;
 		idxFndBuf = nIdxFndBufFirstUsed;
 		if (pFndBuf[idxFndBuf].offset)
 		{
@@ -218,10 +220,10 @@ long locate_previous_title_search(long offset_fnd)
 {
 	long len_buf;
 	int nZeros;
-	int i;
-	char buf[sizeof(TITLE_SEARCH)];
+	unsigned int i;
+	unsigned char buf[sizeof(TITLE_SEARCH)];
 
-	if (offset_fnd > sizeof(TITLE_SEARCH))
+	if (offset_fnd > (long)sizeof(TITLE_SEARCH))
 		len_buf = sizeof(TITLE_SEARCH);
 	else
 		len_buf = offset_fnd;
@@ -252,24 +254,24 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 	// Find the title that is fully spelled out.
 	// The repeated characters with the previous title at the beginning of the current title will be replace by
 	// a character whose binary value is the number of the repeated characters.
-	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + sizeof(uint32_t) && nTitleSearch < SEARCH_FND_SEQUENTIAL_SEARCH_THRESHOLD)
+	while ((!bFound1 || !bFound2) && offset_fnd >= SIZE_BIGRAM_BUF + (long)sizeof(uint32_t) && nTitleSearch < SEARCH_FND_SEQUENTIAL_SEARCH_THRESHOLD)
 	{
-		char *p;
+		const unsigned char *p;
 
-		copy_fnd_to_buf(offset_fnd, (char *)&aTitleSearch[nTitleSearch], sizeof(TITLE_SEARCH));
+		copy_fnd_to_buf(offset_fnd, (unsigned char *)&aTitleSearch[nTitleSearch], sizeof(TITLE_SEARCH));
 		p = aTitleSearch[nTitleSearch].sTitleSearch;
-		strncpy(sTitleSearch, p, MAX_TITLE_SEARCH);
+		ustrncpy(sTitleSearch, p, MAX_TITLE_SEARCH);
 		sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
 		//bigram_decode(sTitleSearch, p, MAX_TITLE_SEARCH);
-		p += strlen(aTitleSearch[nTitleSearch].sTitleSearch) + 1; // pointing to actual title
+		p += ustrlen(aTitleSearch[nTitleSearch].sTitleSearch) + 1; // pointing to actual title
 		//bigram_decode(sTitleActual, p, MAX_TITLE_SEARCH);
-		strncpy(sTitleActual, p, MAX_TITLE_ACTUAL);
+		ustrncpy(sTitleActual, p, MAX_TITLE_ACTUAL);
 		sTitleActual[MAX_TITLE_ACTUAL - 1] = '\0';
-		strcpy(aTitleSearch[nTitleSearch].sTitleSearch, sTitleSearch);
-		strcpy(aTitleSearch[nTitleSearch].sTitleActual, sTitleActual);
-		if ((unsigned char)aTitleSearch[nTitleSearch].sTitleSearch[0] >= ' ')
+		ustrcpy(aTitleSearch[nTitleSearch].sTitleSearch, sTitleSearch);
+		ustrcpy(aTitleSearch[nTitleSearch].sTitleActual, sTitleActual);
+		if (aTitleSearch[nTitleSearch].sTitleSearch[0] >= ' ')
 			bFound1 = 1;
-		if ((unsigned char)aTitleSearch[nTitleSearch].sTitleActual[0] >= ' ')
+		if (aTitleSearch[nTitleSearch].sTitleActual[0] >= ' ')
 			bFound2 = 1;
 		if (!bFound1 || !bFound2)
 			offset_fnd = locate_previous_title_search(offset_fnd);
@@ -283,7 +285,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		{
 			if ((unsigned char)aTitleSearch[i].sTitleSearch[0] >= ' ')
 			{
-				strncpy(sTitleSearch, aTitleSearch[i].sTitleSearch, MAX_TITLE_SEARCH);
+				ustrncpy(sTitleSearch, aTitleSearch[i].sTitleSearch, MAX_TITLE_SEARCH);
 				sTitleSearch[MAX_TITLE_SEARCH - 1] = '\0';
 			}
 			else if (sTitleSearch[0])
@@ -303,7 +305,7 @@ void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearchOut, u
 		{
 			if ((unsigned char)aTitleSearch[i].sTitleActual[0] >= ' ')
 			{
-				strncpy(sTitleActual, aTitleSearch[i].sTitleActual, MAX_TITLE_ACTUAL);
+				ustrncpy(sTitleActual, aTitleSearch[i].sTitleActual, MAX_TITLE_ACTUAL);
 				sTitleActual[MAX_TITLE_ACTUAL - 1] = '\0';
 			}
 			else if (sTitleActual[0])

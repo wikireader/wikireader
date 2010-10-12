@@ -89,7 +89,7 @@ struct keyboard_key {
 	int left_y, right_y;
 	int left_x_inverted, right_x_inverted;
 	int left_y_inverted, right_y_inverted;
-	unsigned char *key; // assuming non-multi-selection key should have length = 1
+	const unsigned char *key; // assuming non-multi-selection key should have length = 1
 };
 
 void keyboard_set_mode(int mode);

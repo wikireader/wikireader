@@ -16,12 +16,14 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
+#include "ustring.h"
 #include "wikilib.h"
 #include "lcd_buf_draw.h"
 #include "wiki_info.h"
@@ -60,7 +62,7 @@ WIKI_LIST wiki_list[] =
 
 bool baWikiActive[MAX_WIKIS];
 extern int search_interrupted;
-int nWikiCount = 0;
+unsigned int nWikiCount = 0;
 int nCurrentWiki = -1; // index to aActiveWikis[].WikiInfoIdx
 bool bWikiIsDanish = false;
 bool bWikiIsJapanese = false;
@@ -69,49 +71,50 @@ bool bWikiIsTC = false;
 KEYBOARD_MODE default_keyboard = KEYBOARD_CHAR;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
-char *pWikiIni = NULL;
+unsigned char *pWikiIni = NULL;
 unsigned long lenWikiIni = 0;
 unsigned long sizeWikiIni = 0;
 PACTIVE_WIKI aActiveWikis = NULL;
 extern int bShowPositioner;
 WIKI_LICENSE_DRAW *pWikiLicenseDraw;
 
-char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki_nls_idx);
+unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len, int wiki_nls_idx);
 int get_wiki_idx_from_serial_id(int wiki_serial_id);
 
 void init_wiki_info(void)
 {
-	int i, j;
+	unsigned int i, j;
 	int fd;
-	char *p;
+	unsigned char *p;
 	int nWikiSerialId;
 
-    memset(baWikiActive, 0, sizeof(baWikiActive));
+	nWikiCount = 0;
+	memset(baWikiActive, 0, sizeof(baWikiActive));
 	for (i = 0; i < MAX_WIKIS; i++)
 	{
 		if (directory_exists(wiki_list[i].wiki_folder))
 		{
-            baWikiActive[i] = true;
-            nWikiCount++;
+			baWikiActive[i] = true;
+			nWikiCount++;
 		}
 	}
-	
+
 	if (nWikiCount > 0)
 	{
 		pWikiLicenseDraw = (PWIKI_LICENSE_DRAW)memory_allocate(sizeof(WIKI_LICENSE_DRAW), "wikiinfo0");
 		aActiveWikis = (PACTIVE_WIKI)memory_allocate(sizeof(ACTIVE_WIKI) * nWikiCount, "wikiinfo1");
-        if (!pWikiLicenseDraw || !aActiveWikis)
-        {
-            fatal_error("too many wikis");
-        }
+		if (!pWikiLicenseDraw || !aActiveWikis)
+		{
+			fatal_error("too many wikis");
+		}
 		pWikiLicenseDraw->lines = 0;
 
-        j = 0;
-        for (i = 0; i < MAX_WIKIS; i++)
-    	{
-            if (baWikiActive[i])
-                aActiveWikis[j++].WikiInfoIdx = i;
-    	}
+		j = 0;
+		for (i = 0; i < MAX_WIKIS; i++)
+		{
+			if (baWikiActive[i])
+				aActiveWikis[j++].WikiInfoIdx = i;
+		}
 
 		nCurrentWiki = 0;
 		fd = file_open("wiki.ini", FILE_OPEN_READ);
@@ -135,11 +138,11 @@ void init_wiki_info(void)
 				}
 				p = get_nls_key_value("positioner", pWikiIni, lenWikiIni, 0);
 				if (*p)
-					bShowPositioner = atoi(p);
+					bShowPositioner = atoi((const char *)p);
 				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni, 0);
 				if (*p)
 				{
-					nWikiSerialId = atoi(p);
+					nWikiSerialId = atoi((const char *)p);
 					if (nWikiSerialId > 0)
 						nCurrentWiki = get_wiki_idx_from_serial_id(nWikiSerialId);
 					if (nCurrentWiki < 0)
@@ -154,8 +157,8 @@ void init_wiki_info(void)
 		}
 		else
 		{
-            lenWikiIni = 0;
-            pWikiIni = memory_allocate(20, "wikiinfo3");
+			lenWikiIni = 0;
+			pWikiIni = memory_allocate(20, "wikiinfo3");
 			memset(pWikiIni, 0, 20);
 		}
 
@@ -163,38 +166,38 @@ void init_wiki_info(void)
 		{
 			aActiveWikis[i].WikiNlsLen = -1;
 		}
-		if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ja"))
+		if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ja"))
 			bWikiIsJapanese = true;
 		else
 			bWikiIsJapanese = false;
-		if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "zht")) // Simplified Chinese Pinyin IME does not need special conversion
+		if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "zht")) // Simplified Chinese Pinyin IME does not need special conversion
 			bWikiIsTC = true;
 		else
 			bWikiIsTC = false;
-		if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ko"))
+		if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ko"))
 			bWikiIsKorean = true;
 		else
 			bWikiIsKorean = false;
-		if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "da"))
+		if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "da"))
 			bWikiIsDanish = true;
 		else
 			bWikiIsDanish = false;
 		default_keyboard = wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_default_keyboard;
 		keyboard_set_mode(default_keyboard);
-	}
-	else
+	} else {
 		fatal_error("No wiki found");
+	}
 }
 
-int get_wiki_idx_by_lang_link(char *lang_link_str)
+int get_wiki_idx_by_lang_link(const unsigned char *lang_link_str)
 {
 	int len;
-	char *p, *q;
-	int i;
+	unsigned char *p, *q;
+	unsigned int i;
 	int current_wiki_cat = -1;
 
-	p = strchr(lang_link_str, ':');
-	q = strchr(lang_link_str, '#');
+	p = ustrchr(lang_link_str, ':');
+	q = ustrchr(lang_link_str, '#');
 	if (!p || (q && q < p))
 		p = q;
 
@@ -206,19 +209,16 @@ int get_wiki_idx_by_lang_link(char *lang_link_str)
 		for (i = 0; i < nWikiCount; i++)
 		{
 			if (current_wiki_cat == wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_cat &&
-                    !strncmp(lang_link_str, wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_lang, len))
+		    !ustrncmp(lang_link_str, wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_lang, len))
 				return i;
 		}
 	}
 	return -1;
 }
 
-bool wiki_lang_exist(char *lang_link_str)
+bool wiki_lang_exist(const unsigned char *lang_link_str)
 {
-	if (get_wiki_idx_by_lang_link(lang_link_str) >= 0)
-		return true;
-	else
-		return false;
+	return get_wiki_idx_by_lang_link(lang_link_str) >= 0;
 }
 
 bool wiki_keyboard_conversion_needed()
@@ -250,26 +250,26 @@ KEYBOARD_MODE wiki_default_keyboard()
 {
 	return default_keyboard;
 }
-uint32_t wiki_lang_link_search(char *lang_link_str)
+uint32_t wiki_lang_link_search(const unsigned char *lang_link_str)
 {
 	uint32_t article_idx = 0;
 	int nTempCurrentWiki = nCurrentWiki;
-	char *p, *q;
+	unsigned char *p, *q;
 
 	search_interrupted = 0;
 	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
 		reset_search_info(nCurrentWiki);
 		init_search_fnd();
-		p = strchr(lang_link_str, ':');
-		q = strchr(lang_link_str, '#');
+		p = ustrchr(lang_link_str, ':');
+		q = ustrchr(lang_link_str, '#');
 		if (!p || (q && q < p))
 			p = q;
 		if (p)
 		{
 			if (*p == '#') // actual title is different than title for search
 			{
-				q = strchr(p + 1, CHAR_LANGUAGE_LINK_TITLE_DELIMITER); // locate the actual title
+				q = ustrchr(p + 1, CHAR_LANGUAGE_LINK_TITLE_DELIMITER); // locate the actual title
 				if (!q)
 					q = p;
 			}
@@ -300,7 +300,7 @@ int get_wiki_count(void)
 
 int get_wiki_idx_from_id(int wiki_id)
 {
-	int i;
+	unsigned int i;
 
 	if (wiki_id <= 0)
 		return nCurrentWiki;
@@ -315,7 +315,7 @@ int get_wiki_idx_from_id(int wiki_id)
 
 int get_wiki_idx_from_serial_id(int wiki_serial_id)
 {
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < nWikiCount; i++)
 	{
@@ -325,7 +325,7 @@ int get_wiki_idx_from_serial_id(int wiki_serial_id)
 	return -1;
 }
 
-int get_wiki_id_from_idx(int wiki_idx)
+int get_wiki_id_from_idx(unsigned int wiki_idx)
 {
 	if (wiki_idx < nWikiCount)
 	{
@@ -334,7 +334,7 @@ int get_wiki_id_from_idx(int wiki_idx)
 	return 0;
 }
 
-int get_wiki_serial_id_from_idx(int wiki_idx)
+int get_wiki_serial_id_from_idx(unsigned int wiki_idx)
 {
 	if (wiki_idx < nWikiCount)
 	{
@@ -343,7 +343,7 @@ int get_wiki_serial_id_from_idx(int wiki_idx)
 	return 0;
 }
 
-char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki_nls_idx)
+unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len, int wiki_nls_idx)
 {
 	int i, j;
 	int key_len;
@@ -353,9 +353,9 @@ char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki
 	if (wiki_nls_idx)
 		sprintf(local_key, "%s%d", key, wiki_nls_idx); // try the key name with wiki_name_idx first
 	else
-		strcpy(local_key, key);
+		ustrcpy(local_key, key);
 
-	key_len = strlen(local_key);
+	key_len = ustrlen(local_key);
 	i = 0;
 	while (i < key_pairs_len - key_len - 1 && !bFound)
 	{
@@ -382,17 +382,17 @@ char *get_nls_key_value(char *key, char *key_pairs, long key_pairs_len, int wiki
 	else if (wiki_nls_idx)
 		return get_nls_key_value(key, key_pairs, key_pairs_len, 0); // try the key name without wiki_name_idx
 	else
-		return "";
+		return (unsigned char *)""; // *** VERY BAD: removes const
 }
 
-char *get_nls_text(char *key)
+const unsigned char *get_nls_text(const char *key)
 {
 	int fd;
 	unsigned long nSize;
-	char *p;
+	unsigned char *p;
 
 	if (nCurrentWiki < 0)
-		return "";
+		return (const unsigned char *)"";
 	else
 	{
 		if (aActiveWikis[nCurrentWiki].WikiNlsLen < 0)
@@ -426,17 +426,17 @@ char *get_nls_text(char *key)
 		}
 
 		if (aActiveWikis[nCurrentWiki].WikiNlsLen == 0)
-			return "";
+			return (const unsigned char *)"";
 
 		return get_nls_key_value(key, aActiveWikis[nCurrentWiki].WikiNls, aActiveWikis[nCurrentWiki].WikiNlsLen, wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_nls_idx);
 	}
 }
 
-char *get_lang_link_display_text(char *lang_link_str)
+const unsigned char *get_lang_link_display_text(const unsigned char *lang_link_str)
 {
 	int nTempCurrentWiki = nCurrentWiki;
-	static char lang_str[3];
-	char *p = NULL;
+	static unsigned char lang_str[3];
+	const unsigned char *p = NULL;
 
 	if ((nCurrentWiki = get_wiki_idx_by_lang_link(lang_link_str)) >= 0)
 	{
@@ -462,10 +462,10 @@ void wiki_selection(void)
 	render_wiki_selection_with_pcf();
 }
 
-char *get_wiki_name(int idx)
+const unsigned char *get_wiki_name(int idx)
 {
 	int nTempCurrentWiki = nCurrentWiki;
-	char *pName;
+	const unsigned char *pName;
 
 	nCurrentWiki = idx;
 	pName = get_nls_text("wiki_name");
@@ -475,13 +475,13 @@ char *get_wiki_name(int idx)
 
 void wiki_ini_insert_keypair(char *key, char *keyval)
 {
-	char *p = get_nls_key_value(key, pWikiIni, lenWikiIni, 0);
+	unsigned char *p = get_nls_key_value(key, pWikiIni, lenWikiIni, 0);
 
 	if (*p)
 	{
-		if (strlen(p) < strlen(keyval))
+		if (ustrlen(p) < ustrlen(keyval))
 		{
-			int diff = strlen(keyval) - strlen(p);
+			int diff = ustrlen(keyval) - ustrlen(p);
 			int move_size;
 
 			if (lenWikiIni + diff < sizeWikiIni)
@@ -492,21 +492,21 @@ void wiki_ini_insert_keypair(char *key, char *keyval)
 			}
 			lenWikiIni += diff;
 		}
-		if (p + strlen(keyval) < pWikiIni + sizeWikiIni - 1)
+		if (p + ustrlen(keyval) < pWikiIni + sizeWikiIni - 1)
 		{
-			memset(p, 0, strlen(keyval) + 1);
-			memcpy(p, keyval, strlen(keyval));
+			memset(p, 0, ustrlen(keyval) + 1);
+			memcpy(p, keyval, ustrlen(keyval));
 		}
 	}
-	else if (lenWikiIni + strlen(key) + strlen(keyval) + 2 < sizeWikiIni)
+	else if (lenWikiIni + ustrlen(key) + ustrlen(keyval) + 2 < sizeWikiIni)
 	{
 		if (lenWikiIni)
 			pWikiIni[lenWikiIni++] = '\0'; // make sure the new key pair start with a new line
-		memcpy(&pWikiIni[lenWikiIni], key, strlen(key));
-		lenWikiIni += strlen(key);
+		memcpy(&pWikiIni[lenWikiIni], key, ustrlen(key));
+		lenWikiIni += ustrlen(key);
 		pWikiIni[lenWikiIni++] = '=';
-		memcpy(&pWikiIni[lenWikiIni], keyval, strlen(keyval));
-		lenWikiIni += strlen(keyval);
+		memcpy(&pWikiIni[lenWikiIni], keyval, ustrlen(keyval));
+		lenWikiIni += ustrlen(keyval);
 		pWikiIni[lenWikiIni] = '\0';
 	}
 }
@@ -515,24 +515,24 @@ void set_wiki(int idx)
 {
 	int fd;
 	char sWikiId[10];
-	int i;
+	unsigned int i;
 	char prev_c = 0;
 
 	nCurrentWiki = idx;
 	reset_search_info(nCurrentWiki);
-	if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ja"))
+	if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ja"))
 		bWikiIsJapanese = true;
 	else
 		bWikiIsJapanese = false;
-	if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "zht"))
+	if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "zht"))
 		bWikiIsTC = true;
 	else
 		bWikiIsTC = false;
-	if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ko"))
+	if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "ko"))
 		bWikiIsKorean = true;
 	else
 		bWikiIsKorean = false;
-	if (!strcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "da"))
+	if (!ustrcmp(wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_lang, "da"))
 		bWikiIsDanish = true;
 	else
 		bWikiIsDanish = false;
@@ -559,9 +559,9 @@ void set_wiki(int idx)
 	}
 }
 
-void nls_replace_text(char *replace_str, char *out_str)
+void nls_replace_text(const unsigned char *replace_str, unsigned char *out_str)
 {
-	if (!strcmp(replace_str, "title"))
+	if (!ustrcmp(replace_str, "title"))
 	{
 		extract_title_from_article(NULL, out_str);
 		while (*out_str)
@@ -574,7 +574,7 @@ void nls_replace_text(char *replace_str, char *out_str)
 	}
 	else
 	{
-		strcpy(out_str, replace_str);
+		ustrcpy(out_str, replace_str);
 	}
 }
 
@@ -584,15 +584,15 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 	int nTempCurrentWiki = nCurrentWiki;
 	int y = 0;
 	int x = 0;
-	char draw_buf[MAX_LICENSE_TEXT_PIXEL_LINES * LCD_BUF_WIDTH_BYTES];
-	unsigned char *pLicenseText;
+	unsigned char draw_buf[MAX_LICENSE_TEXT_PIXEL_LINES * LCD_BUF_WIDTH_BYTES];
+	const unsigned char *pLicenseText;
 	unsigned char footer_buffer[40];
 	unsigned char *footer = footer_buffer;
-	char sLicenseTextSegment[MAX_LICENSE_TEXT_LEN];
-	unsigned char *pLicenseTextSegment;
+	unsigned char sLicenseTextSegment[MAX_LICENSE_TEXT_LEN];
+	const unsigned char *pLicenseTextSegment;
 	int line_height = pcfFonts[LICENSE_TEXT_FONT - 1].Fmetrics.linespace;
-	char str[256];  // possible buffer overflow
-	unsigned char *p, *q;
+	unsigned char str[256];  // possible buffer overflow
+	const unsigned char *p, *q;
 	int bInLink = 0;
 	int nLinkArticleId = 0;
 	int width;
@@ -634,7 +634,7 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				bInLink = 1;
 				nLinkArticleId++;
 				pLicenseText++;
-				if ((p = strchr(pLicenseText, LICENSE_LINK_END)))
+				if ((p = ustrchr(pLicenseText, LICENSE_LINK_END)))
 				{
 					memcpy(sLicenseTextSegment, pLicenseText, p - pLicenseText);
 					sLicenseTextSegment[p - pLicenseText] = '\0';
@@ -642,15 +642,15 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				}
 				else
 				{
-					strcpy(sLicenseTextSegment, pLicenseText);
-					pLicenseText += strlen(pLicenseText);
+					ustrcpy(sLicenseTextSegment, pLicenseText);
+					pLicenseText += ustrlen(pLicenseText);
 				}
 			}
 			else if (pLicenseText[0] == NLS_TEXT_REPLACEMENT_START)
 			{
 				bInLink = 0;
 				pLicenseText++;
-				if ((p = strchr(pLicenseText, NLS_TEXT_REPLACEMENT_END)))
+				if ((p = ustrchr(pLicenseText, NLS_TEXT_REPLACEMENT_END)))
 				{
 					memcpy(str, pLicenseText, p - pLicenseText);
 					str[p - pLicenseText] = '\0';
@@ -658,16 +658,16 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				}
 				else
 				{
-					strcpy(str, pLicenseText);
-					pLicenseText += strlen(pLicenseText);
+					ustrcpy(str, pLicenseText);
+					pLicenseText += ustrlen(pLicenseText);
 				}
 				nls_replace_text(str, sLicenseTextSegment);
 			}
 			else
 			{
 				bInLink = 0;
-				p = strchr(pLicenseText, LICENSE_LINK_START);
-				q = strchr(pLicenseText, NLS_TEXT_REPLACEMENT_START);
+				p = ustrchr(pLicenseText, LICENSE_LINK_START);
+				q = ustrchr(pLicenseText, NLS_TEXT_REPLACEMENT_START);
 				if ((p && q && p > q) || (!p))
 					p = q;
 				if (p)
@@ -678,8 +678,8 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 				}
 				else
 				{
-					strcpy(sLicenseTextSegment, pLicenseText);
-					pLicenseText += strlen(pLicenseText);
+					ustrcpy(sLicenseTextSegment, pLicenseText);
+					pLicenseText += ustrlen(pLicenseText);
 				}
 			}
 			pLicenseTextSegment = sLicenseTextSegment;
@@ -733,7 +733,7 @@ WIKI_LICENSE_DRAW *wiki_license_draw()
 	pWikiLicenseDraw->lines = y;
 	pWikiLicenseDraw->buf = memory_allocate(y * LCD_BUF_WIDTH_BYTES, "wikinfo5");
 	memcpy(pWikiLicenseDraw->buf, draw_buf, y * LCD_BUF_WIDTH_BYTES);
-	
+
 	nCurrentWiki = nTempCurrentWiki;
 	return pWikiLicenseDraw;
 }

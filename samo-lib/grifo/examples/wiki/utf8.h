@@ -21,12 +21,12 @@
 #ifndef ucs4_t
 #define ucs4_t unsigned int
 #endif
-ucs4_t UTF8_to_UCS4(unsigned char **pUTF8);
+ucs4_t UTF8_to_UCS4(const unsigned char **pUTF8);
 void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8);
-void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
-void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
-char *next_utf8_char(char *utf8_str);
-void utf8_char_toupper(unsigned char *out, unsigned char *in);
-unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len);
+void get_last_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8_str, int utf8_str_len);
+void get_first_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8_str, int utf8_str_len);
+const unsigned char *next_utf8_char(const unsigned char *utf8_str);
+void utf8_char_toupper(unsigned char *out, const unsigned char *in);
+unsigned char *full_alphabet_to_half(const unsigned char *full, int *used_len);
 unsigned char *half_alphabet_to_full(unsigned char c);
 #endif

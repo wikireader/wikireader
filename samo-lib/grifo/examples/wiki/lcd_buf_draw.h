@@ -257,7 +257,7 @@ typedef struct __attribute__ ((packed)) _ARTICLE_LINK
 
 typedef struct __attribute__ ((packed)) _EXTERNAL_LINK
 {
-	char *link_str;
+	unsigned char *link_str;
 } EXTERNAL_LINK;
 
 typedef struct __attribute__ ((packed)) _CONCAT_ARTICLE_INFO
@@ -269,12 +269,11 @@ typedef struct __attribute__ ((packed)) _CONCAT_ARTICLE_INFO
 
 void init_lcd_draw_buf();
 char* FontFile(int id);
-ucs4_t UTF8_to_UCS4(unsigned char **);
-void buf_draw_UTF8_str(unsigned char **sUTF8);
+void buf_draw_UTF8_str(const unsigned char **sUTF8);
 void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x);
 void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y);
 void buf_draw_char(ucs4_t u);
-int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes);
+int get_UTF8_char_width(int idxFont, const unsigned char **pContent, long *lenContent, int *nCharBytes);
 int render_article_with_pcf();
 int render_history_with_pcf();
 int render_wiki_selection_with_pcf();
@@ -286,12 +285,12 @@ int div_wiki(int a,int b);
 int GetFontLinespace(int font);
 void display_link_article(long idx_article);
 void display_retrieved_article(long idx_article);
-void display_str(unsigned char *str);
+void display_str(const unsigned char *str);
 void open_article_link(int x,int y);
 void open_article_link_with_link_number(int article_link_number);
 void scroll_article(void);
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear);
-int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted);
+int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inverted);
 int isArticleLinkSelected(int x,int y);
 int check_invert_link(void);
 void set_article_link_number(int num, unsigned long);
@@ -303,17 +302,17 @@ int load_init_article(long);
 void show_scroll_bar(int);
 void msg_on_lcd(int x, int y, char *fmt, ...);
 void msg_on_lcd_clear(int x, int y);
-void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy,unsigned char **pUTF8,int start_x,int end_x,int start_y,int end_y,int offset_x,int font_idx);
-int get_external_str_pixel_width(unsigned char *pUTF8, int font_idx);
-void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *start_x, int *start_y, int *end_x, int *end_y);
-int extract_str_fitting_width(unsigned char **pIn, char *pOut, int width, int font_idx);
+void buf_draw_UTF8_str_in_copy_buffer(unsigned char *framebuffer_copy,const unsigned char **pUTF8,int start_x,int end_x,int start_y,int end_y,int offset_x,int font_idx);
+int get_external_str_pixel_width(const unsigned char *pUTF8, int font_idx);
+void get_external_str_pixel_rectangle(const unsigned char *pIn, int font_idx, int *start_x, int *start_y, int *end_x, int *end_y);
+int extract_str_fitting_width(const unsigned char **pIn, unsigned char *pOut, int width, int font_idx);
 void lcd_buffer_set_pixel(unsigned char *membuffer,int x, int y);
 void lcd_buffer_clear_pixel(unsigned char *membuffer,int x, int y);
 void extract_title_from_article(unsigned char *article_buf, unsigned char *title);
 
 extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];
-extern unsigned char *article_buf_pointer;
+extern const unsigned char *article_buf_pointer;
 void clear_article_pos_info();
 void load_all_fonts();
 #endif /* _LCD_BUF_DRAW_H */

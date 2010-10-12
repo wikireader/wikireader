@@ -1,4 +1,4 @@
-/*
+/*
  * Copyright (c) 2009 Openmoko Inc.
  *
  * Authors   Daniel Mack <daniel@caiaq.de>
@@ -19,11 +19,14 @@
  */
 
 #include <stdlib.h>
+#include <stdarg.h>
 #include <inttypes.h>
-#include <string.h>
 #include <ctype.h>
 #include <stdio.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
+#include "ustring.h"
 #include "wikilib.h"
 #include "guilib.h"
 #include "glyph.h"
@@ -63,7 +66,7 @@ int articleLength = 0;
 unsigned char * membuffer = 0;
 int membuffersize = 0;
 int curBufferPos  = 0;
-unsigned char *article_buf_pointer;
+const unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
 unsigned long start_search_time, last_delete_time;
@@ -214,10 +217,10 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 	int rc = 0;
 	static unsigned long last_ev_time = 0;
 	static struct keyboard_key *last_key = NULL;
-	static char *last_key_utf8_char = NULL;
+	static const unsigned char *last_key_utf8_char = NULL;
 	struct keyboard_key *temp_last_key;
-	char *temp_last_key_utf8_char;
-	char keycode;
+	const unsigned char *temp_last_key_utf8_char;
+	unsigned char keycode;
 
 	temp_last_key = last_key;
 	temp_last_key_utf8_char = last_key_utf8_char;
@@ -242,7 +245,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		   keycode == WL_KEY_POHONE_STYLE_KEYBOARD_123) { // toggling keyboard will be handled at key down
 		rc = -1;
 	} else {
-		int mode = keyboard_get_mode();
+		KEYBOARD_MODE mode = keyboard_get_mode();
 		if (wiki_keyboard_conversion_needed())
 		{
 			if (keycode == WL_KEY_SONANT)
@@ -274,7 +277,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 				}
 				else
 				{
-					if (strlen(key->key) > 1)
+					if (ustrlen(key->key) > 1)
 					{
 						last_ev_time = ev_time;
 						last_key = key;
@@ -423,7 +426,7 @@ static void average_xy(int *average_x, int *average_y, int last_5_x[], int last_
 
 static void handle_keyboard_en(event_t *ev, int last_5_x[], int last_5_y[], unsigned long last_5_y_time_ticks[])
 {
-	int mode;
+	KEYBOARD_MODE mode;
 	struct keyboard_key * key;
 	int i;
 	int average_x, average_y;
@@ -505,7 +508,7 @@ static void handle_keyboard_en(event_t *ev, int last_5_x[], int last_5_y[], unsi
 		touch_down_on_keyboard = 0;
 		touch_down_on_list = 0;
 	} else {
-		if (pre_key && (!key || strcmp(pre_key->key, key->key)))
+		if (pre_key && (!key || ustrcmp(pre_key->key, key->key)))
 		{
 			keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 			//goto out;
@@ -567,7 +570,7 @@ static void handle_keyboard_en(event_t *ev, int last_5_x[], int last_5_y[], unsi
 			if (!touch_down_on_keyboard && !touch_down_on_list)
 				touch_down_on_keyboard = 1;
 
-			if (pre_key && !strcmp(pre_key->key, key->key)) goto out;
+			if (pre_key && !ustrcmp(pre_key->key, key->key)) goto out;
 
 			if (touch_down_on_keyboard) {
 				keyboard_key_invert(key);
@@ -613,7 +616,7 @@ static void handle_keyboard_en(event_t *ev, int last_5_x[], int last_5_y[], unsi
 			unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ?
 				NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 			avail_count = search_result_count() > avail_count ? avail_count : search_result_count();
-			if (new_selection >= avail_count) goto out;
+			if (new_selection >= (int)avail_count) goto out;
 			if (touch_down_on_keyboard) goto out;
 
 			//invert_selection(search_result_selected(), new_selection, RESULT_START, RESULT_HEIGHT);
@@ -757,7 +760,7 @@ static void handle_keyboard_phone_style(event_t *ev, int last_5_x[], int last_5_
 			if (!touch_down_on_keyboard && !touch_down_on_list)
 				touch_down_on_keyboard = 1;
 
-			if (pre_key && !strcmp(pre_key->key, key->key)) goto out;
+			if (pre_key && !ustrcmp(pre_key->key, key->key)) goto out;
 
 			if (touch_down_on_keyboard) {
 				keyboard_key_invert(key);
@@ -803,7 +806,7 @@ static void handle_keyboard_phone_style(event_t *ev, int last_5_x[], int last_5_
 			unsigned int avail_count = keyboard_get_mode() == KEYBOARD_NONE ?
 				NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
 			avail_count = search_result_count() > avail_count ? avail_count : search_result_count();
-			if (new_selection >= avail_count) goto out;
+			if (new_selection >= (int)avail_count) goto out;
 			if (touch_down_on_keyboard) goto out;
 
 			//invert_selection(search_result_selected(), new_selection, RESULT_START, RESULT_HEIGHT);
@@ -885,7 +888,7 @@ static void handle_touch(event_t *ev)
 				if (!touch_down_on_keyboard)
 					touch_down_on_keyboard = 1;
 
-				if (pre_key && !strcmp(pre_key->key, key->key)) goto out;
+				if (pre_key && !ustrcmp(pre_key->key, key->key)) goto out;
 
 				if (touch_down_on_keyboard) {
 					keyboard_key_invert(key);
@@ -937,7 +940,7 @@ static void handle_touch(event_t *ev)
 			}
 			touch_down_on_keyboard = 0;
 		} else {
-			if (pre_key && (!key || strcmp(pre_key->key, key->key)))
+			if (pre_key && (!key || ustrcmp(pre_key->key, key->key)))
 			{
 				keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 				//goto out;
@@ -984,7 +987,7 @@ static void handle_touch(event_t *ev)
 				if (!touch_down_on_keyboard)
 					touch_down_on_keyboard = 1;
 
-				if (pre_key && !strcmp(pre_key->key, key->key)) goto out;
+				if (pre_key && !ustrcmp(pre_key->key, key->key)) goto out;
 
 				if (touch_down_on_keyboard) {
 					keyboard_key_invert(key);
@@ -1204,7 +1207,7 @@ int wikilib_run(void)
 	int more_events = 0;
 	unsigned long last_event_time = 0;
 	int rc;
-	char *pMsg;
+	const unsigned char *pMsg;
 
 
 	wikilib_init();
@@ -1213,9 +1216,9 @@ int wikilib_run(void)
 	history_list_init();
 	print_intro();
 	pMsg = get_nls_text("type_a_word");
-	render_string(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0);
 	load_all_fonts();
-	
+
 	for (;;) {
 		if (more_events)
 			sleep = 0;
@@ -1373,14 +1376,33 @@ unsigned long seconds_to_ticks(float sec)
 	return clock_ticks;
 }
 
-void fatal_error(char *sError)
+void fatal_error_print(const char *file, int line, const char *format, ...)
 {
-	event_t ev;
+	char buffer[256];
+
+	va_list arguments;
+
+	va_start(arguments, format);
+
+	(void)vsnprintf(buffer, sizeof(buffer), format, arguments);
+
+	va_end(arguments);
+
+	debug_printf("FATAL: %s:%d: %s\n", file, line, buffer);
+
+	static bool recursion = false;
+	if (recursion) {
+		panic("recursive call to fatal_error\n");
+	}
+	recursion = true;
 
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SUBTITLE_FONT_IDX, -1, 94, sError, strlen(sError), 0);
+	render_string(SUBTITLE_FONT_IDX, -1, 94, (const unsigned char *)buffer, ustrlen(buffer), 0);
 	guilib_fb_unlock();
-	for (;;)
+
+	event_t ev;
+	for (;;) {
 		event_wait(&ev, callback, "fatal error callback");
+	}
 }

@@ -22,11 +22,11 @@
 // SERCH_CHR_COUNT needs to be strlen(SUPPORTED_SEARCH_CHARS) + 1
 #define SEARCH_CHR_COUNT 54
 #define SIZE_BIGRAM_BUF (128 * 2)
-int bigram_char_idx(char c);
+int bigram_char_idx(unsigned char c);
 void init_bigram(int fd);
-void bigram_decode(char *outStr, char *inStr, int lenMax);
+void bigram_decode(unsigned char *outStr, const unsigned char *inStr, int lenMax);
 void init_char_idx();
-int is_supported_search_char(char c);
-int search_string_cmp(char *title, char *search, int len);
+int is_supported_search_char(unsigned char c);
+int search_string_cmp(const unsigned char *title, const unsigned char *search, int len);
 
 #endif

@@ -20,14 +20,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
 #include <inttypes.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
 #include "search.h"
 #include "keyboard.h"
-#include <guilib.h>
-#include <glyph.h>
+#include "guilib.h"
+#include "glyph.h"
 
+#include "ustring.h"
 #include "Alloc.h"
 #include "Bra.h"
 #include "LzmaDec.h"
@@ -53,10 +55,10 @@ extern int article_link_count;
 extern long saved_idx_article;
 int search_interrupted = 0;
 int b_type_a_word_cleared = 0;
- 
+
 typedef struct _search_results {
-	char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_ACTUAL];
-	char title_search[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
+	unsigned char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_ACTUAL];
+	unsigned char title_search[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
 	uint32_t idx_article[NUMBER_OF_FIRST_PAGE_RESULTS];  // index (wiki.idx) for loading the article
 	uint32_t offset_list[NUMBER_OF_FIRST_PAGE_RESULTS];  // offset (wiki.fnd) of each search title in list
 	uint32_t offset_next;		// offset (wiki.fnd) of the next title after the list
@@ -71,29 +73,29 @@ typedef struct _search_info {
 	int32_t fd_pfx;
 	int32_t fd_idx;
 	uint32_t max_article_idx;
-	uint32_t *prefix_index_table; 	// each SEARCH_INFO used to have private prefix_index_table.  
+	uint32_t *prefix_index_table; 	// each SEARCH_INFO used to have private prefix_index_table.
 									//now it points to the common g_prefix_index_table for all SEARCH_INFO
 	uint32_t b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
-	char *buf;	// buf correspond to result_list
+	unsigned char *buf;	// buf correspond to result_list
 	uint32_t buf_len;
 	uint32_t offset_current;	// offset (wiki.fnd) of the content of buffer
 } SEARCH_INFO;
 static SEARCH_INFO *search_info = NULL;
 uint32_t *g_prefix_index_table = NULL; // common prefix_index_table
-char *g_search_info_buf = NULL; // common SEARCH_INFO buf
+unsigned char *g_search_info_buf = NULL; // common SEARCH_INFO buf
 
 //#define SIZE_PREFIX_INDEX_TABLE SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * sizeof(long)
 //static struct search_state state;
 //static struct search_state last_first_hit;
 
-static char search_string[MAX_TITLE_SEARCH];
+static unsigned char search_string[MAX_TITLE_SEARCH];
 static int search_string_pos[MAX_TITLE_SEARCH];
-static char search_string_per_language[MAX_TITLE_SEARCH * 3];
+static unsigned char search_string_per_language[MAX_TITLE_SEARCH * 3];
 static int search_str_len = 0;
 static int search_str_per_language_len = 0;
-static char temp_search_string[MAX_TITLE_SEARCH];
+static unsigned char temp_search_string[MAX_TITLE_SEARCH];
 static int temp_search_string_pos[MAX_TITLE_SEARCH];
-static char temp_search_string_per_language[MAX_TITLE_SEARCH * 3];
+static unsigned char temp_search_string_per_language[MAX_TITLE_SEARCH * 3];
 static int temp_search_str_len = 0;
 static int temp_search_str_per_language_len = 0;
 
@@ -126,32 +128,32 @@ long result_list_offset_next(void)
 	return result_list->offset_next;
 }
 
-long result_list_next_result(long offset_next, long *idxArticle, char *sTitleActual)
+long result_list_next_result(long offset_next, long *idxArticle, unsigned char *sTitleActual)
 {
 	TITLE_SEARCH titleSearch;
-	char sTitleSearch[MAX_TITLE_SEARCH];
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH];
 
 	copy_fnd_to_buf(offset_next, (void *)&titleSearch, sizeof(TITLE_SEARCH));
 	retrieve_titles_from_fnd(offset_next, sTitleSearch, sTitleActual);
 	if (!search_string_cmp(sTitleSearch, search_string, search_str_len)) // match!
 	{
 		*idxArticle = titleSearch.idxArticle;
-		offset_next += sizeof(titleSearch.idxArticle) + strlen(titleSearch.sTitleSearch) + 2; // now point to the actual title
-		offset_next += strlen(&titleSearch.sTitleSearch[strlen(titleSearch.sTitleSearch) + 1]) + 1; // skip the actual title to the next titleSearch
+		offset_next += sizeof(titleSearch.idxArticle) + ustrlen(titleSearch.sTitleSearch) + 2; // now point to the actual title
+		offset_next += ustrlen(&titleSearch.sTitleSearch[ustrlen(titleSearch.sTitleSearch) + 1]) + 1; // skip the actual title to the next titleSearch
 		return offset_next;
 	}
 	else
 		return 0;
 }
 
-void get_article_title_from_idx(long idx, char *title)
+void get_article_title_from_idx(long idx, unsigned char *title)
 {
 	ARTICLE_PTR article_ptr;
 	TITLE_SEARCH title_search;
 	int wiki_id;
 	int wiki_idx;
 	int nTmpeCurrentWiki = nCurrentWiki;
-	char sTitleSearch[MAX_TITLE_SEARCH];
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH];
 
 	title[0] = '\0';
 	wiki_id = idx >> 24;
@@ -168,7 +170,7 @@ void get_article_title_from_idx(long idx, char *title)
 	file_read(search_info[nCurrentWiki].fd_idx, (void *)&article_ptr, sizeof(article_ptr));
 	if (article_ptr.offset_fnd)
 	{
-		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
+		copy_fnd_to_buf(article_ptr.offset_fnd, (unsigned char *)&title_search, sizeof(title_search));
 		retrieve_titles_from_fnd(article_ptr.offset_fnd, sTitleSearch, title);
 		title[MAX_TITLE_ACTUAL - 1] = '\0';
 	}
@@ -185,7 +187,7 @@ void load_prefix_index(int nWikiIdx)
 		if (search_info[nWikiIdx].fd_pfx >= 0 && search_info[nWikiIdx].fd_idx >= 0)
 		{
 			file_read(search_info[nWikiIdx].fd_idx, (void *)&search_info[nWikiIdx].max_article_idx, sizeof(search_info[nWikiIdx].max_article_idx));
-			memset((char *)search_info[nWikiIdx].b_prefix_index_block_loaded, 0, sizeof(search_info[nWikiIdx].b_prefix_index_block_loaded));
+			memset(search_info[nWikiIdx].b_prefix_index_block_loaded, 0, sizeof(search_info[nWikiIdx].b_prefix_index_block_loaded));
 			search_info[nWikiIdx].inited = 1;
 		}
 		else
@@ -197,7 +199,7 @@ void reset_search_info(int nWikiIdx)
 {
 	load_prefix_index(nWikiIdx);
 	search_info[nWikiIdx].offset_current = -1;
-	memset((char *)search_info[nWikiIdx].b_prefix_index_block_loaded, 0, sizeof(search_info[nWikiIdx].b_prefix_index_block_loaded));
+	memset(search_info[nWikiIdx].b_prefix_index_block_loaded, 0, sizeof(search_info[nWikiIdx].b_prefix_index_block_loaded));
 }
 
 void search_init()
@@ -219,7 +221,7 @@ void search_init()
 		else
 		{
 			g_prefix_index_table = (uint32_t *)memory_allocate(sizeof(uint32_t) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT, "search3");
-			g_search_info_buf = (char *)memory_allocate(NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH), "search4");
+			g_search_info_buf = (unsigned char *)memory_allocate(NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH), "search4");
 			if (!g_prefix_index_table || !g_search_info_buf)
 				fatal_error("search_init malloc error");
 
@@ -247,37 +249,37 @@ void memrcpy(char *dest, char *src, int len) // memory copy starting from the la
 		while (len--)
 		{
 			*dest = *src;
-			dest--;
-			src--;
+			--dest;
+			--src;
 		}
 	}
 }
 
-char article_error[100] = "";
-char article_error2[100] = "";
+unsigned char article_error[100] = "";
+unsigned char article_error2[100] = "";
 static void print_article_error()
 {
-	char msg[100];
+	unsigned char msg[100];
 
-	sprintf(msg, "The article, %lx, failed to load.", saved_idx_article);
+	sprintf((char *)msg, "The article, %lx, failed to load.", saved_idx_article);
 	guilib_fb_lock();
 	guilib_clear();
-	render_string(SEARCH_LIST_FONT_IDX, -1, 84, msg, strlen(msg), 0);
-	render_string(SEARCH_LIST_FONT_IDX, -1, 104, "Please restart your WikiReader and", 34, 0);
-	render_string(SEARCH_LIST_FONT_IDX, -1, 124, "try again.", 10, 0);
-//render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, strlen(article_error), 0);
-//render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, strlen(article_error2), 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 84, msg, ustrlen(msg), 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 104, (const unsigned char *)"Please restart your WikiReader and", 34, 0);
+	render_string(SEARCH_LIST_FONT_IDX, -1, 124, (const unsigned char *)"try again.", 10, 0);
+//render_string(SEARCH_LIST_FONT_IDX, -1, 124, article_error, ustrlen(article_error), 0);
+//render_string(SEARCH_LIST_FONT_IDX, -1, 144, article_error2, ustrlen(article_error2), 0);
 	guilib_fb_unlock();
 }
 
 // check if null terminator exists
-int is_proper_string(char *s, int len)
+int is_proper_string(const unsigned char *s, int len)
 {
 	while (len >= 0)
 	{
 		if (!*s)
 			return 1;
-		s++;
+		++s;
 		len--;
 	}
 	return 0;
@@ -286,7 +288,7 @@ int is_proper_string(char *s, int len)
 char *strnstr(char *s1, char *s2, int len)
 {
 	int bFound = 0;
-	int s2_len = strlen(s2);
+	int s2_len = ustrlen(s2);
 
 	while (!bFound && len >= s2_len)
 	{
@@ -311,17 +313,14 @@ char *strnstr(char *s1, char *s2, int len)
 // 0xXXXXXX00 (TITLE_SEARCH.idxArticle where XXXXXX is not 000000) +
 // 0x00 (TITLE_SEARCH.cZero) +
 // 0xXX (Non-zero of TITLE_SEARCH.sTitleSearch)
-bool is_title_search_pattern(char *pBuf)
+bool is_title_search_pattern(const unsigned char *pBuf)
 {
-	if (pBuf[0] && !pBuf[1] && (pBuf[2] || pBuf[3] || pBuf[4]) && !pBuf[5] && !pBuf[6] && pBuf[7])
-		return true;
-	else
-		return false;
+	return pBuf[0] && !pBuf[1] && (pBuf[2] || pBuf[3] || pBuf[4]) && !pBuf[5] && !pBuf[6] && pBuf[7];
 }
 
-TITLE_SEARCH *locate_proper_title_search(char *buf_middle, int len)
+TITLE_SEARCH *locate_proper_title_search(unsigned char *buf_middle, int len)
 {
-	char *pBuf = buf_middle - 2; 	// including the possible null terminated last two bytes of the last TITLE_SEARCH
+	unsigned char *pBuf = buf_middle - 2; 	// including the possible null terminated last two bytes of the last TITLE_SEARCH
 	// for finding the proper TITLE_SEARCH pattern
 	int i = 0;
 	bool bFound = false;
@@ -340,17 +339,17 @@ TITLE_SEARCH *locate_proper_title_search(char *buf_middle, int len)
 		return NULL;
 }
 
-uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_fnd_start, long offset_fnd_end)
+uint32_t get_article_idx_from_offset_range(const unsigned char *sInputTitleActual, long offset_fnd_start, long offset_fnd_end)
 {
-	int len;
+	unsigned int len;
 	int rc;
 	uint32_t article_idx = 0;
-	char sTitleSearch[MAX_TITLE_SEARCH];
-	char sTitleActual[MAX_TITLE_ACTUAL];
-	char buf_middle[sizeof(TITLE_SEARCH) * 2];
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH];
+	unsigned char sTitleActual[MAX_TITLE_ACTUAL];
+	unsigned char buf_middle[sizeof(TITLE_SEARCH) * 2];
 	long offset_middle;
 	static TITLE_SEARCH *pTitleSearch;
-	int offsetNextTitleSearch = 0;
+	unsigned int offsetNextTitleSearch = 0;
 	bool bFound = false;
 
 	while (!bFound && offset_fnd_start >= 0)
@@ -379,7 +378,7 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 			rc = search_string_cmp(sTitleSearch, search_string, search_str_len);
 			if (!rc) // match!
 			{
-				if (!strcmp(sTitleActual, sInputTitleActual))
+				if (!ustrcmp(sTitleActual, sInputTitleActual))
 				{
 					article_idx = pTitleSearch->idxArticle;
 					bFound = true;
@@ -387,8 +386,8 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 				else
 				{
 					offset_fnd_end = -1; // start sequential search
-					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) +
-						strlen(&pTitleSearch->sTitleSearch[strlen(pTitleSearch->sTitleSearch) + 1]) + 3;
+					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + ustrlen(pTitleSearch->sTitleSearch) +
+						ustrlen(&pTitleSearch->sTitleSearch[ustrlen(pTitleSearch->sTitleSearch) + 1]) + 3;
 					offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
 					offsetNextTitleSearch = 0;
 				}
@@ -397,8 +396,8 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 			{
 				if (offset_fnd_end <= 0)
 				{
-					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) +
-						strlen(&pTitleSearch->sTitleSearch[strlen(pTitleSearch->sTitleSearch) + 1]) + 3;
+					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + ustrlen(pTitleSearch->sTitleSearch) +
+						ustrlen(&pTitleSearch->sTitleSearch[ustrlen(pTitleSearch->sTitleSearch) + 1]) + 3;
 					offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
 				}
 				else // binary search
@@ -418,10 +417,10 @@ uint32_t get_article_idx_from_offset_range(char *sInputTitleActual, long offset_
 							pTitleSearch = locate_proper_title_search(buf_middle, len);
 							if (pTitleSearch)
 							{
-								char local_title_search[MAX_TITLE_SEARCH];
-								char sTitleActual[MAX_TITLE_ACTUAL];
+								unsigned char local_title_search[MAX_TITLE_SEARCH];
+								unsigned char sTitleActual[MAX_TITLE_ACTUAL];
 
-								offset_middle += (char *)pTitleSearch - buf_middle;
+								offset_middle += (const unsigned char *)pTitleSearch - buf_middle;
 								retrieve_titles_from_fnd(offset_middle, local_title_search, sTitleActual);
 								rc = search_string_cmp(local_title_search, search_string, search_str_len);
 								if (rc >= 0)	// the first mactch will be in front or at offset_middle
@@ -483,12 +482,12 @@ out:
 
 int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, int bInit)
 {
-	int len;
+	unsigned int len;
 	int rc;
-	char buf_middle[sizeof(TITLE_SEARCH) * 2];
+	unsigned char buf_middle[sizeof(TITLE_SEARCH) * 2];
 	long offset_middle;
 	static TITLE_SEARCH *pTitleSearch;
-	static int offsetNextTitleSearch = 0;
+	static unsigned int offsetNextTitleSearch = 0;
 	static long offset_fnd_start = -1;
 	static long offset_fnd_end = -1;
 
@@ -554,8 +553,8 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 				       (void *)&pTitleSearch->idxArticle,
 				       sizeof(result_list->idx_article[result_list->count]));
 				result_list->offset_list[result_list->count] = offset_fnd_start + offsetNextTitleSearch;
-				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) +
-					strlen(&pTitleSearch->sTitleSearch[strlen(pTitleSearch->sTitleSearch) + 1]) + 3;
+				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + ustrlen(pTitleSearch->sTitleSearch) +
+					ustrlen(&pTitleSearch->sTitleSearch[ustrlen(pTitleSearch->sTitleSearch) + 1]) + 3;
 				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
 				result_list->count++;
 				if (result_list->count >= NUMBER_OF_FIRST_PAGE_RESULTS)
@@ -568,8 +567,8 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 			{
 				if (offset_fnd_end <= 0)
 				{
-					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + strlen(pTitleSearch->sTitleSearch) +
-						strlen(&pTitleSearch->sTitleSearch[strlen(pTitleSearch->sTitleSearch) + 1]) + 3;
+					offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + ustrlen(pTitleSearch->sTitleSearch) +
+						ustrlen(&pTitleSearch->sTitleSearch[ustrlen(pTitleSearch->sTitleSearch) + 1]) + 3;
 					offset_fnd_start = offset_fnd_start + offsetNextTitleSearch;
 				}
 				else // binary search
@@ -590,10 +589,10 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 							pTitleSearch = locate_proper_title_search(buf_middle, len);
 							if (pTitleSearch)
 							{
-								char local_title_search[MAX_TITLE_SEARCH];
-								char sTitleActual[MAX_TITLE_ACTUAL];
+								unsigned char local_title_search[MAX_TITLE_SEARCH];
+								unsigned char sTitleActual[MAX_TITLE_ACTUAL];
 
-								offset_middle += (char *)pTitleSearch - buf_middle;
+								offset_middle += (unsigned char *)pTitleSearch - buf_middle;
 								retrieve_titles_from_fnd(offset_middle, local_title_search, sTitleActual);
 								rc = search_string_cmp(local_title_search, search_string, search_str_len);
 								if (rc >= 0)	// the first mactch will be in front or at offset_middle
@@ -841,9 +840,9 @@ int next_search_string(char *local_search_string, int len_local_search_string)
 	if (len_local_search_string > 0)
 	{
 		idxChar = 0;
-		while (idxChar < strlen(pSupportedChars) && pSupportedChars[idxChar] != local_search_string[len_local_search_string - 1])
+		while (idxChar < ustrlen(pSupportedChars) && pSupportedChars[idxChar] != local_search_string[len_local_search_string - 1])
 			idxChar++;
-		if (idxChar >= strlen(pSupportedChars) - 1)
+		if (idxChar >= ustrlen(pSupportedChars) - 1)
 		{
 			len_local_search_string--;
 			len_local_search_string = next_search_string(local_search_string, len_local_search_string);
@@ -952,7 +951,7 @@ interrupted:
 	return offset_search_result_end;
 }
 
-uint32_t get_article_idx_by_title(char *titleSearch, char *titleActual)
+uint32_t get_article_idx_by_title(unsigned char *titleSearch, unsigned char *titleActual)
 {
 	uint32_t article_idx = 0;
 	long offset_search_result_start = -1;
@@ -1036,14 +1035,14 @@ interrupted:
 	return found;
 }
 
-void capitalize(char *out_str, char *in_str, int len)
+void capitalize(unsigned char *out_str, unsigned char *in_str, int len)
 {
 	unsigned char utf8_c[5];
 	unsigned char capital_utf8_c[5];
 
     if (wiki_is_korean())
     {
-        english_to_korean(out_str, MAX_TITLE_SEARCH * 3, in_str, &len);
+	english_to_korean(out_str, MAX_TITLE_SEARCH * 3, in_str, &len);
     }
     else if (wiki_keyboard_conversion_needed())
 	{
@@ -1051,12 +1050,12 @@ void capitalize(char *out_str, char *in_str, int len)
 		int j = 0;
 		int used_len;
 		unsigned char *s;
-		
+
 		while (i < len)
 		{
 			s = full_alphabet_to_half(&in_str[i], &used_len);
-            memcpy(&out_str[j], s, strlen(s));
-			j += strlen(s);
+	    memcpy(&out_str[j], s, ustrlen(s));
+			j += ustrlen(s);
 			i += used_len;
 		}
 		out_str[j] = '\0';
@@ -1065,22 +1064,23 @@ void capitalize(char *out_str, char *in_str, int len)
 	{
 		memcpy(out_str, in_str, len + 1);
 	}
-    get_first_utf8_char(utf8_c, out_str, strlen(out_str));
+    get_first_utf8_char(utf8_c, out_str, ustrlen(out_str));
     utf8_char_toupper(capital_utf8_c, utf8_c);
-	memcpy(out_str, capital_utf8_c, strlen(capital_utf8_c)); // assuming the lower case and upper case charasters got the same number of bytes
+	memcpy(out_str, capital_utf8_c, ustrlen(capital_utf8_c)); // assuming the lower case and upper case charasters got the same number of bytes
 }
 
 void search_reload(int flag)
 {
-	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
+	unsigned int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-	int y_pos,start_x_search=0;
-	int end_y_pos;
-	char *title;
-	char temp_search_string[MAX_TITLE_SEARCH * 3];
+	unsigned int y_pos;
+	int start_x_search = 0;
+	unsigned int end_y_pos;
+	unsigned char *title;
+	unsigned char temp_search_string[MAX_TITLE_SEARCH * 3];
 	static int bNoResultLastTime = 0;
 	int keyboard_mode = keyboard_get_mode();
-	char *pMsg;
+	const unsigned char *pMsg;
 
 	more_search_results = 0;
 	guilib_fb_lock();
@@ -1133,7 +1133,7 @@ void search_reload(int flag)
 		result_list->result_populated = 1;
 		result_list->cur_selected = -1;
 		pMsg = get_nls_text("type_a_word");
-		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
+		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0,
 					0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		keyboard_paint();
 		goto out;
@@ -1143,7 +1143,7 @@ void search_reload(int flag)
 		capitalize(temp_search_string, search_string_per_language, search_str_per_language_len);
 	else
 		capitalize(temp_search_string, search_string, search_str_len);
-	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN + 2, temp_search_string, strlen(temp_search_string), 0);
+	start_x_search = render_string_right(SEARCH_HEADING_FONT_IDX, LCD_LEFT_MARGIN, LCD_TOP_MARGIN + 2, temp_search_string, ustrlen(temp_search_string), 0);
 	search_string_pos[search_str_len]=start_x_search;
 	y_pos = RESULT_START;
 
@@ -1157,7 +1157,7 @@ void search_reload(int flag)
 			{
 				guilib_clear_area(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 				pMsg = get_nls_text("no_results");
-				render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
+				render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0);
 				bNoResultLastTime = 1;
 			}
 			goto out;
@@ -1182,10 +1182,10 @@ void search_reload(int flag)
 				}
 				title = result_list->title[i];
 				if (flag != SEARCH_RELOAD_KEEP_RESULT || i >= NUMBER_OF_RESULTS_KEYBOARD)
-					render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
+					render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, ustrlen(title), 0);
 			}
 			y_pos += RESULT_HEIGHT;
-			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
+			if ((y_pos + RESULT_HEIGHT) > guilib_framebuffer_height())
 				break;
 		}
 		if (keyboard_mode == KEYBOARD_NONE)
@@ -1243,11 +1243,11 @@ void search_to_be_reloaded(int to_be_reloaded_flag, int reload_flag)
 
 void search_result_display()
 {
-	int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
+	unsigned int screen_display_count = keyboard_get_mode() == KEYBOARD_NONE ?
 		NUMBER_OF_FIRST_PAGE_RESULTS : NUMBER_OF_RESULTS_KEYBOARD;
-	int y_pos=0;
-	char *title;
-	char *pMsg;
+	unsigned int y_pos = 0;
+	unsigned char *title;
+	const unsigned char *pMsg;
 
 	guilib_fb_lock();
 	guilib_clear_area(0, RESULT_START, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
@@ -1257,7 +1257,7 @@ void search_result_display()
 		result_list->count = 0;
 		result_list->cur_selected = -1;
 		pMsg = get_nls_text("type_a_word");
-		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
+		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0,
 					0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		keyboard_paint();
 		goto out;
@@ -1268,7 +1268,7 @@ void search_result_display()
 
 	if (result_list->result_populated && !result_list->count) {
 		pMsg = get_nls_text("no_results");
-		render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0);
+		render_string(SEARCH_LIST_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0);
 		goto out;
 	}
 
@@ -1279,34 +1279,34 @@ void search_result_display()
 
 		for (i = 0; i < count; i++) {
 			title = result_list->title[i];
-			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, strlen(title), 0);
+			render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, ustrlen(title), 0);
 			y_pos += RESULT_HEIGHT;
 			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
 				break;
 		}
-		if (result_list->cur_selected >= screen_display_count)
-			result_list->cur_selected = screen_display_count - 1;
+		if (result_list->cur_selected >= (int)screen_display_count)
+			result_list->cur_selected = (int)screen_display_count - 1;
 		invert_selection(result_list->cur_selected, -1, RESULT_START, RESULT_HEIGHT);
 	}
 out:
 	guilib_fb_unlock();
 }
 
-int search_replace_per_language_char(char *utf8_char)
+int search_replace_per_language_char(const unsigned char *utf8_char)
 {
-	char last_utf8_char[5];
-	char new_utf8_char[5];
+	unsigned char last_utf8_char[5];
+	unsigned char new_utf8_char[5];
 	int rc = -1;
-	
+
 	flash_keyboard_key_invert();
 	if (search_str_per_language_len > 0)
 	{
 		get_last_utf8_char(last_utf8_char, search_string_per_language, search_str_per_language_len);
-		get_first_utf8_char(new_utf8_char, utf8_char, strlen(utf8_char));
+		get_first_utf8_char(new_utf8_char, utf8_char, ustrlen(utf8_char));
 		if (new_utf8_char[0])
 		{
-			memcpy(&search_string_per_language[search_str_per_language_len - strlen(last_utf8_char)], new_utf8_char, strlen(new_utf8_char));
-			search_str_per_language_len += strlen(new_utf8_char) - strlen(last_utf8_char);
+			memcpy(&search_string_per_language[search_str_per_language_len - ustrlen(last_utf8_char)], new_utf8_char, ustrlen(new_utf8_char));
+			search_str_per_language_len += ustrlen(new_utf8_char) - ustrlen(last_utf8_char);
 			search_string_per_language[search_str_per_language_len] = '\0';
 			hiragana_romaji_conversion(search_string_per_language, &search_str_per_language_len);
 			search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
@@ -1316,7 +1316,7 @@ int search_replace_per_language_char(char *utf8_char)
 		}
 	}
 	delay_us(20000); // 0.2 second
- 	flash_keyboard_key_invert();
+	flash_keyboard_key_invert();
 	return rc;
 }
 
@@ -1349,19 +1349,19 @@ int search_replace_hiragana_backward()
     return rc;
 }
 
-int search_add_per_language_char(char *utf8_char)
+int search_add_per_language_char(const unsigned char *utf8_char)
 {
-	char new_utf8_char[5];
+	unsigned char new_utf8_char[5];
 	int rc = -1;
-	
+
 	if ((*utf8_char == 0x20 && search_str_len > 0 && search_string[search_str_len -1 ] == 0x20) ||
 			(!search_str_len && *utf8_char == 0x20))
 		return -1;
 
-	get_first_utf8_char(new_utf8_char, utf8_char, strlen(utf8_char));
-	if (strlen(new_utf8_char) == 0 || (strlen(new_utf8_char) == 1 && !is_supported_search_char(new_utf8_char[0])))
+	get_first_utf8_char(new_utf8_char, utf8_char, ustrlen(utf8_char));
+	if (ustrlen(new_utf8_char) == 0 || (ustrlen(new_utf8_char) == 1 && !is_supported_search_char(new_utf8_char[0])))
 		return -1; // not supported input
-		
+
 	if (!search_str_per_language_len) // clear type_a_word message
 	{
 		guilib_fb_lock();
@@ -1372,31 +1372,32 @@ int search_add_per_language_char(char *utf8_char)
 	else
 		b_type_a_word_cleared = 0;
 
-	if (new_utf8_char[0] && search_str_per_language_len + strlen(new_utf8_char) < MAX_TITLE_SEARCH * 3 - 1)
+	if (new_utf8_char[0] && search_str_per_language_len + ustrlen(new_utf8_char) < MAX_TITLE_SEARCH * 3 - 1)
 	{
-		memcpy(&search_string_per_language[search_str_per_language_len], new_utf8_char, strlen(new_utf8_char));
-		search_str_per_language_len += strlen(new_utf8_char);
+		memcpy(&search_string_per_language[search_str_per_language_len], new_utf8_char, ustrlen(new_utf8_char));
+		search_str_per_language_len += ustrlen(new_utf8_char);
 		search_string_per_language[search_str_per_language_len] = '\0';
 		if (wiki_is_korean())
 		{
 			if (is_korean_special_key_enabled())
 				search_string_per_language[search_str_per_language_len - 1] = toupper(search_string_per_language[search_str_per_language_len - 1]);
-            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+	    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 		}
 		else
 		{
-    		hiragana_romaji_conversion(search_string_per_language, &search_str_per_language_len);
-    		search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
-        }
+		hiragana_romaji_conversion(search_string_per_language, &search_str_per_language_len);
+		search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+	}
 		time_search_string_changed = timer_get();
 		search_string_changed = true;
 		rc = 0;
 	}
- 	return rc;
+	return rc;
 }
 
 int search_add_char(char c, unsigned long ev_time)
 {
+	(void)ev_time; // *** unused argument
 	if((c == 0x20 && search_str_len>0 && search_string[search_str_len-1] == 0x20) ||
 	   (search_str_len >= MAX_TITLE_SEARCH - 1) ||
 	   (!search_str_len && c == 0x20))
@@ -1454,6 +1455,7 @@ void search_fetch()
  */
 int search_remove_char(int bPopulate, unsigned long ev_time)
 {
+	(void)ev_time; // *** unused argument
 	if (search_str_len == 0)
 		return -1;
 
@@ -1463,7 +1465,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 		{
 			search_string_per_language[--search_str_per_language_len] = '\0';
 			if (wiki_is_korean())
-	            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+		    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 			else
 				search_string[--search_str_len] = '\0';
 		}
@@ -1475,7 +1477,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 				search_str_per_language_len--;
 			search_string_per_language[--search_str_per_language_len] = '\0';
 			if (wiki_is_korean())
-	            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+		    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 			else
 			{
 				search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
@@ -1501,16 +1503,16 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 	return 0;
 }
 
-TITLE_SEARCH *locate_previous_title(char *buf, int len)
+TITLE_SEARCH *locate_previous_title(unsigned char *buf, int len)
 {
-	char *p;
+	unsigned char *p;
 	int bFound = 0;
 
 	if (len > 2)
 	{
 		p = buf + len - 2;
 		len--;
-		while (!bFound && len > sizeof(uint32_t))
+		while (!bFound && len > (int)sizeof(uint32_t))
 		{
 			if (!*p) {
 				bFound = 1;
@@ -1539,7 +1541,7 @@ int clear_search_string()
 		return -1;
 
 	result_list->count = 0;
-	strcpy(search_string,"");
+	search_string[0] = '\0';
 	search_str_len = 0;
 	search_str_per_language_len = 0;
 	return 0;
@@ -1592,7 +1594,7 @@ int retrieve_article(long idx_article_with_wiki_id)
 
 		int dat_file_id = article_ptr.file_id;
 		int fd_dat;
-    	char file_name[13];
+	char file_name[13];
 
 		sprintf(file_name, "wiki%d.dat", dat_file_id);
 		fd_dat = file_open(get_wiki_file_path(nWikiIdx, file_name), FILE_OPEN_READ);
@@ -1679,12 +1681,12 @@ void search_open_article(int new_selection)
 	display_link_article(result_list->idx_article[list_idx]);
 }
 
-long find_closest_idx(long idx, char *title)
+long find_closest_idx(long idx, unsigned char *title)
 {
 	ARTICLE_PTR article_ptr;
 	TITLE_SEARCH title_search;
 	static int count = 0;
-	char sTitleSearch[MAX_TITLE_SEARCH];
+	unsigned char sTitleSearch[MAX_TITLE_SEARCH];
 
 	title[0] = '\0';
 
@@ -1709,7 +1711,7 @@ long find_closest_idx(long idx, char *title)
 	else
 	{
 		count = 0;
-		copy_fnd_to_buf(article_ptr.offset_fnd, (char *)&title_search, sizeof(title_search));
+		copy_fnd_to_buf(article_ptr.offset_fnd, (unsigned char *)&title_search, sizeof(title_search));
 		retrieve_titles_from_fnd(article_ptr.offset_fnd, sTitleSearch, title);
 		title[MAX_TITLE_ACTUAL - 1] = '\0';
 		return idx;
@@ -1720,7 +1722,7 @@ void reset_random_key(void)
 {
 	event_t ev;
 
-	while (event_peek(&ev) != EVENT_NONE && 
+	while (event_peek(&ev) != EVENT_NONE &&
 		(ev.item_type == EVENT_BUTTON_UP || ev.item_type == EVENT_BUTTON_DOWN) &&
 		ev.button.code == BUTTON_RANDOM)
 	{
@@ -1732,7 +1734,7 @@ extern int last_display_mode;
 void random_article(void)
 {
 	long idx_article;
-	char title[MAX_TITLE_ACTUAL];
+	unsigned char title[MAX_TITLE_ACTUAL];
 	unsigned long clock_ticks;
 
 	clock_ticks = timer_get();

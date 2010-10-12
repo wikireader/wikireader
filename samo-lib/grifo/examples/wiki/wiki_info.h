@@ -58,23 +58,23 @@ typedef struct _WIKI_LICENSE_DRAW {
 
 typedef struct _ACTIVE_WIKI {
     int WikiInfoIdx; // index to wiki_info[]
-    char *WikiNls;
+    unsigned char *WikiNls;
     long WikiNlsLen;
 } ACTIVE_WIKI, *PACTIVE_WIKI;
 
 extern int nCurrentWiki;
-bool wiki_lang_exist(char *lang_link_str);
-uint32_t wiki_lang_link_search(char *lang_link_str);
+bool wiki_lang_exist(const unsigned char *lang_link_str);
+uint32_t wiki_lang_link_search(const unsigned char *lang_link_str);
 void init_wiki_info(void);
 int get_wiki_count(void);
-char *get_nls_text(char *key);
-char *get_lang_link_display_text(char *lang_link_str);
+const unsigned char *get_nls_text(const char *key);
+const unsigned char *get_lang_link_display_text(const unsigned char *lang_link_str);
 char *get_wiki_file_path(int nWikiIdx, char *file_name);
-char *get_wiki_name(int idx);
+const unsigned char *get_wiki_name(int idx);
 void wiki_selection(void);
 void set_wiki(int idx);
 int get_wiki_idx_from_id(int wiki_id);
-int get_wiki_id_from_idx(int wiki_idx);
+int get_wiki_id_from_idx(unsigned int wiki_idx);
 WIKI_LICENSE_DRAW *wiki_license_draw(void);
 bool wiki_keyboard_conversion_needed();
 bool wiki_is_TC();

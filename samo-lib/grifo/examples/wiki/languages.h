@@ -36,14 +36,14 @@ enum
     STATE_AFTER_MEDIAL_JAMO,
 };
 
-int zh_jp_to_english(char *sEnglish, int maxLenEnglish, char *sHiragana, int *lenHiragana);
-char *get_hiragana(char *in_str, int len, int *used_len);
-char *get_english(char *in_str, int len, int *used_len);
-void hiragana_romaji_conversion(char *search_string_per_language, int *search_str_per_language_len);
-int replace_japanese_sonant(char *search_string_per_language, int *search_str_per_language_len, char *search_string, int *search_str_len);
-int replace_hiragana_backward(char *search_string_per_language, int *search_str_per_language_len, char *search_string, int *search_str_len);
-void alphabet_to_korean_jamo(char *jamo, char eng);
-int english_to_korean(char *out_str, int max_out_len, char *in_str, int *in_len);
-int english_to_korean_phonetic(char *out_str, int max_out_len, char *in_str, int *in_len);
+int zh_jp_to_english(unsigned char *sEnglish, int maxLenEnglish, unsigned char *sHiragana, int *lenHiragana);
+const unsigned char *get_hiragana(const unsigned char *in_str, int len, int *used_len);
+const unsigned char *get_english(const unsigned char *in_str, int len, int *used_len);
+void hiragana_romaji_conversion(unsigned char *search_string_per_language, int *search_str_per_language_len);
+int replace_japanese_sonant(unsigned char *search_string_per_language, int *search_str_per_language_len, unsigned char *search_string, int *search_str_len);
+int replace_hiragana_backward(unsigned char *search_string_per_language, int *search_str_per_language_len, unsigned char *search_string, int *search_str_len);
+void alphabet_to_korean_jamo(unsigned char *jamo, const unsigned char eng);
+int english_to_korean(unsigned char *out_str, int max_out_len, unsigned char *in_str, int *in_len);
+int english_to_korean_phonetic(unsigned char *out_str, int max_out_len, unsigned char *in_str, int *in_len);
 
 #endif

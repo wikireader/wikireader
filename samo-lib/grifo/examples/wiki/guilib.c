@@ -30,7 +30,7 @@
 #define FRAMEBUFFER_WIDTH    LCD_WIDTH
 #define FRAMEBUFFER_HEIGHT   LCD_HEIGHT
 #define FRAMEBUFFER_SCANLINE LCD_BUFFER_WIDTH
-#define FRAMEBUFFER_SIZE     LCD_BUFFER_SIZE_BYTES 
+#define FRAMEBUFFER_SIZE     LCD_BUFFER_SIZE_BYTES
 
 
 #define EXTRACT_PIXEL(x, y)					\
@@ -78,14 +78,14 @@ void guilib_invert(int start_line, int height)
  */
 void guilib_invert_area(int start_x, int start_y, int end_x, int end_y)
 {
-	unsigned int x, y;
+	int x, y;
 	unsigned int pixel;
 
-	if (start_x > end_x || start_y > end_y || 
+	if (start_x > end_x || start_y > end_y ||
 		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
 		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
 		return;
-		
+
 	if (start_x < 0)
 		start_x = 0;
 	if (end_x >= LCD_WIDTH)
@@ -120,7 +120,8 @@ void guilib_clear(void)
  */
 void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 {
-	unsigned int y, r1, r2;
+	int y;
+	unsigned int r1, r2;
 	uint8_t byte_mask1 = 0;
 	uint8_t byte_mask2 = 0;
 	int byte_idx;
@@ -129,11 +130,11 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 	int nBytes = 0;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
-	if (start_x > end_x || start_y > end_y || 
+	if (start_x > end_x || start_y > end_y ||
 		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
 		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
 		return;
-		
+
 	if (start_x < 0)
 		start_x = 0;
 	if (end_x >= LCD_WIDTH)
@@ -142,7 +143,7 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 		start_y = 0;
 	if (end_y >= LCD_HEIGHT)
 		end_y = LCD_HEIGHT - 1;
-		
+
 	if (start_x == 0 && end_x >= LCD_WIDTH - 1)
 	{
 		byte_idx = start_y * LCD_BUF_WIDTH_BYTES;
@@ -173,7 +174,7 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 			byte_mask1 &= byte_mask2;
 			r2 = 0;
 		}
-		
+
 		for (y = start_y; y <= end_y; ++y) {
 			byte_idx = y * LCD_BUF_WIDTH_BYTES + x_byte_idx;
 			if (r1 > 0)

@@ -20,7 +20,8 @@
 #include <string.h>
 #include <errno.h>
 
-#include "grifo.h"
+#include <grifo.h>
+
 #include "bmf.h"
 #include "wikilib.h"
 
@@ -29,16 +30,25 @@ int load_bmf(pcffont_bmf_t *font)
 	int fd, read_size;
 	font_bmf_header header;
 
-	fd = file_open(font->file, FILE_OPEN_READ);
+	if (NULL == font || NULL == font->file) {
+		fatal_error("font is NULL");
+	}
 
-	if(fd<0)
+	fd = file_open(font->file, FILE_OPEN_READ);
+	if(fd < 0) {
+		panic("failed to open font: %s", font->file);
+		//debug_printf("failed to open font: %s\n", font->file);
 		return -1;
+	}
 
 	file_size(font->file, &(font->file_size));
-
+	if (0 == font->file_size) {
+		fatal_error("zero size font: %s", font->file);
+	}
 	font->charmetric = (char*)memory_allocate(font->file_size, "bmf");
-	if (!font->charmetric)
-		fatal_error("load_bmf malloc error");
+	if (!font->charmetric) {
+		fatal_error("load_bmf malloc error on: %s", font->file);
+	}
 	memset(font->charmetric, 0, font->file_size);
 
 	read_size = file_read(fd, font->charmetric, 256 * sizeof(charmetric_bmf)+sizeof(font_bmf_header));
@@ -69,7 +79,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 
 	if (font->fd == FONT_FD_NOT_INITED)
 	{
-		font->fd = load_bmf(font); 
+		font->fd = load_bmf(font);
 		if(font->fd < 0)
 			return -1;
 	}
@@ -82,7 +92,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 	else
 	{
 		offset = val*sizeof(charmetric_bmf)+font_header;
-		if (offset <= font->file_size - sizeof(charmetric_bmf))
+		if (offset <= (long)font->file_size - (long)sizeof(charmetric_bmf))
 		{
 			memcpy(Cmetrics,font->charmetric+val*sizeof(charmetric_bmf)+font_header,sizeof(charmetric_bmf));
 			if (Cmetrics->width)
@@ -108,7 +118,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 		if (!bFound)
 		{
 			size = sizeof(charmetric_bmf);
-	
+
 			read_size = file_read(font->fd,buffer,size);
 			memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
 			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
@@ -119,9 +129,9 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 		*bitmap = (bmf_bm_t*)Cmetrics+8;
 	else
 	{
-		if (val > 256 && offset <= font->file_size - sizeof(charmetric_bmf))
+		if (val > 256 && offset <= (long)font->file_size - (long)sizeof(charmetric_bmf))
 		{
-			if (font->Fmetrics.default_char && val != font->Fmetrics.default_char)
+			if (font->Fmetrics.default_char && val != (ucs4_t)font->Fmetrics.default_char)
 			{
 				pres_bmfbm(font->Fmetrics.default_char, font, bitmap, Cmetrics);
 			}

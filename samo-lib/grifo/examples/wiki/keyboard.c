@@ -53,9 +53,14 @@ extern unsigned int touch_down_on_keyboard;
 extern int b_type_a_word_cleared;
 
 /* qwerty keyboard by columns */
-#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode) \
-	{	.left_x = l_x, .right_x = r_x, .left_y = l_y, .right_y = r_y, .key = keycode, \
-		.left_x_inverted = l_x_i, .right_x_inverted = r_x_i, .left_y_inverted = l_y_i, .right_y_inverted = r_y_i, .key = keycode, }
+#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode)    \
+	{               .left_x = l_x, .right_x = r_x,                  \
+			.left_y = l_y, .right_y = r_y,                  \
+			.left_x_inverted = l_x_i, .right_x_inverted = r_x_i, \
+			.left_y_inverted = l_y_i, .right_y_inverted = r_y_i, \
+			.key = 	(const unsigned char *)keycode,         \
+			}
+
 static struct keyboard_key qwerty_char[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"q"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"a"),
@@ -144,38 +149,38 @@ static struct keyboard_key qwerty_char_da[] = {
 	KEY(  0, 126,  20, 152,	  1, 128,  19, 150,	"ｑ"),
 	KEY(  0, 153,  20, 180,	  1, 156,  19, 178,	"ａ"),
 	KEY(  0, 181,  20, 207,	  1, 183,  19, 205,	"ｚ"),
-                                                   
+
 	KEY( 21, 126,  42, 152,	 22, 128,  41, 150,	"ｗ"),
 	KEY( 21, 153,  42, 180,	 22, 156,  41, 178,	"ｓ"),
 	KEY( 21, 181,  42, 207,	 22, 183,  41, 205,	"ｘ"),
-                                                   
+
 	KEY( 43, 126,  64, 152,	 44, 128,  63, 150,	"ｅ"),
 	KEY( 43, 153,  64, 180,	 44, 156,  63, 178,	"ｄ"),
 	KEY( 43, 181,  64, 207,	 44, 183,  63, 205,	"ｃ"),
-                                                   
+
 	KEY( 65, 126, 86, 152,	 66, 128,  85, 150,	"ｒ"),
 	KEY( 65, 153, 86, 180,	 66, 156,  85, 178,	"ｆ"),
 	KEY( 65, 181, 86, 207,	 66, 183,  85, 205,	"ｖ"),
-                                                   
+
 	KEY( 87, 126, 108, 152,	 88, 128, 107, 150,	"ｔ"),
 	KEY( 87, 153, 108, 180,	 88, 156, 107, 178,	"ｇ"),
-	KEY( 87, 181, 130, 207,	 88, 184, 129, 205,	" "), 
-                                                   
+	KEY( 87, 181, 130, 207,	 88, 184, 129, 205,	" "),
+
 	KEY(109, 126, 130, 152,	110, 128, 129, 150,	"ｙ"),
 	KEY(109, 153, 130, 180,	110, 156, 129, 178,	"ｈ"),
-                                                   
+
 	KEY(131, 126, 152, 152,	132, 128, 151, 150,	"ｕ"),
 	KEY(131, 153, 152, 180,	132, 156, 151, 178,	"ｊ"),
 	KEY(131, 181, 152, 207,	132, 183, 151, 205,	"ｂ"),
-                                                   
+
 	KEY(153, 126, 174, 152,	154, 128, 173, 150,	"ｉ"),
 	KEY(153, 153, 174, 180,	154, 156, 173, 178,	"ｋ"),
 	KEY(153, 181, 174, 207,	154, 183, 173, 205,	"ｎ"),
-                                                   
+
 	KEY(175, 126, 196, 152,	176, 128, 195, 150,	"ｏ"),
 	KEY(175, 153, 196, 180,	176, 156, 195, 178,	"ｌ"),
 	KEY(175, 181, 196, 207,	176, 183, 195, 205,	"ｍ"),
-                                                   
+
 	KEY(197, 126, 218, 152,	198, 128, 217, 150,	"ｐ"),
 	KEY(197, 153, 218, 180,	198, 156, 217, 178,	"æ"),
 	KEY(197, 181, 218, 207,	198, 183, 217, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
@@ -190,38 +195,38 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"1"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"*"),
 	KEY(  0, 181,  23, 207,	  3, 183,  21, 205,	"@"),
-                                                
+
 	KEY( 24, 126,  47, 152,	 26, 128,  45, 150,	"2"),
 	KEY( 24, 153,  47, 180,	 26, 156,  45, 178,	"$"),
 	KEY( 24, 181,  47, 207,	 26, 183,  45, 205,	"?"),
-                                                
+
 	KEY( 48, 126,  71, 152,	 50, 128,  69, 150,	"3"),
 	KEY( 48, 153,  71, 180,	 50, 156,  69, 178,	"%"),
 	KEY( 48, 181,  71, 207,	 50, 183,  69, 205,	"!"),
-                                                
+
 	KEY( 72, 126, 95, 152,	 74, 128,  93, 150,	"4"),
 	KEY( 72, 153, 95, 180,	 74, 156,  93, 178,	"#"),
 	KEY( 72, 181, 95, 207,	 74, 183,  93, 205,	"&"),
-                                                
+
 	KEY( 96, 126, 119, 152,	 98, 128, 117, 150,	"5"),
 	KEY( 96, 153, 119, 180,	 98, 156, 117, 178,	"("),
 	KEY( 96, 181, 143, 207,	 98, 184, 141, 205,	" "),
-                                                
+
 	KEY(120, 126, 143, 152,	122, 128, 141, 150,	"6"),
 	KEY(120, 153, 143, 180,	122, 156, 141, 178,	")"),
-                                                
+
 	KEY(144, 126, 167, 152,	146, 128, 165, 150,	"7"),
 	KEY(144, 153, 167, 180,	146, 156, 165, 178,	"-"),
 	KEY(144, 181, 167, 207,	146, 183, 165, 205,	","),
-                                                
+
 	KEY(168, 126, 191, 152,	170, 128, 189, 150,	"8"),
 	KEY(168, 153, 191, 180,	170, 156, 189, 178,	"+"),
 	KEY(168, 181, 191, 207,	170, 183, 189, 205,	"."),
-                                                
+
 	KEY(192, 126, 215, 152,	194, 128, 213, 150,	"9"),
 	KEY(192, 153, 215, 180,	194, 156, 213, 178,	"="),
 	KEY(192, 181, 215, 207,	194, 183, 213, 205,	"'"),
-                                                
+
 	KEY(216, 126, 239, 152,	218, 128, 236, 150,	"0"),
 	KEY(216, 153, 239, 180,	218, 156, 236, 178,	WL_KEY_BACKSPACE_STR),
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
@@ -288,19 +293,19 @@ static struct keyboard_key phone_abc[] = {
 	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"ａｂｃ"),
 	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"ｄｅｆ"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
-                                                
+
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
 	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ｇｈｉ"),
 	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"ｊｋｌ"),
 	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"ｍｎｏ"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
-                                                
+
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
 	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"ｐｑｒｓ"),
 	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"ｔｕｖ"),
 	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"ｗｘｙｚ"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
-                                                
+
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"'()"),
@@ -314,45 +319,45 @@ static struct keyboard_key phone_123[] = {
 	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"2"),
 	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"3"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
-                                                 
+
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
 	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"4"),
 	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"5"),
 	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"6"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
-                                                 
+
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
 	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"7"),
 	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"8"),
 	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"9"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
-                                                 
+
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"0"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"、。?!"),
-                                                
+
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
-};                                              
+};
 static struct keyboard_key phone_tw_abc[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
 	KEY( 46, 127,  94, 146,	 48, 129,  93, 145,	"@#$%&"),
 	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"ａｂｃ"),
 	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"ｄｅｆ"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
-                                                
+
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
 	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"ｇｈｉ"),
 	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"ｊｋｌ"),
 	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"ｍｎｏ"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
-                                                
+
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
 	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"ｐｑｒｓ"),
 	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"ｔｕｖ"),
 	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"ｗｘｙｚ"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
-                                                
+
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_123_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"'()"),
@@ -366,29 +371,29 @@ static struct keyboard_key phone_tw_123[] = {
 	KEY( 95, 127, 143, 146,	 97, 129, 142, 145,	"2"),
 	KEY(144, 127, 193, 146,	146, 129, 191, 145,	"3"),
 	KEY(194, 127, 239, 146,	196, 128, 237, 145,	WL_KEY_BACKSPACE_STR),
-                                                 
+
 	KEY(  0, 147,  45, 166,	  2, 149,  43, 165,	WL_KEY_BACKWARD_STR),
 	KEY( 46, 147,  94, 166,	 48, 149,  93, 165,	"4"),
 	KEY( 95, 147, 143, 166,	 97, 149, 142, 165,	"5"),
 	KEY(144, 147, 193, 166,	146, 149, 191, 165,	"6"),
 	KEY(194, 147, 239, 166,	196, 149, 237, 165,	WL_KEY_CLEAR_STR),
-                                                 
+
 	KEY(  0, 167,  45, 186,	  2, 169,  43, 185,	WL_KEY_POHONE_STYLE_KEYBOARD_ABC_STR),
 	KEY( 46, 167,  94, 186,	 48, 169,  93, 185,	"7"),
 	KEY( 95, 167, 143, 186,	 97, 169, 142, 185,	"8"),
 	KEY(144, 167, 193, 186,	146, 169, 191, 185,	"9"),
 	KEY(194, 167, 239, 207,	196, 169, 237, 206,	" "),
-                                                 
+
 	KEY(  0, 187,  45, 207,	  2, 189,  43, 206,	WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT_STR),
 	KEY( 46, 187,  94, 207,	 48, 189,  93, 205,	"+－*="),
 	KEY( 95, 187, 143, 207,	 97, 189, 142, 205,	"0"),
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
-                                                
+
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
-};                                              
-static struct keyboard_key password_char[] = {  
+};
+static struct keyboard_key password_char[] = {
 	KEY(175, 81, 204, 105,	177, 83, 202, 103,	"Y"),
-                                                
+
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"q"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"a"),
 	KEY(  0, 181,  23, 207,	  3, 183,  21, 205,	"z"),
@@ -434,38 +439,38 @@ static struct keyboard_key password_num[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"1"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"*"),
 	KEY(  0, 181,  23, 207,	  3, 183,  21, 205,	"@"),
-                                                
+
 	KEY( 24, 126,  47, 152,	 26, 128,  45, 150,	"2"),
 	KEY( 24, 153,  47, 180,	 26, 156,  45, 178,	"$"),
 	KEY( 24, 181,  47, 207,	 26, 183,  45, 205,	"?"),
-                                                
+
 	KEY( 48, 126,  71, 152,	 50, 128,  69, 150,	"3"),
 	KEY( 48, 153,  71, 180,	 50, 156,  69, 178,	"%"),
 	KEY( 48, 181,  71, 207,	 50, 183,  69, 205,	"!"),
-                                                
+
 	KEY( 72, 126, 95, 152,	 74, 128,  93, 150,	"4"),
 	KEY( 72, 153, 95, 180,	 74, 156,  93, 178,	"#"),
 	KEY( 72, 181, 95, 207,	 74, 183,  93, 205,	"&"),
-                                                
+
 	KEY( 96, 126, 119, 152,	 98, 128, 117, 150,	"5"),
 	KEY( 96, 153, 119, 180,	 98, 156, 117, 178,	"("),
 	KEY( 96, 181, 143, 207,	 98, 184, 141, 205,	" "),
-                                                
+
 	KEY(120, 126, 143, 152,	122, 128, 141, 150,	"6"),
 	KEY(120, 153, 143, 180,	122, 156, 141, 178,	")"),
-                                                
+
 	KEY(144, 126, 167, 152,	146, 128, 165, 150,	"7"),
 	KEY(144, 153, 167, 180,	146, 156, 165, 178,	"-"),
 	KEY(144, 181, 167, 207,	146, 183, 165, 205,	","),
-                                                
+
 	KEY(168, 126, 191, 152,	170, 128, 189, 150,	"8"),
 	KEY(168, 153, 191, 180,	170, 156, 189, 178,	"+"),
 	KEY(168, 181, 191, 207,	170, 183, 189, 205,	"."),
-                                                
+
 	KEY(192, 126, 215, 152,	194, 128, 213, 150,	"9"),
 	KEY(192, 153, 215, 180,	194, 156, 213, 178,	"="),
 	KEY(192, 181, 215, 207,	194, 183, 213, 205,	"'"),
-                                                
+
 	KEY(216, 126, 239, 152,	218, 128, 236, 150,	"0"),
 	KEY(216, 153, 239, 180,	218, 156, 236, 178,	WL_KEY_BACKSPACE_STR),
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
@@ -634,10 +639,10 @@ unsigned int keyboard_height()
 
 struct keyboard_key * keyboard_get_data(int x, int y)
 {
-	unsigned int i;
+	int i;
 	struct keyboard_key *keyboard_key = NULL;
 	int keyboard_entries = 0;
-	
+
 	if (touch_down_on_keyboard && pre_key &&
 		pre_key->left_x - (pre_key->right_x - pre_key->left_x) / 2 <= x && x <= pre_key->right_x + (pre_key->right_x - pre_key->left_x) / 2 &&
 		pre_key->left_y - (pre_key->right_y - pre_key->left_y) / 2 <= y && y <= pre_key->right_y + (pre_key->right_y - pre_key->left_y) / 2 )
@@ -758,26 +763,27 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 
 void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned char *key, int bOverwrite)
 {
+	(void)end_y; // *** unused argument
 	int i, j;
 	int bubble_start_x, bubble_start_y, bubble_end_x, bubble_end_y;
 	int bubble_stem_start_x, bubble_stem_start_y, bubble_stem_end_x, bubble_stem_end_y;
 	int bubble_stem_left_diff, bubble_stem_right_diff;
-	char s[5];
+	unsigned char s[5];
 	int width;
-    int bubble_adjust = 0;
-    int bubble_stem_width = end_x - start_x + 3;
+	int bubble_adjust = 0;
+	int bubble_stem_width = end_x - start_x + 3;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	guilib_fb_lock();
 	bubble_start_x = start_x - (KEY_BUBBLE_TOTAL_WIDTH - (end_x - start_x + 1)) / 2;
 	if (bubble_start_x < 0)
 	{
-        bubble_adjust = -bubble_start_x;
-        bubble_start_x = 0;
+	bubble_adjust = -bubble_start_x;
+	bubble_start_x = 0;
     }
 	else if (bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH > LCD_BUF_WIDTH_PIXELS)
 	{
-        bubble_adjust = -(bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH - LCD_BUF_WIDTH_PIXELS);
+	bubble_adjust = -(bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH - LCD_BUF_WIDTH_PIXELS);
 		bubble_start_x = LCD_BUF_WIDTH_PIXELS - KEY_BUBBLE_TOTAL_WIDTH;
     }
 	bubble_start_y = start_y + KEY_BUBBLE_STEM_UNDER_KEYPAD_PIXELS + KEY_BUBBLE_STEM_HEIGHT - KEY_BUBBLE_TOTAL_HEIGHT;
@@ -790,10 +796,10 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 		bubble_stem_end_x = bubble_stem_start_x + bubble_stem_width - 1;
 		bubble_stem_start_y = bubble_end_y + 1;
 		bubble_stem_end_y = bubble_start_y + KEY_BUBBLE_TOTAL_HEIGHT - 1;
-	
+
 		bubble_stem_left_diff = bubble_stem_start_x - bubble_start_x - bubble_adjust;
 		bubble_stem_right_diff = bubble_end_x - bubble_stem_end_x + bubble_adjust;
-	
+
 		key_bubble_save_x_start_byte = bubble_start_x / 8;
 		key_bubble_save_y_start = bubble_start_y;
 		key_bubble_save_width_bytes = KEY_BUBBLE_TOTAL_WIDTH_BYTES;
@@ -804,7 +810,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 			memcpy(&key_bubble_save[i * KEY_BUBBLE_TOTAL_WIDTH_BYTES],
 				&framebuffer[(key_bubble_save_y_start + i) * LCD_BUF_WIDTH_BYTES + key_bubble_save_x_start_byte], key_bubble_save_width_bytes);
 		}
-	
+
 		for (i = 0; i < KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT; i++)
 		{
 			if (i == 0 || i == 1)
@@ -826,7 +832,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 			else if (KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT - 3 <= i && i <= KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT - 1 )
 			{
 				int left_diff, right_diff;
-	
+
 				left_diff = bubble_stem_left_diff / (KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT - i);
 				if (bubble_stem_left_diff && ! left_diff)
 					left_diff = 1;
@@ -852,7 +858,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 					lcd_set_pixel(bubble_start_x + j, bubble_start_y + i, LCD_WHITE);
 			}
 		}
-	
+
 		for (i = 0; i < KEY_BUBBLE_STEM_HEIGHT; i++) // drawn from the bottom of the stem
 		{
 			if (i == 0) // bottom
@@ -882,9 +888,9 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 	}
 
     if (kb_mode == KEYBOARD_CHAR_KO)
-        alphabet_to_korean_jamo(s, *key);
+	alphabet_to_korean_jamo(s, *key);
     else
-        utf8_char_toupper(s, key);
+	utf8_char_toupper(s, key);
 	width = get_external_str_pixel_width(s, TITLE_FONT_IDX);
 	render_string(TITLE_FONT_IDX, bubble_start_x + (KEY_BUBBLE_TOTAL_WIDTH - width) / 2, bubble_start_y + 1, s, 1, 0);
 	guilib_fb_unlock();
@@ -1092,10 +1098,10 @@ int keyboard_korean_special_key(void)
 	{
 		if (time_diff(timer_get(), key_bubble_start_time) > seconds_to_ticks(KOREAN_SPECIAL_KEY_CHANGE_TIME))
 		{
-			char s[2];
+			unsigned char s[2];
 			s[0] = toupper(*pre_key->key);
-			s[1] = '\0';			
-			draw_key_bubble(pre_key->left_x_inverted, pre_key->left_y_inverted, pre_key->right_x_inverted, pre_key->right_y_inverted, 
+			s[1] = '\0';
+			draw_key_bubble(pre_key->left_x_inverted, pre_key->left_y_inverted, pre_key->right_x_inverted, pre_key->right_y_inverted,
 				s, 1);
 			bKoreanSpecialKeyEnabled = 1;
 		}
@@ -1125,7 +1131,7 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	int i;
 	struct keyboard_key *keyboard_key = NULL;
 	int keyboard_entries = 0;
-	
+
 	if (kb_mode == KEYBOARD_CHAR)
 	{
 		if (wiki_is_japanese() || wiki_is_korean())
@@ -1229,10 +1235,11 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	if (keyboard_key)
 	{
 		unsigned char *s;
-        for (i = 0; i < keyboard_entries; ++i) {
+		for (i = 0; i < keyboard_entries; ++i) {
 			s = full_alphabet_to_half(keyboard_key[i].key, NULL);
-            if (*s == keycode)
+			if (*s == keycode) {
 				return &keyboard_key[i];
+			}
 		}
 	}
 
@@ -1241,11 +1248,9 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 
 int multi_selection_key(struct keyboard_key *key)
 {
-    char first_utf8_char[5];
+    unsigned char first_utf8_char[5];
 
-	get_first_utf8_char(first_utf8_char, key->key, strlen(key->key));
-    if (strlen(first_utf8_char) == strlen(key->key))
-		return 0;
-	else
-		return 1;
+    unsigned int len = strlen((const char *)key->key);
+    get_first_utf8_char(first_utf8_char, key->key, len);
+    return strlen((const char *)first_utf8_char) != len;
 }

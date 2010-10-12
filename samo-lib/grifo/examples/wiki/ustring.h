@@ -1,6 +1,8 @@
 /*
  * Copyright (c) 2009 Openmoko Inc.
  *
+ * Authors   Christopher Hall <hsw@openmoko.com>
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,21 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LCD_RESTRICTED_H
-#define _LCD_RESTRICTED_H
+#if !defined(_USTRING_H_)
+#define _USTRING_H_ 1
 
-#define MAX_PASSWORD_LEN 9
+#include <string.h>
 
-void set_password(void);
-void get_password(void);
-void check_password(void);
-int check_restriction(void);
-int password_add_char(char c);
-int password_remove_char(void);
-int clear_password_string(void);
-int get_password_string_len(void);
-void handle_password_key(char keycode);
-void filter_option(void);
-int init_article_filter(void);
+#define ustrlen(s) ((int)strlen((const char *)(s)))
+#define ustrcpy(d, s) (strcpy((char *)(d), (const char *)(s)))
+#define ustrncpy(d, s, n) (strncpy((char *)(d), (const char *)(s), (n)))
+#define ustrcmp(d, s) (strcmp((const char *)(d), (const char *)(s)))
+#define ustrncmp(d, s, n) (strncmp((const char *)(d), (const char *)(s), (n)))
+#define ustrchr(s, c) ((unsigned char *)strchr((const char *)(s), (c)))
 
-#endif /* _LCD_RESTRICTED_H */
+#endif

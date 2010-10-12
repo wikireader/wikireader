@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
+#include "ustring.h"
 #include "utf8.h"
 
-ucs4_t UTF8_to_UCS4(unsigned char **pUTF8)
+ucs4_t UTF8_to_UCS4(const unsigned char **pUTF8)
 {
 	ucs4_t c0, c1, c2, c3;
 
@@ -107,29 +107,29 @@ void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8)
 	}
 }
 
-void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
+void get_last_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8_str, int utf8_str_len)
 {
 	int i;
 	int j = 0;
-	
+
 	if (utf8_str_len > 0)
 	{
 		i = utf8_str_len - 1;
 		while (i >= 0 && (utf8_str[i] & 0xC0) == 0x80)
 			i--;
-		
+
 		while (i < utf8_str_len && j < 4)
 			out_utf8_char[j++] = utf8_str[i++];
 	}
-	
+
 	out_utf8_char[j] = '\0';
 }
 
-void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
+void get_first_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8_str, int utf8_str_len)
 {
 	int len;
 	int i = 0;
-	
+
 	if (utf8_str_len > 0)
 	{
 		if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
@@ -146,18 +146,18 @@ void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len)
 		}
 		else
 			len = 1;
-		
+
 		for (i = 0; i < len && i < utf8_str_len; i++)
 			out_utf8_char[i] = utf8_str[i];
 	}
-	
+
 	out_utf8_char[i] = '\0';
 }
 
-char *next_utf8_char(char *utf8_str)
+const unsigned char *next_utf8_char(const unsigned char *utf8_str)
 {
 	int len;
-	
+
 	if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
 	{
 		len = 2;
@@ -172,7 +172,7 @@ char *next_utf8_char(char *utf8_str)
 	}
 	else
 		len = 1;
-	
+
 	while (len && *utf8_str)
 	{
 		len--;
@@ -181,30 +181,30 @@ char *next_utf8_char(char *utf8_str)
 	return utf8_str;
 }
 
-void utf8_char_toupper(unsigned char *out, unsigned char *in)
+void utf8_char_toupper(unsigned char *out, const unsigned char *in)
 {
     if ('a' <= *in && *in <= 'z')
     {
-        out[0] = in[0] + ('A' - 'a');
-        out[1] = '\0';
+	out[0] = in[0] + ('A' - 'a');
+	out[1] = '\0';
     }
-    else if (!strncmp(in, (unsigned char *)"æ", 2))
+    else if (!ustrncmp(in, "æ", 2))
     {
-        strcpy(out, "Æ");
+	ustrcpy(out, "Æ");
     }
-    else if (!strncmp(in, "å", 2))
+    else if (!ustrncmp(in, "å", 2))
     {
-        strcpy(out, "Å");
+	ustrcpy(out, "Å");
     }
-    else if (!strncmp(in, "ø", 2))
+    else if (!ustrncmp(in, "ø", 2))
     {
-        strcpy(out, "Ø");
+	ustrcpy(out, "Ø");
     }
     else
-        strcpy(out, in);
+	ustrcpy(out, in);
 }
 
-unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len)
+unsigned char *full_alphabet_to_half(const unsigned char *full, int *used_len)
 {
 	static unsigned char half[5];
 
@@ -235,13 +235,13 @@ unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len)
 	}
 	else
 	{
-    	char first_utf8_char[5];
-    	int len_first_char;
+	unsigned char first_utf8_char[5];
+	int len_first_char;
 
-    	get_first_utf8_char(first_utf8_char, full, strlen(full));
-    	len_first_char = strlen(first_utf8_char);
+	get_first_utf8_char(first_utf8_char, full, ustrlen(full));
+	len_first_char = ustrlen(first_utf8_char);
 		if (used_len)
-        	*used_len = len_first_char;
+		*used_len = len_first_char;
 		memcpy(half, first_utf8_char, len_first_char);
 	}
 	return half;

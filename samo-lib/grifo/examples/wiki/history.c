@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
 #include <wikilib.h>
 #include <guilib.h>
 #include <glyph.h>
 #include <search.h>
 #include <stdlib.h>
 #include <guilib.h>
+
+#include "ustring.h"
 #include "grifo.h"
 #include "history.h"
 #include "search.h"
@@ -86,7 +87,7 @@ void history_reload()
 	render_history_with_pcf();
 }
 
-void history_add(long idx_article, const char *title, int b_keep_pos)
+void history_add(long idx_article, const unsigned char *title, int b_keep_pos)
 {
 	int i = 0;
 	int bFound = 0;
@@ -132,7 +133,7 @@ void history_add(long idx_article, const char *title, int b_keep_pos)
 		history_count = MAX_HISTORY - 1;
 	memrcpy((void*)&history_list[1],(void*)&history_list[0],sizeof(HISTORY)*history_count);
 	history_list[0].idx_article = idx_article;
-	strcpy(history_list[0].title, title);
+	ustrcpy(history_list[0].title, title);
 	history_list[0].last_y_pos = 0;
 	history_count++;
 }
@@ -232,8 +233,8 @@ int history_list_save(int level)
 void draw_clear_history(int bClear)
 {
 	int i;
-	static char localBuffer[27 * LCD_BUFFER_WIDTH / 8];
-	unsigned char *pText;
+	static unsigned char localBuffer[27 * LCD_BUFFER_WIDTH / 8];
+	const unsigned char *pText;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	if (bClear)
@@ -273,12 +274,12 @@ void draw_clear_history(int bClear)
 		framebuffer[204 * LCD_BUFFER_WIDTH / 8 + 29] = 0x1F;
 
 		pText=get_nls_text("clear_history");
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, strlen(pText), 1);
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, strlen((const char *)pText), 1);
 		pText=get_nls_text("yes");
-		render_string(SUBTITLE_FONT_IDX, 131 + (184 - 131 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
-			      185, pText, strlen(pText), 0);
+		render_string(SUBTITLE_FONT_IDX, 131 + (184 - 131 - (get_external_str_pixel_width((const unsigned char *)pText, SUBTITLE_FONT_IDX)) + 1) / 2,
+			      185, pText, strlen((const char *)pText), 0);
 		pText=get_nls_text("no");
-		render_string(SUBTITLE_FONT_IDX, 185 + (238 - 185 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
-			      185, pText, strlen(pText), 0);
+		render_string(SUBTITLE_FONT_IDX, 185 + (238 - 185 - (get_external_str_pixel_width((const unsigned char *)pText, SUBTITLE_FONT_IDX)) + 1) / 2,
+			      185, pText, strlen((const char *)pText), 0);
 	}
 }

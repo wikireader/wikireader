@@ -19,8 +19,8 @@
 #define MAPPING_TABLES_H
 
 struct _english_hiragana_mapping {
-	char *english;
-	char *hiragana;
+	const char *english;
+	const char *hiragana;
 } english_hiragana_mapping[] = {
 	{",",   "、"	},
 	{"-",   "ー"	},
@@ -596,8 +596,8 @@ struct _english_hiragana_mapping {
 };
 
 struct _zh_jp_english_mapping {
-	char *hiragana;
-	char *english;
+	const char *hiragana;
+	const char *english;
 } zh_jp_english_mapping[] = {
 	{"å",	 "a"},
 	{"æ",	 "ae"},
@@ -1276,8 +1276,8 @@ struct _zh_jp_english_mapping {
 };
 
 struct _sonant_conversion {
-	char *origin;
-	char *after_conversion;
+	const char *origin;
+	const char *after_conversion;
 } sonant_conversion[] = {
 	{"ぁ" , "あ" },
 	{"あ" , "ぁ" },
@@ -1347,8 +1347,8 @@ struct _sonant_conversion {
 };
 
 struct _backward_key_sequence {
-	char *origin;
-	char *after_conversion;
+	const char *origin;
+	const char *after_conversion;
 } backward_key_sequence[] = {
 	{"!", "?" },
 	{"#", "@" },
@@ -1489,8 +1489,8 @@ struct _backward_key_sequence {
 };
 
 struct _korean_jamo {
-	char *english;
-	char *jamo;
+	const char *english;
+	const char *jamo;
 } korean_jamo[] = {
 	{"E", "ㄸ" },
 	{"O", "ㅒ" },
@@ -1528,11 +1528,11 @@ struct _korean_jamo {
 };
 
 struct _korean_jamo_ex {
-	char *english;
+	const char *english;
 	int jamo_idx;
-	char *jamo;
-	char *phonetic;
-	char *phonetic_name;
+	const char *jamo;
+	const char *phonetic;
+	const char *phonetic_name;
 } korean_jamo_ex[] = {
 	{"E",  INITIAL_JAMO_BASE+4,   	"ㄸ", "dd" , "ssangtikeut"  },
 	{"O",  MEDIAL_JAMO_BASE+3 ,		"ㅒ", "yae", "yae"          },

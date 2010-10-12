@@ -23,8 +23,14 @@
 #include "grifo.h"
 #include "wikilib.h"
 
-int main(int argc, char **argv)
+// Note: this must be the first object in the linker command line
+//       since Grifo always starts an app from the first .text location.
+
+int grifo_main(int argc, char **argv)
 {
+	(void)argc; // *** unused argument
+	(void)argv; // *** unused argument
+
 	debug_printf("starting wiki app\n");
 	wikilib_run();
 	return 1;

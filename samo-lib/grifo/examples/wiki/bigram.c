@@ -23,7 +23,7 @@
 #include "wiki_info.h"
 
 typedef struct _bitram {
-    char char_pairs[128][2];
+    unsigned char char_pairs[128][2];
 } BIGRAM, *PBIGRAM;
 PBIGRAM aBigram = NULL;
 
@@ -33,7 +33,7 @@ void init_bigram(int fd)
 {
     if (!aBigram)
     {
-        aBigram = (PBIGRAM)memory_allocate(sizeof(BIGRAM) * get_wiki_count(), "bigram");
+	aBigram = (PBIGRAM)memory_allocate(sizeof(BIGRAM) * get_wiki_count(), "bigram");
     }
     init_char_idx();
 	file_read(fd, &aBigram[nCurrentWiki], sizeof(BIGRAM));
@@ -45,7 +45,7 @@ void init_char_idx()
 	int i;
 	int idx = 1;
 	static int inited = 0;
-	
+
 	if (inited)
 		return;
 
@@ -64,12 +64,12 @@ void init_char_idx()
 	}
 }
 
-int bigram_char_idx(char c)
+int bigram_char_idx(unsigned char c)
 {
 	return aCharIdx[(int)c];
 }
 
-void bigram_decode(char *outStr, char *inStr, int lenMax)
+void bigram_decode(unsigned char *outStr, const unsigned char *inStr, int lenMax)
 {
 	unsigned char c;
 
@@ -97,18 +97,15 @@ void bigram_decode(char *outStr, char *inStr, int lenMax)
 	*outStr = '\0';
 }
 
-int is_supported_search_char(char c)
+int is_supported_search_char(unsigned char c)
 {
-	if (c && (strchr(SUPPORTED_SEARCH_CHARS, c) || ('A' <= c && c <= 'Z')))
-		return 1;
-	else
-		return 0;
+	return c && (strchr(SUPPORTED_SEARCH_CHARS, c) || ('A' <= c && c <= 'Z'));
 }
 
-int search_string_cmp(char *title, char *search, int len)  // assuming search consists of lowercase only
+int search_string_cmp(const unsigned char *title, const unsigned char *search, int len)  // assuming search consists of lowercase only
 {
 	int rc = 0;
-	char c = 0;
+	unsigned char c = 0;
 
 	while (!rc && len > 0)
 	{

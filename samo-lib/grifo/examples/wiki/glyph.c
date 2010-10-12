@@ -24,6 +24,7 @@
 #include "wikilib.h"
 #include "grifo.h"
 #include "guilib.h"
+#include "utf8.h"
 #include "glyph.h"
 #include "lcd_buf_draw.h"
 #include "search.h"
@@ -61,16 +62,15 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 	}
 }
 
-int buf_render_string(char *buf, const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted)
+int buf_render_string(unsigned char *buf, const int font, int start_x,
+		  int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int x;
 	int width;
 	long len = text_length;
 	long lenLast = 0;
 	long widthLast = 0;
-	char *p = (char *)string;
-	unsigned char *q;
+	const unsigned char *p = string;
 	int nCharBytes;
 	ucs4_t c;
 
@@ -98,7 +98,7 @@ int buf_render_string(char *buf, const int font, int start_x,
 	}
 
 	x = start_x;
-	q = (unsigned char *)string;
+	const unsigned char *q = (const unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
 		x = buf_draw_bmf_char(buf, c,font-1,x,start_y, inverted);
@@ -109,15 +109,14 @@ int buf_render_string(char *buf, const int font, int start_x,
 }
 
 int render_string(const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted)
+		  int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int x;
 	int width;
 	long len = text_length;
 	long lenLast = 0;
 	long widthLast = 0;
-	char *p = (char *)string;
-	unsigned char *q;
+	const unsigned char *p = string;
 	int nCharBytes;
 	ucs4_t c;
 
@@ -145,7 +144,7 @@ int render_string(const int font, int start_x,
 	}
 
 	x = start_x;
-	q = (unsigned char *)string;
+	const unsigned char *q = (const unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
 		x = draw_bmf_char(c,font-1,x,start_y, inverted, 0);
@@ -156,7 +155,7 @@ int render_string(const int font, int start_x,
 }
 
 int render_string_and_clear(const int font, int start_x,
-		  int start_y, char *string, int text_length, int inverted,
+		  int start_y, const unsigned char *string, int text_length, int inverted,
 		  int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
 {
 	int x;
@@ -165,8 +164,7 @@ int render_string_and_clear(const int font, int start_x,
 	long len = text_length;
 	long lenLast = 0;
 	long widthLast = 0;
-	char *p = (char *)string;
-	unsigned char *q;
+	const unsigned char *p = string;
 	int nCharBytes;
 	ucs4_t c;
 
@@ -226,7 +224,7 @@ int render_string_and_clear(const int font, int start_x,
 		guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
 
 	x = start_x;
-	q = (unsigned char *)string;
+	const unsigned char *q = (const unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
 		x = draw_bmf_char(c,font-1,x,start_y, inverted, 1);
@@ -238,7 +236,7 @@ int render_string_and_clear(const int font, int start_x,
 
 // if search string is longer than the LCD width, keep the right of it to fit
 int render_string_right(const int font, int start_x,
-			int start_y, char *string, int text_length, int inverted)
+			int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int i;
 	int x;
@@ -247,8 +245,7 @@ int render_string_right(const int font, int start_x,
 	int lens[MAX_TITLE_SEARCH];
 	int width = start_x;
 	long len = text_length;
-	char *p = (char *)string;
-	unsigned char *q;
+	const unsigned char *p = string;
 	int nCharBytes;
 	int rc;
 	ucs4_t c;
@@ -280,7 +277,7 @@ int render_string_right(const int font, int start_x,
 	}
 
 	x = start_x;
-	q = (unsigned char *)string;
+	const unsigned char *q = (const unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
 		x = draw_bmf_char(c,font-1,x,start_y, inverted, 1);

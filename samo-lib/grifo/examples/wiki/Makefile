@@ -1,6 +1,6 @@
 # Makefile
 #
-# Copyright (c) 2009 Openmoko Inc.
+# Copyright (c) 2010 Openmoko Inc.
 #
 # Authors   Christopher Hall <hsw@openmoko.com>
 #
@@ -17,96 +17,79 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# +++START_UPDATE_MAKEFILE: Start of auto included code
-# The text between the +++ and --- tags is copied by the
-# UpdateMakefiles script. Do not remove or change these tags.
-# ---
-# Autodetect root directory
-define FIND_ROOT_DIR
-while : ; do \
-  d=$$(pwd) ; \
-  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
-  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
-  cd .. ; \
-done
-endef
-ROOT_DIR := $(shell ${FIND_ROOT_DIR})
-# Directory of Makefile includes
-MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
-# Include the initial Makefile setup
-include ${MK_DIR}/definitions.mk
-# ---END_UPDATE_MAKEFILE: End of auto included code
+include ../application-pre.mk
 
+PROGRAM = wiki
+ICON = YES
 
-INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I${GRIFO_INCLUDE}
-INCLUDES += -I${MINI_LIBC_INCLUDE}
+# list of sources and headers
+SOURCES += ${PROGRAM}.c
+SOURCES += Alloc.c
+SOURCES += bigram.c
+SOURCES += bmf.c
+SOURCES += Bra.c
+SOURCES += btree.c
+SOURCES += glyph.c
+SOURCES += guilib.c
+SOURCES += history.c
+SOURCES += keyboard.c
+SOURCES += languages.c
+SOURCES += lcd_buf_draw.c
+SOURCES += LzFind.c
+SOURCES += LzmaDec.c
+SOURCES += restricted.c
+SOURCES += search.c
+SOURCES += search_fnd.c
+SOURCES += sha1.c
+SOURCES += utf8.c
+SOURCES += wiki_info.c
+SOURCES += wikilib.c
 
-LIBS += lib/libexamples.a
-LIBS += ${GRIFO_LIB}
-LIBS += ${MINI_LIBC_LIB}
-LIBS += $(shell $(CC) -print-libgcc-file-name)
+HEADERS += Alloc.h
+HEADERS += bigram.h
+HEADERS += bmf.h
+HEADERS += Bra.h
+HEADERS += btree.h
+HEADERS += general_header.h
+HEADERS += glyph.h
+HEADERS += guilib.h
+HEADERS += history.h
+HEADERS += keyboard.h
+HEADERS += languages.h
+HEADERS += lcd_buf_draw.h
+HEADERS += LzFind.h
+HEADERS += LzHash.h
+HEADERS += LzmaDec.h
+HEADERS += mapping_tables.h
+HEADERS += restricted.h
+HEADERS += search_fnd.h
+HEADERS += search.h
+HEADERS += sha1.h
+HEADERS += Types.h
+HEADERS += utf8.h
+HEADERS += wiki_info.h
+HEADERS += wikilib.h
 
-LDFLAGS += -static --strip-all -s --no-gc-sections -N
-
-BUILD_PREFIX := build/
-
-INCLUDES += -I${BUILD_PREFIX}
-
-vpath %.c :src
-vpath %.png :src
+IMAGES += keyboard_123.png
+IMAGES += keyboard_abc2_jp.png
+IMAGES += keyboard_abc2_ko.png
+IMAGES += keyboard_abc_da.png
+IMAGES += keyboard_abc_ko.png
+IMAGES += keyboard_abc.png
+IMAGES += keyboard_phone_jp_123.png
+IMAGES += keyboard_phone_jp_abc.png
+IMAGES += keyboard_phone_jp.png
+IMAGES += keyboard_phone_tw_123.png
+IMAGES += keyboard_phone_tw_abc.png
+IMAGES += keyboard_phone_tw.png
+IMAGES += nls.png
 
 ALL_IMAGES = $(addprefix ${BUILD_PREFIX},all_images.h)
+TARGETS += ${ALL_IMAGES}
 
-TARGETS += wiki.app wiki.ico
+IMAGE_HEADERS = $(addsuffix .h,$(addprefix ${BUILD_PREFIX},$(basename ${IMAGES})))
+CLEAN_TARGETS += ${IMAGE_HEADERS}
 
-# list of modules
-OBJECTS = main.o
-OBJECTS += guilib.o
-OBJECTS += bmf.o
-OBJECTS += lcd_buf_draw.o
-OBJECTS += bigram.o
-OBJECTS += glyph.o
-OBJECTS += restricted.o
-OBJECTS += sha1.o
-OBJECTS += wiki_info.o
-OBJECTS += wikilib.o
-OBJECTS += keyboard.o
-OBJECTS += utf8.o
-OBJECTS += btree.o
-OBJECTS += languages.o
-OBJECTS += search.o
-OBJECTS += search_fnd.o
-OBJECTS += history.o
-OBJECTS += LzmaDec.o
-OBJECTS += Alloc.o
-OBJECTS += Bra.o
-OBJECTS += LzFind.o
-
-# convert the image files
-IMAGES = keyboard_abc keyboard_abc2_jp keyboard_abc2_ko keyboard_abc_ko keyboard_abc_da keyboard_123 nls
-IMAGES += keyboard_phone_jp keyboard_phone_jp_abc keyboard_phone_jp_123
-IMAGES += keyboard_phone_tw keyboard_phone_tw_abc keyboard_phone_tw_123
-
-BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
-
-.PHONY: all
-all:  ${TARGETS}
-
-.PHONY: pre-build
-pre-build: ${ALL_IMAGES}
-
-lib/libexamples.a: lib pre-build ${BUILD_OBJECTS}
-	${RM} "$@"
-	${AR} r "$@" ${BUILD_OBJECTS}
-
-
-wiki.app: build build/main.o ${GRIFO_APPLICATION_LDS} ${LIBS}
-	$(LD) -o $@ ${LDFLAGS} build/main.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.app=.map}
-	${OBJDUMP} -D "$@" > "${@:.app=.dump}"
-
-IMAGE_HEADERS = $(addsuffix .h,$(addprefix ${BUILD_PREFIX},$(strip ${IMAGES})))
-CLEAN_FILES += ${IMAGE_HEADERS}
 ${ALL_IMAGES}: build ${IMAGE_HEADERS}
 	@${RM} "$@"
 	@for f in ${IMAGE_HEADERS}; \
@@ -115,21 +98,25 @@ ${ALL_IMAGES}: build ${IMAGE_HEADERS}
 	   echo '#include "'$$(basename "$${f}")'"' >> "$@"; \
 	 done
 
-build:
-	${MKDIR} "$@"
+SIMULATE_FILES += $(addprefix ../,${IMAGES})
 
-lib:
-	${MKDIR} "$@"
+qmake-project:
+	echo 'all_images.target = all_images.h' >> ${QMAKE_PROJECT}
+	echo 'all_images.commands = '"'"'@$${DEL_FILE} "$$@";'"'" >> ${QMAKE_PROJECT}
+	for h in $(notdir ${IMAGE_HEADERS}); \
+	do \
+	  t="$${h%.h}"; \
+	  png="$${t}.png"; \
+	  echo "all_images.commands += 'echo Keyboard: $${h};'" >> ${QMAKE_PROJECT}; \
+	  echo "all_images.commands += 'echo \'\$$\$${LITERAL_HASH}include \"$${h}\"\' >> \"\$$@\";'" >> ${QMAKE_PROJECT}; \
+	  echo "all_images.depends += $${h}" >> ${QMAKE_PROJECT}; \
+	  echo "$${t}.target = $${h}" >> ${QMAKE_PROJECT}; \
+	  echo "$${t}.depends = $${png}" >> ${QMAKE_PROJECT}; \
+	  echo "$${t}.commands = '${IMAGE2HEADER} --inverted --header=$${h} --variable=$${t}_image $${png}';" >> ${QMAKE_PROJECT}; \
+	  echo "QMAKE_EXTRA_TARGETS += $${t}" >> ${QMAKE_PROJECT}; \
+	done
+	echo 'QMAKE_EXTRA_TARGETS += all_images' >> ${QMAKE_PROJECT}
+	echo 'QMAKE_CLEAN += $$$${all_images.target}' >> ${QMAKE_PROJECT}
 
-.PHONY: install
-install: all
-	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
-	${COPY} ${TARGETS} "${DESTDIR}"/
 
-.PHONY: clean
-clean:
-	${RM} -r ${TARGETS} build lib
-	${RM} -r *.o *.app *.d *.map *.asm33 *.dump *.ico
-
-
-include ${MK_DIR}/rules.mk
+include ../application-post.mk

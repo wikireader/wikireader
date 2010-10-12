@@ -35,7 +35,7 @@
 
 void history_clear(void);
 
-void history_add(long idx_article, const char *title, int b_keep_pos);
+void history_add(long idx_article, const unsigned char *title, int b_keep_pos);
 unsigned int history_get_count();
 void history_list_init(void);
 int history_list_save(int level);
@@ -51,7 +51,7 @@ long history_get_previous_idx(long current_idx_article, int b_drop_from_list);
 typedef struct __attribute__ ((packed)) _HISTORY {
 	int32_t idx_article;
 	int32_t last_y_pos;
-	char title[MAX_TITLE_ACTUAL];
+	unsigned char title[MAX_TITLE_ACTUAL];
 } HISTORY;
 
 enum history_save_e {

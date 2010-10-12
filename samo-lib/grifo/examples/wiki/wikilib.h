@@ -75,6 +75,9 @@ unsigned long timer_get(void);
 unsigned long time_diff(unsigned long t2, unsigned long t1);
 unsigned long seconds_to_ticks(float sec);
 void repaint_search(void);
-void fatal_error(char*);
+void fatal_error_print(const char *file, int line, const char *format, ...)  __attribute__ ((format (printf, 3, 4)));
+#define fatal_error(format...) \
+	fatal_error_print(__FILE__, __LINE__, format)
+
 void handle_search_key(struct keyboard_key *key, unsigned long ev_time);
 #endif /* WIKILIB_H */

@@ -18,11 +18,13 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdarg.h>
 #include <inttypes.h>
 
 #include <grifo.h>
 #include <guilib.h>
+
+#include "ustring.h"
 #include "history.h"
 #include "search.h"
 #include "glyph.h"
@@ -58,7 +60,7 @@ extern int display_mode;
 pcffont_bmf_t pcfFonts[FONT_COUNT];
 static int lcd_draw_buf_inited = 0;
 LCD_DRAW_BUF lcd_draw_buf;
-unsigned char * file_buffer;
+unsigned char *file_buffer;
 int restricted_article = 0;
 int lcd_draw_buf_pos  = 0;
 int lcd_draw_cur_y_pos = 0;
@@ -73,7 +75,7 @@ int bShowPositioner = 0;
 
 ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 EXTERNAL_LINK externalLink[MAX_EXTERNAL_LINKS];
-char articleLinkBeforeAfter[MAX_ARTICLE_LINKS];
+unsigned char articleLinkBeforeAfter[MAX_ARTICLE_LINKS];
 
 int link_to_be_activated = -1;
 unsigned long link_to_be_activated_start_time = 0;
@@ -162,16 +164,21 @@ void show_scroll_bar(int bShow)
 
 void load_all_fonts()
 {
-	int i;
+       int i;
 
-	if (!lcd_draw_buf_inited)
-		init_lcd_draw_buf();
-	for (i=0; i < FONT_COUNT; i++)
-	{
-		if (pcfFonts[i].fd == FONT_FD_NOT_INITED)
-			pcfFonts[i].fd = load_bmf(&pcfFonts[i]);
-	}
+       if (!lcd_draw_buf_inited)
+	       init_lcd_draw_buf();
+       for (i=0; i < FONT_COUNT; i++)
+       {
+	       if (pcfFonts[i].fd == FONT_FD_NOT_INITED) {
+		       pcfFonts[i].fd = load_bmf(&pcfFonts[i]);
+		       if (pcfFonts[i].fd < 0) {
+			       fatal_error("Missing font file: %s", pcfFonts[i].file);
+		       }
+	       }
+       }
 }
+
 
 void init_lcd_draw_buf()
 {
@@ -235,10 +242,10 @@ void init_lcd_draw_buf()
 		memset(lcd_draw_buf.screen_buf, 0, LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
 }
 
-void draw_string(unsigned char *s)
+void draw_string(const unsigned char *s)
 {
 	//ucs4_t u;
-	unsigned char **p = &s;
+	const unsigned char **p = &s;
 
 	buf_draw_UTF8_str(p);
 	//while (**p && (u = UTF8_to_UCS4(p)))
@@ -250,7 +257,7 @@ void draw_string(unsigned char *s)
 void draw_article_positioner(int y_pos)
 {
 	static int last_positioner_y = 0;
-	
+
 	if (!bShowPositioner)
 		return;
 	if (y_pos == 0)
@@ -309,7 +316,8 @@ char* FontFile(int idx) {
 	}
 }
 
-void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy, unsigned char **pUTF8,int start_x,int end_x,int start_y,int end_y,int offset_x,int font_idx)
+void buf_draw_UTF8_str_in_copy_buffer(unsigned char *framebuffer_copy, const unsigned char **pUTF8,
+				      int start_x,int end_x,int start_y,int end_y,int offset_x,int font_idx)
 {
 	ucs4_t u;
 	LCD_DRAW_BUF lcd_draw_buf_external;
@@ -317,14 +325,14 @@ void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy, unsigned char **pU
 	lcd_draw_buf_external.current_x = start_x+offset_x;
 	lcd_draw_buf_external.current_y = start_y+2;
 	lcd_draw_buf_external.pPcfFont = &pcfFonts[font_idx - 1];
-	lcd_draw_buf_external.screen_buf = (unsigned char*)framebuffer_copy;
+	lcd_draw_buf_external.screen_buf = framebuffer_copy;
 	lcd_draw_buf_external.line_height = pcfFonts[font_idx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 
 	lcd_draw_buf_external.align_adjustment = 0;
 
 	while (**pUTF8 > MAX_ESC_CHAR)
 	{
-		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
+		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			buf_draw_char_external(&lcd_draw_buf_external,u,start_x,end_x,start_y,end_y);
 		}
@@ -332,7 +340,7 @@ void buf_draw_UTF8_str_in_copy_buffer(char *framebuffer_copy, unsigned char **pU
 	}
 }
 
-void buf_draw_UTF8_str(unsigned char **pUTF8)
+void buf_draw_UTF8_str(const unsigned char **pUTF8)
 {
 	unsigned char c, c2;
 	char c3;
@@ -582,7 +590,7 @@ void draw_language_link_arrow()
 				lcd_set_pixel(j, i, LCD_BLACK);
 			}
 		}
-		
+
 		if (8 + LCD_TOP_MARGIN <= i && i <= 8 + LCD_TOP_MARGIN + MAX_PIXELS_EACH_SIDE)
 		{
 			if (bShowLanguageLinks)
@@ -609,6 +617,7 @@ void draw_language_link_arrow()
 
 void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 {
+	(void)b_repaint_invert_link; // *** unused argument
 	int framebuffersize;
 	framebuffersize = framebuffer_size();
 
@@ -629,7 +638,7 @@ void repaint_framebuffer(unsigned char *buf, int pos, int b_repaint_invert_link)
 
 void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 {
-	int i;
+	unsigned long i;
 	long h_line_y;
 
 
@@ -772,17 +781,17 @@ void buf_draw_char(ucs4_t u)
 	lcd_draw_buf.current_x += Cmetrics.widthDevice;
 }
 
-int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
+int get_external_str_pixel_width(const unsigned char *pIn, int font_idx)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
 	int width = 0;
 	ucs4_t u;
-	unsigned char **pUTF8 = &pIn;
+	const unsigned char **pUTF8 = &pIn;
 
 	while (**pUTF8 > MAX_ESC_CHAR)
 	{
-		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
+		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
@@ -793,12 +802,13 @@ int get_external_str_pixel_width(unsigned char *pIn, int font_idx)
 	return width;
 }
 
-void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *start_x, int *start_y, int *end_x, int *end_y)
+void get_external_str_pixel_rectangle(const unsigned char *pIn, int font_idx,
+				      int *start_x, int *start_y, int *end_x, int *end_y)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
 	ucs4_t u;
-	unsigned char **pUTF8 = &pIn;
+	const unsigned char **pUTF8 = &pIn;
 	int width = 0;
 	int bytes_to_process;
 	int x_base;
@@ -814,17 +824,17 @@ void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *sta
 	*end_y = -999;
 	while (**pUTF8 > MAX_ESC_CHAR)
 	{
-		if ((u = UTF8_to_UCS4((unsigned char**)pUTF8)))
+		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
 			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
 			{
 				bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-			
+
 				x_base = width + Cmetrics.LSBearing;
 				x_offset = 0;
 				y_offset = pcfFonts[font_idx - 1].Fmetrics.linespace - (pcfFonts[font_idx - 1].Fmetrics.descent + Cmetrics.ascent);
-			
+
 				x_bit_idx = x_base & 0x07;
 				for (i = 0; i < bytes_to_process; i++)
 				{
@@ -855,7 +865,7 @@ void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *sta
 						if (!(x_bit_idx & 0x07))
 						{
 							x_bit_idx = 0;
-			
+
 						}
 						j--;
 					}
@@ -869,6 +879,9 @@ void get_external_str_pixel_rectangle(unsigned char *pIn, int font_idx, int *sta
 
 void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int start_x,int end_x,int start_y,int end_y)
 {
+	(void)start_y; // *** unused argument
+	(void)end_y; // *** unused argument
+
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
 	int bytes_to_process;
@@ -936,15 +949,15 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 	lcd_draw_buf_external->current_x += Cmetrics.widthDevice;
 }
 
-int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCharBytes)
+int get_UTF8_char_width(int idxFont, const unsigned char **pContent, long *lenContent, int *nCharBytes)
 {
 	ucs4_t u;
-	char *pBase;
+	const unsigned char *pBase;
 	charmetric_bmf Cmetrics;
 	bmf_bm_t *bitmap;
 
 	pBase = *pContent;
-	u = UTF8_to_UCS4((unsigned char **)pContent);
+	u = UTF8_to_UCS4(pContent);
 	*nCharBytes = *pContent - pBase;
 	*lenContent -= *nCharBytes;
 
@@ -958,18 +971,18 @@ int get_UTF8_char_width(int idxFont, char **pContent, long *lenContent, int *nCh
 bool is_word_break(ucs4_t u)
 {
 	unsigned char c = u & 0x000000FF;
-	
+
 	return ((u > 0x47F) || (u < 0x100 && strchr(" ~!@#$%^&*()-_+=[]\{}|;;':\",./", c)));
 }
 
-int extract_str_fitting_width(unsigned char **pIn, char *pOut, int max_width, int font_idx)
+int extract_str_fitting_width(const unsigned char **pIn, unsigned char *pOut, int max_width, int font_idx)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
 	int width = 0;
 	int widthFitted = 0;
 	ucs4_t u;
-	unsigned char *pOrigIn;
+	const unsigned char *pOrigIn;
 	int nBytesFittingWidth = 0;
 	int nLastBytes, nLastWidth;
 
@@ -979,7 +992,7 @@ int extract_str_fitting_width(unsigned char **pIn, char *pOut, int max_width, in
 	{
 		nLastBytes = *pIn - pOrigIn;
 		nLastWidth = width;
-		if ((u = UTF8_to_UCS4((unsigned char**)(pIn))))
+		if ((u = UTF8_to_UCS4(pIn)))
 		{
 			pres_bmfbm(u, &pcfFonts[font_idx - 1], &bitmap, &Cmetrics);
 			if (bitmap != NULL)
@@ -1008,7 +1021,7 @@ int extract_str_fitting_width(unsigned char **pIn, char *pOut, int max_width, in
 	}
 	else
 	{
-		strcpy(pOut, pOrigIn);
+		ustrcpy(pOut, pOrigIn);
 		widthFitted = width;
 	}
 	return widthFitted;
@@ -1267,7 +1280,7 @@ int render_history_with_pcf()
 	}
 
 	if (history_count == 0) {
-		unsigned char *p = get_nls_text("no_history");
+		const unsigned char *p = get_nls_text("no_history");
 		int str_width = get_external_str_pixel_width(p, DEFAULT_FONT_IDX);
 		lcd_draw_buf.current_x = (LCD_BUF_WIDTH_PIXELS - str_width) / 2;
 		lcd_draw_buf.current_y = 95;
@@ -1347,7 +1360,7 @@ int render_search_result_with_pcf(void)
 	int rc = 0;
 	int start_x, end_x, start_y, end_y;
 	long idxArticle;
-	char sTitleActual[MAX_TITLE_ACTUAL];
+	unsigned char sTitleActual[MAX_TITLE_ACTUAL];
 	static long offset_next = 0;
 
 	if (!more_search_results)
@@ -1547,11 +1560,11 @@ void scroll_article(void)
 	}
 }
 
-void draw_icon(char *pStr)
+void draw_icon(const unsigned char *pStr)
 {
 	int start_x, start_y, end_x, end_y;
 	int i, j;
-	
+
 	get_external_str_pixel_rectangle(pStr, SUBTITLE_FONT_IDX, &start_x, &start_y, &end_x, &end_y);
 	for (i = 0; i < LANGUAGE_LINK_HEIGHT; i++)
 	{
@@ -1570,9 +1583,9 @@ void draw_icon(char *pStr)
 			}
 		}
 	}
-	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 
-		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x, 
-		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, strlen(pStr), 1);
+	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
+		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x,
+		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, ustrlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
 }
 
@@ -1581,20 +1594,20 @@ void draw_restricted_mark()
 	draw_icon(get_nls_text("r"));
 }
 
-void draw_external_link(char *link_str)
+void draw_external_link(const unsigned char *link_str)
 {
-	char *pLang;
+	const unsigned char *pLang;
 
 	pLang = get_lang_link_display_text(link_str);
 	draw_icon(pLang);
 }
 
-int duplicate_wiki_lang(char *link_str1, char *link_str2)
+int duplicate_wiki_lang(const unsigned char *link_str1, const unsigned char *link_str2)
 {
-	char *p;
+	const unsigned char *p;
 	int len;
-	
-	p = strchr(link_str1, ':');
+
+	p = ustrchr(link_str1, ':');
 	if (p)
 	{
 		len = p - link_str1;
@@ -1626,9 +1639,9 @@ void add_show_hide_language_link()
 void display_retrieved_article(long idx_article)
 {
 	int i;
-	int offset;
+	unsigned int offset;
 	ARTICLE_HEADER article_header;
-	char title[MAX_TITLE_ACTUAL];
+	unsigned char title[MAX_TITLE_ACTUAL];
 	int bKeepPos = 0;
 	int nCurrentWikiId = get_wiki_id_from_idx(nCurrentWiki);
 	int nArticleWikiId;
@@ -1653,7 +1666,7 @@ void display_retrieved_article(long idx_article)
 	externalLink[0].link_str = NULL;
 	article_link_count = 1;
 	language_link_count = 0;
-	
+
 	offset = sizeof(ARTICLE_HEADER) + sizeof(ARTICLE_LINK) * article_header.article_link_count;
 	// externalLink[] is for storing the pointer to the language link string.
 	// A corresponding artileLink (with the same index) will be used to store the start_xy and end_xy information.
@@ -1662,11 +1675,11 @@ void display_retrieved_article(long idx_article)
 	{
 		while (offset < article_header.offset_article && article_link_count < MAX_EXTERNAL_LINKS)
 		{
-			char *link_str;
+			unsigned char *link_str;
 			link_str = file_buffer + offset;
 			if (wiki_lang_exist(link_str))
 			{
-				int bDuplicated = 0; 
+				int bDuplicated = 0;
 				for (i = 1; i < article_link_count; i++)
 				{
 					if (externalLink[i].link_str && duplicate_wiki_lang(link_str, externalLink[i].link_str))
@@ -1699,7 +1712,7 @@ void display_retrieved_article(long idx_article)
 					language_link_count++;
 				}
 			}
-			offset += strlen(file_buffer + offset) + 1;
+			offset += ustrlen(file_buffer + offset) + 1;
 		}
 	}
 
@@ -1738,7 +1751,7 @@ void display_retrieved_article(long idx_article)
 	{
 		memcpy(&articleLink[article_link_count],file_buffer+offset,sizeof(ARTICLE_LINK));
 		nLinkWikiId = articleLink[article_link_count].article_id >> 24;
-		if (((!nArticleWikiId || nArticleWikiId == nCurrentWikiId || get_wiki_idx_from_id(nArticleWikiId) >= 0) && !nLinkWikiId) || 
+		if (((!nArticleWikiId || nArticleWikiId == nCurrentWikiId || get_wiki_idx_from_id(nArticleWikiId) >= 0) && !nLinkWikiId) ||
 			(nLinkWikiId && get_wiki_idx_from_id(nLinkWikiId) >= 0))
 		{
 			if (nArticleWikiId && !nLinkWikiId)
@@ -1854,7 +1867,7 @@ int isArticleLinkSelected(int x,int y)
 			return link_currently_activated; // if more than on links are matched, the last matched one got the higher priority
 	}
 
-	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE && 
+	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE &&
 		LCD_HEIGHT - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT &&
 		history_get_previous_idx(saved_idx_article, 0))
 	{
@@ -1872,7 +1885,7 @@ int isArticleLinkSelected(int x,int y)
 	{
 		return 2; // HIDE_LANGUAGE_LINK
 	}
-	
+
 	start_i = 0;
 	end_i = article_link_count - 1;
 	i = article_link_count / 2;
@@ -1943,18 +1956,18 @@ void display_link_article(long idx_article)
 		return; // article not exist
 	}
 
-	if (restricted_article && check_restriction(idx_article))
+	if (restricted_article && check_restriction())
 		return;
 
 	display_retrieved_article(idx_article);
 }
 
-void display_str(unsigned char *str)
+void display_str(const unsigned char *str)
 {
 	int start_x,end_x,start_y,end_y;
 	int offset_x,offset_y;
 	int str_width;
-	unsigned char *p;
+	const unsigned char *p;
 
 	p = str;
 
@@ -1973,7 +1986,7 @@ void display_str(unsigned char *str)
 	str_width = get_external_str_pixel_width(p, DEFAULT_FONT_IDX);
 	offset_x = (end_x - str_width) / 2 - start_x;
 	offset_y = 0;
-	buf_draw_UTF8_str_in_copy_buffer((char *)framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x,DEFAULT_FONT_IDX);
+	buf_draw_UTF8_str_in_copy_buffer(framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x,DEFAULT_FONT_IDX);
 
 	repaint_framebuffer(framebuffer_copy,-1, 0);
 
@@ -2108,7 +2121,7 @@ void invert_link_area(int article_link_number)
 int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 {
 	int x, y;
-	
+
 	if (end_x < 0 || start_x > LCD_BUF_WIDTH_PIXELS - 1)
 		return 1;
 	x = start_x;
@@ -2133,7 +2146,7 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 			x += 8;
 		}
 	}
-	return 1;	
+	return 1;
 }
 
 int nothing_before_link(int article_link_number)
@@ -2201,7 +2214,7 @@ void invert_link(int article_link_number)
 			else
 				bNothingBeforeLink = 0;
 		}
-	
+
 		bNothingAfterLink = articleLinkBeforeAfter[article_link_number] & ARTICLE_LINK_NOTHING_AFTER;
 		local_link_number = article_link_number + 1;
 		while (bNothingAfterLink && local_link_number < article_link_count && article_id == articleLink[local_link_number].article_id)
@@ -2238,7 +2251,7 @@ int check_invert_link()
 		}
 	}
 
-	if (link_to_be_inverted >= 0 && 
+	if (link_to_be_inverted >= 0 &&
 		((display_mode == DISPLAY_MODE_ARTICLE &&
 		time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
 		time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
@@ -2411,7 +2424,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 	return x;
 }
 
-int buf_draw_bmf_char(char *buf, ucs4_t u,int font,int x,int y, int inverted)
+int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inverted)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
@@ -2502,11 +2515,11 @@ int GetFontLinespace(int font)
 void msg_on_lcd(int x, int y, char *fmt, ...)
 {
 	va_list args;
-	char msg[100];
+	unsigned char msg[100];
 	va_start(args, fmt);
-	vsprintf (msg, fmt, args);
+	vsprintf ((char *)msg, fmt, args);
 	guilib_clear_area(x, y, 239, y+18);
-	render_string(DEFAULT_FONT_IDX, x, y, msg, strlen(msg), 0);
+	render_string(DEFAULT_FONT_IDX, x, y, msg, ustrlen(msg), 0);
 	va_end(args);
 }
 
@@ -2521,7 +2534,7 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 	int bDone = 0;
 	ARTICLE_HEADER article_header;
 	int lenTitle = 0;
-		
+
 	if (!article_buf)
 		article_buf = file_buffer;
 	memcpy(&article_header, article_buf, sizeof(ARTICLE_HEADER));

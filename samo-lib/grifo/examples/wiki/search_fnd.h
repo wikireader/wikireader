@@ -27,8 +27,7 @@
 #define SEARCH_FND_SEQUENTIAL_SEARCH_THRESHOLD 64
 
 void init_search_fnd(void);
-int copy_fnd_to_buf(long offset, char *buf, int len);
-int copy_str_to_buf(long offset, char *buf, int len);
+int copy_fnd_to_buf(long offset, unsigned char *buf, int len);
 long get_search_offset_fnd(char *sSearchString, int len);
 void retrieve_titles_from_fnd(long offset_fnd, unsigned char *sTitleSearch, unsigned char *sTitleActual);
 
