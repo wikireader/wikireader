@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+include ../application-pre.mk
+
 PROGRAM = sample
 ICON = YES
 SIMULATE = NO
@@ -25,4 +27,4 @@ SIMULATE = NO
 SOURCES += ${PROGRAM}.c
 HEADERS +=
 
-include ../application.mk
+include ../application-post.mk

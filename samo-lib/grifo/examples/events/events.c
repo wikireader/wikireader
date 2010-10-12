@@ -39,8 +39,8 @@ int grifo_main(int argc, char *argv[]) {
 	} else {
 		debug_printf("events start waiting\n");
 	}
-			delay_us(2000000);
-			debug_printf("RUN:\n");
+	delay_us(2000000);
+	debug_printf("RUN:\n");
 	for (;;) {
 		event_t event;
 

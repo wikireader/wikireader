@@ -66,7 +66,7 @@ int grifo_main(int argc, char *argv[])
 	} else if (strcmp(argv[1], "rename") == 0 && argc == 4) {
 		debug_printf("rename '%s' -> '%s' => %d\n", argv[2], argv[3], file_rename(argv[2], argv[3]));
 	} else if (strcmp(argv[1], "create") == 0) {
-		size_t i;
+		int i;
 		for (i = 2; i < argc; ++i) {
 			debug_printf("create '%s'\n", argv[i]);
 			int handle = file_create(argv[i], FILE_OPEN_WRITE);
@@ -89,7 +89,7 @@ int grifo_main(int argc, char *argv[])
 			}
 		}
 	} else if (strcmp(argv[1], "display") == 0) {
-		size_t i;
+		int i;
 		for (i = 2; i < argc; ++i) {
 			debug_printf("display '%s'\n", argv[i]);
 			int handle = file_open(argv[i], FILE_OPEN_READ);

@@ -17,42 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# +++START_UPDATE_MAKEFILE: Start of auto included code
-# The text between the +++ and --- tags is copied by the
-# UpdateMakefiles script. Do not remove or change these tags.
-# ---
-# Autodetect root directory
-define FIND_ROOT_DIR
-while : ; do \
-  d=$$(pwd) ; \
-  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
-  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
-  cd .. ; \
-done
-endef
-ROOT_DIR := $(shell ${FIND_ROOT_DIR})
-# Directory of Makefile includes
-MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
-# Include the initial Makefile setup
-include ${MK_DIR}/definitions.mk
-# ---END_UPDATE_MAKEFILE: End of auto included code
-
-
-INCLUDES += -I${SAMO_LIB_INCLUDE}
-INCLUDES += -I${GRIFO_INCLUDE}
-INCLUDES += -I${MINI_LIBC_INCLUDE}
-
-LIBS += lib/libexamples.a
-LIBS += ${GRIFO_LIB}
-LIBS += ${MINI_LIBC_LIB}
-LIBS += $(shell $(CC) -print-libgcc-file-name)
-
-LDFLAGS += -static --strip-all -s --no-gc-sections -N
-
-BUILD_PREFIX := build/
-
-vpath %.c :src
-
 # nomally want simulation
 SIMULATE ?= YES
 
@@ -61,7 +25,7 @@ ifeq (,$(strip ${PROGRAM}))
 $(error PROGRAM variable not set)
 endif
 
-TARGETS = ${PROGRAM}.app
+TARGETS += ${PROGRAM}.app
 
 ifeq (YES,$(strip ${ICON}))
 TARGETS += ${PROGRAM}.ico
@@ -77,15 +41,13 @@ endif
 OBJECTS = ${SOURCES:.c=.o}
 BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
-# main target
-.PHONY: all
-all:  build-targets
-
-lib/libexamples.a: lib ${BUILD_OBJECTS}
+# build application library
+lib/libapplication.a: lib ${BUILD_OBJECTS}
 	${RM} "$@"
 	${AR} r "$@" ${BUILD_OBJECTS}
 
 
+# build application binary
 ${PROGRAM}.app: build build/${PROGRAM}.o ${GRIFO_APPLICATION_LDS} ${LIBS}
 	$(LD) -o $@ ${LDFLAGS} build/${PROGRAM}.o ${LIBS} -T ${GRIFO_APPLICATION_LDS} -Map ${@:.app=.map}
 	${OBJDUMP} -D "$@" > "${@:.app=.dump}"
@@ -102,20 +64,42 @@ lib:
 
 # simulation on host OS
 
+QMAKE_PROJECT := simulate/${PROGRAM}.pro
+
 ifeq (YES,$(strip ${SIMULATE}))
-SIMULATE_FILES = $(addprefix ../,${SOURCES})
+SIMULATE_FILES += $(addprefix ../,${SOURCES})
 SIMULATE_FILES += $(addprefix ../,${HEADERS})
 
-TARGETS += simulate
-CLEAN_TARGETS += simulate
-.PHONY: simulate
+SIMULATE_DIR = simulate
+
+TARGETS += simulate-make
+CLEAN_TARGETS += ${SIMULATE_DIR}
+
 simulate:
 	${MKDIR} "$@"
-	ln -fs "${GRIFO_SIMULATOR}"/* ${SIMULATE_FILES} "$@"
-	cd "$@" && \
-	qmake -project -o "${PROGRAM}.pro" && \
+
+# prepare a default qmake project file
+.PHONY: simulate-files
+simulate-files: simulate
+	ln -fs "${GRIFO_SIMULATOR}"/* ${SIMULATE_FILES} "${SIMULATE_DIR}"
+	cd "${SIMULATE_DIR}" && \
+	qmake -project -o "$(notdir ${QMAKE_PROJECT})"
+
+# this can be overridden by the application makefile
+# to modify or append to the ${QMAKE_PROJECT} file
+.PHONY: qmake-project
+simulate-makefile: simulate-files
+
+# take the project file and convert to a makefile
+.PHONY: simulate-makefile
+simulate-makefile: simulate simulate-files qmake-project
+	cd "${SIMULATE_DIR}" && \
 	qmake CONFIG+="qt warn_on thread debug" QMAKE_CXXFLAGS_WARN_ON+='-Werror' QMAKE_CFLAGS_WARN_ON+='-Werror'
-	${MAKE} -C "$@"
+
+# run make on the generated Makefile
+.PHONY: simulate-make
+simulate-make: simulate simulate-makefile
+	${MAKE} -C "simulate"
 
 endif
 
