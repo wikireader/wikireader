@@ -80,4 +80,5 @@ void fatal_error_print(const char *file, int line, const char *format, ...)  __a
 	fatal_error_print(__FILE__, __LINE__, format)
 
 void handle_search_key(struct keyboard_key *key, unsigned long ev_time);
+void wikilib_reset_highlighting();
 #endif /* WIKILIB_H */

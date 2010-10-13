@@ -176,6 +176,7 @@
 #define LCD_BUF_HEIGHT_PIXELS 128 * 1024
 #define LINK_X_DIFF_ALLOWANCE 10
 #define LINK_Y_DIFF_ALLOWANCE 5
+#define INITIAL_HIGHLIGHT_THRESHOLD 8
 #define INITIAL_ARTICLE_SCROLL_THRESHOLD 8
 #define ARTICLE_MOVING_SCROLL_THRESHOLD 1
 #define LINK_DEACTIVATION_MOVE_THRESHOLD 1
@@ -191,6 +192,7 @@
 #define LANGUAGE_LINK_HEIGHT 21
 #define LANGUAGE_LINK_WIDTH_GAP 6
 #define LANGUAGE_LINK_HEIGHT_GAP 6
+#define HIGHLIGHT_SCROLLING_SPOT_HEIGHT 6
 
 // The italic fonts may not define the bitmaps for all characters.
 // The characters that are minssing in the italic fonts will try to return the bitmaps of it's supplement_font file.
@@ -212,7 +214,7 @@
 #define H4_FONT_IDX				SUBTITLE_FONT_IDX
 #define H5_FONT_IDX				SUBTITLE_FONT_IDX
 #define LICENSE_TEXT_FONT		ITALIC_FONT_IDX
-#define FILE_BUFFER_SIZE                (512 * 1024)
+#define FILE_BUFFER_SIZE		(512 * 1024)
 
 typedef struct _LCD_DRAW_BUF
 {
@@ -233,6 +235,10 @@ typedef struct _LCD_DRAW_BUF
 #define SPACE_BEFORE_LICENSE_TEXT 40
 #define SPACE_AFTER_LICENSE_TEXT 5
 #define MAX_ARTICLES_PER_COMPRESSION 256
+#define MAX_LINES_PER_ARTICLE (24 * 1024)
+#define HIGHTLIGHT_X_DIFF_ALLOWANCE 0
+#define HIGHTLIGHT_Y_DIFF_ALLOWANCE 0
+
 /* Structure of a single article in a file with mutiple articles */
 /* byte 0~3: (long) offset from the beginning of the article header to the start of article text */
 /* byte 4~5: (short) number of ARTICLE_LINK blocks */
@@ -267,6 +273,14 @@ typedef struct __attribute__ ((packed)) _CONCAT_ARTICLE_INFO
 	uint32_t article_len;
 } CONCAT_ARTICLE_INFO;
 
+typedef struct _ARTICLE_RENDER_INFO
+{ // each line of the article got an entry
+	uint32_t start_y;
+	uint32_t end_y;
+	const unsigned char *pBuf; // pointer to file_buffer of the first character of the line
+	pcffont_bmf_t *pPcfFont;
+} ARTICLE_RENDER_INFO, *PARTICLE_RENDER_INFO;
+
 void init_lcd_draw_buf();
 char* FontFile(int id);
 void buf_draw_UTF8_str(const unsigned char **sUTF8);
@@ -290,7 +304,8 @@ void open_article_link(int x,int y);
 void open_article_link_with_link_number(int article_link_number);
 void scroll_article(void);
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear);
-int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inverted);
+int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_bytes,
+	ucs4_t u,int font,int x,int y, int inverted, int b_clear);
 int isArticleLinkSelected(int x,int y);
 int check_invert_link(void);
 void set_article_link_number(int num, unsigned long);
@@ -314,5 +329,11 @@ extern LCD_DRAW_BUF lcd_draw_buf;
 extern pcffont_bmf_t pcfFonts[FONT_COUNT];
 extern const unsigned char *article_buf_pointer;
 void clear_article_pos_info();
+bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
+	int *invert_start_x, int *invert_end_x,
+	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+	unsigned char *search_string_actual, bool bRepaint);
+int lcd_draw_get_cur_y_pos();
+unsigned char *lcd_draw_get_cur_buffer();
 void load_all_fonts();
 #endif /* _LCD_BUF_DRAW_H */

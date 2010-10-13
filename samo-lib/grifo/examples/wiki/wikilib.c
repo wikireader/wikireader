@@ -1,4 +1,4 @@
-/*
+/*
  * Copyright (c) 2009 Openmoko Inc.
  *
  * Authors   Daniel Mack <daniel@caiaq.de>
@@ -39,6 +39,7 @@
 #include "restricted.h"
 #include "wiki_info.h"
 #include "utf8.h"
+#include "highlight.h"
 
 #define LCD_Y_CALIBRATION_ADJUSTMENT (-1)
 
@@ -54,8 +55,8 @@ static unsigned int article_touch_down_handled = 0;
 unsigned int touch_down_on_keyboard = 0;
 static unsigned int touch_down_on_list = 0;
 static struct pos article_touch_down_pos;
-static unsigned int touch_y_last_unreleased = 0;
-static unsigned int touch_y_last = 0;
+static int touch_y_last = -1; // -1 stands for no touch yet
+static int touch_x_last = -1;
 static unsigned long start_move_time = 0;
 static unsigned long last_unreleased_time = 0;
 int    last_index_y_pos;
@@ -70,9 +71,6 @@ const unsigned char *article_buf_pointer;
 //int is_rendering = 0;
 int last_selection = 0;
 unsigned long start_search_time, last_delete_time;
-int last_article_move_time,touch_y_last_article;
-int article_touch_count = 0;
-int touch_history = 0;
 extern unsigned long time_scroll_article_last;
 extern unsigned long time_scroll_article_start;
 extern long saved_idx_article;
@@ -86,11 +84,12 @@ extern int b_show_scroll_bar;
 extern int display_first_page;
 bool press_delete_button = false;
 extern bool search_string_changed_remove;
-int history_touch_pos_y_last;
 int touch_search = 0,search_touch_pos_y_last=0;
 bool article_moved = false;
-int  article_scroll_pixel = INITIAL_ARTICLE_SCROLL_THRESHOLD;
-int article_moved_pixels = 0;
+bool b_in_highlighting = false;
+int  article_scroll_threshold = INITIAL_ARTICLE_SCROLL_THRESHOLD;
+int article_moved_x_pixels = 0;
+int article_moved_y_pixels = 0;
 extern int link_to_be_inverted;
 extern int link_currently_inverted;
 long finger_move_speed = 0;
@@ -1005,6 +1004,20 @@ static void handle_touch(event_t *ev)
 			unsigned long diff_ticks = 0;
 			long diff_y = 0;
 
+			if (b_in_highlighting)
+			{
+				highlight_set(ev->touch.x, ev->touch.y);
+				highlight_handle_search();
+				highlight_reset(-1, -1, true);
+				article_scroll_threshold = INITIAL_ARTICLE_SCROLL_THRESHOLD;
+				article_moved_x_pixels = 0;
+				article_moved_y_pixels = 0;
+				touch_x_last = -1;
+				touch_y_last = -1;
+				start_move_time = 0;
+				return;
+			}
+
 			finger_touched = 0;
 			time_scroll_article_last = ev->time_stamp;
 			for (i = 4; i > 0; i--)
@@ -1017,12 +1030,11 @@ static void handle_touch(event_t *ev)
 				}
 			}
 
-			if (diff_ticks <= 0 || abs(article_moved_pixels) > SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD ||
-			    abs(article_moved_pixels) < SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD)
+			if (diff_ticks <= 0 || abs(article_moved_y_pixels) > SMOOTH_SCROLL_ACTIVATION_OFFSET_HIGH_THRESHOLD ||
+			    abs(article_moved_y_pixels) < SMOOTH_SCROLL_ACTIVATION_OFFSET_LOW_THRESHOLD)
 				finger_move_speed = 0;
 			else
 			{
-				// Event timesing is not good for short period due to the events are queued without timestamp
 				finger_move_speed = (float)diff_y * ((float)seconds_to_ticks(1) / (float)diff_ticks);
 				if (abs(finger_move_speed) > SMOOTH_SCROLL_ACTIVATION_SPPED_THRESHOLD)
 				{
@@ -1055,9 +1067,11 @@ static void handle_touch(event_t *ev)
 				b_show_scroll_bar = 0;
 				show_scroll_bar(0); // clear scroll bar
 			}
-			article_scroll_pixel = INITIAL_ARTICLE_SCROLL_THRESHOLD;
-			article_moved_pixels = 0;
-			touch_y_last_unreleased = 0;
+			article_scroll_threshold = INITIAL_ARTICLE_SCROLL_THRESHOLD;
+			article_moved_x_pixels = 0;
+			article_moved_y_pixels = 0;
+			touch_x_last = -1;
+			touch_y_last = -1;
 			start_move_time = 0;
 
 			article_link_number = get_activated_article_link_number();
@@ -1113,13 +1127,14 @@ static void handle_touch(event_t *ev)
 			finger_touched = 1;
 			finger_move_speed = 0;
 
-			if(touch_y_last_unreleased == 0)
+			if(touch_y_last < 0) // initial touch down
 			{
-				touch_y_last_unreleased = ev->touch.y;
+				touch_x_last = ev->touch.x;
 				touch_y_last = ev->touch.y;
 				last_unreleased_time = ev->time_stamp;
 				reset_article_link_number();
-				article_moved_pixels = 0;
+				article_moved_x_pixels = 0;
+				article_moved_y_pixels = 0;
 				last_5_x[0] = ev->touch.x;
 				last_5_y[0] = ev->touch.y;
 				last_5_y_time_ticks[0] = ev->time_stamp;
@@ -1128,23 +1143,24 @@ static void handle_touch(event_t *ev)
 					last_5_x[i] = -1;
 					last_5_y[i] = -1;
 				}
-
+				highlight_reset(ev->touch.x, ev->touch.y, false);
 			}
 			else
 			{
-				article_moved_pixels += touch_y_last - ev->touch.y;
-				if(article_moved || abs(article_moved_pixels) > article_scroll_pixel)
+				article_moved_x_pixels += touch_x_last - ev->touch.x;
+				article_moved_y_pixels += touch_y_last - ev->touch.y;
+				if(!b_in_highlighting && (article_moved || abs(article_moved_y_pixels) > article_scroll_threshold))
 				{
 					if (!article_moved)
 					{
 						article_moved = true;
 						reset_article_link_number();
-						if (article_moved_pixels > 0)
-							article_moved_pixels -= article_scroll_pixel;
+						if (article_moved_y_pixels > 0)
+							article_moved_y_pixels -= article_scroll_threshold;
 						else
-							article_moved_pixels += article_scroll_pixel;
-						display_article_with_pcf(article_moved_pixels);
-						article_scroll_pixel = ARTICLE_MOVING_SCROLL_THRESHOLD;
+							article_moved_y_pixels += article_scroll_threshold;
+						display_article_with_pcf(article_moved_y_pixels);
+						article_scroll_threshold = ARTICLE_MOVING_SCROLL_THRESHOLD;
 					}
 					else if (finger_move_speed == 0)
 					{
@@ -1161,10 +1177,36 @@ static void handle_touch(event_t *ev)
 					last_5_y_time_ticks[0] = ev->time_stamp;
 					b_show_scroll_bar = 1;
 				}
+				else
+				{
+					if (!b_in_highlighting)
+					{
+						if (abs(article_moved_x_pixels) > INITIAL_HIGHLIGHT_THRESHOLD)
+						{
+							reset_article_link_number();
+							b_in_highlighting = highlight_set(ev->touch.x, ev->touch.y);
+						}
+					}
+					else
+					{
+						highlight_set(ev->touch.x, ev->touch.y);
+						//if (ev->touch.y < HIGHLIGHT_SCROLLING_SPOT_HEIGHT ||
+						//	ev->touch.y >= LCD_HEIGHT - HIGHLIGHT_SCROLLING_SPOT_HEIGHT)
+						//{
+						//	article_moved = true;
+						//	finger_move_speed = 20;
+						//}
+						//else
+						//{
+						//	finger_move_speed = 0;
+						//}
+					}
+				}
+				touch_x_last = ev->touch.x;
 				touch_y_last = ev->touch.y;
 			}
 
-			if (!article_moved && get_activated_article_link_number() < 0)
+			if (!b_in_highlighting && !article_moved && get_activated_article_link_number() < 0)
 			{
 				average_xy(&average_x, &average_y, last_5_x, last_5_y, last_5_y_time_ticks);
 				article_link_number = isArticleLinkSelected(average_x, average_y);
@@ -1405,4 +1447,9 @@ void fatal_error_print(const char *file, int line, const char *format, ...)
 	for (;;) {
 		event_wait(&ev, callback, "fatal error callback");
 	}
+}
+
+void wikilib_reset_highlighting()
+{
+	b_in_highlighting = false;
 }

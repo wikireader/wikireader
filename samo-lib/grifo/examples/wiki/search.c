@@ -55,7 +55,7 @@ extern int article_link_count;
 extern long saved_idx_article;
 int search_interrupted = 0;
 int b_type_a_word_cleared = 0;
-
+ 
 typedef struct _search_results {
 	unsigned char title[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_ACTUAL];
 	unsigned char title_search[NUMBER_OF_FIRST_PAGE_RESULTS][MAX_TITLE_SEARCH];
@@ -73,7 +73,7 @@ typedef struct _search_info {
 	int32_t fd_pfx;
 	int32_t fd_idx;
 	uint32_t max_article_idx;
-	uint32_t *prefix_index_table; 	// each SEARCH_INFO used to have private prefix_index_table.
+	uint32_t *prefix_index_table; 	// each SEARCH_INFO used to have private prefix_index_table.  
 									//now it points to the common g_prefix_index_table for all SEARCH_INFO
 	uint32_t b_prefix_index_block_loaded[SEARCH_CHR_COUNT];
 	unsigned char *buf;	// buf correspond to result_list
@@ -693,109 +693,10 @@ long get_search_result_start()
 	int idx_prefix_index_table;
 	char c1, c2, c3;
 	int found = 0;
-/* Disable hashing
-	int i;
-	int lenCompared;
-	int lenCopied;
-*/
 	long offset;
-/* Disable hashing
-	static int lenHashedSearchString = 0;
-	static char sHashedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
-	static long offsetHasedSearchString[MAX_SEARCH_STRING_HASHED_LEN];
-*/
 
-/* Disable hashing
-	if (search_str_len > 3)
+	switch(search_str_len)
 	{
-		// check the length of the hashed search string can be reused
-		if (search_str_len > lenHashedSearchString)
-			lenCompared = lenHashedSearchString;
-		else
-			lenCompared = search_str_len;
-		lenHashedSearchString = 0;
-		for (i = 0; i < lenCompared; i++)
-		{
-			if (sHashedSearchString[i] != search_string[i])
-				lenHashedSearchString = i;
-		}
-
-		// Check if hashed
-		if (lenHashedSearchString > 3)
-		{
-			if (search_str_len > lenHashedSearchString)
-			{
-				if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-					lenCopied = MAX_SEARCH_STRING_HASHED_LEN - lenHashedSearchString;
-				else
-					lenCopied = search_str_len - lenHashedSearchString;
-				memcpy(&sHashedSearchString[lenHashedSearchString], &search_string[lenHashedSearchString], lenCopied);
-				// check the extended part first
-				for (i = 3; i < lenHashedSearchString + lenCopied; i++)
-				{
-					if (i >= lenHashedSearchString)
-						offsetHasedSearchString[i] = get_search_offset_fnd(sHashedSearchString, i + 1);
-					if (search_interrupted)
-					{
-						search_interrupted = 12;
-						goto interrupted;
-					}
-					if (offsetHasedSearchString[i] &&
-					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-					{
-						found = 1;
-						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-					}
-				}
-				lenHashedSearchString += lenCopied;
-			}
-
-			if (!found) // not hashed at the extended part
-			{
-				for (i = 3; i < search_str_len && i < lenHashedSearchString; i++)
-				{
-					if (offsetHasedSearchString[i] &&
-					    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-					{
-						found = 1;
-						offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-					}
-					else
-						break;
-				}
-			}
-		}
-		else
-		{
-			if (search_str_len > MAX_SEARCH_STRING_HASHED_LEN)
-				lenHashedSearchString = MAX_SEARCH_STRING_HASHED_LEN;
-			else
-				lenHashedSearchString = search_str_len;
-			memcpy(sHashedSearchString, search_string, lenHashedSearchString);
-			for (i = 3; i < lenHashedSearchString; i++)
-			{
-				offsetHasedSearchString[i] = get_search_offset_fnd(sHashedSearchString, i + 1);
-				if (search_interrupted)
-				{
-					search_interrupted = 13;
-					goto interrupted;
-				}
-				if (offsetHasedSearchString[i] &&
-				    (i >= MAX_SEARCH_STRING_ALL_HASHED_LEN || i == search_str_len - 1))
-				{
-					found = 1;
-					offset_search_result_start = offsetHasedSearchString[i]; // use the longest hashed search string
-				}
-			}
-		}
-	}
-*/
-
-//	if (!found && (3 >= search_str_len || search_str_len > MAX_SEARCH_STRING_ALL_HASHED_LEN))
-	if (!found)
-	{
-		switch(search_str_len)
-		{
 		case 1:
 			c1 = search_string[0];
 			c2 = '\0';
@@ -811,19 +712,19 @@ long get_search_result_start()
 			c2 = search_string[1];
 			c3 = search_string[2];
 			break;
-		}
-		idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
-			bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
-		if ((offset = get_prefix_index_table(idx_prefix_index_table)))
-		{
-			found = 1;
-			offset_search_result_start = offset;
-		}
-		if (search_interrupted)
-		{
-			search_interrupted = 14;
-			goto interrupted;
-		}
+	}
+	
+	idx_prefix_index_table = bigram_char_idx(c1) * SEARCH_CHR_COUNT * SEARCH_CHR_COUNT +
+		bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
+	if ((offset = get_prefix_index_table(idx_prefix_index_table)))
+	{
+		found = 1;
+		offset_search_result_start = offset;
+	}
+	if (search_interrupted)
+	{
+		search_interrupted = 14;
+		goto interrupted;
 	}
 
 interrupted:
@@ -1042,7 +943,7 @@ void capitalize(unsigned char *out_str, unsigned char *in_str, int len)
 
     if (wiki_is_korean())
     {
-	english_to_korean(out_str, MAX_TITLE_SEARCH * 3, in_str, &len);
+        english_to_korean(out_str, MAX_TITLE_SEARCH * 3, in_str, &len);
     }
     else if (wiki_keyboard_conversion_needed())
 	{
@@ -1050,7 +951,7 @@ void capitalize(unsigned char *out_str, unsigned char *in_str, int len)
 		int j = 0;
 		int used_len;
 		unsigned char *s;
-
+		
 		while (i < len)
 		{
 			s = full_alphabet_to_half(&in_str[i], &used_len);
@@ -1185,7 +1086,7 @@ void search_reload(int flag)
 					render_string(SEARCH_LIST_FONT_IDX, LCD_LEFT_MARGIN, y_pos, title, ustrlen(title), 0);
 			}
 			y_pos += RESULT_HEIGHT;
-			if ((y_pos + RESULT_HEIGHT) > guilib_framebuffer_height())
+			if((y_pos+RESULT_HEIGHT)>guilib_framebuffer_height())
 				break;
 		}
 		if (keyboard_mode == KEYBOARD_NONE)
@@ -1297,7 +1198,7 @@ int search_replace_per_language_char(const unsigned char *utf8_char)
 	unsigned char last_utf8_char[5];
 	unsigned char new_utf8_char[5];
 	int rc = -1;
-
+	
 	flash_keyboard_key_invert();
 	if (search_str_per_language_len > 0)
 	{
@@ -1316,7 +1217,7 @@ int search_replace_per_language_char(const unsigned char *utf8_char)
 		}
 	}
 	delay_us(20000); // 0.2 second
-	flash_keyboard_key_invert();
+ 	flash_keyboard_key_invert();
 	return rc;
 }
 
@@ -1353,7 +1254,7 @@ int search_add_per_language_char(const unsigned char *utf8_char)
 {
 	unsigned char new_utf8_char[5];
 	int rc = -1;
-
+	
 	if ((*utf8_char == 0x20 && search_str_len > 0 && search_string[search_str_len -1 ] == 0x20) ||
 			(!search_str_len && *utf8_char == 0x20))
 		return -1;
@@ -1361,7 +1262,7 @@ int search_add_per_language_char(const unsigned char *utf8_char)
 	get_first_utf8_char(new_utf8_char, utf8_char, ustrlen(utf8_char));
 	if (ustrlen(new_utf8_char) == 0 || (ustrlen(new_utf8_char) == 1 && !is_supported_search_char(new_utf8_char[0])))
 		return -1; // not supported input
-
+		
 	if (!search_str_per_language_len) // clear type_a_word message
 	{
 		guilib_fb_lock();
@@ -1381,18 +1282,18 @@ int search_add_per_language_char(const unsigned char *utf8_char)
 		{
 			if (is_korean_special_key_enabled())
 				search_string_per_language[search_str_per_language_len - 1] = toupper(search_string_per_language[search_str_per_language_len - 1]);
-	    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 		}
 		else
 		{
-		hiragana_romaji_conversion(search_string_per_language, &search_str_per_language_len);
-		search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
-	}
+    		hiragana_romaji_conversion(search_string_per_language, &search_str_per_language_len);
+    		search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+        }
 		time_search_string_changed = timer_get();
 		search_string_changed = true;
 		rc = 0;
 	}
-	return rc;
+ 	return rc;
 }
 
 int search_add_char(char c, unsigned long ev_time)
@@ -1465,7 +1366,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 		{
 			search_string_per_language[--search_str_per_language_len] = '\0';
 			if (wiki_is_korean())
-		    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+	            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 			else
 				search_string[--search_str_len] = '\0';
 		}
@@ -1477,7 +1378,7 @@ int search_remove_char(int bPopulate, unsigned long ev_time)
 				search_str_per_language_len--;
 			search_string_per_language[--search_str_per_language_len] = '\0';
 			if (wiki_is_korean())
-		    search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
+	            search_str_len = english_to_korean_phonetic(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
 			else
 			{
 				search_str_len = zh_jp_to_english(search_string, MAX_TITLE_SEARCH, search_string_per_language, &search_str_per_language_len);
@@ -1594,7 +1495,7 @@ int retrieve_article(long idx_article_with_wiki_id)
 
 		int dat_file_id = article_ptr.file_id;
 		int fd_dat;
-	char file_name[13];
+    	char file_name[13];
 
 		sprintf(file_name, "wiki%d.dat", dat_file_id);
 		fd_dat = file_open(get_wiki_file_path(nWikiIdx, file_name), FILE_OPEN_READ);
@@ -1722,7 +1623,7 @@ void reset_random_key(void)
 {
 	event_t ev;
 
-	while (event_peek(&ev) != EVENT_NONE &&
+	while (event_peek(&ev) != EVENT_NONE && 
 		(ev.item_type == EVENT_BUTTON_UP || ev.item_type == EVENT_BUTTON_DOWN) &&
 		ev.button.code == BUTTON_RANDOM)
 	{

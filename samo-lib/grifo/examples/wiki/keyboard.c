@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "keyboard.h"
-
-#include <string.h>
 #include <ctype.h>
+
 #include <grifo.h>
-#include "grifo.h"
+
+#include "string.h"
+#include "keyboard.h"
 #include "guilib.h"
 #include "wikilib.h"
 #include "wiki_info.h"
@@ -53,7 +53,7 @@ extern unsigned int touch_down_on_keyboard;
 extern int b_type_a_word_cleared;
 
 /* qwerty keyboard by columns */
-#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode)    \
+#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode) \
 	{               .left_x = l_x, .right_x = r_x,                  \
 			.left_y = l_y, .right_y = r_y,                  \
 			.left_x_inverted = l_x_i, .right_x_inverted = r_x_i, \
@@ -770,8 +770,8 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 	int bubble_stem_left_diff, bubble_stem_right_diff;
 	unsigned char s[5];
 	int width;
-	int bubble_adjust = 0;
-	int bubble_stem_width = end_x - start_x + 3;
+    int bubble_adjust = 0;
+    int bubble_stem_width = end_x - start_x + 3;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	guilib_fb_lock();
@@ -1235,12 +1235,12 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	if (keyboard_key)
 	{
 		unsigned char *s;
-		for (i = 0; i < keyboard_entries; ++i) {
+	for (i = 0; i < keyboard_entries; ++i) {
 			s = full_alphabet_to_half(keyboard_key[i].key, NULL);
 			if (*s == keycode) {
 				return &keyboard_key[i];
-			}
 		}
+	}
 	}
 
 	return NULL;

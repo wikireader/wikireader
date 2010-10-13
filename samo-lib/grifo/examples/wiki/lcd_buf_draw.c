@@ -22,8 +22,8 @@
 #include <inttypes.h>
 
 #include <grifo.h>
-#include <guilib.h>
 
+#include "guilib.h"
 #include "ustring.h"
 #include "history.h"
 #include "search.h"
@@ -36,6 +36,7 @@
 #include "search.h"
 #include "bigram.h"
 #include "utf8.h"
+#include "highlight.h"
 
 #define MAX_SCROLL_SECONDS 3
 #define LIST_SCROLL_SPEED_FRICTION 0.3
@@ -60,7 +61,7 @@ extern int display_mode;
 pcffont_bmf_t pcfFonts[FONT_COUNT];
 static int lcd_draw_buf_inited = 0;
 LCD_DRAW_BUF lcd_draw_buf;
-unsigned char *file_buffer;
+unsigned char * file_buffer;
 int restricted_article = 0;
 int lcd_draw_buf_pos  = 0;
 int lcd_draw_cur_y_pos = 0;
@@ -76,6 +77,8 @@ int bShowPositioner = 0;
 ARTICLE_LINK articleLink[MAX_ARTICLE_LINKS];
 EXTERNAL_LINK externalLink[MAX_EXTERNAL_LINKS];
 unsigned char articleLinkBeforeAfter[MAX_ARTICLE_LINKS];
+PARTICLE_RENDER_INFO pArticleRenderInfo;
+int nArticleRenderedLines = 0;
 
 int link_to_be_activated = -1;
 unsigned long link_to_be_activated_start_time = 0;
@@ -164,19 +167,19 @@ void show_scroll_bar(int bShow)
 
 void load_all_fonts()
 {
-       int i;
+	int i;
 
-       if (!lcd_draw_buf_inited)
-	       init_lcd_draw_buf();
-       for (i=0; i < FONT_COUNT; i++)
-       {
+	if (!lcd_draw_buf_inited)
+		init_lcd_draw_buf();
+	for (i=0; i < FONT_COUNT; i++)
+	{
 	       if (pcfFonts[i].fd == FONT_FD_NOT_INITED) {
-		       pcfFonts[i].fd = load_bmf(&pcfFonts[i]);
+			pcfFonts[i].fd = load_bmf(&pcfFonts[i]);
 		       if (pcfFonts[i].fd < 0) {
 			       fatal_error("Missing font file: %s", pcfFonts[i].file);
 		       }
 	       }
-       }
+	}
 }
 
 
@@ -188,8 +191,9 @@ void init_lcd_draw_buf()
 	{
 		framebuffersize = framebuffer_size();
 		framebuffer_copy = (unsigned char*)memory_allocate(framebuffersize, "bufdraw1");
-
 		lcd_draw_buf.screen_buf = (unsigned char *)memory_allocate(LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS, "bufdraw2");
+		if (!framebuffer_copy || !lcd_draw_buf.screen_buf)
+			fatal_error("lcd_draw_buf allocation error");
 
 		for (i=0; i < FONT_COUNT; i++)
 		{
@@ -228,6 +232,9 @@ void init_lcd_draw_buf()
 			}
 
 		}
+		pArticleRenderInfo = (PARTICLE_RENDER_INFO)memory_allocate(sizeof(ARTICLE_RENDER_INFO) * MAX_LINES_PER_ARTICLE, "renderinfo");
+		if (!pArticleRenderInfo)
+			fatal_error("pArticleRenderInfo allocation error");
 		lcd_draw_buf_inited = 1;
 	}
 	lcd_draw_buf.current_x = 0;
@@ -236,7 +243,7 @@ void init_lcd_draw_buf()
 	lcd_draw_buf.pPcfFont = NULL;
 	lcd_draw_buf.line_height = 0;
 	lcd_draw_buf.align_adjustment = 0;
-
+	nArticleRenderedLines = 0;
 
 	if (lcd_draw_buf.screen_buf)
 		memset(lcd_draw_buf.screen_buf, 0, LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
@@ -267,15 +274,15 @@ void draw_article_positioner(int y_pos)
 		while (y_pos - last_positioner_y - article_start_y_pos > LCD_HEIGHT / 2)
 		{
 			last_positioner_y += LCD_HEIGHT / 2;
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y - 2);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y - 1);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y - 1);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 2, last_positioner_y);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y + 1);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y + 1);
-			lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y + 2);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y - 2);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y - 1);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y - 1);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 2, last_positioner_y);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y + 1);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 1, last_positioner_y + 1);
+			guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, 0, last_positioner_y + 2);
 		}
 	}
 }
@@ -283,6 +290,8 @@ void draw_article_positioner(int y_pos)
 void init_file_buffer()
 {
 	file_buffer = (unsigned char*)memory_allocate(FILE_BUFFER_SIZE, "bufdraw3");
+	if (!file_buffer)
+		fatal_error("file_buffer allocation error");
 }
 
 // default font is indexed 0, font id 0 is indexed 1, etc.
@@ -343,7 +352,7 @@ void buf_draw_UTF8_str_in_copy_buffer(unsigned char *framebuffer_copy, const uns
 void buf_draw_UTF8_str(const unsigned char **pUTF8)
 {
 	unsigned char c, c2;
-	char c3;
+	unsigned char c3;
 	long v_line_bottom;
 	ucs4_t u;
 	int font_idx;
@@ -527,7 +536,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 						nBitIdx = 7 - (j % 8);
 						if ((*pUTF8)[nByteIdx] & (1 << nBitIdx))
 						{
-							lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, lcd_draw_buf.current_x +
+							guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, lcd_draw_buf.current_x +
 								      LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment + j, nImageY);
 						}
 					}
@@ -544,8 +553,18 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 
 	while (**pUTF8 > MAX_ESC_CHAR) /* stop at end of string or escape character */
 	{
+		const unsigned char *pTemp = *pUTF8; // save the position before UTF8_to_UCS4 changes pUTF8
 		if ((u = UTF8_to_UCS4(pUTF8)))
 		{
+			if ((lcd_draw_buf.current_x <= 0 || nArticleRenderedLines == 0) && nArticleRenderedLines < MAX_LINES_PER_ARTICLE)
+			{
+				nArticleRenderedLines++;
+				pArticleRenderInfo[nArticleRenderedLines - 1].start_y = lcd_draw_buf.current_y;
+				pArticleRenderInfo[nArticleRenderedLines - 1].end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height - 1;
+				pArticleRenderInfo[nArticleRenderedLines - 1].pBuf = pTemp;
+				pArticleRenderInfo[nArticleRenderedLines - 1].pPcfFont = lcd_draw_buf.pPcfFont;
+			}
+
 			buf_draw_char(u);
 			if(display_first_page==0 && lcd_draw_buf.current_y > LCD_HEIGHT + article_start_y_pos)
 			{
@@ -649,7 +668,7 @@ void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 
 	for(i = start_x;i<end_x;i++)
 	{
-		lcd_buffer_set_pixel(lcd_draw_buf.screen_buf,i, h_line_y);
+		guilib_buffer_set_pixel(lcd_draw_buf.screen_buf,i, h_line_y);
 	}
 
 }
@@ -670,23 +689,6 @@ void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y)
 			p += LCD_BUF_WIDTH_BYTES;
 		}
 	}
-}
-
-void lcd_buffer_set_pixel(unsigned char *membuffer,int x, int y)
-{
-	unsigned int byte = (x + LCD_BUFFER_WIDTH * y) / 8;
-	unsigned int bit  = (x + LCD_BUFFER_WIDTH * y) % 8;
-
-
-	membuffer[byte] |= (1 << (7 - bit));
-}
-
-void lcd_buffer_clear_pixel(unsigned char *membuffer,int x, int y)
-{
-	unsigned int byte = (x + LCD_BUFFER_WIDTH * y) / 8;
-	unsigned int bit  = (x + LCD_BUFFER_WIDTH * y) % 8;
-
-	membuffer[byte] &= ~(1 << (7 - bit));
 }
 
 char lcd_draw_buf_get_byte(int x, int y)
@@ -764,7 +766,7 @@ void buf_draw_char(ucs4_t u)
 					if ((bitmap[i] & (1 << j)) && x_base + x_offset < LCD_BUF_WIDTH_PIXELS)
 					{
 						//*p |= 1 << ((x_base + x_offset) & 0x07);
-						lcd_buffer_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
+						guilib_buffer_set_pixel(lcd_draw_buf.screen_buf,x_base + x_offset, y_base+y_offset);
 					}
 				}
 				x_offset++;
@@ -932,7 +934,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 			{
 				if (bitmap[i] & (1 << j))
 				{
-					lcd_buffer_set_pixel(lcd_draw_buf_external->screen_buf,x_base + x_offset, y_base+y_offset);
+					guilib_buffer_set_pixel(lcd_draw_buf_external->screen_buf,x_base + x_offset, y_base+y_offset);
 				}
 
 			}
@@ -1032,6 +1034,7 @@ void init_render_article(long init_y_pos)
 
 	//if(lcd_draw_buf.current_y>0)
 	//  memset(lcd_draw_buf.screen_buf,0,lcd_draw_buf.current_y*LCD_BUFFER_WIDTH/8);
+	highlight_reset(-1, -1, false);
 	if (lcd_draw_buf.screen_buf)
 		memset(lcd_draw_buf.screen_buf, 0, LCD_BUF_WIDTH_BYTES * LCD_BUF_HEIGHT_PIXELS);
 
@@ -1052,6 +1055,7 @@ void init_render_article(long init_y_pos)
 	lcd_draw_init_y_pos = init_y_pos;
 	finger_move_speed = 0;
 	lcd_draw_buf_pos = 0;
+	nArticleRenderedLines = 0;
 }
 
 void render_wikipedia_license_text(void)
@@ -1572,18 +1576,19 @@ void draw_icon(const unsigned char *pStr)
 		{
 			for (j = lcd_draw_buf.current_x + LCD_LEFT_MARGIN + 1; j < lcd_draw_buf.current_x + LCD_LEFT_MARGIN + LANGUAGE_LINK_WIDTH - 2; j++)
 			{
-				lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
+				guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
 			}
 		}
 		else if (1 < i && i < LANGUAGE_LINK_HEIGHT - 2)
 		{
 			for (j = lcd_draw_buf.current_x + LCD_LEFT_MARGIN; j < lcd_draw_buf.current_x + LCD_LEFT_MARGIN + LANGUAGE_LINK_WIDTH - 1; j++)
 			{
-				lcd_buffer_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
+				guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, j, lcd_draw_buf.current_y + i);
 			}
 		}
 	}
-	buf_render_string(lcd_draw_buf.screen_buf, SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
+	buf_render_string(lcd_draw_buf.screen_buf, LCD_BUF_WIDTH_PIXELS, LCD_BUF_WIDTH_BYTES,
+		SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
 		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x,
 		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, ustrlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
@@ -2012,19 +2017,19 @@ void drawline_in_framebuffer_copy(unsigned char *buffer,int start_x,int start_y,
 	int i,m;
 	for(i = start_y;i<end_y;i++)
 		for(m = start_x;m<end_x;m++)
-			lcd_buffer_clear_pixel(buffer,m,i);
+			guilib_buffer_clear_pixel(buffer,m,i);
 
 	for(i = start_x ; i < end_x ; i++)
-		lcd_buffer_set_pixel(buffer,i, start_y);
+		guilib_buffer_set_pixel(buffer,i, start_y);
 
 	for(i = start_y ; i < end_y ; i++)
-		lcd_buffer_set_pixel(buffer,start_x,i);
+		guilib_buffer_set_pixel(buffer,start_x,i);
 
 	for(i = start_x ; i < end_x ; i++)
-		lcd_buffer_set_pixel(buffer,i,end_y);
+		guilib_buffer_set_pixel(buffer,i,end_y);
 
 	for(i = start_y ; i < end_y ; i++)
-		lcd_buffer_set_pixel(buffer,end_x,i);
+		guilib_buffer_set_pixel(buffer,end_x,i);
 }
 
 // when set_article_link_number is called, the link will be "activated" in a pre-defined period
@@ -2424,7 +2429,8 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 	return x;
 }
 
-int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inverted)
+int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_bytes,
+	ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
@@ -2437,6 +2443,8 @@ int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inv
 	int i; // bitmap byte index
 	int j; // bitmap bit index
 	pcffont_bmf_t *pPcfFont;
+	unsigned int byte;
+	unsigned int bit;
 
 	pPcfFont = &pcfFonts[font];
 
@@ -2446,22 +2454,35 @@ int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inv
 		return -1;
 	}
 
+	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
+	x_base = x + Cmetrics.LSBearing;
+	x_offset = 0;
+	y_offset = pPcfFont->Fmetrics.linespace - (pPcfFont->Fmetrics.descent + Cmetrics.ascent);
+	x_bit_idx = x_base & 0x07;
+
+	if (b_clear)
+	{
+		for (i = 0; i <= pPcfFont->Fmetrics.linespace; i++)
+		// need to clear 1 pixel more than linespace for subtitle font
+		{
+			for (j = 0; j < Cmetrics.widthDevice; j++)
+			{
+				byte = ((x + j) + buf_width_bytes * 8 * (y + i)) / 8;
+				bit  = ((x + j) + buf_width_bytes * 8 * (y + i)) % 8;
+				if (inverted)
+					buf[byte] |= (1 << (7 - bit));
+				else
+					buf[byte] &= ~(1 << (7 - bit));
+			}
+		}
+	}
 	if(u==32)
 	{
 		x += Cmetrics.widthDevice;
 		return x;
 	}
 
-	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
-
-	x_base = x + Cmetrics.LSBearing;
-	x_offset = 0;
-	y_offset = pPcfFont->Fmetrics.linespace - (pPcfFont->Fmetrics.descent + Cmetrics.ascent);
-
-
-	x_bit_idx = x_base & 0x07;
-
-	if (x + Cmetrics.widthDevice >= LCD_BUF_WIDTH_PIXELS)
+	if (x + Cmetrics.widthDevice >= buf_width_pixels)
 		return -1;
 
 	for (i = 0; i < bytes_to_process; i++)
@@ -2476,22 +2497,19 @@ int buf_draw_bmf_char(unsigned char *buf, ucs4_t u,int font,int x,int y, int inv
 			}
 			if (x_offset < Cmetrics.width)
 			{
+				byte = ((x_base+x_offset) + buf_width_bytes * 8 * (y+y_offset)) / 8;
+				bit  = ((x_base+x_offset) + buf_width_bytes * 8 * (y+y_offset)) % 8;
 				if (bitmap[i] & (1 << j))
 				{
 					if (inverted)
 					{
-						unsigned int byte = ((x_base+x_offset) + LCD_BUFFER_WIDTH * (y+y_offset)) / 8;
-						unsigned int bit  = ((x_base+x_offset) + LCD_BUFFER_WIDTH * (y+y_offset)) % 8;
 						buf[byte] ^= (1 << (7 - bit));
 					}
 					else
 					{
-						unsigned int byte = ((x_base+x_offset) + LCD_BUFFER_WIDTH * (y+y_offset)) / 8;
-						unsigned int bit  = ((x_base+x_offset) + LCD_BUFFER_WIDTH * (y+y_offset)) % 8;
 						buf[byte] |= (1 << (7 - bit));
 					}
 				}
-
 			}
 			x_offset++;
 			x_bit_idx++;
@@ -2572,4 +2590,502 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 		}
 	}
 	title[lenTitle] = '\0';
+}
+
+int find_start_line(int y)
+{
+	int iStart, iEnd;
+	int iMiddle = -1;
+	int iBestFit = -1;
+	bool bFound = false;
+
+	y += lcd_draw_cur_y_pos;
+	if (nArticleRenderedLines)
+	{
+		iStart = 0;
+		iEnd = nArticleRenderedLines - 1;
+
+		while (!bFound && iStart <= iEnd)
+		{
+			iMiddle = (iStart + iEnd) / 2;
+			if (y >= (int)pArticleRenderInfo[iMiddle].start_y)
+			{
+				if (iMiddle >= iEnd || y < (int)pArticleRenderInfo[iMiddle + 1].start_y)
+					bFound = true;
+				else
+					iStart = iMiddle + 1;
+			}
+			else
+				iEnd = iMiddle - 1;
+		}
+
+		if (bFound)
+		{
+			if (iMiddle > 0)
+				iMiddle--;
+			while (iMiddle <= iEnd)
+			{
+				if ((int)pArticleRenderInfo[iMiddle].start_y <= y && y <= (int)pArticleRenderInfo[iMiddle].end_y)
+				{
+					iBestFit = iMiddle;
+					break;
+				}
+
+				if (iBestFit < 0 && (int)pArticleRenderInfo[iMiddle].start_y - HIGHTLIGHT_Y_DIFF_ALLOWANCE <= y &&
+					y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
+					iBestFit = iMiddle;
+				iMiddle++;
+			}
+		}
+	}
+	return iBestFit;
+}
+
+int find_end_line(int y)
+{
+	int iStart, iEnd;
+	int iMiddle = -1;
+	int iBestFit = -1;
+	bool bFound = false;
+
+	y += lcd_draw_cur_y_pos;
+	if (nArticleRenderedLines)
+	{
+		iStart = 0;
+		iEnd = nArticleRenderedLines - 1;
+
+		while (!bFound && iStart <= iEnd)
+		{
+			iMiddle = (iStart + iEnd) / 2;
+			if (y >= (int)pArticleRenderInfo[iMiddle].start_y)
+			{
+				if (iMiddle >= iEnd || y < (int)pArticleRenderInfo[iMiddle + 1].start_y)
+					bFound = true;
+				else
+					iStart = iMiddle + 1;
+			}
+			else
+				iEnd = iMiddle - 1;
+		}
+
+		if (bFound)
+		{
+			if (iMiddle > 0)
+				iMiddle--;
+			while (iMiddle <= iEnd)
+			{
+				if ((int)pArticleRenderInfo[iMiddle].start_y <= y && (y <= (int)pArticleRenderInfo[iMiddle].end_y ||
+					(iMiddle < nArticleRenderedLines - 1 && y < (int)pArticleRenderInfo[iMiddle + 1].start_y)))
+				{
+					iBestFit = iMiddle;
+					break;
+				}
+
+				if (iBestFit < 0 && (int)pArticleRenderInfo[iMiddle].start_y - HIGHTLIGHT_Y_DIFF_ALLOWANCE <= y &&
+					y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
+					iBestFit = iMiddle;
+				iMiddle++;
+			}
+		}
+	}
+	return iBestFit;
+}
+
+bool process_esc_code(unsigned char c, const unsigned char **p, pcffont_bmf_t **pFont, int *last_x)
+{
+	unsigned char c2;
+	int font_idx;
+	bool bNewLine = false;
+	int nWidth, nHeight;
+	int vertical_adjustment = 0;
+	int i;
+
+	switch(c)
+	{
+		case ESC_0_SPACE_LINE: /* space line */
+			(*p)++;
+			bNewLine = true;
+			break;
+		case ESC_1_NEW_LINE_DEFAULT_FONT: /* new line with default font and line space */
+			bNewLine = true;
+			break;
+		case ESC_2_NEW_LINE_SAME_FONT: /* new line with previous font and line space */
+			bNewLine = true;
+			break;
+		case ESC_3_NEW_LINE_WITH_FONT: /* new line with specified font and line space */
+			c2 = **p;
+			(*p)++;
+			font_idx = c2 & 0x07;
+			if (font_idx > FONT_COUNT)
+				font_idx = DEFAULT_FONT_IDX;
+			*pFont = &pcfFonts[font_idx - 1];
+			bNewLine = true;
+			break;
+		case ESC_4_CHANGE_FONT: /* change font */
+			c2 = **p;
+			(*p)++;
+			font_idx = c2 & 0x07;
+			if (font_idx > FONT_COUNT)
+				font_idx = DEFAULT_FONT_IDX;
+			*pFont = &pcfFonts[font_idx - 1];
+			break;
+		case ESC_5_RESET_TO_DEFAULT_FONT: /* reset to the default font */
+			*pFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
+			break;
+		case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
+			vertical_adjustment = 0;
+			break;
+		case ESC_7_FORWARD: /* forward */
+			c2 = **p;
+			(*p)++;
+			*last_x += c2;
+			break;
+		case ESC_8_BACKWARD: /* backward */
+			c2 = **p;
+			(*p)++;
+			if (*last_x < c2)
+				*last_x = 0;
+			else
+				*last_x -= c2;
+			break;
+		case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
+			c2 = **p;
+			(*p)++;
+			vertical_adjustment += c2;
+			break;
+		case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
+			(*p)++;
+			break;
+		case ESC_11_VERTICAL_LINE: /* drawing vertical line */
+			(*p)++;
+			break;
+		case ESC_12_FULL_HORIZONTAL_LINE: /* drawing horizontal line from left-most pixel to right-most pixel */
+			break;
+		case ESC_13_FULL_VERTICAL_LINE: /* drawing vertical line from top of the line to the bottom */
+			*last_x += 1;
+			*last_x += 2;
+			break;
+		case ESC_14_BITMAP: /* bitmap */
+			c2 = **p;
+			(*p)++;
+			nWidth = c2;
+			c2 = **p;
+			(*p)++;
+			nHeight = c2;
+			c2 = **p;
+			(*p)++;
+			nHeight |= c2 << 8;
+			if (*last_x == 0)
+				*last_x = LCD_EXTRA_LEFT_MARGIN_FOR_IMAGE;
+			else
+				++last_x;
+			for (i = 0; i < nHeight; i++)
+				*p += (nWidth + 7) / 8;
+			*last_x += nWidth;
+			break;
+		default:
+			break;
+	}
+	return bNewLine;
+}
+
+int find_start_pos(const unsigned char *pBuf, pcffont_bmf_t *pFont, int start_x, int *bytes_before)
+{
+	int last_word_break_x = LCD_LEFT_MARGIN;
+	const unsigned char *p_buf_last_word_break = pBuf;
+	int last_x = LCD_LEFT_MARGIN;
+	const unsigned char *p = pBuf;
+	bmf_bm_t *bitmap;
+	charmetric_bmf Cmetrics;
+	unsigned char c;
+	bool bNewLine = false;
+	ucs4_t u;
+
+	while (!bNewLine && *p && last_x < start_x)
+	{
+		c = *p;
+		if (c <= MAX_ESC_CHAR)
+		{
+			p++;
+			bNewLine = process_esc_code(c, &p, &pFont, &last_x);
+		}
+		else
+		{
+			int temp_last_word_break_x = last_x;
+			const unsigned char *p_temp_buf_last_word_break = p;
+			if ((u = UTF8_to_UCS4(&p)))
+			{
+				if (pres_bmfbm(u, pFont, &bitmap, &Cmetrics) >= 0)
+					last_x += Cmetrics.widthDevice;
+				if (is_word_break(u))
+				{
+					if (last_x < start_x)
+					{
+						last_word_break_x = last_x;
+						p_buf_last_word_break = p;
+					}
+					else
+					{
+						last_word_break_x = temp_last_word_break_x;
+						p_buf_last_word_break = p_temp_buf_last_word_break;
+					}
+				}
+			}
+		}
+	}
+	if (bytes_before)
+		*bytes_before = p_buf_last_word_break - pBuf;
+	return last_word_break_x;
+}
+
+int find_end_pos(const unsigned char *pBuf, pcffont_bmf_t *pFont, int end_x, int *used_bytes)
+{
+	int last_x = LCD_LEFT_MARGIN;
+	const unsigned char *p = pBuf;
+	bmf_bm_t *bitmap;
+	charmetric_bmf Cmetrics;
+	unsigned char c;
+	bool bNewLine = false;
+	ucs4_t u;
+
+	while (!bNewLine && *p && last_x < end_x)
+	{
+		c = *p;
+		if (c <= MAX_ESC_CHAR)
+		{
+			p++;
+			bNewLine = process_esc_code(c, &p, &pFont, &last_x);
+		}
+		else
+		{
+			if ((u = UTF8_to_UCS4(&p)))
+			{
+				if (pres_bmfbm(u, pFont, &bitmap, &Cmetrics) >= 0)
+					last_x += Cmetrics.widthDevice;
+			}
+		}
+	}
+	if (used_bytes)
+		*used_bytes = p - pBuf;
+	return last_x;
+}
+
+void concat_search_string(const unsigned char *pBuf, int nBytes, unsigned char *search_string_actual)
+{
+	int last_x = LCD_LEFT_MARGIN;
+	const unsigned char *p = pBuf;
+	pcffont_bmf_t *pFont;
+	unsigned char c;
+	bool bNewLine = false;
+	bool bFirstChar = true;
+	ucs4_t u;
+	int len_search_string_actual = ustrlen(search_string_actual);
+
+	if (nBytes < 0)
+		nBytes = MAX_TITLE_ACTUAL;
+
+	while (!bNewLine && *p && nBytes > 0)
+	{
+		c = *p;
+		if (c <= MAX_ESC_CHAR)
+		{
+			const unsigned char *pOld = p;
+			p++;
+			bNewLine = process_esc_code(c, &p, &pFont, &last_x);
+			nBytes -= p - pOld;
+		}
+		else
+		{
+			const unsigned char *pOld = p;
+			int len;
+			if ((u = UTF8_to_UCS4(&p)))
+			{
+				len = p - pOld;
+				if (bFirstChar)
+				{
+					bFirstChar = false;
+					if (!is_word_break(u) && len_search_string_actual > 0 && len_search_string_actual + 1 < MAX_TITLE_ACTUAL)
+						search_string_actual[len_search_string_actual++] = ' ';
+				}
+				if (len + len_search_string_actual >= MAX_TITLE_ACTUAL)
+					break;
+				memcpy(&search_string_actual[len_search_string_actual], pOld, len);
+				//memset(&search_string_actual[len_search_string_actual], 'x', len);
+				len_search_string_actual += len;
+				nBytes -= len;
+			}
+		}
+	}
+	search_string_actual[len_search_string_actual] = '\0';
+}
+
+void draw_highlight_area(int start_line, int end_line, int start_x, int end_x,
+	int *invert_start_x, int *invert_end_x,
+	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+	unsigned char *search_string_actual, bool bRepaint)
+{
+	static int iLineStart = -1;
+	static int iLineEnd = -1;
+	static int iXStart = -1;
+	static int iXEnd = -1;
+	int i;
+	int xs, ys, xe, ye;
+	int byets_before_start, bytes_used_to_end;
+	int start_byte, nBytes;
+
+	if (iLineStart >= 0 && bRepaint)
+	{ // invert the original highlight
+		for (i = iLineStart; i <= iLineEnd; i++)
+		{
+			if (i == iLineStart)
+				xs = iXStart;
+			else
+				xs = 0;
+			ys = pArticleRenderInfo[i].start_y;
+			if (i == iLineEnd)
+				xe = iXEnd;
+			else
+				xe = LCD_WIDTH -1;
+			if (i < nArticleRenderedLines - 1)
+				ye = pArticleRenderInfo[i + 1].start_y - 1;
+			else
+				ye = pArticleRenderInfo[i].end_y;
+			guilib_buffer_invert_area(lcd_draw_buf.screen_buf, xs, ys, xe, ye);
+		}
+	}
+
+	if (!start_line && !end_line && !start_x && !end_x)
+	{
+		iLineStart = -1;
+	}
+	else if (start_line >= 0 && end_line >= 0)
+	{
+		if (start_line <= end_line)
+		{
+			iLineStart = start_line;
+			iLineEnd = end_line;
+		}
+		else
+		{
+			iLineStart = end_line;
+			iLineEnd = start_line;
+		}
+		if (start_line < end_line || (start_line == end_line && start_x <= end_x))
+		{
+			iXStart = find_start_pos(pArticleRenderInfo[iLineStart].pBuf, pArticleRenderInfo[iLineStart].pPcfFont,
+				start_x, &byets_before_start);
+			iXEnd = find_end_pos(pArticleRenderInfo[iLineEnd].pBuf, pArticleRenderInfo[iLineEnd].pPcfFont,
+				end_x, &bytes_used_to_end);
+		}
+		else
+		{
+			iXStart = find_start_pos(pArticleRenderInfo[iLineStart].pBuf, pArticleRenderInfo[iLineStart].pPcfFont,
+				end_x, &byets_before_start);
+			iXEnd = find_end_pos(pArticleRenderInfo[iLineEnd].pBuf, pArticleRenderInfo[iLineEnd].pPcfFont,
+				start_x, &bytes_used_to_end);
+		}
+
+		for (i = iLineStart; i <= iLineEnd; i++)
+		{
+			if (i == iLineStart)
+				xs = iXStart;
+			else
+				xs = 0;
+			ys = pArticleRenderInfo[i].start_y;
+			if (i == iLineEnd)
+				xe = iXEnd;
+			else
+				xe = LCD_WIDTH -1;
+			if (i < nArticleRenderedLines - 1)
+				ye = pArticleRenderInfo[i + 1].start_y - 1;
+			else
+				ye = pArticleRenderInfo[i].end_y;
+			guilib_buffer_invert_area(lcd_draw_buf.screen_buf, xs, ys, xe, ye);
+
+			if (i == iLineStart)
+			{
+				if (invert_start_x)
+					*invert_start_x = xs;
+				if (invert_start_y_top)
+					*invert_start_y_top = ys - lcd_draw_cur_y_pos;
+				if (invert_start_y_bottom)
+					*invert_start_y_bottom = ye - lcd_draw_cur_y_pos;
+			}
+
+			if (i == iLineEnd)
+			{
+				if (invert_end_x)
+					*invert_end_x = xe;
+				if (invert_end_y_top)
+					*invert_end_y_top = ys - lcd_draw_cur_y_pos;
+				if (invert_end_y_bottom)
+					*invert_end_y_bottom = ye - lcd_draw_cur_y_pos;
+			}
+
+			if (search_string_actual)
+			{
+				if (i == iLineStart)
+					start_byte = byets_before_start;
+				else
+					start_byte = 0;
+				if (i == iLineEnd)
+					nBytes = bytes_used_to_end - start_byte;
+				else
+					nBytes = -1;
+				concat_search_string(&pArticleRenderInfo[i].pBuf[start_byte], nBytes, search_string_actual);
+			}
+		}
+	}
+	else
+	{ // reset highlight
+		iLineStart = -1;
+	}
+	if (bRepaint)
+		repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos, 0);
+}
+
+bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
+	int *invert_start_x, int *invert_end_x,
+	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+	unsigned char *search_string_actual, bool bRepaint)
+{
+	int iLineStart, iLineEnd;
+
+	if (search_string_actual)
+		search_string_actual[0] = '\0';
+
+	if (!start_x && !start_y && !end_x && !end_y)
+	{
+		iLineStart = 0;
+		iLineEnd = 0;
+	}
+	else
+	{
+		iLineStart = find_start_line(start_y);
+		if (iLineStart >= 0)
+			iLineEnd = find_end_line(end_y);
+		else
+			iLineEnd = -1;
+	}
+
+	if (iLineStart >= 0 && iLineEnd >= 0)
+	{
+		draw_highlight_area(iLineStart, iLineEnd, start_x, end_x,
+			invert_start_x, invert_end_x,
+			invert_start_y_top, invert_start_y_bottom, invert_end_y_top, invert_end_y_bottom,
+			search_string_actual, bRepaint);
+		return true;
+	}
+	else
+		return false;
+}
+
+unsigned char *lcd_draw_get_cur_buffer()
+{
+	return &lcd_draw_buf.screen_buf[lcd_draw_cur_y_pos * LCD_BUF_WIDTH_BYTES];
+}
+
+int lcd_draw_get_cur_y_pos()
+{
+	return lcd_draw_cur_y_pos;
 }

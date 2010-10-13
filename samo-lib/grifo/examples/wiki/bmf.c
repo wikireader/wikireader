@@ -17,11 +17,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 
 #include <grifo.h>
 
+#include "ustring.h"
 #include "bmf.h"
 #include "wikilib.h"
 

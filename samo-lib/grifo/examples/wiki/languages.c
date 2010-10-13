@@ -19,8 +19,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <grifo.h>
+
 #include "ustring.h"
-#include "grifo.h"
 #include "languages.h"
 #include "mapping_tables.h"
 #include "utf8.h"

@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2010 Openmoko Inc.
  *
- * Authors   Daniel Mack <daniel@caiaq.de>
- *           Holger Hans Peter Freyther <zecke@openmoko.org>
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,22 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef _HIGHLIGHT_H
+#define _HIGHLIGHT_H
+#include <stdbool.h>
 
-#include <grifo.h>
-
-#include "wikilib.h"
-
-// Note: this must be the first object in the linker command line
-//       since Grifo always starts an app from the first .text location.
-
-int grifo_main(int argc, char **argv)
-{
-	(void)argc; // *** unused argument
-	(void)argv; // *** unused argument
-
-	debug_printf("starting wiki app\n");
-	wikilib_run();
-	return 1;
-}
+void highlight_reset(int x, int y, bool bRepaint);
+bool highlight_set(int x, int y);
+void highlight_handle_search();
+#endif

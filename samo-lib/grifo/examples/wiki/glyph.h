@@ -26,9 +26,14 @@ struct glyph {
 	char data[0];
 } __attribute__((packed));
 
-int buf_render_string(unsigned char *buf, const int font, int off_x, int off_y,  const unsigned char*, int len, int inverted);
-int render_string(const int font, int off_x, int off_y, const unsigned char*, int len, int inverted);
-int render_string_right(const int font, int off_x, int off_y, const unsigned char*, int len, int inverted);
+
+int buf_render_string(unsigned char *buf, int buf_width_pixels, int buf_width_bytes, const int font,
+	int start_x, int start_y, const unsigned char *string, int text_length, int inverted);
+int buf_render_string_right(unsigned char *buf, int buf_width_pixels, int buf_height_pixels,
+	int buf_width_bytes, const int font,
+	int start_x, int start_y, const unsigned char *string, int text_length, int inverted);
+int render_string(const int font, int off_x, int off_y, const unsigned char *string, int len, int inverted);
+int render_string_right(const int font, int off_x, int off_y, const unsigned char *string, int len, int inverted);
 void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf);
 int draw_glyphs_to_buf(const int font, int start_x, int start_y, const char *string, char *buf);
 int render_string_and_clear(const int font, int start_x,

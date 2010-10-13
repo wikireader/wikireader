@@ -19,8 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-#include "grifo.h"
+#include <grifo.h>
+
+#include "string.h"
 #include "guilib.h"
 #include "glyph.h"
 #include "lcd_buf_draw.h"
@@ -78,9 +79,6 @@ void guilib_invert(int start_line, int height)
  */
 void guilib_invert_area(int start_x, int start_y, int end_x, int end_y)
 {
-	int x, y;
-	unsigned int pixel;
-
 	if (start_x > end_x || start_y > end_y ||
 		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
 		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
@@ -94,60 +92,25 @@ void guilib_invert_area(int start_x, int start_y, int end_x, int end_y)
 		start_y = 0;
 	if (end_y >= LCD_HEIGHT)
 		end_y = LCD_HEIGHT - 1;
-
-	for (y = start_y; y <= end_y; ++y) {
-		for (x = start_x; x <= end_x; x++) {
-			pixel = lcd_get_pixel(x, y);
-			lcd_set_pixel(x, y, !pixel);
-		}
-	}
+	guilib_buffer_invert_area(lcd_get_framebuffer(), start_x, start_y, end_x, end_y);
 }
 
-/**
- * Clear the content of the screen.
- */
-void guilib_clear(void)
+void guilib_buffer_invert_area(unsigned char *membuffer, int start_x, int start_y, int end_x, int end_y)
 {
-#ifdef DISPLAY_INVERTED
-	lcd_clear(LCD_BLACK);
-#else
-	lcd_clear(LCD_WHITE);
-#endif
-}
-
-/**
- * Clear the area specified on the screen.
- */
-void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
-{
-	int y;
-	unsigned int r1, r2;
+	int y, r1, r2;
 	uint8_t byte_mask1 = 0;
 	uint8_t byte_mask2 = 0;
 	int byte_idx;
 	int x_byte_idx;
 	int nBits;
 	int nBytes = 0;
-	uint8_t *framebuffer = lcd_get_framebuffer();
-
-	if (start_x > end_x || start_y > end_y ||
-		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
-		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
-		return;
-
-	if (start_x < 0)
-		start_x = 0;
-	if (end_x >= LCD_WIDTH)
-		end_x = LCD_WIDTH - 1;
-	if (start_y < 0)
-		start_y = 0;
-	if (end_y >= LCD_HEIGHT)
-		end_y = LCD_HEIGHT - 1;
+	int i;
 
 	if (start_x == 0 && end_x >= LCD_WIDTH - 1)
 	{
 		byte_idx = start_y * LCD_BUF_WIDTH_BYTES;
-		memset(&framebuffer[byte_idx], 0, LCD_BUF_WIDTH_BYTES * (end_y - start_y + 1));
+		for (i = byte_idx; i < byte_idx + (end_y - start_y + 1) * LCD_BUFFER_WIDTH_BYTES; i++)
+			membuffer[i] = ~membuffer[i];
 	}
 	else
 	{
@@ -171,7 +134,7 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 		}
 		if (r1 > 0 && end_x - start_x < 8 && r2 > 0)
 		{
-			byte_mask1 &= byte_mask2;
+			byte_mask1 |= byte_mask2;
 			r2 = 0;
 		}
 
@@ -179,17 +142,134 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 			byte_idx = y * LCD_BUF_WIDTH_BYTES + x_byte_idx;
 			if (r1 > 0)
 			{
-				framebuffer[byte_idx] &= byte_mask1;
+				membuffer[byte_idx] = membuffer[byte_idx] ^ (~byte_mask1);
 				byte_idx++;
 			}
 			if (nBytes > 0)
 			{
-				memset(&framebuffer[byte_idx], 0, nBytes);
+				for (i = byte_idx; i < byte_idx + nBytes; i++)
+					membuffer[i] = ~membuffer[i];
 				byte_idx += nBytes;
 			}
 			if (r2 > 0)
 			{
-				framebuffer[byte_idx] &= byte_mask2;
+				membuffer[byte_idx] = membuffer[byte_idx] ^ (~byte_mask2);
+			}
+		}
+	}
+}
+
+void guilib_buffer_set_pixel(unsigned char *membuffer, int x, int y)
+{
+	unsigned int byte = (x + LCD_BUFFER_WIDTH * y) / 8;
+	unsigned int bit  = (x + LCD_BUFFER_WIDTH * y) % 8;
+
+
+	membuffer[byte] |= (1 << (7 - bit));
+}
+
+void guilib_buffer_clear_pixel(unsigned char *membuffer, int x, int y)
+{
+	unsigned int byte = (x + LCD_BUFFER_WIDTH * y) / 8;
+	unsigned int bit  = (x + LCD_BUFFER_WIDTH * y) % 8;
+
+	membuffer[byte] &= ~(1 << (7 - bit));
+}
+
+/**
+ * Clear the content of the screen.
+ */
+void guilib_clear(void)
+{
+#ifdef DISPLAY_INVERTED
+	lcd_clear(LCD_BLACK);
+#else
+	lcd_clear(LCD_WHITE);
+#endif
+}
+
+/**
+ * Clear the area specified on the screen.
+ */
+void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
+{
+	guilib_buffer_clear_area(lcd_get_framebuffer(),
+		LCD_WIDTH, LCD_HEIGHT, LCD_BUF_WIDTH_BYTES,
+		start_x, start_y, end_x, end_y);
+}
+
+void guilib_buffer_clear_area(unsigned char *membuffer,
+	int width, int height, int buf_width_bytes,
+	int start_x, int start_y, int end_x, int end_y)
+{
+	int y, r1, r2;
+	uint8_t byte_mask1 = 0;
+	uint8_t byte_mask2 = 0;
+	int byte_idx;
+	int x_byte_idx;
+	int nBits;
+	int nBytes = 0;
+
+	if (start_x > end_x || start_y > end_y ||
+		(start_x < 0 && end_x < 0) || (start_x >= width && end_x >= width) ||
+		(start_y < 0 && end_y < 0) || (start_y >= height && end_y >= height))
+		return;
+
+	if (start_x < 0)
+		start_x = 0;
+	if (end_x >= width)
+		end_x = width - 1;
+	if (start_y < 0)
+		start_y = 0;
+	if (end_y >= height)
+		end_y = height - 1;
+
+	if (start_x == 0 && end_x >= width - 1)
+	{
+		byte_idx = start_y * buf_width_bytes;
+		memset(&membuffer[byte_idx], 0, buf_width_bytes * (end_y - start_y + 1));
+	}
+	else
+	{
+		x_byte_idx = start_x / 8;
+		r1 = start_x % 8;
+		r2 = (end_x + 1) % 8;
+		// calculate number of full bytes
+		nBits = end_x - start_x + 1 - ((8 - r1) % 8) - r2;
+		if (nBits > 0)
+			nBytes = nBits / 8;
+
+		if (r1 > 0)
+		{
+			byte_mask1 = 0xFF;
+			byte_mask1 <<= 8 - r1;
+		}
+		if (r2 > 0)
+		{
+			byte_mask2 = 0xFF;
+			byte_mask2 >>= r2;
+		}
+		if (r1 > 0 && end_x - start_x < 8 && r2 > 0)
+		{
+			byte_mask1 |= byte_mask2;
+			r2 = 0;
+		}
+
+		for (y = start_y; y <= end_y; ++y) {
+			byte_idx = y * buf_width_bytes + x_byte_idx;
+			if (r1 > 0)
+			{
+				membuffer[byte_idx] &= byte_mask1;
+				byte_idx++;
+			}
+			if (nBytes > 0)
+			{
+				memset(&membuffer[byte_idx], 0, nBytes);
+				byte_idx += nBytes;
+			}
+			if (r2 > 0)
+			{
+				membuffer[byte_idx] &= byte_mask2;
 			}
 		}
 	}

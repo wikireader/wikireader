@@ -18,16 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <wikilib.h>
-#include <guilib.h>
-#include <glyph.h>
-#include <search.h>
 #include <stdlib.h>
 #include <guilib.h>
 
+#include <grifo.h>
+
 #include "ustring.h"
-#include "grifo.h"
 #include "history.h"
+#include "wikilib.h"
+#include "guilib.h"
+#include "glyph.h"
 #include "search.h"
 #include "lcd_buf_draw.h"
 #include "wiki_info.h"
@@ -274,12 +274,12 @@ void draw_clear_history(int bClear)
 		framebuffer[204 * LCD_BUFFER_WIDTH / 8 + 29] = 0x1F;
 
 		pText=get_nls_text("clear_history");
-		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, strlen((const char *)pText), 1);
+		render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, 185, pText, ustrlen(pText), 1);
 		pText=get_nls_text("yes");
-		render_string(SUBTITLE_FONT_IDX, 131 + (184 - 131 - (get_external_str_pixel_width((const unsigned char *)pText, SUBTITLE_FONT_IDX)) + 1) / 2,
-			      185, pText, strlen((const char *)pText), 0);
+		render_string(SUBTITLE_FONT_IDX, 131 + (184 - 131 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
+			      185, pText, ustrlen(pText), 0);
 		pText=get_nls_text("no");
-		render_string(SUBTITLE_FONT_IDX, 185 + (238 - 185 - (get_external_str_pixel_width((const unsigned char *)pText, SUBTITLE_FONT_IDX)) + 1) / 2,
-			      185, pText, strlen((const char *)pText), 0);
+		render_string(SUBTITLE_FONT_IDX, 185 + (238 - 185 - (get_external_str_pixel_width(pText, SUBTITLE_FONT_IDX)) + 1) / 2,
+			      185, pText, ustrlen(pText), 0);
 	}
 }

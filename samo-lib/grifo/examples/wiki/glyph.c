@@ -20,9 +20,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
+#include <grifo.h>
+
+#include "ustring.h"
 #include "wikilib.h"
-#include "grifo.h"
 #include "guilib.h"
 #include "utf8.h"
 #include "glyph.h"
@@ -62,8 +63,9 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 	}
 }
 
-int buf_render_string(unsigned char *buf, const int font, int start_x,
-		  int start_y, const unsigned char *string, int text_length, int inverted)
+
+int buf_render_string(unsigned char *buf, int buf_width_pixels, int buf_width_bytes, const int font,
+	int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int x;
 	int width;
@@ -78,13 +80,13 @@ int buf_render_string(unsigned char *buf, const int font, int start_x,
 		width = 0;
 	else
 		width = start_x;
-	while (len > 0 && width < LCD_BUF_WIDTH_PIXELS)
+	while (len > 0 && width < buf_width_pixels)
 	{
 		lenLast = len;
 		widthLast = width;
 		width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
 	}
-	if (width > LCD_BUF_WIDTH_PIXELS)
+	if (width > buf_width_pixels)
 	{
 		text_length -= lenLast;
 		width = widthLast;
@@ -92,7 +94,7 @@ int buf_render_string(unsigned char *buf, const int font, int start_x,
 
 	if (start_x < 0) // to be centered
 	{
-		start_x = (LCD_BUF_WIDTH_PIXELS - width) / 2;
+		start_x = (buf_width_pixels - width) / 2;
 		if (start_x < 0)
 			start_x = 0;
 	}
@@ -101,11 +103,65 @@ int buf_render_string(unsigned char *buf, const int font, int start_x,
 	const unsigned char *q = (const unsigned char *)string;
 	while (*q) {
 		c = UTF8_to_UCS4(&q);
-		x = buf_draw_bmf_char(buf, c,font-1,x,start_y, inverted);
+		x = buf_draw_bmf_char(buf, buf_width_pixels, buf_width_bytes, c,font-1,x,start_y, inverted, 0);
 		if(x<0)
 			return 0;
 	}
 	return x;
+}
+
+int buf_render_string_right(unsigned char *buf, int buf_width_pixels, int buf_height_pixels,
+	int buf_width_bytes, const int font,
+	int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
+{
+	int i;
+	int x;
+	int utf8_chars = 0;
+	int widths[MAX_TITLE_ACTUAL];
+	int lens[MAX_TITLE_ACTUAL];
+	int width = 0;
+	long len = text_length;
+	const unsigned char *p = string;
+	int nCharBytes;
+	int rc;
+	ucs4_t c;
+
+	while (len > 0 && utf8_chars < MAX_TITLE_ACTUAL)
+	{
+		widths[utf8_chars] = get_UTF8_char_width(font, &p, &len, &nCharBytes);
+		if (utf8_chars == 0)
+			lens[utf8_chars] = nCharBytes;
+		else
+			lens[utf8_chars] = lens[utf8_chars - 1] + nCharBytes;
+		width += widths[utf8_chars];
+		utf8_chars++;
+	}
+
+	rc = width;
+	if (width > buf_width_pixels)
+	{
+		int width_to_descrease = width - buf_width_pixels;
+
+		width = 0;
+		for (i = 0; i < utf8_chars && width < width_to_descrease; i++)
+			width += widths[i];
+		if (0 < i && i <= utf8_chars)
+		{
+			string = &string[lens[i - 1]];
+		}
+	}
+
+	x = start_x;
+	const unsigned char *q = string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = buf_draw_bmf_char(buf, start_x + buf_width_pixels, buf_width_bytes, c,font-1,x,start_y, inverted, 1);
+		if(x<0)
+			return 0;
+	}
+	guilib_buffer_clear_area(buf, LCD_BUF_WIDTH_PIXELS, buf_height_pixels, buf_width_bytes,
+		x, start_y, start_x + buf_width_pixels, start_y + GetFontLinespace(font));
+	return rc;
 }
 
 int render_string(const int font, int start_x,

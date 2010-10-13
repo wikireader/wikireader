@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
 #include <stdlib.h>
-#include "grifo.h"
+
+#include <grifo.h>
+
+#include "ustring.h"
 #include "bigram.h"
 #include "lcd_buf_draw.h"
 #include "wiki_info.h"
