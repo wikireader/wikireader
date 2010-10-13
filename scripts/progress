@@ -19,7 +19,7 @@ USAGE()
   echo '       --analyse         -a         analyse the log file'
   echo '       --git             -g         run git pull --rebase'
   echo '       --process[=<n>]   -p[<n>]    show python/php processes cut line 1..n [unlimited]'
-  echo '       --base=<dir>      -b <dir>   set the base directory [samo]'
+  echo '       --base=<dir>      -b <dir>   set the base directory ['${base_dir}']'
   echo '       --tail[=<n>]      -t[<n>]    show last line of <base_dir>/log [3]'
   echo '       --memory          -m         show memory status'
   echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
@@ -87,7 +87,7 @@ verbose=no
 language=en
 suffix=pedia
 list=''
-base_dir=samo
+base_dir=wikireader
 combine_host=
 render_host=
 run_parallel=
