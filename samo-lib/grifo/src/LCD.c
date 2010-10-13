@@ -618,7 +618,7 @@ int LCD_vuprintf(const char *format, va_list arguments)
 // window buffer
 // -------------
 
-#include "serial.h" // *******************************************************************************
+
 size_t LCD_Window(int x, int y, int width, int height)
 {
 	WindowAvailable = false;
@@ -630,8 +630,8 @@ size_t LCD_Window(int x, int y, int width, int height)
 	x = (x + 31) & ~31;
 	width = (width + 31) & ~31;
 
-	if (x + width >= LCD_WIDTH ||
-	    y + height>= LCD_HEIGHT) {
+	if (x + width >= LCD_BUFFER_WIDTH ||
+	    y + height>= LCD_BUFFER_HEIGHT) {
 		return 0;
 	}
 
@@ -649,12 +649,6 @@ size_t LCD_Window(int x, int y, int width, int height)
 		((((x + width) / 32 - 1) << PIPXEND_SHIFT) & PIPXEND_MASK);
 
 	REG_LCDC_MLADD = LCD_BUFFER_WIDTH_WORDS;
-
-	Serial_printf("LCDC_SADD  = 0x%08lx\n", REG_LCDC_SADD);
-	Serial_printf("LCDC_SSP   = 0x%08lx\n", REG_LCDC_SSP);
-	Serial_printf("LCDC_SEP   = 0x%08lx\n", REG_LCDC_SEP);
-	Serial_printf("LCDC_MLADD = 0x%08lx\n", REG_LCDC_MLADD);
-
 
 	WindowWidth = width;
 	WindowHeight = height;
