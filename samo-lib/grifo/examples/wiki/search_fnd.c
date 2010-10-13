@@ -148,9 +148,9 @@ int copy_fnd_to_buf(long offset, unsigned char *buf, int len)
 		if (nFndIdx < pPerWikiInfo[nCurrentWiki].nFndCount)
 		{
 			file_lseek(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx],
-				blocked_offset - pPerWikiInfo[nCurrentWiki].offsetFndStart[nFndIdx]);
+				   blocked_offset - pPerWikiInfo[nCurrentWiki].offsetFndStart[nFndIdx]);
 			pFndBuf[idxFndBuf].len = file_read(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx],
-							 &pFndBuf[idxFndBuf].buf[0], FND_BUF_BLOCK_SIZE);
+							   &pFndBuf[idxFndBuf].buf[0], FND_BUF_BLOCK_SIZE);
 		}
 		if (nFndIdx >= pPerWikiInfo[nCurrentWiki].nFndCount || pFndBuf[idxFndBuf].len <= 0)
 		{
@@ -173,7 +173,7 @@ int copy_fnd_to_buf(long offset, unsigned char *buf, int len)
 		{
 			file_lseek(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx + 1], 0);
 			pFndBuf[idxFndBuf].len += file_read(pPerWikiInfo[nCurrentWiki].fdFnd[nFndIdx + 1],
-							  &pFndBuf[idxFndBuf].buf[pFndBuf[idxFndBuf].len], FND_BUF_BLOCK_SIZE - pFndBuf[idxFndBuf].len);
+							    &pFndBuf[idxFndBuf].buf[pFndBuf[idxFndBuf].len], FND_BUF_BLOCK_SIZE - pFndBuf[idxFndBuf].len);
 		}
 		pFndBuf[idxFndBuf].offset = blocked_offset;
 		element.key = nKey;

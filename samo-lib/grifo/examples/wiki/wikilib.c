@@ -1371,20 +1371,20 @@ int wikilib_run(void)
 			event_get(&ev);
 		more_events = 1;
 		switch (ev.item_type) {
-			case EVENT_BUTTON_UP:
-				b_show_scroll_bar = 0;
-				handle_button_release(ev.button.code);
-				last_event_time = ev.time_stamp;
-				break;
-			case EVENT_TOUCH_DOWN:
-			case EVENT_TOUCH_MOTION:
-			case EVENT_TOUCH_UP:
-				handle_touch(&ev);
-				last_event_time = ev.time_stamp;
-				break;
-			default:
-				more_events = 0;
-				break;
+		case EVENT_BUTTON_UP:
+			b_show_scroll_bar = 0;
+			handle_button_release(ev.button.code);
+			last_event_time = ev.time_stamp;
+			break;
+		case EVENT_TOUCH_DOWN:
+		case EVENT_TOUCH_MOTION:
+		case EVENT_TOUCH_UP:
+			handle_touch(&ev);
+			last_event_time = ev.time_stamp;
+			break;
+		default:
+			more_events = 0;
+			break;
 		}
 	}
 

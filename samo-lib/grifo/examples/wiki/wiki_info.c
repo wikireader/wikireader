@@ -90,13 +90,13 @@ void init_wiki_info(void)
 	int nWikiSerialId;
 
 	nWikiCount = 0;
-    memset(baWikiActive, 0, sizeof(baWikiActive));
+	memset(baWikiActive, 0, sizeof(baWikiActive));
 	for (i = 0; i < MAX_WIKIS; i++)
 	{
 		if (directory_exists(wiki_list[i].wiki_folder))
 		{
-            baWikiActive[i] = true;
-            nWikiCount++;
+			baWikiActive[i] = true;
+			nWikiCount++;
 		}
 	}
 
@@ -104,18 +104,18 @@ void init_wiki_info(void)
 	{
 		pWikiLicenseDraw = (PWIKI_LICENSE_DRAW)memory_allocate(sizeof(WIKI_LICENSE_DRAW), "wikiinfo0");
 		aActiveWikis = (PACTIVE_WIKI)memory_allocate(sizeof(ACTIVE_WIKI) * nWikiCount, "wikiinfo1");
-        if (!pWikiLicenseDraw || !aActiveWikis)
-        {
-            fatal_error("too many wikis");
-        }
+		if (!pWikiLicenseDraw || !aActiveWikis)
+		{
+			fatal_error("too many wikis");
+		}
 		pWikiLicenseDraw->lines = 0;
 
-        j = 0;
-        for (i = 0; i < MAX_WIKIS; i++)
-    	{
-            if (baWikiActive[i])
-                aActiveWikis[j++].WikiInfoIdx = i;
-    	}
+		j = 0;
+		for (i = 0; i < MAX_WIKIS; i++)
+		{
+			if (baWikiActive[i])
+				aActiveWikis[j++].WikiInfoIdx = i;
+		}
 
 		nCurrentWiki = 0;
 		fd = file_open("wiki.ini", FILE_OPEN_READ);
@@ -158,8 +158,8 @@ void init_wiki_info(void)
 		}
 		else
 		{
-            lenWikiIni = 0;
-            pWikiIni = memory_allocate(20, "wikiinfo3");
+			lenWikiIni = 0;
+			pWikiIni = memory_allocate(20, "wikiinfo3");
 			memset(pWikiIni, 0, 20);
 		}
 
@@ -187,7 +187,7 @@ void init_wiki_info(void)
 		keyboard_set_mode(default_keyboard);
 	} else {
 		fatal_error("No wiki found");
-}
+	}
 }
 
 int get_wiki_idx_by_lang_link(const unsigned char *lang_link_str)
@@ -210,7 +210,7 @@ int get_wiki_idx_by_lang_link(const unsigned char *lang_link_str)
 		for (i = 0; i < nWikiCount; i++)
 		{
 			if (current_wiki_cat == wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_cat &&
-		    !ustrncmp(lang_link_str, wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_lang, len))
+			    !ustrncmp(lang_link_str, wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_lang, len))
 				return i;
 		}
 	}

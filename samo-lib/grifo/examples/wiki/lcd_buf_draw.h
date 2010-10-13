@@ -305,7 +305,7 @@ void open_article_link_with_link_number(int article_link_number);
 void scroll_article(void);
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear);
 int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_bytes,
-	ucs4_t u,int font,int x,int y, int inverted, int b_clear);
+		      ucs4_t u,int font,int x,int y, int inverted, int b_clear);
 int isArticleLinkSelected(int x,int y);
 int check_invert_link(void);
 void set_article_link_number(int num, unsigned long);
@@ -330,9 +330,9 @@ extern pcffont_bmf_t pcfFonts[FONT_COUNT];
 extern const unsigned char *article_buf_pointer;
 void clear_article_pos_info();
 bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
-	int *invert_start_x, int *invert_end_x,
-	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
-	unsigned char *search_string_actual, bool bRepaint);
+			int *invert_start_x, int *invert_end_x,
+			int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+			unsigned char *search_string_actual, bool bRepaint);
 int lcd_draw_get_cur_y_pos();
 unsigned char *lcd_draw_get_cur_buffer();
 void load_all_fonts();

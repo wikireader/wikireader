@@ -38,9 +38,9 @@ void guilib_clear_area(int start_x, int start_y, int end_x, int end_y);
 void guilib_buffer_invert_area(unsigned char *membuffer, int start_x, int start_y, int end_x, int end_y);
 void guilib_buffer_set_pixel(unsigned char *membuffer, int x, int y);
 void guilib_buffer_clear_pixel(unsigned char *membuffer, int x, int y);
-void guilib_buffer_clear_area(unsigned char *membuffer, 
-	int width, int height, int buf_width_bytes,
-	int start_x, int start_y, int end_x, int end_y);
+void guilib_buffer_clear_area(unsigned char *membuffer,
+			      int width, int height, int buf_width_bytes,
+			      int start_x, int start_y, int end_x, int end_y);
 
 /* functions for graphics context management */
 void guilib_fb_lock(void);

@@ -60,9 +60,9 @@ typedef enum {
 	KEYBOARD_CHAR_DA,
 	KEYBOARD_NUM,
 	// all non-phone style keyboards for search should be before this
-    KEYBOARD_PHONE_STYLE,
+	KEYBOARD_PHONE_STYLE,
 	// all phone style keyboards should be after this
-    KEYBOARD_PHONE_STYLE_JP,
+	KEYBOARD_PHONE_STYLE_JP,
 	KEYBOARD_PHONE_STYLE_TW,
 	KEYBOARD_PHONE_STYLE_ABC,
 	KEYBOARD_PHONE_STYLE_123,

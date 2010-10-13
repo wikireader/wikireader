@@ -111,17 +111,17 @@ void get_last_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8_
 {
 	int i;
 	int j = 0;
-	
+
 	if (utf8_str_len > 0)
 	{
 		i = utf8_str_len - 1;
 		while (i >= 0 && (utf8_str[i] & 0xC0) == 0x80)
 			i--;
-		
+
 		while (i < utf8_str_len && j < 4)
 			out_utf8_char[j++] = utf8_str[i++];
 	}
-	
+
 	out_utf8_char[j] = '\0';
 }
 
@@ -129,7 +129,7 @@ void get_first_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8
 {
 	int len;
 	int i = 0;
-	
+
 	if (utf8_str_len > 0)
 	{
 		if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
@@ -146,18 +146,18 @@ void get_first_utf8_char(unsigned char *out_utf8_char, const unsigned char *utf8
 		}
 		else
 			len = 1;
-		
+
 		for (i = 0; i < len && i < utf8_str_len; i++)
 			out_utf8_char[i] = utf8_str[i];
 	}
-	
+
 	out_utf8_char[i] = '\0';
 }
 
 const unsigned char *next_utf8_char(const unsigned char *utf8_str)
 {
 	int len;
-	
+
 	if ((utf8_str[0] & 0xE0) == 0xC0) /* 2-byte UTF8 */
 	{
 		len = 2;
@@ -172,7 +172,7 @@ const unsigned char *next_utf8_char(const unsigned char *utf8_str)
 	}
 	else
 		len = 1;
-	
+
 	while (len && *utf8_str)
 	{
 		len--;
@@ -183,33 +183,33 @@ const unsigned char *next_utf8_char(const unsigned char *utf8_str)
 
 void utf8_char_toupper(unsigned char *out, const unsigned char *in)
 {
-    if ('a' <= *in && *in <= 'z')
-    {
-        out[0] = in[0] + ('A' - 'a');
-        out[1] = '\0';
-    }
-    else if (!ustrncmp(in, "æ", 2))
-    {
-	ustrcpy(out, "Æ");
-    }
-    else if (!ustrncmp(in, "å", 2))
-    {
-	ustrcpy(out, "Å");
-    }
-    else if (!ustrncmp(in, "ø", 2))
-    {
-	ustrcpy(out, "Ø");
-    }
-    else
-	ustrcpy(out, in);
+	if ('a' <= *in && *in <= 'z')
+	{
+		out[0] = in[0] + ('A' - 'a');
+		out[1] = '\0';
+	}
+	else if (!ustrncmp(in, "æ", 2))
+	{
+		ustrcpy(out, "Æ");
+	}
+	else if (!ustrncmp(in, "å", 2))
+	{
+		ustrcpy(out, "Å");
+	}
+	else if (!ustrncmp(in, "ø", 2))
+	{
+		ustrcpy(out, "Ø");
+	}
+	else
+		ustrcpy(out, in);
 }
 
 unsigned char *full_alphabet_to_half(const unsigned char *full, int *used_len)
 {
 	static unsigned char half[5];
 
-    memset(half, 0, sizeof(half));
-    if (full[0] == 0xEF && full[1] == 0xBD && 0x81 <= full[2] && full[2] <= 0x9A)
+	memset(half, 0, sizeof(half));
+	if (full[0] == 0xEF && full[1] == 0xBD && 0x81 <= full[2] && full[2] <= 0x9A)
 	{
 		if (used_len)
 			*used_len = 3;
@@ -235,13 +235,13 @@ unsigned char *full_alphabet_to_half(const unsigned char *full, int *used_len)
 	}
 	else
 	{
-	unsigned char first_utf8_char[5];
-    	int len_first_char;
+		unsigned char first_utf8_char[5];
+		int len_first_char;
 
-	get_first_utf8_char(first_utf8_char, full, ustrlen(full));
-	len_first_char = ustrlen(first_utf8_char);
+		get_first_utf8_char(first_utf8_char, full, ustrlen(full));
+		len_first_char = ustrlen(first_utf8_char);
 		if (used_len)
-        	*used_len = len_first_char;
+			*used_len = len_first_char;
 		memcpy(half, first_utf8_char, len_first_char);
 	}
 	return half;

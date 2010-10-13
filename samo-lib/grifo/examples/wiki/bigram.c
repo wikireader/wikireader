@@ -25,7 +25,7 @@
 #include "wiki_info.h"
 
 typedef struct _bitram {
-    unsigned char char_pairs[128][2];
+	unsigned char char_pairs[128][2];
 } BIGRAM, *PBIGRAM;
 PBIGRAM aBigram = NULL;
 
@@ -33,11 +33,11 @@ int32_t aCharIdx[128];
 
 void init_bigram(int fd)
 {
-    if (!aBigram)
-    {
-	aBigram = (PBIGRAM)memory_allocate(sizeof(BIGRAM) * get_wiki_count(), "bigram");
-    }
-    init_char_idx();
+	if (!aBigram)
+	{
+		aBigram = (PBIGRAM)memory_allocate(sizeof(BIGRAM) * get_wiki_count(), "bigram");
+	}
+	init_char_idx();
 	file_read(fd, &aBigram[nCurrentWiki], sizeof(BIGRAM));
 }
 

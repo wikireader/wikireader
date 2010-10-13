@@ -30,23 +30,23 @@ typedef struct _BTREE_ELEMENT {
 // contains a key value, a payload, and a pointer toward the subtree
 // containing key values greater than this->m_key but lower than the
 // key value of the next element to the right
-    long key;
-    int subtree_node_idx;
-    int data_entry_idx;
+	long key;
+	int subtree_node_idx;
+	int data_entry_idx;
 } BTREE_ELEMENT, *PBTREE_ELEMENT;
 
 typedef struct _BTREE_NODE {
-    int element_count;
-    int parent_node_idx;
-    int next_free_node_idx; // for free nodes only
-    BTREE_ELEMENT elements[BTREE_MAX_ELEMENTS];
+	int element_count;
+	int parent_node_idx;
+	int next_free_node_idx; // for free nodes only
+	BTREE_ELEMENT elements[BTREE_MAX_ELEMENTS];
 } BTREE_NODE, *PBTREE_NODE;
 
 typedef struct _BTREE {
-    int max_nodes;
-    int first_free_node_idx;
-    int root_node_idx;
-    PBTREE_NODE nodes;
+	int max_nodes;
+	int first_free_node_idx;
+	int root_node_idx;
+	PBTREE_NODE nodes;
 	long invalid_key;
 } BTREE, *PBTREE;
 

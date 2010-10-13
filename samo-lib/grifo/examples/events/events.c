@@ -30,8 +30,8 @@ int grifo_main(int argc, char *argv[]) {
 	int DelayTime = 1000000; // microseconds
 	enum {polling, waiting, delayed} EventMethod = waiting;
 	if (argc > 1 && 'p' == argv[1][0]) {
-			EventMethod = polling;
-			debug_printf("events start polling\n");
+		EventMethod = polling;
+		debug_printf("events start polling\n");
 	} else if (argc > 2 && 'd' == argv[1][0]) {
 		EventMethod = delayed;
 		DelayTime = atoi(argv[2]);

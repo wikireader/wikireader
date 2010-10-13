@@ -33,13 +33,13 @@
 #define HIGHLIGHT_SEARCH_BOX_X_MARGIN 5
 #define HIGHLIGHT_SEARCH_BOX_Y_MARGIN 5
 #define HIGHLIGHT_SEARCH_BOX_MAX_LANGUAGE_LINKS 8
-#define HIGHLIGHT_SEARCH_BOX_HEIGHT \
-	(LANGUAGE_LINK_HEIGHT + HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT + \
-	HIGHLIGHT_SEARCH_BOX_Y_MARGIN * 2) + 1
-#define HIGHLIGHT_SEARCH_BOX_WIDTH \
+#define HIGHLIGHT_SEARCH_BOX_HEIGHT					\
+	(LANGUAGE_LINK_HEIGHT + HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT +	\
+	 HIGHLIGHT_SEARCH_BOX_Y_MARGIN * 2) + 1
+#define HIGHLIGHT_SEARCH_BOX_WIDTH					\
 	(HIGHLIGHT_SEARCH_BOX_MAX_LANGUAGE_LINKS * LANGUAGE_LINK_WIDTH + \
-	(HIGHLIGHT_SEARCH_BOX_MAX_LANGUAGE_LINKS - 1) * LANGUAGE_LINK_WIDTH_GAP + \
-	HIGHLIGHT_SEARCH_BOX_X_MARGIN * 2)
+	 (HIGHLIGHT_SEARCH_BOX_MAX_LANGUAGE_LINKS - 1) * LANGUAGE_LINK_WIDTH_GAP + \
+	 HIGHLIGHT_SEARCH_BOX_X_MARGIN * 2)
 
 int highlight_start_x = -1;
 int highlight_start_y = -1;
@@ -171,8 +171,8 @@ void highlight_search_box_redraw_stem()
 	{ // search box below stem
 		for (i = 0; i < HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT; i++)
 			memcpy(&window_buffer[i * window_width_bytes],
-				&draw_buffer[(i + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
-				window_width_bytes);
+			       &draw_buffer[(i + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
+			       window_width_bytes);
 		box_start_x = highlight_search_box_start_x;
 		box_start_y = HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT;
 		box_end_x = highlight_search_box_start_x + HIGHLIGHT_SEARCH_BOX_WIDTH - 1;
@@ -183,8 +183,8 @@ void highlight_search_box_redraw_stem()
 		int y_diff = HIGHLIGHT_SEARCH_BOX_HEIGHT - HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT;
 		for (i = 0; i < HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT; i++)
 			memcpy(&window_buffer[(y_diff + i) * window_width_bytes],
-				&draw_buffer[(i + y_diff + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
-				window_width_bytes);
+			       &draw_buffer[(i + y_diff + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
+			       window_width_bytes);
 		box_start_x = highlight_search_box_start_x;
 		box_start_y = 1;
 		box_end_x = highlight_search_box_start_x + HIGHLIGHT_SEARCH_BOX_WIDTH - 1;
@@ -204,8 +204,8 @@ void highlight_search_box_init()
 
 	for (i = 0; i < HIGHLIGHT_SEARCH_BOX_HEIGHT; i++)
 		memcpy(&window_buffer[i * window_width_bytes],
-			&draw_buffer[(i + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
-			window_width_bytes);
+		       &draw_buffer[(i + highlight_search_box_start_y) * LCD_BUF_WIDTH_BYTES],
+		       window_width_bytes);
 	if (highlight_search_box_stem_y == 0)
 	{ // search box below stem
 		box_start_x = highlight_search_box_start_x;
@@ -221,8 +221,8 @@ void highlight_search_box_init()
 		box_end_y = HIGHLIGHT_SEARCH_BOX_HEIGHT - HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT;
 	}
 	guilib_buffer_clear_area(window_buffer,
-		LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT, window_width_bytes,
-		box_start_x - 1, box_start_y - 1, box_end_x + 1, box_end_y + 1);
+				 LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT, window_width_bytes,
+				 box_start_x - 1, box_start_y - 1, box_end_x + 1, box_end_y + 1);
 	window_draw_box(box_start_x, box_start_y, box_end_x, box_end_y);
 	highlight_search_box_draw_stem();
 }
@@ -233,9 +233,9 @@ void highlight_search_box_redraw_search_string()
 	int window_width_bytes = lcd_window_get_byte_width();
 
 	buf_render_string_right(window_buffer, HIGHLIGHT_SEARCH_BOX_WIDTH - HIGHLIGHT_SEARCH_BOX_X_MARGIN * 2,
-		HIGHLIGHT_SEARCH_BOX_HEIGHT - HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT - 2, window_width_bytes, SUBTITLE_FONT_IDX,
-		highlight_search_box_start_x + HIGHLIGHT_SEARCH_BOX_X_MARGIN, highlight_search_box_search_string_y,
-		highlight_search_string_actual, ustrlen(highlight_search_string_actual), 0);
+				HIGHLIGHT_SEARCH_BOX_HEIGHT - HIGHLIGHT_SEARCH_BOX_STEM_HEIGHT - 2, window_width_bytes, SUBTITLE_FONT_IDX,
+				highlight_search_box_start_x + HIGHLIGHT_SEARCH_BOX_X_MARGIN, highlight_search_box_search_string_y,
+				highlight_search_string_actual, ustrlen(highlight_search_string_actual), 0);
 }
 
 void draw_highlight_search_string()
@@ -282,13 +282,13 @@ void draw_highlight_search_string()
 		highlight_search_box_stem_x = new_highlight_search_box_stem_x;
 		highlight_search_box_stem_y = new_highlight_search_box_stem_y;
 		lcd_window(0, highlight_search_box_start_y,
-			LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT);
+			   LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT);
 		highlight_search_box_init();
 		lcd_window_enable();
 		b_highlight_search_box_enabled = true;
 	}
 	else if (highlight_search_box_start_x != new_highlight_search_box_start_x ||
-		highlight_search_box_start_y != new_highlight_search_box_start_y)
+		 highlight_search_box_start_y != new_highlight_search_box_start_y)
 	{
 		highlight_search_box_start_x = new_highlight_search_box_start_x;
 		highlight_search_box_start_y = new_highlight_search_box_start_y;
@@ -296,12 +296,12 @@ void draw_highlight_search_string()
 		highlight_search_box_stem_y = new_highlight_search_box_stem_y;
 		lcd_window_disable();
 		lcd_window(0, highlight_search_box_start_y,
-			LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT);
+			   LCD_WIDTH, HIGHLIGHT_SEARCH_BOX_HEIGHT);
 		highlight_search_box_init();
 		lcd_window_enable();
 	}
 	else if (highlight_search_box_stem_x != new_highlight_search_box_stem_x ||
-		highlight_search_box_stem_y != new_highlight_search_box_stem_y)
+		 highlight_search_box_stem_y != new_highlight_search_box_stem_y)
 	{
 		highlight_search_box_stem_x = new_highlight_search_box_stem_x;
 		highlight_search_box_stem_y = new_highlight_search_box_stem_y;
@@ -317,9 +317,9 @@ bool highlight_set(int x, int y)
 	highlight_end_x = x;
 	highlight_end_y = y;
 	rc = lcd_draw_highlight(highlight_start_x, highlight_start_y, highlight_end_x, highlight_end_y,
-		&highlight_invert_start_x, &highlight_invert_end_x,
-		&highlight_invert_start_y_top, &highlight_invert_start_y_bottom, &highlight_invert_end_y_top, &highlight_invert_end_y_bottom,
-		highlight_search_string_actual, true);
+				&highlight_invert_start_x, &highlight_invert_end_x,
+				&highlight_invert_start_y_top, &highlight_invert_start_y_bottom, &highlight_invert_end_y_top, &highlight_invert_end_y_bottom,
+				highlight_search_string_actual, true);
 	draw_highlight_search_string();
 	return rc;
 }

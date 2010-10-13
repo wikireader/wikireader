@@ -80,8 +80,8 @@ void guilib_invert(int start_line, int height)
 void guilib_invert_area(int start_x, int start_y, int end_x, int end_y)
 {
 	if (start_x > end_x || start_y > end_y ||
-		(start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
-		(start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
+	    (start_x < 0 && end_x < 0) || (start_x >= LCD_WIDTH && end_x >= LCD_WIDTH) ||
+	    (start_y < 0 && end_y < 0) || (start_y >= LCD_HEIGHT && end_y >= LCD_HEIGHT))
 		return;
 
 	if (start_x < 0)
@@ -194,13 +194,13 @@ void guilib_clear(void)
 void guilib_clear_area(int start_x, int start_y, int end_x, int end_y)
 {
 	guilib_buffer_clear_area(lcd_get_framebuffer(),
-		LCD_WIDTH, LCD_HEIGHT, LCD_BUF_WIDTH_BYTES,
-		start_x, start_y, end_x, end_y);
+				 LCD_WIDTH, LCD_HEIGHT, LCD_BUF_WIDTH_BYTES,
+				 start_x, start_y, end_x, end_y);
 }
 
 void guilib_buffer_clear_area(unsigned char *membuffer,
-	int width, int height, int buf_width_bytes,
-	int start_x, int start_y, int end_x, int end_y)
+			      int width, int height, int buf_width_bytes,
+			      int start_x, int start_y, int end_x, int end_y)
 {
 	int y, r1, r2;
 	uint8_t byte_mask1 = 0;
@@ -211,8 +211,8 @@ void guilib_buffer_clear_area(unsigned char *membuffer,
 	int nBytes = 0;
 
 	if (start_x > end_x || start_y > end_y ||
-		(start_x < 0 && end_x < 0) || (start_x >= width && end_x >= width) ||
-		(start_y < 0 && end_y < 0) || (start_y >= height && end_y >= height))
+	    (start_x < 0 && end_x < 0) || (start_x >= width && end_x >= width) ||
+	    (start_y < 0 && end_y < 0) || (start_y >= height && end_y >= height))
 		return;
 
 	if (start_x < 0)
@@ -331,7 +331,7 @@ void guilib_blit_image(const struct guilib_image *img, int x, int y)
 	for (xx = 0; xx < img->width; xx++)
 		for (yy = 0; yy < img->height; yy++)
 			lcd_set_pixel(x + xx, y + yy,
-					       IMG_GET_PIXEL(img, xx, yy));
+				      IMG_GET_PIXEL(img, xx, yy));
 }
 
 void guilib_init(void)

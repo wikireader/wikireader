@@ -31,9 +31,9 @@
 
 enum
 {
-    STATE_INITIAL,
-    STATE_AFTER_INITIAL_JAMO,
-    STATE_AFTER_MEDIAL_JAMO,
+	STATE_INITIAL,
+	STATE_AFTER_INITIAL_JAMO,
+	STATE_AFTER_MEDIAL_JAMO,
 };
 
 int zh_jp_to_english(unsigned char *sEnglish, int maxLenEnglish, unsigned char *sHiragana, int *lenHiragana);

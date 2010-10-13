@@ -321,7 +321,7 @@ void save_password(int flag)
 			memcpy(restriction_pass1, sha.Message_Digest, 20);
 		}
 		else
-            memset(restriction_pass1, 0, 20);
+			memset(restriction_pass1, 0, 20);
 		file_write(fd, restriction_pass1, 20);
 		if (password_str_len > 0 && flag > 1)
 		{
@@ -330,12 +330,12 @@ void save_password(int flag)
 			SHA1Result(&sha);
 			file_write(fd, sha.Message_Digest, 20);
 		}
-        else
-        {
-            char buf[20];
-            memset(buf, 0, 20);
-            file_write(fd, buf, 20);
-        }
+		else
+		{
+			char buf[20];
+			memset(buf, 0, 20);
+			file_write(fd, buf, 20);
+		}
 
 		file_close(fd);
 		delay_us(200000); // for some reason, save may not work if no delay
@@ -529,8 +529,8 @@ int init_article_filter(void)
 			len = file_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-            memset(restriction_pass2, 0, 20);
-            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
+			memset(restriction_pass2, 0, 20);
+			if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = file_read(fd, restriction_pass2, 20);
 				if (len < 20)
@@ -579,8 +579,8 @@ int check_restriction(void)
 			len = file_read(fd, restriction_pass1, 20);
 			if (len < 20)
 				memset(restriction_pass1, 0, 20);
-            memset(restriction_pass2, 0, 20);
-            if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
+			memset(restriction_pass2, 0, 20);
+			if (memcmp(restriction_pass1, restriction_pass2, 20)) // all 0's for no password saved
 			{
 				len = file_read(fd, restriction_pass2, 20);
 				if (len < 20)

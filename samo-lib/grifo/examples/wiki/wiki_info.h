@@ -57,9 +57,9 @@ typedef struct _WIKI_LICENSE_DRAW {
 } WIKI_LICENSE_DRAW, *PWIKI_LICENSE_DRAW;
 
 typedef struct _ACTIVE_WIKI {
-    int WikiInfoIdx; // index to wiki_info[]
-    unsigned char *WikiNls;
-    long WikiNlsLen;
+	int WikiInfoIdx; // index to wiki_info[]
+	unsigned char *WikiNls;
+	long WikiNlsLen;
 } ACTIVE_WIKI, *PACTIVE_WIKI;
 
 extern int nCurrentWiki;

@@ -173,12 +173,12 @@ void load_all_fonts()
 		init_lcd_draw_buf();
 	for (i=0; i < FONT_COUNT; i++)
 	{
-	       if (pcfFonts[i].fd == FONT_FD_NOT_INITED) {
+		if (pcfFonts[i].fd == FONT_FD_NOT_INITED) {
 			pcfFonts[i].fd = load_bmf(&pcfFonts[i]);
-		       if (pcfFonts[i].fd < 0) {
-			       fatal_error("Missing font file: %s", pcfFonts[i].file);
-		       }
-	       }
+			if (pcfFonts[i].fd < 0) {
+				fatal_error("Missing font file: %s", pcfFonts[i].file);
+			}
+		}
 	}
 }
 
@@ -537,7 +537,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 						if ((*pUTF8)[nByteIdx] & (1 << nBitIdx))
 						{
 							guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, lcd_draw_buf.current_x +
-								      LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment + j, nImageY);
+										LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment + j, nImageY);
 						}
 					}
 					*pUTF8 += (nWidth + 7) / 8;
@@ -1462,7 +1462,7 @@ void display_article_with_pcf(int y_move)
 	if (!bShowLanguageLinks && lcd_draw_cur_y_pos < article_start_y_pos)
 		lcd_draw_cur_y_pos = article_start_y_pos;
 	else if (bShowLanguageLinks && lcd_draw_cur_y_pos >= article_start_y_pos)
-				bShowLanguageLinks = 0;
+		bShowLanguageLinks = 0;
 	if ((lcd_draw_cur_y_pos+LCD_HEIGHT)>lcd_draw_buf.current_y)
 	{
 		lcd_draw_cur_y_pos = lcd_draw_buf.current_y - LCD_HEIGHT;
@@ -1588,9 +1588,9 @@ void draw_icon(const unsigned char *pStr)
 		}
 	}
 	buf_render_string(lcd_draw_buf.screen_buf, LCD_BUF_WIDTH_PIXELS, LCD_BUF_WIDTH_BYTES,
-		SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
-		(LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x,
-		lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, ustrlen(pStr), 1);
+			  SUBTITLE_FONT_IDX, lcd_draw_buf.current_x + LCD_LEFT_MARGIN +
+			  (LANGUAGE_LINK_WIDTH - (end_x - start_x + 1)) / 2 - start_x,
+			  lcd_draw_buf.current_y + (LANGUAGE_LINK_HEIGHT - (end_y - start_y + 1)) / 2 - start_y, pStr, ustrlen(pStr), 1);
 	lcd_draw_buf.current_x += LANGUAGE_LINK_WIDTH + LANGUAGE_LINK_WIDTH_GAP;
 }
 
@@ -1757,7 +1757,7 @@ void display_retrieved_article(long idx_article)
 		memcpy(&articleLink[article_link_count],file_buffer+offset,sizeof(ARTICLE_LINK));
 		nLinkWikiId = articleLink[article_link_count].article_id >> 24;
 		if (((!nArticleWikiId || nArticleWikiId == nCurrentWikiId || get_wiki_idx_from_id(nArticleWikiId) >= 0) && !nLinkWikiId) ||
-			(nLinkWikiId && get_wiki_idx_from_id(nLinkWikiId) >= 0))
+		    (nLinkWikiId && get_wiki_idx_from_id(nLinkWikiId) >= 0))
 		{
 			if (nArticleWikiId && !nLinkWikiId)
 				articleLink[article_link_count].article_id |= nArticleWikiId << 24;
@@ -1873,20 +1873,20 @@ int isArticleLinkSelected(int x,int y)
 	}
 
 	if (display_mode == DISPLAY_MODE_ARTICLE && x < PREVIOUS_ARTICLE_LINKABLE_SIZE &&
-		LCD_HEIGHT - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT &&
-		history_get_previous_idx(saved_idx_article, 0))
+	    LCD_HEIGHT - PREVIOUS_ARTICLE_LINKABLE_SIZE <= origin_y && origin_y < LCD_HEIGHT &&
+	    history_get_previous_idx(saved_idx_article, 0))
 	{
 		return 0; // PREVIOUS_ARTICLE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == article_start_y_pos &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN + LINK_X_DIFF_ALLOWANCE &&
-		article_start_y_pos + LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
+	    LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN + LINK_X_DIFF_ALLOWANCE &&
+	    article_start_y_pos + LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= article_start_y_pos + LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 1; // SHOW_LANGUAGE_LINK
 	}
 	if (display_mode == DISPLAY_MODE_ARTICLE && (language_link_count || restricted_article) && lcd_draw_cur_y_pos == 0 &&
-		LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN  + LINK_X_DIFF_ALLOWANCE &&
-		LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
+	    LCD_BUF_WIDTH_PIXELS - LANGUAGE_LINK_WIDTH - LCD_LEFT_MARGIN - LINK_X_DIFF_ALLOWANCE <= x && x <= LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN  + LINK_X_DIFF_ALLOWANCE &&
+	    LCD_TOP_MARGIN - LINK_Y_DIFF_ALLOWANCE <= y && y <= LCD_TOP_MARGIN + LANGUAGE_LINK_HEIGHT + LINK_Y_DIFF_ALLOWANCE)
 	{
 		return 2; // HIDE_LANGUAGE_LINK
 	}
@@ -1896,7 +1896,7 @@ int isArticleLinkSelected(int x,int y)
 	i = article_link_count / 2;
 	bFound = 0;
 	while (start_i <= end_i && !articleLink[start_i].start_xy && !articleLink[start_i].end_xy)
-			start_i++; // skip the special links - PREVIOUS_ARTICLE_LINK, SHOW_LANGUAGE_LINK, HIDE_LANGUAGE_LINK
+		start_i++; // skip the special links - PREVIOUS_ARTICLE_LINK, SHOW_LANGUAGE_LINK, HIDE_LANGUAGE_LINK
 	while (!bFound && start_i <= end_i)
 	{
 		if (y < (int)(articleLink[i].start_xy >> 8) - LINK_Y_DIFF_ALLOWANCE)
@@ -2257,9 +2257,9 @@ int check_invert_link()
 	}
 
 	if (link_to_be_inverted >= 0 &&
-		((display_mode == DISPLAY_MODE_ARTICLE &&
-		time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
-		time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
+	    ((display_mode == DISPLAY_MODE_ARTICLE &&
+	      time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LINK_INVERT_ACTIVATION_TIME_THRESHOLD)) ||
+	     time_diff(timer_get(), link_to_be_inverted_start_time) >= seconds_to_ticks(LIST_LINK_INVERT_ACTIVATION_TIME_THRESHOLD)))
 	{
 		if (link_currently_inverted >= 0)
 			invert_link(link_currently_inverted);
@@ -2430,7 +2430,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 }
 
 int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_bytes,
-	ucs4_t u,int font,int x,int y, int inverted, int b_clear)
+		      ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 {
 	bmf_bm_t *bitmap;
 	charmetric_bmf Cmetrics;
@@ -2463,7 +2463,7 @@ int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_by
 	if (b_clear)
 	{
 		for (i = 0; i <= pPcfFont->Fmetrics.linespace; i++)
-		// need to clear 1 pixel more than linespace for subtitle font
+			// need to clear 1 pixel more than linespace for subtitle font
 		{
 			for (j = 0; j < Cmetrics.widthDevice; j++)
 			{
@@ -2566,20 +2566,20 @@ void extract_title_from_article(unsigned char *article_buf, unsigned char *title
 			article_buf++;
 			switch(c)
 			{
-				case ESC_0_SPACE_LINE:
-					article_buf++;
-					break;
-				case ESC_2_NEW_LINE_SAME_FONT:
-					title[lenTitle++] = ' '; // append a blank for wrapped title
-					break;
-				case ESC_3_NEW_LINE_WITH_FONT:
-					c2 = *article_buf++;
-					if ((c2 & 0x07) != TITLE_FONT_IDX)
-						bDone = 1;
-					break;
-				default:
+			case ESC_0_SPACE_LINE:
+				article_buf++;
+				break;
+			case ESC_2_NEW_LINE_SAME_FONT:
+				title[lenTitle++] = ' '; // append a blank for wrapped title
+				break;
+			case ESC_3_NEW_LINE_WITH_FONT:
+				c2 = *article_buf++;
+				if ((c2 & 0x07) != TITLE_FONT_IDX)
 					bDone = 1;
-					break;
+				break;
+			default:
+				bDone = 1;
+				break;
 			}
 		}
 		else
@@ -2632,7 +2632,7 @@ int find_start_line(int y)
 				}
 
 				if (iBestFit < 0 && (int)pArticleRenderInfo[iMiddle].start_y - HIGHTLIGHT_Y_DIFF_ALLOWANCE <= y &&
-					y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
+				    y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
 					iBestFit = iMiddle;
 				iMiddle++;
 			}
@@ -2675,14 +2675,14 @@ int find_end_line(int y)
 			while (iMiddle <= iEnd)
 			{
 				if ((int)pArticleRenderInfo[iMiddle].start_y <= y && (y <= (int)pArticleRenderInfo[iMiddle].end_y ||
-					(iMiddle < nArticleRenderedLines - 1 && y < (int)pArticleRenderInfo[iMiddle + 1].start_y)))
+										      (iMiddle < nArticleRenderedLines - 1 && y < (int)pArticleRenderInfo[iMiddle + 1].start_y)))
 				{
 					iBestFit = iMiddle;
 					break;
 				}
 
 				if (iBestFit < 0 && (int)pArticleRenderInfo[iMiddle].start_y - HIGHTLIGHT_Y_DIFF_ALLOWANCE <= y &&
-					y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
+				    y <= (int)pArticleRenderInfo[iMiddle].end_y + HIGHTLIGHT_Y_DIFF_ALLOWANCE)
 					iBestFit = iMiddle;
 				iMiddle++;
 			}
@@ -2702,89 +2702,89 @@ bool process_esc_code(unsigned char c, const unsigned char **p, pcffont_bmf_t **
 
 	switch(c)
 	{
-		case ESC_0_SPACE_LINE: /* space line */
-			(*p)++;
-			bNewLine = true;
-			break;
-		case ESC_1_NEW_LINE_DEFAULT_FONT: /* new line with default font and line space */
-			bNewLine = true;
-			break;
-		case ESC_2_NEW_LINE_SAME_FONT: /* new line with previous font and line space */
-			bNewLine = true;
-			break;
-		case ESC_3_NEW_LINE_WITH_FONT: /* new line with specified font and line space */
-			c2 = **p;
-			(*p)++;
-			font_idx = c2 & 0x07;
-			if (font_idx > FONT_COUNT)
-				font_idx = DEFAULT_FONT_IDX;
-			*pFont = &pcfFonts[font_idx - 1];
-			bNewLine = true;
-			break;
-		case ESC_4_CHANGE_FONT: /* change font */
-			c2 = **p;
-			(*p)++;
-			font_idx = c2 & 0x07;
-			if (font_idx > FONT_COUNT)
-				font_idx = DEFAULT_FONT_IDX;
-			*pFont = &pcfFonts[font_idx - 1];
-			break;
-		case ESC_5_RESET_TO_DEFAULT_FONT: /* reset to the default font */
-			*pFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
-			break;
-		case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
-			vertical_adjustment = 0;
-			break;
-		case ESC_7_FORWARD: /* forward */
-			c2 = **p;
-			(*p)++;
-			*last_x += c2;
-			break;
-		case ESC_8_BACKWARD: /* backward */
-			c2 = **p;
-			(*p)++;
-			if (*last_x < c2)
-				*last_x = 0;
-			else
-				*last_x -= c2;
-			break;
-		case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
-			c2 = **p;
-			(*p)++;
-			vertical_adjustment += c2;
-			break;
-		case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
-			(*p)++;
-			break;
-		case ESC_11_VERTICAL_LINE: /* drawing vertical line */
-			(*p)++;
-			break;
-		case ESC_12_FULL_HORIZONTAL_LINE: /* drawing horizontal line from left-most pixel to right-most pixel */
-			break;
-		case ESC_13_FULL_VERTICAL_LINE: /* drawing vertical line from top of the line to the bottom */
-			*last_x += 1;
-			*last_x += 2;
-			break;
-		case ESC_14_BITMAP: /* bitmap */
-			c2 = **p;
-			(*p)++;
-			nWidth = c2;
-			c2 = **p;
-			(*p)++;
-			nHeight = c2;
-			c2 = **p;
-			(*p)++;
-			nHeight |= c2 << 8;
-			if (*last_x == 0)
-				*last_x = LCD_EXTRA_LEFT_MARGIN_FOR_IMAGE;
-			else
-				++last_x;
-			for (i = 0; i < nHeight; i++)
-				*p += (nWidth + 7) / 8;
-			*last_x += nWidth;
-			break;
-		default:
-			break;
+	case ESC_0_SPACE_LINE: /* space line */
+		(*p)++;
+		bNewLine = true;
+		break;
+	case ESC_1_NEW_LINE_DEFAULT_FONT: /* new line with default font and line space */
+		bNewLine = true;
+		break;
+	case ESC_2_NEW_LINE_SAME_FONT: /* new line with previous font and line space */
+		bNewLine = true;
+		break;
+	case ESC_3_NEW_LINE_WITH_FONT: /* new line with specified font and line space */
+		c2 = **p;
+		(*p)++;
+		font_idx = c2 & 0x07;
+		if (font_idx > FONT_COUNT)
+			font_idx = DEFAULT_FONT_IDX;
+		*pFont = &pcfFonts[font_idx - 1];
+		bNewLine = true;
+		break;
+	case ESC_4_CHANGE_FONT: /* change font */
+		c2 = **p;
+		(*p)++;
+		font_idx = c2 & 0x07;
+		if (font_idx > FONT_COUNT)
+			font_idx = DEFAULT_FONT_IDX;
+		*pFont = &pcfFonts[font_idx - 1];
+		break;
+	case ESC_5_RESET_TO_DEFAULT_FONT: /* reset to the default font */
+		*pFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
+		break;
+	case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
+		vertical_adjustment = 0;
+		break;
+	case ESC_7_FORWARD: /* forward */
+		c2 = **p;
+		(*p)++;
+		*last_x += c2;
+		break;
+	case ESC_8_BACKWARD: /* backward */
+		c2 = **p;
+		(*p)++;
+		if (*last_x < c2)
+			*last_x = 0;
+		else
+			*last_x -= c2;
+		break;
+	case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
+		c2 = **p;
+		(*p)++;
+		vertical_adjustment += c2;
+		break;
+	case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
+		(*p)++;
+		break;
+	case ESC_11_VERTICAL_LINE: /* drawing vertical line */
+		(*p)++;
+		break;
+	case ESC_12_FULL_HORIZONTAL_LINE: /* drawing horizontal line from left-most pixel to right-most pixel */
+		break;
+	case ESC_13_FULL_VERTICAL_LINE: /* drawing vertical line from top of the line to the bottom */
+		*last_x += 1;
+		*last_x += 2;
+		break;
+	case ESC_14_BITMAP: /* bitmap */
+		c2 = **p;
+		(*p)++;
+		nWidth = c2;
+		c2 = **p;
+		(*p)++;
+		nHeight = c2;
+		c2 = **p;
+		(*p)++;
+		nHeight |= c2 << 8;
+		if (*last_x == 0)
+			*last_x = LCD_EXTRA_LEFT_MARGIN_FOR_IMAGE;
+		else
+			++last_x;
+		for (i = 0; i < nHeight; i++)
+			*p += (nWidth + 7) / 8;
+		*last_x += nWidth;
+		break;
+	default:
+		break;
 	}
 	return bNewLine;
 }
@@ -2920,9 +2920,9 @@ void concat_search_string(const unsigned char *pBuf, int nBytes, unsigned char *
 }
 
 void draw_highlight_area(int start_line, int end_line, int start_x, int end_x,
-	int *invert_start_x, int *invert_end_x,
-	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
-	unsigned char *search_string_actual, bool bRepaint)
+			 int *invert_start_x, int *invert_end_x,
+			 int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+			 unsigned char *search_string_actual, bool bRepaint)
 {
 	static int iLineStart = -1;
 	static int iLineEnd = -1;
@@ -2973,16 +2973,16 @@ void draw_highlight_area(int start_line, int end_line, int start_x, int end_x,
 		if (start_line < end_line || (start_line == end_line && start_x <= end_x))
 		{
 			iXStart = find_start_pos(pArticleRenderInfo[iLineStart].pBuf, pArticleRenderInfo[iLineStart].pPcfFont,
-				start_x, &byets_before_start);
+						 start_x, &byets_before_start);
 			iXEnd = find_end_pos(pArticleRenderInfo[iLineEnd].pBuf, pArticleRenderInfo[iLineEnd].pPcfFont,
-				end_x, &bytes_used_to_end);
+					     end_x, &bytes_used_to_end);
 		}
 		else
 		{
 			iXStart = find_start_pos(pArticleRenderInfo[iLineStart].pBuf, pArticleRenderInfo[iLineStart].pPcfFont,
-				end_x, &byets_before_start);
+						 end_x, &byets_before_start);
 			iXEnd = find_end_pos(pArticleRenderInfo[iLineEnd].pBuf, pArticleRenderInfo[iLineEnd].pPcfFont,
-				start_x, &bytes_used_to_end);
+					     start_x, &bytes_used_to_end);
 		}
 
 		for (i = iLineStart; i <= iLineEnd; i++)
@@ -3045,9 +3045,9 @@ void draw_highlight_area(int start_line, int end_line, int start_x, int end_x,
 }
 
 bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
-	int *invert_start_x, int *invert_end_x,
-	int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
-	unsigned char *search_string_actual, bool bRepaint)
+			int *invert_start_x, int *invert_end_x,
+			int *invert_start_y_top, int *invert_start_y_bottom, int *invert_end_y_top, int *invert_end_y_bottom,
+			unsigned char *search_string_actual, bool bRepaint)
 {
 	int iLineStart, iLineEnd;
 
@@ -3071,9 +3071,9 @@ bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
 	if (iLineStart >= 0 && iLineEnd >= 0)
 	{
 		draw_highlight_area(iLineStart, iLineEnd, start_x, end_x,
-			invert_start_x, invert_end_x,
-			invert_start_y_top, invert_start_y_bottom, invert_end_y_top, invert_end_y_bottom,
-			search_string_actual, bRepaint);
+				    invert_start_x, invert_end_x,
+				    invert_start_y_top, invert_start_y_bottom, invert_end_y_top, invert_end_y_bottom,
+				    search_string_actual, bRepaint);
 		return true;
 	}
 	else

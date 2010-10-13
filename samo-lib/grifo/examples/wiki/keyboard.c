@@ -53,7 +53,7 @@ extern unsigned int touch_down_on_keyboard;
 extern int b_type_a_word_cleared;
 
 /* qwerty keyboard by columns */
-#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode) \
+#define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode)	\
 	{               .left_x = l_x, .right_x = r_x,                  \
 			.left_y = l_y, .right_y = r_y,                  \
 			.left_x_inverted = l_x_i, .right_x_inverted = r_x_i, \
@@ -644,8 +644,8 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 	int keyboard_entries = 0;
 
 	if (touch_down_on_keyboard && pre_key &&
-		pre_key->left_x - (pre_key->right_x - pre_key->left_x) / 2 <= x && x <= pre_key->right_x + (pre_key->right_x - pre_key->left_x) / 2 &&
-		pre_key->left_y - (pre_key->right_y - pre_key->left_y) / 2 <= y && y <= pre_key->right_y + (pre_key->right_y - pre_key->left_y) / 2 )
+	    pre_key->left_x - (pre_key->right_x - pre_key->left_x) / 2 <= x && x <= pre_key->right_x + (pre_key->right_x - pre_key->left_x) / 2 &&
+	    pre_key->left_y - (pre_key->right_y - pre_key->left_y) / 2 <= y && y <= pre_key->right_y + (pre_key->right_y - pre_key->left_y) / 2 )
 		return pre_key;
 
 	if (kb_mode == KEYBOARD_CHAR)
@@ -770,22 +770,22 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 	int bubble_stem_left_diff, bubble_stem_right_diff;
 	unsigned char s[5];
 	int width;
-    int bubble_adjust = 0;
-    int bubble_stem_width = end_x - start_x + 3;
+	int bubble_adjust = 0;
+	int bubble_stem_width = end_x - start_x + 3;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	guilib_fb_lock();
 	bubble_start_x = start_x - (KEY_BUBBLE_TOTAL_WIDTH - (end_x - start_x + 1)) / 2;
 	if (bubble_start_x < 0)
 	{
-	bubble_adjust = -bubble_start_x;
-	bubble_start_x = 0;
-    }
+		bubble_adjust = -bubble_start_x;
+		bubble_start_x = 0;
+	}
 	else if (bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH > LCD_BUF_WIDTH_PIXELS)
 	{
-	bubble_adjust = -(bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH - LCD_BUF_WIDTH_PIXELS);
+		bubble_adjust = -(bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH - LCD_BUF_WIDTH_PIXELS);
 		bubble_start_x = LCD_BUF_WIDTH_PIXELS - KEY_BUBBLE_TOTAL_WIDTH;
-    }
+	}
 	bubble_start_y = start_y + KEY_BUBBLE_STEM_UNDER_KEYPAD_PIXELS + KEY_BUBBLE_STEM_HEIGHT - KEY_BUBBLE_TOTAL_HEIGHT;
 	bubble_end_x = bubble_start_x + KEY_BUBBLE_TOTAL_WIDTH - 1;
 	bubble_end_y = bubble_start_y + KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT - 1;
@@ -808,7 +808,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 		for (i = 0; i < KEY_BUBBLE_TOTAL_HEIGHT; i++)
 		{
 			memcpy(&key_bubble_save[i * KEY_BUBBLE_TOTAL_WIDTH_BYTES],
-				&framebuffer[(key_bubble_save_y_start + i) * LCD_BUF_WIDTH_BYTES + key_bubble_save_x_start_byte], key_bubble_save_width_bytes);
+			       &framebuffer[(key_bubble_save_y_start + i) * LCD_BUF_WIDTH_BYTES + key_bubble_save_x_start_byte], key_bubble_save_width_bytes);
 		}
 
 		for (i = 0; i < KEY_BUBBLE_TOTAL_HEIGHT - KEY_BUBBLE_STEM_HEIGHT; i++)
@@ -887,10 +887,10 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 		guilib_clear_area(bubble_start_x + 2, bubble_start_y + 2, bubble_end_x - 2, bubble_end_y - 2);
 	}
 
-    if (kb_mode == KEYBOARD_CHAR_KO)
-	alphabet_to_korean_jamo(s, *key);
-    else
-	utf8_char_toupper(s, key);
+	if (kb_mode == KEYBOARD_CHAR_KO)
+		alphabet_to_korean_jamo(s, *key);
+	else
+		utf8_char_toupper(s, key);
 	width = get_external_str_pixel_width(s, TITLE_FONT_IDX);
 	render_string(TITLE_FONT_IDX, bubble_start_x + (KEY_BUBBLE_TOTAL_WIDTH - width) / 2, bubble_start_y + 1, s, 1, 0);
 	guilib_fb_unlock();
@@ -909,7 +909,7 @@ void restore_key_bubble(void)
 	}
 	for (i = y_start; i < KEY_BUBBLE_TOTAL_HEIGHT; i++)
 		memcpy(&framebuffer[(key_bubble_save_y_start + i) * LCD_BUF_WIDTH_BYTES + key_bubble_save_x_start_byte],
-			&key_bubble_save[i * KEY_BUBBLE_TOTAL_WIDTH_BYTES], key_bubble_save_width_bytes);
+		       &key_bubble_save[i * KEY_BUBBLE_TOTAL_WIDTH_BYTES], key_bubble_save_width_bytes);
 	guilib_fb_unlock();
 }
 
@@ -1010,9 +1010,9 @@ void keyboard_key_invert(struct keyboard_key *key)
 {
 	guilib_fb_lock();
 	if (key && (*key->key == WL_KEY_SWITCH_KEYBOARD ||
-			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
-			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
-			*key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123))
+		    *key->key == WL_KEY_POHONE_STYLE_KEYBOARD_DEFAULT ||
+		    *key->key == WL_KEY_POHONE_STYLE_KEYBOARD_ABC ||
+		    *key->key == WL_KEY_POHONE_STYLE_KEYBOARD_123))
 		pre_key = NULL;
 	else
 	{
@@ -1048,7 +1048,7 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 			unsigned long stay_time_ticks;
 
 			if ((kb_mode > KEYBOARD_PHONE_STYLE) &&
-				multi_selection_key(pre_key))
+			    multi_selection_key(pre_key))
 				stay_time_ticks = seconds_to_ticks(PHONE_STYLE_KEYIN_BEFORE_COMMIT_TIME);
 			else
 				stay_time_ticks = seconds_to_ticks(KEY_BUBBLE_STAY_TIME);
@@ -1064,8 +1064,8 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 		{
 			guilib_fb_lock();
 			if (*pre_key->key == ' ' || *pre_key->key == WL_KEY_BACKSPACE || isupper(*pre_key->key) ||
-				kb_mode > KEYBOARD_PHONE_STYLE ||
-				(*pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
+			    kb_mode > KEYBOARD_PHONE_STYLE ||
+			    (*pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
 				keyboard_process_key_invert(pre_key, true);
 			else if (*pre_key->key != WL_KEY_NLS)
 				restore_key_bubble();
@@ -1102,7 +1102,7 @@ int keyboard_korean_special_key(void)
 			s[0] = toupper(*pre_key->key);
 			s[1] = '\0';
 			draw_key_bubble(pre_key->left_x_inverted, pre_key->left_y_inverted, pre_key->right_x_inverted, pre_key->right_y_inverted,
-				s, 1);
+					s, 1);
 			bKoreanSpecialKeyEnabled = 1;
 		}
 		else
@@ -1114,9 +1114,9 @@ int keyboard_korean_special_key(void)
 int keyboard_adjacent_keys(struct keyboard_key *key1, struct keyboard_key *key2)
 {
 	if (((key1->left_x == key2->left_x || key1->right_x == key2->right_x) && // same column
-		(key1->left_y - key2->right_y == 1 || key2->left_y - key1->right_y == 1)) || // adjacent row
-		((key1->left_y == key2->left_y || key1->right_y == key2->right_y) && // same row
-		(key1->left_x - key2->right_x == 1 || key2->left_x - key1->right_x == 1))) // adjancent column
+	     (key1->left_y - key2->right_y == 1 || key2->left_y - key1->right_y == 1)) || // adjacent row
+	    ((key1->left_y == key2->left_y || key1->right_y == key2->right_y) && // same row
+	     (key1->left_x - key2->right_x == 1 || key2->left_x - key1->right_x == 1))) // adjancent column
 	{
 		return 1;
 	}
@@ -1235,12 +1235,12 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 	if (keyboard_key)
 	{
 		unsigned char *s;
-	for (i = 0; i < keyboard_entries; ++i) {
+		for (i = 0; i < keyboard_entries; ++i) {
 			s = full_alphabet_to_half(keyboard_key[i].key, NULL);
 			if (*s == keycode) {
 				return &keyboard_key[i];
+			}
 		}
-	}
 	}
 
 	return NULL;
@@ -1248,9 +1248,9 @@ struct keyboard_key *keyboard_locate_key(char keycode)
 
 int multi_selection_key(struct keyboard_key *key)
 {
-    unsigned char first_utf8_char[5];
+	unsigned char first_utf8_char[5];
 
-    unsigned int len = strlen((const char *)key->key);
-    get_first_utf8_char(first_utf8_char, key->key, len);
-    return strlen((const char *)first_utf8_char) != len;
+	unsigned int len = strlen((const char *)key->key);
+	get_first_utf8_char(first_utf8_char, key->key, len);
+	return strlen((const char *)first_utf8_char) != len;
 }

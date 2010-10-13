@@ -65,7 +65,7 @@ void render_glyph(int start_x, int start_y, const struct glyph *glyph, char *buf
 
 
 int buf_render_string(unsigned char *buf, int buf_width_pixels, int buf_width_bytes, const int font,
-	int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
+		      int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int x;
 	int width;
@@ -111,8 +111,8 @@ int buf_render_string(unsigned char *buf, int buf_width_pixels, int buf_width_by
 }
 
 int buf_render_string_right(unsigned char *buf, int buf_width_pixels, int buf_height_pixels,
-	int buf_width_bytes, const int font,
-	int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
+			    int buf_width_bytes, const int font,
+			    int start_x, int start_y, const unsigned char *string, int text_length, int inverted)
 {
 	int i;
 	int x;
@@ -160,7 +160,7 @@ int buf_render_string_right(unsigned char *buf, int buf_width_pixels, int buf_he
 			return 0;
 	}
 	guilib_buffer_clear_area(buf, LCD_BUF_WIDTH_PIXELS, buf_height_pixels, buf_width_bytes,
-		x, start_y, start_x + buf_width_pixels, start_y + GetFontLinespace(font));
+				 x, start_y, start_x + buf_width_pixels, start_y + GetFontLinespace(font));
 	return rc;
 }
 
@@ -211,8 +211,8 @@ int render_string(const int font, int start_x,
 }
 
 int render_string_and_clear(const int font, int start_x,
-		  int start_y, const unsigned char *string, int text_length, int inverted,
-		  int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+			    int start_y, const unsigned char *string, int text_length, int inverted,
+			    int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
 {
 	int x;
 	int width;
@@ -266,10 +266,10 @@ int render_string_and_clear(const int font, int start_x,
 	{
 		if (clear_start_x < start_x)
 			guilib_clear_area(clear_start_x, clear_start_y, start_x - 1,
-				clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
+					  clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
 		if (clear_end_x >= width)
 			guilib_clear_area(width, clear_start_y, clear_end_x,
-				clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
+					  clear_end_y < start_y + height ? clear_end_y : start_y + height - 1);
 		if (clear_end_y >= start_y + height)
 			clear_start_y = start_y + height;
 		else

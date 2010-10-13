@@ -148,7 +148,7 @@ bool ReadCommands(const char *filename)
 					buffer[j] = '\0';
 				}
 				if (ReadIcon(MenuRecord[item].icon, sizeof(MenuRecord[item].icon),
-				    MenuRecord[item].IconName)) {
+					     MenuRecord[item].IconName)) {
 					state = STATE_StartCommand;
 				} else {
 					state =  STATE_SkipSpaces;  // ignore invalid icon

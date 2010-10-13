@@ -1,5 +1,5 @@
 /* Bra.h -- Branch converters for executables
-2008-10-04 : Igor Pavlov : Public domain */
+   2008-10-04 : Igor Pavlov : Public domain */
 
 #ifndef __BRA_H
 #define __BRA_H
@@ -7,25 +7,25 @@
 #include "Types.h"
 
 /*
-These functions convert relative addresses to absolute addresses
-in CALL instructions to increase the compression ratio.
-  
+  These functions convert relative addresses to absolute addresses
+  in CALL instructions to increase the compression ratio.
+
   In:
-    data     - data buffer
-    size     - size of data
-    ip       - current virtual Instruction Pinter (IP) value
-    state    - state variable for x86 converter
-    encoding - 0 (for decoding), 1 (for encoding)
-  
+  data     - data buffer
+  size     - size of data
+  ip       - current virtual Instruction Pinter (IP) value
+  state    - state variable for x86 converter
+  encoding - 0 (for decoding), 1 (for encoding)
+
   Out:
-    state    - state variable for x86 converter
+  state    - state variable for x86 converter
 
   Returns:
-    The number of processed bytes. If you call these functions with multiple calls,
-    you must start next call with first byte after block of processed bytes.
-  
+  The number of processed bytes. If you call these functions with multiple calls,
+  you must start next call with first byte after block of processed bytes.
+
   Type   Endian  Alignment  LookAhead
-  
+
   x86    little      1          4
   ARMT   little      2          2
   ARM    little      4          0
@@ -38,15 +38,15 @@ in CALL instructions to increase the compression ratio.
 
   Example:
 
-    UInt32 ip = 0;
-    for ()
-    {
-      ; size must be >= Alignment + LookAhead, if it's not last block
-      SizeT processed = Convert(data, size, ip, 1);
-      data += processed;
-      size -= processed;
-      ip += processed;
-    }
+  UInt32 ip = 0;
+  for ()
+  {
+  ; size must be >= Alignment + LookAhead, if it's not last block
+  SizeT processed = Convert(data, size, ip, 1);
+  data += processed;
+  size -= processed;
+  ip += processed;
+  }
 */
 
 #define x86_Convert_Init(state) { state = 0; }
