@@ -81,7 +81,7 @@ simulate:
 # prepare a default qmake project file
 .PHONY: simulate-files
 simulate-files: simulate
-	ln -fs "${GRIFO_SIMULATOR}"/* ${SIMULATE_FILES} "${SIMULATE_DIR}"
+	ln -fs "${GRIFO_SIMULATOR}"/* "${GRIFO_COMMON}"/* "${GRIFO_INCLUDE}"/* ${SIMULATE_FILES} "${SIMULATE_DIR}"
 	cd "${SIMULATE_DIR}" && \
 	qmake -project -o "$(notdir ${QMAKE_PROJECT})"
 
@@ -94,7 +94,10 @@ simulate-makefile: simulate-files
 .PHONY: simulate-makefile
 simulate-makefile: simulate simulate-files qmake-project
 	cd "${SIMULATE_DIR}" && \
-	qmake CONFIG+="qt warn_on thread debug" QMAKE_CXXFLAGS_WARN_ON+='-Werror' QMAKE_CFLAGS_WARN_ON+='-Werror'
+	qmake CONFIG+="qt warn_on thread debug" \
+	  QMAKE_CXXFLAGS_WARN_ON+='-Werror' QMAKE_CFLAGS_WARN_ON+='-Werror' \
+	  QMAKE_CXXFLAGS+='-DGRIFO_SIMULATOR=1' QMAKE_CFLAGS+='-DGRIFO_SIMULATOR=1' \
+
 
 # run make on the generated Makefile
 .PHONY: simulate-make

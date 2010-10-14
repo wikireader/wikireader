@@ -29,6 +29,7 @@
 #include "delay.h"
 #include "event.h"
 #include "file.h"
+#include "graphics.h"
 #include "LCD.h"
 #include "memory.h"
 #include "serial.h"

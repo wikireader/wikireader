@@ -91,6 +91,9 @@ int grifo_main(int argc, char *argv[])
 	}
 	delay_us(2000000);
 
+	debug_printf("text rows %d\n", lcd_max_rows());
+	debug_printf("text columns %d\n", lcd_max_columns());
+
 	debug_printf("positioned text\n");
 	lcd_clear(LCD_WHITE);
 	lcd_at_xy(20, 8);
@@ -105,7 +108,7 @@ int grifo_main(int argc, char *argv[])
 	lcd_print("A");
 	delay_us(500000);
 
-	lcd_at_xy(LCD_MAX_COLUMNS - 1, LCD_MAX_ROWS - 1);
+	lcd_at_xy(lcd_max_columns() - 1, lcd_max_rows() - 1);
 	lcd_print("Z");
 	delay_us(2000000);
 
@@ -154,7 +157,7 @@ int grifo_main(int argc, char *argv[])
 
 	debug_printf("picture-in-picture\n");
 	lcd_clear(LCD_WHITE);
-	for (y = 0; y < LCD_MAX_ROWS; ++y) {
+	for (y = 0; y < lcd_max_rows(); ++y) {
 		lcd_at_xy(0, y);
 		lcd_printf("background line: %d", y);
 	}

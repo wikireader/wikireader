@@ -31,6 +31,7 @@
 #include <QWidget>
 
 #include "EventQueue.h"
+#include "FrameBuffer.h"
 
 
 class Wikireader : public QWidget {
@@ -44,7 +45,7 @@ private:
 	static const int height = 208;
 	static const int bytes_per_row = 32;
 
-	uint8_t pixels[height * bytes_per_row];
+	FrameBuffer *fb;
 
 	// no copying
 	Wikireader(const Wikireader &);
@@ -59,9 +60,7 @@ public:
 	Wikireader(QApplication *application, EventQueue *queue, QWidget *parent = 0);
 	virtual ~Wikireader();
 
-	uint8_t *FrameBufferAddress() {return pixels;}
-	int FrameBufferSize() {return sizeof(pixels);}
-	int FrameBufferRowSize() {return bytes_per_row;}
+	FrameBuffer *display() {return this->fb;}
 
 };
 

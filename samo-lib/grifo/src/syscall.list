@@ -36,6 +36,7 @@
  (copy-all "src/license.i")
 
  (ifnot _GRIFO_H_)
+ (define _GRIFO_H_ 1)
 
  (include<> inttypes.h)
  (include<> stdbool.h)
@@ -47,9 +48,11 @@
 
  (newline)
 
- (output "#ifndef __ssize_t_defined")
+ (ifnot "__ssize_t_defined")
  (output "typedef int32_t ssize_t;")
- (output "#endif")
+ (endif)
+
+ (start-c-code)
 
  ;; functions
  (0 System_panic ("void" "panic" "const char *format" "...") ("noreturn" "format (printf, 1, 2)"))
@@ -92,10 +95,7 @@
  (output "typedef uint32_t critical_t;")
  (newline)
 
- (output "#if defined(GRIFO_SIMULATOR)")
- (output "#define critcal_enter() 0")
- (output "#define critcal_exit(state)")
- (output "#else")
+ (ifnot GRIFO_SIMULATOR)
 
  (prototype ("inline critical_t" "critcal_enter" "void"))
  (copy-part "src/interrupt.h" "enter")
@@ -104,7 +104,10 @@
  (prototype ("inline void" "critical_exit" "critical_t state"))
  (copy-part "src/interrupt.h" "exit")
 
- (output "#endif")
+ (else)
+ (define "critcal_enter()" "0")
+ (define "critcal_exit(state)" "")
+ (endif)
 
  (section "Timer and Delay")
 
@@ -176,14 +179,15 @@
 
  (comment "src/LCD.h" "text")
  (60 LCD_AtXY ("void" "lcd_at_xy" "int x" "int y"))
- (61 LCD_print  ("int" "lcd_print" "const char *text"))
+ (61 LCD_print  ("void" "lcd_print" "const char *text"))
  (62 LCD_PutChar  ("int" "lcd_print_char" "char c"))
  (63 LCD_printf  ("int" "lcd_printf" "const char *format" "...") "format (printf, 1, 2)")
- (64 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t value"))
+ (64 LCD_SetColour ("lcd_colour_t" "lcd_set_colour" "lcd_colour_t colour"))
  (65 LCD_GetColour ("lcd_colour_t" "lcd_get_colour" "void"))
  (66 LCD_framebuffer_set_byte ("void" "lcd_framebuffer_set_byte" "int byte_idx" "uint8_t value"))
  (67 LCD_framebuffer_get_byte ("uint8_t" "lcd_framebuffer_get_byte" "int byte_idx"))
-
+ (68 LCD_MaxColumns ("int" "lcd_max_columns" "void"))
+ (69 LCD_MaxRows ("int" "lcd_max_rows" "void"))
 
  (section "LCD Window (picture-in-picture)")
 
@@ -219,9 +223,10 @@
  (87 LCD_Window_LineTo ("void" "lcd_window_line_to" "int x" "int y"))
 
 
- (90 LCD_PutBitMap ("void" "lcd_bitmap" "void *framebuffer" "size_t BufferWidth"
-                    "int x" "int y" "size_t width" "size_t height"
-                    "bool reverse" "const uint8_t *bits"))
+ (comment "common/graphics.h" "bitmap")
+ (90 Graphics_PutBitMap ("void" "lcd_bitmap" "void *framebuffer" "size_t BufferWidth"
+                         "int x" "int y" "size_t width" "size_t height"
+                         "bool reverse" "const uint8_t *bits"))
 
 
  (section "Files and Directory Access")
@@ -284,6 +289,13 @@
  (160 Serial_PutChar ("int" "serial_putchar" "int ch"))
  (161 Serial_GetChar ("char" "serial_getchar" "void"))
  (162 Serial_InputAvailable ("bool" "serial_inputavailable" "void"))
+
+
+ (section "Main Program")
+
+ (output "int grifo_main(int argc, char *argv[]);")
+
+ (end-c-code)
 
  (endif)
 )

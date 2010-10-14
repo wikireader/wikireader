@@ -49,7 +49,7 @@ INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I${FATFS_INCLUDE} -I${FATFS_CONFIG_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
-INCLUDES += -Ibuild
+INCLUDES += -Ibuild -Icommon
 
 LIBS += build/libinternal.a
 LIBS += ${FATFS_LIB}
@@ -61,7 +61,7 @@ BUILD_PREFIX := build/
 
 MAKE_SYSCALL := scripts/MakeSystemCalls
 
-vpath %.c :src
+vpath %.c :src:common
 
 TARGETS = build/syscall.table
 TARGETS += build/libinternal.a
@@ -77,6 +77,7 @@ OBJECTS += delay.o
 OBJECTS += elf32.o
 OBJECTS += event.o
 OBJECTS += file.o
+OBJECTS += graphics.o
 OBJECTS += LCD.o
 OBJECTS += main.o
 OBJECTS += memory.o

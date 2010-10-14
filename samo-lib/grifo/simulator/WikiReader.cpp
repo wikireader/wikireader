@@ -51,7 +51,7 @@ Wikireader::Wikireader(QApplication *application, EventQueue *queue, QWidget *pa
 
 	screen->addStretch();
 
-	FrameBuffer *fb = new FrameBuffer(this->queue, this->pixels, this->width, this->height, this->bytes_per_row);
+	this->fb = new FrameBuffer(this->queue, this->width, this->height, this->bytes_per_row);
 	fb->setFocusPolicy(Qt::NoFocus);
 	screen->addWidget(fb);
 

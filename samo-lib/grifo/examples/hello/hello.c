@@ -25,14 +25,14 @@
 int grifo_main(int argc, char *argv[])
 {
 	lcd_clear(LCD_WHITE);
-//	lcd_printf("Hello LCD world\n");
+	lcd_printf("Hello LCD world\n");
 	debug_printf("Hello serial world\n");
 	int i;
 	for (i = 0; i < argc; ++i) {
-//		lcd_printf("argv[%d] = '%s'\n", i, argv[i]);
+		lcd_printf("argv[%d] = '%s'\n", i, argv[i]);
 		debug_printf("argv[%d] = '%s'\n", i, argv[i]);
 	}
 
-	delay_us(1000000);
+	delay_us(5000000);
 	return EXIT_RESTART_INIT;
 }

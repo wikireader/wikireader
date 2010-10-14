@@ -181,19 +181,33 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
    ((eq? 'newline (first item))
     (newline))
 
+   ((eq? 'prototype (first item))
+    (format #t "~a~%" (prototype-string (second item))))
+
    ((eq? 'ifnot (first item))
     (let ((name (second item)))
-      (format #t "~%#if !defined(~a)~%#define ~a 1~%~%" name name)))
+      (format #t "~%#if !defined(~a)~%" name)))
+
+   ((eq? 'define (first item))
+    (let ((name (second item))
+          (value (third item)))
+      (format #t "#define ~a ~a~%" name value)))
+
+   ((eq? 'else (first item))
+    (format #t "~%#else~%~%"))
+
+   ((eq? 'endif (first item))
+    (format #t "~%#endif~%~%"))
 
    ((eq? 'include<> (first item))
     (let ((filename (second item)))
       (format #t "#include <~a>~%" filename)))
 
-   ((eq? 'prototype (first item))
-    (format #t "~a~%" (prototype-string (second item))))
+   ((eq? 'start-c-code (first item))
+    (format #t "~%#ifdef __cplusplus~%extern \"C\" {~%#endif~%~%"))
 
-   ((eq? 'endif (first item))
-    (format #t "~%#endif~%"))
+   ((eq? 'end-c-code (first item))
+    (format #t "~%#ifdef __cplusplus~%}~%#endif~%~%"))
 
    ((eq? 'output (first item))
     (map (lambda (message) (format #t "~a~%" message)) (drop item 1)))))

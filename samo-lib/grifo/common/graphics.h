@@ -1,7 +1,7 @@
 /*
- * some miscellaneous definitions
+ * Generic graphics routines
  *
- * Copyright (c) 2009 Openmoko Inc.
+ * Copyright (c) 2010 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -19,23 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(_STANDARD_H_)
-#define _STANDARD_H_ 1
+#if  !defined(_GRAPHICS_H_)
+#define _GRAPHICS_H_ 1
 
-#include <inttypes.h>  // (u)intXX_t
-#include <stdbool.h>   // bool, true, false
-#include <stdlib.h>    // size_t
-#include <stdarg.h>    // va_list
+#include "standard.h"
 
-typedef int32_t ssize_t;
-
-#if !defined(SizeOfArray)
-#define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-// generic callback returning a flag
-typedef bool Standard_BoolCallBackType(void *arg);
+void Graphics_DrawLine(int x0, int y0, int x1, int y1, uint32_t colour,
+		       void (*SetPixel)(int x, int y, uint32_t colour));
 
+//*[bitmap]: transfer a bitmap ro framebuffer
+void Graphics_PutBitMap(void *framebuffer, size_t BufferWidth,
+			int x, int y, size_t width, size_t height,
+			bool reverse,
+			const uint8_t *bits);
 
+const uint8_t *Graphics_GetFont(unsigned char c);
+int Graphics_FontWidth(void);
+int Graphics_FontHeight(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

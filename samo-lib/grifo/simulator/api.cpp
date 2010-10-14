@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "standard.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -30,6 +32,9 @@
 
 #include "EventQueue.h"
 #include "grifo.h"
+#include "FrameBuffer.h"
+#include "graphics.h"
+
 
 void TerminateApplication(const char *format = 0, ...) __attribute__ ((noreturn));
 
@@ -124,13 +129,70 @@ void grifo_exit(int result) {
 	TerminateApplication("exit with result: %d", result);
 }
 
+
 void chain(const char *command) {
-	TerminateApplication("chain command: %s", command);
+
+	char buffer[256];
+	char *ArgumentStrings[12]; // program name + N-1 arguments + null
+
+	size_t ArgumentCount = 0;
+	const char *source = command;
+	char *destination = buffer;
+
+	memset(ArgumentStrings, 0, sizeof(ArgumentStrings));
+
+	// parse something like: --option="isn't this easy"', '"it's ok"' and "quotes" can be used'
+	while ('\0' != *source && ArgumentCount < SizeOfArray(ArgumentStrings) - 1) {
+		while (isspace(*source)) {
+			++source;
+		}
+		if ('\0' == *source) {
+			break;
+		}
+
+		char quote = '\0';
+		*destination = '\0';
+
+		ArgumentStrings[ArgumentCount++] = destination;
+
+		while ('\0' != *source && destination < &buffer[sizeof(buffer) - 1]) {
+			if ('\0' != quote) {
+				while ('\0' != *source && quote != *source) {
+					*destination++ = *source++;
+					if (destination >= &buffer[sizeof(buffer) - 1]) {
+						break;
+					}
+				}
+				if ('\0' != *source) {
+					quote = '\0';
+					++source;
+				}
+			} else if (isspace(*source)) {
+				break;
+			} else if ('"' == *source || '\'' == *source) {
+				quote = *source++;
+			} else {
+				*destination++ = *source++;
+			}
+		}
+		*destination++ = '\0';
+		if (destination >= &buffer[sizeof(buffer)]) {
+			break;
+		}
+	}
+	// ensure final terminator
+	buffer[sizeof(buffer) - 1] = '\0';
+
+	int rc = execv(ArgumentStrings[0],  ArgumentStrings);
+
+	TerminateApplication("chain command failed(%d) on: %s", rc, command);
 }
+
 
 void power_off(void) {
 	TerminateApplication("Power off");
 }
+
 
 void reboot(void) {
 	TerminateApplication("Reboot");
@@ -215,19 +277,21 @@ event_item_t event_peek(event_t *event) {
 // LCD Access
 // ----------
 
-extern uint8_t *fb;
-extern int fb_max;
-extern int fb_row;
+extern FrameBuffer *fb;
 
+static int GraphicX = 0;
+static int GraphicY = 0;
+static int TextRow = 0;
+static int TextColumn = 0;
 static lcd_colour_t ForegroundColour = LCD_BLACK;
 
-static inline int pos(int x, int y)
-{
-	return y * fb_row + (x >> 3);
+
+static inline int pos(int x, int y) {
+	return y * fb->RowSize() + (x >> 3);
 }
 
 uint8_t *lcd_get_framebuffer(void) {
-	return fb;
+	return fb->address();
 }
 
 uint32_t *lcd_set_framebuffer(uint32_t *address) {
@@ -244,13 +308,13 @@ uint32_t *lcd_set_default_framebuffer(void) {
 
 void lcd_clear(lcd_colour_t colour) {
 	uint8_t c = LCD_WHITE == colour ? 0x00 : 0xff;
-	for (int i = 0; i < fb_max; ++i) {
-		fb[i] = c;
+	for (int i = 0; i < fb->size(); ++i) {
+		fb->address()[i] = c;
 	}
-	//GraphicX = 0;
-	//GraphicY = 0;
-	//TextRow = 0;
-	//TextColumn = 0;
+	GraphicX = 0;
+	GraphicY = 0;
+	TextRow = 0;
+	TextColumn = 0;
 	ForegroundColour = colour == LCD_WHITE ? LCD_BLACK : LCD_WHITE;
 }
 
@@ -260,105 +324,189 @@ lcd_colour_t lcd_get_pixel(int x, int y) {
 	    y < 0 || y >= LCD_HEIGHT) {
 		return LCD_BLACK;
 	}
-	return 0 != (fb[pos(x, y)] & (0x80 >> (x & 0x07))) ? LCD_BLACK : LCD_WHITE;
+	return 0 != (fb->address()[pos(x, y)] & (0x80 >> (x & 0x07))) ? LCD_BLACK : LCD_WHITE;
 }
 
-void lcd_set_pixel(int x, int y, lcd_colour_t colour) {
+static void set_pixel(int x, int y, uint32_t colour) {
 	if (x < 0 || x >= LCD_WIDTH ||
 	    y < 0 || y >= LCD_HEIGHT) {
 		return;
 	}
 	if (LCD_BLACK == colour) {
-		fb[pos(x, y)] |= (0x80 >> (x & 0x07));
+		fb->address()[pos(x, y)] |= (0x80 >> (x & 0x07));
 	} else {
-		fb[pos(x, y)] &= ~(0x80 >> (x & 0x07));
+		fb->address()[pos(x, y)] &= ~(0x80 >> (x & 0x07));
 	}
+}
+
+
+void lcd_set_pixel(int x, int y, lcd_colour_t colour) {
+	set_pixel(x, y, (uint32_t)colour);
 }
 
 
 void lcd_point(int x, int y) {
-	TerminateApplication("lcd_point @ (%d, %d)", x, y);
+	lcd_move_to(x, y);
+	lcd_set_pixel(x, y, ForegroundColour);
 }
 
 
 void lcd_move_to(int x, int y) {
-	TerminateApplication("lcd_move_to: (%d, %d)", x, y);
+	GraphicX = Standard_ClipValue(x, 0, fb->w() - 1);
+	GraphicY = Standard_ClipValue(y, 0, fb->h() - 1);
 }
 
 void lcd_line_to(int x, int y) {
-	TerminateApplication("lcd_line_to: (%d, %d)", x, y);
+	register int x0 = GraphicX;
+	register int y0 = GraphicY;
+	lcd_move_to(x, y);
+	Graphics_DrawLine(x0, y0, GraphicX, GraphicY, ForegroundColour, set_pixel);
 }
 
 
 void lcd_at_xy(int x, int y) {
-	TerminateApplication("lcd_at_xy: (%d, %d)", x, y);
+	TextRow = Standard_ClipValue(y, 0, lcd_max_rows() - 1);
+	TextColumn = Standard_ClipValue(x, 0, lcd_max_columns() - 1);
 }
 
-int lcd_print(const char *text) {
-	TerminateApplication("lcd_print: %s", text);
-	return 0;
+void lcd_print(const char *text) {
+	while ('\0' != *text) {
+		lcd_print_char(*text++);
+	}
+}
+
+static void scroll(void) {
+	TextColumn = 0;
+	++TextRow;
+	if (TextRow >= lcd_max_rows()) {
+		TextRow = lcd_max_rows() - 1;
+
+		uint8_t *p = lcd_get_framebuffer();
+		const uint32_t one_line =  Graphics_FontHeight() * fb->RowSize();
+
+		memcpy(p, p + one_line, fb->size() - one_line);
+		memset(p + fb->size() - one_line, ForegroundColour == LCD_BLACK ? 0 : 0xff, one_line);
+	}
 }
 
 int lcd_print_char(char c) {
-	TerminateApplication("lcd_print_char: %c", c);
-	return 0;
+	if ('\r' == c) {
+		TextColumn = 0;
+		return c;
+	}
+	if ('\n' == c) {
+		scroll();
+		return c;
+	}
+
+	if (TextColumn >= lcd_max_columns()) {
+		scroll();
+	}
+	const uint8_t *font = Graphics_GetFont(c);
+	uint8_t *p = lcd_get_framebuffer();
+
+	int h = Graphics_FontHeight();
+	int w = Graphics_FontWidth();
+	p += w / 8 * TextColumn + h * fb->RowSize() * TextRow;
+
+	int i;
+	if (LCD_BLACK == ForegroundColour) {
+		for (i = 0; i < h; ++i, p += fb->RowSize()) {
+			*p = *font++;
+		}
+	} else {
+		for (i = 0; i < h; ++i, p += fb->RowSize()) {
+			*p = ~*font++;
+		}
+	}
+	++TextColumn;
+	return c;
 }
 
 int lcd_printf(const char *format, ...) {
-	TerminateApplication("lcd_printf: %s", format);
-	return 0;
+	va_list arguments;
+
+	va_start(arguments, format);
+
+	char *p = NULL;
+	int rc = vasprintf(&p, format, arguments);
+
+	lcd_print(p);
+	free(p);
+
+	va_end(arguments);
+
+	return rc;
 }
 
-lcd_colour_t lcd_set_colour(lcd_colour_t value) {
-	TerminateApplication("lcd_set_colour: %d", (int)value);
-	return LCD_BLACK;
+lcd_colour_t lcd_set_colour(lcd_colour_t colour) {
+	register lcd_colour_t previous = ForegroundColour;
+	ForegroundColour = colour;
+	return previous;
 }
 
 lcd_colour_t lcd_get_colour(void) {
-	TerminateApplication("lcd_get_colour");
-	return LCD_BLACK;
+	return ForegroundColour;
 }
 
 void lcd_framebuffer_set_byte(int byte_idx, uint8_t value) {
-	if (byte_idx < 0 || byte_idx >= fb_max) {
-		TerminateApplication("lcd_framebuffer_set_byte[%d]=%d outside 0..%d-1", byte_idx, value, fb_max);
+	if (byte_idx < 0 || byte_idx >= fb->size()) {
+		TerminateApplication("lcd_framebuffer_set_byte[%d]=%d outside 0..%d-1", byte_idx, value, fb->size());
 	}
-	fb[byte_idx] = value;
+	fb->address()[byte_idx] = value;
 }
 
 uint8_t lcd_framebuffer_get_byte(int byte_idx) {
-	if (byte_idx < 0 || byte_idx > fb_max) {
-		TerminateApplication("lcd_framebuffer_get_byte[%d] outside 0..%d", byte_idx, fb_max);
+	if (byte_idx < 0 || byte_idx > fb->size()) {
+		TerminateApplication("lcd_framebuffer_get_byte[%d] outside 0..%d", byte_idx, fb->size());
 	}
-	return fb[byte_idx];
+	return fb->address()[byte_idx];
 }
 
+
+int lcd_max_columns(void) {
+	return fb->w() / Graphics_FontWidth();
+}
+
+
+int lcd_max_rows(void) {
+	return fb->h() / Graphics_FontHeight();
+}
 
 
 // LCD Window (picture-in-picture)
 // -------------------------------
 
+
+static int WindowGraphicX = 0;
+static int WindowGraphicY = 0;
+static int WindowTextRow = 0;
+static int WindowTextColumn = 0;
+static lcd_colour_t WindowForegroundColour = LCD_BLACK;
+
+
 size_t lcd_window(int x, int y, int w, int h) {
-	TerminateApplication("lcd_window: (%d, %d, %d, %d)", x, y, w, h);
-	return 0;
+	WindowGraphicX = 0;
+	WindowGraphicY = 0;
+	WindowTextRow = 0;
+	WindowTextColumn = 0;
+	WindowForegroundColour = LCD_BLACK;
+	return fb->SetWindow(x, y, w, h);
 }
 
 
 size_t lcd_window_get_buffer_size(void) {
-	TerminateApplication("lcd_window_get_buffer_size");
-	return 0;
+	return fb->WindowSize();
 }
 
 
 size_t lcd_window_get_byte_width(void) {
-	TerminateApplication("lcd_window_get_byte_width");
-	return 0;
+	return fb->WindowRowSize();
 }
 
 
 uint8_t *lcd_window_get_buffer(void) {
-	TerminateApplication("lcd_window_get_buffer");
-	return 0;
+	return fb->WindowAddress();
 }
 
 
@@ -369,55 +517,101 @@ uint32_t *lcd_window_set_buffer(uint32_t *address) {
 
 
 void lcd_window_disable(void) {
-	TerminateApplication("lcd_window_disable");
+	return fb->SetWindowEnable(false);
 }
 
 
 void lcd_window_enable(void) {
-	TerminateApplication("lcd_window_enable");
+	return fb->SetWindowEnable(true);
 }
 
 
 void lcd_window_clear(lcd_colour_t colour) {
-	TerminateApplication("lcd_window_clear: %d", (int)colour);
+	if (!fb->WindowAvailable()) {
+		return;
+	}
+	int i;
+	uint8_t fill = colour == LCD_WHITE ? 0 : ~0;
+	for (i = 0; i < fb->WindowSize(); ++i) {
+		fb->WindowAddress()[i] = fill;
+	}
+	WindowGraphicX = 0;
+	WindowGraphicY = 0;
+	WindowTextRow = 0;
+	WindowTextColumn = 0;
+	WindowForegroundColour = colour == LCD_WHITE ? LCD_BLACK : LCD_WHITE;
 }
+
+
+static inline int WindowPos(int x, int y) {
+	return y * fb->WindowRowSize() + (x >> 3);
+}
+
 
 lcd_colour_t lcd_window_get_pixel(int x, int y) {
-	TerminateApplication("lcd_window_get_pixel @ (%d, %d)", x, y);
-	return LCD_BLACK;
+	if (!fb->WindowAvailable() ||
+	    x < 0 || x >= fb->WindowW() ||
+	    y < 0 || y >= fb->WindowH()) {
+		return LCD_BLACK;
+	}
+	return 0 != (fb->WindowAddress()[WindowPos(x, y)] & (0x80 >> (x & 0x07))) ? LCD_BLACK : LCD_WHITE;
 }
+
+
+static void window_set_pixel(int x, int y, uint32_t colour) {
+	if (!fb->WindowAvailable() ||
+	    x < 0 || x >= fb->WindowW() ||
+	    y < 0 || y >= fb->WindowH()) {
+		return;
+	}
+	if (LCD_BLACK == colour) {
+		fb->WindowAddress()[WindowPos(x, y)] |= (0x80 >> (x & 0x07));
+	} else {
+		fb->WindowAddress()[WindowPos(x, y)] &= ~(0x80 >> (x & 0x07));
+	}
+}
+
 
 void lcd_window_set_pixel(int x, int y, lcd_colour_t colour) {
-	TerminateApplication("lcd_window_set_pixel @ (%d, %d) = %d", x, y, (int)colour);
+	window_set_pixel(x, y, (uint32_t)colour);
 }
+
 
 lcd_colour_t lcd_window_set_colour(lcd_colour_t colour) {
-	TerminateApplication("lcd_window_set_colour: %d", (int)colour);
-	return LCD_BLACK;
+	register lcd_colour_t previous = WindowForegroundColour;
+	WindowForegroundColour = colour;
+	return previous;
 }
+
 
 lcd_colour_t lcd_window_get_colour(void) {
-	TerminateApplication("lcd_window_get_colour");
-	return LCD_BLACK;
+	return WindowForegroundColour;
 }
+
 
 void lcd_window_point(int x, int y) {
-	TerminateApplication("lcd_window_point @ (%d, %d)", x, y);
+	lcd_window_move_to(x, y);
+	lcd_window_set_pixel(x, y, WindowForegroundColour);
 }
+
 
 void lcd_window_move_to(int x, int y) {
-	TerminateApplication("lcd_window_move_to: (%d, %d)", x, y);
+	WindowGraphicX = Standard_ClipValue(x, 0, fb->WindowW() - 1);
+	WindowGraphicY = Standard_ClipValue(y, 0, fb->WindowH() - 1);
 }
+
 
 void lcd_window_line_to(int x, int y) {
-	TerminateApplication("lcd_window_line_to: (%d, %d)", x, y);
+	register int x0 = WindowGraphicX;
+	register int y0 = WindowGraphicY;
+	lcd_window_move_to(x, y);
+	Graphics_DrawLine(x0, y0, WindowGraphicX, WindowGraphicY, WindowForegroundColour, window_set_pixel);
 }
 
-void lcd_bitmap(void *framebuffer, size_t BufferWidth, int x, int y, size_t width, size_t height, bool reverse, const uint8_t *bits) {
-	TerminateApplication("lcd_bitmap: %p[%lu], (%d, %d, %d, %d) rev: %d from: %p",
-			     framebuffer, BufferWidth,
-			     x, y, width, height,
-			     reverse, bits);
+
+void lcd_bitmap(void *framebuffer, size_t BufferWidth, int x, int y, size_t width, size_t height,
+		bool reverse, const uint8_t *bits) {
+	Graphics_PutBitMap(framebuffer, BufferWidth, x, y, width, height, reverse, bits);
 }
 
 

@@ -71,7 +71,7 @@ void System_panic(const char *format, ...)
 	LCD_print("System Panic:\n");
 	(void)LCD_vuprintf(format, arguments);
 
-	LCD_AtXY(0, LCD_MAX_ROWS - 1);
+	LCD_AtXY(0, LCD_MaxRows() - 1);
 	LCD_print("Press any key to power off");
 
 	va_end(arguments);

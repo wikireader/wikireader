@@ -28,6 +28,7 @@
 #include <QObject>
 
 #include "WikiReader.h"
+#include "FrameBuffer.h"
 #include "EventQueue.h"
 
 // must be last include to ensure that 64bit OS definitions
@@ -38,9 +39,7 @@
 EventQueue *queue;
 QApplication *application;
 
-uint8_t *fb = 0;
-int fb_max = 0;
-int fb_row = 0;
+FrameBuffer *fb = 0;
 
 
 class MyThread : public QThread {
@@ -54,8 +53,11 @@ public:
 		this->argv = argv;
 	}
 	void run() {
-		grifo_main(this->argc, this->argv);
+		int rc = grifo_main(this->argc, this->argv);
 		application->quit();
+		if (0 == rc) {
+			chain("init.app restart grifo-kernel");
+		}
 	}
 };
 
@@ -96,9 +98,7 @@ int main(int argc, char **argv) {
 	Wikireader w(application, queue);
 	MyThread t(argc, argv);
 
-	fb = w.FrameBufferAddress();
-	fb_max = w.FrameBufferSize();
-	fb_row = w.FrameBufferRowSize();
+	fb = w.display();
 
 	w.show();
 	t.start();

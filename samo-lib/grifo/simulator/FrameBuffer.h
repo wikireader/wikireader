@@ -37,10 +37,24 @@ class FrameBuffer : public QWidget {
 	Q_OBJECT
 
 private:
-	int width;
-	int height;
-	int bytes_per_row;
-	const uint8_t *pixels;
+	int MainWidth;
+	int MainHeight;
+	int MainBytesPerRow;
+	uint8_t *MainPixels;
+
+	int WindowX;
+	int WindowY;
+	int WindowWidth;
+	int WindowHeight;
+	uint8_t *WindowPixels;
+	bool WindowEnable;
+	int WindowBytesPerRow;
+	int WindowBufferSize;
+	bool WindowOperational;
+
+	// window buffer maximum size is the same as MainBufferSize
+	int MainBufferSize;
+
 	EventQueue *queue;
 
 	// no copying
@@ -57,9 +71,26 @@ protected:
 	void paintEvent(QPaintEvent *event);
 
 public:
-	FrameBuffer(EventQueue *queue, const uint8_t *pixels,
-		    int width, int height, int bytes_per_row, QWidget *parent = 0);
+	FrameBuffer(EventQueue *queue, int width, int height, int BytesPerRow, QWidget *parent = 0);
 	virtual ~FrameBuffer();
+
+	uint8_t *address() {return this->MainPixels;}
+
+	int w() {return this->MainWidth;}
+	int h() {return this->MainHeight;}
+	int size() {return this->MainBufferSize;}
+	int RowSize() {return this->MainBytesPerRow;}
+
+	uint8_t *WindowAddress() {return this->WindowPixels;}
+	int WindowW() {return this->WindowWidth;}
+	int WindowH() {return this->WindowHeight;}
+	int WindowSize() {return this->WindowBufferSize;}
+	int WindowRowSize() {return this->WindowBytesPerRow;}
+
+	int SetWindow(int x, int y, int w, int h);
+	void SetWindowEnable(bool state) {this->WindowEnable = state && this->WindowOperational;}
+	bool WindowAvailable() {return this->WindowOperational;}
+
 };
 
 #endif

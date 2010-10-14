@@ -40,6 +40,7 @@ include ${MK_DIR}/definitions.mk
 
 INCLUDES += -I${SAMO_LIB_INCLUDE}
 INCLUDES += -I${GRIFO_INCLUDE}
+INCLUDES += -I${GRIFO_COMMON}
 INCLUDES += -I${MINI_LIBC_INCLUDE}
 
 LIBS += lib/libapplication.a

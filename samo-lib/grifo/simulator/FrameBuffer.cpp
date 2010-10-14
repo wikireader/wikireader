@@ -31,25 +31,53 @@
 
 
 FrameBuffer::FrameBuffer(EventQueue *queue,
-			 const uint8_t *pixels,
-			 int width, int height, int bytes_per_row,
+			 int width, int height, int BytesPerRow,
 			 QWidget *parent)
 	: QWidget(parent) {
-	this->pixels = pixels;
-	this->width = width;
-	this->height = height;
-	this->bytes_per_row = bytes_per_row;
+	this->MainWidth = width;
+	this->MainHeight = height;
+	this->MainBytesPerRow = BytesPerRow;
+	this->MainBufferSize = height * BytesPerRow;
 	this->queue = queue;
-
-	setMaximumSize(this->width, this->height);
-	setMinimumSize(this->width, this->height);
-	qDebug("Framebuffer %d x %d @ %p\n", this->width, this->height, this->pixels);
-	this->startTimer(50);    // milliseconds
+	this->MainPixels = new uint8_t[this->MainBufferSize];
+	this->WindowPixels = new uint8_t[this->MainBufferSize];
+	this->WindowX = 0;
+	this->WindowY = 0;
+	this->WindowWidth = 0;
+	this->WindowHeight = 0;
+	this->WindowEnable = false;
+	this->WindowOperational = false;
+	setMaximumSize(width, height);
+	setMinimumSize(width, height);
+	qDebug("Framebuffer %d x %d\n", width, height);
+	this->startTimer(20);    // milliseconds
 }
 
 
 FrameBuffer::~FrameBuffer() {
+	delete this->MainPixels;
+	delete this->WindowPixels;
 }
+
+
+int FrameBuffer::SetWindow(int x, int y, int w, int h) {
+	this->WindowOperational = false;
+	if (x < 0 || y < 0 || w <= 0 || h <= 0) {
+		return 0;
+	}
+	// same limitations as real hardware
+	x = (x + 31) & ~31;
+	w = (w + 31) & ~31;
+	this->WindowX = x;
+	this->WindowY = y;
+	this->WindowWidth = w;
+	this->WindowHeight = h;
+	this->WindowBytesPerRow = ((w + 31) >> 5) * sizeof(uint32_t);
+	this->WindowBufferSize = this->WindowBytesPerRow * h;
+	this->WindowOperational = this->WindowBufferSize != 0;
+	return this->WindowBufferSize;
+}
+
 
 #define PIXEL(painter, byte, offset, x, y)                              \
 	do {                                                            \
@@ -61,13 +89,14 @@ FrameBuffer::~FrameBuffer() {
 void FrameBuffer::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	painter.setBrush(Qt::SolidPattern);
-	painter.fillRect(0, 0, this->width, this->height, Qt::white);
+	painter.fillRect(0, 0, this->MainWidth, this->MainHeight, Qt::white);
+
 
 	int row_start = 0;
-	for (int y = 0; y < this->height; y++) {
+	for (int y = 0; y < this->MainHeight; y++) {
 		int i = row_start;
-		for (int x = 0; x < this->width; x += 8, ++i) {
-			uint8_t byte = this->pixels[i];
+		for (int x = 0; x < this->MainWidth; x += 8, ++i) {
+			uint8_t byte = this->MainPixels[i];
 			PIXEL(painter, byte, 0, x, y);
 			PIXEL(painter, byte, 1, x, y);
 			PIXEL(painter, byte, 2, x, y);
@@ -77,7 +106,27 @@ void FrameBuffer::paintEvent(QPaintEvent *) {
 			PIXEL(painter, byte, 6, x, y);
 			PIXEL(painter, byte, 7, x, y);
 		}
-		row_start += bytes_per_row;
+		row_start += this->MainBytesPerRow;
+	}
+	if (this->WindowEnable) {
+		int row_start = 0;
+		for (int y = 0; y < this->WindowHeight; y++) {
+			int i = row_start;
+			int y1 = y + this->WindowY;
+			for (int x = 0; x < this->WindowWidth; x += 8, ++i) {
+				int x1 = x + this->WindowX;
+				uint8_t byte = this->WindowPixels[i];
+				PIXEL(painter, byte, 0, x1, y1);
+				PIXEL(painter, byte, 1, x1, y1);
+				PIXEL(painter, byte, 2, x1, y1);
+				PIXEL(painter, byte, 3, x1, y1);
+				PIXEL(painter, byte, 4, x1, y1);
+				PIXEL(painter, byte, 5, x1, y1);
+				PIXEL(painter, byte, 6, x1, y1);
+				PIXEL(painter, byte, 7, x1, y1);
+			}
+			row_start += this->WindowBytesPerRow;
+		}
 	}
 }
 
@@ -101,8 +150,8 @@ void FrameBuffer::mousePressEvent(QMouseEvent *event) {
 	//qDebug("Mouse Press: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_DOWN;
-	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
-	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->MainWidth);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->MainHeight);
 	this->queue->enqueue(&e);
 	//QWidget::mousePressEvent(event);
 }
@@ -111,8 +160,8 @@ void FrameBuffer::mouseMoveEvent(QMouseEvent *event) {
 	//qDebug("Mouse Move: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_MOTION;
-	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
-	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->MainWidth);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->MainHeight);
 	this->queue->enqueue(&e);
 	//QWidget::mouseMoveEvent(event);
 }
@@ -121,8 +170,8 @@ void FrameBuffer::mouseReleaseEvent(QMouseEvent *event) {
 	//qDebug("Mouse Release: %d, %d",  event->pos().x(), event->pos().y());
 	event_t e;
 	e.item_type = EVENT_TOUCH_UP;
-	e.touch.x = RestrictValue(event->pos().x(), 0, this->width);
-	e.touch.y = RestrictValue(event->pos().y(), 0, this->height);
+	e.touch.x = RestrictValue(event->pos().x(), 0, this->MainWidth);
+	e.touch.y = RestrictValue(event->pos().y(), 0, this->MainHeight);
 	this->queue->enqueue(&e);
 	//QWidget::mouseReleaseEvent(event);
 }

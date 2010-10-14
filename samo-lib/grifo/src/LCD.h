@@ -36,12 +36,6 @@ enum {
 
 	LCD_BUFFER_SIZE_BYTES = LCD_BUFFER_WIDTH_BYTES * LCD_BUFFER_HEIGHT,
 	LCD_BUFFER_SIZE_WORDS = LCD_BUFFER_WIDTH_WORDS * LCD_BUFFER_HEIGHT,
-
-	LCD_FONT_WIDTH  = 8,
-	LCD_FONT_HEIGHT = 13,
-	LCD_MAX_COLUMNS = LCD_WIDTH / LCD_FONT_WIDTH,
-	LCD_MAX_ROWS    = LCD_HEIGHT / LCD_FONT_HEIGHT,
-
 };
 //-MakeSystemCalls: types
 
@@ -84,6 +78,8 @@ void LCD_MoveTo(int x, int y);
 void LCD_LineTo(int x, int y);
 
 //*[text]: text output (only affects text cursor)
+int LCD_MaxColumns(void);
+int LCD_MaxRows(void);
 void LCD_AtXY(int column, int row);
 int LCD_PutChar(int c);
 void LCD_print(const char *message);

@@ -1,7 +1,7 @@
 /*
- * Simulation of the GRIFO header
+ * some miscellaneous definitions
  *
- * Copyright (c) 2010 Openmoko Inc.
+ * Copyright (c) 2009 Openmoko Inc.
  *
  * Authors   Christopher Hall <hsw@openmoko.com>
  *
@@ -19,28 +19,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(_SIMULATED_GRIFO_H_)
-#define _SIMULATED_GRIFO_H_ 1
+#if !defined(_STANDARD_H_)
+#define _STANDARD_H_ 1
 
-// include definitions that are for 64 bit OS first
-#include <inttypes.h>
+#include <inttypes.h>  // (u)intXX_t
+#include <stdbool.h>   // bool, true, false
+#include <stdlib.h>    // size_t
+#include <stdarg.h>    // va_list
 
-#define GRIFO_SIMULATOR 1
-
-#ifdef __cplusplus
-extern "C" {
+#ifndef __ssize_t_defined
+typedef int32_t ssize_t;
 #endif
 
-// include the real grifo.h file
-// this generated grifo.h has a 32 bit interface
-#include "../../../include/grifo.h"
-
-// the main entry point for grifo programs
-int grifo_main(int argc, char *argv[]);
+#if !defined(SizeOfArray)
+#define SizeOfArray(a) (sizeof(a) / sizeof((a)[0]))
+#endif
 
 
-#ifdef __cplusplus
+// clip min <= value <= max
+static inline int Standard_ClipValue(int value, int min, int max)
+{
+	if (value < min) {
+		return min;
+	} else if (value > max) {
+		return max;
+	}
+	return value;
 }
-#endif
+
+
+// generic callback returning a flag
+typedef bool Standard_BoolCallBackType(void *arg);
+
 
 #endif
