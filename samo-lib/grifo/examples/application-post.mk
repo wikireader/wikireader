@@ -19,6 +19,7 @@
 
 # nomally want simulation
 SIMULATE ?= YES
+INSTALL_GRIFO_SIMULATION ?= NO
 
 ifeq (,$(strip ${PROGRAM}))
 # ensure "PROGRAM = prog-name" is set
@@ -72,7 +73,7 @@ SIMULATE_FILES += $(addprefix ../,${HEADERS})
 
 SIMULATE_DIR = simulate
 
-TARGETS += simulate-make
+EXTRA_TARGETS += simulate-make
 CLEAN_TARGETS += ${SIMULATE_DIR}
 
 simulate:
@@ -109,12 +110,18 @@ endif
 
 # no more assignments to TARGETS or CLEAN_TARGETS  after this point
 .PHONY: build-targets
-build-targets: ${TARGETS}
+build-targets: ${TARGETS} ${EXTRA_TARGETS}
 
 .PHONY: install
 install: all
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
 	${COPY} ${TARGETS} "${DESTDIR}"/
+ifeq (YES,$(strip ${INSTALL_GRIFO_SIMULATION}))
+ifeq (YES,$(strip ${SIMULATE}))
+	${COPY} "simulate/${PROGRAM}" "${DESTDIR}/${PROGRAM}.app"
+endif
+endif
+
 
 .PHONY: clean
 clean:

@@ -139,7 +139,7 @@ ALL_TARGETS += ${1}
 ifeq (INSTALL,${4})
 .PHONY: ${1}-install
 ${1}-install: ${1} validate-destdir
-	${MAKE} -C "${2}" DESTDIR="$${DESTDIR_PATH}" install
+	${MAKE} -C "${2}" DESTDIR="$${DESTDIR_PATH}" install ${5}
 
 INSTALL_TARGETS += ${1}-install
 endif
@@ -782,7 +782,12 @@ $(call STD_RULE, flash, ${SAMO_LIB}/flash, gcc mini-libc fatfs drivers, INSTALL)
 # Grifo small kernel
 # ==================
 
-$(call STD_RULE, grifo, ${SAMO_LIB}/grifo, gcc mini-libc fatfs, INSTALL)
+$(call STD_RULE, grifo, ${SAMO_LIB}/grifo, gcc mini-libc fatfs, INSTALL, INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
+
+.PHONY: grifo-simulate
+grifo-simulate: validate-destdir
+	make INSTALL_GRIFO_SIMULATION=YES DESTDIR="${DESTDIR}" grifo-install
+	cd "${DESTDIR}" && ./init.app
 
 
 # Master boot record
@@ -923,6 +928,7 @@ help:
 	@echo '  fonts-install         - install font files in DESTDIR'
 	@echo '  grifo                 - build the Grifo kernel and examples'
 	@echo '  grifo-install         - install the Grifo kernel and examples'
+	@echo '  grifo-simulate        - install the simulated Grifo examples - these run on host machine'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
 	@echo '  qt4-simulator         - compile the Qt4 simulator'

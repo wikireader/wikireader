@@ -41,6 +41,8 @@ include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
 
+INSTALL_GRIFO_SIMULATION ?= NO
+
 $(call REQUIRED_BINARY, guile, guile-1.8)
 
 INCLUDES += -Isrc
@@ -149,9 +151,11 @@ stamp-include:
 .PHONY: install
 install: all
 	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+ifneq (YES,$(strip ${INSTALL_GRIFO_SIMULATION}))
 	${COPY} grifo.elf "${DESTDIR}"/kernel.elf
+endif
 	${COPY} init.ini "${DESTDIR}"/
-	${MAKE} -C examples install
+	${MAKE} -C examples install INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}"
 
 .PHONY: clean
 clean:

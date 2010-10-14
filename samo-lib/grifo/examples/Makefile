@@ -38,6 +38,7 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
+INSTALL_GRIFO_SIMULATION ?= NO
 
 DIRS += events
 DIRS += files
@@ -50,7 +51,10 @@ DIRS += wiki
 
 
 ${MAKECMDGOALS} all:
-	@for d in ${DIRS}; do ${MAKE} -C "$${d}" ${MAKECMDGOALS} || exit 1; done
+	@for d in ${DIRS}; \
+	do \
+	  ${MAKE} -C "$${d}" ${MAKECMDGOALS} INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}" || exit 1; \
+	done
 
 
 include ${MK_DIR}/rules.mk
