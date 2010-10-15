@@ -23,7 +23,8 @@ USAGE()
   echo '       --tail[=<n>]      -t[<n>]    show last line of <base_dir>/log [3]'
   echo '       --memory          -m         show memory status'
   echo '       --list=<n-m>      -l <n-m>   restrict to certain machines [1-9]'
-  echo '       --language=<xx>   -L <xx>    process for language:suffix [en:pedia]'
+  echo '       --language=<xx>   -L <xx>    process for language:suffix ['${language}':'${suffix}']'
+  echo '       --compress=<a:b>  -z <a:b>   default compression for rendering e.g. --compress=8:128ki'
   echo '       --run=<rl>        -r <rl>    multirun example rl = "en:pedia:wiki:YES:1:131072:10 de:::YES:32:200000"'
   echo '                                    start the Run script in a screen {index, parse, render}'
   echo '                                    quote arguments OR use "," e.g.  es,de,en:dict'
@@ -55,8 +56,11 @@ set_articles_link()
     books)
       articles_link="${language}wikibooks-pages-articles.xml"
       ;;
+    starw)
+      articles_link="${language}Wookieepedia-pages-articles.xml"
+      ;;
     *)
-      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
+      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books, starw]
       ;;
   esac
 }
@@ -91,13 +95,14 @@ base_dir=wikireader
 combine_host=
 render_host=
 run_parallel=
+compression=
 
 set_farm 1
 set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:r:R:I:cG::4::NfxAF: --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,farm: -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigp::t::aml:L:z:r:R:I:cG::4::NfxAF: --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,compress:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,farm: -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -137,16 +142,25 @@ do
       shift
       ;;
 
+    -z|--compress)
+      c_a="${2%%:*}"
+      c_b="${2##*:}"
+      [ -z "${c_a}" -o -z "${c_b}" ] && USAGE invalid option: $1=$2
+      compression="--articles=${c_a} --block-size=${c_b}"
+      shift 2
+      ;;
+
     -r|--run)
       run_list=$(echo $2 | sed 's/,/ /g')
-      c="scripts/Run ${run_parallel} --clear ${run_list}"
+
+      c="scripts/Run ${run_parallel} ${compression} --clear ${run_list}"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift 2
       ;;
 
     -R|--re-render)
       run_list=$(echo $2 | sed 's/,/ /g')
-      c="scripts/Run ${run_parallel} --re-render ${run_list}"
+      c="scripts/Run ${run_parallel} ${compression} --re-render ${run_list}"
       RenderDo --yes ${render_host} ${list} --brief "screen -X eval chdir 'chdir ${base_dir}' \"exec ${c}\""
       shift 2
       ;;
@@ -283,7 +297,7 @@ do
       l1=en
       s1=pedia
       first_dir=$(basename "${first_dir}")
-      for s in books dict pedia quote
+      for s in books dict pedia quote starw
       do
         l0="${first_dir%${s}}"
         if [ X"${first_dir}" != X"${l0}" ]
@@ -298,7 +312,7 @@ do
       ;;
 
     -x|--xml-link)
-      for s in wiki wiktionary wikiquote wikibooks
+      for s in wiki wiktionary wikiquote wikibooks Wookieepedia
       do
         RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&

@@ -16,19 +16,21 @@ USAGE()
   echo '       arg             <language>:<dir_suffix>:<file_prefix>:<links>:<count>:<size>:<parallel>:<truncate>'
   echo '       --help          -h         this message'
   echo '       --verbose       -v         more messages'
+  echo '       --articles      -a <n>     articles per block ['${default_articles_per_block}']'
+  echo '       --block-size    -b <n>[k]  max size of block ['${default_block_size}']'
   echo '       --index-only    -i         only build the index'
   echo '       --no-run        -n         do not run final make'
   echo '       --clear         -c         clear work and dest dirs - so everything will be built'
   echo '       --re-parse      -R         clear parse and render stamps - to reuse existion index'
   echo '       --re-render     -r         clear render stamps - for re-rendering with diffferent compression'
-  echo '       --machines=<m>  -m <m>     set machine count [${MACHINE_COUNT} or 9]'
-  echo '       --parallel=<n>  -j <n>     set make -j value [${PARALLEL_BUILD} or 3]'
-  echo '       --work=<dir>    -w <dir>   workdir [work]'
-  echo '       --dest=<dir>    -d <dir>   destdir [image]'
-  echo '       --temp=<dir>    -t <dir>   tempdir [/tmp]'
+  echo '       --machines=<m>  -m <m>     set machine count ['${machine_count}']'
+  echo '       --parallel=<n>  -j <n>     set make -j value ['${parallel_build}']'
+  echo '       --work=<dir>    -w <dir>   workdir ['${work}']'
+  echo '       --dest=<dir>    -d <dir>   destdir ['${dest}']'
+  echo '       --temp=<dir>    -t <dir>   tempdir ['${temp}']'
   echo '       --farm=<f>      -f <f>     manual farm number [from hostname numeric suffix]'
   echo '       --debug         -D         only display make operations, do not execute them'
-  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:1:131072:<n>:unlimited'
+  echo '       Arguments:                 defaults:    en:pedia:wiki:YES:'${default_articles_per_block}':'${default_block_size}':<n>:unlimited'
   echo '                                  links      = [YES|NO] to enable inclusion of language links'
   echo '                                  count:size = max articles/max bytes to compress into one block'
   echo '                                  parallel   = overrides the global --parallel=<n> for this item'
@@ -117,10 +119,12 @@ MaximumThreads=64
 truncate='unlimited'
 machine_count=${MACHINE_COUNT:-9}
 parallel_build=${PARALLEL_BUILD:-3}
+default_articles_per_block=1
+default_block_size=131072
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvp:incrRw:d:t:f:p:j:m:D --long=help,verbose,index-only,no-run,clear,re-render,re-parse,work:,dest:,temp:,farm:,parallel:,machines:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvp:a:b:incrRw:d:t:f:p:j:m:D --long=help,verbose,articles:,block-size:,index-only,no-run,clear,re-render,re-parse,work:,dest:,temp:,farm:,parallel:,machines:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -131,6 +135,20 @@ do
     -v|--verbose)
       verbose=yes
       shift
+      ;;
+
+    -a|--articles)
+      IsNumber "$2" || USAGE not a number in: $1=$2
+      default_articles_per_block="$2"
+      shift 2
+      ;;
+
+    -b|--block-size)
+      default_block_size="$2"
+      [ X"${default_block_size%ki}ki" = X"${default_block_size}" ] && default_block_size=$((${default_block_size%ki} * 1024))
+      [ X"${default_block_size%k}k" = X"${default_block_size}" ] && default_block_size=$((${default_block_size%k} * 1000))
+      IsNumber "${default_block_size}" || USAGE not a number in: $1=$2
+      shift 2
       ;;
 
     -i|--index-only)
@@ -249,11 +267,11 @@ do
 
   arg="${arg#*:}"
   articles_per_block="${arg%%:*}"
-  IsNumber "${articles_per_block}" || articles_per_block=1
+  IsNumber "${articles_per_block}" || articles_per_block="${default_articles_per_block}"
 
   arg="${arg#*:}"
   article_block_size="${arg%%:*}"
-  IsNumber "${article_block_size}" || article_block_size=131072
+  IsNumber "${article_block_size}" || article_block_size="${default_block_size}"
 
   arg="${arg#*:}"
   threads="${arg%%:*}"
@@ -283,8 +301,11 @@ do
     books)
       articles_link="${language}wikibooks-pages-articles.xml"
       ;;
+    starw)
+      articles_link="${language}Wookieepedia-pages-articles.xml"
+      ;;
     *)
-      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books]
+      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books, starw]
       ;;
   esac
 
