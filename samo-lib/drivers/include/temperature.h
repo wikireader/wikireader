@@ -29,4 +29,5 @@ void Temperature_initialise(void);
 // call this periodically
 void Temperature_control(void);
 
+char *Temperature_string(int celcius);
 #endif

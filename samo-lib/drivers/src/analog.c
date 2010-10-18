@@ -113,7 +113,12 @@ int Analog_BatteryMilliVolts(void)
 
 int Analog_TemperatureCelcius(void)
 {
-	return (adc[1] * THERMISTOR_K1 + THERMISTOR_K0) / THERMISTOR_DIVISOR;
+	return (Analog_TemperatureCentiCelcius() / 100);
+}
+
+int Analog_TemperatureCentiCelcius(void)
+{
+	return (adc[1] * THERMISTOR_K1 + THERMISTOR_K0) / (THERMISTOR_DIVISOR / 100);
 }
 
 int Analog_ContrastMilliVolts(void)

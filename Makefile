@@ -50,6 +50,8 @@
 #
 #   PROGRESS_BAR               Enable progress bar when compiling mahatma.elf [NO]
 #
+#   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf [NO]
+#
 #   EXTRACT_VERSION_FROM       a link to XML file name that has an embedded date
 #                              which will be used to set WIKI_VERSION
 #
@@ -245,7 +247,8 @@ validate-destdir:
 
 # default: progress bar = off
 PROGRESS_BAR ?= NO
-$(call STD_RULE, mahatma, ${SAMO_LIB}/mahatma, mini-libc fatfs drivers, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}")
+TEMPERATURE_DISPLAY ?= NO
+$(call STD_RULE, mahatma, ${SAMO_LIB}/mahatma, mini-libc fatfs drivers, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" TEMPERATURE_DISPLAY="${TEMPERATURE_DISPLAY}")
 
 
 # Libraries

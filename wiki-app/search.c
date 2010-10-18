@@ -49,6 +49,7 @@
 #include "time.h"
 #else
 #include <tick.h>
+#include <temperature.h>
 #endif
 
 #define DBG_SEARCH 0
@@ -1183,6 +1184,12 @@ void search_reload(int flag)
 		pMsg = get_nls_text("type_a_word");
 		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
 					0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+
+#if defined(INCLUDED_FROM_KERNEL) && ENABLE_TEMPERATURE
+		char *tMsg = Temperature_string(1);
+		render_string_and_clear(SUBTITLE_FONT_IDX, 180, 10, tMsg, strlen(tMsg), 1,
+					0, 0, 239, 40 );
+#endif
 		keyboard_paint();
 		goto out;
 	}
@@ -1305,6 +1312,11 @@ void search_result_display()
 		pMsg = get_nls_text("type_a_word");
 		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, strlen(pMsg), 0,
 					0, 35, 239, LCD_HEIGHT_LINES - KEYBOARD_HEIGHT - 1);
+#if defined(INCLUDED_FROM_KERNEL) && ENABLE_TEMPERATURE
+		char *tMsg = Temperature_string(1);
+		render_string_and_clear(SUBTITLE_FONT_IDX, 180, 10, tMsg, strlen(tMsg), 1,
+					0, 0, 239, 40 );
+#endif
 		keyboard_paint();
 		goto out;
 	}

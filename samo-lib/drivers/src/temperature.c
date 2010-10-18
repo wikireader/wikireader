@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <regs.h>
+#include <stdio.h>
 
 #include "analog.h"
 #include "contrast.h"
@@ -51,6 +52,31 @@ void Temperature_initialise(void)
 		InitialContrast = Contrast_get();
 	}
 }
+
+
+char *Temperature_string(int celcius)
+{
+	static char tMsg[16];
+	//char degree = 0x00B0;
+
+	Analog_scan();
+	int t = Analog_TemperatureCentiCelcius();
+
+	if (!celcius) {// Fahrenheit
+		t = (t*9/5)+3200;
+	}
+	int negative = (t<0?1:0);
+	if (negative) {
+		t = -t;
+	}
+	t += 5; // do proper rounding on the last decimal place
+	int tMajor = t/100;
+	int tMinor = (t - tMajor*100)/10;
+	sprintf(tMsg, "%s%d.%d°%c", (negative?"-":""), tMajor, tMinor, (celcius?'C':'F'));
+
+	return tMsg;
+}
+
 
 void Temperature_control(void)
 {

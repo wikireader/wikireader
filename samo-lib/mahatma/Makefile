@@ -51,8 +51,19 @@ endif
 ifeq (yes,$(strip ${PROGRESS_BAR}))
 ENABLE_PROGRESS := 1
 endif
-# default value is disabled
+
+# enable the temperature display by adding:
+# TEMPERATURE_DISPLAY=yes to make command line
+ifeq (YES,$(strip ${TEMPERATURE_DISPLAY}))
+ENABLE_ := 1
+endif
+ifeq (yes,$(strip ${TEMPERATURE_DISPLAY}))
+ENABLE_TEMPERATURE := 1
+endif
+
+# default values are disabled
 ENABLE_PROGRESS ?= 0
+ENABLE_TEMPERATURE ?= 0
 
 INCLUDES += -I${MINI_LIBC_INCLUDE}
 INCLUDES += -I${DRIVERS_INCLUDE}
@@ -107,11 +118,13 @@ LZMA_COBJS += LzFind.o
 
 # convert the image files
 IMAGES = keyboard_abc keyboard_abc2 keyboard_abc_ko keyboard_abc_da keyboard_123 nls
-IMAGES += keyboard_phone_jp keyboard_phone_abc keyboard_phone_123  
+IMAGES += keyboard_phone_jp keyboard_phone_abc keyboard_phone_123
 IMAGES += keyboard_phone_tw keyboard_phone_tw_abc keyboard_phone_tw_123
 
-CFLAGS+=-DINCLUDED_FROM_KERNEL ${PROFILER_ON} -DENABLE_PROGRESS=${ENABLE_PROGRESS}
-LDFLAGS=-static --strip-all -s --no-gc-sections -N -L${MINI_LIBC}
+CFLAGS += -DINCLUDED_FROM_KERNEL ${PROFILER_ON}
+CFLAGS += -DENABLE_PROGRESS=${ENABLE_PROGRESS}
+CFLAGS += -DENABLE_TEMPERATURE=${ENABLE_TEMPERATURE}
+LDFLAGS = -static --strip-all -s --no-gc-sections -N -L${MINI_LIBC}
 
 
 OBJECTS = mahatma.o

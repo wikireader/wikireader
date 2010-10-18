@@ -31,9 +31,10 @@ void Analog_initialise(void);
 void Analog_scan(void);
 
 // routines to convert the current filtered value
-// to enfineering units
+// to engineering units
 int Analog_BatteryMilliVolts(void);
 int Analog_TemperatureCelcius(void);
+int Analog_TemperatureCentiCelcius(void);
 int Analog_ContrastMilliVolts(void);
 
 #endif
