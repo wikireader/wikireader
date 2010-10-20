@@ -96,7 +96,7 @@ bool ReadCommands(const char *filename)
 		debug_print("init: empty file\n");
 		return false;
 	} else if (r < 0) {
-		debug_printf("init: read error = %ld\n", r);
+		debug_printf("init: read error = %ld\n", (long)r);
 		return false;
 	}
 
@@ -320,7 +320,7 @@ bool ReadIcon(void *icon, ssize_t size, const char *filename)
 		debug_print("init: invalid icon file\n");
 		return false;
 	} else if (r < 0) {
-		debug_printf("init: icon read error = %ld\n", r);
+		debug_printf("init: icon read error = %ld\n", (long)r);
 		return false;
 	}
 

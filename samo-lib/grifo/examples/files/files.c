@@ -51,7 +51,7 @@ int grifo_main(int argc, char *argv[])
 					if (r == 0) {
 						break;
 					} else if (r < 0) {
-						debug_printf("error = %ld\n", r);
+						debug_printf("error = %ld\n", (long)r);
 						break;
 					}
 					int j;
@@ -80,10 +80,10 @@ int grifo_main(int argc, char *argv[])
 					if (r == 0) {
 						break;
 					} else if (r < 0) {
-						debug_printf("error = %ld\n", r);
+						debug_printf("error = %ld\n", (long)r);
 						break;
 					}
-					debug_printf("wrote %ld bytes\n", r);
+					debug_printf("wrote %ld bytes\n", (long)r);
 				}
 				(void)file_close(handle);
 			}
@@ -102,7 +102,7 @@ int grifo_main(int argc, char *argv[])
 					if (r == 0) {
 						break;
 					} else if (r < 0) {
-						debug_printf("error = %ld\n", r);
+						debug_printf("error = %ld\n", (long)r);
 						break;
 					}
 					int j;
