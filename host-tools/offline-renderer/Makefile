@@ -156,6 +156,7 @@ parse: check-dirs check-html stamp-math stamp-RedirectedTo.py
 .PHONY: render
 render: check-dirs check-fonts check-html stamp-PinyinTable.py stamp-user.dic
 	./ArticleRenderer.py ${VERBOSE_ARG} --number="${RENDER_BLOCK}" \
+		--language="${WIKI_LANGUAGE}" \
 		--font-path="${FONT_PATH}" \
 		--article-index="${ARTICLES}" \
 		--data-prefix="${DATA_PREFIX}" \

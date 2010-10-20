@@ -192,6 +192,7 @@ def usage(message):
     print('       --article-index=file             Article index dictionary input [articles.db]')
     print('       --data-prefix=name               Directory and file name portion for .dat files [pedia]')
     print('       --index-prefix=name              Directory and file name portion for .idx-tmp files [pedia]')
+    print('       --languages=<lang>               This data files language code [en]')
     print('       --languages-links=<YN>           Turn on/off inter-wiki links [YES]')
     print('       --images=<YN>                    Turn on/off in-line math images [YES]')
     print('       --articles=<N>                   Articles per block [32]')
@@ -213,7 +214,7 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                                   'hvwn:d:p:i:t:f:l:a:b:m:',
+                                   'hvwn:d:p:i:t:f:L:l:a:b:m:',
                                    ['help',
                                     'verbose',
                                     'warnings',
@@ -223,6 +224,7 @@ def main():
                                     'article-index=',
                                     'test=',
                                     'font-path=',
+                                    'language=',
                                     'language-links=',
                                     'images=',
                                     'articles=',
@@ -241,6 +243,7 @@ def main():
     test_file = ''
     font_path = "../fonts"
     article_db = None
+    language = 'en'
     inter_links = True
     enable_images = True
     articles_per_block = 32
@@ -269,6 +272,8 @@ def main():
             index_file = arg + '{0:d}.idx-tmp'
         elif opt in ('-f', '--font-path'):
             font_path = arg
+        elif opt in ('-L', '--language'):
+            language = arg.lower()
         elif opt in ('-l', '--language-links'):
             arg = arg.lower()
             inter_links = ('yes' == arg)
@@ -354,7 +359,7 @@ def main():
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8', 'replace')
-        WrProcess(f, inter_links, enable_images)
+        WrProcess(f, language, inter_links, enable_images)
         f.close()
 
     for item in font_id_values:
@@ -637,13 +642,14 @@ class WrProcess(HTMLParser.HTMLParser):
 
     READ_BLOCK_SIZE = 64 * (1024 * 1024)
 
-    def __init__ (self, f, inter_links = True, enable_images = True):
+    def __init__ (self, f, language = 'en', inter_links = True, enable_images = True):
         global g_this_article_title, article_count
 
         HTMLParser.HTMLParser.__init__(self)
         self.wordwrap = WordWrap.WordWrap(get_utf8_cwidth)
         self.local_init()
         self.tag_stack = []
+        self.language = language
         self.inter_links = inter_links
         self.enable_images = enable_images
         self.bucket = bucket.Bucket()
@@ -728,7 +734,10 @@ class WrProcess(HTMLParser.HTMLParser):
 
             # create a list of language links
             if self.inter_links and tag == 'a' and 'lang-link' in attrs['class']:
-                self.language_links.append(attrs['href'])
+                link = attrs['href']
+                (lang, data) = link.split(':', 1)
+                if lang != self.language:
+                    self.language_links.append(link)
 
         # handle the tags
         if not self.printing:
