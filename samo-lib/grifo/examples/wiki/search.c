@@ -354,7 +354,7 @@ uint32_t get_article_idx_from_offset_range(const unsigned char *sInputTitleActua
 
 	while (!bFound && offset_fnd_start >= 0)
 	{
-		if (search_info[nCurrentWiki].offset_current != offset_fnd_start)
+		if (search_info[nCurrentWiki].offset_current != (uint32_t)offset_fnd_start)
 		{
 			search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH));
 			search_info[nCurrentWiki].offset_current = offset_fnd_start;
@@ -502,7 +502,7 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 	if (result_list->result_populated || offset_fnd_start < 0)
 		return 0;
 
-	if (search_info[nCurrentWiki].offset_current != offset_fnd_start)
+	if (search_info[nCurrentWiki].offset_current != (uint32_t)offset_fnd_start)
 	{
 		search_info[nCurrentWiki].buf_len = copy_fnd_to_buf(offset_fnd_start, search_info[nCurrentWiki].buf, NUMBER_OF_FIRST_PAGE_RESULTS * sizeof(TITLE_SEARCH));
 		search_info[nCurrentWiki].offset_current = offset_fnd_start;
@@ -1466,7 +1466,7 @@ char *compressed_buf = NULL;
 int retrieve_article(long idx_article_with_wiki_id)
 {
 	ARTICLE_PTR article_ptr;
-	long idx_article;
+	uint32_t idx_article;
 	int nWikiIdx;
 
 	if (!compressed_buf)
@@ -1591,7 +1591,7 @@ long find_closest_idx(long idx, unsigned char *title)
 
 	title[0] = '\0';
 
-	if (idx > search_info[nCurrentWiki].max_article_idx)
+	if ((uint32_t)idx > search_info[nCurrentWiki].max_article_idx)
 		idx -= search_info[nCurrentWiki].max_article_idx;
 	file_lseek(search_info[nCurrentWiki].fd_idx, (idx - 1) * sizeof(ARTICLE_PTR) + sizeof(uint32_t));
 	file_read(search_info[nCurrentWiki].fd_idx, &article_ptr, sizeof(article_ptr));

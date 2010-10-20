@@ -201,7 +201,7 @@ int copy_fnd_to_buf(long offset, unsigned char *buf, int len)
 		nIdxFndBufLastUsed = idxFndBuf;
 	}
 
-	if (len > pFndBuf[idxFndBuf].len - (offset - pFndBuf[idxFndBuf].offset)) // the buf to be copied is separated into two blocks or end of file
+	if (len > (int)(pFndBuf[idxFndBuf].len - (offset - pFndBuf[idxFndBuf].offset))) // the buf to be copied is separated into two blocks or end of file
 		nCopyLen = pFndBuf[idxFndBuf].len - (offset - pFndBuf[idxFndBuf].offset);
 	else
 		nCopyLen = len;

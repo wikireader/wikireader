@@ -974,7 +974,10 @@ bool is_word_break(ucs4_t u)
 {
 	unsigned char c = u & 0x000000FF;
 
-	return ((u > 0x47F) || (u < 0x100 && strchr(" ~!@#$%^&*()-_+=[]\{}|;;':\",./", c)));
+	return ((0x1100 <= u && u <= 0x11FF) || // Hangul
+		(0x2200 <= u && u <= 0x2BFF) || // symbols
+		(0x2E00 <= u) || // symbols or CJK
+		(u < 0x100 && strchr(" ~!@#$%^&*()-_+=[]\{}|;;':\",./", c)));
 }
 
 int extract_str_fitting_width(const unsigned char **pIn, unsigned char *pOut, int max_width, int font_idx)
@@ -2188,7 +2191,7 @@ int nothing_after_link(int article_link_number)
 
 void invert_link(int article_link_number)
 {
-	long article_id;
+	uint32_t article_id;
 	int local_link_number;
 	int bNothingBeforeLink;
 	int bNothingAfterLink;

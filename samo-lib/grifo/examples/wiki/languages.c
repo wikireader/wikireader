@@ -36,9 +36,9 @@ const unsigned char *get_hiragana(const unsigned char *in_str, int len, int *use
 {
 	unsigned int i;
 	int bFound = 0;
-	unsigned int iStart = 0;
-	unsigned int iEnd = sizeof(english_hiragana_mapping) / sizeof(struct _english_hiragana_mapping) - 1;
-	unsigned int iMiddle = 0;
+	int iStart = 0;
+	int iEnd = sizeof(english_hiragana_mapping) / sizeof(struct _english_hiragana_mapping) - 1;
+	int iMiddle = 0;
 	const unsigned char *pReturn = NULL;
 
 	while (!bFound && iStart <= iEnd)
@@ -84,9 +84,9 @@ const unsigned char *get_english(const unsigned char *in_str, int len, int *used
 {
 	unsigned int i;
 	int bFound = 0;
-	unsigned int iStart = 0;
-	unsigned int iEnd = sizeof(zh_jp_english_mapping) / sizeof(struct _zh_jp_english_mapping) - 1;
-	unsigned int iMiddle = 0;
+	int iStart = 0;
+	int iEnd = sizeof(zh_jp_english_mapping) / sizeof(struct _zh_jp_english_mapping) - 1;
+	int iMiddle = 0;
 	const unsigned char *pReturn = NULL;
 	unsigned char first_utf8_char[5];
 	int cmp;
@@ -406,9 +406,9 @@ void alphabet_to_korean_jamo(unsigned char *jamo, unsigned char eng)
 int jamo_index(int state, unsigned char *in_str, int in_len, int *used_len)
 {
 	int bFound = 0;
-	unsigned int iStart = 0;
-	unsigned int iEnd = sizeof(korean_jamo_ex) / sizeof(struct _korean_jamo_ex) - 1;
-	unsigned int iMiddle = 0;
+	int iStart = 0;
+	int iEnd = sizeof(korean_jamo_ex) / sizeof(struct _korean_jamo_ex) - 1;
+	int iMiddle = 0;
 	int rc = -1;
 	unsigned int i;
 
