@@ -4,7 +4,7 @@
 # Author: Liane
 
 # Simplified Chinese
-wiki_name=Wikipedia 中文 [拼音]
+wiki_name=Wikipedia 中文 (拼音)
 license_text=内文已合法注册於 Creative Commons 贡献及分享字号下并可在条款下免费转载使用，请参阅: [CC-BY-SA] 及 [Terms of Use] 以了解更多适用之条款。原文可参考 http://zh.wikipedia.org/wiki/<title>
 type_a_word=输入拼音字母
 no_results=搜寻查无结果
@@ -41,7 +41,7 @@ r=限
 lang_str=中
 
 # Traditional Chinese
-wiki_name2=Wikipedia 中文 [注音符號]
+wiki_name2=Wikipedia 中文 (注音)
 license_text=內文已合法註冊於 Creative Commons 貢獻及分享字號下並可在條款下免費轉載使用，請參閱 [CC-BY-SA] 及 [Terms of Use] 以瞭解更多適用之條款。原文可參考 http://zh.wikipedia.org/wiki/<title>
 type_a_word2=輸入注音符號
 no_results2=搜尋查無結果
