@@ -19,17 +19,19 @@ subs = [
     # &amp; must be last
     (re.compile(r'&amp;', re.IGNORECASE), r'&'),
 
+    # remove comments and multi-line references
+    (re.compile(r'(<!--.*?-->)|(<ref.*?</ref>)', re.IGNORECASE + re.DOTALL), ''),
+
     # remove external links
-    (re.compile(r'\s*(==\s*External\s+links\s*==.*)' + '\n\n', re.IGNORECASE + re.DOTALL), ''),
+    #(re.compile(r'\s*(==\s*External\s+links\s*==.*)' + '\n\n', re.IGNORECASE + re.DOTALL), ''),
+    (re.compile('^[ \t]*==[ \t]External[ \t]+links[ \t]*==[ \t]*$\n+(^[ \t]*[^=\n][^\n]*$\n)*(^[ \t]*=|\n)',
+                re.IGNORECASE + re.MULTILINE), '\n\\2'),
 
     # remove pictures
     (re.compile(r'\s*<gallery>.*?</gallery>', re.IGNORECASE + re.DOTALL), ''),
 
     # remove references
     (re.compile(r'<ref\s+name.*?/>', re.IGNORECASE), ''),
-
-    # remove comments and multi-line references
-    (re.compile(r'(<!--.*?-->)|(<ref.*?</ref>)', re.IGNORECASE + re.DOTALL), ''),
 
     # change br to newline
     (re.compile(r'<br[\s"a-zA-Z0-9=]*/?>', re.IGNORECASE), '\n'),
