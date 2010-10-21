@@ -66,19 +66,19 @@
 
   5 - escape character 4 (change font)
 
-  The font change (including alignment adjustment) is reset after
+  The font change (including y alignment adjustment) is reset after
   the escape character 1, 3, 4 or 5.
 
   Definition of the byte after it:
 
   bit0~2 - font id (1 ~ 7)
 
-  bit3~7 - adjustment to the default horizontal alignment
+  bit3~7 - adjustment to the default y alignment
   (0: 0; 0x01~0x0F: 1~15; 0x10~0x1F: -16~-1)
 
   6 - escape character 5 (reset to the default font)
 
-  7 - escape character 6 (reset to the default vertical alignment)
+  7 - escape character 6 (reset to the default y alignment)
 
   8 - escape character 7 (forward), the byte after it stands for the
   pixels of move right (as the starting point of the next character).
@@ -94,9 +94,9 @@
 
   The leftmost position after the movement is the leftmost pixel of the screen.
 
-  10 - escape character 9 (alignment vertical adjustment), the byte after
+  10 - escape character 9 (alignment y adjustment), the byte after
   it stand for the pixels to adjust to the default vertical
-  alignment (0x01~0x7F: 1~127; 0x80~0x8F: -128~-1)
+  alignment (0x01~0x7F: 1~127; 0x80~0xFF: -128~-1)
 
   It takes effect for all lines after that until another excape
   character 9 or escape character 6 is encountered.
@@ -111,24 +111,24 @@
   Move forward/backward or set the alignment adjustment before
   drawing lines as necessary.
 
-  The horizontal line does not change the horizontal position of
+  The horizontal line does not change the x position of
   the next character.
 
   12 - escape character 11 (drawing vertical line from bottom to top, 1
   pixel thick), the next byte after it stands for the length of the
   line in pixels.
 
-  The vertical line starts at the current vertical position (the
+  The vertical line starts at the current x position (the
   starting position of the next character) and the bottom of the
-  current horizontal alignment.
+  current y alignment.
 
-  Move forward/backward or set the alignment adjustment before
+  Move forward/backward or set the y alignment adjustment before
   drawing lines as necessary.
 
-  The horizontal line does not change the horizontal position of the next character.
+  The vertical line does not change the y position of the next character.
 
   13 - escape character 12 (single pixel horizontal line), the
-  horizontal line pccupies from the left-most pixel to the
+  horizontal line occupies from the left-most pixel to the
   right-most pixel.
   The line is 1 pixel high.
 
@@ -159,7 +159,7 @@
 #define ESC_6_RESET_TO_DEFAULT_ALIGN	7
 #define ESC_7_FORWARD			8
 #define ESC_8_BACKWARD			9
-#define ESC_9_ALIGN_ADJUSTMENT		10
+#define ESC_9_Y_ADJUSTMENT		10
 #define ESC_10_HORIZONTAL_LINE		11
 #define ESC_11_VERTICAL_LINE		12
 #define ESC_12_FULL_HORIZONTAL_LINE	13
@@ -225,8 +225,8 @@ typedef struct _LCD_DRAW_BUF
 	int drawing;
 	int line_height;
 	int actual_height;
-	int align_adjustment;
-	int vertical_adjustment;
+	int y_adjustment;
+	int x_adjustment;
 } LCD_DRAW_BUF;
 
 #define MAX_RESULT_LIST 512

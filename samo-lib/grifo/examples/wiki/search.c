@@ -1531,6 +1531,7 @@ int retrieve_article(long idx_article_with_wiki_id)
 			file_read(fd_dat, &dat_article_len, sizeof(dat_article_len));
 
 			file_read(fd_dat, compressed_buf, dat_article_len);
+			file_close(fd_dat);
 
 			dat_article_len -= LZMA_PROPS_SIZE;
 
@@ -1559,7 +1560,6 @@ int retrieve_article(long idx_article_with_wiki_id)
 					return 0;
 				}
 			}
-			file_close(fd_dat);
 		}
 
 	}

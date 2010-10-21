@@ -242,7 +242,7 @@ void init_lcd_draw_buf()
 	lcd_draw_buf.drawing = 0;
 	lcd_draw_buf.pPcfFont = NULL;
 	lcd_draw_buf.line_height = 0;
-	lcd_draw_buf.align_adjustment = 0;
+	lcd_draw_buf.y_adjustment = 0;
 	nArticleRenderedLines = 0;
 
 	if (lcd_draw_buf.screen_buf)
@@ -337,7 +337,7 @@ void buf_draw_UTF8_str_in_copy_buffer(unsigned char *framebuffer_copy, const uns
 	lcd_draw_buf_external.screen_buf = framebuffer_copy;
 	lcd_draw_buf_external.line_height = pcfFonts[font_idx - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 
-	lcd_draw_buf_external.align_adjustment = 0;
+	lcd_draw_buf_external.y_adjustment = 0;
 
 	while (**pUTF8 > MAX_ESC_CHAR)
 	{
@@ -352,7 +352,7 @@ void buf_draw_UTF8_str_in_copy_buffer(unsigned char *framebuffer_copy, const uns
 void buf_draw_UTF8_str(const unsigned char **pUTF8)
 {
 	unsigned char c, c2;
-	unsigned char c3;
+	char c3;
 	long v_line_bottom;
 	ucs4_t u;
 	int font_idx;
@@ -380,7 +380,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.line_height = c2;
 			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
-			lcd_draw_buf.align_adjustment = 0;
+			lcd_draw_buf.y_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			draw_article_positioner(lcd_draw_buf.current_y);
@@ -391,7 +391,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
 			lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace + LINE_SPACE_ADDON;
 			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
-			lcd_draw_buf.align_adjustment = 0;
+			lcd_draw_buf.y_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			draw_article_positioner(lcd_draw_buf.current_y);
@@ -400,7 +400,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			lcd_draw_buf.current_x = 0;
 			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
-			lcd_draw_buf.align_adjustment = 0;
+			lcd_draw_buf.y_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			draw_article_positioner(lcd_draw_buf.current_y);
@@ -416,7 +416,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			lcd_draw_buf.pPcfFont = &pcfFonts[font_idx - 1];
 			lcd_draw_buf.line_height = c2 >> 3;
 			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
-			lcd_draw_buf.align_adjustment = 0;
+			lcd_draw_buf.y_adjustment = 0;
 			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height >= LCD_BUF_HEIGHT_PIXELS)
 				lcd_draw_buf.current_y = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - 1;
 			draw_article_positioner(lcd_draw_buf.current_y);
@@ -428,24 +428,24 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			if (font_idx > FONT_COUNT)
 				font_idx = DEFAULT_FONT_IDX;
 			lcd_draw_buf.pPcfFont = &pcfFonts[font_idx - 1];
-			lcd_draw_buf.align_adjustment = ((signed char)c2 >> 3);
-			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.align_adjustment >= LCD_BUF_HEIGHT_PIXELS)
-				lcd_draw_buf.align_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
-			if (lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment < lcd_draw_buf.line_height - 1)
-				lcd_draw_buf.align_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+			lcd_draw_buf.y_adjustment = ((signed char)c2 >> 3);
+			if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.y_adjustment >= LCD_BUF_HEIGHT_PIXELS)
+				lcd_draw_buf.y_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+			if (lcd_draw_buf.current_y + lcd_draw_buf.y_adjustment < lcd_draw_buf.line_height - 1)
+				lcd_draw_buf.y_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
 			break;
 		case ESC_5_RESET_TO_DEFAULT_FONT: /* reset to the default font */
 			lcd_draw_buf.pPcfFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
 			break;
 		case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
-			lcd_draw_buf.vertical_adjustment = 0;
+			lcd_draw_buf.x_adjustment = 0;
 			break;
 		case ESC_7_FORWARD: /* forward */
 			c2 = **pUTF8;
 			(*pUTF8)++;
 			lcd_draw_buf.current_x += c2;
-			if (lcd_draw_buf.current_x > LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.vertical_adjustment)
-				lcd_draw_buf.current_x = LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.vertical_adjustment;
+			if (lcd_draw_buf.current_x > LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.x_adjustment)
+				lcd_draw_buf.current_x = LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN - lcd_draw_buf.x_adjustment;
 			break;
 		case ESC_8_BACKWARD: /* backward */
 			c2 = **pUTF8;
@@ -455,28 +455,28 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			else
 				lcd_draw_buf.current_x -= c2;
 			break;
-		case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
-			c3 = **pUTF8;
+		case ESC_9_Y_ADJUSTMENT: /* vertical alignment adjustment */
+			c3 = (char)(**pUTF8);
 			(*pUTF8)++;
-			lcd_draw_buf.vertical_adjustment += c3;
-			//if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.align_adjustment >= LCD_BUF_HEIGHT_PIXELS)
-			//	lcd_draw_buf.align_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
-			//if (lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment < lcd_draw_buf.line_height - 1)
-			//	lcd_draw_buf.align_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+			lcd_draw_buf.x_adjustment += c3;
+			//if (lcd_draw_buf.current_y + lcd_draw_buf.line_height + lcd_draw_buf.y_adjustment >= LCD_BUF_HEIGHT_PIXELS)
+			//	lcd_draw_buf.y_adjustment = LCD_BUF_HEIGHT_PIXELS - lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
+			//if (lcd_draw_buf.current_y + lcd_draw_buf.y_adjustment < lcd_draw_buf.line_height - 1)
+			//	lcd_draw_buf.y_adjustment = lcd_draw_buf.line_height - lcd_draw_buf.current_y - 1;
 			break;
 		case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
 			c2 = **pUTF8;
 			(*pUTF8)++;
 			if ((long)c2 > lcd_draw_buf.current_x)
 				c2 = (unsigned char)lcd_draw_buf.current_x;
-			buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment,
-						 lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment);
+			buf_draw_horizontal_line(lcd_draw_buf.current_x - (unsigned long)c2 + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment,
+						 lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment);
 			break;
 		case ESC_11_VERTICAL_LINE: /* drawing vertical line */
 			c2 = **pUTF8;
 			(*pUTF8)++;
 			v_line_bottom = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
-			v_line_bottom -= lcd_draw_buf.align_adjustment;
+			v_line_bottom -= lcd_draw_buf.y_adjustment;
 			if (v_line_bottom < 0)
 				v_line_bottom = 0;
 			if ((long)c2 > v_line_bottom)
@@ -488,8 +488,8 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			lcd_draw_buf.current_y += lcd_draw_buf.actual_height;
 			lcd_draw_buf.line_height = 1;
 			lcd_draw_buf.actual_height = lcd_draw_buf.line_height;
-			lcd_draw_buf.align_adjustment = 0;
-			buf_draw_horizontal_line(LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment, LCD_BUF_WIDTH_PIXELS);
+			lcd_draw_buf.y_adjustment = 0;
+			buf_draw_horizontal_line(LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment, LCD_BUF_WIDTH_PIXELS);
 			break;
 		case ESC_13_FULL_VERTICAL_LINE: /* drawing vertical line from top of the line to the bottom */
 			lcd_draw_buf.current_x += 1;
@@ -513,12 +513,12 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 			if (lcd_draw_buf.line_height < nHeight + 1)
 				lcd_draw_buf.actual_height = nHeight + 3;
 			nImageY = lcd_draw_buf.current_y + 3;
-			if ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment) % 8 == 0)
+			if ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment) % 8 == 0)
 			{
 				nBytes = (nWidth + 7) / 8;
 				if (nBytes > LCD_BUF_WIDTH_BYTES - 1)
 					nBytes = LCD_BUF_WIDTH_BYTES - 1;
-				nByteIdx = (lcd_draw_buf.current_x  + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment) / 8;
+				nByteIdx = (lcd_draw_buf.current_x  + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment) / 8;
 				for (i = 0; i < nHeight; i++)
 				{
 					memcpy(&lcd_draw_buf.screen_buf[nImageY * LCD_BUF_WIDTH_BYTES + nByteIdx], *pUTF8, nBytes);
@@ -537,7 +537,7 @@ void buf_draw_UTF8_str(const unsigned char **pUTF8)
 						if ((*pUTF8)[nByteIdx] & (1 << nBitIdx))
 						{
 							guilib_buffer_set_pixel(lcd_draw_buf.screen_buf, lcd_draw_buf.current_x +
-										LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment + j, nImageY);
+										LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment + j, nImageY);
 						}
 					}
 					*pUTF8 += (nWidth + 7) / 8;
@@ -662,7 +662,7 @@ void buf_draw_horizontal_line(unsigned long start_x, unsigned long end_x)
 
 
 	h_line_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
-	h_line_y -= lcd_draw_buf.align_adjustment + 1;
+	h_line_y -= lcd_draw_buf.y_adjustment + 1;
 	if (end_x > LCD_BUF_WIDTH_PIXELS)
 		end_x = LCD_BUF_WIDTH_PIXELS;
 
@@ -678,10 +678,10 @@ void buf_draw_vertical_line(unsigned long start_y, unsigned long end_y)
 	unsigned long idx_in_byte;
 	unsigned char *p;
 
-	if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment < LCD_BUF_WIDTH_PIXELS)
+	if (lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment < LCD_BUF_WIDTH_PIXELS)
 	{
-		idx_in_byte = 7 - ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment) & 0x07);
-		p = lcd_draw_buf.screen_buf + start_y * LCD_BUF_WIDTH_BYTES + ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment)>> 3);
+		idx_in_byte = 7 - ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment) & 0x07);
+		p = lcd_draw_buf.screen_buf + start_y * LCD_BUF_WIDTH_BYTES + ((lcd_draw_buf.current_x + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment)>> 3);
 		while (start_y <= end_y)
 		{
 			*p |= 1 << idx_in_byte;
@@ -740,10 +740,10 @@ void buf_draw_char(ucs4_t u)
 
 	bytes_to_process = Cmetrics.widthBytes * Cmetrics.height;
 
-	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN + lcd_draw_buf.vertical_adjustment;
+	x_base = lcd_draw_buf.current_x + Cmetrics.LSBearing + LCD_LEFT_MARGIN + lcd_draw_buf.x_adjustment;
 	if (x_base < LCD_BUF_WIDTH_PIXELS)
 	{ // only draw the chracter if there is space left before the right margin of the LCD screen
-		y_base = lcd_draw_buf.current_y + lcd_draw_buf.align_adjustment;
+		y_base = lcd_draw_buf.current_y + lcd_draw_buf.y_adjustment;
 		x_offset = 0;
 		y_offset = lcd_draw_buf.line_height - (lcd_draw_buf.pPcfFont->Fmetrics.descent + Cmetrics.ascent);
 
@@ -915,7 +915,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 		x_base =  Cmetrics.LSBearing;
 		lcd_draw_buf_external->current_y+=lcd_draw_buf_external->line_height;
 	}
-	y_base = lcd_draw_buf_external->current_y + lcd_draw_buf_external->align_adjustment;
+	y_base = lcd_draw_buf_external->current_y + lcd_draw_buf_external->y_adjustment;
 	x_offset = 0;
 	y_offset = lcd_draw_buf_external->line_height - (lcd_draw_buf_external->pPcfFont->Fmetrics.descent + Cmetrics.ascent);
 	x_bit_idx = x_base & 0x07;
@@ -1048,8 +1048,8 @@ void init_render_article(long init_y_pos)
 	lcd_draw_buf.pPcfFont = NULL;
 	lcd_draw_buf.line_height = 0;
 	lcd_draw_buf.actual_height = 0;
-	lcd_draw_buf.align_adjustment = 0;
-	lcd_draw_buf.vertical_adjustment = 0;
+	lcd_draw_buf.y_adjustment = 0;
+	lcd_draw_buf.x_adjustment = 0;
 
 	display_first_page = 0;
 	lcd_draw_cur_y_pos = 0;
@@ -1190,8 +1190,8 @@ int render_wiki_selection_with_pcf()
 		lcd_draw_buf.line_height = pcfFonts[SEARCH_HEADING_FONT_IDX - 1].Fmetrics.linespace;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y = LCD_TOP_MARGIN;
-		lcd_draw_buf.vertical_adjustment = 0;
-		lcd_draw_buf.align_adjustment = 0;
+		lcd_draw_buf.x_adjustment = 0;
+		lcd_draw_buf.y_adjustment = 0;
 		draw_string(get_nls_text("select_wiki"));
 		lcd_draw_buf.pPcfFont = &pcfFonts[SEARCH_LIST_FONT_IDX - 1];
 		lcd_draw_buf.line_height = HISTORY_RESULT_HEIGHT;
@@ -1275,8 +1275,8 @@ int render_history_with_pcf()
 		lcd_draw_buf.line_height = pcfFonts[SEARCH_HEADING_FONT_IDX - 1].Fmetrics.linespace;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y = LCD_TOP_MARGIN;
-		lcd_draw_buf.vertical_adjustment = 0;
-		lcd_draw_buf.align_adjustment = 0;
+		lcd_draw_buf.x_adjustment = 0;
+		lcd_draw_buf.y_adjustment = 0;
 		draw_string(get_nls_text("history_title"));
 		lcd_draw_buf.pPcfFont = &pcfFonts[SEARCH_LIST_FONT_IDX - 1];
 		lcd_draw_buf.line_height = HISTORY_RESULT_HEIGHT;
@@ -1640,8 +1640,8 @@ void add_show_hide_language_link()
 	lcd_draw_buf.line_height = pcfFonts[DEFAULT_FONT_IDX - 1].Fmetrics.linespace;
 	lcd_draw_buf.current_x = 0;
 	lcd_draw_buf.current_y = LCD_TOP_MARGIN;
-	lcd_draw_buf.vertical_adjustment = 0;
-	lcd_draw_buf.align_adjustment = 0;
+	lcd_draw_buf.x_adjustment = 0;
+	lcd_draw_buf.y_adjustment = 0;
 }
 
 void display_retrieved_article(long idx_article)
@@ -2700,7 +2700,7 @@ bool process_esc_code(unsigned char c, const unsigned char **p, pcffont_bmf_t **
 	int font_idx;
 	bool bNewLine = false;
 	int nWidth, nHeight;
-	int vertical_adjustment = 0;
+	int x_adjustment = 0;
 	int i;
 
 	switch(c)
@@ -2736,7 +2736,7 @@ bool process_esc_code(unsigned char c, const unsigned char **p, pcffont_bmf_t **
 		*pFont = &pcfFonts[DEFAULT_FONT_IDX - 1];
 		break;
 	case ESC_6_RESET_TO_DEFAULT_ALIGN: /* reset to the default vertical alignment */
-		vertical_adjustment = 0;
+		x_adjustment = 0;
 		break;
 	case ESC_7_FORWARD: /* forward */
 		c2 = **p;
@@ -2751,10 +2751,10 @@ bool process_esc_code(unsigned char c, const unsigned char **p, pcffont_bmf_t **
 		else
 			*last_x -= c2;
 		break;
-	case ESC_9_ALIGN_ADJUSTMENT: /* vertical alignment adjustment */
+	case ESC_9_Y_ADJUSTMENT: /* vertical alignment adjustment */
 		c2 = **p;
 		(*p)++;
-		vertical_adjustment += c2;
+		x_adjustment += c2;
 		break;
 	case ESC_10_HORIZONTAL_LINE: /* drawing horizontal line */
 		(*p)++;

@@ -1183,8 +1183,8 @@ static void handle_touch(event_t *ev)
 					{
 						if (abs(article_moved_x_pixels) > INITIAL_HIGHLIGHT_THRESHOLD)
 						{
-							reset_article_link_number();
-							b_in_highlighting = highlight_set(ev->touch.x, ev->touch.y);
+							//reset_article_link_number();
+							//b_in_highlighting = highlight_set(ev->touch.x, ev->touch.y);
 						}
 					}
 					else
