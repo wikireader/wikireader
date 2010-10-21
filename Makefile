@@ -205,9 +205,15 @@ CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 .PHONY: jig-install
 jig-install: validate-destdir forth-install flash-install mbr-install
 
+# install mahatma version
 .PHONY: install
 install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
 
+# install grifo version
+.PHONY: ginstall
+ginstall: validate-destdir grifo-install forth-install fonts-install nls-install misc-files-install version clear-history
+
+# set up version and checksum files
 .PHONY: version
 version: validate-destdir
 	@if [ -z "${VERSION_TAG}" ] ; then echo VERSION_TAG: "'"${VERSION_TAG}"'" is not valid ; exit 1; fi
@@ -218,6 +224,7 @@ version: validate-destdir
 	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
 
 
+# create empty history and password files
 .PHONY: clear-history
 clear-history: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[pP][aA][sS]
