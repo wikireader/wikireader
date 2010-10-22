@@ -147,8 +147,10 @@ exec sbcl --script "$0" "$0" "$@"
     (with-open-file (file-stream file-path :direction :input :element-type 'unsigned-byte)
       (let ((size (file-length file-stream)))
 
-        (if (probe-file sum-path)
+        (if (and (probe-file sum-path) (> (file-write-date sum-path) (file-write-date file-path)))
             (progn
+              (when *debug*
+                (format t "  Read cached sum from: ~a~%" sum-path))
               (with-open-file (sum-stream sum-path :direction :input :element-type 'base-char)
                 (list size (read-line sum-stream))))
             (let ((sum (vector-to-hex (md5:md5sum-stream file-stream))))
