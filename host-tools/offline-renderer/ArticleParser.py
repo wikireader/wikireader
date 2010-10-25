@@ -225,8 +225,14 @@ def main():
         process_id.stdin.close()
         process_id.wait()
 
-    # output some statistics
+    # output some statistics and create count file
     PrintLog.message(u'Parse[{0:s}]: Total:  {1:d}'.format(out_base_name, total_articles))
+
+    # write the total count for Rendering program
+    fd = open(out_name + '.count', 'wb')
+    if fd is not None:
+        fd.write('TOTAL_ARTICLES = {count:d}\n'.format(count = total_articles))
+        fd.close()
 
     # indicate failures
     if 0 != failed_articles:

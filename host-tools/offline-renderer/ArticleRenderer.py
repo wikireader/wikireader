@@ -359,6 +359,11 @@ def main():
 
     for name in args:
         f = codecs.open(name, 'r', 'utf-8', 'replace')
+
+        t = get_parameter_value(name + '.count', 'TOTAL_ARTICLES')
+        if t is not None:
+            PrintLog.message("Render[{0:d}]: Total: {1:s}".format(file_number, t))
+
         WrProcess(f, language, inter_links, enable_images)
         f.close()
 
@@ -384,6 +389,27 @@ def main():
 
     # final message
     PrintLog.message("Render[{0:d}]: Total: {1:d}".format(file_number, article_count))
+
+
+def get_parameter_value(filename, parameter):
+    """get a parameter from file
+
+    file has lines like TOTAL_ARTICLES = 42
+    returns None if no such line found"""
+
+    if os.path.exists(filename):
+        fd = open(filename, 'rb')
+        if fd is not None:
+            for line in fd.readlines():
+                try:       # want lines like: PARAMETER =  value
+                    (name, value) = line.split('=')
+                    if name.strip() == parameter:
+                        fd.close()
+                        return value.strip()
+                except Valuerror:
+                    pass   # just ignore non-conforming lines
+            fd.close()
+    return None
 
 
 #
