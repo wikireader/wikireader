@@ -88,7 +88,7 @@ unsigned long TimeStamp() {
 
 	clock_gettime(4 /*CLOCK_MONOTONIC_RAW*/, &tp);
 
-	return tp.tv_nsec * TIMER_CountsPerMicroSecond / 1000 + tp.tv_sec * 1000000;
+	return tp.tv_nsec / 1000 * TIMER_CountsPerMicroSecond + tp.tv_sec * 1000000 * TIMER_CountsPerMicroSecond;
 }
 
 
