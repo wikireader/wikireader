@@ -25,6 +25,13 @@ class EscapeBuffer(object):
         except KeyError:
             self.callback = lambda x: None
 
+        try:
+            self.max_length = kw['max_length']
+        except KeyError:
+            self.max_length = 'unlimited'
+
+        self.limiting = False
+        self.byte_count = 0
         self.output = io.BytesIO('')
         self.head = None
 
@@ -43,7 +50,32 @@ class EscapeBuffer(object):
         self.output.seek(0)
         self.output.truncate(0)
         self.head = None
+        self.limiting = False
+        self.byte_count = 0
         return text
+
+
+    def internal_write(self, data):
+        """write data to buffer internal stream"""
+
+        if None == data or self.limiting:
+            return
+
+        size = len(data)
+        if 0 == size:
+            return
+
+        if 'unlimited' != self.max_length and self.byte_count + size > self.max_length:
+            # truncate to fit in low capacity cards
+            limited_data = '\x01\n\x07\x01\n\x04\x82\x08\x64* * *' + \
+                '\x01\n\x07\x04\x82Article shortened to fit\x03into the compact database.\x02'
+            self.output.write(limited_data)
+            self.byte_count += len(limited_data)
+            self.limiting = True
+            return
+
+        self.byte_count += size
+        self.output.write(data)
 
 
     def write(self, data):
@@ -53,7 +85,7 @@ class EscapeBuffer(object):
             return
 
         if '' == data and None != self.head:
-            self.output.write(self.head)
+            self.internal_write(self.head)
             self.head = None
             return
 
@@ -61,10 +93,10 @@ class EscapeBuffer(object):
             self.head = data
 
         elif chr(9) == data[0] and chr(1) == self.head[0]:
-            self.output.write(data)
+            self.internal_write(data)
 
         elif chr(10) == data[0] and chr(1) == self.head[0]:
-            self.output.write(data)
+            self.internal_write(data)
 
         elif chr(1) == data[0] and chr(1) == self.head[0]:
             inc = struct.unpack('<B', self.head[1])[0]
@@ -72,7 +104,7 @@ class EscapeBuffer(object):
             self.head = data
 
         else:
-            self.output.write(self.head)
+            self.internal_write(self.head)
             self.head = data
 
 

@@ -342,7 +342,7 @@ def main():
         global g_starty
         g_starty += inc
 
-    output = EscapeBuffer.EscapeBuffer(callback=y_adjust)
+    output = EscapeBuffer.EscapeBuffer(callback=y_adjust, max_length=max_article_length)
 
     if test_file == '':
         compress = True
@@ -351,8 +351,7 @@ def main():
         article_writer = ArticleWriter(file_number, f_out, i_out,
                                        max_buckets = 50,
                                        bucket_size = block_size,
-                                       max_items_per_bucket = articles_per_block,
-                                       max_article_length = max_article_length)
+                                       max_items_per_bucket = articles_per_block)
     else:
         compress = False
         f_out = open(test_file, 'wb')
@@ -1397,38 +1396,19 @@ class ArticleWriter(bucket.Bucket):
     """to combine sets of articles and compress them together"""
 
     def __init__(self, file_number, data_file, index_file,
-                 max_buckets = 50, bucket_size = 524288, max_items_per_bucket = 64,
-                 max_article_length = 'unlimited'):
+                 max_buckets = 50, bucket_size = 524288, max_items_per_bucket = 64):
 
         super(ArticleWriter, self).__init__(max_buckets = max_buckets,
-                                       bucket_size = bucket_size,
-                                       max_items_per_bucket = max_items_per_bucket)
+                                            bucket_size = bucket_size,
+                                            max_items_per_bucket = max_items_per_bucket)
         self.file_number = file_number
         self.index_file = index_file
         self.data_file = data_file
         self.index = {}
-        if type(max_article_length) == str:
-            if 'unlimited' == max_article_length.lower():
-                self.max_article_length = 0
-            else:
-                raise ValueError('ArticleWriter: max_article_length="' + max_article_length + '" is not "unlimited"')
-        else:
-            self.max_article_length = max_article_length
 
 
     def add_article(self, article_index, article_data, fnd_offset, restricted):
         """add article to the buffer"""
-
-        # truncate to fit in low capacity cards
-        # this will have problems with images
-        if self.max_article_length > 0 and len(article_data) > self.max_article_length:
-            article_data = article_data[:self.max_article_length]
-            if ord(article_data[-1]) < 32:
-                article_data = article_data[:-1]
-
-            article_data += '\x01\n\x07\x01\n\x04\x82\x08\x64* * *' + \
-                '\x01\n\x07\x04\x82Article shortened to fit\x03into the compact database.\x02'
-
         self.add((article_index, article_data, fnd_offset, restricted), len(article_data))
 
 
