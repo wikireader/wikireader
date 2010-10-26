@@ -1244,7 +1244,7 @@ bool callback(void *arg)
 int wikilib_run(void)
 {
 	int sleep;
-	long time_now;
+	unsigned long time_now;
 	event_t ev;
 	int more_events = 0;
 	unsigned long last_event_time = 0;
@@ -1382,8 +1382,10 @@ int wikilib_run(void)
 			handle_touch(&ev);
 			last_event_time = ev.time_stamp;
 			break;
-		default:
+		case EVENT_NONE:
 			more_events = 0;
+			break;
+		default:
 			break;
 		}
 	}

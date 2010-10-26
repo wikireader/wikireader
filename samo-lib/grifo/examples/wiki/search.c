@@ -498,6 +498,7 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 		offset_fnd_end = input_offset_fnd_end;
 		result_list->count = 0;
 		offsetNextTitleSearch = 0;
+		is_title_in_result_list(0, NULL);
 	}
 	if (result_list->result_populated || offset_fnd_start < 0)
 		return 0;
@@ -556,7 +557,11 @@ int fetch_search_result(long input_offset_fnd_start, long input_offset_fnd_end, 
 				offsetNextTitleSearch += sizeof(pTitleSearch->idxArticle) + ustrlen(pTitleSearch->sTitleSearch) +
 					ustrlen(&pTitleSearch->sTitleSearch[ustrlen(pTitleSearch->sTitleSearch) + 1]) + 3;
 				result_list->offset_next = offset_fnd_start + offsetNextTitleSearch;
-				result_list->count++;
+				if (!is_title_in_result_list(result_list->idx_article[result_list->count],
+							     result_list->title[result_list->count]))
+				{ // if the title is not in the list, add it
+					result_list->count++;
+				}
 				if (result_list->count >= NUMBER_OF_FIRST_PAGE_RESULTS)
 				{
 					result_list->result_populated = 1;
@@ -1066,6 +1071,7 @@ void search_reload(int flag)
 		bNoResultLastTime = 0;
 
 		article_link_count = 0;
+		is_title_in_result_list(0, NULL);
 		for (i = 0; i < screen_display_count; i++)
 		{
 			end_y_pos = y_pos + RESULT_HEIGHT - 1;
@@ -1075,6 +1081,9 @@ void search_reload(int flag)
 				guilib_clear_area(0, y_pos, 239, end_y_pos);
 			if (i < count)
 			{
+				// title in result_list should have passed is_title_in_result_list() check
+				// call is_title_in_result_list() to add it to the list, any way
+				is_title_in_result_list(result_list->idx_article[i], result_list->title[i]);
 				if (keyboard_mode == KEYBOARD_NONE)
 				{
 					articleLink[article_link_count].start_xy = (unsigned  long)((y_pos - 2) << 8); // consider the difference between render_string and draw_string
@@ -1648,4 +1657,40 @@ void random_article(void)
 		display_link_article(idx_article);
 		reset_random_key(); // flush the pending random button inputs
 	}
+}
+
+bool is_title_in_result_list(long idx, unsigned char *sTitle)
+{
+	static struct _title_list {
+		long idx;
+		char sTitle[MAX_TITLE_ACTUAL];
+	} *pTitleList = NULL;
+	static int nTitles = 0;
+	bool rc = false;
+
+	if (!idx)
+	{ // reset the result list
+		nTitles = 0;
+	}
+	else
+	{
+		if (!pTitleList)
+			pTitleList = memory_allocate(sizeof(struct _title_list) * MAX_RESULT_LIST, "search6");
+		if (pTitleList)
+		{
+			int i = 0;
+			while (!rc && i < nTitles)
+			{
+				if (idx == pTitleList[i].idx && !strcmp((char *)sTitle, pTitleList[i].sTitle))
+					rc = true;
+				i++;
+			}
+			if (!rc && nTitles < MAX_RESULT_LIST)
+			{
+				pTitleList[nTitles].idx = idx;
+				strcpy(pTitleList[nTitles++].sTitle, (char *)sTitle);
+			}
+		}
+	}
+	return rc;
 }

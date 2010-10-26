@@ -1390,49 +1390,55 @@ int render_search_result_with_pcf(void)
 		lcd_draw_cur_y_pos = 0;
 	}
 
-	if ((offset_next = result_list_next_result(offset_next, &idxArticle, sTitleActual)))
-	{
-		start_x = 0;
-		end_x = LCD_BUF_WIDTH_PIXELS - 1;
-		if (article_link_count < MAX_RESULT_LIST)
+	while (more_search_results && !rc)
+	{ // loop until the title not in result list or no more
+		if ((offset_next = result_list_next_result(offset_next, &idxArticle, sTitleActual)))
 		{
-			start_y = lcd_draw_buf.current_y + 1;
-			end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
-			articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
-			articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
-			articleLink[article_link_count++].article_id = idxArticle;
-			draw_string(sTitleActual);
-			lcd_draw_buf.current_x = 0;
-			lcd_draw_buf.current_y += lcd_draw_buf.line_height;
-			rc = 1;
+			start_x = 0;
+			end_x = LCD_BUF_WIDTH_PIXELS - 1;
+			if (article_link_count < MAX_RESULT_LIST)
+			{
+				if (!is_title_in_result_list(idxArticle, sTitleActual))
+				{ // if the title is not in the list, add it
+					start_y = lcd_draw_buf.current_y + 1;
+					end_y = lcd_draw_buf.current_y + lcd_draw_buf.line_height;
+					articleLink[article_link_count].start_xy = (unsigned  long)(start_x | (start_y << 8));
+					articleLink[article_link_count].end_xy = (unsigned  long)(end_x | (end_y << 8));
+					articleLink[article_link_count++].article_id = idxArticle;
+					draw_string(sTitleActual);
+					lcd_draw_buf.current_x = 0;
+					lcd_draw_buf.current_y += lcd_draw_buf.line_height;
+					rc = 1;
+				}
+			}
+			else
+				more_search_results = 0;
+
+			if (stop_render_article == 1)
+			{
+				more_search_results = 0;
+				stop_render_article = 0;
+			}
+
+			if(request_display_next_page > 0 && lcd_draw_buf.current_y >= request_y_pos+LCD_HEIGHT)
+			{
+				lcd_draw_cur_y_pos = request_y_pos;
+				repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos, 1);
+				request_display_next_page = 0;
+			}
 		}
 		else
-			more_search_results = 0;
-
-		if (stop_render_article == 1)
 		{
 			more_search_results = 0;
-			stop_render_article = 0;
-		}
-
-		if(request_display_next_page > 0 && lcd_draw_buf.current_y >= request_y_pos+LCD_HEIGHT)
-		{
-			lcd_draw_cur_y_pos = request_y_pos;
-			repaint_framebuffer(lcd_draw_buf.screen_buf,lcd_draw_cur_y_pos, 1);
-			request_display_next_page = 0;
-		}
-	}
-	else
-	{
-		more_search_results = 0;
-		if (request_display_next_page > 0)
-		{
-			long y_pos = lcd_draw_buf.current_y - LCD_HEIGHT;
-			if (y_pos < 0)
-				y_pos = 0;
-			lcd_draw_cur_y_pos = y_pos;
-			repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos, 1);
-			request_display_next_page = 0;
+			if (request_display_next_page > 0)
+			{
+				long y_pos = lcd_draw_buf.current_y - LCD_HEIGHT;
+				if (y_pos < 0)
+					y_pos = 0;
+				lcd_draw_cur_y_pos = y_pos;
+				repaint_framebuffer(lcd_draw_buf.screen_buf, lcd_draw_cur_y_pos, 1);
+				request_display_next_page = 0;
+			}
 		}
 	}
 

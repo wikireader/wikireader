@@ -141,4 +141,5 @@ int search_replace_per_language_char(const unsigned char *utf8_char);
 int search_add_per_language_char(const unsigned char *utf8_char);
 int search_replace_hiragana_backward();
 void reset_search_info(int nWikiIdx);
+bool is_title_in_result_list(long idx, unsigned char *sTitle);
 #endif
