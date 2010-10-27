@@ -198,7 +198,9 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
     if (p1 > 0 && p2 > 0) {
         i = substr($0, p1 + 1, p2 - p1 - 1)
         if ("Total:" == $2) {
-            render_count[i] = $3
+            if (0 != render_max[i]) {
+                render_count[i] = $3
+            }
             render_max[i] = $3
         } else {
             render_time[i] += $2

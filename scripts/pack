@@ -243,22 +243,30 @@ case "${direct}" in
     do
       part=$((${part} + 1))
       file=$(basename "${p}")
-      HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>,'
+      [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+      HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>'
     done
-    HTMLoutput 4 ') '
+    HTMLoutput 4 ') torrent: ('
     ;;
   *)
     ;;
 esac
-HTMLoutput 4 ' torrent: ('
+HTMLoutput 4 ' '
 part=0
 for p in "${archive}"*
 do
   part=$((${part} + 1))
   file=$(basename "${p}")
-  HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>,'
+  [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+  HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>'
 done
-HTMLoutput 4 ')'
+case "${direct}" in
+  [yY]|[yY][eE][sS])
+    HTMLoutput 4 ')'
+    ;;
+  *)
+    ;;
+esac
 HTMLoutput 2 '</li>'
 
 
@@ -300,23 +308,31 @@ do
       do
         part=$((${part} + 1))
         file=$(basename "${p}")
-        HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>,'
+        [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+        HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>'
       done
-      HTMLoutput 4 ')'
+      HTMLoutput 4 ')torrent: ('
       ;;
     *)
       ;;
   esac
 
-  HTMLoutput 4 ' torrent: ('
+  HTMLoutput 4 ' '
   part=0
   for p in "${archive}"*
   do
     part=$((${part} + 1))
     file=$(basename "${p}")
-    HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>,'
+    [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+    HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>'
   done
-  HTMLoutput 4 ')'
+  case "${direct}" in
+    [yY]|[yY][eE][sS])
+      HTMLoutput 4 ')'
+      ;;
+    *)
+      ;;
+  esac
   HTMLoutput 2 '</li>'
 
 done
