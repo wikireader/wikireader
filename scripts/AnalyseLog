@@ -172,7 +172,6 @@ function seconds_to_string(elapsed_time,   hours, minutes, seconds) {
         c = 0
     }
     parse_max[n] = c
-    render_max[n] = c
 }
 
 /^Parse\[/ {
