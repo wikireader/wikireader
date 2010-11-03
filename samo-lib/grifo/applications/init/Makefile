@@ -17,7 +17,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include ../application-pre.mk
+# +++START_UPDATE_MAKEFILE: Start of auto included code
+# The text between the +++ and --- tags is copied by the
+# UpdateMakefiles script. Do not remove or change these tags.
+# ---
+# Autodetect root directory
+define FIND_ROOT_DIR
+while : ; do \
+  d=$$(pwd) ; \
+  [ -d "$${d}/samo-lib" ] && echo $${d} && exit 0 ; \
+  [ X"/" = X"$${d}" ] && echo ROOT_DIRECTORY_NOT_FOUND && exit 1 ; \
+  cd .. ; \
+done
+endef
+ROOT_DIR := $(shell ${FIND_ROOT_DIR})
+# Directory of Makefile includes
+MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
+# Include the initial Makefile setup
+include ${MK_DIR}/definitions.mk
+# ---END_UPDATE_MAKEFILE: End of auto included code
+
+
+include ${GRIFO_APPLICATION_PRE}
 
 PROGRAM = init
 ICON = NO
@@ -26,4 +47,4 @@ ICON = NO
 SOURCES += ${PROGRAM}.c
 HEADERS +=
 
-include ../application-post.mk
+include ${GRIFO_APPLICATION_POST}

@@ -42,6 +42,7 @@ include ${MK_DIR}/definitions.mk
 
 
 INSTALL_GRIFO_SIMULATION ?= NO
+BUILD_EXAMPLES ?= NO
 
 $(call REQUIRED_BINARY, guile, guile-1.8)
 
@@ -96,7 +97,10 @@ BUILD_OBJECTS = $(addprefix ${BUILD_PREFIX},${OBJECTS})
 
 .PHONY: all
 all:  ${TARGETS}
+	${MAKE} -C applications
+ifeq (YES,$(strip ${BUILD_EXAMPLES}))
 	${MAKE} -C examples
+endif
 
 build/libinternal.a: stamp-build ${BUILD_OBJECTS}
 	${RM} "$@"
@@ -155,12 +159,16 @@ ifneq (YES,$(strip ${INSTALL_GRIFO_SIMULATION}))
 	${COPY} grifo.elf "${DESTDIR}"/kernel.elf
 endif
 	${COPY} init.ini "${DESTDIR}"/
+	${MAKE} -C applications install INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}"
+ifeq (YES,$(strip ${BUILD_EXAMPLES}))
 	${MAKE} -C examples install INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}"
+endif
 
 .PHONY: clean
 clean:
 	${RM} -r ${TARGETS} build include lib stubs
 	${RM} -r *.o *.elf *.d *.map *.asm33 *.dump *.ico stamp-*
+	${MAKE} -C applications clean
 	${MAKE} -C examples clean
 
 

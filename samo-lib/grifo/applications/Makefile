@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 # +++START_UPDATE_MAKEFILE: Start of auto included code
 # The text between the +++ and --- tags is copied by the
 # UpdateMakefiles script. Do not remove or change these tags.
@@ -37,14 +38,16 @@ MK_DIR   := ${ROOT_DIR}/samo-lib/Mk
 include ${MK_DIR}/definitions.mk
 # ---END_UPDATE_MAKEFILE: End of auto included code
 
+INSTALL_GRIFO_SIMULATION ?= NO
 
-include ${GRIFO_APPLICATION_PRE}
+DIRS += init
 
-PROGRAM = files
-ICON = YES
 
-# list of sources and headers
-SOURCES += ${PROGRAM}.c
-HEADERS +=
+${MAKECMDGOALS} all:
+	@for d in ${DIRS}; \
+	do \
+	  ${MAKE} -C "$${d}" ${MAKECMDGOALS} INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}" || exit 1; \
+	done
 
-include ${GRIFO_APPLICATION_POST}
+
+include ${MK_DIR}/rules.mk

@@ -1,0 +1,23 @@
+Grifo
+=====
+
+This is a small kernel that exists as a separate program.
+Its purpose is to simplify the application development process.
+
+All low-level code will be in here and the application will be a
+separate file.  All communications between the application and Grifo
+will be via a system call interface (implemented using software interrupt).
+
+directories:
+
+src           Grifo sources and internal headers
+lds           application.lds linker script
+scripts       programs and scripts to generate other files during make
+Mk            auxiliary makefiles
+lib           libgruifo.a for application to link to
+include       grifo.h for the application programs to #include
+simulator     an emulator in QT to run applications on the host PC
+stubs         generated syscall .s files
+build         Grifo internal objects an libraries
+examples      example applications and test programs
+applications  programs that will be installed by default

@@ -806,6 +806,17 @@ grifo-simulate: validate-destdir
 	cd "${DESTDIR}" && ./init.app
 
 
+# wiki application using grifo
+# ============================
+
+$(call STD_RULE, wiki, wiki, gcc mini-libc grifo, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
+
+.PHONY: wiki-simulate
+wiki-simulate: validate-destdir
+	make INSTALL_GRIFO_SIMULATION=YES DESTDIR="${DESTDIR}" wiki-install
+	cd "${DESTDIR}" && ./wiki.app
+
+
 # Master boot record
 # ==================
 

@@ -43,11 +43,9 @@ INSTALL_GRIFO_SIMULATION ?= NO
 DIRS += events
 DIRS += files
 DIRS += hello
-DIRS += init
 DIRS += lcd
 DIRS += memory
 DIRS += sample1
-DIRS += wiki
 
 
 ${MAKECMDGOALS} all:
