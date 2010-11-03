@@ -56,6 +56,7 @@ class LanguageProcessor(object):
         u'ƶ': u'z',
         u'×': u'*',
         u'÷': u'/',
+        u'ー': '-',
         }
 
     def __init__(self, *args, **kw):
@@ -92,7 +93,7 @@ class LanguageProcessor(object):
         return result
 
 
-    def translate(self, text):
+    def translate(self, text, force = False):
         """base translation using unicode tables"""
         if unicode != type(text):
             text = unicode(text, 'utf-8')
@@ -100,19 +101,19 @@ class LanguageProcessor(object):
         result = []
         for c in text:
             try:
-                n = unicodedata.name(c).split() + ['None', 'None', 'None', 'None']
+                n = unicodedata.name(c).lower().split() + ['NONE', 'NONE', 'NONE', 'NONE']
             except ValueError:
-                n = ('Nothing', 'None', 'None', 'None')
+                n = ('NOTHING', 'NONE', 'NONE', 'NONE')
 
             character_class = n[0]
-            is_letter = 'LETTER' == n[1] or 'LETTER' == n[2]
-            is_small = 'SMALL' == n[1] or 'SMALL' == n[2]
-            is_capital = 'CAPITAL' == n[1] or 'CAPITAL' == n[2]
+            is_letter = 'letter' == n[1] or 'letter' == n[2]
+            is_small = 'small' == n[1] or 'small' == n[2]
+            is_capital = 'capital' == n[1] or 'capital' == n[2]
 
-            if 'HANGUL' == character_class:
+            if 'hangul' == character_class:
                 result = self.append_translations(result, n[2], '')
-            elif character_class in ['HIRAGANA', 'KATAKANA']:
-                if self.cjk_convert and is_letter:
+            elif character_class in ['hiragana', 'katakana']:
+                if (force or self.cjk_convert) and is_letter:
                     # attempt to convert Japanese phonetic when doing Chinese->Pinyin
                     if is_small:
                         result = self.append_translations(result, n[3], '')
@@ -120,7 +121,7 @@ class LanguageProcessor(object):
                         result = self.append_translations(result, n[2], '')
                 else:
                     result = self.append_translations(result, c, '')
-            elif self.cjk_convert and 'CJK' == character_class:
+            elif self.cjk_convert and 'cjk' == character_class:
                 # use all of the list of phonetics available
                 p = []
                 try:
@@ -131,41 +132,42 @@ class LanguageProcessor(object):
                 except KeyError:
                     p.append(unicodedata.normalize('NFD', c))
                 result = self.append_translations(result, p, '')
-            elif character_class in ['GREEK', 'COPTIC']:
+            elif character_class in ['greek', 'coptic']:
                 try:
                     g = n[3][0]
-                    if is_small:
-                        g = g.lower()
+                    if not is_small or is_capital:
+                        g = g.upper()
                     result = self.append_translations(result, g, '')
                 except IndexError:
                     result = self.append_translations(result, c, '')
-            elif 'CYRILLIC' == character_class:
+            elif 'cyrillic' == character_class:
                 try:
-                    if 'SHORT' == n[3]:
+                    if 'short' == n[3]:
                         g = n[4]
                     else:
                         g = n[3]
-                    if g in ['HARD', 'SOFT']:
+                    if g in ['hard', 'soft']:
                         pass
                     else:
                         if len(g) >= 2:
-                            if 'E' == g[0]:
+                            if g[0] in u'e':
                                 g = g[1:]
-                            elif g[0] not in u'AEIOUY':
+                            elif g[0] not in u'aeiouy':
                                 g = g[:-1]
-                            if g[0] in u'G':
+                            if g[0] in u'g':
                                 g = g[:-1]
-                        if is_small:
-                            g = g.lower()
+                        if not is_small or is_capital:
+                            g = g.upper()
                         result = self.append_translations(result, g, '')
                 except IndexError:
                     result = self.append_translations(result, c, '')
             else:
                 for c in unicodedata.normalize('NFD', c):
                     if c in self.EQUIVALENTS:
-                        result = self.append_translations(result, self.EQUIVALENTS[c], '')
-                    else:
-                        result = self.append_translations(result, c, '')
+                        c = self.EQUIVALENTS[c]
+                    if not is_small or is_capital:
+                            c = c.upper()
+                    result = self.append_translations(result, c, '')
 
         if result is None or [] == result or '' == result:
             return ['']
@@ -188,117 +190,6 @@ class LanguageNormal(LanguageProcessor):
 class LanguageJapanese(LanguageProcessor):
     """Convert Japanese to Romaji"""
 
-    PHONETIC = {
-
-        # Katakana
-
-        u'ア': 'a',         u'イ': 'i',         u'ウ': 'u',         u'エ': 'e',         u'オ': 'o',
-        u'カ': 'ka',        u'キ': 'ki',        u'ク': 'ku',        u'ケ': 'ke',        u'コ': 'ko',
-        u'ガ': 'ga',        u'ギ': 'gi',        u'グ': 'gu',        u'ゲ': 'ge',        u'ゴ': 'go',
-
-        u'サ': 'sa',        u'シ': 'shi',       u'ス': 'su',        u'セ': 'se',        u'ソ': 'so',
-        u'ザ': 'za',        u'ジ': 'ji',        u'ズ': 'zu',        u'ゼ': 'ze',        u'ゾ': 'zo',
-        u'タ': 'ta',        u'チ': 'chi',       u'ツ': 'tsu',       u'テ': 'te',        u'ト': 'to',
-
-        u'ダ': 'da',        u'ヂ': 'di',        u'ヅ': 'du',        u'デ': 'de',        u'ド': 'do',
-        u'ナ': 'na',        u'ニ': 'ni',        u'ヌ': 'nu',        u'ネ': 'ne',        u'ノ': 'no',
-        u'ハ': 'ha',        u'ヒ': 'hi',        u'フ': 'fu',        u'ヘ': 'he',        u'ホ': 'ho',
-
-        u'バ': 'ba',        u'ビ': 'bi',        u'ブ': 'bu',        u'ベ': 'be',        u'ボ': 'bo',
-        u'パ': 'pa',        u'ピ': 'pi',        u'プ': 'pu',        u'ペ': 'pe',        u'ポ': 'po',
-        u'マ': 'ma',        u'ミ': 'mi',        u'ム': 'mu',        u'メ': 'me',        u'モ': 'mo',
-
-        u'ヤ': 'ya',                            u'ユ': 'yu',                           u'ヨ': 'yo',
-        u'ラ': 'ra',        u'リ': 'ri',        u'ル': 'ru',        u'レ': 're',        u'ロ': 'ro',
-        u'ワ': 'wa',                                                u'ヱ': 'we',        u'ヲ': 'wo',
-
-        u'ン': 'nn',
-
-        u'ー': '-',
-
-        u'ウァ': 'wha',      u'ウィ': 'whi',                               u'ウェ': 'whe',        u'ウォ': 'who',
-        u'ヴァ': 'va',       u'ヴィ': 'vi',         u'ヴ':   'vu',         u'ヴェ': 've',         u'ヴォ': 'vo',
-        u'チャ': 'cya',      u'チィ': 'cyi',        u'チュ': 'cyu',        u'チェ': 'cye',        u'チョ': 'cyo',
-
-        u'ニャ': 'nya',      u'ニィ': 'nyi',        u'ニュ': 'nyu',        u'ニェ': 'nye',        u'ニョ': 'nyo',
-        u'シャ': 'sya',      u'シィ': 'syi',        u'シュ': 'syu',        u'シェ': 'sye',        u'ショ': 'syo',
-        u'キァ': 'kya',      u'キィ': 'kyi',        u'キュ': 'kyu',        u'キェ': 'kye',        u'キョ': 'kyo',
-
-        u'テャ': 'tha',      u'ティ': 'thi',        u'テュ': 'thu',        u'テェ': 'the',        u'テョ': 'tho',
-        u'ヒャ': 'hya',      u'ヒィ': 'hyi',        u'ヒュ': 'hyu',        u'ヒェ': 'hye',        u'ヒョ': 'hyo',
-        u'ミャ': 'mya',      u'ミィ': 'myi',        u'ミュ': 'myu',        u'ミェ': 'mye',        u'ミョ': 'myo',
-
-        u'リャ': 'rya',      u'リィ': 'ryi',        u'リュ': 'ryu',        u'リェ': 'rye',        u'リョ': 'ryo',
-        u'ジャ': 'ja',       u'ジィ': 'jyi',        u'ジュ': 'ju',         u'ジェ': 'je' ,        u'ジョ': 'jo',
-        u'ギャ': 'gya',      u'ギィ': 'gyi',        u'ギュ': 'gyu',        u'ギェ': 'gye',        u'ギョ': 'gyo',
-
-        u'ビャ': 'bya',      u'ビィ': 'byi',        u'ビュ': 'byu',        u'ビェ': 'bye',        u'ビョ': 'byo',
-        u'ピャ': 'pya',      u'ピィ': 'pyi',        u'ピュ': 'pyu',        u'ピェ': 'pye',        u'ピョ': 'pyo',
-        u'クァ': 'kha',      u'クィ': 'khi',        u'クゥ': 'khu',        u'クェ': 'khe',        u'クォ': 'kho',
-
-        u'グァ': 'gha',      u'グィ': 'ghi',        u'グゥ': 'ghu',        u'グェ': 'ghe',        u'グォ': 'gho',
-        u'ファ': 'fa',       u'フィ': 'fi',                               u'フェ': 'fe',         u'フォ': 'fo',
-        u'フャ': 'fya',                            u'フュ': 'fyu',                              u'フョ': 'fyo',
-
-        u'デァ': 'dha',      u'ディ': 'dhi',        u'デュ': 'dhu',        u'デェ': 'dhe',        u'デョ': 'dho',
-        u'ツァ': 'tsa',      u'ツィ': 'tsi',                              u'ツェ': 'tse',        u'ツォ': 'tso',
-
-        # Hiragana
-
-        u'あ': 'a',         u'い': 'i',         u'う': 'u',         u'え': 'e',         u'お': 'o',
-        u'か': 'ka',        u'き': 'ki',        u'く': 'ku',        u'け': 'ke',        u'こ': 'ko',
-        u'が': 'ga',        u'ぎ': 'gi',        u'ぐ': 'gu',        u'げ': 'ge',        u'ご': 'go',
-
-        u'さ': 'sa',        u'し': 'shi',       u'す': 'su',        u'せ': 'se',        u'そ': 'so',
-        u'ざ': 'za',        u'じ': 'ji',        u'ず': 'zu',        u'ぜ': 'ze',        u'ぞ': 'zo',
-        u'た': 'ta',        u'ち': 'chi',       u'つ': 'tsu',       u'て': 'te',        u'と': 'to',
-
-        u'だ': 'da',        u'ぢ': 'di',        u'づ': 'du',        u'で': 'de',        u'ど': 'do',
-        u'な': 'na',        u'に': 'ni',        u'ぬ': 'nu',        u'ね': 'ne',        u'の': 'no',
-        u'は': 'ha',        u'ひ': 'hi',        u'ふ': 'fu',        u'へ': 'he',        u'ほ': 'ho',
-
-        u'ば': 'ba',        u'び': 'bi',        u'ぶ': 'bu',        u'べ': 'be',        u'ぼ': 'bo',
-        u'ぱ': 'pa',        u'ぴ': 'pi',        u'ぷ': 'pu',        u'ぺ': 'pe',        u'ぽ': 'po',
-        u'ま': 'ma',        u'み': 'mi',        u'む': 'mu',        u'め': 'me',        u'も': 'mo',
-
-        u'や': 'ya',                            u'ゆ': 'yu',                            u'よ': 'yo',
-        u'ら': 'ra',        u'り': 'ri',        u'る': 'ru',        u'れ': 're',        u'ろ': 'ro',
-        u'わ': 'wa',        u'ゐ': 'wi',                            u'ゑ': 'we',        u'を': 'wo',
-
-        u'ん': 'nn',
-
-        u'ー': '-',
-
-        u'うぁ': 'wha',      u'うぃ': 'whi',                               u'うぇ': 'whe',        u'うぉ': 'who',
-        u'ゔぁ': 'va',       u'ゔぃ': 'vi',         u'ゔ':   'vu',         u'ゔぇ': 've',         u'ゔぉ': 'vo',
-        u'チゃ': 'cya',      u'チぃ': 'cyi',        u'チゅ': 'cyu',        u'チぇ': 'cye',        u'チょ': 'cyo',
-
-        u'にゃ': 'nya',      u'にぃ': 'nyi',        u'にゅ': 'nyu',        u'にぇ': 'nye',        u'にょ': 'nyo',
-        u'しゃ': 'sya',      u'しぃ': 'syi',        u'しゅ': 'syu',        u'しぇ': 'sye',        u'しょ': 'syo',
-        u'きぁ': 'kya',      u'きぃ': 'kyi',        u'きゅ': 'kyu',        u'きぇ': 'kye',        u'きょ': 'kyo',
-
-        u'てゃ': 'tha',      u'てぃ': 'thi',        u'てゅ': 'thu',        u'てぇ': 'the',        u'てょ': 'tho',
-        u'ひゃ': 'hya',      u'ひぃ': 'hyi',        u'ひゅ': 'hyu',        u'ひぇ': 'hye',        u'ひょ': 'hyo',
-        u'みゃ': 'mya',      u'みぃ': 'myi',        u'みゅ': 'myu',        u'みぇ': 'mye',        u'みょ': 'myo',
-
-        u'りゃ': 'rya',      u'りぃ': 'ryi',        u'りゅ': 'ryu',        u'りぇ': 'rye',        u'りょ': 'ryo',
-        u'じゃ': 'ja',       u'じぃ': 'jyi',        u'じゅ': 'ju',         u'じぇ': 'je' ,        u'じょ': 'jo',
-        u'ぎゃ': 'gya',      u'ぎぃ': 'gyi',        u'ぎゅ': 'gyu',        u'ぎぇ': 'gye',        u'ぎょ': 'gyo',
-
-        u'びゃ': 'bya',      u'びぃ': 'byi',        u'びゅ': 'byu',        u'びぇ': 'bye',        u'びょ': 'byo',
-        u'ぴゃ': 'pya',      u'ぴぃ': 'pyi',        u'ぴゅ': 'pyu',        u'ぴぇ': 'pye',        u'ぴょ': 'pyo',
-        u'くぁ': 'kha',      u'くぃ': 'khi',        u'くぅ': 'khu',        u'くぇ': 'khe',        u'くぉ': 'kho',
-
-        u'ぐぁ': 'gha',      u'ぐぃ': 'ghi',        u'ぐぅ': 'ghu',        u'ぐぇ': 'ghe',        u'ぐぉ': 'gho',
-        u'ふぁ': 'fa',       u'ふぃ': 'fi',                               u'ふぇ': 'fe',         u'ふぉ': 'fo',
-        u'ふゃ': 'fya',                            u'ふゅ': 'fyu',                              u'ふょ': 'fyo',
-
-        u'でぁ': 'dha',      u'でぃ': 'dhi',        u'でゅ': 'dhu',        u'でぇ': 'dhe',        u'でょ': 'dho',
-        u'つぁ': 'tsa',      u'つぃ': 'tsi',                              u'つぇ': 'tse',        u'つぉ': 'tso',
-
-        }
-
-
     def __init__(self, *args, **kw):
         """intitialise MeCab library"""
         global user_dictionary_path
@@ -314,33 +205,9 @@ class LanguageJapanese(LanguageProcessor):
     def romanise(self, text):
         """private method for converting Japanese phonetics to Romaji"""
 
-        if type(text) != unicode:
-            text = unicode(text, "utf-8")
+        result = super(LanguageJapanese, self).translate(text, True)
+        return result[0]
 
-        result = ''
-        i = 0
-        duplicate = False
-        last = len(text) - 1
-        while i <= last:
-            key = text[i:i + 2] # extract a pair of phonetics
-            if not (i < last and key in self.PHONETIC):
-                key = text[i]
-
-            if key in self.PHONETIC:
-                s = self.PHONETIC[key]
-                i += len(key) - 1
-                if duplicate:
-                    s = s[0] + s
-                    duplicate = False
-                result += s
-            elif key in u'ッっ':
-                duplicate = True
-            else:
-                result += key
-                duplicate = False
-            i += 1
-
-        return result
 
     def trans(self, text):
         """translate Kanji to phonetic array"""
