@@ -1,0 +1,60 @@
+# wiki.inf is for configuring the information of the wiki's supported by WikiReader
+#
+# supported categories:
+# --------------------
+# (ENCYCLOPAEDIA)
+# TRAVEL
+# DICTIONARY
+# QUOTE
+# SOURCE
+# BOOKS
+# GUTENBERG
+# OTHERS
+#
+# supported keyboards:
+# -------------------
+# (ENGLISH)
+# JAPANESE-HIRAGANA
+# JAPANESE-ROMAN
+# KOREAN
+# DANISH
+# CHINESE-PINYIN
+# CHINESE-BOPOMO
+#
+# supported nls index (wiki.nls key suffix):
+# -------------------
+# (0) - default set (e.g., wiki_name)
+# 2   - second set (e.g., wiki_name2)
+#
+# rule: category+language vs. folder name should be 1-1 correpondence
+#       (for the language link to work properly)
+#
+# category     language  folder name  default keyboard   nls index
+# -----------  --------  -----------  -----------------  ---------
+  ,            cy,       cypedia,
+  ,            da,       dapedia,     DANISH
+  GUTENBERG,   de,       deguten,
+  ,            de,       depedia,
+  ,            el,       elpedia,
+  BOOKS,       en,       enbooks,
+  DICTIONARY,  en,       endict,
+  GUTENBERG,   en,       enguten,
+  ,            en,       enpedia,
+  QUOTE,       en,       enquote,
+  ,            es,       espedia,
+  ,            fi,       fipedia,
+  ,            fr,       frpedia,
+  ,            hu,       hupedia,
+  ,            it,       itpedia,
+  ,            ja,       japedia,     JAPANESE-HIRAGANA
+  ,            ja,       japedia,     JAPANESE-ROMAN,    2
+  ,            ko,       kopedia,     KOREAN
+  ,            nl,       nlpedia,
+  ,            no,       nopedia,
+  ,            pl,       plpedia,
+  ,            pt,       ptpedia,
+  ,            ru,       rupedia,
+  ,            sr,       srpedia,
+  ,            simple,   e0pedia,
+  ,            zhs,      zhpedia,     CHINESE-PINYIN
+  ,            zht,      zhpedia,     CHINESE-BOPOMO,    2

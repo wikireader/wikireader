@@ -31,9 +31,10 @@
 #include "search_fnd.h"
 #include "guilib.h"
 
-WIKI_LIST wiki_list[] =
+WIKI_LIST wiki_list_default[] =
 {
 	{ 1,  1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia", KEYBOARD_CHAR, 0},
+#if 0
 	{ 2,  2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia", KEYBOARD_CHAR, 0},
 	{ 3,  3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia", KEYBOARD_CHAR, 0},
 	{ 4,  4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia", KEYBOARD_CHAR, 0},
@@ -56,12 +57,14 @@ WIKI_LIST wiki_list[] =
 	{21, 19, WIKI_CAT_QUOTE,         "en", "enquote", KEYBOARD_CHAR, 0},
 	{22, 20, WIKI_CAT_BOOKS,         "en", "enbooks", KEYBOARD_CHAR, 0},
 	{23, 21, WIKI_CAT_DICTIONARY,    "en", "endict", KEYBOARD_CHAR, 0},
-	{24, 22, WIKI_CAT_BOOKS,         "en", "enguten", KEYBOARD_CHAR, 0},
+	{24, 22, WIKI_CAT_GUTENBERG,     "en", "enguten", KEYBOARD_CHAR, 0},
 	{25, 23, WIKI_CAT_ENCYCLOPAEDIA, "it", "itpedia", KEYBOARD_CHAR, 0},
+#endif
 };
-#define MAX_WIKIS (sizeof(wiki_list) / sizeof(WIKI_LIST))
 
-bool baWikiActive[MAX_WIKIS];
+WIKI_LIST *wiki_list;
+unsigned int nWikiList = 0;
+bool *baWikiActive;
 extern int search_interrupted;
 unsigned int nWikiCount = 0;
 int nCurrentWiki = -1; // index to aActiveWikis[].WikiInfoIdx
@@ -82,16 +85,249 @@ WIKI_LICENSE_DRAW *pWikiLicenseDraw;
 unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len, int wiki_nls_idx);
 int get_wiki_idx_from_serial_id(int wiki_serial_id);
 
+#define MAX_LINE_SIZE 256
+static ssize_t copy_line(char *buf, char *line, ssize_t nLineChars)
+{
+	ssize_t len_left;
+	int i = 0;
+
+	while (i < nLineChars && i < MAX_LINE_SIZE - 1 && line[i] != '\r' && line[i] != '\n')
+		i++;
+	if (i > 0)
+		memcpy(buf, line, i);
+	buf[i] = '\0';
+	while (i < nLineChars && (line[i] == '\r' || line[i] == '\n'))
+		i++;
+	len_left = nLineChars - i;
+	if (len_left > 0)
+		memmove(line, &line[i], len_left);
+	return len_left;
+}
+
+static void trim_leading_spaces(char *buf)
+{
+	int i = 0;
+	while (buf[i] && strchr(" \t\r\n", buf[i]))
+		i++;
+	if (i > 0)
+	{
+		int nMoveLen = strlen(buf) - i;
+
+		memmove(buf, &buf[i], nMoveLen + 1);
+	}
+}
+
+static void trim_trailing_spaces(char *buf)
+{
+	int i = strlen(buf);
+
+	while (i && strchr(" \t\r\n", buf[i]))
+		i--;
+	buf[i + 1] = '\0';
+}
+
+static WIKI_CAT_E get_category_info(char *word)
+{
+	if (!word[0] || !strcmp(word, "ENCYCLOPAEDIA"))
+		return WIKI_CAT_ENCYCLOPAEDIA;
+	else if (!strcmp(word, "TRAVEL"))
+		return WIKI_CAT_TRAVEL;
+	else if (!strcmp(word, "DICTIONARY"))
+		return WIKI_CAT_DICTIONARY;
+	else if (!strcmp(word, "QUOTE"))
+		return WIKI_CAT_QUOTE;
+	else if (!strcmp(word, "SOURCE"))
+		return WIKI_CAT_SOURCE;
+	else if (!strcmp(word, "BOOKS"))
+		return WIKI_CAT_BOOKS;
+	else if (!strcmp(word, "GUTENBERG"))
+		return WIKI_CAT_GUTENBERG;
+	else if (!strcmp(word, "OTHERS"))
+		return WIKI_CAT_OTHERS;
+	else
+		return WIKI_CAT_INVALID;
+}
+
+static KEYBOARD_MODE get_keyboard_info(char *word)
+{
+	if (!word[0] || !strcmp(word, "ENGLISH") || !strcmp(word, "CHINESE-PINYIN"))
+		return KEYBOARD_CHAR;
+	else if (!strcmp(word, "JAPANESE-HIRAGANA"))
+		return KEYBOARD_PHONE_STYLE_JP;
+	else if (!strcmp(word, "JAPANESE-ROMAN"))
+		return KEYBOARD_CHAR_JP;
+	else if (!strcmp(word, "KOREAN"))
+		return KEYBOARD_CHAR_KO;
+	else if (!strcmp(word, "DANISH"))
+		return KEYBOARD_CHAR_DA;
+	else if (!strcmp(word, "CHINESE-BOPOMO"))
+		return KEYBOARD_PHONE_STYLE_TW;
+	else
+		return KEYBOARD_NONE;
+}
+
+static int assign_wiki_id(char *word)
+{
+	unsigned int i;
+	int max_wiki_id = 0;
+
+	for (i = 0; i < nWikiList; i++)
+	{
+		if (!strcmp(word, wiki_list[i].wiki_folder))
+			return wiki_list[i].wiki_id;
+		if (max_wiki_id < wiki_list[i].wiki_id)
+			max_wiki_id = wiki_list[i].wiki_id;
+	}
+	return max_wiki_id + 1;
+}
+
+static void str_to_upper(char *word)
+{
+	unsigned int i;
+	for (i = 0; i < strlen(word); i++)
+		word[i] = toupper(word[i]);
+}
+
+static void str_to_lower(char *word)
+{
+	unsigned int i;
+	for (i = 0; i < strlen(word); i++)
+		word[i] = tolower(word[i]);
+}
+
+static bool get_next_token(char *word, char *buf)
+{
+	static char *last = NULL;
+
+	if (buf)
+		last = buf;
+	if (word && last && *last)
+	{
+		while (last && *last && *last != ',')
+			*word++ = *last++;
+		if (*last == ',')
+			last++;
+		*word = '\0';
+		return true;
+	}
+	return false;
+}
+
 void init_wiki_info(void)
 {
 	unsigned int i, j;
 	int fd;
 	unsigned char *p;
 	int nWikiSerialId;
+	char line[MAX_LINE_SIZE], buf[MAX_LINE_SIZE], word[MAX_LINE_SIZE];
+	ssize_t nLineChars;
 
 	nWikiCount = 0;
-	memset(baWikiActive, 0, sizeof(baWikiActive));
-	for (i = 0; i < MAX_WIKIS; i++)
+	fd = file_open("wiki.inf", FILE_OPEN_READ);
+	if (fd >= 0)
+	{
+		unsigned int nTempWikiList = 0;
+
+		nLineChars = file_read(fd, line, MAX_LINE_SIZE);
+		while (nLineChars > 0)
+		{
+			nLineChars = copy_line(buf, line, nLineChars);
+			trim_leading_spaces(buf);
+			if (buf[0] && buf[0] != '#')
+				nTempWikiList++;
+			nLineChars += file_read(fd, &line[nLineChars], MAX_LINE_SIZE - nLineChars);
+		}
+
+		if (nTempWikiList > 0)
+		{
+			if (nTempWikiList > sizeof(wiki_list) / sizeof(WIKI_LIST))
+				wiki_list = (WIKI_LIST *)memory_allocate(sizeof(WIKI_LIST) * nTempWikiList, "wiki_list");
+			else
+				wiki_list = wiki_list_default;
+			file_lseek(fd, 0);
+			nLineChars = file_read(fd, line, MAX_LINE_SIZE);
+			while (nLineChars > 0)
+			{
+				nLineChars = copy_line(buf, line, nLineChars);
+				trim_leading_spaces(buf);
+				if (buf[0] && buf[0] != '#')
+				{
+					int state = 0;
+
+					memset(&wiki_list[nWikiList], 0, sizeof(WIKI_LIST));
+					wiki_list[nWikiList].wiki_default_keyboard = KEYBOARD_CHAR; // default keyboard
+					get_next_token(NULL, buf); // initialize get_next_token()
+					while (get_next_token(word, NULL))
+					{
+						trim_leading_spaces(word);
+						trim_trailing_spaces(word);
+						switch (state)
+						{
+						case 0:
+							str_to_upper(word);
+							wiki_list[nWikiList].wiki_cat = get_category_info(word);
+							if (wiki_list[nWikiList].wiki_cat != WIKI_CAT_INVALID)
+								state++;
+							else
+								state = 99;
+							break;
+						case 1:
+							strncpy(wiki_list[nWikiList].wiki_lang, word, sizeof(wiki_list[nWikiList].wiki_lang) - 1);
+							wiki_list[nWikiList].wiki_lang[sizeof(wiki_list[nWikiList].wiki_lang) - 1] = '\0';
+							if (wiki_list[nWikiList].wiki_lang[0])
+								state++;
+							else
+								state = 99;
+							break;
+						case 2:
+							str_to_lower(word);
+							strncpy(wiki_list[nWikiList].wiki_folder, word, sizeof(wiki_list[nWikiList].wiki_folder) - 1);
+							wiki_list[nWikiList].wiki_folder[sizeof(wiki_list[nWikiList].wiki_folder) - 1] = '\0';
+							if (wiki_list[nWikiList].wiki_folder[0])
+							{
+								wiki_list[nWikiList].wiki_id = assign_wiki_id(word);
+								state++;
+							}
+							else
+								state = 99;
+							break;
+						case 3:
+							str_to_upper(word);
+							wiki_list[nWikiList].wiki_default_keyboard = get_keyboard_info(word);
+							if (wiki_list[nWikiList].wiki_default_keyboard != KEYBOARD_NONE)
+								state++;
+							else
+								state = 99;
+							break;
+						case 4:
+							wiki_list[nWikiList].wiki_nls_idx = atoi(word);
+							state++;
+							break;
+						default:
+							break;
+						}
+					}
+					if (wiki_list[nWikiList].wiki_cat != WIKI_CAT_INVALID &&
+					    wiki_list[nWikiList].wiki_lang[0] &&
+					    wiki_list[nWikiList].wiki_folder[0] &&
+					    wiki_list[nWikiList].wiki_default_keyboard != KEYBOARD_NONE)
+					{
+						wiki_list[nWikiList].wiki_serial_id = nWikiList + 1;
+						nWikiList++;
+					}
+				}
+				nLineChars += file_read(fd, &line[nLineChars], MAX_LINE_SIZE - nLineChars);
+			}
+		}
+	}
+	if (!nWikiList)
+	{
+		wiki_list = wiki_list_default;
+		nWikiList = sizeof(wiki_list_default) / sizeof(WIKI_LIST);
+	}
+	baWikiActive = (bool *)memory_allocate(sizeof(bool) * nWikiList, "baWikiActive");
+	memset(baWikiActive, 0, sizeof(bool) * nWikiList);
+	for (i = 0; i < nWikiList; i++)
 	{
 		if (directory_exists(wiki_list[i].wiki_folder))
 		{
@@ -111,7 +347,7 @@ void init_wiki_info(void)
 		pWikiLicenseDraw->lines = 0;
 
 		j = 0;
-		for (i = 0; i < MAX_WIKIS; i++)
+		for (i = 0; i < nWikiList; i++)
 		{
 			if (baWikiActive[i])
 				aActiveWikis[j++].WikiInfoIdx = i;
@@ -209,7 +445,7 @@ int get_wiki_idx_by_lang_link(const unsigned char *lang_link_str)
 		len = p - lang_link_str;
 		for (i = 0; i < nWikiCount; i++)
 		{
-			if (current_wiki_cat == wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_cat &&
+			if (current_wiki_cat == (int)wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_cat &&
 			    !ustrncmp(lang_link_str, wiki_list[aActiveWikis[i].WikiInfoIdx].wiki_lang, len))
 				return i;
 		}

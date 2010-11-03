@@ -30,19 +30,22 @@
 #define NLS_TEXT_REPLACEMENT_END '>'
 #define MAX_LICENSE_TEXT_LEN 1024
 #define MAX_LICENSE_TEXT_PIXEL_LINES 512
-enum wiki_cat_e {
+typedef enum {
+	WIKI_CAT_INVALID,
 	WIKI_CAT_ENCYCLOPAEDIA,
 	WIKI_CAT_TRAVEL,
 	WIKI_CAT_DICTIONARY,
 	WIKI_CAT_QUOTE,
 	WIKI_CAT_SOURCE,
 	WIKI_CAT_BOOKS,
-};
+	WIKI_CAT_GUTENBERG,
+	WIKI_CAT_OTHERS
+} WIKI_CAT_E;
 
 typedef struct _WIKI_LIST {
 	int wiki_serial_id;
 	int wiki_id;
-	int wiki_cat;
+	WIKI_CAT_E wiki_cat;
 	char wiki_lang[10];
 	char wiki_folder[10];
 	KEYBOARD_MODE wiki_default_keyboard;

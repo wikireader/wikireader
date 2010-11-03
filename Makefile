@@ -225,14 +225,20 @@ version: validate-destdir
 
 
 # create empty history and password files
+# set up other required files
 .PHONY: clear-history
 clear-history: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[pP][aA][sS]
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[hH][sS][tT]
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][iI]
+	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][fF]
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.pas" bs=40 count=1
-	echo "wiki_id=1" > "${DESTDIR_PATH}/wiki.ini"
+	grep -v '^[[:space:]]*\(#.*\)[[:space:]]*$$' "${LICENSE_DIR}"/wiki.inf > "${DESTDIR_PATH}"/wiki.inf
+	id=$$(grep -n -m 1 '${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}' "${DESTDIR_PATH}/wiki.inf"); \
+	  id=$${id%%:*}; \
+	  [ -z "$${id}" ] && id=1; \
+	  echo wiki_id=$${id%%:*} > "${DESTDIR_PATH}/wiki.ini"
 
 
 .PHONY: misc-files-install
