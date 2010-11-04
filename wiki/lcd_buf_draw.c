@@ -711,7 +711,7 @@ int lcd_draw_buf_get_pixel(int x, int y)
 
 void buf_draw_char(ucs4_t u)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	int bytes_to_process;
 	int x_base;
@@ -785,7 +785,7 @@ void buf_draw_char(ucs4_t u)
 
 int get_external_str_pixel_width(const unsigned char *pIn, int font_idx)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	int width = 0;
 	ucs4_t u;
@@ -807,7 +807,7 @@ int get_external_str_pixel_width(const unsigned char *pIn, int font_idx)
 void get_external_str_pixel_rectangle(const unsigned char *pIn, int font_idx,
 				      int *start_x, int *start_y, int *end_x, int *end_y)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	ucs4_t u;
 	const unsigned char **pUTF8 = &pIn;
@@ -884,7 +884,7 @@ void buf_draw_char_external(LCD_DRAW_BUF *lcd_draw_buf_external,ucs4_t u,int sta
 	(void)start_y; // *** unused argument
 	(void)end_y; // *** unused argument
 
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	int bytes_to_process;
 	int x_base;
@@ -956,7 +956,7 @@ int get_UTF8_char_width(int idxFont, const unsigned char **pContent, long *lenCo
 	ucs4_t u;
 	const unsigned char *pBase;
 	charmetric_bmf Cmetrics;
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 
 	pBase = *pContent;
 	u = UTF8_to_UCS4(pContent);
@@ -982,7 +982,7 @@ bool is_word_break(ucs4_t u)
 
 int extract_str_fitting_width(const unsigned char **pIn, unsigned char *pOut, int max_width, int font_idx)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	int width = 0;
 	int widthFitted = 0;
@@ -2353,7 +2353,7 @@ int strchr_idx(char *s, char c)
 
 int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	//pcf_SCcharmet_t sm;
 	int bytes_to_process;
@@ -2441,7 +2441,7 @@ int draw_bmf_char(ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 int buf_draw_bmf_char(unsigned char *buf, int buf_width_pixels, int buf_width_bytes,
 		      ucs4_t u,int font,int x,int y, int inverted, int b_clear)
 {
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	//pcf_SCcharmet_t sm;
 	int bytes_to_process;
@@ -2804,7 +2804,7 @@ int find_start_pos(const unsigned char *pBuf, pcffont_bmf_t *pFont, int start_x,
 	const unsigned char *p_buf_last_word_break = pBuf;
 	int last_x = LCD_LEFT_MARGIN;
 	const unsigned char *p = pBuf;
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	unsigned char c;
 	bool bNewLine = false;
@@ -2851,7 +2851,7 @@ int find_end_pos(const unsigned char *pBuf, pcffont_bmf_t *pFont, int end_x, int
 {
 	int last_x = LCD_LEFT_MARGIN;
 	const unsigned char *p = pBuf;
-	bmf_bm_t *bitmap;
+	bmf_bm_t *bitmap = NULL;
 	charmetric_bmf Cmetrics;
 	unsigned char c;
 	bool bNewLine = false;
