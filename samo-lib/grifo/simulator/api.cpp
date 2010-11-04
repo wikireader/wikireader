@@ -259,7 +259,7 @@ event_item_t event_get(event_t *event) {
 
 event_item_t event_wait(event_t *event, event_callback_t *callback, void *arg) {
 	for (;;) {
-		event_item_t item = queue->dequeue(event, 3 * 60 * 100); // milliseconds
+		event_item_t item = queue->dequeue(event, 3 * 60 * 1000); // milliseconds
 		if (EVENT_NONE != item) {
 			return event->item_type;
 		}
