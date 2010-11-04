@@ -211,7 +211,13 @@ install: validate-destdir mahatma-install forth-install fonts-install nls-instal
 
 # install grifo version
 .PHONY: ginstall
-ginstall: validate-destdir grifo-install forth-install fonts-install nls-install misc-files-install version clear-history
+ginstall: validate-destdir grifo-install init-ini-install forth-install fonts-install nls-install misc-files-install version clear-history
+
+# install the default init.ini
+.PHONY: init-ini-install
+init-ini-install: validate-destdir
+	${STRIP_HASH_OR_BLANK_LINES} "${LICENSE_DIR}"/init.ini > "${DESTDIR_PATH}"/init.ini
+
 
 # set up version and checksum files
 .PHONY: version
@@ -234,7 +240,7 @@ clear-history: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][fF]
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.pas" bs=40 count=1
-	grep -v '^[[:space:]]*\(#.*\)[[:space:]]*$$' "${LICENSE_DIR}"/wiki.inf > "${DESTDIR_PATH}"/wiki.inf
+	${STRIP_HASH_OR_BLANK_LINES} "${LICENSE_DIR}"/wiki.inf > "${DESTDIR_PATH}"/wiki.inf
 	id=$$(grep -n -m 1 '${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}' "${DESTDIR_PATH}/wiki.inf"); \
 	  id=$${id%%:*}; \
 	  [ -z "$${id}" ] && id=1; \

@@ -158,9 +158,9 @@ install: all
 ifneq (YES,$(strip ${INSTALL_GRIFO_SIMULATION}))
 	${COPY} grifo.elf "${DESTDIR}"/kernel.elf
 endif
-	${COPY} init.ini "${DESTDIR}"/
 	${MAKE} -C applications install INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}"
 ifeq (YES,$(strip ${BUILD_EXAMPLES}))
+	${COPY} init.ini "${DESTDIR}"/
 	${MAKE} -C examples install INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}"
 endif
 

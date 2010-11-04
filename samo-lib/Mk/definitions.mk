@@ -54,6 +54,8 @@ RM = rm -f
 MKDIR = mkdir -p
 COPY = cp -p
 TOUCH = touch
+STRIP_HASH_OR_BLANK_LINES = grep -v '^[[:space:]]*\(\#.*\)\?[[:space:]]*$$'
+
 
 ifeq (Linux,${OS})
 
