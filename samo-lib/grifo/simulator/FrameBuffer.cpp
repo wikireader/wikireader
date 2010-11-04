@@ -55,8 +55,8 @@ FrameBuffer::FrameBuffer(EventQueue *queue,
 
 
 FrameBuffer::~FrameBuffer() {
-	delete this->MainPixels;
-	delete this->WindowPixels;
+	delete[] this->MainPixels;
+	delete[] this->WindowPixels;
 }
 
 
