@@ -111,7 +111,10 @@ void set_root(PBTREE btree, int node_idx)
 
 int key_count (PBTREE btree, int node_idx)
 {
-	return btree->nodes[node_idx].element_count-1;
+	if (BTREE_IS_VALID_NODE_IDX(node_idx))
+		return btree->nodes[node_idx].element_count-1;
+	else
+		return 0;
 }
 
 PBTREE_ELEMENT largest_key (PBTREE btree, int node_idx)
@@ -275,7 +278,7 @@ int vector_insert_for_split (PBTREE btree, int node_idx, PBTREE_ELEMENT element)
 		memcpy(&btree->nodes[node_idx].elements[i], &btree->nodes[node_idx].elements[i-1], sizeof(BTREE_ELEMENT));
 		i--;
 	}
-	if (element->subtree_node_idx)
+	if (BTREE_IS_VALID_NODE_IDX(element->subtree_node_idx))
 		btree->nodes[element->subtree_node_idx].parent_node_idx = node_idx;
 	memcpy(&btree->nodes[node_idx].elements[i], element, sizeof(BTREE_ELEMENT));
 	btree->nodes[node_idx].element_count++;
@@ -579,7 +582,7 @@ PBTREE_ELEMENT btree_search_ex (PBTREE btree, int *node_idx, long desired_key) {
 	// payload, just a subtree).  the seach starts at the *this node, not
 	// at the root of the b-tree.
 	int current_node_idx = *node_idx;
-	if (!key_count(btree, *node_idx))
+	if (!BTREE_IS_VALID_NODE_IDX(*node_idx) || !key_count(btree, *node_idx))
 		current_node_idx = BTREE_INVALID_NODE_IDX;
 	while (BTREE_IS_VALID_NODE_IDX(current_node_idx)) {
 		*node_idx = current_node_idx;
