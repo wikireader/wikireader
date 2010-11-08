@@ -817,10 +817,28 @@ grifo-simulate: validate-destdir
 
 $(call STD_RULE, wiki, wiki, gcc mini-libc grifo, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
 
+
 .PHONY: wiki-simulate
 wiki-simulate: validate-destdir
 	make INSTALL_GRIFO_SIMULATION=YES DESTDIR="${DESTDIR}" wiki-install
 	cd "${DESTDIR}" && ./wiki.app
+
+VALGRIND_OPTS += --leak-check=full
+VALGRIND_OPTS += --leak-resolution=high
+VALGRIND_OPTS += --show-reachable=no
+VALGRIND_OPTS += --undef-value-errors=yes
+VALGRIND_OPTS += --track-origins=yes
+VALGRIND_OPTS += --partial-loads-ok=no
+VALGRIND_OPTS += --freelist-vol=10000000
+VALGRIND_OPTS += --workaround-gcc296-bugs=no
+#VALGRIND_OPTS += --ignore-ranges=0xPP-0xQQ[,0xRR-0xSS]
+VALGRIND_OPTS += --malloc-fill=0xff
+VALGRIND_OPTS += --free-fill=0xff
+
+.PHONY: wiki-valgrind
+wiki-valgrind: validate-destdir
+	make INSTALL_GRIFO_SIMULATION=YES DESTDIR="${DESTDIR}" wiki-install
+	cd "${DESTDIR}" && valgrind ${VALGRIND_OPTS} ./wiki.app
 
 
 # Master boot record
