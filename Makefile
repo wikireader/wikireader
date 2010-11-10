@@ -211,7 +211,7 @@ install: validate-destdir mahatma-install forth-install fonts-install nls-instal
 
 # install grifo version
 .PHONY: ginstall
-ginstall: validate-destdir grifo-install init-ini-install forth-install fonts-install nls-install misc-files-install version clear-history
+ginstall: validate-destdir grifo-install init-ini-install wiki-install forth-install fonts-install nls-install misc-files-install version clear-history
 
 # install the default init.ini
 .PHONY: init-ini-install
