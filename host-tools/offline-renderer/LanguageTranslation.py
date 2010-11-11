@@ -229,7 +229,9 @@ class LanguageJapanese(LanguageProcessor):
                         if i not in result:
                             result[i] = {}
                         f =  b.feature.split(',')
-                        if max_len <= b.length:
+                        if len(f) < 8 and f[1] == '数':
+                            pass
+                        elif max_len <= b.length:
                             if len(f) < 8 or f[7] == '*':
                                 r = self.romanise(b.surface)
                             else:
