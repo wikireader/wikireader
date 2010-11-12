@@ -504,6 +504,8 @@ uint32_t wiki_lang_link_search(const unsigned char *lang_link_str)
 		q = ustrchr(lang_link_str, '#');
 		if (!p || (q && q < p))
 			p = q;
+		if (p && q && q > p)
+			*q = '\0'; // truncate # in title, e.g., en:Tokyo#Cities
 		if (p)
 		{
 			if (*p == '#') // actual title is different than title for search

@@ -2319,7 +2319,12 @@ void open_article_link_with_link_number(int article_link_number)
 	{
 		idx = wiki_lang_link_search(externalLink[article_link_number].link_str);
 		if (!idx)
+		{
+			delay_us(20000);
+			invert_link(article_link_number);
+			display_first_page = 1;
 			return;
+		}
 	}
 	display_link_article(idx);
 }
