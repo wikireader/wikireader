@@ -35,6 +35,8 @@ WIKI_LIST wiki_list_default[] =
 {
 	{ 1,  1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia", KEYBOARD_CHAR, 0},
 #if 0
+	// these are low loaded from "wiki.inf" in the root of the SD Card
+	// the standard default file is: XML-Licenses/wiki.inf
 	{ 2,  2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia", KEYBOARD_CHAR, 0},
 	{ 3,  3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia", KEYBOARD_CHAR, 0},
 	{ 4,  4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia", KEYBOARD_CHAR, 0},

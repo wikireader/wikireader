@@ -1564,7 +1564,8 @@ int retrieve_article(long idx_article_with_wiki_id)
 					} else {
 						restricted_article = 0;
 					}
-					memcpy(file_buffer, &file_buffer[offset], concat_article_infos[idx_concat_article].article_len);
+					// memory overlaps so cannot use memcpy
+					memmove(file_buffer, &file_buffer[offset], concat_article_infos[idx_concat_article].article_len);
 					file_buffer[concat_article_infos[idx_concat_article].article_len] = '\0';
 					return 0;
 				}
