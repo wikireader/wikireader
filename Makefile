@@ -205,8 +205,12 @@ CHECKSUM_FILE := sha${SHA_LEVEL}.txt
 .PHONY: jig-install
 jig-install: validate-destdir forth-install flash-install mbr-install
 
-# install mahatma version
+# default install method - now set to use grifo
 .PHONY: install
+install: ginstall
+
+# install mahatma version
+.PHONY: minstall
 install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
 
 # install grifo version
@@ -957,7 +961,7 @@ help:
 	@echo 'Some of the more useful targets:'
 	@echo
 	@echo '  all                   - compile all the source'
-	@echo '  install               - install forth, mahatma, fonts in DESTDIR'
+	@echo '  install               - install forth, grifo, init, wiki, fonts in DESTDIR'
 	@echo '  index                 - convert XML_FILES to index files in DESTDIR'
 	@echo '  parse                 - parse XML_FILES into one HTML file in WORKDIR'
 	@echo '  render                - render HTML in WORKDIR into one big data file in DESTDIR'
@@ -969,8 +973,6 @@ help:
 	@echo '  farm<1..N>-clean      - remove stamp files to repeat process'
 	@echo '  mbr                   - compile bootloader'
 	@echo '  mbr-install           - install flash.rom in DESTDIR'
-	@echo '  mahatma               - compile kernel'
-	@echo '  mahatma-install       - install mahatma as kernel in DESTDIR'
 	@echo '  forth                 - compile forth'
 	@echo '  forth-install         - install forth files in DESTDIR'
 	@echo '  flash                 - compile flash (programs flash.rom from SD Card'
@@ -982,8 +984,6 @@ help:
 	@echo '  grifo-simulate        - install the simulated Grifo examples - these run on host machine'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
-	@echo '  qt4-simulator         - compile the Qt4 simulator'
-	@echo '  sim4  sim4d           - use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
 	@echo '  console-simulator     - compile the console simulator'
 	@echo '  requirements          - detect missing packages'
 	@echo '  clean                 - clean all programs and object files except the toochain'
@@ -993,6 +993,12 @@ help:
 	@echo '  jig-install           - copy flash program and image; forth and programs to SD Card'
 	@echo '  p33                   - terminal emulator (console debugging)'
 	@echo '  fetch-nls             - Fetch nls, texts and license files from web'
+	@echo
+	@echo '  mahatma               - (deprecated) compile kernel'
+	@echo '  mahatma-install       - (deprecated) install mahatma as kernel in DESTDIR'
+	@echo '  minstall              - (deprecated) install forth, mahatma, fonts in DESTDIR'
+	@echo '  qt4-simulator         - (deprecated) compile the grifo Qt4 simulator'
+	@echo '  sim4  sim4d           - (deprecated) use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
 	@echo
 
 
