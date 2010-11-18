@@ -41,28 +41,17 @@ USAGE()
   exit 1
 }
 
+# ListOfAllContentTypes, TypeToName, TypeToFilename
+source "$(dirname "$0")/wiki-names.sh"
+
 set_articles_link()
 {
-  case "${suffix}" in
-    pedia)
-      articles_link="${language}wiki-pages-articles.xml"
-      ;;
-    dict)
-      articles_link="${language}wiktionary-pages-articles.xml"
-      ;;
-    quote)
-      articles_link="${language}wikiquote-pages-articles.xml"
-      ;;
-    books)
-      articles_link="${language}wikibooks-pages-articles.xml"
-      ;;
-    starw)
-      articles_link="${language}Wookieepedia-pages-articles.xml"
-      ;;
-    *)
-      USAGE invalid suffix: ${suffix}, [pedia, dict, quote, books, starw]
-      ;;
-  esac
+  local fn
+  if ! fn="$(TypeToFilename "${suffix}")"
+  then
+    USAGE invalid suffix: ${suffix}, [${ListOfAllContentTypes}]
+  fi
+  articles_link="${language}${fn}"
 }
 
 set_farm()

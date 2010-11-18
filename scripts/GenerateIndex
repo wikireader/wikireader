@@ -48,7 +48,9 @@ exec sbcl --script "$0" "$0" "$@"
      '(("books" "Wikibooks")
        ("dict" "Wiktionary")
        ("pedia" "Wikipedia")
-       ("quote" "Wikiquote"))
+       ("trav" "Wikitravel")
+       ("quote" "Wikiquote")
+       ("starw" "Wookieepedia"))
    do
      (setf (gethash (first item) *type-codes*) (second item)))
 

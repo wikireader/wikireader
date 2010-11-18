@@ -23,6 +23,9 @@ USAGE()
   exit 1
 }
 
+# ListOfAllContentTypes, TypeToName, TypeToFilename
+source "$(dirname "$0")/wiki-names.sh"
+
 
 nlsprint=$(readlink -m "$(dirname "$0")/../samo-lib/scripts/nls-print")
 verbose=no
@@ -126,30 +129,6 @@ done
 # absolute path to directories
 packages=$(readlink -m "${packages}")
 image=$(readlink -m "${image}")
-
-# all possible type of content
-all_types='books dict pedia quote'
-TypeToName()
-{
-  local type="$1"; shift
-  case "${type}" in
-    books)
-      echo wikibooks
-      ;;
-    dict)
-      echo wiktionary
-      ;;
-    pedia)
-      echo wikipedia
-      ;;
-    quote)
-      echo wikiquote
-      ;;
-    *)
-      echo unknown
-      ;;
-  esac
-}
 
 # create and check directories directory
 mkdir -p "${packages}"
@@ -283,7 +262,7 @@ do
 
   language=unknown
   type=unknown
-  for s in ${all_types}
+  for s in ${ListOfAllContentTypes}
   do
     l1="${d%${s}}"
     if [ X"${d}" != X"${l1}" ]
@@ -295,7 +274,10 @@ do
   done
 
   native_language=$(${nlsprint} "${language}")
-  full_name=$(TypeToName "${type}")
+  if ! full_name=$(TypeToName "${type}")
+  then
+    full_name=unknown
+  fi
 
   HTMLoutput 2 '<li>'
   HTMLoutput 4 "<strong>${native_language} ${full_name}</strong> &#8211;"
