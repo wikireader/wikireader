@@ -392,7 +392,7 @@ static struct keyboard_key phone_tw_123[] = {
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
 };
 static struct keyboard_key password_char[] = {
-	KEY(175, 81, 204, 105,	177, 83, 202, 103,	"Y"),
+	KEY(175, 81, 228, 105,	177, 83, 226, 103,	"Y"),
 
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"q"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"a"),
@@ -434,7 +434,7 @@ static struct keyboard_key password_char[] = {
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
 };
 static struct keyboard_key password_num[] = {
-	KEY(175, 81, 204, 105,	175, 81, 204, 105,	"Y"),
+	KEY(175, 81, 228, 105,	177, 83, 226, 103,	"Y"),
 
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"1"),
 	KEY(  0, 153,  23, 180,	  3, 156,  21, 178,	"*"),
@@ -579,7 +579,8 @@ int keyboard_get_mode()
 
 int nls_button_enabled()
 {
-	return (get_search_string_len() == 0 && get_wiki_count() > 1);
+	return (get_search_string_len() == 0 && get_wiki_count() > 1 &&
+		kb_mode != KEYBOARD_PASSWORD_CHAR && kb_mode != KEYBOARD_PASSWORD_NUM);
 }
 
 

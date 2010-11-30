@@ -153,8 +153,8 @@ void enter_password_screen(const unsigned char *msg)
 	framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 21] = 0x07;
 
 	framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 22] = 0x80;
-	memset(&framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 23], 0, 2);
-	framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 25] = 0x1F;
+	memset(&framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 23], 0, 5);
+	framebuffer[82 * LCD_BUFFER_WIDTH / 8 + 28] = 0x1F;
 
 	for (i = 83; i <= 103; i++)
 	{
@@ -163,8 +163,8 @@ void enter_password_screen(const unsigned char *msg)
 		framebuffer[i * LCD_BUFFER_WIDTH / 8 + 21] = 0x03;
 
 		framebuffer[i * LCD_BUFFER_WIDTH / 8 + 22] = 0x00;
-		memset(&framebuffer[i * LCD_BUFFER_WIDTH / 8 + 23], 0, 2);
-		framebuffer[i * LCD_BUFFER_WIDTH / 8 + 25] = 0x0F;
+		memset(&framebuffer[i * LCD_BUFFER_WIDTH / 8 + 23], 0, 5);
+		framebuffer[i * LCD_BUFFER_WIDTH / 8 + 28] = 0x0F;
 	}
 
 	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 4] = 0xFC;
@@ -172,11 +172,11 @@ void enter_password_screen(const unsigned char *msg)
 	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 21] = 0x07;
 
 	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 22] = 0x80;
-	memset(&framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 23], 0, 2);
-	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 25] = 0x1F;
+	memset(&framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 23], 0, 5);
+	framebuffer[104 * LCD_BUFFER_WIDTH / 8 + 28] = 0x1F;
 
 	pText = get_nls_text("ok");
-	render_string(SUBTITLE_FONT_IDX, 180, 85, pText, ustrlen(pText), 0);
+	render_string_centered(SUBTITLE_FONT_IDX, 177, 85, 50, pText, ustrlen(pText), 0);
 	guilib_fb_unlock();
 }
 

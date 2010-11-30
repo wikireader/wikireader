@@ -39,5 +39,7 @@ int draw_glyphs_to_buf(const int font, int start_x, int start_y, const char *str
 int render_string_and_clear(const int font, int start_x,
 			    int start_y, const unsigned char *string, int text_length, int inverted,
 			    int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
+void render_string_centered(const int font, int start_x, int start_y, int max_width,
+			    const unsigned char *string, int text_length, int inverted);
 #endif /* GLYPH_H */
 

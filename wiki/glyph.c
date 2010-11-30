@@ -343,3 +343,31 @@ int render_string_right(const int font, int start_x,
 	guilib_clear_area(x, start_y, LCD_BUF_WIDTH_PIXELS - 1, start_y + GetFontLinespace(font));
 	return rc;
 }
+
+void render_string_centered(const int font, int start_x, int start_y, int max_width,
+			    const unsigned char *string, int text_length, int inverted)
+{
+	int x;
+	int width = 0;
+	long len = text_length;
+	const unsigned char *p = string;
+	int nCharBytes;
+	ucs4_t c;
+
+	while (len > 0)
+	{
+		width += get_UTF8_char_width(font, &p, &len, &nCharBytes);
+	}
+
+	if (width < max_width)
+		start_x += (max_width - width) / 2;
+
+	x = start_x;
+	const unsigned char *q = (const unsigned char *)string;
+	while (*q) {
+		c = UTF8_to_UCS4(&q);
+		x = draw_bmf_char(c,font-1,x,start_y, inverted, 1);
+		if(x<0)
+			return;
+	}
+}
