@@ -8,8 +8,8 @@ books:wikibooks:wikibooks-pages-articles.xml:
 dict:wiktionary:wiktionary-pages-articles.xml:
 pedia:wikipedia:wiki-pages-articles.xml:
 quote:wikiquote:wikiquote-pages-articles.xml:
-starw:Wookieepedia:wikitravel-pages-articles.xml
-trav:wikitravel:Wookieepedia-pages-articles.xml
+starw:Wookieepedia:Wookieepedia-pages-articles.xml
+trav:wikitravel:wikitravel-pages-articles.xml
 '
 
 ListofAllContentTypes=
