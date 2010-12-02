@@ -301,7 +301,7 @@ do
       ;;
 
     -x|--xml-link)
-      for s in wiki wiktionary wikiquote wikibooks Wookieepedia
+      for s in wiki wiktionary wikiquote wikibooks wikitravel Wookieepedia
       do
         RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&

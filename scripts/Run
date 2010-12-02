@@ -47,7 +47,7 @@ USAGE()
 }
 
 # ListOfAllContentTypes, TypeToName, TypeToFilename
-source "$(dirname "$0")/wiki-names.sh"
+. "$(dirname "$0")/wiki-names.sh"
 
 # run a command or just print it
 RUN()
@@ -234,7 +234,7 @@ do
 done
 
 
-if [[ $((${machine_count} * ${parallel_build})) > ${MaximumThreads} ]]
+if [ $((${machine_count} * ${parallel_build})) -gt ${MaximumThreads} ]
 then
   echo machine_count=${machine_count}
   echo parallel_build=${parallel_build}
