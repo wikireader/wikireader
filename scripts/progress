@@ -42,7 +42,8 @@ USAGE()
 }
 
 # ListOfAllContentTypes, TypeToName, TypeToFilename
-source "$(dirname "$0")/wiki-names.sh"
+. "$(dirname "$0")/wiki-names.sh"
+
 
 set_articles_link()
 {
@@ -301,8 +302,9 @@ do
       ;;
 
     -x|--xml-link)
-      for s in wiki wiktionary wikiquote wikibooks wikitravel Wookieepedia
+      for c in ${ListOfAllContentTypes}
       do
+        s=$(TypeToName "${c}")
         RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&
  f=\$(ls -1 ../'${language}${s}'-*-pages-articles.xml 2>/dev/null | tail -n 1) &&
