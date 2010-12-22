@@ -124,7 +124,7 @@ IMAGES += keyboard_phone_tw.png
 IMAGES += nls.png
 
 ALL_IMAGES = $(addprefix ${BUILD_PREFIX},all_images.h)
-TARGETS += ${ALL_IMAGES}
+PREBUILD_TARGETS += ${ALL_IMAGES}
 
 IMAGE_HEADERS = $(addsuffix .h,$(addprefix ${BUILD_PREFIX},$(basename ${IMAGES})))
 CLEAN_TARGETS += ${IMAGE_HEADERS}

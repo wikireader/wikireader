@@ -110,7 +110,7 @@ endif
 
 # no more assignments to TARGETS or CLEAN_TARGETS  after this point
 .PHONY: build-targets
-build-targets: ${TARGETS} ${EXTRA_TARGETS}
+build-targets: ${PREBUILD_TARGETS} ${TARGETS} ${EXTRA_TARGETS}
 
 .PHONY: install
 install: all
