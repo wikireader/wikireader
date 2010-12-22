@@ -148,6 +148,7 @@ do
   if [ ! -d "${f}" ]
   then
     COPY "${f}" "${card}"
+    touch "${card}/.metadata_never_index"
   fi
 done
 echo
