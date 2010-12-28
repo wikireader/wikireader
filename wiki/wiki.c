@@ -3,6 +3,7 @@
  *
  * Authors   Daniel Mack <daniel@caiaq.de>
  *           Holger Hans Peter Freyther <zecke@openmoko.org>
+ *           Christopher Hall <hsw@openmoko.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +35,23 @@ int grifo_main(int argc, char **argv)
 	(void)argv; // *** unused argument
 
 	debug_printf("starting wiki app\n");
+
+	int fd = file_open("version.txt", FILE_OPEN_READ);
+	if (fd >= 0) {
+		debug_print("Display version.txt\n");
+		for (;;) {
+			char c;
+			size_t len = file_read(fd, &c, 1);
+			if (len <= 0) {
+				break;
+			}
+			debug_print_char(c);
+		}
+		file_close(fd);
+	} else {
+		debug_print("Missing version.txt\n");
+	}
+
 	wikilib_run();
 	return 1;
 }

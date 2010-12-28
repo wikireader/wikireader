@@ -1371,6 +1371,15 @@ int wikilib_run(void)
 			event_get(&ev);
 		more_events = 1;
 		switch (ev.item_type) {
+		case EVENT_KEY:
+			if (display_mode == DISPLAY_MODE_HISTORY
+			    && (ev.key.code == 'y' || ev.key.code == 'Y')) {
+				history_clear();
+				keyboard_set_mode(KEYBOARD_NONE);
+				history_reload();
+				debug_print("History Cleared\n");
+			}
+			break;
 		case EVENT_BUTTON_UP:
 			b_show_scroll_bar = 0;
 			handle_button_release(ev.button.code);
