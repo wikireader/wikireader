@@ -70,7 +70,9 @@ HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.h
 
 VERSION_FILE := ${DATA_PREFIX}.ftr
 
-MECAB_INDEX := /usr/lib/mecab/mecab-dict-index
+# search for the mecab index file
+MECAB_INDEX := $(shell for d in /usr/lib/mecab /usr/libexec/mecab /usr/bin; do f="$${d}/mecab-dict-index"; [ -f "$${f}" ] && echo $${f} && break; done)
+
 MECAB_INDEX_OPTS := --dicdir=/var/lib/mecab/dic/ipadic-utf8 --charset=utf-8 --dictionary-charset=utf-8
 
 PYLZMA_DIR := pylzma-0.3.0
