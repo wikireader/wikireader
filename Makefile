@@ -25,6 +25,8 @@
 # These  can be overridden on the command line:
 # (defaults indicated in [])
 #
+#   XML_FILES                  list of files to process
+#
 #   WIKI_LANGUAGE              Language code [en]
 #
 #   WIKI_LANGUAGE_VARIANT      Variant Language code []
@@ -51,6 +53,8 @@
 #   PROGRESS_BAR               Enable progress bar when compiling mahatma.elf [NO]
 #
 #   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf [NO]
+#
+#   GRIFO_EXAMPLES             Compile / install grifo examples [NO]
 #
 #   EXTRACT_VERSION_FROM       a link to XML file name that has an embedded date
 #                              which will be used to set WIKI_VERSION
@@ -424,7 +428,10 @@ local-pylzma-install:
 
 $(call STD_BASE, offline-renderer, ${HOST_TOOLS}/offline-renderer)
 
+# wikis
 XML_FILES_PATH = $(realpath ${XML_FILES})
+
+# default for simgle machine
 RENDER_BLOCK ?= 0
 
 # rendering compression parameters
@@ -808,7 +815,9 @@ $(call STD_RULE, flash, ${SAMO_LIB}/flash, gcc mini-libc fatfs drivers, INSTALL)
 # Grifo small kernel
 # ==================
 
-$(call STD_RULE, grifo, ${SAMO_LIB}/grifo, gcc mini-libc fatfs, INSTALL, INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
+GRIFO_EXAMPLES ?= NO
+
+$(call STD_RULE, grifo, ${SAMO_LIB}/grifo, gcc mini-libc fatfs, INSTALL, INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}" BUILD_EXAMPLES="${GRIFO_EXAMPLES}")
 
 .PHONY: grifo-simulate
 grifo-simulate: validate-destdir
