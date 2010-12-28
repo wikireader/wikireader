@@ -55,7 +55,7 @@
 #define REG_INT_P16T01			*((REG_TYPE_8 *) (REG_BASE + 0x266))
 #define REG_INT_P16T23			*((REG_TYPE_8 *) (REG_BASE + 0x267))
 #define REG_INT_P16T45			*((REG_TYPE_8 *) (REG_BASE + 0x268))
-#define REG_INT_PLCDC_PSIO0		*((REG_TYPE_8 *) (REG_BASE + 0x269))
+#define REG_INT_PLCDC_PSI00		*((REG_TYPE_8 *) (REG_BASE + 0x269))
 #define REG_INT_PSI01_PAD		*((REG_TYPE_8 *) (REG_BASE + 0x26a))
 #define REG_INT_PRTC			*((REG_TYPE_8 *) (REG_BASE + 0x26b))
 #define REG_INT_PP45L			*((REG_TYPE_8 *) (REG_BASE + 0x26c))
@@ -909,15 +909,26 @@
 #define APPON  (1 << 1)
 #define IQB    (1 << 0)
 
-// Bits for: REG_CH1_INT_PRIORITY
-#define SERIAL_CH1_INT_PRI_7  	0x7
-#define SERIAL_CH1_INT_PRI_6  	0x6
-#define SERIAL_CH1_INT_PRI_5  	0x5
-#define SERIAL_CH1_INT_PRI_4  	0x4
-#define SERIAL_CH1_INT_PRI_3  	0x3
-#define SERIAL_CH1_INT_PRI_2  	0x2
-#define SERIAL_CH1_INT_PRI_1  	0x1
-#define SERIAL_CH1_INT_PRI_0  	0x0
+
+// Bits for: REG_INT_PLCDC_PSI00
+#define SERIAL_CH0_INT_PRI_7  	0x70
+#define SERIAL_CH0_INT_PRI_6  	0x60
+#define SERIAL_CH0_INT_PRI_5  	0x50
+#define SERIAL_CH0_INT_PRI_4  	0x40
+#define SERIAL_CH0_INT_PRI_3  	0x30
+#define SERIAL_CH0_INT_PRI_2  	0x20
+#define SERIAL_CH0_INT_PRI_1  	0x10
+#define SERIAL_CH0_INT_PRI_0  	0x00
+
+// Bits for: REG_INT_PSI01_PAD
+#define SERIAL_CH1_INT_PRI_7  	0x07
+#define SERIAL_CH1_INT_PRI_6  	0x06
+#define SERIAL_CH1_INT_PRI_5  	0x05
+#define SERIAL_CH1_INT_PRI_4  	0x04
+#define SERIAL_CH1_INT_PRI_3  	0x03
+#define SERIAL_CH1_INT_PRI_2  	0x02
+#define SERIAL_CH1_INT_PRI_1  	0x01
+#define SERIAL_CH1_INT_PRI_0  	0x00
 
 
 /*
