@@ -155,6 +155,7 @@ qmake-project:
 	  echo "QMAKE_EXTRA_TARGETS += $${t}" >> ${QMAKE_PROJECT}; \
 	done
 	echo 'QMAKE_EXTRA_TARGETS += all_images' >> ${QMAKE_PROJECT}
+	echo 'QMAKE_LIBS += -lrt' >> ${QMAKE_PROJECT}
 	echo 'QMAKE_CLEAN += $$$${all_images.target}' >> ${QMAKE_PROJECT}
 
 
