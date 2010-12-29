@@ -55,7 +55,7 @@ void serial_init(void)
 		InterruptType s = Interrupt_disable();
 		REG_INT_ESIF01 = ESRX0;
 
-		REG_INT_PLCDC_PSIO0 = 0x70;
+		REG_INT_PLCDC_PSI00 = SERIAL_CH0_INT_PRI_7;
 		console_read = 0;
 		console_write = 0;
 		send_queue_head = NULL;
