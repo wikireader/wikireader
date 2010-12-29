@@ -1,0 +1,103 @@
+#!/bin/sh
+# process all languages
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options>'
+  echo '       --help            -h         this message'
+  exit 1
+}
+
+
+# main program
+
+verbose=no
+debug=no
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvd --long=help,verbose,debug -- "$@") ||exit 1
+
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -d|--debug)
+      debug=yes
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+
+for command in $@
+do
+  case "${command}" in
+
+    # command to rebuild all
+    run)
+      progress -z 16:128ki -r 'cy,de,da,el,en::::::-2,en:dict,en:quote,en:trav,en:starw,es,fi,fr,hu,it,ja,ko,nl,no,pt,ru,sr,zh'
+      ;;
+
+    # retrieve all data
+    get)
+      for l in cy de da el en en:dict en:quote en:trav en:starw es fi fr hu it ja ko nl no pt ru sr zh
+      do
+        progress -L"${l}" -c -G
+      done
+      ;;
+
+    # re-render a few
+    re-render)
+      progress -z 16:128ki --re-render 'de,en::::::-2,es,fr,ja,zh'
+      ;;
+
+    # en is the exception
+    en)
+      progress -z 16:128ki -r en::::::-2
+      ;;
+    rr-en|rren)
+      progress -z 16:128ki --re-render en::::::-2
+      ;;
+
+    # run only one
+    [a-z][a-z]|[a-z][a-z]:*)
+      progress -z 16:128ki -r "${command}"
+      ;;
+
+    # re-render an already built English Wikipedia to fit into 4GB
+    en4gb|en4GB)
+      progress --re-render en:::NO:255:350000:-2:20000
+      ;;
+
+    *)
+      ERROR invalid command: ${command}
+  esac
+done
