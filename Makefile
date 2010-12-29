@@ -215,7 +215,7 @@ install: ginstall
 
 # install mahatma version
 .PHONY: minstall
-install: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
+minstall: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
 
 # install grifo version
 .PHONY: ginstall
