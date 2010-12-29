@@ -70,10 +70,15 @@ HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.h
 
 VERSION_FILE := ${DATA_PREFIX}.ftr
 
-# search for the mecab index file
-MECAB_INDEX := $(shell for d in /usr/lib/mecab /usr/libexec/mecab /usr/bin; do f="$${d}/mecab-dict-index"; [ -f "$${f}" ] && echo $${f} && break; done)
+# search for the mecab index program
+MECAB_INDEX := $(shell for d in /usr/lib/mecab /usr/libexec/mecab /usr/bin; do f="$${d}/mecab-dict-index"; [ -x "$${f}" ] && echo $${f} && break; done)
 
-MECAB_INDEX_OPTS := --dicdir=/var/lib/mecab/dic/ipadic-utf8 --charset=utf-8 --dictionary-charset=utf-8
+# search for the mecab dictionary directory
+MECAB_DICT_DIR := $(shell for d in /var/lib/mecab/dic/ipadic-utf8 /usr/lib64/mecab/dic/ipadic; do [ -d "$${d}" ] && echo $${d} && break; done)
+
+# options for the dictionary index program
+MECAB_INDEX_OPTS := --dicdir="${MECAB_DICT_DIR}" --charset=utf-8 --dictionary-charset=utf-8
+
 
 PYLZMA_DIR := pylzma-0.3.0
 MATH_DIR := mediawiki-offline/math
