@@ -287,10 +287,21 @@ do
   IsInteger "${truncate}" || truncate='unlimited'
   [ "${truncate}" -le 0 ] && truncate='unlimited'
 
+  # license and terms
   licenses=$(readlink -m "${LicensesDirectory}")
   license="${licenses}/${language}/license.xml"
   terms="${licenses}/${language}/terms.xml"
 
+  [ -f "${license}" ] || license="${licenses}/en/license.xml"
+  [ -f "${terms}" ] || terms="${licenses}/en/terms.xml"
+
+  # override license/terms if specific version is required
+  [ -f "${licenses}/${language}/${suffix}-license.xml" ] && license="${licenses}/${language}/${suffix}-license.xml"
+  [ -f "${licenses}/${language}/${suffix}-terms.xml" ] && terms="${licenses}/${language}/${suffix}-terms.xml"
+
+
+
+  # create articles link
   if ! fn="$(TypeToFilename "${suffix}")"
   then
     USAGE invalid suffix: ${suffix}, [${ListOfAllContentTypes}]
@@ -303,9 +314,7 @@ do
 
   [ -f "${articles}" ] || USAGE error articles link: ${articles_link} not set correctly
 
-  [ -f "${license}" ] || license="${licenses}/en/license.xml"
-  [ -f "${terms}" ] || terms="${licenses}/en/terms.xml"
-
+  # ordering of items is important
   xml="${license} ${terms} ${articles}"
 
   # extract numeric suffix from host name

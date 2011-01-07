@@ -1,0 +1,89 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikitravel</sitename>
+    <base>http://wikitravel.org/en/Main_Page</base>
+    <generator>MediaWiki 1.11.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikitravel</namespace>
+      <namespace key="5">Wikitravel talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Wikitravel - Terms of use</title>
+    <id>2571</id>
+    <revision>
+      <id>1520534</id>
+      <timestamp>2010-08-14T03:42:09Z</timestamp>
+      <contributor>
+        <username>Wrh2</username>
+        <id>1399</id>
+        <realname>Ryan Holliday</realname>
+      </contributor>
+      <minor/>
+      <comment>site --&gt; policies</comment>
+      <text xml:space="preserve">The body of work that makes up Wikitravel -- text, images, etc. -- is free for anyone to use, as long as they comply with our [[:shared:Copyleft|copyleft]]. We're working on making the entire Wikitravel database available in other formats, so if you feel the need to copy this information elsewhere, you can.
+
+The wikitravel.org Web server, with accompanying [[Wikitravel:Wiki|Wiki]] software, are a '''collaboration tool''' used to coordinate the effort of contributing [[Wikitravel:Wikitravellers|Wikitravellers]]. It is made available to the entire community of Wikitravel contributors, namely:
+
+#People who support our [[Wikitravel:goals and non-goals|goals]] of creating a free, complete, up-to-date and reliable worldwide travel guide.
+#People who acknowledge that collaboration with other Wikitravellers is necessary to achieve this goal.
+
+If you're not interested in our goals, or if you agree with our goals but refuse to collaborate, compromise, reach [[Wikitravel:consensus|consensus]] or make concessions with other Wikitravellers, we ask that you not use this Web service. If you continue to use the service against our wishes, we reserve the right to use whatever means available -- technical or legal -- to prevent you from disrupting our work together.
+
+See also: [[Wikitravel:Trademark policy]]
+
+==Reframing, image inclusion==
+
+Wikitravel has limited server resources and we'd like to use them to support the creation of content.
+
+For this reason, we ask that individuals or organizations wishing to [[Wikitravel:how to re-distribute Wikitravel content|re-distribute Wikitravel content]] do ''not'' serve images from Wikitravel for inclusion in their own pages, nor put Wikitravel pages into framesets.
+
+==Spiders==
+
+'''Spiders''', '''bots''', and '''scripts''' that read wikitravel.org must obey the following rules. This includes &quot;mass downloaders&quot; like wget or HTTrack. IP addresses for programs that ignore these rules will be ''blocked at the TCP/IP level''. 
+
+# Read-only scripts '''must''' read the [http://wikitravel.org/robots.txt robots.txt] file for Wikitravel and follow its suggestions. Most programs (like [http://www.gnu.org/software/wget/wget.html wget]) automatically know about robots.txt, as do major scripting languages' HTTP client libraries. But if you're writing your own program, check the [http://www.robotstxt.org/wc/norobots.html Standard for Robot Exclusion] for more info.
+# Read-only scripts '''should''' recognize the non-standard [http://help.yahoo.com/help/us/ysearch/slurp/slurp-03.html Crawl-Delay] field in robots.txt. If not, they '''must not''' fetch pages or images more often than once every '''30 seconds'''.
+# Read-only scripts '''must''' have a User-Agent header set. Scripts '''should''' provide a contact email or URL in the header. For example:
+#*''ExampleBot/0.1 (&lt;nowiki&gt;http://www.example.com/bot.html&lt;/nowiki&gt;)''
+#*''MyBot/2.3 (mybot@example.net)''
+
+==See also==
+*[[Wikitravel:How to handle unwanted edits|How to handle unwanted edits]]
+
+
+
+
+
+
+
+
+[[de:Wikitravel:Nutzungsbedingungen]]
+[[it:Wikitravel:Termini d'uso]]
+[[ja:Wikitravel:利用条件]]
+[[nl:Wikitravel:Gebruiksvoorwaarden]]
+[[sv:Wikitravel:Användarvillkor]]
+[[wts:Terms of use/ko]]
+
+
+{{WikitravelDoc|policies}}</text>
+    </revision>
+  </page>
+</mediawiki>
