@@ -18,6 +18,7 @@
  */
 
 #include <ctype.h>
+#include <stdio.h>
 
 #include <grifo.h>
 
@@ -51,6 +52,8 @@ int bKoreanSpecialKeyEnabled = 0;
 extern int display_mode;
 extern unsigned int touch_down_on_keyboard;
 extern int b_type_a_word_cleared;
+int temperature_mode_default = 0;  // 0 = None, 1 = Celcius, 2 = Farenheight
+int temperature_mode = 0;
 
 /* qwerty keyboard by columns */
 #define KEY(l_x, l_y, r_x, r_y, l_x_i, l_y_i, r_x_i, r_y_i, keycode)	\
@@ -102,6 +105,7 @@ static struct keyboard_key qwerty_char[] = {
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key qwerty_full_char[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"ｑ"),
@@ -144,6 +148,7 @@ static struct keyboard_key qwerty_full_char[] = {
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key qwerty_char_da[] = {
 	KEY(  0, 126,  20, 152,	  1, 128,  19, 150,	"ｑ"),
@@ -190,6 +195,7 @@ static struct keyboard_key qwerty_char_da[] = {
 	KEY(219, 181, 239, 207,	220, 183, 238, 205,	WL_KEY_BACKSPACE_STR),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key qwerty_num[] = {
 	KEY(  0, 126,  23, 152,	  3, 128,  21, 150,	"1"),
@@ -232,6 +238,7 @@ static struct keyboard_key qwerty_num[] = {
 	KEY(216, 181, 239, 207,	218, 183, 236, 205,	WL_KEY_SWITCH_KEYBOARD_STR),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key phone_jp[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
@@ -258,6 +265,7 @@ static struct keyboard_key phone_jp[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"、。?!"),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 
 static struct keyboard_key phone_tw[] = {
@@ -285,6 +293,7 @@ static struct keyboard_key phone_tw[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198,  84, 233, 119,	198,  84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 
 static struct keyboard_key phone_abc[] = {
@@ -312,6 +321,7 @@ static struct keyboard_key phone_abc[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key phone_123[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
@@ -338,6 +348,7 @@ static struct keyboard_key phone_123[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key phone_tw_abc[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
@@ -364,6 +375,7 @@ static struct keyboard_key phone_tw_abc[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key phone_tw_123[] = {
 	KEY(  0, 127,  45, 146,	  2, 128,  43, 145,	WL_KEY_NO_WAIT_STR),
@@ -390,6 +402,7 @@ static struct keyboard_key phone_tw_123[] = {
 	KEY(144, 187, 193, 207,	146, 189, 191, 205,	"，‧?!"),
 
 	KEY(198, 84, 233, 119,	198, 84, 233, 119,	WL_KEY_NLS_STR),
+	KEY(180,  10, 239,  27,	180,  10, 239,  27,	WL_KEY_TEMPERATURE_STR),
 };
 static struct keyboard_key password_char[] = {
 	KEY(175, 81, 228, 105,	177, 83, 226, 103,	"Y"),
@@ -583,6 +596,98 @@ int nls_button_enabled()
 		kb_mode != KEYBOARD_PASSWORD_CHAR && kb_mode != KEYBOARD_PASSWORD_NUM);
 }
 
+#if ENABLE_TEMPERATURE
+int temperature_button_enabled() {
+	return (get_search_string_len() == 0 &&
+		kb_mode != KEYBOARD_PASSWORD_CHAR && kb_mode != KEYBOARD_PASSWORD_NUM);
+}
+#else
+int temperature_button_enabled() {return 0;}
+#endif
+
+unsigned char *temperature_string()
+{
+	static char tMsg[16];
+	long t;
+	//char degree = 0x00B0;
+
+	if (temperature_mode == 0 || temperature_mode > 2)
+		return NULL;
+
+	t = analog_input(ANALOG_TEMPERATURE_CENTI_CELCIUS);
+
+	if (temperature_mode == 2) {// Fahrenheit
+		t = (t*9/5)+3200;
+	}
+	int negative = (t<0?1:0);
+	if (negative) {
+		t = -t;
+	}
+	t += 5; // do proper rounding on the last decimal place
+	int tMajor = t/100;
+	int tMinor = (t - tMajor*100)/10;
+	sprintf(tMsg, "%s%d.%d°%c", (negative?"-":""), tMajor, tMinor, ((temperature_mode==1)?'C':'F'));
+
+	return (unsigned char *)tMsg;
+}
+
+void draw_temperature()
+{
+	const unsigned char *tMsg;
+	int i;
+
+	tMsg = temperature_string();
+	guilib_clear_area(180, 10, 239, 27);
+	if (tMsg != NULL)
+		render_string(SUBTITLE_FONT_IDX, 180, 10, tMsg, 1, 0);
+	else
+	{
+		// tiny 'T'
+		int tSize = 5;
+		for (i = 0; i < tSize; i++ )
+		{
+			lcd_set_pixel(230+i-tSize/2, 15, LCD_BLACK);
+			lcd_set_pixel(230, 15+i, LCD_BLACK);
+		}
+	}
+}
+
+void get_temperature_mode()
+{
+	int fd;
+	char sWikiTem[10];
+	int m;
+	fd = file_open("wiki.tem", FILE_OPEN_READ);
+	if (fd < 0)
+	{
+		temperature_mode = temperature_mode_default;
+		return;
+	}
+	file_read(fd, sWikiTem, 10);
+	file_close(fd);
+	sWikiTem[9] = '\0';
+	m = atoi(sWikiTem);
+	if (m < 0 || m > 2)
+		temperature_mode = temperature_mode_default;
+	else
+		temperature_mode = m;
+}
+
+void set_temperature_mode()
+{
+	int fd;
+	char sWikiTem[10];
+
+	fd = file_open("wiki.tem", FILE_OPEN_WRITE);
+	if (fd < 0)
+		fd = file_create("wiki.tem", FILE_OPEN_WRITE);
+	if (fd >= 0)
+	{
+		sprintf(sWikiTem, "%d\n", temperature_mode);
+		file_write(fd, sWikiTem, strlen(sWikiTem));
+		file_close(fd);
+	}
+}
 
 void keyboard_paint()
 {
@@ -627,6 +732,8 @@ void keyboard_paint()
 	guilib_blit_image(image_data, 0, guilib_framebuffer_height() - image_data->height);
 	if (nls_button_enabled())
 		guilib_blit_image(&nls_image, 200, guilib_framebuffer_height() - image_data->height - 40);
+	if (temperature_button_enabled())
+		draw_temperature();
 	guilib_fb_unlock();
 }
 
@@ -754,7 +861,8 @@ struct keyboard_key * keyboard_get_data(int x, int y)
 		for (i = 0; i < keyboard_entries; ++i) {
 			if (keyboard_key[i].left_x <= x && keyboard_key[i].right_x >= x
 			    && keyboard_key[i].left_y <= y && keyboard_key[i].right_y >= y
-			    && (nls_button_enabled() || *keyboard_key[i].key != WL_KEY_NLS)) {
+			    && (nls_button_enabled() || *keyboard_key[i].key != WL_KEY_NLS)
+			    && (temperature_button_enabled() || *keyboard_key[i].key != WL_KEY_TEMPERATURE)) {
 				return &keyboard_key[i];
 			}
 		}
@@ -957,7 +1065,7 @@ void keyboard_process_key_invert(struct keyboard_key *key, bool bResetDelay)
 		guilib_invert_area(end_x,start_y,end_x,start_y);
 		guilib_invert_area(end_x,end_y,end_x,end_y);
 	}
-	else if (*key->key == ' ' || *key->key == WL_KEY_BACKSPACE || isupper(*key->key))
+	else if (*key->key == ' ' || *key->key == WL_KEY_BACKSPACE || isupper(*key->key) || *key->key == WL_KEY_TEMPERATURE)
 	{
 		guilib_invert_area(start_x,start_y,end_x,end_y);
 		guilib_invert_area(start_x,start_y,start_x,start_y);
@@ -1066,9 +1174,9 @@ int keyboard_key_reset_invert(int bFlag, unsigned long ev_time)
 			guilib_fb_lock();
 			if (*pre_key->key == ' ' || *pre_key->key == WL_KEY_BACKSPACE || isupper(*pre_key->key) ||
 			    kb_mode > KEYBOARD_PHONE_STYLE ||
-			    (*pre_key->key == WL_KEY_NLS && display_mode != DISPLAY_MODE_WIKI_SELECTION))
+			    ((*pre_key->key == WL_KEY_NLS || *pre_key->key == WL_KEY_TEMPERATURE ) && display_mode != DISPLAY_MODE_WIKI_SELECTION))
 				keyboard_process_key_invert(pre_key, true);
-			else if (*pre_key->key != WL_KEY_NLS)
+			else if (*pre_key->key != WL_KEY_NLS && *pre_key->key != WL_KEY_TEMPERATURE)
 				restore_key_bubble();
 
 			bIsKoreanSpecialKey = 0;

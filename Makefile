@@ -52,7 +52,7 @@
 #
 #   PROGRESS_BAR               Enable progress bar when compiling mahatma.elf [NO]
 #
-#   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf [NO]
+#   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf/wiki.app [NO]
 #
 #   GRIFO_EXAMPLES             Compile / install grifo examples [NO]
 #
@@ -248,6 +248,7 @@ clear-history: validate-destdir
 	${RM} "${DESTDIR_PATH}"/[wW][iI][kK][iI].[iI][nN][fF]
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.hst" bs=67584 count=1
 	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.pas" bs=40 count=1
+	dd if=/dev/zero of="${DESTDIR_PATH}/wiki.tem" bs=10 count=1
 	${STRIP_HASH_OR_BLANK_LINES} "${LICENSE_DIR}"/wiki.inf > "${DESTDIR_PATH}"/wiki.inf
 	id=$$(grep -n -m 1 '${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}' "${DESTDIR_PATH}/wiki.inf"); \
 	  id=$${id%%:*}; \
@@ -828,7 +829,7 @@ grifo-simulate: validate-destdir
 # wiki application using grifo
 # ============================
 
-$(call STD_RULE, wiki, wiki, gcc mini-libc grifo, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
+$(call STD_RULE, wiki, wiki, gcc mini-libc grifo, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" TEMPERATURE_DISPLAY="${TEMPERATURE_DISPLAY}" INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
 
 
 .PHONY: wiki-simulate

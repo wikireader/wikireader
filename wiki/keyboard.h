@@ -30,6 +30,7 @@
 #define MIDDLE_JAMO_COUNT 21
 #define FINAL_JAMO_COUNT 28
 
+#define WL_KEY_TEMPERATURE			0X0B
 #define WL_KEY_CLEAR				0X0A
 #define WL_KEY_BACKWARD				0X09
 #define WL_KEY_BACKSPACE			0x08
@@ -41,6 +42,7 @@
 #define WL_KEY_SONANT 				0X02
 #define WL_KEY_NO_WAIT 				0X01
 
+#define WL_KEY_TEMPERATURE_STR				"\x0B\x00"
 #define WL_KEY_CLEAR_STR				"\x0A\x00"
 #define WL_KEY_BACKWARD_STR				"\x09\x00"
 #define WL_KEY_BACKSPACE_STR				"\x08\x00"
@@ -106,4 +108,9 @@ void flash_keyboard_key_invert();
 int multi_selection_key(struct keyboard_key *key);
 int keyboard_korean_special_key(void);
 int is_korean_special_key_enabled(void);
+int temperature_button_enabled(void);
+unsigned char *temperature_string(void);
+void draw_temperature(void);
+void get_temperature_mode(void);
+void set_temperature_mode(void);
 #endif

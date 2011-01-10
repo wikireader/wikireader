@@ -125,6 +125,9 @@ long Analog_read(Analog_ChannelType channel)
 	case ANALOG_TEMPERATURE_CELCIUS:
 		return (adc[1] * THERMISTOR_K1 + THERMISTOR_K0) / THERMISTOR_DIVISOR;
 
+	case ANALOG_TEMPERATURE_CENTI_CELCIUS:
+		return (adc[1] * THERMISTOR_K1 + THERMISTOR_K0) / ( THERMISTOR_DIVISOR / 100 );
+
 	default:
 		return 0;
 	}

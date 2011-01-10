@@ -59,6 +59,21 @@ ENABLE_PROGRESS ?= 0
 # optional items for compiler
 CFLAGS += -DENABLE_PROGRESS="${ENABLE_PROGRESS}"
 
+# enable the temperature display by adding:
+# TEMPERATURE_DISPLAY=yes to make command line
+ifeq (YES,$(strip ${TEMPERATURE_DISPLAY}))
+ENABLE_TEMPERATURE := 1
+endif
+ifeq (yes,$(strip ${TEMPERATURE_DISPLAY}))
+ENABLE_TEMPERATURE := 1
+endif
+
+# default values are disabled
+ENABLE_TEMPERATURE ?= 0
+
+# optional items for compiler
+CFLAGS += -DENABLE_TEMPERATURE="${ENABLE_TEMPERATURE}"
+
 # list of sources and headers
 SOURCES += ${PROGRAM}.c
 SOURCES += Alloc.c

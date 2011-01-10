@@ -97,6 +97,7 @@ long finger_move_speed = 0;
 extern int over_scroll_lines;
 #endif
 int finger_touched = 0;
+extern int temperature_mode;
 
 void repaint_search(void)
 {
@@ -235,6 +236,16 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0);
 		keyboard_set_mode(KEYBOARD_NONE);
 		wiki_selection();
+		return;
+	}
+	else if (keycode == WL_KEY_TEMPERATURE) {
+		delay_us(100000);
+		temperature_mode ++;
+		temperature_mode %= 3;
+		set_temperature_mode();
+		guilib_fb_lock();
+		keyboard_paint();
+		guilib_fb_unlock();
 		return;
 	} else if (keycode == WL_KEY_BACKSPACE) {
 		rc = search_remove_char(0, ev_time);
@@ -1256,6 +1267,7 @@ int wikilib_run(void)
 	article_buf_pointer = NULL;
 	search_init();
 	history_list_init();
+	get_temperature_mode();
 	print_intro();
 	pMsg = get_nls_text("type_a_word");
 	render_string(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0);
