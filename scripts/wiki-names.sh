@@ -3,10 +3,11 @@
 # to use: source "$(dirname "$0")/wiki-names.sh"
 
 # type : name : filename
+# Note: no spaces allowed in any line or shell quoting breaks
 ContentList='
 books:wikibooks:wikibooks-pages-articles.xml:
 dict:wiktionary:wiktionary-pages-articles.xml:
-guten:Project Gutenberg:gutenberg:
+guten:Project-Gutenberg:gutenberg:
 pedia:wikipedia:wiki-pages-articles.xml:
 quote:wikiquote:wikiquote-pages-articles.xml:
 starw:Wookieepedia:Wookieepedia-pages-articles.xml
