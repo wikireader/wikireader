@@ -44,7 +44,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
       (format #t "error: ~a~%" message))
   (format #t "usage: ~a <options>~%" *program*)
   (format #t "       --verbose           -v             more descriptive output~%")
-  (format #t "       --debug             -d~%           enable debugging outputs")
+  (format #t "       --debug             -d             enable debugging outputs~%")
   (format #t "       --prefix=<path>     -p <path>      path prefix to image directory~%")
   (format #t "       --language=<lang>   -l <lang>      language code~%")
   (format #t "       --suffix=<suffix>   -s <suffix>    suffix (pedia,quote,dict,...)~%")

@@ -29,7 +29,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
   :use-module (ice-9 rdelim)
   :use-module (ice-9 regex)
   :use-module (srfi srfi-1)
-  :use-module (srfi srfi-19)
+  :use-module ((srfi srfi-19) :renamer (symbol-prefix-proc 'datetime:))
   :export (script-entry-point))
 
 (define-macro (unless cond . body)
@@ -57,7 +57,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                             " * ***** DO NOT MODIFY *****"
                             " */" "~%") "~%")
           file-name
-          (date->string (current-date 0) "~Y-~m-~d ~H:~M:~S ~z")
+          (datetime:date->string (datetime:current-date 0) "~Y-~m-~d ~H:~M:~S ~z")
           program-name))
 
 
