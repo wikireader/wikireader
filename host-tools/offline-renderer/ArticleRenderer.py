@@ -6,7 +6,7 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import sys, os, struct, os.path, re
+import sys, os, struct, re
 import io
 import time
 import HTMLParser
@@ -405,7 +405,7 @@ def get_parameter_value(filename, parameter):
                     if name.strip() == parameter:
                         fd.close()
                         return value.strip()
-                except Valuerror:
+                except ValueError:
                     pass   # just ignore non-conforming lines
             fd.close()
     return None
@@ -504,7 +504,7 @@ def get_imgdata(imgfile, indent):
     try:
         img = gd.image(imgfile)
     except IOError as e:
-        PrintLog.message(u'unable to open image file: {0:s}'.format(imgfile))
+        PrintLog.message(u'unable to open image file: {0:s} because: {1:s}'.format(imgfile, e))
         return (0, 0, r'')
 
     (width, height) = img.size()
@@ -1310,6 +1310,8 @@ def article_index(title):
     return result  # this returns a tuple of text strings, so beware!
 
 
+start_time = 0 # ensure value is initialised
+
 def write_article(language_links):
     global compress
     global verbose
@@ -1385,7 +1387,6 @@ def write_article(language_links):
         except KeyError:
             PrintLog.message(u'Error in: write_article, Title not found')
             PrintLog.message(u'Title:  {0:s}'.format(g_this_article_title))
-            PrintLog.message(u'Offset: {0:s}'.format(file_offset))
             PrintLog.message(u'Count:  {0:s}'.format(article_count))
     else:
         f_out.write(whole_article)

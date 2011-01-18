@@ -6,7 +6,6 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import os, sys
 import re
 import unicodedata
 

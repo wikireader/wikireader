@@ -7,7 +7,6 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 import os, sys, traceback
-import re
 import subprocess
 import time
 import getopt
@@ -15,7 +14,6 @@ import os.path
 import sqlite3
 import TidyUp
 import PrintLog
-from types import *
 
 verbose = False
 
@@ -170,7 +168,7 @@ def main():
             filename = offset_cursor.fetchone()[0]
             input_file = open(filename, 'rb')
             if not input_file:
-                PrintlogLog.message('Failed to open: {0:s}'.format(filename))
+                PrintLog.message('Failed to open: {0:s}'.format(filename))
                 current_file_id = None
                 continue
             if verbose:

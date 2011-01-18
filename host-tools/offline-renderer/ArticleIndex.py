@@ -7,7 +7,8 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 from __future__ import with_statement
-import os, sys, re
+import os
+import sys
 import struct
 from LittleParser import LittleParser
 import urllib
@@ -591,6 +592,8 @@ def bigram_encode(title):
 
     return SearchKey.compact_spaces(result)
 
+
+index_matrix = None # ensure initialised
 
 def output_fnd(filename_format, article_index, language_processor, truncate_title):
     """create bigram table"""

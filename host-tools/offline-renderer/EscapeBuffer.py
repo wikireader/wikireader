@@ -7,8 +7,6 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import os
-import sys
 import io
 import struct
 

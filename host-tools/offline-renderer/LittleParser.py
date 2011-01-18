@@ -7,11 +7,9 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 from HTMLParser import HTMLParser
-import unicodedata
 import htmlentitydefs
 import re
-import codecs
-import sys
+
 
 entities = re.compile(r'&amp;([a-zA-Z]{2,8});', re.IGNORECASE)
 lessthan = re.compile(r'<')

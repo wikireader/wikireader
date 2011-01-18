@@ -8,7 +8,6 @@
 
 import os
 import sys
-import string
 import re
 import getopt
 import PrintLog

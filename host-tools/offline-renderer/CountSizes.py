@@ -8,7 +8,6 @@
 import sys, os
 import struct
 import os.path
-import pylzma
 import getopt
 import PrintLog
 import locale
@@ -17,6 +16,11 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 
 verbose = False
+sizes = None
+dist_list = None
+distribution = None
+byte_count = None
+total = 0
 
 
 def usage(message):

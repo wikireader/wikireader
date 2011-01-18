@@ -7,7 +7,6 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 import sys
-import os
 import unicodedata
 import PrintLog
 

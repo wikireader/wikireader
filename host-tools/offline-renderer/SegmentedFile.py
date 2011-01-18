@@ -5,7 +5,7 @@
 # DESCRIPTION: segmented file handling
 # AUTHORS: Christopher Hall <hsw@openmoko.com>
 
-import sys, os
+import os
 import os.path
 
 class SegmentedFileReader(object):

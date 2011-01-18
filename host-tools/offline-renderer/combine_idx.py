@@ -6,7 +6,8 @@
 # AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
 #          Christopher Hall <hsw@openmoko.com>
 
-import os, sys, re
+import os
+import sys
 import os.path
 import struct
 import getopt
@@ -45,7 +46,6 @@ def main():
             verbose = True
         elif opt in ('-h', '--help'):
             usage(None)
-            off_name = arg
         elif opt in ('-p', '--prefix'):
             in_format = arg + '{0:d}.idx-tmp'
         elif opt in ('-o', '--output'):

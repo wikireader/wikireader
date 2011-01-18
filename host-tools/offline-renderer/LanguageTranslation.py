@@ -8,7 +8,6 @@
 
 import os
 import sys
-import string
 import os.path
 import unicodedata
 import PinyinTable
