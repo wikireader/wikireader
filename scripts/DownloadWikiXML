@@ -11,7 +11,7 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: "$*"
-  echo usage: $(basename "$0") '<options> [<language-code>...]'
+  echo usage: $(basename "$0") '<options> [<language-code>{:<type>}...]'
   echo '       --help            -h         this message'
   echo '       --verbose         -v         more messages'
   echo '       --url=<url>       -u <url>   base URL for downloads ['${RootURL}']'
@@ -22,6 +22,8 @@ USAGE()
   exit 1
 }
 
+# ListOfAllContentTypes, TypeToName, TypeToFilename
+. "$(dirname "$0")/wiki-names.sh"
 
 # main program
 
@@ -101,9 +103,13 @@ then
 fi
 
 
+# process each lang{:type} argument
 for arg in $*
 do
-  url=${RootURL}/${arg}${suffix}
+  lang=${arg%:*}
+  typename=$(TypeToName "${arg#*:}")
+  [ -z "${typename}" ] && typename="${suffix}"
+  url="${RootURL}/${lang}${typename}"
 
   stamp=$(lynx -dump "${url}" | awk '
 BEGIN {
