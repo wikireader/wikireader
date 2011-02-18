@@ -16,7 +16,6 @@ USAGE()
   echo '       --verbose         -v         more messages'
   echo '       --url=<url>       -u <url>   base URL for downloads ['${RootURL}']'
   echo '       --download=<dir>  -d <dir>   download directory [No Download]'
-  echo '       --suffix=<text>   -s <text>  file name suffix ['${suffix}']'
   echo '       --ext=<text>      -x <text>  file name extension ['${ext}']'
   echo '       --rate=<rate>     -r <rate>  download rate limit ['${rate}']'
   exit 1
@@ -30,14 +29,13 @@ USAGE()
 verbose=no
 debug=no
 RootURL=http://download.wikipedia.org
-suffix=wiki
 ext=pages-articles.xml.bz2
 download=
 rate=50k
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvu:d:s:x:r:D --long=help,verbose,url,download:,suffix:,ext:,rate:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvu:d:x:r:D --long=help,verbose,url,download:,ext:,rate:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -58,11 +56,6 @@ do
     -d|--download)
       download=$2
       [ -d "${download}" ] || USAGE ${download} is not a directory
-      shift 2
-      ;;
-
-    -s|--suffix)
-      suffix=$2
       shift 2
       ;;
 
@@ -106,10 +99,14 @@ fi
 # process each lang{:type} argument
 for arg in $*
 do
-  lang=${arg%:*}
-  typename=$(TypeToName "${arg#*:}")
-  [ -z "${typename}" ] && typename="${suffix}"
-  url="${RootURL}/${lang}${typename}"
+  arg="${arg}:::::::::::"
+  lang="${arg%%:*}"
+  arg="${arg#*:}"
+  typename="${arg%%:*}"
+  [ -z "${typename}" ] && typename=pedia
+  file="${lang}$(TypeToFilename "${typename}")"
+  wikiname="${file%%-*}"
+  url="${RootURL}/${wikiname}"
 
   stamp=$(lynx -dump "${url}" | awk '
 BEGIN {
@@ -126,8 +123,8 @@ END{
   }
 }')
 
-  file="${arg}${suffix}-${stamp}-${ext}"
-  remote="${RootURL}/${arg}${suffix}/${stamp}/${file}"
+  file="${wikiname}-${stamp}-${ext}"
+  remote="${RootURL}/${wikiname}/${stamp}/${file}"
   echo Download: ${remote}
   if [ -n "${download}" ]
   then
