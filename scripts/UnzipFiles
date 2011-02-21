@@ -1,0 +1,102 @@
+#!/bin/sh
+# unzip the archives
+
+ERROR()
+{
+  echo error: $*
+  exit 1
+}
+
+USAGE()
+{
+  [ -z "$1" ] || echo error: $*
+  echo usage: $(basename "$0") '<options> <directories_or_directories>...'
+  echo '       --help            -h         this message'
+  echo '       --verbose         -v         show output'
+  exit 1
+}
+
+process()
+{
+  local file
+  file="$1"
+
+  case "${verbose}" in
+    [yY]|[yY][eE][sS])
+      echo checking: ${item}
+      ;;
+  esac
+  if [ "${file}" != "${file%.bz2}" ]
+  then
+    bunzip2 "${file}"
+  fi
+}
+
+
+# main program
+# ------------
+
+verbose=no
+debug=no
+
+getopt=/usr/local/bin/getopt
+[ -x "${getopt}" ] || getopt=getopt
+args=$(${getopt} -o hvd --long=help,verbose,debug -- "$@") || exit 1
+# replace the arguments with the parsed values
+eval set -- "${args}"
+
+while :
+do
+  case "$1" in
+    -v|--verbose)
+      verbose=yes
+      shift
+      ;;
+
+    -d|--debug)
+      debug=yes
+      shift
+      ;;
+
+    --)
+      shift
+      break
+      ;;
+
+    -h|--help)
+      USAGE
+      ;;
+
+    *)
+      USAGE invalid option: $1
+      ;;
+  esac
+done
+
+[ $# -le 0 ] && USAGE missing file or directory arguments
+
+
+for item in $*
+do
+  case "${verbose}" in
+    [yY]|[yY][eE][sS])
+      echo checking: ${item}
+      ;;
+  esac
+  if [ -f "${item}" ]
+  then
+    process "${item}"
+
+  elif [ -d "${item}" ]
+  then
+    for f in "${item}"/*
+    do
+      [ -f "${f}" ] && process "${f}"
+    done
+  else
+    ERROR Not a file or directory: ${item}
+  fi
+done
+
+echo
+echo completed
