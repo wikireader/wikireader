@@ -23,7 +23,7 @@ process()
 
   case "${verbose}" in
     [yY]|[yY][eE][sS])
-      echo checking: ${item}
+      echo processing: ${file}
       ;;
   esac
   if [ "${file}" != "${file%.bz2}" ]
