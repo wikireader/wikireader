@@ -302,9 +302,9 @@ do
       ;;
 
     -x|--xml-link)
-      for c in ${ListOfAllContentTypes}
+      for s in ${ListOfAllFilePrefixes}
       do
-        s=$(TypeToName "${c}")
+        #s=$(TypeToName "${c}")
         RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&
  f=\$(ls -1 ../'${language}${s}'-*-pages-articles.xml 2>/dev/null | tail -n 1) &&

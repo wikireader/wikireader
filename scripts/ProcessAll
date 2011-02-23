@@ -74,6 +74,14 @@ do
       done
       ;;
 
+    # link all data
+    link)
+      for l in cy de da el en es fi fr hu it ja ko nl no pt ru sr zh
+      do
+        progress -L"${l}" -x
+      done
+      ;;
+
     # re-render a few
     re-render)
       progress -z 16:128ki --re-render 'de,en::::::-2,es,fr,ja,zh'
