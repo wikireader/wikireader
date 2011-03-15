@@ -56,6 +56,47 @@ do
   esac
 done
 
+AllItems='
+cy
+de
+da
+el
+en::::::-2
+en:dict
+en:quote
+en:trav
+en:starw
+es
+fi
+fr
+hu
+it
+ja
+ko
+nl
+no
+pt
+ru
+sr
+zh
+'
+
+AllLanguages=
+AllCSV=
+for item in ${AllItems}
+do
+  AllCSV="${AllCSV},${item}"
+  lang="${item%%:*}"
+  eval flag="\${lf_${lang}}"
+  if [ X"${flag}" = X"" ]
+  then
+    eval lf_${lang}="${lang}"
+    AllLanguages="${AllLanguages} ${lang}"
+  fi
+done
+AllLanguages="${AllLanguages## }"
+AllCSV="${AllCSV##,}"
+
 
 for command in $@
 do
@@ -63,12 +104,16 @@ do
 
     # command to rebuild all
     run)
-      progress -z 16:128ki -r 'cy,de,da,el,en::::::-2,en:dict,en:quote,en:trav,en:starw,es,fi,fr,hu,it,ja,ko,nl,no,pt,ru,sr,zh'
+      progress -z 16:128ki -r "${AllCSV}"
+      ;;
+
+    cont)
+      progress -z 16:128ki -l 2 -r 'en:starw,es,fi,fr,hu,it,ja,ko,nl,no,pt,ru,sr,zh'
       ;;
 
     # retrieve all data
     get)
-      for l in cy de da el en en:dict en:quote en:trav en:starw es fi fr hu it ja ko nl no pt ru sr zh
+      for l in ${AllItems}
       do
         progress -L"${l}" -c -G
       done
@@ -76,9 +121,18 @@ do
 
     # link all data
     link)
-      for l in cy de da el en es fi fr hu it ja ko nl no pt ru sr zh
+      for l in ${AllLanguages}
       do
         progress -L"${l}" -x
+      done
+      ;;
+
+    # analyse
+    analyse)
+      for l in ${AllItems}
+      do
+        echo Analysis for: ${l}
+        progress -L"${l}" -a
       done
       ;;
 
