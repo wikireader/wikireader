@@ -54,6 +54,8 @@
 #
 #   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf/wiki.app [NO]
 #
+#   BOOT_LOGO                  A PNG filename in the samo-lib/mbr directory [wikireader.png]
+#
 #   GRIFO_EXAMPLES             Compile / install grifo examples [NO]
 #
 #   EXTRACT_VERSION_FROM       a link to XML file name that has an embedded date
@@ -897,7 +899,7 @@ print-mbr-tty:
 	@echo BOOTLOADER_TTY = "${BOOTLOADER_TTY}"
 	@echo BOOTLOADER_AUX = "${BOOTLOADER_AUX}"
 
-$(call STD_RULE, mbr, ${SAMO_LIB}/mbr, gcc fatfs, INSTALL)
+$(call STD_RULE, mbr, ${SAMO_LIB}/mbr, gcc fatfs, INSTALL, LOGO="${BOOT_LOGO}")
 $(call STD_RULE, jackknife, ${HOST_TOOLS}/jackknife)
 $(call STD_RULE, flash07, ${HOST_TOOLS}/flash07)
 

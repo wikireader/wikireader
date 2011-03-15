@@ -42,6 +42,9 @@ $(call REQUIRED_BINARY, ${AWK}, gawk)
 # set this to 0 or 1 to control the battery indicator in menu.c
 BATTERY_METER ?= 0
 
+# set this to the name of the logo
+LOGO = wikireader.png
+
 # use update YES or NO
 # YES => only change serial number if mbr version is ok
 # NO  => full update even if this will downgrade the mbr
@@ -137,6 +140,8 @@ endef
 # Applications for the boot loader
 
 IMAGE_HEADERS = splash.h empty.h adjust.h
+splash.png: ${LOGO}
+	cp "${LOGO}" "$@"
 
 $(call MAKE_APP,version)
 $(call MAKE_APP,menu,${IMAGE_HEADERS})
@@ -183,7 +188,7 @@ install: all
 .PHONY: clean
 clean:
 	${RM} ${TARGETS} ${APPLICATIONS_CLEAN} ${IMAGE_HEADERS}
-	${RM} *.o *.elf *.d *.p *.asm33 *.header *.map *.rom *.dump
+	${RM} *.o *.elf *.d *.p *.asm33 *.header *.map *.rom *.dump splash.png
 
 # application headers
 %.header: %.c
