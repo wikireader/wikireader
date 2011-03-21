@@ -137,6 +137,8 @@ v-max 1+ constant v-overflow
         else
             = if
                 total-frac @ v-frac @ <
+            else
+                false
             then
         then
         if
@@ -170,6 +172,8 @@ v-max 1+ constant v-overflow
         else
             = if
                 mem-frac @ total-frac @ <
+            else
+                false
             then
         then
         if
