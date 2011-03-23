@@ -138,8 +138,7 @@ static const Byte kLiteralNextStates[kNumStates * 2] =
 #define ENABLE_PROGRESS 0
 #endif
 
-#define MAX_LZMA_PROGRESS_COUNT 240
-extern void draw_progress_bar(int progressCount);
+extern void draw_progress_bar(int progressCount, int limit);
 
 static int MY_FAST_CALL LzmaDec_DecodeReal(CLzmaDec *p, SizeT limit, const Byte *bufLimit)
 {
@@ -163,14 +162,7 @@ static int MY_FAST_CALL LzmaDec_DecodeReal(CLzmaDec *p, SizeT limit, const Byte 
 	UInt32 range = p->range;
 	UInt32 code = p->code;
 #if ENABLE_PROGRESS
-	SizeT LzmaSizePerProgressUnit = 0;
-	SizeT LzmaLastPos = 0;
-	SizeT LzmaProgressCount = 0;
-
-	LzmaSizePerProgressUnit = p->dicBufSize / MAX_LZMA_PROGRESS_COUNT;
-	if (LzmaSizePerProgressUnit < 1)
-		LzmaSizePerProgressUnit = 1;
-	draw_progress_bar(0);
+	draw_progress_bar(0, 0);
 #endif
 	do
 	{
@@ -432,12 +424,7 @@ static int MY_FAST_CALL LzmaDec_DecodeReal(CLzmaDec *p, SizeT limit, const Byte 
 			}
 		}
 #if ENABLE_PROGRESS
-		while (dicPos - LzmaLastPos >= LzmaSizePerProgressUnit)
-		{
-			LzmaLastPos += LzmaSizePerProgressUnit;
-			LzmaProgressCount++;
-			draw_progress_bar(LzmaProgressCount);
-		}
+		draw_progress_bar(dicPos, limit);
 #endif
 	}
 	while (dicPos < limit && buf < bufLimit);

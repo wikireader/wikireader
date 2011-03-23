@@ -336,4 +336,5 @@ bool lcd_draw_highlight(int start_x, int start_y, int end_x, int end_y,
 int lcd_draw_get_cur_y_pos();
 unsigned char *lcd_draw_get_cur_buffer();
 void load_all_fonts();
+void draw_progress_bar(int progressCount, int limit);
 #endif /* _LCD_BUF_DRAW_H */

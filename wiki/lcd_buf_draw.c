@@ -3103,3 +3103,34 @@ int lcd_draw_get_cur_y_pos()
 {
 	return lcd_draw_cur_y_pos;
 }
+
+
+#if ENABLE_PROGRESS
+extern void draw_progress_bar(int progressCount, int limit)
+{
+	static int last_x = 0;
+	if (0 >= progressCount) {
+		lcd_colour_t save = lcd_set_colour(LCD_WHITE);
+		lcd_move_to(0, 1);
+		lcd_line_to(LCD_WIDTH - 1, 1);
+		lcd_move_to(0, 2);
+		lcd_line_to(LCD_WIDTH - 1, 2);
+		lcd_set_colour(save);
+		last_x = 0;
+	} else {
+		int x = LCD_WIDTH * progressCount / limit;
+		if (x >= LCD_WIDTH) {
+			x = LCD_WIDTH - 1;
+		}
+		if (x != last_x) {
+			last_x = x;
+			lcd_colour_t save = lcd_set_colour(LCD_BLACK);
+			lcd_move_to(0, 1);
+			lcd_line_to(x, 1);
+			lcd_move_to(0, 2);
+			lcd_line_to(x, 2);
+			lcd_set_colour(save);
+		}
+	}
+}
+#endif
