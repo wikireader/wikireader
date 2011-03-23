@@ -237,8 +237,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		keyboard_set_mode(KEYBOARD_NONE);
 		wiki_selection();
 		return;
-	}
-	else if (keycode == WL_KEY_TEMPERATURE) {
+	} else if (keycode == WL_KEY_TEMPERATURE) {
 		delay_us(100000);
 		temperature_mode ++;
 		temperature_mode %= 3;
