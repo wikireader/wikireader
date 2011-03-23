@@ -1038,9 +1038,7 @@ void search_reload(int flag)
 		result_list->count = 0;
 		result_list->result_populated = 1;
 		result_list->cur_selected = -1;
-		pMsg = get_nls_text("type_a_word");
-		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0,
-					0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
+		draw_logo_or_type_a_word(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		keyboard_paint();
 		goto out;
 	}
@@ -1166,9 +1164,7 @@ void search_result_display()
 	{
 		result_list->count = 0;
 		result_list->cur_selected = -1;
-		pMsg = get_nls_text("type_a_word");
-		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0,
-					0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
+		draw_logo_or_type_a_word(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		keyboard_paint();
 		goto out;
 	}
@@ -1275,7 +1271,7 @@ int search_add_per_language_char(const unsigned char *utf8_char)
 	if (!search_str_per_language_len) // clear type_a_word message
 	{
 		guilib_fb_lock();
-		guilib_clear_area(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
+		clear_logo_or_type_a_word(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		guilib_fb_unlock();
 		b_type_a_word_cleared = 1;
 	}
@@ -1316,7 +1312,7 @@ int search_add_char(char c, unsigned long ev_time)
 	if (!search_str_len) // clear type_a_word message
 	{
 		guilib_fb_lock();
-		guilib_clear_area(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
+		clear_logo_or_type_a_word(0, 35, 239, LCD_HEIGHT - KEYBOARD_HEIGHT - 1);
 		guilib_fb_unlock();
 		b_type_a_word_cleared = 1;
 	}

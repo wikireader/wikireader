@@ -98,6 +98,148 @@ extern int over_scroll_lines;
 #endif
 int finger_touched = 0;
 extern int temperature_mode;
+int logo_width = 0;
+int logo_height = 0;
+struct guilib_image *p_logo_bitmap = NULL;
+
+static bool get_next_token(char *word, char *buf)
+{
+	static char *last = NULL;
+
+	if (buf)
+		last = buf;
+	if (word && last && *last)
+	{
+		while (last && *last && *last != ',')
+			*word++ = *last++;
+		if (*last == ',')
+			last++;
+		*word = '\0';
+		return true;
+	}
+	return false;
+}
+
+static unsigned char hex2c_reverse(char *word)
+{
+	unsigned char c = 0;
+
+	while (*word)
+	{
+		if (!strncmp(word, "0x", 2))
+			word++;
+		else
+		{
+			if ('0' <= *word && *word <= '9')
+				c = c * 16 + (*word - '0');
+			else if ('a' <= *word && *word <= 'f')
+				c = c * 16 + (*word - 'a' + 10);
+		}
+		word++;
+	}
+
+	// reverse bits
+	c = (c & 0x0F) << 4 | (c & 0xF0) >> 4;
+	c = (c & 0x33) << 2 | (c & 0xCC) >> 2;
+	c = (c & 0x55) << 1 | (c & 0xAA) >> 1;
+
+	return c;
+}
+
+#define MAX_LINE_SIZE 256
+static ssize_t copy_line(char *buf, char *line, ssize_t nLineChars)
+{
+	ssize_t len_left;
+	int i = 0;
+
+	while (i < nLineChars && i < MAX_LINE_SIZE - 1 && line[i] != '\r' && line[i] != '\n')
+		i++;
+	if (i > 0)
+		memcpy(buf, line, i);
+	buf[i] = '\0';
+	while (i < nLineChars && (line[i] == '\r' || line[i] == '\n'))
+		i++;
+	len_left = nLineChars - i;
+	if (len_left > 0)
+		memmove(line, &line[i], len_left);
+	return len_left;
+}
+
+/*
+** A simple implementation of loading an xbm file
+** assuming the file format is like the following:
+**
+**  #define x_width ...
+**  #define x_height ...
+**  static char x_bits[] = {
+**  0x..., 0x..., ...
+**  ...
+**  };
+**
+** No comments nor extra spacing characters are allowed and lower cases only
+** Note: the bit order in each x_bits is reversed
+*/
+static void load_logo_xbm()
+{
+	int fd;
+	char line[MAX_LINE_SIZE], buf[MAX_LINE_SIZE], word[MAX_LINE_SIZE];
+	ssize_t nLineChars;
+	int width_bytes = 0;
+	int x = 0;
+	int y = -1;
+	unsigned char last_byte_truncate = 0xFF;
+
+	fd = file_open("logo.xbm", FILE_OPEN_READ);
+	if (fd >= 0)
+	{
+		nLineChars = file_read(fd, line, MAX_LINE_SIZE);
+		while (nLineChars > 0)
+		{
+			nLineChars = copy_line(buf, line, nLineChars);
+			if (!logo_width || !logo_height)
+			{
+				if (!strncmp(buf, "#define x_width ", strlen("#define x_width ")))
+					logo_width = atoi(&buf[strlen("#define x_width ")]);
+				if (!strncmp(buf, "#define x_height ", strlen("#define x_height ")))
+					logo_height = atoi(&buf[strlen("#define x_height ")]);
+			}
+			else
+			{
+				if (!p_logo_bitmap)
+				{
+					width_bytes = (logo_width + 7) / 8;
+					p_logo_bitmap = (struct guilib_image *)memory_allocate(width_bytes * logo_height + sizeof(unsigned int) * 2, "logo");
+					if (!p_logo_bitmap)
+					{
+						logo_width = 0;
+						logo_height = 0;
+						break;
+					}
+					p_logo_bitmap->width = width_bytes * 8;
+					p_logo_bitmap->height = logo_height;
+					last_byte_truncate <<= width_bytes * 8 - logo_width;
+				}
+				if (y >= logo_height)
+					break;
+				if (!strncmp(buf, "0x", 2)) // assuming the bitmap data lines all start with 0x
+				{
+					x = 0; // a new bitmap line
+					y++;
+					get_next_token(NULL, buf); // initialize get_next_token()
+					while (x < width_bytes && get_next_token(word, NULL))
+					{
+						p_logo_bitmap->data[x + y * width_bytes] = hex2c_reverse(word);
+						if (x == width_bytes - 1)
+							p_logo_bitmap->data[x + y * width_bytes] &= last_byte_truncate;
+						x++;
+					}
+				}
+			}
+			nLineChars += file_read(fd, &line[nLineChars], MAX_LINE_SIZE - nLineChars);
+		}
+		file_close(fd);
+	}
+}
 
 void repaint_search(void)
 {
@@ -1259,8 +1401,6 @@ int wikilib_run(void)
 	int more_events = 0;
 	unsigned long last_event_time = 0;
 	int rc;
-	const unsigned char *pMsg;
-
 
 	wikilib_init();
 	article_buf_pointer = NULL;
@@ -1268,8 +1408,8 @@ int wikilib_run(void)
 	history_list_init();
 	get_temperature_mode();
 	print_intro();
-	pMsg = get_nls_text("type_a_word");
-	render_string(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0);
+	load_logo_xbm();
+	draw_logo_or_type_a_word(0, 0, 0, 0);
 	load_all_fonts();
 
 	for (;;) {
@@ -1474,4 +1614,37 @@ void fatal_error_print(const char *file, int line, const char *format, ...)
 void wikilib_reset_highlighting()
 {
 	b_in_highlighting = false;
+}
+
+static void draw_logo_bitmap(int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+{
+	int start_x, start_y;
+
+	guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
+	start_x = (LCD_BUF_WIDTH_PIXELS - logo_width) / 2;
+	if (start_x < 0)
+		start_x = 0;
+	start_y = (LCD_HEIGHT - KEYBOARD_HEIGHT - logo_height) / 2;
+	guilib_blit_image(p_logo_bitmap, start_x, start_y);
+}
+
+void draw_logo_or_type_a_word(int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+{
+	const unsigned char *pMsg;
+
+	if (!p_logo_bitmap)
+	{
+		pMsg = get_nls_text("type_a_word");
+		render_string_and_clear(SUBTITLE_FONT_IDX, -1, 55, pMsg, ustrlen(pMsg), 0,
+					clear_start_x, clear_start_y, clear_end_x, clear_end_y);
+	}
+	else
+	{
+		draw_logo_bitmap(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
+	}
+}
+
+void clear_logo_or_type_a_word(int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y)
+{
+	guilib_clear_area(clear_start_x, clear_start_y, clear_end_x, clear_end_y);
 }

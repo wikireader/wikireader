@@ -964,7 +964,7 @@ int get_UTF8_char_width(int idxFont, const unsigned char **pContent, long *lenCo
 	*lenContent -= *nCharBytes;
 
 	pres_bmfbm(u, &pcfFonts[idxFont - 1], &bitmap, &Cmetrics);
-	if (bitmap == NULL)
+	if (bitmap == NULL && u != 32)
 		return 0;
 	else
 		return  Cmetrics.widthDevice;

@@ -81,4 +81,6 @@ void fatal_error_print(const char *file, int line, const char *format, ...)  __a
 
 void handle_search_key(struct keyboard_key *key, unsigned long ev_time);
 void wikilib_reset_highlighting();
+void draw_logo_or_type_a_word(int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
+void clear_logo_or_type_a_word(int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
 #endif /* WIKILIB_H */
