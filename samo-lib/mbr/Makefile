@@ -43,7 +43,7 @@ $(call REQUIRED_BINARY, ${AWK}, gawk)
 BATTERY_METER ?= 0
 
 # set this to the name of the logo
-LOGO = wikireader.png
+LOGO ?= wikireader.png
 
 # use update YES or NO
 # YES => only change serial number if mbr version is ok

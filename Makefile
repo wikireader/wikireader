@@ -892,6 +892,7 @@ BOOTLOADER_TTY ?= $(shell ${FindTTY})
 BOOTLOADER_AUX ?= $(shell ${FindAUX})
 SERIAL_NUMBER ?= No Serial Number
 FLASH_UPDATE ?= NO
+BOOT_LOGO ?= wikireader.png
 
 
 .PHONY: print-mbr-tty
