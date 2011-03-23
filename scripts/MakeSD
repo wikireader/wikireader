@@ -7,6 +7,7 @@ USAGE()
   echo usage: $(basename "$0") '<options> <languages|ROOT>'
   echo '       --help           -h         this message'
   echo '       --verbose        -v         more messages'
+  echo '       --force          -f         ignore already copied check'
   echo '       --image=<dir>    -i <dir>   image source directory [image]'
   echo '       --card=<dir>     -c <dir>   image destination directory (no-default)'
   exit 1
@@ -14,6 +15,7 @@ USAGE()
 
 
 verbose=no
+force=no
 image=image
 card=
 suffix=pedia
@@ -22,7 +24,7 @@ debug=no
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvi:c: --long=help,verbose,image:,card:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvfi:c: --long=help,verbose,force,image:,card:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -32,6 +34,11 @@ do
   case "$1" in
     -v|--verbose)
       verbose=yes
+      shift
+      ;;
+
+    -f|--force)
+      force=yes
       shift
       ;;
 
@@ -71,7 +78,15 @@ done
 [ $# -eq 0 ] && USAGE at least one language must be specified
 
 [ -d "${card}" ] || USAGE card: ${card} is not a directory
-[ -f "${card}/kernel.elf" ] && USAGE already copied
+
+case "${force}" in
+  [yY]|[yY][eE][sS])
+    ;;
+  *)
+    [ -f "${card}/kernel.elf" ] && USAGE already copied
+    ;;
+esac
+
 
 COPY()
 {
