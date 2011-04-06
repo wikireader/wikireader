@@ -10,8 +10,17 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: $*
-  echo usage: $(basename "$0") '<options>'
-  echo '       --help            -h         this message'
+  echo usage: $(basename "$0") '<options> <command>'
+  echo '       --help            -h         This message'
+  echo '       --verbose         -v         Display messages'
+  echo 'commands:'
+  echo '       link              Move all symlinks to latest versions'
+  echo '       run               Rebuild all'
+  echo '       cjk               Rebuild ko,ja,zh'
+  echo '       en                Rebuild short for en:pedia (or other two letter language code)'
+  echo '       en:dict           Rebuild specific item (<lang>:<type>)'
+  echo '       analyse           Show summary of logs'
+  echo '       get               Combine and fetch all recently rendered data'
   exit 1
 }
 
@@ -101,14 +110,17 @@ AllCSV="${AllCSV##,}"
 for command in $@
 do
   case "${command}" in
+    help)
+      USAGE
 
     # command to rebuild all
     run)
       progress -z 16:128ki -r "${AllCSV}"
       ;;
 
-    cont)
-      progress -z 16:128ki -l 2 -r 'en:starw,es,fi,fr,hu,it,ja,ko,nl,no,pt,ru,sr,zh'
+    # Chinese, Japanese, Korean
+    cjk)
+      progress -z 16:128ki -r 'ja,ko,zh'
       ;;
 
     # retrieve all data
@@ -136,12 +148,7 @@ do
       done
       ;;
 
-    # re-render a few
-    re-render)
-      progress -z 16:128ki --re-render 'de,en::::::-2,es,fr,ja,zh'
-      ;;
-
-    # en is the exception
+    # en is the exception (reduce the number of threads)
     en)
       progress -z 16:128ki -r en::::::-2
       ;;
@@ -149,7 +156,7 @@ do
       progress -z 16:128ki --re-render en::::::-2
       ;;
 
-    # run only one
+    # run only one language
     [a-z][a-z]|[a-z][a-z]:*)
       progress -z 16:128ki -r "${command}"
       ;;
