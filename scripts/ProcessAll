@@ -14,6 +14,7 @@ USAGE()
   echo '       --help            -h         This message'
   echo '       --verbose         -v         Display messages'
   echo 'commands:'
+  echo '       help              This message'
   echo '       link              Move all symlinks to latest versions'
   echo '       run               Rebuild all'
   echo '       cjk               Rebuild ko,ja,zh'
@@ -112,6 +113,7 @@ do
   case "${command}" in
     help)
       USAGE
+      ;;
 
     # command to rebuild all
     run)
