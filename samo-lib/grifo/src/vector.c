@@ -109,6 +109,37 @@ void Vector_initialise(void)
 		(void)Vector_set(VECTOR_Software_exception_2, panic_Software_exception_2);
 		(void)Vector_set(VECTOR_Software_exception_3, panic_Software_exception_3);
 
+
+		// set all interrupt controller registers to defined state
+		REG_INT_PI2S = 0;
+		REG_INT_EI2S = 0;
+
+		REG_INT_EK01_EP03 = 0;
+		REG_INT_EP47_ERTC_EAD = 0;
+		REG_INT_EP815 = 0;
+
+		REG_INT_PP01L = 0;
+		REG_INT_PP23L = 0;
+		REG_INT_PP45L = 0;
+		REG_INT_PP67L = 0;
+		REG_INT_PP89L = 0;
+		REG_INT_PP1011L = 0;
+		REG_INT_PP1213L = 0;
+		REG_INT_PP1415L = 0;
+
+		REG_PINTSEL_SPT03 = 0;
+		REG_PINTSEL_SPT47 = 0;
+		REG_PINTSEL_SPT811 = 0;
+		REG_PINTSEL_SPT1215 = 0;
+
+		REG_PINTPOL_SPP07 = ~0; // all 1s
+		REG_PINTPOL_SPP815 = ~0; // all 1s
+
+		REG_PINTEL_SEPT07 = ~0; // all 1s
+		REG_PINTEL_SEPT815 = ~0; // all 1s
+
+		REG_INT_FK01_FP03 = ~0; // clear all flags (1=>reset)
+
 		Interrupt_enable(state);
 	}
 }

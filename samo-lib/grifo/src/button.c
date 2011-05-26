@@ -61,15 +61,17 @@ void Button_initialise(void)
 
 		REG_KINTSEL_SPPK01 = 0x04;         // use P60..P62
 
-		REG_INT_PP01L = 0x06;              // P0 prority (for power button)
+		REG_INT_PP23L |= 0x60;             // P03 prority (for power button)
 
-		REG_PINTSEL_SPT03 = 0x00;          // select P03 interrupt (the power button
+		REG_PINTSEL_SPT03 = 0x00;          // select P03 interrupt (the power button)
 
-		REG_PINTPOL_SPP07 = SPPT3;         // P03 active high
+		REG_PINTPOL_SPP07 &= ~SPPT3;       // P03 active low
 
-		REG_PINTEL_SEPT07 = SEPT3;         // P03 edge trigered
+		REG_PINTEL_SEPT07 |= SEPT3;        // P03 edge trigered
 
-		REG_INT_EK01_EP03 = EK0 | EP3;     // enable KINT0 and Port0
+
+		REG_INT_FK01_FP03 = FK0 | FK1 | FP3; // clear all flags
+		REG_INT_EK01_EP03 = EK0 | EP3;     // enable KINT0 and P03
 
 		Vector_set(VECTOR_Port_input_interrupt_3, Button_PowerInterrupt);
 		Vector_set(VECTOR_Key_input_interrupt_0, Button_KeyInterrupt);

@@ -468,10 +468,9 @@ static void handle_button_release(button_t keycode)
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0); // reset invert immediately
 	mode = keyboard_get_mode();
 	if (keycode == BUTTON_POWER) {
-		if (history_list_save(HISTORY_SAVE_POWER_OFF))
-		{
-			delay_us(200000);
-		}
+		history_list_save(HISTORY_SAVE_POWER_OFF);
+		delay_us(250000);
+		power_off();
 	} else if (keycode == BUTTON_SEARCH) {
 		article_buf_pointer = NULL;
 		/* back to search */
