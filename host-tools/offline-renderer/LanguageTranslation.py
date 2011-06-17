@@ -179,11 +179,11 @@ class LanguageNormal(LanguageProcessor):
 
     def __init__(self, *args, **kw):
         """create new instance"""
-        super(LanguageNormal, self).__init__(*args, **kw)
+        super(type(self), self).__init__(*args, **kw)
 
     def translate(self, text):
         """normal translation to alphabetic"""
-        return super(LanguageNormal, self).translate(text)
+        return super(type(self), self).translate(text)
 
 
 class LanguageJapanese(LanguageProcessor):
@@ -193,7 +193,7 @@ class LanguageJapanese(LanguageProcessor):
         """intitialise MeCab library"""
         global user_dictionary_path
 
-        super(LanguageJapanese, self).__init__(*args, cjk_convert=False, **kw)
+        super(type(self), self).__init__(*args, cjk_convert=False, **kw)
 
         user_dictionary = os.path.join(user_dictionary_path, 'user.dic')
 
@@ -204,7 +204,7 @@ class LanguageJapanese(LanguageProcessor):
     def romanise(self, text):
         """private method for converting Japanese phonetics to Romaji"""
 
-        result = super(LanguageJapanese, self).translate(text, True)
+        result = super(type(self), self).translate(text, True)
         return result[0]
 
 
@@ -286,12 +286,12 @@ class LanguageJapanese(LanguageProcessor):
 
         result = []
 
-        for text in super(LanguageJapanese, self).translate(text):
+        for text in super(type(self), self).translate(text):
             for tt in text.split():
                 if type(tt) == unicode:
                     tt = tt.encode('utf-8')
                 phonetics = self.get_phonetics(tt)
-                result = super(LanguageJapanese, self).append_translations(result, phonetics, ' ')
+                result = super(type(self), self).append_translations(result, phonetics, ' ')
 
         if result is None or [] == result or '' == result:
             return ['']
@@ -326,6 +326,7 @@ def main():
         ('ja', u'GFDLのみでライセンスされたコンテンツ（あらゆる文章、ファイルを含む）の受け入れが禁止となりました。'),
         ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ   スタぴか'),
         ('ja3', u'Ъ'),
+        ('ja4', u'国際的な協力の下に規制薬物に係る不正行為を助長する行為等の防止を図るための麻薬及び向精神薬取締法等の特例等に関する法律'),
         ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
         ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
         ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),

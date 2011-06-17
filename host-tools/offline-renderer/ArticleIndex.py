@@ -631,8 +631,9 @@ def output_fnd(filename_format, article_index, language_processor, truncate_titl
     PrintLog.message(u'Sorting titles')
     start_time = time.time()
 
+    ####@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@####
     unique_articles = {}
-    for article in [ (SearchKey.make_key(translated_title), title)
+    for article in [ (SearchKey.make_key(translated_title[:MAXIMUM_TITLE_LENGTH]), title)
                      for title in article_index.all_indices()
                      for translated_title in language_processor.translate(title) ]:
         unique_articles[article] = 1
