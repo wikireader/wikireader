@@ -10,7 +10,7 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: $*
-  echo usage: $(basename "$0") '<options>'
+  echo usage: $(basename "$0") '<options> [find_glob]'
   echo '       --help           -h         this message'
   echo '       --verbose        -v         more messages'
   echo '       --packages=<dir> -p <dir>   directory for 7zipped files ['${packages}']'
@@ -40,7 +40,7 @@ debug=no
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvp:i:t:s:u:S:d: --long=help,verbose,packages:,image:,tracker:,url:,size:,suffix:,direct:,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvp:i:t:s:u:S:d:P --long=help,verbose,packages:,image:,tracker:,url:,size:,suffix:,direct:,pretty,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -124,7 +124,10 @@ done
 [ -z "${image}" ] && USAGE image is not set
 [ -z "${url}" ] && USAGE url is not set
 [ -z "${size}" ] && USAGE size is not set
-[ $# -ne 0 ] && USAGE extraneous extra arguments
+[ $# -gt 1 ] && USAGE extraneous extra arguments
+
+glob='*'
+[ $# -eq 1 ] && glob="$1"
 
 # absolute path to directories
 packages=$(readlink -m "${packages}")
@@ -184,6 +187,7 @@ MakeArchive()
 
 # get all directories
 all_dirs=$(find . -mindepth 1 -maxdepth 1 -type d -print | sort -u)
+selected_dirs=$(find . -mindepth 1 -maxdepth 1 -type d -name "${glob}" -print | sort -u)
 
 # verify critical files are present
 echo checking: base
@@ -191,7 +195,6 @@ for f in kernel.elf textall.bmf forth.elf forth.ini sha256.txt version.txt
 do
   [ -e "${f}" ] || ERROR file: ${f} not found
 done
-DirectoryCount=0
 excludes=
 for p in ${all_dirs}
 do
@@ -202,7 +205,6 @@ do
   do
     [ -e "${d}/${f}" ] || ERROR file: ${f} not found
   done
-  DirectoryCount=$((${DirectoryCount} + 1))
 done
 
 # prepare the base archive
@@ -249,11 +251,9 @@ esac
 HTMLoutput 2 '</li>'
 
 
-count=0
-# process all pedia... directories
-for p in ${all_dirs}
+# process the selected pedia... directories
+for p in ${selected_dirs}
 do
-  count=$((${count} + 1))
   d=$(basename "${p}")
   version=$(head -n 1 "${d}/wiki.ftr")
   [ -z "${version}" ] && ERROR ${d}/wiki.ftr is invalid
