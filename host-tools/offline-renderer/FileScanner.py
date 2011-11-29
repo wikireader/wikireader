@@ -7,7 +7,6 @@
 #          Christopher Hall <hsw@openmoko.com>
 
 import sys, os
-import re
 import getopt
 import FilterWords
 import RedirectedTo
@@ -239,7 +238,6 @@ class MyTestScanner(FileScanner):
 
 
     def redirect(self, category, key, title, rcategory, rkey, rtitle, seek):
-        #pass
         print('R:{0:d} {1:d} : {2:s}[{3:d}]:{4:s} -> {5:s}[{6:d}]:{7:s}'
               .format(self.count, seek, category, key, title, rcategory, rkey, rtitle))
 
