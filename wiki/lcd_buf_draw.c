@@ -1979,7 +1979,8 @@ void display_link_article(long idx_article)
 void display_str(const unsigned char *str)
 {
 	int start_x,end_x,start_y,end_y;
-	int offset_x,offset_y;
+	int offset_x;
+	// int offset_y;
 	int str_width;
 	const unsigned char *p;
 
@@ -1999,7 +2000,7 @@ void display_str(const unsigned char *str)
 
 	str_width = get_external_str_pixel_width(p, DEFAULT_FONT_IDX);
 	offset_x = (end_x - str_width) / 2 - start_x;
-	offset_y = 0;
+	//offset_y = 0;
 	buf_draw_UTF8_str_in_copy_buffer(framebuffer_copy,&str,start_x,end_x,start_y,end_y,offset_x,DEFAULT_FONT_IDX);
 
 	repaint_framebuffer(framebuffer_copy,-1, 0);
@@ -2165,14 +2166,17 @@ int is_lcd_buf_area_blank(int start_x, int start_y, int end_x, int end_y)
 
 int nothing_before_link(int article_link_number)
 {
-	int start_x,start_y,end_x,end_y;
+	int start_x;
+	int start_y;
+	//int end_x;
+	int end_y;
 
 	start_y = (articleLink[article_link_number].start_xy >> 8);
 	start_x = (articleLink[article_link_number].start_xy & 0x000000ff) + LCD_LEFT_MARGIN - 1;
 	if (start_x < 0)
 		start_x = 0;
 	end_y   = (articleLink[article_link_number].end_xy  >>8);
-	end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
+	//end_x   = (articleLink[article_link_number].end_xy & 0x000000ff) + LCD_LEFT_MARGIN;
 	if (is_lcd_buf_area_blank(0, start_y, start_x - 2, end_y))
 		return ARTICLE_LINK_NOTHING_BEFORE;
 	else

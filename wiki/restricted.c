@@ -73,7 +73,6 @@ void first_time_password(int flag)
 	int i;
 	const unsigned char *pText;
 	unsigned char str[256];
-	int width;
 	uint8_t *framebuffer = lcd_get_framebuffer();
 
 	guilib_fb_lock();
@@ -96,10 +95,10 @@ void first_time_password(int flag)
 	if (flag)
 	{
 		pText = get_nls_text("protection");
-		width = extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
+		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
 		if (ustrlen(str))
 			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 10, str, ustrlen(str), 1);
-		width = extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
+		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);
 		if (ustrlen(str))
 			render_string(SUBTITLE_FONT_IDX, LCD_LEFT_MARGIN, BLACK_SPACE_START + 30, str, ustrlen(str), 1);
 		extract_str_fitting_width(&pText, str, LCD_BUF_WIDTH_PIXELS - LCD_LEFT_MARGIN, SUBTITLE_FONT_IDX);

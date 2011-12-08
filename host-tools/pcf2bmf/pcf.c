@@ -525,8 +525,6 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 
     if (bmf_filename[0])
     {
-	int rc;
-
 	fd_bmf = fopen(bmf_filename, "rb");
 	if (NULL == fd_bmf)
 	{
@@ -543,7 +541,7 @@ void Generate_new_font_with_header(pcffont_t *font, char *bmf_filename)
 		printf("Fail to allocate buffer for base bmf font, size %d\n", base_font_size);
 		exit(-1);
 	}
-	rc = fread(base_font_buf, base_font_size, 1, fd_bmf);
+	fread(base_font_buf, base_font_size, 1, fd_bmf);
 	fclose (fd_bmf);
     }
     strcpy(name,sOutFilename);
@@ -2300,4 +2298,3 @@ int wide_char_width(wchar_t ucs)
       (ucs >= 0xffe0 && ucs <= 0xffe6) ||
       (ucs >= 0x20000 && ucs <= 0x2ffff)));
 }
-

@@ -875,7 +875,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 	(void)end_y; // *** unused argument
 	int i, j;
 	int bubble_start_x, bubble_start_y, bubble_end_x, bubble_end_y;
-	int bubble_stem_start_x, bubble_stem_start_y, bubble_stem_end_x, bubble_stem_end_y;
+	int bubble_stem_start_x, bubble_stem_start_y, bubble_stem_end_x /*, bubble_stem_end_y*/;
 	int bubble_stem_left_diff, bubble_stem_right_diff;
 	unsigned char s[5];
 	int width;
@@ -904,7 +904,7 @@ void draw_key_bubble(int start_x, int start_y, int end_x, int end_y, unsigned ch
 		bubble_stem_start_x = bubble_start_x - bubble_adjust + (KEY_BUBBLE_TOTAL_WIDTH - bubble_stem_width) / 2;
 		bubble_stem_end_x = bubble_stem_start_x + bubble_stem_width - 1;
 		bubble_stem_start_y = bubble_end_y + 1;
-		bubble_stem_end_y = bubble_start_y + KEY_BUBBLE_TOTAL_HEIGHT - 1;
+		//bubble_stem_end_y = bubble_start_y + KEY_BUBBLE_TOTAL_HEIGHT - 1;
 
 		bubble_stem_left_diff = bubble_stem_start_x - bubble_start_x - bubble_adjust;
 		bubble_stem_right_diff = bubble_end_x - bubble_stem_end_x + bubble_adjust;

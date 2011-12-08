@@ -461,12 +461,12 @@ static void handle_button_release(button_t keycode)
 {
 //	static long idx_article = 0;
 	static int first_time_random = 0;
-	int mode;
+	//int mode;
 	struct keyboard_key *key;
 
 	finger_move_speed = 0;
 	keyboard_key_reset_invert(KEYBOARD_RESET_INVERT_NOW, 0); // reset invert immediately
-	mode = keyboard_get_mode();
+	//mode = keyboard_get_mode();
 	if (keycode == BUTTON_POWER) {
 		history_list_save(HISTORY_SAVE_POWER_OFF);
 		delay_us(250000);

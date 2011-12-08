@@ -697,7 +697,7 @@ long get_search_result_start()
 	long offset_search_result_start = -1;
 	int idx_prefix_index_table;
 	char c1, c2, c3;
-	int found = 0;
+	//int found = 0;
 	long offset;
 
 	switch(search_str_len)
@@ -723,7 +723,7 @@ long get_search_result_start()
 		bigram_char_idx(c2) * SEARCH_CHR_COUNT + bigram_char_idx(c3);
 	if ((offset = get_prefix_index_table(idx_prefix_index_table)))
 	{
-		found = 1;
+		//found = 1;
 		offset_search_result_start = offset;
 	}
 	if (search_interrupted)

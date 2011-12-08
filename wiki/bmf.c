@@ -27,7 +27,7 @@
 
 int load_bmf(pcffont_bmf_t *font)
 {
-	int fd, read_size;
+	int fd;
 	font_bmf_header header;
 
 	if (NULL == font || NULL == font->file) {
@@ -51,7 +51,7 @@ int load_bmf(pcffont_bmf_t *font)
 	}
 	memset(font->charmetric, 0, font->file_size);
 
-	read_size = file_read(fd, font->charmetric, 256 * sizeof(charmetric_bmf)+sizeof(font_bmf_header));
+	file_read(fd, font->charmetric, 256 * sizeof(charmetric_bmf)+sizeof(font_bmf_header));
 
 	memcpy(&header,font->charmetric,sizeof(font_bmf_header));
 
@@ -67,7 +67,7 @@ int
 pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cmetrics)
 {
 	int size = 0;
-	int read_size = 0, offset = 0;
+	int offset = 0;
 	char buffer[1024];
 	int font_header;
 	int bFound = 0;
@@ -119,7 +119,7 @@ pres_bmfbm(ucs4_t val, pcffont_bmf_t *font, bmf_bm_t **bitmap,charmetric_bmf *Cm
 		{
 			size = sizeof(charmetric_bmf);
 
-			read_size = file_read(font->fd,buffer,size);
+			file_read(font->fd,buffer,size);
 			memcpy(Cmetrics,buffer,sizeof(charmetric_bmf));
 			memcpy(font->charmetric+val*sizeof(charmetric_bmf)+font_header,Cmetrics,sizeof(charmetric_bmf));
 		}
