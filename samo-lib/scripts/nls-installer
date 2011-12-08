@@ -49,6 +49,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
   (format #t "       --language=<lang>   -l <lang>      language code~%")
   (format #t "       --suffix=<suffix>   -s <suffix>    suffix (pedia,quote,dict,...)~%")
   (format #t "       --output=<file>     -o <file>      output file name e.g. wiki.nls~%")
+  (format #t "       --base=<file>       -b <file>      defaults that nls file will override~%")
   (format #t "       --nls=<file>        -n <file>      nls source file~%")
   (format #t "       --change=<name>     -c <name>      optional s/English/<name>/g~%")
   (exit 1))
@@ -63,6 +64,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
                                      (language (single-char #\l) (value #t))
                                      (suffix (single-char #\s) (value #t))
                                      (output (single-char #\o) (value #t))
+                                     (base (single-char #\b) (value #t))
                                      (nls (single-char #\n) (value #t))
                                      (change (single-char #\c) (value #t))
                                      (verbose (single-char #\v))
@@ -71,6 +73,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
          (=l (option-ref parsed-opts 'language #f))
          (=s (option-ref parsed-opts 'suffix #f))
          (=o (option-ref parsed-opts 'output #f))
+         (=b (option-ref parsed-opts 'base #f))
          (=n (option-ref parsed-opts 'nls #f))
          (=c (option-ref parsed-opts 'change ""))
          (*verbose* (option-ref parsed-opts 'verbose #f))
@@ -84,6 +87,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
     (unless =l (usage "Missing language"))
     (unless =s (usage "Missing suffix"))
     (unless =o (usage "Missing output"))
+    (unless =b (usage "Missing base"))
     (unless =n (usage "Missing nls"))
 
     (if *debug*
@@ -94,23 +98,34 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
           (defaults (make-hash-table 100)))
       (if *verbose*
           (format #t "creating: ~a~%" out))
-      (with-input-from-file =n
+      (with-output-to-file out
         (lambda ()
-          (with-output-to-file out
-            (lambda ()
-              (let* ((ignored (make-regexp "^[[:space:]]*(#\\*.*)?$"))
-                    (comment (make-regexp "^[[:space:]]*#.*$"))
-                    (special (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*:[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
-                    (normal (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
-                    (control-list
-                     (list (list no-op ignored)
-                           (list write-all comment)
-                           (list (lambda (match) (write-match table match 1 =s 2 3)) special)
-                           (list (lambda (match) (write-var defaults match 1 2)) normal)
-                           )))
+          (let* ((ignored (make-regexp "^[[:space:]]*(#\\*.*)?$"))
+                 (comment (make-regexp "^[[:space:]]*#.*$"))
+                 (special (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*:[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
+                 (normal (make-regexp "^[[:space:]]*([[:alnum:]_]+)[[:space:]]*=[[:space:]]*(.*)[[:space:]]*$"))
+                 (control-list-normal
+                  (list (list no-op ignored)
+                        (list write-all comment)
+                        (list (lambda (match) (write-match table match 1 =s 2 3)) special)
+                        (list (lambda (match) (write-var defaults match 1 2)) normal)
+                        ))
+                 (control-list-defaults
+                  (list (list no-op ignored)
+                        (list no-op comment)
+                        (list no-op special)
+                        (list (lambda (match) (write-var defaults match 1 2)) normal)
+                        )))
+            (with-input-from-file =n
+              (lambda ()
                 (while (not (eof-object? (peek-char)))
-                       (process control-list
-                                (string-trim-both (read-line)))))
+                       (process control-list-normal
+                                (string-trim-both (read-line))))))
+            (with-input-from-file =b
+              (lambda ()
+                (while (not (eof-object? (peek-char)))
+                       (process control-list-defaults
+                                (string-trim-both (read-line)))))))
 
               ;; copy in any missing values from defaults
               (hash-for-each (lambda (key data)
@@ -120,7 +135,7 @@ exec ${GUILE-guile} -l $0 -c "(apply $main (command-line))" "$0" "$@"
               (for-each display
                         (sort-list
                          (hash-map->list (lambda (key data)
-                                           (format #f "~a=~a~%" key (change =c data))) table) string<?)))))))))
+                                           (format #f "~a=~a~%" key (change =c data))) table) string<?)))))))
 
 
 

@@ -785,6 +785,7 @@ nls-install: validate-destdir
                                            --language="$${language}" \
                                            --suffix="$${suffix}" \
                                            --output="wiki.nls" \
+                                           --base="${LICENSE_DIR}/en/wiki.nls" \
                                            --nls="$${src}" \
                                            --change="$${native_name}" \
                                            --verbose ; \
