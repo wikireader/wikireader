@@ -24,7 +24,7 @@ USAGE()
 }
 
 # ListOfAllContentTypes, TypeToName, TypeToFilename
-source "$(dirname "$0")/wiki-names.sh"
+. "$(dirname "$0")/wiki-names.sh"
 
 
 nlsprint=$(readlink -m "$(dirname "$0")/../samo-lib/scripts/nls-print")
