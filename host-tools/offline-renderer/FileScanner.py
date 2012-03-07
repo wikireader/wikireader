@@ -158,6 +158,7 @@ class FileScanner(object):
 
                 CurrentState = self.StateMachine[next]
                 flag = False
+                body_leading_blanks = 0
                 if 'key' == proc:
                     key = block[:pos].split('"')[0].strip()
                 elif 'namespace' == proc:
