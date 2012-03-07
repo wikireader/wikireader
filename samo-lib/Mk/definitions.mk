@@ -145,6 +145,9 @@ WIKI_APP = ${ROOT_DIR}/wiki-app/
 WIKI_APP_INCLUDE = ${WIKI_APP}
 WIKI_APP_SRC = ${WIKI_APP}
 
+# need to source (.) this script to use its definitions
+WIKI_NAMES = ${ROOT_DIR}/scripts/wiki-names.sh
+
 
 # In samo-lib
 # ===========

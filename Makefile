@@ -769,11 +769,12 @@ fetch-nls-%:
 # install nls file
 .PHONY: nls-install
 nls-install: validate-destdir
-	@find "${DESTDIR}" -type d | \
+	@. ${WIKI_NAMES} ; \
+	find "${DESTDIR}" -type d | \
 	  ( while read dir ; \
 	    do \
 	      d=$$(basename "$${dir}") ; \
-	      for suffix in books dict pedia quote starw trav ; \
+	      for suffix in $${ListOfAllContentTypes} ; \
 	      do \
 	        language="$${d%$${suffix}}" ; \
 	        if [ X"$${language}" != X"$${d}" ] ; \

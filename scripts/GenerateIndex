@@ -23,6 +23,7 @@ exec sbcl --script "$0" "$0" "$@"
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+(require 'asdf)
 (require 'getopt)
 (require 'md5)
 
@@ -45,12 +46,15 @@ exec sbcl --script "$0" "$0" "$@"
 
 (defvar *type-codes* (make-hash-table :test #'equal))
 (loop for item in
-     '(("books" "Wikibooks")
+     '(("appro" "Appropedia")
+       ("books" "Wikibooks")
        ("dict" "Wiktionary")
+       ("guten" "Gutenberg")
+       ("how" "Wikihow")
        ("pedia" "Wikipedia")
-       ("trav" "Wikitravel")
        ("quote" "Wikiquote")
-       ("starw" "Wookieepedia"))
+       ("starw" "Wookieepedia")
+       ("trav" "Wikitravel"))
    do
      (setf (gethash (first item) *type-codes*) (second item)))
 
