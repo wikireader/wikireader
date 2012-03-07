@@ -304,7 +304,7 @@ do
     -x|--xml-link)
       for s in ${ListOfAllFilePrefixes}
       do
-        #s=$(TypeToName "${c}")
+        echo Checking for: ${language}${s}
         RenderDo --yes ${render_host} ${list} --brief "cd '${base_dir}' &&
  rm -f '${language}${s}-pages-articles.xml' &&
  f=\$(ls -1 ../'${language}${s}'-*-pages-articles.xml 2>/dev/null | tail -n 1) &&
