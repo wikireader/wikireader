@@ -68,6 +68,7 @@ class FileScanner(object):
 
     text_start = '<text '
     text_cont = 'xml:space="preserve">'
+    text_cont2 = '>'
     text_stop = '/>'
 
     text_end = '</text>'
@@ -107,6 +108,7 @@ class FileScanner(object):
         'prebody': [
             (text_cont, len(text_cont), 'drop', 'body'),
             (text_stop, len(text_stop), 'zero', 'start'),
+            (text_cont2, len(text_cont2), 'drop', 'body'),
             ],
 
         'body': [
