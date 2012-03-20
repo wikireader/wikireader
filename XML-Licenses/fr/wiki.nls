@@ -3,6 +3,7 @@
 # Author: Zeiram
 
 wiki_name=Wikipédia Français
+dict:wiki_name= Wiktionnaire Français
 license_text=Les textes sont disponibles sous une licence Creative Commons Attribution / Share-Alike et peuvent être réutilisés librement selon les termes de cette licence. Voir : Texte de la licence [CC-BY-SA] et [Conditions d'Utilisation] pour les termes supplémentaires qui s'appliquent. L'article original est disponible à l'adresse : http://fr.wikipedia.org/wiki/<title>
 type_a_word=Entrez un mot ou expression
 no_results=Aucune correspondance

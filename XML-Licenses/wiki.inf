@@ -33,6 +33,7 @@
 # -----------  --------  -----------  -----------------  ---------
   ,            cy,       cypedia,
   ,            da,       dapedia,     DANISH
+  DICTIONARY,  de,       dedict,
   GUTENBERG,   de,       deguten,
   ,            de,       depedia,
   ,            el,       elpedia,
@@ -47,6 +48,7 @@
   TRAVEL,      en,       entrav,
   ,            es,       espedia,
   ,            fi,       fipedia,
+  DICTIONARY,  fr,       frdict,
   ,            fr,       frpedia,
   ,            hu,       hupedia,
   ,            it,       itpedia,
