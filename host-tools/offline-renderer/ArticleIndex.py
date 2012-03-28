@@ -156,7 +156,15 @@ def main():
                                language = language_convert)
 
     for f in args:
+        if verbose:
+             PrintLog.message('process: {0:s}'.format(f))
+        else:
+            pass
         limit = processor.process(f, limit)
+        if verbose:
+             PrintLog.message('process: {0:s} returned: {0:s}'.format(limit))
+        else:
+            pass
         if limit != 'all' and limit <= 0:
             break
 
@@ -483,7 +491,7 @@ pragma journal_mode = memory;
         if restricted:
             self.restricted_count += 1
 
-        if not verbose and self.article_count % 10000 == 0:
+        if self.article_count % 10000 == 0:
             start_time = time.time()
             PrintLog.message(u'Index: {0:7.2f}s {1:10d}'.format(start_time - self.time, self.article_count))
             self.time = start_time
@@ -497,6 +505,7 @@ pragma journal_mode = memory;
                 PrintLog.message(u'  --> {0:s}'.format(bad_words))
             else:
                 PrintLog.message(u'Title: {0:s}'.format(title))
+                pass
 
         character_count = len(text)
         self.total_character_count += character_count
@@ -509,15 +518,28 @@ pragma journal_mode = memory;
 
     def resolve_redirects(self):
         """add redirect to article_index"""
+        global verbose
         count = 0
+        if verbose:
+            PrintLog.message(u'Resolving redirects')
+        else:
+            pass
         for item in self.redirects:
             try:
                 self.set_index(item, self.find(item)[:3] + (True,))
                 count += 1
+                if verbose and count % 1000 == 0:
+                    PrintLog.message(u'Redirects resolved: {0:d}'.format(count))
+                else:
+                    pass
             except KeyError:
                 PrintLog.message(u'Unresolved redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
             except CycleError:
                 PrintLog.message(u'Cyclic redirect: {0:s} -> {1:s}'.format(item, self.redirects[item]))
+        if verbose:
+            PrintLog.message(u'Total redirects resolved: {0:d}'.format(count))
+        else:
+            pass
         return count
 
 
