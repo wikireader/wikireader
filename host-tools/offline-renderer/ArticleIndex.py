@@ -439,7 +439,8 @@ pragma journal_mode = memory;
         if self.KEY_ARTICLE != key or self.KEY_ARTICLE != rkey:
             if verbose:
                 PrintLog.message(u'Non-article Redirect: {0:s}[{1:d}]:{2:s} ->  {3:s}[{4:d}]:{5:s}'
-                                 .format(category, key, title, rcategory, rkey, rtitle))
+                                 .format(unicode(category, 'utf-8'), key, title,
+                                         unicode(rcategory, 'utf-8'), rkey, rtitle))
             return
 
         if '' == rtitle:
