@@ -13,7 +13,8 @@ import unicodedata
 import PinyinTable
 try:
     import MeCab
-except:
+except Exception as e:
+    print('exception: ', e)
     print('error: Missing python module: python-mecab')
     print('       sudo apt-get install python-mecab mecab-ipadic-utf8')
     exit(1)
@@ -278,7 +279,12 @@ class LanguageJapanese(LanguageProcessor):
             for c in key:
                 romaji = romaji + c
             result.append(romaji)
+
         return result
+
+
+    import string
+    punctuation = string.punctuation + u'、・\r\n \t'
 
 
     def translate(self, text):
@@ -287,11 +293,18 @@ class LanguageJapanese(LanguageProcessor):
         result = []
 
         for text in super(type(self), self).translate(text):
-            for tt in text.split():
+            split_text = ''.join([ c if not c in self.punctuation else ' ' for c in list(text)]).split()
+            for tt in split_text:
                 if type(tt) == unicode:
                     tt = tt.encode('utf-8')
                 phonetics = self.get_phonetics(tt)
-                result = super(type(self), self).append_translations(result, phonetics, ' ')
+                #result = super(type(self), self).append_translations(result, phonetics, ' ')
+                # *** nasty hack to make sure the number of translations does not exceed 10000
+                # *** as some Japanese phrases can have hundreds of millions of possible pronunciations
+                # *** e.g. 平親清女・平親清女妹・平親清四女・平親清五女
+                # ***        120  *   360   *   120   *  120   -> 622,080,000
+                # *** just cut the arrays to the first 100 elements
+                result = super(type(self), self).append_translations(result[:100], phonetics[:100], ' ')
 
         if result is None or [] == result or '' == result:
             return ['']
@@ -327,6 +340,14 @@ def main():
         ('ja2', u'2004年新潟県中越地震    孫正義  孫悟空  孫子   バラク・オバマ   スタぴか'),
         ('ja3', u'Ъ'),
         ('ja4', u'国際的な協力の下に規制薬物に係る不正行為を助長する行為等の防止を図るための麻薬及び向精神薬取締法等の特例等に関する法律'),
+        ('ja5', u'東京都クラブバスケットボール連盟'),
+        ('ja6a', u'平親清女'),
+        ('ja6b', u'平親清女妹'),
+        ('ja6c', u'平親清四女'),
+        ('ja6d', u'平親清五女'),
+        ('ja6e', u'平親清女・平親清女妹'),
+        ('ja6f', u'平親清女・平親清女妹・平親清四女'),
+        ('ja6z', u'平親清女・平親清女妹・平親清四女・平親清五女'),
         ('qq', u'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģ'),
         ('q1', u'ĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈ'),
         ('q2', u'ƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯ'),
@@ -346,7 +367,7 @@ def main():
     print(u'\nNormal translation\n==================')
     test_items(texts, LanguageNormal().translate)
 
-    print(u'\nJapnese translation\n====================')
+    print(u'\nJapanese translation\n====================')
     test_items(texts, LanguageJapanese().translate)
 
 
