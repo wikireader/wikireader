@@ -1,0 +1,46 @@
+# Messages for Sundanese (Basa Sunda)
+# Exported from translatewiki.net
+# Author: Kandar
+
+wiki_name=Basa Inggris...
+books:wiki_name=Buku
+dict:wiki_name=Kamus
+guten:wiki_name=Proyék Gutenberg
+pedia:wiki_name=Wikipedia English
+quote:wiki_name=Kutipan
+license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Baca ogé: [Béréndélan pangarang alfabétik], [Bérédélan buku]. Hakcipta kalolobaan ieu buku geus kadaluwarsa di AS (di nagara séjén bisa aya kénéh hakciptana). Ku kituna, sing saha waé bisa bisa nyieun salinan verbatim atawa non-verbatim karya-karya éta. Pikeun lengkepna, tempo: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wikiquote.org/wiki/<title>
+type_a_word=Ketikkeun Kecap atau Frasa
+guten:type_a_word=Ketikkeun Buku atawa Pangarang
+no_results=Taya éntri nu cocog
+searching=néangan...
+select_wiki=Pilih énsiklopédi
+history_title=Jujutan
+no_history=Taya jujutan
+please_wait=Antosan...
+clear_history=Kosongkeun Jujutan
+yes=Enya
+no=Ulah
+protection=Sababaraha éntri Wikipédia bisa jadi teu cocog pikeun barudak. Asupkeun sandi pikeun pangjaga.
+guten:protection=Sababaraha buku bisa jadi teu cocog pikeun barudak. Asupkeun sandi pikeun pangjaga.
+restricted=Sababaraha éntri bisa jadi teu cocog pikeun barudak. Asupkeun sandi pikeun pangjaga.
+set_password=Asupkeun Sandi
+ok=jung
+set_filter=Lamun filterna hurung, kudu ngasupkeun sandi nalika éntri-éntri anu dijaga rék dibuka.
+keep_filter_on=Tetep Hurungkeun Filter
+keep_filter_off=Tetep Pareuman Filter
+filter_options=Pilihan Filter
+turn_filter_on=Hurungkeun Filter
+turn_filter_off=Pareuman Filter
+change_password=Ganti Sandi
+re_enter_password=Asupkeun deui Sandi
+re_enter_new_password=Asupkeun deui sandi anyar
+passwords_not_match=Sandi teu cocog
+enter_old_password=Asupkeun sandi heubeul
+enter_password=Asupkeun sandi
+try_again=Salah. Cobaan deui.
+enter_new_password=Asupkeun sandi anyar
+parental_controls=Kontrol Kolot
+r=R

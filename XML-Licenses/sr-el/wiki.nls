@@ -1,0 +1,47 @@
+# Messages for Serbian (Latin script) (‪Srpski (latinica)‬)
+# Exported from translatewiki.net
+# Author: Charmed94
+# Author: Rancher
+
+wiki_name=Srpski
+books:wiki_name=Knjige
+dict:wiki_name=Rečnik
+guten:wiki_name=Projekat Gutenberg
+pedia:wiki_name=Vikipedija na srpskom
+quote:wiki_name=Citati
+license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+guten:license_text=Pogledajte [spisak autora po azbučnom redu] i [spisak knjiga].  Autorska prava za većinu ovih dela su istekla u Sjedinjenim Američkim Državama, ali ipak mogu biti zaštićena u drugim državama. Svako može doslovno napraviti primerke ovih dela ili ih izmeniti. Za više informacija pogledajte http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+type_a_word=Unesite reč ili frazu
+guten:type_a_word=Unesite knjigu ili autora
+no_results=Nema rezultata.
+searching=traženje…
+select_wiki=Izbor enciklopedije
+history_title=Istorijat
+no_history=Nema istorijata
+please_wait=Sačekajte…
+clear_history=Očistiti istorijat?
+yes=Da
+no=Ne
+protection=Neki unosi na Vikipediji nisu pogodni za maloletna lica. Postavite lozinku radi zaštite.
+guten:protection=Neke knjige nisu pogodne za maloletna lica. Postavite lozinku radi zaštite.
+restricted=Ovaj unos nije pogodan za maloletna lica. Postavite lozinku radi zaštite.
+set_password=Lozinka
+ok=U redu
+set_filter=S uključenim filterom je lozinka obavezna za pristupanje ograničenim člancima.
+keep_filter_on=Ostavi uključen
+keep_filter_off=Ostavi isključen
+filter_options=Postavke filtera
+turn_filter_on=Uključi filter
+turn_filter_off=Isključi filter
+change_password=Promeni lozinku
+re_enter_password=Potvrdite lozinku
+re_enter_new_password=Potvrdite novu lozinku
+passwords_not_match=Lozinke se ne poklapaju.
+enter_old_password=Unesite staru lozinku
+enter_password=Unesite lozinku
+try_again=Pogrešno. Pokušajte ponovo.
+enter_new_password=Unesite novu lozinku
+parental_controls=Roditeljska kontrola
+r=R

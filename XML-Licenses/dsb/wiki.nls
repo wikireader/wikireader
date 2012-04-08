@@ -2,9 +2,18 @@
 # Exported from translatewiki.net
 # Author: Michawiki
 
-wiki_name=Wikipedija dolnoserbski
+wiki_name=Dolnoserbšćina...
+books:wiki_name=Knigły
+dict:wiki_name=Słownik
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Wikipedija dolnoserbski
+quote:wiki_name=Citaty
 license_text=Tekst stoj pód licencu Creative Commons Attribution/Share-Alike License k dispoziciji a daj soe swobodnje pód wuměnjenjami teje licence wužywaś. Glědaj: Tekst licence [CC-BY-SA] a [wužywarske wuměnjenja] za pśidatne wuměnjenja, kótarež daju se nałožyś. Originalny nastawk namakajoš na: http://dsb.wikipedia.org/wiki/<title>
+dict:license_text=Tekst stoj pód licencu Creative Commons Attribution/Share-Alike License k dispoziciji a dajo se swobodnje pód wuměnjenjami teje licence wužywaś. Glědaj: Tekst licence [CC-BY-SA] a [wužywarske wuměnjenja] za pśidatne wuměnjenja, kótarež daju se nałožyś. Originalny nastawk namakajoš na: http://en.wikktionary.org/wiki/<title>
+guten:license_text=Glědaj teke: [Alfabetiska lisćina awtorow], [Lisćina zběrkow knigłow]. Awtorske pšawo nejwěcej toś tych knigłow jo spadnjone w USA. (W drugich krajach by mógli hyšći awtorske pšawa wobstaś). Tak móžo kuždy pósłowne abo změnjone kopije tych źěłow gótowaś. Za drobnostki, glědaj: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst stoj pód licencu Creative Commons Attribution/Share-Alike License k dispoziciji a dajo se swobodnje pód wuměnjenjami teje licence wužywaś. Glědaj: Tekst licence [CC-BY-SA] a [wužywarske wuměnjenja] za pśidatne wuměnjenja, kótarež daju se nałožyś. Originalny nastawk namakajoš na: http://en.wikiquote.org/wiki/<title>
 type_a_word=Słowo abo wuraz zapódaś
+guten:type_a_word=Zapiš knigły abo awtora
 no_results=Žedne zapiski namakane
 searching=pyta se...
 select_wiki=Encyklopediju wubraś
@@ -15,6 +24,7 @@ clear_history=Historiju wulašowaś
 yes=Jo
 no=Ně
 protection=Někotare zapiski Wikipedije njejsu gódne za njedolětnych. Pšosym nastaj gronidło za šćit.
+guten:protection=Někotare knigły njejsu gódne za njedolětnych. Pšosym nastaj gronidło za šćit.
 restricted=Toś ten zapisk njejo gódny za njedolětnych. Pčosym nastaj gronidło za šćit.
 set_password=Gronidło nastajiś
 ok=w pórědku

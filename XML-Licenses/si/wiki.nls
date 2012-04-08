@@ -1,0 +1,43 @@
+# Messages for Sinhala (සිංහල)
+# Exported from translatewiki.net
+# Author: Singhalawap
+# Author: පසිඳු කාවින්ද
+
+wiki_name=සිංහල...
+books:wiki_name=පොත්
+dict:wiki_name=ශබ්දකෝෂය
+guten:wiki_name=ව්‍යාපෘති ගුටෙන්බර්ගය
+pedia:wiki_name=සිංහල විකිපීඩියා
+quote:wiki_name=උද්ධරණ
+type_a_word=වචනය හෝ වාක්‍ය ඛණ්ඩය ටයිප් කරන්න
+guten:type_a_word=පොත හෝ කර්තෘ ටයිප් කරන්න
+no_results=සටහන් හමු නොවුණි
+searching=සොයමින් පවතී...
+select_wiki=විශ්වකෝෂය තෝරන්න
+history_title=ඉතිහාසය
+no_history=විත්ති නොමැත
+please_wait=මදක් රැදීසිටින්න
+clear_history=යටගියාව ශුද්ධ කරන්න
+yes=ඔව්
+no=නැත
+protection=විකිපීඩියාවෙහි අන්තර්ගත සමහරක් බාලවයස්කරුවන්ට සුදුසු නැත. කරුණාකර මුරපදයක් සකසන්න.
+guten:protection=සමහරක් පොත් බාලවයස්කරුවන්ට සුදුසු නැත. කරුණාකර ආරක්ෂාව සඳහා මුරපදයක් සකසන්න.
+restricted=මෙම ඇතුල් කිරීම බාලවයස්කරුවන්ට සුදුසු නැත. කරුණාකර ආරක්ෂාව සඳහා මුරපදයක් සකසන්න.
+set_password=මුරපදය සකසන්න
+ok=නිවැරදියි
+set_filter=පෙරීම ON කිරීමත් සමඟ, සීමිත ප්‍රවේශනයන් වෙත ප්‍රවේශ්‍ය කරන විට මුර පදය ඇතුල් කිරීම අවශ්‍ය වේ.
+keep_filter_on=පෙරහන ON කර තබන්න
+keep_filter_off=පෙරහන OFF කර තබන්න
+filter_options=පෙරහන් විකල්ප
+turn_filter_on=පෙරහන ON කරන්න
+turn_filter_off=පෙරහන OFF කරන්න
+change_password=මුර පදය වෙනස් කරන්න
+re_enter_password=මුර පදය යලි ඇතුල් කරන්න
+re_enter_new_password=නව මුර පදය යලි ඇතුල් කරන්න
+passwords_not_match=මුර පදයන් නොගැලපෙති
+enter_old_password=පැරණි මුර පදය ඇතුල් කරන්න
+enter_password=මුර පදය ඇතුල් කරන්න
+try_again=වැරදියි. නැවත උත්සහ කරන්න.
+enter_new_password=නව මුර පදය ඇතුල් කරන්න
+parental_controls=මව්පිය පාලක
+r=සී

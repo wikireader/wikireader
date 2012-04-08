@@ -1,0 +1,21 @@
+# Messages for Asturian (Asturianu)
+# Exported from translatewiki.net
+# Author: Xuacu
+
+wiki_name=Asturianu...
+books:wiki_name=Llibros
+dict:wiki_name=Diccionariu
+guten:wiki_name=Proyeutu Gutenberg
+pedia:wiki_name=Uiquipedia n'asturianu
+quote:wiki_name=Cites
+type_a_word=Escribi una pallabra o frase
+guten:type_a_word=Escribi un títulu o autor
+no_results=Nun s'alcontraron resultaos
+searching=buscando...
+select_wiki=Seleiciona enciclopedia
+history_title=Historial
+no_history=Nun hai historial
+please_wait=Aguarda, por favor…
+clear_history=Llimpiar historial
+yes=Sí
+no=Non

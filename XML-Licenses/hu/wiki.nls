@@ -2,11 +2,23 @@
 # Exported from translatewiki.net
 # Author: Bdamokos
 # Author: Dani
+# Author: Dj
 # Author: Glanthor Reviol
+# Author: Matteo55
+# Author: Misibacsi
 
-wiki_name=Magyar Wikipédia
+wiki_name=Magyar...
+books:wiki_name=Könyvek
+dict:wiki_name=Szótár
+guten:wiki_name=Gutenberg-projekt
+pedia:wiki_name=Magyar Wikipédia
+quote:wiki_name=Idézetek
 license_text=A szöveg a Creative Commons Nevezd meg! - Így add tovább licenc alatt érhető el és a licenc feltételei alapján szabadon felhasználható. Lásd a [CC-BY-SA] licenc szövegét és a [Terms of Use]-t a további feltételekért. Az eredeti szócikk a következő címen érhető el: http://en.wikipedia.org/wiki/<title>
+dict:license_text=A szöveg a Creative Commons Nevezd meg! - Így add tovább! licenc (röviden: CC-BY-SA) alatt érhető el és a licenc feltételei alapján szabadon felhasználható. További információkért lásd a [CC-BY-SA] licenc szövegét és a [felhasználási feltételek]et. Az eredeti szócikk a következő címen érhető el: http://hu.wiktionary.org/wiki/<title>
+guten:license_text=Lásd még: [szerzői betűrendes listája], [könyvespolcok listája].  A legtöbb könyvnek lejárt a szerzői joga az Egyesült Államokban.  (Más országokban lehetnek továbbra is védettek). Így bárki használhatja ezeket az alkotásokat szó szerinti vagy nem szó szerinti másolatban. Részletekért lásd: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=A szöveg a Creative Commons Nevezd meg! - Így add tovább! licenc (röviden:CC-BY-SA) alatt érhető el és a licenc feltételei alapján szabadon felhasználható. További információkért lásd a [CC-BY-SA] licenc szövegét és a [felhasználási feltételek]-et. Az eredeti szócikk a következő címen érhető el: http://en.wikipedia.org/wiki/<title>
 type_a_word=Írj be egy szót vagy kifejezést
+guten:type_a_word=Írjon be egy könyvet vagy egy szerzőt
 no_results=Nincs találat
 searching=keresés…
 select_wiki=Válassz enciklopédiát
@@ -17,6 +29,7 @@ clear_history=Előzmények törlése
 yes=Igen
 no=Nem
 protection=Néhány Wikipédia-bejegyzés nem biztos, hogy megfelelő kiskorúak számára. Kérlek állíts be egy jelszót a védelemhez!
+guten:protection=Egyes könyvek lehetséges, hogy nem megfelelő kiskorúak számára. Kérlek állíts be egy jelszót a védelemhez!
 restricted=Ez a bejegyzés lehet, hogy nem megfelelő a kiskorúak számára. Kérlek állíts be egy jelszót a védelemhez!
 set_password=Jelszó beállítása
 ok=rendben

@@ -1,9 +1,19 @@
 # Messages for Danish (Dansk)
 # Exported from translatewiki.net
+# Author: Peter Alberti
 
-wiki_name=Wikipedia Dansk
-license_text=Tekst er udgivet under Creative Commons Attribution / Share-Alike License og kan frit genanvendes i henhold til denne licens. Se: Tekst i [CC-BY-SA] License og [Terms of Use] for yderligere vilkår, som kan finde anvendelse. Den oprindelige artikel er tilgængelig på: http://da.wikipedia.org/wiki/<title>
+wiki_name=Dansk...
+books:wiki_name=Bøger
+dict:wiki_name=Ordbog
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Wikipedia Dansk
+quote:wiki_name=Citater
+license_text=Tekst er udgivet under Creative Commons Navngivelse-DelPåSammeVilkår Licensen og kan frit genanvendes i henhold til denne licens. Se: Tekst i [CC-BY-SA] Licensen og [Terms of Use] for yderligere vilkår, som kan finde anvendelse. Den oprindelige artikel er tilgængelig på: http://da.wikipedia.org/wiki/<title>
+dict:license_text=Tekst er udgivet under Creative Commons Navngivelse-DelPåSammeVilkår Licensen og kan frit genanvendes i henhold til denne licens. Se: Tekst i [CC-BY-SA] Licensen og [Terms of Use] for yderligere vilkår, som kan finde anvendelse. Den oprindelige artikel er tilgængelig på: http://da.wiktionary.org/wiki/<title>
+guten:license_text=Se også: [Alfabetisk liste over forfattere], [Liste over boghylder]. Ophavsretten til de fleste af disse bøger er udløbet i USA. (De kan stadigvæk være beskyttet af ophavsret i andre lande.) Så hvem som helst kan lave ordrette eller ikke ordrette kopier af disse værker. For flere oplysninger se: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst er udgivet under Creative Commons Navngivelse-DelPåSammeVilkår Licensen og kan frit genanvendes i henhold til denne licens. Se: Tekst i [CC-BY-SA] Licensen og [Terms of Use] for yderligere vilkår, som kan finde anvendelse. Den oprindelige artikel er tilgængelig på: http://da.wikiquote.org/wiki/<title>
 type_a_word=Søg i Wikipedia Dansk
+guten:type_a_word=Skriv navnet på en bog eller forfatter
 no_results=No entries found
 searching=søgning...
 select_wiki=Vælg encyklopædi
@@ -14,6 +24,7 @@ clear_history=Ryd historie
 yes=ja
 no=nej
 protection=Nogle Wikipedia artikler er ikke egnet for mindreårige. Angiv venligst en adgangskode til beskyttelse.
+guten:protection=Nogle bøger er måske ikke egnede for mindreårige. Angiv en adgangskode for beskyttelse.
 restricted=Denne artikel er muligvis ikke egnet for mindreårige. Angiv venligst en adgangskode til beskyttelse.
 set_password=Angiv adgangskode
 ok=ok

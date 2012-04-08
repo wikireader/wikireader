@@ -1,0 +1,46 @@
+# Messages for Malay (Bahasa Melayu)
+# Exported from translatewiki.net
+# Author: Anakmalaysia
+
+wiki_name=Bahasa Melayu...
+books:wiki_name=Buku
+dict:wiki_name=Kamus
+guten:wiki_name=Projek Gutenberg
+pedia:wiki_name=Wikipedia Bahasa Melayu
+quote:wiki_name=Petikan
+license_text=Teks ini disediakan di bawah Lesen Creative Commons Attribution/Share-Alike dan boleh digunakan semula secara bebas mengikut peruntukan lesen tersebut. Rujuk: Teks Lesen [CC-BY-SA] dan [Terms of Use] untuk peruntukan tambahan. Rencana asal terdapat di: http://ms.wikipedia.org/<title>
+dict:license_text=Teks ini disediakan di bawah Lesen Creative Commons Attribution/Share-Alike dan boleh digunakan semula secara bebas mengikut peruntukan lesen tersebut. Rujuk: Teks Lesen [CC-BY-SA] dan [Terms of Use] untuk peruntukan tambahan. Rencana asal terdapat di: http://ms.wikipedia.org/<title>
+guten:license_text=Lihat juga: [Senarai pengarang mengikut abjak], [Senarai rak buku].  Hakcipta bagi kebanyakan buku ini telah luput di Amerika Syarikat (tetapi mungkin masih diperakui di negara lain), maka sesiapa boleh membuat salinan karya-karya itu kata demi kata atau sebaliknya. Untuk maklumat lanjut, layari: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teks ini disediakan di bawah Lesen Creative Commons Attribution/Share-Alike dan boleh digunakan semula secara bebas mengikut peruntukan lesen tersebut. Rujuk: Teks Lesen [CC-BY-SA] dan [Terms of Use] untuk peruntukan tambahan. Rencana asal terdapat di: http://ms.wikipedia.org/<title>
+type_a_word=Taipkan Kata/Ungkapan
+guten:type_a_word=Taipkan judul Buku/nama Pengarang
+no_results=Tiada entri dijumpai
+searching=mencari...
+select_wiki=Pilih ensiklopedia
+history_title=Sejarah
+no_history=Tiada sejarah
+please_wait=Sila tunggu...
+clear_history=Padamkan Sejarah
+yes=Ya
+no=Tidak
+protection=Sesetengah entri dalam Wikipedia mungkin tidak sesuai untuk golongan bawah umur. Sila tetapkan kata laluan sebagai perlindungan.
+guten:protection=Sesetengah buku mungkin tidak sesuai untuk golongan bawah umur. Sila tetapkan kata laluan sebagai perlindungan.
+restricted=Entri ini mungkin tidak sesuai untuk golongan bawah umur. Sila tetapkan kata laluan sebagai perlindungan.
+set_password=Tetapkan Kata Laluan
+ok=ok
+set_filter=Apabila penapisan DIHIDUPKAN, kata laluan diperlukan apabila mahu mencapai entri-entri yang disekat.
+keep_filter_on=HIDUPKAN Penapis
+keep_filter_off=MATIKAN Penapis
+filter_options=Pilihan Penapis
+turn_filter_on=HIDUPKAN Penapis
+turn_filter_off=MATIKAN Penapis
+change_password=Tukar Kata Laluan
+re_enter_password=Taipkan Semula Kata Laluan
+re_enter_new_password=Taipkan semula kata laluan baru
+passwords_not_match=Kata laluan tidak sepadan
+enter_old_password=Taipkan kata laluan lama
+enter_password=Taipkan Kata Laluan
+try_again=Salah. Sila cuba lagi.
+enter_new_password=Taipkan kata laluan baru
+parental_controls=Pengawasan Ibu Bapa
+r=18

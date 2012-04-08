@@ -1,27 +1,40 @@
 # Messages for German (Deutsch)
 # Exported from translatewiki.net
+# Author: KagerMtc
+# Author: Kghbln
+# Author: Purodha
+# Author: The Evil IP address
 
-wiki_name=Deutsche Wikipedia
-dict:wiki_name=Deutsche Wiktionary
-license_text=Dieser Text ist unter der "Creative Commons Attribution/Share-Alike License" verfügbar und kann unter deren Bedingungen frei benutzt werden. Siehe auch :Text der [CC-BY-SA] Lizenz und die zusätzlichen Benutzungsbedingungen, welche ebenfalls zutreffen können. Der Originaltext ist verfügbar bei: http://de.wikipedia.org/wiki/<title>
+wiki_name=Deutsch …
+books:wiki_name=Bücher
+dict:wiki_name=Wörterbuch
+guten:wiki_name=Project Gutenberg
+pedia:wiki_name=Deutschsprachige Wikipedia
+quote:wiki_name=Zitate
+license_text=Dieser Text ist unter der „Creative Commons Namensnennung-Weitergabe unter gleichen Bedingungen“-Lizenz verfügbar und kann entsprechend deren Bedingungen frei benutzt werden. Siehe auch den Text der [CC-BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://de.wikipedia.org/wiki/<title>
+dict:license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://de.wiktionary.org/wiki/<title>
+guten:license_text=Siehe auch: [Alphabetische Liste der Autoren], [Liste der Bücherregale]. Das Urheberrecht für die meisten dieser Bücher ist in den USA abgelaufen. (Sie könnten allerdings noch in anderen Ländern geschützt sein.) Jeder kann wörtliche oder abgewandelte Kopien dieser Werke erstellen. Auf der Seite http://www.gutenberg.org/wiki/Main_Page findet man weitere Hinweise.
+quote:license_text=Dieser Text ist unter der „Creative Commons Namensnennung-Weitergabe unter gleichen Bedingungen“-Lizenz verfügbar und kann entsprechend deren Bedingungen frei benutzt werden. Siehe auch den Text der [CC-BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://de.wikiquote.org/wiki/<title>
 type_a_word=Suchbegriff eingeben
-no_results=Kein Eintrag gefunden
-searching=suche ...
-select_wiki=Wähle Lexikon
+guten:type_a_word=Ein Buch oder einen Autor angeben
+no_results=Keine Einträge gefunden
+searching=suche …
+select_wiki=Wahl der Enzyklopädie
 history_title=Verlauf
-no_history=Kein Verlauf vorhanden.
-please_wait=Bitte warten ...
+no_history=Kein Verlauf vorhanden
+please_wait=Bitte warten …
 clear_history=Verlauf löschen
 yes=Ja
 no=Nein
-protection=Einige Einträge der Wikipedia sind nicht für Jugendliche geeignet. Bitte richten Sie ein Jugendschutz-Passwort ein.
-restricted=Dieser Eintrag ist für Jugendliche nicht geeignet, bitte richten Sie ein Jugendschutz-Passwort ein.
+protection=Einige Einträge der Wikipedia könnten nicht für Jugendliche geeignet sein. Ein Jugendschutzpasswort sollte festgelegt werden.
+guten:protection=Einige Bücher könnten nicht für Jugendliche geeignet sein. Ein Jugendschutzpasswort sollte festgelegt werden.
+restricted=Dieser Eintrag könnte nicht für Jugendliche geeignet sein. Ein Jugendschutzpasswort sollte festgelegt werden.
 set_password=Passwort setzen
 ok=ok
 set_filter=Bei eingeschalteter Filterung wird ein Passwort benötigt, um auf geschützte Artikel zuzugreifen.
 keep_filter_on=Filter an lassen
 keep_filter_off=Filter aus lassen
-filter_options=Filter Einstellungen
+filter_options=Filtereinstellungen
 turn_filter_on=Filter anschalten
 turn_filter_off=Filter ausschalten
 change_password=Passwort ändern
@@ -30,7 +43,7 @@ re_enter_new_password=Neues Passwort erneut eingeben
 passwords_not_match=Die Passwörter stimmen nicht überein
 enter_old_password=Geben Sie das alte Passwort ein
 enter_password=Passwort eingeben
-try_again=Falsch, versuchen Sie es bitte nochmals.
+try_again=Falsch, versuchen Sie es bitte erneut.
 enter_new_password=Neues Passwort eingeben
 parental_controls=Jugendschutz
 r=R

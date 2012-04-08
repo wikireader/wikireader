@@ -1,30 +1,34 @@
 # Messages for Message documentation (Message documentation)
 # Exported from translatewiki.net
+# Author: EugeneZelenko
+# Author: Lloffiwr
 # Author: McDutchie
 # Author: Moskovich
 # Author: Siebrand
 
 wiki_name=The language version of Wikipedia that is being used.\n\nChange "English" to the name of the language you're translating into.
+pedia:wiki_name=[[File:Select_wiki.png|right|150px]] The whole message should be localised. "Wikipedia" should be localised to the name of Wikipedia in your language and script. Instead of "English" you should put the name of your own language, in your language.
+quote:wiki_name={{Identical|Quote}}
 license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title>[[File:License_text.png|right|150px]]
-type_a_word=Type a Word or Phrase[[File:Type_a_word.png|right|150px]]
-no_results=No Entries found[[File:No_results.png]]
-select_wiki=Choose encyclopedia[[File:Select_wiki.png]]
-history_title=History[[File:History_title.png]]
-clear_history=Clear History[[File:Clear_history.png]]
-yes=Yes[[File:Clear_history.png]]
-no=No[[File:Clear_history.png]]
-protection=Some Wikipedia entries may not be suitable for minors. Please set a password for protection.[[File:Protection.png]]
+type_a_word=Type a Word or Phrase[[File:Type_a_word.png|right|150px]]. Note: Try to keep it short and sweet since we don't wrap this string.
+no_results=No Entries found[[File:No_results.png|right|150px]]
+select_wiki=Choose encyclopedia[[File:Select_wiki.png|150px|right]]
+history_title=History[[File:History_title.png|150px|right]]\n{{Identical|History}}
+clear_history=Clear History[[File:Clear_history.png|150px|right]] Note: Translated string cannot be much longer than the English string.
+yes=Yes[[File:Clear_history.png|150px|right]]\n{{Identical|Yes}}
+no=No[[File:Clear_history.png|150px|right]]\n{{Identical|No}}
+protection=Some Wikipedia entries may not be suitable for minors. Please set a password for protection.[[File:Protection.png|150px|right]]
 set_password=Set Password[[File:Set_password.png|right|150px]]
-ok=ok[[File:Re_enter_password.png]]
-set_filter=With filtering ON, a password is required when restricted articles are accessed.[[File:Set_filter.png]]
-keep_filter_on=Keep Filter ON[[File:Set_filter.png]]
-keep_filter_off=Keep Filter OFF[[File:Set_filter.png]]
-filter_options=Filter Options[[File:Filter_options.png]]
-turn_filter_on=Turn Filter ON[[File:Filter_options.png]]
-turn_filter_off=Turn Filter OFF[[File:Filter_options.png]]
-change_password=Change Password[[File:Filter_options.png]]
-re_enter_password=Re-enter Password[[File:Re_enter_password.png]]
-passwords_not_match=Passwords do not match[[File:Passwords_not_match.png]]
+ok={{Identical|OK}}\n\n[[File:Re_enter_password.png|150px|right]]\nNot capitalised, at most 4 characters in length.
+set_filter=With filtering ON, a password is required when restricted articles are accessed.[[File:Set_filter.png|150px|right]]
+keep_filter_on=Keep Filter ON[[File:Set_filter.png|150px|right]]
+keep_filter_off=Keep Filter OFF[[File:Set_filter.png|150px|right]]
+filter_options=Filter Options[[File:Filter_options.png|150px|right]]
+turn_filter_on=Turn Filter ON[[File:Filter_options.png|150px|right]]
+turn_filter_off=Turn Filter OFF[[File:Filter_options.png|150px|right]]
+change_password=Change Password[[File:Filter_options.png|150px|right]]
+re_enter_password=Re-enter Password[[File:Re_enter_password.png|150px|right]]
+passwords_not_match=Passwords do not match[[File:Passwords_not_match.png|150px|right]] Note: Try to keep it short and sweet since we don't wrap this string.\n{{Identical|Passwords do not match}}
 enter_password=Enter Password
-parental_controls=Parental Controls[[File:Passwords_not_match.png]]
-r=Stands for 'restricted'. It has to be as short as possible.[[File:R.png]]
+parental_controls=Parental Controls[[File:Passwords_not_match.png|150px|right]]
+r=Stands for 'restricted'. It has to be as short as possible.[[File:R.png|150px|right]]

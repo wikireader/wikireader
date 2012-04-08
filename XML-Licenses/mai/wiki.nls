@@ -1,0 +1,42 @@
+# Messages for Maithili (मैथिली)
+# Exported from translatewiki.net
+# Author: Vinitutpal
+
+wiki_name=अंग्रेजी
+books:wiki_name=पोथी
+dict:wiki_name=शब्दकोश
+guten:wiki_name=प्रोजेक्ट गुटनबर्ग
+pedia:wiki_name=विकीपीडियाक अंग्रेजी
+quote:wiki_name=उद्धरण
+type_a_word=शब्द वा मुहावरा के टाइप करू
+guten:type_a_word=पोथी वा लेखक के टाइप करू
+no_results=कोनो इंट्री नहि भेटल
+searching=ताकि जा रहल अछि...
+select_wiki=इनसाइक्लोपीडिया देखू
+history_title=इतिहास
+no_history=इतिहास नहि अछि
+please_wait=प्रतीक्षा करू
+clear_history=इतिहास हटाऊ
+yes=हाँ
+no=नै
+protection=किछु विकिपीडियाक सामग्री नेनक लेल नहि अछि. ताहि सें कृपया क के पासवर्ड सेट करू.
+guten:protection=किछु किताबक सामग्री नेनक लेल नहि अछि. ताहि सें कृपया क के पासवर्ड सेट करू.
+restricted=ई सामग्री नेनाक लेल नहि अछि. ताहि सें कृपया क के पासवर्ड सेट करू
+set_password=पासवर्ड से करू
+ok=ओके
+set_filter=साफ कएल,एकटा पासवर्ड क जरूरत होयत जखन अहां प्रतिबंधित इलाका में आयब.
+keep_filter_on=फ़िल्टर आन राखू
+keep_filter_off=फ़िल्टर आफ राखू
+filter_options=फ़िल्टरक विकल्प
+turn_filter_on=फ़िल्टर ऑन करू
+turn_filter_off=फ़िल्टर ऑफ़ करू
+change_password=कूटशब्द बदलू
+re_enter_password=कूटशब्द दियो
+re_enter_new_password=कूटशब्द फेर सें भरू
+passwords_not_match=कूटशब्द नहि मिलल
+enter_old_password=पुरान कूटशब्द लिखू
+enter_password=कूटशब्द लिखू
+try_again=गलत, फेर सें कोशिश करू
+enter_new_password=नब कूटशब्द लिखू
+parental_controls=माता-पिताक नियंत्रण
+r=रोकि देल गेल

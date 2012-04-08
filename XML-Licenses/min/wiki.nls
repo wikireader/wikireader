@@ -1,0 +1,46 @@
+# Messages for Minangkabau (Baso Minangkabau)
+# Exported from translatewiki.net
+# Author: Luthfi94
+
+wiki_name=Baso Minangkabau
+books:wiki_name=Buku
+dict:wiki_name=Kamuih
+guten:wiki_name=Paroyek Gutenberg
+pedia:wiki_name=Wikipedia Baso Minangkabau
+quote:wiki_name=Kutipan
+license_text=Teks tasadio di bawah Lisensi Atribusi/Babagi Sarupo Creative Commons dan dapek digunokan sacara bebas di bawah parsyaratan lisensi tasabuik. Liek: Teks dari Lisensi [CC-BY-SA] [Katantuan Panggunoan] untuak katantuan tambahan nan mungkin balaku. Artikel asali tasadio di: http://en.wikiquote.org/wiki/<title>
+dict:license_text=Teks tasadio di bawah Lisensi Atribusi/Babagi Sarupo Creative Commons dan dapek digunokan sacara bebas di bawah parsyaratan lisensi tasabuik. Liek: Teks dari Lisensi [CC-BY-SA] dan [Katantuan Panggunoan] untuak katantuan tambahan nan mungkin balaku. Artikel asali tasadio di: http://en.wikiquote.org/wiki/<title>
+guten:license_text=Liek pulo: [Dafta panulih sacaro alfabetih], [Dafta rak buku]. Hak cipta untuak buku-buku ini alah kadaluwarsa di Amerika Sarikat. (Mungkin masih mampunyoi hak cipta di negara lain). Jadi, siapopun dapek mambuek salinan verbatim atau non-verbatim tahadok karya-karya tasabuik. Untuak labiah lanjuik, liek: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teks tasadio di bawah Lisensi Atribusi/Babagi Sarupo Creative Commons dan dapek digunokan sacara bebas di bawah parsyaratan lisensi tasabuik. Liek: Teks dari Lisensi [CC-BY-SA] dan [Katantuan Panggunoan] untuak katantuan tambahan nan mungkin balaku. Artikel asali tasadio di: http://en.wikiquote.org/wiki/<title>
+type_a_word=Ketikkan Kato atau Frasa
+guten:type_a_word=Ketik Buku atau Panulih
+no_results=Indak ado entri nan ditamuan
+searching=sadang mancahari ...
+select_wiki=Piliah Ensiklopedia
+history_title=Riwayat
+no_history=Indak ado riwayat
+please_wait=Sila tunggu...
+clear_history=Hapuih Riwayat
+yes=Yo
+no=Indak
+protection=Babarapo isi Wikipedia mungkin indak cocok untuak anak di bawah umua. Sila gunokan sandi untuak palinduangan.
+guten:protection=Babarapa buku mungkin indak cocok untuak anak di bawah umua. Sila pasang sandi untuak palinduangan.
+restricted=Artikel iko mungkin indak cocok untuak anak di bawah umua. Sila pasang sandi untuak palinduangan.
+set_password=Pasang Sandi
+ok=ok
+set_filter=Jikok panyaringan HIDUIK, password diparalukan bilo akses entri dibatasi.
+keep_filter_on=Tetap Hiduikan Filter
+keep_filter_off=Tetap Matikan Filter
+filter_options=Pilihan Filter
+turn_filter_on=Hiduikan Filter
+turn_filter_off=Matikan Filter
+change_password=Ganti sandi
+re_enter_password=Masuakan baliak sandi
+re_enter_new_password=Masuakan baliak sandi baharu
+passwords_not_match=Sandi indak cocok
+enter_old_password=Masuakan sandi lamo
+enter_password=Masuakan sandi
+try_again=Salah. Sila cubo baliak.
+enter_new_password=Masuakan sandi baharu
+parental_controls=Kandali Urang Gaek
+r=R

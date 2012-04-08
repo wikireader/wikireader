@@ -1,0 +1,46 @@
+# Messages for Lithuanian (Lietuvių)
+# Exported from translatewiki.net
+# Author: Matasg
+
+wiki_name=Lietuvių...
+books:wiki_name=Knygos
+dict:wiki_name=Žodynas
+guten:wiki_name=Gutenbergo projektas
+pedia:wiki_name=Wikipedia Lietuvių kalba
+quote:wiki_name=Citatos
+license_text=Tekstas pateikiamas pagal Creative Commons Attribution/Share-Alike licenciją ir gali būti laisvai panaudotas kitoms reikmėms pagal tos licencijos sąlygas. Perskaitykite [CC-BY-SA] licencijos tekstą bei [naudojimosi sąlygas], norėdami sužinoti daugiau apie papildomas sąlygas, kurios gali būti taikomos. Originalų straipsnį rasite: http://lt.wikipedia.org/wiki/<title>
+dict:license_text=Tekstas pateikiamas pagal Creative Commons Attribution/Share-Alike licenciją ir gali būti laisvai panaudotas kitoms reikmėms pagal tos licencijos sąlygas. Perskaitykite [CC-BY-SA] licencijos tekstą bei [naudojimosi sąlygas], norėdami sužinoti daugiau apie papildomas sąlygas, kurios gali būti taikomos. Originalų straipsnį rasite: http://lt.wiktionary.org/wiki/<title>
+guten:license_text=Daugiau: [Alfabetinis autorių sąrašas], [Knygų lentynų sąrašas]. Daugumai knygų Jungtinėse Amerikos Valstijose autoriaus teisės yra pasibaigusios. (Knygos vis dar gali būti saugomos autorių teisių kitose šalyse). Taigi kiekvienas gali šiuos darbus kopijuoti pažodžiui arba ne pažodžiui. Norėdami sužinoti daugiau, skaitykite http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekstas pateikiamas pagal Creative Commons Attribution/Share-Alike licenciją ir gali būti laisvai panaudotas kitoms reikmėms pagal tos licencijos sąlygas. Perskaitykite [CC-BY-SA] licencijos tekstą bei [naudojimosi sąlygas], norėdami sužinoti daugiau apie papildomas sąlygas, kurios gali būti taikomos. Originalų straipsnį rasite: http://lt.wikiquote.org/wiki/<title>
+type_a_word=Įveskite žodį ar frazę
+guten:type_a_word=Įveskite knygą arba autorių
+no_results=Įrašų nerasta
+searching=ieškoma...
+select_wiki=Pasirinkite enciklopediją
+history_title=Istorija
+no_history=Nėra istorijos
+please_wait=Prašome palaukti ...
+clear_history=Išvalyti istoriją
+yes=Taip
+no=Ne
+protection=Kai kurie Wikipedia įrašai gali būti netinkami nepilnamečiams. Prašome nustatyti apsaugos slaptažodį.
+guten:protection=Kai kurios knygos gali būti netinkamos nepilnamečiams. Prašome nustatyti apsaugos slaptažodį.
+restricted=Šis įrašas gali būti netinkamas nepilnamečiams. Prašome nustatyti apsaugos slaptažodį.
+set_password=Slaptažodžio nustatymas
+ok=gerai
+set_filter=Jei įjungtas filtravimas, reikia įvesti slaptažodį, radus draudžiamų įrašų.
+keep_filter_on=Filtras ĮJUNGTAS
+keep_filter_off=Filtras IŠJUNGTAS
+filter_options=Filtro nustatymai
+turn_filter_on=Įjungti filtrą
+turn_filter_off=Išjungti filtrą
+change_password=Slaptažodžio keitimas
+re_enter_password=Dar kartą įveskite slaptažodį
+re_enter_new_password=Dar kartą įveskite naują slaptažodį
+passwords_not_match=Slaptažodžiai nesutampa
+enter_old_password=Įveskite seną slaptažodį
+enter_password=Įveskite slaptažodį
+try_again=Neteisingai. Bandykite dar kartą.
+enter_new_password=Įveskite naują slaptažodį
+parental_controls=Tėvų kontrolė
+r=S

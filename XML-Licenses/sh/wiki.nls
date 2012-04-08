@@ -1,0 +1,41 @@
+# Messages for Serbo-Croatian (Srpskohrvatski)
+# Exported from translatewiki.net
+# Author: OC Ripper
+
+wiki_name=Srpskohrvatski...
+books:wiki_name=Knjige
+dict:wiki_name=Rječnik
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Wikipedia na srpskohrvatskom
+quote:wiki_name=Citati
+license_text=Tekst je dostupan pod licencom Creative Commons Imenovanje/Dijeli pod istim uvjetima i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+type_a_word=Upišite riječ ili frazu
+no_results=Nema rezultata.
+searching=traženje…
+select_wiki=Izbor enciklopedije
+history_title=Historija
+no_history=Nema historije
+please_wait=Molimo pričekajte...
+clear_history=Očisti historiju
+yes=Da
+no=Ne
+protection=Neki Wikipedijini unosi možda nisu prikladni za maloljetnike. Molimo Vas da postavite lozinku za zaštitu.
+guten:protection=Neki Wikipedijini unosi možda nisu prikladni za maloljetnike. Molimo Vas da postavite lozinku za zaštitu.
+restricted=Ovaj unos možda nije pogodan za maloljetnike. Molimo Vas da postavite lozinku radi zaštite.
+set_password=Postavite lozinku
+ok=U redu
+set_filter=S uključenim filterom je lozinka obavezna za pristupanje ograničenim člancima.
+keep_filter_on=Ostavi uključen filter
+keep_filter_off=Ostavi isključen filter
+filter_options=Postavke filtera
+turn_filter_on=Uključite filter
+turn_filter_off=Isključite filter
+change_password=Promijeni lozinku
+re_enter_password=Ponovno unesite lozinku
+re_enter_new_password=Ponovno unesite novu lozinku
+passwords_not_match=Lozinke se ne poklapaju
+enter_old_password=Unesite staru lozinku
+enter_password=Unesite lozinku
+try_again=Pogrešno. Molimo vas da pokušate ponovo.
+enter_new_password=Unesite novu lozinku
+parental_controls=Roditeljski nadzor

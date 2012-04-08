@@ -1,0 +1,31 @@
+# Messages for Bulgarian (Български)
+# Exported from translatewiki.net
+# Author: DCLXVI
+# Author: Vladimir Penov
+
+wiki_name=Български...
+books:wiki_name=Книги
+dict:wiki_name=Речник
+guten:wiki_name=Проект Гутенберг
+pedia:wiki_name=Уикипедия на български
+quote:wiki_name=Цитати
+searching=търсене...
+select_wiki=Избиране на енциклопедия
+history_title=История
+no_history=Няма история
+clear_history=Изтриване
+yes=Да
+no=Не
+set_password=Избиране на парола
+filter_options=Настройки на филтъра
+turn_filter_on=Включване на филтъра
+turn_filter_off=Изключване на филтъра
+change_password=Промяна на паролата
+re_enter_password=Парола (повторно)
+re_enter_new_password=Нова парола (повторно)
+passwords_not_match=Паролите не съвпадат
+enter_old_password=Въведете старата парола
+enter_password=Въведете парола
+try_again=Грешка. Опитайте отново.
+enter_new_password=Въведете новата парола
+parental_controls=Родителски контрол

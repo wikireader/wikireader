@@ -1,0 +1,46 @@
+# Messages for Estonian (Eesti)
+# Exported from translatewiki.net
+# Author: Oop
+
+wiki_name=Inglise...
+books:wiki_name=Raamatud
+dict:wiki_name=Sõnastik
+guten:wiki_name=Project Gutenberg
+pedia:wiki_name=Eesti Vikipeedia
+quote:wiki_name=Tsitaadid
+license_text=Tekst on kättesaadav litsentsi Creative Commons Attribution/Share--Alike alusel ning seda saab litsentsis esitatud tingimustel vabalt kasutada. Võimalike lisatingimuste kohta loe [CC-BY-SA]-litsentsi teksti ja [kasutustingimusi]. Originaalartikkel on kättesaadav aadressil: http://en.wikipedia.org/wiki/ <title>
+dict:license_text=Tekst on kättesaadav litsentsi Creative Commons Attribution/Share--Alike alusel ning seda saab litsentsis esitatud tingimustel vabalt kasutada. Võimalike lisatingimuste kohta loe [CC-BY-SA]-litsentsi teksti ja [kasutustingimusi]. Originaalartikkel on kättesaadav aadressil: http://en.wiktionary.org/wiki/ <title>
+guten:license_text=Vaata ka: [autorite tähestikuline loend], [raamaturiiulte loetelu]. Enamiku nende raamatute autoriõigused Ameerika Ühendriikides on aegunud. (Teistes riikides võivad nende autoriõigused veel kehtida.) Seega võib igaüks teha neist teostest sõnasõnalisi või osaliselt kattuvaid koopiaid. Lisateavet vaata aadressilt: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst on kättesaadav litsentsi Creative Commons Attribution/Share--Alike alusel ning seda saab litsentsis esitatud tingimustel vabalt kasutada. Võimalike lisatingimuste kohta loe [CC-BY-SA]-litsentsi teksti ja [kasutustingimusi]. Originaalartikkel on kättesaadav aadressil: http://en.wikiquote.org/wiki/ <title>
+type_a_word=Kirjuta sõna või fraas
+guten:type_a_word=Kirjuta raamatu pealkiri või autori nimi
+no_results=Kirjeid ei leitud
+searching=otsin...
+select_wiki=Vali entsüklopeedia
+history_title=Ajalugu
+no_history=Ajalugu puudub
+please_wait=Oota...
+clear_history=Kustuta ajalugu
+yes=Jah
+no=Ei
+protection=Mõned Wikipedia artiklid ei pruugi olla alaealistele kohased. Palun määra kaitseks salasõna.
+guten:protection=Mõned raamatud ei pruugi olla alaealistele kohased. Palun määra kaitseks salasõna.
+restricted=See artikkel ei pruugi olla alaealistele kohane. Palun määra kaitseks salasõna.
+set_password=Määra parool
+ok=Ok
+set_filter=Kui filter on sisselülitatud, nõutakse piiratud ligipääsuga artiklite lugemiseks salasõna.
+keep_filter_on=Hoia filter SEES
+keep_filter_off=Lülita filter VÄLJA
+filter_options=Filtrisuvandid
+turn_filter_on=Lülita filter SISSE
+turn_filter_off=Lülitage Filter VÄLJA
+change_password=Muuda salasõna
+re_enter_password=Sisestage salasõna veel kord
+re_enter_new_password=Sisestage uus salasõna veel kord
+passwords_not_match=Salasõnad ei kattu
+enter_old_password=Sisestage vana salasõna
+enter_password=Sisestage salasõna
+try_again=Vale. Palun proovige uuesti.
+enter_new_password=Sisestage uus salasõna
+parental_controls=Vanemlik järelvalve
+r=K

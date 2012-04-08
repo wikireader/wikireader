@@ -1,0 +1,46 @@
+# Messages for Burmese (မြန်မာဘာသာ)
+# Exported from translatewiki.net
+# Author: Erikoo
+
+wiki_name=မြန်မာ...
+books:wiki_name=စာအုပ်များ
+dict:wiki_name=အဘိဓာန်
+guten:wiki_name=Project Gutenberg
+pedia:wiki_name=မြန်မာ ဝီကီပိဒိယ
+quote:wiki_name=ကိုးကား
+license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wiktionary.org/wiki/<title>
+guten:license_text=See also: [Alphabetical list of authors], [List of bookshelves].  Copyright for most of these books has expired in the United States. (They may still be copyrighted in other countries). So anybody may make verbatim or non-verbatim copies of those works. For details, see: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikiquote.org/wiki/<title>
+type_a_word=ရှာဖွေလိုသော စကားလုံး/စာကြောင်း ရိုက်ပါ
+guten:type_a_word=စာအုပ်/စာရေးသူ အမည် ရိုက်ထည့်ပါ
+no_results= မည်သည့် စကားလုံးမျှ ရှာမတွေ့ပါ
+searching=ရှာဖွေနေသည်...
+select_wiki=အခြားဘာသာ စွယ်စုံကျမ်း
+history_title=မှတ်တမ်း
+no_history=မှတ်တမ်းမရှိပါ
+please_wait=ခေတ္တစောင့်ပါ...
+clear_history=မှတ်တမ်းဖျက်ပါ
+yes=လုပ်မည်
+no=မလုပ်ပါ
+protection=အချို့သော စာများ သည်ကလေးများ နှင့်သင့်တော် မည်မဟုတ်ပါ။ ကျေးဇူးပြု၍ စကားဝှက်သတ်မှတ်ထားပါ။
+guten:protection=အချို့စာအုပ်များသည် ကလေးများနှင့်သင့်လျှော် မည်မဟုတ်ပါ။ စကားဝှက်သတ်မှတ်ထားပါ။
+restricted=ဤရေးသွင်းချက်သည် ကလေးများနှင့်မသင့်လျှော်ပါ။ စကားဝှက်သတ်မှတ်ပါ။
+set_password=စကားဝှက် သတ်မှတ်ပါ
+ok=အိုကေ
+set_filter=ကာကွယ်မှုအား ဖွင့်ထားသောကြောင့် ကန့်သတ်ထားသည်များတွင် စကားဝှက်လိုအပ်မည်ဖြစ်သည်။
+keep_filter_on=ရှာဖွေမှုများအား ကာကွယ်ထားသည်
+keep_filter_off=ဆက်လက်မကာကွယ်ပါ
+filter_options=ကာကွယ် မှုများအား ရွေးချယ်ရန်
+turn_filter_on=ကာကွယ်မည်
+turn_filter_off=ရှာဖွေမှုများအား မကာကွယ်ထားပါ
+change_password=စကားဝှက် ပြောင်းရန်
+re_enter_password=စကားဝှက်အား ပြန်ရိုက်ပါ
+re_enter_new_password=စကားဝှက်အသစ်အား ပြန်ရိုက်ပါ
+passwords_not_match=စကားဝှက်မတူပါ
+enter_old_password=စကားဝှက်အဟောင်းအား ပြန်ရိုက်ပါ
+enter_password=စကားဝှက် ရိုက်ပါ
+try_again=မှားနေသည်။ ပြန်ရိုက်ပါ။
+enter_new_password=စကားဝှက် အသစ် ရိုက်ပါ
+parental_controls=ကလေးများအတွက် ထိန်းချုပ်ရန်
+r=ကန့်သတ်

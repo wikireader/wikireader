@@ -1,13 +1,23 @@
 # Messages for Japanese (日本語)
 # Exported from translatewiki.net
+# Author: Fryed-peach
 # Author: Hosiryuhosi
+# Author: Schu
 # Author: cigarcook <cigarcook@koress.jp>
+# Author: 青子守歌
 
 wiki_name=Wikipedia 日本語 (ひらがな入力)
-wiki_name2=Wikipedia 日本語 (ローマ字入力)
+books:wiki_name=図書
+dict:wiki_name=辞書
+guten:wiki_name=グーテンベルク・プロジェクト
+pedia:wiki_name=ウィキペディア日本語版
+quote:wiki_name=引用集
 license_text=テキストは[クリエイティブ・コモンズ 表示-継承ライセンス]の下で利用可能です。追加の条件が適用される場合があります。詳細は[利用規約]を参照してください。The original article is available at: http://ja.wikipedia.org/wiki/<title>
+dict:license_text=文章は、クリエイティブ・コモンズ 表示-継承ライセンスの下で利用可能で、このライセンスの条項の下で自由に再利用が可能です。[CC-BY-SA]ライセンスの文書と、追加条項については[利用規約]をご覧ください。元の記事は、 http://en.wiktionary.org/wiki/<title> で入手可能です。
+guten:license_text=[本棚の一覧]、[アルファベット順の著者一覧]もご覧ください。これらの書籍の、アメリカ合衆国で著作権の有効期間が切れています。（他の国では、著作権保護されているかもしれません）。ゆえに、誰でも、これらの作品を、そっくりそのまま、あるいは改変した複製を作成することができます。詳細については、 http://www.gutenberg.org/wiki/Main_Page をご覧ください。
+quote:license_text=文章は、クリエイティブ・コモンズ 表示-継承ライセンスの下で利用可能で、このライセンスの条項の下で自由に再利用が可能です。[CC-BY-SA]ライセンスの文書と、追加条項については[利用規約]をご覧ください。元の記事は、 http://en.wikiquote.org/wiki/<title> で入手可能です。
 type_a_word=記事名をひらがなで入力
-type_a_word2=記事名をローマ字で入力
+guten:type_a_word=本や著者を入力
 no_results=記事が見つかりません
 searching=検索中...
 select_wiki=Choose encyclopedia
@@ -18,6 +28,7 @@ clear_history=履歴をクリア
 yes=はい
 no=いいえ
 protection=Wikipediaには一部の方へ好ましくない記事が含まれます。閲覧するにはパスワードを設定してください。
+guten:protection=いくつかの書籍は、未成年者に適しているとは限りません。保護用のパスワードを設定してください。
 restricted=この記事は一部の方へ相応しくない内容を含みます。閲覧するにはパスワードを設定してください。
 set_password=パスワードを設定
 ok=ok
@@ -37,4 +48,3 @@ try_again=失敗。再入力してください。
 enter_new_password=新しいパスワード
 parental_controls=保護者制限
 r=R
-lang_str=日

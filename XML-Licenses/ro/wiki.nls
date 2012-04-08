@@ -1,0 +1,47 @@
+# Messages for Romanian (Română)
+# Exported from translatewiki.net
+# Author: Minisarm
+# Author: Strainu
+
+wiki_name=Română...
+books:wiki_name=Manuale
+dict:wiki_name=Dicționar
+guten:wiki_name=Proiectul Gutenberg
+pedia:wiki_name=Wikipedia Română
+quote:wiki_name=Citate
+license_text=Textul este disponibil sub licența Creative Commons cu atribuire și distribuire în condiții identice și poate fi reutilizat fără obligații, în conformitate cu termenii acesteia. Vedeți textul licenței [CC-BY-SA] și [Termenii de utilizare] pentru eventualele clauze suplimentare. Articolul original este disponibil la adresa: http://ro.wikipedia.org/wiki/<title>
+dict:license_text=Textul este disponibil sub licența Creative Commons cu atribuire și distribuire în condiții identice și poate fi reutilizat fără obligații, în conformitate cu termenii acesteia. Vedeți textul licenței [CC-BY-SA] și [Termenii de utilizare] pentru eventualele clauze suplimentare. Articolul original este disponibil la adresa: http://ro.wiktionary.org/wiki/<title>
+guten:license_text=Vedeți și: [Lista alfabetică a autorilor], [Lista rafturilor cu cărți].  Drepturile de autor asupra majorității cărților au expirat în Statele Unite. (Totuși, aceste drepturi ar putea fi încă valabile în alte țări). În concluzie, oricine poate efectua copii (integrale sau parțiale) ale acestor lucrări. Pentru detalii, vizitați: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Textul este disponibil sub licența Creative Commons cu atribuire și distribuire în condiții identice și poate fi reutilizat fără obligații, în conformitate cu termenii acesteia. Vedeți textul licenței [CC-BY-SA] și [Termenii de utilizare] pentru eventualele clauze suplimentare. Articolul original este disponibil la adresa: http://ro.wikiquote.org/wiki/<title>
+type_a_word=Tastați un cuvânt sau o frază
+guten:type_a_word=Introduceți numele unei cărți sau un autor
+no_results=Nu s-au găsit rezultate
+searching=se caută…
+select_wiki=Alegeți enciclopedia
+history_title=Istoric
+no_history=Nu există istoric
+please_wait=Vă rugăm să așteptați...
+clear_history=Ștergere istoric
+yes=Da
+no=Nu
+protection=Unele articole de la Wikipedia ar putea fi nepotrivite pentru minori. Vă rugăm să setați o parolă pentru protecția conținutului.
+guten:protection=Anumite cărți pot fi nepotrivite pentru minori. Vă rugăm să setați o parolă pentru protecție.
+restricted=Această intrare nu este potrivită pentru minori. Vă rugăm să setați o parolă pentru protecția conținutului.
+set_password=Setați parola
+ok=ok
+set_filter=Cu filtrarea activată, este necesară o parolă pentru a accesa articolele restricționate.
+keep_filter_on=Păstrează filtrul PORNIT
+keep_filter_off=Păstrează filtrul OPRIT
+filter_options=Opțiuni de filtrare
+turn_filter_on=Pornește filtrul
+turn_filter_off=Oprește filtrul
+change_password=Schimbă parola
+re_enter_password=Reintroduceți parola
+re_enter_new_password=Reintroduceți noua parolă
+passwords_not_match=Parolele nu sunt identice
+enter_old_password=Introduceți vechea parolă
+enter_password=Introduceți parola
+try_again=Greșită. Vă rugăm să reîncercați
+enter_new_password=Introduceți noua parolă
+parental_controls=Control parental
+r=R (18*)

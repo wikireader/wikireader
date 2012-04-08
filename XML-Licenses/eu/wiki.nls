@@ -2,8 +2,14 @@
 # Exported from translatewiki.net
 # Author: An13sa
 
-wiki_name=Ingelesezko Wikipedia
+wiki_name=Ingelesa ...
+books:wiki_name=Liburuak
+dict:wiki_name=Hiztegia
+guten:wiki_name=Gutenberg Proiektua
+pedia:wiki_name=Ingelesezko Wikipedia
+quote:wiki_name=Aipuak
 type_a_word=Hitz edo esaldi bat idatzi
+guten:type_a_word=Idatzi liburua edo egilea
 no_results=Ez da sarrerarik aurkitu
 searching=bilatzen...
 select_wiki=Entziklopedia aukeratu
@@ -13,10 +19,13 @@ please_wait=Mesedez itxaron...
 clear_history=Historia garbitu
 yes=Bai
 no=Ez
-protection=Wikipediako sarrera btzuk ez dira egokiak adingabeentzat. Mesedez ezarr pasahitz bat babeserako.
+protection=Wikipediako sarrera batzuk ez dira egokiak adingabeentzat. Mesedez ezarri pasahitz bat babesa bermatzeko.
+guten:protection=Liburu batzuk ez dira egokiak adingabeentzat. Mesedez ezarri pasahitz bat babesa bermatzeko.
 restricted=Sarrera hau ez da egokia adingabeentzat. Mesedez ezarri pasahitz bat babesa bermatzeko.
 set_password=Pasahitza ezarri
 ok=ados
+keep_filter_on=Iragazkia JARRI
+keep_filter_off=Iragazkia KENDU
 filter_options=Iragazkiaren Aukerak
 turn_filter_on=Iragazkia GAITU
 turn_filter_off=Iragazkia EZGAITU

@@ -3,7 +3,12 @@
 # Author: Praveenp
 # Author: Shijualex
 
-wiki_name=മലയാളം വിക്കിപീഡിയ
+wiki_name=മലയാളം...
+books:wiki_name=പുസ്തകങ്ങൾ
+dict:wiki_name=നിഘണ്ടു
+guten:wiki_name=ഗുട്ടെൻബർഗ് പദ്ധതി
+pedia:wiki_name=മലയാളം വിക്കിപീഡിയ
+quote:wiki_name=ഉദ്ധരണികൾ
 type_a_word=വാക്കോ വാക്യാംശമോ ടൈപ്പ് ചെയ്യുക
 searching=തിരഞ്ഞുകൊണ്ടിരിക്കുന്നു...
 select_wiki=എന്‍‌സൈക്ലോപീഡിയ തിരഞ്ഞെടുക്കുക

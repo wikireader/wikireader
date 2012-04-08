@@ -1,0 +1,46 @@
+# Messages for Hebrew (עברית)
+# Exported from translatewiki.net
+# Author: Amire80
+
+wiki_name=עברית...
+books:wiki_name=ספרים
+dict:wiki_name=מילון
+guten:wiki_name=פרויקט גוטנברג
+pedia:wiki_name=ויקיפדיה העברית
+quote:wiki_name=ציטוטים
+license_text=הטקסט מוגש בכפוף לרישיון קריאייטיב קומונז–ייחוס–שיתוף זהה ואפשר לעשות בו שימוש חוזר לפי תנאי הרישיון הזה. ר׳ הטקסט של רישיון [CC-BY-SA] ו[תנאי שימוש] לתנאים נוספים שעשויים לחול. כתובת הערך המקורי: http://he.wikipedia.org/wiki/<title>
+dict:license_text=הטקסט מוגש בכפוף לרישיון קריאייטיב קומונז–ייחוס–שיתוף זהה ואפשר לעשות בו שימוש חוזר לפי תנאי הרישיון הזה. ר׳ הטקסט של רישיון [CC-BY-SA] ו[תנאי שימוש] לתנאים נוספים שעשויים לחול. כתובת הערך המקורי: http://he.wiktionary.org/wiki/<title>
+guten:license_text=ר׳ גם: [רשימה אלפביתית של מחברים], [רשימת מדפי ספרים]. זכויות היוצרים למרבית הספרים האלה פגו בארצות הברית. (ייתכן שהם עדיין מוגבלים בזכויות יוצרים בארצות אחרות.) כל אחד יכול לעשות עותקים זהים ולא זהים של היצירות אלה. לפרטים ר׳: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=הטקסט מוגש בכפוף לרישיון קריאייטיב קומונז–ייחוס–שיתוף זהה ואפשר לעשות בו שימוש חוזר לפי תנאי הרישיון הזה. ר׳ הטקסט של רישיון [CC-BY-SA] ו[תנאי שימוש] לתנאים נוספים שעשויים לחול. כתובת הערך המקורי: http://he.wikiquote.org/wiki/<title>
+type_a_word=חיפוש מילים
+guten:type_a_word=חיפוש ספר או מחבר
+no_results=לא נמצאו ערכים
+searching=חיפוש...
+select_wiki=בחירת אנציקלופדיה
+history_title=היסטוריה
+no_history=אין היסטוריה
+please_wait=נא להמתין...
+clear_history=ניקוי היסטוריה
+yes=כן
+no=לא
+protection=ערכים מסוימים בוויקיפדיה אינם מתאימים לקטינים. נא להגדיר ססמה להגנה.
+guten:protection=ספרים מסוימים אינם מתאימים לקטינים. נא להגדיר ססמה להגנה.
+restricted=הערך הזה אינו מתאים לקטינים. נא להגדיר ססמה להגנה.
+set_password=הגדרת ססמה
+ok=אישור
+set_filter=כאשר הסינון פועל, ,נדרשת ססמה בכניסה לערכים מוגבלים.
+keep_filter_on=הפעלת המסנן
+keep_filter_off=כיבוי המסנן
+filter_options=אפשרויות מסנן
+turn_filter_on=הפעלת המסנן
+turn_filter_off=כיבוי המסנן
+change_password=החלפת ססמה
+re_enter_password=הקלדת ססמה מחדש
+re_enter_new_password=יש להקליד ססמה מחדש
+passwords_not_match=הססמאות אינן זהות
+enter_old_password=הקלדת הססמה הישנה
+enter_password=ססמה
+try_again=טעות. נא לנסות שוב.
+enter_new_password=ססמה חדשה
+parental_controls=בקרת הורים
+r=X

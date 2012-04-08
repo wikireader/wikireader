@@ -2,19 +2,29 @@
 # Exported from translatewiki.net
 # Author: Lloffiwr
 
-wiki_name=Wicipedia Cymraeg
-license_text=Rhoddir testun y dudalen ar gael ar delerau'r drwydded Creative Commons Attribution/Share-Alike, a gellir ei ailddefnyddio'n ddilyffethair yn ôl telerau'r drwydded honno. Gweler: Testun y drwydded [CC-BY-SA] a'r [Telerau Defnyddio] am unrhyw delerau ychwanegol sy'n perthyn i'r testun. Mae'r erthygl wreiddiol i'w gweld ar: http://en.wikipedia.org/wiki/<title>
+wiki_name=Cymraeg...
+books:wiki_name=Llyfrau
+dict:wiki_name=Geiriadur
+guten:wiki_name=Prosiect Gutenberg
+pedia:wiki_name=Wicipedia Cymraeg
+quote:wiki_name=Dyfyniadau
+license_text=Rhoddir testun y dudalen ar gael ar delerau'r drwydded Creative Commons Attribution/Share-Alike, a gellir ei ailddefnyddio'n ddilyffethair yn ôl telerau'r drwydded honno. Gweler: Testun y drwydded [CC-BY-SA] a'r [Telerau Defnyddio] am unrhyw delerau ychwanegol sy'n perthyn i'r testun. Mae'r erthygl wreiddiol i'w gweld ar: http://cy.wikipedia.org/wiki/<title>
+dict:license_text=Rhoddir testun y dudalen ar gael ar delerau'r drwydded Creative Commons Attribution/Share-Alike, a gellir ei ailddefnyddio'n ddilyffethair yn ôl telerau'r drwydded honno. Gweler: Testun y drwydded [CC-BY-SA] a'r [Telerau Defnyddio] am unrhyw delerau ychwanegol sy'n perthyn i'r testun. Mae'r erthygl wreiddiol i'w gweld ar: http://cy.wiktionary.org/wiki/<title>
+guten:license_text=Gweler hefyd: [Rhestr awduron yn nhrefn yr wyddor], [Rhestr silffoedd llyfrau]. Mae'r hawlfraint i'r rhan fwyaf o'r llyfrau hyn wedi dod i ben yn yr Unol Daleithiau. (Efallai bod hawlfraint arnynt o hyd mewn gwledydd eraill). Felly gall unrhyw un wneud copïau air am air neu nad ydynt yn air am air o'r gweithiau hyn. Am fanylion, gweler: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Rhoddir testun y dudalen ar gael ar delerau'r drwydded Creative Commons Attribution/Share-Alike, a gellir ei ailddefnyddio'n ddilyffethair yn ôl telerau'r drwydded honno. Gweler: Testun y drwydded [CC-BY-SA] a'r [Telerau Defnyddio] am unrhyw delerau ychwanegol sy'n perthyn i'r testun. Mae'r erthygl wreiddiol i'w gweld ar: http://cy.wikiquote.org/wiki/<title>
 type_a_word=Teipiwch Air neu Gymal
+guten:type_a_word=Teipiwch enw llyfr neu awdur
 no_results=Ni chafwyd hyd i unrhyw gofnod
 searching=wrthi'n chwilio...
 select_wiki=Dewiswch wyddoniadur
 history_title=Hanes
 no_history=Dim hanes
 please_wait=Arhoswch...
-clear_history=Gwaceier yr Hanes
+clear_history=Gwacáu'r Hanes
 yes=Ie
 no=Na
-protection=Efallai nad yw rhai o erthyglau Wicipedia yn addas i blant. Gallwch gyfyngu mynediad atynt trwy osod cyfrinair.
+protection=Efallai nad yw rhai o'r erthyglau yn addas i blant. Cyfyngwch fynediad atynt gyda chyfrinair.
+guten:protection=Efallai nad yw rhai o'r llyfrau yn addas i blant. Cyfyngwch fynediad atynt gyda chyfrinair.
 restricted=Efallai nad yw'r erthygl hon yn addas i blant. Gallwch gyfyngu mynediad ati trwy osod cyfrinair.
 set_password=Gosod cyfrinair
 ok=iawn
@@ -27,7 +37,7 @@ turn_filter_off=GORFFEN hidlo
 change_password=Newid y Cyfrinair
 re_enter_password=Ail-deipiwch y Cyfrinair
 re_enter_new_password=Ail-deipiwch y cyfrinair newydd
-passwords_not_match=Nid yw'r cyfrineiriau yn cyd-fynd
+passwords_not_match=Y cyfrineiriau yn wahanol
 enter_old_password=Teipiwch yr hen gyfrinair
 enter_password=Teipiwch y cyfrinair
 try_again=Anghywir. Ceisiwch eto.

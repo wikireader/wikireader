@@ -1,0 +1,46 @@
+# Messages for Traditional Chinese (‪中文(繁體)‬)
+# Exported from translatewiki.net
+# Author: Anakmalaysia
+# Author: Dream
+# Author: Lauhenry
+# Author: Wrightbus
+
+wiki_name=中文...
+books:wiki_name=圖書
+dict:wiki_name=字典
+guten:wiki_name=古登堡計劃
+pedia:wiki_name=中文維基百科
+quote:wiki_name=語錄
+license_text=文本可根據創造性的下議院歸因/-方式共享許可證，並根據該許可中的條款可以自由重複使用。請參閱： 文本的許可證[CC-BY-SA] 和[使用條款] 為可能適用的附加條款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
+type_a_word=請輸入詞或短句
+guten:type_a_word=輸入書籍或作者名
+no_results=找不到任何項目
+searching=搜尋中...
+select_wiki=選擇語言版本
+history_title=歷史
+no_history=沒有歷史
+please_wait=請稍候...
+clear_history=清除歷史記錄
+yes=是
+no=否
+protection=有些維基百科條目兒童不宜。請設密碼保護。
+guten:protection=有些書可能兒童不宜。請設密碼保護。
+restricted=此項目可能不適合未成年人。請設置密碼以保護。
+set_password=設置密碼
+ok=確定
+set_filter=開啟過濾器後，當瀏覽受限文章時需要輸入密碼。
+keep_filter_on=開啟過濾器
+keep_filter_off=關閉過濾器
+filter_options=過濾功能選項
+turn_filter_on=開啟過濾功能
+turn_filter_off=關閉過濾功能
+change_password=更改密碼
+re_enter_password=重新輸入密碼
+re_enter_new_password=重新輸入新密碼
+passwords_not_match=密碼不符
+enter_old_password=輸入舊密碼
+enter_password=輸入新密碼
+try_again=密碼錯誤，請重試。
+enter_new_password=輸入新密碼
+parental_controls=家長控制
+r=禁

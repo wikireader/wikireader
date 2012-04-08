@@ -1,8 +1,15 @@
 # Messages for Korean (한국어)
-# Localise WikiReader at translatewiki.net
-# See http://translatewiki.net/wiki/Translating:WikiReader for more information.
+# Exported from translatewiki.net
+# Author: Cwt96
+
 wiki_name=Wikipedia 한글
+books:wiki_name=책
+dict:wiki_name=사전
+guten:wiki_name=프로젝트 구텐베르크
+pedia:wiki_name=Wikipedia 한국어
+quote:wiki_name=인용
 license_text=모든 문서는 크리에이티브 커먼즈 저작자표시-동일조건변경허락 3.0에 따라 사용할 수 있습니다. 추가적인 조건이 적용될 수 있습니다. 자세한 내용은 이용 규약을 참고하십시오. 원본참고싸이트 : http://ko.wikipedia.org/wiki/<title>
+quote:license_text=모든 문서는 크리에이티브 커먼즈 저작자표시-동일조건변경허락 3.0에 따라 사용할 수 있습니다. 추가적인 조건이 적용될 수 있습니다. 자세한 내용은 [CC-BY-SA), [이용 규약]을 참고하십시오. 원본참고싸이트 : http://en.wikiquote.org/wiki/<title>
 type_a_word=단어입력
 no_results=자료없음
 searching=검색중...
@@ -17,8 +24,8 @@ protection=이 내용은 미성년자 관람불가이니 암호를 설정해 주
 restricted=제한된 관람내용이니 암호를 설정해 주세요
 set_password=암호설정
 ok=예
-set_filter=보호차단 내용이니 암호를 설정해 주세요  
-keep_filter_on=보호지속실행 
+set_filter=보호차단 내용이니 암호를 설정해 주세요
+keep_filter_on=보호지속실행
 keep_filter_off=보호지속취소
 filter_options=보호설정
 turn_filter_on=보호실행
@@ -33,4 +40,3 @@ try_again=다시 시도하세요
 enter_new_password=새암호입력
 parental_controls=개인설정
 r=R
-lang_str=한

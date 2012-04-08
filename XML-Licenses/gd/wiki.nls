@@ -1,0 +1,46 @@
+# Messages for Scottish Gaelic (Gàidhlig)
+# Exported from translatewiki.net
+# Author: Akerbeltz
+
+wiki_name=Gàidhlig...
+books:wiki_name=Leabhraichean
+dict:wiki_name=Faclair
+guten:wiki_name=Pròiseact Gutenberg
+pedia:wiki_name=Uicipeid na Gàidhlig
+quote:wiki_name=Luaidhean
+license_text=Tha an teacsa seo ri fhaighinn fon cheadachas Creative Commons Attribution/Share-Alike agus 's urrainnear ath-chleachdadh gu saor fo theirmichean a' cheadachais sin. Faic: Teacsa Ceadachas [CC-BY-SA] is [Terms of Use] airson teirmichean a bharrachd a dh'fhaodadh a bhith buailteach. Gheibhear an t-artaigeal tùsail aig: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tha an teacsa seo ri fhaighinn fon cheadachas Creative Commons Attribution/Share-Alike agus 's urrainnear ath-chleachdadh gu saor fo theirmichean a' cheadachais sin. Faic: Teacsa Ceadachas [CC-BY-SA] is [Terms of Use] airson teirmichean a bharrachd a dh'fhaodadh a bhith buailteach. Gheibhear an t-artaigeal tùsail aig: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Faic cuideachd: [Alphabetical list of authors], [List of bookshelves].  Dh'fhalbh a' chòir letbhbreac air a' chuid as motha dhe na leabhraichean seo anns an Stàitean Aonaichte. (Faodaidh gu bheil iad fo bhuaidh còir lethbhreac ann an dùthchannan eile fhathast). Tha cead aig duine sam bith ma-thà lethbhric a dhèanamh dhe na h-obraichean seo, ge b' ann facal air an fhacal gus nach ann. Faic na leanas airson mion-fhiosrachadh: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tha an teacsa seo ri fhaighinn fon cheadachas Creative Commons Attribution/Share-Alike agus 's urrainnear ath-chleachdadh gu saor fo theirmichean a' cheadachais sin. Faic: Teacsa Ceadachas [CC-BY-SA] is [Terms of Use] airson teirmichean a bharrachd a dh'fhaodadh a bhith buailteach. Gheibhear an t-artaigeal tùsail aig: http://en.wikiquote.org/wiki/<title>
+type_a_word=Cuir a-steach facal no abairt
+guten:type_a_word=Cuir a-steach leabhar no ùghdar
+no_results=Cha deach càil a lorg
+searching=a' lorg...
+select_wiki=Tagh an leabhar-eòlais
+history_title=Eachdraidh
+no_history=Gun eachdraidh
+please_wait=Fuirich ort...
+clear_history=Am bu toigh leat an eachdraidh fhalamhadh?
+yes=Bu toigh l'
+no=Cha bu toigh l'
+protection=Tha cuid dhe na clàir aig an Uicipeid a dh'fhaodadh a bhith freagarrach do dh'inbhich a-mhàin. Cuir ann facal-faire airson dìon.
+guten:protection=Faodaidh nach eil seo freagarrach ach do dh'inbhich a-mhàin. Cuir ann facal-faire airson dìon.
+restricted=Faodaidh nach eil an clàr seo freagarrach ach do dh'inbhich a-mhàin. Cuir ann facal-faire airson dìon.
+set_password=Suidhich facal-faire
+ok=ok
+set_filter=Ma bhios an criathradh AIR, bidh feum air facal faire nuair a nithear inntrigeadh do chlàir fo dhìon.
+keep_filter_on=Cum a' chriathrag AIR
+keep_filter_off=Cum a' chriathrag DHETH
+filter_options=Roghainnean a' chriathraidh
+turn_filter_on=Cuir an criathradh AIR
+turn_filter_off=Cuir an criathradh DHETH
+change_password=Atharraich am facal-faire
+re_enter_password=Cuir a-steach am facal-faire a-rithist
+re_enter_new_password=Cuir a-steach am facal-faire ùr a-rithist
+passwords_not_match=Chan eil na faclan-faire a' freagairt ri chèil
+enter_old_password=Cuir a-steach an seann-fhacal-faire
+enter_password=Cuir a-steach am facal-faire
+try_again=Cearr. Feuch ris a-rithist.
+enter_new_password=Cuir a-steach facal-faire ùr
+parental_controls=Smachd nam pàrant
+r=Cuing

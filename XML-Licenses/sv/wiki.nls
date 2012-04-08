@@ -1,9 +1,23 @@
 # Messages for Swedish (Svenska)
 # Exported from translatewiki.net
 # Author: Ainali
+# Author: Dafer45
+# Author: Tobulos1
+# Author: WikiPhoenix
 
-wiki_name=Svenska Wikipedia
+wiki_name=Svenska...
+books:wiki_name=Böcker
+dict:wiki_name=Ordlista
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Wikipedia Svenska
+quote:wiki_name=Citat
+license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se:  licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se: licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
+guten:license_text=Se även: [alfabetisk lista över författare], [lista över bokhyllor].  Upphovsrätten för de flesta av dessa böcker har gått ut i USA. (De kan fortfarande vara upphovsrättsskyddade i andra länder). Så vem som helst får göra ordagranna eller icke-ordagranna kopior av dessa verk. För detaljer, se: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se:  licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
 type_a_word=Skriv ett ord eller en fras
+guten:type_a_word=Skriv en bok eller författare
+no_results=Ingen artikel hittades
 searching=söker...
 select_wiki=Välj encyklopedi
 history_title=Historik
@@ -13,8 +27,13 @@ clear_history=Rensa historik
 yes=Ja
 no=Nej
 protection=Vissa Wikipediaartiklar kanske inte är lämpliga för mindreåriga. Ställ in ett lösenord för skydd.
+guten:protection=Några böcker kanske inte är lämpliga för underåriga. Ange ett lösenord för skydd.
+restricted=Denna artikel kanske inte är lämplig för minderåriga. Ställ in ett lösenord för skydd.
 set_password=Ange lösenord
 ok=ok
+set_filter=Med filtrering påslagen krävs ett lösenord för att komma åt begränsade artiklar.
+keep_filter_on=Filter på
+keep_filter_off=Filter av
 filter_options=Filteralternativ
 turn_filter_on=Slå på filter
 turn_filter_off=Stäng av filter
@@ -22,6 +41,9 @@ change_password=Byt lösenord
 re_enter_password=Upprepa lösenord
 re_enter_new_password=Upprepa nytt lösenord
 passwords_not_match=Lösenorden matchar inte
+enter_old_password=Skriv in det gamla lösenordet
 enter_password=Ange lösenord
 try_again=Fel. Försök igen.
 enter_new_password=Ange nytt lösenord
+parental_controls=Föräldrakontroll
+r=R

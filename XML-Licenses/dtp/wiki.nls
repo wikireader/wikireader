@@ -1,0 +1,42 @@
+# Messages for Central Dusun (Dusun Bundu-liwan)
+# Exported from translatewiki.net
+# Author: FRANCIS5091
+# Author: FRANELYA
+
+wiki_name=Dusun...
+books:wiki_name=Buuk
+dict:wiki_name=Komoiboros
+guten:wiki_name=Purujik Gutonbog
+pedia:wiki_name=Wikipodia Dusun
+quote:wiki_name=Kotuboros
+type_a_word=Toipo iso Ka toi Ijaan
+guten:type_a_word=Toipo iso Buuk toi Monunurat
+no_results=Awu po nokosuang
+searching=mogihum...
+select_wiki=Pilio insiklopidia
+history_title=Susuyan
+no_history=Ingaa susuyan
+please_wait=Andado po kino....
+clear_history=Pugaso susuyan
+yes=Bah
+no=Awu
+protection=Haro pipiro suang Wikipodia di awu kosudong do tangaanak. Mangai posoino kaatalib do poningolig.
+guten:protection=Haro pipiro buuk di awu kosudong do tangaanak. Mangai posoino kaatalib do poningolig.
+set_password=Posoino Kaatalib
+ok=O
+set_filter=Miampai gagan poinsikit, gunoon kaatalib soira do mongintong di sinuang-suang pogoduhan.
+keep_filter_on=Posikito gagan
+keep_filter_off=Pisoko gagan
+filter_options=Pomilian gagan
+turn_filter_on=Mangai posikito gagan
+turn_filter_off=Mangai pisoko gagan
+change_password=Alanai Kaatalib
+re_enter_password=Mi-suang Kaatalib
+re_enter_new_password=Mi-suang kaatalib wagu
+passwords_not_match=Awu kopisangai kaatalib
+enter_old_password=Posuango kaatalib laid
+enter_password=Posuango kaatalib
+try_again=Nokosilap. Mangai umbalai kaagu
+enter_new_password=Posuango kaatalib wagu
+parental_controls=Pananamong molohing
+r=N

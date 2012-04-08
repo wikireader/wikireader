@@ -1,0 +1,47 @@
+# Messages for Slovak (Slovenčina)
+# Exported from translatewiki.net
+# Author: Lesny skriatok
+# Author: Wizzard
+
+wiki_name=Slovenčina...
+books:wiki_name=Knihy
+dict:wiki_name=Slovník
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Slovenská Wikipédia
+quote:wiki_name=Citáty
+license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wikipedia.org/wiki/<title></title>
+dict:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wiktionary.org/wiki/<title></title>
+guten:license_text=Pozri aj: [abecedný zoznam autorov] [zoznam knižníc]. Väčšina týchto kníh je v Spojených štátoch voľným dielom. (V iných krajinách môžu byť stále chránené autorským právom). Tieto diela teda môže ktokoľvek kopírovať a upravovať. Pre podrobnosti pozri: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wikiquote.org/wiki/<title></title>
+type_a_word=Zadajte slovo alebo frázu
+guten:type_a_word=Napíšte knihu alebo autora
+no_results=Nenašli sa žiadne záznamy
+searching=vyhľadávanie...
+select_wiki=Vybrať encyklopédiu
+history_title=História
+no_history=Žiadna história
+please_wait=Čakajte prosím...
+clear_history=Vymazať históriu
+yes=Áno
+no=Nie
+protection=Niektoré položky Wikipédie nemusia byť vhodné pre neplnoleté osoby. Prosím nastavte si heslo pre ochranu.
+guten:protection=Niektoré knihy nemusia byť vhodné pre maloletých. Prosím, nastavte heslo pre ochranu.
+restricted=Tento záznam nemusí byť vhodný pre maloletých. Prosím, nastavte heslo pre ochranu.
+set_password=Nastaviť heslo
+ok=ok
+set_filter=So zapnutým filtrovaním sa pri prístupe k chráneným článkom vyžaduje heslo.
+keep_filter_on=Nechať filter zapnutý
+keep_filter_off=Nechať filter vypnutý
+filter_options=Možnosti filtra
+turn_filter_on=Zapnúť filter
+turn_filter_off=Vypnúť Filter
+change_password=Zmeniť heslo
+re_enter_password=Zadajte heslo znovu
+re_enter_new_password=Zadajte nové heslo znovu
+passwords_not_match=Heslá sa nezhodujú
+enter_old_password=Zadajte staré heslo
+enter_password=Zadajte heslo
+try_again=Zle. Skúste znova.
+enter_new_password=Zadajte nové heslo
+parental_controls=Rodičovská kontrola
+r=R

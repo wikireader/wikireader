@@ -2,7 +2,10 @@
 # Exported from translatewiki.net
 # Author: Ahmed-Najib-Biabani-Ibrahimkhel
 
-wiki_name=انګرېزي وېکيپېډيا
+wiki_name=انګرېزي ...
+books:wiki_name=کتابونه
+dict:wiki_name=سيند
+pedia:wiki_name=پښتو وېکيپېډيا
 type_a_word=يوه وييکه يا عبارت وټاپۍ
 no_results=څه و نه موندل شو
 searching=د پلټنې په حال کې...
@@ -13,9 +16,12 @@ please_wait=لطفاً تم شۍ ...
 clear_history=پېښليک پاکول
 yes=هو
 no=نه
+protection=د ويکيپېډيا ځينې مېنځپانګې به د ماشومانو د کتلو وړ نه وي. نو د داسې مېنځپانګې نه د ژغورلو په تکل، تاسې يو پټنوم وټاکۍ.
 set_password=پټنوم ټاکل
 ok=ښه
+keep_filter_on=چاڼګر بل ساتل
 filter_options=د چاڼګر خوښنې
+turn_filter_on=چاڼګر بلول
 change_password=پټنوم بدلول
 re_enter_password=پټنوم بيا وليکۍ
 re_enter_new_password=نوی پټنوم مو بيا وليکۍ

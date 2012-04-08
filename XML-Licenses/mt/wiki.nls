@@ -1,0 +1,46 @@
+# Messages for Maltese (Malti)
+# Exported from translatewiki.net
+# Author: Chrisportelli
+
+wiki_name=Malti...
+books:wiki_name=Kotba
+dict:wiki_name=Dizzjunarju
+guten:wiki_name=Proġett Gutenberg
+pedia:wiki_name=Il-Wikipedija bil-Maltii
+quote:wiki_name=Kwotazzjonijiet
+license_text=It-test huwa disponibbli taħt il-Liċenzja Creative Commons Attribution/Share-Alike u jista' jerġa' jiġi wżat taħt it-termini ta' dik il-liċenzja. Ara: Test tal-Liċenzja [CC-BY-SA] u [Termini ta' Użu] għal termi addizjonali li jistgħu japplikaw. L-artiklu oriġinali huwa disponibbli fuq: http://mt.wikipedia.org/wiki/<title>
+dict:license_text=It-test huwa disponibbli taħt il-Liċenzja Creative Commons Attribution/Share-Alike u jista' jerġa' jiġi wżat taħt it-termini ta' dik il-liċenzja. Ara: Test tal-Liċenzja [CC-BY-SA] u [Termini ta' Użu] għal termi addizjonali li jistgħu japplikaw. L-artiklu oriġinali huwa disponibbli fuq: http://mt.wiktionary.org/wiki/<title>
+guten:license_text=Ara wkoll: [Lista alfabetika tal-awturi], Lista ta' librerij. Għal ħafna minn dawn il-kotba, il-copyright skada fl-Istat Uniti. (Dawn jistgħu jkunu għadhom bil-copyright f'pajjiżi oħra). Allura kulħadd jista' jagħmel kopji ''verbatim'' jew mhux ''verbatim'' ta' dawn ix-xogħlijiet. Għal detalji, ara http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=It-test huwa disponibbli taħt il-Liċenzja Creative Commons Attribution/Share-Alike u jista' jerġa' jiġi wżat taħt it-termini ta' dik il-liċenzja. Ara: Test tal-Liċenzja [CC-BY-SA] u [Termini ta' Użu] għal termi addizjonali li jistgħu japplikaw. L-artiklu oriġinali huwa disponibbli fuq: http://en.wikiquote.org/wiki/<title>
+type_a_word=Daħħal kelma jew frażi
+guten:type_a_word=Daħħal ktieb jew awtur
+no_results=Ma nstabet l-ebda daħla
+searching=qed issir it-tfittxija...
+select_wiki=Agħżel enċiklopedija
+history_title=Storja
+no_history=L-ebda storja
+please_wait=Jekk jogħġbok stenna...
+clear_history=Ħassar l-istorja
+yes=Iva
+no=Le
+protection=Ċerti daħliet fil-Wikipedija jistgħu ma jkunux adattati għal persuni minuri. Jekk jogħġbok għamel password għall-protezzjoni.
+guten:protection=Ċerti kotba jistgħu ma jkunux adattati għall-minuri. Jekk jogħġbok daħħal password għall-protezzjoni.
+restricted=Din id-daħla tista' ma tkunx adattata għal persuni minuri. Jekk jogħġbok agħmel password għall-protezzjoni.
+set_password=Agħeml password
+ok=ok
+set_filter=Bil-filtru MIXGĦUL, password hi bżonnjuża sabiex taċċessa artikli ristretti.
+keep_filter_on=Żomm il-filtru MIXGĦUL
+keep_filter_off=Żomm il-filtru MITFI
+filter_options=Opzjonijiet tal-filtru
+turn_filter_on=Attiva l-filtru
+turn_filter_off=Iddiżattiva l-filtru
+change_password=Biddel il-password
+re_enter_password=Erġa' daħħal il-password
+re_enter_new_password=Erġa' daħħal password ġdida
+passwords_not_match=Il-passwords ma jaqblux
+enter_old_password=Daħħal il-password il-qadima
+enter_password=Daħħal il-password
+try_again=Żball. Jekk jogħġbok erġa' pprova.
+enter_new_password=Daħħa il-password il-ġdida
+parental_controls=Kontrolli tal-ġenituri
+r=R

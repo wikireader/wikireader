@@ -1,9 +1,20 @@
 # Messages for Arabic (العربية)
 # Exported from translatewiki.net
+# Author: Houcinee1
+# Author: Meno25
 # Author: OsamaK
 
-wiki_name=ويكيبيديا الإنجليزية
+wiki_name=العربية...
+books:wiki_name=كتب
+dict:wiki_name=قاموس
+guten:wiki_name=مشروع جوتنبرج
+pedia:wiki_name=ويكيبيديا العربية
+quote:wiki_name=اقتباسات
+starw:wiki_name=ووكيبيديا
+trav:wiki_name=ويك ترافيل
+guten:license_text=انظر أيضا : [قائمة أبجدية لأسماء الكتب] ، [قائمة أرفف الكتب]. انتهت صلاحية حقوق الطبع والنشر لمعظم هذه الكتب في الولايات المتحدة. (قد لا يزال تكون حقوق الطبع والنشر في البلدان الأخرى). لذلك قد جعل أي شخص نسخ حرفية أو غير حرفية ، من تلك الأعمال. لمزيد من التفاصيل ، انظر : http://www.gutenberg.org/wiki/Main_Page
 type_a_word=اكتب كلمة أو عبارة
+guten:type_a_word=اكتب كتاب أو مؤلف
 no_results=لم يُعثر على أي مدخلات
 searching=يبحث...
 select_wiki=اختر الموسوعة
@@ -14,6 +25,7 @@ clear_history=امسح التاريخ
 yes=نعم
 no=لا
 protection=قد لا تناسب بعض مقالات ويكيبيديا الأطفال. من فضلك اضبط كلمة سر لحمايتهم.
+guten:protection=بعض الكتب قد لا تكون مناسبة للقاصرين. الرجاء تعيين كلمة مرور للحماية.
 restricted=قد لا تناسب هذه المدخلة الأطفال. من فضلك اضبط كلمة سر لحمايتهم.
 set_password=اضبط كلمة السر
 ok=موافق

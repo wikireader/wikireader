@@ -1,0 +1,40 @@
+# Messages for Vietnamese (Tiếng Việt)
+# Exported from translatewiki.net
+# Author: Minh Nguyen
+# Author: Xiao Qiao
+
+wiki_name=Tiếng Việt…
+books:wiki_name=Sách
+dict:wiki_name=Từ điển
+guten:wiki_name=Dự án Gutenberg
+pedia:wiki_name=Wikipedia tiếng Việt
+quote:wiki_name=Danh ngôn
+type_a_word=Gõ từ hoặc cụm từ
+guten:type_a_word=Gõ một cuốn sách hoặc tác giả
+no_results=Không tìm thấy mục từ
+searching=đang tìm…
+select_wiki=Chọn bách khoa toàn thư
+history_title=Lịch sử
+no_history=Không có lịch sử
+please_wait=Vui lòng chờ…
+clear_history=Xóa Lịch sử
+yes=Có
+no=Không
+protection=Một số mục Wikipedia có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
+guten:protection=Một số cuốn sách có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
+restricted=Mục nhập này có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
+set_password=Thiết lập mật khẩu
+ok=ok
+filter_options=Tùy chọn Bộ lọc
+turn_filter_on=BẬT Bộ lọc
+turn_filter_off=TẮT Bộ lọc
+change_password=Thay đổi Mật khẩu
+re_enter_password=Nhập lại mật khẩu
+re_enter_new_password=Nhập lại mật khẩu mới
+passwords_not_match=Mật khẩu không khớp
+enter_old_password=Nhập mật khẩu cũ
+enter_password=Nhập mật khẩu
+try_again=Sai. Xin vui lòng thử lại.
+enter_new_password=Nhập mật khẩu mới
+parental_controls=Điều khiển của cha mẹ
+r=R

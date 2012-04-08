@@ -1,0 +1,46 @@
+# Messages for    زَوُن (   زَوُن)
+# Exported from translatewiki.net
+# Author: Csisc
+
+wiki_name=Tounsi...
+books:wiki_name=كتب
+dict:wiki_name=Dictionnaire
+guten:wiki_name=مشروع جوتنبرج
+pedia:wiki_name=Wikipedia Tounsi
+quote:wiki_name=اقتباسات
+license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
+dict:license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
+guten:license_text=انظر أيضا : [قائمة أبجدية لأسماء الكتب] ، [قائمة أرفف الكتب]. انتهت صلاحية حقوق الطبع والنشر لمعظم هذه الكتب في الولايات المتحدة. (قد لا يزال تكون حقوق الطبع والنشر في البلدان الأخرى). لذلك قد جعل أي شخص نسخ حرفية أو غير حرفية ، من تلك الأعمال. لمزيد من التفاصيل ، انظر : http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
+type_a_word=اكتب كلمة أو عبارة
+guten:type_a_word=اكتب كتاب أو مؤلف
+no_results=لم يُعثر على أي مدخلات
+searching=يبحث...
+select_wiki=اختر الموسوعة
+history_title=تاريخ
+no_history=لا يوجد تاريخ
+please_wait=انتظر من فضلك...
+clear_history=امسح التاريخ
+yes=oui (n3am)
+no=la
+protection=قد لا تناسب بعض مقالات ويكيبيديا الأطفال. من فضلك اضبط كلمة سر لحمايتهم.
+guten:protection=بعض الكتب قد لا تكون مناسبة للقاصرين. الرجاء تعيين كلمة مرور للحماية.
+restricted=قد لا تناسب هذه المدخلة الأطفال. من فضلك اضبط كلمة سر لحمايتهم.
+set_password=اضبط كلمة السر
+ok=موافق
+set_filter=عن تشغيل المُرشّح، سوف تطلب كلمة سر عند الوصول إلى مقالات مُقيّدة.
+keep_filter_on=أبق المُرشَّح عاملا
+keep_filter_off=أبقِ المُرشَّح مُطفأ
+filter_options=خيارات المُرشَّح
+turn_filter_on=شغّل المُرشِّح
+turn_filter_off=أطفئ المُرشَّح
+change_password=غيّر كلمة السر
+re_enter_password=أعد إدخال كلمة السر
+re_enter_new_password=أعد إدخال كلمة السر الجديدة
+passwords_not_match=كلمتا السر لا تتطابقان
+enter_old_password=أدخل كلمة السر القديمة
+enter_password=أدخل كلمة السر
+try_again=خطأ. من فضلك حاول مرة أخرى.
+enter_new_password=أدخل كلمة سر جديدة
+parental_controls=تحكم الوالدين
+r=9ath3i

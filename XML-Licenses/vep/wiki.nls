@@ -1,0 +1,46 @@
+# Messages for Veps (Vepsän kel’)
+# Exported from translatewiki.net
+# Author: Игорь Бродский
+
+wiki_name=Anglijan
+books:wiki_name=Kirjad
+dict:wiki_name=Vajehnik
+guten:wiki_name=Gutenberg-projekt
+pedia:wiki_name=Vepsän Vikipedii
+quote:wiki_name=Citatad
+license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Kc. mugažo: [Avtoriden nimikirjutez kirjamišton mödhe], [Kirjanpal'čiden nimikirjutez]. Kopirait (avtoranoiktuz) neniden kirjoiden enambusen täht om lopnus AÜVš. (No se voib olda väges toižiš valdkundoiš). Muga, kaikutte sab tehta neniden töiden täuded vai palahižed kopijad. Miše lugeda detališ, kc. http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wikiquote.org/wiki/<title>
+type_a_word=Kirjutagat sana vai fraz
+guten:type_a_word=Kirjutagat kirjan vai avtoran nimi
+no_results=Ei ole kirjutesid
+searching=Ecmine...
+select_wiki=Valikat enciklopedii
+history_title=Istorii
+no_history=Ei ole istorijad
+please_wait=Olgat hüväd, varastagat...
+clear_history=Puhtastada istorii
+yes=Ka
+no=Ei
+protection=Erasid Vikipedijan kirjutusid ei rekomenduigoi lapsile. Olgat hüväd, säkat peitsana kaičendan täht.
+guten:protection=Erasid kirjoid ei rekomenduigoi lapsile. Olgat hüväd, säkat peitsana kaičendan täht.
+restricted=Necidä kirjutust ei rekomenduigoi lapsile. Olgat hüväd, säkat peitsana kaičendan täht.
+set_password=Panda peitsana
+ok=ok
+set_filter=Konz fil'truind om kävutamas, miše lugeda kirjutusid röunatud tulendanke pidab teta peitsana.
+keep_filter_on=Jätta fil'tr avaitud-pozicijaha
+keep_filter_off=Jätta fil'tr sauptud-pozicijaha
+filter_options=Fil'tran opcijad
+turn_filter_on=Avaita fil'tr
+turn_filter_off=Saubata fil'tr
+change_password=Toižetada peitsana
+re_enter_password=Kirjutagat peitsana völ kerdan
+re_enter_new_password=Kirjutagat uz' peitsana völ kerdan
+passwords_not_match=Peitsanad ei kožugoi toine toiženke
+enter_old_password=Kirjutagat vanh peitsana
+enter_password=Kirjutagat peitsana
+try_again=Värin om. Olgat hüväd, lat'kat völ kerdan.
+enter_new_password=Kirjutagat uz' peitsana
+parental_controls=Vanhembiden kontrol'
+r=R

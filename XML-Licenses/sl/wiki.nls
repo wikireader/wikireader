@@ -1,0 +1,46 @@
+# Messages for Slovenian (Slovenščina)
+# Exported from translatewiki.net
+# Author: Dbc334
+
+wiki_name=Angleščina ...
+books:wiki_name=Knjige
+dict:wiki_name=Slovar
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Angleška Wikipedija
+quote:wiki_name=Navedki
+license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Glej tudi: [Abecedni seznam avtorjev], [Seznam knjižnih polic].  Avtorske pravice so v Združenih državah Amerike za večino teh knjig potekle. (Morda so še vedno avtorsko zaščitene v drugih državah.) Zato lahko vsakdo izdeluje dobesedne ali prirejene kopije teh del. Za podrobnosti glej: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wikiquote.org/wiki/<title>
+type_a_word=Vnesite besedo ali besedno zvezo
+guten:type_a_word=Vnesite knjigo ali avtorja
+no_results=Najden ni bil noben vnos
+searching=iskanje ...
+select_wiki=Izberite enciklopedijo
+history_title=Zgodovina
+no_history=Ni zgodovine
+please_wait=Prosimo, počakajte ...
+clear_history=Počisti zgodovino
+yes=Da
+no=Ne
+protection=Nekateri vnosi Wikipedije morda niso primerni za mladoletnike. Prosimo, nastavite geslo za zaščito.
+guten:protection=Nekateri knjige morda niso primerne za mladoletnike. Prosimo, nastavite geslo za zaščito.
+restricted=Vnos morda ni primeren za mladoletnike. Prosimo, nastavite geslo za zaščito.
+set_password=Nastavi geslo
+ok=ok
+set_filter=Ko je filtriranje vključeno, je za dostop do omejenih vnosov potrebno geslo.
+keep_filter_on=Ohrani filter vklopljen
+keep_filter_off=Ohrani filter izklopljen
+filter_options=Možnosti filtra
+turn_filter_on=Vklopi filter
+turn_filter_off=Izklopi filter
+change_password=Spremenite geslo
+re_enter_password=Ponovno vnesite geslo
+re_enter_new_password=Ponovno vnesite novo geslo
+passwords_not_match=Gesli se ne ujemata
+enter_old_password=Vnesite staro geslo
+enter_password=Vnesite geslo
+try_again=Narobe. Prosimo, poskusite znova.
+enter_new_password=Vnesite novo geslo
+parental_controls=Starševski nadzor
+r=O

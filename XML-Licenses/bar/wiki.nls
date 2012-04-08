@@ -1,0 +1,42 @@
+# Messages for Bavarian (Boarisch)
+# Exported from translatewiki.net
+# Author: Mucalexx
+
+wiki_name=Boarisch ...
+books:wiki_name=Biacher
+dict:wiki_name=Werterbuach
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Boarischsproochige Wikipedia
+quote:wiki_name=Zitaate
+type_a_word=Suachbegrif eigeem
+guten:type_a_word=A Buach oder an Autor augeem
+no_results=Koane Eiträg gfunden
+searching=suach ...
+select_wiki=Woi vo da Enzyklopädie
+history_title=Valaaff
+no_history=Koa Valaaff vurhaunden
+please_wait=Bittschee worten ...
+clear_history=Valaaff leschen
+yes=Jo
+no=Naa
+protection=A poar Eiträg vo da Wikipedia kunnten ned fyr Jungdliche geignet sei. A Jungdschutzposswort soidad festgleegt wern.
+guten:protection=A poar Biacher kunnten ned fyr Jungdliche geignet sei. A Jungdschutzposswort soidad festgleegt wern.
+restricted=Der Eitrog kunnt ned fyr Jungdliche geignet sei. A Jungdschutzposswort soidad festgleegt wern.
+set_password=Posswort eigeem
+ok=passt
+set_filter=Bei eigschoiterder Füjterung werd a Posswort braucht, um auf gschytzde Artike zua z' greiffm.
+keep_filter_on=An Füjter aulossen
+keep_filter_off=An Füjter aus lossen
+filter_options=Füjtereistöjungen
+turn_filter_on=Füjter ausschoiden
+turn_filter_off=Füjter ausschoiden
+change_password=Posswort ändern
+re_enter_password=As Posswort noamoi eigeem
+re_enter_new_password=Neichs Posswort noamoi eigeem
+passwords_not_match=De Posswerter stimman ned ywerei
+enter_old_password=Geem S' as oide Posswort ei
+enter_password=Posswort eigeem
+try_again=Foisch, vasuachen S' as bittsche noamoi
+enter_new_password=Neichs Posswort eigeem
+parental_controls=Jungdschutz
+r=R

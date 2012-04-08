@@ -2,9 +2,18 @@
 # Exported from translatewiki.net
 # Author: Naudefj
 
-wiki_name=Afrikaanse Wikipedia
+wiki_name=Afrikaans...
+books:wiki_name=Boeke
+dict:wiki_name=Woordeboek
+guten:wiki_name=Projek Gutenberg
+pedia:wiki_name=Afrikaanse Wikipedia
+quote:wiki_name=Aanhalings
 license_text=Teks is beskikbaar onder die Creative Commons Erkenning-Insgelyks Deel Lisensie en kan vrylik hergebruik word onder die voorwaardes van die lisensie. Sien: teks van die [CC-BY-SA] lisensie en [Terms of Use] vir verdere voorwaardes wat moontlik van toepassing is. Die oorspronklike artikel is beskikbaar by: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Teks is beskikbaar onder die Creative Commons Erkenning-Insgelyks Deel Lisensie en kan vrylik hergebruik word onder die voorwaardes van die lisensie. Sien: teks van die [CC-BY-SA] lisensie en [Gebruiksvoorwaardes] vir verdere inligting wat moontlik van toepassing is. Die oorspronklike artikel is beskikbaar by: http://en.wikipedia.org/wiki/<title>
+guten:license_text=Sien ook: [Alfabetiese lys van outeurs], [Lys van boeke]. Kopiereg op die meeste van hierdie boeke het reeds in die Verenigde State verval. (Daar mag nog moontlik kopiereg in ander lande hierop wees). So, enige iemand kan verbatim of nie-verbatim afskrifte van die werk maak. Vir meer inligting, sien: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teks is beskikbaar onder die Creative Commons Erkenning-Insgelyks Deel Lisensie en kan vrylik hergebruik word onder die voorwaardes van die lisensie. Sien: teks van die [CC-BY-SA] lisensie en [Gebruiksvoorwaardes] vir verdere inligting wat moontlik van toepassing is. Die oorspronklike artikel is beskikbaar by: http://en.wikipedia.org/wiki/<title>
 type_a_word=Tik 'n word of frase in
+guten:type_a_word=Verskaf boek of outeur
 no_results=Geen resultate gevind nie
 searching=besig om te soek...
 select_wiki=Kies 'n ensiklopedie
@@ -15,6 +24,7 @@ clear_history=Vee geskiedenis uit
 yes=Ja
 no=Nee
 protection=Sommige Wikipedia-bladsye is moontlik nie vir minderjariges geskik nie. Stel 'n wagwoord vir beskerming.
+guten:protection=Sommige boeke mag nie vir minderjariges geskik wees nie. Stel asseblief 'n wagwoord vir beskerming.
 restricted=Hierdie inskrywing is moontlik nie geskik vir minderjariges nie. Stel 'n wagwoord vir beskerming.
 set_password=Stel wagwoord
 ok=OK

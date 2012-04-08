@@ -1,0 +1,50 @@
+# Messages for Indonesian (Bahasa Indonesia)
+# Exported from translatewiki.net
+# Author: Bennylin
+# Author: Dadanhrn
+# Author: Farras
+# Author: Irwangatot
+# Author: IvanLanin
+
+wiki_name=Bahasa Indonesia
+books:wiki_name=Buku
+dict:wiki_name=Kamus
+guten:wiki_name=Proyek Gutenberg
+pedia:wiki_name=Wikipedia Bahasa Indonesia
+quote:wiki_name=Kutipan
+license_text=Teks tersedia di bawah Lisensi Atribusi/Berbagi Serupa Creative Commons dan dapat digunakan secara bebas di bawah persyaratan lisensi tersebut. Lihat: Teks dari Lisensi [CC-BY-SA] [Ketentuan Penggunaan] untuk ketentuan tambahan yang mungkin berlaku. Artikel asli tersedia di: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Teks tersedia di bawah Lisensi Atribusi/Berbagi Serupa Creative Commons dan dapat digunakan secara bebas di bawah persyaratan lisensi tersebut. Lihat: Teks dari Lisensi [CC-BY-SA] dan [Ketentuan Penggunaan] untuk ketentuan tambahan yang mungkin berlaku. Artikel asli tersedia di: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Lihat pula: [Daftar penulis secara alfabetis], [Daftar rak buku]. Hak cipta untuk buku-buku ini telah kedaluwarsa di Amerika Serikat. (Mungkin masih memiliki hak cipta di negara lain). Jadi, siapapun dapat membuat salinan verbatim atau non-verbatim terhadap karya-karya tersebut. Untuk lebih lanjut, lihat: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teks tersedia di bawah Lisensi Atribusi/Berbagi Serupa Creative Commons dan dapat digunakan secara bebas di bawah persyaratan lisensi tersebut. Lihat: Teks dari Lisensi [CC-BY-SA] dan [Ketentuan Penggunaan] untuk ketentuan tambahan yang mungkin berlaku. Artikel asli tersedia di: http://en.wikiquote.org/wiki/<title>
+type_a_word=Ketikkan Kata atau Frasa
+guten:type_a_word=Ketik Buku atau Penulis
+no_results=Tidak ada entri yang ditemukan
+searching=sedang mencari ...
+select_wiki=Pilih Ensiklopedia
+history_title=Riwayat
+no_history=Tidak ada riwayat
+please_wait=Silakan tunggu...
+clear_history=Hapus Riwayat
+yes=Ya
+no=Tidak
+protection=Beberapa isi Wikipedia mungkin tidak cocok untuk anak di bawah umur. Silakan gunakan sandi untuk pelindungan.
+guten:protection=Beberapa buku mungkin tidak cocok untuk anak di bawah umur. Silakan pasang sandi untuk pelindungan.
+restricted=Artikel ini mungkin tidak cocok untuk anak di bawah umur. Silakan pasang sandi untuk pelindungan.
+set_password=Pasang Sandi
+ok=ok
+set_filter=Jika Filter Nyala, diperlukan sandi untuk mengakses konten dengan kode "R".
+keep_filter_on=Tetap Nyalakan Filter
+keep_filter_off=Tetap Matikan Filter
+filter_options=Pilihan Filter
+turn_filter_on=Nyalakan Filter
+turn_filter_off=Matikan Filter
+change_password=Ganti sandi
+re_enter_password=Masukkan kembali sandi
+re_enter_new_password=Masukkan kembali sandi baru
+passwords_not_match=Sandi tidak cocok
+enter_old_password=Masukkan sandi lama
+enter_password=Masukkan sandi
+try_again=Salah. Silakan coba lagi.
+enter_new_password=Masukkan sandi baru
+parental_controls=Kendali Orang Tua
+r=R

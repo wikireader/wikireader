@@ -1,0 +1,45 @@
+# Messages for Finnish (Suomi)
+# Exported from translatewiki.net
+# Author: Centerlink
+# Author: Nike
+
+wiki_name=Englanti ...
+books:wiki_name=Kirjat
+dict:wiki_name=Sanakirja
+guten:wiki_name=Projekti Gutenberg
+pedia:wiki_name=Wikipedia Englanti
+quote:wiki_name=Lainaukset
+license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wikipedia.org/wiki/ <title>
+guten:license_text=Katso myös: [Aakkosellinen tekijöiden luettelo] [Kirjahyllyjen luettelo]. Copyright useimmille näistä kirjoista on päättynyt Yhdysvalloissa. (Ne voivat silti olla tekijänoikeuden alaisia muissa maissa). Joten kuka tahansa voi tehdä kirjallisia tai ei-kirjallisia kopioita näistä teoksista. Katso lisätietoja: http://www.gutenberg.org/wiki/Main_Page
+type_a_word=Kirjoita sana tai lause
+guten:type_a_word=Kirjoita kirja tai tekijä
+no_results=Ei hakutuloksia
+searching=etsitään...
+select_wiki=Valitse tietosanakirja
+history_title=Historia
+no_history=Ei historiaa
+please_wait=Odota ...
+clear_history=Tyhjennä historia
+yes=Kyllä
+no=Ei
+protection=Jotkut Wikipedia-merkinnät eivät sovellu alaikäisille. Aseta salasanasuoja.
+guten:protection=Jotkut kirjat eivät ehkä sovi alaikäisille. Aseta salasanasuojaus.
+restricted=Tämä merkintä ei sovellu alaikäisille. Aseta salasanasuoja.
+set_password=Aseta salasana
+ok=valmis
+set_filter=Suodatuksen ollessa PÄÄLLÄ salasana vaaditaan rajoitettuun artikkeliin pääsemiseksi.
+keep_filter_on=Pidä suodatus PÄÄLLÄ
+keep_filter_off=POISTA suodatus
+filter_options=Suodatinvalitsimet
+turn_filter_on=Laita suodatus PÄÄLLE
+turn_filter_off=POISTA suodatus
+change_password=Vaihda salasana
+re_enter_password=Kirjoita salasana uudelleen
+re_enter_new_password=Kirjoita salasana uudelleen
+passwords_not_match=Salasanat eivät täsmää
+enter_old_password=Anna vanha salasana
+enter_password=Anna salasana
+try_again=Virhe. Yritä uudelleen.
+enter_new_password=Anna uusi salasana
+parental_controls=Käytönvalvonta
+r=K

@@ -1,0 +1,47 @@
+# Messages for Bosnian (Bosanski)
+# Exported from translatewiki.net
+# Author: CERminator
+# Author: Edinwiki
+
+wiki_name=Bosanski...
+books:wiki_name=Knjige
+dict:wiki_name=Rječnik
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Wikipedija na Bosanskom
+quote:wiki_name=Citati
+license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+guten:license_text=Pogledajte [abecedni popis autora] i [popis knjiga].  Autorska prava za većinu ovih djela su istekla u Sjedinjenim Američkim Državama, ali ipak mogu biti zaštićena u drugim državama. Svatko može napraviti kopije ovih djela ili ih izmijeniti. Za više informacija pogledajte http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+type_a_word=Unesite riječ ili frazu
+guten:type_a_word=Unesite knjigu ili autora
+no_results=Nema rezultata.
+searching=tražim...
+select_wiki=Izaberite enciklopediju
+history_title=Historija
+no_history=Nema historije
+please_wait=Molimo pričekajte ...
+clear_history=Očisti historiju
+yes=Da
+no=Ne
+protection=Neki Wikipedijini unosi možda nisu prikladni za maloljetnike. Molimo Vas da postavite lozinku za zaštitu.
+guten:protection=Neki Wikipedijini unosi možda nisu prikladni za maloljetnike. Molimo Vas da postavite lozinku za zaštitu.
+restricted=Neki Wikipedijini unosi možda nisu prikladni za maloljetnike. Molimo Vas da postavite lozinku za zaštitu.
+set_password=Postavite lozinku
+ok=u redu
+set_filter=S uključenim filterom je lozinka obavezna za pristupanje ograničenim člancima.
+keep_filter_on=Ostavi uključen filter
+keep_filter_off=Ostavi isključen filter
+filter_options=Postavke filtera
+turn_filter_on=Uključite filter
+turn_filter_off=Isključite filter
+change_password=Promijeni lozinku
+re_enter_password=Ponovno unesite lozinku
+re_enter_new_password=Ponovno unesite novu lozinku
+passwords_not_match=Lozinke se ne poklapaju
+enter_old_password=Unesite staru lozinku
+enter_password=Unesite lozinku
+try_again=Pogrešno. Molimo vas da pokušate ponovo.
+enter_new_password=Unesite novu lozinku
+parental_controls=Roditeljski nadzor
+r=O
