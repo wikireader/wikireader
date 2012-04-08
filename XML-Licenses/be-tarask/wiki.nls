@@ -1,0 +1,48 @@
+# Messages for Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+# Exported from translatewiki.net
+# Author: EugeneZelenko
+# Author: Jim-by
+# Author: Wizardist
+
+wiki_name=Беларуская…
+books:wiki_name=Кнігі
+dict:wiki_name=Слоўнік
+guten:wiki_name=Праект «Гутэнбэрг»
+pedia:wiki_name=Беларуская Вікіпэдыя
+quote:wiki_name=Цытаты
+license_text=Гэты тэкст даступны на ўмовах ліцэнзіі Creative Commons Attribution/Share-Alike. Глядзіце дадаткова: тэкст ліцэнзіі [CC-BY-SA], [умовы выкарыстаньня]. Арыгінальны тэкст артыкула даступны па адрасе http://be-x-old.wikipedia.org/wiki/<title>
+dict:license_text=Гэты тэкст даступны на ўмовах ліцэнзіі Creative Commons Attribution/Share-Alike і можа быць свабодна выкарыстаны на ўмовах гэтай ліцэнзіі. Глядзіце дадаткова: тэкст ліцэнзіі [CC-BY-SA], [умовы выкарыстаньня]. Арыгінальны тэкст артыкула даступны па адрасе http://en.wikipedia.org/wiki/<title>
+guten:license_text=Глядзіце таксама: [Альфабэтны сьпіс аўтараў], [Сьпіс кніжных полак]. Аўтарскія правы на большасьць з гэтых кнігаў скончыліся ў Злучаных Штатах. (Яны могуць быць усё яшчэ абароненыя аўтарскімі правамі ў іншых краінах). Такім чынам, кожны можа рабіць поўныя ці частковыя копіі гэтых працаў. Падрабязнасьці глядзіце на http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Гэты тэкст даступны на ўмовах ліцэнзіі Creative Commons Attribution/Share-Alike і можа свабодна выкарыстаны на ўмовах гэтай ліцэнзіі. Глядзіце дадаткова тэкст ліцэнзіі [CC-BY-SA] і [умовы выкарыстаньня]. Арыгінальны тэкст артыкула даступны па адрасе: http://en.wikiquote.org/wiki/<title>
+type_a_word=Увядзіце слова ці фразу
+guten:type_a_word=Увядзіце кнігу ці аўтара
+no_results=Запісы ня знойдзеныя
+searching=пошук…
+select_wiki=Выберыце энцыкляпэдыю
+history_title=Гісторыя
+no_history=Няма гісторыі
+please_wait=Калі ласка, пачакайце…
+clear_history=Ачысьціць гісторыю
+yes=Так
+no=Не
+protection=Некаторыя артыкулы Вікіпэдыі могуць быць непрыдатныя для непаўнагадовых. Калі ласка, устанавіце пароль для абароны.
+guten:protection=Некаторыя кнігі могуць быць непрыдатным для непаўнагадовых. Калі ласка, устанавіце пароль для абароны.
+restricted=Гэты артыкул можа быць непрыдатным для непаўнагадовых. Калі ласка, устанавіце пароль для абароны.
+set_password=Устанавіць пароль
+ok=Добра
+set_filter=З уключанай фільтрацыяй для прагляду абароненых артыкулаў патрэбны пароль.
+keep_filter_on=Пакінуць фільтар уключаным
+keep_filter_off=Пакінуць фільтар выключаным
+filter_options=Устаноўкі фільтру
+turn_filter_on=Уключыць фільтар
+turn_filter_off=Выключыць фільтар
+change_password=Зьмяніць пароль
+re_enter_password=Увядзіце пароль яшчэ раз
+re_enter_new_password=Увядзіце новы пароль яшчэ раз
+passwords_not_match=Паролі не супадаюць
+enter_old_password=Увядзіце стары пароль
+enter_password=Увядзіце пароль
+try_again=Няправільна. Паспрабуйце зноў.
+enter_new_password=Увядзіце новы пароль
+parental_controls=Бацькоўскі кантроль
+r=R

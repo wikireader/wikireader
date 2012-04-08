@@ -2,7 +2,10 @@
 # Exported from translatewiki.net
 # Author: Veeven
 
-wiki_name=వికీపీడియా ఆంగ్లం
+wiki_name=తెలుగు...
+books:wiki_name=పుస్తకాలు
+dict:wiki_name=నిఘంటువు
+pedia:wiki_name=తెలుగు వికీపీడియా
 type_a_word=ఒక పదం లేదా పదబంధాన్ని టైపుచెయ్యండి
 no_results=ఫలితాలేమీ లేవు
 searching=వెతుకుతున్నాం...

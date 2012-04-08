@@ -2,9 +2,18 @@
 # Exported from translatewiki.net
 # Author: McDutchie
 
-wiki_name=Wikipedia in interlingua
+wiki_name=Interlingua...
+books:wiki_name=Libros
+dict:wiki_name=Dictionario
+guten:wiki_name=Projecto Gutenberg
+pedia:wiki_name=Wikipedia in interlingua
+quote:wiki_name=Citationes
 license_text=Le texto es disponibile sub le licentia Creative Commons Attribution/Share-Alike e pote esser reusate liberemente sub le conditiones de iste licentia. Vide: Texto del licentia [CC-BY-SA] e [Conditiones de uso] pro additional conditiones que pote esser in vigor. Le articulo original es disponibile a: http://ia.wikipedia.org/wiki/<title>
+dict:license_text=Le texto es disponibile sub le licentia Creative Commons Attribution/Share-Alike e pote esser reusate liberemente sub le conditiones de iste licentia. Vide: Texto del licentia [CC-BY-SA] e [Conditiones de uso] pro additional conditiones que pote esser in vigor. Le articulo original es disponibile a: http://ia.wiktionary.org/wiki/<title>
+guten:license_text=Vide etiam: [Lista alphabetic de autores], [Lista de libros].  Le derecto de autor del major parte de iste libros ha expirate in le Statos Unite. (Illos pote esser ancora subjecte al derecto de autor in altere paises). Dunque, omnes pote facer copias litteral o non litteral de iste obras. Pro detalios, vide: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Le texto es disponibile sub le licentia Creative Commons Attribution/Share-Alike e pote esser reusate liberemente sub le conditiones de iste licentia. Vide: Texto del licentia [CC-BY-SA] e [Conditiones de uso] pro additional conditiones que pote esser in vigor. Le articulo original es disponibile a: http://ia.wikiquote.org/wiki/<title>
 type_a_word=Entra un parola o phrase
+guten:type_a_word=Entra un libro o autor
 no_results=Nihil trovate
 searching=cerca in curso…
 select_wiki=Selige un encyclopedia
@@ -15,8 +24,9 @@ clear_history=Rader historia
 yes=Si
 no=No
 protection=Certe articulos de Wikipedia pote esser inappropriate pro minores. Per favor mitte un contrasigno pro protection.
+guten:protection=Alcun libros pote esser inappropriate pro minores. Per favor mitte un contrasigno pro protection.
 restricted=Iste articulo pote esser inappropriate pro minores. Per favor mitte un contrasigno pro protection.
-set_password=Mitter contrasigno
+set_password=Definir contrasigno
 ok=ok
 set_filter=Si le filtro es active, un contrasigno es necessari pro acceder a articulos restringite.
 keep_filter_on=Lassar filtro active

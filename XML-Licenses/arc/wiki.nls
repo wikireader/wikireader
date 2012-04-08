@@ -1,0 +1,42 @@
+# Messages for Aramaic (ܐܪܡܝܐ)
+# Exported from translatewiki.net
+# Author: Man2fly2002
+
+wiki_name=ܐܢܓܠܝܬ...
+books:wiki_name=ܟܬܒ̈ܐ
+dict:wiki_name=ܠܟܣܝܩܘܢ
+guten:wiki_name=ܬܪܡܝܬܐ ܕܓܘܬܢܒܪܓ
+pedia:wiki_name=ܘܝܩܝܦܕܝܐ ܣܘܪܝܝܐ
+quote:wiki_name=ܨܘܬ̈ܐ
+type_a_word=ܟܬܒ ܡܠܬܐ ܐܘ ܦܬܓܡܐ
+guten:type_a_word=ܟܬܒ ܟܬܒܐ ܐܘ ܣܝܘܡܐ
+no_results=ܠܐ ܡܫܟܚ ܥܘܕ ܡܥܠܝܬ̈ܐ
+searching=ܒܨܝܐ...
+select_wiki=ܓܒܝ ܐܝܢܣܟܠܘܦܕܝܐ
+history_title=ܬܫܥܝܬܐ
+no_history=ܠܝܬ ܬܫܥܝܬܐ
+please_wait=ܣܟܝ ܐܢ ܒܣܡܐ ܠܘܟ...
+clear_history=ܫܘܦ ܬܫܥܝܬܐ
+yes=ܐܝܢ
+no=ܠܐ
+protection=ܚܕܟܡܐ ܡܢ ܡܠܘܐܐ ܕܘܝܩܝܦܕܝܐ ܡܩܘܡܐ ܕܠܐ ܠܚܡܝ ܠܫܒܪ̈ܐ. ܐܢ ܒܣܡܐ ܠܘܟ ܬܚܘܕ ܡܠܬܐ ܪܙܢܝܬܐ ܠܚܡܝܬܝܗܝ.
+guten:protection=ܚܕܟܡܐ ܡܢ ܟܬܒ̈ܐ ܡܩܘܡܐ ܕܠܐ ܠܚܡܝ ܠܓܗ̈ܠܐ. ܐܢ ܒܣܡܐ ܠܘܟ ܬܚܘܕ ܡܠܬܐ ܪܙܢܝܬܐ ܠܚܡܝܬܐ.
+restricted=ܐܗܐ ܡܥܠܬܐ ܡܩܘܡܐ ܕܠܐ ܠܚܡܐ ܠܫܒܪ̈ܐ. ܐܢ ܒܣܡܐ ܠܘܟ ܬܚܘܕ ܡܠܬܐ ܪܙܢܝܬܐ ܠܚܡܝܬܝܗܝ.
+set_password=ܐܬܬܚܘܕ ܡܠܬܐ ܪܙܢܝܬܐ
+ok=ܛܒ
+set_filter=ܐܝܡܢ ܕܡܨܠܬܐ ܗܘܝܐ ܠܗܝܬܐ، ܣܢܝܩܬ ܠܡܠܬܐ ܕܥܠܠܐ ܠܡܛܝܐ ܠܡ̈ܠܘܐܐ ܡܩܝܕ̈ܐ.
+keep_filter_on=ܫܒܘܩ ܠܡܨܠܬܐ ܠܗܝܬܐ
+keep_filter_off=ܫܒܘܩ ܠܡܨܠܬܐ ܕܥܝܟܬܐ
+filter_options=ܓܒ̈ܝܬܐ ܕܡܨܠܬܐ
+turn_filter_on=ܡܦܠܚ ܠܡܨܠܬܐ
+turn_filter_off=ܡܕܥܟ ܠܡܨܠܬܐ
+change_password=ܫܚܠܦ ܡܠܬܐ ܕܥܠܠܐ
+re_enter_password=ܬܢܝ ܟܬܒܬܐ ܕܡܠܬܐ ܕܥܠܠܐ
+re_enter_new_password=ܡܥܒܪ ܡܠܬܐ ܪܙܢܝܬܐ ܚܕܬܐ
+passwords_not_match=ܡܠܬܐ ܕܥܠܠܐ ܠܐ ܐܘܝܢܬܐ
+enter_old_password=ܡܥܒܪ ܡܠܬܐ ܪܙܢܝܬܐ ܥܬܝܩܬܐ
+enter_password=ܡܥܒܪ ܡܠܬܐ ܪܙܢܝܬܐ
+try_again=ܚܠܛܐ. ܚܦܘܛ ܬܢܝܢܘܬ
+enter_new_password=ܡܥܒܪ ܡܠܬܐ ܪܙܢܝܬܐ ܚܕܬܐ
+parental_controls=ܢܛܘܪܘܬܐ ܕܐܒܗ̈ܐ
+r=ܩ

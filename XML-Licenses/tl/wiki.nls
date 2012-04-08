@@ -1,0 +1,47 @@
+# Messages for Tagalog (Tagalog)
+# Exported from translatewiki.net
+# Author: AnakngAraw
+# Author: Sky Harbor
+
+wiki_name=Tagalog...
+books:wiki_name=Mga aklat
+dict:wiki_name=Diksiyonaryo
+guten:wiki_name=Proyektong Gutenberg
+pedia:wiki_name=Wikipediang Tagalog
+quote:wiki_name=Mga sipi
+license_text=Nakukuha ang teksto sa ilalim ng Lisensyang ''Creative Commons Attribution/Share-Alike'' at maaaring malayang muling gamitin sa ilalim ng mga termino ng ganyang lisensya.  Tingnan ang: Teksto ng Lisensyang [CC-BY-SA] at [Termino ng Paggamit] para sa karagdagang mga terminong maaaring gamitin.  Ang orihinal na artikulo ay makukuha sa : http://en.wikipedia.org/wiki/<title>
+dict:license_text=Ang teksto ay makukuha sa ilalim ng Lisensiyang Malikhaing mga Pangkaraniwan Atribusyon/Pagpapamahaging-Magkatulad at malayang muling magagamit sa ilalim ng mga patakaran ng lisensiyang iyon.  Tingnan: Teksto ng Lisensiya at [Mga Patakaran ng Paggamit] ng [CC-BY-SA] para sa karagdagang mga patakarang maaaring magamit.  Ang orihinal na teksto ay makukuha sa: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Tingnan din: [Nakaalpabetong talaan ng mga may-akda], [Talaan ng mga paminggalan ng aklat].  Ang karapatang-ari para sa karamihan ng mga aklat na ito ay paso na sa Estados Unidos. (Maaaring nakakarapatang-ari pa sila sa ibang mga bansa). Kaya't sinuman ay maaaring makagawa ng mga kopyang ayon sa orihinal o hindi ayon sa orihinal ng mga akdang ito.  Para sa mga detalye, tingnan ang: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Ang teksto ay makukuha sa ilalim ng Lisensiyang Malikhaing mga Pangkaraniwan Atribusyon/Pagpapamahaging-Magkatulad at malayang magagamit uli sa ilalim ng mga patakaran ng lisensiyang iyon.  Tingnan: Teksto ng Lisensiya at [Mga Patakaran sa Paggamit] ng [CC-BY-SA] para sa karagdagang mga patakarang maaaring gamitin.  Ang orihinal na artikulo ay makukuha sa: http://en.wikiquote.org/wiki/<title>
+type_a_word=Magtipa ng isang Salita o Parirala
+guten:type_a_word=Magmakinilya ng isang Aklat o May-akda
+no_results=Walang natagpuang mga entrada
+searching=naghahanap...
+select_wiki=Pumili ng ensiklopedya
+history_title=Kasaysayan
+no_history=Walang kasaysayan
+please_wait=Maghintay po lamang...
+clear_history=Dalisayin ang Kasaysayan
+yes=Oo
+no=Huwag
+protection=Ilan sa mga entradang pang-Wikipedia ay hindi naaangkop para sa mga wala pa sa wastong gulang.  Mangyaring magtakda ng hudyat na pamprutekta.
+guten:protection=Ilan sa mga aklat ang maaaring hindi akma sa mga wala pa sa hustong gulang.  Mangyaring magtakda ng isang hudyat para sa pagsasanggalang.
+restricted=Maaaring hindi naaangkot ang entradang ito para sa mga wala pa sa hustong gulat.  Mangyaring magtakda lamang ng hudyat na pamprutekta.
+set_password=Itakda ang Hudyat
+ok=okey
+set_filter=Kapag BUHAY ang pagsasala, kailangan ang isang hudyat kapat pinupuntahan ang mga artikulong ipinagbabawal.
+keep_filter_on=Bayaang BUHAY ang Pansala
+keep_filter_off=Bayaang NAKAPATAY ang Pansala
+filter_options=Mga Pagpipilian para sa Pansala
+turn_filter_on=BUHAYIN ang Pansala
+turn_filter_off=PATAYIN ang Pansala
+change_password=Baguhin ang Hudyat
+re_enter_password=Muling ipasok ang Hudyat
+re_enter_new_password=Muling ipasok ang bagong hudyat
+passwords_not_match=Hindi nagtutugma ang mga hudyat
+enter_old_password=Ipasok ang lumang hudyat
+enter_password=Ipasok ang hudyat
+try_again=Mali. Subukan po muli.
+enter_new_password=Ipasok ang bagong hudyat
+parental_controls=Mga Pangtaban na Magagamit ng mga Magulang
+r=R

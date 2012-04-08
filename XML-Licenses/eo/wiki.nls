@@ -1,0 +1,46 @@
+# Messages for Esperanto (Esperanto)
+# Exported from translatewiki.net
+# Author: Mihxil
+
+wiki_name=Esperanto...
+books:wiki_name=Libroj
+dict:wiki_name=Vortaro
+guten:wiki_name=Projekto Gutenberg
+pedia:wiki_name=Vikipedio Esperanta
+quote:wiki_name=Citaĵoj
+license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Vidu ankaŭ [Alfabetan liston de aŭtoroj], [Liston de librobretoj]. La kopirajto por la plimulto el tiuj ĉi libroj estas senvalidiĝinta en Usono. (Estas eble ke en aliaj landoj la kopirajto ankoraŭ validas). Do ĉiuj rajtas laŭlitere aŭ nelaŭlitere kopii tiujn ĉi verkojn. Pliajn detalojn trovu je: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wikiquote.org/wiki/<title>
+type_a_word=Tajpu vorton aŭ frazon
+guten:type_a_word=Tajpu libron aŭ aŭtoron
+no_results=Nenio estis trovita
+searching=serĉante...
+select_wiki=Elektu enciklopedion
+history_title=Historio
+no_history=Mankas historio
+please_wait=Bonvolu atendi...
+clear_history=Malplenigi historion
+yes=Jes
+no=Ne
+protection=Estas kelkaj vikipediaj artikoloj kiuj ne estas taŭgaj por neplenaĝuloj. Bonvolu meti pasvorton por protekto.
+guten:protection=Estas kelkaj libroj kiuj ne estas taŭgaj por neplenaĝuloj. Bonvolu meti pasvorton por protekto.
+restricted=Tiu ĉi ero ne estas taŭgo por neplenaĝuloj. Bonvolu meti pasvorton por protekto.
+set_password=Pasvorto
+ok=ek
+set_filter=Se filtrado estas AKTIVA, tiam pasvorto endas kiam oni vizitas protektatajn erojn.
+keep_filter_on=Tenu filtradon AKTIVA
+keep_filter_off=Tenu filtradon MALAKTIVA
+filter_options=Filtraj opcioj
+turn_filter_on=AKTIVigu filtradon
+turn_filter_off=MALAKTIVigu filtradon
+change_password=Ŝanĝu pasvorton
+re_enter_password=Retajpu pasvorton
+re_enter_new_password=Retajpu la novan pasvorton
+passwords_not_match=Pasvortoj ne samas
+enter_old_password=Tajpu malnovan pasvorton
+enter_password=Tajpu pasvorton
+try_again=Malĝuste. Bonvolu reprovi.
+enter_new_password=Tajpu novan pasvorton
+parental_controls=Gepatra kontrolado
+r=P

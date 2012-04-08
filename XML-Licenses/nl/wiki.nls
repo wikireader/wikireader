@@ -2,9 +2,22 @@
 # Exported from translatewiki.net
 # Author: Siebrand
 
-wiki_name=Nederlandstalige Wikipedia
-license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC-BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://en.wikipedia.org/wiki/<title>
+wiki_name=Nederlandstalig...
+appro:wiki_name=Appropedia
+books:wiki_name=Boeken
+dict:wiki_name=Woordenboek
+guten:wiki_name=Project Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Nederlandstalige Wikipedia
+quote:wiki_name=Citaten
+license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://en.wikipedia.org/wiki/<title>
+appro:license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://www.appropedia.org/Appropedia:Copyrights.
+dict:license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://en.wiktionary.org/wiki/<title>
+guten:license_text=Zie ook: [Alfabetische lijst van auteurs], [Lijst van boeken]. Auteursrecht voor de meeste van deze boeken is vervallen in de Verenigde Staten. Er kunnen nog steeds auteursrechten van toepassing zijn in andere landen. Iedereen mag letterlijke of niet-letterlijke kopieën van deze werken maken. Voor meer informatie, zie http://www.gutenberg.org/wiki/Main_Page
+how:license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://www.wikihow.com/wikiHow:Creative-Commons.
+quote:license_text=De teksten zijn beschikbaar onder de de Creative Commons-licentie Naamsvermelding-Gelijk delen en kunnen vrijelijk hergebruikt worden onder de voorwaarden van die licentie. Voor meer informatie zie de tekst van de licentie [CC BY-SA] en de [Gebruiksvoorwaarden] waarin eventuele aanvullende voorwaarden beschreven zijn. Het originele artikel is beschikbaar op http://en.wikiquote.org/wiki/<title></title>
 type_a_word=Voer een woord of zin in
+guten:type_a_word=Geef boek of auteur in
 no_results=Geen resultaten
 searching=bezig met zoeken...
 select_wiki=Kies een encyclopedie
@@ -15,6 +28,7 @@ clear_history=Geschiedenis wissen
 yes=Ja
 no=Nee
 protection=Een aantal pagina's van Wikimedia is wellicht minder geschikt voor minderjarigen. U kunt een wachtwoord instellen om die pagina's minder eenvoudig bereikbaar te maken.
+guten:protection=Sommige boeken kunnen niet geschikt zijn voor minderjarigen. Stel een wachtwoord voor bescherming.
 restricted=Deze pagina is wellicht minder geschikt voor minderjarigen. U kunt een wachtwoord instellen om de pagina's minder eenvoudig bereikbaar te maken.
 set_password=Wachtwoord instellen
 ok=OK

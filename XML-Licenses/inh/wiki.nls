@@ -1,0 +1,42 @@
+# Messages for Ingush (ГӀалгӀай)
+# Exported from translatewiki.net
+# Author: Sapral Mikail
+
+wiki_name=ГIалгIай
+books:wiki_name=Китабаш
+dict:wiki_name=ЛугIат
+guten:wiki_name="Дикалоам" болх
+pedia:wiki_name=ГIалгIай Википаде
+quote:wiki_name=Дошоаларг
+type_a_word=Цхьа дош е лоацаяздам чуязаде
+guten:type_a_word=Китаба е яздархо чуязаде
+no_results=Цхьаккха йоазонаш корадаьдац
+searching=лохаш ба//ва/да/я...
+select_wiki=Хоамдуне хьаржаp
+history_title=Искар
+no_history=Искар дац
+please_wait=Сабар де
+clear_history=Искарахь цIенде
+yes=XIаа
+no=A
+protection=Цхьа дола Вики-йоазувнаш, кIезига ха йолачарна, пайда болаш дац. Дехар да, лорамадоагI оттае.
+guten:protection=Цхьа дола китабаш, кIезига ха йолачарна, пайда болаш дац. Дехар да, лорамадоагI оттае.
+restricted=Ер яздам, кIезига ха йолачарна, пайда болаш яц. Дехар да, лорамадоагI оттае.
+set_password=КъайладоагIий дIаоттам
+ok=Мегаьд
+set_filter=Сага цIенаъергаца къайла чуваларца оагIувнашка хьажа, къайладоагI эша.
+keep_filter_on=ЦIенаерг сага йита
+keep_filter_off=ЦIенаерг йоая йита
+filter_options=ЦIенъергий оттамаш
+turn_filter_on=ЦIенаерг сага хьал
+turn_filter_off=ЦIенаерг йоае дIа
+change_password=КъайладогIа хувца
+re_enter_password=КъайладоагI юха ала
+re_enter_new_password=Керда къайладоагIа юха ала
+passwords_not_match=КъайладоагIаш тара дац
+enter_old_password=Къаьна къайладоагIа Iочуязаде
+enter_password=КъайладоагIа Iочуязаде
+try_again=Харца да/я. Юха Iоачуязаде
+enter_new_password=Керда къайладоагIа Iочуязаде
+parental_controls=Да-нана тIахьежам
+r=Къ

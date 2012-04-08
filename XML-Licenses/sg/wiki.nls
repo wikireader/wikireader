@@ -1,0 +1,46 @@
+# Messages for Sango (Sängö)
+# Exported from translatewiki.net
+# Author: Mdkidiri
+
+wiki_name=Sängö
+books:wiki_name=Âbûku
+dict:wiki_name=Bakarî
+guten:wiki_name=Pialö Gutenberg
+pedia:wiki_name=Wïkïpêdia na Sängö
+quote:wiki_name=Pekôyângâ
+license_text=Gbâsû nî ayeke na gbe tî peremïi Creative Commons Attribution / Zo alîngbi tî vunga nî sân tî sanzêe yê daä, sï ngâ lo lîngbi tî sâra kua na nî töngana sô atene na yâ tî peremïi nî.. Bâa gbâsû [CC-BY-SA] tî peremïi nî na [Sopë tî särängö-kua na nî] tî bâa âmbênî âkâmba tî lägërëmä sô alîngbi tî sâra kua. Aara gbâsû nî na lingo sô: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Gbâsû nî ayeke na gbe tî peremïi Creative Commons Attribution / Zo alîngbi tî vunga nî sân tî sanzêe yê daä, sï ngâ lo lîngbi tî sâra kua na nî töngana sô atene na yâ tî peremïi nî.. Bâa gbâsû [CC-BY-SA] tî peremïi nî na [Sopë tî särängö-kua na nî] tî hînga âmbênî âkâmba tî lägërëmä sô alîngbi tî sâra kua. Tâkâ fîtasû nî ayeke na lindo sô : http://en.wiktionary.org/wiki/<title>
+guten:license_text=Bâa ngâ: [Lafabëe molongö tî âWasû], [Molongö tî âgbalâka]. Ângura tî wasû tî mîngi tî âbûku sô kûê amîngo na Amerîka awe. (Me ângura nî alîngbi tî ngbâ fî na yâ tî âmbênî ködörö ndê). Töngasô, zô kûê alîngbi tî wara sûkô tî âmbëtï sô, atâa töngana gbâsû, atâa töngana limo. Tî hînga kûê daä, gue na: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Gbâsû nî ayeke na gbe tî peremïi Creative Commons Attribution / Zo alîngbi tî vunga nî sân tî sanzêe yê daä, sï ngâ lo lîngbi tî sâra kua na nî töngana sô atene na yâ tî peremïi nî.. Bâa gbâsû [CC-BY-SA] tî peremïi nî na [Sopë tî särängö-kua na nî] tî hînga âmbênî âkâmba tî lägërëmä sô alîngbi tî sâra kua. Tâkâ fîtasû nî ayeke na lindo sô: http://en.wikiquote.org/wiki/<title>
+type_a_word=Pîka mbênî mbupa wala mbênî penzelö
+guten:type_a_word=Sû mbênî litënë tî bûku wala ïrï tî mbênî wasû
+no_results=Awara mângbi ôko pëpe
+searching=Ayeke gi ndo...
+select_wiki=Soro gbâkâ bakarî nî
+history_title=Mbai
+no_history=Mbai nî ayeke äpe
+please_wait=Kü kêtê sï o!
+clear_history=Woza mbai nî
+yes=Iin
+no=Ên-en
+protection=Âmbênî âfîtasû tî yâ tî Wïkïpêdia alîngbi na âmôlengê pëpe. Kânga lêgë nî na pafungûla.
+guten:protection=Âmbênî âbûku tî yâ tî Wïkïpêdia alîngbi na âmôlengê pëpe. Kânga lêgë nî na pafungûla.
+restricted=Fîtasû sô alîngbi na âmôlengê pëpe. Kânga lêgë nî na pafungûla.
+set_password=Seka pafungûla
+ok=Iin
+set_filter=Töngana a seka mänä awe, gï pafungûla sï alîngbi tî zî lêgë tî sï na fîtasû sô a funga nî sô.
+keep_filter_on=Seka mänä
+keep_filter_off=Zî mänä
+filter_options=Bâamû tî mänä
+turn_filter_on=Zîngo mänä
+turn_filter_off=Mîngp mänä
+change_password=Sanzêe pafungûla
+re_enter_password=Kîri mo pîka pafungûla nî
+re_enter_new_password=Kîri mo pîka finî pafungûla nî
+passwords_not_match=Âpafungûla nî ayeke ndê ndê
+enter_old_password=Pîka ngbêre pafungûla nî
+enter_password=Pîka pafungûla
+try_again=Kpälë! Kîri mo tara
+enter_new_password=Pîka finî pafungûla
+parental_controls=Babâ ala mamâ abâa sï
+r=D

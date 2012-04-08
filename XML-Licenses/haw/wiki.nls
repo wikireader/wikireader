@@ -1,0 +1,46 @@
+# Messages for Hawaiian (Hawai`i)
+# Exported from translatewiki.net
+# Author: Kolonahe
+
+wiki_name=ʻŌlelo Pelekānia
+books:wiki_name=Puke
+dict:wiki_name=Puke Wehewehe
+guten:wiki_name=Papa Hana Gutenberg
+pedia:wiki_name=Wikipikia ʻŌlelo Pelekānia
+quote:wiki_name=Puanaʻī
+license_text=Aia ke kikokikona i loko o ke Creative Commons Attribution/Share-Alike License a hike ke hoʻohana hou ma loko o kēlā laikini. ʻIke i: Kikokikona o ka [CC-CY-SA] laikini a me [Nā Meaʻaelike Hana] no nā mea kikoʻī ʻē aʻe e pili paha. Aia ka ʻatikala ʻoiaʻiʻo ma: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Aia ke kikokikona i loko o ke Creative Commons Attribution/Share-Alike License a hike ke hoʻohana hou ma loko o kēlā laikini. ʻIke i: Kikokikona o ka [CC-CY-SA] laikini a me  ka [Nā Meaʻaelike Hana] no nā mea kikoʻī ʻē aʻe e pili paha. Aia ka ʻatikala ʻoiaʻiʻo ma: http://en.wikipedia.org/wiki/<title>
+guten:license_text=ʻIke nō hoʻi: [Helu Pīʻapa o Nā Mea Kākau], [Helu o Nā Hakakau Puke]. Ua pau ʻia ka palapala hoʻokuleana o ka nui o kēia mau puke i loko o ʻAmelika. (Hana paha i nā lāhui ʻē aʻe i ka palapala hoʻokulean i kēia manawa). No laila, Hana i nā kope haʻi e like lea me ka mea i lohe ʻia a i ʻole hana ʻole no kēia mau hana. No nā kikoʻī, hele i: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Aia ke kikokikona i loko o ke Creative Commons Attribution/Share-Alike License a hike ke hoʻohana hou ma loko o kēlā laikini. ʻIke i: Kikokikona o ka [CC-CY-SA] laikini a me  ka [Nā Meaʻaelike Hana] no nā mea kikoʻī ʻē aʻe e pili paha. Aia ka ʻatikala ʻoiaʻiʻo ma: http://en.wikipedia.org/wiki/<title>
+type_a_word=Kikokiko i kekahi Huaʻolelo a i ʻole Māmalaʻōlelo
+guten:type_a_word=Kikokiko i kekahi puke a i ʻole mea kākau
+no_results=ʻAʻohe me i ʻimi ʻia
+searching=Ke ʻimi nei...
+select_wiki=Koho i ka puke hōʻike pōkole no kēlā me kēia mea
+history_title=Mōʻaukala
+no_history=ʻAʻohe mōʻaukala
+please_wait=E kali ke ʻoluʻolu...
+clear_history=Holoi i ka Mōʻaukala
+yes=ʻAe
+no=ʻAʻole
+protection=ʻO kekahi o nā ʻaoʻao mai Wikipikia, ʻaʻole maikaʻi no nā keiki. E ʻoluʻolu, hoʻohana i kekahi ʻōlelo hūnā no ka palena
+guten:protection=ʻO kekahi o nā puke, ʻaʻole maikaʻi no nā keiki. E ʻoluʻolu, hoʻohana i kekahi ʻōlelo hūnā no ka palena.
+restricted=ʻO kēia ʻaoʻao, ʻaʻole maikaʻi paha no nā keiki. E ʻoluʻolu, hoʻohana i kekahi ʻōlelo hūnā no ka palena
+set_password=Hana ʻŌlelo Hūnā
+ok=Hiki
+set_filter=Me ka hoʻā ʻana o ke kānana, konokono kekahi ʻōlelo hūnā i kou helena i nā wahi ʻaoʻao pale keiki
+keep_filter_on=Hoʻā wale ke Kānana
+keep_filter_off=Hoʻopio wale ke Kānana
+filter_options=Kānana makemake
+turn_filter_on=Hoʻohana ke Kānana
+turn_filter_off=Hoʻopio ke Kānana
+change_password=Hoʻololi i ka ʻōlelo hūnā
+re_enter_password=Kikokiko hou i ka ʻōlelo hūnā
+re_enter_new_password=Kikokiko hou i ka ʻōlelo hūnā hou
+passwords_not_match=ʻAʻole like nā ʻōlelo hūnā ʻelua
+enter_old_password=Kikokiko i ka ʻōlelo hūnā kahiko
+enter_password=Kikokiko i ka 'ōlelo hūnā
+try_again=Hewa. E ʻoluʻolu, hana hou.
+enter_new_password=Kikokiko i ka ʻōlelo hūnā hou
+parental_controls=Hoʻoholo Pale Keiki
+r=KP

@@ -1,0 +1,48 @@
+# Messages for Persian (فارسی)
+# Exported from translatewiki.net
+# Author: Ebraminio
+# Author: Mjbmr
+# Author: ZxxZxxZ
+
+wiki_name=فارسی...
+books:wiki_name=نسک
+dict:wiki_name=واژه
+guten:wiki_name=پروژهٔ گوتنبرگ
+pedia:wiki_name=ویکی‌پدیای فارسی
+quote:wiki_name=گفتاورد
+license_text=متن تحت مجوز کرییتیو کامانز Attribution/Share-Alike در دسترس است و می‌تواند به طور آزادانه تحت شرایط مجوز مورد استفاده مجدد قرار گیرد. برای اطلاع از شرایط مجوز [کرییتیو کامانز] را ببینید. اصل مقاله در http://fa.wikipedia.org/wiki/<title> در دسترس است.
+dict:license_text=متن تحت مجوز کرییتیو کامانز Attribution/Share-Alike در دسترس است و می‌تواند به طور آزادانه تحت شرایط مجوز مورد استفاده مجدد قرار گیرد. برای اطلاع از شرایط مجوز [کرییتیو کامانز] را ببینید. اصل سرواژه در http://fa.wiktionary.org/wiki/<title> در دسترس است.
+guten:license_text=همچنین ببینید: [Alphabetical list of authors]، [List of bookshelves]. حق تکثیر بیشتر این کتاب‌ها در ایالات متحدهٔ آمریکا به پایان رسیده‌است. (ممکن است هنوز در کشورهای دیگر به پایان نرسیده باشند). بنابراین ممکن است هرکسی به صورت کلمه‌به‌کلمه و یا اقتباسی از آن‌ها نسخه برداری کنند. برای اطلاعات بیشتر بنگرید به: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=متن تحت مجوز کرییتیو کامانز Attribution/Share-Alike در دسترس است و می‌تواند به طور آزادانه تحت شرایط مجوز مورد استفاده مجدد قرار گیرد. برای اطلاع از شرایط مجوز [کرییتیو کامانز] را ببینید. اصل گفتار در http://fa.wikiquote.org/wiki/<title> در دسترس است.
+type_a_word=واژه یا عبارتی را بنویسید
+guten:type_a_word=نام کتاب یا نویسنده را بنویسید
+no_results=هیچ ورودی‌ای یافت نشد
+searching=در حال جستجو...
+select_wiki=دانشنامه را انتخاب کنید
+history_title=تاریخچه
+no_history=بدون تاریخچه
+please_wait=لطفاً صبر کنید...
+clear_history=پاک‌کردن تاریخچه
+yes=بله
+no=خیر
+protection=ممکن است برخی مقاله‌های ویکی‌پدیا برای کم‌سن‌وسالان مناسب نباشند. لطفاً برای حفاظت گذرواژه‌ای را تنظیم کنید.
+guten:protection=ممکن است برخی کتاب‌ها برای کم‌سن‌وسالان مناسب نباشند. لطفاً برای حفاظت گذرواژه‌ای را تنظیم کنید.
+restricted=ممکن است این نوشتار برای کم‌سن‌وسالان مناسب نباشد. لطفاً برای حفاظت گذرواژه‌ای را تنظیم کنید.
+set_password=تنظیم گذرواژه
+ok=تأیید
+set_filter=هنگامی که پالایش روشن باشد برای دسترسی به مقاله‌های محافظت‌شده گذرواژه نیاز است.
+keep_filter_on=پالایش را روشن نگه دار
+keep_filter_off=پالایش را خاموش نگه دار
+filter_options=تنظیمات پالایش
+turn_filter_on=روشن‌کردن پالایش
+turn_filter_off=خاموش‌کردن پالایش
+change_password=تغییر گذرواژه
+re_enter_password=دوباره گذرواژه را وارد کنید
+re_enter_new_password=دوباره گذرواژهٔ جدید را وارد کنید
+passwords_not_match=گذرواژه‌ها مطابقت ندارند
+enter_old_password=گذرواژهٔ قدیمی را وارد کنید
+enter_password=گذرواژه را وارد کنید
+try_again=اشتباه است. لطفاً دوباره سعی کنید.
+enter_new_password=گذرواژه جدید را وارد کنید
+parental_controls=نظارت والدین
+r=محدود

@@ -1,0 +1,31 @@
+# Messages for Punjabi (ਪੰਜਾਬੀ)
+# Exported from translatewiki.net
+# Author: Aalam
+
+wiki_name=ਪੰਜਾਬੀ...
+books:wiki_name=ਕਿਤਾਬਾਂ
+dict:wiki_name=ਸ਼ਬਦਕੋਸ਼
+guten:wiki_name=ਪਰੋਜੈਕਟ ਗੁਟਿਨਬਰਗ
+pedia:wiki_name=ਵਿਕਿਪੀਡਿਆ ਪੰਜਾਬੀ
+quote:wiki_name=ਹਵਾਲੇ
+type_a_word=ਸ਼ਬਦ ਜਾਂ ਵਾਕ ਲਿਖੋ
+no_results=ਕੋਈ ਐਂਟਰੀ ਨਹੀਂ ਲੱਭੀ
+searching=ਖੋਜ ਜਾਰੀ ਹੈ...
+select_wiki=ਵਿਸ਼ਵਕੋਸ਼ ਚੁਣੋ
+history_title=ਅਤੀਤ
+no_history=ਕੋਈ ਅਤੀਤ ਨਹੀਂ ਹੈ
+please_wait=ਉਡੀਕੋ ਜੀ...
+clear_history=ਅਤੀਤ ਸਾਫ਼ ਕਰੋ
+yes=ਹਾਂ
+no=ਨਹੀਂ
+set_password=ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ
+ok=ਠੀਕ ਹੈ
+change_password=ਪਾਸਵਰਡ ਬਦਲੋ
+re_enter_password=ਪਾਸਵਰਡ ਮੁੜ-ਦਿਉ
+re_enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਮੁੜ-ਦਿਉ
+passwords_not_match=ਪਾਸਵਰਡ ਮਿਲਦਾ ਨਹੀਂ ਹੈ
+enter_old_password=ਪੁਰਾਣਾ ਪਾਸਵਰਡ ਦਿਉ
+enter_password=ਪਾਸਵਰਡ ਦਿਉ
+try_again=ਗਲਤ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ।
+enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਦਿਉ
+r=R

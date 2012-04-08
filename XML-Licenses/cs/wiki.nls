@@ -1,11 +1,21 @@
 # Messages for Czech (Česky)
 # Exported from translatewiki.net
+# Author: Dontlietome7
 # Author: Mormegil
 # Author: Mr. Richard Bolla
 
-wiki_name=Česká Wikipedie
+wiki_name=Čeština...
+books:wiki_name=Knihy
+dict:wiki_name=Slovník
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Česká Wikipedie
+quote:wiki_name=Citáty
 license_text=Tento text je dostupný pod licencí Creative Commons Uveďte autora/Zachovejte licenci a může být volně užíván za dodržení podmínek této licence. Podívejte se také na: text licence [CC-BY-SA] a [podmínky užití], které obsahují upřesňující podmínky. Původní článek je dostupný na: http://cs.wikipedia.org/wiki/<title>
+dict:license_text=Text je dostupný pod licencí Creative Commons Uveďte autora/Zachovejte licenci a může být volně užíván za dodržení podmínek této licence. Podívejte se na: text licence [CC-BY-SA] a [podmínky užití], které obsahují upřesňující podmínky. Původní článek je dostupný na: http://cs.wiktionary.org/wiki/<title>
+guten:license_text=Viz též: [Abecední seznam autorů], [Seznam knihoven]. Většina těchto knih je ve Spojených státech volným dílem. (V jiných zemích stále mohou být chráněny autorským právem.) Tato díla tedy může kdokoli kopírovat a upravovat. Podrobnosti jsou uvedeny na http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Text je dostupný pod licencí Creative Commons Uveďte autora/Zachovejte licenci a může být volně užíván za dodržení podmínek této licence. Podívejte se také na: text licence [CC-BY-SA] a [podmínky užití], které obsahují upřesňující podmínky. Původní článek je dostupný na: http://cs.wikiquote.org/wiki/<title>
 type_a_word=Zadejte slovo či frázi
+guten:type_a_word=Napište knihu nebo autora
 no_results=Nenalezeny žádné záznamy
 searching=vyhledávám...
 select_wiki=Vybrat encyklopedii
@@ -16,6 +26,7 @@ clear_history=Vyprázdnit historii
 yes=Ano
 no=Ne
 protection=Některé položky ve Wikipedii nemusí být vhodné pro děti a mladistvé. Prosím, nastavte si heslo pro ochranu.
+guten:protection=Některé knihy nemusí být vhodné pro nezletilé. Prosím nastavte heslo pro ochranu.
 restricted=Tato položka nemusí být vhodná pro děti a mladistvé. Prosím, nastavte si heslo pro ochranu.
 set_password=Nastavit heslo
 ok=OK

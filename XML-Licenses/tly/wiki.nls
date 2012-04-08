@@ -1,0 +1,27 @@
+# Messages for Толышә зывон (Толышә зывон)
+# Exported from translatewiki.net
+# Author: Гусейн
+
+wiki_name=Толышә...
+books:wiki_name=Китобон
+dict:wiki_name=Луғәт
+guten:wiki_name="Гутенберг" нәхшәје
+pedia:wiki_name=Толышә Википедијә
+type_a_word=Кәлимә ја сыхан бынывыштән
+guten:type_a_word=Китоби ном ја мыәллифи бынывыштән
+no_results=Нывыштәјон пәјдо кардә быәнин
+searching=нәве...
+select_wiki=Енсиклопедијә сәчын
+history_title=Тарых
+no_history=Тарых ни
+please_wait=Зәһмәт ныбу, чәш быкан…
+clear_history=Тарыхи тәмиз кардеј
+yes=Бәле
+no=Не
+set_password=Парол ној
+ok=OK
+change_password=Пароли дәгиш кардеј
+enter_old_password=Канә парол дәғандән
+enter_password=Пароли бынывыштән
+enter_new_password=Тожә парол бынывыштән
+r=R

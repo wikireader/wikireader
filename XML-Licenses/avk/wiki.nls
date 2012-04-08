@@ -1,0 +1,46 @@
+# Messages for Kotava (Kotava)
+# Exported from translatewiki.net
+# Author: Wikimistusik
+
+wiki_name=Englava...
+books:wiki_name=Neveem
+dict:wiki_name=Ravlemak
+guten:wiki_name=Gutenberg abdumimaks
+pedia:wiki_name=Englavafa Wikipedia
+quote:wiki_name=Ozwaks
+license_text=Krent tir roderaykan vey Creative Commons Attribution/Share-Alike License nume vey trogarneem ke bata sorta nuyon zo tolfaver. Wil : Krent ke [CC-BY-SA] License and [Terms of Use] icde rorewawes lof trogarneem. Xantaf teliz tir roderyakan dene : http://en.wikipedia.org/wiki/<title>
+dict:license_text=Krent tir roderaykan vey Creative Commons Attribution/Share-Alike License nume vey trogarneem ke bata sorta nuyon zo tolfaver. Wil : Krent ke [CC-BY-SA] License and [Terms of Use] icde rorewawes lof trogarneem. Xantaf teliz tir roderyakan dene : http://en.wikipedia.org/wiki/<title>
+guten:license_text=Dere wil : [Abavafa vexala dem sutesik] ik [Vexala dem brenja]. Copyright roka ke lok ke batyona neva tir kaikifa koe Tanarasokeem. (Sina soe rotid leve roka koe konara patecta). Acum kontan ton tageltaca ik metageltaca va batyon grabom ronoksudar. Ta pinta, wil : http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Krent tir roderaykan vey Creative Commons Attribution/Share-Alike License nume vey trogarneem ke bata sorta nuyon zo tolfaver. Wil : Krent ke [CC-BY-SA] License and [Terms of Use] icde rorewawes lof trogarneem. Xantaf teliz tir roderyakan dene : http://en.wikipedia.org/wiki/<title>
+type_a_word=Va ravlem ok blayak geltsutel
+guten:type_a_word=Va neva ok sutesik geltsutel
+no_results=Mek trasiks
+searching=wan aneyar...
+select_wiki=Va xadola kiblal
+history_title=Izvot
+no_history=Mek izvot
+please_wait=Vay kel...
+clear_history=Tucuara va izvot
+yes=En
+no=Me
+protection=Konak Wikipedia bazeks va jotik romedojeniad. Va remravlem ta nendara vay plekul.
+guten:protection=Konaka neva va jotik romedojeniad. Va remravlem ta nendara vay plekul.
+restricted=Bat bazeks va jotik romedojeniar. Va remravlem ta nendara vay plekul.
+set_password=Va remravlem plekul
+ok=gue
+set_filter=Ton ON espara, remravlem tir adraf viele irutayanu bu zo vansad
+keep_filter_on=Va ON espara sul
+keep_filter_off=Va OFF espara sul
+filter_options=Espas ikatcusikieem
+turn_filter_on=Va espara gu ON betal
+turn_filter_off=Va espara gu OFF betal
+change_password=Va remravlem betal
+re_enter_password=Va remravlem tolbazel
+re_enter_new_password=Va warzaf remravlem tolbazel
+passwords_not_match=Remravlem me miltad
+enter_old_password=Va guazaf remravlem bazel
+enter_password=Va remravlem bazel
+try_again=Rotafa. Gire lwil.
+enter_new_password=Va warzaf remravlem bazel
+parental_controls=Gadafa stujera
+r=B

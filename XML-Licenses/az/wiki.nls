@@ -1,0 +1,43 @@
+# Messages for Azerbaijani (Azərbaycanca)
+# Exported from translatewiki.net
+# Author: Cekli829
+# Author: Melikov Memmed
+# Author: PPerviz
+# Author: Sortilegus
+# Author: Vago
+
+wiki_name=Azərbaycanca...
+books:wiki_name=Kitablar
+dict:wiki_name=Lüğət
+guten:wiki_name="Qutenberq" layihəsi
+pedia:wiki_name=Azərbaycanca Vikipediya
+quote:wiki_name=Sitatlar
+type_a_word=Bir söz yazın
+guten:type_a_word=Kitab və ya müəllifin tipi
+no_results=Heç bir nəticə tapılmadı
+searching=axtarılır...
+select_wiki=Ensiklopediya seçimi
+history_title=Tarixçə
+no_history=Tarixçəsi yoxdur
+please_wait=Lütfən gözləyin...
+clear_history=Tarixçəni təmizlə
+yes=Bəli
+no=Xeyr
+protection=Yetkinlik yaşına çatmayanların Vikipediyanın bəzi məqalələri ilə tanış olması tövsiyə olunmur. Lütfən, mühafizə üçün parol müəyyənləşdirin.
+guten:protection=Yetkinlik yaşına çatmayanların bəzi kitablarla tanış olması tövsiyə olunmur. Lütfən, mühafizə üçün parol müəyyənləşdirin.
+restricted=Yetkinlik yaşına çatmayanların bu məqalə ilə tanış olması tövsiyə olunmur. Lütfən, mühafizə üçün parol müəyyənləşdirin.
+set_password=Parolu nizamla
+ok=ok
+filter_options=Filtrin nizamlamaları
+turn_filter_on=Filtri aç
+turn_filter_off=Filtri söndür
+change_password=Parolu dəyiş
+re_enter_password=Parolu yenidən daxil edin
+re_enter_new_password=Yeni parolu təkrar daxil edin
+passwords_not_match=Parollar bir-birinə uyğun deyil
+enter_old_password=Köhnə parolu daxil edin
+enter_password=Parolu daxil edin
+try_again=Yenidən cəhd edin
+enter_new_password=Yeni parolu daxil edin
+parental_controls=Valideyn nəzarəti
+r=R

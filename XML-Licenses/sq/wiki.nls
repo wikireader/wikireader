@@ -1,0 +1,47 @@
+# Messages for Albanian (Shqip)
+# Exported from translatewiki.net
+# Author: Marinari
+# Author: Techlik
+
+wiki_name=Anglisht
+books:wiki_name=Libra
+dict:wiki_name=Fjalor
+guten:wiki_name=Projekti Gutenberg
+pedia:wiki_name=Wikipedia Anglisht
+quote:wiki_name=Citate
+license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj licence. Shikoni: Teksti i licencës [CC-BY-SA] dhe [Kushtet e përdorimit] për terme shtesë të cilat mund të aplikohen. Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
+dict:license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj liçence. Shih: Teksti i Liçencës [CC-BY-SA] dhe [Kushtet e Përdorimit] për kushte të tjera të cilat mund të zbatohen.  Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
+guten:license_text=Shih gjithashtu: [Lista e alfabetike e autorëve], [Lista e Rafteve të Librave]. E drejta e autorit për shumicën e këtyre librave ka skaduar në Shtetet e Bashkuara. (Ato mund të jetë ende e drejt e autorit në vende tjera). Pra kushdo mund të bëjë kopje tekstualisht ose jo-tekstualisht të këtyre veprave. Për detaje, shih: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj liçence. Shih: Teksti i Liçencës [CC-BY-SA] dhe [Kushtet e Përdorimit] për kushte të tjera të cilat mund të zbatohen.  Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
+type_a_word=Shtyp Fjalën apo Frazën
+guten:type_a_word=Shtyp Librin apo Autorin
+no_results=Nuk janë gjetur të dhëna
+searching=në kërkim
+select_wiki=Zgjidhni enciklopedin
+history_title=Historiku
+no_history=Nuk ka histori
+please_wait=Ju lutem prisni ...
+clear_history=Spastro Historikun
+yes=Po
+no=Jo
+protection=Disa shënime të Wikipedia mund të mos jenë të përshtatshme për të miturit. Ju lutemi vendosni fjalëkalimin për mbrojtje
+guten:protection=Disa libra mund të mos jenë të përshtatshme për të miturit. Ju lutemi vendosni fjalëkalimin për mbrojtje
+restricted=Ky shënim mund të mos jenë i përshtatshme për të miturit. Ju lutemi vendosni fjalëkalimin për mbrojtje
+set_password=Cakto Fjalëkalimin
+ok=në rregull
+set_filter=Me filtrimin e kyçur, fjalëkalimi është i nevojshëm kur çaseni në shënime të kufizuara (ndaluara)
+keep_filter_on=Mbaj filtrimin ndezur
+keep_filter_off=Mbaj filtrimin fikur
+filter_options=Alternativat e filtrimit
+turn_filter_on=Aktivizo filtrimin
+turn_filter_off=Deaktivizo filtrimin
+change_password=Ndrysho fjalëkalimin
+re_enter_password=Ri-shtyp Fjalëkalimin
+re_enter_new_password=Ri-shtyp fjalëkalimin e ri
+passwords_not_match=Fjalëkalimi nuk përputhet
+enter_old_password=Shkruani fjalëkalimin e vjetër
+enter_password=Shkruani fjalëkalimin
+try_again=Gabim. Ju lutem provoni përsëri.
+enter_new_password=Shkruani fjalëkalimin e ri
+parental_controls=Kontroli Prindëror
+r=R

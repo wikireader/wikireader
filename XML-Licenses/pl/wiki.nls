@@ -1,10 +1,21 @@
 # Messages for Polish (Polski)
 # Exported from translatewiki.net
 # Author: Dos
+# Author: McDutchie
+# Author: Sp5uhe
 
-wiki_name=Polska Wikipedia
-license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie wykorzystywany ponownie zgodnie z warunkami tej licencji. Zobacz: Tekst licencji [CC-BY-SA] i dodatkowe warunki, które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikipedia.org/wiki/<title>
+wiki_name=Polski...
+books:wiki_name=Książki
+dict:wiki_name=Słownik
+guten:wiki_name=Projekt Gutenberg
+pedia:wiki_name=Polska Wikipedia
+quote:wiki_name=Cytaty
+license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie ponownie wykorzystywany zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [warunki użycia], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikipedia.org/wiki/<title>
+dict:license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie wykorzystywany ponownie zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [warunki użycia], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikitionary.org/wiki/<title>
+guten:license_text=Zobacz również [alfabetyczny spis autorów] i [listę kategorii książek]. Do większości publikacji prawa autorskie w Stanach Zjednoczonych wygasły (utwory mogą być jednak chronione prawami autorski w innych krajach). Każdy może kopiować te prace w całości lub w części. Więcej informacji na stronie http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie ponownie wykorzystywany zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [warunki użycia], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikiquote.org/wiki/<title>
 type_a_word=Wpisz słowo lub wyrażenie
+guten:type_a_word=Wpisz tytuł książki lub autora
 no_results=Nie znaleziono wpisów
 searching=wyszukiwanie...
 select_wiki=Wybierz encyklopedie
@@ -15,6 +26,7 @@ clear_history=Wyczyść historię
 yes=Tak
 no=Nie
 protection=Niektóre wpisy na Wikipedii mogą być nieodpowiednie dla nieletnich. Proszę ustawić hasło ochrony rodzicielskiej.
+guten:protection=Niektóre książki mogą być nieodpowiednie dla nieletnich. Proszę ustawić hasło dla ochrony.
 restricted=Ten wpis może być nieodpowiedni dla nieletnich. Proszę ustawić hasło ochrony rodzicielskiej.
 set_password=Ustaw hasło
 ok=ok

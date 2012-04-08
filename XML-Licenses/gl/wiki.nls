@@ -1,10 +1,20 @@
 # Messages for Galician (Galego)
 # Exported from translatewiki.net
+# Author: McDutchie
 # Author: Toliño
 
-wiki_name=Galipedia
+wiki_name=Galego...
+books:wiki_name=Libros
+dict:wiki_name=Dicionario
+guten:wiki_name=Proxecto Gutenberg
+pedia:wiki_name=Wikipedia en galego
+quote:wiki_name=Citas
 license_text=Todo o texto está dispoñible baixo a licenza Creative Commons recoñecemento compartir igual e pódese empregar libremente baixo os termos desta licenza. Véxase tamén: o texto da licenza [CC-BY-SA] e os [termos de uso] para os termos adicionais que se poidan aplicar. O artigo orixinal está dispoñible en: http://gl.wikipedia.org/wiki/<title>
+dict:license_text=Todo o texto está dispoñible baixo a licenza Creative Commons recoñecemento compartir igual e pódese empregar libremente baixo os termos desta licenza. Véxase tamén: o texto da licenza [CC-BY-SA] e os [termos de uso] para os termos adicionais que se poidan aplicar. O artigo orixinal está dispoñible en: http://gl.wiktionary.org/wiki/<title>
+guten:license_text=Véxase tamén: [Lista en orde alfabética dos autores], [Lista de andeis]. Os dereitos de autor da maioría destes libros expirou nos Estados Unidos. (Poden estar protexidos por dereitos de autor noutros países.) Así, calquera pode facer copias, textuais ou non, destas obras. Para obter máis información, consulte: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Todo o texto está dispoñible baixo a licenza Creative Commons recoñecemento compartir igual e pódese empregar libremente baixo os termos desta licenza. Véxase tamén: o texto da licenza [CC-BY-SA] e os [termos de uso] para os termos adicionais que se poidan aplicar. O artigo orixinal está dispoñible en: http://gl.wikiquote.org/wiki/<title>
 type_a_word=Escriba unha palabra ou frase
+guten:type_a_word=Escriba un título ou autor
 no_results=Non se atopou ningunha entrada
 searching=procurando...
 select_wiki=Escolla a enciclopedia
@@ -15,9 +25,10 @@ clear_history=Limpar o historial
 yes=Si
 no=Non
 protection=Algunhas entradas da Wikipedia poden non ser adecuadas para os menores. Por favor, defina un contrasinal de protección.
+guten:protection=Algúns libros poden non ser adecuados para os menores. Por favor, defina un contrasinal de protección.
 restricted=Esta entrada pode non ser adecuada para os menores. Por favor, defina un contrasinal de protección.
 set_password=Definir un contrasinal
-ok=de acordo
+ok=aceptar
 set_filter=Co filtrado activado, necesítase un contrasinal para acceder a artigos restrinxidos.
 keep_filter_on=Manter o filtro activado
 keep_filter_off=Manter o filtro desactivado

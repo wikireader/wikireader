@@ -1,0 +1,49 @@
+# Messages for Colognian (Ripoarisch)
+# Exported from translatewiki.net
+# Author: Purodha
+
+wiki_name=Ripoaresch Platt&nbsp;…
+books:wiki_name=Bööscher
+dict:wiki_name=Wööterbooch
+guten:wiki_name=Projäk Gutenberg
+pedia:wiki_name=Wikipedija en ripoaresch Sprooche
+quote:wiki_name=Zitate
+starw:wiki_name=Wookieepedia
+trav:wiki_name=Wiki för et Reise
+license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wikipedia.org/wiki/<title> nohzelässe.
+dict:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wiktionary.org/wiki/<title> nohzelässe.
+guten:license_text=Süsch och: [de alphabeetesche Leß met de Schriever], [de Leß met de Bööcherschääfer]. Et Urhevverrääsch för de miehste vun dänne Bööcher est en de USA ald eröm. (Se künnte en ander Länder ävver joot noch jeschöz sin) Jeder_ein kann jenoue udder ömjemoodelte Koppieje vun dä Werke maache. Op dä Sigg <i lang="en">http://www.gutenberg.org/wiki/Main_Page</i> kam_mer mieh doh drövver lässe.
+quote:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wikiquote.org/wiki/<title> nohzelässe.
+trav:license_text=Dä Täx steiht onger der Lizänz vun de <i lang="en">Creative Commons</i> „der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un kann frei jenuz wääde onger dä Bedengunge vun dä Lizänz. Loor noh däm Täx vun de [CC-BY-SA] Lizänz un de <i lang="en">[Terms of Use]</i> noh däm, wat noch jöltesch sin maach. Dä Ojinaal Atikel es op http://wikitravel.org/en/<title> ze fenge.
+type_a_word=Wat som_mer söhke?
+guten:type_a_word=Jev e Booch udder ene Schriever en
+no_results=Kein Enndrääsch jefonge
+searching=ben aam Söhke&nbsp;…
+select_wiki=Nohkixel ußsöhke
+history_title=Vörijje Sigge
+no_history=Mer han kein Sigge vun vürheer
+please_wait=Ene Momang&nbsp;…
+clear_history=Leß leddich maache
+yes=Joh
+no=Nää
+protection=Paa Wikkipedijasigge sulle nix för Pänz sin, Do künnts e Paßwoot drop säze.
+guten:protection=Paa Bööscher sulle nix för Pänz sin, Do künnts e Paßwoot drop säze.
+restricted=Dat heh sull nix för Pänz sin, Do künnts e Paßwoot drop säze.
+set_password=Paßwoot faßlääje
+ok=Lohß Jonn!
+set_filter=Wann dä Felter aanjeschalldt es, bruch mer e Paßwoot, öm op de beschrängkte Sigge ze kumme.
+keep_filter_on=Felter aanlohße
+keep_filter_off=Felter ußlohße
+filter_options=Felter
+turn_filter_on=Felter aanschallde
+turn_filter_off=Felter ußschallde
+change_password=Paßwood ändere
+re_enter_password=Jif et Paßwoot norr_ens en
+re_enter_new_password=Jif et neue Paßwoot norr_ens en
+passwords_not_match=De Paßwööter sin unejaal
+enter_old_password=Jif et ahle Paßwoot en
+enter_password=Jif et Paßwoot en
+try_again=Verkeeht. Donn_et norr_ens versöhke.
+enter_new_password=Jif et neue Paßwoot en
+parental_controls=Övverwaachung vun de Älldere
+r=B

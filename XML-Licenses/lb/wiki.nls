@@ -2,18 +2,38 @@
 # Exported from translatewiki.net
 # Author: Robby
 
-wiki_name=Lëtzebuergesch Wikipedia
+wiki_name=Lëtzebuergesch...
+books:wiki_name=Bicher
+dict:wiki_name=Dictionnaire
+guten:wiki_name=Projet Gutenberg
+pedia:wiki_name=Lëtzebuergesch Wikipedia
+quote:wiki_name=Zitater
+license_text=Den Text ass ënnert der  Creative Commons Attribution/Share-Alike Lizenz disponibel a ka fräi weiderbenotzt ginn ënnert de Bedingungen vun där Lizenz. Kuckt: Text vun der [CC-BY-SA] Lizenz an [Terms of Use] fir weider Benotzungsbedingungen déi applicabel kënne sinn. Den Original-Artikel ass op: http://en.wikipedia.org/wiki/<title> disponibel
+dict:license_text=Den Text ass ënnert der  Creative Commons Attribution/Share-Alike Lizenz disponibel a ka fräi weiderbenotzt ginn ënnert de Bedingunge vun där Lizenz. Kuckt: Text vun der [CC-BY-SA] Lizenz an [Terms of Use] fir weider Benotzungsbedingungen déi applicabel kënne sinn. Den Original-Artikel ass op: http://en.wikipedia.org/wiki/<title> disponibel
+guten:license_text=Kuckt och: [Alphabetesch Lëscht vun den Auteuren], [Lëscht vun de Bicheretagèren]. Copyright dir déi meescht vun dëse Bicher ass an den USA ofgelaf. (Et ka sinn datt si an anere Länner nach ënner de Copyright falen). Dofir ka jiddereen textuell oder aner Kopie vun deene Wierker maachen. Fir méi Detailer kuckt: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Den Text ass ënnert der  Creative Commons Attribution/Share-Alike Lizenz disponibel a ka fräi weiderbenotzt ginn ënnert de Bedingungen vun där Lizenz. Kuckt: Text vun der [CC-BY-SA] Lizenz an [Terms of Use] fir weider Benotzungsbedingungen déi applicabel kënne sinn. Den Original-Artikel ass op: http://en.wikipedia.org/wiki/<title> disponibel
 type_a_word=Tippt e Wuert oder e Saz
+guten:type_a_word=E Buch oder en Auteur uginn
 no_results=Näischt fonnt
 searching=sichen ...
 select_wiki=Enzyklopedie eraussichen
+history_title=Geschicht
+no_history=Keng Versiounen do
 please_wait=W.e.g. waarden ...
+clear_history=Versioune läschen
 yes=Jo
 no=Neen
+protection=Eenzel Artikelen op Wikipedia kënne fir Jonker net gëeegent sinn. Setzt w.e.g. e Jugendschutz-Passwuert an.
+guten:protection=Et gëtt Bicher déi net fir Jonker gëeegent sinn. Setzt w.e.g e Passwuert als Schutz an.
+restricted=Dësen Artikel kann net gëeegent si fir Jonker. Setzt w.e.g e Passwuert als Schutz an.
 set_password=Passwuert festleeën
 ok=ok
 set_filter=Wa Filtering aktivéiert ass, gëtt e Passwuert verlaangt fir op geschützten Artikelen zouzegräifen.
+keep_filter_on=Filter uloossen
+keep_filter_off=Filter ausloossen
 filter_options=Optioune vum Filter
+turn_filter_on=Filter aschalten
+turn_filter_off=Filter ausschalten
 change_password=Passwuert änneren
 re_enter_password=Passwuert nei-aginn
 re_enter_new_password=Neit Passwuert nei aginn

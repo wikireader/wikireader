@@ -1,0 +1,46 @@
+# Messages for Interlingue (Interlingue)
+# Exported from translatewiki.net
+# Author: Renan
+
+wiki_name=Interlingue...
+books:wiki_name=Libres
+dict:wiki_name=Dictionarium
+guten:wiki_name=Projecte Gutenberg
+pedia:wiki_name=Wikipedia Interlingue
+quote:wiki_name=Citationes
+license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in:  http://en.wikipedia.org/wiki/<title>
+dict:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Vider anc: [Liste alfabetic de autores], [Liste de tentor de líbres]. Jure editorial por max de tis libres ha expirat in li States Unit. (Ili posse seren esser gardat che jure editorial in altri países). Talmen alquem posse fabricar copies verbal o non-verbal de tis labores. Por detallies, vider: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in:  http://en.wikiquote.org/wiki/<title>
+type_a_word=Tippa un Parol o Frase
+guten:type_a_word=Tippa un Libre o Autor
+no_results=Nequant intrada consatatat
+searching=serchant...
+select_wiki=Selecter enciclopedie
+history_title=Historie
+no_history=Nequant historie
+please_wait=Pleser atende...
+clear_history=Vacuar Historie
+yes=Yes
+no=Ne
+protection=Alcun intradas de Wikipedia posse ne esser convenent por minoris. Pleser adapta un parol-clave por protection.
+guten:protection=Alcun libres posse ne esser convenent por minoris. Pleser adapta un parol-clave por protection.
+restricted=Ti intrada posse ne esser convenent por minoris. Pleser adapta un parol-clave por protection.
+set_password=Adaptar Parol-clave
+ok=ok
+set_filter=Che filtre ON, un parol-clave es exiget quande intradas restrictet es accesset.
+keep_filter_on=Conservar Filtre ON
+keep_filter_off=Conservar Filtre OFF
+filter_options=Optiones de Filtre
+turn_filter_on=Tornar Filtre ON
+turn_filter_off=Tornar Filtre OFF
+change_password=Changear Parol-clave
+re_enter_password=Re-intrar Parol-clave
+re_enter_new_password=Re-intrar nov parol-clave
+passwords_not_match=Parol-claves ne egale
+enter_old_password=Intrar antiqui parol-clave
+enter_password=Intrar parol-clave
+try_again=Íncorect. Pleser prova denov.
+enter_new_password=Intrar nov parol-clave
+parental_controls=Controles Principal
+r=R

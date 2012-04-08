@@ -1,0 +1,47 @@
+# Messages for Simplified Chinese (‪中文(简体)‬)
+# Exported from translatewiki.net
+# Author: Gaoxuewei
+# Author: Hydra
+
+wiki_name=中文...
+books:wiki_name=图书
+dict:wiki_name=字典
+guten:wiki_name=古登堡
+pedia:wiki_name=维基百科中文版
+quote:wiki_name=引用
+license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
+dict:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wiktionary.org/wiki/<title>
+guten:license_text=另请参阅： [作者的字母顺序排序列表]，[书架的列表]。在美国，大多数的这些书的版权已过期。（他们可能仍受版权保护在其他国家）。任何人可作出逐字或非逐字复制这些作品。有关详细信息，请参阅： http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikiquote.org/wiki/<title>
+type_a_word=请输入单词或词组
+guten:type_a_word=键入一本书或作者
+no_results=没有找到相关条目
+searching=搜索中...
+select_wiki=选择版本
+history_title=搜索记录
+no_history=搜索记录为空
+please_wait=请稍候...
+clear_history=清除历史记录
+yes=确定
+no=取消
+protection=一些维基百科条目并不适合未成年人。请设置一个保护密码。
+guten:protection=一些书可能不适合未成年人。请为设置密码保护。
+restricted=本条目不适合未成年人阅读。请设置一个保护密码。
+set_password=设置密码
+ok=确定
+set_filter=开启过滤器后，当浏览受限文章时需要输入密码。
+keep_filter_on=开启过滤器
+keep_filter_off=关闭过滤器
+filter_options=过滤器设置
+turn_filter_on=开启过滤器
+turn_filter_off=关闭过滤器
+change_password=修改密码
+re_enter_password=再次输入一次密码
+re_enter_new_password=再次输入一次密码
+passwords_not_match=两次密码不一致
+enter_old_password=输入旧密码
+enter_password=输入新密码
+try_again=输入错误。请再试一次。
+enter_new_password=输入新密码
+parental_controls=家长控制
+r=禁

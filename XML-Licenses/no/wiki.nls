@@ -1,20 +1,30 @@
-# Messages for Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+# Messages for Norwegian Bokmål (‪Norsk (bokmål)‬)
 # Exported from translatewiki.net
 # Author: Nghtwlkr
 
-wiki_name=Wikipedia Norsk (bokmål)
+wiki_name=Norsk (bokmål)...
+books:wiki_name=Bøker
+dict:wiki_name=Ordbok
+guten:wiki_name=Prosjekt Gutenberg
+pedia:wiki_name=Wikipedia på bokmål og riksmål
+quote:wiki_name=Sitat
 license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse/Del på like vilkår og kan fritt gjenbrukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Se også: [Alphabetisk liste over forfattere], [Liste over bokhyller]. Opphavsrett for de fleste av disse bøkene har gått ut i USA. (De kan fortsatt være opphavsrettsbeskyttet i andre land. Så hvem som helst kan gjøre ordrette eller ikke ordrette kopier av disse verkene. For detaljer, se: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse/Del på like vilkår og kan fritt gjenbrukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikiquote.org/wiki/<title>
 type_a_word=Skriv inn et ord eller uttrykk
+guten:type_a_word=Skriv inn en bok eller forfatter
 no_results=Ingen oppføringer funnet
 searching=søker...
 select_wiki=Velg encyklopedi
 history_title=Historikk
 no_history=Ingen historikk
-please_wait=Vent...
+please_wait=Vennligst vent...
 clear_history=Slett historikk
 yes=Ja
 no=Nei
 protection=Enkelte Wikipediaoppføringer kan være uegnet for mindreåringe. Angi et passord for beskyttelse.
+guten:protection=Enkelte bøker kan være uegnet for mindreårige. Angi et passord for beskyttelse.
 restricted=Denne oppføringen kan være uegnet for mindreårige. Angi et passord for beskyttelse.
 set_password=Angi passord
 ok=ok

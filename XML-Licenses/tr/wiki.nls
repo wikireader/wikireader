@@ -1,9 +1,23 @@
 # Messages for Turkish (Türkçe)
 # Exported from translatewiki.net
+# Author: Emperyan
 # Author: Joseph
+# Author: Khutuck
+# Author: Tarkovsky
+# Author: Vito Genovese
 
-wiki_name=Türkçe Vikipedi
+wiki_name=Türkçe...
+books:wiki_name=Kitaplar
+dict:wiki_name=Sözlük
+guten:wiki_name=Gutenberg Projesi
+pedia:wiki_name=Türkçe Vikipedi
+quote:wiki_name=Alıntı
+license_text=Metin Creative Commons Attribution / Share-Alike Lisansı altında mevcuttur ve bu lisans koşulları altında serbestçe yeniden kullanılabilir. Bakınız: Ek koşullar iiçin  [CC-BY-SA] Lisans Metnine ve [Kullanım Koşulları] metnine. Orijinal makalede burada: http://en.wikipedia.org/wiki/ <title>
+dict:license_text=Metin Creative Commons Attribution / Share-Alike Lisansı altında mevcuttur ve bu lisans koşulları altında serbestçe yeniden kullanılabilir. Bakınız: Ek koşullar iiçin  [CC-BY-SA] Lisans Metnine ve [Kullanım Koşulları] metnine. Orijinal makalede burada: http://en.wikipedia.org/wiki/ <title>
+guten:license_text=Ayrıca bkz: [yazarlar alfabetik listesi], [kitap rafları listesi].  Bu kitapların çoğunluğu için telif hakkı ABD'de doldu. (Hala diğer ülkelerde telif hakkı saklı olabilir). Bu yüzden herkes bu işlerin birebir ya da birebir olmayan kopyası kalabilir. Ayrıntılı bilgi için bkz: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Metin Creative Commons Attribution / Share-Alike Lisansı altında mevcuttur ve bu lisans koşulları altında serbestçe yeniden kullanılabilir. Bakınız: Ek koşullar iiçin  [CC-BY-SA] Lisans Metnine ve [Kullanım Koşulları] metnine. Orijinal makalede burada: http://en.wikipedia.org/wiki/ <title>
 type_a_word=Bir Kelime ya da Cümle girin
+guten:type_a_word=Kitap veya Yazar Türü
 no_results=Hiçbir girdi bulunamadı
 searching=aranıyor...
 select_wiki=Ansiklopedi seç
@@ -13,14 +27,18 @@ please_wait=Lütfen bekleyin...
 clear_history=Geçmişi sil
 yes=Evet
 no=Hayır
+protection=Bazı Wikipedia girişleri çocuklar için uygun olmayabilir. Lütfen koruma için bir şifre belirleyin.
+guten:protection=Bazı kitaplar çocuklar için uygun olmayabilir. Lütfen koruma için bir şifre belirleyin.
+restricted=Bu yazı küçükler için uygun olmayabilir. Koruma için bir şifre belirleyin.
 set_password=Şifreyi ayarla
 ok=tamam
+set_filter=Filtreleme açık olduğunda, kısıtlı makalelere erişim için şifre gereklidir.
 keep_filter_on=Filtreyi AÇIK tut
 keep_filter_off=Filtreyi KAPALI tut
 filter_options=Filtre Seçenekleri
 turn_filter_on=Filtreyi AÇ
 turn_filter_off=Filtreyi KAPAT
-change_password=Şifreyi Değiştir
+change_password=Parolayı Değiştir
 re_enter_password=Şifreyi tekrar girin
 re_enter_new_password=Yeni şifreyi tekrar girin
 passwords_not_match=Parolalar eşleşmiyor
@@ -28,3 +46,5 @@ enter_old_password=Eski parolayı girin
 enter_password=Parolayı girin
 try_again=Yanlış. Lütfen tekrar deneyin.
 enter_new_password=Yeni şifreyi girin
+parental_controls=Ebeveyn Denetimleri
+r=R

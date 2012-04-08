@@ -1,0 +1,47 @@
+# Messages for Faroese (Føroyskt)
+# Exported from translatewiki.net
+# Author: Diupwijk
+# Author: EileenSanda
+
+wiki_name=Føroyskt...
+books:wiki_name=Bøkur
+dict:wiki_name=Orðabók
+guten:wiki_name=Verkætlan Gutenberg
+pedia:wiki_name=Enska Wikipedia
+quote:wiki_name=Sitatir (endurtøkur)
+license_text=Teksturin er tøkur undir Creative Commons Attribution/Share-Alike License og kann verða nýttur frítt undir treytunum settar av hasum lisensinum. Sí: Tekst [CC-BY-SA]  Lisense og [Terms of Use] fyri aðrar treytir sum kunnu koma fyri. Tann upprunaliga greinin er tøk á:  http://en.wikipedia.org/wiki/<title>
+dict:license_text=Teksturin er tøkur undir Creative Commons Attribution/Share-Alike License og kann endurnýtast frítt undir treytunum hjá tí lisensinum. Sí: Tekst hjá [CC-BY-SA] License og [Terms of Use] for fleiri treytum sum kunnu koma fyri. Tann upprunaliga greinin er tøk á: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Sí eisini: [Alphabetical list of authors], [List of bookshelves].  Rættindini fyri flestu av hesum bókum eru útgingin í USA. (Tey kunnu enn vera  undir copyright í øðrum londum). So ein og hvør kann taka orðarætt ella ikki orðarætt avrit (kopi) av hesum verkum. Fyri smálutir, sí: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Teksturin er tøkur undir Creative Commons Navngeving-Deil-Eftir-Somu-Treytum Lisensinum og kann frít endurnýtast sambært treytunum í hesum lisensinum. Sí: Tekst í [CC-BY-SA] Lisens og [Terms of Use] fyri fleiri treytir sum kunnu brúkast. Tann upprunaliga greinin er tøk á: http://da.wikiquote.org/wiki/<title>
+type_a_word=Skriva eitt orð ella ein setning
+guten:type_a_word=Skriva eina bók ella ein rithøvund
+no_results=Onki funnið
+searching=leitar...
+select_wiki=Vel alfrøði
+history_title=Søga
+no_history=Ongin søga
+please_wait=Vinarliga bíða...
+clear_history=Strika søgu
+yes=Ja
+no=Nei
+protection=Summi Wikipedia ískoyti eru møguliga ikki hóskandi fyri børn. Vinarliga vel eitt loyniorð fyri at verja tey.
+guten:protection=Summar bøkur eru møguliga ikki hóskandi fyri børn. Vinarliga vel eitt loyniorð fyri at verja tey.
+restricted=Hetta ískoyti er møguliga ikki hóskandi fyri børn. Vinarliga vel eitt loyniorð fyri at verja tey.
+set_password=Vel loyniorð
+ok=Í lagi
+set_filter=Tá filtrið stendur á ON, so verður biðið um eitt loyniorð, tá tú fert inn á ískoyti, sum eru avmarkaði.
+keep_filter_on=Lat filtrið vera á ON
+keep_filter_off=Slá filtrið frá (OFF)
+filter_options=Filtur Møguleikar
+turn_filter_on=Set filturi á ON
+turn_filter_off=Sløkk fyri filturinum, set á OFF
+change_password=Broyt loyniorð
+re_enter_password=Skrivað loyniorðið enn einaferð
+re_enter_new_password=Skrivað enn einaferð nýggja loyniorðið
+passwords_not_match=Loyniorðini eru ikki eins
+enter_old_password=Skrivað gamla loyniorðið
+enter_password=Skrivað loyniorð
+try_again=Skeivt. Vinarliga royn aftur.
+enter_new_password=Vel nýtt loyniorð
+parental_controls=Foreldra stýring
+r=R

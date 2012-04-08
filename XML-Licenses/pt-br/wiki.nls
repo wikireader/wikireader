@@ -1,10 +1,21 @@
 # Messages for Brazilian Portuguese (Português do Brasil)
 # Exported from translatewiki.net
+# Author: Giro720
+# Author: Gustavo
 # Author: Rodrigo Avila
 
-wiki_name=Wikipedia Português
+wiki_name=Português...
+books:wiki_name=Livros
+dict:wiki_name=Dicionário
+guten:wiki_name=Projeto Gutemberg
+pedia:wiki_name=Wikipédia em português
+quote:wiki_name=Citações
 license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wikipedia.org/wiki/<title>
+dict:license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wiktionary.org/wiki/<title>
+guten:license_text=veja também: [Lista alfabética de autores], [Lista de prateleiras]. O direito autoral da maioria destes livros já expirou nos Estados Unidos. (Apesar de que ainda é possível haver direitos autorais em outros países). Assim, ninguém pode fazer cópias, integrais ou não, destes trabalhos. Para detalhes, acesse: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wikiquote.org/wiki/<title>
 type_a_word=Escreva uma palavra ou frase
+guten:type_a_word=Digite um Livro ou um Autor
 no_results=Nenhum registro encontrado
 searching=pesquisando...
 select_wiki=Escolha a enciclopédia
@@ -15,6 +26,7 @@ clear_history=Limpar histórico
 yes=Sim
 no=Não
 protection=Alguns artigos da Wikipédia podem não ser adequados para menores. Por favor, crie uma senha de proteção.
+guten:protection=Alguns livros podem não ser adequados a menores. Por favor defina uma senha de proteção.
 restricted=Este artigo pode não ser adequado para menores. Por favor, crie uma senha de proteção.
 set_password=Digite a senha
 ok=ok

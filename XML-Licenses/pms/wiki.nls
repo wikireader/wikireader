@@ -3,9 +3,18 @@
 # Author: Borichèt
 # Author: Dragonòt
 
-wiki_name=Anglèis ëd Wikipedia
-license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Share-Alike e a peul esse liberament dovrà sota ij termo ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Terms of Use] për termo adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
+wiki_name=Anglèis...
+books:wiki_name=Lìber
+dict:wiki_name=Dissionari
+guten:wiki_name=Proget Gutenberg
+pedia:wiki_name=Wikipedia an piemontèis
+quote:wiki_name=Sitassion
+license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Terms of Use] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
+dict:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Atribussion/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'usagi] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
+guten:license_text=Vëdde ëdcò: [Lista Alfabética dj'autor], [Lista dij lìber]. Ij drit ëd còpia për la pì part dë sti lìber-sì a son scadù ant jë Stat Unì. (A peulo esse sota drit ëd còpia an d'àutri stat). Parèj chicassìa a peul fé dle còpie paròla për paròla o pa dë sti travaj-sì. Për ij detaj, vëdde: http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Atribussion/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'usagi] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
 type_a_word=Scriv na Paròla o na Fras
+guten:type_a_word=Scriv un Lìber o n'Autor
 no_results=Pa gnun-e vos trovà
 searching=sërché...
 select_wiki=Serne l'enciclopedìa
@@ -16,6 +25,7 @@ clear_history=Scancelé la stòria
 yes=É!
 no=Nò
 protection=Chèiche vos ëd Wikipedia a peulo esse pa adate për ij minor. Për piasì ch'a ampòsta na ciav për la protession.
+guten:protection=Chèich lìber a peulo esse pa adat për ij minor. Për piasì ch'a ampòsta na ciav për la protession.
 restricted=Sta vos-sì a peul esse pa adata për ij minor. Për piasì, ch'a ampòsta na ciav për la protession.
 set_password=Ampòsta Ciav
 ok=va bin

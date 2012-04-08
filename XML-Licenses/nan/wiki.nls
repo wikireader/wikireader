@@ -1,0 +1,42 @@
+# Messages for Min Nan Chinese (Bân-lâm-gú)
+# Exported from translatewiki.net
+# Author: Ianbu
+
+wiki_name=閩南語...
+books:wiki_name=冊
+dict:wiki_name=字典
+guten:wiki_name=古騰堡(Gutenberg)計畫
+pedia:wiki_name=閩南語維基百科
+quote:wiki_name=言錄
+type_a_word=拍一字抑一句話
+guten:type_a_word=拍冊名抑作者
+no_results=揣無拍的
+searching=揣
+select_wiki=選百科全書
+history_title=Le̍k-sú
+no_history=無歷史記錄
+please_wait=請等待...
+clear_history=清掉歷史記錄
+yes=hó
+no=毋通
+protection=有一寡維基百科的條目無適合予囡仔看，請設一个密碼來防止。
+guten:protection=有一寡冊無適合予囡仔看，請設一个密碼來防止。
+restricted=有一寡項目無適合予囡仔看，請設一个密碼來防止。
+set_password=設密碼
+ok=好矣
+set_filter=佇有過濾器了後，欲看有管制的文章就愛密碼。
+keep_filter_on=保留篩選
+keep_filter_off=毋免篩選
+filter_options=篩選的設定
+turn_filter_on=設定篩選
+turn_filter_off=取消篩選
+change_password=改密碼
+re_enter_password=閣拍一擺密碼
+re_enter_new_password=閣拍一擺新密碼
+passwords_not_match=密碼毋著
+enter_old_password=拍舊密碼
+enter_password=拍密碼
+try_again=錯誤！請重拍。
+enter_new_password=拍新密碼
+parental_controls=爸母管囡仔
+r=限
