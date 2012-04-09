@@ -1,36 +1,95 @@
-# Messages for Chinese (中文)
+# Messages for Simplified Chinese (‪中文(简体)‬)
 # Exported from translatewiki.net
-# Author: Liane
+# Author: Gaoxuewei
+# Author: Hydra
 
-wiki_name=Wikipedia 中文 (拼音)
-license_text=內文已合法註冊於 Creative Commons 貢獻及分享字號下並可在條款下免費轉載使用，請參閱 [CC-BY-SA] 及 [Terms of Use] 以瞭解更多適用之條款。原文可參考 http://zh.wikipedia.org/wiki/<title>
-type_a_word=输入拼音字母
-no_results=搜寻查无结果
-searching=搜寻中...
-select_wiki=选择维基百科语言
-history_title=搜寻记录
-no_history=无搜寻记录
+wiki_name=中文...
+books:wiki_name=图书
+dict:wiki_name=字典
+guten:wiki_name=古登堡
+pedia:wiki_name=维基百科中文版
+quote:wiki_name=引用
+license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
+dict:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wiktionary.org/wiki/<title>
+guten:license_text=另请参阅： [作者的字母顺序排序列表]，[书架的列表]。在美国，大多数的这些书的版权已过期。（他们可能仍受版权保护在其他国家）。任何人可作出逐字或非逐字复制这些作品。有关详细信息，请参阅： http://www.gutenberg.org/wiki/Main_Page
+quote:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikiquote.org/wiki/<title>
+type_a_word=请输入单词或词组
+guten:type_a_word=键入一本书或作者
+no_results=没有找到相关条目
+searching=搜索中...
+select_wiki=选择版本
+history_title=搜索记录
+no_history=搜索记录为空
 please_wait=请稍候...
-clear_history=清除搜寻记录
-yes=是
-no=否
-protection=保护 (部份维基搜寻内文可能不适於未成年阅览，请设定密码。)
-restricted=限制 (此内文有限制层级阅览，请设定密码。)
-set_password=密码设定
-ok=ok
-set_filter=过滤功能设定 (此过滤功能若开启，限制层级的内文将被要求输入密码。)
-keep_filter_on=保持过滤功能开启
-keep_filter_off=保持过滤功能关闭
-filter_options=过滤功能选项
-turn_filter_on=开启过滤功能
-turn_filter_off=关闭过滤功能
-change_password=密码更改
-re_enter_password=重新输入密码
-re_enter_new_password=重新输入新密码
-passwords_not_match=密码错误
+clear_history=清除历史记录
+yes=确定
+no=取消
+protection=一些维基百科条目并不适合未成年人。请设置一个保护密码。
+guten:protection=一些书可能不适合未成年人。请为设置密码保护。
+restricted=本条目不适合未成年人阅读。请设置一个保护密码。
+set_password=设置密码
+ok=确定
+set_filter=开启过滤器后，当浏览受限文章时需要输入密码。
+keep_filter_on=开启过滤器
+keep_filter_off=关闭过滤器
+filter_options=过滤器设置
+turn_filter_on=开启过滤器
+turn_filter_off=关闭过滤器
+change_password=修改密码
+re_enter_password=再次输入一次密码
+re_enter_new_password=再次输入一次密码
+passwords_not_match=两次密码不一致
 enter_old_password=输入旧密码
-enter_password=输入密码
-try_again=重新输入
+enter_password=输入新密码
+try_again=输入错误。请再试一次。
 enter_new_password=输入新密码
 parental_controls=家长控制
-r=限
+r=禁
+
+
+# Messages for Traditional Chinese (‪中文(繁體)‬)
+# Exported from translatewiki.net
+# Author: Anakmalaysia
+# Author: Dream
+# Author: Lauhenry
+# Author: Wrightbus
+
+wiki_name2=中文...
+books:wiki_name2=圖書
+dict:wiki_name2=字典
+guten:wiki_name2=古登堡計劃
+pedia:wiki_name2=中文維基百科
+quote:wiki_name2=語錄
+license_text2=文本可根據創造性的下議院歸因/-方式共享許可證，並根據該許可中的條款可以自由重複使用。請參閱： 文本的許可證[CC-BY-SA] 和[使用條款] 為可能適用的附加條款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
+type_a_word2=請輸入詞或短句
+guten:type_a_word2=輸入書籍或作者名
+no_results2=找不到任何項目
+searching2=搜尋中...
+select_wiki2=選擇語言版本
+history_title2=歷史
+no_history2=沒有歷史
+please_wait2=請稍候...
+clear_history2=清除歷史記錄
+yes2=是
+no2=否
+protection2=有些維基百科條目兒童不宜。請設密碼保護。
+guten:protection2=有些書可能兒童不宜。請設密碼保護。
+restricted2=此項目可能不適合未成年人。請設置密碼以保護。
+set_password2=設置密碼
+ok2=確定
+set_filter2=開啟過濾器後，當瀏覽受限文章時需要輸入密碼。
+keep_filter_on2=開啟過濾器
+keep_filter_off2=關閉過濾器
+filter_options2=過濾功能選項
+turn_filter_on2=開啟過濾功能
+turn_filter_off2=關閉過濾功能
+change_password2=更改密碼
+re_enter_password2=重新輸入密碼
+re_enter_new_password2=重新輸入新密碼
+passwords_not_match2=密碼不符
+enter_old_password2=輸入舊密碼
+enter_password2=輸入新密碼
+try_again2=密碼錯誤，請重試。
+enter_new_password2=輸入新密碼
+parental_controls2=家長控制
+r2=禁

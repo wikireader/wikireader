@@ -1,0 +1,16 @@
+#!/bin/sh
+
+base=XML-Licenses
+file=wiki.nls
+
+simple="${base}/zh-hans/${file}"
+traditional="${base}/zh-hant/${file}"
+combined="${base}/zh/${file}"
+
+rm -f "${combined}"
+(
+  cat "${simple}"
+  echo
+  echo
+  sed 's/=/2=/' "${traditional}"
+) > "${combined}"
