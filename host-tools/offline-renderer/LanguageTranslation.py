@@ -10,6 +10,7 @@ import os
 import sys
 import os.path
 import unicodedata
+import SearchKey
 import PinyinTable
 try:
     import MeCab
@@ -283,17 +284,13 @@ class LanguageJapanese(LanguageProcessor):
         return result
 
 
-    import string
-    punctuation = string.punctuation + u'、・\r\n \t'
-
-
     def translate(self, text):
         """take Japanese string and convert to Roman letters"""
 
         result = []
 
         for text in super(type(self), self).translate(text):
-            split_text = ''.join([ c if not c in self.punctuation else ' ' for c in list(text)]).split()
+            split_text = ''.join([ c if not c in SearchKey.unsupported_punctuation() else ' ' for c in list(text)]).split()
             for tt in split_text:
                 if type(tt) == unicode:
                     tt = tt.encode('utf-8')

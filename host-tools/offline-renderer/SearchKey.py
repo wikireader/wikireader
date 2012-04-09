@@ -8,12 +8,24 @@
 
 import re
 import unicodedata
+import string
 
 # this _must_ be in ascending ASCII sequence
 KEYPAD_KEYS = """ !#$%&'()*+,-.0123456789=?@abcdefghijklmnopqrstuvwxyz"""
 
 # underscore and space
 whitespaces = re.compile(r'([\s_]+)', re.IGNORECASE)
+
+# list of unsupported punctuation
+PUNCTUATION = string.punctuation + u'、・\r\n \t'
+translation_table = dict.fromkeys(map(ord, KEYPAD_KEYS), None)
+UNSUPPORTED_PUNCTUATION = PUNCTUATION.translate(translation_table)
+
+
+def unsupported_punctuation():
+    """return string of unsupported punctuation characters"""
+    global UNSUPPORTED_PUNCTUATION
+    return UNSUPPORTED_PUNCTUATION
 
 
 def make_key(text):
