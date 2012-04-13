@@ -32,6 +32,6 @@ x11-fonts/bdftopcf
 2. There is a BSDmakefile that simply calls gmake so the sample
    files can be tested with:
 
-make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml index parse render combine hash
-make DESTDIR=image fonts-install
+make DESTDIR=image WORKDIR=work XML_FILES=xml-file-samples/japanese_architects.xml iprc
+make DESTDIR=image install
 make DESTDIR=image sim4
