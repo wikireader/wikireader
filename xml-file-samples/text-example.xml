@@ -1,0 +1,178 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>Wikipedia</sitename>
+    <base>http://en.wikipedia.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.16alpha-wmf</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" junk="ignore this">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wikipedia</namespace>
+      <namespace key="5">Wikipedia talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+      <namespace key="100">Portal</namespace>
+      <namespace key="101">Portal talk</namespace>
+    </namespaces>
+  </siteinfo>
+
+  <page>
+    <title>!!!01 reserved for license</title>
+    <id>875198</id>
+    <revision>
+      <id>305149838</id>
+      <timestamp>2010-05-26T16:43:38Z</timestamp>
+      <contributor>
+        <username>JustTesting</username>
+        <id>42</id>
+      </contributor>
+      <minor/>
+      <comment>No Comment</comment>
+      <text xml:space="preserve">This should be license text
+</text>
+    </revision>
+  </page>
+
+  <page>
+    <title>!!!02 reserved for terms</title>
+    <id>875198</id>
+    <revision>
+      <id>305149838</id>
+      <timestamp>2010-05-26T16:43:38Z</timestamp>
+      <contributor>
+        <username>JustTesting</username>
+        <id>42</id>
+      </contributor>
+      <minor/>
+      <comment>No Comment</comment>
+      <text xml:space="preserve">This should be terms text
+</text>
+    </revision>
+  </page>
+
+  <page>
+    <title>An Example Text Article</title>
+    <id>875198</id>
+    <revision>
+      <id>305149838</id>
+      <timestamp>2010-05-26T16:43:38Z</timestamp>
+      <contributor>
+        <username>JustTesting</username>
+        <id>42</id>
+      </contributor>
+      <minor/>
+      <comment>No Comment</comment>
+      <text xml:space="preserve">Article One
+
+This article is proken into two pages
+
+* [[The First Page]]
+* [[The Second Page]]
+
+</text>
+    </revision>
+  </page>
+
+  <page>
+    <title>The First Page</title>
+    <id>875198</id>
+    <revision>
+      <id>305149838</id>
+      <timestamp>2010-05-26T16:43:38Z</timestamp>
+      <contributor>
+        <username>JustTesting</username>
+        <id>42</id>
+      </contributor>
+      <minor/>
+      <comment>No Comment</comment>
+      <text xml:space="preserve">
+== Page One ==
+
+[[The Second Page]]
+
+
+GALLIA est omnis divisa in partes tres, quarum unam incolunt Belgae,
+aliam Aquitani, tertiam qui ipsorum lingua Celtae, nostra Galli
+appellantur. Hi omnes lingua, institutis, legibus inter se differunt.
+
+Gallos ab Aquitanis Garumna flumen, a Belgis Matrona et Sequana dividit.
+
+Horum omnium fortissimi sunt Belgae, propterea quod a cultu atque
+humanitate provinciae longissime absunt, minimeque ad eos mercatores saepe
+commeant atque ea quae ad effeminandos animos pertinent important,
+proximique sunt Germanis, qui trans Rhenum incolunt, quibuscum continenter
+bellum gerunt. Qua de causa Helvetii quoque reliquos Gallos virtute
+praecedunt, quod fere cotidianis proeliis cum Germanis contendunt, cum aut
+suis finibus eos prohibent aut ipsi in eorum finibus bellum gerunt.
+
+
+[[The Second Page]]
+</text>
+    </revision>
+  </page>
+
+  <page>
+    <title>The Second Page</title>
+    <id>875198</id>
+    <revision>
+      <id>305149838</id>
+      <timestamp>2010-05-26T16:43:38Z</timestamp>
+      <contributor>
+        <username>JustTesting</username>
+        <id>42</id>
+      </contributor>
+      <minor/>
+      <comment>No Comment</comment>
+      <text xml:space="preserve">
+== Page Two ==
+
+[[The First Page]]
+
+
+[Eorum una, pars, quam Gallos obtinere dictum est, initium capit a flumine
+Rhodano, continetur Garumna flumine, Oceano, finibus Belgarum, attingit
+etiam ab Sequanis et Helvetiis flumen Rhenum, vergit ad septentriones.
+
+Belgae ab extremis Galliae finibus oriuntur, pertinent ad inferiorem
+partem fluminis Rheni, spectant in septentrionem et orientem solem.
+
+Aquitania a Garumna flumine ad Pyrenaeos montes et eam partem Oceani quae
+est ad Hispaniam pertinet; spectat inter occasum solis et septentriones.]
+
+
+Apud Helvetios longe nobilissimus fuit et ditissimus Orgetorix. Is
+M. Messala, [et P.] M. Pisone consulibus regni cupiditate inductus
+coniurationem nobilitatis fecit et civitati persuasit ut de finibus suis
+cum omnibus copiis exirent: perfacile esse, cum virtute omnibus
+praestarent, totius Galliae imperio potiri. Id hoc facilius iis
+persuasit, quod undique loci natura Helvetii continentur: una ex parte
+flumine Rheno latissimo atque altissimo, qui agrum Helvetium a Germanis
+dividit; altera ex parte monte Iura altissimo, qui est inter Sequanos et
+Helvetios; tertia lacu Lemanno et flumine Rhodano, qui provinciam nostram
+ab Helvetiis dividit. His rebus fiebat ut et minus late vagarentur et
+minus facile finitimis bellum inferre possent; qua ex parte homines
+bellandi cupidi magno dolore adficiebantur. Pro multitudine autem hominum
+et pro gloria belli atque fortitudinis angustos se fines habere
+arbitrabantur, qui in longitudinem milia passuum CCXL, in latitudinem
+CLXXX patebant.
+
+[[The First Page]]
+
+</text>
+    </revision>
+  </page>
+
+
+</mediawiki>
