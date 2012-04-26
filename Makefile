@@ -236,9 +236,17 @@ version: validate-destdir
 	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	${RM} "${DESTDIR_PATH}"/*/*.idx-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
-	find "${DESTDIR_PATH}" -type d -print -exec \
-	  sh -c "cd '{}' && ${RM} '${CHECKSUM_FILE}' && sha${SHA_LEVEL}sum * > '${CHECKSUM_FILE}'" ';'
+	find "${DESTDIR_PATH}" -mindepth 1 -type d -print -exec \
+	  ${MAKE} -C '{}' -f '${PWD}/$(firstword ${MAKEFILE_LIST})' DESTDIR='${DESTDIR_PATH}' '${CHECKSUM_FILE}' ';'
 
+.PHONY: clean-sha
+clean-sha:
+	find "${DESTDIR_PATH}" -type f -name '${CHECKSUM_FILE}' -print -delete
+
+# rebuild checksum if out of date
+${CHECKSUM_FILE}: $(filter-out ${CHECKSUM_FILE},$(wildcard *))
+	${RM} '$@'
+	sha${SHA_LEVEL}sum * > '$@'
 
 # create empty history and password files
 # set up other required files
@@ -785,11 +793,20 @@ nls-install: validate-destdir
 	          ${SCRIPTS}/nls-installer --prefix="${DESTDIR_PATH}" \
                                            --language="$${language}" \
                                            --suffix="$${suffix}" \
-                                           --output="wiki.nls" \
+                                           --output="wiki.nls.tmp" \
                                            --base="${LICENSE_DIR}/en/wiki.nls" \
                                            --nls="$${src}" \
                                            --change="$${native_name}" \
                                            --verbose ; \
+	          t_in="${DESTDIR_PATH}/$${language}$${suffix}/wiki.nls.tmp" ; \
+	          t_out="${DESTDIR_PATH}/$${language}$${suffix}/wiki.nls" ; \
+	          if cmp -s "$${t_in}" "$${t_out}" ; \
+	          then \
+	            rm -f "$${t_in}" ; \
+	          else \
+	            rm -f "$${t_out}" ; \
+	            mv "$${t_in}" "$${t_out}" ; \
+	          fi ; \
 	          break ; \
 	        fi ; \
 	      done \
