@@ -47,6 +47,7 @@
   OTHERS,      en,       enstarw,
   TRAVEL,      en,       entrav,
   ,            es,       espedia,
+  DICTIONARY,  en,       esdict,
   ,            fi,       fipedia,
   DICTIONARY,  fr,       frdict,
   ,            fr,       frpedia,
