@@ -214,8 +214,10 @@ eval MakeArchive "'${archive}'" '.' ${excludes}
 
 HTMLoutput 0 '<ul>'
 
+archive_date="$(basename "${archive}")"
+archive_date="${archive_date#*-}"
 HTMLoutput 2 '<li>'
-HTMLoutput 4 "<strong>Base Files</strong> &#8211;"
+HTMLoutput 4 "<strong>Base Files (${archive_date})</strong> &#8211;"
 case "${direct}" in
   [yY]|[yY][eE][sS])
     HTMLoutput 4 ' direct: ('
@@ -279,8 +281,10 @@ do
     full_name=unknown
   fi
 
+  archive_date="$(basename "${archive}")"
+  archive_date="${archive_date#*-}"
   HTMLoutput 2 '<li>'
-  HTMLoutput 4 "<strong>${native_language} ${full_name}</strong> &#8211;"
+  HTMLoutput 4 "<strong>${native_language} ${full_name} (${archive_date})</strong> &#8211;"
 
   case "${direct}" in
     [yY]|[yY][eE][sS])
