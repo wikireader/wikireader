@@ -2,15 +2,22 @@
 # Exported from translatewiki.net
 # Author: Centerlink
 # Author: Nike
+# Author: Veikk0.ma
 
 wiki_name=Englanti ...
+appro:wiki_name=Appropedia
 books:wiki_name=Kirjat
 dict:wiki_name=Sanakirja
 guten:wiki_name=Projekti Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Englanti
 quote:wiki_name=Lainaukset
 license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wikipedia.org/wiki/ <title>
+appro:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Katso myös: [Aakkosellinen tekijöiden luettelo] [Kirjahyllyjen luettelo]. Copyright useimmille näistä kirjoista on päättynyt Yhdysvalloissa. (Ne voivat silti olla tekijänoikeuden alaisia muissa maissa). Joten kuka tahansa voi tehdä kirjallisia tai ei-kirjallisia kopioita näistä teoksista. Katso lisätietoja: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wikiquote.org/wiki/<title>
 type_a_word=Kirjoita sana tai lause
 guten:type_a_word=Kirjoita kirja tai tekijä
 no_results=Ei hakutuloksia
@@ -22,9 +29,9 @@ please_wait=Odota ...
 clear_history=Tyhjennä historia
 yes=Kyllä
 no=Ei
-protection=Jotkut Wikipedia-merkinnät eivät sovellu alaikäisille. Aseta salasanasuoja.
+protection=Jotkut Wikipedia-artikkelit eivät ehkä sovi alaikäisille. Aseta salasanasuojaus.
 guten:protection=Jotkut kirjat eivät ehkä sovi alaikäisille. Aseta salasanasuojaus.
-restricted=Tämä merkintä ei sovellu alaikäisille. Aseta salasanasuoja.
+restricted=Tämä merkintä ei ehkä sovi alaikäisille. Aseta salasanasuojaus.
 set_password=Aseta salasana
 ok=valmis
 set_filter=Suodatuksen ollessa PÄÄLLÄ salasana vaaditaan rajoitettuun artikkeliin pääsemiseksi.

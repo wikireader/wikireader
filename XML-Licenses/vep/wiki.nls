@@ -3,14 +3,18 @@
 # Author: Игорь Бродский
 
 wiki_name=Anglijan
+appro:wiki_name=Appropedii
 books:wiki_name=Kirjad
 dict:wiki_name=Vajehnik
 guten:wiki_name=Gutenberg-projekt
+how:wiki_name=WikiHow (WikiKut)
 pedia:wiki_name=Vepsän Vikipedii
 quote:wiki_name=Citatad
 license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Kc. mugažo: [Avtoriden nimikirjutez kirjamišton mödhe], [Kirjanpal'čiden nimikirjutez]. Kopirait (avtoranoiktuz) neniden kirjoiden enambusen täht om lopnus AÜVš. (No se voib olda väges toižiš valdkundoiš). Muga, kaikutte sab tehta neniden töiden täuded vai palahižed kopijad. Miše lugeda detališ, kc. http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Tekst anttas Creative Commons Attribution/Share-Alike License-licenzijan mödhe. Sidä sab kävutada tugedusita necen licenzijan arvoimižiden mödhe. Kc. [CC-BY-SA]-licenzijan tekst da [Kävutamižen arvoimižed], kudambiš voib olda ližaarvoimižid. Originaline kirjutuz om naku: http://en.wikiquote.org/wiki/<title>
 type_a_word=Kirjutagat sana vai fraz
 guten:type_a_word=Kirjutagat kirjan vai avtoran nimi

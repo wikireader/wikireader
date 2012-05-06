@@ -1,20 +1,25 @@
 # Messages for Spanish (Español)
 # Exported from translatewiki.net
 # Author: AlimanRuna
+# Author: Armando-Martin
 # Author: Crazymadlover
 # Author: McDutchie
 # Author: Translationista
 # Author: VegaDark
 
 wiki_name=Español ...
+appro:wiki_name=Appropedia
 books:wiki_name=Libros
 dict:wiki_name=Diccionario
 guten:wiki_name=Proyecto Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia en español
 quote:wiki_name=Citas
 license_text=Este texto se encuentra bajo licencias Creative Commons Reconocimiento/Compartir igual y puede ser eutilizada libremente bajo los terminos de esta licencia: Ver: Texto de [CC-BY-SA] Licencia y [terminos de uso]. El rticulo original se encuentra en: http://es.wikipedia.org/wiki/<title>
+appro:license_text=El texto está disponible bajo la licencia Creative Commons Atribución/Compartir-igual y puede ser reutilizado libremente bajo los mismo términos de esa licencia. Vea: Texto de la Licencia [CC-BY-SA], y [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=El texto está disponible bajo la licencia de Reconocimiento-Compartir Igual Genérica y puede ser reutilizado libremente bajo los mismo términos. Visita: Texto de la Licencia [CC-BY-SA], [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://es.wiktionary.org/wiki/<title>
 guten:license_text=Ver también: [Lista alfabética de autores], [Lista de libreros].  El Copyright para la mayoría de estos libros ha expirado en los Estados Unidos. (Puede aún estar bajo copyright en otros países). Así que cualquiera puede hacer copias literales o no literales de esas obras. Para detalles, ver: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=El texto está disponible bajo la licencia de Creative Commons Reconocimiento-Compartir Igual y puede ser reutilizado libremente bajo los mismo términos de esa licencia. Vea: Texto de la Licencia [CC-BY-SA], y [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=El texto está disponible bajo la licencia de Reconocimiento-Compartir Igual Genérica y puede ser reutilizado libremente bajo los mismo términos. Visita: Texto de la Licencia [CC-BY-SA], [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://es.wikiquote.org/wiki/<title>
 type_a_word=Buscar en Wikipedia Español
 guten:type_a_word=Escribe un Libro o un Autor

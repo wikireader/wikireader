@@ -3,11 +3,18 @@
 # Author: Ianbu
 
 wiki_name=閩南語...
+appro:wiki_name=適當百科(Appropedia)
 books:wiki_name=冊
 dict:wiki_name=字典
 guten:wiki_name=古騰堡(Gutenberg)計畫
+how:wiki_name=按怎做維基(WikiHow)
 pedia:wiki_name=閩南語維基百科
 quote:wiki_name=言錄
+license_text=文章是以創作公共使用-名姓註明-仝款方式分享（CC-BY-SA）來授權，照伊的條款就通使用， 看[CC-BY-SA]的授權文本佮[Terms of Use]有提供詳細信息，佇http://en.wikipedia.org/wiki/<title>嘛通看著原本的文章。
+appro:license_text=文章是以創作公共使用-名姓註明-仝款方式分享（CC-BY-SA）來授權，照伊的條款就通自由使用， 看[CC-BY-SA]的授權文本佮[Terms of Use]有提供詳細信息，佇http://www.appropedia.org/Appropedia:Copyrights有原本的文章。
+dict:license_text=文章是以創作公共使用-名姓註明-仝款方式分享（CC-BY-SA）來授權，照伊的條款就通使用， 看[CC-BY-SA]的授權文本佮[Terms of Use]有提供詳細信息，佇http://en.wikipedia.org/wiki/<title>嘛通看著原本的文章。
+how:license_text=文章是以創作公共使用-名姓註明-仝款方式分享（CC-BY-SA）來授權，照伊的條款就通自由使用， 看[CC-BY-SA]的授權文本佮[Terms of Use]有提供詳細信息，佇http://www.wikihow.com/wikiHow:Creative-Commons通看著原本的文章。
+quote:license_text=文章是以創作公共使用-名姓註明-仝款方式分享（CC-BY-SA）來授權，照伊的條款就通自由使用， 看[CC-BY-SA]的授權文本佮[Terms of Use]有提供詳細信息，佇http://en.wikipedia.org/wiki/<title>嘛通看著原本的文章。
 type_a_word=拍一字抑一句話
 guten:type_a_word=拍冊名抑作者
 no_results=揣無拍的

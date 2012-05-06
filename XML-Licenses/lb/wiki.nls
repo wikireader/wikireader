@@ -3,9 +3,11 @@
 # Author: Robby
 
 wiki_name=Lëtzebuergesch...
+appro:wiki_name=Appropedia
 books:wiki_name=Bicher
 dict:wiki_name=Dictionnaire
 guten:wiki_name=Projet Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Lëtzebuergesch Wikipedia
 quote:wiki_name=Zitater
 license_text=Den Text ass ënnert der  Creative Commons Attribution/Share-Alike Lizenz disponibel a ka fräi weiderbenotzt ginn ënnert de Bedingungen vun där Lizenz. Kuckt: Text vun der [CC-BY-SA] Lizenz an [Terms of Use] fir weider Benotzungsbedingungen déi applicabel kënne sinn. Den Original-Artikel ass op: http://en.wikipedia.org/wiki/<title> disponibel

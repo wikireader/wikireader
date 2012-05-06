@@ -1,0 +1,32 @@
+# Messages for Kazakh (Cyrillic script) (‪Қазақша (кирил)‬)
+# Exported from translatewiki.net
+# Author: MrKarahanly
+
+wiki_name=Қазақша...
+appro:wiki_name=Appropedia
+books:wiki_name=Кітаптар
+dict:wiki_name=Сөздік
+guten:wiki_name="Гутенберг" жобасы
+how:wiki_name=WikiHow
+pedia:wiki_name=Википедия — Қазақша
+searching=ізделуде...
+select_wiki=Энциклопедияны таңдаңыз
+history_title=Тарихы
+no_history=Тарихы жоқ
+please_wait=Күте тұрыңыз...
+clear_history=Тарихты өшір
+yes=Иә
+no=Жоқ
+ok=OK
+filter_options=Фильтр баптаулары
+turn_filter_on=Фильтрды қосу
+turn_filter_off=Филтрьды өшіру
+change_password=Құпия сөзді өзгерту
+re_enter_password=Құпия сөзді қайта енгізу
+re_enter_new_password=Жаңа құпия сөзді қайта енгізу
+passwords_not_match=Құпия сөздер келіспейді
+enter_old_password=Ескі құпия сөзді енгізіңіз
+enter_password=Құпия сөзді енгізу
+try_again=Қате. Қайта тырысып көріңіз
+enter_new_password=Жаңа құпия сөзді енгізу
+r=R

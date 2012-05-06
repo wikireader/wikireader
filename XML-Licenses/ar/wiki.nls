@@ -1,18 +1,26 @@
 # Messages for Arabic (العربية)
 # Exported from translatewiki.net
+# Author: DRIHEM
 # Author: Houcinee1
 # Author: Meno25
 # Author: OsamaK
 
 wiki_name=العربية...
+appro:wiki_name=Appropedia
 books:wiki_name=كتب
 dict:wiki_name=قاموس
 guten:wiki_name=مشروع جوتنبرج
+how:wiki_name=WikiHow
 pedia:wiki_name=ويكيبيديا العربية
 quote:wiki_name=اقتباسات
 starw:wiki_name=ووكيبيديا
 trav:wiki_name=ويك ترافيل
+license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://en.wikipedia.org/wiki/<title>
+appro:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://en.wiktionary.org/wiki/<title>
 guten:license_text=انظر أيضا : [قائمة أبجدية لأسماء الكتب] ، [قائمة أرفف الكتب]. انتهت صلاحية حقوق الطبع والنشر لمعظم هذه الكتب في الولايات المتحدة. (قد لا يزال تكون حقوق الطبع والنشر في البلدان الأخرى). لذلك قد جعل أي شخص نسخ حرفية أو غير حرفية ، من تلك الأعمال. لمزيد من التفاصيل ، انظر : http://www.gutenberg.org/wiki/Main_Page
+how:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://en.wikiquote.org/wiki/<title>
 type_a_word=اكتب كلمة أو عبارة
 guten:type_a_word=اكتب كتاب أو مؤلف
 no_results=لم يُعثر على أي مدخلات
