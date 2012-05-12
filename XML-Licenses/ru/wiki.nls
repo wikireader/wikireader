@@ -8,9 +8,11 @@
 # Author: Александр Сигачёв
 
 wiki_name=Русская…
+appro:wiki_name=Appropedia
 books:wiki_name=Учебник
 dict:wiki_name=Словарь
 guten:wiki_name=Проект "Гутенберг"
+how:wiki_name=WikiHow
 pedia:wiki_name=Википедия — Русский
 quote:wiki_name=Цитатник
 license_text=Текст доступен по лицензии Creative Commons Attribution/Share Alike и может быть свободно использован в соответствии с условиями этой лицензии. См. текст лицензии [CC-BY-SA] и [Условия использования], в которых могут быть описаны дополнительные условия. Оригинал статьи доступен по адресу: http://en.wikipedia.org/wiki/<title>

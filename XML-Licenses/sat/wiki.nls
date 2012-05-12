@@ -1,8 +1,42 @@
 # Messages for Santali (Santali)
 # Exported from translatewiki.net
 # Author: Albinus
+# Author: David Baskey
 # Author: Ghonokuashabaskey
 
 wiki_name=Ińlis
 books:wiki_name=Puthi
 dict:wiki_name=Diḱsonạri
+quote:wiki_name=Ol hunạr
+type_a_word=Katha olme
+guten:type_a_word=Mit́ṭen kitạb se Onoliạ oleme
+no_results=Jahan olge baṅ ńamlena
+searching=Sendraeḍań
+select_wiki=Ensaiklopedia bachao
+history_title=Jạṛ
+no_history=Jạṛ bạnuḱa
+please_wait=Dayakate tạṅgime
+clear_history=Jạṛ Saphaeme
+yes=Hẽ
+no=Baṅ
+protection=Wikipediare emakan thoṛa kathako Kạṭicko lạgit́te paseć baṅ jojaḱa. Dayakate rukhiạ lạgit uku nombor emme.
+guten:protection=Thoṛa kitạbko do kạtićko lạgit́ baṅ jojaḱa. Dayakate uku nomborte rukhiạkam.
+restricted=Noa emakanaḱ do kaṭićko lạgit́ paseć baṅ jojaḱa. Dayakate uku nomborte rukhiạkam.
+set_password=Uku nombor bạisạome
+ok=Ṭhikgea
+set_filter=Sapha ehob saõte, mit́ṭen uku nombor jạruṛa tinre baṅganoḱ jaegare boloḱ.
+keep_filter_on=Sapha ehobmẽ
+keep_filter_off=Sapha mucạdmẽ
+filter_options=Sapha bachaoko
+turn_filter_on=Sapha ehobmẽ
+turn_filter_off=Sapha mucạdmẽ
+change_password=Uku nombor bodolme
+re_enter_password=Arhõ uku nombor emmẽ
+re_enter_new_password=Arhõ nãwãte uku nombor emmẽ
+passwords_not_match=Uku nombor do baṅ milạulena
+enter_old_password=Mare uku nombor emmẽ
+enter_password=Uku nombor emmẽ
+try_again=Bhul. Dayakate arhõ kurumuṭuimẽ
+enter_new_password=Nãwã uku nombor emmẽ
+parental_controls=Rehẽt samṛao
+r=R

@@ -2,13 +2,13 @@
 # Exported from translatewiki.net
 # Author: Erdemaslancan
 
-wiki_name=Zazaki
+wiki_name=Dimli
 appro:wiki_name=Appropedia
 books:wiki_name=Kitabi
 dict:wiki_name=Qısebend
 guten:wiki_name=Procey Gutenbergi
 how:wiki_name=WikiHow
-pedia:wiki_name=Zazaki Wikipediya
+pedia:wiki_name=Wikipedia Zazaki
 quote:wiki_name=Qısey
 type_a_word=yew kelime ya zi Hemle bınusne
 guten:type_a_word=babeta Kıtabi yana Nuskari
@@ -21,7 +21,7 @@ please_wait=Tay pıpawe
 clear_history=verore cı bester ne
 yes=E
 no=Nê
-set_password=Parolayer saz qı
+set_password=Sazê parolay
 ok=temam
 set_filter=Filtre akerde yo qande coy tay caya re parola icab kena
 keep_filter_on=Filtri AKERDE tepşe
