@@ -10,26 +10,10 @@ ERROR()
 USAGE()
 {
   [ -z "$1" ] || echo error: $*
-  echo usage: $(basename "$0") '<options> <directories_or_directories>...'
+  echo usage: $(basename "$0") '<options> <directories>...'
   echo '       --help            -h         this message'
   echo '       --verbose         -v         show output'
   exit 1
-}
-
-process()
-{
-  local file
-  file="$1"
-
-  case "${verbose}" in
-    [yY]|[yY][eE][sS])
-      echo processing: ${file}
-      ;;
-  esac
-  if [ "${file}" != "${file%.bz2}" ]
-  then
-    bunzip2 "${file}"
-  fi
 }
 
 
@@ -38,6 +22,8 @@ process()
 
 verbose=no
 debug=no
+
+unzippers='bz2:bunzip2 gz:gunzip'
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
@@ -73,29 +59,41 @@ do
   esac
 done
 
-[ $# -le 0 ] && USAGE missing file or directory arguments
+[ $# -le 0 ] && USAGE missing directory arguments
 
-
-for item in $*
+# check all elenents are directories
+for dir in $*
 do
-  case "${verbose}" in
-    [yY]|[yY][eE][sS])
-      echo checking: ${item}
-      ;;
-  esac
-  if [ -f "${item}" ]
-  then
-    process "${item}"
+  [ -d "${dir}" ] || USAGE not a directory: ${dir}
+done
 
-  elif [ -d "${item}" ]
-  then
-    for f in "${item}"/*
+date_glob="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"
+
+for dir in $*
+do
+  [ X"${verbose}" = X"yes" ] &&  echo directory: ${file}
+
+  for zz in ${unzippers}
+  do
+    extension="${zz%%:*}"
+    zz="${zz#*:}"
+    program="${zz%%:*}"
+    for file in "${dir}"/*."${extension}"
     do
-      [ -f "${f}" ] && process "${f}"
+      base="$(basename "${file}")"
+      prefix="${base%%-*}"
+      suffix="${base#*-${date_glob}-}"
+      suffix="${suffix%*.${extension}}"
+      for old_file in "${dir}/${prefix}-"${date_glob}"-${suffix}"
+      do
+        [ -f "${old_file}" ] || continue
+        [ X"${verbose}" = X"yes" ] && echo delete: ${old_file}
+        rm -f "${old_file}"
+      done
+      [ X"${verbose}" = X"yes" ] && echo run: ${program} "${file}"
+      ${program} "${file}"
     done
-  else
-    ERROR Not a file or directory: ${item}
-  fi
+  done
 done
 
 echo
