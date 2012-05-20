@@ -1,0 +1,50 @@
+# Messages for Vèneto (Vèneto)
+# Exported from translatewiki.net
+# Author: Alunardon90
+
+wiki_name=Veneto...
+appro:wiki_name=Apropedia
+books:wiki_name=Libri
+dict:wiki_name=Disionario
+guten:wiki_name=Projeto Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipedia in veneto
+quote:wiki_name=Citasion
+license_text=El testo xe disponibiłe secondo licensa Creative Commons "Attribusion/Condividi ała stesa maniera" e el połe esare ridoparà liberamente secondo i termini di tal licensa. Vedi el testo deła licensa [CC-BY-SA] e i [termini de utiłixo] pa łe ulteriori condision aplicade. L'articoło orijinałe xe disponibiłe a l'indiriso: http://it.wikipedia.org/wiki/<title>
+appro:license_text=El testo xe disponibiłe secondo licensa Creative Commons "Atribusion/Condividi ała stesa maniera" e el połe esare ridoparà liberamente secondo i termini di tal licensa. Vedi el testo de ła licensa [CC-BY-SA] e i [termini de utiłixo] pa łe ulteriori condision aplicade. L'articoło orijinałe xe disponibiłe a l'indiriso: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=El testo xe disponibiłe secondo licensa Creative Commons "Attribusion/Condividi ała stesa maniera" e el połe esare ridoparà liberamente secondo i termini di tal licensa. Vedi el testo deła licensa [CC-BY-SA] e i [termini de utiłixo] pa łe ulteriori condision aplicade. L'articoło orijinałe xe disponibiłe a l'indiriso: http://vec.wikitionary.org/wiki/<title>
+guten:license_text=Vedi anca: [elenco alfabetego dei autori], [elenco dełe librerie]. El dirito de autore pa ła major parte de sti libri xe scadùo nei Stati Unidi (ma łi podarìa uncora esare proteti daldirito d'autore in altri paexi). Cuindi, chiuncue połe far copie ała letara o no leterałi de ste opere. Per majori detaji, vedi: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=El testo xe disponibiłe secondo licensa Creative Commons "Attribusion/Condividi ała stesa maniera" e el połe esare ridoparà liberamente secondo i termini di tal licensa. Vedi el testo deła licensa [CC-BY-SA] e i [termini de utiłixo] pa łe ulteriori condision aplicade. L'articoło orijinałe xe disponibiłe a l'indiriso: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=El testo xe disponibiłe secondo licensa Creative Commons "Attribusion/Condividi ała stesa maniera" e el połe esare ridoparà liberamente secondo i termini di tal licensa. Vedi el testo deła licensa [CC-BY-SA] e i [termini de utiłixo] pa łe ulteriori condision aplicade. L'articoło orijinałe xe disponibiłe a l'indiriso: http://vec.wikipedia.org/wiki/<title>
+type_a_word=Dijita na paroła o na fraxe
+guten:type_a_word=Inserisi un libro o un autore
+no_results=No xe stà catà nisun rixultato
+searching=riçerca in corso...
+select_wiki=Deçidi l'ençiclopedia
+history_title=Cronołojia
+no_history=Cronołojia voda
+please_wait=Speta n'atimo par piasere...
+clear_history=Canceła cronołojia
+yes=Si
+no=No
+protection=Alcune voxi de Wikipedia podarìa no esare adate ai minori. Se prega de inpostare na password pa ła protesion.
+guten:protection=Alcuni libri podarìa no esare adati pa i minori. Se prega de inpostare na password pa ła protesion.
+restricted=Sta voxe podarìa no esare adata ai minori. Se prega de inpostare na password pa ła protesion.
+set_password=Inposta password
+ok=va ben
+set_filter=Co'l filtro ativo (ON), xe necesaria na password co se acede ai elementi riservadi.
+keep_filter_on=Lasa el filtro ativo
+keep_filter_off=Lasa el filtro inativo
+filter_options=Opsion del filtro
+turn_filter_on=Ativa el filtro
+turn_filter_off=Dixativa el filtro
+change_password=Canbia ła password
+re_enter_password=Rinserisi ła password
+re_enter_new_password=Rinserisi ła nova password
+passwords_not_match=Le password no corisponde
+enter_old_password=Inserisi ła password vecia
+enter_password=Inserisi ła password
+try_again=Te ghe sbajà. Prova da novo.
+enter_new_password=Inserisi ła nova password
+parental_controls=Controło jenitori
+r=R

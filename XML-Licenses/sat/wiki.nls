@@ -5,9 +5,19 @@
 # Author: Ghonokuashabaskey
 
 wiki_name=Ińlis
+appro:wiki_name=Appropedia
 books:wiki_name=Puthi
 dict:wiki_name=Diḱsonạri
+guten:wiki_name=Guṭenbark porjekṭ
+how:wiki_name=Wikihow
+pedia:wiki_name=Eṅlis Wikipedia
 quote:wiki_name=Ol hunạr
+license_text=Noa ol do kreyetiv komons atribeuson/seyar-alayik laicenses reaḱ udhinre okare do sadhinlekate arhõm beohar dareyak. Bạṛtite jojoaḱ niyomko baḍae lạgitte ńelmẽ:[CC-BY-SA] reaḱ laisens ar [beohar reaḱ niyomko], asol laisens do nonḍegem ńama:http://en.wikipedia.org/wiki/<title>
+appro:license_text=Noa ol do kreyetiv komons atribeuson/seyar-alayik laicenses reaḱ udhinre okare do sadhinlekate arhõm beohar dareyak. Bạṛtite jojoaḱ niyomko baḍae lạgitte ńelmẽ:[CC-BY-SA] reaḱ laisens ar [beohar reaḱ niyomko], asol laisens do nonḍegem ńama:http://en.wikipedia.org/wiki/<title>
+dict:license_text=Noa ol do kreyetiv komons atribeuson/seyar-alayik laicenses reaḱ udhinre okare do sadhinlekate arhõm beohar dareyak. Bạṛtite jojoaḱ niyomko baḍae lạgitte ńelmẽ:[CC-BY-SA] reaḱ laisens ar [beohar reaḱ niyomko], asol laisens do nonḍegem ńama:http://en.wikipedia.org/wiki/<title>
+guten:license_text=Arhõ ńelmẽ: [alfebeṭ hotete onoliạkoaḱ tạlika], [jaba reaḱ tạlika]. kupyrayeṭko one oka puthiko United Statere umạr cabayen.\n(Ona ko do paseć eṭaḱ disạmkore kopirayeṭ hoedaṛeyaḱ). Ona lekate jahaẽ katha se begor kathate kupiy kạmikoye daṛeyaḱ. Bạṛtite, ńelmẽ: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Noa ol do kreyeṭiv komons aṭribeuson/seyar-alayiḱ laisenses reaḱ udhinre okare do sạdhinlekate arhõm beohar daṛeyaḱ. Baṛtite jojaḱ niyomko baḍae lạgitte ńelmẽ:[CC-BY-SA] reaḱ laisens ar [beohar reaḱ níomko], asol laisens do nonḍ̣egem ńama:http://wikiHow.com/wikiHow:Creative-Commons
+quote:license_text=Noa ol do kreyeṭiv komons aṭribeuson/seyar-alayiḱ laisenses reaḱ udhinre okare do sạdhinlekate arhõm beohar daṛeyaḱ. Baṛtite jojaḱ niyomko baḍae lạgitte ńelmẽ:[CC-BY-SA] reaḱ laisens ar [beohar reaḱ níomko], asol laisens do nonḍ̣egem ńama:http://en.wikiquote.org/wiki/<title>
 type_a_word=Katha olme
 guten:type_a_word=Mit́ṭen kitạb se Onoliạ oleme
 no_results=Jahan olge baṅ ńamlena
