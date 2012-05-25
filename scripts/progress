@@ -38,6 +38,7 @@ USAGE()
   echo '       --fetch-log       -f         fetch log files'
   echo '       --xml-link        -x         link wiki .xml file to latest version'
   echo '       --abort           -A         abort remote PHP/Python/make'
+  echo '       --unzip           -u         unzip compressed xml files, removing corresponding old files'
   exit 1
 }
 
@@ -92,7 +93,7 @@ set_articles_link
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvb:swigp::t::aml:L:z:r:R:I:cG::4::NfxAF: --long=help,verbose,base:,stamps,work,image,git,process::,tail::,analyse,memory,list:,language:,compress:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,farm: -- "$@") || exit 1
+args=$(${getopt} -o hvb:swigup::t::aml:L:z:r:R:I:cG::4::NfxAF: --long=help,verbose,base:,stamps,work,image,git,unzip,process::,tail::,analyse,memory,list:,language:,compress:,run:,re-render:,re-index:,copy,get::,sim4::,new-session,fetch-log,xml-link,abort,farm: -- "$@") || exit 1
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
@@ -215,6 +216,11 @@ do
 
     -g|--git)
       RenderDo --yes ${render_host} ${list} --verbose "cd '${base_dir}' && git checkout . && git pull --rebase"
+      shift
+      ;;
+
+    -u|--unzip)
+      RenderDo --yes ${render_host} ${list} --verbose "cd && '${base_dir}/scripts/UnzipFiles' -v ."
       shift
       ;;
 
