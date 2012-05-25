@@ -25,6 +25,7 @@
 #include "serial.h"
 #include "file.h"
 #include "elf32.h"
+#include "watchdog.h"
 
 // 0 = no-debugging
 // 1 = serious errors
@@ -116,6 +117,7 @@ ELF32_ErrorType ELF32_load(uint32_t *execution_address,
 			   uint32_t *highest_free_address,
 			   const char *filename)
 {
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 	int rc = ELF32_OK;
 	*highest_free_address = 0; // lowest possible address
 
@@ -167,6 +169,7 @@ ELF32_ErrorType ELF32_load(uint32_t *execution_address,
 
 	int i;
 	for (i = 0; i < hdr.e_shnum; i++) {
+		Watchdog_KeepAlive(WATCHDOG_KEY);
 		elf32_sec sec;
 		File_lseek(handle, hdr.e_shoff + sizeof(sec) * i);
 		n = File_read(handle, &sec, sizeof(sec));
@@ -230,6 +233,7 @@ ELF32_ErrorType ELF32_load(uint32_t *execution_address,
 // make sure every thing is cleaned up if the load fails fail
 abort_close:
 	File_close(handle);
+	Watchdog_KeepAlive(WATCHDOG_KEY);
 
 	return rc;
 }
