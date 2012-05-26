@@ -3,14 +3,18 @@
 # Author: Kandar
 
 wiki_name=Basa Inggris...
+appro:wiki_name=Appropédia
 books:wiki_name=Buku
 dict:wiki_name=Kamus
 guten:wiki_name=Proyék Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia English
 quote:wiki_name=Kutipan
 license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Téks gumelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Baca ogé: [Béréndélan pangarang alfabétik], [Bérédélan buku]. Hakcipta kalolobaan ieu buku geus kadaluwarsa di AS (di nagara séjén bisa aya kénéh hakciptana). Ku kituna, sing saha waé bisa bisa nyieun salinan verbatim atawa non-verbatim karya-karya éta. Pikeun lengkepna, tempo: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Téks gumelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Téks gelar ditangtayungan ku Creative Commons Attribution/Share-Alike License sarta bisa dipaké deui sacara bébas luyu jeung lisénsina. Baca: Téks Lisénsi [CC-BY-SA] jeung [Terms of Use] pikeun sarat-sarat lianna. Artikel asli bisa dibuka di: http://en.wikiquote.org/wiki/<title>
 type_a_word=Ketikkeun Kecap atau Frasa
 guten:type_a_word=Ketikkeun Buku atawa Pangarang

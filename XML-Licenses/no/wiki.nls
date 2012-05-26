@@ -3,14 +3,18 @@
 # Author: Nghtwlkr
 
 wiki_name=Norsk (bokmål)...
+appro:wiki_name=Appropedia
 books:wiki_name=Bøker
 dict:wiki_name=Ordbok
 guten:wiki_name=Prosjekt Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia på bokmål og riksmål
 quote:wiki_name=Sitat
 license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse/Del på like vilkår og kan fritt gjenbrukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Se også: [Alphabetisk liste over forfattere], [Liste over bokhyller]. Opphavsrett for de fleste av disse bøkene har gått ut i USA. (De kan fortsatt være opphavsrettsbeskyttet i andre land. Så hvem som helst kan gjøre ordrette eller ikke ordrette kopier av disse verkene. For detaljer, se: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse/Del på like vilkår og kan fritt gjenbrukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikiquote.org/wiki/<title>
 type_a_word=Skriv inn et ord eller uttrykk
 guten:type_a_word=Skriv inn en bok eller forfatter

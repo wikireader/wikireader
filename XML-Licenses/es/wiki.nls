@@ -6,6 +6,7 @@
 # Author: McDutchie
 # Author: Translationista
 # Author: VegaDark
+# Author: Vivaelcelta
 
 wiki_name=Español ...
 appro:wiki_name=Appropedia
@@ -30,7 +31,7 @@ history_title=Historial
 no_history=No hay historial
 please_wait=Espere por favor...
 clear_history=Limpiar historial
-yes=Si
+yes=Sí
 no=No
 protection=Algunas entradas de la Wikipedia pueden no ser apropiadas para menores de edad. Por favor coloque una contraseña por protección.
 guten:protection=Algunos libros podrían no ser aptos para menores. Por favor, establece una contraseña de protección.
