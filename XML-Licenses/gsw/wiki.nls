@@ -1,16 +1,21 @@
 # Messages for Swiss German (Alemannisch)
 # Exported from translatewiki.net
+# Author: Als-Chlämens
 # Author: Als-Holder
 
 wiki_name=Alemannisch ...
+appro:wiki_name=Appropedia
 books:wiki_name=Biecher
 dict:wiki_name=Werterbuech
 guten:wiki_name=Project Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Alemannischi Wikipedia
 quote:wiki_name=Zitat
 license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://als.wikipedia.org/wiki/<title>
+appro:license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://www.appropedia.org/Appropedia:Urheberrechte
 dict:license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://de.wiktionary.org/wiki/<title>
 guten:license_text=Lueg au: [Alphabetischi Lischt vu dr Autore], [Lischt vu dr Biecherschäft]. S Urheberrächt fir di meischte vu däne Biecher isch in dr USA abglofe. (Si chennte aber no in andre Länder gschitzt syy.) Jede cha wertligi oder abgwandleti Kopie vu däne Wärch aalege. Lueg d Syte http://www.gutenberg.org/wiki/Main_Page fir meh Hiiwyys.
+how:license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Dää Text isch unter dr "Creative Commons Attribution/Share-Alike License" verfiegbar un cha unter sällene Bedingige frej brucht wäre. Lueg au: Text vu dr [CC-BY-SA]-Lizänz un di zuesätzlige Benutzigsbedingige, wu au villicht zuedräffe chennte. Dr Orginaltext isch verfiegbar bi: http://de.wikiquote.org/wiki/<title>
 type_a_word=Gib e Wort oder e Phrase yy
 guten:type_a_word=E Buech oder e Autor aagee

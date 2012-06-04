@@ -3,16 +3,20 @@
 # Author: Purodha
 
 wiki_name=Ripoaresch Platt&nbsp;…
+appro:wiki_name=Appropedia
 books:wiki_name=Bööscher
 dict:wiki_name=Wööterbooch
 guten:wiki_name=Projäk Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedija en ripoaresch Sprooche
 quote:wiki_name=Zitate
 starw:wiki_name=Wookieepedia
 trav:wiki_name=Wiki för et Reise
 license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wikipedia.org/wiki/<title> nohzelässe.
+appro:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://www.appropedia.org/Appropedia:Copyrights nohzelässe.
 dict:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wiktionary.org/wiki/<title> nohzelässe.
 guten:license_text=Süsch och: [de alphabeetesche Leß met de Schriever], [de Leß met de Bööcherschääfer]. Et Urhevverrääsch för de miehste vun dänne Bööcher est en de USA ald eröm. (Se künnte en ander Länder ävver joot noch jeschöz sin) Jeder_ein kann jenoue udder ömjemoodelte Koppieje vun dä Werke maache. Op dä Sigg <i lang="en">http://www.gutenberg.org/wiki/Main_Page</i> kam_mer mieh doh drövver lässe.
+how:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://www.wikihow.com/wikiHow:Creative-Commons nohzelässe.
 quote:license_text=Heh dä Täx es ze han onger dä Lizänz „<i lang="en">Creative Commons</i>, der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un dä kann noh dä iere Bedengunge frei jebruch wääde. Süsch och noh_m Täxt vun der Lezänz [CC-BY-SA], un de extra [Bedengunge], di och zohträffe künnte. Dä Ojinaaltäx es op http://ksh.wikiquote.org/wiki/<title> nohzelässe.
 trav:license_text=Dä Täx steiht onger der Lizänz vun de <i lang="en">Creative Commons</i> „der Name moß jenannt wääde un Wiggerjävve zoh dersellve Bedengunge es zohjelohße“ un kann frei jenuz wääde onger dä Bedengunge vun dä Lizänz. Loor noh däm Täx vun de [CC-BY-SA] Lizänz un de <i lang="en">[Terms of Use]</i> noh däm, wat noch jöltesch sin maach. Dä Ojinaal Atikel es op http://wikitravel.org/en/<title> ze fenge.
 type_a_word=Wat som_mer söhke?

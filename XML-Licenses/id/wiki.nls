@@ -7,9 +7,11 @@
 # Author: IvanLanin
 
 wiki_name=Bahasa Indonesia
+appro:wiki_name=Appropedia
 books:wiki_name=Buku
 dict:wiki_name=Kamus
 guten:wiki_name=Proyek Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Bahasa Indonesia
 quote:wiki_name=Kutipan
 license_text=Teks tersedia di bawah Lisensi Atribusi/Berbagi Serupa Creative Commons dan dapat digunakan secara bebas di bawah persyaratan lisensi tersebut. Lihat: Teks dari Lisensi [CC-BY-SA] [Ketentuan Penggunaan] untuk ketentuan tambahan yang mungkin berlaku. Artikel asli tersedia di: http://en.wikipedia.org/wiki/<title>
