@@ -50,9 +50,9 @@
 #
 #   VERSION_TAG                Optional version string for the root programs/fonts [${todays-date}]
 #
-#   PROGRESS_BAR               Enable progress bar when compiling mahatma.elf [NO]
+#   PROGRESS_BAR               Enable progress bar when compiling wiki.app [NO]
 #
-#   TEMPERATURE_DISPLAY        Enable temperature display when compiling mahatma.elf/wiki.app [NO]
+#   TEMPERATURE_DISPLAY        Enable temperature display when compiling wiki.app [NO]
 #
 #   BOOT_LOGO                  A PNG filename in the samo-lib/mbr directory [wikireader.png]
 #
@@ -215,10 +215,6 @@ jig-install: validate-destdir forth-install flash-install mbr-install
 .PHONY: install
 install: ginstall
 
-# install mahatma version
-.PHONY: minstall
-minstall: validate-destdir mahatma-install forth-install fonts-install nls-install misc-files-install version clear-history
-
 # install grifo version
 .PHONY: ginstall
 ginstall: validate-destdir grifo-install init-ini-install wiki-install forth-install fonts-install nls-install misc-files-install version clear-history
@@ -278,15 +274,6 @@ misc-files-install: validate-destdir
 validate-destdir:
 	@if [ ! -d "${DESTDIR_PATH}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}"'" is not a directory ; exit 1; fi
 	@if [ ! -d "${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}" ] ; then echo DESTDIR: "'"${DESTDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"'" is not a directory ; exit 1; fi
-
-
-# Main program
-# ============
-
-# default: progress bar = off
-PROGRESS_BAR ?= NO
-TEMPERATURE_DISPLAY ?= NO
-$(call STD_RULE, mahatma, ${SAMO_LIB}/mahatma, mini-libc fatfs drivers, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" TEMPERATURE_DISPLAY="${TEMPERATURE_DISPLAY}")
 
 
 # Libraries
@@ -847,8 +834,12 @@ grifo-simulate: validate-destdir
 	cd "${DESTDIR}" && ./init.app
 
 
-# wiki application using grifo
-# ============================
+# Main wiki application using grifo
+# =================================
+
+# default: progress bar = off
+PROGRESS_BAR ?= NO
+TEMPERATURE_DISPLAY ?= NO
 
 $(call STD_RULE, wiki, wiki, gcc mini-libc grifo, INSTALL, PROGRESS_BAR="${PROGRESS_BAR}" TEMPERATURE_DISPLAY="${TEMPERATURE_DISPLAY}" INSTALL_GRIFO_SIMULATION="${INSTALL_GRIFO_SIMULATION}")
 
@@ -1024,13 +1015,7 @@ help:
 	@echo '  createdirs            - create work/temp/image for current language'
 	@echo '  jig-install           - copy flash program and image; forth and programs to SD Card'
 	@echo '  p33                   - terminal emulator (console debugging)'
-	@echo '  fetch-nls             - Fetch nls, texts and license files from web'
-	@echo
-	@echo '  mahatma               - (deprecated) compile kernel'
-	@echo '  mahatma-install       - (deprecated) install mahatma as kernel in DESTDIR'
-	@echo '  minstall              - (deprecated) install forth, mahatma, fonts in DESTDIR'
-	@echo '  qt4-simulator         - (deprecated) compile the grifo Qt4 simulator'
-	@echo '  sim4  sim4d           - (deprecated) use the data file in DESTDIR and run the qt4-simulator (d => gdb)'
+	@echo '  fetch-nls             - Fetch nls, texts and license files from web (*not sure it this still works*)'
 	@echo
 
 
