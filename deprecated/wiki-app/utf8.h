@@ -1,10 +1,5 @@
 /*
- * touchscreen handler
- *
  * Copyright (c) 2009 Openmoko Inc.
- *
- * Authors   Daniel Mack <daniel@caiaq.de>
- *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(TOUCHSCREEN_H)
-#define TOUCHSCREEN_H 1
+#ifndef UTF8_H
+#define UTF8_H
 
-void touchscreen_handler(void);
-
-bool touchscreen_event_pending(void);
-
-bool touchscreen_get_event(struct wl_input_event *ev);
-
-void touchscreen_init(void);
-
+#ifndef ucs4_t
+#define ucs4_t unsigned int
 #endif
-
+ucs4_t UTF8_to_UCS4(unsigned char **pUTF8);
+void UCS4_to_UTF8(ucs4_t u, unsigned char *sUTF8);
+void get_last_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
+void get_first_utf8_char(char *out_utf8_char, char *utf8_str, int utf8_str_len);
+char *next_utf8_char(char *utf8_str);
+void utf8_char_toupper(unsigned char *out, unsigned char *in);
+unsigned char *full_alphabet_to_half(unsigned char *full, int *used_len);
+unsigned char *half_alphabet_to_full(unsigned char c);
+#endif

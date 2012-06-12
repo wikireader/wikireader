@@ -99,4 +99,3 @@ void wl_input_wait(struct wl_input_event *ev, int sleep)
 
 	}
 }
-

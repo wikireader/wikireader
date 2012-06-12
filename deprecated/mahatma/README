@@ -52,5 +52,3 @@ area mapped to external components. Mahatma's linker script stores routines
 which are involved in interrupt handling and system suspend/resume to the
 DST RAM section. In particular, all symbols and functions from traps.c and
 suspend.c are handled like that.
-
-

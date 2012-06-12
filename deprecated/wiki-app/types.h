@@ -27,4 +27,3 @@ typedef signed short	s16;
 typedef signed int	s32;
 
 #endif /* TYPES_H */
-

@@ -35,4 +35,3 @@ int render_string_and_clear(const int font, int start_x,
 			    int start_y, char *string, int text_length, int inverted,
 			    int clear_start_x, int clear_start_y, int clear_end_x, int clear_end_y);
 #endif /* GLYPH_H */
-

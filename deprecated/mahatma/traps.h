@@ -1,5 +1,5 @@
 /*
- * Frame buffer interface
+ * interrupt vector setup
  *
  * Copyright (c) 2009 Openmoko Inc.
  *
@@ -20,21 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <guilib.h>
-#include <string.h>
-#include <regs.h>
-#include <lcd.h>
+#if !defined(TRAPS_H)
+#define TRAPS_H 1
 
-unsigned char *framebuffer;
+void traps_init(void);
 
-void fb_init(void)
-{
-	LCD_initialise();
-	framebuffer = (unsigned char *) LCD_VRAM;
-}
-
-void fb_refresh(void)
-{
-	return;
-}
-
+#endif

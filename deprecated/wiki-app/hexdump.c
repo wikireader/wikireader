@@ -78,4 +78,3 @@ void hexdump(const char *p, unsigned int len)
 		hex_print(line);
 	}
 }
-

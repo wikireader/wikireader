@@ -1,10 +1,5 @@
 /*
- * interrupt vector setup
- *
  * Copyright (c) 2009 Openmoko Inc.
- *
- * Authors   Daniel Mack <daniel@caiaq.de>
- *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(TRAPS_H)
-#define TRAPS_H 1
+#ifndef WL_FILE_IO_H
+#define WL_FILE_IO_H
 
-void traps_init(void);
+enum {
+	WL_O_RDONLY = 0,
+	WL_O_WRONLY,
+	WL_O_RDWR,
+	WL_O_CREATE,
+};
 
-#endif
+/* those are implemented by the specific/file-io-*.c */
+int wl_open(const char *filename, int flags);
+void wl_close(int fd);
+int wl_read(int fd, void *buf, unsigned int count);
+int wl_write(int fd, void *buf, unsigned int count);
+int wl_seek(int fd, unsigned int pos);
+int wl_fsize(int fd, unsigned int *size);
+unsigned int wl_tell(int fd);
 
+#endif /* WL_FILE_IO_H */

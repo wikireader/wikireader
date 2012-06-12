@@ -86,4 +86,3 @@ void print_byte(uint8_t val);
 void print_u32(uint32_t val);
 
 #endif /* MISC_H */
-

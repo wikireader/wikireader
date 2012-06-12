@@ -227,4 +227,3 @@ void guilib_init(void)
 {
 	guilib_clear();
 }
-

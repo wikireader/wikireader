@@ -137,4 +137,3 @@ int search_string_cmp(char *title, char *search, int len)  // assuming search co
 	}
 	return rc;
 }
-

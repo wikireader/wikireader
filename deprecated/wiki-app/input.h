@@ -98,4 +98,3 @@ void wl_input_reset_random_key(void);
 #endif
 
 #endif /* WL_INPUT_H */
-

@@ -1,5 +1,10 @@
 /*
+ * Frame buffer interface
+ *
  * Copyright (c) 2009 Openmoko Inc.
+ *
+ * Authors   Daniel Mack <daniel@caiaq.de>
+ *           Christopher Hall <hsw@openmoko.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +20,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WL_TIME_H
-#define WL_TIME_H
+#include <guilib.h>
+#include <string.h>
+#include <regs.h>
+#include <lcd.h>
 
-/* returns the amount of milliseconds since uptime */
-unsigned int get_timer(void);
+unsigned char *framebuffer;
 
-#endif /* WL_TIME_H */
+void fb_init(void)
+{
+	LCD_initialise();
+	framebuffer = (unsigned char *) LCD_VRAM;
+}
 
+void fb_refresh(void)
+{
+	return;
+}

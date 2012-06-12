@@ -51,4 +51,3 @@ struct guilib_image {
 void guilib_blit_image(const struct guilib_image *img, int x, int y);
 
 #endif /* GUILIB_H */
-
