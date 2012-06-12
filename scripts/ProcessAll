@@ -12,6 +12,7 @@ USAGE()
   [ -z "$1" ] || echo error: $*
   echo usage: $(basename "$0") '<options> <command>'
   echo '       --help            -h         This message'
+  echo '       --brief           -b         Brief output (for analyse)'
   echo '       --verbose         -v         Display messages'
   echo 'commands:'
   echo '       help              This message'
@@ -29,11 +30,12 @@ USAGE()
 # main program
 
 verbose=no
+brief=no
 debug=no
 
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvd --long=help,verbose,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvbd --long=help,verbose,brief,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
@@ -43,6 +45,11 @@ do
   case "$1" in
     -v|--verbose)
       verbose=yes
+      shift
+      ;;
+
+    -b|--brief)
+      brief=yes
       shift
       ;;
 
@@ -69,6 +76,7 @@ done
 AllItems='
 cy
 de
+de:dict
 da
 el
 en::::::-2
@@ -81,6 +89,7 @@ en:starw
 es
 fi
 fr
+fr:dict
 hu
 it
 ja
@@ -152,7 +161,12 @@ do
       for l in ${AllItems}
       do
         echo Analysis for: ${l}
-        progress -L"${l}" -a
+        if [ X"${brief}" = X"yes" ]
+        then
+          progress -L"${l}" -a | egrep '(^Analysis|Completion:)'
+        else
+          progress -L"${l}" -a
+        fi
       done
       ;;
 
