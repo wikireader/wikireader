@@ -24,7 +24,7 @@
 #include <tff.h>
 #include <diskio.h>
 #include <delay.h>
-#include <misc.h>
+#include <print.h>
 #include <lcd.h>
 #include <FLASH.h>
 
@@ -74,7 +74,7 @@ int flash(int arg)
 	bool flag = false;
 	for (i = 0; i < ProgramRetries; ++i) {
 		print("Begin Pass: ");
-		print_dec32(i);
+		print_int(i);
 		print_char('\n');
 		LCD_DisplayImage(LCD_PositionTop, true, &program_image);
 		if (process(filename)) {
@@ -115,7 +115,7 @@ static bool process(const char *filename)
 	rc = f_open(&file, filename, FA_READ);
 	if (FR_OK != rc) {
 		print("open error = ");
-		print_dec32(rc);
+		print_int(rc);
 		print_char('\n');
 		return false;
 	}
@@ -124,16 +124,16 @@ static bool process(const char *filename)
 	rc = f_read(&file, ROMBuffer, sizeof(ROMBuffer), &length);
 	if (FR_OK != rc) {
 		print("read error = ");
-		print_dec32(rc);
+		print_int(rc);
 		print_char('\n');
 		f_close(&file);
 		return false;
 	}
 	if (sizeof(ROMBuffer) != length) {
 		print("only read: ");
-		print_dec32(length);
+		print_int(length);
 		print(" required ");
-		print_dec32(sizeof(ROMBuffer));
+		print_int(sizeof(ROMBuffer));
 		print_char('\n');
 		f_close(&file);
 		return false;
