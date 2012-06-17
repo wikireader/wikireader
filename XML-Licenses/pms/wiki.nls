@@ -4,14 +4,18 @@
 # Author: Dragonòt
 
 wiki_name=Anglèis...
+appro:wiki_name=Appropedia
 books:wiki_name=Lìber
 dict:wiki_name=Dissionari
 guten:wiki_name=Proget Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia an piemontèis
 quote:wiki_name=Sitassion
 license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Terms of Use] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Attribution/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'utilisassion] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Atribussion/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'usagi] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
 guten:license_text=Vëdde ëdcò: [Lista Alfabética dj'autor], [Lista dij lìber]. Ij drit ëd còpia për la pì part dë sti lìber-sì a son scadù ant jë Stat Unì. (A peulo esse sota drit ëd còpia an d'àutri stat). Parèj chicassìa a peul fé dle còpie paròla për paròla o pa dë sti travaj-sì. Për ij detaj, vëdde: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Atribussion/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'usagi] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Ël test a l'é disponìbil sota la Licensa Creative Commons Atribussion/Partagi ugual e a peul esse liberament dovrà sota le condission ëd cola licensa-lì. Vardé: Test ëd la Licensa [CC-BY-SA] e [Condission d'usagi] për le condission adissionaj ch'a peulo aplichesse. L'artìcol original a l'é disponìbil a: http://en.wikipedia.org/wiki/<title>
 type_a_word=Scriv na Paròla o na Fras
 guten:type_a_word=Scriv un Lìber o n'Autor

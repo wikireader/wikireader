@@ -4,14 +4,18 @@
 # Author: Edinwiki
 
 wiki_name=Bosanski...
+appro:wiki_name=Apropedija
 books:wiki_name=Knjige
 dict:wiki_name=Rječnik
 guten:wiki_name=Projekt Gutenberg
+how:wiki_name=WikiKako
 pedia:wiki_name=Wikipedija na Bosanskom
 quote:wiki_name=Citati
 license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uslovima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uslovi korištenja] za dodatne uslove koji se mogu primjenjivati. Izvorni članak dostupan je na: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
 guten:license_text=Pogledajte [abecedni popis autora] i [popis knjiga].  Autorska prava za većinu ovih djela su istekla u Sjedinjenim Američkim Državama, ali ipak mogu biti zaštićena u drugim državama. Svatko može napraviti kopije ovih djela ili ih izmijeniti. Za više informacija pogledajte http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uslovima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uslovi korištenja] za dodatne uslove koji se mogu primjenjivati. Izvorni članak dostupan je na: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Tekst je dostupan pod licencom Creative Commons Attribution/Share-Alike i može se slobodno koristiti dalje pod uvjetima te licence. Vidi: Tekst [CC-BY-SA] licence i [Uvjeti korištenja] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
 type_a_word=Unesite riječ ili frazu
 guten:type_a_word=Unesite knjigu ili autora
