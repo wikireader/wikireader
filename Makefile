@@ -232,8 +232,10 @@ version: validate-destdir
 	${RM} "${VERSION_FILE}" "${DESTDIR_PATH}"/*.idx-tmp "${DESTDIR_PATH}"/*~
 	${RM} "${DESTDIR_PATH}"/*/*.idx-tmp
 	echo VERSION: ${VERSION_TAG} >> "${VERSION_FILE}"
-	find "${DESTDIR_PATH}" -mindepth 1 -type d -print -exec \
+	find '${DESTDIR_PATH}' -mindepth 1 -type d -print -exec \
 	  ${MAKE} -C '{}' -f '${PWD}/$(firstword ${MAKEFILE_LIST})' DESTDIR='${DESTDIR_PATH}' '${CHECKSUM_FILE}' ';'
+	(cd '${DESTDIR_PATH}' &&  sha${SHA_LEVEL}sum $$(find . -maxdepth 1 -type f -printf '%f\n' | grep -v '${CHECKSUM_FILE}') > '${CHECKSUM_FILE}')
+
 
 .PHONY: clean-sha
 clean-sha:
