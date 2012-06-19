@@ -31,37 +31,8 @@
 #include "search_fnd.h"
 #include "guilib.h"
 
-WIKI_LIST wiki_list_default[] =
-{
-	{ 1,  1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia", KEYBOARD_CHAR, 0},
-#if 0
-	// these are loaded from "wiki.inf" in the root of the SD Card
-	// the standard default file is: XML-Licenses/wiki.inf
-	{ 2,  2, WIKI_CAT_ENCYCLOPAEDIA, "es", "espedia", KEYBOARD_CHAR, 0},
-	{ 3,  3, WIKI_CAT_ENCYCLOPAEDIA, "fr", "frpedia", KEYBOARD_CHAR, 0},
-	{ 4,  4, WIKI_CAT_ENCYCLOPAEDIA, "de", "depedia", KEYBOARD_CHAR, 0},
-	{ 5,  5, WIKI_CAT_ENCYCLOPAEDIA, "nl", "nlpedia", KEYBOARD_CHAR, 0},
-	{ 6,  6, WIKI_CAT_ENCYCLOPAEDIA, "pt", "ptpedia", KEYBOARD_CHAR, 0},
-	{ 7,  7, WIKI_CAT_ENCYCLOPAEDIA, "fi", "fipedia", KEYBOARD_CHAR, 0},
-	{ 8,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_PHONE_STYLE_JP, 0},
-	{ 9,  8, WIKI_CAT_ENCYCLOPAEDIA, "ja", "japedia", KEYBOARD_CHAR_JP, 2},
-	{10,  9, WIKI_CAT_ENCYCLOPAEDIA, "da", "dapedia", KEYBOARD_CHAR_DA, 0},
-	{11, 10, WIKI_CAT_ENCYCLOPAEDIA, "no", "nopedia", KEYBOARD_CHAR, 0},
-	{12, 11, WIKI_CAT_ENCYCLOPAEDIA, "hu", "hupedia", KEYBOARD_CHAR, 0},
-	{13, 12, WIKI_CAT_ENCYCLOPAEDIA, "ko", "kopedia", KEYBOARD_CHAR_KO, 0},
-	{14, 13, WIKI_CAT_ENCYCLOPAEDIA, "el", "elpedia", KEYBOARD_CHAR, 0},
-	{15, 14, WIKI_CAT_ENCYCLOPAEDIA, "ru", "rupedia", KEYBOARD_CHAR, 0},
-	{16, 15, WIKI_CAT_ENCYCLOPAEDIA, "zhs", "zhpedia", KEYBOARD_CHAR, 0},
-	{17, 15, WIKI_CAT_ENCYCLOPAEDIA, "zht", "zhpedia", KEYBOARD_PHONE_STYLE_TW, 2},
-	{18, 16, WIKI_CAT_ENCYCLOPAEDIA, "cy", "cypedia", KEYBOARD_CHAR, 0},
-	{19, 17, WIKI_CAT_ENCYCLOPAEDIA, "pl", "plpedia", KEYBOARD_CHAR, 0},
-	{20, 18, WIKI_CAT_ENCYCLOPAEDIA, "simple", "e0pedia", KEYBOARD_CHAR, 0},
-	{21, 19, WIKI_CAT_QUOTE,         "en", "enquote", KEYBOARD_CHAR, 0},
-	{22, 20, WIKI_CAT_BOOKS,         "en", "enbooks", KEYBOARD_CHAR, 0},
-	{23, 21, WIKI_CAT_DICTIONARY,    "en", "endict", KEYBOARD_CHAR, 0},
-	{24, 22, WIKI_CAT_GUTENBERG,     "en", "enguten", KEYBOARD_CHAR, 0},
-	{25, 23, WIKI_CAT_ENCYCLOPAEDIA, "it", "itpedia", KEYBOARD_CHAR, 0},
-#endif
+WIKI_LIST wiki_list_default[] = {
+	{1, 1, WIKI_CAT_ENCYCLOPAEDIA, "en", "enpedia", KEYBOARD_CHAR, ""},
 };
 
 WIKI_LIST *wiki_list;
@@ -84,7 +55,7 @@ PACTIVE_WIKI aActiveWikis = NULL;
 extern int bShowPositioner;
 WIKI_LICENSE_DRAW *pWikiLicenseDraw;
 
-unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len, int wiki_nls_idx);
+const unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len);
 int get_wiki_idx_from_serial_id(int wiki_serial_id);
 
 #define MAX_LINE_SIZE 256
@@ -219,7 +190,6 @@ void init_wiki_info(void)
 {
 	unsigned int i, j;
 	int fd;
-	unsigned char *p;
 	int nWikiSerialId;
 	char line[MAX_LINE_SIZE], buf[MAX_LINE_SIZE], word[MAX_LINE_SIZE];
 	ssize_t nLineChars;
@@ -302,7 +272,9 @@ void init_wiki_info(void)
 								state = 99;
 							break;
 						case 4:
-							wiki_list[nWikiList].wiki_nls_idx = atoi(word);
+							// whole structure was cleared
+							// so copy n-1 bytes
+							strncpy((char *)wiki_list[nWikiList].wiki_menu_extra, word, sizeof(wiki_list[nWikiList].wiki_menu_extra) - 1);
 							state++;
 							break;
 						default:
@@ -368,17 +340,17 @@ void init_wiki_info(void)
 				file_read(fd, pWikiIni, lenWikiIni);
 				file_close(fd);
 				pWikiIni[lenWikiIni] = '\0';
-				p = pWikiIni;
-				while (*p)
+				unsigned char *p0 = pWikiIni;
+				while (*p0)
 				{
-					if (*p == '\r' || *p == '\n')
-						*p = '\0';
-					p++;
+					if (*p0 == '\r' || *p0 == '\n')
+						*p0 = '\0';
+					p0++;
 				}
-				p = get_nls_key_value("positioner", pWikiIni, lenWikiIni, 0);
+				const unsigned char *p = get_nls_key_value("positioner", pWikiIni, lenWikiIni);
 				if (*p)
 					bShowPositioner = atoi((const char *)p);
-				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni, 0);
+				p = get_nls_key_value("wiki_id", pWikiIni, lenWikiIni);
 				if (*p)
 				{
 					nWikiSerialId = atoi((const char *)p);
@@ -527,6 +499,7 @@ uint32_t wiki_lang_link_search(const unsigned char *lang_link_str)
 	nCurrentWiki = nTempCurrentWiki;
 	return article_idx;
 }
+
 char *get_wiki_file_path(int nWikiIdx, char *file_name)
 {
 	static char sFilePath[32];
@@ -586,25 +559,19 @@ int get_wiki_serial_id_from_idx(unsigned int wiki_idx)
 	return 0;
 }
 
-unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len, int wiki_nls_idx)
+const unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len)
 {
 	int i, j;
 	int key_len;
 	int bFound = 0;
-	char local_key[64];
 
-	if (wiki_nls_idx)
-		sprintf(local_key, "%s%d", key, wiki_nls_idx); // try the key name with wiki_name_idx first
-	else
-		ustrcpy(local_key, key);
-
-	key_len = ustrlen(local_key);
+	key_len = ustrlen(key);
 	i = 0;
 	while (i < key_pairs_len - key_len - 1 && !bFound)
 	{
 		for (j = 0; j < key_len; j++)
 		{
-			if (local_key[j] != key_pairs[i + j])
+			if (key[j] != key_pairs[i + j])
 				break;
 		}
 		i += j;
@@ -622,10 +589,8 @@ unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long
 	}
 	if (bFound)
 		return &key_pairs[i + 1];
-	else if (wiki_nls_idx)
-		return get_nls_key_value(key, key_pairs, key_pairs_len, 0); // try the key name without wiki_name_idx
 	else
-		return (unsigned char *)""; // *** VERY BAD: removes const
+		return (const unsigned char *)"";
 }
 
 const unsigned char *get_nls_text(const char *key)
@@ -671,7 +636,7 @@ const unsigned char *get_nls_text(const char *key)
 		if (aActiveWikis[nCurrentWiki].WikiNlsLen == 0)
 			return (const unsigned char *)"";
 
-		return get_nls_key_value(key, aActiveWikis[nCurrentWiki].WikiNls, aActiveWikis[nCurrentWiki].WikiNlsLen, wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_nls_idx);
+		return get_nls_key_value(key, aActiveWikis[nCurrentWiki].WikiNls, aActiveWikis[nCurrentWiki].WikiNlsLen);
 	}
 }
 
@@ -716,12 +681,26 @@ const unsigned char *get_wiki_name(int idx)
 	return pName;
 }
 
+// I think this will only work if get_wiki_name has just been called
+const unsigned char *get_wiki_extra_name(int idx)
+{
+	return wiki_list[aActiveWikis[idx].WikiInfoIdx].wiki_menu_extra;
+}
+
 void wiki_ini_insert_keypair(char *key, char *keyval)
 {
-	unsigned char *p = get_nls_key_value(key, pWikiIni, lenWikiIni, 0);
+	const unsigned char *p = get_nls_key_value(key, pWikiIni, lenWikiIni);
 
 	if (*p)
 	{
+		debug_print("not sure about this");
+		debug_printf("p = %s\n", p);
+		debug_printf("k = %s\n", keyval);
+#if 0
+//*****************************************************************************
+//***************** What does this do? ****************************************
+//***************** Why does it write to somethis that is read-only? **********
+//*****************************************************************************
 		if (ustrlen(p) < ustrlen(keyval))
 		{
 			int diff = ustrlen(keyval) - ustrlen(p);
@@ -740,6 +719,7 @@ void wiki_ini_insert_keypair(char *key, char *keyval)
 			memset(p, 0, ustrlen(keyval) + 1);
 			memcpy(p, keyval, ustrlen(keyval));
 		}
+#endif
 	}
 	else if (lenWikiIni + ustrlen(key) + ustrlen(keyval) + 2 < sizeWikiIni)
 	{

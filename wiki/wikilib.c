@@ -381,7 +381,7 @@ void handle_search_key(struct keyboard_key *key, unsigned long ev_time)
 		return;
 	} else if (keycode == WL_KEY_TEMPERATURE) {
 		delay_us(100000);
-		temperature_mode ++;
+		++temperature_mode;
 		temperature_mode %= 3;
 		set_temperature_mode();
 		guilib_fb_lock();

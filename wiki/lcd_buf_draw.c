@@ -1213,6 +1213,8 @@ int render_wiki_selection_with_pcf()
 			articleLink[article_link_count++].article_id = rendered_wiki_selection_count;
 		}
 		draw_string(get_wiki_name(rendered_wiki_selection_count));
+		draw_string((const unsigned char *)" ");
+		draw_string(get_wiki_extra_name(rendered_wiki_selection_count));
 		rendered_wiki_selection_count++;
 		lcd_draw_buf.current_x = 0;
 		lcd_draw_buf.current_y += lcd_draw_buf.line_height;

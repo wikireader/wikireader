@@ -49,7 +49,7 @@ typedef struct _WIKI_LIST {
 	char wiki_lang[10];
 	char wiki_folder[10];
 	KEYBOARD_MODE wiki_default_keyboard;
-	int wiki_nls_idx; // 0 for using wiki_name entry in wiki.nls, 2 for using wiki_name2, etc.
+	unsigned char wiki_menu_extra[32];
 } WIKI_LIST;
 
 typedef struct _WIKI_LICENSE_DRAW {
@@ -74,6 +74,7 @@ const unsigned char *get_nls_text(const char *key);
 const unsigned char *get_lang_link_display_text(const unsigned char *lang_link_str);
 char *get_wiki_file_path(int nWikiIdx, char *file_name);
 const unsigned char *get_wiki_name(int idx);
+const unsigned char *get_wiki_extra_name(int idx);
 void wiki_selection(void);
 void set_wiki(int idx);
 int get_wiki_idx_from_id(int wiki_id);
