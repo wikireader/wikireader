@@ -1114,11 +1114,17 @@ class WrProcess(HTMLParser.HTMLParser):
                 self.li_inside[self.level] = False
 
         elif tag == 'dd':
-            self.flush_buffer()
-            esc_code0(LIST_MARGIN_TOP)
-            if self.li_inside[self.level]:
-                self.li_inside[self.level] = False
-                self.list_decrease_indent()
+            if 0 == self.level:
+                if warnings or True:
+                    (line, column) = self.getpos()
+                    PrintLog.message(u'Warning: stray </{0:s}> @[L{1:d}/C{2:d}] in article[{3:d}]: {4:s}'
+                                     .format(tag, line, column, article_count + 1, g_this_article_title))
+            else:
+                self.flush_buffer()
+                esc_code0(LIST_MARGIN_TOP)
+                if self.li_inside[self.level]:
+                    self.li_inside[self.level] = False
+                    self.list_decrease_indent()
 
         elif tag == 'dt':
             self.flush_buffer()
