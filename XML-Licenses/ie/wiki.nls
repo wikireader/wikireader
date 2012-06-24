@@ -3,14 +3,18 @@
 # Author: Renan
 
 wiki_name=Interlingue...
+appro:wiki_name=Apropedia
 books:wiki_name=Libres
 dict:wiki_name=Dictionarium
 guten:wiki_name=Projecte Gutenberg
+how:wiki_name=WikiQualmen
 pedia:wiki_name=Wikipedia Interlingue
 quote:wiki_name=Citationes
 license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in:  http://en.wikipedia.org/wiki/<title>
+appro:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in:  http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Vider anc: [Liste alfabetic de autores], [Liste de tentor de líbres]. Jure editorial por max de tis libres ha expirat in li States Unit. (Ili posse seren esser gardat che jure editorial in altri países). Talmen alquem posse fabricar copies verbal o non-verbal de tis labores. Por detallies, vider: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Textu es disponibil sub li Atribuetion Creative Commons/Autorisation Share-Alike e posse esser líbermen reusat sub li conditiones de ti autorisation. Vider: Textu del Autorisation [CC-BY-SA] e [Condition de Usu] por conditiones additional posse aplicar. Li articul original es disponibil in:  http://en.wikiquote.org/wiki/<title>
 type_a_word=Tippa un Parol o Frase
 guten:type_a_word=Tippa un Libre o Autor

@@ -3,17 +3,22 @@
 # Author: Ainali
 # Author: Dafer45
 # Author: Tobulos1
+# Author: Warrakkk
 # Author: WikiPhoenix
 
 wiki_name=Svenska...
+appro:wiki_name=Appropedia
 books:wiki_name=Böcker
 dict:wiki_name=Ordlista
 guten:wiki_name=Projekt Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Svenska
 quote:wiki_name=Citat
 license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se:  licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Text är tillgänglig under Creative Commons Attribution/Share-Alike licensen och fritt kan återanvändas enligt villkoren i denna licens. Se: Text [CC-av-SA] licens och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se: licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
 guten:license_text=Se även: [alfabetisk lista över författare], [lista över bokhyllor].  Upphovsrätten för de flesta av dessa böcker har gått ut i USA. (De kan fortfarande vara upphovsrättsskyddade i andra länder). Så vem som helst får göra ordagranna eller icke-ordagranna kopior av dessa verk. För detaljer, se: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Text är tillgänglig under Creative Commons Attribution/Share-Alike licensen och kan fritt återanvändas enligt villkoren i denna licens. Se: Text [CC-av-SA] licens och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Text är tillgänglig under Creative Commons Erkännande/Dela lika licens och kan återanvändas fritt enligt villkoren i denna licens. Se:  licenstexten för [CC-BY-SA] och [användarvillkor] för ytterligare villkor som kan gälla. Den ursprungliga artikeln är tillgänglig på: http://en.wikipedia.org/wiki/<title>
 type_a_word=Skriv ett ord eller en fras
 guten:type_a_word=Skriv en bok eller författare
