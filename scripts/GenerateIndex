@@ -54,6 +54,8 @@ exec sbcl --script "$0" "$0" "$@"
        ("pedia" "Wikipedia")
        ("quote" "Wikiquote")
        ("starw" "Wookieepedia")
+       ("fgrlm" "ForgottenRealms")
+       ("dand" "DandD")
        ("trav" "Wikitravel"))
    do
      (setf (gethash (first item) *type-codes*) (second item)))

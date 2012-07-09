@@ -21,6 +21,7 @@ USAGE()
   echo '       cjk               Rebuild ko,ja,zh'
   echo '       en                Rebuild short for en:pedia (or other two letter language code)'
   echo '       en:dict           Rebuild specific item (<lang>:<type>)'
+  echo '       ja,es:dict,da     Rebuild several items (comma separated list)'
   echo '       analyse           Show summary of logs'
   echo '       get               Combine and fetch all recently rendered data'
   exit 1
@@ -87,6 +88,7 @@ en:quote
 en:trav
 en:starw
 es
+es:dict
 fi
 fr
 fr:dict
