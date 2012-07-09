@@ -1,0 +1,91 @@
+diff --git a/Makefile b/Makefile
+index 0f1a9b1..3e2856f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -27,6 +27,8 @@
+ #
+ #   XML_FILES                  list of files to process
+ #
++#   EBOOK_FILES                directory of ebook files to process
++#
+ #   WIKI_LANGUAGE              Language code [en]
+ #
+ #   WIKI_LANGUAGE_VARIANT      Variant Language code []
+@@ -431,6 +433,9 @@ $(call STD_BASE, offline-renderer, ${HOST_TOOLS}/offline-renderer)
+ # wikis
+ XML_FILES_PATH = $(realpath ${XML_FILES})
+
++# Gutenberg
++EBOOK_FILES_PATH := $(realpath ${EBOOK_FILES})
++
+ # default for simgle machine
+ RENDER_BLOCK ?= 0
+
+@@ -467,6 +472,17 @@ createdirs:
+	${MKDIR} "${TEMPDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
+
+
++.PHONY: bindex
++bindex: validate-destdir
++	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} bindex \
++		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
++		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
++		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
++		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
++		EBOOK_FILES="${EBOOK_FILES_PATH}" \
++		RENDER_BLOCK="${RENDER_BLOCK}" \
++		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
++
+ .PHONY: index
+ index: validate-destdir
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" index \
+@@ -525,6 +541,10 @@ combine: validate-destdir
+ .PHONY: iprc
+ iprc: index parse render combine
+
++# ebooks all stages
++.PHONY: brc
++brc: bindex render combine
++
+
+ # Build database using multiple machines
+ # ======================================
+@@ -770,7 +790,7 @@ nls-install: validate-destdir
+	  ( while read dir ; \
+	    do \
+	      d=$$(basename "$${dir}") ; \
+-	      for suffix in books dict pedia quote starw trav ; \
++	      for suffix in books dict guten pedia quote starw trav ; \
+	      do \
+	        language="$${d%$${suffix}}" ; \
+	        if [ X"$${language}" != X"$${d}" ] ; \
+diff --git a/host-tools/offline-renderer/Makefile b/host-tools/offline-renderer/Makefile
+index 819fce2..f815d24 100644
+--- a/host-tools/offline-renderer/Makefile
++++ b/host-tools/offline-renderer/Makefile
+@@ -122,6 +122,10 @@ all: ${TARGETS}
+ check-xml:
+	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
+
++.PHONY: check-ebook
++check-ebook:
++	@if [ -z "${EBOOK_FILES}" ] ; then echo EBOOK_FILES is not set ; exit 1; fi
++
+ .PHONY: check-dirs
+ check-dirs:
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+@@ -138,6 +142,14 @@ check-html:
+	@if [ -z "${HTML_ARTICLES}" ] ; then echo HTML_ARTICLES is not set ; exit 1; fi
+
+
++.PHONY: bindex
++bindex: check-dirs check-ebook
++	./BookIndex.py ${VERBOSE_ARG} \
++		--article-index="${ARTICLES}" \
++		--prefix="${DATA_PREFIX}" \
++		--xhtml="${HTML_ARTICLES}" \
++		--workdir="${WORKDIR_PATH}/books" ${EBOOK_FILES}
++
+ .PHONY: index
+ index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-user.dic ${IGNORED_TEMPLATES}
+	./ArticleIndex.py ${VERBOSE_ARG} \

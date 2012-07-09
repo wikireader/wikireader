@@ -1,0 +1,30 @@
+From Tom,
+  see how to convert...
+
+for j in range(len(dom.childNodes)):
+#!/bin/zsh
+# download guteberg files
+# Authors: Tom Bachmann <e_mc_h2@web.de>
+
+for i in $(grep '\.epub' ~tmp/catalog.rdf | tr -d ' ')
+{
+  f=$(echo $i | sed 's/^.*;\(.*\)">/\1/')
+
+  num=$(echo $f |  tr '/' ' ' | awk '{print $4}' | sed 's/^..\([^\.-]*\).*/\1/')
+
+  lang=$(grep "\"etext${num}\"" ~tmp/catalog.rdf -A50 | grep 'dc:language' | head -n 1 | sed 's/^.*<rdf:value>\(.*\)<\/rdf:value>.*$/\1/' | sed 's/.*;\(.*\)">$/\1/')
+
+  d=$(echo $f | sed 's/-images//')
+  if [ "$d" != "$f" ]
+  then
+    lang="foo"
+  fi
+  if [ "$lang" = "de" -o "$lang" = "en" ]
+  then
+    #echo download $f
+    wget "www.gutenberg.org/$f"
+    sleep 2
+  else
+    echo $f >> ignore
+  fi
+}

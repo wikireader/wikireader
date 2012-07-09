@@ -1,0 +1,127 @@
+diff --git a/Makefile b/Makefile
+index 0f1a9b1..3e2856f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -27,6 +27,8 @@
+ #
+ #   XML_FILES                  list of files to process
+ #
++#   EBOOK_FILES                directory of ebook files to process
++#
+ #   WIKI_LANGUAGE              Language code [en]
+ #
+ #   WIKI_LANGUAGE_VARIANT      Variant Language code []
+@@ -431,6 +433,9 @@ $(call STD_BASE, offline-renderer, ${HOST_TOOLS}/offline-renderer)
+ # wikis
+ XML_FILES_PATH = $(realpath ${XML_FILES})
+
++# Gutenberg
++EBOOK_FILES_PATH := $(realpath ${EBOOK_FILES})
++
+ # default for simgle machine
+ RENDER_BLOCK ?= 0
+
+@@ -467,6 +472,17 @@ createdirs:
+	${MKDIR} "${TEMPDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}"
+
+
++.PHONY: bindex
++bindex: validate-destdir
++	cd ${HOST_TOOLS}/offline-renderer && ${MAKE} bindex \
++		WIKI_LANGUAGE="${WIKI_LANGUAGE}" \
++		WIKI_LANGUAGE_VARIANT="${WIKI_LANGUAGE_VARIANT}" \
++		WIKI_FILE_PREFIX="${WIKI_FILE_PREFIX}" \
++		WIKI_DIR_SUFFIX="${WIKI_DIR_SUFFIX}" \
++		EBOOK_FILES="${EBOOK_FILES_PATH}" \
++		RENDER_BLOCK="${RENDER_BLOCK}" \
++		WORKDIR="${WORKDIR_PATH}" DESTDIR="${DESTDIR_PATH}"
++
+ .PHONY: index
+ index: validate-destdir
+	${MAKE} -C "${HOST_TOOLS}/offline-renderer" index \
+@@ -525,6 +541,10 @@ combine: validate-destdir
+ .PHONY: iprc
+ iprc: index parse render combine
+
++# ebooks all stages
++.PHONY: brc
++brc: bindex render combine
++
+
+ # Build database using multiple machines
+ # ======================================
+@@ -770,7 +790,7 @@ nls-install: validate-destdir
+	  ( while read dir ; \
+	    do \
+	      d=$$(basename "$${dir}") ; \
+-	      for suffix in books dict pedia quote starw trav ; \
++	      for suffix in books dict guten pedia quote starw trav ; \
+	      do \
+	        language="$${d%$${suffix}}" ; \
+	        if [ X"$${language}" != X"$${d}" ] ; \
+diff --git a/host-tools/offline-renderer/Makefile b/host-tools/offline-renderer/Makefile
+index 819fce2..6db887b 100644
+--- a/host-tools/offline-renderer/Makefile
++++ b/host-tools/offline-renderer/Makefile
+@@ -47,6 +47,7 @@ WIKI_FILE_PREFIX ?= wiki
+ WIKI_LANGUAGE ?= en
+ WIKI_DIR_SUFFIX ?= pedia
+ WIKI_VERSION ?= $(shell date '+%Y%m%d')
++COLL_NUMBER ?= 0
+
+ ENABLE_LANGUAGES_LINKS ?= YES
+ ENABLE_IMAGES ?= YES
+@@ -61,12 +62,12 @@ TEMPDIR_PATH := $(shell ${RESOLVEPATH} ${TEMPDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUF
+
+ DATA_PREFIX := $(shell ${RESOLVEPATH} ${DESTDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
+ INDEX_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/${WIKI_FILE_PREFIX})
+-ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles.db)
+-COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/counts.text)
+-TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/templates.db)
+-OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/offsets.db)
++ARTICLES := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles${COLL_NUMBER}.db)
++COUNTS_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/counts${COLL_NUMBER}.text)
++TEMPLATE_FILE := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/templates${COLL_NUMBER}.db)
++OFFSETS := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/offsets${COLL_NUMBER}.db)
+ HTML_ARTICLES_PREFIX := $(shell ${RESOLVEPATH} ${WORKDIR_PATH}/articles-)
+-HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${RENDER_BLOCK}.html)
++HTML_ARTICLES := $(shell ${RESOLVEPATH} ${HTML_ARTICLES_PREFIX}${COLL_NUMBER}-${RENDER_BLOCK}.html)
+
+ VERSION_FILE := ${DATA_PREFIX}.ftr
+
+@@ -122,6 +123,10 @@ all: ${TARGETS}
+ check-xml:
+	@if [ -z "${XML_FILES}" ] ; then echo XML_FILES is not set ; exit 1; fi
+
++.PHONY: check-ebook
++check-ebook:
++	@if [ -z "${EBOOK_FILES}" ] ; then echo EBOOK_FILES is not set ; exit 1; fi
++
+ .PHONY: check-dirs
+ check-dirs:
+	@if [ ! -d "${DESTDIR}" ] ; then echo DESTDIR: "'"${DESTDIR}"'" is not a directory ; exit 1; fi
+@@ -138,6 +143,15 @@ check-html:
+	@if [ -z "${HTML_ARTICLES}" ] ; then echo HTML_ARTICLES is not set ; exit 1; fi
+
+
++.PHONY: bindex
++bindex: check-dirs check-ebook
++	./BookIndex.py ${VERBOSE_ARG} \
++		--article-index="${ARTICLES}" \
++		--prefix="${DATA_PREFIX}" \
++		--coll-number="${COLL_NUMBER}" \
++		--xhtml="${HTML_ARTICLES}" \
++		--workdir="${WORKDIR_PATH}/books" ${EBOOK_FILES}
++
+ .PHONY: index
+ index: check-dirs check-xml stamp-RedirectedTo.py stamp-PinyinTable.py stamp-user.dic ${IGNORED_TEMPLATES}
+	./ArticleIndex.py ${VERBOSE_ARG} \
+@@ -174,6 +188,8 @@ render: check-dirs check-fonts check-html stamp-PinyinTable.py stamp-user.dic
+		--block-size="${ARTICLE_BLOCK_SIZE}" \
+		--max-article-length="${MAX_ARTICLE_LENGTH}" \
+		"${HTML_ARTICLES}"
++#		--coll-number="${COLL_NUMBER}"
++#		--dat-number="${COLL_NUMBER}"
+
+ .PHONY: combine
+ combine: check-dirs
