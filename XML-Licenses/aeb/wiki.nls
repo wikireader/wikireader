@@ -3,14 +3,18 @@
 # Author: Csisc
 
 wiki_name=Tounsi...
+appro:wiki_name=appropedia: mawsou3at el melkia
 books:wiki_name=كتب
 dict:wiki_name=Dictionnaire
 guten:wiki_name=مشروع جوتنبرج
+how:wiki_name=Wikikifech
 pedia:wiki_name=Wikipedia Tounsi
 quote:wiki_name=اقتباسات
 license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
+appro:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
 guten:license_text=انظر أيضا : [قائمة أبجدية لأسماء الكتب] ، [قائمة أرفف الكتب]. انتهت صلاحية حقوق الطبع والنشر لمعظم هذه الكتب في الولايات المتحدة. (قد لا يزال تكون حقوق الطبع والنشر في البلدان الأخرى). لذلك قد جعل أي شخص نسخ حرفية أو غير حرفية ، من تلك الأعمال. لمزيد من التفاصيل ، انظر : http://www.gutenberg.org/wiki/Main_Page
+how:license_text=يتوفر هذا النص تحت ترخيص إبداع العموم/قابل للمشاركة ويمكن إعادة أستخدامه بكل حرية و هو خاضع لبنود هذا الترخيص. أنظر: نص [CC-BY-SA] الترخيص و [Terms of Use] لمزيد من البنود القابلة للتطبيق هنا. يتواجد النص الأصلي في: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=el text motawafer ta7t ichraf the Creative Commons Attribution/Share-Alike License w ynejem el ness yesta3mlouh idha o7torimat elijra'at el koll. Ara: Nass el licence mte3  [CC-BY-SA] w [Terms of Use] il ma3loumet o5ra. el article original tnejem tel9ah fi: http://aeb.wikipedia.org/wiki/<title>
 type_a_word=اكتب كلمة أو عبارة
 guten:type_a_word=اكتب كتاب أو مؤلف

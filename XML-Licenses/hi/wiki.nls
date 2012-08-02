@@ -1,0 +1,17 @@
+# Messages for Hindi (हिन्दी)
+# Exported from translatewiki.net
+# Author: Anand Vivek Satpathi
+
+wiki_name=अंग्रेजी
+books:wiki_name=पुस्तकें
+dict:wiki_name=शब्दकोश
+guten:wiki_name=परियोजना गुटेनबर्ग
+how:wiki_name=विकिकैसे
+searching=खोज रहा...
+select_wiki=विश्वकोश चुनें
+history_title=इतिहास
+no_history=कोई इतिहास नही
+clear_history=इतिहास मिटाएँ
+yes=हाँ
+no=नहीं
+ok=ठीक है

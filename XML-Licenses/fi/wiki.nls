@@ -1,6 +1,7 @@
 # Messages for Finnish (suomi)
 # Exported from translatewiki.net
 # Author: Centerlink
+# Author: Linnea
 # Author: Nike
 # Author: Veikk0.ma
 
@@ -8,10 +9,10 @@ wiki_name=Englanti ...
 appro:wiki_name=Appropedia
 books:wiki_name=Kirjat
 dict:wiki_name=Sanakirja
-guten:wiki_name=Projekti Gutenberg
+guten:wiki_name=Gutenberg-projekti
 how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Englanti
-quote:wiki_name=Lainaukset
+quote:wiki_name=Sitaatit
 license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wikipedia.org/wiki/ <title>
 appro:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Teksti on saatavilla Creative Commons Attribution/Share-Alike License-lisenssin alaisena ja sitä voidaan vapaasti käyttää uudelleen tuon lisenssin ehtojen mukaisesti. Katso lisätietoja [CC-BY-SA]-lisenssin teksti ja [Terms of Use] sovellettavista lisäehdoista. Alkuperäinen artikkeli löytyy osoitteesta: http://en.wiktionary.org/wiki/<title>
