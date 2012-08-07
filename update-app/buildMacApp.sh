@@ -6,7 +6,8 @@ EOF
 rm -rf build dist
 python setup.py py2app
 
-codesign -f -s "Developer ID Application" "dist/Wikireader Update.app/" --timestamp=none
+#codesign -f -s "Developer ID Application" "dist/Wikireader Update.app/" --timestamp=none
+codesign -f -s "Developer ID Application" "dist/Wikireader Update.app/"
 
 # check code sign
 spctl -a -v "dist/Wikireader Update.app"
