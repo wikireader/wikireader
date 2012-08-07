@@ -1,0 +1,5 @@
+dist
+*.exe
+test
+*.pyc
+*.pyo
