@@ -1,5 +1,6 @@
 # Messages for French (français)
 # Exported from translatewiki.net
+# Author: Cquoi
 # Author: Gomoko
 # Author: IAlex
 # Author: McDutchie
@@ -33,7 +34,7 @@ please_wait=Veuillez patienter...
 clear_history=Vider historique
 yes=Oui
 no=Non
-protection=Certains articles sur Wikipédia peuvent être inappropriés pour les jeunes. Veuillez définir un mot de passe l'accès à ces articles.
+protection=Certains articles sur Wikipédia peuvent être inappropriés pour les jeunes. Veuillez définir un mot de passe pour y accéder.
 guten:protection=Certains livres peuvent être inappropriés pour les mineurs. Veuillez s'il vous plait mettre en place un mot de passe de protection.
 restricted=Cet article n'est pas approprié pour les jeunes. Veuillez définir un mot de passe pour y accéder.
 set_password=Définir un mot de passe

@@ -1,6 +1,7 @@
 # Messages for Oriya (ଓଡ଼ିଆ)
 # Exported from translatewiki.net
 # Author: Ansumang
+# Author: Jnanaranjan Sahu
 # Author: Psubhashish
 
 wiki_name=ଇଂରାଜୀ...
@@ -20,8 +21,17 @@ please_wait=ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ...
 clear_history=ଇତିହାସ ଖାଲି କରନ୍ତୁ
 yes=ହଁ
 no=ନା
+protection=କିଛି ଉଇକିପେଡିଆ ତଥ୍ୟ ଛୋଟ ପିଲାଙ୍କ ପାଇଁ ଉପଯୁକ୍ତ ନୁହେଁ । ଦୟାକରି ଏହା ଉପରେ ପାସୱାର୍ଡ ଦିଅନ୍ତୁ ।
+guten:protection=କିଛି ବହି ଛୋଟ ପିଲାଙ୍କ ପାଇଁ ଉପଯୁକ୍ତ ନୁହେଁ । ଦୟାକରି ସୁରକ୍ଷା ପାଇଁ ଏହା ଉପରେ ପାସୱାର୍ଡ ଦିଅନ୍ତୁ ।
+restricted=କିଛି ଉଇକିପେଡିଆ ତଥ୍ୟ ଛୋଟ ପିଲାଙ୍କ ପାଇଁ ଉପଯୁକ୍ତ ନୁହେଁ । ଦୟାକରି ସୁରକ୍ଷା ପାଇଁ ଏହା ଉପରେ ପାସୱାର୍ଡ ଦିଅନ୍ତୁ ।
 set_password=ପାସୱର୍ଡ଼ ସେଟ କରନ୍ତୁ
 ok=ଠିକ ଅଛି
+set_filter=ଶୋଧନ ପ୍ରକ୍ରିୟା ଚାଲୁ ରହିଥିଲେ, ସୁରକ୍ଷିତ ତଥ୍ୟ ଦେଖିବା ପାଇଁ ଗୋଟିଏ ପାସୱାର୍ଡ ଦରକାର ହୋଇଥାଏ ।
+keep_filter_on=ଶୋଧନ ପ୍ରକ୍ରିୟା ଚାଲୁ କରିବେ
+keep_filter_off=ଶୋଧନ ପ୍ରକ୍ରିୟା ବନ୍ଦ କରିବେ
+filter_options=ଶୋଧନ ପ୍ରକ୍ରିୟା
+turn_filter_on=ଶୋଧନ ପ୍ରକ୍ରିୟା ଚାଲୁ କରିବେ
+turn_filter_off=ଶୋଧନ ପ୍ରକ୍ରିୟା ବନ୍ଦ କରିବେ
 change_password=ପାସୱର୍ଡ଼ ବଦଳାନ୍ତୁ
 re_enter_password=ପାସୱର୍ଡ଼ ପୁଣି ନିବେଶ କରନ୍ତୁ
 re_enter_new_password=ନୂଆ ପାସୱର୍ଡ଼ ପୁଣି ନିବେଶ କରନ୍ତୁ

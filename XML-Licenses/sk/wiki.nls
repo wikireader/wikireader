@@ -1,12 +1,15 @@
 # Messages for Slovak (slovenčina)
 # Exported from translatewiki.net
 # Author: Lesny skriatok
+# Author: Teslaton
 # Author: Wizzard
 
 wiki_name=Slovenčina...
+appro:wiki_name=Appropedia
 books:wiki_name=Knihy
 dict:wiki_name=Slovník
 guten:wiki_name=Projekt Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Slovenská Wikipédia
 quote:wiki_name=Citáty
 license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wikipedia.org/wiki/<title></title>
