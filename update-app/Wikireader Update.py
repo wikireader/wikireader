@@ -79,7 +79,7 @@ class AboutDialog(wx.Dialog):
 
 class WindowsMenuBar(wx.MenuBar):
     def OnAbout(self, evt):
-        dlg = AboutDialog(self, -1, "About Wikireader Update", size=(400, 462), style=wx.DEFAULT_DIALOG_STYLE)
+        dlg = AboutDialog(self, -1, "About WikiReader Update", size=(400, 462), style=wx.DEFAULT_DIALOG_STYLE)
         dlg.ShowModal()
 
     def OnFAQ(self, evt):
@@ -103,7 +103,7 @@ class WindowsMenuBar(wx.MenuBar):
             faqItem = helpMenu.Append(302, "&Frequently Asked Questions")
             titem = helpMenu.Append(303, "&Twitter")
             helpMenu.AppendSeparator()
-            aitem =helpMenu.Append(301, "&About Wikireader Update")
+            aitem =helpMenu.Append(301, "&About WikiReader Update")
 
             self.Append(fileMenu, '&File')
             self.Append(helpMenu, '&Help')
@@ -118,7 +118,7 @@ class WindowsMenuBar(wx.MenuBar):
 
 class MacSystemMenuFrame(wx.Frame):
     def OnAbout(self, evt):
-        dlg = AboutDialog(self, -1, "About Wikireader Update", size=(400, 462), style=wx.DEFAULT_DIALOG_STYLE)
+        dlg = AboutDialog(self, -1, "About WikiReader Update", size=(400, 462), style=wx.DEFAULT_DIALOG_STYLE)
         dlg.ShowModal()
 
     def OnFAQ(self, evt):
@@ -138,7 +138,7 @@ class MacSystemMenuFrame(wx.Frame):
         if wx.Platform == '__WXMAC__':
             menu = wx.Menu()
             qitem = menu.Append(wx.ID_EXIT,"Quit","Quit Applications")
-            aitem = menu.Append(wx.ID_ABOUT, "&About Wikireader Update")
+            aitem = menu.Append(wx.ID_ABOUT, "&About WikiReader Update")
             faqItem = menu.Append(555, "Frequently Asked Questions")
             titem = menu.Append(556, "Twitter")
             menubar.Append(menu, '&Help')
@@ -157,7 +157,7 @@ class MainFrame(wx.Frame):
 
         frameHeight = 0
         if wx.Platform == '__WXMSW__':
-           frameHeight = 70
+           frameHeight = 30
 
         wx.Frame.__init__(self, None, -1, "WikiReader Update", size=(499, 360 + frameHeight))
         self.SetBackgroundColour("black")
@@ -492,7 +492,7 @@ class DownloadPackageFrame(wx.Frame):
         self.SetIcon(images.icon.GetIcon())
     
     def checkBaseFile(self):
-        self.dlg = wx.ProgressDialog("Wikireader Updater",
+        self.dlg = wx.ProgressDialog("WikiReader Updater",
                                "Checking base files ...",
                                maximum = 100,
                                parent=self,
@@ -811,7 +811,7 @@ def showMessage(msg):
     wx.MessageBox(msg, 'Info', wx.OK | wx.ICON_INFORMATION)
 
 def checkingVersionDialog(parent, showError=True):
-    dlg = wx.ProgressDialog("Wikireader Updater",
+    dlg = wx.ProgressDialog("WikiReader Updater",
                                "Checking sdcard ...",
                                maximum = 100,
                                parent=parent,

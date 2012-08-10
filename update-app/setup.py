@@ -7,7 +7,7 @@ Usage:
 
 from setuptools import setup
 
-APP = ['Wikireader Update.py']
+APP = ['WikiReader Update.py']
 DATA_FILES = ['./tools/7za']
 OPTIONS = {'argv_emulation': True,
  'iconfile': 'WikiReader.icns',

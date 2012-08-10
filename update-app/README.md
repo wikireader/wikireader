@@ -6,8 +6,8 @@
 [Pyinstaller - pack applcation to exe](http://www.pyinstaller.org/)
 
 ```
-python Makespec.py -F -w --icon=icon.ico "Wikireader Update.py"
-python Build.py .\Wikireader Update\Wikireader Update.spec
+python Makespec.py -F -w --icon=icon.ico "WikiReader Update.py"
+python Build.py .\WikiReader Update\WikiReader Update.spec
 ```
 
 ### Mac
