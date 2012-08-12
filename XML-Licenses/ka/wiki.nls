@@ -1,0 +1,21 @@
+# Messages for Georgian (ქართული)
+# Exported from translatewiki.net
+# Author: David1010
+
+wiki_name=ქართული...
+appro:wiki_name=Appropedia
+books:wiki_name=წიგნები
+dict:wiki_name=ლექსიკონი
+pedia:wiki_name=ქართული ვიკიპედია
+quote:wiki_name=ციტატები
+searching=იძებნება...
+history_title=ისტორია
+no_history=არ არის ისტორია
+clear_history=ისტორიის წაშლა
+yes=დიახ
+no=არა
+set_password=პაროლის დაყენება
+ok=კარგი
+enter_old_password=შეიყვანეთ ძველი პაროლი
+enter_password=შეიყვანეთ პაროლი
+r=R

@@ -1,0 +1,44 @@
+# Messages for Uyghur (Arabic script) (ئۇيغۇرچە)
+# Exported from translatewiki.net
+# Author: Sahran
+
+wiki_name=ئۇيغۇرچە…
+appro:wiki_name=Appropedia
+books:wiki_name=كىتابلار
+dict:wiki_name=لۇغەت
+guten:wiki_name=گۇتېنبېرگ قۇرۇلۇشى
+how:wiki_name=WikiHow
+pedia:wiki_name=ئۇيغۇرچە ۋىكىپېدىيا
+quote:wiki_name=نەقىللەر
+type_a_word=بىر سۆز ياكى سۆز بېرىكمىسى كىرگۈزۈڭ
+guten:type_a_word=كىتاب ياكى يازغۇچىنى كىرگۈزۈڭ
+no_results=ھېچقانداق كىرگۈزۈش تېپىلمىدى
+searching=ئىزدەۋاتىدۇ…
+select_wiki=ئېنىسكىلوپىدىيا تاللاڭ
+history_title=تارىخ
+no_history=تارىخى يوق
+please_wait=سەل كۈتۈڭ…
+clear_history=تارىخ خاتىرىسىنى تازىلا
+yes=ھەئە
+no=ياق
+protection=بەزى ۋىكىپېدىيا تۈرلىرى بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. قوغداش ئۈچۈن ئىم تەڭشەڭ.
+guten:protection=بەزى كىتابلار بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. ئۇنى قوغداش ئۈچۈن ئىم تەڭشەڭ.
+restricted=بۇ تۈرلەر بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. ئۇنى قوغداش ئۈچۈن ئىم تەڭشەڭ.
+set_password=ئىم تەڭشەك
+ok=جەزملە
+set_filter=سۈزگۈچ ئېچىلغاندىن كېيىن، زىيارەت قىلىش چەكلىمىگە ئۇچرىغان ماقالىگە يولۇققاندا ئىم كىرگۈزۈش كېرەك.
+keep_filter_on=سۈزگۈچنى ئوچۇق تۇت
+keep_filter_off=سۈزگۈچنى تاقاق تۇت
+filter_options=سۈزگۈچ تاللانما
+turn_filter_on=سۈزگۈچنى ئاچ
+turn_filter_off=سۈزگۈچنى تاقا
+change_password=ئىم ئۆزگەرت
+re_enter_password=ئىمنى قايتا كىرگۈزۈڭ
+re_enter_new_password=يېڭى ئىمنى قايتا كىرگۈزۈڭ
+passwords_not_match=ئىم ماس كەلمىدى
+enter_old_password=كونا ئىمنى كىرگۈزۈڭ
+enter_password=ئىم كىرگۈزۈڭ
+try_again=خاتا. قايتا كىرگۈزۈڭ
+enter_new_password=يېڭى ئىمنى كىرگۈزۈڭ
+parental_controls=ئاتا-ئانا تىزگىنلىرى
+r=چەكلەنگەن

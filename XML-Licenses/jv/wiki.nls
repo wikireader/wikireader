@@ -1,0 +1,50 @@
+# Messages for Javanese (Basa Jawa)
+# Exported from translatewiki.net
+# Author: NoiX180
+
+wiki_name=Basa Jawa...
+appro:wiki_name=Appropedia
+books:wiki_name=Buku
+dict:wiki_name=Bausastra
+guten:wiki_name=Proyèk Gutenberg
+how:wiki_name=WikiPiyé
+pedia:wiki_name=Wikipédia Basa Jawa
+quote:wiki_name=Kutipan
+license_text=Teks sumadhiya sakisoré Lisènsi Sakrupa Atribusi/Paduman Creative Commons lan bisa sacara bebas dianggo sakisore syarat lisènsi. Delok: Teks Lisènsi [CC-BY-SA] lan [Katemton Panganggoan] kanggo katemton tambahan sing mungkin dipatrapaké. Artikel sing asli sumadhiya nèng: http://jv.wikipedia.org/wiki/<title>
+appro:license_text=Tèks iki sumadhiya sakisoré Lisènsi Sakrupa Atribusi/Paduman Creative Commons lan bisa sacara bébas dianggo sakisoré syarat lisènsi. Delok: Tèks Lisènsi [CC-BY-SA] lan [Katemton Panganggoan] kanggo katemton tambahan sing mungkin dipatrapaké. Artikel sing asli sumadhiya nèng: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Tèks iki sumadhiya sakisoré Lisènsi Sakrupa Atribusi/Paduman Creative Commons lan bisa sacara bébas dianggo sakisoré syarat lisènsi. Delok: Tèks Lisènsi [CC-BY-SA] lan [Katemton Panganggoan] kanggo katemton tambahan sing mungkin dipatrapaké. Artikel sing asli sumadhiya nèng: http://jv.wikipedia.org/wiki/<title>
+guten:license_text=Uga delok: [Daptar panganggit sacara alpabetis], [Daptar rak buku]. Hak cipta kanggo buku-buku ini wis kedaluwarsa nèng Amérika Serikat. (Mungkin isih ana sing nduwèni hak cipta nèng negara liya). Dadiné, sapa waé bisa nggawé salinan verbatim utawa non-verbatim saka karya-karya kuwi. Kanggo sabanjuré, delok: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tèks iki sumadhiya sakisoré Lisènsi Sakrupa Atribusi/Paduman Creative Commons lan bisa sacara bébas dianggo sakisoré syarat lisènsi. Delok: Tèks Lisènsi [CC-BY-SA] lan [Katemton Panganggoan] kanggo katemton tambahan sing mungkin dipatrapaké. Artikel sing asli sumadhiya nèng: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Tèks iki sumadhiya sakisoré Lisènsi Sakrupa Atribusi/Paduman Creative Commons lan bisa sacara bébas dianggo sakisoré syarat lisènsi. Delok: Tèks Lisènsi [CC-BY-SA] lan [Katemton Panganggoan] kanggo katemton tambahan sing mungkin dipatrapaké. Artikel sing asli sumadhiya nèng: http://en.wikiquote.org/wiki/<title>
+type_a_word=Tik Tembung utawa Prase
+guten:type_a_word=Tik Buku utawa Panganggit
+no_results=Ora ana kontèn sing ditemokaké
+searching=nggolèki...
+select_wiki=Pilih bauwerna
+history_title=Riwayat
+no_history=Ora ana riwayat
+please_wait=Mangga dientèni...
+clear_history=Busak Riwayat
+yes=Iya
+no=Ora
+protection=Sebagéyan kontèn Wikipédia mungkin ora patut kanggo uwong sing durung cukup umur. Mangga pasang tembung sandhi kanggo njagani.
+guten:protection=Sebagéyan buku mungkin ora patut kanggo uwong sing durung cukup umur. Mangga pasang tembung sandhi kanggo njagani.
+restricted=Kontèn iki mungkin ora patut kanggo uwong sing durung cukup umur. Mangga pasang tembung sandhi kanggo njagani.
+set_password=Pasang Tembung Sandhi
+ok=oké
+set_filter=Yèn modé panyaringané murub, tembung sandhi bakal dibutuhaké kanggo ngaksès kontèn sing diwatesi.
+keep_filter_on=Tetep Urubna Panyaring
+keep_filter_off=Tetep Patèni Panyaring
+filter_options=Pilihan Panyaring
+turn_filter_on=Urubna Panyaring
+turn_filter_off=Patèni Panyaring
+change_password=Ganti tembung sandhiné
+re_enter_password=Balèni lebokna tembung sandhiné
+re_enter_new_password=Balèni lebokna tembung sandhi anyar
+passwords_not_match=Tembung sandhiné ora padha
+enter_old_password=Lebokna tembung sandhi lawas
+enter_password=Lebokna tembung sandhi
+try_again=Salah. Mangga coba manèh.
+enter_new_password=Lebokna tembung sandhi anyar
+parental_controls=Kendhaliné Wong Tuwa
+r=R
