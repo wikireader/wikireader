@@ -13,7 +13,14 @@ import simplejson
 import disk
 import download
 import images
-
+import logging
+# logger = logging.getLogger('WikiReader')
+# hdlr = logging.FileHandler('/var/tmp/WikiReader.log')
+# formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+# hdlr.setFormatter(formatter)
+# logger.addHandler(hdlr)
+# logger.setLevel(logging.INFO)
+#logger.info('test')
 
 # stuff for debugging
 print "Python", sys.version
@@ -44,23 +51,21 @@ class AboutDialog(wx.Dialog):
         pre.Create(parent, ID, title, pos, size, style)
 
         self.PostCreate(pre)
-
         wrap = 360
         linkPosX = 0
         copyRightPosX = 0
         if wx.Platform == '__WXMSW__':
-           wrap = 260
-           linkPosX = 30
-           copyRightPosX = -30
+            wrap = 260
+            linkPosX = 30
+            copyRightPosX = -30
 
         whitePanel = wx.Panel(self, -1, size=(499, 440), pos=(0, 0))
         whitePanel.SetBackgroundColour("White")
 
-
         logoImage = images.geticon_128x128Bitmap()
         logo = wx.StaticBitmap(whitePanel, -1, logoImage, size=(128, 128), pos=(136, 20))
 
-        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0", pos=(160, 150))
+        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.1", pos=(160, 150))
 
         descLabel = wx.StaticText(whitePanel, -1, 
 "From day one, our goal was to give physical form to Wikipedia, one of the most interesting aspects of the Internet, so people can bring it with them everywhere they go. We want to promote personal growth and the ability to enjoy those unexpected moments when curiosity strikes. WikiReader is our gift for those who have the openness to experience life and the willingness to be changed by it.",
@@ -72,7 +77,7 @@ class AboutDialog(wx.Dialog):
         hl.HyperLinkCtrl(whitePanel, wx.ID_ANY, "WikiReader uses only open source software",
                                         URL="https://github.com/wikireader", pos=(70+linkPosX, 340))
 
-        copyrightLabel = wx.StaticText(whitePanel, -1, "Copyright © 2012 Openmoko Inc. All rights reserved. The \nWikipedia name and logo are registered trademarks owned by \nthe Wikimedia Foundation and used with permission.", size=(499, 40), pos=(50+copyRightPosX, 370), style=wx.ALIGN_CENTER)
+        copyrightLabel = wx.StaticText(whitePanel, -1, u"Copyright \N{Copyright Sign} 2012 Openmoko Inc. All rights reserved. The \nWikipedia name and logo are registered trademarks owned by \nthe Wikimedia Foundation and used with permission.", size=(499, 40), pos=(50+copyRightPosX, 370), style=wx.ALIGN_CENTER)
         copyrightLabelFont = wx.Font(defaultSmallSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         copyrightLabel.SetFont(copyrightLabelFont)
 
@@ -121,6 +126,7 @@ class MacSystemMenuFrame(wx.Frame):
         dlg = AboutDialog(self, -1, "About WikiReader Update", size=(400, 462), style=wx.DEFAULT_DIALOG_STYLE)
         dlg.ShowModal()
 
+
     def OnFAQ(self, evt):
         h = hl.HyperLinkCtrl(self, wx.ID_ANY)
         h.GotoURL("http://thewikireader.com/#faq", True, True)
@@ -134,7 +140,6 @@ class MacSystemMenuFrame(wx.Frame):
         self.parent = parent
 
         menubar = wx.MenuBar()
-        
         if wx.Platform == '__WXMAC__':
             menu = wx.Menu()
             qitem = menu.Append(wx.ID_EXIT,"Quit","Quit Applications")
