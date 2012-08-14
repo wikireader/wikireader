@@ -65,7 +65,7 @@ class AboutDialog(wx.Dialog):
         logoImage = images.geticon_128x128Bitmap()
         logo = wx.StaticBitmap(whitePanel, -1, logoImage, size=(128, 128), pos=(136, 20))
 
-        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.1", pos=(160, 150))
+        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.2", pos=(160, 150))
 
         descLabel = wx.StaticText(whitePanel, -1, 
 "From day one, our goal was to give physical form to Wikipedia, one of the most interesting aspects of the Internet, so people can bring it with them everywhere they go. We want to promote personal growth and the ability to enjoy those unexpected moments when curiosity strikes. WikiReader is our gift for those who have the openness to experience life and the willingness to be changed by it.",

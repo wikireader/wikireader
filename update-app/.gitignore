@@ -3,4 +3,3 @@ dist
 test
 *.pyc
 *.pyo
-*.sublime*

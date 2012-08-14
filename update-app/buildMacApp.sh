@@ -14,4 +14,10 @@ spctl -a -v "dist/WikiReader Update.app"
 
 #open "dist/WikiReader Update.app"
 
+cd dist
+
+tar -zcvf "WikiReader.tar.gz" "WikiReader Update.app/"
+
+cd -
+
 rm -rf build

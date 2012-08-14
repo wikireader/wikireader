@@ -18,7 +18,7 @@ KERNEL*
 *.map
 *.elf
 stamp-*
-image*
+/image*
 work*
 *.xml
 log
