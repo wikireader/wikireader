@@ -19,5 +19,3 @@ cd dist
 tar -zcvf "WikiReader.tar.gz" "WikiReader Update.app/"
 
 cd -
-
-rm -rf build
