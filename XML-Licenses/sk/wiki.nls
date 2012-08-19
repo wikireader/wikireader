@@ -1,5 +1,6 @@
 # Messages for Slovak (slovenčina)
 # Exported from translatewiki.net
+# Author: Kusavica
 # Author: Lesny skriatok
 # Author: Teslaton
 # Author: Wizzard
@@ -13,8 +14,10 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Slovenská Wikipédia
 quote:wiki_name=Citáty
 license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wikipedia.org/wiki/<title></title>
+appro:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wiktionary.org/wiki/<title></title>
 guten:license_text=Pozri aj: [abecedný zoznam autorov] [zoznam knižníc]. Väčšina týchto kníh je v Spojených štátoch voľným dielom. (V iných krajinách môžu byť stále chránené autorským právom). Tieto diela teda môže ktokoľvek kopírovať a upravovať. Pre podrobnosti pozri: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Text je k dispozícii pod Creative Commons Attribution, Share-Alike a môže byť voľne opätovne použitý pod podmienkami tejto licencie. Pozri: Text licencie [CC-BY-SA] a [podmienky používania], ktoré obsahujú dodatkové podmienky. Pôvodný článok je k dispozícii na: http://sk.wikiquote.org/wiki/<title></title>
 type_a_word=Zadajte slovo alebo frázu
 guten:type_a_word=Napíšte knihu alebo autora

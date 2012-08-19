@@ -2,10 +2,37 @@
 # Exported from translatewiki.net
 # Author: Papuass
 
+wiki_name=Angļu...
+appro:wiki_name=Appropedia
 books:wiki_name=Grāmatas
 dict:wiki_name=Vārdnīca
+guten:wiki_name=Project Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Angliskā Vikipēdija
 quote:wiki_name=Citāti
+license_text=Teksts ir pieejams saskaņā ar Creative Commons Attribution/Share-Alike licenci un var tikt brīvi izmantots atkārtoti saskaņā ar šo licenci. Apskatiet: [CC-BY-SA] licences tekstu un [Izmantošanas noteikumus], lai uzzinātu par papildus nosacījumiem. Sākotnējais raksts ir pieejams: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Teksts ir pieejams saskaņā ar Creative Commons Attribution/Share-Alike licenci un var tikt brīvi izmantots atkārtoti saskaņā ar šo licenci. Apskatiet: [CC-BY-SA] licences tekstu un [Izmantošanas noteikumus], lai uzzinātu par papildus nosacījumiem. Sākotnējais raksts ir pieejams: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Teksts ir pieejams saskaņā ar Creative Commons Attribution/Share-Alike licenci un var tikt brīvi izmantots atkārtoti saskaņā ar šo licenci. Apskatiet: [CC-BY-SA] licences tekstu un [Izmantošanas noteikumus], lai uzzinātu par papildus nosacījumiem. Sākotnējais raksts ir pieejams: http://en.wiktionary.org/wiki/<title>
+how:license_text=Teksts ir pieejams saskaņā ar Creative Commons Attribution/Share-Alike licenci un var tikt brīvi izmantots atkārtoti saskaņā ar šo licenci. Apskatiet: [CC-BY-SA] licences tekstu un [Izmantošanas noteikumus], lai uzzinātu par papildus nosacījumiem. Sākotnējais raksts ir pieejams: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Teksts ir pieejams saskaņā ar Creative Commons Attribution/Share-Alike licenci un var tikt brīvi izmantots atkārtoti saskaņā ar šo licenci. Apskatiet: [CC-BY-SA] licences tekstu un [Izmantošanas noteikumus], lai uzzinātu par papildus nosacījumiem. Sākotnējais raksts ir pieejams: http://en.wikiquote.org/wiki/<title>
+type_a_word=Ierakstiet vārdu vai frāzi
+guten:type_a_word=Ievadiet grāmatu vai autoru
+searching=meklē...
+select_wiki=Izvēlieties enciklopēdiju
 history_title=Vēsture
 no_history=Nav vēstures
+please_wait=Lūdzu, uzgaidiet...
+clear_history=Notīrīt vēsturi
 yes=Jā
 no=Nē
+set_password=Uzstādīt paroli
+ok=labi
+change_password=Mainīt paroli
+re_enter_password=Atkārtoti ievadiet paroli
+re_enter_new_password=Ievadiet vēlreiz jauno paroli
+passwords_not_match=Paroles nesakrīt
+enter_old_password=Ievadiet veco paroli
+enter_password=Ievadiet paroli
+try_again=Nepareizi. Lūdzu, mēģiniet vēlreiz.
+enter_new_password=Ievadiet jauno paroli
+parental_controls=Vecāku kontrole
