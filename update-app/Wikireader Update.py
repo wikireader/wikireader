@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+WikiReader update app - Main program
+"""
+
 import sys, os
 import wx
 import wx.lib.mixins.listctrl as listmix
@@ -13,21 +17,23 @@ import simplejson
 import disk
 import download
 import images
-import logging
+
+## Debug for deploy version
+#import logging
 # logger = logging.getLogger('WikiReader')
 # hdlr = logging.FileHandler('/var/tmp/WikiReader.log')
 # formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 # hdlr.setFormatter(formatter)
 # logger.addHandler(hdlr)
 # logger.setLevel(logging.INFO)
-#logger.info('test')
+# logger.info('test')
 
 # stuff for debugging
-print "Python", sys.version
-print "wx.version:", wx.version()
-print "pid:", os.getpid()
+#print "Python", sys.version
+#print "wx.version:", wx.version()
+#print "pid:", os.getpid()
 #print "uname:", os.uname()
-print "platform:", wx.Platform
+#print "platform:", wx.Platform
 
 kPackages = None
 checkedItems = []
@@ -834,7 +840,7 @@ def checkingVersionDialog(parent, showError=True):
     if not version:
         version = '0000.00.00'
     
-    print version
+    #print version
     if len(disk.getMountList()) < 1 and showError:
         wx.MessageBox('We don\'t detected any sdcard on your computer', 'Info', wx.OK | wx.ICON_INFORMATION)
     

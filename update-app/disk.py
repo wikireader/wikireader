@@ -13,8 +13,6 @@ if wx.Platform == '__WXMSW__':
     import subprocess
     from Utilities import resource_path
       
-#from commands import getoutput
-#print getoutput('df -h')
 tmpDirName = '/wikireader'
 downloadDirName = '/Download'
 

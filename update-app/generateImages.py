@@ -1,3 +1,9 @@
+"""
+Generate all imgs to python binary file.
+img2py command required.
+$ python generateImages.py
+"""
+
 from commands import getoutput
 import os
 from Utilities import getProgramFolder

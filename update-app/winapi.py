@@ -1,3 +1,7 @@
+"""
+This API only for MSW(Windows) version.
+"""
+
 import wmi
 
 c = wmi.WMI()
