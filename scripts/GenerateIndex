@@ -23,9 +23,14 @@ exec sbcl --script "$0" "$0" "$@"
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+(load (merge-pathnames "quicklisp/setup.lisp"
+                       (user-homedir-pathname)))
+
 (require 'asdf)
 (require 'getopt)
 (require 'md5)
+(require 'cl-json)
+
 
 (defvar *program* (second sb-ext:*posix-argv*) "name of this script file")
 (defvar *debug* nil  "set true for debug output")
@@ -200,109 +205,52 @@ exec sbcl --script "$0" "$0" "$@"
        collect (append (identify k) (list v)))))
 
 
-(defvar *xml-indent* 0  "for indenting the XML output")
-(defvar *xml-stack* nil "for xml-close to match the tags")
-(defvar *xml-stream* t  "current xml output stream")
-
-(defun xml-set-stream (out-stream)
-  "set the xml output stream"
-  (if out-stream
-      (setq *xml-stream* out-stream)
-      (setq *xml-stream* t))) ;; sets output to stdout
-
-(defun xml-current-indent ()
-  "a number of spaces corresponding to *xml-indent*"
-  (make-string *xml-indent* :initial-element #\Space))
-
-
-(defun xml-string-of (item)
-  "return string of item, but downcase symbols"
-  (if (symbolp item)
-      (string-downcase item)
-      (format nil "~a" item)))
-
-
-(defun xml-attribute-string (attributes)
-  "convert: ((key value)...) to string form: key=''value''..."
-  (loop for attr in attributes
-     append (list (format nil " ~a=\"~a\""
-                          (xml-string-of (first attr))
-                          (xml-string-of (second attr))))
-       into attr-list
-     finally
-       (return (apply #'concatenate 'string attr-list))))
-
-
-(defun xml-entry (tag data &rest attributes)
-  "display a single line XML entry"
-  (format *xml-stream* "~a<~a~a>~a</~a>~%" (xml-current-indent)
-          (xml-string-of tag)
-          (xml-attribute-string attributes)
-          data
-          (xml-string-of tag)))
-
-
-(defun xml-open (tag &rest attributes)
-  "start the XML tag"
-  (format *xml-stream* "~a<~a~a>~%" (xml-current-indent) (xml-string-of tag) (xml-attribute-string attributes))
-  (setq *xml-indent* (+ *xml-indent* 2))
-  (push (xml-string-of tag) *xml-stack*))
-
-
-(defun xml-close ()
-  "close the most recently opened tag"
-  (when *xml-stack*
-    (setq *xml-indent* (- *xml-indent* 2))
-    (format *xml-stream* "~a</~a>~%" (xml-current-indent) (pop *xml-stack*))))
-
-
-(defun output-archive (file-list uncompressed-size)
-  "output xml for a single archive ((file size MD5)...)"
-  (xml-open 'archives (list 'count (length file-list)) (list 'size uncompressed-size))
-  (loop
-     for count = 1 then (1+ count)
-     for item in file-list
-       do
-       (xml-entry 'file (concatenate 'string (first item)"?torrent")
-                  (list 'id count) (list 'size (second item)) (list 'md5 (third item))))
-  (xml-close))
-
-
 (defun output-volumes (structure &key base)
   "output the volume list"
   (loop
      for item in structure
-     with count = 0
      when (eq base (string= (first item) "."))
-     do
-       (incf count)
-       (xml-open 'volume (list 'id count))
+     collect
        (let* ((lang (third item))
               (id (first lang))
               (english (second lang))
-              (native (third lang)))
-         (xml-entry 'language native (list 'id id) (list 'name english)))
-       (xml-entry 'name (second (fourth item)))
-       (xml-entry 'date (second item))
-       (xml-entry 'folder (first item))
-       (let* ((a (fifth item))
+              (native (third lang))
+              (name (second (fourth item)))
+              (date (second item))
+              (folder (first item))
+              (a (fifth item))
               (uncompressed-size (first a))
               (archives (rest a)))
-         (output-archive archives uncompressed-size))
-       (xml-close)))
+         (list
+          (cons 'id id)
+          (cons 'english english)
+          (cons 'native native)
+          (cons 'name name)
+          (cons 'date date)
+          (cons 'folder folder)
+          (cons 'size uncompressed-size)
+          (cons 'files (map 'list #'make-file-item archives))))))
 
 
-(defun output-structure (dir-name structure)
-  "output the XML structure"
-  (xml-open 'release)
-  (xml-entry 'version (file-namestring dir-name))
-  (xml-open 'compatibility '(select single))
-  (output-volumes structure :base t)
-  (xml-close)
-  (xml-open 'documents '(select multiple))
-  (output-volumes structure)
-  (xml-close)
-  (xml-close))
+(defun make-file-item (file)
+  "create a file object"
+       (let* ((name (first file))
+              (size (second file))
+              (md5 (third file)))
+         (list
+          (cons 'name name)
+          (cons 'size size)
+          (cons 'md5 md5))))
+
+
+(defun output-structure (stream dir-name structure)
+  "output the JSON structure"
+  (let ((bases  (output-volumes structure :base t))
+        (volumes (output-volumes structure))
+        (table (make-hash-table :test #'equal)))
+    (setf (gethash 'bases table) bases)
+    (setf (gethash 'volumes table) volumes)
+    (json:encode-json table stream)))
 
 
 (defun main (args)
@@ -337,14 +285,11 @@ exec sbcl --script "$0" "$0" "$@"
       (load-languages languages)
       (with-open-file (out-stream index :direction :output :if-exists :supersede
                                   :if-does-not-exist :create)
-        (xml-set-stream out-stream)
-        ;;(xml-set-stream t)
         (loop for dir in (sort directories #'string<)
            do
              (when *verbose*
                (format t "Directory: ~a~%" dir))
-             (output-structure dir (partition-files dir (list-of-files dir))))
-        (xml-set-stream nil)))))
+             (output-structure out-stream dir (partition-files dir (list-of-files dir))))))))
 
 
 ;;; run the main program
