@@ -5,6 +5,9 @@
 * Python 2.7.3
 * wxPython (2.9.3.1 on OSX, 2.8.12.1 on Windows)
 * py2app 0.6.4 (for OSX)
+* wmi
+* py2win
+* simplejson
 
 ### Check packages version
 
