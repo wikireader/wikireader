@@ -1,3 +1,12 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+# COPYRIGHT: Openmoko Inc. 2012
+# LICENSE: GPL Version 3 or later
+# DESCRIPTION: Create Article Indices
+# AUTHORS: Sean Moss-Pultz <sean@openmoko.com>
+#          Christopher Hall <hsw@openmoko.com>
+#          Hank Wang <hank@openmoko.com>
+
 """
 This API only for MSW(Windows) version.
 """
