@@ -26,10 +26,11 @@ exec sbcl --script "$0" "$0" "$@"
 (load (merge-pathnames "quicklisp/setup.lisp"
                        (user-homedir-pathname)))
 
-(require 'asdf)
-(require 'getopt)
-(require 'md5)
-(require 'cl-json)
+(ql:quickload 'getopt)
+(ql:quickload 'md5)
+(ql:quickload 'cl-json)
+
+
 
 
 (defvar *program* (second sb-ext:*posix-argv*) "name of this script file")
@@ -180,11 +181,18 @@ exec sbcl --script "$0" "$0" "$@"
     (loop for file-path in (sort
                             (append (directory 7z) (directory arc))
                             #'string< :key #'namestring)
-       collect
-         (let ((basename (file-namestring file-path)))
-           (when *verbose*
-             (format t "  File: ~a~%" basename))
-           (append (list basename) (md5sum-and-length file-path))))))
+       when
+         (let ((basename (file-namestring file-path))
+               (ignore-file-name (concatenate 'string (namestring file-path) ".IGNORE")))
+           (if (probe-file ignore-file-name)
+               (when *verbose*
+                 (format t "  Skip: ~a~%" basename)
+                 nil)
+               (progn
+                 (when *verbose*
+                   (format t "  File: ~a~%" basename))
+                 (append (list basename) (md5sum-and-length file-path)))))
+       collect it)))
 
 
 (defun partition-files (dir file-list)
