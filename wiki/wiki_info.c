@@ -48,9 +48,14 @@ bool bWikiIsTC = false;
 KEYBOARD_MODE default_keyboard = KEYBOARD_CHAR;
 int rendered_wiki_selection_count = -1;
 int current_article_wiki_id = 0;
+
+// store the wiki.ini file contents
+#define WIKI_INI_NAME "wiki.ini"
 unsigned char *pWikiIni = NULL;
-unsigned long lenWikiIni = 0;
-unsigned long sizeWikiIni = 0;
+#define MIN_WIKI_INI_ALLOCATION 32
+unsigned long sizeWikiIni = 0;  // the number of bytes allocated to pWikiIni
+unsigned long lenWikiIni = 0;   // the number of bytes in use in pWikiIni
+
 PACTIVE_WIKI aActiveWikis = NULL;
 extern int bShowPositioner;
 WIKI_LICENSE_DRAW *pWikiLicenseDraw;
@@ -328,18 +333,18 @@ void init_wiki_info(void)
 		}
 
 		nCurrentWiki = 0;
-		fd = file_open("wiki.ini", FILE_OPEN_READ);
+		fd = file_open(WIKI_INI_NAME, FILE_OPEN_READ);
 		if (fd >= 0)
 		{
-			file_size("wiki.ini", &lenWikiIni);
-			sizeWikiIni = lenWikiIni + 16;  // reserve space for wiki_id key pair
+			file_size(WIKI_INI_NAME, &lenWikiIni);
+			sizeWikiIni = lenWikiIni + MIN_WIKI_INI_ALLOCATION;  // reserve space for wiki_id key pair
 			pWikiIni = memory_allocate(sizeWikiIni, "wikiinfo2");
 			if (pWikiIni)
 			{
 				memset(pWikiIni, 0, sizeWikiIni);
 				file_read(fd, pWikiIni, lenWikiIni);
 				file_close(fd);
-				pWikiIni[lenWikiIni] = '\0';
+				pWikiIni[lenWikiIni] = '\0';  // safe because extra bytes were allocated
 				unsigned char *p0 = pWikiIni;
 				while (*p0)
 				{
@@ -369,8 +374,12 @@ void init_wiki_info(void)
 		else
 		{
 			lenWikiIni = 0;
-			pWikiIni = memory_allocate(20, "wikiinfo3");
-			memset(pWikiIni, 0, 20);
+			sizeWikiIni = MIN_WIKI_INI_ALLOCATION;
+			pWikiIni = memory_allocate(sizeWikiIni, "wikiinfo3");
+			if (pWikiIni)
+			{
+				memset(pWikiIni, 0, sizeWikiIni);
+			}
 		}
 
 		for (i = 0; i < nWikiCount; i++)
@@ -559,6 +568,11 @@ int get_wiki_serial_id_from_idx(unsigned int wiki_idx)
 	return 0;
 }
 
+// key is a string e.g. "key1"
+// key_pairs is a string like "key1=value1<NUL+>key2=value2<NUL*>"
+//                                         ^1 or more       ^optional
+// key_pairs_len is the number of bytes in key_pairs
+// returns pointer to first byte of value string
 const unsigned char *get_nls_key_value(const char *key, unsigned char *key_pairs, long key_pairs_len)
 {
 	int i, j;
@@ -687,59 +701,63 @@ const unsigned char *get_wiki_extra_name(int idx)
 	return wiki_list[aActiveWikis[idx].WikiInfoIdx].wiki_menu_extra;
 }
 
-void wiki_ini_insert_keypair(char *key, char *keyval)
+// pWikiIni    = start of storage
+//             = "key1=values<NUL>key2=value2<NUL>"
+// lenWikiIni  = currently in-use byte count
+// sizeWikiIni = total available byte count
+void wiki_ini_insert_keypair(const char *key, const char *keyval)
 {
-	const unsigned char *p = get_nls_key_value(key, pWikiIni, lenWikiIni);
+	const unsigned char *p_value = get_nls_key_value(key, pWikiIni, lenWikiIni);
+	unsigned long key_len = ustrlen(key);
+	unsigned long value_len = ustrlen(keyval);
+	unsigned char *afterEnd = pWikiIni + lenWikiIni;
 
-	if (*p)
+	// if the returned pointer is within the writable area cast away the const
+	if (p_value >= pWikiIni && p_value < afterEnd)
 	{
-		debug_print("not sure about this");
-		debug_printf("p = %s\n", p);
-		debug_printf("k = %s\n", keyval);
-#if 0
-//*****************************************************************************
-//***************** What does this do? ****************************************
-//***************** Why does it write to somethis that is read-only? **********
-//*****************************************************************************
-		if (ustrlen(p) < ustrlen(keyval))
+		unsigned char *p_start = (unsigned char *)p_value - key_len - 1;   // first byte of key
+		unsigned char *p = (unsigned char *)p_value;
+		while (p < afterEnd && '\0' != *p)
 		{
-			int diff = ustrlen(keyval) - ustrlen(p);
-			int move_size;
+			++p;
+		}
+		while (p < afterEnd && '\0' == *p)
+		{
+			++p;
+		}
+		long int move_size = lenWikiIni - (p_start - pWikiIni);  // number of bytes after this key to end
 
-			if (lenWikiIni + diff < sizeWikiIni)
-			{
-				move_size = lenWikiIni - (p - pWikiIni);
-				if (move_size > 0)
-					memmove(p + diff, p, move_size);
-			}
-			lenWikiIni += diff;
-		}
-		if (p + ustrlen(keyval) < pWikiIni + sizeWikiIni - 1)
-		{
-			memset(p, 0, ustrlen(keyval) + 1);
-			memcpy(p, keyval, ustrlen(keyval));
-		}
-#endif
+		memmove(p_start, p, move_size);
+		lenWikiIni -= p - p_start;
 	}
-	else if (lenWikiIni + ustrlen(key) + ustrlen(keyval) + 2 < sizeWikiIni)
+
+	// strip trailing NULs
+	while (lenWikiIni > 0 && '\0' == pWikiIni[lenWikiIni - 1])
 	{
-		if (lenWikiIni)
-			pWikiIni[lenWikiIni++] = '\0'; // make sure the new key pair start with a new line
-		memcpy(&pWikiIni[lenWikiIni], key, ustrlen(key));
-		lenWikiIni += ustrlen(key);
+		--lenWikiIni;
+	}
+
+	// if string is not empty append NUL
+	if (lenWikiIni > 0 && lenWikiIni < sizeWikiIni && lenWikiIni > 0)
+	{
+		pWikiIni[lenWikiIni++] = '\0';
+	}
+
+	// append key=new_value<NUL>
+	if (lenWikiIni + key_len + value_len + 2 <= sizeWikiIni)
+	{
+		memcpy(&pWikiIni[lenWikiIni], key, key_len);
+		lenWikiIni += key_len;
 		pWikiIni[lenWikiIni++] = '=';
-		memcpy(&pWikiIni[lenWikiIni], keyval, ustrlen(keyval));
-		lenWikiIni += ustrlen(keyval);
-		pWikiIni[lenWikiIni] = '\0';
+		memcpy(&pWikiIni[lenWikiIni], keyval, value_len);
+		lenWikiIni += value_len;
+		pWikiIni[lenWikiIni++] = '\0';
 	}
 }
 
 void set_wiki(int idx)
 {
 	int fd;
-	char sWikiId[10];
-	unsigned int i;
-	char prev_c = 0;
 
 	nCurrentWiki = idx;
 	reset_search_info(nCurrentWiki);
@@ -760,25 +778,44 @@ void set_wiki(int idx)
 	else
 		bWikiIsDanish = false;
 	default_keyboard = wiki_list[aActiveWikis[nCurrentWiki].WikiInfoIdx].wiki_default_keyboard;
-	fd = file_open("wiki.ini", FILE_OPEN_WRITE);
+	fd = file_open(WIKI_INI_NAME, FILE_OPEN_WRITE);
 	if (fd < 0)
-		fd = file_create("wiki.ini", FILE_OPEN_WRITE);
+	{
+		fd = file_create(WIKI_INI_NAME, FILE_OPEN_WRITE);
+	}
 	if (fd >= 0)
 	{
+		char sWikiId[10];
 		sprintf(sWikiId, "%d", get_wiki_serial_id_from_idx(nCurrentWiki));
 		wiki_ini_insert_keypair("wiki_id", sWikiId);
+		debug_printf("write to: %s = '%s'\n", WIKI_INI_NAME, pWikiIni);
+		bool write_eol = true;
+		unsigned int i;
 		for (i = 0; i < lenWikiIni; i++)
 		{
 			if (pWikiIni[i] == '\0')
 			{
-				if (prev_c != '\0')
+				if(write_eol)
+				{
 					file_write(fd, "\n", 1);
+					write_eol = false;
+				}
 			}
 			else
+			{
 				file_write(fd, &pWikiIni[i], 1);
-			prev_c = pWikiIni[i];
+				write_eol = true;
+			}
+		}
+		if (write_eol)
+		{
+			file_write(fd, "\n", 1);
 		}
 		file_close(fd);
+	}
+	else
+	{
+		debug_printf("%s failed\n", WIKI_INI_NAME);
 	}
 }
 
