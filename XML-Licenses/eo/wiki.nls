@@ -1,16 +1,21 @@
 # Messages for Esperanto (Esperanto)
 # Exported from translatewiki.net
 # Author: Mihxil
+# Author: Objectivesea
 
 wiki_name=Esperanto...
+appro:wiki_name=Taŭgopedio
 books:wiki_name=Libroj
 dict:wiki_name=Vortaro
 guten:wiki_name=Projekto Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Vikipedio Esperanta
 quote:wiki_name=Citaĵoj
 license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Vidu ankaŭ [Alfabetan liston de aŭtoroj], [Liston de librobretoj]. La kopirajto por la plimulto el tiuj ĉi libroj estas senvalidiĝinta en Usono. (Estas eble ke en aliaj landoj la kopirajto ankoraŭ validas). Do ĉiuj rajtas laŭlitere aŭ nelaŭlitere kopii tiujn ĉi verkojn. Pliajn detalojn trovu je: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Tiu ĉi teksto haveblas je la permesilo Creative Commons/Dividi-similaĵojn kaj povas esti libere reuzata je la kondiĉoj de tiu permesilo. Vidu tekston de la permesilo [CC-BY-SA] kaj [Uzkondiĉoj] por la kromaj kondiĉoj kiuj eble efikas. La originala artikolo troveblas je: http://en.wikiquote.org/wiki/<title>
 type_a_word=Tajpu vorton aŭ frazon
 guten:type_a_word=Tajpu libron aŭ aŭtoron
