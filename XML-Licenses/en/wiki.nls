@@ -21,6 +21,7 @@ pedia:wiki_name=Wikipedia English
 quote:wiki_name=Quotes
 starw:wiki_name=Wookieepedia
 trav:wiki_name=WikiTravel
+hitch:wiki_name=Hitchwiki
 
 license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://en.wikipedia.org/wiki/<title>
 

@@ -42,6 +42,7 @@
   DICTIONARY,  en,       endict,
   GUTENBERG,   en,       enguten,
   OTHERS,      en,       enhow,
+  OTHERS,      en,       enhitch,
   ,            en,       enpedia,
   QUOTE,       en,       enquote,
   OTHERS,      en,       enstarw,
