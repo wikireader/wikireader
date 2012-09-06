@@ -77,7 +77,7 @@ class AboutDialog(wx.Dialog):
         logoImage = images.geticon_128x128Bitmap()
         logo = wx.StaticBitmap(whitePanel, -1, logoImage, size=(128, 128), pos=(136, 20))
 
-        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.2", pos=(156, 150))
+        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.3", pos=(156, 150))
 
         descLabel = wx.StaticText(whitePanel, -1, 
 "From day one, our goal was to give physical form to Wikipedia, one of the most interesting aspects of the Internet, so people can bring it with them everywhere they go. We want to promote personal growth and the ability to enjoy those unexpected moments when curiosity strikes. WikiReader is our gift for those who have the openness to experience life and the willingness to be changed by it.",
@@ -318,6 +318,9 @@ class PackagesListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
 
 
 class SelectPackageFrame(wx.Frame):
+
+    mswTotalSpace, mswFreeSpace = 0, 0
+
     def __init__(self, parent=None):
 
         frameHeight = 0
@@ -388,7 +391,17 @@ class SelectPackageFrame(wx.Frame):
             event.Skip()
     
     def updateSelectedSize(self):
+
+        # Set flag, don't checkFreeSpace everytime on Windows
+        if self.mswTotalSpace != 0:
+            return
+
         TotalSpace, FreeSpace = checkFreeSpace()
+
+        if wx.Platform == '__WXMSW__':    
+            self.mswTotalSpace = TotalSpace
+            self.mswFreeSpace = FreeSpace
+
         if TotalSpace:
             SelectedSpace = 0
             for i in checkedItems:

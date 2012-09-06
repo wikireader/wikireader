@@ -1,18 +1,19 @@
 # -*- mode: python -*-
-a = Analysis([os.path.join(HOMEPATH,'support\\_mountzlib.py'), os.path.join(HOMEPATH,'support\\useUnicode.py'), 'C:\\Users\\om\\wikireader\\update-app\\WikiReader Update.py'],
-             pathex=['C:\\pyinstaller-1.5.1'])
-
-a.datas += [('7za.exe', 'C:\\Users\\om\\wikireader\\update-app\\tools\\7za.exe', 'DATA')]
+a = Analysis(['Wikireader Update.py'],
+             pathex=['C:\\Users\\om\\Documents\\GitHub\\wikireader\\update-app'],
+             hiddenimports=[],
+             hookspath=None)
+a.datas += [('7za.exe', 'tools\\7za.exe', 'DATA')]
 pyz = PYZ(a.pure)
-exe = EXE( pyz,
+exe = EXE(pyz,
           a.scripts,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name=os.path.join('dist', 'WikiReader Update.exe'),
+          name=os.path.join('dist', 'Wikireader Update.exe'),
           debug=False,
-          strip=False,
+          strip=None,
           upx=True,
-          console=False , icon='C:\\Users\\om\\wikireader\\update-app\\images\\icon.ico')
+          console=False , icon='images\\icon_512x512.ico')
 app = BUNDLE(exe,
-             name=os.path.join('dist', 'WikiReader Update.exe.app'))
+             name=os.path.join('dist', 'Wikireader Update.exe.app'))
