@@ -1,6 +1,7 @@
 # Messages for Italian (italiano)
 # Exported from translatewiki.net
 # Author: Beta16
+# Author: Darth Kule
 # Author: Nemo bis
 # Author: Pietrodn
 
@@ -12,6 +13,7 @@ guten:wiki_name=Progetto Gutenberg
 how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia in italiano
 quote:wiki_name=Citazioni
+hitch:wiki_name=Hitchwiki
 license_text=Il testo è disponibile secondo la licenza Creative Commons Attribuzione-Condividi allo stesso modo e può essere riutilizzato liberamente secondo i termini di tale licenza. Vedi il testo della licenza [CC-BY-SA] ed i [termini di utilizzo] per le condizioni aggiuntive che possono essere applicate. L'articolo originale è disponibile all'indirizzo: http://it.wikipedia.org/wiki/<title>
 appro:license_text=Il testo è disponibile secondo la licenza Creative Commons Attribuzione-Condividi allo stesso modo e può essere riutilizzato liberamente secondo i termini di tale licenza. Vedi il testo della licenza [CC-BY-SA] ed i [termini di utilizzo] per le condizioni aggiuntive che possono essere applicate. L'articolo originale è disponibile all'indirizzo: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Il testo è disponibile secondo la licenza Creative Commons Attribuzione-Condividi allo stesso modo e può essere riutilizzato liberamente secondo i termini di tale licenza. Vedi il testo della licenza [CC-BY-SA] ed i [termini di utilizzo] per le condizioni aggiuntive che possono essere applicate. L'articolo originale è disponibile all'indirizzo: http://it.wiktionary.org/wiki/<title>

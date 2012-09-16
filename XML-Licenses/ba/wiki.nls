@@ -1,6 +1,7 @@
 # Messages for Bashkir (башҡортса)
 # Exported from translatewiki.net
 # Author: Roustammr
+# Author: ҒатаУлла
 
 wiki_name=Башҡортса...
 dict:wiki_name=Һүҙлек
@@ -8,3 +9,4 @@ history_title=Тарих
 please_wait=Зинһар өсөн көтөгөҙ...
 yes=Эйе
 no=Юҡ
+r=R

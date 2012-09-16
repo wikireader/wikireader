@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: KagerMtc
 # Author: Kghbln
+# Author: Nipsky
 # Author: Purodha
 # Author: The Evil IP address
 
@@ -13,14 +14,15 @@ guten:wiki_name=Project Gutenberg
 how:wiki_name=WikiHow
 pedia:wiki_name=Deutschsprachige Wikipedia
 quote:wiki_name=Zitate
+hitch:wiki_name=Hitchwiki
 license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://de.wikipedia.org/wiki/<title>
 appro:license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://www.appropedia.org/Appropedia:Urheberrechte
 dict:license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://de.wiktionary.org/wiki/<title>
 guten:license_text=Siehe auch: [Alphabetische Liste der Autoren], [Liste der Bücherregale]. Das Urheberrecht für die meisten dieser Bücher ist in den USA abgelaufen. (Sie könnten allerdings noch in anderen Ländern geschützt sein.) Jeder kann wörtliche oder abgewandelte Kopien dieser Werke erstellen. Auf der Seite http://www.gutenberg.org/wiki/Main_Page findet man weitere Hinweise.
 how:license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://de.wikiquote.org/wiki/<title>
-type_a_word=Suchbegriff eingeben
-guten:type_a_word=Ein Buch oder einen Autor angeben
+type_a_word=Wort oder Satz eingeben
+guten:type_a_word=Buch oder Autor eingeben
 no_results=Keine Einträge gefunden
 searching=suche …
 select_wiki=Wahl der Enzyklopädie
@@ -47,7 +49,7 @@ re_enter_new_password=Neues Passwort erneut eingeben
 passwords_not_match=Die Passwörter stimmen nicht überein
 enter_old_password=Geben Sie das alte Passwort ein
 enter_password=Passwort eingeben
-try_again=Falsch, versuchen Sie es bitte erneut.
+try_again=Dies ist falsch. Versuchen Sie es bitte erneut.
 enter_new_password=Neues Passwort eingeben
 parental_controls=Jugendschutz
 r=R

@@ -2,14 +2,18 @@
 # Exported from translatewiki.net
 # Author: Giro720
 # Author: Gustavo
+# Author: Luckas Blade
 # Author: Rodrigo Avila
 
 wiki_name=Português...
+appro:wiki_name=Appropedia
 books:wiki_name=Livros
 dict:wiki_name=Dicionário
 guten:wiki_name=Projeto Gutemberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipédia em português
 quote:wiki_name=Citações
+hitch:wiki_name=Hitchwiki
 license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wikipedia.org/wiki/<title>
 dict:license_text=O texto está disponível sob licença da Creative Commons Attribution / Share-alike e pode ser reutilizado livremente sob os termos desta licença. Veja: Texto da [CC-BY-SA] Licença e [Termos de Uso] para termos adicionais que podem ser aplicados. O artigo original está disponível em: http://pt.wiktionary.org/wiki/<title>
 guten:license_text=veja também: [Lista alfabética de autores], [Lista de prateleiras]. O direito autoral da maioria destes livros já expirou nos Estados Unidos. (Apesar de que ainda é possível haver direitos autorais em outros países). Assim, ninguém pode fazer cópias, integrais ou não, destes trabalhos. Para detalhes, acesse: http://www.gutenberg.org/wiki/Main_Page
