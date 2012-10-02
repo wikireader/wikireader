@@ -3,11 +3,14 @@
 # Author: Sapral Mikail
 
 wiki_name=ГIалгIай
+appro:wiki_name=Белхийпайдане
 books:wiki_name=Китабаш
 dict:wiki_name=ЛугIат
 guten:wiki_name="Дикалоам" болх
+how:wiki_name=Массалоацорг
 pedia:wiki_name=ГIалгIай Википаде
 quote:wiki_name=Дошоаларг
+hitch:wiki_name=Массазам
 type_a_word=Цхьа дош е лоацаяздам чуязаде
 guten:type_a_word=Китаба е яздархо чуязаде
 no_results=Цхьаккха йоазонаш корадаьдац

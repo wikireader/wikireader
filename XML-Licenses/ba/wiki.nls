@@ -4,7 +4,15 @@
 # Author: ҒатаУлла
 
 wiki_name=Башҡортса...
+appro:wiki_name=Appropedia
+books:wiki_name=Дәреслек
 dict:wiki_name=Һүҙлек
+guten:wiki_name="Гутенберг" проекты
+how:wiki_name=WikiHow
+pedia:wiki_name=Википедия — Башҡортса
+quote:wiki_name=Цитаталар
+hitch:wiki_name=Hitchwiki
+license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы: http://en.wikipedia.org/wiki/<title>
 history_title=Тарих
 please_wait=Зинһар өсөн көтөгөҙ...
 yes=Эйе
