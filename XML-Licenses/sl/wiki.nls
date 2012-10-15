@@ -1,6 +1,7 @@
 # Messages for Slovenian (slovenščina)
 # Exported from translatewiki.net
 # Author: Dbc334
+# Author: Eleassar
 
 wiki_name=Angleščina ...
 books:wiki_name=Knjige
@@ -10,9 +11,9 @@ how:wiki_name=WikiKako
 pedia:wiki_name=Angleška Wikipedija
 quote:wiki_name=Navedki
 license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wikipedia.org/wiki/<title>
-dict:license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wiktionary.org/wiki/<title>
+dict:license_text=Besedilo je na razpolago pod licenco Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga pod pogoji licence lahko prosto uporabljate. Dodatni pogoji, ki morda veljajo, so opisani na straneh: Besedilo licence [CC-BY-SA] in [Pogoji uporabe]. Izvorni članek je dostopen na naslovu: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Glej tudi: [Abecedni seznam avtorjev], [Seznam knjižnih polic].  Avtorske pravice so v Združenih državah Amerike za večino teh knjig potekle. (Morda so še vedno avtorsko zaščitene v drugih državah.) Zato lahko vsakdo izdeluje dobesedne ali prirejene kopije teh del. Za podrobnosti glej: http://www.gutenberg.org/wiki/Main_Page
-quote:license_text=Besedilo je na voljo pod dovoljenjem Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko prosto ponovno uporabite pod pogoji dovoljenja. Glej: Besedilo dovoljenja [CC-BY-SA] in [Pogoje uporabe] za dodatne pogoje, ki so morda v veljavi. Izvirni članek je na voljo na: http://en.wikiquote.org/wiki/<title>
+quote:license_text=Besedilo je na razpolago pod licenco Creative Commons Priznanje avtorstva-Deljenje pod enakimi pogoji in ga lahko v skladu s pogoji licence prosto uporabljate. Dodatni pogoji, ki morda veljajo, so opisani na straneh: Besedilo dovoljenja [CC-BY-SA] in [Pogoji uporabe]. Izvorni članek je dostopen na naslovu: http://en.wikiquote.org/wiki/<title>
 type_a_word=Vnesite besedo ali besedno zvezo
 guten:type_a_word=Vnesite knjigo ali avtorja
 no_results=Najden ni bil noben vnos
