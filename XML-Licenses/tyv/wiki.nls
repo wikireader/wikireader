@@ -1,6 +1,7 @@
 # Messages for Tuvinian (тыва дыл)
 # Exported from translatewiki.net
 # Author: Sborsody
+# Author: SuKhDug
 
 wiki_name=Тыва дыл...
 books:wiki_name=Номнар
@@ -16,3 +17,4 @@ no=Чок
 ok=чөп
 filter_options=Шүүрдүң эдиглери
 change_password=Чажыт сөстү өскертири
+parental_controls=Ада-иениң хайгааралы
