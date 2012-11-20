@@ -1,15 +1,19 @@
 # Messages for Ukrainian (українська)
 # Exported from translatewiki.net
 # Author: AS
+# Author: Base
 # Author: KEL
 # Author: Prima klasy4na
 
 wiki_name=Українська
+appro:wiki_name=Appropedia
 books:wiki_name=Книги
 dict:wiki_name=Словник
 guten:wiki_name=Проект "Гутенберг"
+how:wiki_name=WikiHow
 pedia:wiki_name=Вікіпедія Українською
 quote:wiki_name=Цитати
+hitch:wiki_name=Hitchwiki
 license_text=Текст доступний на умовах ліцензії Creative Commons Attribution/Share-Alike License і може вільно використовуватися відповідно до умов цієї ліцензії. Див.: Текст ліцензії [CC-BY-SA]  та [Умови користування] для додаткових умов, які можуть застосовуватися. Оригінал статті доступний за адресою: http://en.wikipedia.org/wiki/<title>
 dict:license_text=Текст доступний на умовах ліцензії Creative Commons Attribution/Share-Alike та може вільно використовуватися відповідно до умов даної ліцензії. Див. текст ліцензії [CC-BY-SA] та [Умови користування] для додаткових умов, які можуть застосовуватися. Оригінал статті доступний за адресою: http://en.wikipedia.org/wiki/<title>
 guten:license_text=Див. також: [Алфавітний список авторів], [Список книжкових полиць]. Авторські права на більшість з цих книг закінчилися у Сполучених Штатах. (Вони можуть ще бути захищені авторським правом в інших країнах). Таким чином будь-хто може зробити дослівні або не точні копії цих робіт. Для отримання додаткової інформації див.: http://www.gutenberg.org/wiki/Main_Page

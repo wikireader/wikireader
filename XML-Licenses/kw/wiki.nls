@@ -1,18 +1,19 @@
 # Messages for Cornish (kernowek)
 # Exported from translatewiki.net
+# Author: Kernoweger
 # Author: Kw-Moon
 # Author: Nrowe
 # Author: Scryfer
 
 wiki_name=Kernowek...
 type_a_word=Jynnscrif ger po lavaren
-no_results=Travyth kevys
-searching=ow hwilas...
-select_wiki=Dewisewgh godhoniador
+no_results=Ny veu kevys entrans veth
+searching=ow whilas...
+select_wiki=Dowisowgh godhoniador
 history_title=Istory
-no_history=Istory veth
+no_history=Nyns eus istory
 please_wait=Gortewgh mar pleg...
-yes=Ea
+yes=Ya
 no=Na
 ok=da lowr
 r=R
