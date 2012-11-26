@@ -1,13 +1,18 @@
 # Messages for تورکجه (تورکجه)
 # Exported from translatewiki.net
+# Author: Arjanizary
 # Author: E THP
+# Author: Mousa
 
 wiki_name=تورکجه
 appro:wiki_name=پروپئدیا
 books:wiki_name=کیتابلار
 dict:wiki_name=سوزلوک
+guten:wiki_name="گوتئنبئرگ"پروِژه‌سی
+how:wiki_name=ویکی‌نئجه
 pedia:wiki_name=تورکجه ویکی‌پئدیا
 quote:wiki_name=سیتادلار
+hitch:wiki_name=هیچ‌ویکی
 type_a_word=بیر سؤز یازین
 guten:type_a_word=کیتاب یا یازانین آدین یازین
 no_results=هئچ بیر نتیجه تاپیلمادی
@@ -20,9 +25,17 @@ clear_history=گئچمیشی سیل
 yes=بلی
 no=یوخ
 protection=يئتکینلیک ياشینا چاتمايانلارین ویکی‌پئديانین بعضی یازیلارینا ایله تانیش اولماسی توصیه‌‌ اولونمور. لطفاً، محافظه‌‌ اوچون پارول موعيينلشدیرین.
+guten:protection=يئتکینلیک ياشینا چاتمايانلارین بعضی کیتابلارلا تانیش اولماسی توصیه‌‌ اولونمور. لطفاً، قوروما‌‌ اوچون رمز موعيينلشدیرین.
+restricted=يئتکینلیک ياشینا چاتمايانلارین بو مقاله ایله تانیش اولماسی توصیه‌‌ اولونمور. لطفاً، قوروماق‌‌ اوچون رمز موعيينلشدیرین.
+set_password=رمز قوْی
 ok=اولدو
+set_filter=With filtering ON, a password is required when restricted entries are accessed.
+keep_filter_on=فیلتئری آچیق ساخلا
+keep_filter_off=فیلتئری باغلی ساخلا
+filter_options=فیلتئر سئچَنَکلری
+turn_filter_on=فیلتئری آچ
 turn_filter_off=فیلتری سوندور
-change_password=رمزی دَییش
+change_password=رمزی دَییشدیر
 re_enter_password=رمزی یئنی‌دن یازین
 re_enter_new_password=یئنی رمزی یئنی‌دن یازاین
 passwords_not_match=رمزلر بیر بیریله اویغون دئیل‌
