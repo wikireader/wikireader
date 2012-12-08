@@ -1,17 +1,23 @@
 # Messages for Albanian (shqip)
 # Exported from translatewiki.net
+# Author: Euriditi
 # Author: Marinari
 # Author: Techlik
 
 wiki_name=Anglisht
+appro:wiki_name=Appropedia
 books:wiki_name=Libra
 dict:wiki_name=Fjalor
 guten:wiki_name=Projekti Gutenberg
+how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Anglisht
 quote:wiki_name=Citate
+hitch:wiki_name=Hitchwiki
 license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj licence. Shikoni: Teksti i licencës [CC-BY-SA] dhe [Kushtet e përdorimit] për terme shtesë të cilat mund të aplikohen. Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
+appro:license_text=Teksti është nën licensën Creative Commons Attribution/Share-Alike dhe mund të ripërdoret lirisht nën kushtet e licensës. Shiko: Licenës [CC-BY-SA] dhe [Kushtet e përdorimit] për kushte të tjera që mund të aplokohen. Artikulli origjinal gjendet tek: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj liçence. Shih: Teksti i Liçencës [CC-BY-SA] dhe [Kushtet e Përdorimit] për kushte të tjera të cilat mund të zbatohen.  Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
 guten:license_text=Shih gjithashtu: [Lista e alfabetike e autorëve], [Lista e Rafteve të Librave]. E drejta e autorit për shumicën e këtyre librave ka skaduar në Shtetet e Bashkuara. (Ato mund të jetë ende e drejt e autorit në vende tjera). Pra kushdo mund të bëjë kopje tekstualisht ose jo-tekstualisht të këtyre veprave. Për detaje, shih: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Teksti është nën licensën Creative Commons Attribution/Share-Alike dhe mund të ripërdoret lirisht nën kushtet e licensës. Shiko: Licenës [CC-BY-SA] dhe [Kushtet e përdorimit] për kushte të tjera që mund të aplokohen. Artikulli origjinal gjendet tek: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Teksti ofrohet nën Creative Commons Attribution/Share-Alike Liçenca dhe mund të ri-përdoret lirshëm në terme të kësaj liçence. Shih: Teksti i Liçencës [CC-BY-SA] dhe [Kushtet e Përdorimit] për kushte të tjera të cilat mund të zbatohen.  Artikulli origjinal ofrohet në http://en.wikipedia.org/wiki/<title>
 type_a_word=Shtyp Fjalën apo Frazën
 guten:type_a_word=Shtyp Librin apo Autorin

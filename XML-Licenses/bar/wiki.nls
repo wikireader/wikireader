@@ -1,13 +1,16 @@
 # Messages for Bavarian (Boarisch)
 # Exported from translatewiki.net
+# Author: Bua333
 # Author: Mucalexx
 
 wiki_name=Boarisch ...
-books:wiki_name=Biacher
-dict:wiki_name=Werterbuach
+appro:wiki_name=Appropedia
+books:wiki_name=Biacha
+dict:wiki_name=Weatabuach
 guten:wiki_name=Projekt Gutenberg
-pedia:wiki_name=Boarischsproochige Wikipedia
-quote:wiki_name=Zitaate
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipedia af Boarisch
+quote:wiki_name=Zitat
 type_a_word=Suachbegrif eigeem
 guten:type_a_word=A Buach oder an Autor augeem
 no_results=Koane Eiträg gfunden
