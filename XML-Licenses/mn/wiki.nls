@@ -1,0 +1,42 @@
+# Messages for Mongolian (монгол)
+# Exported from translatewiki.net
+# Author: Wisdom
+
+wiki_name=Монгол хэл...
+books:wiki_name=Ном
+dict:wiki_name=Толь
+guten:wiki_name=Gutenberg төсөл
+how:wiki_name=WikiHow
+pedia:wiki_name=Википедиа Монгол
+type_a_word=Үг эсвэл өгүүлбэр бичнэ үү
+guten:type_a_word=Номны нэр эсвэл зохиолчийн нэрийг бичнэ үү
+no_results=Үр дүн олдсонгүй
+searching=хайж байна...
+select_wiki=Тайлбар толь сонгох
+history_title=Түүх
+no_history=Түүх алга
+please_wait=Түр хүлээнэ үү...
+clear_history=Түүхийг цэвэрлэх
+yes=Тэгье
+no=Үгүй
+protection=Зарим Википедиагийн хуудсууд багачуудад тохирохгүй.\nХамгаалалт хийх үүднээс нууц үг өгнө үү.
+guten:protection=Зарим ном багачуудад тохирохгүй. \nХамгаалал хийн нууц үг өгнө үү.
+restricted=Энэ бичлэг багачуудад тохирохгүй тул нууц үг өгч хамгаална уу.
+set_password=Нууц үг өгөх
+ok=Зөв
+set_filter=Шүүлтүүрийг идэвхижүүлснээр хязгаарлагдсан бичлэгүүд нууц үгээр хамгаалагдана.
+keep_filter_on=Шүүлтүүрийг идэвхийжүүлэх
+keep_filter_off=Шүүлтүүрийг үл идэвхижүүлэх
+filter_options=Шүүлтүүрийн Сонголтууд
+turn_filter_on=Шүүлтүүр идэвхитэй
+turn_filter_off=Шүүлтүүр идэвхигүй
+change_password=Нууц үг солих
+re_enter_password=Нууц үгээ ахин оруул
+re_enter_new_password=Шинэ нууц үгээ ахин оруул
+passwords_not_match=Өгсөн нууц үг тохирсонгүй
+enter_old_password=Хуучин нууц үг оруул
+enter_password=Нууц үг оруул
+try_again=Буруу байна. Ахин хийгээд үз.
+enter_new_password=Шинэ нууц үгээ оруул
+parental_controls=Насны ангиллын хяналт
+r=Хориот
