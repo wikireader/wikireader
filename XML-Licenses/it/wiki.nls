@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Beta16
 # Author: Darth Kule
+# Author: Muxator
 # Author: Nemo bis
 # Author: Pietrodn
 
@@ -32,7 +33,7 @@ clear_history=Cancella cronologia
 yes=Sì
 no=No
 protection=Alcune voci di Wikipedia potrebbero non essere adatte ai minori. Si prega di impostare una password per la protezione.
-guten:protection=Alcuni libri potrebbero non essere adatti per i minori. Si prega di impostare una password per la protezione.
+guten:protection=Alcuni libri potrebbero non essere adatti ai minori. Si prega di impostare una password per la protezione.
 restricted=Questa voce potrebbe non essere adatta ai minori. Si prega di impostare una password per la protezione.
 set_password=Imposta password
 ok=ok
@@ -45,7 +46,7 @@ turn_filter_off=Disattiva il filtro
 change_password=Cambia password
 re_enter_password=Reinserisci la password
 re_enter_new_password=Reinserisci la nuova password
-passwords_not_match=Le password non corrispondono
+passwords_not_match=Le password non coincidono
 enter_old_password=Inserisci la vecchia password
 enter_password=Inserisci la password
 try_again=Sbagliato. Prova di nuovo.

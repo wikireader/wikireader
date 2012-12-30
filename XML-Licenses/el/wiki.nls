@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Dead3y3
 # Author: Evropi
+# Author: Glavkos
 # Author: Kiriakos
 
 wiki_name=Ελληνικά...
@@ -10,6 +11,7 @@ dict:wiki_name=Λεξικό
 guten:wiki_name=Εγχείρημα Γουτεμβέργιος
 pedia:wiki_name=Βικιπαίδεια Ελληνικά
 quote:wiki_name=Φθέγματα
+hitch:wiki_name=Hitchwiki
 license_text=Το κείμενο είναι διαθέσιμο υπό την άδεια Creative Commons Attribution/Share-Alike License και μπορεί να χρησιμοποιηθεί ελεύθερα υπό τους όρους αυτής της άδειας. Δείτε Κείμενο της [CC-BY-SA] License και [Όροι Χρήσης] για επιπρόσθετους όρους που μπορεί να εφαρμόζονται. Το πρωτότυπο άρθρο είναι διαθέσιμο στη διεύθυνση: http://en.wikipedia.org/wiki/<title>
 dict:license_text=Το κείμενο είναι διαθέσιμο υπό την άδεια Creative Commons Attribution/Share-Alike και μπορεί να χρησιμοποιηθεί ελεύθερα υπό τους όρους αυτής της άδειας. Δείτε τα κείμενα της άδειας [CC-BY-SA] και των [Terms of Use] (όρων χρήσης) για επιπρόσθετους όρους που μπορεί να εφαρμόζονται. Το πρωτότυπο άρθρο είναι διαθέσιμο στη διεύθυνση http://en.wiktionary.org/wiki/<title>
 guten:license_text=Δείτε επίσης:  [Αλφαβητικός κατάλογος συγγραφέων], [Κατάλογος ραφιών]. Τα πνευματικά δικαιώματα για τα περισσότερα από αυτά τα βιβλία έχουν λήξει στις Ηνωμένες Πολιτείες. (Μπορεί να υπόκεινται σε πνευματικά δικαιώματα σε άλλες χώρες).Συνεπώς, μπορεί ο καθένας να κάνει ακριβή ή μη αντίγραφα αυτών των έργων. Για περισσότερες λεπτομέρεις δείτε: http://www.gutenberg.org/wiki/Main_Page

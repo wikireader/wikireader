@@ -1,5 +1,6 @@
 # Messages for Bashkir (башҡортса)
 # Exported from translatewiki.net
+# Author: Haqmar
 # Author: Roustammr
 # Author: ҒатаУлла
 
@@ -13,8 +14,40 @@ pedia:wiki_name=Википедия — Башҡортса
 quote:wiki_name=Цитаталар
 hitch:wiki_name=Hitchwiki
 license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы: http://en.wikipedia.org/wiki/<title>
+guten:license_text=Бында ҡарағыҙ: [Авторҙар исемлеге], [Китаптар исемлеге]. Бында булған күп китаптарҙың автор хоҡуҡтары Америка Ҡушма Штаттарында тамамланған. (Ләкин улар башҡа илдәрҙә һаман да үҙ көсөндә булыуы мөмкин). Шуның өсөн һәр кеше был мәғлүмәтте тулыһынса йәки өлөшләт ҡуллана ала. Тулырак мәғлүмәт өсөн:http://www.gutenberg.org/wiki/Main_Page битен ҡарағыҙ
+how:license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы:  http://www.wikihow.com/<title>
+quote:license_text=Текст Creative Commons Attribution/Share Alike лицензияһы буйынса таратыла һәм ирекле ҡулланыла ала. [CC-BY-SA] һәм [Ҡулланыу шарттары]ның тексттарын ҡарағыз, уларҙа өҫтәмә шарттар күрһәтелгән булыуы мөмкин. Мәҡәләнең оригиналы: http://en.wikiquote.org/wiki/<title>
+type_a_word=Һүҙ йәки һүҙбәйләнеш индерегеҙ
+guten:type_a_word=Китап йәки автор исемен кертегеҙ
+no_results=Яҙмалар табылманы
+searching=эҙләү...
+select_wiki=Энциклопедия һайлағыҙ
 history_title=Тарих
+no_history=Тарихы юҡ
 please_wait=Зинһар өсөн көтөгөҙ...
+clear_history=Тарихты таҙартырға
 yes=Эйе
 no=Юҡ
+protection=Ҡайһы бер Википедия мәҡәләләре балиғ булмағандар өсөн ярамаҫҡа мөмкин. Һаҡлау өсөн пароль ҡуйығыҙ.
+guten:protection=Ҡайһы бер китаптар балиғ булмағандар өсөн ярамаҫҡа мөмкин. Һаҡлау өсөн пароль ҡуйығыҙ.
+restricted=Ҡайһы бер мәҡәләләр балиғ булмағандар өсөн ярамаҫҡа мөмкин. Һаҡлау өсөн пароль ҡуйығыҙ.
+set_password=Пароль яһау
+ok=OK
+set_filter=Фильтр АСЫҠ булғанда сикләнгән мәҡәләләрҙе ҡарау өсөн пароль кәрәк буласаҡ.
+keep_filter_on=Фильтр ҒӘМӘЛДӘ булһын
+keep_filter_off=Фильтр АСЫҠ булһын
+filter_options=Фильтр көйләүҙәре
+turn_filter_on=Фильтрҙы АСЫРҒА
+turn_filter_off=Фильтрҙы ЯБЫРҒА
+change_password=Паролде үҙгәртергә
+re_enter_password=Паролде ҡабатлағыҙ
+re_enter_new_password=Яңы паролде ҡабаттан яҙығыҙ
+passwords_not_match=Паролдәр тап килмәйҙәр
+enter_old_password=Иҫке паролде яҙығыҙ
+enter_password=Паролде яҙығыҙ
+try_again=Хата. Яңынан ҡабатлағыҙ.
+enter_new_password=Яңы паролде яҙығыҙ
+parental_controls=Өлкәндәр контроле
 r=R

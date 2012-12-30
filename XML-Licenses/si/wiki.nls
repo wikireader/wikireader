@@ -4,11 +4,14 @@
 # Author: පසිඳු කාවින්ද
 
 wiki_name=සිංහල...
+appro:wiki_name=ඇප්රොපීඩියා
 books:wiki_name=පොත්
 dict:wiki_name=ශබ්දකෝෂය
 guten:wiki_name=ව්‍යාපෘති ගුටෙන්බර්ගය
+how:wiki_name=විකිහව්
 pedia:wiki_name=සිංහල විකිපීඩියා
 quote:wiki_name=උද්ධරණ
+hitch:wiki_name=හිච්විකි
 type_a_word=වචනය හෝ වාක්‍ය ඛණ්ඩය ටයිප් කරන්න
 guten:type_a_word=පොත හෝ කර්තෘ ටයිප් කරන්න
 no_results=සටහන් හමු නොවුණි

@@ -1,0 +1,51 @@
+# Messages for Newari (नेपाल भाषा)
+# Exported from translatewiki.net
+# Author: Eukesh
+
+wiki_name=अंग्रेजी...
+appro:wiki_name=एप्प्रोपिदिया
+books:wiki_name=सफू
+dict:wiki_name=खँग्वःधूकु
+guten:wiki_name=गुतेनबर्ग ज्याझ्वः
+how:wiki_name=विकिहाउ
+pedia:wiki_name=अंग्रेजी विकिपिडिया
+quote:wiki_name=धापू
+hitch:wiki_name=हिच्विकि
+license_text=पाठ क्रियटिभ कमन्स एट्रिब्युसन/शेयर-अलाइक लाइसन्स (Creative Commons Attribution/Share-Alike License)या अन्तर्गतय् दूगु ख व थुकिया आधारय् सितिकं हानं छ्ह्यलेज्यु। पालनयाये मालेफूगु मेमेगु शर्ततयेगु निंतिं [CC-BY-SA] लाइसन्सया पाठ व [छ्य्लाया शर्त (Terms of Use)] स्वयादिसँ। धाथेंया च्वसु: http://en.wikipedia.org/wiki/<title> स उपलब्ध दु।
+appro:license_text=पाठ क्रियटिभ कमन्स एट्रिब्युसन/शेयर-अलाइक लाइसन्स (Creative Commons Attribution/Share-Alike License)या अन्तर्गतय् दूगु ख व थुकिया आधारय् सितिकं हानं छ्ह्यलेज्यु। पालनयाये मालेफूगु मेमेगु शर्ततयेगु निंतिं [CC-BY-SA] लाइसन्सया पाठ व [छ्य्लाया शर्त (Terms of Use)] स्वयादिसँ। धाथेंया च्वसु: http://www.appropedia.org/Appropedia:Copyrights स उपलब्ध दु।
+dict:license_text=पाठ क्रियटिभ कमन्स एट्रिब्युसन/शेयर-अलाइक लाइसन्स (Creative Commons Attribution/Share-Alike License)या अन्तर्गतय् दूगु ख व थुकिया आधारय् सितिकं हानं छ्ह्यलेज्यु। पालनयाये मालेफूगु मेमेगु शर्ततयेगु निंतिं [CC-BY-SA] लाइसन्सया पाठ व [छ्य्लाया शर्त (Terms of Use)] स्वयादिसँ। धाथेंया च्वसु: http://en.wiktionary.org/wiki/<title> स उपलब्ध दु।
+guten:license_text=स्वयादिसँ: [च्वमितयेगु वर्णक्रमकथंया धलः], [सफूपुचःया धलः]। थुकिया आपा थें सफूतयेगु लेखाधिकार संयुक्त राज्य अमेरिकाय् फुइधुंकल (मेमेगु देशय् धाःसा लेखाधिकार दयाच्वनेफु)। अतः, थ्व ज्यातयेगु सुनानं अक्षरशः वा भावात्मक नकल दयेकेछिं। पूवंक सूचं कायेत स्वयादिसँ: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=पाठ क्रियटिभ कमन्स एट्रिब्युसन/शेयर-अलाइक लाइसन्स (Creative Commons Attribution/Share-Alike License)या अन्तर्गतय् दूगु ख व थुकिया आधारय् सितिकं हानं छ्ह्यलेज्यु। पालनयाये मालेफूगु मेमेगु शर्ततयेगु निंतिं [CC-BY-SA] लाइसन्सया पाठ व [छ्य्लाया शर्त (Terms of Use)] स्वयादिसँ। धाथेंया च्वसु: http://www.wikihow.com/wikiHow:Creative-Commons स उपलब्ध दु।
+quote:license_text=पाठ क्रियटिभ कमन्स एट्रिब्युसन/शेयर-अलाइक लाइसन्स (Creative Commons Attribution/Share-Alike License)या अन्तर्गतय् दूगु ख व थुकिया आधारय् सितिकं हानं छ्ह्यलेज्यु। पालनयाये मालेफूगु मेमेगु शर्ततयेगु निंतिं [CC-BY-SA] लाइसन्सया पाठ व [छ्य्लाया शर्त (Terms of Use)] स्वयादिसँ। धाथेंया च्वसु: http://en.wikiquote.org/wiki/<title> स उपलब्ध दु।
+type_a_word=छपु खँग्वः वा छब्या खँपु तियादिसँ
+guten:type_a_word=सफू वा च्वमि तियादिसँ
+no_results=एन्ट्रि मलु
+searching=मालाच्वन...
+select_wiki=हलिंसफू ल्ययादिसँ
+history_title=इतिहास
+no_history=इतिहास मदूगु
+please_wait=पलख पियादिसँ...
+clear_history=इतिहास यचुकादिसँ
+yes=ख
+no=मखु
+protection=विकिपिडियाया छुं भाग मस्तयेगु निंतिं उपयुक्त मजुइफु। कृपया सुरक्षाया निंतिं पासवर्द तयादिसँ।
+guten:protection=छुं सफू मस्तयेगु निंतिं उपयुक्त मजुइफु। कृपया सुरक्षाया निंतिं पासवर्द तयादिसँ।
+restricted=थ्व भाग मस्तयेगु निंतिं उपयुक्त मजुइफु। कृपया सुरक्षाया निंतिं पासवर्द तयादिसँ।
+set_password=पासवर्द तयादिस्ँ
+ok=ज्यु
+set_filter=फिल्टरिङ्ग अन जुयाच्वंबिले वर्जित भाग स्वयेत पासवर्द मा।
+keep_filter_on=फिल्तर ON त्वतादिसँ
+keep_filter_off=फिल्तर OFF त्वतादिसँ
+filter_options=फिल्तर विकल्पत
+turn_filter_on=फिल्तर ON यानादिसँ
+turn_filter_off=फिल्तर OFF यानादिसँ
+change_password=पासवर्द हिलादिसँ
+re_enter_password=पासवर्द हानं तियादिसँ
+re_enter_new_password=न्हुगु पासवर्द हानं तियादिसँ
+passwords_not_match=पासवर्द ज्वःमला
+enter_old_password=पुलांगु पासवर्द तियादिसँ
+enter_password=पासवर्द तियादिसँ
+try_again=मज्यु। हानं कुतः यानादिसँ।
+enter_new_password=न्हुगु पासवर्द तियादिसँ
+parental_controls=प्यारेन्तरल नियन्त्रण
+r=R
