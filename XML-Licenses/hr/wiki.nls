@@ -5,14 +5,19 @@
 # Author: SpeedyGonsales
 
 wiki_name=Hrvatski...
+appro:wiki_name=Apropedija
 books:wiki_name=Knjige
 dict:wiki_name=Rječnik
 guten:wiki_name=Projekt Gutenberg
+how:wiki_name=WikiKako
 pedia:wiki_name=Wikipedija na hrvatskom
 quote:wiki_name=Citati
+hitch:wiki_name=Autostop wiki
 license_text=Tekst je dostupan pod licencijo, Creative Commons Imenovanje/Dijeli pod istim uvjetima i može se slobodno rabiti dalje pod uvjetima te licencije. Vidi: Tekst [CC-BY-SA] licencije i [Uvjeti uporabe] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tekst je dostupan pod Creative Commons Imenovanje/Dijeli pod istim uvjetima licencijom i može se slobodno koristiti pod uvjetima te licencije. Vidi: Tekst [CC-BY-SA] licencije i [Terms of Use] za dodatne uvjete koji se primjenjuju. Izvorni članak dostupan je na: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst je dostupan pod Creative Commons Imenovanje/Dijeli pod istim uvjetima licencijom i može se slobodno rabiti dalje pod uvjetima te licencije. Vidi: Tekst [CC-BY-SA] licencije i [Uvjeti uporabe] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
 guten:license_text=Pogledajte [abecedni popis autora] i [popis knjiga].  Autorska prava za većinu ovih djela su istekla u Sjedinjenim Američkim Državama, ali ipak mogu biti zaštićena u drugim državama. Svatko može napraviti kopije ovih djela ili ih izmijeniti. Za više informacija pogledajte http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tekst je dostupan pod Creative Commons Imenovanje/Dijeli pod istim uvjetima licencijom i može se slobodno rabiti dalje pod uvjetima te licencije. Vidi: Tekst [CC-BY-SA] licencije i [Terms of Use] za dodatne uvjete koji se primjenjuju. Izvorni članak dostupan je na: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Tekst je dostupan pod Creative Commons Imenovanje/Dijeli pod istim uvjetima licencijom i može se slobodno rabiti dalje pod uvjetima te licencije. Vidi: Tekst [CC-BY-SA] licencije i [Uvjeti uporabe] za dodatne uvjete koji se mogu primjenjivati. Izvorni članak dostupan je na: http://en.wikipedia.org/wiki/<title>
 type_a_word=Upišite riječ ili frazu
 guten:type_a_word=Upišite knjigu ili autora

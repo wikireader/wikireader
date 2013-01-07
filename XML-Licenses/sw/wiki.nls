@@ -1,5 +1,6 @@
 # Messages for Swahili (Kiswahili)
 # Exported from translatewiki.net
+# Author: Kwisha
 # Author: Stephenwanjau
 
 wiki_name=Kiswahili...
@@ -10,8 +11,15 @@ guten:wiki_name=Mradi wa Gutenberg
 how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia Kiswahili
 quote:wiki_name=Nukuu
+hitch:wiki_name=Hitchwiki
+license_text=Maandishi yanapatikana chini ya leseni ya Creative Commons Attribution/Share-Alike License na yanaweza kutumiwa tena bila ruhusa chini ya masharti ya leseni hiyo. Taza: Maandishi ya [CC-BY-SA] License and [Terms of Use] kwa masharti ya ziada ambayo yanatekelezwa. Makala ya asili yanapatikana katika:http://en.wikipedia.org/wiki/<title>
+appro:license_text=Maandishi yanapatikana chini ya leseni ya Creative Commons Attribution/Share-Alike License na yanaweza kutumiwa tena bila ruhusa chini ya masharti ya leseni hiyo. Taza: Maandishi ya [CC-BY-SA] License and [Terms of Use] kwa masharti ya ziada ambayo yanatekelezwa. Makala ya asili yanapatikana katika: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Maandishi yanapatikana chini ya leseni ya Creative Commons Attribution/Share-Alike License na yanaweza kutumiwa tena bila ruhusa chini ya masharti ya leseni hiyo. Taza: Maandishi ya [CC-BY-SA] License and [Terms of Use] kwa masharti ya ziada ambayo yanatekelezwa. Makala ya asili yanapatikana katika: http://en.wiktionary.org/wiki/<title>
+how:license_text=Maandishi yanapatikana chini ya leseni ya Creative Commons Attribution/Share-Alike License na yanaweza kutumiwa tena bila ruhusa chini ya masharti ya leseni hiyo. Taza: Maandishi ya [CC-BY-SA] License and [Terms of Use] kwa masharti ya ziada ambayo yanatekelezwa. Makala ya asili yanapatikana katika: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Maandishi yanapatikana chini ya leseni ya Creative Commons Attribution/Share-Alike License na yanaweza kutumiwa tena bila ruhusa chini ya masharti ya leseni hiyo. Taza: Maandishi ya [CC-BY-SA] License and [Terms of Use] kwa masharti ya ziada ambayo yanatekelezwa. Makala ya asili yanapatikana katika: http://en.wikiquote.org/wiki/<title>
 type_a_word=Chapa neno au kirai
 guten:type_a_word=Chapa kitabu au mwandishi
+no_results=Hakuna viingizo vimapatikana
 searching=inatafuta...
 select_wiki=Chagua kamusi elezi
 history_title=Historia
@@ -25,6 +33,7 @@ guten:protection=Vitabu vingine vinaweza kuwa havifai kwa watoto. Tafadhali weka
 restricted=Baadhi ya maingizo yanaweza kuwa hayafai kwa watoto. Tafadhali weka neno la siri kwa ajili ya ulinzi.
 set_password=Weka nywila
 ok=sawa
+set_filter=Chujio ikiwa imewashwa, nywila inahitajika ili kufikia viingizo vilivyozuiwa.
 keep_filter_on=Weka chujio
 keep_filter_off=Wacha chuji kama imezimwa
 filter_options=Chaguo za chujio

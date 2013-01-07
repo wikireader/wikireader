@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Anand Vivek Satpathi
 # Author: Ansumang
+# Author: Siddhartha Ghai
 
 wiki_name=अंग्रेजी
 appro:wiki_name=एप्रोपीडिया
@@ -9,11 +10,11 @@ books:wiki_name=पुस्तकें
 dict:wiki_name=शब्दकोश
 guten:wiki_name=परियोजना गुटेनबर्ग
 how:wiki_name=विकिकैसे
-pedia:wiki_name=विकिपीडिया इंराजी
+pedia:wiki_name=हिन्दी विकिपीडिया
 quote:wiki_name=उल्लेख
 hitch:wiki_name=हिचविकि
-type_a_word=किसी शब्द या वाक्यांश टाइप करें
-guten:type_a_word=किसी किताब या लेखक टाइप करें
+type_a_word=कोई शब्द या वाक्यांश टाइप करें
+guten:type_a_word=कोई किताब या लेखक टाइप करें
 no_results=कोई प्रविष्टियाँ नहीं मिलीं
 searching=खोज रहा...
 select_wiki=विश्वकोश चुनें
@@ -25,17 +26,17 @@ yes=हाँ
 no=नहीं
 set_password=पासवर्ड सेट करें
 ok=ठीक है
-keep_filter_on=फ़िल्टर चालू रखें
-keep_filter_off=फ़िल्टर बंद रखें
-filter_options=फ़िल्टर विकल्पों
-turn_filter_on=फ़िल्टर चालू करें
-turn_filter_off=फ़िल्टर बंद करें
-change_password=पासवर्ड परिवर्तित करें
-re_enter_password=पासवर्ड पुन: दर्ज करें
-re_enter_new_password=नया पासवर्ड पुन: दर्ज करें
+keep_filter_on=फ़िल्टर सक्षम रखें
+keep_filter_off=फ़िल्टर अक्षम रखें
+filter_options=फ़िल्टर विकल्प
+turn_filter_on=फ़िल्टर सक्षम करें
+turn_filter_off=फ़िल्टर अक्षम करें
+change_password=पासवर्ड बदलें
+re_enter_password=पासवर्ड पुनः दर्ज करें
+re_enter_new_password=नया पासवर्ड पुनः दर्ज करें
 passwords_not_match=पासवर्ड मेल नहीं खाते हैं
 enter_old_password=पुराना पासवर्ड दर्ज करें
 enter_password=पासवर्ड दर्ज करें
-try_again=गलत। कृपया पुन: प्रयास करें।
+try_again=गलत। कृपया पुनः प्रयास करें।
 enter_new_password=नया पासवर्ड दर्ज करें
 parental_controls=अभिभावक नियंत्रण

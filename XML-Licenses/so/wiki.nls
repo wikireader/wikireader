@@ -1,0 +1,33 @@
+# Messages for Somali (Soomaaliga)
+# Exported from translatewiki.net
+# Author: Abshirdheere
+
+wiki_name=Soomaaliga...
+books:wiki_name=Buugaag
+dict:wiki_name=Qaamuus
+guten:wiki_name=Mashruuc Gutenberg
+pedia:wiki_name=Wikipedia Soomaali
+please_wait=Fadlan sug...
+yes=Haa
+no=Maya
+protection=Waxaa laga yaabaa in aaneey ku habooneyn  wikipedia caruurta. Fadlan udooro eraysir ilaaliya.
+guten:protection=Buugaagta qaar waxaa laga yaabaa in aaneey ku habooneyn da'yerta. Fadlan udooro eraysir ilaaliya.
+restricted=Waxaa laga yaabaa in aaneey ku habooneyn  qaybtaan caruurta. Fadlan udooro eraysir si looga ilaaliyo.
+set_password=Ereysir udooro
+ok=ok
+set_filter=Filtereha si uu u shidnaado, waxaa lagama maarmaan ah Ereysir marka la furayo maqaalada xiran.
+keep_filter_on=Fiilterka udaa shaqadiisa
+keep_filter_off=Fiilterka ka jooji shaqada
+filter_options=Dooqyeda fiilterka
+turn_filter_on=Howlagal
+turn_filter_off=Howlgab
+change_password=Bedel ereysirta
+re_enter_password=Ku celi ereysirta
+re_enter_new_password=ku celi ereysirta cusub
+passwords_not_match=Ereysirta isma waafaqsana
+enter_old_password=Geli ereysirtii hore
+enter_password=Geli ereysirta
+try_again=Qalad. Fadlan isku day mar kale
+enter_new_password=Geli ereysir cusub
+parental_controls=Ilaalinta waalidiinta
+r=R
