@@ -1,5 +1,6 @@
 # Messages for Azerbaijani (azərbaycanca)
 # Exported from translatewiki.net
+# Author: AZISS
 # Author: Cekli829
 # Author: Melikov Memmed
 # Author: PPerviz
@@ -10,6 +11,7 @@ wiki_name=Azərbaycanca...
 books:wiki_name=Kitablar
 dict:wiki_name=Lüğət
 guten:wiki_name="Qutenberq" layihəsi
+how:wiki_name=VikiNecə
 pedia:wiki_name=Azərbaycanca Vikipediya
 quote:wiki_name=Sitatlar
 type_a_word=Bir söz yazın
@@ -28,6 +30,8 @@ guten:protection=Yetkinlik yaşına çatmayanların bəzi kitablarla tanış olm
 restricted=Yetkinlik yaşına çatmayanların bu məqalə ilə tanış olması tövsiyə olunmur. Lütfən, mühafizə üçün parol müəyyənləşdirin.
 set_password=Parolu nizamla
 ok=ok
+keep_filter_on=Filtiri İSLƏK vəziyyətdə saxla
+keep_filter_off=Filtiri SÖNÜLÜ vəziyyətdə saxla
 filter_options=Filtrin nizamlamaları
 turn_filter_on=Filtri aç
 turn_filter_off=Filtri söndür

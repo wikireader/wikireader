@@ -4,6 +4,7 @@
 # Author: Dream
 # Author: Frankou
 # Author: Lauhenry
+# Author: Simon Shek
 # Author: Wrightbus
 
 wiki_name=中文...
@@ -29,7 +30,7 @@ select_wiki=選擇語言版本
 history_title=歷史
 no_history=沒有歷史
 please_wait=請稍候...
-clear_history=清除歷史記錄
+clear_history=清除歷史
 yes=是
 no=否
 protection=有些維基百科條目兒童不宜。請設密碼保護。
