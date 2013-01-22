@@ -79,7 +79,7 @@ D. Ubuntu Server 12.10
 
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install openssh-server mg lynx
+sudo apt-get install openssh-server mg lynx bash-completion
 sudo apt-get install git build-essential flex bison
 sudo apt-get install xfonts-utils ocaml guile-2.0 gforth
 sudo apt-get install sqlite3 qt4-qmake libqt4-dev
@@ -102,5 +102,5 @@ make
 # gcc fails  ... add -i386 if 32bit system
 cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
 make
-   81  mg host-tools/gcc-3.3.2/build/config.cache
-   82  sudo apt-get install mg
+# system should build
+ls -l wiki/wiki.app
