@@ -1,0 +1,51 @@
+# Messages for Occitan (occitan)
+# Exported from translatewiki.net
+# Author: Cedric31
+
+wiki_name=Occitan...
+appro:wiki_name=Apropèdia
+books:wiki_name=Libres
+dict:wiki_name=Diccionari
+guten:wiki_name=Projècte Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipèdia en occitan
+quote:wiki_name=Citacions
+hitch:wiki_name=Hitchwiki
+license_text=Lo tèxte es disponible jos la licéncia Creative Commons Atribucion / Redistribucion a l’identica e pòt èsser reütilizat liurament segon los tèrmes d'aquesta licéncia. Vejatz : Tèxte de la licéncia [CC-BY-SA] e [Condicions d’utilizacion] pels tèrmes suplementaris que s'i pòdon aplicar. L’article d'origina es disponible a l’adreça : http://fr.wikipedia.org/wiki/<title>
+appro:license_text=Lo tèxte es disponible jos la licéncia Creative Commons Atribucion/Redistribucion a l’identica e pòt èsser reütilizar liurament segon los tèrmes d'aquesta licéncia. Veire : Tèxte de la licéncia [CC-BY-SA] e [Condicions d’utilizacion] per las condicions suplementàrias que s’aplicant. L’article original es disponible a l’adreça : http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Lo tèxte es disponible jos la licéncia Creative Commons Atribucion / Redistribucion a l’identica e pòt èsser reütilizat liurament segon los tèrmes d'aquesta licéncia. Vejatz : Tèxte de la licéncia [CC-BY-SA] e [Condicions d’utilizacion] pels tèrmes suplementaris que s'i pòdon aplicar. L’article d'origina es disponible a l’adreça : http://fr.wiktionary.org/wiki/<title>
+guten:license_text=Vejatz tanben : [Lista alfabetica dels autors], [Lista de las laissas]. Los dreches d’autors de la màger part d'aquestes libres an expirat als Estats Units. (Benlèu que son encara someses a de tals dreches dins de païses mai). Atal, qual que siá pòt realizar de còpias, integralas o pas, d'aquestes trabalhs. Per mai de detalhs, consultar : http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Lo tèxte es disponible jos la licéncia Creative Commons Atribucion / Redistribucion a l’identica e pòt èsser reütilizat liurament segon los tèrmes d'aquesta licéncia. Vejatz : Tèxte de la licéncia [CC-BY-SA] e [Condicions d’utilizacion] pels tèrmes suplementaris que s'i pòdon aplicar. L’article d'origina es disponible a l’adreça : http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Lo tèxte es disponible jos la licéncia Creative Commons Atribucion/Redistribucion a l’identica e pòt èsser reütilizar liurament segon los tèrmes d'aquesta licéncia. Veire : Tèxte de la licéncia [CC-BY-SA] e [Condicions d’utilizacion] per las condicions suplementàrias que s’aplicant. L’article original es disponible a l’adreça : http://en.wikiquote.org/wiki/<title>
+type_a_word=Picatz un mot o expression
+guten:type_a_word=Escrivètz un títol de libre o un nom d'autor
+no_results=Pas cap de correspondéncia
+searching=Recèrca en cors...
+select_wiki=Causir l'enciclopèdia
+history_title=Istoric
+no_history=Pas cap d'istoric
+please_wait=Pacientatz...
+clear_history=Voidar l'istoric
+yes=Òc
+no=Non
+protection=D'unes articles sus Wikipèdia pòdon èsser inapropriats pels joves. Definissètz un senhal per i accedir.
+guten:protection=D'unes libres pòdon èsser inapropriats pels menors. Mercé de definir un senhal de proteccion per i accedir.
+restricted=Aqueste article es inapropriats pels joves. Definissètz un senhal de proteccion per i accedir.
+set_password=Definir un senhal
+ok=d'acòrdi
+set_filter=Amb lo filtratge activat, un senhal es requesit per l'accès a un article protegit.
+keep_filter_on=Activar lo filtratge
+keep_filter_off=Desactivar lo filtratge
+filter_options=Opcions de filtratge
+turn_filter_on=Activar lo filtratge
+turn_filter_off=Desactivar lo filtratge
+change_password=Cambiar de senhal
+re_enter_password=Confirmatz lo senhal
+re_enter_new_password=Confirmatz lo senhal
+passwords_not_match=Los senhals son pas identics
+enter_old_password=Picatz l'ancian senhal
+enter_password=Picatz lo senhal
+try_again=Error. Ensajatz tornarmai.
+enter_new_password=Picatz lo senhal novèl
+parental_controls=Contraròtle parental
+r=R
