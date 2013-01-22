@@ -71,3 +71,36 @@ C. Compiling a test database (multiple language version - latest kernel.elf)
    e.g.   mkfs.vfat -F 32 -n wikird /dev/sd<id-and-partition>
           mount /dev/sd<id-and-partition> /mnt
           cp -r image/* /mnt/
+
+
+
+D. Ubuntu Server 12.10
+======================
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install openssh-server mg lynx
+sudo apt-get install git build-essential flex bison
+sudo apt-get install xfonts-utils ocaml guile-2.0 gforth
+sudo apt-get install sqlite3 qt4-qmake libqt4-dev
+sudo apt-get install cjk-latex
+sudo apt-get install php5-cli
+sudo apt-get install dvipng
+sudo apt-get install mecab-ipadic-utf8
+sudo apt-get install php5-sqlite php5-tidy
+sudo apt-get install gawk
+sudo apt-get install python-gd
+
+git clone https://github.com/wikireader/wikireader.git
+cd wikireader/
+make clean
+make requirements
+make
+# binutils fails  ... add -i386 if 32bit system
+cp SavedCaches/config.cache-binutils-12.10 host-tools/binutils-2.10.1/build/config.cache
+make
+# gcc fails  ... add -i386 if 32bit system
+cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
+make
+   81  mg host-tools/gcc-3.3.2/build/config.cache
+   82  sudo apt-get install mg
