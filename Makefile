@@ -372,6 +372,7 @@ REQUIRES_TARGETS += toolchain-requires
 # QT simulator
 # ============
 
+ifeq (DEPRECATED,)
 
 .PHONY: qt4-simulator
 qt4-simulator: qt4-simulator-requires
@@ -401,6 +402,12 @@ sim4d: qt4-simulator validate-destdir
 
 # the console simulator is presently broken
 #$(call STD_RULE, console-simulator, ${HOST_TOOLS}/console-simulator)
+
+else
+.PHONY: sim4
+sim4:
+	@echo error: deprecated target, replaced by: make DESTDIR=some_image_dir wiki-simulate
+endif
 
 
 # Font processing
@@ -1009,7 +1016,8 @@ help:
 	@echo '  grifo-simulate        - install the simulated Grifo examples - these run on host machine'
 	@echo '  gcc                   - compile gcc toolchain'
 	@echo '  flash-mbr             - flash bootloader to the E07 board'
-	@echo '  console-simulator     - compile the console simulator'
+	@echo '  wiki-simulate         - compile, install run simulator in DESTDIR'
+	@echo '                          assumes install already done; overwrites wiki.app with x86 exe'
 	@echo '  requirements          - detect missing packages'
 	@echo '  clean                 - clean all programs and object files except the toochain'
 	@echo '  clean-toolchain       - clean just the toochain'
