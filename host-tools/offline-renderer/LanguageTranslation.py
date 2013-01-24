@@ -218,7 +218,11 @@ class LanguageJapanese(LanguageProcessor):
             text = text.encode('utf-8')
 
         n = self.mecab.parseToNode(text)
-        slen = n.sentence_length;
+	try:
+            slen = n.sentence_length;
+        except AttributeError as e:
+            print('**AttributeError(sentence_length) on "{t:s}"\n'.format(t=text))
+            slen = -1
         processed_len = 0
         for i in range(slen + 1):
             b = n.begin_node_list(i)
