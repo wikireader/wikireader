@@ -89,7 +89,7 @@ sudo apt-get install dvipng
 sudo apt-get install mecab-ipadic-utf8
 sudo apt-get install php5-sqlite php5-tidy
 sudo apt-get install gawk
-sudo apt-get install python-gd
+sudo apt-get install python-gd python-mecab python-lzma
 
 git clone https://github.com/wikireader/wikireader.git
 cd wikireader/
