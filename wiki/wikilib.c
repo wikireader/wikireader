@@ -1278,6 +1278,17 @@ static void handle_touch(event_t *ev)
 			finger_touched = 1;
 			finger_move_speed = 0;
 
+			if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y < 15))
+         {
+            // top edge final desired action to jump 100 lines
+               display_article_with_pcf(-100);
+         }
+         if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y > 185))
+         {
+            // bottom edge final desired action to jump 100 lines
+               display_article_with_pcf(100);
+         }
+
 			if(touch_y_last < 0) // initial touch down
 			{
 				touch_x_last = ev->touch.x;
