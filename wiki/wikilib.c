@@ -522,7 +522,7 @@ static void handle_button_release(button_t keycode)
 		random_article();
 	} else if ((keycode == BUTTON_RANDOM)&&(display_mode == DISPLAY_MODE_ARTICLE)) {
 		// Add here page next Karthik
-		display_article_with_pcf(170);
+		display_article_with_pcf(200);
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
 		key = keyboard_locate_key((char)keycode);
