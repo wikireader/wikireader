@@ -506,7 +506,8 @@ static void handle_button_release(button_t keycode)
 				guilib_fb_unlock();
 			}
 		}
-	} else if (keycode == BUTTON_RANDOM) {
+			//if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y < 15))
+	} else if ((keycode == BUTTON_RANDOM)&&(display_mode != DISPLAY_MODE_ARTICLE)) {
 		if (first_time_random < 4)
 			first_time_random++;
 		if (first_time_random == 3)
@@ -519,6 +520,9 @@ static void handle_button_release(button_t keycode)
 		display_mode = DISPLAY_MODE_ARTICLE;
 		last_display_mode = DISPLAY_MODE_INDEX;
 		random_article();
+	} else if ((keycode == BUTTON_RANDOM)&&(display_mode == DISPLAY_MODE_ARTICLE)) {
+		// Add here page next Karthik
+		display_article_with_pcf(170);
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
 		key = keyboard_locate_key((char)keycode);
@@ -1281,12 +1285,14 @@ static void handle_touch(event_t *ev)
 			if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y < 15))
          {
             // Karthik top edge final desired action to jump 100 lines
-               display_article_with_pcf(-100);
+            // do nothing   display_article_with_pcf(-100);
+					finger_move_speed = 0;
          }
          if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y > 185))
          {
             // Karthik bottom edge final desired action to jump 100 lines
-               display_article_with_pcf(100);
+            // do nothing  display_article_with_pcf(100);
+					finger_move_speed = 0;
          }
 
 			if(touch_y_last < 0) // initial touch down

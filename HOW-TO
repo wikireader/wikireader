@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PARALLEL_BUILD=12
 make clean-toolchain
 mkdir /tmp/2013/enpedia
 make install DESTDIR=/tmp/2013

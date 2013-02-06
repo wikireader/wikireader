@@ -549,7 +549,7 @@ RENDER_STAMP := ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/stamp-render
 # ---------------------------------------------------------------------------------------
 
 MACHINE_COUNT ?= 9
-PARALLEL_BUILD ?= 3
+PARALLEL_BUILD ?= 12
 
 COUNTS_FILE = ${WORKDIR_PATH}/${WIKI_LANGUAGE}${WIKI_DIR_SUFFIX}/counts.text
 
