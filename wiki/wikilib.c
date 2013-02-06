@@ -483,7 +483,7 @@ static void handle_button_release(button_t keycode)
 			keyboard_set_mode(wiki_default_keyboard());
 			repaint_search();
 		}
-	} else if (keycode == BUTTON_HISTORY) {
+	} else if ((keycode == BUTTON_HISTORY)&&(display_mode != DISPLAY_MODE_ARTICLE)) {
 		if (display_mode != DISPLAY_MODE_HISTORY) {
 			clear_article_pos_info(); // to clear the previous article positioning information for list links to work properly
 			article_buf_pointer = NULL;
@@ -506,7 +506,9 @@ static void handle_button_release(button_t keycode)
 				guilib_fb_unlock();
 			}
 		}
-			//if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y < 15))
+	} else if ((keycode == BUTTON_HISTORY)&&(display_mode == DISPLAY_MODE_ARTICLE)) {
+      // Add here page next Karthik
+             display_article_with_pcf(-200);
 	} else if ((keycode == BUTTON_RANDOM)&&(display_mode != DISPLAY_MODE_ARTICLE)) {
 		if (first_time_random < 4)
 			first_time_random++;
@@ -1281,19 +1283,6 @@ static void handle_touch(event_t *ev)
 		} else {
 			finger_touched = 1;
 			finger_move_speed = 0;
-
-			if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y < 15))
-         {
-            // Karthik top edge final desired action to jump 100 lines
-            // do nothing   display_article_with_pcf(-100);
-					finger_move_speed = 0;
-         }
-         if ((finger_move_speed == 0)&&(display_mode == DISPLAY_MODE_ARTICLE)&&(ev->touch.y > 185))
-         {
-            // Karthik bottom edge final desired action to jump 100 lines
-            // do nothing  display_article_with_pcf(100);
-					finger_move_speed = 0;
-         }
 
 			if(touch_y_last < 0) // initial touch down
 			{
