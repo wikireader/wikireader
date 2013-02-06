@@ -1,0 +1,2 @@
+include gpiotest.4th
+test-gpio-main

@@ -1,0 +1,37 @@
+  ,            cy,       cypedia,
+  ,            da,       dapedia,     DANISH
+  DICTIONARY,  de,       dedict,
+  GUTENBERG,   de,       deguten,
+  ,            de,       depedia,
+  ,            el,       elpedia,
+  BOOKS,       en,       enbooks,
+  OTHERS,      en,       enappro,
+  DICTIONARY,  en,       endict,
+  GUTENBERG,   en,       enguten,
+  OTHERS,      en,       enhow,
+  OTHERS,      en,       enhitch,
+  ,            en,       enpedia,
+  QUOTE,       en,       enquote,
+  OTHERS,      en,       enstarw,
+  TRAVEL,      en,       entrav,
+  ,            es,       espedia,
+  DICTIONARY,  en,       esdict,
+  ,            fi,       fipedia,
+  DICTIONARY,  fr,       frdict,
+  ,            fr,       frpedia,
+  ,            hu,       hupedia,
+  ,            it,       itpedia,
+  ,            ja,       japedia,     JAPANESE-HIRAGANA, (ひらがな入力)
+  ,            ja,       japedia,     JAPANESE-ROMAN,    (ローマ字入力)
+  ,            ko,       kopedia,     KOREAN
+  ,            nl,       nlpedia,
+  ,            no,       nopedia,
+  ,            pl,       plpedia,
+  ,            pt,       ptpedia,
+  ,            ru,       rupedia,
+  ,            sr,       srpedia,
+  ,            sv,       svpedia,
+  ,            simple,   e0pedia,
+  ,            tr,       trpedia,
+  ,            zhs,      zhpedia,     CHINESE-PINYIN,    (拼音)
+  ,            zht,      zhpedia,     CHINESE-BOPOMO,    (注音)

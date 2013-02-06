@@ -1,0 +1,2 @@
+include lcd-test.4th
+test-lcd-main

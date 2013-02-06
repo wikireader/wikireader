@@ -1,19 +1,26 @@
 #!/bin/bash
 
+
+DEST_DIR=/tmp/2013-a
+
 PARALLEL_BUILD=12
 make clean-toolchain
-mkdir /tmp/2013/enpedia
-make install DESTDIR=/tmp/2013
+
+mkdir -p $DEST_DIR/enpedia
+make install DESTDIR=$DEST_DIR
 cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
 mkdir -p host-tools/gcc-3.3.2/build
 cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
 make
 cp SavedCaches/config.cache-binutils-12.10 host-tools/binutils-2.10.1/build/config.cache
 make
-make install DESTDIR=/tmp/2013
+make install DESTDIR=$DEST_DIR
 
-echo "NOw simulate"
+
+exit
+echo "Now simulate"
 echo "This will crash. it is OK"
+mkdir -p /tmp/2013/enpedia
 make wiki-simulate DESTDIR=/tmp/2013
 echo "Now delete enpedia from /tmp/2013"
 echo "cd /tmp/2013 and then ./wiki.app"
