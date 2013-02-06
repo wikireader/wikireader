@@ -21,6 +21,12 @@ echo "Now delete enpedia from /tmp/2013"
 echo "cd /tmp/2013 and then ./wiki.app"
 
 
+Changes I have done
+Edit
+wiki/wikilib.c
+See this for more details
+
+
 
 Contents of root directory
 ==========================
