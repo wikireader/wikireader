@@ -8,6 +8,7 @@
 # Author: Siebrand
 
 wiki_name=The language version of Wikipedia that is being used.\n\nChange "English" to the name of the language you're translating into.
+dict:wiki_name={{Identical|Dictionary}}
 pedia:wiki_name=[[File:Select_wiki.png|right|150px]] The whole message should be localised. "Wikipedia" should be localised to the name of Wikipedia in your language and script. Instead of "English" you should put the name of your own language, in your language.
 quote:wiki_name={{Identical|Quote}}
 starw:wiki_name={{Optional}}
@@ -17,6 +18,7 @@ type_a_word=Type a Word or Phrase[[File:Type_a_word.png|right|150px]]. Note: Try
 no_results=No Entries found[[File:No_results.png|right|150px]]
 select_wiki=Choose encyclopedia[[File:Select_wiki.png|150px|right]]
 history_title=History[[File:History_title.png|150px|right]]\n{{Identical|History}}
+please_wait={{Identical|Please wait}}
 clear_history=Clear History[[File:Clear_history.png|150px|right]] Note: Translated string cannot be much longer than the English string.
 yes=Yes[[File:Clear_history.png|150px|right]]\n{{Identical|Yes}}
 no=No[[File:Clear_history.png|150px|right]]\n{{Identical|No}}
