@@ -3,10 +3,17 @@
 # Author: Namik
 
 wiki_name=Инглис...
+appro:wiki_name=Хъагъаз маса чlаларал
 books:wiki_name=Ктабар
+dict:wiki_name=Гафалаг
 pedia:wiki_name=Инглис Викепедийа
+quote:wiki_name=Куотес
+searching=жагъур...
+select_wiki=Хкягъун энциклопедиа
 history_title=Кьиспес(тарих)
 no_history=Кьиспес авач
+clear_history=Къиса алудун
 yes=Э
 no=Ваъ
+set_password=Кулег эциг авун
 ok=Э
