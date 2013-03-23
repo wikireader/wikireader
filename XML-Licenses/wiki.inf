@@ -57,11 +57,13 @@
   ,            ja,       japedia,     JAPANESE-HIRAGANA, (ひらがな入力)
   ,            ja,       japedia,     JAPANESE-ROMAN,    (ローマ字入力)
   ,            ko,       kopedia,     KOREAN
+  ,            ms,       mspedia,
   ,            nl,       nlpedia,
   ,            no,       nopedia,
   ,            pl,       plpedia,
   ,            pt,       ptpedia,
   ,            ru,       rupedia,
+  DICTIONARY,  ru,       rudict,
   ,            sr,       srpedia,
   ,            sv,       svpedia,
   ,            simple,   e0pedia,
