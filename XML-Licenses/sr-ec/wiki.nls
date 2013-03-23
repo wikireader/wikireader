@@ -2,9 +2,10 @@
 # Exported from translatewiki.net
 # Author: Charmed94
 # Author: Rancher
+# Author: Милан Јелисавчић
 # Author: Михајло Анђелковић
 
-wiki_name=Српски
+wiki_name=Српски...
 appro:wiki_name=Апропедија
 books:wiki_name=Књиге
 dict:wiki_name=Речник
@@ -50,4 +51,4 @@ enter_password=Унесите лозинку
 try_again=Погрешно. Покушајте поново.
 enter_new_password=Унесите нову лозинку
 parental_controls=Родитељска контрола
-r=R
+r=О
