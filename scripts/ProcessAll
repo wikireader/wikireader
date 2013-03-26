@@ -17,6 +17,8 @@ USAGE()
   echo 'commands:'
   echo '       help              This message'
   echo '       link              Move all symlinks to latest versions'
+  echo '       list              Show list of items to run'
+  echo '       from <item>       remove all items before <item> from list, e.g. from lv list  from ru run'
   echo '       run               Rebuild all'
   echo '       cjk               Rebuild ko,ja,zh'
   echo '       en                Rebuild short for en:pedia (or other two letter language code)'
@@ -76,17 +78,17 @@ done
 
 AllItems='
 cy
+da
 de
 de:dict
-da
 el
 en::::::-2
 en:appro
 en:dict
 en:how
 en:quote
-en:trav
 en:starw
+en:trav
 es
 es:dict
 fi
@@ -96,6 +98,7 @@ hu
 it
 ja
 ko
+lv
 ms
 nl
 no
@@ -110,26 +113,32 @@ zh
 '
 
 
-AllLanguages=
-AllCSV=
-for item in ${AllItems}
-do
-  AllCSV="${AllCSV},${item}"
-  lang="${item%%:*}"
-  eval flag="\${lf_${lang}}"
-  if [ X"${flag}" = X"" ]
-  then
-    eval lf_${lang}="${lang}"
-    AllLanguages="${AllLanguages} ${lang}"
-  fi
-done
-AllLanguages="${AllLanguages## }"
-AllCSV="${AllCSV##,}"
+make_all() {
+  AllLanguages=
+  AllCSV=
+  for item in ${AllItems}
+  do
+    AllCSV="${AllCSV},${item}"
+    lang="${item%%:*}"
+    eval flag="\${lf_${lang}}"
+    if [ X"${flag}" = X"" ]
+    then
+      eval lf_${lang}="${lang}"
+      AllLanguages="${AllLanguages} ${lang}"
+    fi
+  done
+  AllLanguages="${AllLanguages## }"
+  AllCSV="${AllCSV##,}"
+}
+
+make_all
 
 [ $# -eq 0 ] && USAGE missing command
 
-for command in $@
+while [ $# -gt 0 ]
 do
+  command="$1"
+  shift
   case "${command}" in
     help)
       USAGE
@@ -173,6 +182,36 @@ do
           progress -L"${l}" -a
         fi
       done
+      ;;
+
+    # list
+    list)
+      for l in ${AllItems}
+      do
+        echo ${l}
+      done
+      ;;
+
+    # from <item>
+    from)
+      flag=no
+      NewList=''
+      [ -z "$1" ] && USAGE from requires an argument
+      TheItem="$1"
+      shift
+      for l in ${AllItems}
+      do
+        if [ X"${l}" = X"${TheItem}" ]
+        then
+          flag=yes
+        fi
+        if [ X"yes" = X"${flag}" ]
+        then
+          NewList="${NewList} ${l}"
+        fi
+      done
+      AllItems="${NewList}"
+      make_all
       ;;
 
     # en is the exception (reduce the number of threads)
