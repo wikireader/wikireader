@@ -63,7 +63,6 @@ def getMountList():
         return mount
     else:
         return winapi.getRemovableDisk()
-        #return []
 
 def getVersion():
     for mount in getMountList():

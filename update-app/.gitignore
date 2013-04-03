@@ -1,5 +1,7 @@
 dist
+build
 *.exe
 test
 *.pyc
 *.pyo
+*.log

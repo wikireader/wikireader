@@ -8,6 +8,7 @@
 #          Hank Wang <hank@openmoko.com>
 
 import os
+import sys
 
 def opj(path):
     """Convert paths to the platform-specific separator"""
@@ -23,11 +24,12 @@ def getProgramFolder():
     programFolder = os.path.abspath(moduleDir)
     return programFolder
 
-def resource_path(relative):
-    return os.path.join(
-        os.environ.get(
-            "_MEIPASS2",
-            os.path.abspath(".")
-        ),
-        relative
-    )
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)

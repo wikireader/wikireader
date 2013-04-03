@@ -1,6 +1,5 @@
 # -*- mode: python -*-
 a = Analysis(['Wikireader Update.py'],
-             pathex=['C:\\Users\\om\\Documents\\GitHub\\wikireader\\update-app'],
              hiddenimports=[],
              hookspath=None)
 a.datas += [('7za.exe', 'tools\\7za.exe', 'DATA')]

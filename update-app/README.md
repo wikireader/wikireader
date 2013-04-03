@@ -1,4 +1,4 @@
-# WikiReader Development Note
+# Wikireader Update
 
 ### Package list
 
@@ -28,15 +28,21 @@ $ python
 
 [Pyinstaller - pack applcation to exe](http://www.pyinstaller.org/)
 
+
+**Recreate Spec file**
 ```
 python Makespec.py -F -w --icon=icon.ico "WikiReader Update.py"
 python Build.py .\WikiReader Update\WikiReader Update.spec
 ```
 
-Important: Add 7za path to spec.
-
+**Generate executable file on Windows**
 ```
-a.datas += [('7za.exe', 'C:\\wikireaderPlus\\tools\\7za.exe', 'DATA')]
+build.bat
+```
+
+**Important**: Add 7za path to spec.
+```
+a.datas += [('7za.exe', 'tools\\7za.exe', 'DATA')]
 ```
 
 ### OSX
@@ -77,5 +83,3 @@ http://developer.apple.com/library/mac/#documentation/ToolsLanguages/Conceptual/
 [Mac Developer - Code Signing Tasks](https://developer.apple.com/library/mac/#documentation/security/Conceptual/CodeSigningGuide/Procedures/Procedures.html)
 
 [Developer ID Gotcha](http://www.red-sweater.com/blog/2390/developer-id-gotcha)
-
-
