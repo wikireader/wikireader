@@ -1,0 +1,109 @@
+#!/bin/sh
+# aside from this initial boilerplate, this is actually -*- scheme -*- code
+main='(module-ref (resolve-module '\''(scripts script-entry-point)) '\'main')'
+exec ${GUILE-guile} --no-auto-compile -l $0 -c "(apply $main (command-line))" "$0" "$@"
+!#
+
+;;; nls-print - print the name of a language from its code
+;;;
+;;; Copyright (c) 2010 Openmoko Inc.
+;;;
+;;; Authors   Christopher Hall <hsw@openmoko.com>
+;;;
+;;; This program is free software: you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation, either version 3 of the License, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+(define-module (scripts script-entry-point)
+  :use-module (ice-9 getopt-long)
+  :use-module (ice-9 rdelim)
+  :use-module (ice-9 regex)
+  :use-module (srfi srfi-1)
+  :export (script-entry-point))
+
+(define-macro (unless cond . body)
+  `(if (not ,cond) (begin ,@body)))
+
+(define *program* "program-name-here")
+(define *debug* #f)
+(define *verbose* #f)
+
+(define (usage message)
+  "Display a usage message"
+  (if (string? message)
+      (format #t "error: ~a~%" message))
+  (format #t "usage: ~a [--verbose] [--debug] <file>~%" *program*)
+  (exit 1))
+
+
+(define (main . args)
+  "Main program"
+  (set! *program* (second args))
+  (let* ((parsed-opts (getopt-long (drop args 1)
+                                   '((help (single-char #\h))
+                                     (verbose (single-char #\v))
+                                     (debug (single-char #\d)))))
+         (=h (option-ref parsed-opts 'help #f))
+         (*verbose* (option-ref parsed-opts 'verbose #f))
+         (*debug* (option-ref parsed-opts 'debug #f))
+         (inputs (drop (first parsed-opts) 1)))
+    (if =h (usage '()))
+    (if *debug*
+        (begin
+          (format #t "parsed opts = ~a~%" parsed-opts)
+          (format #t "non-option args = ~a~%" inputs)))
+
+    (unless (= 1 (length inputs)) (usage "exactly one code argument is required"))
+
+    (let ((title (make-regexp "<title>(Bible[^<]*/([^<]*))</title>"))
+          (numeric-prefix (make-regexp "^([[:digit:]]+|I+)[[:space:]]+(.*)$"))
+          (in (car inputs)))
+      (with-input-from-file in
+        (lambda ()
+          (while (not (eof-object? (peek-char)))
+                 (let* ((line (string-trim-both (read-line)))
+                        (match (regexp-exec title line)))
+                   (if match
+                       (let* ((article (get-sub-match match 1))
+                              (redirect (get-sub-match match 2))
+                              (prefixed (regexp-exec numeric-prefix redirect)))
+                         (if *debug*
+                             (format #t "redirect = ~a -> ~a~%" redirect article))
+                         (create-redirect article redirect)
+                         (if prefixed
+                             (let ((number (get-sub-match prefixed 1))
+                                   (name (get-sub-match prefixed 2)))
+                               (create-redirect article (string-join (list name number) " "))))
+
+                         )))))))
+))
+
+
+(define (get-sub-match match i)
+  "extract the full title from a match"
+  (let ((text (array-ref match 0))
+        (ref (array-ref match (1+ i))))
+    (string-copy text (car ref) (cdr ref))))
+
+
+(define (create-redirect existing-title new-title)
+  "Create a MediaWiki redirect entry"
+  (format #t "
+  <page>
+    <title>~a</title>
+    <revision>
+      <text xml:space=\"preserve\">#REDIRECT [[~a]]
+</text>
+    </revision>
+  </page>
+" new-title existing-title))

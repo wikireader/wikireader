@@ -284,8 +284,12 @@ do
 
   arg="${arg#*:}"
   truncate="${arg%%:*}"
-  IsInteger "${truncate}" || truncate='unlimited'
-  [ "${truncate}" -le 0 ] && truncate='unlimited'
+  if IsInteger "${truncate}"
+  then
+    [ "${truncate}" -le 0 ] && truncate='unlimited'
+  else
+    truncate='unlimited'
+  fi
 
   # license and terms
   licenses=$(readlink -m "${LicensesDirectory}")

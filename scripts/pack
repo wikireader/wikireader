@@ -11,15 +11,17 @@ USAGE()
 {
   [ -z "$1" ] || echo error: $*
   echo usage: $(basename "$0") '<options> [find_glob]'
-  echo '       --help           -h         this message'
-  echo '       --verbose        -v         more messages'
-  echo '       --packages=<dir> -p <dir>   directory for 7zipped files ['${packages}']'
-  echo '       --image=<dir>    -i <dir>   image source directory ['${image}']'
-  echo '       --url=<url>      -u <url>   base url for HTML file ['${url}']'
-  echo '       --size=<n>       -s <n>     7zip splitting factor (number[kmg]) ['${size}']'
-  echo '       --suffix=<text>  -S <text>  extra suffix after date for 7z files ['${suffix}']'
-  echo '       --direct=<y/n>   -d <y/n>   generate direct links ['${direct}']'
-  echo '       --pretty         -P         pretty print the HTML'
+  echo '       --help             -h         this message'
+  echo '       --verbose          -v         more messages'
+  echo '       --packages=<dir>   -p <dir>   directory for 7zipped files ['${packages}']'
+  echo '       --image=<dir>      -i <dir>   image source directory ['${image}']'
+  echo '       --url=<url>        -u <url>   base url for HTML file %s for language ['${url}']'
+  echo '       --languages=<list> -l <list>  comma separated language prefixes ['${languages}']'
+  echo '       --size=<n>         -s <n>     7zip splitting factor (number[kmg]) ['${size}']'
+  echo '       --suffix=<text>    -S <text>  extra suffix after date for 7z files ['${suffix}']'
+  echo '       --torrent=<y/n>    -t <y/n>   generate torrent links ['${torrent}']'
+  echo '       --direct=<y/n>     -d <y/n>   generate direct links ['${direct}']'
+  echo '       --pretty=<y/n>     -P <y/n>   pretty print the HTML ['${pretty}']'
   exit 1
 }
 
@@ -27,24 +29,49 @@ USAGE()
 . "$(dirname "$0")/wiki-names.sh"
 
 
+# defaults
 nlsprint=$(readlink -m "$(dirname "$0")/../samo-lib/scripts/nls-print")
 verbose=no
 packages="packages/$(date '+%Y%m%d')"
 image=image
-url=http://wrmlbeta.s3.amazonaws.com
+url=http://%s.thewikireader.com/downloads
+# note src_lang=dst_lang (e.g. cy=en  will place the cypedia in the en.XXX url
+languages=en,cy=en
 size=1g
-pretty=no
+pretty=yes
 suffix=
-direct=no
+torrent=no
+direct=yes
 debug=no
 
+# process options
 getopt=/usr/local/bin/getopt
 [ -x "${getopt}" ] || getopt=getopt
-args=$(${getopt} -o hvp:i:t:s:u:S:d:P --long=help,verbose,packages:,image:,tracker:,url:,size:,suffix:,direct:,pretty,debug -- "$@") ||exit 1
+args=$(${getopt} -o hvp:i:t:s:u:S:d:t:P: --long=help,verbose,packages:,image:,tracker:,url:,size:,suffix:,direct:,torrent:,pretty:,debug -- "$@") ||exit 1
 
 # replace the arguments with the parsed values
 eval set -- "${args}"
 
+# yes/no options
+yes_no()
+{
+  local option value
+  option="$1"; shift
+  value="$1"; shift
+  case "${value}" in
+    [yY]|[yY][eE][sS])
+      eval "\${option}"=yes
+      ;;
+    [nN]|[nN][oO])
+      eval "\${option}"=no
+      ;;
+    *)
+      USAGE must be yes or no: ${option}=${value}
+      ;;
+  esac
+}
+
+# scan all options
 while :
 do
   case "$1" in
@@ -74,18 +101,12 @@ do
       ;;
 
     -d|--direct)
-      direct="$2"
-      case "${direct}" in
-        [yY][yY][eE][sS])
-          direct=yes
-          ;;
-        [nN]|[nN][oO])
-          direct=no
-          ;;
-        *)
-          USAGE must be yes or no: $1=$2
-          ;;
-      esac
+      yes_no direct "$2"
+      shift 2
+      ;;
+
+    -t|--torrent)
+      yes_no torrent "$2"
       shift 2
       ;;
 
@@ -95,8 +116,8 @@ do
       ;;
 
     -P|--pretty)
-      pretty=yes
-      shift
+      yes_no pretty "$2"
+      shift 2
       ;;
 
     --debug)
@@ -123,7 +144,9 @@ done
 [ -z "${packages}" ] && USAGE packages is not set
 [ -z "${image}" ] && USAGE image is not set
 [ -z "${url}" ] && USAGE url is not set
+[ -z "${languages}" ] && USAGE languages is not set
 [ -z "${size}" ] && USAGE size is not set
+[ X"${direct}" = X"no" -a X"${torrent}" = X"no" ] && USAGE must set direct and/or torrent
 [ $# -gt 1 ] && USAGE extraneous extra arguments
 
 glob='*'
@@ -138,6 +161,24 @@ mkdir -p "${packages}"
 [ -d "${packages}" ] || ERROR ${packages} is not a directory
 
 cd "${image}" || ERROR image directory: ${image} not found
+
+# split up languages so url_${lang}='http://...'
+# and ensure there is an 'other' for the rest
+# and create corresponding subdirectories
+SAVE_IFS="${IFS}"
+IFS=",${IFS}"
+for l in ${languages} other
+do
+  src_l=${l%%=*}
+  dst_l=${l##*=}
+  u=$(printf "${url}" "${dst_l}")
+  eval "url_${src_l}"="\${u}"
+  packages_subdir="${packages}/${dst_l}"
+  mkdir -p "${packages_subdir}"
+  [ -d "${packages_subdir}" ] || ERROR ${packages_subdir} is not a directory
+  eval "pkgdir_${src_l}"="\${packages_subdir}"
+done
+IFS="${SAVE_IFS}"
 
 # setup for HTML output
 HTMLFileName="${packages}/packages.html"
@@ -185,13 +226,54 @@ MakeArchive()
   fi
 }
 
+# create direct and/or torrent links
+MakeLinks()
+{
+  local direct torrent p part file archive url
+  direct="$1"; shift
+  torrent="$1"; shift
+  archive="$1"; shift
+  url="$1"; shift
+
+  if [ X"yes" = X"${direct}" ]
+  then
+    HTMLoutput 4 ' direct: ('
+    part=0
+    for p in "${archive}"*
+    do
+      file=$(basename "${p}")
+      [ X"${file##*.}" = X"IGNORE" ] && continue
+      part=$((${part} + 1))
+      [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+      HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>'
+    done
+    HTMLoutput 4 ')'
+  fi
+
+  if [ X"yes" = X"${torrent}" ]
+  then
+    HTMLoutput 4 ' torrent: ('
+    part=0
+    for p in "${archive}"*
+    do
+      file=$(basename "${p}")
+      [ X"${file##*.}" = X"IGNORE" ] && continue
+      part=$((${part} + 1))
+      [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
+      HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>'
+    done
+    HTMLoutput 4 ')'
+  fi
+}
+
+
 # get all directories
 all_dirs=$(find . -mindepth 1 -maxdepth 1 -type d -print | sort -u)
 selected_dirs=$(find . -mindepth 1 -maxdepth 1 -type d -name "${glob}" -print | sort -u)
 
 # verify critical files are present
 echo checking: base
-for f in kernel.elf textall.bmf forth.elf forth.ini sha256.txt version.txt
+for f in kernel.elf init.app wiki.app wiki.inf textall.bmf forth.elf forth.ini sha256.txt version.txt
 do
   [ -e "${f}" ] || ERROR file: ${f} not found
 done
@@ -207,9 +289,9 @@ do
   done
 done
 
-# prepare the base archive
+# prepare the base archive (always in en subdir)
 version=$(awk '/^[[:space:]]*VERSION:/{print $2}' version.txt | head -n 1)
-archive="${packages}/base-${version}${suffix}"
+archive="${pkgdir_en}/base-${version}${suffix}"
 eval MakeArchive "'${archive}'" '.' ${excludes}
 
 HTMLoutput 0 '<ul>'
@@ -218,38 +300,9 @@ archive_date="$(basename "${archive}")"
 archive_date="${archive_date#*-}"
 HTMLoutput 2 '<li>'
 HTMLoutput 4 "<strong>Base Files (${archive_date})</strong> &#8211;"
-case "${direct}" in
-  [yY]|[yY][eE][sS])
-    HTMLoutput 4 ' direct: ('
-    part=0
-    for p in "${archive}"*
-    do
-      part=$((${part} + 1))
-      file=$(basename "${p}")
-      [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
-      HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>'
-    done
-    HTMLoutput 4 ') torrent: ('
-    ;;
-  *)
-    ;;
-esac
-HTMLoutput 4 ' '
-part=0
-for p in "${archive}"*
-do
-  part=$((${part} + 1))
-  file=$(basename "${p}")
-  [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
-  HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>'
-done
-case "${direct}" in
-  [yY]|[yY][eE][sS])
-    HTMLoutput 4 ')'
-    ;;
-  *)
-    ;;
-esac
+
+MakeLinks "${direct}" "${torrent}" "${archive}" "${url_en}"
+
 HTMLoutput 2 '</li>'
 
 
@@ -259,8 +312,6 @@ do
   d=$(basename "${p}")
   version=$(head -n 1 "${d}/wiki.ftr")
   [ -z "${version}" ] && ERROR ${d}/wiki.ftr is invalid
-  archive="${packages}/${d}-${version}${suffix}"
-  MakeArchive "${archive}" "${d}" "-v${size}"
 
   language=unknown
   type=unknown
@@ -281,44 +332,22 @@ do
     full_name=unknown
   fi
 
+  eval language_url=\"\${url_${language}}\"
+  [ -z "${language_url}" ] && language_url="${url_other}"
+
+  eval package_dir=\"\${pkgdir_${language}}\"
+  [ -z "${package_dir}" ] && package_dir="${pkgdir_other}"
+
+  archive="${package_dir}/${d}-${version}${suffix}"
+  MakeArchive "${archive}" "${d}" "-v${size}"
+
   archive_date="$(basename "${archive}")"
   archive_date="${archive_date#*-}"
   HTMLoutput 2 '<li>'
   HTMLoutput 4 "<strong>${native_language} ${full_name} (${archive_date})</strong> &#8211;"
 
-  case "${direct}" in
-    [yY]|[yY][eE][sS])
-      HTMLoutput 4 ' direct: ('
-      part=0
-      for p in "${archive}"*
-      do
-        part=$((${part} + 1))
-        file=$(basename "${p}")
-        [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
-        HTMLoutput 4 '<a href="'${url}/${file}'">Part '${part}'</a>'
-      done
-      HTMLoutput 4 ')torrent: ('
-      ;;
-    *)
-      ;;
-  esac
+  MakeLinks "${direct}" "${torrent}" "${archive}" "${language_url}"
 
-  HTMLoutput 4 ' '
-  part=0
-  for p in "${archive}"*
-  do
-    part=$((${part} + 1))
-    file=$(basename "${p}")
-    [ "${part}" -ne 1 ] &&  HTMLoutput 4 ', '
-    HTMLoutput 4 '<a href="'${url}/${file}'?torrent">Part '${part}'</a>'
-  done
-  case "${direct}" in
-    [yY]|[yY][eE][sS])
-      HTMLoutput 4 ')'
-      ;;
-    *)
-      ;;
-  esac
   HTMLoutput 2 '</li>'
 
 done

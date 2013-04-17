@@ -57,6 +57,7 @@ exec sbcl --script "$0" "$0" "$@"
        ("dict" "Wiktionary")
        ("guten" "Gutenberg")
        ("how" "Wikihow")
+       ("kjv" "KingJamesBible")
        ("pedia" "Wikipedia")
        ("quote" "Wikiquote")
        ("starw" "Wookieepedia")
@@ -66,12 +67,19 @@ exec sbcl --script "$0" "$0" "$@"
    do
      (setf (gethash (first item) *type-codes*) (second item)))
 
-
 (defun get-type (code)
   "return type name from type code"
   (multiple-value-bind (value exists)
       (gethash code *type-codes*)
     (and exists value)))
+
+
+(defvar *protocol* "http://" "HTTP or HTTPS")
+(defvar *domain* ".thewikireader.com/downloads/" "fixed part of the URL")
+
+(defun get-url (prefix file)
+  "create the full URL"
+  (concatenate 'string *protocol* prefix *domain* file))
 
 
 (defvar *languages* (make-hash-table :test #'equal))
@@ -174,8 +182,16 @@ exec sbcl --script "$0" "$0" "$@"
               (list size sum)))))))
 
 
+(defun split-path-string (string)
+    "Returns a list of substrings of string e.g. /a/b/c -> (\"a\" \"b\" \"c\")
+a trailing '/' will cause an empty item on the end of the list"
+    (loop for i = 0 then (1+ j)
+       as j = (position #\/ string :start i)
+          collect (subseq string i j)
+       while j))
+
 (defun list-of-files (dir-name)
-  "return a sorted list of all .7z and .7z.* files ((basename size MD5)...)"
+  "return a sorted list of all .7z and .7z.* files ((basename size MD5 prefix)...)"
   (let ((7z (concatenate 'string dir-name "/*.7z"))
         (arc (concatenate 'string dir-name "/*.7z.???")))
     (loop for file-path in (sort
@@ -183,6 +199,7 @@ exec sbcl --script "$0" "$0" "$@"
                             #'string< :key #'namestring)
        when
          (let ((basename (file-namestring file-path))
+               (prefix (first (last (split-path-string (directory-namestring file-path)) 2))) ; always has trailing '/' => 2 conses
                (ignore-file-name (concatenate 'string (namestring file-path) ".IGNORE")))
            (if (probe-file ignore-file-name)
                (when *verbose*
@@ -191,13 +208,13 @@ exec sbcl --script "$0" "$0" "$@"
                (progn
                  (when *verbose*
                    (format t "  File: ~a~%" basename))
-                 (append (list basename) (md5sum-and-length file-path)))))
+                 (append (list basename) (md5sum-and-length file-path) (list prefix)))))
        collect it)))
 
 
 (defun partition-files (dir file-list)
   "put adjacent similar names into a nested list
-   (folder date language type ( uncompressed-size (file1 length1 MD5-1) (file2 length2 MD5-2) ... ) )"
+   (folder date language type ( uncompressed-size (file1 length1 MD5-1 prefix1) (file2 length2 MD5-2 prefix2) ... ) )"
   (let ((table (make-hash-table :test #'equal)))
     (loop for item in file-list
        do
@@ -244,14 +261,16 @@ exec sbcl --script "$0" "$0" "$@"
   "create a file object"
        (let* ((name (first file))
               (size (second file))
-              (md5 (third file)))
+              (md5 (third file))
+              (prefix (fourth file)))
          (list
           (cons 'name name)
+          (cons 'url (get-url prefix name))
           (cons 'size size)
           (cons 'md5 md5))))
 
 
-(defun output-structure (stream dir-name structure)
+(defun output-structure (stream structure)
   "output the JSON structure"
   (let ((bases  (output-volumes structure :base t))
         (volumes (output-volumes structure))
@@ -293,11 +312,13 @@ exec sbcl --script "$0" "$0" "$@"
       (load-languages languages)
       (with-open-file (out-stream index :direction :output :if-exists :supersede
                                   :if-does-not-exist :create)
-        (loop for dir in (sort directories #'string<)
-           do
-             (when *verbose*
-               (format t "Directory: ~a~%" dir))
-             (output-structure out-stream dir (partition-files dir (list-of-files dir))))))))
+        (let ((all-files (loop for dir in (sort directories #'string<)
+                           append
+                             (when (string= "" (file-namestring (probe-file dir)))
+                               (when *verbose*
+                                 (format t "Directory: ~a~%" dir))
+                               (partition-files dir (list-of-files dir))))))
+           (output-structure out-stream all-files))))))
 
 
 ;;; run the main program
