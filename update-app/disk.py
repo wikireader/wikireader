@@ -38,7 +38,7 @@ def getSDCardRootPath():
         return ""
 
 def getProbablyMount():
-    mounts = re.findall(r'/dev/disk(?!0).s.\s+([a-zA-Z0-9.]+)Gi.+/Volumes/(.+)', getoutput('df -h'))
+    mounts = re.findall(r'/dev/disk(?!0).s?.\s+([a-zA-Z0-9.]+)Gi.+/Volumes/(.+)', getoutput('df -h'))
     results = []
     for size, mount in mounts:
         if float(size) < 62:

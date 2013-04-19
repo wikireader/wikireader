@@ -55,7 +55,7 @@ if wx.Platform == '__WXMSW__':
     defaultMaxFontSize = 18
 
 class AboutDialog(wx.Dialog):
-    def __init__(self, parent, ID, title, size=wx.DefaultSize, pos=wx.DefaultPosition, 
+    def __init__(self, parent, ID, title, size=wx.DefaultSize, pos=wx.DefaultPosition,
                 style=wx.DEFAULT_DIALOG_STYLE,
             ):
         pre = wx.PreDialog()
@@ -77,9 +77,9 @@ class AboutDialog(wx.Dialog):
         logoImage = images.geticon_128x128Bitmap()
         logo = wx.StaticBitmap(whitePanel, -1, logoImage, size=(128, 128), pos=(136, 20))
 
-        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.0.3", pos=(156, 150))
+        versionLabel = wx.StaticText(whitePanel, -1, "Version 1.1.0", pos=(156, 150))
 
-        descLabel = wx.StaticText(whitePanel, -1, 
+        descLabel = wx.StaticText(whitePanel, -1,
 "From day one, our goal was to give physical form to Wikipedia, one of the most interesting aspects of the Internet, so people can bring it with them everywhere they go. We want to promote personal growth and the ability to enjoy those unexpected moments when curiosity strikes. WikiReader is our gift for those who have the openness to experience life and the willingness to be changed by it.",
         pos=(20, 180))
         descLabel.Wrap(wrap)
@@ -181,25 +181,25 @@ class MainFrame(wx.Frame):
         self.parent = parent
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
         WindowsMenuBar(self)
-        
-        
+
+
         whitePanel = wx.Panel(self, -1, size=(499, 93), pos=(0, 245))
         whitePanel.SetBackgroundColour("White")
         whitePanel.Bind(wx.EVT_KEY_DOWN, parent.OnKeyDown)
         whitePanel.SetFocus()
-        
+
         blueLinePanel = wx.Panel(self, -1, size=(499, 10), pos=(0, 236))
         blueLinePanel.SetBackgroundColour(wx.Colour(51, 153, 255))
-        
+
         logoImage = images.getlogo_frontBitmap()
         wx.StaticBitmap(self, -1, logoImage, (39, 17), size=(430, 127))
-        
+
         LastLabel = wx.StaticText(self, -1, "Last update on", size=(30, 40), pos=(49, 187))
         LastLabel.SetForegroundColour("#3399ff")
         LastLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         LastLabel.SetFont(LastLabelFont)
         self.LastLabel = LastLabel
-        
+
         LastUpdateLabel = wx.StaticText(self, -1, "0000.00.00", size=(50, 40), pos=(49, 203))
         LastUpdateLabel.SetForegroundColour("white")
         LastUpdateLabelFont = wx.Font(defaultMaxFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Arial, Helvetica", encoding=wx.FONTENCODING_DEFAULT)
@@ -214,7 +214,7 @@ class MainFrame(wx.Frame):
             self.LastLabel.Show()
             self.LastUpdateLabel.Show()
             LastUpdateLabel.SetLabel(lastVersion)
-        
+
         HintLabel = wx.StaticText(
                 whitePanel, -1,
                 "The Update tool downloads updates to your PC for easier\ntransfering to the WikiReader.",
@@ -223,11 +223,11 @@ class MainFrame(wx.Frame):
         HintLabel.SetForegroundColour("black")
         HintLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         HintLabel.SetFont(HintLabelFont)
-        
+
         updateButton = wx.Button(whitePanel, 40, "Check for updates", pos=(180, 50))
         updateButton.SetDefault()
         parent.Bind(wx.EVT_LEFT_DOWN, parent.OnUpdateClick, updateButton)
-        
+
         self.Centre()
         self.Show(True)
         self.SetIcon(images.icon.GetIcon())
@@ -238,15 +238,15 @@ class CheckUpdateFrame(wx.Frame):
         pos = (140, 42)
         if wx.Platform == '__WXMSW__':
            pos = (110, 42)
-        
+
         wx.Frame.__init__(self, None, -1, "WikiReader Update", size=(499, 307))
         self.SetBackgroundColour("black")
         self.parent = parent
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 252), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
 
@@ -256,13 +256,13 @@ class CheckUpdateFrame(wx.Frame):
 
         cancelButton = wx.Button(whitePanel, 9, "Cancel", (211, 137))
         self.Bind(wx.EVT_BUTTON, parent.OnClose, cancelButton)
-        
+
         gauge = wx.Gauge(self, -1, 50, pos=(125, 130), size=(250, 25))
         gauge.Pulse()
-            
+
         self.Centre()
         self.SetIcon(images.icon.GetIcon())
-        
+
 
 class PackagesListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
 
@@ -272,7 +272,7 @@ class PackagesListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
         listmix.ListCtrlAutoWidthMixin.__init__(self)
         self.parent = parent
         #self.setColumns()
-    
+
     def OnCheckItem(self, index, flag):
         global checkedItems
         if flag:
@@ -284,14 +284,14 @@ class PackagesListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
             self.parent.parent.downloadButton.Enable()
             self.parent.parent.downloadButton.SetDefault()
         else:
-            self.parent.parent.downloadButton.Disable()   
+            self.parent.parent.downloadButton.Disable()
 
         self.parent.parent.updateSelectedSize()
-    
+
     def setColumns(self):
         self.InsertColumn(0, 'name')
         self.InsertColumn(1, 'size', wx.LIST_FORMAT_LEFT)
-        
+
         data = {}
         i = 0
         for volume in kPackages['volumes']:
@@ -299,20 +299,20 @@ class PackagesListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrl
             size = volume['size']
             data[i] = (name, size)
             i = i + 1
-        
+
         items = data.items()
         for key, values in items:
             index = self.InsertStringItem(sys.maxint, unicode(values[0], "utf-8"))
             if index % 2 == 0:
                 self.SetItemBackgroundColour(index, "#F0F0FE")
-                
+
             for i in range(len(values)):
                 gap = ""
                 if i == 0:
                     self.SetStringItem(index, i, gap + unicode(values[i], "utf-8"))
                 else:
                     self.SetStringItem(index, i, disk.humanable(values[i]))
-                
+
         self.SetColumnWidth(0, 330)
         self.SetColumnWidth(1, 70)
 
@@ -334,10 +334,10 @@ class SelectPackageFrame(wx.Frame):
         self.parent = parent
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
         WindowsMenuBar(self)
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 451+frameHeight), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
 
@@ -347,22 +347,22 @@ class SelectPackageFrame(wx.Frame):
         WaringLabel.SetFont(WaringLabelFont)
         WaringLabel.Hide()
         self.WaringLabel = WaringLabel
-        
+
         TopHintLabel = wx.StaticText(whitePanel, -1, "New updates are available for your WikiReader.", size=(30, 40), pos=(36, 16+posY))
         TopHintLabelFont = wx.Font(defaultBigFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         TopHintLabel.SetFont(TopHintLabelFont)
-        
+
         DescLabel = wx.StaticText(whitePanel, -1, "Downloading the updates may take some time.\nIf you're not ready to download now, press Cancel.\nTo continue, check the desired updates and press Download.", size=(30, 40), pos=(36, 36+posY))
         DescLabel.SetForegroundColour("#666666")
         DescLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         DescLabel.SetFont(DescLabelFont)
-        
+
         SelectedSizeLabel = wx.StaticText(whitePanel, -1, "No SDCard detected.", size=(30, 40), pos=(36, 90+posY))
         SelectedSizeLabel.SetForegroundColour("#666666")
         SelectedSizeLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         SelectedSizeLabel.SetFont(SelectedSizeLabelFont)
         self.SelectedSizeLabel = SelectedSizeLabel
-        
+
         cancelButton = wx.Button(whitePanel, 9, "Cancel", (150, 395+posY))
         self.Bind(wx.EVT_BUTTON, self.OnClick, cancelButton)
 
@@ -370,26 +370,26 @@ class SelectPackageFrame(wx.Frame):
         downloadButton.Disable()
         self.downloadButton = downloadButton
         self.Bind(wx.EVT_BUTTON, self.OnClick, downloadButton)
-        
+
         PackagesListPanel = wx.Panel(whitePanel, -1, size=(420, 270), pos=(36, 116+posY))
         PackagesListPanel.parent = self
         self.packagesListCtrl = PackagesListCtrl(PackagesListPanel, -1, size=(420, 270), style=wx.LC_REPORT | wx.LC_NO_HEADER)
         self.packagesListCtrl.setColumns()
-        
-            
+
+
         self.Centre()
         self.SetIcon(images.icon.GetIcon())
         self.updateSelectedSize()
 
     def OnClick(self, event):
-        btnId = event.GetId() 
+        btnId = event.GetId()
         if btnId == 9:
             self.parent.OnClose(self)
         elif btnId == 10:
             self.parent.OnDownload(self)
         else:
             event.Skip()
-    
+
     def updateSelectedSize(self):
 
         # Set flag, don't checkFreeSpace everytime on Windows
@@ -398,7 +398,7 @@ class SelectPackageFrame(wx.Frame):
 
         TotalSpace, FreeSpace = checkFreeSpace()
 
-        if wx.Platform == '__WXMSW__':    
+        if wx.Platform == '__WXMSW__':
             self.mswTotalSpace = TotalSpace
             self.mswFreeSpace = FreeSpace
 
@@ -406,17 +406,17 @@ class SelectPackageFrame(wx.Frame):
             SelectedSpace = 0
             for i in checkedItems:
                 currentExistsSize = disk.getFolderSize(disk.getSDCardFullPath() + '/' + kPackages['volumes'][i]['folder'])
-                
+
                 if currentExistsSize <= kPackages['volumes'][i]['size']:
                     SelectedSpace = SelectedSpace + kPackages['volumes'][i]['size'] - currentExistsSize
                 else:
                     SelectedSpace = SelectedSpace + kPackages['volumes'][i]['size']
-                    
+
             SelectedSpace = SelectedSpace / 1024.0
-            
+
             UsedSpace = TotalSpace - FreeSpace
             SelectedSizeText = "%.1fGB of %.1fGB selected." % ((UsedSpace+SelectedSpace)/1024.0/1024.0, TotalSpace/1024.0/1024.0)
-            
+
             if (UsedSpace+SelectedSpace) > TotalSpace:
                 self.WaringLabel.Show()
                 self.downloadButton.Disable()
@@ -426,28 +426,28 @@ class SelectPackageFrame(wx.Frame):
                     self.downloadButton.Enable()
         else:
             SelectedSizeText = "No SDCard detected."
-            
+
         self.SelectedSizeLabel.SetLabel(SelectedSizeText)
 
 
 class DownloadPackagesListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
-    
+
     def __init__(self, parent, ID, pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.LC_REPORT|wx.LC_VIRTUAL|wx.LC_HRULES|wx.LC_VRULES):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, style)
         #listmix.CheckListCtrlMixin.__init__(self)
         listmix.ListCtrlAutoWidthMixin.__init__(self)
         self.setColumns()
-    
+
     def setColumns(self):
         self.InsertColumn(0, 'Name')
         self.InsertColumn(1, 'Progress', wx.LIST_FORMAT_CENTER)
         self.InsertColumn(2, 'Status', wx.LIST_FORMAT_CENTER)
-        
+
         #data = {"1": ("Cymraeg / Wikipedia / 20120623", "255.4MB"),
         #"2": ("Dansk", "1.27GB"),
         #"3": ("Deutsch", "328MB"),
         #"4": ("English", "11MB")}
-        
+
         data = {}
         i = 0
         for item in checkedItems:
@@ -457,18 +457,18 @@ class DownloadPackagesListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
             time = "Wait"
             data[i] = (name, progress, time)
             i = i + 1
-        
+
         items = data.items()
         for key, values in items:
             index = self.InsertStringItem(sys.maxint, unicode(values[0], "utf-8"))
             if index % 2 == 0:
                 self.SetItemBackgroundColour(index, "#F0F0FE")
-                
+
             for i in range(len(values)):
                 if i==0:
                     gap = ' '
                 self.SetStringItem(index, i, gap + unicode(values[i], "utf-8"))
-                
+
         self.SetColumnWidth(0, 270)
         self.SetColumnWidth(1, 70)
         self.SetColumnWidth(2, 60)
@@ -478,9 +478,9 @@ class DownloadPackageFrame(wx.Frame):
     thread = None
     currentDownloadIndex = 0
     dlg = None
-        
+
     def __init__(self, parent=None):
-        
+
         frameHeight = 0
         posY = 0
         if wx.Platform == '__WXMSW__':
@@ -488,23 +488,23 @@ class DownloadPackageFrame(wx.Frame):
            posY = -60
 
         wx.Frame.__init__(self, None, -1, "WikiReader Update", size=(499, 507+frameHeight))
-        
+
         self.parent = parent
         self.SetBackgroundColour("black")
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
         WindowsMenuBar(self)
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 451+frameHeight), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
-        
+
         TopHintLabel = wx.StaticText(whitePanel, -1, "Downloading %d updates.. " % (len(checkedItems)), size=(30, 40), pos=(36, 66+posY))
         TopHintLabelFont = wx.Font(defaultBigFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         TopHintLabel.SetFont(TopHintLabelFont)
         self.TopHintLabel = TopHintLabel
-        
+
         DescLabel = wx.StaticText(whitePanel, -1, "This will take a while. Make sure your computer is connected\nto a power source and please do not disconnect the Internet\nconnection while downloads are in progress.", size=(30, 40), pos=(36, 86+posY))
         DescLabel.SetForegroundColour("#666666")
         DescLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
@@ -512,15 +512,15 @@ class DownloadPackageFrame(wx.Frame):
 
         cancelButton = wx.Button(whitePanel, 9, "Cancel", (210, 450+posY))
         self.Bind(wx.EVT_BUTTON, parent.OnCancelDownload, cancelButton)
-        
+
         PackagesListPanel = wx.Panel(whitePanel, -1, size=(420, 270), pos=(36, 166+posY))
         self.packagesListCtrl = DownloadPackagesListCtrl(PackagesListPanel, -1, size=(420, 270), style=wx.LC_REPORT)
-        
-            
+
+
         self.Centre()
         #self.Show(True)
         self.SetIcon(images.icon.GetIcon())
-    
+
     def checkBaseFile(self):
         self.dlg = wx.ProgressDialog("WikiReader Updater",
                                "Checking base files ...",
@@ -535,7 +535,7 @@ class DownloadPackageFrame(wx.Frame):
                                 #| wx.PD_REMAINING_TIME
                                 | wx.PD_AUTO_HIDE
                                 )
-        
+
         base = kPackages['bases'][0]
         baseFile = base['files'][0]
         if not disk.checkFileSize(baseFile['name'], baseFile['size']):
@@ -544,27 +544,27 @@ class DownloadPackageFrame(wx.Frame):
         else:
             self.dlg.Update(100) # set 100 to close the dlg
             self.finishBaseFile()
-    
+
     def updateBaseFile(self, percent):
         self.dlg.Update(int(float(percent[:-1])))
-        
+
     def finishBaseFile(self):
         self.downloadStart()
-        
+
     def downloadStart(self):
         download.downloadPackage(self, kPackages['volumes'][checkedItems[0]], callback=self.finishDownload, updateback=self.updateProgress)
-    
+
     def finishDownload(self):
         if self:
             self.packagesListCtrl.SetStringItem(self.currentDownloadIndex, 1, "100%")
             self.packagesListCtrl.SetStringItem(self.currentDownloadIndex, 2, "Finished")
             self.currentDownloadIndex = self.currentDownloadIndex + 1
-            
+
             if len(checkedItems) == self.currentDownloadIndex:
                 self.parent.GoPrepareInstall()
             else:
                 download.downloadPackage(self, kPackages['volumes'][checkedItems[self.currentDownloadIndex]], callback=self.finishDownload, updateback=self.updateProgress)
-        
+
     def updateProgress(self, percent):
         if self:
             self.packagesListCtrl.SetStringItem(self.currentDownloadIndex, 1, percent)
@@ -574,7 +574,7 @@ class DownloadPackageFrame(wx.Frame):
 
 class PrepareInstallFrame(wx.Frame):
     def __init__(self, parent=None):
-        
+
         frameHeight = 0
         posY = 0
         posX = 0
@@ -585,58 +585,58 @@ class PrepareInstallFrame(wx.Frame):
             posY = -0
             posX = -40
             imagePosY = -0
-            imagePosX = -30    
+            imagePosX = -30
 
         wx.Frame.__init__(self, None, -1, "WikiReader Update", size=(499, 320+frameHeight))
         self.SetBackgroundColour("black")
         self.parent = parent
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
         WindowsMenuBar(self)
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 252+frameHeight), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
 
 
         self.posX = posX
         self.posY = posY
-        
+
         HintLabel = wx.StaticText(whitePanel, -1, "Prepare to install ...", size=(499, 40), pos=(68+posX, 20+posY), style=wx.ALIGN_CENTER)
         HintLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         HintLabel.SetFont(HintLabelFont)
         self.HintLabel = HintLabel
-        
+
         deviceImage = images.getdeviceBitmap()
         wx.StaticBitmap(whitePanel, -1, deviceImage, pos=(75+imagePosX, 65+posY+imagePosY), size=(388, 112))
-        
+
         quitButton = wx.Button(whitePanel, 8, "Quit", (150, 195+posY))
         self.Bind(wx.EVT_BUTTON, parent.OnClose, quitButton)
 
         self.installButton = wx.Button(whitePanel, 9, "Install", (270, 195+posY))
         self.Bind(wx.EVT_BUTTON, parent.OnInstall, self.installButton)
-        
+
         tryButton = wx.Button(whitePanel, 10, "Try again", (270, 195+posY), (20, 20))
         self.Bind(wx.EVT_BUTTON, self.OnTryClick, tryButton)
         tryButton.SetDefault()
         tryButton.SetSize(tryButton.GetBestSize())
         self.tryButton = tryButton
-        
+
         self.Centre()
         self.SetIcon(images.icon.GetIcon())
-        
+
         self.checkSDcard()
-    
+
     def OnTryClick(self, event):
         self.checkSDcard()
-        
+
     def checkSDcard(self):
         mounts = disk.getMountList()
         self.HintLabel.SetForegroundColour("red")
         self.installButton.Show()
         self.tryButton.Hide()
-            
+
         if len(mounts) == 0:
             self.HintLabel.SetLabel("Insert WikiReader's SD card into a memory card reader\nthat is plugged into this computer.")
             self.installButton.Hide()
@@ -658,7 +658,7 @@ class PrepareInstallFrame(wx.Frame):
 
 class InstallFrame(wx.Frame):
     def __init__(self, parent=None):
-        
+
         posY = 0
         posX = 0
         if wx.Platform == '__WXMSW__':
@@ -667,38 +667,38 @@ class InstallFrame(wx.Frame):
 
         wx.Frame.__init__(self, None, -1, "WikiReader Update", size=(499, 307))
         self.SetBackgroundColour("black")
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 252), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
-        
+
         HintLabel = wx.StaticText(whitePanel, -1, "Installing updates to microSD card..", size=(499, 40), pos=(115+posX, 60+posY))
         HintLabelFont = wx.Font(defaultBigFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         HintLabel.SetFont(HintLabelFont)
-        
+
         SubHintLabel = wx.StaticText(whitePanel, -1, "We're almost there..", size=(499, 40), pos=(115+posX, 80+posY))
         SubHintLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         SubHintLabel.SetForegroundColour('gray')
         SubHintLabel.SetFont(SubHintLabelFont)
-        
+
         self.gauge = wx.Gauge(whitePanel, -1, 100, pos=(100, 140+posY), size=(300, 25))
-        self.gauge.SetBezelFace(3)  
+        self.gauge.SetBezelFace(3)
         self.gauge.SetShadowWidth(3)
-        
-            
+
+
         self.Centre()
         self.SetIcon(images.icon.GetIcon())
-        
+
     def updateGauge(self, count):
         self.gauge.SetValue(count)
-        
+
 
 class FinishFrame(wx.Frame):
     def __init__(self, parent=None):
-        
+
         frameHeight = 0
         posY = 0
         posX = 0
@@ -712,17 +712,17 @@ class FinishFrame(wx.Frame):
         self.parent = parent
         self.Bind(wx.EVT_CLOSE, parent.OnClose)
         WindowsMenuBar(self)
-        
+
         whitePanel = wx.Panel(self, -1, size=(499, 252+frameHeight), pos=(0, 51))
         whitePanel.SetBackgroundColour("White")
-        
+
         logoImage = images.getlogo_topBitmap()
         wx.StaticBitmap(self, -1, logoImage, pos=(8, 12), size=(336, 39))
-        
+
         HintLabel = wx.StaticText(whitePanel, -1, "Installation complete!", size=(499, 40), pos=(155+posX, 50+posY))
         HintLabelFont = wx.Font(defaultBigFontSize, wx.DEFAULT, wx.NORMAL, wx.BOLD, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         HintLabel.SetFont(HintLabelFont)
-        
+
         SubHintLabel = wx.StaticText(whitePanel, -1, "Thank you for being so patient. You may now safely eject\nthe microSD card and place it back in your WikiReader.", size=(10, 40), pos=(65+posX, 80+posY), style=wx.ALIGN_CENTER)
         SubHintLabelFont = wx.Font(defaultFontSize, wx.DEFAULT, wx.NORMAL, wx.NORMAL, underline=False, faceName="Helvetica", encoding=wx.FONTENCODING_DEFAULT)
         # SubHintLabel.SetForegroundColour('777777')
@@ -731,14 +731,14 @@ class FinishFrame(wx.Frame):
         doneButton = wx.Button(whitePanel, 8, "Done", (200, 230))
         doneButton.SetDefault()
         self.Bind(wx.EVT_BUTTON, parent.OnClose, doneButton)
-        
+
         self.Centre()
         self.SetIcon(images.icon.GetIcon())
 
 
 class WikiReaderUpdater(wx.App):
     currentThread = None
-    
+
     def __init__(self):
         wx.App.__init__(self, redirect=False)
 
@@ -749,39 +749,39 @@ class WikiReaderUpdater(wx.App):
 
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_BUTTON, self.OnClose)
-        
+
 
         # init tmp dir
         disk.getTmpDir()
-        
+
         # debug
         # self.mainFrame.Destroy()
         # self.OnUpdateClick(None)
         # SelectPackageFrame(self).show()
         # FinishFrame(self).Show()
         #self.goSelect()
-        
+
         return True
-    
+
     def OnClose(self, event):
         if self.currentThread:
             self.currentThread.stop()
         wx.Exit()
-    
+
     def OnUpdateClick(self, event):
         self.mainFrame.Destroy()
         self.checkUpdateFrame = CheckUpdateFrame(self)
         self.checkUpdateFrame.Show()
         self.checkUpdate()
-    
+
     def OnKeyDown(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
             wx.Exit()
         event.Skip()
-        
+
     def checkUpdate(self):
         self.currentThread = download.downloadPackageList(self.finishCheckUpdate)
-    
+
     def finishCheckUpdate(self, packages):
         global kPackages
         self.currentThread = None
@@ -792,7 +792,7 @@ class WikiReaderUpdater(wx.App):
         self.checkUpdateFrame.Destroy()
         self.selectPackageFrame = SelectPackageFrame(self)
         self.selectPackageFrame.Show()
-        
+
     def OnDownload(self, event):
         if len(checkedItems) == 0:
             showMessage("Please select packages to download.")
@@ -801,29 +801,29 @@ class WikiReaderUpdater(wx.App):
             self.downloadPackageFrame = DownloadPackageFrame(self)
             self.downloadPackageFrame.Show()
             self.downloadPackageFrame.checkBaseFile()
-    
+
     def OnCancelDownload(self, event):
         if self.downloadPackageFrame.thread:
             self.downloadPackageFrame.thread.stop()
         self.downloadPackageFrame.Destroy()
         self.selectPackageFrame.Show()
-        
+
     def GoPrepareInstall(self):
         self.downloadPackageFrame.Destroy()
         self.prepareInstallFrame = PrepareInstallFrame(self)
         self.prepareInstallFrame.Show()
-        
+
     def OnInstall(self, event):
         self.prepareInstallFrame.Destroy()
         self.installFrame = InstallFrame(self)
         self.installFrame.Show()
         disk.installPackage(kPackages, checkedItems, self.FinishInstall, self.installFrame.updateGauge)
-    
+
     def FinishInstall(self):
         self.installFrame.Destroy()
         self.finishFrame = FinishFrame(self)
         self.finishFrame.Show()
-        
+
 def checkFreeSpace():
     mountDisks = disk.getMountList()
     #if len(mountDisks) > 1:
@@ -833,7 +833,7 @@ def checkFreeSpace():
 
     if len(mountDisks) > 0:
         return disk.getFreeSpace(mountDisks[0])
-    
+
     return None, None
 
 
@@ -854,17 +854,17 @@ def checkingVersionDialog(parent, showError=True):
                                 #| wx.PD_REMAINING_TIME
                                 #| wx.PD_AUTO_HIDE
                                 )
-        
+
     version = disk.getVersion()
     if not version:
         version = '0000.00.00'
-    
+
     #print version
     if len(disk.getMountList()) < 1 and showError:
         wx.MessageBox('We don\'t detected any sdcard on your computer', 'Info', wx.OK | wx.ICON_INFORMATION)
-    
+
     dlg.Destroy()
-    
+
     return version
 
 
