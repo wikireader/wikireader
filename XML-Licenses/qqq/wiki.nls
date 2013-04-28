@@ -34,6 +34,6 @@ turn_filter_off=Turn Filter OFF[[File:Filter_options.png|150px|right]]
 change_password=Change Password[[File:Filter_options.png|150px|right]]\n{{Identical|Change password}}
 re_enter_password=Re-enter Password[[File:Re_enter_password.png|150px|right]]
 passwords_not_match=Passwords do not match[[File:Passwords_not_match.png|150px|right]] Note: Try to keep it short and sweet since we don't wrap this string.\n{{Identical|Passwords do not match}}
-enter_password=Enter Password
+enter_password={{Identical|Enter password}}
 parental_controls=Parental Controls[[File:Passwords_not_match.png|150px|right]]
 r=Stands for 'restricted'. It has to be as short as possible.[[File:R.png|150px|right]]

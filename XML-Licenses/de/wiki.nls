@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: KagerMtc
 # Author: Kghbln
+# Author: Metalhead64
 # Author: Nipsky
 # Author: Purodha
 # Author: The Evil IP address
@@ -15,6 +16,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Deutschsprachige Wikipedia
 quote:wiki_name=Zitate
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=King-James-Bibel
 license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://de.wikipedia.org/wiki/<title>
 appro:license_text=Dieser Text ist unter der Creative-Commons-Lizenz „Namensnennung-Weitergabe unter gleichen Bedingungen“ verfügbar und kann entsprechend deren Bedingungen frei genutzt werden. Siehe den Text der [CC BY-SA]-Lizenz und die zusätzlichen [Nutzungsbedingungen], welche ebenfalls zutreffen können. Der Originaltext ist verfügbar unter http://www.appropedia.org/Appropedia:Urheberrechte
 dict:license_text=Text is available under the Creative Commons Attribution/Share-Alike License and can be freely reused under the terms of that license. See: Text of the [CC-BY-SA] License and [Terms of Use] for additional terms which may apply. The original article is available at: http://de.wiktionary.org/wiki/<title>

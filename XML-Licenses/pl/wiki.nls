@@ -1,6 +1,7 @@
 # Messages for Polish (polski)
 # Exported from translatewiki.net
 # Author: BeginaFelicysym
+# Author: Chrumps
 # Author: Dos
 # Author: McDutchie
 # Author: Sovq
@@ -49,7 +50,7 @@ re_enter_new_password=Ponownie wprowadź nowe hasło
 passwords_not_match=Hasła nie są identyczne
 enter_old_password=Podaj stare hasło
 enter_password=Podaj hasło
-try_again=Źle. Proszę spróbować ponownie.
+try_again=Źle. Spróbuj ponownie.
 enter_new_password=Wprowadź nowe hasło
 parental_controls=Kontrola rodzicielska
 r=R
