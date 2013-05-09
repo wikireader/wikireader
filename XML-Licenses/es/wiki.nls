@@ -4,6 +4,7 @@
 # Author: Armando-Martin
 # Author: Crazymadlover
 # Author: Hereñu
+# Author: Larjona
 # Author: McDutchie
 # Author: Translationista
 # Author: VegaDark
@@ -18,6 +19,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia en español
 quote:wiki_name=Citas
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Biblia del rey Jaime
 license_text=Este texto se encuentra bajo licencias Creative Commons Reconocimiento/Compartir igual y puede ser utilizada libremente bajo los términos de esta licencia: Ver: Texto de [CC-BY-SA] Licencia y [términos de uso]. El artículo original se encuentra en: http://es.wikipedia.org/wiki/<title>
 appro:license_text=El texto está disponible bajo la licencia Creative Commons Atribución/Compartir-igual y puede ser reutilizado libremente bajo los mismos términos de esa licencia. Vea: Texto de la Licencia [CC-BY-SA], y [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=El texto está disponible bajo la licencia de Reconocimiento-Compartir Igual Genérica y puede ser reutilizado libremente bajo los mismo términos. Visita: Texto de la Licencia [CC-BY-SA], [Términos de uso] para ver los términos adicionales que puedan ser aplicables. El artículo original está disponible en: http://es.wiktionary.org/wiki/<title>

@@ -1,6 +1,7 @@
 # Messages for Bulgarian (български)
 # Exported from translatewiki.net
 # Author: DCLXVI
+# Author: Termininja
 # Author: Vladimir Penov
 
 wiki_name=Български...
@@ -13,10 +14,12 @@ searching=търсене...
 select_wiki=Избиране на енциклопедия
 history_title=История
 no_history=Няма история
+please_wait=Моля, изчакайте...
 clear_history=Изтриване
 yes=Да
 no=Не
 set_password=Избиране на парола
+ok=ОК
 filter_options=Настройки на филтъра
 turn_filter_on=Включване на филтъра
 turn_filter_off=Изключване на филтъра

@@ -1,10 +1,33 @@
 # Messages for Latin (Latina)
 # Exported from translatewiki.net
 # Author: Amahoney
+# Author: Autokrator
 # Author: MissPetticoats
 
 wiki_name=Latina...
-books:wiki_name=Libres
+appro:wiki_name=Appropedia
+books:wiki_name=Libri
+dict:wiki_name=Dictionarium
+guten:wiki_name=Inceptum Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Vicipaedia Latina
+quote:wiki_name=Sententiae
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Biblia Regis Iacobi
+type_a_word=Quaerere aliquid
+guten:type_a_word=Librum vel auctorem quaerere
+no_results=Nullae commentationes repertae
+searching=quaerens...
+select_wiki=Encyclopaedia
 history_title=Historia
+no_history=Historia nulla
+clear_history=Historiam delere
 yes=Ita vero
 no=Minime
+set_password=Tesseram eligere
+ok=Confirmare
+change_password=Tesseram mutare
+passwords_not_match=Tessera different
+try_again=Tessera falsa.
+parental_controls=Recognitiones parentales
+r=R

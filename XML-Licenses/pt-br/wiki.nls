@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Giro720
 # Author: Gustavo
+# Author: Luckas
 # Author: Luckas Blade
 # Author: Rodrigo Avila
 # Author: 555
@@ -10,7 +11,7 @@ wiki_name=Português...
 appro:wiki_name=Appropedia
 books:wiki_name=Livros
 dict:wiki_name=Dicionário
-guten:wiki_name=Projeto Gutemberg
+guten:wiki_name=Projeto Gutenberg
 how:wiki_name=WikiHow
 pedia:wiki_name=Wikipédia em português
 quote:wiki_name=Citações

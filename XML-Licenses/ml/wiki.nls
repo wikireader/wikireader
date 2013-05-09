@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Praveenp
 # Author: Shijualex
+# Author: Sreejithk2000
 
 wiki_name=മലയാളം...
 books:wiki_name=പുസ്തകങ്ങൾ
@@ -19,6 +20,9 @@ yes=അതെ
 no=ഇല്ല
 set_password=രഹസ്യവാക്ക് സജ്ജമാക്കുക
 ok=ശരി
+keep_filter_off=ഫിൽറ്റർ ഓഫാക്കി വയ്ക്കുക
+turn_filter_on=ഫിൽറ്റർ ഓണാക്കി വയ്ക്കുക
+turn_filter_off=ഫിൽറ്റർ ഓഫാക്കുക
 change_password=രഹസ്യവാക്ക് മാറ്റുക
 re_enter_password=രഹസ്യവാക്ക് വീണ്ടും നൽകുക
 re_enter_new_password=പുതിയ രഹസ്യവാക്ക് വീണ്ടും നൽകുക

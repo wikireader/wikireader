@@ -1,0 +1,52 @@
+# Messages for Hakka (Hak-kâ-fa)
+# Exported from translatewiki.net
+# Author: Jetlag
+
+wiki_name=客語
+appro:wiki_name=Appropedia
+books:wiki_name=圖書
+dict:wiki_name=字典
+guten:wiki_name=古登堡計劃
+how:wiki_name=WikiHow
+pedia:wiki_name=客語維基百科
+quote:wiki_name=引用
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=King James Bible
+license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可中嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 和[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wikipedia.org/wiki/<title>
+appro:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可中嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用的附加條款。目前嘅原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
+dict:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 和[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wiktionary.org/wiki/<title>
+guten:license_text=另請參閱： [作者嘅字母順序排序列表]，[書架嘅列表]。在美國，大多數邇兜書嘅版權已過期。 （他們可能仍受版權保護在其他國家）。任何人可作出逐字或非逐字複製邇兜作品。有關詳細信息，請參閱： http://www.gutenberg.org/wiki/Main_Page
+how:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://www.wikihow.com/wikiHow:Creative-Commons<title>
+quote:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wikiquote.org/wiki/<title>
+type_a_word=請輸入詞或短句
+guten:type_a_word=輸入書籍或作者名
+no_results=尋毋到任何項目
+searching=搜索緊...
+select_wiki=選擇語言版本
+history_title=歷史
+no_history=無歷史
+please_wait=請稍候...
+clear_history=清除歷史
+yes=係
+no=否
+protection=有兜維基百科條目毋適合小朋友。請設密碼保護。
+guten:protection=有兜書可能毋適合小朋友。請設密碼保護。
+restricted=邇隻項目可能不適合未成年人。請設置密碼以保護。
+set_password=設置密碼
+ok=確定
+set_filter=開啟過濾器後，當瀏覽受限文章時愛輸入密碼。
+keep_filter_on=開啟過濾器
+keep_filter_off=關閉過濾器
+filter_options=過濾功能選項
+turn_filter_on=開啟過濾功能
+turn_filter_off=關閉過濾功能
+change_password=更改密碼
+re_enter_password=重新輸入密碼
+re_enter_new_password=重新輸入新密碼
+passwords_not_match=密碼毋著
+enter_old_password=輸入舊密碼
+enter_password=輸入新密碼
+try_again=密碼錯誤，請重試。
+enter_new_password=輸入汝嘅新密碼
+parental_controls=家長控制
+r=禁

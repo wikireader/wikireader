@@ -1,6 +1,7 @@
 # Messages for Vietnamese (Tiếng Việt)
 # Exported from translatewiki.net
 # Author: Minh Nguyen
+# Author: Tuankiet65
 # Author: Xiao Qiao
 
 wiki_name=Tiếng Việt…
@@ -12,9 +13,15 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia tiếng Việt
 quote:wiki_name=Danh ngôn
 hitch:wiki_name=Hitchwiki
-kjv:wiki_name=Kinh Thánh King James
-type_a_word=Gõ từ hoặc cụm từ
-guten:type_a_word=Gõ một cuốn sách hoặc tác giả
+kjv:wiki_name=Kinh thánh King James
+license_text=Văn bản được phát hành theo Giấy phép Creative Commons Ghi công–Chia sẻ tương tự và có thể tự do tái sử dụng theo các điều khoản của giấy phép đó. Xem: Nội dung của giấy phép [CC-BY-SA] và [các điều khoản sử dụng] cho điều khoản bổ sung có thể áp dụng. Bản gốc của tài liệu có sẵn tại: http://vi.wikipedia.org/wiki/<title>
+appro:license_text=Văn bản được phát hành theo Giấy phép Creative Commons Ghi công–Chia sẻ tương tự và có thể tự do tái sử dụng theo các điều khoản của giấy phép đó. Xem: Nội dung của giấy phép [CC-BY-SA] và [các điều khoản sử dụng] cho điều khoản bổ sung có thể áp dụng. Bản gốc của tài liệu có sẵn tại: http://www.appropedia.org/Appropedia:Copyrights?uselang=vi
+dict:license_text=Văn bản được phát hành theo Giấy phép Creative Commons Ghi công–Chia sẻ tương tự và có thể tự do tái sử dụng theo các điều khoản của giấy phép đó. Xem: Nội dung của giấy phép [CC-BY-SA] và [các điều khoản sử dụng] cho điều khoản bổ sung có thể áp dụng. Bản gốc của tài liệu có sẵn tại: http://vi.wikipedia.org/wiki/<title>
+guten:license_text=Xem thêm: [Các tác giả theo thứ tự ABC], [Danh sách các kệ sách]. Bản quyền của hầu hết các cuốn sách đã hết hạn ở Hoa Kì (Chúng có thể vẫn còn bản quyền ở các nước khác.) Vậy nên bất cứ ai cũng có thể làm một bản sao nguyên bản hay không nguyên bản của các cuốn sách đó. Để biết thêm chi tiết, xem http://www.gutenberg.org/wiki/Main_Page?uselang=vi
+how:license_text=Văn bản được phát hành theo Giấy phép Creative Commons Ghi công–Chia sẻ tương tự và có thể tự do tái sử dụng theo các điều khoản của giấy phép đó. Xem: Nội dung của giấy phép [CC-BY-SA] và [các điều khoản sử dụng] cho điều khoản bổ sung có thể áp dụng. Bản gốc của tài liệu có sẵn tại: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Văn bản được phát hành theo Giấy phép Creative Commons Ghi công–Chia sẻ tương tự và có thể tự do tái sử dụng theo các điều khoản của giấy phép đó. Xem: Nội dung của giấy phép [CC-BY-SA] và [các điều khoản sử dụng] cho điều khoản bổ sung có thể áp dụng. Bản gốc của tài liệu có sẵn tại: http://vi.wikiquote.org/wiki/<title>
+type_a_word=Gõ Từ hoặc Cụm từ
+guten:type_a_word=Gõ tên một Cuốn sách hoặc Tác giả
 no_results=Không tìm thấy mục từ
 searching=đang tìm…
 select_wiki=Chọn bách khoa toàn thư
@@ -24,21 +31,24 @@ please_wait=Vui lòng chờ…
 clear_history=Xóa Lịch sử
 yes=Có
 no=Không
-protection=Một số mục Wikipedia có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
+protection=Một số mục trên Wikipedia có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
 guten:protection=Một số cuốn sách có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
-restricted=Mục nhập này có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
-set_password=Thiết lập mật khẩu
+restricted=Mục này có thể không thích hợp cho trẻ vị thành niên. Xin vui lòng thiết lập một mật khẩu bảo vệ.
+set_password=Thiết lập Mật khẩu
 ok=ok
+set_filter=Với bộ lọc được BẬT, người dùng phải nhập mật khẩu khi truy cập các mục được hạn chế.
+keep_filter_on=BẬT Bộ lọc
+keep_filter_off=TẮT Bộ lọc
 filter_options=Tùy chọn Bộ lọc
 turn_filter_on=BẬT Bộ lọc
 turn_filter_off=TẮT Bộ lọc
 change_password=Thay đổi Mật khẩu
-re_enter_password=Nhập lại mật khẩu
+re_enter_password=Nhập lại Mật khẩu
 re_enter_new_password=Nhập lại mật khẩu mới
 passwords_not_match=Mật khẩu không khớp
 enter_old_password=Nhập mật khẩu cũ
 enter_password=Nhập mật khẩu
-try_again=Sai. Xin vui lòng thử lại.
+try_again=Mật khẩu sai. Xin vui lòng thử lại.
 enter_new_password=Nhập mật khẩu mới
 parental_controls=Điều khiển của cha mẹ
 r=R
