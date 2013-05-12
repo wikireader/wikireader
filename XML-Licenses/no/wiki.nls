@@ -1,5 +1,6 @@
 # Messages for Norwegian Bokmål (norsk bokmål)
 # Exported from translatewiki.net
+# Author: Laaknor
 # Author: Nghtwlkr
 # Author: Wouterkoch
 
@@ -12,6 +13,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Wikipedia på bokmål og riksmål
 quote:wiki_name=Sitat
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=King James bibel
 license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wikipedia.org/wiki/<title>
 appro:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse-Del på like vilkår og kan fritt brukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst er tilgjengelig under lisensen Creative Commons Navngivelse/Del på like vilkår og kan fritt gjenbrukes under vilkårene i denne lisensen. Se: Tekst i [CC-BY-SA]-lisensen og [Terms of Use] (bruksvilkår) for ytterligere vilkår som kan gjelde. Originalartikkelen er tilgjengelig på: http://en.wiktionary.org/wiki/<title>

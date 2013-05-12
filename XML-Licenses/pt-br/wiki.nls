@@ -5,6 +5,7 @@
 # Author: Luckas
 # Author: Luckas Blade
 # Author: Rodrigo Avila
+# Author: Tuliouel
 # Author: 555
 
 wiki_name=Português...
@@ -16,6 +17,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Wikipédia em português
 quote:wiki_name=Citações
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Bíblia do rei Tiago
 license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wikipedia.org/wiki/<title>
 appro:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wiktionary.org/wiki/<title>
