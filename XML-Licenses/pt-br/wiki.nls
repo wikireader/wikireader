@@ -1,5 +1,6 @@
 # Messages for Brazilian Portuguese (português do Brasil)
 # Exported from translatewiki.net
+# Author: Fúlvio
 # Author: Giro720
 # Author: Gustavo
 # Author: Luckas
@@ -18,12 +19,12 @@ pedia:wiki_name=Wikipédia em português
 quote:wiki_name=Citações
 hitch:wiki_name=Hitchwiki
 kjv:wiki_name=Bíblia do rei Tiago
-license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wikipedia.org/wiki/<title>
-appro:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://www.appropedia.org/Appropedia:Copyrights
-dict:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wiktionary.org/wiki/<title>
+license_text=O texto está disponível sob a licença Creative Commons Atribuição / Compartilha Igual, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wikipedia.org/wiki/<title>
+appro:license_text=O texto está disponível sob a licença Creative Commons Atribuição / Compartilha Igual, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=O texto está disponível sob a licença Creative Commons Atribuição / Compartilha Igual, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wiktionary.org/wiki/<title>
 guten:license_text=Ver também: [Lista alfabética de autores], [Lista de prateleiras]. Os direitos autorais da maioria destes livros já expirou nos Estados Unidos (apesar de possivelmente estarem protegidos em outros países). Ou seja, qualquer pessoa pode fazer cópias, integrais ou não, destes trabalhos. Para detalhes, acesse: http://www.gutenberg.org/wiki/Main_Page
-how:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://www.wikihow.com/wikiHow:Creative-Commons
-quote:license_text=O texto está disponível sob a licença Creative Commons Attribution / Share-alike, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wikiquote.org/wiki/<title>
+how:license_text=O texto está disponível sob a licença Creative Commons Atribuição / Compartilha Igual, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=O texto está disponível sob a licença Creative Commons Atribuição / Compartilha Igual, podendo ser reutilizado livremente sob tais termos. Veja: Texto da Licença [CC-BY-SA] e [Termos de Uso] para termos adicionais aplicáveis. O texto original está disponível em: http://pt.wikiquote.org/wiki/<title>
 type_a_word=Escreva uma palavra ou frase
 guten:type_a_word=Digite um Livro ou um Autor
 no_results=Nenhum registro encontrado
