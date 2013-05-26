@@ -6,6 +6,7 @@
 # Author: McDutchie
 # Author: Sovq
 # Author: Sp5uhe
+# Author: Ty221
 
 wiki_name=Polski...
 appro:wiki_name=Appropedia
@@ -16,6 +17,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Polska Wikipedia
 quote:wiki_name=Cytaty
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Biblia króla Jakuba
 license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie ponownie wykorzystywany zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [warunki użycia], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikipedia.org/wiki/<title>
 appro:license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie ponownie wykorzystywany zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [Zasady Uzytkowania], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Tekst udostępniony na licencji Creative Commons Attribution/Share-Alike i może być dowolnie wykorzystywany ponownie zgodnie z warunkami tej licencji. Zobacz tekst licencji [CC-BY-SA] i dodatkowe [warunki użycia], które mogą mieć zastosowanie. Oryginalny artykuł jest dostępny pod adresem: http://pl.wikitionary.org/wiki/<title>

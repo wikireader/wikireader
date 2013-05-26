@@ -4,6 +4,7 @@
 # Author: Base
 # Author: KEL
 # Author: Prima klasy4na
+# Author: Ата
 
 wiki_name=Українська
 appro:wiki_name=Appropedia
@@ -14,6 +15,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Вікіпедія Українською
 quote:wiki_name=Цитати
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Біблія Короля Якова
 license_text=Текст доступний на умовах ліцензії Creative Commons Attribution/Share-Alike License і може вільно використовуватися відповідно до умов цієї ліцензії. Див.: Текст ліцензії [CC-BY-SA]  та [Умови користування] для додаткових умов, які можуть застосовуватися. Оригінал статті доступний за адресою: http://en.wikipedia.org/wiki/<title>
 appro:license_text=Текст доступний за ліцензією Creative Commons Attribution/Share-Alik і може бути вільно використаним відповідно до умов цієї ліцензії. Див. текст ліцензії [CC-BY-SA] та [умови використання], в яких може бути описано додаткові умови. Оригінал статті доступний за адресою: http://www.appropedia.org/Appropedia:Copyrights
 dict:license_text=Текст доступний на умовах ліцензії Creative Commons Attribution/Share-Alike та може вільно використовуватися відповідно до умов даної ліцензії. Див. текст ліцензії [CC-BY-SA] та [Умови користування] для додаткових умов, які можуть застосовуватися. Оригінал статті доступний за адресою: http://en.wikipedia.org/wiki/<title>
