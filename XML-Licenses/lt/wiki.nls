@@ -1,13 +1,16 @@
 # Messages for Lithuanian (lietuvių)
 # Exported from translatewiki.net
+# Author: Mantak111
 # Author: Matasg
 
 wiki_name=Lietuvių...
 books:wiki_name=Knygos
 dict:wiki_name=Žodynas
 guten:wiki_name=Gutenbergo projektas
+how:wiki_name=VikiKaip
 pedia:wiki_name=Wikipedia Lietuvių kalba
 quote:wiki_name=Citatos
+kjv:wiki_name=King James Bible
 license_text=Tekstas pateikiamas pagal Creative Commons Attribution/Share-Alike licenciją ir gali būti laisvai panaudotas kitoms reikmėms pagal tos licencijos sąlygas. Perskaitykite [CC-BY-SA] licencijos tekstą bei [naudojimosi sąlygas], norėdami sužinoti daugiau apie papildomas sąlygas, kurios gali būti taikomos. Originalų straipsnį rasite: http://lt.wikipedia.org/wiki/<title>
 dict:license_text=Tekstas pateikiamas pagal Creative Commons Attribution/Share-Alike licenciją ir gali būti laisvai panaudotas kitoms reikmėms pagal tos licencijos sąlygas. Perskaitykite [CC-BY-SA] licencijos tekstą bei [naudojimosi sąlygas], norėdami sužinoti daugiau apie papildomas sąlygas, kurios gali būti taikomos. Originalų straipsnį rasite: http://lt.wiktionary.org/wiki/<title>
 guten:license_text=Daugiau: [Alfabetinis autorių sąrašas], [Knygų lentynų sąrašas]. Daugumai knygų Jungtinėse Amerikos Valstijose autoriaus teisės yra pasibaigusios. (Knygos vis dar gali būti saugomos autorių teisių kitose šalyse). Taigi kiekvienas gali šiuos darbus kopijuoti pažodžiui arba ne pažodžiui. Norėdami sužinoti daugiau, skaitykite http://www.gutenberg.org/wiki/Main_Page

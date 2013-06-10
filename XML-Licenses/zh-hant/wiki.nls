@@ -3,6 +3,7 @@
 # Author: Anakmalaysia
 # Author: Dream
 # Author: Frankou
+# Author: Justincheng12345
 # Author: Lauhenry
 # Author: Simon Shek
 # Author: Wrightbus
@@ -16,6 +17,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=中文維基百科
 quote:wiki_name=語錄
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=詹姆斯王聖經
 license_text=文本可根據創造性的下議院歸因/-方式共享許可證，並根據該許可中的條款可以自由重複使用。請參閱： 文本的許可證[CC-BY-SA] 和[使用條款] 為可能適用的附加條款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
 appro:license_text=文本可根據創造性的下議院歸因/-方式共享許可證，並根據該許可中的條款可以自由重複使用。請參閱： 文本的許可證[CC-BY-SA] 和[使用條款] 為可能適用的附加條款。目前的原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
 dict:license_text=文本可根據創造性的下議院歸因/-方式共享許可證，並根據該許可中的條款可以自由重複使用。請參閱： 文本的許可證[CC-BY-SA] 和[使用條款] 為可能適用的附加條款。目前的原始文章： http://en.wiktionary.org/wiki/<title>
