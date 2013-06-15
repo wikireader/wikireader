@@ -34,9 +34,9 @@
 
 #define DBG_HISTORY 0
 
-#define HISTORY_MAX_ITEM	19
+#define HISTORY_MAX_ITEM		19
 #define HISTORY_MAX_DISPLAY_ITEM	18U
-#define MAX_VIEWING_LIST 30
+#define MAX_VIEWING_LIST 		30
 
 HISTORY history_list[MAX_HISTORY];
 struct _viewing_list {
