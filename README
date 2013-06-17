@@ -3,7 +3,7 @@ Contents of root directory
 
 binutils*  [Created during build]
 
-  Stamp files for make
+  Stamp files for make.
 
 COPYING
 
@@ -18,7 +18,7 @@ doc
 
 gcc*  [Created during build]
 
-  Stamp files for make
+  Stamp files for make.
 
 host-tools
 
@@ -39,13 +39,13 @@ Makefile
 
 samo-lib
 
-  Programs and libraries that run on the WikiReader Hardware
+  Programs and libraries that run on the WikiReader Hardware.
 
   See: samo-lib/00ReadMe.text
 
 scripts
 
-  Some scripts to handle building on multiple machines and/ore multiple
+  Some scripts to handle building on multiple machines and/or multiple
   cores.  The "Run" script is the actual build script and the "progress"
   script is used to control and monitor the remote servers.
 
@@ -55,7 +55,7 @@ testudo
 
 TODO
 
-  Some notes about things to think about
+  Some notes about things to think about in the future.
 
 wiki-app
 
@@ -64,7 +64,7 @@ wiki-app
 
 xml-file-samples
 
-  Some XML files for testing the offline rendering process
+  Some XML files for testing the offline rendering process.
 
 XML-Licenses
 
