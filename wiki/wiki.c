@@ -34,7 +34,7 @@ int grifo_main(int argc, char **argv)
 	(void)argc; // *** unused argument
 	(void)argv; // *** unused argument
 
-	debug_printf("starting wiki app\n");
+	debug_printf("Starting Wiki App\n");
 
 	int fd = file_open("version.txt", FILE_OPEN_READ);
 	if (fd >= 0) {
