@@ -3,6 +3,7 @@
 # Author: Anakmalaysia
 # Author: Gaoxuewei
 # Author: Hydra
+# Author: Qiyue2001
 # Author: Yfdyh000
 
 wiki_name=中文...
@@ -14,6 +15,7 @@ how:wiki_name=WikiHow
 pedia:wiki_name=维基百科中文版
 quote:wiki_name=引用
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=詹姆斯王圣经
 license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
 appro:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
 dict:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wiktionary.org/wiki/<title>
