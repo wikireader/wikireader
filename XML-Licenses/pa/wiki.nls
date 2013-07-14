@@ -1,14 +1,21 @@
 # Messages for Punjabi (ਪੰਜਾਬੀ)
 # Exported from translatewiki.net
 # Author: Aalam
+# Author: Babanwalia
 
 wiki_name=ਪੰਜਾਬੀ...
+appro:wiki_name=ਐਪਰੋਪੀਡੀਆ
 books:wiki_name=ਕਿਤਾਬਾਂ
 dict:wiki_name=ਸ਼ਬਦਕੋਸ਼
-guten:wiki_name=ਪਰੋਜੈਕਟ ਗੁਟਿਨਬਰਗ
-pedia:wiki_name=ਵਿਕਿਪੀਡਿਆ ਪੰਜਾਬੀ
+guten:wiki_name=ਪਰੋਜੈਕਟ ਗੂਟਨਬਰਗ
+how:wiki_name=ਵਿਕੀਹਾਓ
+pedia:wiki_name=ਪੰਜਾਬੀ ਵਿਕੀਪੀਡਿਆ
 quote:wiki_name=ਹਵਾਲੇ
-type_a_word=ਸ਼ਬਦ ਜਾਂ ਵਾਕ ਲਿਖੋ
+hitch:wiki_name=ਹਿਚਵਿਕੀ
+kjv:wiki_name=ਰਾਜਾ ਜੇਮਜ਼ ਦੀ ਬਾਈਬਲ
+guten:license_text=ਇਹ ਵੀ ਵੇਖੋ:[ਲੇਖਕਾਂ ਦੀ ਵਰਨਾਂ ਮੁਤਾਬਕ ਸੂਚੀ], [ਕਿਤਾਬ ਸਲਫ਼ਾਂ ਦੀ ਸੂਚੀ]। \nਇਹਨਾਂ ਵਿੱਚੋਂ ਬਹੁਤੀਆਂ ਕਿਤਾਬਾਂ ਦੇ ਕਾਪੀਰਾਈਟ ਦੀ ਮਿਆਦ ਸੰਯੁਕਤ ਰਾਜ ਵਿਚ ਖ਼ਤਮ ਹੋ ਚੁੱਕੀ ਹੈ। (ਬਾਕੀ ਦੇਸ਼ਾਂ ਵਿਚ ਇਹ ਅਜੇ ਵੀ ਕਾਪੀਰਾਈਟ ਹੇਠ ਹੋ ਸਕਦੀਆਂ ਹਨ।) ਸੋ ਕੋਈ ਵੀ ਇਹਨਾਂ ਦੀਆਂ ਐਨ ਮੇਲ ਖਾਂਦੀਆਂ ਜਾਂ ਥੋੜ੍ਹੀਆਂ ਵੱਖਰੀਆਂ ਨਕਲਾਂ ਉਤਾਰ ਸਕਦਾ ਹੈ। ਤਫ਼ਸੀਲ ਲਈ ਵੇਖੋ:http://www.gutenberg.org/wiki/Main_Page
+type_a_word=ਸ਼ਬਦ ਜਾਂ ਵਾਕੰਸ਼ ਲਿਖੋ
+guten:type_a_word=ਕਿਤਾਬ ਜਾਂ ਲੇਖਕ ਟਾਈਪ ਕਰੋ
 no_results=ਕੋਈ ਐਂਟਰੀ ਨਹੀਂ ਲੱਭੀ
 searching=ਖੋਜ ਜਾਰੀ ਹੈ...
 select_wiki=ਵਿਸ਼ਵਕੋਸ਼ ਚੁਣੋ
@@ -18,14 +25,24 @@ please_wait=ਉਡੀਕੋ ਜੀ...
 clear_history=ਅਤੀਤ ਸਾਫ਼ ਕਰੋ
 yes=ਹਾਂ
 no=ਨਹੀਂ
+protection=ਕੁਝ ਵਿਕੀਪੀਡੀਆ ਲੇਖ ਨਾਬਾਲਗਾਂ ਲਈ ਢੁਕਵੇਂ ਨਹੀਂ ਹੋ ਸਕਦੇ। ਸੁਰੱਖਿਆ ਵਾਸਤੇ ਇੱਕ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ ਜੀ।
+guten:protection=ਕੁਝ ਕਿਤਾਬਾਂ ਨਾਬਾਲਗਾਂ ਲਈ ਢੁਕਵੀਆਂ ਨਹੀਂ ਹੋ ਸਕਦੀਆਂ। ਸੁਰੱਖਿਆ ਵਾਸਤੇ ਇੱਕ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ ਜੀ।
+restricted=ਇਹ ਲੇਖ ਨਾਬਾਲਗਾਂ ਲਈ ਢੁਕਵੇਂ ਨਹੀਂ ਹੋ ਸਕਦਾ। ਸੁਰੱਖਿਆ ਵਾਸਤੇ ਇੱਕ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ ਜੀ।
 set_password=ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ
 ok=ਠੀਕ ਹੈ
+set_filter=ਜੇਕਰ ਛਾਨਣੀ ਚਾਲੂ ਹੈ ਤਾਂ ਰੋਕ ਲੱਗੇ ਲੇਖਾਂ 'ਤੇ ਜਾਣ ਲਈ ਪਾਸਵਰਡ ਚਾਹੀਦਾ ਹੋਵੇਗਾ।
+keep_filter_on=ਛਾਨਣੀ ਚਾਲੂ ਰੱਖੋ
+keep_filter_off=ਛਾਨਣੀ ਬੰਦ ਕਰੋ
+filter_options=ਛਾਨਣੀ ਦੀਆਂ ਚੋਣਾਂ
+turn_filter_on=ਛਾਨਣੀ ਚਾਲੂ ਰੱਖੋ
+turn_filter_off=ਛਾਨਣੀ ਬੰਦ ਕਰੋ
 change_password=ਪਾਸਵਰਡ ਬਦਲੋ
-re_enter_password=ਪਾਸਵਰਡ ਮੁੜ-ਦਿਉ
-re_enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਮੁੜ-ਦਿਉ
-passwords_not_match=ਪਾਸਵਰਡ ਮਿਲਦਾ ਨਹੀਂ ਹੈ
-enter_old_password=ਪੁਰਾਣਾ ਪਾਸਵਰਡ ਦਿਉ
-enter_password=ਪਾਸਵਰਡ ਦਿਉ
+re_enter_password=ਪਾਸਵਰਡ ਮੁੜ-ਭਰੋ
+re_enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਮੁੜ-ਭਰੋ
+passwords_not_match=ਪਾਸਵਰਡ ਮਿਲਦੇ ਨਹੀਂ ਹਨ
+enter_old_password=ਪੁਰਾਣਾ ਪਾਸਵਰਡ ਭਰੋ
+enter_password=ਪਾਸਵਰਡ ਭਰੋ
 try_again=ਗਲਤ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ।
-enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਦਿਉ
-r=R
+enter_new_password=ਨਵਾਂ ਪਾਸਵਰਡ ਭਰੋ
+parental_controls=ਮਾਪਿਆਂ ਦੀ ਨਿਗਰਾਨੀ
+r=ਰੋਕ
