@@ -1,27 +1,36 @@
 # Messages for Malayalam (മലയാളം)
 # Exported from translatewiki.net
+# Author: Akhilan
 # Author: Praveenp
 # Author: Raghith
 # Author: Shijualex
 # Author: Sreejithk2000
 
 wiki_name=ഇംഗ്ലീഷ്...
+appro:wiki_name=അപ്രോപീഡിയ
 books:wiki_name=പുസ്തകങ്ങൾ
 dict:wiki_name=നിഘണ്ടു
 guten:wiki_name=ഗുട്ടെൻബർഗ് പദ്ധതി
+how:wiki_name=വിക്കിഹൗ
 pedia:wiki_name=വിക്കിപീഡിയ മലയാളം
 quote:wiki_name=ഉദ്ധരണികൾ
+hitch:wiki_name=ഹിച്ച്‌വിക്കി
 type_a_word=വാക്കോ വാക്യാംശമോ ടൈപ്പ് ചെയ്യുക
+guten:type_a_word=ഏതെങ്കിലും ഒരു പുസ്തകം അല്ലെങ്കിൽ രചയിതാവിന്റെ പേരെഴുതുക
+no_results=ഉള്ളടക്കമൊന്നും കണ്ടെത്താനായില്ല
 searching=തിരഞ്ഞുകൊണ്ടിരിക്കുന്നു...
 select_wiki=എന്‍‌സൈക്ലോപീഡിയ തിരഞ്ഞെടുക്കുക
 history_title=നാള്‍വഴി
 no_history=തിരുത്തല്‍ ചരിത്രമില്ല
 please_wait=ദയവായി കാത്തിരിക്കുക
+clear_history=നാൾവഴി ശൂന്യമാക്കുക
 yes=അതെ
 no=ഇല്ല
 set_password=രഹസ്യവാക്ക് സജ്ജമാക്കുക
 ok=ശരി
+keep_filter_on=അരിപ്പ സജീവമാക്കി വയ്ക്കുക
 keep_filter_off=ഫിൽറ്റർ ഓഫാക്കി വയ്ക്കുക
+filter_options=അരിപ്പയുടെ ഐച്ഛികങ്ങൾ
 turn_filter_on=ഫിൽറ്റർ ഓണാക്കി വയ്ക്കുക
 turn_filter_off=ഫിൽറ്റർ ഓഫാക്കുക
 change_password=രഹസ്യവാക്ക് മാറ്റുക

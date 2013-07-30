@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Author: Emperyan
 # Author: Erdemaslancan
+# Author: Incelemeelemani
 # Author: Joseph
 # Author: Khutuck
 # Author: Tarkovsky
@@ -15,6 +16,8 @@ guten:wiki_name=Gutenberg Projesi
 how:wiki_name=WikiHow
 pedia:wiki_name=Türkçe Vikipedi
 quote:wiki_name=Alıntı
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Kral James İncili
 license_text=Metin Creative Commons Attribution / Share-Alike Lisansı altında mevcuttur ve bu lisans koşulları altında serbestçe yeniden kullanılabilir. Bakınız: Ek koşullar iiçin  [CC-BY-SA] Lisans Metnine ve [Kullanım Koşulları] metnine. Orijinal makalede burada: http://en.wikipedia.org/wiki/ <title>
 dict:license_text=Metin Creative Commons Attribution / Share-Alike Lisansı altında mevcuttur ve bu lisans koşulları altında serbestçe yeniden kullanılabilir. Bakınız: Ek koşullar iiçin  [CC-BY-SA] Lisans Metnine ve [Kullanım Koşulları] metnine. Orijinal makalede burada: http://en.wikipedia.org/wiki/ <title>
 guten:license_text=Ayrıca bkz: [yazarlar alfabetik listesi], [kitap rafları listesi].  Bu kitapların çoğunluğu için telif hakkı ABD'de doldu. (Hala diğer ülkelerde telif hakkı saklı olabilir). Bu yüzden herkes bu işlerin birebir ya da birebir olmayan kopyası kalabilir. Ayrıntılı bilgi için bkz: http://www.gutenberg.org/wiki/Main_Page
