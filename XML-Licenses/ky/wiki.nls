@@ -1,6 +1,7 @@
 # Messages for Kirghiz (Кыргызча)
 # Exported from translatewiki.net
 # Author: Growingup
+# Author: Maksat
 
 wiki_name=Кыргыз тил...
 appro:wiki_name=Appropedia
@@ -11,6 +12,13 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Уикипедия — Кыргыз
 quote:wiki_name=Цитаталар
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Иаков Падышасынын библиясы
+license_text=Текст, Creative Commons Attribution/Share-Alike лицензиясынын негизинде бардыгына жеткиликтүү жана бул лицензиянын негизинде эркин колдонууга укуктуу. Лицензиянын текстин карап чыгыңыз [CC-BY-SA] ошондой эле [Terms of Use|Колдонуу шарты]. Макаланын расмий шилтемеси http://en.wikipedia.org/wiki/<title>
+appro:license_text=Текст, Creative Commons Attribution/Share-Alike лицензиясынын негизинде бардыгына жеткиликтүү жана бул лицензиянын негизинде эркин колдонууга укуктуу. Лицензиянын текстин карап чыгыңыз [CC-BY-SA] ошондой эле [Terms of Use|Колдонуу шарты]. Макаланын расмий шилтемеси http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Текст, Creative Commons Attribution/Share-Alike лицензиясынын негизинде бардыгына жеткиликтүү жана бул лицензиянын негизинде эркин колдонууга укуктуу. Лицензиянын текстин карап чыгыңыз [CC-BY-SA] ошондой эле [Terms of Use|Колдонуу шарты]. Макаланын расмий шилтемеси http://en.wikipedia.org/wiki/<title>
+guten:license_text=Кошумча карап чыгыңыз: [Авторлордун ариптик тизмеси], [Китеп текчелеринин тизмеси]. Бул китептердин көпчүлүгүнүн автордук укугу Кошмо Штаттарда эскирген. (Алар башка өлкөлөрдө автордук укукка ээ болушу ыктымал). Ошондуктан, ар бир инсан буларды толук бойдон же жарым жартылай көчүрө алат.  Кенен маалымат үчүн төмөнкү шилтемени караңыз: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Текст, Creative Commons Attribution/Share-Alike лицензиясынын негизинде бардыгына жеткиликтүү жана бул лицензиянын негизинде эркин колдонууга укуктуу. Лицензиянын текстин карап чыгыңыз [CC-BY-SA] ошондой эле [Terms of Use|Колдонуу шарты]. Макаланын расмий шилтемеси http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Текст, Creative Commons Attribution/Share-Alike лицензиясынын негизинде бардыгына жеткиликтүү жана бул лицензиянын негизинде эркин колдонууга укуктуу. Лицензиянын текстин карап чыгыңыз [CC-BY-SA] ошондой эле [Terms of Use|Колдонуу шарты]. Макаланын расмий шилтемеси http://en.wikipedia.org/wiki/<title>
 type_a_word=Сөз же сүйлөмдү киргизиңиз
 guten:type_a_word=Китепти же авторду киргизиңиз
 no_results=Жазуулар табылган жок
@@ -22,8 +30,12 @@ please_wait=Күтө туруңуз...
 clear_history=Тарыхты тазалоо
 yes=Ооба
 no=Жок
+protection=Уикипедиянын кээ бир макалалары жашы жете элек инсандар үчүн жараксыз. Сураныч, коргоо үчүн сыр сөз түзүңүз.
+guten:protection=Кээ бир китептер жашы жете элек инсандар үчүн жараксыз. Сураныч, коргоо үчүн сыр сөз түзүңүз.
+restricted=Бул макала жашы жете элек инсандар үчүн жеткиликсиз. Сураныч, сыр сөз түзүңүз.
 set_password=Сырсөздү орнотуу
 ok=OK
+set_filter=Чектөө көрсөтүлгөн. Чек коюулган макалаларды кароодо сыр сөз талап кылынат.
 keep_filter_on=Фильтрди күйүк боюнча калтыруу
 keep_filter_off=Фильтрди өчүк боюнча калтыруу
 filter_options=Фильтр ырастоолору

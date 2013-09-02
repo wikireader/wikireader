@@ -7,7 +7,7 @@
 # Author: Shirayuki
 # Author: Siebrand
 
-wiki_name=The language version of Wikipedia that is being used.\n\nChange "English" to the name of the language you're translating into.
+wiki_name=The language version of Wikipedia that is being used.\n\nChange "English" to the name of the language you're translating into.\n{{Identical|English}}
 dict:wiki_name={{Identical|Dictionary}}
 pedia:wiki_name=[[File:Select_wiki.png|right|150px]] The whole message should be localised. "Wikipedia" should be localised to the name of Wikipedia in your language and script. Instead of "English" you should put the name of your own language, in your language.
 quote:wiki_name={{Identical|Quote}}

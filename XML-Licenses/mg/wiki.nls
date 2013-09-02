@@ -1,0 +1,50 @@
+# Messages for Malagasy (Malagasy)
+# Exported from translatewiki.net
+# Author: Jagwar
+
+wiki_name=Malagasy...
+appro:wiki_name=Appropedia
+books:wiki_name=Boky
+dict:wiki_name=Rakibolana
+guten:wiki_name=Tetikasa Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipedia amin'ny teny malagasy
+quote:wiki_name=Tsiahy
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Baibolin'ny mpanjaka James
+license_text=Amin'ny lisansan'ny Creative Commons Attribution/Share-Alike ny lahatsoratra ary azo zarazaraina an-kalalahana araky ny fepetr'izany lisansa izany. Jereo: Lahatsoratry ny lisansa [CC-BY-SA] ary ny [Terms of Use] ho an'ny fepetra fanampiny. Eo amin'i http://mg\n.wikipedia.org/wiki/<title> ny lahatsoratra niaviana.
+appro:license_text=Amin'ny lisansan'ny Creative Commons Attribution/Share-Alike ny lahatsoratra ary azo zarazaraina an-kalalahana araky ny fepetr'izany lisansa izany. Jereo: Lahatsoratry ny lisansa [CC-BY-SA] ary ny [Terms of Use] ho an'ny fepetra fanampiny. Eo amin'i http://www.appropedia.org/Appropedia:Copyrights ny lahatsoratra niaviana.
+dict:license_text=Amin'ny lisansan'ny Creative Commons Attribution/Share-Alike ny lahatsoratra ary azo zarazaraina an-kalalahana araky ny fepetr'izany lisansa izany. Jereo: Lahatsoratry ny lisansa [CC-BY-SA] ary ny [Terms of Use] ho an'ny fepetra fanampiny. Eo amin'i http://mg.wiktionary.org/wiki/<title> ny lahatsoratra niaviana.
+guten:license_text=Jereo koa: [Lisitry ny mpamorona araky ny abidy], [Lisitry ny etazeran'ny boky] Afa-jom-pamorona ireo boky ireo any Etazonia (Mety mbola iharan'ny zom-pamorona izy ireo any amin'ny firenena hafa). Noho izany dia afaka mandika azy ireo izay tia hana. Ho ann'y fampahalalana antsipirihany jereo:http://www.gutenberg.org/wiki/Main_Page
+type_a_word=Manorata teny na fehezanteny eto
+guten:type_a_word=Manorata lohatenim-boky na anaram-pamorona
+no_results=Tsy nahitana iditra
+searching=mikaroka...
+select_wiki=Hifidy raki-pahalalana
+history_title=Tantara
+no_history=Tsy misy tantara
+please_wait=andraso azafady...
+clear_history=Hanadio ny tantara
+yes=Eny
+no=Tsia
+protection=Mety tsy mety ho an'ny tanora ny lahatsoratra sasan'i Wikipedia. Asio tenimiafina fiarovana azafady.
+guten:protection=Mety tsy mety ho an'ny tsy ampy taona ny boky sasany. Asio tenimiafina fiarovana azafady.
+restricted=Mety tsy mety ho an'ny tsy ampy taona ity lahatsoratra ity. Asio tenimiafina fiarovana azafady.
+set_password=Tenimiafina fiarovana
+ok=OK
+set_filter=Rehefa alefa ny fanivanana, mila mampiditra tenimiafina vao afaka mamaky lahatsoratra voaaro
+keep_filter_on=Hitazona ny fanivanana handeha
+keep_filter_off=Ajanona ny fanivanana tsy handeha
+filter_options=Safidin-tsivana
+turn_filter_on=Alefa ny fanivanana
+turn_filter_off=Hanajanona ny fanivanana
+change_password=Hanova ny tenimiafina
+re_enter_password=Hamarino ny tenimiafina
+re_enter_new_password=Hamarino ny tenimiafina
+passwords_not_match=Tsy miady ilay tenimiafina
+enter_old_password=Atsofohy ny tenimiafina taloha
+enter_password=Atsofohy ny tenimiafina
+try_again=Diso. Andramo inray.
+enter_new_password=Atsofohy ny tenmiafina vaovao
+parental_controls=Fifehezan'ny raiamandreny
+r=R
