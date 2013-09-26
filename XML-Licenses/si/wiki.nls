@@ -1,6 +1,7 @@
 # Messages for Sinhala (සිංහල)
 # Exported from translatewiki.net
 # Author: Singhalawap
+# Author: Varuna Harshana
 # Author: පසිඳු කාවින්ද
 
 wiki_name=සිංහල...
@@ -12,6 +13,10 @@ how:wiki_name=විකිහව්
 pedia:wiki_name=සිංහල විකිපීඩියා
 quote:wiki_name=උද්ධරණ
 hitch:wiki_name=හිච්විකි
+kjv:wiki_name=ජේම්ස් රජුගේ බයිබලය
+license_text=මෙම පෙළ Creative Commons Attribution/Share-Alike බලපත්‍රය යටතේ පවතින අතර, එහි කොන්දේසි අනුව නිදහස් ලෙස නැවත භාවිතා කළ හැක. බලන්න: [CC-BY-SA] බලපත්‍රය සහ [Terms of Use] අමතර කොන්දේසි. මුල් ලිපිය: http://en.wikipedia.org/wiki/<title>
+appro:license_text=මෙම පෙළ Creative Commons Attribution/Share-Alike බලපත්‍රය යටතේ පවතින අතර, එහි කොන්දේසි අනුව නිදහස් ලෙස නැවත භාවිතා කළ හැක. බලන්න: [CC-BY-SA] බලපත්‍රය සහ [Terms of Use] අමතර කොන්දේසි. මුල් ලිපිය: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=මෙම පෙළ Creative Commons Attribution/Share-Alike බලපත්‍රය යටතේ පවතින අතර, එහි කොන්දේසි අනුව නිදහස් ලෙස නැවත භාවිතා කළ හැක. බලන්න: [CC-BY-SA] බලපත්‍රය සහ [Terms of Use] අමතර කොන්දේසි. මුල් ලිපිය:http://en.wiktionary.org/wiki/<title>
 type_a_word=වචනය හෝ වාක්‍ය ඛණ්ඩය ටයිප් කරන්න
 guten:type_a_word=පොත හෝ කර්තෘ ටයිප් කරන්න
 no_results=සටහන් හමු නොවුණි

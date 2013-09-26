@@ -1,6 +1,7 @@
 # Messages for Serbian (Latin script) (srpski (latinica)‎)
 # Exported from translatewiki.net
 # Author: Charmed94
+# Author: Milicevic01
 # Author: Rancher
 
 wiki_name=Srpski
@@ -12,12 +13,12 @@ how:wiki_name=Vikihau
 pedia:wiki_name=Vikipedija na srpskom
 quote:wiki_name=Citati
 hitch:wiki_name=Autostop viki
-license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+license_text=Tekst je dostupan pod licencom Creative Commons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
 appro:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://www.appropedia.org/Appropedia:Copyrights
-dict:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+dict:license_text=Tekst je dostupan pod licencom Creative Commons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
 guten:license_text=Pogledajte [spisak autora po azbučnom redu] i [spisak knjiga].  Autorska prava za većinu ovih dela su istekla u Sjedinjenim Američkim Državama, ali ipak mogu biti zaštićena u drugim državama. Svako može doslovno napraviti primerke ovih dela ili ih izmeniti. Za više informacija pogledajte http://www.gutenberg.org/wiki/Main_Page
 how:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://www.wikihow.com/wikiHow:Creative-Commons
-quote:license_text=Tekst je dostupan pod licencom Krijejtiv komons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
+quote:license_text=Tekst je dostupan pod licencom Creative Commons Autorstvo–Deliti pod istim uslovima i može se slobodno koristiti pod uslovima te licence. Pogledajte tekst licence [CC-BY-SA] i [uslove korišćenja] za dodatne uslove koji se mogu primeniti. Originalan članak je dostupan na http://en.wikipedia.org/wiki/<title>
 type_a_word=Unesite reč ili frazu
 guten:type_a_word=Unesite knjigu ili autora
 no_results=Nema rezultata.
