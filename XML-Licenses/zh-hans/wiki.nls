@@ -3,6 +3,7 @@
 # Author: Anakmalaysia
 # Author: Gaoxuewei
 # Author: Hydra
+# Author: Liuxinyu970226
 # Author: Qiyue2001
 # Author: Yfdyh000
 
@@ -10,18 +11,18 @@ wiki_name=中文...
 appro:wiki_name=Appropedia
 books:wiki_name=图书
 dict:wiki_name=字典
-guten:wiki_name=古登堡
-how:wiki_name=WikiHow
+guten:wiki_name=古腾堡计划
+how:wiki_name=维基如何
 pedia:wiki_name=维基百科中文版
 quote:wiki_name=引用
 hitch:wiki_name=Hitchwiki
 kjv:wiki_name=詹姆斯王圣经
-license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikipedia.org/wiki/<title>
+license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://zh.wikipedia.org/wiki/<title>
 appro:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
-dict:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wiktionary.org/wiki/<title>
+dict:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章：http://zh.wiktionary.org/wiki/<title>
 guten:license_text=另请参阅： [作者的字母顺序排序列表]，[书架的列表]。在美国，大多数的这些书的版权已过期。（他们可能仍受版权保护在其他国家）。任何人可作出逐字或非逐字复制这些作品。有关详细信息，请参阅： http://www.gutenberg.org/wiki/Main_Page
-how:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://www.wikihow.com/wikiHow:Creative-Commons<title>
-quote:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://en.wikiquote.org/wiki/<title>
+how:license_text=文本依据知识共享-署名-相同方式共享授权以及在此授权之下的自由再分发和商业性使用。参见：[CC-BY-SA]许可证正文[使用条款] 为可能适用的附加条款。目前的原始文章： http://www.wikihow.com/wikiHow:Creative-Commons<title>
+quote:license_text=文本可根据创造性的下议院归因 /-方式共享许可证，并根据该许可中的条款可以自由重复使用。请参阅： 文本的许可证 [CC-BY-SA] 和 [使用条款] 为可能适用的附加条款。目前的原始文章： http://zh.wikiquote.org/wiki/<title>
 type_a_word=请输入单词或词组
 guten:type_a_word=键入一本书或作者
 no_results=没有找到相关条目
