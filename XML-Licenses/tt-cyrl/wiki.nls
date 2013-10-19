@@ -1,5 +1,6 @@
 # Messages for Tatar (Cyrillic script) (татарча)
 # Exported from translatewiki.net
+# Author: Ilnur efende
 # Author: Zahidulla
 # Author: Ильнар
 
@@ -12,9 +13,12 @@ how:wiki_name=WikiHow
 pedia:wiki_name=Википедия — Татарча
 quote:wiki_name=Өзекләр җыентыгы
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Корль Яков библиясе
 license_text=Текст Creative Commons Attribution/Share Alike лицензиясе буенча тарала һәм бу лицензия кысаларында ирекле кулланыла ала. [CC-BY-SA] һәм [Куллану шартлары]ның текстларын карагыз, аларда барлык өстәмә шартлар күрсәтелгән булырга мөмкин. Мәкаләнең оригиналы: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Текст Creative Commons Attribution/Share Alike лицензиясе буенча тарала һәм бу лицензия кысаларында ирекле кулланыла ала. [CC-BY-SA] һәм [Куллану шартлары]ның текстларын карагыз, аларда барлык өстәмә шартлар күрсәтелгән була ала. Мәкаләнең оригиналын http://www.appropedia.org/Appropedia:Copyrights адресы буенча карап була.
 dict:license_text=Текст Creative Commons Attribution/Share Alike лицензиясе буенча таралаһәм бу лицензия кысаларында ирекле рәвештә тарала ала. [CC-BY-SA] һәм [Куллану шартлары]ның текстларын карагыз, аларда барлык өстәмә шартлары күрсәтелгән. Мәкаләнең төп юрамасы: http://en.wiktionary.org/wiki/<title>
 guten:license_text=Моны да карагыз: [Авторларның әлифбалы исемлеге], [Китап кишләре исемлеге]. Монда урнашкан күбесе китапларның автор хокуклары Америка Кушма Штатларында тәмамлана. (Ләкин алар башка дәүләтләрдә һаман да автор хокукларына ия булырга мөмкин). Шуның нигезендә һәрбер кеше тулысынча яисә өлешчә бу эшләрне күчерә ала. Тулырак мәгълүмат алу өчен:http://www.gutenberg.org/wiki/Main_Page сәхифәсен карагыз
+how:license_text=Текст Creative Commons Attribution/Share Alike лицензиясе буенча таралаһәм бу лицензия кысаларында ирекле рәвештә тарала ала. [CC-BY-SA] һәм [Куллану шартлары]ның текстларын карагыз, аларда барлык өстәмә шартлары күрсәтелгән. Мәкаләнең төп юрамасы: http://www.wikihow.com/wikiHow:Creative-Commons
 quote:license_text=Текст Creative Commons Attribution/Share Alike лицензиясе буенча таралаһәм бу лицензия кысаларында ирекле рәвештә тарала ала. [CC-BY-SA] һәм [Куллану шартлары]ның текстларын карагыз, аларда барлык өстәмә шартлары күрсәтелгән. Мәкаләнең төп юрамасы: http://en.wikiquote.org/wiki/<title>
 type_a_word=Сүз яисә фраза кертегез
 guten:type_a_word=Китап яисә автор исемен кертегез
