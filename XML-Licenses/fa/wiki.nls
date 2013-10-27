@@ -9,10 +9,10 @@
 # Author: ZxxZxxZ
 # Author: پسر یاس
 
-wiki_name=پارسی...
+wiki_name=فارسی...
 appro:wiki_name=اپروپدیا
-books:wiki_name=نسک
-dict:wiki_name=واژه
+books:wiki_name=کتاب
+dict:wiki_name=واژه‌نامه
 guten:wiki_name=پروژهٔ گوتنبرگ
 how:wiki_name=ویکی‌چگونه
 pedia:wiki_name=ویکی‌پدیای فارسی
@@ -42,8 +42,8 @@ restricted=ممکن است این نوشتار برای کم‌سن‌وسالا
 set_password=تنظیم گذرواژه
 ok=تأیید
 set_filter=هنگامی که پالایش روشن باشد برای دسترسی به مقاله‌های محافظت‌شده گذرواژه نیاز است.
-keep_filter_on=پالایش را روشن نگه دار
-keep_filter_off=پالایش را خاموش نگه دار
+keep_filter_on=پالایش را روشن نگه‌دار
+keep_filter_off=پالایش را خاموش نگه‌دار
 filter_options=تنظیمات پالایش
 turn_filter_on=روشن‌کردن پالایش
 turn_filter_off=خاموش‌کردن پالایش
