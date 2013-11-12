@@ -1,0 +1,42 @@
+# Messages for Nepali (नेपाली)
+# Exported from translatewiki.net
+# Author: सरोज कुमार ढकाल
+
+wiki_name=अङ्ग्रेजी
+appro:wiki_name=एप्रोपेडिया
+books:wiki_name=पुस्तकहरू
+dict:wiki_name=शव्दकोश
+guten:wiki_name=गुटेनबर्ग आयोजना
+how:wiki_name=विकिहाउ
+pedia:wiki_name=अङ्ग्रेजी विकिपीडिया
+quote:wiki_name=कोटहरू
+hitch:wiki_name=हिच्विकी
+kjv:wiki_name=किङ्ग जेम्सको बाइबल
+type_a_word=शब्द या टुक्का लेख्नुहोस्
+guten:type_a_word=किताब या लेखकको नाम लेख्नुहोस्
+no_results=कुनै पनि नतिजा भेटिएन
+searching=खोज्दै ...
+select_wiki=विश्वकोष छान्नुहोस्
+history_title=इतिहास
+no_history=इतिहास छैन
+please_wait=कृपया प्रतिक्षा गर्नुहोस् ...
+clear_history=इतिहास हटाउने
+yes=हो
+no=हैन
+set_password=पासवर्ड राख्नुहोस्
+ok=हुन्छ
+keep_filter_on=फिल्टरलाई खुला राख्ने
+keep_filter_off=फिल्टर बन्द राख्ने
+filter_options=फिल्टर विकल्पहरू
+turn_filter_on=फिल्टर खुला गर्ने
+turn_filter_off=फिल्टर बन्द राख्ने
+change_password=पासवर्ड परिवर्तन गर्नुहोस्
+re_enter_password=पासवर्ड फेरि लेख्नुहोस्
+re_enter_new_password=नयाँ पासवर्ड फेरि लेख्नुहोस्
+passwords_not_match=पासवर्डहरु मेल खाएन
+enter_old_password=पुरानो पासवर्ड लेख्नुहोस्
+enter_password=पासवर्ड लेख्नुहोस्
+try_again=गलत भयो । कृपया पुन: प्रयास गर्नुहोस् ।
+enter_new_password=नयाँ पासवर्ड लेख्नुहोस्
+parental_controls=अभिवावकीय नियन्त्रण
+r=नि
