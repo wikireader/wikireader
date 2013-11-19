@@ -1,6 +1,7 @@
 # Messages for Uyghur (Arabic script) (ئۇيغۇرچە)
 # Exported from translatewiki.net
 # Author: Sahran
+# Author: Tel'et
 
 wiki_name=ئۇيغۇرچە…
 appro:wiki_name=Appropedia
@@ -25,7 +26,7 @@ no=ياق
 protection=بەزى ۋىكىپېدىيا تۈرلىرى بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. قوغداش ئۈچۈن ئىم تەڭشەڭ.
 guten:protection=بەزى كىتابلار بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. ئۇنى قوغداش ئۈچۈن ئىم تەڭشەڭ.
 restricted=بۇ تۈرلەر بالاغەتكە يەتمىگەنلەرگە ماس كەلمەيدۇ. ئۇنى قوغداش ئۈچۈن ئىم تەڭشەڭ.
-set_password=ئىم تەڭشەك
+set_password=پارول بېكىتىش
 ok=جەزملە
 set_filter=سۈزگۈچ ئېچىلغاندىن كېيىن، زىيارەت قىلىش چەكلىمىگە ئۇچرىغان ماقالىگە يولۇققاندا ئىم كىرگۈزۈش كېرەك.
 keep_filter_on=سۈزگۈچنى ئوچۇق تۇت
@@ -33,13 +34,13 @@ keep_filter_off=سۈزگۈچنى تاقاق تۇت
 filter_options=سۈزگۈچ تاللانما
 turn_filter_on=سۈزگۈچنى ئاچ
 turn_filter_off=سۈزگۈچنى تاقا
-change_password=ئىم ئۆزگەرت
+change_password=پارولنى ئۆزگەرتىش
 re_enter_password=ئىمنى قايتا كىرگۈزۈڭ
-re_enter_new_password=يېڭى ئىمنى قايتا كىرگۈزۈڭ
-passwords_not_match=ئىم ماس كەلمىدى
+re_enter_new_password=يېڭى پارولنى قايتا كىرگۈزۈڭ
+passwords_not_match=پارول ماس كەلمىدى
 enter_old_password=كونا ئىمنى كىرگۈزۈڭ
-enter_password=ئىم كىرگۈزۈڭ
+enter_password=پارول كىرگۈزۈڭ
 try_again=خاتا. قايتا كىرگۈزۈڭ
-enter_new_password=يېڭى ئىمنى كىرگۈزۈڭ
+enter_new_password=يېڭى پارول كىرگۈزۈڭ
 parental_controls=ئاتا-ئانا تىزگىنلىرى
 r=چەكلەنگەن
