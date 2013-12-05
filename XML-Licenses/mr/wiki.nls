@@ -1,15 +1,16 @@
 # Messages for Marathi (मराठी)
 # Exported from translatewiki.net
 # Author: Htt
+# Author: V.narsikar
 
-wiki_name=मराठी...
+wiki_name=इंग्रजी...
 books:wiki_name=पुस्तके
 dict:wiki_name=शब्दकोश
 guten:wiki_name=ग्युटेनबर्ग प्रकल्प
 pedia:wiki_name=विकीपीडिया मराठी
-quote:wiki_name=उद्धृत
+quote:wiki_name=उद्धरणे
 type_a_word=शब्द / वाक्य लिहा
-guten:type_a_word=पुसतक / लेखक लिहा
+guten:type_a_word=पुस्तक / लेखक लिहा
 no_results=शोधातून काहीही मिळाले नाही.
 searching=शोधत आहे...
 select_wiki=विश्वकोश निवडा
@@ -20,7 +21,7 @@ clear_history=इतिहास काढा
 yes=होय
 no=नाही
 set_password=परवलीचा शब्द तयार करा
-ok=ठीक
+ok=ठीक आहे
 keep_filter_on=फिल्टर चालू ठेवा
 keep_filter_off=फिल्टर बंद ठेवा
 filter_options=फिल्टर पर्याय
