@@ -1,0 +1,41 @@
+# Messages for Oromo (Oromoo)
+# Exported from translatewiki.net
+# Author: Tumsaa
+
+wiki_name=Afaan Oromoo...
+books:wiki_name=Kitaabota
+dict:wiki_name=Galmee Jechootaa
+pedia:wiki_name=Wiikipidiyaa Afaan Oromoo
+kjv:wiki_name=Macaafa Qulqulluu Kiingi Jeemsi
+type_a_word=Jecha ykn gaalee galchi
+guten:type_a_word=Maqaa kitaabaa ykn kan barreessaa galchi
+no_results=Galmeen homtuu hin argamne
+searching=Barbaadaara...
+select_wiki=Insaayiikiloppiidiyaa filadhu
+history_title=Seenaa
+no_history=Seenaan hin jiru
+please_wait=Maaloo eegi...
+clear_history=Seenaa balleessi
+yes=Eyyee
+no=Lakki
+protection=Barreeffamni Wiikiipidiyaa tokko tokkoo daa'immaniif garri ta'uu baachuu danda'u. Maaloo, daa'imman dhorkuuf iggitaa(password) itti godhaa.
+guten:protection=Kitaabonni tokko tokkoo daa'immaniif garri ta'uu baachuu danda'u. Maaloo, daa'imman dhorkuuf iggitaa(password) itti godhaa.
+restricted=Barreeffamni kun daa'immaniif garri ta'uu baachuu danda'u. Maaloo, daa'imman dhorkuuf iggitaa(password) itti godhaa.
+set_password=Iggitaa(password) galchaa
+ok=Tole
+set_filter=Yeroo gingilchaan(filter) hojjatu, galmee dhorkamaa ilaaluuf iggitaa(password) galchuu barbaachisa.
+keep_filter_on=Gingilchaa(filter) kaasi
+keep_filter_off=Gingilchaa(filter) dhaamsi
+filter_options=Filannoo gingilchaa(filter)
+turn_filter_on=Gingilchaa(filter) kaasi
+turn_filter_off=Gingilchaa(filter) dhaamsi
+change_password=Iggitaa(password) jijjiiri
+re_enter_password=Iggitaa(password) lammata galchi
+re_enter_new_password=Iggitaa(password) haaraa lammata galchi
+passwords_not_match=Iggitaan(password) lamaan tokko miti
+enter_old_password=Iggitaa(password) durii galchi
+enter_password=Iggitaa(password) galchi
+try_again=Sirrii miti. Itti deebi'ii yaali.
+enter_new_password=Iggitaa(password) haaraa galchi
+parental_controls=Meeshaa too'annaa kan maatii
+r=Dh
