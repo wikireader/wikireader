@@ -3,6 +3,7 @@
 # Author: AlimanRuna
 # Author: Armando-Martin
 # Author: Crazymadlover
+# Author: Fitoschido
 # Author: Hereñu
 # Author: Larjona
 # Author: McDutchie
@@ -33,7 +34,7 @@ searching=buscando...
 select_wiki=Seleccione enciclopedia
 history_title=Historial
 no_history=No hay historial
-please_wait=Espere por favor...
+please_wait=Espera un momento…
 clear_history=Limpiar historial
 yes=Sí
 no=No
