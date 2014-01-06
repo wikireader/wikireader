@@ -1,0 +1,52 @@
+# Messages for Neapolitan (Napulitano)
+# Exported from translatewiki.net
+# Author: Chelin
+
+wiki_name=Napulitano...
+appro:wiki_name=Appropedia
+books:wiki_name=Libbre
+dict:wiki_name=Dizziunario
+guten:wiki_name=Pruggietto Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipedia 'n napulitano
+quote:wiki_name=Zitazzione
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Bibbia 'e re Giacomo
+license_text='O testo è disponibile sicunno 'a licenzia Creative Commons Attribuzzione-Cundivide ô stisso modo e può essere reautilizzato libberamente sicunno e termene 'e tale licenzia. Vede 'o testo d"a licenzia [CC-BY-SA] ed e [termene 'e autilizzo] ppe 'e cundizzione aggiuntive ca possono essere apprecate. L'articulo originale se truova all'innerezzo: http://nap.wikipedia.org/wiki/<title>
+appro:license_text='O testo è disponibile sicunno 'a licenzia Creative Commons Attribuzzione-Cundivide ô stisso modo e può essere reautilizzato libberamente sicunno e termene 'e tale licenzia. Vede 'o testo d"a licenzia [CC-BY-SA] ed e [termene 'e autilizzo] ppe 'e cundizzione aggiuntive ca possono essere apprecate. L'articulo originale se truova all'innerezzo:\nhttp://www.appropedia.org/Appropedia:Copyrights
+dict:license_text='O testo è disponibile sicunno 'a licenzia Creative Commons Attribuzzione-Cundivide ô stisso modo e può essere reautilizzato libberamente sicunno e termene 'e tale licenzia. Vede 'o testo d"a licenzia [CC-BY-SA] ed e [termene 'e autilizzo] ppe 'e cundizzione aggiuntive ca possono essere apprecate. L'articulo originale se truova all'innerezzo: http://nap.wiktionary.org/wiki/<title>
+guten:license_text=Vere anche: [elenco arfabeteco d"e autore], [elenco d"e libbrerie]. 'O copyright ppe 'a maggior parte 'e chiste libbre è scaduto dint'ê State Aunite (ma possono angora essere prutette 'e copyright 'n atre paise). Quinde, chiunque può fà copie ad 'a lettera o nun letterale 'e cheeste opere. Ppe maggiure dettaglie, vede: http://www.gutenberg.org/wiki/Main_Page
+how:license_text='O testo è disponibile sicunno 'a licenzia Creative Commons Attribuzzione-Cundivide ô stisso modo e può essere reautilizzato libberamente sicunno e termene 'e tale licenzia. Vede 'o testo d"a licenzia [CC-BY-SA] ed e [termene 'e autilizzo] ppe 'e cundizzione aggiuntive ca possono essere apprecate. L'articulo originale se truova all'innerezzo: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text='O testo è disponibile sicunno 'a licenzia Creative Commons Attribuzzione-Cundivide ô stisso modo e può essere reautilizzato libberamente sicunno e termene 'e tale licenzia. Vede 'o testo d"a licenzia [CC-BY-SA] ed e [termene 'e autilizzo] ppe 'e cundizzione aggiuntive ca possono essere apprecate. L'articulo originale se truova all'innerezzo: http://nap.wikiquote.org/wiki/<title>
+type_a_word='Nserisce 'na parola o 'na frase
+guten:type_a_word='Nserisce 'nu libbro o 'n autore
+no_results=Nisciuno risultato truovato
+searching=ricerca 'n corso...
+select_wiki=Scegle l'enciclopedía
+history_title=Cronologgia
+no_history=Cronologgia vota
+please_wait=Aspetta ppe favore...
+clear_history=Canciella cronologgia
+yes=Sì
+no=No
+protection=Alcune vvoce 'e Wikipedia potrebbero nun essere adatte ad 'e minure. Se prega 'e 'mpustà 'na password ppe 'a prutezzione.
+guten:protection=Alcune libbre potrebbero nun essere adatte ad 'e minure. Se prega 'e 'mpustà 'na password ppe 'a prutezzione.
+restricted=Chista vvoce potrebbe nun essere adatta ad 'e minure. Se prega 'e 'mpustà 'na password ppe 'a prutezzione.
+set_password=Mpusta password
+ok=ok
+set_filter=Cu filtraggio ON, deve avè 'na password quanno se accede ad 'e elemiente riservate.
+keep_filter_on=Lascio 'o filtro attivo
+keep_filter_off=Lascio 'o filtro 'nattivo
+filter_options=Opzione d"o filtro
+turn_filter_on=Attiva 'o filtro
+turn_filter_off=Disattiva 'o filtro
+change_password=Càgna password
+re_enter_password=Cunferma 'a password
+re_enter_new_password=Cunferma 'a nova password
+passwords_not_match='E password nun song uguale
+enter_old_password='Nserisce 'a viecchia password
+enter_password='Nserisce 'a password
+try_again=Sbagliato. Prova 'e novo.
+enter_new_password='Nserisce 'a nova password
+parental_controls=Cuntrollo geniture
+r=R
