@@ -1,22 +1,23 @@
 # Messages for Hakka (客家語/Hak-kâ-ngî)
 # Exported from translatewiki.net
+# Author: EagerLin
 # Author: Jetlag
 
-wiki_name=客語
+wiki_name=客家話
 appro:wiki_name=Appropedia
 books:wiki_name=圖書
 dict:wiki_name=字典
 guten:wiki_name=古登堡計劃
 how:wiki_name=WikiHow
-pedia:wiki_name=客語維基百科
+pedia:wiki_name=客家話維基百科
 quote:wiki_name=引用
 hitch:wiki_name=Hitchwiki
 kjv:wiki_name=King James Bible
-license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可中嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 和[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wikipedia.org/wiki/<title>
-appro:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可中嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用的附加條款。目前嘅原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
-dict:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 和[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wiktionary.org/wiki/<title>
-guten:license_text=另請參閱： [作者嘅字母順序排序列表]，[書架嘅列表]。在美國，大多數邇兜書嘅版權已過期。 （他們可能仍受版權保護在其他國家）。任何人可作出逐字或非逐字複製邇兜作品。有關詳細信息，請參閱： http://www.gutenberg.org/wiki/Main_Page
-how:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://www.wikihow.com/wikiHow:Creative-Commons<title>
+license_text=文本可根據創造性个下議院歸因/-方式共享許可證，並根據該許可中嘅條款可以自由重複使用。請參閱： 文本个許可證[CC-BY-SA] 和[使用條款] 為可能適用个附加條款。目前个原始文章： http://en.wikipedia.org/wiki/<title>
+appro:license_text=文本可根據創造性个下議院歸因/-方式共享許可證，並根據該許可中个條款可以自由重複使用。請參閱： 文本个許可證[CC-BY-SA] 與[使用條款] 為可能適用个附加條款。目前个原始文章： http://www.appropedia.org/Appropedia:Copyrights<title>
+dict:license_text=文本可根據創造性个下議院歸因/-方式共享許可證，並根據該許可肚个條款可以自由重複使用。請參閱： 文本个許可證[CC-BY-SA] 和[使用條款] 為可能適用个附加條款。目前个原始文章： http://en.wiktionary.org/wiki/<title>
+guten:license_text=另請參閱： [作者个字母順序排序列表]，[書架嘅列表]。在美國，大多數邇兜書个版權已過期。 （他們可能仍受版權保護在其他國家）。任何人可作出逐字或非逐字複製邇兜作品。有關詳細信息，請參閱： http://www.gutenberg.org/wiki/Main_Page
+how:license_text=文本可根據創造性个下議院歸因/-方式共享許可證，並根據該許可肚个條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用个附加條款。目前个原始文章： http://www.wikihow.com/wikiHow:Creative-Commons<title>
 quote:license_text=文本可根據創造性嘅下議院歸因/-方式共享許可證，並根據該許可肚嘅條款可以自由重複使用。請參閱： 文本嘅許可證[CC-BY-SA] 與[使用條款] 為可能適用嘅附加條款。目前嘅原始文章： http://en.wikiquote.org/wiki/<title>
 type_a_word=請輸入詞或短句
 guten:type_a_word=輸入書籍或作者名

@@ -4,10 +4,17 @@
 # Author: Mmistmurt
 
 wiki_name=Taglizit...
+appro:wiki_name=Appropedia
 books:wiki_name=Idlisen
 dict:wiki_name=Wikamawal
+guten:wiki_name=Asenfar Gutenberg
 how:wiki_name=WikiHow
 pedia:wiki_name=Wikipidya s teqbaylit
 quote:wiki_name=Inzan
 hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Tibibelt n ugellid Jacques
 license_text=Aḍris yella ddaw turagt Creative Commons Attribution / Tzemrem ad tqedcem yis akken iwen teǧǧa turagt, walit: Aḍris n [CC-BY-SA] d [tiwtilin useqdec] i tmerna n wawalen i tzemrem ad tarnum. Amagrad unṣib yella deg tansiwt : http://kab.wikipedia.org/wiki/<title>
+type_a_word=Sekcem awal neɣ tanfalit
+guten:type_a_word=Aru-d azwel n udlis neɣ isem n umeskar
+ok=ok
+r=R
