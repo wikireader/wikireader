@@ -1,0 +1,52 @@
+# Messages for Sardinian (sardu)
+# Exported from translatewiki.net
+# Author: L2212
+
+wiki_name=Sardu...
+appro:wiki_name=Appropedia
+books:wiki_name=Libros
+dict:wiki_name=Ditzionàrju
+guten:wiki_name=Progetu Gutenberg
+how:wiki_name=WikiHow
+pedia:wiki_name=Wikipedia Sardu
+quote:wiki_name=Mentovaziones
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=Bìblia de re Giacumu
+license_text=Su testu est lenzu segundu sa litzèntzia Creative Commons Atributzione-Cumpartzi a sa matessi manera e podet essere impreau liberamente sighinde sos termines de tale litzèntzia. Bie su testu de sa litzèntzia [CC-BY-SA] e sos [termines de impreu] pro sas cunditziones annuntilas chi podene essere applicadas. S'artìculu oritzinale est lenzu a su giassu: http://sc.wikipedia.org/wiki/<title>
+appro:license_text=Su testu est lenzu segundu sa litzèntzia Creative Commons Atributzione-Cumpartzi a sa matessi manera e podet essere impreau liberamente sighinde sos termines de tale litzèntzia. Bie su testu de sa litzèntzia [CC-BY-SA] e sos [termines de impreu] pro sas cunditziones annuntilas chi podene essere applicadas. S'artìculu oritzinale est lenzu a su giassu:\nhttp://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Su testu est lenzu segundu sa litzèntzia Creative Commons Atributzione-Cumpartzi a sa matessi manera e podet essere impreau liberamente sighinde sos termines de tale litzèntzia. Bie su testu de sa litzèntzia [CC-BY-SA] e sos [termines de impreu] pro sas cunditziones annuntilas chi podene essere applicadas. S'artìculu oritzinale est lenzu a su giassu: http://en.wiktionary.org/wiki/<title>
+guten:license_text=Bie fintzas: [lista de sos autores], [elencu de sas librerias]. Su copyright pro sa parte prus manna de custos libros est iscadidu in sos Istados Unidos (ma podene essere galu protettos dae copyright in atteros istados). Pro cussu, cada unu podede fàghere còpias literàles o non literàles de custas òperas. Pro atteras informatziònes, bie: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Su testu est lenzu segundu sa litzèntzia Creative Commons Atributzione-Cumpartzi a sa matessi manera e podet essere impreau liberamente sighinde sos termines de tale litzèntzia. Bie su testu de sa litzèntzia [CC-BY-SA] e sos [termines de impreu] pro sas cunditziones annuntilas chi podene essere applicadas. S'artìculu oritzinale est lenzu a su giassu: http://www.wikihow.com/wikiHow:Creative-Commons (in inglesu)
+quote:license_text=Su testu est lenzu segundu sa litzèntzia Creative Commons Atributzione-Cumpartzi a sa matessi manera e podet essere impreau liberamente sighinde sos termines de tale litzèntzia. Bie su testu de sa litzèntzia [CC-BY-SA] e sos [termines de impreu] pro sas cunditziones annuntilas chi podene essere applicadas. S'artìculu oritzinale est lenzu a su giassu: http://sc.wikipedia.org/wiki/<title>
+type_a_word=Iscrìe una paràula o una frase
+guten:type_a_word=Iscrìe unu libru o un autore
+no_results=Mancu unu resurtu agatau
+searching=chircande...
+select_wiki=Issèbera s'entziclopedìa
+history_title=Istòria
+no_history=Istòria bòida
+please_wait=Iseta unu momentu...
+clear_history=Bùrra s'istòria
+yes=Eja
+no=Nono
+protection=Carchi boghe de Wikipedia pòdet essere inadata a sos pitzinnos. Pro piaghere impòsta una crae pro amparu.
+guten:protection=Carchi libru podet essere inadatu a sos pitzinnos. Pro piaghere impòsta una crae pro amparu.
+restricted=Custa boghe podet essere inadata a sos pitzinnos. Pro piaghere impòsta una crae pro amparu.
+set_password=Impòsta sa crae
+ok=ok
+set_filter=Si su firtru est postu in ON, bi serbit una crae pro intrare in sos elementos reservados.
+keep_filter_on=Mantèni su firtru allùttu
+keep_filter_off=Mantèni su firtru mortu
+filter_options=Preferèntzias pro su firtru
+turn_filter_on=Allughe su firtru
+turn_filter_off=Mori su firtru
+change_password=Càmbia sa crae
+re_enter_password=Torra a iscrìere sa crae
+re_enter_new_password=Torra a iscriere sa crae noa
+passwords_not_match=Sas crais sunt diferentes
+enter_old_password=Iscrie sa crae betza
+enter_password=Iscrie sa crae
+try_again=Isballiau. Torra a proare.
+enter_new_password=Iscrie sa crae noa
+parental_controls=Compidada de sos genitores
+r=R

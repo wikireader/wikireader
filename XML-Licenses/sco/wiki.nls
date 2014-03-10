@@ -1,0 +1,52 @@
+# Messages for Scots (Scots)
+# Exported from translatewiki.net
+# Author: John Reid
+
+wiki_name=Ingils...
+appro:wiki_name=Appropædia
+books:wiki_name=Buiks
+dict:wiki_name=Dictionair
+guten:wiki_name=Waurk Gutenberg
+how:wiki_name=WikiHou
+pedia:wiki_name=Wikipædia Scots
+quote:wiki_name=Quotes
+hitch:wiki_name=Hitchwiki
+kjv:wiki_name=King James Bible
+license_text=Tex is available unner the Creative Commyns Attribution/Share-Alike License n can be freelie reuised unner the terms o that license. See: Tex o the [CC-BY-SA] License n [Terms o Uiss] fer addeetional terms that micht applie. The oreeginal airticle is available at: http://en.wikipedia.org/wiki/<title>
+appro:license_text=Tex is available unner the Creative Commyns Attribution/Share-Alike License n can be freelie reuised unner the terms o that license. See: Tex o the [CC-BY-SA] License n [Terms o Uiss] fer addeetional terms that micht applie. The oreeginal airticle is available at: http://www.appropedia.org/Appropedia:Copyrights
+dict:license_text=Tex is available unner the Creative Commyns Attribution/Share-Alike License n can be freelie reuised unner the terms o that license. See: Tex o the [CC-BY-SA] License n [Terms o Uiss] fer addeetional terms that micht applie. The oreeginal airticle is available at: http://en.wiktionary.org/wiki/<title>
+guten:license_text=See foreby: [Alphabetical leet o authors], [Leet o buikshelves].  Copiericht fer maist o thir buiks haes expired in the Unitit States. (They micht still be copierichten in ither kintries.) Sae oniebodie can mak verbatim or no-verbatim copies o thae works. Fer details, see: http://www.gutenberg.org/wiki/Main_Page
+how:license_text=Tex is available unner the Creative Commyns Attribution/Share-Alike License n can be freely reuised unner the terms o that license. See: Tex o the [CC-BY-SA] License n [Terms o Uiss] fer addeetional terms that micht applie. The oreeginal airticle is available at: http://www.wikihow.com/wikiHow:Creative-Commons
+quote:license_text=Tex is available unner the Creative Commyns Attribution/Share-Alike License n can be freelie reuised unner the terms o that license. See: Tex o the [CC-BY-SA] License n [Terms o Uiss] fer addeetional terms that micht applie. The oreeginal airticle is available at: http://en.wikiquote.org/wiki/<title>
+type_a_word=Type ae Wyrd or Phrase
+guten:type_a_word=Type ae Buik or Author
+no_results=Nae entries foond
+searching=raking
+select_wiki=Chuise encyclopædia
+history_title=Histerie
+no_history=Nae histerie
+please_wait=Please wait...
+clear_history=Clear Histerie
+yes=Ai
+no=Naw
+protection=Some Wikipædia entries micht no be suitable fer the kids. Please set ae password fer protection.
+guten:protection=Some buiks micht no be suitable fer the kids. Please set ae password fer protection.
+restricted=This entry micht no be suitable fer the kids. Please set ae password for protection.
+set_password=Set Password
+ok=ok
+set_filter=Wi filtering OAN, ae password is needed whan restricted entries ar accessed.
+keep_filter_on=Keep Filter OAN
+keep_filter_off=Keep Filter AFF
+filter_options=Filter Opties
+turn_filter_on=Turn Filter OAN
+turn_filter_off=Turn Filter AFF
+change_password=Chynge Password
+re_enter_password=Re-enter Password
+re_enter_new_password=Re-enter new password
+passwords_not_match=Passwords dinna match
+enter_old_password=Enter auld password
+enter_password=Enter password
+try_again=Wrang. Please try again.
+enter_new_password=Enter new password
+parental_controls=Parental Controls
+r=R

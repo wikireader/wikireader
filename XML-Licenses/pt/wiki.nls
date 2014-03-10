@@ -1,6 +1,7 @@
 # Messages for Portuguese (português)
 # Exported from translatewiki.net
 # Author: Hamilton Abreu
+# Author: Imperadeiro98
 # Author: Luckas
 # Author: Malafaya
 # Author: McDutchie
@@ -24,7 +25,7 @@ how:license_text=O texto está disponível nos termos da licença Creative Commo
 quote:license_text=O texto está disponível nos termos da licença Creative Commons - Atribuição - Partilha nos Mesmos Termos e pode ser reutilizado livremente nos termos desta licença. Veja: Texto da Licença [CC-BY-SA] e [Condições de Uso] para termos adicionais que possam ser aplicáveis. O artigo original está disponível em: http://pt.wikiquote.org/wiki/<title>
 type_a_word=Escreva uma Palavra ou Frase
 guten:type_a_word=Introduza um Livro ou Autor
-no_results=Nenhum registro encontrado
+no_results=Nenhum resultado encontrado
 searching=a pesquisar...
 select_wiki=Escolha a enciclopédia
 history_title=Histórico
