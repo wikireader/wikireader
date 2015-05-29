@@ -53,7 +53,7 @@ struct {
 char buffer[65536];
 
 
-bool ReadCommands(const char *filename);
+int ReadCommands(const char *filename);
 int MenuHandler(void);
 int CursorPosition(int x, int y);
 bool ReadIcon(void *icon, ssize_t size, const char *filename);
@@ -61,20 +61,29 @@ bool ReadIcon(void *icon, ssize_t size, const char *filename);
 
 int grifo_main(int argc, char *argv[])
 {
+	int nelem, m;
+
 	debug_print("init starting\n");
 
-	if (!ReadCommands("init.ini")) {
+	nelem = ReadCommands("init.ini");
+
+	// Nothing good in the file, give up
+	if (nelem == 0) {
+		debug_print("init no init.ini entries\n");
 		return EXIT_POWER_OFF;
 	}
 
-	// run the auto-boot item 0
-	if (argc > 1 && 0 == strcmp("auto-boot", argv[1]) && MenuRecord[0].ok) {
+	// One menu item, run it if autobooting
+	if ((nelem == 1) && MenuRecord[0].ok) {
+	    debug_print("init boot only\n");
 		chain(MenuRecord[0].command);
 	}
 
 	// menu for non-auto-boot
-	int m = MenuHandler();
+	debug_print("init choosing...\n");
+	m = MenuHandler();
 	if (MenuRecord[m].ok) {
+		debug_printf("init chose %d\n", m);
 		chain(MenuRecord[m].command);
 	}
 
@@ -82,7 +91,8 @@ int grifo_main(int argc, char *argv[])
 }
 
 
-bool ReadCommands(const char *filename)
+int
+ReadCommands(const char *filename)
 {
 	int handle = file_open(filename, FILE_OPEN_READ);
 	if (handle < 0) {
@@ -185,7 +195,7 @@ bool ReadCommands(const char *filename)
 		}
 	}
 
-	return item > 0;
+	return(item);
 }
 
 
