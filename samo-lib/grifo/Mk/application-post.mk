@@ -96,7 +96,6 @@ simulate-makefile: simulate-files
 simulate-makefile: simulate simulate-files qmake-project
 	cd "${SIMULATE_DIR}" && \
 	qmake CONFIG+="qt warn_on thread debug" \
-	  QMAKE_CXXFLAGS_WARN_ON+='-Werror' QMAKE_CFLAGS_WARN_ON+='-Werror' \
 	  QMAKE_CXXFLAGS+='-DGRIFO_SIMULATOR=1' QMAKE_CFLAGS+='-DGRIFO_SIMULATOR=1' \
 	  QMAKE_LIBS+='-lrt'
 
