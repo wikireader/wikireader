@@ -1,0 +1,2 @@
+include susptest.4th
+test-suspend-main

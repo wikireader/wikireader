@@ -1,0 +1,2 @@
+include serial.4th
+display-serial-number

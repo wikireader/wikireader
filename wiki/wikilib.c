@@ -483,7 +483,7 @@ static void handle_button_release(button_t keycode)
 			keyboard_set_mode(wiki_default_keyboard());
 			repaint_search();
 		}
-	} else if (keycode == BUTTON_HISTORY) {
+	} else if ((keycode == BUTTON_HISTORY)&&(display_mode != DISPLAY_MODE_ARTICLE)) {
 		if (display_mode != DISPLAY_MODE_HISTORY) {
 			clear_article_pos_info(); // to clear the previous article positioning information for list links to work properly
 			article_buf_pointer = NULL;
@@ -506,7 +506,10 @@ static void handle_button_release(button_t keycode)
 				guilib_fb_unlock();
 			}
 		}
-	} else if (keycode == BUTTON_RANDOM) {
+	} else if ((keycode == BUTTON_HISTORY)&&(display_mode == DISPLAY_MODE_ARTICLE)) {
+      // Add here page next Karthik
+             display_article_with_pcf(-200);
+	} else if ((keycode == BUTTON_RANDOM)&&(display_mode != DISPLAY_MODE_ARTICLE)) {
 		if (first_time_random < 4)
 			first_time_random++;
 		if (first_time_random == 3)
@@ -519,6 +522,9 @@ static void handle_button_release(button_t keycode)
 		display_mode = DISPLAY_MODE_ARTICLE;
 		last_display_mode = DISPLAY_MODE_INDEX;
 		random_article();
+	} else if ((keycode == BUTTON_RANDOM)&&(display_mode == DISPLAY_MODE_ARTICLE)) {
+		// Add here page next Karthik
+		display_article_with_pcf(200);
 	} else if (display_mode == DISPLAY_MODE_INDEX) {
 		article_buf_pointer = NULL;
 		key = keyboard_locate_key((char)keycode);

@@ -1,0 +1,35 @@
+Spring 2010 WikiReader Content Update
+
+This update is recommended for all WikiReader users and includes general system fixes that enhance the stability, rendering quality, and usability of your WikiReader.  
+
+
+What's Included?
+
+- Jan. 16th, 2010 snapshot of the entire English Wikipedia
+- Added keypad animations for better typing
+- Improved keypad type recognition and usability
+- Fixed various parsing errors within articles
+- Fixed various template generating issues within articles
+- Rendered math formulas to bitmap images
+- Added kinetic scrolling for better reading
+- Added back feature for quick navigation
+
+For more detailed information, including source codes, please visit our git repository: http://github.com/wikireader.
+
+
+Updating Your WikiReader
+
+Replace the contents of your WikiReader's SD card with everything in this folder. 
+
+More detailed instructions are available at: 
+  
+  http://thewikireader.com/update.html
+
+
+Still Need Help?
+
+Contact us through email at support@thewikireader.com, or message us on twitter.com (@wikireader) and we'll get back to you right away.
+
+Enjoy.
+
+

@@ -1,3 +1,33 @@
+Edit 
+wikireader/samo-lib/include/config.h
+and enable
+#define BOARD_SAMO_V1 1
+
+make clean-toolchain
+mkdir /tmp/2013/enpedia
+make install DESTDIR=/tmp/2013
+cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
+mkdir -p host-tools/gcc-3.3.2/build
+cp SavedCaches/config.cache-gcc-12.10 host-tools/gcc-3.3.2/build/config.cache
+make
+cp SavedCaches/config.cache-binutils-12.10 host-tools/binutils-2.10.1/build/config.cache
+make
+make install DESTDIR=/tmp/2013
+
+echo "NOw simulate"
+echo "This will crash. it is OK"
+make wiki-simulate DESTDIR=/tmp/2013
+echo "Now delete enpedia from /tmp/2013"
+echo "cd /tmp/2013 and then ./wiki.app"
+
+
+Changes I have done
+Edit
+wiki/wikilib.c
+See this for more details
+
+
+
 Contents of root directory
 ==========================
 
