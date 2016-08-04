@@ -1,4 +1,3 @@
-
 Assorted TODO thoughts...
 
 *) up-level gcc compiler
@@ -9,3 +8,5 @@ Assorted TODO thoughts...
 *) enable C99 in compiler, use C99 types more consistantly
 
 *) C++ support
+
+*) Add support for warning headers on articles

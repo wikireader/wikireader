@@ -23,6 +23,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #endif
+
 #include "keyboard.h"
 
 #ifndef NULL
